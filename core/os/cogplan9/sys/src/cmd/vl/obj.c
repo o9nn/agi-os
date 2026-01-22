@@ -1,17 +1,17 @@
-#define	EXTERN
-#include	"l.h"
-#include	<ar.h>
-#ifndef	DEFAULT
-#define	DEFAULT	'9'
+#define EXTERN
+#include "l.h"
+#include <ar.h>
+#ifndef DEFAULT
+#define DEFAULT '9'
 #endif
-char	*noname		= "<none>";
-char	symname[]	= SYMDEF;
-char	thechar		= 'v';
-char	*thestring 	= "mips";
+char *noname = "<none>";
+char symname[] = SYMDEF;
+char thechar = 'v';
+char *thestring = "mips";
 int little;
-char**	libdir;
-int	nlibdir	= 0;
-static	int	maxlibdir = 0;
+char** libdir;
+int nlibdir = 0;
+static int maxlibdir = 0;
 void
 usage(void)
 {
@@ -50,7 +50,7 @@ a = ARGF();
 if(a)
 INITENTRY = a;
 break;
-case  'm':
+case 'm':
 thechar = '0';
 thestring = "spim";
 little = 1;

@@ -39,23 +39,23 @@ uint32_t reserved;
 uint64_t sector;
 uint8_t data[];
 };
-#define VIRTIO_BLK_T_IN           0
-#define VIRTIO_BLK_T_OUT          1
-#define VIRTIO_BLK_T_FLUSH        4
-#define VIRTIO_BLK_T_DISCARD      11
+#define VIRTIO_BLK_T_IN 0
+#define VIRTIO_BLK_T_OUT 1
+#define VIRTIO_BLK_T_FLUSH 4
+#define VIRTIO_BLK_T_DISCARD 11
 #define VIRTIO_BLK_T_WRITE_ZEROES 13
-#define VIRTIO_BLK_S_OK           0
-#define VIRTIO_BLK_S_IOERR        1
-#define VIRTIO_BLK_S_UNSUPP       2
-#define VIRTIO_BLK_F_SIZE_MAX     1
-#define VIRTIO_BLK_F_SEG_MAX      2
-#define VIRTIO_BLK_F_GEOMETRY     4
-#define VIRTIO_BLK_F_RO           5
-#define VIRTIO_BLK_F_BLK_SIZE     6
-#define VIRTIO_BLK_F_FLUSH        9
-#define VIRTIO_BLK_F_TOPOLOGY     10
-#define VIRTIO_BLK_F_CONFIG_WCE   11
-#define VIRTIO_BLK_F_DISCARD      13
+#define VIRTIO_BLK_S_OK 0
+#define VIRTIO_BLK_S_IOERR 1
+#define VIRTIO_BLK_S_UNSUPP 2
+#define VIRTIO_BLK_F_SIZE_MAX 1
+#define VIRTIO_BLK_F_SEG_MAX 2
+#define VIRTIO_BLK_F_GEOMETRY 4
+#define VIRTIO_BLK_F_RO 5
+#define VIRTIO_BLK_F_BLK_SIZE 6
+#define VIRTIO_BLK_F_FLUSH 9
+#define VIRTIO_BLK_F_TOPOLOGY 10
+#define VIRTIO_BLK_F_CONFIG_WCE 11
+#define VIRTIO_BLK_F_DISCARD 13
 #define VIRTIO_BLK_F_WRITE_ZEROES 14
 struct virtio_blk_dev {
 struct virtio_device *vdev;

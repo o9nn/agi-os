@@ -23,8 +23,8 @@ int debug = TRUE ;
 #define MIN_COMMIT 4096
 #define ID_NAME "GSPMDRV_%u_%u"
 #define SHARED_NAME "\\SHAREMEM\\%s"
-#define SYNC_NAME   "\\SEM32\\SYNC_%s"
-#define MUTEX_NAME  "\\SEM32\\MUTEX_%s"
+#define SYNC_NAME "\\SEM32\\SYNC_%s"
+#define MUTEX_NAME "\\SEM32\\MUTEX_%s"
 LONG display_planes;
 LONG display_bitcount;
 LONG display_hasPalMan;
@@ -384,7 +384,7 @@ if (index < 64) {
 int one = 255 / 3;
 *r = ((index & 0x30) >> 4) * one;
 *g = ((index & 0x0c) >> 2) * one;
-*b =  (index & 0x03) * one;
+*b = (index & 0x03) * one;
 }
 else {
 int val = index & 0x1f;
@@ -810,7 +810,7 @@ if (!gs_load_dll()) {
 fprintf(stdout, "Can't load %s\n", szDllName);
 return -1;
 }
-{   int format = DISPLAY_COLORS_NATIVE | DISPLAY_ALPHA_NONE |
+{ int format = DISPLAY_COLORS_NATIVE | DISPLAY_ALPHA_NONE |
 DISPLAY_DEPTH_1 | DISPLAY_LITTLEENDIAN | DISPLAY_BOTTOMFIRST;
 int depth;
 HPS ps = WinGetPS(HWND_DESKTOP);

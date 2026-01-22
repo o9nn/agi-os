@@ -160,7 +160,7 @@ return 0;
 }
 #endif
 #if NCR53C400_PSEUDO_DMA
-static inline int NCR5380_pread (struct Scsi_Host *instance, unsigned char *dst,    int len)
+static inline int NCR5380_pread (struct Scsi_Host *instance, unsigned char *dst, int len)
 {
 int blocks = len / 128;
 int start = 0;
@@ -250,7 +250,7 @@ NCR5380_write(MODE_REG, MR_BASE);
 NCR5380_read(RESET_PARITY_INTERRUPT_REG);
 return 0;
 }
-static inline int NCR5380_pwrite (struct Scsi_Host *instance, unsigned char *src,    int len)
+static inline int NCR5380_pwrite (struct Scsi_Host *instance, unsigned char *src, int len)
 {
 int blocks = len / 128;
 int start = 0;
@@ -406,7 +406,7 @@ PRINTP("Generic NCR5380 driver version %d\n" ANDP GENERIC_NCR5380_PUBLIC_RELEASE
 PRINTP("NCR5380 core version %d\n" ANDP NCR5380_PUBLIC_RELEASE);
 #ifdef NCR53C400
 PRINTP("NCR53C400 extension version %d\n" ANDP NCR53C400_PUBLIC_RELEASE);
-PRINTP("NCR53C400 card%s detected\n" ANDP  (((struct NCR5380_hostdata *)scsi_ptr->hostdata)->flags & FLAG_NCR53C400)?"":" not");
+PRINTP("NCR53C400 card%s detected\n" ANDP (((struct NCR5380_hostdata *)scsi_ptr->hostdata)->flags & FLAG_NCR53C400)?"":" not");
 # if NCR53C400_PSEUDO_DMA
 PRINTP("NCR53C400 pseudo DMA used\n");
 # endif

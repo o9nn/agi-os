@@ -18,7 +18,7 @@ count_node *left;
 count_node *right;
 };
 #ifdef DEBUG
-#  define debug_print_nodes(nodes, n, tag, lengths)\
+# define debug_print_nodes(nodes, n, tag, lengths)\
 if ( gs_debug_c('W') ) print_nodes_proc(nodes, n, tag, lengths);
 private void
 print_nodes_proc(const count_node * nodes, int n, const char *tag, int lengths)
@@ -41,7 +41,7 @@ i = j;
 }
 }
 #else
-#  define debug_print_nodes(nodes, n, tag, lengths) DO_NOTHING
+# define debug_print_nodes(nodes, n, tag, lengths) DO_NOTHING
 #endif
 #define pn1 ((const count_node *)p1)
 #define pn2 ((const count_node *)p2)

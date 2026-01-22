@@ -6,8 +6,8 @@
 #include <bio.h>
 typedef struct Args Args;
 struct Args {
-int	argc;
-char	**argv;
+int argc;
+char **argv;
 };
 typedef struct Dfile Dfile;
 typedef struct Fid Fid;
@@ -37,149 +37,149 @@ threadexitsall(fmt);
 }
 enum
 {
-Nfidhash=	64,
-Ndfhash=	128,
+Nfidhash= 64,
+Ndfhash= 128,
 };
 struct Symbol
 {
-Symbol	*next;
-char	*sym;
-int	fno;
+Symbol *next;
+char *sym;
+int fno;
 };
 struct File
 {
 QLock;
-char	*name;
-Symbol	*ref;
-uchar	*refvec;
-uint	len;
-uint	tarlen;
-uint	mode;
-uint	mtime;
-int	use;
-int	fd;
+char *name;
+Symbol *ref;
+uchar *refvec;
+uint len;
+uint tarlen;
+uint mode;
+uint mtime;
+int use;
+int fd;
 };
 struct Dfile
 {
 Lock;
-int	use;
-int	old;
-File	*file;
-int	nfile;
-int	flen;
-Symbol	**dhash;
-int	hlen;
-Dfile	*next;
-char	*path;
-Qid	qid;
+int use;
+int old;
+File *file;
+int nfile;
+int flen;
+Symbol **dhash;
+int hlen;
+Dfile *next;
+char *path;
+Qid qid;
 };
 struct Fid
 {
-Fid	*next;
-int	fid;
-int	ref;
-int	attached;
-int	open;
-Qid	qid;
-char	*path;
-Dfile	*df;
-Symbol	*dp;
-int	fd;
-Dir	*dir;
-int	ndir;
-int	dirindex;
+Fid *next;
+int fid;
+int ref;
+int attached;
+int open;
+Qid qid;
+char *path;
+Dfile *df;
+Symbol *dp;
+int fd;
+Dir *dir;
+int ndir;
+int dirindex;
 };
 struct Request
 {
-Request	*next;
-Fid	*fid;
-Fcall	f;
-uchar	buf[1];
+Request *next;
+Fid *fid;
+Fcall f;
+uchar buf[1];
 };
 enum
 {
-Tblocksize=	512,
-Tnamesize=	100,
+Tblocksize= 512,
+Tnamesize= 100,
 };
 struct Tardir
 {
-char	name[Tnamesize];
-char	mode[8];
-char	uid[8];
-char	gid[8];
-char	size[12];
-char	mtime[12];
-char	chksum[8];
-char	linkflag;
-char	linkname[Tnamesize];
+char name[Tnamesize];
+char mode[8];
+char uid[8];
+char gid[8];
+char size[12];
+char mtime[12];
+char chksum[8];
+char linkflag;
+char linkname[Tnamesize];
 };
 struct Fs
 {
 Lock;
-int	fd;
-Fid	*hash[Nfidhash];
-char	*root;
-Qid	rootqid;
+int fd;
+Fid *hash[Nfidhash];
+char *root;
+Qid rootqid;
 };
 struct Fsarg
 {
-Fs	*fs;
-int	fd;
+Fs *fs;
+int fd;
 char *root;
 };
-extern	void	fsrun(void*);
-extern	Fid*	fsgetfid(Fs*, int);
-extern	void	fsputfid(Fs*, Fid*);
-extern	void	fsreply(Fs*, Request*, char*);
-extern	void	fsversion(Fs*, Request*, Fid*);
-extern	void	fsauth(Fs*, Request*, Fid*);
-extern	void	fsflush(Fs*, Request*, Fid*);
-extern	void	fsattach(Fs*, Request*, Fid*);
-extern	void	fswalk(Fs*, Request*, Fid*);
-extern	void	fsopen(Fs*, Request*, Fid*);
-extern	void	fscreate(Fs*, Request*, Fid*);
-extern	void	fsread(Fs*, Request*, Fid*);
-extern	void	fswrite(Fs*, Request*, Fid*);
-extern	void	fsclunk(Fs*, Request*, Fid*);
-extern	void	fsremove(Fs*, Request*, Fid*);
-extern	void	fsstat(Fs*, Request*, Fid*);
-extern	void	fswstat(Fs*, Request*, Fid*);
-void 	(*fcall[])(Fs*, Request*, Fid*) =
+extern void fsrun(void*);
+extern Fid* fsgetfid(Fs*, int);
+extern void fsputfid(Fs*, Fid*);
+extern void fsreply(Fs*, Request*, char*);
+extern void fsversion(Fs*, Request*, Fid*);
+extern void fsauth(Fs*, Request*, Fid*);
+extern void fsflush(Fs*, Request*, Fid*);
+extern void fsattach(Fs*, Request*, Fid*);
+extern void fswalk(Fs*, Request*, Fid*);
+extern void fsopen(Fs*, Request*, Fid*);
+extern void fscreate(Fs*, Request*, Fid*);
+extern void fsread(Fs*, Request*, Fid*);
+extern void fswrite(Fs*, Request*, Fid*);
+extern void fsclunk(Fs*, Request*, Fid*);
+extern void fsremove(Fs*, Request*, Fid*);
+extern void fsstat(Fs*, Request*, Fid*);
+extern void fswstat(Fs*, Request*, Fid*);
+void (*fcall[])(Fs*, Request*, Fid*) =
 {
-[Tflush]	fsflush,
-[Tversion]	fsversion,
-[Tauth]	fsauth,
-[Tattach]	fsattach,
-[Twalk]		fswalk,
-[Topen]		fsopen,
-[Tcreate]	fscreate,
-[Tread]		fsread,
-[Twrite]	fswrite,
-[Tclunk]	fsclunk,
-[Tremove]	fsremove,
-[Tstat]		fsstat,
-[Twstat]	fswstat
+[Tflush] fsflush,
+[Tversion] fsversion,
+[Tauth] fsauth,
+[Tattach] fsattach,
+[Twalk] fswalk,
+[Topen] fsopen,
+[Tcreate] fscreate,
+[Tread] fsread,
+[Twrite] fswrite,
+[Tclunk] fsclunk,
+[Tremove] fsremove,
+[Tstat] fsstat,
+[Twstat] fswstat
 };
-char Eperm[]   = "permission denied";
-char Eexist[]  = "file does not exist";
+char Eperm[] = "permission denied";
+char Eexist[] = "file does not exist";
 char Enotdir[] = "not a directory";
 char Eisopen[] = "file already open";
 char Enofid[] = "no such fid";
-char mallocerr[]	= "malloc: %r";
-char Etoolong[]	= "name too long";
+char mallocerr[] = "malloc: %r";
+char Etoolong[] = "name too long";
 char *dependlog = "depend";
 int debug;
 Dfile *dfhash[Ndfhash];
 QLock dfhlock[Ndfhash];
 QLock iolock;
-Request*	allocreq(int);
-Dfile*	getdf(char*);
-void	releasedf(Dfile*);
-Symbol*	dfsearch(Dfile*, char*);
-void	dfresolve(Dfile*, int);
-char*	mkpath(char*, char*);
-int	mktar(Dfile*, Symbol*, uchar*, uint, int);
-void	closetar(Dfile*, Symbol*);
+Request* allocreq(int);
+Dfile* getdf(char*);
+void releasedf(Dfile*);
+Symbol* dfsearch(Dfile*, char*);
+void dfresolve(Dfile*, int);
+char* mkpath(char*, char*);
+int mktar(Dfile*, Symbol*, uchar*, uint, int);
+void closetar(Dfile*, Symbol*);
 void*
 emalloc(uint n)
 {
@@ -827,8 +827,8 @@ fsreply(fs, r, Eperm);
 uint
 shash(char *str, int len)
 {
-uint	hash;
-char	*val;
+uint hash;
+char *val;
 hash = 0;
 for(val = str; *val; val++)
 hash = (hash*13) + *val-'a';

@@ -58,37 +58,37 @@ newsys = tearing(sys)
 @test length(equations(newsys)) == 1
 @test issetequal(ModelingToolkit.vars(equations(newsys)), [u1, u4, u5])
 # Before:
-#      u1  u2  u3  u4  u5
-# e1 [  1               1 ]
-# e2 [  1   1             ]
-# e3 [  1   1   1         ]
-# e4 [      1   1   1     ]
-# e5 [  1           1   1 ]
+# u1 u2 u3 u4 u5
+# e1 [ 1 1 ]
+# e2 [ 1 1 ]
+# e3 [ 1 1 1 ]
+# e4 [ 1 1 1 ]
+# e5 [ 1 1 1 ]
 # solvable_graphs:
-#      u1  u2  u3  u4  u5
-# e1 [  1                 ]
-# e2 [      1             ]
-# e3 [          1         ]
-# e4 [              1     ]
-# e5 [                  1 ]
+# u1 u2 u3 u4 u5
+# e1 [ 1 ]
+# e2 [ 1 ]
+# e3 [ 1 ]
+# e4 [ 1 ]
+# e5 [ 1 ]
 #
 # Optimal:
-#      u2  u3  u4  u5  | u1
-# e2 [  1              |  1 ]
-# e3 [  1   1          |  1 ]
-# e4 [  1   1   1      |    ]
-# e5 [          1   1  |  1 ]
+# u2 u3 u4 u5 | u1
+# e2 [ 1 | 1 ]
+# e3 [ 1 1 | 1 ]
+# e4 [ 1 1 1 | ]
+# e5 [ 1 1 | 1 ]
 # ---------------------|-----
-# e1 [          1   1  |    ]
+# e1 [ 1 1 | ]
 #
 # Or:
-#      u1  u2  u3  u4 | u5
-# e1 [  1             |  1 ]
-# e2 [  1   1         |    ]
-# e3 [  1   1   1     |    ]
-# e4 [      1   1   1 |    ]
+# u1 u2 u3 u4 | u5
+# e1 [ 1 | 1 ]
+# e2 [ 1 1 | ]
+# e3 [ 1 1 1 | ]
+# e4 [ 1 1 1 | ]
 # --------------------|-----
-# e5 [  1           1 |  1 ]
+# e5 [ 1 1 | 1 ]
 let state = TearingState(sys)
 result, = tearing(state)
 S = StructuralTransformations.reordered_matrix(sys, result.var_eq_matching)

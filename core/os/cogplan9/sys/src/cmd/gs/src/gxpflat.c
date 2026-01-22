@@ -33,7 +33,7 @@ adx0 = any_abs(dx0), ady0 = any_abs(dy0),
 adx1 = any_abs(dx1), ady1 = any_abs(dy1);
 fixed
 d = max(adx0, adx1) + max(ady0, ady1);
-uint qtmp = d - (d >> 2)  +fixed_flat - 1;
+uint qtmp = d - (d >> 2) +fixed_flat - 1;
 uint q = qtmp / fixed_flat;
 if_debug6('2', "[2]d01=%g,%g d12=%g,%g d23=%g,%g\n",
 fixed2float(pc->p1.x - x0), fixed2float(pc->p1.y - y0),
@@ -93,9 +93,9 @@ curve_points_to_coefficients(x0, x1, x2, x3,
 *ax, *bx, *cx, x01, x12);
 curve_points_to_coefficients(y0, y1, y2, y3,
 *ay, *by, *cy, y01, y12);
-#   define max_fast (max_fixed / 6)
-#   define min_fast (-max_fast)
-#   define in_range(v) (v < max_fast && v > min_fast)
+# define max_fast (max_fixed / 6)
+# define min_fast (-max_fast)
+# define in_range(v) (v < max_fast && v > min_fast)
 if (k > k_sample_max ||
 !in_range(*ax) || !in_range(*ay) ||
 !in_range(*bx) || !in_range(*by) ||
@@ -130,7 +130,7 @@ return false;
 this->curve = true;
 vd_curve(this->x0, this->y0, x1, y1, x2, y2, this->x3, this->y3, 0, RGB(255, 255, 255));
 this->k = k;
-#   ifdef DEBUG
+# ifdef DEBUG
 if (gs_debug_c('3')) {
 dlprintf4("[3]x0=%f y0=%f x1=%f y1=%f\n",
 fixed2float(this->x0), fixed2float(this->y0),
@@ -139,7 +139,7 @@ dlprintf5("   x2=%f y2=%f x3=%f y3=%f  k=%d\n",
 fixed2float(x2), fixed2float(y2),
 fixed2float(this->x3), fixed2float(this->y3), this->k);
 }
-#   endif
+# endif
 if (k == -1) {
 return true;
 }
@@ -161,7 +161,7 @@ this->id2x = arith_rshift(bx2, k2);
 this->id2y = arith_rshift(by2, k2);
 this->rd2x = ((uint)bx2 << this->k) & this->rmask;
 this->rd2y = ((uint)by2 << this->k) & this->rmask;
-#   define adjust_rem(r, q, rmask) if ( r > rmask ) q ++, r &= rmask
+# define adjust_rem(r, q, rmask) if ( r > rmask ) q ++, r &= rmask
 this->idx += arith_rshift_1(this->id2x);
 this->idy += arith_rshift_1(this->id2y);
 this->rdx += ((uint)this->bx << this->k) & this->rmask,
@@ -180,7 +180,7 @@ this->rd2x += this->rd3x = (uint)ax6 & this->rmask,
 this->rd2y += this->rd3y = (uint)ay6 & this->rmask;
 adjust_rem(this->rd2x, this->id2x, this->rmask);
 adjust_rem(this->rd2y, this->id2y, this->rmask);
-#   undef adjust_rem
+# undef adjust_rem
 return true;
 }
 private inline bool
@@ -246,10 +246,10 @@ if (this->k <= 1) {
 --this->i;
 if (this->i == 0)
 goto last;
-#	define poly2(a,b,c) arith_rshift_1(arith_rshift_1(arith_rshift_1(a) + b) + c)
+# define poly2(a,b,c) arith_rshift_1(arith_rshift_1(arith_rshift_1(a) + b) + c)
 x += poly2(this->ax, this->bx, this->cx);
 y += poly2(this->ay, this->by, this->cy);
-#	undef poly2
+# undef poly2
 if_debug2('3', "[3]dx=%f, dy=%f\n",
 fixed2float(x - this->x0), fixed2float(y - this->y0));
 if_debug5('3', "[3]%s x=%g, y=%g x=%d y=%d\n",
@@ -263,10 +263,10 @@ return true;
 --this->i;
 if (this->i == 0)
 goto last;
-#	ifdef DEBUG
+# ifdef DEBUG
 gx_flattened_iterator__print_state(this);
-#	endif
-#	define accum(i, r, di, dr, rmask)\
+# endif
+# define accum(i, r, di, dr, rmask)\
 if ( (r += dr) > rmask ) r &= rmask, i += di + 1;\
 else i += di
 accum(x, this->rx, this->idx, this->rdx, this->rmask);
@@ -279,7 +279,7 @@ if_debug5('3', "[3]%s x=%g, y=%g x=%d y=%d\n",
 (((x ^ this->lx0) | (y ^ this->ly0)) & float2fixed(-0.5) ?
 "add" : "skip"),
 fixed2float(x), fixed2float(y), x, y);
-#	undef accum
+# undef accum
 this->lx1 = this->x = x;
 this->ly1 = this->y = y;
 vd_bar(this->lx0, this->ly0, this->lx1, this->ly1, 1, RGB(0, 255, 0));
@@ -296,7 +296,7 @@ return false;
 private inline void
 gx_flattened_iterator__unaccum(gx_flattened_iterator *this)
 {
-#   define unaccum(i, r, di, dr, rmask)\
+# define unaccum(i, r, di, dr, rmask)\
 if ( r < dr ) r += rmask + 1 - dr, i -= di + 1;\
 else r -= dr, i -= di
 unaccum(this->id2x, this->rd2x, this->id3x, this->rd3x, this->rmask);
@@ -305,7 +305,7 @@ unaccum(this->idx, this->rdx, this->id2x, this->rd2x, this->rmask);
 unaccum(this->idy, this->rdy, this->id2y, this->rd2y, this->rmask);
 unaccum(this->x, this->rx, this->idx, this->rdx, this->rmask);
 unaccum(this->y, this->ry, this->idy, this->rdy, this->rmask);
-#   undef unaccum
+# undef unaccum
 }
 bool
 gx_flattened_iterator__prev(gx_flattened_iterator *this)
@@ -323,13 +323,13 @@ return false;
 }
 gx_flattened_iterator__unaccum(this);
 this->i++;
-#   ifdef DEBUG
+# ifdef DEBUG
 if_debug5('3', "[3]%s x=%g, y=%g x=%d y=%d\n",
 (((this->x ^ this->lx1) | (this->y ^ this->ly1)) & float2fixed(-0.5) ?
 "add" : "skip"),
 fixed2float(this->x), fixed2float(this->y), this->x, this->y);
 gx_flattened_iterator__print_state(this);
-#   endif
+# endif
 last = (this->i == (1 << this->k) - 1);
 this->lx0 = this->x;
 this->ly0 = this->y;
@@ -392,7 +392,7 @@ ppt->x = this->lx1;
 ppt->y = this->ly1;
 ppt++;
 if (ppt == &points[max_points] || !more) {
-gs_fixed_point *pe = (more ?  ppt - 2 : ppt);
+gs_fixed_point *pe = (more ? ppt - 2 : ppt);
 code = generate_segments(ppath, points, pe - points, notes);
 if (code < 0)
 return code;

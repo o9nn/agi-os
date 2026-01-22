@@ -40,13 +40,13 @@
 #define STDMETHOD(name) STDMETHOD_(HRESULT, name)
 #define EXTERN_C extern "C"
 #define UNREFERENCED_PARAMETER(P) (void)(P)
-#define RtlEqualMemory(Destination, Source, Length)                            \
+#define RtlEqualMemory(Destination, Source, Length) \
 (!memcmp((Destination), (Source), (Length)))
-#define RtlMoveMemory(Destination, Source, Length)                             \
+#define RtlMoveMemory(Destination, Source, Length) \
 memmove((Destination), (Source), (Length))
-#define RtlCopyMemory(Destination, Source, Length)                             \
+#define RtlCopyMemory(Destination, Source, Length) \
 memcpy((Destination), (Source), (Length))
-#define RtlFillMemory(Destination, Length, Fill)                               \
+#define RtlFillMemory(Destination, Length, Fill) \
 memset((Destination), (Fill), (Length))
 #define RtlZeroMemory(Destination, Length) memset((Destination), 0, (Length))
 #define MoveMemory RtlMoveMemory
@@ -79,8 +79,8 @@ memset((Destination), (Fill), (Length))
 #define SEVERITY_ERROR 1
 #define FACILITY_WIN32 7
 #define HRESULT_CODE(hr) ((hr) & 0xFFFF)
-#define MAKE_HRESULT(severity, facility, code)                                 \
-((HRESULT)(((unsigned long)(severity) << 31) |                               \
+#define MAKE_HRESULT(severity, facility, code) \
+((HRESULT)(((unsigned long)(severity) << 31) | \
 ((unsigned long)(facility) << 16) | ((unsigned long)(code))))
 #define FILE_TYPE_UNKNOWN 0x0000
 #define FILE_TYPE_DISK 0x0001
@@ -157,8 +157,8 @@ memset((Destination), (Fill), (Length))
 #define SUCCEEDED(hr) (((HRESULT)(hr)) >= 0)
 #define FAILED(hr) (((HRESULT)(hr)) < 0)
 #define DXC_FAILED(hr) (((HRESULT)(hr)) < 0)
-#define HRESULT_FROM_WIN32(x)                                                  \
-(HRESULT)(x) <= 0 ? (HRESULT)(x)                                             \
+#define HRESULT_FROM_WIN32(x) \
+(HRESULT)(x) <= 0 ? (HRESULT)(x) \
 : (HRESULT)(((x) & 0x0000FFFF) | (7 << 16) | 0x80000000)
 #define _In_
 #define _In_z_
@@ -236,10 +236,10 @@ typedef std::nullptr_t nullptr_t;
 typedef signed int HRESULT;
 typedef void *HANDLE;
 typedef void *RPC_IF_HANDLE;
-#define DECLARE_HANDLE(name)                                                   \
-struct name##__ {                                                            \
-int unused;                                                                \
-};                                                                           \
+#define DECLARE_HANDLE(name) \
+struct name##__ { \
+int unused; \
+}; \
 typedef struct name##__ *name
 DECLARE_HANDLE(HINSTANCE);
 typedef void *HMODULE;
@@ -355,7 +355,7 @@ return ((c >= '0' && c <= '9')
 : ((c >= 'a' && c <= 'f')
 ? (c - 'a' + 10)
 : ((c >= 'A' && c <= 'F') ? (c - 'A' + 10)
-:  -1)));
+: -1)));
 }
 constexpr uint8_t byte_from_hex(char c1, char c2) {
 return nybble_from_hex(c1) << 4 | nybble_from_hex(c2);
@@ -380,18 +380,18 @@ byte_from_hexstr(str + 28), byte_from_hexstr(str + 30),
 byte_from_hexstr(str + 32), byte_from_hexstr(str + 34)}};
 }
 template <typename interface> inline GUID __emulated_uuidof();
-#define CROSS_PLATFORM_UUIDOF(interface, spec)                                 \
-struct interface;                                                            \
-template <> inline GUID __emulated_uuidof<interface>() {                     \
-static const IID _IID = guid_from_string(spec);                            \
-return _IID;                                                               \
+#define CROSS_PLATFORM_UUIDOF(interface, spec) \
+struct interface; \
+template <> inline GUID __emulated_uuidof<interface>() { \
+static const IID _IID = guid_from_string(spec); \
+return _IID; \
 }
 #define __uuidof(T) __emulated_uuidof<typename std::decay<T>::type>()
-#define IID_PPV_ARGS(ppType)                                                   \
+#define IID_PPV_ARGS(ppType) \
 __uuidof(decltype(**(ppType))), reinterpret_cast<void **>(ppType)
 #else
 #ifndef CROSS_PLATFORM_UUIDOF
-#define CROSS_PLATFORM_UUIDOF(interface, spec)                                 \
+#define CROSS_PLATFORM_UUIDOF(interface, spec) \
 struct __declspec(uuid(spec)) interface;
 #endif
 template <typename T> inline void **IID_PPV_ARGS_Helper(T **pp) {
@@ -399,7 +399,7 @@ return reinterpret_cast<void **>(pp);
 }
 #define IID_PPV_ARGS(ppType) __uuidof(**(ppType)), IID_PPV_ARGS_Helper(ppType)
 #endif
-#define DEFINE_GUID(name, l, w1, w2, b1, b2, b3, b4, b5, b6, b7, b8)           \
+#define DEFINE_GUID(name, l, w1, w2, b1, b2, b3, b4, b5, b6, b7, b8) \
 const GUID name = {l, w1, w2, {b1, b2, b3, b4, b5, b6, b7, b8}}
 #define DECLSPEC_UUID(x)
 #define MIDL_INTERFACE(x) struct DECLSPEC_UUID(x)

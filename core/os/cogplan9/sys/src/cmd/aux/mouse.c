@@ -2,10 +2,10 @@
 #include <libc.h>
 enum
 {
-Sleep500	= 500,
-Sleep1000	= 1000,
-Sleep2000	= 2000,
-TIMEOUT		= 5000,
+Sleep500 = 500,
+Sleep1000 = 1000,
+Sleep2000 = 2000,
+TIMEOUT = 5000,
 };
 char *speeds[] =
 {
@@ -15,7 +15,7 @@ char *speeds[] =
 "b9600",
 0,
 };
-int	button2;
+int button2;
 #define DEBUG if(debug)
 int can9600;
 int debug;

@@ -2,13 +2,13 @@
 #define MIN_TAB_PIXELS 10
 #define MIN_TAB_10THS 15
 #ifndef X_DPI
-#  define X_DPI 240
+# define X_DPI 240
 #endif
 #ifndef Y_BASERES
-#  define Y_BASERES 72
+# define Y_BASERES 72
 #endif
 #ifndef Y_DPI
-#  define Y_DPI (1*Y_BASERES)
+# define Y_DPI (1*Y_BASERES)
 #endif
 private dev_proc_print_page(epson_print_page);
 private dev_proc_print_page(eps9mid_print_page);
@@ -47,7 +47,7 @@ int archaic, int tab_hiccup)
 {
 static const char graphics_modes_9[5] =
 {
--1, 0 , 1	, 7 , DD+3
+-1, 0 , 1 , 7 , DD+3
 };
 static const char graphics_modes_24[7] =
 {
@@ -74,7 +74,7 @@ int bytes_per_space = dots_per_space * out_y_mult;
 int tab_min_pixels = x_dpi * MIN_TAB_10THS / 10;
 int skip = 0, lnum = 0, pass, ypass;
 if ( buf1 == 0 || buf2 == 0 )
-{	if ( buf1 )
+{ if ( buf1 )
 gs_free(pdev->memory, (char *)buf1, in_size, 1, "eps_print_page(buf1)");
 if ( buf2 )
 gs_free(pdev->memory, (char *)buf2, in_size, 1, "eps_print_page(buf2)");
@@ -131,10 +131,10 @@ if ( y_9pin_high )
 byte *p;
 int i;
 static const char index[] =
-{  0,  8, 16,  1,  9, 17,
-2, 10, 18,  3, 11, 19,
-4, 12, 20,  5, 13, 21,
-6, 14, 22,  7, 15, 23
+{ 0, 8, 16, 1, 9, 17,
+2, 10, 18, 3, 11, 19,
+4, 12, 20, 5, 13, 21,
+6, 14, 22, 7, 15, 23
 };
 for ( i = 0; i < 24; i++ )
 {
@@ -284,10 +284,10 @@ putc(((which & 1) ? *dp : 0), prn_stream);
 }
 }
 #ifndef ARCHAIC
-#  define ARCHAIC 0
+# define ARCHAIC 0
 #endif
 #ifndef TAB_HICCUP
-#  define TAB_HICCUP 0
+# define TAB_HICCUP 0
 #endif
 #define ESC 0x1b
 private const char eps_init_string[] = {

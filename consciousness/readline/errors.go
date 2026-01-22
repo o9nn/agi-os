@@ -1,11 +1,11 @@
 package readline
 import (
-	"errors"
+"errors"
 )
 var ErrInterrupt = errors.New("Interrupt")
 type InterruptError struct {
-	Line []rune
+Line []rune
 }
 func (*InterruptError) Error() string {
-	return "Interrupted"
+return "Interrupted"
 }

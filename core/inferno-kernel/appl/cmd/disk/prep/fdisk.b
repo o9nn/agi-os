@@ -16,7 +16,7 @@ Edit, Part: import pedit;
 include "arg.m";
 Fdisk: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 Mpart: con 64;
 blank := 0;
@@ -119,111 +119,111 @@ if(written)
 recover(edit);
 }
 }
-Active:	con 16r80;		# partition is active
-Primary:	con 16r01;		# internal flag
-TypeBB:	con 16rFF;
-TypeEMPTY:	con 16r00;
-TypeFAT12:	con 16r01;
-TypeXENIX:	con 16r02;		# root
-TypeXENIXUSR:	con 16r03;		# usr
-TypeFAT16:	con 16r04;
-TypeEXTENDED:	con 16r05;
-TypeFATHUGE:	con 16r06;
-TypeHPFS:	con 16r07;
-TypeAIXBOOT:	con 16r08;
-TypeAIXDATA:	con 16r09;
-TypeOS2BOOT:	con 16r0A;		# OS/2 Boot Manager
-TypeFAT32:	con 16r0B;		# FAT 32
-TypeFAT32LBA:	con 16r0C;		# FAT 32 needing LBA support
-TypeEXTHUGE:	con 16r0F;		# FAT 32 extended partition
-TypeUNFORMATTED:	con 16r16;		# unformatted primary partition (OS/2 FDISK)?
-TypeHPFS2:	con 16r17;
-TypeIBMRecovery:	con 16r1C;	# really hidden fat
-TypeCPM0:	con 16r52;
-TypeDMDDO:	con 16r54;		# Disk Manager Dynamic Disk Overlay
-TypeGB:	con 16r56;		# ????
-TypeSPEEDSTOR:	con 16r61;
-TypeSYSV386:	con 16r63;		# also HURD?
-TypeNETWARE:	con 16r64;
-TypePCIX:	con 16r75;
-TypeMINIX13:	con 16r80;		# Minix v1.3 and below
-TypeMINIX:	con 16r81;		# Minix v1.5+
-TypeLINUXSWAP:	con 16r82;
-TypeLINUX:	con 16r83;
-TypeLINUXEXT:	con 16r85;
-TypeAMOEBA:	con 16r93;
-TypeAMOEBABB:	con 16r94;
-TypeBSD386:	con 16rA5;
-TypeBSDI:	con 16rB7;
-TypeBSDISWAP:	con 16rB8;
-TypeOTHER:	con 16rDA;
-TypeCPM:	con 16rDB;
-TypeDellRecovery:	con 16rDE;
-TypeSPEEDSTOR12:	con 16rE1;
-TypeSPEEDSTOR16:	con 16rE4;
-TypeLANSTEP:	con 16rFE;
-Type9:	con Disks->Type9;
+Active: con 16r80; # partition is active
+Primary: con 16r01; # internal flag
+TypeBB: con 16rFF;
+TypeEMPTY: con 16r00;
+TypeFAT12: con 16r01;
+TypeXENIX: con 16r02; # root
+TypeXENIXUSR: con 16r03; # usr
+TypeFAT16: con 16r04;
+TypeEXTENDED: con 16r05;
+TypeFATHUGE: con 16r06;
+TypeHPFS: con 16r07;
+TypeAIXBOOT: con 16r08;
+TypeAIXDATA: con 16r09;
+TypeOS2BOOT: con 16r0A; # OS/2 Boot Manager
+TypeFAT32: con 16r0B; # FAT 32
+TypeFAT32LBA: con 16r0C; # FAT 32 needing LBA support
+TypeEXTHUGE: con 16r0F; # FAT 32 extended partition
+TypeUNFORMATTED: con 16r16; # unformatted primary partition (OS/2 FDISK)?
+TypeHPFS2: con 16r17;
+TypeIBMRecovery: con 16r1C; # really hidden fat
+TypeCPM0: con 16r52;
+TypeDMDDO: con 16r54; # Disk Manager Dynamic Disk Overlay
+TypeGB: con 16r56; # ????
+TypeSPEEDSTOR: con 16r61;
+TypeSYSV386: con 16r63; # also HURD?
+TypeNETWARE: con 16r64;
+TypePCIX: con 16r75;
+TypeMINIX13: con 16r80; # Minix v1.3 and below
+TypeMINIX: con 16r81; # Minix v1.5+
+TypeLINUXSWAP: con 16r82;
+TypeLINUX: con 16r83;
+TypeLINUXEXT: con 16r85;
+TypeAMOEBA: con 16r93;
+TypeAMOEBABB: con 16r94;
+TypeBSD386: con 16rA5;
+TypeBSDI: con 16rB7;
+TypeBSDISWAP: con 16rB8;
+TypeOTHER: con 16rDA;
+TypeCPM: con 16rDB;
+TypeDellRecovery: con 16rDE;
+TypeSPEEDSTOR12: con 16rE1;
+TypeSPEEDSTOR16: con 16rE4;
+TypeLANSTEP: con 16rFE;
+Type9: con Disks->Type9;
 TableSize: con TentrySize*NTentry;
 Omagic: con TableSize;
 Type: adt {
-desc:	string;
-name:	string;
+desc: string;
+name: string;
 };
 Dospart: adt {
-p:	ref Part;
-pc:	ref PCpart;
-primary:	int;
-lba:	big;	# absolute address
-size:	big;
+p: ref Part;
+pc: ref PCpart;
+primary: int;
+lba: big; # absolute address
+size: big;
 };
 Recover: adt {
-table:	array of byte;	# [TableSize+2] copy of table and magic
-lba:	big;	# where it came from
+table: array of byte; # [TableSize+2] copy of table and magic
+lba: big; # where it came from
 };
 types: array of Type = array[256] of {
-TypeEMPTY =>		( "EMPTY", "" ),
-TypeFAT12 =>		( "FAT12", "dos" ),
-TypeFAT16 =>		( "FAT16", "dos" ),
-TypeFAT32 =>		( "FAT32", "dos" ),
-TypeFAT32LBA =>		( "FAT32LBA", "dos" ),
-TypeEXTHUGE =>		( "EXTHUGE", "" ),
-TypeIBMRecovery =>	( "IBMRECOVERY", "ibm" ),
-TypeEXTENDED =>		( "EXTENDED", "" ),
-TypeFATHUGE =>		( "FATHUGE", "dos" ),
-TypeBB =>		( "BB", "bb" ),
-TypeXENIX =>		( "XENIX", "xenix" ),
-TypeXENIXUSR =>		( "XENIX USR", "xenixusr" ),
-TypeHPFS =>		( "HPFS", "ntfs" ),
-TypeAIXBOOT =>		( "AIXBOOT", "aixboot" ),
-TypeAIXDATA =>		( "AIXDATA", "aixdata" ),
-TypeOS2BOOT =>		( "OS/2BOOT", "os2boot" ),
-TypeUNFORMATTED =>	( "UNFORMATTED", "" ),
-TypeHPFS2 =>		( "HPFS2", "hpfs2" ),
-TypeCPM0 =>		( "CPM0", "cpm0" ),
-TypeDMDDO =>		( "DMDDO", "dmdd0" ),
-TypeGB =>		( "GB", "gb" ),
-TypeSPEEDSTOR =>		( "SPEEDSTOR", "speedstor" ),
-TypeSYSV386 =>		( "SYSV386", "sysv386" ),
-TypeNETWARE =>		( "NETWARE", "netware" ),
-TypePCIX =>		( "PCIX", "pcix" ),
-TypeMINIX13 =>		( "MINIXV1.3", "minix13" ),
-TypeMINIX =>		( "MINIXV1.5", "minix15" ),
-TypeLINUXSWAP =>		( "LINUXSWAP", "linuxswap" ),
-TypeLINUX =>		( "LINUX", "linux" ),
-TypeLINUXEXT =>		( "LINUXEXTENDED", "" ),
-TypeAMOEBA =>		( "AMOEBA", "amoeba" ),
-TypeAMOEBABB =>		( "AMOEBABB", "amoebaboot" ),
-TypeBSD386 =>		( "BSD386", "bsd386" ),
-TypeBSDI =>		( "BSDI", "bsdi" ),
-TypeBSDISWAP =>		( "BSDISWAP", "bsdiswap" ),
-TypeOTHER =>		( "OTHER", "other" ),
-TypeCPM =>		( "CPM", "cpm" ),
-TypeDellRecovery =>	( "DELLRECOVERY", "dell" ),
-TypeSPEEDSTOR12 =>	( "SPEEDSTOR12", "speedstor" ),
-TypeSPEEDSTOR16 =>	( "SPEEDSTOR16", "speedstor" ),
-TypeLANSTEP =>		( "LANSTEP", "lanstep" ),
-Type9 =>			( "PLAN9", "plan9" ),
-* =>	(nil, nil),
+TypeEMPTY => ( "EMPTY", "" ),
+TypeFAT12 => ( "FAT12", "dos" ),
+TypeFAT16 => ( "FAT16", "dos" ),
+TypeFAT32 => ( "FAT32", "dos" ),
+TypeFAT32LBA => ( "FAT32LBA", "dos" ),
+TypeEXTHUGE => ( "EXTHUGE", "" ),
+TypeIBMRecovery => ( "IBMRECOVERY", "ibm" ),
+TypeEXTENDED => ( "EXTENDED", "" ),
+TypeFATHUGE => ( "FATHUGE", "dos" ),
+TypeBB => ( "BB", "bb" ),
+TypeXENIX => ( "XENIX", "xenix" ),
+TypeXENIXUSR => ( "XENIX USR", "xenixusr" ),
+TypeHPFS => ( "HPFS", "ntfs" ),
+TypeAIXBOOT => ( "AIXBOOT", "aixboot" ),
+TypeAIXDATA => ( "AIXDATA", "aixdata" ),
+TypeOS2BOOT => ( "OS/2BOOT", "os2boot" ),
+TypeUNFORMATTED => ( "UNFORMATTED", "" ),
+TypeHPFS2 => ( "HPFS2", "hpfs2" ),
+TypeCPM0 => ( "CPM0", "cpm0" ),
+TypeDMDDO => ( "DMDDO", "dmdd0" ),
+TypeGB => ( "GB", "gb" ),
+TypeSPEEDSTOR => ( "SPEEDSTOR", "speedstor" ),
+TypeSYSV386 => ( "SYSV386", "sysv386" ),
+TypeNETWARE => ( "NETWARE", "netware" ),
+TypePCIX => ( "PCIX", "pcix" ),
+TypeMINIX13 => ( "MINIXV1.3", "minix13" ),
+TypeMINIX => ( "MINIXV1.5", "minix15" ),
+TypeLINUXSWAP => ( "LINUXSWAP", "linuxswap" ),
+TypeLINUX => ( "LINUX", "linux" ),
+TypeLINUXEXT => ( "LINUXEXTENDED", "" ),
+TypeAMOEBA => ( "AMOEBA", "amoeba" ),
+TypeAMOEBABB => ( "AMOEBABB", "amoebaboot" ),
+TypeBSD386 => ( "BSD386", "bsd386" ),
+TypeBSDI => ( "BSDI", "bsdi" ),
+TypeBSDISWAP => ( "BSDISWAP", "bsdiswap" ),
+TypeOTHER => ( "OTHER", "other" ),
+TypeCPM => ( "CPM", "cpm" ),
+TypeDellRecovery => ( "DELLRECOVERY", "dell" ),
+TypeSPEEDSTOR12 => ( "SPEEDSTOR12", "speedstor" ),
+TypeSPEEDSTOR16 => ( "SPEEDSTOR16", "speedstor" ),
+TypeLANSTEP => ( "LANSTEP", "lanstep" ),
+Type9 => ( "PLAN9", "plan9" ),
+* => (nil, nil),
 };
 dosparts: list of ref Dospart;
 tag2part(p: ref Part): ref Dospart
@@ -290,14 +290,14 @@ p.pc = pcpart;
 else
 p.pc = ref PCpart(0, 0, big 0, big 0, big 0);
 p.primary = primary;
-p.p = ref Part;	# TO DO
+p.p = ref Part; # TO DO
 p.p.name = name;
 p.p.start = lba/sec2cyl;
 p.p.end = (lba+size)/sec2cyl;
 p.p.ctlstart = lba;
 p.p.ctlend = lba+size;
 p.p.tag = ++parttag;
-p.lba = lba;	# absolute lba
+p.lba = lba; # absolute lba
 p.size = size;
 dosparts = p :: dosparts;
 return p;
@@ -353,7 +353,7 @@ exits("restored");
 rdpart(edit: ref Edit, lba: big, xbase: big)
 {
 if(xbase == big 0)
-xbase = lba;	# extended partition in mbr sets the base
+xbase = lba; # extended partition in mbr sets the base
 table := gettable(edit.disk, mbroffset+lba, lba == big 0);
 addrecover(table, mbroffset+lba);
 for(tp := 0; tp<TableSize; tp += TentrySize){
@@ -577,7 +577,7 @@ sys->print("%s %-12s %*bd %-*bd (%bd cylinders, %bd %s)%s\n", qual, name,
 edit.disk.width, a, edit.disk.width, b, b-a, sz, suf, ty);
 else
 sys->print("%s %-12s %*bd %-*bd (%bd cylinders, %bd.%.2d %s)%s\n", qual, name,
-edit.disk.width, a, edit.disk.width, b,  b-a,
+edit.disk.width, a, edit.disk.width, b, b-a,
 sz/div, int(((sz%div)*big 100)/div), suf, ty);
 }
 cmdadd(edit: ref Edit, name: string, start: big, end: big): string

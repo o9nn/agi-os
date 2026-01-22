@@ -4,28 +4,28 @@
 (define tname "concatenate-test")
 (test-begin tname)
 (define flatten-set
-	(Concatenate
-		(Type 'SetLink)
-		(List
-			(List (Concept "a") (Concept "b"))
-			(List (Concept "c") (Concept "b")))))
+(Concatenate
+(Type 'SetLink)
+(List
+(List (Concept "a") (Concept "b"))
+(List (Concept "c") (Concept "b")))))
 (define flat-set (cog-execute! flatten-set))
 (format #t "flat set is ~A" flat-set)
 (test-assert "flat set"
-	(equal? flat-set
-		(Set (Concept "b") (Concept "c") (Concept "a") (Concept "b"))))
+(equal? flat-set
+(Set (Concept "b") (Concept "c") (Concept "a") (Concept "b"))))
 (define link-link
-	(LinkValue
-		(LinkValue (Concept "a") (Concept "b"))
-		(LinkValue (Concept "c") (Concept "b"))))
+(LinkValue
+(LinkValue (Concept "a") (Concept "b"))
+(LinkValue (Concept "c") (Concept "b"))))
 (cog-set-value! (Anchor "rock") (Predicate "key") link-link)
 (define flatten-val
-	(Concatenate
-		(ValueOf (Anchor "rock") (Predicate "key"))))
+(Concatenate
+(ValueOf (Anchor "rock") (Predicate "key"))))
 (define flat-val (cog-execute! flatten-val))
 (format #t "flat val is ~A" flat-val)
 (test-assert "flat val"
-	(equal? flat-val
-		(LinkValue (Concept "a") (Concept "b") (Concept "c") (Concept "b"))))
+(equal? flat-val
+(LinkValue (Concept "a") (Concept "b") (Concept "c") (Concept "b"))))
 (test-end tname)
 (opencog-test-end)

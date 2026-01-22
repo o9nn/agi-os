@@ -1,5 +1,5 @@
 #ifndef gxdcconv_INCLUDED
-#  define gxdcconv_INCLUDED
+# define gxdcconv_INCLUDED
 #include "gxfrac.h"
 frac color_rgb_to_gray(frac r, frac g, frac b,
 const gs_imager_state * pis);

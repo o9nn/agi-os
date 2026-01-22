@@ -8,122 +8,122 @@
 #include "../port/netif.h"
 #include "etherif.h"
 #include "ureg.h"
-#define	DBG	if(0)iprint
-#define	MIIDBG	if(0)iprint
+#define DBG if(0)iprint
+#define MIIDBG if(0)iprint
 enum {
-Nrdre		= 64,
-Ntdre		= 32,
-Rbsize		= ROUNDUP(ETHERMAXTU+4, 4),
-Bufsize		= ROUNDUP(Rbsize, CACHELINESZ),
+Nrdre = 64,
+Ntdre = 32,
+Rbsize = ROUNDUP(ETHERMAXTU+4, 4),
+Bufsize = ROUNDUP(Rbsize, CACHELINESZ),
 };
 typedef struct DmaReg DmaReg;
 struct DmaReg {
-ulong	dtxc;
-ulong	drxc;
-ulong	dtsc;
-ulong	drsc;
-ulong	tdlb;
-ulong	rdlb;
-ulong	mal;
-ulong	mah;
-ulong	pad[0x80-0x20];
-ulong	maal[16][2];
+ulong dtxc;
+ulong drxc;
+ulong dtsc;
+ulong drsc;
+ulong tdlb;
+ulong rdlb;
+ulong mal;
+ulong mah;
+ulong pad[0x80-0x20];
+ulong maal[16][2];
 };
 enum {
-TxSoftReset=	1<<31,
-TxUDPck=	1<<18,
-TxTCPck=		1<<17,
-TxIPck=		1<<16,
-TxFCE=		1<<9,
-TxLB=		1<<8,
-TxEP=		1<<2,
-TxCrc=		1<<1,
-TxEnable=	1<<0,
-RxUDPck=	1<<18,
-RxTCPck=		1<<17,
-RxIPck=		1<<16,
-RxFCE=		1<<9,
-RxRB=		1<<6,
-RxRM=		1<<5,
-RxRU=		1<<4,
-RxAE=		1<<3,
-RxRA=		1<<2,
-RxEnable=	1<<0,
+TxSoftReset= 1<<31,
+TxUDPck= 1<<18,
+TxTCPck= 1<<17,
+TxIPck= 1<<16,
+TxFCE= 1<<9,
+TxLB= 1<<8,
+TxEP= 1<<2,
+TxCrc= 1<<1,
+TxEnable= 1<<0,
+RxUDPck= 1<<18,
+RxTCPck= 1<<17,
+RxIPck= 1<<16,
+RxFCE= 1<<9,
+RxRB= 1<<6,
+RxRM= 1<<5,
+RxRU= 1<<4,
+RxAE= 1<<3,
+RxRA= 1<<2,
+RxEnable= 1<<0,
 };
 typedef struct WanPhy WanPhy;
 struct WanPhy {
-ulong	did;
-ulong	rid;
-ulong	pad0;
-ulong	wmc;
-ulong	wppm;
-ulong	wpc;
-ulong	wps;
-ulong	pps;
+ulong did;
+ulong rid;
+ulong pad0;
+ulong wmc;
+ulong wppm;
+ulong wpc;
+ulong wps;
+ulong pps;
 };
 enum {
-WAnc=	1<<30,
-WAnr=	1<<29,
-WAnaP=	1<<28,
-WAna100FD=	1<<27,
-WAna100HD=	1<<26,
-WAna10FD=	1<<25,
-WAna10HD=	1<<24,
-WLs=	1<<23,
-WDs=	1<<22,
-WSs=	1<<21,
-WLparP=	1<<20,
-WLpar100FD=	1<<19,
-WLpar100HD=	1<<18,
-WLpar10FD=	1<<17,
-WLpar10HD=	1<<16,
-WAnDis=	1<<15,
-WForce100=	1<<14,
-WForceFD=	1<<13,
-LedSpeed=	0,
+WAnc= 1<<30,
+WAnr= 1<<29,
+WAnaP= 1<<28,
+WAna100FD= 1<<27,
+WAna100HD= 1<<26,
+WAna10FD= 1<<25,
+WAna10HD= 1<<24,
+WLs= 1<<23,
+WDs= 1<<22,
+WSs= 1<<21,
+WLparP= 1<<20,
+WLpar100FD= 1<<19,
+WLpar100HD= 1<<18,
+WLpar10FD= 1<<17,
+WLpar10HD= 1<<16,
+WAnDis= 1<<15,
+WForce100= 1<<14,
+WForceFD= 1<<13,
+LedSpeed= 0,
 LedLink,
 LedFD,
 LedColl,
 LedTxRx,
 LedFDColl,
 LedLinkTxRx,
-WLpbk=	1<<14,
-WRlpblk=	1<<13,
-WPhyIso=	1<<12,
-WPhyLink=	1<<10,
-WMdix=	1<<9,
-WFef=	1<<8,
-WAmdixp=	1<<7,
-WTxdis=	1<<6,
-WDfef=	1<<5,
-Wpd=	1<<4,
-WDmdx=	1<<3,
-WFmdx=	1<<2,
-WMlpbk=	1<<1,
-Ppsm=	1<<0,
+WLpbk= 1<<14,
+WRlpblk= 1<<13,
+WPhyIso= 1<<12,
+WPhyLink= 1<<10,
+WMdix= 1<<9,
+WFef= 1<<8,
+WAmdixp= 1<<7,
+WTxdis= 1<<6,
+WDfef= 1<<5,
+Wpd= 1<<4,
+WDmdx= 1<<3,
+WFmdx= 1<<2,
+WMlpbk= 1<<1,
+Ppsm= 1<<0,
 };
-#define	DMABURST(n)	((n)<<24)
+#define DMABURST(n) ((n)<<24)
 typedef struct {
 Lock;
-int	port;
-int	init;
-int	active;
-int	reading;
-ulong	anap;
-DmaReg*	regs;
-WanPhy*	wphy;
+int port;
+int init;
+int active;
+int reading;
+ulong anap;
+DmaReg* regs;
+WanPhy* wphy;
 Ring;
-ulong	interrupts;
-ulong	deferred;
-ulong	heartbeat;
-ulong	latecoll;
-ulong	retrylim;
-ulong	underrun;
-ulong	overrun;
-ulong	carrierlost;
-ulong	retrycount;
+ulong interrupts;
+ulong deferred;
+ulong heartbeat;
+ulong latecoll;
+ulong retrylim;
+ulong underrun;
+ulong overrun;
+ulong carrierlost;
+ulong retrycount;
 } Ctlr;
-static void	switchinit(uchar*);
+static void switchinit(uchar*);
 static void switchdump(void);
 static void
 attach(Ether *ether)
@@ -521,96 +521,96 @@ return 0;
 }
 typedef struct Switch Switch;
 struct Switch {
-ulong	sec0;
-ulong	sec1;
-ulong	sec2;
-ulong	cfg[5][3];
-ulong	an[2];
-ulong	seiac;
-ulong	seiadh2;
-ulong	seiadh1;
-ulong	seiadl;
-ulong	seafc;
-ulong	scph;
-ulong	scpl;
-ulong	mah;
-ulong	mal;
-ulong	ppm[2];
+ulong sec0;
+ulong sec1;
+ulong sec2;
+ulong cfg[5][3];
+ulong an[2];
+ulong seiac;
+ulong seiadh2;
+ulong seiadh1;
+ulong seiadl;
+ulong seafc;
+ulong scph;
+ulong scpl;
+ulong mah;
+ulong mal;
+ulong ppm[2];
 };
 enum {
-Nbe=	1<<31,
-Unh=	1<<21,
-Lca=		1<<20,
-Paf=		1<<19,
-Sfce=	1<<18,
-Flfc=		1<<17,
-Bsm=	1<<16,
-Age=	1<<15,
-Agef=	1<<14,
-Aboe=	1<<13,
-Uvmd=	1<<12,
-Mspd=	1<<11,
-Bpm=	1<<10,
-Fair=		1<<9,
-Ncd=	1<<8,
-Lmpsd=	1<<7,
-Pbr=		1<<6,
-Sbpe=	1<<5,
-Shdm=	1<<4,
-PrioHi=	0<<2,
+Nbe= 1<<31,
+Unh= 1<<21,
+Lca= 1<<20,
+Paf= 1<<19,
+Sfce= 1<<18,
+Flfc= 1<<17,
+Bsm= 1<<16,
+Age= 1<<15,
+Agef= 1<<14,
+Aboe= 1<<13,
+Uvmd= 1<<12,
+Mspd= 1<<11,
+Bpm= 1<<10,
+Fair= 1<<9,
+Ncd= 1<<8,
+Lmpsd= 1<<7,
+Pbr= 1<<6,
+Sbpe= 1<<5,
+Shdm= 1<<4,
+PrioHi= 0<<2,
 Prio10_1= 1<<2,
-Prio5_1=	2<<2,
-Prio2_1=	3<<2,
-Etm=	1<<1,
-Esf=		1<<0,
-IEEEneg=	1<<11,
-Tpid=	1<<10,
-PhyEn=	1<<8,
-TfcDis=	1<<7,
-RfcDis=	1<<6,
-Hps=	1<<5,
-VlanEn=	1<<4,
-Sw10BT=	1<<1,
-VIDrep=	1<<0,
+Prio5_1= 2<<2,
+Prio2_1= 3<<2,
+Etm= 1<<1,
+Esf= 1<<0,
+IEEEneg= 1<<11,
+Tpid= 1<<10,
+PhyEn= 1<<8,
+TfcDis= 1<<7,
+RfcDis= 1<<6,
+Hps= 1<<5,
+VlanEn= 1<<4,
+Sw10BT= 1<<1,
+VIDrep= 1<<0,
 };
-#define	BASEPRIO(n)	(((n)&7)<<28)
+#define BASEPRIO(n) (((n)&7)<<28)
 enum {
-AnegDis=	1<<15,
-Force100=	1<<14,
-ForceFD=	1<<13,
-STTxEn=	1<<7,
-STRxEn=	1<<6,
-STLnDis=	1<<5,
-Bsp=		1<<4,
-Pce=		1<<3,
-Dpce=	1<<2,
-IEEEpce=	1<<1,
-PrioEn=	1<<0,
-IngressFilter=	1<<28,
-DiscardNonPVID=	1<<27,
-ForcePortFC=	1<<26,
-EnablePortBP=	1<<25,
-Rdprc=	1<<7,
-Lprrc=	1<<6,
-Hprrc=	1<<5,
-Lprfce=	1<<4,
-Hprfce=	1<<3,
-Tdprc=	1<<2,
-Lptrc=	1<<1,
-Hptrc=	1<<0,
-Cread=	1<<12,
-Cwrite=	0<<12,
-StaticMacs=	0<<10,
-VLANs=		1<<10,
-DynMacs=	2<<10,
-MibCounter=	3<<10,
+AnegDis= 1<<15,
+Force100= 1<<14,
+ForceFD= 1<<13,
+STTxEn= 1<<7,
+STRxEn= 1<<6,
+STLnDis= 1<<5,
+Bsp= 1<<4,
+Pce= 1<<3,
+Dpce= 1<<2,
+IEEEpce= 1<<1,
+PrioEn= 1<<0,
+IngressFilter= 1<<28,
+DiscardNonPVID= 1<<27,
+ForcePortFC= 1<<26,
+EnablePortBP= 1<<25,
+Rdprc= 1<<7,
+Lprrc= 1<<6,
+Hprrc= 1<<5,
+Lprfce= 1<<4,
+Hprfce= 1<<3,
+Tdprc= 1<<2,
+Lptrc= 1<<1,
+Hptrc= 1<<0,
+Cread= 1<<12,
+Cwrite= 0<<12,
+StaticMacs= 0<<10,
+VLANs= 1<<10,
+DynMacs= 2<<10,
+MibCounter= 3<<10,
 };
 enum {
-VlanValid=	1<<21,
-MACempty=	1<<(68-2*32),
-NotReady=	1<<(55-32),
-NVlans=	16,
-NSMacs=	8,
+VlanValid= 1<<21,
+MACempty= 1<<(68-2*32),
+NotReady= 1<<(55-32),
+NVlans= 16,
+NSMacs= 8,
 };
 static char* portmibnames[] = {
 "RxLoPriorityByte",
@@ -647,8 +647,8 @@ static char* portmibnames[] = {
 "TxMultipleCollision",
 };
 enum {
-MibOverflow=	1<<31,
-MibValid=		1<<30,
+MibOverflow= 1<<31,
+MibValid= 1<<30,
 };
 static char* allportnames[] = {
 "Port1TxDropPackets",
@@ -711,9 +711,9 @@ microdelay(10);
 }
 typedef struct Vidmap Vidmap;
 struct Vidmap {
-uchar	ports;
-uchar	fid;
-ushort	vid;
+uchar ports;
+uchar fid;
+ushort vid;
 };
 static Vidmap
 getvidmap(Switch *sw, int i)
@@ -749,12 +749,12 @@ microdelay(10);
 }
 typedef struct StaticMac StaticMac;
 struct StaticMac {
-uchar	valid;
-uchar	fid;
-uchar	usefid;
-uchar	override;
-uchar	ports;
-uchar	mac[Eaddrlen];
+uchar valid;
+uchar fid;
+uchar usefid;
+uchar override;
+uchar ports;
+uchar mac[Eaddrlen];
 };
 static StaticMac
 getstaticmac(Switch *sw, int i)
@@ -810,12 +810,12 @@ microdelay(10);
 }
 typedef struct DynMac DynMac;
 struct DynMac {
-ushort	nentry;
-uchar	valid;
-uchar	age;
-uchar	port;
-uchar	fid;
-uchar	mac[Eaddrlen];
+ushort nentry;
+uchar valid;
+uchar age;
+uchar port;
+uchar fid;
+uchar mac[Eaddrlen];
 };
 static DynMac
 getdynmac(Switch *sw, int i)

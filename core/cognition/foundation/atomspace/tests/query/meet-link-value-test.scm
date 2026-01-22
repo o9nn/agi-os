@@ -14,27 +14,27 @@
 (Evaluation (Predicate "furry")    (Concept "cat") (CountTruthValue 1 0 4))
 (Evaluation (Predicate "domestic") (Concept "cat") (CountTruthValue 1 0 5))
 (define flow-pairs
-	(Meet
-		(VariableList
-			(TypedVariable (Variable "$cpt") (Type 'Concept))
-			(TypedVariable (Variable "$prop") (Type 'Predicate)))
-		(Present
-			(Evaluation (Variable "$prop") (Variable "$cpt")))))
+(Meet
+(VariableList
+(TypedVariable (Variable "$cpt") (Type 'Concept))
+(TypedVariable (Variable "$prop") (Type 'Predicate)))
+(Present
+(Evaluation (Variable "$prop") (Variable "$cpt")))))
 (define qvalue (cog-execute! flow-pairs))
 (test-assert "Return value is a container value"
-	(cog-subtype? 'ContainerValue (cog-type qvalue)))
+(cog-subtype? 'ContainerValue (cog-type qvalue)))
 (test-assert "Size of queue is ten"
-	(equal? 10 (length (cog-value->list qvalue))))
+(equal? 10 (length (cog-value->list qvalue))))
 (for-each
-	(lambda (LV)
-		(test-assert "Its a link value"
-			(equal? (cog-type LV) 'LinkValue)))
-	(cog-value->list qvalue))
+(lambda (LV)
+(test-assert "Its a link value"
+(equal? (cog-type LV) 'LinkValue)))
+(cog-value->list qvalue))
 (for-each
-	(lambda (N)
-		(define LV (cog-value-ref qvalue N))
-		(test-assert "Still a link value"
-			(equal? (cog-type LV) 'LinkValue)))
-	(iota 10))
+(lambda (N)
+(define LV (cog-value-ref qvalue N))
+(test-assert "Still a link value"
+(equal? (cog-type LV) 'LinkValue)))
+(iota 10))
 (test-end tname)
 (opencog-test-end)

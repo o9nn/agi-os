@@ -3,7 +3,7 @@
 void
 runout(void)
 {
-int	i;
+int i;
 if (boxflg || allflg || dboxflg)
 need();
 if (ctrflg) {
@@ -26,7 +26,7 @@ Bprint(&tabout, ".in \\n(#Iu\n");
 void
 runtabs(int lform, int ldata)
 {
-int	c, ct, vforml, lf;
+int c, ct, vforml, lf;
 Bprint(&tabout, ".ta ");
 for (c = 0; c < ncol; c++) {
 vforml = lform;
@@ -72,7 +72,7 @@ return(0);
 void
 need(void)
 {
-int	texlin, horlin, i;
+int texlin, horlin, i;
 for (texlin = horlin = i = 0; i < nlin; i++) {
 if (fullbot[i] != 0)
 horlin++;
@@ -86,7 +86,7 @@ Bprint(&tabout, ".ne %dv+%dp\n", texlin, 2 * horlin);
 void
 deftail(void)
 {
-int	i, c, lf, lwid;
+int i, c, lf, lwid;
 for (i = 0; i < MAXHEAD; i++)
 if (linestop[i])
 Bprint(&tabout, ".nr #%c 0-1\n", linestop[i] + 'a' - 1);
@@ -120,7 +120,7 @@ drawvert(lf, nlin - 1, c, lwid);
 Bprint(&tabout, "\\h'|\\n(TWu'\n");
 }
 }
-if (boxflg || allflg || dboxflg)  {
+if (boxflg || allflg || dboxflg) {
 Bprint(&tabout, ".if \\n(#a>=0 .sp -1\n");
 Bprint(&tabout, ".if \\n(#a>=0 \\h'|\\n(TWu'");
 drawvert (0, nlin - 1, ncol, dboxflg ? 2 : 1);

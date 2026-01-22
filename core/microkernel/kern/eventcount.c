@@ -12,10 +12,10 @@
 #include <kern/thread.h>
 #include <machine/spl.h>
 #include <kern/eventcount.h>
-#define	MAX_EVCS	10
-evc_t	all_eventcounters[MAX_EVCS];
+#define MAX_EVCS 10
+evc_t all_eventcounters[MAX_EVCS];
 void
-evc_init(evc_t	ev)
+evc_init(evc_t ev)
 {
 int i;
 memset(ev, 0, sizeof(*ev));
@@ -32,7 +32,7 @@ ev->waiting_thread = THREAD_NULL;
 simple_lock_init(&ev->lock);
 }
 void
-evc_destroy(evc_t	ev)
+evc_destroy(evc_t ev)
 {
 evc_signal(ev);
 ev->sanity = 0;
@@ -45,9 +45,9 @@ void evc_notify_abort(const thread_t thread)
 int i;
 evc_t ev;
 int s = splsched();
-for (i = 0; i < MAX_EVCS; i++)  {
+for (i = 0; i < MAX_EVCS; i++) {
 ev = all_eventcounters[i];
-if (ev)  {
+if (ev) {
 simple_lock(&ev->lock);
 if (ev->waiting_thread == thread)
 {
@@ -59,16 +59,16 @@ simple_unlock(&ev->lock);
 }
 splx(s);
 }
-static void  __attribute__((noreturn))
+static void __attribute__((noreturn))
 evc_continue(void)
 {
 thread_syscall_return(KERN_SUCCESS);
 }
 kern_return_t evc_wait(natural_t ev_id)
 {
-spl_t		s;
-kern_return_t	ret;
-evc_t		ev;
+spl_t s;
+kern_return_t ret;
+evc_t ev;
 if ((ev_id >= MAX_EVCS) ||
 ((ev = all_eventcounters[ev_id]) == 0) ||
 (ev->ev_id != ev_id) || (ev->sanity != ev))
@@ -95,8 +95,8 @@ return ret;
 }
 kern_return_t evc_wait_clear(natural_t ev_id)
 {
-spl_t		s;
-evc_t		ev;
+spl_t s;
+evc_t ev;
 if ((ev_id >= MAX_EVCS) ||
 ((ev = all_eventcounters[ev_id]) == 0) ||
 (ev->ev_id != ev_id) || (ev->sanity != ev))
@@ -119,7 +119,7 @@ evc_signal(evc_t ev)
 {
 volatile thread_t thread;
 int state;
-spl_t    s;
+spl_t s;
 if (ev->sanity != ev)
 return;
 s = splsched();
@@ -136,9 +136,9 @@ cpu_pause();
 thread_lock(thread);
 switch ((state = thread->state) & TH_SCHED_STATE)
 {
-case  TH_WAIT | TH_SUSP | TH_UNINT:
-case  TH_WAIT           | TH_UNINT:
-case  TH_WAIT:
+case TH_WAIT | TH_SUSP | TH_UNINT:
+case TH_WAIT | TH_UNINT:
+case TH_WAIT:
 thread->state = (state &~ TH_WAIT) | TH_RUN;
 #if NCPUS > 1
 thread_setrun(thread, TRUE);
@@ -153,9 +153,9 @@ thread_unlock(thread);
 goto retry;
 #else
 #endif
-case          TH_WAIT | TH_SUSP:
+case TH_WAIT | TH_SUSP:
 case TH_RUN | TH_WAIT | TH_SUSP:
-case TH_RUN | TH_WAIT           | TH_UNINT:
+case TH_RUN | TH_WAIT | TH_UNINT:
 case TH_RUN | TH_WAIT | TH_SUSP | TH_UNINT:
 thread->state = state &~ TH_WAIT;
 thread_unlock(thread);
@@ -169,16 +169,16 @@ break;
 simple_unlock(&ev->lock);
 splx(s);
 }
-#if	NCPUS <= 1
+#if NCPUS <= 1
 void
 simpler_thread_setrun(
-thread_t	th,
-boolean_t	may_preempt)
+thread_t th,
+boolean_t may_preempt)
 {
-struct run_queue	*rq;
-int			whichq;
+struct run_queue *rq;
+int whichq;
 if (default_pset.idle_count > 0) {
-processor_t	processor;
+processor_t processor;
 processor = (processor_t) queue_first(&default_pset.idle_queue);
 queue_remove(&default_pset.idle_queue, processor,
 processor_t, processor_queue);

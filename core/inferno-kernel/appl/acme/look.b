@@ -63,11 +63,11 @@ if(!expanded)
 return;
 f = 0;
 if((e.at!=nil && t.w!=nil) || (e.name!=nil && lookfile(e.name, len e.name)!=nil))
-f = 1;		# acme can do it without loading a file
+f = 1; # acme can do it without loading a file
 if(q0!=e.q0 || q1!=e.q1)
-f |= 2;	# second (post-expand) message follows
+f |= 2; # second (post-expand) message follows
 if(e.name != nil)
-f |= 4;	# it's a file name
+f |= 4; # it's a file name
 c = 'l';
 if(t.what == Textm->Body)
 c = 'L';
@@ -107,12 +107,12 @@ strfree(r);
 r = nil;
 return;
 }
-if(0 && dat->plumbed){	# don't do yet : 2 acmes running => only 1 receives msg
+if(0 && dat->plumbed){ # don't do yet : 2 acmes running => only 1 receives msg
 m := ref Msg;
 m.src = "acme";
 m.dst = nil;
 (dir, nil) := dirname(t, nil, 0);
-if(dir == ".")	# sigh
+if(dir == ".") # sigh
 dir = nil;
 if(dir == nil)
 dir = acme->wdir;
@@ -301,7 +301,7 @@ b = b[0:i] + b[i+1:];
 --n;
 --i;
 }
-#  eliminate ./
+# eliminate ./
 for(i=0; i<n-1; i++)
 if(b[i]=='.' && b[i+1]=='/' && (i==0 || b[i-1]=='/')){
 b = b[0:i] + b[i+2:];
@@ -326,7 +326,7 @@ break;
 if(found)
 for(j=i-1; j>=0; --j)
 if(j==0 || b[j-1]=='/'){
-i += 3;		# character beyond ..
+i += 3; # character beyond ..
 if(i<n && b[i]=='/')
 ++i;
 b = b[0:j] + b[i:];
@@ -412,7 +412,7 @@ raise "e";
 nt = t.w.tag.file.buf.nc;
 if(nt == 0)
 raise "e";
-if(n>=1 &&  r[0]=='/')
+if(n>=1 && r[0]=='/')
 raise "e";
 b = stralloc(nt+n+1);
 t.w.tag.file.buf.read(0, b, 0, nt);
@@ -473,7 +473,7 @@ q1++;
 }else if(colon >= 0)
 q1 = colon;
 if(q1 > q0)
-if(colon >= 0){	# stop at white space
+if(colon >= 0){ # stop at white space
 for(amax=colon+1; amax<t.file.buf.nc; amax++)
 if((c=t.readc(amax))==' ' || c=='\t' || c=='\n')
 break;
@@ -514,7 +514,7 @@ return (FALSE, e);
 }
 #
 # See if it's a file name in <>, and turn that into an include
-# file name if so.  Should probably do it for "" too, but that's not
+# file name if so. Should probably do it for "" too, but that's not
 # restrictive enough syntax and checking for a #include earlier on the
 # line would be silly.
 #
@@ -594,7 +594,7 @@ if(k>0 && t.file.name[k-1] == '/')
 k--;
 if(t.file.name[0:k] == s[0:n]){
 w = w.body.file.curtext.w;
-if(w.col != nil)	# protect against race deleting w
+if(w.col != nil) # protect against race deleting w
 return w;
 }
 }
@@ -649,7 +649,7 @@ t.w.tag.setselect(t.w.tag.file.buf.nc, t.w.tag.file.buf.nc);
 if(ow != nil)
 for(i=ow.nincl; --i>=0; ){
 n = len ow.incl[i];
-w.addincl(ow.incl[i], n);	# really do want to copy here
+w.addincl(ow.incl[i], n); # really do want to copy here
 }
 }
 if(e.a1 == e.a0)
@@ -689,7 +689,7 @@ et.col.add(nil, nil, -1).settag();
 break;
 }
 nf = narg-na;
-f = arg[0:nf];	# want a copy
+f = arg[0:nf]; # want a copy
 (f, nf) = dirname(et, f, nf);
 e.q0 = e.q1 = e.a0 = e.a1 = 0;
 e.at = nil;

@@ -13,9 +13,9 @@ ulong maxlockpc;
 ulong maxilockpc;
 struct
 {
-ulong	locks;
-ulong	glare;
-ulong	inglare;
+ulong locks;
+ulong glare;
+ulong inglare;
 } lockstats;
 static void
 inccnt(Ref *r)
@@ -199,7 +199,7 @@ maxilockcycles = l->lockcycles;
 maxilockpc = l->pc;
 }
 if(l->lockcycles > 2400)
-ilockpcs[n++ & 0xff]  = l->pc;
+ilockpcs[n++ & 0xff] = l->pc;
 #endif
 if(l->key == 0)
 print("iunlock: not locked: pc %#p\n", getcallerpc(&l));

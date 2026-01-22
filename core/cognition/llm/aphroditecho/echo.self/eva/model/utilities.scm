@@ -5,17 +5,17 @@
 (cog-logger-set-stdout! ebl #f)
 (define-public (eva-get-logger)
 "
-  eva-get-logger
-  Returns the looger for eva-model module. This is a logger to be used by all
-  eva-* modules.
+eva-get-logger
+Returns the looger for eva-model module. This is a logger to be used by all
+eva-* modules.
 "
-  ebl
+ebl
 )
 (define-public (print-msg node)
 "
-  print-msg NODE
-  NODE's name is the message logged when the logger for this module is on
-  DEBUG level.
+print-msg NODE
+NODE's name is the message logged when the logger for this module is on
+DEBUG level.
 "
-  (cog-logger-debug ebl "~a" (cog-name node))
-  (stv 1 1))
+(cog-logger-debug ebl "~a" (cog-name node))
+(stv 1 1))

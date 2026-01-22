@@ -233,7 +233,6 @@ class ContinuousLearningSystem:
             stats['performance_stats'] = {'mean': np.mean(recent_performances), 'std': np.std(recent_performances), 'min': np.min(recent_performances), 'max': np.max(recent_performances), 'recent_trend': np.mean(recent_performances[-5:]) - np.mean(recent_performances[-10:-5]) if len(recent_performances) >= 10 else 0.0}
         return stats
     async def reset_learning_state(self):
-        """This allows for structured forgetting while retaining important knowledge."""
         self.interaction_count = 0
         self.current_learning_rate = self.config.learning_rate_base
         self.performance_history = []

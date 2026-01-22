@@ -17,10 +17,10 @@ This sequence serves as the **ontogenetic generator** for the entire system:
 A000081 Ontogenetic Engine
 ↓
 ┌─────────────────────┼─────────────────────┐
-↓                     ↓                     ↓
-Rooted Trees          B-Series Ridge        Reservoir
-(Structure)           (Integration)         (Dynamics)
-↓                     ↓                     ↓
+↓ ↓ ↓
+Rooted Trees B-Series Ridge Reservoir
+(Structure) (Integration) (Dynamics)
+↓ ↓ ↓
 └─────────────────────┼─────────────────────┘
 ↓
 P-System Membranes
@@ -172,30 +172,30 @@ function generate_trees_of_order(n::Int)
 if n <= 0
 return Vector{Int}[]
 elseif n == 1
-return [[1]]  # 1 tree
+return [[1]] # 1 tree
 elseif n == 2
-return [[1, 2]]  # 1 tree
+return [[1, 2]] # 1 tree
 elseif n == 3
-return [[1, 2, 3], [1, 2, 2]]  # 2 trees
+return [[1, 2, 3], [1, 2, 2]] # 2 trees
 elseif n == 4
 return [
-[1, 2, 3, 4],  # Linear
-[1, 2, 3, 3],  # Branch at end
-[1, 2, 3, 2],  # Branch at middle
-[1, 2, 2, 2]   # Star (3 branches)
-]  # 4 trees
+[1, 2, 3, 4], # Linear
+[1, 2, 3, 3], # Branch at end
+[1, 2, 3, 2], # Branch at middle
+[1, 2, 2, 2] # Star (3 branches)
+] # 4 trees
 elseif n == 5
 # 9 trees for order 5
 return [
-[1, 2, 3, 4, 5],  # Linear
-[1, 2, 3, 4, 4],  # Branch at level 3
-[1, 2, 3, 4, 3],  # Branch at level 2
-[1, 2, 3, 4, 2],  # Branch at level 1
-[1, 2, 3, 3, 3],  # Two branches at level 2
-[1, 2, 3, 3, 2],  # Mixed branches
-[1, 2, 3, 2, 2],  # Different configuration
-[1, 2, 2, 3, 3],  # Symmetric branches
-[1, 2, 2, 2, 2]   # Star (4 branches)
+[1, 2, 3, 4, 5], # Linear
+[1, 2, 3, 4, 4], # Branch at level 3
+[1, 2, 3, 4, 3], # Branch at level 2
+[1, 2, 3, 4, 2], # Branch at level 1
+[1, 2, 3, 3, 3], # Two branches at level 2
+[1, 2, 3, 3, 2], # Mixed branches
+[1, 2, 3, 2, 2], # Different configuration
+[1, 2, 2, 3, 3], # Symmetric branches
+[1, 2, 2, 2, 2] # Star (4 branches)
 ]
 else
 # For higher orders, generate representative trees
@@ -244,7 +244,7 @@ idx1 = indices[i]
 idx2 = indices[i+1]
 if idx1 <= size && idx2 <= size
 W[idx1, idx2] = randn() * 0.1
-W[idx2, idx1] = randn() * 0.1  # Symmetric
+W[idx2, idx1] = randn() * 0.1 # Symmetric
 end
 end
 end
@@ -278,7 +278,7 @@ membranes = Dict{Int, Dict{String, Any}}()
 for i in 1:num_membranes
 membranes[i] = Dict{String, Any}(
 "id" => i,
-"parent" => i > 1 ? 1 : 0,  # Nested structure
+"parent" => i > 1 ? 1 : 0, # Nested structure
 "multiset" => Dict{String, Int}(),
 "energy" => 0.0,
 "tree_count" => 0
@@ -437,7 +437,7 @@ membrane_force = total_complexity * 0.01
 idx = min(membrane_id, length(system.state))
 system.state[idx] += dt * membrane_force
 # Update membrane energy
-membrane["energy"] *= (1.0 - dt * 0.01)  # Decay
+membrane["energy"] *= (1.0 - dt * 0.01) # Decay
 end
 end
 return nothing

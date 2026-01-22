@@ -6,12 +6,12 @@
 #include <windows.h>
 #endif
 #ifndef EXIT_FAILURE
-#define EXIT_FAILURE  1
+#define EXIT_FAILURE 1
 #endif
 #ifdef NEED_SHORT_EXTERNAL_NAMES
-#define jpeg_std_message_table	jMsgTable
+#define jpeg_std_message_table jMsgTable
 #endif
-#define JMESSAGE(code,string)	string ,
+#define JMESSAGE(code,string) string ,
 const char * const jpeg_std_message_table[] = {
 #include "jerror.h"
 NULL

@@ -109,7 +109,7 @@ int copy = min(len, iov->iov_len - offset);
 offset = 0;
 if (copy_from_user(kdata, base, copy))
 goto out;
-len   -= copy;
+len -= copy;
 kdata += copy;
 iov++;
 }
@@ -139,9 +139,9 @@ if (par_len > copy) {
 if (copy_from_user(kdata, base, copy))
 goto out_fault;
 kdata += copy;
-base  += copy;
+base += copy;
 partial_cnt += copy;
-len   -= copy;
+len -= copy;
 iov++;
 if (len)
 continue;
@@ -153,9 +153,9 @@ if (copy_from_user(kdata, base, par_len))
 goto out_fault;
 csum = csum_partial(kdata - partial_cnt, 4, csum);
 kdata += par_len;
-base  += par_len;
-copy  -= par_len;
-len   -= par_len;
+base += par_len;
+copy -= par_len;
+len -= par_len;
 partial_cnt = 0;
 }
 if (len > copy)
@@ -175,7 +175,7 @@ csum, &err);
 if (err)
 goto out;
 }
-len   -= copy + partial_cnt;
+len -= copy + partial_cnt;
 kdata += copy + partial_cnt;
 iov++;
 }

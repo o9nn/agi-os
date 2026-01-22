@@ -9,17 +9,17 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#define Colormap	XColormap
-#define Cursor		XCursor
-#define Display		XDisplay
-#define Drawable	XDrawable
-#define Font		XFont
-#define GC		XGC
-#define Point		XPoint
-#define Rectangle	XRectangle
-#define Screen		XScreen
-#define Visual		XVisual
-#define Window		XWindow
+#define Colormap XColormap
+#define Cursor XCursor
+#define Display XDisplay
+#define Drawable XDrawable
+#define Font XFont
+#define GC XGC
+#define Point XPoint
+#define Rectangle XRectangle
+#define Screen XScreen
+#define Visual XVisual
+#define Window XWindow
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>
@@ -43,52 +43,52 @@ static int displaydepth;
 extern ulong displaychan;
 enum
 {
-DblTime	= 300
+DblTime = 300
 };
-static uchar*	gscreendata;
-static uchar*	xscreendata;
-XColor	map[256];
-XColor	mapr[256];
-XColor	mapg[256];
-XColor	mapb[256];
-XColor	map7[128];
-uchar	map7to8[128][2];
+static uchar* gscreendata;
+static uchar* xscreendata;
+XColor map[256];
+XColor mapr[256];
+XColor mapg[256];
+XColor mapb[256];
+XColor map7[128];
+uchar map7to8[128][2];
 static Atom clipboard;
 static Atom utf8string;
 static Atom targets;
 static Atom text;
 static Atom compoundtext;
 static Atom cursorchange;
-static XColormap		xcmap;
-static int 		infernotox11[256];
-static int 		infernortox11[256];
-static int 		infernogtox11[256];
-static int 		infernobtox11[256];
-static int		triedscreen;
-static XDrawable		xdrawable;
-static void		xexpose(XEvent*);
-static void		xmouse(XEvent*);
-static void		xkeyboard(XEvent*);
-static void		xsetcursor(XEvent*);
-static void		xkbdproc(void*);
-static void		xdestroy(XEvent*);
-static void		xselect(XEvent*, XDisplay*);
-static void		xproc(void*);
-static void		xinitscreen(int, int, ulong, ulong*, int*);
-static void		initxcmap(XWindow);
-static XGC		creategc(XDrawable);
-static void		graphicsgmap(XColor*, int);
-static void		graphicscmap(XColor*);
-static void		graphicsrgbmap(XColor*, XColor*, XColor*);
-static int		xscreendepth;
-static	XDisplay*	xdisplay;
-static	XDisplay*	xmcon;
-static	XDisplay*	xkbdcon;
-static	XDisplay*	xsnarfcon;
-static XVisual		*xvis;
-static XGC		xgc;
-static XImage 		*img;
-static int              is_shm;
+static XColormap xcmap;
+static int infernotox11[256];
+static int infernortox11[256];
+static int infernogtox11[256];
+static int infernobtox11[256];
+static int triedscreen;
+static XDrawable xdrawable;
+static void xexpose(XEvent*);
+static void xmouse(XEvent*);
+static void xkeyboard(XEvent*);
+static void xsetcursor(XEvent*);
+static void xkbdproc(void*);
+static void xdestroy(XEvent*);
+static void xselect(XEvent*, XDisplay*);
+static void xproc(void*);
+static void xinitscreen(int, int, ulong, ulong*, int*);
+static void initxcmap(XWindow);
+static XGC creategc(XDrawable);
+static void graphicsgmap(XColor*, int);
+static void graphicscmap(XColor*);
+static void graphicsrgbmap(XColor*, XColor*, XColor*);
+static int xscreendepth;
+static XDisplay* xdisplay;
+static XDisplay* xmcon;
+static XDisplay* xkbdcon;
+static XDisplay* xsnarfcon;
+static XVisual *xvis;
+static XGC xgc;
+static XImage *img;
+static int is_shm;
 static int putsnarf, assertsnarf;
 char *gkscanid = "emu_x11";
 static int shm_got_x_error = 0;
@@ -472,18 +472,18 @@ xdestroy(&event);
 }
 }
 enum {
-CursorSize=	32
+CursorSize= 32
 };
 typedef struct ICursor ICursor;
 struct ICursor {
-int	inuse;
-int	modify;
-int	hotx;
-int	hoty;
-int	w;
-int	h;
-uchar	src[(CursorSize/8)*CursorSize];
-uchar	mask[(CursorSize/8)*CursorSize];
+int inuse;
+int modify;
+int hotx;
+int hoty;
+int w;
+int h;
+uchar src[(CursorSize/8)*CursorSize];
+uchar mask[(CursorSize/8)*CursorSize];
 };
 static ICursor icursor;
 static void
@@ -608,10 +608,10 @@ XFlush(xkbdcon);
 typedef struct Mg Mg;
 struct Mg
 {
-int	code;
-int	bit;
-int	len;
-ulong	mask;
+int code;
+int bit;
+int len;
+ulong mask;
 };
 static int
 maskx(Mg* g, int code, ulong mask)
@@ -1213,7 +1213,7 @@ mousetrack(b, x, y, 0);
 }
 #include "x11-keysym2ucs.c"
 enum{
-SnarfSize=	100*1024
+SnarfSize= 100*1024
 };
 typedef struct Clip Clip;
 struct Clip

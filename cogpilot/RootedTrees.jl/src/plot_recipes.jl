@@ -146,7 +146,7 @@ push!(colors, [color_root])
 # │ pass each segment in a separate vector instead, and use a row vector for `seriescolor`. Legend entries
 # │ may be suppressed by passing an empty label.
 # │ For example,
-# └     plot([1:2,1:3], [[4,5],[3,4,5]], label=["y" ""], seriescolor=[1 2])
+# └ plot([1:2,1:3], [[4,5],[3,4,5]], label=["y" ""], seriescolor=[1 2])
 # ┌ Warning: Indices Base.OneTo(9) of attribute `linecolor` does not match data indices 3:9.
 # └ @ Plots ~/.julia/packages/Plots/AJMX6/src/utils.jl:132
 # ┌ Info: Data contains NaNs or missing values, and indices of `linecolor` vector do not match data indices.
@@ -154,7 +154,7 @@ push!(colors, [color_root])
 # │ pass each segment in a separate vector instead, and use a row vector for `linecolor`. Legend entries
 # │ may be suppressed by passing an empty label.
 # │ For example,
-# └     plot([1:2,1:3], [[4,5],[3,4,5]], label=["y" ""], linecolor=[1 2])
+# └ plot([1:2,1:3], [[4,5],[3,4,5]], label=["y" ""], linecolor=[1 2])
 # ┌ Warning: Indices Base.OneTo(9) of attribute `fillcolor` does not match data indices 3:9.
 # └ @ Plots ~/.julia/packages/Plots/AJMX6/src/utils.jl:132
 # ┌ Info: Data contains NaNs or missing values, and indices of `fillcolor` vector do not match data indices.
@@ -162,7 +162,7 @@ push!(colors, [color_root])
 # │ pass each segment in a separate vector instead, and use a row vector for `fillcolor`. Legend entries
 # │ may be suppressed by passing an empty label.
 # │ For example,
-# └     plot([1:2,1:3], [[4,5],[3,4,5]], label=["y" ""], fillcolor=[1 2])
+# └ plot([1:2,1:3], [[4,5],[3,4,5]], label=["y" ""], fillcolor=[1 2])
 # ┌ Warning: Indices Base.OneTo(9) of attribute `markercolor` does not match data indices 3:9.
 # └ @ Plots ~/.julia/packages/Plots/AJMX6/src/utils.jl:132
 # ┌ Info: Data contains NaNs or missing values, and indices of `markercolor` vector do not match data indices.
@@ -170,7 +170,7 @@ push!(colors, [color_root])
 # │ pass each segment in a separate vector instead, and use a row vector for `markercolor`. Legend entries
 # │ may be suppressed by passing an empty label.
 # │ For example,
-# └     plot([1:2,1:3], [[4,5],[3,4,5]], label=["y" ""], markercolor=[1 2])
+# └ plot([1:2,1:3], [[4,5],[3,4,5]], label=["y" ""], markercolor=[1 2])
 # Compute plot coordinates recursively
 subtr = subtrees(t)
 # Distribute children uniformly in x and at equal y coordinates

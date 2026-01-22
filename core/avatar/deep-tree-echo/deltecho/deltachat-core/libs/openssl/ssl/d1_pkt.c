@@ -251,7 +251,7 @@ rr->length -= mac_size;
 rr->length -= mac_size;
 mac = &rr->data[rr->length];
 }
-i = s->method->ssl3_enc->mac(s, md, 0  );
+i = s->method->ssl3_enc->mac(s, md, 0 );
 if (i < 0 || mac == NULL
 || CRYPTO_memcmp(md, mac, (size_t)mac_size) != 0)
 enc_err = -1;

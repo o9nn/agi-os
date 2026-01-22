@@ -9,7 +9,7 @@ void (*routine)(void *);
 void *data;
 };
 typedef struct tq_struct * task_queue;
-#define DECLARE_TASK_QUEUE(q)  task_queue q = NULL
+#define DECLARE_TASK_QUEUE(q) task_queue q = NULL
 extern task_queue tq_timer, tq_immediate, tq_scheduler, tq_disk;
 static __inline__ void queue_task_irq(struct tq_struct *bh_pointer,
 task_queue *bh_list)
@@ -48,10 +48,10 @@ while (p) {
 void *arg;
 void (*f) (void *);
 struct tq_struct *save_p;
-arg    = p -> data;
-f      = p -> routine;
+arg = p -> data;
+f = p -> routine;
 save_p = p;
-p      = p -> next;
+p = p -> next;
 save_p -> sync = 0;
 (*f)(arg);
 }

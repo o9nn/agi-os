@@ -1,9 +1,7 @@
-#include	"lib9.h"
-#include	<bio.h>
-
+#include "lib9.h"
+#include <bio.h>
 int
 Bfildes(Biobuf *bp)
 {
-
-	return bp->fid;
+return bp->fid;
 }

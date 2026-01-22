@@ -117,7 +117,7 @@ operation & TEXT_DO_TRUE_CHARPATH ? cpm_true_charpath :
 operation & TEXT_DO_FALSE_CHARBOXPATH ? cpm_false_charboxpath :
 operation & TEXT_DO_TRUE_CHARBOXPATH ? cpm_true_charboxpath :
 operation & TEXT_DO_CHARWIDTH ? cpm_charwidth :
-cpm_show  );
+cpm_show );
 else
 penum->charpath_flag =
 (propagate_charpath ? pgs->in_charpath : cpm_show);
@@ -337,14 +337,14 @@ gx_compute_text_oversampling(penum, penum->current_font, *alpha_bits, log2_scale
 1 : min(log2_scale->x + log2_scale->y, *alpha_bits));
 if (gs_currentaligntopixels(penum->current_font->dir) == 0) {
 int scx = -1L << (_fixed_shift - log2_scale->x);
-int rdx =  1L << (_fixed_shift - 1 - log2_scale->x);
-#	if 1
+int rdx = 1L << (_fixed_shift - 1 - log2_scale->x);
+# if 1
 subpix_origin->y = 0;
-#	else
+# else
 int scy = -1L << (_fixed_shift - log2_scale->y);
-int rdy =  1L << (_fixed_shift - 1 - log2_scale->y);
+int rdy = 1L << (_fixed_shift - 1 - log2_scale->y);
 subpix_origin->y = ((penum->origin.y + rdy) & scy) & (fixed_1 - 1);
-#	endif
+# endif
 subpix_origin->x = ((penum->origin.x + rdx) & scx) & (fixed_1 - 1);
 } else
 subpix_origin->x = subpix_origin->y = 0;
@@ -566,7 +566,7 @@ return show_proceed(penum);
 }
 private int
 continue_kshow(gs_show_enum * penum)
-{   int code;
+{ int code;
 gs_state *pgs = penum->pgs;
 if (pgs->font != penum->orig_font)
 gs_setfont(pgs, penum->orig_font);
@@ -597,7 +597,7 @@ return code;
 case 1:
 ;
 }
-{   cached_fm_pair *pair;
+{ cached_fm_pair *pair;
 code = gx_lookup_fm_pair(pgs->font, &char_tm_only(pgs),
 &penum->log2_scale, penum->charpath_flag != cpm_show, &pair);
 if (code < 0)
@@ -859,7 +859,7 @@ penum->current_font = pfont;
 show_state_setup(penum);
 pair = 0;
 case 0:
-{   int alpha_bits, depth;
+{ int alpha_bits, depth;
 gs_log2_scale_point log2_scale;
 gs_fixed_point subpix_origin;
 code = compute_glyph_raster_params(penum, false, &alpha_bits, &depth, &subpix_origin, &log2_scale);
@@ -1172,8 +1172,8 @@ if (penum->charpath_flag == cpm_show) {
 if (gs_currentaligntopixels(penum->current_font->dir) == 0) {
 int scx = -1L << (_fixed_shift - penum->log2_scale.x);
 int scy = -1L << (_fixed_shift - penum->log2_scale.y);
-int rdx =  1L << (_fixed_shift - 1 - penum->log2_scale.x);
-int rdy =  1L << (_fixed_shift - 1 - penum->log2_scale.y);
+int rdx = 1L << (_fixed_shift - 1 - penum->log2_scale.x);
+int rdy = 1L << (_fixed_shift - 1 - penum->log2_scale.y);
 cpt_x = (cpt_x + rdx) & scx;
 cpt_y = (cpt_y + rdy) & scy;
 } else {

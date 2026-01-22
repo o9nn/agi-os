@@ -3,39 +3,39 @@
 #include <mach/boolean.h>
 #include <mach/mach_types.h>
 #include <machine/thread.h>
-#define GDB_PACKET_SIZE     1024
-#define GDB_BUFFER_MAX      2048
+#define GDB_PACKET_SIZE 1024
+#define GDB_BUFFER_MAX 2048
 typedef enum {
 GDB_STATE_DISCONNECTED,
 GDB_STATE_CONNECTED,
 GDB_STATE_RUNNING,
 GDB_STATE_STOPPED
 } gdb_state_t;
-#define GDB_CMD_READ_REGISTERS      'g'
-#define GDB_CMD_WRITE_REGISTERS     'G'
-#define GDB_CMD_READ_MEMORY         'm'
-#define GDB_CMD_WRITE_MEMORY        'M'
-#define GDB_CMD_CONTINUE            'c'
-#define GDB_CMD_STEP                's'
-#define GDB_CMD_SET_BREAKPOINT      'Z'
-#define GDB_CMD_REMOVE_BREAKPOINT   'z'
-#define GDB_CMD_QUERY               'q'
-#define GDB_CMD_KILL                'k'
-#define GDB_CMD_VCONT              'v'
-#define GDB_CMD_THREAD_INFO        'T'
-#define GDB_CMD_EXTENDED           '!'
-#define GDB_PACKET_START           '$'
-#define GDB_PACKET_END             '#'
-#define GDB_ACK                    '+'
-#define GDB_NAK                    '-'
-#define GDB_SIGNAL_TRAP            5
-#define GDB_SIGNAL_SEGV            11
-#define GDB_SIGNAL_TERM            15
+#define GDB_CMD_READ_REGISTERS 'g'
+#define GDB_CMD_WRITE_REGISTERS 'G'
+#define GDB_CMD_READ_MEMORY 'm'
+#define GDB_CMD_WRITE_MEMORY 'M'
+#define GDB_CMD_CONTINUE 'c'
+#define GDB_CMD_STEP 's'
+#define GDB_CMD_SET_BREAKPOINT 'Z'
+#define GDB_CMD_REMOVE_BREAKPOINT 'z'
+#define GDB_CMD_QUERY 'q'
+#define GDB_CMD_KILL 'k'
+#define GDB_CMD_VCONT 'v'
+#define GDB_CMD_THREAD_INFO 'T'
+#define GDB_CMD_EXTENDED '!'
+#define GDB_PACKET_START '$'
+#define GDB_PACKET_END '#'
+#define GDB_ACK '+'
+#define GDB_NAK '-'
+#define GDB_SIGNAL_TRAP 5
+#define GDB_SIGNAL_SEGV 11
+#define GDB_SIGNAL_TERM 15
 typedef enum {
-GDB_BP_SOFTWARE    = 0,
-GDB_BP_HARDWARE    = 1,
+GDB_BP_SOFTWARE = 0,
+GDB_BP_HARDWARE = 1,
 GDB_BP_WRITE_WATCH = 2,
-GDB_BP_READ_WATCH  = 3,
+GDB_BP_READ_WATCH = 3,
 GDB_BP_ACCESS_WATCH = 4
 } gdb_breakpoint_type_t;
 struct gdb_stub_config {
@@ -71,15 +71,15 @@ extern void gdb_stub_thread_destroy(thread_t thread);
 extern void gdb_stub_thread_switch(thread_t old_thread, thread_t new_thread);
 extern boolean_t gdb_stub_memory_valid(vm_offset_t address, vm_size_t length);
 extern void gdb_stub_memory_changed(vm_offset_t address, vm_size_t length);
-#define GDB_STUB_DEFAULT_CONFIG {       \
-.enabled = FALSE,                   \
-.hardware_breakpoints = TRUE,       \
-.software_breakpoints = TRUE,       \
-.watchpoints = TRUE,                \
-.multiprocess = FALSE,              \
-.thread_aware = TRUE,               \
-.max_breakpoints = 4,               \
-.max_watchpoints = 4                \
+#define GDB_STUB_DEFAULT_CONFIG { \
+.enabled = FALSE, \
+.hardware_breakpoints = TRUE, \
+.software_breakpoints = TRUE, \
+.watchpoints = TRUE, \
+.multiprocess = FALSE, \
+.thread_aware = TRUE, \
+.max_breakpoints = 4, \
+.max_watchpoints = 4 \
 }
 #define GDB_MAX_HW_BREAKPOINTS 4
 #define GDB_MAX_HW_WATCHPOINTS 4

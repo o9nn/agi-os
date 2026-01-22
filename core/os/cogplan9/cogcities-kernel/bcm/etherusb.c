@@ -8,52 +8,52 @@
 #include "../port/netif.h"
 #include "etherif.h"
 #include "../ip/ip.h"
-#define	GET4(p)		((p)[3]<<24 | (p)[2]<<16 | (p)[1]<<8  | (p)[0])
-#define	PUT4(p, v)	((p)[0] = (v), (p)[1] = (v)>>8, \
+#define GET4(p) ((p)[3]<<24 | (p)[2]<<16 | (p)[1]<<8 | (p)[0])
+#define PUT4(p, v) ((p)[0] = (v), (p)[1] = (v)>>8, \
 (p)[2] = (v)>>16, (p)[3] = (v)>>24)
-#define	dprint	if(debug) print
-#define ddump	if(0) dump
+#define dprint if(debug) print
+#define ddump if(0) dump
 static int debug = 0;
 enum {
-Bind	= 0,
+Bind = 0,
 Unbind,
-SmscRxerror	= 0x8000,
-SmscTxfirst	= 0x2000,
-SmscTxlast	= 0x1000,
+SmscRxerror = 0x8000,
+SmscTxfirst = 0x2000,
+SmscTxlast = 0x1000,
 };
 typedef struct Ctlr Ctlr;
 typedef struct Udev Udev;
 typedef int (Unpackfn)(Ether*, Block*);
 typedef void (Transmitfn)(Ctlr*, Block*);
 struct Ctlr {
-Ether*	edev;
-Udev*	udev;
-Chan*	inchan;
-Chan*	outchan;
-char*	buf;
-int	bufsize;
-int	maxpkt;
-uint	rxbuf;
-uint	rxpkt;
-uint	txbuf;
-uint	txpkt;
+Ether* edev;
+Udev* udev;
+Chan* inchan;
+Chan* outchan;
+char* buf;
+int bufsize;
+int maxpkt;
+uint rxbuf;
+uint rxpkt;
+uint txbuf;
+uint txpkt;
 QLock;
 };
 struct Udev {
-char	*name;
+char *name;
 Unpackfn *unpack;
 Transmitfn *transmit;
 };
 static Cmdtab cmds[] = {
-{ Bind,		"bind",		7, },
-{ Unbind,	"unbind",	0, },
+{ Bind, "bind", 7, },
+{ Unbind, "unbind", 0, },
 };
 static Unpackfn unpackcdc, unpackasix, unpacksmsc;
 static Transmitfn transmitcdc, transmitasix, transmitsmsc;
 static Udev udevtab[] = {
-{ "cdc",	unpackcdc,	transmitcdc, },
-{ "asix",	unpackasix,	transmitasix, },
-{ "smsc",	unpacksmsc,	transmitsmsc, },
+{ "cdc", unpackcdc, transmitcdc, },
+{ "asix", unpackasix, transmitasix, },
+{ "smsc", unpacksmsc, transmitsmsc, },
 { nil },
 };
 static void

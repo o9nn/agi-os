@@ -1,28 +1,28 @@
 #! /bin/bash
 if [[ `tty` == "not a tty" ]]
 then
-	script -c $0 /dev/null
-	exit 0
+script -c $0 /dev/null
+exit 0
 fi
 export LD_LIBRARY_PATH=/usr/local/lib/opencog/modules
 if [ $
-then 
-  echo "Usage: ./run-multiple-terminals.sh <mode> <language> <db_name> [<username>] [<password>]"
-  exit 0
+then
+echo "Usage: ./run-multiple-terminals.sh <mode> <language> <db_name> [<username>] [<password>]"
+exit 0
 fi
 source ./config/det-port-num.sh $1 $2
 launcher=launch-cogserver.scm
 byobu new-session -d -n 'cntl' '$SHELL'
 case $
-   3)
-      byobu new-window -n 'cogsrv' "nice guile -l $launcher -- --mode $1 --lang $2 --db $3; $SHELL"
-      ;;
-   4)
-      byobu new-window -n 'cogsrv' "nice guile -l $launcher -- --mode $1 --lang $2 --db $3 --user $4; $SHELL"
-      ;;
-   *)
-      byobu new-window -n 'cogsrv' "nice guile -l $launcher -- --mode $1 --lang $2 --db $3 --user $4 --password $5; $SHELL"
-      ;;
+3)
+byobu new-window -n 'cogsrv' "nice guile -l $launcher -- --mode $1 --lang $2 --db $3; $SHELL"
+;;
+4)
+byobu new-window -n 'cogsrv' "nice guile -l $launcher -- --mode $1 --lang $2 --db $3 --user $4; $SHELL"
+;;
+*)
+byobu new-window -n 'cogsrv' "nice guile -l $launcher -- --mode $1 --lang $2 --db $3 --user $4 --password $5; $SHELL"
+;;
 esac
 sleep 2;
 tmux new-window -n 'telnet' "rlwrap telnet localhost $PORT; $SHELL"

@@ -34,22 +34,22 @@ Debugger("assertion failure");
 void SoftDebugger(const char *message)
 {
 printf("Debugger invoked: %s\n", message);
-#if	!MACH_KDB
+#if !MACH_KDB
 printf("But no debugger, continuing.\n");
 return;
 #endif
-#if	defined(vax) || defined(PC532)
+#if defined(vax) || defined(PC532)
 asm("bpt");
 #endif
-#ifdef	sun3
+#ifdef sun3
 current_thread()->pcb->flag |= TRACE_KDB;
 asm("orw  #0x00008000,sr");
 #endif
-#ifdef	sun4
+#ifdef sun4
 current_thread()->pcb->pcb_flag |= TRACE_KDB;
 asm("ta 0x81");
 #endif
-#if	defined(mips ) || defined(i860) || defined(alpha)
+#if defined(mips ) || defined(i860) || defined(alpha)
 gimmeabreak();
 #endif
 #if defined(__i386__) || defined(__x86_64__)
@@ -58,15 +58,15 @@ asm("int3");
 }
 void Debugger(const char *message)
 {
-#if	!MACH_KDB
+#if !MACH_KDB
 panic("Debugger invoked, but there isn't one!");
 #endif
 SoftDebugger(message);
 panic("Debugger returned!");
 }
-def_simple_lock_irq_data(static,	panic_lock)
-const char     		*panicstr;
-int			paniccpu;
+def_simple_lock_irq_data(static, panic_lock)
+const char *panicstr;
+int paniccpu;
 void
 panic_init(void)
 {
@@ -77,7 +77,7 @@ extern boolean_t reboot_on_panic;
 void
 Panic(const char *file, int line, const char *fun, const char *s, ...)
 {
-va_list	listp;
+va_list listp;
 spl_t spl;
 panic_init();
 spl = simple_lock_irq(&panic_lock);
@@ -93,7 +93,7 @@ paniccpu = cpu_number();
 }
 simple_unlock_irq(spl, &panic_lock);
 printf("panic ");
-#if	NCPUS > 1
+#if NCPUS > 1
 printf("{cpu%d} ", paniccpu);
 #endif
 printf("%s:%d: %s: ",file, line, fun);
@@ -101,10 +101,10 @@ va_start(listp, s);
 _doprnt(s, listp, do_cnputc, 16, 0);
 va_end(listp);
 printf("\n");
-#if	MACH_KDB
+#if MACH_KDB
 Debugger("panic");
 #else
-# ifdef	MACH_HYP
+# ifdef MACH_HYP
 hyp_crash();
 # else
 {
@@ -119,7 +119,7 @@ halt_all_cpus (reboot_on_panic);
 void
 log(int level, const char *fmt, ...)
 {
-va_list	listp;
+va_list listp;
 va_start(listp, fmt);
 _doprnt(fmt, listp, do_cnputc, 16, 0);
 va_end(listp);

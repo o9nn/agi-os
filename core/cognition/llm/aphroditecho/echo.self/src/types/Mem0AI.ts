@@ -1,50 +1,50 @@
 export interface Mem0ry {
-  id: string;
-  title: string;
-  content: string;
-  tags: string[];
-  createdAt: string;
-  updatedAt: string;
-  metadata?: Record<string, unknown>;
-  context?: string;
-  type?: Mem0ryType;
-  embedding?: number[];
+id: string;
+title: string;
+content: string;
+tags: string[];
+createdAt: string;
+updatedAt: string;
+metadata?: Record<string, unknown>;
+context?: string;
+type?: Mem0ryType;
+embedding?: number[];
 }
 export type Mem0ryType =
-  | "episodic" 
-  | "semantic" 
-  | "procedural" 
-  | "declarative" 
-  | "implicit" 
-  | "associative" 
-  | "memory"; 
+| "episodic"
+| "semantic"
+| "procedural"
+| "declarative"
+| "implicit"
+| "associative"
+| "memory";
 export interface Mem0rySearchResult {
-  id: string;
-  content: string;
-  metadata?: Record<string, unknown>;
-  similarity: number;
+id: string;
+content: string;
+metadata?: Record<string, unknown>;
+similarity: number;
 }
 export interface Mem0ryQueryOptions {
-  threshold?: number;
-  limit?: number;
-  type?: Mem0ryType;
-  includeTags?: string[];
-  excludeTags?: string[];
-  timeframe?: {
-    start?: Date;
-    end?: Date;
-  };
+threshold?: number;
+limit?: number;
+type?: Mem0ryType;
+includeTags?: string[];
+excludeTags?: string[];
+timeframe?: {
+start?: Date;
+end?: Date;
+};
 }
 export interface Mem0ryStats {
-  total: number;
-  byType: Record<Mem0ryType, number>;
-  byTag: Record<string, number>;
-  recentlyAdded: number;
-  recentlyAccessed: number;
+total: number;
+byType: Record<Mem0ryType, number>;
+byTag: Record<string, number>;
+recentlyAdded: number;
+recentlyAccessed: number;
 }
 export interface Mem0AISummary {
-  insights: string[];
-  frequentConcepts: string[];
-  knowledgeGaps: string[];
-  recommendations: string[];
+insights: string[];
+frequentConcepts: string[];
+knowledgeGaps: string[];
+recommendations: string[];
 }

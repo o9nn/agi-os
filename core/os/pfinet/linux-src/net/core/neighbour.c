@@ -164,7 +164,7 @@ if (n == NULL)
 return NULL;
 memcpy(n->primary_key, pkey, key_len);
 n->dev = dev;
-if (tbl->constructor &&	tbl->constructor(n) < 0) {
+if (tbl->constructor && tbl->constructor(n) < 0) {
 neigh_destroy(n);
 return NULL;
 }
@@ -545,7 +545,7 @@ return neigh;
 }
 static void neigh_hh_init(struct neighbour *n, struct dst_entry *dst, u16 protocol)
 {
-struct hh_cache	*hh = NULL;
+struct hh_cache *hh = NULL;
 struct device *dev = dst->dev;
 for (hh=n->hh; hh; hh = hh->hh_next)
 if (hh->hh_type == protocol)
@@ -568,7 +568,7 @@ else
 hh->hh_output = n->ops->output;
 }
 }
-if (hh)	{
+if (hh) {
 atomic_inc(&hh->hh_refcnt);
 dst->hh = hh;
 }
@@ -846,8 +846,8 @@ u32 pid, u32 seq, int event)
 {
 unsigned long now = jiffies;
 struct ndmsg *ndm;
-struct nlmsghdr  *nlh;
-unsigned char	 *b = skb->tail;
+struct nlmsghdr *nlh;
+unsigned char *b = skb->tail;
 struct nda_cacheinfo ci;
 nlh = NLMSG_PUT(skb, pid, seq, event, sizeof(*ndm));
 ndm = NLMSG_DATA(nlh);
@@ -924,7 +924,7 @@ return skb->len;
 void neigh_app_ns(struct neighbour *n)
 {
 struct sk_buff *skb;
-struct nlmsghdr  *nlh;
+struct nlmsghdr *nlh;
 int size = NLMSG_SPACE(sizeof(struct ndmsg)+256);
 skb = alloc_skb(size, GFP_ATOMIC);
 if (!skb)
@@ -941,7 +941,7 @@ netlink_broadcast(rtnl, skb, 0, RTMGRP_NEIGH, GFP_ATOMIC);
 static void neigh_app_notify(struct neighbour *n)
 {
 struct sk_buff *skb;
-struct nlmsghdr  *nlh;
+struct nlmsghdr *nlh;
 int size = NLMSG_SPACE(sizeof(struct ndmsg)+256);
 skb = alloc_skb(size, GFP_ATOMIC);
 if (!skb)

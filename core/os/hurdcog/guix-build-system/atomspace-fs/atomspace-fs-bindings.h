@@ -29,11 +29,11 @@ size_t partition_size;
 size_t partition_offset;
 int features;
 } atomspace_filesystem_t;
-#define ATOMSPACE_FS_DISTRIBUTED_STORAGE   (1 << 0)
-#define ATOMSPACE_FS_PARALLEL_COMPUTING    (1 << 1)
-#define ATOMSPACE_FS_COGNITIVE_OPERATIONS  (1 << 2)
-#define ATOMSPACE_FS_PLAN9_NAMESPACE       (1 << 3)
-#define ATOMSPACE_FS_INFERNO_FEATURES      (1 << 4)
+#define ATOMSPACE_FS_DISTRIBUTED_STORAGE (1 << 0)
+#define ATOMSPACE_FS_PARALLEL_COMPUTING (1 << 1)
+#define ATOMSPACE_FS_COGNITIVE_OPERATIONS (1 << 2)
+#define ATOMSPACE_FS_PLAN9_NAMESPACE (1 << 3)
+#define ATOMSPACE_FS_INFERNO_FEATURES (1 << 4)
 error_t atomspace_fs_init(atomspace_filesystem_t **filesystem);
 error_t atomspace_fs_mount(atomspace_filesystem_t *filesystem,
 const char *mount_point,
@@ -86,7 +86,7 @@ void atomspace_fs_log(const char *level, const char *format, ...);
 #else
 #define ATOMSPACE_FS_DEBUG(fmt, ...)
 #endif
-#define ATOMSPACE_FS_INFO(fmt, ...)  atomspace_fs_log("INFO", fmt, ##__VA_ARGS__)
-#define ATOMSPACE_FS_WARN(fmt, ...)  atomspace_fs_log("WARN", fmt, ##__VA_ARGS__)
+#define ATOMSPACE_FS_INFO(fmt, ...) atomspace_fs_log("INFO", fmt, ##__VA_ARGS__)
+#define ATOMSPACE_FS_WARN(fmt, ...) atomspace_fs_log("WARN", fmt, ##__VA_ARGS__)
 #define ATOMSPACE_FS_ERROR(fmt, ...) atomspace_fs_log("ERROR", fmt, ##__VA_ARGS__)
 #endif

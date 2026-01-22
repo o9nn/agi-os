@@ -5,15 +5,15 @@ static char *copyright = "Copyright (c) 1989 Mark H. Colburn.\nAll rights reserv
 #include "pax.h"
 struct nm_list {
 struct nm_list *next;
-short           length;
-char            found;
-char            firstch;
-char            re;
-char            name[1];
+short length;
+char found;
+char firstch;
+char re;
+char name[1];
 };
 struct dirinfo {
-char            dirname[PATH_MAX + 1];
-OFFSET	    where;
+char dirname[PATH_MAX + 1];
+OFFSET where;
 struct dirinfo *next;
 };
 static struct dirinfo *stack_head = (struct dirinfo *)NULL;
@@ -30,10 +30,10 @@ static struct nm_list *namelist;
 void add_name(char *name)
 #else
 void add_name(name)
-char           *name;
+char *name;
 #endif
 {
-int             i;
+int i;
 struct nm_list *p;
 i = strlen(name);
 p = (struct nm_list *) malloc((unsigned) (i + sizeof(struct nm_list)));
@@ -61,11 +61,11 @@ namelist = p;
 int name_match(char *p)
 #else
 int name_match(p)
-char           *p;
+char *p;
 #endif
 {
 struct nm_list *nlp;
-int             len;
+int len;
 if ((nlp = namelist) == 0) {
 return (1);
 }
@@ -111,8 +111,8 @@ namelast = (struct nm_list *)NULL;
 void name_init(int argc, char **argv)
 #else
 void name_init(argc, argv)
-int             argc;
-char          **argv;
+int argc;
+char **argv;
 #endif
 {
 n_argc = argc;
@@ -122,16 +122,16 @@ n_argv = argv;
 int name_next(char *name, Stat *statbuf)
 #else
 int name_next(name, statbuf)
-char           *name;
-Stat           *statbuf;
+char *name;
+Stat *statbuf;
 #endif
 {
-int             err = -1;
-static int      in_subdir = 0;
-static DIR     *dirp;
-struct dirent  *d;
+int err = -1;
+static int in_subdir = 0;
+static DIR *dirp;
+struct dirent *d;
 static struct dirinfo *curr_dir;
-int			len;
+int len;
 do {
 if (names_from_stdin) {
 if (lineget(stdin, name) < 0) {
@@ -229,10 +229,10 @@ add_name(n_argv[optind++]);
 static void pushdir(struct dirinfo *info)
 #else
 static void pushdir(info)
-struct dirinfo	*info;
+struct dirinfo *info;
 #endif
 {
-if  (stack_head == (struct dirinfo *)NULL) {
+if (stack_head == (struct dirinfo *)NULL) {
 stack_head = info;
 stack_head->next = (struct dirinfo *)NULL;
 } else {
@@ -246,7 +246,7 @@ static struct dirinfo *popdir(void)
 static struct dirinfo *popdir()
 #endif
 {
-struct dirinfo	*tmp;
+struct dirinfo *tmp;
 if (stack_head == (struct dirinfo *)NULL) {
 return((struct dirinfo *)NULL);
 } else {

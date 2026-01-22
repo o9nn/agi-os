@@ -48,7 +48,7 @@ static unsigned char cfb_key[16] = {
 static unsigned char cfb_iv[80] =
 { 0x34, 0x12, 0x78, 0x56, 0xab, 0x90, 0xef, 0xcd };
 static unsigned char cfb_buf1[40], cfb_buf2[40], cfb_tmp[8];
-#  define CFB_TEST_SIZE 24
+# define CFB_TEST_SIZE 24
 static unsigned char plain[CFB_TEST_SIZE] = {
 0x4e, 0x6f, 0x77, 0x20, 0x69, 0x73,
 0x20, 0x74, 0x68, 0x65, 0x20, 0x74,
@@ -68,7 +68,7 @@ int i, n, err = 0;
 RC2_KEY key;
 unsigned char buf[8], buf2[8];
 for (n = 0; n < 4; n++) {
-RC2_set_key(&key, 16, &(RC2key[n][0]), 0  );
+RC2_set_key(&key, 16, &(RC2key[n][0]), 0 );
 RC2_ecb_encrypt(&(RC2plain[n][0]), buf, &key, RC2_ENCRYPT);
 if (memcmp(&(RC2cipher[n][0]), buf, 8) != 0) {
 printf("ecb rc2 error encrypting\n");

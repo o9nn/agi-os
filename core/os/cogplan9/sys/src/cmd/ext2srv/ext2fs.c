@@ -5,9 +5,9 @@
 #include <9p.h>
 #include "dat.h"
 #include "fns.h"
-#define thdr	r->ifcall
-#define rhdr	r->ofcall
-extern int	errno;
+#define thdr r->ifcall
+#define rhdr r->ofcall
+extern int errno;
 static void
 response(Req *r)
 {
@@ -296,15 +296,15 @@ error:
 response(r);
 }
 Srv ext2srv = {
-.destroyfid =	destroyfid,
-.attach =	rattach,
-.stat =		rstat,
-.wstat =	rwstat,
-.clone =	rclone,
-.walk1 =	rwalk1,
-.open =		ropen,
-.read =		rread,
-.write =	rwrite,
-.create =	rcreate,
-.remove =	rremove,
+.destroyfid = destroyfid,
+.attach = rattach,
+.stat = rstat,
+.wstat = rwstat,
+.clone = rclone,
+.walk1 = rwalk1,
+.open = ropen,
+.read = rread,
+.write = rwrite,
+.create = rcreate,
+.remove = rremove,
 };

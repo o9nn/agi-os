@@ -9,15 +9,15 @@
 #if defined(_MSC_VER)
 #pragma warning(disable: 4244 4267)
 #endif
-#define CL_CHECK(err)                                               \
-do {                                                            \
-cl_int err_ = (err);                                        \
-if (err_ != CL_SUCCESS) {                                   \
-fprintf(stderr, "ggml_opencl: %s error %d at %s:%d\n",  \
-#err, err_, __FILE__, __LINE__);                    \
+#define CL_CHECK(err) \
+do { \
+cl_int err_ = (err); \
+if (err_ != CL_SUCCESS) { \
+fprintf(stderr, "ggml_opencl: %s error %d at %s:%d\n", \
+#err, err_, __FILE__, __LINE__); \
 fprintf(stderr, "You may be out of VRAM. Please check if you have enough.\n");\
-exit(1);                                                \
-}                                                           \
+exit(1); \
+} \
 } while (0)
 static cl_platform_id platform;
 static cl_device_id device;

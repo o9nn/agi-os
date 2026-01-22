@@ -4,25 +4,25 @@ cmake --build build -j
 export LLAMA_CACHE=${LLAMA_CACHE:-$HOME/Library/Caches/llama.cpp}
 export LLAMA_SERVER_BIN_PATH=$PWD/build/bin/llama-server
 if [ ! -x "$LLAMA_SERVER_BIN_PATH" ]; then
-    echo "Could not find llama-server binary at $LLAMA_SERVER_BIN_PATH"
-    exit 1
+echo "Could not find llama-server binary at $LLAMA_SERVER_BIN_PATH"
+exit 1
 fi
 if [ ! -d "$LLAMA_CACHE" ]; then
-    echo "Could not find llama cache at $LLAMA_CACHE, please set LLAMA_CACHE explicitly."
-    exit 1
+echo "Could not find llama cache at $LLAMA_CACHE, please set LLAMA_CACHE explicitly."
+exit 1
 fi
 export ARGS=(
-    --llama-baseline="$(which llama-server)"
-    --n 30
-    --temp -1
-    --temp 0
-    --temp 0.5
-    --temp 0.75
-    --temp 1
-    --temp 1.5
-    --temp 2
-    --temp 5
-    "$@"
+--llama-baseline="$(which llama-server)"
+--n 30
+--temp -1
+--temp 0
+--temp 0.5
+--temp 0.75
+--temp 1
+--temp 1.5
+--temp 2
+--temp 5
+"$@"
 )
 ./scripts/tool_bench.py run ${ARGS[@]} --model "Qwen 2.5 Coder 0.5B Q4_K_M"           --output ../qwenc0.5b.jsonl --hf bartowski/Qwen2.5-Coder-0.5B-Instruct-GGUF:Q4_K_M --ollama qwen2.5-coder:0.5b-instruct-q4_K_M
 ./scripts/tool_bench.py run ${ARGS[@]} --model "Qwen 2.5 Coder 1.5B Q4_K_M"           --output ../qwenc1.5b.jsonl --hf bartowski/Qwen2.5-Coder-1.5B-Instruct-GGUF:Q4_K_M --ollama qwen2.5-coder:1.5b-instruct-q4_K_M
@@ -46,5 +46,5 @@ export ARGS=(
 ./scripts/tool_bench.py run ${ARGS[@]} --model "Phi 4 Instruct Q4_K_M"                --output ../phi4.jsonl      --hf bartowski/phi-4-GGUF:Q4_K_M
 ./scripts/tool_bench.py run ${ARGS[@]} --model "Phi 3.5 Mini Instruct Q4_K_M"         --output ../phi3.5.jsonl    --hf bartowski/Phi-3.5-mini-instruct-GGUF:Q4_K_M
 for f in ../*.jsonl; do
-    ./scripts/tool_bench.py plot "$f" --output ${f%.jsonl}.png || true
+./scripts/tool_bench.py plot "$f" --output ${f%.jsonl}.png || true
 done

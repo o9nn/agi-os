@@ -125,7 +125,7 @@ Ve =>
 if(!used){
 ep := <-v.i;
 if(ep.addr != nil)
-endpoints->open(nil, ep);		# open and discard
+endpoints->open(nil, ep); # open and discard
 }
 Vw =>
 if(!used){

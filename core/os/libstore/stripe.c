@@ -71,7 +71,7 @@ int nkids = enc->ints[enc->cur_int++];
 struct store *kids[nkids];
 error_t err = store_decode_children (enc, nkids, classes, kids);
 if (! err)
-err =  store_ileave_create (kids, nkids, interleave, flags, store);
+err = store_ileave_create (kids, nkids, interleave, flags, store);
 return err;
 }
 }
@@ -111,7 +111,7 @@ int nkids = enc->ints[enc->cur_int++];
 struct store *kids[nkids];
 error_t err = store_decode_children (enc, nkids, classes, kids);
 if (! err)
-err =  store_concat_create (kids, nkids, flags, store);
+err = store_concat_create (kids, nkids, flags, store);
 return err;
 }
 }

@@ -143,7 +143,7 @@ return ArchFaked;
 return ArchFailure;
 }
 if(DEBUG) fprint(2, "%*sarchive(%ud, %#ux): block label %L\n",
-p->depth*2, "",  p->snapEpoch, b->addr, &b->l);
+p->depth*2, "", p->snapEpoch, b->addr, &b->l);
 p->depth++;
 if(p->depth > p->maxdepth)
 p->maxdepth = p->depth;

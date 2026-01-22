@@ -13,13 +13,13 @@
 #include <kern/debug.h>
 #include <kern/printf.h>
 #include <kern/slab.h>
-#if	MACH_KDB
+#if MACH_KDB
 #include <ddb/db_output.h>
 #endif
 struct kmem_cache ipc_object_caches[IOT_NUMBER];
 void
 ipc_object_reference(
-ipc_object_t	object)
+ipc_object_t object)
 {
 io_lock(object);
 assert(object->io_references > 0);
@@ -28,7 +28,7 @@ io_unlock(object);
 }
 void
 ipc_object_release(
-ipc_object_t	object)
+ipc_object_t object)
 {
 io_lock(object);
 assert(object->io_references > 0);
@@ -37,10 +37,10 @@ io_check_unlock(object);
 }
 kern_return_t
 ipc_object_translate(
-ipc_space_t		space,
-mach_port_name_t	name,
-mach_port_right_t	right,
-ipc_object_t		*objectp)
+ipc_space_t space,
+mach_port_name_t name,
+mach_port_right_t right,
+ipc_object_t *objectp)
 {
 ipc_entry_t entry;
 ipc_object_t object;
@@ -61,8 +61,8 @@ return KERN_SUCCESS;
 }
 kern_return_t
 ipc_object_alloc_dead(
-ipc_space_t	space,
-mach_port_name_t	*namep)
+ipc_space_t space,
+mach_port_name_t *namep)
 {
 ipc_entry_t entry;
 kern_return_t kr;
@@ -79,8 +79,8 @@ return KERN_SUCCESS;
 }
 kern_return_t
 ipc_object_alloc_dead_name(
-ipc_space_t	space,
-mach_port_name_t	name)
+ipc_space_t space,
+mach_port_name_t name)
 {
 ipc_entry_t entry;
 kern_return_t kr;
@@ -99,12 +99,12 @@ return KERN_SUCCESS;
 }
 kern_return_t
 ipc_object_alloc(
-ipc_space_t		space,
-ipc_object_type_t	otype,
-mach_port_type_t	type,
-mach_port_urefs_t	urefs,
-mach_port_name_t	*namep,
-ipc_object_t		*objectp)
+ipc_space_t space,
+ipc_object_type_t otype,
+mach_port_type_t type,
+mach_port_urefs_t urefs,
+mach_port_name_t *namep,
+ipc_object_t *objectp)
 {
 ipc_object_t object;
 ipc_entry_t entry;
@@ -142,12 +142,12 @@ return KERN_SUCCESS;
 }
 kern_return_t
 ipc_object_alloc_name(
-ipc_space_t		space,
-ipc_object_type_t	otype,
-mach_port_type_t	type,
-mach_port_urefs_t	urefs,
-mach_port_name_t	name,
-ipc_object_t		*objectp)
+ipc_space_t space,
+ipc_object_type_t otype,
+mach_port_type_t type,
+mach_port_urefs_t urefs,
+mach_port_name_t name,
+ipc_object_t *objectp)
 {
 ipc_object_t object;
 ipc_entry_t entry;
@@ -189,7 +189,7 @@ return KERN_SUCCESS;
 }
 mach_msg_type_name_t
 ipc_object_copyin_type(
-mach_msg_type_name_t	msgt_name)
+mach_msg_type_name_t msgt_name)
 {
 switch (msgt_name) {
 case 0:
@@ -214,10 +214,10 @@ return 0;
 }
 kern_return_t
 ipc_object_copyin(
-ipc_space_t		space,
-mach_port_name_t	name,
-mach_msg_type_name_t	msgt_name,
-ipc_object_t		*objectp)
+ipc_space_t space,
+mach_port_name_t name,
+mach_msg_type_name_t msgt_name,
+ipc_object_t *objectp)
 {
 ipc_entry_t entry;
 ipc_port_t soright;
@@ -237,8 +237,8 @@ return kr;
 }
 void
 ipc_object_copyin_from_kernel(
-ipc_object_t		object,
-mach_msg_type_name_t	msgt_name)
+ipc_object_t object,
+mach_msg_type_name_t msgt_name)
 {
 assert(IO_VALID(object));
 switch (msgt_name) {
@@ -303,8 +303,8 @@ panic("ipc_object_copyin_from_kernel: strange rights");
 }
 void
 ipc_object_destroy(
-ipc_object_t		object,
-mach_msg_type_name_t	msgt_name)
+ipc_object_t object,
+mach_msg_type_name_t msgt_name)
 {
 assert(IO_VALID(object));
 assert(io_otype(object) == IOT_PORT);
@@ -324,11 +324,11 @@ panic("ipc_object_destroy: strange rights");
 }
 kern_return_t
 ipc_object_copyout(
-ipc_space_t		space,
-ipc_object_t		object,
-mach_msg_type_name_t	msgt_name,
-boolean_t		overflow,
-mach_port_name_t	*namep)
+ipc_space_t space,
+ipc_object_t object,
+mach_msg_type_name_t msgt_name,
+boolean_t overflow,
+mach_port_name_t *namep)
 {
 mach_port_name_t name;
 ipc_entry_t entry;
@@ -372,11 +372,11 @@ return kr;
 }
 kern_return_t
 ipc_object_copyout_name(
-ipc_space_t		space,
-ipc_object_t		object,
-mach_msg_type_name_t	msgt_name,
-boolean_t		overflow,
-mach_port_name_t	name)
+ipc_space_t space,
+ipc_object_t object,
+mach_msg_type_name_t msgt_name,
+boolean_t overflow,
+mach_port_name_t name)
 {
 mach_port_name_t oname;
 ipc_entry_t oentry;
@@ -423,10 +423,10 @@ return kr;
 }
 void
 ipc_object_copyout_dest(
-ipc_space_t		space,
-ipc_object_t		object,
-mach_msg_type_name_t	msgt_name,
-mach_port_name_t	*namep)
+ipc_space_t space,
+ipc_object_t object,
+mach_msg_type_name_t msgt_name,
+mach_port_name_t *namep)
 {
 mach_port_name_t name;
 assert(IO_VALID(object));
@@ -480,9 +480,9 @@ panic("ipc_object_copyout_dest: strange rights");
 }
 kern_return_t
 ipc_object_rename(
-ipc_space_t	space,
-mach_port_name_t	oname,
-mach_port_name_t	nname)
+ipc_space_t space,
+mach_port_name_t oname,
+mach_port_name_t nname)
 {
 ipc_entry_t oentry, nentry;
 kern_return_t kr;
@@ -504,8 +504,8 @@ return KERN_INVALID_NAME;
 kr = ipc_right_rename(space, oname, oentry, nname, nentry);
 return kr;
 }
-#if	MACH_KDB
-#define	printf	kdbprintf
+#if MACH_KDB
+#define printf kdbprintf
 char *ikot_print_array[IKOT_MAX_TYPE] = {
 "(NONE)             ",
 "(THREAD)           ",

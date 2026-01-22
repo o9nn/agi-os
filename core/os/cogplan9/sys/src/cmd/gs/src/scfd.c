@@ -67,9 +67,9 @@ ss->wpos = q - ss->lbuf, ss->cbit = qbit
 #define peek_var_bits(n) hcd_peek_var_bits(n)
 #define skip_bits(n) hcd_skip_bits(n)
 #ifdef DEBUG
-#  define IF_DEBUG(expr) expr
+# define IF_DEBUG(expr) expr
 #else
-#  define IF_DEBUG(expr) DO_NOTHING
+# define IF_DEBUG(expr) DO_NOTHING
 #endif
 #define get_run(decode, initial_bits, min_bits, runlen, str, locl, outl)\
 BEGIN\
@@ -89,7 +89,7 @@ IF_DEBUG(uint init_bits = peek_bits(initial_bits));\
 if (!avail_bits(clen)) goto outl;\
 clen -= initial_bits;\
 skip_bits(initial_bits);\
-ensure_bits(clen, outl);		\
+ensure_bits(clen, outl); \
 np = &decode[np->run_length + peek_var_bits(clen)];\
 if_debug4('W', "%s xcode=0x%x,%d rlen=%d\n", str,\
 (init_bits << np->code_length) +\
@@ -98,7 +98,7 @@ initial_bits + np->code_length,\
 np->run_length);\
 skip_bits(np->code_length);\
 } else {\
-locl:	if_debug4('W', "%s code=0x%x,%d rlen=%d\n", str,\
+locl: if_debug4('W', "%s code=0x%x,%d rlen=%d\n", str,\
 peek_var_bits(clen), clen, np->run_length);\
 skip_bits(clen);\
 }\
@@ -106,16 +106,16 @@ runlen = np->run_length;\
 END
 #define skip_data(rlen, makeup_label)\
 if ( (qbit -= rlen) < 0 )\
-{	q -= qbit >> 3, qbit &= 7;\
+{ q -= qbit >> 3, qbit &= 7;\
 if ( rlen >= 64 ) goto makeup_label;\
 }
 #define invert_data(rlen, black_byte, makeup_action, d)\
 if ( rlen > qbit )\
-{	*q++ ^= (1 << qbit) - 1;\
+{ *q++ ^= (1 << qbit) - 1;\
 rlen -= qbit;\
 switch ( rlen >> 3 )\
 {\
-case 7:		\
+case 7: \
 if ( rlen + qbit >= 64 ) goto d;\
 *q++ = black_byte;\
 case 6: *q++ = black_byte;\
@@ -127,12 +127,12 @@ case 1: *q = black_byte;\
 rlen &= 7;\
 if ( !rlen ) { qbit = 0; break; }\
 q++;\
-case 0:			\
+case 0: \
 qbit = 8 - rlen;\
 *q ^= 0xff << qbit;\
 break;\
-default:	\
-d:			memset(q, black_byte, rlen >> 3);\
+default: \
+d: memset(q, black_byte, rlen >> 3);\
 q += rlen >> 3;\
 rlen &= 7;\
 if ( !rlen ) qbit = 0, q--;\
@@ -457,8 +457,8 @@ count, pcount);
 ensure_bits(3, out3);
 #define vertical_0 (countof(cf2_run_vertical) / 2)
 switch (peek_bits(3)) {
-default  :
-v0:	    skip_bits(1);
+default :
+v0: skip_bits(1);
 rlen = vertical_0;
 break;
 case 2:

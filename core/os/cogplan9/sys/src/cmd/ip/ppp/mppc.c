@@ -5,57 +5,57 @@
 #include <auth.h>
 #include "ppp.h"
 enum {
-HistorySize=	8*1024,
-Cminmatch	= 3,
-Chshift		= 4,
-Cnhash		= 1<<(Chshift*Cminmatch),
-HMASK		= Cnhash-1,
+HistorySize= 8*1024,
+Cminmatch = 3,
+Chshift = 4,
+Cnhash = 1<<(Chshift*Cminmatch),
+HMASK = Cnhash-1,
 };
 typedef struct Carena Carena;
 struct Carena
 {
-uchar	*pos;
-uchar	buf[HistorySize];
+uchar *pos;
+uchar buf[HistorySize];
 };
 typedef struct Cstate Cstate;
 struct Cstate
 {
 QLock;
-int	count;
-int	reset;
-int	front;
-ulong	sreg;
-int	bits;
-Block	*b;
-Carena	arenas[2];
-Carena	*hist;
-Carena	*ohist;
-ulong	hash[Cnhash];
-int	h;
-ulong	me;
-ulong	split;
-int	encrypt;
-uchar	startkey[16];
-uchar	key[16];
+int count;
+int reset;
+int front;
+ulong sreg;
+int bits;
+Block *b;
+Carena arenas[2];
+Carena *hist;
+Carena *ohist;
+ulong hash[Cnhash];
+int h;
+ulong me;
+ulong split;
+int encrypt;
+uchar startkey[16];
+uchar key[16];
 RC4state rc4key;
 };
 typedef struct Uncstate Uncstate;
 struct Uncstate
 {
-int	count;
-int	resetid;
-uchar	his[HistorySize];
-int	indx;
-int	size;
-uchar	startkey[16];
-uchar	key[16];
+int count;
+int resetid;
+uchar his[HistorySize];
+int indx;
+int size;
+uchar startkey[16];
+uchar key[16];
 RC4state rc4key;
 };
 enum {
-Preset=		(1<<15),
-Pfront=		(1<<14),
-Pcompress=	(1<<13),
-Pencrypt=	(1<<12),
+Preset= (1<<15),
+Pfront= (1<<14),
+Pcompress= (1<<13),
+Pencrypt= (1<<12),
 };
 enum {
 Lit7,
@@ -82,26 +82,26 @@ Off13,
 Off8,
 Off6,
 };
-static	void		*compinit(PPP*);
-static	Block*		comp(PPP*, ushort, Block*, int*);
-static	void		comp2(Cstate*, uchar*, int);
-static	Block		*compresetreq(void*, Block*);
-static	void		compfini(void*);
-static	void		complit(Cstate*, int);
-static	void		compcopy(Cstate*, int, int);
-static	void		compout(Cstate*, ulong, int);
-static	void		compfront(Cstate*);
-static	void		hashcheck(Cstate*);
-static	void		compreset(Cstate*);
-static	int		hashit(uchar*);
-static	void		*uncinit(PPP*);
-static	Block*		uncomp(PPP*, Block*, int *protop, Block**);
-static	Block		*uncomp2(Uncstate *s, Block*, ushort);
-static	void		uncfini(void*);
-static	void		uncresetack(void*, Block*);
-static  int		ipcheck(uchar*, int);
-static  void		hischeck(Uncstate*);
-static	void		setkey(uchar *key, uchar *startkey);
+static void *compinit(PPP*);
+static Block* comp(PPP*, ushort, Block*, int*);
+static void comp2(Cstate*, uchar*, int);
+static Block *compresetreq(void*, Block*);
+static void compfini(void*);
+static void complit(Cstate*, int);
+static void compcopy(Cstate*, int, int);
+static void compout(Cstate*, ulong, int);
+static void compfront(Cstate*);
+static void hashcheck(Cstate*);
+static void compreset(Cstate*);
+static int hashit(uchar*);
+static void *uncinit(PPP*);
+static Block* uncomp(PPP*, Block*, int *protop, Block**);
+static Block *uncomp2(Uncstate *s, Block*, ushort);
+static void uncfini(void*);
+static void uncresetack(void*, Block*);
+static int ipcheck(uchar*, int);
+static void hischeck(Uncstate*);
+static void setkey(uchar *key, uchar *startkey);
 Comptype cmppc = {
 compinit,
 comp,
@@ -372,7 +372,7 @@ p = buf;
 for(i=0; i<16; i++)
 p += sprint(p, "%.2ux ", key[i]);
 }
-static	void *
+static void *
 uncinit(PPP *ppp)
 {
 Uncstate *s;
@@ -384,7 +384,7 @@ setkey(s->key, s->startkey);
 setupRC4state(&s->rc4key, s->key, 16);
 return s;
 }
-static	Block*
+static Block*
 uncomp(PPP *ppp, Block *b, int *protop, Block **r)
 {
 Uncstate *s;
@@ -419,9 +419,9 @@ b->rptr += 2;
 *protop = proto;
 return b;
 }
-#define NEXTBYTE	sreg = (sreg<<8) | *p++; n--; bits += 8
-int	maxoff;
-static	Block*
+#define NEXTBYTE sreg = (sreg<<8) | *p++; n--; bits += 8
+int maxoff;
+static Block*
 uncomp2(Uncstate *s, Block *b, ushort count)
 {
 int ecount, n, bits, off, len, ones;
@@ -464,7 +464,7 @@ if(count & Pencrypt) {
 rc4(&s->rc4key, p, n);
 }
 if(!(count & Pcompress)) {
-return  b;
+return b;
 }
 bits = 0;
 sreg = 0;
@@ -588,11 +588,11 @@ netlog("*****bad history\n");
 freeb(b);
 return nil;
 }
-static	void
+static void
 uncresetack(void*, Block*)
 {
 }
-static	void
+static void
 uncfini(void *as)
 {
 Uncstate *s;
@@ -616,79 +616,79 @@ memmove(key, digest, 16);
 typedef struct Iphdr Iphdr;
 struct Iphdr
 {
-uchar	vihl;
-uchar	tos;
-uchar	length[2];
-uchar	id[2];
-uchar	frag[2];
-uchar	ttl;
-uchar	proto;
-uchar	cksum[2];
-uchar	src[4];
-uchar	dst[4];
+uchar vihl;
+uchar tos;
+uchar length[2];
+uchar id[2];
+uchar frag[2];
+uchar ttl;
+uchar proto;
+uchar cksum[2];
+uchar src[4];
+uchar dst[4];
 };
 enum
 {
-QMAX		= 64*1024-1,
-IP_TCPPROTO	= 6,
-TCP_IPLEN	= 8,
-TCP_PHDRSIZE	= 12,
-TCP_HDRSIZE	= 20,
-TCP_PKT		= TCP_IPLEN+TCP_PHDRSIZE,
+QMAX = 64*1024-1,
+IP_TCPPROTO = 6,
+TCP_IPLEN = 8,
+TCP_PHDRSIZE = 12,
+TCP_HDRSIZE = 20,
+TCP_PKT = TCP_IPLEN+TCP_PHDRSIZE,
 };
 enum
 {
-UDP_PHDRSIZE	= 12,
-UDP_HDRSIZE	= 20,
-UDP_IPHDR	= 8,
-IP_UDPPROTO	= 17,
-UDP_USEAD	= 12,
-UDP_RELSIZE	= 16,
-Udprxms		= 200,
-Udptickms	= 100,
-Udpmaxxmit	= 10,
+UDP_PHDRSIZE = 12,
+UDP_HDRSIZE = 20,
+UDP_IPHDR = 8,
+IP_UDPPROTO = 17,
+UDP_USEAD = 12,
+UDP_RELSIZE = 16,
+Udprxms = 200,
+Udptickms = 100,
+Udpmaxxmit = 10,
 };
 typedef struct UDPhdr UDPhdr;
 struct UDPhdr
 {
-uchar	vihl;
-uchar	tos;
-uchar	length[2];
-uchar	id[2];
-uchar	frag[2];
-uchar	Unused;
-uchar	udpproto;
-uchar	udpplen[2];
-uchar	udpsrc[4];
-uchar	udpdst[4];
-uchar	udpsport[2];
-uchar	udpdport[2];
-uchar	udplen[2];
-uchar	udpcksum[2];
+uchar vihl;
+uchar tos;
+uchar length[2];
+uchar id[2];
+uchar frag[2];
+uchar Unused;
+uchar udpproto;
+uchar udpplen[2];
+uchar udpsrc[4];
+uchar udpdst[4];
+uchar udpsport[2];
+uchar udpdport[2];
+uchar udplen[2];
+uchar udpcksum[2];
 };
 typedef struct TCPhdr TCPhdr;
 struct TCPhdr
 {
-uchar	vihl;
-uchar	tos;
-uchar	length[2];
-uchar	id[2];
-uchar	frag[2];
-uchar	Unused;
-uchar	proto;
-uchar	tcplen[2];
-uchar	tcpsrc[4];
-uchar	tcpdst[4];
-uchar	tcpsport[2];
-uchar	tcpdport[2];
-uchar	tcpseq[4];
-uchar	tcpack[4];
-uchar	tcpflag[2];
-uchar	tcpwin[2];
-uchar	tcpcksum[2];
-uchar	tcpurg[2];
-uchar	tcpopt[2];
-uchar	tcpmss[2];
+uchar vihl;
+uchar tos;
+uchar length[2];
+uchar id[2];
+uchar frag[2];
+uchar Unused;
+uchar proto;
+uchar tcplen[2];
+uchar tcpsrc[4];
+uchar tcpdst[4];
+uchar tcpsport[2];
+uchar tcpdport[2];
+uchar tcpseq[4];
+uchar tcpack[4];
+uchar tcpflag[2];
+uchar tcpwin[2];
+uchar tcpcksum[2];
+uchar tcpurg[2];
+uchar tcpopt[2];
+uchar tcpmss[2];
 };
 static void
 hischeck(Uncstate *s)

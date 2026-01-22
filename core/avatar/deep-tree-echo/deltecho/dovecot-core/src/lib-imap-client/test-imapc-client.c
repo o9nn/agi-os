@@ -12,7 +12,7 @@
 #include "imapc-client-private.h"
 #include <stdio.h>
 #include <unistd.h>
-#define SERVER_KILL_TIMEOUT_SECS    20
+#define SERVER_KILL_TIMEOUT_SECS 20
 #define IMAPC_COMMAND_STATE_INVALID (enum imapc_command_state)-1
 typedef void test_server_init_t(void);
 typedef void test_client_init_t(void);

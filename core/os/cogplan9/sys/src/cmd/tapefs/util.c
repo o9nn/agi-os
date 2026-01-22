@@ -92,7 +92,7 @@ origname);
 free(origname);
 return ent;
 }
-if (new)  {
+if (new) {
 ent->ndata = fi.size;
 ent->addr = fi.addr;
 ent->data = fi.data;

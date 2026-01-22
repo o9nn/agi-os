@@ -460,7 +460,7 @@ const char *sname;
 convert_to_process_colors = true;
 switch (pdev->pcm_color_info_index) {
 case gs_color_space_index_DeviceGray: sname = names->DeviceGray; break;
-case gs_color_space_index_DeviceRGB:  sname = names->DeviceRGB;  break;
+case gs_color_space_index_DeviceRGB: sname = names->DeviceRGB; break;
 case gs_color_space_index_DeviceCMYK: sname = names->DeviceCMYK; break;
 default:
 eprintf("Unsupported ProcessColorModel.");
@@ -787,7 +787,7 @@ return pdf_image_end_image_data(info, draw_last, USE_AS_IMAGE);
 }
 private int
 pdf_image_end_image_cvd(gx_image_enum_common_t * info, bool draw_last)
-{   pdf_lcvd_t *cvd = (pdf_lcvd_t *)info->dev;
+{ pdf_lcvd_t *cvd = (pdf_lcvd_t *)info->dev;
 int code = pdf_dump_converted_image(cvd->pdev, cvd);
 int code1 = gx_image1_end_image(info, draw_last);
 int code2 = gs_closedevice((gx_device *)cvd->mask);

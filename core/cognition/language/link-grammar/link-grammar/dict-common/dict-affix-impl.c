@@ -32,7 +32,7 @@ return NULL;
 void affix_list_add(Dictionary afdict, Afdict_class * ac,
 const char * affix)
 {
-if (NULL == ac)  return;
+if (NULL == ac) return;
 if (ac->mem_elems <= ac->length)
 {
 size_t new_sz;
@@ -120,7 +120,7 @@ ac < &afdict->afdict_class[ARRAY_SIZE(afdict_classname)]; ac++)
 int i;
 int l = ac->length - 1;
 const char * t;
-for (i = 0;  i < l; i++, l--)
+for (i = 0; i < l; i++, l--)
 {
 t = ac->string[i];
 ac->string[i] = ac->string[l];
@@ -195,7 +195,7 @@ int *capture_group = alloca(ac->length * sizeof(*capture_group));
 ac->Nregexes = 0;
 if (AFDICT_UNITS != affix_strippable[i])
 {
-for (size_t n = 0;  n < ac->length; n++)
+for (size_t n = 0; n < ac->length; n++)
 {
 capture_group[n] = get_affix_regex_cg(ac->string[n]);
 if (capture_group[n] < 0) continue;
@@ -206,7 +206,7 @@ if (ac->Nregexes > 0)
 ac->regex = malloc(ac->Nregexes * sizeof(Regex_node *));
 memset(ac->regex, 0, ac->Nregexes * sizeof(Regex_node *));
 size_t re_index = 0;
-for (size_t n = 0;  n < ac->length; n++)
+for (size_t n = 0; n < ac->length; n++)
 {
 if (capture_group[n] < 0) continue;
 const size_t regex_len =
@@ -243,7 +243,7 @@ if (AFDICT_UNITS != affix_strippable[i])
 {
 ac = AFCLASS(afdict, affix_strippable[i]);
 bool not_in_dict = false;
-for (int n = 0;  n < ac->length - ac->Nregexes; n++)
+for (int n = 0; n < ac->length - ac->Nregexes; n++)
 {
 if (!dictionary_word_is_known(dict, ac->string[n]))
 {

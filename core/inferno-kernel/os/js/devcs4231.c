@@ -1,26 +1,26 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"devtab.h"
-#include	"io.h"
-#include	"audio.h"
-#define	DPRINT	if(chatty)print
-typedef struct	AChan	AChan;
-typedef struct	AQueue	AQueue;
-typedef struct	Buf	Buf;
-typedef struct	Vol	Vol;
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "devtab.h"
+#include "io.h"
+#include "audio.h"
+#define DPRINT if(chatty)print
+typedef struct AChan AChan;
+typedef struct AQueue AQueue;
+typedef struct Buf Buf;
+typedef struct Vol Vol;
 enum
 {
-Qdir		= 0,
+Qdir = 0,
 Qaudio,
 Qaudioctl,
-Fmono		= 1,
-Fin		= 2,
-Fout		= 4,
-Vaudio		= 0,
+Fmono = 1,
+Fin = 2,
+Fout = 4,
+Vaudio = 0,
 Vaux1,
 Vaux2,
 Vline,
@@ -30,161 +30,161 @@ Vspeed,
 Vchans,
 Vbits,
 Nvol,
-Speed		= 22050,
-Ncmd		= 50,
+Speed = 22050,
+Ncmd = 50,
 };
 enum {
-Paddr=	0,
-TRD=	1<<5,
-MCE=	1<<6,
-Pdata=	1,
-Pstatus=	2,
-Pio=		3,
-LeftADC=	0,
-MGE=	1<<5,
-ISline=	0<<6,
-ISaux1=	1<<6,
-ISmic=	2<<6,
-ISloop=	3<<6,
-ISmask=	3<<6,
+Paddr= 0,
+TRD= 1<<5,
+MCE= 1<<6,
+Pdata= 1,
+Pstatus= 2,
+Pio= 3,
+LeftADC= 0,
+MGE= 1<<5,
+ISline= 0<<6,
+ISaux1= 1<<6,
+ISmic= 2<<6,
+ISloop= 3<<6,
+ISmask= 3<<6,
 RightADC= 1,
 LeftAux1= 2,
-Mute=	1<<7,
+Mute= 1<<7,
 RightAux1= 3,
 LeftAux2= 4,
 RightAux2= 5,
 LeftDAC= 6,
 RightDAC= 7,
-OutFormat=	8,
-Stereo=	1<<4,
-Linear8=	0<<5,
-uLaw=	1<<5,
-Linear16=	2<<5,
-aLaw=	3<<5,
-ADPCM=	5<<5,
-Fmask=	7<<5,
-Config=	9,
-PEN=	1<<0,
-CEN=	1<<1,
-Nocal=	0<<3,
-Convcal=	1<<3,
-DACcal=	2<<3,
-Fullcal=	3<<3,
-PinControl=	10,
-IEN=		1<<1,
-DEN=	1<<3,
-Xctl0=	1<<6,
-Xctl1=	1<<7,
-Status=	11,
-ACI=		1<<5,
-Mode=	12,
-Mode2=	1<<6,
-Loopback=	13,
-LBE=		1<<0,
-PlayCount1=	14,
-PlayCount0=	15,
-Feature1=	16,
-PMCE=	1<<4,
-CMCE=	1<<5,
-Feature2=	17,
-LeftLine=	18,
-RightLine=	19,
-Timer0=	20,
-Timer1=	21,
-Feature3=	23,
-FeatureStatus=	24,
-PI=	1<<4,
-CI=	1<<5,
-TI=	1<<6,
+OutFormat= 8,
+Stereo= 1<<4,
+Linear8= 0<<5,
+uLaw= 1<<5,
+Linear16= 2<<5,
+aLaw= 3<<5,
+ADPCM= 5<<5,
+Fmask= 7<<5,
+Config= 9,
+PEN= 1<<0,
+CEN= 1<<1,
+Nocal= 0<<3,
+Convcal= 1<<3,
+DACcal= 2<<3,
+Fullcal= 3<<3,
+PinControl= 10,
+IEN= 1<<1,
+DEN= 1<<3,
+Xctl0= 1<<6,
+Xctl1= 1<<7,
+Status= 11,
+ACI= 1<<5,
+Mode= 12,
+Mode2= 1<<6,
+Loopback= 13,
+LBE= 1<<0,
+PlayCount1= 14,
+PlayCount0= 15,
+Feature1= 16,
+PMCE= 1<<4,
+CMCE= 1<<5,
+Feature2= 17,
+LeftLine= 18,
+RightLine= 19,
+Timer0= 20,
+Timer1= 21,
+Feature3= 23,
+FeatureStatus= 24,
+PI= 1<<4,
+CI= 1<<5,
+TI= 1<<6,
 ChipID= 25,
-MonoCtl=	26,
-MBY=	1<<5,
-MOM=	1<<6,
-InFormat=	28,
-RecCount1=	30,
-RecCount0=	31,
+MonoCtl= 26,
+MBY= 1<<5,
+MOM= 1<<6,
+InFormat= 28,
+RecCount1= 30,
+RecCount0= 31,
 };
-#define	csdelay()	microdelay(1)
+#define csdelay() microdelay(1)
 static Dirtab audiodir[] =
 {
-"audio",	{Qaudio},		0,	0666,
-"audioctl",	{Qaudioctl},		0,	0666,
+"audio", {Qaudio}, 0, 0666,
+"audioctl", {Qaudioctl}, 0, 0666,
 };
-#define	NPORT		(sizeof audiodir/sizeof(Dirtab))
+#define NPORT (sizeof audiodir/sizeof(Dirtab))
 struct Buf
 {
-uchar*	virt;
-int	count;
-Buf*	next;
+uchar* virt;
+int count;
+Buf* next;
 };
 struct AQueue
 {
 Lock;
-Buf*	first;
-Buf*	last;
+Buf* first;
+Buf* last;
 };
 struct AChan
 {
 QLock;
-Rendez	r;
-Buf	buf[Nbuf];
-AQueue	empty;
-AQueue	full;
-Buf*	current;
-Buf*	filling;
-int	flushing;
+Rendez r;
+Buf buf[Nbuf];
+AQueue empty;
+AQueue full;
+Buf* current;
+Buf* filling;
+int flushing;
 };
 static struct
 {
 QLock;
-int	opened;
-int	bufinit;
-int	rivol[Nvol];
-int	livol[Nvol];
-int	rovol[Nvol];
-int	lovol[Nvol];
-int	loopback;
-AChan	in;
-AChan	out;
+int opened;
+int bufinit;
+int rivol[Nvol];
+int livol[Nvol];
+int rovol[Nvol];
+int lovol[Nvol];
+int loopback;
+AChan in;
+AChan out;
 } audio;
-static	char*	encname(int);
-static	int	dacload(int, int);
-static	int	auxload(int, int);
-static	int	adcload(int, int);
-static	int	monoload(int, int);
+static char* encname(int);
+static int dacload(int, int);
+static int auxload(int, int);
+static int adcload(int, int);
+static int monoload(int, int);
 struct Vol
 {
-char*	name;
-int	flag;
-int	ilval;
-int	irval;
-int	reg;
-int	(*load)(int, int);
+char* name;
+int flag;
+int ilval;
+int irval;
+int reg;
+int (*load)(int, int);
 };
-static	Vol	volumes[] = {
-[Vaudio]	{"audio",	    Fout, 	50,	50,	LeftDAC, dacload},
-[Vaux1]		{"aux1",		Fin,	0,	0,	LeftAux1, auxload},
-[Vaux2]		{"aux2",		Fin,	0,	0,	LeftAux2, auxload},
-[Vline]		{"line",		Fin,	0,	0,	LeftLine, auxload},
-[Vmono]		{"mono",		Fin|Fout|Fmono,	0,	0,	MonoCtl, monoload},
-[Vmic]		{"mic",		Fin,	0,	0,	LeftADC, adcload},
-[Vspeed]	{"rate",	Fin|Fout|Fmono,	Speed,	Speed,},
-[Vchans]	{"chans",	Fin|Fout|Fmono,	2,	2,},
-[Vbits]	{"bits", Fin|Fout|Fmono, 8, 8,},
+static Vol volumes[] = {
+[Vaudio] {"audio", Fout, 50, 50, LeftDAC, dacload},
+[Vaux1] {"aux1", Fin, 0, 0, LeftAux1, auxload},
+[Vaux2] {"aux2", Fin, 0, 0, LeftAux2, auxload},
+[Vline] {"line", Fin, 0, 0, LeftLine, auxload},
+[Vmono] {"mono", Fin|Fout|Fmono, 0, 0, MonoCtl, monoload},
+[Vmic] {"mic", Fin, 0, 0, LeftADC, adcload},
+[Vspeed] {"rate", Fin|Fout|Fmono, Speed, Speed,},
+[Vchans] {"chans", Fin|Fout|Fmono, 2, 2,},
+[Vbits] {"bits", Fin|Fout|Fmono, 8, 8,},
 {0},
 };
 static struct
 {
 Lock;
-int	port;
-int	irq;
-uchar	sticky;
-uchar	regs[32];
+int port;
+int irq;
+uchar sticky;
+uchar regs[32];
 } csdev;
-static	void	contininput(void);
-static	void	continoutput(void);
-static	char	Evolume[]	= "illegal audioctl specifier";
-static	int	chatty;
+static void contininput(void);
+static void continoutput(void);
+static char Evolume[] = "illegal audioctl specifier";
+static int chatty;
 #include "cs4231.h"
 static int
 xin(int r)
@@ -590,7 +590,7 @@ sleep(&audio.out.r, outcomplete, &audio.out);
 qunlock(&audio.out);
 poperror();
 }
-static	void
+static void
 resetlevel(void)
 {
 int i;
@@ -1042,11 +1042,11 @@ static char *
 encname(int v)
 {
 switch(v & ~(0xF|Stereo)){
-case uLaw:	return "ulaw";
-case aLaw:	return "alaw";
-case Linear8:	return "pcm";
-case Linear16:	return "pcm16";
-case ADPCM:	return "adpcm";
-default:	return "?";
+case uLaw: return "ulaw";
+case aLaw: return "alaw";
+case Linear8: return "pcm";
+case Linear16: return "pcm16";
+case ADPCM: return "adpcm";
+default: return "?";
 }
 }

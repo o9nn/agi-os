@@ -7,17 +7,17 @@
 #include <kern/queue.h>
 #include <kern/lock.h>
 struct vm_compressed_page {
-queue_chain_t		hash_link;
-vm_object_t		object;
-vm_offset_t		offset;
-void			*compressed_data;
-vm_size_t		compressed_size;
-unsigned int		access_time;
+queue_chain_t hash_link;
+vm_object_t object;
+vm_offset_t offset;
+void *compressed_data;
+vm_size_t compressed_size;
+unsigned int access_time;
 };
 struct vm_compress_stats {
-unsigned int		compressed_pages;
-unsigned int		decompressed_pages;
-unsigned int		average_compression_ratio;
+unsigned int compressed_pages;
+unsigned int decompressed_pages;
+unsigned int average_compression_ratio;
 };
 void vm_compress_init(void);
 kern_return_t vm_page_compress(vm_object_t object, vm_offset_t offset, vm_page_t page);

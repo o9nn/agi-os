@@ -176,7 +176,7 @@ extra = 0;
 missing = 0;
 for(i=BloomHeadSize/4; i<n; i++){
 if(a1[i] != a2[i]){
-extra   += countbits(a1[i] & ~a2[i]);
+extra += countbits(a1[i] & ~a2[i]);
 missing += countbits(a2[i] & ~a1[i]);
 }
 }

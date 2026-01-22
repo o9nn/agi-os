@@ -3,7 +3,7 @@
 static const struct argp_option
 std_runtime_options[] =
 {
-{"update", 'u',  0, 0, "Flush any meta-data cached in core"},
+{"update", 'u', 0, 0, "Flush any meta-data cached in core"},
 {"remount", 0, 0, OPTION_HIDDEN | OPTION_ALIAS},
 {0, 0}
 };

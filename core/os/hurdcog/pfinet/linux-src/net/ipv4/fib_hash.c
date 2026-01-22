@@ -26,41 +26,41 @@
 #include <net/ip_fib.h>
 #define FTprint(a...)
 typedef struct {
-u32	datum;
+u32 datum;
 } fn_key_t;
 typedef struct {
-u32	datum;
+u32 datum;
 } fn_hash_idx_t;
 struct fib_node
 {
-struct fib_node		*fn_next;
-struct fib_info		*fn_info;
-#define FIB_INFO(f)	((f)->fn_info)
-fn_key_t		fn_key;
-u8			fn_tos;
-u8			fn_type;
-u8			fn_scope;
-u8			fn_state;
+struct fib_node *fn_next;
+struct fib_info *fn_info;
+#define FIB_INFO(f) ((f)->fn_info)
+fn_key_t fn_key;
+u8 fn_tos;
+u8 fn_type;
+u8 fn_scope;
+u8 fn_state;
 };
-#define FN_S_ZOMBIE	1
-#define FN_S_ACCESSED	2
+#define FN_S_ZOMBIE 1
+#define FN_S_ACCESSED 2
 static int fib_hash_zombies;
 struct fn_zone
 {
-struct fn_zone	*fz_next;
-struct fib_node	**fz_hash;
-int		fz_nent;
-int		fz_divisor;
-u32		fz_hashmask;
-#define FZ_HASHMASK(fz)	((fz)->fz_hashmask)
-int		fz_order;
-u32		fz_mask;
-#define FZ_MASK(fz)	((fz)->fz_mask)
+struct fn_zone *fz_next;
+struct fib_node **fz_hash;
+int fz_nent;
+int fz_divisor;
+u32 fz_hashmask;
+#define FZ_HASHMASK(fz) ((fz)->fz_hashmask)
+int fz_order;
+u32 fz_mask;
+#define FZ_MASK(fz) ((fz)->fz_mask)
 };
 struct fn_hash
 {
-struct fn_zone	*fn_zones[33];
-struct fn_zone	*fn_zone_list;
+struct fn_zone *fn_zones[33];
+struct fn_zone *fn_zone_list;
 };
 static __inline__ fn_hash_idx_t fn_hash(fn_key_t key, struct fn_zone *fz)
 {
@@ -71,8 +71,8 @@ h ^= (h>>5);
 h &= FZ_HASHMASK(fz);
 return *(fn_hash_idx_t*)&h;
 }
-#define fz_key_0(key)		((key).datum = 0)
-#define fz_prefix(key,fz)	((key).datum)
+#define fz_key_0(key) ((key).datum = 0)
+#define fz_prefix(key,fz) ((key).datum)
 static __inline__ fn_key_t fz_key(u32 dst, struct fn_zone *fz)
 {
 fn_key_t k;
@@ -138,7 +138,7 @@ return;
 printk("fn_rehash_zone: hash for zone %d grows from %d\n", fz->fz_order, old_divisor);
 #endif
 ht = kmalloc(new_divisor*sizeof(struct fib_node*), GFP_KERNEL);
-if (ht)	{
+if (ht) {
 memset(ht, 0, new_divisor*sizeof(struct fib_node*));
 start_bh_atomic();
 old_ht = fz->fz_hash;
@@ -318,7 +318,7 @@ static void rtmsg_fib(int, struct fib_node*, int, int,
 struct nlmsghdr *n,
 struct netlink_skb_parms *);
 #else
-#define rtmsg_fib(a, b, c, d, e, f)	(void) 0
+#define rtmsg_fib(a, b, c, d, e, f) (void) 0
 #endif
 static int
 fn_hash_insert(struct fib_table *tb, struct rtmsg *r, struct kern_rta *rta,
@@ -351,7 +351,7 @@ if (dst & ~FZ_MASK(fz))
 return -EINVAL;
 key = fz_key(dst, fz);
 }
-if  ((fi = fib_create_info(r, rta, n, &err)) == NULL)
+if ((fi = fib_create_info(r, rta, n, &err)) == NULL)
 return err;
 #ifdef CONFIG_IP_ROUTE_LARGE_TABLES
 if (fz->fz_nent > (fz->fz_divisor<<2) &&
@@ -471,7 +471,7 @@ FTprint("tb(%d)_delete: %d %08x/%d %d\n", tb->tb_id, r->rtm_type, rta->rta_dst ?
 *(u32*)rta->rta_dst : 0, z, rta->rta_oif ? *rta->rta_oif : -1);
 if (z > 32)
 return -EINVAL;
-if ((fz  = table->fn_zones[z]) == NULL)
+if ((fz = table->fn_zones[z]) == NULL)
 return -ESRCH;
 fz_key_0(key);
 if (rta->rta_dst) {

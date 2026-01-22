@@ -111,7 +111,7 @@ gx_render_plane_t *render_plane, int index)
 if (index >= 0) {
 gx_colors_used_t colors_used;
 int ignore_start;
-gdev_prn_colors_used(dev, y, height, &colors_used,  &ignore_start);
+gdev_prn_colors_used(dev, y, height, &colors_used, &ignore_start);
 if (colors_used.slow_rop)
 index = -1;
 }

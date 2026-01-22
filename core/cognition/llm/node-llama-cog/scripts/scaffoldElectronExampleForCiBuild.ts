@@ -10,33 +10,33 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const electronTemplateName = "electron-typescript-react";
 const projectName = "node-llama-cpp-electron-example";
 const argv = await yargs(hideBin(process.argv))
-    .option("packageVersion", {
-        type: "string",
-        demandOption: true
-    })
-    .option("packageFolderPath", {
-        type: "string",
-        demandOption: true
-    })
-    .argv;
+.option("packageVersion", {
+type: "string",
+demandOption: true
+})
+.option("packageFolderPath", {
+type: "string",
+demandOption: true
+})
+.argv;
 const {packageVersion, packageFolderPath} = argv;
 if (packageVersion === "")
-    throw new Error("packageVersion is empty");
+throw new Error("packageVersion is empty");
 console.info("node-llama-cpp version:", packageVersion);
 const resolvedPackageFolderPath = path.resolve(process.cwd(), packageFolderPath);
 const templateFilePath = path.join(packedProjectTemplatesDirectory, `${electronTemplateName}.json`);
 if (!(await fs.pathExists(templateFilePath)))
-    throw new Error(`Template file was not found for template "${electronTemplateName}"`);
+throw new Error(`Template file was not found for template "${electronTemplateName}"`);
 const template: ProjectTemplate = await fs.readJSON(templateFilePath);
 await scaffoldProjectTemplate({
-    template,
-    directoryPath: resolvedPackageFolderPath,
-    parameters: {
-        [ProjectTemplateParameter.ProjectName]: projectName,
-        [ProjectTemplateParameter.ModelUriOrUrl]: "https://github.com/withcatai/node-llama-cpp",
-        [ProjectTemplateParameter.ModelUriOrFilename]: "model.gguf",
-        [ProjectTemplateParameter.CurrentModuleVersion]: packageVersion
-    }
+template,
+directoryPath: resolvedPackageFolderPath,
+parameters: {
+[ProjectTemplateParameter.ProjectName]: projectName,
+[ProjectTemplateParameter.ModelUriOrUrl]: "https://github.com/withcatai/node-llama-cpp",
+[ProjectTemplateParameter.ModelUriOrFilename]: "model.gguf",
+[ProjectTemplateParameter.CurrentModuleVersion]: packageVersion
+}
 });
 const packageJsonPath = path.join(resolvedPackageFolderPath, "package.json");
 const packageJson = await fs.readJson(packageJsonPath);

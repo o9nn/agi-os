@@ -9,9 +9,9 @@
 #endif
 #include <asm/system.h>
 #include <asm/unaligned.h>
-#define SYS_IND(p)	get_unaligned(&p->sys_ind)
-#define NR_SECTS(p)	get_unaligned(&p->nr_sects)
-#define START_SECT(p)	get_unaligned(&p->start_sect)
+#define SYS_IND(p) get_unaligned(&p->sys_ind)
+#define NR_SECTS(p) get_unaligned(&p->nr_sects)
+#define START_SECT(p) get_unaligned(&p->start_sect)
 struct gendisk *gendisk_head = NULL;
 static int current_minor = 0;
 extern int *blk_size[];
@@ -49,7 +49,7 @@ static void add_partition (struct gendisk *hd, int minor, int start, int size)
 {
 char buf[8];
 hd->part[minor].start_sect = start;
-hd->part[minor].nr_sects   = size;
+hd->part[minor].nr_sects = size;
 printk(" %s", disk_name(hd, minor, buf));
 }
 static inline int is_extended_partition(struct partition *p)
@@ -156,7 +156,7 @@ bh->b_state = 0;
 #ifdef CONFIG_BLK_DEV_IDE
 check_table:
 #endif
-if (*(unsigned short *)  (0x1fe + data) != 0xAA55) {
+if (*(unsigned short *) (0x1fe + data) != 0xAA55) {
 brelse(bh);
 return 0;
 }
@@ -267,8 +267,8 @@ struct d_partition {
 u32 p_size;
 u32 p_offset;
 u32 p_fsize;
-u8  p_fstype;
-u8  p_frag;
+u8 p_fstype;
+u8 p_frag;
 u16 p_cpg;
 } d_partitions[8];
 } * label;
@@ -333,12 +333,12 @@ unsigned short csum;
 struct sun_partition *p;
 int other_endian;
 unsigned long spc;
-#define SUN_LABEL_MAGIC          0xDABE
-#define SUN_LABEL_MAGIC_SWAPPED  0xBEDA
-#define SWAP16(x)  (other_endian ? (((__u16)(x) & 0xFF) << 8) \
+#define SUN_LABEL_MAGIC 0xDABE
+#define SUN_LABEL_MAGIC_SWAPPED 0xBEDA
+#define SWAP16(x) (other_endian ? (((__u16)(x) & 0xFF) << 8) \
 | (((__u16)(x) & 0xFF00) >> 8) \
 : (__u16)(x))
-#define SWAP32(x)  (other_endian ? (((__u32)(x) & 0xFF) << 24) \
+#define SWAP32(x) (other_endian ? (((__u32)(x) & 0xFF) << 24) \
 | (((__u32)(x) & 0xFF00) << 8) \
 | (((__u32)(x) & 0xFF0000) >> 8) \
 | (((__u32)(x) & 0xFF000000) >> 24) \
@@ -394,13 +394,13 @@ return sum;
 static int
 amiga_partition(struct gendisk *hd, unsigned int dev, unsigned long first_sector)
 {
-struct buffer_head	*bh;
-struct RigidDiskBlock	*rdb;
-struct PartitionBlock	*pb;
-int			 start_sect;
-int			 nr_sects;
-int			 blk;
-int			 part, res;
+struct buffer_head *bh;
+struct RigidDiskBlock *rdb;
+struct PartitionBlock *pb;
+int start_sect;
+int nr_sects;
+int blk;
+int part, res;
 set_blocksize(dev,512);
 res = 0;
 for (blk = 0; blk < RDB_ALLOCATION_LIMIT; blk++) {
@@ -424,7 +424,7 @@ printk("Dev %d: unable to read partition block %d\n",
 dev,blk);
 goto rdb_done;
 }
-pb  = (struct PartitionBlock *)bh->b_data;
+pb = (struct PartitionBlock *)bh->b_data;
 blk = htonl(pb->pb_Next);
 if (pb->pb_ID == htonl(IDNAME_PARTITION) && checksum_block(
 (__u32 *)pb,htonl(pb->pb_SummedLongs) & 0x7F) == 0 ) {
@@ -487,8 +487,8 @@ printk(" unknown partition table\n");
 void resetup_one_dev(struct gendisk *dev, int drive)
 {
 int i;
-int first_minor	= drive << dev->minor_shift;
-int end_minor	= first_minor + dev->max_p;
+int first_minor = drive << dev->minor_shift;
+int end_minor = first_minor + dev->max_p;
 blk_size[dev->major] = NULL;
 current_minor = 1 + first_minor;
 check_partition(dev, MKDEV(dev->major, first_minor));
@@ -501,7 +501,7 @@ blk_size[dev->major] = dev->sizes;
 static void setup_dev(struct gendisk *dev)
 {
 int i, drive;
-int end_minor	= dev->max_nr * dev->max_p;
+int end_minor = dev->max_nr * dev->max_p;
 blk_size[dev->major] = NULL;
 for (i = 0 ; i < end_minor; i++) {
 dev->part[i].start_sect = 0;
@@ -509,7 +509,7 @@ dev->part[i].nr_sects = 0;
 }
 dev->init(dev);
 for (drive = 0 ; drive < dev->nr_real ; drive++) {
-int first_minor	= drive << dev->minor_shift;
+int first_minor = drive << dev->minor_shift;
 current_minor = 1 + first_minor;
 check_partition(dev, MKDEV(dev->major, first_minor));
 }

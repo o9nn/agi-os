@@ -1,11 +1,11 @@
 #ifndef gxdcolor_INCLUDED
-#  define gxdcolor_INCLUDED
+# define gxdcolor_INCLUDED
 #include "gscsel.h"
 #include "gsdcolor.h"
 #include "gsropt.h"
 #include "gsstruct.h"
 #ifndef gx_device_DEFINED
-#  define gx_device_DEFINED
+# define gx_device_DEFINED
 typedef struct gx_device_s gx_device;
 #endif
 typedef struct gx_rop_source_s {
@@ -80,13 +80,13 @@ gx_dc_type_data_ht_binary,
 gx_dc_type_data_ht_colored,
 #define gx_dc_type_wts (&gx_dc_type_data_wts)
 gx_dc_type_data_wts;
-extern  dev_color_proc_get_nonzero_comps(gx_dc_pure_get_nonzero_comps);
-extern  dev_color_proc_get_nonzero_comps(gx_dc_ht_binary_get_nonzero_comps);
-extern  dev_color_proc_get_nonzero_comps(gx_dc_ht_colored_get_nonzero_comps);
+extern dev_color_proc_get_nonzero_comps(gx_dc_pure_get_nonzero_comps);
+extern dev_color_proc_get_nonzero_comps(gx_dc_ht_binary_get_nonzero_comps);
+extern dev_color_proc_get_nonzero_comps(gx_dc_ht_colored_get_nonzero_comps);
 extern int gx_get_dc_type_index(const gx_device_color *);
 extern const gx_device_color_type_t * gx_get_dc_type_from_index(int);
-extern  dev_color_proc_get_phase(gx_dc_no_get_phase);
-extern  dev_color_proc_get_phase(gx_dc_ht_get_phase);
+extern dev_color_proc_get_phase(gx_dc_no_get_phase);
+extern dev_color_proc_get_phase(gx_dc_ht_get_phase);
 #define gs_color_writes_pure(pgs)\
 color_writes_pure((pgs)->dev_color, (pgs)->log_op)
 void gx_set_device_color_1(gs_state * pgs);
@@ -113,12 +113,12 @@ gx_device_color_fill_rectangle(pdevc, x, y, w, h, dev, lop, NULL)
 gx_fill_rectangle_device_rop(x, y, w, h, pdevc, (pgs)->device, lop)
 #define gx_fill_rectangle(x, y, w, h, pdevc, pgs)\
 gx_fill_rectangle_rop(x, y, w, h, pdevc, (pgs)->log_op, pgs)
-extern  int     gx_dc_write_color( gx_color_index       color,
-const gx_device *    dev,
-byte *               pdata,
-uint *               psize );
-extern  int     gx_dc_read_color( gx_color_index *  pcolor,
+extern int gx_dc_write_color( gx_color_index color,
 const gx_device * dev,
-const byte *      pdata,
-int               size );
+byte * pdata,
+uint * psize );
+extern int gx_dc_read_color( gx_color_index * pcolor,
+const gx_device * dev,
+const byte * pdata,
+int size );
 #endif

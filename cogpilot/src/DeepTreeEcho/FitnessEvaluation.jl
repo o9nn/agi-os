@@ -108,9 +108,9 @@ W = mem_res.reservoir.reservoir
 if size(W, 1) > 0
 ρ = compute_spectral_radius(W)
 if ρ >= 1.0
-stability_score *= 0.7  # Penalty for violating echo state property
+stability_score *= 0.7 # Penalty for violating echo state property
 else
-stability_score *= (1.0 - ρ)  # Reward for small spectral radius
+stability_score *= (1.0 - ρ) # Reward for small spectral radius
 end
 end
 end

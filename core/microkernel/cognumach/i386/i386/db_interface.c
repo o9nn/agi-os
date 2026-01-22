@@ -34,7 +34,7 @@
 static boolean_t kernel_dr;
 #endif
 static boolean_t zero_dr;
-db_regs_t	ddb_regs;
+db_regs_t ddb_regs;
 void db_load_context(pcb_t pcb)
 {
 #if MACH_KDB
@@ -85,17 +85,17 @@ db_load_context(pcb);
 return KERN_SUCCESS;
 }
 #if MACH_KDB
-struct	 i386_saved_state *i386_last_saved_statep;
-struct	 i386_saved_state i386_nested_saved_state;
+struct i386_saved_state *i386_last_saved_statep;
+struct i386_saved_state i386_nested_saved_state;
 uintptr_t i386_last_kdb_sp;
-extern	thread_t db_default_thread;
+extern thread_t db_default_thread;
 static struct i386_debug_state ids;
 void db_dr (
-int		num,
-vm_offset_t	linear_addr,
-int		type,
-int		len,
-int		persistence)
+int num,
+vm_offset_t linear_addr,
+int type,
+int len,
+int persistence)
 {
 int s = splhigh();
 unsigned long dr7;
@@ -134,12 +134,12 @@ splx(s);
 }
 boolean_t
 db_set_hw_watchpoint(
-const db_watchpoint_t	watch,
-unsigned		num)
+const db_watchpoint_t watch,
+unsigned num)
 {
-vm_size_t	size = watch->hiaddr - watch->loaddr;
-db_addr_t	addr = watch->loaddr;
-vm_offset_t 	kern_addr;
+vm_size_t size = watch->hiaddr - watch->loaddr;
+db_addr_t addr = watch->loaddr;
+vm_offset_t kern_addr;
 if (num >= 4)
 return FALSE;
 if (size != 1 && size != 2 && size != 4)
@@ -158,7 +158,7 @@ return TRUE;
 }
 boolean_t
 db_clear_hw_watchpoint(
-unsigned	num)
+unsigned num)
 {
 if (num >= 4)
 return FALSE;
@@ -167,8 +167,8 @@ return TRUE;
 }
 static void
 kdbprinttrap(
-int	type,
-int	code)
+int type,
+int code)
 {
 printf("kernel: %s (%d), code=%x\n",
 trap_name(type), type, code);
@@ -177,11 +177,11 @@ extern jmp_buf_t *db_recover;
 spl_t saved_ipl[NCPUS];
 boolean_t
 kdb_trap(
-int	type,
-int	code,
+int type,
+int code,
 struct i386_saved_state *regs)
 {
-spl_t	s;
+spl_t s;
 s = splhigh();
 saved_ipl[cpu_number()] = s;
 switch (type) {
@@ -190,7 +190,7 @@ case T_DEBUG:
 int addr;
 int status = get_dr6();
 if (status & 0xf) {
-addr =	status & 0x8 ? get_dr3() :
+addr = status & 0x8 ? get_dr3() :
 status & 0x4 ? get_dr2() :
 status & 0x2 ? get_dr1() :
 get_dr0();
@@ -211,7 +211,7 @@ db_error("");
 }
 kdbprinttrap(type, code);
 }
-#if	NCPUS > 1
+#if NCPUS > 1
 if (db_enter())
 #endif
 {
@@ -220,37 +220,37 @@ i386_last_kdb_sp = (uintptr_t) &type;
 ddb_regs = *regs;
 if ((regs->cs & 0x3) == KERNEL_RING) {
 ddb_regs.uesp = (uintptr_t)&regs->uesp;
-ddb_regs.ss   = KERNEL_DS;
+ddb_regs.ss = KERNEL_DS;
 }
 cnpollc(TRUE);
 db_task_trap(type, code, (regs->cs & 0x3) != 0);
 cnpollc(FALSE);
-regs->eip    = ddb_regs.eip;
-regs->efl    = ddb_regs.efl;
-regs->eax    = ddb_regs.eax;
-regs->ecx    = ddb_regs.ecx;
-regs->edx    = ddb_regs.edx;
-regs->ebx    = ddb_regs.ebx;
+regs->eip = ddb_regs.eip;
+regs->efl = ddb_regs.efl;
+regs->eax = ddb_regs.eax;
+regs->ecx = ddb_regs.ecx;
+regs->edx = ddb_regs.edx;
+regs->ebx = ddb_regs.ebx;
 if ((regs->cs & 0x3) != KERNEL_RING) {
 regs->uesp = ddb_regs.uesp;
-regs->ss   = ddb_regs.ss & SEGMENT_SELECTOR_MASK;
+regs->ss = ddb_regs.ss & SEGMENT_SELECTOR_MASK;
 }
-regs->ebp    = ddb_regs.ebp;
-regs->esi    = ddb_regs.esi;
-regs->edi    = ddb_regs.edi;
-regs->cs     = ddb_regs.cs & SEGMENT_SELECTOR_MASK;
+regs->ebp = ddb_regs.ebp;
+regs->esi = ddb_regs.esi;
+regs->edi = ddb_regs.edi;
+regs->cs = ddb_regs.cs & SEGMENT_SELECTOR_MASK;
 #if !defined(__x86_64__) || defined(USER32)
-regs->es     = ddb_regs.es & SEGMENT_SELECTOR_MASK;
-regs->ds     = ddb_regs.ds & SEGMENT_SELECTOR_MASK;
-regs->fs     = ddb_regs.fs & SEGMENT_SELECTOR_MASK;
-regs->gs     = ddb_regs.gs & SEGMENT_SELECTOR_MASK;
+regs->es = ddb_regs.es & SEGMENT_SELECTOR_MASK;
+regs->ds = ddb_regs.ds & SEGMENT_SELECTOR_MASK;
+regs->fs = ddb_regs.fs & SEGMENT_SELECTOR_MASK;
+regs->gs = ddb_regs.gs & SEGMENT_SELECTOR_MASK;
 #endif
 if ((type == T_INT3) &&
 (db_get_task_value(regs->eip, BKPT_SIZE, FALSE, TASK_NULL)
 == BKPT_INST))
 regs->eip += BKPT_SIZE;
 }
-#if	NCPUS > 1
+#if NCPUS > 1
 db_leave();
 #endif
 splx(s);
@@ -258,34 +258,34 @@ return 1;
 }
 struct int_regs {
 #ifdef __i386__
-long	edi;
-long	esi;
+long edi;
+long esi;
 #endif
-long	ebp;
-long	ebx;
+long ebp;
+long ebx;
 struct i386_interrupt_state *is;
 };
 void
 kdb_kentry(
-struct int_regs	*int_regs)
+struct int_regs *int_regs)
 {
 struct i386_interrupt_state *is = int_regs->is;
-spl_t	s = splhigh();
-#if	NCPUS > 1
+spl_t s = splhigh();
+#if NCPUS > 1
 if (db_enter())
 #endif
 {
 if ((is->cs & 0x3) != KERNEL_RING) {
 struct i386_interrupt_state_user *user_is = (struct i386_interrupt_state_user *)is;
 ddb_regs.uesp = user_is->uesp;
-ddb_regs.ss   = user_is->ss;
+ddb_regs.ss = user_is->ss;
 }
 else {
-ddb_regs.ss  = KERNEL_DS;
+ddb_regs.ss = KERNEL_DS;
 ddb_regs.uesp= (uintptr_t)(is+1);
 }
 ddb_regs.efl = is->efl;
-ddb_regs.cs  = is->cs;
+ddb_regs.cs = is->cs;
 ddb_regs.eip = is->eip;
 ddb_regs.eax = is->eax;
 ddb_regs.ecx = is->ecx;
@@ -301,10 +301,10 @@ ddb_regs.esi = is->rsi;
 ddb_regs.edi = is->rdi;
 #endif
 #if !defined(__x86_64__) || defined(USER32)
-ddb_regs.ds  = is->ds;
-ddb_regs.es  = is->es;
-ddb_regs.fs  = is->fs;
-ddb_regs.gs  = is->gs;
+ddb_regs.ds = is->ds;
+ddb_regs.es = is->es;
+ddb_regs.fs = is->fs;
+ddb_regs.gs = is->gs;
 #endif
 cnpollc(TRUE);
 db_task_trap(-1, 0, (ddb_regs.cs & 0x3) != 0);
@@ -315,7 +315,7 @@ user_is->uesp = ddb_regs.uesp;
 user_is->ss = ddb_regs.ss & SEGMENT_SELECTOR_MASK;
 }
 is->efl = ddb_regs.efl;
-is->cs  = ddb_regs.cs & SEGMENT_SELECTOR_MASK;
+is->cs = ddb_regs.cs & SEGMENT_SELECTOR_MASK;
 is->eip = ddb_regs.eip;
 is->eax = ddb_regs.eax;
 is->ecx = ddb_regs.ecx;
@@ -331,13 +331,13 @@ is->rsi = ddb_regs.esi;
 is->rdi = ddb_regs.edi;
 #endif
 #if !defined(__x86_64__) || defined(USER32)
-is->ds  = ddb_regs.ds & SEGMENT_SELECTOR_MASK;
-is->es  = ddb_regs.es & SEGMENT_SELECTOR_MASK;
-is->fs  = ddb_regs.fs & SEGMENT_SELECTOR_MASK;
-is->gs  = ddb_regs.gs & SEGMENT_SELECTOR_MASK;
+is->ds = ddb_regs.ds & SEGMENT_SELECTOR_MASK;
+is->es = ddb_regs.es & SEGMENT_SELECTOR_MASK;
+is->fs = ddb_regs.fs & SEGMENT_SELECTOR_MASK;
+is->gs = ddb_regs.gs & SEGMENT_SELECTOR_MASK;
 #endif
 }
-#if	NCPUS > 1
+#if NCPUS > 1
 db_leave();
 #endif
 (void) splx(s);
@@ -345,18 +345,18 @@ db_leave();
 boolean_t db_no_vm_fault = TRUE;
 static int
 db_user_to_phys_address(
-const task_t	task,
-vm_offset_t	addr,
-phys_addr_t	*paddr,
-int		flag)
+const task_t task,
+vm_offset_t addr,
+phys_addr_t *paddr,
+int flag)
 {
 pt_entry_t *ptp;
-boolean_t	faulted = FALSE;
+boolean_t faulted = FALSE;
 retry:
 ptp = pmap_pte(task->map->pmap, addr);
 if (ptp == PT_ENTRY_NULL || (*ptp & INTEL_PTE_VALID) == 0) {
 if (!faulted && !db_no_vm_fault) {
-kern_return_t	err;
+kern_return_t err;
 faulted = TRUE;
 err = vm_fault( task->map,
 trunc_page(addr),
@@ -375,10 +375,10 @@ return(0);
 }
 int
 db_user_to_kernel_address(
-const task_t	task,
-vm_offset_t	addr,
-vm_offset_t	*kaddr,
-int		flag)
+const task_t task,
+vm_offset_t addr,
+vm_offset_t *kaddr,
+int flag)
 {
 phys_addr_t paddr;
 if (db_user_to_phys_address(task, addr, &paddr, flag) < 0)
@@ -392,14 +392,14 @@ return(0);
 }
 boolean_t
 db_read_bytes(
-vm_offset_t	addr,
-int		size,
-char		*data,
-task_t		task)
+vm_offset_t addr,
+int size,
+char *data,
+task_t task)
 {
-char		*src;
-int		n;
-phys_addr_t	phys_addr;
+char *src;
+int n;
+phys_addr_t phys_addr;
 src = (char *)addr;
 if ((addr >= VM_MIN_KERNEL_ADDRESS && addr < VM_MAX_KERNEL_ADDRESS) || task == TASK_NULL) {
 if (task == TASK_NULL)
@@ -429,18 +429,18 @@ return TRUE;
 }
 void
 db_write_bytes(
-vm_offset_t	addr,
-int		size,
-char		*data,
-task_t		task)
+vm_offset_t addr,
+int size,
+char *data,
+task_t task)
 {
-char		*dst;
+char *dst;
 pt_entry_t *ptep0 = 0;
-pt_entry_t	oldmap0 = 0;
-vm_offset_t	addr1;
+pt_entry_t oldmap0 = 0;
+vm_offset_t addr1;
 pt_entry_t *ptep1 = 0;
-pt_entry_t	oldmap1 = 0;
-extern char	etext;
+pt_entry_t oldmap1 = 0;
+extern char etext;
 if ((addr < VM_MIN_KERNEL_ADDRESS) ^
 ((addr + size) <= VM_MIN_KERNEL_ADDRESS)) {
 db_error("\ncannot write data into mixed space\n");
@@ -485,13 +485,13 @@ set_cr4(get_cr4() | CR4_PGE);
 }
 void
 db_write_bytes_user_space(
-vm_offset_t	addr,
-int		size,
-char		*data,
-task_t		task)
+vm_offset_t addr,
+int size,
+char *data,
+task_t task)
 {
-int		n;
-phys_addr_t	phys_addr;
+int n;
+phys_addr_t phys_addr;
 while (size > 0) {
 if (db_user_to_phys_address(task, addr, &phys_addr, 1) < 0)
 return;
@@ -505,12 +505,12 @@ copy_to_phys((vm_offset_t) data, phys_addr, n);
 }
 boolean_t
 db_check_access(
-vm_offset_t	addr,
-int		size,
-task_t		task)
+vm_offset_t addr,
+int size,
+task_t task)
 {
-int	n;
-phys_addr_t	phys_addr;
+int n;
+phys_addr_t phys_addr;
 if (addr >= VM_MIN_KERNEL_ADDRESS) {
 if (kernel_task == TASK_NULL)
 return TRUE;
@@ -533,12 +533,12 @@ return TRUE;
 }
 boolean_t
 db_phys_eq(
-task_t		task1,
-vm_offset_t	addr1,
-const task_t	task2,
-vm_offset_t	addr2)
+task_t task1,
+vm_offset_t addr1,
+const task_t task2,
+vm_offset_t addr2)
 {
-phys_addr_t	phys_addr1, phys_addr2;
+phys_addr_t phys_addr1, phys_addr2;
 if (addr1 >= VM_MIN_KERNEL_ADDRESS || addr2 >= VM_MIN_KERNEL_ADDRESS)
 return FALSE;
 if ((addr1 & (INTEL_PGBYTES-1)) != (addr2 & (INTEL_PGBYTES-1)))
@@ -553,17 +553,17 @@ if (db_user_to_phys_address(task1, addr1, &phys_addr1, 0) < 0
 return FALSE;
 return(phys_addr1 == phys_addr2);
 }
-#define DB_USER_STACK_ADDR		(VM_MIN_KERNEL_ADDRESS)
-#define DB_NAME_SEARCH_LIMIT		(DB_USER_STACK_ADDR-(INTEL_PGBYTES*3))
+#define DB_USER_STACK_ADDR (VM_MIN_KERNEL_ADDRESS)
+#define DB_NAME_SEARCH_LIMIT (DB_USER_STACK_ADDR-(INTEL_PGBYTES*3))
 #define GNU
 #ifndef GNU
 static boolean_t
 db_search_null(
-const task_t	task,
-vm_offset_t	*svaddr,
-vm_offset_t	evaddr,
-vm_offset_t	*skaddr,
-int		flag)
+const task_t task,
+vm_offset_t *svaddr,
+vm_offset_t evaddr,
+vm_offset_t *skaddr,
+int flag)
 {
 unsigned vaddr;
 unsigned *kaddr;
@@ -578,7 +578,7 @@ kaddr = (vm_offset_t *)*skaddr;
 vaddr -= sizeof(unsigned);
 kaddr--;
 }
-if ((*kaddr == 0) ^ (flag  == 0)) {
+if ((*kaddr == 0) ^ (flag == 0)) {
 *svaddr = vaddr;
 *skaddr = (unsigned)kaddr;
 return TRUE;
@@ -590,8 +590,8 @@ return FALSE;
 #ifdef GNU
 static boolean_t
 looks_like_command(
-const task_t	task,
-char*		kaddr)
+const task_t task,
+char* kaddr)
 {
 char *c;
 assert(!((vm_offset_t) kaddr & (INTEL_PGBYTES-1)));

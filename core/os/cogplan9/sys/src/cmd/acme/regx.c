@@ -10,12 +10,12 @@
 #include <plumb.h>
 #include "dat.h"
 #include "fns.h"
-Rangeset	sel;
-Rune		*lastregexp;
+Rangeset sel;
+Rune *lastregexp;
 typedef struct Inst Inst;
 struct Inst
 {
-uint	type;
+uint type;
 union {
 int sid;
 int subid;
@@ -28,26 +28,26 @@ Inst *left;
 Inst *next;
 };
 };
-#define	NPROG	1024
-Inst	program[NPROG];
-Inst	*progp;
-Inst	*startinst;
-Inst	*bstartinst;
-Channel	*rechan;
+#define NPROG 1024
+Inst program[NPROG];
+Inst *progp;
+Inst *startinst;
+Inst *bstartinst;
+Channel *rechan;
 typedef struct Ilist Ilist;
 struct Ilist
 {
-Inst	*inst;
+Inst *inst;
 Rangeset se;
-uint	startp;
+uint startp;
 };
-#define	NLIST	127
-Ilist	*tl, *nl;
-Ilist	list[2][NLIST+1];
-static	Rangeset sempty;
+#define NLIST 127
+Ilist *tl, *nl;
+Ilist list[2][NLIST+1];
+static Rangeset sempty;
 enum {
 OPERATOR = Runemask+1,
-START	= OPERATOR,
+START = OPERATOR,
 RBRA,
 LBRA,
 OR,
@@ -55,53 +55,53 @@ CAT,
 STAR,
 PLUS,
 QUEST,
-ANY	= OPERATOR<<1,
+ANY = OPERATOR<<1,
 NOP,
 BOL,
 EOL,
 CCLASS,
 NCCLASS,
 END,
-ISATOR	= OPERATOR,
-ISAND	= OPERATOR<<1,
+ISATOR = OPERATOR,
+ISAND = OPERATOR<<1,
 };
 typedef struct Node Node;
 struct Node
 {
-Inst	*first;
-Inst	*last;
+Inst *first;
+Inst *last;
 };
-#define	NSTACK	20
-Node	andstack[NSTACK];
-Node	*andp;
-int	atorstack[NSTACK];
-int	*atorp;
-int	lastwasand;
-int	cursubid;
-int	subidstack[NSTACK];
-int	*subidp;
-int	backwards;
-int	nbra;
-Rune	*exprp;
-#define	DCLASS	10
-int	nclass;
-int	Nclass;
-Rune	**class;
-int	negateclass;
-int	addinst(Ilist *l, Inst *inst, Rangeset *sep);
-void	newmatch(Rangeset*);
-void	bnewmatch(Rangeset*);
-void	pushand(Inst*, Inst*);
-void	pushator(int);
-Node	*popand(int);
-int	popator(void);
-void	startlex(Rune*);
-int	lex(void);
-void	operator(int);
-void	operand(int);
-void	evaluntil(int);
-void	optimize(Inst*);
-void	bldcclass(void);
+#define NSTACK 20
+Node andstack[NSTACK];
+Node *andp;
+int atorstack[NSTACK];
+int *atorp;
+int lastwasand;
+int cursubid;
+int subidstack[NSTACK];
+int *subidp;
+int backwards;
+int nbra;
+Rune *exprp;
+#define DCLASS 10
+int nclass;
+int Nclass;
+Rune **class;
+int negateclass;
+int addinst(Ilist *l, Inst *inst, Rangeset *sep);
+void newmatch(Rangeset*);
+void bnewmatch(Rangeset*);
+void pushand(Inst*, Inst*);
+void pushator(int);
+Node *popand(int);
+int popator(void);
+void startlex(Rune*);
+int lex(void);
+void operator(int);
+void operand(int);
+void evaluntil(int);
+void optimize(Inst*);
+void bldcclass(void);
 void
 rxinit(void)
 {
@@ -744,7 +744,7 @@ return sel.r[0].q0 >= 0;
 void
 bnewmatch(Rangeset *sp)
 {
-int  i;
+int i;
 if(sel.r[0].q0<0 || sp->r[0].q0>sel.r[0].q1 || (sp->r[0].q0==sel.r[0].q1 && sp->r[0].q1<sel.r[0].q0))
 for(i = 0; i<NRange; i++){
 sel.r[i].q0 = sp->r[i].q1;

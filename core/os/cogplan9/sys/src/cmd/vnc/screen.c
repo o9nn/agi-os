@@ -1,39 +1,39 @@
-#include	<u.h>
-#include	<libc.h>
-#include	"compat.h"
-#include	"kbd.h"
-#include	"error.h"
-#define	Image	IMAGE
-#include	<draw.h>
-#include	<memdraw.h>
-#include	<cursor.h>
-#include	"screen.h"
+#include <u.h>
+#include <libc.h>
+#include "compat.h"
+#include "kbd.h"
+#include "error.h"
+#define Image IMAGE
+#include <draw.h>
+#include <memdraw.h>
+#include <cursor.h>
+#include "screen.h"
 enum
 {
 CURSORDIM = 16
 };
-Memimage	*gscreen;
-Point		ZP;
-int		cursorver;
-Point		cursorpos;
-static Memimage		*back;
-static Memimage		*conscol;
-static Memimage		*curscol;
-static Point		curpos;
-static Memsubfont	*memdefont;
-static Rectangle	flushr;
-static Rectangle	window;
-static int		h;
-static int		w;
-static Rectangle	cursorr;
-static Point		offscreen;
-static uchar		cursset[CURSORDIM*CURSORDIM/8];
-static uchar		cursclr[CURSORDIM*CURSORDIM/8];
-static int		cursdrawvers = -1;
-static Memimage		*cursorset;
-static Memimage		*cursorclear;
-static Cursor		screencursor;
-Cursor	arrow = {
+Memimage *gscreen;
+Point ZP;
+int cursorver;
+Point cursorpos;
+static Memimage *back;
+static Memimage *conscol;
+static Memimage *curscol;
+static Point curpos;
+static Memsubfont *memdefont;
+static Rectangle flushr;
+static Rectangle window;
+static int h;
+static int w;
+static Rectangle cursorr;
+static Point offscreen;
+static uchar cursset[CURSORDIM*CURSORDIM/8];
+static uchar cursclr[CURSORDIM*CURSORDIM/8];
+static int cursdrawvers = -1;
+static Memimage *cursorset;
+static Memimage *cursorclear;
+static Cursor screencursor;
+Cursor arrow = {
 { -1, -1 },
 { 0xFF, 0xFF, 0x80, 0x01, 0x80, 0x02, 0x80, 0x0C,
 0x80, 0x10, 0x80, 0x10, 0x80, 0x08, 0x80, 0x04,

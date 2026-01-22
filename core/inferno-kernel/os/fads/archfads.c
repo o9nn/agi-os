@@ -1,17 +1,17 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
 #include "../port/netif.h"
 #include "../mpc/etherif.h"
 #include "../port/flashif.h"
-#include	<draw.h>
-#include	<memdraw.h>
-#include	<cursor.h>
-#include	"screen.h"
-#include	"archfads.h"
+#include <draw.h>
+#include <memdraw.h>
+#include <cursor.h>
+#include "screen.h"
+#include "archfads.h"
 enum {
 BOOTCS = 0,
 BCSRCS = 1,
@@ -100,26 +100,26 @@ ulong v;
 print("IMMR: ");
 v = getimmr() & 0xFFFF;
 switch(v>>8){
-case 0x00:	print("MPC860/821"); break;
-case 0x20:	print("MPC823"); break;
-case 0x21:	print("MPC823A"); break;
-default:	print("Type #%lux", v>>8); break;
+case 0x00: print("MPC860/821"); break;
+case 0x20: print("MPC823"); break;
+case 0x21: print("MPC823A"); break;
+default: print("Type #%lux", v>>8); break;
 }
 print(", mask #%lux\n", v&0xFF);
 v = m->bcsr[3]>>16;
 print("MPC8xxFADS rev %lud, DB: ", ((v>>4)&8)|((v>>1)&4)|(v&3));
 f = (v>>8)&0x3F;
 switch(f){
-default:	print("ID#%x", f); break;
-case 0x00:	print("MPC860/821"); break;
-case 0x01:	print("MPC813"); break;
-case 0x02:	print("MPC821"); break;
-case 0x03:	print("MPC823"); break;
-case 0x20:	print("MPC801"); break;
-case 0x21:	print("MPC850"); break;
-case 0x22:	print("MPC860"); break;
-case 0x23:	print("MPC860SAR"); break;
-case 0x24:	print("MPC860T"); break;
+default: print("ID#%x", f); break;
+case 0x00: print("MPC860/821"); break;
+case 0x01: print("MPC813"); break;
+case 0x02: print("MPC821"); break;
+case 0x03: print("MPC823"); break;
+case 0x20: print("MPC801"); break;
+case 0x21: print("MPC850"); break;
+case 0x22: print("MPC860"); break;
+case 0x23: print("MPC860SAR"); break;
+case 0x24: print("MPC860T"); break;
 }
 print("ADS, rev #%lux\n", (m->bcsr[2]>>16)&7);
 for(i=0; i<=4; i++)
@@ -127,32 +127,32 @@ print("BCSR%d: %8.8lux\n", i, m->bcsr[i]);
 v = m->bcsr[2];
 f = (v>>28)&0xF;
 switch(f){
-default:	print("Unknown"); break;
-case 4:	print("SM732A2000/SM73228 - 8M SIMM"); break;
-case 5:	print("SM732A1000A/SM73218 - 4M SIMM"); break;
-case 6:	print("MCM29080 - 8M SIMM"); break;
-case 7:	print("MCM29040 - 4M SIMM"); break;
-case 8:	print("MCM29020 - 2M SIMM"); break;
+default: print("Unknown"); break;
+case 4: print("SM732A2000/SM73228 - 8M SIMM"); break;
+case 5: print("SM732A1000A/SM73218 - 4M SIMM"); break;
+case 6: print("MCM29080 - 8M SIMM"); break;
+case 7: print("MCM29040 - 4M SIMM"); break;
+case 8: print("MCM29020 - 2M SIMM"); break;
 }
 switch((m->bcsr[3]>>20)&7){
-default:	i = 0; break;
-case 1:	i = 150; break;
-case 2:	i = 120; break;
-case 3:	i = 90; break;
+default: i = 0; break;
+case 1: i = 150; break;
+case 2: i = 120; break;
+case 3: i = 90; break;
 }
 print(" flash, %dns\n", i);
 f = (v>>23)&0xF;
 switch(f&3){
-case 0:	i = 4; break;
-case 1:	i = 32; break;
-case 2:	i = 16; break;
-case 3:	i = 8; break;
+case 0: i = 4; break;
+case 1: i = 32; break;
+case 2: i = 16; break;
+case 3: i = 8; break;
 }
 print("%dM SIMM, ", i);
 switch(f>>2){
-default: 	i = 0; break;
-case 2:	i = 70; break;
-case 3:	i = 60; break;
+default: i = 0; break;
+case 2: i = 70; break;
+case 3: i = 60; break;
 }
 print("%dns\n", i);
 print("options: #%lux\n", (m->bcsr[2]>>19)&0xF);
@@ -163,13 +163,13 @@ cpuidprint(void)
 {
 print("PVR: ");
 switch(m->cputype){
-case 0x01:	print("MPC601"); break;
-case 0x03:	print("MPC603"); break;
-case 0x04:	print("MPC604"); break;
-case 0x06:	print("MPC603e"); break;
-case 0x07:	print("MPC603e-v7"); break;
-case 0x50:	print("MPC8xx"); break;
-default:	print("PowerPC version #%x", m->cputype); break;
+case 0x01: print("MPC601"); break;
+case 0x03: print("MPC603"); break;
+case 0x04: print("MPC604"); break;
+case 0x06: print("MPC603e"); break;
+case 0x07: print("MPC603e-v7"); break;
+case 0x50: print("MPC8xx"); break;
+default: print("PowerPC version #%x", m->cputype); break;
 }
 print(", revision #%lux\n", getpvr()&0xffff);
 archidprint();
@@ -187,7 +187,7 @@ twinkle(void)
 if(m->ticks%MS2TK(1000) == 0)
 m->bcsr[4] ^= DisableLamp;
 }
-void	(*archclocktick)(void) = twinkle;
+void (*archclocktick)(void) = twinkle;
 void
 clockcheck(void)
 {
@@ -200,12 +200,12 @@ int mbyte;
 if(bank != 0)
 return -1;
 switch((m->bcsr[2]>>28)&0xF){
-default:	return -1;
-case 4:	mbyte=8; t = "SM732x8"; break;
-case 5:	mbyte=4; t = "SM732x8"; break;
-case 6:	mbyte=8; t = "AMD29F0x0"; break;
-case 7:	mbyte=4; t = "AMD29F0x0"; break;
-case 8:	mbyte=2; t = "AMD29F0x0"; break;
+default: return -1;
+case 4: mbyte=8; t = "SM732x8"; break;
+case 5: mbyte=4; t = "SM732x8"; break;
+case 6: mbyte=8; t = "AMD29F0x0"; break;
+case 7: mbyte=4; t = "AMD29F0x0"; break;
+case 8: mbyte=2; t = "AMD29F0x0"; break;
 }
 f->type = t;
 f->addr = KADDR(PHYSFLASH);

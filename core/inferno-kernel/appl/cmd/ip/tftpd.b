@@ -13,8 +13,8 @@ Tftpd: module
 {
 init: fn (nil: ref Draw->Context, argv: list of string);
 };
-dir:=  "/services/tftpd";
-net:=  "/net";
+dir:= "/services/tftpd";
+net:= "/net";
 Tftp_READ: con 1;
 Tftp_WRITE: con 2;
 Tftp_DATA: con 3;
@@ -140,12 +140,12 @@ arg->init(args);
 arg->setusage("tftpd [-dr] [-p port] [-h homedir] [-x network-dir]");
 while((o := arg->opt()) != 0)
 case o {
-'d' =>	dbg++;
-'h' =>	dir = arg->earg();
-'r' =>		restricted = 1;
-'p' =>	port = int arg->earg();
-'x' =>	net = arg->earg();
-* =>		arg->usage();
+'d' => dbg++;
+'h' => dir = arg->earg();
+'r' => restricted = 1;
+'p' => port = int arg->earg();
+'x' => net = arg->earg();
+* => arg->usage();
 }
 args =arg->argv();
 if(args != nil){
@@ -181,9 +181,9 @@ DBG(sys->sprint("raddr=%s", raddr));
 cx := dial->dial(raddr, nil);
 if(cx == nil)
 fatal("dialing "+raddr);
-#		showbuf("bigbuf", bigbuf[0:dlen]);
+# showbuf("bigbuf", bigbuf[0:dlen]);
 op := ip->get2(bigbuf, Udphdrsize);
-mbuf := bigbuf[Udphdrsize+2:dlen];		# get past Udphdr and op
+mbuf := bigbuf[Udphdrsize+2:dlen]; # get past Udphdr and op
 dlen -= 14;
 case op {
 Tftp_READ or Tftp_WRITE =>
@@ -195,7 +195,7 @@ continue;
 nak(cx.dfd, 4, "Illegal TFTP operation");
 continue;
 }
-#		showbuf("mbuf", mbuf[0:dlen]);
+# showbuf("mbuf", mbuf[0:dlen]);
 i := 0;
 while(dlen > 0 && mbuf[i] != byte 0) {
 dlen--;
@@ -271,7 +271,7 @@ break loop;
 * =>
 nbytes = cmd;
 }
-#		showbuf("sendblock", buf[0:nbytes]);
+# showbuf("sendblock", buf[0:nbytes]);
 ret := sys->write(net, buf, 4+nbytes);
 DBG(sys->sprint("ret=%d", ret));
 if(ret < 0) {
@@ -375,10 +375,10 @@ break;
 op := int buf[0]<<8 | int buf[1];
 if(op == Tftp_ERROR)
 break;
-#		showbuf("got", buf[0:n]);
+# showbuf("got", buf[0:n]);
 n -= 4;
 inblock := int buf[2]<<8 | int buf[3];
-#		showbuf("hdr", buf[0:4]);
+# showbuf("hdr", buf[0:4]);
 if(op == Tftp_DATA) {
 if(inblock == block) {
 ret := sys->write(file, buf[4:], n);
@@ -406,7 +406,7 @@ timer.destroy();
 ack(fd: ref Sys->FD, block: int)
 {
 buf := array[] of {byte 0, byte Tftp_ACK, byte (block>>8), byte block};
-#	showbuf("ack", buf);
+# showbuf("ack", buf);
 if(sys->write(fd, buf, 4) < 0)
 fatal("write ack");
 }

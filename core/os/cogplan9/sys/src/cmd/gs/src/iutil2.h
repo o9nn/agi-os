@@ -1,5 +1,5 @@
 #ifndef iutil2_INCLUDED
-#  define iutil2_INCLUDED
+# define iutil2_INCLUDED
 #define MAX_PASSWORD 64
 typedef struct password_s {
 uint size;

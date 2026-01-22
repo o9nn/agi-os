@@ -1,5 +1,5 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #include "mailprivacy.h"
 #include <libetpan/libetpan.h>
@@ -8,9 +8,9 @@
 #include <fcntl.h>
 #include <unistd.h>
 #ifdef WIN32
-#	include "win_etpan.h"
+# include "win_etpan.h"
 #else
-#	include <sys/mman.h>
+# include <sys/mman.h>
 #endif
 #include <stdlib.h>
 #include <string.h>
@@ -654,7 +654,7 @@ struct mailmime * mime,
 struct mailmime ** result)
 {
 return mailprivacy_encrypt_msg(privacy, privacy_driver, privacy_encryption,
-NULL,  mime, result);
+NULL, mime, result);
 }
 int mailprivacy_encrypt_msg(struct mailprivacy * privacy,
 char * privacy_driver, char * privacy_encryption,

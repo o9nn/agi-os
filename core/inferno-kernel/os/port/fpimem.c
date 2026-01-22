@@ -76,7 +76,7 @@ if(e <= (ExpBias - SingleExpBias))
 return;
 e = SingleExpBias - (ExpBias - e);
 }
-else  if(e >= (ExpBias + (SingleExpMax-SingleExpBias))){
+else if(e >= (ExpBias + (SingleExpMax-SingleExpBias))){
 *s |= SingleExpMax<<23;
 return;
 }

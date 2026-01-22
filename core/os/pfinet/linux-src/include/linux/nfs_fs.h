@@ -9,64 +9,64 @@
 #ifdef RPC_DEBUG
 # define NFS_DEBUG
 #endif
-#define NFS_MAX_DIRCACHE		16
-#define NFS_MAX_FILE_IO_BUFFER_SIZE	16384
-#define NFS_DEF_FILE_IO_BUFFER_SIZE	4096
-#define NFS_MAX_RPC_TIMEOUT		(6*HZ)
-#define NFS_LOOKUP_CACHE_SIZE		64
-#define NFS_SUPER_MAGIC			0x6969
-#define NFS_FH(dentry)			((struct nfs_fh *) ((dentry)->d_fsdata))
-#define NFS_DSERVER(dentry)		(&(dentry)->d_sb->u.nfs_sb.s_server)
-#define NFS_SERVER(inode)		(&(inode)->i_sb->u.nfs_sb.s_server)
-#define NFS_CLIENT(inode)		(NFS_SERVER(inode)->client)
-#define NFS_ADDR(inode)			(RPC_PEERADDR(NFS_CLIENT(inode)))
-#define NFS_CONGESTED(inode)		(RPC_CONGESTED(NFS_CLIENT(inode)))
-#define NFS_READTIME(inode)		((inode)->u.nfs_i.read_cache_jiffies)
-#define NFS_OLDMTIME(inode)		((inode)->u.nfs_i.read_cache_mtime)
+#define NFS_MAX_DIRCACHE 16
+#define NFS_MAX_FILE_IO_BUFFER_SIZE 16384
+#define NFS_DEF_FILE_IO_BUFFER_SIZE 4096
+#define NFS_MAX_RPC_TIMEOUT (6*HZ)
+#define NFS_LOOKUP_CACHE_SIZE 64
+#define NFS_SUPER_MAGIC 0x6969
+#define NFS_FH(dentry) ((struct nfs_fh *) ((dentry)->d_fsdata))
+#define NFS_DSERVER(dentry) (&(dentry)->d_sb->u.nfs_sb.s_server)
+#define NFS_SERVER(inode) (&(inode)->i_sb->u.nfs_sb.s_server)
+#define NFS_CLIENT(inode) (NFS_SERVER(inode)->client)
+#define NFS_ADDR(inode) (RPC_PEERADDR(NFS_CLIENT(inode)))
+#define NFS_CONGESTED(inode) (RPC_CONGESTED(NFS_CLIENT(inode)))
+#define NFS_READTIME(inode) ((inode)->u.nfs_i.read_cache_jiffies)
+#define NFS_OLDMTIME(inode) ((inode)->u.nfs_i.read_cache_mtime)
 #define NFS_CACHEINV(inode) \
 do { \
 NFS_READTIME(inode) = jiffies - 1000000; \
 NFS_OLDMTIME(inode) = 0; \
 } while (0)
-#define NFS_ATTRTIMEO(inode)		((inode)->u.nfs_i.attrtimeo)
+#define NFS_ATTRTIMEO(inode) ((inode)->u.nfs_i.attrtimeo)
 #define NFS_MINATTRTIMEO(inode) \
 (S_ISDIR(inode->i_mode)? NFS_SERVER(inode)->acdirmin \
 : NFS_SERVER(inode)->acregmin)
 #define NFS_MAXATTRTIMEO(inode) \
 (S_ISDIR(inode->i_mode)? NFS_SERVER(inode)->acdirmax \
 : NFS_SERVER(inode)->acregmax)
-#define NFS_FLAGS(inode)		((inode)->u.nfs_i.flags)
-#define NFS_REVALIDATING(inode)		(NFS_FLAGS(inode) & NFS_INO_REVALIDATE)
-#define NFS_WRITEBACK(inode)		((inode)->u.nfs_i.writeback)
-#define NFS_RPC_SWAPFLAGS		(RPC_TASK_SWAPPER|RPC_TASK_ROOTCREDS)
-#define NFS_CLNTF_BUFSIZE	0x0001
+#define NFS_FLAGS(inode) ((inode)->u.nfs_i.flags)
+#define NFS_REVALIDATING(inode) (NFS_FLAGS(inode) & NFS_INO_REVALIDATE)
+#define NFS_WRITEBACK(inode) ((inode)->u.nfs_i.writeback)
+#define NFS_RPC_SWAPFLAGS (RPC_TASK_SWAPPER|RPC_TASK_ROOTCREDS)
+#define NFS_CLNTF_BUFSIZE 0x0001
 #ifdef __KERNEL__
 struct nfs_wreq {
-struct rpc_listitem	wb_list;
-struct rpc_task		wb_task;
-struct file *		wb_file;
-struct page *		wb_page;
-struct wait_queue *	wb_wait;
-unsigned int		wb_offset;
-unsigned int		wb_bytes;
-unsigned int		wb_count;
-int			wb_status;
-pid_t			wb_pid;
-unsigned short		wb_flags;
-struct nfs_writeargs	wb_args;
-struct nfs_fattr	wb_fattr;
+struct rpc_listitem wb_list;
+struct rpc_task wb_task;
+struct file * wb_file;
+struct page * wb_page;
+struct wait_queue * wb_wait;
+unsigned int wb_offset;
+unsigned int wb_bytes;
+unsigned int wb_count;
+int wb_status;
+pid_t wb_pid;
+unsigned short wb_flags;
+struct nfs_writeargs wb_args;
+struct nfs_fattr wb_fattr;
 };
-#define WB_NEXT(req)		((struct nfs_wreq *) ((req)->wb_list.next))
-#define NFS_WRITE_CANCELLED	0x0004
-#define NFS_WRITE_UNCOMMITTED	0x0008
-#define NFS_WRITE_INVALIDATE	0x0010
-#define NFS_WRITE_INPROGRESS	0x0100
-#define NFS_WRITE_COMPLETE	0x0200
-#define WB_CANCELLED(req)	((req)->wb_flags & NFS_WRITE_CANCELLED)
-#define WB_UNCOMMITTED(req)	((req)->wb_flags & NFS_WRITE_UNCOMMITTED)
-#define WB_INVALIDATE(req)	((req)->wb_flags & NFS_WRITE_INVALIDATE)
-#define WB_INPROGRESS(req)	((req)->wb_flags & NFS_WRITE_INPROGRESS)
-#define WB_COMPLETE(req)	((req)->wb_flags & NFS_WRITE_COMPLETE)
+#define WB_NEXT(req) ((struct nfs_wreq *) ((req)->wb_list.next))
+#define NFS_WRITE_CANCELLED 0x0004
+#define NFS_WRITE_UNCOMMITTED 0x0008
+#define NFS_WRITE_INVALIDATE 0x0010
+#define NFS_WRITE_INPROGRESS 0x0100
+#define NFS_WRITE_COMPLETE 0x0200
+#define WB_CANCELLED(req) ((req)->wb_flags & NFS_WRITE_CANCELLED)
+#define WB_UNCOMMITTED(req) ((req)->wb_flags & NFS_WRITE_UNCOMMITTED)
+#define WB_INVALIDATE(req) ((req)->wb_flags & NFS_WRITE_INVALIDATE)
+#define WB_INPROGRESS(req) ((req)->wb_flags & NFS_WRITE_INPROGRESS)
+#define WB_COMPLETE(req) ((req)->wb_flags & NFS_WRITE_COMPLETE)
 extern int nfs_proc_getattr(struct nfs_server *server, struct nfs_fh *fhandle,
 struct nfs_fattr *fattr);
 extern int nfs_proc_setattr(struct nfs_server *server, struct nfs_fh *fhandle,
@@ -122,15 +122,15 @@ extern void nfs_invalidate_dircache(struct inode *);
 extern void nfs_invalidate_dircache_sb(struct super_block *);
 extern struct inode_operations nfs_symlink_inode_operations;
 extern int nfs_lock(struct file *, int, struct file_lock *);
-extern int  nfs_writepage(struct file *, struct page *);
-extern int  nfs_check_failed_request(struct inode *);
-extern int  nfs_wb_all(struct inode *);
-extern int  nfs_wb_page(struct inode *, struct page *);
-extern int  nfs_wb_file(struct inode *, struct file *);
+extern int nfs_writepage(struct file *, struct page *);
+extern int nfs_check_failed_request(struct inode *);
+extern int nfs_wb_all(struct inode *);
+extern int nfs_wb_page(struct inode *, struct page *);
+extern int nfs_wb_file(struct inode *, struct file *);
 extern void nfs_inval(struct inode *);
-extern int  nfs_updatepage(struct file *, struct page *, unsigned long, unsigned int, int);
-extern int  nfs_readpage(struct file *, struct page *);
-extern int  nfs_mount(struct sockaddr_in *, char *, struct nfs_fh *);
+extern int nfs_updatepage(struct file *, struct page *, unsigned long, unsigned int, int);
+extern int nfs_readpage(struct file *, struct page *);
+extern int nfs_mount(struct sockaddr_in *, char *, struct nfs_fh *);
 static inline int
 nfs_revalidate_inode(struct nfs_server *server, struct dentry *dentry)
 {
@@ -141,21 +141,21 @@ return _nfs_revalidate_inode(server, dentry);
 }
 extern int nfs_root_mount(struct super_block *sb);
 #endif
-#define NFSDBG_VFS		0x0001
-#define NFSDBG_DIRCACHE		0x0002
-#define NFSDBG_LOOKUPCACHE	0x0004
-#define NFSDBG_PAGECACHE	0x0008
-#define NFSDBG_PROC		0x0010
-#define NFSDBG_XDR		0x0020
-#define NFSDBG_FILE		0x0040
-#define NFSDBG_ROOT		0x0080
-#define NFSDBG_ALL		0xFFFF
+#define NFSDBG_VFS 0x0001
+#define NFSDBG_DIRCACHE 0x0002
+#define NFSDBG_LOOKUPCACHE 0x0004
+#define NFSDBG_PAGECACHE 0x0008
+#define NFSDBG_PROC 0x0010
+#define NFSDBG_XDR 0x0020
+#define NFSDBG_FILE 0x0040
+#define NFSDBG_ROOT 0x0080
+#define NFSDBG_ALL 0xFFFF
 #ifdef __KERNEL__
 # undef ifdebug
 # ifdef NFS_DEBUG
-#  define ifdebug(fac)		if (nfs_debug & NFSDBG_##fac)
+# define ifdebug(fac) if (nfs_debug & NFSDBG_##fac)
 # else
-#  define ifdebug(fac)		if (0)
+# define ifdebug(fac) if (0)
 # endif
 #endif
 #endif

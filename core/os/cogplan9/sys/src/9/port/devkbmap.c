@@ -1,19 +1,19 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
 enum{
 Qdir,
 Qdata,
 };
 Dirtab kbmaptab[]={
-".",		{Qdir, 0, QTDIR},	0,	0555,
-"kbmap",	{Qdata, 0},		0,	0600,
+".", {Qdir, 0, QTDIR}, 0, 0555,
+"kbmap", {Qdata, 0}, 0, 0600,
 };
-#define	NKBFILE	sizeof(kbmaptab)/sizeof(kbmaptab[0])
-#define	KBLINELEN	(3*NUMSIZE+1)
+#define NKBFILE sizeof(kbmaptab)/sizeof(kbmaptab[0])
+#define KBLINELEN (3*NUMSIZE+1)
 static Chan *
 kbmapattach(char *spec)
 {
@@ -92,7 +92,7 @@ free(c->aux);
 c->aux = nil;
 }
 while(--l >= 0) {
-*lp++  = *b++;
+*lp++ = *b++;
 if(lp[-1] == '\n' || lp == &line[sizeof(line)-1]) {
 *lp = 0;
 if(*line == 0)

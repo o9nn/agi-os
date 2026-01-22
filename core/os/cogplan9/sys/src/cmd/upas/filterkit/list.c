@@ -8,20 +8,20 @@
 int debug;
 enum
 {
-Tregexp=	(1<<0),
-Texact=		(1<<1),
+Tregexp= (1<<0),
+Texact= (1<<1),
 };
 typedef struct Pattern Pattern;
 struct Pattern
 {
-Pattern	*next;
-int	type;
-char	*arg;
-int	bang;
+Pattern *next;
+int type;
+char *arg;
+int bang;
 };
-String	*patternpath;
-Pattern	*patterns;
-String	*mbox;
+String *patternpath;
+Pattern *patterns;
+String *mbox;
 static void
 usage(void)
 {

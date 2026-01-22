@@ -27,7 +27,7 @@ pos, fontmnt-1);
 i = strlen(fontname);
 fontmtab[pos] = galloc(fontmtab[pos], i+1, "mountfont():fontmtab");
 strcpy(fontmtab[pos], fontname);
-if (curfontpos == pos)	curfontpos = -1;
+if (curfontpos == pos) curfontpos = -1;
 }
 void
 settrfont(void) {
@@ -221,7 +221,7 @@ thisfont = RUNEGETGROUP(' ');
 thischar = RUNEGETCHAR(' ');
 for (cp = &(troffontab[trindex].charent[thisfont][thischar]); *cp != 0; cp = &((*cp)->next))
 if ((*cp)->name)
-if  (strcmp((*cp)->name, " ") == 0)
+if (strcmp((*cp)->name, " ") == 0)
 break;
 if (*cp == 0) *cp = galloc(0, sizeof(struct charent), "readtroffmetric:charent");
 (*cp)->postfontid = thisfont;
@@ -298,7 +298,7 @@ if ((*cp)->name) {
 if (debug)
 fprint(2, "installing <%s>, found <%s>\n",
 stoken, (*cp)->name);
-if  (strcmp((*cp)->name, stoken) == 0)
+if (strcmp((*cp)->name, stoken) == 0)
 break;
 }
 if (*cp == 0)

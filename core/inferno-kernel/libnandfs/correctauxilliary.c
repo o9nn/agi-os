@@ -9,7 +9,7 @@ uchar c;
 int i, k;
 if (a == b)
 return 0;
-c =  a ^ b;
+c = a ^ b;
 for (i = 0x80, k = 0; i; i >>= 1)
 if (c & i)
 k++;

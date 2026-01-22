@@ -1,5 +1,5 @@
 (ConceptNode "apple" (stv 0.8 0.9))
 (InheritanceLink (stv 0.8 0.4)
-                 (ConceptNode "apple")
-                 (ConceptNode "fruit"))
+(ConceptNode "apple")
+(ConceptNode "fruit"))
 (define target (ConceptNode "fruit"))

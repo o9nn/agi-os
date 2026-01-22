@@ -1,20 +1,20 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-extern	void kbdputsc(int, int);
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+extern void kbdputsc(int, int);
 enum {
 Qdir,
 Qkbd,
 };
 Dirtab kbintab[] = {
-".",	{Qdir, 0, QTDIR},	0,	0555,
-"kbin",	{Qkbd, 0},		0,	0200,
+".", {Qdir, 0, QTDIR}, 0, 0555,
+"kbin", {Qkbd, 0}, 0, 0200,
 };
-Lock	kbinlck;
-int	kbinbusy;
+Lock kbinlck;
+int kbinbusy;
 static Chan *
 kbinattach(char *spec)
 {

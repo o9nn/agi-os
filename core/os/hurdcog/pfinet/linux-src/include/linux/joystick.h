@@ -2,48 +2,48 @@
 #define _LINUX_JOYSTICK_H
 #include <asm/types.h>
 #include <linux/module.h>
-#define JS_VERSION		0x01020f
-#define JS_EVENT_BUTTON		0x01
-#define JS_EVENT_AXIS		0x02
-#define JS_EVENT_INIT		0x80
+#define JS_VERSION 0x01020f
+#define JS_EVENT_BUTTON 0x01
+#define JS_EVENT_AXIS 0x02
+#define JS_EVENT_INIT 0x80
 struct js_event {
 __u32 time;
 __s16 value;
 __u8 type;
 __u8 number;
 };
-#define JSIOCGVERSION		_IOR('j', 0x01, __u32)
-#define JSIOCGAXES		_IOR('j', 0x11, __u8)
-#define JSIOCGBUTTONS		_IOR('j', 0x12, __u8)
-#define JSIOCGNAME(len)		_IOC(_IOC_READ, 'j', 0x13, len)
-#define JSIOCSCORR		_IOW('j', 0x21, struct js_corr)
-#define JSIOCGCORR		_IOR('j', 0x22, struct js_corr)
-#define JS_CORR_NONE		0x00
-#define JS_CORR_BROKEN		0x01
+#define JSIOCGVERSION _IOR('j', 0x01, __u32)
+#define JSIOCGAXES _IOR('j', 0x11, __u8)
+#define JSIOCGBUTTONS _IOR('j', 0x12, __u8)
+#define JSIOCGNAME(len) _IOC(_IOC_READ, 'j', 0x13, len)
+#define JSIOCSCORR _IOW('j', 0x21, struct js_corr)
+#define JSIOCGCORR _IOR('j', 0x22, struct js_corr)
+#define JS_CORR_NONE 0x00
+#define JS_CORR_BROKEN 0x01
 struct js_corr {
 __s32 coef[8];
 __s16 prec;
 __u16 type;
 };
-#define JS_RETURN		sizeof(struct JS_DATA_TYPE)
-#define JS_TRUE			1
-#define JS_FALSE		0
-#define JS_X_0			0x01
-#define JS_Y_0			0x02
-#define JS_X_1			0x04
-#define JS_Y_1			0x08
-#define JS_MAX			2
-#define JS_DEF_TIMEOUT		0x1300
-#define JS_DEF_CORR		0
-#define JS_DEF_TIMELIMIT	10L
-#define JS_SET_CAL		1
-#define JS_GET_CAL		2
-#define JS_SET_TIMEOUT		3
-#define JS_GET_TIMEOUT		4
-#define JS_SET_TIMELIMIT	5
-#define JS_GET_TIMELIMIT	6
-#define JS_GET_ALL		7
-#define JS_SET_ALL		8
+#define JS_RETURN sizeof(struct JS_DATA_TYPE)
+#define JS_TRUE 1
+#define JS_FALSE 0
+#define JS_X_0 0x01
+#define JS_Y_0 0x02
+#define JS_X_1 0x04
+#define JS_Y_1 0x08
+#define JS_MAX 2
+#define JS_DEF_TIMEOUT 0x1300
+#define JS_DEF_CORR 0
+#define JS_DEF_TIMELIMIT 10L
+#define JS_SET_CAL 1
+#define JS_GET_CAL 2
+#define JS_SET_TIMEOUT 3
+#define JS_GET_TIMEOUT 4
+#define JS_SET_TIMELIMIT 5
+#define JS_GET_TIMELIMIT 6
+#define JS_GET_ALL 7
+#define JS_SET_ALL 8
 struct JS_DATA_TYPE {
 int buttons;
 int x;
@@ -58,7 +58,7 @@ struct JS_DATA_TYPE JS_SAVE;
 struct JS_DATA_TYPE JS_CORR;
 };
 #ifdef __KERNEL__
-#define JS_BUFF_SIZE		64
+#define JS_BUFF_SIZE 64
 #include <linux/version.h>
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,2,0)
 #error "You need to use at least v2.2 Linux kernel."
@@ -67,43 +67,43 @@ struct JS_DATA_TYPE JS_CORR;
 #include <asm/spinlock.h>
 typedef struct wait_queue *wait_queue_head_t;
 #define __setup(a,b)
-#define BASE_ADDRESS(x,i)	((x)->base_address[i])
-#define DECLARE_WAITQUEUE(x,y)	struct wait_queue x = { y, NULL }
-#define init_waitqueue_head(x)	do { *(x) = NULL; } while (0)
-#define __set_current_state(x)	current->state = x
-#define SETUP_PARAM		char *str, int *ints
-#define SETUP_PARSE(x)		do {} while (0)
+#define BASE_ADDRESS(x,i) ((x)->base_address[i])
+#define DECLARE_WAITQUEUE(x,y) struct wait_queue x = { y, NULL }
+#define init_waitqueue_head(x) do { *(x) = NULL; } while (0)
+#define __set_current_state(x) current->state = x
+#define SETUP_PARAM char *str, int *ints
+#define SETUP_PARSE(x) do {} while (0)
 #else
 #include <linux/spinlock.h>
-#define BASE_ADDRESS(x,i)	((x)->resource[i].start)
-#define SETUP_PARAM		char *str
-#define SETUP_PARSE(x)		int ints[x]; get_options(str, x, ints)
+#define BASE_ADDRESS(x,i) ((x)->resource[i].start)
+#define SETUP_PARAM char *str
+#define SETUP_PARSE(x) int ints[x]; get_options(str, x, ints)
 #endif
-#define PCI_VENDOR_ID_AUREAL	0x12eb
+#define PCI_VENDOR_ID_AUREAL 0x12eb
 #include <linux/parport.h>
-#define JS_PAR_STATUS_INVERT	(0x80)
-#define JS_PAR_CTRL_INVERT	(0x04)
-#define JS_PAR_DATA_IN(y)	parport_read_data(y->port)
-#define JS_PAR_DATA_OUT(x,y)	parport_write_data(y->port, x)
-#define JS_PAR_STATUS(y)	parport_read_status(y->port)
+#define JS_PAR_STATUS_INVERT (0x80)
+#define JS_PAR_CTRL_INVERT (0x04)
+#define JS_PAR_DATA_IN(y) parport_read_data(y->port)
+#define JS_PAR_DATA_OUT(x,y) parport_write_data(y->port, x)
+#define JS_PAR_STATUS(y) parport_read_status(y->port)
 #ifndef PARPORT_NEED_GENERIC_OPS
-#define JS_PAR_CTRL_IN(y)	parport_read_control(y->port)
+#define JS_PAR_CTRL_IN(y) parport_read_control(y->port)
 #else
-#define JS_PAR_CTRL_IN(y)	inb(y->port->base+2)
+#define JS_PAR_CTRL_IN(y) inb(y->port->base+2)
 #endif
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,3,0)
-#define JS_PAR_CTRL_OUT(x,y)	parport_write_control(y->port, x)
-#define JS_PAR_ECTRL_OUT(x,y)	parport_write_econtrol(y->port, x)
+#define JS_PAR_CTRL_OUT(x,y) parport_write_control(y->port, x)
+#define JS_PAR_ECTRL_OUT(x,y) parport_write_econtrol(y->port, x)
 #else
-#define JS_PAR_CTRL_OUT(x,y)					\
-do {							\
-if ((x) & 0x20) parport_data_reverse(y->port);	\
-else parport_data_forward(y->port);		\
-parport_write_control(y->port, (x) & ~0x20);	\
+#define JS_PAR_CTRL_OUT(x,y) \
+do { \
+if ((x) & 0x20) parport_data_reverse(y->port); \
+else parport_data_forward(y->port); \
+parport_write_control(y->port, (x) & ~0x20); \
 } while (0)
 #define JS_PAR_ECTRL_OUT(x,y)
-#define PARPORT_MODE_PCPS2	PARPORT_MODE_TRISTATE
-#define PARPORT_MODE_PCECPPS2	PARPORT_MODE_TRISTATE
+#define PARPORT_MODE_PCPS2 PARPORT_MODE_TRISTATE
+#define PARPORT_MODE_PCECPPS2 PARPORT_MODE_TRISTATE
 #endif
 struct js_dev;
 typedef int (*js_read_func)(void *info, int **axes, int **buttons);

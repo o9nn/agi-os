@@ -4,12 +4,12 @@
 #include <pwd.h>
 #include <sys/mman.h>
 #include "usermux.h"
-#define DIRENTS_CHUNK_SIZE	(128*1024)
-#define DIRENTS_CACHE_TIME	90
+#define DIRENTS_CHUNK_SIZE (128*1024)
+#define DIRENTS_CACHE_TIME 90
 #define DIRENT_ALIGN 4
 #define DIRENT_NAME_OFFS offsetof (struct dirent, d_name)
-#define DIRENT_LEN(name_len)						      \
-((DIRENT_NAME_OFFS + (name_len) + 1 + (DIRENT_ALIGN - 1))		      \
+#define DIRENT_LEN(name_len) \
+((DIRENT_NAME_OFFS + (name_len) + 1 + (DIRENT_ALIGN - 1)) \
 & ~(DIRENT_ALIGN - 1))
 static error_t lookup_user (struct usermux *mux, const char *user,
 struct node **node);

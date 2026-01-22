@@ -6,46 +6,46 @@
 enum {
 Maxpath = 128,
 };
-static int	blank;
-static int	file;
-static int	doautox;
-static int	printflag;
-static Part	**opart;
-static int	nopart;
-static char	*osecbuf;
-static char	*secbuf;
-static int	rdonly;
-static int	dowrite;
-static int	docache;
-static int	donvram;
-static void	autoxpart(Edit*);
-static Part	*mkpart(char*, vlong, vlong, int);
-static void	rdpart(Edit*);
-static void	wrpart(Edit*);
-static void	checkfat(Disk*);
-static void 	cmdsum(Edit*, Part*, vlong, vlong);
-static char 	*cmdadd(Edit*, char*, vlong, vlong);
-static char 	*cmddel(Edit*, Part*);
-static char 	*cmdokname(Edit*, char*);
-static char 	*cmdwrite(Edit*);
-static char	*cmdctlprint(Edit*, int, char**);
+static int blank;
+static int file;
+static int doautox;
+static int printflag;
+static Part **opart;
+static int nopart;
+static char *osecbuf;
+static char *secbuf;
+static int rdonly;
+static int dowrite;
+static int docache;
+static int donvram;
+static void autoxpart(Edit*);
+static Part *mkpart(char*, vlong, vlong, int);
+static void rdpart(Edit*);
+static void wrpart(Edit*);
+static void checkfat(Disk*);
+static void cmdsum(Edit*, Part*, vlong, vlong);
+static char *cmdadd(Edit*, char*, vlong, vlong);
+static char *cmddel(Edit*, Part*);
+static char *cmdokname(Edit*, char*);
+static char *cmdwrite(Edit*);
+static char *cmdctlprint(Edit*, int, char**);
 Edit edit = {
-.add=	cmdadd,
-.del=	cmddel,
+.add= cmdadd,
+.del= cmddel,
 .okname=cmdokname,
-.sum=	cmdsum,
-.write=	cmdwrite,
-.unit=	"sector",
+.sum= cmdsum,
+.write= cmdwrite,
+.unit= "sector",
 };
 typedef struct Auto Auto;
 struct Auto
 {
-char	*name;
-uvlong	min;
-uvlong	max;
-uint	weight;
-uchar	alloc;
-uvlong	size;
+char *name;
+uvlong min;
+uvlong max;
+uint weight;
+uchar alloc;
+uvlong size;
 };
 #define TB (1024LL*GB)
 #define GB (1024*1024*1024)
@@ -53,17 +53,17 @@ uvlong	size;
 #define KB (1024)
 Auto autox[] =
 {
-{	"9fat",		10*MB,	100*MB,	10,	},
-{	"nvram",	512,	512,	1,	},
-{	"fscfg",	1024,	8192,	1,	},
-{	"fs",		200*MB,	0,	10,	},
-{	"fossil",	200*MB,	0,	4,	},
-{	"arenas",	500*MB,	0,	20,	},
-{	"isect",	25*MB,	0,	1,	},
-{	"bloom",	4*MB,	512*MB,	1,	},
-{	"other",	200*MB,	0,	4,	},
-{	"swap",		100*MB,	512*MB,	1,	},
-{	"cache",	50*MB,	1*GB,	2,	},
+{ "9fat", 10*MB, 100*MB, 10, },
+{ "nvram", 512, 512, 1, },
+{ "fscfg", 1024, 8192, 1, },
+{ "fs", 200*MB, 0, 10, },
+{ "fossil", 200*MB, 0, 4, },
+{ "arenas", 500*MB, 0, 20, },
+{ "isect", 25*MB, 0, 1, },
+{ "bloom", 4*MB, 512*MB, 1, },
+{ "other", 200*MB, 0, 4, },
+{ "swap", 100*MB, 512*MB, 1, },
+{ "cache", 50*MB, 1*GB, 2, },
 };
 void
 usage(void)
@@ -220,9 +220,9 @@ static char isfrog[256]={
 1, 1, 1, 1, 1, 1, 1, 1,
 1, 1, 1, 1, 1, 1, 1, 1,
 1, 1, 1, 1, 1, 1, 1, 1,
-[' ']	1,
-['/']	1,
-[0x7f]	1,
+[' '] 1,
+['/'] 1,
+[0x7f] 1,
 };
 static char*
 cmdokname(Edit*, char *elem)

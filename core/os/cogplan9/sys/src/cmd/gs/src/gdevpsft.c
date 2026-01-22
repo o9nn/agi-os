@@ -623,7 +623,7 @@ uint glyph_index;
 gs_glyph_data_t glyph_data;
 if (glyph < gs_min_cid_glyph)
 return_error(gs_error_invalidfont);
-glyph_index = glyph  & ~GS_GLYPH_TAG;
+glyph_index = glyph & ~GS_GLYPH_TAG;
 if_debug1('L', "[L]glyph_index %u\n", glyph_index);
 glyph_data.memory = pfont->memory;
 if ((code = pfont->data.get_outline(pfont, glyph_index, &glyph_data)) >= 0) {
@@ -851,9 +851,9 @@ stream_write(s, post_initial, 32);
 }
 }
 #if ARCH_SIZEOF_LONG > ARCH_SIZEOF_INT
-#  define HEAD_MAGIC 0xb1b0afbaL
+# define HEAD_MAGIC 0xb1b0afbaL
 #else
-#  define HEAD_MAGIC ((ulong)~0x4e4f5045)
+# define HEAD_MAGIC ((ulong)~0x4e4f5045)
 #endif
 put_u32(head + 8, HEAD_MAGIC - file_checksum);
 #undef HEAD_MAGIC

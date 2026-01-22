@@ -1,12 +1,12 @@
 #include "sys.h"
 #include "spam.h"
-int 	debug;
-Biobuf	bin;
-char	patfile[128], header[Hdrsize+2];
-char	cmd[1024];
-char*	canon(Biobuf*, char*, char*, int*);
-int	matcher(char *, Pattern*, char*, Resub*);
-int	matchaction(Patterns*, char*);
+int debug;
+Biobuf bin;
+char patfile[128], header[Hdrsize+2];
+char cmd[1024];
+char* canon(Biobuf*, char*, char*, int*);
+int matcher(char *, Pattern*, char*, Resub*);
+int matchaction(Patterns*, char*);
 void
 usage(void)
 {

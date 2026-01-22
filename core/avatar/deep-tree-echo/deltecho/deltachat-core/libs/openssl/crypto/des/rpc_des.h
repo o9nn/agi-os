@@ -1,5 +1,5 @@
-#define DES_MAXLEN      65536
-#define DES_QUICKLEN    16
+#define DES_MAXLEN 65536
+#define DES_QUICKLEN 16
 #ifdef HEADER_DES_H
 # undef ENCRYPT
 # undef DECRYPT
@@ -17,7 +17,7 @@ unsigned char UDES_data[DES_QUICKLEN];
 unsigned char *UDES_buf;
 } UDES;
 #define des_data UDES.UDES_data
-#define des_buf  UDES.UDES_buf
+#define des_buf UDES.UDES_buf
 };
-#define DESIOCBLOCK     _IOWR('d', 6, struct desparams)
-#define DESIOCQUICK     _IOWR('d', 7, struct desparams)
+#define DESIOCBLOCK _IOWR('d', 6, struct desparams)
+#define DESIOCQUICK _IOWR('d', 7, struct desparams)

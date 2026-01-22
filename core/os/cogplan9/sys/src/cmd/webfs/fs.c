@@ -35,9 +35,9 @@ Qfragment,
 Qftptype,
 Qend,
 };
-#define PATH(type, n)	((type)|((n)<<8))
-#define TYPE(path)		((int)(path) & 0xFF)
-#define NUM(path)		((uint)(path)>>8)
+#define PATH(type, n) ((type)|((n)<<8))
+#define TYPE(path) ((int)(path) & 0xFF)
+#define NUM(path) ((uint)(path)>>8)
 Channel *creq;
 Channel *creqwait;
 Channel *cclunk;
@@ -51,28 +51,28 @@ int offset;
 };
 Tab tab[] =
 {
-"/",			DMDIR|0555,		0,
-"ctl",			0666,			0,
-"clone",		0666,			0,
-"cookies",		0666,			0,
-"XXX",		DMDIR|0555,		0,
-"ctl",			0666,			0,
-"body",		0444,			0,
-"XXX",		0444,			0,
-"contenttype",	0444,			0,
-"postbody",	0666,			0,
-"parsed",		DMDIR|0555,		0,
-"url",			0444,			offsetof(Url, url),
-"scheme",		0444,			offsetof(Url, scheme),
-"schemedata",	0444,			offsetof(Url, schemedata),
-"user",		0444,			offsetof(Url, user),
-"passwd",		0444,			offsetof(Url, passwd),
-"host",		0444,			offsetof(Url, host),
-"port",		0444,			offsetof(Url, port),
-"path",		0444,			offsetof(Url, path),
-"query",		0444,			offsetof(Url, query),
-"fragment",	0444,			offsetof(Url, fragment),
-"ftptype",		0444,			offsetof(Url, ftp.type),
+"/", DMDIR|0555, 0,
+"ctl", 0666, 0,
+"clone", 0666, 0,
+"cookies", 0666, 0,
+"XXX", DMDIR|0555, 0,
+"ctl", 0666, 0,
+"body", 0444, 0,
+"XXX", 0444, 0,
+"contenttype", 0444, 0,
+"postbody", 0666, 0,
+"parsed", DMDIR|0555, 0,
+"url", 0444, offsetof(Url, url),
+"scheme", 0444, offsetof(Url, scheme),
+"schemedata", 0444, offsetof(Url, schemedata),
+"user", 0444, offsetof(Url, user),
+"passwd", 0444, offsetof(Url, passwd),
+"host", 0444, offsetof(Url, host),
+"port", 0444, offsetof(Url, port),
+"path", 0444, offsetof(Url, path),
+"query", 0444, offsetof(Url, query),
+"fragment", 0444, offsetof(Url, fragment),
+"ftptype", 0444, offsetof(Url, ftp.type),
 };
 ulong time0;
 static void
@@ -517,13 +517,13 @@ threadexitsall("done");
 }
 Srv fs =
 {
-.attach=		fssend,
-.destroyfid=	fsdestroyfid,
-.walk1=		fswalk1,
-.open=		fssend,
-.read=		fssend,
-.write=		fssend,
-.stat=		fssend,
-.flush=		fssend,
-.end=		takedown,
+.attach= fssend,
+.destroyfid= fsdestroyfid,
+.walk1= fswalk1,
+.open= fssend,
+.read= fssend,
+.write= fssend,
+.stat= fssend,
+.flush= fssend,
+.end= takedown,
 };

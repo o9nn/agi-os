@@ -196,10 +196,10 @@ function count_edges(grid::CartesianGridRej{N, T};
 diagonal_connections = false) where {N, T}
 l, m, n = grid_size(grid)..., 1, 1
 (ni, ns, ne, nc) = diagonal_connections ? (26, 17, 11, 7) : (6, 5, 4, 3)
-num_edges = ni * (l - 2) * (m - 2) * (n - 2) +                            # Edges from internal vertices.
+num_edges = ni * (l - 2) * (m - 2) * (n - 2) + # Edges from internal vertices.
 ns * (2(l - 2) * (m - 2) + 2(l - 2) * (n - 2) + 2(m - 2) * (n - 2)) + # Edges from side vertices.
-ne * (4(l - 2) + 4(m - 2) + 4(n - 2)) +                   # Edges from edge vertices.
-nc * 8                                              # Edges from corner vertices.
+ne * (4(l - 2) + 4(m - 2) + 4(n - 2)) + # Edges from edge vertices.
+nc * 8 # Edges from corner vertices.
 return num_edges
 end
 # Counts and edges on a masked grid. Does so by looping through all the vertices of the grid,

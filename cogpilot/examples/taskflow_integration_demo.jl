@@ -15,8 +15,8 @@ using DeepTreeEcho.TaskflowIntegration
 using Random
 println("""
 ╔════════════════════════════════════════════════════════════════╗
-║  TASKFLOW INTEGRATION WITH DEEP TREE ECHO                      ║
-║  Parallel Task Graph Execution for Ontogenetic Evolution       ║
+║ TASKFLOW INTEGRATION WITH DEEP TREE ECHO ║
+║ Parallel Task Graph Execution for Ontogenetic Evolution ║
 ╚════════════════════════════════════════════════════════════════╝
 """)
 Random.seed!(42)
@@ -95,10 +95,10 @@ t2 = create_task!(custom_graph, "Process A", () -> println("  Executing: Process
 t3 = create_task!(custom_graph, "Process B", () -> println("  Executing: Process B"))
 t4 = create_task!(custom_graph, "Merge", () -> println("  Executing: Merge"))
 # Add dependencies
-add_dependency!(custom_graph, t1, t2)  # t2 depends on t1
-add_dependency!(custom_graph, t1, t3)  # t3 depends on t1
-add_dependency!(custom_graph, t2, t4)  # t4 depends on t2
-add_dependency!(custom_graph, t3, t4)  # t4 depends on t3
+add_dependency!(custom_graph, t1, t2) # t2 depends on t1
+add_dependency!(custom_graph, t1, t3) # t3 depends on t1
+add_dependency!(custom_graph, t2, t4) # t4 depends on t2
+add_dependency!(custom_graph, t3, t4) # t4 depends on t3
 println("\nCustom task graph structure:")
 print_taskgraph(custom_graph)
 # Execute

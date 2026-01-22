@@ -5,10 +5,10 @@
 #define LOGFILE "telco"
 enum
 {
-OPERM	= 0x3,
-Ndev	= 8,
-Nreq	= (Ndev*3)/2,
-Nrbuf	= 32*1024,
+OPERM = 0x3,
+Ndev = 8,
+Nreq = (Ndev*3)/2,
+Nrbuf = 32*1024,
 };
 typedef struct Fid Fid;
 typedef struct Dev Dev;
@@ -16,75 +16,75 @@ typedef struct Request Request;
 typedef struct Type Type;
 struct Fid
 {
-Qid	qid;
-short	busy;
-short	open;
-int	fid;
-Fid	*next;
-char	*user;
+Qid qid;
+short busy;
+short open;
+int fid;
+Fid *next;
+char *user;
 };
 struct Request
 {
-Request	*next;
-Fid	*fid;
-ulong	tag;
-int	count;
-int	flushed;
+Request *next;
+Fid *fid;
+ulong tag;
+int count;
+int flushed;
 };
 struct Dev
 {
 Lock;
-int	ctl;
-int	data;
-char	*path;
-Type	*t;
-Type	*baset;
-int	speed;
-int	fclass;
-int	open;
-long	perm;
-char	*name;
-char	*user;
-char	msgbuf[128];
-Request	*r;
+int ctl;
+int data;
+char *path;
+Type *t;
+Type *baset;
+int speed;
+int fclass;
+int open;
+long perm;
+char *name;
+char *user;
+char msgbuf[128];
+Request *r;
 Request *rlast;
-int	monitoring;
-char	rbuf[Nrbuf];
-char	*rp;
-char	*wp;
-long	pid;
+int monitoring;
+char rbuf[Nrbuf];
+char *rp;
+char *wp;
+long pid;
 };
 enum
 {
-Devmask=	(Ndev-1)<<8,
-Qlvl1=		0,
-Qlvl2=		1,
-Qclone=		2,
-Qlvl3=		3,
-Qdata=		4,
-Qctl=		5,
-Pexec =		1,
-Pwrite = 	2,
-Pread = 	4,
-Pother = 	1,
-Pgroup = 	8,
-Powner =	64,
+Devmask= (Ndev-1)<<8,
+Qlvl1= 0,
+Qlvl2= 1,
+Qclone= 2,
+Qlvl3= 3,
+Qdata= 4,
+Qctl= 5,
+Pexec = 1,
+Pwrite = 2,
+Pread = 4,
+Pother = 1,
+Pgroup = 8,
+Powner = 64,
 };
 char *names[] =
 {
-[Qlvl1]		"/",
-[Qlvl2]		"telco",
-[Qclone]	"clone",
-[Qlvl3]		"",
-[Qdata]		"data",
-[Qctl]		"ctl",
+[Qlvl1] "/",
+[Qlvl2] "telco",
+[Qclone] "clone",
+[Qlvl3] "",
+[Qdata] "data",
+[Qctl] "ctl",
 };
 #define DEV(q) ((((ulong)(q).path)&Devmask)>>8)
 #define TYPE(q) (((ulong)(q).path)&((1<<8)-1))
 #define MKQID(t, i) ((((i)<<8)&Devmask) | (t))
 enum
 {
-Cerrorcorrection	= 0,
+Cerrorcorrection = 0,
 Ccompression,
 Cflowctl,
 Crateadjust,
@@ -94,15 +94,15 @@ Ncommand,
 };
 struct Type
 {
-char	*name;
-char	*ident;
-char	*response;
-char	*basetype;
-char	*commands[Ncommand];
+char *name;
+char *ident;
+char *response;
+char *basetype;
+char *commands[Ncommand];
 };
 Type typetab[] =
 {
-{	"Rockwell",		0,	0,	0,
+{ "Rockwell", 0, 0, 0,
 "AT\\N7",
 "AT%C1\\J0",
 "AT\\Q3",
@@ -110,7 +110,7 @@ Type typetab[] =
 "AT+FCLASS=2\rAT+FCR=1\r",
 "AT+FCLASS=0",
 },
-{	"ATT2400",	"ATI9",	"E2400",	"Rockwell",
+{ "ATT2400", "ATI9", "E2400", "Rockwell",
 "AT\\N3",
 0,
 0,
@@ -118,7 +118,7 @@ Type typetab[] =
 0,
 0,
 },
-{	"ATT14400",	"ATI9",	"E14400",	"Rockwell",
+{ "ATT14400", "ATI9", "E14400", "Rockwell",
 0,
 0,
 0,
@@ -126,7 +126,7 @@ Type typetab[] =
 0,
 0,
 },
-{	"MT1432",	"ATI2",	"MT1432",	0,
+{ "MT1432", "ATI2", "MT1432", 0,
 "AT&E1",
 "AT&E15$BA0",
 "AT&E4",
@@ -134,7 +134,7 @@ Type typetab[] =
 "AT+FCLASS=2\rAT+FTBC=0\rAT+FREL=1\rAT+FCQ=1\rAT+FBOR=1\rAT+FCR=1\rAT+FDIS=,3",
 "AT+FCLASS=0",
 },
-{	"MT2834",	"ATI2",	"MT2834",	"MT1432",
+{ "MT2834", "ATI2", "MT2834", "MT1432",
 0,
 0,
 0,
@@ -142,7 +142,7 @@ Type typetab[] =
 "AT+FCLASS=2\rAT+FTBC=0\rAT+FREL=1\rAT+FCQ=1\rAT+FBOR=1\rAT+FCR=1",
 0,
 },
-{	"VOCAL",	"ATI6",	"144DPL+FAX",	"Rockwell",
+{ "VOCAL", "ATI6", "144DPL+FAX", "Rockwell",
 "AT\\N3",
 "AT%C3\\J0",
 0,
@@ -160,88 +160,88 @@ Failure,
 Noise,
 Found,
 };
-typedef struct Msg	Msg;
+typedef struct Msg Msg;
 struct Msg
 {
-char	*text;
-int	type;
+char *text;
+int type;
 };
 Msg msgs[] =
 {
-{ "OK",			Ok, },
-{ "NO CARRIER", 	Failure, },
-{ "ERROR",		Failure, },
-{ "NO DIALTONE",	Failure, },
-{ "BUSY",		Failure, },
-{ "NO ANSWER",		Failure, },
-{ "CONNECT",		Success, },
-{ 0,			0 },
+{ "OK", Ok, },
+{ "NO CARRIER", Failure, },
+{ "ERROR", Failure, },
+{ "NO DIALTONE", Failure, },
+{ "BUSY", Failure, },
+{ "NO ANSWER", Failure, },
+{ "CONNECT", Success, },
+{ 0, 0 },
 };
-Fid	*fids;
-Dev	*dev;
-int	ndev;
-int	mfd[2];
-char	*user;
-uchar	mdata[8192+IOHDRSZ];
-int	messagesize = sizeof mdata;
-Fcall	thdr;
-Fcall	rhdr;
-char	errbuf[ERRMAX];
-uchar	statbuf[STATMAX];
-int	pulsed;
-int	verbose;
-int	maxspeed = 56000;
-char	*srcid = "plan9";
-int	answer = 1;
-Fid	*newfid(int);
-int	devstat(Dir*, uchar*, int);
-int	devgen(Qid, int, Dir*, uchar*, int);
-void	error(char*);
-void	io(void);
-void	*erealloc(void*, ulong);
-void	*emalloc(ulong);
-void	usage(void);
-int	perm(Fid*, Dev*, int);
-void	setspeed(Dev*, int);
-int	getspeed(char*, int);
-char	*dialout(Dev*, char*);
-void	onhook(Dev*);
-int	readmsg(Dev*, int, char*);
-void	monitor(Dev*);
-int	getinput(Dev*, char*, int);
-void	serve(Dev*);
-void	receiver(Dev*);
-char*	modemtype(Dev*, int, int);
-char	*rflush(Fid*), *rversion(Fid*),
+Fid *fids;
+Dev *dev;
+int ndev;
+int mfd[2];
+char *user;
+uchar mdata[8192+IOHDRSZ];
+int messagesize = sizeof mdata;
+Fcall thdr;
+Fcall rhdr;
+char errbuf[ERRMAX];
+uchar statbuf[STATMAX];
+int pulsed;
+int verbose;
+int maxspeed = 56000;
+char *srcid = "plan9";
+int answer = 1;
+Fid *newfid(int);
+int devstat(Dir*, uchar*, int);
+int devgen(Qid, int, Dir*, uchar*, int);
+void error(char*);
+void io(void);
+void *erealloc(void*, ulong);
+void *emalloc(ulong);
+void usage(void);
+int perm(Fid*, Dev*, int);
+void setspeed(Dev*, int);
+int getspeed(char*, int);
+char *dialout(Dev*, char*);
+void onhook(Dev*);
+int readmsg(Dev*, int, char*);
+void monitor(Dev*);
+int getinput(Dev*, char*, int);
+void serve(Dev*);
+void receiver(Dev*);
+char* modemtype(Dev*, int, int);
+char *rflush(Fid*), *rversion(Fid*),
 *rattach(Fid*), *rauth(Fid*), *rwalk(Fid*),
 *ropen(Fid*), *rcreate(Fid*),
 *rread(Fid*), *rwrite(Fid*), *rclunk(Fid*),
 *rremove(Fid*), *rstat(Fid*), *rwstat(Fid*);
-char 	*(*fcalls[])(Fid*) = {
-[Tflush]	rflush,
-[Tversion]	rversion,
-[Tattach]	rattach,
-[Tauth]	rauth,
-[Twalk]		rwalk,
-[Topen]		ropen,
-[Tcreate]	rcreate,
-[Tread]		rread,
-[Twrite]	rwrite,
-[Tclunk]	rclunk,
-[Tremove]	rremove,
-[Tstat]		rstat,
-[Twstat]	rwstat,
+char *(*fcalls[])(Fid*) = {
+[Tflush] rflush,
+[Tversion] rversion,
+[Tattach] rattach,
+[Tauth] rauth,
+[Twalk] rwalk,
+[Topen] ropen,
+[Tcreate] rcreate,
+[Tread] rread,
+[Twrite] rwrite,
+[Tclunk] rclunk,
+[Tremove] rremove,
+[Tstat] rstat,
+[Twstat] rwstat,
 };
-char	Eperm[] =	"permission denied";
-char	Enotdir[] =	"not a directory";
-char	Enotexist[] =	"file does not exist";
-char	Ebadaddr[] = 	"bad address";
-char	Eattn[] = 	"can't get modem's attention";
-char	Edial[] = 	"can't dial";
-char	Enoauth[] =	"telco: authentication not required";
-char	Eisopen[] = 	"file already open for I/O";
-char	Enodev[] = 	"no free modems";
-char	Enostream[] =	"stream closed prematurely";
+char Eperm[] = "permission denied";
+char Enotdir[] = "not a directory";
+char Enotexist[] = "file does not exist";
+char Ebadaddr[] = "bad address";
+char Eattn[] = "can't get modem's attention";
+char Edial[] = "can't dial";
+char Enoauth[] = "telco: authentication not required";
+char Eisopen[] = "file already open for I/O";
+char Enodev[] = "no free modems";
+char Enostream[] = "stream closed prematurely";
 void
 usage(void)
 {
@@ -905,7 +905,7 @@ return Failure;
 }
 int portspeed[] = { 56000, 38400, 19200, 14400, 9600, 4800, 2400, 1200, 600, 300, 0 };
 char*
-modemtype(Dev *d, int limit,  int fax)
+modemtype(Dev *d, int limit, int fax)
 {
 int *p;
 Type *t, *bt;

@@ -10,27 +10,27 @@ static const char *version =
 #include <asm/system.h>
 #include <asm/io.h>
 #include "8390.h"
-#define AC_NIC_BASE		0x00
-#define AC_SA_PROM		0x16
-#define  AC_ADDR0		 0x00
-#define  AC_ADDR1		 0x40
-#define  AC_ADDR2		 0x90
-#define AC_ID_PORT		0xC80
-#define AC_EISA_ID		 0x0110d305
-#define AC_RESET_PORT	0xC84
-#define  AC_RESET		 0x00
-#define  AC_ENABLE		 0x01
-#define AC_CONFIG		0xC90
+#define AC_NIC_BASE 0x00
+#define AC_SA_PROM 0x16
+#define AC_ADDR0 0x00
+#define AC_ADDR1 0x40
+#define AC_ADDR2 0x90
+#define AC_ID_PORT 0xC80
+#define AC_EISA_ID 0x0110d305
+#define AC_RESET_PORT 0xC84
+#define AC_RESET 0x00
+#define AC_ENABLE 0x01
+#define AC_CONFIG 0xC90
 #define AC_IO_EXTENT 0x10
 static unsigned char config2irqmap[8] = {15, 12, 11, 10, 9, 7, 5, 3};
 static int addrmap[8] =
-{0xFF0000, 0xFE0000, 0xFD0000, 0xFFF0000, 0xFFE0000, 0xFFC0000,  0xD0000, 0 };
+{0xFF0000, 0xFE0000, 0xFD0000, 0xFFF0000, 0xFFE0000, 0xFFC0000, 0xD0000, 0 };
 static const char *port_name[4] = { "10baseT", "invalid", "AUI", "10base2"};
-#define config2irq(configval)	config2irqmap[((configval) >> 3) & 7]
-#define config2mem(configval)	addrmap[(configval) & 7]
-#define config2name(configval)	port_name[((configval) >> 6) & 3]
-#define AC_START_PG		0x00
-#define AC_STOP_PG		0x80
+#define config2irq(configval) config2irqmap[((configval) >> 3) & 7]
+#define config2mem(configval) addrmap[(configval) & 7]
+#define config2name(configval) port_name[((configval) >> 6) & 3]
+#define AC_START_PG 0x00
+#define AC_STOP_PG 0x80
 int ac3200_probe(struct device *dev);
 static int ac_probe1(int ioaddr, struct device *dev);
 static int ac_open(struct device *dev);
@@ -109,7 +109,7 @@ return -ENOMEM;
 request_region(ioaddr, AC_IO_EXTENT, "ac3200");
 dev->base_addr = ioaddr;
 #ifdef notyet
-if (dev->mem_start)	{
+if (dev->mem_start) {
 for (i = 0; i < 7; i++)
 if (addrmap[i] == dev->mem_start)
 break;
@@ -204,8 +204,8 @@ MOD_DEC_USE_COUNT;
 return 0;
 }
 #ifdef MODULE
-#define MAX_AC32_CARDS	4
-#define NAMELEN		8
+#define MAX_AC32_CARDS 4
+#define NAMELEN 8
 static char namelist[NAMELEN * MAX_AC32_CARDS] = { 0, };
 static struct device dev_ac32[MAX_AC32_CARDS] = {
 {
@@ -216,7 +216,7 @@ NULL,
 },
 };
 static int io[MAX_AC32_CARDS] = { 0, };
-static int irq[MAX_AC32_CARDS]  = { 0, };
+static int irq[MAX_AC32_CARDS] = { 0, };
 static int mem[MAX_AC32_CARDS] = { 0, };
 int
 init_module(void)

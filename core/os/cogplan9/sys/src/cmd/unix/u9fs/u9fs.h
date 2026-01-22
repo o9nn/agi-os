@@ -16,7 +16,7 @@ extern Auth authrhosts;
 extern Auth authnone;
 extern ulong truerand(void);
 extern void randombytes(uchar*, uint);
-extern ulong  msize;
+extern ulong msize;
 typedef struct Fid Fid;
 Fid *newauthfid(int fid, void *magic, char **ep);
 Fid *oldauthfid(int fid, void **magic, char **ep);

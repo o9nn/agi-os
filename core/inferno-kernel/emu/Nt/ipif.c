@@ -1,13 +1,13 @@
 #define Unknown win_Unknown
-#include        <windows.h>
-#include        <winbase.h>
-#include        <sys/types.h>
-#include        <winsock.h>
+#include <windows.h>
+#include <winbase.h>
+#include <sys/types.h>
+#include <winsock.h>
 #undef Unknown
-#include        "dat.h"
-#include        "fns.h"
-#include        "ip.h"
-#include        "error.h"
+#include "dat.h"
+#include "fns.h"
+#include "ip.h"
+#include "error.h"
 typedef int socklen_t;
 extern int SOCK_SELECT;
 char Enotv4[] = "address not IPv4";
@@ -59,7 +59,7 @@ sin = (struct sockaddr_in*)&sa;
 sin->sin_family = AF_INET;
 switch(hdrlen){
 case OUdphdrlenv4:
-memmove(&sin->sin_addr, h,  4);
+memmove(&sin->sin_addr, h, 4);
 memmove(&sin->sin_port, h+8, 2);
 break;
 case OUdphdrlen:
@@ -79,7 +79,7 @@ return r;
 static int
 doselect(int sock)
 {
-fd_set	waitr;
+fd_set waitr;
 struct timeval seltime;
 up->syscall = SOCK_SELECT;
 FD_ZERO(&waitr);

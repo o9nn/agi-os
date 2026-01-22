@@ -1,5 +1,5 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #include "mailimf.h"
 #include <string.h>
@@ -934,7 +934,7 @@ res = MAILIMF_ERROR_MEMORY;
 goto err;
 }
 }
-else  {
+else {
 body_type = MAILMIME_MESSAGE;
 content_type = mailmime_get_content_message();
 if (content_type == NULL) {

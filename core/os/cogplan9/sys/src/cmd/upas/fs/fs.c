@@ -6,121 +6,121 @@
 #include "dat.h"
 enum
 {
-OPERM	= 0x3,
+OPERM = 0x3,
 };
 typedef struct Fid Fid;
 struct Fid
 {
-Qid	qid;
-short	busy;
-short	open;
-int	fid;
-Fid	*next;
-Mailbox	*mb;
-Message	*m;
+Qid qid;
+short busy;
+short open;
+int fid;
+Fid *next;
+Mailbox *mb;
+Message *m;
 Message *mtop;
-long	foff;
-Message	*fptr;
-int	fvers;
+long foff;
+Message *fptr;
+int fvers;
 };
-ulong	path;
-Fid	*fids;
-int	mfd[2];
-char	user[Elemlen];
-int	messagesize = 4*1024+IOHDRSZ;
-uchar	mdata[8*1024+IOHDRSZ];
-uchar	mbuf[8*1024+IOHDRSZ];
-Fcall	thdr;
-Fcall	rhdr;
-int	fflg;
-char	*mntpt;
-int	biffing;
-int	plumbing = 1;
-QLock	mbllock;
-Mailbox	*mbl;
-Fid		*newfid(int);
-void		error(char*);
-void		io(void);
-void		*erealloc(void*, ulong);
-void		*emalloc(ulong);
-void		usage(void);
-void		reader(void);
-int		readheader(Message*, char*, int, int);
-int		cistrncmp(char*, char*, int);
-int		tokenconvert(String*, char*, int);
-String*		stringconvert(String*, char*, int);
-void		post(char*, char*, int);
-char	*rflush(Fid*), *rauth(Fid*),
+ulong path;
+Fid *fids;
+int mfd[2];
+char user[Elemlen];
+int messagesize = 4*1024+IOHDRSZ;
+uchar mdata[8*1024+IOHDRSZ];
+uchar mbuf[8*1024+IOHDRSZ];
+Fcall thdr;
+Fcall rhdr;
+int fflg;
+char *mntpt;
+int biffing;
+int plumbing = 1;
+QLock mbllock;
+Mailbox *mbl;
+Fid *newfid(int);
+void error(char*);
+void io(void);
+void *erealloc(void*, ulong);
+void *emalloc(ulong);
+void usage(void);
+void reader(void);
+int readheader(Message*, char*, int, int);
+int cistrncmp(char*, char*, int);
+int tokenconvert(String*, char*, int);
+String* stringconvert(String*, char*, int);
+void post(char*, char*, int);
+char *rflush(Fid*), *rauth(Fid*),
 *rattach(Fid*), *rwalk(Fid*),
 *ropen(Fid*), *rcreate(Fid*),
 *rread(Fid*), *rwrite(Fid*), *rclunk(Fid*),
 *rremove(Fid*), *rstat(Fid*), *rwstat(Fid*),
 *rversion(Fid*);
-char 	*(*fcalls[])(Fid*) = {
-[Tflush]	rflush,
-[Tversion]	rversion,
-[Tauth]	rauth,
-[Tattach]	rattach,
-[Twalk]		rwalk,
-[Topen]		ropen,
-[Tcreate]	rcreate,
-[Tread]		rread,
-[Twrite]	rwrite,
-[Tclunk]	rclunk,
-[Tremove]	rremove,
-[Tstat]		rstat,
-[Twstat]	rwstat,
+char *(*fcalls[])(Fid*) = {
+[Tflush] rflush,
+[Tversion] rversion,
+[Tauth] rauth,
+[Tattach] rattach,
+[Twalk] rwalk,
+[Topen] ropen,
+[Tcreate] rcreate,
+[Tread] rread,
+[Twrite] rwrite,
+[Tclunk] rclunk,
+[Tremove] rremove,
+[Tstat] rstat,
+[Twstat] rwstat,
 };
-char	Eperm[] =	"permission denied";
-char	Enotdir[] =	"not a directory";
-char	Enoauth[] =	"upas/fs: authentication not required";
-char	Enotexist[] =	"file does not exist";
-char	Einuse[] =	"file in use";
-char	Eexist[] =	"file exists";
-char	Enotowner[] =	"not owner";
-char	Eisopen[] = 	"file already open for I/O";
-char	Excl[] = 	"exclusive use file already open";
-char	Ename[] = 	"illegal name";
-char	Ebadctl[] =	"unknown control message";
+char Eperm[] = "permission denied";
+char Enotdir[] = "not a directory";
+char Enoauth[] = "upas/fs: authentication not required";
+char Enotexist[] = "file does not exist";
+char Einuse[] = "file in use";
+char Eexist[] = "file exists";
+char Enotowner[] = "not owner";
+char Eisopen[] = "file already open for I/O";
+char Excl[] = "exclusive use file already open";
+char Ename[] = "illegal name";
+char Ebadctl[] = "unknown control message";
 char *dirtab[] =
 {
-[Qdir]		".",
-[Qbody]		"body",
-[Qbcc]		"bcc",
-[Qcc]		"cc",
-[Qdate]		"date",
-[Qdigest]	"digest",
-[Qdisposition]	"disposition",
-[Qfilename]	"filename",
-[Qfrom]		"from",
-[Qheader]	"header",
-[Qinfo]		"info",
-[Qinreplyto]	"inreplyto",
-[Qlines]	"lines",
-[Qmimeheader]	"mimeheader",
-[Qmessageid]	"messageid",
-[Qraw]		"raw",
-[Qrawunix]	"rawunix",
-[Qrawbody]	"rawbody",
-[Qrawheader]	"rawheader",
-[Qreplyto]	"replyto",
-[Qsender]	"sender",
-[Qsubject]	"subject",
-[Qto]		"to",
-[Qtype]		"type",
-[Qunixdate]	"unixdate",
-[Qunixheader]	"unixheader",
-[Qctl]		"ctl",
-[Qmboxctl]	"ctl",
+[Qdir] ".",
+[Qbody] "body",
+[Qbcc] "bcc",
+[Qcc] "cc",
+[Qdate] "date",
+[Qdigest] "digest",
+[Qdisposition] "disposition",
+[Qfilename] "filename",
+[Qfrom] "from",
+[Qheader] "header",
+[Qinfo] "info",
+[Qinreplyto] "inreplyto",
+[Qlines] "lines",
+[Qmimeheader] "mimeheader",
+[Qmessageid] "messageid",
+[Qraw] "raw",
+[Qrawunix] "rawunix",
+[Qrawbody] "rawbody",
+[Qrawheader] "rawheader",
+[Qreplyto] "replyto",
+[Qsender] "sender",
+[Qsubject] "subject",
+[Qto] "to",
+[Qtype] "type",
+[Qunixdate] "unixdate",
+[Qunixheader] "unixheader",
+[Qctl] "ctl",
+[Qmboxctl] "ctl",
 };
 enum
 {
-Hsize=	1277,
+Hsize= 1277,
 };
-Hash	*htab[Hsize];
-int	debug;
-int	fflag;
-int	logging;
+Hash *htab[Hsize];
+int debug;
+int fflag;
+int logging;
 void
 usage(void)
 {
@@ -1146,8 +1146,8 @@ typedef struct Ignorance Ignorance;
 struct Ignorance
 {
 Ignorance *next;
-char	*str;
-int	partial;
+char *str;
+int partial;
 };
 Ignorance *ignorance;
 void

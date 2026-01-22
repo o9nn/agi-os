@@ -23,21 +23,21 @@ MT_TEMPLATE,
 MT_ROOT,
 MT_CONTR,
 MT_PUNC,
-MT_STEM    = 1<<6,
-MT_PREFIX  = 1<<7,
-MT_MIDDLE  = 1<<8,
-MT_SUFFIX  = 1<<9
+MT_STEM = 1<<6,
+MT_PREFIX = 1<<7,
+MT_MIDDLE = 1<<8,
+MT_SUFFIX = 1<<9
 } Morpheme_type;
 #define IS_REG_MORPHEME (MT_STEM|MT_PREFIX|MT_MIDDLE|MT_SUFFIX)
 #define WS_UNKNOWN (1<<0)
-#define WS_REGEX   (1<<1)
-#define WS_SPELL   (1<<2)
-#define WS_RUNON   (1<<3)
-#define WS_HASALT  (1<<4)
+#define WS_REGEX (1<<1)
+#define WS_SPELL (1<<2)
+#define WS_RUNON (1<<3)
+#define WS_HASALT (1<<4)
 #define WS_UNSPLIT (1<<5)
-#define WS_INDICT  (1<<6)
+#define WS_INDICT (1<<6)
 #define WS_FIRSTUPPER (1<<7)
-#define WS_PL      (1<<14)
+#define WS_PL (1<<14)
 #define WS_GUESS (WS_SPELL|WS_RUNON|WS_REGEX)
 typedef enum
 {

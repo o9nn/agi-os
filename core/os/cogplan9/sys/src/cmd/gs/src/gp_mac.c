@@ -46,12 +46,12 @@ return (NULL);
 void
 gp_init (void)
 {
-extern char    *gs_lib_default_path;
-extern char    *gs_init_file;
+extern char *gs_lib_default_path;
+extern char *gs_init_file;
 #if 0
 {
-int			i;
-char	  **p;
+int i;
+char **p;
 for (i = iGSLibPathStr, p = &gs_lib_default_path;
 i <= iGSInitFileStr;
 i++, p = &gs_init_file)
@@ -74,7 +74,7 @@ gp_do_exit(int exit_status)
 exit(exit_status);
 }
 #ifndef HZ
-#  define	HZ	100
+# define HZ 100
 #endif
 int
 gettimeofday(struct timeval *tvp)
@@ -113,7 +113,7 @@ gp_get_usertime(long *pdt)
 gp_get_realtime(pdt);
 pdt[0] -= (char)rand();
 }
-const char *	gp_strerror(int)
+const char * gp_strerror(int)
 {
 return NULL;
 }
@@ -124,13 +124,13 @@ gp_get_realtime(pdt);
 void
 gpp_get_clock (long *pdt)
 {
-long				secs;
-DateTimeRec			dateRec;
-static DateTimeRec	baseDateRec = {1980, 1, 1, 0, 0, 0, 1};
-long				pdtmp[2];
-void 				do_get_clock (DateTimeRec *dateRec, long *pdt);
+long secs;
+DateTimeRec dateRec;
+static DateTimeRec baseDateRec = {1980, 1, 1, 0, 0, 0, 1};
+long pdtmp[2];
+void do_get_clock (DateTimeRec *dateRec, long *pdt);
 GetDateTime ((unsigned long *) &secs);
-do_get_clock (&dateRec	  , pdt);
+do_get_clock (&dateRec , pdt);
 do_get_clock (&baseDateRec, pdtmp);
 if (pdtmp[0] < pdt[0])
 pdt[0] -= pdtmp[0];
@@ -147,11 +147,11 @@ nMicroTickCount;
 long idate;
 static const int mstart[12] =
 { 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334 };
-long				secs;
-DateTimeRec			dateRec;
-static DateTimeRec	baseDateRec = {1980, 1, 1, 0, 0, 0, 1};
-void 				do_get_clock (DateTimeRec *dateRec, long *pdt);
-if ((beginMicroTickCount.lo == 0)&&(beginMicroTickCount.hi == 0) )  {
+long secs;
+DateTimeRec dateRec;
+static DateTimeRec baseDateRec = {1980, 1, 1, 0, 0, 0, 1};
+void do_get_clock (DateTimeRec *dateRec, long *pdt);
+if ((beginMicroTickCount.lo == 0)&&(beginMicroTickCount.hi == 0) ) {
 Microseconds(&beginMicroTickCount);
 }
 Microseconds(&microTickCount);
@@ -172,7 +172,7 @@ pdt[0] = ((idate*24 + dateRec.hour) * 60 + dateRec.minute) * 60 + dateRec.second
 pdt[1] = nMicroTickCount.lo * 100;
 #ifdef DEBUG_CLOCK
 fprintf(stderr,"pdt[0] = %ld  pdt[1] = %ld\n", pdt[0], pdt[1]);
-fprintf(stderr,"b hi[0] = %ld  lo[1] = %ld\n",  beginMicroTickCount.hi, beginMicroTickCount.lo);
+fprintf(stderr,"b hi[0] = %ld  lo[1] = %ld\n", beginMicroTickCount.hi, beginMicroTickCount.lo);
 fprintf(stderr,"m hi[0] = %ld  lo[1] = %ld\n", microTickCount.hi, microTickCount.lo);
 #endif
 }

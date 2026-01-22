@@ -4,17 +4,17 @@
 #include <vector>
 #include "fast_hadamard_transform.h"
 #define CHECK_SHAPE(x, ...) TORCH_CHECK(x.sizes() == torch::IntArrayRef({__VA_ARGS__}), #x " must have shape (" #__VA_ARGS__ ")")
-#define DISPATCH_ITYPE_FLOAT_AND_HALF_AND_BF16(ITYPE, NAME, ...)                    \
-if (ITYPE == at::ScalarType::Half) {                                            \
-using input_t = at::Half;                                                   \
-__VA_ARGS__();                                                              \
-} else if (ITYPE == at::ScalarType::BFloat16) {                                 \
-using input_t = at::BFloat16;                                               \
-__VA_ARGS__();                                                              \
-} else if (ITYPE == at::ScalarType::Float) {                                    \
-using input_t = float;                                                      \
-__VA_ARGS__();                                                              \
-} else {                                                                        \
+#define DISPATCH_ITYPE_FLOAT_AND_HALF_AND_BF16(ITYPE, NAME, ...) \
+if (ITYPE == at::ScalarType::Half) { \
+using input_t = at::Half; \
+__VA_ARGS__(); \
+} else if (ITYPE == at::ScalarType::BFloat16) { \
+using input_t = at::BFloat16; \
+__VA_ARGS__(); \
+} else if (ITYPE == at::ScalarType::Float) { \
+using input_t = float; \
+__VA_ARGS__(); \
+} else { \
 AT_ERROR(#NAME, " not implemented for input type '", toString(ITYPE), "'"); \
 }
 template<typename input_t>

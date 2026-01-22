@@ -195,13 +195,13 @@ NETMASK,
 DSTADDR,
 BRDADDR
 };
-#define SIOCGIF(name, type)						\
-kern_return_t								\
-S_iioctl_siocgif##name (struct sock_user *user,                       \
-ifname_t ifnam,				\
-sockaddr_t *addr)			\
-{									\
-return siocgifXaddr (user, ifnam, addr, type);			\
+#define SIOCGIF(name, type) \
+kern_return_t \
+S_iioctl_siocgif##name (struct sock_user *user, \
+ifname_t ifnam, \
+sockaddr_t *addr) \
+{ \
+return siocgifXaddr (user, ifnam, addr, type); \
 }
 static kern_return_t
 siocgifXaddr (struct sock_user *user,
@@ -229,13 +229,13 @@ sin->sin_addr.s_addr = addrs[type];
 pthread_mutex_unlock (&global_lock);
 return err;
 }
-#define SIOCSIF(name, type)						\
-kern_return_t								\
-S_iioctl_siocsif##name (struct sock_user *user,                       \
-const ifname_t ifnam,				\
-sockaddr_t addr)				\
-{									\
-return siocsifXaddr (user, ifnam, &addr, type);			\
+#define SIOCSIF(name, type) \
+kern_return_t \
+S_iioctl_siocsif##name (struct sock_user *user, \
+const ifname_t ifnam, \
+sockaddr_t addr) \
+{ \
+return siocsifXaddr (user, ifnam, &addr, type); \
 }
 static kern_return_t
 siocsifXaddr (struct sock_user *user,

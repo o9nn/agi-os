@@ -6,10 +6,10 @@
 #include <kern/lock.h>
 #include <vm/vm_object.h>
 #include <vm/vm_page.h>
-#define BLOCK_CACHE_MIN_BLOCK_SIZE	512
-#define BLOCK_CACHE_MAX_BLOCK_SIZE	65536
-#define BLOCK_CACHE_DEFAULT_BLOCKS	1024
-#define BLOCK_CACHE_HASH_SIZE		256
+#define BLOCK_CACHE_MIN_BLOCK_SIZE 512
+#define BLOCK_CACHE_MAX_BLOCK_SIZE 65536
+#define BLOCK_CACHE_DEFAULT_BLOCKS 1024
+#define BLOCK_CACHE_HASH_SIZE 256
 typedef enum {
 BLOCK_CACHE_CLEAN = 0,
 BLOCK_CACHE_DIRTY = 1,
@@ -18,37 +18,37 @@ BLOCK_CACHE_WRITING = 3,
 BLOCK_CACHE_ERROR = 4
 } block_cache_state_t;
 struct block_cache_entry {
-queue_chain_t	hash_link;
-queue_chain_t	lru_link;
-queue_chain_t	object_link;
-vm_object_t	object;
-vm_offset_t	block_offset;
-vm_size_t	block_size;
+queue_chain_t hash_link;
+queue_chain_t lru_link;
+queue_chain_t object_link;
+vm_object_t object;
+vm_offset_t block_offset;
+vm_size_t block_size;
 block_cache_state_t state;
-unsigned int	ref_count;
-unsigned int	access_time;
-unsigned int	access_frequency;
-boolean_t	read_ahead_hint;
-boolean_t	write_cluster_hint;
-unsigned int	page_count;
-vm_page_t	*pages;
+unsigned int ref_count;
+unsigned int access_time;
+unsigned int access_frequency;
+boolean_t read_ahead_hint;
+boolean_t write_cluster_hint;
+unsigned int page_count;
+vm_page_t *pages;
 simple_lock_data_t lock;
-int		waiters;
+int waiters;
 };
 typedef struct block_cache_entry *block_cache_entry_t;
 struct block_cache {
-vm_size_t	block_size;
-unsigned int	max_blocks;
-unsigned int	total_blocks;
-unsigned int	hits;
-unsigned int	misses;
-unsigned int	reads;
-unsigned int	writes;
-queue_head_t	hash_buckets[BLOCK_CACHE_HASH_SIZE];
-queue_head_t	lru_queue;
-queue_head_t	block_list;
+vm_size_t block_size;
+unsigned int max_blocks;
+unsigned int total_blocks;
+unsigned int hits;
+unsigned int misses;
+unsigned int reads;
+unsigned int writes;
+queue_head_t hash_buckets[BLOCK_CACHE_HASH_SIZE];
+queue_head_t lru_queue;
+queue_head_t block_list;
 simple_lock_data_t lock;
-vm_object_t	object;
+vm_object_t object;
 };
 typedef struct block_cache *block_cache_t;
 void vm_block_cache_init(void);

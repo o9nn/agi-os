@@ -26,7 +26,7 @@ static char Eaddress[] = "address out of range";
 static char *
 logfsbootblockupdate(LogfsBoot *lb, void *buf, LogfsBootPath *path, uchar tag, ulong block)
 {
-LogfsLowLevel *ll =  lb->ll;
+LogfsLowLevel *ll = lb->ll;
 char *errmsg;
 ulong packedpath;
 if(lb->trace > 1)
@@ -357,7 +357,7 @@ return Eaddress;
 lboffset = laddress % lb->blocksize;
 pblock = lb->map[lblock];
 paddress = (*ll->calcrawaddress)(ll, pblock, lboffset);
-lpage = lboffset >>  ll->l2pagesize;
+lpage = lboffset >> ll->l2pagesize;
 lpageoffset = lboffset & ((1 << ll->l2pagesize) - 1);
 if(lblockp)
 *lblockp = lblock;

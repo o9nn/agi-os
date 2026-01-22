@@ -1,11 +1,11 @@
 #pragma once
 #include "ggml.h"
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 typedef struct ggml_backend_buffer_type * ggml_backend_buffer_type_t;
-typedef struct      ggml_backend_buffer * ggml_backend_buffer_t;
-typedef struct             ggml_backend * ggml_backend_t;
+typedef struct ggml_backend_buffer * ggml_backend_buffer_t;
+typedef struct ggml_backend * ggml_backend_t;
 struct ggml_tallocr {
 ggml_backend_buffer_t buffer;
 void * base;
@@ -13,11 +13,11 @@ size_t alignment;
 size_t offset;
 };
 GGML_API struct ggml_tallocr ggml_tallocr_new(ggml_backend_buffer_t buffer);
-GGML_API enum ggml_status    ggml_tallocr_alloc(struct ggml_tallocr * talloc, struct ggml_tensor * tensor);
+GGML_API enum ggml_status ggml_tallocr_alloc(struct ggml_tallocr * talloc, struct ggml_tensor * tensor);
 typedef struct ggml_gallocr * ggml_gallocr_t;
 GGML_API ggml_gallocr_t ggml_gallocr_new(ggml_backend_buffer_type_t buft);
 GGML_API ggml_gallocr_t ggml_gallocr_new_n(ggml_backend_buffer_type_t * bufts, int n_bufs);
-GGML_API void           ggml_gallocr_free(ggml_gallocr_t galloc);
+GGML_API void ggml_gallocr_free(ggml_gallocr_t galloc);
 GGML_API bool ggml_gallocr_reserve(ggml_gallocr_t galloc, struct ggml_cgraph * graph);
 GGML_API bool ggml_gallocr_reserve_n(
 ggml_gallocr_t galloc,
@@ -33,6 +33,6 @@ bool allocated;
 GGML_API struct ggml_allocr_buffer_status ggml_gallocr_get_attempted_buffer_size(ggml_gallocr_t galloc, int buffer_id);
 GGML_API struct ggml_backend_buffer * ggml_backend_alloc_ctx_tensors_from_buft(struct ggml_context * ctx, ggml_backend_buffer_type_t buft);
 GGML_API struct ggml_backend_buffer * ggml_backend_alloc_ctx_tensors(struct ggml_context * ctx, ggml_backend_t backend);
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif

@@ -32,11 +32,11 @@ mem_get_bits_rectangle);
 #define put8(ptr, abcd, efgh)\
 (ptr)[0] = abcd, (ptr)[1] = efgh
 #if arch_is_big_endian
-#  define declare_unpack_color(abcd, efgh, color)\
+# define declare_unpack_color(abcd, efgh, color)\
 bits32 abcd = (bits32)((color) >> 32);\
 bits32 efgh = (bits32)(color)
 #else
-#  define declare_unpack_color(abcd, efgh, color)\
+# define declare_unpack_color(abcd, efgh, color)\
 bits32 abcd = (bits32)((0x000000ff & ((color) >> 56)) |\
 (0x0000ff00 & ((color) >> 40)) |\
 (0x00ff0000 & ((color) >> 24)) |\

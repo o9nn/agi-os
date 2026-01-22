@@ -1,38 +1,38 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"ip.h"
-typedef struct Ip4hdr		Ip4hdr;
-typedef struct IP		IP;
-typedef struct Fragment4	Fragment4;
-typedef struct Fragment6	Fragment6;
-typedef struct Ipfrag		Ipfrag;
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "ip.h"
+typedef struct Ip4hdr Ip4hdr;
+typedef struct IP IP;
+typedef struct Fragment4 Fragment4;
+typedef struct Fragment6 Fragment6;
+typedef struct Ipfrag Ipfrag;
 enum
 {
-IP4HDR		= 20,
-IP6HDR		= 40,
-IP_HLEN4	= 0x05,
-IP_DF		= 0x4000,
-IP_MF		= 0x2000,
-IP6FHDR		= 8,
-IP_MAX		= 64*1024,
+IP4HDR = 20,
+IP6HDR = 40,
+IP_HLEN4 = 0x05,
+IP_DF = 0x4000,
+IP_MF = 0x2000,
+IP6FHDR = 8,
+IP_MAX = 64*1024,
 };
-#define BLKIPVER(xp)	(((Ip4hdr*)((xp)->rp))->vihl&0xF0)
+#define BLKIPVER(xp) (((Ip4hdr*)((xp)->rp))->vihl&0xF0)
 struct Ip4hdr
 {
-uchar	vihl;
-uchar	tos;
-uchar	length[2];
-uchar	id[2];
-uchar	frag[2];
-uchar	ttl;
-uchar	proto;
-uchar	cksum[2];
-uchar	src[4];
-uchar	dst[4];
+uchar vihl;
+uchar tos;
+uchar length[2];
+uchar id[2];
+uchar frag[2];
+uchar ttl;
+uchar proto;
+uchar cksum[2];
+uchar src[4];
+uchar dst[4];
 };
 enum
 {
@@ -59,85 +59,85 @@ Nstats,
 };
 struct Fragment4
 {
-Block*	blist;
-Fragment4*	next;
-ulong 	src;
-ulong 	dst;
-ushort	id;
-ulong 	age;
+Block* blist;
+Fragment4* next;
+ulong src;
+ulong dst;
+ushort id;
+ulong age;
 };
 struct Fragment6
 {
-Block*	blist;
-Fragment6*	next;
-uchar 	src[IPaddrlen];
-uchar 	dst[IPaddrlen];
-uint	id;
-ulong 	age;
+Block* blist;
+Fragment6* next;
+uchar src[IPaddrlen];
+uchar dst[IPaddrlen];
+uint id;
+ulong age;
 };
 struct Ipfrag
 {
-ushort	foff;
-ushort	flen;
+ushort foff;
+ushort flen;
 };
 struct IP
 {
-ulong		stats[Nstats];
-QLock		fraglock4;
-Fragment4*	flisthead4;
-Fragment4*	fragfree4;
-Ref		id4;
-QLock		fraglock6;
-Fragment6*	flisthead6;
-Fragment6*	fragfree6;
-Ref		id6;
-int		iprouting;
+ulong stats[Nstats];
+QLock fraglock4;
+Fragment4* flisthead4;
+Fragment4* fragfree4;
+Ref id4;
+QLock fraglock6;
+Fragment6* flisthead6;
+Fragment6* fragfree6;
+Ref id6;
+int iprouting;
 };
 static char *statnames[] =
 {
-[Forwarding]	"Forwarding",
-[DefaultTTL]	"DefaultTTL",
-[InReceives]	"InReceives",
-[InHdrErrors]	"InHdrErrors",
-[InAddrErrors]	"InAddrErrors",
-[ForwDatagrams]	"ForwDatagrams",
-[InUnknownProtos]	"InUnknownProtos",
-[InDiscards]	"InDiscards",
-[InDelivers]	"InDelivers",
-[OutRequests]	"OutRequests",
-[OutDiscards]	"OutDiscards",
-[OutNoRoutes]	"OutNoRoutes",
-[ReasmTimeout]	"ReasmTimeout",
-[ReasmReqds]	"ReasmReqds",
-[ReasmOKs]	"ReasmOKs",
-[ReasmFails]	"ReasmFails",
-[FragOKs]	"FragOKs",
-[FragFails]	"FragFails",
-[FragCreates]	"FragCreates",
+[Forwarding] "Forwarding",
+[DefaultTTL] "DefaultTTL",
+[InReceives] "InReceives",
+[InHdrErrors] "InHdrErrors",
+[InAddrErrors] "InAddrErrors",
+[ForwDatagrams] "ForwDatagrams",
+[InUnknownProtos] "InUnknownProtos",
+[InDiscards] "InDiscards",
+[InDelivers] "InDelivers",
+[OutRequests] "OutRequests",
+[OutDiscards] "OutDiscards",
+[OutNoRoutes] "OutNoRoutes",
+[ReasmTimeout] "ReasmTimeout",
+[ReasmReqds] "ReasmReqds",
+[ReasmOKs] "ReasmOKs",
+[ReasmFails] "ReasmFails",
+[FragOKs] "FragOKs",
+[FragFails] "FragFails",
+[FragCreates] "FragCreates",
 };
-#define BLKIP(xp)	((Ip4hdr*)((xp)->rp))
-#define BKFG(xp)	((Ipfrag*)((xp)->base))
-ushort		ipcsum(uchar*);
-Block*		ip4reassemble(IP*, int, Block*, Ip4hdr*);
-void		ipfragfree4(IP*, Fragment4*);
-Fragment4*	ipfragallo4(IP*);
+#define BLKIP(xp) ((Ip4hdr*)((xp)->rp))
+#define BKFG(xp) ((Ipfrag*)((xp)->base))
+ushort ipcsum(uchar*);
+Block* ip4reassemble(IP*, int, Block*, Ip4hdr*);
+void ipfragfree4(IP*, Fragment4*);
+Fragment4* ipfragallo4(IP*);
 void
 ip_init_6(Fs *f)
 {
 V6params *v6p;
 v6p = smalloc(sizeof(V6params));
-v6p->rp.mflag		= 0;
-v6p->rp.oflag		= 0;
-v6p->rp.maxraint	= 600000;
-v6p->rp.minraint	= 200000;
-v6p->rp.linkmtu		= 0;
-v6p->rp.reachtime	= 0;
-v6p->rp.rxmitra		= 0;
-v6p->rp.ttl		= MAXTTL;
-v6p->rp.routerlt	= 3*(v6p->rp.maxraint);
-v6p->hp.rxmithost	= 1000;
-v6p->cdrouter 		= -1;
-f->v6p			= v6p;
+v6p->rp.mflag = 0;
+v6p->rp.oflag = 0;
+v6p->rp.maxraint = 600000;
+v6p->rp.minraint = 200000;
+v6p->rp.linkmtu = 0;
+v6p->rp.reachtime = 0;
+v6p->rp.rxmitra = 0;
+v6p->rp.ttl = MAXTTL;
+v6p->rp.routerlt = 3*(v6p->rp.maxraint);
+v6p->hp.rxmithost = 1000;
+v6p->cdrouter = -1;
+f->v6p = v6p;
 }
 void
 initfrag(IP *ip, int size)

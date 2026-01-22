@@ -442,8 +442,8 @@ free (np);
 }
 #define DIRENT_ALIGN 4
 #define DIRENT_NAME_OFFS offsetof (struct dirent, d_name)
-#define DIRENT_LEN(name_len)                                                  \
-((DIRENT_NAME_OFFS + (name_len) + 1 + (DIRENT_ALIGN - 1))                   \
+#define DIRENT_LEN(name_len) \
+((DIRENT_NAME_OFFS + (name_len) + 1 + (DIRENT_ALIGN - 1)) \
 & ~(DIRENT_ALIGN - 1))
 error_t
 netfs_get_dirents (struct iouser *cred, struct node *dir,

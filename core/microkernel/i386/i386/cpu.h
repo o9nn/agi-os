@@ -2,7 +2,7 @@
 #define _X86_CPU_H
 #include <kern/macros.h>
 #define CPU_EFL_ONE 0x00000002
-#define CPU_EFL_IF  0x00000200
+#define CPU_EFL_IF 0x00000200
 static __always_inline unsigned long
 cpu_get_eflags(void)
 {

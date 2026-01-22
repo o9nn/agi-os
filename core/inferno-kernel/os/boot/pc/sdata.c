@@ -9,222 +9,222 @@
 #include "sd.h"
 extern SDifc sdataifc;
 enum {
-DbgCONFIG	= 0x0001,
-DbgIDENTIFY	= 0x0002,
-DbgSTATE	= 0x0004,
-DbgPROBE	= 0x0008,
-DbgDEBUG	= 0x0080,
-DbgINL		= 0x0100,
-Dbg48BIT	= 0x0200,
-DbgBsy		= 0x0400,
+DbgCONFIG = 0x0001,
+DbgIDENTIFY = 0x0002,
+DbgSTATE = 0x0004,
+DbgPROBE = 0x0008,
+DbgDEBUG = 0x0080,
+DbgINL = 0x0100,
+Dbg48BIT = 0x0200,
+DbgBsy = 0x0400,
 };
-#define DEBUG		(DbgDEBUG|DbgCONFIG)
+#define DEBUG (DbgDEBUG|DbgCONFIG)
 enum {
-Data		= 0,
-Error		= 1,
-Features	= 1,
-Count		= 2,
-Ir		= 2,
-Sector		= 3,
-Lbalo		= 3,
-Cyllo		= 4,
-Bytelo		= 4,
-Lbamid		= 4,
-Cylhi		= 5,
-Bytehi		= 5,
-Lbahi		= 5,
-Dh		= 6,
-Status		= 7,
-Command		= 7,
-As		= 2,
-Dc		= 2,
-};
-enum {
-Med		= 0x01,
-Ili		= 0x01,
-Nm		= 0x02,
-Eom		= 0x02,
-Abrt		= 0x04,
-Mcr		= 0x08,
-Idnf		= 0x10,
-Mc		= 0x20,
-Unc		= 0x40,
-Wp		= 0x40,
-Icrc		= 0x80,
+Data = 0,
+Error = 1,
+Features = 1,
+Count = 2,
+Ir = 2,
+Sector = 3,
+Lbalo = 3,
+Cyllo = 4,
+Bytelo = 4,
+Lbamid = 4,
+Cylhi = 5,
+Bytehi = 5,
+Lbahi = 5,
+Dh = 6,
+Status = 7,
+Command = 7,
+As = 2,
+Dc = 2,
 };
 enum {
-Dma		= 0x01,
-Ovl		= 0x02,
+Med = 0x01,
+Ili = 0x01,
+Nm = 0x02,
+Eom = 0x02,
+Abrt = 0x04,
+Mcr = 0x08,
+Idnf = 0x10,
+Mc = 0x20,
+Unc = 0x40,
+Wp = 0x40,
+Icrc = 0x80,
 };
 enum {
-Cd		= 0x01,
-Io		= 0x02,
-Rel		= 0x04,
+Dma = 0x01,
+Ovl = 0x02,
 };
 enum {
-Dev0		= 0xA0,
-Dev1		= 0xB0,
-Lba		= 0x40,
+Cd = 0x01,
+Io = 0x02,
+Rel = 0x04,
 };
 enum {
-Err		= 0x01,
-Chk		= 0x01,
-Drq		= 0x08,
-Dsc		= 0x10,
-Serv		= 0x10,
-Df		= 0x20,
-Dmrd		= 0x20,
-Drdy		= 0x40,
-Bsy		= 0x80,
+Dev0 = 0xA0,
+Dev1 = 0xB0,
+Lba = 0x40,
 };
 enum {
-Cnop		= 0x00,
-Cdr		= 0x08,
-Crs		= 0x20,
-Crs48		= 0x24,
-Crd48		= 0x25,
-Crdq48		= 0x26,
-Crsm48		= 0x29,
-Cws		= 0x30,
-Cws48		= 0x34,
-Cwd48		= 0x35,
-Cwdq48		= 0x36,
-Cwsm48		= 0x39,
-Cedd		= 0x90,
-Cpkt		= 0xA0,
-Cidpkt		= 0xA1,
-Crsm		= 0xC4,
-Cwsm		= 0xC5,
-Csm		= 0xC6,
-Crdq		= 0xC7,
-Crd		= 0xC8,
-Cwd		= 0xCA,
-Cwdq		= 0xCC,
-Cstandby	= 0xE2,
-Cid		= 0xEC,
-Csf		= 0xEF,
+Err = 0x01,
+Chk = 0x01,
+Drq = 0x08,
+Dsc = 0x10,
+Serv = 0x10,
+Df = 0x20,
+Dmrd = 0x20,
+Drdy = 0x40,
+Bsy = 0x80,
 };
 enum {
-Nien		= 0x02,
-Srst		= 0x04,
+Cnop = 0x00,
+Cdr = 0x08,
+Crs = 0x20,
+Crs48 = 0x24,
+Crd48 = 0x25,
+Crdq48 = 0x26,
+Crsm48 = 0x29,
+Cws = 0x30,
+Cws48 = 0x34,
+Cwd48 = 0x35,
+Cwdq48 = 0x36,
+Cwsm48 = 0x39,
+Cedd = 0x90,
+Cpkt = 0xA0,
+Cidpkt = 0xA1,
+Crsm = 0xC4,
+Cwsm = 0xC5,
+Csm = 0xC6,
+Crdq = 0xC7,
+Crd = 0xC8,
+Cwd = 0xCA,
+Cwdq = 0xCC,
+Cstandby = 0xE2,
+Cid = 0xEC,
+Csf = 0xEF,
 };
 enum {
-Bmiba		= 0x20,
-Idetim		= 0x40,
-Sidetim		= 0x44,
-Udmactl		= 0x48,
-Udmatim		= 0x4A,
+Nien = 0x02,
+Srst = 0x04,
 };
 enum {
-Bmicx		= 0,
-Bmisx		= 2,
-Bmidtpx		= 4,
+Bmiba = 0x20,
+Idetim = 0x40,
+Sidetim = 0x44,
+Udmactl = 0x48,
+Udmatim = 0x4A,
 };
 enum {
-Ssbm		= 0x01,
-Rwcon		= 0x08,
+Bmicx = 0,
+Bmisx = 2,
+Bmidtpx = 4,
 };
 enum {
-Bmidea		= 0x01,
-Idedmae		= 0x02,
-Ideints		= 0x04,
-Dma0cap		= 0x20,
-Dma1cap		= 0x40,
+Ssbm = 0x01,
+Rwcon = 0x08,
 };
 enum {
-PrdEOT		= 0x80000000,
+Bmidea = 0x01,
+Idedmae = 0x02,
+Ideints = 0x04,
+Dma0cap = 0x20,
+Dma1cap = 0x40,
 };
 enum {
-Iconfig		= 0,
-Ilcyl		= 1,
-Ilhead		= 3,
-Ilsec		= 6,
-Iserial		= 10,
-Ifirmware	= 23,
-Imodel		= 27,
-Imaxrwm		= 47,
-Icapabilities	= 49,
-Istandby	= 50,
-Ipiomode	= 51,
-Ivalid		= 53,
-Iccyl		= 54,
-Ichead		= 55,
-Icsec		= 56,
-Iccap		= 57,
-Irwm		= 59,
-Ilba		= 60,
-Imwdma		= 63,
-Iapiomode	= 64,
-Iminmwdma	= 65,
-Irecmwdma	= 66,
-Iminpio		= 67,
-Iminiordy	= 68,
-Ipcktbr		= 71,
-Iserbsy		= 72,
-Iqdepth		= 75,
-Imajor		= 80,
-Iminor		= 81,
-Icsfs		= 82,
-Icsfe		= 85,
-Iudma		= 88,
-Ierase		= 89,
-Ieerase		= 90,
-Ipower		= 91,
-Ilba48		= 100,
-Irmsn		= 127,
-Isecstat	= 128,
+PrdEOT = 0x80000000,
+};
+enum {
+Iconfig = 0,
+Ilcyl = 1,
+Ilhead = 3,
+Ilsec = 6,
+Iserial = 10,
+Ifirmware = 23,
+Imodel = 27,
+Imaxrwm = 47,
+Icapabilities = 49,
+Istandby = 50,
+Ipiomode = 51,
+Ivalid = 53,
+Iccyl = 54,
+Ichead = 55,
+Icsec = 56,
+Iccap = 57,
+Irwm = 59,
+Ilba = 60,
+Imwdma = 63,
+Iapiomode = 64,
+Iminmwdma = 65,
+Irecmwdma = 66,
+Iminpio = 67,
+Iminiordy = 68,
+Ipcktbr = 71,
+Iserbsy = 72,
+Iqdepth = 75,
+Imajor = 80,
+Iminor = 81,
+Icsfs = 82,
+Icsfe = 85,
+Iudma = 88,
+Ierase = 89,
+Ieerase = 90,
+Ipower = 91,
+Ilba48 = 100,
+Irmsn = 127,
+Isecstat = 128,
 };
 typedef struct Ctlr Ctlr;
 typedef struct Drive Drive;
 typedef struct Prd {
-ulong	pa;
-int	count;
+ulong pa;
+int count;
 } Prd;
 enum {
-Nprd		= SDmaxio/(64*1024)+2,
+Nprd = SDmaxio/(64*1024)+2,
 };
 typedef struct Ctlr {
-int	cmdport;
-int	ctlport;
-int	irq;
-int	tbdf;
-Pcidev*	pcidev;
-void	(*ienable)(Ctlr*);
-SDev*	sdev;
-Drive*	drive[2];
-Prd*	prdt;
-Drive*	curdrive;
-int	command;
-int	done;
+int cmdport;
+int ctlport;
+int irq;
+int tbdf;
+Pcidev* pcidev;
+void (*ienable)(Ctlr*);
+SDev* sdev;
+Drive* drive[2];
+Prd* prdt;
+Drive* curdrive;
+int command;
+int done;
 Lock;
 } Ctlr;
 typedef struct Drive {
-Ctlr*	ctlr;
-int	dev;
-ushort	info[256];
-int	c;
-int	h;
-int	s;
-vlong	sectors;
-int	secsize;
-int	pkt;
-uchar	pktcmd[16];
-uchar	sense[18];
-uchar	inquiry[48];
-int	command;
-int	write;
-uchar*	data;
-int	dlen;
-uchar*	limit;
-int	count;
-int	block;
-int	status;
-int	error;
-int	flags;
+Ctlr* ctlr;
+int dev;
+ushort info[256];
+int c;
+int h;
+int s;
+vlong sectors;
+int secsize;
+int pkt;
+uchar pktcmd[16];
+uchar sense[18];
+uchar inquiry[48];
+int command;
+int write;
+uchar* data;
+int dlen;
+uchar* limit;
+int count;
+int block;
+int status;
+int error;
+int flags;
 } Drive;
 enum {
-Lba48		= 0x1,
-Lba48always	= 0x2,
+Lba48 = 0x1,
+Lba48always = 0x2,
 };
 static void
 pc87415ienable(Ctlr* ctlr)
@@ -687,14 +687,14 @@ atageniodone(void* arg)
 return ((Ctlr*)arg)->done;
 }
 static uchar cmd48[256] = {
-[Crs]	Crs48,
-[Crd]	Crd48,
-[Crdq]	Crdq48,
-[Crsm]	Crsm48,
-[Cws]	Cws48,
-[Cwd]	Cwd48,
-[Cwdq]	Cwdq48,
-[Cwsm]	Cwsm48,
+[Crs] Crs48,
+[Crd] Crd48,
+[Crdq] Crdq48,
+[Crsm] Crsm48,
+[Cws] Cws48,
+[Cwd] Cwd48,
+[Cwdq] Cwdq48,
+[Cwsm] Cwsm48,
 };
 static int
 atageniostart(Drive* drive, vlong lba)

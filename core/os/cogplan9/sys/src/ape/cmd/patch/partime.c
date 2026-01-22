@@ -2,26 +2,26 @@
 # include <conf.h>
 #else
 # if HAVE_CONFIG_H
-#  include <config.h>
+# include <config.h>
 # else
-#  ifndef __STDC__
-#   define const
-#  endif
+# ifndef __STDC__
+# define const
+# endif
 # endif
 # if HAVE_LIMITS_H
-#  include <limits.h>
+# include <limits.h>
 # endif
 # ifndef LONG_MIN
 # define LONG_MIN (-1-2147483647L)
 # endif
 # if STDC_HEADERS
-#  include <stdlib.h>
+# include <stdlib.h>
 # endif
 # include <time.h>
 # ifdef __STDC__
-#  define P(x) x
+# define P(x) x
 # else
-#  define P(x) ()
+# define P(x) ()
 # endif
 #endif
 #include <ctype.h>
@@ -30,11 +30,11 @@
 #else
 # define CTYPE_DOMAIN(c) ((unsigned) (c) <= 0177)
 #endif
-#define ISALNUM(c)	(CTYPE_DOMAIN (c) && isalnum (c))
-#define ISALPHA(c)	(CTYPE_DOMAIN (c) && isalpha (c))
-#define ISSPACE(c)	(CTYPE_DOMAIN (c) && isspace (c))
-#define ISUPPER(c)	(CTYPE_DOMAIN (c) && isupper (c))
-#define ISDIGIT(c)	((unsigned) (c) - '0' <= 9)
+#define ISALNUM(c) (CTYPE_DOMAIN (c) && isalnum (c))
+#define ISALPHA(c) (CTYPE_DOMAIN (c) && isalpha (c))
+#define ISSPACE(c) (CTYPE_DOMAIN (c) && isspace (c))
+#define ISUPPER(c) (CTYPE_DOMAIN (c) && isupper (c))
+#define ISDIGIT(c) ((unsigned) (c) - '0' <= 9)
 #include <partime.h>
 char const partimeId[] =
 "$Id: partime.c,v 5.16 1997/05/19 06:33:53 eggert Exp $";
@@ -79,10 +79,10 @@ static struct name_val const weekday_names[] =
 {"sat", 6},
 {"", TM_UNDEFINED}
 };
-#define hr60nonnegative(t) ((t)/100 * 60  +  (t)%100)
+#define hr60nonnegative(t) ((t)/100 * 60 + (t)%100)
 #define hr60(t) ((t)<0 ? -hr60nonnegative(-(t)) : hr60nonnegative(t))
 #define zs(t,s) {s, hr60(t)}
-#define zd(t,s,d) zs(t, s),  zs((t)+100, d)
+#define zd(t,s,d) zs(t, s), zs((t)+100, d)
 static struct name_val const zone_names[] =
 {
 zs (-1000, "hst"),
@@ -94,20 +94,20 @@ zd (- 600, "cst" , "cdt" ),
 zd (- 500, "est" , "edt" ),
 zd (- 400, "ast" , "adt" ),
 zd (- 330, "nst" , "ndt" ),
-zs (  000, "utc" ),
-zs (  000, "uct" ),
-zs (  000, "cut" ),
-zs (  000, "ut"),
-zs (  000, "z"),
-zd (  000, "gmt" , "bst" ),
-zd (  000, "wet" , "west"),
-zd (  100, "cet" , "cest"),
-zd (  100, "met" , "mest"),
-zd (  100, "mez" , "mesz"),
-zd (  200, "eet" , "eest"),
-zs (  530, "ist" ),
-zd (  900, "jst" , "jdt" ),
-zd (  900, "kst" , "kdt" ),
+zs ( 000, "utc" ),
+zs ( 000, "uct" ),
+zs ( 000, "cut" ),
+zs ( 000, "ut"),
+zs ( 000, "z"),
+zd ( 000, "gmt" , "bst" ),
+zd ( 000, "wet" , "west"),
+zd ( 100, "cet" , "cest"),
+zd ( 100, "met" , "mest"),
+zd ( 100, "mez" , "mesz"),
+zd ( 200, "eet" , "eest"),
+zs ( 530, "ist" ),
+zd ( 900, "jst" , "jdt" ),
+zd ( 900, "kst" , "kdt" ),
 zd ( 1200, "nzst", "nzdt"),
 {"lt", 1},
 #if 0
@@ -117,18 +117,18 @@ zd (- 500, "ast" , "adt" ),
 zd (- 400, "wst" , "wdt" ),
 zd (- 400, "cst" , "cdt" ),
 zd (- 200, "fst" , "fdt" ),
-zs (  000, "wat" ),
-zs (  100, "cat" ),
-zs (  200, "sat" ),
-zd (  200, "ist" , "idt" ),
-zs (  300, "eat" ),
-zd (  300, "msk" , "msd" ),
-zd (  330, "ist" , "idt" ),
-zs (  800, "hkt" ),
-zs (  800, "sgt" ),
-zd (  800, "cst" , "cdt" ),
-zd (  800, "wst" , "wst" ),
-zd (  930, "cst" , "cst" ),
+zs ( 000, "wat" ),
+zs ( 100, "cat" ),
+zs ( 200, "sat" ),
+zd ( 200, "ist" , "idt" ),
+zs ( 300, "eat" ),
+zd ( 300, "msk" , "msd" ),
+zd ( 330, "ist" , "idt" ),
+zs ( 800, "hkt" ),
+zs ( 800, "sgt" ),
+zd ( 800, "cst" , "cdt" ),
+zd ( 800, "wst" , "wst" ),
+zd ( 930, "cst" , "cst" ),
 zs ( 1000, "gst" ),
 zd ( 1000, "est" , "est" ),
 #endif
@@ -153,7 +153,7 @@ buf[j] = ISUPPER (c) ? tolower (c) : c;
 }
 for (;; table++)
 for (j = 0; ; j++)
-if (j == NAME_LENGTH_MAXIMUM  ||  ! table[0].name[j])
+if (j == NAME_LENGTH_MAXIMUM || ! table[0].name[j])
 return table[0].val;
 else if (buf[j] != table[0].name[j])
 break;
@@ -263,15 +263,15 @@ int num10 = 0, denom10 = 10, product;
 while (ISDIGIT (*++s))
 {
 int d = denom10 * 10;
-if (d / 10  !=  denom10)
+if (d / 10 != denom10)
 return 0;
 denom10 = d;
 }
 s = parse_fixed (s1, (int) (s - s1), &num10);
 product = num10 * resolution;
 f = (product + (denom10 >> 1)) / denom10;
-f -= f & (product % denom10  ==  denom10 >> 1);
-if (f < 0  ||  product/resolution != num10)
+f -= f & (product % denom10 == denom10 >> 1);
+if (f < 0 || product/resolution != num10)
 return 0;
 }
 *fres = f;
@@ -525,7 +525,7 @@ merge_partime (t, u)
 struct partime *t;
 struct partime const *u;
 {
-# define conflict(a,b) ((a) != (b)  &&  TM_DEFINED (a)  &&  TM_DEFINED (b))
+# define conflict(a,b) ((a) != (b) && TM_DEFINED (a) && TM_DEFINED (b))
 if (conflict (t->tm.tm_sec, u->tm.tm_sec)
 || conflict (t->tm.tm_min, u->tm.tm_min)
 || conflict (t->tm.tm_hour, u->tm.tm_hour)

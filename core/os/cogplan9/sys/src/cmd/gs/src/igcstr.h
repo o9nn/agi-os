@@ -1,5 +1,5 @@
 #ifndef igcstr_INCLUDED
-#  define igcstr_INCLUDED
+# define igcstr_INCLUDED
 chunk_t *gc_locate(const void *, gc_state_t *);
 void gc_strings_set_marks(chunk_t *, bool);
 bool gc_string_mark(const byte *, uint, bool, gc_state_t *);

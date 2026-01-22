@@ -14,12 +14,12 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 class __mutex_base
 {
 protected:
-typedef __gthread_mutex_t			__native_type;
+typedef __gthread_mutex_t __native_type;
 #ifdef __GTHREAD_MUTEX_INIT
-__native_type  _M_mutex = __GTHREAD_MUTEX_INIT;
+__native_type _M_mutex = __GTHREAD_MUTEX_INIT;
 constexpr __mutex_base() noexcept = default;
 #else
-__native_type  _M_mutex;
+__native_type _M_mutex;
 __mutex_base() noexcept
 {
 __GTHREAD_MUTEX_INIT_FUNCTION(&_M_mutex);
@@ -32,7 +32,7 @@ __mutex_base& operator=(const __mutex_base&) = delete;
 class mutex : private __mutex_base
 {
 public:
-typedef __native_type* 			native_handle_type;
+typedef __native_type* native_handle_type;
 #ifdef __GTHREAD_MUTEX_INIT
 constexpr
 #endif
@@ -123,9 +123,9 @@ __gthread_cond_t _M_cond;
 struct defer_lock_t { explicit defer_lock_t() = default; };
 struct try_to_lock_t { explicit try_to_lock_t() = default; };
 struct adopt_lock_t { explicit adopt_lock_t() = default; };
-_GLIBCXX17_INLINE constexpr defer_lock_t	defer_lock { };
-_GLIBCXX17_INLINE constexpr try_to_lock_t	try_to_lock { };
-_GLIBCXX17_INLINE constexpr adopt_lock_t	adopt_lock { };
+_GLIBCXX17_INLINE constexpr defer_lock_t defer_lock { };
+_GLIBCXX17_INLINE constexpr try_to_lock_t try_to_lock { };
+_GLIBCXX17_INLINE constexpr adopt_lock_t adopt_lock { };
 template<typename _Mutex>
 class lock_guard
 {
@@ -140,7 +140,7 @@ lock_guard(mutex_type& __m, adopt_lock_t) noexcept : _M_device(__m)
 lock_guard(const lock_guard&) = delete;
 lock_guard& operator=(const lock_guard&) = delete;
 private:
-mutex_type&  _M_device;
+mutex_type& _M_device;
 };
 _GLIBCXX_END_NAMESPACE_VERSION
 }

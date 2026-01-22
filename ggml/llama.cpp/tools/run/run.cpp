@@ -6,18 +6,18 @@
 #define JSON_ASSERT GGML_ASSERT
 #include <nlohmann/json.hpp>
 #if defined(_WIN32)
-#    ifndef NOMINMAX
-#        define NOMINMAX
-#    endif
-#    include <windows.h>
-#    include <io.h>
+# ifndef NOMINMAX
+# define NOMINMAX
+# endif
+# include <windows.h>
+# include <io.h>
 #else
-#    include <sys/file.h>
-#    include <sys/ioctl.h>
-#    include <unistd.h>
+# include <sys/file.h>
+# include <sys/ioctl.h>
+# include <unistd.h>
 #endif
 #if defined(LLAMA_USE_CURL)
-#    include <curl/curl.h>
+# include <curl/curl.h>
 #endif
 #include <signal.h>
 #include <climits>
@@ -52,11 +52,11 @@ return oss.str();
 class Opt {
 public:
 int init(int argc, const char ** argv) {
-ctx_params           = llama_context_default_params();
-model_params         = llama_model_default_params();
+ctx_params = llama_context_default_params();
+model_params = llama_model_default_params();
 context_size_default = ctx_params.n_batch;
-n_threads_default    = ctx_params.n_threads;
-ngl_default          = model_params.n_gpu_layers;
+n_threads_default = ctx_params.n_threads;
+ngl_default = model_params.n_gpu_layers;
 common_params_sampling sampling;
 temperature_default = sampling.temp;
 if (argc < 2) {
@@ -73,26 +73,26 @@ if (help) {
 print_help();
 return 2;
 }
-ctx_params.n_batch        = context_size >= 0 ? context_size : context_size_default;
-ctx_params.n_ctx          = ctx_params.n_batch;
+ctx_params.n_batch = context_size >= 0 ? context_size : context_size_default;
+ctx_params.n_ctx = ctx_params.n_batch;
 ctx_params.n_threads = ctx_params.n_threads_batch = n_threads >= 0 ? n_threads : n_threads_default;
 model_params.n_gpu_layers = ngl >= 0 ? ngl : ngl_default;
-temperature               = temperature >= 0 ? temperature : temperature_default;
+temperature = temperature >= 0 ? temperature : temperature_default;
 return 0;
 }
 llama_context_params ctx_params;
-llama_model_params   model_params;
+llama_model_params model_params;
 std::string model_;
 std::string chat_template_file;
-std::string          user;
-bool                 use_jinja   = false;
-int                  context_size = -1, ngl = -1, n_threads = -1;
-float                temperature = -1;
-bool                 verbose     = false;
+std::string user;
+bool use_jinja = false;
+int context_size = -1, ngl = -1, n_threads = -1;
+float temperature = -1;
+bool verbose = false;
 private:
-int   context_size_default = -1, ngl_default = -1, n_threads_default = -1;
+int context_size_default = -1, ngl_default = -1, n_threads_default = -1;
 float temperature_default = -1;
-bool  help                = false;
+bool help = false;
 bool parse_flag(const char ** argv, int i, const char * short_opt, const char * long_opt) {
 return strcmp(argv[i], short_opt) == 0 || strcmp(argv[i], long_opt) == 0;
 }
@@ -176,7 +176,7 @@ user += " " + std::string(argv[i]);
 return 0;
 }
 int parse(int argc, const char ** argv) {
-bool options_parsing   = true;
+bool options_parsing = true;
 for (int i = 1, positional_args_i = 0; i < argc; ++i) {
 int ret = parse_options_with_value(argc, argv, i, options_parsing);
 if (ret == 0) {
@@ -256,9 +256,9 @@ context_size_default, ngl_default, temperature_default, n_threads_default);
 }
 };
 struct progress_data {
-size_t                                file_size  = 0;
+size_t file_size = 0;
 std::chrono::steady_clock::time_point start_time = std::chrono::steady_clock::now();
-bool                                  printed    = false;
+bool printed = false;
 };
 static int get_terminal_width() {
 #if defined(_WIN32)
@@ -280,8 +280,8 @@ return file;
 }
 int lock() {
 if (file) {
-#    ifdef _WIN32
-fd    = _fileno(file);
+# ifdef _WIN32
+fd = _fileno(file);
 hFile = (HANDLE) _get_osfhandle(fd);
 if (hFile == INVALID_HANDLE_VALUE) {
 fd = -1;
@@ -293,13 +293,13 @@ if (!LockFileEx(hFile, LOCKFILE_EXCLUSIVE_LOCK | LOCKFILE_FAIL_IMMEDIATELY, 0, M
 fd = -1;
 return 1;
 }
-#    else
+# else
 fd = fileno(file);
 if (flock(fd, LOCK_EX | LOCK_NB) != 0) {
 fd = -1;
 return 1;
 }
-#    endif
+# endif
 }
 return 0;
 }
@@ -317,14 +317,14 @@ return out;
 }
 ~File() {
 if (fd >= 0) {
-#    ifdef _WIN32
+# ifdef _WIN32
 if (hFile != INVALID_HANDLE_VALUE) {
 OVERLAPPED overlapped = {};
 UnlockFileEx(hFile, 0, MAXDWORD, MAXDWORD, &overlapped);
 }
-#    else
+# else
 flock(fd, LOCK_UN);
-#    endif
+# endif
 }
 if (file) {
 fclose(file);
@@ -332,9 +332,9 @@ fclose(file);
 }
 private:
 int fd = -1;
-#    ifdef _WIN32
+# ifdef _WIN32
 HANDLE hFile = nullptr;
-#    endif
+# endif
 };
 #ifdef LLAMA_USE_CURL
 class HttpClient {
@@ -350,7 +350,7 @@ if (!curl) {
 return 1;
 }
 progress_data data;
-File          out;
+File out;
 if (!output_file.empty()) {
 output_file_partial = output_file + ".partial";
 if (!out.open(output_file_partial, "ab")) {
@@ -385,7 +385,7 @@ curl_easy_cleanup(curl);
 }
 }
 private:
-CURL *              curl  = nullptr;
+CURL * curl = nullptr;
 struct curl_slist * chunk = nullptr;
 void set_write_options(std::string * response_str, const File & out) {
 if (response_str) {
@@ -431,7 +431,7 @@ curl_easy_setopt(curl, CURLOPT_FAILONERROR, 1L);
 return curl_easy_perform(curl);
 }
 static std::string human_readable_time(double seconds) {
-int hrs  = static_cast<int>(seconds) / 3600;
+int hrs = static_cast<int>(seconds) / 3600;
 int mins = (static_cast<int>(seconds) % 3600) / 60;
 int secs = static_cast<int>(seconds) % 60;
 if (hrs > 0) {
@@ -444,9 +444,9 @@ return string_format("%ds", secs);
 }
 static std::string human_readable_size(curl_off_t size) {
 static const char * suffix[] = { "B", "KB", "MB", "GB", "TB" };
-char                length   = sizeof(suffix) / sizeof(suffix[0]);
-int                 i        = 0;
-double              dbl_size = size;
+char length = sizeof(suffix) / sizeof(suffix[0]);
+int i = 0;
+double dbl_size = size;
 if (size > 1024) {
 for (i = 0; (size / 1024) > 0 && i < length - 1; i++, size /= 1024) {
 dbl_size = size / 1024.0;
@@ -462,13 +462,13 @@ return 0;
 }
 total_to_download += data->file_size;
 const curl_off_t now_downloaded_plus_file_size = now_downloaded + data->file_size;
-const curl_off_t percentage      = calculate_percentage(now_downloaded_plus_file_size, total_to_download);
-std::string      progress_prefix = generate_progress_prefix(percentage);
+const curl_off_t percentage = calculate_percentage(now_downloaded_plus_file_size, total_to_download);
+std::string progress_prefix = generate_progress_prefix(percentage);
 const double speed = calculate_speed(now_downloaded, data->start_time);
-const double tim   = (total_to_download - now_downloaded) / speed;
-std::string  progress_suffix =
+const double tim = (total_to_download - now_downloaded) / speed;
+std::string progress_suffix =
 generate_progress_suffix(now_downloaded_plus_file_size, total_to_download, speed, tim);
-int         progress_bar_width = calculate_progress_bar_width(progress_prefix, progress_suffix);
+int progress_bar_width = calculate_progress_bar_width(progress_prefix, progress_suffix);
 std::string progress_bar;
 generate_progress_bar(progress_bar_width, percentage, progress_bar);
 print_progress(progress_prefix, progress_bar, progress_suffix);
@@ -482,7 +482,7 @@ static std::string generate_progress_prefix(curl_off_t percentage) {
 return string_format("%3ld%% |", static_cast<long int>(percentage));
 }
 static double calculate_speed(curl_off_t now_downloaded, const std::chrono::steady_clock::time_point & start_time) {
-const auto                          now             = std::chrono::steady_clock::now();
+const auto now = std::chrono::steady_clock::now();
 const std::chrono::duration<double> elapsed_seconds = now - start_time;
 return now_downloaded / elapsed_seconds.count();
 }
@@ -525,12 +525,12 @@ return size * nmemb;
 #endif
 class LlamaData {
 public:
-llama_model_ptr                 model;
-llama_sampler_ptr               sampler;
-llama_context_ptr               context;
+llama_model_ptr model;
+llama_sampler_ptr sampler;
+llama_context_ptr context;
 std::vector<llama_chat_message> messages;
-std::list<std::string>          msg_strs;
-std::vector<char>               fmtted;
+std::list<std::string> msg_strs;
+std::vector<char> fmtted;
 int init(Opt & opt) {
 model = initialize_model(opt);
 if (!model) {
@@ -561,11 +561,11 @@ return 1;
 }
 #endif
 std::pair<std::string, std::string> extract_model_and_tag(std::string & model, const std::string & base_url) {
-std::string  model_tag = "latest";
+std::string model_tag = "latest";
 const size_t colon_pos = model.find(':');
 if (colon_pos != std::string::npos) {
 model_tag = model.substr(colon_pos + 1);
-model     = model.substr(0, colon_pos);
+model = model.substr(0, colon_pos);
 }
 std::string url = base_url + model + "/manifests/" + model_tag;
 return { model, url };
@@ -573,7 +573,7 @@ return { model, url };
 int download_and_parse_manifest(const std::string & url, const std::vector<std::string> & headers,
 nlohmann::json & manifest) {
 std::string manifest_str;
-int         ret = download(url, "", false, headers, &manifest_str);
+int ret = download(url, "", false, headers, &manifest_str);
 if (ret) {
 return ret;
 }
@@ -582,15 +582,15 @@ return 0;
 }
 int dl_from_endpoint(std::string & model_endpoint, std::string & model, const std::string & bn) {
 size_t pos = model.find('/');
-pos        = model.find('/', pos + 1);
-std::string              hfr, hff;
+pos = model.find('/', pos + 1);
+std::string hfr, hff;
 std::vector<std::string> headers = { "User-Agent: llama-cpp", "Accept: application/json" };
-std::string              url;
+std::string url;
 if (pos == std::string::npos) {
 auto [model_name, manifest_url] = extract_model_and_tag(model, model_endpoint + "v2/");
-hfr                             = model_name;
+hfr = model_name;
 nlohmann::json manifest;
-int            ret = download_and_parse_manifest(manifest_url, headers, manifest);
+int ret = download_and_parse_manifest(manifest_url, headers, manifest);
 if (ret) {
 return ret;
 }
@@ -617,7 +617,7 @@ model = "library/" + model;
 }
 auto [model_name, manifest_url] = extract_model_and_tag(model, "https:
 nlohmann::json manifest;
-int            ret = download_and_parse_manifest(manifest_url, {}, manifest);
+int ret = download_and_parse_manifest(manifest_url, {}, manifest);
 if (ret) {
 return ret;
 }
@@ -632,21 +632,21 @@ std::string blob_url = "https:
 return download(blob_url, bn, true, headers);
 }
 int github_dl(const std::string & model, const std::string & bn) {
-std::string  repository = model;
-std::string  branch     = "main";
-const size_t at_pos     = model.find('@');
+std::string repository = model;
+std::string branch = "main";
+const size_t at_pos = model.find('@');
 if (at_pos != std::string::npos) {
 repository = model.substr(0, at_pos);
-branch     = model.substr(at_pos + 1);
+branch = model.substr(at_pos + 1);
 }
 const std::vector<std::string> repo_parts = string_split(repository, "/");
 if (repo_parts.size() < 3) {
 printe("Invalid GitHub repository format\n");
 return 1;
 }
-const std::string & org          = repo_parts[0];
-const std::string & project      = repo_parts[1];
-std::string         url          = "https:
+const std::string & org = repo_parts[0];
+const std::string & project = repo_parts[1];
+std::string url = "https:
 for (size_t i = 2; i < repo_parts.size(); ++i) {
 url += "/" + repo_parts[i];
 }
@@ -657,19 +657,19 @@ const size_t slash_pos = model.find('/');
 if (slash_pos == std::string::npos) {
 return 1;
 }
-const std::string bucket     = model.substr(0, slash_pos);
-const std::string key        = model.substr(slash_pos + 1);
+const std::string bucket = model.substr(0, slash_pos);
+const std::string key = model.substr(slash_pos + 1);
 const char * access_key = std::getenv("AWS_ACCESS_KEY_ID");
 const char * secret_key = std::getenv("AWS_SECRET_ACCESS_KEY");
 if (!access_key || !secret_key) {
 printe("AWS credentials not found in environment\n");
 return 1;
 }
-const time_t                   now     = time(nullptr);
-const tm                       tm      = *gmtime(&now);
-const std::string              date     = strftime_fmt("%Y%m%d", tm);
-const std::string              datetime = strftime_fmt("%Y%m%dT%H%M%SZ", tm);
-const std::vector<std::string> headers  = {
+const time_t now = time(nullptr);
+const tm tm = *gmtime(&now);
+const std::string date = strftime_fmt("%Y%m%d", tm);
+const std::string datetime = strftime_fmt("%Y%m%dT%H%M%SZ", tm);
+const std::vector<std::string> headers = {
 "Authorization: AWS4-HMAC-SHA256 Credential=" + std::string(access_key) + "/" + date +
 "/us-east-1/s3/aws4_request",
 "x-amz-content-sha256: UNSIGNED-PAYLOAD", "x-amz-date: " + datetime
@@ -693,7 +693,7 @@ model_ = model_.substr(pos + substring.size());
 return 0;
 }
 int resolve_model(std::string & model_) {
-int                            ret     = 0;
+int ret = 0;
 if (string_starts_with(model_, "file:
 rm_until_substring(model_, ":
 return ret;
@@ -759,7 +759,7 @@ static int apply_chat_template(const struct common_chat_templates * tmpls, Llama
 common_chat_templates_inputs inputs;
 for (const auto & msg : llama_data.messages) {
 common_chat_msg cmsg;
-cmsg.role    = msg.role;
+cmsg.role = msg.role;
 cmsg.content = msg.content;
 inputs.messages.push_back(cmsg);
 }
@@ -799,7 +799,7 @@ prompt_tokens.resize(n_tokens);
 return n_tokens;
 }
 static int check_context_size(const llama_context_ptr & ctx, const llama_batch & batch) {
-const int n_ctx      = llama_n_ctx(ctx.get());
+const int n_ctx = llama_n_ctx(ctx.get());
 const int n_ctx_used = llama_memory_seq_pos_max(llama_get_memory(ctx.get()), 0);
 if (n_ctx_used + batch.n_tokens > n_ctx) {
 printf(LOG_COL_DEFAULT "\n");
@@ -810,7 +810,7 @@ return 0;
 }
 static int convert_token_to_string(const llama_vocab * vocab, const llama_token token_id, std::string & piece) {
 char buf[256];
-int  n = llama_token_to_piece(vocab, token_id, buf, sizeof(buf), 0, true);
+int n = llama_token_to_piece(vocab, token_id, buf, sizeof(buf), 0, true);
 if (n < 0) {
 printe("failed to convert token to piece\n");
 return 1;
@@ -853,7 +853,7 @@ return 0;
 }
 static int read_user_input(std::string & user_input) {
 static const char * prompt_prefix_env = std::getenv("LLAMA_PROMPT_PREFIX");
-static const char * prompt_prefix     = prompt_prefix_env ? prompt_prefix_env : "> ";
+static const char * prompt_prefix = prompt_prefix_env ? prompt_prefix_env : "> ";
 #ifdef WIN32
 printf("\r" LOG_CLR_TO_EOL LOG_COL_DEFAULT "%s", prompt_prefix);
 std::getline(std::cin, user_input);
@@ -910,7 +910,7 @@ return read_user_input(user_input);
 static bool is_stdin_a_terminal() {
 #if defined(_WIN32)
 HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
-DWORD  mode;
+DWORD mode;
 return GetConsoleMode(hStdin, &mode);
 #else
 return isatty(STDIN_FILENO);
@@ -919,7 +919,7 @@ return isatty(STDIN_FILENO);
 static bool is_stdout_a_terminal() {
 #if defined(_WIN32)
 HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
-DWORD  mode;
+DWORD mode;
 return GetConsoleMode(hStdout, &mode);
 #else
 return isatty(STDOUT_FILENO);
@@ -975,7 +975,7 @@ std::string chat_template;
 if (!opt.chat_template_file.empty()) {
 chat_template = read_chat_template_file(opt.chat_template_file);
 }
-common_chat_templates_ptr chat_templates    = common_chat_templates_init(llama_data.model.get(), chat_template);
+common_chat_templates_ptr chat_templates = common_chat_templates_init(llama_data.model.get(), chat_template);
 static const bool stdout_a_terminal = is_stdout_a_terminal();
 while (true) {
 std::string user_input;
@@ -1018,7 +1018,7 @@ SetConsoleCtrlHandler(reinterpret_cast<PHANDLER_ROUTINE>(console_ctrl_handler), 
 }
 int main(int argc, const char ** argv) {
 ctrl_c_handling();
-Opt       opt;
+Opt opt;
 const int ret = opt.init(argc, argv);
 if (ret == 2) {
 return 0;

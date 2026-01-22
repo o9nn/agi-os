@@ -23,7 +23,7 @@ smbsearchfree(&search);
 void
 smbsearchclosebyid(SmbSession *s, ushort sid)
 {
-smbsearchclose(s,  smbidmapfind(s->sidmap, sid));
+smbsearchclose(s, smbidmapfind(s->sidmap, sid));
 }
 SmbSearch *
 smbsearchnew(SmbSession *s, SmbDirCache *dc, Reprog *r, SmbTree *t)

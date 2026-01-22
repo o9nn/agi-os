@@ -12,10 +12,10 @@
 #include "gsequivc.h"
 #define ENABLE_ICC_PROFILE 0
 #ifndef X_DPI
-#  define X_DPI 72
+# define X_DPI 72
 #endif
 #ifndef Y_DPI
-#  define Y_DPI 72
+# define Y_DPI 72
 #endif
 private dev_proc_open_device(psd_prn_open);
 private dev_proc_get_params(psd_get_params);
@@ -78,65 +78,65 @@ gs_private_st_composite_final(st_psd_device, psd_device,
 "psd_device", psd_device_enum_ptrs, psd_device_reloc_ptrs,
 psd_device_finalize);
 #define device_procs(get_color_mapping_procs)\
-{	psd_prn_open,\
+{ psd_prn_open,\
 gx_default_get_initial_matrix,\
-NULL,				\
-gdev_prn_output_page,		\
-gdev_prn_close,			\
-NULL,				\
-psd_map_color_rgb,		\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-psd_get_params,			\
-psd_put_params,			\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-gx_page_device_get_page_device,	\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-get_color_mapping_procs,	\
-psd_get_color_comp_index,	\
-psd_encode_color,		\
-psd_decode_color,		\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
+NULL, \
+gdev_prn_output_page, \
+gdev_prn_close, \
+NULL, \
+psd_map_color_rgb, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+psd_get_params, \
+psd_put_params, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+gx_page_device_get_page_device, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+get_color_mapping_procs, \
+psd_get_color_comp_index, \
+psd_encode_color, \
+psd_decode_color, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
 psd_update_spot_equivalent_colors \
 }
 private fixed_colorant_name DeviceGrayComponents[] = {
@@ -155,16 +155,16 @@ std_device_full_body_type_extended(psd_device, &procs, dname,\
 (int)((long)(DEFAULT_WIDTH_10THS) * (X_DPI) / 10),\
 (int)((long)(DEFAULT_HEIGHT_10THS) * (Y_DPI) / 10),\
 X_DPI, Y_DPI,\
-GX_DEVICE_COLOR_MAX_COMPONENTS,	\
-ncomp,		\
-pol,			\
-depth, 0,		\
-mg, mc,		\
-mg + 1, mc + 1,	\
-GX_CINFO_SEP_LIN,	\
-cn,			\
-0, 0,			\
-0, 0, 0, 0		\
+GX_DEVICE_COLOR_MAX_COMPONENTS, \
+ncomp, \
+pol, \
+depth, 0, \
+mg, mc, \
+mg + 1, mc + 1, \
+GX_CINFO_SEP_LIN, \
+cn, \
+0, 0, \
+0, 0, 0, 0 \
 ),\
 prn_device_body_rest_(psd_print_page)
 private const gx_device_procs spot_rgb_procs = device_procs(get_psdrgb_color_mapping_procs);
@@ -598,11 +598,11 @@ return devn_get_color_comp_index(dev,
 pname, name_size, component_type, ENABLE_AUTO_SPOT_COLORS);
 }
 #if arch_is_big_endian
-#  define assign_u16(a,v) a = (v)
-#  define assign_u32(a,v) a = (v)
+# define assign_u16(a,v) a = (v)
+# define assign_u32(a,v) a = (v)
 #else
-#  define assign_u16(a,v) a = ((v) >> 8) + ((v) << 8)
-#  define assign_u32(a,v) a = (((v) >> 24) & 0xff) + (((v) >> 8) & 0xff00) + (((v) & 0xff00) << 8) + (((v) & 0xff) << 24)
+# define assign_u16(a,v) a = ((v) >> 8) + ((v) << 8)
+# define assign_u32(a,v) a = (((v) >> 24) & 0xff) + (((v) >> 8) & 0xff00) + (((v) & 0xff00) << 8) + (((v) & 0xff) << 24)
 #endif
 typedef struct {
 FILE *f;

@@ -9,7 +9,7 @@ bufio: Bufio;
 Iobuf: import bufio;
 Tst: module
 {
-init:   fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 File: adt {
 name: string;
@@ -108,7 +108,7 @@ files = ref File(f, fd, <-sync) :: files;
 sys->print("opened %s\n", f);
 return hd files;
 }
-updateproc(name: string, fd: ref Sys->FD,  sync: chan of int)
+updateproc(name: string, fd: ref Sys->FD, sync: chan of int)
 {
 sync <-= sys->pctl(0, nil);
 c := chan of string;

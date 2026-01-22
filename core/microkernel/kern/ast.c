@@ -9,14 +9,14 @@
 #include <kern/processor.h>
 #include <device/net_io.h>
 #include <machine/spl.h>
-#if	MACH_FIXPRI
+#if MACH_FIXPRI
 #include <mach/policy.h>
 #endif
 volatile ast_t need_ast[NCPUS];
 void
 ast_init(void)
 {
-#ifndef	MACHINE_AST
+#ifndef MACHINE_AST
 int i;
 for (i=0; i<NCPUS; i++)
 need_ast[i] = 0;
@@ -47,18 +47,18 @@ thread_block(thread_exception_return);
 void
 ast_check(void)
 {
-int			mycpu = cpu_number();
-processor_t		myprocessor;
-thread_t		thread = current_thread();
-run_queue_t		rq;
-spl_t			s = splsched();
+int mycpu = cpu_number();
+processor_t myprocessor;
+thread_t thread = current_thread();
+run_queue_t rq;
+spl_t s = splsched();
 myprocessor = cpu_to_processor(mycpu);
 switch(myprocessor->state) {
 case PROCESSOR_OFF_LINE:
 case PROCESSOR_IDLE:
 case PROCESSOR_DISPATCHING:
 break;
-#if	NCPUS > 1
+#if NCPUS > 1
 case PROCESSOR_ASSIGN:
 case PROCESSOR_SHUTDOWN:
 ast_on(mycpu, AST_BLOCK);
@@ -72,7 +72,7 @@ if (thread->state & TH_SUSP || myprocessor->runq.count > 0) {
 ast_on(mycpu, AST_BLOCK);
 break;
 }
-#if	MACH_FIXPRI
+#if MACH_FIXPRI
 if (myprocessor->processor_set->policies & POLICY_FIXEDPRI) {
 if (csw_needed(thread,myprocessor)) {
 ast_on(mycpu, AST_BLOCK);
@@ -87,7 +87,7 @@ else {
 #endif
 rq = &(myprocessor->processor_set->runq);
 if (!(myprocessor->first_quantum) && (rq->count > 0)) {
-queue_t 		q;
+queue_t q;
 q = rq->runq + *(volatile int *)&rq->low;
 if (queue_empty(q)) {
 runq_lock(rq);
@@ -108,7 +108,7 @@ ast_on(mycpu, AST_BLOCK);
 break;
 }
 }
-#if	MACH_FIXPRI
+#if MACH_FIXPRI
 }
 #endif
 break;

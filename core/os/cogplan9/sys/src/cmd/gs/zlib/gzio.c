@@ -1,67 +1,67 @@
 #include <stdio.h>
 #include "zutil.h"
 #ifdef NO_DEFLATE
-#  define NO_GZCOMPRESS
+# define NO_GZCOMPRESS
 #endif
 #ifndef NO_DUMMY_DECL
 struct internal_state {int dummy;};
 #endif
 #ifndef Z_BUFSIZE
-#  ifdef MAXSEG_64K
-#    define Z_BUFSIZE 4096
-#  else
-#    define Z_BUFSIZE 16384
-#  endif
+# ifdef MAXSEG_64K
+# define Z_BUFSIZE 4096
+# else
+# define Z_BUFSIZE 16384
+# endif
 #endif
 #ifndef Z_PRINTF_BUFSIZE
-#  define Z_PRINTF_BUFSIZE 4096
+# define Z_PRINTF_BUFSIZE 4096
 #endif
 #ifdef __MVS__
-#  pragma map (fdopen , "\174\174FDOPEN")
+# pragma map (fdopen , "\174\174FDOPEN")
 FILE *fdopen(int, const char *);
 #endif
 #ifndef STDC
-extern voidp  malloc OF((uInt size));
-extern void   free   OF((voidpf ptr));
+extern voidp malloc OF((uInt size));
+extern void free OF((voidpf ptr));
 #endif
 #define ALLOC(size) malloc(size)
 #define TRYFREE(p) {if (p) free(p);}
 static int const gz_magic[2] = {0x1f, 0x8b};
-#define ASCII_FLAG   0x01
-#define HEAD_CRC     0x02
-#define EXTRA_FIELD  0x04
-#define ORIG_NAME    0x08
-#define COMMENT      0x10
-#define RESERVED     0xE0
+#define ASCII_FLAG 0x01
+#define HEAD_CRC 0x02
+#define EXTRA_FIELD 0x04
+#define ORIG_NAME 0x08
+#define COMMENT 0x10
+#define RESERVED 0xE0
 typedef struct gz_stream {
 z_stream stream;
-int      z_err;
-int      z_eof;
-FILE     *file;
-Byte     *inbuf;
-Byte     *outbuf;
-uLong    crc;
-char     *msg;
-char     *path;
-int      transparent;
-char     mode;
-z_off_t  start;
-z_off_t  in;
-z_off_t  out;
-int      back;
-int      last;
+int z_err;
+int z_eof;
+FILE *file;
+Byte *inbuf;
+Byte *outbuf;
+uLong crc;
+char *msg;
+char *path;
+int transparent;
+char mode;
+z_off_t start;
+z_off_t in;
+z_off_t out;
+int back;
+int last;
 } gz_stream;
-local gzFile gz_open      OF((const char *path, const char *mode, int  fd));
-local int do_flush        OF((gzFile file, int flush));
-local int    get_byte     OF((gz_stream *s));
-local void   check_header OF((gz_stream *s));
-local int    destroy      OF((gz_stream *s));
-local void   putLong      OF((FILE *file, uLong x));
-local uLong  getLong      OF((gz_stream *s));
+local gzFile gz_open OF((const char *path, const char *mode, int fd));
+local int do_flush OF((gzFile file, int flush));
+local int get_byte OF((gz_stream *s));
+local void check_header OF((gz_stream *s));
+local int destroy OF((gz_stream *s));
+local void putLong OF((FILE *file, uLong x));
+local uLong getLong OF((gz_stream *s));
 local gzFile gz_open (path, mode, fd)
 const char *path;
 const char *mode;
-int  fd;
+int fd;
 {
 int err;
 int level = Z_DEFAULT_COMPRESSION;
@@ -122,7 +122,7 @@ if (err != Z_OK || s->outbuf == Z_NULL) {
 return destroy(s), (gzFile)Z_NULL;
 }
 } else {
-s->stream.next_in  = s->inbuf = (Byte*)ALLOC(Z_BUFSIZE);
+s->stream.next_in = s->inbuf = (Byte*)ALLOC(Z_BUFSIZE);
 err = inflateInit2(&(s->stream), -MAX_WBITS);
 if (err != Z_OK || s->inbuf == Z_NULL) {
 return destroy(s), (gzFile)Z_NULL;
@@ -227,7 +227,7 @@ return;
 }
 for (len = 0; len < 6; len++) (void)get_byte(s);
 if ((flags & EXTRA_FIELD) != 0) {
-len  =  (uInt)get_byte(s);
+len = (uInt)get_byte(s);
 len += ((uInt)get_byte(s))<<8;
 while (len-- != 0 && get_byte(s) != EOF) ;
 }
@@ -279,7 +279,7 @@ unsigned len;
 {
 gz_stream *s = (gz_stream*)file;
 Bytef *start = (Bytef*)buf;
-Byte  *next_out;
+Byte *next_out;
 if (s == NULL || s->mode != 'r') return Z_STREAM_ERROR;
 if (s->z_err == Z_DATA_ERROR || s->z_err == Z_ERRNO) return -1;
 if (s->z_err == Z_STREAM_END) return 0;
@@ -305,16 +305,16 @@ if (n > 0) {
 zmemcpy(s->stream.next_out, s->stream.next_in, n);
 next_out += n;
 s->stream.next_out = next_out;
-s->stream.next_in   += n;
+s->stream.next_in += n;
 s->stream.avail_out -= n;
-s->stream.avail_in  -= n;
+s->stream.avail_in -= n;
 }
 if (s->stream.avail_out > 0) {
 s->stream.avail_out -= fread(next_out, 1, s->stream.avail_out,
 s->file);
 }
 len -= s->stream.avail_out;
-s->in  += len;
+s->in += len;
 s->out += len;
 if (len == 0) s->z_eof = 1;
 return (int)len;
@@ -420,7 +420,7 @@ return (int)(len - s->stream.avail_in);
 }
 #ifdef STDC
 #include <stdarg.h>
-int ZEXPORTVA gzprintf (gzFile file, const char *format,  ...)
+int ZEXPORTVA gzprintf (gzFile file, const char *format, ...)
 {
 char buf[Z_PRINTF_BUFSIZE];
 va_list va;
@@ -428,24 +428,24 @@ int len;
 buf[sizeof(buf) - 1] = 0;
 va_start(va, format);
 #ifdef NO_vsnprintf
-#  ifdef HAS_vsprintf_void
+# ifdef HAS_vsprintf_void
 (void)vsprintf(buf, format, va);
 va_end(va);
 for (len = 0; len < sizeof(buf); len++)
 if (buf[len] == 0) break;
-#  else
+# else
 len = vsprintf(buf, format, va);
 va_end(va);
-#  endif
+# endif
 #else
-#  ifdef HAS_vsnprintf_void
+# ifdef HAS_vsnprintf_void
 (void)vsnprintf(buf, sizeof(buf), format, va);
 va_end(va);
 len = strlen(buf);
-#  else
+# else
 len = vsnprintf(buf, sizeof(buf), format, va);
 va_end(va);
-#  endif
+# endif
 #endif
 if (len <= 0 || len >= (int)sizeof(buf) || buf[sizeof(buf) - 1] != 0)
 return 0;
@@ -463,24 +463,24 @@ char buf[Z_PRINTF_BUFSIZE];
 int len;
 buf[sizeof(buf) - 1] = 0;
 #ifdef NO_snprintf
-#  ifdef HAS_sprintf_void
+# ifdef HAS_sprintf_void
 sprintf(buf, format, a1, a2, a3, a4, a5, a6, a7, a8,
 a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20);
 for (len = 0; len < sizeof(buf); len++)
 if (buf[len] == 0) break;
-#  else
+# else
 len = sprintf(buf, format, a1, a2, a3, a4, a5, a6, a7, a8,
 a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20);
-#  endif
+# endif
 #else
-#  ifdef HAS_snprintf_void
+# ifdef HAS_snprintf_void
 snprintf(buf, sizeof(buf), format, a1, a2, a3, a4, a5, a6, a7, a8,
 a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20);
 len = strlen(buf);
-#  else
+# else
 len = snprintf(buf, sizeof(buf), format, a1, a2, a3, a4, a5, a6, a7, a8,
 a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20);
-#  endif
+# endif
 #endif
 if (len <= 0 || len >= sizeof(buf) || buf[sizeof(buf) - 1] != 0)
 return 0;
@@ -527,7 +527,7 @@ if (len == 0 && s->z_err == Z_BUF_ERROR) s->z_err = Z_OK;
 done = (s->stream.avail_out != 0 || s->z_err == Z_STREAM_END);
 if (s->z_err != Z_OK && s->z_err != Z_STREAM_END) break;
 }
-return  s->z_err == Z_STREAM_END ? Z_OK : s->z_err;
+return s->z_err == Z_STREAM_END ? Z_OK : s->z_err;
 }
 int ZEXPORT gzflush (file, flush)
 gzFile file;
@@ -537,7 +537,7 @@ gz_stream *s = (gz_stream*)file;
 int err = do_flush (file, flush);
 if (err) return err;
 fflush(s->file);
-return  s->z_err == Z_STREAM_END ? Z_OK : s->z_err;
+return s->z_err == Z_STREAM_END ? Z_OK : s->z_err;
 }
 #endif
 z_off_t ZEXPORT gzseek (file, offset, whence)
@@ -563,7 +563,7 @@ s->inbuf = (Byte*)ALLOC(Z_BUFSIZE);
 if (s->inbuf == Z_NULL) return -1L;
 zmemzero(s->inbuf, Z_BUFSIZE);
 }
-while (offset > 0)  {
+while (offset > 0) {
 uInt size = Z_BUFSIZE;
 if (offset < Z_BUFSIZE) size = (uInt)offset;
 size = gzwrite(file, s->inbuf, size);
@@ -600,7 +600,7 @@ s->out++;
 offset--;
 if (s->last) s->z_err = Z_STREAM_END;
 }
-while (offset > 0)  {
+while (offset > 0) {
 int size = Z_BUFSIZE;
 if (offset < Z_BUFSIZE) size = (int)offset;
 size = gzread(file, s->outbuf, (uInt)size);

@@ -7,7 +7,7 @@ Point, Rect, Display, Image: import draw;
 include "tk.m";
 tk: Tk;
 Toplevel: import tk;
-include	"tkclient.m";
+include "tkclient.m";
 tkclient: Tkclient;
 ctxt: ref Draw->Context;
 include "dialog.m";
@@ -22,25 +22,25 @@ remap: Remap;
 Mpegi: import mio;
 WmMpeg: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 Stopped, Playing, Stepping, Paused: con iota;
-state	:= Stopped;
+state := Stopped;
 depth := -1;
 sdepth: int;
 cvt: ref Image;
 pixelrec: Draw->Rect;
 decoders := array[] of {
-1=>	Mpegd->PATH4,
-2=>	Mpegd->PATH4,
-4=>	Mpegd->PATH4,
-8 or 16 or 24 or 32 =>	Mpegd->PATH,
+1=> Mpegd->PATH4,
+2=> Mpegd->PATH4,
+4=> Mpegd->PATH4,
+8 or 16 or 24 or 32 => Mpegd->PATH,
 };
 remappers := array[] of {
-1=>	Remap->PATH1,
-2=>	Remap->PATH2,
-4=>	Remap->PATH4,
-8 or 16 or 24 or 32 =>	Remap->PATH,
+1=> Remap->PATH1,
+2=> Remap->PATH2,
+4=> Remap->PATH4,
+8 or 16 or 24 or 32 => Remap->PATH,
 };
 task_cfg := array[] of {
 "canvas .c",
@@ -62,9 +62,9 @@ task_cfg := array[] of {
 };
 init(xctxt: ref Draw->Context, argv: list of string)
 {
-sys  = load Sys  Sys->PATH;
+sys = load Sys Sys->PATH;
 draw = load Draw Draw->PATH;
-tk   = load Tk   Tk->PATH;
+tk = load Tk Tk->PATH;
 tkclient= load Tkclient Tkclient->PATH;
 dialog = load Dialog Dialog->PATH;
 selectfile= load Selectfile Selectfile->PATH;
@@ -191,12 +191,12 @@ canvr.max = canvr.min.add(Point(m.width, m.height));
 if (depth != sdepth){
 chans := Draw->CMAP8;
 case depth {
-0 =>	chans = Draw->GREY1;
-1 =>	chans = Draw->GREY2;
-2 =>	chans = Draw->GREY4;
-3 =>	chans = Draw->CMAP8;
-4 =>	chans = Draw->RGB16;
-5 =>	chans = Draw->RGB24;	# ?
+0 => chans = Draw->GREY1;
+1 => chans = Draw->GREY2;
+2 => chans = Draw->GREY4;
+3 => chans = Draw->CMAP8;
+4 => chans = Draw->RGB16;
+5 => chans = Draw->RGB24; # ?
 }
 cvt = ctxt.display.newimage(Rect((0, 0), (m.width, m.height)), chans, 0, 0);
 }

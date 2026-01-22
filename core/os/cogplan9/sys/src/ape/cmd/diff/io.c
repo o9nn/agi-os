@@ -201,7 +201,7 @@ bucket = &buckets[-1];
 p--;
 bufend = suffix_begin = (char const *) p;
 }
-for (i = *bucket;  ;  i = eqs[i].next)
+for (i = *bucket; ; i = eqs[i].next)
 if (!i)
 {
 i = eqs_index++;
@@ -237,7 +237,7 @@ cureqs[line] = i;
 ++line;
 }
 current->buffered_lines = line;
-for (i = 0;  ;  i++)
+for (i = 0; ; i++)
 {
 if (line == alloc_lines)
 {
@@ -363,7 +363,7 @@ filevec[0].suffix_begin = p0;
 filevec[1].suffix_begin = p1;
 if (no_diff_means_no_output && ! function_regexp_list)
 {
-for (prefix_count = 1;  prefix_count < context + 1;  prefix_count *= 2)
+for (prefix_count = 1; prefix_count < context + 1; prefix_count *= 2)
 ;
 prefix_mask = prefix_count - 1;
 alloc_lines0
@@ -405,9 +405,9 @@ alloc_lines1
 linbuf1 = (char const **) xmalloc (alloc_lines1 * sizeof (*linbuf1));
 if (buffered_prefix != lines)
 {
-for (i = 0;  i < buffered_prefix;  i++)
+for (i = 0; i < buffered_prefix; i++)
 linbuf1[i] = linbuf0[(lines - context + i) & prefix_mask];
-for (i = 0;  i < buffered_prefix;  i++)
+for (i = 0; i < buffered_prefix; i++)
 linbuf0[i] = linbuf1[i];
 }
 for (i = 0; i < buffered_prefix; i++)
@@ -476,7 +476,7 @@ find_identical_ends (filevec);
 equivs_alloc = filevec[0].alloc_lines + filevec[1].alloc_lines + 1;
 equivs = (struct equivclass *) xmalloc (equivs_alloc * sizeof (struct equivclass));
 equivs_index = 1;
-for (i = 0;  primes[i] < equivs_alloc / 3;  i++)
+for (i = 0; primes[i] < equivs_alloc / 3; i++)
 if (! primes[i])
 abort ();
 nbuckets = primes[i];

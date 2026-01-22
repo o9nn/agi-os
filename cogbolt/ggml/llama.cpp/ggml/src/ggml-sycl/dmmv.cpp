@@ -180,7 +180,7 @@ uint32_t aux[4];
 const uint8_t * d = (const uint8_t *)aux;
 const uint8_t * m = (const uint8_t *)(aux + 2);
 for (int i = ix; i < num_blocks_per_row; i += K_QUANTS_PER_ITERATION) {
-const float   * y = yy + i * QK_K + y_offset;
+const float * y = yy + i * QK_K + y_offset;
 const uint8_t * q = x[i].qs + q_offset;
 const float dall = x[i].dm[0];
 const float dmin = x[i].dm[1];
@@ -213,7 +213,7 @@ const int offset = tid * K_QUANTS_PER_ITERATION;
 uint32_t uaux[2];
 const uint8_t * d = (const uint8_t *)uaux;
 for (int i = ix; i < num_blocks_per_row; i += 2*K_QUANTS_PER_ITERATION) {
-const float   * y = yy + i * QK_K + offset;
+const float * y = yy + i * QK_K + offset;
 const uint8_t * q = x[i].qs + offset;
 const uint32_t * s = (const uint32_t *)x[i].scales;
 uaux[0] = s[0] & 0x0f0f0f0f;
@@ -260,19 +260,19 @@ const int tid =
 item_ct1.get_local_id(2) / K_QUANTS_PER_ITERATION;
 const int ix =
 item_ct1.get_local_id(2) % K_QUANTS_PER_ITERATION;
-const int n  = K_QUANTS_PER_ITERATION;
+const int n = K_QUANTS_PER_ITERATION;
 const int step = 16/K_QUANTS_PER_ITERATION;
 const int im = tid/step;
 const int in = tid - step*im;
 const uint8_t m = 1 << (4*im);
 const int l0 = n*in;
-const int q_offset =  32*im + l0;
+const int q_offset = 32*im + l0;
 const int y_offset = 128*im + l0;
 uint16_t utmp[4];
 const int8_t * s = (const int8_t *)utmp;
 const uint16_t s_shift = 4*im;
 for (int i = ix; i < num_blocks_per_row; i += K_QUANTS_PER_ITERATION) {
-const float   * y  = yy + i * QK_K + y_offset;
+const float * y = yy + i * QK_K + y_offset;
 const uint8_t * q = x[i].qs + q_offset;
 const uint8_t * h = x[i].hmask + l0;
 const uint16_t * a = (const uint16_t *)x[i].scales;
@@ -296,12 +296,12 @@ tmp += d * sum;
 }
 #else
 const int tid = item_ct1.get_local_id(2)/(2*K_QUANTS_PER_ITERATION);
-const int ix  = item_ct1.get_local_id(2)%(2*K_QUANTS_PER_ITERATION);
+const int ix = item_ct1.get_local_id(2)%(2*K_QUANTS_PER_ITERATION);
 const int offset = tid * K_QUANTS_PER_ITERATION;
 const int in = offset/8;
 const int im = offset%8;
 for (int i = ix; i < num_blocks_per_row; i += 2*K_QUANTS_PER_ITERATION) {
-const float   * y = yy + i * QK_K + offset;
+const float * y = yy + i * QK_K + offset;
 const uint8_t * q = x[i].qs + offset;
 const uint8_t * s = x[i].scales;
 const float dall = (float)x[i].d;
@@ -310,9 +310,9 @@ for (int l = 0; l < K_QUANTS_PER_ITERATION; ++l) {
 const uint8_t hl = x[i].hmask[im+l] >> in;
 const uint8_t ql = q[l];
 sum += y[l+ 0] * dall * ((s[0] & 0xF) - 8) * ((int8_t)((ql >> 0) & 3) - ((hl >> 0) & 1 ? 0 : 4))
-+ y[l+16] * dall * ((s[0] >>  4) - 8) * ((int8_t)((ql >> 2) & 3) - ((hl >> 2) & 1 ? 0 : 4))
++ y[l+16] * dall * ((s[0] >> 4) - 8) * ((int8_t)((ql >> 2) & 3) - ((hl >> 2) & 1 ? 0 : 4))
 + y[l+32] * dall * ((s[1] & 0xF) - 8) * ((int8_t)((ql >> 4) & 3) - ((hl >> 4) & 1 ? 0 : 4))
-+ y[l+48] * dall * ((s[1] >>  4) - 8) * ((int8_t)((ql >> 6) & 3) - ((hl >> 6) & 1 ? 0 : 4));
++ y[l+48] * dall * ((s[1] >> 4) - 8) * ((int8_t)((ql >> 6) & 3) - ((hl >> 6) & 1 ? 0 : 4));
 }
 tmp += sum;
 }
@@ -346,9 +346,9 @@ item_ct1.get_local_id(2) / K_QUANTS_PER_ITERATION;
 const int ix =
 item_ct1.get_local_id(2) % K_QUANTS_PER_ITERATION;
 const int step = 8/K_QUANTS_PER_ITERATION;
-const int il  = tid/step;
-const int ir  = tid - step*il;
-const int n   = 2 * K_QUANTS_PER_ITERATION;
+const int il = tid/step;
+const int ir = tid - step*il;
+const int n = 2 * K_QUANTS_PER_ITERATION;
 const int im = il/2;
 const int in = il%2;
 const int l0 = n*(2*ir + in);
@@ -365,8 +365,8 @@ const uint8_t * q4 = (const uint8_t *)q16;
 #endif
 float tmp = 0;
 for (int i = ix; i < num_blocks_per_row; i += K_QUANTS_PER_ITERATION) {
-const float   * y1 = yy + i*QK_K + y_offset;
-const float   * y2 = y1 + 128;
+const float * y1 = yy + i*QK_K + y_offset;
+const float * y2 = y1 + 128;
 const float dall = x[i].dm[0];
 const float dmin = x[i].dm[1];
 const uint16_t * a = (const uint16_t *)x[i].scales;
@@ -410,14 +410,14 @@ tmp += dall * (s.x * sc[0] + s.y * sc[1] * 1.f/16.f + s.z * sc[4] + s.w * sc[5] 
 }
 #else
 const int tid = item_ct1.get_local_id(2)/(2*K_QUANTS_PER_ITERATION);
-const int ix  = item_ct1.get_local_id(2)%(2*K_QUANTS_PER_ITERATION);
+const int ix = item_ct1.get_local_id(2)%(2*K_QUANTS_PER_ITERATION);
 const int step = tid * K_QUANTS_PER_ITERATION;
 uint16_t aux16[2];
 const uint8_t * s = (const uint8_t *)aux16;
 float tmp = 0;
 for (int i = ix; i < num_blocks_per_row; i += 2*K_QUANTS_PER_ITERATION) {
 const uint8_t * q = x[i].qs + step;
-const float   * y = yy + i*QK_K + step;
+const float * y = yy + i*QK_K + step;
 const uint16_t * a = (const uint16_t *)x[i].scales;
 aux16[0] = a[0] & 0x0f0f;
 aux16[1] = (a[0] >> 4) & 0x0f0f;
@@ -427,8 +427,8 @@ float sum = 0.f;
 for (int j = 0; j < K_QUANTS_PER_ITERATION; ++j) {
 sum += y[j+ 0] * (d * s[0] * (q[j+ 0] & 0xF) - m * s[2])
 + y[j+16] * (d * s[0] * (q[j+16] & 0xF) - m * s[2])
-+ y[j+32] * (d * s[1] * (q[j+ 0] >>  4) - m * s[3])
-+ y[j+48] * (d * s[1] * (q[j+16] >>  4) - m * s[3]);
++ y[j+32] * (d * s[1] * (q[j+ 0] >> 4) - m * s[3])
++ y[j+48] * (d * s[1] * (q[j+16] >> 4) - m * s[3]);
 }
 tmp += sum;
 }
@@ -458,25 +458,25 @@ const uint16_t kmask2 = 0x0f0f;
 const uint16_t kmask3 = 0xc0c0;
 const int tid = item_ct1.get_local_id(2) / 2;
 const int ix = item_ct1.get_local_id(2) % 2;
-const int il  = tid/4;
-const int ir  = tid - 4*il;
-const int n   = 2;
+const int il = tid/4;
+const int ir = tid - 4*il;
+const int n = 2;
 const int im = il/2;
 const int in = il%2;
 const int l0 = n*(2*ir + in);
 const int q_offset = 32*im + l0;
 const int y_offset = 64*im + l0;
-const uint8_t hm1  = 1 << (2*im);
-const uint8_t hm2  = hm1 << 4;
+const uint8_t hm1 = 1 << (2*im);
+const uint8_t hm2 = hm1 << 4;
 uint16_t aux[4];
 const uint8_t * sc = (const uint8_t *)aux;
 uint16_t q16[8];
 const uint8_t * q4 = (const uint8_t *)q16;
 for (int i = ix; i < num_blocks_per_row; i += 2) {
 const uint8_t * ql1 = x[i].qs + q_offset;
-const uint8_t * qh  = x[i].qh + l0;
-const float   * y1  = yy + i*QK_K + y_offset;
-const float   * y2  = y1 + 128;
+const uint8_t * qh = x[i].qh + l0;
+const float * y1 = yy + i*QK_K + y_offset;
+const float * y2 = y1 + 128;
 const float dall = x[i].dm[0];
 const float dmin = x[i].dm[1];
 const uint16_t * a = (const uint16_t *)x[i].scales;
@@ -518,22 +518,22 @@ dmin * smin;
 }
 #else
 const int tid = item_ct1.get_local_id(2)/(2*K_QUANTS_PER_ITERATION);
-const int ix  = item_ct1.get_local_id(2)%(2*K_QUANTS_PER_ITERATION);
+const int ix = item_ct1.get_local_id(2)%(2*K_QUANTS_PER_ITERATION);
 const int step = tid * K_QUANTS_PER_ITERATION;
 const int im = step/8;
 const int in = step%8;
 for (int i = ix; i < num_blocks_per_row; i += 2*K_QUANTS_PER_ITERATION) {
 const uint8_t * q = x[i].qs + step;
-const int8_t  * s = x[i].scales;
-const float   * y = yy + i*QK_K + step;
-const float     d = x[i].d;
+const int8_t * s = x[i].scales;
+const float * y = yy + i*QK_K + step;
+const float d = x[i].d;
 float sum = 0.f;
 for (int j = 0; j < K_QUANTS_PER_ITERATION; ++j) {
 const uint8_t h = x[i].qh[in+j] >> im;
 sum += y[j+ 0] * d * s[0] * ((q[j+ 0] & 0xF) - ((h >> 0) & 1 ? 0 : 16))
 + y[j+16] * d * s[1] * ((q[j+16] & 0xF) - ((h >> 2) & 1 ? 0 : 16))
-+ y[j+32] * d * s[2] * ((q[j+ 0] >>  4) - ((h >> 4) & 1 ? 0 : 16))
-+ y[j+48] * d * s[3] * ((q[j+16] >>  4) - ((h >> 6) & 1 ? 0 : 16));
++ y[j+32] * d * s[2] * ((q[j+ 0] >> 4) - ((h >> 4) & 1 ? 0 : 16))
++ y[j+48] * d * s[3] * ((q[j+16] >> 4) - ((h >> 6) & 1 ? 0 : 16));
 }
 tmp += sum;
 }
@@ -573,53 +573,53 @@ const int is = in / 4;
 #endif
 const int ql_offset = 64*im + l0;
 const int qh_offset = 32*im + l0;
-const int s_offset  =  8*im + is;
+const int s_offset = 8*im + is;
 const int y_offset = 128*im + l0;
 float tmp = 0;
 for (int i = ix; i < num_blocks_per_row; i += K_QUANTS_PER_ITERATION) {
-const float   * y  = yy + i * QK_K + y_offset;
+const float * y = yy + i * QK_K + y_offset;
 const uint8_t * ql = x[i].ql + ql_offset;
 const uint8_t * qh = x[i].qh + qh_offset;
-const int8_t  * s  = x[i].scales + s_offset;
+const int8_t * s = x[i].scales + s_offset;
 const float d = x[i].d;
 #if K_QUANTS_PER_ITERATION == 1
 float sum = y[ 0] * s[0] * d * ((int8_t)((ql[ 0] & 0xF) | ((qh[ 0] & 0x03) << 4)) - 32)
 + y[16] * s[1] * d * ((int8_t)((ql[16] & 0xF) | ((qh[16] & 0x03) << 4)) - 32)
 + y[32] * s[2] * d * ((int8_t)((ql[32] & 0xF) | ((qh[ 0] & 0x0c) << 2)) - 32)
 + y[48] * s[3] * d * ((int8_t)((ql[48] & 0xF) | ((qh[16] & 0x0c) << 2)) - 32)
-+ y[64] * s[4] * d * ((int8_t)((ql[ 0]  >> 4) | ((qh[ 0] & 0x30) >> 0)) - 32)
-+ y[80] * s[5] * d * ((int8_t)((ql[16]  >> 4) | ((qh[16] & 0x30) >> 0)) - 32)
-+ y[96] * s[6] * d * ((int8_t)((ql[32]  >> 4) | ((qh[ 0] & 0xc0) >> 2)) - 32)
-+y[112] * s[7] * d * ((int8_t)((ql[48]  >> 4) | ((qh[16] & 0xc0) >> 2)) - 32);
++ y[64] * s[4] * d * ((int8_t)((ql[ 0] >> 4) | ((qh[ 0] & 0x30) >> 0)) - 32)
++ y[80] * s[5] * d * ((int8_t)((ql[16] >> 4) | ((qh[16] & 0x30) >> 0)) - 32)
++ y[96] * s[6] * d * ((int8_t)((ql[32] >> 4) | ((qh[ 0] & 0xc0) >> 2)) - 32)
++y[112] * s[7] * d * ((int8_t)((ql[48] >> 4) | ((qh[16] & 0xc0) >> 2)) - 32);
 tmp += sum;
 #else
 float sum = 0;
 for (int l = 0; l < 4; ++l) {
 sum += y[l+ 0] * s[0] * d * ((int8_t)((ql[l+ 0] & 0xF) | (((qh[l] >> 0) & 3) << 4)) - 32)
 + y[l+32] * s[2] * d * ((int8_t)((ql[l+32] & 0xF) | (((qh[l] >> 2) & 3) << 4)) - 32)
-+ y[l+64] * s[4] * d * ((int8_t)((ql[l+ 0]  >> 4) | (((qh[l] >> 4) & 3) << 4)) - 32)
-+ y[l+96] * s[6] * d * ((int8_t)((ql[l+32]  >> 4) | (((qh[l] >> 6) & 3) << 4)) - 32);
++ y[l+64] * s[4] * d * ((int8_t)((ql[l+ 0] >> 4) | (((qh[l] >> 4) & 3) << 4)) - 32)
++ y[l+96] * s[6] * d * ((int8_t)((ql[l+32] >> 4) | (((qh[l] >> 6) & 3) << 4)) - 32);
 }
 tmp += sum;
 #endif
 }
 #else
 const int tid = item_ct1.get_local_id(2)/(2*K_QUANTS_PER_ITERATION);
-const int ix  = item_ct1.get_local_id(2)%(2*K_QUANTS_PER_ITERATION);
+const int ix = item_ct1.get_local_id(2)%(2*K_QUANTS_PER_ITERATION);
 const int step = tid * K_QUANTS_PER_ITERATION;
 float tmp = 0;
 for (int i = ix; i < num_blocks_per_row; i += 2*K_QUANTS_PER_ITERATION) {
-const float   * y  = yy + i * QK_K + step;
+const float * y = yy + i * QK_K + step;
 const uint8_t * ql = x[i].ql + step;
 const uint8_t * qh = x[i].qh + step;
-const int8_t  * s  = x[i].scales;
+const int8_t * s = x[i].scales;
 const float d = x[i+0].d;
 float sum = 0;
 for (int j = 0; j < K_QUANTS_PER_ITERATION; ++j) {
 sum += y[j+ 0] * s[0] * d * ((int8_t)((ql[j+ 0] & 0xF) | ((qh[j] & 0x03) << 4)) - 32)
 + y[j+16] * s[1] * d * ((int8_t)((ql[j+16] & 0xF) | ((qh[j] & 0x0c) << 2)) - 32)
-+ y[j+32] * s[2] * d * ((int8_t)((ql[j+ 0] >>  4) | ((qh[j] & 0x30) >> 0)) - 32)
-+ y[j+48] * s[3] * d * ((int8_t)((ql[j+16] >>  4) | ((qh[j] & 0xc0) >> 2)) - 32);
++ y[j+32] * s[2] * d * ((int8_t)((ql[j+ 0] >> 4) | ((qh[j] & 0x30) >> 0)) - 32)
++ y[j+48] * s[3] * d * ((int8_t)((ql[j+16] >> 4) | ((qh[j] & 0xc0) >> 2)) - 32);
 }
 tmp += sum;
 }

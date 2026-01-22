@@ -292,7 +292,7 @@ template->set_defaults(st);
 {
 stream_Downsample_state *const ss = (stream_Downsample_state *) st;
 ss->Colors =
-(pim->ColorSpace == 0 ? 1  :
+(pim->ColorSpace == 0 ? 1 :
 gs_color_space_num_components(pim->ColorSpace));
 ss->WidthIn = pim->Width;
 ss->HeightIn = pim->Height;

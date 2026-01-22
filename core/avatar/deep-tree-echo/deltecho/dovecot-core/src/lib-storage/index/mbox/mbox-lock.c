@@ -13,7 +13,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #ifdef HAVE_FLOCK
-#  include <sys/file.h>
+# include <sys/file.h>
 #endif
 #define LOCK_RANDOM_USLEEP_TIME (100000 + (unsigned int)i_rand() % 100000)
 enum mbox_lock_type {
@@ -54,7 +54,7 @@ time_t max_wait_time);
 static int mbox_lock_flock(struct mbox_lock_context *ctx, int lock_type,
 time_t max_wait_time);
 #else
-#  define mbox_lock_flock NULL
+# define mbox_lock_flock NULL
 #endif
 static int mbox_lock_lockf(struct mbox_lock_context *ctx, int lock_type,
 time_t max_wait_time);

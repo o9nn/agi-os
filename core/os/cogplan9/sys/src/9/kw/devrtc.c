@@ -5,45 +5,45 @@
 #include "fns.h"
 #include "../port/error.h"
 #include "io.h"
-typedef	struct	RtcReg	RtcReg;
-typedef	struct	Rtc	Rtc;
+typedef struct RtcReg RtcReg;
+typedef struct Rtc Rtc;
 struct RtcReg
 {
-ulong	time;
-ulong	date;
-ulong	alarmtm;
-ulong	alarmdt;
-ulong	intrmask;
-ulong	intrcause;
+ulong time;
+ulong date;
+ulong alarmtm;
+ulong alarmdt;
+ulong intrmask;
+ulong intrcause;
 };
 struct Rtc
 {
-int	sec;
-int	min;
-int	hour;
-int	wday;
-int	mday;
-int	mon;
-int	year;
+int sec;
+int min;
+int hour;
+int wday;
+int mday;
+int mon;
+int year;
 };
 enum {
 Qdir,
 Qrtc,
 };
 static Dirtab rtcdir[] = {
-".",	{Qdir, 0, QTDIR},	0,		0555,
-"rtc",	{Qrtc},			NUMSIZE,	0664,
+".", {Qdir, 0, QTDIR}, 0, 0555,
+"rtc", {Qrtc}, NUMSIZE, 0664,
 };
-static	RtcReg	*rtcreg;
-static	Lock	rtclock;
-#define SEC2MIN	60
+static RtcReg *rtcreg;
+static Lock rtclock;
+#define SEC2MIN 60
 #define SEC2HOUR (60*SEC2MIN)
 #define SEC2DAY (24L*SEC2HOUR)
-static	int	dmsize[] =
+static int dmsize[] =
 {
 365, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 };
-static	int	ldmsize[] =
+static int ldmsize[] =
 {
 366, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 };
@@ -107,19 +107,19 @@ rtc->mday = day + 1;
 rtc->mon = d;
 }
 enum {
-Rtcsec	= 0x00007f,
-Rtcmin	= 0x007f00,
-Rtcms	= 8,
-Rtchr12	= 0x1f0000,
-Rtchr24	= 0x3f0000,
-Rtchrs	= 16,
-Rdmday	= 0x00003f,
-Rdmon	= 0x001f00,
-Rdms	= 8,
-Rdyear	= 0x7f0000,
-Rdys	= 16,
-Rtcpm	= 1<<21,
-Rtc12	= 1<<22,
+Rtcsec = 0x00007f,
+Rtcmin = 0x007f00,
+Rtcms = 8,
+Rtchr12 = 0x1f0000,
+Rtchr24 = 0x3f0000,
+Rtchrs = 16,
+Rdmday = 0x00003f,
+Rdmon = 0x001f00,
+Rdms = 8,
+Rdyear = 0x7f0000,
+Rdys = 16,
+Rtcpm = 1<<21,
+Rtc12 = 1<<22,
 };
 static ulong
 bcd2dec(ulong bcd)

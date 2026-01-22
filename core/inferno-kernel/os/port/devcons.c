@@ -1,43 +1,43 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	<version.h>
-#include	"mp.h"
-#include	"libsec.h"
-#include	"keyboard.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include <version.h>
+#include "mp.h"
+#include "libsec.h"
+#include "keyboard.h"
 extern int cflag;
 extern int keepbroken;
-void	(*serwrite)(char *, int);
-Queue*	kscanq;
-char*	kscanid;
-Queue*	kbdq;
-Queue*	lineq;
-Queue*	printq;
-Queue*	klogq;
-int	iprintscreenputs;
+void (*serwrite)(char *, int);
+Queue* kscanq;
+char* kscanid;
+Queue* kbdq;
+Queue* lineq;
+Queue* printq;
+Queue* klogq;
+int iprintscreenputs;
 static struct
 {
 RWlock;
-Queue*	q;
+Queue* q;
 } kprintq;
 static struct
 {
 QLock;
-int	raw;
-int	ctl;
-int	kbdr;
-int	scan;
-int	x;
-char	line[1024];
-char	c;
-int	count;
-int	repeat;
+int raw;
+int ctl;
+int kbdr;
+int scan;
+int x;
+char line[1024];
+char c;
+int count;
+int repeat;
 } kbd;
-char*	sysname;
-char*	eve;
+char* sysname;
+char* eve;
 enum
 {
 CMreboot,
@@ -49,12 +49,12 @@ CMconsole,
 };
 static Cmdtab sysctlcmd[] =
 {
-CMreboot,	"reboot",	0,
-CMhalt,	"halt", 0,
-CMpanic,	"panic", 0,
-CMconsole,	"console", 1,
-CMbroken,	"broken", 0,
-CMnobroken,	"nobroken", 0,
+CMreboot, "reboot", 0,
+CMhalt, "halt", 0,
+CMpanic, "panic", 0,
+CMconsole, "console", 1,
+CMbroken, "broken", 0,
+CMnobroken, "nobroken", 0,
 };
 void
 printinit(void)
@@ -303,17 +303,17 @@ if(printq)
 qiwrite(printq, buf, n);
 }
 typedef struct {
-Rune	r;
-char	*m;
-void	(*f)(Rune);
-int	i;
+Rune r;
+char *m;
+void (*f)(Rune);
+int i;
 } Dbgkey;
 static struct {
 Rendez;
-Dbgkey	*work;
-Dbgkey	keys[50];
-int	nkeys;
-int	on;
+Dbgkey *work;
+Dbgkey keys[50];
+int nkeys;
+int on;
 } dbg;
 static Dbgkey *
 finddbgkey(Rune r)
@@ -520,27 +520,27 @@ Qjit,
 };
 static Dirtab consdir[]=
 {
-".",	{Qdir, 0, QTDIR},	0,		DMDIR|0555,
-"cons",		{Qcons},	0,		0660,
-"consctl",	{Qconsctl},	0,		0220,
-"sysctl",	{Qsysctl},	0,		0644,
-"drivers",	{Qdrivers},	0,		0444,
-"hostowner",	{Qhostowner},	0,	0644,
-"keyboard",	{Qkeyboard},	0,		0666,
-"klog",		{Qklog},	0,		0444,
-"kprint",		{Qkprint},	0,		0444,
-"scancode",	{Qscancode},	0,		0444,
-"memory",	{Qmemory},	0,		0444,
-"msec",		{Qmsec},	NUMSIZE,	0444,
-"null",		{Qnull},	0,		0666,
-"random",	{Qrandom},	0,		0444,
-"notquiterandom", {Qnotquiterandom}, 0,	0444,
-"sysname",	{Qsysname},	0,		0664,
-"time",		{Qtime},	0,		0664,
-"user",		{Quser},	0,	0644,
-"jit",		{Qjit},	0,	0666,
+".", {Qdir, 0, QTDIR}, 0, DMDIR|0555,
+"cons", {Qcons}, 0, 0660,
+"consctl", {Qconsctl}, 0, 0220,
+"sysctl", {Qsysctl}, 0, 0644,
+"drivers", {Qdrivers}, 0, 0444,
+"hostowner", {Qhostowner}, 0, 0644,
+"keyboard", {Qkeyboard}, 0, 0666,
+"klog", {Qklog}, 0, 0444,
+"kprint", {Qkprint}, 0, 0444,
+"scancode", {Qscancode}, 0, 0444,
+"memory", {Qmemory}, 0, 0444,
+"msec", {Qmsec}, NUMSIZE, 0444,
+"null", {Qnull}, 0, 0666,
+"random", {Qrandom}, 0, 0444,
+"notquiterandom", {Qnotquiterandom}, 0, 0444,
+"sysname", {Qsysname}, 0, 0664,
+"time", {Qtime}, 0, 0664,
+"user", {Quser}, 0, 0644,
+"jit", {Qjit}, 0, 0666,
 };
-ulong	boottime;
+ulong boottime;
 long
 seconds(void)
 {
@@ -835,7 +835,7 @@ if(p == nil)
 error(Enomem);
 l = 0;
 for(i = 0; devtab[i] != nil; i++)
-l += snprint(p+l, READSTR-l, "#%C %s\n", devtab[i]->dc,  devtab[i]->name);
+l += snprint(p+l, READSTR-l, "#%C %s\n", devtab[i]->dc, devtab[i]->name);
 if(waserror()){
 free(p);
 nexterror();
@@ -1029,7 +1029,7 @@ devbwrite,
 devremove,
 devwstat,
 };
-static	ulong	randn;
+static ulong randn;
 static void
 seedrand(void)
 {

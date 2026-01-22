@@ -1,8 +1,8 @@
 implement Look;
 #
-#	Copyright © 2002 Lucent Technologies Inc.
-#	transliteration of the Plan 9 command; subject to the Lucent Public License 1.02
-#	-r option added by Caerwyn Jones to print a range
+# Copyright © 2002 Lucent Technologies Inc.
+# transliteration of the Plan 9 command; subject to the Lucent Public License 1.02
+# -r option added by Caerwyn Jones to print a range
 #
 include "sys.m";
 sys: Sys;
@@ -20,33 +20,33 @@ dfile: ref Iobuf;
 bout: ref Iobuf;
 debug := 0;
 fold, direc, exact, iflag, range: int;
-rev := 1;	# -1 for reverse-ordered file, not implemented
+rev := 1; # -1 for reverse-ordered file, not implemented
 compare: ref fn(a, b: string): int;
 tab := '\t';
 entry: string;
 word: string;
 key: string;
 latin_fold_tab := array[64] of {
-# 	Table to fold latin 1 characters to ASCII equivalents
-# 	based at Rune value 0xc0
+# Table to fold latin 1 characters to ASCII equivalents
+# based at Rune value 0xc0
 #
-#	 À    Á    Â    Ã    Ä    Å    Æ    Ç
-#	 È    É    Ê    Ë    Ì    Í    Î    Ï
-#	 Ð    Ñ    Ò    Ó    Ô    Õ    Ö    ×
-#	 Ø    Ù    Ú    Û    Ü    Ý    Þ    ß
-#	 à    á    â    ã    ä    å    æ    ç
-#	 è    é    ê    ë    ì    í    î    ï
-#	 ð    ñ    ò    ó    ô    õ    ö    ÷
-#	 ø    ù    ú    û    ü    ý    þ    ÿ
+# À Á Â Ã Ä Å Æ Ç
+# È É Ê Ë Ì Í Î Ï
+# Ð Ñ Ò Ó Ô Õ Ö ×
+# Ø Ù Ú Û Ü Ý Þ ß
+# à á â ã ä å æ ç
+# è é ê ë ì í î ï
+# ð ñ ò ó ô õ ö ÷
+# ø ù ú û ü ý þ ÿ
 #
-'a',	'a',	'a',	'a',	'a',	'a',	'a',	'c',
-'e',	'e',	'e',	'e',	'i',	'i',	'i',	'i',
-'d',	'n',	'o',	'o',	'o',	'o',	'o',	0,
-'o',	'u',	'u',	'u',	'u',	'y',	0,	0,
-'a',	'a',	'a',	'a',	'a',	'a',	'a',	'c',
-'e',	'e',	'e',	'e',	'i',	'i',	'i',	'i',
-'d',	'n',	'o',	'o',	'o',	'o',	'o',	0,
-'o',	'u',	'u',	'u',	'u',	'y',	0,	'y',
+'a', 'a', 'a', 'a', 'a', 'a', 'a', 'c',
+'e', 'e', 'e', 'e', 'i', 'i', 'i', 'i',
+'d', 'n', 'o', 'o', 'o', 'o', 'o', 0,
+'o', 'u', 'u', 'u', 'u', 'y', 0, 0,
+'a', 'a', 'a', 'a', 'a', 'a', 'a', 'c',
+'e', 'e', 'e', 'e', 'i', 'i', 'i', 'i',
+'d', 'n', 'o', 'o', 'o', 'o', 'o', 0,
+'o', 'u', 'u', 'u', 'u', 'y', 0, 'y',
 };
 init(nil: ref Draw->Context, args: list of string)
 {
@@ -207,12 +207,12 @@ return 1;
 return 0;
 }
 #
-#	acomp(s, t) returns:
-#		-2 if s strictly precedes t
-#		-1 if s is a prefix of t
-#		0 if s is the same as t
-#		1 if t is a prefix of s
-#		2 if t strictly precedes s
+# acomp(s, t) returns:
+# -2 if s strictly precedes t
+# -1 if s is a prefix of t
+# 0 if s is the same as t
+# 1 if t is a prefix of s
+# 2 if t strictly precedes s
 #
 acomp(s, t: string): int
 {
@@ -250,7 +250,7 @@ continue;
 if(fold)
 if(isupper(r))
 r = tolower(r);
-if(r != s[o])	# avoid copying s unless necessary
+if(r != s[o]) # avoid copying s unless necessary
 s[o] = r;
 o++;
 }

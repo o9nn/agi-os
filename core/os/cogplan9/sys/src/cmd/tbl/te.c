@@ -6,11 +6,11 @@ fprint(2, "\n%s:%d: %s\n", ifile, iline, s);
 fprint(2, "tbl quits\n");
 exits(s);
 }
-char	*
+char *
 gets1(char *s, int size)
 {
-char	*p, *ns;
-int	nbl;
+char *p, *ns;
+int nbl;
 iline++;
 ns = s;
 p = Brdline(tabin, '\n');
@@ -32,8 +32,8 @@ gets1(s + 1, size - (s-ns));
 return(p);
 }
 # define BACKMAX 500
-char	backup[BACKMAX];
-char	*backp = backup;
+char backup[BACKMAX];
+char *backp = backup;
 void
 un1getc(int c)
 {
@@ -46,12 +46,12 @@ error("too much backup");
 int
 get1char(void)
 {
-int	c;
+int c;
 if (backp > backup)
 c = *--backp;
 else
 c = Bgetc(tabin);
-if (c == 0)  {
+if (c == 0) {
 if (swapin() == 0)
 error("unexpected EOF");
 c = Bgetc(tabin);

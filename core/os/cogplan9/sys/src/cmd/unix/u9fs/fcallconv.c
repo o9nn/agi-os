@@ -5,7 +5,7 @@ extern int old9p;
 static uint dumpsome(char*, char*, long);
 static void fdirconv(char*, Dir*);
 static char *qidtype(char*, uchar);
-#define	QIDFMT	"(%.16llux %lud %s)"
+#define QIDFMT "(%.16llux %lud %s)"
 int
 fcallconv(va_list *arg, Fconv *f1)
 {
@@ -135,7 +135,7 @@ case Rwstat:
 sprint(buf, "Rwstat tag %ud", tag);
 break;
 default:
-sprint(buf,  "unknown type %d", type);
+sprint(buf, "unknown type %d", type);
 }
 strconv(buf, f1);
 return(sizeof(Fcall*));

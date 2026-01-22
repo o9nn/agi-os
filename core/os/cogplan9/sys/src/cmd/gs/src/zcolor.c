@@ -20,9 +20,9 @@
 #include "icolor.h"
 #include "idparam.h"
 #include "iname.h"
-extern  void    gx_set_effective_transfer(gs_state *);
-const int   zcolor_remap_one_ostack = 4;
-const int   zcolor_remap_one_estack = 3;
+extern void gx_set_effective_transfer(gs_state *);
+const int zcolor_remap_one_ostack = 4;
+const int zcolor_remap_one_estack = 3;
 private inline bool
 pattern_instance_uses_base_space(const gs_pattern_instance_t * pinst)
 {
@@ -32,11 +32,11 @@ pinst->type->procs.get_pattern(pinst) );
 private int
 zcurrentcolor(i_ctx_t * i_ctx_p)
 {
-os_ptr                  op = osp;
-const gs_color_space *  pcs = gs_currentcolorspace(igs);
+os_ptr op = osp;
+const gs_color_space * pcs = gs_currentcolorspace(igs);
 const gs_client_color * pcc = gs_currentcolor(igs);
-int                     i, n = cs_num_components(pcs);
-bool                    push_pattern = n < 0;
+int i, n = cs_num_components(pcs);
+bool push_pattern = n < 0;
 if (push_pattern) {
 gs_pattern_instance_t * pinst = pcc->pattern;
 if (pinst == 0 || !pattern_instance_uses_base_space(pinst))
@@ -49,8 +49,8 @@ op -= n - 1;
 if (push_pattern)
 --n;
 for (i = 0; i < n; i++, op++) {
-float   rval = pcc->paint.values[i];
-int     ival = (int)rval;
+float rval = pcc->paint.values[i];
+int ival = (int)rval;
 if (rval == ival)
 make_int(op, ival);
 else
@@ -63,7 +63,7 @@ return 0;
 private int
 zcurrentcolorspace(i_ctx_t * i_ctx_p)
 {
-os_ptr  op = osp;
+os_ptr op = osp;
 push(1);
 if ( gs_color_space_get_index(igs->color_space) == gs_color_space_index_DeviceGray ) {
 ref gray, graystr;
@@ -87,7 +87,7 @@ return 0;
 private int
 zgetuseciecolor(i_ctx_t * i_ctx_p)
 {
-os_ptr  op = osp;
+os_ptr op = osp;
 push(1);
 *op = istate->use_cie_color;
 return 0;
@@ -95,17 +95,17 @@ return 0;
 private int
 zsetcolor(i_ctx_t * i_ctx_p)
 {
-os_ptr                  op = osp;
-const gs_color_space *  pcs = gs_currentcolorspace(igs);
-gs_client_color         cc;
-int                     n_comps, n_numeric_comps, num_offset = 0, code;
-bool                    is_ptype2 = 0;
+os_ptr op = osp;
+const gs_color_space * pcs = gs_currentcolorspace(igs);
+gs_client_color cc;
+int n_comps, n_numeric_comps, num_offset = 0, code;
+bool is_ptype2 = 0;
 cc.pattern = 0;
 if ((n_comps = cs_num_components(pcs)) < 0) {
 n_comps = -n_comps;
 if (r_has_type(op, t_dictionary)) {
-ref *   pImpl;
-int     ptype;
+ref * pImpl;
+int ptype;
 dict_find_string(op, "Implementation", &pImpl);
 cc.pattern = r_ptr(pImpl, gs_pattern_instance_t);
 n_numeric_comps = ( pattern_instance_uses_base_space(cc.pattern)
@@ -131,7 +131,7 @@ return code;
 private int
 zsetcolorspace(i_ctx_t * i_ctx_p)
 {
-os_ptr  op = osp;
+os_ptr op = osp;
 istate->colorspace.array = *op;
 pop(1);
 return 0;
@@ -139,12 +139,12 @@ return 0;
 private int
 zincludecolorspace(i_ctx_t * i_ctx_p)
 {
-os_ptr  op = osp;
+os_ptr op = osp;
 ref nsref;
 int code;
 check_type(*op, t_name);
 name_string_ref(imemory, op, &nsref);
-code =  gs_includecolorspace(igs, nsref.value.const_bytes, r_size(&nsref));
+code = gs_includecolorspace(igs, nsref.value.const_bytes, r_size(&nsref));
 if (!code)
 pop(1);
 return code;
@@ -152,8 +152,8 @@ return code;
 private int
 zsetdevcspace(i_ctx_t * i_ctx_p)
 {
-gs_color_space  cs;
-int             code;
+gs_color_space cs;
+int code;
 switch((gs_color_space_index)osp->value.intval) {
 default:
 case gs_color_space_index_DeviceGray:
@@ -173,7 +173,7 @@ return code;
 private int
 zcurrenttransfer(i_ctx_t *i_ctx_p)
 {
-os_ptr  op = osp;
+os_ptr op = osp;
 push(1);
 *op = istate->transfer_procs.gray;
 return 0;
@@ -181,7 +181,7 @@ return 0;
 private int
 zprocesscolors(i_ctx_t * i_ctx_p)
 {
-os_ptr  op = osp;
+os_ptr op = osp;
 push(1);
 make_int(op, gs_currentdevice(igs)->color_info.num_components);
 return 0;
@@ -189,8 +189,8 @@ return 0;
 private int
 zsettransfer(i_ctx_t * i_ctx_p)
 {
-os_ptr  op = osp;
-int     code;
+os_ptr op = osp;
+int code;
 check_proc(*op);
 check_ostack(zcolor_remap_one_ostack - 1);
 check_estack(1 + zcolor_remap_one_estack);
@@ -210,13 +210,13 @@ zcolor_remap_one_finish );
 }
 int
 zcolor_remap_one(
-i_ctx_t *           i_ctx_p,
-const ref *         pproc,
-gx_transfer_map *   pmap,
-const gs_state *    pgs,
-op_proc_t           finish_proc )
+i_ctx_t * i_ctx_p,
+const ref * pproc,
+gx_transfer_map * pmap,
+const gs_state * pgs,
+op_proc_t finish_proc )
 {
-os_ptr              op;
+os_ptr op;
 if (r_size(pproc) == 0) {
 gx_set_identity_transfer(pmap);
 return o_push_estack;
@@ -308,7 +308,7 @@ return 0;
 private int
 zcolor_test_all(i_ctx_t *i_ctx_p)
 {
-os_ptr                  op = osp;
+os_ptr op = osp;
 gx_color_value cv[GX_DEVICE_COLOR_MAX_COMPONENTS];
 gx_color_value cvout[GX_DEVICE_COLOR_MAX_COMPONENTS];
 gx_color_value cvbad[GX_DEVICE_COLOR_MAX_COMPONENTS];
@@ -439,7 +439,7 @@ for (i = 0; i < ncomp; i++)
 make_real(op+i, (float)cvbad[i] / (float)gx_max_color_value);
 return 0;
 }
-const op_def    zcolor_op_defs[] =
+const op_def zcolor_op_defs[] =
 {
 { "0currentcolor", zcurrentcolor },
 { "0currentcolorspace", zcurrentcolorspace },

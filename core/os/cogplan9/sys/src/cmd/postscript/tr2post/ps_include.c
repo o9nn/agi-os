@@ -36,8 +36,8 @@ double urx, ury;
 double w = whiteout != 0;
 Section *global;
 Section prolog, page, trailer;
-#define has(word)	(strncmp(buf, word, strlen(word)) == 0)
-#define grab(n)		((Section *)(nglobal \
+#define has(word) (strncmp(buf, word, strlen(word)) == 0)
+#define grab(n) ((Section *)(nglobal \
 ? realloc((char *)global, n*sizeof(Section)) \
 : calloc(n, sizeof(Section))))
 global = nil;

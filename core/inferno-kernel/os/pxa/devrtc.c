@@ -1,27 +1,27 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"io.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "io.h"
 enum{
 Qdir,
 Qrtc,
 Qrtctrim,
 };
 static Dirtab rtcdir[]={
-".",		{Qdir,0,QTDIR},	0,	0555,
-"rtc",		{Qrtc},	NUMSIZE,	0664,
-"rtctrim",	{Qrtctrim},	0,	0664,
+".", {Qdir,0,QTDIR}, 0, 0555,
+"rtc", {Qrtc}, NUMSIZE, 0664,
+"rtctrim", {Qrtctrim}, 0, 0664,
 };
-#define	NRTC	(sizeof(rtcdir)/sizeof(rtcdir[0]))
+#define NRTC (sizeof(rtcdir)/sizeof(rtcdir[0]))
 extern ulong boottime;
 enum {
-RTSR_al=	1<<0,
-RTSR_hz=	1<<1,
-RTSR_ale=	1<<2,
-RTSR_hze=	1<<3,
+RTSR_al= 1<<0,
+RTSR_hz= 1<<1,
+RTSR_ale= 1<<2,
+RTSR_hze= 1<<3,
 };
 static void
 rtcreset(void)

@@ -13,11 +13,11 @@
 typedef struct Undo Undo;
 struct Undo
 {
-short	type;
-short	mod;
-uint		seq;
-uint		p0;
-uint		n;
+short type;
+short mod;
+uint seq;
+uint p0;
+uint n;
 };
 enum
 {

@@ -7,171 +7,171 @@
 #include "ureg.h"
 #include "../port/error.h"
 #include "../port/sd.h"
-#define K2BPA(va, tbdf)	PADDR(va)
-#define BPA2K(pa, tbdf)	KADDR(pa)
+#define K2BPA(va, tbdf) PADDR(va)
+#define BPA2K(pa, tbdf) KADDR(pa)
 extern SDifc sdmylexifc;
 enum {
-Rcontrol	= 0x00,
-Rstatus		= 0x00,
-Rcpr		= 0x01,
-Rdatain		= 0x01,
-Rinterrupt	= 0x02,
+Rcontrol = 0x00,
+Rstatus = 0x00,
+Rcpr = 0x01,
+Rdatain = 0x01,
+Rinterrupt = 0x02,
 };
 enum {
-Rsbus		= 0x10,
-Rint		= 0x20,
-Rsoft		= 0x40,
-Rhard		= 0x80,
+Rsbus = 0x10,
+Rint = 0x20,
+Rsoft = 0x40,
+Rhard = 0x80,
 };
 enum {
-Cmdinv		= 0x01,
-Dirrdy		= 0x04,
-Cprbsy		= 0x08,
-Hardy		= 0x10,
-Inreq		= 0x20,
-Dfail		= 0x40,
-Dact		= 0x80,
+Cmdinv = 0x01,
+Dirrdy = 0x04,
+Cprbsy = 0x08,
+Hardy = 0x10,
+Inreq = 0x20,
+Dfail = 0x40,
+Dact = 0x80,
 };
 enum {
-Cinitialise	= 0x01,
-Cstart		= 0x02,
-Cinquiry	= 0x04,
-Ceombri		= 0x05,
-Cinquire	= 0x0B,
-Cextbios	= 0x28,
-Cmbienable	= 0x29,
-Ciem		= 0x81,
-Ciesi		= 0x8D,
-Cerrm		= 0x8F,
-Cwide		= 0x96,
+Cinitialise = 0x01,
+Cstart = 0x02,
+Cinquiry = 0x04,
+Ceombri = 0x05,
+Cinquire = 0x0B,
+Cextbios = 0x28,
+Cmbienable = 0x29,
+Ciem = 0x81,
+Ciesi = 0x8D,
+Cerrm = 0x8F,
+Cwide = 0x96,
 };
 enum {
-Imbl		= 0x01,
-Mbor		= 0x02,
-Cmdc		= 0x04,
-Rsts		= 0x08,
-Intv		= 0x80,
+Imbl = 0x01,
+Mbor = 0x02,
+Cmdc = 0x04,
+Rsts = 0x08,
+Intv = 0x80,
 };
 typedef struct Mbox24 Mbox24;
 struct Mbox24 {
-uchar	code;
-uchar	ccb[3];
+uchar code;
+uchar ccb[3];
 };
 typedef struct Mbox32 Mbox32;
 struct Mbox32 {
-uchar	ccb[4];
-uchar	btstat;
-uchar	sdstat;
-uchar	pad;
-uchar	code;
+uchar ccb[4];
+uchar btstat;
+uchar sdstat;
+uchar pad;
+uchar code;
 };
 enum {
-Mbfree		= 0x00,
-Mbostart	= 0x01,
-Mboabort	= 0x02,
-Mbiok		= 0x01,
-Mbiabort	= 0x02,
-Mbinx		= 0x03,
-Mbierror	= 0x04,
+Mbfree = 0x00,
+Mbostart = 0x01,
+Mboabort = 0x02,
+Mbiok = 0x01,
+Mbiabort = 0x02,
+Mbinx = 0x03,
+Mbierror = 0x04,
 };
 typedef struct Ccb24 Ccb24;
 typedef struct Ccb32 Ccb32;
 typedef union Ccb Ccb;
 typedef struct Ccb24 {
-uchar	opcode;
-uchar	datadir;
-uchar	cdblen;
-uchar	senselen;
-uchar	datalen[3];
-uchar	dataptr[3];
-uchar	linkptr[3];
-uchar	linkid;
-uchar	btstat;
-uchar	sdstat;
-uchar	reserved[2];
-uchar	cs[12+0xFF];
-void*	data;
+uchar opcode;
+uchar datadir;
+uchar cdblen;
+uchar senselen;
+uchar datalen[3];
+uchar dataptr[3];
+uchar linkptr[3];
+uchar linkid;
+uchar btstat;
+uchar sdstat;
+uchar reserved[2];
+uchar cs[12+0xFF];
+void* data;
 Rendez;
-int	done;
-Ccb*	ccb;
+int done;
+Ccb* ccb;
 } Ccb24;
 typedef struct Ccb32 {
-uchar	opcode;
-uchar	datadir;
-uchar	cdblen;
-uchar	senselen;
-uchar	datalen[4];
-uchar	dataptr[4];
-uchar	reserved[2];
-uchar	btstat;
-uchar	sdstat;
-uchar	targetid;
-uchar	luntag;
-uchar	cdb[12];
-uchar	ccbctl;
-uchar	linkid;
-uchar	linkptr[4];
-uchar	senseptr[4];
-uchar	sense[0xFF];
+uchar opcode;
+uchar datadir;
+uchar cdblen;
+uchar senselen;
+uchar datalen[4];
+uchar dataptr[4];
+uchar reserved[2];
+uchar btstat;
+uchar sdstat;
+uchar targetid;
+uchar luntag;
+uchar cdb[12];
+uchar ccbctl;
+uchar linkid;
+uchar linkptr[4];
+uchar senseptr[4];
+uchar sense[0xFF];
 Rendez;
-int	done;
-Ccb*	ccb;
+int done;
+Ccb* ccb;
 } Ccb32;
 typedef union Ccb {
 Ccb24;
 Ccb32;
 } Ccb;
 enum {
-OInitiator	= 0x00,
-Ordl		= 0x03,
+OInitiator = 0x00,
+Ordl = 0x03,
 };
 enum {
-CCBdatain	= 0x08,
-CCBdataout	= 0x10,
+CCBdatain = 0x08,
+CCBdataout = 0x10,
 };
 enum {
-Eok		= 0x00,
+Eok = 0x00,
 };
 enum {
-TagEnable	= 0x20,
-SQTag		= 0x00,
-HQTag		= 0x40,
-OQTag		= 0x80,
+TagEnable = 0x20,
+SQTag = 0x00,
+HQTag = 0x40,
+OQTag = 0x80,
 };
 enum {
-NoDisc		= 0x08,
-NoUnd		= 0x10,
-NoData		= 0x20,
-NoStat		= 0x40,
-NoIntr		= 0x80,
+NoDisc = 0x08,
+NoUnd = 0x10,
+NoData = 0x20,
+NoStat = 0x40,
+NoIntr = 0x80,
 };
 typedef struct Ctlr Ctlr;
 struct Ctlr {
-int	port;
-int	id;
-int	bus;
-int	irq;
-int	wide;
-Pcidev*	pcidev;
-SDev*	sdev;
-int	spurious;
-Lock	issuelock;
-Lock	ccblock;
-QLock	ccbq;
-Rendez	ccbr;
-Lock	mboxlock;
-void*	mb;
-int	mbox;
-int	mbix;
-Lock	cachelock;
-Ccb*	ccb;
-Ccb**	cache;
+int port;
+int id;
+int bus;
+int irq;
+int wide;
+Pcidev* pcidev;
+SDev* sdev;
+int spurious;
+Lock issuelock;
+Lock ccblock;
+QLock ccbq;
+Rendez ccbr;
+Lock mboxlock;
+void* mb;
+int mbox;
+int mbix;
+Lock cachelock;
+Ccb* ccb;
+Ccb** cache;
 };
 enum {
-NMbox		= 8*8,
-NCcb		= NMbox-1,
+NMbox = 8*8,
+NCcb = NMbox-1,
 };
-#define PADDR24(a, n)	((PADDR(a)+(n)) <= (1<<24))
+#define PADDR24(a, n) ((PADDR(a)+(n)) <= (1<<24))
 static void
 ccbfree(Ctlr* ctlr, Ccb* ccb)
 {

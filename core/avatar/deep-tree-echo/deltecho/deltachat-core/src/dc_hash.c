@@ -5,12 +5,12 @@
 #include <stdint.h>
 #include "dc_context.h"
 #include "dc_hash.h"
-#define Addr(X)  ((uintptr_t)X)
-static void*    sjhashMalloc(long bytes) { void* p=malloc(bytes); if (p) memset(p, 0, bytes); return p; }
-#define         sjhashMallocRaw(a) malloc((a))
-#define         sjhashFree(a) free((a))
+#define Addr(X) ((uintptr_t)X)
+static void* sjhashMalloc(long bytes) { void* p=malloc(bytes); if (p) memset(p, 0, bytes); return p; }
+#define sjhashMallocRaw(a) malloc((a))
+#define sjhashFree(a) free((a))
 static const unsigned char sjhashUpperToLower[] = {
-0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17,
+0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35,
 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53,
 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 97, 98, 99,100,101,102,103,
@@ -126,11 +126,11 @@ static int (*hashFunction(int keyClass))(const void*,int)
 {
 switch (keyClass)
 {
-case DC_HASH_INT:    return &intHash;
+case DC_HASH_INT: return &intHash;
 case DC_HASH_POINTER:return &ptrHash;
 case DC_HASH_STRING: return &strHash;
 case DC_HASH_BINARY: return &binHash;;
-default:            break;
+default: break;
 }
 return 0;
 }
@@ -138,10 +138,10 @@ static int (*compareFunction(int keyClass))(const void*,int,const void*,int)
 {
 switch (keyClass)
 {
-case DC_HASH_INT:     return &intCompare;
+case DC_HASH_INT: return &intCompare;
 case DC_HASH_POINTER: return &ptrCompare;
-case DC_HASH_STRING:  return &strCompare;
-case DC_HASH_BINARY:  return &binCompare;
+case DC_HASH_STRING: return &strCompare;
+case DC_HASH_BINARY: return &binCompare;
 default: break;
 }
 return 0;
@@ -157,7 +157,7 @@ if (pHead)
 pNew->next = pHead;
 pNew->prev = pHead->prev;
 if (pHead->prev) { pHead->prev->next = pNew; }
-else             { pH->first = pNew; }
+else { pH->first = pNew; }
 pHead->prev = pNew;
 }
 else

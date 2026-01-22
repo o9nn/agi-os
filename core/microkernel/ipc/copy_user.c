@@ -112,7 +112,7 @@ return 1;
 mach_msg_user_type_to_kernel(&user, kaddr);
 return 0;
 }
-static inline int copyout_mach_msg_type(const mach_msg_type_t *kaddr, rpc_vm_offset_t  *uaddr) {
+static inline int copyout_mach_msg_type(const mach_msg_type_t *kaddr, rpc_vm_offset_t *uaddr) {
 mach_msg_user_type_t user;
 mach_msg_kernel_type_to_user(kaddr, &user);
 return copyout(&user, uaddr, sizeof(mach_msg_user_type_t));

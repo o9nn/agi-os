@@ -1,5 +1,5 @@
 #ifndef gxfont0c_INCLUDED
-#  define gxfont0c_INCLUDED
+# define gxfont0c_INCLUDED
 #include "gxfont0.h"
 #include "gxfcid.h"
 int gs_font_type0_from_cidfont(gs_font_type0 **ppfont0, gs_font *font,

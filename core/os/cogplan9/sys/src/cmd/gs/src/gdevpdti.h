@@ -1,8 +1,8 @@
 #ifndef gdevpdti_INCLUDED
-#  define gdevpdti_INCLUDED
+# define gdevpdti_INCLUDED
 #include "gdevpdt.h"
 #ifndef pdf_bitmap_fonts_DEFINED
-#  define pdf_bitmap_fonts_DEFINED
+# define pdf_bitmap_fonts_DEFINED
 typedef struct pdf_bitmap_fonts_s pdf_bitmap_fonts_t;
 #endif
 void pdf_close_text_page(gx_device_pdf *pdev);

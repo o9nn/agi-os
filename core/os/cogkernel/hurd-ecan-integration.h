@@ -8,11 +8,11 @@
 typedef unsigned int mach_port_t;
 typedef int error_t;
 #endif
-#define ECAN_DEFAULT_TOTAL_FUNDS    10000
+#define ECAN_DEFAULT_TOTAL_FUNDS 10000
 #define ECAN_DEFAULT_FOCUS_THRESHOLD 100
-#define ECAN_DEFAULT_WAGE_RATE      0.1
-#define ECAN_DEFAULT_RENT_RATE      0.05
-#define ECAN_DEFAULT_SPREAD_RATE    0.2
+#define ECAN_DEFAULT_WAGE_RATE 0.1
+#define ECAN_DEFAULT_RENT_RATE 0.05
+#define ECAN_DEFAULT_SPREAD_RATE 0.2
 typedef struct {
 double sti;
 double lti;

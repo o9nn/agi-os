@@ -8,43 +8,43 @@ extern char *Debug;
 typedef struct Pingcache Pingcache;
 struct Pingcache {
 Pingcache*next;
-long	rtt;
-char	*host;
-long	expire;
+long rtt;
+char *host;
+long expire;
 };
 typedef struct {
-uchar	vihl;
-uchar	tos;
-uchar	length[2];
-uchar	id[2];
-uchar	frag[2];
-uchar	ttl;
-uchar	proto;
-uchar	ipcksum[2];
-uchar	src[4];
-uchar	dst[4];
-uchar	type;
-uchar	code;
-uchar	cksum[2];
-uchar	icmpid[2];
-uchar	seq[2];
-uchar	data[1];
+uchar vihl;
+uchar tos;
+uchar length[2];
+uchar id[2];
+uchar frag[2];
+uchar ttl;
+uchar proto;
+uchar ipcksum[2];
+uchar src[4];
+uchar dst[4];
+uchar type;
+uchar code;
+uchar cksum[2];
+uchar icmpid[2];
+uchar seq[2];
+uchar data[1];
 } Icmp;
 enum {
-EchoReply	= 0,
-Unreachable	= 3,
-SrcQuench	= 4,
-EchoRequest	= 8,
-TimeExceed	= 11,
-Timestamp	= 13,
-TimestampReply	= 14,
-InfoRequest	= 15,
-InfoReply	= 16,
-ICMP_IPSIZE	= 20,
-ICMP_HDRSIZE	= 8,
-Npings		= 8,
-Payload		= 32,
-Cachetime	= 60,
+EchoReply = 0,
+Unreachable = 3,
+SrcQuench = 4,
+EchoRequest = 8,
+TimeExceed = 11,
+Timestamp = 13,
+TimestampReply = 14,
+InfoRequest = 15,
+InfoReply = 16,
+ICMP_IPSIZE = 20,
+ICMP_HDRSIZE = 8,
+Npings = 8,
+Payload = 32,
+Cachetime = 60,
 };
 static Pingcache *Cache;
 int

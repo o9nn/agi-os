@@ -1,5 +1,5 @@
 #ifndef ostack_INCLUDED
-#  define ostack_INCLUDED
+# define ostack_INCLUDED
 #include "iostack.h"
 #include "icstate.h"
 #define iop_stack (i_ctx_p->op_stack)

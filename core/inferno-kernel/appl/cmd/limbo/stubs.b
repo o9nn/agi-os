@@ -52,7 +52,7 @@ popblock();
 }
 firstinst = firstinst.next;
 sblinst(firstinst, n);
-#	(adts, nadts) := findadts(globals);
+# (adts, nadts) := findadts(globals);
 sblty(adts, nadts);
 fs := array[n] of ref Decl;
 n = 0;
@@ -389,38 +389,38 @@ return s + d.sym.name;
 }
 ckindname := array[Tend] of
 {
-Tnone =>	"void",
-Tadt =>		"struct",
-Tadtpick =>	"?adtpick?",
-Tarray =>	"Array*",
-Tbig =>		"LONG",
-Tbyte =>	"BYTE",
-Tchan =>	"Channel*",
-Treal =>	"REAL",
-Tfn =>		"?fn?",
-Tint =>		"WORD",
-Tlist =>	"List*",
-Tmodule =>	"Modlink*",
-Tref =>		"?ref?",
-Tstring =>	"String*",
-Ttuple =>	"?tuple?",
+Tnone => "void",
+Tadt => "struct",
+Tadtpick => "?adtpick?",
+Tarray => "Array*",
+Tbig => "LONG",
+Tbyte => "BYTE",
+Tchan => "Channel*",
+Treal => "REAL",
+Tfn => "?fn?",
+Tint => "WORD",
+Tlist => "List*",
+Tmodule => "Modlink*",
+Tref => "?ref?",
+Tstring => "String*",
+Ttuple => "?tuple?",
 Texception => "?exception",
 Tfix => "WORD",
 Tpoly => "void*",
-Tainit =>	"?ainit?",
-Talt =>		"?alt?",
-Tany =>		"void*",
-Tarrow =>	"?arrow?",
-Tcase =>	"?case?",
-Tcasel =>	"?casel?",
-Tcasec =>	"?casec?",
-Tdot =>		"?dot?",
-Terror =>	"?error?",
-Tgoto =>	"?goto?",
-Tid =>		"?id?",
-Tiface =>	"?iface?",
+Tainit => "?ainit?",
+Talt => "?alt?",
+Tany => "void*",
+Tarrow => "?arrow?",
+Tcase => "?case?",
+Tcasel => "?casel?",
+Tcasec => "?casec?",
+Tdot => "?dot?",
+Terror => "?error?",
+Tgoto => "?goto?",
+Tid => "?id?",
+Tiface => "?iface?",
 Texcept => "?except?",
-Tinst =>	"?inst?",
+Tinst => "?inst?",
 };
 ctypeconv(t: ref Type): string
 {

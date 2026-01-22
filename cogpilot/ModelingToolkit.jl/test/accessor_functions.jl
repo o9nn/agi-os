@@ -22,7 +22,7 @@ end
 ### Basic Tests ###
 # Checks `toplevel = false` argument for various accessors (currently only for `ODESystem`s).
 # Compares to `` version, and `get_` functions.
-# Checks  accessors for parameters, unknowns, equations, observables, and events.
+# Checks accessors for parameters, unknowns, equations, observables, and events.
 # Some tests looks funny (caused by the formatter).
 let
 # Prepares model components.
@@ -136,7 +136,7 @@ equations_toplevel.([sys_mid2])..., eqs_mid2)
 @test all_sets_equal(equations_toplevel.([sys_top])..., eqs_top)
 @test all(sym_issubset(equations_toplevel(sys), get_eqs(sys))
 for sys in [sys_bot, sys_mid2, sys_mid1, sys_top])
-# Checks `continuous_events_toplevel` and  `discrete_events_toplevel` (straightforward
+# Checks `continuous_events_toplevel` and `discrete_events_toplevel` (straightforward
 # as I stored the same single event in all systems). Don't check for non-toplevel cases as
 # technically not needed for these tests and name spacing the events is a mess.
 @test all_sets_equal(

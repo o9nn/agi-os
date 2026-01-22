@@ -1,7 +1,7 @@
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 #ifndef NOMINMAX
-#   define NOMINMAX
+# define NOMINMAX
 #endif
 #include <windows.h>
 #endif
@@ -59,9 +59,9 @@ return buft->device;
 }
 ggml_backend_buffer_t ggml_backend_buffer_init(
 ggml_backend_buffer_type_t buft,
-struct ggml_backend_buffer_i      iface,
-void *                     context,
-size_t                     size) {
+struct ggml_backend_buffer_i iface,
+void * context,
+size_t size) {
 ggml_backend_buffer_t buffer = new ggml_backend_buffer {
 iface,
 buft,
@@ -465,8 +465,8 @@ int n_backends;
 ggml_backend_t backends[GGML_SCHED_MAX_BACKENDS];
 ggml_backend_buffer_type_t bufts[GGML_SCHED_MAX_BACKENDS];
 ggml_gallocr_t galloc;
-struct ggml_hash_set  hash_set;
-int                 * hv_tensor_backend_ids;
+struct ggml_hash_set hash_set;
+int * hv_tensor_backend_ids;
 struct ggml_tensor ** hv_tensor_copies;
 int * node_backend_ids;
 int * leaf_backend_ids;
@@ -1143,9 +1143,9 @@ const char * GGML_SCHED_DEBUG = getenv("GGML_SCHED_DEBUG");
 sched->debug = GGML_SCHED_DEBUG ? atoi(GGML_SCHED_DEBUG) : 0;
 sched->n_backends = n_backends;
 sched->n_copies = parallel ? GGML_SCHED_MAX_COPIES : 1;
-sched->hash_set    = ggml_hash_set_new(graph_size);
+sched->hash_set = ggml_hash_set_new(graph_size);
 sched->hv_tensor_backend_ids = (int *) malloc(sched->hash_set.size * sizeof(sched->hv_tensor_backend_ids[0]));
-sched->hv_tensor_copies      = (ggml_tensor **) malloc(sched->hash_set.size * sched->n_backends * sched->n_copies * sizeof(struct ggml_tensor *));
+sched->hv_tensor_copies = (ggml_tensor **) malloc(sched->hash_set.size * sched->n_backends * sched->n_copies * sizeof(struct ggml_tensor *));
 const size_t ggml_sched_max_splits = graph_size;
 const size_t nodes_size = graph_size + ggml_sched_max_splits*GGML_SCHED_MAX_SPLIT_INPUTS*2;
 sched->node_backend_ids = (int *) calloc(nodes_size, sizeof(sched->node_backend_ids[0]));
@@ -1200,7 +1200,7 @@ void ggml_backend_sched_reset(ggml_backend_sched_t sched) {
 if (!sched->is_reset) {
 ggml_hash_set_reset(&sched->hash_set);
 memset(sched->hv_tensor_backend_ids, -1, sched->hash_set.size * sizeof(sched->hv_tensor_backend_ids[0]));
-memset(sched->hv_tensor_copies,       0, sched->hash_set.size * sched->n_backends * sched->n_copies * sizeof(struct ggml_tensor *));
+memset(sched->hv_tensor_copies, 0, sched->hash_set.size * sched->n_backends * sched->n_copies * sizeof(struct ggml_tensor *));
 sched->is_reset = true;
 }
 sched->is_alloc = false;

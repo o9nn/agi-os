@@ -2,11 +2,11 @@
 #define _9P_BATCH_H_
 #include <stdint.h>
 #include <stdbool.h>
-#define TBATCH      200
-#define RBATCH      201
-#define TQUERY      202
-#define RQUERY      203
-#define MAX_BATCH_OPS   1000
+#define TBATCH 200
+#define RBATCH 201
+#define TQUERY 202
+#define RQUERY 203
+#define MAX_BATCH_OPS 1000
 typedef enum {
 BATCH_OP_READ = 0,
 BATCH_OP_WRITE,

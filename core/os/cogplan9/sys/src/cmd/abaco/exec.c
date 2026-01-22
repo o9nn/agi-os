@@ -11,44 +11,44 @@
 #include <html.h>
 #include "dat.h"
 #include "fns.h"
-void	del(Text *, Text *, int, int, Rune *, int);
-void	delcol(Text *, Text *, int, int, Rune *, int);
-void	cut(Text *, Text *, int, int, Rune *, int);
-void	exit(Text *, Text *, int, int, Rune *, int);
-void	get(Text *, Text *, int, int, Rune *, int);
-void	go(Text *,Text *,  int, int, Rune *, int);
-void	google(Text *,Text *,  int, int, Rune *, int);
-void	new(Text*, Text *, int, int, Rune *, int);
-void	newcol(Text*, Text *, int, int, Rune *, int);
-void	paste(Text *, Text *, int, int, Rune *, int);
-void	sort(Text *, Text *, int, int, Rune *, int);
-void	stop(Text *, Text *, int, int, Rune *, int);
-void	debug(Text *, Text *, int, int, Rune *, int);
+void del(Text *, Text *, int, int, Rune *, int);
+void delcol(Text *, Text *, int, int, Rune *, int);
+void cut(Text *, Text *, int, int, Rune *, int);
+void exit(Text *, Text *, int, int, Rune *, int);
+void get(Text *, Text *, int, int, Rune *, int);
+void go(Text *,Text *, int, int, Rune *, int);
+void google(Text *,Text *, int, int, Rune *, int);
+void new(Text*, Text *, int, int, Rune *, int);
+void newcol(Text*, Text *, int, int, Rune *, int);
+void paste(Text *, Text *, int, int, Rune *, int);
+void sort(Text *, Text *, int, int, Rune *, int);
+void stop(Text *, Text *, int, int, Rune *, int);
+void debug(Text *, Text *, int, int, Rune *, int);
 typedef struct Exectab Exectab;
 struct Exectab
 {
-Rune	*name;
-void	(*fn)(Text *, Text *, int, int, Rune *, int);
-int		flag1;
-int		flag2;
+Rune *name;
+void (*fn)(Text *, Text *, int, int, Rune *, int);
+int flag1;
+int flag2;
 };
 Exectab exectab[] = {
-{ L"Back",		go,		FALSE,	XXX		},
-{ L"Cut",		cut,		TRUE,	TRUE	},
-{ L"Debug",	debug,	XXX,		XXX		},
-{ L"Del",		del,		XXX,		XXX		},
-{ L"Delcol",	delcol,	FALSE,	TRUE	},
-{ L"Exit",		exit,		XXX,		XXX		},
-{ L"Get",		get,		XXX,		XXX		},
-{ L"Google",	google,	XXX,		XXX		},
-{ L"New",		new,		XXX,		XXX		},
-{ L"Newcol",	newcol,	XXX,		XXX		},
-{ L"Next",		go,		TRUE,	XXX		},
-{ L"Paste",		paste,	TRUE,	XXX		},
-{ L"Snarf",		cut,		TRUE,	FALSE	},
-{ L"Stop",		stop,		XXX,		XXX		},
-{ L"Sort",		sort,		XXX,		XXX		},
-{ nil, 			nil,		0,		0		},
+{ L"Back", go, FALSE, XXX },
+{ L"Cut", cut, TRUE, TRUE },
+{ L"Debug", debug, XXX, XXX },
+{ L"Del", del, XXX, XXX },
+{ L"Delcol", delcol, FALSE, TRUE },
+{ L"Exit", exit, XXX, XXX },
+{ L"Get", get, XXX, XXX },
+{ L"Google", google, XXX, XXX },
+{ L"New", new, XXX, XXX },
+{ L"Newcol", newcol, XXX, XXX },
+{ L"Next", go, TRUE, XXX },
+{ L"Paste", paste, TRUE, XXX },
+{ L"Snarf", cut, TRUE, FALSE },
+{ L"Stop", stop, XXX, XXX },
+{ L"Sort", sort, XXX, XXX },
+{ nil, nil, 0, 0 },
 };
 static
 Exectab*
@@ -243,21 +243,21 @@ if(t->w)
 textscrdraw(t);
 closerunestr(&rs);
 }
-typedef	struct	Expand Expand;
+typedef struct Expand Expand;
 struct Expand
 {
-uint	q0;
-uint	q1;
-Rune	*name;
-int	nname;
-int	jump;
+uint q0;
+uint q1;
+Rune *name;
+int nname;
+int jump;
 union{
-Text	*at;
-Rune	*ar;
+Text *at;
+Rune *ar;
 };
-int	(*agetc)(void*, uint);
-int	a0;
-int	a1;
+int (*agetc)(void*, uint);
+int a0;
+int a1;
 };
 int
 expand(Text *t, uint q0, uint q1, Expand *e)

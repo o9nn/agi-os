@@ -3,51 +3,51 @@
 #include "mem.h"
 #include "dat.h"
 #include "fns.h"
-#define TTB(pa)	((pa) & ~0x3FFF)
-#define L1x(pa)	(((pa)>>20) & 0xFFF)
-#define PTBA(pa)	((pa) & ~0x3FF)
-#define L2x(pa)	(((pa)>>12) & 0xFF)
-#define PBA(pa)	((pa) & ~0xFFF)
-#define SBA(pa)	((pa) & ~0xFFFFF)
+#define TTB(pa) ((pa) & ~0x3FFF)
+#define L1x(pa) (((pa)>>20) & 0xFFF)
+#define PTBA(pa) ((pa) & ~0x3FF)
+#define L2x(pa) (((pa)>>12) & 0xFF)
+#define PBA(pa) ((pa) & ~0xFFF)
+#define SBA(pa) ((pa) & ~0xFFFFF)
 enum {
-Section=	1<<20,
-LargePage=	1<<16,
-SmallPage=	1<<12,
-EsmallPage=	1<<10,
+Section= 1<<20,
+LargePage= 1<<16,
+SmallPage= 1<<12,
+EsmallPage= 1<<10,
 SectionPages = Section/SmallPage,
 PtAlign = 1<<10,
-L1type= 	3<<0,
-L1page= 	1<<0,
+L1type= 3<<0,
+L1page= 1<<0,
 L1section= 2<<0,
-L1fpage=	3<<0,
-L1buffered=	1<<2,
-L1cached=	1<<3,
-L1P=	1<<9,
-L1sectionX=	1<<12,
-L1minicache=	(L1sectionX | L1cached),
-L2type=	3<<0,
-L2invalid=	0<<0,
-L2large=	1<<0,
-L2small=	2<<0,
-L2esmall=	3<<0,
-L2buffered=	1<<2,
-L2cached=	1<<3,
-L2smallX=	1<<6,
-L2largeX=	1<<12,
-Dnone=	0,
-Dclient=	1,
-Dmanager=	3,
-APsro=	0,
-APsrw=	1,
-APuro=	2,
-APurw=	3,
+L1fpage= 3<<0,
+L1buffered= 1<<2,
+L1cached= 1<<3,
+L1P= 1<<9,
+L1sectionX= 1<<12,
+L1minicache= (L1sectionX | L1cached),
+L2type= 3<<0,
+L2invalid= 0<<0,
+L2large= 1<<0,
+L2small= 2<<0,
+L2esmall= 3<<0,
+L2buffered= 1<<2,
+L2cached= 1<<3,
+L2smallX= 1<<6,
+L2largeX= 1<<12,
+Dnone= 0,
+Dclient= 1,
+Dmanager= 3,
+APsro= 0,
+APsrw= 1,
+APuro= 2,
+APurw= 3,
 MINICACHED = 0x10000000,
 };
-#define L1dom(d)	(((d) & 0xF)<<5)
-#define AP(i, v)	((v)<<(((i)*2)+4))
-#define L1AP(v)	AP(3, (v))
-#define L2AP(v)	AP(3, (v))|AP(2, (v))|AP(1, (v))|AP(0, (v))
-#define L1krw	(L1AP(APsrw) | L1dom(0))
+#define L1dom(d) (((d) & 0xF)<<5)
+#define AP(i, v) ((v)<<(((i)*2)+4))
+#define L1AP(v) AP(3, (v))
+#define L2AP(v) AP(3, (v))|AP(2, (v))|AP(1, (v))|AP(0, (v))
+#define L1krw (L1AP(APsrw) | L1dom(0))
 ulong
 va2pa(void *v)
 {
@@ -123,7 +123,7 @@ for(i = 0; i < 64*MB; i += MB)
 ttb[L1x(UCDRAMZERO+i)] = (PHYSMEM0+i) | L1krw | L1section;
 if(0)
 for(va = KZERO; va < KZERO+64*MB; va += MB)
-ttb[L1x(va|MINICACHED)] = va | L1krw  | L1minicache | L1section;
+ttb[L1x(va|MINICACHED)] = va | L1krw | L1minicache | L1section;
 ttb[L1x(DCFADDR)] |= L1cached | L1buffered;
 #ifdef NOTYET
 ttb[L1x(MCFADDR)] |= L1minicache;

@@ -1,11 +1,11 @@
 #include "tdef.h"
 #include "fns.h"
 #include "ext.h"
-int	regcnt = NNAMES;
-int	falsef	= 0;
-#define	NHASHSIZE	128
-#define	NHASH(i)	((i>>6)^i) & (NHASHSIZE-1)
-Numtab	*nhash[NHASHSIZE];
+int regcnt = NNAMES;
+int falsef = 0;
+#define NHASHSIZE 128
+#define NHASH(i) ((i>>6)^i) & (NHASHSIZE-1)
+Numtab *nhash[NHASHSIZE];
 Numtab *numtabp = NULL;
 #define NDELTA 400
 int ncnt = 0;
@@ -155,8 +155,8 @@ nform = numtabp[j].fmt;
 }
 setn1(i, nform, (Tchar) 0);
 }
-Tchar	numbuf[25];
-Tchar	*numbufp;
+Tchar numbuf[25];
+Tchar *numbufp;
 int wrc(Tchar i)
 {
 if (numbufp >= &numbuf[24])
@@ -669,7 +669,7 @@ k = 0;
 j = getch();
 if (!isalpha(cbits(j))) {
 ch = j;
-while ((j = cbits(getch())) >= '0' &&  j <= '9')
+while ((j = cbits(getch())) >= '0' && j <= '9')
 k++;
 }
 if (!k)

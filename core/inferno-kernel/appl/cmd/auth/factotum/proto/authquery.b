@@ -73,7 +73,7 @@ return "authquery: bad query: "+err;
 if(sexp == nil)
 return "authquery: no result";
 if(sexp.op() != "needcert"){
-io.done(ref Authinfo(nil, nil, nil, sexp.pack()));	# XXX use something other than secret
+io.done(ref Authinfo(nil, nil, nil, sexp.pack())); # XXX use something other than secret
 return nil;
 }
 (sexp, err) = needcert(io, sexp);
@@ -98,7 +98,7 @@ return "authquery: bad cert sexp: "+err;
 if((err = q.addcert(sexp)) != nil)
 return "authquery: bad certificate received: "+err;
 }
-write(io,  q.result().pack());
+write(io, q.result().pack());
 io.done(ref Authinfo);
 return nil;
 }
@@ -109,7 +109,7 @@ return ref Sexp.List(ref Sexp.String(op, nil) :: els);
 needcert(nil: ref IO, se: ref Sexp): (ref Sexp, string)
 {
 return (mkop("cert", se :: nil), nil);
-#	(key, err) := io.findkey(
+# (key, err) := io.findkey(
 }
 write(io: ref IO, buf: array of byte)
 {

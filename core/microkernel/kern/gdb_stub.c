@@ -6,25 +6,25 @@ static struct gdb_stub_config gdb_config = GDB_STUB_DEFAULT_CONFIG;
 static gdb_state_t gdb_state = GDB_STATE_DISCONNECTED;
 static struct gdb_stub_stats gdb_stats = {0};
 static struct gdb_hw_breakpoint hw_breakpoints[GDB_MAX_HW_BREAKPOINTS] = {0};
-#define DR7_GE          (1UL << 9)
-#define DR7_LE          (1UL << 8)
-#define DR7_G0          (1UL << 1)
-#define DR7_L0          (1UL << 0)
-#define DR7_G1          (1UL << 3)
-#define DR7_L1          (1UL << 2)
-#define DR7_G2          (1UL << 5)
-#define DR7_L2          (1UL << 4)
-#define DR7_G3          (1UL << 7)
-#define DR7_L3          (1UL << 6)
-#define DR7_TYPE_SHIFT(n)   (16 + (n)*4)
-#define DR7_LEN_SHIFT(n)    (18 + (n)*4)
-#define DR7_TYPE_EXEC       0
-#define DR7_TYPE_WRITE      1
-#define DR7_TYPE_IO         2
-#define DR7_TYPE_ACCESS     3
-#define DR7_LEN_1           0
-#define DR7_LEN_2           1
-#define DR7_LEN_4           3
+#define DR7_GE (1UL << 9)
+#define DR7_LE (1UL << 8)
+#define DR7_G0 (1UL << 1)
+#define DR7_L0 (1UL << 0)
+#define DR7_G1 (1UL << 3)
+#define DR7_L1 (1UL << 2)
+#define DR7_G2 (1UL << 5)
+#define DR7_L2 (1UL << 4)
+#define DR7_G3 (1UL << 7)
+#define DR7_L3 (1UL << 6)
+#define DR7_TYPE_SHIFT(n) (16 + (n)*4)
+#define DR7_LEN_SHIFT(n) (18 + (n)*4)
+#define DR7_TYPE_EXEC 0
+#define DR7_TYPE_WRITE 1
+#define DR7_TYPE_IO 2
+#define DR7_TYPE_ACCESS 3
+#define DR7_LEN_1 0
+#define DR7_LEN_2 1
+#define DR7_LEN_4 3
 static inline void set_debug_register(int reg, vm_offset_t value)
 {
 switch (reg) {

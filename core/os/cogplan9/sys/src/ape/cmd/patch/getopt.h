@@ -1,6 +1,6 @@
 #ifndef _GETOPT_H
 #define _GETOPT_H 1
-#ifdef	__cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 extern char *optarg;
@@ -18,9 +18,9 @@ int has_arg;
 int *flag;
 int val;
 };
-#define	no_argument		0
-#define required_argument	1
-#define optional_argument	2
+#define no_argument 0
+#define required_argument 1
+#define optional_argument 2
 #if defined (__STDC__) && __STDC__
 #ifdef __GNU_LIBRARY__
 extern int getopt (int argc, char *const *argv, const char *shortopts);
@@ -42,7 +42,7 @@ extern int getopt_long ();
 extern int getopt_long_only ();
 extern int _getopt_internal ();
 #endif
-#ifdef	__cplusplus
+#ifdef __cplusplus
 }
 #endif
 #endif

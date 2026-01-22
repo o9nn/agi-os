@@ -691,7 +691,7 @@ return_error(e_invalidfileaccess);
 return 0;
 }
 private int
-lib_fopen_with_libpath(gs_file_path_ptr  lib_path,
+lib_fopen_with_libpath(gs_file_path_ptr lib_path,
 const gs_memory_t *mem,
 i_ctx_t *i_ctx_p,
 gx_io_device *iodev,
@@ -926,7 +926,7 @@ imem = (gs_ref_memory_t *) mem;
 if (imem) {
 s = imem->streams;
 while (s != 0) {
-if (!s_is_valid(s) && s->read_id != 0  ) {
+if (!s_is_valid(s) && s->read_id != 0 ) {
 s->is_temp = 0;
 return s;
 }

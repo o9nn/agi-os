@@ -3,13 +3,13 @@
 #include <sys/time.h>
 #include <time.h>
 #include "timefmt.h"
-#define SECOND 	1
-#define MINUTE	60
-#define HOUR	(60*MINUTE)
-#define DAY	(24*HOUR)
-#define WEEK 	(7*DAY)
-#define MONTH   (31*DAY)
-#define YEAR    (365*DAY)
+#define SECOND 1
+#define MINUTE 60
+#define HOUR (60*MINUTE)
+#define DAY (24*HOUR)
+#define WEEK (7*DAY)
+#define MONTH (31*DAY)
+#define YEAR (365*DAY)
 static unsigned
 int_len (unsigned n)
 {
@@ -55,18 +55,18 @@ char *sfxs[5];
 }
 time_scales[] =
 {
-{{2*YEAR, 0},  {YEAR, 0},  {MONTH, 0},{" years", "years", "yrs", "y", 0 }},
-{{3*MONTH, 0}, {MONTH, 0}, {WEEK, 0}, {" months","months","mo",       0 }},
-{{2*WEEK, 0},  {WEEK, 0},  {DAY, 0},  {" weeks", "weeks", "wks", "w", 0 }},
-{{2*DAY, 0},   {DAY, 0},   {HOUR, 0}, {" days",  "days",  "dys", "d", 0 }},
-{{2*HOUR, 0},  {HOUR, 0},  {MINUTE, 0},{" hours","hours", "hrs", "h", 0 }},
-{{2*MINUTE, 0},{MINUTE, 0},{1, 0},    {" minutes","min",  "mi",  "m", 0 }},
-{{1, 100000},  {1, 0},     {0, 100000},{" seconds", "sec", "s", 0 }},
-{{1, 0},       {1, 0},     {0, 0},    {" second", "sec", "s", 0 }},
-{{0, 1100},    {0, 1000},  {0, 100},  {" milliseconds", "ms", 0 }},
-{{0, 1000},    {0, 1000},  {0, 0},    {" millisecond", "ms", 0 }},
-{{0, 2},       {0, 1},     {0, 0},    {" microseconds", "us", 0 }},
-{{0, 1},       {0, 1},     {0, 0},    {" microsecond", "us", 0 }},
+{{2*YEAR, 0}, {YEAR, 0}, {MONTH, 0},{" years", "years", "yrs", "y", 0 }},
+{{3*MONTH, 0}, {MONTH, 0}, {WEEK, 0}, {" months","months","mo", 0 }},
+{{2*WEEK, 0}, {WEEK, 0}, {DAY, 0}, {" weeks", "weeks", "wks", "w", 0 }},
+{{2*DAY, 0}, {DAY, 0}, {HOUR, 0}, {" days", "days", "dys", "d", 0 }},
+{{2*HOUR, 0}, {HOUR, 0}, {MINUTE, 0},{" hours","hours", "hrs", "h", 0 }},
+{{2*MINUTE, 0},{MINUTE, 0},{1, 0}, {" minutes","min", "mi", "m", 0 }},
+{{1, 100000}, {1, 0}, {0, 100000},{" seconds", "sec", "s", 0 }},
+{{1, 0}, {1, 0}, {0, 0}, {" second", "sec", "s", 0 }},
+{{0, 1100}, {0, 1000}, {0, 100}, {" milliseconds", "ms", 0 }},
+{{0, 1000}, {0, 1000}, {0, 0}, {" millisecond", "ms", 0 }},
+{{0, 2}, {0, 1}, {0, 0}, {" microseconds", "us", 0 }},
+{{0, 1}, {0, 1}, {0, 0}, {" microsecond", "us", 0 }},
 {{0, 0} }
 };
 struct tscale *ts;

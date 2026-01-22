@@ -3,9 +3,9 @@
 #include "inflate.h"
 #include "inffast.h"
 #ifdef MAKEFIXED
-#  ifndef BUILDFIXED
-#    define BUILDFIXED
-#  endif
+# ifndef BUILDFIXED
+# define BUILDFIXED
+# endif
 #endif
 local void fixedtables OF((struct inflate_state FAR *state));
 local int updatewindow OF((z_streamp strm, unsigned out));
@@ -109,7 +109,7 @@ inflate_table(DISTS, state->lens, 32, &(next), &(bits), state->work);
 virgin = 0;
 }
 #else
-#   include "inffixed.h"
+# include "inffixed.h"
 #endif
 state->lencode = lenfix;
 state->lenbits = 9;
@@ -194,19 +194,19 @@ if (state->whave < state->wsize) state->whave += dist;
 return 0;
 }
 #ifdef GUNZIP
-#  define UPDATE(check, buf, len) \
+# define UPDATE(check, buf, len) \
 (state->flags ? crc32(check, buf, len) : adler32(check, buf, len))
 #else
-#  define UPDATE(check, buf, len) adler32(check, buf, len)
+# define UPDATE(check, buf, len) adler32(check, buf, len)
 #endif
 #ifdef GUNZIP
-#  define CRC2(check, word) \
+# define CRC2(check, word) \
 do { \
 hbuf[0] = (unsigned char)(word); \
 hbuf[1] = (unsigned char)((word) >> 8); \
 check = crc32(check, hbuf, 2); \
 } while (0)
-#  define CRC4(check, word) \
+# define CRC4(check, word) \
 do { \
 hbuf[0] = (unsigned char)(word); \
 hbuf[1] = (unsigned char)((word) >> 8); \
@@ -897,9 +897,9 @@ strm->avail_in -= len;
 strm->next_in += len;
 strm->total_in += len;
 if (state->have != 4) return Z_DATA_ERROR;
-in = strm->total_in;  out = strm->total_out;
+in = strm->total_in; out = strm->total_out;
 inflateReset(strm);
-strm->total_in = in;  strm->total_out = out;
+strm->total_in = in; strm->total_out = out;
 state->mode = TYPE;
 return Z_OK;
 }

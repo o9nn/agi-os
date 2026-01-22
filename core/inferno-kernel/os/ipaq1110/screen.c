@@ -11,9 +11,9 @@
 #include "screen.h"
 enum {
 Backgnd = 0xFF,
-Foregnd =	0x00,
+Foregnd = 0x00,
 };
-#define	DPRINT	if(1)iprint
+#define DPRINT if(1)iprint
 static Memdata xgdata;
 static Memimage xgscreen =
 {
@@ -48,7 +48,7 @@ void swcurs_load(SWcursor*, Cursor*);
 void swcursupdate(int, int, int, int);
 static char printbuf[1024];
 static int printbufpos = 0;
-static void	lcdscreenputs(char*, int);
+static void lcdscreenputs(char*, int);
 static void screenpbuf(char*, int);
 void (*screenputs)(char*, int) = screenpbuf;
 static Cursor arrow = {
@@ -64,12 +64,12 @@ static Cursor arrow = {
 0x61, 0xF0, 0x60, 0xE0, 0x40, 0x40, 0x00, 0x00,
 },
 };
-static	ushort	palette16[256];
-static	void	(*flushpixels)(Rectangle, ulong*, int, ulong*, int);
-static	void	flush8to4(Rectangle, ulong*, int, ulong*, int);
-static	void	flush8to4r(Rectangle, ulong*, int, ulong*, int);
-static	void	flush8to16(Rectangle, ulong*, int, ulong*, int);
-static	void	flush8to16r(Rectangle, ulong*, int, ulong*, int);
+static ushort palette16[256];
+static void (*flushpixels)(Rectangle, ulong*, int, ulong*, int);
+static void flush8to4(Rectangle, ulong*, int, ulong*, int);
+static void flush8to4r(Rectangle, ulong*, int, ulong*, int);
+static void flush8to16(Rectangle, ulong*, int, ulong*, int);
+static void flush8to16r(Rectangle, ulong*, int, ulong*, int);
 int
 setcolor(ulong p, ulong r, ulong g, ulong b)
 {
@@ -130,22 +130,22 @@ cb*0x01010101);
 lcd_flush();
 }
 static uchar lum[256]={
-0,   7,  15,  23,  39,  47,  55,  63,  79,  87,  95, 103, 119, 127, 135, 143,
-154,  17,   9,  17,  25,  49,  59,  62,  68,  89,  98, 107, 111, 129, 138, 146,
-157, 166,  34,  11,  19,  27,  59,  71,  69,  73,  99, 109, 119, 119, 139, 148,
-159, 169, 178,  51,  13,  21,  29,  69,  83,  75,  78, 109, 120, 131, 128, 149,
-28,  35,  43,  60,  68,  75,  83, 100, 107, 115, 123, 140, 147, 155, 163,  20,
-25,  35,  40,  47,  75,  85,  84,  89, 112, 121, 129, 133, 151, 159, 168, 176,
-190,  30,  42,  44,  50,  90, 102,  94,  97, 125, 134, 144, 143, 163, 172, 181,
-194, 204,  35,  49,  49,  54, 105, 119, 103, 104, 137, 148, 158, 154, 175, 184,
-56,  63,  80,  88,  96, 103, 120, 128, 136, 143, 160, 168, 175, 183,  40,  48,
-54,  63,  69,  90,  99, 107, 111, 135, 144, 153, 155, 173, 182, 190, 198,  45,
-50,  60,  70,  74, 100, 110, 120, 120, 150, 160, 170, 167, 186, 195, 204, 214,
-229,  55,  66,  77,  79, 110, 121, 131, 129, 165, 176, 187, 179, 200, 210, 219,
-84, 100, 108, 116, 124, 140, 148, 156, 164, 180, 188, 196, 204,  60,  68,  76,
-82,  91, 108, 117, 125, 134, 152, 160, 169, 177, 195, 204, 212, 221,  66,  74,
-80,  89,  98, 117, 126, 135, 144, 163, 172, 181, 191, 210, 219, 228, 238,  71,
-76,  85,  95, 105, 126, 135, 145, 155, 176, 185, 195, 205, 225, 235, 245, 255,
+0, 7, 15, 23, 39, 47, 55, 63, 79, 87, 95, 103, 119, 127, 135, 143,
+154, 17, 9, 17, 25, 49, 59, 62, 68, 89, 98, 107, 111, 129, 138, 146,
+157, 166, 34, 11, 19, 27, 59, 71, 69, 73, 99, 109, 119, 119, 139, 148,
+159, 169, 178, 51, 13, 21, 29, 69, 83, 75, 78, 109, 120, 131, 128, 149,
+28, 35, 43, 60, 68, 75, 83, 100, 107, 115, 123, 140, 147, 155, 163, 20,
+25, 35, 40, 47, 75, 85, 84, 89, 112, 121, 129, 133, 151, 159, 168, 176,
+190, 30, 42, 44, 50, 90, 102, 94, 97, 125, 134, 144, 143, 163, 172, 181,
+194, 204, 35, 49, 49, 54, 105, 119, 103, 104, 137, 148, 158, 154, 175, 184,
+56, 63, 80, 88, 96, 103, 120, 128, 136, 143, 160, 168, 175, 183, 40, 48,
+54, 63, 69, 90, 99, 107, 111, 135, 144, 153, 155, 173, 182, 190, 198, 45,
+50, 60, 70, 74, 100, 110, 120, 120, 150, 160, 170, 167, 186, 195, 204, 214,
+229, 55, 66, 77, 79, 110, 121, 131, 129, 165, 176, 187, 179, 200, 210, 219,
+84, 100, 108, 116, 124, 140, 148, 156, 164, 180, 188, 196, 204, 60, 68, 76,
+82, 91, 108, 117, 125, 134, 152, 160, 169, 177, 195, 204, 212, 221, 66, 74,
+80, 89, 98, 117, 126, 135, 144, 163, 172, 181, 191, 210, 219, 228, 238, 71,
+76, 85, 95, 105, 126, 135, 145, 155, 176, 185, 195, 205, 225, 235, 245, 255,
 };
 void flushmemscreen(Rectangle r);
 void
@@ -248,7 +248,7 @@ while(h--) {
 for(i=w; i; i--) {
 ulong v1 = *s++;
 ulong v2 = *s++;
-*d++ = 	 (lum[v2>>24]<<28)
+*d++ = (lum[v2>>24]<<28)
 |(lum[(v2>>16)&0xff]<<24)
 |(lum[(v2>>8)&0xff]<<20)
 |(lum[v2&0xff]<<16)
@@ -486,22 +486,22 @@ me = nil;
 unlock(vd);
 }
 typedef struct SWcursor {
-ulong	*fb;
+ulong *fb;
 Rectangle r;
-int	d;
-int 	width;
-int	x;
-int	y;
-int	hotx;
-int	hoty;
-uchar	cbwid;
-uchar	f;
-uchar	cwid;
-uchar	chgt;
-int	hidecount;
-uchar	data[CURSWID*CURSHGT];
-uchar	mask[CURSWID*CURSHGT];
-uchar	save[CURSWID*CURSHGT];
+int d;
+int width;
+int x;
+int y;
+int hotx;
+int hoty;
+uchar cbwid;
+uchar f;
+uchar cwid;
+uchar chgt;
+int hidecount;
+uchar data[CURSWID*CURSHGT];
+uchar mask[CURSWID*CURSHGT];
+uchar save[CURSWID*CURSHGT];
 } SWcursor;
 enum {
 CUR_ENA = 0x01,
@@ -509,9 +509,9 @@ CUR_DRW = 0x02,
 CUR_SWP = 0x10,
 };
 static Rectangle cursoroffrect;
-static int	cursorisoff;
+static int cursorisoff;
 static void swcursorflush(int, int);
-static void	swcurs_draw_or_undraw(SWcursor *);
+static void swcurs_draw_or_undraw(SWcursor *);
 static void
 cursorupdate0(void)
 {

@@ -1,17 +1,17 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
 enum{
 Qdir,
 Qdata,
 };
 static
 Dirtab XXXtab[]={
-".",			{Qdir, 0, QTDIR},	0,	0555,
-"data",		{Qdata, 0},	0,	0666,
+".", {Qdir, 0, QTDIR}, 0, 0555,
+"data", {Qdata, 0}, 0, 0666,
 };
 static void
 XXXreset(void)

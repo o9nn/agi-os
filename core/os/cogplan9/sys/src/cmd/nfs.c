@@ -1206,17 +1206,17 @@ fsdispatch(void *v)
 Req *r;
 r = v;
 switch(r->ifcall.type){
-default:	respond(r, "unknown type");	break;
-case Tattach:	fsattach(r);	break;
-case Topen:	fsopen(r);	break;
-case Tcreate:	fscreate(r);	break;
-case Tread:	fsread(r);	break;
-case Twrite:	fswrite(r);	break;
-case Tremove:	fsremove(r);	break;
-case Tflush:	fsflush(r);	break;
-case Tstat:	fsstat(r);	break;
-case Twstat:	fswstat(r);	break;
-case Twalk:	fswalk(r);	break;
+default: respond(r, "unknown type"); break;
+case Tattach: fsattach(r); break;
+case Topen: fsopen(r); break;
+case Tcreate: fscreate(r); break;
+case Tread: fsread(r); break;
+case Twrite: fswrite(r); break;
+case Tremove: fsremove(r); break;
+case Tflush: fsflush(r); break;
+case Tstat: fsstat(r); break;
+case Twstat: fswstat(r); break;
+case Twalk: fswalk(r); break;
 }
 }
 void
@@ -1238,18 +1238,18 @@ threadexitsall(nil);
 }
 Srv fs =
 {
-.destroyfid =	fsdestroyfid,
-.attach=		fssend,
-.open=		fssend,
-.create=		fssend,
-.read=		fssend,
-.write=		fssend,
-.remove=		fssend,
-.flush=		fssend,
-.stat=		fssend,
-.wstat=		fssend,
-.walk=		fssend,
-.end=		fsdie
+.destroyfid = fsdestroyfid,
+.attach= fssend,
+.open= fssend,
+.create= fssend,
+.read= fssend,
+.write= fssend,
+.remove= fssend,
+.flush= fssend,
+.stat= fssend,
+.wstat= fssend,
+.walk= fssend,
+.end= fsdie
 };
 void
 usage(void)

@@ -1,16 +1,16 @@
 #ifndef _ZFTAPE_H
 #define _ZFTAPE_H
-#define ZFTAPE_VERSION  "zftape for " FTAPE_VERSION
+#define ZFTAPE_VERSION "zftape for " FTAPE_VERSION
 #include <linux/ftape.h>
-#define ZFTAPE_LABEL       "Ftape - The Linux Floppy Tape Project!"
-#define ZFT_Q80_MODE		(1 << 3)
-#define ZFT_ZIP_MODE		(1 << 4)
-#define ZFT_RAW_MODE		(1 << 5)
-#define ZFT_MINOR_OP_MASK	(ZFT_Q80_MODE	| 	\
-ZFT_ZIP_MODE	| 	\
+#define ZFTAPE_LABEL "Ftape - The Linux Floppy Tape Project!"
+#define ZFT_Q80_MODE (1 << 3)
+#define ZFT_ZIP_MODE (1 << 4)
+#define ZFT_RAW_MODE (1 << 5)
+#define ZFT_MINOR_OP_MASK (ZFT_Q80_MODE | \
+ZFT_ZIP_MODE | \
 ZFT_RAW_MODE)
-#define ZFT_MINOR_MASK		(FTAPE_SEL_MASK		|	\
-ZFT_MINOR_OP_MASK	|	\
+#define ZFT_MINOR_MASK (FTAPE_SEL_MASK | \
+ZFT_MINOR_OP_MASK | \
 FTAPE_NO_REWIND)
 #ifdef ZFT_OBSOLETE
 struct mtblksz {

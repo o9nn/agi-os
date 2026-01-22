@@ -37,17 +37,17 @@ static struct rt6_info * ipv6_get_dflt_router (void);
 #endif
 static const struct argp_option options[] =
 {
-{"interface", 'i', "DEVICE",   0,  "Network interface to use", 1},
+{"interface", 'i', "DEVICE", 0, "Network interface to use", 1},
 {0,0,0,0,"These apply to a given interface:", 2},
-{"address",   'a', "ADDRESS",  OPTION_ARG_OPTIONAL, "Set the network address"},
-{"netmask",   'm', "MASK",     OPTION_ARG_OPTIONAL, "Set the netmask"},
-{"peer",      'p', "ADDRESS",  OPTION_ARG_OPTIONAL, "Set the peer address"},
-{"gateway",   'g', "ADDRESS",  OPTION_ARG_OPTIONAL, "Set the default gateway"},
-{"ipv4",      '4', "NAME",     0, "Put active IPv4 translator on NAME"},
+{"address", 'a', "ADDRESS", OPTION_ARG_OPTIONAL, "Set the network address"},
+{"netmask", 'm', "MASK", OPTION_ARG_OPTIONAL, "Set the netmask"},
+{"peer", 'p', "ADDRESS", OPTION_ARG_OPTIONAL, "Set the peer address"},
+{"gateway", 'g', "ADDRESS", OPTION_ARG_OPTIONAL, "Set the default gateway"},
+{"ipv4", '4', "NAME", 0, "Put active IPv4 translator on NAME"},
 #ifdef CONFIG_IPV6
-{"ipv6",      '6', "NAME",     0, "Put active IPv6 translator on NAME"},
-{"address6",  'A', "ADDR/LEN", OPTION_ARG_OPTIONAL, "Set the global IPv6 address"},
-{"gateway6",  'G', "ADDRESS",  OPTION_ARG_OPTIONAL, "Set the IPv6 default gateway"},
+{"ipv6", '6', "NAME", 0, "Put active IPv6 translator on NAME"},
+{"address6", 'A', "ADDR/LEN", OPTION_ARG_OPTIONAL, "Set the global IPv6 address"},
+{"gateway6", 'G', "ADDRESS", OPTION_ARG_OPTIONAL, "Set the IPv6 default gateway"},
 #endif
 {0}
 };
@@ -142,19 +142,19 @@ parse_opt (int opt, char *arg, struct argp_state *state)
 {
 error_t err = 0;
 struct parse_hook *h = state->hook;
-#define RETURN(_err)								\
-do { if (opt == ARGP_KEY_SUCCESS)						\
-{ err = (_err); goto free_hook; }					\
-else									\
+#define RETURN(_err) \
+do { if (opt == ARGP_KEY_SUCCESS) \
+{ err = (_err); goto free_hook; } \
+else \
 return _err; } while (0)
-#define PERR(err, fmt, args...)							\
+#define PERR(err, fmt, args...) \
 do { argp_error (state, fmt , ##args); RETURN (err); } while (0)
 #define FAIL(rerr, status, perr, fmt, args...) \
 do{ argp_failure (state, status, perr, fmt , ##args); RETURN (rerr); } while(0)
-#undef	ADDR
-#define ADDR(str, type)							      \
-({ unsigned long addr = inet_addr (str);				      \
-if (addr == INADDR_NONE) PERR (EINVAL, "Malformed %s", type);	      \
+#undef ADDR
+#define ADDR(str, type) \
+({ unsigned long addr = inet_addr (str); \
+if (addr == INADDR_NONE) PERR (EINVAL, "Malformed %s", type); \
 addr; })
 if (!arg && state->next < state->argc
 && (*state->argv[state->next] != '-'))
@@ -444,14 +444,14 @@ uint32_t addr, mask, peer, broad;
 struct rt_key key = { 0 };
 struct fib_result res;
 inquire_device (dev, &addr, &mask, &peer, &broad);
-#define ADD_OPT(fmt, args...)						\
-do { char buf[100];							\
-if (! err) {							\
-snprintf (buf, sizeof buf, fmt , ##args);			\
+#define ADD_OPT(fmt, args...) \
+do { char buf[100]; \
+if (! err) { \
+snprintf (buf, sizeof buf, fmt , ##args); \
 err = argz_add (argz, argz_len, buf); } } while (0)
-#define ADD_ADDR_OPT(name, addr)					\
-do { struct in_addr i;						\
-i.s_addr = (addr);						\
+#define ADD_ADDR_OPT(name, addr) \
+do { struct in_addr i; \
+i.s_addr = (addr); \
 ADD_OPT ("--%s=%s", name, inet_ntoa (i)); } while (0)
 ADD_OPT ("--interface=%s", dev->name);
 if (addr != INADDR_NONE)

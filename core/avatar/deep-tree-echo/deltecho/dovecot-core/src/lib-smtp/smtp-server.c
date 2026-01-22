@@ -40,7 +40,7 @@ else
 server->set.login_greeting = PACKAGE_NAME" ready.";
 if (set->capabilities == 0) {
 server->set.capabilities = SMTP_SERVER_DEFAULT_CAPABILITIES;
-} else  {
+} else {
 server->set.capabilities = set->capabilities;
 }
 server->set.workarounds = set->workarounds;

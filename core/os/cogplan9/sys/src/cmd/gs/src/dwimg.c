@@ -20,10 +20,10 @@ static void create_window(IMAGE *img);
 #define M_SEPARATION 3
 #define DISPLAY_ERROR (-1)
 #ifndef min
-#  define min(a, b) (((a) < (b)) ? (a) : (b))
+# define min(a, b) (((a) < (b)) ? (a) : (b))
 #endif
 #ifndef max
-#  define max(a, b) (((a) > (b)) ? (a) : (b))
+# define max(a, b) (((a) > (b)) ? (a) : (b))
 #endif
 void image_color(unsigned int format, int index,
 unsigned char *r, unsigned char *g, unsigned char *b);
@@ -231,10 +231,10 @@ return DISPLAY_ERROR;
 img->devicen[comp_num].used = 1;
 strncpy(img->devicen[comp_num].name, name,
 sizeof(img->devicen[comp_num].name)-1);
-img->devicen[comp_num].cyan    = c;
+img->devicen[comp_num].cyan = c;
 img->devicen[comp_num].magenta = m;
-img->devicen[comp_num].yellow  = y;
-img->devicen[comp_num].black   = k;
+img->devicen[comp_num].yellow = y;
+img->devicen[comp_num].black = k;
 return 0;
 }
 void
@@ -495,7 +495,7 @@ if (index < 64) {
 int one = 255 / 3;
 *r = ((index & 0x30) >> 4) * one;
 *g = ((index & 0x0c) >> 2) * one;
-*b =  (index & 0x03) * one;
+*b = (index & 0x03) * one;
 }
 else {
 int val = index & 0x1f;
@@ -622,9 +622,9 @@ black += cyan + magenta + yellow;
 cyan = magenta = yellow = 0;
 }
 }
-*dest++ = (255 - yellow)  * (255 - black)/255;
+*dest++ = (255 - yellow) * (255 - black)/255;
 *dest++ = (255 - magenta) * (255 - black)/255;
-*dest++ = (255 - cyan)    * (255 - black)/255;
+*dest++ = (255 - cyan) * (255 - black)/255;
 }
 }
 void
@@ -658,9 +658,9 @@ black += cyan + magenta + yellow;
 cyan = magenta = yellow = 0;
 }
 }
-*dest++ = (255 - yellow)  * (255 - black)/255;
+*dest++ = (255 - yellow) * (255 - black)/255;
 *dest++ = (255 - magenta) * (255 - black)/255;
-*dest++ = (255 - cyan)    * (255 - black)/255;
+*dest++ = (255 - cyan) * (255 - black)/255;
 source += 4;
 }
 }
@@ -691,10 +691,10 @@ value = source[j];
 if (show_gray)
 black += value;
 else {
-cyan    += value * devicen[j].cyan    / 65535;
+cyan += value * devicen[j].cyan / 65535;
 magenta += value * devicen[j].magenta / 65535;
-yellow  += value * devicen[j].yellow  / 65535;
-black   += value * devicen[j].black / 65535;
+yellow += value * devicen[j].yellow / 65535;
+black += value * devicen[j].black / 65535;
 }
 }
 }
@@ -706,9 +706,9 @@ if (yellow > 255)
 yellow = 255;
 if (black > 255)
 black = 255;
-*dest++ = (255 - yellow)  * (255 - black)/255;
+*dest++ = (255 - yellow) * (255 - black)/255;
 *dest++ = (255 - magenta) * (255 - black)/255;
-*dest++ = (255 - cyan)    * (255 - black)/255;
+*dest++ = (255 - cyan) * (255 - black)/255;
 source += 8;
 }
 }
@@ -989,7 +989,7 @@ img->nVscrollMax = max(0, img->bmih.biHeight - img->cyClient);
 img->nVscrollPos = min(img->nVscrollPos, img->nVscrollMax);
 SetScrollRange(hwnd, SB_VERT, 0, img->nVscrollMax, FALSE);
 SetScrollPos(hwnd, SB_VERT, img->nVscrollPos, TRUE);
-img->cxAdjust = min(img->bmih.biWidth,  img->cxClient) - img->cxClient;
+img->cxAdjust = min(img->bmih.biWidth, img->cxClient) - img->cxClient;
 img->cxClient += img->cxAdjust;
 img->nHscrollMax = max(0, img->bmih.biWidth - img->cxClient);
 img->nHscrollPos = min(img->nHscrollPos, img->nHscrollMax);

@@ -154,8 +154,8 @@ Unroll<ROWS * COLS>{}(storec);
 }
 };
 #endif
-#define LAUNCH_TINYGEMM_KERNEL_NN(MB_SIZE, NB_SIZE)                          \
-tinygemm_kernel_nn<scalar_t, has_bias, MB_SIZE, NB_SIZE>::apply(         \
+#define LAUNCH_TINYGEMM_KERNEL_NN(MB_SIZE, NB_SIZE) \
+tinygemm_kernel_nn<scalar_t, has_bias, MB_SIZE, NB_SIZE>::apply( \
 A + mb_start * lda, B + nb_start * 2, C + mb_start * ldc + nb_start, \
 has_bias ? bias + nb_start : nullptr, K, lda, ldb, ldc);
 template <typename scalar_t, bool has_bias>
@@ -274,10 +274,10 @@ void tinygemm_kernel(const scalar_t* __restrict__ A, const scalar_t* __restrict_
 float* __restrict__ Ctmp, int64_t M, int64_t N, int64_t K, int64_t lda, int64_t ldb, int64_t ldc, bool brg) {
 tinygemm_kernel<scalar_t, false>(A, B, C, Ctmp, nullptr, M, N, K, lda, ldb, ldc, brg);
 }
-#define INSTANTIATE_TINYGEMM_TEMPLATE(TYPE)                                             \
-template void tinygemm_kernel<TYPE>(                                                \
-const TYPE* __restrict__ A, const TYPE* __restrict__ B, TYPE* __restrict__ C,   \
-float* __restrict__ Ctmp, int64_t M, int64_t N, int64_t K, int64_t lda,         \
+#define INSTANTIATE_TINYGEMM_TEMPLATE(TYPE) \
+template void tinygemm_kernel<TYPE>( \
+const TYPE* __restrict__ A, const TYPE* __restrict__ B, TYPE* __restrict__ C, \
+float* __restrict__ Ctmp, int64_t M, int64_t N, int64_t K, int64_t lda, \
 int64_t ldb, int64_t ldc, bool brg)
 INSTANTIATE_TINYGEMM_TEMPLATE(at::BFloat16);
 INSTANTIATE_TINYGEMM_TEMPLATE(at::Half);

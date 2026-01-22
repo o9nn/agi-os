@@ -50,11 +50,11 @@ for(i = 0; i < Pcolours; i++){
 p = vga->palette[i^0xFF];
 setcolour(p, xnto32(i>>5, 3), xnto32(i>>2, 3), xnto32(i, 2));
 }
-p =  vga->palette[0x55^0xFF];
+p = vga->palette[0x55^0xFF];
 setcolour(p, xnto32(0x15, 6), xnto32(0x15, 6), xnto32(0x15, 6));
-p =  vga->palette[0xAA^0xFF];
+p = vga->palette[0xAA^0xFF];
 setcolour(p, xnto32(0x2A, 6), xnto32(0x2A, 6), xnto32(0x2A, 6));
-p =  vga->palette[0xFF^0xFF];
+p = vga->palette[0xFF^0xFF];
 setcolour(p, xnto32(0x3F, 6), xnto32(0x3F, 6), xnto32(0x3F, 6));
 }
 else for(i = 0; i < 16; i++){

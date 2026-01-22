@@ -1,63 +1,63 @@
 implement Mashbuiltin;
 #
-#	"tk" builtin.
+# "tk" builtin.
 #
-#	tk clear		- clears the text frame
-#	tk def button name value
-#	tk def ibutton name value image
-#	tk def menu name
-#	tk def item menu name value
-#	tk dialog title mesg default label ...
-#	tk dump			- print commands to reconstruct toolbar
-#	tk dump name ...
-#	tk env			- update tk execution env
-#	tk file title dir pattern ...
-#	tk geom
-#	tk layout name ...
-#	tk notice message
-#	tk sel			- print selection
-#	tk sget			- print snarf
-#	tk sput string		- put snarf
-#	tk string mesg		- get string
-#	tk taskbar string
-#	tk text			- print window text
+# tk clear - clears the text frame
+# tk def button name value
+# tk def ibutton name value image
+# tk def menu name
+# tk def item menu name value
+# tk dialog title mesg default label ...
+# tk dump - print commands to reconstruct toolbar
+# tk dump name ...
+# tk env - update tk execution env
+# tk file title dir pattern ...
+# tk geom
+# tk layout name ...
+# tk notice message
+# tk sel - print selection
+# tk sget - print snarf
+# tk sput string - put snarf
+# tk string mesg - get string
+# tk taskbar string
+# tk text - print window text
 #
-include	"mash.m";
-include	"mashparse.m";
-include	"wmlib.m";
-include	"dialog.m";
-include	"selectfile.m";
-mashlib:	Mashlib;
-wmlib:		Wmlib;
-dialog:	Dialog;
-selectfile:	Selectfile;
-Env, Stab, Symb:	import mashlib;
-sys, bufio, tk:		import mashlib;
-gtop, gctxt, ident:	import mashlib;
-Iobuf:	import bufio;
-tkitems:	ref Stab;
-tklayout:	list of string;
-tkenv:	ref Env;
-tkserving:	int = 0;
-Cbutton, Cibutton, Cmenu:	con Cprivate + iota;
-Cmark:	con 3;
-BUTT:	con ".b.";
+include "mash.m";
+include "mashparse.m";
+include "wmlib.m";
+include "dialog.m";
+include "selectfile.m";
+mashlib: Mashlib;
+wmlib: Wmlib;
+dialog: Dialog;
+selectfile: Selectfile;
+Env, Stab, Symb: import mashlib;
+sys, bufio, tk: import mashlib;
+gtop, gctxt, ident: import mashlib;
+Iobuf: import bufio;
+tkitems: ref Stab;
+tklayout: list of string;
+tkenv: ref Env;
+tkserving: int = 0;
+Cbutton, Cibutton, Cmenu: con Cprivate + iota;
+Cmark: con 3;
+BUTT: con ".b.";
 #
-#	Interface to catch the use as a command.
+# Interface to catch the use as a command.
 #
 init(nil: ref Draw->Context, args: list of string)
 {
 raise "fail: " + hd args + " not loaded";
 }
 #
-#	Used by whatis.
+# Used by whatis.
 #
 name(): string
 {
 return "tk";
 }
 #
-#	Install command and initialize state.
+# Install command and initialize state.
 #
 mashinit(nil: list of string, lib: Mashlib, this: Mashbuiltin, e: ref Env)
 {
@@ -92,7 +92,7 @@ e.defbuiltin("tk", this);
 tkitems = Stab.new();
 }
 #
-#	Execute the "tk" builtin.
+# Execute the "tk" builtin.
 #
 mashcmd(e: ref Env, l: list of string)
 {
@@ -188,7 +188,7 @@ e.report(sys->sprint("tk: unknown command: %s", s));
 }
 }
 #
-#	Execute tk command and check for error.
+# Execute tk command and check for error.
 #
 tkcmd(e: ref Env, s: string): string
 {
@@ -204,7 +204,7 @@ focus(e: ref Env)
 tkcmd(e, "focus .ft.t");
 }
 #
-#	Serve loop.
+# Serve loop.
 #
 tkserve(mash: chan of string)
 {
@@ -222,7 +222,7 @@ notname(e: ref Env, s: string)
 e.report(sys->sprint("tk: %s: malformed name", s));
 }
 #
-#	Define a button, menu or item.
+# Define a button, menu or item.
 #
 define(e: ref Env, l: list of string)
 {
@@ -287,7 +287,7 @@ e.report("tk: " + s + ": unknown command");
 }
 }
 #
-#	Update a menu item.
+# Update a menu item.
 #
 updateitem(l: list of string, c, v: string): list of string
 {
@@ -393,7 +393,7 @@ r = tl r;
 }
 }
 #
-#	Check that the layout tags are unique.
+# Check that the layout tags are unique.
 #
 unique(e: ref Env, r: list of ref Symb): int
 {
@@ -414,8 +414,8 @@ unmark(r);
 return u;
 }
 #
-#	Update the button bar layout and the environment.
-#	Maybe spawn the server.
+# Update the button bar layout and the environment.
+# Maybe spawn the server.
 #
 layout(e: ref Env, l: list of string)
 {
@@ -456,7 +456,7 @@ out.puts(sys->sprint(" %s", mashlib->quote(hd tl s.value)));
 out.puts(";\n");
 }
 #
-#	Print commands to reconstruct toolbar.
+# Print commands to reconstruct toolbar.
 #
 dump(e: ref Env, l: list of string)
 {

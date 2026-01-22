@@ -31,27 +31,27 @@ pthread_cond_init (&l->wait, NULL);
 l->po_id = po->locks;
 return 0;
 }
-#define list_link(X, head, node)				\
-do							\
-{							\
-struct rlock_list **e;				\
-for (e = head;					\
-*e && ((*e)->start < node->start);		\
-e = &(*e)->X.next)				\
-;							\
-node->X.next = *e;					\
-if (node->X.next)					\
-node->X.next->X.prevp = &node->X.next;		\
-node->X.prevp = e;					\
-*e = node;						\
-}							\
+#define list_link(X, head, node) \
+do \
+{ \
+struct rlock_list **e; \
+for (e = head; \
+*e && ((*e)->start < node->start); \
+e = &(*e)->X.next) \
+; \
+node->X.next = *e; \
+if (node->X.next) \
+node->X.next->X.prevp = &node->X.next; \
+node->X.prevp = e; \
+*e = node; \
+} \
 while (0)
-#define list_unlink(X, node)					\
-do							\
-{							\
-*node->X.prevp = node->X.next;			\
-if (node->X.next)					\
-node->X.next->X.prevp = node->X.prevp;		\
-}							\
+#define list_unlink(X, node) \
+do \
+{ \
+*node->X.prevp = node->X.next; \
+if (node->X.next) \
+node->X.next->X.prevp = node->X.prevp; \
+} \
 while (0)
 #endif

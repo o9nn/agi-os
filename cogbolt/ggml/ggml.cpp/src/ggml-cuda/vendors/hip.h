@@ -11,9 +11,9 @@
 #define CUBLAS_OP_T HIPBLAS_OP_T
 #define CUBLAS_STATUS_SUCCESS HIPBLAS_STATUS_SUCCESS
 #define CUBLAS_TF32_TENSOR_OP_MATH 0
-#define CUDA_R_16F  HIPBLAS_R_16F
+#define CUDA_R_16F HIPBLAS_R_16F
 #define CUDA_R_16BF HIPBLAS_R_16B
-#define CUDA_R_32F  HIPBLAS_R_32F
+#define CUDA_R_32F HIPBLAS_R_32F
 #define CU_DEVICE_ATTRIBUTE_VIRTUAL_MEMORY_MANAGEMENT_SUPPORTED hipDeviceAttributeVirtualMemoryManagementSupported
 #define CU_MEM_ALLOC_GRANULARITY_RECOMMENDED hipMemAllocationGranularityRecommended
 #define CU_MEM_ALLOCATION_TYPE_PINNED hipMemAllocationTypePinned
@@ -233,7 +233,7 @@ return c;
 static __device__ __forceinline__ half2 __shfl_xor(half2 var, int laneMask, int width) {
 typedef union half2_b32 {
 half2 val;
-int   b32;
+int b32;
 } half2_b32_t;
 half2_b32_t tmp;
 tmp.val = var;

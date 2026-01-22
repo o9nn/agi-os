@@ -6,10 +6,10 @@
 (define config-dir (dirname (current-filename)))
 (define (prepend-config-dir fp) (string-append config-dir "/" fp))
 (define rule-files (list "rules/term/deduction.scm"
-                         "rules/propositional/modus-ponens.scm"))
+"rules/propositional/modus-ponens.scm"))
 (for-each (lambda (fp) (load (prepend-config-dir fp))) rule-files)
 (define rules (list deduction-inheritance-rule-name
-                    modus-ponens-implication-rule-name))
+modus-ponens-implication-rule-name))
 (ure-add-rules pln-rbs rules)
 (ure-set-num-parameter pln-rbs "URE:maximum-iterations" 20)
 (ure-set-fuzzy-bool-parameter pln-rbs "URE:attention-allocation" 0)

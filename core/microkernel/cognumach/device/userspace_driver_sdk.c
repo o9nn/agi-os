@@ -279,11 +279,11 @@ if (!driver || !fmt) {
 return;
 }
 switch (level) {
-case USRD_LOG_ERROR:   level_str = "ERROR"; break;
+case USRD_LOG_ERROR: level_str = "ERROR"; break;
 case USRD_LOG_WARNING: level_str = "WARN"; break;
-case USRD_LOG_INFO:    level_str = "INFO"; break;
-case USRD_LOG_DEBUG:   level_str = "DEBUG"; break;
-default:               level_str = "UNKNOWN"; break;
+case USRD_LOG_INFO: level_str = "INFO"; break;
+case USRD_LOG_DEBUG: level_str = "DEBUG"; break;
+default: level_str = "UNKNOWN"; break;
 }
 printf("[%s:%s] ", driver->public.info.name, level_str);
 va_start(args, fmt);

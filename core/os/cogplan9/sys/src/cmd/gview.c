@@ -1,17 +1,17 @@
-#include	<u.h>
-#include	<libc.h>
-#include	<ctype.h>
-#include	<draw.h>
-#include	<event.h>
-#include	<cursor.h>
-#include	<stdio.h>
-#define Never	0xffffffff
-#define LOG2  0.301029995664
-#define Button_bit(b)	(1 << ((b)-1))
+#include <u.h>
+#include <libc.h>
+#include <ctype.h>
+#include <draw.h>
+#include <event.h>
+#include <cursor.h>
+#include <stdio.h>
+#define Never 0xffffffff
+#define LOG2 0.301029995664
+#define Button_bit(b) (1 << ((b)-1))
 enum {
-But1	= Button_bit(1),
-But2	= Button_bit(2),
-But3	= Button_bit(3),
+But1 = Button_bit(1),
+But2 = Button_bit(2),
+But3 = Button_bit(3),
 };
 int cantmv = 1;
 int plotdots;
@@ -29,9 +29,9 @@ double underscan = .05;
 double fuzz = 6;
 int tick_len = 15;
 FILE* logfil = 0;
-#define labdigs  3
+#define labdigs 3
 #define digs10pow 1000
-#define axis_color  clr_im(DLtblue)
+#define axis_color clr_im(DLtblue)
 char* str_insert(char* buf, char* s, int n)
 {
 int blen, slen = strlen(s) + 1;
@@ -78,7 +78,7 @@ const Rectangle* r = &(screen->r);
 return p.x-r->min.x<lft_border || r->max.x-p.x<rt_border
 || p.y-r->min.y<=top_border || r->max.y-p.y<=bot_border;
 }
-Cursor	bullseye =
+Cursor bullseye =
 {
 {-7, -7},
 {
@@ -121,7 +121,7 @@ return (ev.mouse.buttons==Button_bit(but)) ? -1 : 0;
 }
 int lift_button(int but, Mouse* m, int tlimit)
 {
-do {	*m = emouse();
+do { *m = emouse();
 if (m->msec >= tlimit)
 return 0;
 } while (m->buttons & Button_bit(but));
@@ -130,10 +130,10 @@ return 1;
 void latest_mouse(int but, Mouse* m)
 {
 int bbit = Button_bit(but);
-do {	*m = emouse();
+do { *m = emouse();
 } while ((m->buttons & bbit) && ecanmouse());
 }
-enum {	DOrange=0xffaa00FF, Dgray=0xbbbbbbFF, DDkgreen=0x009900FF,
+enum { DOrange=0xffaa00FF, Dgray=0xbbbbbbFF, DDkgreen=0x009900FF,
 DDkred=0xcc0000FF, DViolet=0x990099FF, DDkyellow=0xaaaa00FF,
 DLtblue=0xaaaaffFF, DPink=0xffaaaaFF,
 };
@@ -148,26 +148,26 @@ int nam1;
 Image* im;
 } color_ref;
 color_ref clrtab[] = {
-DRed,		"Red",		'R', 0,
-DPink,		"Pink",		'P', 0,
-DDkred,		"Dkred",	'r', 0,
-DOrange,	"Orange",	'O', 0,
-DYellow,	"Yellow",	'Y', 0,
-DDkyellow,	"Dkyellow",	'y', 0,
-DGreen,		"Green",	'G', 0,
-DDkgreen,	"Dkgreen",	'g', 0,
-DCyan,		"Cyan",		'C', 0,
-DBlue,		"Blue",		'B', 0,
-DLtblue,	"Ltblue",	'b', 0,
-DMagenta,	"Magenta",	'M', 0,
-DViolet,	"Violet",	'V', 0,
-Dgray,		"Gray",		'A', 0,
-DBlack,		"Black",	'K', 0,
-DWhite,		"White",	'W', 0,
-DNofill,	0,		0,   0
+DRed, "Red", 'R', 0,
+DPink, "Pink", 'P', 0,
+DDkred, "Dkred", 'r', 0,
+DOrange, "Orange", 'O', 0,
+DYellow, "Yellow", 'Y', 0,
+DDkyellow, "Dkyellow", 'y', 0,
+DGreen, "Green", 'G', 0,
+DDkgreen, "Dkgreen", 'g', 0,
+DCyan, "Cyan", 'C', 0,
+DBlue, "Blue", 'B', 0,
+DLtblue, "Ltblue", 'b', 0,
+DMagenta, "Magenta", 'M', 0,
+DViolet, "Violet", 'V', 0,
+Dgray, "Gray", 'A', 0,
+DBlack, "Black", 'K', 0,
+DWhite, "White", 'W', 0,
+DNofill, 0, 0, 0
 };
 short nam1_idx[128];
-void  init_clrtab(void)
+void init_clrtab(void)
 {
 int i;
 Rectangle r = Rect(0,0,1,1);
@@ -193,8 +193,8 @@ if (clrtab[i].c==DNofill)
 exits("bad color");
 return i;
 }
-#define clr_im(clr)	clrtab[clr_id(clr)].im
-#define is_Multi  -2
+#define clr_im(clr) clrtab[clr_id(clr)].im
+#define is_Multi -2
 thick_color* tc_default(thick_color *buf)
 {
 buf[0].thick = 1;
@@ -292,7 +292,7 @@ if (r1->max.x <= x2min || x2max <= r1->min.x)
 return 0;
 if (slant >=0)
 {x2min*=slant; x2max*=slant;}
-else	{double t=x2min*slant; x2min=x2max*slant; x2max=t;}
+else {double t=x2min*slant; x2min=x2max*slant; x2max=t;}
 return r1->max.y > r2->min.y-x2max && r2->max.y-x2min > r1->min.y;
 }
 int fcontains(const frectangle* r, fpoint p)
@@ -369,7 +369,7 @@ fpolygon *q, **p = &fps->p;
 while (*p!=fp)
 if (*p==0)
 return;
-else	p = &(*p)->link;
+else p = &(*p)->link;
 *p = fp->link;
 fps->bb = empty_frect;
 for (q=fps->p; q!=0; q=q->link)
@@ -379,16 +379,16 @@ typedef struct transform {
 double sl;
 fpoint o, sc;
 } transform;
-#define do_transform(d,tr,s)	((d)->x = (tr)->o.x + (tr)->sc.x*(s)->x,  \
-(d)->y = (tr)->o.y + (tr)->sc.y*(s)->y    \
+#define do_transform(d,tr,s) ((d)->x = (tr)->o.x + (tr)->sc.x*(s)->x, \
+(d)->y = (tr)->o.y + (tr)->sc.y*(s)->y \
 + (tr)->sl*(s)->x)
-#define do_untransform(d,tr,s)	((d)->x = (.5+(s)->x-(tr)->o.x)/(tr)->sc.x,    \
+#define do_untransform(d,tr,s) ((d)->x = (.5+(s)->x-(tr)->o.x)/(tr)->sc.x, \
 (d)->y = (.5+(s)->y-(tr)->sl*(d)->x-(tr)->o.y) \
 /(tr)->sc.y)
-#define xtransform(tr,xx)	((tr)->o.x + (tr)->sc.x*(xx))
-#define ytransform(tr,yy)	((tr)->o.y + (tr)->sc.y*(yy))
-#define dxuntransform(tr,xx)	((xx)/(tr)->sc.x)
-#define dyuntransform(tr,yy)	((yy)/(tr)->sc.y)
+#define xtransform(tr,xx) ((tr)->o.x + (tr)->sc.x*(xx))
+#define ytransform(tr,yy) ((tr)->o.y + (tr)->sc.y*(yy))
+#define dxuntransform(tr,xx) ((xx)/(tr)->sc.x)
+#define dyuntransform(tr,yy) ((yy)/(tr)->sc.y)
 transform cur_trans(void)
 {
 transform t;
@@ -471,10 +471,10 @@ fpoint r_ur, r_ul, r_ll, r_lr;
 fpoint ur, ll;
 transform tr = cur_trans();
 double ht;
-r_ur.x=rmaxx;  r_ur.y=rminy;
-r_ul.x=rminx;  r_ul.y=rminy;
-r_ll.x=rminx;  r_ll.y=rmaxy;
-r_lr.x=rmaxx;  r_lr.y=rmaxy;
+r_ur.x=rmaxx; r_ur.y=rminy;
+r_ul.x=rminx; r_ul.y=rminy;
+r_ll.x=rminx; r_ll.y=rmaxy;
+r_lr.x=rmaxx; r_lr.y=rmaxy;
 do_untransform(ul, &tr, &r_ul);
 do_untransform(lr, &tr, &r_lr);
 do_untransform(&ur, &tr, &r_ur);
@@ -484,7 +484,7 @@ if (ll.x < ul->x)
 ul->x = ll.x;
 if (ur.y > ul->y)
 ul->y = ur.y;
-else	ht = -ht;
+else ht = -ht;
 if (ur.x > lr->x)
 lr->x = ur.x;
 if (ll.y < lr->y)
@@ -542,7 +542,7 @@ dx /= screen->r.max.x - lft_border - screen->r.min.x - rt_border;
 dy /= screen->r.max.y - bot_border - screen->r.min.y - top_border;
 if (dx > dy)
 expand2(&univ.disp.min.y, &univ.disp.max.y, dx/dy);
-else	expand2(&univ.disp.min.x, &univ.disp.max.x, dy/dx);
+else expand2(&univ.disp.min.x, &univ.disp.max.x, dy/dx);
 univ.slant_ht = univ.disp.max.y - univ.disp.min.y;
 }
 void slant_disp(fpoint p, fpoint q)
@@ -553,17 +553,17 @@ if (p.x == q.x)
 return;
 sh = univ.slant_ht;
 if (sh > 0) {
-yll=yul=univ.disp.min.y;  yul+=sh;
-ylr=yur=univ.disp.max.y;  ylr-=sh;
+yll=yul=univ.disp.min.y; yul+=sh;
+ylr=yur=univ.disp.max.y; ylr-=sh;
 } else {
-yll=yul=univ.disp.max.y;  yll+=sh;
-ylr=yur=univ.disp.min.y;  yur-=sh;
+yll=yul=univ.disp.max.y; yll+=sh;
+ylr=yur=univ.disp.min.y; yur-=sh;
 }
 dy = (univ.disp.max.x-univ.disp.min.x)*(q.y - p.y)/(q.x - p.x);
 dy -= ylr - yll;
 if (dy > 0)
 {yll-=dy; yur+=dy;}
-else	{yul-=dy; ylr+=dy;}
+else {yul-=dy; ylr+=dy;}
 if (ylr > yll) {
 univ.disp.min.y = yll;
 univ.disp.max.y = yur;
@@ -751,7 +751,7 @@ double out_length(const fpoint* p0, const fpoint* pn, frectangle r, double slope
 {
 const fpoint* p = p0;
 double fr;
-do {	if (p->x < r.min.x)
+do { if (p->x < r.min.x)
 do if (++p>pn) return pn-p0;
 while (p->x <= r.min.x);
 else if (p->x > r.max.x)
@@ -767,8 +767,8 @@ else return p - p0;
 } while ((fr=frac_outside(p-1,p,&r,slope)) == 1);
 return (p - p0) + fr-1;
 }
-#define Nthous  7
-#define Len_thous  30
+#define Nthous 7
+#define Len_thous 30
 char* thous_nam[Nthous] = {
 "one", "thousand", "million", "billion",
 "trillion", "quadrillion", "quintillion",
@@ -809,10 +809,10 @@ if (nhi >= digs10pow)
 r.off = r.unit*lead_digits(nlo, nhi-nlo);
 else if (nlo <= -digs10pow)
 r.off = -r.unit*lead_digits(-nhi, nhi-nlo);
-else	r.off = 0;
+else r.off = 0;
 r.sep = (s0<=r.unit) ? r.unit : (s0<2*r.unit ? 2*r.unit : 5*r.unit);
 switch (r.logunit%3) {
-case 1:	r.unit*=.1; r.logunit--;
+case 1: r.unit*=.1; r.logunit--;
 break;
 case -1: case 2:
 r.unit*=10; r.logunit++;
@@ -931,7 +931,7 @@ fpolygon* fp;
 double t;
 } pt_on_fpoly;
 static double myx, myy;
-#define mydist(p,o,sl,xwt,ywt)	(myx=(p).x-(o).x, myy=(p).y-sl*(p).x-(o).y,	\
+#define mydist(p,o,sl,xwt,ywt) (myx=(p).x-(o).x, myy=(p).y-sl*(p).x-(o).y, \
 xwt*myx*myx + ywt*myy*myy)
 double closest_time(const fpoint* p0, const fpoint* ctr, double slant,
 double xwt, double ywt)
@@ -1035,9 +1035,9 @@ Point ctr;
 Rectangle r;
 if (tr==0)
 ctr.x = ctr.y = Dotrad;
-else	do_transform(&ctr, tr, &cur_sel.p);
-r.min.x=ctr.x-Dotrad;  r.max.x=ctr.x+Dotrad+1;
-r.min.y=ctr.y-Dotrad;  r.max.y=ctr.y+Dotrad+1;
+else do_transform(&ctr, tr, &cur_sel.p);
+r.min.x=ctr.x-Dotrad; r.max.x=ctr.x+Dotrad+1;
+r.min.y=ctr.y-Dotrad; r.max.y=ctr.y+Dotrad+1;
 return r;
 }
 void unselect(const transform* tr)
@@ -1060,7 +1060,7 @@ Point tmp, pt = screen->r.min;
 int siz;
 tmp = stringsize(display->defaultfont, msg);
 siz = tmp.x;
-pt.x=top_left;  pt.y+=outersep;
+pt.x=top_left; pt.y+=outersep;
 if (top_left+siz > top_right) {
 Rectangle r;
 r.min.y = pt.y;
@@ -1117,7 +1117,7 @@ if (tr==0)
 do_transform(&p2, tr, &cur_sel.p);
 if (fabs(p2.x)+fabs(p2.y)>1e8 || (pt2.x=p2.x, pt2.y=p2.y, is_off_screen(pt2)))
 {cur_sel.t= -1; return;}
-pt3.x=pt2.x-Dotrad;  pt3.y=pt2.y-Dotrad;
+pt3.x=pt2.x-Dotrad; pt3.y=pt2.y-Dotrad;
 draw(sel_bkg, sel_dot_box(0), screen, display->opaque, pt3);
 fillellipse(screen, pt2, Dotrad, Dotrad, clr_im(DRed), pt2);
 say_where(tr);
@@ -1131,8 +1131,8 @@ double slant;
 pt_on_fpoly* psel;
 unselect(&tr);
 do_untransform(&ctr, &tr, &pt);
-pt1.x=pt.x-fuzz;  pt1.y=pt.y+fuzz;
-pt2.x=pt.x+fuzz;  pt2.y=pt.y-fuzz;
+pt1.x=pt.x-fuzz; pt1.y=pt.y+fuzz;
+pt2.x=pt.x+fuzz; pt2.y=pt.y-fuzz;
 do_untransform(&r.min, &tr, &pt1);
 do_untransform(&r.max, &tr, &pt2);
 slant = u_slant_amt(&univ);
@@ -1196,7 +1196,7 @@ Point qq, q;
 if (n1 > n) {
 pp.x = p[0].x + (n1-n)*(p[1].x - p[0].x);
 pp.y = p[0].y + (n1-n)*(p[1].y - p[0].y);
-} else	pp = *p--;
+} else pp = *p--;
 do_transform(&qq, tr, &pp);
 if (n1==0)
 fillellipse(screen, qq, 1+thick, 1+thick, clr, qq);
@@ -1337,14 +1337,14 @@ void prepare_mv(const fpolygon* fp)
 Rectangle r = screen->r;
 Image* scr0;
 int dt = 1 + fp->c.thick;
-r.min.x+=lft_border-dt;  r.min.y+=top_border-dt;
-r.max.x-=rt_border-dt;   r.max.y-=bot_border-dt;
+r.min.x+=lft_border-dt; r.min.y+=top_border-dt;
+r.max.x-=rt_border-dt; r.max.y-=bot_border-dt;
 if (mv_bkgd!=0 && mv_bkgd->repl==0)
 freeimage(mv_bkgd);
 mv_bkgd = allocimage(display, r, CMAP8, 0, DNofill);
 if (mv_bkgd==0)
 mv_bkgd = display->white;
-else {	transform tr = cur_trans();
+else { transform tr = cur_trans();
 draw(mv_bkgd, r, screen, display->opaque, r.min);
 draw(mv_bkgd, sel_dot_box(&tr), sel_bkg, display->opaque, ZP);
 scr0 = screen;
@@ -1360,8 +1360,8 @@ for (p=fp->p; p<=pn; p++) {
 (p->x) += dx;
 (p->y) += dy;
 }
-(fp->bb.min.x)+=dx;  (fp->bb.min.y)+=dy;
-(fp->bb.max.x)+=dx;  (fp->bb.max.y)+=dy;
+(fp->bb.min.x)+=dx; (fp->bb.min.y)+=dy;
+(fp->bb.max.x)+=dx; (fp->bb.max.y)+=dy;
 }
 void rotate_fp(fpolygon* fp, fpoint o, double theta)
 {
@@ -1382,7 +1382,7 @@ fpolygon* fp = cur_sel.fp;
 fpoint loc, loc0=cur_sel.p;
 double tsav = cur_sel.t;
 unselect(&tr);
-do {	latest_mouse(but, m);
+do { latest_mouse(but, m);
 (fp->c.thick)++;
 draw_fpoly(fp, &tr, mv_bkgd);
 (fp->c.thick)--;
@@ -1402,7 +1402,7 @@ double dir_angle(const Point* pt, const transform* tr)
 fpoint p;
 double dy, dx;
 do_untransform(&p, tr, pt);
-dy=p.y-cur_sel.p.y;  dx=p.x-cur_sel.p.x;
+dy=p.y-cur_sel.p.y; dx=p.x-cur_sel.p.x;
 return (dx==0 && dy==0) ? 0.0 : atan2(dy, dx);
 }
 double do_rotate(int but, Mouse* m)
@@ -1412,7 +1412,7 @@ int bbit = Button_bit(but);
 fpolygon* fp = cur_sel.fp;
 double theta0 = dir_angle(&m->xy, &tr);
 double th, theta = theta0;
-do {	latest_mouse(but, m);
+do { latest_mouse(but, m);
 (fp->c.thick)++;
 draw_fpoly(fp, &tr, mv_bkgd);
 (fp->c.thick)--;
@@ -1553,12 +1553,12 @@ a0 = a->link;
 free(a);
 return a0;
 }
-enum m_index {     Mzoom_in,  Mzoom_out,  Munzoom,  Mslant,    Munslant,
-Msquare_up,  Mrecenter,  Mrecolor,  Mrestack,  Mread,
-Mwrite,      Mexit};
-char* m_items[] = {"zoom in", "zoom out", "unzoom", "slant",   "unslant",
+enum m_index { Mzoom_in, Mzoom_out, Munzoom, Mslant, Munslant,
+Msquare_up, Mrecenter, Mrecolor, Mrestack, Mread,
+Mwrite, Mexit};
+char* m_items[] = {"zoom in", "zoom out", "unzoom", "slant", "unslant",
 "square up", "recenter", "recolor", "restack", "read",
-"write",     "exit", 0};
+"write", "exit", 0};
 Menu m_menu = {m_items, 0, 0};
 void do_mmenu(int but, Mouse* m)
 {
@@ -1629,7 +1629,7 @@ void doevent(void)
 ulong etype;
 int mobile;
 ulong mvtime;
-Event	ev;
+Event ev;
 etype = eread(Emouse|Ekeyboard, &ev);
 if(etype & Emouse) {
 if (ev.mouse.buttons & But1) {

@@ -1,11 +1,11 @@
 #ifndef sstring_INCLUDED
-#  define sstring_INCLUDED
+# define sstring_INCLUDED
 typedef struct stream_AXE_state_s {
 stream_state_common;
 bool EndOfData;
 int count;
 } stream_AXE_state;
-#define private_st_AXE_state()	\
+#define private_st_AXE_state() \
 gs_private_st_simple(st_AXE_state, stream_AXE_state,\
 "ASCIIHexEncode state")
 #define s_AXE_init_inline(ss)\
@@ -15,7 +15,7 @@ typedef struct stream_AXD_state_s {
 stream_state_common;
 int odd;
 } stream_AXD_state;
-#define private_st_AXD_state()	\
+#define private_st_AXD_state() \
 gs_private_st_simple(st_AXD_state, stream_AXD_state,\
 "ASCIIHexDecode state")
 #define s_AXD_init_inline(ss)\
@@ -26,7 +26,7 @@ stream_state_common;
 bool from_string;
 int depth;
 } stream_PSSD_state;
-#define private_st_PSSD_state()	\
+#define private_st_PSSD_state() \
 gs_private_st_simple(st_PSSD_state, stream_PSSD_state,\
 "PSStringDecode state")
 int s_PSSD_init(stream_state * st);

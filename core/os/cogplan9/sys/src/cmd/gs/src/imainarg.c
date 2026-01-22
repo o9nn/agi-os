@@ -34,16 +34,16 @@
 extern int zflush(i_ctx_t *);
 extern int zflushpage(i_ctx_t *);
 #ifndef GS_LIB
-#  define GS_LIB "GS_LIB"
+# define GS_LIB "GS_LIB"
 #endif
 #ifndef GS_OPTIONS
-#  define GS_OPTIONS "GS_OPTIONS"
+# define GS_OPTIONS "GS_OPTIONS"
 #endif
 #ifndef GS_MAX_LIB_DIRS
-#  define GS_MAX_LIB_DIRS 25
+# define GS_MAX_LIB_DIRS 25
 #endif
 #ifndef GS_BUG_MAILBOX
-#  define GS_BUG_MAILBOX "bug-gs@ghostscript.com"
+# define GS_BUG_MAILBOX "bug-gs@ghostscript.com"
 #endif
 #define MAX_BUFFERED_SIZE 1024
 #undef puts
@@ -713,10 +713,10 @@ return 1;
 private const char help_usage1[] = "\
 Usage: gs [switches] [file1.ps file2.ps ...]\n\
 Most frequently used switches: (you can use # in place of =)\n\
--dNOPAUSE           no pause after page   | -q       `quiet', fewer messages\n\
--g<width>x<height>  page size in pixels   | -r<res>  pixels/inch resolution\n";
+-dNOPAUSE no pause after page | -q `quiet', fewer messages\n\
+-g<width>x<height> page size in pixels | -r<res> pixels/inch resolution\n";
 private const char help_usage2[] = "\
--sDEVICE=<devname>  select device         | -dBATCH  exit after last file\n\
+-sDEVICE=<devname> select device | -dBATCH exit after last file\n\
 -sOutputFile=<file> select output file: - for stdout, |command for pipe,\n\
 embed %d or %ld for page #\n";
 private const char help_trailer[] = "\

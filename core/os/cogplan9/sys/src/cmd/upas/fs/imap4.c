@@ -5,9 +5,9 @@
 #include <auth.h>
 #include "dat.h"
 #pragma varargck argpos imap4cmd 2
-#pragma varargck	type	"Z"	char*
-int	doublequote(Fmt*);
-int	pipeline = 1;
+#pragma varargck type "Z" char*
+int doublequote(Fmt*);
+int pipeline = 1;
 static char Eio[] = "i/o error";
 typedef struct Imap Imap;
 struct Imap {
@@ -71,13 +71,13 @@ FETCH,
 UNKNOWN,
 };
 static char *verblist[] = {
-[OK]		"OK",
-[NO]		"NO",
-[BAD]	"BAD",
-[BYE]	"BYE",
-[EXISTS]	"EXISTS",
-[STATUS]	"STATUS",
-[FETCH]	"FETCH",
+[OK] "OK",
+[NO] "NO",
+[BAD] "BAD",
+[BYE] "BYE",
+[EXISTS] "EXISTS",
+[STATUS] "STATUS",
+[FETCH] "FETCH",
 };
 static int
 verbcode(char *verb)

@@ -1,102 +1,102 @@
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
-#include	"ip.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
+#include "ip.h"
 enum
 {
-Qtopdir		= 1,
+Qtopdir = 1,
 Qtopbase,
-Qarp=	Qtopbase,
+Qarp= Qtopbase,
 Qndb,
 Qprotodir,
 Qprotobase,
-Qclone=	Qprotobase,
+Qclone= Qprotobase,
 Qstats,
 Qconvdir,
 Qconvbase,
-Qctl=	Qconvbase,
+Qctl= Qconvbase,
 Qdata,
 Qlisten,
 Qlocal,
 Qremote,
 Qstatus,
-Logtype=	5,
-Masktype=	(1<<Logtype)-1,
-Logconv=	12,
-Maskconv=	(1<<Logconv)-1,
-Shiftconv=	Logtype,
-Logproto=	8,
-Maskproto=	(1<<Logproto)-1,
-Shiftproto=	Logtype + Logconv,
+Logtype= 5,
+Masktype= (1<<Logtype)-1,
+Logconv= 12,
+Maskconv= (1<<Logconv)-1,
+Shiftconv= Logtype,
+Logproto= 8,
+Maskproto= (1<<Logproto)-1,
+Shiftproto= Logtype + Logconv,
 Statelen = 256,
-Nfs=	1,
-Maxproto	= 4,
-MAXCONV		= 4096
+Nfs= 1,
+Maxproto = 4,
+MAXCONV = 4096
 };
-#define TYPE(x) 	( ((ulong)(x).path) & Masktype )
-#define CONV(x) 	( (((ulong)(x).path) >> Shiftconv) & Maskconv )
-#define PROTO(x) 	( (((ulong)(x).path) >> Shiftproto) & Maskproto )
-#define QID(p, c, y) 	( ((p)<<(Shiftproto)) | ((c)<<Shiftconv) | (y) )
+#define TYPE(x) ( ((ulong)(x).path) & Masktype )
+#define CONV(x) ( (((ulong)(x).path) >> Shiftconv) & Maskconv )
+#define PROTO(x) ( (((ulong)(x).path) >> Shiftproto) & Maskproto )
+#define QID(p, c, y) ( ((p)<<(Shiftproto)) | ((c)<<Shiftconv) | (y) )
 enum
 {
-Idle=		0,
-Announcing=	1,
-Announced=	2,
-Connecting=	3,
-Connected=	4,
-Hungup=	5,
+Idle= 0,
+Announcing= 1,
+Announced= 2,
+Connecting= 3,
+Connected= 4,
+Hungup= 5,
 };
 struct Conv
 {
-QLock	l;
-int	x;
-Proto*	p;
-uchar	laddr[IPaddrlen];
-uchar	raddr[IPaddrlen];
-int	restricted;
-ushort	lport;
-ushort	rport;
-char*	owner;
-int	perm;
-int	inuse;
-int	state;
-int	headers;
-char	cerr[ERRMAX];
-QLock	listenq;
-void*	ptcl;
-int	sfd;
-QLock	wlock;
+QLock l;
+int x;
+Proto* p;
+uchar laddr[IPaddrlen];
+uchar raddr[IPaddrlen];
+int restricted;
+ushort lport;
+ushort rport;
+char* owner;
+int perm;
+int inuse;
+int state;
+int headers;
+char cerr[ERRMAX];
+QLock listenq;
+void* ptcl;
+int sfd;
+QLock wlock;
 };
 struct Proto
 {
-QLock	l;
-int	x;
-int	ipproto;
-int	stype;
-char*	name;
-int	maxconv;
-Fs*	f;
-Conv**	conv;
-int	pctlsize;
-int	nc;
-int	ac;
-Qid	qid;
-void*	priv;
+QLock l;
+int x;
+int ipproto;
+int stype;
+char* name;
+int maxconv;
+Fs* f;
+Conv** conv;
+int pctlsize;
+int nc;
+int ac;
+Qid qid;
+void* priv;
 };
 struct Fs
 {
-RWlock	l;
-int	dev;
-int	np;
-Proto*	p[Maxproto+1];
-Proto*	t2p[256];
-char	ndb[1024];
-int	ndbvers;
-long	ndbmtime;
+RWlock l;
+int dev;
+int np;
+Proto* p[Maxproto+1];
+Proto* t2p[256];
+char ndb[1024];
+int ndbvers;
+long ndbmtime;
 };
-static	Fs	*ipfs[Nfs];
-static	char	network[] = "network";
-static	char* ipstates[] = {
+static Fs *ipfs[Nfs];
+static char network[] = "network";
+static char* ipstates[] = {
 "Closed",
 "Announcing",
 "Announced",
@@ -104,9 +104,9 @@ static	char* ipstates[] = {
 "Established",
 "Closed",
 };
-static	Conv*	protoclone(Proto*, char*, int);
-static	Conv*	newconv(Proto*, Conv **);
-static	void	setladdr(Conv*);
+static Conv* protoclone(Proto*, char*, int);
+static Conv* newconv(Proto*, Conv **);
+static void setladdr(Conv*);
 static int
 ip3gen(Chan *c, int i, Dir *dp)
 {
@@ -166,7 +166,7 @@ char *p;
 int prot;
 int len = 0;
 Fs *f;
-extern ulong	kerndate;
+extern ulong kerndate;
 f = ipfs[c->dev];
 prot = 0664;
 mkqid(&q, QID(0, 0, i), 0, QTFILE);

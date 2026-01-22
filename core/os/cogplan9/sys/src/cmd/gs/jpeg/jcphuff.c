@@ -22,16 +22,16 @@ c_derived_tbl * derived_tbls[NUM_HUFF_TBLS];
 long * count_ptrs[NUM_HUFF_TBLS];
 } phuff_entropy_encoder;
 typedef phuff_entropy_encoder * phuff_entropy_ptr;
-#define MAX_CORR_BITS  1000
+#define MAX_CORR_BITS 1000
 #ifdef RIGHT_SHIFT_IS_UNSIGNED
-#define ISHIFT_TEMPS	int ishift_temp;
-#define IRIGHT_SHIFT(x,shft)  \
+#define ISHIFT_TEMPS int ishift_temp;
+#define IRIGHT_SHIFT(x,shft) \
 ((ishift_temp = (x)) < 0 ? \
 (ishift_temp >> (shft)) | ((~0) << (16-(shft))) : \
 (ishift_temp >> (shft)))
 #else
 #define ISHIFT_TEMPS
-#define IRIGHT_SHIFT(x,shft)	((x) >> (shft))
+#define IRIGHT_SHIFT(x,shft) ((x) >> (shft))
 #endif
 METHODDEF(boolean) encode_mcu_DC_first JPP((j_compress_ptr cinfo,
 JBLOCKROW *MCU_data));
@@ -103,9 +103,9 @@ entropy->put_bits = 0;
 entropy->restarts_to_go = cinfo->restart_interval;
 entropy->next_restart_num = 0;
 }
-#define emit_byte(entropy,val)  \
-{ *(entropy)->next_output_byte++ = (JOCTET) (val);  \
-if (--(entropy)->free_in_buffer == 0)  \
+#define emit_byte(entropy,val) \
+{ *(entropy)->next_output_byte++ = (JOCTET) (val); \
+if (--(entropy)->free_in_buffer == 0) \
 dump_buffer(entropy); }
 LOCAL(void)
 dump_buffer (phuff_entropy_ptr entropy)

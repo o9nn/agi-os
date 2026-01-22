@@ -9,9 +9,9 @@
 #include <sys/procfs.h>
 #include <stddef.h>
 #include <alloca.h>
-#define ELF_CLASS	PASTE (ELFCLASS, __ELF_NATIVE_CLASS)
-#define PASTE(a, b)	PASTE_1 (a, b)
-#define PASTE_1(a, b)	a##b
+#define ELF_CLASS PASTE (ELFCLASS, __ELF_NATIVE_CLASS)
+#define PASTE(a, b) PASTE_1 (a, b)
+#define PASTE_1(a, b) a##b
 #include <endian.h>
 #if BYTE_ORDER == BIG_ENDIAN
 #define ELF_DATA ELFDATA2MSB
@@ -22,7 +22,7 @@
 #include <mach/vm_param.h>
 #include <assert-backtrace.h>
 #ifdef __x86_64__
-# define ELF_MACHINE		EM_X86_64
+# define ELF_MACHINE EM_X86_64
 static inline void
 fetch_thread_regset (thread_t thread, prgregset_t *gregs)
 {
@@ -79,7 +79,7 @@ memcpy (*fpregs, &st.hw_state, sizeof (st.hw_state));
 }
 }
 #elif defined (i386_THREAD_STATE)
-# define ELF_MACHINE		EM_386
+# define ELF_MACHINE EM_386
 static inline void
 fetch_thread_regset (thread_t thread, prgregset_t *gregs)
 {
@@ -115,7 +115,7 @@ memcpy (fpregs, st.hw_state, sizeof st.hw_state);
 }
 }
 #elif defined ALPHA_THREAD_STATE
-# define ELF_MACHINE		EM_ALPHA
+# define ELF_MACHINE EM_ALPHA
 static inline void
 fetch_thread_regset (thread_t thread, prgregset_t *gregs)
 {
@@ -133,7 +133,7 @@ assert_backtrace (sizeof (struct alpha_float_state) == sizeof *fpregs);
 (thread_state_t) fpregs, &count);
 }
 #elif defined (AARCH64_THREAD_STATE)
-# define ELF_MACHINE		EM_AARCH64
+# define ELF_MACHINE EM_AARCH64
 static inline void
 fetch_thread_regset (thread_t thread, prgregset_t *gregs)
 {
@@ -156,16 +156,16 @@ assert_backtrace (count == AARCH64_FLOAT_STATE_COUNT);
 }
 #else
 # warning "do not understand this machine flavor, no registers in dumps"
-# define ELF_MACHINE		EM_NONE
+# define ELF_MACHINE EM_NONE
 #endif
 #ifndef TIME_VALUE_TO_TIMESPEC
-#define TIME_VALUE_TO_TIMESPEC(tv, ts) {                                \
-(ts)->tv_sec = (tv)->seconds;                                   \
-(ts)->tv_nsec = (tv)->microseconds * 1000;                      \
+#define TIME_VALUE_TO_TIMESPEC(tv, ts) { \
+(ts)->tv_sec = (tv)->seconds; \
+(ts)->tv_nsec = (tv)->microseconds * 1000; \
 }
 #endif
-#define PAGES_TO_KB(x)	((x) * (vm_page_size / 1024))
-#define ENCODE_PCT(f)	((uint16_t) ((f) * 32768.0))
+#define PAGES_TO_KB(x) ((x) * (vm_page_size / 1024))
+#define ENCODE_PCT(f) ((uint16_t) ((f) * 32768.0))
 extern process_t procserver;
 error_t
 dump_core (task_t task, file_t file, off_t corelimit,
@@ -202,9 +202,9 @@ thread_t *threads;
 mach_msg_type_number_t nthreads, i;
 off_t notestart;
 #define DEFINE_NOTE(typename) struct { struct note_header hdr; typename data; }
-#define WRITE_NOTE(type, var) ({ 					      \
-(var).hdr = NOTE_HEADER ((type), sizeof (var).data);			      \
-write_note (&(var).hdr);						      \
+#define WRITE_NOTE(type, var) ({ \
+(var).hdr = NOTE_HEADER ((type), sizeof (var).data); \
+write_note (&(var).hdr); \
 })
 struct note_header
 {
@@ -247,9 +247,9 @@ return EFBIG;
 {
 vm_address_t region_address, last_region_address, last_region_end;
 vm_prot_t last_protection;
-#define RECORD_LAST_REGION do {						      \
-if (last_region_end > last_region_address				      \
-&& last_protection != VM_PROT_NONE)				      \
+#define RECORD_LAST_REGION do { \
+if (last_region_end > last_region_address \
+&& last_protection != VM_PROT_NONE) \
 record_last_region (alloca (sizeof (struct vm_region_list))); } while (0)
 inline void record_last_region (struct vm_region_list *region)
 {

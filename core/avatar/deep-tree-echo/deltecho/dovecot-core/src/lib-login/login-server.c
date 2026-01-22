@@ -269,7 +269,7 @@ return;
 e_error(conn->event,
 "fd_read(%s) failed: %m", pl->socket_path);
 } else if (str_len(pl->input) > 0) {
-e_error(conn->event,  "fd_read(%s) failed: disconnected",
+e_error(conn->event, "fd_read(%s) failed: disconnected",
 pl->socket_path);
 } else {
 e_error(conn->event,

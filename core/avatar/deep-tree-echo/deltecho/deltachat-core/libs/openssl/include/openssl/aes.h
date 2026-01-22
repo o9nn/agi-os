@@ -2,14 +2,14 @@
 # define HEADER_AES_H
 # include <openssl/opensslconf.h>
 # ifdef OPENSSL_NO_AES
-#  error AES is disabled.
+# error AES is disabled.
 # endif
 # include <stddef.h>
-# define AES_ENCRYPT     1
-# define AES_DECRYPT     0
+# define AES_ENCRYPT 1
+# define AES_DECRYPT 0
 # define AES_MAXNR 14
 # define AES_BLOCK_SIZE 16
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 struct aes_key_st {
@@ -69,7 +69,7 @@ const unsigned char *in, unsigned int inlen);
 int AES_unwrap_key(AES_KEY *key, const unsigned char *iv,
 unsigned char *out,
 const unsigned char *in, unsigned int inlen);
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif
 #endif

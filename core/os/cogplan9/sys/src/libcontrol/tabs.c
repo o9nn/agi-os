@@ -9,18 +9,18 @@
 typedef struct Tab Tab;
 struct Tab {
 Control;
-int		border;
-int		selected;
-int		separation;
-char		*format;
-CImage	*bordercolor;
-CImage	*image;
-Control	*tabrow;
-Control	*tabstack;
-Control	*tabcolumn;
-int		ntabs;
-int		nbuttons;
-Control	**buttons;
+int border;
+int selected;
+int separation;
+char *format;
+CImage *bordercolor;
+CImage *image;
+Control *tabrow;
+Control *tabstack;
+Control *tabcolumn;
+int ntabs;
+int nbuttons;
+Control **buttons;
 };
 enum{
 EAdd,
@@ -40,21 +40,21 @@ ESize,
 EValue,
 };
 static char *cmds[] = {
-[EAdd] =			"add",
-[EBorder] =		"border",
-[EBordercolor] =	"bordercolor",
-[EButton] =		"button",
-[EFocus] = 		"focus",
-[EFormat] = 		"format",
-[EHide] =			"hide",
-[EImage] =		"image",
-[ERect] =			"rect",
-[EReveal] =		"reveal",
-[ESeparation] =		"separation",
-[ESeparatorcolor] =	"separatorcolor",
-[EShow] =			"show",
-[ESize] =			"size",
-[EValue] =			"value",
+[EAdd] = "add",
+[EBorder] = "border",
+[EBordercolor] = "bordercolor",
+[EButton] = "button",
+[EFocus] = "focus",
+[EFormat] = "format",
+[EHide] = "hide",
+[EImage] = "image",
+[ERect] = "rect",
+[EReveal] = "reveal",
+[ESeparation] = "separation",
+[ESeparatorcolor] = "separatorcolor",
+[EShow] = "show",
+[ESize] = "size",
+[EValue] = "value",
 };
 static void
 tabshow(Tab *t)

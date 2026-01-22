@@ -18,7 +18,7 @@
 #include "trans.h"
 const char *cons_client_name = "console";
 const char *cons_client_version = HURD_VERSION;
-#define DEFAULT_CONSOLE_NODE	"/dev/cons"
+#define DEFAULT_CONSOLE_NODE "/dev/cons"
 static pthread_mutex_t global_lock;
 static vcons_t active_vcons = NULL;
 static int saved_id = 0;
@@ -437,30 +437,30 @@ static const struct argp_child startup_children[] =
 static struct argp startup_argp = {options, parse_opt, 0,
 0, startup_children};
 #if HAVE_DAEMON
-#define daemon_error(status, errnum, format, args...)			\
-do									\
-{									\
-if (daemonize)							\
-{								\
-if (errnum)							\
-daemon_log (LOG_ERR, format ": %s", ##args,			\
-strerror(errnum));				\
-else								\
-daemon_log (LOG_ERR, format, ##args);			\
-if (status)							\
-{								\
+#define daemon_error(status, errnum, format, args...) \
+do \
+{ \
+if (daemonize) \
+{ \
+if (errnum) \
+daemon_log (LOG_ERR, format ": %s", ##args, \
+strerror(errnum)); \
+else \
+daemon_log (LOG_ERR, format, ##args); \
+if (status) \
+{ \
 \
-daemon_retval_send (status);				\
-daemon_pid_file_remove ();				\
-return 0;							\
-}								\
-}								\
-else								\
-error (status, errnum, format, ##args);				\
-}									\
+daemon_retval_send (status); \
+daemon_pid_file_remove (); \
+return 0; \
+} \
+} \
+else \
+error (status, errnum, format, ##args); \
+} \
 while (0);
 #else
-#define daemon_error	error
+#define daemon_error error
 #endif
 int
 main (int argc, char *argv[])

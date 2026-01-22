@@ -5,27 +5,27 @@
 #include "fns.h"
 #include "io.h"
 #include "ureg.h"
-#define MEMDEBUG	0
+#define MEMDEBUG 0
 enum {
-MemUPA		= 0,
-MemRAM		= 1,
-MemUMB		= 2,
-MemReserved	= 3,
-NMemType	= 4,
-KB		= 1024,
-MemMin		= 8*MB,
-MemMax		= (3*1024+768)*MB,
+MemUPA = 0,
+MemRAM = 1,
+MemUMB = 2,
+MemReserved = 3,
+NMemType = 4,
+KB = 1024,
+MemMin = 8*MB,
+MemMax = (3*1024+768)*MB,
 };
 typedef struct Map Map;
 struct Map {
-ulong	size;
-ulong	addr;
+ulong size;
+ulong addr;
 };
 typedef struct RMap RMap;
 struct RMap {
-char*	name;
-Map*	map;
-Map*	mapend;
+char* name;
+Map* map;
+Map* mapend;
 Lock;
 };
 static Map mapupa[16];

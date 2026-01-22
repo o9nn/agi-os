@@ -17,9 +17,9 @@ Next, Down, Skip, Quit: import Fs;
 Walk: module {};
 Loopcheck: adt {
 a: array of list of ref Sys->Dir;
-new:		fn(): ref Loopcheck;
-enter:	fn(l: self ref Loopcheck, d: ref Sys->Dir): int;
-leave:	fn(l: self ref Loopcheck, d: ref Sys->Dir);
+new: fn(): ref Loopcheck;
+enter: fn(l: self ref Loopcheck, d: ref Sys->Dir): int;
+leave: fn(l: self ref Loopcheck, d: ref Sys->Dir);
 };
 types(): string
 {
@@ -136,7 +136,7 @@ break directory;
 Next =>
 break;
 }
-if(sys->chdir("..") == -1)		# XXX what should we do if this fails?
+if(sys->chdir("..") == -1) # XXX what should we do if this fails?
 report(errorc, sys->sprint("failed to cd .. from %#q: %r\n", path + a[i].name));
 } else {
 if(fswalkfile(path, a[i], c, blocksize, errorc) == Skip)

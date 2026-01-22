@@ -9,7 +9,7 @@ typedef struct Fid Fid;
 enum
 {
 Stacksize = 320 * 1024,
-OPERM	= 0x3
+OPERM = 0x3
 };
 struct Fid
 {
@@ -20,79 +20,79 @@ char *user;
 Qid qid;
 VacFile *file;
 VacDirEnum *vde;
-Fid	*next;
+Fid *next;
 };
 enum
 {
-Pexec =		1,
-Pwrite = 	2,
-Pread = 	4,
-Pother = 	1,
-Pgroup = 	8,
-Powner =	64
+Pexec = 1,
+Pwrite = 2,
+Pread = 4,
+Pother = 1,
+Pgroup = 8,
+Powner = 64
 };
-Fid	*fids;
-uchar	*data;
-int	mfd[2];
-int	srvfd = -1;
-char	*user;
-uchar	mdata[8192+IOHDRSZ];
+Fid *fids;
+uchar *data;
+int mfd[2];
+int srvfd = -1;
+char *user;
+uchar mdata[8192+IOHDRSZ];
 int messagesize = sizeof mdata;
-Fcall	rhdr;
-Fcall	thdr;
-VacFs	*fs;
-VtConn  *conn;
-int	noperm;
-int	dotu;
+Fcall rhdr;
+Fcall thdr;
+VacFs *fs;
+VtConn *conn;
+int noperm;
+int dotu;
 char *defmnt;
-Fid *	newfid(int);
-void	error(char*);
-void	io(void);
-void	vacshutdown(void);
-void	usage(void);
-int	perm(Fid*, int);
-int	permf(VacFile*, char*, int);
-ulong	getl(void *p);
-void	init(char*, char*, long, int);
-int	vacdirread(Fid *f, char *p, long off, long cnt);
-int	vacstat(VacFile *parent, VacDir *vd, uchar *p, int np);
-void 	srv(void* a);
-char	*rflush(Fid*), *rversion(Fid*),
+Fid * newfid(int);
+void error(char*);
+void io(void);
+void vacshutdown(void);
+void usage(void);
+int perm(Fid*, int);
+int permf(VacFile*, char*, int);
+ulong getl(void *p);
+void init(char*, char*, long, int);
+int vacdirread(Fid *f, char *p, long off, long cnt);
+int vacstat(VacFile *parent, VacDir *vd, uchar *p, int np);
+void srv(void* a);
+char *rflush(Fid*), *rversion(Fid*),
 *rauth(Fid*), *rattach(Fid*), *rwalk(Fid*),
 *ropen(Fid*), *rcreate(Fid*),
 *rread(Fid*), *rwrite(Fid*), *rclunk(Fid*),
 *rremove(Fid*), *rstat(Fid*), *rwstat(Fid*);
-char 	*(*fcalls[Tmax])(Fid*);
+char *(*fcalls[Tmax])(Fid*);
 void
 initfcalls(void)
 {
-fcalls[Tflush]=	rflush;
-fcalls[Tversion]=	rversion;
-fcalls[Tattach]=	rattach;
-fcalls[Tauth]=		rauth;
-fcalls[Twalk]=		rwalk;
-fcalls[Topen]=		ropen;
-fcalls[Tcreate]=	rcreate;
-fcalls[Tread]=		rread;
-fcalls[Twrite]=	rwrite;
-fcalls[Tclunk]=	rclunk;
-fcalls[Tremove]=	rremove;
-fcalls[Tstat]=		rstat;
-fcalls[Twstat]=	rwstat;
+fcalls[Tflush]= rflush;
+fcalls[Tversion]= rversion;
+fcalls[Tattach]= rattach;
+fcalls[Tauth]= rauth;
+fcalls[Twalk]= rwalk;
+fcalls[Topen]= ropen;
+fcalls[Tcreate]= rcreate;
+fcalls[Tread]= rread;
+fcalls[Twrite]= rwrite;
+fcalls[Tclunk]= rclunk;
+fcalls[Tremove]= rremove;
+fcalls[Tstat]= rstat;
+fcalls[Twstat]= rwstat;
 }
-char	Eperm[] =	"permission denied";
-char	Enotdir[] =	"not a directory";
-char	Enotexist[] =	"file does not exist";
-char	Einuse[] =	"file in use";
-char	Eexist[] =	"file exists";
-char	Enotowner[] =	"not owner";
-char	Eisopen[] = 	"file already open for I/O";
-char	Excl[] = 	"exclusive use file already open";
-char	Ename[] = 	"illegal name";
-char	Erdonly[] = 	"read only file system";
-char	Eio[] = 	"i/o error";
-char	Eempty[] = 	"directory is not empty";
-char	Emode[] =	"illegal mode";
+char Eperm[] = "permission denied";
+char Enotdir[] = "not a directory";
+char Enotexist[] = "file does not exist";
+char Einuse[] = "file in use";
+char Eexist[] = "file exists";
+char Enotowner[] = "not owner";
+char Eisopen[] = "file already open for I/O";
+char Excl[] = "exclusive use file already open";
+char Ename[] = "illegal name";
+char Erdonly[] = "read only file system";
+char Eio[] = "i/o error";
+char Eempty[] = "directory is not empty";
+char Emode[] = "illegal mode";
 int dflag;
 void
 notifyf(void *a, char *s)

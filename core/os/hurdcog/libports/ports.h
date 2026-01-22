@@ -13,11 +13,11 @@
 #else
 #define PORTS_EI __extern_inline
 #endif
-#define PORTS_INHIBITED		0x0100
-#define PORTS_BLOCKED		0x0200
-#define PORTS_INHIBIT_WAIT	0x0400
-#define PORTS_NO_ALLOC		0x0800
-#define PORTS_ALLOC_WAIT	0x1000
+#define PORTS_INHIBITED 0x0100
+#define PORTS_BLOCKED 0x0200
+#define PORTS_INHIBIT_WAIT 0x0400
+#define PORTS_NO_ALLOC 0x0800
+#define PORTS_ALLOC_WAIT 0x1000
 struct port_info
 {
 #ifdef __cplusplus
@@ -36,10 +36,10 @@ hurd_ihash_locp_t hentry;
 hurd_ihash_locp_t ports_htable_entry;
 };
 typedef struct port_info *port_info_t;
-#define PORT_HAS_SENDRIGHTS	0x0001
-#define PORT_INHIBITED		PORTS_INHIBITED
-#define PORT_BLOCKED		PORTS_BLOCKED
-#define PORT_INHIBIT_WAIT	PORTS_INHIBIT_WAIT
+#define PORT_HAS_SENDRIGHTS 0x0001
+#define PORT_INHIBITED PORTS_INHIBITED
+#define PORT_BLOCKED PORTS_BLOCKED
+#define PORT_INHIBIT_WAIT PORTS_INHIBIT_WAIT
 struct port_bucket
 {
 mach_port_t portset;
@@ -50,11 +50,11 @@ int count;
 struct ports_threadpool threadpool;
 struct port_info *notify_port;
 };
-#define PORT_BUCKET_INHIBITED	PORTS_INHIBITED
-#define PORT_BUCKET_BLOCKED	PORTS_BLOCKED
+#define PORT_BUCKET_INHIBITED PORTS_INHIBITED
+#define PORT_BUCKET_BLOCKED PORTS_BLOCKED
 #define PORT_BUCKET_INHIBIT_WAIT PORTS_INHIBIT_WAIT
-#define PORT_BUCKET_NO_ALLOC	PORTS_NO_ALLOC
-#define PORT_BUCKET_ALLOC_WAIT	PORTS_ALLOC_WAIT
+#define PORT_BUCKET_NO_ALLOC PORTS_NO_ALLOC
+#define PORT_BUCKET_ALLOC_WAIT PORTS_ALLOC_WAIT
 struct port_class
 {
 int flags;
@@ -64,11 +64,11 @@ void (*clean_routine) (void *);
 void (*dropweak_routine) (void *);
 struct ports_msg_id_range *uninhibitable_rpcs;
 };
-#define PORT_CLASS_INHIBITED	PORTS_INHIBITED
-#define PORT_CLASS_BLOCKED	PORTS_BLOCKED
-#define PORT_CLASS_INHIBIT_WAIT	PORTS_INHIBIT_WAIT
-#define PORT_CLASS_NO_ALLOC	PORTS_NO_ALLOC
-#define PORT_CLASS_ALLOC_WAIT	PORTS_ALLOC_WAIT
+#define PORT_CLASS_INHIBITED PORTS_INHIBITED
+#define PORT_CLASS_BLOCKED PORTS_BLOCKED
+#define PORT_CLASS_INHIBIT_WAIT PORTS_INHIBIT_WAIT
+#define PORT_CLASS_NO_ALLOC PORTS_NO_ALLOC
+#define PORT_CLASS_ALLOC_WAIT PORTS_ALLOC_WAIT
 struct rpc_info
 {
 thread_t thread;
@@ -165,9 +165,9 @@ void ports_port_deref (void *port);
 void ports_port_deref_weak (void *port);
 #define ports_port_notify_right(port) \
 ((struct port_info *) (port))->bucket->notify_port->port_right
-#define ports_port_is_notify(port)                  \
-({                                                \
-struct port_info *__pi = (port);                \
+#define ports_port_is_notify(port) \
+({ \
+struct port_info *__pi = (port); \
 __pi ? (__pi->bucket->notify_port == __pi) : 0; \
 })
 error_t ports_request_dead_name_notification (void *object,
@@ -242,9 +242,9 @@ extern struct hurd_ihash _ports_htable;
 extern pthread_rwlock_t _ports_htable_lock;
 extern int _ports_total_rpcs;
 extern int _ports_flags;
-#define _PORTS_INHIBITED	PORTS_INHIBITED
-#define _PORTS_BLOCKED		PORTS_BLOCKED
-#define _PORTS_INHIBIT_WAIT	PORTS_INHIBIT_WAIT
+#define _PORTS_INHIBITED PORTS_INHIBITED
+#define _PORTS_BLOCKED PORTS_BLOCKED
+#define _PORTS_INHIBIT_WAIT PORTS_INHIBIT_WAIT
 void _ports_complete_deallocate (struct port_info *);
 error_t _ports_create_port_internal (struct port_class *, struct port_bucket *,
 size_t, void *, int);

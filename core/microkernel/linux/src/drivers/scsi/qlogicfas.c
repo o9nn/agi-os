@@ -3,7 +3,7 @@
 #define QL_TURBO_PDMA 1
 #define QL_ENABLE_PARITY 1
 #define QL_RESET_AT_START 0
-#define XTALFREQ	40
+#define XTALFREQ 40
 #define SLOWCABLE 1
 #define FASTSCSI 0
 #define FASTCLK 0
@@ -35,18 +35,18 @@ struct proc_dir_entry proc_scsi_qlogicfas = {
 PROC_SCSI_QLOGICFAS, 6, "qlogicfas",
 S_IFDIR | S_IRUGO | S_IXUGO, 2
 };
-static int	    qbase = 0;
-static int	    qinitid;
-static int	    qabort;
-static int	    qlirq = -1;
-static char	    qinfo[80];
-static Scsi_Cmnd   *qlcmd;
-static int	    qlcfg5 = ( XTALFREQ << 5 );
-static int	    qlcfg6 = SYNCXFRPD;
-static int	    qlcfg7 = SYNCOFFST;
-static int	    qlcfg8 = ( SLOWCABLE << 7 ) | ( QL_ENABLE_PARITY << 4 );
-static int	    qlcfg9 = ( ( XTALFREQ + 4 ) / 5 );
-static int	    qlcfgc = ( FASTCLK << 3 ) | ( FASTSCSI << 4 );
+static int qbase = 0;
+static int qinitid;
+static int qabort;
+static int qlirq = -1;
+static char qinfo[80];
+static Scsi_Cmnd *qlcmd;
+static int qlcfg5 = ( XTALFREQ << 5 );
+static int qlcfg6 = SYNCXFRPD;
+static int qlcfg7 = SYNCOFFST;
+static int qlcfg8 = ( SLOWCABLE << 7 ) | ( QL_ENABLE_PARITY << 4 );
+static int qlcfg9 = ( ( XTALFREQ + 4 ) / 5 );
+static int qlcfgc = ( FASTCLK << 3 ) | ( FASTSCSI << 4 );
 #define REG0 ( outb( inb( qbase + 0xd ) & 0x7f , qbase + 0xd ), outb( 4 , qbase + 0xd ))
 #define REG1 ( outb( inb( qbase + 0xd ) | 0x80 , qbase + 0xd ), outb( 0xb4 | QL_INT_ACTIVE_HIGH , qbase + 0xd ))
 #define WATCHDOG 5000000
@@ -55,11 +55,11 @@ static int	    qlcfgc = ( FASTCLK << 3 ) | ( FASTSCSI << 4 );
 #else
 #define rtrc(i) {}
 #endif
-static void	ql_zap(void);
-void	ql_zap()
+static void ql_zap(void);
+void ql_zap()
 {
-int	x;
-unsigned long	flags;
+int x;
+unsigned long flags;
 save_flags( flags );
 cli();
 x = inb(qbase + 0xd);
@@ -70,9 +70,9 @@ if (x & 0x80)
 REG1;
 restore_flags( flags );
 }
-static int	ql_pdma(int phase, char *request, int reqlen)
+static int ql_pdma(int phase, char *request, int reqlen)
 {
-int	j;
+int j;
 j = 0;
 if (phase & 1) {
 #if QL_TURBO_PDMA
@@ -139,9 +139,9 @@ j = inb(qbase+8);
 }
 return inb( qbase + 8 ) & 0xc0;
 }
-static int	ql_wai(void)
+static int ql_wai(void)
 {
-int	i,k;
+int i,k;
 k = 0;
 i = jiffies + WATCHDOG;
 while ( i > jiffies && !qabort && !((k = inb(qbase + 4)) & 0xe0))
@@ -158,10 +158,10 @@ if (k & 0x40)
 return (DID_ERROR);
 return 0;
 }
-static void	ql_icmd(Scsi_Cmnd * cmd)
+static void ql_icmd(Scsi_Cmnd * cmd)
 {
-unsigned int	    i;
-unsigned long	flags;
+unsigned int i;
+unsigned long flags;
 qabort = 0;
 save_flags( flags );
 cli();
@@ -191,16 +191,16 @@ qlcmd = cmd;
 outb(0x41, qbase + 3);
 restore_flags( flags );
 }
-static unsigned int	ql_pcmd(Scsi_Cmnd * cmd)
+static unsigned int ql_pcmd(Scsi_Cmnd * cmd)
 {
-unsigned int	i, j, k;
-unsigned int	result;
-unsigned int	status;
-unsigned int	message;
-unsigned int	phase;
-unsigned int	reqlen;
-struct scatterlist	*sglist;
-unsigned int	sgcount;
+unsigned int i, j, k;
+unsigned int result;
+unsigned int status;
+unsigned int message;
+unsigned int phase;
+unsigned int reqlen;
+struct scatterlist *sglist;
+unsigned int sgcount;
 rtrc(1)
 j = inb(qbase + 6);
 i = inb(qbase + 5);
@@ -286,14 +286,14 @@ return ((qabort == 1 ? DID_ABORT : DID_RESET) << 16);
 return (result << 16) | (message << 8) | (status & STATUS_MASK);
 }
 #if QL_USE_IRQ
-static void	       ql_ihandl(int irq, void *dev_id, struct pt_regs * regs)
+static void ql_ihandl(int irq, void *dev_id, struct pt_regs * regs)
 {
-Scsi_Cmnd	   *icmd;
+Scsi_Cmnd *icmd;
 REG0;
 if (!(inb(qbase + 4) & 0x80))
 return;
 if (qlcmd == NULL) {
-int	i;
+int i;
 i = 16;
 while (i-- && inb(qbase + 5));
 return;
@@ -305,11 +305,11 @@ qlcmd = NULL;
 }
 #endif
 #if QL_USE_IRQ
-static void	qlidone(Scsi_Cmnd * cmd) {};
+static void qlidone(Scsi_Cmnd * cmd) {};
 #endif
-int	qlogicfas_command(Scsi_Cmnd * cmd)
+int qlogicfas_command(Scsi_Cmnd * cmd)
 {
-int	k;
+int k;
 #if QL_USE_IRQ
 if (qlirq >= 0) {
 qlogicfas_queuecommand(cmd, qlidone);
@@ -325,7 +325,7 @@ return (k << 16);
 return ql_pcmd(cmd);
 }
 #if QL_USE_IRQ
-int	qlogicfas_queuecommand(Scsi_Cmnd * cmd, void (*done) (Scsi_Cmnd *))
+int qlogicfas_queuecommand(Scsi_Cmnd * cmd, void (*done) (Scsi_Cmnd *))
 {
 if(cmd->target == qinitid) {
 cmd->result = DID_BAD_TARGET << 16;
@@ -339,25 +339,25 @@ ql_icmd(cmd);
 return 0;
 }
 #else
-int	qlogicfas_queuecommand(Scsi_Cmnd * cmd, void (*done) (Scsi_Cmnd *))
+int qlogicfas_queuecommand(Scsi_Cmnd * cmd, void (*done) (Scsi_Cmnd *))
 {
 return 1;
 }
 #endif
 #ifdef PCMCIA
-void	qlogicfas_preset(int port, int irq)
+void qlogicfas_preset(int port, int irq)
 {
 qbase=port;
 qlirq=irq;
 }
 #endif
-int	qlogicfas_detect(Scsi_Host_Template * host)
+int qlogicfas_detect(Scsi_Host_Template * host)
 {
-int	i, j;
-int	qltyp;
-struct	Scsi_Host	*hreg;
-unsigned long	flags;
-host->proc_dir =  &proc_scsi_qlogicfas;
+int i, j;
+int qltyp;
+struct Scsi_Host *hreg;
+unsigned long flags;
+host->proc_dir = &proc_scsi_qlogicfas;
 if( !qbase ) {
 for (qbase = 0x230; qbase < 0x430; qbase += 0x100) {
 if( check_region( qbase , 0x10 ) )
@@ -428,7 +428,7 @@ qltyp, qbase, qlirq, QL_TURBO_PDMA );
 host->name = qinfo;
 return 1;
 }
-int	qlogicfas_biosparam(Disk * disk, kdev_t dev, int ip[])
+int qlogicfas_biosparam(Disk * disk, kdev_t dev, int ip[])
 {
 ip[0] = 0x40;
 ip[1] = 0x20;
@@ -442,19 +442,19 @@ ip[2] = 1023;
 }
 return 0;
 }
-int	qlogicfas_abort(Scsi_Cmnd * cmd)
+int qlogicfas_abort(Scsi_Cmnd * cmd)
 {
 qabort = 1;
 ql_zap();
 return 0;
 }
-int	qlogicfas_reset(Scsi_Cmnd * cmd, unsigned int flags)
+int qlogicfas_reset(Scsi_Cmnd * cmd, unsigned int flags)
 {
 qabort = 2;
 ql_zap();
 return 1;
 }
-const char	*qlogicfas_info(struct Scsi_Host * host)
+const char *qlogicfas_info(struct Scsi_Host * host)
 {
 return qinfo;
 }

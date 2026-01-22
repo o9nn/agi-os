@@ -40,17 +40,17 @@ char *macnames[] = {
 "hmac-sha1",
 };
 char *st_names[] = {
-[Empty]		"Empty",
-[Allocated]	"Allocated",
-[Initting]	"Initting",
-[Listening]	"Listening",
-[Opening]	"Opening",
-[Negotiating]	"Negotiating",
-[Authing]	"Authing",
-[Established]	"Established",
-[Eof]		"Eof",
-[Closing]	"Closing",
-[Closed]	"Closed",
+[Empty] "Empty",
+[Allocated] "Allocated",
+[Initting] "Initting",
+[Listening] "Listening",
+[Opening] "Opening",
+[Negotiating] "Negotiating",
+[Authing] "Authing",
+[Established] "Established",
+[Eof] "Eof",
+[Closing] "Closing",
+[Closed] "Closed",
 };
 int debug;
 int kflag;
@@ -1180,7 +1180,7 @@ r->ofcall.count = r->ifcall.count;
 respexit(c, r, nil, nil);
 }
 r->ofcall.count = r->ifcall.count;
-if (c->state == Closed  || c->state == Closing ||
+if (c->state == Closed || c->state == Closing ||
 ch->state == Closed || ch->state == Closing)
 respexit(c, r, buf, nil);
 p = new_packet(c);
@@ -2741,7 +2741,7 @@ free(p3);
 for (i = 0; pkas[i] && strcmp("ssh-rsa", pkas[i]->name) != 0;
 ++i)
 ;
-sshdebug(c, "client_auth rsa signing alg %d: %r",  i);
+sshdebug(c, "client_auth rsa signing alg %d: %r", i);
 if ((p3 = pkas[i]->sign(c, p4->payload, p4->rlength-1)) == nil) {
 sshdebug(c, "client_auth rsa signing failed: %r");
 free(p4);

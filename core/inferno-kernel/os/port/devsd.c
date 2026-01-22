@@ -10,8 +10,8 @@
 extern Dev sddevtab;
 extern SDifc* sdifc[];
 typedef struct SDevgrp {
-SDev*	dev;
-int	nunits;
+SDev* dev;
+int nunits;
 } SDevgrp;
 static SDevgrp* devs;
 static QLock devslock;
@@ -22,38 +22,38 @@ Rawdata,
 Rawstatus,
 };
 enum {
-Qtopdir		= 1,
+Qtopdir = 1,
 Qtopbase,
 Qtopctl = Qtopbase,
 Qtopstat,
 Qunitdir,
 Qunitbase,
-Qctl		= Qunitbase,
+Qctl = Qunitbase,
 Qraw,
 Qpart,
-TypeLOG		= 4,
-NType		= (1<<TypeLOG),
-TypeMASK	= (NType-1),
-TypeSHIFT	= 0,
-PartLOG		= 8,
-NPart		= (1<<PartLOG),
-PartMASK	= (NPart-1),
-PartSHIFT	= TypeLOG,
-UnitLOG		= 8,
-NUnit		= (1<<UnitLOG),
-UnitMASK	= (NUnit-1),
-UnitSHIFT	= (PartLOG+TypeLOG),
-DevLOG		= 8,
-NDev		= (1 << DevLOG),
-DevMASK	= (NDev-1),
+TypeLOG = 4,
+NType = (1<<TypeLOG),
+TypeMASK = (NType-1),
+TypeSHIFT = 0,
+PartLOG = 8,
+NPart = (1<<PartLOG),
+PartMASK = (NPart-1),
+PartSHIFT = TypeLOG,
+UnitLOG = 8,
+NUnit = (1<<UnitLOG),
+UnitMASK = (NUnit-1),
+UnitSHIFT = (PartLOG+TypeLOG),
+DevLOG = 8,
+NDev = (1 << DevLOG),
+DevMASK = (NDev-1),
 DevSHIFT = (UnitLOG+PartLOG+TypeLOG),
 Ncmd = 20,
 };
-#define TYPE(q)		((((ulong)(q).path)>>TypeSHIFT) & TypeMASK)
-#define PART(q)		((((ulong)(q).path)>>PartSHIFT) & PartMASK)
-#define UNIT(q)		((((ulong)(q).path)>>UnitSHIFT) & UnitMASK)
-#define DEV(q)		((((ulong)(q).path)>>DevSHIFT) & DevMASK)
-#define QID(d,u, p, t)	(((d)<<DevSHIFT)|((u)<<UnitSHIFT)|\
+#define TYPE(q) ((((ulong)(q).path)>>TypeSHIFT) & TypeMASK)
+#define PART(q) ((((ulong)(q).path)>>PartSHIFT) & PartMASK)
+#define UNIT(q) ((((ulong)(q).path)>>UnitSHIFT) & UnitMASK)
+#define DEV(q) ((((ulong)(q).path)>>DevSHIFT) & DevMASK)
+#define QID(d,u, p, t) (((d)<<DevSHIFT)|((u)<<UnitSHIFT)|\
 ((p)<<PartSHIFT)|((t)<<TypeSHIFT))
 static void
 sdaddpart(SDunit* unit, char* name, ulong start, ulong end)
@@ -104,7 +104,7 @@ pp->perm = 0640;
 pp->valid = 1;
 }
 static void
-sddelpart(SDunit* unit,  char* name)
+sddelpart(SDunit* unit, char* name)
 {
 int i;
 SDpart *pp;
@@ -784,9 +784,9 @@ return 0;
 }
 typedef struct Confdata Confdata;
 struct Confdata {
-int	on;
-char*	spec;
-DevConf	cf;
+int on;
+char* spec;
+DevConf cf;
 };
 static void
 parseswitch(Confdata* cd, char* option)
@@ -860,15 +860,15 @@ parsetype(Confdata* cd, char* option)
 cd->cf.type = option;
 }
 static struct {
-char	*option;
-void	(*parse)(Confdata*, char*);
+char *option;
+void (*parse)(Confdata*, char*);
 } options[] = {
-{ 	"switch",	parseswitch,	},
-{	"spec",		parsespec,	},
-{	"port",		parseport,	},
-{	"size",		parsesize,	},
-{	"irq",		parseirq,	},
-{	"type",		parsetype,	},
+{ "switch", parseswitch, },
+{ "spec", parsespec, },
+{ "port", parseport, },
+{ "size", parsesize, },
+{ "irq", parseirq, },
+{ "type", parsetype, },
 };
 static long
 sdwrite(Chan* c, void* a, long n, vlong off)

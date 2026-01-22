@@ -43,9 +43,9 @@ FRhscrollauto, FRvscrollauto
 : import B;
 # font stuff
 Fontinfo : adt {
-name:	string;
-f:	ref Font;
-spw:	int;			# width of a space in this font
+name: string;
+f: ref Font;
+spw: int; # width of a space in this font
 };
 fonts := array[NumFnt] of {
 FntR*NumSize+Tiny => Fontinfo("/fonts/charon/plain.tiny.font", nil, 0),
@@ -71,16 +71,16 @@ FntT*NumSize+Verylarge => ("/fonts/charon/cw.vlarge.font", nil, 0)
 };
 # Seems better to use a slightly smaller font in Controls, to match other browsers
 CtlFnt: con (FntR*NumSize+Small);
-# color stuff.  have hash table mapping RGB values to D->Image for that color
+# color stuff. have hash table mapping RGB values to D->Image for that color
 Colornode : adt {
-rgb:	int;
-im:	ref Image;
-next:	ref Colornode;
+rgb: int;
+im: ref Image;
+next: ref Colornode;
 };
 # Source of info for page (html, image, etc.)
 Source: adt {
-bs:	ref ByteSource;
-redirects:	int;
+bs: ref ByteSource;
+redirects: int;
 pick {
 Srequired or
 Shtml =>
@@ -100,7 +100,7 @@ add: fn(srcs: self ref Sources, s: ref Source, required: int);
 done: fn(srcs: self ref Sources, s: ref Source);
 waitsrc: fn(srcs : self ref Sources) : ref Source;
 };
-NCOLHASH : con 19;	# 19 checked for standard colors: only 1 collision
+NCOLHASH : con 19; # 19 checked for standard colors: only 1 collision
 colorhashtab := array[NCOLHASH] of ref Colornode;
 # No line break should happen between adjacent characters if
 # they are 'wordchars' : set in this array, or outside the array range.
@@ -126,30 +126,30 @@ wordchar := array[16rA0] of {
 '\''=>byte 1, '"'=>byte 1, '.'=>byte 1, ','=>byte 1, '('=>byte 1, ')'=>byte 1,
 * => byte 0
 };
-TABPIX: con 30;		# number of pixels in a tab
-CAPSEP: con 5;			# number of pixels separating tab from caption
-SCRBREADTH: con 14;	# scrollbar breadth (normal)
-SCRFBREADTH: con 14;	# scrollbar breadth (inside child frame or select control)
-FRMARGIN: con 0;		# default margin around frames
-RULESP: con 7;			# extra space before and after rules
-POPUPLINES: con 12;	# number of lines in popup select list
-MINSCR: con 6;			# min size in pixels of scrollbar drag widget
-SCRDELTASF: con 10000;	# fixed-point scale factor for scrollbar per-pixel step
+TABPIX: con 30; # number of pixels in a tab
+CAPSEP: con 5; # number of pixels separating tab from caption
+SCRBREADTH: con 14; # scrollbar breadth (normal)
+SCRFBREADTH: con 14; # scrollbar breadth (inside child frame or select control)
+FRMARGIN: con 0; # default margin around frames
+RULESP: con 7; # extra space before and after rules
+POPUPLINES: con 12; # number of lines in popup select list
+MINSCR: con 6; # min size in pixels of scrollbar drag widget
+SCRDELTASF: con 10000; # fixed-point scale factor for scrollbar per-pixel step
 # all of the following include room for relief
-CBOXWID: con 14;		# check box width
-CBOXHT: con 12;		# check box height
-ENTVMARGIN : con 4;	# vertical margin inside entry box
-ENTHMARGIN : con 6;	# horizontal margin inside entry box
-SELMARGIN : con 4;		# margin inside select control
-BUTMARGIN: con 4;		# margin inside button control
-PBOXWID: con 10;		# progress box width
-PBOXHT: con 16;		# progress box height
-PBOXBD: con 2;		# progress box border width
-TABLEMAXTARGET: con 2000;	# targetwidth to get max width of table cell
-TABLEFLOATTARGET: con 1;	# targetwidth for floating tables
-SELBG: con 16r00FFFF;	# aqua
-ARPAUSE : con 500;			# autorepeat initial delay (ms)
-ARTICK : con 100;			# autorepeat tick delay (ms)
+CBOXWID: con 14; # check box width
+CBOXHT: con 12; # check box height
+ENTVMARGIN : con 4; # vertical margin inside entry box
+ENTHMARGIN : con 6; # horizontal margin inside entry box
+SELMARGIN : con 4; # margin inside select control
+BUTMARGIN: con 4; # margin inside button control
+PBOXWID: con 10; # progress box width
+PBOXHT: con 16; # progress box height
+PBOXBD: con 2; # progress box border width
+TABLEMAXTARGET: con 2000; # targetwidth to get max width of table cell
+TABLEFLOATTARGET: con 1; # targetwidth for floating tables
+SELBG: con 16r00FFFF; # aqua
+ARPAUSE : con 500; # autorepeat initial delay (ms)
+ARTICK : con 100; # autorepeat tick delay (ms)
 display: ref D->Display;
 dbg := 0;
 dbgtab := 0;
@@ -185,7 +185,7 @@ getfont(DefFnt);
 fnt := fonts[DefFnt].f;
 linespace = fnt.height;
 lineascent = fnt.ascent;
-charspace = fnt.width("a");	# a kind of average char width
+charspace = fnt.width("a"); # a kind of average char width
 spspace = fonts[DefFnt].spw;
 getfont(CtlFnt);
 fnt = fonts[CtlFnt].f;
@@ -215,7 +215,7 @@ if (bsmain.req != nil) {
 auth = bsmain.req.auth;
 url = bsmain.req.url;
 }
-#	auth := bsmain.req.auth;
+# auth := bsmain.req.auth;
 ans : array of byte = nil;
 di := Docinfo.new();
 if(linkclick && f.doc != nil)
@@ -326,8 +326,8 @@ sources.done(src);
 CU->freebs(bs);
 src.bs = nil;
 continue;
-#						src = sources.main;
-#						CU->assert(src != nil);
+# src = sources.main;
+# CU->assert(src != nil);
 }
 itl := s.itsrc.getitems();
 if(di.kidinfo != nil) {
@@ -905,7 +905,7 @@ oldy := y;
 y = pastbrk(lay, y, IFcleft|IFcright);
 if(dbg > 1)
 sys->print("moved y past %d, now y=%d\n", oldy, y);
-CU->assert(y > oldy);	# else infinite recurse
+CU->assert(y > oldy); # else infinite recurse
 # Do the move down by artificially increasing the
 # height of the previous line
 lprev.height += y-oldy;
@@ -1077,7 +1077,7 @@ h = a;
 it.height = h;
 it.ascent = a;
 Irule =>
-it.height =  t.size + 2*RULESP;
+it.height = t.size + 2*RULESP;
 it.ascent = t.size + RULESP;
 Iimage =>
 setimagedims(t);
@@ -1315,7 +1315,7 @@ return (ss, fnt.width(ss));
 }
 # Return max width of a float that overlaps [ymin, ymax) on given side.
 # Floats are in reverse order of addition, so each float's y is <= that of
-# preceding floats in list.  Floats from both sides are intermixed.
+# preceding floats in list. Floats from both sides are intermixed.
 floatw(ymin, ymax: int, flist: list of ref Item.Ifloat, side: byte) : int
 {
 ans := 0;
@@ -1382,7 +1382,7 @@ change = 1;
 y += fl.item.height;
 }
 }
-#	if(change)
+# if(change)
 # TODO only change if y and/or height changed
 changelines(l.next, lay.end);
 }
@@ -1453,7 +1453,7 @@ if(dbg)
 sys->print("Relayout (for max) for cell %d.%d\n", tab.tableid, c.cellid);
 relayout(f, clay, tw, Aleft);
 }
-clay.flags |= Lchanged;	# for min test, below
+clay.flags |= Lchanged; # for min test, below
 c.maxw = clay.width;
 if(dbgtab)
 sys->print("sizetable %d for cell %d max layout done, targw=%d, c.maxw=%d\n",
@@ -1493,7 +1493,7 @@ tab.cols[ci].width = colmaxw[ci] + d;
 }
 }
 else {
-# calc min column widths and  apportion out
+# calc min column widths and apportion out
 # differences
 if(dbgtab)
 sys->print("sizetable %d, availwidth %d, need min widths too\n", tab.tableid, availwidth);
@@ -1690,8 +1690,8 @@ return ht;
 # totw from availwidth).
 # hsep is amount of free space available between columns
 # where there is multicolumn spanning.
-# This is a two-pass algorithm.  The first pass ignores
-# cells that span multiple columns.  The second pass
+# This is a two-pass algorithm. The first pass ignores
+# cells that span multiple columns. The second pass
 # sees if those multispanners need still more space, and
 # if so, apportions the space out.
 widthcalc(tab: ref Table, w: array of int, hsep, domax: int) : int
@@ -1813,11 +1813,11 @@ spix := 1.0;
 spcnt := 1.0;
 min_relu := 0;
 if(totrel > 0)
-min_relu = 30;	# allow for scrollbar (14) and a bit
+min_relu = 30; # allow for scrollbar (14) and a bit
 relu := real min_relu;
 tt := totpix + (t*totpcnt/100) + totrel*min_relu;
 # want
-#  t ==  totpix*spix + (totpcnt/100)*spcnt*t + totrel*relu
+# t == totpix*spix + (totpcnt/100)*spcnt*t + totrel*relu
 if(tt < t) {
 # need to expand one of spix, spcnt, relu
 if(totrel == 0) {
@@ -2060,13 +2060,13 @@ Ifloat =>
 xx := layorigin.x + lay.margin;
 if(i.side == Aright) {
 xx -= i.x;
-#				# for main layout of frame, floats hug
-#				# right edge of frame, not layout
-#				# (other browsers do that)
-#				if(f.layout == lay)
+# # for main layout of frame, floats hug
+# # right edge of frame, not layout
+# # (other browsers do that)
+# if(f.layout == lay)
 xx += lay.targetwidth;
-#				else
-#					xx += lay.width;
+# else
+# xx += lay.width;
 }
 else
 xx += i.x;
@@ -2145,8 +2145,8 @@ capy = y+tab.toth-tab.caph+vsp;
 else
 boxy = y+tab.caph;
 if (tab.background.color != -1 && tab.background.color != parentlay.background.color) {
-#	if(tab.background.image != parentlay.background.image ||
-#	   tab.background.color != parentlay.background.color) {
+# if(tab.background.image != parentlay.background.image ||
+# tab.background.color != parentlay.background.color) {
 bgi := colorimage(tab.background.color);
 im.draw(((x,boxy),(x+tab.totw,boxy+tab.toth-tab.caph)),
 bgi, nil, zp);
@@ -2212,10 +2212,10 @@ y := r.min.y - n;
 xr := r.max.x+n;
 ybi := r.max.y;
 src := colorimage(color);
-im.draw((Point(x,y),Point(xr,y+n)), src, nil, zp);				# top
-im.draw((Point(x,ybi),Point(xr,ybi+n)), src, nil, zp);			# bottom
-im.draw((Point(x,y+n),Point(x+n,ybi)), src, nil, zp);			# left
-im.draw((Point(xr-n,y+n),Point(xr,ybi)), src, nil, zp);			# right
+im.draw((Point(x,y),Point(xr,y+n)), src, nil, zp); # top
+im.draw((Point(x,ybi),Point(xr,ybi+n)), src, nil, zp); # bottom
+im.draw((Point(x,y+n),Point(x+n,ybi)), src, nil, zp); # left
+im.draw((Point(xr-n,y+n),Point(xr,ybi)), src, nil, zp); # right
 }
 # Draw relief border just outside r, width 2 border,
 # colors white/lightgrey/darkgrey/black
@@ -2249,14 +2249,14 @@ tli = colorimage(Black);
 bro = colorimage(White);
 bri = colorimage(Grey);
 }
-im.draw((Point(x2,y2), Point(xr1,y1)), tlo, nil, zp);		# top outside
-im.draw((Point(x1,y1), Point(xr,y)), tli, nil, zp);			# top inside
-im.draw((Point(x2,y1), Point(x1,yb1)), tlo, nil, zp);		# left outside
-im.draw((Point(x1,y), Point(x,yb)), tli, nil, zp);			# left inside
-im.draw((Point(xr,y1),Point(xr1,yb)), bri, nil, zp);		# right inside
-im.draw((Point(xr1,y),Point(xr2,yb1)), bro, nil, zp);		# right outside
-im.draw((Point(x1,yb),Point(xr1,yb1)), bri, nil, zp);		# bottom inside
-im.draw((Point(x,yb1),Point(xr2,yb2)), bro, nil, zp);		# bottom outside
+im.draw((Point(x2,y2), Point(xr1,y1)), tlo, nil, zp); # top outside
+im.draw((Point(x1,y1), Point(xr,y)), tli, nil, zp); # top inside
+im.draw((Point(x2,y1), Point(x1,yb1)), tlo, nil, zp); # left outside
+im.draw((Point(x1,y), Point(x,yb)), tli, nil, zp); # left inside
+im.draw((Point(xr,y1),Point(xr1,yb)), bri, nil, zp); # right inside
+im.draw((Point(xr1,y),Point(xr2,yb1)), bro, nil, zp); # right outside
+im.draw((Point(x1,yb),Point(xr1,yb1)), bri, nil, zp); # bottom inside
+im.draw((Point(x,yb1),Point(xr2,yb2)), bro, nil, zp); # bottom outside
 }
 # Fill r with color
 drawfill(im: ref Image, r: Rect, color: int)
@@ -2322,11 +2322,11 @@ if (hv < 0)
 hv = -hv;
 xhd := colorhashtab[hv];
 x := xhd;
-while(x != nil && x.rgb  != rgb)
+while(x != nil && x.rgb != rgb)
 x = x.next;
 if(x == nil) {
-#			pix := I->closest_rgbpix((rgb>>16)&255, (rgb>>8)&255, rgb&255);
-#			im := display.color(pix);
+# pix := I->closest_rgbpix((rgb>>16)&255, (rgb>>8)&255, rgb&255);
+# im := display.color(pix);
 im := display.rgb((rgb>>16)&255, (rgb>>8)&255, rgb&255);
 if(im == nil)
 raise sys->sprint("exLayout: can't allocate color #%8.8ux: %r", rgb);
@@ -2629,11 +2629,11 @@ xx = origin.x + lay.margin;
 if(fl.side == Aright) {
 xx -= fl.x;
 xx += lay.targetwidth;
-#				if(lay == f.layout)
-#					xx = origin.x + (f.cr.dx() - lay.margin) - fl.x;
-##					xx += f.cr.dx() - fl.x;
-#				else
-#					xx += lay.width - fl.x;
+# if(lay == f.layout)
+# xx = origin.x + (f.cr.dx() - lay.margin) - fl.x;
+## xx += f.cr.dx() - fl.x;
+# else
+# xx += lay.width - fl.x;
 }
 else
 xx += fl.x;
@@ -2719,7 +2719,7 @@ loc.add(LEitem, Point(x,yy));
 loc.le[loc.n-1].item = i;
 loc.add(LEitem, Point(x,yy));
 loc.le[loc.n-1].item = it;
-loc.pos = zp;	# doesn't matter, its an 'it' test
+loc.pos = zp; # doesn't matter, its an 'it' test
 return loc;
 }
 }
@@ -2805,8 +2805,8 @@ return nil;
 # to come from the src URL.
 #
 # For now, assume this is called only after the entire build process
-# has finished.  Also, only handle the case where the image has
-# been preloaded and is in the cache now.  This isn't right (BUG), but will
+# has finished. Also, only handle the case where the image has
+# been preloaded and is in the cache now. This isn't right (BUG), but will
 # cover most of the cases of extant image swapping, and besides,
 # image swapping is mostly cosmetic anyway.
 #
@@ -2969,9 +2969,9 @@ h += 2*BUTMARGIN;
 r := Rect(zp, Point(w,h));
 if(candisable && pic != nil) {
 # make "greyed out" image:
-#	- convert pic to monochrome (ones where pic is non-white)
-#	- draw pic in White, then DarkGrey shifted (-1,-1) and use
-#	    union of those two areas as mask
+# - convert pic to monochrome (ones where pic is non-white)
+# - draw pic in White, then DarkGrey shifted (-1,-1) and use
+# union of those two areas as mask
 dpicmask = display.newimage(pic.r, Draw->GREY1, 0, D->White);
 dpic = display.newimage(pic.r, pic.chans, 0, D->White);
 dpic.draw(dpic.r, colorimage(White), pic, zp);
@@ -3067,7 +3067,7 @@ return ref Control.Canimimage(f, nil, Rect((0,0),(cim.width,cim.height)), 0, nil
 Control.newlabel(f: ref Frame, s: string) : ref Control
 {
 w := fonts[DefFnt].f.width(s);
-h := ctllinespace + 2*ENTVMARGIN;	# give it same height as an entry box
+h := ctllinespace + 2*ENTVMARGIN; # give it same height as an entry box
 return ref Control.Clabel(f, nil, Rect(zp,Point(w,h)), 0, nil, s);
 }
 Control.disable(c: self ref Control)
@@ -3096,11 +3096,11 @@ onchange = pc.onchange;
 pc.onchange = 0;
 # this code reproduced Navigator 2 bug
 # changes to Select Formfield selection only resulted in onchange event upon
-# loss of focus.  Now handled by domouse() code so event can be raised
+# loss of focus. Now handled by domouse() code so event can be raised
 # immediately
-#	Cselect =>
-#		onchange = pc.onchange;
-#		pc.onchange = 0;
+# Cselect =>
+# onchange = pc.onchange;
+# pc.onchange = 0;
 }
 if(onchange && (c.ff.evmask & E->SEonchange)) {
 se := ref E->ScriptEvent(E->SEonchange, c.f.id, c.ff.form.formid, c.ff.fieldid, -1, -1, -1, -1, 1, nil, nil, 0);
@@ -3262,7 +3262,7 @@ entrydelrange(c, sels, sele);
 (sels, sele) = c.sel;
 }
 slen = len c.s;
-c.s[slen] = 0;	# expand string by 1 char
+c.s[slen] = 0; # expand string by 1 char
 for(k := slen; k > sels; k--)
 c.s[k] = c.s[k-1];
 c.s[sels] = keychar;
@@ -3398,7 +3398,7 @@ d := c.f.controls[ff.ctlid];
 if(d.flags&CFactive) {
 d.flags &= ~CFactive;
 d.draw(1);
-break;		# at most one other should be on
+break; # at most one other should be on
 }
 }
 }
@@ -3585,12 +3585,12 @@ topline += val*ny;
 CAscrollline =>
 topline += val;
 CAscrolldelta =>
-#						# insufficient for large number of lines
+# # insufficient for large number of lines
 topline += val;
-#						if(val > 0)
-#							topline++;
-#						else
-#							topline--;
+# if(val > 0)
+# topline++;
+# else
+# topline--;
 }
 if (topline+ny >= nlines)
 topline = (nlines-1) - ny;
@@ -3608,12 +3608,12 @@ newfirst += val*cff.nvis;
 CAscrollline =>
 newfirst += val;
 CAscrolldelta =>
-#						# insufficient for very long select lists
+# # insufficient for very long select lists
 newfirst += val;
-#						if(val > 0)
-#							newfirst++;
-#						else
-#							newfirst--;
+# if(val > 0)
+# newfirst++;
+# else
+# newfirst--;
 }
 newfirst = max(0, min(newfirst, len cff.options - cff.nvis));
 cff.first = newfirst;
@@ -3631,10 +3631,10 @@ CAscrollline =>
 newfirst += val;
 CAscrolldelta =>
 newfirst += val;
-#							if(val > 0)
-#								newfirst++;
-#							else
-#								newfirst--;
+# if(val > 0)
+# newfirst++;
+# else
+# newfirst--;
 }
 newfirst = max(0, min(newfirst, len cff.options - cff.nvis));
 cff.first = newfirst;
@@ -3870,8 +3870,8 @@ eclipr.min.x += ENTHMARGIN;
 eclipr.max.x -= ENTHMARGIN;
 eclipr.min.y += ENTVMARGIN;
 eclipr.max.y -= ENTVMARGIN;
-#		if (c.scr != nil)
-#			eclipr.max.x -= SCRFBREADTH;
+# if (c.scr != nil)
+# eclipr.max.x -= SCRFBREADTH;
 (eclipr, any) = clipr.clip(eclipr);
 win.clipr = eclipr;
 p := c.r.min.add(Point(ENTHMARGIN,ENTVMARGIN));
@@ -4148,7 +4148,7 @@ wrapstring(fnt: ref Font, s: string, availw: int) : (array of string, array of i
 sl : list of (string, int) = nil;
 sw := fnt.width(s);
 n := 0;
-k := 0;	# index into original s where current s starts
+k := 0; # index into original s where current s starts
 origlen := len s;
 done := 0;
 while(!done) {
@@ -4333,7 +4333,7 @@ lhs, rhs : string;
 if (sels > 0)
 lhs = e.s[:sels];
 if (sels < len e.s)
-rhs  = e.s[sels:];
+rhs = e.s[sels:];
 e.entryset(lhs + snarf + rhs);
 e.sel = (len lhs, len lhs + len snarf);
 }
@@ -4431,14 +4431,14 @@ return ans;
 Line.new() : ref Line
 {
 return ref Line(
-nil, nil, nil,	# items, next, prev
-zp,		# pos
-0, 0, 0,	# width, height, ascent
-byte 0);	# flags
+nil, nil, nil, # items, next, prev
+zp, # pos
+0, 0, 0, # width, height, ascent
+byte 0); # flags
 }
 Loc.new() : ref Loc
 {
-return ref Loc(array[10] of Locelem, 0, zp);	# le, n, pos
+return ref Loc(array[10] of Locelem, 0, zp); # le, n, pos
 }
 Loc.add(loc: self ref Loc, kind: int, pos: Point)
 {
@@ -4467,7 +4467,7 @@ sys->print("%s: Loc with %d components, pos=(%d,%d)\n", msg, loc.n, loc.pos.x, l
 for(i := 0; i < loc.n; i++) {
 case loc.le[i].kind {
 LEframe =>
-sys->print("frame %x\n",  loc.le[i].frame);
+sys->print("frame %x\n", loc.le[i].frame);
 LEline =>
 sys->print("line %x\n", loc.le[i].line);
 LEitem =>

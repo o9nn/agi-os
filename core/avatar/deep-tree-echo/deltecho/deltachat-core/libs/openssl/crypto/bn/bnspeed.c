@@ -32,21 +32,21 @@
 #include <openssl/x509.h>
 #ifndef HZ
 # ifndef CLK_TCK
-#  ifndef _BSD_CLK_TCK_
-#   define HZ   100.0
-#  else
-#   define HZ ((double)_BSD_CLK_TCK_)
-#  endif
+# ifndef _BSD_CLK_TCK_
+# define HZ 100.0
 # else
-#  define HZ ((double)CLK_TCK)
+# define HZ ((double)_BSD_CLK_TCK_)
+# endif
+# else
+# define HZ ((double)CLK_TCK)
 # endif
 #endif
 #undef BUFSIZE
 #define BUFSIZE ((long)1024*8)
 int run = 0;
 static double Time_F(int s);
-#define START   0
-#define STOP    1
+#define START 0
+#define STOP 1
 static double Time_F(int s)
 {
 double ret;
@@ -74,7 +74,7 @@ return ((ret < 0.001) ? 0.001 : ret);
 }
 #endif
 }
-#define NUM_SIZES       5
+#define NUM_SIZES 5
 static int sizes[NUM_SIZES] = { 128, 256, 512, 1024, 2048 };
 void do_mul(BIGNUM *r, BIGNUM *a, BIGNUM *b, BN_CTX *ctx);
 int main(int argc, char **argv)

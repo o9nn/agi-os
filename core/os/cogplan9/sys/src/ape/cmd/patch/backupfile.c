@@ -17,13 +17,13 @@
 # define dirent direct
 # define NLENGTH(direct) ((size_t) (direct)->d_namlen)
 # if HAVE_SYS_NDIR_H
-#  include <sys/ndir.h>
+# include <sys/ndir.h>
 # endif
 # if HAVE_SYS_DIR_H
-#  include <sys/dir.h>
+# include <sys/dir.h>
 # endif
 # if HAVE_NDIR_H
-#  include <ndir.h>
+# include <ndir.h>
 # endif
 #endif
 #if CLOSEDIR_VOID

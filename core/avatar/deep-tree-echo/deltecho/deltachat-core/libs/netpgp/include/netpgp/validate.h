@@ -1,22 +1,22 @@
 #ifndef VALIDATE_H_
-#define VALIDATE_H_	1
+#define VALIDATE_H_ 1
 typedef struct validate_key_cb_t{
-pgp_content_enum	type;
-pgp_keydata_key_t	key;
-pgp_keydata_key_t	subkey;
-uint8_t			     pubkeyid[PGP_KEY_ID_SIZE];
+pgp_content_enum type;
+pgp_keydata_key_t key;
+pgp_keydata_key_t subkey;
+uint8_t pubkeyid[PGP_KEY_ID_SIZE];
 enum {
 LS_UNKNOWN = 0,
 LS_ATTRIBUTE,
 LS_ID,
 LS_SUBKEY,
 LS_PRIMARY,
-}               	 last_seen;
-uint8_t			*userid;
-pgp_data_t		 userattr;
-uint8_t			 hash[PGP_MAX_HASH_SIZE];
-const pgp_keyring_t	*keyring;
-pgp_validation_t	*result;
+} last_seen;
+uint8_t *userid;
+pgp_data_t userattr;
+uint8_t hash[PGP_MAX_HASH_SIZE];
+const pgp_keyring_t *keyring;
+pgp_validation_t *result;
 pgp_cb_ret_t(*getpassphrase) (const pgp_packet_t *,
 pgp_cbdata_t *);
 unsigned not_commited;
@@ -33,14 +33,14 @@ LITDATA,
 SIGNED_CLEARTEXT
 } type;
 union {
-pgp_litdata_body_t	 litdata_body;
-pgp_fixed_body_t	 cleartext_body;
+pgp_litdata_body_t litdata_body;
+pgp_fixed_body_t cleartext_body;
 } data;
-uint8_t			 	 hash[PGP_MAX_HASH_SIZE];
-pgp_memory_t			*mem;
-const pgp_keyring_t		*keyring;
-pgp_validation_t		*result;
-char				*detachname;
+uint8_t hash[PGP_MAX_HASH_SIZE];
+pgp_memory_t *mem;
+const pgp_keyring_t *keyring;
+pgp_validation_t *result;
+char *detachname;
 } validate_data_cb_t;
 #if 0
 pgp_cb_ret_t pgp_validate_key_cb(const pgp_packet_t *, pgp_cbdata_t *);
@@ -51,19 +51,19 @@ const unsigned,
 const pgp_sig_t *,
 const pgp_pubkey_t *);
 #endif
-unsigned   pgp_validate_file(pgp_io_t *,
+unsigned pgp_validate_file(pgp_io_t *,
 pgp_validation_t *,
 const char *,
 const char *,
 const int,
 const pgp_keyring_t *);
-unsigned   pgp_validate_mem(pgp_io_t *,
+unsigned pgp_validate_mem(pgp_io_t *,
 pgp_validation_t *,
 pgp_memory_t *,
 pgp_memory_t **,
 const int,
 const pgp_keyring_t *);
-unsigned   pgp_validate_mem_detached(pgp_io_t *,
+unsigned pgp_validate_mem_detached(pgp_io_t *,
 pgp_validation_t *,
 pgp_memory_t *,
 pgp_memory_t **,

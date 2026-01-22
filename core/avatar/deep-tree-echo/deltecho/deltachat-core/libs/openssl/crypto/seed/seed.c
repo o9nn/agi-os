@@ -3,13 +3,13 @@
 # include <stdlib.h>
 # include <string.h>
 # ifdef WIN32
-#  include <memory.h>
+# include <memory.h>
 # endif
 # include <openssl/crypto.h>
 # include <openssl/seed.h>
 # include "seed_locl.h"
 # ifdef SS
-#  undef SS
+# undef SS
 # endif
 static const seed_word SS[4][256] = { {
 0x2989a1a8, 0x05858184, 0x16c6d2d4,
@@ -494,22 +494,22 @@ static const seed_word SS[4][256] = { {
 0xc9d1d819, 0x4c404c0c, 0x83838003, 0x8f838c0f,
 0xcec2cc0e, 0x0b33383b, 0x4a42480a, 0x87b3b437}
 };
-# define KC0     0x9e3779b9
-# define KC1     0x3c6ef373
-# define KC2     0x78dde6e6
-# define KC3     0xf1bbcdcc
-# define KC4     0xe3779b99
-# define KC5     0xc6ef3733
-# define KC6     0x8dde6e67
-# define KC7     0x1bbcdccf
-# define KC8     0x3779b99e
-# define KC9     0x6ef3733c
-# define KC10    0xdde6e678
-# define KC11    0xbbcdccf1
-# define KC12    0x779b99e3
-# define KC13    0xef3733c6
-# define KC14    0xde6e678d
-# define KC15    0xbcdccf1b
+# define KC0 0x9e3779b9
+# define KC1 0x3c6ef373
+# define KC2 0x78dde6e6
+# define KC3 0xf1bbcdcc
+# define KC4 0xe3779b99
+# define KC5 0xc6ef3733
+# define KC6 0x8dde6e67
+# define KC7 0x1bbcdccf
+# define KC8 0x3779b99e
+# define KC9 0x6ef3733c
+# define KC10 0xdde6e678
+# define KC11 0xbbcdccf1
+# define KC12 0x779b99e3
+# define KC13 0xef3733c6
+# define KC14 0xde6e678d
+# define KC15 0xbcdccf1b
 # if defined(OPENSSL_SMALL_FOOTPRINT)
 static const seed_word KC[] = {
 KC0, KC1, KC2, KC3, KC4, KC5, KC6, KC7,

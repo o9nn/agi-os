@@ -1,18 +1,18 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"ureg.h"
-#include	"pool.h"
-#include	"../port/error.h"
-#include	"../port/netif.h"
-#include	"../port/sd.h"
-#include	"dosfs.h"
-#include	<disk.h>
-long	biosread0(Bootfs *, void *, long);
-vlong	biosseek(Bootfs *fs, vlong off);
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "ureg.h"
+#include "pool.h"
+#include "../port/error.h"
+#include "../port/netif.h"
+#include "../port/sd.h"
+#include "dosfs.h"
+#include <disk.h>
+long biosread0(Bootfs *, void *, long);
+vlong biosseek(Bootfs *fs, vlong off);
 extern SDifc sdbiosifc;
 extern int biosndevs;
 uchar *
@@ -85,7 +85,7 @@ case ScmdExtread:
 if (r->cmd[0] == ScmdRead)
 panic("biosrio: ScmdRead read op");
 off = r->cmd[2]<<24 | r->cmd[3]<<16 | r->cmd[4]<<8 | r->cmd[5];
-nb =  r->cmd[7]<<8  | r->cmd[8];
+nb = r->cmd[7]<<8 | r->cmd[8];
 USED(nb);
 memset(&fs, 0, sizeof fs);
 biosseek(&fs, off * unit->secsize);

@@ -8,12 +8,12 @@ array = (dc_array_t*) calloc(1, sizeof(dc_array_t));
 if (array==NULL) {
 exit(47);
 }
-array->magic     = DC_ARRAY_MAGIC;
-array->context   = context;
-array->count     = 0;
+array->magic = DC_ARRAY_MAGIC;
+array->context = context;
+array->count = 0;
 array->allocated = initsize<1? 1 : initsize;
-array->type      = type;
-array->array     = malloc(array->allocated * sizeof(uintptr_t));
+array->type = type;
+array->array = malloc(array->allocated * sizeof(uintptr_t));
 if (array->array==NULL) {
 exit(48);
 }
@@ -245,7 +245,7 @@ return array->array;
 }
 char* dc_arr_to_string(const uint32_t* arr, int cnt)
 {
-char*       ret = NULL;
+char* ret = NULL;
 const char* sep = ",";
 if (arr==NULL || cnt <= 0) {
 return dc_strdup("");

@@ -7,8 +7,8 @@ enum {
 Maxenvname = 256,
 };
 char *Signame[] = {
-"sigexit",	"sighup",	"sigint",	"sigquit",
-"sigalrm",	"sigkill",	"sigfpe",	"sigterm",
+"sigexit", "sighup", "sigint", "sigquit",
+"sigalrm", "sigkill", "sigfpe", "sigterm",
 0
 };
 char *syssigname[] = {
@@ -29,17 +29,17 @@ void execbind(void);
 void execmount(void);
 void execnewpgrp(void);
 builtin Builtin[] = {
-"cd",		execcd,
-"whatis",	execwhatis,
-"eval",		execeval,
-"exec",		execexec,
-"exit",		execexit,
-"shift",	execshift,
-"wait",		execwait,
-".",		execdot,
-"finit",	execfinit,
-"flag",		execflag,
-"rfork",	execnewpgrp,
+"cd", execcd,
+"whatis", execwhatis,
+"eval", execeval,
+"exec", execexec,
+"exit", execexit,
+"shift", execshift,
+"wait", execwait,
+".", execdot,
+"finit", execfinit,
+"flag", execflag,
+"rfork", execnewpgrp,
 0
 };
 void
@@ -57,22 +57,22 @@ for(s = runq->argv->words->next->word;*s;s++) switch(*s){
 default:
 goto Usage;
 case 'n':
-arg|=RFNAMEG;  break;
+arg|=RFNAMEG; break;
 case 'N':
 arg|=RFCNAMEG;
 break;
 case 'm':
-arg|=RFNOMNT;  break;
+arg|=RFNOMNT; break;
 case 'e':
-arg|=RFENVG;   break;
+arg|=RFENVG; break;
 case 'E':
-arg|=RFCENVG;  break;
+arg|=RFCENVG; break;
 case 's':
-arg|=RFNOTEG;  break;
+arg|=RFNOTEG; break;
 case 'f':
-arg|=RFFDG;    break;
+arg|=RFFDG; break;
 case 'F':
-arg|=RFCFDG;   break;
+arg|=RFCFDG; break;
 }
 break;
 default:
@@ -337,7 +337,7 @@ else werrstr("command name too long");
 pfmt(err, "%s: %s\n", argv[1], errstr);
 efree((char *)argv);
 }
-#define	NDIR	256
+#define NDIR 256
 int
 Globsize(char *p)
 {
@@ -354,11 +354,11 @@ globlen++;
 }
 return isglob?globlen:0;
 }
-#define	NFD	50
+#define NFD 50
 struct{
-Dir	*dbuf;
-int	i;
-int	n;
+Dir *dbuf;
+int i;
+int n;
 }dir[NFD];
 int
 Opendir(char *name)

@@ -114,7 +114,7 @@ code = t1_hinter__set_font_data(h, 2, pdata, pcis->no_grid_fitting);
 if (code < 0)
 return code;
 break;
-default  :
+default :
 break;
 }
 INIT_CSTACK(cstack, csp, pcis);
@@ -568,7 +568,7 @@ csp += 6;
 goto flex;
 case ce2_flex:
 *csp /= 100;
-flex:			{
+flex: {
 fixed x_join = csp[-12] + csp[-10] + csp[-8];
 fixed y_join = csp[-11] + csp[-9] + csp[-7];
 fixed x_end = x_join + csp[-6] + csp[-4] + csp[-2];

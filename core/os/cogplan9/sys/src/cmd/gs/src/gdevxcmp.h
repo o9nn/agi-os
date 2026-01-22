@@ -1,5 +1,5 @@
 #ifndef gdevxcmp_INCLUDED
-#  define gdevxcmp_INCLUDED
+# define gdevxcmp_INCLUDED
 typedef struct x11_rgb_s {
 gx_color_value rgb[3];
 bool defined;

@@ -87,17 +87,17 @@ X_DPI, Y_DPI,
 4, 4, 1, 1, 2, 2, pcxcmyk_print_page)
 };
 #if arch_is_big_endian
-#  define assign_ushort(a,v) a = ((v) >> 8) + ((v) << 8)
+# define assign_ushort(a,v) a = ((v) >> 8) + ((v) << 8)
 #else
-#  define assign_ushort(a,v) a = (v)
+# define assign_ushort(a,v) a = (v)
 #endif
 typedef struct pcx_header_s {
 byte manuf;
 byte version;
-#define version_2_5			0
-#define version_2_8_with_palette	2
-#define version_2_8_without_palette	3
-#define version_3_0 	5
+#define version_2_5 0
+#define version_2_8_with_palette 2
+#define version_2_8_without_palette 3
+#define version_3_0 5
 byte encoding;
 byte bpp;
 ushort x1;
@@ -111,8 +111,8 @@ byte reserved;
 byte nplanes;
 ushort bpl;
 ushort palinfo;
-#define palinfo_color	1
-#define palinfo_gray	2
+#define palinfo_color 1
+#define palinfo_gray 2
 byte xtra[58];
 } pcx_header;
 private const pcx_header pcx_header_prototype =

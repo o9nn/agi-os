@@ -10,17 +10,17 @@ static int max_interrupt_work = 20;
 static const int rx_copybreak = 200;
 static const int mtu = 1500;
 static int multicast_filter_limit = 64;
-#define TX_RING_SIZE	16
-#define TX_QUEUE_LEN	10
-#define RX_RING_SIZE	32
-#define TX_TIMEOUT  (6*HZ)
-#define PKT_BUF_SZ		1536
+#define TX_RING_SIZE 16
+#define TX_QUEUE_LEN 10
+#define RX_RING_SIZE 32
+#define TX_TIMEOUT (6*HZ)
+#define PKT_BUF_SZ 1536
 #ifndef __KERNEL__
 #define __KERNEL__
 #endif
 #if !defined(__OPTIMIZE__)
-#warning  You must compile this file with the correct options!
-#warning  See the last lines of the source file.
+#warning You must compile this file with the correct options!
+#warning See the last lines of the source file.
 #error You must compile this driver with "-O".
 #endif
 #include <linux/config.h>
@@ -31,7 +31,7 @@ static int multicast_filter_limit = 64;
 #define MODVERSIONS
 #endif
 #include <linux/version.h>
-#if LINUX_VERSION_CODE < 0x20300  &&  defined(MODVERSIONS)
+#if LINUX_VERSION_CODE < 0x20300 && defined(MODVERSIONS)
 #include <linux/module.h>
 #include <linux/modversions.h>
 #else
@@ -63,9 +63,9 @@ static int multicast_filter_limit = 64;
 #include "pci-scan.h"
 #include "kern_compat.h"
 #endif
-#define virt_to_le32desc(addr)  cpu_to_le32(virt_to_bus(addr))
-#define le32desc_to_virt(addr)  bus_to_virt(le32_to_cpu(addr))
-#if (LINUX_VERSION_CODE >= 0x20100)  &&  defined(MODULE)
+#define virt_to_le32desc(addr) cpu_to_le32(virt_to_bus(addr))
+#define le32desc_to_virt(addr) bus_to_virt(le32_to_cpu(addr))
+#if (LINUX_VERSION_CODE >= 0x20100) && defined(MODULE)
 char kernel_version[] = UTS_RELEASE;
 #endif
 MODULE_AUTHOR("Donald Becker <becker@scyld.com>");
@@ -100,40 +100,40 @@ EEPROM_8BIT=0x200, INVERT_LED_PWR=0x400, MII_XCVR_PWR=0x4000,
 HAS_V2_TX=0x800, WN0_XCVR_PWR=0x1000,
 };
 #define FEATURE_BOOMERANG (HAS_MII)
-#define FEATURE_CYCLONE  (IS_CYCLONE|HAS_V2_TX)
-#define FEATURE_TORNADO  (IS_TORNADO|HAS_NWAY|HAS_V2_TX)
+#define FEATURE_CYCLONE (IS_CYCLONE|HAS_V2_TX)
+#define FEATURE_TORNADO (IS_TORNADO|HAS_NWAY|HAS_V2_TX)
 static void *vortex_probe1(struct pci_dev *pdev, void *init_dev,
 long ioaddr, int irq, int chip_idx, int find_cnt);
 static int pwr_event(void *dev_instance, int event);
 #ifdef USE_MEM_OPS
 #define PCI_IOTYPE (PCI_USES_MASTER | PCI_USES_MEM | PCI_ADDR1)
 #else
-#define PCI_IOTYPE (PCI_USES_MASTER | PCI_USES_IO  | PCI_ADDR0)
+#define PCI_IOTYPE (PCI_USES_MASTER | PCI_USES_IO | PCI_ADDR0)
 #endif
 static struct pci_id_info pci_tbl[] = {
-{"3c590 Vortex 10Mbps", 	{ 0x590010B7, 0xffffffff },
+{"3c590 Vortex 10Mbps", { 0x590010B7, 0xffffffff },
 PCI_IOTYPE, VORTEX_SIZE, IS_VORTEX, },
-{"3c595 Vortex 100baseTx",	{ 0x595010B7, 0xffffffff },
+{"3c595 Vortex 100baseTx", { 0x595010B7, 0xffffffff },
 PCI_IOTYPE, VORTEX_SIZE, IS_VORTEX, },
-{"3c595 Vortex 100baseT4",	{ 0x595110B7, 0xffffffff },
+{"3c595 Vortex 100baseT4", { 0x595110B7, 0xffffffff },
 PCI_IOTYPE, VORTEX_SIZE, IS_VORTEX, },
 {"3c595 Vortex 100base-MII",{ 0x595210B7, 0xffffffff },
 PCI_IOTYPE, VORTEX_SIZE, IS_VORTEX, },
-{"3c592 EISA Vortex",		{ 0x592010B7, 0xffffffff },
+{"3c592 EISA Vortex", { 0x592010B7, 0xffffffff },
 PCI_IOTYPE, VORTEX_SIZE, IS_VORTEX, },
-{"3c597 EISA Vortex",		{ 0x597010B7, 0xffffffff },
+{"3c597 EISA Vortex", { 0x597010B7, 0xffffffff },
 PCI_IOTYPE, VORTEX_SIZE, IS_VORTEX, },
-{"Vortex (unknown)",		{ 0x590010B7, 0xff00ffff },
+{"Vortex (unknown)", { 0x590010B7, 0xff00ffff },
 PCI_IOTYPE, VORTEX_SIZE, IS_VORTEX, },
-{"3c900 Boomerang 10baseT",	{ 0x900010B7, 0xffffffff },
+{"3c900 Boomerang 10baseT", { 0x900010B7, 0xffffffff },
 PCI_IOTYPE, BOOMERANG_SIZE, IS_BOOMERANG, },
 {"3c900 Boomerang 10Mbps Combo", { 0x900110B7, 0xffffffff },
 PCI_IOTYPE,BOOMERANG_SIZE, IS_BOOMERANG, },
-{"3c900 Cyclone 10Mbps TPO",   { 0x900410B7, 0xffffffff },
+{"3c900 Cyclone 10Mbps TPO", { 0x900410B7, 0xffffffff },
 PCI_IOTYPE, CYCLONE_SIZE, IS_CYCLONE, },
 {"3c900 Cyclone 10Mbps Combo", { 0x900510B7, 0xffffffff },
 PCI_IOTYPE, CYCLONE_SIZE, IS_CYCLONE, },
-{"3c900 Cyclone 10Mbps TPC",   { 0x900610B7, 0xffffffff },
+{"3c900 Cyclone 10Mbps TPC", { 0x900610B7, 0xffffffff },
 PCI_IOTYPE, CYCLONE_SIZE, IS_CYCLONE, },
 {"3c900B-FL Cyclone 10base-FL",{ 0x900A10B7, 0xffffffff },
 PCI_IOTYPE, CYCLONE_SIZE, IS_CYCLONE, },
@@ -174,7 +174,7 @@ FEATURE_TORNADO|EEPROM_8BIT|HAS_CB_FNS|INVERT_LED_PWR|MII_XCVR_PWR, },
 {"3c1556B series mini-PCI",{ 0x605610B7, 0xf0ffffff },
 PCI_IOTYPE, CYCLONE_SIZE,
 FEATURE_TORNADO|EEPROM_8BIT|HAS_CB_FNS|INVERT_LED_PWR|MII_XCVR_PWR, },
-{"3c575 Boomerang CardBus",	{ 0x505710B7, 0xffffffff },
+{"3c575 Boomerang CardBus", { 0x505710B7, 0xffffffff },
 PCI_IOTYPE,BOOMERANG_SIZE, IS_BOOMERANG|HAS_MII|EEPROM_8BIT, },
 {"3CCFE575BT Cyclone CardBus",{ 0x515710B7, 0xffffffff },
 PCI_IOTYPE, CYCLONE_SIZE,
@@ -243,8 +243,8 @@ DMAInProgress = 1<<11,
 CmdInProgress = 1<<12,
 };
 enum Window1 {
-TX_FIFO = 0x10,  RX_FIFO = 0x10,  RxErrors = 0x14,
-RxStatus = 0x18,  Timer=0x1A, TxStatus = 0x1B,
+TX_FIFO = 0x10, RX_FIFO = 0x10, RxErrors = 0x14,
+RxStatus = 0x18, Timer=0x1A, TxStatus = 0x1B,
 TxFree = 0x1C,
 };
 enum Window0 {
@@ -285,7 +285,7 @@ DownPollRate = 0x2d, TxFreeThreshold = 0x2f,
 UpPktStatus = 0x30, UpListPtr = 0x38,
 TxPktID=0x18, RxPriorityThresh = 0x3c,
 };
-#define LAST_FRAG  0x80000000
+#define LAST_FRAG 0x80000000
 struct boom_rx_desc {
 u32 next;
 s32 status;
@@ -310,7 +310,7 @@ TxNoRoundup=0x10000000,
 TxIntrUploaded=0x80000000,
 };
 enum ChipCaps { CapBusMaster=0x20, CapNoTxLength=0x0200, CapPwrMgmt=0x2000 };
-#define PRIV_ALIGN	15
+#define PRIV_ALIGN 15
 struct vortex_private {
 struct boom_rx_desc rx_ring[RX_RING_SIZE];
 struct boom_tx_desc tx_ring[TX_RING_SIZE];
@@ -327,7 +327,7 @@ struct sk_buff *tx_skb;
 unsigned int cur_tx, dirty_tx;
 unsigned int tx_full:1, restart_tx:1;
 long last_reset;
-spinlock_t	window_lock;
+spinlock_t window_lock;
 struct net_device_stats stats;
 char *cb_fn_base;
 int msg_level;
@@ -366,17 +366,17 @@ mask:8,
 next:8;
 int wait;
 } media_tbl[] = {
-{	"10baseT",   Media_10TP,0x08, XCVR_10base2, (14*HZ)/10},
+{ "10baseT", Media_10TP,0x08, XCVR_10base2, (14*HZ)/10},
 { "10Mbs AUI", Media_SQE, 0x20, XCVR_Default, (1*HZ)/10},
-{ "undefined", 0,			0x80, XCVR_10baseT, 10000},
-{ "10base2",   0,			0x10, XCVR_AUI,		(1*HZ)/10},
+{ "undefined", 0, 0x80, XCVR_10baseT, 10000},
+{ "10base2", 0, 0x10, XCVR_AUI, (1*HZ)/10},
 { "100baseTX", Media_Lnk, 0x02, XCVR_100baseFx, (14*HZ)/10},
-{ "100baseFX", Media_Lnk, 0x04, XCVR_MII,		(14*HZ)/10},
-{ "MII",		 0,			0x41, XCVR_10baseT, 3*HZ },
-{ "undefined", 0,			0x01, XCVR_10baseT, 10000},
-{ "Autonegotiate", 0,		0x41, XCVR_10baseT, 3*HZ},
-{ "MII-External",	 0,		0x41, XCVR_10baseT, 3*HZ },
-{ "Default",	 0,			0xFF, XCVR_10baseT, 10000},
+{ "100baseFX", Media_Lnk, 0x04, XCVR_MII, (14*HZ)/10},
+{ "MII", 0, 0x41, XCVR_10baseT, 3*HZ },
+{ "undefined", 0, 0x01, XCVR_10baseT, 10000},
+{ "Autonegotiate", 0, 0x41, XCVR_10baseT, 3*HZ},
+{ "MII-External", 0, 0x41, XCVR_10baseT, 3*HZ },
+{ "Default", 0, 0xFF, XCVR_10baseT, 10000},
 };
 #if ! defined(CARDBUS) && ! defined(USE_MEM_OPS)
 static int eisa_scan(struct net_device *dev);
@@ -402,9 +402,9 @@ static struct net_device_stats *vortex_get_stats(struct net_device *dev);
 static void set_rx_mode(struct net_device *dev);
 static int vortex_ioctl(struct net_device *dev, struct ifreq *rq, int cmd);
 #if defined(NO_PCI)
-#define acpi_set_WOL(dev)	do {} while(0);
-#define acpi_wake(pci_dev)	do {} while(0);
-#define acpi_set_pwr_state(pci_dev, state)	do {} while(0);
+#define acpi_set_WOL(dev) do {} while(0);
+#define acpi_wake(pci_dev) do {} while(0);
+#define acpi_set_pwr_state(pci_dev, state) do {} while(0);
 #else
 static void acpi_set_WOL(struct net_device *dev);
 #endif
@@ -609,7 +609,7 @@ option = options[find_cnt];
 else
 option = -1;
 if (option >= 0) {
-vp->media_override = ((option & 7) == 2)  ?  0  :  option & 15;
+vp->media_override = ((option & 7) == 2) ? 0 : option & 15;
 vp->full_duplex = (option & 0x200) ? 1 : 0;
 vp->bus_master = (option & 16) ? 1 : 0;
 } else {
@@ -617,12 +617,12 @@ vp->media_override = 7;
 vp->full_duplex = 0;
 vp->bus_master = 0;
 }
-if (find_cnt < MAX_UNITS  &&  full_duplex[find_cnt] > 0)
+if (find_cnt < MAX_UNITS && full_duplex[find_cnt] > 0)
 vp->full_duplex = 1;
 vp->options = option;
 EL3WINDOW(0);
 outw(0x5555, ioaddr + Wn0EepromData);
-ee_read_cmd = do_eeprom_op(ioaddr, 0x80) == 0x5555  ?  0x200 : 0x80;
+ee_read_cmd = do_eeprom_op(ioaddr, 0x80) == 0x5555 ? 0x200 : 0x80;
 if (do_eeprom_op(ioaddr, ee_read_cmd + 0x37) == 0x6d50)
 ee_read_cmd += 0x30;
 for (i = 0; i < 0x40; i++) {
@@ -641,7 +641,7 @@ while (i < 0x21)
 checksum ^= eeprom[i++];
 checksum = (checksum ^ (checksum >> 8)) & 0xff;
 }
-if (checksum != 0x00  &&  !(drv_flags & IS_TORNADO))
+if (checksum != 0x00 && !(drv_flags & IS_TORNADO))
 printk(" ***INVALID CHECKSUM %4.4x*** ", checksum);
 for (i = 0; i < 3; i++)
 ((u16 *)dev->dev_addr)[i] = htons(eeprom[i + 10]);
@@ -708,7 +708,7 @@ mdio_read(ioaddr, 24, 1);
 for (phy = 1; phy <= 32 && phy_idx < sizeof(vp->phys); phy++) {
 int mii_status, phyx = phy & 0x1f;
 mii_status = mdio_read(ioaddr, phyx, 1);
-if ((mii_status & 0xf800)  &&  mii_status != 0xffff) {
+if ((mii_status & 0xf800) && mii_status != 0xffff) {
 vp->phys[phy_idx++] = phyx;
 printk(KERN_INFO "  MII transceiver found at address %d,"
 " status %4x.\n", phyx, mii_status);
@@ -721,7 +721,7 @@ if (phy_idx == 0) {
 printk(KERN_WARNING"  ***WARNING*** No MII transceivers found!\n");
 vp->phys[0] = 24;
 } else {
-if (mii_preamble_required == 0  &&
+if (mii_preamble_required == 0 &&
 mdio_read(ioaddr, vp->phys[0], 1) == 0) {
 printk(KERN_INFO "%s:  MII transceiver has preamble bug.\n",
 dev->name);
@@ -886,7 +886,7 @@ int mii_reg1, mii_reg5;
 EL3WINDOW(4);
 mii_reg1 = mdio_read(ioaddr, vp->phys[0], 1);
 mii_reg5 = mdio_read(ioaddr, vp->phys[0], 5);
-if (mii_reg5 == 0xffff  ||  mii_reg5 == 0x0000)
+if (mii_reg5 == 0xffff || mii_reg5 == 0x0000)
 ;
 else if ((mii_reg5 & 0x0100) != 0
 || (mii_reg5 & 0x00C0) == 0x0040)
@@ -909,7 +909,7 @@ outw(inw(ioaddr + Wn4_Media) & ~Media_Lnk, ioaddr + Wn4_Media);
 EL3WINDOW(3);
 vp->wn3_mac_ctrl = vp->full_duplex ? 0x0120 : 0;
 if (dev->mtu > 1500)
-vp->wn3_mac_ctrl |= (dev->mtu == 1504  ?  0x0400 : 0x0040);
+vp->wn3_mac_ctrl |= (dev->mtu == 1504 ? 0x0400 : 0x0040);
 outb(vp->wn3_mac_ctrl, ioaddr + Wn3_MAC_Ctrl);
 if (vp->drv_flags & HAS_V2_TX)
 outw(dev->mtu + 14, ioaddr + Wn3_MaxPktSize);
@@ -945,7 +945,7 @@ memset(vp->mc_filter, 0, sizeof vp->mc_filter);
 for (i = 0; i < 200000; i++)
 if ( ! (inw(ioaddr + EL3_STATUS) & CmdInProgress))
 break;
-if (i >= 200  &&  (vp->msg_level & NETIF_MSG_DRV))
+if (i >= 200 && (vp->msg_level & NETIF_MSG_DRV))
 printk(KERN_DEBUG "%s: Rx Reset took an unexpectedly long time"
 " to finish, %d ticks.\n",
 dev->name, i);
@@ -1004,7 +1004,7 @@ printk(KERN_DEBUG "%s: Media selection timer tick happened, "
 "%s %s duplex.\n",
 dev->name, media_tbl[dev->if_port].name,
 vp->full_duplex ? "full" : "half");
-if (vp->cur_tx - vp->dirty_tx > 1  &&
+if (vp->cur_tx - vp->dirty_tx > 1 &&
 (jiffies - dev->trans_start) > TX_TIMEOUT) {
 if (inw(ioaddr + EL3_STATUS) & IntLatch) {
 if ( ! vp->polling) {
@@ -1028,7 +1028,7 @@ old_window = inw(ioaddr + EL3_CMD) >> 13;
 EL3WINDOW(4);
 media_status = inw(ioaddr + Wn4_Media);
 switch (dev->if_port) {
-case XCVR_10baseT:  case XCVR_100baseTx:  case XCVR_100baseFx:
+case XCVR_10baseT: case XCVR_100baseTx: case XCVR_100baseFx:
 if (media_status & Media_LnkBeat) {
 ok = 1;
 if (vp->msg_level & NETIF_MSG_LINK)
@@ -1054,7 +1054,7 @@ break;
 mii_reg5 = mdio_read(ioaddr, vp->phys[0], 5);
 negotiated = mii_reg5 & vp->advertising;
 duplex = (negotiated & 0x0100) || (negotiated & 0x03C0) == 0x0040;
-if (mii_reg5 == 0xffff  ||  vp->full_duplex == duplex)
+if (mii_reg5 == 0xffff || vp->full_duplex == duplex)
 break;
 if (vp->msg_level & NETIF_MSG_LINK)
 printk(KERN_INFO "%s: Setting %s-duplex based on "
@@ -1162,7 +1162,7 @@ outb(20, ioaddr + DownPollRate);
 if (vp->msg_level & NETIF_MSG_TX_ERR)
 printk(KERN_DEBUG "%s: Resetting the Tx ring pointer.\n",
 dev->name);
-if (vp->cur_tx - vp->dirty_tx > 0  &&  inl(ioaddr + DownListPtr) == 0)
+if (vp->cur_tx - vp->dirty_tx > 0 && inl(ioaddr + DownListPtr) == 0)
 outl(virt_to_bus(&vp->tx_ring[vp->dirty_tx % TX_RING_SIZE]),
 ioaddr + DownListPtr);
 else
@@ -1198,8 +1198,8 @@ unsigned char tx_status = inb(ioaddr + TxStatus);
 if (vp->msg_level & NETIF_MSG_TX_ERR)
 printk(KERN_DEBUG"%s: Transmit error, Tx status register %2.2x.\n",
 dev->name, tx_status);
-if (tx_status & 0x14)  vp->stats.tx_fifo_errors++;
-if (tx_status & 0x38)  vp->stats.tx_aborted_errors++;
+if (tx_status & 0x14) vp->stats.tx_fifo_errors++;
+if (tx_status & 0x38) vp->stats.tx_aborted_errors++;
 outb(0, ioaddr + TxStatus);
 if (tx_status & 0x30)
 do_tx_reset = 1;
@@ -1217,7 +1217,7 @@ static int DoneDidThat = 0;
 if (vp->msg_level & NETIF_MSG_MISC)
 printk(KERN_DEBUG "%s: Updating stats.\n", dev->name);
 update_stats(ioaddr, dev);
-if (DoneDidThat == 0  &&
+if (DoneDidThat == 0 &&
 inw(ioaddr + EL3_STATUS) & StatsFull) {
 printk(KERN_WARNING "%s: Updating statistics failed, disabling "
 "stats as an interrupt source.\n", dev->name);
@@ -1311,7 +1311,7 @@ dev->trans_start = jiffies;
 {
 int tx_status;
 int i = 32;
-while (--i > 0	&&	(tx_status = inb(ioaddr + TxStatus)) > 0) {
+while (--i > 0 && (tx_status = inb(ioaddr + TxStatus)) > 0) {
 if (tx_status & 0x3C) {
 if (vp->msg_level & NETIF_MSG_TX_ERR)
 printk(KERN_DEBUG "%s: Tx error, status %2.2x.\n",
@@ -1519,11 +1519,11 @@ unsigned char rx_error = inb(ioaddr + RxErrors);
 if (vp->msg_level & NETIF_MSG_RX_ERR)
 printk(KERN_DEBUG " Rx error: status %2.2x.\n", rx_error);
 vp->stats.rx_errors++;
-if (rx_error & 0x01)  vp->stats.rx_over_errors++;
-if (rx_error & 0x02)  vp->stats.rx_length_errors++;
-if (rx_error & 0x04)  vp->stats.rx_frame_errors++;
-if (rx_error & 0x08)  vp->stats.rx_crc_errors++;
-if (rx_error & 0x10)  vp->stats.rx_length_errors++;
+if (rx_error & 0x01) vp->stats.rx_over_errors++;
+if (rx_error & 0x02) vp->stats.rx_length_errors++;
+if (rx_error & 0x04) vp->stats.rx_frame_errors++;
+if (rx_error & 0x08) vp->stats.rx_crc_errors++;
+if (rx_error & 0x10) vp->stats.rx_length_errors++;
 } else {
 int pkt_len = rx_status & 0x1fff;
 struct sk_buff *skb;
@@ -1590,10 +1590,10 @@ unsigned char rx_error = rx_status >> 16;
 if (vp->msg_level & NETIF_MSG_RX_ERR)
 printk(KERN_DEBUG " Rx error: status %2.2x.\n", rx_error);
 vp->stats.rx_errors++;
-if (rx_error & 0x02)  vp->stats.rx_length_errors++;
-if (rx_error & 0x10)  vp->stats.rx_length_errors++;
-if (rx_error & 0x04)  vp->stats.rx_frame_errors++;
-if (rx_error & 0x08)  vp->stats.rx_crc_errors++;
+if (rx_error & 0x02) vp->stats.rx_length_errors++;
+if (rx_error & 0x10) vp->stats.rx_length_errors++;
+if (rx_error & 0x04) vp->stats.rx_frame_errors++;
+if (rx_error & 0x08) vp->stats.rx_crc_errors++;
 if (rx_error & 0x01) {
 vp->stats.rx_over_errors++;
 if (vp->drv_flags & HAS_V2_TX) {
@@ -1740,14 +1740,14 @@ int old_window = inw(ioaddr + EL3_CMD);
 if (old_window == 0xffff)
 return;
 EL3WINDOW(6);
-vp->stats.tx_carrier_errors		+= inb(ioaddr + 0);
-vp->stats.tx_heartbeat_errors	+= inb(ioaddr + 1);
+vp->stats.tx_carrier_errors += inb(ioaddr + 0);
+vp->stats.tx_heartbeat_errors += inb(ioaddr + 1);
 inb(ioaddr + 2);
-vp->stats.collisions			+= inb(ioaddr + 3);
-vp->stats.tx_window_errors		+= inb(ioaddr + 4);
-vp->stats.rx_fifo_errors		+= inb(ioaddr + 5);
-vp->stats.tx_packets			+= inb(ioaddr + 6);
-vp->stats.tx_packets			+= (inb(ioaddr + 9)&0x30) << 4;
+vp->stats.collisions += inb(ioaddr + 3);
+vp->stats.tx_window_errors += inb(ioaddr + 4);
+vp->stats.rx_fifo_errors += inb(ioaddr + 5);
+vp->stats.tx_packets += inb(ioaddr + 6);
+vp->stats.tx_packets += (inb(ioaddr + 9)&0x30) << 4;
 inb(ioaddr + 7);
 inb(ioaddr + 8);
 inw(ioaddr + 10);
@@ -1891,12 +1891,12 @@ outw(new_mode, ioaddr + EL3_CMD);
 }
 }
 #define mdio_delay() inl(mdio_addr)
-#define MDIO_SHIFT_CLK	0x01
-#define MDIO_DIR_WRITE	0x04
+#define MDIO_SHIFT_CLK 0x01
+#define MDIO_DIR_WRITE 0x04
 #define MDIO_DATA_WRITE0 (0x00 | MDIO_DIR_WRITE)
 #define MDIO_DATA_WRITE1 (0x02 | MDIO_DIR_WRITE)
-#define MDIO_DATA_READ	0x02
-#define MDIO_ENB_IN		0x00
+#define MDIO_DATA_READ 0x02
+#define MDIO_ENB_IN 0x00
 static void mdio_sync(long ioaddr, int bits)
 {
 long mdio_addr = ioaddr + Wn4_PhysicalMgmt;
@@ -2027,7 +2027,7 @@ void cleanup_module(void)
 struct net_device *next_dev;
 #ifdef CARDBUS
 unregister_driver(&vortex_ops);
-#elif	! defined(NO_PCI)
+#elif ! defined(NO_PCI)
 pci_drv_unregister(&vortex_drv_id);
 #endif
 while (root_vortex_dev) {

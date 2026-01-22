@@ -6,10 +6,10 @@ int ttyfd, ctlfd, debug;
 int baud = Baud;
 char *baudstr = "b%dd1r1pns1l8i1w5";
 Place where = {-(74.0 + 23.9191/60.0), 40.0 + 41.1346/60.0};
-void	setline(void);
-void	evermore80(Place, int);
-void	evermore89(int);
-void	evermore8e(void);
+void setline(void);
+void evermore80(Place, int);
+void evermore89(int);
+void evermore8e(void);
 void
 setline(void){
 char *serialctl;
@@ -85,7 +85,7 @@ fprint(2, "Evermore80");
 time(&now);
 seconds = now - 315964800;
 week = (seconds / (7*24*3600));
-seconds = seconds %  (7*24*3600);
+seconds = seconds % (7*24*3600);
 s = buf;
 s = putbyte(s, 0x80);
 s = putshort(s, week);
@@ -97,10 +97,10 @@ s = putshort(s, 0);
 s = putbyte(s, 2);
 s = putbyte(s, GGAon|GSAon|GSVon|RMCon|CRCon);
 switch(baud){
-case 4800:	s = putbyte(s, 0);	break;
-case 9600:	s = putbyte(s, 1);	break;
-case 19200:	s = putbyte(s, 2);	break;
-case 38400:	s = putbyte(s, 3);	break;
+case 4800: s = putbyte(s, 0); break;
+case 9600: s = putbyte(s, 1); break;
+case 19200: s = putbyte(s, 2); break;
+case 38400: s = putbyte(s, 3); break;
 default:
 sysfatal("Illegal baud rate");
 }
@@ -116,10 +116,10 @@ s = buf;
 s = putbyte(s, 0x89);
 s = putbyte(s, 0x01);
 switch(baud){
-case  4800:	s = putbyte(s, 0x00);	break;
-case  9600:	s = putbyte(s, 0x01);	break;
-case 19200:	s = putbyte(s, 0x02);	break;
-case 38400:	s = putbyte(s, 0x03);	break;
+case 4800: s = putbyte(s, 0x00); break;
+case 9600: s = putbyte(s, 0x01); break;
+case 19200: s = putbyte(s, 0x02); break;
+case 38400: s = putbyte(s, 0x03); break;
 default:
 sysfatal("illegal baud rate %d", baud);
 }

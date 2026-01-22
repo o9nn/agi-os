@@ -3,14 +3,14 @@
 #include "llist.h"
 #include "fts-language.h"
 #ifdef HAVE_LIBEXTTEXTCAT_TEXTCAT_H
-#  include <libexttextcat/textcat.h>
+# include <libexttextcat/textcat.h>
 #elif defined (HAVE_FTS_EXTTEXTCAT)
-#  include <textcat.h>
+# include <textcat.h>
 #endif
 #ifndef TEXTCAT_RESULT_UNKNOWN
-#  ifdef TEXTCAT_RESULT_UNKOWN
-#    define TEXTCAT_RESULT_UNKNOWN TEXTCAT_RESULT_UNKOWN
-#  endif
+# ifdef TEXTCAT_RESULT_UNKOWN
+# define TEXTCAT_RESULT_UNKNOWN TEXTCAT_RESULT_UNKOWN
+# endif
 #endif
 #define DETECT_STR_MAX_LEN 200
 struct fts_textcat {

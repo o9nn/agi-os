@@ -7,7 +7,7 @@
 #include "imap-id.h"
 #include "dovecot-version.h"
 #ifdef HAVE_SYS_UTSNAME_H
-#  include <sys/utsname.h>
+# include <sys/utsname.h>
 #endif
 #define IMAP_ID_KEY_ACCEPT_CHARS "abcdefghijklmnopqrstuvwxyz0123456789_-"
 static struct utsname utsname_result;

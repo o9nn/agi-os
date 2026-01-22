@@ -1,23 +1,23 @@
 package discover
 import (
-	"bytes"
-	"log/slog"
-	"testing"
+"bytes"
+"log/slog"
+"testing"
 )
 func TestLinuxCPUDetails(t *testing.T) {
-	type results struct {
-		cores      int
-		efficiency int
-		threads    int
-	}
-	type testCase struct {
-		input          string
-		expCPUs        []results
-		expThreadCount int
-	}
-	testCases := map[string]*testCase{
-		"#5554 Docker Ollama container inside the LXC": {
-			input: `processor	: 0
+type results struct {
+cores      int
+efficiency int
+threads    int
+}
+type testCase struct {
+input          string
+expCPUs        []results
+expThreadCount int
+}
+testCases := map[string]*testCase{
+"#5554 Docker Ollama container inside the LXC": {
+input: `processor	: 0
 vendor_id	: AuthenticAMD
 cpu family	: 25
 model	: 160
@@ -234,22 +234,22 @@ cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management:
 `,
-			expCPUs: []results{
-				{
-					cores:      4,
-					efficiency: 0,
-					threads:    4,
-				},
-				{
-					cores:      4,
-					efficiency: 0,
-					threads:    4,
-				},
-			},
-			expThreadCount: 8,
-		},
-		"#5554 LXC direct output": {
-			input: `processor	: 0
+expCPUs: []results{
+{
+cores:      4,
+efficiency: 0,
+threads:    4,
+},
+{
+cores:      4,
+efficiency: 0,
+threads:    4,
+},
+},
+expThreadCount: 8,
+},
+"#5554 LXC direct output": {
+input: `processor	: 0
 vendor_id	: AuthenticAMD
 cpu family	: 25
 model	: 160
@@ -466,17 +466,17 @@ cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
 `,
-			expCPUs: []results{
-				{
-					cores:      8,
-					efficiency: 0,
-					threads:    8,
-				},
-			},
-			expThreadCount: 8,
-		},
-		"#5554 LXC docker container output": {
-			input: `processor	: 483
+expCPUs: []results{
+{
+cores:      8,
+efficiency: 0,
+threads:    8,
+},
+},
+expThreadCount: 8,
+},
+"#5554 LXC docker container output": {
+input: `processor	: 483
 vendor_id	: AuthenticAMD
 cpu family	: 25
 model	: 160
@@ -1260,17 +1260,17 @@ cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
 `,
-			expCPUs: []results{
-				{
-					cores:      29,
-					efficiency: 0,
-					threads:    29,
-				},
-			},
-			expThreadCount: 29,
-		},
-		"#5554 LXC docker output": {
-			input: `processor	: 0
+expCPUs: []results{
+{
+cores:      29,
+efficiency: 0,
+threads:    29,
+},
+},
+expThreadCount: 29,
+},
+"#5554 LXC docker output": {
+input: `processor	: 0
 vendor_id	: AuthenticAMD
 cpu family	: 25
 model	: 160
@@ -1487,17 +1487,17 @@ cache_alignment	: 64
 address sizes	: 52 bits physical, 57 bits virtual
 power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
 `,
-			expCPUs: []results{
-				{
-					cores:      8,
-					efficiency: 0,
-					threads:    8,
-				},
-			},
-			expThreadCount: 8,
-		},
-		"#7359 VMware multi-core core VM": {
-			input: `processor	: 0
+expCPUs: []results{
+{
+cores:      8,
+efficiency: 0,
+threads:    8,
+},
+},
+expThreadCount: 8,
+},
+"#7359 VMware multi-core core VM": {
+input: `processor	: 0
 vendor_id	: GenuineIntel
 cpu family	: 6
 model	: 106
@@ -1706,52 +1706,52 @@ cache_alignment	: 64
 address sizes	: 45 bits physical, 48 bits virtual
 power management:
 `,
-			expCPUs: []results{
-				{
-					cores:      1,
-					efficiency: 0,
-					threads:    1,
-				},
-				{
-					cores:      1,
-					efficiency: 0,
-					threads:    1,
-				},
-				{
-					cores:      1,
-					efficiency: 0,
-					threads:    1,
-				},
-				{
-					cores:      1,
-					efficiency: 0,
-					threads:    1,
-				},
-				{
-					cores:      1,
-					efficiency: 0,
-					threads:    1,
-				},
-				{
-					cores:      1,
-					efficiency: 0,
-					threads:    1,
-				},
-				{
-					cores:      1,
-					efficiency: 0,
-					threads:    1,
-				},
-				{
-					cores:      1,
-					efficiency: 0,
-					threads:    1,
-				},
-			},
-			expThreadCount: 8,
-		},
-		"#7287 HyperV 2 socket exposed to VM": {
-			input: `processor	: 0
+expCPUs: []results{
+{
+cores:      1,
+efficiency: 0,
+threads:    1,
+},
+{
+cores:      1,
+efficiency: 0,
+threads:    1,
+},
+{
+cores:      1,
+efficiency: 0,
+threads:    1,
+},
+{
+cores:      1,
+efficiency: 0,
+threads:    1,
+},
+{
+cores:      1,
+efficiency: 0,
+threads:    1,
+},
+{
+cores:      1,
+efficiency: 0,
+threads:    1,
+},
+{
+cores:      1,
+efficiency: 0,
+threads:    1,
+},
+{
+cores:      1,
+efficiency: 0,
+threads:    1,
+},
+},
+expThreadCount: 8,
+},
+"#7287 HyperV 2 socket exposed to VM": {
+input: `processor	: 0
 vendor_id	: AuthenticAMD
 cpu family	: 23
 model	: 96
@@ -1968,52 +1968,52 @@ cache_alignment : 64
 address sizes	: 48 bits physical, 48 bits virtual
 power management:
 `,
-			expCPUs: []results{
-				{
-					cores:      2,
-					efficiency: 0,
-					threads:    4,
-				},
-				{
-					cores:      2,
-					efficiency: 0,
-					threads:    4,
-				},
-			},
-			expThreadCount: 4,
-		},
-	}
-	for k, v := range testCases {
-		t.Run(k, func(t *testing.T) {
-			buf := bytes.NewBufferString(v.input)
-			cpus, err := linuxCPUDetails(buf)
-			if err != nil {
-				t.Fatal(err)
-			}
-			slog.Info("example", "scenario", k, "cpus", cpus)
-			si := SystemInfo{
-				System: CPUInfo{
-					CPUs: cpus,
-				},
-			}
-			threadCount := si.GetOptimalThreadCount()
-			if len(v.expCPUs) != len(cpus) {
-				t.Fatalf("incorrect number of sockets: expected:%v got:%v", v.expCPUs, cpus)
-			}
-			for i, c := range cpus {
-				if c.CoreCount != v.expCPUs[i].cores {
-					t.Fatalf("incorrect number of cores: expected:%v got:%v", v.expCPUs[i], c)
-				}
-				if c.EfficiencyCoreCount != v.expCPUs[i].efficiency {
-					t.Fatalf("incorrect number of efficiency cores: expected:%v got:%v", v.expCPUs[i], c)
-				}
-				if c.ThreadCount != v.expCPUs[i].threads {
-					t.Fatalf("incorrect number of threads: expected:%v got:%v", v.expCPUs[i], c)
-				}
-			}
-			if threadCount != v.expThreadCount {
-				t.Fatalf("incorrect thread count expected:%d got:%d", v.expThreadCount, threadCount)
-			}
-		})
-	}
+expCPUs: []results{
+{
+cores:      2,
+efficiency: 0,
+threads:    4,
+},
+{
+cores:      2,
+efficiency: 0,
+threads:    4,
+},
+},
+expThreadCount: 4,
+},
+}
+for k, v := range testCases {
+t.Run(k, func(t *testing.T) {
+buf := bytes.NewBufferString(v.input)
+cpus, err := linuxCPUDetails(buf)
+if err != nil {
+t.Fatal(err)
+}
+slog.Info("example", "scenario", k, "cpus", cpus)
+si := SystemInfo{
+System: CPUInfo{
+CPUs: cpus,
+},
+}
+threadCount := si.GetOptimalThreadCount()
+if len(v.expCPUs) != len(cpus) {
+t.Fatalf("incorrect number of sockets: expected:%v got:%v", v.expCPUs, cpus)
+}
+for i, c := range cpus {
+if c.CoreCount != v.expCPUs[i].cores {
+t.Fatalf("incorrect number of cores: expected:%v got:%v", v.expCPUs[i], c)
+}
+if c.EfficiencyCoreCount != v.expCPUs[i].efficiency {
+t.Fatalf("incorrect number of efficiency cores: expected:%v got:%v", v.expCPUs[i], c)
+}
+if c.ThreadCount != v.expCPUs[i].threads {
+t.Fatalf("incorrect number of threads: expected:%v got:%v", v.expCPUs[i], c)
+}
+}
+if threadCount != v.expThreadCount {
+t.Fatalf("incorrect thread count expected:%d got:%d", v.expThreadCount, threadCount)
+}
+})
+}
 }

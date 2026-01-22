@@ -9,27 +9,27 @@ static const BN_ULONG SQR_tb[16] = { 0, 1, 4, 5, 16, 17, 20, 21,
 64, 65, 68, 69, 80, 81, 84, 85
 };
 # if defined(SIXTY_FOUR_BIT) || defined(SIXTY_FOUR_BIT_LONG)
-#  define SQR1(w) \
+# define SQR1(w) \
 SQR_tb[(w) >> 60 & 0xF] << 56 | SQR_tb[(w) >> 56 & 0xF] << 48 | \
 SQR_tb[(w) >> 52 & 0xF] << 40 | SQR_tb[(w) >> 48 & 0xF] << 32 | \
 SQR_tb[(w) >> 44 & 0xF] << 24 | SQR_tb[(w) >> 40 & 0xF] << 16 | \
-SQR_tb[(w) >> 36 & 0xF] <<  8 | SQR_tb[(w) >> 32 & 0xF]
-#  define SQR0(w) \
+SQR_tb[(w) >> 36 & 0xF] << 8 | SQR_tb[(w) >> 32 & 0xF]
+# define SQR0(w) \
 SQR_tb[(w) >> 28 & 0xF] << 56 | SQR_tb[(w) >> 24 & 0xF] << 48 | \
 SQR_tb[(w) >> 20 & 0xF] << 40 | SQR_tb[(w) >> 16 & 0xF] << 32 | \
-SQR_tb[(w) >> 12 & 0xF] << 24 | SQR_tb[(w) >>  8 & 0xF] << 16 | \
-SQR_tb[(w) >>  4 & 0xF] <<  8 | SQR_tb[(w)       & 0xF]
+SQR_tb[(w) >> 12 & 0xF] << 24 | SQR_tb[(w) >> 8 & 0xF] << 16 | \
+SQR_tb[(w) >> 4 & 0xF] << 8 | SQR_tb[(w) & 0xF]
 # endif
 # ifdef THIRTY_TWO_BIT
-#  define SQR1(w) \
+# define SQR1(w) \
 SQR_tb[(w) >> 28 & 0xF] << 24 | SQR_tb[(w) >> 24 & 0xF] << 16 | \
-SQR_tb[(w) >> 20 & 0xF] <<  8 | SQR_tb[(w) >> 16 & 0xF]
-#  define SQR0(w) \
-SQR_tb[(w) >> 12 & 0xF] << 24 | SQR_tb[(w) >>  8 & 0xF] << 16 | \
-SQR_tb[(w) >>  4 & 0xF] <<  8 | SQR_tb[(w)       & 0xF]
+SQR_tb[(w) >> 20 & 0xF] << 8 | SQR_tb[(w) >> 16 & 0xF]
+# define SQR0(w) \
+SQR_tb[(w) >> 12 & 0xF] << 24 | SQR_tb[(w) >> 8 & 0xF] << 16 | \
+SQR_tb[(w) >> 4 & 0xF] << 8 | SQR_tb[(w) & 0xF]
 # endif
 # if !defined(OPENSSL_BN_ASM_GF2m)
-#  ifdef THIRTY_TWO_BIT
+# ifdef THIRTY_TWO_BIT
 static void bn_GF2m_mul_1x1(BN_ULONG *r1, BN_ULONG *r0, const BN_ULONG a,
 const BN_ULONG b)
 {
@@ -90,8 +90,8 @@ h ^= b >> 1;
 *r1 = h;
 *r0 = l;
 }
-#  endif
-#  if defined(SIXTY_FOUR_BIT) || defined(SIXTY_FOUR_BIT_LONG)
+# endif
+# if defined(SIXTY_FOUR_BIT) || defined(SIXTY_FOUR_BIT_LONG)
 static void bn_GF2m_mul_1x1(BN_ULONG *r1, BN_ULONG *r0, const BN_ULONG a,
 const BN_ULONG b)
 {
@@ -180,7 +180,7 @@ h ^= b >> 1;
 *r1 = h;
 *r0 = l;
 }
-#  endif
+# endif
 static void bn_GF2m_mul_2x2(BN_ULONG *r, const BN_ULONG a1, const BN_ULONG a0,
 const BN_ULONG b1, const BN_ULONG b0)
 {

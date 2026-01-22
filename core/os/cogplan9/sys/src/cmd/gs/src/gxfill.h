@@ -1,7 +1,7 @@
 #ifndef gxfill_INCLUDED
-#  define gxfill_INCLUDED
+# define gxfill_INCLUDED
 #ifndef active_line_DEFINED
-#  define active_line_DEFINED
+# define active_line_DEFINED
 typedef struct active_line_s active_line;
 #endif
 struct active_line_s {
@@ -11,15 +11,15 @@ gs_fixed_point diff;
 fixed y_fast_max;
 fixed num_adjust;
 #if ARCH_DIV_NEG_POS_TRUNCATES
-#  define SET_NUM_ADJUST(alp) \
+# define SET_NUM_ADJUST(alp) \
 (alp)->num_adjust =\
 ((alp)->diff.x >= 0 ? 0 : -(alp)->diff.y + fixed_epsilon)
-#  define ADD_NUM_ADJUST(num, alp) ((num) + (alp)->num_adjust)
-#  define MAX_MINUS_NUM_ADJUST(alp) ADD_NUM_ADJUST(max_fixed, alp)
+# define ADD_NUM_ADJUST(num, alp) ((num) + (alp)->num_adjust)
+# define MAX_MINUS_NUM_ADJUST(alp) ADD_NUM_ADJUST(max_fixed, alp)
 #else
-#  define SET_NUM_ADJUST(alp) DO_NOTHING
-#  define ADD_NUM_ADJUST(num, alp) (num)
-#  define MAX_MINUS_NUM_ADJUST(alp) max_fixed
+# define SET_NUM_ADJUST(alp) DO_NOTHING
+# define ADD_NUM_ADJUST(num, alp) (num)
+# define MAX_MINUS_NUM_ADJUST(alp) max_fixed
 #endif
 #define SET_AL_POINTS(alp, startp, endp)\
 BEGIN\
@@ -70,7 +70,7 @@ dev_proc_fill_rectangle((*fill_rect));
 dev_proc_fill_trapezoid((*fill_trap));
 } fill_options;
 #ifndef line_list_DEFINED
-#  define line_list_DEFINED
+# define line_list_DEFINED
 typedef struct line_list_s line_list;
 #endif
 struct line_list_s {
@@ -92,11 +92,11 @@ int main_dir;
 fixed y_break;
 const fill_options * const fo;
 #if arch_small_memory
-#  define MAX_LOCAL_ACTIVE 6
-#  define MAX_LOCAL_SECTION 50
+# define MAX_LOCAL_ACTIVE 6
+# define MAX_LOCAL_SECTION 50
 #else
-#  define MAX_LOCAL_ACTIVE 20
-#  define MAX_LOCAL_SECTION 100
+# define MAX_LOCAL_ACTIVE 20
+# define MAX_LOCAL_SECTION 100
 #endif
 active_line local_active[MAX_LOCAL_ACTIVE];
 margin local_margins[MAX_LOCAL_ACTIVE];
@@ -116,12 +116,12 @@ mq_cross, cross_slow, cross_low, order, slow_order;
 };
 typedef struct stats_fill_s stats_fill_t;
 extern stats_fill_t stats_fill;
-#  define INCR(x) (++(stats_fill.x))
-#  define INCR_EXPR(x) INCR(x)
-#  define INCR_BY(x,n) (stats_fill.x += (n))
+# define INCR(x) (++(stats_fill.x))
+# define INCR_EXPR(x) INCR(x)
+# define INCR_BY(x,n) (stats_fill.x += (n))
 #else
-#  define INCR(x) DO_NOTHING
-#  define INCR_EXPR(x) discard(0)
-#  define INCR_BY(x,n) DO_NOTHING
+# define INCR(x) DO_NOTHING
+# define INCR_EXPR(x) discard(0)
+# define INCR_BY(x,n) DO_NOTHING
 #endif
 #endif

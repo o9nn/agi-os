@@ -732,7 +732,7 @@ bool connected = true;
 for (size_t node = 0; node < _sent->length; node++) {
 CONNECTIVITY_DEBUG(
 if (is_linked_word[node]) printf("%d ", components[node]);
-else                      printf("[%d] ", components[node]);
+else printf("[%d] ", components[node]);
 )
 if (is_linked_word[node]) {
 if (components[node] != 0) {
@@ -1232,7 +1232,7 @@ Lit lhs = Lit(_variables->string_cost(var, cost));
 cout << "*** Connector: ." << wi << ". ." << pi << ". " << Ci << dir << endl;
 #endif
 int low = (dir == '-') ? 0 : wi + 1;
-int hi  = (dir == '-') ? wi : _sent->length;
+int hi = (dir == '-') ? wi : _sent->length;
 std::vector<int> _w_;
 for (int wj = low; wj < hi; wj++) {
 if (!_word_tags[wj].match_possible(wi, pi))
@@ -1250,7 +1250,7 @@ generate_xor_conditions(_link_cw_);
 }
 DEBUG_print("--------- end multi");
 #ifdef SAT_DEBUG
-cout << "*** End Connector: ." << wi << ". ." << pi << ". " <<  Ci << endl;
+cout << "*** End Connector: ." << wi << ". ." << pi << ". " << Ci << endl;
 #endif
 }
 void SATEncoderConjunctionFreeSentences::generate_linked_definitions()
@@ -1409,11 +1409,11 @@ return false;
 }
 #endif
 }
-DEBUG_print("Total links: ." <<  lkg->num_links << "." << endl);
+DEBUG_print("Total links: ." << lkg->num_links << "." << endl);
 return true;
 }
 #undef D_SEL
-extern "C" int sat_parse(Sentence sent, Parse_Options  opts)
+extern "C" int sat_parse(Sentence sent, Parse_Options opts)
 {
 if (opts->min_null_count > 0) {
 if (opts->verbosity >= 1)
@@ -1457,7 +1457,7 @@ sent->num_linkages_post_processed = linkage_limit;
 }
 return 0;
 }
-extern "C" Linkage sat_create_linkage(LinkageIdx k, Sentence sent, Parse_Options  opts)
+extern "C" Linkage sat_create_linkage(LinkageIdx k, Sentence sent, Parse_Options opts)
 {
 SATEncoder* encoder = (SATEncoder*) sent->hook;
 if (!encoder) return NULL;

@@ -15,8 +15,8 @@
 (define x-cpts (Set (ConceptNode "asdf") (ConceptNode "partner")))
 (define x-cpts-n-subtypes x-cpts)
 (define x-nodes-n-subtypes (Set
-                             (ConceptNode "asdf")
-                             (ConceptNode "partner")
-                             (PredicateNode "key")
-                             (WordNode "asdf")
-                             (WordNode "pqrs")))
+(ConceptNode "asdf")
+(ConceptNode "partner")
+(PredicateNode "key")
+(WordNode "asdf")
+(WordNode "pqrs")))

@@ -5,22 +5,22 @@ typedef struct Alias Alias;
 typedef struct Addr Addr;
 typedef struct Ctype Ctype;
 struct Attach {
-Attach	*next;
-char	*path;
-char	*type;
-int	ainline;
-Ctype	*ctype;
+Attach *next;
+char *path;
+char *type;
+int ainline;
+Ctype *ctype;
 };
 struct Alias
 {
-Alias	*next;
-int	n;
-Addr	*addr;
+Alias *next;
+int n;
+Addr *addr;
 };
 struct Addr
 {
-Addr	*next;
-char	*v;
+Addr *next;
+char *v;
 };
 enum {
 Hfrom,
@@ -45,73 +45,73 @@ PGPsign = 1,
 PGPencrypt = 2,
 };
 char *hdrs[Nhdr] = {
-[Hfrom]		"from:",
-[Hto]		"to:",
-[Hcc]		"cc:",
-[Hbcc]		"bcc:",
-[Hreplyto]	"reply-to:",
-[Hinreplyto]	"in-reply-to:",
-[Hsender]	"sender:",
-[Hdate]		"date:",
-[Hsubject]	"subject:",
-[Hpriority]	"priority:",
-[Hmsgid]	"message-id:",
-[Hmime]		"mime-",
-[Hcontent]	"content-",
-[Hx]		"x-",
-[Hprecedence]	"precedence",
+[Hfrom] "from:",
+[Hto] "to:",
+[Hcc] "cc:",
+[Hbcc] "bcc:",
+[Hreplyto] "reply-to:",
+[Hinreplyto] "in-reply-to:",
+[Hsender] "sender:",
+[Hdate] "date:",
+[Hsubject] "subject:",
+[Hpriority] "priority:",
+[Hmsgid] "message-id:",
+[Hmime] "mime-",
+[Hcontent] "content-",
+[Hx] "x-",
+[Hprecedence] "precedence",
 };
 struct Ctype {
-char	*type;
-char 	*ext;
-int	display;
+char *type;
+char *ext;
+int display;
 };
 Ctype ctype[] = {
-{ "text/plain",			"txt",	1,	},
-{ "text/html",			"html",	1,	},
-{ "text/html",			"htm",	1,	},
-{ "text/tab-separated-values",	"tsv",	1,	},
-{ "text/richtext",		"rtx",	1,	},
-{ "message/rfc822",		"txt",	1,	},
-{ "", 				0,	0,	},
+{ "text/plain", "txt", 1, },
+{ "text/html", "html", 1, },
+{ "text/html", "htm", 1, },
+{ "text/tab-separated-values", "tsv", 1, },
+{ "text/richtext", "rtx", 1, },
+{ "message/rfc822", "txt", 1, },
+{ "", 0, 0, },
 };
 Ctype *mimetypes;
 int pid = -1;
 int pgppid = -1;
-void	Bdrain(Biobuf*);
-void	attachment(Attach*, Biobuf*);
-void	body(Biobuf*, Biobuf*, int);
-int	cistrcmp(char*, char*);
-int	cistrncmp(char*, char*, int);
-int	doublequote(Fmt*);
-void*	emalloc(int);
-int	enc64(char*, int, uchar*, int);
-void*	erealloc(void*, int);
-char*	estrdup(char*);
-Addr*	expand(int, char**);
-Addr*	expandline(String**, Addr*);
-void	freeaddr(Addr*);
-void	freeaddr(Addr *);
-void	freeaddrs(Addr*);
-void	freealias(Alias*);
-void	freealiases(Alias*);
-Attach*	mkattach(char*, char*, int);
-char*	mkboundary(void);
-char*	mksubject(char*);
-int	pgpfilter(int*, int, int);
-int	pgpopts(char*);
-int	printcc(Biobuf*, Addr*);
-int	printdate(Biobuf*);
-int	printfrom(Biobuf*);
-int	printinreplyto(Biobuf*, char*);
-int	printsubject(Biobuf*, char*);
-int	printto(Biobuf*, Addr*);
-Alias*	readaliases(void);
-int	readheaders(Biobuf*, int*, String**, Addr**, int);
-void	readmimetypes(void);
-int	rfc2047fmt(Fmt*);
-int	sendmail(Addr*, Addr*, int*, char*);
-char*	waitforsubprocs(void);
+void Bdrain(Biobuf*);
+void attachment(Attach*, Biobuf*);
+void body(Biobuf*, Biobuf*, int);
+int cistrcmp(char*, char*);
+int cistrncmp(char*, char*, int);
+int doublequote(Fmt*);
+void* emalloc(int);
+int enc64(char*, int, uchar*, int);
+void* erealloc(void*, int);
+char* estrdup(char*);
+Addr* expand(int, char**);
+Addr* expandline(String**, Addr*);
+void freeaddr(Addr*);
+void freeaddr(Addr *);
+void freeaddrs(Addr*);
+void freealias(Alias*);
+void freealiases(Alias*);
+Attach* mkattach(char*, char*, int);
+char* mkboundary(void);
+char* mksubject(char*);
+int pgpfilter(int*, int, int);
+int pgpopts(char*);
+int printcc(Biobuf*, Addr*);
+int printdate(Biobuf*);
+int printfrom(Biobuf*);
+int printinreplyto(Biobuf*, char*);
+int printsubject(Biobuf*, char*);
+int printto(Biobuf*, Addr*);
+Alias* readaliases(void);
+int readheaders(Biobuf*, int*, String**, Addr**, int);
+void readmimetypes(void);
+int rfc2047fmt(Fmt*);
+int sendmail(Addr*, Addr*, int*, char*);
+char* waitforsubprocs(void);
 int rflag, lbflag, xflag, holding, nflag, Fflag, eightflag, dflag;
 int pgpflag = 0;
 char *user;
@@ -127,8 +127,8 @@ Nomessage = 1,
 Nobody = 2,
 Error = -1,
 };
-#pragma varargck	type	"Z"	char*
-#pragma varargck	type	"U"	char*
+#pragma varargck type "Z" char*
+#pragma varargck type "U" char*
 void
 usage(void)
 {
@@ -367,7 +367,7 @@ if(s == nil || s[0] == '\0')
 return -1;
 while(*s){
 switch(*s++){
-case 's':  case 'S':
+case 's': case 'S':
 pgpflag |= PGPsign;
 break;
 case 'e': case 'E':

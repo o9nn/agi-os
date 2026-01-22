@@ -1,5 +1,5 @@
 #ifndef gzstate_INCLUDED
-#  define gzstate_INCLUDED
+# define gzstate_INCLUDED
 #include "gscpm.h"
 #include "gscspace.h"
 #include "gsrefct.h"
@@ -8,39 +8,39 @@
 #include "gsstate.h"
 #include "gxstate.h"
 #ifndef gx_path_DEFINED
-#  define gx_path_DEFINED
+# define gx_path_DEFINED
 typedef struct gx_path_s gx_path;
 #endif
 #ifndef gx_clip_path_DEFINED
-#  define gx_clip_path_DEFINED
+# define gx_clip_path_DEFINED
 typedef struct gx_clip_path_s gx_clip_path;
 #endif
 #ifndef gx_clip_stack_DEFINED
-#  define gx_clip_stack_DEFINED
+# define gx_clip_stack_DEFINED
 typedef struct gx_clip_stack_s gx_clip_stack_t;
 #endif
 #ifndef gs_color_space_DEFINED
-#  define gs_color_space_DEFINED
+# define gs_color_space_DEFINED
 typedef struct gs_color_space_s gs_color_space;
 #endif
 #ifndef gs_client_color_DEFINED
-#  define gs_client_color_DEFINED
+# define gs_client_color_DEFINED
 typedef struct gs_client_color_s gs_client_color;
 #endif
 #ifndef gs_font_DEFINED
-#  define gs_font_DEFINED
+# define gs_font_DEFINED
 typedef struct gs_font_s gs_font;
 #endif
 #ifndef gs_transparency_group_DEFINED
-#  define gs_transparency_group_DEFINED
+# define gs_transparency_group_DEFINED
 typedef struct gs_transparency_group_s gs_transparency_group_t;
 #endif
 #ifndef gs_device_filter_stack_DEFINED
-#  define gs_device_filter_stack_DEFINED
+# define gs_device_filter_stack_DEFINED
 typedef struct gs_device_filter_stack_s gs_device_filter_stack_t;
 #endif
 #ifndef gs_device_filter_DEFINED
-#  define gs_device_filter_DEFINED
+# define gs_device_filter_DEFINED
 typedef struct gs_device_filter_s gs_device_filter_t;
 #endif
 struct gs_device_filter_stack_s {
@@ -84,7 +84,7 @@ gs_transparency_group_t *transparency_group_stack;
 #define gs_state_client_data(pgs) ((pgs)->client_data)
 gs_state_client_procs client_procs;
 };
-#define public_st_gs_state()	\
+#define public_st_gs_state() \
 gs_public_st_composite(st_gs_state, gs_state, "gs_state",\
 gs_state_enum_ptrs, gs_state_reloc_ptrs)
 #define gs_state_do_ptrs(m)\

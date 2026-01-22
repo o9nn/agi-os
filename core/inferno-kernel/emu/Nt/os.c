@@ -1,33 +1,33 @@
 #define Unknown win_Unknown
 #define UNICODE
-#include	<windows.h>
+#include <windows.h>
 #include <winbase.h>
-#include	<winsock.h>
+#include <winsock.h>
 #undef Unknown
-#include	<excpt.h>
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
-#include	"r16.h"
-int	SYS_SLEEP = 2;
+#include <excpt.h>
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
+#include "r16.h"
+int SYS_SLEEP = 2;
 int SOCK_SELECT = 3;
-#define	MAXSLEEPERS	1500
-extern	int	cflag;
-DWORD	PlatformId;
-DWORD	consolestate;
-static	char*	path;
-static	HANDLE	kbdh = INVALID_HANDLE_VALUE;
-static	HANDLE	conh = INVALID_HANDLE_VALUE;
-static	HANDLE	errh = INVALID_HANDLE_VALUE;
-static	int	donetermset = 0;
-static	int sleepers = 0;
-__declspec(thread)       Proc    *up;
-HANDLE	ntfd2h(int);
-int	nth2fd(HANDLE);
-void	termrestore(void);
+#define MAXSLEEPERS 1500
+extern int cflag;
+DWORD PlatformId;
+DWORD consolestate;
+static char* path;
+static HANDLE kbdh = INVALID_HANDLE_VALUE;
+static HANDLE conh = INVALID_HANDLE_VALUE;
+static HANDLE errh = INVALID_HANDLE_VALUE;
+static int donetermset = 0;
+static int sleepers = 0;
+__declspec(thread) Proc *up;
+HANDLE ntfd2h(int);
+int nth2fd(HANDLE);
+void termrestore(void);
 char *hosttype = "Nt";
 char *cputype = "386";
-void	(*coherence)(void) = nofence;
+void (*coherence)(void) = nofence;
 static void
 pfree(Proc *p)
 {
@@ -189,31 +189,31 @@ termrestore();
 ExitProcess(x);
 }
 struct ecodes {
-DWORD	code;
-char*	name;
+DWORD code;
+char* name;
 } ecodes[] = {
-EXCEPTION_ACCESS_VIOLATION,		"segmentation violation",
-EXCEPTION_DATATYPE_MISALIGNMENT,	"data alignment",
-EXCEPTION_BREAKPOINT,                	"breakpoint",
-EXCEPTION_SINGLE_STEP,               	"single step",
-EXCEPTION_ARRAY_BOUNDS_EXCEEDED,	"array bounds check",
-EXCEPTION_FLT_DENORMAL_OPERAND,		"denormalized float",
-EXCEPTION_FLT_DIVIDE_BY_ZERO,		"floating point divide by zero",
-EXCEPTION_FLT_INEXACT_RESULT,		"inexact floating point",
-EXCEPTION_FLT_INVALID_OPERATION,	"invalid floating operation",
-EXCEPTION_FLT_OVERFLOW,			"floating point result overflow",
-EXCEPTION_FLT_STACK_CHECK,		"floating point stack check",
-EXCEPTION_FLT_UNDERFLOW,		"floating point result underflow",
-EXCEPTION_INT_DIVIDE_BY_ZERO,		"divide by zero",
-EXCEPTION_INT_OVERFLOW,			"integer overflow",
-EXCEPTION_PRIV_INSTRUCTION,		"privileged instruction",
-EXCEPTION_IN_PAGE_ERROR,		"page-in error",
-EXCEPTION_ILLEGAL_INSTRUCTION,		"illegal instruction",
-EXCEPTION_NONCONTINUABLE_EXCEPTION,	"non-continuable exception",
-EXCEPTION_STACK_OVERFLOW,		"stack overflow",
-EXCEPTION_INVALID_DISPOSITION,		"invalid disposition",
-EXCEPTION_GUARD_PAGE,			"guard page violation",
-0,					nil
+EXCEPTION_ACCESS_VIOLATION, "segmentation violation",
+EXCEPTION_DATATYPE_MISALIGNMENT, "data alignment",
+EXCEPTION_BREAKPOINT, "breakpoint",
+EXCEPTION_SINGLE_STEP, "single step",
+EXCEPTION_ARRAY_BOUNDS_EXCEEDED, "array bounds check",
+EXCEPTION_FLT_DENORMAL_OPERAND, "denormalized float",
+EXCEPTION_FLT_DIVIDE_BY_ZERO, "floating point divide by zero",
+EXCEPTION_FLT_INEXACT_RESULT, "inexact floating point",
+EXCEPTION_FLT_INVALID_OPERATION, "invalid floating operation",
+EXCEPTION_FLT_OVERFLOW, "floating point result overflow",
+EXCEPTION_FLT_STACK_CHECK, "floating point stack check",
+EXCEPTION_FLT_UNDERFLOW, "floating point result underflow",
+EXCEPTION_INT_DIVIDE_BY_ZERO, "divide by zero",
+EXCEPTION_INT_OVERFLOW, "integer overflow",
+EXCEPTION_PRIV_INSTRUCTION, "privileged instruction",
+EXCEPTION_IN_PAGE_ERROR, "page-in error",
+EXCEPTION_ILLEGAL_INSTRUCTION, "illegal instruction",
+EXCEPTION_NONCONTINUABLE_EXCEPTION, "non-continuable exception",
+EXCEPTION_STACK_OVERFLOW, "stack overflow",
+EXCEPTION_INVALID_DISPOSITION, "invalid disposition",
+EXCEPTION_GUARD_PAGE, "guard page violation",
+0, nil
 };
 LONG
 TrapHandler(LPEXCEPTION_POINTERS ureg)
@@ -271,7 +271,7 @@ termrestore(void)
 if(kbdh != INVALID_HANDLE_VALUE)
 SetConsoleMode(kbdh, consolestate);
 }
-static	int	rebootok = 0;
+static int rebootok = 0;
 void
 osreboot(char *file, char **argv)
 {
@@ -332,16 +332,16 @@ void
 FPsave(void *fptr)
 {
 _asm {
-mov	eax, fptr
-fstenv	[eax]
+mov eax, fptr
+fstenv [eax]
 }
 }
 void
 FPrestore(void *fptr)
 {
 _asm {
-mov	eax, fptr
-fldenv	[eax]
+mov eax, fptr
+fldenv [eax]
 }
 }
 ulong
@@ -349,11 +349,11 @@ umult(ulong a, ulong b, ulong *high)
 {
 ulong lo, hi;
 _asm {
-mov	eax, a
-mov	ecx, b
-MUL	ecx
-mov	lo, eax
-mov	hi, edx
+mov eax, a
+mov ecx, b
+MUL ecx
+mov lo, eax
+mov hi, edx
 }
 *high = hi;
 return lo;
@@ -450,11 +450,11 @@ return GetTickCount();
 #define SEC2MIN 60L
 #define SEC2HOUR (60L*SEC2MIN)
 #define SEC2DAY (24L*SEC2HOUR)
-static	int	dmsize[] =
+static int dmsize[] =
 {
 365, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 };
-static	int	ldmsize[] =
+static int ldmsize[] =
 {
 366, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 };

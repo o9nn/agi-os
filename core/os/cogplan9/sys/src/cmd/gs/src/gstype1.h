@@ -1,13 +1,13 @@
 #ifndef gstype1_INCLUDED
-#  define gstype1_INCLUDED
+# define gstype1_INCLUDED
 #define crypt_charstring_seed 4330
 typedef struct gs_type1_state_s gs_type1_state;
 #ifndef gx_path_DEFINED
-#  define gx_path_DEFINED
+# define gx_path_DEFINED
 typedef struct gx_path_s gx_path;
 #endif
 #ifndef gs_font_type1_DEFINED
-#  define gs_font_type1_DEFINED
+# define gs_font_type1_DEFINED
 typedef struct gs_font_type1_s gs_font_type1;
 #endif
 #ifndef gs_type1_data_s_DEFINED

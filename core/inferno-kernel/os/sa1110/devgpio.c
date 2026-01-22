@@ -1,10 +1,10 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"io.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "io.h"
 enum{
 Qdir,
 Qgpioset,
@@ -14,12 +14,12 @@ Qgpioctl,
 Qgpiostatus,
 };
 Dirtab gpiodir[]={
-".",				{Qdir,0},			0,	0555,
-"gpioset",			{Qgpioset, 0},		0,	0664,
-"gpioclear",		{Qgpioclear, 0},		0,	0664,
-"gpioedge",		{Qgpioedge, 0},		0,	0664,
-"gpioctl",			{Qgpioctl,0},		0,	0664,
-"gpiostatus",		{Qgpiostatus,0},	0,	0444,
+".", {Qdir,0}, 0, 0555,
+"gpioset", {Qgpioset, 0}, 0, 0664,
+"gpioclear", {Qgpioclear, 0}, 0, 0664,
+"gpioedge", {Qgpioedge, 0}, 0, 0664,
+"gpioctl", {Qgpioctl,0}, 0, 0664,
+"gpiostatus", {Qgpiostatus,0}, 0, 0444,
 };
 static Chan*
 gpioattach(char* spec)

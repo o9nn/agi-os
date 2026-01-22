@@ -4,14 +4,14 @@ void dc_strbuilder_init(dc_strbuilder_t* strbuilder, int init_bytes)
 if (strbuilder==NULL) {
 return;
 }
-strbuilder->allocated    = DC_MAX(init_bytes, 128);
-strbuilder->buf          = malloc(strbuilder->allocated);
+strbuilder->allocated = DC_MAX(init_bytes, 128);
+strbuilder->buf = malloc(strbuilder->allocated);
 if (strbuilder->buf==NULL) {
 exit(38);
 }
-strbuilder->buf[0]       = 0;
-strbuilder->free         = strbuilder->allocated - 1 ;
-strbuilder->eos          = strbuilder->buf;
+strbuilder->buf[0] = 0;
+strbuilder->free = strbuilder->allocated - 1 ;
+strbuilder->eos = strbuilder->buf;
 }
 char* dc_strbuilder_cat(dc_strbuilder_t* strbuilder, const char* text)
 {
@@ -20,15 +20,15 @@ return NULL;
 }
 int len = strlen(text);
 if (len > strbuilder->free) {
-int add_bytes  = DC_MAX(len, strbuilder->allocated);
+int add_bytes = DC_MAX(len, strbuilder->allocated);
 int old_offset = (int)(strbuilder->eos - strbuilder->buf);
 strbuilder->allocated = strbuilder->allocated + add_bytes;
-strbuilder->buf       = realloc(strbuilder->buf, strbuilder->allocated+add_bytes);
+strbuilder->buf = realloc(strbuilder->buf, strbuilder->allocated+add_bytes);
 if (strbuilder->buf==NULL) {
 exit(39);
 }
-strbuilder->free      = strbuilder->free + add_bytes;
-strbuilder->eos       = strbuilder->buf + old_offset;
+strbuilder->free = strbuilder->free + add_bytes;
+strbuilder->eos = strbuilder->buf + old_offset;
 }
 char* ret = strbuilder->eos;
 strcpy(strbuilder->eos, text);
@@ -38,9 +38,9 @@ return ret;
 }
 void dc_strbuilder_catf(dc_strbuilder_t* strbuilder, const char* format, ...)
 {
-char  testbuf[1];
+char testbuf[1];
 char* buf = NULL;
-int   char_cnt_without_zero = 0;
+int char_cnt_without_zero = 0;
 va_list argp;
 va_list argp_copy;
 va_start(argp, format);
@@ -66,6 +66,6 @@ free(buf);
 void dc_strbuilder_empty(dc_strbuilder_t* strbuilder)
 {
 strbuilder->buf[0] = 0;
-strbuilder->free   = strbuilder->allocated - 1 ;
-strbuilder->eos    = strbuilder->buf;
+strbuilder->free = strbuilder->allocated - 1 ;
+strbuilder->eos = strbuilder->buf;
 }

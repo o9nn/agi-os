@@ -16,11 +16,11 @@ inline bool operator()(const AtomPtr& a, const AtomPtr& b) const
 { return this->test(a,b); }
 virtual bool test(const AtomPtr&, const AtomPtr&) const = 0;
 };
-struct STISort : public AtomComparator  {
+struct STISort : public AtomComparator {
 STISort() {};
 virtual bool test(const AtomPtr&, const AtomPtr&) const;
 };
-struct LTIAndTVAscendingSort : public AtomComparator  {
+struct LTIAndTVAscendingSort : public AtomComparator {
 LTIAndTVAscendingSort() {};
 virtual bool test(const AtomPtr&, const AtomPtr&) const;
 };

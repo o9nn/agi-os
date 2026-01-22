@@ -3,7 +3,7 @@
 #
 implement Init;
 include "sys.m";
-sys:	Sys;
+sys: Sys;
 include "draw.m";
 include "keyring.m";
 kr: Keyring;
@@ -14,7 +14,7 @@ include "tftp.m";
 Bootpreadlen: con 128;
 Init: module
 {
-init:	fn();
+init: fn();
 };
 ip: string;
 mask: string;
@@ -33,7 +33,7 @@ fatal(sys->sprint("opening #B/kexec: %r"));
 ipavailable = 0;
 if (dobind("#l", "/net", sys->MREPL) && dobind("#I", "/net", sys->MAFTER))
 ipavailable = 1;
-dobind("#c", "/dev", sys->MAFTER); 	# console device
+dobind("#c", "/dev", sys->MAFTER); # console device
 if (!ipavailable)
 fatal("no IP stack available");
 cfd := sys->open("/net/ipifc/clone", sys->ORDWR);
@@ -226,7 +226,7 @@ return fsip;
 }
 netfs(server: string): int
 {
-auth = load Auth  Auth->PATH;
+auth = load Auth Auth->PATH;
 if (auth != nil)
 auth->init();
 kr = load Keyring Keyring->PATH;
@@ -499,7 +499,7 @@ spawn dhcplisten(pidc, conn.dfd, dc);
 dhcppid := <- pidc;
 dhcp := ref Dhcp;
 dhcp.op = 1;
-dhcp.htype  = 1;
+dhcp.htype = 1;
 gethaddr(dhcp);
 dhcp.hops = 0;
 dhcp.xid = random->randomint(Random->NotQuiteRandom);

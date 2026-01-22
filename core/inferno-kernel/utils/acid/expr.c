@@ -60,7 +60,7 @@ fmtsize(Value *v)
 int ret;
 switch(v->vstore.fmt) {
 default:
-return  fsize[v->vstore.fmt];
+return fsize[v->vstore.fmt];
 case 'i':
 case 'I':
 if(v->type != TINT || machdata == 0)

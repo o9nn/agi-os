@@ -9,10 +9,10 @@ include "arg.m";
 include "keyring.m";
 include "security.m";
 include "dial.m";
-DEFCMD:	con "/dis/sh";
+DEFCMD: con "/dis/sh";
 CPU: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 badmodule(p: string)
 {
@@ -50,9 +50,9 @@ usage();
 }
 argv = arg->argv();
 args := "auxi/cpuslave";
-#	if(ctxt != nil && ctxt.screen != nil)
-#		args += " -s" + string ctxt.screen.id;
-#	else
+# if(ctxt != nil && ctxt.screen != nil)
+# args += " -s" + string ctxt.screen.id;
+# else
 args += " --";
 mach: string;
 case len argv {

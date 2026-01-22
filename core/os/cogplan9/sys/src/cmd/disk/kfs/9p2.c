@@ -1,5 +1,5 @@
-#include	"all.h"
-#define MSIZE	(MAXDAT+128)
+#include "all.h"
+#define MSIZE (MAXDAT+128)
 static void
 seterror(Fcall *ou, int err)
 {
@@ -359,7 +359,7 @@ error = Ealloc;
 goto out;
 }
 d = getdir(p, file->slot);
-if(d == nil ||  !(d->mode & DALLOC)){
+if(d == nil || !(d->mode & DALLOC)){
 error = Ealloc;
 goto out;
 }

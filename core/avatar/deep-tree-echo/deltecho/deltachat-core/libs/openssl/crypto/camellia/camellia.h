@@ -2,12 +2,12 @@
 # define HEADER_CAMELLIA_H
 # include <openssl/opensslconf.h>
 # ifdef OPENSSL_NO_CAMELLIA
-#  error CAMELLIA is disabled.
+# error CAMELLIA is disabled.
 # endif
 # include <stddef.h>
-# define CAMELLIA_ENCRYPT        1
-# define CAMELLIA_DECRYPT        0
-#ifdef  __cplusplus
+# define CAMELLIA_ENCRYPT 1
+# define CAMELLIA_DECRYPT 0
+#ifdef __cplusplus
 extern "C" {
 #endif
 # define CAMELLIA_BLOCK_SIZE 16
@@ -54,7 +54,7 @@ size_t length, const CAMELLIA_KEY *key,
 unsigned char ivec[CAMELLIA_BLOCK_SIZE],
 unsigned char ecount_buf[CAMELLIA_BLOCK_SIZE],
 unsigned int *num);
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif
 #endif

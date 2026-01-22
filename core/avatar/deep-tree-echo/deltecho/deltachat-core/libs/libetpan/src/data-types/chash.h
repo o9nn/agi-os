@@ -4,7 +4,7 @@
 extern "C" {
 #endif
 #ifndef LIBETPAN_CONFIG_H
-#	include <libetpan/libetpan-config.h>
+# include <libetpan/libetpan-config.h>
 #endif
 typedef struct {
 void * data;
@@ -25,10 +25,10 @@ chashdatum value;
 struct chashcell * next;
 };
 typedef struct chashcell chashiter;
-#define CHASH_COPYNONE    0
-#define CHASH_COPYKEY     1
-#define CHASH_COPYVALUE   2
-#define CHASH_COPYALL     (CHASH_COPYKEY | CHASH_COPYVALUE)
+#define CHASH_COPYNONE 0
+#define CHASH_COPYKEY 1
+#define CHASH_COPYVALUE 2
+#define CHASH_COPYALL (CHASH_COPYKEY | CHASH_COPYVALUE)
 #define CHASH_DEFAULTSIZE 13
 LIBETPAN_EXPORT
 chash * chash_new(unsigned int size, int flags);
@@ -56,9 +56,9 @@ LIBETPAN_EXPORT
 chashiter * chash_next(chash * hash, chashiter * iter);
 #ifdef NO_MACROS
 LIBETPAN_EXPORT
-unsigned int          chash_size(chash * hash);
+unsigned int chash_size(chash * hash);
 LIBETPAN_EXPORT
-unsigned int          chash_count(chash * hash);
+unsigned int chash_count(chash * hash);
 LIBETPAN_EXPORT
 void chash_key(chashiter * iter, chashdatum * result);
 LIBETPAN_EXPORT

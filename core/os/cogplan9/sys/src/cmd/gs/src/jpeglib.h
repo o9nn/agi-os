@@ -4,17 +4,17 @@
 #include "jconfig.h"
 #endif
 #include "jmorecfg.h"
-#define JPEG_LIB_VERSION  62
-#define DCTSIZE		    8
-#define DCTSIZE2	    64
-#define NUM_QUANT_TBLS      4
-#define NUM_HUFF_TBLS       4
-#define NUM_ARITH_TBLS      16
-#define MAX_COMPS_IN_SCAN   4
-#define MAX_SAMP_FACTOR     4
-#define C_MAX_BLOCKS_IN_MCU   10
+#define JPEG_LIB_VERSION 62
+#define DCTSIZE 8
+#define DCTSIZE2 64
+#define NUM_QUANT_TBLS 4
+#define NUM_HUFF_TBLS 4
+#define NUM_ARITH_TBLS 16
+#define MAX_COMPS_IN_SCAN 4
+#define MAX_SAMP_FACTOR 4
+#define C_MAX_BLOCKS_IN_MCU 10
 #ifndef D_MAX_BLOCKS_IN_MCU
-#define D_MAX_BLOCKS_IN_MCU   10
+#define D_MAX_BLOCKS_IN_MCU 10
 #endif
 typedef JSAMPLE FAR *JSAMPROW;
 typedef JSAMPROW *JSAMPARRAY;
@@ -84,10 +84,10 @@ JDCT_IFAST,
 JDCT_FLOAT
 } J_DCT_METHOD;
 #ifndef JDCT_DEFAULT
-#define JDCT_DEFAULT  JDCT_ISLOW
+#define JDCT_DEFAULT JDCT_ISLOW
 #endif
 #ifndef JDCT_FASTEST
-#define JDCT_FASTEST  JDCT_IFAST
+#define JDCT_FASTEST JDCT_IFAST
 #endif
 typedef enum {
 JDITHER_NONE,
@@ -95,11 +95,11 @@ JDITHER_ORDERED,
 JDITHER_FS
 } J_DITHER_MODE;
 #define jpeg_common_fields \
-struct jpeg_error_mgr * err;	\
-struct jpeg_memory_mgr * mem;	\
+struct jpeg_error_mgr * err; \
+struct jpeg_memory_mgr * mem; \
 struct jpeg_progress_mgr * progress; \
-void * client_data;		\
-boolean is_decompressor;	\
+void * client_data; \
+boolean is_decompressor; \
 int global_state
 struct jpeg_common_struct {
 jpeg_common_fields;
@@ -252,10 +252,10 @@ JMETHOD(void, error_exit, (j_common_ptr cinfo));
 JMETHOD(void, emit_message, (j_common_ptr cinfo, int msg_level));
 JMETHOD(void, output_message, (j_common_ptr cinfo));
 JMETHOD(void, format_message, (j_common_ptr cinfo, char * buffer));
-#define JMSG_LENGTH_MAX  200
+#define JMSG_LENGTH_MAX 200
 JMETHOD(void, reset_error_mgr, (j_common_ptr cinfo));
 int msg_code;
-#define JMSG_STR_PARM_MAX  80
+#define JMSG_STR_PARM_MAX 80
 union {
 int i[8];
 char s[JMSG_STR_PARM_MAX];
@@ -291,9 +291,9 @@ JMETHOD(void, skip_input_data, (j_decompress_ptr cinfo, long num_bytes));
 JMETHOD(boolean, resync_to_restart, (j_decompress_ptr cinfo, int desired));
 JMETHOD(void, term_source, (j_decompress_ptr cinfo));
 };
-#define JPOOL_PERMANENT	0
-#define JPOOL_IMAGE	1
-#define JPOOL_NUMPOOLS	2
+#define JPOOL_PERMANENT 0
+#define JPOOL_IMAGE 1
+#define JPOOL_NUMPOOLS 2
 typedef struct jvirt_sarray_control * jvirt_sarray_ptr;
 typedef struct jvirt_barray_control * jvirt_barray_ptr;
 struct jpeg_memory_mgr {
@@ -337,59 +337,59 @@ long max_alloc_chunk;
 };
 typedef JMETHOD(boolean, jpeg_marker_parser_method, (j_decompress_ptr cinfo));
 #ifdef HAVE_PROTOTYPES
-#define JPP(arglist)	arglist
+#define JPP(arglist) arglist
 #else
-#define JPP(arglist)	()
+#define JPP(arglist) ()
 #endif
 #ifdef NEED_SHORT_EXTERNAL_NAMES
-#define jpeg_std_error		jStdError
-#define jpeg_CreateCompress	jCreaCompress
-#define jpeg_CreateDecompress	jCreaDecompress
-#define jpeg_destroy_compress	jDestCompress
-#define jpeg_destroy_decompress	jDestDecompress
-#define jpeg_stdio_dest		jStdDest
-#define jpeg_stdio_src		jStdSrc
-#define jpeg_set_defaults	jSetDefaults
-#define jpeg_set_colorspace	jSetColorspace
-#define jpeg_default_colorspace	jDefColorspace
-#define jpeg_set_quality	jSetQuality
-#define jpeg_set_linear_quality	jSetLQuality
-#define jpeg_add_quant_table	jAddQuantTable
-#define jpeg_quality_scaling	jQualityScaling
-#define jpeg_simple_progression	jSimProgress
-#define jpeg_suppress_tables	jSuppressTables
-#define jpeg_alloc_quant_table	jAlcQTable
-#define jpeg_alloc_huff_table	jAlcHTable
-#define jpeg_start_compress	jStrtCompress
-#define jpeg_write_scanlines	jWrtScanlines
-#define jpeg_finish_compress	jFinCompress
-#define jpeg_write_raw_data	jWrtRawData
-#define jpeg_write_marker	jWrtMarker
-#define jpeg_write_m_header	jWrtMHeader
-#define jpeg_write_m_byte	jWrtMByte
-#define jpeg_write_tables	jWrtTables
-#define jpeg_read_header	jReadHeader
-#define jpeg_start_decompress	jStrtDecompress
-#define jpeg_read_scanlines	jReadScanlines
-#define jpeg_finish_decompress	jFinDecompress
-#define jpeg_read_raw_data	jReadRawData
-#define jpeg_has_multiple_scans	jHasMultScn
-#define jpeg_start_output	jStrtOutput
-#define jpeg_finish_output	jFinOutput
-#define jpeg_input_complete	jInComplete
-#define jpeg_new_colormap	jNewCMap
-#define jpeg_consume_input	jConsumeInput
-#define jpeg_calc_output_dimensions	jCalcDimensions
-#define jpeg_save_markers	jSaveMarkers
-#define jpeg_set_marker_processor	jSetMarker
-#define jpeg_read_coefficients	jReadCoefs
-#define jpeg_write_coefficients	jWrtCoefs
-#define jpeg_copy_critical_parameters	jCopyCrit
-#define jpeg_abort_compress	jAbrtCompress
-#define jpeg_abort_decompress	jAbrtDecompress
-#define jpeg_abort		jAbort
-#define jpeg_destroy		jDestroy
-#define jpeg_resync_to_restart	jResyncRestart
+#define jpeg_std_error jStdError
+#define jpeg_CreateCompress jCreaCompress
+#define jpeg_CreateDecompress jCreaDecompress
+#define jpeg_destroy_compress jDestCompress
+#define jpeg_destroy_decompress jDestDecompress
+#define jpeg_stdio_dest jStdDest
+#define jpeg_stdio_src jStdSrc
+#define jpeg_set_defaults jSetDefaults
+#define jpeg_set_colorspace jSetColorspace
+#define jpeg_default_colorspace jDefColorspace
+#define jpeg_set_quality jSetQuality
+#define jpeg_set_linear_quality jSetLQuality
+#define jpeg_add_quant_table jAddQuantTable
+#define jpeg_quality_scaling jQualityScaling
+#define jpeg_simple_progression jSimProgress
+#define jpeg_suppress_tables jSuppressTables
+#define jpeg_alloc_quant_table jAlcQTable
+#define jpeg_alloc_huff_table jAlcHTable
+#define jpeg_start_compress jStrtCompress
+#define jpeg_write_scanlines jWrtScanlines
+#define jpeg_finish_compress jFinCompress
+#define jpeg_write_raw_data jWrtRawData
+#define jpeg_write_marker jWrtMarker
+#define jpeg_write_m_header jWrtMHeader
+#define jpeg_write_m_byte jWrtMByte
+#define jpeg_write_tables jWrtTables
+#define jpeg_read_header jReadHeader
+#define jpeg_start_decompress jStrtDecompress
+#define jpeg_read_scanlines jReadScanlines
+#define jpeg_finish_decompress jFinDecompress
+#define jpeg_read_raw_data jReadRawData
+#define jpeg_has_multiple_scans jHasMultScn
+#define jpeg_start_output jStrtOutput
+#define jpeg_finish_output jFinOutput
+#define jpeg_input_complete jInComplete
+#define jpeg_new_colormap jNewCMap
+#define jpeg_consume_input jConsumeInput
+#define jpeg_calc_output_dimensions jCalcDimensions
+#define jpeg_save_markers jSaveMarkers
+#define jpeg_set_marker_processor jSetMarker
+#define jpeg_read_coefficients jReadCoefs
+#define jpeg_write_coefficients jWrtCoefs
+#define jpeg_copy_critical_parameters jCopyCrit
+#define jpeg_abort_compress jAbrtCompress
+#define jpeg_abort_decompress jAbrtDecompress
+#define jpeg_abort jAbort
+#define jpeg_destroy jDestroy
+#define jpeg_resync_to_restart jResyncRestart
 #endif
 EXTERN(struct jpeg_error_mgr *) jpeg_std_error
 JPP((struct jpeg_error_mgr * err));
@@ -445,9 +445,9 @@ JPP((j_compress_ptr cinfo, int val));
 EXTERN(void) jpeg_write_tables JPP((j_compress_ptr cinfo));
 EXTERN(int) jpeg_read_header JPP((j_decompress_ptr cinfo,
 boolean require_image));
-#define JPEG_SUSPENDED		0
-#define JPEG_HEADER_OK		1
-#define JPEG_HEADER_TABLES_ONLY	2
+#define JPEG_SUSPENDED 0
+#define JPEG_HEADER_OK 1
+#define JPEG_HEADER_TABLES_ONLY 2
 EXTERN(boolean) jpeg_start_decompress JPP((j_decompress_ptr cinfo));
 EXTERN(JDIMENSION) jpeg_read_scanlines JPP((j_decompress_ptr cinfo,
 JSAMPARRAY scanlines,
@@ -463,10 +463,10 @@ EXTERN(boolean) jpeg_finish_output JPP((j_decompress_ptr cinfo));
 EXTERN(boolean) jpeg_input_complete JPP((j_decompress_ptr cinfo));
 EXTERN(void) jpeg_new_colormap JPP((j_decompress_ptr cinfo));
 EXTERN(int) jpeg_consume_input JPP((j_decompress_ptr cinfo));
-#define JPEG_REACHED_SOS	1
-#define JPEG_REACHED_EOI	2
-#define JPEG_ROW_COMPLETED	3
-#define JPEG_SCAN_COMPLETED	4
+#define JPEG_REACHED_SOS 1
+#define JPEG_REACHED_EOI 2
+#define JPEG_ROW_COMPLETED 3
+#define JPEG_SCAN_COMPLETED 4
 EXTERN(void) jpeg_calc_output_dimensions JPP((j_decompress_ptr cinfo));
 EXTERN(void) jpeg_save_markers
 JPP((j_decompress_ptr cinfo, int marker_code,
@@ -485,10 +485,10 @@ EXTERN(void) jpeg_abort JPP((j_common_ptr cinfo));
 EXTERN(void) jpeg_destroy JPP((j_common_ptr cinfo));
 EXTERN(boolean) jpeg_resync_to_restart JPP((j_decompress_ptr cinfo,
 int desired));
-#define JPEG_RST0	0xD0
-#define JPEG_EOI	0xD9
-#define JPEG_APP0	0xE0
-#define JPEG_COM	0xFE
+#define JPEG_RST0 0xD0
+#define JPEG_EOI 0xD9
+#define JPEG_APP0 0xE0
+#define JPEG_COM 0xFE
 #ifdef INCOMPLETE_TYPES_BROKEN
 #ifndef JPEG_INTERNALS
 struct jvirt_sarray_control { long dummy; };

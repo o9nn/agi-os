@@ -7,44 +7,44 @@ dial: Dial;
 Connection: import dial;
 Telnet: module
 {
-init:	fn(ctxt: ref Draw->Context, args: list of string);
+init: fn(ctxt: ref Draw->Context, args: list of string);
 };
 Debug: con 0;
 Inbuf: adt {
-fd:	ref Sys->FD;
-out:	ref Outbuf;
-buf:	array of byte;
-ptr:	int;
-nbyte:	int;
+fd: ref Sys->FD;
+out: ref Outbuf;
+buf: array of byte;
+ptr: int;
+nbyte: int;
 };
 Outbuf: adt {
-buf:	array of byte;
-ptr:	int;
+buf: array of byte;
+ptr: int;
 };
-BS:		con 8;		# ^h backspace character
-BSW:		con 23;		# ^w bacspace word
-BSL:		con 21;		# ^u backspace line
-EOT:		con 4;		# ^d end of file
-ESC:		con 27;		# hold mode
-net:	ref Connection;
+BS: con 8; # ^h backspace character
+BSW: con 23; # ^w bacspace word
+BSL: con 21; # ^u backspace line
+EOT: con 4; # ^d end of file
+ESC: con 27; # hold mode
+net: ref Connection;
 stdin, stdout, stderr: ref Sys->FD;
 # control characters
-Se:			con 240;	# end subnegotiation
-NOP:			con 241;
-Mark:		con 242;	# data mark
-Break:		con 243;
-Interrupt:		con 244;
-Abort:		con 245;	# TENEX ^O
-AreYouThere:	con 246;
-Erasechar:	con 247;	# erase last character
-Eraseline:		con 248;	# erase line
-GoAhead:		con 249;	# half duplex clear to send
-Sb:			con 250;	# start subnegotiation
-Will:			con 251;
-Wont:		con 252;
-Do:			con 253;
-Dont:		con 254;
-Iac:			con 255;
+Se: con 240; # end subnegotiation
+NOP: con 241;
+Mark: con 242; # data mark
+Break: con 243;
+Interrupt: con 244;
+Abort: con 245; # TENEX ^O
+AreYouThere: con 246;
+Erasechar: con 247; # erase last character
+Eraseline: con 248; # erase line
+GoAhead: con 249; # half duplex clear to send
+Sb: con 250; # start subnegotiation
+Will: con 251;
+Wont: con 252;
+Do: con 253;
+Dont: con 254;
+Iac: con 255;
 # options
 Binary, Echo, SGA, Stat, Timing,
 Det, Term, EOR, Uid, Outmark,
@@ -52,33 +52,33 @@ Ttyloc, M3270, Padx3, Window, Speed,
 Flow, Line, Xloc, Extend: con iota;
 Opt: adt
 {
-name:	string;
-code:	int;
-noway:	int;
-remote:	int;		# remote value
-local:	int;		# local value
+name: string;
+code: int;
+noway: int;
+remote: int; # remote value
+local: int; # local value
 };
 opt := array[] of
 {
-Binary =>		Opt("binary",			0,	0,	0, 	0),
-Echo	=>		Opt("echo",			1,  	0, 	0,	0),
-SGA	=>		Opt("suppress go ahead",	3,  	0, 	0,	0),
-Stat =>		Opt("status",			5,  	1, 	0,	0),
-Timing =>		Opt("timing",			6,  	1, 	0,	0),
-Det=>		Opt("det",				20, 	1, 	0,	0),
-Term =>		Opt("terminal",			24, 	0, 	0,	0),
-EOR =>		Opt("end of record",		25, 	1, 	0,	0),
-Uid =>		Opt("uid",				26, 	1, 	0,	0),
-Outmark => 	Opt("outmark",			27, 	1, 	0,	0),
-Ttyloc =>		Opt("ttyloc",			28, 	1, 	0,	0),
-M3270 =>		Opt("3270 mode",		29, 	1, 	0,	0),
-Padx3 =>		Opt("pad x.3",			30, 	1, 	0,	0),
-Window =>	Opt("window size",		31, 	1, 	0,	0),
-Speed =>		Opt("speed",			32, 	1, 	0,	0),
-Flow	=>		Opt("flow control",		33, 	1, 	0,	0),
-Line	=>		Opt("line mode",		34, 	1, 	0,	0),
-Xloc	=>		Opt("X display loc",		35, 	1, 	0,	0),
-Extend =>		Opt("Extended",		255,	1, 	0,	0),
+Binary => Opt("binary", 0, 0, 0, 0),
+Echo => Opt("echo", 1, 0, 0, 0),
+SGA => Opt("suppress go ahead", 3, 0, 0, 0),
+Stat => Opt("status", 5, 1, 0, 0),
+Timing => Opt("timing", 6, 1, 0, 0),
+Det=> Opt("det", 20, 1, 0, 0),
+Term => Opt("terminal", 24, 0, 0, 0),
+EOR => Opt("end of record", 25, 1, 0, 0),
+Uid => Opt("uid", 26, 1, 0, 0),
+Outmark => Opt("outmark", 27, 1, 0, 0),
+Ttyloc => Opt("ttyloc", 28, 1, 0, 0),
+M3270 => Opt("3270 mode", 29, 1, 0, 0),
+Padx3 => Opt("pad x.3", 30, 1, 0, 0),
+Window => Opt("window size", 31, 1, 0, 0),
+Speed => Opt("speed", 32, 1, 0, 0),
+Flow => Opt("flow control", 33, 1, 0, 0),
+Line => Opt("line mode", 34, 1, 0, 0),
+Xloc => Opt("X display loc", 35, 1, 0, 0),
+Extend => Opt("Extended", 255, 1, 0, 0),
 };
 usage()
 {
@@ -163,12 +163,12 @@ fromnet(pidch, finished: chan of int)
 pidch <-= sys->pctl(0, nil);
 conout := ref Outbuf(array[BUFSIZE] of byte, 0);
 netinp := ref Inbuf(net.dfd, conout, array[BUFSIZE] of byte, 0, 0);
-loop:	for(;;) {
+loop: for(;;) {
 c := getc(netinp);
 case c {
 -1 =>
 break loop;
-Iac  =>
+Iac =>
 c = getc(netinp);
 if(c != Iac) {
 flushout(conout);
@@ -374,10 +374,10 @@ negname(c: int): string
 {
 t := "Unknown";
 case c {
-Will =>	t = "will";
-Wont =>	t = "wont";
-Do =>	t = "do";
-Dont =>	t = "dont";
+Will => t = "will";
+Wont => t = "wont";
+Do => t = "do";
+Dont => t = "dont";
 }
 return t;
 }

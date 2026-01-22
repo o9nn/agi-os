@@ -17,13 +17,13 @@ static vm_offset_t lpr_std[NLPR] = { 0 };
 static struct bus_device *lpr_info[NLPR];
 struct bus_driver lprdriver = {
 lprprobe, 0, lprattach, 0, lpr_std, "lpr", lpr_info, 0, 0, 0};
-struct tty	lpr_tty[NLPR];
+struct tty lpr_tty[NLPR];
 int lpr_alive[NLPR];
 int
 lprprobe(vm_offset_t port, struct bus_ctlr *dev)
 {
-u_short	addr = (u_short) dev->address;
-int	unit = dev->unit;
+u_short addr = (u_short) dev->address;
+int unit = dev->unit;
 int ret;
 if ((unit < 0) || (unit >= NLPR)) {
 printf("com %d out of range\n", unit);
@@ -44,8 +44,8 @@ return(ret);
 }
 void lprattach(struct bus_device *dev)
 {
-u_char		unit = dev->unit;
-u_short		addr = (u_short) dev->address;
+u_char unit = dev->unit;
+u_short addr = (u_short) dev->address;
 if (unit >= NLPR) {
 printf(", disabled by NLPR configuration\n");
 return;
@@ -87,9 +87,9 @@ return (char_open(dev, tp, flag, ior));
 void
 lprclose(dev_t dev, int flag)
 {
-int 		unit = minor(dev);
-struct	tty	*tp = &lpr_tty[unit];
-u_short		addr = 	(u_short) lprinfo[unit]->address;
+int unit = minor(dev);
+struct tty *tp = &lpr_tty[unit];
+u_short addr = (u_short) lprinfo[unit]->address;
 ttyclose(tp);
 if (tp->t_state&TS_HUPCLS || (tp->t_state&TS_ISOPEN)==0) {
 outb(INTR_ENAB(addr), inb(INTR_ENAB(addr)) & 0x0f);
@@ -119,8 +119,8 @@ dev_status_t data,
 mach_msg_type_number_t *count
 )
 {
-io_return_t	result = D_SUCCESS;
-int		unit = minor(dev);
+io_return_t result = D_SUCCESS;
+int unit = minor(dev);
 switch (flavor) {
 default:
 result = tty_get_status(&lpr_tty[unit], flavor, data, count);
@@ -130,13 +130,13 @@ return (result);
 }
 io_return_t
 lprsetstat(
-dev_t		dev,
-dev_flavor_t	flavor,
-dev_status_t	data,
-mach_msg_type_number_t	count)
+dev_t dev,
+dev_flavor_t flavor,
+dev_status_t data,
+mach_msg_type_number_t count)
 {
-io_return_t	result = D_SUCCESS;
-int 		unit = minor(dev);
+io_return_t result = D_SUCCESS;
+int unit = minor(dev);
 switch (flavor) {
 default:
 result = tty_set_status(&lpr_tty[unit], flavor, data, count);
@@ -196,8 +196,8 @@ return;
 }
 void
 lprstop(
-struct tty 	*tp,
-int		flags)
+struct tty *tp,
+int flags)
 {
 if ((tp->t_state & TS_BUSY) && (tp->t_state & TS_TTSTOP) == 0)
 tp->t_state |= TS_FLUSH;

@@ -33,9 +33,9 @@ unsigned long file_grows;
 };
 static struct ext2fs_pager_stats ext2s_pager_stats =
 { .lock = PTHREAD_SPINLOCK_INITIALIZER };
-#define STAT_INC(field)							      \
-do { pthread_spin_lock (&ext2s_pager_stats.lock);			      \
-ext2s_pager_stats.field++;						      \
+#define STAT_INC(field) \
+do { pthread_spin_lock (&ext2s_pager_stats.lock); \
+ext2s_pager_stats.field++; \
 pthread_spin_unlock (&ext2s_pager_stats.lock); } while (0)
 #else
 #define STAT_INC(field) 0

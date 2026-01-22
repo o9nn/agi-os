@@ -1,162 +1,162 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"zoran.h"
-#include	"crystal.h"
-#include	"io.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "zoran.h"
+#include "crystal.h"
+#include "io.h"
 enum
 {
-CPUACCCTRL      = 0x20,
-CPUACCMD        = 0x21,
-BNKADR          = 0x22,
-SYSCONFIG       = 0x23,
-VGACOMP         = 0x24,
-VGAMASK         = 0x25,
-VIDCOMPL        = 0x26,
-VIDCOMPH        = 0x27,
-MOS             = 0x28,
-DISPCTRL        = 0x29,
-CAPCTRL         = 0x2a,
-OVLKT           = 0x2b,
-OVLWINHSTRT     = 0x2c,
-OVLWINVSTRT     = 0x2d,
-OVLWINHEND      = 0x2e,
-OVLWINVEND      = 0x2f,
-RESERVED1       = 0x30,
-RESERVED2       = 0x31,
-DISPWINVSTRT1   = 0x32,
-DISPWINVSTRT2   = 0x33,
-DISPWINVEND     = 0x34,
-DISPWINHSTRT1   = 0x35,
-DISPWINHSTRT2   = 0x36,
-DISPWINHEND     = 0x37,
-CAPWINVSTRT     = 0x38,
-CAPWINHSTRT     = 0x39,
-CAPWINVMF       = 0x3a,
-CAPWINHMF       = 0x3b,
-RESERVED3       = 0x3c,
-CAPMASK         = 0x3d,
-BNKPOLATION     = 0x3e,
-SYNCPOL         = 0x3f,
-DISPVTOTAL      = 0x40,
-DISPHTOTAL      = 0x41,
-DISPVSTRT       = 0x42,
-DISPVEND        = 0x43,
-DISPHSTRT       = 0x44,
-DISPHEND        = 0x45,
-DISPSYNCW       = 0x46,
-DISPCRTCCTRL    = 0x47,
-CAPVTOTAL       = 0x48,
-CAPHTOTAL       = 0x49,
-CAPVSTRT        = 0x4a,
-CAPVEND         = 0x4b,
-CAPHSTRT        = 0x4c,
-CAPHEND         = 0x4d,
-CAPSYNCW        = 0x4e,
-CAPCRTCCTRL     = 0x4f,
-VIDLUTDACRW     = 0x50,
-VIDLUTDACRW0    = (VIDLUTDACRW),
-VIDLUTDACRW1    = (VIDLUTDACRW+1),
-VIDLUTDACRW2    = (VIDLUTDACRW+2),
-VIDLUTDACRW3    = (VIDLUTDACRW+3),
-VIDLUTDACRW4    = (VIDLUTDACRW+4),
-VIDLUTDACRW5    = (VIDLUTDACRW+5),
-VIDLUTDACRW6    = (VIDLUTDACRW+6),
-VIDLUTDACRW7    = (VIDLUTDACRW+7),
-VGALUTDACRW     = 0x58,
-VGALUTDACRW0    = (VGALUTDACRW),
-VGALUTDACRW1    = (VGALUTDACRW+1),
-VGALUTDACRW2    = (VGALUTDACRW+2),
-VGALUTDACRW3    = (VGALUTDACRW+3),
-VGALUTDACRW4    = (VGALUTDACRW+4),
-VGALUTDACRW5    = (VGALUTDACRW+5),
-VGALUTDACRW6    = (VGALUTDACRW+6),
-VGALUTDACRW7    = (VGALUTDACRW+7),
-HZOOMF          = 0x60,
-VZOOMF          = 0x61,
-DELAY1          = 0x62,
-DELAY2          = 0x63,
-TRILO      	= 0,
-TRIHI     	= 1,
-TRIINDEX    	= 2,
-SCL             = 0x02,
-SDA             = 0x01,
-I2CR		= 0x2B,
-SAA7110		= 0x9c,
-WRITE_C		= 0x00,
-I2DLY		= 5,
+CPUACCCTRL = 0x20,
+CPUACCMD = 0x21,
+BNKADR = 0x22,
+SYSCONFIG = 0x23,
+VGACOMP = 0x24,
+VGAMASK = 0x25,
+VIDCOMPL = 0x26,
+VIDCOMPH = 0x27,
+MOS = 0x28,
+DISPCTRL = 0x29,
+CAPCTRL = 0x2a,
+OVLKT = 0x2b,
+OVLWINHSTRT = 0x2c,
+OVLWINVSTRT = 0x2d,
+OVLWINHEND = 0x2e,
+OVLWINVEND = 0x2f,
+RESERVED1 = 0x30,
+RESERVED2 = 0x31,
+DISPWINVSTRT1 = 0x32,
+DISPWINVSTRT2 = 0x33,
+DISPWINVEND = 0x34,
+DISPWINHSTRT1 = 0x35,
+DISPWINHSTRT2 = 0x36,
+DISPWINHEND = 0x37,
+CAPWINVSTRT = 0x38,
+CAPWINHSTRT = 0x39,
+CAPWINVMF = 0x3a,
+CAPWINHMF = 0x3b,
+RESERVED3 = 0x3c,
+CAPMASK = 0x3d,
+BNKPOLATION = 0x3e,
+SYNCPOL = 0x3f,
+DISPVTOTAL = 0x40,
+DISPHTOTAL = 0x41,
+DISPVSTRT = 0x42,
+DISPVEND = 0x43,
+DISPHSTRT = 0x44,
+DISPHEND = 0x45,
+DISPSYNCW = 0x46,
+DISPCRTCCTRL = 0x47,
+CAPVTOTAL = 0x48,
+CAPHTOTAL = 0x49,
+CAPVSTRT = 0x4a,
+CAPVEND = 0x4b,
+CAPHSTRT = 0x4c,
+CAPHEND = 0x4d,
+CAPSYNCW = 0x4e,
+CAPCRTCCTRL = 0x4f,
+VIDLUTDACRW = 0x50,
+VIDLUTDACRW0 = (VIDLUTDACRW),
+VIDLUTDACRW1 = (VIDLUTDACRW+1),
+VIDLUTDACRW2 = (VIDLUTDACRW+2),
+VIDLUTDACRW3 = (VIDLUTDACRW+3),
+VIDLUTDACRW4 = (VIDLUTDACRW+4),
+VIDLUTDACRW5 = (VIDLUTDACRW+5),
+VIDLUTDACRW6 = (VIDLUTDACRW+6),
+VIDLUTDACRW7 = (VIDLUTDACRW+7),
+VGALUTDACRW = 0x58,
+VGALUTDACRW0 = (VGALUTDACRW),
+VGALUTDACRW1 = (VGALUTDACRW+1),
+VGALUTDACRW2 = (VGALUTDACRW+2),
+VGALUTDACRW3 = (VGALUTDACRW+3),
+VGALUTDACRW4 = (VGALUTDACRW+4),
+VGALUTDACRW5 = (VGALUTDACRW+5),
+VGALUTDACRW6 = (VGALUTDACRW+6),
+VGALUTDACRW7 = (VGALUTDACRW+7),
+HZOOMF = 0x60,
+VZOOMF = 0x61,
+DELAY1 = 0x62,
+DELAY2 = 0x63,
+TRILO = 0,
+TRIHI = 1,
+TRIINDEX = 2,
+SCL = 0x02,
+SDA = 0x01,
+I2CR = 0x2B,
+SAA7110 = 0x9c,
+WRITE_C = 0x00,
+I2DLY = 5,
 };
 enum
 {
-ZR36100		= 0x1e0,
-ZRIRQ		= 15,
-ZRDMA		= 6,
-ZRIDREG		= 4,
-ZRMACH210   	= 6,
-ZRREG0      	= 8,
-ZRREG1		= 10,
-ZRSR		= ZRREG1,
-ZRRDY		= (1<<3),
-ZRIDLE		= (1<<2),
-ZRREG2		= 12,
-ZRREG3		= 14,
-SIFwidth	= 320,
-SIFheight	= 240,
-IDPCOUNT	= 3064,
-PMDPCOUNT	= 2048,
-SVMDPCOUNT	= 2048,
-HIWAT		= 2*128*1024,
-DMABLK		= 16384,
+ZR36100 = 0x1e0,
+ZRIRQ = 15,
+ZRDMA = 6,
+ZRIDREG = 4,
+ZRMACH210 = 6,
+ZRREG0 = 8,
+ZRREG1 = 10,
+ZRSR = ZRREG1,
+ZRRDY = (1<<3),
+ZRIDLE = (1<<2),
+ZRREG2 = 12,
+ZRREG3 = 14,
+SIFwidth = 320,
+SIFheight = 240,
+IDPCOUNT = 3064,
+PMDPCOUNT = 2048,
+SVMDPCOUNT = 2048,
+HIWAT = 2*128*1024,
+DMABLK = 16384,
 };
 static struct {
-int	zrport;
-int	irq;
-int	dma;
-int	trport;
+int zrport;
+int irq;
+int dma;
+int trport;
 } mpegconf;
-static	char Evmode[] = "video format not supported";
-static	char Eaudio[] = "invalid audio layer";
-static	char Earate[] = "bad audio sample rate";
-static	short	STDBY;
-static	short	VIDSEL;
-static	short	VSNIRQn;
-static	short	INTENAn;
-static	short	DSPBOOT;
-static	short	DSPRST;
-static	short	MPGRST;
-static	int	machsr;
-static	int	dopen;
-static	int	started;
-static	int	stop;
-static	int	pause;
-static	int	sp2br;
-static	int	sp2cd;
-static	char	properties[] = "video mpeg1,sif\naudio musicam,I musicam,II\n";
-static	void	inittrident(void);
-static	int	initzoran(void);
-static	void	initcrystal(void);
-static	void	mpegintr(Ureg*, void*);
-static	void	setwindow(int, char**);
-static	void	freebufs(void);
-static	int	mkbuf(char*, int);
+static char Evmode[] = "video format not supported";
+static char Eaudio[] = "invalid audio layer";
+static char Earate[] = "bad audio sample rate";
+static short STDBY;
+static short VIDSEL;
+static short VSNIRQn;
+static short INTENAn;
+static short DSPBOOT;
+static short DSPRST;
+static short MPGRST;
+static int machsr;
+static int dopen;
+static int started;
+static int stop;
+static int pause;
+static int sp2br;
+static int sp2cd;
+static char properties[] = "video mpeg1,sif\naudio musicam,I musicam,II\n";
+static void inittrident(void);
+static int initzoran(void);
+static void initcrystal(void);
+static void mpegintr(Ureg*, void*);
+static void setwindow(int, char**);
+static void freebufs(void);
+static int mkbuf(char*, int);
 typedef struct Buf Buf;
 struct Buf
 {
-int	nchar;
-uchar*	ptr;
-Buf*	link;
-uchar	data[1];
+int nchar;
+uchar* ptr;
+Buf* link;
+uchar data[1];
 };
 static struct
 {
 Lock;
-int	qlen;
-Buf*	head;
-Buf*	tail;
-Rendez	flow;
+int qlen;
+Buf* head;
+Buf* tail;
+Rendez flow;
 } bqueue;
 static int
 zrstatus(void)
@@ -206,8 +206,8 @@ Qctl,
 };
 static Dirtab mpegtab[]=
 {
-"mpeg",		{Qdata, 0},	0,	0666,
-"mpegctl",	{Qctl,  0},	0,	0666,
+"mpeg", {Qdata, 0}, 0, 0666,
+"mpegctl", {Qctl, 0}, 0, 0666,
 };
 static void
 mpegreset(void)
@@ -308,7 +308,7 @@ return readstr(off, a, n, properties);
 }
 return 0;
 }
-#define SCALE(a, b)	((((a)<<10)/(b))-1024)
+#define SCALE(a, b) ((((a)<<10)/(b))-1024)
 enum
 {
 CWINVF = 0x3ff,
@@ -416,7 +416,7 @@ static Audio AudioclkI[] =
 416000, 0x0000001c, 0x0006e70b,
 448000, 0x0000001a, 0x0006e70b,
 };
-static Audio  AudioclkII[] =
+static Audio AudioclkII[] =
 {
 48000, 0x000000fa, 0x00071c71,
 56000, 0x000000d6, 0x00071a04,
@@ -578,22 +578,22 @@ if(done)
 return;
 boardid = ins(mpegconf.zrport+ZRIDREG);
 if(boardid == 0xE3E3) {
-STDBY   = 0x0000;
-VIDSEL  = 0x2020;
+STDBY = 0x0000;
+VIDSEL = 0x2020;
 VSNIRQn = 0x1010;
 INTENAn = 0x0808;
 DSPBOOT = 0x0404;
-DSPRST  = 0x0202;
-MPGRST  = 0x0101;
+DSPRST = 0x0202;
+MPGRST = 0x0101;
 }
 else {
-STDBY   = 0x0404;
-VIDSEL  = 0x1010;
+STDBY = 0x0404;
+VIDSEL = 0x1010;
 VSNIRQn = 0x8080;
 INTENAn = 0x4040;
 DSPBOOT = 0x0202;
-DSPRST  = 0x0101;
-MPGRST  = 0x2020;
+DSPRST = 0x0101;
+MPGRST = 0x2020;
 }
 done = 1;
 }
@@ -681,8 +681,8 @@ return 0;
 }
 static struct
 {
-short	reg;
-ushort	val;
+short reg;
+ushort val;
 } trireg[] =
 {
 0x20, 0x0400,

@@ -17,20 +17,20 @@
 #include <kern/ipc_host.h>
 #include <ipc/ipc_port.h>
 #include <machine/mp_desc.h>
-#if	MACH_HOST
+#if MACH_HOST
 #include <kern/slab.h>
 struct kmem_cache pset_cache;
 struct processor_set *slave_pset;
 #endif
-int	master_cpu;
+int master_cpu;
 struct processor_set default_pset;
-queue_head_t		all_psets;
-int			all_psets_count;
+queue_head_t all_psets;
+int all_psets_count;
 def_simple_lock_data(, all_psets_lock);
-processor_t	master_processor;
+processor_t master_processor;
 void pset_sys_bootstrap(void)
 {
-int	i;
+int i;
 pset_init(&default_pset);
 for (i = 0; i < NCPUS; i++) {
 processor_init(processor_ptr(i), i);
@@ -42,11 +42,11 @@ queue_enter(&all_psets, &default_pset, processor_set_t, all_psets);
 all_psets_count = 1;
 default_pset.active = TRUE;
 }
-#if	MACH_HOST
+#if MACH_HOST
 void pset_sys_init(void)
 {
-int		i;
-processor_t	processor;
+int i;
+processor_t processor;
 kmem_cache_init(&pset_cache, "processor_set",
 sizeof(struct processor_set), 0, NULL, 0);
 for (i = 0; i < NCPUS; i++) {
@@ -61,9 +61,9 @@ processor_set_create(&realhost, &slave_pset, &slave_pset);
 }
 #endif
 void pset_init(
-processor_set_t	pset)
+processor_set_t pset)
 {
-int	i;
+int i;
 simple_lock_init(&pset->runq.lock);
 pset->runq.low = 0;
 pset->runq.count = 0;
@@ -88,11 +88,11 @@ simple_lock_init(&pset->lock);
 pset->pset_self = IP_NULL;
 pset->pset_name_self = IP_NULL;
 pset->max_priority = BASEPRI_USER;
-#if	MACH_FIXPRI
+#if MACH_FIXPRI
 pset->policies = POLICY_TIMESHARE;
 #endif
 pset->set_quantum = min_quantum;
-#if	NCPUS > 1
+#if NCPUS > 1
 pset->quantum_adj_index = 0;
 simple_lock_init_irq(&pset->quantum_adj_lock);
 for (i = 0; i <= NCPUS; i++) {
@@ -104,10 +104,10 @@ pset->load_average = 0;
 pset->sched_load = SCHED_SCALE;
 }
 void processor_init(
-processor_t 	pr,
-int		slot_num)
+processor_t pr,
+int slot_num)
 {
-int	i;
+int i;
 simple_lock_init(&pr->runq.lock);
 pr->runq.low = 0;
 pr->runq.count = 0;
@@ -135,8 +135,8 @@ pr->last_balance_tick = 0;
 #endif
 }
 void pset_remove_processor(
-processor_set_t	pset,
-processor_t	processor)
+processor_set_t pset,
+processor_t processor)
 {
 if (pset != processor->processor_set)
 panic("pset_remove_processor: wrong pset");
@@ -146,8 +146,8 @@ pset->processor_count--;
 quantum_set(pset);
 }
 void pset_add_processor(
-processor_set_t	pset,
-processor_t	processor)
+processor_set_t pset,
+processor_t processor)
 {
 queue_enter(&pset->processors, processor, processor_t, processors);
 processor->processor_set = pset;
@@ -156,8 +156,8 @@ pset->empty = FALSE;
 quantum_set(pset);
 }
 void pset_remove_task(
-processor_set_t	pset,
-task_t		task)
+processor_set_t pset,
+task_t task)
 {
 if (pset != task->processor_set)
 return;
@@ -166,33 +166,33 @@ task->processor_set = PROCESSOR_SET_NULL;
 pset->task_count--;
 }
 void pset_add_task(
-processor_set_t	pset,
-task_t		task)
+processor_set_t pset,
+task_t task)
 {
 queue_enter(&pset->tasks, task, task_t, pset_tasks);
 task->processor_set = pset;
 pset->task_count++;
 }
 void pset_remove_thread(
-processor_set_t	pset,
-thread_t	thread)
+processor_set_t pset,
+thread_t thread)
 {
 queue_remove(&pset->threads, thread, thread_t, pset_threads);
 thread->processor_set = PROCESSOR_SET_NULL;
 pset->thread_count--;
 }
 void pset_add_thread(
-processor_set_t	pset,
-thread_t	thread)
+processor_set_t pset,
+thread_t thread)
 {
 queue_enter(&pset->threads, thread, thread_t, pset_threads);
 thread->processor_set = pset;
 pset->thread_count++;
 }
 void thread_change_psets(
-thread_t	thread,
-processor_set_t	old_pset,
-processor_set_t	new_pset)
+thread_t thread,
+processor_set_t old_pset,
+processor_set_t new_pset)
 {
 queue_remove(&old_pset->threads, thread, thread_t, pset_threads);
 old_pset->thread_count--;
@@ -201,7 +201,7 @@ thread->processor_set = new_pset;
 new_pset->thread_count++;
 }
 void pset_deallocate(
-processor_set_t	pset)
+processor_set_t pset)
 {
 if (pset == PROCESSOR_SET_NULL)
 return;
@@ -210,10 +210,10 @@ if (--pset->ref_count > 0) {
 pset_ref_unlock(pset);
 return;
 }
-#if	!MACH_HOST
+#if !MACH_HOST
 panic("pset_deallocate: default_pset destroyed");
 #endif
-#if	MACH_HOST
+#if MACH_HOST
 pset->ref_count = 1;
 pset_ref_unlock(pset);
 simple_lock(&all_psets_lock);
@@ -235,7 +235,7 @@ kmem_cache_free(&pset_cache, (vm_offset_t)pset);
 #endif
 }
 void pset_reference(
-processor_set_t	pset)
+processor_set_t pset)
 {
 pset_ref_lock(pset);
 pset->ref_count++;
@@ -243,14 +243,14 @@ pset_ref_unlock(pset);
 }
 kern_return_t
 processor_info(
-processor_t		processor,
-int			flavor,
-host_t			*host,
-processor_info_t	info,
-natural_t		*count)
+processor_t processor,
+int flavor,
+host_t *host,
+processor_info_t info,
+natural_t *count)
 {
-int				slot_num, state;
-processor_basic_info_t		basic_info;
+int slot_num, state;
+processor_basic_info_t basic_info;
 if (processor == PROCESSOR_NULL)
 return KERN_INVALID_ARGUMENT;
 if (flavor != PROCESSOR_BASIC_INFO ||
@@ -275,18 +275,18 @@ basic_info->is_master = FALSE;
 return KERN_SUCCESS;
 }
 kern_return_t processor_start(
-processor_t	processor)
+processor_t processor)
 {
 if (processor == PROCESSOR_NULL)
 return KERN_INVALID_ARGUMENT;
 return KERN_FAILURE;
 }
 kern_return_t processor_exit(
-processor_t	processor)
+processor_t processor)
 {
 if (processor == PROCESSOR_NULL)
 return KERN_INVALID_ARGUMENT;
-#if	NCPUS > 1
+#if NCPUS > 1
 return processor_shutdown(processor);
 #else
 return KERN_FAILURE;
@@ -294,23 +294,23 @@ return KERN_FAILURE;
 }
 kern_return_t
 processor_control(
-processor_t	processor,
+processor_t processor,
 processor_info_t info,
-natural_t	 count)
+natural_t count)
 {
 if (processor == PROCESSOR_NULL)
 return KERN_INVALID_ARGUMENT;
-#if	NCPUS > 1
+#if NCPUS > 1
 return cpu_control(processor->slot_num, (int *)info, count);
 #else
 return KERN_FAILURE;
 #endif
 }
 void quantum_set(
-processor_set_t	pset)
+processor_set_t pset)
 {
-#if	NCPUS > 1
-int	i, ncpus;
+#if NCPUS > 1
+int i, ncpus;
 ncpus = pset->processor_count;
 for ( i=1 ; i <= ncpus ; i++) {
 pset->machine_quantum[i] =
@@ -324,14 +324,14 @@ pset->set_quantum = pset->machine_quantum[i];
 default_pset.set_quantum = min_quantum;
 #endif
 }
-#if	MACH_HOST
+#if MACH_HOST
 kern_return_t
 processor_set_create(
-host_t		host,
+host_t host,
 processor_set_t *new_set,
 processor_set_t *new_name)
 {
-processor_set_t	pset;
+processor_set_t pset;
 if (host == HOST_NULL)
 return KERN_INVALID_ARGUMENT;
 pset = (processor_set_t) kmem_cache_alloc(&pset_cache);
@@ -352,8 +352,8 @@ return KERN_SUCCESS;
 kern_return_t processor_set_destroy(
 processor_set_t pset)
 {
-queue_entry_t	elem;
-queue_head_t	*list;
+queue_entry_t elem;
+queue_head_t *list;
 if (pset == PROCESSOR_SET_NULL || pset == &default_pset)
 return KERN_INVALID_ARGUMENT;
 pset_lock(pset);
@@ -402,7 +402,7 @@ return KERN_SUCCESS;
 #else
 kern_return_t
 processor_set_create(
-host_t		host,
+host_t host,
 processor_set_t *new_set,
 processor_set_t *new_name)
 {
@@ -416,8 +416,8 @@ return KERN_FAILURE;
 #endif
 kern_return_t
 processor_get_assignment(
-processor_t	processor,
-processor_set_t	*pset)
+processor_t processor,
+processor_set_t *pset)
 {
 int state;
 if (processor == PROCESSOR_NULL)
@@ -431,16 +431,16 @@ return KERN_SUCCESS;
 }
 kern_return_t
 processor_set_info(
-processor_set_t		pset,
-int			flavor,
-host_t			*host,
-processor_set_info_t	info,
-natural_t		*count)
+processor_set_t pset,
+int flavor,
+host_t *host,
+processor_set_info_t info,
+natural_t *count)
 {
 if (pset == PROCESSOR_SET_NULL)
 return KERN_INVALID_ARGUMENT;
 if (flavor == PROCESSOR_SET_BASIC_INFO) {
-processor_set_basic_info_t	basic_info;
+processor_set_basic_info_t basic_info;
 if (*count < PROCESSOR_SET_BASIC_INFO_COUNT)
 return KERN_FAILURE;
 basic_info = (processor_set_basic_info_t) info;
@@ -456,12 +456,12 @@ pset_unlock(pset);
 return KERN_SUCCESS;
 }
 else if (flavor == PROCESSOR_SET_SCHED_INFO) {
-processor_set_sched_info_t	sched_info;
+processor_set_sched_info_t sched_info;
 if (*count < PROCESSOR_SET_SCHED_INFO_COUNT)
 return KERN_FAILURE;
 sched_info = (processor_set_sched_info_t) info;
 pset_lock(pset);
-#if	MACH_FIXPRI
+#if MACH_FIXPRI
 sched_info->policies = pset->policies;
 #else
 sched_info->policies = POLICY_TIMESHARE;
@@ -478,8 +478,8 @@ return KERN_INVALID_ARGUMENT;
 kern_return_t
 processor_set_max_priority(
 processor_set_t pset,
-int		max_priority,
-boolean_t	change_threads)
+int max_priority,
+boolean_t change_threads)
 {
 if (pset == PROCESSOR_SET_NULL || invalid_pri(max_priority))
 return KERN_INVALID_ARGUMENT;
@@ -487,7 +487,7 @@ pset_lock(pset);
 pset->max_priority = max_priority;
 if (change_threads) {
 queue_head_t *list;
-thread_t	thread;
+thread_t thread;
 list = &pset->threads;
 queue_iterate(list, thread, thread_t, pset_threads) {
 if (thread->max_priority < max_priority)
@@ -499,12 +499,12 @@ return KERN_SUCCESS;
 }
 kern_return_t
 processor_set_policy_enable(
-processor_set_t	pset,
-int		policy)
+processor_set_t pset,
+int policy)
 {
 if ((pset == PROCESSOR_SET_NULL) || invalid_policy(policy))
 return KERN_INVALID_ARGUMENT;
-#if	MACH_FIXPRI
+#if MACH_FIXPRI
 pset_lock(pset);
 pset->policies |= policy;
 pset_unlock(pset);
@@ -518,20 +518,20 @@ return KERN_FAILURE;
 }
 kern_return_t
 processor_set_policy_disable(
-processor_set_t	pset,
-int		policy,
-boolean_t	change_threads)
+processor_set_t pset,
+int policy,
+boolean_t change_threads)
 {
 if ((pset == PROCESSOR_SET_NULL) || policy == POLICY_TIMESHARE ||
 invalid_policy(policy))
 return KERN_INVALID_ARGUMENT;
-#if	MACH_FIXPRI
+#if MACH_FIXPRI
 pset_lock(pset);
 if (pset->policies & policy) {
 pset->policies &= ~policy;
 if (change_threads) {
-queue_head_t	*list;
-thread_t	thread;
+queue_head_t *list;
+thread_t thread;
 list = &pset->threads;
 queue_iterate(list, thread, thread_t, pset_threads) {
 if (thread->policy == policy)
@@ -543,14 +543,14 @@ pset_unlock(pset);
 #endif
 return KERN_SUCCESS;
 }
-#define THING_TASK	0
-#define THING_THREAD	1
+#define THING_TASK 0
+#define THING_THREAD 1
 static kern_return_t
 processor_set_things(
-processor_set_t	pset,
-mach_port_t	**thing_list,
-natural_t	*count,
-int		type)
+processor_set_t pset,
+mach_port_t **thing_list,
+natural_t *count,
+int type)
 {
 unsigned int actual;
 unsigned i;
@@ -663,17 +663,17 @@ return KERN_SUCCESS;
 }
 kern_return_t
 processor_set_tasks(
-processor_set_t	pset,
-task_array_t	*task_list,
-natural_t	*count)
+processor_set_t pset,
+task_array_t *task_list,
+natural_t *count)
 {
 return processor_set_things(pset, task_list, count, THING_TASK);
 }
 kern_return_t
 processor_set_threads(
-processor_set_t	pset,
-thread_array_t	*thread_list,
-natural_t	*count)
+processor_set_t pset,
+thread_array_t *thread_list,
+natural_t *count)
 {
 return processor_set_things(pset, thread_list, count, THING_THREAD);
 }

@@ -19,10 +19,10 @@
 #include "vdtrace.h"
 #endif
 #include "gdevdsp.h"
-#define kScrollBarWidth   15
+#define kScrollBarWidth 15
 #define MAX_ARGS 25
-Boolean   gRunningOnX = false;
-Boolean   gDone;
+Boolean gRunningOnX = false;
+Boolean gDone;
 ControlActionUPP gActionFunctionScrollUPP;
 const char start_string[] = "systemdict /start get exec\n";
 void *instance;
@@ -33,7 +33,7 @@ typedef struct IMAGE_S IMAGE;
 struct IMAGE_S {
 void *handle;
 void *device;
-WindowRef  windowRef;
+WindowRef windowRef;
 ControlRef scrollbarVertRef;
 ControlRef scrollbarHorizRef;
 PixMapHandle pixmapHdl;
@@ -62,15 +62,15 @@ static size_t get_input(void *ptr, size_t size);
 static void window_create (IMAGE *img);
 static void window_invalidate (WindowRef windowRef);
 static void window_adjust_scrollbars (WindowRef windowRef);
-void    main                      (void);
-OSErr   quitAppEventHandler       (AppleEvent *,AppleEvent *,SInt32);
-void    doEvents                  (EventRecord *);
-void    doMouseDown               (EventRecord *);
-void    doUpdate                  (EventRecord *);
-void    doUpdateWindow            (EventRecord *);
-void    doOSEvent                 (EventRecord *);
-void    doInContent               (EventRecord *,WindowRef);
-pascal void    actionFunctionScroll      (ControlRef,ControlPartCode);
+void main (void);
+OSErr quitAppEventHandler (AppleEvent *,AppleEvent *,SInt32);
+void doEvents (EventRecord *);
+void doMouseDown (EventRecord *);
+void doUpdate (EventRecord *);
+void doUpdateWindow (EventRecord *);
+void doOSEvent (EventRecord *);
+void doInContent (EventRecord *,WindowRef);
+pascal void actionFunctionScroll (ControlRef,ControlPartCode);
 static int GSDLLCALL
 gsdll_stdin(void *instance, char *buf, int len)
 {
@@ -343,9 +343,9 @@ return 0;
 static void window_create(IMAGE *img)
 {
 WindowRef windowRef;
-Str255    windowTitle = "\pGhostscript Image";
-Rect      windowRect = {20,4,580,420};
-Rect      scrollbarRect = {0,0,0,0};
+Str255 windowTitle = "\pGhostscript Image";
+Rect windowRect = {20,4,580,420};
+Rect scrollbarRect = {0,0,0,0};
 #if TARGET_API_MAC_CARBON
 GetAvailableWindowPositioningBounds(GetMainDevice(),&windowRect);
 #endif
@@ -380,7 +380,7 @@ InvalWindowRect(windowRef, &portRect);
 static void window_adjust_scrollbars(WindowRef windowRef)
 {
 IMAGE *img;
-Rect   portRect;
+Rect portRect;
 img = (IMAGE*)GetWRefCon(windowRef);
 GetWindowPortBounds(windowRef,&portRect);
 HideControl(img->scrollbarVertRef);
@@ -425,7 +425,7 @@ int exit_code;
 int argc;
 char **argv;
 char dformat[64], ddevice[32];
-SInt32        response;
+SInt32 response;
 #if TARGET_API_MAC_CARBON
 MoreMasterPointers(224);
 #else
@@ -511,7 +511,7 @@ SIOUXHandleOneEvent(&eventStructure);
 }
 void doEvents(EventRecord *eventStrucPtr)
 {
-WindowRef      windowRef;
+WindowRef windowRef;
 if (eventStrucPtr->what == mouseDown &&
 FindWindow(eventStrucPtr->where,&windowRef) == inMenuBar)
 SelectWindow(SIOUXTextWindow->window);
@@ -548,12 +548,12 @@ break;
 }
 void doMouseDown(EventRecord *eventStrucPtr)
 {
-WindowRef      windowRef;
+WindowRef windowRef;
 WindowPartCode partCode, zoomPart;
-BitMap         screenBits;
-Rect           constraintRect, mainScreenRect;
-Point          standardStateHeightAndWidth;
-long           newSize;
+BitMap screenBits;
+Rect constraintRect, mainScreenRect;
+Point standardStateHeightAndWidth;
+long newSize;
 partCode = FindWindow(eventStrucPtr->where,&windowRef);
 switch(partCode)
 {
@@ -571,7 +571,7 @@ break;
 case inGoAway:
 break;
 case inGrow:
-constraintRect.top   = 75;
+constraintRect.top = 75;
 constraintRect.left = 250;
 constraintRect.bottom = constraintRect.right = 32767;
 newSize = GrowWindow(windowRef,eventStrucPtr->where,&constraintRect);
@@ -610,11 +610,11 @@ EndUpdate(windowRef);
 void doUpdateWindow(EventRecord *eventStrucPtr)
 {
 IMAGE *img;
-WindowRef    windowRef;
-Rect         srcRect, destRect, fillRect;
+WindowRef windowRef;
+Rect srcRect, destRect, fillRect;
 PixMapHandle srcPixmapHdl, destPixmapHdl;
-RGBColor     grayColour = { 0xC000,0xC000,0xC000 };
-SInt32  hScroll, vScroll;
+RGBColor grayColour = { 0xC000,0xC000,0xC000 };
+SInt32 hScroll, vScroll;
 windowRef = (WindowRef) eventStrucPtr->message;
 img = (IMAGE*)GetWRefCon(windowRef);
 srcPixmapHdl = img->pixmapHdl;
@@ -627,7 +627,7 @@ PixMap *pixmap = *srcPixmapHdl;
 PixPatHandle hdlPixPat = NewPixPat();
 MakeRGBPat(hdlPixPat, &grayColour);
 GetWindowPortBounds(windowRef,&destRect);
-destRect.right  -= kScrollBarWidth;
+destRect.right -= kScrollBarWidth;
 destRect.bottom -= kScrollBarWidth;
 if (destRect.right > pixmap->bounds.right)
 {
@@ -671,7 +671,7 @@ break;
 void doInContent(EventRecord *eventStrucPtr,WindowRef windowRef)
 {
 ControlPartCode controlPartCode;
-ControlRef      controlRef;
+ControlRef controlRef;
 SetPortWindowPort(windowRef);
 GlobalToLocal(&eventStrucPtr->where);
 if(controlRef = FindControlUnderMouse(eventStrucPtr->where,windowRef,&controlPartCode))
@@ -731,9 +731,9 @@ SetControl32BitValue(controlRef,controlValue);
 }
 OSErr quitAppEventHandler(AppleEvent *appEvent,AppleEvent *reply,SInt32 handlerRefcon)
 {
-OSErr    osError;
+OSErr osError;
 DescType returnedType;
-Size     actualSize;
+Size actualSize;
 osError = AEGetAttributePtr(appEvent,keyMissedKeywordAttr,typeWildCard,&returnedType,NULL,0,
 &actualSize);
 if(osError == errAEDescNotFound)

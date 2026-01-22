@@ -1,7 +1,7 @@
 #ifndef icid_INCLUDED
-#  define icid_INCLUDED
+# define icid_INCLUDED
 #ifndef gs_cid_system_info_DEFINED
-#  define gs_cid_system_info_DEFINED
+# define gs_cid_system_info_DEFINED
 typedef struct gs_cid_system_info_s gs_cid_system_info_t;
 #endif
 int cid_system_info_param(gs_cid_system_info_t *, const ref *);

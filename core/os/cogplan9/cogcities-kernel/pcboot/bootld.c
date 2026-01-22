@@ -1,20 +1,20 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"ureg.h"
-#include	"pool.h"
-#include	"../port/netif.h"
-#include	"../ip/ip.h"
-#include	"pxe.h"
-#include	<a.out.h>
-#include 	"/sys/src/libmach/elf.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "ureg.h"
+#include "pool.h"
+#include "../port/netif.h"
+#include "../ip/ip.h"
+#include "pxe.h"
+#include <a.out.h>
+#include "/sys/src/libmach/elf.h"
 #undef KADDR
 #undef PADDR
-#define KADDR(a)	((void*)((ulong)(a) | KZERO))
-#define PADDR(a)	((ulong)(a) & ~KSEGM)
+#define KADDR(a) ((void*)((ulong)(a) | KZERO))
+#define PADDR(a) ((ulong)(a) & ~KSEGM)
 extern int debug;
 extern void pagingoff(ulong);
 static uchar elfident[] = {
@@ -311,7 +311,7 @@ php = phdr+curphdr;
 if(debug)
 print("readedata %d\n", curphdr);
 if(php->filesz < php->memsz){
-print("%lud",  php->memsz-php->filesz);
+print("%lud", php->memsz-php->filesz);
 elftotal += php->memsz-php->filesz;
 memset((char*)KADDR(PADDR(php->paddr)+php->filesz), 0,
 php->memsz-php->filesz);
@@ -328,7 +328,7 @@ php = p64hdr+curphdr;
 if(debug)
 print("reade64data %d\n", curphdr);
 if(php->filesz < php->memsz){
-print("%llud",  php->memsz - php->filesz);
+print("%llud", php->memsz - php->filesz);
 elftotal += php->memsz - php->filesz;
 memset((char*)KADDR(PADDR(php->paddr) + php->filesz), 0,
 php->memsz - php->filesz);
@@ -398,7 +398,7 @@ prstackuse(int)
 char *top, *base;
 ulong *p;
 base = up->kstack;
-top =  up->kstack + KSTACK - (sizeof(Sargs) + BY2WD);
+top = up->kstack + KSTACK - (sizeof(Sargs) + BY2WD);
 for (p = (ulong *)base; (char *)p < top && *p ==
 (Stkpat<<24 | Stkpat<<16 | Stkpat<<8 | Stkpat); p++)
 ;

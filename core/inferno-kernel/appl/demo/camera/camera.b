@@ -19,36 +19,36 @@ include "arg.m";
 Camera : module {
 init : fn (nil : ref Draw->Context, argv : list of string);
 };
-cdp_get_product_info: 			con 16r01;
-cdp_get_image_specifications:	con 16r02;
-cdp_get_camera_status:			con 16r03;
-cdp_set_product_info:			con 16r05;
-cdp_get_camera_capabilities:		con 16r10;
-cdp_get_camera_state:			con 16r11;
-cdp_set_camera_state:			con 16r12;
-cdp_get_camera_defaults:		con 16r13;
-cdp_set_camera_defaults:		con 16r14;
-cdp_restore_camera_states:		con 16r15;
-cdp_get_scene_analysis:			con 16r18;
-cdp_get_power_mode:			con 16r19;
-cdp_set_power_mode:			con 16r1a;
-cdp_get_s1_mode:				con 16r1d;
-cdp_set_s1_mode:				con 16r1e;
-cdp_start_capture:				con 16r30;
-cdp_get_file_list:				con 16r40;
-cdp_get_new_file_list:			con 16r41;
-cdp_get_file_data:				con 16r42;
-cdp_erase_file:					con 16r43;
-cdp_get_storage_status:			con 16r44;
-cdp_set_file_data:				con 16r47;
-cdp_get_file_tag:				con 16r48;
-cdp_set_user_file_tag:			con 16r49;
-cdp_get_clock:					con 16r70;
-cdp_set_clock:					con 16r71;
-cdp_get_error:					con 16r78;
-cdp_get_interface_timeout:		con 16r90;
-cdp_set_interface_timeout:		con 16r91;
-cdp_header_len:				con 12;
+cdp_get_product_info: con 16r01;
+cdp_get_image_specifications: con 16r02;
+cdp_get_camera_status: con 16r03;
+cdp_set_product_info: con 16r05;
+cdp_get_camera_capabilities: con 16r10;
+cdp_get_camera_state: con 16r11;
+cdp_set_camera_state: con 16r12;
+cdp_get_camera_defaults: con 16r13;
+cdp_set_camera_defaults: con 16r14;
+cdp_restore_camera_states: con 16r15;
+cdp_get_scene_analysis: con 16r18;
+cdp_get_power_mode: con 16r19;
+cdp_set_power_mode: con 16r1a;
+cdp_get_s1_mode: con 16r1d;
+cdp_set_s1_mode: con 16r1e;
+cdp_start_capture: con 16r30;
+cdp_get_file_list: con 16r40;
+cdp_get_new_file_list: con 16r41;
+cdp_get_file_data: con 16r42;
+cdp_erase_file: con 16r43;
+cdp_get_storage_status: con 16r44;
+cdp_set_file_data: con 16r47;
+cdp_get_file_tag: con 16r48;
+cdp_set_user_file_tag: con 16r49;
+cdp_get_clock: con 16r70;
+cdp_set_clock: con 16r71;
+cdp_get_error: con 16r78;
+cdp_get_interface_timeout: con 16r90;
+cdp_set_interface_timeout: con 16r91;
+cdp_header_len: con 12;
 T_DIR: con 0;
 T_CTL: con 1;
 T_ABILITIES: con 2;
@@ -91,10 +91,10 @@ byte 16r02,
 byte 16rc9,
 };
 bak := array [] of {
-byte 16r5a,	# 2 byte header
+byte 16r5a, # 2 byte header
 byte 16ra5,
-byte 16r55,	# I/F Type
-byte 16r00,	# Comm Flag
+byte 16r55, # I/F Type
+byte 16r00, # Comm Flag
 byte 16r00,
 byte 16r00,
 byte 16r00,
@@ -116,17 +116,17 @@ byte 0,
 SERIAL, USB, IRDA: con (1<<iota);
 BEACON, BEACONRESULT: con (1<<iota);
 Camera_adt: adt {
-port_type: 	int;
-port_num:	int;
-command:	int;
-mode: 		int;
-fd:			ref Sys->FD;
-ctlfd:			ref Sys->FD;
-cdp:			array of byte;
-bufbytes:		int;
-baud:		int;
-dfs, hfs:		int;		# device and host frame sizes
-stat:			int;	# eia status file
+port_type: int;
+port_num: int;
+command: int;
+mode: int;
+fd: ref Sys->FD;
+ctlfd: ref Sys->FD;
+cdp: array of byte;
+bufbytes: int;
+baud: int;
+dfs, hfs: int; # device and host frame sizes
+stat: int; # eia status file
 };
 statopt := array[] of {
 "status",
@@ -178,8 +178,8 @@ nametree = load Nametree Nametree->PATH;
 nametree->init();
 arg := load Arg Arg->PATH;
 filelist = array[200] of Fitem;
-C.port_num = 0;			# XXXXX from argv
-C.port_type = SERIAL;		# Serial only for now
+C.port_num = 0; # XXXXX from argv
+C.port_type = SERIAL; # Serial only for now
 C.baud = 115200;
 C.dfs = C.hfs = 1023;
 C.cdp = array [DL_QUANTA] of byte;
@@ -348,7 +348,7 @@ return -1;
 }
 <- tick =>
 kill(pid);
-return -1;		# failure
+return -1; # failure
 }
 }
 }
@@ -559,7 +559,7 @@ lastgm = gm;
 retryit = 0;
 if (gm == nil) {
 sys->print("exiting!\n");
-break serveloop;		# nil => EOF => last mount was unmounted
+break serveloop; # nil => EOF => last mount was unmounted
 }
 print(sys->sprint("Got new GM %s tag: %d\n", gm.text(), gm.tag),4);
 # print(sys->sprint("Got new GM %s tag: %d\n", gm.text(), gm.tag),2);
@@ -702,7 +702,7 @@ srv.reply(styxservers->readbytes(m, data));
 srv.reply(ref Rmsg.Error(m.tag, "Cannot read file"));
 }
 # if (readfid != -1)
-# 	sys->print("readfid set: %d\n",readfid);
+# sys->print("readfid set: %d\n",readfid);
 Write =>
 print("got write request in serveloop\n",6);
 (f,e) := srv.canwrite(m);
@@ -723,22 +723,22 @@ err := "";
 case hd s {
 "refresh" =>
 # for (i := 0; i < reslength; i++) {
-#	tree.remove(filelist[i].qid.path);
-#	tree.remove(big filelist[i].cf.thumbqid);
+# tree.remove(filelist[i].qid.path);
+# tree.remove(big filelist[i].cf.thumbqid);
 # }
 if (get_file_list() != 0)
 err = "Error: Could not read from camera";
 else
 updatetree(tree);
 # for (i = 0; i < reslength; i++)
-#	buildfilelist(tree, i);
+# buildfilelist(tree, i);
 "snap" =>
 nu := int f.uname;
 print(sys->sprint("User %d taking photo\n",nu),2);
 for (i := 0; i < len currentattr; i++) {
 # sys->print("user: %s=%d current: %s=%d\n",
-# 	users[nu].attr[i].t0,users[nu].attr[i].t1,
-#	currentattr[i].t0,currentattr[i].t1);
+# users[nu].attr[i].t0,users[nu].attr[i].t1,
+# currentattr[i].t0,currentattr[i].t1);
 if (users[nu].attr[i].t1 != currentattr[i].t1) {
 set_camera_state(users[nu].attr[i].t0, users[nu].attr[i].t1);
 sys->sleep(100);
@@ -760,7 +760,7 @@ break;
 }
 updatetree(tree);
 * =>
-if (n == 2) {	# assume that it is a (string, int) tuple
+if (n == 2) { # assume that it is a (string, int) tuple
 na := getattr(hd s);
 if (na == -1)
 err = "Invalid command name '"+hd s+"'";
@@ -795,7 +795,7 @@ srv.default(gm);
 }
 if (recon) {
 retryit = 1;
-ok :=	reconnect(4);
+ok := reconnect(4);
 if (!ok) {
 srv.reply(ref Rmsg.Error(gm.tag, "Could not connect to camera"));
 killchan := chan of int;
@@ -903,7 +903,7 @@ else break;
 if (filelen == 0 && !isthumb) return nil; # doesn't matter if filesize is wrong for thumbnail
 if (isthumb) filelen = filelist[photonum].cf.thumblength;
 if (usecache && cachesize(dosname, isthumb) == filelen) {
-#		print(sys->sprint("Is cached!\n");
+# print(sys->sprint("Is cached!\n");
 n := m.count;
 filesize := cachesize(dosname,isthumb);
 if (offset >= filesize) return nil;
@@ -918,7 +918,7 @@ fd = nil;
 return data;
 }
 }
-#	print(sys->sprint("Is NOT cached!\n");
+# print(sys->sprint("Is NOT cached!\n");
 if (photonum == ex.pnum && offset == ex.offset && ex.isthumb == isthumb)
 data = ex.data;
 else if (isthumb)
@@ -1038,7 +1038,7 @@ poll_and_wait(): int
 {
 print("poll and wait\n",7);
 write_n(C.fd, pwl, len pwl);
-#	sys->sleep(100);
+# sys->sleep(100);
 if (read_n_to(C.fd, pak, len pak,TIMEOUT) < 0) {
 print("poll_and_wait: unexpected read failure, exiting...\n",1);
 return -1;
@@ -1054,7 +1054,7 @@ pwl[0] = byte ((1<<5)|(1<<4)|(1<<3)|(1<<2)|(to_write>>8));
 pwl[1] = byte (to_write&16rff);
 if (poll_and_wait() != 0)
 return -1;
-#	pak[1] == byte 2; ?
+# pak[1] == byte 2; ?
 pak[1] = byte 2;
 wrote_here := write_n(C.fd, C.cdp, to_write);
 if (wrote_here != to_write)
@@ -1138,7 +1138,7 @@ off = set_int(C.cdp[off:], l, off);
 off = set_int(C.cdp[off:], filesize, off);
 print(sys->sprint( "getthumbdata %d %d %d\n", offset, maxlength, filesize),5);
 send_message();
-#		sys->sleep(2000);
+# sys->sleep(2000);
 if ((err = receive_message()) != 0) {
 print(sys->sprint("Error %d\n", err),1);
 return nil;
@@ -1212,7 +1212,7 @@ off = set_int(C.cdp[off:], file.driveno, off);
 off = set_fstring(C.cdp[off:], file.pathname, off);
 off = set_dosname(C.cdp[off:], file.dosname, off);
 send_message();
-#	sys->sleep(1000);
+# sys->sleep(1000);
 if (receive_message() != 0)
 return -1;
 return 0;
@@ -1229,7 +1229,7 @@ s := "";
 C.command = cdp_get_storage_status;
 C.bufbytes = build_cdp_header(C.cdp, 0);
 send_message();
-#	sys->sleep(2000);
+# sys->sleep(2000);
 if (receive_message() != 0) return "";
 off := cdp_header_len;
 taken, available, raw : int;
@@ -1249,7 +1249,7 @@ mode: int;
 C.command = cdp_get_power_mode;
 C.bufbytes = build_cdp_header(C.cdp, 0);
 send_message();
-#	sys->sleep(2000);
+# sys->sleep(2000);
 if (receive_message() != 0) return "Could not read power mode";
 off := cdp_header_len;
 (mode, off) = get_int(C.cdp[off:], off);
@@ -1343,10 +1343,10 @@ return 0;
 setfiledata()
 {
 off := cdp_header_len;
-off = set_int(C.cdp[off:], 1, off);						# ascending order
-off = set_int(C.cdp[off:], 1, off);						# drive a: internal RAM disk
-off = set_fstring(C.cdp[off:], array of byte "", off);		# set pathname to null
-off = set_dosname(C.cdp[off:], array of byte "", off);		# set Dos filename to null
+off = set_int(C.cdp[off:], 1, off); # ascending order
+off = set_int(C.cdp[off:], 1, off); # drive a: internal RAM disk
+off = set_fstring(C.cdp[off:], array of byte "", off); # set pathname to null
+off = set_dosname(C.cdp[off:], array of byte "", off); # set Dos filename to null
 }
 get_file_size(i: int): int
 {
@@ -1361,10 +1361,10 @@ return 0;
 setfiledata2(i: int)
 {
 off := cdp_header_len;
-off = set_int(C.cdp[off:], 1, off);						# ascending order
-off = set_int(C.cdp[off:], 1, off);						# drive a: internal RAM disk
-off = set_fstring(C.cdp[off:], filelist[i].cf.pathname, off);	# set pathname
-off = set_dosname(C.cdp[off:], filelist[i].cf.dosname, off);	# set Dos filename
+off = set_int(C.cdp[off:], 1, off); # ascending order
+off = set_int(C.cdp[off:], 1, off); # drive a: internal RAM disk
+off = set_fstring(C.cdp[off:], filelist[i].cf.pathname, off); # set pathname
+off = set_dosname(C.cdp[off:], filelist[i].cf.dosname, off); # set Dos filename
 }
 set_interface_timeout()
 {
@@ -1375,7 +1375,7 @@ off := cdp_header_len;
 off = set_int(C.cdp[off:], 100, off);
 off = set_int(C.cdp[off:], 5, off);
 send_message();
-#	sys->sleep(1000);
+# sys->sleep(1000);
 receive_message();
 }
 display_filelist(): string
@@ -1408,7 +1408,7 @@ print("Get capabilities\n",3);
 C.command = cdp_get_camera_capabilities;
 C.bufbytes = build_cdp_header(C.cdp, 0);
 send_message();
-#	sys->sleep(500);
+# sys->sleep(500);
 if (receive_message() != -1)
 return capabilities();
 print("Error recieving abilities message\n",1);
@@ -1428,7 +1428,7 @@ caplist: list of ref Capability;
 print_camera_capabilities(): string
 {
 rs := "";
-#	p : ref Capability;
+# p : ref Capability;
 pick p := hd caplist{
 List =>
 rs += sys->sprint("Pname = %s ", p.pname);
@@ -1436,7 +1436,7 @@ Range =>
 rs += sys->sprint("Pname = %s  min = %d  max = %d  default = %d ", p.pname,
 p.min, p.max, p.default);
 }
-#	p := tl p;
+# p := tl p;
 return rs;
 }
 capabilities(): string
@@ -1588,9 +1588,9 @@ data = array of byte string tmp;
 data = array of byte "!ERROR!";
 }
 # if (string data == "!ERROR!") return "";
-#		if (rlen == 1)
-#			s = string data;
-#		else s += sys->sprint("%s: %s\n",string name, string data);
+# if (rlen == 1)
+# s = string data;
+# else s += sys->sprint("%s: %s\n",string name, string data);
 s += sys->sprint("%s: %s\n",string name, string data);
 }
 return s;
@@ -1610,11 +1610,11 @@ off = set_int(C.cdp[off:], val, off);
 C.command = cdp_set_camera_state;
 C.bufbytes = build_cdp_header(C.cdp, 8);
 send_message();
-#	sys->sleep(1000);
+# sys->sleep(1000);
 if ((e := receive_message()) == 0) {
 na := getattr(pname);
 if (na != -1)
-currentattr[na].t1 =  val;
+currentattr[na].t1 = val;
 return nil;
 }
 else
@@ -1625,14 +1625,14 @@ capture(): int
 C.command = cdp_get_camera_status;
 C.bufbytes = build_cdp_header(C.cdp, 0);
 send_message();
-#	sys->sleep(1000);
+# sys->sleep(1000);
 if (receive_message() != 0)
 return -1;
 d := set_capture_data();
 C.command = cdp_start_capture;
 C.bufbytes = build_cdp_header(C.cdp, d);
 send_message();
-#	sys->sleep(3000);
+# sys->sleep(3000);
 return receive_message();
 }
 dump_message()
@@ -1665,7 +1665,7 @@ poll_and_reply(nak: int): int
 print("poll and reply\n",7);
 if ((read_n_to(C.fd, pwl, len pwl,TIMEOUT) < 0) && nak) {
 pak[0] = byte 0;
-pak[1] = byte 2;		# reject
+pak[1] = byte 2; # reject
 write_n(C.fd, pak, len pak);
 return 0;
 }
@@ -1717,9 +1717,9 @@ return 3;
 # raise "error: receive packet2 failed";
 }
 }
-#	sys->sleep(500);
+# sys->sleep(500);
 read_n_to(C.fd, pak, len pak, TIMEOUT);
-return  (int ((C.cdp[10]<<8)|(C.cdp[11])));  # result code
+return (int ((C.cdp[10]<<8)|(C.cdp[11]))); # result code
 }
 reset(fd: ref Sys->FD)
 {
@@ -1741,9 +1741,9 @@ sys->fprint(fd, "killgrp");
 }
 #dump_buf(buf: array of byte, i: int)
 #{
-#	for (j := 0; j < i; j++)
-#		sys->fprint(sys->fildes(2), "%x ", int buf[j]);
-#	sys->fprint(sys->fildes(2), "\n");
+# for (j := 0; j < i; j++)
+# sys->fprint(sys->fildes(2), "%x ", int buf[j]);
+# sys->fprint(sys->fildes(2), "\n");
 #}
 serialport(port : int) : (ref Sys->FD, ref Sys->FD, string)
 {
@@ -1798,7 +1798,7 @@ beacon_intro(data: chan of array of byte, pchan: chan of int, fd: ref Sys->FD)
 buf := array[64] of byte;
 cbuf: array of byte;
 pid := sys->pctl(0, nil);
-#	print(sys->sprint("b_intro: starting %d\n",pid);
+# print(sys->sprint("b_intro: starting %d\n",pid);
 pchan <-= pid;
 failed := array[len bintro] of { * => byte 0 };
 # discard characters until lead in character reached
@@ -1906,7 +1906,7 @@ return 0;
 read_n(fd: ref Sys->FD, buf: array of byte, n: int, res: chan of int)
 {
 pid := sys->pctl(0, nil);
-#	print(sys->sprint("read_n: starting %d\n",pid);
+# print(sys->sprint("read_n: starting %d\n",pid);
 res <-= pid;
 print(sys->sprint( "read_n %d\n", n),7);
 nread := 0;
@@ -1918,7 +1918,7 @@ break;
 nread += i;
 }
 res <-= nread;
-#	print(sys->sprint("read_n: ending %d\n",pid);
+# print(sys->sprint("read_n: ending %d\n",pid);
 }
 read_n2(fd: ref Sys->FD, buf: array of byte, n: int): int
 {
@@ -1965,7 +1965,7 @@ sys->sleep(1);
 if (i <= 0) {
 print(sys->sprint("Error returned by write: %r\n"),1);
 readstat();
-#			recon = 1;
+# recon = 1;
 return nwrite;
 }
 nwrite += i;
@@ -2155,7 +2155,7 @@ if (r < 0) r = -r;
 if (r > 255) r = 255;
 return byte r;
 }
-thumb2bit(buf: array of byte, w,h: int):  array of byte
+thumb2bit(buf: array of byte, w,h: int): array of byte
 {
 convbuf := convert_thumb(w,h,buf);
 # assume thumbs are small so we wont gain much by compressing them
@@ -2278,7 +2278,7 @@ break;
 if (n != -1 && attempt >= n)
 break;
 if (++to5 >= 5) {
-delay  *= 2;
+delay *= 2;
 to5 = 0;
 if (delay > 600000)
 delay = 600000;

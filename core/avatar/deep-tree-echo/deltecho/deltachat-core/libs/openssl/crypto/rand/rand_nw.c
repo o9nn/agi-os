@@ -3,9 +3,9 @@
 #include "rand_lcl.h"
 #if defined (OPENSSL_SYS_NETWARE)
 # if defined(NETWARE_LIBC)
-#  include <nks/thread.h>
+# include <nks/thread.h>
 # else
-#  include <nwthread.h>
+# include <nwthread.h>
 # endif
 extern int GetProcessSwitchCount(void);
 # if !defined(NETWARE_LIBC) || (CURRENT_NDK_THRESHOLD < 509220000)

@@ -1,29 +1,29 @@
 #ifndef gxchar_INCLUDED
-#  define gxchar_INCLUDED
+# define gxchar_INCLUDED
 #include "gschar.h"
 #include "gxtext.h"
 #ifndef cached_char_DEFINED
-#  define cached_char_DEFINED
+# define cached_char_DEFINED
 typedef struct cached_char_s cached_char;
 #endif
 #ifndef cached_fm_pair_DEFINED
-#  define cached_fm_pair_DEFINED
+# define cached_fm_pair_DEFINED
 typedef struct cached_fm_pair_s cached_fm_pair;
 #endif
 #ifndef gs_font_DEFINED
-#  define gs_font_DEFINED
+# define gs_font_DEFINED
 typedef struct gs_font_s gs_font;
 #endif
 #ifndef gs_text_enum_DEFINED
-#  define gs_text_enum_DEFINED
+# define gs_text_enum_DEFINED
 typedef struct gs_text_enum_s gs_text_enum_t;
 #endif
 #ifndef gx_device_memory_DEFINED
-#  define gx_device_memory_DEFINED
+# define gx_device_memory_DEFINED
 typedef struct gx_device_memory_s gx_device_memory;
 #endif
 #ifndef gx_device_null_DEFINED
-#  define gx_device_null_DEFINED
+# define gx_device_null_DEFINED
 typedef struct gx_device_null_s gx_device_null;
 #endif
 typedef enum {
@@ -62,7 +62,7 @@ gs_public_st_composite(st_gs_show_enum, gs_show_enum, "gs_show_enum",\
 show_enum_enum_ptrs, show_enum_reloc_ptrs)
 int gx_current_char(const gs_text_enum_t * pte);
 #ifndef gs_font_dir_DEFINED
-#  define gs_font_dir_DEFINED
+# define gs_font_dir_DEFINED
 typedef struct gs_font_dir_s gs_font_dir;
 #endif
 cached_char *

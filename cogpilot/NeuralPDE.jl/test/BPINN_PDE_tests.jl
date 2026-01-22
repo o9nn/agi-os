@@ -369,11 +369,11 @@ exps = toexpr.(eqs)
 nullobj = [recur_expression(exp, Dict_differentials) for exp in exps]
 # Dict_differentials is now ;
 # Dict{Any, Any} with 5 entries:
-#   Differential(x)(Differential(x)(u(x, t)))            => diff_5
-#   Differential(x)(Differential(x)(Differential(x)(u(x… => diff_1
-#   Differential(x)(Differential(x)(Differential(x)(Dif… => diff_2
-#   Differential(x)(u(x, t))                             => diff_4
-#   Differential(t)(u(x, t))                             => diff_3
+# Differential(x)(Differential(x)(u(x, t))) => diff_5
+# Differential(x)(Differential(x)(Differential(x)(u(x… => diff_1
+# Differential(x)(Differential(x)(Differential(x)(Dif… => diff_2
+# Differential(x)(u(x, t)) => diff_4
+# Differential(t)(u(x, t)) => diff_3
 # using HMC algorithm due to convergence, stability, time of training. (refer to mcmc chain plots)
 # choice of std for objectives is very important
 # pass in Dict_differentials, phystdnew arguments when using the new model

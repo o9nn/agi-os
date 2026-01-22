@@ -103,7 +103,7 @@ ASN1_OBJECT *named_curve;
 ECPARAMETERS *parameters;
 ASN1_NULL *implicitlyCA;
 } value;
-}  ;
+} ;
 typedef struct ec_privatekey_st {
 long version;
 ASN1_OCTET_STRING *privateKey;

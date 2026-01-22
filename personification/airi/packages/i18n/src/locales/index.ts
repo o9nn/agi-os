@@ -6,11 +6,11 @@ import vi from './vi'
 import zhHans from './zh-Hans'
 import zhHant from './zh-Hant'
 export default {
-  en,
-  es,
-  fr,
-  ru,
-  vi,
-  'zh-Hans': zhHans,
-  'zh-Hant': zhHant,
+en,
+es,
+fr,
+ru,
+vi,
+'zh-Hans': zhHans,
+'zh-Hant': zhHant,
 }

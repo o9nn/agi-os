@@ -4,62 +4,62 @@
 #include "dat.h"
 #include "fns.h"
 #include "interp.h"
-#define left	u.s.bhl
-#define right	u.s.bhr
-#define fwd	u.s.bhf
-#define prev	u.s.bhv
-#define parent	u.s.bhp
-#define RESERVED	256*1024
+#define left u.s.bhl
+#define right u.s.bhr
+#define fwd u.s.bhf
+#define prev u.s.bhv
+#define parent u.s.bhp
+#define RESERVED 256*1024
 struct Pool
 {
-char*	name;
-int	pnum;
-ulong	maxsize;
-int	quanta;
-int	chunk;
-ulong	ressize;
-ulong	cursize;
-ulong	arenasize;
-ulong	hw;
-Lock	l;
-Bhdr*	root;
-Bhdr*	chain;
-ulong	nalloc;
-ulong	nfree;
-int	nbrk;
-int	lastfree;
-int	warn;
-void	(*move)(void*, void*);
+char* name;
+int pnum;
+ulong maxsize;
+int quanta;
+int chunk;
+ulong ressize;
+ulong cursize;
+ulong arenasize;
+ulong hw;
+Lock l;
+Bhdr* root;
+Bhdr* chain;
+ulong nalloc;
+ulong nfree;
+int nbrk;
+int lastfree;
+int warn;
+void (*move)(void*, void*);
 };
 static
 struct
 {
-int	n;
-Pool	pool[MAXPOOL];
+int n;
+Pool pool[MAXPOOL];
 } table = {
 3,
 {
-{ "main",  0,	 4*1024*1024, 31,  128*1024, 15*256*1024 },
-{ "heap",  1,	16*1024*1024, 31,  128*1024, 15*1024*1024 },
-{ "image", 2,	 8*1024*1024, 31, 300*1024, 15*512*1024 },
+{ "main", 0, 4*1024*1024, 31, 128*1024, 15*256*1024 },
+{ "heap", 1, 16*1024*1024, 31, 128*1024, 15*1024*1024 },
+{ "image", 2, 8*1024*1024, 31, 300*1024, 15*512*1024 },
 }
 };
-Pool*	mainmem = &table.pool[0];
-Pool*	heapmem = &table.pool[1];
-Pool*	imagmem = &table.pool[2];
+Pool* mainmem = &table.pool[0];
+Pool* heapmem = &table.pool[1];
+Pool* imagmem = &table.pool[2];
 static void _auditmemloc(char *, void *);
 void (*auditmemloc)(char *, void *) = _auditmemloc;
 static void _poolfault(void *, char *, ulong);
 void (*poolfault)(void *, char *, ulong) = _poolfault;
 enum {
-Npadlong	= 2,
+Npadlong = 2,
 MallocOffset = 0,
 ReallocOffset = 1
 };
 int
 memusehigh(void)
 {
-return 	mainmem->cursize > mainmem->ressize ||
+return mainmem->cursize > mainmem->ressize ||
 heapmem->cursize > heapmem->ressize ||
 imagmem->cursize > imagmem->ressize;
 }
@@ -737,7 +737,7 @@ if (((Bhdr*)v >= bc) && ((Bhdr*)v < ec))
 goto found;
 }
 iunlock(&p->l);
-nextpool:	;
+nextpool: ;
 }
 print("%s: %lux not in pools\n", str, v);
 return;

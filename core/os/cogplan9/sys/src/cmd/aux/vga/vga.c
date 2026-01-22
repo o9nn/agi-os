@@ -4,10 +4,10 @@
 #include "pci.h"
 #include "vga.h"
 enum {
-NSeqx		= 0x05,
-NCrtx		= 0x19,
-NGrx		= 0x09,
-NAttrx		= 0x15,
+NSeqx = 0x05,
+NCrtx = 0x19,
+NGrx = 0x09,
+NAttrx = 0x15,
 };
 uchar
 vgai(long port)

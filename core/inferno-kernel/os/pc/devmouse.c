@@ -1,10 +1,10 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"../port/error.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "../port/error.h"
 enum
 {
 Mouseother,
@@ -32,8 +32,8 @@ Qmouseprobe,
 };
 static
 Dirtab mousetab[]={
-"mousectl",		{Qmousectl, 0},	0,	0600,
-"mouseprobe",	{Qmouseprobe, 0}, 0, 0400,
+"mousectl", {Qmousectl, 0}, 0, 0600,
+"mouseprobe", {Qmouseprobe, 0}, 0, 0400,
 };
 static Chan*
 mouseattach(char* spec)
@@ -299,20 +299,20 @@ i8042auxcmd(0xF4);
 mousetype = MousePS2;
 }
 enum {
-BMdatap	= 0x23c,
-BMsigp	= 0x23d,
-BMctlp	= 0x23e,
-BMintrp	= 0x23e,
-BMconfigp	= 0x23f,
+BMdatap = 0x23c,
+BMsigp = 0x23d,
+BMctlp = 0x23e,
+BMintrp = 0x23e,
+BMconfigp = 0x23f,
 BMintron = 0x0,
 BMintroff = 0x10,
-BMrxlo	= 0x80,
-BMrxhi	= 0xa0,
-BMrylo	= 0xc0,
-BMryhi	= 0xe0,
-BMconfig	= 0x91,
-BMdefault	= 0x90,
-BMsigval	= 0xa5
+BMrxlo = 0x80,
+BMrxhi = 0xa0,
+BMrylo = 0xc0,
+BMryhi = 0xe0,
+BMconfig = 0x91,
+BMdefault = 0x90,
+BMsigval = 0xa5
 };
 static void
 busmouseintr(Ureg *, void *)
@@ -364,17 +364,17 @@ mousetype = Mousebus;
 mouseport = irq >= 0 ? irq : VectorBUSMOUSE-VectorPIC;
 }
 enum {
-MBMdatap=	0x23d,
-MBMsigp=	0x23e,
-MBMctlp=	0x23c,
-MBMconfigp=	0x23f,
-MBMintron=	0x11,
-MBMintroff=	0x10,
+MBMdatap= 0x23d,
+MBMsigp= 0x23e,
+MBMctlp= 0x23c,
+MBMconfigp= 0x23f,
+MBMintron= 0x11,
+MBMintroff= 0x10,
 MBMrbuttons= 0x00,
-MBMrx=		0x01,
-MBMry=		0x02,
-MBMstart=	0x80,
-MBMcmd=		0x07,
+MBMrx= 0x01,
+MBMry= 0x02,
+MBMstart= 0x80,
+MBMcmd= 0x07,
 };
 static void
 msbusmouseintr(Ureg *, void *)

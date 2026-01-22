@@ -122,9 +122,9 @@ uint32_t data32[16];
 unsigned i;
 for (i = 0; i < 16; i++)
 data32[i] =
-((uint32_t)(p->buffer[i * 4    ]) << 24) +
+((uint32_t)(p->buffer[i * 4 ]) << 24) +
 ((uint32_t)(p->buffer[i * 4 + 1]) << 16) +
-((uint32_t)(p->buffer[i * 4 + 2]) <<  8) +
+((uint32_t)(p->buffer[i * 4 + 2]) << 8) +
 ((uint32_t)(p->buffer[i * 4 + 3]));
 sha256_transform(p->state, data32);
 }

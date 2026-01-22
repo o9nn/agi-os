@@ -1,40 +1,40 @@
 typedef struct {
-uchar	ident[16];
-ushort	type;
-ushort	machine;
-int	version;
-ulong	elfentry;
-ulong	phoff;
-ulong	shoff;
-int	flags;
-ushort	ehsize;
-ushort	phentsize;
-ushort	phnum;
-ushort	shentsize;
-ushort	shnum;
-ushort	shstrndx;
+uchar ident[16];
+ushort type;
+ushort machine;
+int version;
+ulong elfentry;
+ulong phoff;
+ulong shoff;
+int flags;
+ushort ehsize;
+ushort phentsize;
+ushort phnum;
+ushort shentsize;
+ushort shnum;
+ushort shstrndx;
 } Ehdr;
 typedef struct {
-int	type;
-ulong	offset;
-ulong	vaddr;
-ulong	paddr;
-int	filesz;
-ulong	memsz;
-int	flags;
-int	align;
+int type;
+ulong offset;
+ulong vaddr;
+ulong paddr;
+int filesz;
+ulong memsz;
+int flags;
+int align;
 } Phdr;
 typedef struct {
-ulong	name;
-ulong	type;
-ulong	flags;
-ulong	addr;
-ulong	offset;
-ulong	size;
-ulong	link;
-ulong	info;
-ulong	addralign;
-ulong	entsize;
+ulong name;
+ulong type;
+ulong flags;
+ulong addr;
+ulong offset;
+ulong size;
+ulong link;
+ulong info;
+ulong addralign;
+ulong entsize;
 } Shdr;
 enum {
 MAG0 = 0,
@@ -93,4 +93,4 @@ Swrite = 1,
 Salloc = 2,
 Sexec = 4,
 };
-#define	ELF_MAG		((0x7f<<24) | ('E'<<16) | ('L'<<8) | 'F')
+#define ELF_MAG ((0x7f<<24) | ('E'<<16) | ('L'<<8) | 'F')

@@ -1,20 +1,20 @@
 #include <stdlib.h>
 #include "spin.h"
 #include "y.tab.h"
-extern RunList	*X, *run;
-extern Symbol	*Fname;
-extern Element	*LastStep;
-extern int	Rvous, lineno, Tval, interactive, MadeChoice;
-extern int	TstOnly, verbose, s_trail, xspin, jumpsteps, depth;
-extern int	analyze, nproc, nstop, no_print, like_java;
-static long	Seed = 1;
-static int	E_Check = 0, Escape_Check = 0;
-static int	eval_sync(Element *);
-static int	pc_enabled(Lextok *n);
-extern void	sr_buf(int, int);
+extern RunList *X, *run;
+extern Symbol *Fname;
+extern Element *LastStep;
+extern int Rvous, lineno, Tval, interactive, MadeChoice;
+extern int TstOnly, verbose, s_trail, xspin, jumpsteps, depth;
+extern int analyze, nproc, nstop, no_print, like_java;
+static long Seed = 1;
+static int E_Check = 0, Escape_Check = 0;
+static int eval_sync(Element *);
+static int pc_enabled(Lextok *n);
+extern void sr_buf(int, int);
 void
 Srand(unsigned int s)
-{	Seed = s;
+{ Seed = s;
 }
 long
 Rand(void)
@@ -25,7 +25,7 @@ return Seed;
 }
 Element *
 rev_escape(SeqList *e)
-{	Element *r;
+{ Element *r;
 if (!e)
 return (Element *) 0;
 if ((r = rev_escape(e->nxt)) != ZE)
@@ -34,7 +34,7 @@ return eval_sub(e->this->frst);
 }
 Element *
 eval_sub(Element *e)
-{	Element *f, *g;
+{ Element *f, *g;
 SeqList *z;
 int i, j, k, only_pos;
 if (!e || !e->n)
@@ -46,7 +46,7 @@ comment(stdout, e->n, 0);
 printf("\n");
 #endif
 if (e->n->ntyp == GOTO)
-{	if (Rvous) return ZE;
+{ if (Rvous) return ZE;
 LastStep = e;
 f = get_lab(e->n, 1);
 f = huntele(f, e->status, -1);
@@ -60,7 +60,7 @@ if (e->n->ntyp == UNLESS)
 {
 return eval_sub(e->sub->this->frst);
 } else if (e->sub)
-{	Element *has_else = ZE;
+{ Element *has_else = ZE;
 Element *bas_else = ZE;
 int nr_else = 0, nr_choices = 0;
 only_pos = -1;
@@ -69,15 +69,15 @@ if (interactive
 && !Escape_Check
 && !(e->status&(D_ATOM))
 && depth >= jumpsteps)
-{	printf("Select stmnt (");
+{ printf("Select stmnt (");
 whoruns(0); printf(")\n");
 if (nproc-nstop > 1)
-{	printf("\tchoice 0: other process\n");
+{ printf("\tchoice 0: other process\n");
 nr_choices++;
 only_pos = 0;
-}	}
+} }
 for (z = e->sub, j=0; z; z = z->nxt)
-{	j++;
+{ j++;
 if (interactive
 && !MadeChoice && !E_Check
 && !Escape_Check
@@ -85,8 +85,8 @@ if (interactive
 && depth >= jumpsteps
 && z->this->frst
 && (xspin || (verbose&32) || Enabled0(z->this->frst)))
-{	if (z->this->frst->n->ntyp == ELSE)
-{	has_else = (Rvous)?ZE:z->this->frst->nxt;
+{ if (z->this->frst->n->ntyp == ELSE)
+{ has_else = (Rvous)?ZE:z->this->frst->nxt;
 nr_else = j;
 continue;
 }
@@ -98,52 +98,52 @@ printf("line %d, ", z->this->frst->n->ln);
 if (!Enabled0(z->this->frst))
 printf("unexecutable, ");
 else
-{	nr_choices++;
+{ nr_choices++;
 only_pos = j;
 }
 comment(stdout, z->this->frst->n, 0);
 printf("\n");
-}	}
+} }
 if (nr_choices == 0 && has_else)
-{	printf("\tchoice %d: (else)\n", nr_else);
+{ printf("\tchoice %d: (else)\n", nr_else);
 only_pos = nr_else;
 }
 if (nr_choices <= 1 && only_pos != -1 && !MadeChoice)
-{	MadeChoice = only_pos;
+{ MadeChoice = only_pos;
 }
 if (interactive && depth >= jumpsteps
 && !Escape_Check
 && !(e->status&(D_ATOM))
 && !E_Check)
-{	if (!MadeChoice)
-{	char buf[256];
+{ if (!MadeChoice)
+{ char buf[256];
 if (xspin)
 printf("Make Selection %d\n\n", j);
 else
 printf("Select [0-%d]: ", j);
 fflush(stdout);
 if (scanf("%64s", buf) <= 0)
-{	printf("no input\n");
+{ printf("no input\n");
 return ZE;
 }
 if (isdigit((int)buf[0]))
 k = atoi(buf);
 else
-{	if (buf[0] == 'q')
+{ if (buf[0] == 'q')
 alldone(0);
 k = -1;
 }
 } else
-{	k = MadeChoice;
+{ k = MadeChoice;
 MadeChoice = 0;
 }
 if (k < 1 || k > j)
-{	if (k != 0) printf("\tchoice outside range\n");
+{ if (k != 0) printf("\tchoice outside range\n");
 return ZE;
 }
 k--;
 } else
-{	if (e->n && e->n->indstep >= 0)
+{ if (e->n && e->n->indstep >= 0)
 k = 0;
 else
 k = Rand()%j;
@@ -151,72 +151,72 @@ k = Rand()%j;
 has_else = ZE;
 bas_else = ZE;
 for (i = 0, z = e->sub; i < j+k; i++)
-{	if (z->this->frst
-&&  z->this->frst->n->ntyp == ELSE)
-{	bas_else = z->this->frst;
+{ if (z->this->frst
+&& z->this->frst->n->ntyp == ELSE)
+{ bas_else = z->this->frst;
 has_else = (Rvous)?ZE:bas_else->nxt;
 if (!interactive || depth < jumpsteps
 || Escape_Check
 || (e->status&(D_ATOM)))
-{	z = (z->nxt)?z->nxt:e->sub;
+{ z = (z->nxt)?z->nxt:e->sub;
 continue;
 }
 }
 if (z->this->frst
-&&  ((z->this->frst->n->ntyp == ATOMIC
-||  z->this->frst->n->ntyp == D_STEP)
-&&  z->this->frst->n->sl->this->frst->n->ntyp == ELSE))
-{	bas_else = z->this->frst->n->sl->this->frst;
+&& ((z->this->frst->n->ntyp == ATOMIC
+|| z->this->frst->n->ntyp == D_STEP)
+&& z->this->frst->n->sl->this->frst->n->ntyp == ELSE))
+{ bas_else = z->this->frst->n->sl->this->frst;
 has_else = (Rvous)?ZE:bas_else->nxt;
 if (!interactive || depth < jumpsteps
 || Escape_Check
 || (e->status&(D_ATOM)))
-{	z = (z->nxt)?z->nxt:e->sub;
+{ z = (z->nxt)?z->nxt:e->sub;
 continue;
 }
 }
 if (i >= k)
-{	if ((f = eval_sub(z->this->frst)) != ZE)
+{ if ((f = eval_sub(z->this->frst)) != ZE)
 return f;
 else if (interactive && depth >= jumpsteps
 && !(e->status&(D_ATOM)))
-{	if (!E_Check && !Escape_Check)
+{ if (!E_Check && !Escape_Check)
 printf("\tunexecutable\n");
 return ZE;
-}	}
+} }
 z = (z->nxt)?z->nxt:e->sub;
 }
 LastStep = bas_else;
 return has_else;
 } else
-{	if (e->n->ntyp == ATOMIC
-||  e->n->ntyp == D_STEP)
-{	f = e->n->sl->this->frst;
+{ if (e->n->ntyp == ATOMIC
+|| e->n->ntyp == D_STEP)
+{ f = e->n->sl->this->frst;
 g = e->n->sl->this->last;
 g->nxt = e->nxt;
 if (!(g = eval_sub(f)))
 return ZE;
 return g;
 } else if (e->n->ntyp == NON_ATOMIC)
-{	f = e->n->sl->this->frst;
+{ f = e->n->sl->this->frst;
 g = e->n->sl->this->last;
 g->nxt = e->nxt;
 return eval_sub(f);
 } else if (e->n->ntyp == '.')
-{	if (!Rvous) return e->nxt;
+{ if (!Rvous) return e->nxt;
 return eval_sub(e->nxt);
 } else
-{	SeqList *x;
+{ SeqList *x;
 if (!(e->status & (D_ATOM))
-&&  e->esc && verbose&32)
-{	printf("Stmnt [");
+&& e->esc && verbose&32)
+{ printf("Stmnt [");
 comment(stdout, e->n, 0);
 printf("] has escape(s): ");
 for (x = e->esc; x; x = x->nxt)
-{	printf("[");
+{ printf("[");
 g = x->this->frst;
 if (g->n->ntyp == ATOMIC
-||  g->n->ntyp == NON_ATOMIC)
+|| g->n->ntyp == NON_ATOMIC)
 g = g->n->sl->this->frst;
 comment(stdout, g->n, 0);
 printf("] ");
@@ -229,26 +229,26 @@ if (!(e->status & D_ATOM))
 #if 1
 if (!s_trail)
 #endif
-{	Escape_Check++;
+{ Escape_Check++;
 if (like_java)
-{	if ((g = rev_escape(e->esc)) != ZE)
-{	if (verbose&4)
+{ if ((g = rev_escape(e->esc)) != ZE)
+{ if (verbose&4)
 printf("\tEscape taken\n");
 Escape_Check--;
 return g;
 }
 } else
-{	for (x = e->esc; x; x = x->nxt)
-{	if ((g = eval_sub(x->this->frst)) != ZE)
-{	if (verbose&4)
-{	printf("\tEscape taken ");
+{ for (x = e->esc; x; x = x->nxt)
+{ if ((g = eval_sub(x->this->frst)) != ZE)
+{ if (verbose&4)
+{ printf("\tEscape taken ");
 if (g->n && g->n->fn)
 printf("%s:%d", g->n->fn->name, g->n->ln);
 printf("\n");
 }
 Escape_Check--;
 return g;
-}	}	}
+} } }
 Escape_Check--;
 }
 switch (e->n->ntyp) {
@@ -275,9 +275,9 @@ eval_sync(Element *e)
 {
 Lextok *now = (e)?e->n:ZN;
 if (!now
-||  now->ntyp != 'r'
-||  now->val >= 2
-||  !q_is_sync(now))
+|| now->ntyp != 'r'
+|| now->val >= 2
+|| !q_is_sync(now))
 {
 return 0;
 }
@@ -286,12 +286,12 @@ return eval(now);
 }
 static int
 assign(Lextok *now)
-{	int t;
+{ int t;
 if (TstOnly) return 1;
 switch (now->rgt->ntyp) {
-case FULL:	case NFULL:
-case EMPTY:	case NEMPTY:
-case RUN:	case LEN:
+case FULL: case NFULL:
+case EMPTY: case NEMPTY:
+case RUN: case LEN:
 t = BYTE;
 break;
 default:
@@ -303,9 +303,9 @@ return setval(now->lft, eval(now->rgt));
 }
 static int
 nonprogress(void)
-{	RunList	*r;
+{ RunList *r;
 for (r = run; r; r = r->nxt)
-{	if (has_lab(r->pc, 4))
+{ if (has_lab(r->pc, 4))
 return 0;
 }
 return 1;
@@ -315,7 +315,7 @@ eval(Lextok *now)
 {
 if (now) {
 lineno = now->ln;
-Fname  = now->fn;
+Fname = now->fn;
 #ifdef DEBUG
 printf("eval ");
 comment(stdout, now, 0);
@@ -323,58 +323,58 @@ printf("\n");
 #endif
 switch (now->ntyp) {
 case CONST: return now->val;
-case   '!': return !eval(now->lft);
-case  UMIN: return -eval(now->lft);
-case   '~': return ~eval(now->lft);
-case   '/': return (eval(now->lft) / eval(now->rgt));
-case   '*': return (eval(now->lft) * eval(now->rgt));
-case   '-': return (eval(now->lft) - eval(now->rgt));
-case   '+': return (eval(now->lft) + eval(now->rgt));
-case   '%': return (eval(now->lft) % eval(now->rgt));
-case    LT: return (eval(now->lft) <  eval(now->rgt));
-case    GT: return (eval(now->lft) >  eval(now->rgt));
-case   '&': return (eval(now->lft) &  eval(now->rgt));
-case   '^': return (eval(now->lft) ^  eval(now->rgt));
-case   '|': return (eval(now->lft) |  eval(now->rgt));
-case    LE: return (eval(now->lft) <= eval(now->rgt));
-case    GE: return (eval(now->lft) >= eval(now->rgt));
-case    NE: return (eval(now->lft) != eval(now->rgt));
-case    EQ: return (eval(now->lft) == eval(now->rgt));
-case    OR: return (eval(now->lft) || eval(now->rgt));
-case   AND: return (eval(now->lft) && eval(now->rgt));
+case '!': return !eval(now->lft);
+case UMIN: return -eval(now->lft);
+case '~': return ~eval(now->lft);
+case '/': return (eval(now->lft) / eval(now->rgt));
+case '*': return (eval(now->lft) * eval(now->rgt));
+case '-': return (eval(now->lft) - eval(now->rgt));
+case '+': return (eval(now->lft) + eval(now->rgt));
+case '%': return (eval(now->lft) % eval(now->rgt));
+case LT: return (eval(now->lft) < eval(now->rgt));
+case GT: return (eval(now->lft) > eval(now->rgt));
+case '&': return (eval(now->lft) & eval(now->rgt));
+case '^': return (eval(now->lft) ^ eval(now->rgt));
+case '|': return (eval(now->lft) | eval(now->rgt));
+case LE: return (eval(now->lft) <= eval(now->rgt));
+case GE: return (eval(now->lft) >= eval(now->rgt));
+case NE: return (eval(now->lft) != eval(now->rgt));
+case EQ: return (eval(now->lft) == eval(now->rgt));
+case OR: return (eval(now->lft) || eval(now->rgt));
+case AND: return (eval(now->lft) && eval(now->rgt));
 case LSHIFT: return (eval(now->lft) << eval(now->rgt));
 case RSHIFT: return (eval(now->lft) >> eval(now->rgt));
-case   '?': return (eval(now->lft) ? eval(now->rgt->lft)
+case '?': return (eval(now->lft) ? eval(now->rgt->lft)
 : eval(now->rgt->rgt));
-case     'p': return remotevar(now);
-case     'q': return remotelab(now);
-case     'R': return qrecv(now, 0);
-case     LEN: return qlen(now);
-case    FULL: return (qfull(now));
-case   EMPTY: return (qlen(now)==0);
-case   NFULL: return (!qfull(now));
-case  NEMPTY: return (qlen(now)>0);
+case 'p': return remotevar(now);
+case 'q': return remotelab(now);
+case 'R': return qrecv(now, 0);
+case LEN: return qlen(now);
+case FULL: return (qfull(now));
+case EMPTY: return (qlen(now)==0);
+case NFULL: return (!qfull(now));
+case NEMPTY: return (qlen(now)>0);
 case ENABLED: if (s_trail) return 1;
 return pc_enabled(now->lft);
-case    EVAL: return eval(now->lft);
-case  PC_VAL: return pc_value(now->lft);
+case EVAL: return eval(now->lft);
+case PC_VAL: return pc_value(now->lft);
 case NONPROGRESS: return nonprogress();
-case    NAME: return getval(now);
+case NAME: return getval(now);
 case TIMEOUT: return Tval;
-case     RUN: return TstOnly?1:enable(now);
-case   's': return qsend(now);
-case   'r': return qrecv(now, 1);
-case   'c': return eval(now->lft);
+case RUN: return TstOnly?1:enable(now);
+case 's': return qsend(now);
+case 'r': return qrecv(now, 1);
+case 'c': return eval(now->lft);
 case PRINT: return TstOnly?1:interprint(stdout, now);
 case PRINTM: return TstOnly?1:printm(stdout, now);
-case  ASGN: return assign(now);
+case ASGN: return assign(now);
 case C_CODE: if (!analyze)
-{	printf("%s:\t", now->sym->name);
+{ printf("%s:\t", now->sym->name);
 plunk_inline(stdout, now->sym->name, 0, 1);
 }
 return 1;
 case C_EXPR: if (!analyze)
-{	printf("%s:\t", now->sym->name);
+{ printf("%s:\t", now->sym->name);
 plunk_expr(stdout, now->sym->name);
 printf("\n");
 }
@@ -386,11 +386,11 @@ comment(stdout, now->lft, 0);
 printf(")\n");
 if (s_trail && !xspin) return 1;
 wrapup(1);
-case  IF: case DO: case BREAK: case UNLESS:
-case   '.': return 1;
-case   '@': return 0;
-case  ELSE: return 1;
-default   : printf("spin: bad node type %d (run)\n", now->ntyp);
+case IF: case DO: case BREAK: case UNLESS:
+case '.': return 1;
+case '@': return 0;
+case ELSE: return 1;
+default : printf("spin: bad node type %d (run)\n", now->ntyp);
 if (s_trail) printf("spin: trail file doesn't match spec?\n");
 fatal("aborting", 0);
 }}
@@ -398,7 +398,7 @@ return 0;
 }
 int
 printm(FILE *fd, Lextok *n)
-{	extern char Buf[];
+{ extern char Buf[];
 int j;
 Buf[0] = '\0';
 if (!no_print)
@@ -414,7 +414,7 @@ return 1;
 }
 int
 interprint(FILE *fd, Lextok *n)
-{	Lextok *tmp = n->lft;
+{ Lextok *tmp = n->lft;
 char c, *s = n->sym->name;
 int i, j; char lbuf[512];
 extern char Buf[];
@@ -429,16 +429,16 @@ case '\\':
 switch(s[++i]) {
 case 't': strcat(Buf, "\t"); break;
 case 'n': strcat(Buf, "\n"); break;
-default:  goto onechar;
+default: goto onechar;
 }
 break;
-case  '%':
+case '%':
 if ((c = s[++i]) == '%')
-{	strcat(Buf, "%");
+{ strcat(Buf, "%");
 break;
 }
 if (!tmp)
-{	non_fatal("too few print args %s", s);
+{ non_fatal("too few print args %s", s);
 break;
 }
 j = eval(tmp->lft);
@@ -455,13 +455,13 @@ break;
 case 'o': sprintf(lbuf, "%o", j); break;
 case 'u': sprintf(lbuf, "%u", (unsigned) j); break;
 case 'x': sprintf(lbuf, "%x", j); break;
-default:  non_fatal("bad print cmd: '%s'", &s[i-1]);
+default: non_fatal("bad print cmd: '%s'", &s[i-1]);
 lbuf[0] = '\0'; break;
 }
 goto append;
 default:
-onechar:		 lbuf[0] = s[i]; lbuf[1] = '\0';
-append:			 strcat(Buf, lbuf);
+onechar: lbuf[0] = s[i]; lbuf[1] = '\0';
+append: strcat(Buf, lbuf);
 break;
 }
 dotag(fd, Buf);
@@ -471,7 +471,7 @@ return 1;
 }
 static int
 Enabled1(Lextok *n)
-{	int i; int v = verbose;
+{ int i; int v = verbose;
 if (n)
 switch (n->ntyp) {
 case 'c':
@@ -486,11 +486,11 @@ verbose = v;
 return i;
 case C_CODE: case C_EXPR:
 case PRINT: case PRINTM:
-case   ASGN: case ASSERT:
+case ASGN: case ASSERT:
 return 1;
 case 's':
 if (q_is_sync(n))
-{	if (Rvous) return 0;
+{ if (Rvous) return 0;
 TstOnly = 1; verbose = 0;
 E_Check++;
 i = eval(n);
@@ -513,7 +513,7 @@ return 0;
 }
 int
 Enabled0(Element *e)
-{	SeqList *z;
+{ SeqList *z;
 if (!e || !e->n)
 return 0;
 switch (e->n->ntyp) {
@@ -532,13 +532,13 @@ case NON_ATOMIC:
 return Enabled0(e->n->sl->this->frst);
 }
 if (e->sub)
-{	for (z = e->sub; z; z = z->nxt)
+{ for (z = e->sub; z; z = z->nxt)
 if (Enabled0(z->this->frst))
 return 1;
 return 0;
 }
 for (z = e->esc; z; z = z->nxt)
-{	if (Enabled0(z->this->frst))
+{ if (Enabled0(z->this->frst))
 return 1;
 }
 #if 0
@@ -550,7 +550,7 @@ return Enabled1(e->n);
 }
 int
 pc_enabled(Lextok *n)
-{	int i = nproc - nstop;
+{ int i = nproc - nstop;
 int pid = eval(n);
 int result = 0;
 RunList *Y, *oX;
@@ -558,7 +558,7 @@ if (pid == X->pid)
 fatal("used: enabled(pid=thisproc) [%s]", X->n->name);
 for (Y = run; Y; Y = Y->nxt)
 if (--i == pid)
-{	oX = X; X = Y;
+{ oX = X; X = Y;
 result = Enabled0(Y->pc);
 X = oX;
 break;

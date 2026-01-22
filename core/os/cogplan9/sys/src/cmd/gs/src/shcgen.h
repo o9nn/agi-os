@@ -1,5 +1,5 @@
 #ifndef shcgen_INCLUDED
-#  define shcgen_INCLUDED
+# define shcgen_INCLUDED
 int hc_compute(hc_definition * def, const long *freqs, gs_memory_t * mem);
 int hc_bytes_from_definition(byte * dbytes, const hc_definition * def);
 void hc_sizes_from_bytes(hc_definition * def, const byte * dbytes, int num_bytes);

@@ -200,7 +200,7 @@ return_error(e_invalidfont);
 return 0;
 }
 int
-add_FID(i_ctx_t *i_ctx_p, ref * fp  , gs_font * pfont,
+add_FID(i_ctx_t *i_ctx_p, ref * fp , gs_font * pfont,
 gs_ref_memory_t *imem)
 {
 ref fid;
@@ -440,7 +440,7 @@ ref data;
 } gs_unicode_decoder;
 private
 CLEAR_MARKS_PROC(unicode_decoder_clear_marks)
-{   gs_unicode_decoder *const pptr = vptr;
+{ gs_unicode_decoder *const pptr = vptr;
 r_clear_attrs(&pptr->data, l_mark);
 }
 private

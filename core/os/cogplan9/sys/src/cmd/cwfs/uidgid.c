@@ -1,29 +1,29 @@
 #include "all.h"
 struct {
-char*	name;
-Userid	uid;
-Userid	lead;
+char* name;
+Userid uid;
+Userid lead;
 } minusers[] = {
-"adm",		-1,	-1,
-"none",		0,	-1,
-"tor",		1,	1,
-"sys",		10000,	0,
-"map",		10001,	10001,
-"doc",		10002,	0,
-"upas",		10003,	10003,
-"font",		10004,	0,
-"bootes",	10005,	10005,
+"adm", -1, -1,
+"none", 0, -1,
+"tor", 1, 1,
+"sys", 10000, 0,
+"map", 10001, 10001,
+"doc", 10002, 0,
+"upas", 10003, 10003,
+"font", 10004, 0,
+"bootes", 10005, 10005,
 0
 };
 static char buf[4096];
 static Rune ichar[] = L"?=+-/:";
-Uid*	chkuid(char *name, int chk);
-void	do_newuser(int, char*[]);
-char*	getword(char*, Rune, char*, int);
-void	pentry(char*, Uid*);
-int	readln(char*, int);
-void	setminusers(void);
-Uid*	uidtop(int);
+Uid* chkuid(char *name, int chk);
+void do_newuser(int, char*[]);
+char* getword(char*, Rune, char*, int);
+void pentry(char*, Uid*);
+int readln(char*, int);
+void setminusers(void);
+Uid* uidtop(int);
 void
 cmd_users(int argc, char *argv[])
 {

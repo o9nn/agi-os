@@ -7,7 +7,7 @@ dial: Dial;
 include "ip.m";
 Virgild: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 stderr: ref Sys->FD;
 Udphdrsize: con IP->Udphdrlen;
@@ -71,9 +71,9 @@ return nil;
 return c.dfd;
 }
 #
-#  query is userid?question
+# query is userid?question
 #
-#  for now, we're ignoring userid
+# for now, we're ignoring userid
 #
 query(request: string): string
 {
@@ -83,8 +83,8 @@ sys->fprint(stderr, "virgild: bad request %s %d\n", request, n);
 return nil;
 }
 #
-#  until we have something better, ask cs
-#  to translate, make the request look cs-like
+# until we have something better, ask cs
+# to translate, make the request look cs-like
 #
 fd := sys->open("/net/cs", Sys->ORDWR);
 if(fd == nil){

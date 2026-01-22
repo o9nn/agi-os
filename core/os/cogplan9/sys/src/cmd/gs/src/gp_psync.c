@@ -5,7 +5,7 @@
 #include "gserrors.h"
 #include "gpsync.h"
 #ifndef PTHREAD_CREATE_DETACHED
-#  define PTHREAD_CREATE_DETACHED 1
+# define PTHREAD_CREATE_DETACHED 1
 #endif
 typedef struct pt_semaphore_t {
 int count;

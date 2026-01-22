@@ -3,19 +3,19 @@
 #include "mem.h"
 #include "dat.h"
 #include "fns.h"
-#define	Image	IMAGE
+#define Image IMAGE
 #include <draw.h>
 #include <memdraw.h>
 #include <cursor.h>
 #include "screen.h"
 enum {
-Tabstop		= 4,
-Scroll		= 8,
-Wid		= 1024,
-Ht		= 768,
-Depth		= 16,
+Tabstop = 4,
+Scroll = 8,
+Wid = 1024,
+Ht = 768,
+Depth = 16,
 };
-Cursor	arrow = {
+Cursor arrow = {
 { -1, -1 },
 { 0xFF, 0xFF, 0x80, 0x01, 0x80, 0x02, 0x80, 0x0C,
 0x80, 0x10, 0x80, 0x10, 0x80, 0x08, 0x80, 0x04,
@@ -48,25 +48,25 @@ static Memimage *conscol;
 static Memimage *back;
 static Memsubfont *memdefont;
 static Lock screenlock;
-static Point	curpos;
-static int	h, w;
+static Point curpos;
+static int h, w;
 static Rectangle window;
 static void myscreenputs(char *s, int n);
 static void screenputc(char *buf);
 static void screenwin(void);
-static int	swvisible;
-static int	swenabled;
+static int swvisible;
+static int swenabled;
 static Memimage *swback;
 static Memimage *swimg;
 static Memimage *swmask;
 static Memimage *swimg1;
 static Memimage *swmask1;
-static Point	swoffset;
+static Point swoffset;
 static Rectangle swrect;
-static Point	swpt;
-static Point	swvispt;
-static int	swvers;
-static int	swvisvers;
+static Point swpt;
+static Point swvispt;
+static int swvers;
+static int swvisvers;
 static void
 swcursorhide(void)
 {
@@ -150,7 +150,7 @@ for(j=0x80; j; j>>=1){
 }
 swoffset = curs->offset;
 swvers++;
-memimagedraw(swimg1,  swimg1->r,  swimg,  ZP, memopaque, ZP, S);
+memimagedraw(swimg1, swimg1->r, swimg, ZP, memopaque, ZP, S);
 memimagedraw(swmask1, swmask1->r, swmask, ZP, memopaque, ZP, S);
 }
 void
@@ -201,11 +201,11 @@ freememimage(swmask1);
 freememimage(swimg);
 freememimage(swimg1);
 }
-swback  = allocmemimage(Rect(0,0,32,32), gscreen->chan);
-swmask  = allocmemimage(Rect(0,0,16,16), GREY8);
+swback = allocmemimage(Rect(0,0,32,32), gscreen->chan);
+swmask = allocmemimage(Rect(0,0,16,16), GREY8);
 swmask1 = allocmemimage(Rect(0,0,16,16), GREY1);
-swimg   = allocmemimage(Rect(0,0,16,16), GREY8);
-swimg1  = allocmemimage(Rect(0,0,16,16), GREY1);
+swimg = allocmemimage(Rect(0,0,16,16), GREY8);
+swimg1 = allocmemimage(Rect(0,0,16,16), GREY1);
 if(swback==nil || swmask==nil || swmask1==nil || swimg==nil || swimg1 == nil){
 print("software cursor: allocmemimage fails\n");
 return;

@@ -4,7 +4,7 @@
 #include <TargetConditionals.h>
 #endif
 #ifdef GPU_INFO_USE_VULKAN
-#  include "../../gpuInfo/vulkan-gpu-info.h"
+# include "../../gpuInfo/vulkan-gpu-info.h"
 #endif
 #ifdef GPU_INFO_USE_VULKAN
 void logVulkanWarning(const char* message) {

@@ -14,78 +14,78 @@ include "string.m";
 str: String;
 Ar: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 ARMAG: con "!<arch>\n";
 SARMAG: con len ARMAG;
 ARFMAG0: con byte '`';
 ARFMAG1: con byte '\n';
-SARNAME: con 16;	# ancient limit
+SARNAME: con 16; # ancient limit
 #
 # printable archive header
-#	name[SARNAME] date[12] uid[6] gid[6] mode[8] size[10] fmag[2]
+# name[SARNAME] date[12] uid[6] gid[6] mode[8] size[10] fmag[2]
 #
-Oname:	con 0;
-Lname:	con SARNAME;
-Odate:	con Oname+Lname;
-Ldate:	con 12;
-Ouid:	con Odate+Ldate;
-Luid:		con 6;
-Ogid:	con Ouid+Luid;
-Lgid:		con 6;
-Omode:	con Ogid+Lgid;
-Lmode:	con 8;
-Osize:	con Omode+Lmode;
-Lsize:	con 10;
-Ofmag:	con Osize+Lsize;
-Lfmag:	con 2;
-SAR_HDR:	con Ofmag+Lfmag;	# 60
+Oname: con 0;
+Lname: con SARNAME;
+Odate: con Oname+Lname;
+Ldate: con 12;
+Ouid: con Odate+Ldate;
+Luid: con 6;
+Ogid: con Ouid+Luid;
+Lgid: con 6;
+Omode: con Ogid+Lgid;
+Lmode: con 8;
+Osize: con Omode+Lmode;
+Lsize: con 10;
+Ofmag: con Osize+Lsize;
+Lfmag: con 2;
+SAR_HDR: con Ofmag+Lfmag; # 60
 #
-# 	The algorithm uses up to 3 temp files.  The "pivot contents" is the
-# 	archive contents specified by an a, b, or i option.  The temp files are
-# 	astart - contains existing contentss up to and including the pivot contents.
-# 	amiddle - contains new files moved or inserted behind the pivot.
-# 	aend - contains the existing contentss that follow the pivot contents.
-# 	When all contentss have been processed, function 'install' streams the
-#  	temp files, in order, back into the archive.
+# The algorithm uses up to 3 temp files. The "pivot contents" is the
+# archive contents specified by an a, b, or i option. The temp files are
+# astart - contains existing contentss up to and including the pivot contents.
+# amiddle - contains new files moved or inserted behind the pivot.
+# aend - contains the existing contentss that follow the pivot contents.
+# When all contentss have been processed, function 'install' streams the
+# temp files, in order, back into the archive.
 #
-Armember: adt {	# one per archive contents
-name:	string;	# trimmed
-length:	int;
-date:	int;
-uid:	int;
-gid:	int;
-mode:	int;
-size:	int;
-contents:	array of byte;
-fd:	ref Sys->FD;	# if contents is nil and fd is not nil, fd has contents
-next:	cyclic ref Armember;
-new:		fn(name: string, fd: ref Sys->FD): ref Armember;
-rdhdr:	fn(b: ref Iobuf): ref Armember;
-read:		fn(m: self ref Armember, b:  ref Iobuf): int;
-wrhdr:	fn(m: self ref Armember, fd: ref Sys->FD);
-write:	fn(m: self ref Armember, fd: ref Sys->FD);
-skip:		fn(m: self ref Armember, b: ref Iobuf);
-replace:	fn(m: self ref Armember, name: string, fd: ref Sys->FD);
-copyout:	fn(m: self ref Armember, b: ref Iobuf, destfd: ref Sys->FD);
+Armember: adt { # one per archive contents
+name: string; # trimmed
+length: int;
+date: int;
+uid: int;
+gid: int;
+mode: int;
+size: int;
+contents: array of byte;
+fd: ref Sys->FD; # if contents is nil and fd is not nil, fd has contents
+next: cyclic ref Armember;
+new: fn(name: string, fd: ref Sys->FD): ref Armember;
+rdhdr: fn(b: ref Iobuf): ref Armember;
+read: fn(m: self ref Armember, b: ref Iobuf): int;
+wrhdr: fn(m: self ref Armember, fd: ref Sys->FD);
+write: fn(m: self ref Armember, fd: ref Sys->FD);
+skip: fn(m: self ref Armember, b: ref Iobuf);
+replace: fn(m: self ref Armember, name: string, fd: ref Sys->FD);
+copyout: fn(m: self ref Armember, b: ref Iobuf, destfd: ref Sys->FD);
 };
-Arfile: adt {	# one per tempfile
-fd:	ref Sys->FD;	# paging file descriptor, nil if none allocated
-head:	ref Armember;
-tail:	ref Armember;
-new:		fn(): ref Arfile;
-copy:	fn(ar: self ref Arfile, b: ref Iobuf, mem: ref Armember);
-insert:	fn(ar: self ref Arfile, mem: ref Armember);
-stream:	fn(ar: self ref Arfile, fd: ref Sys->FD);
-page:	fn(ar: self ref Arfile): int;
+Arfile: adt { # one per tempfile
+fd: ref Sys->FD; # paging file descriptor, nil if none allocated
+head: ref Armember;
+tail: ref Armember;
+new: fn(): ref Arfile;
+copy: fn(ar: self ref Arfile, b: ref Iobuf, mem: ref Armember);
+insert: fn(ar: self ref Arfile, mem: ref Armember);
+stream: fn(ar: self ref Arfile, fd: ref Sys->FD);
+page: fn(ar: self ref Arfile): int;
 };
 File: adt {
-name:	string;
-trimmed:	string;
-found:	int;
+name: string;
+trimmed: string;
+found: int;
 };
-man :=	"mrxtdpq";
-opt :=	"uvnbailo";
+man := "mrxtdpq";
+opt := "uvnbailo";
 aflag := 0;
 bflag := 0;
 cflag := 0;
@@ -111,21 +111,21 @@ args = tl args;
 s := hd args; args = tl args;
 for(i := 0; i < len s; i++){
 case s[i] {
-'a' =>	aflag = 1;
-'b' =>	bflag = 1;
-'c' =>	cflag = 1;
-'d' =>	setcom(dcmd);
-'i' =>		bflag = 1;
-'l' =>		;	# ignored
-'m' =>	setcom(mcmd);
-'o' =>	oflag = 1;
-'p' =>	setcom(pcmd);
-'q' =>	setcom(qcmd);
-'r' =>		setcom(rcmd);
-'t' =>		setcom(tcmd);
-'u' =>	uflag = 1;
-'v' =>	vflag = 1;
-'x' =>	setcom(xcmd);
+'a' => aflag = 1;
+'b' => bflag = 1;
+'c' => cflag = 1;
+'d' => setcom(dcmd);
+'i' => bflag = 1;
+'l' => ; # ignored
+'m' => setcom(mcmd);
+'o' => oflag = 1;
+'p' => setcom(pcmd);
+'q' => setcom(qcmd);
+'r' => setcom(rcmd);
+'t' => setcom(tcmd);
+'u' => uflag = 1;
+'v' => vflag = 1;
+'x' => setcom(xcmd);
 * =>
 sys->fprint(stderr, "ar: bad option `%c'\n", s[i]);
 usage();
@@ -151,7 +151,7 @@ cp := hd args; args = tl args;
 files := array[len args] of ref File;
 for(i = 0; args != nil; args = tl args)
 files[i++] = ref File(hd args, trim(hd args), 0);
-comfun(cp, files);	# do the command
+comfun(cp, files); # do the command
 allfound := 1;
 for(i = 0; i < len files; i++)
 if(!files[i].found){
@@ -163,7 +163,7 @@ if(!allfound)
 raise "fail: file not found";
 }
 #
-# 	select a command
+# select a command
 #
 setcom(fun: ref fn(s: string, f: array of ref File))
 {
@@ -174,7 +174,7 @@ usage();
 comfun = fun;
 }
 #
-# 	perform the 'r' and 'u' commands
+# perform the 'r' and 'u' commands
 #
 rcmd(arname: string, files: array of ref File)
 {
@@ -183,7 +183,7 @@ parts = array[2] of {Arfile.new(), nil};
 ap := parts[0];
 if(bar != nil){
 while((mem := Armember.rdhdr(bar)) != nil){
-if(bamatch(mem.name, pivotname))	# check for pivot
+if(bamatch(mem.name, pivotname)) # check for pivot
 ap = parts[1] = Arfile.new();
 f := match(files, mem.name);
 if(f == nil){
@@ -228,7 +228,7 @@ parts[0].insert(Armember.new(f.trimmed, dfd));
 sys->fprint(stderr, "ar: cannot open %s: %r\n", f.name);
 }
 if(bar == nil && !cflag)
-install(arname, parts, 1);	# issue 'creating' msg
+install(arname, parts, 1); # issue 'creating' msg
 else
 install(arname, parts, 0);
 }
@@ -246,7 +246,7 @@ mem.skip(bar);
 changed = 1;
 }else
 parts[0].copy(bar, mem);
-mem =  nil;	# conserves memory
+mem = nil; # conserves memory
 }
 if(changed)
 install(arname, parts, 0);
@@ -294,7 +294,7 @@ if(len files > 0 && ++i >= len files)
 break;
 }else
 mem.skip(bar);
-mem = nil;	# we no longer need the contents
+mem = nil; # we no longer need the contents
 }
 }
 mcmd(arname: string, files: array of ref File)
@@ -344,7 +344,7 @@ sys->fprint(stderr, "ar: creating %s\n", arname);
 fd = arcreate(arname);
 }
 # leave note group behind when writing archive; i.e. sidestep interrupts
-sys->seek(fd, big 0, 2);	# append
+sys->seek(fd, big 0, 2); # append
 for(i := 0; i < len files; i++){
 f := files[i];
 f.found = 1;
@@ -361,7 +361,7 @@ sys->fprint(stderr, "ar: cannot open %s: %r\n", f.name);
 }
 }
 #
-# 	open an archive and validate its header
+# open an archive and validate its header
 #
 openrawar(arname: string, mode: int, errok: int): ref Sys->FD
 {
@@ -390,7 +390,7 @@ bfd.seek(big SARMAG, 0);
 return bfd;
 }
 #
-# 	create an archive and set its header
+# create an archive and set its header
 #
 arcreate(arname: string): ref Sys->FD
 {
@@ -404,7 +404,7 @@ mustwrite(fd, a, len a);
 return fd;
 }
 #
-# 		error handling
+# error handling
 #
 wrerr()
 {
@@ -446,7 +446,7 @@ ap.stream(fd);
 match(files: array of ref File, file: string): ref File
 {
 if(len files == 0)
-return ref File(file, file, 0);	# empty list always matches
+return ref File(file, file, 0); # empty list always matches
 for(i := 0; i < len files; i++)
 if(!files[i].found && files[i].trimmed == file){
 files[i].found = 1;
@@ -456,26 +456,26 @@ return nil;
 }
 #
 # is `file' the pivot member's name and is the archive positioned
-# at the correct point wrt after or before options?  return true if so.
+# at the correct point wrt after or before options? return true if so.
 #
 state := 0;
 bamatch(file: string, pivot: string): int
 {
 case state {
-0 =>			# looking for position file
+0 => # looking for position file
 if(aflag){
 if(file == pivot)
 state = 1;
 }else if(bflag){
 if(file == pivot){
-state = 2;	# found
+state = 2; # found
 return 1;
 }
 }
-1 =>			# found - after previous file
+1 => # found - after previous file
 state = 2;
 return 1;
-2 =>			# already found position file
+2 => # already found position file
 ;
 }
 return 0;
@@ -510,8 +510,8 @@ t := daytime->text(daytime->local(mem.date));
 return s+sys->sprint(" %-12.12s %-4.4s ", t[4:], t[24:]);
 }
 mtab := array[] of {
-"---",	"--x",	"-w-",	"-wx",
-"r--",	"r-x",	"rw-",	"rwx"
+"---", "--x", "-w-", "-wx",
+"r--", "r-x", "rw-", "rwx"
 };
 modes(mode: int): string
 {
@@ -584,7 +584,7 @@ mem.replace(name, fd);
 return mem;
 }
 #
-# replace the contents  of an existing member
+# replace the contents of an existing member
 #
 Armember.replace(mem: self ref Armember, name: string, fd: ref Sys->FD)
 {
@@ -604,7 +604,7 @@ sys->fprint(stderr, "ar: file %s too big\n", name);
 raise "fail:error";
 }
 mem.fd = fd;
-mem.contents = nil;	# will be copied across from fd when needed
+mem.contents = nil; # will be copied across from fd when needed
 }
 #
 # read the contents of an archive member
@@ -639,7 +639,7 @@ return;
 }
 if(mem.fd == nil)
 raise "ar: write nil fd";
-buf := array[Sys->ATOMICIO] of byte;	# could be bigger
+buf := array[Sys->ATOMICIO] of byte; # could be bigger
 for(nr := mem.size; nr > 0;){
 n := nr;
 if(n > len buf)
@@ -672,7 +672,7 @@ if(mem.contents != nil){
 mustwrite(ofd, mem.contents, len mem.contents);
 return;
 }
-buf := array[Sys->ATOMICIO] of byte;	# could be bigger
+buf := array[Sys->ATOMICIO] of byte; # could be bigger
 for(nr := mem.size; nr > 0;){
 n := nr;
 if(n > len buf)
@@ -690,14 +690,14 @@ if(mem.size & 1)
 b.getc();
 }
 #
-# 	Temp file I/O subsystem.  We attempt to cache all three temp files in
-# 	core.  When we run out of memory we spill to disk.
-# 	The I/O model assumes that temp files:
-# 		1) are only written on the end
-# 		2) are only read from the beginning
-# 		3) are only read after all writing is complete.
-# 	The architecture uses one control block per temp file.  Each control
-# 	block anchors a chain of buffers, each containing an archive contents.
+# Temp file I/O subsystem. We attempt to cache all three temp files in
+# core. When we run out of memory we spill to disk.
+# The I/O model assumes that temp files:
+# 1) are only written on the end
+# 2) are only read from the beginning
+# 3) are only read after all writing is complete.
+# The architecture uses one control block per temp file. Each control
+# block anchors a chain of buffers, each containing an archive contents.
 #
 Arfile.new(): ref Arfile
 {
@@ -712,7 +712,7 @@ mem.read(b);
 ap.insert(mem);
 }
 #
-#  insert a contents buffer into the contents chain
+# insert a contents buffer into the contents chain
 #
 Arfile.insert(ap: self ref Arfile, mem: ref Armember)
 {
@@ -728,7 +728,7 @@ ap.tail = mem;
 #
 Arfile.stream(ap: self ref Arfile, fd: ref Sys->FD)
 {
-if(ap.fd != nil){		# copy prefix from disk
+if(ap.fd != nil){ # copy prefix from disk
 buf := array[Sys->ATOMICIO] of byte;
 sys->seek(ap.fd, big 0, 0);
 while((n := sys->read(ap.fd, buf, len buf)) > 0)
@@ -760,7 +760,7 @@ break;
 if(i >= 20){
 warned =1;
 sys->fprint(stderr,"ar: warning: can't create temp file %s: %r\n", name);
-return 0;	# we'll simply use the memory
+return 0; # we'll simply use the memory
 }
 }
 tn++;

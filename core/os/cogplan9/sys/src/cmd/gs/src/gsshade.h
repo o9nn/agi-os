@@ -1,5 +1,5 @@
 #ifndef gsshade_INCLUDED
-#  define gsshade_INCLUDED
+# define gsshade_INCLUDED
 #include "gsccolor.h"
 #include "gscspace.h"
 #include "gsdsrc.h"
@@ -25,11 +25,11 @@ typedef struct gs_shading_params_s {
 gs_shading_params_common;
 } gs_shading_params_t;
 #ifndef gs_shading_t_DEFINED
-#  define gs_shading_t_DEFINED
+# define gs_shading_t_DEFINED
 typedef struct gs_shading_s gs_shading_t;
 #endif
 #ifndef gx_device_DEFINED
-#  define gx_device_DEFINED
+# define gx_device_DEFINED
 typedef struct gx_device_s gx_device;
 #endif
 #define SHADING_FILL_RECTANGLE_PROC(proc)\
@@ -51,7 +51,7 @@ gs_shading_head_t head;
 gs_shading_params_t params;
 };
 #define ShadingType(psh) ((psh)->head.type)
-#define private_st_shading()	\
+#define private_st_shading() \
 gs_private_st_ptrs2(st_shading, gs_shading_t, "gs_shading_t",\
 shading_enum_ptrs, shading_reloc_ptrs,\
 params.ColorSpace, params.Background)
@@ -61,7 +61,7 @@ float Domain[4];
 gs_matrix Matrix;
 gs_function_t *Function;
 } gs_shading_Fb_params_t;
-#define private_st_shading_Fb()	\
+#define private_st_shading_Fb() \
 gs_private_st_suffix_add1(st_shading_Fb, gs_shading_Fb_t,\
 "gs_shading_Fb_t", shading_Fb_enum_ptrs, shading_Fb_reloc_ptrs,\
 st_shading, params.Function)
@@ -72,7 +72,7 @@ float Domain[2];
 gs_function_t *Function;
 bool Extend[2];
 } gs_shading_A_params_t;
-#define private_st_shading_A()	\
+#define private_st_shading_A() \
 gs_private_st_suffix_add1(st_shading_A, gs_shading_A_t,\
 "gs_shading_A_t", shading_A_enum_ptrs, shading_A_reloc_ptrs,\
 st_shading, params.Function)
@@ -83,7 +83,7 @@ float Domain[2];
 gs_function_t *Function;
 bool Extend[2];
 } gs_shading_R_params_t;
-#define private_st_shading_R()	\
+#define private_st_shading_R() \
 gs_private_st_suffix_add1(st_shading_R, gs_shading_R_t,\
 "gs_shading_R_t", shading_R_enum_ptrs, shading_R_reloc_ptrs,\
 st_shading, params.Function)
@@ -101,35 +101,35 @@ typedef struct gs_shading_mesh_s {
 gs_shading_head_t head;
 gs_shading_mesh_params_t params;
 } gs_shading_mesh_t;
-#define private_st_shading_mesh()	\
+#define private_st_shading_mesh() \
 gs_private_st_composite(st_shading_mesh, gs_shading_mesh_t,\
 "gs_shading_mesh_t", shading_mesh_enum_ptrs, shading_mesh_reloc_ptrs)
 typedef struct gs_shading_FfGt_params_s {
 gs_shading_mesh_params_common;
 int BitsPerFlag;
 } gs_shading_FfGt_params_t;
-#define private_st_shading_FfGt()	\
+#define private_st_shading_FfGt() \
 gs_private_st_composite_only(st_shading_FfGt, gs_shading_FfGt_t,\
 "gs_shading_FfGt_t", shading_mesh_enum_ptrs, shading_mesh_reloc_ptrs)
 typedef struct gs_shading_LfGt_params_s {
 gs_shading_mesh_params_common;
 int VerticesPerRow;
 } gs_shading_LfGt_params_t;
-#define private_st_shading_LfGt()	\
+#define private_st_shading_LfGt() \
 gs_private_st_composite_only(st_shading_LfGt, gs_shading_LfGt_t,\
 "gs_shading_LfGt_t", shading_mesh_enum_ptrs, shading_mesh_reloc_ptrs)
 typedef struct gs_shading_Cp_params_s {
 gs_shading_mesh_params_common;
 int BitsPerFlag;
 } gs_shading_Cp_params_t;
-#define private_st_shading_Cp()	\
+#define private_st_shading_Cp() \
 gs_private_st_composite_only(st_shading_Cp, gs_shading_Cp_t,\
 "gs_shading_Cp_t", shading_mesh_enum_ptrs, shading_mesh_reloc_ptrs)
 typedef struct gs_shading_Tpp_params_s {
 gs_shading_mesh_params_common;
 int BitsPerFlag;
 } gs_shading_Tpp_params_t;
-#define private_st_shading_Tpp()	\
+#define private_st_shading_Tpp() \
 gs_private_st_composite_only(st_shading_Tpp, gs_shading_Tpp_t,\
 "gs_shading_Tpp_t", shading_mesh_enum_ptrs, shading_mesh_reloc_ptrs)
 void gs_shading_Fb_params_init(gs_shading_Fb_params_t * params);
@@ -161,10 +161,10 @@ int gs_shading_Tpp_init(gs_shading_t ** ppsh,
 const gs_shading_Tpp_params_t * params,
 gs_memory_t * mem);
 #ifndef gx_path_DEFINED
-#  define gx_path_DEFINED
+# define gx_path_DEFINED
 typedef struct gx_path_s gx_path;
 #endif
-int gs_shading_fill_path_adjusted(const gs_shading_t *psh,  gx_path *ppath,
+int gs_shading_fill_path_adjusted(const gs_shading_t *psh, gx_path *ppath,
 const gs_fixed_rect *prect, gx_device *dev,
 gs_imager_state *pis, bool fill_background);
 #endif

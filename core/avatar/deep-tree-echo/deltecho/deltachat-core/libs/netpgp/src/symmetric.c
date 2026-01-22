@@ -106,7 +106,7 @@ CAST_cfb64_encrypt(in, out, (long)count,
 crypt->encrypt_key, crypt->iv, &crypt->num,
 CAST_DECRYPT);
 }
-#define TRAILER		"","","","",0,NULL,NULL
+#define TRAILER "","","","",0,NULL,NULL
 static pgp_crypt_t cast5 =
 {
 PGP_SA_CAST5,
@@ -316,7 +316,7 @@ static int
 tripledes_init(pgp_crypt_t *crypt)
 {
 DES_key_schedule *keys;
-int             n;
+int n;
 if (crypt->encrypt_key) {
 free(crypt->encrypt_key);
 }
@@ -558,11 +558,11 @@ size_t
 pgp_decrypt_se(pgp_crypt_t *decrypt, void *outvoid, const void *invoid,
 size_t count)
 {
-const uint8_t	*in = invoid;
-uint8_t		*out = outvoid;
-int              saved = (int)count;
+const uint8_t *in = invoid;
+uint8_t *out = outvoid;
+int saved = (int)count;
 while (count-- > 0) {
-uint8_t   t;
+uint8_t t;
 if ((size_t) decrypt->num == decrypt->blocksize) {
 (void) memcpy(decrypt->siv, decrypt->civ,
 decrypt->blocksize);
@@ -581,9 +581,9 @@ size_t
 pgp_encrypt_se(pgp_crypt_t *encrypt, void *outvoid, const void *invoid,
 size_t count)
 {
-const uint8_t	*in = invoid;
-uint8_t		*out = outvoid;
-int              saved = (int)count;
+const uint8_t *in = invoid;
+uint8_t *out = outvoid;
+int saved = (int)count;
 while (count-- > 0) {
 if ((size_t) encrypt->num == encrypt->blocksize) {
 (void) memcpy(encrypt->siv, encrypt->civ,

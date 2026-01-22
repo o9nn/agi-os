@@ -11,9 +11,9 @@
 #define IS_WHITE_OR_EOL(ch) (IS_WHITE(ch) || IS_EOL(ch))
 #define IS_BLANK(str) (IS_EOL(str[0]))
 #define NOT_DSC_LINE(str) (((str)[0]!='%') || ((str)[1]!='%'))
-#define DSC_START(dsc)  ((dsc)->data_offset + (dsc)->data_index - (dsc)->line_length)
-#define DSC_END(dsc)  ((dsc)->data_offset + (dsc)->data_index)
-#define CDSC_PROPAGATE	10
+#define DSC_START(dsc) ((dsc)->data_offset + (dsc)->data_index - (dsc)->line_length)
+#define DSC_END(dsc) ((dsc)->data_offset + (dsc)->data_index)
+#define CDSC_PROPAGATE 10
 #define CDSC_NEEDMORE 11
 dsc_private void * dsc_memalloc(CDSC *dsc, size_t size);
 dsc_private void dsc_memfree(CDSC*dsc, void *ptr);
@@ -817,7 +817,7 @@ dsc->data_index += dsc->line_length = (int)(p - dsc->line);
 } while (dsc->skip_lines && dsc->line_length);
 if (dsc->line_length == 0)
 return 0;
-if ((dsc->line[0]=='%') && (dsc->line[1]=='%'))  {
+if ((dsc->line[0]=='%') && (dsc->line[1]=='%')) {
 if ((dsc->skip_document) && dsc->line_length &&
 COMPARE(dsc->line, "%%EndDocument")) {
 dsc->skip_document--;
@@ -2173,7 +2173,7 @@ dsc_check_match_prompt(CDSC *dsc, const char *str, int count)
 {
 if (count != 0) {
 char buf[MAXSTR+MAXSTR];
-if (dsc->line_length < (unsigned int)(sizeof(buf)/2-1))  {
+if (dsc->line_length < (unsigned int)(sizeof(buf)/2-1)) {
 strncpy(buf, dsc->line, dsc->line_length);
 buf[dsc->line_length] = '\0';
 }
@@ -2409,7 +2409,7 @@ if (dsc->scan_section == scan_pre_pages) {
 if (IS_DSC(line, "%%Page:")) {
 dsc->scan_section = scan_pages;
 }
-else  {
+else {
 DSC_OFFSET *last;
 if (dsc->endsetup != 0)
 last = &dsc->endsetup;

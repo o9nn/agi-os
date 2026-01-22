@@ -10,14 +10,14 @@ class ModuleManager
 {
 protected:
 typedef struct {
-Module*                 module;
-std::string             id;
-std::string             filename;
-std::string             dirpath;
-Module::LoadFunction*   loadFunction;
+Module* module;
+std::string id;
+std::string filename;
+std::string dirpath;
+Module::LoadFunction* loadFunction;
 Module::UnloadFunction* unloadFunction;
 Module::ConfigFunction* configFunction;
-void*                   handle;
+void* handle;
 } ModuleData;
 typedef std::map<const std::string, ModuleData> ModuleMap;
 ModuleMap modules;

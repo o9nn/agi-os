@@ -67,7 +67,7 @@ r.ptr = str - 1;
 r.limit = r.ptr + size;
 w.limit = buf + sizeof(buf) - 1;
 do {
-w.ptr = buf;  w.ptr--;
+w.ptr = buf; w.ptr--;
 status = (*template->process) (st, &r, &w, true);
 stream_write(s, buf, (uint) (w.ptr + 1 - buf));
 }
@@ -90,9 +90,9 @@ param_printer_params_default_values
 private param_proc_xmit_typed(param_print_typed);
 private const gs_param_list_procs printer_param_list_procs = {
 param_print_typed,
-NULL  ,
-NULL  ,
-NULL  ,
+NULL ,
+NULL ,
+NULL ,
 gs_param_request_default,
 gs_param_requested_default
 };

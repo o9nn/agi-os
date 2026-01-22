@@ -9,7 +9,7 @@ units: Units;
 include "cssfont.m";
 # locally available font styles
 BOLD, CW, ITALIC, PLAIN, NSTYLES: con iota;
-NSIZES: con 5;			# number of locally available font sizes
+NSIZES: con 5; # number of locally available font sizes
 fonts := array[] of {
 PLAIN => array[] of {
 "/fonts/charon/plain.tiny.font",
@@ -70,15 +70,15 @@ sizechoice[i] = array[maxheight + 1] of byte;
 for (j = 0; j < maxheight + 1; j++)
 sizechoice[i][j] = byte matchheight(j, fontinfo[i]);
 }
-#	for (i = 0; i < NSTYLES; i++) {
-#		sys->print("class %d\n", i);
-#		for (j := 0; j < NSIZES; j++) {
-#			sys->print("	height %d; translates to %d [%d]\n",
-#				fontinfo[i][j].height,
-#				int sizechoice[i][fontinfo[i][j].height],
-#				fontinfo[i][int sizechoice[i][fontinfo[i][j].height]].height);
-#		}
-#	}
+# for (i = 0; i < NSTYLES; i++) {
+# sys->print("class %d\n", i);
+# for (j := 0; j < NSIZES; j++) {
+# sys->print("	height %d; translates to %d [%d]\n",
+# fontinfo[i][j].height,
+# int sizechoice[i][fontinfo[i][j].height],
+# fontinfo[i][int sizechoice[i][fontinfo[i][j].height]].height);
+# }
+# }
 }
 # find the closest match to a given desired height from the choices given.
 matchheight(desired: int, choices: array of ref Font): int
@@ -100,13 +100,13 @@ return i;
 }
 sys->fprint(sys->fildes(2), "cssfont: can't happen!\n");
 raise "error";
-return -1;		# should never happen
+return -1; # should never happen
 }
 # get an appropriate font given the css specification.
 getfont(spec: Spec, parentem, parentex: int): (string, int, int)
 {
 #sys->print("getfont size:%s family:%s; style:%s; weight:%s -> ",
-#		spec.size, spec.family, spec.style, spec.weight);
+# spec.size, spec.family, spec.style, spec.weight);
 class := getclass(spec);
 i := choosesize(class, spec.size, parentem, parentex);
 #sys->print("%s (height:%d)\n", fonts[class][i], fontinfo[class][i].height);

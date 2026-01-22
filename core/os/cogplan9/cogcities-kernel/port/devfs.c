@@ -17,9 +17,9 @@ Fclear,
 Fdel,
 Fdisk,
 Sectorsz = 1,
-Blksize	= 8*1024,
+Blksize = 8*1024,
 Incr = 5,
-Qtop	= 0,
+Qtop = 0,
 Qdir,
 Qctl,
 Qfirst,
@@ -27,9 +27,9 @@ Iswrite = 0,
 Isread,
 Optional = 0,
 Mustexist,
-Maxconf	= 4*1024,
-Ndevs	= 32,
-Ntrees	= 128,
+Maxconf = 4*1024,
+Ndevs = 32,
+Ntrees = 128,
 Maxretries = 3,
 Retrypause = 5000,
 };
@@ -38,29 +38,29 @@ typedef struct Fsdev Fsdev;
 typedef struct Tree Tree;
 struct Inner
 {
-char	*iname;
-vlong	isize;
-Chan	*idev;
+char *iname;
+vlong isize;
+Chan *idev;
 };
 struct Fsdev
 {
 Ref;
-int	gone;
-int	vers;
-int	type;
-char	*name;
-Tree*	tree;
-vlong	size;
-vlong	start;
-uint	ndevs;
-Inner	*inner[Ndevs];
+int gone;
+int vers;
+int type;
+char *name;
+Tree* tree;
+vlong size;
+vlong start;
+uint ndevs;
+Inner *inner[Ndevs];
 };
 struct Tree
 {
-char	*name;
-Fsdev	**devs;
-uint	ndevs;
-uint	nadevs;
+char *name;
+Fsdev **devs;
+uint ndevs;
+uint nadevs;
 };
 #define dprint if(debug)print
 extern Dev fsdevtab;
@@ -78,19 +78,19 @@ static char cfgstr[] = "fsdev:\n";
 static Qid tqid = {Qtop, 0, QTDIR};
 static Qid cqid = {Qctl, 0, 0};
 static char* tnames[] = {
-[Fmirror]	"mirror",
-[Fcat]		"cat",
-[Finter]	"inter",
-[Fpart]		"part",
+[Fmirror] "mirror",
+[Fcat] "cat",
+[Finter] "inter",
+[Fpart] "part",
 };
 static Cmdtab configs[] = {
-Fmirror,"mirror",	0,
-Fcat,	"cat",		0,
-Finter,	"inter",	0,
-Fpart,	"part",		0,
-Fclear,	"clear",	1,
-Fdel,	"del",		2,
-Fdisk,	"disk",		0,
+Fmirror,"mirror", 0,
+Fcat, "cat", 0,
+Finter, "inter", 0,
+Fpart, "part", 0,
+Fclear, "clear", 1,
+Fdel, "del", 2,
+Fdisk, "disk", 0,
 };
 static char Egone[] = "device is gone";
 static char*
@@ -166,7 +166,7 @@ return t->devs[i];
 static Fsdev*
 path2dev(int q)
 {
-Tree	*t;
+Tree *t;
 dprint("path2dev %ux\n", q);
 t = gettree(path2treeno(q), Mustexist);
 return getdev(t, path2devno(q) - Qfirst, Mustexist);
@@ -174,8 +174,8 @@ return getdev(t, path2devno(q) - Qfirst, Mustexist);
 static Tree*
 treealloc(char *name)
 {
-int	i;
-Tree	*t;
+int i;
+Tree *t;
 dprint("treealloc %s\n", name);
 for(i = 0; i < nelem(trees); i++)
 if(trees[i] == nil)
@@ -203,8 +203,8 @@ return nil;
 static Fsdev*
 devalloc(Tree *t, char *name)
 {
-int	i, ndevs;
-Fsdev	*mp, **devs;
+int i, ndevs;
+Fsdev *mp, **devs;
 dprint("devalloc %s %s\n", t->name, name);
 mp = mallocz(sizeof(Fsdev), 1);
 if(mp == nil)
@@ -252,9 +252,9 @@ panic("#k: deltree: bug: tree not found");
 static void
 mdeldev(Fsdev *mp)
 {
-int	i;
-Inner	*in;
-Tree	*t;
+int i;
+Inner *in;
+Tree *t;
 dprint("deldev %s gone %d ref %uld\n", mp->name, mp->gone, mp->ref);
 mp->gone = 1;
 mp->vers = ++qidvers;
@@ -322,9 +322,9 @@ error(Enonexist);
 static void
 setdsize(Fsdev* mp, vlong *ilen)
 {
-int	i;
-vlong	inlen;
-Inner	*in;
+int i;
+vlong inlen;
+Inner *in;
 dprint("setdsize %s\n", mp->name);
 for (i = 0; i < mp->ndevs; i++){
 in = mp->inner[i];
@@ -367,8 +367,8 @@ error(Eexist);
 static void
 parseconfig(char *a, long n, Cmdbuf **cbp, Cmdtab **ctp)
 {
-Cmdbuf	*cb;
-Cmdtab	*ct;
+Cmdbuf *cb;
+Cmdtab *ct;
 *cbp = cb = parsecmd(a, n);
 *ctp = ct = lookupcmd(cb, configs, nelem(configs));
 cb->f++;
@@ -414,9 +414,9 @@ validname(*dev, 0);
 static vlong
 getlen(Chan *c)
 {
-uchar	buf[128];
-Dir	d;
-long	l;
+uchar buf[128];
+Dir d;
+long l;
 l = devtab[c->type]->stat(c, buf, sizeof buf);
 convM2D(buf, l, &d, nil);
 return d.length;
@@ -424,16 +424,16 @@ return d.length;
 static void
 mconfig(char* a, long n)
 {
-int	i;
-vlong	size, start;
-vlong	*ilen;
-char	*tname, *dname, *fakef[4];
-Chan	**idev;
-Cmdbuf	*cb;
-Cmdtab	*ct;
-Fsdev	*mp;
-Inner	*inprv;
-Tree	*t;
+int i;
+vlong size, start;
+vlong *ilen;
+char *tname, *dname, *fakef[4];
+Chan **idev;
+Cmdbuf *cb;
+Cmdtab *ct;
+Fsdev *mp;
+Inner *inprv;
+Tree *t;
 if (*a == '\0' || *a == '#' || *a == '\n')
 return;
 dprint("mconfig\n");
@@ -479,7 +479,7 @@ cb->f = fakef;
 cb->nf = 4;
 }
 start = strtoll(cb->f[2], nil, 10);
-size =  strtoll(cb->f[3], nil, 10);
+size = strtoll(cb->f[3], nil, 10);
 if(cb->f == fakef)
 size -= start;
 cb->nf -= 2;
@@ -609,10 +609,10 @@ poperror();
 static int
 mgen(Chan *c, char*, Dirtab*, int, int i, Dir *dp)
 {
-int	treeno;
-Fsdev	*mp;
-Qid	qid;
-Tree	*t;
+int treeno;
+Fsdev *mp;
+Qid qid;
+Tree *t;
 dprint("mgen %#ullx %d\n", c->qid.path, i);
 qid.type = QTDIR;
 qid.vers = 0;
@@ -692,11 +692,11 @@ return wq;
 static int
 mstat(Chan *c, uchar *db, int n)
 {
-int	p;
-Dir	d;
-Fsdev	*mp;
-Qid	q;
-Tree	*t;
+int p;
+Dir d;
+Fsdev *mp;
+Qid q;
+Tree *t;
 dprint("mstat %llux\n", c->qid.path);
 rlock(&lck);
 if(waserror()){
@@ -733,8 +733,8 @@ return n;
 static Chan*
 mopen(Chan *c, int omode)
 {
-int	q;
-Fsdev	*mp;
+int q;
+Fsdev *mp;
 dprint("mopen %llux\n", c->qid.path);
 if((c->qid.type & QTDIR) && omode != OREAD)
 error(Eperm);
@@ -760,8 +760,8 @@ return c;
 static void
 mclose(Chan *c)
 {
-int	mustdel, q;
-Fsdev	*mp;
+int mustdel, q;
+Fsdev *mp;
 dprint("mclose %llux\n", c->qid.path);
 if(c->qid.type & QTDIR || !(c->flag & COPEN))
 return;
@@ -795,7 +795,7 @@ static long
 io(Fsdev *mp, Inner *in, int isread, void *a, long l, vlong off)
 {
 long wl;
-Chan	*mc;
+Chan *mc;
 mc = in->idev;
 if(mc == nil)
 error(Egone);
@@ -815,9 +815,9 @@ return wl;
 static long
 catio(Fsdev *mp, int isread, void *a, long n, vlong off)
 {
-int	i;
-long	l, res;
-Inner	*in;
+int i;
+long l, res;
+Inner *in;
 if(debug)
 print("catio %d %p %ld %lld\n", isread, a, n, off);
 res = n;
@@ -846,16 +846,16 @@ return res - n;
 static long
 interio(Fsdev *mp, int isread, void *a, long n, vlong off)
 {
-int	i;
-long	boff, res, l, wl, wsz;
-vlong	woff, blk, mblk;
-blk  = off / Blksize;
+int i;
+long boff, res, l, wl, wsz;
+vlong woff, blk, mblk;
+blk = off / Blksize;
 boff = off % Blksize;
-wsz  = Blksize - boff;
+wsz = Blksize - boff;
 res = n;
 while(n > 0){
 mblk = blk / mp->ndevs;
-i    = blk % mp->ndevs;
+i = blk % mp->ndevs;
 woff = mblk*Blksize + boff;
 if (n > wsz)
 l = wsz;
@@ -875,8 +875,8 @@ return res;
 static char*
 seprintconf(char *s, char *e)
 {
-int	i, j;
-Tree	*t;
+int i, j;
+Tree *t;
 *s = 0;
 for(i = 0; i < ntrees; i++){
 t = trees[i];
@@ -890,10 +890,10 @@ return s;
 static long
 mread(Chan *c, void *a, long n, vlong off)
 {
-int	i, retry;
-long	l, res;
-Fsdev	*mp;
-Tree	*t;
+int i, retry;
+long l, res;
+Fsdev *mp;
+Tree *t;
 dprint("mread %llux\n", c->qid.path);
 rlock(&lck);
 if(waserror()){
@@ -971,10 +971,10 @@ return res;
 static long
 mwrite(Chan *c, void *a, long n, vlong off)
 {
-int	i, allbad, anybad, retry;
-long	l, res;
-Fsdev	*mp;
-Tree	*t;
+int i, allbad, anybad, retry;
+long l, res;
+Fsdev *mp;
+Tree *t;
 dprint("mwrite %llux\n", c->qid.path);
 if (c->qid.type & QTDIR)
 error(Eisdir);

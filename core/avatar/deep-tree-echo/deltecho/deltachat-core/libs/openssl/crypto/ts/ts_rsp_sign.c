@@ -184,12 +184,12 @@ err:
 TSerr(TS_F_TS_RESP_CTX_ADD_MD, ERR_R_MALLOC_FAILURE);
 return 0;
 }
-#define TS_RESP_CTX_accuracy_free(ctx)          \
-ASN1_INTEGER_free(ctx->seconds);        \
-ctx->seconds = NULL;                    \
-ASN1_INTEGER_free(ctx->millis);         \
-ctx->millis = NULL;                     \
-ASN1_INTEGER_free(ctx->micros);         \
+#define TS_RESP_CTX_accuracy_free(ctx) \
+ASN1_INTEGER_free(ctx->seconds); \
+ctx->seconds = NULL; \
+ASN1_INTEGER_free(ctx->millis); \
+ctx->millis = NULL; \
+ASN1_INTEGER_free(ctx->micros); \
 ctx->micros = NULL;
 int TS_RESP_CTX_set_accuracy(TS_RESP_CTX *ctx,
 int secs, int millis, int micros)

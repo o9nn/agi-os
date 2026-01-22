@@ -25,7 +25,7 @@ newbuffer() : ref Buffer
 b := ref nullbuffer;
 return b;
 }
-Slop : con 100;	# room to grow with reallocation
+Slop : con 100; # room to grow with reallocation
 Buffer.sizecache(b : self ref Buffer, n : int)
 {
 if(n <= b.cmax)
@@ -122,7 +122,7 @@ obl = nil;
 }
 Buffer.insert(b : self ref Buffer, q0 : int, s : string, n : int)
 {
-i, j,  m, t, off, p : int;
+i, j, m, t, off, p : int;
 if (q0>b.nc)
 error("bad assert in insert");
 p = 0;
@@ -133,7 +133,7 @@ if(b.cnc+n <= Maxblock){
 # Everything fits in one block.
 t = b.cnc+n;
 m = n;
-if(b.bl == nil){	# allocate
+if(b.bl == nil){ # allocate
 if (b.cnc != 0)
 error("bad assert in insert");
 b.addblock(0, t);
@@ -149,7 +149,7 @@ c.s[off+j] = s[p+j];
 b.cnc = t;
 }
 #
-# We must make a new block.  If q0 is at
+# We must make a new block. If q0 is at
 # the very beginning or end of this block,
 # just make a new block and fill it.
 #
@@ -157,7 +157,7 @@ else if(q0==b.cq || q0==b.cq+b.cnc){
 if(b.cdirty)
 b.flush();
 m = min(n, Maxblock);
-if(b.bl == nil){	# allocate
+if(b.bl == nil){ # allocate
 if (b.cnc != 0)
 error("bad assert in insert");
 i = 0;
@@ -188,7 +188,7 @@ b.bl[i] = disk.write(b.bl[i], b.c.s[off:], m);
 b.cnc -= m;
 }
 #
-# Now at end of block.  Take as much input
+# Now at end of block. Take as much input
 # as possible and tack it on end of block.
 #
 m = min(n, Maxblock-b.cnc);
@@ -233,23 +233,23 @@ b.nc -= n;
 }
 # Buffer.replace(b: self ref Buffer, q0: int, q1: int, s: string, n: int)
 # {
-#	if(q0>q1 || q0>b.nc || q1>b.nc || n != q1-q0)
-#		error("bad assert in replace");
-#	p := 0;
-#	while(q1 > q0){
-#		b.setcache(q0);
-#		off := q0-b.cq;
-#		if(q1 > b.cq+b.cnc)
-#			n = b.cnc-off;
-#		else
-#			n = q1-q0;
-#		c := b.c;
-#		for(i := 0; i < n; i++)
-#			c.s[i+off] = s[i+p];
-#		b.cdirty = TRUE;
-#		q0 += n;
-#		p += n;
-#	}
+# if(q0>q1 || q0>b.nc || q1>b.nc || n != q1-q0)
+# error("bad assert in replace");
+# p := 0;
+# while(q1 > q0){
+# b.setcache(q0);
+# off := q0-b.cq;
+# if(q1 > b.cq+b.cnc)
+# n = b.cnc-off;
+# else
+# n = q1-q0;
+# c := b.c;
+# for(i := 0; i < n; i++)
+# c.s[i+off] = s[i+p];
+# b.cdirty = TRUE;
+# q0 += n;
+# p += n;
+# }
 # }
 pbuf : array of byte;
 bufloader(b: ref Buffer, q0: int, r: string, nr: int): int

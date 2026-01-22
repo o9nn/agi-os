@@ -5,13 +5,13 @@
 #include "error.h"
 #include "ip.h"
 #include "devip.h"
-void	csclose(Chan*);
-long	csread(Chan*, void*, long, vlong);
-long	cswrite(Chan*, void*, long, vlong);
+void csclose(Chan*);
+long csread(Chan*, void*, long, vlong);
+long cswrite(Chan*, void*, long, vlong);
 void osipinit(void);
 enum
 {
-Qtopdir		= 1,
+Qtopdir = 1,
 Qcs,
 Qprotodir,
 Qclonus,
@@ -22,46 +22,46 @@ Qstatus,
 Qremote,
 Qlocal,
 Qlisten,
-MAXPROTO	= 4
+MAXPROTO = 4
 };
-#define TYPE(x) 	((int)((x).path & 0xf))
-#define CONV(x) 	((int)(((x).path >> 4)&0xfff))
-#define PROTO(x) 	((int)(((x).path >> 16)&0xff))
-#define QID(p, c, y) 	(((p)<<16) | ((c)<<4) | (y))
-#define ipzero(x)	memset(x, 0, IPaddrlen)
-typedef struct Proto	Proto;
-typedef struct Conv	Conv;
+#define TYPE(x) ((int)((x).path & 0xf))
+#define CONV(x) ((int)(((x).path >> 4)&0xfff))
+#define PROTO(x) ((int)(((x).path >> 16)&0xff))
+#define QID(p, c, y) (((p)<<16) | ((c)<<4) | (y))
+#define ipzero(x) memset(x, 0, IPaddrlen)
+typedef struct Proto Proto;
+typedef struct Conv Conv;
 struct Conv
 {
-int	x;
-Ref	r;
-int	sfd;
-int	perm;
-char	owner[KNAMELEN];
-char*	state;
-uchar	laddr[IPaddrlen];
-ushort	lport;
-uchar	raddr[IPaddrlen];
-ushort	rport;
-int	restricted;
-char	cerr[KNAMELEN];
-Proto*	p;
+int x;
+Ref r;
+int sfd;
+int perm;
+char owner[KNAMELEN];
+char* state;
+uchar laddr[IPaddrlen];
+ushort lport;
+uchar raddr[IPaddrlen];
+ushort rport;
+int restricted;
+char cerr[KNAMELEN];
+Proto* p;
 };
 struct Proto
 {
-Lock	l;
-int	x;
-int	stype;
-char	name[KNAMELEN];
-int	nc;
-int	maxconv;
-Conv**	conv;
-Qid	qid;
+Lock l;
+int x;
+int stype;
+char name[KNAMELEN];
+int nc;
+int maxconv;
+Conv** conv;
+Qid qid;
 };
-static	int	np;
-static	Proto	proto[MAXPROTO];
-static	Conv*	protoclone(Proto*, char*, int);
-static	void	setladdr(Conv*);
+static int np;
+static Proto proto[MAXPROTO];
+static Conv* protoclone(Proto*, char*, int);
+static void setladdr(Conv*);
 int
 ipgen(Chan *c, char *nname, Dirtab *d, int nd, int s, Dir *dp)
 {

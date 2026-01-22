@@ -17,7 +17,7 @@ main(void)
 {
 int c;
 Biobuf bin, bout;
-Binit(&bin,  0, OREAD);
+Binit(&bin, 0, OREAD);
 Binit(&bout, 1, OWRITE);
 while((c = Bgetc(&bin)) != Beof)
 if(c != '=')
@@ -32,7 +32,7 @@ while((c = Bgetc(&bin)) != Beof && c != '?')
 continue;
 while((c = Bgetc(&bin)) != Beof && c != '?'){
 if(c == '='){
-c  = hex(Bgetc(&bin)) << 4;
+c = hex(Bgetc(&bin)) << 4;
 c |= hex(Bgetc(&bin));
 }
 Bputc(&bout, c);

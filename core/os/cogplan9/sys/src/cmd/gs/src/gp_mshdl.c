@@ -12,7 +12,7 @@ private iodev_proc_fclose(mswin_handle_fclose);
 const gx_io_device gs_iodev_handle = {
 "%handle%", "FileSystem",
 {iodev_no_init, iodev_no_open_device,
-NULL  , mswin_handle_fopen, mswin_handle_fclose,
+NULL , mswin_handle_fopen, mswin_handle_fclose,
 iodev_no_delete_file, iodev_no_rename_file, iodev_no_file_status,
 iodev_no_enumerate_files, NULL, NULL,
 iodev_no_get_params, iodev_no_put_params

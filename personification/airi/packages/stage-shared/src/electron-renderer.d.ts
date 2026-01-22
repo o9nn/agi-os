@@ -1,4 +1,4 @@
 import type { ElectronWindow } from './window'
 declare global {
-  interface Window extends ElectronWindow {}
+interface Window extends ElectronWindow {}
 }

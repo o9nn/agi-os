@@ -32,12 +32,12 @@
 #else
 #define IS_PROMISE_DRIVE (0)
 #endif
-static const byte	ide_hwif_to_major[MAX_HWIFS] = {IDE0_MAJOR, IDE1_MAJOR, IDE2_MAJOR, IDE3_MAJOR};
+static const byte ide_hwif_to_major[MAX_HWIFS] = {IDE0_MAJOR, IDE1_MAJOR, IDE2_MAJOR, IDE3_MAJOR};
 static unsigned short default_io_base[MAX_HWIFS] = {0x1f0, 0x170, 0x1e8, 0x168};
-static const byte	default_irqs[MAX_HWIFS]     = {14, 15, 11, 10};
-static int	idebus_parameter;
-static int	system_bus_speed;
-ide_hwif_t	ide_hwifs[MAX_HWIFS];
+static const byte default_irqs[MAX_HWIFS] = {14, 15, 11, 10};
+static int idebus_parameter;
+static int system_bus_speed;
+ide_hwif_t ide_hwifs[MAX_HWIFS];
 #if (DISK_RECOVERY_TIME > 0)
 static unsigned long read_timer(void)
 {
@@ -76,37 +76,37 @@ p = ((byte *) hwif) + sizeof(ide_hwif_t);
 do {
 *--p = 0;
 } while (p > (byte *) hwif);
-hwif->index     = index;
-hwif->io_base	= default_io_base[index];
-hwif->irq	= default_irqs[index];
-hwif->ctl_port	= hwif->io_base ? hwif->io_base+0x206 : 0x000;
+hwif->index = index;
+hwif->io_base = default_io_base[index];
+hwif->irq = default_irqs[index];
+hwif->ctl_port = hwif->io_base ? hwif->io_base+0x206 : 0x000;
 #ifdef CONFIG_BLK_DEV_HD
 if (hwif->io_base == HD_DATA)
 hwif->noprobe = 1;
 #endif
-hwif->major	= ide_hwif_to_major[index];
-hwif->name[0]	= 'i';
-hwif->name[1]	= 'd';
-hwif->name[2]	= 'e';
-hwif->name[3]	= '0' + index;
+hwif->major = ide_hwif_to_major[index];
+hwif->name[0] = 'i';
+hwif->name[1] = 'd';
+hwif->name[2] = 'e';
+hwif->name[3] = '0' + index;
 #ifdef CONFIG_BLK_DEV_IDETAPE
 hwif->tape_drive = NULL;
 #endif
 for (unit = 0; unit < MAX_DRIVES; ++unit) {
 ide_drive_t *drive = &hwif->drives[unit];
-drive->select.all		= (unit<<4)|0xa0;
-drive->hwif			= hwif;
-drive->ctl			= 0x08;
-drive->ready_stat		= READY_STAT;
-drive->bad_wstat		= BAD_W_STAT;
-drive->special.b.recalibrate	= 1;
-drive->special.b.set_geometry	= 1;
-drive->name[0]			= 'h';
-drive->name[1]			= 'd';
+drive->select.all = (unit<<4)|0xa0;
+drive->hwif = hwif;
+drive->ctl = 0x08;
+drive->ready_stat = READY_STAT;
+drive->bad_wstat = BAD_W_STAT;
+drive->special.b.recalibrate = 1;
+drive->special.b.set_geometry = 1;
+drive->name[0] = 'h';
+drive->name[1] = 'd';
 #ifdef MACH
-drive->name[2]			= '0' + (index * MAX_DRIVES) + unit;
+drive->name[2] = '0' + (index * MAX_DRIVES) + unit;
 #else
-drive->name[2]			= 'a' + (index * MAX_DRIVES) + unit;
+drive->name[2] = 'a' + (index * MAX_DRIVES) + unit;
 #endif
 }
 }
@@ -147,7 +147,7 @@ static inline void do_vlb_sync (unsigned short port) {
 #endif
 void ide_input_data (ide_drive_t *drive, void *buffer, unsigned int wcount)
 {
-unsigned short io_base  = HWIF(drive)->io_base;
+unsigned short io_base = HWIF(drive)->io_base;
 unsigned short data_reg = io_base+IDE_DATA_OFFSET;
 byte io_32bit = drive->io_32bit;
 if (io_32bit) {
@@ -176,7 +176,7 @@ insw(data_reg, buffer, wcount<<1);
 }
 void ide_output_data (ide_drive_t *drive, void *buffer, unsigned int wcount)
 {
-unsigned short io_base  = HWIF(drive)->io_base;
+unsigned short io_base = HWIF(drive)->io_base;
 unsigned short data_reg = io_base+IDE_DATA_OFFSET;
 byte io_32bit = drive->io_32bit;
 if (io_32bit) {
@@ -226,14 +226,14 @@ printk("%s: ide_set_handler: handler not null; old=%p, new=%p\n",
 drive->name, hwgroup->handler, handler);
 }
 #endif
-hwgroup->handler       = handler;
+hwgroup->handler = handler;
 hwgroup->timer.expires = jiffies + timeout;
 add_timer(&(hwgroup->timer));
 }
 static int lba_capacity_is_ok (struct hd_driveid *id)
 {
-unsigned long lba_sects   = id->lba_capacity;
-unsigned long chs_sects   = id->cyls * id->heads * id->sectors;
+unsigned long lba_sects = id->lba_capacity;
+unsigned long chs_sects = id->cyls * id->heads * id->sectors;
 unsigned long _10_percent = chs_sects / 10;
 if (id->cyls == 16383 && id->sectors == 63 &&
 (id->heads == 15 || id->heads == 16) &&
@@ -248,7 +248,7 @@ return 1;
 }
 return 0;
 }
-static unsigned long current_capacity (ide_drive_t  *drive)
+static unsigned long current_capacity (ide_drive_t *drive)
 {
 struct hd_driveid *id = drive->id;
 unsigned long capacity;
@@ -304,26 +304,26 @@ for (units = MAX_DRIVES; units > 0; --units) {
 if (hwif->drives[units-1].present)
 break;
 }
-minors    = units * (1<<PARTN_BITS);
-gd        = kmalloc (sizeof(struct gendisk), GFP_KERNEL);
+minors = units * (1<<PARTN_BITS);
+gd = kmalloc (sizeof(struct gendisk), GFP_KERNEL);
 gd->sizes = kmalloc (minors * sizeof(int), GFP_KERNEL);
-gd->part  = kmalloc (minors * sizeof(struct hd_struct), GFP_KERNEL);
-bs        = kmalloc (minors*sizeof(int), GFP_KERNEL);
+gd->part = kmalloc (minors * sizeof(struct hd_struct), GFP_KERNEL);
+bs = kmalloc (minors*sizeof(int), GFP_KERNEL);
 memset(gd->part, 0, minors * sizeof(struct hd_struct));
 blksize_size[hwif->major] = bs;
 for (unit = 0; unit < minors; ++unit)
 *bs++ = BLOCK_SIZE;
 for (unit = 0; unit < units; ++unit)
 hwif->drives[unit].part = &gd->part[unit << PARTN_BITS];
-gd->major	= hwif->major;
-gd->major_name	= IDE_MAJOR_NAME;
-gd->minor_shift	= PARTN_BITS;
-gd->max_p	= 1<<PARTN_BITS;
-gd->max_nr	= units;
-gd->nr_real	= units;
-gd->init	= ide_geninit;
+gd->major = hwif->major;
+gd->major_name = IDE_MAJOR_NAME;
+gd->minor_shift = PARTN_BITS;
+gd->max_p = 1<<PARTN_BITS;
+gd->max_nr = units;
+gd->nr_real = units;
+gd->init = ide_geninit;
 gd->real_devices= hwif;
-gd->next	= NULL;
+gd->next = NULL;
 for (gdp = &gendisk_head; *gdp; gdp = &((*gdp)->next)) ;
 hwif->gd = *gdp = gd;
 }
@@ -361,7 +361,7 @@ ide_set_handler (drive, &reset_pollfunc, HZ/20);
 return;
 }
 printk("%s: reset timed-out, status=0x%02x\n", hwif->name, tmp);
-} else  {
+} else {
 printk("%s: reset: ", hwif->name);
 if ((tmp = GET_ERR()) == 1)
 printk("success\n");
@@ -391,7 +391,7 @@ printk("failed\n");
 }
 hwgroup->poll_timeout = 0;
 }
-static void do_reset1 (ide_drive_t *drive, int  do_not_try_atapi)
+static void do_reset1 (ide_drive_t *drive, int do_not_try_atapi)
 {
 unsigned int unit;
 unsigned long flags;
@@ -424,7 +424,7 @@ rdrive->tape.reset_issued = 1;
 #endif
 rdrive->special.all = 0;
 rdrive->special.b.set_geometry = 1;
-rdrive->special.b.recalibrate  = 1;
+rdrive->special.b.recalibrate = 1;
 if (OK_TO_RESET_CONTROLLER)
 rdrive->mult_count = 0;
 if (!rdrive->keep_settings) {
@@ -492,13 +492,13 @@ printk(" { ");
 if (stat & BUSY_STAT)
 printk("Busy ");
 else {
-if (stat & READY_STAT)	printk("DriveReady ");
-if (stat & WRERR_STAT)	printk("DeviceFault ");
-if (stat & SEEK_STAT)	printk("SeekComplete ");
-if (stat & DRQ_STAT)	printk("DataRequest ");
-if (stat & ECC_STAT)	printk("CorrectedError ");
-if (stat & INDEX_STAT)	printk("Index ");
-if (stat & ERR_STAT)	printk("Error ");
+if (stat & READY_STAT) printk("DriveReady ");
+if (stat & WRERR_STAT) printk("DeviceFault ");
+if (stat & SEEK_STAT) printk("SeekComplete ");
+if (stat & DRQ_STAT) printk("DataRequest ");
+if (stat & ECC_STAT) printk("CorrectedError ");
+if (stat & INDEX_STAT) printk("Index ");
+if (stat & ERR_STAT) printk("Error ");
 }
 printk("}");
 }
@@ -510,12 +510,12 @@ printk("%s: %s: error=0x%02x", drive->name, msg, err);
 #if FANCY_STATUS_DUMPS
 if (drive->media == ide_disk) {
 printk(" { ");
-if (err & ICRC_ERR)	printk((err & ABRT_ERR) ? "BadCRC " : "BadSector ");
-if (err & ECC_ERR)	printk("UncorrectableError ");
-if (err & ID_ERR)	printk("SectorIdNotFound ");
-if (err & ABRT_ERR)	printk("DriveStatusError ");
-if (err & TRK0_ERR)	printk("TrackZeroNotFound ");
-if (err & MARK_ERR)	printk("AddrMarkNotFound ");
+if (err & ICRC_ERR) printk((err & ABRT_ERR) ? "BadCRC " : "BadSector ");
+if (err & ECC_ERR) printk("UncorrectableError ");
+if (err & ID_ERR) printk("SectorIdNotFound ");
+if (err & ABRT_ERR) printk("DriveStatusError ");
+if (err & TRK0_ERR) printk("TrackZeroNotFound ");
+if (err & MARK_ERR) printk("AddrMarkNotFound ");
 printk("}");
 if (err & (BBD_ERR|ECC_ERR|ID_ERR|MARK_ERR)) {
 byte cur = IN_BYTE(IDE_SELECT_REG);
@@ -701,7 +701,7 @@ break;
 if ((rq->current_nr_sectors -= nsect) == 0) {
 if ((rq->bh = rq->bh->b_reqnext) != NULL) {
 rq->current_nr_sectors = rq->bh->b_size>>9;
-rq->buffer             = rq->bh->b_data;
+rq->buffer = rq->bh->b_data;
 } else {
 panic("%s: buffer list corrupted\n", drive->name);
 break;
@@ -900,10 +900,10 @@ OUT_BYTE(((block>>8)&0x0f)|drive->select.all,io_base+IDE_SELECT_OFFSET);
 } else {
 unsigned int sect,head,cyl,track;
 track = block / drive->sect;
-sect  = block % drive->sect + 1;
+sect = block % drive->sect + 1;
 OUT_BYTE(sect,io_base+IDE_SECTOR_OFFSET);
-head  = track % drive->head;
-cyl   = track / drive->head;
+head = track % drive->head;
+cyl = track / drive->head;
 if (cyl >= 1 << 16) {
 printk("block %lu cylinder %u beyond CHS\n", block, cyl);
 ide_end_request(0, hwif->hwgroup);
@@ -1003,7 +1003,7 @@ printk("%s: block not locked\n", drive->name);
 goto kill_rq;
 }
 #endif
-block    = rq->sector;
+block = rq->sector;
 blockend = block + rq->nr_sectors;
 if ((blockend < block) || (blockend > drive->part[minor&PARTN_MASK].nr_sects)) {
 #ifdef MACH
@@ -1145,7 +1145,7 @@ do_hwgroup_request (ide_hwifs[3].hwgroup);
 static void timer_expiry (unsigned long data)
 {
 ide_hwgroup_t *hwgroup = (ide_hwgroup_t *) data;
-ide_drive_t   *drive   = hwgroup->drive;
+ide_drive_t *drive = hwgroup->drive;
 unsigned long flags;
 save_flags(flags);
 cli();
@@ -1217,10 +1217,10 @@ cli();
 }
 static ide_drive_t *get_info_ptr (kdev_t i_rdev)
 {
-int		major = MAJOR(i_rdev);
-unsigned int	h;
+int major = MAJOR(i_rdev);
+unsigned int h;
 for (h = 0; h < MAX_HWIFS; ++h) {
-ide_hwif_t  *hwif = &ide_hwifs[h];
+ide_hwif_t *hwif = &ide_hwifs[h];
 if (hwif->present && major == hwif->major) {
 unsigned unit = DEVICE_NR(i_rdev);
 if (unit < MAX_DRIVES) {
@@ -1291,7 +1291,7 @@ if (!HWGROUP(drive)->active) {
 do_hwgroup_request(HWGROUP(drive));
 cli();
 }
-if (action == ide_wait  && rq->rq_status != RQ_INACTIVE)
+if (action == ide_wait && rq->rq_status != RQ_INACTIVE)
 down(&sem);
 restore_flags(flags);
 return rq->errors ? -EIO : 0;
@@ -1394,13 +1394,13 @@ restore_flags(flags);
 for (p = 0; p < (1<<PARTN_BITS); ++p) {
 if (drive->part[p].nr_sects > 0) {
 kdev_t devp = MKDEV(major, minor+p);
-fsync_dev          (devp);
-invalidate_inodes  (devp);
+fsync_dev (devp);
+invalidate_inodes (devp);
 invalidate_buffers (devp);
 set_blocksize(devp, 1024);
 }
 drive->part[p].start_sect = 0;
-drive->part[p].nr_sects   = 0;
+drive->part[p].nr_sects = 0;
 };
 drive->part[0].nr_sects = current_capacity(drive);
 if ((drive->media != ide_disk && drive->media != ide_floppy) || !drive->part[0].nr_sects)
@@ -1693,8 +1693,8 @@ if ((id->model[0] == 'N' && id->model[1] == 'E')
 || (id->model[0] == 'P' && id->model[1] == 'i'))
 bswap = 0;
 }
-ide_fixstring (id->model,     sizeof(id->model),     bswap);
-ide_fixstring (id->fw_rev,    sizeof(id->fw_rev),    bswap);
+ide_fixstring (id->model, sizeof(id->model), bswap);
+ide_fixstring (id->fw_rev, sizeof(id->fw_rev), bswap);
 ide_fixstring (id->serial_no, sizeof(id->serial_no), bswap);
 if (strstr((char *)id->model, "E X A B Y T E N E S T"))
 return;
@@ -1792,25 +1792,25 @@ return;
 drive->media = ide_disk;
 if (!drive->present) {
 drive->present = 1;
-drive->cyl     = drive->bios_cyl  = id->cyls;
-drive->head    = drive->bios_head = id->heads;
-drive->sect    = drive->bios_sect = id->sectors;
+drive->cyl = drive->bios_cyl = id->cyls;
+drive->head = drive->bios_head = id->heads;
+drive->sect = drive->bios_sect = id->sectors;
 }
 if ((id->field_valid & 1) && id->cur_cyls && id->cur_heads
 && (id->cur_heads <= 16) && id->cur_sectors) {
-drive->cyl  = id->cur_cyls;
+drive->cyl = id->cur_cyls;
 drive->head = id->cur_heads;
 drive->sect = id->cur_sectors;
 capacity = drive->cyl * drive->head * drive->sect;
 check = (id->cur_capacity0 << 16) | id->cur_capacity1;
 if (check == capacity) {
-id->cur_capacity0 = (capacity >>  0) & 0xffff;
+id->cur_capacity0 = (capacity >> 0) & 0xffff;
 id->cur_capacity1 = (capacity >> 16) & 0xffff;
 }
 }
 if ((!drive->head || drive->head > 16) &&
 id->heads && id->heads <= 16) {
-drive->cyl  = id->cyls;
+drive->cyl = id->cyls;
 drive->head = id->heads;
 drive->sect = id->sectors;
 }
@@ -2052,15 +2052,15 @@ cmos_disks = inb_p(0x71);
 for (unit = 0; unit < MAX_DRIVES; ++unit) {
 ide_drive_t *drive = &hwif->drives[unit];
 if ((cmos_disks & (0xf0 >> (unit*4))) && !drive->present && !drive->nobios) {
-unsigned short cyl  = *(unsigned short *)BIOS;
-unsigned char  head = *(BIOS+2);
-unsigned char  sect = *(BIOS+14);
-unsigned char  ctl  = *(BIOS+8);
+unsigned short cyl = *(unsigned short *)BIOS;
+unsigned char head = *(BIOS+2);
+unsigned char sect = *(BIOS+14);
+unsigned char ctl = *(BIOS+8);
 if (cyl > 0 && head > 0 && sect > 0 && sect < 64 && head < 255) {
-drive->cyl   = drive->bios_cyl  = cyl;
-drive->head  = drive->bios_head = head;
-drive->sect  = drive->bios_sect = sect;
-drive->ctl   = ctl;
+drive->cyl = drive->bios_cyl = cyl;
+drive->head = drive->bios_head = head;
+drive->sect = drive->bios_sect = sect;
+drive->ctl = ctl;
 drive->present = 1;
 printk("hd%d: got CHS=%d/%d/%d CTL=%x from BIOS\n",
 unit, cyl, head, sect, ctl);
@@ -2113,7 +2113,7 @@ drive->present = 0;
 }
 if (drive->present && !hwif->present) {
 hwif->present = 1;
-request_region(hwif->io_base,  8, hwif->name);
+request_region(hwif->io_base, 8, hwif->name);
 request_region(hwif->ctl_port, 1, hwif->name);
 }
 }
@@ -2174,7 +2174,7 @@ const char max_drive = '0' + ((MAX_HWIFS * MAX_DRIVES) - 1);
 #else
 const char max_drive = 'a' + ((MAX_HWIFS * MAX_DRIVES) - 1);
 #endif
-const char max_hwif  = '0' + (MAX_HWIFS - 1);
+const char max_hwif = '0' + (MAX_HWIFS - 1);
 printk("ide_setup: %s", s);
 init_ide_data ();
 #ifdef MACH
@@ -2190,7 +2190,7 @@ unit = s[2] - '0';
 #else
 unit = s[2] - 'a';
 #endif
-hw   = unit / MAX_DRIVES;
+hw = unit / MAX_DRIVES;
 unit = unit % MAX_DRIVES;
 hwif = &ide_hwifs[hw];
 drive = &hwif->drives[unit];
@@ -2228,11 +2228,11 @@ case -10:
 drive->nodma = 1;
 goto done;
 case 3:
-drive->media	= ide_disk;
-drive->cyl	= drive->bios_cyl  = vals[0];
-drive->head	= drive->bios_head = vals[1];
-drive->sect	= drive->bios_sect = vals[2];
-drive->present	= 1;
+drive->media = ide_disk;
+drive->cyl = drive->bios_cyl = vals[0];
+drive->head = drive->bios_head = vals[1];
+drive->sect = drive->bios_sect = vals[2];
+drive->present = 1;
 drive->forced_geom = 1;
 hwif->noprobe = 0;
 goto done;
@@ -2344,11 +2344,11 @@ vals[1] = vals[0] + 0x206;
 case 2:
 vals[2] = 0;
 case 3:
-hwif->io_base  = vals[0];
+hwif->io_base = vals[0];
 hwif->ctl_port = vals[1];
-hwif->irq      = vals[2];
-hwif->noprobe  = 0;
-hwif->chipset  = ide_generic;
+hwif->irq = vals[2];
+hwif->noprobe = 0;
+hwif->chipset = ide_generic;
 goto done;
 case 0: goto bad_option;
 default:
@@ -2382,11 +2382,11 @@ if (xparm < 0 && (drive->bios_cyl * drive->bios_head * drive->bios_sect) < (1024
 return 0;
 }
 if (drive->id) {
-drive->cyl  = drive->id->cyls;
+drive->cyl = drive->id->cyls;
 drive->head = drive->id->heads;
 drive->sect = drive->id->sectors;
 }
-drive->bios_cyl  = drive->cyl;
+drive->bios_cyl = drive->cyl;
 drive->bios_head = drive->head;
 drive->bios_sect = drive->sect;
 drive->special.b.set_geometry = 1;
@@ -2468,8 +2468,8 @@ if (match) {
 hwgroup = match->hwgroup;
 } else {
 hwgroup = kmalloc(sizeof(ide_hwgroup_t), GFP_KERNEL);
-hwgroup->hwif 	 = hwgroup->next_hwif = hwif->next = hwif;
-hwgroup->rq      = NULL;
+hwgroup->hwif = hwgroup->next_hwif = hwif->next = hwif;
+hwgroup->rq = NULL;
 hwgroup->handler = NULL;
 if (hwif->drives[0].present)
 hwgroup->drive = &hwif->drives[0];

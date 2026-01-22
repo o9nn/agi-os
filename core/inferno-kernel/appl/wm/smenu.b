@@ -59,7 +59,7 @@ cmd(m.t, "update");
 Scrollmenu.destroy(m: self ref Scrollmenu)
 {
 if(m.c != nil){
-m.c <-= "u";	# fake unmap message
+m.c <-= "u"; # fake unmap message
 m.c = nil;
 }
 m.name = nil;
@@ -132,7 +132,7 @@ res := prefix + string (int hd toks + m.o);
 for(t := 0; t < SEC; ){
 if(m.timer)
 alt{
-resc <-=  res =>
+resc <-= res =>
 t = SEC;
 <- timerc =>
 t++;

@@ -3,20 +3,20 @@
 #include <auth.h>
 #include <fcall.h>
 #include "tapefs.h"
-#define	V6NADDR	8
-#define	V6FMT	0160000
-#define	V6IFREG	0100000
-#define	V6IFDIR	0140000
-#define	V6IFCHR	0120000
-#define	V6IFBLK	0160000
-#define	V6MODE	0777
-#define	V6LARGE	010000
-#define	V6SUPERB	1
-#define	V6ROOT		1
-#define	V6NAMELEN	14
-#define	BLSIZE	512
-#define	LINOPB	(BLSIZE/sizeof(struct v6dinode))
-#define	LNINDIR	(BLSIZE/sizeof(unsigned short))
+#define V6NADDR 8
+#define V6FMT 0160000
+#define V6IFREG 0100000
+#define V6IFDIR 0140000
+#define V6IFCHR 0120000
+#define V6IFBLK 0160000
+#define V6MODE 0777
+#define V6LARGE 010000
+#define V6SUPERB 1
+#define V6ROOT 1
+#define V6NAMELEN 14
+#define BLSIZE 512
+#define LINOPB (BLSIZE/sizeof(struct v6dinode))
+#define LNINDIR (BLSIZE/sizeof(unsigned short))
 struct v6dinode {
 unsigned char flags[2];
 unsigned char nlinks;
@@ -28,14 +28,14 @@ unsigned char addr[V6NADDR][2];
 unsigned char atime[4];
 unsigned char mtime[4];
 };
-struct	v6dir {
-uchar	ino[2];
-char	name[V6NAMELEN];
+struct v6dir {
+uchar ino[2];
+char name[V6NAMELEN];
 };
-int	tapefile;
-Fileinf	iget(int ino);
-long	bmap(Ram *r, long bno);
-void	getblk(Ram *r, long bno, char *buf);
+int tapefile;
+Fileinf iget(int ino);
+long bmap(Ram *r, long bno);
+void getblk(Ram *r, long bno, char *buf);
 void
 populate(char *name)
 {

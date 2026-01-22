@@ -4,7 +4,7 @@ typedef struct BuildStack {
 FSM_trans *t;
 struct BuildStack *nxt;
 } BuildStack;
-extern ProcList	*rdy;
+extern ProcList *rdy;
 extern int verbose, eventmapnr, claimnr, rvopt, export_ast, u_sync;
 extern Element *Al_El;
 static FSM_state *fsm_free;
@@ -15,19 +15,19 @@ static int cur_st_id;
 int o_max;
 FSM_state *fsm;
 FSM_state **fsm_tbl;
-FSM_use   *use_free;
+FSM_use *use_free;
 static void ana_seq(Sequence *);
 static void ana_stmnt(FSM_trans *, Lextok *, int);
 extern void AST_slice(void);
 extern void AST_store(ProcList *, int);
-extern int  has_global(Lextok *);
+extern int has_global(Lextok *);
 extern void exit(int);
 static void
 fsm_table(void)
-{	FSM_state *f;
+{ FSM_state *f;
 max_st_id += 2;
 if (o_max < max_st_id)
-{	o_max = max_st_id;
+{ o_max = max_st_id;
 fsm_tbl = (FSM_state **) emalloc(max_st_id * sizeof(FSM_state *));
 } else
 memset((char *)fsm_tbl, 0, max_st_id * sizeof(FSM_state *));
@@ -38,7 +38,7 @@ fsm_tbl[f->from] = f;
 }
 static int
 FSM_DFS(int from, FSM_use *u)
-{	FSM_state *f;
+{ FSM_state *f;
 FSM_trans *t;
 FSM_use *v;
 int n;
@@ -46,7 +46,7 @@ if (from == 0)
 return 1;
 f = fsm_tbl[from];
 if (!f)
-{	printf("cannot find state %d\n", from);
+{ printf("cannot find state %d\n", from);
 fatal("fsm_dfs: cannot happen\n", (char *) 0);
 }
 if (f->seen)
@@ -65,7 +65,7 @@ return 1;
 }
 static void
 new_dfs(void)
-{	int i;
+{ int i;
 for (i = 0; i < cur_st_id; i++)
 if (fsm_tbl[i])
 fsm_tbl[i]->seen = 0;
@@ -76,13 +76,13 @@ good_dead(Element *e, FSM_use *u)
 switch (u->special) {
 case 2:
 if (e->n->ntyp == ASGN
-&&  e->n->rgt->ntyp == CONST
-&&  e->n->rgt->val == 0)
+&& e->n->rgt->ntyp == CONST
+&& e->n->rgt->val == 0)
 return 0;
 break;
 case 1:
 if (e->n->ntyp != 'c'
-&&  e->n->ntyp != 'r')
+&& e->n->ntyp != 'r')
 return 0;
 break;
 }
@@ -93,31 +93,31 @@ static int howdeep = 0;
 #endif
 static int
 eligible(FSM_trans *v)
-{	Element	*el = ZE;
-Lextok	*lt = ZN;
+{ Element *el = ZE;
+Lextok *lt = ZN;
 if (v) el = v->step;
 if (el) lt = v->step->n;
 if (!lt
-||  v->nxt
-||  el->esc
-||  (el->status&CHECK2)
-||  lt->ntyp == ATOMIC
-||  lt->ntyp == NON_ATOMIC
-||  lt->ntyp == IF
-||  lt->ntyp == C_CODE
-||  lt->ntyp == C_EXPR
-||  has_lab(el, 0)
-||  lt->ntyp == DO
-||  lt->ntyp == UNLESS
-||  lt->ntyp == D_STEP
-||  lt->ntyp == ELSE
-||  lt->ntyp == '@'
-||  lt->ntyp == 'c'
-||  lt->ntyp == 'r'
-||  lt->ntyp == 's')
+|| v->nxt
+|| el->esc
+|| (el->status&CHECK2)
+|| lt->ntyp == ATOMIC
+|| lt->ntyp == NON_ATOMIC
+|| lt->ntyp == IF
+|| lt->ntyp == C_CODE
+|| lt->ntyp == C_EXPR
+|| has_lab(el, 0)
+|| lt->ntyp == DO
+|| lt->ntyp == UNLESS
+|| lt->ntyp == D_STEP
+|| lt->ntyp == ELSE
+|| lt->ntyp == '@'
+|| lt->ntyp == 'c'
+|| lt->ntyp == 'r'
+|| lt->ntyp == 's')
 return 0;
 if (!(el->status&(2|4)))
-{	int unsafe = (el->status&I_GLOB)?1:has_global(el->n);
+{ int unsafe = (el->status&I_GLOB)?1:has_global(el->n);
 if (unsafe)
 return 0;
 }
@@ -125,27 +125,27 @@ return 1;
 }
 static int
 canfill_in(FSM_trans *v)
-{	Element	*el = v->step;
-Lextok	*lt = v->step->n;
+{ Element *el = v->step;
+Lextok *lt = v->step->n;
 if (!lt
-||  v->nxt
-||  el->esc
-||  (el->status&CHECK2))
+|| v->nxt
+|| el->esc
+|| (el->status&CHECK2))
 return 0;
 if (!(el->status&(2|4))
-&&  ((el->status&I_GLOB)
-||   has_global(el->n)))
+&& ((el->status&I_GLOB)
+|| has_global(el->n)))
 return 0;
 return 1;
 }
 static int
 pushbuild(FSM_trans *v)
-{	BuildStack *b;
+{ BuildStack *b;
 for (b = bs; b; b = b->nxt)
 if (b->t == v)
 return 0;
 if (bf)
-{	b = bf;
+{ b = bf;
 bf = bf->nxt;
 } else
 b = (BuildStack *) emalloc(sizeof(BuildStack));
@@ -156,7 +156,7 @@ return 1;
 }
 static void
 popbuild(void)
-{	BuildStack *f;
+{ BuildStack *f;
 if (!bs)
 fatal("cannot happen, popbuild", (char *) 0);
 f = bs;
@@ -166,13 +166,13 @@ bf = f;
 }
 static int
 build_step(FSM_trans *v)
-{	FSM_state *f;
-Element	*el;
+{ FSM_state *f;
+Element *el;
 #if 0
-Lextok	*lt = ZN;
+Lextok *lt = ZN;
 #endif
-int	st;
-int	r;
+int st;
+int r;
 if (!v) return -1;
 el = v->step;
 st = v->to;
@@ -187,7 +187,7 @@ f = fsm_tbl[st];
 #if 0
 lt = v->step->n;
 if (verbose&32)
-{	if (++howdeep == 1)
+{ if (++howdeep == 1)
 printf("spin: %s:%d, merge:\n", lt->fn->name, lt->ln);
 printf("\t[%d] <seqno %d>\t", howdeep, el->seqno);
 comment(stdout, lt, 0);
@@ -198,7 +198,7 @@ r = build_step(f->t);
 v->step->merge = (r == -1) ? st : r;
 #if 0
 if (verbose&32)
-{	printf("	merge value: %d (st=%d,r=%d, line %d)\n",
+{ printf("	merge value: %d (st=%d,r=%d, line %d)\n",
 v->step->merge, st, r, el->n->ln);
 howdeep--;
 }
@@ -208,19 +208,19 @@ return v->step->merge;
 }
 static void
 FSM_MERGER( void)
-{	FSM_state *f, *g;
+{ FSM_state *f, *g;
 FSM_trans *t;
-Lextok	*lt;
+Lextok *lt;
 for (f = fsm; f; f = f->nxt)
 for (t = f->t; t; t = t->nxt)
-{	if (!t->step) continue;
+{ if (!t->step) continue;
 t->step->merge_in = f->in;
 if (t->step->merge)
 continue;
 lt = t->step->n;
 if (lt->ntyp == 'c'
-||  lt->ntyp == 'r'
-||  lt->ntyp == 's')
+|| lt->ntyp == 'r'
+|| lt->ntyp == 's')
 continue;
 if (!eligible(t))
 continue;
@@ -232,7 +232,7 @@ if (!g || !eligible(g->t))
 t->step->merge_single = t->to;
 #if 0
 if ((verbose&32))
-{	printf("spin: %s:%d, merge_single:\n\t<seqno %d>\t",
+{ printf("spin: %s:%d, merge_single:\n\t<seqno %d>\t",
 t->step->n->fn->name,
 t->step->n->ln,
 t->step->seqno);
@@ -247,7 +247,7 @@ continue;
 }
 for (f = fsm; f; f = f->nxt)
 for (t = f->t; t; t = t->nxt)
-{	if (!t->step || t->step->merge)
+{ if (!t->step || t->step->merge)
 continue;
 lt = t->step->n;
 #if 0
@@ -259,9 +259,9 @@ statement within the atomic sequence
 the same is not true for non-rv send operations
 #endif
 if (lt->ntyp == 'c'
-||  lt->ntyp == 'r'
-||  (lt->ntyp == 's' && u_sync == 0))
-{	if (!canfill_in(t))
+|| lt->ntyp == 'r'
+|| (lt->ntyp == 's' && u_sync == 0))
+{ if (!canfill_in(t))
 continue;
 g = fsm_tbl[t->to];
 if (!g || !g->t || !g->t->step)
@@ -275,7 +275,7 @@ t->step->merge_start = g->t->step->merge_single;
 #if 0
 if ((verbose&32)
 && t->step->merge_start)
-{	printf("spin: %s:%d, merge_START:\n\t<seqno %d>\t",
+{ printf("spin: %s:%d, merge_START:\n\t<seqno %d>\t",
 lt->fn->name, lt->ln,
 t->step->seqno);
 comment(stdout, lt, 0);
@@ -287,7 +287,7 @@ printf(";\n");
 }
 static void
 FSM_ANA(void)
-{	FSM_state *f;
+{ FSM_state *f;
 FSM_trans *t;
 FSM_use *u, *v, *w;
 int n;
@@ -295,9 +295,9 @@ for (f = fsm; f; f = f->nxt)
 for (t = f->t; t; t = t->nxt)
 for (n = 0; n < 2; n++)
 for (u = t->Val[n]; u; u = u->nxt)
-{	if (!u->var->context
-||   u->var->type == CHAN
-||   u->var->type == STRUCT)
+{ if (!u->var->context
+|| u->var->type == CHAN
+|| u->var->type == STRUCT)
 continue;
 new_dfs();
 if (FSM_DFS(t->to, u))
@@ -308,15 +308,15 @@ for (f = fsm; f; f = f->nxt)
 for (t = f->t; t; t = t->nxt)
 for (n = 0; n < 2; n++)
 for (u = t->Val[n], w = (FSM_use *) 0; u; )
-{	if (u->special)
-{	v = u->nxt;
+{ if (u->special)
+{ v = u->nxt;
 if (!w)
 t->Val[n] = v;
 else
 w->nxt = v;
 #if q
 if (verbose&32)
-{	printf("%s : %3d:  %d -> %d \t",
+{ printf("%s : %3d:  %d -> %d \t",
 t->step->n->fn->name,
 t->step->n->ln,
 f->from,
@@ -327,14 +327,14 @@ u->special, u->var->name);
 }
 #endif
 if (good_dead(t->step, u))
-{	u->nxt = t->step->dead;
+{ u->nxt = t->step->dead;
 t->step->dead = u;
 }
 u = v;
 } else
-{	w = u;
+{ w = u;
 u = u->nxt;
-}	}
+} }
 }
 void
 rel_use(FSM_use *u)
@@ -375,13 +375,13 @@ fsm = (FSM_state *) 0;
 }
 static FSM_state *
 mkstate(int s)
-{	FSM_state *f;
+{ FSM_state *f;
 for (f = fsm; f; f = f->nxt)
 if (f->from == s)
 break;
 if (!f)
-{	if (fsm_free)
-{	f = fsm_free;
+{ if (fsm_free)
+{ f = fsm_free;
 memset(f, 0, sizeof(FSM_state));
 fsm_free = fsm_free->nxt;
 } else
@@ -397,9 +397,9 @@ return f;
 }
 static FSM_trans *
 get_trans(int to)
-{	FSM_trans *t;
+{ FSM_trans *t;
 if (trans_free)
-{	t = trans_free;
+{ t = trans_free;
 memset(t, 0, sizeof(FSM_trans));
 trans_free = trans_free->nxt;
 } else
@@ -409,7 +409,7 @@ return t;
 }
 static void
 FSM_EDGE(int from, int to, Element *e)
-{	FSM_state *f;
+{ FSM_state *f;
 FSM_trans *t;
 f = mkstate(from);
 t = get_trans(to);
@@ -419,7 +419,7 @@ f->t = t;
 f = mkstate(to);
 f->in++;
 if (export_ast)
-{	t = get_trans(from);
+{ t = get_trans(from);
 t->step = e;
 t->nxt = f->p;
 f->p = t;
@@ -427,17 +427,17 @@ f->p = t;
 if (t->step)
 ana_stmnt(t, t->step->n, 0);
 }
-#define LVAL	1
-#define RVAL	0
+#define LVAL 1
+#define RVAL 0
 static void
 ana_var(FSM_trans *t, Lextok *now, int usage)
-{	FSM_use *u, *v;
+{ FSM_use *u, *v;
 if (!t || !now || !now->sym)
 return;
 if (now->sym->name[0] == '_'
-&&  (strcmp(now->sym->name, "_") == 0
-||   strcmp(now->sym->name, "_pid") == 0
-||   strcmp(now->sym->name, "_last") == 0))
+&& (strcmp(now->sym->name, "_") == 0
+|| strcmp(now->sym->name, "_pid") == 0
+|| strcmp(now->sym->name, "_last") == 0))
 return;
 v = t->Val[usage];
 for (u = v; u; u = u->nxt)
@@ -446,7 +446,7 @@ return;
 if (!now->lft)
 {
 if (use_free)
-{	u = use_free;
+{ u = use_free;
 use_free = use_free->nxt;
 } else
 u = (FSM_use *) emalloc(sizeof(FSM_use));
@@ -456,13 +456,13 @@ t->Val[usage] = u;
 } else
 ana_stmnt(t, now->lft, RVAL);
 if (now->sym->type == STRUCT
-&&  now->rgt
-&&  now->rgt->lft)
+&& now->rgt
+&& now->rgt->lft)
 ana_var(t, now->rgt->lft, usage);
 }
 static void
 ana_stmnt(FSM_trans *t, Lextok *now, int usage)
-{	Lextok *v;
+{ Lextok *v;
 if (!t || !now) return;
 switch (now->ntyp) {
 case '.':
@@ -471,7 +471,7 @@ case GOTO:
 case CONST:
 case TIMEOUT:
 case NONPROGRESS:
-case  ELSE:
+case ELSE:
 case '@':
 case 'q':
 case IF:
@@ -539,25 +539,25 @@ case 'R':
 case 'r':
 ana_stmnt(t, now->lft, RVAL);
 for (v = now->rgt; v; v = v->rgt)
-{	if (v->lft->ntyp == EVAL)
+{ if (v->lft->ntyp == EVAL)
 ana_stmnt(t, v->lft->lft, RVAL);
 else
 if (v->lft->ntyp != CONST
-&&  now->ntyp != 'R')
+&& now->ntyp != 'R')
 ana_stmnt(t, v->lft, LVAL);
 }
 break;
 case '?':
 ana_stmnt(t, now->lft, RVAL);
 if (now->rgt)
-{	ana_stmnt(t, now->rgt->lft, RVAL);
+{ ana_stmnt(t, now->rgt->lft, RVAL);
 ana_stmnt(t, now->rgt->rgt, RVAL);
 }
 break;
 case NAME:
 ana_var(t, now, usage);
 break;
-case   'p':
+case 'p':
 ana_stmnt(t, now->lft->lft, RVAL);
 ana_var(t, now, RVAL);
 ana_var(t, now->rgt, RVAL);
@@ -570,7 +570,7 @@ fatal("aborting", (char *) 0);
 }
 void
 ana_src(int dataflow, int merger)
-{	ProcList *p;
+{ ProcList *p;
 Element *e;
 #if 0
 int counter = 1;
@@ -582,16 +582,16 @@ fsm_table();
 e = p->s->frst;
 #if 0
 if (dataflow || merger)
-{	printf("spin: %d, optimizing '%s'",
+{ printf("spin: %d, optimizing '%s'",
 counter++, p->n->name);
 fflush(stdout);
 }
 #endif
 if (dataflow)
-{	FSM_ANA();
+{ FSM_ANA();
 }
 if (merger)
-{	FSM_MERGER();
+{ FSM_MERGER();
 huntele(e, e->status, -1)->merge_in = 1;
 #if 0
 printf("\n");
@@ -604,7 +604,7 @@ FSM_DEL();
 for (e = Al_El; e; e = e->Nxt)
 {
 if (!(e->status&DONE) && (verbose&32))
-{	printf("unreachable code: ");
+{ printf("unreachable code: ");
 printf("%s:%3d  ", e->n->fn->name, e->n->ln);
 comment(stdout, e->n, 0);
 printf("\n");
@@ -612,22 +612,22 @@ printf("\n");
 e->status &= ~DONE;
 }
 if (export_ast)
-{	AST_slice();
+{ AST_slice();
 alldone(0);
 }
 }
 void
 spit_recvs(FILE *f1, FILE *f2)
-{	Element *e;
+{ Element *e;
 Sequence *s;
 extern int Unique;
 fprintf(f1, "unsigned char Is_Recv[%d];\n", Unique);
 fprintf(f2, "void\nset_recvs(void)\n{\n");
 for (e = Al_El; e; e = e->Nxt)
-{	if (!e->n) continue;
+{ if (!e->n) continue;
 switch (e->n->ntyp) {
 case 'r':
-markit:			fprintf(f2, "\tIs_Recv[%d] = 1;\n", e->Seqno);
+markit: fprintf(f2, "\tIs_Recv[%d] = 1;\n", e->Seqno);
 break;
 case D_STEP:
 s = e->n->sl->this;
@@ -659,32 +659,32 @@ fprintf(f2, "}\n");
 }
 static void
 ana_seq(Sequence *s)
-{	SeqList *h;
+{ SeqList *h;
 Sequence *t;
 Element *e, *g;
 int From, To;
 for (e = s->frst; e; e = e->nxt)
-{	if (e->status & DONE)
+{ if (e->status & DONE)
 goto checklast;
 e->status |= DONE;
 From = e->seqno;
 if (e->n->ntyp == UNLESS)
 ana_seq(e->sub->this);
 else if (e->sub)
-{	for (h = e->sub; h; h = h->nxt)
-{	g = huntstart(h->this->frst);
+{ for (h = e->sub; h; h = h->nxt)
+{ g = huntstart(h->this->frst);
 To = g->seqno;
 if (g->n->ntyp != 'c'
-||  g->n->lft->ntyp != CONST
-||  g->n->lft->val != 0
-||  g->esc)
+|| g->n->lft->ntyp != CONST
+|| g->n->lft->val != 0
+|| g->esc)
 FSM_EDGE(From, To, e);
 }
 for (h = e->sub; h; h = h->nxt)
 ana_seq(h->this);
 } else if (e->n->ntyp == ATOMIC
-||  e->n->ntyp == D_STEP
-||  e->n->ntyp == NON_ATOMIC)
+|| e->n->ntyp == D_STEP
+|| e->n->ntyp == NON_ATOMIC)
 {
 t = e->n->sl->this;
 g = huntstart(t->frst);
@@ -693,27 +693,27 @@ To = g->seqno;
 FSM_EDGE(From, To, e);
 ana_seq(t);
 } else
-{	if (e->n->ntyp == GOTO)
-{	g = get_lab(e->n, 1);
+{ if (e->n->ntyp == GOTO)
+{ g = get_lab(e->n, 1);
 g = huntele(g, e->status, -1);
 To = g->seqno;
 } else if (e->nxt)
-{	g = huntele(e->nxt, e->status, -1);
+{ g = huntele(e->nxt, e->status, -1);
 To = g->seqno;
 } else
 To = 0;
 FSM_EDGE(From, To, e);
 if (e->esc
-&&  e->n->ntyp != GOTO
-&&  e->n->ntyp != '.')
+&& e->n->ntyp != GOTO
+&& e->n->ntyp != '.')
 for (h = e->esc; h; h = h->nxt)
-{	g = huntstart(h->this->frst);
+{ g = huntstart(h->this->frst);
 To = g->seqno;
 FSM_EDGE(From, To, ZE);
 ana_seq(h->this);
 }
 }
-checklast:	if (e == s->last)
+checklast: if (e == s->last)
 break;
 }
 }

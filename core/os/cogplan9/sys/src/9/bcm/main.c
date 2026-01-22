@@ -8,18 +8,18 @@
 #include <pool.h>
 #include "reboot.h"
 enum {
-Ustkheadroom	= sizeof(Sargs) + sizeof(uintptr) + sizeof(Tos),
+Ustkheadroom = sizeof(Sargs) + sizeof(uintptr) + sizeof(Tos),
 };
-#define	Minfirmrev	326770
-#define	Minfirmdate	"19 Aug 2013"
-#define BOOTARGS	((char*)CONFADDR)
-#define	BOOTARGSLEN	(MACHADDR-CONFADDR)
-#define	MAXCONF		64
-#define MAXCONFLINE	160
+#define Minfirmrev 326770
+#define Minfirmdate "19 Aug 2013"
+#define BOOTARGS ((char*)CONFADDR)
+#define BOOTARGSLEN (MACHADDR-CONFADDR)
+#define MAXCONF 64
+#define MAXCONFLINE 160
 uintptr kseg0 = KZERO;
-Mach*	machaddr[MAXMACH];
-Conf	conf;
-ulong	memsize = 128*1024*1024;
+Mach* machaddr[MAXMACH];
+Conf conf;
+ulong memsize = 128*1024*1024;
 static int oargc;
 static char* oargv[20];
 static char oargb[128];
@@ -30,22 +30,22 @@ static char confval[MAXCONF][MAXCONFLINE];
 static int nconf;
 typedef struct Atag Atag;
 struct Atag {
-u32int	size;
-u32int	tag;
+u32int size;
+u32int tag;
 union {
-u32int	data[1];
+u32int data[1];
 struct {
-u32int	size;
-u32int	base;
+u32int size;
+u32int base;
 } mem;
-char	cmdline[1];
+char cmdline[1];
 };
 };
 enum {
-AtagNone	= 0x00000000,
-AtagCore	= 0x54410001,
-AtagMem		= 0x54410002,
-AtagCmdline	= 0x54410009,
+AtagNone = 0x00000000,
+AtagCore = 0x54410001,
+AtagMem = 0x54410002,
+AtagCmdline = 0x54410009,
 };
 static int
 findconf(char *name)

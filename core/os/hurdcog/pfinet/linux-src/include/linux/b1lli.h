@@ -25,22 +25,22 @@ typedef struct avmb1_carddef {
 int port;
 int irq;
 } avmb1_carddef;
-#define AVM_CARDTYPE_B1		0
-#define AVM_CARDTYPE_T1		1
-#define AVM_CARDTYPE_M1		2
-#define AVM_CARDTYPE_M2		3
+#define AVM_CARDTYPE_B1 0
+#define AVM_CARDTYPE_T1 1
+#define AVM_CARDTYPE_M1 2
+#define AVM_CARDTYPE_M2 3
 typedef struct avmb1_extcarddef {
 int port;
 int irq;
 int cardtype;
 int cardnr;
 } avmb1_extcarddef;
-#define	AVMB1_LOAD		0
-#define AVMB1_ADDCARD		1
-#define AVMB1_RESETCARD		2
-#define	AVMB1_LOAD_AND_CONFIG	3
-#define	AVMB1_ADDCARD_WITH_TYPE	4
-#define AVMB1_GET_CARDINFO	5
-#define AVMB1_REMOVECARD	6
-#define	AVMB1_REGISTERCARD_IS_OBSOLETE
+#define AVMB1_LOAD 0
+#define AVMB1_ADDCARD 1
+#define AVMB1_RESETCARD 2
+#define AVMB1_LOAD_AND_CONFIG 3
+#define AVMB1_ADDCARD_WITH_TYPE 4
+#define AVMB1_GET_CARDINFO 5
+#define AVMB1_REMOVECARD 6
+#define AVMB1_REGISTERCARD_IS_OBSOLETE
 #endif

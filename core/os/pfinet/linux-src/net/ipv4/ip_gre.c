@@ -35,13 +35,13 @@ NULL, 0x0, 0x0, 0x0, 0x0, 0, 0, 0, 0, 0, NULL, ipgre_fb_tunnel_init,
 static struct ip_tunnel ipgre_fb_tunnel = {
 NULL, &ipgre_fb_tunnel_dev, {0, }, 0, 0, 0, 0, 0, 0, 0, {"gre0", }
 };
-#define HASH_SIZE  16
+#define HASH_SIZE 16
 #define HASH(addr) ((addr^(addr>>4))&0xF)
 static struct ip_tunnel *tunnels[4][HASH_SIZE];
-#define tunnels_r_l	(tunnels[3])
-#define tunnels_r	(tunnels[2])
-#define tunnels_l	(tunnels[1])
-#define tunnels_wc	(tunnels[0])
+#define tunnels_r_l (tunnels[3])
+#define tunnels_r (tunnels[2])
+#define tunnels_l (tunnels[1])
+#define tunnels_wc (tunnels[0])
 static struct ip_tunnel * ipgre_tunnel_lookup(u32 remote, u32 local, u32 key)
 {
 unsigned h0 = HASH(remote);
@@ -175,7 +175,7 @@ void ipgre_err(struct sk_buff *skb, unsigned char *dp, int len)
 {
 #ifndef I_WISH_WORLD_WERE_PERFECT
 struct iphdr *iph = (struct iphdr*)dp;
-u16	     *p = (u16*)(dp+(iph->ihl<<2));
+u16 *p = (u16*)(dp+(iph->ihl<<2));
 int grehlen = (iph->ihl<<2) + 4;
 int type = skb->h.icmph->type;
 int code = skb->h.icmph->code;
@@ -227,7 +227,7 @@ return;
 #else
 struct iphdr *iph = (struct iphdr*)dp;
 struct iphdr *eiph;
-u16	     *p = (u16*)(dp+(iph->ihl<<2));
+u16 *p = (u16*)(dp+(iph->ihl<<2));
 int type = skb->h.icmph->type;
 int code = skb->h.icmph->code;
 int rel_type = 0;
@@ -336,13 +336,13 @@ kfree_skb(skb2);
 int ipgre_rcv(struct sk_buff *skb, unsigned short len)
 {
 struct iphdr *iph = skb->nh.iph;
-u8     *h = skb->h.raw;
-u16    flags = *(u16*)h;
-u16    csum = 0;
-u32    key = 0;
-u32    seqno = 0;
+u8 *h = skb->h.raw;
+u16 flags = *(u16*)h;
+u16 csum = 0;
+u32 key = 0;
+u32 seqno = 0;
 struct ip_tunnel *tunnel;
-int    offset = 4;
+int offset = 4;
 if (flags&(GRE_CSUM|GRE_KEY|GRE_ROUTING|GRE_SEQ|GRE_VERSION)) {
 if (flags&(GRE_VERSION|GRE_ROUTING))
 goto drop;
@@ -406,17 +406,17 @@ static int ipgre_tunnel_xmit(struct sk_buff *skb, struct device *dev)
 {
 struct ip_tunnel *tunnel = (struct ip_tunnel*)dev->priv;
 struct net_device_stats *stats = &tunnel->stat;
-struct iphdr  *old_iph = skb->nh.iph;
-struct iphdr  *tiph;
-u8     tos;
-u16    df;
+struct iphdr *old_iph = skb->nh.iph;
+struct iphdr *tiph;
+u8 tos;
+u16 df;
 struct rtable *rt;
 struct device *tdev;
-struct iphdr  *iph;
-int    max_headroom;
-int    gre_hlen;
-u32    dst;
-int    mtu;
+struct iphdr *iph;
+int max_headroom;
+int gre_hlen;
+u32 dst;
+int mtu;
 if (tunnel->recursion++) {
 tunnel->stat.collisions++;
 goto tx_error;
@@ -532,14 +532,14 @@ skb->nh.raw = skb_push(skb, gre_hlen);
 memset(&(IPCB(skb)->opt), 0, sizeof(IPCB(skb)->opt));
 dst_release(skb->dst);
 skb->dst = &rt->u.dst;
-iph 			=	skb->nh.iph;
-iph->version		=	4;
-iph->ihl		=	sizeof(struct iphdr) >> 2;
-iph->frag_off		=	df;
-iph->protocol		=	IPPROTO_GRE;
-iph->tos		=	tos;
-iph->daddr		=	rt->rt_dst;
-iph->saddr		=	rt->rt_src;
+iph = skb->nh.iph;
+iph->version = 4;
+iph->ihl = sizeof(struct iphdr) >> 2;
+iph->frag_off = df;
+iph->protocol = IPPROTO_GRE;
+iph->tos = tos;
+iph->daddr = rt->rt_dst;
+iph->saddr = rt->rt_src;
 if ((iph->ttl = tiph->ttl) == 0) {
 if (skb->protocol == __constant_htons(ETH_P_IP))
 iph->ttl = old_iph->ttl;
@@ -568,8 +568,8 @@ if (tunnel->parms.o_flags&GRE_CSUM) {
 *(__u16*)ptr = ip_compute_csum((void*)(iph+1), skb->len - sizeof(struct iphdr));
 }
 }
-iph->tot_len		=	htons(skb->len);
-iph->id			=	htons(ip_id_count++);
+iph->tot_len = htons(skb->len);
+iph->id = htons(ip_id_count++);
 ip_send_check(iph);
 stats->tx_bytes += skb->len;
 stats->tx_packets++;
@@ -714,8 +714,8 @@ struct ip_tunnel *t = (struct ip_tunnel*)dev->priv;
 struct iphdr *iph = (struct iphdr *)skb_push(skb, t->hlen);
 u16 *p = (u16*)(iph+1);
 memcpy(iph, &t->parms.iph, sizeof(struct iphdr));
-p[0]		= t->parms.o_flags;
-p[1]		= htons(type);
+p[0] = t->parms.o_flags;
+p[1] = htons(type);
 if (saddr)
 memcpy(&iph->saddr, saddr, 4);
 if (daddr) {
@@ -764,18 +764,18 @@ return 0;
 static void ipgre_tunnel_init_gen(struct device *dev)
 {
 struct ip_tunnel *t = (struct ip_tunnel*)dev->priv;
-dev->destructor		= ipgre_tunnel_destroy;
-dev->hard_start_xmit	= ipgre_tunnel_xmit;
-dev->get_stats		= ipgre_tunnel_get_stats;
-dev->do_ioctl		= ipgre_tunnel_ioctl;
-dev->change_mtu		= ipgre_tunnel_change_mtu;
+dev->destructor = ipgre_tunnel_destroy;
+dev->hard_start_xmit = ipgre_tunnel_xmit;
+dev->get_stats = ipgre_tunnel_get_stats;
+dev->do_ioctl = ipgre_tunnel_ioctl;
+dev->change_mtu = ipgre_tunnel_change_mtu;
 dev_init_buffers(dev);
-dev->type		= ARPHRD_IPGRE;
-dev->hard_header_len 	= LL_MAX_HEADER + sizeof(struct iphdr) + 4;
-dev->mtu		= 1500 - sizeof(struct iphdr) - 4;
-dev->flags		= IFF_NOARP;
-dev->iflink		= 0;
-dev->addr_len		= 4;
+dev->type = ARPHRD_IPGRE;
+dev->hard_header_len = LL_MAX_HEADER + sizeof(struct iphdr) + 4;
+dev->mtu = 1500 - sizeof(struct iphdr) - 4;
+dev->flags = IFF_NOARP;
+dev->iflink = 0;
+dev->addr_len = 4;
 memcpy(dev->dev_addr, &t->parms.iph.saddr, 4);
 memcpy(dev->broadcast, &t->parms.iph.daddr, 4);
 }
@@ -846,15 +846,15 @@ struct ip_tunnel *tunnel = (struct ip_tunnel*)dev->priv;
 struct iphdr *iph;
 ipgre_tunnel_init_gen(dev);
 #ifdef MODULE
-dev->open		= ipgre_fb_tunnel_open;
-dev->stop		= ipgre_fb_tunnel_close;
+dev->open = ipgre_fb_tunnel_open;
+dev->stop = ipgre_fb_tunnel_close;
 #endif
 iph = &ipgre_fb_tunnel.parms.iph;
-iph->version		= 4;
-iph->protocol		= IPPROTO_GRE;
-iph->ihl		= 5;
-tunnel->hlen		= sizeof(struct iphdr) + 4;
-tunnels_wc[0]		= &ipgre_fb_tunnel;
+iph->version = 4;
+iph->protocol = IPPROTO_GRE;
+iph->ihl = 5;
+tunnel->hlen = sizeof(struct iphdr) + 4;
+tunnels_wc[0] = &ipgre_fb_tunnel;
 return 0;
 }
 static struct inet_protocol ipgre_protocol = {

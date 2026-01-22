@@ -1,8 +1,8 @@
-#define	NSYM	50
-#define	NSNAME	8
-#define NOPROF	(1<<0)
-#define DUPOK	(1<<1)
-enum	as
+#define NSYM 50
+#define NSNAME 8
+#define NOPROF (1<<0)
+#define DUPOK (1<<1)
+enum as
 {
 AXXX,
 AAAA,
@@ -673,7 +673,7 @@ ALAST
 };
 enum
 {
-D_AL		= 0,
+D_AL = 0,
 D_CL,
 D_DL,
 D_BL,
@@ -689,7 +689,7 @@ D_R12B,
 D_R13B,
 D_R14B,
 D_R15B,
-D_AX		= 16,
+D_AX = 16,
 D_CX,
 D_DX,
 D_BX,
@@ -705,14 +705,14 @@ D_R12,
 D_R13,
 D_R14,
 D_R15,
-D_AH		= 32,
+D_AH = 32,
 D_CH,
 D_DH,
 D_BH,
-D_F0		= 36,
-D_M0		= 44,
-D_X0		= 52,
-D_CS		= 68,
+D_F0 = 36,
+D_M0 = 44,
+D_X0 = 52,
+D_CS = 68,
 D_SS,
 D_DS,
 D_ES,
@@ -723,42 +723,42 @@ D_IDTR,
 D_LDTR,
 D_MSW,
 D_TASK,
-D_CR		= 79,
-D_DR		= 95,
-D_TR		= 103,
-D_NONE		= 111,
-D_BRANCH	= 112,
-D_EXTERN	= 113,
-D_STATIC		= 114,
-D_AUTO		= 115,
-D_PARAM		= 116,
-D_CONST		= 117,
-D_FCONST	= 118,
-D_SCONST	= 119,
-D_ADDR		= 120,
+D_CR = 79,
+D_DR = 95,
+D_TR = 103,
+D_NONE = 111,
+D_BRANCH = 112,
+D_EXTERN = 113,
+D_STATIC = 114,
+D_AUTO = 115,
+D_PARAM = 116,
+D_CONST = 117,
+D_FCONST = 118,
+D_SCONST = 119,
+D_ADDR = 120,
 D_FILE,
 D_FILE1,
 D_INDIR,
-T_TYPE		= 1<<0,
-T_INDEX		= 1<<1,
-T_OFFSET	= 1<<2,
-T_FCONST	= 1<<3,
-T_SYM		= 1<<4,
-T_SCONST	= 1<<5,
-T_64	= 1<<6,
-REGARG		= D_BP,
-REGRET		= D_AX,
-FREGRET		= D_X0,
-REGSP		= D_SP,
-REGTMP		= D_DI,
-REGEXT		= D_R15,
-FREGMIN		= D_X0+5,
-FREGEXT		= D_X0+7
+T_TYPE = 1<<0,
+T_INDEX = 1<<1,
+T_OFFSET = 1<<2,
+T_FCONST = 1<<3,
+T_SYM = 1<<4,
+T_SCONST = 1<<5,
+T_64 = 1<<6,
+REGARG = D_BP,
+REGRET = D_AX,
+FREGRET = D_X0,
+REGSP = D_SP,
+REGTMP = D_DI,
+REGEXT = D_R15,
+FREGMIN = D_X0+5,
+FREGEXT = D_X0+7
 };
-#define	SYMDEF	"__.SYMDEF"
-typedef	struct	ieee	Ieee;
-struct	ieee
+#define SYMDEF "__.SYMDEF"
+typedef struct ieee Ieee;
+struct ieee
 {
-long	l;
-long	h;
+long l;
+long h;
 };

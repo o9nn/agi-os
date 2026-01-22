@@ -1,6 +1,6 @@
 implement Modem;
 #
-# Copyright © 1998-2001 Vita Nuova Holdings Limited.  All rights reserved.
+# Copyright © 1998-2001 Vita Nuova Holdings Limited. All rights reserved.
 #
 include "sys.m";
 sys: Sys;
@@ -9,25 +9,25 @@ lock: Lock;
 Semaphore: import lock;
 include "draw.m";
 include "modem.m";
-hangupcmd := "ATH0";		# was ATZH0 but some modem versions on Umec hung on ATZ
+hangupcmd := "ATH0"; # was ATZH0 but some modem versions on Umec hung on ATZ
 # modem return codes
 Ok, Success, Failure, Abort, Noise, Found: con iota;
 maxspeed: con 115200;
 #
-#  modem return messages
+# modem return messages
 #
 Msg: adt {
-text: 		string;
-code: 		int;
+text: string;
+code: int;
 };
 msgs: array of Msg = array [] of {
-("OK", 			Ok),
-("NO CARRIER", 	Failure),
-("ERROR", 		Failure),
+("OK", Ok),
+("NO CARRIER", Failure),
+("ERROR", Failure),
 ("NO DIALTONE", Failure),
-("BUSY", 		Failure),
-("NO ANSWER", 	Failure),
-("CONNECT", 	Success),
+("BUSY", Failure),
+("NO ANSWER", Failure),
+("CONNECT", Success),
 };
 kill(pid: int)
 {
@@ -92,7 +92,7 @@ sys->print("->%s\n",x);
 return nil;
 }
 #
-#  apply a string of commands to modem & look for a response
+# apply a string of commands to modem & look for a response
 #
 apply(d: ref Device, s: string, substr: string, secs: int): int
 {
@@ -100,7 +100,7 @@ m := Ok;
 buf := "";
 for(i := 0; i < len s; i++){
 c := s[i];
-buf[len buf] = c;		# assume no Unicode
+buf[len buf] = c; # assume no Unicode
 if(c == '\r' || i == (len s -1)){
 if(c != '\r')
 buf[len buf] = '\r';
@@ -113,9 +113,9 @@ buf = "";
 return m;
 }
 #
-#  get modem into command mode if it isn't already
+# get modem into command mode if it isn't already
 #
-GUARDTIME: con 1100;	# usual default for S12=50 in units of 1/50 sec; allow 100ms fuzz
+GUARDTIME: con 1100; # usual default for S12=50 in units of 1/50 sec; allow 100ms fuzz
 attention(d: ref Device): int
 {
 for(i := 0; i < 3; i++){
@@ -132,7 +132,7 @@ sys->print("status: %s\n", msg);
 return Failure;
 }
 #
-#  apply a command type
+# apply a command type
 #
 applyspecial(d: ref Device, cmd: string): int
 {
@@ -141,7 +141,7 @@ return Failure;
 return apply(d, cmd, nil, 2);
 }
 #
-#  hang up any connections in progress and close the device
+# hang up any connections in progress and close the device
 #
 Device.onhook(d: self ref Device)
 {
@@ -153,7 +153,7 @@ sys->print("modem: no attention\n");
 if(d.ctl != nil) {
 sys->fprint(d.ctl,"d0\n");
 sys->fprint(d.ctl,"r0\n");
-sys->fprint(d.ctl, "h\n");	# hangup on native serial
+sys->fprint(d.ctl, "h\n"); # hangup on native serial
 sys->sleep(250);
 sys->fprint(d.ctl,"r1\n");
 sys->fprint(d.ctl,"d1\n");
@@ -176,13 +176,13 @@ return 1;
 return 0;
 }
 #
-#  read till we see a message or we time out
+# read till we see a message or we time out
 #
 readmsg(d: ref Device, secs: int, substr: string): (int, string)
 {
 found := 0;
 msecs := secs*1000;
-limit := 1000;		# pretty arbitrary
+limit := 1000; # pretty arbitrary
 s := "";
 for(start := sys->millisec(); sys->millisec() <= start+msecs;){
 a := d.getinput(1);
@@ -221,11 +221,11 @@ return (Found, s);
 return (Noise, s);
 }
 #
-#  get baud rate from a connect message
+# get baud rate from a connect message
 #
 getspeed(msg: string, speed: int): int
 {
-p := msg[7:];	# skip "CONNECT"
+p := msg[7:]; # skip "CONNECT"
 while(p[0] == ' ' || p[0] == '\t')
 p = p[1:];
 s := int p;
@@ -235,7 +235,7 @@ else
 return s;
 }
 #
-#  set speed and RTS/CTS modem flow control
+# set speed and RTS/CTS modem flow control
 #
 setspeed(d: ref Device, baud: int)
 {
@@ -254,7 +254,7 @@ d.pid = <-pidc;
 }
 }
 #
-#  a process to read input from a modem.
+# a process to read input from a modem.
 #
 monitor(d: ref Device, pidc: chan of int, errc: chan of string)
 {
@@ -289,7 +289,7 @@ errc <-= err;
 }
 }
 #
-#  return up to n bytes read from the modem by monitor()
+# return up to n bytes read from the modem by monitor()
 #
 Device.getinput(d: self ref Device, n: int): array of byte
 {
@@ -309,7 +309,7 @@ return a;
 Device.getc(d: self ref Device, msec: int): int
 {
 start := sys->millisec();
-while((b  := d.getinput(1)) == nil) {
+while((b := d.getinput(1)) == nil) {
 if (msec && sys->millisec() > start+msec)
 return 0;
 sys->sleep(1);
@@ -335,11 +335,11 @@ d.speed = 0;
 d.t = *modeminfo;
 if(d.t.hangup == nil)
 d.t.hangup = hangupcmd;
-d.trace = trace | 1;	# always trace for now
+d.trace = trace | 1; # always trace for now
 return d;
 }
 #
-#  dial a number
+# dial a number
 #
 Device.dial(d: self ref Device, number: string): string
 {
@@ -351,7 +351,7 @@ x := attention(d);
 if (x != Ok && d.trace)
 return "bad response from modem";
 #
-#  extended Hayes commands, meaning depends on modem
+# extended Hayes commands, meaning depends on modem
 #
 sys->print("modem: init\n");
 if(d.t.country != nil)
@@ -393,8 +393,8 @@ if(rateadjust == Ok)
 setspeed(d, connectspeed);
 if(d.ctl != nil){
 if(d != nil)
-sys->fprint(d.ctl, "s%d", connectspeed);	# set DCE speed (if device implements it)
-sys->fprint(d.ctl, "c1");	# enable CD monitoring
+sys->fprint(d.ctl, "s%d", connectspeed); # set DCE speed (if device implements it)
+sys->fprint(d.ctl, "c1"); # enable CD monitoring
 }
 return nil;
 }

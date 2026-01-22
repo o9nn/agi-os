@@ -10,23 +10,23 @@
 #include "gen.h"
 #include "ext.h"
 typedef struct bbox {
-int	set;
-double	llx, lly;
-double	urx, ury;
+int set;
+double llx, lly;
+double urx, ury;
 } Bbox;
-Bbox	bbox = {FALSE, 0.0, 0.0, 0.0, 0.0};
-Bbox	docbbox = {FALSE, 0.0, 0.0, 0.0, 0.0};
-double	ctm[6] = {1.0, 0.0, 0.0, 1.0, 0.0, 0.0};
-double	matrix1[6], matrix2[6];
-void	concat(double []);
-void	resetbbox(int);
-void	rotate(double);
-void	scale(double, double);
-void	translate(double, double);
-void	writebbox(FILE *, char *, int);
+Bbox bbox = {FALSE, 0.0, 0.0, 0.0, 0.0};
+Bbox docbbox = {FALSE, 0.0, 0.0, 0.0, 0.0};
+double ctm[6] = {1.0, 0.0, 0.0, 1.0, 0.0, 0.0};
+double matrix1[6], matrix2[6];
+void concat(double []);
+void resetbbox(int);
+void rotate(double);
+void scale(double, double);
+void translate(double, double);
+void writebbox(FILE *, char *, int);
 void
 cover(x, y)
-double	x, y;
+double x, y;
 {
 if ( bbox.set == FALSE ) {
 bbox.llx = bbox.urx = x;
@@ -45,12 +45,12 @@ bbox.ury = y;
 }
 void
 writebbox(fp, keyword, slop)
-FILE	*fp;
-char	*keyword;
-int		slop;
+FILE *fp;
+char *keyword;
+int slop;
 {
-Bbox	ubbox;
-double	x, y;
+Bbox ubbox;
+double x, y;
 if ( strcmp(keyword, BOUNDINGBOX) == 0 )
 bbox = docbbox;
 if ( bbox.set == TRUE ) {
@@ -127,7 +127,7 @@ concat(matrix1);
 void
 concat(double m1[])
 {
-double	m2[6];
+double m2[6];
 m2[0] = ctm[0];
 m2[1] = ctm[1];
 m2[2] = ctm[2];

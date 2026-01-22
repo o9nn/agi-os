@@ -14,30 +14,30 @@ Black,
 };
 typedef struct Tab
 {
-ushort	run;
-ushort	bits;
-int		code;
+ushort run;
+ushort bits;
+int code;
 } Tab;
-Tab	wtab[8192];
-Tab	btab[8192];
-uchar	bitrev[256];
-uchar	bitnonrev[256];
-int	readrow(uchar *rev, int*);
-void	initwbtab(void);
-void	sync(uchar*);
-int	readfile(int, char*, char*);
-int		nbytes;
-uchar	*bytes;
-uchar	*pixels;
-uchar	*buf;
-int		y;
-uint		bitoffset;
-uint		word24;
+Tab wtab[8192];
+Tab btab[8192];
+uchar bitrev[256];
+uchar bitnonrev[256];
+int readrow(uchar *rev, int*);
+void initwbtab(void);
+void sync(uchar*);
+int readfile(int, char*, char*);
+int nbytes;
+uchar *bytes;
+uchar *pixels;
+uchar *buf;
+int y;
+uint bitoffset;
+uint word24;
 enum
 {
-Bytes	= 1024*1024,
-Lines	= 1410,
-Dots		= 1728,
+Bytes = 1024*1024,
+Lines = 1410,
+Dots = 1728,
 };
 void
 error(char *fmt, ...)
@@ -127,7 +127,7 @@ HenabECM,
 HenabBFT,
 Hmsperscan,
 };
-int	defhdr[8] = {
+int defhdr[8] = {
 0,
 0,
 0,
@@ -335,8 +335,8 @@ bitoffset += t->bits;
 }
 typedef struct File
 {
-char	*val;
-int	code;
+char *val;
+int code;
 }File;
 File ibtab[] = {
 #include "btab"

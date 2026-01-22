@@ -4,8 +4,8 @@
 #include "pci.h"
 #include "vga.h"
 enum {
-Prescale	= 2,
-NIndex		= 14,
+Prescale = 2,
+NIndex = 14,
 };
 static ulong index[NIndex] = {
 50000000,

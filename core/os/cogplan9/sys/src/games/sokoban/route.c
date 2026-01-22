@@ -153,7 +153,7 @@ Step *s;
 int *p;
 if (r == nil || dl == nil)
 return dl;
-s =  laststep(r);
+s = laststep(r);
 if (s == nil || s->count == 0)
 return dl;
 for (p=dl; p < dl + n; p++)

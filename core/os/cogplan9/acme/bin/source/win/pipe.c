@@ -7,14 +7,14 @@
 typedef struct Wpid Wpid;
 struct Wpid
 {
-int		pid;
-Window	*w;
-Wpid		*next;
+int pid;
+Window *w;
+Wpid *next;
 };
-void	pipectl(void*);
-int	pipefd;
-Wpid	*wpid;
-int	snarffd;
+void pipectl(void*);
+int pipefd;
+Wpid *wpid;
+int snarffd;
 Channel *newpipechan;
 int
 newpipewin(int pid, char *p)

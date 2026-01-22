@@ -52,8 +52,8 @@ else if (idvec->num)
 memcpy (*ids, idvec->ids, idvec->num * sizeof *ids);
 *nids = idvec->num;
 }
-#define C(auth, ids)	idvec_copyout (&auth->ids, ids, n##ids)
-#define OUTIDS(auth)	(C (auth, euids), C (auth, egids), \
+#define C(auth, ids) idvec_copyout (&auth->ids, ids, n##ids)
+#define OUTIDS(auth) (C (auth, euids), C (auth, egids), \
 C (auth, auids), C (auth, agids))
 kern_return_t
 S_auth_getids (struct authhandle *auth,
@@ -96,7 +96,7 @@ auths[i + 1] = auth_port_to_handle (authpts[i]);
 #define groupmember(gid, auth) \
 (idvec_contains (&(auth)->egids, gid) \
 || idvec_contains (&(auth)->agids, gid))
-#define isroot(auth)		isuid (0, auth)
+#define isroot(auth) isuid (0, auth)
 for (i = 0; i < nauths; i++)
 if (auths[i] && isroot (auths[i]))
 {

@@ -6,16 +6,16 @@ Clockface : module {
 init : fn (ctxt : ref Draw->Context, argv : list of string);
 };
 sys : Sys;
-hmpath : con "motor/0";		# hour-hand motor
-mmpath : con "motor/2";		# minute-hand motor
-allmpath : con "motor/012";	# all motors (for stopall msg)
-hbpath : con "sensor/0";		# hour-hand sensor
-mbpath : con "sensor/2";		# minute-hand sensor
-lspath: con "sensor/1";		# light sensor;
-ONTHRESH : con 780;		# light sensor thresholds
+hmpath : con "motor/0"; # hour-hand motor
+mmpath : con "motor/2"; # minute-hand motor
+allmpath : con "motor/012"; # all motors (for stopall msg)
+hbpath : con "sensor/0"; # hour-hand sensor
+mbpath : con "sensor/2"; # minute-hand sensor
+lspath: con "sensor/1"; # light sensor;
+ONTHRESH : con 780; # light sensor thresholds
 OFFTHRESH : con 740;
 NCLICKS : con 120;
-MINCLICKS : con 2;			# min number of clicks required to stop a motor
+MINCLICKS : con 2; # min number of clicks required to stop a motor
 Hand : adt {
 motor : ref Sys->FD;
 sensor : ref Sys->FD;
@@ -75,7 +75,7 @@ sys->print("setting sensor types\n");
 setsensortypes(hourhand, minutehand, lightsensor);
 reqch = chan of (string, chan of int);
 spawn sethands();
-#	reqch <-= ("reset", nil);
+# reqch <-= ("reset", nil);
 spawn srvlink(f2c);
 }
 srvlink(f2c : ref Sys->FileIO)

@@ -129,7 +129,7 @@ argv = arg->argv();
 if (argv == nil || (addr != nil && tl argv != nil))
 usage();
 if (addr == nil)
-doauth = 0;		# no authentication necessary for local mount
+doauth = 0; # no authentication necessary for local mount
 if (doauth) {
 auth = load Auth Auth->PATH;
 if (auth == nil)
@@ -148,7 +148,7 @@ if (tl argv != nil)
 mountpoint = hd tl argv;
 if (addr != nil) {
 if (doauth && algs == nil)
-algs = "none" :: nil;		# XXX is this default a bad idea?
+algs = "none" :: nil; # XXX is this default a bad idea?
 srvrq := chan of (ref Sys->FD, string, Uproc);
 srvsync := chan of (int, string);
 spawn listener(addr, srvrq, srvsync, algs);
@@ -205,7 +205,7 @@ uprocs[i] = uprocch;
 break;
 }
 if (i == len tchans) {
-sys->fprint(stderr, "lockfs: too many clients\n");	# XXX expand arrays
+sys->fprint(stderr, "lockfs: too many clients\n"); # XXX expand arrays
 if (uprocch != nil)
 uprocch <-= (nil, nil);
 } else
@@ -237,7 +237,7 @@ if (ll == nil)
 return (-1, d);
 return (1, (hd ll).d);
 }
-handletmsg(srv:  ref Styxserver, gm: ref Tmsg, uproc: Uproc): int
+handletmsg(srv: ref Styxserver, gm: ref Tmsg, uproc: Uproc): int
 {
 {
 if (gm == nil)
@@ -271,7 +271,7 @@ c := fid2chan(srv, m.fid);
 qids: array of Sys->Qid;
 cc := ref *c;
 if (len m.names > 0) {
-qids = array[1] of Sys->Qid;	# it's just one level
+qids = array[1] of Sys->Qid; # it's just one level
 if ((cc.qid.qtype & Sys->QTDIR) == 0) {
 srv.reply(ref Rmsg.Error(m.tag, Enotdir));
 break;

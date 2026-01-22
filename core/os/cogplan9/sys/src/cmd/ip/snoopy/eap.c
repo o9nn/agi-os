@@ -3,17 +3,17 @@
 #include <ip.h>
 #include "dat.h"
 #include "protos.h"
-typedef struct Hdr	Hdr;
+typedef struct Hdr Hdr;
 struct Hdr
 {
-uchar	code;
-uchar	id;
-uchar	len[2];
-uchar	tp;
+uchar code;
+uchar id;
+uchar len[2];
+uchar tp;
 };
 enum
 {
-EAPHDR=	4,
+EAPHDR= 4,
 TPHDR= 1,
 Request = 1,
 Response,
@@ -48,15 +48,15 @@ static Mux p_mux[] =
 };
 static char *eapsubtype[256] =
 {
-[Identity]	"Identity",
-[Notify]	"Notify",
-[Nak]		"Nak",
-[Md5]	"Md5",
-[Otp]		"Otp",
-[Gtc]		"Gtc",
-[Ttls]		"Ttls",
-[Xpnd]	"Xpnd",
-[Xprm]	"Xprm",
+[Identity] "Identity",
+[Notify] "Notify",
+[Nak] "Nak",
+[Md5] "Md5",
+[Otp] "Otp",
+[Gtc] "Gtc",
+[Ttls] "Ttls",
+[Xpnd] "Xpnd",
+[Xprm] "Xprm",
 };
 static void
 p_compile(Filter *f)

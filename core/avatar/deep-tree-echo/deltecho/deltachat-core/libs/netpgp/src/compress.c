@@ -19,31 +19,31 @@ __RCSID("$NetBSD$");
 #include "netpgp/crypto.h"
 #include "netpgp/memory.h"
 #include "netpgp/writer.h"
-#define DECOMPRESS_BUFFER	1024
+#define DECOMPRESS_BUFFER 1024
 typedef struct {
 pgp_compression_type_t type;
-pgp_region_t   *region;
-uint8_t   	in[DECOMPRESS_BUFFER];
-uint8_t   	out[DECOMPRESS_BUFFER];
-z_stream        zstream;
-size_t          offset;
-int             inflate_ret;
+pgp_region_t *region;
+uint8_t in[DECOMPRESS_BUFFER];
+uint8_t out[DECOMPRESS_BUFFER];
+z_stream zstream;
+size_t offset;
+int inflate_ret;
 } z_decompress_t;
 #ifdef HAVE_BZLIB_H
 typedef struct {
 pgp_compression_type_t type;
-pgp_region_t   *region;
-char            in[DECOMPRESS_BUFFER];
-char            out[DECOMPRESS_BUFFER];
-bz_stream       bzstream;
-size_t          offset;
-int             inflate_ret;
+pgp_region_t *region;
+char in[DECOMPRESS_BUFFER];
+char out[DECOMPRESS_BUFFER];
+bz_stream bzstream;
+size_t offset;
+int inflate_ret;
 } bz_decompress_t;
 #endif
 typedef struct {
-z_stream        stream;
-uint8_t  	*src;
-uint8_t  	*dst;
+z_stream stream;
+uint8_t *src;
+uint8_t *dst;
 } compress_t;
 static int
 zlib_compressed_data_reader(pgp_stream_t *stream, void *dest, size_t length,
@@ -52,9 +52,9 @@ pgp_reader_t *readinfo,
 pgp_cbdata_t *cbinfo)
 {
 z_decompress_t *z = pgp_reader_get_arg(readinfo);
-size_t           len;
-size_t		 cc;
-char		*cdest = dest;
+size_t len;
+size_t cc;
+char *cdest = dest;
 if (z->type != PGP_C_ZIP && z->type != PGP_C_ZLIB) {
 (void) fprintf(stderr,
 "zlib_compressed_data_reader: weird type %d\n",
@@ -72,12 +72,12 @@ length);
 }
 for (cc = 0 ; cc < length ; cc += len) {
 if (&z->out[z->offset] == z->zstream.next_out) {
-int             ret;
+int ret;
 z->zstream.next_out = z->out;
 z->zstream.avail_out = sizeof(z->out);
 z->offset = 0;
 if (z->zstream.avail_in == 0) {
-unsigned        n = z->region->length;
+unsigned n = z->region->length;
 if (!z->region->indeterminate) {
 n -= z->region->readc;
 if (n > sizeof(z->in)) {
@@ -134,9 +134,9 @@ pgp_reader_t *readinfo,
 pgp_cbdata_t *cbinfo)
 {
 bz_decompress_t *bz = pgp_reader_get_arg(readinfo);
-size_t		len;
-size_t		 cc;
-char		*cdest = dest;
+size_t len;
+size_t cc;
+char *cdest = dest;
 if (bz->type != PGP_C_BZIP2) {
 (void) fprintf(stderr, "Weird type %d\n", bz->type);
 return 0;
@@ -147,12 +147,12 @@ return 0;
 }
 for (cc = 0 ; cc < length ; cc += len) {
 if (&bz->out[bz->offset] == bz->bzstream.next_out) {
-int             ret;
+int ret;
 bz->bzstream.next_out = (char *) bz->out;
 bz->bzstream.avail_out = sizeof(bz->out);
 bz->offset = 0;
 if (bz->bzstream.avail_in == 0) {
-unsigned        n = bz->region->length;
+unsigned n = bz->region->length;
 if (!bz->region->indeterminate) {
 n -= bz->region->readc;
 if (n > sizeof(bz->in))
@@ -206,8 +206,8 @@ z_decompress_t z;
 #ifdef HAVE_BZLIB_H
 bz_decompress_t bz;
 #endif
-const int	printerrors = 1;
-int             ret;
+const int printerrors = 1;
+int ret;
 switch (type) {
 case PGP_C_ZIP:
 case PGP_C_ZLIB:
@@ -304,12 +304,12 @@ return ret;
 unsigned
 pgp_writez(pgp_output_t *out, const uint8_t *data, const unsigned len)
 {
-compress_t	*zip;
-size_t		 sz_in;
-size_t		 sz_out;
-int              ret;
-int              r = 0;
-const int       level = Z_DEFAULT_COMPRESSION;
+compress_t *zip;
+size_t sz_in;
+size_t sz_out;
+int ret;
+int r = 0;
+const int level = Z_DEFAULT_COMPRESSION;
 if ((zip = calloc(1, sizeof(*zip))) == NULL) {
 (void) fprintf(stderr, "pgp_writez: bad alloc\n");
 return 0;

@@ -5,10 +5,10 @@ export AGENTIC_NODE_ID=${AGENTIC_NODE_ID:-1}
 export AGENTIC_NAMESPACE=${AGENTIC_NAMESPACE:-"cognitive_grammar_ns"}
 export AGENTIC_PORT=${AGENTIC_PORT:-8080}
 if [ ! -f "/dis/agentic_limbo.dis" ]; then
-    echo "Building agentic cognitive grammar components..."
-    cd agentic_cognitive_grammar
-    mk install
-    cd ..
+echo "Building agentic cognitive grammar components..."
+cd agentic_cognitive_grammar
+mk install
+cd ..
 fi
 echo "Starting distributed namespace: $AGENTIC_NAMESPACE"
 echo "Node ID: $AGENTIC_NODE_ID"

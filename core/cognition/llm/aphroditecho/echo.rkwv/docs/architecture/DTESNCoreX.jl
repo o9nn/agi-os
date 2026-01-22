@@ -119,9 +119,9 @@ function create_j_surfaces!(system::DTESNSystem, differential_system::Dict{Strin
 @parameters α β γ
 # J-Surface differential equations (thermodynamic-like)
 eqs = [
-D(x) ~ α * (y - x),           # Heat-like exchange
-D(y) ~ x * (β - z) - y,       # Cognitive load dynamics
-D(z) ~ x * y - γ * z          # Emotional state evolution
+D(x) ~ α * (y - x), # Heat-like exchange
+D(y) ~ x * (β - z) - y, # Cognitive load dynamics
+D(z) ~ x * y - γ * z # Emotional state evolution
 ]
 @named sys = ODESystem(eqs)
 sys = structural_simplify(sys)

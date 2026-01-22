@@ -25,7 +25,7 @@
 #include <net/sock.h>
 #include <net/ip_fib.h>
 #define FSprintk(a...)
-static struct fib_info 	*fib_info_list;
+static struct fib_info *fib_info_list;
 #define for_fib_info() { struct fib_info *fi; \
 for (fi = fib_info_list; fi; fi = fi->fib_next)
 #define endfor_fib_info() }
@@ -43,8 +43,8 @@ for (nhsel=0; nhsel < 1; nhsel++)
 #define endfor_nexthops(fi) }
 static struct
 {
-int	error;
-u8	scope;
+int error;
+u8 scope;
 } fib_props[RTA_MAX+1] = {
 { 0, RT_SCOPE_NOWHERE},
 { 0, RT_SCOPE_UNIVERSE},
@@ -80,7 +80,7 @@ static __inline__ int nh_comp(const struct fib_info *fi, const struct fib_info *
 const struct fib_nh *onh = ofi->fib_nh;
 for_nexthops(fi) {
 if (nh->nh_oif != onh->nh_oif ||
-nh->nh_gw  != onh->nh_gw ||
+nh->nh_gw != onh->nh_gw ||
 nh->nh_scope != onh->nh_scope ||
 #ifdef CONFIG_IP_ROUTE_MULTIPATH
 nh->nh_weight != onh->nh_weight ||
@@ -183,7 +183,7 @@ if (rta->rta_priority &&
 return 1;
 if (rta->rta_oif || rta->rta_gw) {
 if ((!rta->rta_oif || *rta->rta_oif == fi->fib_nh->nh_oif) &&
-(!rta->rta_gw  || memcmp(rta->rta_gw, &fi->fib_nh->nh_gw, 4) == 0))
+(!rta->rta_gw || memcmp(rta->rta_gw, &fi->fib_nh->nh_gw, 4) == 0))
 return 0;
 return 1;
 }
@@ -450,8 +450,8 @@ u8 tb_id, u8 type, u8 scope, void *dst, int dst_len, u8 tos,
 struct fib_info *fi)
 {
 struct rtmsg *rtm;
-struct nlmsghdr  *nlh;
-unsigned char	 *b = skb->tail;
+struct nlmsghdr *nlh;
+unsigned char *b = skb->tail;
 nlh = NLMSG_PUT(skb, pid, seq, event, sizeof(*rtm));
 rtm = NLMSG_DATA(nlh);
 rtm->rtm_family = AF_INET;
@@ -524,8 +524,8 @@ int
 fib_convert_rtentry(int cmd, struct nlmsghdr *nl, struct rtmsg *rtm,
 struct kern_rta *rta, struct rtentry *r)
 {
-int    plen;
-u32    *ptr;
+int plen;
+u32 *ptr;
 memset(rtm, 0, sizeof(*rtm));
 memset(rta, 0, sizeof(*rta));
 if (r->rt_dst.sa_family != AF_INET)
@@ -572,7 +572,7 @@ if (r->rt_dev) {
 char *colon;
 #endif
 struct device *dev;
-char   devname[IFNAMSIZ];
+char devname[IFNAMSIZ];
 if (copy_from_user(devname, r->rt_dev, IFNAMSIZ-1))
 return -EFAULT;
 devname[IFNAMSIZ-1] = 0;
@@ -620,7 +620,7 @@ if (mx == NULL)
 return -ENOMEM;
 rta->rta_mx = mx;
 mx->rta_type = RTA_METRICS;
-mx->rta_len  = RTA_LENGTH(0);
+mx->rta_len = RTA_LENGTH(0);
 if (r->rt_flags&RTF_MTU) {
 rec = (void*)((char*)mx + RTA_ALIGN(mx->rta_len));
 rec->rta_type = RTAX_MTU;

@@ -21,7 +21,7 @@ OPEN_PAREN, CLOSE_PAREN, CTERN,
 VAR, LIT, END, BAD
 };
 #define IS_BINOP(op) (((int)op) >= (int)O_EQ && ((int)op) <= (int)O_COMMA)
-#define IS_ASSIGNOP(op)	((int)(op) >= (int)O_ASN && (int)(op) <= (int)O_BORASN)
+#define IS_ASSIGNOP(op) ((int)(op) >= (int)O_ASN && (int)(op) <= (int)O_BORASN)
 enum prec {
 P_PRIMARY = 0,
 P_MULT,
@@ -38,74 +38,74 @@ P_TERN,
 P_ASSIGN,
 P_COMMA
 };
-#define MAX_PREC	P_COMMA
+#define MAX_PREC P_COMMA
 struct opinfo {
-char		name[4];
-int		len;
-enum prec	prec;
+char name[4];
+int len;
+enum prec prec;
 };
 static const struct opinfo opinfo[] = {
-{ "++",	 2, P_PRIMARY },
-{ "--",	 2, P_PRIMARY },
-{ "==",	 2, P_EQUALITY },
-{ "!=",	 2, P_EQUALITY },
-{ "=",	 1, P_ASSIGN },
-{ "*=",	 2, P_ASSIGN },
-{ "/=",	 2, P_ASSIGN },
-{ "%=",	 2, P_ASSIGN },
-{ "+=",	 2, P_ASSIGN },
-{ "-=",	 2, P_ASSIGN },
+{ "++", 2, P_PRIMARY },
+{ "--", 2, P_PRIMARY },
+{ "==", 2, P_EQUALITY },
+{ "!=", 2, P_EQUALITY },
+{ "=", 1, P_ASSIGN },
+{ "*=", 2, P_ASSIGN },
+{ "/=", 2, P_ASSIGN },
+{ "%=", 2, P_ASSIGN },
+{ "+=", 2, P_ASSIGN },
+{ "-=", 2, P_ASSIGN },
 { "<<=", 3, P_ASSIGN },
 { ">>=", 3, P_ASSIGN },
-{ "&=",	 2, P_ASSIGN },
-{ "^=",	 2, P_ASSIGN },
-{ "|=",	 2, P_ASSIGN },
-{ "<<",	 2, P_SHIFT },
-{ ">>",	 2, P_SHIFT },
-{ "<=",	 2, P_RELATION },
-{ ">=",	 2, P_RELATION },
-{ "<",	 1, P_RELATION },
-{ ">",	 1, P_RELATION },
-{ "&&",	 2, P_LAND },
-{ "||",	 2, P_LOR },
-{ "*",	 1, P_MULT },
-{ "/",	 1, P_MULT },
-{ "%",	 1, P_MULT },
-{ "+",	 1, P_ADD },
-{ "-",	 1, P_ADD },
-{ "&",	 1, P_BAND },
-{ "^",	 1, P_BXOR },
-{ "|",	 1, P_BOR },
-{ "?",	 1, P_TERN },
-{ ",",	 1, P_COMMA },
-{ "~",	 1, P_PRIMARY },
-{ "!",	 1, P_PRIMARY },
-{ "(",	 1, P_PRIMARY },
-{ ")",	 1, P_PRIMARY },
-{ ":",	 1, P_PRIMARY },
-{ "",	 0, P_PRIMARY }
+{ "&=", 2, P_ASSIGN },
+{ "^=", 2, P_ASSIGN },
+{ "|=", 2, P_ASSIGN },
+{ "<<", 2, P_SHIFT },
+{ ">>", 2, P_SHIFT },
+{ "<=", 2, P_RELATION },
+{ ">=", 2, P_RELATION },
+{ "<", 1, P_RELATION },
+{ ">", 1, P_RELATION },
+{ "&&", 2, P_LAND },
+{ "||", 2, P_LOR },
+{ "*", 1, P_MULT },
+{ "/", 1, P_MULT },
+{ "%", 1, P_MULT },
+{ "+", 1, P_ADD },
+{ "-", 1, P_ADD },
+{ "&", 1, P_BAND },
+{ "^", 1, P_BXOR },
+{ "|", 1, P_BOR },
+{ "?", 1, P_TERN },
+{ ",", 1, P_COMMA },
+{ "~", 1, P_PRIMARY },
+{ "!", 1, P_PRIMARY },
+{ "(", 1, P_PRIMARY },
+{ ")", 1, P_PRIMARY },
+{ ":", 1, P_PRIMARY },
+{ "", 0, P_PRIMARY }
 };
 typedef struct expr_state Expr_state;
 struct expr_state {
 const char *expression;
 const char *tokp;
-enum token  tok;
-int	    noassign;
+enum token tok;
+int noassign;
 struct tbl *val;
 struct tbl *evaling;
 };
 enum error_type { ET_UNEXPECTED, ET_BADLIT, ET_RECURSIVE,
 ET_LVALUE, ET_RDONLY, ET_STR };
-static void        evalerr  ARGS((Expr_state *es, enum error_type type,
+static void evalerr ARGS((Expr_state *es, enum error_type type,
 const char *str)) GCC_FUNC_ATTR(noreturn);
 static struct tbl *evalexpr ARGS((Expr_state *es, enum prec prec));
-static void        token    ARGS((Expr_state *es));
-static struct tbl *do_ppmm  ARGS((Expr_state *es, enum token op,
+static void token ARGS((Expr_state *es));
+static struct tbl *do_ppmm ARGS((Expr_state *es, enum token op,
 struct tbl *vasn, bool_t is_prefix));
-static void	   assign_check ARGS((Expr_state *es, enum token op,
+static void assign_check ARGS((Expr_state *es, enum token op,
 struct tbl *vasn));
-static struct tbl *tempvar  ARGS((void));
-static struct tbl *intvar   ARGS((Expr_state *es, struct tbl *vp));
+static struct tbl *tempvar ARGS((void));
+static struct tbl *intvar ARGS((Expr_state *es, struct tbl *vp));
 int
 evaluate(expr, rval, error_ok)
 const char *expr;
@@ -415,7 +415,7 @@ evalerr(es, ET_STR, "missing ]");
 cp += len;
 }
 #ifdef KSH
-else if (c == '('  ) {
+else if (c == '(' ) {
 ;
 }
 #endif

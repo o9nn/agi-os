@@ -3,7 +3,7 @@ include "sys.m";
 sys : Sys;
 include "bufio.m";
 bufio: Bufio;
-Iobuf: 	import bufio;
+Iobuf: import bufio;
 include "draw.m";
 draw: Draw;
 include "cache.m";
@@ -162,7 +162,7 @@ if(close == 0. || d < close){
 close = d;
 To = s;
 }
-}else if(s ==  "default"){
+}else if(s == "default"){
 (def, line) = getfield(line);
 }
 }

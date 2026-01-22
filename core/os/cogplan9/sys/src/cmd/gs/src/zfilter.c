@@ -292,7 +292,7 @@ uint min_size = min_buf_size + max_min_left;
 stream *bs;
 ref bsop;
 int code;
-if (s->modes == 0   || s->bsize >= min_size)
+if (s->modes == 0 || s->bsize >= min_size)
 return 0;
 if (s->cbuf == 0) {
 uint len = max(min_size, 128);

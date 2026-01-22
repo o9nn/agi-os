@@ -1,7 +1,7 @@
 import type { MouseInElementOptions } from '@vueuse/core'
 import { useElectronMouseInElement } from '../use-electron-mouse-in-element'
 export function useElectronMouseInWindow(
-  options: MouseInElementOptions = {},
+options: MouseInElementOptions = {},
 ) {
-  return useElectronMouseInElement(undefined, options)
+return useElectronMouseInElement(undefined, options)
 }

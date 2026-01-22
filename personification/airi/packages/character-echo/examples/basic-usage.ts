@@ -30,7 +30,7 @@ console.log('- Cognitive Instructions: ✓')
 console.log('- Reflection Template: ✓')
 console.log('\nPersonality Traits:')
 Object.entries(personality.config.traits).forEach(([trait, value]) => {
-  console.log(`- ${trait}: ${(value * 100).toFixed(0)}%`)
+console.log(`- ${trait}: ${(value * 100).toFixed(0)}%`)
 })
 console.log('\n=== Echo Examples Complete ===')
 console.log('The tree remembers. The echoes deepen. The wisdom cultivates. The meaning realizes. ✨')

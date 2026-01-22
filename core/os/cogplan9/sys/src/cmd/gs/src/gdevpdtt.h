@@ -1,11 +1,11 @@
 #ifndef gdevpdtt_INCLUDED
-#  define gdevpdtt_INCLUDED
+# define gdevpdtt_INCLUDED
 #ifndef pdf_char_glyph_pair_DEFINED
-#  define pdf_char_glyph_pair_DEFINED
+# define pdf_char_glyph_pair_DEFINED
 typedef struct pdf_char_glyph_pair_s pdf_char_glyph_pair_t;
 #endif
 #ifndef pdf_char_glyph_pairs_DEFINED
-#  define pdf_char_glyph_pairs_DEFINED
+# define pdf_char_glyph_pairs_DEFINED
 typedef struct pdf_char_glyph_pairs_s pdf_char_glyph_pairs_t;
 #endif
 struct pdf_char_glyph_pairs_s {

@@ -7,28 +7,28 @@
 #include <control.h>
 typedef struct Keyboard Keyboard;
 enum{
-SRegular	= 0,
-SShift	= 1,
-SCaps	= 2,
-SMask	= 3,
-Nstate	= 4,
-SControl	= 4,
+SRegular = 0,
+SShift = 1,
+SCaps = 2,
+SMask = 3,
+Nstate = 4,
+SControl = 4,
 };
 struct Keyboard
 {
 Control;
-CImage	*image;
-CImage	*mask;
-CImage	*light;
-CImage	*textcolor;
-CImage	*bordercolor;
-CFont	*font;
-CFont	*ctlfont;
-Image	*im[Nstate];
-int		border;
-int		lastbut;
-int		state;
-char		*key;
+CImage *image;
+CImage *mask;
+CImage *light;
+CImage *textcolor;
+CImage *bordercolor;
+CFont *font;
+CFont *ctlfont;
+Image *im[Nstate];
+int border;
+int lastbut;
+int state;
+char *key;
 };
 enum{
 EBorder,
@@ -46,19 +46,19 @@ EShow,
 ESize,
 };
 static char *cmds[] = {
-[EBorder] =	"border",
+[EBorder] = "border",
 [EBordercolor] = "bordercolor",
-[EFocus] = 	"focus",
-[EFont] =		"font",
-[EFormat] = 	"format",
-[EHide] =		"hide",
-[EImage] =	"image",
-[ELight] =		"light",
-[EMask] =		"mask",
-[ERect] =		"rect",
-[EReveal] =	"reveal",
-[EShow] =		"show",
-[ESize] =		"size",
+[EFocus] = "focus",
+[EFont] = "font",
+[EFormat] = "format",
+[EHide] = "hide",
+[EImage] = "image",
+[ELight] = "light",
+[EMask] = "mask",
+[ERect] = "rect",
+[EReveal] = "reveal",
+[EShow] = "show",
+[ESize] = "size",
 nil
 };
 enum
@@ -101,21 +101,21 @@ static char *keycapsshift[Nrow] = {
 "Ctrl\0Alt\0 \0Scrib\0Menu\0Esc\0\0"
 };
 struct{
-char	*name;
-int	val;
+char *name;
+int val;
 }keytab[] = {
-"Shift",	0,
-"Ctrl",	0,
-"Alt",		0,
-"Caps",	0,
-"Del",	'\177',
-"Enter",	'\n',
-"Esc",	'\033',
-"<-",		'\b',
-"->",		'\t',
-"Scrib",	0x10000,
-"Menu",	0x10001,
-nil,		0,
+"Shift", 0,
+"Ctrl", 0,
+"Alt", 0,
+"Caps", 0,
+"Del", '\177',
+"Enter", '\n',
+"Esc", '\033',
+"<-", '\b',
+"->", '\t',
+"Scrib", 0x10000,
+"Menu", 0x10001,
+nil, 0,
 };
 static char **keyset[Nstate] = {
 keyregular,
@@ -123,10 +123,10 @@ keyshift,
 keycaps,
 keycapsshift,
 };
-static void	keyboardshow(Keyboard*);
-static void	keyup(Keyboard*, Point);
-static void	keydown(Keyboard*, Point);
-static void	keyresize(Keyboard*);
+static void keyboardshow(Keyboard*);
+static void keyup(Keyboard*, Point);
+static void keydown(Keyboard*, Point);
+static void keyresize(Keyboard*);
 static void
 keyboardmouse(Control *c, Mouse *m)
 {

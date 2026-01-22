@@ -34,9 +34,9 @@ freezblock(b);
 freepart(p);
 return -1;
 }
-b->data  += Maglen;
+b->data += Maglen;
 b->_size -= Maglen;
-b->len   -= Maglen;
+b->len -= Maglen;
 z = memchr(b->data, '\0', b->len);
 if(z)
 b->len = z - b->data;

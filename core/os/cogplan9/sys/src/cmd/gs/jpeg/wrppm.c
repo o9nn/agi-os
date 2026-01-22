@@ -1,19 +1,19 @@
 #include "cdjpeg.h"
 #ifdef PPM_SUPPORTED
 #if BITS_IN_JSAMPLE == 8
-#define PUTPPMSAMPLE(ptr,v)  *ptr++ = (char) (v)
+#define PUTPPMSAMPLE(ptr,v) *ptr++ = (char) (v)
 #define BYTESPERSAMPLE 1
 #define PPM_MAXVAL 255
 #else
 #ifdef PPM_NORAWWORD
-#define PUTPPMSAMPLE(ptr,v)  *ptr++ = (char) ((v) >> (BITS_IN_JSAMPLE-8))
+#define PUTPPMSAMPLE(ptr,v) *ptr++ = (char) ((v) >> (BITS_IN_JSAMPLE-8))
 #define BYTESPERSAMPLE 1
 #define PPM_MAXVAL 255
 #else
-#define PUTPPMSAMPLE(ptr,v)			\
-{ register int val_ = v;		\
-*ptr++ = (char) (val_ & 0xFF);	\
-*ptr++ = (char) ((val_ >> 8) & 0xFF);	\
+#define PUTPPMSAMPLE(ptr,v) \
+{ register int val_ = v; \
+*ptr++ = (char) (val_ & 0xFF); \
+*ptr++ = (char) ((val_ >> 8) & 0xFF); \
 }
 #define BYTESPERSAMPLE 2
 #define PPM_MAXVAL ((1<<BITS_IN_JSAMPLE)-1)

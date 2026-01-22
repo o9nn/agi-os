@@ -1,34 +1,34 @@
 (define crisp-modus-ponens-rule
-  (let* ((A (Variable "$A"))
-         (B (Variable "$B"))
-         (AB (Implication A B))
-         (LambdaT (Type "LambdaLink"))
-         (PredicateT (Type "PredicateNode"))
-         (vardecl (VariableSet
-                     (TypedVariable A (TypeChoice LambdaT PredicateT))
-                     (TypedVariable B (TypeChoice LambdaT PredicateT))))
-         (precon1 (Evaluation (GroundedPredicate "scm-eager: true-enough") A))
-         (precon2 (Evaluation (GroundedPredicate "scm-eager: true-enough") AB))
-         (pattern (And
-                     (Present AB)
-                     precon1 precon2))
-         (rewrite (ExecutionOutput
-                     (GroundedSchema "scm-eager: crisp-modus-ponens")
-                     (List B A AB))))
-    (BindLink
-        vardecl
-        pattern
-        rewrite)))
+(let* ((A (Variable "$A"))
+(B (Variable "$B"))
+(AB (Implication A B))
+(LambdaT (Type "LambdaLink"))
+(PredicateT (Type "PredicateNode"))
+(vardecl (VariableSet
+(TypedVariable A (TypeChoice LambdaT PredicateT))
+(TypedVariable B (TypeChoice LambdaT PredicateT))))
+(precon1 (Evaluation (GroundedPredicate "scm-eager: true-enough") A))
+(precon2 (Evaluation (GroundedPredicate "scm-eager: true-enough") AB))
+(pattern (And
+(Present AB)
+precon1 precon2))
+(rewrite (ExecutionOutput
+(GroundedSchema "scm-eager: crisp-modus-ponens")
+(List B A AB))))
+(BindLink
+vardecl
+pattern
+rewrite)))
 (define (true-enough-bool a)
-  (let ((s (cog-mean a)) (c (cog-confidence a)))
-    (and (> s 0.5) (> c 0.5))))
+(let ((s (cog-mean a)) (c (cog-confidence a)))
+(and (> s 0.5) (> c 0.5))))
 (define (true-enough a)
-  (bool->tv (true-enough-bool a)))
+(bool->tv (true-enough-bool a)))
 (define (crisp-modus-ponens B A AB)
-  (if (and (true-enough-bool A) (true-enough-bool AB))
-      (cog-set-tv! B (stv 1 1))))
+(if (and (true-enough-bool A) (true-enough-bool AB))
+(cog-set-tv! B (stv 1 1))))
 (define crisp-modus-ponens-rule-name
-    (DefinedSchemaNode "crisp-modus-ponens-rule"))
+(DefinedSchemaNode "crisp-modus-ponens-rule"))
 (DefineLink
-    crisp-modus-ponens-rule-name
-    crisp-modus-ponens-rule)
+crisp-modus-ponens-rule-name
+crisp-modus-ponens-rule)

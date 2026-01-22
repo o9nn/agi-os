@@ -18,9 +18,9 @@ int count_moves;
 int count_chars;
 } pdf_text_buffer_t;
 #define TEXT_BUFFER_DEFAULT\
-{ { 0, 0 } },		\
-{ 0 },			\
-0,				\
+{ { 0, 0 } }, \
+{ 0 }, \
+0, \
 0
 struct pdf_text_state_s {
 pdf_text_state_values_t in;
@@ -46,7 +46,7 @@ private const pdf_text_state_t ts_default = {
 { 0, 0 },
 { 0, 0 }
 };
-gs_private_st_ptrs2(st_pdf_text_state, pdf_text_state_t,  "pdf_text_state_t",
+gs_private_st_ptrs2(st_pdf_text_state, pdf_text_state_t, "pdf_text_state_t",
 pdf_text_state_enum_ptrs, pdf_text_state_reloc_ptrs,
 in.pdfont, out.pdfont);
 private int

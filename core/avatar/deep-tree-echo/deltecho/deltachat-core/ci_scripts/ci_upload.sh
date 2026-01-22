@@ -1,7 +1,7 @@
 #!/bin/bash
-if [ -z "$DEVPI_LOGIN" ] ; then 
-    echo "required: password for 'dc' user on https://m.devpi/net/dc index"
-    exit 1
+if [ -z "$DEVPI_LOGIN" ] ; then
+echo "required: password for 'dc' user on https://m.devpi/net/dc index"
+exit 1
 fi
 set -xe
 DOXYDOCDIR=${1:?directory where doxygen docs to be found}
@@ -9,23 +9,23 @@ PYDOCDIR=${2:?directory with python docs}
 WHEELHOUSEDIR=${3:?directory with pre-built wheels}
 export BRANCH=${CIRCLE_BRANCH:?specify branch for uploading purposes}
 rsync -avz \
-  -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
-  "$PYDOCDIR/html/" \
-  delta@py.delta.chat:build/${BRANCH}
+-e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
+"$PYDOCDIR/html/" \
+delta@py.delta.chat:build/${BRANCH}
 rsync -avz \
-  -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
-  "$DOXYDOCDIR/html/" \
-  delta@py.delta.chat:build-c/${BRANCH}
+-e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
+"$DOXYDOCDIR/html/" \
+delta@py.delta.chat:build-c/${BRANCH}
 echo -----------------------
-echo upload wheels 
+echo upload wheels
 echo -----------------------
 pushd $WHEELHOUSEDIR
 pip install devpi-client
 devpi use https://m.devpi.net
 devpi login dc --password $DEVPI_LOGIN
 devpi use dc/$BRANCH || {
-    devpi index -c $BRANCH 
-    devpi use dc/$BRANCH
+devpi index -c $BRANCH
+devpi use dc/$BRANCH
 }
 devpi index $BRANCH bases=/root/pypi
 devpi upload deltachat*.whl

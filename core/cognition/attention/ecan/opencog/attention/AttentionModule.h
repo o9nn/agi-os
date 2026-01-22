@@ -18,10 +18,10 @@ class AttentionModule : public Module
 {
 private:
 Scheduler* _scheduler;
-Factory<AFImportanceDiffusionAgent, Agent>  afImportanceFactory;
-Factory<WAImportanceDiffusionAgent, Agent>  waImportanceFactory;
-Factory<AFRentCollectionAgent, Agent>  afRentFactory;
-Factory<WARentCollectionAgent, Agent>  waRentFactory;
+Factory<AFImportanceDiffusionAgent, Agent> afImportanceFactory;
+Factory<WAImportanceDiffusionAgent, Agent> waImportanceFactory;
+Factory<AFRentCollectionAgent, Agent> afRentFactory;
+Factory<WARentCollectionAgent, Agent> waRentFactory;
 Factory<ForgettingAgent, Agent> forgettingFactory;
 Factory<HebbianUpdatingAgent, Agent> hebbianUpdatingFactory;
 Factory<HebbianCreationAgent, Agent> hebbianCreationFactory;

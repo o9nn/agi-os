@@ -141,8 +141,8 @@ struct sock *sk, *result = NULL;
 unsigned short hnum = ntohs(dport);
 int badness = -1;
 for(sk = udp_hash[hnum & (UDP_HTABLE_SIZE - 1)]; sk != NULL; sk = sk->next) {
-if((sk->num == hnum)		&&
-(sk->family == PF_INET6)	&&
+if((sk->num == hnum) &&
+(sk->family == PF_INET6) &&
 !(sk->dead && (sk->state == TCP_CLOSE))) {
 struct ipv6_pinfo *np = &sk->net_pinfo.af_inet6;
 int score = 0;
@@ -179,15 +179,15 @@ return result;
 }
 int udpv6_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len)
 {
-struct sockaddr_in6	*usin = (struct sockaddr_in6 *) uaddr;
-struct ipv6_pinfo      	*np = &sk->net_pinfo.af_inet6;
-struct in6_addr		*daddr;
-struct in6_addr		saddr;
-struct dst_entry	*dst;
-struct flowi		fl;
-struct ip6_flowlabel	*flowlabel = NULL;
-int			addr_type;
-int			err;
+struct sockaddr_in6 *usin = (struct sockaddr_in6 *) uaddr;
+struct ipv6_pinfo *np = &sk->net_pinfo.af_inet6;
+struct in6_addr *daddr;
+struct in6_addr saddr;
+struct dst_entry *dst;
+struct flowi fl;
+struct ip6_flowlabel *flowlabel = NULL;
+int addr_type;
+int err;
 if (usin->sin6_family == AF_INET) {
 if (__ipv6_only_sock(sk))
 return -EAFNOSUPPORT;
@@ -450,7 +450,7 @@ int dif)
 struct sock *s = sk;
 unsigned short num = ntohs(loc_port);
 for(; s; s = s->next) {
-if((s->num == num)		&&
+if((s->num == num) &&
 !(s->dead && (s->state == TCP_CLOSE))) {
 struct ipv6_pinfo *np = &s->net_pinfo.af_inet6;
 if(s->dport) {
@@ -574,10 +574,10 @@ return(0);
 }
 struct udpv6fakehdr
 {
-struct udphdr	uh;
-struct iovec	*iov;
-__u32		wcheck;
-__u32		pl_len;
+struct udphdr uh;
+struct iovec *iov;
+__u32 wcheck;
+__u32 pl_len;
 struct in6_addr *daddr;
 };
 static int udpv6_getfrag(const void *data, struct in6_addr *addr,

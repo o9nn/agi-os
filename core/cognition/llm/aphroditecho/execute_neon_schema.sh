@@ -10,10 +10,10 @@ echo ""
 SCHEMA_SQL=$(cat "$SCHEMA_FILE")
 echo "Executing schema SQL..."
 manus-mcp-cli tool call run_sql --server neon --input "{
-  \"params\": {
-    \"projectId\": \"$PROJECT_ID\",
-    \"sql\": $(echo "$SCHEMA_SQL" | jq -Rs .)
-  }
+\"params\": {
+\"projectId\": \"$PROJECT_ID\",
+\"sql\": $(echo "$SCHEMA_SQL" | jq -Rs .)
+}
 }"
 echo ""
 echo "Schema execution complete!"

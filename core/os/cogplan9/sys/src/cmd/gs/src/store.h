@@ -1,15 +1,15 @@
 #ifndef store_INCLUDED
-#  define store_INCLUDED
+# define store_INCLUDED
 #include "ialloc.h"
 #include "idosave.h"
 #define ref_assign_inline(pto,pfrom)\
 ((pto)->value = (pfrom)->value,\
 (pto)->tas = (pfrom)->tas)
 #ifdef __TURBOC__
-#  define ref_assign(pto,pfrom)\
+# define ref_assign(pto,pfrom)\
 discard(ref_assign_inline(pto, pfrom))
 #else
-#  define ref_assign(pto,pfrom)\
+# define ref_assign(pto,pfrom)\
 (*(pto) = *(pfrom))
 #endif
 #define ialloc_new_mask (idmemory->new_mask)
@@ -44,15 +44,15 @@ discard((ref_assign_inline(pto,pfrom), ref_mark_new(pto)))
 (ref_save(pcont,pto,cname), ref_assign_new_inline(pto,pfrom))
 #define ref_mark_old(pto) ((pto)->tas.type_attrs &= ~ialloc_new_mask)
 #ifdef DEBUG
-#  define and_fill_s(pref)\
+# define and_fill_s(pref)\
 , (gs_debug['$'] ? r_set_size(pref, 0xfeed) : 0)
 #define DEADBEEF ((int)(((uint)0xdead << 16) | 0xbeef))
-#  define and_fill_sv(pref)\
+# define and_fill_sv(pref)\
 , (gs_debug['$'] ? (r_set_size(pref, 0xfeed),\
 (pref)->value.intval = DEADBEEF) : 0)
 #else
-#  define and_fill_s(pref)
-#  define and_fill_sv(pref)
+# define and_fill_s(pref)
+# define and_fill_sv(pref)
 #endif
 #define make_ta(pref,newtype,newattrs)\
 (r_set_type_attrs(pref, newtype, newattrs) and_fill_sv(pref))

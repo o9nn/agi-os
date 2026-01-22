@@ -1,10 +1,10 @@
 static void
 PrepareSG( PACB pACB, PDCB pDCB, PSRB pSRB )
 {
-ULONG  retAddr,wlval;
+ULONG retAddr,wlval;
 USHORT wval,i;
-PSGL   psgl;
-PSGE   psge;
+PSGL psgl;
+PSGE psge;
 retAddr = pACB->jmp_table8;
 if(pDCB->DCBscntl3 & EN_WIDE_SCSI)
 retAddr += jmp_table16;
@@ -37,7 +37,7 @@ static void
 DC390W_StartSCSI( PACB pACB, PDCB pDCB, PSRB pSRB )
 {
 USHORT ioport;
-UCHAR  bval;
+UCHAR bval;
 pSRB->TagNumber = 31;
 ioport = pACB->IOPortBase;
 bval = SIGNAL_PROC;
@@ -46,7 +46,7 @@ pACB->pActiveDCB = pDCB;
 pDCB->pActiveSRB = pSRB;
 return;
 }
-#ifndef  VERSION_ELF_1_2_13
+#ifndef VERSION_ELF_1_2_13
 static void
 DC390W_Interrupt( int irq, void *dev_id, struct pt_regs *regs)
 #else
@@ -56,12 +56,12 @@ DC390W_Interrupt( int irq, struct pt_regs *regs)
 {
 PACB pACB;
 PDCB pDCB;
-ULONG  wlval;
+ULONG wlval;
 USHORT ioport = 0;
 USHORT wval, i;
-void  (*stateV)( PACB );
-UCHAR  istat = 0;
-UCHAR  bval;
+void (*stateV)( PACB );
+UCHAR istat = 0;
+UCHAR bval;
 pACB = pACB_start;
 if( pACB == NULL )
 return;
@@ -89,7 +89,7 @@ return;
 #ifdef DC390W_DEBUG1
 printk("Istate=%2x,",istat);
 #endif
-if(istat &	ABORT_OP)
+if(istat & ABORT_OP)
 {
 istat &= ~ABORT_OP;
 outb(istat,ioport+ISTAT);
@@ -131,7 +131,7 @@ return;
 static void
 ExceptionHandler(ULONG wlval, PACB pACB, PDCB pDCB)
 {
-PSRB  pSRB;
+PSRB pSRB;
 UCHAR bval;
 USHORT ioport;
 ioport = pACB->IOPortBase;
@@ -193,10 +193,10 @@ DC390W_ResetSCSIBus( pACB );
 static void
 ParityError( PACB pACB, PDCB pDCB )
 {
-ULONG   ioport;
-UCHAR   bval,msg;
-ULONG   wlval;
-PSRB    pSRB;
+ULONG ioport;
+UCHAR bval,msg;
+ULONG wlval;
+PSRB pSRB;
 ioport = pACB->IOPortBase;
 bval = inb(ioport+SCRATCHA);
 if(bval & RE_SELECTED_)
@@ -514,7 +514,7 @@ wlval = pSRB->ReturnAddr;
 if(wlval <= pACB->jmp_table8)
 {
 if(pDCB->DCBscntl3 & EN_WIDE_SCSI)
-wlval +=  jmp_table16;
+wlval += jmp_table16;
 }
 else
 {
@@ -529,9 +529,9 @@ return;
 static void
 SetXferRate( PACB pACB, PDCB pDCB )
 {
-UCHAR  bval;
+UCHAR bval;
 USHORT cnt, i;
-PDCB   ptr;
+PDCB ptr;
 if( !(pDCB->IdentifyMsg & 0x07) )
 {
 if( pACB->scan_devices )
@@ -580,7 +580,7 @@ DC390W_Disconnected( PACB pACB )
 {
 PDCB pDCB;
 PSRB pSRB;
-ULONG  wlval, flags;
+ULONG wlval, flags;
 USHORT ioport;
 UCHAR bval;
 #ifdef DC390W_DEBUG0
@@ -621,11 +621,11 @@ return;
 static void
 DC390W_Reselected1( PACB pACB )
 {
-PDCB   pDCB;
-PSRB   pSRB;
+PDCB pDCB;
+PSRB pSRB;
 USHORT ioport, wval;
-ULONG  wlval, flags;
-UCHAR  bval;
+ULONG wlval, flags;
+UCHAR bval;
 #ifdef DC390W_DEBUG0
 printk("Rsel1,");
 #endif
@@ -701,7 +701,7 @@ pDCB = pACB->pActiveDCB;
 pSRB = pDCB->pGoingSRB;
 psrb1 = pDCB->pGoingLast;
 if( !pSRB )
-goto  UXP_RSL;
+goto UXP_RSL;
 for(;;)
 {
 if(pSRB->TagNumber != bval)
@@ -709,7 +709,7 @@ if(pSRB->TagNumber != bval)
 if( pSRB != psrb1 )
 pSRB = pSRB->pNextSRB;
 else
-goto  UXP_RSL;
+goto UXP_RSL;
 }
 else
 break;
@@ -762,11 +762,11 @@ return;
 static void
 PhaseMismatch( PACB pACB )
 {
-USHORT  ioport;
-ULONG   wlval,swlval;
-USHORT  wval;
-UCHAR   bval,phase;
-PDCB    pDCB;
+USHORT ioport;
+ULONG wlval,swlval;
+USHORT wval;
+UCHAR bval,phase;
+PDCB pDCB;
 #ifdef DC390W_DEBUG0
 printk("Mismatch,");
 #endif
@@ -841,14 +841,14 @@ outl(wlval,(ioport+DSP));
 return;
 }
 static void
-DataIOcommon( PACB pACB, ULONG	Swlval, ULONG  Cwlval )
+DataIOcommon( PACB pACB, ULONG Swlval, ULONG Cwlval )
 {
 PDCB pDCB;
 PSRB pSRB;
 PSGE Segptr;
 USHORT ioport;
-ULONG  wlval,swlval,dataXferCnt;
-UCHAR  bval,bvald;
+ULONG wlval,swlval,dataXferCnt;
+UCHAR bval,bvald;
 ioport = pACB->IOPortBase;
 wlval = inl((ioport+DSP));
 pDCB = pACB->pActiveDCB;
@@ -905,8 +905,8 @@ DC390W_CmdCompleted( PACB pACB )
 PDCB pDCB;
 PSRB pSRB;
 USHORT ioport;
-ULONG  wlval, flags;
-UCHAR  bval;
+ULONG wlval, flags;
+UCHAR bval;
 #ifdef DC390W_DEBUG0
 printk("Cmplete,");
 #endif
@@ -916,7 +916,7 @@ pDCB = pACB->pActiveDCB;
 pSRB = pDCB->pActiveSRB;
 pDCB->pActiveSRB = NULL;
 ioport = pACB->IOPortBase;
-bval  = inb(ioport+SCRATCHA);
+bval = inb(ioport+SCRATCHA);
 pSRB->ScratchABuf = bval;
 bval = pSRB->TagNumber;
 if(pDCB->MaxCommand > 1)
@@ -931,15 +931,15 @@ return;
 static void
 SRBdone( PACB pACB, PDCB pDCB, PSRB pSRB )
 {
-PSRB   psrb;
-UCHAR  bval, bval1, i, j, status;
+PSRB psrb;
+UCHAR bval, bval1, i, j, status;
 PSCSICMD pcmd;
-PSCSI_INQDATA  ptr;
-USHORT  disable_tag;
-ULONG  flags;
-PSGE   ptr1;
-PSGL   ptr2;
-ULONG  wlval,swlval;
+PSCSI_INQDATA ptr;
+USHORT disable_tag;
+ULONG flags;
+PSGE ptr1;
+PSGL ptr2;
+ULONG wlval,swlval;
 pcmd = pSRB->pcmd;
 status = pACB->status;
 if(pSRB->SRBFlag & AUTO_REQSENSE)
@@ -973,8 +973,8 @@ pSRB->TargetStatus = 0;
 *((PULONG) &(pSRB->CmdBlock[0])) = pSRB->Segment0[0][0];
 *((PULONG) &(pSRB->CmdBlock[4])) = pSRB->Segment0[0][1];
 *((PULONG) &(pSRB->CmdBlock[8])) = pSRB->Segment0[1][0];
-pSRB->__command[0]		     = pSRB->Segment0[1][1] & 0xff;
-pSRB->SGcount		     = (UCHAR) (pSRB->Segment0[1][1] >> 8);
+pSRB->__command[0] = pSRB->Segment0[1][1] & 0xff;
+pSRB->SGcount = (UCHAR) (pSRB->Segment0[1][1] >> 8);
 *((PULONG) &(pSRB->pSegmentList))= pSRB->Segment0[2][0];
 if( pSRB->CmdBlock[0] == TEST_UNIT_READY )
 {
@@ -1019,7 +1019,7 @@ ptr2++;
 }
 pSRB->XferredLen = swlval - wlval;
 pSRB->RemainSegPtr = 0;
-#ifdef	DC390W_DEBUG0
+#ifdef DC390W_DEBUG0
 printk("XferredLen=%8x,NotXferLen=%8x,",(UINT) pSRB->XferredLen,(UINT) wlval);
 #endif
 }
@@ -1202,9 +1202,9 @@ return;
 static void
 DoingSRB_Done( PACB pACB )
 {
-PDCB  pDCB, pdcb;
-PSRB  psrb, psrb2;
-USHORT  cnt, i;
+PDCB pDCB, pdcb;
+PSRB psrb, psrb2;
+USHORT cnt, i;
 PSCSICMD pcmd;
 pDCB = pACB->pLinkDCB;
 pdcb = pDCB;
@@ -1220,7 +1220,7 @@ pcmd->result = DID_RESET << 16;
 psrb->pNextSRB = pACB->pFreeSRB;
 pACB->pFreeSRB = psrb;
 pcmd->scsi_done( pcmd );
-psrb  = psrb2;
+psrb = psrb2;
 }
 pdcb->GoingSRBCnt = 0;;
 pdcb->pGoingSRB = NULL;
@@ -1233,8 +1233,8 @@ static void
 DC390W_ResetSCSIBus( PACB pACB )
 {
 USHORT ioport;
-UCHAR  bval;
-ULONG  flags;
+UCHAR bval;
+ULONG flags;
 save_flags(flags);
 cli();
 pACB->ACBFlag |= RESET_DEV;
@@ -1256,8 +1256,8 @@ static void
 DC390W_ResetSCSIBus2( PACB pACB )
 {
 USHORT ioport;
-UCHAR  bval;
-ULONG  flags;
+UCHAR bval;
+ULONG flags;
 save_flags(flags);
 cli();
 ioport = pACB->IOPortBase;
@@ -1274,7 +1274,7 @@ DC390W_ScsiRstDetect( PACB pACB )
 {
 ULONG wlval, flags;
 USHORT ioport;
-UCHAR  bval;
+UCHAR bval;
 save_flags(flags);
 sti();
 #ifdef DC390W_DEBUG0
@@ -1308,7 +1308,7 @@ return;
 static void
 RequestSense( PACB pACB, PDCB pDCB, PSRB pSRB )
 {
-PSCSICMD  pcmd;
+PSCSICMD pcmd;
 pSRB->SRBFlag |= AUTO_REQSENSE;
 pSRB->Segment0[0][0] = *((PULONG) &(pSRB->CmdBlock[0]));
 pSRB->Segment0[0][1] = *((PULONG) &(pSRB->CmdBlock[4]));
@@ -1340,8 +1340,8 @@ DC390W_FatalError( pACB );
 static void
 DC390W_FatalError( PACB pACB )
 {
-PSRB  pSRB;
-PDCB  pDCB;
+PSRB pSRB;
+PDCB pDCB;
 ULONG flags;
 #ifdef DC390W_DEBUG0
 printk("DC390W: Fatal Error!!\n");

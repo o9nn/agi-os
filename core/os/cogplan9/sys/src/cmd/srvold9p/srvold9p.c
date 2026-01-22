@@ -4,18 +4,18 @@
 #include <fcall.h>
 #include <libsec.h>
 #include "9p1.h"
-char	*user;
-int	newfd;
-int	roldfd;
-int	woldfd;
-int	debug;
-int	dofcall;
-QLock	servelock;
-QLock	fidlock;
-QLock	taglock;
-int	mainpid;
-int	ntag;
-int	nfork;
+char *user;
+int newfd;
+int roldfd;
+int woldfd;
+int debug;
+int dofcall;
+QLock servelock;
+QLock fidlock;
+QLock taglock;
+int mainpid;
+int ntag;
+int nfork;
 char FLUSHED[] = "FLUSHED";
 enum{
 Maxfdata = 8192
@@ -29,32 +29,32 @@ Stdio,
 typedef struct Tag Tag;
 struct Tag
 {
-int	tag;
-int	flushed;
-int	received;
-int	ref;
-Tag	*next;
+int tag;
+int flushed;
+int received;
+int ref;
+Tag *next;
 };
 typedef struct Message Message;
 struct Message
 {
-char	*data;
-int	n;
+char *data;
+int n;
 };
 typedef struct Fid Fid;
 struct Fid
 {
-short	busy;
-short	allocated;
-int	fid;
-Qid	qid;
-ulong	newoffset;
-ulong	oldoffset;
-Fid	*next;
+short busy;
+short allocated;
+int fid;
+Qid qid;
+ulong newoffset;
+ulong oldoffset;
+Fid *next;
 };
-Fid	*fids;
-Tag	*tags;
-char	*rflush(Fcall*, Fcall*, char*),
+Fid *fids;
+Tag *tags;
+char *rflush(Fcall*, Fcall*, char*),
 *rversion(Fcall*, Fcall*, char*),
 *rauth(Fcall*, Fcall*, char*),
 *rattach(Fcall*, Fcall*, char*),
@@ -67,36 +67,36 @@ char	*rflush(Fcall*, Fcall*, char*),
 *rremove(Fcall*, Fcall*, char*),
 *rstat(Fcall*, Fcall*, char*),
 *rwstat(Fcall*, Fcall*, char*);
-char 	*(*fcalls[])(Fcall*, Fcall*, char*) = {
-[Tversion]	rversion,
-[Tflush]	rflush,
-[Tauth]	rauth,
-[Tattach]	rattach,
-[Twalk]		rwalk,
-[Topen]		ropen,
-[Tcreate]	rcreate,
-[Tread]		rread,
-[Twrite]	rwrite,
-[Tclunk]	rclunk,
-[Tremove]	rremove,
-[Tstat]		rstat,
-[Twstat]	rwstat,
+char *(*fcalls[])(Fcall*, Fcall*, char*) = {
+[Tversion] rversion,
+[Tflush] rflush,
+[Tauth] rauth,
+[Tattach] rattach,
+[Twalk] rwalk,
+[Topen] ropen,
+[Tcreate] rcreate,
+[Tread] rread,
+[Twrite] rwrite,
+[Tclunk] rclunk,
+[Tremove] rremove,
+[Tstat] rstat,
+[Twstat] rwstat,
 };
 char Etoolong[] = "name too long";
-void	connect(int, char*);
-void	post(int, char*);
-void	serve(void);
-void	demux(void);
-void*	emalloc(ulong);
-char*	transact9p1(Fcall9p1*, Fcall9p1*, char*);
-Fid*	newfid(int);
+void connect(int, char*);
+void post(int, char*);
+void serve(void);
+void demux(void);
+void* emalloc(ulong);
+char* transact9p1(Fcall9p1*, Fcall9p1*, char*);
+Fid* newfid(int);
 struct
 {
-char	chal[CHALLEN];
-char	rchal[CHALLEN];
-char	authid[NAMEREC];
-char	authdom[DOMLEN];
-int	id;
+char chal[CHALLEN];
+char rchal[CHALLEN];
+char authid[NAMEREC];
+char authdom[DOMLEN];
+int id;
 } ai;
 void
 usage(void)
@@ -374,7 +374,7 @@ serve(void)
 char *err;
 int n;
 Fcall thdr;
-Fcall	rhdr;
+Fcall rhdr;
 uchar mdata[IOHDRSZ+Maxfdata];
 char mdata9p1[IOHDRSZ+Maxfdata];
 Tag *tag;

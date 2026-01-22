@@ -14,17 +14,17 @@ extern "C"
 #define CJSON_EXPORT_SYMBOLS
 #endif
 #if defined(CJSON_HIDE_SYMBOLS)
-#define CJSON_PUBLIC(type)   type CJSON_STDCALL
+#define CJSON_PUBLIC(type) type CJSON_STDCALL
 #elif defined(CJSON_EXPORT_SYMBOLS)
-#define CJSON_PUBLIC(type)   __declspec(dllexport) type CJSON_STDCALL
+#define CJSON_PUBLIC(type) __declspec(dllexport) type CJSON_STDCALL
 #elif defined(CJSON_IMPORT_SYMBOLS)
-#define CJSON_PUBLIC(type)   __declspec(dllimport) type CJSON_STDCALL
+#define CJSON_PUBLIC(type) __declspec(dllimport) type CJSON_STDCALL
 #endif
 #else
 #define CJSON_CDECL
 #define CJSON_STDCALL
 #if (defined(__GNUC__) || defined(__SUNPRO_CC) || defined (__SUNPRO_C)) && defined(CJSON_API_VISIBILITY)
-#define CJSON_PUBLIC(type)   __attribute__((visibility("default"))) type
+#define CJSON_PUBLIC(type) __attribute__((visibility("default"))) type
 #else
 #define CJSON_PUBLIC(type) type
 #endif
@@ -34,14 +34,14 @@ extern "C"
 #define CJSON_VERSION_PATCH 19
 #include <stddef.h>
 #define cJSON_Invalid (0)
-#define cJSON_False  (1 << 0)
-#define cJSON_True   (1 << 1)
-#define cJSON_NULL   (1 << 2)
+#define cJSON_False (1 << 0)
+#define cJSON_True (1 << 1)
+#define cJSON_NULL (1 << 2)
 #define cJSON_Number (1 << 3)
 #define cJSON_String (1 << 4)
-#define cJSON_Array  (1 << 5)
+#define cJSON_Array (1 << 5)
 #define cJSON_Object (1 << 6)
-#define cJSON_Raw    (1 << 7)
+#define cJSON_Raw (1 << 7)
 #define cJSON_IsReference 256
 #define cJSON_StringIsConst 512
 typedef struct cJSON

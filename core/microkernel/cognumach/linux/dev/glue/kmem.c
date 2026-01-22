@@ -12,12 +12,12 @@
 #include <linux/delay.h>
 #include <asm/system.h>
 #include <linux/dev/glue/glue.h>
-#define MEM_CHUNK_SIZE	(64 * 1024)
-#define MEM_CHUNKS	32
-#define MEM_DMA_LIMIT	(16 * 1024 * 1024)
-#define MIN_ALLOC	12
+#define MEM_CHUNK_SIZE (64 * 1024)
+#define MEM_CHUNKS 32
+#define MEM_DMA_LIMIT (16 * 1024 * 1024)
+#define MIN_ALLOC 12
 #ifndef NBPW
-#define NBPW		32
+#define NBPW 32
 #endif
 struct blkhdr
 {

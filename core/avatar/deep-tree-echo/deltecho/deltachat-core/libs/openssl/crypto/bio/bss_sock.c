@@ -5,9 +5,9 @@
 #ifndef OPENSSL_NO_SOCK
 # include <openssl/bio.h>
 # ifdef WATT32
-#  define sock_write SockWrite
-#  define sock_read  SockRead
-#  define sock_puts  SockPuts
+# define sock_write SockWrite
+# define sock_read SockRead
+# define sock_puts SockPuts
 # endif
 static int sock_write(BIO *h, const char *buf, int num);
 static int sock_read(BIO *h, char *buf, int size);
@@ -148,23 +148,23 @@ int BIO_sock_non_fatal_error(int err)
 {
 switch (err) {
 # if defined(OPENSSL_SYS_WINDOWS) || defined(OPENSSL_SYS_NETWARE)
-#  if defined(WSAEWOULDBLOCK)
+# if defined(WSAEWOULDBLOCK)
 case WSAEWOULDBLOCK:
-#  endif
-#  if 0
-#   if defined(WSAENOTCONN)
+# endif
+# if 0
+# if defined(WSAENOTCONN)
 case WSAENOTCONN:
-#   endif
-#  endif
+# endif
+# endif
 # endif
 # ifdef EWOULDBLOCK
-#  ifdef WSAEWOULDBLOCK
-#   if WSAEWOULDBLOCK != EWOULDBLOCK
+# ifdef WSAEWOULDBLOCK
+# if WSAEWOULDBLOCK != EWOULDBLOCK
 case EWOULDBLOCK:
-#   endif
-#  else
+# endif
+# else
 case EWOULDBLOCK:
-#  endif
+# endif
 # endif
 # if defined(ENOTCONN)
 case ENOTCONN:
@@ -173,9 +173,9 @@ case ENOTCONN:
 case EINTR:
 # endif
 # ifdef EAGAIN
-#  if EWOULDBLOCK != EAGAIN
+# if EWOULDBLOCK != EAGAIN
 case EAGAIN:
-#  endif
+# endif
 # endif
 # ifdef EPROTO
 case EPROTO:

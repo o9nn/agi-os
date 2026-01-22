@@ -218,7 +218,7 @@ ilist->highest_name_id = node->name_id;
 static int mailbox_list_index_node_cmp(const struct mailbox_list_index_node *n1,
 const struct mailbox_list_index_node *n2)
 {
-return  n1->parent == n2->parent &&
+return n1->parent == n2->parent &&
 strcmp(n1->raw_name, n2->raw_name) == 0 ? 0 : -1;
 }
 static unsigned int

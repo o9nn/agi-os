@@ -16,19 +16,19 @@
 #include <kern/smp.h>
 #include <mach/vm_param.h>
 #include <vm/vm_map.h>
-#define db_thread_to_task(thread)	((thread)? thread->task: TASK_NULL)
-char		db_examine_format[TOK_STRING_SIZE] = "x";
-int		db_examine_count = 1;
-db_addr_t	db_examine_prev_addr = 0;
-thread_t	db_examine_thread = THREAD_NULL;
+#define db_thread_to_task(thread) ((thread)? thread->task: TASK_NULL)
+char db_examine_format[TOK_STRING_SIZE] = "x";
+int db_examine_count = 1;
+db_addr_t db_examine_prev_addr = 0;
+thread_t db_examine_thread = THREAD_NULL;
 void
 db_examine_cmd(
-db_expr_t	addr,
-int		have_addr,
-db_expr_t	count,
-const char *	modif)
+db_expr_t addr,
+int have_addr,
+db_expr_t count,
+const char * modif)
 {
-thread_t	thread;
+thread_t thread;
 if (modif[0] != '\0')
 db_strcpy(db_examine_format, modif);
 if (count == -1)
@@ -50,20 +50,20 @@ db_thread_to_task(thread));
 }
 void
 db_examine_forward(
-db_expr_t	addr,
-int		have_addr,
-db_expr_t	count,
-const char *	modif)
+db_expr_t addr,
+int have_addr,
+db_expr_t count,
+const char * modif)
 {
 db_examine(db_next, db_examine_format, db_examine_count,
 db_thread_to_task(db_examine_thread));
 }
 void
 db_examine_backward(
-db_expr_t	addr,
-int		have_addr,
-db_expr_t	count,
-const char *	modif)
+db_expr_t addr,
+int have_addr,
+db_expr_t count,
+const char * modif)
 {
 db_examine(db_examine_prev_addr - (db_next - db_examine_prev_addr),
 db_examine_format, db_examine_count,
@@ -71,16 +71,16 @@ db_thread_to_task(db_examine_thread));
 }
 void
 db_examine(
-db_addr_t	addr,
-const char *	fmt,
-int		count,
-task_t		task)
+db_addr_t addr,
+const char * fmt,
+int count,
+task_t task)
 {
-int		c;
-db_expr_t	value;
-int		size;
-int		width;
-const char *	fp;
+int c;
+db_expr_t value;
+int size;
+int width;
+const char * fp;
 db_examine_prev_addr = addr;
 while (--count >= 0) {
 fp = fmt;
@@ -119,8 +119,8 @@ db_next = db_xcdump(addr, size, count + 1, task);
 return;
 default:
 if (db_print_position() == 0) {
-char *	name;
-db_addr_t	off;
+char * name;
+db_addr_t off;
 db_find_task_sym_and_offset(addr, &name, &off, task);
 if (off == 0)
 db_printf("%s:\t", name);
@@ -201,10 +201,10 @@ db_next = addr;
 }
 void
 db_whatis_cmd(
-db_expr_t	addr,
-int		have_addr,
-db_expr_t	count,
-const char *	modif)
+db_expr_t addr,
+int have_addr,
+db_expr_t count,
+const char * modif)
 {
 int i;
 {
@@ -307,10 +307,10 @@ struct vm_page *page = vm_page_lookup_pa(pa);
 db_printf("phys %llx, page %p\n", (unsigned long long) pa, page);
 if (page) {
 const char *types[] = {
-[VM_PT_FREE] =	"free",
-[VM_PT_RESERVED] =	"reserved",
-[VM_PT_TABLE] =	"table",
-[VM_PT_KERNEL] =	"kernel",
+[VM_PT_FREE] = "free",
+[VM_PT_RESERVED] = "reserved",
+[VM_PT_TABLE] = "table",
+[VM_PT_KERNEL] = "kernel",
 };
 db_printf("  %s\n", types[page->type]);
 db_printf("  free %u\n", page->free);
@@ -326,13 +326,13 @@ db_printf("  order %u\n", page->order);
 }
 }
 }
-char	db_print_format = 'x';
+char db_print_format = 'x';
 void
 db_print_cmd(void)
 {
-db_expr_t	value;
-int		t;
-task_t		task = TASK_NULL;
+db_expr_t value;
+int t;
+task_t task = TASK_NULL;
 if ((t = db_read_token()) == tSLASH) {
 if (db_read_token() != tIDENT) {
 db_printf("Bad modifier \"/%s\"\n", db_tok_string);
@@ -391,8 +391,8 @@ db_error(0);
 }
 void
 db_print_loc_and_inst(
-db_addr_t	loc,
-task_t		task)
+db_addr_t loc,
+task_t task)
 {
 db_task_printsym(loc, DB_STGY_PROC, task);
 db_printf(":\t");
@@ -411,15 +411,15 @@ boolean_t b,
 db_expr_t e2,
 const char * cc)
 {
-int		t;
-db_addr_t	addr;
-int		size = 0;
-db_expr_t	value;
-db_expr_t	mask;
-db_addr_t	count;
-thread_t	thread;
-boolean_t	thread_flag = FALSE;
-char		*p;
+int t;
+db_addr_t addr;
+int size = 0;
+db_expr_t value;
+db_expr_t mask;
+db_addr_t count;
+thread_t thread;
+boolean_t thread_flag = FALSE;
+char *p;
 t = db_read_token();
 if (t == tSLASH) {
 t = db_read_token();
@@ -483,12 +483,12 @@ db_search(addr, size, value, mask, count, db_thread_to_task(thread));
 }
 void
 db_search(
-db_addr_t	addr,
-int		size,
-db_expr_t	value,
-db_expr_t	mask,
-unsigned int	count,
-task_t		task)
+db_addr_t addr,
+int size,
+db_expr_t value,
+db_expr_t mask,
+unsigned int count,
+task_t task)
 {
 while (count-- != 0) {
 db_prev = addr;
@@ -498,20 +498,20 @@ addr += size;
 }
 db_next = addr;
 }
-#define DB_XCDUMP_NC	16
+#define DB_XCDUMP_NC 16
 int
 db_xcdump(
-db_addr_t	addr,
-int		size,
-int		count,
-task_t		task)
+db_addr_t addr,
+int size,
+int count,
+task_t task)
 {
-int 		i, n;
-db_expr_t	value;
-int		bcount;
-db_addr_t	off;
-char		*name;
-char		data[DB_XCDUMP_NC];
+int i, n;
+db_expr_t value;
+int bcount;
+db_addr_t off;
+char *name;
+char data[DB_XCDUMP_NC];
 db_find_task_sym_and_offset(addr, &name, &off, task);
 for (n = count*size; n > 0; n -= bcount) {
 db_prev = addr;

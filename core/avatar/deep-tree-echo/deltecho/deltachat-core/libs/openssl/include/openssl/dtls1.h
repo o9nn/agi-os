@@ -3,46 +3,46 @@
 # include <openssl/buffer.h>
 # include <openssl/pqueue.h>
 # ifdef OPENSSL_SYS_VMS
-#  include <resource.h>
-#  include <sys/timeb.h>
+# include <resource.h>
+# include <sys/timeb.h>
 # endif
 # ifdef OPENSSL_SYS_WIN32
-#  include <winsock.h>
+# include <winsock.h>
 # elif defined(OPENSSL_SYS_NETWARE) && !defined(_WINSOCK2API_)
-#  include <sys/timeval.h>
+# include <sys/timeval.h>
 # else
-#  if defined(OPENSSL_SYS_VXWORKS)
-#   include <sys/times.h>
-#  else
-#   include <sys/time.h>
-#  endif
+# if defined(OPENSSL_SYS_VXWORKS)
+# include <sys/times.h>
+# else
+# include <sys/time.h>
 # endif
-#ifdef  __cplusplus
+# endif
+#ifdef __cplusplus
 extern "C" {
 #endif
-# define DTLS1_VERSION                   0xFEFF
-# define DTLS_MAX_VERSION                DTLS1_VERSION
-# define DTLS1_VERSION_MAJOR             0xFE
-# define DTLS1_BAD_VER                   0x0100
+# define DTLS1_VERSION 0xFEFF
+# define DTLS_MAX_VERSION DTLS1_VERSION
+# define DTLS1_VERSION_MAJOR 0xFE
+# define DTLS1_BAD_VER 0x0100
 # if 0
-#  define DTLS1_AD_MISSING_HANDSHAKE_MESSAGE    110
+# define DTLS1_AD_MISSING_HANDSHAKE_MESSAGE 110
 # endif
-# define DTLS1_COOKIE_LENGTH                     256
-# define DTLS1_RT_HEADER_LENGTH                  13
-# define DTLS1_HM_HEADER_LENGTH                  12
-# define DTLS1_HM_BAD_FRAGMENT                   -2
-# define DTLS1_HM_FRAGMENT_RETRY                 -3
-# define DTLS1_CCS_HEADER_LENGTH                  1
+# define DTLS1_COOKIE_LENGTH 256
+# define DTLS1_RT_HEADER_LENGTH 13
+# define DTLS1_HM_HEADER_LENGTH 12
+# define DTLS1_HM_BAD_FRAGMENT -2
+# define DTLS1_HM_FRAGMENT_RETRY -3
+# define DTLS1_CCS_HEADER_LENGTH 1
 # ifdef DTLS1_AD_MISSING_HANDSHAKE_MESSAGE
-#  define DTLS1_AL_HEADER_LENGTH                   7
+# define DTLS1_AL_HEADER_LENGTH 7
 # else
-#  define DTLS1_AL_HEADER_LENGTH                   2
+# define DTLS1_AL_HEADER_LENGTH 2
 # endif
 # ifndef OPENSSL_NO_SSL_INTERN
-#  ifndef OPENSSL_NO_SCTP
-#   define DTLS1_SCTP_AUTH_LABEL   "EXPORTER_DTLS_OVER_SCTP"
-#  endif
-#  define DTLS1_MAX_MTU_OVERHEAD                   48
+# ifndef OPENSSL_NO_SCTP
+# define DTLS1_SCTP_AUTH_LABEL "EXPORTER_DTLS_OVER_SCTP"
+# endif
+# define DTLS1_MAX_MTU_OVERHEAD 48
 typedef struct dtls1_bitmap_st {
 unsigned long map;
 unsigned char max_seq_num[8];
@@ -50,11 +50,11 @@ unsigned char max_seq_num[8];
 struct dtls1_retransmit_state {
 EVP_CIPHER_CTX *enc_write_ctx;
 EVP_MD_CTX *write_hash;
-#  ifndef OPENSSL_NO_COMP
+# ifndef OPENSSL_NO_COMP
 COMP_CTX *compress;
-#  else
+# else
 char *compress;
-#  endif
+# endif
 SSL_SESSION *session;
 unsigned short epoch;
 };
@@ -117,25 +117,25 @@ unsigned char handshake_fragment[DTLS1_HM_HEADER_LENGTH];
 unsigned int handshake_fragment_len;
 unsigned int retransmitting;
 unsigned int change_cipher_spec_ok;
-#  ifndef OPENSSL_NO_SCTP
+# ifndef OPENSSL_NO_SCTP
 int next_state;
 int shutdown_received;
-#  endif
+# endif
 } DTLS1_STATE;
 typedef struct dtls1_record_data_st {
 unsigned char *packet;
 unsigned int packet_length;
 SSL3_BUFFER rbuf;
 SSL3_RECORD rrec;
-#  ifndef OPENSSL_NO_SCTP
+# ifndef OPENSSL_NO_SCTP
 struct bio_dgram_sctp_rcvinfo recordinfo;
-#  endif
+# endif
 } DTLS1_RECORD_DATA;
 # endif
-# define DTLS1_TMO_READ_COUNT                      2
-# define DTLS1_TMO_WRITE_COUNT                     2
-# define DTLS1_TMO_ALERT_COUNT                     12
-#ifdef  __cplusplus
+# define DTLS1_TMO_READ_COUNT 2
+# define DTLS1_TMO_WRITE_COUNT 2
+# define DTLS1_TMO_ALERT_COUNT 12
+#ifdef __cplusplus
 }
 #endif
 #endif

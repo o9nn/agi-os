@@ -2,41 +2,41 @@
 #define _ADFS_FS_H
 #include <linux/types.h>
 struct adfs_discrecord {
-unsigned char  log2secsize;
-unsigned char  secspertrack;
-unsigned char  heads;
-unsigned char  density;
-unsigned char  idlen;
-unsigned char  log2bpmb;
-unsigned char  skew;
-unsigned char  bootoption;
-unsigned char  lowsector;
-unsigned char  nzones;
+unsigned char log2secsize;
+unsigned char secspertrack;
+unsigned char heads;
+unsigned char density;
+unsigned char idlen;
+unsigned char log2bpmb;
+unsigned char skew;
+unsigned char bootoption;
+unsigned char lowsector;
+unsigned char nzones;
 unsigned short zone_spare;
-unsigned long  root;
-unsigned long  disc_size;
+unsigned long root;
+unsigned long disc_size;
 unsigned short disc_id;
-unsigned char  disc_name[10];
-unsigned long  disc_type;
-unsigned long  disc_size_high;
-unsigned char  log2sharesize:4;
-unsigned char  unused:4;
-unsigned char  big_flag:1;
+unsigned char disc_name[10];
+unsigned long disc_type;
+unsigned long disc_size_high;
+unsigned char log2sharesize:4;
+unsigned char unused:4;
+unsigned char big_flag:1;
 };
-#define ADFS_DISCRECORD		(0xc00)
-#define ADFS_DR_OFFSET		(0x1c0)
-#define ADFS_DR_SIZE		 60
-#define ADFS_SUPER_MAGIC	 0xadf5
-#define ADFS_FREE_FRAG		 0
-#define ADFS_BAD_FRAG		 1
-#define ADFS_ROOT_FRAG		 2
+#define ADFS_DISCRECORD (0xc00)
+#define ADFS_DR_OFFSET (0x1c0)
+#define ADFS_DR_SIZE 60
+#define ADFS_SUPER_MAGIC 0xadf5
+#define ADFS_FREE_FRAG 0
+#define ADFS_BAD_FRAG 1
+#define ADFS_ROOT_FRAG 2
 struct adfs_dirheader {
 unsigned char startmasseq;
 unsigned char startname[4];
 };
-#define ADFS_NEWDIR_SIZE	2048
-#define ADFS_OLDDIR_SIZE	1024
-#define ADFS_NUM_DIR_ENTRIES	77
+#define ADFS_NEWDIR_SIZE 2048
+#define ADFS_OLDDIR_SIZE 1024
+#define ADFS_NUM_DIR_ENTRIES 77
 struct adfs_direntry {
 char dirobname[10];
 #define ADFS_NAME_LEN 10
@@ -45,24 +45,24 @@ __u8 direxec[4];
 __u8 dirlen[4];
 __u8 dirinddiscadd[3];
 __u8 newdiratts;
-#define ADFS_NDA_OWNER_READ	(1 << 0)
-#define ADFS_NDA_OWNER_WRITE	(1 << 1)
-#define ADFS_NDA_LOCKED		(1 << 2)
-#define ADFS_NDA_DIRECTORY	(1 << 3)
-#define ADFS_NDA_EXECUTE	(1 << 4)
-#define ADFS_NDA_PUBLIC_READ	(1 << 5)
-#define ADFS_NDA_PUBLIC_WRITE	(1 << 6)
+#define ADFS_NDA_OWNER_READ (1 << 0)
+#define ADFS_NDA_OWNER_WRITE (1 << 1)
+#define ADFS_NDA_LOCKED (1 << 2)
+#define ADFS_NDA_DIRECTORY (1 << 3)
+#define ADFS_NDA_EXECUTE (1 << 4)
+#define ADFS_NDA_PUBLIC_READ (1 << 5)
+#define ADFS_NDA_PUBLIC_WRITE (1 << 6)
 };
-#define ADFS_MAX_NAME_LEN	255
+#define ADFS_MAX_NAME_LEN 255
 struct adfs_idir_entry {
-__u32		inode_no;
-__u32		file_id;
-__u32		name_len;
-__u32		size;
-__u32		mtime;
-__u32		filetype;
-__u8		mode;
-char		name[ADFS_MAX_NAME_LEN];
+__u32 inode_no;
+__u32 file_id;
+__u32 name_len;
+__u32 size;
+__u32 mtime;
+__u32 filetype;
+__u8 mode;
+char name[ADFS_MAX_NAME_LEN];
 };
 union adfs_dirtail {
 struct {

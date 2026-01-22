@@ -7,33 +7,33 @@
 #include "dosfs.h"
 #include "fns.h"
 #include "errstr.h"
-#define	Reqsize	(sizeof(Fcall)+Maxfdata)
-Fcall	*req;
-Fcall	*rep;
-uchar	mdata[Maxiosize];
-char	repdata[Maxfdata];
-uchar	statbuf[STATMAX];
-int	errno;
-char	errbuf[ERRMAX];
-void	rmservice(void);
-char	srvfile[64];
-char	*deffile;
-int	doabort;
-int	trspaces;
-void	(*fcalls[])(void) = {
-[Tversion]	rversion,
-[Tflush]	rflush,
-[Tauth]	rauth,
-[Tattach]	rattach,
-[Twalk]		rwalk,
-[Topen]		ropen,
-[Tcreate]	rcreate,
-[Tread]		rread,
-[Twrite]	rwrite,
-[Tclunk]	rclunk,
-[Tremove]	rremove,
-[Tstat]		rstat,
-[Twstat]	rwstat,
+#define Reqsize (sizeof(Fcall)+Maxfdata)
+Fcall *req;
+Fcall *rep;
+uchar mdata[Maxiosize];
+char repdata[Maxfdata];
+uchar statbuf[STATMAX];
+int errno;
+char errbuf[ERRMAX];
+void rmservice(void);
+char srvfile[64];
+char *deffile;
+int doabort;
+int trspaces;
+void (*fcalls[])(void) = {
+[Tversion] rversion,
+[Tflush] rflush,
+[Tauth] rauth,
+[Tattach] rattach,
+[Twalk] rwalk,
+[Topen] ropen,
+[Tcreate] rcreate,
+[Tread] rread,
+[Twrite] rwrite,
+[Tclunk] rclunk,
+[Tremove] rremove,
+[Tstat] rstat,
+[Twstat] rwstat,
 };
 void
 usage(void)

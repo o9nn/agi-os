@@ -13,12 +13,12 @@
 #include "dc_job.h"
 char* dc_render_setup_file(dc_context_t* context, const char* passphrase)
 {
-sqlite3_stmt*          stmt = NULL;
-char*                  self_addr = NULL;
-dc_key_t*              curr_private_key = dc_key_new();
-char                   passphrase_begin[8];
-char*                  encr_string = NULL;
-char*                  ret_setupfilecontent = NULL;
+sqlite3_stmt* stmt = NULL;
+char* self_addr = NULL;
+dc_key_t* curr_private_key = dc_key_new();
+char passphrase_begin[8];
+char* encr_string = NULL;
+char* ret_setupfilecontent = NULL;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC || passphrase==NULL
 || strlen(passphrase)<2 || curr_private_key==NULL) {
 goto cleanup;
@@ -84,15 +84,15 @@ return ret_setupfilecontent;
 }
 char* dc_decrypt_setup_file(dc_context_t* context, const char* passphrase, const char* filecontent)
 {
-char*         fc_buf = NULL;
-const char*   fc_headerline = NULL;
-const char*   fc_base64 = NULL;
-char*         binary = NULL;
-size_t        binary_bytes = 0;
-size_t        indx = 0;
-void*         plain = NULL;
-size_t        plain_bytes = 0;
-char*         payload = NULL;
+char* fc_buf = NULL;
+const char* fc_headerline = NULL;
+const char* fc_base64 = NULL;
+char* binary = NULL;
+size_t binary_bytes = 0;
+size_t indx = 0;
+void* plain = NULL;
+size_t plain_bytes = 0;
+char* payload = NULL;
 fc_buf = dc_strdup(filecontent);
 if (!dc_split_armored_data(fc_buf, &fc_headerline, NULL, NULL, &fc_base64)
 || fc_headerline==NULL || strcmp(fc_headerline, "-----BEGIN PGP MESSAGE-----")!=0 || fc_base64==NULL) {
@@ -114,9 +114,9 @@ return payload;
 }
 char* dc_create_setup_code(dc_context_t* context)
 {
-#define         CODE_ELEMS 9
-uint16_t        random_val = 0;
-int             i = 0;
+#define CODE_ELEMS 9
+uint16_t random_val = 0;
+int i = 0;
 dc_strbuilder_t ret;
 dc_strbuilder_init(&ret, 0);
 for (i = 0; i < CODE_ELEMS; i++)
@@ -157,13 +157,13 @@ return out.buf;
 }
 char* dc_initiate_key_transfer(dc_context_t* context)
 {
-int       success = 0;
-char*     setup_code = NULL;
-char*     setup_file_content = NULL;
-char*     setup_file_name = NULL;
-uint32_t  chat_id = 0;
+int success = 0;
+char* setup_code = NULL;
+char* setup_file_content = NULL;
+char* setup_file_name = NULL;
+uint32_t chat_id = 0;
 dc_msg_t* msg = NULL;
-uint32_t  msg_id = 0;
+uint32_t msg_id = 0;
 if (!dc_alloc_ongoing(context)) {
 return 0;
 }
@@ -185,10 +185,10 @@ goto cleanup;
 }
 msg = dc_msg_new_untyped(context);
 msg->type = DC_MSG_FILE;
-dc_param_set    (msg->param, DC_PARAM_FILE,              setup_file_name);
-dc_param_set    (msg->param, DC_PARAM_MIMETYPE,          "application/autocrypt-setup");
-dc_param_set_int(msg->param, DC_PARAM_CMD,               DC_CMD_AUTOCRYPT_SETUP_MESSAGE);
-dc_param_set_int(msg->param, DC_PARAM_FORCE_PLAINTEXT,   DC_FP_NO_AUTOCRYPT_HEADER);
+dc_param_set (msg->param, DC_PARAM_FILE, setup_file_name);
+dc_param_set (msg->param, DC_PARAM_MIMETYPE, "application/autocrypt-setup");
+dc_param_set_int(msg->param, DC_PARAM_CMD, DC_CMD_AUTOCRYPT_SETUP_MESSAGE);
+dc_param_set_int(msg->param, DC_PARAM_FORCE_PLAINTEXT, DC_FP_NO_AUTOCRYPT_HEADER);
 CHECK_EXIT
 if ((msg_id = dc_send_msg(context, chat_id, msg))==0) {
 goto cleanup;
@@ -219,15 +219,15 @@ return setup_code;
 }
 static int set_self_key(dc_context_t* context, const char* armored, int set_default)
 {
-int            success = 0;
-char*          buf = NULL;
-const char*    buf_headerline = NULL;
-const char*    buf_preferencrypt = NULL;
-const char*    buf_base64 = NULL;
-dc_key_t*      private_key = dc_key_new();
-dc_key_t*      public_key = dc_key_new();
-sqlite3_stmt*  stmt = NULL;
-char*          self_addr = NULL;
+int success = 0;
+char* buf = NULL;
+const char* buf_headerline = NULL;
+const char* buf_preferencrypt = NULL;
+const char* buf_base64 = NULL;
+dc_key_t* private_key = dc_key_new();
+dc_key_t* public_key = dc_key_new();
+sqlite3_stmt* stmt = NULL;
+char* self_addr = NULL;
 buf = dc_strdup(armored);
 if (!dc_split_armored_data(buf, &buf_headerline, NULL, &buf_preferencrypt, &buf_base64)
 || strcmp(buf_headerline, "-----BEGIN PGP PRIVATE KEY BLOCK-----")!=0 || buf_base64==NULL) {
@@ -273,13 +273,13 @@ return success;
 }
 int dc_continue_key_transfer(dc_context_t* context, uint32_t msg_id, const char* setup_code)
 {
-int       success = 0;
+int success = 0;
 dc_msg_t* msg = NULL;
-char*     filename = NULL;
-char*     filecontent = NULL;
-size_t    filebytes = 0;
-char*     armored_key = NULL;
-char*     norm_sc = NULL;
+char* filename = NULL;
+char* filecontent = NULL;
+size_t filebytes = 0;
+char* armored_key = NULL;
+char* norm_sc = NULL;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC || msg_id <= DC_MSG_ID_LAST_SPECIAL || setup_code==NULL) {
 goto cleanup;
 }
@@ -314,7 +314,7 @@ return success;
 }
 static int export_key_to_asc_file(dc_context_t* context, const char* dir, int id, const dc_key_t* key, int is_default)
 {
-int   success = 0;
+int success = 0;
 char* file_name = NULL;
 if (is_default) {
 file_name = dc_mprintf("%s/%s-key-default.asc", dir, key->type==DC_KEY_PUBLIC? "public" : "private");
@@ -336,22 +336,22 @@ return success;
 }
 static int export_self_keys(dc_context_t* context, const char* dir)
 {
-int           success = 0;
-int           export_errors = 0;
+int success = 0;
+int export_errors = 0;
 sqlite3_stmt* stmt = NULL;
-int           id = 0;
-int           is_default = 0;
-dc_key_t*     public_key = dc_key_new();
-dc_key_t*     private_key = dc_key_new();
+int id = 0;
+int is_default = 0;
+dc_key_t* public_key = dc_key_new();
+dc_key_t* private_key = dc_key_new();
 if ((stmt=dc_sqlite3_prepare(context->sql, "SELECT id, public_key, private_key, is_default FROM keypairs;"))==NULL) {
 goto cleanup;
 }
 while (sqlite3_step(stmt)==SQLITE_ROW) {
-id = sqlite3_column_int(         stmt, 0 );
-dc_key_set_from_stmt(public_key,  stmt, 1, DC_KEY_PUBLIC);
+id = sqlite3_column_int( stmt, 0 );
+dc_key_set_from_stmt(public_key, stmt, 1, DC_KEY_PUBLIC);
 dc_key_set_from_stmt(private_key, stmt, 2, DC_KEY_PRIVATE);
 is_default = sqlite3_column_int( stmt, 3 );
-if(!export_key_to_asc_file(context, dir, id, public_key,  is_default)) {
+if(!export_key_to_asc_file(context, dir, id, public_key, is_default)) {
 export_errors++;
 }
 if (!export_key_to_asc_file(context, dir, id, private_key, is_default)) {
@@ -369,17 +369,17 @@ return success;
 }
 static int import_self_keys(dc_context_t* context, const char* dir_name)
 {
-int            imported_cnt = 0;
-DIR*           dir_handle = NULL;
+int imported_cnt = 0;
+DIR* dir_handle = NULL;
 struct dirent* dir_entry = NULL;
-char*          suffix = NULL;
-char*          path_plus_name = NULL;
-int            set_default = 0;
-char*          buf = NULL;
-size_t         buf_bytes = 0;
-const char*    private_key = NULL;
-char*          buf2 = NULL;
-const char*    buf2_headerline = NULL;
+char* suffix = NULL;
+char* path_plus_name = NULL;
+int set_default = 0;
+char* buf = NULL;
+size_t buf_bytes = 0;
+const char* private_key = NULL;
+char* buf2 = NULL;
+const char* buf2_headerline = NULL;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC || dir_name==NULL) {
 goto cleanup;
 }
@@ -438,27 +438,27 @@ return imported_cnt;
 #define FILE_PROGRESS \
 processed_files_cnt++; \
 int permille = (processed_files_cnt*1000)/total_files_cnt; \
-if (permille <  10) { permille =  10; } \
+if (permille < 10) { permille = 10; } \
 if (permille > 990) { permille = 990; } \
 context->cb(context, DC_EVENT_IMEX_PROGRESS, permille, 0);
 static int export_backup(dc_context_t* context, const char* dir)
 {
-int            success = 0;
-int            closed = 0;
-char*          dest_pathNfilename = NULL;
-dc_sqlite3_t*  dest_sql = NULL;
-time_t         now = time(NULL);
-DIR*           dir_handle = NULL;
+int success = 0;
+int closed = 0;
+char* dest_pathNfilename = NULL;
+dc_sqlite3_t* dest_sql = NULL;
+time_t now = time(NULL);
+DIR* dir_handle = NULL;
 struct dirent* dir_entry = NULL;
-int            prefix_len = strlen(DC_BAK_PREFIX);
-int            suffix_len = strlen(DC_BAK_SUFFIX);
-char*          curr_pathNfilename = NULL;
-void*          buf = NULL;
-size_t         buf_bytes = 0;
-sqlite3_stmt*  stmt = NULL;
-int            total_files_cnt = 0;
-int            processed_files_cnt = 0;
-int            delete_dest_file = 0;
+int prefix_len = strlen(DC_BAK_PREFIX);
+int suffix_len = strlen(DC_BAK_SUFFIX);
+char* curr_pathNfilename = NULL;
+void* buf = NULL;
+size_t buf_bytes = 0;
+sqlite3_stmt* stmt = NULL;
+int total_files_cnt = 0;
+int processed_files_cnt = 0;
+int delete_dest_file = 0;
 {
 struct tm* timeinfo;
 char buffer[256];
@@ -555,13 +555,13 @@ return success;
 }
 static int import_backup(dc_context_t* context, const char* backup_to_import)
 {
-int           success = 0;
-int           processed_files_cnt = 0;
-int           total_files_cnt = 0;
+int success = 0;
+int processed_files_cnt = 0;
+int total_files_cnt = 0;
 sqlite3_stmt* stmt = NULL;
-char*         pathNfilename = NULL;
-char*         repl_from = NULL;
-char*         repl_to = NULL;
+char* pathNfilename = NULL;
+char* repl_from = NULL;
+char* repl_to = NULL;
 dc_log_info(context, 0, "Import \"%s\" to \"%s\".", backup_to_import, context->dbfile);
 if (dc_is_configured(context)) {
 dc_log_error(context, 0, "Cannot import backups to accounts in use.");
@@ -593,8 +593,8 @@ if (context->shall_stop_ongoing) {
 goto cleanup;
 }
 FILE_PROGRESS
-const char* file_name    = (const char*)sqlite3_column_text (stmt, 0);
-int         file_bytes   = sqlite3_column_bytes(stmt, 1);
+const char* file_name = (const char*)sqlite3_column_text (stmt, 0);
+int file_bytes = sqlite3_column_bytes(stmt, 1);
 const void* file_content = sqlite3_column_blob (stmt, 1);
 if (file_bytes > 0 && file_content) {
 free(pathNfilename);
@@ -620,18 +620,18 @@ return success;
 void dc_imex(dc_context_t* context, int what, const char* param1, const char* param2)
 {
 dc_param_t* param = dc_param_new();
-dc_param_set_int(param, DC_PARAM_CMD,      what);
-dc_param_set    (param, DC_PARAM_CMD_ARG,  param1);
-dc_param_set    (param, DC_PARAM_CMD_ARG2, param2);
+dc_param_set_int(param, DC_PARAM_CMD, what);
+dc_param_set (param, DC_PARAM_CMD_ARG, param1);
+dc_param_set (param, DC_PARAM_CMD_ARG2, param2);
 dc_job_kill_action(context, DC_JOB_IMEX_IMAP);
 dc_job_add(context, DC_JOB_IMEX_IMAP, 0, param->packed, 0);
 dc_param_unref(param);
 }
 void dc_job_do_DC_JOB_IMEX_IMAP(dc_context_t* context, dc_job_t* job)
 {
-int   success = 0;
-int   ongoing_allocated_here = 0;
-int   what = 0;
+int success = 0;
+int ongoing_allocated_here = 0;
+int what = 0;
 char* param1 = NULL;
 char* param2 = NULL;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC || context->sql==NULL) {
@@ -641,9 +641,9 @@ if (!dc_alloc_ongoing(context)) {
 goto cleanup;
 }
 ongoing_allocated_here = 1;
-what   = dc_param_get_int(job->param, DC_PARAM_CMD,      0);
-param1 = dc_param_get    (job->param, DC_PARAM_CMD_ARG,  NULL);
-param2 = dc_param_get    (job->param, DC_PARAM_CMD_ARG2, NULL);
+what = dc_param_get_int(job->param, DC_PARAM_CMD, 0);
+param1 = dc_param_get (job->param, DC_PARAM_CMD_ARG, NULL);
+param2 = dc_param_get (job->param, DC_PARAM_CMD_ARG2, NULL);
 if (param1==NULL) {
 dc_log_error(context, 0, "No Import/export dir/file given.");
 goto cleanup;
@@ -696,14 +696,14 @@ context->cb(context, DC_EVENT_IMEX_PROGRESS, success? 1000 : 0, 0);
 }
 char* dc_imex_has_backup(dc_context_t* context, const char* dir_name)
 {
-char*          ret = NULL;
-time_t         ret_backup_time = 0;
-DIR*           dir_handle = NULL;
+char* ret = NULL;
+time_t ret_backup_time = 0;
+DIR* dir_handle = NULL;
 struct dirent* dir_entry = NULL;
-int            prefix_len = strlen(DC_BAK_PREFIX);
-int            suffix_len = strlen(DC_BAK_SUFFIX);
-char*          curr_pathNfilename = NULL;
-dc_sqlite3_t*  test_sql = NULL;
+int prefix_len = strlen(DC_BAK_PREFIX);
+int suffix_len = strlen(DC_BAK_SUFFIX);
+char* curr_pathNfilename = NULL;
+dc_sqlite3_t* test_sql = NULL;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC) {
 return NULL;
 }
@@ -744,7 +744,7 @@ return ret;
 int dc_check_password(dc_context_t* context, const char* test_pw)
 {
 dc_loginparam_t* loginparam = dc_loginparam_new();
-int              success = 0;
+int success = 0;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC) {
 goto cleanup;
 }

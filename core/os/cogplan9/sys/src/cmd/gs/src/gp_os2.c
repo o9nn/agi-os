@@ -16,7 +16,7 @@
 #else
 #include <dos.h>
 #endif
-#  define rshort x
+# define rshort x
 #define intdos(a,b) _int86(0x21, a, b)
 #include "memory_.h"
 #include "string_.h"
@@ -548,7 +548,7 @@ gp_fopen(const char *fname, const char *mode)
 return fopen(fname, mode);
 }
 uint gp_file_name_root(const char *fname, uint len)
-{   int i = 0;
+{ int i = 0;
 if (len == 0)
 return 0;
 if (len > 1 && fname[0] == '\\' && fname[1] == '\\') {
@@ -567,7 +567,7 @@ i = (len > 2 && (fname[2] == '/' || fname[2] == '\\') ? 3 : 2);
 return i;
 }
 uint gs_file_name_check_separator(const char *fname, int len, const char *item)
-{   if (len > 0) {
+{ if (len > 0) {
 if (fname[0] == '/' || fname[0] == '\\')
 return 1;
 } else if (len < 0) {
@@ -577,28 +577,28 @@ return 1;
 return 0;
 }
 bool gp_file_name_is_parent(const char *fname, uint len)
-{   return len == 2 && fname[0] == '.' && fname[1] == '.';
+{ return len == 2 && fname[0] == '.' && fname[1] == '.';
 }
 bool gp_file_name_is_current(const char *fname, uint len)
-{   return len == 1 && fname[0] == '.';
+{ return len == 1 && fname[0] == '.';
 }
 const char *gp_file_name_separator(void)
-{   return "/";
+{ return "/";
 }
 const char *gp_file_name_directory_separator(void)
-{   return "/";
+{ return "/";
 }
 const char *gp_file_name_parent(void)
-{   return "..";
+{ return "..";
 }
 const char *gp_file_name_current(void)
-{   return ".";
+{ return ".";
 }
 bool gp_file_name_is_partent_allowed(void)
-{   return true;
+{ return true;
 }
 bool gp_file_name_is_empty_item_meanful(void)
-{   return false;
+{ return false;
 }
 gp_file_name_combine_result
 gp_file_name_combine(const char *prefix, uint plen, const char *fname, uint flen,

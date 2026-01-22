@@ -4,19 +4,19 @@
 #define RGB(R,G,B) ((R<<24)|(G<<16)|(B<<8)|(0xff))
 enum
 {
-tkBackR		= 0xdd,
-tkBackG 	= 0xdd,
-tkBackB 	= 0xdd,
-tkSelectR	= 0xb0,
-tkSelectG	= 0x30,
-tkSelectB	= 0x60,
-tkSelectbgndR	= 0x40,
-tkSelectbgndG	= 0x40,
-tkSelectbgndB	= 0x40
+tkBackR = 0xdd,
+tkBackG = 0xdd,
+tkBackB = 0xdd,
+tkSelectR = 0xb0,
+tkSelectG = 0x30,
+tkSelectB = 0x60,
+tkSelectbgndR = 0x40,
+tkSelectbgndG = 0x40,
+tkSelectbgndB = 0x40
 };
 typedef struct Coltab Coltab;
 struct Coltab {
-int	c;
+int c;
 ulong rgba;
 int shade;
 };

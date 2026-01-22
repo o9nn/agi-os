@@ -1,9 +1,9 @@
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
 #undef _POSIX_C_SOURCE
 #include <sys/stat.h>
-#include	<termios.h>
+#include <termios.h>
 enum
 {
 Devchar = 't',
@@ -11,45 +11,45 @@ Ndataqid = 1,
 Nctlqid,
 Nstatqid,
 Nqid = 3,
-CTLS=	023,
-CTLQ=	021,
+CTLS= 023,
+CTLQ= 021,
 Maxctl = 128,
 Maxfield = 32
 };
-#define NETTYPE(x)	((x)&0x0F)
-#define NETID(x)	((x)>>4)
-#define NETQID(i,t)	(((i)<<4)|(t))
+#define NETTYPE(x) ((x)&0x0F)
+#define NETID(x) ((x)>>4)
+#define NETQID(i,t) (((i)<<4)|(t))
 static Dirtab *eiadir;
 static int ndir;
 static char Devname[] = "eia";
 typedef struct Eia Eia;
 struct Eia {
-Ref		r;
-int		fd;
-int		overrun;
-int		frame;
-int		restore;
-struct termios 	ts;
-int		dtr;
-int		rts;
-int		cts;
+Ref r;
+int fd;
+int overrun;
+int frame;
+int restore;
+struct termios ts;
+int dtr;
+int rts;
+int cts;
 };
 static Eia *eia;
 struct tcdef_t {
-int	val;
-tcflag_t	flag;
+int val;
+tcflag_t flag;
 };
 struct flagmap {
-char*	s;
-tcflag_t	flag;
+char* s;
+tcflag_t flag;
 };
 static struct tcdef_t bps[];
 static struct tcdef_t size[] = {
-{5,	CS5},
-{6,	CS6},
-{7,	CS7},
-{8,	CS8},
-{-1,	-1}
+{5, CS5},
+{6, CS6},
+{7, CS7},
+{8, CS8},
+{-1, -1}
 };
 static char *
 ftos(char *buf, struct tcdef_t *tbl, tcflag_t flag)
@@ -73,7 +73,7 @@ rdxtra(int port, struct termios *ts, char *str);
 static long
 rdstat(int port, void *buf, long n, ulong offset)
 {
-int  fd = eia[port].fd;
+int fd = eia[port].fd;
 struct termios ts;
 char str[Maxctl];
 char sbuf[20];
@@ -182,7 +182,7 @@ osleave();
 if(r < 0)
 goto Error;
 eia[port].restore = 1;
-eia[port].ts      = ts;
+eia[port].ts = ts;
 }
 static void
 eiainit(void)

@@ -9,23 +9,23 @@
 #include <netinet/ip.h>
 #include <mach.h>
 #ifdef DEBUG
-#define debug(format, ...) do				\
-{							\
-fprintf (stderr, "eth-multiplexer: %s: ", __func__);  \
-fprintf (stderr, format, ## __VA_ARGS__);		\
-fprintf (stderr, "\n");                               \
-fflush (stderr);					\
+#define debug(format, ...) do \
+{ \
+fprintf (stderr, "eth-multiplexer: %s: ", __func__); \
+fprintf (stderr, format, ## __VA_ARGS__); \
+fprintf (stderr, "\n"); \
+fflush (stderr); \
 } while (0)
 #else
 #define debug(format, ...) do {} while (0)
 #endif
-#define print_backtrace() do				\
-{							\
-size_t size;						\
-void *array[30];					\
-size = backtrace (array, sizeof (array));		\
-debug ("the depth of the stack: %d", size);		\
-backtrace_symbols_fd(array, size, fileno (stderr));	\
+#define print_backtrace() do \
+{ \
+size_t size; \
+void *array[30]; \
+size = backtrace (array, sizeof (array)); \
+debug ("the depth of the stack: %d", size); \
+backtrace_symbols_fd(array, size, fileno (stderr)); \
 } while (0)
 static inline void
 print_pack (char *packet, int len)

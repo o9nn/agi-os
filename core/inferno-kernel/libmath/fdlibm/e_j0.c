@@ -1,18 +1,18 @@
 #include "fdlibm.h"
 static double pzero(double), qzero(double);
 static const double
-Huge 	= 1e300,
-one	= 1.0,
-invsqrtpi=  5.64189583547756279280e-01,
-tpi      =  6.36619772367581382433e-01,
-R02  =  1.56249999999999947958e-02,
-R03  = -1.89979294238854721751e-04,
-R04  =  1.82954049532700665670e-06,
-R05  = -4.61832688532103189199e-09,
-S01  =  1.56191029464890010492e-02,
-S02  =  1.16926784663337450260e-04,
-S03  =  5.13546550207318111446e-07,
-S04  =  1.16614003333790000205e-09;
+Huge = 1e300,
+one = 1.0,
+invsqrtpi= 5.64189583547756279280e-01,
+tpi = 6.36619772367581382433e-01,
+R02 = 1.56249999999999947958e-02,
+R03 = -1.89979294238854721751e-04,
+R04 = 1.82954049532700665670e-06,
+R05 = -4.61832688532103189199e-09,
+S01 = 1.56191029464890010492e-02,
+S02 = 1.16926784663337450260e-04,
+S03 = 5.13546550207318111446e-07,
+S04 = 1.16614003333790000205e-09;
 static double zero = 0.0;
 double __ieee754_j0(double x)
 {
@@ -30,7 +30,7 @@ cc = s+c;
 if(ix<0x7fe00000) {
 z = -cos(x+x);
 if ((s*c)<zero) cc = z/ss;
-else 	    ss = z/cc;
+else ss = z/cc;
 }
 if(ix>0x48000000) z = (invsqrtpi*cc)/sqrt(x);
 else {
@@ -42,12 +42,12 @@ return z;
 if(ix<0x3f200000) {
 if(Huge+x>one) {
 if(ix<0x3e400000) return one;
-else 	      return one - 0.25*x*x;
+else return one - 0.25*x*x;
 }
 }
 z = x*x;
-r =  z*(R02+z*(R03+z*(R04+z*R05)));
-s =  one+z*(S01+z*(S02+z*(S03+z*S04)));
+r = z*(R02+z*(R03+z*(R04+z*R05)));
+s = one+z*(S01+z*(S02+z*(S03+z*S04)));
 if(ix < 0x3FF00000) {
 return one + z*(-0.25+(r/s));
 } else {
@@ -56,17 +56,17 @@ return((one+u)*(one-u)+z*(r/s));
 }
 }
 static const double
-u00  = -7.38042951086872317523e-02,
-u01  =  1.76666452509181115538e-01,
-u02  = -1.38185671945596898896e-02,
-u03  =  3.47453432093683650238e-04,
-u04  = -3.81407053724364161125e-06,
-u05  =  1.95590137035022920206e-08,
-u06  = -3.98205194132103398453e-11,
-v01  =  1.27304834834123699328e-02,
-v02  =  7.60068627350353253702e-05,
-v03  =  2.59150851840457805467e-07,
-v04  =  4.41110311332675467403e-10;
+u00 = -7.38042951086872317523e-02,
+u01 = 1.76666452509181115538e-01,
+u02 = -1.38185671945596898896e-02,
+u03 = 3.47453432093683650238e-04,
+u04 = -3.81407053724364161125e-06,
+u05 = 1.95590137035022920206e-08,
+u06 = -3.98205194132103398453e-11,
+v01 = 1.27304834834123699328e-02,
+v02 = 7.60068627350353253702e-05,
+v03 = 2.59150851840457805467e-07,
+v04 = 4.41110311332675467403e-10;
 double __ieee754_y0(double x)
 {
 double z, s,c,ss,cc,u,v;
@@ -74,7 +74,7 @@ int hx,ix,lx;
 hx = __HI(x);
 ix = 0x7fffffff&hx;
 lx = __LO(x);
-if(ix>=0x7ff00000) return  one/(x+x*x);
+if(ix>=0x7ff00000) return one/(x+x*x);
 if((ix|lx)==0) return -one/zero;
 if(hx<0) return zero/zero;
 if(ix >= 0x40000000) {
@@ -85,7 +85,7 @@ cc = s+c;
 if(ix<0x7fe00000) {
 z = -cos(x+x);
 if ((s*c)<zero) cc = z/ss;
-else            ss = z/cc;
+else ss = z/cc;
 }
 if(ix>0x48000000) z = (invsqrtpi*ss)/sqrt(x);
 else {
@@ -168,7 +168,7 @@ const double *p,*q;
 double z,r,s;
 int ix;
 ix = 0x7fffffff&__HI(x);
-if(ix>=0x40200000)     {p = pR8; q= pS8;}
+if(ix>=0x40200000) {p = pR8; q= pS8;}
 else if(ix>=0x40122E8B){p = pR5; q= pS5;}
 else if(ix>=0x4006DB6D){p = pR3; q= pS3;}
 else if(ix>=0x40000000){p = pR2; q= pS2;}
@@ -247,7 +247,7 @@ const double *p,*q;
 double s,r,z;
 int ix;
 ix = 0x7fffffff&__HI(x);
-if(ix>=0x40200000)     {p = qR8; q= qS8;}
+if(ix>=0x40200000) {p = qR8; q= qS8;}
 else if(ix>=0x40122E8B){p = qR5; q= qS5;}
 else if(ix>=0x4006DB6D){p = qR3; q= qS3;}
 else if(ix>=0x40000000){p = qR2; q= qS2;}

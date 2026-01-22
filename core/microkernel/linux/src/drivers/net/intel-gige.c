@@ -12,22 +12,22 @@ static int full_duplex[MAX_UNITS] = {-1, -1, -1, -1, -1, -1, -1, -1};
 static int rx_intr_holdoff = 0;
 static int tx_intr_holdoff = 128;
 #if ! defined(final_version)
-#define TX_RING_SIZE	8
-#define TX_QUEUE_LEN	5
-#define RX_RING_SIZE	4
+#define TX_RING_SIZE 8
+#define TX_QUEUE_LEN 5
+#define RX_RING_SIZE 4
 #else
-#define TX_RING_SIZE	16
-#define TX_QUEUE_LEN	10
-#define RX_RING_SIZE	32
+#define TX_RING_SIZE 16
+#define TX_QUEUE_LEN 10
+#define RX_RING_SIZE 32
 #endif
-#define TX_TIMEOUT  (6*HZ)
-#define PKT_BUF_SZ		1536
+#define TX_TIMEOUT (6*HZ)
+#define PKT_BUF_SZ 1536
 #ifndef __KERNEL__
 #define __KERNEL__
 #endif
 #if !defined(__OPTIMIZE__)
-#warning  You must compile this file with the correct options!
-#warning  See the last lines of the source file.
+#warning You must compile this file with the correct options!
+#warning See the last lines of the source file.
 #error You must compile this driver with "-O".
 #endif
 #include <linux/config.h>
@@ -66,9 +66,9 @@ static int tx_intr_holdoff = 128;
 #include "pci-scan.h"
 #include "kern_compat.h"
 #endif
-#define virt_to_le32desc(addr)  cpu_to_le32(virt_to_bus(addr))
-#define le32desc_to_virt(addr)  bus_to_virt(le32_to_cpu(addr))
-#if (LINUX_VERSION_CODE >= 0x20100)  &&  defined(MODULE)
+#define virt_to_le32desc(addr) cpu_to_le32(virt_to_bus(addr))
+#define le32desc_to_virt(addr) bus_to_virt(le32_to_cpu(addr))
+#if (LINUX_VERSION_CODE >= 0x20100) && defined(MODULE)
 char kernel_version[] = UTS_RELEASE;
 #endif
 MODULE_AUTHOR("Donald Becker <becker@scyld.com>");
@@ -155,7 +155,7 @@ RxCtrlReset=0x01, RxCtrlEnable=0x02, RxCtrlAllUnicast=0x08,
 RxCtrlAllMulticast=0x10,
 RxCtrlLoopback=0xC0,
 RxCtrlAcceptBroadcast=0x8000,
-AcceptAllPhys=0x08,	AcceptAllMulticast=0x10, AcceptBroadcast=0x8000,
+AcceptAllPhys=0x08, AcceptAllMulticast=0x10, AcceptBroadcast=0x8000,
 AcceptMyPhys=0,
 AcceptMulticast=0,
 };
@@ -181,7 +181,7 @@ TxDescDone=0x0001, TxDescEndPkt=0x0002,
 enum rx_status_bits {
 RxDescDone=0x0001, RxDescEndPkt=0x0002,
 };
-#define PRIV_ALIGN	15
+#define PRIV_ALIGN 15
 struct netdev_private {
 struct net_device *next_module;
 void *priv_addr;
@@ -212,22 +212,22 @@ unsigned int duplex_lock:1;
 unsigned int medialock:1;
 unsigned int default_port;
 };
-static int  eeprom_read(long ioaddr, int location);
-static int  netdev_open(struct net_device *dev);
-static int  change_mtu(struct net_device *dev, int new_mtu);
+static int eeprom_read(long ioaddr, int location);
+static int netdev_open(struct net_device *dev);
+static int change_mtu(struct net_device *dev, int new_mtu);
 static void check_duplex(struct net_device *dev);
 static void netdev_timer(unsigned long data);
 static void tx_timeout(struct net_device *dev);
 static void init_ring(struct net_device *dev);
-static int  start_tx(struct sk_buff *skb, struct net_device *dev);
+static int start_tx(struct sk_buff *skb, struct net_device *dev);
 static void intr_handler(int irq, void *dev_instance, struct pt_regs *regs);
 static void netdev_error(struct net_device *dev, int intr_status);
-static int  netdev_rx(struct net_device *dev);
+static int netdev_rx(struct net_device *dev);
 static void netdev_error(struct net_device *dev, int intr_status);
 static void set_rx_mode(struct net_device *dev);
 static struct net_device_stats *get_stats(struct net_device *dev);
 static int mii_ioctl(struct net_device *dev, struct ifreq *rq, int cmd);
-static int  netdev_close(struct net_device *dev);
+static int netdev_close(struct net_device *dev);
 static struct net_device *root_net_dev = NULL;
 #ifndef MODULE
 int igige_probe(struct net_device *dev)
@@ -283,7 +283,7 @@ np->default_port = option & 0x3330;
 if (np->default_port)
 np->medialock = 1;
 }
-if (card_idx < MAX_UNITS  &&  full_duplex[card_idx] > 0)
+if (card_idx < MAX_UNITS && full_duplex[card_idx] > 0)
 np->full_duplex = 1;
 if (np->full_duplex)
 np->duplex_lock = 1;
@@ -318,7 +318,7 @@ ioaddr + ChipCtrl);
 }
 return dev;
 }
-#define eeprom_delay(ee_addr)	readl(ee_addr)
+#define eeprom_delay(ee_addr) readl(ee_addr)
 enum EEPROM_Ctrl_Bits {
 EE_ShiftClk=0x01, EE_ChipSelect=0x02, EE_DataIn=0x08, EE_DataOut=0x04,
 };
@@ -471,8 +471,8 @@ printk(KERN_DEBUG "%s: Media selection timer tick, status %8.8x, "
 dev->name, (int)readl(ioaddr + ChipStatus),
 (int)readl(ioaddr + TxStatus), (int)readl(ioaddr + RxStatus));
 }
-if ((jiffies - dev->trans_start) > TX_TIMEOUT  &&
-(np->cur_tx - np->dirty_tx > 0  ||
+if ((jiffies - dev->trans_start) > TX_TIMEOUT &&
+(np->cur_tx - np->dirty_tx > 0 ||
 netif_queue_paused(dev)) ) {
 tx_timeout(dev);
 }
@@ -584,7 +584,7 @@ int work_limit;
 ioaddr = dev->base_addr;
 np = (struct netdev_private *)dev->priv;
 work_limit = np->max_interrupt_work;
-#if defined(__i386__)  &&  LINUX_VERSION_CODE < 0x020300
+#if defined(__i386__) && LINUX_VERSION_CODE < 0x020300
 if (test_and_set_bit(0, (void*)&dev->interrupt)) {
 printk(KERN_ERR"%s: SMP simultaneous entry of an interrupt handler.\n",
 dev->name);
@@ -615,7 +615,7 @@ np->stats.tx_bytes += np->tx_skbuff[entry]->len;
 dev_free_skb_irq(np->tx_skbuff[entry]);
 np->tx_skbuff[entry] = 0;
 }
-if (np->tx_full  &&  np->cur_tx - np->dirty_tx < TX_QUEUE_LEN - 4) {
+if (np->tx_full && np->cur_tx - np->dirty_tx < TX_QUEUE_LEN - 4) {
 np->tx_full = 0;
 netif_resume_tx_queue(dev);
 }
@@ -631,7 +631,7 @@ break;
 if (np->msg_level & NETIF_MSG_INTR)
 printk(KERN_DEBUG "%s: exiting interrupt, status=%#4.4x.\n",
 dev->name, (int)readl(ioaddr + IntrStatus));
-#if defined(__i386__)  &&  LINUX_VERSION_CODE < 0x020300
+#if defined(__i386__) && LINUX_VERSION_CODE < 0x020300
 clear_bit(0, (void*)&dev->interrupt);
 #endif
 return;
@@ -761,8 +761,8 @@ long ioaddr = dev->base_addr;
 struct netdev_private *np = (struct netdev_private *)dev->priv;
 int crc_errs = readl(ioaddr + RxCRCErrs);
 if (crc_errs != 0xffffffff) {
-np->stats.rx_crc_errors	+= readl(ioaddr + RxCRCErrs);
-np->stats.rx_missed_errors	+= readl(ioaddr + RxMissed);
+np->stats.rx_crc_errors += readl(ioaddr + RxCRCErrs);
+np->stats.rx_missed_errors += readl(ioaddr + RxMissed);
 }
 return &np->stats;
 }
@@ -794,7 +794,7 @@ printk(KERN_NOTICE "%s: Promiscuous mode enabled.\n", dev->name);
 new_rx_mode |=
 RxCtrlAcceptBroadcast | RxCtrlAllMulticast | RxCtrlAllUnicast;
 } else if ((dev->mc_count > np->multicast_filter_limit)
-||  (dev->flags & IFF_ALLMULTI)) {
+|| (dev->flags & IFF_ALLMULTI)) {
 new_rx_mode &= ~RxCtrlAllUnicast;
 new_rx_mode |= RxCtrlAcceptBroadcast | RxCtrlAllMulticast;
 } else {

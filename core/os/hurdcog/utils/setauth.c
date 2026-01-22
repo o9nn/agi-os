@@ -14,9 +14,9 @@ static const struct argp_option options[] =
 #ifdef SU
 {"no-save", OPT_NO_SAVE, 0, 0, "Don't save removed effective ids as available ids"},
 #else
-{"save",   's', 0, 0, "Save removed effective ids as available ids"},
+{"save", 's', 0, 0, "Save removed effective ids as available ids"},
 #endif
-{"keep",   'k', 0, 0, "Keep old ids in addition to the new ones"},
+{"keep", 'k', 0, 0, "Keep old ids in addition to the new ones"},
 { 0 }
 };
 static struct argp_child child_argps[] = {{ &frobauth_posix_argp }, { 0 }};

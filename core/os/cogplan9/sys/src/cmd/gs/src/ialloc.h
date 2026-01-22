@@ -1,5 +1,5 @@
 #ifndef ialloc_INCLUDED
-#  define ialloc_INCLUDED
+# define ialloc_INCLUDED
 #include "imemory.h"
 #define gs_imemory (i_ctx_p->memory)
 #define idmemory (&gs_imemory)

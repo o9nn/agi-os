@@ -1,12 +1,12 @@
 #include "stdinc.h"
 #include "9.h"
 enum {
-OMODE		= 0x7,
+OMODE = 0x7,
 };
 enum {
-PermX		= 1,
-PermW		= 2,
-PermR		= 4,
+PermX = 1,
+PermW = 2,
+PermR = 4,
 };
 static char EPermission[] = "permission denied";
 static int
@@ -905,17 +905,17 @@ vtUnlock(con->lock);
 return 1;
 }
 int (*rFcall[Tmax])(Msg*) = {
-[Tversion]	= rTversion,
-[Tauth]		= rTauth,
-[Tattach]	= rTattach,
-[Tflush]	= rTflush,
-[Twalk]		= rTwalk,
-[Topen]		= rTopen,
-[Tcreate]	= rTcreate,
-[Tread]		= rTread,
-[Twrite]	= rTwrite,
-[Tclunk]	= rTclunk,
-[Tremove]	= rTremove,
-[Tstat]		= rTstat,
-[Twstat]	= rTwstat,
+[Tversion] = rTversion,
+[Tauth] = rTauth,
+[Tattach] = rTattach,
+[Tflush] = rTflush,
+[Twalk] = rTwalk,
+[Topen] = rTopen,
+[Tcreate] = rTcreate,
+[Tread] = rTread,
+[Twrite] = rTwrite,
+[Tclunk] = rTclunk,
+[Tremove] = rTremove,
+[Tstat] = rTstat,
+[Twstat] = rTwstat,
 };

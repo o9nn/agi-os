@@ -1,5 +1,5 @@
-#define IN(x)		inb(csdev.port+(x))
-#define OUT(x,v)	outb(csdev.port+(x),(v))
+#define IN(x) inb(csdev.port+(x))
+#define OUT(x,v) outb(csdev.port+(x),(v))
 void
 cs4231install(void)
 {

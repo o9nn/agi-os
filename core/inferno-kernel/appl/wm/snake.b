@@ -201,7 +201,7 @@ paused = 1;
 tick = dummytick;
 kch = realkch;
 }
-if (!ndir.eq(dir) && !ndir.eq(dir.mul(-1))) {		# don't allow 180° turn.
+if (!ndir.eq(dir) && !ndir.eq(dir.mul(-1))) { # don't allow 180° turn.
 lkey = int c;
 dir = ndir;
 }
@@ -248,8 +248,8 @@ return;
 if(wasfood){
 score++;
 #if(score % 10 == 0){
-#	if(ticki.dt > 0)
-#		ticki.dt -= 5;
+# if(ticki.dt > 0)
+# ticki.dt -= 5;
 #}
 cmd(win, ".score configure -text " + string score);
 leaveit = 1;

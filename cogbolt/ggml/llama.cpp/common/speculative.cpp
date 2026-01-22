@@ -7,7 +7,7 @@
 #include <cstring>
 #include <algorithm>
 #include <map>
-#define SPEC_VOCAB_MAX_SIZE_DIFFERENCE  128
+#define SPEC_VOCAB_MAX_SIZE_DIFFERENCE 128
 #define SPEC_VOCAB_CHECK_START_TOKEN_ID 5
 struct common_speculative {
 struct llama_context * ctx_tgt;
@@ -93,7 +93,7 @@ return false;
 {
 const int n_vocab_tgt = llama_vocab_n_tokens(vocab_tgt);
 const int n_vocab_dft = llama_vocab_n_tokens(vocab_dft);
-const int vocab_diff  = n_vocab_tgt > n_vocab_dft
+const int vocab_diff = n_vocab_tgt > n_vocab_dft
 ? n_vocab_tgt - n_vocab_dft
 : n_vocab_dft - n_vocab_tgt;
 if (vocab_diff > SPEC_VOCAB_MAX_SIZE_DIFFERENCE) {
@@ -152,10 +152,10 @@ struct common_speculative * spec,
 struct common_speculative_params params,
 const llama_tokens & prompt_tgt_main_model,
 llama_token id_last) {
-auto & batch  = spec->batch;
+auto & batch = spec->batch;
 auto & ctx_tgt = spec->ctx_tgt;
 auto & ctx_dft = spec->ctx_dft;
-auto & smpl   = spec->smpl;
+auto & smpl = spec->smpl;
 auto & prompt_dft = spec->prompt_dft;
 auto * mem_dft = llama_get_memory(ctx_dft);
 int reuse_i = 0;
@@ -184,7 +184,7 @@ const int i_start = std::max<int>(0, (int) prompt_tgt.size() - n_ctx);
 for (int i = 0; i < (int) prompt_dft.size(); ++i) {
 int cur = 0;
 while (i_start + cur < (int) prompt_tgt.size() &&
-i       + cur < (int) prompt_dft.size() &&
+i + cur < (int) prompt_dft.size() &&
 prompt_tgt[i_start + cur] == prompt_dft[i + cur]) {
 cur++;
 }
@@ -230,7 +230,7 @@ llama_decode(ctx_dft, batch);
 const llama_pos n_past = prompt_dft.size();
 LOG_DBG("%s: n_past = %d\n", __func__, n_past);
 common_batch_clear(batch);
-common_batch_add  (batch, id_last, n_past, { 0 }, true);
+common_batch_add (batch, id_last, n_past, { 0 }, true);
 prompt_dft.push_back(id_last);
 LOG_DBG("%s: draft prompt: %s\n", __func__, string_from(ctx_dft, prompt_dft).c_str());
 llama_decode(ctx_dft, batch);

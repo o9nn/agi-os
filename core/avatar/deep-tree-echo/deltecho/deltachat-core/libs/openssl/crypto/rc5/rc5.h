@@ -1,20 +1,20 @@
 #ifndef HEADER_RC5_H
 # define HEADER_RC5_H
 # include <openssl/opensslconf.h>
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 # ifdef OPENSSL_NO_RC5
-#  error RC5 is disabled.
+# error RC5 is disabled.
 # endif
-# define RC5_ENCRYPT     1
-# define RC5_DECRYPT     0
+# define RC5_ENCRYPT 1
+# define RC5_DECRYPT 0
 # define RC5_32_INT unsigned long
-# define RC5_32_BLOCK            8
-# define RC5_32_KEY_LENGTH       16
-# define RC5_8_ROUNDS    8
-# define RC5_12_ROUNDS   12
-# define RC5_16_ROUNDS   16
+# define RC5_32_BLOCK 8
+# define RC5_32_KEY_LENGTH 16
+# define RC5_8_ROUNDS 8
+# define RC5_12_ROUNDS 12
+# define RC5_16_ROUNDS 16
 typedef struct rc5_key_st {
 int rounds;
 RC5_32_INT data[2 * (RC5_16_ROUNDS + 1)];
@@ -34,7 +34,7 @@ unsigned char *ivec, int *num, int enc);
 void RC5_32_ofb64_encrypt(const unsigned char *in, unsigned char *out,
 long length, RC5_32_KEY *schedule,
 unsigned char *ivec, int *num);
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif
 #endif

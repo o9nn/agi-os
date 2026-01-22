@@ -5,8 +5,8 @@
 from opencog.atomspace import AtomSpace, createTruthValue
 from opencog.atomspace import types
 def foo(atspace):
-    TV = createTruthValue(0.42, 0.69)
-    atspace.add_node(types.ConceptNode, 'Apple', TV)
+TV = createTruthValue(0.42, 0.69)
+atspace.add_node(types.ConceptNode, 'Apple', TV)
 ")
 (python-call-with-as "foo" (cog-atomspace))
 (cog-node 'ConceptNode "Apple")

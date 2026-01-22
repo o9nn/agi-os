@@ -319,7 +319,7 @@ fully_determined = true, kwargs...)
 @unpack structure = state
 @unpack graph, solvable_graph, var_to_diff, eq_to_diff = state.structure
 # Step 1: Perform Bareiss factorization on the adjacency matrix of the linear
-#         subsystem of the system we're interested in.
+# subsystem of the system we're interested in.
 #
 ils, solvable_variables, (rank1, rank2, rank3, pivots) = aag_bareiss!(structure, ils)
 if fully_determined == true

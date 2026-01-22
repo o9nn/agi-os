@@ -1,9 +1,9 @@
 #include "antiword.h"
-static BOOL	bOldMacFile = FALSE;
+static BOOL bOldMacFile = FALSE;
 static BOOL
 bCheckBytes(FILE *pFile, const UCHAR *aucBytes, size_t tBytes)
 {
-int	iIndex, iChar;
+int iIndex, iChar;
 fail(pFile == NULL || aucBytes == NULL || tBytes == 0);
 rewind(pFile);
 for (iIndex = 0; iIndex < (int)tBytes; iIndex++) {
@@ -19,7 +19,7 @@ return TRUE;
 BOOL
 bIsWordForDosFile(FILE *pFile, long lFilesize)
 {
-static UCHAR	aucBytes[] =
+static UCHAR aucBytes[] =
 { 0x31, 0xbe, 0x00, 0x00, 0x00, 0xab };
 DBG_MSG("bIsWordForDosFile");
 if (pFile == NULL || lFilesize < 0) {
@@ -35,9 +35,9 @@ return bCheckBytes(pFile, aucBytes, elementsof(aucBytes));
 static BOOL
 bIsWordFileWithOLE(FILE *pFile, long lFilesize)
 {
-static UCHAR	aucBytes[] =
+static UCHAR aucBytes[] =
 { 0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1 };
-int	iTailLen;
+int iTailLen;
 if (pFile == NULL || lFilesize < 0) {
 DBG_MSG("No proper file given");
 return FALSE;
@@ -68,7 +68,7 @@ return bCheckBytes(pFile, aucBytes, elementsof(aucBytes));
 BOOL
 bIsRtfFile(FILE *pFile)
 {
-static UCHAR	aucBytes[] =
+static UCHAR aucBytes[] =
 { '{', '\\', 'r', 't', 'f', '1' };
 DBG_MSG("bIsRtfFile");
 return bCheckBytes(pFile, aucBytes, elementsof(aucBytes));
@@ -76,7 +76,7 @@ return bCheckBytes(pFile, aucBytes, elementsof(aucBytes));
 BOOL
 bIsWordPerfectFile(FILE *pFile)
 {
-static UCHAR	aucBytes[] =
+static UCHAR aucBytes[] =
 { 0xff, 'W', 'P', 'C' };
 DBG_MSG("bIsWordPerfectFile");
 return bCheckBytes(pFile, aucBytes, elementsof(aucBytes));
@@ -84,11 +84,11 @@ return bCheckBytes(pFile, aucBytes, elementsof(aucBytes));
 BOOL
 bIsWinWord12File(FILE *pFile, long lFilesize)
 {
-static UCHAR	aucBytes[2][4] = {
+static UCHAR aucBytes[2][4] = {
 { 0x9b, 0xa5, 0x21, 0x00 },
 { 0xdb, 0xa5, 0x2d, 0x00 },
 };
-int	iIndex;
+int iIndex;
 DBG_MSG("bIsWinWord12File");
 if (pFile == NULL || lFilesize < 0) {
 DBG_MSG("No proper file given");
@@ -110,11 +110,11 @@ return FALSE;
 BOOL
 bIsMacWord45File(FILE *pFile)
 {
-static UCHAR	aucBytes[2][6] = {
+static UCHAR aucBytes[2][6] = {
 { 0xfe, 0x37, 0x00, 0x1c, 0x00, 0x00 },
 { 0xfe, 0x37, 0x00, 0x23, 0x00, 0x00 },
 };
-int	iIndex;
+int iIndex;
 DBG_MSG("bIsMacWord45File");
 for (iIndex = 0; iIndex < (int)elementsof(aucBytes); iIndex++) {
 if (bCheckBytes(pFile,
@@ -145,7 +145,7 @@ return -1;
 int
 iGetVersionNumber(const UCHAR *aucHeader)
 {
-USHORT	usFib, usChse;
+USHORT usFib, usChse;
 usFib = usGetWord(0x02, aucHeader);
 if (usFib >= 0x1000) {
 DBG_HEX(usFib);
@@ -154,21 +154,21 @@ usFib = usGetWordBE(0x02, aucHeader);
 DBG_DEC(usFib);
 bOldMacFile = FALSE;
 switch (usFib) {
-case   0:
+case 0:
 DBG_MSG("Word for DOS");
 return 0;
-case  28:
+case 28:
 DBG_MSG("Word 4 for Macintosh");
 bOldMacFile = TRUE;
 return 4;
-case  33:
+case 33:
 DBG_MSG("Word 1.x for Windows");
 return 1;
-case  35:
+case 35:
 DBG_MSG("Word 5 for Macintosh");
 bOldMacFile = TRUE;
 return 5;
-case  45:
+case 45:
 DBG_MSG("Word 2 for Windows");
 return 2;
 case 101:
@@ -217,7 +217,7 @@ return bOldMacFile;
 int
 iInitDocument(FILE *pFile, long lFilesize)
 {
-int	iGuess, iWordVersion;
+int iGuess, iWordVersion;
 iGuess = iGuessVersionNumber(pFile, lFilesize);
 switch (iGuess) {
 case 0:

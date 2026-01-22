@@ -14,11 +14,11 @@
 #define IP_PORTFW_PORT_MIN 1
 #define IP_PORTFW_PORT_MAX 60999
 struct ip_portfw {
-struct 		list_head list;
-__u32           laddr, raddr;
-__u16           lport, rport;
-atomic_t	pref_cnt;
-int 		pref;
+struct list_head list;
+__u32 laddr, raddr;
+__u16 lport, rport;
+atomic_t pref_cnt;
+int pref;
 };
 static struct ip_masq_mod *mmod_self = NULL;
 #ifdef CONFIG_IP_MASQ_DEBUG
@@ -40,7 +40,7 @@ struct list_head *list = &portfw_list[prot];
 int nent;
 nent = atomic_read(&mmod_self->mmod_nent);
 write_lock_bh(&portfw_lock);
-for (entry=list->next;entry != list;entry = entry->next)  {
+for (entry=list->next;entry != list;entry = entry->next) {
 n = list_entry(entry, struct ip_portfw, list);
 if (n->lport == lport &&
 (!laddr || n->laddr == laddr) &&
@@ -119,7 +119,7 @@ return count;
 }
 static __inline__ int ip_portfw_add(__u16 protocol, __u16 lport, __u32 laddr, __u16 rport, __u32 raddr, int pref)
 {
-struct ip_portfw  *npf;
+struct ip_portfw *npf;
 int prot = portfw_idx(protocol);
 if (pref <= 0)
 return EINVAL;
@@ -135,7 +135,7 @@ npf->laddr = laddr;
 npf->lport = lport;
 npf->rport = rport;
 npf->raddr = raddr;
-npf->pref  = pref;
+npf->pref = pref;
 atomic_set(&npf->pref_cnt, npf->pref);
 INIT_LIST_HEAD(&npf->list);
 write_lock_bh(&portfw_lock);
@@ -146,7 +146,7 @@ return 0;
 }
 static __inline__ int portfw_ctl(int optname, struct ip_masq_ctl *mctl, int optlen)
 {
-struct ip_portfw_user *mm =  &mctl->u.portfw_user;
+struct ip_portfw_user *mm = &mctl->u.portfw_user;
 int ret = EINVAL;
 int arglen = optlen - IP_MASQ_CTL_BSIZE;
 int cmd;
@@ -293,10 +293,10 @@ out:
 write_unlock(&portfw_lock);
 return ms;
 }
-#define portfw_in_update	NULL
-#define portfw_out_rule		NULL
-#define portfw_out_create	NULL
-#define portfw_out_update	NULL
+#define portfw_in_update NULL
+#define portfw_out_rule NULL
+#define portfw_out_create NULL
+#define portfw_out_update NULL
 static struct ip_masq_mod portfw_mod = {
 NULL,
 NULL,

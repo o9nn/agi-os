@@ -324,11 +324,11 @@ vec_op::storeFP32(value, out_ptr + head_elem_idx);
 std::free(logits);
 }
 };
-#define LAUNCH_V1_ATTENTION_KERNEL(T, HEAD_SIZE, BLOCK_SIZE)                   \
-paged_attention_v1_impl<T, HEAD_SIZE, BLOCK_SIZE>::call(                     \
+#define LAUNCH_V1_ATTENTION_KERNEL(T, HEAD_SIZE, BLOCK_SIZE) \
+paged_attention_v1_impl<T, HEAD_SIZE, BLOCK_SIZE>::call( \
 out_ptr, query_ptr, key_cache_ptr, value_cache_ptr, num_kv_heads, scale, \
-block_tables_ptr, seq_lens_ptr, max_num_blocks_per_seq,                  \
-alibi_slopes_ptr, q_stride, kv_block_stride, kv_head_stride, num_seqs,   \
+block_tables_ptr, seq_lens_ptr, max_num_blocks_per_seq, \
+alibi_slopes_ptr, q_stride, kv_block_stride, kv_head_stride, num_seqs, \
 num_heads);
 template <typename T, int BLOCK_SIZE>
 void paged_attention_v1_impl_launcher(
@@ -383,18 +383,18 @@ TORCH_CHECK(false, "Unsupported head size: ", head_size);
 break;
 }
 }
-#define CALL_V1_KERNEL_LAUNCHER(T, BLOCK_SIZE)                               \
-paged_attention_v1_impl_launcher<T, BLOCK_SIZE>(                           \
+#define CALL_V1_KERNEL_LAUNCHER(T, BLOCK_SIZE) \
+paged_attention_v1_impl_launcher<T, BLOCK_SIZE>( \
 out, query, key_cache, value_cache, num_kv_heads, scale, block_tables, \
 seq_lens, max_seq_len, alibi_slopes);
-#define CALL_V1_KERNEL_LAUNCHER_BLOCK_SIZE(T)                     \
-switch (block_size) {                                           \
-case 16:                                                      \
-CALL_V1_KERNEL_LAUNCHER(T, 16);                             \
-break;                                                      \
-default:                                                      \
+#define CALL_V1_KERNEL_LAUNCHER_BLOCK_SIZE(T) \
+switch (block_size) { \
+case 16: \
+CALL_V1_KERNEL_LAUNCHER(T, 16); \
+break; \
+default: \
 TORCH_CHECK(false, "Unsupported block size: ", block_size); \
-break;                                                      \
+break; \
 }
 }
 void paged_attention_v1(
@@ -596,12 +596,12 @@ cast_acc.save(seq_head_output);
 }
 }
 };
-#define LAUNCH_V2_ATTENTION_KERNEL(T, HEAD_SIZE, BLOCK_SIZE)                 \
-paged_attention_v2_impl<T, HEAD_SIZE, BLOCK_SIZE, PARTITION_SIZE>::call(   \
-out_ptr, exp_sums_ptr, max_logits_ptr, tmp_out_ptr, query_ptr,         \
+#define LAUNCH_V2_ATTENTION_KERNEL(T, HEAD_SIZE, BLOCK_SIZE) \
+paged_attention_v2_impl<T, HEAD_SIZE, BLOCK_SIZE, PARTITION_SIZE>::call( \
+out_ptr, exp_sums_ptr, max_logits_ptr, tmp_out_ptr, query_ptr, \
 key_cache_ptr, value_cache_ptr, num_kv_heads, scale, block_tables_ptr, \
-seq_lens_ptr, max_num_blocks_per_seq, alibi_slopes_ptr, q_stride,      \
-kv_block_stride, kv_head_stride, num_seqs, num_heads,                  \
+seq_lens_ptr, max_num_blocks_per_seq, alibi_slopes_ptr, q_stride, \
+kv_block_stride, kv_head_stride, num_seqs, num_heads, \
 max_num_partitions);
 template <typename T, int BLOCK_SIZE, int PARTITION_SIZE = 512>
 void paged_attention_v2_impl_launcher(
@@ -661,19 +661,19 @@ TORCH_CHECK(false, "Unsupported head size: ", head_size);
 break;
 }
 }
-#define CALL_V2_KERNEL_LAUNCHER(T, BLOCK_SIZE)                              \
-paged_attention_v2_impl_launcher<T, BLOCK_SIZE>(                          \
-out, exp_sums, max_logits, tmp_out, query, key_cache, value_cache,    \
+#define CALL_V2_KERNEL_LAUNCHER(T, BLOCK_SIZE) \
+paged_attention_v2_impl_launcher<T, BLOCK_SIZE>( \
+out, exp_sums, max_logits, tmp_out, query, key_cache, value_cache, \
 num_kv_heads, scale, block_tables, seq_lens, block_size, max_seq_len, \
 alibi_slopes);
-#define CALL_V2_KERNEL_LAUNCHER_BLOCK_SIZE(T)                     \
-switch (block_size) {                                           \
-case 16:                                                      \
-CALL_V2_KERNEL_LAUNCHER(T, 16);                             \
-break;                                                      \
-default:                                                      \
+#define CALL_V2_KERNEL_LAUNCHER_BLOCK_SIZE(T) \
+switch (block_size) { \
+case 16: \
+CALL_V2_KERNEL_LAUNCHER(T, 16); \
+break; \
+default: \
 TORCH_CHECK(false, "Unsupported block size: ", block_size); \
-break;                                                      \
+break; \
 }
 }
 void paged_attention_v2(

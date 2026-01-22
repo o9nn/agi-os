@@ -20,10 +20,10 @@
 # include <fcntl.h>
 #endif
 #ifdef _WIN32
-# define stat    _stat
-# define chmod   _chmod
-# define open    _open
-# define fdopen  _fdopen
+# define stat _stat
+# define chmod _chmod
+# define open _open
+# define fdopen _fdopen
 #endif
 #undef BUFSIZE
 #define BUFSIZE 1024
@@ -113,7 +113,7 @@ return (1);
 #if defined(O_CREAT) && !defined(OPENSSL_NO_POSIX_IO) && !defined(OPENSSL_SYS_VMS)
 {
 # ifndef O_BINARY
-#  define O_BINARY 0
+# define O_BINARY 0
 # endif
 int fd = open(file, O_WRONLY | O_CREAT | O_BINARY, 0600);
 if (fd != -1)

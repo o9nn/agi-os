@@ -24,16 +24,16 @@ clamp[i + CLOFF] = byte i;
 for (i = CLOFF + 256; i < CLOFF + 256 + CLOFF; i++)
 clamp[i] = byte 255;
 }
-#	rgb(y, cb, cr: int): (int, int, int)
-#	{
-#		Y := real y;
-#		Cb := real (cb - 128);
-#		Cr := real (cr - 128);
-#		r := int (Y+1.402*Cr);
-#		g := int (Y-0.34414*Cb-0.71414*Cr);
-#		b := int (Y+1.772*Cb);
-#		return (r, g, b);
-#	}
+# rgb(y, cb, cr: int): (int, int, int)
+# {
+# Y := real y;
+# Cb := real (cb - 128);
+# Cr := real (cr - 128);
+# r := int (Y+1.402*Cr);
+# g := int (Y-0.34414*Cb-0.71414*Cr);
+# b := int (Y+1.772*Cb);
+# return (r, g, b);
+# }
 B: con 16;
 M: con (1 << B);
 B0: con int (-0.34414 * real M);

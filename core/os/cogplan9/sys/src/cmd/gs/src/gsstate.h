@@ -1,12 +1,12 @@
 #ifndef gsstate_INCLUDED
-#  define gsstate_INCLUDED
+# define gsstate_INCLUDED
 #ifndef gs_state_DEFINED
-#  define gs_state_DEFINED
+# define gs_state_DEFINED
 typedef struct gs_state_s gs_state;
 #endif
 #ifndef gs_overprint_params_t_DEFINED
-#  define gs_overprint_params_t_DEFINED
-typedef struct gs_overprint_params_s    gs_overprint_params_t;
+# define gs_overprint_params_t_DEFINED
+typedef struct gs_overprint_params_s gs_overprint_params_t;
 #endif
 gs_state *gs_state_alloc(gs_memory_t *);
 int gs_state_free(gs_state *);
@@ -15,9 +15,9 @@ int gs_grestore_only(gs_state *);
 int gs_gsave_for_save(gs_state *, gs_state **), gs_grestoreall_for_restore(gs_state *, gs_state *);
 gs_state *gs_gstate(gs_state *);
 gs_state *gs_state_copy(gs_state *, gs_memory_t *);
-int gs_copygstate(gs_state *  , const gs_state *  ),
-gs_currentgstate(gs_state *  , const gs_state *  ),
-gs_setgstate(gs_state *  , const gs_state *  );
+int gs_copygstate(gs_state * , const gs_state * ),
+gs_currentgstate(gs_state * , const gs_state * ),
+gs_setgstate(gs_state * , const gs_state * );
 int gs_state_update_overprint(gs_state *, const gs_overprint_params_t *);
 bool gs_currentoverprint(const gs_state *);
 void gs_setoverprint(gs_state *, bool);

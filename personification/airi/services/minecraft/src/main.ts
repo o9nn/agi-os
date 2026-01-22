@@ -13,31 +13,31 @@ import { LLMAgent } from './libs/llm-agent'
 import { wrapPlugin } from './libs/mineflayer'
 import { initLogger, useLogger } from './utils/logger'
 async function main() {
-  initLogger() 
-  initEnv()
-  const { bot } = await initBot({
-    botConfig: config.bot,
-    plugins: [
-      wrapPlugin(MineflayerArmorManager),
-      wrapPlugin(MineflayerAutoEat),
-      wrapPlugin(MineflayerCollectBlock),
-      wrapPlugin(MineflayerPathfinder),
-      wrapPlugin(MineflayerPVP),
-      wrapPlugin(MineflayerTool),
-    ],
-  })
-  const airiClient = new Client({
-    name: config.airi.clientName,
-    url: config.airi.wsBaseUrl,
-  })
-  const agent = await createNeuriAgent(bot)
-  await bot.loadPlugin(LLMAgent({ agent, airiClient }))
-  process.on('SIGINT', () => {
-    bot.stop()
-    exit(0)
-  })
+initLogger()
+initEnv()
+const { bot } = await initBot({
+botConfig: config.bot,
+plugins: [
+wrapPlugin(MineflayerArmorManager),
+wrapPlugin(MineflayerAutoEat),
+wrapPlugin(MineflayerCollectBlock),
+wrapPlugin(MineflayerPathfinder),
+wrapPlugin(MineflayerPVP),
+wrapPlugin(MineflayerTool),
+],
+})
+const airiClient = new Client({
+name: config.airi.clientName,
+url: config.airi.wsBaseUrl,
+})
+const agent = await createNeuriAgent(bot)
+await bot.loadPlugin(LLMAgent({ agent, airiClient }))
+process.on('SIGINT', () => {
+bot.stop()
+exit(0)
+})
 }
 main().catch((err: Error) => {
-  useLogger().errorWithError('Fatal error', err)
-  exit(1)
+useLogger().errorWithError('Fatal error', err)
+exit(1)
 })

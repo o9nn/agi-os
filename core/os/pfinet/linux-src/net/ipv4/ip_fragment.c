@@ -17,25 +17,25 @@ int sysctl_ipfrag_high_thresh = 256*1024;
 int sysctl_ipfrag_low_thresh = 192*1024;
 int sysctl_ipfrag_time = IP_FRAG_TIME;
 struct ipfrag {
-int		offset;
-int		end;
-int		len;
-struct sk_buff	*skb;
-unsigned char	*ptr;
-struct ipfrag	*next;
-struct ipfrag	*prev;
+int offset;
+int end;
+int len;
+struct sk_buff *skb;
+unsigned char *ptr;
+struct ipfrag *next;
+struct ipfrag *prev;
 };
 struct ipq {
-struct iphdr	*iph;
-struct ipq	*next;
-struct ipfrag	*fragments;
-int		len;
-short		ihlen;
+struct iphdr *iph;
+struct ipq *next;
+struct ipfrag *fragments;
+int len;
+short ihlen;
 struct timer_list timer;
-struct ipq	**pprev;
-struct device	*dev;
+struct ipq **pprev;
+struct device *dev;
 };
-#define IPQ_HASHSZ	64
+#define IPQ_HASHSZ 64
 struct ipq *ipq_hash[IPQ_HASHSZ];
 #define ipqhashfn(id, saddr, daddr, prot) \
 ((((id) >> 1) ^ (saddr) ^ (daddr) ^ (prot)) & (IPQ_HASHSZ - 1))
@@ -86,9 +86,9 @@ __u8 protocol = iph->protocol;
 unsigned int hash = ipqhashfn(id, saddr, daddr, protocol);
 struct ipq *qp;
 for(qp = ipq_hash[hash]; qp; qp = qp->next) {
-if(qp->iph->id == id		&&
-qp->iph->saddr == saddr	&&
-qp->iph->daddr == daddr	&&
+if(qp->iph->id == id &&
+qp->iph->saddr == saddr &&
+qp->iph->daddr == daddr &&
 qp->iph->protocol == protocol) {
 del_timer(&qp->timer);
 break;

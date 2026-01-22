@@ -333,7 +333,7 @@ input = i_stream_create_from_data(text, text_len);
 jinput = json_istream_create(input, 0, NULL, 0);
 ret = json_istream_read(jinput, &jnode);
 if (string_tests[i].string == NULL) {
-test_assert(ret <  0);
+test_assert(ret < 0);
 test_json_read_failure(&jinput);
 } else {
 test_assert(ret != 0);
@@ -387,7 +387,7 @@ test_assert(ret != 0);
 test_json_read_success_text(
 &jinput, "read data success");
 } else {
-test_assert(ret <  0);
+test_assert(ret < 0);
 test_json_read_failure(&jinput);
 }
 json_istream_unref(&jinput);
@@ -3116,14 +3116,14 @@ test_begin("json istream skip object fields (by key)");
 input = test_istream_create_data(test_input, strlen(test_input));
 jinput = json_istream_create_object(input, NULL, 0);
 for (i = 0; i < keys_count; i++) {
-ret =  json_istream_read_object_member(jinput, &key);
+ret = json_istream_read_object_member(jinput, &key);
 if (ret < 0)
 break;
 test_assert(ret > 0);
 test_assert(strcmp(key, keys[i]) == 0);
 json_istream_skip(jinput);
 }
-ret =  json_istream_read_object_member(jinput, &key);
+ret = json_istream_read_object_member(jinput, &key);
 test_assert(ret < 0);
 test_assert(json_istream_is_at_end(jinput));
 test_json_read_success(&jinput);
@@ -3134,7 +3134,7 @@ input = test_istream_create_data(test_input, strlen(test_input));
 jinput = json_istream_create_object(input, NULL, 0);
 for (pos = 0; pos <= strlen(test_input); pos +=2) {
 test_istream_set_size(input, pos);
-ret =  json_istream_read_object_member(jinput, &key);
+ret = json_istream_read_object_member(jinput, &key);
 if (ret == 0)
 continue;
 if (ret < 0)
@@ -3144,7 +3144,7 @@ test_assert(strcmp(key, keys[i]) == 0);
 json_istream_skip(jinput);
 i++;
 }
-ret =  json_istream_read_object_member(jinput, &key);
+ret = json_istream_read_object_member(jinput, &key);
 test_assert(ret < 0);
 test_assert(json_istream_is_at_end(jinput));
 test_json_read_success(&jinput);
@@ -3155,17 +3155,17 @@ test_begin("json istream skip object fields (by value type)");
 input = test_istream_create_data(test_input, strlen(test_input));
 jinput = json_istream_create_object(input, NULL, 0);
 for (i = 0; i < keys_count; i++) {
-ret =  json_istream_read_object_member(jinput, &key);
+ret = json_istream_read_object_member(jinput, &key);
 if (ret < 0)
 break;
 test_assert(ret > 0);
 test_assert(strcmp(key, keys[i]) == 0);
-ret =  json_istream_read(jinput, &jnode);
+ret = json_istream_read(jinput, &jnode);
 test_assert(ret > 0);
 test_assert(strcmp(jnode.name, keys[i]) == 0);
 json_istream_skip(jinput);
 }
-ret =  json_istream_read_object_member(jinput, &key);
+ret = json_istream_read_object_member(jinput, &key);
 test_assert(ret < 0);
 test_assert(json_istream_is_at_end(jinput));
 test_json_read_success(&jinput);
@@ -3177,7 +3177,7 @@ jinput = json_istream_create_object(input, NULL, 0);
 for (;;) {
 for (pos = 0; pos <= strlen(test_input); pos +=2) {
 test_istream_set_size(input, pos);
-ret =  json_istream_read_object_member(jinput, &key);
+ret = json_istream_read_object_member(jinput, &key);
 if (ret == 0)
 continue;
 if (ret > 0) {
@@ -3190,7 +3190,7 @@ if (ret < 0)
 break;
 for (pos = 0; pos <= strlen(test_input); pos +=2) {
 test_istream_set_size(input, pos);
-ret =  json_istream_read(jinput, &jnode);
+ret = json_istream_read(jinput, &jnode);
 if (ret == 0)
 continue;
 if (ret > 0) {
@@ -3204,7 +3204,7 @@ if (ret < 0)
 break;
 json_istream_skip(jinput);
 }
-ret =  json_istream_read_object_member(jinput, &key);
+ret = json_istream_read_object_member(jinput, &key);
 test_assert(ret < 0);
 test_assert(json_istream_is_at_end(jinput));
 test_json_read_success(&jinput);

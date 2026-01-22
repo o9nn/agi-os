@@ -6,16 +6,16 @@
 #define ACQUIRE_DTOA_LOCK(n)
 #define FREE_DTOA_LOCK(n)
 #ifndef DBL_DIG
-#define DBL_DIG		15
+#define DBL_DIG 15
 #endif
 #ifndef DBL_MAX_10_EXP
-#define DBL_MAX_10_EXP	308
+#define DBL_MAX_10_EXP 308
 #endif
 #ifndef DBL_MAX_EXP
-#define DBL_MAX_EXP	1024
+#define DBL_MAX_EXP 1024
 #endif
 #ifndef FLT_RADIX
-#define FLT_RADIX	2
+#define FLT_RADIX 2
 #endif
 #ifndef FLT_ROUNDS
 #define FLT_ROUNDS 1
@@ -29,29 +29,29 @@
 #define word1(x) ((FPdbleword*)&x)->lo
 #else
 #ifdef __LITTLE_ENDIAN
-#define word0(x) ((unsigned  long *)&x)[1]
-#define word1(x) ((unsigned  long *)&x)[0]
+#define word0(x) ((unsigned long *)&x)[1]
+#define word1(x) ((unsigned long *)&x)[0]
 #else
-#define word0(x) ((unsigned  long *)&x)[0]
-#define word1(x) ((unsigned  long *)&x)[1]
+#define word0(x) ((unsigned long *)&x)[0]
+#define word1(x) ((unsigned long *)&x)[1]
 #endif
 #endif
-#define Exp_shift  20
+#define Exp_shift 20
 #define Exp_shift1 20
-#define Exp_msk1    0x100000
-#define Exp_msk11   0x100000
-#define Exp_mask  0x7ff00000
+#define Exp_msk1 0x100000
+#define Exp_msk11 0x100000
+#define Exp_mask 0x7ff00000
 #define P 53
 #define Bias 1023
 #define Emin (-1022)
-#define Exp_1  0x3ff00000
+#define Exp_1 0x3ff00000
 #define Exp_11 0x3ff00000
 #define Ebits 11
-#define Frac_mask  0xfffff
+#define Frac_mask 0xfffff
 #define Frac_mask1 0xfffff
 #define Ten_pmax 22
 #define Bletch 0x10
-#define Bndry_mask  0xfffff
+#define Bndry_mask 0xfffff
 #define Bndry_mask1 0xfffff
 #define LSB 1
 #define Sign_bit 0x80000000
@@ -70,22 +70,22 @@
 struct
 Bigint {
 struct Bigint *next;
-int	k, maxwds, sign, wds;
-unsigned  long x[1];
+int k, maxwds, sign, wds;
+unsigned long x[1];
 };
 typedef struct Bigint Bigint;
 static Bigint *freelist[Kmax+1];
 static Bigint *
 Balloc(int k)
 {
-int	x;
+int x;
 Bigint * rv;
 ACQUIRE_DTOA_LOCK(0);
 if (rv = freelist[k]) {
 freelist[k] = rv->next;
 } else {
 x = 1 << k;
-rv = (Bigint * )malloc(sizeof(Bigint) + (x - 1) * sizeof(unsigned  long));
+rv = (Bigint * )malloc(sizeof(Bigint) + (x - 1) * sizeof(unsigned long));
 if(rv == nil)
 return nil;
 rv->k = k;
@@ -110,9 +110,9 @@ y->wds*sizeof(long) + 2*sizeof(int))
 static Bigint *
 multadd(Bigint *b, int m, int a)
 {
-int	i, wds;
-unsigned  long * x, y;
-unsigned  long xi, z;
+int i, wds;
+unsigned long * x, y;
+unsigned long xi, z;
 Bigint * b1;
 wds = b->wds;
 x = b->x;
@@ -137,10 +137,10 @@ b->wds = wds;
 return b;
 }
 static Bigint *
-s2b(const char *s, int nd0, int nd, unsigned  long y9)
+s2b(const char *s, int nd0, int nd, unsigned long y9)
 {
 Bigint * b;
-int	i, k;
+int i, k;
 long x, y;
 x = (nd + 8) / 9;
 for (k = 0, y = 1; x > y; y <<= 1, k++)
@@ -162,9 +162,9 @@ b = multadd(b, 10, *s++ - '0');
 return b;
 }
 static int
-hi0bits(register unsigned  long x)
+hi0bits(register unsigned long x)
 {
-register int	k = 0;
+register int k = 0;
 if (!(x & 0xffff0000)) {
 k = 16;
 x <<= 16;
@@ -189,10 +189,10 @@ return 32;
 return k;
 }
 static int
-lo0bits(unsigned  long *y)
+lo0bits(unsigned long *y)
 {
-register int	k;
-register unsigned  long x = *y;
+register int k;
+register unsigned long x = *y;
 if (x & 7) {
 if (x & 1)
 return 0;
@@ -242,10 +242,10 @@ static Bigint *
 mult(Bigint *a, Bigint *b)
 {
 Bigint * c;
-int	k, wa, wb, wc;
-unsigned  long carry, y, z;
-unsigned  long * x, *xa, *xae, *xb, *xbe, *xc, *xc0;
-unsigned  long z2;
+int k, wa, wb, wc;
+unsigned long carry, y, z;
+unsigned long * x, *xa, *xae, *xb, *xbe, *xc, *xc0;
+unsigned long z2;
 if (a->wds < b->wds) {
 c = a;
 a = b;
@@ -304,9 +304,9 @@ static Bigint *
 pow5mult(Bigint *b, int k)
 {
 Bigint * b1, *p5, *p51;
-int	i;
-static int	p05[3] = {
-5, 25, 125 	};
+int i;
+static int p05[3] = {
+5, 25, 125 };
 if (i = k & 3)
 b = multadd(b, p05[i-1], 0);
 if (!(k >>= 2))
@@ -342,9 +342,9 @@ return b;
 static Bigint *
 lshift(Bigint *b, int k)
 {
-int	i, k1, n, n1;
+int i, k1, n, n1;
 Bigint * b1;
-unsigned  long * x, *x1, *xe, z;
+unsigned long * x, *x1, *xe, z;
 n = k >> 5;
 k1 = b->k;
 n1 = n + b->wds + 1;
@@ -376,8 +376,8 @@ return b1;
 static int
 cmp(Bigint *a, Bigint *b)
 {
-unsigned  long * xa, *xa0, *xb, *xb0;
-int	i, j;
+unsigned long * xa, *xa0, *xb, *xb0;
+int i, j;
 i = a->wds;
 j = b->wds;
 if (i -= j)
@@ -398,9 +398,9 @@ static Bigint *
 diff(Bigint *a, Bigint *b)
 {
 Bigint * c;
-int	i, wa, wb;
+int i, wa, wb;
 long borrow, y;
-unsigned  long * xa, *xae, *xb, *xbe, *xc;
+unsigned long * xa, *xae, *xb, *xbe, *xc;
 long z;
 i = cmp(a, b);
 if (!i) {
@@ -453,7 +453,7 @@ static double
 ulp(double x)
 {
 register long L;
-double	a;
+double a;
 L = (word0(x) & Exp_mask) - (P - 1) * Exp_msk1;
 #ifndef Sudden_Underflow
 if (L > 0) {
@@ -478,9 +478,9 @@ return a;
 static double
 b2d(Bigint *a, int *e)
 {
-unsigned  long * xa, *xa0, w, y, z;
-int	k;
-double	d;
+unsigned long * xa, *xa0, w, y, z;
+int k;
+double d;
 #define d0 word0(d)
 #define d1 word1(d)
 xa0 = a->x;
@@ -512,8 +512,8 @@ static Bigint *
 d2b(double d, int *e, int *bits)
 {
 Bigint * b;
-int	de, i, k;
-unsigned  long * x, y, z;
+int de, i, k;
+unsigned long * x, y, z;
 #define d0 word0(d)
 #define d1 word1(d)
 b = Balloc(1);
@@ -558,8 +558,8 @@ return b;
 static double
 ratio(Bigint *a, Bigint *b)
 {
-double	da, db;
-int	k, ka, kb;
+double da, db;
+int k, ka, kb;
 da = b2d(a, &ka);
 db = b2d(b, &kb);
 k = ka - kb + 32 * (a->wds - b->wds);
@@ -591,7 +591,7 @@ static const double tinytens[] = {
 static int
 match(const char **sp, char *t)
 {
-int	c, d;
+int c, d;
 const char * s = *sp;
 while (d = *t++) {
 if ((c = *++s) >= 'A' && c <= 'Z')
@@ -605,13 +605,13 @@ return 1;
 double
 strtod(const char *s00, char **se)
 {
-int	scale;
-int	bb2, bb5, bbe, bd2, bd5, bbbits, bs2, c, dsign,
+int scale;
+int bb2, bb5, bbe, bd2, bd5, bbbits, bs2, c, dsign,
 e, e1, esign, i, j, k, nd, nd0, nf, nz, nz0, sign;
 const char * s, *s0, *s1;
-double	aadj, aadj1, adj, rv, rv0;
+double aadj, aadj1, adj, rv, rv0;
 long L;
-unsigned  long y, z;
+unsigned long y, z;
 Bigint * bb, *bb1, *bd, *bd0, *bs, *delta;
 sign = nz0 = nz = 0;
 rv = 0.;
@@ -893,7 +893,7 @@ break;
 if (i == 0) {
 if (dsign) {
 if ((word0(rv) & Bndry_mask1) == Bndry_mask1
-&&  word1(rv) == 0xffffffff) {
+&& word1(rv) == 0xffffffff) {
 word0(rv) = (word0(rv) & Exp_mask)
 + Exp_msk1
 ;
@@ -1041,12 +1041,12 @@ return sign ? -rv : rv;
 static int
 quorem(Bigint *b, Bigint *S)
 {
-int	n;
+int n;
 long borrow, y;
-unsigned  long carry, q, ys;
-unsigned  long * bx, *bxe, *sx, *sxe;
+unsigned long carry, q, ys;
+unsigned long * bx, *bxe, *sx, *sxe;
 long z;
-unsigned  long si, zs;
+unsigned long si, zs;
 n = S->wds;
 if (b->wds < n)
 return 0;
@@ -1107,13 +1107,13 @@ b->wds = n;
 }
 return q;
 }
-static char	*
+static char *
 rv_alloc(int i)
 {
-int	j, k, *r;
-j = sizeof(unsigned  long);
+int j, k, *r;
+j = sizeof(unsigned long);
 for (k = 0;
-sizeof(Bigint) - sizeof(unsigned  long) - sizeof(int) + j <= i;
+sizeof(Bigint) - sizeof(unsigned long) - sizeof(int) + j <= i;
 j <<= 1)
 k++;
 r = (int * )Balloc(k);
@@ -1121,10 +1121,10 @@ r = (int * )Balloc(k);
 return
 (char *)(r + 1);
 }
-static char	*
+static char *
 nrv_alloc(char *s, char **rve, int n)
 {
-char	*rv, *t;
+char *rv, *t;
 t = rv = rv_alloc(n);
 while (*t = *s++)
 t++;
@@ -1139,20 +1139,20 @@ Bigint * b = (Bigint * )((int *)s - 1);
 b->maxwds = 1 << (b->k = *(int * )b);
 Bfree(b);
 }
-char	*
+char *
 dtoa(double d, int mode, int ndigits, int *decpt, int *sign, char **rve)
 {
-int	bbits, b2, b5, be, dig, i, ieps, ilim, ilim0, ilim1,
+int bbits, b2, b5, be, dig, i, ieps, ilim, ilim0, ilim1,
 j, j1, k, k0, k_check, leftright, m2, m5, s2, s5,
 spec_case, try_quick;
 long L;
 #ifndef Sudden_Underflow
-int	denorm;
-unsigned  long x;
+int denorm;
+unsigned long x;
 #endif
 Bigint * b, *b1, *delta, *mlo, *mhi, *S;
-double	d2, ds, eps;
-char	*s, *s0;
+double d2, ds, eps;
+char *s, *s0;
 if (word0(d) & Sign_bit) {
 *sign = 1;
 word0(d) &= ~Sign_bit;
@@ -1181,7 +1181,7 @@ i -= Bias;
 denorm = 0;
 } else {
 i = bbits + be + (Bias + (P - 1) - 1);
-x = i > 32  ? word0(d) << 64 - i | word1(d) >> i - 32
+x = i > 32 ? word0(d) << 64 - i | word1(d) >> i - 32
 : word1(d) << 32 - i;
 d2 = x;
 word0(d2) -= 31 * Exp_msk1;

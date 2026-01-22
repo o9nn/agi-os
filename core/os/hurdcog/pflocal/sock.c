@@ -12,7 +12,7 @@ error_t err = 0;
 pthread_mutex_lock (&sock->lock);
 *pipe = sock->read_pipe;
 if (*pipe != NULL)
-if (   !(sock->pipe_class->flags & PIPE_CLASS_CONNECTIONLESS)
+if ( !(sock->pipe_class->flags & PIPE_CLASS_CONNECTIONLESS)
 && !(sock->flags & PFLOCAL_SOCK_CONNECTED))
 err = ENOTCONN;
 else
@@ -259,7 +259,7 @@ error_t err = 0;
 struct pipe *old_sock1_write_pipe = NULL;
 void connect (struct sock *wr, struct sock *rd)
 {
-if (!(   (wr->flags & PFLOCAL_SOCK_SHUTDOWN_WRITE)
+if (!( (wr->flags & PFLOCAL_SOCK_SHUTDOWN_WRITE)
 || (rd->flags & PFLOCAL_SOCK_SHUTDOWN_READ)))
 {
 struct pipe *pipe = rd->read_pipe;

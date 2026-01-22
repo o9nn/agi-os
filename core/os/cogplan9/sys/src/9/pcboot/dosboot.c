@@ -1,36 +1,36 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"ureg.h"
-#include	"pool.h"
-#include	"../port/error.h"
-#include	"../port/netif.h"
-#include	"dosfs.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "ureg.h"
+#include "pool.h"
+#include "../port/error.h"
+#include "../port/netif.h"
+#include "dosfs.h"
 enum {
 Dosfilemax = 8,
 Dosextmax = 3,
 };
-static void	bootdump(Dosboot*);
-static void	setname(Dosfile*, char*);
-#define chatty	0
-#define chat	if(chatty)print
+static void bootdump(Dosboot*);
+static void setname(Dosfile*, char*);
+#define chatty 0
+#define chat if(chatty)print
 enum
 {
-Nbio=	16,
+Nbio= 16,
 };
-typedef struct	Clustbuf	Clustbuf;
+typedef struct Clustbuf Clustbuf;
 struct Clustbuf
 {
-int	age;
-long	sector;
-uchar	*iobuf;
-Dos	*dos;
-int	size;
+int age;
+long sector;
+uchar *iobuf;
+Dos *dos;
+int size;
 };
-Clustbuf	bio[Nbio];
+Clustbuf bio[Nbio];
 Clustbuf*
 getclust(Dos *dos, long sector)
 {
@@ -154,7 +154,7 @@ l++;
 }
 fp->lcurrent = l;
 fp->pcurrent = p;
-l =  dos->dataaddr + (p-2)*dos->clustsize;
+l = dos->dataaddr + (p-2)*dos->clustsize;
 chat("fileaddr %ld -> %ld\n", ltarget, l);
 return l;
 }
@@ -279,8 +279,8 @@ lowercase(nms[i++]);
 *nmarray = nms;
 return 0;
 }
-#define	JMPSHORT	0xeb
-#define JMPNEAR		0xe9
+#define JMPSHORT 0xeb
+#define JMPNEAR 0xe9
 long
 dosreadseg(File *f, void *va, long len)
 {

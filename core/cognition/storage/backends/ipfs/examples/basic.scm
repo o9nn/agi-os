@@ -9,9 +9,9 @@
 (ipfs-atom-cid c)
 (ipfs-publish-atomspace)
 (define e
-	(Evaluation
-		(Predicate "Some relationship")
-		(List (Concept "foo") (Concept "bar"))))
+(Evaluation
+(Predicate "Some relationship")
+(List (Concept "foo") (Concept "bar"))))
 (store-atom e)
 (ipfs-publish-atomspace)
 (ipfs-atom-cid e)

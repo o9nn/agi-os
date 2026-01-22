@@ -1,60 +1,60 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"ip.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "ip.h"
 enum
 {
-QMAX		= 64*1024-1,
-IP_TCPPROTO	= 6,
-TCP4_IPLEN	= 8,
-TCP4_PHDRSIZE	= 12,
-TCP4_HDRSIZE	= 20,
-TCP4_TCBPHDRSZ	= 40,
-TCP4_PKT	= TCP4_IPLEN+TCP4_PHDRSIZE,
-TCP6_IPLEN	= 0,
-TCP6_PHDRSIZE	= 40,
-TCP6_HDRSIZE	= 20,
-TCP6_TCBPHDRSZ	= 60,
-TCP6_PKT	= TCP6_IPLEN+TCP6_PHDRSIZE,
-TcptimerOFF	= 0,
-TcptimerON	= 1,
-TcptimerDONE	= 2,
-MAX_TIME 	= (1<<20),
-TCP_ACK		= 50,
-MAXBACKMS	= 9*60*1000,
-URG		= 0x20,
-ACK		= 0x10,
-PSH		= 0x08,
-RST		= 0x04,
-SYN		= 0x02,
-FIN		= 0x01,
-EOLOPT		= 0,
-NOOPOPT		= 1,
-MSSOPT		= 2,
-MSS_LENGTH	= 4,
-WSOPT		= 3,
-WS_LENGTH	= 3,
-MSL2		= 10,
-MSPTICK		= 50,
-DEF_MSS		= 1460,
-DEF_MSS6	= 1280,
-DEF_RTT		= 500,
-DEF_KAT		= 120000,
-TCP_LISTEN	= 0,
-TCP_CONNECT	= 1,
-SYNACK_RXTIMER	= 250,
-TCPREXMTTHRESH	= 3,
-FORCE		= 1,
-CLONE		= 2,
-RETRAN		= 4,
-ACTIVE		= 8,
-SYNACK		= 16,
-LOGAGAIN	= 3,
-LOGDGAIN	= 2,
-Closed		= 0,
+QMAX = 64*1024-1,
+IP_TCPPROTO = 6,
+TCP4_IPLEN = 8,
+TCP4_PHDRSIZE = 12,
+TCP4_HDRSIZE = 20,
+TCP4_TCBPHDRSZ = 40,
+TCP4_PKT = TCP4_IPLEN+TCP4_PHDRSIZE,
+TCP6_IPLEN = 0,
+TCP6_PHDRSIZE = 40,
+TCP6_HDRSIZE = 20,
+TCP6_TCBPHDRSZ = 60,
+TCP6_PKT = TCP6_IPLEN+TCP6_PHDRSIZE,
+TcptimerOFF = 0,
+TcptimerON = 1,
+TcptimerDONE = 2,
+MAX_TIME = (1<<20),
+TCP_ACK = 50,
+MAXBACKMS = 9*60*1000,
+URG = 0x20,
+ACK = 0x10,
+PSH = 0x08,
+RST = 0x04,
+SYN = 0x02,
+FIN = 0x01,
+EOLOPT = 0,
+NOOPOPT = 1,
+MSSOPT = 2,
+MSS_LENGTH = 4,
+WSOPT = 3,
+WS_LENGTH = 3,
+MSL2 = 10,
+MSPTICK = 50,
+DEF_MSS = 1460,
+DEF_MSS6 = 1280,
+DEF_RTT = 500,
+DEF_KAT = 120000,
+TCP_LISTEN = 0,
+TCP_CONNECT = 1,
+SYNACK_RXTIMER = 250,
+TCPREXMTTHRESH = 3,
+FORCE = 1,
+CLONE = 2,
+RETRAN = 4,
+ACTIVE = 8,
+SYNACK = 16,
+LOGAGAIN = 3,
+LOGDGAIN = 2,
+Closed = 0,
 Listen,
 Syn_sent,
 Syn_received,
@@ -65,169 +65,169 @@ Close_wait,
 Closing,
 Last_ack,
 Time_wait,
-Maxlimbo	= 1000,
-NLHT		= 256,
-LHTMASK		= NLHT-1,
-HaveWS		= 1<<8,
+Maxlimbo = 1000,
+NLHT = 256,
+LHTMASK = NLHT-1,
+HaveWS = 1<<8,
 };
 char *tcpstates[] =
 {
-"Closed", 	"Listen", 	"Syn_sent", "Syn_received",
-"Established", 	"Finwait1",	"Finwait2", "Close_wait",
-"Closing", 	"Last_ack", 	"Time_wait"
+"Closed", "Listen", "Syn_sent", "Syn_received",
+"Established", "Finwait1", "Finwait2", "Close_wait",
+"Closing", "Last_ack", "Time_wait"
 };
 typedef struct Tcptimer Tcptimer;
 struct Tcptimer
 {
-Tcptimer	*next;
-Tcptimer	*prev;
-Tcptimer	*readynext;
-int	state;
-int	start;
-int	count;
-void	(*func)(void*);
-void	*arg;
+Tcptimer *next;
+Tcptimer *prev;
+Tcptimer *readynext;
+int state;
+int start;
+int count;
+void (*func)(void*);
+void *arg;
 };
 typedef struct Tcp4hdr Tcp4hdr;
 struct Tcp4hdr
 {
-uchar	vihl;
-uchar	tos;
-uchar	length[2];
-uchar	id[2];
-uchar	frag[2];
-uchar	Unused;
-uchar	proto;
-uchar	tcplen[2];
-uchar	tcpsrc[4];
-uchar	tcpdst[4];
-uchar	tcpsport[2];
-uchar	tcpdport[2];
-uchar	tcpseq[4];
-uchar	tcpack[4];
-uchar	tcpflag[2];
-uchar	tcpwin[2];
-uchar	tcpcksum[2];
-uchar	tcpurg[2];
-uchar	tcpopt[1];
+uchar vihl;
+uchar tos;
+uchar length[2];
+uchar id[2];
+uchar frag[2];
+uchar Unused;
+uchar proto;
+uchar tcplen[2];
+uchar tcpsrc[4];
+uchar tcpdst[4];
+uchar tcpsport[2];
+uchar tcpdport[2];
+uchar tcpseq[4];
+uchar tcpack[4];
+uchar tcpflag[2];
+uchar tcpwin[2];
+uchar tcpcksum[2];
+uchar tcpurg[2];
+uchar tcpopt[1];
 };
 typedef struct Tcp6hdr Tcp6hdr;
 struct Tcp6hdr
 {
-uchar	vcf[4];
-uchar	ploadlen[2];
-uchar	proto;
-uchar	ttl;
-uchar	tcpsrc[IPaddrlen];
-uchar	tcpdst[IPaddrlen];
-uchar	tcpsport[2];
-uchar	tcpdport[2];
-uchar	tcpseq[4];
-uchar	tcpack[4];
-uchar	tcpflag[2];
-uchar	tcpwin[2];
-uchar	tcpcksum[2];
-uchar	tcpurg[2];
-uchar	tcpopt[1];
+uchar vcf[4];
+uchar ploadlen[2];
+uchar proto;
+uchar ttl;
+uchar tcpsrc[IPaddrlen];
+uchar tcpdst[IPaddrlen];
+uchar tcpsport[2];
+uchar tcpdport[2];
+uchar tcpseq[4];
+uchar tcpack[4];
+uchar tcpflag[2];
+uchar tcpwin[2];
+uchar tcpcksum[2];
+uchar tcpurg[2];
+uchar tcpopt[1];
 };
 typedef struct Tcp Tcp;
-struct	Tcp
+struct Tcp
 {
-ushort	source;
-ushort	dest;
-ulong	seq;
-ulong	ack;
-uchar	flags;
-ushort	ws;
-ulong	wnd;
-ushort	urg;
-ushort	mss;
-ushort	len;
+ushort source;
+ushort dest;
+ulong seq;
+ulong ack;
+uchar flags;
+ushort ws;
+ulong wnd;
+ushort urg;
+ushort mss;
+ushort len;
 };
 typedef struct Reseq Reseq;
 struct Reseq
 {
-Reseq	*next;
-Tcp	seg;
-Block	*bp;
-ushort	length;
+Reseq *next;
+Tcp seg;
+Block *bp;
+ushort length;
 };
 typedef struct Tcpctl Tcpctl;
 struct Tcpctl
 {
-uchar	state;
-uchar	type;
-uchar	code;
+uchar state;
+uchar type;
+uchar code;
 struct {
-ulong	una;
-ulong	nxt;
-ulong	ptr;
-ulong	wnd;
-ulong	urg;
-ulong	wl2;
-int	scale;
-ulong	dupacks;
-int	recovery;
-ulong	rxt;
+ulong una;
+ulong nxt;
+ulong ptr;
+ulong wnd;
+ulong urg;
+ulong wl2;
+int scale;
+ulong dupacks;
+int recovery;
+ulong rxt;
 } snd;
 struct {
-ulong	nxt;
-ulong	wnd;
-ulong	urg;
-int	blocked;
-int	una;
-int	scale;
+ulong nxt;
+ulong wnd;
+ulong urg;
+int blocked;
+int una;
+int scale;
 } rcv;
-ulong	iss;
-int	sawwsopt;
-ulong	cwind;
-int	scale;
-ushort	ssthresh;
-int	resent;
-int	irs;
-ushort	mss;
-int	rerecv;
-ulong	window;
-uchar	backoff;
-int	backedoff;
-uchar	flags;
-Reseq	*reseq;
-Tcptimer	timer;
-Tcptimer	acktimer;
-Tcptimer	rtt_timer;
-Tcptimer	katimer;
-ulong	rttseq;
-int	srtt;
-int	mdev;
-int	kacounter;
-uint	sndsyntime;
-ulong	time;
-int	nochecksum;
-int	flgcnt;
+ulong iss;
+int sawwsopt;
+ulong cwind;
+int scale;
+ushort ssthresh;
+int resent;
+int irs;
+ushort mss;
+int rerecv;
+ulong window;
+uchar backoff;
+int backedoff;
+uchar flags;
+Reseq *reseq;
+Tcptimer timer;
+Tcptimer acktimer;
+Tcptimer rtt_timer;
+Tcptimer katimer;
+ulong rttseq;
+int srtt;
+int mdev;
+int kacounter;
+uint sndsyntime;
+ulong time;
+int nochecksum;
+int flgcnt;
 union {
-Tcp4hdr	tcp4hdr;
-Tcp6hdr	tcp6hdr;
+Tcp4hdr tcp4hdr;
+Tcp6hdr tcp6hdr;
 } protohdr;
 };
 typedef struct Limbo Limbo;
 struct Limbo
 {
-Limbo	*next;
-uchar	laddr[IPaddrlen];
-uchar	raddr[IPaddrlen];
-ushort	lport;
-ushort	rport;
-ulong	irs;
-ulong	iss;
-ushort	mss;
-ushort	rcvscale;
-ushort	sndscale;
-ulong	lastsend;
-uchar	version;
-uchar	rexmits;
+Limbo *next;
+uchar laddr[IPaddrlen];
+uchar raddr[IPaddrlen];
+ushort lport;
+ushort rport;
+ulong irs;
+ulong iss;
+ushort mss;
+ushort rcvscale;
+ushort sndscale;
+ulong lastsend;
+uchar version;
+uchar rexmits;
 };
-int	tcp_irtt = DEF_RTT;
-ushort	tcp_mss = DEF_MSS;
+int tcp_irtt = DEF_RTT;
+ushort tcp_mss = DEF_MSS;
 enum {
 MaxConn,
 ActiveOpens,
@@ -248,53 +248,53 @@ Nstats
 };
 static char *statnames[] =
 {
-[MaxConn]	"MaxConn",
-[ActiveOpens]	"ActiveOpens",
-[PassiveOpens]	"PassiveOpens",
-[EstabResets]	"EstabResets",
-[CurrEstab]	"CurrEstab",
-[InSegs]	"InSegs",
-[OutSegs]	"OutSegs",
-[RetransSegs]	"RetransSegs",
-[RetransTimeouts]	"RetransTimeouts",
-[InErrs]	"InErrs",
-[OutRsts]	"OutRsts",
-[CsumErrs]	"CsumErrs",
-[HlenErrs]	"HlenErrs",
-[LenErrs]	"LenErrs",
-[OutOfOrder]	"OutOfOrder",
+[MaxConn] "MaxConn",
+[ActiveOpens] "ActiveOpens",
+[PassiveOpens] "PassiveOpens",
+[EstabResets] "EstabResets",
+[CurrEstab] "CurrEstab",
+[InSegs] "InSegs",
+[OutSegs] "OutSegs",
+[RetransSegs] "RetransSegs",
+[RetransTimeouts] "RetransTimeouts",
+[InErrs] "InErrs",
+[OutRsts] "OutRsts",
+[CsumErrs] "CsumErrs",
+[HlenErrs] "HlenErrs",
+[LenErrs] "LenErrs",
+[OutOfOrder] "OutOfOrder",
 };
 typedef struct Tcppriv Tcppriv;
 struct Tcppriv
 {
-QLock 	tl;
+QLock tl;
 Tcptimer *timers;
-Ipht	ht;
-int	nlimbo;
-Limbo	*lht[NLHT];
-QLock	apl;
-int	ackprocstarted;
-ulong	stats[Nstats];
+Ipht ht;
+int nlimbo;
+Limbo *lht[NLHT];
+QLock apl;
+int ackprocstarted;
+ulong stats[Nstats];
 };
 int tcpporthogdefense = 0;
-int	addreseq(Tcpctl*, Tcppriv*, Tcp*, Block*, ushort);
-void	getreseq(Tcpctl*, Tcp*, Block**, ushort*);
-void	localclose(Conv*, char*);
-void	procsyn(Conv*, Tcp*);
-void	tcpiput(Proto*, Ipifc*, Block*);
-void	tcpoutput(Conv*);
-int	tcptrim(Tcpctl*, Tcp*, Block**, ushort*);
-void	tcpstart(Conv*, int);
-void	tcptimeout(void*);
-void	tcpsndsyn(Conv*, Tcpctl*);
-void	tcprcvwin(Conv*);
-void	tcpacktimer(void*);
-void	tcpkeepalive(void*);
-void	tcpsetkacounter(Tcpctl*);
-void	tcprxmit(Conv*);
-void	tcpsettimer(Tcpctl*);
-void	tcpsynackrtt(Conv*);
-void	tcpsetscale(Conv*, Tcpctl*, ushort, ushort);
+int addreseq(Tcpctl*, Tcppriv*, Tcp*, Block*, ushort);
+void getreseq(Tcpctl*, Tcp*, Block**, ushort*);
+void localclose(Conv*, char*);
+void procsyn(Conv*, Tcp*);
+void tcpiput(Proto*, Ipifc*, Block*);
+void tcpoutput(Conv*);
+int tcptrim(Tcpctl*, Tcp*, Block**, ushort*);
+void tcpstart(Conv*, int);
+void tcptimeout(void*);
+void tcpsndsyn(Conv*, Tcpctl*);
+void tcprcvwin(Conv*);
+void tcpacktimer(void*);
+void tcpkeepalive(void*);
+void tcpsetkacounter(Tcpctl*);
+void tcprxmit(Conv*);
+void tcpsettimer(Tcpctl*);
+void tcpsynackrtt(Conv*);
+void tcpsetscale(Conv*, Tcpctl*, ushort, ushort);
 static void limborexmit(Proto*);
 static void limbo(Conv*, uchar*, uchar*, Tcp*, int);
 void

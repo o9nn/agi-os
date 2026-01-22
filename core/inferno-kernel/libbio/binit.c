@@ -1,11 +1,11 @@
-#include	"lib9.h"
-#include	<bio.h>
+#include "lib9.h"
+#include <bio.h>
 enum
 {
-MAXBUFS	= 20
+MAXBUFS = 20
 };
-static	Biobuf*	wbufs[MAXBUFS];
-static	int		atexitflag;
+static Biobuf* wbufs[MAXBUFS];
+static int atexitflag;
 static
 void
 batexit(void)

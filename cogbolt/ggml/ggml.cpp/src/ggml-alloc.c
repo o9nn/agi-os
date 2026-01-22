@@ -543,8 +543,8 @@ node_alloc->dst.size_max = 0;
 } else {
 struct hash_node * hn = ggml_gallocr_hash_get(galloc, node);
 node_alloc->dst.buffer_id = hn->buffer_id;
-node_alloc->dst.offset    = hn->offset;
-node_alloc->dst.size_max  = ggml_backend_buft_get_alloc_size(galloc->bufts[hn->buffer_id], node);
+node_alloc->dst.offset = hn->offset;
+node_alloc->dst.size_max = ggml_backend_buft_get_alloc_size(galloc->bufts[hn->buffer_id], node);
 }
 for (int j = 0; j < GGML_MAX_SRC; j++) {
 struct ggml_tensor * src = node->src[j];
@@ -555,7 +555,7 @@ node_alloc->src[j].size_max = 0;
 } else {
 struct hash_node * hn = ggml_gallocr_hash_get(galloc, src);
 node_alloc->src[j].buffer_id = hn->buffer_id;
-node_alloc->src[j].offset   = hn->offset;
+node_alloc->src[j].offset = hn->offset;
 node_alloc->src[j].size_max = ggml_backend_buft_get_alloc_size(galloc->bufts[hn->buffer_id], src);
 }
 }

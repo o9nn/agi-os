@@ -229,7 +229,7 @@ end
 # Checks that various model options (observables, events, defaults and metadata, differential equations,
 # non-default_iv) works for hybrid models.
 let
-# Creates the model (X species is pure jump, Y is pure ODE, and  Z1,Z2 are mixed).
+# Creates the model (X species is pure jump, Y is pure ODE, and Z1,Z2 are mixed).
 # Hybrid species have non-constant rates containing the two other species.
 rn = @reaction_network begin
 @ivs τ

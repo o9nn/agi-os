@@ -297,7 +297,7 @@ rop232, rop233, rop234, rop235, rop236, rop237, rop238, rop239,
 rop240, rop241, rop242, rop243, rop244, rop245, rop246, rop247,
 rop248, rop249, rop250, rop251, rop252, rop253, rop254, rop255
 };
-const byte  rop_usage_table[256] =
+const byte rop_usage_table[256] =
 {
 0, 7, 7, 6, 7, 5, 7, 7, 7, 7, 5, 7, 6, 7, 7, 4,
 7, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,

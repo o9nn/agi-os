@@ -1,19 +1,19 @@
 #ifndef gxcspace_INCLUDED
-#  define gxcspace_INCLUDED
+# define gxcspace_INCLUDED
 #include "gscspace.h"
 #include "gsccolor.h"
 #include "gscsel.h"
 #include "gxfrac.h"
 #ifndef gx_device_color_DEFINED
-#  define gx_device_color_DEFINED
+# define gx_device_color_DEFINED
 typedef struct gx_device_color_s gx_device_color;
 #endif
 #ifndef gx_device_DEFINED
-#  define gx_device_DEFINED
+# define gx_device_DEFINED
 typedef struct gx_device_s gx_device;
 #endif
 #ifndef stream_DEFINED
-#  define stream_DEFINED
+# define stream_DEFINED
 typedef struct stream_s stream;
 #endif
 struct gs_color_space_type_s {
@@ -99,7 +99,7 @@ float smoothness)
 cs_proc_is_linear((*is_linear));
 };
 extern_st(st_base_color_space);
-#define public_st_base_color_space()	\
+#define public_st_base_color_space() \
 gs_public_st_simple(st_base_color_space, gs_base_color_space,\
 "gs_base_color_space")
 cs_proc_num_components(gx_num_components_1);

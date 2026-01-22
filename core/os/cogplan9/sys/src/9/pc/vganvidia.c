@@ -5,7 +5,7 @@
 #include "fns.h"
 #include "io.h"
 #include "../port/error.h"
-#define	Image	IMAGE
+#define Image IMAGE
 #include <draw.h>
 #include <memdraw.h>
 #include <cursor.h>
@@ -23,11 +23,11 @@ hwCurPos = Pramdac + 0x0300,
 };
 #define SKIPS 8
 struct {
-ulong	*dmabase;
-int		dmacurrent;
-int		dmaput;
-int		dmafree;
-int		dmamax;
+ulong *dmabase;
+int dmacurrent;
+int dmaput;
+int dmafree;
+int dmamax;
 } nv;
 static Pcidev*
 nvidiapci(void)
@@ -108,10 +108,10 @@ vgaxo(Crtx, 0x31, vgaxi(Crtx, 0x31) & ~0x01);
 static void
 nvidiacurload(VGAscr* scr, Cursor* curs)
 {
-ulong*	p;
-int	i,j;
-ushort	c,s;
-ulong	tmp;
+ulong* p;
+int i,j;
+ushort c,s;
+ulong tmp;
 if(scr->mmio == 0)
 return;
 vgaxo(Crtx, 0x31, vgaxi(Crtx, 0x31) & ~0x01);
@@ -158,7 +158,7 @@ return;
 static int
 nvidiacurmove(VGAscr* scr, Point p)
 {
-ulong*	cursorpos;
+ulong* cursorpos;
 if(scr->mmio == 0)
 return 1;
 cursorpos = (void*)((uchar*)scr->mmio + hwCurPos);
@@ -179,8 +179,8 @@ vgaxo(Crtx, 0x31, vgaxi(Crtx, 0x31) | 0x01);
 void
 writeput(VGAscr *scr, int data)
 {
-uchar	*p, scratch;
-ulong	*fifo;
+uchar *p, scratch;
+ulong *fifo;
 outb(0x3D0,0);
 p = scr->vaddr;
 scratch = *p;
@@ -191,7 +191,7 @@ USED(scratch);
 ulong
 readget(VGAscr *scr)
 {
-ulong	*fifo;
+ulong *fifo;
 fifo = (void*)((uchar*)scr->mmio + Fifo);
 return (fifo[0x0011] >> 2);
 }
@@ -244,7 +244,7 @@ nv.dmafree -= (size + 1);
 static void
 waitforidle(VGAscr *scr)
 {
-ulong*	pgraph;
+ulong* pgraph;
 int x;
 pgraph = (void*)((uchar*)scr->mmio + Pgraph);
 x = 0;
@@ -261,8 +261,8 @@ iprint("idle stat %lud scrio %#p scr %#p pc %#p\n", *pgraph, scr->mmio, scr, get
 static void
 nvresetgraphics(VGAscr *scr)
 {
-ulong	surfaceFormat, patternFormat, rectFormat, lineFormat;
-int		pitch, i;
+ulong surfaceFormat, patternFormat, rectFormat, lineFormat;
+int pitch, i;
 pitch = scr->gscreen->width*BY2WD;
 if(nv.dmabase == nil){
 if(scr->storage <= scr->apsize)

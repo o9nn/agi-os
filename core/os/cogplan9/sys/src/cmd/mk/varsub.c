@@ -1,10 +1,10 @@
-#include	"mk.h"
-static	Word		*subsub(Word*, char*, char*);
-static	Word		*expandvar(char**);
-static	Bufblock	*varname(char**);
-static	Word		*extractpat(char*, char**, char*, char*);
-static	int		submatch(char*, Word*, Word*, int*, char**);
-static	Word		*varmatch(char *);
+#include "mk.h"
+static Word *subsub(Word*, char*, char*);
+static Word *expandvar(char**);
+static Bufblock *varname(char**);
+static Word *extractpat(char*, char**, char*, char*);
+static int submatch(char*, Word*, Word*, int*, char**);
+static Word *varmatch(char *);
 Word *
 varsub(char **s)
 {

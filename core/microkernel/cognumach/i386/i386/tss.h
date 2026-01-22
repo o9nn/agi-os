@@ -1,5 +1,5 @@
-#ifndef	_I386_TSS_H_
-#define	_I386_TSS_H_
+#ifndef _I386_TSS_H_
+#define _I386_TSS_H_
 #include <sys/types.h>
 #include <mach/inline.h>
 #include <machine/io_perm.h>
@@ -23,33 +23,33 @@ uint16_t io_bit_map_offset;
 } __attribute__((__packed__));
 #else
 struct i386_tss {
-int		back_link;
-int		esp0;
-int		ss0;
-int		esp1;
-int		ss1;
-int		esp2;
-int		ss2;
-int		cr3;
-int		eip;
-int		eflags;
-int		eax;
-int		ecx;
-int		edx;
-int		ebx;
-int		esp;
-int		ebp;
-int		esi;
-int		edi;
-int		es;
-int		cs;
-int		ss;
-int		ds;
-int		fs;
-int		gs;
-int		ldt;
-unsigned short	trace_trap;
-unsigned short	io_bit_map_offset;
+int back_link;
+int esp0;
+int ss0;
+int esp1;
+int ss1;
+int esp2;
+int ss2;
+int cr3;
+int eip;
+int eflags;
+int eax;
+int ecx;
+int edx;
+int ebx;
+int esp;
+int ebp;
+int esi;
+int edi;
+int es;
+int cs;
+int ss;
+int ds;
+int fs;
+int gs;
+int ldt;
+unsigned short trace_trap;
+unsigned short io_bit_map_offset;
 };
 #endif
 struct task_tss

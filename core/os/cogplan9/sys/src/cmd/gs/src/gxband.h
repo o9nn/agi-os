@@ -1,5 +1,5 @@
 #ifndef gxband_INCLUDED
-#  define gxband_INCLUDED
+# define gxband_INCLUDED
 #include "gxclio.h"
 typedef struct gx_band_params_s {
 bool page_uses_transparency;

@@ -12,43 +12,43 @@ static int icvt_p(FILE *f, va_list *args, int store, int width, int type);
 static int icvt_s(FILE *f, va_list *args, int store, int width, int type);
 static int icvt_u(FILE *f, va_list *args, int store, int width, int type);
 static int (*icvt[])(FILE *, va_list *, int, int, int)={
-0,	0,	0,	0,	0,	0,	0,	0,
-0,	0,	0,	0,	0,	0,	0,	0,
-0,	0,	0,	0,	0,	0,	0,	0,
-0,	0,	0,	0,	0,	0,	0,	0,
-0,	0,	0,	0,	0,	0,	0,	0,
-0,	0,	0,	0,	0,	0,	0,	0,
-0,	0,	0,	0,	0,	0,	0,	0,
-0,	0,	0,	0,	0,	0,	0,	0,
-0,	0,	0,	0,	0,	icvt_f,	0,	icvt_f,
-0,	0,	0,	0,	0,	0,	0,	0,
-0,	0,	0,	0,	0,	0,	0,	0,
-icvt_x,	0,	0,	icvt_sq,0,	0,	0,	0,
-0,	0,	0,	icvt_c,	icvt_d,	icvt_f,	icvt_f,	icvt_f,
-0,	icvt_i,	0,	0,	0,	0,	icvt_n,	icvt_o,
-icvt_p,	0,	0,	icvt_s,	0,	icvt_u,	0,	0,
-icvt_x,	0,	0,	0,	0,	0,	0,	0,
-0,	0,	0,	0,	0,	0,	0,	0,
-0,	0,	0,	0,	0,	0,	0,	0,
-0,	0,	0,	0,	0,	0,	0,	0,
-0,	0,	0,	0,	0,	0,	0,	0,
-0,	0,	0,	0,	0,	0,	0,	0,
-0,	0,	0,	0,	0,	0,	0,	0,
-0,	0,	0,	0,	0,	0,	0,	0,
-0,	0,	0,	0,	0,	0,	0,	0,
-0,	0,	0,	0,	0,	0,	0,	0,
-0,	0,	0,	0,	0,	0,	0,	0,
-0,	0,	0,	0,	0,	0,	0,	0,
-0,	0,	0,	0,	0,	0,	0,	0,
-0,	0,	0,	0,	0,	0,	0,	0,
-0,	0,	0,	0,	0,	0,	0,	0,
-0,	0,	0,	0,	0,	0,	0,	0,
-0,	0,	0,	0,	0,	0,	0,	0,
+0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, icvt_f, 0, icvt_f,
+0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0,
+icvt_x, 0, 0, icvt_sq,0, 0, 0, 0,
+0, 0, 0, icvt_c, icvt_d, icvt_f, icvt_f, icvt_f,
+0, icvt_i, 0, 0, 0, 0, icvt_n, icvt_o,
+icvt_p, 0, 0, icvt_s, 0, icvt_u, 0, 0,
+icvt_x, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0,
 };
-#define	ngetc(f)		(nread++, getc(f))
-#define	nungetc(c, f)		(--nread, ungetc((c), f))
-#define	wgetc(c, f, out)	if(width--==0) goto out; (c)=ngetc(f)
-#define	wungetc(c, f)		(++width, nungetc(c, f))
+#define ngetc(f) (nread++, getc(f))
+#define nungetc(c, f) (--nread, ungetc((c), f))
+#define wgetc(c, f, out) if(width--==0) goto out; (c)=ngetc(f)
+#define wungetc(c, f) (++width, nungetc(c, f))
 static int nread, ncvt;
 static const char *fmtp;
 int vfscanf(FILE *f, const char *s, va_list args){
@@ -110,9 +110,9 @@ case 'L': *va_arg(*args, long *)=nread; break;
 }
 return 1;
 }
-#define	SIGNED		1
-#define	UNSIGNED	2
-#define	POINTER		3
+#define SIGNED 1
+#define UNSIGNED 2
+#define POINTER 3
 static int icvt_fixed(FILE *f, va_list *args,
 int store, int width, int type, int unsgned, int base){
 unsigned long int num=0;
@@ -172,10 +172,10 @@ if(store){
 switch(unsgned){
 case SIGNED:
 switch(type){
-case 'h': *va_arg(*args,  short *)=num*sign; break;
-case 'n': *va_arg(*args,  int *)=num*sign; break;
+case 'h': *va_arg(*args, short *)=num*sign; break;
+case 'n': *va_arg(*args, int *)=num*sign; break;
 case 'l':
-case 'L': *va_arg(*args,  long *)=num*sign; break;
+case 'L': *va_arg(*args, long *)=num*sign; break;
 }
 break;
 case UNSIGNED:
@@ -210,7 +210,7 @@ return icvt_fixed(f, args, store, width, type, UNSIGNED, 10);
 static int icvt_p(FILE *f, va_list *args, int store, int width, int type){
 return icvt_fixed(f, args, store, width, type, POINTER, 16);
 }
-#define	NBUF	509
+#define NBUF 509
 static int icvt_f(FILE *f, va_list *args, int store, int width, int type){
 char buf[NBUF+1];
 char *s=buf;

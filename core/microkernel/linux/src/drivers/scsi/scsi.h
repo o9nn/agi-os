@@ -12,55 +12,55 @@ extern void scsi_make_blocked_list(void);
 extern volatile int in_scan_scsis;
 extern const unsigned char scsi_command_size[8];
 #define COMMAND_SIZE(opcode) scsi_command_size[((opcode) >> 5) & 7]
-#define IDENTIFY_BASE       0x80
-#define IDENTIFY(can_disconnect, lun)   (IDENTIFY_BASE |\
-((can_disconnect) ?  0x40 : 0) |\
+#define IDENTIFY_BASE 0x80
+#define IDENTIFY(can_disconnect, lun) (IDENTIFY_BASE |\
+((can_disconnect) ? 0x40 : 0) |\
 ((lun) & 0x07))
 #define MAX_SCSI_DEVICE_CODE 10
 extern const char *const scsi_device_types[MAX_SCSI_DEVICE_CODE];
-#define DID_OK          0x00
-#define DID_NO_CONNECT  0x01
-#define DID_BUS_BUSY    0x02
-#define DID_TIME_OUT    0x03
-#define DID_BAD_TARGET  0x04
-#define DID_ABORT       0x05
-#define DID_PARITY      0x06
-#define DID_ERROR       0x07
-#define DID_RESET       0x08
-#define DID_BAD_INTR    0x09
-#define DRIVER_OK       0x00
-#define DRIVER_BUSY         0x01
-#define DRIVER_SOFT         0x02
-#define DRIVER_MEDIA        0x03
-#define DRIVER_ERROR        0x04
-#define DRIVER_INVALID      0x05
-#define DRIVER_TIMEOUT      0x06
-#define DRIVER_HARD         0x07
-#define DRIVER_SENSE	    0x08
-#define SUGGEST_RETRY       0x10
-#define SUGGEST_ABORT       0x20
-#define SUGGEST_REMAP       0x30
-#define SUGGEST_DIE         0x40
-#define SUGGEST_SENSE       0x80
-#define SUGGEST_IS_OK       0xff
-#define DRIVER_MASK         0x0f
-#define SUGGEST_MASK        0xf0
-#define MAX_COMMAND_SIZE    12
-#define SCSI_UNKNOWN    0
-#define SCSI_1          1
-#define SCSI_1_CCS      2
-#define SCSI_2          3
-#define SCSI_MAN_UNKNOWN     0
-#define SCSI_MAN_NEC         1
-#define SCSI_MAN_TOSHIBA     2
-#define SCSI_MAN_NEC_OLDCDR  3
-#define SCSI_MAN_SONY        4
-#define SCSI_MAN_PIONEER     5
-#define WAS_RESET       0x01
-#define WAS_TIMEDOUT    0x02
-#define WAS_SENSE       0x04
-#define IS_RESETTING    0x08
-#define IS_ABORTING     0x10
+#define DID_OK 0x00
+#define DID_NO_CONNECT 0x01
+#define DID_BUS_BUSY 0x02
+#define DID_TIME_OUT 0x03
+#define DID_BAD_TARGET 0x04
+#define DID_ABORT 0x05
+#define DID_PARITY 0x06
+#define DID_ERROR 0x07
+#define DID_RESET 0x08
+#define DID_BAD_INTR 0x09
+#define DRIVER_OK 0x00
+#define DRIVER_BUSY 0x01
+#define DRIVER_SOFT 0x02
+#define DRIVER_MEDIA 0x03
+#define DRIVER_ERROR 0x04
+#define DRIVER_INVALID 0x05
+#define DRIVER_TIMEOUT 0x06
+#define DRIVER_HARD 0x07
+#define DRIVER_SENSE 0x08
+#define SUGGEST_RETRY 0x10
+#define SUGGEST_ABORT 0x20
+#define SUGGEST_REMAP 0x30
+#define SUGGEST_DIE 0x40
+#define SUGGEST_SENSE 0x80
+#define SUGGEST_IS_OK 0xff
+#define DRIVER_MASK 0x0f
+#define SUGGEST_MASK 0xf0
+#define MAX_COMMAND_SIZE 12
+#define SCSI_UNKNOWN 0
+#define SCSI_1 1
+#define SCSI_1_CCS 2
+#define SCSI_2 3
+#define SCSI_MAN_UNKNOWN 0
+#define SCSI_MAN_NEC 1
+#define SCSI_MAN_TOSHIBA 2
+#define SCSI_MAN_NEC_OLDCDR 3
+#define SCSI_MAN_SONY 4
+#define SCSI_MAN_PIONEER 5
+#define WAS_RESET 0x01
+#define WAS_TIMEDOUT 0x02
+#define WAS_SENSE 0x04
+#define IS_RESETTING 0x08
+#define IS_ABORTING 0x10
 #define ASKED_FOR_SENSE 0x20
 typedef struct scsi_device {
 struct scsi_device * next;
@@ -98,13 +98,13 @@ unsigned was_reset:1;
 unsigned expecting_cc_ua:1;
 } Scsi_Device;
 #define status_byte(result) (((result) >> 1) & 0x1f)
-#define msg_byte(result)    (((result) >> 8) & 0xff)
-#define host_byte(result)   (((result) >> 16) & 0xff)
+#define msg_byte(result) (((result) >> 8) & 0xff)
+#define host_byte(result) (((result) >> 16) & 0xff)
 #define driver_byte(result) (((result) >> 24) & 0xff)
-#define suggestion(result)  (driver_byte(result) & SUGGEST_MASK)
-#define sense_class(sense)  (((sense) >> 4) & 0x7)
-#define sense_error(sense)  ((sense) & 0xf)
-#define sense_valid(sense)  ((sense) & 0x80);
+#define suggestion(result) (driver_byte(result) & SUGGEST_MASK)
+#define sense_class(sense) (((sense) >> 4) & 0x7)
+#define sense_error(sense) ((sense) & 0xf)
+#define sense_valid(sense) ((sense) & 0x80);
 extern Scsi_Device * scsi_devices;
 extern struct hd_struct * sd;
 #if defined(MAJOR_NR) && (MAJOR_NR == SCSI_DISK_MAJOR)
@@ -112,7 +112,7 @@ extern struct hd_struct * sd;
 #endif
 extern int scsi_dev_init (void);
 struct scatterlist {
-char *  address;
+char * address;
 char * alt_address;
 unsigned int length;
 };
@@ -135,15 +135,15 @@ unsigned int length;
 #define SCSI_RESET_WAKEUP 4
 #define SCSI_RESET_NOT_RUNNING 5
 #define SCSI_RESET_ERROR 6
-#define SCSI_RESET_SYNCHRONOUS		0x01
-#define SCSI_RESET_ASYNCHRONOUS		0x02
-#define SCSI_RESET_SUGGEST_BUS_RESET	0x04
-#define SCSI_RESET_SUGGEST_HOST_RESET	0x08
+#define SCSI_RESET_SYNCHRONOUS 0x01
+#define SCSI_RESET_ASYNCHRONOUS 0x02
+#define SCSI_RESET_SUGGEST_BUS_RESET 0x04
+#define SCSI_RESET_SUGGEST_HOST_RESET 0x08
 #define SCSI_RESET_BUS_RESET 0x100
 #define SCSI_RESET_HOST_RESET 0x200
-#define SCSI_RESET_ACTION   0xff
-void *   scsi_malloc(unsigned int);
-int      scsi_free(void *, unsigned int);
+#define SCSI_RESET_ACTION 0xff
+void * scsi_malloc(unsigned int);
+int scsi_free(void *, unsigned int);
 extern unsigned int dma_free_sectors;
 extern unsigned int need_isa_buffer;
 typedef struct scsi_pointer {
@@ -272,54 +272,54 @@ wake_up(&wait_for_request);
 wake_up(&SCpnt->device->device_wait);
 return NULL;
 }
-#define INIT_SCSI_REQUEST       \
-if (!CURRENT) {             \
-CLEAR_INTR;             \
-restore_flags(flags);	\
-return;                 \
-}                           \
-if (MAJOR(CURRENT->rq_dev) != MAJOR_NR)           \
+#define INIT_SCSI_REQUEST \
+if (!CURRENT) { \
+CLEAR_INTR; \
+restore_flags(flags); \
+return; \
+} \
+if (MAJOR(CURRENT->rq_dev) != MAJOR_NR) \
 panic(DEVICE_NAME ": request list destroyed");\
-if (CURRENT->bh) {                                \
-if (!buffer_locked(CURRENT->bh))              \
-panic(DEVICE_NAME ": block not locked");  \
+if (CURRENT->bh) { \
+if (!buffer_locked(CURRENT->bh)) \
+panic(DEVICE_NAME ": block not locked"); \
 }
 #endif
 #ifdef MACH
-#define SCSI_SLEEP(QUEUE, CONDITION) {		    \
-if (CONDITION) {			            \
-struct wait_queue wait = { NULL, NULL};     \
-add_wait_queue(QUEUE, &wait);		    \
-for(;;) {			            \
-if (CONDITION) {		            \
-if (intr_count)	                    \
+#define SCSI_SLEEP(QUEUE, CONDITION) { \
+if (CONDITION) { \
+struct wait_queue wait = { NULL, NULL}; \
+add_wait_queue(QUEUE, &wait); \
+for(;;) { \
+if (CONDITION) { \
+if (intr_count) \
 panic("scsi: trying to call schedule() in interrupt" \
-", file %s, line %d.\n", __FILE__, __LINE__);  \
-schedule();			\
-}				\
-else			        \
-break;      		\
-}			        \
+", file %s, line %d.\n", __FILE__, __LINE__); \
+schedule(); \
+} \
+else \
+break; \
+} \
 remove_wait_queue(QUEUE, &wait);\
 }; }
 #else
-#define SCSI_SLEEP(QUEUE, CONDITION) {		    \
-if (CONDITION) {			            \
-struct wait_queue wait = { current, NULL};  \
-add_wait_queue(QUEUE, &wait);		    \
-for(;;) {			            \
-current->state = TASK_UNINTERRUPTIBLE;	    \
-if (CONDITION) {		            \
-if (intr_count)	                    \
+#define SCSI_SLEEP(QUEUE, CONDITION) { \
+if (CONDITION) { \
+struct wait_queue wait = { current, NULL}; \
+add_wait_queue(QUEUE, &wait); \
+for(;;) { \
+current->state = TASK_UNINTERRUPTIBLE; \
+if (CONDITION) { \
+if (intr_count) \
 panic("scsi: trying to call schedule() in interrupt" \
-", file %s, line %d.\n", __FILE__, __LINE__);  \
-schedule();			\
-}				\
-else			        \
-break;      		\
-}			        \
+", file %s, line %d.\n", __FILE__, __LINE__); \
+schedule(); \
+} \
+else \
+break; \
+} \
 remove_wait_queue(QUEUE, &wait);\
-current->state = TASK_RUNNING;	\
+current->state = TASK_RUNNING; \
 }; }
 #endif
 #endif

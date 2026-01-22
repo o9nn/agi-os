@@ -8,44 +8,44 @@
 #include "y.tab.h"
 struct keywd
 {
-char	*name;
-int	terminal;
+char *name;
+int terminal;
 }
 keywds[] =
 {
-"do",		Tdo,
-"if",		Tif,
-"then",		Tthen,
-"else",		Telse,
-"while",	Twhile,
-"loop",		Tloop,
-"head",		Thead,
-"tail",		Ttail,
-"append",	Tappend,
-"defn",		Tfn,
-"return",	Tret,
-"local",	Tlocal,
-"aggr",		Tcomplex,
-"union",	Tcomplex,
-"adt",		Tcomplex,
-"complex",	Tcomplex,
-"delete",	Tdelete,
-"whatis",	Twhat,
-"eval",		Teval,
-"builtin",	Tbuiltin,
-0,		0
+"do", Tdo,
+"if", Tif,
+"then", Tthen,
+"else", Telse,
+"while", Twhile,
+"loop", Tloop,
+"head", Thead,
+"tail", Ttail,
+"append", Tappend,
+"defn", Tfn,
+"return", Tret,
+"local", Tlocal,
+"aggr", Tcomplex,
+"union", Tcomplex,
+"adt", Tcomplex,
+"complex", Tcomplex,
+"delete", Tdelete,
+"whatis", Twhat,
+"eval", Teval,
+"builtin", Tbuiltin,
+0, 0
 };
 char cmap[256] =
 {
-['0']	'\0'+1,
-['n']	'\n'+1,
-['r']	'\r'+1,
-['t']	'\t'+1,
-['b']	'\b'+1,
-['f']	'\f'+1,
-['a']	'\a'+1,
-['v']	'\v'+1,
-['\\']	'\\'+1,
+['0'] '\0'+1,
+['n'] '\n'+1,
+['r'] '\r'+1,
+['t'] '\t'+1,
+['b'] '\b'+1,
+['f'] '\f'+1,
+['a'] '\a'+1,
+['v'] '\v'+1,
+['\\'] '\\'+1,
 ['"']	'"'+1,
 };
 void
@@ -58,12 +58,12 @@ enter(keywds[i].name, keywds[i].terminal);
 typedef struct IOstack IOstack;
 struct IOstack
 {
-char	*name;
-int	line;
-char	*text;
-char	*ip;
-Biobuf	*fin;
-IOstack	*prev;
+char *name;
+int line;
+char *text;
+char *ip;
+Biobuf *fin;
+IOstack *prev;
 };
 IOstack *lexio;
 void
@@ -158,7 +158,7 @@ break;
 i += snprint(buf+i, sizeof(buf)-i, " [%s:%d]", e->name, e->line);
 }
 } else
-snprint(buf, sizeof(buf),  "no file:0");
+snprint(buf, sizeof(buf), "no file:0");
 fmtstrcpy(f, buf);
 return 0;
 }

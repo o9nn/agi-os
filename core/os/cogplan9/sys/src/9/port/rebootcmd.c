@@ -1,18 +1,18 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	<a.out.h>
-#include 	"/sys/src/libmach/elf.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include <a.out.h>
+#include "/sys/src/libmach/elf.h"
 enum {
-Ehdr32sz	= 52,
-Phdr32sz	= 32,
-Shdr32sz	= 40,
-Ehdr64sz	= 64,
-Phdr64sz	= 56,
-Shdr64sz	= 64,
+Ehdr32sz = 52,
+Phdr32sz = 32,
+Shdr32sz = 40,
+Ehdr64sz = 64,
+Phdr64sz = 56,
+Shdr64sz = 64,
 };
 static uchar elfident[] = {
 '\177', 'E', 'L', 'F',

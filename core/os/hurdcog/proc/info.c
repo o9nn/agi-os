@@ -314,7 +314,7 @@ return 0;
 }
 return get_string_array (p->p_task, p->p_envp, (vm_address_t *)buf, buflen);
 }
-#define PI_FETCH_THREAD_DETAILS  \
+#define PI_FETCH_THREAD_DETAILS \
 (PI_FETCH_THREAD_SCHED | PI_FETCH_THREAD_BASIC | PI_FETCH_THREAD_WAITS)
 kern_return_t
 S_proc_getprocinfo (struct proc *callerp,

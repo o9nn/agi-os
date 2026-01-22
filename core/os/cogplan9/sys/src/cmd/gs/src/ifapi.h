@@ -1,5 +1,5 @@
 #ifndef ifapi_INCLUDED
-#  define ifapi_INCLUDED
+# define ifapi_INCLUDED
 #include "iplugin.h"
 typedef int FracInt;
 typedef int FAPI_retcode;
@@ -68,9 +68,9 @@ void *client_font_data2;
 const void *char_data;
 int char_data_len;
 unsigned short (*get_word )(FAPI_font *ff, fapi_font_feature var_id, int index);
-unsigned long  (*get_long )(FAPI_font *ff, fapi_font_feature var_id, int index);
-float          (*get_float)(FAPI_font *ff, fapi_font_feature var_id, int index);
-unsigned short (*get_subr) (FAPI_font *ff, int index,     byte *buf, ushort buf_length);
+unsigned long (*get_long )(FAPI_font *ff, fapi_font_feature var_id, int index);
+float (*get_float)(FAPI_font *ff, fapi_font_feature var_id, int index);
+unsigned short (*get_subr) (FAPI_font *ff, int index, byte *buf, ushort buf_length);
 unsigned short (*get_glyph)(FAPI_font *ff, int char_code, byte *buf, ushort buf_length);
 unsigned short (*serialize_tt_font)(FAPI_font *ff, void *buf, int buf_size);
 };
@@ -78,9 +78,9 @@ typedef struct FAPI_path_s FAPI_path;
 struct FAPI_path_s {
 void *olh;
 int shift;
-int (*moveto   )(FAPI_path *, FracInt, FracInt);
-int (*lineto   )(FAPI_path *, FracInt, FracInt);
-int (*curveto  )(FAPI_path *, FracInt, FracInt, FracInt, FracInt, FracInt, FracInt);
+int (*moveto )(FAPI_path *, FracInt, FracInt);
+int (*lineto )(FAPI_path *, FracInt, FracInt);
+int (*curveto )(FAPI_path *, FracInt, FracInt, FracInt, FracInt, FracInt, FracInt);
 int (*closepath)(FAPI_path *);
 };
 typedef struct FAPI_font_scale_s {

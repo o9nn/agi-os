@@ -1,16 +1,16 @@
 #!/bin/bash
 cd "$(dirname "$0")/docker-simple" || exit
 if ! command -v docker &> /dev/null; then
-    echo "Docker is not installed or not in PATH. Please install Docker first."
-    exit 1
+echo "Docker is not installed or not in PATH. Please install Docker first."
+exit 1
 fi
 if command -v docker-compose &> /dev/null; then
-    COMPOSE_CMD="docker-compose"
+COMPOSE_CMD="docker-compose"
 elif command -v docker &> /dev/null && docker compose version &> /dev/null; then
-    COMPOSE_CMD="docker compose"
+COMPOSE_CMD="docker compose"
 else
-    echo "Docker Compose is not installed. Please install Docker Compose first."
-    exit 1
+echo "Docker Compose is not installed. Please install Docker Compose first."
+exit 1
 fi
 echo "Starting simplified Docker container..."
 echo "This will use the configuration in the docker-simple directory"

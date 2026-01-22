@@ -5,10 +5,10 @@
 #include "DeskLib:SWI.h"
 #include "antiword.h"
 #if !defined(DrawFile_Render)
-#define DrawFile_Render		0x045540
+#define DrawFile_Render 0x045540
 #endif
 #if !defined(JPEG_Info)
-#define JPEG_Info		0x049980
+#define JPEG_Info 0x049980
 #endif
 void
 werr(int iFatal, const char *szFormat, ...)
@@ -29,8 +29,8 @@ exit(iFatal);
 int
 iGetFiletype(const char *szFilename)
 {
-os_error	*e;
-int		iType;
+os_error *e;
+int iType;
 fail(szFilename == NULL || szFilename[0] == '\0');
 e = SWI(2, 7, SWI_OS_File | XOS_Bit,
 23, szFilename,
@@ -44,7 +44,7 @@ return -1;
 void
 vSetFiletype(const char *szFilename, int iFiletype)
 {
-os_error	*e;
+os_error *e;
 fail(szFilename == NULL || szFilename[0] == '\0');
 if (iFiletype < 0x000 || iFiletype > 0xfff) {
 return;
@@ -69,10 +69,10 @@ break;
 BOOL
 bMakeDirectory(const char *szFilename)
 {
-os_error	*e;
-char	*pcLastDot;
-int	iObjectType;
-char	szDirectory[PATH_MAX+1];
+os_error *e;
+char *pcLastDot;
+int iObjectType;
+char szDirectory[PATH_MAX+1];
 DBG_MSG("bMakeDirectory");
 fail(szFilename == NULL || szFilename[0] == '\0');
 DBG_MSG(szFilename);
@@ -115,8 +115,8 @@ return TRUE;
 int
 iReadCurrentAlphabetNumber(void)
 {
-os_error	*e;
-int		iAlphabetNumber;
+os_error *e;
+int iAlphabetNumber;
 e = SWI(2, 2, SWI_OS_Byte | XOS_Bit,
 71, 127,
 NULL, &iAlphabetNumber);
@@ -129,8 +129,8 @@ return -1;
 int
 iGetRiscOsVersion(void)
 {
-os_error	*e;
-int		iVersion;
+os_error *e;
+int iVersion;
 e = SWI(3, 2, SWI_OS_Byte | XOS_Bit,
 129, 0, 0xff,
 NULL, &iVersion);
@@ -169,8 +169,8 @@ return 0;
 BOOL
 bGetJpegInfo(UCHAR *pucJpeg, size_t tJpegSize)
 {
-os_error	*e;
-int	iReg0, iReg4, iReg5;
+os_error *e;
+int iReg0, iReg4, iReg5;
 e = SWI(3, 6, JPEG_Info | XOS_Bit,
 0x00, pucJpeg, tJpegSize,
 &iReg0, NULL, NULL, NULL, &iReg4, &iReg5);

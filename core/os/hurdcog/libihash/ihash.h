@@ -1,13 +1,13 @@
 #ifndef _HURD_IHASH_H
-#define _HURD_IHASH_H	1
+#define _HURD_IHASH_H 1
 #include <errno.h>
 #include <sys/types.h>
 #include <limits.h>
 #include <stdint.h>
 #include <stddef.h>
 typedef void *hurd_ihash_value_t;
-#define _HURD_IHASH_EMPTY	((hurd_ihash_value_t) 0)
-#define _HURD_IHASH_DELETED	((hurd_ihash_value_t) -1)
+#define _HURD_IHASH_EMPTY ((hurd_ihash_value_t) 0)
+#define _HURD_IHASH_DELETED ((hurd_ihash_value_t) -1)
 static inline int
 hurd_ihash_value_valid (hurd_ihash_value_t value)
 {
@@ -38,22 +38,22 @@ hurd_ihash_fct_cmp_t fct_cmp;
 size_t nr_free;
 };
 typedef struct hurd_ihash *hurd_ihash_t;
-#define HURD_IHASH_MIN_SIZE	32
+#define HURD_IHASH_MIN_SIZE 32
 #define HURD_IHASH_MAX_LOAD_DEFAULT 96
-#define HURD_IHASH_NO_LOCP	INTPTR_MIN
-#define HURD_IHASH_INITIALIZER(locp_offs)				\
-{ .nr_items = 0, .size = 0, .cleanup = (hurd_ihash_cleanup_t) 0,	\
-.max_load = HURD_IHASH_MAX_LOAD_DEFAULT,				\
+#define HURD_IHASH_NO_LOCP INTPTR_MIN
+#define HURD_IHASH_INITIALIZER(locp_offs) \
+{ .nr_items = 0, .size = 0, .cleanup = (hurd_ihash_cleanup_t) 0, \
+.max_load = HURD_IHASH_MAX_LOAD_DEFAULT, \
 .locp_offset = (locp_offs)}
-#define HURD_IHASH_INITIALIZER_GKI(locp_offs, f_clean, f_clean_data,	\
-f_hash, f_compare)			\
-{ .nr_items = 0, .size = 0,						\
-.cleanup = (f_clean),						\
-.cleanup_data = (f_clean_data),					\
-.max_load = HURD_IHASH_MAX_LOAD_DEFAULT,				\
-.locp_offset = (locp_offs),						\
-.fct_hash = (f_hash),						\
-.fct_cmp = (f_compare)}						\
+#define HURD_IHASH_INITIALIZER_GKI(locp_offs, f_clean, f_clean_data, \
+f_hash, f_compare) \
+{ .nr_items = 0, .size = 0, \
+.cleanup = (f_clean), \
+.cleanup_data = (f_clean_data), \
+.max_load = HURD_IHASH_MAX_LOAD_DEFAULT, \
+.locp_offset = (locp_offs), \
+.fct_hash = (f_hash), \
+.fct_cmp = (f_compare)} \
 void hurd_ihash_init (hurd_ihash_t ht, intptr_t locp_offs);
 void hurd_ihash_destroy (hurd_ihash_t ht);
 error_t hurd_ihash_create (hurd_ihash_t *ht, intptr_t locp_offs);
@@ -85,22 +85,22 @@ hurd_ihash_value_t hurd_ihash_find (hurd_ihash_t ht, hurd_ihash_key_t key);
 hurd_ihash_value_t hurd_ihash_locp_find (hurd_ihash_t ht,
 hurd_ihash_key_t key,
 hurd_ihash_locp_t *slot);
-#define HURD_IHASH_ITERATE(ht, val)					\
-for (hurd_ihash_value_t val,						\
-*_hurd_ihash_valuep = (ht)->size ? &(ht)->items[0].value : 0;	\
-(ht)->size							\
-&& (size_t) ((_hurd_ihash_item_t) _hurd_ihash_valuep		\
-- &(ht)->items[0])				\
-< (ht)->size						\
-&& (val = *_hurd_ihash_valuep, 1);				\
-_hurd_ihash_valuep = (hurd_ihash_value_t *)			\
-(((_hurd_ihash_item_t) _hurd_ihash_valuep) + 1))		\
+#define HURD_IHASH_ITERATE(ht, val) \
+for (hurd_ihash_value_t val, \
+*_hurd_ihash_valuep = (ht)->size ? &(ht)->items[0].value : 0; \
+(ht)->size \
+&& (size_t) ((_hurd_ihash_item_t) _hurd_ihash_valuep \
+- &(ht)->items[0]) \
+< (ht)->size \
+&& (val = *_hurd_ihash_valuep, 1); \
+_hurd_ihash_valuep = (hurd_ihash_value_t *) \
+(((_hurd_ihash_item_t) _hurd_ihash_valuep) + 1)) \
 if (val != _HURD_IHASH_EMPTY && val != _HURD_IHASH_DELETED)
-#define HURD_IHASH_ITERATE_ITEMS(ht, item)                              \
-for (_hurd_ihash_item_t item = (ht)->size? &(ht)->items[0]: 0;	\
-(ht)->size && item - &(ht)->items[0] < (ht)->size;               \
-item++)                                                          \
-if (item->value != _HURD_IHASH_EMPTY &&                             \
+#define HURD_IHASH_ITERATE_ITEMS(ht, item) \
+for (_hurd_ihash_item_t item = (ht)->size? &(ht)->items[0]: 0; \
+(ht)->size && item - &(ht)->items[0] < (ht)->size; \
+item++) \
+if (item->value != _HURD_IHASH_EMPTY && \
 item->value != _HURD_IHASH_DELETED)
 int hurd_ihash_remove (hurd_ihash_t ht, hurd_ihash_key_t key);
 void hurd_ihash_locp_remove (hurd_ihash_t ht, hurd_ihash_locp_t locp);

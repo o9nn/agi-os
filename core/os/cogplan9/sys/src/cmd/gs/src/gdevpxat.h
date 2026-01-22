@@ -1,5 +1,5 @@
 #ifndef gdevpxat_INCLUDED
-#  define gdevpxat_INCLUDED
+# define gdevpxat_INCLUDED
 typedef enum {
 pxaPaletteDepth = 2,
 pxaColorSpace,

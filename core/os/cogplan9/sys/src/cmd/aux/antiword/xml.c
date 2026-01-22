@@ -1,115 +1,115 @@
 #include <string.h>
 #include "antiword.h"
-#define vAddEndTagsUntil1(p,t)	vAddEndTagsUntil2(p,t,TAG_NOTAG)
+#define vAddEndTagsUntil1(p,t) vAddEndTagsUntil2(p,t,TAG_NOTAG)
 #if defined(DEBUG)
-#define vStackTrace()	__vStackTrace(__LINE__)
+#define vStackTrace() __vStackTrace(__LINE__)
 #else
 #define vStackTrace()
 #endif
-static encoding_type	eEncoding = encoding_neutral;
-static int	iWordVersion = -1;
-static BOOL	bOldMacFile = FALSE;
-static BOOL	bEmphasisOpen = FALSE;
-static BOOL	bSuperscriptOpen = FALSE;
-static BOOL	bSubscriptOpen = FALSE;
-static BOOL	bTitleOpen = FALSE;
-static BOOL	bTableOpen = FALSE;
-static BOOL	bFootnoteOpen = FALSE;
-static UINT	uiParagraphLevel = 0;
-static UINT	uiListLevel = 0;
-static BOOL	bEmptyListLevel = TRUE;
-static USHORT	usHeaderLevelCurrent = 0;
-static BOOL	bEmptyHeaderLevel = TRUE;
-static int	iTableColumnsCurrent = 0;
-static UINT	uiFootnoteNumber = 0;
-#define INITIAL_STACK_SIZE	10
+static encoding_type eEncoding = encoding_neutral;
+static int iWordVersion = -1;
+static BOOL bOldMacFile = FALSE;
+static BOOL bEmphasisOpen = FALSE;
+static BOOL bSuperscriptOpen = FALSE;
+static BOOL bSubscriptOpen = FALSE;
+static BOOL bTitleOpen = FALSE;
+static BOOL bTableOpen = FALSE;
+static BOOL bFootnoteOpen = FALSE;
+static UINT uiParagraphLevel = 0;
+static UINT uiListLevel = 0;
+static BOOL bEmptyListLevel = TRUE;
+static USHORT usHeaderLevelCurrent = 0;
+static BOOL bEmptyHeaderLevel = TRUE;
+static int iTableColumnsCurrent = 0;
+static UINT uiFootnoteNumber = 0;
+#define INITIAL_STACK_SIZE 10
 #if defined(DEBUG)
-#define EXTENSION_STACK_SIZE	 2
+#define EXTENSION_STACK_SIZE 2
 #else
-#define EXTENSION_STACK_SIZE	10
+#define EXTENSION_STACK_SIZE 10
 #endif
-static UCHAR	*aucStack = NULL;
-static size_t	tStacksize = 0;
-static size_t	tStackNextFree = 0;
-#define TAG_NOTAG		(UCHAR)0
-#define TAG_AUTHOR		(UCHAR)1
-#define TAG_BEGINPAGE		(UCHAR)2
-#define TAG_BOOK		(UCHAR)3
-#define TAG_BOOKINFO		(UCHAR)4
-#define TAG_CHAPTER		(UCHAR)5
-#define TAG_COLSPEC		(UCHAR)6
-#define TAG_CORPNAME		(UCHAR)7
-#define TAG_DATE		(UCHAR)8
-#define TAG_EMPHASIS		(UCHAR)9
-#define TAG_ENTRY		(UCHAR)10
-#define TAG_FILENAME		(UCHAR)11
-#define TAG_FOOTNOTE		(UCHAR)12
-#define TAG_INFORMALTABLE	(UCHAR)13
-#define TAG_ITEMIZEDLIST	(UCHAR)14
-#define TAG_LISTITEM		(UCHAR)15
-#define TAG_ORDEREDLIST		(UCHAR)16
-#define TAG_PARA		(UCHAR)17
-#define TAG_ROW			(UCHAR)18
-#define TAG_SECT1		(UCHAR)19
-#define TAG_SECT2		(UCHAR)20
-#define TAG_SECT3		(UCHAR)21
-#define TAG_SECT4		(UCHAR)22
-#define TAG_SECT5		(UCHAR)23
-#define TAG_SUBSCRIPT		(UCHAR)24
-#define TAG_SUBTITLE		(UCHAR)25
-#define TAG_SUPERSCRIPT		(UCHAR)26
-#define TAG_SURNAME		(UCHAR)27
-#define TAG_TBODY		(UCHAR)28
-#define TAG_TGROUP		(UCHAR)29
-#define TAG_TITLE		(UCHAR)30
+static UCHAR *aucStack = NULL;
+static size_t tStacksize = 0;
+static size_t tStackNextFree = 0;
+#define TAG_NOTAG (UCHAR)0
+#define TAG_AUTHOR (UCHAR)1
+#define TAG_BEGINPAGE (UCHAR)2
+#define TAG_BOOK (UCHAR)3
+#define TAG_BOOKINFO (UCHAR)4
+#define TAG_CHAPTER (UCHAR)5
+#define TAG_COLSPEC (UCHAR)6
+#define TAG_CORPNAME (UCHAR)7
+#define TAG_DATE (UCHAR)8
+#define TAG_EMPHASIS (UCHAR)9
+#define TAG_ENTRY (UCHAR)10
+#define TAG_FILENAME (UCHAR)11
+#define TAG_FOOTNOTE (UCHAR)12
+#define TAG_INFORMALTABLE (UCHAR)13
+#define TAG_ITEMIZEDLIST (UCHAR)14
+#define TAG_LISTITEM (UCHAR)15
+#define TAG_ORDEREDLIST (UCHAR)16
+#define TAG_PARA (UCHAR)17
+#define TAG_ROW (UCHAR)18
+#define TAG_SECT1 (UCHAR)19
+#define TAG_SECT2 (UCHAR)20
+#define TAG_SECT3 (UCHAR)21
+#define TAG_SECT4 (UCHAR)22
+#define TAG_SECT5 (UCHAR)23
+#define TAG_SUBSCRIPT (UCHAR)24
+#define TAG_SUBTITLE (UCHAR)25
+#define TAG_SUPERSCRIPT (UCHAR)26
+#define TAG_SURNAME (UCHAR)27
+#define TAG_TBODY (UCHAR)28
+#define TAG_TGROUP (UCHAR)29
+#define TAG_TITLE (UCHAR)30
 typedef struct docbooktags_tag {
-UCHAR	ucTagnumber;
-char	szTagname[15];
-BOOL	bAddNewlineStart;
-BOOL	bAddNewlineEnd;
+UCHAR ucTagnumber;
+char szTagname[15];
+BOOL bAddNewlineStart;
+BOOL bAddNewlineEnd;
 } docbooktags_type;
 static const docbooktags_type atDocBookTags[] = {
-{	TAG_NOTAG, 		"!ERROR!",	TRUE,	TRUE	},
-{	TAG_AUTHOR,		"author",	TRUE,	TRUE	},
-{	TAG_BEGINPAGE,		"beginpage",	TRUE,	TRUE	},
-{	TAG_BOOK, 		"book",		TRUE,	TRUE	},
-{	TAG_BOOKINFO, 		"bookinfo",	TRUE,	TRUE	},
-{	TAG_CHAPTER, 		"chapter",	TRUE,	TRUE	},
-{	TAG_COLSPEC,		"colspec",	TRUE,	TRUE	},
-{	TAG_CORPNAME,		"corpname",	FALSE,	FALSE	},
-{	TAG_DATE,		"date",		FALSE,	FALSE	},
-{	TAG_EMPHASIS,		"emphasis",	FALSE,	FALSE	},
-{	TAG_ENTRY,		"entry",	TRUE,	TRUE	},
-{	TAG_FILENAME,		"filename",	FALSE,	FALSE	},
-{	TAG_FOOTNOTE,		"footnote",	FALSE,	FALSE	},
-{	TAG_INFORMALTABLE,	"informaltable",TRUE,	TRUE	},
-{	TAG_ITEMIZEDLIST,	"itemizedlist",	TRUE,	TRUE	},
-{	TAG_LISTITEM,		"listitem",	TRUE,	TRUE	},
-{	TAG_ORDEREDLIST,	"orderedlist",	TRUE,	TRUE	},
-{	TAG_PARA, 		"para",		TRUE,	TRUE	},
-{	TAG_ROW,		"row",		TRUE,	TRUE	},
-{	TAG_SECT1, 		"sect1",	TRUE,	TRUE	},
-{	TAG_SECT2, 		"sect2",	TRUE,	TRUE	},
-{	TAG_SECT3, 		"sect3",	TRUE,	TRUE	},
-{	TAG_SECT4, 		"sect4",	TRUE,	TRUE	},
-{	TAG_SECT5, 		"sect5",	TRUE,	TRUE	},
-{	TAG_SUBSCRIPT,		"subscript",	FALSE,	FALSE	},
-{	TAG_SUBTITLE,		"subtitle",	FALSE,	FALSE	},
-{	TAG_SUPERSCRIPT,	"superscript",	FALSE,	FALSE	},
-{	TAG_SURNAME,		"surname",	FALSE,	FALSE	},
-{	TAG_TBODY,		"tbody",	TRUE,	TRUE	},
-{	TAG_TGROUP,		"tgroup",	TRUE,	TRUE	},
-{	TAG_TITLE, 		"title",	FALSE,	FALSE	},
+{ TAG_NOTAG, "!ERROR!", TRUE, TRUE },
+{ TAG_AUTHOR, "author", TRUE, TRUE },
+{ TAG_BEGINPAGE, "beginpage", TRUE, TRUE },
+{ TAG_BOOK, "book", TRUE, TRUE },
+{ TAG_BOOKINFO, "bookinfo", TRUE, TRUE },
+{ TAG_CHAPTER, "chapter", TRUE, TRUE },
+{ TAG_COLSPEC, "colspec", TRUE, TRUE },
+{ TAG_CORPNAME, "corpname", FALSE, FALSE },
+{ TAG_DATE, "date", FALSE, FALSE },
+{ TAG_EMPHASIS, "emphasis", FALSE, FALSE },
+{ TAG_ENTRY, "entry", TRUE, TRUE },
+{ TAG_FILENAME, "filename", FALSE, FALSE },
+{ TAG_FOOTNOTE, "footnote", FALSE, FALSE },
+{ TAG_INFORMALTABLE, "informaltable",TRUE, TRUE },
+{ TAG_ITEMIZEDLIST, "itemizedlist", TRUE, TRUE },
+{ TAG_LISTITEM, "listitem", TRUE, TRUE },
+{ TAG_ORDEREDLIST, "orderedlist", TRUE, TRUE },
+{ TAG_PARA, "para", TRUE, TRUE },
+{ TAG_ROW, "row", TRUE, TRUE },
+{ TAG_SECT1, "sect1", TRUE, TRUE },
+{ TAG_SECT2, "sect2", TRUE, TRUE },
+{ TAG_SECT3, "sect3", TRUE, TRUE },
+{ TAG_SECT4, "sect4", TRUE, TRUE },
+{ TAG_SECT5, "sect5", TRUE, TRUE },
+{ TAG_SUBSCRIPT, "subscript", FALSE, FALSE },
+{ TAG_SUBTITLE, "subtitle", FALSE, FALSE },
+{ TAG_SUPERSCRIPT, "superscript", FALSE, FALSE },
+{ TAG_SURNAME, "surname", FALSE, FALSE },
+{ TAG_TBODY, "tbody", TRUE, TRUE },
+{ TAG_TGROUP, "tgroup", TRUE, TRUE },
+{ TAG_TITLE, "title", FALSE, FALSE },
 };
-static void	vAddStartTag(diagram_type *, UCHAR, const char *);
-static void	vAddEndTag(diagram_type *, UCHAR);
-static void	vAddCombinedTag(diagram_type *, UCHAR, const char *);
-static void	vPrintChar(diagram_type *, char);
+static void vAddStartTag(diagram_type *, UCHAR, const char *);
+static void vAddEndTag(diagram_type *, UCHAR);
+static void vAddCombinedTag(diagram_type *, UCHAR, const char *);
+static void vPrintChar(diagram_type *, char);
 #if defined(DEBUG)
 static void
 vCheckTagTable(void)
 {
-size_t	tIndex;
+size_t tIndex;
 for (tIndex = 0; tIndex < elementsof(atDocBookTags); tIndex++) {
 if (tIndex != (size_t)atDocBookTags[tIndex].ucTagnumber) {
 DBG_DEC(tIndex);
@@ -120,7 +120,7 @@ werr(1, "Array atDocBookTags is broken");
 static void
 __vStackTrace(int iLine)
 {
-int	iIndex;
+int iIndex;
 fprintf(stderr, "%s[%3d]:\n", __FILE__, iLine);
 if (tStackNextFree == 0) {
 fprintf(stderr, "The stack is empty\n");
@@ -173,7 +173,7 @@ return aucStack[tStackNextFree - 1];
 static void
 vPrintLevel(FILE *pOutFile)
 {
-size_t	tIndex;
+size_t tIndex;
 fail(pOutFile == NULL);
 for (tIndex = 0; tIndex < tStackNextFree; tIndex++) {
 (void)putc(' ', pOutFile);
@@ -182,9 +182,9 @@ for (tIndex = 0; tIndex < tStackNextFree; tIndex++) {
 static void
 vPrintFootnote(diagram_type *pDiag, UINT uiFootnoteIndex)
 {
-const char	*szText, *pcTmp;
-BOOL	bSuScript;
-UCHAR	ucTopTag;
+const char *szText, *pcTmp;
+BOOL bSuScript;
+UCHAR ucTopTag;
 TRACE_MSG("vPrintFootnote");
 szText = szGetFootnootText(uiFootnoteIndex);
 if (szText == NULL) {
@@ -240,9 +240,9 @@ break;
 static void
 vPrintSpecialChar(diagram_type *pDiag, USHORT usChar)
 {
-ULONG   ulChar;
-size_t  tLen, tIndex;
-char    szResult[4];
+ULONG ulChar;
+size_t tLen, tIndex;
+char szResult[4];
 fail(pDiag == NULL);
 fail(pDiag->pOutFile == NULL);
 fail(iWordVersion < 0);
@@ -261,8 +261,8 @@ for (tIndex = 0; tIndex < tLen; tIndex++) {
 static void
 vPrintSpecialString(diagram_type *pDiag, const char *szString)
 {
-int	iIndex;
-USHORT	usChar;
+int iIndex;
+USHORT usChar;
 fail(pDiag == NULL);
 fail(pDiag->pOutFile == NULL);
 fail(szString == NULL);
@@ -359,7 +359,7 @@ break;
 static void
 vAddEndTag(diagram_type *pDiag, UCHAR ucTag)
 {
-UCHAR	ucTopTag;
+UCHAR ucTopTag;
 fail(pDiag == NULL);
 fail(pDiag->pOutFile == NULL);
 fail((size_t)ucTag >= elementsof(atDocBookTags));
@@ -440,7 +440,7 @@ break;
 static void
 vAddEndTagOptional(diagram_type *pDiag, UCHAR ucTag)
 {
-UCHAR	ucTopTag;
+UCHAR ucTopTag;
 ucTopTag = ucReadStack();
 if (ucTag == ucTopTag) {
 vAddEndTag(pDiag, ucTag);
@@ -471,7 +471,7 @@ pDiag->lXleft = 0;
 static void
 vAddEndTagsUntil2(diagram_type *pDiag, UCHAR ucTag1, UCHAR ucTag2)
 {
-UCHAR	ucTopTag;
+UCHAR ucTopTag;
 do {
 ucTopTag = ucReadStack();
 switch (ucTopTag) {
@@ -504,10 +504,10 @@ vAddEndTag(pDiag, ucTopTag);
 void
 vCreateBookIntro(diagram_type *pDiag, int iVersion)
 {
-const char	*szTitle, *szSubject, *szAuthor;
-const char	*szLastSaveDtm, *szCompany;
-const char	*szLanguage;
-char		szTmp[13];
+const char *szTitle, *szSubject, *szAuthor;
+const char *szLastSaveDtm, *szCompany;
+const char *szLanguage;
+char szTmp[13];
 fail(pDiag == NULL);
 fail(pDiag->pOutFile == NULL);
 fail(iVersion < 0);
@@ -611,11 +611,11 @@ static void
 vPrintXML(diagram_type *pDiag, const char *szString, size_t tStringLength,
 USHORT usFontstyle)
 {
-const char	*szAttr;
-int	iCount;
-size_t	tNextFree;
-BOOL	bNotReady, bEmphasisNew, bSuperscriptNew, bSubscriptNew;
-UCHAR	ucTopTag, aucStorage[3];
+const char *szAttr;
+int iCount;
+size_t tNextFree;
+BOOL bNotReady, bEmphasisNew, bSuperscriptNew, bSubscriptNew;
+UCHAR ucTopTag, aucStorage[3];
 fail(szString == NULL);
 if (szString == NULL || szString[0] == '\0' || tStringLength == 0) {
 return;
@@ -732,7 +732,7 @@ vAddStartTag(pDiag, TAG_PARA, NULL);
 void
 vEndOfParagraphXML(diagram_type *pDiag, UINT uiMaxLevel)
 {
-UCHAR	ucTopTag;
+UCHAR ucTopTag;
 fail(pDiag == NULL);
 if (uiParagraphLevel > uiMaxLevel) {
 DBG_DEC(uiParagraphLevel);
@@ -795,8 +795,8 @@ vAddCombinedTag(pDiag, TAG_BEGINPAGE, NULL);
 static void
 vCloseHeaderLevels(diagram_type *pDiag, USHORT usIstd)
 {
-BOOL	bNotReady;
-UCHAR	ucTopTag;
+BOOL bNotReady;
+UCHAR ucTopTag;
 DBG_MSG("vCloseHeaderLevels");
 DBG_DEC(usIstd);
 DBG_DEC(usHeaderLevelCurrent);
@@ -874,8 +874,8 @@ vAddStartTag(pDiag, TAG_TITLE, NULL);
 void
 vStartOfListXML(diagram_type *pDiag, UCHAR ucNFC, BOOL bIsEndOfTable)
 {
-const char	*szAttr;
-UCHAR		ucTag;
+const char *szAttr;
+UCHAR ucTag;
 fail(pDiag == NULL);
 if (bIsEndOfTable) {
 vEndOfTableXML(pDiag);
@@ -943,8 +943,8 @@ vStackTrace();
 void
 vStartOfListItemXML(diagram_type *pDiag, BOOL bNoMarks)
 {
-const char	*szAttr;
-UCHAR	ucTopTag;
+const char *szAttr;
+UCHAR ucTopTag;
 fail(pDiag == NULL);
 if (bTableOpen) {
 return;
@@ -962,11 +962,11 @@ vAddStartTag(pDiag, TAG_PARA, NULL);
 static void
 vStartOfTable(diagram_type *pDiag, UCHAR ucBorderInfo)
 {
-const char	*szFrame;
-BOOL	bNotReady;
-UCHAR	ucTopTag;
-char	cColSep, cRowSep;
-char	szAttr[40];
+const char *szFrame;
+BOOL bNotReady;
+UCHAR ucTopTag;
+char cColSep, cRowSep;
+char szAttr[40];
 fail(pDiag == NULL);
 bNotReady = TRUE;
 do {
@@ -1030,10 +1030,10 @@ static void
 vStartOfTableGroup(diagram_type *pDiag,
 int iNbrOfColumns, const short *asColumnWidth)
 {
-double	dWidth;
-int	iIndex;
-char	szCols[6 + 3 * sizeof(int) + 1 + 1];
-char	szColWidth[10 + 3 * sizeof(short) + 3 + 3 + 1];
+double dWidth;
+int iIndex;
+char szCols[6 + 3 * sizeof(int) + 1 + 1];
+char szColWidth[10 + 3 * sizeof(short) + 3 + 3 + 1];
 fail(iNbrOfColumns < 1);
 fail(asColumnWidth == NULL);
 sprintf(szCols, "cols='%d'", iNbrOfColumns);
@@ -1063,8 +1063,8 @@ void
 vAddTableRowXML(diagram_type *pDiag, char **aszColTxt,
 int iNbrOfColumns, const short *asColumnWidth, UCHAR ucBorderInfo)
 {
-size_t	tCount, tStringLength;
-int	iIndex;
+size_t tCount, tStringLength;
+int iIndex;
 fail(pDiag == NULL);
 fail(pDiag->pOutFile == NULL);
 fail(aszColTxt == NULL);

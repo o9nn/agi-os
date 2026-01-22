@@ -804,13 +804,13 @@ break;
 default:
 i_panic("Cannot convert parameter %s to short opt", arg->name);
 }
-if (opt   != NULL) array_push_back(dest, &opt);
+if (opt != NULL) array_push_back(dest, &opt);
 if (value != NULL) array_push_back(dest, &value);
 }
 const char *const *
 doveadm_cmdv2_wrapper_generate_args(struct doveadm_mail_cmd_context *ctx)
 {
-struct doveadm_cmd_context *cctx =  ctx->cctx;
+struct doveadm_cmd_context *cctx = ctx->cctx;
 ARRAY_TYPE(const_string) pos_args, all_args;
 p_array_init(&all_args, ctx->pool, 8);
 p_array_init(&pos_args, ctx->pool, 8);

@@ -76,7 +76,7 @@ if (c == nil)
 break;
 if (int c.path == Qmsgs){
 newmsgclient(tm.fid, c.uname);
-#root[0].qid.vers++;		# TO DO
+#root[0].qid.vers++; # TO DO
 }
 Read =>
 c := srv.getfid(tm.fid);
@@ -124,7 +124,7 @@ Clunk =>
 c := srv.clunk(tm);
 if (c != nil && int c.path == Qmsgs){
 closemsgclient(tm.fid);
-# root[0].qid.vers++;		# TO DO
+# root[0].qid.vers++; # TO DO
 }
 * =>
 srv.default(tmsg);
@@ -213,8 +213,8 @@ nextmsg = nm;
 getnextmsg(mc: ref Msgclient): string
 {
 # uncomment next two lines to eliminate queued messages to self
-#	while(mc.nextmsg.next != nil && mc.nextmsg.fromfid == mc.fid)
-#		mc.nextmsg = mc.nextmsg.next;
+# while(mc.nextmsg.next != nil && mc.nextmsg.fromfid == mc.fid)
+# mc.nextmsg = mc.nextmsg.next;
 if ((m := mc.nextmsg).next != nil){
 mc.nextmsg = m.next;
 return msgtext(mc, m);

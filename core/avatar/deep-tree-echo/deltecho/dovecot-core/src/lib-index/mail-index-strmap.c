@@ -289,7 +289,7 @@ if (ctx->input->v_offset + size > ctx->end_offset)
 size = ctx->end_offset - ctx->input->v_offset;
 bytes = p = (const uint8_t *)data;
 end = bytes + size;
-if (mail_index_unpack_num(&p, end, num_r) <  0)
+if (mail_index_unpack_num(&p, end, num_r) < 0)
 return -1;
 i_stream_skip(ctx->input, p - bytes);
 return 1;

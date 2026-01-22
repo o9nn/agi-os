@@ -129,8 +129,8 @@ next : cyclic ref Msg;
 };
 Client : adt {
 fid : int;
-bitdata : array of byte;		# bit file client
-nextmsg : ref Msg;			# strokes file client
+bitdata : array of byte; # bit file client
+nextmsg : ref Msg; # strokes file client
 pending : Sys->Rread;
 pendlen : int;
 };

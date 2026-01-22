@@ -12,22 +12,22 @@
 #define HWCAP2_SME (1 << 23)
 #endif
 struct aarch64_features {
-bool has_dotprod     = false;
-bool has_fp16_va     = false;
-bool has_sve         = false;
-bool has_sve2        = false;
-bool has_i8mm        = false;
-bool has_sme         = false;
+bool has_dotprod = false;
+bool has_fp16_va = false;
+bool has_sve = false;
+bool has_sve2 = false;
+bool has_i8mm = false;
+bool has_sme = false;
 aarch64_features() {
 #if defined(__linux__)
 uint32_t hwcap = getauxval(AT_HWCAP);
 uint32_t hwcap2 = getauxval(AT_HWCAP2);
 has_dotprod = !!(hwcap & HWCAP_ASIMDDP);
 has_fp16_va = !!(hwcap & HWCAP_FPHP);
-has_sve     = !!(hwcap & HWCAP_SVE);
-has_sve2    = !!(hwcap2 & HWCAP2_SVE2);
-has_i8mm    = !!(hwcap2 & HWCAP2_I8MM);
-has_sme     = !!(hwcap2 & HWCAP2_SME);
+has_sve = !!(hwcap & HWCAP_SVE);
+has_sve2 = !!(hwcap2 & HWCAP2_SVE2);
+has_i8mm = !!(hwcap2 & HWCAP2_I8MM);
+has_sme = !!(hwcap2 & HWCAP2_SME);
 #elif defined(__APPLE__)
 int oldp = 0;
 size_t size = sizeof(oldp);

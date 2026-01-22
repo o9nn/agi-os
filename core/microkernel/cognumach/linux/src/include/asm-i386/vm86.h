@@ -1,36 +1,36 @@
 #ifndef _LINUX_VM86_H
 #define _LINUX_VM86_H
-#define TF_MASK		0x00000100
-#define IF_MASK		0x00000200
-#define IOPL_MASK	0x00003000
-#define NT_MASK		0x00004000
-#define VM_MASK		0x00020000
-#define AC_MASK		0x00040000
-#define VIF_MASK	0x00080000
-#define VIP_MASK	0x00100000
-#define ID_MASK		0x00200000
-#define BIOSSEG		0x0f000
-#define CPU_086		0
-#define CPU_186		1
-#define CPU_286		2
-#define CPU_386		3
-#define CPU_486		4
-#define CPU_586		5
-#define VM86_TYPE(retval)	((retval) & 0xff)
-#define VM86_ARG(retval)	((retval) >> 8)
-#define VM86_SIGNAL	0
-#define VM86_UNKNOWN	1
-#define VM86_INTx	2
-#define VM86_STI	3
-#define VM86_PICRETURN	4
-#define VM86_TRAP	6
-#define VM86_PLUS_INSTALL_CHECK	0
-#define VM86_ENTER		1
-#define VM86_ENTER_NO_BYPASS	2
-#define	VM86_REQUEST_IRQ	3
-#define VM86_FREE_IRQ		4
-#define VM86_GET_IRQ_BITS	5
-#define VM86_GET_AND_RESET_IRQ	6
+#define TF_MASK 0x00000100
+#define IF_MASK 0x00000200
+#define IOPL_MASK 0x00003000
+#define NT_MASK 0x00004000
+#define VM_MASK 0x00020000
+#define AC_MASK 0x00040000
+#define VIF_MASK 0x00080000
+#define VIP_MASK 0x00100000
+#define ID_MASK 0x00200000
+#define BIOSSEG 0x0f000
+#define CPU_086 0
+#define CPU_186 1
+#define CPU_286 2
+#define CPU_386 3
+#define CPU_486 4
+#define CPU_586 5
+#define VM86_TYPE(retval) ((retval) & 0xff)
+#define VM86_ARG(retval) ((retval) >> 8)
+#define VM86_SIGNAL 0
+#define VM86_UNKNOWN 1
+#define VM86_INTx 2
+#define VM86_STI 3
+#define VM86_PICRETURN 4
+#define VM86_TRAP 6
+#define VM86_PLUS_INSTALL_CHECK 0
+#define VM86_ENTER 1
+#define VM86_ENTER_NO_BYPASS 2
+#define VM86_REQUEST_IRQ 3
+#define VM86_FREE_IRQ 4
+#define VM86_GET_IRQ_BITS 5
+#define VM86_GET_AND_RESET_IRQ 6
 struct vm86_regs {
 long ebx;
 long ecx;
@@ -65,7 +65,7 @@ unsigned long cpu_type;
 struct revectored_struct int_revectored;
 struct revectored_struct int21_revectored;
 };
-#define VM86_SCREEN_BITMAP	0x0001
+#define VM86_SCREEN_BITMAP 0x0001
 struct vm86plus_info_struct {
 unsigned long force_return_for_pic:1;
 unsigned long vm86dbg_active:1;

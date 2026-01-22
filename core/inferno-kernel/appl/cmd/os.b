@@ -7,7 +7,7 @@ str: String;
 include "arg.m";
 Os: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 init(nil: ref Draw->Context, args: list of string)
 {
@@ -47,7 +47,7 @@ if (args == nil)
 arg->usage();
 arg = nil;
 sys->pctl(Sys->FORKNS, nil);
-sys->bind("#p", "/prog", Sys->MREPL);		# don't worry if it fails
+sys->bind("#p", "/prog", Sys->MREPL); # don't worry if it fails
 if(mntpoint == nil){
 mntpoint = "/cmd";
 if(sys->stat(mntpoint+"/clone").t0 == -1)

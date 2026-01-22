@@ -7,81 +7,81 @@
 #define Extern extern
 #include "acid.h"
 #include "y.tab.h"
-void	cvtatof(Node*, Node*);
-void	cvtatoi(Node*, Node*);
-void	cvtitoa(Node*, Node*);
-void	bprint(Node*, Node*);
-void	funcbound(Node*, Node*);
-void	printto(Node*, Node*);
-void	getfile(Node*, Node*);
-void	fmt(Node*, Node*);
-void	pcfile(Node*, Node*);
-void	pcline(Node*, Node*);
-void	setproc(Node*, Node*);
-void	strace(Node*, Node*);
-void	follow(Node*, Node*);
-void	reason(Node*, Node*);
-void	newproc(Node*, Node*);
-void	startstop(Node*, Node*);
-void	match(Node*, Node*);
-void	status(Node*, Node*);
-void	kill(Node*,Node*);
-void	waitstop(Node*, Node*);
-void	stop(Node*, Node*);
-void	start(Node*, Node*);
-void	filepc(Node*, Node*);
-void	doerror(Node*, Node*);
-void	rc(Node*, Node*);
-void	doaccess(Node*, Node*);
-void	map(Node*, Node*);
-void	readfile(Node*, Node*);
-void	interpret(Node*, Node*);
-void	include(Node*, Node*);
-void	regexp(Node*, Node*);
-void	dosysr1(Node*, Node*);
-void	fmtof(Node*, Node*) ;
-void	dofmtsize(Node*, Node*) ;
+void cvtatof(Node*, Node*);
+void cvtatoi(Node*, Node*);
+void cvtitoa(Node*, Node*);
+void bprint(Node*, Node*);
+void funcbound(Node*, Node*);
+void printto(Node*, Node*);
+void getfile(Node*, Node*);
+void fmt(Node*, Node*);
+void pcfile(Node*, Node*);
+void pcline(Node*, Node*);
+void setproc(Node*, Node*);
+void strace(Node*, Node*);
+void follow(Node*, Node*);
+void reason(Node*, Node*);
+void newproc(Node*, Node*);
+void startstop(Node*, Node*);
+void match(Node*, Node*);
+void status(Node*, Node*);
+void kill(Node*,Node*);
+void waitstop(Node*, Node*);
+void stop(Node*, Node*);
+void start(Node*, Node*);
+void filepc(Node*, Node*);
+void doerror(Node*, Node*);
+void rc(Node*, Node*);
+void doaccess(Node*, Node*);
+void map(Node*, Node*);
+void readfile(Node*, Node*);
+void interpret(Node*, Node*);
+void include(Node*, Node*);
+void regexp(Node*, Node*);
+void dosysr1(Node*, Node*);
+void fmtof(Node*, Node*) ;
+void dofmtsize(Node*, Node*) ;
 typedef struct Btab Btab;
 struct Btab
 {
-char	*name;
-void	(*fn)(Node*, Node*);
+char *name;
+void (*fn)(Node*, Node*);
 } tab[] =
 {
-"atof",		cvtatof,
-"atoi",		cvtatoi,
-"error",	doerror,
-"file",		getfile,
-"readfile",	readfile,
-"access",	doaccess,
-"filepc",	filepc,
-"fnbound",	funcbound,
-"fmt",		fmt,
-"follow",	follow,
-"itoa",		cvtitoa,
-"kill",		kill,
-"match",	match,
-"newproc",	newproc,
-"pcfile",	pcfile,
-"pcline",	pcline,
-"print",	bprint,
-"printto",	printto,
-"rc",		rc,
-"reason",	reason,
-"setproc",	setproc,
-"start",	start,
-"startstop",	startstop,
-"status",	status,
-"stop",		stop,
-"strace",	strace,
-"sysr1",	dosysr1,
-"waitstop",	waitstop,
-"map",		map,
-"interpret",	interpret,
-"include",	include,
-"regexp",	regexp,
-"fmtof",	fmtof,
-"fmtsize",	dofmtsize,
+"atof", cvtatof,
+"atoi", cvtatoi,
+"error", doerror,
+"file", getfile,
+"readfile", readfile,
+"access", doaccess,
+"filepc", filepc,
+"fnbound", funcbound,
+"fmt", fmt,
+"follow", follow,
+"itoa", cvtitoa,
+"kill", kill,
+"match", match,
+"newproc", newproc,
+"pcfile", pcfile,
+"pcline", pcline,
+"print", bprint,
+"printto", printto,
+"rc", rc,
+"reason", reason,
+"setproc", setproc,
+"start", start,
+"startstop", startstop,
+"status", status,
+"stop", stop,
+"strace", strace,
+"sysr1", dosysr1,
+"waitstop", waitstop,
+"map", map,
+"interpret", interpret,
+"include", include,
+"regexp", regexp,
+"fmtof", fmtof,
+"fmtsize", dofmtsize,
 0
 };
 char vfmt[] = "aBbcCdDfFgGiIoOqQrRsSuUVWxXYZ38";

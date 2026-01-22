@@ -1,5 +1,5 @@
 const LegendController = {
-  init: () => {
-  }
+init: () => {
+}
 }
 export default LegendController;

@@ -18,8 +18,8 @@ const char *envelope_sender;
 bool synced:1;
 bool have_filename:1;
 };
-#define RAW_STORAGE(s)		container_of(s, struct raw_storage, storage)
-#define RAW_MAILBOX(s)		container_of(s, struct raw_mailbox, box)
+#define RAW_STORAGE(s) container_of(s, struct raw_storage, storage)
+#define RAW_MAILBOX(s) container_of(s, struct raw_mailbox, box)
 extern struct mail_vfuncs raw_mail_vfuncs;
 struct mail_user *
 raw_storage_create_from_set(struct mail_storage_service_ctx *ctx,

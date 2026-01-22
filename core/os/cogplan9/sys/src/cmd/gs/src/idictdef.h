@@ -1,5 +1,5 @@
 #ifndef idictdef_INCLUDED
-#  define idictdef_INCLUDED
+# define idictdef_INCLUDED
 #define dict_is_packed(dct) r_has_type(&(dct)->keys, t_shortarray)
 #define packed_key_empty (pt_tag(pt_integer) + 0)
 #define packed_key_deleted (pt_tag(pt_integer) + 1)
@@ -22,7 +22,7 @@ found2;\
 else if ( !r_packed_is_name(kp) )\
 { \
 if ( *kp == packed_key_empty ) miss;\
-if ( kp == kbot ) break;	\
+if ( kp == kbot ) break; \
 else { del; }\
 }\
 }

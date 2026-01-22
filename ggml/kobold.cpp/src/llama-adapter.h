@@ -6,7 +6,7 @@
 #include <vector>
 struct llama_adapter_cvec {
 ggml_tensor * tensor_for(int il) const;
-ggml_tensor * apply_to(ggml_context * ctx, ggml_tensor * cur, int  il) const;
+ggml_tensor * apply_to(ggml_context * ctx, ggml_tensor * cur, int il) const;
 bool apply(
 const llama_model & model,
 const float * data,
@@ -17,7 +17,7 @@ int32_t il_end);
 private:
 bool init(const llama_model & model);
 int32_t layer_start = -1;
-int32_t layer_end   = -1;
+int32_t layer_end = -1;
 std::vector<ggml_context_ptr> ctxs;
 std::vector<ggml_backend_buffer_ptr> bufs;
 std::vector<ggml_tensor *> tensors;
@@ -26,7 +26,7 @@ struct llama_adapter_lora_weight {
 ggml_tensor * a = nullptr;
 ggml_tensor * b = nullptr;
 float get_scale(float alpha, float adapter_scale) const {
-const float rank  = (float) b->ne[0];
+const float rank = (float) b->ne[0];
 const float scale = alpha ? adapter_scale * alpha / rank : adapter_scale;
 return scale;
 }

@@ -4,26 +4,26 @@
 #define NULL 0
 #endif
 #define NCR53c406a { \
-NULL			, \
-NULL			, \
-&proc_scsi_NCR53c406a      , \
-NULL			, \
-"NCR53c406a"		, \
-NCR53c406a_detect		, \
-NULL			, \
-NCR53c406a_info		, \
-NCR53c406a_command		, \
-NCR53c406a_queue		, \
-NCR53c406a_abort		, \
-NCR53c406a_reset		, \
-NULL			, \
-NCR53c406a_biosparm	, \
-1				, \
-7				, \
-32				 , \
-1				, \
-0				, \
-1				, \
+NULL , \
+NULL , \
+&proc_scsi_NCR53c406a , \
+NULL , \
+"NCR53c406a" , \
+NCR53c406a_detect , \
+NULL , \
+NCR53c406a_info , \
+NCR53c406a_command , \
+NCR53c406a_queue , \
+NCR53c406a_abort , \
+NCR53c406a_reset , \
+NULL , \
+NCR53c406a_biosparm , \
+1 , \
+7 , \
+32 , \
+1 , \
+0 , \
+1 , \
 ENABLE_CLUSTERING \
 }
 extern struct proc_dir_entry proc_scsi_NCR53c406a;

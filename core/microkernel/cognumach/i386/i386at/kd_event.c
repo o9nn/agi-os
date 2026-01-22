@@ -16,7 +16,7 @@
 #endif
 #include "kd_event.h"
 kd_event_queue kbd_queue;
-queue_head_t	kbd_read_queue = { &kbd_read_queue, &kbd_read_queue };
+queue_head_t kbd_read_queue = { &kbd_read_queue, &kbd_read_queue };
 static boolean_t initialized = FALSE;
 static void
 kbdinit(void)
@@ -39,8 +39,8 @@ return(0);
 }
 void
 kbdclose(
-dev_t 	dev,
-int 	flags)
+dev_t dev,
+int flags)
 {
 spl_t s = SPLKD();
 kb_mode = KB_ASCII;
@@ -48,10 +48,10 @@ kdq_reset(&kbd_queue);
 splx(s);
 }
 io_return_t kbdgetstat(
-dev_t		dev,
-dev_flavor_t	flavor,
-dev_status_t	data,
-mach_msg_type_number_t	*count)
+dev_t dev,
+dev_flavor_t flavor,
+dev_status_t data,
+mach_msg_type_number_t *count)
 {
 switch (flavor) {
 case KDGKBDTYPE:
@@ -69,10 +69,10 @@ return (D_INVALID_OPERATION);
 return (D_SUCCESS);
 }
 io_return_t kbdsetstat(
-dev_t		dev,
-dev_flavor_t	flavor,
-dev_status_t	data,
-mach_msg_type_number_t	count)
+dev_t dev,
+dev_flavor_t flavor,
+dev_status_t data,
+mach_msg_type_number_t count)
 {
 switch (flavor) {
 case KDSKBDMODE:
@@ -94,11 +94,11 @@ return (D_SUCCESS);
 }
 int
 kbdread(
-dev_t		dev,
-io_req_t	ior)
+dev_t dev,
+io_req_t ior)
 {
-int		err, count;
-spl_t		s;
+int err, count;
+spl_t s;
 if (ior->io_count % sizeof(kd_event) != 0)
 return D_INVALID_SIZE;
 err = device_read_alloc(ior, (vm_size_t)ior->io_count);
@@ -128,8 +128,8 @@ return (D_SUCCESS);
 }
 boolean_t kbd_read_done(io_req_t ior)
 {
-int		count;
-spl_t		s;
+int count;
+spl_t s;
 s = SPLKD();
 if (kdq_empty(&kbd_queue)) {
 ior->io_done = kbd_read_done;
@@ -167,13 +167,13 @@ printf_once("kbd: queue full\n");
 else
 kdq_put(&kbd_queue, ev);
 {
-io_req_t	ior;
+io_req_t ior;
 while ((ior = (io_req_t)dequeue_head(&kbd_read_queue)) != 0)
 iodone(ior);
 }
 }
 u_int X_kdb_enter_str[512], X_kdb_exit_str[512];
-int   X_kdb_enter_len = 0,  X_kdb_exit_len = 0;
+int X_kdb_enter_len = 0, X_kdb_exit_len = 0;
 static void
 kdb_in_out(const u_int *p)
 {

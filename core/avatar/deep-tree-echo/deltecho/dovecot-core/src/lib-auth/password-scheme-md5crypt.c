@@ -5,7 +5,7 @@
 #include "password-scheme.h"
 static unsigned char itoa64[] =
 "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-static char	magic[] = "$1$";
+static char magic[] = "$1$";
 static void
 to64(string_t *str, unsigned long v, int n)
 {
@@ -17,7 +17,7 @@ v >>= 6;
 const char *password_generate_md5_crypt(const char *pw, const char *salt)
 {
 const char *sp,*ep;
-unsigned char	final[MD5_RESULTLEN];
+unsigned char final[MD5_RESULTLEN];
 int sl,pl,i,j;
 struct md5_context ctx,ctx1;
 unsigned long l;
@@ -72,7 +72,7 @@ l = (final[ 1]<<16) | (final[ 7]<<8) | final[13]; to64(passwd,l,4);
 l = (final[ 2]<<16) | (final[ 8]<<8) | final[14]; to64(passwd,l,4);
 l = (final[ 3]<<16) | (final[ 9]<<8) | final[15]; to64(passwd,l,4);
 l = (final[ 4]<<16) | (final[10]<<8) | final[ 5]; to64(passwd,l,4);
-l =                    final[11]                ; to64(passwd,l,2);
+l = final[11] ; to64(passwd,l,2);
 safe_memset(final, 0, sizeof(final));
 return str_c(passwd);
 }

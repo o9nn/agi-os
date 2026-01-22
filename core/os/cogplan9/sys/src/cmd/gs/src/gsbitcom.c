@@ -3,7 +3,7 @@
 #include "gdebug.h"
 #include "gsbitops.h"
 #ifndef ALPHA_LSB_FIRST
-#  define ALPHA_LSB_FIRST 0
+# define ALPHA_LSB_FIRST 0
 #endif
 static const byte half_byte_1s[16] = {
 0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4
@@ -71,11 +71,11 @@ uint h;
 for (h = height; h; srow += sskip, h -= yscale) {
 const byte *s = srow;
 #if ALPHA_LSB_FIRST
-#  define out_shift_initial 0
-#  define out_shift_update(out_shift, nbits) ((out_shift += (nbits)) >= 8)
+# define out_shift_initial 0
+# define out_shift_update(out_shift, nbits) ((out_shift += (nbits)) >= 8)
 #else
-#  define out_shift_initial (8 - out_bits)
-#  define out_shift_update(out_shift, nbits) ((out_shift -= (nbits)) < 0)
+# define out_shift_initial (8 - out_bits)
+# define out_shift_update(out_shift, nbits) ((out_shift -= (nbits)) < 0)
 #endif
 int out_shift = out_shift_initial;
 byte out = 0;

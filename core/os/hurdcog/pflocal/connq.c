@@ -114,7 +114,7 @@ free (req);
 else if (cq->num_listeners > 0)
 pthread_cond_signal (&cq->listeners);
 else
-{  }
+{ }
 out:
 pthread_mutex_unlock (&cq->lock);
 return err;

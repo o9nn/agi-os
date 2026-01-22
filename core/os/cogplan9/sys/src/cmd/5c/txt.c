@@ -1,5 +1,5 @@
 #include "gc.h"
-static	char	resvreg[nelem(reg)];
+static char resvreg[nelem(reg)];
 void
 ginit(void)
 {
@@ -1047,7 +1047,7 @@ break;
 }
 nextpc();
 if(a == AGOK) {
-diag(Z, "bad in gbranch %O",  o);
+diag(Z, "bad in gbranch %O", o);
 nextpc();
 }
 p->as = a;
@@ -1127,7 +1127,7 @@ return o;
 }
 return 0;
 }
-schar	ewidth[NTYPE] =
+schar ewidth[NTYPE] =
 {
 -1,
 SZ_CHAR,
@@ -1150,7 +1150,7 @@ SZ_IND,
 -1,
 SZ_INT,
 };
-long	ncast[NTYPE] =
+long ncast[NTYPE] =
 {
 0,
 BCHAR|BUCHAR,

@@ -4,54 +4,54 @@
 #include "pci.h"
 #include "vga.h"
 typedef struct {
-Pcidev*	pci;
-ulong	io;
-uchar*	mmio;
-ulong	ioreg[13];
-ulong	g[25];
-ulong	w[25];
+Pcidev* pci;
+ulong io;
+uchar* mmio;
+ulong ioreg[13];
+ulong g[25];
+ulong w[25];
 } T2r4;
 enum {
-IntVcnt		= 0x20/4,
-IntHcnt		= 0x24/4,
-DbAdr		= 0x28/4,
-DbPtch		= 0x2C/4,
-CrtHac		= 0x30/4,
-CrtHbl		= 0x34/4,
-CrtHfp		= 0x38/4,
-CrtHs		= 0x3C/4,
-CrtVac		= 0x40/4,
-CrtVbl		= 0x44/4,
-CrtVfp		= 0x48/4,
-CrtVs		= 0x4C/4,
-CrtLcnt		= 0x50/4,
-CrtZoom		= 0x54/4,
-Crt1con		= 0x58/4,
-Crt2con		= 0x5C/4,
-DbAdr2		= 0x60/4,
+IntVcnt = 0x20/4,
+IntHcnt = 0x24/4,
+DbAdr = 0x28/4,
+DbPtch = 0x2C/4,
+CrtHac = 0x30/4,
+CrtHbl = 0x34/4,
+CrtHfp = 0x38/4,
+CrtHs = 0x3C/4,
+CrtVac = 0x40/4,
+CrtVbl = 0x44/4,
+CrtVfp = 0x48/4,
+CrtVs = 0x4C/4,
+CrtLcnt = 0x50/4,
+CrtZoom = 0x54/4,
+Crt1con = 0x58/4,
+Crt2con = 0x5C/4,
+DbAdr2 = 0x60/4,
 };
 enum {
-Mw0Ctrl		= 0x00/4,
-Mw0Ad		= 0x04/4,
-Mw0Sz		= 0x08/4,
-Mw0Org		= 0x10/4,
-Mw0Mask		= 0x24/4,
-Mw1Ctlr		= 0x28/4,
-Mw1Ad		= 0x2C/4,
-Mw1Sz		= 0x30/4,
-Mw1Org		= 0x38/4,
-Mw1Mask		= 0x4C/4,
-MwcFcnt		= 0x50/4,
-MwcFlsh		= 0x54/4,
-YuvLi		= 0x58/4,
-YuvLa		= 0x5C/4,
-MwCtrl		= 0x60/4,
+Mw0Ctrl = 0x00/4,
+Mw0Ad = 0x04/4,
+Mw0Sz = 0x08/4,
+Mw0Org = 0x10/4,
+Mw0Mask = 0x24/4,
+Mw1Ctlr = 0x28/4,
+Mw1Ad = 0x2C/4,
+Mw1Sz = 0x30/4,
+Mw1Org = 0x38/4,
+Mw1Mask = 0x4C/4,
+MwcFcnt = 0x50/4,
+MwcFlsh = 0x54/4,
+YuvLi = 0x58/4,
+YuvLa = 0x5C/4,
+MwCtrl = 0x60/4,
 };
 enum {
-IndexLo		= 4,
-IndexHi		= 5,
-Data		= 6,
-IndexCtl	= 7,
+IndexLo = 4,
+IndexHi = 5,
+Data = 6,
+IndexCtl = 7,
 };
 static uchar
 _rgb524xi(Vga* vga, int index)

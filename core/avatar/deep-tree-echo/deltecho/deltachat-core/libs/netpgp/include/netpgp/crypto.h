@@ -5,46 +5,46 @@
 #include "memory.h"
 #include "packet-parse.h"
 #include <openssl/dsa.h>
-#define PGP_MIN_HASH_SIZE	16
+#define PGP_MIN_HASH_SIZE 16
 struct pgp_hash_t {
-pgp_hash_alg_t		 alg;
-size_t			 size;
-const char		*name;
-int			(*init)(pgp_hash_t *);
-void			(*add)(pgp_hash_t *, const uint8_t *, unsigned);
-unsigned		(*finish)(pgp_hash_t *, uint8_t *);
-void		 	*data;
+pgp_hash_alg_t alg;
+size_t size;
+const char *name;
+int (*init)(pgp_hash_t *);
+void (*add)(pgp_hash_t *, const uint8_t *, unsigned);
+unsigned (*finish)(pgp_hash_t *, uint8_t *);
+void *data;
 };
 struct pgp_crypt_t {
-pgp_symm_alg_t	alg;
-size_t			blocksize;
-size_t			keysize;
-void 			(*set_iv)(pgp_crypt_t *, const uint8_t *);
-void			(*set_crypt_key)(pgp_crypt_t *, const uint8_t *);
-int			(*base_init)(pgp_crypt_t *);
-void			(*decrypt_resync)(pgp_crypt_t *);
-void			(*block_encrypt)(pgp_crypt_t *, void *, const void *);
-void			(*block_decrypt)(pgp_crypt_t *, void *, const void *);
-void 			(*cfb_encrypt)(pgp_crypt_t *, void *, const void *, size_t);
-void			(*cfb_decrypt)(pgp_crypt_t *, void *, const void *, size_t);
-void			(*decrypt_finish)(pgp_crypt_t *);
-uint8_t			iv[PGP_MAX_BLOCK_SIZE];
-uint8_t			civ[PGP_MAX_BLOCK_SIZE];
-uint8_t			siv[PGP_MAX_BLOCK_SIZE];
-uint8_t			key[PGP_MAX_KEY_SIZE];
-int			num;
-void			*encrypt_key;
-void			*decrypt_key;
+pgp_symm_alg_t alg;
+size_t blocksize;
+size_t keysize;
+void (*set_iv)(pgp_crypt_t *, const uint8_t *);
+void (*set_crypt_key)(pgp_crypt_t *, const uint8_t *);
+int (*base_init)(pgp_crypt_t *);
+void (*decrypt_resync)(pgp_crypt_t *);
+void (*block_encrypt)(pgp_crypt_t *, void *, const void *);
+void (*block_decrypt)(pgp_crypt_t *, void *, const void *);
+void (*cfb_encrypt)(pgp_crypt_t *, void *, const void *, size_t);
+void (*cfb_decrypt)(pgp_crypt_t *, void *, const void *, size_t);
+void (*decrypt_finish)(pgp_crypt_t *);
+uint8_t iv[PGP_MAX_BLOCK_SIZE];
+uint8_t civ[PGP_MAX_BLOCK_SIZE];
+uint8_t siv[PGP_MAX_BLOCK_SIZE];
+uint8_t key[PGP_MAX_KEY_SIZE];
+int num;
+void *encrypt_key;
+void *decrypt_key;
 };
 typedef struct pgp_validation_t {
-unsigned		 validc;
-pgp_sig_info_t	*valid_sigs;
-unsigned		 invalidc;
-pgp_sig_info_t	*invalid_sigs;
-unsigned		 unknownc;
-pgp_sig_info_t	*unknown_sigs;
-time_t			 birthtime;
-time_t			 duration;
+unsigned validc;
+pgp_sig_info_t *valid_sigs;
+unsigned invalidc;
+pgp_sig_info_t *invalid_sigs;
+unsigned unknownc;
+pgp_sig_info_t *unknown_sigs;
+time_t birthtime;
+time_t duration;
 } pgp_validation_t;
 void pgp_crypto_finish(void);
 void pgp_hash_md5(pgp_hash_t *);
@@ -106,10 +106,10 @@ pgp_pk_sesskey_params_t *);
 struct pgp_key_data;
 void pgp_writer_push_encrypt(pgp_output_t *,
 const struct pgp_key_data *);
-unsigned   pgp_encrypt_file(pgp_io_t *, const char *, const char *,
+unsigned pgp_encrypt_file(pgp_io_t *, const char *, const char *,
 const pgp_key_t *,
 const unsigned, const unsigned, const char *);
-unsigned   pgp_decrypt_file(pgp_io_t *,
+unsigned pgp_decrypt_file(pgp_io_t *,
 const char *,
 const char *,
 pgp_keyring_t *,
@@ -144,11 +144,11 @@ const unsigned use_armour,
 key_id_t **recipients_key_ids,
 unsigned *recipients_count);
 #if 0
-pgp_key_t  *pgp_rsa_new_selfsign_key(const int,
+pgp_key_t *pgp_rsa_new_selfsign_key(const int,
 const unsigned long, const uint8_t *, const char *,
 const char *);
 #endif
-unsigned    pgp_rsa_generate_keypair(pgp_key_t *,
+unsigned pgp_rsa_generate_keypair(pgp_key_t *,
 const int,
 const unsigned long,
 const char *,
@@ -160,57 +160,57 @@ pgp_dsa_sig_t *pgp_dsa_sign(uint8_t *, unsigned,
 const pgp_dsa_seckey_t *,
 const pgp_dsa_pubkey_t *);
 struct pgp_reader_t {
-pgp_reader_func_t	*reader;
-pgp_reader_destroyer_t	*destroyer;
-void			*arg;
-unsigned		 accumulate:1;
-uint8_t			*accumulated;
-unsigned		 asize;
-unsigned		 alength;
-unsigned		 position;
-pgp_reader_t		*next;
-pgp_stream_t		*parent;
-unsigned		 partial_read:1;
-unsigned		 coalescing:1;
-unsigned		 virtualc;
-unsigned		 virtualoff;
-uint8_t			*virtualpkt;
+pgp_reader_func_t *reader;
+pgp_reader_destroyer_t *destroyer;
+void *arg;
+unsigned accumulate:1;
+uint8_t *accumulated;
+unsigned asize;
+unsigned alength;
+unsigned position;
+pgp_reader_t *next;
+pgp_stream_t *parent;
+unsigned partial_read:1;
+unsigned coalescing:1;
+unsigned virtualc;
+unsigned virtualoff;
+uint8_t *virtualpkt;
 };
 struct pgp_cryptinfo_t {
-const char			*symm_passphrase;
-pgp_keyring_t		*secring;
-pgp_key_t		*keydata;
-pgp_keyring_t		*pubring;
+const char *symm_passphrase;
+pgp_keyring_t *secring;
+pgp_key_t *keydata;
+pgp_keyring_t *pubring;
 DYNARRAY(key_id_t, recipients_key_ids);
 };
 struct pgp_cbdata_t {
-pgp_cbfunc_t		*cbfunc;
-void			*arg;
-pgp_error_t		**errors;
-pgp_cbdata_t		*next;
-pgp_output_t		*output;
-pgp_io_t		*io;
-pgp_cryptinfo_t		 cryptinfo;
-pgp_printstate_t	 printstate;
-pgp_seckey_t		*sshseckey;
-int			 gotpass;
+pgp_cbfunc_t *cbfunc;
+void *arg;
+pgp_error_t **errors;
+pgp_cbdata_t *next;
+pgp_output_t *output;
+pgp_io_t *io;
+pgp_cryptinfo_t cryptinfo;
+pgp_printstate_t printstate;
+pgp_seckey_t *sshseckey;
+int gotpass;
 };
 typedef struct {
-pgp_hash_t	hash;
-uint8_t	keyid[PGP_KEY_ID_SIZE];
+pgp_hash_t hash;
+uint8_t keyid[PGP_KEY_ID_SIZE];
 } pgp_hashtype_t;
-#define NTAGS	0x100
+#define NTAGS 0x100
 struct pgp_stream_t {
-uint8_t		 	ss_raw[NTAGS / 8];
-uint8_t		 	ss_parsed[NTAGS / 8];
-pgp_reader_t	 	 readinfo;
-pgp_cbdata_t		 cbinfo;
-pgp_error_t		*errors;
-void			*io;
-pgp_crypt_t		 decrypt;
-pgp_cryptinfo_t		 cryptinfo;
-size_t			 hashc;
-pgp_hashtype_t		*hashes;
+uint8_t ss_raw[NTAGS / 8];
+uint8_t ss_parsed[NTAGS / 8];
+pgp_reader_t readinfo;
+pgp_cbdata_t cbinfo;
+pgp_error_t *errors;
+void *io;
+pgp_crypt_t decrypt;
+pgp_cryptinfo_t cryptinfo;
+size_t hashc;
+pgp_hashtype_t *hashes;
 };
 uint8_t* pgp_s2k_do(const char* passphrase,
 int wanted_key_len,

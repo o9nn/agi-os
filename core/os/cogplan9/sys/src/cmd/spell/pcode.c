@@ -3,24 +3,24 @@
 #include <bio.h>
 #include <ctype.h>
 #include "code.h"
-typedef	struct	Dict	Dict;
-struct	Dict
+typedef struct Dict Dict;
+struct Dict
 {
-char*	word;
-int	encode;
+char* word;
+int encode;
 };
-Dict	words[200000];
-char	space[500000];
-long	encodes[4094];
-long	nspace;
-long	nwords;
-int	ncodes;
-Biobuf	bout;
-void	readinput(int f);
-long	typecode(char *str);
-int	wcmp(void*, void*);
-void	pdict(void);
-void	sput(int);
+Dict words[200000];
+char space[500000];
+long encodes[4094];
+long nspace;
+long nwords;
+int ncodes;
+Biobuf bout;
+void readinput(int f);
+long typecode(char *str);
+int wcmp(void*, void*);
+void pdict(void);
+void sput(int);
 void
 main(int argc, char *argv[])
 {
@@ -92,80 +92,80 @@ exits("space");
 }
 Bterm(&buf);
 }
-typedef	struct	Class	Class;
-struct	Class
+typedef struct Class Class;
+struct Class
 {
-char*	codename;
-long	bits;
+char* codename;
+long bits;
 };
-Class	codea[]  =
+Class codea[] =
 {
 { "a", ADJ },
 { "adv", ADV },
 0
 };
-Class	codec[] =
+Class codec[] =
 {
 { "comp", COMP },
 0
 };
-Class	coded[] =
+Class coded[] =
 {
 { "d", DONT_TOUCH},
 0
 };
-Class	codee[] =
+Class codee[] =
 {
-{ "ed",	ED },
+{ "ed", ED },
 { "er", ACTOR },
 0
 };
-Class	codei[] =
+Class codei[] =
 {
 { "in", IN },
 { "ion", ION },
 0
 };
-Class	codem[] =
+Class codem[] =
 {
 { "man", MAN },
 { "ms", MONO },
 0
 };
-Class	coden[] =
+Class coden[] =
 {
 { "n", NOUN },
 { "na", N_AFFIX },
 { "nopref", NOPREF },
 0
 };
-Class	codep[] =
+Class codep[] =
 {
 { "pc", PROP_COLLECT },
 0
 };
-Class	codes[] =
+Class codes[] =
 {
 { "s", STOP },
 0
 };
-Class	codev[] =
+Class codev[] =
 {
 { "v", VERB },
 { "va", V_AFFIX },
 { "vi", V_IRREG },
 0
 };
-Class	codey[] =
+Class codey[] =
 {
 { "y", _Y },
 0
 };
-Class	codez[] =
+Class codez[] =
 {
 0
 };
-Class*	codetab[] =
+Class* codetab[] =
 {
 codea,
 codez,

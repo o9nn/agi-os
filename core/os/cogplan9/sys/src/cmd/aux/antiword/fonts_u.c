@@ -3,15 +3,15 @@
 #include <string.h>
 #include "antiword.h"
 #include "fontinfo.h"
-static BOOL		bUsePlainText = TRUE;
-static encoding_type	eEncoding = encoding_neutral;
+static BOOL bUsePlainText = TRUE;
+static encoding_type eEncoding = encoding_neutral;
 FILE *
 pOpenFontTableFile(void)
 {
-FILE		*pFile;
-const char	*szHome, *szAntiword, *szGlobalFile;
-char		szEnvironmentFile[PATH_MAX+1];
-char		szLocalFile[PATH_MAX+1];
+FILE *pFile;
+const char *szHome, *szAntiword, *szGlobalFile;
+char szEnvironmentFile[PATH_MAX+1];
+char szLocalFile[PATH_MAX+1];
 szEnvironmentFile[0] = '\0';
 szLocalFile[0] = '\0';
 szAntiword = szGetAntiwordDirectory();
@@ -77,10 +77,10 @@ bUsePlainText = TRUE;
 drawfile_fontref
 tOpenFont(UCHAR ucWordFontNumber, USHORT usFontStyle, USHORT usWordFontSize)
 {
-options_type	tOptions;
-const char	*szOurFontname;
-size_t	tIndex;
-int	iFontnumber;
+options_type tOptions;
+const char *szOurFontname;
+size_t tIndex;
+int iFontnumber;
 NO_DBG_MSG("tOpenFont");
 NO_DBG_DEC(ucWordFontNumber);
 NO_DBG_HEX(usFontStyle);
@@ -113,8 +113,8 @@ return (drawfile_fontref)0;
 drawfile_fontref
 tOpenTableFont(USHORT usWordFontSize)
 {
-options_type	tOptions;
-int	iWordFontnumber;
+options_type tOptions;
+int iWordFontnumber;
 NO_DBG_MSG("tOpenTableFont");
 vGetOptions(&tOptions);
 eEncoding = tOptions.eEncoding;
@@ -141,11 +141,11 @@ long
 lComputeStringWidth(const char *szString, size_t tStringLength,
 drawfile_fontref tFontRef, USHORT usFontSize)
 {
-USHORT	*ausCharWidths;
-UCHAR	*pucChar;
-long	lRelWidth;
-size_t	tIndex;
-int	iFontRef;
+USHORT *ausCharWidths;
+UCHAR *pucChar;
+long lRelWidth;
+size_t tIndex;
+int iFontRef;
 fail(szString == NULL);
 fail(usFontSize < MIN_FONT_SIZE || usFontSize > MAX_FONT_SIZE);
 if (szString[0] == '\0' || tStringLength == 0) {

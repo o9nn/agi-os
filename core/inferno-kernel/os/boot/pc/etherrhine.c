@@ -5,9 +5,9 @@
 #include "fns.h"
 #include "io.h"
 typedef struct QLock { int r; } QLock;
-#define qlock(i)	while(0)
-#define qunlock(i)	while(0)
-#define iprint		print
+#define qlock(i) while(0)
+#define qunlock(i) while(0)
+#define iprint print
 #include "etherif.h"
 #include "ethermii.h"
 enum {
@@ -19,33 +19,33 @@ BIGSTR = 8192,
 typedef struct Desc Desc;
 typedef struct Ctlr Ctlr;
 struct Desc {
-ulong	stat;
-ulong	size;
-ulong	addr;
-ulong	next;
-char	*buf;
-ulong	pad[3];
+ulong stat;
+ulong size;
+ulong addr;
+ulong next;
+char *buf;
+ulong pad[3];
 };
 struct Ctlr {
-Pcidev	*pci;
-int	attached;
-int	txused;
-int	txhead;
-int	txtail;
-int	rxtail;
-ulong	port;
-Mii	mii;
-Desc	*txd;
-Desc	*rxd;
-QLock	attachlck;
-Lock	tlock;
+Pcidev *pci;
+int attached;
+int txused;
+int txhead;
+int txtail;
+int rxtail;
+ulong port;
+Mii mii;
+Desc *txd;
+Desc *rxd;
+QLock attachlck;
+Lock tlock;
 };
-#define ior8(c, r)	(inb((c)->port+(r)))
-#define iow8(c, r, b)	(outb((c)->port+(r), (int)(b)))
-#define ior16(c, r)	(ins((c)->port+(r)))
-#define ior32(c, r)	(inl((c)->port+(r)))
-#define iow16(c, r, w)	(outs((c)->port+(r), (ushort)(w)))
-#define iow32(c, r, l)	(outl((c)->port+(r), (ulong)(l)))
+#define ior8(c, r) (inb((c)->port+(r)))
+#define iow8(c, r, b) (outb((c)->port+(r), (int)(b)))
+#define ior16(c, r) (ins((c)->port+(r)))
+#define ior32(c, r) (inl((c)->port+(r)))
+#define iow16(c, r, w) (outs((c)->port+(r), (ushort)(w)))
+#define iow32(c, r, l) (outl((c)->port+(r), (ulong)(l)))
 #define csr8r ior8
 #define csr8w iow8
 #define csr16r ior16
@@ -53,160 +53,160 @@ Lock	tlock;
 #define csr32r ior32
 #define csr32w iow32
 enum Regs {
-Eaddr		= 0x0,
-Rcr		= 0x6,
-Tcr		= 0x7,
-Cr		= 0x8,
-Isr		= 0xc,
-Imr		= 0xe,
-McastAddr	= 0x10,
-RxdAddr		= 0x18,
-TxdAddr		= 0x1C,
-Bcr0		= 0x6E,
-Bcr1		= 0x6F,
-RhineMiiPhy	= 0x6C,
-RhineMiiSr	= 0x6D,
-RhineMiiCr	= 0x70,
-RhineMiiAddr	= 0x71,
-RhineMiiData	= 0x72,
-Eecsr		= 0x74,
-ConfigB		= 0x79,
-ConfigD		= 0x7B,
-MiscCr		= 0x80,
-HwSticky	= 0x83,
-MiscIsr		= 0x84,
-MiscImr		= 0x86,
-WolCrSet	= 0xA0,
-WolCfgSet	= 0xA1,
-WolCgSet	= 0xA3,
-WolCrClr	= 0xA4,
-PwrCfgClr	= 0xA5,
-WolCgClr	= 0xA7,
+Eaddr = 0x0,
+Rcr = 0x6,
+Tcr = 0x7,
+Cr = 0x8,
+Isr = 0xc,
+Imr = 0xe,
+McastAddr = 0x10,
+RxdAddr = 0x18,
+TxdAddr = 0x1C,
+Bcr0 = 0x6E,
+Bcr1 = 0x6F,
+RhineMiiPhy = 0x6C,
+RhineMiiSr = 0x6D,
+RhineMiiCr = 0x70,
+RhineMiiAddr = 0x71,
+RhineMiiData = 0x72,
+Eecsr = 0x74,
+ConfigB = 0x79,
+ConfigD = 0x7B,
+MiscCr = 0x80,
+HwSticky = 0x83,
+MiscIsr = 0x84,
+MiscImr = 0x86,
+WolCrSet = 0xA0,
+WolCfgSet = 0xA1,
+WolCgSet = 0xA3,
+WolCrClr = 0xA4,
+PwrCfgClr = 0xA5,
+WolCgClr = 0xA7,
 };
 enum {
-Sep		= 0x01,
-Ar		= 0x02,
-Am		= 0x04,
-Ab		= 0x08,
-RxBcast		= Ab,
-Prom		= 0x10,
-RxProm		= Prom,
-RrftMASK	= 0xE0,
-RrftSHIFT	= 5,
-Rrft64		= 0<<RrftSHIFT,
-Rrft32		= 1<<RrftSHIFT,
-Rrft128		= 2<<RrftSHIFT,
-Rrft256		= 3<<RrftSHIFT,
-Rrft512		= 4<<RrftSHIFT,
-Rrft768		= 5<<RrftSHIFT,
-Rrft1024	= 6<<RrftSHIFT,
-RrftSAF		= 7<<RrftSHIFT,
+Sep = 0x01,
+Ar = 0x02,
+Am = 0x04,
+Ab = 0x08,
+RxBcast = Ab,
+Prom = 0x10,
+RxProm = Prom,
+RrftMASK = 0xE0,
+RrftSHIFT = 5,
+Rrft64 = 0<<RrftSHIFT,
+Rrft32 = 1<<RrftSHIFT,
+Rrft128 = 2<<RrftSHIFT,
+Rrft256 = 3<<RrftSHIFT,
+Rrft512 = 4<<RrftSHIFT,
+Rrft768 = 5<<RrftSHIFT,
+Rrft1024 = 6<<RrftSHIFT,
+RrftSAF = 7<<RrftSHIFT,
 };
 enum {
-Lb0		= 0x02,
-Lb1		= 0x04,
-Ofset		= 0x08,
-RtsfMASK	= 0xE0,
-RtsfSHIFT	= 5,
-Rtsf128		= 0<<RtsfSHIFT,
-Rtsf256		= 1<<RtsfSHIFT,
-Rtsf512		= 2<<RtsfSHIFT,
-Rtsf1024	= 3<<RtsfSHIFT,
-RtsfSAF		= 7<<RtsfSHIFT,
+Lb0 = 0x02,
+Lb1 = 0x04,
+Ofset = 0x08,
+RtsfMASK = 0xE0,
+RtsfSHIFT = 5,
+Rtsf128 = 0<<RtsfSHIFT,
+Rtsf256 = 1<<RtsfSHIFT,
+Rtsf512 = 2<<RtsfSHIFT,
+Rtsf1024 = 3<<RtsfSHIFT,
+RtsfSAF = 7<<RtsfSHIFT,
 };
 enum Crbits {
-Init		= 1<<0,
-Start		= 1<<1,
-Stop		= 1<<2,
-RxOn		= 1<<3,
-TxOn		= 1<<4,
-Tdmd		= 1<<5,
-Rdmd		= 1<<6,
-EarlyRx		= 1<<8,
-Reserved0	= 1<<9,
-FullDuplex	= 1<<10,
-NoAutoPoll	= 1<<11,
-Reserved1	= 1<<12,
-Tdmd1		= 1<<13,
-Rdmd1		= 1<<14,
-Reset		= 1<<15,
+Init = 1<<0,
+Start = 1<<1,
+Stop = 1<<2,
+RxOn = 1<<3,
+TxOn = 1<<4,
+Tdmd = 1<<5,
+Rdmd = 1<<6,
+EarlyRx = 1<<8,
+Reserved0 = 1<<9,
+FullDuplex = 1<<10,
+NoAutoPoll = 1<<11,
+Reserved1 = 1<<12,
+Tdmd1 = 1<<13,
+Rdmd1 = 1<<14,
+Reset = 1<<15,
 };
 enum Isrbits {
-RxOk		= 1<<0,
-TxOk		= 1<<1,
-RxErr		= 1<<2,
-TxErr		= 1<<3,
-TxBufUdf	= 1<<4,
-RxBufLinkErr	= 1<<5,
-BusErr		= 1<<6,
-CrcOvf		= 1<<7,
-EarlyRxInt	= 1<<8,
-TxFifoUdf	= 1<<9,
-RxFifoOvf	= 1<<10,
-TxPktRace	= 1<<11,
-NoRxbuf		= 1<<12,
-TxCollision	= 1<<13,
-PortCh		= 1<<14,
-GPInt		= 1<<15,
+RxOk = 1<<0,
+TxOk = 1<<1,
+RxErr = 1<<2,
+TxErr = 1<<3,
+TxBufUdf = 1<<4,
+RxBufLinkErr = 1<<5,
+BusErr = 1<<6,
+CrcOvf = 1<<7,
+EarlyRxInt = 1<<8,
+TxFifoUdf = 1<<9,
+RxFifoOvf = 1<<10,
+TxPktRace = 1<<11,
+NoRxbuf = 1<<12,
+TxCollision = 1<<13,
+PortCh = 1<<14,
+GPInt = 1<<15,
 };
 enum {
-DmaMASK		= 0x07,
-DmaSHIFT	= 0,
-Dma32		= 0<<DmaSHIFT,
-Dma64		= 1<<DmaSHIFT,
-Dma128		= 2<<DmaSHIFT,
-Dma256		= 3<<DmaSHIFT,
-Dma512		= 4<<DmaSHIFT,
-Dma1024		= 5<<DmaSHIFT,
-DmaSAF		= 7<<DmaSHIFT,
-CrftMASK	= 0x38,
-CrftSHIFT	= 3,
-Crft64		= 1<<CrftSHIFT,
-Crft128		= 2<<CrftSHIFT,
-Crft256		= 3<<CrftSHIFT,
-Crft512		= 4<<CrftSHIFT,
-Crft1024	= 5<<CrftSHIFT,
-CrftSAF		= 7<<CrftSHIFT,
-Extled		= 0x40,
-Med2		= 0x80,
+DmaMASK = 0x07,
+DmaSHIFT = 0,
+Dma32 = 0<<DmaSHIFT,
+Dma64 = 1<<DmaSHIFT,
+Dma128 = 2<<DmaSHIFT,
+Dma256 = 3<<DmaSHIFT,
+Dma512 = 4<<DmaSHIFT,
+Dma1024 = 5<<DmaSHIFT,
+DmaSAF = 7<<DmaSHIFT,
+CrftMASK = 0x38,
+CrftSHIFT = 3,
+Crft64 = 1<<CrftSHIFT,
+Crft128 = 2<<CrftSHIFT,
+Crft256 = 3<<CrftSHIFT,
+Crft512 = 4<<CrftSHIFT,
+Crft1024 = 5<<CrftSHIFT,
+CrftSAF = 7<<CrftSHIFT,
+Extled = 0x40,
+Med2 = 0x80,
 };
 enum {
-PotMASK		= 0x07,
-PotSHIFT	= 0,
-CtftMASK	= 0x38,
-CtftSHIFT	= 3,
-Ctft64		= 1<<CtftSHIFT,
-Ctft128		= 2<<CtftSHIFT,
-Ctft256		= 3<<CtftSHIFT,
-Ctft512		= 4<<CtftSHIFT,
-Ctft1024	= 5<<CtftSHIFT,
-CtftSAF		= 7<<CtftSHIFT,
+PotMASK = 0x07,
+PotSHIFT = 0,
+CtftMASK = 0x38,
+CtftSHIFT = 3,
+Ctft64 = 1<<CtftSHIFT,
+Ctft128 = 2<<CtftSHIFT,
+Ctft256 = 3<<CtftSHIFT,
+Ctft512 = 4<<CtftSHIFT,
+Ctft1024 = 5<<CtftSHIFT,
+CtftSAF = 7<<CtftSHIFT,
 };
 enum Eecsrbits {
-EeAutoLoad	= 1<<5,
+EeAutoLoad = 1<<5,
 };
 enum Descbits {
-OwnNic		= 1<<31,
-TxAbort		= 1<<8,
-TxError		= 1<<15,
-RxChainbuf	= 1<<10,
-RxChainStart	= 1<<9,
-RxChainEnd	= 1<<8,
-Chainbuf	= 1<<15,
-TxDisableCrc	= 1<<16,
-TxChainStart	= 1<<21,
-TxChainEnd	= 1<<22,
-TxInt		= 1<<23,
+OwnNic = 1<<31,
+TxAbort = 1<<8,
+TxError = 1<<15,
+RxChainbuf = 1<<10,
+RxChainStart = 1<<9,
+RxChainEnd = 1<<8,
+Chainbuf = 1<<15,
+TxDisableCrc = 1<<16,
+TxChainStart = 1<<21,
+TxChainEnd = 1<<22,
+TxInt = 1<<23,
 };
 enum RhineMiiCrbits {
-Mdc	= 1<<0,
-Mdi	= 1<<1,
-Mdo	= 1<<2,
-Mdout	= 1<<3,
-Mdpm	= 1<<4,
-Wcmd	= 1<<5,
-Rcmd	= 1<<6,
-Mauto	= 1<<7,
+Mdc = 1<<0,
+Mdi = 1<<1,
+Mdo = 1<<2,
+Mdout = 1<<3,
+Mdpm = 1<<4,
+Wcmd = 1<<5,
+Rcmd = 1<<6,
+Mauto = 1<<7,
 };
 static void
 attach(Ether *edev)
@@ -324,7 +324,7 @@ interrupt(Ureg *, void *arg)
 Ether *edev;
 Ctlr *ctlr;
 RingBuf *rb;
-ushort  isr, misr;
+ushort isr, misr;
 ulong stat;
 Desc *rxd, *rd;
 int i, n, size;

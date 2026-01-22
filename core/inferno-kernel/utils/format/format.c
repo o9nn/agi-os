@@ -1,66 +1,66 @@
 #include <lib9.h>
-typedef struct Type	Type;
+typedef struct Type Type;
 struct Type
 {
-char	*name;
-int	bytes;
-int	sectors;
-int	heads;
-int	tracks;
-int	media;
-int	cluster;
+char *name;
+int bytes;
+int sectors;
+int heads;
+int tracks;
+int media;
+int cluster;
 };
 Type floppytype[] =
 {
-{ "3½HD",	512, 18, 2, 80,	0xf0, 1, },
-{ "3½DD",	512,  9, 2, 80,	0xf9, 2, },
-{ "5¼HD",	512, 15, 2, 80,	0xf9, 1, },
-{ "5¼DD",	512,  9, 2, 40,	0xfd, 2, },
+{ "3½HD", 512, 18, 2, 80, 0xf0, 1, },
+{ "3½DD", 512, 9, 2, 80, 0xf9, 2, },
+{ "5¼HD", 512, 15, 2, 80, 0xf9, 1, },
+{ "5¼DD", 512, 9, 2, 40, 0xfd, 2, },
 };
 #define NTYPES (sizeof(floppytype)/sizeof(Type))
-typedef struct Dosboot	Dosboot;
+typedef struct Dosboot Dosboot;
 struct Dosboot{
-uchar	magic[3];
-uchar	version[8];
-uchar	sectsize[2];
-uchar	clustsize;
-uchar	nresrv[2];
-uchar	nfats;
-uchar	rootsize[2];
-uchar	volsize[2];
-uchar	mediadesc;
-uchar	fatsize[2];
-uchar	trksize[2];
-uchar	nheads[2];
-uchar	nhidden[4];
-uchar	bigvolsize[4];
-uchar	driveno;
-uchar	reserved0;
-uchar	bootsig;
-uchar	volid[4];
-uchar	label[11];
-uchar	type[8];
+uchar magic[3];
+uchar version[8];
+uchar sectsize[2];
+uchar clustsize;
+uchar nresrv[2];
+uchar nfats;
+uchar rootsize[2];
+uchar volsize[2];
+uchar mediadesc;
+uchar fatsize[2];
+uchar trksize[2];
+uchar nheads[2];
+uchar nhidden[4];
+uchar bigvolsize[4];
+uchar driveno;
+uchar reserved0;
+uchar bootsig;
+uchar volid[4];
+uchar label[11];
+uchar type[8];
 };
-#define	PUTSHORT(p, v) { (p)[1] = (v)>>8; (p)[0] = (v); }
-#define	PUTLONG(p, v) { PUTSHORT((p), (v)); PUTSHORT((p)+2, (v)>>16); }
-typedef struct Dosdir	Dosdir;
+#define PUTSHORT(p, v) { (p)[1] = (v)>>8; (p)[0] = (v); }
+#define PUTLONG(p, v) { PUTSHORT((p), (v)); PUTSHORT((p)+2, (v)>>16); }
+typedef struct Dosdir Dosdir;
 struct Dosdir
 {
-uchar	name[8];
-uchar	ext[3];
-uchar	attr;
-uchar	reserved[10];
-uchar	time[2];
-uchar	date[2];
-uchar	start[2];
-uchar	length[4];
+uchar name[8];
+uchar ext[3];
+uchar attr;
+uchar reserved[10];
+uchar time[2];
+uchar date[2];
+uchar start[2];
+uchar length[4];
 };
-#define	DRONLY	0x01
-#define	DHIDDEN	0x02
-#define	DSYSTEM	0x04
-#define	DVLABEL	0x08
-#define	DDIR	0x10
-#define	DARCH	0x20
+#define DRONLY 0x01
+#define DHIDDEN 0x02
+#define DSYSTEM 0x04
+#define DVLABEL 0x08
+#define DDIR 0x10
+#define DARCH 0x20
 uchar bootprog[512];
 uchar bootprog1[16] =
 {
@@ -76,15 +76,15 @@ uchar bootprog2[128] =
 0x26, 0x89, 0x07, 0xEA, 0x00, 0x00, 0xFF, 0xFF,
 0xEB, 0xD6, 0xAC, 0x0A, 0xC0, 0x74, 0x09, 0xB4,
 0x0E, 0xBB, 0x07, 0x00, 0xCD, 0x10, 0xEB, 0xF2,
-0xC3,  'N',  'o',  't',  ' ',  'a',  ' ',  'b',
-'o',  'o',  't',  'a',  'b',  'l',  'e',  ' ',
-'d',  'i',  's',  'c',  ' ',  'o',  'r',  ' ',
-'d',  'i',  's',  'c',  ' ',  'e',  'r',  'r',
-'o',  'r', '\r', '\n',  'P',  'r',  'e',  's',
-'s',  ' ',  'a',  'l',  'm',  'o',  's',  't',
-' ',  'a',  'n',  'y',  ' ',  'k',  'e',  'y',
-' ',  't',  'o',  ' ',  'r',  'e',  'b',  'o',
-'o',  't',  '.',  '.',  '.', 0x00, 0x00, 0x00,
+0xC3, 'N', 'o', 't', ' ', 'a', ' ', 'b',
+'o', 'o', 't', 'a', 'b', 'l', 'e', ' ',
+'d', 'i', 's', 'c', ' ', 'o', 'r', ' ',
+'d', 'i', 's', 'c', ' ', 'e', 'r', 'r',
+'o', 'r', '\r', '\n', 'P', 'r', 'e', 's',
+'s', ' ', 'a', 'l', 'm', 'o', 's', 't',
+' ', 'a', 'n', 'y', ' ', 'k', 'e', 'y',
+' ', 't', 'o', ' ', 'r', 'e', 'b', 'o',
+'o', 't', '.', '.', '.', 0x00, 0x00, 0x00,
 };
 uchar bootprog3[16] =
 {
@@ -127,9 +127,9 @@ enum
 Sof = 1,
 Eof = 2,
 };
-void	dosfs(int, char*, int, char*[]);
-ulong	clustalloc(int);
-void	addrname(uchar*, Dir*, ulong, char *);
+void dosfs(int, char*, int, char*[]);
+ulong clustalloc(int);
+void addrname(uchar*, Dir*, ulong, char *);
 int initfflag(void);
 Tm *getlocaltime(void);
 int openfloppy(char *);

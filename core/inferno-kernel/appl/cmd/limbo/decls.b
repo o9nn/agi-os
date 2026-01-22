@@ -1,56 +1,56 @@
 storename := array[Dend] of
 {
-Dtype =>	"type",
-Dfn =>		"function",
-Dglobal =>	"global",
-Darg =>		"argument",
-Dlocal =>	"local",
-Dconst =>	"con",
-Dfield =>	"field",
-Dtag =>		"pick tag",
-Dimport =>	"import",
-Dunbound =>	"unbound",
-Dundef =>	"undefined",
-Dwundef =>	"undefined",
+Dtype => "type",
+Dfn => "function",
+Dglobal => "global",
+Darg => "argument",
+Dlocal => "local",
+Dconst => "con",
+Dfield => "field",
+Dtag => "pick tag",
+Dimport => "import",
+Dunbound => "unbound",
+Dundef => "undefined",
+Dwundef => "undefined",
 };
 storeart := array[Dend] of
 {
-Dtype =>	"a ",
-Dfn =>		"a ",
-Dglobal =>	"a ",
-Darg =>		"an ",
-Dlocal =>	"a ",
-Dconst =>	"a ",
-Dfield =>	"a ",
-Dtag =>		"a ",
-Dimport =>	"an ",
-Dunbound =>	"",
-Dundef =>	"",
-Dwundef =>	"",
+Dtype => "a ",
+Dfn => "a ",
+Dglobal => "a ",
+Darg => "an ",
+Dlocal => "a ",
+Dconst => "a ",
+Dfield => "a ",
+Dtag => "a ",
+Dimport => "an ",
+Dunbound => "",
+Dundef => "",
+Dwundef => "",
 };
 storespace := array[Dend] of
 {
-Dtype =>	0,
-Dfn =>		0,
-Dglobal =>	1,
-Darg =>		1,
-Dlocal =>	1,
-Dconst =>	0,
-Dfield =>	1,
-Dtag =>		0,
-Dimport =>	0,
-Dunbound =>	0,
-Dundef =>	0,
-Dwundef =>	0,
+Dtype => 0,
+Dfn => 0,
+Dglobal => 1,
+Darg => 1,
+Dlocal => 1,
+Dconst => 0,
+Dfield => 1,
+Dtag => 0,
+Dimport => 0,
+Dunbound => 0,
+Dundef => 0,
+Dwundef => 0,
 };
-impdecl:	ref Decl;
-impdecls:	ref Dlist;
-scopes :=	array[MaxScope] of ref Decl;
-tails :=	array[MaxScope] of ref Decl;
-scopekind := 	array[MaxScope] of byte;
-scopenode :=	array[MaxScope] of ref Node;
-iota:		ref Decl;
-zdecl:		Decl;
+impdecl: ref Decl;
+impdecls: ref Dlist;
+scopes := array[MaxScope] of ref Decl;
+tails := array[MaxScope] of ref Decl;
+scopekind := array[MaxScope] of byte;
+scopenode := array[MaxScope] of ref Node;
+iota: ref Decl;
+zdecl: Decl;
 popscopes()
 {
 d: ref Decl;
@@ -488,10 +488,10 @@ return d;
 }
 # inloop() : int
 # {
-#	for (i := scope; i > 0; i--)
-#		if (int scopekind[i] == Sloop)
-#			return 1;
-#	return 0;
+# for (i := scope; i > 0; i--)
+# if (int scopekind[i] == Sloop)
+# return 1;
+# return 0;
 # }
 nested() : int
 {
@@ -528,7 +528,7 @@ return scopes[scope];
 # remove the effects of any imported adt types
 # whenever the adt is imported from a module,
 # we record in the type's decl the module to use
-# when calling members.  the process is reversed here.
+# when calling members. the process is reversed here.
 #
 popscope(): ref Decl
 {
@@ -1017,7 +1017,7 @@ return 0;
 }
 dequal(d1: ref Decl, d2: ref Decl, full: int): int
 {
-return	d1.sym == d2.sym &&
+return d1.sym == d2.sym &&
 d1.store == d2.store &&
 d1.implicit == d2.implicit &&
 d1.cyc == d2.cyc &&
@@ -1052,7 +1052,7 @@ if(t.size != tt.size || t.align != tt.align)
 continue;
 z = tzero(t)+tzero(tt);
 if(z > 0)
-continue;	# for now
+continue; # for now
 if(t == tt || tequal(t, tt))
 res = dd;
 else{

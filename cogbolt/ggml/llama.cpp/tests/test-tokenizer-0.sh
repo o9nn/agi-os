@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 if [ $
-    printf "Usage: $0 <name> <input>\n"
-    exit 1
+printf "Usage: $0 <name> <input>\n"
+exit 1
 fi
 name=$1
 input=$2
@@ -17,8 +17,8 @@ cat /tmp/test-tokenizer-0-$name-cpp.log | grep "tokenized in"
 set +e
 diff $input.tok $input.tokcpp > /dev/null 2>&1
 if [ $? -eq 0 ]; then
-    printf "Tokenization is correct!\n"
+printf "Tokenization is correct!\n"
 else
-    diff $input.tok $input.tokcpp | head -n 32
-    printf "Tokenization differs!\n"
+diff $input.tok $input.tokcpp | head -n 32
+printf "Tokenization differs!\n"
 fi

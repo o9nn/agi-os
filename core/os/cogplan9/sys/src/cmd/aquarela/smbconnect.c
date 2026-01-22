@@ -76,7 +76,7 @@ peerinfo.sessionkey = smbnhgets(pdata); pdata += 4;
 peerinfo.capabilities = smbnhgets(pdata); pdata += 4;
 utcintenthsofaus = smbnhgetv(pdata); pdata += 8;
 secssince1970 = utcintenthsofaus / 10000000 - 11644473600LL;
-peerinfo.utc =  (vlong)secssince1970 * (vlong)1000000000 + (utcintenthsofaus % 10000000) * 100;
+peerinfo.utc = (vlong)secssince1970 * (vlong)1000000000 + (utcintenthsofaus % 10000000) * 100;
 peerinfo.tzoff = -smbnhgets(pdata) * 60; pdata += 2;
 peerinfo.encryptionkeylength = *pdata++;
 print("securitymode: 0x%.2ux\n", peerinfo.securitymode);

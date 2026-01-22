@@ -1,10 +1,10 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #include <stdlib.h>
 #include <string.h>
 #include "chash.h"
-#define CHASH_MAXDEPTH    3
+#define CHASH_MAXDEPTH 3
 static inline unsigned int chash_func(const char * key, unsigned int len) {
 #if 0
 register unsigned int c = 0, t;

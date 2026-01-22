@@ -1,31 +1,31 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"../port/error.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "../port/error.h"
 typedef struct Pnp Pnp;
 typedef struct Card Card;
 struct Pnp
 {
 QLock;
-int		rddata;
-int		debug;
-Card		*cards;
+int rddata;
+int debug;
+Card *cards;
 };
 struct Card
 {
-int		csn;
-ulong	id1;
-ulong	id2;
-char		*cfgstr;
-int		ncfg;
-Card*	next;
+int csn;
+ulong id1;
+ulong id2;
+char *cfgstr;
+int ncfg;
+Card* next;
 };
-static Pnp	pnp;
-#define	DPRINT	if(pnp.debug) print
-#define	XPRINT	if(1) print
+static Pnp pnp;
+#define DPRINT if(pnp.debug) print
+#define XPRINT if(1) print
 enum {
 Address = 0x279,
 WriteData = 0xa79,
@@ -38,17 +38,17 @@ Qpcidir,
 Qpcictl,
 Qpciraw,
 };
-#define TYPE(q)		((ulong)(q).path & 0x0F)
-#define CSN(q)		(((ulong)(q).path>>4) & 0xFF)
-#define QID(c, t)	(((c)<<4)|(t))
+#define TYPE(q) ((ulong)(q).path & 0x0F)
+#define CSN(q) (((ulong)(q).path>>4) & 0xFF)
+#define QID(c, t) (((c)<<4)|(t))
 static Dirtab topdir[] = {
-".",	{ Qtopdir, 0, QTDIR },	0,	0555,
-"pnp",	{ Qpnpdir, 0, QTDIR },	0,	0555,
-"pci",	{ Qpcidir, 0, QTDIR },	0,	0555,
+".", { Qtopdir, 0, QTDIR }, 0, 0555,
+"pnp", { Qpnpdir, 0, QTDIR }, 0, 0555,
+"pci", { Qpcidir, 0, QTDIR }, 0, 0555,
 };
 static Dirtab pnpdir[] = {
-".",	{ Qpnpdir, 0, QTDIR },	0,	0555,
-"ctl",	{ Qpnpctl, 0, 0 },	0,	0666,
+".", { Qpnpdir, 0, QTDIR }, 0, 0555,
+"ctl", { Qpnpctl, 0, 0 }, 0, 0666,
 };
 extern Dev pnpdevtab;
 static int wrconfig(Card*, char*);

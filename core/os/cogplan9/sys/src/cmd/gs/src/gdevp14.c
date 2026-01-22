@@ -27,7 +27,7 @@
 #include "png_.h"
 #endif
 # define INCR(v) DO_NOTHING
-#define	PDF14_MAX_PLANES 16
+#define PDF14_MAX_PLANES 16
 private
 ENUM_PTRS_WITH(pdf14_buf_enum_ptrs, pdf14_buf *buf)
 return 0;
@@ -36,7 +36,7 @@ case 1: return ENUM_OBJ(buf->data);
 case 2: return ENUM_OBJ(buf->transfer_fn);
 ENUM_PTRS_END
 private
-RELOC_PTRS_WITH(pdf14_buf_reloc_ptrs, pdf14_buf	*buf)
+RELOC_PTRS_WITH(pdf14_buf_reloc_ptrs, pdf14_buf *buf)
 {
 RELOC_VAR(buf->saved);
 RELOC_VAR(buf->data);
@@ -48,100 +48,100 @@ pdf14_buf_enum_ptrs, pdf14_buf_reloc_ptrs);
 gs_private_st_ptrs2(st_pdf14_ctx, pdf14_ctx, "pdf14_ctx",
 pdf14_ctx_enum_ptrs, pdf14_ctx_reloc_ptrs,
 stack, maskbuf);
-#define	X_DPI 72
-#define	Y_DPI 72
-private	int pdf14_open(gx_device * pdev);
-private	dev_proc_close_device(pdf14_close);
-private	int pdf14_output_page(gx_device	* pdev,	int num_copies,	int flush);
-private	dev_proc_put_params(pdf14_put_params);
-private	dev_proc_encode_color(pdf14_encode_color);
-private	dev_proc_decode_color(pdf14_decode_color);
-private	dev_proc_fill_rectangle(pdf14_fill_rectangle);
-private	dev_proc_fill_rectangle(pdf14_mark_fill_rectangle);
-private	dev_proc_fill_rectangle(pdf14_mark_fill_rectangle_ko_simple);
-private	dev_proc_fill_path(pdf14_fill_path);
-private	dev_proc_stroke_path(pdf14_stroke_path);
-private	dev_proc_begin_typed_image(pdf14_begin_typed_image);
-private	dev_proc_text_begin(pdf14_text_begin);
-private	dev_proc_create_compositor(pdf14_create_compositor);
-private	dev_proc_create_compositor(pdf14_forward_create_compositor);
-private	dev_proc_begin_transparency_group(pdf14_begin_transparency_group);
-private	dev_proc_end_transparency_group(pdf14_end_transparency_group);
-private	dev_proc_begin_transparency_mask(pdf14_begin_transparency_mask);
-private	dev_proc_end_transparency_mask(pdf14_end_transparency_mask);
-private	const gx_color_map_procs *
+#define X_DPI 72
+#define Y_DPI 72
+private int pdf14_open(gx_device * pdev);
+private dev_proc_close_device(pdf14_close);
+private int pdf14_output_page(gx_device * pdev, int num_copies, int flush);
+private dev_proc_put_params(pdf14_put_params);
+private dev_proc_encode_color(pdf14_encode_color);
+private dev_proc_decode_color(pdf14_decode_color);
+private dev_proc_fill_rectangle(pdf14_fill_rectangle);
+private dev_proc_fill_rectangle(pdf14_mark_fill_rectangle);
+private dev_proc_fill_rectangle(pdf14_mark_fill_rectangle_ko_simple);
+private dev_proc_fill_path(pdf14_fill_path);
+private dev_proc_stroke_path(pdf14_stroke_path);
+private dev_proc_begin_typed_image(pdf14_begin_typed_image);
+private dev_proc_text_begin(pdf14_text_begin);
+private dev_proc_create_compositor(pdf14_create_compositor);
+private dev_proc_create_compositor(pdf14_forward_create_compositor);
+private dev_proc_begin_transparency_group(pdf14_begin_transparency_group);
+private dev_proc_end_transparency_group(pdf14_end_transparency_group);
+private dev_proc_begin_transparency_mask(pdf14_begin_transparency_mask);
+private dev_proc_end_transparency_mask(pdf14_end_transparency_mask);
+private const gx_color_map_procs *
 pdf14_get_cmap_procs(const gs_imager_state *, const gx_device *);
-#define	XSIZE (int)(8.5	* X_DPI)
-#define	YSIZE (int)(11 * Y_DPI)
-#define	pdf14_procs(get_color_mapping_procs, get_color_comp_index) \
+#define XSIZE (int)(8.5 * X_DPI)
+#define YSIZE (int)(11 * Y_DPI)
+#define pdf14_procs(get_color_mapping_procs, get_color_comp_index) \
 {\
-pdf14_open,			\
-NULL,				\
-NULL,				\
-pdf14_output_page,		\
-pdf14_close,			\
-pdf14_encode_color,		\
-pdf14_decode_color,		\
-pdf14_fill_rectangle,		\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-pdf14_put_params,		\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-pdf14_fill_path,		\
-pdf14_stroke_path,		\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-pdf14_begin_typed_image,	\
-NULL,				\
-NULL,				\
-pdf14_create_compositor,	\
-NULL,				\
-pdf14_text_begin,		\
-NULL,				\
+pdf14_open, \
+NULL, \
+NULL, \
+pdf14_output_page, \
+pdf14_close, \
+pdf14_encode_color, \
+pdf14_decode_color, \
+pdf14_fill_rectangle, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+pdf14_put_params, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+pdf14_fill_path, \
+pdf14_stroke_path, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+pdf14_begin_typed_image, \
+NULL, \
+NULL, \
+pdf14_create_compositor, \
+NULL, \
+pdf14_text_begin, \
+NULL, \
 pdf14_begin_transparency_group,\
 pdf14_end_transparency_group,\
 pdf14_begin_transparency_mask,\
 pdf14_end_transparency_mask,\
-NULL,				\
-get_color_mapping_procs,	\
-get_color_comp_index,		\
-pdf14_encode_color,		\
-pdf14_decode_color		\
+NULL, \
+get_color_mapping_procs, \
+get_color_comp_index, \
+pdf14_encode_color, \
+pdf14_decode_color \
 }
-private	const gx_device_procs pdf14_Gray_procs =
+private const gx_device_procs pdf14_Gray_procs =
 pdf14_procs(gx_default_DevGray_get_color_mapping_procs,
 gx_default_DevGray_get_color_comp_index);
-private	const gx_device_procs pdf14_RGB_procs =
+private const gx_device_procs pdf14_RGB_procs =
 pdf14_procs(gx_default_DevRGB_get_color_mapping_procs,
 gx_default_DevRGB_get_color_comp_index);
-private	const gx_device_procs pdf14_CMYK_procs =
+private const gx_device_procs pdf14_CMYK_procs =
 pdf14_procs(gx_default_DevCMYK_get_color_mapping_procs,
 gx_default_DevCMYK_get_color_comp_index);
 gs_private_st_composite_use_final(st_pdf14_device, pdf14_device, "pdf14_device",
 pdf14_device_enum_ptrs, pdf14_device_reloc_ptrs,
 gx_device_finalize);
-const pdf14_device gs_pdf14_Gray_device	= {
+const pdf14_device gs_pdf14_Gray_device = {
 std_device_color_stype_body(pdf14_device, &pdf14_Gray_procs, "pdf14gray",
 &st_pdf14_device,
 XSIZE, YSIZE, X_DPI, Y_DPI, 8, 255, 256),
@@ -153,7 +153,7 @@ std_device_color_stype_body(pdf14_device, &pdf14_RGB_procs, "pdf14RGB",
 XSIZE, YSIZE, X_DPI, Y_DPI, 24, 255, 256),
 { 0 }
 };
-const pdf14_device gs_pdf14_CMYK_device	= {
+const pdf14_device gs_pdf14_CMYK_device = {
 std_device_std_color_full_body_type(pdf14_device, &pdf14_CMYK_procs,
 "PDF14cmyk", &st_pdf14_device, XSIZE, YSIZE, X_DPI, Y_DPI, 32,
 0, 0, 0, 0, 0, 0),
@@ -161,17 +161,17 @@ std_device_std_color_full_body_type(pdf14_device, &pdf14_CMYK_procs,
 };
 private
 ENUM_PTRS_WITH(pdf14_device_enum_ptrs, pdf14_device *pdev) return 0;
-case 0:	return ENUM_OBJ(pdev->ctx);
-case 1:	ENUM_RETURN(gx_device_enum_ptr(pdev->target));
+case 0: return ENUM_OBJ(pdev->ctx);
+case 1: ENUM_RETURN(gx_device_enum_ptr(pdev->target));
 ENUM_PTRS_END
-private	RELOC_PTRS_WITH(pdf14_device_reloc_ptrs, pdf14_device *pdev)
+private RELOC_PTRS_WITH(pdf14_device_reloc_ptrs, pdf14_device *pdev)
 {
 RELOC_VAR(pdev->ctx);
 pdev->target = gx_device_reloc_ptr(pdev->target, gcst);
 }
 RELOC_PTRS_END
-private	pdf14_buf *
-pdf14_buf_new(gs_int_rect *rect, bool has_alpha_g, bool	has_shape,
+private pdf14_buf *
+pdf14_buf_new(gs_int_rect *rect, bool has_alpha_g, bool has_shape,
 int n_chan,
 gs_memory_t *memory)
 {
@@ -219,15 +219,15 @@ result->bbox.q.x = min_int;
 result->bbox.q.y = min_int;
 return result;
 }
-private	void
+private void
 pdf14_buf_free(pdf14_buf *buf, gs_memory_t *memory)
 {
 gs_free_object(memory, buf->transfer_fn, "pdf14_buf_free");
 gs_free_object(memory, buf->data, "pdf14_buf_free");
 gs_free_object(memory, buf, "pdf14_buf_free");
 }
-private	pdf14_ctx *
-pdf14_ctx_new(gs_int_rect *rect, int n_chan, bool additive, gs_memory_t	*memory)
+private pdf14_ctx *
+pdf14_ctx_new(gs_int_rect *rect, int n_chan, bool additive, gs_memory_t *memory)
 {
 pdf14_ctx *result;
 pdf14_buf *buf;
@@ -252,7 +252,7 @@ result->rect = *rect;
 result->additive = additive;
 return result;
 }
-private	void
+private void
 pdf14_ctx_free(pdf14_ctx *ctx)
 {
 pdf14_buf *buf, *next;
@@ -262,7 +262,7 @@ pdf14_buf_free(buf, ctx->memory);
 }
 gs_free_object (ctx->memory, ctx, "pdf14_ctx_free");
 }
-private	pdf14_buf *
+private pdf14_buf *
 pdf14_find_backdrop_buf(pdf14_ctx *ctx)
 {
 pdf14_buf *buf = ctx->stack;
@@ -273,8 +273,8 @@ buf = buf->saved;
 }
 return NULL;
 }
-private	int
-pdf14_push_transparency_group(pdf14_ctx	*ctx, gs_int_rect *rect,
+private int
+pdf14_push_transparency_group(pdf14_ctx *ctx, gs_int_rect *rect,
 bool isolated, bool knockout,
 byte alpha, byte shape,
 gs_blend_mode_t blend_mode)
@@ -326,7 +326,7 @@ memset (buf_plane, 0, buf->planestride);
 }
 return 0;
 }
-private	int
+private int
 pdf14_pop_transparency_group(pdf14_ctx *ctx)
 {
 pdf14_buf *tos = ctx->stack;
@@ -473,8 +473,8 @@ ctx->maskbuf = NULL;
 }
 return 0;
 }
-private	int
-pdf14_push_transparency_mask(pdf14_ctx *ctx, gs_int_rect *rect,	byte bg_alpha,
+private int
+pdf14_push_transparency_mask(pdf14_ctx *ctx, gs_int_rect *rect, byte bg_alpha,
 byte *transfer_fn)
 {
 pdf14_buf *buf;
@@ -493,7 +493,7 @@ ctx->stack = buf;
 memset(buf->data, 0, buf->planestride * buf->n_chan);
 return 0;
 }
-private	int
+private int
 pdf14_pop_transparency_mask(pdf14_ctx *ctx)
 {
 pdf14_buf *tos = ctx->stack;
@@ -501,7 +501,7 @@ ctx->stack = tos->saved;
 ctx->maskbuf = tos;
 return 0;
 }
-private	int
+private int
 pdf14_open(gx_device *dev)
 {
 pdf14_device *pdev = (pdf14_device *)dev;
@@ -518,8 +518,8 @@ if (pdev->ctx == NULL)
 return_error(gs_error_VMerror);
 return 0;
 }
-private	gx_color_index
-pdf14_encode_color(gx_device *dev, const gx_color_value	colors[])
+private gx_color_index
+pdf14_encode_color(gx_device *dev, const gx_color_value colors[])
 {
 int drop = sizeof(gx_color_value) * 8 - 8;
 gx_color_index color = 0;
@@ -531,7 +531,7 @@ color |= (colors[i] >> drop);
 }
 return (color == gx_no_color_index ? color ^ 1 : color);
 }
-private	int
+private int
 pdf14_decode_color(gx_device * dev, gx_color_index color, gx_color_value * out)
 {
 int i;
@@ -543,7 +543,7 @@ color >>= 8;
 return 0;
 }
 #ifdef DUMP_TO_PNG
-private	int
+private int
 dump_planar_rgba(gs_memory_t *mem,
 const byte *buf, int width, int height, int rowstride, int planestride)
 {
@@ -612,7 +612,7 @@ fclose (file);
 return code;
 }
 #endif
-private	int
+private int
 pdf14_put_image(pdf14_device *pdev, gs_imager_state *pis, gx_device *target)
 {
 int code;
@@ -683,7 +683,7 @@ a = buf_ptr[x + planestride * num_comp];
 if ((a + 1) & 0xfe) {
 a ^= 0xff;
 for (comp_num = 0; comp_num < num_comp; comp_num++) {
-comp  = buf_ptr[x + planestride * comp_num];
+comp = buf_ptr[x + planestride * comp_num];
 tmp = ((bg - comp) * a) + 0x80;
 comp += (tmp + (tmp >> 8)) >> 8;
 linebuf[x * num_comp + comp_num] = comp;
@@ -713,7 +713,7 @@ rc_decrement_only(pdev, "pdf_14_put_image");
 #endif
 return code;
 }
-private	int
+private int
 pdf14_close(gx_device *dev)
 {
 pdf14_device *pdev = (pdf14_device *)dev;
@@ -723,7 +723,7 @@ pdev->ctx = NULL;
 }
 return 0;
 }
-private	int
+private int
 pdf14_output_page(gx_device * dev, int num_copies, int flush)
 {
 pdf14_device * pdev = (pdf14_device *)dev;
@@ -731,9 +731,9 @@ if (pdev->target != NULL)
 return (*dev_proc(pdev->target, output_page)) (pdev->target, num_copies, flush);
 return 0;
 }
-#define	COPY_PARAM(p) dev->p = target->p
-#define	COPY_ARRAY_PARAM(p) memcpy(dev->p, target->p, sizeof(dev->p))
-private	void
+#define COPY_PARAM(p) dev->p = target->p
+#define COPY_ARRAY_PARAM(p) memcpy(dev->p, target->p, sizeof(dev->p))
+private void
 gs_pdf14_device_copy_params(gx_device *dev, const gx_device *target)
 {
 COPY_PARAM(width);
@@ -749,8 +749,8 @@ COPY_PARAM(PageCount);
 #undef COPY_ARRAY_PARAM
 #undef COPY_PARAM
 }
-private	int
-pdf14_forward_put_params(gx_device * dev, gs_param_list	* plist)
+private int
+pdf14_forward_put_params(gx_device * dev, gs_param_list * plist)
 {
 pdf14_device * pdev = (pdf14_device *)dev;
 gx_device * tdev = pdev->target;
@@ -763,8 +763,8 @@ gx_device_copy_params(dev, tdev);
 }
 return code;
 }
-private	int
-pdf14_put_params(gx_device * dev, gs_param_list	* plist)
+private int
+pdf14_put_params(gx_device * dev, gs_param_list * plist)
 {
 pdf14_device * pdev = (pdf14_device *)dev;
 gx_device * tdev = pdev->target;
@@ -777,7 +777,7 @@ gs_pdf14_device_copy_params(dev, tdev);
 }
 return code;
 }
-private	void
+private void
 pdf14_set_marking_params(gx_device *dev, const gs_imager_state *pis)
 {
 pdf14_device * pdev = (pdf14_device *)dev;
@@ -788,8 +788,8 @@ pdev->blend_mode = pis->blend_mode;
 if_debug3('v', "[v]set_marking_params, opacity = %g, shape = %g, bm = %d\n",
 pdev->opacity, pdev->shape, pis->blend_mode);
 }
-private	int
-pdf14_fill_path(gx_device *dev,	const gs_imager_state *pis,
+private int
+pdf14_fill_path(gx_device *dev, const gs_imager_state *pis,
 gx_path *ppath, const gx_fill_params *params,
 const gx_drawing_color *pdcolor,
 const gx_clip_path *pcpath)
@@ -799,8 +799,8 @@ new_is.log_op |= lop_pdf14;
 pdf14_set_marking_params(dev, pis);
 return gx_default_fill_path(dev, &new_is, ppath, params, pdcolor, pcpath);
 }
-private	int
-pdf14_stroke_path(gx_device *dev, const	gs_imager_state	*pis,
+private int
+pdf14_stroke_path(gx_device *dev, const gs_imager_state *pis,
 gx_path *ppath, const gx_stroke_params *params,
 const gx_drawing_color *pdcolor,
 const gx_clip_path *pcpath)
@@ -811,7 +811,7 @@ pdf14_set_marking_params(dev, pis);
 return gx_default_stroke_path(dev, &new_is, ppath, params, pdcolor,
 pcpath);
 }
-private	int
+private int
 pdf14_begin_typed_image(gx_device * dev, const gs_imager_state * pis,
 const gs_matrix *pmat, const gs_image_common_t *pic,
 const gs_int_rect * prect,
@@ -823,8 +823,8 @@ pdf14_set_marking_params(dev, pis);
 return gx_default_begin_typed_image(dev, pis, pmat, pic, prect, pdcolor,
 pcpath, mem, pinfo);
 }
-private	void
-pdf14_set_params(gs_imager_state * pis,	gx_device * dev,
+private void
+pdf14_set_params(gs_imager_state * pis, gx_device * dev,
 const gs_pdf14trans_params_t * pparams)
 {
 if (pparams->changed & PDF14_SET_BLEND_MODE)
@@ -837,7 +837,7 @@ if (pparams->changed & PDF14_SET_OPACITY_ALPHA)
 pis->opacity.alpha = pparams->opacity.alpha;
 pdf14_set_marking_params(dev, pis);
 }
-private	int
+private int
 pdf14_forward_open_device(gx_device * dev)
 {
 gx_device_forward * pdev = (gx_device_forward *)dev;
@@ -849,7 +849,7 @@ if ((code = gs_opendevice(tdev)) >= 0)
 gx_device_copy_params(dev, tdev);
 return code;
 }
-private	void
+private void
 pdf14_forward_device_procs(gx_device * dev)
 {
 gx_device_forward * pdev = (gx_device_forward *)dev;
@@ -866,7 +866,7 @@ set_dev_proc(dev, copy_alpha, gx_forward_copy_alpha);
 set_dev_proc(dev, open_device, pdf14_forward_open_device);
 set_dev_proc(dev, put_params, pdf14_forward_put_params);
 }
-private	int
+private int
 pdf14_disable_device(gx_device * dev)
 {
 gx_device_forward * pdev = (gx_device_forward *)dev;
@@ -876,7 +876,7 @@ pdf14_forward_device_procs(dev);
 set_dev_proc(dev, create_compositor, pdf14_forward_create_compositor);
 return 0;
 }
-private	pdf14_default_colorspace_t
+private pdf14_default_colorspace_t
 pdf14_determine_default_blend_cs(gx_device * pdev)
 {
 if (pdev->color_info.polarity == GX_CINFO_POLARITY_SUBTRACTIVE)
@@ -885,7 +885,7 @@ else {
 return DeviceRGB;
 }
 }
-private	int
+private int
 get_pdf14_device_proto(gx_device * dev,
 const pdf14_device ** pdevproto)
 {
@@ -906,8 +906,8 @@ return_error(gs_error_rangecheck);
 }
 return 0;
 }
-private	int
-pdf14_recreate_device(gs_memory_t *mem,	gs_imager_state	* pis,
+private int
+pdf14_recreate_device(gs_memory_t *mem, gs_imager_state * pis,
 gx_device * dev)
 {
 pdf14_device * pdev = (pdf14_device *)dev;
@@ -924,7 +924,7 @@ gx_device_fill_in_procs(dev);
 check_device_separable((gx_device *)pdev);
 return code;
 }
-private	int
+private int
 gx_update_pdf14_compositor(gx_device * pdev, gs_imager_state * pis,
 const gs_pdf14trans_t * pdf14pct, gs_memory_t * mem )
 {
@@ -966,7 +966,7 @@ break;
 }
 return code;
 }
-private	int
+private int
 pdf14_forward_create_compositor(gx_device * dev, gx_device * * pcdev,
 const gs_composite_t * pct, gs_imager_state * pis,
 gs_memory_t * mem)
@@ -988,7 +988,7 @@ return code;
 pdev->target = ndev;
 return 0;
 }
-private	int
+private int
 pdf14_create_compositor(gx_device * dev, gx_device * * pcdev,
 const gs_composite_t * pct, gs_imager_state * pis,
 gs_memory_t * mem)
@@ -1003,7 +1003,7 @@ return 0;
 } else
 return gx_no_create_compositor(dev, pcdev, pct, pis, mem);
 }
-private	int
+private int
 pdf14_text_begin(gx_device * dev, gs_imager_state * pis,
 const gs_text_params_t * text, gs_font * font,
 gx_path * path, const gx_device_color * pdcolor,
@@ -1021,7 +1021,7 @@ return code;
 *ppenum = (gs_text_enum_t *)penum;
 return code;
 }
-private	int
+private int
 pdf14_fill_rectangle(gx_device * dev,
 int x, int y, int w, int h, gx_color_index color)
 {
@@ -1035,7 +1035,7 @@ return pdf14_mark_fill_rectangle_ko_simple(dev, x, y, w, h, color);
 else
 return pdf14_mark_fill_rectangle(dev, x, y, w, h, color);
 }
-private	int
+private int
 pdf14_begin_transparency_group(gx_device *dev,
 const gs_transparency_group_params_t *ptgp,
 const gs_rect *pbbox,
@@ -1065,7 +1065,7 @@ ptgp->Isolated, ptgp->Knockout,
 pis->blend_mode);
 return code;
 }
-private	int
+private int
 pdf14_end_transparency_group(gx_device *dev,
 gs_imager_state *pis,
 gs_transparency_state_t **ppts)
@@ -1076,8 +1076,8 @@ if_debug0('v', "[v]end_transparency_group\n");
 code = pdf14_pop_transparency_group(pdev->ctx);
 return code;
 }
-private	int
-pdf14_begin_transparency_mask(gx_device	*dev,
+private int
+pdf14_begin_transparency_mask(gx_device *dev,
 const gx_transparency_mask_params_t *ptmp,
 const gs_rect *pbbox,
 gs_imager_state *pis,
@@ -1095,7 +1095,7 @@ memcpy(transfer_fn, ptmp->transfer_fn, size_of(ptmp->transfer_fn));
 return pdf14_push_transparency_mask(pdev->ctx, &pdev->ctx->rect, bg_alpha,
 transfer_fn);
 }
-private	int
+private int
 pdf14_end_transparency_mask(gx_device *dev,
 gs_transparency_mask_t **pptm)
 {
@@ -1103,7 +1103,7 @@ pdf14_device *pdev = (pdf14_device *)dev;
 if_debug0('v', "end transparency mask!\n");
 return pdf14_pop_transparency_mask(pdev->ctx);
 }
-private	int
+private int
 pdf14_mark_fill_rectangle(gx_device * dev,
 int x, int y, int w, int h, gx_color_index color)
 {
@@ -1186,8 +1186,8 @@ line += rowstride;
 }
 return 0;
 }
-private	int
-pdf14_mark_fill_rectangle_ko_simple(gx_device *	dev,
+private int
+pdf14_mark_fill_rectangle_ko_simple(gx_device * dev,
 int x, int y, int w, int h, gx_color_index color)
 {
 pdf14_device *pdev = (pdf14_device *)dev;
@@ -1257,14 +1257,14 @@ line += rowstride;
 }
 return 0;
 }
-private	cmap_proc_gray(pdf14_cmap_gray_direct);
-private	cmap_proc_rgb(pdf14_cmap_rgb_direct);
-private	cmap_proc_cmyk(pdf14_cmap_cmyk_direct);
-private	cmap_proc_rgb_alpha(pdf14_cmap_rgb_alpha_direct);
-private	cmap_proc_separation(pdf14_cmap_separation_direct);
-private	cmap_proc_devicen(pdf14_cmap_devicen_direct);
-private	cmap_proc_is_halftoned(pdf14_cmap_is_halftoned);
-private	const gx_color_map_procs pdf14_cmap_many = {
+private cmap_proc_gray(pdf14_cmap_gray_direct);
+private cmap_proc_rgb(pdf14_cmap_rgb_direct);
+private cmap_proc_cmyk(pdf14_cmap_cmyk_direct);
+private cmap_proc_rgb_alpha(pdf14_cmap_rgb_alpha_direct);
+private cmap_proc_separation(pdf14_cmap_separation_direct);
+private cmap_proc_devicen(pdf14_cmap_devicen_direct);
+private cmap_proc_is_halftoned(pdf14_cmap_is_halftoned);
+private const gx_color_map_procs pdf14_cmap_many = {
 pdf14_cmap_gray_direct,
 pdf14_cmap_rgb_direct,
 pdf14_cmap_cmyk_direct,
@@ -1273,7 +1273,7 @@ pdf14_cmap_separation_direct,
 pdf14_cmap_devicen_direct,
 pdf14_cmap_is_halftoned
 };
-private	inline void
+private inline void
 map_components_to_colorants(const frac * pcc,
 const gs_devicen_color_map * pcolor_component_map, frac * plist)
 {
@@ -1288,7 +1288,7 @@ if (pos >= 0)
 plist[pos] = pcc[i];
 }
 }
-private	void
+private void
 pdf14_cmap_gray_direct(frac gray, gx_device_color * pdc, const gs_imager_state * pis,
 gx_device * dev, gs_color_select_t select)
 {
@@ -1303,8 +1303,8 @@ color = dev_proc(dev, encode_color)(dev, cv);
 if (color != gx_no_color_index)
 color_set_pure(pdc, color);
 }
-private	void
-pdf14_cmap_rgb_direct(frac r, frac g, frac b, gx_device_color *	pdc,
+private void
+pdf14_cmap_rgb_direct(frac r, frac g, frac b, gx_device_color * pdc,
 const gs_imager_state * pis, gx_device * dev, gs_color_select_t select)
 {
 int i, ncomps = dev->color_info.num_components;
@@ -1318,7 +1318,7 @@ color = dev_proc(dev, encode_color)(dev, cv);
 if (color != gx_no_color_index)
 color_set_pure(pdc, color);
 }
-private	void
+private void
 pdf14_cmap_cmyk_direct(frac c, frac m, frac y, frac k, gx_device_color * pdc,
 const gs_imager_state * pis, gx_device * dev, gs_color_select_t select)
 {
@@ -1333,8 +1333,8 @@ color = dev_proc(dev, encode_color)(dev, cv);
 if (color != gx_no_color_index)
 color_set_pure(pdc, color);
 }
-private	void
-pdf14_cmap_rgb_alpha_direct(frac r, frac g, frac b, frac alpha,	gx_device_color	* pdc,
+private void
+pdf14_cmap_rgb_alpha_direct(frac r, frac g, frac b, frac alpha, gx_device_color * pdc,
 const gs_imager_state * pis, gx_device * dev, gs_color_select_t select)
 {
 int i, ncomps = dev->color_info.num_components;
@@ -1361,7 +1361,7 @@ color = dev_proc(dev, encode_color)(dev, cv);
 if (color != gx_no_color_index)
 color_set_pure(pdc, color);
 }
-private	void
+private void
 pdf14_cmap_separation_direct(frac all, gx_device_color * pdc, const gs_imager_state * pis,
 gx_device * dev, gs_color_select_t select)
 {
@@ -1393,8 +1393,8 @@ color = dev_proc(dev, encode_color)(dev, cv);
 if (color != gx_no_color_index)
 color_set_pure(pdc, color);
 }
-private	void
-pdf14_cmap_devicen_direct(const	frac * pcc,
+private void
+pdf14_cmap_devicen_direct(const frac * pcc,
 gx_device_color * pdc, const gs_imager_state * pis, gx_device * dev,
 gs_color_select_t select)
 {
@@ -1415,12 +1415,12 @@ color = dev_proc(dev, encode_color)(dev, cv);
 if (color != gx_no_color_index)
 color_set_pure(pdc, color);
 }
-private	bool
-pdf14_cmap_is_halftoned(const gs_imager_state *	pis, gx_device * dev)
+private bool
+pdf14_cmap_is_halftoned(const gs_imager_state * pis, gx_device * dev)
 {
 return false;
 }
-private	const gx_color_map_procs *
+private const gx_color_map_procs *
 pdf14_get_cmap_procs(const gs_imager_state *pis, const gx_device * dev)
 {
 return &pdf14_cmap_many;
@@ -1452,23 +1452,23 @@ code = dev_proc((gx_device *) p14dev, open_device) ((gx_device *) p14dev);
 pdf14_set_marking_params((gx_device *)p14dev, pis);
 return code;
 }
-#define	private_st_gs_pdf14trans_t()\
+#define private_st_gs_pdf14trans_t()\
 gs_private_st_ptrs1(st_pdf14trans, gs_pdf14trans_t, "gs_pdf14trans_t",\
 st_pdf14trans_enum_ptrs, st_pdf14trans_reloc_ptrs, params.transfer_function)
 private_st_gs_pdf14trans_t();
-private	bool
-c_pdf14trans_equal(const gs_composite_t	* pct0,	const gs_composite_t * pct1)
+private bool
+c_pdf14trans_equal(const gs_composite_t * pct0, const gs_composite_t * pct1)
 {
 return false;
 }
 #ifdef DEBUG
 static char * pdf14_opcode_names[] = PDF14_OPCODE_NAMES;
 #endif
-#define	put_value(dp, value)\
+#define put_value(dp, value)\
 memcpy(dp, &value, sizeof(value));\
 dp += sizeof(value)
-private	int
-c_pdf14trans_write(const gs_composite_t	* pct, byte * data, uint * psize)
+private int
+c_pdf14trans_write(const gs_composite_t * pct, byte * data, uint * psize)
 {
 const gs_pdf14trans_params_t * pparams = &((const gs_pdf14trans_t *)pct)->params;
 int need, avail = *psize;
@@ -1537,11 +1537,11 @@ return 0;
 int gs_create_pdf14trans( gs_composite_t ** ppct,
 const gs_pdf14trans_params_t * pparams,
 gs_memory_t * mem );
-#define	read_value(dp, value)\
+#define read_value(dp, value)\
 memcpy(&value, dp, sizeof(value));\
 dp += sizeof(value)
-private	int
-c_pdf14trans_read(gs_composite_t * * ppct, const byte *	data,
+private int
+c_pdf14trans_read(gs_composite_t * * ppct, const byte * data,
 uint size, gs_memory_t * mem )
 {
 gs_pdf14trans_params_t params = {0};
@@ -1612,7 +1612,7 @@ used = data - start;
 if_debug1('v', "  used = %d\n", used);
 return used;
 }
-private	int
+private int
 c_pdf14trans_create_default_compositor(const gs_composite_t * pct,
 gx_device ** pp14dev, gx_device * tdev, gs_imager_state * pis,
 gs_memory_t * mem)
@@ -1631,9 +1631,9 @@ break;
 }
 return code;
 }
-private	composite_clist_write_update(c_pdf14trans_clist_write_update);
-private	composite_clist_read_update(c_pdf14trans_clist_read_update);
-const gs_composite_type_t   gs_composite_pdf14trans_type = {
+private composite_clist_write_update(c_pdf14trans_clist_write_update);
+private composite_clist_read_update(c_pdf14trans_clist_read_update);
+const gs_composite_type_t gs_composite_pdf14trans_type = {
 GX_COMPOSITOR_PDF14_TRANS,
 {
 c_pdf14trans_create_default_compositor,
@@ -1644,7 +1644,7 @@ c_pdf14trans_clist_write_update,
 c_pdf14trans_clist_read_update
 }
 };
-const gs_composite_type_t   gs_composite_pdf14trans_no_clist_writer_type = {
+const gs_composite_type_t gs_composite_pdf14trans_no_clist_writer_type = {
 GX_COMPOSITOR_PDF14_TRANS,
 {
 c_pdf14trans_create_default_compositor,
@@ -1663,11 +1663,11 @@ return (pct->type == &gs_composite_pdf14trans_type
 }
 int
 gs_create_pdf14trans(
-gs_composite_t **               ppct,
-const gs_pdf14trans_params_t *  pparams,
-gs_memory_t *                   mem )
+gs_composite_t ** ppct,
+const gs_pdf14trans_params_t * pparams,
+gs_memory_t * mem )
 {
-gs_pdf14trans_t *                pct;
+gs_pdf14trans_t * pct;
 rc_alloc_struct_0( pct,
 gs_pdf14trans_t,
 &st_pdf14trans,
@@ -1681,7 +1681,7 @@ pct->params = *pparams;
 return 0;
 }
 int
-send_pdf14trans(gs_imager_state	* pis, gx_device * dev,
+send_pdf14trans(gs_imager_state * pis, gx_device * dev,
 gx_device * * pcdev, gs_pdf14trans_params_t * pparams, gs_memory_t * mem)
 {
 gs_composite_t * pct = NULL;
@@ -1693,7 +1693,7 @@ code = dev_proc(dev, create_compositor) (dev, pcdev, pct, pis, mem);
 gs_free_object(pis->memory, pct, "send_pdf14trans");
 return code;
 }
-typedef	struct pdf14_clist_device_s {
+typedef struct pdf14_clist_device_s {
 gx_device_forward_common;
 const gx_color_map_procs *(*save_get_cmap_procs)(const gs_imager_state *,
 const gx_device *);
@@ -1707,81 +1707,81 @@ gs_private_st_suffix_add0_final(st_pdf14_clist_device,
 pdf14_clist_device, "pdf14_clist_device",
 device_c_pdf14_clist_enum_ptrs, device_c_pdf14_clist_reloc_ptrs,
 gx_device_finalize, st_device_forward);
-#define	pdf14_clist_procs(get_color_mapping_procs, get_color_comp_index,\
+#define pdf14_clist_procs(get_color_mapping_procs, get_color_comp_index,\
 encode_color, decode_color) \
 {\
-NULL,				\
-gx_forward_get_initial_matrix,	\
-gx_forward_sync_output,		\
-gx_forward_output_page,		\
-gx_forward_close_device,	\
-encode_color,			\
-decode_color,			\
-gx_forward_fill_rectangle,	\
-gx_forward_tile_rectangle,	\
-gx_forward_copy_mono,		\
-gx_forward_copy_color,		\
-NULL		,		\
-gx_forward_get_bits,		\
-gx_forward_get_params,		\
-pdf14_put_params,		\
-encode_color,			\
-gx_forward_get_xfont_procs,	\
-gx_forward_get_xfont_device,	\
-NULL,				\
-gx_forward_get_page_device,	\
-gx_forward_get_alpha_bits,	\
-NULL,				\
-gx_forward_get_band,		\
-gx_forward_copy_rop,		\
-pdf14_clist_fill_path,		\
-pdf14_clist_stroke_path,		\
-gx_forward_fill_mask,		\
-gx_forward_fill_trapezoid,	\
-gx_forward_fill_parallelogram,	\
-gx_forward_fill_triangle,	\
-gx_forward_draw_thin_line,	\
-pdf14_clist_begin_image,	\
-gx_forward_image_data,		\
-gx_forward_end_image,		\
+NULL, \
+gx_forward_get_initial_matrix, \
+gx_forward_sync_output, \
+gx_forward_output_page, \
+gx_forward_close_device, \
+encode_color, \
+decode_color, \
+gx_forward_fill_rectangle, \
+gx_forward_tile_rectangle, \
+gx_forward_copy_mono, \
+gx_forward_copy_color, \
+NULL , \
+gx_forward_get_bits, \
+gx_forward_get_params, \
+pdf14_put_params, \
+encode_color, \
+gx_forward_get_xfont_procs, \
+gx_forward_get_xfont_device, \
+NULL, \
+gx_forward_get_page_device, \
+gx_forward_get_alpha_bits, \
+NULL, \
+gx_forward_get_band, \
+gx_forward_copy_rop, \
+pdf14_clist_fill_path, \
+pdf14_clist_stroke_path, \
+gx_forward_fill_mask, \
+gx_forward_fill_trapezoid, \
+gx_forward_fill_parallelogram, \
+gx_forward_fill_triangle, \
+gx_forward_draw_thin_line, \
+pdf14_clist_begin_image, \
+gx_forward_image_data, \
+gx_forward_end_image, \
 gx_forward_strip_tile_rectangle, \
-gx_forward_strip_copy_rop,	\
-gx_forward_get_clipping_box,	\
-pdf14_clist_begin_typed_image,	\
-gx_forward_get_bits_rectangle,	\
-NULL,				\
-pdf14_clist_create_compositor,	\
-gx_forward_get_hardware_params,	\
-pdf14_clist_text_begin,		\
-NULL,				\
+gx_forward_strip_copy_rop, \
+gx_forward_get_clipping_box, \
+pdf14_clist_begin_typed_image, \
+gx_forward_get_bits_rectangle, \
+NULL, \
+pdf14_clist_create_compositor, \
+gx_forward_get_hardware_params, \
+pdf14_clist_text_begin, \
+NULL, \
 pdf14_begin_transparency_group,\
 pdf14_end_transparency_group,\
 pdf14_begin_transparency_mask,\
 pdf14_end_transparency_mask,\
-NULL,				\
-get_color_mapping_procs,	\
-get_color_comp_index,		\
-encode_color,			\
-decode_color			\
+NULL, \
+get_color_mapping_procs, \
+get_color_comp_index, \
+encode_color, \
+decode_color \
 }
-private	dev_proc_create_compositor(pdf14_clist_create_compositor);
-private	dev_proc_create_compositor(pdf14_clist_forward_create_compositor);
-private	dev_proc_fill_path(pdf14_clist_fill_path);
-private	dev_proc_stroke_path(pdf14_clist_stroke_path);
-private	dev_proc_text_begin(pdf14_clist_text_begin);
-private	dev_proc_begin_image(pdf14_clist_begin_image);
-private	dev_proc_begin_typed_image(pdf14_clist_begin_typed_image);
-private	const gx_device_procs pdf14_clist_Gray_procs =
+private dev_proc_create_compositor(pdf14_clist_create_compositor);
+private dev_proc_create_compositor(pdf14_clist_forward_create_compositor);
+private dev_proc_fill_path(pdf14_clist_fill_path);
+private dev_proc_stroke_path(pdf14_clist_stroke_path);
+private dev_proc_text_begin(pdf14_clist_text_begin);
+private dev_proc_begin_image(pdf14_clist_begin_image);
+private dev_proc_begin_typed_image(pdf14_clist_begin_typed_image);
+private const gx_device_procs pdf14_clist_Gray_procs =
 pdf14_clist_procs(gx_default_DevGray_get_color_mapping_procs,
 gx_default_DevGray_get_color_comp_index,
 gx_default_8bit_map_gray_color,
 gx_default_8bit_map_color_gray);
-private	const gx_device_procs pdf14_clist_RGB_procs =
+private const gx_device_procs pdf14_clist_RGB_procs =
 pdf14_clist_procs(gx_default_DevRGB_get_color_mapping_procs,
 gx_default_DevRGB_get_color_comp_index,
 gx_default_rgb_map_rgb_color,
 gx_default_rgb_map_color_rgb);
-private	const gx_device_procs pdf14_clist_CMYK_procs =
+private const gx_device_procs pdf14_clist_CMYK_procs =
 pdf14_clist_procs(gx_default_DevCMYK_get_color_mapping_procs,
 gx_default_DevCMYK_get_color_comp_index,
 cmyk_8bit_map_cmyk_color, cmyk_8bit_map_color_cmyk);
@@ -1791,7 +1791,7 @@ std_device_color_stype_body(pdf14_clist_device, &pdf14_clist_Gray_procs,
 XSIZE, YSIZE, X_DPI, Y_DPI, 8, 255, 256),
 { 0 }
 };
-const pdf14_clist_device pdf14_clist_RGB_device	= {
+const pdf14_clist_device pdf14_clist_RGB_device = {
 std_device_color_stype_body(pdf14_clist_device, &pdf14_clist_RGB_procs,
 "pdf14clistRGB", &st_pdf14_clist_device,
 XSIZE, YSIZE, X_DPI, Y_DPI, 24, 255, 256),
@@ -1804,7 +1804,7 @@ std_device_std_color_full_body_type(pdf14_clist_device,
 0, 0, 0, 0, 0, 0),
 { 0 }
 };
-private	int
+private int
 get_pdf14_clist_device_proto(gx_device * dev,
 const pdf14_clist_device ** pdevproto)
 {
@@ -1825,7 +1825,7 @@ return_error(gs_error_rangecheck);
 }
 return 0;
 }
-private	int
+private int
 pdf14_create_clist_device(gs_memory_t *mem, gs_imager_state * pis,
 gx_device ** ppdev, gx_device * target)
 {
@@ -1848,7 +1848,7 @@ code = dev_proc((gx_device *) pdev, open_device) ((gx_device *) pdev);
 *ppdev = (gx_device *) pdev;
 return code;
 }
-private	int
+private int
 pdf14_disable_clist_device(gs_memory_t *mem, gs_imager_state * pis,
 gx_device * dev)
 {
@@ -1860,8 +1860,8 @@ pdf14_forward_device_procs(dev);
 set_dev_proc(dev, create_compositor, pdf14_clist_forward_create_compositor);
 return 0;
 }
-private	int
-pdf14_recreate_clist_device(gs_memory_t	*mem, gs_imager_state *	pis,
+private int
+pdf14_recreate_clist_device(gs_memory_t *mem, gs_imager_state * pis,
 gx_device * dev)
 {
 pdf14_clist_device * pdev = (pdf14_clist_device *)dev;
@@ -1878,8 +1878,8 @@ gx_device_fill_in_procs(dev);
 check_device_separable((gx_device *)pdev);
 return code;
 }
-private	int
-pdf14_clist_create_compositor(gx_device	* dev, gx_device ** pcdev,
+private int
+pdf14_clist_create_compositor(gx_device * dev, gx_device ** pcdev,
 const gs_composite_t * pct, gs_imager_state * pis, gs_memory_t * mem)
 {
 pdf14_clist_device * pdev = (pdf14_clist_device *)dev;
@@ -1939,8 +1939,8 @@ rc_assign(pdev->target, *pcdev, "pdf14_clist_create_compositor");
 *pcdev = dev;
 return code;
 }
-private	int
-pdf14_clist_forward_create_compositor(gx_device	* dev, gx_device * * pcdev,
+private int
+pdf14_clist_forward_create_compositor(gx_device * dev, gx_device * * pcdev,
 const gs_composite_t * pct, gs_imager_state * pis,
 gs_memory_t * mem)
 {
@@ -1961,7 +1961,7 @@ return code;
 pdev->target = ndev;
 return 0;
 }
-private	int
+private int
 pdf14_clist_update_params(pdf14_clist_device * pdev, const gs_imager_state * pis)
 {
 gs_pdf14trans_params_t params = { 0 };
@@ -1992,8 +1992,8 @@ code = send_pdf14trans((gs_imager_state *)pis, (gx_device *)pdev,
 }
 return code;
 }
-private	int
-pdf14_clist_fill_path(gx_device	*dev, const gs_imager_state *pis,
+private int
+pdf14_clist_fill_path(gx_device *dev, const gs_imager_state *pis,
 gx_path *ppath, const gx_fill_params *params,
 const gx_drawing_color *pdcolor,
 const gx_clip_path *pcpath)
@@ -2007,8 +2007,8 @@ return code;
 new_is.log_op |= lop_pdf14;
 return gx_default_fill_path(dev, &new_is, ppath, params, pdcolor, pcpath);
 }
-private	int
-pdf14_clist_stroke_path(gx_device *dev,	const gs_imager_state *pis,
+private int
+pdf14_clist_stroke_path(gx_device *dev, const gs_imager_state *pis,
 gx_path *ppath, const gx_stroke_params *params,
 const gx_drawing_color *pdcolor,
 const gx_clip_path *pcpath)
@@ -2022,8 +2022,8 @@ return code;
 new_is.log_op |= lop_pdf14;
 return gx_default_stroke_path(dev, &new_is, ppath, params, pdcolor, pcpath);
 }
-private	int
-pdf14_clist_text_begin(gx_device * dev,	gs_imager_state	* pis,
+private int
+pdf14_clist_text_begin(gx_device * dev, gs_imager_state * pis,
 const gs_text_params_t * text, gs_font * font,
 gx_path * path, const gx_device_color * pdcolor,
 const gx_clip_path * pcpath, gs_memory_t * memory,
@@ -2042,7 +2042,7 @@ return code;
 *ppenum = (gs_text_enum_t *)penum;
 return code;
 }
-private	int
+private int
 pdf14_clist_begin_image(gx_device * dev,
 const gs_imager_state * pis, const gs_image_t * pim,
 gs_image_format_t format, const gs_int_rect * prect,
@@ -2058,8 +2058,8 @@ return code;
 return gx_default_begin_image(dev, pis, pim, format, prect,
 pdcolor, pcpath, memory, pinfo);
 }
-private	int
-pdf14_clist_begin_typed_image(gx_device	* dev, const gs_imager_state * pis,
+private int
+pdf14_clist_begin_typed_image(gx_device * dev, const gs_imager_state * pis,
 const gs_matrix *pmat, const gs_image_common_t *pic,
 const gs_int_rect * prect,
 const gx_drawing_color * pdcolor,
@@ -2074,7 +2074,7 @@ return code;
 return gx_default_begin_typed_image(dev, pis, pmat,
 pic, prect, pdcolor, pcpath, mem, pinfo);
 }
-private	int
+private int
 c_pdf14trans_clist_write_update(const gs_composite_t * pcte, gx_device * dev,
 gx_device ** pcdev, gs_imager_state * pis, gs_memory_t * mem)
 {
@@ -2101,8 +2101,8 @@ break;
 *pcdev = dev;
 return code;
 }
-private	int
-c_pdf14trans_clist_read_update(gs_composite_t *	pcte, gx_device	* cdev,
+private int
+c_pdf14trans_clist_read_update(gs_composite_t * pcte, gx_device * cdev,
 gx_device * tdev, gs_imager_state * pis, gs_memory_t * mem)
 {
 pdf14_device * p14dev = (pdf14_device *)tdev;

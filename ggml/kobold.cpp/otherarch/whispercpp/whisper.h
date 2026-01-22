@@ -6,29 +6,29 @@
 #include <stdbool.h>
 #include <string>
 #ifdef __GNUC__
-#    define WHISPER_DEPRECATED(func, hint) func __attribute__((deprecated(hint)))
+# define WHISPER_DEPRECATED(func, hint) func __attribute__((deprecated(hint)))
 #elif defined(_MSC_VER)
-#    define WHISPER_DEPRECATED(func, hint) __declspec(deprecated(hint)) func
+# define WHISPER_DEPRECATED(func, hint) __declspec(deprecated(hint)) func
 #else
-#    define WHISPER_DEPRECATED(func, hint) func
+# define WHISPER_DEPRECATED(func, hint) func
 #endif
 #ifdef WHISPER_SHARED
-#    ifdef _WIN32
-#        ifdef WHISPER_BUILD
-#            define WHISPER_API __declspec(dllexport)
-#        else
-#            define WHISPER_API __declspec(dllimport)
-#        endif
-#    else
-#        define WHISPER_API __attribute__ ((visibility ("default")))
-#    endif
+# ifdef _WIN32
+# ifdef WHISPER_BUILD
+# define WHISPER_API __declspec(dllexport)
+# else
+# define WHISPER_API __declspec(dllimport)
+# endif
+# else
+# define WHISPER_API __attribute__ ((visibility ("default")))
+# endif
 #else
-#    define WHISPER_API
+# define WHISPER_API
 #endif
 #define WHISPER_SAMPLE_RATE 16000
-#define WHISPER_N_FFT       400
-#define WHISPER_HOP_LENGTH  160
-#define WHISPER_CHUNK_SIZE  30
+#define WHISPER_N_FFT 400
+#define WHISPER_HOP_LENGTH 160
+#define WHISPER_CHUNK_SIZE 30
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -63,9 +63,9 @@ size_t n_heads;
 const whisper_ahead * heads;
 } whisper_aheads;
 struct whisper_context_params {
-bool  use_gpu;
-bool  flash_attn;
-int   gpu_device;
+bool use_gpu;
+bool flash_attn;
+int gpu_device;
 bool dtw_token_timestamps;
 enum whisper_alignment_heads_preset dtw_aheads_preset;
 int dtw_n_top;
@@ -87,28 +87,28 @@ float vlen;
 typedef struct whisper_model_loader {
 void * context;
 size_t (*read)(void * ctx, void * output, size_t read_size);
-bool    (*eof)(void * ctx);
-void  (*close)(void * ctx);
+bool (*eof)(void * ctx);
+void (*close)(void * ctx);
 } whisper_model_loader;
 enum whisper_gretype {
-WHISPER_GRETYPE_END            = 0,
-WHISPER_GRETYPE_ALT            = 1,
-WHISPER_GRETYPE_RULE_REF       = 2,
-WHISPER_GRETYPE_CHAR           = 3,
-WHISPER_GRETYPE_CHAR_NOT       = 4,
+WHISPER_GRETYPE_END = 0,
+WHISPER_GRETYPE_ALT = 1,
+WHISPER_GRETYPE_RULE_REF = 2,
+WHISPER_GRETYPE_CHAR = 3,
+WHISPER_GRETYPE_CHAR_NOT = 4,
 WHISPER_GRETYPE_CHAR_RNG_UPPER = 5,
-WHISPER_GRETYPE_CHAR_ALT       = 6,
+WHISPER_GRETYPE_CHAR_ALT = 6,
 };
 typedef struct whisper_grammar_element {
 enum whisper_gretype type;
-uint32_t             value;
+uint32_t value;
 } whisper_grammar_element;
-WHISPER_API struct whisper_context * whisper_init_from_file_with_params  (const char * path_model,              struct whisper_context_params params);
-WHISPER_API struct whisper_context * whisper_init_from_buffer_with_params(void * buffer, size_t buffer_size,    struct whisper_context_params params);
-WHISPER_API struct whisper_context * whisper_init_with_params            (struct whisper_model_loader * loader, struct whisper_context_params params);
-WHISPER_API struct whisper_context * whisper_init_from_file_with_params_no_state  (const char * path_model,              struct whisper_context_params params);
-WHISPER_API struct whisper_context * whisper_init_from_buffer_with_params_no_state(void * buffer, size_t buffer_size,    struct whisper_context_params params);
-WHISPER_API struct whisper_context * whisper_init_with_params_no_state            (struct whisper_model_loader * loader, struct whisper_context_params params);
+WHISPER_API struct whisper_context * whisper_init_from_file_with_params (const char * path_model, struct whisper_context_params params);
+WHISPER_API struct whisper_context * whisper_init_from_buffer_with_params(void * buffer, size_t buffer_size, struct whisper_context_params params);
+WHISPER_API struct whisper_context * whisper_init_with_params (struct whisper_model_loader * loader, struct whisper_context_params params);
+WHISPER_API struct whisper_context * whisper_init_from_file_with_params_no_state (const char * path_model, struct whisper_context_params params);
+WHISPER_API struct whisper_context * whisper_init_from_buffer_with_params_no_state(void * buffer, size_t buffer_size, struct whisper_context_params params);
+WHISPER_API struct whisper_context * whisper_init_with_params_no_state (struct whisper_model_loader * loader, struct whisper_context_params params);
 WHISPER_DEPRECATED(
 WHISPER_API struct whisper_context * whisper_init_from_file(const char * path_model),
 "use whisper_init_from_file_with_params instead"
@@ -139,70 +139,70 @@ struct whisper_context * ctx,
 const char * model_path,
 const char * device,
 const char * cache_dir);
-WHISPER_API void whisper_free      (struct whisper_context * ctx);
+WHISPER_API void whisper_free (struct whisper_context * ctx);
 WHISPER_API void whisper_free_state(struct whisper_state * state);
 WHISPER_API void whisper_free_params(struct whisper_full_params * params);
 WHISPER_API void whisper_free_context_params(struct whisper_context_params * params);
 WHISPER_API int whisper_pcm_to_mel(
 struct whisper_context * ctx,
 const float * samples,
-int   n_samples,
-int   n_threads);
+int n_samples,
+int n_threads);
 WHISPER_API int whisper_pcm_to_mel_with_state(
 struct whisper_context * ctx,
 struct whisper_state * state,
 const float * samples,
-int   n_samples,
-int   n_threads);
+int n_samples,
+int n_threads);
 WHISPER_API int whisper_pcm_to_mel_phase_vocoder(
 struct whisper_context * ctx,
 const float * samples,
-int   n_samples,
-int   n_threads);
+int n_samples,
+int n_threads);
 WHISPER_API int whisper_pcm_to_mel_phase_vocoder_with_state(
 struct whisper_context * ctx,
 struct whisper_state * state,
 const float * samples,
-int   n_samples,
-int   n_threads);
+int n_samples,
+int n_threads);
 WHISPER_API int whisper_set_mel(
 struct whisper_context * ctx,
 const float * data,
-int   n_len,
-int   n_mel);
+int n_len,
+int n_mel);
 WHISPER_API int whisper_set_mel_with_state(
 struct whisper_context * ctx,
 struct whisper_state * state,
 const float * data,
-int   n_len,
-int   n_mel);
+int n_len,
+int n_mel);
 WHISPER_API int whisper_encode(
 struct whisper_context * ctx,
-int   offset,
-int   n_threads);
+int offset,
+int n_threads);
 WHISPER_API int whisper_encode_with_state(
 struct whisper_context * ctx,
 struct whisper_state * state,
-int   offset,
-int   n_threads);
+int offset,
+int n_threads);
 WHISPER_API int whisper_decode(
 struct whisper_context * ctx,
 const whisper_token * tokens,
-int   n_tokens,
-int   n_past,
-int   n_threads);
+int n_tokens,
+int n_past,
+int n_threads);
 WHISPER_API int whisper_decode_with_state(
 struct whisper_context * ctx,
 struct whisper_state * state,
 const whisper_token * tokens,
-int   n_tokens,
-int   n_past,
-int   n_threads);
+int n_tokens,
+int n_past,
+int n_threads);
 WHISPER_API int whisper_tokenize(
 struct whisper_context * ctx,
 const char * text,
 whisper_token * tokens,
-int   n_max_tokens);
+int n_max_tokens);
 int whisper_token_count(struct whisper_context * ctx, const char * text);
 WHISPER_API int whisper_lang_max_id();
 WHISPER_API int whisper_lang_id(const char * lang);
@@ -210,34 +210,34 @@ WHISPER_API const char * whisper_lang_str(int id);
 WHISPER_API const char * whisper_lang_str_full(int id);
 WHISPER_API int whisper_lang_auto_detect(
 struct whisper_context * ctx,
-int   offset_ms,
-int   n_threads,
+int offset_ms,
+int n_threads,
 float * lang_probs);
 WHISPER_API int whisper_lang_auto_detect_with_state(
 struct whisper_context * ctx,
 struct whisper_state * state,
-int   offset_ms,
-int   n_threads,
+int offset_ms,
+int n_threads,
 float * lang_probs);
-WHISPER_API int whisper_n_len           (struct whisper_context * ctx);
+WHISPER_API int whisper_n_len (struct whisper_context * ctx);
 WHISPER_API int whisper_n_len_from_state(struct whisper_state * state);
-WHISPER_API int whisper_n_vocab         (struct whisper_context * ctx);
-WHISPER_API int whisper_n_text_ctx      (struct whisper_context * ctx);
-WHISPER_API int whisper_n_audio_ctx     (struct whisper_context * ctx);
+WHISPER_API int whisper_n_vocab (struct whisper_context * ctx);
+WHISPER_API int whisper_n_text_ctx (struct whisper_context * ctx);
+WHISPER_API int whisper_n_audio_ctx (struct whisper_context * ctx);
 WHISPER_API int whisper_is_multilingual (struct whisper_context * ctx);
-WHISPER_API int whisper_model_n_vocab      (struct whisper_context * ctx);
-WHISPER_API int whisper_model_n_audio_ctx  (struct whisper_context * ctx);
+WHISPER_API int whisper_model_n_vocab (struct whisper_context * ctx);
+WHISPER_API int whisper_model_n_audio_ctx (struct whisper_context * ctx);
 WHISPER_API int whisper_model_n_audio_state(struct whisper_context * ctx);
 WHISPER_API int whisper_model_n_audio_head (struct whisper_context * ctx);
 WHISPER_API int whisper_model_n_audio_layer(struct whisper_context * ctx);
-WHISPER_API int whisper_model_n_text_ctx   (struct whisper_context * ctx);
+WHISPER_API int whisper_model_n_text_ctx (struct whisper_context * ctx);
 WHISPER_API int whisper_model_n_text_state (struct whisper_context * ctx);
-WHISPER_API int whisper_model_n_text_head  (struct whisper_context * ctx);
+WHISPER_API int whisper_model_n_text_head (struct whisper_context * ctx);
 WHISPER_API int whisper_model_n_text_layer (struct whisper_context * ctx);
-WHISPER_API int whisper_model_n_mels       (struct whisper_context * ctx);
-WHISPER_API int whisper_model_ftype        (struct whisper_context * ctx);
-WHISPER_API int whisper_model_type         (struct whisper_context * ctx);
-WHISPER_API float * whisper_get_logits           (struct whisper_context * ctx);
+WHISPER_API int whisper_model_n_mels (struct whisper_context * ctx);
+WHISPER_API int whisper_model_ftype (struct whisper_context * ctx);
+WHISPER_API int whisper_model_type (struct whisper_context * ctx);
+WHISPER_API float * whisper_get_logits (struct whisper_context * ctx);
 WHISPER_API float * whisper_get_logits_from_state(struct whisper_state * state);
 WHISPER_API const char * whisper_token_to_str(struct whisper_context * ctx, whisper_token token);
 WHISPER_API const char * whisper_model_type_readable(struct whisper_context * ctx);
@@ -265,7 +265,7 @@ typedef void (*whisper_logits_filter_callback)(
 struct whisper_context * ctx,
 struct whisper_state * state,
 const whisper_token_data * tokens,
-int   n_tokens,
+int n_tokens,
 float * logits,
 void * user_data);
 struct whisper_full_params {
@@ -282,15 +282,15 @@ bool print_special;
 bool print_progress;
 bool print_realtime;
 bool print_timestamps;
-bool  token_timestamps;
+bool token_timestamps;
 float thold_pt;
 float thold_ptsum;
-int   max_len;
-bool  split_on_word;
-int   max_tokens;
+int max_len;
+bool split_on_word;
+int max_tokens;
 bool speed_up;
 bool debug_mode;
-int  audio_ctx;
+int audio_ctx;
 bool tdrz_enable;
 const char * suppress_regex;
 const char * initial_prompt;
@@ -325,9 +325,9 @@ void * abort_callback_user_data;
 whisper_logits_filter_callback logits_filter_callback;
 void * logits_filter_callback_user_data;
 const whisper_grammar_element ** grammar_rules;
-size_t                           n_grammar_rules;
-size_t                           i_start_rule;
-float                            grammar_penalty;
+size_t n_grammar_rules;
+size_t i_start_rule;
+float grammar_penalty;
 };
 WHISPER_API struct whisper_context_params * whisper_context_default_params_by_ref();
 WHISPER_API struct whisper_context_params whisper_context_default_params(void);
@@ -335,46 +335,46 @@ WHISPER_API struct whisper_full_params * whisper_full_default_params_by_ref(enum
 WHISPER_API struct whisper_full_params whisper_full_default_params(enum whisper_sampling_strategy strategy);
 WHISPER_API int whisper_full(
 struct whisper_context * ctx,
-struct whisper_full_params   params,
+struct whisper_full_params params,
 const float * samples,
-int   n_samples);
+int n_samples);
 WHISPER_API int whisper_full_with_state(
 struct whisper_context * ctx,
 struct whisper_state * state,
-struct whisper_full_params   params,
+struct whisper_full_params params,
 const float * samples,
-int   n_samples);
+int n_samples);
 WHISPER_API int whisper_full_parallel(
 struct whisper_context * ctx,
-struct whisper_full_params   params,
+struct whisper_full_params params,
 const float * samples,
-int   n_samples,
-int   n_processors);
-WHISPER_API int whisper_full_n_segments           (struct whisper_context * ctx);
+int n_samples,
+int n_processors);
+WHISPER_API int whisper_full_n_segments (struct whisper_context * ctx);
 WHISPER_API int whisper_full_n_segments_from_state(struct whisper_state * state);
 WHISPER_API int whisper_full_lang_id(struct whisper_context * ctx);
 WHISPER_API int whisper_full_lang_id_from_state(struct whisper_state * state);
-WHISPER_API int64_t whisper_full_get_segment_t0           (struct whisper_context * ctx, int i_segment);
+WHISPER_API int64_t whisper_full_get_segment_t0 (struct whisper_context * ctx, int i_segment);
 WHISPER_API int64_t whisper_full_get_segment_t0_from_state(struct whisper_state * state, int i_segment);
-WHISPER_API int64_t whisper_full_get_segment_t1           (struct whisper_context * ctx, int i_segment);
+WHISPER_API int64_t whisper_full_get_segment_t1 (struct whisper_context * ctx, int i_segment);
 WHISPER_API int64_t whisper_full_get_segment_t1_from_state(struct whisper_state * state, int i_segment);
 WHISPER_API bool whisper_full_get_segment_speaker_turn_next(struct whisper_context * ctx, int i_segment);
 WHISPER_API bool whisper_full_get_segment_speaker_turn_next_from_state(struct whisper_state * state, int i_segment);
-WHISPER_API const char * whisper_full_get_segment_text           (struct whisper_context * ctx, int i_segment);
+WHISPER_API const char * whisper_full_get_segment_text (struct whisper_context * ctx, int i_segment);
 WHISPER_API const char * whisper_full_get_segment_text_from_state(struct whisper_state * state, int i_segment);
-WHISPER_API int whisper_full_n_tokens           (struct whisper_context * ctx, int i_segment);
+WHISPER_API int whisper_full_n_tokens (struct whisper_context * ctx, int i_segment);
 WHISPER_API int whisper_full_n_tokens_from_state(struct whisper_state * state, int i_segment);
-WHISPER_API const char * whisper_full_get_token_text           (struct whisper_context * ctx, int i_segment, int i_token);
+WHISPER_API const char * whisper_full_get_token_text (struct whisper_context * ctx, int i_segment, int i_token);
 WHISPER_API const char * whisper_full_get_token_text_from_state(struct whisper_context * ctx, struct whisper_state * state, int i_segment, int i_token);
-WHISPER_API whisper_token whisper_full_get_token_id           (struct whisper_context * ctx, int i_segment, int i_token);
+WHISPER_API whisper_token whisper_full_get_token_id (struct whisper_context * ctx, int i_segment, int i_token);
 WHISPER_API whisper_token whisper_full_get_token_id_from_state(struct whisper_state * state, int i_segment, int i_token);
-WHISPER_API whisper_token_data whisper_full_get_token_data           (struct whisper_context * ctx, int i_segment, int i_token);
+WHISPER_API whisper_token_data whisper_full_get_token_data (struct whisper_context * ctx, int i_segment, int i_token);
 WHISPER_API whisper_token_data whisper_full_get_token_data_from_state(struct whisper_state * state, int i_segment, int i_token);
-WHISPER_API float whisper_full_get_token_p           (struct whisper_context * ctx, int i_segment, int i_token);
+WHISPER_API float whisper_full_get_token_p (struct whisper_context * ctx, int i_segment, int i_token);
 WHISPER_API float whisper_full_get_token_p_from_state(struct whisper_state * state, int i_segment, int i_token);
-WHISPER_API int          whisper_bench_memcpy          (int n_threads);
-WHISPER_API const char * whisper_bench_memcpy_str      (int n_threads);
-WHISPER_API int          whisper_bench_ggml_mul_mat    (int n_threads);
+WHISPER_API int whisper_bench_memcpy (int n_threads);
+WHISPER_API const char * whisper_bench_memcpy_str (int n_threads);
+WHISPER_API int whisper_bench_ggml_mul_mat (int n_threads);
 WHISPER_API const char * whisper_bench_ggml_mul_mat_str(int n_threads);
 WHISPER_API void whisper_log_set(ggml_log_callback log_callback, void * user_data);
 #ifdef __cplusplus

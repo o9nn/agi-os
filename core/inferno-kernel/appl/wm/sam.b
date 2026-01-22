@@ -4,7 +4,7 @@ sys: Sys;
 fprint, sprint, FD: import sys;
 stderr, logfd: ref FD;
 include "draw.m";
-draw:	Draw;
+draw: Draw;
 include "samterm.m";
 include "samtk.m";
 samtk: Samtk;
@@ -28,22 +28,22 @@ fprint(logfd, "Samterm started\n");
 pgrp := sys->pctl(sys->NEWPGRP, nil);
 ctxt = ref Context(
 context,
-1000,		# initial tag
-0,		# lock
-nil,		# keysel
-nil,		# scrollsel
-nil,		# buttonsel
-nil,		# menu2sel
-nil,		# menu3sel
-nil,		# titlesel
-nil,		# tags
-nil,		# menus
-nil,		# texts
-nil,		# cmd
-nil,		# which
-nil,		# work
-pgrp,		# pgrp
-logfd		# logging file descriptor
+1000, # initial tag
+0, # lock
+nil, # keysel
+nil, # scrollsel
+nil, # buttonsel
+nil, # menu2sel
+nil, # menu3sel
+nil, # titlesel
+nil, # tags
+nil, # menus
+nil, # texts
+nil, # cmd
+nil, # which
+nil, # work
+pgrp, # pgrp
+logfd # logging file descriptor
 );
 samtk = load Samtk Samtk->PATH;
 if (samtk == nil) {

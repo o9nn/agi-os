@@ -171,22 +171,22 @@ static void test_posargs(void)
 {
 test_case("pos_0args", 0, assert_no_pos_args, &cmdv2_posargs,
 line("cmd"));
-test_case("pos_1args", 0, assert_1_pos_args,  &cmdv2_posargs,
+test_case("pos_1args", 0, assert_1_pos_args, &cmdv2_posargs,
 line("cmd arg1"));
-test_case("pos_2args", 0, assert_2_pos_args,  &cmdv2_posargs,
+test_case("pos_2args", 0, assert_2_pos_args, &cmdv2_posargs,
 line("cmd arg1 arg2"));
-test_case("pos_3args", -1, assert_not_execd,  &cmdv2_posargs,
+test_case("pos_3args", -1, assert_not_execd, &cmdv2_posargs,
 line("cmd arg1 arg2 arg3"));
 }
 static void test_kvargs(void)
 {
 test_case("kv_0args", 0, assert_no_pos_args, &cmdv2_kvargs,
 line("cmd"));
-test_case("kv_1args", 0, assert_1_pos_args,  &cmdv2_kvargs,
+test_case("kv_1args", 0, assert_1_pos_args, &cmdv2_kvargs,
 line("cmd arg1"));
-test_case("kv_2args", 0, assert_2_pos_args,  &cmdv2_kvargs,
+test_case("kv_2args", 0, assert_2_pos_args, &cmdv2_kvargs,
 line("cmd arg1 arg2"));
-test_case("kv_3args", -1, assert_not_execd,  &cmdv2_kvargs,
+test_case("kv_3args", -1, assert_not_execd, &cmdv2_kvargs,
 line("cmd arg1 arg2 arg3"));
 test_case("kv_early", 0, assert_kv1_in_pos12, &cmdv2_kvargs,
 line("cmd key1 value1"));

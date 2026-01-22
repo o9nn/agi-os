@@ -312,7 +312,7 @@ return 0;
 }
 int
 op_show_finish_setup(i_ctx_t *i_ctx_p, gs_text_enum_t * penum, int npop,
-op_proc_t endproc  )
+op_proc_t endproc )
 {
 gs_text_enum_t *osenum = op_show_find(i_ctx_p);
 es_ptr ep = esp + snumpush;
@@ -461,7 +461,7 @@ push_op_estack(op_show_continue);
 return o_push_estack;
 }
 case TEXT_PROCESS_CDEVPROC:
-{   gs_font *pfont = penum->current_font;
+{ gs_font *pfont = penum->current_font;
 ref cnref;
 op_proc_t cont = op_show_continue, exec_cont = 0;
 gs_glyph glyph = penum->returned.current_glyph;

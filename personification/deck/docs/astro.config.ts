@@ -6,34 +6,34 @@ import sidebarTopicsDropdown from 'starlight-sidebar-topics-dropdown'
 import catppuccin from 'starlight-theme-catppuccin'
 import { sidebar } from './src/utils/sidebar'
 export default defineConfig({
-  integrations: [
-    markdown(),
-    starlight({
-      components: {
-        PageTitle: './src/components/starlight/PageTitle.astro',
-      },
-      editLink: {
-        baseUrl: 'https://github.com/moeru-ai/deck/edit/main/docs',
-      },
-      favicon: '/moeru-ai.png',
-      logo: {
-        alt: '@moeru-ai/deck',
-        replacesTitle: true,
-        src: './public/moeru-ai.png',
-      },
-      plugins: [
-        sidebarTopicsDropdown(sidebar),
-        catppuccin({
-          dark: 'macchiato-green',
-          light: 'latte-teal',
-        }),
-      ],
-      social: {
-        github: 'https://github.com/moeru-ai/deck',
-      },
-      title: '@moeru-ai/deck',
-    }),
-    tailwind(),
-  ],
-  markdown: { smartypants: false },
+integrations: [
+markdown(),
+starlight({
+components: {
+PageTitle: './src/components/starlight/PageTitle.astro',
+},
+editLink: {
+baseUrl: 'https://github.com/moeru-ai/deck/edit/main/docs',
+},
+favicon: '/moeru-ai.png',
+logo: {
+alt: '@moeru-ai/deck',
+replacesTitle: true,
+src: './public/moeru-ai.png',
+},
+plugins: [
+sidebarTopicsDropdown(sidebar),
+catppuccin({
+dark: 'macchiato-green',
+light: 'latte-teal',
+}),
+],
+social: {
+github: 'https://github.com/moeru-ai/deck',
+},
+title: '@moeru-ai/deck',
+}),
+tailwind(),
+],
+markdown: { smartypants: false },
 })

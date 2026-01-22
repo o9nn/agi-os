@@ -44,38 +44,38 @@ default:
 ERREXIT(cinfo, JERR_RLE_BADERROR);
 break;
 }
-width  = source->header.xmax - source->header.xmin + 1;
+width = source->header.xmax - source->header.xmin + 1;
 height = source->header.ymax - source->header.ymin + 1;
 source->header.xmin = 0;
 source->header.xmax = width-1;
-cinfo->image_width      = width;
-cinfo->image_height     = height;
-cinfo->data_precision   = 8;
+cinfo->image_width = width;
+cinfo->image_height = height;
+cinfo->data_precision = 8;
 if (source->header.ncolors == 1 && source->header.ncmap == 0) {
-source->visual     = GRAYSCALE;
+source->visual = GRAYSCALE;
 TRACEMS2(cinfo, 1, JTRC_RLE_GRAY, width, height);
 } else if (source->header.ncolors == 1 && source->header.ncmap == 1) {
-source->visual     = MAPPEDGRAY;
+source->visual = MAPPEDGRAY;
 TRACEMS3(cinfo, 1, JTRC_RLE_MAPGRAY, width, height,
 1 << source->header.cmaplen);
 } else if (source->header.ncolors == 1 && source->header.ncmap == 3) {
-source->visual     = PSEUDOCOLOR;
+source->visual = PSEUDOCOLOR;
 TRACEMS3(cinfo, 1, JTRC_RLE_MAPPED, width, height,
 1 << source->header.cmaplen);
 } else if (source->header.ncolors == 3 && source->header.ncmap == 3) {
-source->visual     = TRUECOLOR;
+source->visual = TRUECOLOR;
 TRACEMS3(cinfo, 1, JTRC_RLE_FULLMAP, width, height,
 1 << source->header.cmaplen);
 } else if (source->header.ncolors == 3 && source->header.ncmap == 0) {
-source->visual     = DIRECTCOLOR;
+source->visual = DIRECTCOLOR;
 TRACEMS2(cinfo, 1, JTRC_RLE, width, height);
 } else
 ERREXIT(cinfo, JERR_RLE_UNSUPPORTED);
 if (source->visual == GRAYSCALE || source->visual == MAPPEDGRAY) {
-cinfo->in_color_space   = JCS_GRAYSCALE;
+cinfo->in_color_space = JCS_GRAYSCALE;
 cinfo->input_components = 1;
 } else {
-cinfo->in_color_space   = JCS_RGB;
+cinfo->in_color_space = JCS_RGB;
 cinfo->input_components = 3;
 }
 if (source->visual != GRAYSCALE) {
@@ -118,7 +118,7 @@ src_row = * (*cinfo->mem->access_virt_sarray)
 ((j_common_ptr) cinfo, source->image, source->row, (JDIMENSION) 1, FALSE);
 for (col = cinfo->image_width; col > 0; col--) {
 val = GETJSAMPLE(*src_row++);
-*dest_row++ = (JSAMPLE) (colormap[val      ] >> 8);
+*dest_row++ = (JSAMPLE) (colormap[val ] >> 8);
 *dest_row++ = (JSAMPLE) (colormap[val + 256] >> 8);
 *dest_row++ = (JSAMPLE) (colormap[val + 512] >> 8);
 }
@@ -129,7 +129,7 @@ load_image (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
 {
 rle_source_ptr source = (rle_source_ptr) sinfo;
 JDIMENSION row, col;
-JSAMPROW  scanline, red_ptr, green_ptr, blue_ptr;
+JSAMPROW scanline, red_ptr, green_ptr, blue_ptr;
 rle_pixel **rle_row;
 rle_map *colormap;
 char channel;
@@ -187,9 +187,9 @@ for (row = 0; row < cinfo->image_height; row++) {
 scanline = * (*cinfo->mem->access_virt_sarray)
 ((j_common_ptr) cinfo, source->image, row, (JDIMENSION) 1, TRUE);
 rle_getrow(&source->header, rle_row);
-red_ptr   = rle_row[0];
+red_ptr = rle_row[0];
 green_ptr = rle_row[1];
-blue_ptr  = rle_row[2];
+blue_ptr = rle_row[2];
 for (col = cinfo->image_width; col > 0; col--) {
 *scanline++ = *red_ptr++;
 *scanline++ = *green_ptr++;

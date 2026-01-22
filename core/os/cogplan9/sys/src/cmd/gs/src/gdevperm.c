@@ -117,7 +117,7 @@ m = row[x * ncomp + 1];
 y = row[x * ncomp + 2];
 k = row[x * ncomp + 3];
 }
-} else  {
+} else {
 if (permute) {
 c = row[x * ncomp + 1];
 m = row[x * ncomp + 3];

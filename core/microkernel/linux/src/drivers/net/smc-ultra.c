@@ -29,15 +29,15 @@ struct sk_buff *skb, int ring_offset);
 static void ultra_pio_output(struct device *dev, int count,
 const unsigned char *buf, const int start_page);
 static int ultra_close_card(struct device *dev);
-#define START_PG		0x00
-#define ULTRA_CMDREG	0
-#define	 ULTRA_RESET	0x80
-#define	 ULTRA_MEMENB	0x40
-#define IOPD	0x02
-#define IOPA	0x07
-#define ULTRA_NIC_OFFSET  16
+#define START_PG 0x00
+#define ULTRA_CMDREG 0
+#define ULTRA_RESET 0x80
+#define ULTRA_MEMENB 0x40
+#define IOPD 0x02
+#define IOPA 0x07
+#define ULTRA_NIC_OFFSET 16
 #define ULTRA_IO_EXTENT 32
-#define EN0_ERWCNT		0x08
+#define EN0_ERWCNT 0x08
 #ifdef HAVE_DEVLIST
 struct netdev_entry ultra_drv =
 {"ultra", ultra_probe1, NETCARD_IO_EXTENT, netcard_portlist};
@@ -80,7 +80,7 @@ if ((checksum & 0xff) != 0xFF)
 return ENODEV;
 if (dev == NULL)
 dev = init_etherdev(0, 0);
-if (ei_debug  &&  version_printed++ == 0)
+if (ei_debug && version_printed++ == 0)
 printk("%s", version);
 model_name = (idreg & 0xF0) == 0x20 ? "SMC Ultra" : "SMC EtherEZ";
 printk("%s: %s at %#3x,", dev->name, model_name, ioaddr);
@@ -259,8 +259,8 @@ MOD_DEC_USE_COUNT;
 return 0;
 }
 #ifdef MODULE
-#define MAX_ULTRA_CARDS	4
-#define NAMELEN		8
+#define MAX_ULTRA_CARDS 4
+#define NAMELEN 8
 static char namelist[NAMELEN * MAX_ULTRA_CARDS] = { 0, };
 static struct device dev_ultra[MAX_ULTRA_CARDS] = {
 {
@@ -271,7 +271,7 @@ NULL,
 },
 };
 static int io[MAX_ULTRA_CARDS] = { 0, };
-static int irq[MAX_ULTRA_CARDS]  = { 0, };
+static int irq[MAX_ULTRA_CARDS] = { 0, };
 int
 init_module(void)
 {
@@ -282,7 +282,7 @@ dev->name = namelist+(NAMELEN*this_dev);
 dev->irq = irq[this_dev];
 dev->base_addr = io[this_dev];
 dev->init = ultra_probe;
-if (io[this_dev] == 0)  {
+if (io[this_dev] == 0) {
 if (this_dev != 0) break;
 printk(KERN_NOTICE "smc-ultra.c: Presently autoprobing (not recommended) for a single card.\n");
 }

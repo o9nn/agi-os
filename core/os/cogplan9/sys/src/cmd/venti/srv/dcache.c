@@ -1,31 +1,31 @@
 #include "stdinc.h"
 #include "dat.h"
 #include "fns.h"
-typedef struct DCache	DCache;
+typedef struct DCache DCache;
 enum
 {
-HashLog		= 9,
-HashSize	= 1<<HashLog,
-HashMask	= HashSize - 1,
+HashLog = 9,
+HashSize = 1<<HashLog,
+HashMask = HashSize - 1,
 };
 struct DCache
 {
-QLock		lock;
-RWLock		dirtylock;
-Rendez		full;
-Round		round;
-DBlock		*free;
-u32int		now;
-int		size;
-DBlock		**heads;
-int		nheap;
-DBlock		**heap;
-int		nblocks;
-DBlock		*blocks;
-DBlock		**write;
-u8int		*mem;
-int		ndirty;
-int		maxdirty;
+QLock lock;
+RWLock dirtylock;
+Rendez full;
+Round round;
+DBlock *free;
+u32int now;
+int size;
+DBlock **heads;
+int nheap;
+DBlock **heap;
+int nblocks;
+DBlock *blocks;
+DBlock **write;
+u8int *mem;
+int ndirty;
+int maxdirty;
 };
 typedef struct Ra Ra;
 struct Ra
@@ -33,14 +33,14 @@ struct Ra
 Part *part;
 u64int addr;
 };
-static DCache	dcache;
-static int	downheap(int i, DBlock *b);
-static int	upheap(int i, DBlock *b);
-static DBlock	*bumpdblock(void);
-static void	delheap(DBlock *db);
-static void	fixheap(int i, DBlock *b);
-static void	flushproc(void*);
-static void	writeproc(void*);
+static DCache dcache;
+static int downheap(int i, DBlock *b);
+static int upheap(int i, DBlock *b);
+static DBlock *bumpdblock(void);
+static void delheap(DBlock *db);
+static void fixheap(int i, DBlock *b);
+static void flushproc(void*);
+static void writeproc(void*);
 void
 initdcache(u32int mem)
 {
@@ -86,7 +86,7 @@ static u32int
 pbhash(u64int addr)
 {
 u32int h;
-#define hashit(c)	((((c) * 0x6b43a9b5) >> (32 - HashLog)) & HashMask)
+#define hashit(c) ((((c) * 0x6b43a9b5) >> (32 - HashLog)) & HashMask)
 h = (addr >> 32) ^ addr;
 return hashit(h);
 }

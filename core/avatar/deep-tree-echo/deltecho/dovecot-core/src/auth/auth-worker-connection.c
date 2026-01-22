@@ -321,7 +321,7 @@ return 1;
 } else if (strcmp(args[0], "SHUTDOWN") == 0) {
 worker->shutdown = TRUE;
 return 1;
-} else if (strcmp(args[0],  "RESTART") == 0) {
+} else if (strcmp(args[0], "RESTART") == 0) {
 worker->restart = TRUE;
 return 1;
 }

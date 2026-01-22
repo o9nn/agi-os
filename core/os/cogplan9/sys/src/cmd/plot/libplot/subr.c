@@ -1,6 +1,6 @@
 #include "mplot.h"
-#define pSMALL    0.5
-struct penvir  E[9] = {
+#define pSMALL 0.5
+struct penvir E[9] = {
 { 0., 1024., 0., 0., 1., -1.,1024., -1024., 0., 0., pSMALL, 1., 1, 0.,1, DBlack, DWhite},
 { 0., 1024., 0., 0., 1., -1.,1024., -1024., 0., 0., pSMALL, 1., 1, 0.,1, DBlack, DWhite},
 { 0., 1024., 0., 0., 1., -1.,1024., -1024., 0., 0., pSMALL, 1., 1, 0.,1, DBlack, DWhite},
@@ -23,7 +23,7 @@ c=c*10+*s++-'0';
 if(c < 0)
 return DBlack;
 return cmap2rgba(c);
-case 'k':  case 'z':
+case 'k': case 'z':
 return(DBlack);
 case 'r':
 return(DRed);

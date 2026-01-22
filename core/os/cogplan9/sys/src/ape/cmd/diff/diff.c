@@ -70,7 +70,7 @@ excluded_filename (f)
 char const *f;
 {
 int i;
-for (i = 0;  i < exclude_count;  i++)
+for (i = 0; i < exclude_count; i++)
 if (fnmatch (exclude[i], f, 0) == 0)
 return 1;
 return 0;
@@ -100,7 +100,7 @@ if (f.desc < 0 || fstat (f.desc, &f.stat) != 0)
 return -1;
 sip (&f, 1);
 slurp (&f);
-for (p = f.buffer, lim = p + f.buffered_chars;  p < lim;  p = q)
+for (p = f.buffer, lim = p + f.buffered_chars; p < lim; p = q)
 {
 q = (char *) memchr (p, '\n', lim - p);
 if (!q)
@@ -409,7 +409,7 @@ if (argc - optind != 2)
 try_help (argc - optind < 2 ? "missing operand" : "extra operand");
 {
 int t = tab_expand_flag ? 1 : TAB_WIDTH;
-int off = (width + t + GUTTER_WIDTH_MINIMUM) / (2*t)  *  t;
+int off = (width + t + GUTTER_WIDTH_MINIMUM) / (2*t) * t;
 sdiff_half_width = max (0, min (off - GUTTER_WIDTH_MINIMUM, width - off)),
 sdiff_column2_offset = sdiff_half_width ? off : width;
 }
@@ -550,7 +550,7 @@ usage ()
 {
 char const * const *p;
 printf ("Usage: %s [OPTION]... FILE1 FILE2\n\n", program_name);
-for (p = option_help;  *p;  p++)
+for (p = option_help; *p; p++)
 printf ("  %s\n", *p);
 printf ("\nIf FILE1 or FILE2 is `-', read standard input.\n");
 }

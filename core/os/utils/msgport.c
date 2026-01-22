@@ -107,10 +107,10 @@ while (*str)
 {
 switch (*str)
 {
-case 'r': flags |= O_RDONLY;		break;
-case 'w': flags |= O_WRONLY|O_CREAT;	break;
-case 'x': flags |= O_EXEC;		break;
-case 'a': flags |= O_APPEND;		break;
+case 'r': flags |= O_RDONLY; break;
+case 'w': flags |= O_WRONLY|O_CREAT; break;
+case 'x': flags |= O_EXEC; break;
+case 'a': flags |= O_APPEND; break;
 default:
 break;
 }
@@ -378,20 +378,20 @@ assert_perror_backtrace (err);
 return 0;
 }
 #define OA OPTION_ARG_OPTIONAL
-#define CMD_GETENV	1000
-#define CMD_SETENV	1001
-#define CMD_CLRENV	1002
-#define CMD_CHCWDIR	1003
-#define CMD_CHCRDIR	1004
-#define CMD_CDROOT	1005
-#define CMD_UMASK	1006
-#define CMD_SETFD      	1007
-#define CMD_STDIN	1008
-#define CMD_STDOUT	1009
-#define CMD_STDERR	1010
-#define CMD_PWD		1011
-#define CMD_GETROOT	1012
-#define CMD_REPORT_WAIT	1013
+#define CMD_GETENV 1000
+#define CMD_SETENV 1001
+#define CMD_CLRENV 1002
+#define CMD_CHCWDIR 1003
+#define CMD_CHCRDIR 1004
+#define CMD_CDROOT 1005
+#define CMD_UMASK 1006
+#define CMD_SETFD 1007
+#define CMD_STDIN 1008
+#define CMD_STDOUT 1009
+#define CMD_STDERR 1010
+#define CMD_PWD 1011
+#define CMD_GETROOT 1012
+#define CMD_REPORT_WAIT 1013
 struct cmds_argp_params
 {
 cmd_t **cmds;
@@ -399,22 +399,22 @@ size_t *num_cmds;
 };
 static const struct argp_option cmd_options[] =
 {
-{"getenv",   CMD_GETENV, "VAR",            OA, "Get environment variable"},
-{"printenv", 0,	   0,     OPTION_ALIAS},
-{"setenv",   CMD_SETENV, "VAR VALUE",       0, "Set environment variable"},
-{"clearenv", CMD_CLRENV, 0,                 0, "Clear environment"},
-{"pwd",      CMD_PWD,    0,     0, "Print current working directory"},
-{"getcwd",   0,	   0,     OPTION_ALIAS},
-{"getroot",  CMD_GETROOT,0,     0, "Print current root directory"},
-{"setfd",    CMD_SETFD,  "FD FILE [rwxa]", 0, "Change file descriptor"},
-{"stdin",    CMD_STDIN,  "FILE [rwxa]",    0, "Change standard input"},
-{"stdout",   CMD_STDOUT, "FILE [rwxa]",    0, "Change standard output"},
-{"stderr",   CMD_STDERR, "FILE [rwxa]",    0, "Change standard error"},
-{"chdir",    CMD_CHCWDIR,"DIR",   0, "Change current working directory"},
-{"cd",       0,	   0,     OPTION_ALIAS},
-{"chroot",   CMD_CHCRDIR,"DIR",   0, "Change current root directory"},
-{"cdroot",   CMD_CDROOT, 0,       0, "Change cwd to root directory"},
-{"umask",    CMD_UMASK,  "MASK", OA, "Change umask"},
+{"getenv", CMD_GETENV, "VAR", OA, "Get environment variable"},
+{"printenv", 0, 0, OPTION_ALIAS},
+{"setenv", CMD_SETENV, "VAR VALUE", 0, "Set environment variable"},
+{"clearenv", CMD_CLRENV, 0, 0, "Clear environment"},
+{"pwd", CMD_PWD, 0, 0, "Print current working directory"},
+{"getcwd", 0, 0, OPTION_ALIAS},
+{"getroot", CMD_GETROOT,0, 0, "Print current root directory"},
+{"setfd", CMD_SETFD, "FD FILE [rwxa]", 0, "Change file descriptor"},
+{"stdin", CMD_STDIN, "FILE [rwxa]", 0, "Change standard input"},
+{"stdout", CMD_STDOUT, "FILE [rwxa]", 0, "Change standard output"},
+{"stderr", CMD_STDERR, "FILE [rwxa]", 0, "Change standard error"},
+{"chdir", CMD_CHCWDIR,"DIR", 0, "Change current working directory"},
+{"cd", 0, 0, OPTION_ALIAS},
+{"chroot", CMD_CHCRDIR,"DIR", 0, "Change current root directory"},
+{"cdroot", CMD_CDROOT, 0, 0, "Change cwd to root directory"},
+{"umask", CMD_UMASK, "MASK", OA, "Change umask"},
 {"report-wait", CMD_REPORT_WAIT, 0, 0, "Describe what threads are blocked on"},
 {0, 0}
 };

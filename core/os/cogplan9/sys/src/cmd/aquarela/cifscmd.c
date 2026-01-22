@@ -3,7 +3,7 @@
 SmbClient *c;
 Biobuf bin, bout;
 static int verbose = 1;
-#define	SEP(c)	(((c)==' ')||((c)=='\t')||((c)=='\n'))
+#define SEP(c) (((c)==' ')||((c)=='\t')||((c)=='\n'))
 typedef struct Slut {
 char *name;
 int val;
@@ -43,7 +43,7 @@ if(!*s)
 break;
 s++;
 }
-else  {
+else {
 while(n--)
 *to++ = *s++;
 }
@@ -156,7 +156,7 @@ fid, attr, mtime, size, accessallowed);
 return 0;
 }
 static Cmd cmd[] = {
-{ "help",	cmdhelp,	0, "help" },
+{ "help", cmdhelp, 0, "help" },
 { "open", cmdopen, 1, "open name sharemode openmode" },
 { 0, 0 },
 };

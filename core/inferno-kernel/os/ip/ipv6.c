@@ -1,34 +1,34 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"ip.h"
-#include	"ipv6.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "ip.h"
+#include "ipv6.h"
 enum
 {
-IP4HDR		= 20,
-IP6HDR		= 40,
-IP_HLEN4	= 0x05,
-IP_DF		= 0x4000,
-IP_MF		= 0x2000,
-IP6FHDR		= 8,
-IP_MAX		= (32*1024),
+IP4HDR = 20,
+IP6HDR = 40,
+IP_HLEN4 = 0x05,
+IP_DF = 0x4000,
+IP_MF = 0x2000,
+IP6FHDR = 8,
+IP_MAX = (32*1024),
 };
 #define IPV6CLASS(hdr) ((hdr->vcf[0]&0x0F)<<2 | (hdr->vcf[1]&0xF0)>>2)
-#define BLKIPVER(xp)	(((Ip6hdr*)((xp)->rp))->vcf[0]&0xF0)
-#define BKFG(xp)	((Ipfrag*)((xp)->base))
-typedef struct	IP	IP;
-typedef struct	Fragment4	Fragment4;
-typedef struct	Fragment6	Fragment6;
-typedef struct	Ipfrag	Ipfrag;
-Block*		ip6reassemble(IP*, int, Block*, Ip6hdr*);
-void		ipfragfree6(IP*, Fragment6*);
-Fragment6*	ipfragallo6(IP*);
-static Block*		procxtns(IP *ip, Block *bp, int doreasm);
-int		unfraglen(Block *bp, uchar *nexthdr, int setfh);
-Block*		procopts(Block *bp);
+#define BLKIPVER(xp) (((Ip6hdr*)((xp)->rp))->vcf[0]&0xF0)
+#define BKFG(xp) ((Ipfrag*)((xp)->base))
+typedef struct IP IP;
+typedef struct Fragment4 Fragment4;
+typedef struct Fragment6 Fragment6;
+typedef struct Ipfrag Ipfrag;
+Block* ip6reassemble(IP*, int, Block*, Ip6hdr*);
+void ipfragfree6(IP*, Fragment6*);
+Fragment6* ipfragallo6(IP*);
+static Block* procxtns(IP *ip, Block *bp, int doreasm);
+int unfraglen(Block *bp, uchar *nexthdr, int setfh);
+Block* procopts(Block *bp);
 enum
 {
 Forwarding,
@@ -54,61 +54,61 @@ Nstats,
 };
 static char *statnames[] =
 {
-[Forwarding]	"Forwarding",
-[DefaultTTL]	"DefaultTTL",
-[InReceives]	"InReceives",
-[InHdrErrors]	"InHdrErrors",
-[InAddrErrors]	"InAddrErrors",
-[ForwDatagrams]	"ForwDatagrams",
-[InUnknownProtos]	"InUnknownProtos",
-[InDiscards]	"InDiscards",
-[InDelivers]	"InDelivers",
-[OutRequests]	"OutRequests",
-[OutDiscards]	"OutDiscards",
-[OutNoRoutes]	"OutNoRoutes",
-[ReasmTimeout]	"ReasmTimeout",
-[ReasmReqds]	"ReasmReqds",
-[ReasmOKs]	"ReasmOKs",
-[ReasmFails]	"ReasmFails",
-[FragOKs]	"FragOKs",
-[FragFails]	"FragFails",
-[FragCreates]	"FragCreates",
+[Forwarding] "Forwarding",
+[DefaultTTL] "DefaultTTL",
+[InReceives] "InReceives",
+[InHdrErrors] "InHdrErrors",
+[InAddrErrors] "InAddrErrors",
+[ForwDatagrams] "ForwDatagrams",
+[InUnknownProtos] "InUnknownProtos",
+[InDiscards] "InDiscards",
+[InDelivers] "InDelivers",
+[OutRequests] "OutRequests",
+[OutDiscards] "OutDiscards",
+[OutNoRoutes] "OutNoRoutes",
+[ReasmTimeout] "ReasmTimeout",
+[ReasmReqds] "ReasmReqds",
+[ReasmOKs] "ReasmOKs",
+[ReasmFails] "ReasmFails",
+[FragOKs] "FragOKs",
+[FragFails] "FragFails",
+[FragCreates] "FragCreates",
 };
 struct Fragment4
 {
-Block*	blist;
-Fragment4*	next;
-ulong 	src;
-ulong 	dst;
-ushort	id;
-ulong 	age;
+Block* blist;
+Fragment4* next;
+ulong src;
+ulong dst;
+ushort id;
+ulong age;
 };
 struct Fragment6
 {
-Block*	blist;
-Fragment6*	next;
-uchar 	src[IPaddrlen];
-uchar 	dst[IPaddrlen];
-uint	id;
-ulong 	age;
+Block* blist;
+Fragment6* next;
+uchar src[IPaddrlen];
+uchar dst[IPaddrlen];
+uint id;
+ulong age;
 };
 struct Ipfrag
 {
-ushort	foff;
-ushort	flen;
+ushort foff;
+ushort flen;
 };
 struct IP
 {
-ulong		stats[Nstats];
-QLock		fraglock4;
-Fragment4*	flisthead4;
-Fragment4*	fragfree4;
-Ref		id4;
-QLock		fraglock6;
-Fragment6*	flisthead6;
-Fragment6*	fragfree6;
-Ref		id6;
-int		iprouting;
+ulong stats[Nstats];
+QLock fraglock4;
+Fragment4* flisthead4;
+Fragment4* fragfree4;
+Ref id4;
+QLock fraglock6;
+Fragment6* flisthead6;
+Fragment6* fragfree6;
+Ref id6;
+int iprouting;
 };
 int
 ipoput6(Fs *f, Block *bp, int gating, int ttl, int tos, Conv *c)

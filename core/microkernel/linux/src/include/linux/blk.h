@@ -5,17 +5,17 @@
 #include <linux/malloc.h>
 #include <linux/config.h>
 #include <linux/md.h>
-#define NR_REQUEST	64
+#define NR_REQUEST 64
 #define IN_ORDER(s1,s2) \
 ((s1)->rq_dev < (s2)->rq_dev || (((s1)->rq_dev == (s2)->rq_dev && \
 (s1)->sector < (s2)->sector)))
 #if defined(IDE_DRIVER) || defined(MD_DRIVER)
 #define SECTOR_MASK ((BLOCK_SIZE >> 9) - 1)
 #else
-#define SECTOR_MASK (blksize_size[MAJOR_NR] &&     \
+#define SECTOR_MASK (blksize_size[MAJOR_NR] && \
 blksize_size[MAJOR_NR][MINOR(CURRENT->rq_dev)] ? \
-((blksize_size[MAJOR_NR][MINOR(CURRENT->rq_dev)] >> 9) - 1) :  \
-((BLOCK_SIZE >> 9)  -  1))
+((blksize_size[MAJOR_NR][MINOR(CURRENT->rq_dev)] >> 9) - 1) : \
+((BLOCK_SIZE >> 9) - 1))
 #endif
 #define SUBSECTOR(block) (CURRENT->current_nr_sectors > 0)
 #ifdef CONFIG_CDU31A
@@ -81,14 +81,14 @@ extern int mount_initrd;
 void initrd_init(void);
 #endif
 #define RO_IOCTLS(dev,where) \
-case BLKROSET: { int __err;  if (!suser()) return -EACCES; \
+case BLKROSET: { int __err; if (!suser()) return -EACCES; \
 __err = verify_area(VERIFY_READ, (void *) (where), sizeof(long)); \
 if (!__err) set_device_ro((dev),get_fs_long((long *) (where))); return __err; } \
 case BLKROGET: { int __err = verify_area(VERIFY_WRITE, (void *) (where), sizeof(long)); \
 if (!__err) put_fs_long(0!=is_read_only(dev),(long *) (where)); return __err; }
 #if defined(MAJOR_NR) || defined(IDE_DRIVER)
 #ifdef IDE_DRIVER
-#define DEVICE_NR(device)	(MINOR(device) >> PARTN_BITS)
+#define DEVICE_NR(device) (MINOR(device) >> PARTN_BITS)
 #define DEVICE_ON(device)
 #define DEVICE_OFF(device)
 #elif (MAJOR_NR == RAMDISK_MAJOR)
@@ -123,7 +123,7 @@ static void floppy_off(unsigned int nr);
 #define DEVICE_NR(device) (MINOR(device) >> 4)
 #define DEVICE_ON(device)
 #define DEVICE_OFF(device)
-#elif  (MAJOR_NR == MD_MAJOR) && defined(MD_DRIVER)
+#elif (MAJOR_NR == MD_MAJOR) && defined(MD_DRIVER)
 #define DEVICE_NAME "Multiple devices driver"
 #define DEVICE_REQUEST do_md_request
 #define DEVICE_NR(device) (MINOR(device))

@@ -1,7 +1,7 @@
 #ifndef srdline_INCLUDED
-#  define srdline_INCLUDED
+# define srdline_INCLUDED
 #ifndef stream_DEFINED
-#  define stream_DEFINED
+# define stream_DEFINED
 typedef struct stream_s stream;
 #endif
 #define sreadline_proc(proc)\

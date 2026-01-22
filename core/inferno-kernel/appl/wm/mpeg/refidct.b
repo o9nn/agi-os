@@ -5,7 +5,7 @@ include "mpegio.m";
 sys: Sys;
 math: Math;
 #
-#	Reference IDCT.  Full expanded 2-d IDCT.
+# Reference IDCT. Full expanded 2-d IDCT.
 #
 coeff: array of array of real;
 init()

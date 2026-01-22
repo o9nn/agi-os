@@ -8,15 +8,15 @@
 #include "siscale.h"
 #if USE_FPU <= 0
 typedef int PixelWeight;
-#  if arch_ints_are_short
+# if arch_ints_are_short
 typedef long AccumTmp;
-#  else
+# else
 typedef int AccumTmp;
-#  endif
+# endif
 #define num_weight_bits\
 ((sizeof(AccumTmp) - maxSizeofPixel) * 8 - (LOG2_MAX_ISCALE_SUPPORT + 1))
-#define numScaleBits  ((maxSizeofPixel - sizeof(PixelTmp)) * 8 )
-#define fixedScaleFactor  ((int) (1 << numScaleBits))
+#define numScaleBits ((maxSizeofPixel - sizeof(PixelTmp)) * 8 )
+#define fixedScaleFactor ((int) (1 << numScaleBits))
 #define scale_PixelWeight(factor) ((int)((factor) * (1 << num_weight_bits)))
 #define unscale_AccumTmp(atemp, fraction_bits) arith_rshift(atemp, fraction_bits)
 #define NEED_FRACTION_BITS
@@ -47,8 +47,8 @@ stream_image_scale_state_common;
 int sizeofPixelIn;
 int sizeofPixelOut;
 double xscale, yscale;
-void  *src;
-void  *dst;
+void *src;
+void *dst;
 PixelTmp *tmp;
 CLIST *contrib;
 CONTRIB *items;
@@ -181,7 +181,7 @@ p[k].weight +=
 return last_index;
 }
 private void
-zoom_x(PixelTmp * tmp, const void  *src, int sizeofPixelIn,
+zoom_x(PixelTmp * tmp, const void *src, int sizeofPixelIn,
 int tmp_width, int WidthIn, int Colors, const CLIST * contrib,
 const CONTRIB * items)
 {
@@ -197,7 +197,7 @@ if_debug1('W', "[W]zoom_x color %d:", c);
 #define zoom_x_loop(PixelIn, PixelIn2)\
 const PixelIn *raster = (const PixelIn *)src + c;\
 for ( i = 0; i < tmp_width; tp += Colors, ++clp, ++i )\
-{	AccumTmp weight = 0;\
+{ AccumTmp weight = 0;\
 { int j = clp->n;\
 const PixelIn *pp = raster + clp->first_pixel;\
 const CONTRIB *cp = items + clp->index;\
@@ -235,7 +235,7 @@ if_debug0('W', "\n");
 }
 }
 private void
-zoom_y(void  *dst, int sizeofPixelOut, uint MaxValueOut,
+zoom_y(void *dst, int sizeofPixelOut, uint MaxValueOut,
 const PixelTmp * tmp, int WidthOut, int tmp_width,
 int Colors, const CLIST * contrib, const CONTRIB * items)
 {

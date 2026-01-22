@@ -6,8 +6,8 @@ CHaveResp,
 Maxphase,
 };
 static char *phasenames[Maxphase] = {
-[CNeedChal]	"CNeedChal",
-[CHaveResp]	"CHaveResp",
+[CNeedChal] "CNeedChal",
+[CHaveResp] "CHaveResp",
 };
 struct State
 {
@@ -129,11 +129,11 @@ s = fss->ps;
 free(s);
 }
 Proto httpdigest = {
-.name=		"httpdigest",
-.init=		hdinit,
-.write=		hdwrite,
-.read=		hdread,
-.close=		hdclose,
-.addkey=	replacekey,
-.keyprompt=	"user? realm? !password?"
+.name= "httpdigest",
+.init= hdinit,
+.write= hdwrite,
+.read= hdread,
+.close= hdclose,
+.addkey= replacekey,
+.keyprompt= "user? realm? !password?"
 };

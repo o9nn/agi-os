@@ -7,51 +7,51 @@ dd: module
 {
 init: fn(nil: ref Draw->Context, argv: list of string);
 };
-BIG:	con 2147483647;
+BIG: con 2147483647;
 LCASE,
 UCASE,
 SWAB,
-NERR	,
-SYNC	:	con (1<<iota);
+NERR ,
+SYNC : con (1<<iota);
 NULL,
 CNULL,
 EBCDIC,
 IBM,
 ASCII,
 BLOCK,
-UNBLOCK:	con iota;
-cflag:		int;
-ctype:	int;
-fflag:		int;
-arg:		string;
-ifile:		string;
-ofile:		string;
-ibuf:		array of byte;
-obuf:		array of byte;
-op:		int;
-skip:		int;
-oseekn:	int;
-iseekn:	int;
-count:	int;
-files:=	1;
-ibs:=		512;
-obs:=		512;
-bs:		int;
-cbs:		int;
-ibc:		int;
-obc:		int;
-cbc:		int;
-nifr:		int;
-nipr:		int;
-nofr:		int;
-nopr:		int;
-ntrunc:	int;
-ibf:		ref Sys->FD;
-obf:		ref Sys->FD;
-nspace:	int;
+UNBLOCK: con iota;
+cflag: int;
+ctype: int;
+fflag: int;
+arg: string;
+ifile: string;
+ofile: string;
+ibuf: array of byte;
+obuf: array of byte;
+op: int;
+skip: int;
+oseekn: int;
+iseekn: int;
+count: int;
+files:= 1;
+ibs:= 512;
+obs:= 512;
+bs: int;
+cbs: int;
+ibc: int;
+obc: int;
+cbc: int;
+nifr: int;
+nipr: int;
+nofr: int;
+nopr: int;
+ntrunc: int;
+ibf: ref Sys->FD;
+obf: ref Sys->FD;
+nspace: int;
 iskey(key:string, s: string): int
 {
-return key[0] == '-' && key[1:] ==  s;
+return key[0] == '-' && key[1:] == s;
 }
 exits(msg: string)
 {
@@ -212,7 +212,7 @@ obuf = array[obs] of byte;
 if(fflag)
 obuf = ibuf;
 sys->seek(obf, big obs*big oseekn, Sys->SEEKRELA);
-sys->seek(ibf, big ibs*big iseekn,  Sys->SEEKRELA);
+sys->seek(ibf, big ibs*big iseekn, Sys->SEEKRELA);
 while(skip) {
 sys->read(ibf, ibuf, ibs);
 skip--;

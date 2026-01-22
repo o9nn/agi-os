@@ -5,7 +5,7 @@
 #include <linux/config.h>
 #include <asm/spinlock.h>
 extern spinlock_t io_request_lock;
-#define NR_REQUEST	128
+#define NR_REQUEST 128
 #define IN_ORDER(s1,s2) \
 ((s1)->rq_dev < (s2)->rq_dev || (((s1)->rq_dev == (s2)->rq_dev && \
 (s1)->sector < (s2)->sector)))
@@ -58,7 +58,7 @@ extern int initrd_below_start_ok;
 void initrd_init(void);
 #endif
 #define RO_IOCTLS(dev,where) \
-case BLKROSET: { int __val;  if (!capable(CAP_SYS_ADMIN)) return -EACCES; \
+case BLKROSET: { int __val; if (!capable(CAP_SYS_ADMIN)) return -EACCES; \
 if (get_user(__val, (int *)(where))) return -EFAULT; \
 set_device_ro((dev),__val); return 0; } \
 case BLKROGET: { int __val = (is_read_only(dev) != 0) ; \
@@ -67,7 +67,7 @@ int end_that_request_first(struct request *req, int uptodate, char *name);
 void end_that_request_last(struct request *req);
 #if defined(MAJOR_NR) || defined(IDE_DRIVER)
 #ifdef IDE_DRIVER
-#define DEVICE_NR(device)	(MINOR(device) >> PARTN_BITS)
+#define DEVICE_NR(device) (MINOR(device) >> PARTN_BITS)
 #define DEVICE_ON(device)
 #define DEVICE_OFF(device)
 #define DEVICE_NAME "ide"
@@ -109,7 +109,7 @@ static void floppy_off(unsigned int nr);
 #define DEVICE_NR(device) (((MAJOR(device) & SD_MAJOR_MASK) << (8 - 4)) + (MINOR(device) >> 4))
 #define DEVICE_ON(device)
 #define DEVICE_OFF(device)
-#elif  (MAJOR_NR == MD_MAJOR) && defined(MD_DRIVER)
+#elif (MAJOR_NR == MD_MAJOR) && defined(MD_DRIVER)
 #define DEVICE_NAME "Multiple devices driver"
 #define DEVICE_REQUEST do_md_request
 #define DEVICE_NR(device) (MINOR(device))

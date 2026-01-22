@@ -11,168 +11,168 @@ typedef struct Ccb Ccb;
 typedef struct Ctlr Ctlr;
 typedef struct Gcb Gcb;
 struct Gcb {
-u16int	gcw;
-u16int	gsw;
-u16int	gsr;
-u16int	abs;
-u16int	bt;
-u16int	cpv;
-u16int	ccbn;
-u16int	ccboff;
-u16int	ccbsz;
-u16int	gcw2;
-u16int	gsw2;
-u16int	esr;
-u16int	isr;
-u16int	osr;
-u16int	msr;
-u16int	csr;
+u16int gcw;
+u16int gsw;
+u16int gsr;
+u16int abs;
+u16int bt;
+u16int cpv;
+u16int ccbn;
+u16int ccboff;
+u16int ccbsz;
+u16int gcw2;
+u16int gsw2;
+u16int esr;
+u16int isr;
+u16int osr;
+u16int msr;
+u16int csr;
 };
 struct Ccb {
-u16int	br;
-u16int	df;
-u16int	lp;
-u16int	ibs;
-u16int	obs;
-u16int 	ibtr;
-u16int	oblw;
-u8int	ixon[2];
-u16int	ibhw;
-u16int	iblw;
-u16int	cc;
-u16int	cs;
-u16int	ibsa;
-u16int 	ibea;
-u16int	obsa;
-u16int 	obea;
-u16int	ibwp;
-u16int	ibrp;
-u16int	obwp;
-u16int	obrp;
-u16int	ces;
-u16int	bcp;
-u16int	mc;
-u16int	ms;
-u16int	bs;
-u16int	crf;
-u8int	ixoff[2];
-u16int	cs2;
-u8int	sec[2];
+u16int br;
+u16int df;
+u16int lp;
+u16int ibs;
+u16int obs;
+u16int ibtr;
+u16int oblw;
+u8int ixon[2];
+u16int ibhw;
+u16int iblw;
+u16int cc;
+u16int cs;
+u16int ibsa;
+u16int ibea;
+u16int obsa;
+u16int obea;
+u16int ibwp;
+u16int ibrp;
+u16int obwp;
+u16int obrp;
+u16int ces;
+u16int bcp;
+u16int mc;
+u16int ms;
+u16int bs;
+u16int crf;
+u8int ixoff[2];
+u16int cs2;
+u8int sec[2];
 };
 enum {
-Br76800		= 0xFF00,
-Br115200	= 0xFF01,
+Br76800 = 0xFF00,
+Br115200 = 0xFF01,
 };
 enum {
-Db5		= 0x0000,
-Db6		= 0x0001,
-Db7		= 0x0002,
-Db8		= 0x0003,
-DbMASK		= 0x0003,
-Sb1		= 0x0000,
-Sb2		= 0x0004,
-SbMASK		= 0x0004,
-Np		= 0x0000,
-Op		= 0x0008,
-Ep		= 0x0010,
-Mp		= 0x0020,
-Sp		= 0x0030,
-PMASK		= 0x0038,
-Cmn		= 0x0000,
-Cme		= 0x0040,
-Cmll		= 0x0080,
-Cmrl		= 0x00C0,
+Db5 = 0x0000,
+Db6 = 0x0001,
+Db7 = 0x0002,
+Db8 = 0x0003,
+DbMASK = 0x0003,
+Sb1 = 0x0000,
+Sb2 = 0x0004,
+SbMASK = 0x0004,
+Np = 0x0000,
+Op = 0x0008,
+Ep = 0x0010,
+Mp = 0x0020,
+Sp = 0x0030,
+PMASK = 0x0038,
+Cmn = 0x0000,
+Cme = 0x0040,
+Cmll = 0x0080,
+Cmrl = 0x00C0,
 };
 enum {
-Ixon		= 0x0001,
-Ixany		= 0x0002,
-Ixgen		= 0x0004,
-Cts		= 0x0008,
-Dtr		= 0x0010,
-½d		= 0x0020,
-Rts		= 0x0040,
-Emcs		= 0x0080,
-Ecs		= 0x1000,
-Eia422		= 0x2000,
+Ixon = 0x0001,
+Ixany = 0x0002,
+Ixgen = 0x0004,
+Cts = 0x0008,
+Dtr = 0x0010,
+½d = 0x0020,
+Rts = 0x0040,
+Emcs = 0x0080,
+Ecs = 0x1000,
+Eia422 = 0x2000,
 };
 enum {
-Ccu		= 0x0001,
-Cco		= 0x0002,
-Fib		= 0x0004,
-Fob		= 0x0008,
-Er		= 0x0010,
-Dr		= 0x0020,
-Et		= 0x0040,
-Dt		= 0x0080,
+Ccu = 0x0001,
+Cco = 0x0002,
+Fib = 0x0004,
+Fob = 0x0008,
+Er = 0x0010,
+Dr = 0x0020,
+Et = 0x0040,
+Dt = 0x0080,
 };
 enum {
-Oe		= 0x0001,
-Pe		= 0x0002,
-Fe		= 0x0004,
-Br		= 0x0008,
+Oe = 0x0001,
+Pe = 0x0002,
+Fe = 0x0004,
+Br = 0x0008,
 };
 enum {
-Adtr		= 0x0001,
-Arts		= 0x0002,
-Ab		= 0x0010,
+Adtr = 0x0001,
+Arts = 0x0002,
+Ab = 0x0010,
 };
 enum {
-Scts		= 0x0001,
-Sdsr		= 0x0002,
-Sri		= 0x0004,
-Sdcd		= 0x0008,
+Scts = 0x0001,
+Sdsr = 0x0002,
+Sri = 0x0004,
+Sdcd = 0x0008,
 };
 enum {
-Rd		= 0x0001,
-Td		= 0x0002,
-Tbxoff		= 0x0004,
-Tbcts		= 0x0008,
-Rbxoff		= 0x0010,
-Rbrts		= 0x0020,
+Rd = 0x0001,
+Td = 0x0002,
+Tbxoff = 0x0004,
+Tbcts = 0x0008,
+Rbxoff = 0x0010,
+Rbrts = 0x0020,
 };
 enum {
-Range		= 0x00,
-Remap		= 0x04,
-Region		= 0x18,
-Mb0		= 0x40,
-Ldb		= 0x60,
-Pdb		= 0x64,
-Ics		= 0x68,
-Mcc		= 0x6C,
+Range = 0x00,
+Remap = 0x04,
+Region = 0x18,
+Mb0 = 0x40,
+Ldb = 0x60,
+Pdb = 0x64,
+Ics = 0x68,
+Mcc = 0x6C,
 };
 enum {
-Edcc		= 1,
-Aic		= 0x10,
-Cpr		= 1ul << 31,
+Edcc = 1,
+Aic = 0x10,
+Cpr = 1ul << 31,
 };
 enum {
-Rcr		= 1ul << 29,
-Asr		= 1ul << 30,
-Lis		= 1ul << 31,
+Rcr = 1ul << 29,
+Asr = 1ul << 30,
+Lis = 1ul << 31,
 };
 typedef struct Cc Cc;
 typedef struct Ccb Ccb;
 typedef struct Ctlr Ctlr;
 struct Cc {
-int	uartno;
-Ccb*	ccb;
-Ctlr*	ctlr;
+int uartno;
+Ccb* ccb;
+Ctlr* ctlr;
 Rendez;
 Uart;
 };
 typedef struct Ctlr {
-char*	name;
-Pcidev*	pcidev;
-int	ctlrno;
-Ctlr*	next;
-u32int*	reg;
-uchar*	mem;
-Gcb*	gcb;
-int	im;
-Cc	cc[16];
+char* name;
+Pcidev* pcidev;
+int ctlrno;
+Ctlr* next;
+u32int* reg;
+uchar* mem;
+Gcb* gcb;
+int im;
+Cc cc[16];
 } Ctlr;
-#define csr32r(c, r)	(*((c)->reg+((r)/4)))
-#define csr32w(c, r, v)	(*((c)->reg+((r)/4)) = (v))
+#define csr32r(c, r) (*((c)->reg+((r)/4)))
+#define csr32w(c, r, v) (*((c)->reg+((r)/4)) = (v))
 static Ctlr* axpctlrhead;
 static Ctlr* axpctlrtail;
 extern PhysUart axpphysuart;
@@ -238,9 +238,9 @@ uart->ferr,
 uart->oerr,
 uart->berr,
 uart->serr,
-(ms & Scts) ? " cts"  : "",
-(ms & Sdsr) ? " dsr"  : "",
-(ms & Sdcd) ? " dcd"  : "",
+(ms & Scts) ? " cts" : "",
+(ms & Sdsr) ? " dsr" : "",
+(ms & Sdcd) ? " dcd" : "",
 (ms & Sri) ? " ring" : ""
 );
 n = readstr(offset, buf, n, p);
@@ -725,21 +725,21 @@ ctlrno++;
 return head;
 }
 PhysUart axpphysuart = {
-.name		= "AvanstarXp",
-.pnp		= axppnp,
-.enable		= axpenable,
-.disable	= axpdisable,
-.kick		= axpkick,
-.dobreak	= axpbreak,
-.baud		= axpbaud,
-.bits		= axpbits,
-.stop		= axpstop,
-.parity		= axpparity,
-.modemctl	= axpmodemctl,
-.rts		= axprts,
-.dtr		= axpdtr,
-.status		= axpstatus,
-.fifo		= axpfifo,
-.getc		= nil,
-.putc		= nil,
+.name = "AvanstarXp",
+.pnp = axppnp,
+.enable = axpenable,
+.disable = axpdisable,
+.kick = axpkick,
+.dobreak = axpbreak,
+.baud = axpbaud,
+.bits = axpbits,
+.stop = axpstop,
+.parity = axpparity,
+.modemctl = axpmodemctl,
+.rts = axprts,
+.dtr = axpdtr,
+.status = axpstatus,
+.fifo = axpfifo,
+.getc = nil,
+.putc = nil,
 };

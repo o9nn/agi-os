@@ -16,7 +16,7 @@ char ether_address[ETH_ALEN];
 static mach_port_t readptname;
 static struct bpf_insn ether_filter[] =
 {
-{NETF_IN|NETF_BPF,  0, 0, 0},
+{NETF_IN|NETF_BPF, 0, 0, 0},
 {40, 0, 0, 12},
 {21, 1, 0, 2054},
 {21, 0, 1, 2048},

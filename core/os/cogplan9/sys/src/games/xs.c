@@ -12,11 +12,11 @@ Cursor whitearrow = {
 };
 enum
 {
-CNone	= 0,
-CBounds	= 1,
-CPiece	= 2,
-NX	= 10,
-NY	= 20,
+CNone = 0,
+CBounds = 1,
+CPiece = 2,
+NX = 10,
+NY = 20,
 };
 enum{
 TIMER,
@@ -26,33 +26,33 @@ KBD,
 SUSPEND,
 NALT
 };
-char		board[NY][NX];
-Rectangle	rboard;
-Point		pscore;
-Point		scoresz;
-int		pcsz = 32;
-Point		pos;
-Image	*bb, *bbmask, *bb2, *bb2mask;
-Image	*whitemask;
-Rectangle	br, br2;
-long		points;
-int		dt;
-int		DY;
-int		DMOUSE;
-int		lastmx;
-Mouse	mouse;
-int		newscreen;
-Channel	*timerc;
-Channel	*suspc;
-Channel	*mousec;
-Channel	*kbdc;
-Mousectl	*mousectl;
-Keyboardctl	*kbdctl;
-int		suspended;
-void		redraw(int);
-int	tsleep;
+char board[NY][NX];
+Rectangle rboard;
+Point pscore;
+Point scoresz;
+int pcsz = 32;
+Point pos;
+Image *bb, *bbmask, *bb2, *bb2mask;
+Image *whitemask;
+Rectangle br, br2;
+long points;
+int dt;
+int DY;
+int DMOUSE;
+int lastmx;
+Mouse mouse;
+int newscreen;
+Channel *timerc;
+Channel *suspc;
+Channel *mousec;
+Channel *kbdc;
+Mousectl *mousectl;
+Keyboardctl *kbdctl;
+int suspended;
+void redraw(int);
+int tsleep;
 Piece *piece;
-#define	NCOL	10
+#define NCOL 10
 uchar txbits[NCOL][32]={
 {0xDD,0xDD,0xFF,0xFF,0x77,0x77,0xFF,0xFF,
 0xDD,0xDD,0xFF,0xFF,0x77,0x77,0xFF,0xFF,

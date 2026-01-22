@@ -18,7 +18,7 @@ const gx_device_printer far_data gs_sgirgb_device =
 sgi_prn_device(sgi_procs, "sgirgb", 3, 24, 255, 255, sgi_print_page);
 private gx_color_index
 sgi_map_rgb_color(gx_device * dev, const ushort cv[])
-{      ushort bitspercolor = dev->color_info.depth / 3;
+{ ushort bitspercolor = dev->color_info.depth / 3;
 ulong max_value = (1 << bitspercolor) - 1;
 ushort red, green, blue;
 red = cv[0]; green = cv[1]; blue = cv[2];
@@ -28,7 +28,7 @@ return ((red*max_value / gx_max_color_value) << (bitspercolor * 2)) +
 }
 private int
 sgi_map_color_rgb(gx_device *dev, gx_color_index color, ushort prgb[3])
-{	ushort bitspercolor = dev->color_info.depth / 3;
+{ ushort bitspercolor = dev->color_info.depth / 3;
 ushort colormask = (1 << bitspercolor) - 1;
 prgb[0] = (ushort)(((color >> (bitspercolor * 2)) & colormask) *
 (ulong)gx_max_color_value / colormask);
@@ -61,8 +61,8 @@ header->dim = 3;
 header->xsize=bdev->width;
 header->ysize=bdev->height;
 header->zsize=3;
-header->min_color  = 0;
-header->max_color  = bdev->color_info.max_color;
+header->min_color = 0;
+header->max_color = bdev->color_info.max_color;
 header->wastebytes = 0;
 strncpy(header->name,"gs picture",80);
 header->colormap = CM_NORMAL;
@@ -77,7 +77,7 @@ return 0;
 }
 private int
 sgi_next_row(sgi_cursor *pcur)
-{    if (pcur->lnum < 0)
+{ if (pcur->lnum < 0)
 return 1;
 gdev_prn_copy_scan_lines((gx_device_printer*)pcur->dev,
 pcur->lnum--, pcur->data, pcur->line_size);
@@ -86,7 +86,7 @@ return 0;
 #define bdev ((gx_device_printer *)pdev)
 private int
 sgi_print_page(gx_device_printer *pdev, FILE *pstream)
-{      sgi_cursor cur;
+{ sgi_cursor cur;
 int code = sgi_begin_page(bdev, pstream, &cur);
 uint bpe, mask;
 int separation;
@@ -95,7 +95,7 @@ byte *edata ;
 long lastval;
 int rownumber;
 #define aref2(a,b) a*bdev->height+b
-edata =  (byte*)gs_malloc(pdev->memory, cur.line_size, 1, "sgi_begin_page");
+edata = (byte*)gs_malloc(pdev->memory, cur.line_size, 1, "sgi_begin_page");
 if((code<0)||(rowsizes==(long*)NULL)||(edata==(byte*)NULL)) return(-1);
 fwrite(rowsizes,sizeof(long),3*bdev->height,pstream);
 fwrite(rowsizes,sizeof(long),3*bdev->height,pstream);

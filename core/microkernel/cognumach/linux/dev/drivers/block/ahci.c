@@ -548,8 +548,8 @@ ret = 2;
 } else {
 memcpy(&port->id, &id, sizeof(id));
 port->is_cd = 0;
-ide_fixstring(id.model,     sizeof(id.model),     1);
-ide_fixstring(id.fw_rev,    sizeof(id.fw_rev),    1);
+ide_fixstring(id.model, sizeof(id.model), 1);
+ide_fixstring(id.fw_rev, sizeof(id.fw_rev), 1);
 ide_fixstring(id.serial_no, sizeof(id.serial_no), 1);
 if (cmd == WIN_PIDENTIFY)
 {
@@ -864,10 +864,10 @@ for (nports = 0, port = &ports[0]; port < &ports[MAX_PORTS]; port++)
 if (port->ahci_port)
 nports++;
 nminors = nports * (1<<PARTN_BITS);
-gd              = kmalloc(sizeof(*gd), GFP_KERNEL);
-gd->sizes       = kmalloc(nminors * sizeof(*gd->sizes), GFP_KERNEL);
-gd->part        = kmalloc(nminors * sizeof(*gd->part), GFP_KERNEL);
-bs              = kmalloc(nminors * sizeof(*bs), GFP_KERNEL);
+gd = kmalloc(sizeof(*gd), GFP_KERNEL);
+gd->sizes = kmalloc(nminors * sizeof(*gd->sizes), GFP_KERNEL);
+gd->part = kmalloc(nminors * sizeof(*gd->part), GFP_KERNEL);
+bs = kmalloc(nminors * sizeof(*bs), GFP_KERNEL);
 blksize_size[MAJOR_NR] = bs;
 for (unit = 0; unit < nminors; unit++)
 *bs++ = PAGE_SIZE;
@@ -876,14 +876,14 @@ for (unit = 0; unit < nports; unit++) {
 ports[unit].gd = gd;
 ports[unit].part = &gd->part[unit << PARTN_BITS];
 }
-gd->major       = MAJOR_NR;
-gd->major_name  = "sd";
+gd->major = MAJOR_NR;
+gd->major_name = "sd";
 gd->minor_shift = PARTN_BITS;
-gd->max_p       = 1<<PARTN_BITS;
-gd->max_nr      = nports;
-gd->nr_real     = nports;
-gd->init        = ahci_geninit;
-gd->next        = NULL;
+gd->max_p = 1<<PARTN_BITS;
+gd->max_nr = nports;
+gd->nr_real = nports;
+gd->init = ahci_geninit;
+gd->next = NULL;
 for (gdp = &gendisk_head; *gdp; gdp = &((*gdp)->next))
 ;
 *gdp = gd;

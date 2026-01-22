@@ -31,15 +31,15 @@
 (define ra (Concept "foo"))
 (test-assert "Concept Keys" (equal? 2 (length (cog-keys ra))))
 (test-assert "Concept Num"
-	(equal? (cog-value ra (Predicate "num")) (FloatValue 11 22 33)))
+(equal? (cog-value ra (Predicate "num")) (FloatValue 11 22 33)))
 (test-assert "Concept Str"
-	(equal? (cog-value ra (Predicate "str")) (StringValue "p" "q" "r")))
+(equal? (cog-value ra (Predicate "str")) (StringValue "p" "q" "r")))
 (define rli (Link (Concept "foo") (Concept "bar")))
 (test-assert "List Keys" (equal? 2 (length (cog-keys rli))))
 (test-assert "List Num"
-	(equal? (cog-value rli (Predicate "num")) (FloatValue 4 5 6)))
+(equal? (cog-value rli (Predicate "num")) (FloatValue 4 5 6)))
 (test-assert "List Str"
-	(equal? (cog-value rli (Predicate "str")) (StringValue "x" "y" "z")))
+(equal? (cog-value rli (Predicate "str")) (StringValue "x" "y" "z")))
 (delete-file fname)
 (test-end tname)
 (opencog-test-end)

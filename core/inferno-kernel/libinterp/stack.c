@@ -3,7 +3,7 @@
 #include "interp.h"
 #include "raise.h"
 #include <pool.h>
-#define T(r)	*((void**)(R.r))
+#define T(r) *((void**)(R.r))
 void
 newstack(Prog *p)
 {
@@ -55,7 +55,7 @@ ns->reg.SP = R.SP;
 ns->reg.TS = R.TS;
 ns->reg.EX = R.EX;
 f = ns->reg.tos.fr;
-f->t  = nil;
+f->t = nil;
 f->mr = nil;
 R.s = f;
 R.EX = ns->stack;

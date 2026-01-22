@@ -4,9 +4,9 @@
 #include <krb.h>
 #ifdef WITH_DES
 # ifdef WITH_SSL_DES
-#  include <openssl/des.h>
+# include <openssl/des.h>
 # else
-#  include <des.h>
+# include <des.h>
 # endif
 #endif
 #ifdef WIN32
@@ -101,7 +101,7 @@ int secflags;
 long time_sec;
 char time_5ms;
 } context_t;
-#define KRB_LOCK_MUTEX(utils)  \
+#define KRB_LOCK_MUTEX(utils) \
 if(((sasl_utils_t *)(utils))->mutex_lock(krb_mutex) != 0) { \
 ((sasl_utils_t *)(utils))->seterror(((sasl_utils_t *)(utils))->conn, \
 0, "error locking mutex"); \
@@ -140,7 +140,7 @@ if(ret != SASL_OK) return ret;
 KRB_LOCK_MUTEX(text->utils);
 if (text->sec_type == KRB_SEC_ENCRYPTION) {
 len=krb_mk_priv(inblob->data, (text->encode_buf+4),
-inblob->curlen,  text->init_keysched,
+inblob->curlen, text->init_keysched,
 &text->session, &text->ip_local,
 &text->ip_remote);
 } else if (text->sec_type == KRB_SEC_INTEGRITY) {
@@ -903,7 +903,7 @@ text->init_keysched,
 DES_ENCRYPT);
 result = _plug_buf_alloc(text->utils, &text->out_buf,
 &text->out_buf_len, len);
-if (result != SASL_OK)  return result;
+if (result != SASL_OK) return result;
 memcpy(text->out_buf, sout, len);
 *clientout = text->out_buf;
 *clientoutlen = len;

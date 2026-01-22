@@ -1,15 +1,15 @@
 #include <stdio.h>
 #include "zlib.h"
 #ifdef STDC
-#  include <string.h>
-#  include <stdlib.h>
+# include <string.h>
+# include <stdlib.h>
 #else
-extern void exit  OF((int));
+extern void exit OF((int));
 #endif
 #if defined(VMS) || defined(RISCOS)
-#  define TESTFILE "foo-gz"
+# define TESTFILE "foo-gz"
 #else
-#  define TESTFILE "foo.gz"
+# define TESTFILE "foo.gz"
 #endif
 #define CHECK_ERR(err, msg) { \
 if (err != Z_OK) { \
@@ -20,24 +20,24 @@ exit(1); \
 const char hello[] = "hello, hello!";
 const char dictionary[] = "hello";
 uLong dictId;
-void test_compress      OF((Byte *compr, uLong comprLen,
+void test_compress OF((Byte *compr, uLong comprLen,
 Byte *uncompr, uLong uncomprLen));
-void test_gzio          OF((const char *fname,
+void test_gzio OF((const char *fname,
 Byte *uncompr, uLong uncomprLen));
-void test_deflate       OF((Byte *compr, uLong comprLen));
-void test_inflate       OF((Byte *compr, uLong comprLen,
+void test_deflate OF((Byte *compr, uLong comprLen));
+void test_inflate OF((Byte *compr, uLong comprLen,
 Byte *uncompr, uLong uncomprLen));
 void test_large_deflate OF((Byte *compr, uLong comprLen,
 Byte *uncompr, uLong uncomprLen));
 void test_large_inflate OF((Byte *compr, uLong comprLen,
 Byte *uncompr, uLong uncomprLen));
-void test_flush         OF((Byte *compr, uLong *comprLen));
-void test_sync          OF((Byte *compr, uLong comprLen,
+void test_flush OF((Byte *compr, uLong *comprLen));
+void test_sync OF((Byte *compr, uLong comprLen,
 Byte *uncompr, uLong uncomprLen));
-void test_dict_deflate  OF((Byte *compr, uLong comprLen));
-void test_dict_inflate  OF((Byte *compr, uLong comprLen,
+void test_dict_deflate OF((Byte *compr, uLong comprLen));
+void test_dict_inflate OF((Byte *compr, uLong comprLen,
 Byte *uncompr, uLong uncomprLen));
-int  main               OF((int argc, char *argv[]));
+int main OF((int argc, char *argv[]));
 void test_compress(compr, comprLen, uncompr, uncomprLen)
 Byte *compr, *uncompr;
 uLong comprLen, uncomprLen;
@@ -140,7 +140,7 @@ c_stream.zfree = (free_func)0;
 c_stream.opaque = (voidpf)0;
 err = deflateInit(&c_stream, Z_DEFAULT_COMPRESSION);
 CHECK_ERR(err, "deflateInit");
-c_stream.next_in  = (Bytef*)hello;
+c_stream.next_in = (Bytef*)hello;
 c_stream.next_out = compr;
 while (c_stream.total_in != len && c_stream.total_out < comprLen) {
 c_stream.avail_in = c_stream.avail_out = 1;
@@ -166,7 +166,7 @@ strcpy((char*)uncompr, "garbage");
 d_stream.zalloc = (alloc_func)0;
 d_stream.zfree = (free_func)0;
 d_stream.opaque = (voidpf)0;
-d_stream.next_in  = compr;
+d_stream.next_in = compr;
 d_stream.avail_in = 0;
 d_stream.next_out = uncompr;
 err = inflateInit(&d_stream);
@@ -235,7 +235,7 @@ strcpy((char*)uncompr, "garbage");
 d_stream.zalloc = (alloc_func)0;
 d_stream.zfree = (free_func)0;
 d_stream.opaque = (voidpf)0;
-d_stream.next_in  = compr;
+d_stream.next_in = compr;
 d_stream.avail_in = (uInt)comprLen;
 err = inflateInit(&d_stream);
 CHECK_ERR(err, "inflateInit");
@@ -267,7 +267,7 @@ c_stream.zfree = (free_func)0;
 c_stream.opaque = (voidpf)0;
 err = deflateInit(&c_stream, Z_DEFAULT_COMPRESSION);
 CHECK_ERR(err, "deflateInit");
-c_stream.next_in  = (Bytef*)hello;
+c_stream.next_in = (Bytef*)hello;
 c_stream.next_out = compr;
 c_stream.avail_in = 3;
 c_stream.avail_out = (uInt)*comprLen;
@@ -293,7 +293,7 @@ strcpy((char*)uncompr, "garbage");
 d_stream.zalloc = (alloc_func)0;
 d_stream.zfree = (free_func)0;
 d_stream.opaque = (voidpf)0;
-d_stream.next_in  = compr;
+d_stream.next_in = compr;
 d_stream.avail_in = 2;
 err = inflateInit(&d_stream);
 CHECK_ERR(err, "inflateInit");
@@ -350,7 +350,7 @@ strcpy((char*)uncompr, "garbage");
 d_stream.zalloc = (alloc_func)0;
 d_stream.zfree = (free_func)0;
 d_stream.opaque = (voidpf)0;
-d_stream.next_in  = compr;
+d_stream.next_in = compr;
 d_stream.avail_in = (uInt)comprLen;
 err = inflateInit(&d_stream);
 CHECK_ERR(err, "inflateInit");
@@ -394,8 +394,8 @@ fprintf(stderr, "warning: different zlib version\n");
 }
 printf("zlib version %s = 0x%04x, compile flags = 0x%lx\n",
 ZLIB_VERSION, ZLIB_VERNUM, zlibCompileFlags());
-compr    = (Byte*)calloc((uInt)comprLen, 1);
-uncompr  = (Byte*)calloc((uInt)uncomprLen, 1);
+compr = (Byte*)calloc((uInt)comprLen, 1);
+uncompr = (Byte*)calloc((uInt)uncomprLen, 1);
 if (compr == Z_NULL || uncompr == Z_NULL) {
 printf("out of memory\n");
 exit(1);

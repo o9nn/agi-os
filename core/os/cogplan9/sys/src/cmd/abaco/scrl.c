@@ -73,7 +73,7 @@ draw(t->b, r, b, nil, Pt(0, r1.min.y));
 void
 scrsleep(uint dt)
 {
-Timer	*timer;
+Timer *timer;
 static Alt alts[3];
 timer = timerstart(dt);
 alts[0].c = timer->c;
@@ -196,7 +196,7 @@ d = Dx(p->r);
 size = Dx(p->lay->r);
 p0 = p->pos.x;
 pos = &p->pos.x;
-smin =  s.min.x;
+smin = s.min.x;
 smax = s.max.x;
 om = mouse->xy.x;
 }else{
@@ -207,7 +207,7 @@ d = Dy(p->r);
 size = Dy(p->lay->r);
 p0 = p->pos.y;
 pos = &p->pos.y;
-smin =  s.min.y;
+smin = s.min.y;
 smax = s.max.y;
 om = mouse->xy.y;
 }

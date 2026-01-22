@@ -14,13 +14,13 @@
 #include <device/device_reply.user.h>
 #include <device/chario.h>
 #include <device/tty.h>
-short	tthiwat[NSPEEDS] =
+short tthiwat[NSPEEDS] =
 { 100,100,100,100,100,100,100,200,200,400,400,400,650,650,1300,2000,
 2000,2000 };
-short	ttlowat[NSPEEDS] =
-{  30, 30, 30, 30, 30, 30, 30, 50, 50,120,120,120,125,125, 125, 125,
+short ttlowat[NSPEEDS] =
+{ 30, 30, 30, 30, 30, 30, 30, 50, 50,120,120,120,125,125, 125, 125,
 125,125 };
-struct ldisc_switch	linesw[] = {
+struct ldisc_switch linesw[] = {
 {
 char_read,
 char_write,
@@ -29,9 +29,9 @@ ttymodem,
 tty_output
 }
 };
-const unsigned int	tty_inq_size = 4096;
-const unsigned int	tty_outq_size = 2048;
-boolean_t		pdma_default = TRUE;
+const unsigned int tty_inq_size = 4096;
+const unsigned int tty_outq_size = 2048;
+boolean_t pdma_default = TRUE;
 int pdma_timeouts[NSPEEDS];
 int pdma_water_mark[NSPEEDS];
 void chario_init(void)
@@ -47,8 +47,8 @@ pdma_timeouts[B1800] = _PR(180);
 pdma_timeouts[B2400] = _PR(240);
 pdma_timeouts[B4800] = _PR(480);
 pdma_timeouts[B9600] = _PR(960);
-pdma_timeouts[EXTA]  = _PR(1440);
-pdma_timeouts[EXTB]  = _PR(1920);
+pdma_timeouts[EXTA] = _PR(1440);
+pdma_timeouts[EXTB] = _PR(1920);
 pdma_timeouts[B57600] = _PR(5760);
 pdma_timeouts[B115200] = _PR(11520);
 for (i = B0; i < B300; i++)
@@ -63,20 +63,20 @@ pdma_water_mark[B2400] = _PR(240);
 pdma_water_mark[B4800] = _PR(480);
 i = tty_inq_size/2;
 pdma_water_mark[B9600] = i;
-pdma_water_mark[EXTA]  = i;
-pdma_water_mark[EXTB]  = i;
+pdma_water_mark[EXTA] = i;
+pdma_water_mark[EXTB] = i;
 pdma_water_mark[B57600] = i;
 pdma_water_mark[B115200] = i;
 return;
 }
 io_return_t char_open(
-int		dev,
-struct tty *	tp,
-dev_mode_t	mode,
-io_req_t	ior)
+int dev,
+struct tty * tp,
+dev_mode_t mode,
+io_req_t ior)
 {
-spl_t	s;
-io_return_t	rc = D_SUCCESS;
+spl_t s;
+io_return_t rc = D_SUCCESS;
 s = simple_lock_irq(&tp->t_lock);
 tp->t_dev = dev;
 if (tp->t_mctl)
@@ -103,7 +103,7 @@ simple_unlock_irq(s, &tp->t_lock);
 return rc;
 }
 boolean_t char_open_done(
-io_req_t	ior)
+io_req_t ior)
 {
 struct tty *tp = (struct tty *)ior->io_dev_ptr;
 spl_t s;
@@ -123,22 +123,22 @@ ior->io_error = D_SUCCESS;
 return TRUE;
 }
 static boolean_t tty_close_open_reply(
-io_req_t	ior)
+io_req_t ior)
 {
 ior->io_error = D_DEVICE_DOWN;
 (void) ds_open_done(ior);
 return TRUE;
 }
 io_return_t char_write(
-struct tty *	tp,
-io_req_t	ior)
+struct tty * tp,
+io_req_t ior)
 {
-spl_t		s;
-int	count;
-char	*data;
-vm_offset_t	addr = 0;
-io_return_t	rc = D_SUCCESS;
-data  = ior->io_data;
+spl_t s;
+int count;
+char *data;
+vm_offset_t addr = 0;
+io_return_t rc = D_SUCCESS;
+data = ior->io_data;
 count = ior->io_count;
 if (count == 0)
 return rc;
@@ -177,7 +177,7 @@ if (!(ior->io_op & IO_INBAND))
 return rc;
 }
 boolean_t char_write_done(
-io_req_t	ior)
+io_req_t ior)
 {
 struct tty *tp = (struct tty *)ior->io_dev_ptr;
 spl_t s;
@@ -202,7 +202,7 @@ mach_device_deallocate(ior->io_device);
 return TRUE;
 }
 static boolean_t tty_close_write_reply(
-io_req_t	ior)
+io_req_t ior)
 {
 ior->io_residual = ior->io_count;
 ior->io_error = D_DEVICE_DOWN;
@@ -213,8 +213,8 @@ io_return_t char_read(
 struct tty *tp,
 io_req_t ior)
 {
-spl_t		s;
-kern_return_t	rc;
+spl_t s;
+kern_return_t rc;
 rc = device_read_alloc(ior, (vm_size_t)ior->io_count);
 if (rc != KERN_SUCCESS)
 return rc;
@@ -248,7 +248,7 @@ simple_unlock_irq(s, &tp->t_lock);
 return rc;
 }
 boolean_t char_read_done(
-io_req_t	ior)
+io_req_t ior)
 {
 struct tty *tp = (struct tty *)ior->io_dev_ptr;
 spl_t s;
@@ -271,7 +271,7 @@ simple_unlock_irq(s, &tp->t_lock);
 return TRUE;
 }
 static boolean_t tty_close_read_reply(
-io_req_t	ior)
+io_req_t ior)
 {
 ior->io_residual = ior->io_count;
 ior->io_error = D_DEVICE_DOWN;
@@ -281,7 +281,7 @@ return TRUE;
 void ttyclose(
 struct tty *tp)
 {
-io_req_t	ior;
+io_req_t ior;
 while ((ior = (io_req_t)dequeue_head(&tp->t_delayed_read)) != 0) {
 ior->io_done = tty_close_read_reply;
 iodone(ior);
@@ -303,11 +303,11 @@ tp->t_state = tp->t_state & (TS_MIN|TS_CARR_ON);
 }
 static boolean_t
 tty_queue_clean(
-queue_t			q,
-const ipc_port_t	port,
-boolean_t		(*routine)(io_req_t) )
+queue_t q,
+const ipc_port_t port,
+boolean_t (*routine)(io_req_t) )
 {
-io_req_t	ior;
+io_req_t ior;
 ior = (io_req_t)queue_first(q);
 while (!queue_end(q, (queue_entry_t)ior)) {
 if (ior->io_reply_port == port) {
@@ -322,22 +322,22 @@ return FALSE;
 }
 boolean_t
 tty_portdeath(
-struct tty *		tp,
-const ipc_port_t	port)
+struct tty * tp,
+const ipc_port_t port)
 {
-spl_t	spl;
-boolean_t	result;
+spl_t spl;
+boolean_t result;
 spl = simple_lock_irq(&tp->t_lock);
 if (tp->t_delayed_read.next == 0) {
 result = FALSE;
 }
 else {
 result =
-tty_queue_clean(&tp->t_delayed_read,  port,
+tty_queue_clean(&tp->t_delayed_read, port,
 tty_close_read_reply)
 || tty_queue_clean(&tp->t_delayed_write, port,
 tty_close_write_reply)
-|| tty_queue_clean(&tp->t_delayed_open,  port,
+|| tty_queue_clean(&tp->t_delayed_open, port,
 tty_close_open_reply);
 }
 simple_unlock_irq(spl, &tp->t_lock);
@@ -345,11 +345,11 @@ return result;
 }
 io_return_t tty_get_status(
 struct tty *tp,
-dev_flavor_t	flavor,
-int *		data,
-natural_t	*count)
+dev_flavor_t flavor,
+int * data,
+natural_t *count)
 {
-spl_t		s;
+spl_t s;
 switch (flavor) {
 case TTY_STATUS:
 {
@@ -361,7 +361,7 @@ s = simple_lock_irq(&tp->t_lock);
 tsp->tt_ispeed = tp->t_ispeed;
 tsp->tt_ospeed = tp->t_ospeed;
 tsp->tt_breakc = tp->t_breakc;
-tsp->tt_flags  = tp->t_flags;
+tsp->tt_flags = tp->t_flags;
 if (tp->t_state & TS_HUPCLS)
 tsp->tt_flags |= TF_HUPCLS;
 simple_unlock_irq(s, &tp->t_lock);
@@ -375,15 +375,15 @@ return D_SUCCESS;
 }
 io_return_t tty_set_status(
 struct tty *tp,
-dev_flavor_t	flavor,
-int *		data,
-natural_t	count)
+dev_flavor_t flavor,
+int * data,
+natural_t count)
 {
-int	s;
+int s;
 switch (flavor) {
 case TTY_FLUSH:
 {
-int	flags;
+int flags;
 if (count < TTY_FLUSH_COUNT)
 return D_INVALID_OPERATION;
 flags = *data;
@@ -427,7 +427,7 @@ s = simple_lock_irq(&tp->t_lock);
 tp->t_ispeed = tsp->tt_ispeed;
 tp->t_ospeed = tsp->tt_ospeed;
 tp->t_breakc = tsp->tt_breakc;
-tp->t_flags  = tsp->tt_flags & ~TF_HUPCLS;
+tp->t_flags = tsp->tt_flags & ~TF_HUPCLS;
 if (tsp->tt_flags & TF_HUPCLS)
 tp->t_state |= TS_HUPCLS;
 simple_unlock_irq(s, &tp->t_lock);
@@ -439,17 +439,17 @@ return D_INVALID_OPERATION;
 return D_SUCCESS;
 }
 void queue_delayed_reply(
-queue_t		qh,
-io_req_t	ior,
-boolean_t	(*io_done)(io_req_t) )
+queue_t qh,
+io_req_t ior,
+boolean_t (*io_done)(io_req_t) )
 {
 ior->io_done = io_done;
 enqueue_tail(qh, (queue_entry_t)ior);
 }
 void tty_queue_completion(
-queue_t	qh)
+queue_t qh)
 {
-io_req_t	ior;
+io_req_t ior;
 while ((ior = (io_req_t)dequeue_head(qh)) != 0) {
 iodone(ior);
 }
@@ -461,7 +461,7 @@ if ((tp->t_flags & TS_INIT) == 0) {
 queue_init(&tp->t_delayed_open);
 queue_init(&tp->t_delayed_read);
 queue_init(&tp->t_delayed_write);
-cb_alloc(&tp->t_inq,  tty_inq_size);
+cb_alloc(&tp->t_inq, tty_inq_size);
 if (tp->t_mctl && tp->t_inq.c_hog > 30)
 tp->t_inq.c_hog -= 30;
 cb_alloc(&tp->t_outq, tty_outq_size);
@@ -471,7 +471,7 @@ tp->t_breakc = 0;
 }
 void tty_flush(
 struct tty *tp,
-int	rw)
+int rw)
 {
 if (rw & D_READ) {
 cb_clear(&tp->t_inq);
@@ -487,7 +487,7 @@ tty_queue_completion(&tp->t_delayed_write);
 void ttrstrt(
 struct tty *tp)
 {
-spl_t	s;
+spl_t s;
 s = simple_lock_irq(&tp->t_lock);
 tp->t_state &= ~TS_TIMEOUT;
 ttstart (tp);
@@ -512,9 +512,9 @@ tty_queue_completion(&tp->t_delayed_write);
 }
 static void ttypush(void * _tp)
 {
-struct tty	*tp = _tp;
-spl_t	s;
-int	state;
+struct tty *tp = _tp;
+spl_t s;
+int state;
 s = simple_lock_irq(&tp->t_lock);
 state = tp->t_state;
 if (state & TS_MIN_TO)
@@ -538,8 +538,8 @@ tp->t_state = state & ~TS_MIN_TO_RCV;
 simple_unlock_irq(s, &tp->t_lock);
 }
 void ttyinput(
-unsigned int	c,
-struct tty	*tp)
+unsigned int c,
+struct tty *tp)
 {
 if (tp->t_inq.c_cc >= tp->t_inq.c_hog) {
 if (tp->t_mctl) {
@@ -577,17 +577,17 @@ tp->t_state |= TS_MIN_TO_RCV;
 }
 }
 void ttyinput_many(
-struct tty	*tp,
-char		*chars,
-int		count)
+struct tty *tp,
+char *chars,
+int count)
 {
 if (tp->t_inq.c_cc < tp->t_inq.c_hog)
 count -= b_to_q(chars, count, &tp->t_inq);
 tty_queue_completion(&tp->t_delayed_read);
 }
 boolean_t ttymodem(
-struct tty *	tp,
-boolean_t	carrier_up)
+struct tty * tp,
+boolean_t carrier_up)
 {
 if ((tp->t_state&TS_WOPEN) == 0 && (tp->t_flags & MDMBUF)) {
 if (carrier_up) {
@@ -616,8 +616,8 @@ return TRUE;
 }
 void
 tty_cts(
-struct tty *	tp,
-boolean_t	cts_up)
+struct tty * tp,
+boolean_t cts_up)
 {
 if (tp->t_state & TS_ISOPEN){
 if (cts_up) {

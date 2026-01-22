@@ -1,18 +1,18 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"init.h"
-#include	"pool.h"
-#include	"tos.h"
-#define	MAXCONF		64
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "init.h"
+#include "pool.h"
+#include "tos.h"
+#define MAXCONF 64
 typedef struct Plan9ini Plan9ini;
 struct Plan9ini
 {
-char	*name;
-char	*val;
+char *name;
+char *val;
 };
 char *plan9inistr;
 Plan9ini plan9ini[MAXCONF];

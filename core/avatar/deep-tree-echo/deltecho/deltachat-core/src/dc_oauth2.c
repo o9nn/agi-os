@@ -10,8 +10,8 @@ char* get_userinfo;
 } oauth2_t;
 static oauth2_t* get_info(const char* addr)
 {
-oauth2_t*   oauth2 = NULL;
-char*       addr_normalized = NULL;
+oauth2_t* oauth2 = NULL;
+char* addr_normalized = NULL;
 const char* domain = NULL;
 addr_normalized = dc_addr_normalize(addr);
 domain = strchr(addr_normalized, '@');
@@ -106,9 +106,9 @@ return 1;
 char* dc_get_oauth2_url(dc_context_t* context, const char* addr,
 const char* redirect_uri)
 {
-#define CLIENT_ID     "959970109878-4mvtgf6feshskf7695nfln6002mom908.apps.googleusercontent.com"
-oauth2_t*   oauth2 = NULL;
-char*       oauth2_url = NULL;
+#define CLIENT_ID "959970109878-4mvtgf6feshskf7695nfln6002mom908.apps.googleusercontent.com"
+oauth2_t* oauth2 = NULL;
+char* oauth2_url = NULL;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC
 || redirect_uri==NULL || redirect_uri[0]==0) {
 goto cleanup;
@@ -128,21 +128,21 @@ return oauth2_url;
 char* dc_get_oauth2_access_token(dc_context_t* context, const char* addr,
 const char* code, int flags)
 {
-oauth2_t*   oauth2 = NULL;
-char*       access_token = NULL;
-char*       refresh_token = NULL;
-char*       refresh_token_for = NULL;
-char*       redirect_uri = NULL;
-int         update_redirect_uri_on_success = 0;
-char*       token_url = NULL;
-time_t      expires_in = 0;
-char*       error = NULL;
-char*       error_description = NULL;
-char*       json = NULL;
+oauth2_t* oauth2 = NULL;
+char* access_token = NULL;
+char* refresh_token = NULL;
+char* refresh_token_for = NULL;
+char* redirect_uri = NULL;
+int update_redirect_uri_on_success = 0;
+char* token_url = NULL;
+time_t expires_in = 0;
+char* error = NULL;
+char* error_description = NULL;
+char* json = NULL;
 jsmn_parser parser;
-jsmntok_t   tok[128];
-int         tok_cnt = 0;
-int         locked = 0;
+jsmntok_t tok[128];
+int tok_cnt = 0;
+int locked = 0;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC
 || code==NULL || code[0]==0) {
 dc_log_warning(context, 0, "Internal OAuth2 error");
@@ -175,9 +175,9 @@ dc_log_info(context, 0, "Regenerate OAuth2 access_token by refresh_token...");
 redirect_uri = dc_sqlite3_get_config(context->sql, "oauth2_redirect_uri", "unset");
 token_url = dc_strdup(oauth2->refresh_token);
 }
-replace_in_uri(&token_url, "$CLIENT_ID",     oauth2->client_id);
-replace_in_uri(&token_url, "$REDIRECT_URI",  redirect_uri);
-replace_in_uri(&token_url, "$CODE",          code);
+replace_in_uri(&token_url, "$CLIENT_ID", oauth2->client_id);
+replace_in_uri(&token_url, "$REDIRECT_URI", redirect_uri);
+replace_in_uri(&token_url, "$CODE", code);
 replace_in_uri(&token_url, "$REFRESH_TOKEN", refresh_token);
 json = (char*)context->cb(context, DC_EVENT_HTTP_POST, (uintptr_t)token_url, 0);
 if (json==NULL) {
@@ -248,12 +248,12 @@ return access_token? access_token : dc_strdup(NULL);
 static char* get_oauth2_addr(dc_context_t* context, const oauth2_t* oauth2,
 const char* access_token)
 {
-char*       addr_out = NULL;
-char*       userinfo_url = NULL;
-char*       json = NULL;
+char* addr_out = NULL;
+char* userinfo_url = NULL;
+char* json = NULL;
 jsmn_parser parser;
-jsmntok_t   tok[128];
-int         tok_cnt = 0;
+jsmntok_t tok[128];
+int tok_cnt = 0;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC
 || access_token==NULL || access_token[0]==0 || oauth2==NULL) {
 goto cleanup;
@@ -287,8 +287,8 @@ return addr_out;
 char* dc_get_oauth2_addr(dc_context_t* context, const char* addr,
 const char* code)
 {
-char*     access_token = NULL;
-char*     addr_out = NULL;
+char* access_token = NULL;
+char* addr_out = NULL;
 oauth2_t* oauth2 = NULL;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC
 || (oauth2=get_info(addr))==NULL || oauth2->get_userinfo==NULL) {

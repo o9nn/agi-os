@@ -4,78 +4,78 @@ typedef struct SDpart SDpart;
 typedef struct SDreq SDreq;
 typedef struct SDunit SDunit;
 typedef struct SDpart {
-uvlong	start;
-uvlong	end;
-char	name[NAMELEN];
-char	user[NAMELEN];
-ulong	perm;
-int	valid;
+uvlong start;
+uvlong end;
+char name[NAMELEN];
+char user[NAMELEN];
+ulong perm;
+int valid;
 void *crud;
 } SDpart;
 typedef struct SDunit {
-SDev*	dev;
-int	subno;
-uchar	inquiry[256];
-char	name[NAMELEN];
-uvlong	sectors;
-ulong	secsize;
-SDpart*	part;
-int	npart;
-int	changed;
-int	state;
-ulong	pid;
-SDreq*	req;
+SDev* dev;
+int subno;
+uchar inquiry[256];
+char name[NAMELEN];
+uvlong sectors;
+ulong secsize;
+SDpart* part;
+int npart;
+int changed;
+int state;
+ulong pid;
+SDreq* req;
 } SDunit;
 typedef struct SDev {
-SDifc*	ifc;
-void	*ctlr;
-int	idno;
-int	index;
-int	nunit;
-SDev*	next;
-int	enabled;
+SDifc* ifc;
+void *ctlr;
+int idno;
+int index;
+int nunit;
+SDev* next;
+int enabled;
 } SDev;
 typedef struct SDifc {
-char*	name;
-SDev*	(*pnp)(void);
-SDev*	(*legacy)(int, int);
-SDev*	(*id)(SDev*);
-int	(*enable)(SDev*);
-int	(*disable)(SDev*);
-int	(*verify)(SDunit*);
-int	(*online)(SDunit*);
-int	(*rio)(SDreq*);
-int	(*rctl)(SDunit*, char*, int);
-int	(*wctl)(SDunit*, void*);
-long	(*bio)(SDunit*, int, int, void*, long, long);
+char* name;
+SDev* (*pnp)(void);
+SDev* (*legacy)(int, int);
+SDev* (*id)(SDev*);
+int (*enable)(SDev*);
+int (*disable)(SDev*);
+int (*verify)(SDunit*);
+int (*online)(SDunit*);
+int (*rio)(SDreq*);
+int (*rctl)(SDunit*, char*, int);
+int (*wctl)(SDunit*, void*);
+long (*bio)(SDunit*, int, int, void*, long, long);
 } SDifc;
 typedef struct SDreq {
-SDunit*	unit;
-int	lun;
-int	write;
-uchar	cmd[16];
-int	clen;
-void*	data;
-int	dlen;
-int	flags;
-int	status;
-long	rlen;
-uchar	sense[256];
+SDunit* unit;
+int lun;
+int write;
+uchar cmd[16];
+int clen;
+void* data;
+int dlen;
+int flags;
+int status;
+long rlen;
+uchar sense[256];
 } SDreq;
 enum {
-SDnosense	= 0x00000001,
-SDvalidsense	= 0x00010000,
+SDnosense = 0x00000001,
+SDvalidsense = 0x00010000,
 };
 enum {
-SDmalloc	= -4,
-SDeio		= -3,
-SDtimeout	= -2,
-SDnostatus	= -1,
-SDok		= 0,
-SDcheck		= 0x02,
-SDbusy		= 0x08,
-SDmaxio		= 2048*1024,
-SDnpart		= 16,
+SDmalloc = -4,
+SDeio = -3,
+SDtimeout = -2,
+SDnostatus = -1,
+SDok = 0,
+SDcheck = 0x02,
+SDbusy = 0x08,
+SDmaxio = 2048*1024,
+SDnpart = 16,
 };
 extern int scsiverify(SDunit*);
 extern int scsionline(SDunit*);
@@ -83,14 +83,14 @@ extern long scsibio(SDunit*, int, int, void*, long, long);
 extern SDev* scsiid(SDev*, SDifc*);
 #define IrqATA0 14
 #define IrqATA1 15
-#define qlock(i)	while(0)
-#define qunlock(i)	while(0)
+#define qlock(i) while(0)
+#define qunlock(i) while(0)
 #define putstrn consputs
 void sleep(void*, int(*)(void*), void*);
 void tsleep(void*, int(*)(void*), void*, int);
 #define wakeup(x) while(0)
 extern long sdbio(SDunit *unit, SDpart *pp, void *a, long len, vlong off);
-void	partition(SDunit*);
+void partition(SDunit*);
 SDpart* sdfindpart(SDunit*, char*);
-void	sdaddpart(SDunit*, char*, uvlong, uvlong);
-void*	sdmalloc(void*, ulong);
+void sdaddpart(SDunit*, char*, uvlong, uvlong);
+void* sdmalloc(void*, ulong);

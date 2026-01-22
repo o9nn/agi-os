@@ -6,8 +6,8 @@
 #include "../boot/boot.h"
 typedef struct Fs Fs;
 #include "/sys/src/boot/pc/dosfs.h"
-#define	GSHORT(p)	(((p)[1]<<8)|(p)[0])
-#define	GLONG(p)	((GSHORT((p)+2)<<16)|GSHORT(p))
+#define GSHORT(p) (((p)[1]<<8)|(p)[0])
+#define GLONG(p) ((GSHORT((p)+2)<<16)|GSHORT(p))
 #define trace 0
 enum {
 parttrace = 0,
@@ -21,19 +21,19 @@ NAMELEN = 256,
 typedef struct SDpart SDpart;
 typedef struct SDunit SDunit;
 typedef struct SDpart {
-uvlong	start;
-uvlong	end;
-char	name[NAMELEN];
-int	valid;
+uvlong start;
+uvlong end;
+char name[NAMELEN];
+int valid;
 } SDpart;
 typedef struct SDunit {
-int	ctl;
-int	data;
-char	name[NAMELEN];
-uvlong	sectors;
-ulong	secsize;
-SDpart*	part;
-int	npart;
+int ctl;
+int data;
+char name[NAMELEN];
+uvlong sectors;
+ulong secsize;
+SDpart* part;
+int npart;
 } SDunit;
 static uchar *mbrbuf, *partbuf;
 static void
@@ -215,7 +215,7 @@ break;
 if(gettokens(line[i], field, 4, " ") != 4)
 break;
 start = strtoull(field[2], 0, 0);
-end   = strtoull(field[3], 0, 0);
+end = strtoull(field[3], 0, 0);
 if(start >= end || end > unit->sectors)
 break;
 sdaddpart(unit, field[1], p->start+start, p->start+end);
@@ -444,14 +444,14 @@ for(i = 0; i < n; i++) {
 name = dir[i].name;
 if (strncmp(name, "sd", 2) != 0)
 continue;
-ctlname  = smprint("/dev/%s/ctl", name);
+ctlname = smprint("/dev/%s/ctl", name);
 dataname = smprint("/dev/%s/data", name);
 if (ctlname == nil || dataname == nil) {
 free(ctlname);
 free(dataname);
 continue;
 }
-ctl  = open(ctlname, ORDWR);
+ctl = open(ctlname, ORDWR);
 data = open(dataname, OREAD);
 free(ctlname);
 free(dataname);

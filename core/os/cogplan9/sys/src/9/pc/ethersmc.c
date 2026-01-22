@@ -8,177 +8,177 @@
 #include "../port/netif.h"
 #include "etherif.h"
 enum {
-IoSize		= 0x10,
-TxTimeout	= 150,
+IoSize = 0x10,
+TxTimeout = 150,
 };
 enum {
-TupleFunce	= 0x22,
-TfNodeId	= 0x04,
+TupleFunce = 0x22,
+TfNodeId = 0x04,
 };
 enum {
-Tcr		= 0x0000,
-Eph		= 0x0002,
-Rcr		= 0x0004,
-Counter		= 0x0006,
-MemInfo		= 0x0008,
-MemCfg		= 0x000A,
+Tcr = 0x0000,
+Eph = 0x0002,
+Rcr = 0x0004,
+Counter = 0x0006,
+MemInfo = 0x0008,
+MemCfg = 0x000A,
 };
 enum {
-Config		= 0x0000,
-BaseAddr	= 0x0002,
-Addr0		= 0x0004,
-Addr1		= 0x0006,
-Addr2		= 0x0008,
-General		= 0x000A,
-Control		= 0x000C,
+Config = 0x0000,
+BaseAddr = 0x0002,
+Addr0 = 0x0004,
+Addr1 = 0x0006,
+Addr2 = 0x0008,
+General = 0x000A,
+Control = 0x000C,
 };
 enum {
-MmuCmd		= 0x0000,
-PktNo		= 0x0002,
-AllocRes	= 0x0003,
-FifoPorts	= 0x0004,
-Pointer		= 0x0006,
-Data1		= 0x0008,
-Interrupt	= 0x000C,
-IntrMask	= 0x000D,
+MmuCmd = 0x0000,
+PktNo = 0x0002,
+AllocRes = 0x0003,
+FifoPorts = 0x0004,
+Pointer = 0x0006,
+Data1 = 0x0008,
+Interrupt = 0x000C,
+IntrMask = 0x000D,
 };
 enum {
-Mcast0		= 0x0000,
-Mcast2		= 0x0002,
-Mcast4		= 0x0004,
-Mcast6		= 0x0006,
-Revision	= 0x000A,
+Mcast0 = 0x0000,
+Mcast2 = 0x0002,
+Mcast4 = 0x0004,
+Mcast6 = 0x0006,
+Revision = 0x000A,
 };
 enum {
-BankSelect	= 0x000E
+BankSelect = 0x000E
 };
 enum {
-BsrMask		= 0xFF00,
-BsrId		= 0x3300,
+BsrMask = 0xFF00,
+BsrId = 0x3300,
 };
 enum {
-TcrClear	= 0x0000,
-TcrEnable	= 0x0001,
-TcrLoop		= 0x0002,
-TcrForceCol	= 0x0004,
-TcrPadEn	= 0x0080,
-TcrNoCrc	= 0x0100,
-TcrMonCns	= 0x0400,
-TcrFduplx	= 0x0800,
-TcrStpSqet	= 0x1000,
-TcrEphLoop	= 0x2000,
-TcrNormal	= TcrEnable,
+TcrClear = 0x0000,
+TcrEnable = 0x0001,
+TcrLoop = 0x0002,
+TcrForceCol = 0x0004,
+TcrPadEn = 0x0080,
+TcrNoCrc = 0x0100,
+TcrMonCns = 0x0400,
+TcrFduplx = 0x0800,
+TcrStpSqet = 0x1000,
+TcrEphLoop = 0x2000,
+TcrNormal = TcrEnable,
 };
 enum {
-EphTxOk		= 0x0001,
-Eph1Col		= 0x0002,
-EphMCol		= 0x0004,
-EphTxMcast	= 0x0008,
-Eph16Col	= 0x0010,
-EphSqet		= 0x0020,
-EphTxBcast	= 0x0040,
-EphDefr		= 0x0080,
-EphLatCol	= 0x0200,
-EphLostCarr	= 0x0400,
-EphExcDefr	= 0x0800,
-EphCntRol	= 0x1000,
-EphRxOvrn	= 0x2000,
-EphLinkOk	= 0x4000,
-EphTxUnrn	= 0x8000,
+EphTxOk = 0x0001,
+Eph1Col = 0x0002,
+EphMCol = 0x0004,
+EphTxMcast = 0x0008,
+Eph16Col = 0x0010,
+EphSqet = 0x0020,
+EphTxBcast = 0x0040,
+EphDefr = 0x0080,
+EphLatCol = 0x0200,
+EphLostCarr = 0x0400,
+EphExcDefr = 0x0800,
+EphCntRol = 0x1000,
+EphRxOvrn = 0x2000,
+EphLinkOk = 0x4000,
+EphTxUnrn = 0x8000,
 };
 enum {
-RcrClear	= 0x0000,
-RcrPromisc	= 0x0002,
-RcrAllMcast	= 0x0004,
-RcrEnable	= 0x0100,
-RcrStripCrc	= 0x0200,
-RcrSoftReset	= 0x8000,
-RcrNormal	= RcrStripCrc | RcrEnable,
+RcrClear = 0x0000,
+RcrPromisc = 0x0002,
+RcrAllMcast = 0x0004,
+RcrEnable = 0x0100,
+RcrStripCrc = 0x0200,
+RcrSoftReset = 0x8000,
+RcrNormal = RcrStripCrc | RcrEnable,
 };
 enum {
-CntColMask	= 0x000F,
-CntMColMask	= 0x00F0,
-CntDtxMask	= 0x0F00,
-CntExDtxMask	= 0xF000,
-CntColShr	= 1,
-CntMColShr	= 4,
-CntDtxShr	= 8,
+CntColMask = 0x000F,
+CntMColMask = 0x00F0,
+CntDtxMask = 0x0F00,
+CntExDtxMask = 0xF000,
+CntColShr = 1,
+CntMColShr = 4,
+CntDtxShr = 8,
 };
 enum {
-MirTotalMask	= 0x00FF,
-MirFreeMask	= 0xFF00,
+MirTotalMask = 0x00FF,
+MirFreeMask = 0xFF00,
 };
 enum {
-CfgIrqSel0	= 0x0002,
-CfgIrqSel1	= 0x0004,
-CfgDisLink	= 0x0040,
-Cfg16Bit	= 0x0080,
-CfgAuiSelect	= 0x0100,
-CfgSetSqlch	= 0x0200,
-CfgFullStep	= 0x0400,
-CfgNoWait	= 0x1000,
-CfgMiiSelect	= 0x8000,
+CfgIrqSel0 = 0x0002,
+CfgIrqSel1 = 0x0004,
+CfgDisLink = 0x0040,
+Cfg16Bit = 0x0080,
+CfgAuiSelect = 0x0100,
+CfgSetSqlch = 0x0200,
+CfgFullStep = 0x0400,
+CfgNoWait = 0x1000,
+CfgMiiSelect = 0x8000,
 };
 enum {
-CtlStore	= 0x0001,
-CtlReload	= 0x0002,
-CtlEeSelect	= 0x0004,
-CtlTeEnable	= 0x0020,
-CtlCrEnable	= 0x0040,
-CtlLeEnable	= 0x0080,
-CtlAutoRls	= 0x0800,
-CtlPowerDn	= 0x2000,
+CtlStore = 0x0001,
+CtlReload = 0x0002,
+CtlEeSelect = 0x0004,
+CtlTeEnable = 0x0020,
+CtlCrEnable = 0x0040,
+CtlLeEnable = 0x0080,
+CtlAutoRls = 0x0800,
+CtlPowerDn = 0x2000,
 };
 enum {
-McBusy		= 0x0001,
-McAlloc		= 0x0020,
-McReset		= 0x0040,
-McRelease	= 0x0080,
-McFreePkt	= 0x00A0,
-McEnqueue	= 0x00C0,
-McTxReset	= 0x00E0,
+McBusy = 0x0001,
+McAlloc = 0x0020,
+McReset = 0x0040,
+McRelease = 0x0080,
+McFreePkt = 0x00A0,
+McEnqueue = 0x00C0,
+McTxReset = 0x00E0,
 };
 enum {
-ArFailed	= 0x80,
+ArFailed = 0x80,
 };
 enum {
-FpTxEmpty	= 0x0080,
-FpRxEmpty	= 0x8000,
-FpTxMask	= 0x007F,
-FpRxMask	= 0x7F00,
+FpTxEmpty = 0x0080,
+FpRxEmpty = 0x8000,
+FpTxMask = 0x007F,
+FpRxMask = 0x7F00,
 };
 enum {
-PtrRead		= 0x2000,
-PtrAutoInc	= 0x4000,
-PtrRcv		= 0x8000,
+PtrRead = 0x2000,
+PtrAutoInc = 0x4000,
+PtrRcv = 0x8000,
 };
 enum {
-IntRcv		= 0x0001,
-IntTxError	= 0x0002,
-IntTxEmpty	= 0x0004,
-IntAlloc	= 0x0008,
-IntRxOvrn	= 0x0010,
-IntEph		= 0x0020,
+IntRcv = 0x0001,
+IntTxError = 0x0002,
+IntTxEmpty = 0x0004,
+IntAlloc = 0x0008,
+IntRxOvrn = 0x0010,
+IntEph = 0x0020,
 };
 enum {
-TsSuccess	= 0x0001,
-Ts16Col		= 0x00A0,
-TsLatCol	= 0x0200,
-TsLostCar	= 0x0400,
+TsSuccess = 0x0001,
+Ts16Col = 0x00A0,
+TsLatCol = 0x0200,
+TsLostCar = 0x0400,
 };
 enum {
-RsMcast		= 0x0001,
-RsTooShort	= 0x0400,
-RsTooLong	= 0x0800,
-RsOddFrame	= 0x1000,
-RsBadCrc	= 0x2000,
-RsAlgnErr	= 0x8000,
-RsError		= RsAlgnErr | RsBadCrc | RsTooLong | RsTooShort,
+RsMcast = 0x0001,
+RsTooShort = 0x0400,
+RsTooLong = 0x0800,
+RsOddFrame = 0x1000,
+RsBadCrc = 0x2000,
+RsAlgnErr = 0x8000,
+RsError = RsAlgnErr | RsBadCrc | RsTooLong | RsTooShort,
 };
 enum {
-RxLenMask	= 0x07FF,
-HdrSize		= 6,
-PageSize	= 256,
+RxLenMask = 0x07FF,
+HdrSize = 6,
+PageSize = 256,
 };
 typedef struct Smc91xx Smc91xx;
 struct Smc91xx {
@@ -224,7 +224,7 @@ SELECT_BANK(1);
 outs(port + Control, CtlAutoRls | CtlTeEnable |
 CtlCrEnable);
 for(i = 0; i < 6; i++) {
-outb(port + Addr0 +  i, ether->ea[i]);
+outb(port + Addr0 + i, ether->ea[i]);
 }
 SELECT_BANK(2);
 outs(port + MmuCmd, McReset);
@@ -503,11 +503,11 @@ static long
 ifstat(Ether* ether, void* a, long n, ulong offset)
 {
 static char *chiprev[] = {
-[3] 	"92",
-[5]	"95",
-[7]	"100",
-[8]	"100-FD",
-[9]	"110",
+[3] "92",
+[5] "95",
+[7] "100",
+[8] "100-FD",
+[9] "110",
 };
 Smc91xx* ctlr;
 char *p, *s;

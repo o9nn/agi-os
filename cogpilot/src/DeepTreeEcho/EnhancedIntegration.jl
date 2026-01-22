@@ -31,7 +31,7 @@ reservoir::Any
 garden::Any
 generator::Any
 # Integration state
-coupling_matrix::Matrix{Float64}  # Cross-component coupling strengths
+coupling_matrix::Matrix{Float64} # Cross-component coupling strengths
 feedback_history::Vector{Dict{String,Float64}}
 synchronization_state::Vector{Float64}
 emergent_patterns::Vector{Dict{String,Any}}
@@ -50,11 +50,11 @@ function create_enhanced_system(base_system)
 # Initialize coupling matrix (5x5 for 5 main components)
 # Components: JSurface, Ridge, Reservoir, Garden, Generator
 coupling_matrix = [
-1.0  0.7  0.6  0.5  0.8;  # JSurface influences
-0.7  1.0  0.8  0.6  0.7;  # Ridge influences
-0.6  0.8  1.0  0.9  0.5;  # Reservoir influences
-0.5  0.6  0.9  1.0  0.7;  # Garden influences
-0.8  0.7  0.5  0.7  1.0   # Generator influences
+1.0 0.7 0.6 0.5 0.8; # JSurface influences
+0.7 1.0 0.8 0.6 0.7; # Ridge influences
+0.6 0.8 1.0 0.9 0.5; # Reservoir influences
+0.5 0.6 0.9 1.0 0.7; # Garden influences
+0.8 0.7 0.5 0.7 1.0 # Generator influences
 ]
 # Initialize synchronization state
 sync_state = zeros(5)
@@ -75,9 +75,9 @@ coupling_matrix,
 Vector{Dict{String,Float64}}(),
 sync_state,
 Vector{Dict{String,Any}}(),
-0.5,  # Initial integration strength
-0.5,  # Initial coherence
-1.0,  # Initial entropy
+0.5, # Initial integration strength
+0.5, # Initial coherence
+1.0, # Initial entropy
 config
 )
 end
@@ -323,7 +323,7 @@ function compute_hamiltonian(state)
 return 0.5 * dot(state.state, state.state)
 end
 function compute_gradient(state)
-return state.state  # Simplified gradient
+return state.state # Simplified gradient
 end
 function compute_garden_diversity(garden)
 if isempty(garden.trees)
@@ -353,7 +353,7 @@ end
 # Gradient flow function (simplified interface)
 function gradient_flow!(jsurface, state, dt)
 # Apply gradient descent on the state
-grad = -state.state  # Negative gradient for descent
+grad = -state.state # Negative gradient for descent
 state.state .+= dt .* grad
 end
 end # module EnhancedIntegration

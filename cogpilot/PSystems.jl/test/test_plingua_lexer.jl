@@ -45,7 +45,7 @@ tokens = tokenize("[]{}(),;='@<>-->")
 end
 @testset "Lexer Whitespace and Comments" begin
 source = """
-abc  xyz
+abc xyz
 """
 tokens = tokenize(source)
 # Should only have abc, xyz, EOF

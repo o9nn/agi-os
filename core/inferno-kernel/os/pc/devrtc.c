@@ -1,32 +1,32 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
 enum {
-Paddr=		0x70,
-Pdata=		0x71,
-Seconds=	0x00,
-Minutes=	0x02,
-Hours=		0x04,
-Mday=		0x07,
-Month=		0x08,
-Year=		0x09,
-Status=		0x0A,
-Nvoff=		128,
-Nvsize=		256,
-Nbcd=		6,
+Paddr= 0x70,
+Pdata= 0x71,
+Seconds= 0x00,
+Minutes= 0x02,
+Hours= 0x04,
+Mday= 0x07,
+Month= 0x08,
+Year= 0x09,
+Status= 0x0A,
+Nvoff= 128,
+Nvsize= 256,
+Nbcd= 6,
 };
-typedef struct Rtc	Rtc;
+typedef struct Rtc Rtc;
 struct Rtc
 {
-int	sec;
-int	min;
-int	hour;
-int	mday;
-int	mon;
-int	year;
+int sec;
+int min;
+int hour;
+int mday;
+int mon;
+int year;
 };
 enum{
 Qdir = 0,
@@ -34,9 +34,9 @@ Qrtc,
 Qnvram,
 };
 Dirtab rtcdir[]={
-".",	{Qdir, 0, QTDIR},	0,	0555,
-"nvram",	{Qnvram, 0},	Nvsize,	0664,
-"rtc",		{Qrtc, 0},	0,	0664,
+".", {Qdir, 0, QTDIR}, 0, 0555,
+"nvram", {Qnvram, 0}, Nvsize, 0664,
+"rtc", {Qrtc, 0}, 0, 0664,
 };
 static ulong rtc2sec(Rtc*);
 static void sec2rtc(ulong, Rtc*);
@@ -91,12 +91,12 @@ for(i = 0; i < 10000; i++){
 outb(Paddr, Status);
 if(inb(Pdata) & 0x80)
 continue;
-outb(Paddr, Seconds);	bcdclock[0] = inb(Pdata);
-outb(Paddr, Minutes);	bcdclock[1] = inb(Pdata);
-outb(Paddr, Hours);	bcdclock[2] = inb(Pdata);
-outb(Paddr, Mday);	bcdclock[3] = inb(Pdata);
-outb(Paddr, Month);	bcdclock[4] = inb(Pdata);
-outb(Paddr, Year);	bcdclock[5] = inb(Pdata);
+outb(Paddr, Seconds); bcdclock[0] = inb(Pdata);
+outb(Paddr, Minutes); bcdclock[1] = inb(Pdata);
+outb(Paddr, Hours); bcdclock[2] = inb(Pdata);
+outb(Paddr, Mday); bcdclock[3] = inb(Pdata);
+outb(Paddr, Month); bcdclock[4] = inb(Pdata);
+outb(Paddr, Year); bcdclock[5] = inb(Pdata);
 outb(Paddr, Status);
 if((inb(Pdata) & 0x80) == 0)
 break;
@@ -201,12 +201,12 @@ PUTBCD(rtc.mday, 3);
 PUTBCD(rtc.mon, 4);
 PUTBCD(rtc.year, 5);
 ilock(&nvrtlock);
-outb(Paddr, Seconds);	outb(Pdata, bcdclock[0]);
-outb(Paddr, Minutes);	outb(Pdata, bcdclock[1]);
-outb(Paddr, Hours);	outb(Pdata, bcdclock[2]);
-outb(Paddr, Mday);	outb(Pdata, bcdclock[3]);
-outb(Paddr, Month);	outb(Pdata, bcdclock[4]);
-outb(Paddr, Year);	outb(Pdata, bcdclock[5]);
+outb(Paddr, Seconds); outb(Pdata, bcdclock[0]);
+outb(Paddr, Minutes); outb(Pdata, bcdclock[1]);
+outb(Paddr, Hours); outb(Pdata, bcdclock[2]);
+outb(Paddr, Mday); outb(Pdata, bcdclock[3]);
+outb(Paddr, Month); outb(Pdata, bcdclock[4]);
+outb(Paddr, Year); outb(Pdata, bcdclock[5]);
 iunlock(&nvrtlock);
 return n;
 case Qnvram:
@@ -257,11 +257,11 @@ devwstat,
 #define SEC2MIN 60L
 #define SEC2HOUR (60L*SEC2MIN)
 #define SEC2DAY (24L*SEC2HOUR)
-static	int	dmsize[] =
+static int dmsize[] =
 {
 365, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 };
-static	int	ldmsize[] =
+static int ldmsize[] =
 {
 366, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 };

@@ -15,13 +15,13 @@
 #endif
 struct gptj_hparams {
 int32_t n_vocab = 50400;
-int32_t n_ctx   = 2048;
-int32_t n_embd  = 4096;
-int32_t n_head  = 16;
+int32_t n_ctx = 2048;
+int32_t n_embd = 4096;
+int32_t n_head = 16;
 int32_t n_layer = 28;
-int32_t n_rot   = 64;
-int32_t ftype   = 1;
-float   eps     = 1e-5f;
+int32_t n_rot = 64;
+int32_t ftype = 1;
+float eps = 1e-5f;
 };
 struct gptj_layer {
 struct ggml_tensor * ln_1_g;
@@ -66,12 +66,12 @@ return false;
 {
 auto & hparams = model.hparams;
 fin.read((char *) &hparams.n_vocab, sizeof(hparams.n_vocab));
-fin.read((char *) &hparams.n_ctx,   sizeof(hparams.n_ctx));
-fin.read((char *) &hparams.n_embd,  sizeof(hparams.n_embd));
-fin.read((char *) &hparams.n_head,  sizeof(hparams.n_head));
+fin.read((char *) &hparams.n_ctx, sizeof(hparams.n_ctx));
+fin.read((char *) &hparams.n_embd, sizeof(hparams.n_embd));
+fin.read((char *) &hparams.n_head, sizeof(hparams.n_head));
 fin.read((char *) &hparams.n_layer, sizeof(hparams.n_layer));
-fin.read((char *) &hparams.n_rot,   sizeof(hparams.n_rot));
-fin.read((char *) &hparams.ftype,   sizeof(hparams.ftype));
+fin.read((char *) &hparams.n_rot, sizeof(hparams.n_rot));
+fin.read((char *) &hparams.ftype, sizeof(hparams.ftype));
 const int32_t qntvr = hparams.ftype / GGML_QNT_VERSION_FACTOR;
 printf("%s: n_vocab = %d\n", __func__, hparams.n_vocab);
 printf("%s: n_ctx   = %d\n", __func__, hparams.n_ctx);
@@ -113,25 +113,25 @@ auto & ctx = model.ctx;
 size_t ctx_size = 0;
 {
 const auto & hparams = model.hparams;
-const int n_embd  = hparams.n_embd;
+const int n_embd = hparams.n_embd;
 const int n_layer = hparams.n_layer;
-const int n_ctx   = hparams.n_ctx;
+const int n_ctx = hparams.n_ctx;
 const int n_vocab = hparams.n_vocab;
 ctx_size += ggml_row_size(GGML_TYPE_F32, n_embd);
 ctx_size += ggml_row_size(GGML_TYPE_F32, n_embd);
 ctx_size += ggml_row_size(wtype, n_embd*n_vocab);
-ctx_size += ggml_row_size(wtype,         n_embd*n_vocab);
-ctx_size += ggml_row_size(GGML_TYPE_F32,        n_vocab);
+ctx_size += ggml_row_size(wtype, n_embd*n_vocab);
+ctx_size += ggml_row_size(GGML_TYPE_F32, n_vocab);
 ctx_size += n_layer*(ggml_row_size(GGML_TYPE_F32, n_embd));
 ctx_size += n_layer*(ggml_row_size(GGML_TYPE_F32, n_embd));
 ctx_size += n_layer*(ggml_row_size(wtype, n_embd*n_embd));
 ctx_size += n_layer*(ggml_row_size(wtype, n_embd*n_embd));
 ctx_size += n_layer*(ggml_row_size(wtype, n_embd*n_embd));
 ctx_size += n_layer*(ggml_row_size(wtype, n_embd*n_embd));
-ctx_size += n_layer*(ggml_row_size(wtype,         4*n_embd*n_embd));
+ctx_size += n_layer*(ggml_row_size(wtype, 4*n_embd*n_embd));
 ctx_size += n_layer*(ggml_row_size(GGML_TYPE_F32, 4*n_embd));
-ctx_size += n_layer*(ggml_row_size(wtype,         4*n_embd*n_embd));
-ctx_size += n_layer*(ggml_row_size(GGML_TYPE_F32,   n_embd));
+ctx_size += n_layer*(ggml_row_size(wtype, 4*n_embd*n_embd));
+ctx_size += n_layer*(ggml_row_size(GGML_TYPE_F32, n_embd));
 ctx_size += n_ctx*n_layer*ggml_row_size(GGML_TYPE_F16, n_embd);
 ctx_size += n_ctx*n_layer*ggml_row_size(GGML_TYPE_F16, n_embd);
 ctx_size += (5 + 10*n_layer)*512;
@@ -151,50 +151,50 @@ return false;
 }
 {
 const auto & hparams = model.hparams;
-const int n_embd  = hparams.n_embd;
+const int n_embd = hparams.n_embd;
 const int n_layer = hparams.n_layer;
 const int n_vocab = hparams.n_vocab;
 model.layers.resize(n_layer);
-model.wte    = ggml_new_tensor_2d(ctx, wtype,         n_embd, n_vocab);
+model.wte = ggml_new_tensor_2d(ctx, wtype, n_embd, n_vocab);
 model.ln_f_g = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_embd);
 model.ln_f_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_embd);
-model.lmh_g  = ggml_new_tensor_2d(ctx, wtype,         n_embd, n_vocab);
-model.lmh_b  = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_vocab);
+model.lmh_g = ggml_new_tensor_2d(ctx, wtype, n_embd, n_vocab);
+model.lmh_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_vocab);
 model.tensors["transformer.wte.weight"] = model.wte;
 model.tensors["transformer.ln_f.weight"] = model.ln_f_g;
-model.tensors["transformer.ln_f.bias"]   = model.ln_f_b;
+model.tensors["transformer.ln_f.bias"] = model.ln_f_b;
 model.tensors["lm_head.weight"] = model.lmh_g;
-model.tensors["lm_head.bias"]   = model.lmh_b;
+model.tensors["lm_head.bias"] = model.lmh_b;
 for (int i = 0; i < n_layer; ++i) {
 auto & layer = model.layers[i];
-layer.ln_1_g          = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_embd);
-layer.ln_1_b          = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_embd);
-layer.c_attn_q_proj_w = ggml_new_tensor_2d(ctx, wtype,           n_embd,   n_embd);
-layer.c_attn_k_proj_w = ggml_new_tensor_2d(ctx, wtype,           n_embd,   n_embd);
-layer.c_attn_v_proj_w = ggml_new_tensor_2d(ctx, wtype,           n_embd,   n_embd);
-layer.c_attn_proj_w   = ggml_new_tensor_2d(ctx, wtype,           n_embd,   n_embd);
-layer.c_mlp_fc_w      = ggml_new_tensor_2d(ctx, wtype,           n_embd, 4*n_embd);
-layer.c_mlp_fc_b      = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, 4*n_embd);
-layer.c_mlp_proj_w    = ggml_new_tensor_2d(ctx, wtype,         4*n_embd,   n_embd);
-layer.c_mlp_proj_b    = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_embd);
-model.tensors["transformer.h." + std::to_string(i) + ".ln_1.weight"]          = layer.ln_1_g;
-model.tensors["transformer.h." + std::to_string(i) + ".ln_1.bias"]            = layer.ln_1_b;
-model.tensors["transformer.h." + std::to_string(i) + ".attn.q_proj.weight"]   = layer.c_attn_q_proj_w;
-model.tensors["transformer.h." + std::to_string(i) + ".attn.k_proj.weight"]   = layer.c_attn_k_proj_w;
-model.tensors["transformer.h." + std::to_string(i) + ".attn.v_proj.weight"]   = layer.c_attn_v_proj_w;
+layer.ln_1_g = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_embd);
+layer.ln_1_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_embd);
+layer.c_attn_q_proj_w = ggml_new_tensor_2d(ctx, wtype, n_embd, n_embd);
+layer.c_attn_k_proj_w = ggml_new_tensor_2d(ctx, wtype, n_embd, n_embd);
+layer.c_attn_v_proj_w = ggml_new_tensor_2d(ctx, wtype, n_embd, n_embd);
+layer.c_attn_proj_w = ggml_new_tensor_2d(ctx, wtype, n_embd, n_embd);
+layer.c_mlp_fc_w = ggml_new_tensor_2d(ctx, wtype, n_embd, 4*n_embd);
+layer.c_mlp_fc_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, 4*n_embd);
+layer.c_mlp_proj_w = ggml_new_tensor_2d(ctx, wtype, 4*n_embd, n_embd);
+layer.c_mlp_proj_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_embd);
+model.tensors["transformer.h." + std::to_string(i) + ".ln_1.weight"] = layer.ln_1_g;
+model.tensors["transformer.h." + std::to_string(i) + ".ln_1.bias"] = layer.ln_1_b;
+model.tensors["transformer.h." + std::to_string(i) + ".attn.q_proj.weight"] = layer.c_attn_q_proj_w;
+model.tensors["transformer.h." + std::to_string(i) + ".attn.k_proj.weight"] = layer.c_attn_k_proj_w;
+model.tensors["transformer.h." + std::to_string(i) + ".attn.v_proj.weight"] = layer.c_attn_v_proj_w;
 model.tensors["transformer.h." + std::to_string(i) + ".attn.out_proj.weight"] = layer.c_attn_proj_w;
-model.tensors["transformer.h." + std::to_string(i) + ".mlp.fc_in.weight"]     = layer.c_mlp_fc_w;
-model.tensors["transformer.h." + std::to_string(i) + ".mlp.fc_in.bias"]       = layer.c_mlp_fc_b;
-model.tensors["transformer.h." + std::to_string(i) + ".mlp.fc_out.weight"]    = layer.c_mlp_proj_w;
-model.tensors["transformer.h." + std::to_string(i) + ".mlp.fc_out.bias"]      = layer.c_mlp_proj_b;
+model.tensors["transformer.h." + std::to_string(i) + ".mlp.fc_in.weight"] = layer.c_mlp_fc_w;
+model.tensors["transformer.h." + std::to_string(i) + ".mlp.fc_in.bias"] = layer.c_mlp_fc_b;
+model.tensors["transformer.h." + std::to_string(i) + ".mlp.fc_out.weight"] = layer.c_mlp_proj_w;
+model.tensors["transformer.h." + std::to_string(i) + ".mlp.fc_out.bias"] = layer.c_mlp_proj_b;
 }
 }
 {
 const auto & hparams = model.hparams;
-const int n_embd  = hparams.n_embd;
+const int n_embd = hparams.n_embd;
 const int n_layer = hparams.n_layer;
-const int n_ctx   = hparams.n_ctx;
-const int n_mem      = n_layer*n_ctx;
+const int n_ctx = hparams.n_ctx;
+const int n_mem = n_layer*n_ctx;
 const int n_elements = n_embd*n_mem;
 model.memory_k = ggml_new_tensor_1d(ctx, GGML_TYPE_F16, n_elements);
 model.memory_v = ggml_new_tensor_1d(ctx, GGML_TYPE_F16, n_elements);
@@ -211,7 +211,7 @@ int32_t length;
 int32_t ttype;
 fin.read(reinterpret_cast<char *>(&n_dims), sizeof(n_dims));
 fin.read(reinterpret_cast<char *>(&length), sizeof(length));
-fin.read(reinterpret_cast<char *>(&ttype),  sizeof(ttype));
+fin.read(reinterpret_cast<char *>(&ttype), sizeof(ttype));
 if (fin.eof()) {
 break;
 }
@@ -264,16 +264,16 @@ const gptj_model & model,
 const int n_threads,
 const int n_past,
 const std::vector<gpt_vocab::id> & embd_inp,
-std::vector<float>         & embd_w,
-size_t                     & mem_per_token) {
+std::vector<float> & embd_w,
+size_t & mem_per_token) {
 const int N = embd_inp.size();
 const auto & hparams = model.hparams;
-const int n_embd  = hparams.n_embd;
+const int n_embd = hparams.n_embd;
 const int n_layer = hparams.n_layer;
-const int n_ctx   = hparams.n_ctx;
-const int n_head  = hparams.n_head;
+const int n_ctx = hparams.n_ctx;
+const int n_head = hparams.n_head;
 const int n_vocab = hparams.n_vocab;
-const int n_rot   = hparams.n_rot;
+const int n_rot = hparams.n_rot;
 static size_t buf_size = 256u*1024*1024;
 static void * buf = malloc(buf_size);
 if (mem_per_token > 0 && mem_per_token*N > buf_size) {
@@ -318,7 +318,7 @@ struct ggml_tensor * Kcur = ggml_rope_inplace(ctx0, ggml_reshape_3d(ctx0, ggml_m
 struct ggml_tensor * Vcur = ggml_transpose(ctx0, ggml_mul_mat(ctx0, model.layers[il].c_attn_v_proj_w, cur));
 struct ggml_tensor * k = ggml_view_1d(ctx0, model.memory_k, N*n_embd, (ggml_element_size(model.memory_k)*n_embd)*(il*n_ctx + n_past));
 struct ggml_tensor * v = ggml_view_2d(ctx0, model.memory_v, N, n_embd,
-(   n_ctx)*ggml_element_size(model.memory_v),
+( n_ctx)*ggml_element_size(model.memory_v),
 (il*n_ctx)*ggml_element_size(model.memory_v)*n_embd + n_past*ggml_element_size(model.memory_v));
 ggml_build_forward_expand(gf, ggml_cpy(ctx0, Kcur, k));
 ggml_build_forward_expand(gf, ggml_cpy(ctx0, Vcur, v));
@@ -371,7 +371,7 @@ cur = ggml_add(ctx0,
 ggml_repeat(ctx0, model.layers[il].c_mlp_proj_b, cur),
 cur);
 }
-cur  = ggml_add(ctx0, cur, inpFF);
+cur = ggml_add(ctx0, cur, inpFF);
 inpL = ggml_add(ctx0, cur, inpL);
 }
 {
@@ -427,7 +427,7 @@ t_load_us = ggml_time_us() - t_start_us;
 test_gpt_tokenizer(vocab, params.token_test);
 }
 int n_past = 0;
-int64_t t_sample_us  = 0;
+int64_t t_sample_us = 0;
 int64_t t_predict_us = 0;
 std::vector<float> logits;
 std::vector<gpt_vocab::id> embd_inp = ::gpt_tokenize(vocab, params.prompt);
@@ -449,9 +449,9 @@ t_predict_us += ggml_time_us() - t_start_us;
 n_past += embd.size();
 embd.clear();
 if (i >= embd_inp.size()) {
-const int   top_k = params.top_k;
+const int top_k = params.top_k;
 const float top_p = params.top_p;
-const float temp  = params.temp;
+const float temp = params.temp;
 const int n_vocab = model.hparams.n_vocab;
 gpt_vocab::id id = 0;
 {

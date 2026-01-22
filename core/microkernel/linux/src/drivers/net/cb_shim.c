@@ -218,7 +218,7 @@ return 0;
 }
 void cleanup_module(void)
 {
-register_hotswap_hook = 	old_cb_hook;
+register_hotswap_hook = old_cb_hook;
 unregister_hotswap_hook = old_un_cb_hook;
 return;
 }

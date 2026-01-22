@@ -31,7 +31,7 @@ struct EvolutionRule
 membrane_label::Int
 lhs::Multiset
 rhs::Multiset
-target::Union{Int, Symbol, Nothing}  # :out, :in_X, or membrane id
+target::Union{Int, Symbol, Nothing} # :out, :in_X, or membrane id
 dissolve::Bool
 priority::Int
 function EvolutionRule(label::Int, lhs::Multiset, rhs::Multiset;
@@ -280,7 +280,7 @@ for _ in 1:steps
 # Apply rules to all membranes
 membrane_ids = collect(keys(reservoir.membranes))
 for id in membrane_ids
-if haskey(reservoir.membranes, id)  # Check if not dissolved
+if haskey(reservoir.membranes, id) # Check if not dissolved
 apply_rules!(reservoir, id)
 end
 end

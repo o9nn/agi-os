@@ -71,7 +71,7 @@ while((((d, name, nil), reply) := <-c).t0.t0 != nil){
 if(all == 0)
 name = d.name;
 if(re != nil)
-reply <-= regex->execute(re, name) != nil;		# XXX should anchor it?
+reply <-= regex->execute(re, name) != nil; # XXX should anchor it?
 else
 reply <-= filepat->match(pat, name);
 }

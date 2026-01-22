@@ -35,7 +35,7 @@ char * join_path(const char * prefix, const char * suffix)
 {
 char * path;
 size_t path_len, prel;
-path_len = strlen(prefix) + 1  + strlen(suffix);
+path_len = strlen(prefix) + 1 + strlen(suffix);
 path = (char *) malloc(path_len + 1);
 strcpy(path, prefix);
 prel = strlen(path);

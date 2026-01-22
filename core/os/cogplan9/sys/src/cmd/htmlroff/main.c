@@ -1,8 +1,8 @@
 #include "a.h"
-Biobuf	bout;
-char*	tmacdir;
-int		verbose;
-int		utf8 = 0;
+Biobuf bout;
+char* tmacdir;
+int verbose;
+int utf8 = 0;
 void
 usage(void)
 {

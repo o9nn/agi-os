@@ -138,8 +138,8 @@ dequantize_block_q4_K(vx, y, get_pointer(scale_local_acc), item_ct1);
 template <typename dst_t>
 static void dequantize_row_q4_K_sycl_reorder(const void * vx, dst_t * y, const int64_t k, dpct::queue_ptr stream) {
 const int64_t nb = k / QK_K;
-const size_t  local_size  = 32;
-const size_t  global_size = nb * local_size;
+const size_t local_size = 32;
+const size_t global_size = nb * local_size;
 dpct::has_capability_or_fail(stream->get_device(), { sycl::aspect::fp16 });
 sycl_launch(stream, [&](sycl::handler & cgh) {
 sycl::local_accessor<uint8_t, 1> scale_local_acc(sycl::range<1>(12), cgh);
@@ -344,7 +344,7 @@ static void convert_unary_nc(const void * __restrict__ vx, dst_t * __restrict__ 
 const int64_t ne02, const int64_t s01, const int64_t s02, const int64_t s03,
 const sycl::nd_item<3> & item_ct1) {
 const int64_t work_group_size = item_ct1.get_local_range(2);
-const int64_t global_id       = item_ct1.get_local_id(2) + work_group_size * item_ct1.get_group(2);
+const int64_t global_id = item_ct1.get_local_id(2) + work_group_size * item_ct1.get_group(2);
 const int64_t i01 = item_ct1.get_group(1);
 const int64_t i02 = item_ct1.get_group(0) % ne02;
 const int64_t i03 = item_ct1.get_group(0) / ne02;
@@ -362,7 +362,7 @@ const int64_t ne00, const int64_t ne01, const int64_t ne02, const int64_t ne03,
 const int64_t s01, const int64_t s02, const int64_t s03, dpct::queue_ptr queue) {
 dpct::has_capability_or_fail(queue->get_device(), { sycl::aspect::fp16 });
 sycl::range<3> global_size(ne02 * ne03, ne01, ceil_div(ne00, SYCL_DEQUANTIZE_BLOCK_SIZE));
-int64_t        downsized_workgroup = downsample_sycl_global_range(global_size[0], SYCL_DEQUANTIZE_BLOCK_SIZE);
+int64_t downsized_workgroup = downsample_sycl_global_range(global_size[0], SYCL_DEQUANTIZE_BLOCK_SIZE);
 sycl::range<3> workgroup_size(1, 1, downsized_workgroup);
 queue->parallel_for(sycl::nd_range<3>(global_size * workgroup_size, workgroup_size), [=](sycl::nd_item<3> item_ct1) {
 convert_unary_nc<src_t>(vx, y, ne00, ne01, ne02, s01, s02, s03, item_ct1);

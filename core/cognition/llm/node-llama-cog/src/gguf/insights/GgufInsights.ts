@@ -9,623 +9,623 @@ import {padSafeContextSize} from "../../evaluator/LlamaContext/utils/padSafeCont
 import {GgufInsightsConfigurationResolver} from "./GgufInsightsConfigurationResolver.js";
 import {GgufInsightsTokens} from "./GgufInsightsTokens.js";
 export type GgufInsightsResourceRequirements = {
-    cpuRam: number,
-    gpuVram: number
+cpuRam: number,
+gpuVram: number
 };
 export class GgufInsights {
-     public readonly _llama: Llama;
-     private readonly _modelSize: number;
-     private _totalFileLayers: number | null = null;
-     private _supportsRanking?: boolean;
-     public readonly _ggufFileInfo: GgufFileInfo;
-     private readonly _configurationResolver: GgufInsightsConfigurationResolver;
-     private readonly _tokens: GgufInsightsTokens;
-    private constructor(ggufFileInfo: GgufFileInfo, llama: Llama) {
-        this._llama = llama;
-        this._ggufFileInfo = ggufFileInfo;
-        this._modelSize = calculateTensorsSize(ggufFileInfo.fullTensorInfo ?? [], llama, true, true);
-        this._configurationResolver = GgufInsightsConfigurationResolver._create(this);
-        this._tokens = GgufInsightsTokens._create(this);
-    }
-    public getWarnings(modelFilePath?: string) {
-        const warnings: string[] = [];
-        const modelFilePathText = (modelFilePath != null && modelFilePath !== "")
-            ? ` ("${getReadablePath(modelFilePath)}")`
-            : "";
-        if (this._ggufFileInfo?.metadata?.tokenizer?.ggml?.model === "gpt2" &&
-            this._ggufFileInfo?.metadata?.tokenizer?.ggml?.model == null
-        ) {
-            warnings.push(
-                `This model file${modelFilePathText} is missing a pre-tokenizer configuration. ` +
-                "This may cause incorrect tokenization and thus degrade the generation quality. " +
-                "Consider using a newer model or regenerating this GGUF model file"
-            );
-        }
-        return warnings;
-    }
-    public get ggufFileInfo(): GgufFileInfo {
-        return this._ggufFileInfo;
-    }
-    public get configurationResolver() {
-        return this._configurationResolver;
-    }
-    public get tokens() {
-        return this._tokens;
-    }
-    public get trainContextSize() {
-        return this._ggufFileInfo.architectureMetadata.context_length;
-    }
-    public get embeddingVectorSize() {
-        return this._ggufFileInfo.architectureMetadata.embedding_length;
-    }
-    public get totalLayers() {
-        const outputLayers = 1;
-        return this._getTotalFileLayers() + outputLayers;
-    }
-    public get modelSize() {
-        return this._modelSize;
-    }
-    public get flashAttentionSupported() {
-        if (this._ggufFileInfo.metadata?.general?.architecture === GgufArchitectureType.grok)
-            return false;
-        else if (this._ggufFileInfo.metadata?.general?.architecture === GgufArchitectureType.gemma2)
-            return false;
-        else {
-            const nHead = this._ggufFileInfo.architectureMetadata?.attention?.head_count ?? 0;
-            const nEmbd = this._ggufFileInfo.architectureMetadata?.embedding_length ?? 0;
-            const nEmbdHeadK = this._ggufFileInfo.architectureMetadata?.attention?.key_length ?? ((nHead == 0) ? 0 : (nEmbd / nHead));
-            const nEmbdHeadV = this._ggufFileInfo.architectureMetadata?.attention?.value_length ?? ((nHead == 0) ? 0 : nEmbd / nHead);
-            if (nEmbdHeadK !== nEmbdHeadV)
-                return false;
-        }
-        return true;
-    }
-    public get hasEncoder() {
-        switch (this._ggufFileInfo.metadata?.general?.architecture) {
-            case GgufArchitectureType.t5:
-            case GgufArchitectureType.t5encoder:
-                return true;
-        }
-        return false;
-    }
-    public get hasDecoder() {
-        switch (this._ggufFileInfo.metadata?.general?.architecture) {
-            case GgufArchitectureType.t5encoder:
-                return false;
-        }
-        return true;
-    }
-    public get isRecurrent() {
-        switch (this._ggufFileInfo.metadata?.general?.architecture) {
-            case GgufArchitectureType.mamba:
-            case GgufArchitectureType.mamba2:
-            case GgufArchitectureType.rwkv6:
-            case GgufArchitectureType.rwkv6qwen2:
-            case GgufArchitectureType.rwkv7:
-            case GgufArchitectureType.arwkv7:
-                return true;
-        }
-        return false;
-    }
-    public get supportsRanking() {
-        if (this._supportsRanking != null)
-            return this._supportsRanking;
-        const layers = this._ggufFileInfo.fullTensorInfo ?? [];
-        for (let i = layers.length - 1; i >= 0; i--) {
-            const tensor = layers[i];
-            if (tensor == null)
-                continue;
-            if (tensor.name === "cls.weight" || tensor.name === "cls.output.weight") {
-                this._supportsRanking = this.tokens.sepToken != null || this.tokens.eosToken != null ||
-                    isRankingTemplateValid(parseRankingTemplate(this._ggufFileInfo.metadata?.tokenizer?.["chat_template.rerank"]));
-                this._supportsRanking &&= !(this.hasEncoder && this.hasDecoder); 
-                return this._supportsRanking;
-            }
-        }
-        this._supportsRanking = false;
-        return this._supportsRanking;
-    }
-    public get swaSize() {
-        const slidingWindow = this._ggufFileInfo?.architectureMetadata?.attention?.sliding_window;
-        if (slidingWindow == null || slidingWindow <= 0)
-            return undefined;
-        const trainContextSize = this.trainContextSize;
-        if (trainContextSize != null && slidingWindow >= trainContextSize)
-            return undefined;
-        return slidingWindow;
-    }
-    public estimateModelResourceRequirements({
-        gpuLayers, useMmap = this._llama.supportsMmap, gpuSupportsMmap = this._llama.gpuSupportsMmap
-    }: {
-        gpuLayers: number, useMmap?: boolean, gpuSupportsMmap?: boolean
-    }): GgufInsightsResourceRequirements {
-        const {cpu, gpu} = this._getTensorResourceSplit(gpuLayers);
-        return {
-            cpuRam: calculateTensorsSize(cpu, this._llama, false),
-            gpuVram: calculateTensorsSize(gpu, this._llama, useMmap && gpuSupportsMmap)
-        };
-    }
-    public estimateContextResourceRequirements({
-        contextSize, modelGpuLayers, batchSize, sequences, isEmbeddingContext = false, includeGraphOverhead = true, flashAttention = false,
-        swaFullCache = false
-    }: {
-        contextSize: number, modelGpuLayers: number, batchSize?: number, sequences?: number, isEmbeddingContext?: boolean,
-        flashAttention?: boolean, includeGraphOverhead?: boolean, swaFullCache?: boolean
-    }): GgufInsightsResourceRequirements {
-        if (sequences == null) sequences = getDefaultContextSequences();
-        if (batchSize == null) batchSize = getDefaultContextBatchSize({contextSize, sequences});
-        const llmData = this._ggufFileInfo.architectureMetadata;
-        const tensorInfo = this._ggufFileInfo.fullTensorInfo ?? [];
-        const slidingWindow = this.swaSize ?? 0;
-        const kvUnified = false;
-        const usingSWA = !swaFullCache && slidingWindow > 0 && slidingWindow < contextSize &&
-            (this.trainContextSize == null || slidingWindow < this.trainContextSize);
-        const swaPattern = getSwaPatternForArchitecture(this._ggufFileInfo.metadata?.general?.architecture);
-        const nonSwaPercent = swaPattern <= 1
-            ? 1
-            : (1 / (swaPattern + (flashAttention ? -0.5 : -1)));
-        const kvCachePadding = 1;
-        const actualContextSize = kvUnified
-            ? padSafeContextSize(sequences * contextSize, "up")
-            : sequences * padSafeContextSize(contextSize, "up");
-        const kvSize = usingSWA
-            ? (
-                (1 - nonSwaPercent) * Math.min(actualContextSize, ggmlPad(sequences * slidingWindow + batchSize, kvCachePadding)) +
-                nonSwaPercent * actualContextSize
-            )
-            : actualContextSize;
-        const totalFileLayers = this._getTotalFileLayers();
-        const finalGpuLayers = Math.max(0, Math.min(modelGpuLayers ?? totalFileLayers, totalFileLayers));
-        const finalCpuLayers = totalFileLayers - finalGpuLayers;
-        const usingGpu = finalGpuLayers !== 0;
-        const vocabularySize = llmData.vocab_size ?? this._ggufFileInfo.metadata.tokenizer?.ggml?.tokens?.length ?? 0;
-        const embeddingSize = llmData.embedding_length ?? 0;
-        const floatBytes = 4; 
-        const int32TBytes = 4; 
-        const estimateOutput = (nOutputs: number) => {
-            const nOutputsMax = Math.max(batchSize, nOutputs);
-            const isT5 = this._ggufFileInfo.metadata.general?.architecture === GgufArchitectureType.t5;
-            const hasLogits = isT5 || !isEmbeddingContext;
-            const hasEmbd = isT5 || isEmbeddingContext;
-            const logitsSize = hasLogits
-                ? (vocabularySize * nOutputsMax)
-                : 0;
-            const embdSize = hasEmbd
-                ? (embeddingSize * nOutputsMax)
-                : 0;
-            const outputBufferSize = (logitsSize + embdSize) * floatBytes;
-            const outputIdsArr = int32TBytes * batchSize;
-            return outputBufferSize + outputIdsArr;
-        };
-        const estimateGraphOverheadMemory = (): number => {
-            const s1MB = Math.pow(1024, 2);
-            const tensorInfo = this._ggufFileInfo.fullTensorInfo ?? [];
-            const expertCount = llmData?.expert_count ?? 0;
-            const headCount = llmData?.attention?.head_count ?? 0;
-            const embeddingLength = llmData?.embedding_length ?? 0;
-            let defaultCalculationAdjustment = 0;
-            if (batchSize == null)
-                return 0;
-            if (this._ggufFileInfo.metadata.general?.architecture === GgufArchitectureType.llama) {
-                if (expertCount > 0) {
-                    const expertsUsedCount = this._ggufFileInfo.architectureMetadata.expert_used_count ?? 2;
-                    return int32TBytes * batchSize * (((expertsUsedCount + 1) * embeddingLength) + (kvSize * headCount));
-                }
-                return int32TBytes * batchSize * (embeddingLength + (kvSize * headCount));
-            } else if (this._ggufFileInfo.metadata.general?.architecture === GgufArchitectureType.qwen2) {
-                if (modelGpuLayers === this.totalLayers) {
-                    defaultCalculationAdjustment -= (s1MB * 340) * (
-                        this.trainContextSize == null
-                            ? 1
-                            : kvSize / this.trainContextSize
-                    );
-                } else {
-                    defaultCalculationAdjustment -= (s1MB * 250) + (
-                        (s1MB * 50) * (
-                            this.trainContextSize == null
-                                ? 1
-                                : kvSize / this.trainContextSize
-                        )
-                    );
-                }
-            } else if (this._ggufFileInfo.metadata.general?.architecture === GgufArchitectureType.gemma) {
-                if (modelGpuLayers === this.totalLayers) {
-                    defaultCalculationAdjustment += (s1MB * 40) - (
-                        (s1MB * 270) * (
-                            this.trainContextSize == null
-                                ? 1
-                                : kvSize / this.trainContextSize
-                        )
-                    );
-                } else {
-                    defaultCalculationAdjustment += -(s1MB * 550) + (
-                        (s1MB * 150) * (
-                            this.trainContextSize == null
-                                ? 1
-                                : Math.max(0, (1 - (kvSize / this.trainContextSize)))
-                        )
-                    );
-                }
-            } else if (this._ggufFileInfo.metadata.general?.architecture === GgufArchitectureType.stablelm) {
-                const headCount = this._ggufFileInfo.architectureMetadata.attention?.head_count ?? 0;
-                return (int32TBytes * batchSize * kvSize * headCount) - (50 * s1MB);
-            } else if (this._ggufFileInfo.metadata.general?.architecture === GgufArchitectureType.qwen3) {
-                return int32TBytes * batchSize * (embeddingLength + (kvSize * headCount));
-            } else if (expertCount > 0) {
-                const expertsUsedCount = this._ggufFileInfo.architectureMetadata.expert_used_count ?? 2;
-                return int32TBytes * batchSize * (((expertsUsedCount + 1) * embeddingLength) + (kvSize * headCount));
-            }
-            const totalElements = tensorInfo.length === 0
-                ? this.totalLayers * (
-                    (
-                        (llmData.embedding_length ?? 0) +
-                        (llmData.feed_forward_length ?? 0)
-                    ) / 2
-                )
-                : tensorInfo.reduce((res, tensor) => {
-                    return res + tensor.dimensions.reduce((res: number, dim) => res + Number(dim), 0);
-                }, 0);
-            if (this._ggufFileInfo.metadata.general?.architecture === GgufArchitectureType.phi3) {
-                return (totalElements * 123 * (kvSize / 4096)) + defaultCalculationAdjustment;
-            }
-            return (totalElements * 77.655 * (kvSize / 4096)) + defaultCalculationAdjustment;
-        };
-        const gpuKVCacheSize = usingGpu
-            ? this._estimateKvMemorySizeInBytes(
-                kvSize,
-                finalGpuLayers < totalFileLayers
-                    ? (finalGpuLayers + 1)
-                    : finalGpuLayers
-            )
-            : 0;
-        const cpuKVCacheSize = this._estimateKvMemorySizeInBytes(kvSize, finalCpuLayers);
-        const getMaxNodesMultiplier = (arch: GgufArchitectureType | undefined, nTokens: number): {min: number, multiplier: number} => {
-            if (arch === GgufArchitectureType.qwen3next)
-                return {
-                    min: nTokens * 40,
-                    multiplier: 32
-                };
-            return {
-                min: 1024,
-                multiplier: 8
-            };
-        };
-        const maxNodesMultiplier = getMaxNodesMultiplier(
-            this._ggufFileInfo.metadata?.general?.architecture,
-            Math.min(actualContextSize, batchSize)
-        );
-        const maxNodes = Math.max(maxNodesMultiplier.min, maxNodesMultiplier.multiplier * tensorInfo.length);
-        const cpuNodes = maxNodesMultiplier.multiplier * (tensorInfo.length * (finalCpuLayers / totalFileLayers));
-        const gpuNodes = maxNodes - cpuNodes;
-        const gpuComputeBufferSize = (this._llama._consts.ggmlTensorOverhead * gpuNodes) +
-            this._llama._bindings.getGgmlGraphOverheadCustom(gpuNodes, false);
-        const cpuComputeBufferSize = (this._llama._consts.ggmlTensorOverhead * cpuNodes) +
-            this._llama._bindings.getGgmlGraphOverheadCustom(cpuNodes, false);
-        const graphOverheadMemory = (flashAttention || !includeGraphOverhead)
-            ? 0
-            : estimateGraphOverheadMemory();
-        const graphOverheadGpuSize = usingGpu
-            ? Math.round(graphOverheadMemory * (finalGpuLayers / totalFileLayers))
-            : 0;
-        const graphOverheadCpuSize = graphOverheadMemory - graphOverheadGpuSize;
-        const outputBufferSize = estimateOutput(sequences);
-        const gpuVram = gpuKVCacheSize + gpuComputeBufferSize + graphOverheadGpuSize + outputBufferSize;
-        const cpuRam = cpuKVCacheSize + cpuComputeBufferSize + graphOverheadCpuSize + outputBufferSize;
-        return {
-            cpuRam,
-            gpuVram: usingGpu
-                ? gpuVram
-                : 0
-        };
-    }
-    public _getTensorResourceSplit(gpuLayers: number): {
-        cpu: GgufTensorInfo[],
-        gpu: GgufTensorInfo[]
-    } {
-        const tensorInfo = this._ggufFileInfo.fullTensorInfo ?? [];
-        const architecture = this._ggufFileInfo.metadata?.general?.architecture;
-        if (gpuLayers === 0) {
-            return {
-                cpu: tensorInfo,
-                gpu: []
-            };
-        }
-        const fileLayers = this._getFileLayers();
-        const startGpuLayer = Math.max(0, fileLayers - gpuLayers);
-        const gpuTensors: GgufTensorInfo[] = [];
-        const cpuTensors: GgufTensorInfo[] = [];
-        let tokenEmbedLayer: GgufTensorInfo | undefined;
-        let mainOutputLayer: GgufTensorInfo | undefined;
-        for (const singleTensorInfo of tensorInfo) {
-            if (isMainOutputLayer(singleTensorInfo.name))
-                mainOutputLayer = singleTensorInfo;
-            else if (isTokenEmbedLayer(singleTensorInfo.name))
-                tokenEmbedLayer = singleTensorInfo;
-            if (isInputLayer(singleTensorInfo.name)) {
-                cpuTensors.push(singleTensorInfo);
-                continue;
-            } else if (isOutputLayer(singleTensorInfo.name)) {
-                if (gpuLayers === this.totalLayers) {
-                    gpuTensors.push(singleTensorInfo);
-                    continue;
-                } else {
-                    cpuTensors.push(singleTensorInfo);
-                    continue;
-                }
-            }
-            const {layerNumber} = parseTensorName(singleTensorInfo.name);
-            if (gpuLayers !== this.totalLayers) {
-                if (architecture === GgufArchitectureType.qwen2 || architecture === GgufArchitectureType.gemma) {
-                    if (layerNumber != null && layerNumber >= startGpuLayer)
-                        gpuTensors.push(singleTensorInfo);
-                    else
-                        cpuTensors.push(singleTensorInfo);
-                    continue;
-                }
-            }
-            if (layerNumber == null || layerNumber >= startGpuLayer)
-                gpuTensors.push(singleTensorInfo);
-            else
-                cpuTensors.push(singleTensorInfo);
-        }
-        if (mainOutputLayer == null && tokenEmbedLayer != null && gpuLayers === this.totalLayers && !gpuTensors.includes(tokenEmbedLayer))
-            gpuTensors.push(tokenEmbedLayer);
-        return {
-            cpu: cpuTensors,
-            gpu: gpuTensors
-        };
-    }
-    public _determineNumberOfLayersFromTensorInfo(): number {
-        const layerNumbers = new Set<number>();
-        for (const singleTensorInfo of (this._ggufFileInfo.fullTensorInfo ?? [])) {
-            const {layerNumber} = parseTensorName(singleTensorInfo.name);
-            if (layerNumber != null)
-                layerNumbers.add(layerNumber);
-        }
-        return layerNumbers.size;
-    }
-    public _getFileLayers() {
-        return this._ggufFileInfo.architectureMetadata.block_count ?? this._determineNumberOfLayersFromTensorInfo();
-    }
-    public _estimateKvMemorySizeInBytes(kvSize: number, layers: number) {
-        const nHead = this._ggufFileInfo.architectureMetadata.attention?.head_count ?? 0;
-        const nEmbd = this._ggufFileInfo.architectureMetadata.embedding_length ?? 0;
-        const nEmbdHeadK = this._ggufFileInfo.architectureMetadata.attention?.key_length ?? ((nHead == 0) ? 0 : (nEmbd / nHead));
-        const nHeadKv: number | number[] = this._ggufFileInfo.architectureMetadata.attention?.head_count_kv ?? nHead;
-        const nEmbdHeadV = this._ggufFileInfo.architectureMetadata.attention?.value_length ?? ((nHead == 0) ? 0 : nEmbd / nHead);
-        const ssmDConv = this._ggufFileInfo.architectureMetadata.ssm?.conv_kernel ?? 0;
-        const ssmDInner = this._ggufFileInfo.architectureMetadata.ssm?.inner_size ?? 0;
-        const modelNEmbdKS = (this._ggufFileInfo.architectureMetadata.wkv?.head_size ?? 0) !== 0
-            ? (this._ggufFileInfo.architectureMetadata.token_shift_count ?? 0) * nEmbd
-            : (ssmDConv > 0 ? (ssmDConv - 1) : 0) * ssmDInner;
-        const ssmDState = this._ggufFileInfo.architectureMetadata.ssm?.state_size ?? 0;
-        const modelNEmbdVS = (this._ggufFileInfo.architectureMetadata.wkv?.head_size ?? 0) !== 0
-            ? nEmbd * (this._ggufFileInfo.architectureMetadata.wkv?.head_size ?? 0)
-            : ssmDState * ssmDInner;
-        let totalElementsK = 0;
-        let totalElementsV = 0;
-        for (let i = 0; i < layers; i++) {
-            const nHeadKvArrayItem: number = (typeof nHeadKv === "number")
-                ? nHeadKv
-                : nHeadKv[i] !== 0
-                    ? nHeadKv[i]
-                    : nHead;
-            const nEmbdKGqa = nEmbdHeadK * nHeadKvArrayItem;
-            const nEmbdVGqa = nEmbdHeadV * nHeadKvArrayItem;
-            const totalNEmbdKGqa = nEmbdKGqa + modelNEmbdKS;
-            const totalNEmbdVGqa = nEmbdVGqa + modelNEmbdVS;
-            totalElementsK += totalNEmbdKGqa * kvSize;
-            totalElementsV += totalNEmbdVGqa * kvSize;
-        }
-        const keyTypeSize = this._ggufFileInfo.metadata.general?.architecture === GgufArchitectureType.mamba
-            ? this._llama._consts.ggmlTypeF32Size
-            : this._llama._consts.ggmlTypeF16Size;
-        const valueTypeSize = this._ggufFileInfo.metadata.general?.architecture === GgufArchitectureType.mamba
-            ? this._llama._consts.ggmlTypeF32Size
-            : this._llama._consts.ggmlTypeF16Size;
-        return (
-            (totalElementsK * keyTypeSize) +
-            (totalElementsV * valueTypeSize)
-        );
-    }
-    private _getTotalFileLayers() {
-        if (this._totalFileLayers != null)
-            return this._totalFileLayers;
-        this._totalFileLayers = this._getFileLayers();
-        return this._totalFileLayers;
-    }
-    public static async from(ggufFileInfo: GgufFileInfo, llama?: Llama) {
-        let resolvedLlama = llama;
-        if (resolvedLlama == null)
-            resolvedLlama = await getLlamaWithoutBackend();
-        return new GgufInsights(ggufFileInfo, resolvedLlama);
-    }
+public readonly _llama: Llama;
+private readonly _modelSize: number;
+private _totalFileLayers: number | null = null;
+private _supportsRanking?: boolean;
+public readonly _ggufFileInfo: GgufFileInfo;
+private readonly _configurationResolver: GgufInsightsConfigurationResolver;
+private readonly _tokens: GgufInsightsTokens;
+private constructor(ggufFileInfo: GgufFileInfo, llama: Llama) {
+this._llama = llama;
+this._ggufFileInfo = ggufFileInfo;
+this._modelSize = calculateTensorsSize(ggufFileInfo.fullTensorInfo ?? [], llama, true, true);
+this._configurationResolver = GgufInsightsConfigurationResolver._create(this);
+this._tokens = GgufInsightsTokens._create(this);
+}
+public getWarnings(modelFilePath?: string) {
+const warnings: string[] = [];
+const modelFilePathText = (modelFilePath != null && modelFilePath !== "")
+? ` ("${getReadablePath(modelFilePath)}")`
+: "";
+if (this._ggufFileInfo?.metadata?.tokenizer?.ggml?.model === "gpt2" &&
+this._ggufFileInfo?.metadata?.tokenizer?.ggml?.model == null
+) {
+warnings.push(
+`This model file${modelFilePathText} is missing a pre-tokenizer configuration. ` +
+"This may cause incorrect tokenization and thus degrade the generation quality. " +
+"Consider using a newer model or regenerating this GGUF model file"
+);
+}
+return warnings;
+}
+public get ggufFileInfo(): GgufFileInfo {
+return this._ggufFileInfo;
+}
+public get configurationResolver() {
+return this._configurationResolver;
+}
+public get tokens() {
+return this._tokens;
+}
+public get trainContextSize() {
+return this._ggufFileInfo.architectureMetadata.context_length;
+}
+public get embeddingVectorSize() {
+return this._ggufFileInfo.architectureMetadata.embedding_length;
+}
+public get totalLayers() {
+const outputLayers = 1;
+return this._getTotalFileLayers() + outputLayers;
+}
+public get modelSize() {
+return this._modelSize;
+}
+public get flashAttentionSupported() {
+if (this._ggufFileInfo.metadata?.general?.architecture === GgufArchitectureType.grok)
+return false;
+else if (this._ggufFileInfo.metadata?.general?.architecture === GgufArchitectureType.gemma2)
+return false;
+else {
+const nHead = this._ggufFileInfo.architectureMetadata?.attention?.head_count ?? 0;
+const nEmbd = this._ggufFileInfo.architectureMetadata?.embedding_length ?? 0;
+const nEmbdHeadK = this._ggufFileInfo.architectureMetadata?.attention?.key_length ?? ((nHead == 0) ? 0 : (nEmbd / nHead));
+const nEmbdHeadV = this._ggufFileInfo.architectureMetadata?.attention?.value_length ?? ((nHead == 0) ? 0 : nEmbd / nHead);
+if (nEmbdHeadK !== nEmbdHeadV)
+return false;
+}
+return true;
+}
+public get hasEncoder() {
+switch (this._ggufFileInfo.metadata?.general?.architecture) {
+case GgufArchitectureType.t5:
+case GgufArchitectureType.t5encoder:
+return true;
+}
+return false;
+}
+public get hasDecoder() {
+switch (this._ggufFileInfo.metadata?.general?.architecture) {
+case GgufArchitectureType.t5encoder:
+return false;
+}
+return true;
+}
+public get isRecurrent() {
+switch (this._ggufFileInfo.metadata?.general?.architecture) {
+case GgufArchitectureType.mamba:
+case GgufArchitectureType.mamba2:
+case GgufArchitectureType.rwkv6:
+case GgufArchitectureType.rwkv6qwen2:
+case GgufArchitectureType.rwkv7:
+case GgufArchitectureType.arwkv7:
+return true;
+}
+return false;
+}
+public get supportsRanking() {
+if (this._supportsRanking != null)
+return this._supportsRanking;
+const layers = this._ggufFileInfo.fullTensorInfo ?? [];
+for (let i = layers.length - 1; i >= 0; i--) {
+const tensor = layers[i];
+if (tensor == null)
+continue;
+if (tensor.name === "cls.weight" || tensor.name === "cls.output.weight") {
+this._supportsRanking = this.tokens.sepToken != null || this.tokens.eosToken != null ||
+isRankingTemplateValid(parseRankingTemplate(this._ggufFileInfo.metadata?.tokenizer?.["chat_template.rerank"]));
+this._supportsRanking &&= !(this.hasEncoder && this.hasDecoder);
+return this._supportsRanking;
+}
+}
+this._supportsRanking = false;
+return this._supportsRanking;
+}
+public get swaSize() {
+const slidingWindow = this._ggufFileInfo?.architectureMetadata?.attention?.sliding_window;
+if (slidingWindow == null || slidingWindow <= 0)
+return undefined;
+const trainContextSize = this.trainContextSize;
+if (trainContextSize != null && slidingWindow >= trainContextSize)
+return undefined;
+return slidingWindow;
+}
+public estimateModelResourceRequirements({
+gpuLayers, useMmap = this._llama.supportsMmap, gpuSupportsMmap = this._llama.gpuSupportsMmap
+}: {
+gpuLayers: number, useMmap?: boolean, gpuSupportsMmap?: boolean
+}): GgufInsightsResourceRequirements {
+const {cpu, gpu} = this._getTensorResourceSplit(gpuLayers);
+return {
+cpuRam: calculateTensorsSize(cpu, this._llama, false),
+gpuVram: calculateTensorsSize(gpu, this._llama, useMmap && gpuSupportsMmap)
+};
+}
+public estimateContextResourceRequirements({
+contextSize, modelGpuLayers, batchSize, sequences, isEmbeddingContext = false, includeGraphOverhead = true, flashAttention = false,
+swaFullCache = false
+}: {
+contextSize: number, modelGpuLayers: number, batchSize?: number, sequences?: number, isEmbeddingContext?: boolean,
+flashAttention?: boolean, includeGraphOverhead?: boolean, swaFullCache?: boolean
+}): GgufInsightsResourceRequirements {
+if (sequences == null) sequences = getDefaultContextSequences();
+if (batchSize == null) batchSize = getDefaultContextBatchSize({contextSize, sequences});
+const llmData = this._ggufFileInfo.architectureMetadata;
+const tensorInfo = this._ggufFileInfo.fullTensorInfo ?? [];
+const slidingWindow = this.swaSize ?? 0;
+const kvUnified = false;
+const usingSWA = !swaFullCache && slidingWindow > 0 && slidingWindow < contextSize &&
+(this.trainContextSize == null || slidingWindow < this.trainContextSize);
+const swaPattern = getSwaPatternForArchitecture(this._ggufFileInfo.metadata?.general?.architecture);
+const nonSwaPercent = swaPattern <= 1
+? 1
+: (1 / (swaPattern + (flashAttention ? -0.5 : -1)));
+const kvCachePadding = 1;
+const actualContextSize = kvUnified
+? padSafeContextSize(sequences * contextSize, "up")
+: sequences * padSafeContextSize(contextSize, "up");
+const kvSize = usingSWA
+? (
+(1 - nonSwaPercent) * Math.min(actualContextSize, ggmlPad(sequences * slidingWindow + batchSize, kvCachePadding)) +
+nonSwaPercent * actualContextSize
+)
+: actualContextSize;
+const totalFileLayers = this._getTotalFileLayers();
+const finalGpuLayers = Math.max(0, Math.min(modelGpuLayers ?? totalFileLayers, totalFileLayers));
+const finalCpuLayers = totalFileLayers - finalGpuLayers;
+const usingGpu = finalGpuLayers !== 0;
+const vocabularySize = llmData.vocab_size ?? this._ggufFileInfo.metadata.tokenizer?.ggml?.tokens?.length ?? 0;
+const embeddingSize = llmData.embedding_length ?? 0;
+const floatBytes = 4;
+const int32TBytes = 4;
+const estimateOutput = (nOutputs: number) => {
+const nOutputsMax = Math.max(batchSize, nOutputs);
+const isT5 = this._ggufFileInfo.metadata.general?.architecture === GgufArchitectureType.t5;
+const hasLogits = isT5 || !isEmbeddingContext;
+const hasEmbd = isT5 || isEmbeddingContext;
+const logitsSize = hasLogits
+? (vocabularySize * nOutputsMax)
+: 0;
+const embdSize = hasEmbd
+? (embeddingSize * nOutputsMax)
+: 0;
+const outputBufferSize = (logitsSize + embdSize) * floatBytes;
+const outputIdsArr = int32TBytes * batchSize;
+return outputBufferSize + outputIdsArr;
+};
+const estimateGraphOverheadMemory = (): number => {
+const s1MB = Math.pow(1024, 2);
+const tensorInfo = this._ggufFileInfo.fullTensorInfo ?? [];
+const expertCount = llmData?.expert_count ?? 0;
+const headCount = llmData?.attention?.head_count ?? 0;
+const embeddingLength = llmData?.embedding_length ?? 0;
+let defaultCalculationAdjustment = 0;
+if (batchSize == null)
+return 0;
+if (this._ggufFileInfo.metadata.general?.architecture === GgufArchitectureType.llama) {
+if (expertCount > 0) {
+const expertsUsedCount = this._ggufFileInfo.architectureMetadata.expert_used_count ?? 2;
+return int32TBytes * batchSize * (((expertsUsedCount + 1) * embeddingLength) + (kvSize * headCount));
+}
+return int32TBytes * batchSize * (embeddingLength + (kvSize * headCount));
+} else if (this._ggufFileInfo.metadata.general?.architecture === GgufArchitectureType.qwen2) {
+if (modelGpuLayers === this.totalLayers) {
+defaultCalculationAdjustment -= (s1MB * 340) * (
+this.trainContextSize == null
+? 1
+: kvSize / this.trainContextSize
+);
+} else {
+defaultCalculationAdjustment -= (s1MB * 250) + (
+(s1MB * 50) * (
+this.trainContextSize == null
+? 1
+: kvSize / this.trainContextSize
+)
+);
+}
+} else if (this._ggufFileInfo.metadata.general?.architecture === GgufArchitectureType.gemma) {
+if (modelGpuLayers === this.totalLayers) {
+defaultCalculationAdjustment += (s1MB * 40) - (
+(s1MB * 270) * (
+this.trainContextSize == null
+? 1
+: kvSize / this.trainContextSize
+)
+);
+} else {
+defaultCalculationAdjustment += -(s1MB * 550) + (
+(s1MB * 150) * (
+this.trainContextSize == null
+? 1
+: Math.max(0, (1 - (kvSize / this.trainContextSize)))
+)
+);
+}
+} else if (this._ggufFileInfo.metadata.general?.architecture === GgufArchitectureType.stablelm) {
+const headCount = this._ggufFileInfo.architectureMetadata.attention?.head_count ?? 0;
+return (int32TBytes * batchSize * kvSize * headCount) - (50 * s1MB);
+} else if (this._ggufFileInfo.metadata.general?.architecture === GgufArchitectureType.qwen3) {
+return int32TBytes * batchSize * (embeddingLength + (kvSize * headCount));
+} else if (expertCount > 0) {
+const expertsUsedCount = this._ggufFileInfo.architectureMetadata.expert_used_count ?? 2;
+return int32TBytes * batchSize * (((expertsUsedCount + 1) * embeddingLength) + (kvSize * headCount));
+}
+const totalElements = tensorInfo.length === 0
+? this.totalLayers * (
+(
+(llmData.embedding_length ?? 0) +
+(llmData.feed_forward_length ?? 0)
+) / 2
+)
+: tensorInfo.reduce((res, tensor) => {
+return res + tensor.dimensions.reduce((res: number, dim) => res + Number(dim), 0);
+}, 0);
+if (this._ggufFileInfo.metadata.general?.architecture === GgufArchitectureType.phi3) {
+return (totalElements * 123 * (kvSize / 4096)) + defaultCalculationAdjustment;
+}
+return (totalElements * 77.655 * (kvSize / 4096)) + defaultCalculationAdjustment;
+};
+const gpuKVCacheSize = usingGpu
+? this._estimateKvMemorySizeInBytes(
+kvSize,
+finalGpuLayers < totalFileLayers
+? (finalGpuLayers + 1)
+: finalGpuLayers
+)
+: 0;
+const cpuKVCacheSize = this._estimateKvMemorySizeInBytes(kvSize, finalCpuLayers);
+const getMaxNodesMultiplier = (arch: GgufArchitectureType | undefined, nTokens: number): {min: number, multiplier: number} => {
+if (arch === GgufArchitectureType.qwen3next)
+return {
+min: nTokens * 40,
+multiplier: 32
+};
+return {
+min: 1024,
+multiplier: 8
+};
+};
+const maxNodesMultiplier = getMaxNodesMultiplier(
+this._ggufFileInfo.metadata?.general?.architecture,
+Math.min(actualContextSize, batchSize)
+);
+const maxNodes = Math.max(maxNodesMultiplier.min, maxNodesMultiplier.multiplier * tensorInfo.length);
+const cpuNodes = maxNodesMultiplier.multiplier * (tensorInfo.length * (finalCpuLayers / totalFileLayers));
+const gpuNodes = maxNodes - cpuNodes;
+const gpuComputeBufferSize = (this._llama._consts.ggmlTensorOverhead * gpuNodes) +
+this._llama._bindings.getGgmlGraphOverheadCustom(gpuNodes, false);
+const cpuComputeBufferSize = (this._llama._consts.ggmlTensorOverhead * cpuNodes) +
+this._llama._bindings.getGgmlGraphOverheadCustom(cpuNodes, false);
+const graphOverheadMemory = (flashAttention || !includeGraphOverhead)
+? 0
+: estimateGraphOverheadMemory();
+const graphOverheadGpuSize = usingGpu
+? Math.round(graphOverheadMemory * (finalGpuLayers / totalFileLayers))
+: 0;
+const graphOverheadCpuSize = graphOverheadMemory - graphOverheadGpuSize;
+const outputBufferSize = estimateOutput(sequences);
+const gpuVram = gpuKVCacheSize + gpuComputeBufferSize + graphOverheadGpuSize + outputBufferSize;
+const cpuRam = cpuKVCacheSize + cpuComputeBufferSize + graphOverheadCpuSize + outputBufferSize;
+return {
+cpuRam,
+gpuVram: usingGpu
+? gpuVram
+: 0
+};
+}
+public _getTensorResourceSplit(gpuLayers: number): {
+cpu: GgufTensorInfo[],
+gpu: GgufTensorInfo[]
+} {
+const tensorInfo = this._ggufFileInfo.fullTensorInfo ?? [];
+const architecture = this._ggufFileInfo.metadata?.general?.architecture;
+if (gpuLayers === 0) {
+return {
+cpu: tensorInfo,
+gpu: []
+};
+}
+const fileLayers = this._getFileLayers();
+const startGpuLayer = Math.max(0, fileLayers - gpuLayers);
+const gpuTensors: GgufTensorInfo[] = [];
+const cpuTensors: GgufTensorInfo[] = [];
+let tokenEmbedLayer: GgufTensorInfo | undefined;
+let mainOutputLayer: GgufTensorInfo | undefined;
+for (const singleTensorInfo of tensorInfo) {
+if (isMainOutputLayer(singleTensorInfo.name))
+mainOutputLayer = singleTensorInfo;
+else if (isTokenEmbedLayer(singleTensorInfo.name))
+tokenEmbedLayer = singleTensorInfo;
+if (isInputLayer(singleTensorInfo.name)) {
+cpuTensors.push(singleTensorInfo);
+continue;
+} else if (isOutputLayer(singleTensorInfo.name)) {
+if (gpuLayers === this.totalLayers) {
+gpuTensors.push(singleTensorInfo);
+continue;
+} else {
+cpuTensors.push(singleTensorInfo);
+continue;
+}
+}
+const {layerNumber} = parseTensorName(singleTensorInfo.name);
+if (gpuLayers !== this.totalLayers) {
+if (architecture === GgufArchitectureType.qwen2 || architecture === GgufArchitectureType.gemma) {
+if (layerNumber != null && layerNumber >= startGpuLayer)
+gpuTensors.push(singleTensorInfo);
+else
+cpuTensors.push(singleTensorInfo);
+continue;
+}
+}
+if (layerNumber == null || layerNumber >= startGpuLayer)
+gpuTensors.push(singleTensorInfo);
+else
+cpuTensors.push(singleTensorInfo);
+}
+if (mainOutputLayer == null && tokenEmbedLayer != null && gpuLayers === this.totalLayers && !gpuTensors.includes(tokenEmbedLayer))
+gpuTensors.push(tokenEmbedLayer);
+return {
+cpu: cpuTensors,
+gpu: gpuTensors
+};
+}
+public _determineNumberOfLayersFromTensorInfo(): number {
+const layerNumbers = new Set<number>();
+for (const singleTensorInfo of (this._ggufFileInfo.fullTensorInfo ?? [])) {
+const {layerNumber} = parseTensorName(singleTensorInfo.name);
+if (layerNumber != null)
+layerNumbers.add(layerNumber);
+}
+return layerNumbers.size;
+}
+public _getFileLayers() {
+return this._ggufFileInfo.architectureMetadata.block_count ?? this._determineNumberOfLayersFromTensorInfo();
+}
+public _estimateKvMemorySizeInBytes(kvSize: number, layers: number) {
+const nHead = this._ggufFileInfo.architectureMetadata.attention?.head_count ?? 0;
+const nEmbd = this._ggufFileInfo.architectureMetadata.embedding_length ?? 0;
+const nEmbdHeadK = this._ggufFileInfo.architectureMetadata.attention?.key_length ?? ((nHead == 0) ? 0 : (nEmbd / nHead));
+const nHeadKv: number | number[] = this._ggufFileInfo.architectureMetadata.attention?.head_count_kv ?? nHead;
+const nEmbdHeadV = this._ggufFileInfo.architectureMetadata.attention?.value_length ?? ((nHead == 0) ? 0 : nEmbd / nHead);
+const ssmDConv = this._ggufFileInfo.architectureMetadata.ssm?.conv_kernel ?? 0;
+const ssmDInner = this._ggufFileInfo.architectureMetadata.ssm?.inner_size ?? 0;
+const modelNEmbdKS = (this._ggufFileInfo.architectureMetadata.wkv?.head_size ?? 0) !== 0
+? (this._ggufFileInfo.architectureMetadata.token_shift_count ?? 0) * nEmbd
+: (ssmDConv > 0 ? (ssmDConv - 1) : 0) * ssmDInner;
+const ssmDState = this._ggufFileInfo.architectureMetadata.ssm?.state_size ?? 0;
+const modelNEmbdVS = (this._ggufFileInfo.architectureMetadata.wkv?.head_size ?? 0) !== 0
+? nEmbd * (this._ggufFileInfo.architectureMetadata.wkv?.head_size ?? 0)
+: ssmDState * ssmDInner;
+let totalElementsK = 0;
+let totalElementsV = 0;
+for (let i = 0; i < layers; i++) {
+const nHeadKvArrayItem: number = (typeof nHeadKv === "number")
+? nHeadKv
+: nHeadKv[i] !== 0
+? nHeadKv[i]
+: nHead;
+const nEmbdKGqa = nEmbdHeadK * nHeadKvArrayItem;
+const nEmbdVGqa = nEmbdHeadV * nHeadKvArrayItem;
+const totalNEmbdKGqa = nEmbdKGqa + modelNEmbdKS;
+const totalNEmbdVGqa = nEmbdVGqa + modelNEmbdVS;
+totalElementsK += totalNEmbdKGqa * kvSize;
+totalElementsV += totalNEmbdVGqa * kvSize;
+}
+const keyTypeSize = this._ggufFileInfo.metadata.general?.architecture === GgufArchitectureType.mamba
+? this._llama._consts.ggmlTypeF32Size
+: this._llama._consts.ggmlTypeF16Size;
+const valueTypeSize = this._ggufFileInfo.metadata.general?.architecture === GgufArchitectureType.mamba
+? this._llama._consts.ggmlTypeF32Size
+: this._llama._consts.ggmlTypeF16Size;
+return (
+(totalElementsK * keyTypeSize) +
+(totalElementsV * valueTypeSize)
+);
+}
+private _getTotalFileLayers() {
+if (this._totalFileLayers != null)
+return this._totalFileLayers;
+this._totalFileLayers = this._getFileLayers();
+return this._totalFileLayers;
+}
+public static async from(ggufFileInfo: GgufFileInfo, llama?: Llama) {
+let resolvedLlama = llama;
+if (resolvedLlama == null)
+resolvedLlama = await getLlamaWithoutBackend();
+return new GgufInsights(ggufFileInfo, resolvedLlama);
+}
 }
 function parseTensorName(tensorName?: string): {
-    layerNumber: number | undefined
+layerNumber: number | undefined
 } {
-    if (tensorName == null)
-        return {layerNumber: undefined};
-    const layerTensorPrefix = "blk.";
-    if (!tensorName.startsWith(layerTensorPrefix))
-        return {layerNumber: undefined};
-    const dotIndex = tensorName.indexOf(".", layerTensorPrefix.length);
-    const layerNumberString = tensorName.slice(
-        layerTensorPrefix.length,
-        dotIndex < 0
-            ? tensorName.length
-            : dotIndex
-    );
-    const layerNumber = parseInt(layerNumberString);
-    if (Number.isFinite(layerNumber))
-        return {layerNumber};
-    return {layerNumber: undefined};
+if (tensorName == null)
+return {layerNumber: undefined};
+const layerTensorPrefix = "blk.";
+if (!tensorName.startsWith(layerTensorPrefix))
+return {layerNumber: undefined};
+const dotIndex = tensorName.indexOf(".", layerTensorPrefix.length);
+const layerNumberString = tensorName.slice(
+layerTensorPrefix.length,
+dotIndex < 0
+? tensorName.length
+: dotIndex
+);
+const layerNumber = parseInt(layerNumberString);
+if (Number.isFinite(layerNumber))
+return {layerNumber};
+return {layerNumber: undefined};
 }
 function calculateTensorsSize(
-    tensorsInfo: GgufTensorInfo[],
-    llama: Llama,
-    useMmap: boolean,
-    startFromTensorDataOffset: boolean = false
+tensorsInfo: GgufTensorInfo[],
+llama: Llama,
+useMmap: boolean,
+startFromTensorDataOffset: boolean = false
 ) {
-    if (!useMmap) {
-        let size = 0;
-        for (const tensorInfo of tensorsInfo)
-            size += calculateTensorSize(tensorInfo, llama);
-        return size;
-    }
-    const fileStats = new Map<number, {
-        tensorsSize: number,
-        startOffset?: number | bigint,
-        endOffset?: number | bigint
-    }>();
-    for (const tensorInfo of tensorsInfo) {
-        let stats = fileStats.get(tensorInfo.filePart);
-        if (stats == null) {
-            stats = {
-                tensorsSize: 0
-            };
-            fileStats.set(tensorInfo.filePart, stats);
-        }
-        const tensorSize = calculateTensorSize(tensorInfo, llama);
-        stats.tensorsSize += tensorSize;
-        const startOffset = tensorInfo.offset;
-        const endOffset = typeof startOffset === "number"
-            ? startOffset + tensorSize
-            : startOffset + BigInt(tensorSize);
-        if (startFromTensorDataOffset)
-            stats.startOffset = Number(BigInt(tensorInfo.fileOffset) - BigInt(tensorInfo.offset));
-        else if (stats.startOffset == null || startOffset < stats.startOffset)
-            stats.startOffset = startOffset;
-        if (stats.endOffset == null || endOffset > stats.endOffset)
-            stats.endOffset = endOffset;
-    }
-    let size = 0;
-    for (const [, stats] of fileStats) {
-        const offsetSize = (stats.endOffset == null || stats.startOffset == null)
-            ? 0
-            : Number(BigInt(stats.endOffset) - BigInt(stats.startOffset));
-        const tensorsSize = stats.tensorsSize;
-        size += Math.max(offsetSize, tensorsSize);
-    }
-    return size;
+if (!useMmap) {
+let size = 0;
+for (const tensorInfo of tensorsInfo)
+size += calculateTensorSize(tensorInfo, llama);
+return size;
+}
+const fileStats = new Map<number, {
+tensorsSize: number,
+startOffset?: number | bigint,
+endOffset?: number | bigint
+}>();
+for (const tensorInfo of tensorsInfo) {
+let stats = fileStats.get(tensorInfo.filePart);
+if (stats == null) {
+stats = {
+tensorsSize: 0
+};
+fileStats.set(tensorInfo.filePart, stats);
+}
+const tensorSize = calculateTensorSize(tensorInfo, llama);
+stats.tensorsSize += tensorSize;
+const startOffset = tensorInfo.offset;
+const endOffset = typeof startOffset === "number"
+? startOffset + tensorSize
+: startOffset + BigInt(tensorSize);
+if (startFromTensorDataOffset)
+stats.startOffset = Number(BigInt(tensorInfo.fileOffset) - BigInt(tensorInfo.offset));
+else if (stats.startOffset == null || startOffset < stats.startOffset)
+stats.startOffset = startOffset;
+if (stats.endOffset == null || endOffset > stats.endOffset)
+stats.endOffset = endOffset;
+}
+let size = 0;
+for (const [, stats] of fileStats) {
+const offsetSize = (stats.endOffset == null || stats.startOffset == null)
+? 0
+: Number(BigInt(stats.endOffset) - BigInt(stats.startOffset));
+const tensorsSize = stats.tensorsSize;
+size += Math.max(offsetSize, tensorsSize);
+}
+return size;
 }
 function calculateTensorSize(tensor: GgufTensorInfo, llama: Llama) {
-    const typeSize = llama._bindings.getTypeSizeForGgmlType(tensor.ggmlType);
-    const blockSize = llama._bindings.getBlockSizeForGgmlType(tensor.ggmlType);
-    const ggmlMaxDims = llama._consts.ggmlMaxDims;
-    if (typeSize == null || blockSize == null)
-        throw new Error("Invalid type or block size");
-    const {ne, nb} = getTensorNeAndNb(tensor, {typeSize, blockSize, ggmlMaxDims});
-    if (blockSize === 1) {
-        let totalBytes = typeSize;
-        for (let i = 0; i < ggmlMaxDims; i++) {
-            totalBytes += (ne[i] - 1) * nb[i];
-        }
-        return totalBytes;
-    } else {
-        let totalBytes = Math.floor((ne[0] * nb[0]) / blockSize);
-        for (let i = 1; i < ggmlMaxDims; i++) {
-            totalBytes += (ne[i] - 1) * nb[i];
-        }
-        return totalBytes;
-    }
+const typeSize = llama._bindings.getTypeSizeForGgmlType(tensor.ggmlType);
+const blockSize = llama._bindings.getBlockSizeForGgmlType(tensor.ggmlType);
+const ggmlMaxDims = llama._consts.ggmlMaxDims;
+if (typeSize == null || blockSize == null)
+throw new Error("Invalid type or block size");
+const {ne, nb} = getTensorNeAndNb(tensor, {typeSize, blockSize, ggmlMaxDims});
+if (blockSize === 1) {
+let totalBytes = typeSize;
+for (let i = 0; i < ggmlMaxDims; i++) {
+totalBytes += (ne[i] - 1) * nb[i];
+}
+return totalBytes;
+} else {
+let totalBytes = Math.floor((ne[0] * nb[0]) / blockSize);
+for (let i = 1; i < ggmlMaxDims; i++) {
+totalBytes += (ne[i] - 1) * nb[i];
+}
+return totalBytes;
+}
 }
 function getTensorNeAndNb(tensor: GgufTensorInfo, {
-    typeSize, blockSize, ggmlMaxDims
+typeSize, blockSize, ggmlMaxDims
 }: {
-    typeSize: number, blockSize: number, ggmlMaxDims: number
+typeSize: number, blockSize: number, ggmlMaxDims: number
 }) {
-    const ne = [
-        ...tensor.dimensions,
-        ...(Array(Math.max(0, ggmlMaxDims - tensor.dimensions.length)).fill(1))
-    ].slice(0, ggmlMaxDims);
-    const nb = [
-        typeSize,
-        Math.floor(typeSize * (ne[0] / blockSize)),
-        ...Array(ggmlMaxDims - 2).fill(0)
-    ];
-    for (let i = 2; i < ggmlMaxDims; i++) {
-        nb[i] = nb[i - 1] * ne[i - 1];
-    }
-    return {
-        ne,
-        nb
-    };
+const ne = [
+...tensor.dimensions,
+...(Array(Math.max(0, ggmlMaxDims - tensor.dimensions.length)).fill(1))
+].slice(0, ggmlMaxDims);
+const nb = [
+typeSize,
+Math.floor(typeSize * (ne[0] / blockSize)),
+...Array(ggmlMaxDims - 2).fill(0)
+];
+for (let i = 2; i < ggmlMaxDims; i++) {
+nb[i] = nb[i - 1] * ne[i - 1];
+}
+return {
+ne,
+nb
+};
 }
 function isInputLayer(layerName: string) {
-    const [firstPart] = layerName.split(".");
-    if (firstPart == null)
-        return false;
-    switch (firstPart) {
-        case "token_embd":
-        case "token_embd_norm":
-        case "token_types":
-        case "position_embd":
-            return true;
-    }
-    return false;
+const [firstPart] = layerName.split(".");
+if (firstPart == null)
+return false;
+switch (firstPart) {
+case "token_embd":
+case "token_embd_norm":
+case "token_types":
+case "position_embd":
+return true;
+}
+return false;
 }
 function isOutputLayer(layerName: string) {
-    const [firstPart, secondPart] = layerName.split(".");
-    if (firstPart == null)
-        return false;
-    switch (firstPart) {
-        case "output":
-        case "output_norm":
-        case "cls":
-            return true;
-    }
-    if (secondPart == null)
-        return false;
-    switch (firstPart + "." + secondPart) {
-        case "cls.output":
-        case "dec.output_norm":
-        case "enc.output_norm":
-            return true;
-    }
-    return false;
+const [firstPart, secondPart] = layerName.split(".");
+if (firstPart == null)
+return false;
+switch (firstPart) {
+case "output":
+case "output_norm":
+case "cls":
+return true;
+}
+if (secondPart == null)
+return false;
+switch (firstPart + "." + secondPart) {
+case "cls.output":
+case "dec.output_norm":
+case "enc.output_norm":
+return true;
+}
+return false;
 }
 function isMainOutputLayer(layerName: string) {
-    const [firstPart] = layerName.split(".");
-    return firstPart === "output";
+const [firstPart] = layerName.split(".");
+return firstPart === "output";
 }
 function isTokenEmbedLayer(layerName: string) {
-    const [firstPart] = layerName.split(".");
-    return firstPart === "token_embd";
+const [firstPart] = layerName.split(".");
+return firstPart === "token_embd";
 }
 function ggmlPad(value: number, padding: number): number {
-    return ((value + padding - 1) & ~(padding - 1));
+return ((value + padding - 1) & ~(padding - 1));
 }
 function getSwaPatternForArchitecture(architecture?: GgufArchitectureType): number {
-    switch (architecture) {
-        case GgufArchitectureType.llama4:
-            return 4;
-        case GgufArchitectureType.phi3:
-            return 1;
-        case GgufArchitectureType.gemma2:
-            return 2;
-        case GgufArchitectureType.gemma3:
-            return 6;
-        case GgufArchitectureType.gemma3n:
-            return 5;
-        case GgufArchitectureType.cohere2:
-            return 4;
-        case GgufArchitectureType.exaone4:
-            return 4;
-        case GgufArchitectureType.gptOss:
-            return 2;
-        case GgufArchitectureType.smallthinker:
-            return 4;
-    }
-    return 1;
+switch (architecture) {
+case GgufArchitectureType.llama4:
+return 4;
+case GgufArchitectureType.phi3:
+return 1;
+case GgufArchitectureType.gemma2:
+return 2;
+case GgufArchitectureType.gemma3:
+return 6;
+case GgufArchitectureType.gemma3n:
+return 5;
+case GgufArchitectureType.cohere2:
+return 4;
+case GgufArchitectureType.exaone4:
+return 4;
+case GgufArchitectureType.gptOss:
+return 2;
+case GgufArchitectureType.smallthinker:
+return 4;
+}
+return 1;
 }
 export function parseRankingTemplate(template: string | undefined | null): string | undefined {
-    if (template == null)
-        return undefined;
-    return template
-        .replaceAll("{query}", "{{query}}")
-        .replaceAll("{document}", "{{document}}");
+if (template == null)
+return undefined;
+return template
+.replaceAll("{query}", "{{query}}")
+.replaceAll("{document}", "{{document}}");
 }
 export function isRankingTemplateValid(template: string | undefined | null): boolean {
-    return template != null && template.includes("{{query}}") && template.includes("{{document}}");
+return template != null && template.includes("{{query}}") && template.includes("{{document}}");
 }

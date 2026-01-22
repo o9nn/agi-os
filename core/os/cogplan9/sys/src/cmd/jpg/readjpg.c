@@ -4,107 +4,107 @@
 #include <draw.h>
 #include "imagefile.h"
 enum {
-SOF	=0xC0,
+SOF =0xC0,
 SOF2=0xC2,
-JPG	=0xC8,
-DHT	=0xC4,
-DAC	=0xCC,
-RST	=0xD0,
-RST7	=0xD7,
-SOI	=0xD8,
-EOI	=0xD9,
-SOS	=0xDA,
-DQT	=0xDB,
-DNL	=0xDC,
-DRI	=0xDD,
-DHP	=0xDE,
-EXP	=0xDF,
-APPn	=0xE0,
-JPGn	=0xF0,
-COM	=0xFE,
-CLAMPOFF	= 300,
-NCLAMP		= CLAMPOFF+700
+JPG =0xC8,
+DHT =0xC4,
+DAC =0xCC,
+RST =0xD0,
+RST7 =0xD7,
+SOI =0xD8,
+EOI =0xD9,
+SOS =0xDA,
+DQT =0xDB,
+DNL =0xDC,
+DRI =0xDD,
+DHP =0xDE,
+EXP =0xDF,
+APPn =0xE0,
+JPGn =0xF0,
+COM =0xFE,
+CLAMPOFF = 300,
+NCLAMP = CLAMPOFF+700
 };
 typedef struct Framecomp Framecomp;
 typedef struct Header Header;
 typedef struct Huffman Huffman;
 struct Framecomp
 {
-int	C;
-int	H;
-int	V;
-int	Tq;
+int C;
+int H;
+int V;
+int Tq;
 };
 struct Huffman
 {
-int	*size;
-int	*code;
-int	*val;
-int	mincode[17];
-int	maxcode[17];
-int	valptr[17];
-int	value[256];
-int	shift[256];
+int *size;
+int *code;
+int *val;
+int mincode[17];
+int maxcode[17];
+int valptr[17];
+int value[256];
+int shift[256];
 };
 struct Header
 {
-Biobuf	*fd;
-char		err[256];
-jmp_buf	errlab;
-int		sr;
-int		cnt;
-uchar	*buf;
-int		nbuf;
-int		peek;
-int		Nf;
-Framecomp	comp[3];
-uchar	mode;
-int		X;
-int		Y;
-int		qt[4][64];
-Huffman	dcht[4];
-Huffman	acht[4];
-int		**data[3];
-int		ndata[3];
-uchar	*sf;
-uchar	*ss;
-int		ri;
+Biobuf *fd;
+char err[256];
+jmp_buf errlab;
+int sr;
+int cnt;
+uchar *buf;
+int nbuf;
+int peek;
+int Nf;
+Framecomp comp[3];
+uchar mode;
+int X;
+int Y;
+int qt[4][64];
+Huffman dcht[4];
+Huffman acht[4];
+int **data[3];
+int ndata[3];
+uchar *sf;
+uchar *ss;
+int ri;
 Rawimage *image;
 Rawimage **array;
-int		*dccoeff[3];
-int		**accoeff[3];
-int		naccoeff[3];
-int		nblock[3];
-int		nacross;
-int		ndown;
-int		Hmax;
-int		Vmax;
+int *dccoeff[3];
+int **accoeff[3];
+int naccoeff[3];
+int nblock[3];
+int nacross;
+int ndown;
+int Hmax;
+int Vmax;
 };
-static	uchar	clamp[NCLAMP];
-static	Rawimage	*readslave(Header*, int);
-static	int			readsegment(Header*, int*);
-static	void			quanttables(Header*, uchar*, int);
-static	void			huffmantables(Header*, uchar*, int);
-static	void			soiheader(Header*);
-static	int			nextbyte(Header*, int);
-static	int			int2(uchar*, int);
-static	void			nibbles(int, int*, int*);
-static	int			receive(Header*, int);
-static	int			receiveEOB(Header*, int);
-static	int			receivebit(Header*);
-static	void			restart(Header*, int);
-static	int			decode(Header*, Huffman*);
-static	Rawimage*	baselinescan(Header*, int);
-static	void			progressivescan(Header*, int);
-static	Rawimage*	progressiveIDCT(Header*, int);
-static	void			idct(int*);
-static	void			colormap1(Header*, int, Rawimage*, int*, int, int);
-static	void			colormapall1(Header*, int, Rawimage*, int*, int*, int*, int, int);
-static	void			colormap(Header*, int, Rawimage*, int**, int**, int**, int, int, int, int, int*, int*);
-static	void			jpgerror(Header*, char*, ...);
-static	char		readerr[] = "ReadJPG: read error: %r";
-static	char		memerr[] = "ReadJPG: malloc failed: %r";
-static	int zig[64] = {
+static uchar clamp[NCLAMP];
+static Rawimage *readslave(Header*, int);
+static int readsegment(Header*, int*);
+static void quanttables(Header*, uchar*, int);
+static void huffmantables(Header*, uchar*, int);
+static void soiheader(Header*);
+static int nextbyte(Header*, int);
+static int int2(uchar*, int);
+static void nibbles(int, int*, int*);
+static int receive(Header*, int);
+static int receiveEOB(Header*, int);
+static int receivebit(Header*);
+static void restart(Header*, int);
+static int decode(Header*, Huffman*);
+static Rawimage* baselinescan(Header*, int);
+static void progressivescan(Header*, int);
+static Rawimage* progressiveIDCT(Header*, int);
+static void idct(int*);
+static void colormap1(Header*, int, Rawimage*, int*, int, int);
+static void colormapall1(Header*, int, Rawimage*, int*, int*, int*, int, int);
+static void colormap(Header*, int, Rawimage*, int**, int**, int**, int, int, int, int, int*, int*);
+static void jpgerror(Header*, char*, ...);
+static char readerr[] = "ReadJPG: read error: %r";
+static char memerr[] = "ReadJPG: malloc failed: %r";
+static int zig[64] = {
 0, 1, 8, 16, 9, 2, 3, 10, 17,
 24, 32, 25, 18, 11, 4, 5,
 12, 19, 26, 33, 40, 48, 41, 34,
@@ -295,7 +295,7 @@ header->comp[i].Tq = b[6+3*i+2];
 header->mode = m;
 header->sf = b;
 break;
-case  SOS:
+case SOS:
 header->ss = b;
 switch(header->mode){
 case SOF:
@@ -309,13 +309,13 @@ sprint(header->err, "unrecognized or unspecified encoding %d", header->mode);
 break;
 }
 break;
-case  DHT:
+case DHT:
 huffmantables(header, b, n);
 break;
-case  DRI:
+case DRI:
 header->ri = int2(b, 0);
 break;
-case  COM:
+case COM:
 break;
 case EOI:
 if(header->mode == SOF2)
@@ -772,7 +772,7 @@ static
 void
 progressivedc(Header *h, int comp, int Ah, int Al)
 {
-int Ns, z, ri, mcu,  nmcu;
+int Ns, z, ri, mcu, nmcu;
 int block, t, diff, qt, *dc, bn;
 Huffman *dcht;
 uchar *ss;
@@ -1111,7 +1111,7 @@ k += 8;
 }
 static
 void
-colormap(Header *h, int colorspace, Rawimage *image, int *data0[8*8], int *data1[8*8], int *data2[8*8], int mcu, int nacross, int Hmax, int Vmax,  int *H, int *V)
+colormap(Header *h, int colorspace, Rawimage *image, int *data0[8*8], int *data1[8*8], int *data2[8*8], int mcu, int nacross, int Hmax, int Vmax, int *H, int *V)
 {
 uchar *rpic, *gpic, *bpic;
 int x, y, dx, dy, minx, miny;
@@ -1297,19 +1297,19 @@ h->cnt--;
 return (h->sr >> h->cnt) & 1;
 }
 enum {
-W1		= 2841,
-W2		= 2676,
-W3		= 2408,
-W5		= 1609,
-W6		= 1108,
-W7		= 565,
-W1pW7	= 3406,
-W1mW7	= 2276,
-W3pW5	= 4017,
-W3mW5	= 799,
-W2pW6	= 3784,
-W2mW6	= 1567,
-R2		= 181
+W1 = 2841,
+W2 = 2676,
+W3 = 2408,
+W5 = 1609,
+W6 = 1108,
+W7 = 565,
+W1pW7 = 3406,
+W1mW7 = 2276,
+W3pW5 = 4017,
+W3mW5 = 799,
+W2pW6 = 3784,
+W2mW6 = 1567,
+R2 = 181
 };
 static
 void

@@ -33,29 +33,29 @@ verbose: string;
 errormsg := array[] of {
 Internal => Error("500 Internal Error", "Internal Error",
 "This server could not process your request due to an interal error."),
-TempFail =>	Error("500 Internal Error", "Temporary Failure",
+TempFail => Error("500 Internal Error", "Temporary Failure",
 "The object %s is currently inaccessible.<p>Please try again later."),
-Unimp =>	Error("501 Not implemented", "Command not implemented",
+Unimp => Error("501 Not implemented", "Command not implemented",
 "This server does not implement the %s command."),
-UnkVers =>	Error("501 Not Implemented", "Unknown http version",
+UnkVers => Error("501 Not Implemented", "Unknown http version",
 "This server does not know how to respond to http version %s."),
-BadCont =>	Error("501 Not Implemented", "Impossible format",
+BadCont => Error("501 Not Implemented", "Impossible format",
 "This server cannot produce %s in any of the formats your client accepts."),
-BadReq =>	Error("400 Bad Request", "Strange Request",
+BadReq => Error("400 Bad Request", "Strange Request",
 "Your client sent a query that this server could not understand."),
-Syntax =>	Error("400 Bad Request", "Garbled Syntax",
+Syntax => Error("400 Bad Request", "Garbled Syntax",
 "Your client sent a query with incoherent syntax."),
 BadSearch =>Error("400 Bad Request", "Inapplicable Search",
 "Your client sent a search that cannot be applied to %s."),
 NotFound =>Error("404 Not Found", "Object not found",
 "The object %s does not exist on this server."),
-NoSearch =>	Error("403 Forbidden", "Search not supported",
+NoSearch => Error("403 Forbidden", "Search not supported",
 "The object %s does not support the search command."),
 OnlySearch =>Error("403 Forbidden", "Searching Only",
 "The object %s only supports the searching methods."),
-Unauth =>	Error("401 Unauthorized", "Unauthorized",
+Unauth => Error("401 Unauthorized", "Unauthorized",
 "You are not authorized to see the object %s."),
-OK =>	Error("200 OK", "everything is fine","Groovy man"),
+OK => Error("200 OK", "everything is fine","Groovy man"),
 };
 badmodule(p: string)
 {
@@ -151,7 +151,7 @@ name, s, g.wordval));
 }
 break;
 ',' =>
-return  mimeok(g,name, multipart,head);
+return mimeok(g,name, multipart,head);
 * =>
 return head;
 }
@@ -322,7 +322,7 @@ or ';' or ':' or '?' or '=' =>
 return c;
 '"' =>
 word(g,"\"");
-getc(g);		# skip the closing quote
+getc(g); # skip the closing quote
 return Word;
 * =>
 ungetc(g);
@@ -428,7 +428,7 @@ i += 2;
 c = d0*16 + d1;
 }
 }
-} else if(c == '+'  || c == 0)
+} else if(c == '+' || c == 0)
 c = ' ';
 a[o++] = byte c;
 }else
@@ -452,7 +452,7 @@ fail(g: ref Private_info,reason : int, message : string)
 verb : string;
 title:=sys->sprint("<head><title>%s</title></head>\n<body bgcolor=#ffffff>\n",
 errormsg[reason].concise);
-body1:=	"<h1> Error </h1>\n<P>" +
+body1:= "<h1> Error </h1>\n<P>" +
 "Sorry, Charon is unable to process your request. The webserver reports"+
 " the following error <P><b>";
 #concise error
@@ -513,8 +513,8 @@ t := "";
 for(i := 0; i < len p; i++){
 c := p[i];
 if(c == 0)
-continue;	# ignore nul bytes
-if(c >= Runeself){	# convert to UTF-8
+continue; # ignore nul bytes
+if(c >= Runeself){ # convert to UTF-8
 n := sys->char2byte(c, a, 0);
 for(j := 0; j < n; j++)
 t += sys->sprint("%%%.2X", int a[j]);

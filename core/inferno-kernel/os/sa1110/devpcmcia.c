@@ -9,7 +9,7 @@ int pcmdebug=0;
 #define DPRINT if(pcmdebug)iprint
 #define DPRINT1 if(pcmdebug > 1)iprint
 #define DPRINT2 if(pcmdebug > 2)iprint
-#define PCMERR(x)	pce(x);
+#define PCMERR(x) pce(x);
 enum
 {
 Qdir,
@@ -17,31 +17,31 @@ Qmem,
 Qattr,
 Qctl,
 };
-#define SLOTNO(c)	(((ulong)c->qid.path>>8)&0xff)
-#define TYPE(c)		((ulong)c->qid.path&0xff)
-#define QID(s,t)	(((s)<<8)|(t))
+#define SLOTNO(c) (((ulong)c->qid.path>>8)&0xff)
+#define TYPE(c) ((ulong)c->qid.path&0xff)
+#define QID(s,t) (((s)<<8)|(t))
 enum
 {
-Rconfig=	0,
-Creset=	 (1<<7),
-Clevel=	 (1<<6),
+Rconfig= 0,
+Creset= (1<<7),
+Clevel= (1<<6),
 };
-enum	{
-Maxctab=	8,
-Maxslot=	2
+enum {
+Maxctab= 8,
+Maxslot= 2
 };
 static struct {
 Ref;
 } pcmcia;
-static PCMslot	slot[Maxslot];
+static PCMslot slot[Maxslot];
 static PCMslot *lastslot ;
-static	int	nslot = Maxslot;
-static void	slotdis(PCMslot *);
-static void	pcmciaintr(Ureg*, void*);
-static void	pcmciareset(void);
-static int	pcmio(int, ISAConf*);
-static long	pcmread(int, int, void*, long, ulong);
-static long	pcmwrite(int, int, void*, long, ulong);
+static int nslot = Maxslot;
+static void slotdis(PCMslot *);
+static void pcmciaintr(Ureg*, void*);
+static void pcmciareset(void);
+static int pcmio(int, ISAConf*);
+static long pcmread(int, int, void*, long, ulong);
+static long pcmwrite(int, int, void*, long, ulong);
 static void slottiming(int, int, int, int, int);
 static void slotmap(int, ulong, ulong, ulong);
 static void pcmciadump(PCMslot*);
@@ -446,7 +446,7 @@ y += 9;
 y /= 10;
 y = y-1;
 if(y < 0)
-y  = 0;
+y = 0;
 if(y > 0x1F)
 y = 0x1F;
 return y & 0x1F;

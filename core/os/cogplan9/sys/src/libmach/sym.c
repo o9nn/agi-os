@@ -2,68 +2,68 @@
 #include <libc.h>
 #include <bio.h>
 #include <mach.h>
-#define	HUGEINT	0x7fffffff
-#define	NNAME	20
-typedef	struct txtsym Txtsym;
-typedef	struct file File;
-typedef	struct hist Hist;
+#define HUGEINT 0x7fffffff
+#define NNAME 20
+typedef struct txtsym Txtsym;
+typedef struct file File;
+typedef struct hist Hist;
 struct txtsym {
-int 	n;
-Sym	**locals;
-Sym	*sym;
+int n;
+Sym **locals;
+Sym *sym;
 };
 struct hist {
-char	*name;
-long	line;
-long	offset;
+char *name;
+long line;
+long offset;
 };
 struct file {
-uvlong	addr;
+uvlong addr;
 union {
-Txtsym	*txt;
-Sym	*sym;
+Txtsym *txt;
+Sym *sym;
 };
-int	n;
-Hist	*hist;
+int n;
+Hist *hist;
 };
-static	int	debug = 0;
-static	Sym	**autos;
-static	File	*files;
-static	int	fmax;
-static	Sym	**fnames;
-static	Sym	**globals;
-static	Hist	*hist;
-static	int	isbuilt;
-static	long	nauto;
-static	long	nfiles;
-static	long	nglob;
-static	long	nhist;
-static	long	nsym;
-static	int	ntxt;
-static	uchar	*pcline;
-static	uchar 	*pclineend;
-static	uchar	*spoff;
-static	uchar	*spoffend;
-static	Sym	*symbols;
-static	Txtsym	*txt;
-static	uvlong	txtstart;
-static	uvlong	txtend;
-static void	cleansyms(void);
-static long	decodename(Biobuf*, Sym*);
-static short	*encfname(char*);
-static int 	fline(char*, int, long, Hist*, Hist**);
-static void	fillsym(Sym*, Symbol*);
-static int	findglobal(char*, Symbol*);
-static int	findlocvar(Symbol*, char *, Symbol*);
-static int	findtext(char*, Symbol*);
-static int	hcomp(Hist*, short*);
-static int	hline(File*, short*, long*);
-static void	printhist(char*, Hist*, int);
-static int	buildtbls(void);
-static int	symcomp(void*, void*);
-static int	symerrmsg(int, char*);
-static int	txtcomp(void*, void*);
-static int	filecomp(void*, void*);
+static int debug = 0;
+static Sym **autos;
+static File *files;
+static int fmax;
+static Sym **fnames;
+static Sym **globals;
+static Hist *hist;
+static int isbuilt;
+static long nauto;
+static long nfiles;
+static long nglob;
+static long nhist;
+static long nsym;
+static int ntxt;
+static uchar *pcline;
+static uchar *pclineend;
+static uchar *spoff;
+static uchar *spoffend;
+static Sym *symbols;
+static Txtsym *txt;
+static uvlong txtstart;
+static uvlong txtend;
+static void cleansyms(void);
+static long decodename(Biobuf*, Sym*);
+static short *encfname(char*);
+static int fline(char*, int, long, Hist*, Hist**);
+static void fillsym(Sym*, Symbol*);
+static int findglobal(char*, Symbol*);
+static int findlocvar(Symbol*, char *, Symbol*);
+static int findtext(char*, Symbol*);
+static int hcomp(Hist*, short*);
+static int hline(File*, short*, long*);
+static void printhist(char*, Hist*, int);
+static int buildtbls(void);
+static int symcomp(void*, void*);
+static int symerrmsg(int, char*);
+static int txtcomp(void*, void*);
+static int filecomp(void*, void*);
 int
 syminit(int fd, Fhdr *fp)
 {
@@ -926,7 +926,7 @@ while(bp < end && *c)
 *bp++ = *c++;
 }
 *bp = 0;
-i =  bp-buf;
+i = bp-buf;
 if(i > 1) {
 cleanname(buf);
 i = strlen(buf);
@@ -1049,7 +1049,7 @@ return ~0;
 uvlong
 line2addr(long line, uvlong basepc, uvlong endpc)
 {
-uchar *c,  u;
+uchar *c, u;
 uvlong currpc, pc;
 long currline;
 long delta, d;

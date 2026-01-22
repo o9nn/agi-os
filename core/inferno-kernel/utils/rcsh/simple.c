@@ -1,34 +1,34 @@
 #include "rc.h"
-typedef struct Builtin	Builtin;
+typedef struct Builtin Builtin;
 struct Builtin
 {
-char	*name;
-void	(*fnc)(void);
+char *name;
+void (*fnc)(void);
 };
-int	exitnext(void);
-void	execexec(void);
-void	execfunc(Var *func);
-void	execcd(void);
-void	execwhatis(void);
-void	execeval(void);
-void	execexit(void);
-void	execshift(void);
-void	execwait(void);
-void	execdot(void);
-void	execflag(void);
+int exitnext(void);
+void execexec(void);
+void execfunc(Var *func);
+void execcd(void);
+void execwhatis(void);
+void execeval(void);
+void execexit(void);
+void execshift(void);
+void execwait(void);
+void execdot(void);
+void execflag(void);
 Builtin builtin[]={
-"cd",		execcd,
-"whatis",	execwhatis,
-"eval",		execeval,
-"exec",		execexec,
-"exit",		execexit,
-"shift",	execshift,
-"wait",		execwait,
-".",		execdot,
-"flag",		execflag,
+"cd", execcd,
+"whatis", execwhatis,
+"eval", execeval,
+"exec", execexec,
+"exit", execexit,
+"shift", execshift,
+"wait", execwait,
+".", execdot,
+"flag", execflag,
 0
 };
-int	mapfd(int fd);
+int mapfd(int fd);
 void
 Xsimple(void)
 {
@@ -215,7 +215,7 @@ execexit(void)
 switch(count(runq->argv->words)){
 default: pfmt(err, "Usage: exit [status]\nExiting anyway\n");
 case 2: setstatus(runq->argv->words->next->word);
-case 1:	Xexit();
+case 1: Xexit();
 }
 }
 void

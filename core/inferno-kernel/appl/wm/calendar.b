@@ -39,7 +39,7 @@ show: fn(cal: self ref Cal, date: int);
 mark: fn(cal: self ref Cal, ent: Entry);
 };
 Entry: adt {
-date: int;		# YYYYMMDD
+date: int; # YYYYMMDD
 mark: int;
 };
 Sentry: adt {
@@ -99,7 +99,7 @@ if (ctxt == nil) {
 sys->fprint(sys->fildes(2), "calendar: no window context\n");
 raise "fail:bad context";
 }
-days = Xa(array[] of {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri",  "Sat"});
+days = Xa(array[] of {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"});
 months = Xa(array[] of {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"});
 arg->init(argv);
 while ((opt := arg->opt()) != 0) {
@@ -732,7 +732,7 @@ for (i := 0; i < len e; i++)
 if (ent.date < e[i].ent.date)
 break;
 ne := array[len e + 1] of Sentry;
-(ne[0:],  ne[i], ne[i+1:]) = (e[0:i], (ent, int info.name), e[i:]);
+(ne[0:], ne[i], ne[i+1:]) = (e[0:i], (ent, int info.name), e[i:]);
 sched.entries = ne;
 return (0, nil);
 } else {
@@ -807,7 +807,7 @@ if (fd == nil) {
 notice(ctxt, top, X("Cannot set time: ") + sys->sprint("%r"));
 return;
 }
-(panel, wmctl) := tkclient->toplevel(ctxt, "",	X("Set Time"), 0);
+(panel, wmctl) := tkclient->toplevel(ctxt, "", X("Set Time"), 0);
 tkcmds(panel, panelcmds);
 cmdch := chan of string;
 tk->namechan(panel, cmdch, "cmd");
@@ -956,7 +956,7 @@ blanktm: Tm;
 # starting day of month/year.
 monthinfo(mon, year: int): (int, int)
 {
-t  := ref blanktm;
+t := ref blanktm;
 t.mday = 1;
 t.mon = mon;
 t.year = year - 1900;

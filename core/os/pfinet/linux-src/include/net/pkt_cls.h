@@ -5,41 +5,41 @@ struct rtattr;
 struct tcmsg;
 struct tcf_result
 {
-unsigned long	class;
-u32		classid;
+unsigned long class;
+u32 classid;
 };
 struct tcf_proto
 {
-struct tcf_proto	*next;
-void			*root;
-int			(*classify)(struct sk_buff*, struct tcf_proto*, struct tcf_result *);
-u32			protocol;
-u32			prio;
-u32			classid;
-struct Qdisc		*q;
-void			*data;
-struct tcf_proto_ops	*ops;
+struct tcf_proto *next;
+void *root;
+int (*classify)(struct sk_buff*, struct tcf_proto*, struct tcf_result *);
+u32 protocol;
+u32 prio;
+u32 classid;
+struct Qdisc *q;
+void *data;
+struct tcf_proto_ops *ops;
 };
 struct tcf_walker
 {
-int	stop;
-int	skip;
-int	count;
-int	(*fn)(struct tcf_proto *, unsigned long node, struct tcf_walker *);
+int stop;
+int skip;
+int count;
+int (*fn)(struct tcf_proto *, unsigned long node, struct tcf_walker *);
 };
 struct tcf_proto_ops
 {
-struct tcf_proto_ops	*next;
-char			kind[IFNAMSIZ];
-int			(*classify)(struct sk_buff*, struct tcf_proto*, struct tcf_result *);
-int			(*init)(struct tcf_proto*);
-void			(*destroy)(struct tcf_proto*);
-unsigned long		(*get)(struct tcf_proto*, u32 handle);
-void			(*put)(struct tcf_proto*, unsigned long);
-int			(*change)(struct tcf_proto*, unsigned long, u32 handle, struct rtattr **, unsigned long *);
-int			(*delete)(struct tcf_proto*, unsigned long);
-void			(*walk)(struct tcf_proto*, struct tcf_walker *arg);
-int			(*dump)(struct tcf_proto*, unsigned long, struct sk_buff *skb, struct tcmsg*);
+struct tcf_proto_ops *next;
+char kind[IFNAMSIZ];
+int (*classify)(struct sk_buff*, struct tcf_proto*, struct tcf_result *);
+int (*init)(struct tcf_proto*);
+void (*destroy)(struct tcf_proto*);
+unsigned long (*get)(struct tcf_proto*, u32 handle);
+void (*put)(struct tcf_proto*, unsigned long);
+int (*change)(struct tcf_proto*, unsigned long, u32 handle, struct rtattr **, unsigned long *);
+int (*delete)(struct tcf_proto*, unsigned long);
+void (*walk)(struct tcf_proto*, struct tcf_walker *arg);
+int (*dump)(struct tcf_proto*, unsigned long, struct sk_buff *skb, struct tcmsg*);
 };
 static __inline__ int tc_classify(struct sk_buff *skb, struct tcf_proto *tp, struct tcf_result *res)
 {

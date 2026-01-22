@@ -6,86 +6,86 @@
 #include "io.h"
 #include "../port/error.h"
 enum {
-UartFREQ =	0,
-IERrx		= 1<<0,
-IERtx		= 1<<1,
-IRRintrmask	= (1<<4)-1,
-IRRnointr	= 1,
-IRRthrempty	= 2,
-IRRrxdata	= 4,
-IRRrxstatus	= 6,
-IRRtimeout	= 12,
-IRRfifomask	= 3<<6,
-IRRfifoenable	= 3<<6,
-FCRenable	= 1<<0,
-FCRrxreset	= 1<<1,
-FCRtxreset	= 1<<2,
-FCRrxtriggermask	= 3<<6,
-FCRrxtrigger1	= 0<<6,
-FCRrxtrigger4	= 1<<6,
-FCRrxtrigger8	= 2<<6,
-FCRrxtrigger14	= 3<<6,
-LCRbpcmask	= 3<<0,
-LCRbpc5		= 0<<0,
-LCRbpc6		= 1<<0,
-LCRbpc7		= 2<<0,
-LCRbpc8		= 3<<0,
-LCRstop2b	= 1<<2,
-LCRparity	= 1<<3,
-LCRparityeven	= 1<<4,
-LCRbreak	= 1<<6,
-LCRdivlatch	= 1<<7,
-LSRrx		= 1<<0,
-LSRrunerr	= 1<<1,
-LSRparerr	= 1<<2,
-LSRframeerr	= 1<<3,
-LSRbi		= 1<<4,
-LSRthre		= 1<<5,
-LSRtxempty	= 1<<6,
-LSRfifoerr	= 1<<7,
+UartFREQ = 0,
+IERrx = 1<<0,
+IERtx = 1<<1,
+IRRintrmask = (1<<4)-1,
+IRRnointr = 1,
+IRRthrempty = 2,
+IRRrxdata = 4,
+IRRrxstatus = 6,
+IRRtimeout = 12,
+IRRfifomask = 3<<6,
+IRRfifoenable = 3<<6,
+FCRenable = 1<<0,
+FCRrxreset = 1<<1,
+FCRtxreset = 1<<2,
+FCRrxtriggermask = 3<<6,
+FCRrxtrigger1 = 0<<6,
+FCRrxtrigger4 = 1<<6,
+FCRrxtrigger8 = 2<<6,
+FCRrxtrigger14 = 3<<6,
+LCRbpcmask = 3<<0,
+LCRbpc5 = 0<<0,
+LCRbpc6 = 1<<0,
+LCRbpc7 = 2<<0,
+LCRbpc8 = 3<<0,
+LCRstop2b = 1<<2,
+LCRparity = 1<<3,
+LCRparityeven = 1<<4,
+LCRbreak = 1<<6,
+LCRdivlatch = 1<<7,
+LSRrx = 1<<0,
+LSRrunerr = 1<<1,
+LSRparerr = 1<<2,
+LSRframeerr = 1<<3,
+LSRbi = 1<<4,
+LSRthre = 1<<5,
+LSRtxempty = 1<<6,
+LSRfifoerr = 1<<7,
 };
 extern PhysUart kwphysuart;
 typedef struct UartReg UartReg;
 struct UartReg
 {
 union {
-ulong	thr;
-ulong	dll;
-ulong	rbr;
+ulong thr;
+ulong dll;
+ulong rbr;
 };
 union {
-ulong	ier;
-ulong	dlh;
+ulong ier;
+ulong dlh;
 };
 union {
-ulong	iir;
-ulong	fcr;
+ulong iir;
+ulong fcr;
 };
-ulong	lcr;
-ulong	mcr;
-ulong	lsr;
-ulong	scr;
+ulong lcr;
+ulong mcr;
+ulong lsr;
+ulong scr;
 };
 typedef struct Ctlr Ctlr;
 struct Ctlr {
 UartReg*regs;
-int	irq;
+int irq;
 Lock;
 };
 static Ctlr kirkwoodctlr[] = {
 {
-.regs   = nil,
-.irq    = IRQ1uart0, },
+.regs = nil,
+.irq = IRQ1uart0, },
 };
 static Uart kirkwooduart[] = {
 {
-.regs	= &kirkwoodctlr[0],
-.name	= "eia0",
-.freq	= UartFREQ,
-.phys	= &kwphysuart,
+.regs = &kirkwoodctlr[0],
+.name = "eia0",
+.freq = UartFREQ,
+.phys = &kwphysuart,
 .special= 0,
 .console= 1,
-.next	= nil, },
+.next = nil, },
 };
 static void
 kw_read(Uart *uart)
@@ -253,23 +253,23 @@ regs->thr = c;
 coherence();
 }
 PhysUart kwphysuart = {
-.name		= "kirkwood",
-.pnp		= kw_pnp,
-.enable		= kw_enable,
-.disable	= kw_disable,
-.kick		= kw_kick,
-.dobreak	= kw_break,
-.baud		= kw_baud,
-.bits		= kw_bits,
-.stop		= kw_stop,
-.parity		= kw_parity,
-.modemctl	= kw_modemctl,
-.rts		= kw_rts,
-.dtr		= kw_dtr,
-.status		= kw_status,
-.fifo		= kw_fifo,
-.getc		= kw_getc,
-.putc		= kw_putc,
+.name = "kirkwood",
+.pnp = kw_pnp,
+.enable = kw_enable,
+.disable = kw_disable,
+.kick = kw_kick,
+.dobreak = kw_break,
+.baud = kw_baud,
+.bits = kw_bits,
+.stop = kw_stop,
+.parity = kw_parity,
+.modemctl = kw_modemctl,
+.rts = kw_rts,
+.dtr = kw_dtr,
+.status = kw_status,
+.fifo = kw_fifo,
+.getc = kw_getc,
+.putc = kw_putc,
 };
 void
 uartkirkwoodconsole(void)

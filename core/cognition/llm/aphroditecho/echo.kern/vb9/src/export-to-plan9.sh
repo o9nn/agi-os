@@ -10,13 +10,13 @@ find $FORM_PATH -type f | sort
 echo ""
 echo "2. Control Text Files:"
 for control in Label1 Text1 Button1 Text2; do
-    echo "  $control/text: $(cat $FORM_PATH/$control/text)"
+echo "  $control/text: $(cat $FORM_PATH/$control/text)"
 done
 echo ""
 echo "3. Event Handlers (Executable Files):"
 find $FORM_PATH -name "click" -o -name "change" -o -name "load" | while read handler; do
-    echo "  $handler:"
-    echo "    $(head -1 $handler)"
+echo "  $handler:"
+echo "    $(head -1 $handler)"
 done
 echo ""
 echo "4. Simulated 9P Service Operations:"
@@ -37,7 +37,7 @@ echo "  Drawing the form IS computing across the cluster"
 echo ""
 echo "VB9 Principles Demonstrated:"
 echo "✓ Drawing = Computing"
-echo "✓ Visual = Actual" 
+echo "✓ Visual = Actual"
 echo "✓ Everything is a File"
 echo "✓ Events are Executables"
 echo "✓ Forms are Services"

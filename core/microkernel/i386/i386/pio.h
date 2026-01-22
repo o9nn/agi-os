@@ -1,7 +1,7 @@
 #ifndef _I386_PIO_H_
 #define _I386_PIO_H_
-#ifndef	__GNUC__
-#error	You do not stand a chance.  This file is gcc only.
+#ifndef __GNUC__
+#error You do not stand a chance. This file is gcc only.
 #endif
 #define inl(y) \
 ({ unsigned int _tmp__; \

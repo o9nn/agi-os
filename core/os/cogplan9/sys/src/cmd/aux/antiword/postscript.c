@@ -4,24 +4,24 @@
 #include <string.h>
 #include "version.h"
 #include "antiword.h"
-static encoding_type	eEncoding = encoding_neutral;
-static image_level_enum	eImageLevel = level_default;
-static BOOL		bUseLandscape = FALSE;
-static long		lPageHeight = LONG_MAX;
-static long		lPageWidth = LONG_MAX;
-static long		lFooterHeight = 0;
-static BOOL		bInFtrSpace = FALSE;
-static const char	*szCreationDate = NULL;
-static const char	*szCreator = NULL;
-static drawfile_fontref	tFontRefCurr = (drawfile_fontref)-1;
-static USHORT		usFontSizeCurr = 0;
-static int		iFontColorCurr = -1;
-static long		lYtopCurr = -1;
-static int		iPageCount = 0;
-static int		iImageCount = 0;
-static int		iSectionIndex = 0;
-static BOOL		bFirstInSection = TRUE;
-static void		vMoveTo(diagram_type *, long);
+static encoding_type eEncoding = encoding_neutral;
+static image_level_enum eImageLevel = level_default;
+static BOOL bUseLandscape = FALSE;
+static long lPageHeight = LONG_MAX;
+static long lPageWidth = LONG_MAX;
+static long lFooterHeight = 0;
+static BOOL bInFtrSpace = FALSE;
+static const char *szCreationDate = NULL;
+static const char *szCreator = NULL;
+static drawfile_fontref tFontRefCurr = (drawfile_fontref)-1;
+static USHORT usFontSizeCurr = 0;
+static int iFontColorCurr = -1;
+static long lYtopCurr = -1;
+static int iPageCount = 0;
+static int iImageCount = 0;
+static int iSectionIndex = 0;
+static BOOL bFirstInSection = TRUE;
+static void vMoveTo(diagram_type *, long);
 static const char *iso_8859_1_data[] = {
 "/newcodes	% ISO-8859-1 character encodings",
 "[",
@@ -190,7 +190,7 @@ fprintf(pOutFile, "%%%%EndPageSetup\n");
 static void
 vAddHdrFtr(diagram_type *pDiag, const hdrftr_block_type *pHdrFtrInfo)
 {
-output_type	*pStart, *pPrev, *pNext;
+output_type *pStart, *pPrev, *pNext;
 fail(pDiag == NULL);
 fail(pHdrFtrInfo == NULL);
 vStartOfParagraphPS(pDiag, 0);
@@ -239,8 +239,8 @@ pStart = pNext->pNext;
 static void
 vAddHeader(diagram_type *pDiag)
 {
-const hdrftr_block_type	*pHdrInfo;
-const hdrftr_block_type	*pFtrInfo;
+const hdrftr_block_type *pHdrInfo;
+const hdrftr_block_type *pFtrInfo;
 fail(pDiag == NULL);
 NO_DBG_MSG("vAddHeader");
 pHdrInfo = pGetHdrFtrInfo(iSectionIndex, TRUE,
@@ -277,7 +277,7 @@ lPageHeight - PS_TOP_MARGIN - pDiag->lYtop);
 static void
 vAddFooter(diagram_type *pDiag)
 {
-const hdrftr_block_type	*pFtrInfo;
+const hdrftr_block_type *pFtrInfo;
 fail(pDiag == NULL);
 NO_DBG_MSG("vAddFooter");
 pFtrInfo = pGetHdrFtrInfo(iSectionIndex, FALSE,
@@ -361,9 +361,9 @@ vProloguePS(diagram_type *pDiag,
 const char *szTask, const char *szFilename,
 const options_type *pOptions)
 {
-FILE	*pOutFile;
-const char	*szTmp;
-time_t	tTime;
+FILE *pOutFile;
+const char *szTmp;
+time_t tTime;
 fail(pDiag == NULL);
 fail(pDiag->pOutFile == NULL);
 fail(szTask == NULL || szTask[0] == '\0');
@@ -449,7 +449,7 @@ szCreator = NULL;
 static void
 vPrintPalette(FILE *pOutFile, const imagedata_type *pImg)
 {
-int	iIndex;
+int iIndex;
 fail(pOutFile == NULL);
 fail(pImg == NULL);
 fail(pImg->iColorsUsed < 2);
@@ -478,7 +478,7 @@ fprintf(pOutFile, "] setcolorspace\n");
 void
 vImageProloguePS(diagram_type *pDiag, const imagedata_type *pImg)
 {
-FILE	*pOutFile;
+FILE *pOutFile;
 fail(pDiag == NULL);
 fail(pDiag->pOutFile == NULL);
 fail(pImg == NULL);
@@ -654,7 +654,7 @@ fprintf(pOutFile, "} exec\n");
 void
 vImageEpiloguePS(diagram_type *pDiag)
 {
-FILE	*pOutFile;
+FILE *pOutFile;
 fail(pDiag == NULL);
 fail(pDiag->pOutFile == NULL);
 pOutFile = pDiag->pOutFile;
@@ -666,7 +666,7 @@ pDiag->lXleft = 0;
 BOOL
 bAddDummyImagePS(diagram_type *pDiag, const imagedata_type *pImg)
 {
-FILE	*pOutFile;
+FILE *pOutFile;
 fail(pDiag == NULL);
 fail(pDiag->pOutFile == NULL);
 fail(pImg == NULL);
@@ -697,11 +697,11 @@ return TRUE;
 void
 vAddFontsPS(diagram_type *pDiag)
 {
-FILE	*pOutFile;
+FILE *pOutFile;
 const font_table_type *pTmp, *pTmp2;
-size_t	tIndex;
-int	iLineLen, iOurFontnameLen;
-BOOL	bFound;
+size_t tIndex;
+int iLineLen, iOurFontnameLen;
+BOOL bFound;
 fail(pDiag == NULL);
 fail(pDiag->pOutFile == NULL);
 pOutFile = pDiag->pOutFile;
@@ -798,9 +798,9 @@ static void
 vPrintPS(FILE *pFile, const char *szString, size_t tStringLength,
 USHORT usFontstyle)
 {
-double		dSuperscriptMove, dSubscriptMove;
-const UCHAR	*ucBytes;
-size_t		tCount;
+double dSuperscriptMove, dSubscriptMove;
+const UCHAR *ucBytes;
+size_t tCount;
 fail(szString == NULL);
 if (szString == NULL || szString[0] == '\0' || tStringLength == 0) {
 return;
@@ -863,11 +863,11 @@ fprintf(pFile, "0 %.2f rmoveto\n", dSubscriptMove);
 static void
 vSetColor(FILE *pFile, UCHAR ucFontColor)
 {
-ULONG	ulTmp, ulRed, ulGreen, ulBlue;
+ULONG ulTmp, ulRed, ulGreen, ulBlue;
 ulTmp = ulColor2Color(ucFontColor);
-ulRed   = (ulTmp & 0x0000ff00) >> 8;
+ulRed = (ulTmp & 0x0000ff00) >> 8;
 ulGreen = (ulTmp & 0x00ff0000) >> 16;
-ulBlue  = (ulTmp & 0xff000000) >> 24;
+ulBlue = (ulTmp & 0xff000000) >> 24;
 fprintf(pFile, "%.3f %.3f %.3f setrgbcolor\n",
 ulRed / 255.0, ulGreen / 255.0, ulBlue / 255.0);
 }
@@ -884,7 +884,7 @@ char *szString, size_t tStringLength, long lStringWidth,
 UCHAR ucFontColor, USHORT usFontstyle, drawfile_fontref tFontRef,
 USHORT usFontSize, USHORT usMaxFontSize)
 {
-const char	*szOurFontname;
+const char *szOurFontname;
 fail(pDiag == NULL || szString == NULL);
 fail(pDiag->pOutFile == NULL);
 fail(pDiag->lXleft < 0);

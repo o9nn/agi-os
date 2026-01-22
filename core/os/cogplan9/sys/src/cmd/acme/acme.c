@@ -12,33 +12,33 @@
 #include "fns.h"
 #include <bio.h>
 #include "edit.h"
-void	mousethread(void*);
-void	keyboardthread(void*);
-void	waitthread(void*);
-void	xfidallocthread(void*);
-void	newwindowthread(void*);
+void mousethread(void*);
+void keyboardthread(void*);
+void waitthread(void*);
+void xfidallocthread(void*);
+void newwindowthread(void*);
 void plumbproc(void*);
-Reffont	**fontcache;
-int		nfontcache;
-char		wdir[512] = ".";
-Reffont	*reffonts[2];
-int		snarffd = -1;
-int		mainpid;
-int		plumbsendfd;
-int		plumbeditfd;
+Reffont **fontcache;
+int nfontcache;
+char wdir[512] = ".";
+Reffont *reffonts[2];
+int snarffd = -1;
+int mainpid;
+int plumbsendfd;
+int plumbeditfd;
 enum{
 NSnarf = 1000
 };
-Rune	snarfrune[NSnarf+1];
-char		*fontnames[2] =
+Rune snarfrune[NSnarf+1];
+char *fontnames[2] =
 {
 "/lib/font/bit/lucidasans/euro.8.font",
 "/lib/font/bit/lucm/unicode.9.font"
 };
 Command *command;
-void	acmeerrorinit(void);
-void	readfile(Column*, char*);
-int	shutdown(void*, char*);
+void acmeerrorinit(void);
+void readfile(Column*, char*);
+int shutdown(void*, char*);
 void
 derror(Display*, char *errorstr)
 {
@@ -164,7 +164,7 @@ proccreate(plumbproc, nil, STACK);
 }
 plumbsendfd = plumbopen("send", OWRITE|OCEXEC);
 fsysinit();
-#define	WPERCOL	8
+#define WPERCOL 8
 disk = diskinit();
 if(!loadfile || !rowload(&row, loadfile, TRUE)){
 rowinit(&row, screen->clipr);
@@ -233,7 +233,7 @@ char *oknotes[] ={
 "exit",
 nil
 };
-int	dumping;
+int dumping;
 int
 shutdown(void*, char *msg)
 {
@@ -516,9 +516,9 @@ break;
 typedef struct Pid Pid;
 struct Pid
 {
-int	pid;
-char	msg[ERRMAX];
-Pid	*next;
+int pid;
+char msg[ERRMAX];
+Pid *next;
 };
 void
 waitthread(void *)

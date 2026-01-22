@@ -31,8 +31,8 @@ D(y) ~ β + (ρ - z) * x - y]
 #test_equal.(equations(lorenz1_aliased), reduced_eqs)
 @test isempty(setdiff(unknowns(lorenz1_aliased), [x, y, z]))
 #test_equal.(observed(lorenz1_aliased), [u ~ 0
-#                                        z ~ x - y
-#                                        a ~ -z])
+# z ~ x - y
+# a ~ -z])
 # Multi-System Reduction
 @variables s(t)
 eqs1 = [

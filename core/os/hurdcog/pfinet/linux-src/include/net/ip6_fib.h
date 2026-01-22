@@ -8,43 +8,43 @@
 struct rt6_info;
 struct fib6_node
 {
-struct fib6_node	*parent;
-struct fib6_node	*left;
-struct fib6_node	*right;
-struct fib6_node	*subtree;
-struct rt6_info		*leaf;
-__u16			fn_bit;
-__u16			fn_flags;
-__u32			fn_sernum;
+struct fib6_node *parent;
+struct fib6_node *left;
+struct fib6_node *right;
+struct fib6_node *subtree;
+struct rt6_info *leaf;
+__u16 fn_bit;
+__u16 fn_flags;
+__u32 fn_sernum;
 };
 struct rt6key
 {
-struct in6_addr	addr;
-int		plen;
+struct in6_addr addr;
+int plen;
 };
 struct rt6_info
 {
 union {
-struct dst_entry	dst;
-struct rt6_info		*next;
+struct dst_entry dst;
+struct rt6_info *next;
 } u;
-#define rt6i_dev			u.dst.dev
-#define rt6i_nexthop			u.dst.neighbour
-#define rt6i_expires			u.dst.expires
-struct fib6_node		*rt6i_node;
-struct in6_addr			rt6i_gateway;
-u32				rt6i_flags;
-u32				rt6i_metric;
-u8				rt6i_hoplimit;
-atomic_t			rt6i_ref;
+#define rt6i_dev u.dst.dev
+#define rt6i_nexthop u.dst.neighbour
+#define rt6i_expires u.dst.expires
+struct fib6_node *rt6i_node;
+struct in6_addr rt6i_gateway;
+u32 rt6i_flags;
+u32 rt6i_metric;
+u8 rt6i_hoplimit;
+atomic_t rt6i_ref;
 union {
-struct flow_rule	*rt6iu_flowr;
-struct flow_filter	*rt6iu_filter;
+struct flow_rule *rt6iu_flowr;
+struct flow_filter *rt6iu_filter;
 } flow_u;
-#define rt6i_flowr			flow_u.rt6iu_flowr
-#define rt6i_filter			flow_u.rt6iu_filter
-struct rt6key			rt6i_dst;
-struct rt6key			rt6i_src;
+#define rt6i_flowr flow_u.rt6iu_flowr
+#define rt6i_filter flow_u.rt6iu_filter
+struct rt6key rt6i_dst;
+struct rt6key rt6i_src;
 };
 struct fib6_walker_t
 {
@@ -71,40 +71,40 @@ w->prev->next = w->next;
 w->prev = w->next = w;
 }
 struct rt6_statistics {
-__u32		fib_nodes;
-__u32		fib_route_nodes;
-__u32		fib_rt_alloc;
-__u32		fib_rt_entries;
-__u32		fib_rt_cache;
+__u32 fib_nodes;
+__u32 fib_route_nodes;
+__u32 fib_rt_alloc;
+__u32 fib_rt_entries;
+__u32 fib_rt_cache;
 };
-#define RTN_TL_ROOT	0x0001
-#define RTN_ROOT	0x0002
-#define RTN_RTINFO	0x0004
-#define RTPRI_FIREWALL	8
-#define RTPRI_FLOW	16
-#define RTPRI_KERN_CTL	32
-#define RTPRI_USER_MIN	256
-#define RTPRI_USER_MAX	1024
-#define RTPRI_KERN_DFLT	4096
-#define	MAX_FLOW_BACKTRACE	32
-typedef void			(*f_pnode)(struct fib6_node *fn, void *);
-extern struct fib6_node		ip6_routing_table;
-extern struct fib6_node		*fib6_lookup(struct fib6_node *root,
+#define RTN_TL_ROOT 0x0001
+#define RTN_ROOT 0x0002
+#define RTN_RTINFO 0x0004
+#define RTPRI_FIREWALL 8
+#define RTPRI_FLOW 16
+#define RTPRI_KERN_CTL 32
+#define RTPRI_USER_MIN 256
+#define RTPRI_USER_MAX 1024
+#define RTPRI_KERN_DFLT 4096
+#define MAX_FLOW_BACKTRACE 32
+typedef void (*f_pnode)(struct fib6_node *fn, void *);
+extern struct fib6_node ip6_routing_table;
+extern struct fib6_node *fib6_lookup(struct fib6_node *root,
 struct in6_addr *daddr,
 struct in6_addr *saddr);
-struct fib6_node		*fib6_locate(struct fib6_node *root,
+struct fib6_node *fib6_locate(struct fib6_node *root,
 struct in6_addr *daddr, int dst_len,
 struct in6_addr *saddr, int src_len);
-extern void			fib6_clean_tree(struct fib6_node *root,
+extern void fib6_clean_tree(struct fib6_node *root,
 int (*func)(struct rt6_info *, void *arg),
 int prune, void *arg);
-extern int			fib6_walk(struct fib6_walker_t *w);
-extern int			fib6_walk_continue(struct fib6_walker_t *w);
-extern int			fib6_add(struct fib6_node *root,
+extern int fib6_walk(struct fib6_walker_t *w);
+extern int fib6_walk_continue(struct fib6_walker_t *w);
+extern int fib6_add(struct fib6_node *root,
 struct rt6_info *rt);
-extern int			fib6_del(struct rt6_info *rt);
-extern void			inet6_rt_notify(int event, struct rt6_info *rt);
-extern void			fib6_run_gc(unsigned long dummy);
-extern void			fib6_gc_cleanup(void);
+extern int fib6_del(struct rt6_info *rt);
+extern void inet6_rt_notify(int event, struct rt6_info *rt);
+extern void fib6_run_gc(unsigned long dummy);
+extern void fib6_gc_cleanup(void);
 #endif
 #endif

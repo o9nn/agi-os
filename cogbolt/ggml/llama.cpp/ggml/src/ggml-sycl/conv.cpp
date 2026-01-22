@@ -1,9 +1,9 @@
 #include "conv.hpp"
-static  void conv_transpose_1d_kernel(
+static void conv_transpose_1d_kernel(
 const int s0, const int output_size,
 const int src0_ne0, const int src0_ne1, const int src0_ne2,
 const int src1_ne0, const int dst_ne0,
-const float * src0, const float * src1,  float * dst,
+const float * src0, const float * src1, float * dst,
 const sycl::nd_item<3> &item_ct1) {
 int global_index = item_ct1.get_local_id(2) +
 item_ct1.get_group(2) * item_ct1.get_local_range(2);
@@ -22,7 +22,7 @@ continue;
 }
 int weight_idx = idx - i*s0;
 float kernel_weight = src0[kernel_offset + weight_idx];
-float input_value =  src1[input_offset+i];
+float input_value = src1[input_offset+i];
 accumulator += kernel_weight * input_value;
 }
 }

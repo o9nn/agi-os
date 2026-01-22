@@ -1,5 +1,5 @@
 #ifndef icie_INCLUDED
-#  define icie_INCLUDED
+# define icie_INCLUDED
 int dict_ranges_param(const gs_memory_t *mem,
 const ref * pdref, const char *kstr, int count,
 gs_range * prange);

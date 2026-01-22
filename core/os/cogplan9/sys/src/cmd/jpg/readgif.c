@@ -6,40 +6,40 @@
 typedef struct Entry Entry;
 typedef struct Header Header;
 struct Entry{
-int		prefix;
-int		exten;
+int prefix;
+int exten;
 };
 struct Header{
-Biobuf	*fd;
-char		err[256];
-jmp_buf	errlab;
-uchar 	buf[3*256];
-char 		vers[8];
-uchar 	*globalcmap;
-int		screenw;
-int		screenh;
-int		fields;
-int		bgrnd;
-int		aspect;
-int		flags;
-int		delay;
-int		trindex;
-int		loopcount;
-Entry	tbl[4096];
-Rawimage	**array;
-Rawimage	*new;
-uchar	*pic;
+Biobuf *fd;
+char err[256];
+jmp_buf errlab;
+uchar buf[3*256];
+char vers[8];
+uchar *globalcmap;
+int screenw;
+int screenh;
+int fields;
+int bgrnd;
+int aspect;
+int flags;
+int delay;
+int trindex;
+int loopcount;
+Entry tbl[4096];
+Rawimage **array;
+Rawimage *new;
+uchar *pic;
 };
-static char		readerr[] = "ReadGIF: read error: %r";
-static char		extreaderr[] = "ReadGIF: can't read extension: %r";
-static char		memerr[] = "ReadGIF: malloc failed: %r";
-static Rawimage**	readarray(Header*);
-static Rawimage*	readone(Header*);
-static void			readheader(Header*);
-static void			skipextension(Header*);
-static uchar*		readcmap(Header*, int);
-static uchar*		decode(Header*, Rawimage*, Entry*);
-static void			interlace(Header*, Rawimage*);
+static char readerr[] = "ReadGIF: read error: %r";
+static char extreaderr[] = "ReadGIF: can't read extension: %r";
+static char memerr[] = "ReadGIF: malloc failed: %r";
+static Rawimage** readarray(Header*);
+static Rawimage* readone(Header*);
+static void readheader(Header*);
+static void skipextension(Header*);
+static uchar* readcmap(Header*, int);
+static uchar* decode(Header*, Rawimage*, Entry*);
+static void interlace(Header*, Rawimage*);
 static
 void
 clear(void **p)
@@ -194,7 +194,7 @@ readheader(Header *h)
 if(Bread(h->fd, h->buf, 13) != 13)
 giferror(h, "ReadGIF: can't read header: %r");
 memmove(h->vers, h->buf, 6);
-if(strcmp(h->vers, "GIF87a")!=0 &&  strcmp(h->vers, "GIF89a")!=0)
+if(strcmp(h->vers, "GIF87a")!=0 && strcmp(h->vers, "GIF89a")!=0)
 giferror(h, "ReadGIF: can't recognize format %s", h->vers);
 h->screenw = h->buf[6]+(h->buf[7]<<8);
 h->screenh = h->buf[8]+(h->buf[9]<<8);

@@ -360,8 +360,8 @@ Example:
 ```
 t = ModelingToolkit.t_nounits
 @variables u(t) y(t)
-D  = Differential(t)
-v  = ModelingToolkit.vars(D(y) ~ u)
+D = Differential(t)
+v = ModelingToolkit.vars(D(y) ~ u)
 v == Set([D(y), u])
 ```
 """
@@ -454,7 +454,7 @@ end
 collect_differential_variables(sys) = collect_operator_variables(sys, Differential)
 """
 collect_applied_operators(x, op)
-Return  a `Set` with all applied operators in `x`, example:
+Return a `Set` with all applied operators in `x`, example:
 ```
 @independent_variables t
 @variables u(t) y(t)

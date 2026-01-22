@@ -20,6 +20,6 @@ struct common_speculative * spec,
 const char *source, const char *dest);
 llama_tokens common_speculative_gen_draft(
 struct common_speculative * spec,
-struct common_speculative_params   params,
+struct common_speculative_params params,
 const llama_tokens & prompt,
-llama_token   id_last);
+llama_token id_last);

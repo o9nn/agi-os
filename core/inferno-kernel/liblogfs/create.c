@@ -21,7 +21,7 @@ return logfsefidopen;
 pe = f->entry;
 if((pe->qid.type & QTDIR) == 0)
 return Enotdir;
-if((perm & DMDIR) != 0 && ((mode & OTRUNC) != 0 || (mode &  3) != OREAD))
+if((perm & DMDIR) != 0 && ((mode & OTRUNC) != 0 || (mode & 3) != OREAD))
 return Eperm;
 if(!logfsuserpermcheck(server, pe, f, DMWRITE))
 return Eperm;

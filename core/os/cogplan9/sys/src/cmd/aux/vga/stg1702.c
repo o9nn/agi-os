@@ -4,18 +4,18 @@
 #include "pci.h"
 #include "vga.h"
 enum {
-Command		= 0x00,
-IndexLO		= 0x01,
-IndexHI		= 0x02,
-Index		= 0x03,
-CompanyID	= 0x00,
-DeviceID	= 0x01,
-Pmode		= 0x03,
-Smode		= 0x04,
-Pipeline	= 0x05,
-Sreset		= 0x06,
-Power		= 0x07,
-Nindex		= 0x08,
+Command = 0x00,
+IndexLO = 0x01,
+IndexHI = 0x02,
+Index = 0x03,
+CompanyID = 0x00,
+DeviceID = 0x01,
+Pmode = 0x03,
+Smode = 0x04,
+Pipeline = 0x05,
+Sreset = 0x06,
+Power = 0x07,
+Nindex = 0x08,
 };
 static void
 pixmask(void)

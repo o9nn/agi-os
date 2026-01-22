@@ -502,7 +502,7 @@ memset(data, 0, sizeof data);
 if(SRrcapacity(rp, data) == -1)
 return -1;
 rp->lbsize = GETBELONG(data+4);
-blocks =     GETBELONG(data);
+blocks = GETBELONG(data);
 if(debug)
 fprint(2, "scuzz: dirdevopen: logical block size %lud, "
 "# blocks %lud\n", rp->lbsize, blocks);

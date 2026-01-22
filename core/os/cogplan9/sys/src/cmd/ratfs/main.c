@@ -1,39 +1,39 @@
 #include "ratfs.h"
-#define	SRVFILE		"/srv/ratify"
-#define MOUNTPOINT	"/mail/ratify"
-#define	CTLFILE		"/mail/lib/blocked"
-#define	CONFFILE	"/mail/lib/smtpd.conf.ext"
-typedef struct Filetree	Filetree;
-struct	Filetree
+#define SRVFILE "/srv/ratify"
+#define MOUNTPOINT "/mail/ratify"
+#define CTLFILE "/mail/lib/blocked"
+#define CONFFILE "/mail/lib/smtpd.conf.ext"
+typedef struct Filetree Filetree;
+struct Filetree
 {
-int	level;
-char	*name;
-ushort	type;
-int	mode;
-ulong	qid;
+int level;
+char *name;
+ushort type;
+int mode;
+ulong qid;
 };
-Filetree	filetree[] =
+Filetree filetree[] =
 {
-0,	"/",		Directory,	0555|DMDIR,	Qroot,
-1,	"allow",	Addrdir,	0555|DMDIR,	Qallow,
-1,	"delay",	Addrdir,	0555|DMDIR,	Qdelay,
-1,	"block",	Addrdir,	0555|DMDIR,	Qblock,
-1,	"dial",		Addrdir,	0555|DMDIR,	Qdial,
-1,	"deny",		Addrdir,	0555|DMDIR,	Qdeny,
-1,	"trusted",	Trusted,	0777|DMDIR,	Qtrusted,
-1,	"ctl",		Ctlfile,	0222,		Qctl,
-2,	"ip",		IPaddr,		0555|DMDIR,	Qaddr,
-2,	"account",	Acctaddr,	0555|DMDIR,	Qaddr,
-0,	0,		0,		0,		0,
+0, "/", Directory, 0555|DMDIR, Qroot,
+1, "allow", Addrdir, 0555|DMDIR, Qallow,
+1, "delay", Addrdir, 0555|DMDIR, Qdelay,
+1, "block", Addrdir, 0555|DMDIR, Qblock,
+1, "dial", Addrdir, 0555|DMDIR, Qdial,
+1, "deny", Addrdir, 0555|DMDIR, Qdeny,
+1, "trusted", Trusted, 0777|DMDIR, Qtrusted,
+1, "ctl", Ctlfile, 0222, Qctl,
+2, "ip", IPaddr, 0555|DMDIR, Qaddr,
+2, "account", Acctaddr, 0555|DMDIR, Qaddr,
+0, 0, 0, 0, 0,
 };
-int	debugfd = -1;
-int	trustedqid = Qtrustedfile;
-char	*ctlfile =	CTLFILE;
-char	*conffile =	CONFFILE;
-#pragma	varargck	type	"I"	Cidraddr*
-static	int	ipconv(Fmt*);
-static	void	post(int, char*);
-static	void	setroot(void);
+int debugfd = -1;
+int trustedqid = Qtrustedfile;
+char *ctlfile = CTLFILE;
+char *conffile = CONFFILE;
+#pragma varargck type "I" Cidraddr*
+static int ipconv(Fmt*);
+static void post(int, char*);
+static void setroot(void);
 void
 usage(void)
 {

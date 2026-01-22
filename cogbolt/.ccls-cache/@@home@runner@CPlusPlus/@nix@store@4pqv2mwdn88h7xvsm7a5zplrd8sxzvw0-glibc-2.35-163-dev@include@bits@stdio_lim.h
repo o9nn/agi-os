@@ -9,9 +9,9 @@
 #ifdef __USE_POSIX
 # define L_ctermid 9
 # if !defined __USE_XOPEN2K || defined __USE_GNU
-#  define L_cuserid 9
+# define L_cuserid 9
 # endif
 #endif
-#undef  FOPEN_MAX
+#undef FOPEN_MAX
 #define FOPEN_MAX 16
 #endif

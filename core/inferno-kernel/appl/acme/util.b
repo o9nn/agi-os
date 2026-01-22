@@ -61,7 +61,7 @@ return x;
 isalnum(c : int) : int
 {
 #
-# Hard to get absolutely right.  Use what we know about ASCII
+# Hard to get absolutely right. Use what we know about ASCII
 # and assume anything above the Latin control characters is
 # potentially an alphanumeric.
 #
@@ -73,8 +73,8 @@ if(strchr("!\"#$%&'()*+,-./:;<=>?@[\\]^`{|}~", c) >= 0)
 return FALSE;
 return TRUE;
 # return ('a' <= c && c <= 'z') ||
-#	   ('A' <= c && c <= 'Z') ||
-#	   ('0' <= c && c <= '9');
+# ('A' <= c && c <= 'Z') ||
+# ('0' <= c && c <= '9');
 }
 strchr(s : string, c : int) : int
 {
@@ -108,7 +108,7 @@ getenv(s : string) : string
 if (env == nil)
 env = load Env Env->PATH;
 e := env->getenv(s);
-if(e != nil && e[len e - 1] == '\n')	# shell bug
+if(e != nil && e[len e - 1] == '\n') # shell bug
 return e[0: len e -1];
 return e;
 }
@@ -244,7 +244,7 @@ error(s : string)
 {
 sys->fprint(stderr, "acme: %s: %r\n", s);
 debug(sys->sprint("error %s : %r\n", s));
-# s[-1] = 0;	# create broken process for debugging
+# s[-1] = 0; # create broken process for debugging
 acme->acmeexit("error");
 }
 dlock : ref Lock;
@@ -451,7 +451,7 @@ debug(s);
 debug("\n");
 return;
 }
-if(row.ncol == 0){	# really early error
+if(row.ncol == 0){ # really early error
 row.init(mainwin.clipr);
 row.add(nil, -1);
 row.add(nil, -1);
@@ -502,9 +502,9 @@ return (0, nil, nil);
 (m, l) := sys->tokenize(s, " ");
 if(m < 3)
 return (0, nil, nil);
-pc := int hd l;	l = tl l;
-mod := hd l;	l = tl l;
-exc := hd l;	l = tl l;
+pc := int hd l; l = tl l;
+mod := hd l; l = tl l;
+exc := hd l; l = tl l;
 for( ; l != nil; l = tl l)
 exc += " " + hd l;
 return (pc, mod, exc);

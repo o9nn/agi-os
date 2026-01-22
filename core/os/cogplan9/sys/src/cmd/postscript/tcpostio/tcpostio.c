@@ -14,12 +14,12 @@
 #include <sys/time.h>
 #include <sys/socket.h>
 #include <sys/wait.h>
-extern	int dial_debug;
-extern	int dial(char*, char*, char*, int*);
+extern int dial_debug;
+extern int dial(char*, char*, char*, int*);
 int debug = 0;
-#define READTIMEOUT	300
-#define	RCVSELTIMEOUT	30
-#define	SNDSELTIMEOUT	300
+#define READTIMEOUT 300
+#define RCVSELTIMEOUT 30
+#define SNDSELTIMEOUT 300
 void
 rdtmout(void) {
 fprintf(stderr, "read timeout occurred, check printer\n");
@@ -44,39 +44,39 @@ return(n);
 return(i);
 }
 typedef struct {
-char	*state;
-int	val;
+char *state;
+int val;
 } Status;
-#define	INITIALIZING	0
-#define	IDLE		1
-#define	BUSY		2
-#define	WAITING		3
-#define	PRINTING	4
-#define	PRINTERERROR	5
-#define	ERROR		6
-#define	FLUSHING	7
-#define UNKNOWN		8
-#define START	'S'
+#define INITIALIZING 0
+#define IDLE 1
+#define BUSY 2
+#define WAITING 3
+#define PRINTING 4
+#define PRINTERERROR 5
+#define ERROR 6
+#define FLUSHING 7
+#define UNKNOWN 8
+#define START 'S'
 unsigned char Start[] = { START };
-#define ID_LE		'L'
+#define ID_LE 'L'
 unsigned char Id_le[] = { ID_LE };
-#define	REQ_STAT	'T'
+#define REQ_STAT 'T'
 unsigned char Req_stat[] = { REQ_STAT };
-#define	SEND_DATA	'D'
+#define SEND_DATA 'D'
 unsigned char Send_data[] = { SEND_DATA };
-#define	SENT_DATA	'A'
+#define SENT_DATA 'A'
 unsigned char Sent_data[] = { SENT_DATA };
-#define	WAIT_FOR_EOJ	'W'
+#define WAIT_FOR_EOJ 'W'
 unsigned char Wait_for_eoj[] = { WAIT_FOR_EOJ };
-#define END_OF_JOB	'E'
+#define END_OF_JOB 'E'
 unsigned char End_of_job[] = { END_OF_JOB };
-#define FATAL_ERROR	'F'
+#define FATAL_ERROR 'F'
 unsigned char Fatal_error[] = { FATAL_ERROR };
-#define	WAIT_FOR_IDLE	'I'
+#define WAIT_FOR_IDLE 'I'
 unsigned char Wait_for_idle[] = { WAIT_FOR_IDLE };
-#define	OVER_AND_OUT	'O'
+#define OVER_AND_OUT 'O'
 unsigned char Over_and_out[] = { OVER_AND_OUT };
-Status	statuslist[] = {
+Status statuslist[] = {
 "initializing", INITIALIZING,
 "idle", IDLE,
 "busy", BUSY,
@@ -97,28 +97,28 @@ break;
 }
 return(str1);
 }
-#define	MESGSIZE	16384
+#define MESGSIZE 16384
 int blocksize = 1920;
-char	mesg[MESGSIZE];
+char mesg[MESGSIZE];
 int
 parsmesg(char *buf) {
 static char sbuf[MESGSIZE];
-char	*s;
-char	*e;
-char	*key, *val;
-char	*p;
-int	i;
+char *s;
+char *e;
+char *key, *val;
+char *p;
+int i;
 if (*(s=find(buf, "%[ "))!='\0' && *(e=find(s, " ]%"))!='\0') {
 strcpy(sbuf, s+3);
 sbuf[e-(s+3)] = '\0';
-for (key=strtok(sbuf, " :"); key != NULL; key=strtok(NULL, " :"))  {
+for (key=strtok(sbuf, " :"); key != NULL; key=strtok(NULL, " :")) {
 if (strcmp(key, "Error") == 0)
 return(ERROR);
 if ((val=strtok(NULL, ";")) != NULL && strcmp(key, "status") == 0)
 key = val;
 for (; *key == ' '; key++) ;
 for (p = key; *p; p++)
-if (*p == ':')  {
+if (*p == ':') {
 *p = '\0';
 break;
 } else if (isupper(*p)) *p = tolower(*p);
@@ -308,7 +308,7 @@ sendfile(int infd, int printerfd, int pipefd)
 unsigned char proto;
 int progstate = START;
 int i, n, nfds;
-int bytesread,  bytesent = 0;
+int bytesread, bytesent = 0;
 nfds = ((pipefd>printerfd)?pipefd:printerfd) + 1;
 if (write(printerfd, "\004", 1)!=1) {
 perror("sendfile:write:");

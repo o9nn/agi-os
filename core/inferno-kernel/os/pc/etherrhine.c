@@ -42,12 +42,12 @@ Desc *rxd;
 QLock attachlck;
 Lock lock;
 };
-#define ior8(c, r)	(inb((c)->port+(r)))
-#define ior16(c, r)	(ins((c)->port+(r)))
-#define ior32(c, r)	(inl((c)->port+(r)))
-#define iow8(c, r, b)	(outb((c)->port+(r), (int)(b)))
-#define iow16(c, r, w)	(outs((c)->port+(r), (ushort)(w)))
-#define iow32(c, r, l)	(outl((c)->port+(r), (ulong)(l)))
+#define ior8(c, r) (inb((c)->port+(r)))
+#define ior16(c, r) (ins((c)->port+(r)))
+#define ior32(c, r) (inl((c)->port+(r)))
+#define iow8(c, r, b) (outb((c)->port+(r), (int)(b)))
+#define iow16(c, r, w) (outs((c)->port+(r), (ushort)(w)))
+#define iow32(c, r, l) (outl((c)->port+(r), (ulong)(l)))
 enum Regs {
 Eaddr = 0x0,
 Rcr = 0x6,
@@ -360,7 +360,7 @@ interrupt(Ureg *, void *arg)
 {
 Ether *edev;
 Ctlr *ctlr;
-ushort  isr, misr;
+ushort isr, misr;
 ulong stat;
 Desc *rxd, *rd;
 int i, n, j;

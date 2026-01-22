@@ -1,5 +1,5 @@
 #ifndef gsline_INCLUDED
-#  define gsline_INCLUDED
+# define gsline_INCLUDED
 #include "gslparam.h"
 int gs_setlinewidth(gs_state *, floatp);
 float gs_currentlinewidth(const gs_state *);
@@ -29,7 +29,7 @@ bool gs_currentdotlength_absolute(const gs_state *);
 int gs_setdotorientation(gs_state *);
 int gs_dotorientation(gs_state *);
 #ifndef gs_imager_state_DEFINED
-#  define gs_imager_state_DEFINED
+# define gs_imager_state_DEFINED
 typedef struct gs_imager_state_s gs_imager_state;
 #endif
 int gs_imager_setflat(gs_imager_state *, floatp);

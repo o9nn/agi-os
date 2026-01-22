@@ -6,10 +6,10 @@
 #include "gxlum.h"
 #include "gdevdcrd.h"
 #ifndef X_DPI
-#  define X_DPI 72
+# define X_DPI 72
 #endif
 #ifndef Y_DPI
-#  define Y_DPI 72
+# define Y_DPI 72
 #endif
 private dev_proc_map_rgb_color(bit_mono_map_color);
 private dev_proc_map_color_rgb(bit_map_color_rgb);
@@ -18,59 +18,59 @@ private dev_proc_get_params(bit_get_params);
 private dev_proc_put_params(bit_put_params);
 private dev_proc_print_page(bit_print_page);
 #define bit_procs(encode_color)\
-{	gdev_prn_open,\
+{ gdev_prn_open,\
 gx_default_get_initial_matrix,\
-NULL,	\
+NULL, \
 gdev_prn_output_page,\
 gdev_prn_close,\
-encode_color,	\
-bit_map_color_rgb,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
+encode_color, \
+bit_map_color_rgb, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
 bit_get_params,\
 bit_put_params,\
-encode_color,	\
-NULL,	\
-NULL,	\
-NULL,	\
-gx_page_device_get_page_device,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-encode_color,		\
-bit_map_color_rgb	\
+encode_color, \
+NULL, \
+NULL, \
+NULL, \
+gx_page_device_get_page_device, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+encode_color, \
+bit_map_color_rgb \
 }
 #define REAL_NUM_COMPONENTS(dev) (dev->dname[3] == 'c' ? 4 : \
 dev->dname[3] == 'r' ? 3 : 1)
@@ -208,10 +208,10 @@ if (code < 0)
 ecode = code;
 else
 switch (v) {
-case   2: bpc = 1; break;
-case   4: bpc = 2; break;
-case  16: bpc = 4; break;
-case  32: bpc = 5; break;
+case 2: bpc = 1; break;
+case 4: bpc = 2; break;
+case 16: bpc = 4; break;
+case 32: bpc = 5; break;
 case 256: bpc = 8; break;
 case 4096: bpc = 12; break;
 case 65536: bpc = 16; break;

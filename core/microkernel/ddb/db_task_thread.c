@@ -6,11 +6,11 @@
 #include <ddb/db_output.h>
 #include <ddb/db_task_thread.h>
 #include <ddb/db_variables.h>
-#define	DB_MAX_TASKID	0x10000
-#define DB_MAX_THREADID	0x10000
-#define DB_MAX_PSETS	0x10000
-task_t		db_default_task;
-thread_t	db_default_thread;
+#define DB_MAX_TASKID 0x10000
+#define DB_MAX_THREADID 0x10000
+#define DB_MAX_PSETS 0x10000
+task_t db_default_task;
+thread_t db_default_thread;
 int
 db_lookup_task(const task_t target_task)
 {
@@ -112,8 +112,8 @@ return(TASK_NULL);
 }
 static thread_t
 db_lookup_thread_id(
-task_t	task,
-int 	thread_id)
+task_t task,
+int thread_id)
 {
 thread_t thread;
 if (thread_id > DB_MAX_THREADID)
@@ -128,11 +128,11 @@ return(THREAD_NULL);
 }
 boolean_t
 db_get_next_thread(
-thread_t	*threadp,
-int		position)
+thread_t *threadp,
+int position)
 {
-db_expr_t	value;
-thread_t	thread;
+db_expr_t value;
+thread_t thread;
 *threadp = THREAD_NULL;
 if (db_expression(&value)) {
 thread = (thread_t) value;
@@ -158,12 +158,12 @@ db_default_task = db_default_thread->task;
 }
 void
 db_set_default_thread(
-struct db_variable 	*vp,
-db_expr_t		*valuep,
-int			flag,
-db_var_aux_param_t 	ap)
+struct db_variable *vp,
+db_expr_t *valuep,
+int flag,
+db_var_aux_param_t ap)
 {
-thread_t	thread;
+thread_t thread;
 if (flag != DB_VAR_SET) {
 *valuep = (db_expr_t) db_default_thread;
 return;
@@ -178,12 +178,12 @@ return;
 }
 void
 db_get_task_thread(
-struct db_variable	*vp,
-db_expr_t		*valuep,
-int			flag,
-db_var_aux_param_t	ap)
+struct db_variable *vp,
+db_expr_t *valuep,
+int flag,
+db_var_aux_param_t ap)
 {
-task_t	 task;
+task_t task;
 thread_t thread;
 if (flag != DB_VAR_GET) {
 db_error("Cannot set to $task variable\n");

@@ -1,55 +1,55 @@
 package table
 import (
-	"github.com/go-jet/jet/v2/postgres"
+"github.com/go-jet/jet/v2/postgres"
 )
 var Chats = newChatsTable("public", "chats", "")
 type chatsTable struct {
-	postgres.Table
-	ID        postgres.ColumnString
-	UserID    postgres.ColumnString
-	BotID     postgres.ColumnString
-	CreatedAt postgres.ColumnTimestamp
-	AllColumns     postgres.ColumnList
-	MutableColumns postgres.ColumnList
+postgres.Table
+ID        postgres.ColumnString
+UserID    postgres.ColumnString
+BotID     postgres.ColumnString
+CreatedAt postgres.ColumnTimestamp
+AllColumns     postgres.ColumnList
+MutableColumns postgres.ColumnList
 }
 type ChatsTable struct {
-	chatsTable
-	EXCLUDED chatsTable
+chatsTable
+EXCLUDED chatsTable
 }
 func (a ChatsTable) AS(alias string) *ChatsTable {
-	return newChatsTable(a.SchemaName(), a.TableName(), alias)
+return newChatsTable(a.SchemaName(), a.TableName(), alias)
 }
 func (a ChatsTable) FromSchema(schemaName string) *ChatsTable {
-	return newChatsTable(schemaName, a.TableName(), a.Alias())
+return newChatsTable(schemaName, a.TableName(), a.Alias())
 }
 func (a ChatsTable) WithPrefix(prefix string) *ChatsTable {
-	return newChatsTable(a.SchemaName(), prefix+a.TableName(), a.TableName())
+return newChatsTable(a.SchemaName(), prefix+a.TableName(), a.TableName())
 }
 func (a ChatsTable) WithSuffix(suffix string) *ChatsTable {
-	return newChatsTable(a.SchemaName(), a.TableName()+suffix, a.TableName())
+return newChatsTable(a.SchemaName(), a.TableName()+suffix, a.TableName())
 }
 func newChatsTable(schemaName, tableName, alias string) *ChatsTable {
-	return &ChatsTable{
-		chatsTable: newChatsTableImpl(schemaName, tableName, alias),
-		EXCLUDED:   newChatsTableImpl("", "excluded", ""),
-	}
+return &ChatsTable{
+chatsTable: newChatsTableImpl(schemaName, tableName, alias),
+EXCLUDED:   newChatsTableImpl("", "excluded", ""),
+}
 }
 func newChatsTableImpl(schemaName, tableName, alias string) chatsTable {
-	var (
-		IDColumn        = postgres.StringColumn("id")
-		UserIDColumn    = postgres.StringColumn("user_id")
-		BotIDColumn     = postgres.StringColumn("bot_id")
-		CreatedAtColumn = postgres.TimestampColumn("created_at")
-		allColumns      = postgres.ColumnList{IDColumn, UserIDColumn, BotIDColumn, CreatedAtColumn}
-		mutableColumns  = postgres.ColumnList{UserIDColumn, BotIDColumn, CreatedAtColumn}
-	)
-	return chatsTable{
-		Table: postgres.NewTable(schemaName, tableName, alias, allColumns...),
-		ID:        IDColumn,
-		UserID:    UserIDColumn,
-		BotID:     BotIDColumn,
-		CreatedAt: CreatedAtColumn,
-		AllColumns:     allColumns,
-		MutableColumns: mutableColumns,
-	}
+var (
+IDColumn        = postgres.StringColumn("id")
+UserIDColumn    = postgres.StringColumn("user_id")
+BotIDColumn     = postgres.StringColumn("bot_id")
+CreatedAtColumn = postgres.TimestampColumn("created_at")
+allColumns      = postgres.ColumnList{IDColumn, UserIDColumn, BotIDColumn, CreatedAtColumn}
+mutableColumns  = postgres.ColumnList{UserIDColumn, BotIDColumn, CreatedAtColumn}
+)
+return chatsTable{
+Table: postgres.NewTable(schemaName, tableName, alias, allColumns...),
+ID:        IDColumn,
+UserID:    UserIDColumn,
+BotID:     BotIDColumn,
+CreatedAt: CreatedAtColumn,
+AllColumns:     allColumns,
+MutableColumns: mutableColumns,
+}
 }

@@ -1,7 +1,7 @@
 #define PNG_INTERNAL
 #include "png.h"
 #if defined(_WIN32_WCE)
-#  ifdef PNG_FLOATING_POINT_SUPPORTED
+# ifdef PNG_FLOATING_POINT_SUPPORTED
 __inline double strtod(const char *nptr, char **endptr)
 {
 double result = 0;
@@ -19,7 +19,7 @@ free(str);
 }
 return result;
 }
-#  endif
+# endif
 #endif
 png_uint_32
 png_get_uint_31(png_structp png_ptr, png_bytep buf)
@@ -150,11 +150,11 @@ else
 png_warning(png_ptr, msg);
 inflateReset(&png_ptr->zstream);
 png_ptr->zstream.avail_in = 0;
-if (text ==  NULL)
+if (text == NULL)
 {
 text_size = prefix_size + png_sizeof(msg) + 1;
 text = (png_charp)png_malloc_warn(png_ptr, text_size);
-if (text ==  NULL)
+if (text == NULL)
 {
 png_free(png_ptr,chunkdata);
 png_error(png_ptr,"Not enough memory to decompress chunk");
@@ -175,7 +175,7 @@ if (text == NULL)
 text_size = prefix_size +
 png_ptr->zbuf_size - png_ptr->zstream.avail_out;
 text = (png_charp)png_malloc_warn(png_ptr, text_size + 1);
-if (text ==  NULL)
+if (text == NULL)
 {
 png_free(png_ptr,chunkdata);
 png_error(png_ptr,"Not enough memory to decompress chunk.");
@@ -233,7 +233,7 @@ png_warning(png_ptr,
 "Incomplete compressed datastream in chunk other than IDAT");
 #endif
 text_size=prefix_size;
-if (text ==  NULL)
+if (text == NULL)
 {
 text = (png_charp)png_malloc_warn(png_ptr, text_size+1);
 if (text == NULL)
@@ -513,9 +513,9 @@ return;
 #endif
 #ifdef PNG_FLOATING_POINT_SUPPORTED
 file_gamma = (float)igamma / (float)100000.0;
-#  ifdef PNG_READ_GAMMA_SUPPORTED
+# ifdef PNG_READ_GAMMA_SUPPORTED
 png_ptr->gamma = file_gamma;
-#  endif
+# endif
 png_set_gAMA(png_ptr, info_ptr, file_gamma);
 #endif
 #ifdef PNG_FIXED_POINT_SUPPORTED
@@ -673,24 +673,24 @@ int_y_blue = (png_fixed_point)uint_y;
 #ifdef PNG_FLOATING_POINT_SUPPORTED
 white_x = (float)int_x_white / (float)100000.0;
 white_y = (float)int_y_white / (float)100000.0;
-red_x   = (float)int_x_red   / (float)100000.0;
-red_y   = (float)int_y_red   / (float)100000.0;
+red_x = (float)int_x_red / (float)100000.0;
+red_y = (float)int_y_red / (float)100000.0;
 green_x = (float)int_x_green / (float)100000.0;
 green_y = (float)int_y_green / (float)100000.0;
-blue_x  = (float)int_x_blue  / (float)100000.0;
-blue_y  = (float)int_y_blue  / (float)100000.0;
+blue_x = (float)int_x_blue / (float)100000.0;
+blue_y = (float)int_y_blue / (float)100000.0;
 #endif
 #if defined(PNG_READ_sRGB_SUPPORTED)
 if (info_ptr->valid & PNG_INFO_sRGB)
 {
-if (PNG_OUT_OF_RANGE(int_x_white, 31270,  1000) ||
-PNG_OUT_OF_RANGE(int_y_white, 32900,  1000) ||
-PNG_OUT_OF_RANGE(int_x_red,   64000L, 1000) ||
-PNG_OUT_OF_RANGE(int_y_red,   33000,  1000) ||
-PNG_OUT_OF_RANGE(int_x_green, 30000,  1000) ||
+if (PNG_OUT_OF_RANGE(int_x_white, 31270, 1000) ||
+PNG_OUT_OF_RANGE(int_y_white, 32900, 1000) ||
+PNG_OUT_OF_RANGE(int_x_red, 64000L, 1000) ||
+PNG_OUT_OF_RANGE(int_y_red, 33000, 1000) ||
+PNG_OUT_OF_RANGE(int_x_green, 30000, 1000) ||
 PNG_OUT_OF_RANGE(int_y_green, 60000L, 1000) ||
-PNG_OUT_OF_RANGE(int_x_blue,  15000,  1000) ||
-PNG_OUT_OF_RANGE(int_y_blue,   6000,  1000))
+PNG_OUT_OF_RANGE(int_x_blue, 15000, 1000) ||
+PNG_OUT_OF_RANGE(int_y_blue, 6000, 1000))
 {
 png_warning(png_ptr,
 "Ignoring incorrect cHRM value when sRGB is also present");
@@ -770,22 +770,22 @@ png_fixed_point igamma;
 #ifdef PNG_FIXED_POINT_SUPPORTED
 igamma=info_ptr->int_gamma;
 #else
-#  ifdef PNG_FLOATING_POINT_SUPPORTED
+# ifdef PNG_FLOATING_POINT_SUPPORTED
 igamma=(png_fixed_point)(info_ptr->gamma * 100000.);
-#  endif
+# endif
 #endif
 if (PNG_OUT_OF_RANGE(igamma, 45500L, 500))
 {
 png_warning(png_ptr,
 "Ignoring incorrect gAMA value when sRGB is also present");
 #ifndef PNG_NO_CONSOLE_IO
-#  ifdef PNG_FIXED_POINT_SUPPORTED
+# ifdef PNG_FIXED_POINT_SUPPORTED
 fprintf(stderr,"incorrect gamma=(%d/100000)\n",(int)png_ptr->int_gamma);
-#  else
-#    ifdef PNG_FLOATING_POINT_SUPPORTED
+# else
+# ifdef PNG_FLOATING_POINT_SUPPORTED
 fprintf(stderr,"incorrect gamma=%f\n",png_ptr->gamma);
-#    endif
-#  endif
+# endif
+# endif
 #endif
 }
 }
@@ -793,14 +793,14 @@ fprintf(stderr,"incorrect gamma=%f\n",png_ptr->gamma);
 #ifdef PNG_READ_cHRM_SUPPORTED
 #ifdef PNG_FIXED_POINT_SUPPORTED
 if (info_ptr->valid & PNG_INFO_cHRM)
-if (PNG_OUT_OF_RANGE(info_ptr->int_x_white, 31270,  1000) ||
-PNG_OUT_OF_RANGE(info_ptr->int_y_white, 32900,  1000) ||
-PNG_OUT_OF_RANGE(info_ptr->int_x_red,   64000L, 1000) ||
-PNG_OUT_OF_RANGE(info_ptr->int_y_red,   33000,  1000) ||
-PNG_OUT_OF_RANGE(info_ptr->int_x_green, 30000,  1000) ||
+if (PNG_OUT_OF_RANGE(info_ptr->int_x_white, 31270, 1000) ||
+PNG_OUT_OF_RANGE(info_ptr->int_y_white, 32900, 1000) ||
+PNG_OUT_OF_RANGE(info_ptr->int_x_red, 64000L, 1000) ||
+PNG_OUT_OF_RANGE(info_ptr->int_y_red, 33000, 1000) ||
+PNG_OUT_OF_RANGE(info_ptr->int_x_green, 30000, 1000) ||
 PNG_OUT_OF_RANGE(info_ptr->int_y_green, 60000L, 1000) ||
-PNG_OUT_OF_RANGE(info_ptr->int_x_blue,  15000,  1000) ||
-PNG_OUT_OF_RANGE(info_ptr->int_y_blue,   6000,  1000))
+PNG_OUT_OF_RANGE(info_ptr->int_x_blue, 15000, 1000) ||
+PNG_OUT_OF_RANGE(info_ptr->int_y_blue, 6000, 1000))
 {
 png_warning(png_ptr,
 "Ignoring incorrect cHRM value when sRGB is also present");
@@ -881,10 +881,10 @@ png_warning(png_ptr, "Profile size field missing from iCCP chunk");
 return;
 }
 pC = (png_bytep)(chunkdata+prefix_length);
-profile_size = ((*(pC  ))<<24) |
+profile_size = ((*(pC ))<<24) |
 ((*(pC+1))<<16) |
 ((*(pC+2))<< 8) |
-((*(pC+3))    );
+((*(pC+3)) );
 if(profile_size < profile_length)
 profile_length = profile_size;
 if(profile_size > profile_length)
@@ -982,9 +982,9 @@ pp->alpha = *entry_start++;
 }
 else
 {
-pp->red   = png_get_uint_16(entry_start); entry_start += 2;
+pp->red = png_get_uint_16(entry_start); entry_start += 2;
 pp->green = png_get_uint_16(entry_start); entry_start += 2;
-pp->blue  = png_get_uint_16(entry_start); entry_start += 2;
+pp->blue = png_get_uint_16(entry_start); entry_start += 2;
 pp->alpha = png_get_uint_16(entry_start); entry_start += 2;
 }
 pp->frequency = png_get_uint_16(entry_start); entry_start += 2;
@@ -995,16 +995,16 @@ for (i = 0; i < new_palette.nentries; i++)
 {
 if (new_palette.depth == 8)
 {
-pp[i].red   = *entry_start++;
+pp[i].red = *entry_start++;
 pp[i].green = *entry_start++;
-pp[i].blue  = *entry_start++;
+pp[i].blue = *entry_start++;
 pp[i].alpha = *entry_start++;
 }
 else
 {
-pp[i].red   = png_get_uint_16(entry_start); entry_start += 2;
+pp[i].red = png_get_uint_16(entry_start); entry_start += 2;
 pp[i].green = png_get_uint_16(entry_start); entry_start += 2;
-pp[i].blue  = png_get_uint_16(entry_start); entry_start += 2;
+pp[i].blue = png_get_uint_16(entry_start); entry_start += 2;
 pp[i].alpha = png_get_uint_16(entry_start); entry_start += 2;
 }
 pp->frequency = png_get_uint_16(entry_start); entry_start += 2;

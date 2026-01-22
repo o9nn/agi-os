@@ -1,11 +1,11 @@
 (use-modules (opencog) (opencog exec))
 (define (incr-counts THING-A THING-B)
-	(cog-inc-count! (List THING-A THING-B) 1.0)
-	(cog-inc-count! (List (AnyNode "left wildcard") THING-B) 1.0)
-	(cog-inc-count! (List THING-A (AnyNode "right wildcard")) 1.0)
-	(cog-inc-count! (AnyNode "grand total") 1.0))
+(cog-inc-count! (List THING-A THING-B) 1.0)
+(cog-inc-count! (List (AnyNode "left wildcard") THING-B) 1.0)
+(cog-inc-count! (List THING-A (AnyNode "right wildcard")) 1.0)
+(cog-inc-count! (AnyNode "grand total") 1.0))
 (define (observe STRING-A STRING-B)
-	(incr-counts (Concept STRING-A) (Concept STRING-B)))
+(incr-counts (Concept STRING-A) (Concept STRING-B)))
 (observe "hello" "world")
 (observe "hello" "Sue")
 (observe "hello" "Adrian")
@@ -13,32 +13,32 @@
 (observe "goodbye" "Mike")
 (define tvp (PredicateNode "*-TruthValueKey-*"))
 (DefineLink
-	(DefinedProcedure "dynamic MI")
-	(Lambda
-		(VariableList (Variable "$L") (Variable "$R"))
-		(Log2
-			(Divide
-				(Times
-					(FloatValueOf (List (Variable "$L") (Variable "$R")) tvp)
-					(FloatValueOf (AnyNode "grand total") tvp))
-				(Times
-					(FloatValueOf (List (Variable "$L") (Any "right wildcard")) tvp)
-					(FloatValueOf (List (Any "left wildcard") (Variable "$R")) tvp))))))
+(DefinedProcedure "dynamic MI")
+(Lambda
+(VariableList (Variable "$L") (Variable "$R"))
+(Log2
+(Divide
+(Times
+(FloatValueOf (List (Variable "$L") (Variable "$R")) tvp)
+(FloatValueOf (AnyNode "grand total") tvp))
+(Times
+(FloatValueOf (List (Variable "$L") (Any "right wildcard")) tvp)
+(FloatValueOf (List (Any "left wildcard") (Variable "$R")) tvp))))))
 (define (install-formula THING-A THING-B)
-	(define pair (List THING-A THING-B))
-	(cog-set-value! pair (Predicate "MI Key")
-		(FormulaStream
-			(ExecutionOutput (DefinedProcedure "dynamic MI") pair))))
+(define pair (List THING-A THING-B))
+(cog-set-value! pair (Predicate "MI Key")
+(FormulaStream
+(ExecutionOutput (DefinedProcedure "dynamic MI") pair))))
 (define (install-mi STRING-A STRING-B)
-	(install-formula (Concept STRING-A) (Concept STRING-B)))
+(install-formula (Concept STRING-A) (Concept STRING-B)))
 (define (get-computed-value THING-A THING-B)
-	(cog-value (List THING-A THING-B) (Predicate "MI Key")))
+(cog-value (List THING-A THING-B) (Predicate "MI Key")))
 (define (get-mi-stream STRING-A STRING-B)
-	(get-computed-value (Concept STRING-A) (Concept STRING-B)))
+(get-computed-value (Concept STRING-A) (Concept STRING-B)))
 (install-mi "hello" "world")
 (get-mi-stream "hello" "world")
 (define (get-mi STRING-A STRING-B)
-	(cog-value-ref (get-mi-stream STRING-A STRING-B) 2))
+(cog-value-ref (get-mi-stream STRING-A STRING-B) 2))
 (get-mi "hello" "world")
 (observe "hello" "world")
 (get-mi "hello" "world")
@@ -48,38 +48,38 @@
 (get-mi "hello" "world")
 (cog-prt-atomspace)
 (cog-set-value! (Concept "someplace") (Predicate "mask key")
-	(BoolValue 0 0 1))
+(BoolValue 0 0 1))
 (cog-execute!
-	(Decimate
-		(BoolValueOf (Concept "someplace") (Predicate "mask key"))
-		(FloatValueOf (AnyNode "grand total") tvp)))
+(Decimate
+(BoolValueOf (Concept "someplace") (Predicate "mask key"))
+(FloatValueOf (AnyNode "grand total") tvp)))
 (define (make-deci ATOM)
-	(Decimate
-		(BoolValueOf (Concept "someplace") (Predicate "mask key"))
-		(FloatValueOf ATOM tvp)))
+(Decimate
+(BoolValueOf (Concept "someplace") (Predicate "mask key"))
+(FloatValueOf ATOM tvp)))
 (DefineLink
-	(DefinedProcedure "scalar MI")
-	(Lambda
-		(VariableList (Variable "$L") (Variable "$R"))
-		(Log2
-			(Divide
-				(Times
-					(make-deci (List (Variable "$L") (Variable "$R")))
-					(make-deci (AnyNode "grand total")))
-				(Times
-					(make-deci (List (Variable "$L") (Any "right wildcard")))
-					(make-deci (List (Any "left wildcard") (Variable "$R"))))))))
+(DefinedProcedure "scalar MI")
+(Lambda
+(VariableList (Variable "$L") (Variable "$R"))
+(Log2
+(Divide
+(Times
+(make-deci (List (Variable "$L") (Variable "$R")))
+(make-deci (AnyNode "grand total")))
+(Times
+(make-deci (List (Variable "$L") (Any "right wildcard")))
+(make-deci (List (Any "left wildcard") (Variable "$R"))))))))
 (define (install-scalar THING-A THING-B)
-	(define pair (List THING-A THING-B))
-	(cog-set-value! pair (Predicate "Alt MI Key")
-		(FormulaStream
-			(ExecutionOutput (DefinedProcedure "scalar MI") pair))))
+(define pair (List THING-A THING-B))
+(cog-set-value! pair (Predicate "Alt MI Key")
+(FormulaStream
+(ExecutionOutput (DefinedProcedure "scalar MI") pair))))
 (define (install-scalar-mi STRING-A STRING-B)
-	(install-scalar (Concept STRING-A) (Concept STRING-B)))
+(install-scalar (Concept STRING-A) (Concept STRING-B)))
 (define (get-computed-scalar THING-A THING-B)
-	(cog-value (List THING-A THING-B) (Predicate "Alt MI Key")))
+(cog-value (List THING-A THING-B) (Predicate "Alt MI Key")))
 (define (get-mi-scalar STRING-A STRING-B)
-	(get-computed-scalar (Concept STRING-A) (Concept STRING-B)))
+(get-computed-scalar (Concept STRING-A) (Concept STRING-B)))
 (install-scalar-mi "hello" "world")
 (get-mi-scalar "hello" "world")
 (get-mi "hello" "world")

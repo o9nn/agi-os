@@ -1,11 +1,11 @@
 #include "stdinc.h"
 #include "dat.h"
 #include "fns.h"
-int			syncwrites = 0;
-int			queuewrites = 0;
-int			writestodevnull = 0;
-int			verifywrites = 0;
-static Packet		*readilump(Lump *u, IAddr *ia, u8int *score);
+int syncwrites = 0;
+int queuewrites = 0;
+int writestodevnull = 0;
+int verifywrites = 0;
+static Packet *readilump(Lump *u, IAddr *ia, u8int *score);
 Packet*
 readlump(u8int *score, int type, u32int size, int *cached)
 {

@@ -52,7 +52,7 @@ vulkandeviceenv = "GGML_VK_VISIBLE_DEVICES="+vulkan_info_str;
 putenv((char*)vulkandeviceenv.c_str());
 }
 executable_path = inputs.executable_path;
-if(file_format==FileFormat::GPTJ_1 || file_format==FileFormat::GPTJ_2 || file_format==FileFormat::GPTJ_3 || file_format==FileFormat::GPTJ_4  || file_format==FileFormat::GPTJ_5)
+if(file_format==FileFormat::GPTJ_1 || file_format==FileFormat::GPTJ_2 || file_format==FileFormat::GPTJ_3 || file_format==FileFormat::GPTJ_4 || file_format==FileFormat::GPTJ_5)
 {
 printf("\n---\nIdentified as Legacy GPT-J model: (ver %d)\nAttempting to Load...\n---\n", file_format);
 ModelLoadResult lr = gpttype_load_model(inputs, file_format, file_format_meta);

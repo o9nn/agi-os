@@ -5,12 +5,12 @@
 #include "fns.h"
 #include "io.h"
 #include "../port/error.h"
-#define	PKT_LEN			40
-#define MPC82XX_INIT_DELAY      0x10000
-#define HPIC		0xFC000000
-#define HPIA		0xFC000010
-#define HPID_A		0xFC000020
-#define HPID		0xFC000030
+#define PKT_LEN 40
+#define MPC82XX_INIT_DELAY 0x10000
+#define HPIC 0xFC000000
+#define HPIA 0xFC000010
+#define HPID_A 0xFC000020
+#define HPID 0xFC000030
 #include "mcc2.h"
 static ssize_t mcc2_read( struct file *, char *, size_t, loff_t * );
 static ssize_t mcc2_write( struct file *, const char *, size_t, loff_t *);
@@ -31,7 +31,7 @@ boolean DwCreateList( ListDB * );
 void *DwMalloc( U32 );
 void DwFree( U32, void * );
 void ppc_irq_dispatch_handler(struct pt_regs *regs, int irq);
-#define NR_MASK_WORDS   ((NR_IRQS + 31) / 32)
+#define NR_MASK_WORDS ((NR_IRQS + 31) / 32)
 extern int ppc_spurious_interrupts;
 extern int ppc_second_irq;
 extern struct irqaction *ppc_irq_action[NR_IRQS];
@@ -40,48 +40,48 @@ extern unsigned int ppc_local_irq_count[NR_CPUS];
 extern unsigned int ppc_cached_irq_mask[NR_MASK_WORDS];
 extern unsigned int ppc_lost_interrupts[NR_MASK_WORDS];
 extern atomic_t ppc_n_lost_interrupts;
-void	Mcc2Init( void );
-void	MccDisable( unsigned char );
-void	MccEnable( unsigned char, unsigned char, unsigned char );
-void	MccRiscCmd( unsigned char, dwv_RISC_OPCODE, unsigned char );
-boolean	MccTest( void );
-int	MccTxBuffer( unsigned char, unsigned char, char *, unsigned short, unsigned short );
-extern	U32 PpcDisable( void );
-extern	void PpcMsrRestore( U32 );
-static	int	mcc2_major = MCC_MAJOR;
-static	BOOLEAN insertBD_T( BD_PFIFO *, BD_P );
-static	BOOLEAN removBD_T( BD_PFIFO *, BD_P * );
-BOOLEAN	empty(volatile register FIFO *);
-int	insert( FIFO *, char * );
-int	remove( FIFO *, char ** );
-void	AppInit( void );
-#define physaddr(ADDR)	(0x60020000 | ((ADDR) << 23) | (2 << 18))
+void Mcc2Init( void );
+void MccDisable( unsigned char );
+void MccEnable( unsigned char, unsigned char, unsigned char );
+void MccRiscCmd( unsigned char, dwv_RISC_OPCODE, unsigned char );
+boolean MccTest( void );
+int MccTxBuffer( unsigned char, unsigned char, char *, unsigned short, unsigned short );
+extern U32 PpcDisable( void );
+extern void PpcMsrRestore( U32 );
+static int mcc2_major = MCC_MAJOR;
+static BOOLEAN insertBD_T( BD_PFIFO *, BD_P );
+static BOOLEAN removBD_T( BD_PFIFO *, BD_P * );
+BOOLEAN empty(volatile register FIFO *);
+int insert( FIFO *, char * );
+int remove( FIFO *, char ** );
+void AppInit( void );
+#define physaddr(ADDR) (0x60020000 | ((ADDR) << 23) | (2 << 18))
 mcc_iorw_t mcc_iorw;
 #if 0
 typedef struct mcc_io {
-unsigned int	cmd;
-unsigned int    address;
-unsigned int    *buf;
-int		ind;
-int             nbytes;
-siramctl_t	SiRam;
-cpmux_t		CpMux;
-mcc_t		Mcc_T;
-iop8260_t	Io_Ports;
+unsigned int cmd;
+unsigned int address;
+unsigned int *buf;
+int ind;
+int nbytes;
+siramctl_t SiRam;
+cpmux_t CpMux;
+mcc_t Mcc_T;
+iop8260_t Io_Ports;
 } mcc_iorw_t;
 #endif
 static void
 ioctl_parm( unsigned int loop_mode )
 {
-Si2Regs->SiAmr = SIxMR_SAD_BANK0_FIRST_HALF    |
-loop_mode                     |
-SIxMR_NO_BIT_RX_SYNC_DELAY    |
-SIxMR_DSC_CH_DATA_CLK_EQU     |
-SIxMR_CRT_SPEPARATE_PINS      |
-SIxMR_SLx_NORMAL_OPERATION    |
+Si2Regs->SiAmr = SIxMR_SAD_BANK0_FIRST_HALF |
+loop_mode |
+SIxMR_NO_BIT_RX_SYNC_DELAY |
+SIxMR_DSC_CH_DATA_CLK_EQU |
+SIxMR_CRT_SPEPARATE_PINS |
+SIxMR_SLx_NORMAL_OPERATION |
 SIxMR_CE_TX_RISING_RX_FALLING |
-SIxMR_FE_FALLING_EDGE         |
-SIxMR_GM_GCI_SCIT_MODE        |
+SIxMR_FE_FALLING_EDGE |
+SIxMR_GM_GCI_SCIT_MODE |
 SIxMR_NO_BIT_TX_SYNC_DELAY;
 }
 #if 0
@@ -140,7 +140,7 @@ switch(mode)
 {
 case HPI_RD:
 lng = (long)(((mcc_iorw_t *)param)->address);
-lptr =  ((unsigned long *)lng);
+lptr = ((unsigned long *)lng);
 vptr = (void *)lptr;
 if (copy_to_user( (((mcc_iorw_t *)param)->buf), (void *)vptr, (((mcc_iorw_t *)param)->nbytes))) {
 printk("mcc2_ioctl: Failed during  read from hpi.\n");
@@ -149,7 +149,7 @@ return -EFAULT;
 break;
 case HPI_WR:
 lng = (long)(((mcc_iorw_t *)param)->address);
-lptr =  ((unsigned long *)lng);
+lptr = ((unsigned long *)lng);
 vptr = (void *)lptr;
 if (copy_from_user( (void *)vptr, (((mcc_iorw_t *)param)->buf), (((mcc_iorw_t *)param)->nbytes))) {
 printk("mcc2_ioctl: Failed during  write to hpi\n");
@@ -158,7 +158,7 @@ return -EFAULT;
 break;
 case FPGA_RD:
 lng = (long)(((mcc_iorw_t *)param)->address);
-lptr =  ((unsigned long *)lng);
+lptr = ((unsigned long *)lng);
 vptr = (void *)lptr;
 if (copy_to_user( (((mcc_iorw_t *)param)->buf), (void *)vptr, (((mcc_iorw_t *)param)->nbytes))) {
 printk("mcc2_ioctl: Failed during  read from FPGA.\n");
@@ -167,7 +167,7 @@ return -EFAULT;
 break;
 case FPGA_WR:
 lng = (long)(((mcc_iorw_t *)param)->address);
-lptr =  ((unsigned long *)lng);
+lptr = ((unsigned long *)lng);
 vptr = (void *)lptr;
 if (copy_from_user( (void *)vptr, (((mcc_iorw_t *)param)->buf), (((mcc_iorw_t *)param)->nbytes))) {
 printk("mcc2_ioctl: Failed during  write to FPGA\n");

@@ -44,10 +44,10 @@ memory_order_seq_cst
 #endif
 enum __memory_order_modifier
 {
-__memory_order_mask          = 0x0ffff,
+__memory_order_mask = 0x0ffff,
 __memory_order_modifier_mask = 0xffff0000,
-__memory_order_hle_acquire   = 0x10000,
-__memory_order_hle_release   = 0x20000
+__memory_order_hle_acquire = 0x10000,
+__memory_order_hle_release = 0x20000
 };
 constexpr memory_order
 operator|(memory_order __m, __memory_order_modifier __mod)
@@ -202,7 +202,7 @@ struct __atomic_base
 using value_type = _ITp;
 using difference_type = value_type;
 private:
-typedef _ITp 	__int_type;
+typedef _ITp __int_type;
 static constexpr int _S_alignment =
 sizeof(_ITp) > alignof(_ITp) ? sizeof(_ITp) : alignof(_ITp);
 alignas(_S_alignment) __int_type _M_i _GLIBCXX20_INIT(0);
@@ -468,8 +468,8 @@ template<typename _PTp>
 struct __atomic_base<_PTp*>
 {
 private:
-typedef _PTp* 	__pointer_type;
-__pointer_type 	_M_p _GLIBCXX20_INIT(nullptr);
+typedef _PTp* __pointer_type;
+__pointer_type _M_p _GLIBCXX20_INIT(nullptr);
 constexpr ptrdiff_t
 _M_type_size(ptrdiff_t __d) const { return __d * sizeof(_PTp); }
 constexpr ptrdiff_t

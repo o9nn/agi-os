@@ -55,10 +55,10 @@ const char* buf_terminated,
 int is_msgrmsg)
 {
 carray* lines = dc_split_into_lines(buf_terminated);
-int     l = 0;
-int     l_first = 0;
-int     l_last = carray_count(lines)-1;
-char*   line = NULL;
+int l = 0;
+int l_first = 0;
+int l_last = carray_count(lines)-1;
+char* line = NULL;
 {
 int footer_mark = 0;
 for (l = l_first; l <= l_last; l++)
@@ -203,9 +203,9 @@ char* temp = NULL;
 if (simplify==NULL || in_unterminated==NULL || in_bytes <= 0) {
 return dc_strdup("");
 }
-simplify->is_forwarded    = 0;
+simplify->is_forwarded = 0;
 simplify->is_cut_at_begin = 0;
-simplify->is_cut_at_end   = 0;
+simplify->is_cut_at_end = 0;
 out = strndup((char*)in_unterminated, in_bytes);
 if (out==NULL) {
 return dc_strdup("");

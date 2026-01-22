@@ -367,7 +367,7 @@ return ret;
 *value_r = hdr_value;
 msgid_bare = message_id_get_next(&hdr_value);
 if (msgid_bare != NULL) {
-*value_r = t_strconcat("<",  msgid_bare, ">", NULL);
+*value_r = t_strconcat("<", msgid_bare, ">", NULL);
 return 1;
 } else if (!require_valid) {
 return 1;
@@ -458,7 +458,7 @@ buffer_create_from_data(&buf, guid_128_r, GUID_128_SIZE);
 buffer_set_used_size(&buf, 0);
 sha1_get_digest(guid, strlen(guid), sha1_sum);
 #if SHA1_RESULTLEN < GUID_128_SIZE
-#  error not possible
+# error not possible
 #endif
 buffer_append(&buf,
 sha1_sum + SHA1_RESULTLEN - GUID_128_SIZE,

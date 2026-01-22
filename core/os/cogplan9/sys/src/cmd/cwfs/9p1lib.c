@@ -1,16 +1,16 @@
 #include "all.h"
 #include "9p1.h"
-#define	CHAR(x)		*p++ = f->x
-#define	SHORT(x)	{ ulong vvv = f->x; *p++ = vvv; *p++ = vvv>>8; }
-#define	LONGINT(q) {*p++ = (q); *p++ = (q)>>8; *p++ = (q)>>16; *p++ = (q)>>24;}
-#define	LONG(x)		{ ulong vvv = f->x; LONGINT(vvv); }
-#define	VLONG(x) { \
+#define CHAR(x) *p++ = f->x
+#define SHORT(x) { ulong vvv = f->x; *p++ = vvv; *p++ = vvv>>8; }
+#define LONGINT(q) {*p++ = (q); *p++ = (q)>>8; *p++ = (q)>>16; *p++ = (q)>>24;}
+#define LONG(x) { ulong vvv = f->x; LONGINT(vvv); }
+#define VLONG(x) { \
 uvlong q = f->x; \
 *p++ = (q)>> 0; *p++ = (q)>> 8; *p++ = (q)>>16; *p++ = (q)>>24; \
 *p++ = (q)>>32; *p++ = (q)>>40; *p++ = (q)>>48; *p++ = (q)>>56; \
 }
-#define	BYTES(x,n)	memmove(p, f->x, n); p += n
-#define	STRING(x,n)	strncpy((char*)p, f->x, n); p += n
+#define BYTES(x,n) memmove(p, f->x, n); p += n
+#define STRING(x,n) strncpy((char*)p, f->x, n); p += n
 int
 convS2M9p1(Fcall *f, uchar *ap)
 {
@@ -212,23 +212,23 @@ if(key)
 encrypt(key, ap, n);
 return n;
 }
-#undef	CHAR
-#undef	SHORT
-#undef	LONG
-#undef	LONGINT
-#undef	VLONG
-#undef	BYTES
-#undef	STRING
-#define	CHAR(x)		f->x = *p++
-#define	SHORT(x)	f->x = (p[0] | (p[1]<<8)); p += 2
-#define	LONG(x)	f->x = p[0] | (p[1]<<8) | (p[2]<<16) | (p[3]<<24); p += 4
-#define	VLONG(x) { \
-f->x =	    (p[0] | (p[1]<<8) | (p[2]<<16) | (p[3]<<24)) | \
+#undef CHAR
+#undef SHORT
+#undef LONG
+#undef LONGINT
+#undef VLONG
+#undef BYTES
+#undef STRING
+#define CHAR(x) f->x = *p++
+#define SHORT(x) f->x = (p[0] | (p[1]<<8)); p += 2
+#define LONG(x) f->x = p[0] | (p[1]<<8) | (p[2]<<16) | (p[3]<<24); p += 4
+#define VLONG(x) { \
+f->x = (p[0] | (p[1]<<8) | (p[2]<<16) | (p[3]<<24)) | \
 (uvlong)(p[4] | (p[5]<<8) | (p[6]<<16) | (p[7]<<24)) << 32; \
 p += 8; \
 }
-#define	BYTES(x,n)	memmove(f->x, p, n); p += n
-#define	STRING(x,n)	memmove(f->x, p, n); p += n
+#define BYTES(x,n) memmove(f->x, p, n); p += n
+#define STRING(x,n) memmove(f->x, p, n); p += n
 int
 convM2S9p1(uchar *ap, Fcall *f, int n)
 {

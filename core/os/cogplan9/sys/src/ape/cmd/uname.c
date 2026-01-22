@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/utsname.h>
-#define	ARGBEGIN	for((argv0=*argv),argv++,argc--;\
+#define ARGBEGIN for((argv0=*argv),argv++,argc--;\
 argv[0] && argv[0][0]=='-' && argv[0][1];\
 argc--, argv++) {\
 char *_args, *_argt, _argc;\
@@ -10,10 +10,10 @@ if(_args[0]=='-' && _args[1]==0){\
 argc--; argv++; break;\
 }\
 while(*_args) switch(_argc=*_args++)
-#define	ARGEND		}
-#define	ARGF()		(_argt=_args, _args="",\
+#define ARGEND }
+#define ARGF() (_argt=_args, _args="",\
 (*_argt? _argt: argv[1]? (argc--, *++argv): 0))
-#define	ARGC()		_argc
+#define ARGC() _argc
 char *argv0;
 static int started;
 static void

@@ -401,7 +401,7 @@ free(ptr);
 }
 #endif
 #if defined(PNG_1_0_X)
-#  define png_malloc_warn png_malloc
+# define png_malloc_warn png_malloc
 #else
 png_voidp PNGAPI
 png_malloc_warn(png_structp png_ptr, png_uint_32 size)

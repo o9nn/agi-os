@@ -1,4 +1,4 @@
-#ifndef	_IPC_IPC_OBJECT_H_
+#ifndef _IPC_IPC_OBJECT_H_
 #define _IPC_IPC_OBJECT_H_
 #include <mach/kern_return.h>
 #include <mach/message.h>
@@ -14,45 +14,45 @@ decl_simple_lock_data(,io_lock_data)
 ipc_object_refs_t io_references;
 ipc_object_bits_t io_bits;
 } *ipc_object_t;
-#define	IO_NULL			((ipc_object_t) 0)
-#define	IO_DEAD			((ipc_object_t) -1)
-#define	IO_VALID(io)		(((io) != IO_NULL) && ((io) != IO_DEAD))
-#define	IO_BITS_KOTYPE		0x0000ffff
-#define IO_BITS_OTYPE		0x3fff0000
-#define	IO_BITS_PROTECTED_PAYLOAD	0x40000000
-#define	IO_BITS_ACTIVE		0x80000000U
-#define	io_active(io)		((int)(io)->io_bits < 0)
-#define	io_otype(io)		(((io)->io_bits & IO_BITS_OTYPE) >> 16)
-#define	io_kotype(io)		((io)->io_bits & IO_BITS_KOTYPE)
-#define	io_makebits(active, otype, kotype)	\
+#define IO_NULL ((ipc_object_t) 0)
+#define IO_DEAD ((ipc_object_t) -1)
+#define IO_VALID(io) (((io) != IO_NULL) && ((io) != IO_DEAD))
+#define IO_BITS_KOTYPE 0x0000ffff
+#define IO_BITS_OTYPE 0x3fff0000
+#define IO_BITS_PROTECTED_PAYLOAD 0x40000000
+#define IO_BITS_ACTIVE 0x80000000U
+#define io_active(io) ((int)(io)->io_bits < 0)
+#define io_otype(io) (((io)->io_bits & IO_BITS_OTYPE) >> 16)
+#define io_kotype(io) ((io)->io_bits & IO_BITS_KOTYPE)
+#define io_makebits(active, otype, kotype) \
 (((active) ? IO_BITS_ACTIVE : 0) | ((otype) << 16) | (kotype))
-#define	IOT_PORT		0
-#define IOT_PORT_SET		1
-#define IOT_NUMBER		2
+#define IOT_PORT 0
+#define IOT_PORT_SET 1
+#define IOT_NUMBER 2
 extern struct kmem_cache ipc_object_caches[IOT_NUMBER];
-#define	io_alloc(otype)		\
+#define io_alloc(otype) \
 ((ipc_object_t) kmem_cache_alloc(&ipc_object_caches[(otype)]))
-#define	io_free(otype, io)	\
+#define io_free(otype, io) \
 kmem_cache_free(&ipc_object_caches[(otype)], (vm_offset_t) (io))
-#define	io_lock_init(io)	simple_lock_init(&(io)->io_lock_data)
-#define	io_lock(io)		simple_lock(&(io)->io_lock_data)
-#define	io_lock_try(io)		simple_lock_try(&(io)->io_lock_data)
-#define	io_unlock(io)		simple_unlock(&(io)->io_lock_data)
-#define io_check_unlock(io) 						\
-MACRO_BEGIN								\
-ipc_object_refs_t _refs = (io)->io_references;			\
+#define io_lock_init(io) simple_lock_init(&(io)->io_lock_data)
+#define io_lock(io) simple_lock(&(io)->io_lock_data)
+#define io_lock_try(io) simple_lock_try(&(io)->io_lock_data)
+#define io_unlock(io) simple_unlock(&(io)->io_lock_data)
+#define io_check_unlock(io) \
+MACRO_BEGIN \
+ipc_object_refs_t _refs = (io)->io_references; \
 \
-io_unlock(io);							\
-if (_refs == 0)							\
-io_free(io_otype(io), io);				\
+io_unlock(io); \
+if (_refs == 0) \
+io_free(io_otype(io), io); \
 MACRO_END
-#define	io_reference(io)						\
-MACRO_BEGIN								\
-(io)->io_references++;						\
+#define io_reference(io) \
+MACRO_BEGIN \
+(io)->io_references++; \
 MACRO_END
-#define	io_release(io)							\
-MACRO_BEGIN								\
-(io)->io_references--;						\
+#define io_release(io) \
+MACRO_BEGIN \
+(io)->io_references--; \
 MACRO_END
 extern void
 ipc_object_reference(ipc_object_t);

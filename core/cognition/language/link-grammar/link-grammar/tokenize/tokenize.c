@@ -25,8 +25,8 @@
 #define D_SW 6
 #define D_UN 6
 typedef const char *stripped_t[MAX_STRIP];
-#define ENTITY_MARKER   "<marker-entity>"
-#define COMMON_ENTITY_MARKER   "<marker-common-entity>"
+#define ENTITY_MARKER "<marker-entity>"
+#define COMMON_ENTITY_MARKER "<marker-common-entity>"
 #define REPLACEMENT_MARK "~"
 #define CAP1st "<1stCAP>"
 #define CAPnon "<nonCAP>"
@@ -1072,11 +1072,11 @@ static bool matchspan_fixed(const Afdict_class *mpunc, const char *w,
 int *start, int *end)
 {
 const char *wend = &w[strlen(w)];
-for (int i = 0;  i < mpunc->length - mpunc->Nregexes; i++)
+for (int i = 0; i < mpunc->length - mpunc->Nregexes; i++)
 {
 const char *affix = mpunc->string[i];
 int f_start, f_end;
-for (f_start = 1; w + f_start <  wend; f_start++)
+for (f_start = 1; w + f_start < wend; f_start++)
 {
 size_t sz = strcspn(affix, subscript_mark_str());
 f_end = f_start + sz;
@@ -1129,7 +1129,7 @@ while(*word != '\0')
 #define NO_MATCH INT_MAX
 int start = NO_MATCH, end = 0;
 int matched_rnum = NO_MATCH;
-for (int rnum = -1;  rnum < mpunc->Nregexes; rnum++)
+for (int rnum = -1; rnum < mpunc->Nregexes; rnum++)
 {
 int ms, me;
 if (unlikely(mpunc_find(mpunc, rnum, word, &ms, &me)))
@@ -1703,7 +1703,7 @@ issue_dictcap(sent, false, unsplit_word, downcase);
 word_is_known = true;
 }
 }
-if (!(word_is_known ||  lc_word_is_in_dict ||
+if (!(word_is_known || lc_word_is_in_dict ||
 (word_can_split && !is_contraction_word(dict, word))))
 {
 if ((NULL != unsplit_word->regex_name))
@@ -1973,7 +1973,7 @@ assert(0 < max_words, "Too many words (it may be an infinite loop)");
 max_words--;
 Word *wa_word = word_new(sent);
 size_t curr_widx = sent->length - 1;
-const Gword *unsplit_word  = wp_old->word;
+const Gword *unsplit_word = wp_old->word;
 if (MT_INFRASTRUCTURE != unsplit_word->morpheme_type)
 {
 unsplit_word = wg_get_sentence_word(sent, (Gword *)unsplit_word);

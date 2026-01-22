@@ -1,14 +1,14 @@
 #include "tdef.h"
 #include "fns.h"
 #include "ext.h"
-int	vpos	 = 0;
-int	hpos	 = 0;
+int vpos = 0;
+int hpos = 0;
 extern Font fonts[MAXFONTS+1];
-int	Inch;
-int	Hor;
-int	Vert;
-int	Unitwidth;
-int	nfonts;
+int Inch;
+int Hor;
+int Vert;
+int Unitwidth;
+int nfonts;
 void t_ptinit(void)
 {
 int i;
@@ -70,7 +70,7 @@ t_specnames();
 }
 void t_specnames(void)
 {
-int	i;
+int i;
 for (i = 0; spnames[i].n; i++)
 *spnames[i].n = chadd(spnames[i].v, Troffchar, Install);
 }
@@ -189,7 +189,7 @@ if (k < 040 && k != DRAWFCN)
 return(outsize);
 j = z = 0;
 if (k != DRAWFCN) {
-if (widcache[k].fontpts == (xfont<<8) + xpts  && !setwdf) {
+if (widcache[k].fontpts == (xfont<<8) + xpts && !setwdf) {
 w = widcache[k].width;
 bd = 0;
 cs = 0;

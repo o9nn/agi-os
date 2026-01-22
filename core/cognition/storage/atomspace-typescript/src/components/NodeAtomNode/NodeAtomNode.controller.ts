@@ -1,5 +1,5 @@
 const NodeAtomNodeController = {
-  init: () => {
-  }
+init: () => {
+}
 }
 export default NodeAtomNodeController;

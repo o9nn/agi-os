@@ -20,8 +20,8 @@
 #include "smtp-client-transaction.h"
 #include <sys/signal.h>
 #include <unistd.h>
-#define CLIENT_PROGRESS_TIMEOUT     10
-#define SERVER_KILL_TIMEOUT_SECS    20
+#define CLIENT_PROGRESS_TIMEOUT 10
+#define SERVER_KILL_TIMEOUT_SECS 20
 static void main_deinit(void);
 enum server_connection_state {
 SERVER_CONNECTION_STATE_EHLO = 0,
@@ -1342,7 +1342,7 @@ switch (pctx->index) {
 case 0: case 1: case 2:
 test_assert(smtp_reply_is_success(reply));
 break;
-case 3:  case 4: case 5:
+case 3: case 4: case 5:
 test_assert(reply->status ==
 SMTP_CLIENT_COMMAND_ERROR_BAD_REPLY);
 break;
@@ -2433,7 +2433,7 @@ break;
 case 1:
 test_assert(reply->status == 535);
 break;
-case 2:	case 3:	case 4:	case 5:
+case 2: case 3: case 4: case 5:
 test_assert(reply->status == 250);
 break;
 }
@@ -2455,7 +2455,7 @@ break;
 case 1:
 test_assert(reply->status == 535);
 break;
-case 2:	case 3:	case 4:	case 5:
+case 2: case 3: case 4: case 5:
 test_assert(reply->status == 250);
 break;
 }
@@ -2477,7 +2477,7 @@ break;
 case 1:
 test_assert(reply->status == 535);
 break;
-case 2:	case 3:	case 4:	case 5:
+case 2: case 3: case 4: case 5:
 test_assert(reply->status == 250);
 break;
 }
@@ -2496,7 +2496,7 @@ case 0:
 case 1:
 test_assert(FALSE);
 break;
-case 2:	case 3:	case 4:	case 5:
+case 2: case 3: case 4: case 5:
 test_assert(TRUE);
 break;
 }
@@ -2518,7 +2518,7 @@ break;
 case 1:
 test_assert(reply->status == 535);
 break;
-case 2:	case 3:	case 4:	case 5:
+case 2: case 3: case 4: case 5:
 test_assert(reply->status == 250);
 break;
 }

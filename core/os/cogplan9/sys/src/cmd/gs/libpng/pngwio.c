@@ -139,7 +139,7 @@ if(FP_SEG(ptr) != FP_SEG(far_ptr))
 png_error(png_ptr,"segment lost in conversion");
 return(near_ptr);
 }
-#  else
+# else
 void *png_far_to_near(png_structp png_ptr,png_voidp ptr, int check)
 {
 void *near_ptr;
@@ -151,6 +151,6 @@ if(far_ptr != ptr)
 png_error(png_ptr,"segment lost in conversion");
 return(near_ptr);
 }
-#   endif
-#   endif
+# endif
+# endif
 #endif

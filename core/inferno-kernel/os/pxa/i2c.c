@@ -1,80 +1,80 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"io.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "io.h"
 typedef struct Ctlr Ctlr;
 typedef struct I2Cregs I2Cregs;
 struct I2Cregs {
-ulong	ibmr;
-ulong	pad0;
-ulong	idbr;
-ulong	pad1;
-ulong	icr;
-ulong	pad2;
-ulong	isr;
-ulong	pad3;
-ulong	isar;
+ulong ibmr;
+ulong pad0;
+ulong idbr;
+ulong pad1;
+ulong icr;
+ulong pad2;
+ulong isr;
+ulong pad3;
+ulong isar;
 };
 enum {
-Scls=	1<<1,
-Sdas=	1<<0,
-Fm=		1<<15,
-Ur=		1<<14,
-Sadie=	1<<13,
-Aldie=	1<<12,
-Ssdie=	1<<11,
-Beie=	1<<10,
-Irfie=	1<<9,
-Iteie=	1<<8,
-Gcd=	1<<7,
-Scle=	1<<6,
-Iue=		1<<5,
-Ma=		1<<4,
-Tb=		1<<3,
-Ack=		0<<2,
-Nak=	1<<2,
-Stop=	1<<1,
-Start=	1<<0,
-Bed=		1<<10,
-Sad=		1<<9,
-Gcad=	1<<8,
-Irf=		1<<7,
-Ite=		1<<6,
-Ald=		1<<5,
-Ssd=		1<<4,
-Ibb=		1<<3,
-Ub=		1<<2,
-Nakrcv=	1<<1,
-Rwm=	1<<0,
-Err=		Bed | Ssd,
-Rbit =	1<<0,
-Wbit=	0<<0,
-MaxIO =	8192,
-MaxSA=	2,
-Bufsize =	MaxIO,
-Freq =	0,
+Scls= 1<<1,
+Sdas= 1<<0,
+Fm= 1<<15,
+Ur= 1<<14,
+Sadie= 1<<13,
+Aldie= 1<<12,
+Ssdie= 1<<11,
+Beie= 1<<10,
+Irfie= 1<<9,
+Iteie= 1<<8,
+Gcd= 1<<7,
+Scle= 1<<6,
+Iue= 1<<5,
+Ma= 1<<4,
+Tb= 1<<3,
+Ack= 0<<2,
+Nak= 1<<2,
+Stop= 1<<1,
+Start= 1<<0,
+Bed= 1<<10,
+Sad= 1<<9,
+Gcad= 1<<8,
+Irf= 1<<7,
+Ite= 1<<6,
+Ald= 1<<5,
+Ssd= 1<<4,
+Ibb= 1<<3,
+Ub= 1<<2,
+Nakrcv= 1<<1,
+Rwm= 1<<0,
+Err= Bed | Ssd,
+Rbit = 1<<0,
+Wbit= 0<<0,
+MaxIO = 8192,
+MaxSA= 2,
+Bufsize = MaxIO,
+Freq = 0,
 I2Ctimeout = 10000,
 Chatty = 0,
 };
-#define	DPRINT	if(Chatty)print
+#define DPRINT if(Chatty)print
 struct Ctlr {
 Lock;
-QLock	io;
-int	init;
-int	polling;
-I2Cregs*	regs;
-int	status;
-int	phase;
-Rendez	r;
-int	addr;
-int	salen;
-int	offset;
-int	cntl;
-int	rdcount;
-Block*	b;
+QLock io;
+int init;
+int polling;
+I2Cregs* regs;
+int status;
+int phase;
+Rendez r;
+int addr;
+int salen;
+int offset;
+int cntl;
+int rdcount;
+Block* b;
 };
 enum {
 Idle,
@@ -87,13 +87,13 @@ Read,
 Write,
 Halting,
 };
-static	Ctlr	i2cctlr[1];
-static void	interrupt(Ureg*, void*);
+static Ctlr i2cctlr[1];
+static void interrupt(Ureg*, void*);
 static int readyxfer(Ctlr*, int);
-static void	rxstart(Ctlr*);
-static void	txstart(Ctlr*);
-static void	stopxfer(Ctlr*);
-static void	txoffset(Ctlr*, ulong, int);
+static void rxstart(Ctlr*);
+static void txstart(Ctlr*);
+static void stopxfer(Ctlr*);
+static void txoffset(Ctlr*, ulong, int);
 static int idlectlr(Ctlr*);
 static void
 i2cdump(char *t, I2Cregs *i2c)

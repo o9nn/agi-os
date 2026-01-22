@@ -5,22 +5,22 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-# define PKCS12_KEY_ID   1
-# define PKCS12_IV_ID    2
-# define PKCS12_MAC_ID   3
+# define PKCS12_KEY_ID 1
+# define PKCS12_IV_ID 2
+# define PKCS12_MAC_ID 3
 # ifndef PKCS12_DEFAULT_ITER
-#  define PKCS12_DEFAULT_ITER     PKCS5_DEFAULT_ITER
+# define PKCS12_DEFAULT_ITER PKCS5_DEFAULT_ITER
 # endif
 # define PKCS12_MAC_KEY_LENGTH 20
 # define PKCS12_SALT_LEN 8
 # ifdef PBE_UNICODE
-#  define PKCS12_key_gen PKCS12_key_gen_uni
-#  define PKCS12_add_friendlyname PKCS12_add_friendlyname_uni
+# define PKCS12_key_gen PKCS12_key_gen_uni
+# define PKCS12_add_friendlyname PKCS12_add_friendlyname_uni
 # else
-#  define PKCS12_key_gen PKCS12_key_gen_asc
-#  define PKCS12_add_friendlyname PKCS12_add_friendlyname_asc
+# define PKCS12_key_gen PKCS12_key_gen_asc
+# define PKCS12_add_friendlyname PKCS12_add_friendlyname_asc
 # endif
-# define KEY_EX  0x10
+# define KEY_EX 0x10
 # define KEY_SIG 0x80
 typedef struct {
 X509_SIG *dinfo;
@@ -56,8 +56,8 @@ ASN1_IA5STRING *sdsicert;
 ASN1_TYPE *other;
 } value;
 } PKCS12_BAGS;
-# define PKCS12_ERROR    0
-# define PKCS12_OK       1
+# define PKCS12_ERROR 0
+# define PKCS12_OK 1
 # define M_PKCS12_x5092certbag PKCS12_x5092certbag
 # define M_PKCS12_x509crl2certbag PKCS12_x509crl2certbag
 # define M_PKCS12_certbag2x509 PKCS12_certbag2x509
@@ -171,58 +171,58 @@ PKCS12 *d2i_PKCS12_bio(BIO *bp, PKCS12 **p12);
 PKCS12 *d2i_PKCS12_fp(FILE *fp, PKCS12 **p12);
 int PKCS12_newpass(PKCS12 *p12, char *oldpass, char *newpass);
 void ERR_load_PKCS12_strings(void);
-# define PKCS12_F_PARSE_BAG                               129
-# define PKCS12_F_PARSE_BAGS                              103
-# define PKCS12_F_PKCS12_ADD_FRIENDLYNAME                 100
-# define PKCS12_F_PKCS12_ADD_FRIENDLYNAME_ASC             127
-# define PKCS12_F_PKCS12_ADD_FRIENDLYNAME_UNI             102
-# define PKCS12_F_PKCS12_ADD_LOCALKEYID                   104
-# define PKCS12_F_PKCS12_CREATE                           105
-# define PKCS12_F_PKCS12_GEN_MAC                          107
-# define PKCS12_F_PKCS12_INIT                             109
-# define PKCS12_F_PKCS12_ITEM_DECRYPT_D2I                 106
-# define PKCS12_F_PKCS12_ITEM_I2D_ENCRYPT                 108
-# define PKCS12_F_PKCS12_ITEM_PACK_SAFEBAG                117
-# define PKCS12_F_PKCS12_KEY_GEN_ASC                      110
-# define PKCS12_F_PKCS12_KEY_GEN_UNI                      111
-# define PKCS12_F_PKCS12_MAKE_KEYBAG                      112
-# define PKCS12_F_PKCS12_MAKE_SHKEYBAG                    113
-# define PKCS12_F_PKCS12_NEWPASS                          128
-# define PKCS12_F_PKCS12_PACK_P7DATA                      114
-# define PKCS12_F_PKCS12_PACK_P7ENCDATA                   115
-# define PKCS12_F_PKCS12_PARSE                            118
-# define PKCS12_F_PKCS12_PBE_CRYPT                        119
-# define PKCS12_F_PKCS12_PBE_KEYIVGEN                     120
-# define PKCS12_F_PKCS12_SETUP_MAC                        122
-# define PKCS12_F_PKCS12_SET_MAC                          123
-# define PKCS12_F_PKCS12_UNPACK_AUTHSAFES                 130
-# define PKCS12_F_PKCS12_UNPACK_P7DATA                    131
-# define PKCS12_F_PKCS12_VERIFY_MAC                       126
-# define PKCS12_F_PKCS8_ADD_KEYUSAGE                      124
-# define PKCS12_F_PKCS8_ENCRYPT                           125
-# define PKCS12_R_CANT_PACK_STRUCTURE                     100
-# define PKCS12_R_CONTENT_TYPE_NOT_DATA                   121
-# define PKCS12_R_DECODE_ERROR                            101
-# define PKCS12_R_ENCODE_ERROR                            102
-# define PKCS12_R_ENCRYPT_ERROR                           103
-# define PKCS12_R_ERROR_SETTING_ENCRYPTED_DATA_TYPE       120
-# define PKCS12_R_INVALID_NULL_ARGUMENT                   104
-# define PKCS12_R_INVALID_NULL_PKCS12_POINTER             105
-# define PKCS12_R_IV_GEN_ERROR                            106
-# define PKCS12_R_KEY_GEN_ERROR                           107
-# define PKCS12_R_MAC_ABSENT                              108
-# define PKCS12_R_MAC_GENERATION_ERROR                    109
-# define PKCS12_R_MAC_SETUP_ERROR                         110
-# define PKCS12_R_MAC_STRING_SET_ERROR                    111
-# define PKCS12_R_MAC_VERIFY_ERROR                        112
-# define PKCS12_R_MAC_VERIFY_FAILURE                      113
-# define PKCS12_R_PARSE_ERROR                             114
-# define PKCS12_R_PKCS12_ALGOR_CIPHERINIT_ERROR           115
-# define PKCS12_R_PKCS12_CIPHERFINAL_ERROR                116
-# define PKCS12_R_PKCS12_PBE_CRYPT_ERROR                  117
-# define PKCS12_R_UNKNOWN_DIGEST_ALGORITHM                118
-# define PKCS12_R_UNSUPPORTED_PKCS12_MODE                 119
-#ifdef  __cplusplus
+# define PKCS12_F_PARSE_BAG 129
+# define PKCS12_F_PARSE_BAGS 103
+# define PKCS12_F_PKCS12_ADD_FRIENDLYNAME 100
+# define PKCS12_F_PKCS12_ADD_FRIENDLYNAME_ASC 127
+# define PKCS12_F_PKCS12_ADD_FRIENDLYNAME_UNI 102
+# define PKCS12_F_PKCS12_ADD_LOCALKEYID 104
+# define PKCS12_F_PKCS12_CREATE 105
+# define PKCS12_F_PKCS12_GEN_MAC 107
+# define PKCS12_F_PKCS12_INIT 109
+# define PKCS12_F_PKCS12_ITEM_DECRYPT_D2I 106
+# define PKCS12_F_PKCS12_ITEM_I2D_ENCRYPT 108
+# define PKCS12_F_PKCS12_ITEM_PACK_SAFEBAG 117
+# define PKCS12_F_PKCS12_KEY_GEN_ASC 110
+# define PKCS12_F_PKCS12_KEY_GEN_UNI 111
+# define PKCS12_F_PKCS12_MAKE_KEYBAG 112
+# define PKCS12_F_PKCS12_MAKE_SHKEYBAG 113
+# define PKCS12_F_PKCS12_NEWPASS 128
+# define PKCS12_F_PKCS12_PACK_P7DATA 114
+# define PKCS12_F_PKCS12_PACK_P7ENCDATA 115
+# define PKCS12_F_PKCS12_PARSE 118
+# define PKCS12_F_PKCS12_PBE_CRYPT 119
+# define PKCS12_F_PKCS12_PBE_KEYIVGEN 120
+# define PKCS12_F_PKCS12_SETUP_MAC 122
+# define PKCS12_F_PKCS12_SET_MAC 123
+# define PKCS12_F_PKCS12_UNPACK_AUTHSAFES 130
+# define PKCS12_F_PKCS12_UNPACK_P7DATA 131
+# define PKCS12_F_PKCS12_VERIFY_MAC 126
+# define PKCS12_F_PKCS8_ADD_KEYUSAGE 124
+# define PKCS12_F_PKCS8_ENCRYPT 125
+# define PKCS12_R_CANT_PACK_STRUCTURE 100
+# define PKCS12_R_CONTENT_TYPE_NOT_DATA 121
+# define PKCS12_R_DECODE_ERROR 101
+# define PKCS12_R_ENCODE_ERROR 102
+# define PKCS12_R_ENCRYPT_ERROR 103
+# define PKCS12_R_ERROR_SETTING_ENCRYPTED_DATA_TYPE 120
+# define PKCS12_R_INVALID_NULL_ARGUMENT 104
+# define PKCS12_R_INVALID_NULL_PKCS12_POINTER 105
+# define PKCS12_R_IV_GEN_ERROR 106
+# define PKCS12_R_KEY_GEN_ERROR 107
+# define PKCS12_R_MAC_ABSENT 108
+# define PKCS12_R_MAC_GENERATION_ERROR 109
+# define PKCS12_R_MAC_SETUP_ERROR 110
+# define PKCS12_R_MAC_STRING_SET_ERROR 111
+# define PKCS12_R_MAC_VERIFY_ERROR 112
+# define PKCS12_R_MAC_VERIFY_FAILURE 113
+# define PKCS12_R_PARSE_ERROR 114
+# define PKCS12_R_PKCS12_ALGOR_CIPHERINIT_ERROR 115
+# define PKCS12_R_PKCS12_CIPHERFINAL_ERROR 116
+# define PKCS12_R_PKCS12_PBE_CRYPT_ERROR 117
+# define PKCS12_R_UNKNOWN_DIGEST_ALGORITHM 118
+# define PKCS12_R_UNSUPPORTED_PKCS12_MODE 119
+#ifdef __cplusplus
 }
 #endif
 #endif

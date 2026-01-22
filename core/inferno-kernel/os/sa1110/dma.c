@@ -1,46 +1,46 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"io.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "io.h"
 enum {
-CSRrun=		1 << 0,
-CSRie=		1 << 1,
-CSRerror=	1 << 2,
-CSRdonea=	1 << 3,
-CSRstrta=	1 << 4,
-CSRdoneb=	1 << 5,
-CSRstrtb=	1 << 6,
-CSRbiu=		1 << 7,
-Ndma=	6,
+CSRrun= 1 << 0,
+CSRie= 1 << 1,
+CSRerror= 1 << 2,
+CSRdonea= 1 << 3,
+CSRstrta= 1 << 4,
+CSRdoneb= 1 << 5,
+CSRstrtb= 1 << 6,
+CSRbiu= 1 << 7,
+Ndma= 6,
 };
-#define	DMACFG(da, ds, dw, bs) (((da)<<8)|((ds)<<4)|((dw)<<3)|((bs)<<2))
+#define DMACFG(da, ds, dw, bs) (((da)<<8)|((ds)<<4)|((dw)<<3)|((bs)<<2))
 static ulong dmaconfig[16] = {
-[DmaUDC] 	DMACFG(0x80000A, 0, 0, 1),
-[DmaUART0]	DMACFG(0x804005, 4, 0, 0),
-[DmaHSSP]	DMACFG(0x81001B, 6, 0, 1),
-[DmaUART1]	DMACFG(0x80C005, 6, 0, 0),
-[DmaUART2]	DMACFG(0x814005, 8, 0, 0),
+[DmaUDC] DMACFG(0x80000A, 0, 0, 1),
+[DmaUART0] DMACFG(0x804005, 4, 0, 0),
+[DmaHSSP] DMACFG(0x81001B, 6, 0, 1),
+[DmaUART1] DMACFG(0x80C005, 6, 0, 0),
+[DmaUART2] DMACFG(0x814005, 8, 0, 0),
 [DmaMCPaudio] DMACFG(0x818002, 10, 1, 1),
 [DmaMCPtelecom] DMACFG(0x818003, 12, 1, 1),
-[DmaSSP]		DMACFG(0x81C01B, 14, 1, 0),
+[DmaSSP] DMACFG(0x81C01B, 14, 1, 0),
 };
 struct Dma {
-int	chan;
-DmaReg*	reg;
-void	(*interrupt)(void*, ulong);
-void*	arg;
-Rendez	r;
-int	intrset;
+int chan;
+DmaReg* reg;
+void (*interrupt)(void*, ulong);
+void* arg;
+Rendez r;
+int intrset;
 };
 static struct {
 Lock;
-int	avail;
-Dma	dma[Ndma];
+int avail;
+Dma dma[Ndma];
 } dmachans;
-static	void	dmaintr(Ureg*, void*);
+static void dmaintr(Ureg*, void*);
 void
 dmareset(void)
 {
@@ -124,7 +124,7 @@ return 1;
 void
 dmastop(Dma *dma)
 {
-dma->reg->dcsr_c =	CSRrun |
+dma->reg->dcsr_c = CSRrun |
 CSRie |
 CSRerror |
 CSRdonea |

@@ -6,16 +6,16 @@
 (EvaluationLink (PredicateNode "door C") (ConceptNode "unlocked"))
 (EvaluationLink (PredicateNode "door C") (ConceptNode "open"))
 (define (get-a) (GetLink
-    (AndLink
-       (ChoiceLink
-          (EvaluationLink (VariableNode "$door") (ConceptNode "locked")))
-       (ChoiceLink
-          (EvaluationLink (VariableNode "$door") (ConceptNode "closed")))
-      )))
+(AndLink
+(ChoiceLink
+(EvaluationLink (VariableNode "$door") (ConceptNode "locked")))
+(ChoiceLink
+(EvaluationLink (VariableNode "$door") (ConceptNode "closed")))
+)))
 (define (get-bc) (GetLink
-    (AndLink
-       (ChoiceLink
-          (EvaluationLink (VariableNode "$door") (ConceptNode "unlocked")))
-       (ChoiceLink
-          (EvaluationLink (VariableNode "$door") (VariableNode "$ajar")))
-      )))
+(AndLink
+(ChoiceLink
+(EvaluationLink (VariableNode "$door") (ConceptNode "unlocked")))
+(ChoiceLink
+(EvaluationLink (VariableNode "$door") (VariableNode "$ajar")))
+)))

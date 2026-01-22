@@ -27,8 +27,8 @@ exit;
 }
 ar := argv2r(tl argv);
 br := argv2r(tl tl tl tl tl argv);
-a := Line.new(ar.min, ar.max);			# ball
-b := Line.new(br.min, br.max);			# bat
+a := Line.new(ar.min, ar.max); # ball
+b := Line.new(br.min, br.max); # bat
 (hit, hitp, s, t) := b.intersection(a.p, a.v);
 if (hit) {
 nv := boing(a.v, b);
@@ -56,14 +56,14 @@ r: Rect;
 return r;
 }
 Line: adt {
-p, v:		Realpoint;
-s:		real;
-new:			fn(p1, p2: Point): ref Line;
-hittest:		fn(l: self ref Line, p: Point): (Realpoint, real, real);
-intersection:	fn(b: self ref Line, p, v: Realpoint): (int, Realpoint, real, real);
-point:		fn(b: self ref Line, s: real): Point;
-θ:			fn(b: self ref Line): real;
-newpolar:		fn(p: Realpoint, θ: real, s: real): ref Line;
+p, v: Realpoint;
+s: real;
+new: fn(p1, p2: Point): ref Line;
+hittest: fn(l: self ref Line, p: Point): (Realpoint, real, real);
+intersection: fn(b: self ref Line, p, v: Realpoint): (int, Realpoint, real, real);
+point: fn(b: self ref Line, s: real): Point;
+θ: fn(b: self ref Line): real;
+newpolar: fn(p: Realpoint, θ: real, s: real): ref Line;
 };
 Realpoint: adt {
 x, y: real;
@@ -73,7 +73,7 @@ Line.new(p1, p2: Point): ref Line
 ln := ref Line;
 ln.p = (real p1.x, real p1.y);
 v := Realpoint(real (p2.x - p1.x), real (p2.y - p1.y));
-ln.s =  math->sqrt(v.x * v.x + v.y * v.y);
+ln.s = math->sqrt(v.x * v.x + v.y * v.y);
 if (ln.s > ZERO)
 ln.v = (v.x / ln.s, v.y / ln.s);
 else

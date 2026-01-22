@@ -10,20 +10,20 @@ template<typename T_BC, typename T_Q>
 struct IGemmKernel {
 virtual ~IGemmKernel() = default;
 virtual void GetMetric(Metric& metric, int m, int n, int k) = 0;
-virtual void Launch(T_BC*        C,
-const uint*  A,
-const T_BC*  B,
-const T_Q*   Q,
-int          M,
-int          N,
-int          K,
-int          output_op_idx,
+virtual void Launch(T_BC* C,
+const uint* A,
+const T_BC* B,
+const T_Q* Q,
+int M,
+int N,
+int K,
+int output_op_idx,
 cudaStream_t) = 0;
 virtual void Dump(std::ostream& os) = 0;
 };
 template<typename CtaShape, typename WarpShape, int Stages, int GroupSize, typename OutputOps, typename T_BC, typename T_Q>
 struct GemmKernel: public IGemmKernel<T_BC, T_Q> {
-static constexpr CtaShape  cta_shape{};
+static constexpr CtaShape cta_shape{};
 static constexpr WarpShape warp_shape{};
 using GemmType = Gemm<cta_shape.m(),
 cta_shape.n(),
@@ -37,18 +37,18 @@ OutputOps,
 T_BC,
 T_Q>;
 decltype(&gemm_s4_f16_nn<GemmType, T_BC, T_Q>) kernel_func_;
-std::shared_ptr<cudaDeviceProp>     props_;
-int                                 max_active_ctas_{};
-static constexpr int kSlices       = GemmType::SLICES;
-static constexpr int kSmemSizeA    = GemmType::IteratorA::kSmemByteSize * kSlices;
-static constexpr int kSmemSizeB    = GemmType::IteratorB::kSmemByteSize * kSlices;
-static constexpr int kSmemSizeC    = sizeof(float) * cta_shape.m() * cta_shape.n();
+std::shared_ptr<cudaDeviceProp> props_;
+int max_active_ctas_{};
+static constexpr int kSlices = GemmType::SLICES;
+static constexpr int kSmemSizeA = GemmType::IteratorA::kSmemByteSize * kSlices;
+static constexpr int kSmemSizeB = GemmType::IteratorB::kSmemByteSize * kSlices;
+static constexpr int kSmemSizeC = sizeof(float) * cta_shape.m() * cta_shape.n();
 static constexpr int kSmemByteSize = std::max(kSmemSizeA + kSmemSizeB, kSmemSizeC);
 static constexpr int kSmemSizeQ = sizeof(typename GemmType::IteratorQ::Storage);
 explicit GemmKernel(std::shared_ptr<cudaDeviceProp> props = {}): props_(std::move(props))
 {
 if (!props_) {
-props_        = std::make_shared<cudaDeviceProp>();
+props_ = std::make_shared<cudaDeviceProp>();
 int device_id = -1;
 cudaGetDevice(&device_id);
 cudaGetDeviceProperties(props_.get(), device_id);
@@ -64,40 +64,40 @@ return m % cta_shape.m() == 0 && k % cta_shape.k() == 0;
 }
 void GetMetric(Metric& metric, int m, int n, int k) override
 {
-metric.cta_shape  = {cta_shape.m(), cta_shape.n(), cta_shape.k()};
+metric.cta_shape = {cta_shape.m(), cta_shape.n(), cta_shape.k()};
 metric.warp_shape = {warp_shape.m(), warp_shape.n(), warp_shape.k()};
-metric.warps      = GemmType::kWarpCount;
-metric.stages     = Stages;
-metric.smem       = (kSmemByteSize + kSmemSizeQ) / 1024.f;
+metric.warps = GemmType::kWarpCount;
+metric.stages = Stages;
+metric.smem = (kSmemByteSize + kSmemSizeQ) / 1024.f;
 metric.feasible = is_feasible(m, n, k) && max_active_ctas_ > 0;
 metric.prefer = cta_shape.m() != 64 || m <= k;
 if (!metric.feasible) {
 return;
 }
-int grid_size    = ((m + cta_shape.m() - 1) / cta_shape.m()) * ((n + cta_shape.n() - 1) / cta_shape.n());
+int grid_size = ((m + cta_shape.m() - 1) / cta_shape.m()) * ((n + cta_shape.n() - 1) / cta_shape.n());
 metric.grid_size = grid_size;
 metric.max_active_ctas = max_active_ctas_;
 metric.active_ctas =
 std::min(max_active_ctas_, (grid_size + props_->multiProcessorCount - 1) / props_->multiProcessorCount);
-metric.waves     = (float)grid_size / (props_->multiProcessorCount * metric.active_ctas);
+metric.waves = (float)grid_size / (props_->multiProcessorCount * metric.active_ctas);
 metric.occupancy = (metric.active_ctas * GemmType::kWarpCount)
 / (float)(props_->maxThreadsPerMultiProcessor / props_->warpSize);
-metric.cta_cnt_m  = (m + cta_shape.m() - 1) / cta_shape.m();
-metric.cta_cnt_n  = (n + cta_shape.n() - 1) / cta_shape.n();
+metric.cta_cnt_m = (m + cta_shape.m() - 1) / cta_shape.m();
+metric.cta_cnt_n = (n + cta_shape.n() - 1) / cta_shape.n();
 metric.cta_iter_k = (k + cta_shape.k() - 1) / cta_shape.k();
 metric.tile_efficiency = (float)n / (metric.cta_cnt_n * cta_shape.n());
 metric.wave_efficiency = metric.waves / std::ceil(metric.waves);
 const int m_pad = (m + cta_shape.m() - 1) / cta_shape.m() * cta_shape.m();
 const int n_pad = (n + cta_shape.n() - 1) / cta_shape.n() * cta_shape.n();
-metric.grid_a0  = 0.25f * m * n_pad / cta_shape.n();
-metric.grid_b0  = 1.00f * n * m_pad / cta_shape.m();
-metric.grid_a1  = 0.65f * m_pad * n_pad / warp_shape.n();
-metric.grid_b1  = 0.25f * m_pad * n_pad / warp_shape.m();
-metric.grid_mm  = 1.00f * m_pad * n_pad / 64;
+metric.grid_a0 = 0.25f * m * n_pad / cta_shape.n();
+metric.grid_b0 = 1.00f * n * m_pad / cta_shape.m();
+metric.grid_a1 = 0.65f * m_pad * n_pad / warp_shape.n();
+metric.grid_b1 = 0.25f * m_pad * n_pad / warp_shape.m();
+metric.grid_mm = 1.00f * m_pad * n_pad / 64;
 metric.grid_sum = metric.grid_a0 + metric.grid_b0 + metric.grid_a1 + metric.grid_b1 + metric.grid_mm;
 metric.cta_sum = metric.grid_sum / grid_size;
 metric.waves1 = (float)grid_size / (props_->multiProcessorCount * metric.active_ctas);
-metric.cta_wave  = std::ceil(metric.waves1) * metric.active_ctas;
+metric.cta_wave = std::ceil(metric.waves1) * metric.active_ctas;
 metric.grid_norm = metric.cta_wave * metric.cta_sum;
 }
 void Launch(

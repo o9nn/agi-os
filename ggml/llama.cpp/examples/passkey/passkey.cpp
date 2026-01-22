@@ -16,15 +16,15 @@ int main(int argc, char ** argv) {
 common_params params;
 params.n_junk = 250;
 params.n_keep = 32;
-params.i_pos  = -1;
+params.i_pos = -1;
 if (!common_params_parse(argc, argv, params, LLAMA_EXAMPLE_PASSKEY, print_usage)) {
 return 1;
 }
 common_init();
 int n_junk = params.n_junk;
 int n_keep = params.n_keep;
-int n_grp  = params.grp_attn_n;
-int i_pos  = params.i_pos;
+int n_grp = params.grp_attn_n;
+int i_pos = params.i_pos;
 if (i_pos == -1) {
 i_pos = rand() % n_junk;
 }
@@ -65,9 +65,9 @@ const int n_tokens_prefix = common_tokenize(ctx, prompt_prefix, true).size();
 const int n_tokens_all = tokens_list.size();
 const int n_predict = 16;
 const int n_len = n_tokens_all + n_predict;
-const int n_ctx       = llama_n_ctx(ctx) - n_keep;
-const int n_kv_req    = llama_n_ctx(ctx);
-const int n_batch     = ctx_params.n_batch;
+const int n_ctx = llama_n_ctx(ctx) - n_keep;
+const int n_kv_req = llama_n_ctx(ctx);
+const int n_batch = ctx_params.n_batch;
 const int n_batch_grp = ctx_params.n_batch/n_grp;
 LOG_INF("\n%s: n_len = %d, n_ctx = %d, n_kv_req = %d, n_grp = %d, n_batch = %d, n_junk = %d, i_pos = %d\n", __func__, n_len, n_ctx, n_kv_req, n_grp, n_batch, n_junk, i_pos);
 LOG_INF("\n");
@@ -80,7 +80,7 @@ for (int i = 0; i < n_ctx; i += n_batch) {
 if (i > 0 && n_grp > 1) {
 const int ib = i/n_batch - 1;
 const int bd = n_batch_grp*(n_grp - 1);
-llama_memory_seq_add(mem, 0, n_past - n_batch,         n_past,         ib*bd);
+llama_memory_seq_add(mem, 0, n_past - n_batch, n_past, ib*bd);
 llama_memory_seq_div(mem, 0, n_past - n_batch + ib*bd, n_past + ib*bd, n_grp);
 n_past = llama_memory_seq_pos_max(mem, 0) + 1;
 }
@@ -103,8 +103,8 @@ break;
 for (int i = n_ctx; i < n_tokens_all; i += n_batch) {
 const int n_discard = n_batch;
 LOG_INF("%s: shifting KV cache with %d\n", __func__, n_discard);
-llama_memory_seq_rm (mem, 0, n_keep            , n_keep + n_discard);
-llama_memory_seq_add(mem, 0, n_keep + n_discard, n_ctx,  -n_discard);
+llama_memory_seq_rm (mem, 0, n_keep , n_keep + n_discard);
+llama_memory_seq_add(mem, 0, n_keep + n_discard, n_ctx, -n_discard);
 n_past = llama_memory_seq_pos_max(mem, 0) + 1;
 common_batch_clear(batch);
 for (int j = 0; j < n_batch && i + j < n_tokens_all; j++) {
@@ -123,15 +123,15 @@ LOG_INF("%s: processed: [%6d, %6d)\n", __func__, i, std::min(i + n_batch, n_toke
 const int n_discard = n_past - n_ctx + n_predict;
 if (n_discard > 0) {
 LOG_INF("%s: shifting KV cache with %d to free space for the answer\n", __func__, n_discard);
-llama_memory_seq_rm (mem, 0, n_keep            , n_keep + n_discard);
-llama_memory_seq_add(mem, 0, n_keep + n_discard, n_ctx,  -n_discard);
+llama_memory_seq_rm (mem, 0, n_keep , n_keep + n_discard);
+llama_memory_seq_add(mem, 0, n_keep + n_discard, n_ctx, -n_discard);
 n_past = llama_memory_seq_pos_max(mem, 0) + 1;
 }
 }
 LOG_INF("\n");
 LOG_INF("%s: passkey = %d, inserted at position %d / %d (token pos: ~%d)\n", __func__, passkey, i_pos, n_junk, (i_pos * n_tokens_all) / n_junk);
 LOG_INF("\n");
-int n_cur    = n_tokens_all;
+int n_cur = n_tokens_all;
 int n_decode = 0;
 LOG_INF("%s", prompt_suffix.c_str());
 const auto t_main_start = ggml_time_us();

@@ -9,15 +9,15 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 template<typename _Arg, typename _Result>
 struct unary_function
 {
-typedef _Arg 	argument_type;
-typedef _Result 	result_type;
+typedef _Arg argument_type;
+typedef _Result result_type;
 };
 template<typename _Arg1, typename _Arg2, typename _Result>
 struct binary_function
 {
-typedef _Arg1 	first_argument_type;
-typedef _Arg2 	second_argument_type;
-typedef _Result 	result_type;
+typedef _Arg1 first_argument_type;
+typedef _Arg2 second_argument_type;
+typedef _Result result_type;
 };
 #if __cplusplus > 201103L
 struct __is_transparent;

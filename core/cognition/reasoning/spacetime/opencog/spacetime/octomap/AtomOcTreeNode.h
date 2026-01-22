@@ -70,7 +70,7 @@ inline T getData() const
 {
 return dat;
 }
-inline void  setData(T c)
+inline void setData(T c)
 {
 this->dat = c;
 }
@@ -96,7 +96,7 @@ std::ostream& writeValue(std::ostream &s) const{
 std::bitset<8> children;
 for (unsigned int i = 0; i < 8; i++) {
 if (this->childExists(i)) children[i] = 1;
-else                children[i] = 0;
+else children[i] = 0;
 }
 char children_char = (char) children.to_ulong();
 s.write((const char*) &value, sizeof(value));

@@ -3,13 +3,13 @@
 #include "fns.h"
 #include "error.h"
 #include "9.h"
-static int	sizeToDepth(uvlong s, int psize, int dsize);
-static u32int 	tagGen(void);
-static Block 	*sourceLoad(Source *r, Entry *e);
-static int	sourceShrinkDepth(Source*, Block*, Entry*, int);
-static int	sourceShrinkSize(Source*, Entry*, uvlong);
-static int	sourceGrowDepth(Source*, Block*, Entry*, int);
-#define sourceIsLocked(r)	((r)->b != nil)
+static int sizeToDepth(uvlong s, int psize, int dsize);
+static u32int tagGen(void);
+static Block *sourceLoad(Source *r, Entry *e);
+static int sourceShrinkDepth(Source*, Block*, Entry*, int);
+static int sourceShrinkSize(Source*, Entry*, uvlong);
+static int sourceGrowDepth(Source*, Block*, Entry*, int);
+#define sourceIsLocked(r) ((r)->b != nil)
 static Source *
 sourceAlloc(Fs *fs, Block *b, Source *p, u32int offset, int mode, int issnapshot)
 {

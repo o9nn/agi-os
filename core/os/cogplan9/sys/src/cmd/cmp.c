@@ -1,7 +1,7 @@
 #include <u.h>
 #include <libc.h>
 #include <ctype.h>
-#define		BUF		65536
+#define BUF 65536
 int sflag = 0;
 int lflag = 0;
 int Lflag = 0;
@@ -33,10 +33,10 @@ vlong nc = 1, l = 1;
 char *name1, *name2;
 uchar *b1s, *b1e, *b2s, *b2e;
 ARGBEGIN{
-case 's':	sflag = 1; break;
-case 'l':	lflag = 1; break;
-case 'L':	Lflag = 1; break;
-default:	usage();
+case 's': sflag = 1; break;
+case 'l': lflag = 1; break;
+case 'L': Lflag = 1; break;
+default: usage();
 }ARGEND
 if(argc < 2 || argc > 4)
 usage();
@@ -58,13 +58,13 @@ for(;;){
 if(b1s >= b1e){
 if(b1s >= &buf1[BUF])
 b1s = buf1;
-n = read(f1, b1s,  &buf1[BUF] - b1s);
+n = read(f1, b1s, &buf1[BUF] - b1s);
 b1e = b1s + n;
 }
 if(b2s >= b2e){
 if(b2s >= &buf2[BUF])
 b2s = buf2;
-n = read(f2, b2s,  &buf2[BUF] - b2s);
+n = read(f2, b2s, &buf2[BUF] - b2s);
 b2e = b2s + n;
 }
 n = b2e - b2s;

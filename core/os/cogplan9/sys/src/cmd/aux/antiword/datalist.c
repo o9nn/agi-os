@@ -2,22 +2,22 @@
 #include <errno.h>
 #include "antiword.h"
 #if defined(__riscos)
-#define EIO		42
+#define EIO 42
 #endif
 typedef struct data_mem_tag {
-data_block_type		tInfo;
-struct data_mem_tag	*pNext;
+data_block_type tInfo;
+struct data_mem_tag *pNext;
 } data_mem_type;
-static data_mem_type	*pAnchor = NULL;
-static data_mem_type	*pBlockLast = NULL;
-static data_mem_type	*pBlockCurrent = NULL;
-static ULONG	ulBlockOffset = 0;
-static size_t	tByteNext = 0;
-static UCHAR	aucBlock[BIG_BLOCK_SIZE];
+static data_mem_type *pAnchor = NULL;
+static data_mem_type *pBlockLast = NULL;
+static data_mem_type *pBlockCurrent = NULL;
+static ULONG ulBlockOffset = 0;
+static size_t tByteNext = 0;
+static UCHAR aucBlock[BIG_BLOCK_SIZE];
 void
 vDestroyDataBlockList(void)
 {
-data_mem_type	*pCurr, *pNext;
+data_mem_type *pCurr, *pNext;
 DBG_MSG("vDestroyDataBlockList");
 pCurr = pAnchor;
 while (pCurr != NULL) {
@@ -34,7 +34,7 @@ tByteNext = 0;
 BOOL
 bAdd2DataBlockList(const data_block_type *pDataBlock)
 {
-data_mem_type	*pListMember;
+data_mem_type *pListMember;
 fail(pDataBlock == NULL);
 fail(pDataBlock->ulFileOffset == FC_INVALID);
 fail(pDataBlock->ulDataPos == CP_INVALID);
@@ -77,8 +77,8 @@ return pBlockCurrent->tInfo.ulFileOffset + ulBlockOffset + tByteNext;
 BOOL
 bSetDataOffset(FILE *pFile, ULONG ulFileOffset)
 {
-data_mem_type	*pCurr;
-size_t	tReadLen;
+data_mem_type *pCurr;
+size_t tReadLen;
 DBG_HEX(ulFileOffset);
 for (pCurr = pAnchor; pCurr != NULL; pCurr = pCurr->pNext) {
 if (ulFileOffset < pCurr->tInfo.ulFileOffset ||
@@ -105,8 +105,8 @@ return FALSE;
 int
 iNextByte(FILE *pFile)
 {
-ULONG	ulReadOff;
-size_t	tReadLen;
+ULONG ulReadOff;
+size_t tReadLen;
 fail(pBlockCurrent == NULL);
 if (tByteNext >= sizeof(aucBlock) ||
 ulBlockOffset + tByteNext >= pBlockCurrent->tInfo.ulLength) {
@@ -138,7 +138,7 @@ return (int)aucBlock[tByteNext++];
 USHORT
 usNextWord(FILE *pFile)
 {
-USHORT	usLSB, usMSB;
+USHORT usLSB, usMSB;
 usLSB = (USHORT)iNextByte(pFile);
 if (usLSB == (USHORT)EOF) {
 errno = EIO;
@@ -155,7 +155,7 @@ return (usMSB << 8) | usLSB;
 ULONG
 ulNextLong(FILE *pFile)
 {
-ULONG	ulLSW, ulMSW;
+ULONG ulLSW, ulMSW;
 ulLSW = (ULONG)usNextWord(pFile);
 if (ulLSW == (ULONG)EOF) {
 errno = EIO;
@@ -189,7 +189,7 @@ return (usMSB << 8) | usLSB;
 ULONG
 ulNextLongBE(FILE *pFile)
 {
-ULONG	ulLSW, ulMSW;
+ULONG ulLSW, ulMSW;
 ulMSW = (ULONG)usNextWordBE(pFile);
 if (ulMSW == (ULONG)EOF) {
 errno = EIO;
@@ -206,7 +206,7 @@ return (ulMSW << 16) | ulLSW;
 size_t
 tSkipBytes(FILE *pFile, size_t tToSkip)
 {
-size_t	tToGo, tMaxMove, tMove;
+size_t tToGo, tMaxMove, tMove;
 fail(pFile == NULL);
 fail(pBlockCurrent == NULL);
 tToGo = tToSkip;
@@ -229,7 +229,7 @@ return tToSkip;
 ULONG
 ulDataPos2FileOffset(ULONG ulDataPos)
 {
-data_mem_type	*pCurr;
+data_mem_type *pCurr;
 fail(ulDataPos == CP_INVALID);
 for (pCurr = pAnchor; pCurr != NULL; pCurr = pCurr->pNext) {
 if (ulDataPos < pCurr->tInfo.ulDataPos ||

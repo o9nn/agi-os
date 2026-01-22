@@ -1,5 +1,5 @@
 #ifndef ivmspace_INCLUDED
-#  define ivmspace_INCLUDED
+# define ivmspace_INCLUDED
 #include "gsgc.h"
 #define a_space (((1 << r_space_bits) - 1) << r_space_shift)
 typedef enum {

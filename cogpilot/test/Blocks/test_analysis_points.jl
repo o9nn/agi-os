@@ -30,8 +30,8 @@ matrices, _ = get_comp_sensitivity(sys, ap)
 # Equivalent code using ControlSystems. This can be used to verify the expected results tested for above.
 using ControlSystemsBase
 P = tf(1.0, [1, 1])
-C = 1                      # Negative feedback assumed in ControlSystems
-S = sensitivity(P, C)      # or feedback(1, P*C)
+C = 1 # Negative feedback assumed in ControlSystems
+S = sensitivity(P, C) # or feedback(1, P*C)
 T = comp_sensitivity(P, C) # or feedback(P*C)
 =#
 # Test with automatically created analysis point
@@ -90,8 +90,8 @@ eqs = [connect(P.output, :plant_output, add.input2)
 connect(add.output, C.input)
 connect(C.output, :plant_input, P.input)]
 # eqs = [connect(P.output, add.input2)
-#        connect(add.output, C.input)
-#        connect(C.output, P.input)]
+# connect(add.output, C.input)
+# connect(C.output, P.input)]
 sys_inner = System(eqs, t, systems = [P, C, add], name = :inner)
 @named r = Constant(k = 1)
 @named F = FirstOrder(k = 1, T = 3)
@@ -121,7 +121,7 @@ using ModelingToolkit: connect
 m1 = 1
 m2 = 1
 k = 1000 # Spring stiffness
-c = 10   # Damping coefficient
+c = 10 # Damping coefficient
 @named inertia1 = Inertia(; J = m1)
 @named inertia2 = Inertia(; J = m2)
 @named spring = Spring(; c = k)
@@ -171,9 +171,9 @@ sys = mtkcompile(closed_loop)
 prob = ODEProblem(sys, unknowns(sys) .=> 0.0, (0.0, 4.0))
 sol = solve(prob, Rodas5P(), reltol = 1e-6, abstol = 1e-9)
 # plot(
-#     plot(sol, vars = [filt.y, model.inertia1.phi, model.inertia2.phi]),
-#     plot(sol, vars = [pid.ctr_output.u], title = "Control signal"),
-#     legend = :bottomright,
+# plot(sol, vars = [filt.y, model.inertia1.phi, model.inertia2.phi]),
+# plot(sol, vars = [pid.ctr_output.u], title = "Control signal"),
+# legend = :bottomright,
 # )
 matrices, ssys = linearize(closed_loop, :r, :y)
 lsys = ss(matrices...) |> sminreal

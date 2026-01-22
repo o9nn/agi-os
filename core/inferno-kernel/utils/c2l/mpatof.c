@@ -1,23 +1,23 @@
-#include	"cc.h"
+#include "cc.h"
 enum
 {
-Mpscale	= 29,
-Mpprec	= 36,
-Mpbase	= 1L<<Mpscale,
+Mpscale = 29,
+Mpprec = 36,
+Mpbase = 1L<<Mpscale,
 };
 typedef
 struct
 {
-long	a[Mpprec];
-char	ovf;
+long a[Mpprec];
+char ovf;
 } Mp;
-int	mpatof(char*, double*);
-int	mpatov(char *s, vlong *v);
-void	mpint(Mp*, int);
-void	mppow(Mp*, int, int);
-void	mpmul(Mp*, int);
-void	mpadd(Mp*, Mp*);
-int	mptof(Mp*, double*);
+int mpatof(char*, double*);
+int mpatov(char *s, vlong *v);
+void mpint(Mp*, int);
+void mppow(Mp*, int, int);
+void mpmul(Mp*, int);
+void mpadd(Mp*, Mp*);
+int mptof(Mp*, double*);
 int
 mpatof(char *s, double *d)
 {
@@ -36,8 +36,8 @@ goto bad;
 case '-':
 f = 1;
 case ' ':
-case  '\t':
-case  '+':
+case '\t':
+case '+':
 continue;
 case '.':
 dp = 1;

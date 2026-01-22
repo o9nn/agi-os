@@ -2,48 +2,48 @@
 (define freq-obj (add-pair-freq-api star-obj))
 (define (weighted-density NBINS LO HI WEIFN FILENAM)
 "
-  density NBINS LO HI WEIFN FILENAM - create histogram of density of states.
-  Example: Density of states just counts 1.0 for each pair.
-  (weighted-density 200 7 30 (lambda (PAIR) 1.0) \"/tmp/density.dat\")
+density NBINS LO HI WEIFN FILENAM - create histogram of density of states.
+Example: Density of states just counts 1.0 for each pair.
+(weighted-density 200 7 30 (lambda (PAIR) 1.0) \"/tmp/density.dat\")
 "
-	(define (pval ITEM) (freq-obj 'pair-logli ITEM))
-	(define bins (bin-count all-pairs NBINS pval WEIFN LO HI))
-	(define counts (array->list (second bins)))
-	(define bin-total
-		(fold 
-			(lambda (bin tot) (+ tot bin))
-			0
-			counts))
-	(define bwid (/ (- HI LO) NBINS))
-	(format #t "Total count = ~A bin-width = ~A\n"
-		bin-total bwid)
-	(define oport (open-file FILENAM "w"))
-	(format oport "#\n# Total count = ~A bin-width = ~A\n"
-		bin-total bwid)
-	(print-bincounts-tsv bins oport)
-	(close oport)
+(define (pval ITEM) (freq-obj 'pair-logli ITEM))
+(define bins (bin-count all-pairs NBINS pval WEIFN LO HI))
+(define counts (array->list (second bins)))
+(define bin-total
+(fold
+(lambda (bin tot) (+ tot bin))
+0
+counts))
+(define bwid (/ (- HI LO) NBINS))
+(format #t "Total count = ~A bin-width = ~A\n"
+bin-total bwid)
+(define oport (open-file FILENAM "w"))
+(format oport "#\n# Total count = ~A bin-width = ~A\n"
+bin-total bwid)
+(print-bincounts-tsv bins oport)
+(close oport)
 )
 (define (pcnt ITEM) 1)
 (weighted-density 200 7 30 pcnt "/tmp/density.dat")
 (define (pcnt PAIR)
-	(define LWRD (star-obj 'left-element PAIR))
-	(freq-obj 'right-wild-freq LWRD))
+(define LWRD (star-obj 'left-element PAIR))
+(freq-obj 'right-wild-freq LWRD))
 (weighted-density 200 7 30 pcnt "/tmp/density-leftp.dat")
 (define (pcnt PAIR)
-	(define LWRD (star-obj 'right-element PAIR))
-	(freq-obj 'left-wild-freq LWRD))
+(define LWRD (star-obj 'right-element PAIR))
+(freq-obj 'left-wild-freq LWRD))
 (weighted-density 200 7 30 pcnt "/tmp/density-rightp.dat")
 (define (pcnt PAIR)
-	(define LWRD (star-obj 'left-element PAIR))
-	(freq-obj 'right-wild-logli LWRD))
+(define LWRD (star-obj 'left-element PAIR))
+(freq-obj 'right-wild-logli LWRD))
 (weighted-density 200 7 30 pcnt "/tmp/density-lmarg-logli.dat")
 (define (pcnt PAIR)
-	(define LWRD (star-obj 'left-element PAIR))
-	(freq-obj 'right-wild-fentropy LWRD))
+(define LWRD (star-obj 'left-element PAIR))
+(freq-obj 'right-wild-fentropy LWRD))
 (weighted-density 200 7 30 pcnt "/tmp/density-lmarg-fent.dat")
 (define (pcnt PAIR)
-	(define LWRD (star-obj 'left-element PAIR))
-	(freq-obj 'right-wild-fmi LWRD))
+(define LWRD (star-obj 'left-element PAIR))
+(freq-obj 'right-wild-fmi LWRD))
 (weighted-density 200 7 30 pcnt "/tmp/density-lmarg-fmi.dat")
 (define (pcnt PAIR) (freq-obj 'pair-mi PAIR))
 (weighted-density 200 7 30 pcnt "/tmp/density-mi.dat")

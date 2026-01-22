@@ -232,11 +232,11 @@ step_up = -2 * width;
 } else
 height = -height;
 if(clut) {
-unsigned mask_blue =  (unsigned)clut[0].blue +
+unsigned mask_blue = (unsigned)clut[0].blue +
 ((unsigned)clut[0].green << 8);
-unsigned mask_green =  (unsigned)clut[1].blue +
+unsigned mask_green = (unsigned)clut[1].blue +
 ((unsigned)clut[1].green << 8);
-unsigned mask_red =  (unsigned)clut[2].blue +
+unsigned mask_red = (unsigned)clut[2].blue +
 ((unsigned)clut[2].green << 8);
 int shft_blue = msb((ulong)mask_blue) - 8;
 int shft_green = msb((ulong)mask_green) - 8;
@@ -302,15 +302,15 @@ step_up = -2 * width;
 } else
 height = -height;
 if(clut) {
-ulong mask_blue =  (ulong)clut[0].blue +
+ulong mask_blue = (ulong)clut[0].blue +
 ((ulong)clut[0].green << 8) +
 ((ulong)clut[0].red << 16) +
 ((ulong)clut[0].alpha << 24);
-ulong mask_green =  (ulong)clut[1].blue +
+ulong mask_green = (ulong)clut[1].blue +
 ((ulong)clut[1].green << 8) +
 ((ulong)clut[1].red << 16) +
 ((ulong)clut[1].alpha << 24);
-ulong mask_red =  (ulong)clut[2].blue +
+ulong mask_red = (ulong)clut[2].blue +
 ((ulong)clut[2].green << 8) +
 ((ulong)clut[2].red << 16) +
 ((ulong)clut[2].alpha << 24);
@@ -321,7 +321,7 @@ for(iy = height; iy; iy--, i += step_up)
 for(ix = 0; ix < width; ix++, i++) {
 ulong val;
 Bread(b, c, sizeof(c));
-val =  (ulong)c[0] + ((ulong)c[1] << 8) +
+val = (ulong)c[0] + ((ulong)c[1] << 8) +
 ((ulong)c[2] << 16) + ((ulong)c[1] << 24);
 buf[i].alpha = 0;
 if(shft_blue >= 0)
@@ -394,9 +394,9 @@ if(num_coltab) {
 int i;
 Bseek(b, bmih.size + Filehdrsz, 0);
 for(i = 0; i < num_coltab; i++) {
-clut[i].blue  = (uchar)Bgetc(b);
+clut[i].blue = (uchar)Bgetc(b);
 clut[i].green = (uchar)Bgetc(b);
-clut[i].red   = (uchar)Bgetc(b);
+clut[i].red = (uchar)Bgetc(b);
 clut[i].alpha = (uchar)Bgetc(b);
 }
 }
@@ -459,7 +459,7 @@ if ((bmp = ReadBMP(bp, &width, &height)) == nil)
 return nil;
 if ((a = calloc(sizeof(Rawimage), 1)) == nil)
 goto Error;
-for (c = 0; c  < 3; c++)
+for (c = 0; c < 3; c++)
 if ((a->chans[c] = calloc(width, height)) == nil)
 goto Error;
 if ((array = calloc(sizeof(Rawimage *), 2)) == nil)

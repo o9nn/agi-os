@@ -6,8 +6,8 @@
 #include "serial.h"
 #include "ucons.h"
 Cinfo uconsinfo[] = {
-{ Net20DCVid,	Net20DCDid },
-{ 0,		0 },
+{ Net20DCVid, Net20DCDid },
+{ 0, 0 },
 };
 int
 uconsmatch(char *info)
@@ -30,7 +30,7 @@ Serial *ser;
 ser = p->s;
 p->baud = ~0;
 ser->maxrtrans = ser->maxwtrans = 8;
-devctl(p->epin,  "maxpkt 8");
+devctl(p->epin, "maxpkt 8");
 devctl(p->epout, "maxpkt 8");
 return 0;
 }

@@ -1,26 +1,26 @@
 implement Raw2Iaf;
 include "sys.m";
 include "draw.m";
-sys:	Sys;
-FD:	import sys;
-stderr:	ref FD;
-rateK:	con "rate";
-rateV:	string = "44100";
-chanK:	con "chans";
-chanV:	string = "2";
-bitsK:	con "bits";
-bitsV:	string = "16";
-encK:	con "enc";
-encV:	string = "pcm";
-progV:	string;
-inV:	string = nil;
-outV:	string = nil;
-inf:	ref FD;
-outf:	ref FD;
-pad	:= array[] of { "  ", " ", "", "   " };
+sys: Sys;
+FD: import sys;
+stderr: ref FD;
+rateK: con "rate";
+rateV: string = "44100";
+chanK: con "chans";
+chanV: string = "2";
+bitsK: con "bits";
+bitsV: string = "16";
+encK: con "enc";
+encV: string = "pcm";
+progV: string;
+inV: string = nil;
+outV: string = nil;
+inf: ref FD;
+outf: ref FD;
+pad := array[] of { "  ", " ", "", "   " };
 Raw2Iaf: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 usage()
 {
@@ -31,18 +31,18 @@ options(s: string)
 {
 for (i := 0; i < len s; i++) {
 case s[i] {
-'8' =>	rateV = "8000";
-'1' =>	rateV = "11025";
-'2' =>	rateV = "22050";
-'4' =>	rateV = "44100";
-'m' =>	chanV = "1";
-'s' =>	chanV = "2";
-'b' =>	bitsV = "8";
-'w' =>	bitsV = "16";
-'a' =>	encV = "alaw";
-'u' =>	encV = "ulaw";
-'p' =>	encV = "pcm";
-* =>	usage();
+'8' => rateV = "8000";
+'1' => rateV = "11025";
+'2' => rateV = "22050";
+'4' => rateV = "44100";
+'m' => chanV = "1";
+'s' => chanV = "2";
+'b' => bitsV = "8";
+'w' => bitsV = "16";
+'a' => encV = "alaw";
+'u' => encV = "ulaw";
+'p' => encV = "pcm";
+* => usage();
 }
 }
 }
@@ -103,9 +103,9 @@ exit;
 }
 }
 s := rateK + "\t" + rateV + "\n"
-+  chanK + "\t" + chanV + "\n"
-+  bitsK + "\t" + bitsV + "\n"
-+  encK + "\t" + encV;
++ chanK + "\t" + chanV + "\n"
++ bitsK + "\t" + bitsV + "\n"
++ encK + "\t" + encV;
 sys->fprint(outf, "%s%s\n\n", s, pad[len s % 4]);
 if (sys->stream(inf, outf, Sys->ATOMICIO) < 0)
 sys->fprint(stderr, "%s: data copy error: %r\n", progV);

@@ -38,30 +38,30 @@ uint invalid_irq:1;
 uchar tx_queue;
 ushort tx_queue_len;
 };
-#define STATUS			0
-#define TX_STATUS		0
-#define RX_STATUS		1
-#define TX_INTR			2
-#define RX_INTR			3
-#define TX_MODE			4
-#define RX_MODE			5
-#define CONFIG_0		6
-#define CONFIG_1		7
-#define DATAPORT		8
-#define TX_START		10
-#define MODE13			13
-#define EEPROM_Ctrl 	16
-#define EEPROM_Data 	17
-#define IOCONFIG		18
-#define IOCONFIG1		19
-#define	SAPROM			20
-#define RESET			31
-#define AT1700_IO_EXTENT	32
+#define STATUS 0
+#define TX_STATUS 0
+#define RX_STATUS 1
+#define TX_INTR 2
+#define RX_INTR 3
+#define TX_MODE 4
+#define RX_MODE 5
+#define CONFIG_0 6
+#define CONFIG_1 7
+#define DATAPORT 8
+#define TX_START 10
+#define MODE13 13
+#define EEPROM_Ctrl 16
+#define EEPROM_Data 17
+#define IOCONFIG 18
+#define IOCONFIG1 19
+#define SAPROM 20
+#define RESET 31
+#define AT1700_IO_EXTENT 32
 extern int at1700_probe(struct device *dev);
 static int at1700_probe1(struct device *dev, int ioaddr);
 static int read_eeprom(int ioaddr, int location);
 static int net_open(struct device *dev);
-static int	net_send_packet(struct sk_buff *skb, struct device *dev);
+static int net_send_packet(struct sk_buff *skb, struct device *dev);
 static void net_interrupt(int irq, void *dev_id, struct pt_regs *regs);
 static void net_rx(struct device *dev);
 static int net_close(struct device *dev);
@@ -105,7 +105,7 @@ if (at1700_probe_list[inb(ioaddr + IOCONFIG1) & 0x07] == ioaddr
 && (read_eeprom(ioaddr, 5) & 0xff00) == 0xF400)
 is_at1700 = 1;
 else if (fmv18x_probe_list[inb(ioaddr + IOCONFIG) & 0x07] == ioaddr
-&& inb(ioaddr + SAPROM    ) == 0x00
+&& inb(ioaddr + SAPROM ) == 0x00
 && inb(ioaddr + SAPROM + 1) == 0x00
 && inb(ioaddr + SAPROM + 2) == 0x0e)
 is_fmv18x = 1;
@@ -151,10 +151,10 @@ dev->priv = kmalloc(sizeof(struct net_local), GFP_KERNEL);
 if (dev->priv == NULL)
 return -ENOMEM;
 memset(dev->priv, 0, sizeof(struct net_local));
-dev->open		= net_open;
-dev->stop		= net_close;
+dev->open = net_open;
+dev->stop = net_close;
 dev->hard_start_xmit = net_send_packet;
-dev->get_stats	= net_get_stats;
+dev->get_stats = net_get_stats;
 dev->set_multicast_list = &set_rx_mode;
 ether_setup(dev);
 {
@@ -169,14 +169,14 @@ return 0;
 }
 return 0;
 }
-#define EE_SHIFT_CLK	0x40
-#define EE_CS			0x20
-#define EE_DATA_WRITE	0x80
-#define EE_DATA_READ	0x80
-#define eeprom_delay()	do {} while (0);
-#define EE_WRITE_CMD	(5 << 6)
-#define EE_READ_CMD		(6 << 6)
-#define EE_ERASE_CMD	(7 << 6)
+#define EE_SHIFT_CLK 0x40
+#define EE_CS 0x20
+#define EE_DATA_WRITE 0x80
+#define EE_DATA_READ 0x80
+#define eeprom_delay() do {} while (0);
+#define EE_WRITE_CMD (5 << 6)
+#define EE_READ_CMD (6 << 6)
+#define EE_ERASE_CMD (7 << 6)
 static int read_eeprom(int ioaddr, int location)
 {
 int i;
@@ -303,7 +303,7 @@ outw(status, ioaddr + TX_STATUS);
 if (net_debug > 4)
 printk("%s: Interrupt with status %04x.\n", dev->name, status);
 if (status & 0xff00
-||  (inb(ioaddr + RX_MODE) & 0x40) == 0) {
+|| (inb(ioaddr + RX_MODE) & 0x40) == 0) {
 net_rx(dev);
 }
 if (status & 0x00ff) {
@@ -449,7 +449,7 @@ printk("%s: Promiscuous mode enabled.\n", dev->name);
 memset(mc_filter, 0xff, sizeof(mc_filter));
 outb(3, ioaddr + RX_MODE);
 } else if (dev->mc_count > MC_FILTERBREAK
-||  (dev->flags & IFF_ALLMULTI)) {
+|| (dev->flags & IFF_ALLMULTI)) {
 memset(mc_filter, 0xff, sizeof(mc_filter));
 outb(2, ioaddr + RX_MODE);
 } else if (dev->mc_count == 0) {
@@ -491,7 +491,7 @@ int init_module(void)
 if (io == 0)
 printk("at1700: You should not use auto-probing with insmod!\n");
 dev_at1700.base_addr = io;
-dev_at1700.irq       = irq;
+dev_at1700.irq = irq;
 if (register_netdev(&dev_at1700) != 0) {
 printk("at1700: register_netdev() returned non-zero.\n");
 return -EIO;

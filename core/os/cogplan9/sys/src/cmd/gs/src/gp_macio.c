@@ -44,10 +44,10 @@
 extern void
 convertSpecToPath(FSSpec * s, char * p, int pLen)
 {
-OSStatus	err = noErr;
-CInfoPBRec	params;
-Str255		dirName;
-int		totLen = 0, dirLen = 0;
+OSStatus err = noErr;
+CInfoPBRec params;
+Str255 dirName;
+int totLen = 0, dirLen = 0;
 memcpy(p, s->name + 1, s->name[0]);
 totLen += s->name[0];
 params.dirInfo.ioNamePtr = dirName;
@@ -88,10 +88,10 @@ setenv(const char * env, char *p) {
 }
 char *
 getenv(const char * env) {
-char 			*p;
-FSSpec			pFile;
-OSErr			err = 0;
-char			fpath[256]="";
+char *p;
+FSSpec pFile;
+OSErr err = 0;
+char fpath[256]="";
 if ( strcmp(env,"GS_LIB") == 0) {
 pFile.name[0] = 0;
 err = FindFolder(kOnSystemDisk, kApplicationSupportFolderType, kDontCreateFolder,
@@ -194,7 +194,7 @@ return 1;
 private int
 mac_stdout_write_process(stream_state *st, stream_cursor_read *pr,
 stream_cursor_write *ignore_pw, bool last)
-{	uint count = pr->limit - pr->ptr;
+{ uint count = pr->limit - pr->ptr;
 if (pgsdll_callback == NULL) return EOFC;
 (*pgsdll_callback) (GSDLL_STDOUT, (char *)(pr->ptr + 1), count);
 pr->ptr = pr->limit;
@@ -203,7 +203,7 @@ return 0;
 private int
 mac_stderr_write_process(stream_state *st, stream_cursor_read *pr,
 stream_cursor_write *ignore_pw, bool last)
-{	uint count = pr->limit - pr->ptr;
+{ uint count = pr->limit - pr->ptr;
 if (pgsdll_callback == NULL) return EOFC;
 (*pgsdll_callback) (GSDLL_STDOUT, (char *)(pr->ptr + 1), count);
 pr->ptr = pr->limit;
@@ -233,7 +233,7 @@ const char gp_fmode_rb[] = "rb";
 const char gp_fmode_wb[] = "wb";
 int
 gp_setmode_binary(FILE *pfile, bool binary)
-{	return 0;
+{ return 0;
 }
 FILE *
 gp_open_scratch_file (const char *prefix, char fname[gp_file_name_sizeof], const char *mode)
@@ -314,7 +314,7 @@ gs_memory_t *memory;
 };
 file_enum *
 gp_enumerate_files_init (const char *pat, uint patlen, gs_memory_t *memory)
-{	file_enum *pfen =
+{ file_enum *pfen =
 (file_enum *)gs_alloc_bytes(memory, sizeof(file_enum), "gp_enumerate_files");
 char *pattern;
 if ( pfen == 0 ) return 0;
@@ -330,8 +330,8 @@ return pfen;
 }
 uint
 gp_enumerate_files_next (file_enum *pfen, char *ptr, uint maxlen)
-{	if ( pfen->first_time )
-{	pfen->first_time = 0;
+{ if ( pfen->first_time )
+{ pfen->first_time = 0;
 }
 return -1;
 }
@@ -354,7 +354,7 @@ return fid;
 }
 FILE *
 popen (const char * fname, const char * mode ) {
-return gp_fopen (fname,  mode);
+return gp_fopen (fname, mode);
 }
 int
 pclose (FILE * pipe ) {
@@ -404,7 +404,7 @@ return 0;
 }
 #endif
 uint gs_file_name_check_separator(const char *fname, int len, const char *item)
-{   if (len > 0) {
+{ if (len > 0) {
 if (fname[0] == ':') {
 if (fname == item + 1 && item[0] == ':')
 return 1;
@@ -419,28 +419,28 @@ return 1;
 return 0;
 }
 bool gp_file_name_is_parent(const char *fname, uint len)
-{   return len == 1 && fname[0] == ':';
+{ return len == 1 && fname[0] == ':';
 }
 bool gp_file_name_is_current(const char *fname, uint len)
-{   return (len == 0) || (len == 1 && fname[0] == ':');
+{ return (len == 0) || (len == 1 && fname[0] == ':');
 }
 const char *gp_file_name_separator(void)
-{   return ":";
+{ return ":";
 }
 const char *gp_file_name_directory_separator(void)
-{   return ":";
+{ return ":";
 }
 const char *gp_file_name_parent(void)
-{   return "::";
+{ return "::";
 }
 const char *gp_file_name_current(void)
-{   return ":";
+{ return ":";
 }
 bool gp_file_name_is_partent_allowed(void)
-{   return true;
+{ return true;
 }
 bool gp_file_name_is_empty_item_meanful(void)
-{   return true;
+{ return true;
 }
 gp_file_name_combine_result
 gp_file_name_combine(const char *prefix, uint plen, const char *fname, uint flen,
@@ -539,7 +539,7 @@ goto fin;
 }
 HLock(fond);
 res = *fond + 52;
-n = get_int16(res) + 1;	res += 2;
+n = get_int16(res) + 1; res += 2;
 table = fond_table_grow(table, n);
 for (j = start; j < start + n; j++ ) {
 table->refs[j].size = get_int16(res); res += 2;

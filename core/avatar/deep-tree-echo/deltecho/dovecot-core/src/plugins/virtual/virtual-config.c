@@ -45,7 +45,7 @@ return sargs;
 input = i_stream_create_from_data(str_data(rule), str_len(rule));
 (void)i_stream_read(input);
 imap_parser = imap_parser_create(input, NULL, SIZE_MAX);
-ret = imap_parser_finish_line(imap_parser, 0,  0, &args);
+ret = imap_parser_finish_line(imap_parser, 0, 0, &args);
 if (ret < 0) {
 sargs = NULL;
 *error_r = t_strdup(imap_parser_get_error(imap_parser, NULL));

@@ -62,8 +62,8 @@ false,
 private int
 mac_open(register gx_device *dev)
 {
-gx_device_macos				* mdev = (gx_device_macos *)dev;
-static short picHeader[42] = {	0x0000,
+gx_device_macos * mdev = (gx_device_macos *)dev;
+static short picHeader[42] = { 0x0000,
 0x0000, 0x0000, 0x0318, 0x0264,
 0x0011, 0x02ff, 0x0c00, 0xfffe, 0x0000,
 0x0048, 0x0000,
@@ -83,21 +83,21 @@ mdev->numUsedFonts = 0;
 mdev->lastFontFace = -1;
 mdev->lastFontSize = -1;
 mdev->lastFontID = -1;
-mdev->pic		= (PicHandle) NewHandle(500000);
+mdev->pic = (PicHandle) NewHandle(500000);
 if (mdev->pic == 0)
 return gs_error_VMerror;
 HLockHi((Handle) mdev->pic);
-mdev->currPicPos	= (short*) *mdev->pic;
+mdev->currPicPos = (short*) *mdev->pic;
 memcpy(mdev->currPicPos, picHeader, 42*2);
 mdev->currPicPos += 42;
-((short*)(*mdev->pic))[ 3]	= mdev->MediaSize[1];
-((short*)(*mdev->pic))[ 4]	= mdev->MediaSize[0];
-((short*)(*mdev->pic))[16] = ((short*)(*mdev->pic))[35]	= ((short*)(*mdev->pic))[40] = mdev->height;
+((short*)(*mdev->pic))[ 3] = mdev->MediaSize[1];
+((short*)(*mdev->pic))[ 4] = mdev->MediaSize[0];
+((short*)(*mdev->pic))[16] = ((short*)(*mdev->pic))[35] = ((short*)(*mdev->pic))[40] = mdev->height;
 ((short*)(*mdev->pic))[17] = ((short*)(*mdev->pic))[36] = ((short*)(*mdev->pic))[41] = mdev->width;
-((short*)(*mdev->pic))[10]	= (((long) X2Fix( mdev->x_pixels_per_inch )) & 0xFFFF0000) >> 16;
-((short*)(*mdev->pic))[11]	=  ((long) X2Fix( mdev->x_pixels_per_inch )) & 0x0000FFFF;
-((short*)(*mdev->pic))[12]	= (((long) X2Fix( mdev->y_pixels_per_inch )) & 0xFFFF0000) >> 16;
-((short*)(*mdev->pic))[13]	=  ((long) X2Fix( mdev->y_pixels_per_inch )) & 0x0000FFFF;
+((short*)(*mdev->pic))[10] = (((long) X2Fix( mdev->x_pixels_per_inch )) & 0xFFFF0000) >> 16;
+((short*)(*mdev->pic))[11] = ((long) X2Fix( mdev->x_pixels_per_inch )) & 0x0000FFFF;
+((short*)(*mdev->pic))[12] = (((long) X2Fix( mdev->y_pixels_per_inch )) & 0xFFFF0000) >> 16;
+((short*)(*mdev->pic))[13] = ((long) X2Fix( mdev->y_pixels_per_inch )) & 0x0000FFFF;
 *mdev->currPicPos = 0x00ff;
 if (pgsdll_callback)
 (*pgsdll_callback) (GSDLL_DEVICE, (char *)mdev, 1);
@@ -106,7 +106,7 @@ return 0;
 private void
 mac_get_initial_matrix(register gx_device *dev, register gs_matrix *pmat)
 {
-pmat->xx = dev->x_pixels_per_inch /  72.0;
+pmat->xx = dev->x_pixels_per_inch / 72.0;
 pmat->xy = 0;
 pmat->yx = 0;
 pmat->yy = dev->y_pixels_per_inch / -72.0;
@@ -116,7 +116,7 @@ pmat->ty = dev->height;
 int
 mac_sync_output(gx_device * dev)
 {
-gx_device_macos		* mdev = (gx_device_macos *)dev;
+gx_device_macos * mdev = (gx_device_macos *)dev;
 *mdev->currPicPos = 0x00ff;
 if (pgsdll_callback)
 (*pgsdll_callback) (GSDLL_SYNC, (char *)mdev, 0);
@@ -125,8 +125,8 @@ return (0);
 int
 mac_output_page(gx_device * dev, int copies, int flush)
 {
-gx_device_macos		* mdev = (gx_device_macos *)dev;
-int					code = 0;
+gx_device_macos * mdev = (gx_device_macos *)dev;
+int code = 0;
 mdev->outputPage = true;
 if (strcmp(mdev->outputFileName, "")) {
 code = mac_save_pict(dev);
@@ -139,9 +139,9 @@ return code;
 private int
 mac_save_pict(gx_device * dev)
 {
-gx_device_macos		* mdev = (gx_device_macos *)dev;
-int					code = 0;
-int					i;
+gx_device_macos * mdev = (gx_device_macos *)dev;
+int code = 0;
+int i;
 if (mdev->outputFile == NULL) {
 code = gx_device_open_output_file(dev, mdev->outputFileName, true, true, &(mdev->outputFile));
 if (code < 0) return code;
@@ -155,8 +155,8 @@ return code;
 private int
 mac_close(register gx_device *dev)
 {
-gx_device_macos	* mdev = (gx_device_macos *)dev;
-long	len;
+gx_device_macos * mdev = (gx_device_macos *)dev;
+long len;
 HUnlock((Handle) mdev->pic);
 if (strcmp(mdev->outputFileName, "")) {
 DisposeHandle((Handle) mdev->pic);
@@ -175,7 +175,7 @@ mac_fill_rectangle(register gx_device *dev,
 int x, int y, int w, int h,
 gx_color_index color)
 {
-gx_device_macos		* mdev = (gx_device_macos *)dev;
+gx_device_macos * mdev = (gx_device_macos *)dev;
 if (mdev->outputPage &&
 (x == 0) && (y == 0) && (w == mdev->width) && (h == mdev->height)) {
 return 0;
@@ -193,7 +193,7 @@ int x0, int y0,
 int x1, int y1,
 gx_color_index color)
 {
-gx_device_macos		* mdev = (gx_device_macos *)dev;
+gx_device_macos * mdev = (gx_device_macos *)dev;
 CheckMem(1024, 100*1024);
 ResetPage();
 GSSetFgCol(dev, mdev->currPicPos, color);
@@ -207,13 +207,13 @@ const unsigned char *base, int data_x, int raster, gx_bitmap_id id,
 int x, int y, int w, int h,
 gx_color_index color_0, gx_color_index color_1)
 {
-gx_device_macos		* mdev = (gx_device_macos *)dev;
-int				byteCount = raster * h;
-short			copyMode;
+gx_device_macos * mdev = (gx_device_macos *)dev;
+int byteCount = raster * h;
+short copyMode;
 if (color_0 == gx_no_color_index && color_1 == gx_no_color_index)
 return 0;
 fit_copy(dev, base, data_x, raster, id, x, y, w, h);
-CheckMem(10*1024 + byteCount*10,  100*1024 + byteCount*10);
+CheckMem(10*1024 + byteCount*10, 100*1024 + byteCount*10);
 ResetPage();
 if (color_0 == gx_no_color_index)
 copyMode = srcOr;
@@ -239,13 +239,13 @@ mac_copy_alpha(gx_device *dev, const unsigned char *base, int data_x,
 int raster, gx_bitmap_id id, int x, int y, int w, int h,
 gx_color_index color, int depth)
 {
-gx_device_macos		* mdev = (gx_device_macos *)dev;
-ColorSpec			*colorTable;
-short				copyMode, shade, maxShade = (1 << depth) - 1, byteCount = raster * h;
-gx_color_value		rgb[3];
-colorHSV			colHSV;
-colorRGB			colRGB;
-float				saturation, value;
+gx_device_macos * mdev = (gx_device_macos *)dev;
+ColorSpec *colorTable;
+short copyMode, shade, maxShade = (1 << depth) - 1, byteCount = raster * h;
+gx_color_value rgb[3];
+colorHSV colHSV;
+colorRGB colRGB;
+float saturation, value;
 fit_copy(dev, base, data_x, raster, id, x, y, w, h);
 CheckMem( byteCount*4 + 200*1024, byteCount*4 + 500*1024 );
 ResetPage();
@@ -260,13 +260,13 @@ mac_convert_rgb_hsv(&colRGB, &colHSV);
 saturation = colHSV.s;
 value = colHSV.v;
 for (shade=0; shade <= maxShade; shade++) {
-colorTable[shade].value = maxShade -  shade;
+colorTable[shade].value = maxShade - shade;
 colHSV.s = saturation * (1.0 - (float)shade/(float)maxShade);
 colHSV.v = value + ((1.0 - value) * (float)shade/(float)maxShade);
 mac_convert_hsv_rgb(&colHSV, &colRGB);
-colorTable[shade].rgb.red   = colRGB.red;
+colorTable[shade].rgb.red = colRGB.red;
 colorTable[shade].rgb.green = colRGB.green;
-colorTable[shade].rgb.blue  = colRGB.blue;
+colorTable[shade].rgb.blue = colRGB.blue;
 }
 copyMode = srcCopy + ditherCopy;
 GSSetStdCol(mdev->currPicPos);
@@ -289,39 +289,39 @@ return 0;
 void
 mac_convert_rgb_hsv(colorRGB *inRGB, colorHSV *HSV)
 {
-#define NORMALIZE_RGB(col)	((float)col/(float)0xFFFF)
-float	min = 1.0, temp;
-float	r = NORMALIZE_RGB(inRGB->red),
+#define NORMALIZE_RGB(col) ((float)col/(float)0xFFFF)
+float min = 1.0, temp;
+float r = NORMALIZE_RGB(inRGB->red),
 g = NORMALIZE_RGB(inRGB->green),
 b = NORMALIZE_RGB(inRGB->blue);
 HSV->h = 0;
 HSV->v = r;
 if (g > HSV->v) HSV->v = g;
-if (b  > HSV->v) HSV->v = b;
+if (b > HSV->v) HSV->v = b;
 min = r;
 if (g < min) min = g;
-if (b  < min) min = b;
+if (b < min) min = b;
 temp = HSV->v - min;
 if (HSV->v > 0)
 HSV->s = temp / HSV->v;
 else
 HSV->s = 0;
 if (HSV->s > 0) {
-float	rd = (HSV->v - r) / temp,
+float rd = (HSV->v - r) / temp,
 gd = (HSV->v - g) / temp,
 bd = (HSV->v - b) / temp;
 if (HSV->v == r) {
-if (min == g)	HSV->h = 5 + bd;
-else			HSV->h = 1 - gd;
+if (min == g) HSV->h = 5 + bd;
+else HSV->h = 1 - gd;
 } else if (HSV->v == g) {
-if (min == b)	HSV->h = 1 + rd;
-else			HSV->h = 3 - bd;
+if (min == b) HSV->h = 1 + rd;
+else HSV->h = 3 - bd;
 } else {
-if (min == r)	HSV->h = 3 + gd;
-else			HSV->h = 5 - rd;
+if (min == r) HSV->h = 3 + gd;
+else HSV->h = 5 - rd;
 }
-if (HSV->h < 6)		HSV->h *= 60;
-else				HSV->h = 0;
+if (HSV->h < 6) HSV->h *= 60;
+else HSV->h = 0;
 }
 }
 void
@@ -330,37 +330,37 @@ mac_convert_hsv_rgb(colorHSV *inHSV, colorRGB *RGB)
 if (inHSV->s == 0) {
 RGB->red = RGB->green = RGB->blue = inHSV->v * 0xFFFF;
 } else {
-float	h = inHSV->h / 60;
-int		i = trunc(h);
-float	fract = h - i;
-unsigned short	t1 = (inHSV->v * (1 - inHSV->s)) * 0xFFFF,
+float h = inHSV->h / 60;
+int i = trunc(h);
+float fract = h - i;
+unsigned short t1 = (inHSV->v * (1 - inHSV->s)) * 0xFFFF,
 t2 = (inHSV->v * (1 - inHSV->s * fract)) * 0xFFFF,
 t3 = (inHSV->v * (1 - inHSV->s * (1 - fract))) * 0xFFFF,
-v  = inHSV->v * 0xFFFF;
+v = inHSV->v * 0xFFFF;
 switch(i) {
-case 0:		RGB->red   = v;
+case 0: RGB->red = v;
 RGB->green = t3;
-RGB->blue  = t1;
+RGB->blue = t1;
 break;
-case 1:		RGB->red   = t2;
+case 1: RGB->red = t2;
 RGB->green = v;
-RGB->blue  = t1;
+RGB->blue = t1;
 break;
-case 2:		RGB->red   = t1;
+case 2: RGB->red = t1;
 RGB->green = v;
-RGB->blue  = t3;
+RGB->blue = t3;
 break;
-case 3:		RGB->red   = t1;
+case 3: RGB->red = t1;
 RGB->green = t2;
-RGB->blue  = v;
+RGB->blue = v;
 break;
-case 4:		RGB->red   = t3;
+case 4: RGB->red = t3;
 RGB->green = t1;
-RGB->blue  = v;
+RGB->blue = v;
 break;
-case 5:		RGB->red   = v;
+case 5: RGB->red = v;
 RGB->green = t1;
-RGB->blue  = t2;
+RGB->blue = t2;
 break;
 }
 }
@@ -368,46 +368,46 @@ break;
 private int
 mac_set_colordepth(gx_device *dev, int depth)
 {
-gx_device_macos				* mdev = (gx_device_macos *)dev;
-gx_device_color_info		* ci = &mdev->color_info;
+gx_device_macos * mdev = (gx_device_macos *)dev;
+gx_device_color_info * ci = &mdev->color_info;
 if (depth != 1 && depth != 4 && depth != 7 && depth != 8 && depth != 24)
 return gs_error_rangecheck;
 mdev->color_info.depth = depth;
 switch (depth)
 {
 case 1:
-ci->num_components	= 1;
-ci->max_gray		= 1;		ci->max_color		= 0;
-ci->dither_grays	= 2;		ci->dither_colors	= 0;
+ci->num_components = 1;
+ci->max_gray = 1; ci->max_color = 0;
+ci->dither_grays = 2; ci->dither_colors = 0;
 set_dev_proc(dev, map_rgb_color, gx_default_b_w_map_rgb_color);
 set_dev_proc(dev, map_color_rgb, gx_default_b_w_map_color_rgb);
 break;
 case 4:
-ci->num_components	= 1;
-ci->max_gray		= 15;		ci->max_color		= 0;
-ci->dither_grays	= 16;		ci->dither_colors	= 0;
+ci->num_components = 1;
+ci->max_gray = 15; ci->max_color = 0;
+ci->dither_grays = 16; ci->dither_colors = 0;
 set_dev_proc(dev, map_rgb_color, gx_default_gray_map_rgb_color);
 set_dev_proc(dev, map_color_rgb, gx_default_gray_map_color_rgb);
 break;
 case 7:
-ci->depth			= 7;
-ci->num_components	= 1;
-ci->max_gray		= 255;		ci->max_color		= 0;
-ci->dither_grays	= 256;		ci->dither_colors	= 0;
+ci->depth = 7;
+ci->num_components = 1;
+ci->max_gray = 255; ci->max_color = 0;
+ci->dither_grays = 256; ci->dither_colors = 0;
 set_dev_proc(dev, map_rgb_color, gx_default_gray_map_rgb_color);
 set_dev_proc(dev, map_color_rgb, gx_default_gray_map_color_rgb);
 break;
 case 8:
-ci->num_components	= 3;
-ci->max_gray		= 15;		ci->max_color		= 5;
-ci->dither_grays	= 16;		ci->dither_colors	= 6;
+ci->num_components = 3;
+ci->max_gray = 15; ci->max_color = 5;
+ci->dither_grays = 16; ci->dither_colors = 6;
 set_dev_proc(dev, map_rgb_color, gx_default_rgb_map_rgb_color);
 set_dev_proc(dev, map_color_rgb, gx_default_rgb_map_color_rgb);
 break;
 case 24:
-ci->num_components	= 3;
-ci->max_gray		= 255;		ci->max_color		= 16777215;
-ci->dither_grays	= 256;		ci->dither_colors	= 16777216;
+ci->num_components = 3;
+ci->max_gray = 255; ci->max_color = 16777215;
+ci->dither_grays = 256; ci->dither_colors = 16777216;
 set_dev_proc(dev, map_rgb_color, gx_default_rgb_map_rgb_color);
 set_dev_proc(dev, map_color_rgb, gx_default_rgb_map_color_rgb);
 break;
@@ -417,12 +417,12 @@ return 0;
 private int
 mac_put_params(gx_device *dev, gs_param_list *plist)
 {
-gx_device_macos		*mdev	= (gx_device_macos *)dev;
-int						isOpen = mdev->is_open;
-int						code;
-bool					useXFonts;
-int						depth;
-gs_param_string			outputFile;
+gx_device_macos *mdev = (gx_device_macos *)dev;
+int isOpen = mdev->is_open;
+int code;
+bool useXFonts;
+int depth;
+gs_param_string outputFile;
 code = param_read_bool(plist, "UseExternalFonts", &useXFonts);
 if (!code)
 mdev->useXFonts = useXFonts;
@@ -469,9 +469,9 @@ return code;
 private int
 mac_get_params(gx_device *dev, gs_param_list *plist)
 {
-gx_device_macos		*mdev	= (gx_device_macos *)dev;
-int						code;
-gs_param_string			outputFile;
+gx_device_macos *mdev = (gx_device_macos *)dev;
+int code;
+gs_param_string outputFile;
 code = gx_default_get_params(dev, plist);
 if (code < 0)
 return code;
@@ -486,19 +486,19 @@ return code;
 int GSDLLAPI
 gsdll_get_pict(unsigned char *dev, PicHandle *thePict)
 {
-gx_device_macos			* mdev = (gx_device_macos *)dev;
+gx_device_macos * mdev = (gx_device_macos *)dev;
 *thePict = mdev->pic;
 return 0;
 }
 #if 0
 private int
 mac_copy_color (register gx_device *dev,
-const unsigned char *base, int data_x, int raster,  gx_bitmap_id id,
+const unsigned char *base, int data_x, int raster, gx_bitmap_id id,
 int x, int y, int w, int h)
 {
-gx_device_macos		* mdev = (gx_device_macos *)dev;
-int				byteCount = raster * h, color;
-gx_color_value	rgb[3];
+gx_device_macos * mdev = (gx_device_macos *)dev;
+int byteCount = raster * h, color;
+gx_color_value rgb[3];
 fit_copy(dev, base, data_x, raster, id, x, y, w, h);
 CheckMem(10*1024 + byteCount*4, 100*1024 + byteCount*4);
 ResetPage();
@@ -512,7 +512,7 @@ PICTWriteRect(mdev->currPicPos, data_x, 0, w, h);
 PICTWriteRect(mdev->currPicPos, x, y, w, h);
 PICTWriteInt(mdev->currPicPos, srcCopy);
 {
-short	i;
+short i;
 byteCount = 0;
 for (i=0; i<raster/4*h; i++) {
 PICTWriteByte(mdev->currPicPos, 0x00);
@@ -524,14 +524,14 @@ byteCount += 3;
 if (byteCount % 2)
 PICTWriteFillByte(mdev->currPicPos);
 } else if (mdev->color_info.depth <= 8) {
-ColorSpec		*colorTable;
+ColorSpec *colorTable;
 colorTable = (ColorSpec*) malloc(sizeof(ColorSpec) * (1 << mdev->color_info.depth));
 for (color=0; color < (1 << mdev->color_info.depth); color++) {
 (*dev_proc(dev, map_color_rgb))(dev, color, rgb);
-colorTable[color].value		= color;
-colorTable[color].rgb.red	= rgb[0];
-colorTable[color].rgb.green	= rgb[1];
-colorTable[color].rgb.blue	= rgb[2];
+colorTable[color].value = color;
+colorTable[color].rgb.red = rgb[0];
+colorTable[color].rgb.green = rgb[1];
+colorTable[color].rgb.blue = rgb[2];
 }
 PICTWriteOpcode(mdev->currPicPos, 0x0098);
 PICTWritePixMap(mdev->currPicPos, 0, 0, raster*8/mdev->color_info.depth, h, raster, 1, 0,
@@ -557,7 +557,7 @@ int x, int y, int w, int h,
 gx_color_index color_0, gx_color_index color_1,
 int phase_x, int phase_y)
 {
-gx_device_macos		* mdev = (gx_device_macos *)dev;
-int					byteCount = tile->raster * tile->size.y;
+gx_device_macos * mdev = (gx_device_macos *)dev;
+int byteCount = tile->raster * tile->size.y;
 }
 #endif

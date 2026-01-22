@@ -311,7 +311,7 @@ str_append(iacl_storage->iacl_ctx->reply, key);
 str_append_c(iacl_storage->iacl_ctx->reply, ' ');
 str_append(iacl_storage->iacl_ctx->reply, value);
 str_append_c(iacl_storage->iacl_ctx->reply, ' ');
-}  else {
+} else {
 str_truncate(ctx->reply, 0);
 break;
 }

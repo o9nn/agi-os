@@ -1,110 +1,110 @@
-#ifndef	_UNISTD_H
-#define	_UNISTD_H	1
+#ifndef _UNISTD_H
+#define _UNISTD_H 1
 #include <features.h>
 __BEGIN_DECLS
 #ifdef __USE_XOPEN2K8
-# define _POSIX_VERSION	200809L
+# define _POSIX_VERSION 200809L
 #elif defined __USE_XOPEN2K
-# define _POSIX_VERSION	200112L
+# define _POSIX_VERSION 200112L
 #elif defined __USE_POSIX199506
-# define _POSIX_VERSION	199506L
+# define _POSIX_VERSION 199506L
 #elif defined __USE_POSIX199309
-# define _POSIX_VERSION	199309L
+# define _POSIX_VERSION 199309L
 #else
-# define _POSIX_VERSION	199009L
+# define _POSIX_VERSION 199009L
 #endif
 #ifdef __USE_XOPEN2K8
-# define __POSIX2_THIS_VERSION	200809L
+# define __POSIX2_THIS_VERSION 200809L
 #elif defined __USE_XOPEN2K
-# define __POSIX2_THIS_VERSION	200112L
+# define __POSIX2_THIS_VERSION 200112L
 #elif defined __USE_POSIX199506
-# define __POSIX2_THIS_VERSION	199506L
+# define __POSIX2_THIS_VERSION 199506L
 #else
-# define __POSIX2_THIS_VERSION	199209L
+# define __POSIX2_THIS_VERSION 199209L
 #endif
-#define _POSIX2_VERSION	__POSIX2_THIS_VERSION
-#define	_POSIX2_C_VERSION	__POSIX2_THIS_VERSION
-#define	_POSIX2_C_BIND	__POSIX2_THIS_VERSION
-#define	_POSIX2_C_DEV	__POSIX2_THIS_VERSION
-#define	_POSIX2_SW_DEV	__POSIX2_THIS_VERSION
-#define _POSIX2_LOCALEDEF       __POSIX2_THIS_VERSION
+#define _POSIX2_VERSION __POSIX2_THIS_VERSION
+#define _POSIX2_C_VERSION __POSIX2_THIS_VERSION
+#define _POSIX2_C_BIND __POSIX2_THIS_VERSION
+#define _POSIX2_C_DEV __POSIX2_THIS_VERSION
+#define _POSIX2_SW_DEV __POSIX2_THIS_VERSION
+#define _POSIX2_LOCALEDEF __POSIX2_THIS_VERSION
 #ifdef __USE_XOPEN2K8
-# define _XOPEN_VERSION	700
+# define _XOPEN_VERSION 700
 #elif defined __USE_XOPEN2K
-# define _XOPEN_VERSION	600
+# define _XOPEN_VERSION 600
 #elif defined __USE_UNIX98
-# define _XOPEN_VERSION	500
+# define _XOPEN_VERSION 500
 #else
-# define _XOPEN_VERSION	4
+# define _XOPEN_VERSION 4
 #endif
-#define _XOPEN_XCU_VERSION	4
-#define _XOPEN_XPG2	1
-#define _XOPEN_XPG3	1
-#define _XOPEN_XPG4	1
-#define _XOPEN_UNIX	1
-#define	_XOPEN_ENH_I18N	1
-#define _XOPEN_LEGACY	1
+#define _XOPEN_XCU_VERSION 4
+#define _XOPEN_XPG2 1
+#define _XOPEN_XPG3 1
+#define _XOPEN_XPG4 1
+#define _XOPEN_UNIX 1
+#define _XOPEN_ENH_I18N 1
+#define _XOPEN_LEGACY 1
 #include <bits/posix_opt.h>
 #if defined __USE_UNIX98 || defined __USE_XOPEN2K
 # include <bits/environments.h>
 #endif
-#define	STDIN_FILENO	0
-#define	STDOUT_FILENO	1
-#define	STDERR_FILENO	2
+#define STDIN_FILENO 0
+#define STDOUT_FILENO 1
+#define STDERR_FILENO 2
 #include <bits/types.h>
-#ifndef	__ssize_t_defined
+#ifndef __ssize_t_defined
 typedef __ssize_t ssize_t;
 # define __ssize_t_defined
 #endif
-#define	__need_size_t
+#define __need_size_t
 #define __need_NULL
 #include <stddef.h>
 #if defined __USE_XOPEN || defined __USE_XOPEN2K
 # ifndef __gid_t_defined
 typedef __gid_t gid_t;
-#  define __gid_t_defined
+# define __gid_t_defined
 # endif
 # ifndef __uid_t_defined
 typedef __uid_t uid_t;
-#  define __uid_t_defined
+# define __uid_t_defined
 # endif
 # ifndef __off_t_defined
-#  ifndef __USE_FILE_OFFSET64
+# ifndef __USE_FILE_OFFSET64
 typedef __off_t off_t;
-#  else
+# else
 typedef __off64_t off_t;
-#  endif
-#  define __off_t_defined
+# endif
+# define __off_t_defined
 # endif
 # if defined __USE_LARGEFILE64 && !defined __off64_t_defined
 typedef __off64_t off64_t;
-#  define __off64_t_defined
+# define __off64_t_defined
 # endif
 # ifndef __useconds_t_defined
 typedef __useconds_t useconds_t;
-#  define __useconds_t_defined
+# define __useconds_t_defined
 # endif
 # ifndef __pid_t_defined
 typedef __pid_t pid_t;
-#  define __pid_t_defined
+# define __pid_t_defined
 # endif
 #endif
 #if defined __USE_XOPEN_EXTENDED || defined __USE_XOPEN2K
 # ifndef __intptr_t_defined
 typedef __intptr_t intptr_t;
-#  define __intptr_t_defined
+# define __intptr_t_defined
 # endif
 #endif
 #if defined __USE_MISC || defined __USE_XOPEN
 # ifndef __socklen_t_defined
 typedef __socklen_t socklen_t;
-#  define __socklen_t_defined
+# define __socklen_t_defined
 # endif
 #endif
-#define	R_OK	4
-#define	W_OK	2
-#define	X_OK	1
-#define	F_OK	0
+#define R_OK 4
+#define W_OK 2
+#define X_OK 1
+#define F_OK 0
 extern int access (const char *__name, int __type) __THROW __nonnull ((1));
 #ifdef __USE_GNU
 extern int euidaccess (const char *__name, int __type)
@@ -119,19 +119,19 @@ __THROW __nonnull ((2, 3));
 extern int faccessat (int __fd, const char *__file, int __type, int __flag)
 __THROW __nonnull ((2)) __wur;
 #endif
-#ifndef	_STDIO_H
-# define SEEK_SET	0
-# define SEEK_CUR	1
-# define SEEK_END	2
+#ifndef _STDIO_H
+# define SEEK_SET 0
+# define SEEK_CUR 1
+# define SEEK_END 2
 # ifdef __USE_GNU
-#  define SEEK_DATA	3
-#  define SEEK_HOLE	4
+# define SEEK_DATA 3
+# define SEEK_HOLE 4
 # endif
 #endif
 #if defined __USE_MISC && !defined L_SET
-# define L_SET		SEEK_SET
-# define L_INCR		SEEK_CUR
-# define L_XTND		SEEK_END
+# define L_SET SEEK_SET
+# define L_INCR SEEK_CUR
+# define L_XTND SEEK_END
 #endif
 #ifndef __USE_FILE_OFFSET64
 extern __off_t lseek (int __fd, __off_t __offset, int __whence) __THROW;
@@ -141,7 +141,7 @@ extern __off64_t __REDIRECT_NTH (lseek,
 (int __fd, __off64_t __offset, int __whence),
 lseek64);
 # else
-#  define lseek lseek64
+# define lseek lseek64
 # endif
 #endif
 #ifdef __USE_LARGEFILE64
@@ -165,7 +165,7 @@ extern ssize_t pwrite (int __fd, const void *__buf, size_t __n,
 __off_t __offset) __wur
 __attr_access ((__read_only__, 2, 3));
 # else
-#  ifdef __REDIRECT
+# ifdef __REDIRECT
 extern ssize_t __REDIRECT (pread, (int __fd, void *__buf, size_t __nbytes,
 __off64_t __offset),
 pread64) __wur
@@ -174,10 +174,10 @@ extern ssize_t __REDIRECT (pwrite, (int __fd, const void *__buf,
 size_t __nbytes, __off64_t __offset),
 pwrite64) __wur
 __attr_access ((__read_only__, 2, 3));
-#  else
-#   define pread pread64
-#   define pwrite pwrite64
-#  endif
+# else
+# define pread pread64
+# define pwrite pwrite64
+# endif
 # endif
 # ifdef __USE_LARGEFILE64
 extern ssize_t pread64 (int __fd, void *__buf, size_t __nbytes,
@@ -218,7 +218,7 @@ extern int chdir (const char *__path) __THROW __nonnull ((1)) __wur;
 extern int fchdir (int __fd) __THROW __wur;
 #endif
 extern char *getcwd (char *__buf, size_t __size) __THROW __wur;
-#ifdef	__USE_GNU
+#ifdef __USE_GNU
 extern char *get_current_dir_name (void) __THROW;
 #endif
 #if (defined __USE_XOPEN_EXTENDED && !defined __USE_XOPEN2K8) \
@@ -266,7 +266,7 @@ extern long int pathconf (const char *__path, int __name)
 __THROW __nonnull ((1));
 extern long int fpathconf (int __fd, int __name) __THROW;
 extern long int sysconf (int __name) __THROW;
-#ifdef	__USE_POSIX2
+#ifdef __USE_POSIX2
 extern size_t confstr (int __name, char *__buf, size_t __len) __THROW
 __fortified_attr_access (__write_only__, 2, 3);
 #endif
@@ -291,7 +291,7 @@ extern __gid_t getgid (void) __THROW;
 extern __gid_t getegid (void) __THROW;
 extern int getgroups (int __size, __gid_t __list[]) __THROW __wur
 __fortified_attr_access (__write_only__, 2, 1);
-#ifdef	__USE_GNU
+#ifdef __USE_GNU
 extern int group_member (__gid_t __gid) __THROW;
 #endif
 extern int setuid (__uid_t __uid) __THROW __wur;
@@ -370,10 +370,10 @@ extern char *getlogin (void);
 extern int getlogin_r (char *__name, size_t __name_len) __nonnull ((1))
 __fortified_attr_access (__write_only__, 1, 2);
 #endif
-#ifdef	__USE_MISC
+#ifdef __USE_MISC
 extern int setlogin (const char *__name) __THROW __nonnull ((1));
 #endif
-#ifdef	__USE_POSIX2
+#ifdef __USE_POSIX2
 # include <bits/getopt_posix.h>
 #endif
 #if defined __USE_XOPEN_EXTENDED || defined __USE_XOPEN2K
@@ -412,7 +412,7 @@ extern int syncfs (int __fd) __THROW;
 extern long int gethostid (void);
 extern void sync (void) __THROW;
 # if defined __USE_MISC || !defined __USE_XOPEN2K
-extern int getpagesize (void)  __THROW __attribute__ ((__const__));
+extern int getpagesize (void) __THROW __attribute__ ((__const__));
 extern int getdtablesize (void) __THROW;
 # endif
 #endif
@@ -421,13 +421,13 @@ extern int getdtablesize (void) __THROW;
 extern int truncate (const char *__file, __off_t __length)
 __THROW __nonnull ((1)) __wur;
 # else
-#  ifdef __REDIRECT_NTH
+# ifdef __REDIRECT_NTH
 extern int __REDIRECT_NTH (truncate,
 (const char *__file, __off64_t __length),
 truncate64) __nonnull ((1)) __wur;
-#  else
-#   define truncate truncate64
-#  endif
+# else
+# define truncate truncate64
+# endif
 # endif
 # ifdef __USE_LARGEFILE64
 extern int truncate64 (const char *__file, __off64_t __length)
@@ -439,12 +439,12 @@ __THROW __nonnull ((1)) __wur;
 # ifndef __USE_FILE_OFFSET64
 extern int ftruncate (int __fd, __off_t __length) __THROW __wur;
 # else
-#  ifdef __REDIRECT_NTH
+# ifdef __REDIRECT_NTH
 extern int __REDIRECT_NTH (ftruncate, (int __fd, __off64_t __length),
 ftruncate64) __wur;
-#  else
-#   define ftruncate ftruncate64
-#  endif
+# else
+# define ftruncate ftruncate64
+# endif
 # endif
 # ifdef __USE_LARGEFILE64
 extern int ftruncate64 (int __fd, __off64_t __length) __THROW __wur;
@@ -460,18 +460,18 @@ extern long int syscall (long int __sysno, ...) __THROW;
 #endif
 #if (defined __USE_MISC || defined __USE_XOPEN_EXTENDED) && !defined F_LOCK
 # define F_ULOCK 0
-# define F_LOCK  1
+# define F_LOCK 1
 # define F_TLOCK 2
-# define F_TEST  3
+# define F_TEST 3
 # ifndef __USE_FILE_OFFSET64
 extern int lockf (int __fd, int __cmd, __off_t __len) __wur;
 # else
-#  ifdef __REDIRECT
+# ifdef __REDIRECT
 extern int __REDIRECT (lockf, (int __fd, int __cmd, __off64_t __len),
 lockf64) __wur;
-#  else
-#   define lockf lockf64
-#  endif
+# else
+# define lockf lockf64
+# endif
 # endif
 # ifdef __USE_LARGEFILE64
 extern int lockf64 (int __fd, int __cmd, __off64_t __len) __wur;
@@ -479,10 +479,10 @@ extern int lockf64 (int __fd, int __cmd, __off64_t __len) __wur;
 #endif
 #ifdef __USE_GNU
 # define TEMP_FAILURE_RETRY(expression) \
-(__extension__							      \
-({ long int __result;						      \
-do __result = (long int) (expression);				      \
-while (__result == -1L && errno == EINTR);			      \
+(__extension__ \
+({ long int __result; \
+do __result = (long int) (expression); \
+while (__result == -1L && errno == EINTR); \
 __result; }))
 ssize_t copy_file_range (int __infd, __off64_t *__pinoff,
 int __outfd, __off64_t *__poutoff,
@@ -495,7 +495,7 @@ extern int fdatasync (int __fildes);
 extern char *crypt (const char *__key, const char *__salt)
 __THROW __nonnull ((1, 2));
 #endif
-#ifdef	__USE_XOPEN
+#ifdef __USE_XOPEN
 extern void swab (const void *__restrict __from, void *__restrict __to,
 ssize_t __n) __THROW __nonnull ((1, 2))
 __attr_access ((__read_only__, 1, 3))

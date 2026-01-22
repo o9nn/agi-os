@@ -1,10 +1,10 @@
 #ifndef gsiparam_INCLUDED
-#  define gsiparam_INCLUDED
+# define gsiparam_INCLUDED
 #include "gsccolor.h"
 #include "gsmatrix.h"
 #include "gsstype.h"
 #ifndef gx_image_type_DEFINED
-#  define gx_image_type_DEFINED
+# define gx_image_type_DEFINED
 typedef struct gx_image_type_s gx_image_type_t;
 #endif
 #define gs_image_common\
@@ -46,7 +46,7 @@ gs_image_format_component_planar = 1,
 gs_image_format_bit_planar = 2
 } gs_image_format_t;
 #ifndef gs_color_space_DEFINED
-#  define gs_color_space_DEFINED
+# define gs_color_space_DEFINED
 typedef struct gs_color_space_s gs_color_space;
 #endif
 #define gs_pixel_image_common\
@@ -77,7 +77,7 @@ bool adjust;
 gs_image_alpha_t Alpha;
 } gs_image1_t;
 extern_st(st_gs_image1);
-#define public_st_gs_image1()	\
+#define public_st_gs_image1() \
 gs_public_st_suffix_add0(st_gs_image1, gs_image1_t, "gs_image1_t",\
 image1_enum_ptrs, image1_reloc_ptrs, st_gs_pixel_image)
 typedef gs_image1_t gs_image_t;

@@ -7,28 +7,28 @@
 #include "../port/error.h"
 #include "../port/sd.h"
 #include "ahci.h"
-#define	dprint(...)	if(debug)	iprint(__VA_ARGS__); else USED(debug)
-#define	idprint(...)	if(prid)	iprint(__VA_ARGS__);  else USED(prid)
-#define	aprint(...)	if(datapi)	iprint(__VA_ARGS__);  else USED(datapi)
-#define Tname(c)	tname[(c)->type]
-#define Intel(x)	((x)->pci->vid == Vintel)
+#define dprint(...) if(debug) iprint(__VA_ARGS__); else USED(debug)
+#define idprint(...) if(prid) iprint(__VA_ARGS__); else USED(prid)
+#define aprint(...) if(datapi) iprint(__VA_ARGS__); else USED(datapi)
+#define Tname(c) tname[(c)->type]
+#define Intel(x) ((x)->pci->vid == Vintel)
 enum {
-NCtlr	= 16,
+NCtlr = 16,
 NCtlrdrv= 32,
-NDrive	= NCtlr*NCtlrdrv,
-Read	= 0,
+NDrive = NCtlr*NCtlrdrv,
+Read = 0,
 Write,
-Nms	= 256,
-Mphywait=  2*1024/Nms - 1,
-Midwait	= 16*1024/Nms - 1,
+Nms = 256,
+Mphywait= 2*1024/Nms - 1,
+Midwait = 16*1024/Nms - 1,
 Mcomrwait= 64*1024/Nms - 1,
-Obs	= 0xa0,
+Obs = 0xa0,
 Maxintrspertick = 2000,
 };
 enum {
-Pmap	= 0x90,
-Ppcs	= 0x91,
-Prev	= 0xa8,
+Pmap = 0x90,
+Ppcs = 0x91,
+Prev = 0xa8,
 };
 enum {
 Tesb,
@@ -94,67 +94,67 @@ typedef struct Ctlr Ctlr;
 typedef struct Drive Drive;
 struct Drive {
 Lock;
-Ctlr	*ctlr;
-SDunit	*unit;
-char	name[10];
-Aport	*port;
-Aportm	portm;
-Aportc	portc;
-uchar	mediachange;
-uchar	state;
-uchar	smartrs;
-uvlong	sectors;
-ulong	secsize;
-ulong	intick;
-ulong	lastseen;
-int	wait;
-uchar	mode;
-uchar	active;
-char	serial[20+1];
-char	firmware[8+1];
-char	model[40+1];
-int	infosz;
-ushort	*info;
-ushort	tinyinfo[2];
-int	driveno;
-int	portno;
-ulong	lastintr0;
-ulong	intrs;
+Ctlr *ctlr;
+SDunit *unit;
+char name[10];
+Aport *port;
+Aportm portm;
+Aportc portc;
+uchar mediachange;
+uchar state;
+uchar smartrs;
+uvlong sectors;
+ulong secsize;
+ulong intick;
+ulong lastseen;
+int wait;
+uchar mode;
+uchar active;
+char serial[20+1];
+char firmware[8+1];
+char model[40+1];
+int infosz;
+ushort *info;
+ushort tinyinfo[2];
+int driveno;
+int portno;
+ulong lastintr0;
+ulong intrs;
 };
 struct Ctlr {
 Lock;
-int	type;
-int	enabled;
-SDev	*sdev;
-Pcidev	*pci;
-uchar	*mmio;
-ulong	*lmmio;
-Ahba	*hba;
-uchar	*physio;
-Drive	*rawdrive;
-Drive	*drive[NCtlrdrv];
-int	ndrive;
-int	mport;
-ulong	lastintr0;
-ulong	intrs;
+int type;
+int enabled;
+SDev *sdev;
+Pcidev *pci;
+uchar *mmio;
+ulong *lmmio;
+Ahba *hba;
+uchar *physio;
+Drive *rawdrive;
+Drive *drive[NCtlrdrv];
+int ndrive;
+int mport;
+ulong lastintr0;
+ulong intrs;
 };
 struct Asleep {
-Aport	*p;
-int	i;
+Aport *p;
+int i;
 };
 extern SDifc sdiahciifc;
-static	Ctlr	iactlr[NCtlr];
-static	SDev	sdevs[NCtlr];
-static	int	niactlr;
-static	Drive	*iadrive[NDrive];
-static	int	niadrive;
-static	int	debug;
-static	int	prid = 1;
-static	int	datapi;
+static Ctlr iactlr[NCtlr];
+static SDev sdevs[NCtlr];
+static int niactlr;
+static Drive *iadrive[NDrive];
+static int niadrive;
+static int debug;
+static int prid = 1;
+static int datapi;
 static char stab[] = {
-[0]	'i', 'm',
-[8]	't', 'c', 'p', 'e',
-[16]	'N', 'I', 'W', 'B', 'D', 'C', 'H', 'S', 'T', 'F', 'X'
+[0] 'i', 'm',
+[8] 't', 'c', 'p', 'e',
+[16] 'N', 'I', 'W', 'B', 'D', 'C', 'H', 'S', 'T', 'F', 'X'
 };
 static void
 serrstr(ulong r, char *s, char *e)
@@ -376,7 +376,7 @@ gbit32(void *a)
 ulong j;
 uchar *i;
 i = a;
-j  = i[3] << 24;
+j = i[3] << 24;
 j |= i[2] << 16;
 j |= i[1] << 8;
 j |= i[0];
@@ -741,7 +741,7 @@ clearci(Aport *p)
 {
 if(p->cmd & Ast) {
 p->cmd &= ~Ast;
-p->cmd |=  Ast;
+p->cmd |= Ast;
 }
 }
 static void
@@ -1557,7 +1557,7 @@ print("%s: bad cmd %.2#ux\n", name, cmd[0]);
 r->status = SDcheck;
 return SDcheck;
 }
-lba   = cmd[2]<<24 | cmd[3]<<16 | cmd[4]<<8 | cmd[5];
+lba = cmd[2]<<24 | cmd[3]<<16 | cmd[4]<<8 | cmd[5];
 count = cmd[7]<<8 | cmd[8];
 if(r->data == nil)
 return SDok;
@@ -1627,7 +1627,7 @@ r->status = SDeio;
 return SDeio;
 }
 count -= n;
-lba   += n;
+lba += n;
 data += n * unit->secsize;
 }
 r->rlen = data - (uchar*)r->data;
@@ -1756,7 +1756,7 @@ tname[type]);
 break;
 }
 c = iactlr + niactlr;
-s = sdevs  + niactlr;
+s = sdevs + niactlr;
 memset(c, 0, sizeof *c);
 memset(s, 0, sizeof *s);
 io = p->mem[Abar].bar & ~0xf;
@@ -1927,7 +1927,7 @@ if(strcmp(f[0], "change") == 0)
 changemedia(u);
 else if(strcmp(f[0], "flushcache") == 0)
 runflushcache(d);
-else if(strcmp(f[0], "identify") ==  0){
+else if(strcmp(f[0], "identify") == 0){
 i = strtoul(f[1]? f[1]: "0", 0, 0);
 if(i > 0xff)
 i = 0;

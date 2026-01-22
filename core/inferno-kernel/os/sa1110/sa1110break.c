@@ -27,26 +27,26 @@ IRSC,
 ISBC,
 ISUB,
 };
-static int	instrtype(Instr i);
-static ulong	iadd(Ureg *ur, Instr i);
-static ulong	ibranch(Ureg *ur, Instr i);
-static ulong	ildm(Ureg *ur, Instr i);
-static ulong	ildr(Ureg *ur, Instr i);
-static ulong	imov(Ureg *ur, Instr i);
-static ulong	shifterval(Ureg *ur, Instr i);
-static int	condpass(Instr i, ulong psr);
-static ulong	*address(Ureg *ur, Instr i);
-static ulong*	multiaddr(Ureg *ur, Instr i);
-static int	nbits(ulong v);
-#define COND_N(psr)	(((psr) >> 31) & 1)
-#define COND_Z(psr)	(((psr) >> 30) & 1)
-#define COND_C(psr)	(((psr) >> 29) & 1)
-#define COND_V(psr)	(((psr) >> 28) & 1)
-#define REG(i, a, b)	(((i) & BITS((a), (b))) >> (a))
-#define REGVAL(ur, r)	(*((ulong*)(ur) + (r)))
-#define LSR(v, s)	((ulong)(v) >> (s))
-#define ASR(v, s)	((long)(v) >> (s))
-#define ROR(v, s)	(LSR((v), (s)) | (((v) & ((1 << (s))-1)) << (32 - (s))))
+static int instrtype(Instr i);
+static ulong iadd(Ureg *ur, Instr i);
+static ulong ibranch(Ureg *ur, Instr i);
+static ulong ildm(Ureg *ur, Instr i);
+static ulong ildr(Ureg *ur, Instr i);
+static ulong imov(Ureg *ur, Instr i);
+static ulong shifterval(Ureg *ur, Instr i);
+static int condpass(Instr i, ulong psr);
+static ulong *address(Ureg *ur, Instr i);
+static ulong* multiaddr(Ureg *ur, Instr i);
+static int nbits(ulong v);
+#define COND_N(psr) (((psr) >> 31) & 1)
+#define COND_Z(psr) (((psr) >> 30) & 1)
+#define COND_C(psr) (((psr) >> 29) & 1)
+#define COND_V(psr) (((psr) >> 28) & 1)
+#define REG(i, a, b) (((i) & BITS((a), (b))) >> (a))
+#define REGVAL(ur, r) (*((ulong*)(ur) + (r)))
+#define LSR(v, s) ((ulong)(v) >> (s))
+#define ASR(v, s) ((long)(v) >> (s))
+#define ROR(v, s) (LSR((v), (s)) | (((v) & ((1 << (s))-1)) << (32 - (s))))
 void
 machbreakinit(void)
 {
@@ -82,11 +82,11 @@ machnextaddr(Ureg *ur)
 Instr i;
 i = machinstr(ur->pc);
 switch(instrtype(i)) {
-case IADD:	return iadd(ur,i);
-case IBRANCH:	return ibranch(ur,i);
-case ILDM:	return ildm(ur,i);
-case ILDR:	return ildr(ur,i);
-case IMOV:	return imov(ur,i);
+case IADD: return iadd(ur,i);
+case IBRANCH: return ibranch(ur,i);
+case ILDM: return ildm(ur,i);
+case ILDR: return ildr(ur,i);
+case IMOV: return imov(ur,i);
 case IADC:
 case IAND:
 case IBIC:
@@ -109,18 +109,18 @@ instrtype(Instr i)
 {
 if(i & BITS(26,27) == 0) {
 switch((i >> 21) & 0xF) {
-case 0:		return IAND;
-case 1:		return IEOR;
-case 2:		return ISUB;
-case 3:		return IRSB;
-case 4:		return IADD;
-case 5:		return IADC;
-case 6:		return ISBC;
-case 7:		return IRSC;
-case 0xD:	return IMOV;
-case 0xC:	return IORR;
-case 0xE:	return IBIC;
-case 0xF:	return IMVN;
+case 0: return IAND;
+case 1: return IEOR;
+case 2: return ISUB;
+case 3: return IRSB;
+case 4: return IADD;
+case 5: return IADC;
+case 6: return ISBC;
+case 7: return IRSC;
+case 0xD: return IMOV;
+case 0xC: return IORR;
+case 0xE: return IBIC;
+case 0xF: return IMVN;
 }
 if(((i & BIT(25)|BITS(23,24)|BITS(20,21))) >> 20 == 0x10)
 return IMRS;
@@ -176,22 +176,22 @@ uchar z = COND_Z(psr);
 uchar c = COND_C(psr);
 uchar v = COND_V(psr);
 switch(LSR(i,28)) {
-case 0:		return z;
-case 1:		return !z;
-case 2:		return c;
-case 3:		return !c;
-case 4:		return n;
-case 5:		return !n;
-case 6:		return v;
-case 7:		return !v;
-case 8:		return c && !z;
-case 9:		return !c || z;
-case 10:	return n == v;
-case 11:	return n != v;
-case 12:	return !z && (n == v);
-case 13:	return z && (n != v);
-case 14:	return 1;
-case 15:	return 0;
+case 0: return z;
+case 1: return !z;
+case 2: return c;
+case 3: return !c;
+case 4: return n;
+case 5: return !n;
+case 6: return v;
+case 7: return !v;
+case 8: return c && !z;
+case 9: return !c || z;
+case 10: return n == v;
+case 11: return n != v;
+case 12: return !z && (n == v);
+case 13: return z && (n != v);
+case 14: return 1;
+case 15: return 0;
 }
 }
 static ulong
@@ -258,9 +258,9 @@ return (ulong*)(REGVAL(ur, Rn) - (i & BITS(0, 11)));
 ulong Rm = REGVAL(ur, REG(i, 0, 3));
 ulong index = 0;
 switch(i & BITS(5,6) >> 5) {
-case 0:	index = Rm << ((i & BITS(7, 11)) >> 7);		break;
-case 1:	index = LSR(Rm, ((i & BITS(7, 11)) >> 7));	break;
-case 2:	index = ASR(Rm, ((i & BITS(7, 11)) >> 7));	break;
+case 0: index = Rm << ((i & BITS(7, 11)) >> 7); break;
+case 1: index = LSR(Rm, ((i & BITS(7, 11)) >> 7)); break;
+case 2: index = ASR(Rm, ((i & BITS(7, 11)) >> 7)); break;
 case 3:
 if(i & BITS(7, 11) == 0)
 index = (COND_C(ur->psr) << 31) | LSR(Rm, 1);
@@ -279,7 +279,7 @@ multiaddr(Ureg *ur, Instr i)
 ulong Rn = REGVAL(ur, REG(i, 16, 19));
 switch((i >> 23) & 3) {
 case 0: return (ulong*)(Rn - (nbits(i & BITS(0,15))*4)+4);
-case 1:	return (ulong*)Rn;
+case 1: return (ulong*)Rn;
 case 2: return (ulong*)(Rn - (nbits(i & BITS(0,15))*4));
 case 3: return (ulong*)(Rn + 4);
 }

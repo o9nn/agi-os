@@ -21,7 +21,7 @@ if(b->sign < 0){
 x = 0;
 } else {
 if(b->top > 1 || x > MAXUINT)
-x =  MAXUINT;
+x = MAXUINT;
 }
 return x;
 }

@@ -5,15 +5,15 @@
 #endif
 #include "crypt-blowfish.h"
 #ifdef __i386__
-#define BF_SCALE			1
+#define BF_SCALE 1
 #elif defined(__x86_64__) || defined(__alpha__) || defined(__hppa__)
-#define BF_SCALE			1
+#define BF_SCALE 1
 #else
-#define BF_SCALE			0
+#define BF_SCALE 0
 #endif
 typedef unsigned int BF_word;
 typedef signed int BF_word_signed;
-#define BF_N				16
+#define BF_N 16
 typedef BF_word BF_key[BF_N + 2];
 typedef struct {
 BF_word S[4][0x100];

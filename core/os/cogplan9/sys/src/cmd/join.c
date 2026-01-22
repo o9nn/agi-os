@@ -8,31 +8,31 @@ F2,
 NIN,
 F0,
 };
-#define	NFLD	100
+#define NFLD 100
 #define comp() runestrcmp(ppi[F1][j1], ppi[F2][j2])
 Biobuf *f[NIN];
 Rune buf[NIN][Bsize];
 Rune *ppi[NIN][NFLD+1];
-Rune	sep1	= ' ';
-Rune	sep2	= '\t';
-int	j1	= 1;
-int	j2	= 1;
-int	a1;
-int 	a2;
-int	olist[NIN*NFLD];
-int	olistf[NIN*NFLD];
-int	no;
-char *sepstr	= " ";
-int	discard;
-Rune	null[Bsize]	= L"";
+Rune sep1 = ' ';
+Rune sep2 = '\t';
+int j1 = 1;
+int j2 = 1;
+int a1;
+int a2;
+int olist[NIN*NFLD];
+int olistf[NIN*NFLD];
+int no;
+char *sepstr = " ";
+int discard;
+Rune null[Bsize] = L"";
 Biobuf binbuf, boutbuf;
 Biobuf *bin, *bout;
-char	*getoptarg(int*, char***);
-int	input(int);
-void	join(int);
-void	oparse(char*);
-void	output(int, int);
-Rune	*strtorune(Rune *, char *);
+char *getoptarg(int*, char***);
+int input(int);
+void join(int);
+void oparse(char*);
+void output(int, int);
+Rune *strtorune(Rune *, char *);
 void
 main(int argc, char **argv)
 {
@@ -120,7 +120,7 @@ if (argc != 3) {
 fprint(2, "usage: join [-1 x -2 y] [-o list] file1 file2\n");
 exits("usage");
 }
-if (j1 < 1  || j2 < 1)
+if (j1 < 1 || j2 < 1)
 sysfatal("invalid field indices");
 j1--;
 j2--;

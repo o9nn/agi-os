@@ -5,19 +5,19 @@
 #include <ip.h>
 #include "dns.h"
 enum {
-FQDNMAX	= 255,
+FQDNMAX = 255,
 };
 char *errmsgs[] = {
-[0]  "ok",
-[1]  "request format error",
-[2]  "internal server error",
-[3]  "domain name does not exist",
-[4]  "request not supported",
-[5]  "permission denied",
-[6]  "domain name already exists",
-[7]  "resource record already exists",
-[8]  "resource record does not exist",
-[9]  "server not authoritative",
+[0] "ok",
+[1] "request format error",
+[2] "internal server error",
+[3] "domain name does not exist",
+[4] "request not supported",
+[5] "permission denied",
+[6] "domain name already exists",
+[7] "resource record already exists",
+[8] "resource record does not exist",
+[9] "server not authoritative",
 [10] "domain name not in zone",
 };
 void
@@ -37,7 +37,7 @@ int
 g16(uchar **p)
 {
 int n;
-n  = *(*p)++ << 8;
+n = *(*p)++ << 8;
 n |= *(*p)++;
 return n;
 }

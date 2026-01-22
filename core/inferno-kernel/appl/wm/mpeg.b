@@ -8,13 +8,13 @@ ctxt: ref Draw->Context;
 include "tk.m";
 tk: Tk;
 Toplevel: import tk;
-include	"tkclient.m";
+include "tkclient.m";
 tkclient: Tkclient;
-include	"mpeg.m";
+include "mpeg.m";
 mpeg: Mpeg;
 WmMpeg: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 Stopped, Playing: con iota;
 dx, dy: int;
@@ -40,14 +40,14 @@ task_cfg := array[] of {
 };
 init(xctxt: ref Draw->Context, nil: list of string)
 {
-sys = load Sys  Sys->PATH;
+sys = load Sys Sys->PATH;
 draw = load Draw Draw->PATH;
 tk = load Tk Tk->PATH;
 tkclient = load Tkclient Tkclient->PATH;
-mpeg = load Mpeg  Mpeg->PATH;
+mpeg = load Mpeg Mpeg->PATH;
 ctxt = xctxt;
 tkclient->init();
-(t, menubut)  := tkclient->toplevel(ctxt.screen, "", "Mpeg Player", Tkclient->Appl);
+(t, menubut) := tkclient->toplevel(ctxt.screen, "", "Mpeg Player", Tkclient->Appl);
 cmd := chan of string;
 tk->namechan(t, cmd, "cmd");
 tkclient->tkcmds(t, task_cfg);
@@ -145,7 +145,7 @@ return;
 tkclient->wmctl(t, menu);
 tcip := <-pchan =>
 case tcip {
-"dx" =>	dx = int tk->cmd(t, ".dx get");
+"dx" => dx = int tk->cmd(t, ".dx get");
 "dy" => dy = int tk->cmd(t, ".dy get");
 "dw" => dw = int tk->cmd(t, ".dw get");
 "dh" => dh = int tk->cmd(t, ".dh get");

@@ -3,58 +3,58 @@
 #include "keyboard.h"
 #include "tk.h"
 #include "listb.h"
-#define	O(t, e)		((long)(&((t*)0)->e))
+#define O(t, e) ((long)(&((t*)0)->e))
 enum {
-Listpadx	= 2,
+Listpadx = 2,
 };
 typedef struct TkLentry TkLentry;
 typedef struct TkListbox TkListbox;
 struct TkLentry
 {
-TkLentry*	link;
-int		flag;
-int		width;
-char		text[TKSTRUCTALIGN];
+TkLentry* link;
+int flag;
+int width;
+char text[TKSTRUCTALIGN];
 };
 struct TkListbox
 {
-TkLentry*	head;
-TkLentry*	anchor;
-TkLentry*	active;
-int		yelem;
-int		xdelta;
-int		nitem;
-int		nwidth;
-int		selmode;
-int		sborderwidth;
-char*		xscroll;
-char*		yscroll;
+TkLentry* head;
+TkLentry* anchor;
+TkLentry* active;
+int yelem;
+int xdelta;
+int nitem;
+int nwidth;
+int selmode;
+int sborderwidth;
+char* xscroll;
+char* yscroll;
 };
 TkStab tkselmode[] =
 {
-"single",	TKsingle,
-"browse",	TKbrowse,
-"multiple",	TKmultiple,
-"extended",	TKextended,
+"single", TKsingle,
+"browse", TKbrowse,
+"multiple", TKmultiple,
+"extended", TKextended,
 nil
 };
 static
 TkOption opts[] =
 {
-"xscrollcommand",	OPTtext,	O(TkListbox, xscroll),	nil,
-"yscrollcommand",	OPTtext,	O(TkListbox, yscroll),	nil,
-"selectmode",		OPTstab,	O(TkListbox, selmode),	tkselmode,
-"selectborderwidth",	OPTnndist,	O(TkListbox, sborderwidth),	nil,
+"xscrollcommand", OPTtext, O(TkListbox, xscroll), nil,
+"yscrollcommand", OPTtext, O(TkListbox, yscroll), nil,
+"selectmode", OPTstab, O(TkListbox, selmode), tkselmode,
+"selectborderwidth", OPTnndist, O(TkListbox, sborderwidth), nil,
 nil
 };
 static
 TkEbind b[] =
 {
-{TkButton1P,		"%W tkListbButton1P %y"},
-{TkButton1R,	"%W tkListbButton1R"},
-{TkButton1P|TkMotion,	"%W tkListbButton1MP %y"},
-{TkMotion,		""},
-{TkKey,	"%W tkListbKey 0x%K"},
+{TkButton1P, "%W tkListbButton1P %y"},
+{TkButton1R, "%W tkListbButton1R"},
+{TkButton1P|TkMotion, "%W tkListbButton1MP %y"},
+{TkMotion, ""},
+{TkKey, "%W tkListbKey 0x%K"},
 };
 static int
 lineheight(Tk *tk)
@@ -878,24 +878,24 @@ return nil;
 static
 TkCmdtab tklistcmd[] =
 {
-"activate",		tklistbactivate,
-"cget",			tklistbcget,
-"configure",		tklistbconf,
-"curselection",		tklistbcursel,
-"delete",		tklistbdelete,
-"get",			tklistbget,
-"index",		tklistbindex,
-"insert",		tklistbinsert,
-"nearest",		tklistbnearest,
-"selection",		tklistbselection,
-"see",			tklistbsee,
-"size",			tklistbsize,
-"xview",		tklistbxview,
-"yview",		tklistbyview,
-"tkListbButton1P",	tklistbbutton1p,
-"tkListbButton1R",	tklistbbutton1r,
-"tkListbButton1MP",	tklistbbutton1m,
-"tkListbKey",	tklistbkey,
+"activate", tklistbactivate,
+"cget", tklistbcget,
+"configure", tklistbconf,
+"curselection", tklistbcursel,
+"delete", tklistbdelete,
+"get", tklistbget,
+"index", tklistbindex,
+"insert", tklistbinsert,
+"nearest", tklistbnearest,
+"selection", tklistbselection,
+"see", tklistbsee,
+"size", tklistbsize,
+"xview", tklistbxview,
+"yview", tklistbyview,
+"tkListbButton1P", tklistbbutton1p,
+"tkListbButton1R", tklistbbutton1r,
+"tkListbButton1MP", tklistbbutton1m,
+"tkListbKey", tklistbkey,
 nil
 };
 TkMethod listboxmethod = {

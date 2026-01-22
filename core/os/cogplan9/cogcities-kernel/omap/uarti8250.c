@@ -4,121 +4,121 @@
 #include "dat.h"
 #include "fns.h"
 enum {
-Rbr		= 0,
-Thr		= 0,
-Ier		= 1,
-Iir		= 2,
-Fcr		= 2,
-Lcr		= 3,
-Mcr		= 4,
-Lsr		= 5,
-Msr		= 6,
-Scr		= 7,
-Mdr		= 8,
-Dll		= 0,
-Dlm		= 1,
+Rbr = 0,
+Thr = 0,
+Ier = 1,
+Iir = 2,
+Fcr = 2,
+Lcr = 3,
+Mcr = 4,
+Lsr = 5,
+Msr = 6,
+Scr = 7,
+Mdr = 8,
+Dll = 0,
+Dlm = 1,
 };
 enum {
-Busy		= 0x01,
+Busy = 0x01,
 };
 enum {
-Erda		= 0x01,
-Ethre		= 0x02,
-Erls		= 0x04,
-Ems		= 0x08,
+Erda = 0x01,
+Ethre = 0x02,
+Erls = 0x04,
+Ems = 0x08,
 };
 enum {
-Ims		= 0x00,
-Ip		= 0x01,
-Ithre		= 0x02,
-Irda		= 0x04,
-Irls		= 0x06,
-Ictoi		= 0x0C,
-IirMASK		= 0x3F,
-Ifena		= 0xC0,
+Ims = 0x00,
+Ip = 0x01,
+Ithre = 0x02,
+Irda = 0x04,
+Irls = 0x06,
+Ictoi = 0x0C,
+IirMASK = 0x3F,
+Ifena = 0xC0,
 };
 enum {
-FIFOena		= 0x01,
-FIFOrclr	= 0x02,
-FIFOtclr	= 0x04,
-FIFO1		= 0x00,
-FIFO4		= 0x40,
-FIFO8		= 0x80,
-FIFO14		= 0xC0,
+FIFOena = 0x01,
+FIFOrclr = 0x02,
+FIFOtclr = 0x04,
+FIFO1 = 0x00,
+FIFO4 = 0x40,
+FIFO8 = 0x80,
+FIFO14 = 0xC0,
 };
 enum {
-Wls5		= 0x00,
-Wls6		= 0x01,
-Wls7		= 0x02,
-Wls8		= 0x03,
-WlsMASK		= 0x03,
-Stb		= 0x04,
-Pen		= 0x08,
-Eps		= 0x10,
-Stp		= 0x20,
-Brk		= 0x40,
-Dlab		= 0x80,
+Wls5 = 0x00,
+Wls6 = 0x01,
+Wls7 = 0x02,
+Wls8 = 0x03,
+WlsMASK = 0x03,
+Stb = 0x04,
+Pen = 0x08,
+Eps = 0x10,
+Stp = 0x20,
+Brk = 0x40,
+Dlab = 0x80,
 };
 enum {
-Dtr		= 0x01,
-Rts		= 0x02,
-Out1		= 0x04,
-Dm		= 0x10,
+Dtr = 0x01,
+Rts = 0x02,
+Out1 = 0x04,
+Dm = 0x10,
 };
 enum {
-Dr		= 0x01,
-Oe		= 0x02,
-Pe		= 0x04,
-Fe		= 0x08,
-Bi		= 0x10,
-Thre		= 0x20,
-Temt		= 0x40,
-FIFOerr		= 0x80,
+Dr = 0x01,
+Oe = 0x02,
+Pe = 0x04,
+Fe = 0x08,
+Bi = 0x10,
+Thre = 0x20,
+Temt = 0x40,
+FIFOerr = 0x80,
 };
 enum {
-Dcts		= 0x01,
-Ddsr		= 0x02,
-Teri		= 0x04,
-Ddcd		= 0x08,
-Cts		= 0x10,
-Dsr		= 0x20,
-Ri		= 0x40,
-Dcd		= 0x80,
+Dcts = 0x01,
+Ddsr = 0x02,
+Teri = 0x04,
+Ddcd = 0x08,
+Cts = 0x10,
+Dsr = 0x20,
+Ri = 0x40,
+Dcd = 0x80,
 };
 enum {
-Modemask	= 7,
-Modeuart	= 0,
+Modemask = 7,
+Modeuart = 0,
 };
 typedef struct Ctlr {
-u32int*	io;
-int	irq;
-int	tbdf;
-int	iena;
-int	poll;
-uchar	sticky[Scr+1];
+u32int* io;
+int irq;
+int tbdf;
+int iena;
+int poll;
+uchar sticky[Scr+1];
 Lock;
-int	hasfifo;
-int	checkfifo;
-int	fena;
+int hasfifo;
+int checkfifo;
+int fena;
 } Ctlr;
 extern PhysUart i8250physuart;
 static Ctlr i8250ctlr[] = {
-{	.io	= (u32int*)PHYSCONS,
-.irq	= 74,
-.tbdf	= -1,
-.poll	= 0, },
+{ .io = (u32int*)PHYSCONS,
+.irq = 74,
+.tbdf = -1,
+.poll = 0, },
 };
 static Uart i8250uart[] = {
-{	.regs	= &i8250ctlr[0],
-.name	= "COM3",
-.freq	= 3686000,
-.phys	= &i8250physuart,
+{ .regs = &i8250ctlr[0],
+.name = "COM3",
+.freq = 3686000,
+.phys = &i8250physuart,
 .console= 1,
-.next	= nil, },
+.next = nil, },
 };
-#define csr8r(c, r)	((c)->io[r])
-#define csr8w(c, r, v)	((c)->io[r] = (c)->sticky[r] | (v), coherence())
-#define csr8o(c, r, v)	((c)->io[r] = (v), coherence())
+#define csr8r(c, r) ((c)->io[r])
+#define csr8w(c, r, v) ((c)->io[r] = (c)->sticky[r] | (v), coherence())
+#define csr8o(c, r, v) ((c)->io[r] = (v), coherence())
 static long
 i8250status(Uart* uart, void* buf, long n, long offset)
 {
@@ -554,23 +554,23 @@ i8250interrupt(nil, uart);
 }
 #endif
 PhysUart i8250physuart = {
-.name		= "i8250",
-.pnp		= i8250pnp,
-.enable		= i8250enable,
-.disable	= i8250disable,
-.kick		= i8250kick,
-.dobreak	= i8250break,
-.baud		= i8250baud,
-.bits		= i8250bits,
-.stop		= i8250stop,
-.parity		= i8250parity,
-.modemctl	= i8250modemctl,
-.rts		= i8250rts,
-.dtr		= i8250dtr,
-.status		= i8250status,
-.fifo		= i8250fifo,
-.getc		= i8250getc,
-.putc		= i8250putc,
+.name = "i8250",
+.pnp = i8250pnp,
+.enable = i8250enable,
+.disable = i8250disable,
+.kick = i8250kick,
+.dobreak = i8250break,
+.baud = i8250baud,
+.bits = i8250bits,
+.stop = i8250stop,
+.parity = i8250parity,
+.modemctl = i8250modemctl,
+.rts = i8250rts,
+.dtr = i8250dtr,
+.status = i8250status,
+.fifo = i8250fifo,
+.getc = i8250getc,
+.putc = i8250putc,
 };
 static void
 i8250dumpregs(Ctlr* ctlr)
@@ -583,7 +583,7 @@ dll = csr8r(ctlr, Dll);
 csr8w(ctlr, Lcr, 0);
 _uartprint("dlm %#ux dll %#ux\n", dlm, dll);
 }
-Uart*	uartenable(Uart *p);
+Uart* uartenable(Uart *p);
 int
 i8250console(void)
 {

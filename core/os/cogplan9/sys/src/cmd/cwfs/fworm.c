@@ -1,5 +1,5 @@
 #include "all.h"
-#define	FDEV(d)		((d)->fw.fw)
+#define FDEV(d) ((d)->fw.fw)
 enum { DEBUG = 0 };
 Devsize
 fwormsize(Device *d)

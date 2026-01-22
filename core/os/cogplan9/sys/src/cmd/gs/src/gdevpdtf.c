@@ -129,20 +129,20 @@ int size;
 gs_encoding_index_t base_encoding;
 } pdf_standard_font_info_t;
 private const pdf_standard_font_info_t standard_font_info[] = {
-{"Courier",                7, ENCODING_INDEX_STANDARD},
-{"Courier-Bold",          12, ENCODING_INDEX_STANDARD},
-{"Courier-Oblique",       15, ENCODING_INDEX_STANDARD},
-{"Courier-BoldOblique",   19, ENCODING_INDEX_STANDARD},
-{"Helvetica",              9, ENCODING_INDEX_STANDARD},
-{"Helvetica-Bold",        14, ENCODING_INDEX_STANDARD},
-{"Helvetica-Oblique",     17, ENCODING_INDEX_STANDARD},
+{"Courier", 7, ENCODING_INDEX_STANDARD},
+{"Courier-Bold", 12, ENCODING_INDEX_STANDARD},
+{"Courier-Oblique", 15, ENCODING_INDEX_STANDARD},
+{"Courier-BoldOblique", 19, ENCODING_INDEX_STANDARD},
+{"Helvetica", 9, ENCODING_INDEX_STANDARD},
+{"Helvetica-Bold", 14, ENCODING_INDEX_STANDARD},
+{"Helvetica-Oblique", 17, ENCODING_INDEX_STANDARD},
 {"Helvetica-BoldOblique", 21, ENCODING_INDEX_STANDARD},
-{"Symbol",                 6, ENCODING_INDEX_SYMBOL},
-{"Times-Roman",           11, ENCODING_INDEX_STANDARD},
-{"Times-Bold",            10, ENCODING_INDEX_STANDARD},
-{"Times-Italic",          12, ENCODING_INDEX_STANDARD},
-{"Times-BoldItalic",      16, ENCODING_INDEX_STANDARD},
-{"ZapfDingbats",          12, ENCODING_INDEX_DINGBATS},
+{"Symbol", 6, ENCODING_INDEX_SYMBOL},
+{"Times-Roman", 11, ENCODING_INDEX_STANDARD},
+{"Times-Bold", 10, ENCODING_INDEX_STANDARD},
+{"Times-Italic", 12, ENCODING_INDEX_STANDARD},
+{"Times-BoldItalic", 16, ENCODING_INDEX_STANDARD},
+{"ZapfDingbats", 12, ENCODING_INDEX_DINGBATS},
 {0}
 };
 private int

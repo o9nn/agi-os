@@ -5,33 +5,33 @@
 #include "ggml-sycl/presets.hpp"
 #include "ggml.h"
 static void cpy_1_f32_f32(const char * cxi, char * cdsti) {
-const float * xi   = (const float *) cxi;
-float *       dsti = (float *) cdsti;
+const float * xi = (const float *) cxi;
+float * dsti = (float *) cdsti;
 *dsti = *xi;
 }
 static void cpy_1_f32_f16(const char * cxi, char * cdsti) {
-const float * xi   = (const float *) cxi;
-sycl::half *  dsti = (sycl::half *) cdsti;
+const float * xi = (const float *) cxi;
+sycl::half * dsti = (sycl::half *) cdsti;
 *dsti = sycl::vec<float, 1>(*xi).convert<sycl::half, sycl::rounding_mode::automatic>()[0];
 }
 static void cpy_1_f16_f16(const char * cxi, char * cdsti) {
-const sycl::half * xi   = (const sycl::half *) cxi;
-sycl::half *       dsti = (sycl::half *) cdsti;
+const sycl::half * xi = (const sycl::half *) cxi;
+sycl::half * dsti = (sycl::half *) cdsti;
 *dsti = *xi;
 }
 static void cpy_1_f16_f32(const char * cxi, char * cdsti) {
-const sycl::half * xi   = (const sycl::half *) cxi;
-float *            dsti = (float *) cdsti;
+const sycl::half * xi = (const sycl::half *) cxi;
+float * dsti = (float *) cdsti;
 *dsti = *xi;
 }
 static void cpy_1_i16_i16(const char * cxi, char * cdsti) {
-const int16_t * xi   = (const int16_t *) cxi;
-int16_t *       dsti = (int16_t *) cdsti;
+const int16_t * xi = (const int16_t *) cxi;
+int16_t * dsti = (int16_t *) cdsti;
 *dsti = *xi;
 }
 static void cpy_1_i32_i32(const char * cxi, char * cdsti) {
-const int32_t * xi   = (const int32_t *) cxi;
-int32_t *       dsti = (int32_t *) cdsti;
+const int32_t * xi = (const int32_t *) cxi;
+int32_t * dsti = (int32_t *) cdsti;
 *dsti = *xi;
 }
 template <cpy_kernel_t cpy_1>
@@ -43,15 +43,15 @@ const int i = item_ct1.get_local_range(2) * item_ct1.get_group(2) + item_ct1.get
 if (i >= ne) {
 return;
 }
-const int i03      = i / (ne00 * ne01 * ne02);
-const int i02      = (i - i03 * ne00 * ne01 * ne02) / (ne00 * ne01);
-const int i01      = (i - i03 * ne00 * ne01 * ne02 - i02 * ne01 * ne00) / ne00;
-const int i00      = i - i03 * ne00 * ne01 * ne02 - i02 * ne01 * ne00 - i01 * ne00;
+const int i03 = i / (ne00 * ne01 * ne02);
+const int i02 = (i - i03 * ne00 * ne01 * ne02) / (ne00 * ne01);
+const int i01 = (i - i03 * ne00 * ne01 * ne02 - i02 * ne01 * ne00) / ne00;
+const int i00 = i - i03 * ne00 * ne01 * ne02 - i02 * ne01 * ne00 - i01 * ne00;
 const int x_offset = i00 * nb00 + i01 * nb01 + i02 * nb02 + i03 * nb03;
-const int i13        = i / (ne10 * ne11 * ne12);
-const int i12        = (i - i13 * ne10 * ne11 * ne12) / (ne10 * ne11);
-const int i11        = (i - i13 * ne10 * ne11 * ne12 - i12 * ne10 * ne11) / ne10;
-const int i10        = i - i13 * ne10 * ne11 * ne12 - i12 * ne10 * ne11 - i11 * ne10;
+const int i13 = i / (ne10 * ne11 * ne12);
+const int i12 = (i - i13 * ne10 * ne11 * ne12) / (ne10 * ne11);
+const int i11 = (i - i13 * ne10 * ne11 * ne12 - i12 * ne10 * ne11) / ne10;
+const int i10 = i - i13 * ne10 * ne11 * ne12 - i12 * ne10 * ne11 - i11 * ne10;
 const int dst_offset = i10 * nb10 + i11 * nb11 + i12 * nb12 + i13 * nb13;
 cpy_1(cx + x_offset, cdst + dst_offset);
 }
@@ -66,7 +66,7 @@ float * cdstf = (float *) (cdsti);
 for (int j = 0; j < QK8_0; j += 2) {
 dfloat2 dq;
 dequantize_q8_0(cxi, 0, j, dq);
-*(cdstf + j)     = dq.x();
+*(cdstf + j) = dq.x();
 *(cdstf + j + 1) = dq.y();
 }
 }
@@ -75,7 +75,7 @@ float * cdstf = (float *) (cdsti);
 for (int j = 0; j < qk / 2; j++) {
 dfloat2 dq;
 dequant(cxi, 0, j, dq);
-*(cdstf + j)          = dq.x();
+*(cdstf + j) = dq.x();
 *(cdstf + j + qk / 2) = dq.y();
 }
 }
@@ -88,15 +88,15 @@ const int i = (item_ct1.get_local_range(2) * item_ct1.get_group(2) + item_ct1.ge
 if (i >= ne) {
 return;
 }
-const int i03      = i / (ne00 * ne01 * ne02);
-const int i02      = (i - i03 * ne00 * ne01 * ne02) / (ne00 * ne01);
-const int i01      = (i - i03 * ne00 * ne01 * ne02 - i02 * ne01 * ne00) / ne00;
-const int i00      = i - i03 * ne00 * ne01 * ne02 - i02 * ne01 * ne00 - i01 * ne00;
+const int i03 = i / (ne00 * ne01 * ne02);
+const int i02 = (i - i03 * ne00 * ne01 * ne02) / (ne00 * ne01);
+const int i01 = (i - i03 * ne00 * ne01 * ne02 - i02 * ne01 * ne00) / ne00;
+const int i00 = i - i03 * ne00 * ne01 * ne02 - i02 * ne01 * ne00 - i01 * ne00;
 const int x_offset = (i00 / qk) * nb00 + i01 * nb01 + i02 * nb02 + i03 * nb03;
-const int i13        = i / (ne10 * ne11 * ne12);
-const int i12        = (i - i13 * ne10 * ne11 * ne12) / (ne10 * ne11);
-const int i11        = (i - i13 * ne10 * ne11 * ne12 - i12 * ne10 * ne11) / ne10;
-const int i10        = i - i13 * ne10 * ne11 * ne12 - i12 * ne10 * ne11 - i11 * ne10;
+const int i13 = i / (ne10 * ne11 * ne12);
+const int i12 = (i - i13 * ne10 * ne11 * ne12) / (ne10 * ne11);
+const int i11 = (i - i13 * ne10 * ne11 * ne12 - i12 * ne10 * ne11) / ne10;
+const int i10 = i - i13 * ne10 * ne11 * ne12 - i12 * ne10 * ne11 - i11 * ne10;
 const int dst_offset = (i10 / qk) * nb10 + i11 * nb11 + i12 * nb12 + i13 * nb13;
 cpy_blck_q_q<T>(cx + x_offset, cdst + dst_offset);
 }
@@ -109,15 +109,15 @@ const int i = (item_ct1.get_local_range(2) * item_ct1.get_group(2) + item_ct1.ge
 if (i >= ne) {
 return;
 }
-const int i03      = i / (ne00 * ne01 * ne02);
-const int i02      = (i - i03 * ne00 * ne01 * ne02) / (ne00 * ne01);
-const int i01      = (i - i03 * ne00 * ne01 * ne02 - i02 * ne01 * ne00) / ne00;
-const int i00      = i - i03 * ne00 * ne01 * ne02 - i02 * ne01 * ne00 - i01 * ne00;
+const int i03 = i / (ne00 * ne01 * ne02);
+const int i02 = (i - i03 * ne00 * ne01 * ne02) / (ne00 * ne01);
+const int i01 = (i - i03 * ne00 * ne01 * ne02 - i02 * ne01 * ne00) / ne00;
+const int i00 = i - i03 * ne00 * ne01 * ne02 - i02 * ne01 * ne00 - i01 * ne00;
 const int x_offset = i00 * nb00 + i01 * nb01 + i02 * nb02 + i03 * nb03;
-const int i13        = i / (ne10 * ne11 * ne12);
-const int i12        = (i - i13 * ne10 * ne11 * ne12) / (ne10 * ne11);
-const int i11        = (i - i13 * ne10 * ne11 * ne12 - i12 * ne10 * ne11) / ne10;
-const int i10        = i - i13 * ne10 * ne11 * ne12 - i12 * ne10 * ne11 - i11 * ne10;
+const int i13 = i / (ne10 * ne11 * ne12);
+const int i12 = (i - i13 * ne10 * ne11 * ne12) / (ne10 * ne11);
+const int i11 = (i - i13 * ne10 * ne11 * ne12 - i12 * ne10 * ne11) / ne10;
+const int i10 = i - i13 * ne10 * ne11 * ne12 - i12 * ne10 * ne11 - i11 * ne10;
 const int dst_offset = (i10 / qk) * nb10 + i11 * nb11 + i12 * nb12 + i13 * nb13;
 cpy_blck(cx + x_offset, cdst + dst_offset);
 }
@@ -130,15 +130,15 @@ const int i = (item_ct1.get_local_range(2) * item_ct1.get_group(2) + item_ct1.ge
 if (i >= ne) {
 return;
 }
-const int i03      = i / (ne00 * ne01 * ne02);
-const int i02      = (i - i03 * ne00 * ne01 * ne02) / (ne00 * ne01);
-const int i01      = (i - i03 * ne00 * ne01 * ne02 - i02 * ne01 * ne00) / ne00;
-const int i00      = i - i03 * ne00 * ne01 * ne02 - i02 * ne01 * ne00 - i01 * ne00;
+const int i03 = i / (ne00 * ne01 * ne02);
+const int i02 = (i - i03 * ne00 * ne01 * ne02) / (ne00 * ne01);
+const int i01 = (i - i03 * ne00 * ne01 * ne02 - i02 * ne01 * ne00) / ne00;
+const int i00 = i - i03 * ne00 * ne01 * ne02 - i02 * ne01 * ne00 - i01 * ne00;
 const int x_offset = (i00 / qk) * nb00 + i01 * nb01 + i02 * nb02 + i03 * nb03;
-const int i13        = i / (ne10 * ne11 * ne12);
-const int i12        = (i - i13 * ne10 * ne11 * ne12) / (ne10 * ne11);
-const int i11        = (i - i13 * ne10 * ne11 * ne12 - i12 * ne10 * ne11) / ne10;
-const int i10        = i - i13 * ne10 * ne11 * ne12 - i12 * ne10 * ne11 - i11 * ne10;
+const int i13 = i / (ne10 * ne11 * ne12);
+const int i12 = (i - i13 * ne10 * ne11 * ne12) / (ne10 * ne11);
+const int i11 = (i - i13 * ne10 * ne11 * ne12 - i12 * ne10 * ne11) / ne10;
+const int i10 = i - i13 * ne10 * ne11 * ne12 - i12 * ne10 * ne11 - i11 * ne10;
 const int dst_offset = i10 * nb10 + i11 * nb11 + i12 * nb12 + i13 * nb13;
 cpy_blck(cx + x_offset, cdst + dst_offset);
 }

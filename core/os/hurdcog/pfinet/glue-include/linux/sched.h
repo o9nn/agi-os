@@ -31,7 +31,7 @@
 #include <linux/wait.h>
 #include <linux/timer.h>
 #define jiffies (fetch_jiffies ())
-#define current	(&current_contents)
+#define current (&current_contents)
 extern struct task_struct current_contents;
 struct task_struct
 {
@@ -51,9 +51,9 @@ prepare_current (int isroot)
 current->signal = 0;
 current->isroot = isroot;
 }
-#define become_task(user)		prepare_current ((user)->isroot)
-#define become_task_protid(protid)	prepare_current ((protid)->isroot)
-#define signal_pending(current)	((current)->signal)
+#define become_task(user) prepare_current ((user)->isroot)
+#define become_task_protid(protid) prepare_current ((protid)->isroot)
+#define signal_pending(current) ((current)->signal)
 #define PF_EXITING 1
 #define TASK_INTERRUPTIBLE 0
 #define TASK_RUNNING 0
@@ -109,7 +109,7 @@ pthread_cond_t **condp = (void *) p, *c = *condp;
 if (c)
 pthread_cond_broadcast (c);
 }
-#define wake_up		wake_up_interruptible
+#define wake_up wake_up_interruptible
 static inline void
 add_wait_queue(struct wait_queue ** p, struct wait_queue * wait)
 {
@@ -158,7 +158,7 @@ return 0;
 del_timer(&timer);
 return 0;
 }
-#define	MAX_SCHEDULE_TIMEOUT	LONG_MAX
+#define MAX_SCHEDULE_TIMEOUT LONG_MAX
 static inline int
 send_sig (u_long signo, struct task_struct *task, int priv)
 {

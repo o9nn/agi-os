@@ -8,7 +8,7 @@ jx = __HI(x);
 ix = jx&0x7fffffff;
 if(ix>=0x7ff00000) {
 if (jx>=0) return one/x+one;
-else       return one/x-one;
+else return one/x-one;
 }
 if (ix < 0x40360000) {
 if (ix<0x3c800000)

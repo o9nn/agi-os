@@ -192,15 +192,15 @@ n3 = hd tl tl args;
 }
 r := Zero;
 case op {
-EQ =>	r = mki(n1.eq(n2));
-NEQ =>	r = mki(!n1.eq(n2));
-GT =>	r = mki(n1.cmp(n2) > 0);
-LT =>	r = mki(n1.cmp(n2) < 0);
-GE =>	r = mki(n1.cmp(n2) >= 0);
-LE =>	r = mki(n1.cmp(n2) <= 0);
-PLUS =>	r = n1.add(n2);
-MINUS =>	r = n1.sub(n2);
-NOT	 =>	r = mki(n1.eq(Zero));
+EQ => r = mki(n1.eq(n2));
+NEQ => r = mki(!n1.eq(n2));
+GT => r = mki(n1.cmp(n2) > 0);
+LT => r = mki(n1.cmp(n2) < 0);
+GE => r = mki(n1.cmp(n2) >= 0);
+LE => r = mki(n1.cmp(n2) <= 0);
+PLUS => r = n1.add(n2);
+MINUS => r = n1.sub(n2);
+NOT => r = mki(n1.eq(Zero));
 DIVIDE =>
 if (n2.eq(Zero))
 ctxt.fail("divide by zero", "expr: division by zero");
@@ -211,19 +211,19 @@ ctxt.fail("divide by zero", "expr: division by zero");
 (nil, r) = n1.div(n2);
 TIMES =>
 r = n1.mul(n2);
-AND =>	r = bitop(ipand, n1, n2);
-OR =>	r = bitop(ipor, n1, n2);
-XOR =>	r = bitop(ipxor, n1, n2);
+AND => r = bitop(ipand, n1, n2);
+OR => r = bitop(ipor, n1, n2);
+XOR => r = bitop(ipxor, n1, n2);
 UMINUS => r = n1.neg();
-BNOT =>	r = n1.neg().sub(One);
-SHL =>	r = n1.shl(n2.iptoint());
-SHR =>	r = n1.shr(n2.iptoint());
-SEQ =>	return seq(n1, n2, stk);
-BITS =>	r = mki(n1.bits());
-EXPMOD =>	r = n1.expmod(n2, n3);
-EXP =>	r = n1.expmod(n2, nil);
-RAND =>	r = IPint.random(0, n1.iptoint());
-INVERT =>	r = n1.invert(n2);
+BNOT => r = n1.neg().sub(One);
+SHL => r = n1.shl(n2.iptoint());
+SHR => r = n1.shr(n2.iptoint());
+SEQ => return seq(n1, n2, stk);
+BITS => r = mki(n1.bits());
+EXPMOD => r = n1.expmod(n2, n3);
+EXP => r = n1.expmod(n2, nil);
+RAND => r = IPint.random(0, n1.iptoint());
+INVERT => r = n1.invert(n2);
 }
 return r :: stk;
 }
@@ -298,7 +298,7 @@ if ('0' <= s[i] && s[i] <= '9')
 n = n.mul(r).add(mki(s[i] - '0'));
 else if ('a' <= s[i] && s[i] < 'a' + radix - 10)
 n = n.mul(r).add(mki(s[i] - 'a' + 10));
-else if ('A' <= s[i] && s[i]  < 'A' + radix - 10)
+else if ('A' <= s[i] && s[i] < 'A' + radix - 10)
 n = n.mul(r).add(mki(s[i] - 'A' + 10));
 else
 break;
@@ -378,8 +378,8 @@ return 'a' + d - 10;
 log2(x: int): int
 {
 case x {
-2 =>	return 1;
-4 =>	return 2;
+2 => return 1;
+4 => return 2;
 8 => return 3;
 16 => return 4;
 32 => return 5;

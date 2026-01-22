@@ -1,58 +1,58 @@
 package table
 import (
-	"github.com/go-jet/jet/v2/postgres"
+"github.com/go-jet/jet/v2/postgres"
 )
 var Messages = newMessagesTable("public", "messages", "")
 type messagesTable struct {
-	postgres.Table
-	ID        postgres.ColumnString
-	ChatID    postgres.ColumnString
-	Sender    postgres.ColumnString
-	Content   postgres.ColumnString
-	CreatedAt postgres.ColumnTimestamp
-	AllColumns     postgres.ColumnList
-	MutableColumns postgres.ColumnList
+postgres.Table
+ID        postgres.ColumnString
+ChatID    postgres.ColumnString
+Sender    postgres.ColumnString
+Content   postgres.ColumnString
+CreatedAt postgres.ColumnTimestamp
+AllColumns     postgres.ColumnList
+MutableColumns postgres.ColumnList
 }
 type MessagesTable struct {
-	messagesTable
-	EXCLUDED messagesTable
+messagesTable
+EXCLUDED messagesTable
 }
 func (a MessagesTable) AS(alias string) *MessagesTable {
-	return newMessagesTable(a.SchemaName(), a.TableName(), alias)
+return newMessagesTable(a.SchemaName(), a.TableName(), alias)
 }
 func (a MessagesTable) FromSchema(schemaName string) *MessagesTable {
-	return newMessagesTable(schemaName, a.TableName(), a.Alias())
+return newMessagesTable(schemaName, a.TableName(), a.Alias())
 }
 func (a MessagesTable) WithPrefix(prefix string) *MessagesTable {
-	return newMessagesTable(a.SchemaName(), prefix+a.TableName(), a.TableName())
+return newMessagesTable(a.SchemaName(), prefix+a.TableName(), a.TableName())
 }
 func (a MessagesTable) WithSuffix(suffix string) *MessagesTable {
-	return newMessagesTable(a.SchemaName(), a.TableName()+suffix, a.TableName())
+return newMessagesTable(a.SchemaName(), a.TableName()+suffix, a.TableName())
 }
 func newMessagesTable(schemaName, tableName, alias string) *MessagesTable {
-	return &MessagesTable{
-		messagesTable: newMessagesTableImpl(schemaName, tableName, alias),
-		EXCLUDED:      newMessagesTableImpl("", "excluded", ""),
-	}
+return &MessagesTable{
+messagesTable: newMessagesTableImpl(schemaName, tableName, alias),
+EXCLUDED:      newMessagesTableImpl("", "excluded", ""),
+}
 }
 func newMessagesTableImpl(schemaName, tableName, alias string) messagesTable {
-	var (
-		IDColumn        = postgres.StringColumn("id")
-		ChatIDColumn    = postgres.StringColumn("chat_id")
-		SenderColumn    = postgres.StringColumn("sender")
-		ContentColumn   = postgres.StringColumn("content")
-		CreatedAtColumn = postgres.TimestampColumn("created_at")
-		allColumns      = postgres.ColumnList{IDColumn, ChatIDColumn, SenderColumn, ContentColumn, CreatedAtColumn}
-		mutableColumns  = postgres.ColumnList{ChatIDColumn, SenderColumn, ContentColumn, CreatedAtColumn}
-	)
-	return messagesTable{
-		Table: postgres.NewTable(schemaName, tableName, alias, allColumns...),
-		ID:        IDColumn,
-		ChatID:    ChatIDColumn,
-		Sender:    SenderColumn,
-		Content:   ContentColumn,
-		CreatedAt: CreatedAtColumn,
-		AllColumns:     allColumns,
-		MutableColumns: mutableColumns,
-	}
+var (
+IDColumn        = postgres.StringColumn("id")
+ChatIDColumn    = postgres.StringColumn("chat_id")
+SenderColumn    = postgres.StringColumn("sender")
+ContentColumn   = postgres.StringColumn("content")
+CreatedAtColumn = postgres.TimestampColumn("created_at")
+allColumns      = postgres.ColumnList{IDColumn, ChatIDColumn, SenderColumn, ContentColumn, CreatedAtColumn}
+mutableColumns  = postgres.ColumnList{ChatIDColumn, SenderColumn, ContentColumn, CreatedAtColumn}
+)
+return messagesTable{
+Table: postgres.NewTable(schemaName, tableName, alias, allColumns...),
+ID:        IDColumn,
+ChatID:    ChatIDColumn,
+Sender:    SenderColumn,
+Content:   ContentColumn,
+CreatedAt: CreatedAtColumn,
+AllColumns:     allColumns,
+MutableColumns: mutableColumns,
+}
 }

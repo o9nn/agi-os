@@ -1,13 +1,13 @@
 #ifndef gxcmap_INCLUDED
-#  define gxcmap_INCLUDED
+# define gxcmap_INCLUDED
 #include "gscsel.h"
 #include "gxfmap.h"
 #ifndef gx_device_DEFINED
-#  define gx_device_DEFINED
+# define gx_device_DEFINED
 typedef struct gx_device_s gx_device;
 #endif
 #ifndef gx_device_color_DEFINED
-#  define gx_device_color_DEFINED
+# define gx_device_color_DEFINED
 typedef struct gx_device_color_s gx_device_color;
 #endif
 #define cmap_proc_gray(proc)\
@@ -47,7 +47,7 @@ cm_map_proc_gray((*map_gray));
 cm_map_proc_rgb((*map_rgb));
 cm_map_proc_cmyk((*map_cmyk));
 };
-typedef struct gx_cm_color_map_procs_s  gx_cm_color_map_procs;
+typedef struct gx_cm_color_map_procs_s gx_cm_color_map_procs;
 cm_map_proc_gray(gray_cs_to_gray_cm);
 cm_map_proc_rgb(rgb_cs_to_rgb_cm);
 cm_map_proc_cmyk(cmyk_cs_to_cmyk_cm);
@@ -99,8 +99,8 @@ extern cm_map_proc_cmyk(gx_error_cmyk_cs_to_cmyk_cm);
 const gx_cm_color_map_procs * (proc)(const dev_t * dev)
 #define dev_proc_get_color_mapping_procs(proc) \
 dev_t_proc_get_color_mapping_procs(proc, gx_device)
-#define NO_COMP_NAME_TYPE	0
-#define SEPARATION_NAME		1
+#define NO_COMP_NAME_TYPE 0
+#define SEPARATION_NAME 1
 #define dev_t_proc_get_color_comp_index(proc, dev_t) \
 int (proc)(dev_t * dev, const char * pname, int name_size, int component_type)
 #define dev_proc_get_color_comp_index(proc) \

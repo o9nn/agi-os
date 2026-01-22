@@ -50,7 +50,7 @@
 #ifdef CONFIG_NET_RADIO
 #include <linux/wireless.h>
 #endif
-#define min(a,b)	((a)<(b)?(a):(b))
+#define min(a,b) ((a)<(b)?(a):(b))
 struct linux_mib net_statistics;
 extern int raw_get_info(char *, char **, off_t, int, int);
 extern int snmp_get_info(char *, char **, off_t, int, int);
@@ -300,8 +300,8 @@ unsigned short snum;
 int chk_addr_ret;
 if(sk->prot->bind)
 return sk->prot->bind(sk, uaddr, addr_len);
-if ((sk->state != TCP_CLOSE)			||
-(addr_len < sizeof(struct sockaddr_in))	||
+if ((sk->state != TCP_CLOSE) ||
+(addr_len < sizeof(struct sockaddr_in)) ||
 (sk->num != 0))
 return -EINVAL;
 chk_addr_ret = inet_addr_type(addr->sin_addr.s_addr);
@@ -464,8 +464,8 @@ return err;
 static int inet_getname(struct socket *sock, struct sockaddr *uaddr,
 int *uaddr_len, int peer)
 {
-struct sock *sk		= sock->sk;
-struct sockaddr_in *sin	= (struct sockaddr_in *)uaddr;
+struct sock *sk = sock->sk;
+struct sockaddr_in *sin = (struct sockaddr_in *)uaddr;
 sin->sin_family = AF_INET;
 if (peer) {
 if (!tcp_connected(sk->state))

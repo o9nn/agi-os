@@ -2,77 +2,77 @@
 #include <string.h>
 #include <ctype.h>
 #include "antiword.h"
-#define BI_RGB		0
-#define BI_RLE8		1
-#define BI_RLE4		2
-#define PNG_CB_PALETTE		0x01
-#define PNG_CB_COLOR		0x02
-#define PNG_CB_ALPHA		0x04
-#define MSOBI_WMF	0x0216
-#define MSOBI_EMF	0x03d4
-#define MSOBI_PICT	0x0542
-#define MSOBI_PNG	0x06e0
-#define MSOBI_JPEG	0x046a
-#define MSOBI_DIB	0x07a8
+#define BI_RGB 0
+#define BI_RLE8 1
+#define BI_RLE4 2
+#define PNG_CB_PALETTE 0x01
+#define PNG_CB_COLOR 0x02
+#define PNG_CB_ALPHA 0x04
+#define MSOBI_WMF 0x0216
+#define MSOBI_EMF 0x03d4
+#define MSOBI_PICT 0x0542
+#define MSOBI_PNG 0x06e0
+#define MSOBI_JPEG 0x046a
+#define MSOBI_DIB 0x07a8
 typedef enum {
-M_SOF0	= 0xc0,
-M_SOF1	= 0xc1,
-M_SOF2	= 0xc2,
-M_SOF3	= 0xc3,
-M_SOF5	= 0xc5,
-M_SOF6	= 0xc6,
-M_SOF7	= 0xc7,
-M_JPG	= 0xc8,
-M_SOF9	= 0xc9,
-M_SOF10	= 0xca,
-M_SOF11	= 0xcb,
-M_SOF13	= 0xcd,
-M_SOF14	= 0xce,
-M_SOF15	= 0xcf,
-M_DHT	= 0xc4,
-M_DAC	= 0xcc,
-M_RST0	= 0xd0,
-M_RST1	= 0xd1,
-M_RST2	= 0xd2,
-M_RST3	= 0xd3,
-M_RST4	= 0xd4,
-M_RST5	= 0xd5,
-M_RST6	= 0xd6,
-M_RST7	= 0xd7,
-M_SOI	= 0xd8,
-M_EOI	= 0xd9,
-M_SOS	= 0xda,
-M_DQT	= 0xdb,
-M_DNL	= 0xdc,
-M_DRI	= 0xdd,
-M_DHP	= 0xde,
-M_EXP	= 0xdf,
-M_APP0	= 0xe0,
-M_APP1	= 0xe1,
-M_APP2	= 0xe2,
-M_APP3	= 0xe3,
-M_APP4	= 0xe4,
-M_APP5	= 0xe5,
-M_APP6	= 0xe6,
-M_APP7	= 0xe7,
-M_APP8	= 0xe8,
-M_APP9	= 0xe9,
-M_APP10	= 0xea,
-M_APP11	= 0xeb,
-M_APP12	= 0xec,
-M_APP13	= 0xed,
-M_APP14	= 0xee,
-M_APP15	= 0xef,
-M_JPG0	= 0xf0,
-M_JPG13	= 0xfd,
-M_COM	= 0xfe,
-M_TEM	= 0x01
+M_SOF0 = 0xc0,
+M_SOF1 = 0xc1,
+M_SOF2 = 0xc2,
+M_SOF3 = 0xc3,
+M_SOF5 = 0xc5,
+M_SOF6 = 0xc6,
+M_SOF7 = 0xc7,
+M_JPG = 0xc8,
+M_SOF9 = 0xc9,
+M_SOF10 = 0xca,
+M_SOF11 = 0xcb,
+M_SOF13 = 0xcd,
+M_SOF14 = 0xce,
+M_SOF15 = 0xcf,
+M_DHT = 0xc4,
+M_DAC = 0xcc,
+M_RST0 = 0xd0,
+M_RST1 = 0xd1,
+M_RST2 = 0xd2,
+M_RST3 = 0xd3,
+M_RST4 = 0xd4,
+M_RST5 = 0xd5,
+M_RST6 = 0xd6,
+M_RST7 = 0xd7,
+M_SOI = 0xd8,
+M_EOI = 0xd9,
+M_SOS = 0xda,
+M_DQT = 0xdb,
+M_DNL = 0xdc,
+M_DRI = 0xdd,
+M_DHP = 0xde,
+M_EXP = 0xdf,
+M_APP0 = 0xe0,
+M_APP1 = 0xe1,
+M_APP2 = 0xe2,
+M_APP3 = 0xe3,
+M_APP4 = 0xe4,
+M_APP5 = 0xe5,
+M_APP6 = 0xe6,
+M_APP7 = 0xe7,
+M_APP8 = 0xe8,
+M_APP9 = 0xe9,
+M_APP10 = 0xea,
+M_APP11 = 0xeb,
+M_APP12 = 0xec,
+M_APP13 = 0xed,
+M_APP14 = 0xee,
+M_APP15 = 0xef,
+M_JPG0 = 0xf0,
+M_JPG13 = 0xfd,
+M_COM = 0xfe,
+M_TEM = 0x01
 } JPEG_MARKER;
 static BOOL
 bFillPaletteDIB(FILE *pFile, imagedata_type *pImg, BOOL bNewFormat)
 {
-int	iIndex;
-BOOL	bIsColorPalette;
+int iIndex;
+BOOL bIsColorPalette;
 fail(pFile == NULL);
 fail(pImg == NULL);
 if (pImg->uiBitsPerComponent > 8) {
@@ -106,8 +106,8 @@ return bIsColorPalette;
 static BOOL
 bExamineDIB(FILE *pFile, imagedata_type *pImg)
 {
-size_t	tHeaderSize;
-int	iPlanes, iCompression;
+size_t tHeaderSize;
+int iPlanes, iCompression;
 tHeaderSize = (size_t)ulNextLong(pFile);
 switch (tHeaderSize) {
 case 12:
@@ -187,7 +187,7 @@ return TRUE;
 static int
 iNextMarker(FILE *pFile)
 {
-int	iMarker;
+int iMarker;
 do {
 do {
 iMarker = iNextByte(pFile);
@@ -204,10 +204,10 @@ return iMarker;
 static BOOL
 bExamineJPEG(FILE *pFile, imagedata_type *pImg)
 {
-size_t	tLength;
-int	iMarker, iIndex;
-char	appstring[10];
-BOOL	bSOFDone;
+size_t tLength;
+int iMarker, iIndex;
+char appstring[10];
+BOOL bSOFDone;
 tLength = 0;
 bSOFDone = FALSE;
 while (!bSOFDone && (iMarker = iNextMarker(pFile)) != (int)M_EOI) {
@@ -305,7 +305,7 @@ return TRUE;
 static BOOL
 bFillPalettePNG(FILE *pFile, imagedata_type *pImg, size_t tLength)
 {
-int	iIndex, iEntries;
+int iIndex, iEntries;
 fail(pFile == NULL);
 fail(pImg == NULL);
 if (pImg->uiBitsPerComponent > 8) {
@@ -342,13 +342,13 @@ return TRUE;
 static BOOL
 bExaminePNG(FILE *pFile, imagedata_type *pImg)
 {
-size_t		tLength;
-ULONG		ulLong1, ulLong2, ulName;
-int		iIndex, iTmp;
-int		iCompressionMethod, iFilterMethod, iInterlaceMethod;
-int		iColor, iIncrement;
-BOOL		bHasPalette, bHasAlpha;
-UCHAR	aucBuf[4];
+size_t tLength;
+ULONG ulLong1, ulLong2, ulName;
+int iIndex, iTmp;
+int iCompressionMethod, iFilterMethod, iInterlaceMethod;
+int iColor, iIncrement;
+BOOL bHasPalette, bHasAlpha;
+UCHAR aucBuf[4];
 ulLong1 = ulNextLongBE(pFile);
 ulLong2 = ulNextLongBE(pFile);
 if (ulLong1 != 0x89504e47UL || ulLong2 != 0x0d0a1a0aUL) {
@@ -436,7 +436,7 @@ if (pImg->uiBitsPerComponent != 1 && pImg->uiBitsPerComponent != 2 &&
 pImg->uiBitsPerComponent != 4 && pImg->uiBitsPerComponent != 8 &&
 pImg->uiBitsPerComponent != 16) {
 DBG_DEC(pImg->uiBitsPerComponent);
-return  FALSE;
+return FALSE;
 }
 if (pImg->iComponents != 1 && pImg->iComponents != 3) {
 DBG_DEC(pImg->iComponents);
@@ -466,8 +466,8 @@ return TRUE;
 static BOOL
 bExamineWMF(FILE *pFile, imagedata_type *pImg)
 {
-ULONG	ulFileSize, ulMaxRecord, ulMagic;
-USHORT	usType, usHeaderSize, usVersion, usNoObjects;
+ULONG ulFileSize, ulMaxRecord, ulMagic;
+USHORT usType, usHeaderSize, usVersion, usNoObjects;
 usType = usNextWord(pFile);
 usHeaderSize = usNextWord(pFile);
 ulMagic = ((ULONG)usHeaderSize << 16) | (ULONG)usType;
@@ -488,10 +488,10 @@ return FALSE;
 static void
 vImage2Papersize(imagedata_type *pImg)
 {
-static int	iNetPageHeight = -1;
-static int	iNetPageWidth = -1;
-options_type	tOptions;
-double  dVerFactor, dHorFactor, dFactor;
+static int iNetPageHeight = -1;
+static int iNetPageWidth = -1;
+options_type tOptions;
+double dVerFactor, dHorFactor, dFactor;
 DBG_MSG("vImage2Papersize");
 fail(pImg == NULL);
 if (iNetPageHeight < 0 || iNetPageWidth < 0) {
@@ -523,9 +523,9 @@ static size_t
 tFind6Image(FILE *pFile, size_t tPosition, size_t tLength,
 imagetype_enum *peImageType)
 {
-ULONG	ulMarker;
-size_t	tRecordLength, tToSkip;
-USHORT	usMarker;
+ULONG ulMarker;
+size_t tRecordLength, tToSkip;
+USHORT usMarker;
 fail(pFile == NULL);
 fail(peImageType == NULL);
 *peImageType = imagetype_is_unknown;
@@ -595,9 +595,9 @@ static size_t
 tFind8Image(FILE *pFile, size_t tPosition, size_t tLength,
 imagetype_enum *peImageType)
 {
-size_t	tRecordLength, tNameLen;
-USHORT	usRecordVersion, usRecordType, usRecordInstance;
-USHORT	usTmp;
+size_t tRecordLength, tNameLen;
+USHORT usRecordVersion, usRecordType, usRecordInstance;
+USHORT usTmp;
 fail(pFile == NULL);
 fail(peImageType == NULL);
 *peImageType = imagetype_is_unknown;
@@ -695,10 +695,10 @@ return (size_t)-1;
 image_info_enum
 eExamineImage(FILE *pFile, ULONG ulFileOffsetImage, imagedata_type *pImg)
 {
-long	lTmp;
-size_t	tWordHeaderLen, tLength, tPos;
-int	iType, iHorSize, iVerSize;
-USHORT	usHorScalingFactor, usVerScalingFactor;
+long lTmp;
+size_t tWordHeaderLen, tLength, tPos;
+int iType, iHorSize, iVerSize;
+USHORT usHorScalingFactor, usVerScalingFactor;
 if (ulFileOffsetImage == FC_INVALID) {
 return image_no_information;
 }
@@ -753,15 +753,15 @@ return image_no_information;
 tPos = tWordHeaderLen;
 (void)memset(pImg, 0, sizeof(*pImg));
 switch (iType) {
-case   7:
-case   8:
+case 7:
+case 8:
 tPos = tFind6Image(pFile, tPos, tLength, &pImg->eImageType);
 if (tPos == (size_t)-1) {
 return image_no_information;
 }
 DBG_HEX(tPos);
 break;
-case  94:
+case 94:
 pImg->eImageType = imagetype_is_external;
 DBG_HEX(ulFileOffsetImage + tPos);
 break;

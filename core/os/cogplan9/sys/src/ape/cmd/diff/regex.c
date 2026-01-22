@@ -1,11 +1,11 @@
 #if defined (_AIX) && !defined (REGEX_MALLOC)
 #pragma alloca
 #endif
-#undef	_GNU_SOURCE
+#undef _GNU_SOURCE
 #define _GNU_SOURCE
 #ifdef emacs
-#define PTR_TO_OFFSET(d)						\
-POS_AS_IN_BUFFER (MATCHING_IN_FIRST_STRING			\
+#define PTR_TO_OFFSET(d) \
+POS_AS_IN_BUFFER (MATCHING_IN_FIRST_STRING \
 ? (d) - string1 : (d) - (string2 - size1))
 #define POS_AS_IN_BUFFER(p) ((p) + (NILP (re_match_object) || BUFFERP (re_match_object)))
 #else
@@ -50,13 +50,13 @@ char *realloc ();
 #if defined (HAVE_STRING_H) || defined (STDC_HEADERS) || defined (_LIBC)
 #include <string.h>
 #ifndef bcmp
-#define bcmp(s1, s2, n)	memcmp ((s1), (s2), (n))
+#define bcmp(s1, s2, n) memcmp ((s1), (s2), (n))
 #endif
 #ifndef bcopy
-#define bcopy(s, d, n)	memcpy ((d), (s), (n))
+#define bcopy(s, d, n) memcpy ((d), (s), (n))
 #endif
 #ifndef bzero
-#define bzero(s, n)	memset ((s), 0, (n))
+#define bzero(s, n) memset ((s), 0, (n))
 #endif
 #else
 #include <strings.h>
@@ -164,18 +164,18 @@ char *alloca ();
 #endif
 #endif
 #define REGEX_ALLOCATE alloca
-#define REGEX_REALLOCATE(source, osize, nsize)				\
-(destination = (char *) alloca (nsize),				\
-bcopy (source, destination, osize),					\
+#define REGEX_REALLOCATE(source, osize, nsize) \
+(destination = (char *) alloca (nsize), \
+bcopy (source, destination, osize), \
 destination)
 #define REGEX_FREE(arg) ((void)0)
 #endif
 #if defined (REL_ALLOC) && defined (REGEX_MALLOC)
-#define REGEX_ALLOCATE_STACK(size)				\
+#define REGEX_ALLOCATE_STACK(size) \
 r_alloc (&failure_stack_ptr, (size))
-#define REGEX_REALLOCATE_STACK(source, osize, nsize)		\
+#define REGEX_REALLOCATE_STACK(source, osize, nsize) \
 r_re_alloc (&failure_stack_ptr, (nsize))
-#define REGEX_FREE_STACK(ptr)					\
+#define REGEX_FREE_STACK(ptr) \
 r_alloc_free (&failure_stack_ptr)
 #else
 #ifdef REGEX_MALLOC
@@ -184,12 +184,12 @@ r_alloc_free (&failure_stack_ptr)
 #define REGEX_FREE_STACK free
 #else
 #define REGEX_ALLOCATE_STACK alloca
-#define REGEX_REALLOCATE_STACK(source, osize, nsize)			\
+#define REGEX_REALLOCATE_STACK(source, osize, nsize) \
 REGEX_REALLOCATE (source, osize, nsize)
 #define REGEX_FREE_STACK(arg)
 #endif
 #endif
-#define FIRST_STRING_P(ptr)					\
+#define FIRST_STRING_P(ptr) \
 (size1 && string1 <= (ptr) && (ptr) <= string1 + size1)
 #define TALLOC(n, t) ((t *) malloc ((n) * sizeof (t)))
 #define RETALLOC(addr, n, t) ((addr) = (t *) realloc (addr, (n) * sizeof (t)))
@@ -248,20 +248,20 @@ categoryspec,
 notcategoryspec
 #endif
 } re_opcode_t;
-#define STORE_NUMBER(destination, number)				\
-do {									\
-(destination)[0] = (number) & 0377;					\
-(destination)[1] = (number) >> 8;					\
+#define STORE_NUMBER(destination, number) \
+do { \
+(destination)[0] = (number) & 0377; \
+(destination)[1] = (number) >> 8; \
 } while (0)
-#define STORE_NUMBER_AND_INCR(destination, number)			\
-do {									\
-STORE_NUMBER (destination, number);					\
-(destination) += 2;							\
+#define STORE_NUMBER_AND_INCR(destination, number) \
+do { \
+STORE_NUMBER (destination, number); \
+(destination) += 2; \
 } while (0)
-#define EXTRACT_NUMBER(destination, source)				\
-do {									\
-(destination) = *(source) & 0377;					\
-(destination) += SIGN_EXTEND_CHAR (*((source) + 1)) << 8;		\
+#define EXTRACT_NUMBER(destination, source) \
+do { \
+(destination) = *(source) & 0377; \
+(destination) += SIGN_EXTEND_CHAR (*((source) + 1)) << 8; \
 } while (0)
 #ifdef DEBUG
 static void
@@ -278,10 +278,10 @@ int temp = SIGN_EXTEND_CHAR (*(source + 1));
 #define EXTRACT_NUMBER(dest, src) extract_number (&dest, src)
 #endif
 #endif
-#define EXTRACT_NUMBER_AND_INCR(destination, source)			\
-do {									\
-EXTRACT_NUMBER (destination, source);				\
-(source) += 2;							\
+#define EXTRACT_NUMBER_AND_INCR(destination, source) \
+do { \
+EXTRACT_NUMBER (destination, source); \
+(source) += 2; \
 } while (0)
 #ifdef DEBUG
 static void
@@ -298,58 +298,58 @@ extract_number (destination, *source);
 extract_number_and_incr (&dest, &src)
 #endif
 #endif
-#define STORE_CHARACTER_AND_INCR(destination, character)	\
-do {								\
-(destination)[0] = (character) & 0377;			\
-(destination)[1] = ((character) >> 8) & 0377;		\
-(destination)[2] = (character) >> 16;			\
-(destination) += 3;						\
+#define STORE_CHARACTER_AND_INCR(destination, character) \
+do { \
+(destination)[0] = (character) & 0377; \
+(destination)[1] = ((character) >> 8) & 0377; \
+(destination)[2] = (character) >> 16; \
+(destination) += 3; \
 } while (0)
-#define EXTRACT_CHARACTER(destination, source)	\
-do {						\
-(destination) = ((source)[0]		\
-| ((source)[1] << 8)	\
-| ((source)[2] << 16));	\
+#define EXTRACT_CHARACTER(destination, source) \
+do { \
+(destination) = ((source)[0] \
+| ((source)[1] << 8) \
+| ((source)[2] << 16)); \
 } while (0)
 #define CHARSET_BITMAP_SIZE(p) ((p)[1] & 0x7F)
-#define CHARSET_RANGE_TABLE_EXISTS_P(p)	 ((p)[1] & 0x80)
+#define CHARSET_RANGE_TABLE_EXISTS_P(p) ((p)[1] & 0x80)
 #define CHARSET_RANGE_TABLE(p) (&(p)[2 + CHARSET_BITMAP_SIZE (p)])
-#define CHARSET_LOOKUP_BITMAP(p, c)				\
-((c) < CHARSET_BITMAP_SIZE (p) * BYTEWIDTH			\
+#define CHARSET_LOOKUP_BITMAP(p, c) \
+((c) < CHARSET_BITMAP_SIZE (p) * BYTEWIDTH \
 && (p)[2 + (c) / BYTEWIDTH] & (1 << ((c) % BYTEWIDTH)))
-#define CHARSET_RANGE_TABLE_END(range_table, count)	\
+#define CHARSET_RANGE_TABLE_END(range_table, count) \
 ((range_table) + (count) * 2 * 3)
-#define CHARSET_LOOKUP_RANGE_TABLE_RAW(not, c, range_table, count)	\
-do									\
-{									\
-int range_start, range_end;					\
-unsigned char *p;							\
-unsigned char *range_table_end					\
-= CHARSET_RANGE_TABLE_END ((range_table), (count));		\
+#define CHARSET_LOOKUP_RANGE_TABLE_RAW(not, c, range_table, count) \
+do \
+{ \
+int range_start, range_end; \
+unsigned char *p; \
+unsigned char *range_table_end \
+= CHARSET_RANGE_TABLE_END ((range_table), (count)); \
 \
-for (p = (range_table); p < range_table_end; p += 2 * 3)		\
-{								\
-EXTRACT_CHARACTER (range_start, p);				\
-EXTRACT_CHARACTER (range_end, p + 3);				\
+for (p = (range_table); p < range_table_end; p += 2 * 3) \
+{ \
+EXTRACT_CHARACTER (range_start, p); \
+EXTRACT_CHARACTER (range_end, p + 3); \
 \
-if (range_start <= (c) && (c) <= range_end)			\
-{								\
-(not) = !(not);						\
-break;							\
-}								\
-}								\
-}									\
+if (range_start <= (c) && (c) <= range_end) \
+{ \
+(not) = !(not); \
+break; \
+} \
+} \
+} \
 while (0)
-#define CHARSET_LOOKUP_RANGE_TABLE(not, c, charset)			\
-do									\
-{									\
+#define CHARSET_LOOKUP_RANGE_TABLE(not, c, charset) \
+do \
+{ \
 \
-int count;							\
-unsigned char *range_table = CHARSET_RANGE_TABLE (charset);	\
+int count; \
+unsigned char *range_table = CHARSET_RANGE_TABLE (charset); \
 \
-EXTRACT_NUMBER_AND_INCR (count, range_table);			\
-CHARSET_LOOKUP_RANGE_TABLE_RAW ((not), (c), range_table, count);	\
-}									\
+EXTRACT_NUMBER_AND_INCR (count, range_table); \
+CHARSET_LOOKUP_RANGE_TABLE_RAW ((not), (c), range_table, count); \
+} \
 while (0)
 #ifdef DEBUG
 #include <stdio.h>
@@ -360,9 +360,9 @@ static int debug = 0;
 #define DEBUG_PRINT2(x1, x2) if (debug) printf (x1, x2)
 #define DEBUG_PRINT3(x1, x2, x3) if (debug) printf (x1, x2, x3)
 #define DEBUG_PRINT4(x1, x2, x3, x4) if (debug) printf (x1, x2, x3, x4)
-#define DEBUG_PRINT_COMPILED_PATTERN(p, s, e)				\
+#define DEBUG_PRINT_COMPILED_PATTERN(p, s, e) \
 if (debug) print_partial_compiled_pattern (s, e)
-#define DEBUG_PRINT_DOUBLE_STRING(w, s1, sz1, s2, sz2)			\
+#define DEBUG_PRINT_DOUBLE_STRING(w, s1, sz1, s2, sz2) \
 if (debug) print_double_string (w, s1, sz1, s2, sz2)
 void
 print_fastmap (fastmap)
@@ -376,7 +376,7 @@ if (fastmap[i++])
 {
 was_a_range = 0;
 putchar (i - 1);
-while (i < (1 << BYTEWIDTH)  &&  fastmap[i])
+while (i < (1 << BYTEWIDTH) && fastmap[i])
 {
 was_a_range = 1;
 i++;
@@ -681,63 +681,63 @@ fail_stack_elt_t *stack;
 unsigned size;
 unsigned avail;
 } fail_stack_type;
-#define FAIL_STACK_EMPTY()     (fail_stack.avail == 0)
+#define FAIL_STACK_EMPTY() (fail_stack.avail == 0)
 #define FAIL_STACK_PTR_EMPTY() (fail_stack_ptr->avail == 0)
-#define FAIL_STACK_FULL()      (fail_stack.avail == fail_stack.size)
+#define FAIL_STACK_FULL() (fail_stack.avail == fail_stack.size)
 #ifdef MATCH_MAY_ALLOCATE
-#define INIT_FAIL_STACK()						\
-do {									\
-fail_stack.stack = (fail_stack_elt_t *)				\
-REGEX_ALLOCATE_STACK (INIT_FAILURE_ALLOC * TYPICAL_FAILURE_SIZE	\
-* sizeof (fail_stack_elt_t));		\
+#define INIT_FAIL_STACK() \
+do { \
+fail_stack.stack = (fail_stack_elt_t *) \
+REGEX_ALLOCATE_STACK (INIT_FAILURE_ALLOC * TYPICAL_FAILURE_SIZE \
+* sizeof (fail_stack_elt_t)); \
 \
-if (fail_stack.stack == NULL)					\
-return -2;							\
+if (fail_stack.stack == NULL) \
+return -2; \
 \
-fail_stack.size = INIT_FAILURE_ALLOC;				\
-fail_stack.avail = 0;						\
+fail_stack.size = INIT_FAILURE_ALLOC; \
+fail_stack.avail = 0; \
 } while (0)
-#define RESET_FAIL_STACK()  REGEX_FREE_STACK (fail_stack.stack)
+#define RESET_FAIL_STACK() REGEX_FREE_STACK (fail_stack.stack)
 #else
-#define INIT_FAIL_STACK()						\
-do {									\
-fail_stack.avail = 0;						\
+#define INIT_FAIL_STACK() \
+do { \
+fail_stack.avail = 0; \
 } while (0)
 #define RESET_FAIL_STACK()
 #endif
 #define FAIL_STACK_GROWTH_FACTOR 4
-#define GROW_FAIL_STACK(fail_stack)					\
-(((fail_stack).size * sizeof (fail_stack_elt_t)			\
->= re_max_failures * TYPICAL_FAILURE_SIZE)				\
-? 0									\
-: ((fail_stack).stack						\
-= (fail_stack_elt_t *)						\
-REGEX_REALLOCATE_STACK ((fail_stack).stack,			\
-(fail_stack).size * sizeof (fail_stack_elt_t),		\
-MIN (re_max_failures * TYPICAL_FAILURE_SIZE,			\
-((fail_stack).size * sizeof (fail_stack_elt_t)		\
-* FAIL_STACK_GROWTH_FACTOR))),				\
+#define GROW_FAIL_STACK(fail_stack) \
+(((fail_stack).size * sizeof (fail_stack_elt_t) \
+>= re_max_failures * TYPICAL_FAILURE_SIZE) \
+? 0 \
+: ((fail_stack).stack \
+= (fail_stack_elt_t *) \
+REGEX_REALLOCATE_STACK ((fail_stack).stack, \
+(fail_stack).size * sizeof (fail_stack_elt_t), \
+MIN (re_max_failures * TYPICAL_FAILURE_SIZE, \
+((fail_stack).size * sizeof (fail_stack_elt_t) \
+* FAIL_STACK_GROWTH_FACTOR))), \
 \
-(fail_stack).stack == NULL					\
-? 0								\
-: ((fail_stack).size						\
-= (MIN (re_max_failures * TYPICAL_FAILURE_SIZE,		\
-((fail_stack).size * sizeof (fail_stack_elt_t)		\
-* FAIL_STACK_GROWTH_FACTOR))				\
-/ sizeof (fail_stack_elt_t)),				\
+(fail_stack).stack == NULL \
+? 0 \
+: ((fail_stack).size \
+= (MIN (re_max_failures * TYPICAL_FAILURE_SIZE, \
+((fail_stack).size * sizeof (fail_stack_elt_t) \
+* FAIL_STACK_GROWTH_FACTOR)) \
+/ sizeof (fail_stack_elt_t)), \
 1)))
-#define PUSH_PATTERN_OP(POINTER, FAIL_STACK)				\
-((FAIL_STACK_FULL ()							\
-&& !GROW_FAIL_STACK (FAIL_STACK))					\
-? 0									\
-: ((FAIL_STACK).stack[(FAIL_STACK).avail++].pointer = POINTER,	\
+#define PUSH_PATTERN_OP(POINTER, FAIL_STACK) \
+((FAIL_STACK_FULL () \
+&& !GROW_FAIL_STACK (FAIL_STACK)) \
+? 0 \
+: ((FAIL_STACK).stack[(FAIL_STACK).avail++].pointer = POINTER, \
 1))
-#define PUSH_FAILURE_POINTER(item)					\
+#define PUSH_FAILURE_POINTER(item) \
 fail_stack.stack[fail_stack.avail++].pointer = (unsigned char *) (item)
-#define PUSH_FAILURE_INT(item)					\
+#define PUSH_FAILURE_INT(item) \
 fail_stack.stack[fail_stack.avail++].integer = (item)
-#define PUSH_FAILURE_ELT(item)					\
-fail_stack.stack[fail_stack.avail++] =  (item)
+#define PUSH_FAILURE_ELT(item) \
+fail_stack.stack[fail_stack.avail++] = (item)
 #define POP_FAILURE_POINTER() fail_stack.stack[--fail_stack.avail].pointer
 #define POP_FAILURE_INT() fail_stack.stack[--fail_stack.avail].integer
 #define POP_FAILURE_ELT() fail_stack.stack[--fail_stack.avail]
@@ -748,157 +748,157 @@ fail_stack.stack[fail_stack.avail++] =  (item)
 #define DEBUG_PUSH(item)
 #define DEBUG_POP(item_addr)
 #endif
-#define PUSH_FAILURE_POINT(pattern_place, string_place, failure_code)	\
-do {									\
-char *destination;							\
+#define PUSH_FAILURE_POINT(pattern_place, string_place, failure_code) \
+do { \
+char *destination; \
 \
-int this_reg;							\
+int this_reg; \
 \
-DEBUG_STATEMENT (failure_id++);					\
-DEBUG_STATEMENT (nfailure_points_pushed++);				\
-DEBUG_PRINT2 ("\nPUSH_FAILURE_POINT #%u:\n", failure_id);		\
+DEBUG_STATEMENT (failure_id++); \
+DEBUG_STATEMENT (nfailure_points_pushed++); \
+DEBUG_PRINT2 ("\nPUSH_FAILURE_POINT #%u:\n", failure_id); \
 DEBUG_PRINT2 ("  Before push, next avail: %d\n", (fail_stack).avail);\
 DEBUG_PRINT2 ("			size: %d\n", (fail_stack).size);\
 \
-DEBUG_PRINT2 ("  slots needed: %d\n", NUM_FAILURE_ITEMS);		\
-DEBUG_PRINT2 ("	available: %d\n", REMAINING_AVAIL_SLOTS);	\
+DEBUG_PRINT2 ("  slots needed: %d\n", NUM_FAILURE_ITEMS); \
+DEBUG_PRINT2 ("	available: %d\n", REMAINING_AVAIL_SLOTS); \
 \
 \
-while (REMAINING_AVAIL_SLOTS < NUM_FAILURE_ITEMS)			\
-{									\
-if (!GROW_FAIL_STACK (fail_stack))				\
-return failure_code;						\
+while (REMAINING_AVAIL_SLOTS < NUM_FAILURE_ITEMS) \
+{ \
+if (!GROW_FAIL_STACK (fail_stack)) \
+return failure_code; \
 \
-DEBUG_PRINT2 ("\n  Doubled stack; size now: %d\n",		\
-(fail_stack).size);				\
+DEBUG_PRINT2 ("\n  Doubled stack; size now: %d\n", \
+(fail_stack).size); \
 DEBUG_PRINT2 ("	 slots available: %d\n", REMAINING_AVAIL_SLOTS);\
-}									\
+} \
 \
 \
-DEBUG_PRINT1 ("\n");						\
+DEBUG_PRINT1 ("\n"); \
 \
-if (1)								\
+if (1) \
 for (this_reg = lowest_active_reg; this_reg <= highest_active_reg; \
-this_reg++)							\
-{								\
-DEBUG_PRINT2 ("  Pushing reg: %d\n", this_reg);		\
-DEBUG_STATEMENT (num_regs_pushed++);				\
+this_reg++) \
+{ \
+DEBUG_PRINT2 ("  Pushing reg: %d\n", this_reg); \
+DEBUG_STATEMENT (num_regs_pushed++); \
 \
-DEBUG_PRINT2 ("    start: 0x%x\n", regstart[this_reg]);	\
-PUSH_FAILURE_POINTER (regstart[this_reg]);			\
+DEBUG_PRINT2 ("    start: 0x%x\n", regstart[this_reg]); \
+PUSH_FAILURE_POINTER (regstart[this_reg]); \
 \
-DEBUG_PRINT2 ("    end: 0x%x\n", regend[this_reg]);		\
-PUSH_FAILURE_POINTER (regend[this_reg]);			\
+DEBUG_PRINT2 ("    end: 0x%x\n", regend[this_reg]); \
+PUSH_FAILURE_POINTER (regend[this_reg]); \
 \
-DEBUG_PRINT2 ("    info: 0x%x\n      ", reg_info[this_reg]);	\
-DEBUG_PRINT2 (" match_null=%d",				\
-REG_MATCH_NULL_STRING_P (reg_info[this_reg]));	\
-DEBUG_PRINT2 (" active=%d", IS_ACTIVE (reg_info[this_reg]));	\
-DEBUG_PRINT2 (" matched_something=%d",			\
-MATCHED_SOMETHING (reg_info[this_reg]));	\
-DEBUG_PRINT2 (" ever_matched=%d",				\
-EVER_MATCHED_SOMETHING (reg_info[this_reg]));	\
-DEBUG_PRINT1 ("\n");						\
-PUSH_FAILURE_ELT (reg_info[this_reg].word);			\
-}								\
+DEBUG_PRINT2 ("    info: 0x%x\n      ", reg_info[this_reg]); \
+DEBUG_PRINT2 (" match_null=%d", \
+REG_MATCH_NULL_STRING_P (reg_info[this_reg])); \
+DEBUG_PRINT2 (" active=%d", IS_ACTIVE (reg_info[this_reg])); \
+DEBUG_PRINT2 (" matched_something=%d", \
+MATCHED_SOMETHING (reg_info[this_reg])); \
+DEBUG_PRINT2 (" ever_matched=%d", \
+EVER_MATCHED_SOMETHING (reg_info[this_reg])); \
+DEBUG_PRINT1 ("\n"); \
+PUSH_FAILURE_ELT (reg_info[this_reg].word); \
+} \
 \
 DEBUG_PRINT2 ("  Pushing  low active reg: %d\n", lowest_active_reg);\
-PUSH_FAILURE_INT (lowest_active_reg);				\
+PUSH_FAILURE_INT (lowest_active_reg); \
 \
 DEBUG_PRINT2 ("  Pushing high active reg: %d\n", highest_active_reg);\
-PUSH_FAILURE_INT (highest_active_reg);				\
+PUSH_FAILURE_INT (highest_active_reg); \
 \
-DEBUG_PRINT2 ("  Pushing pattern 0x%x: ", pattern_place);		\
-DEBUG_PRINT_COMPILED_PATTERN (bufp, pattern_place, pend);		\
-PUSH_FAILURE_POINTER (pattern_place);				\
+DEBUG_PRINT2 ("  Pushing pattern 0x%x: ", pattern_place); \
+DEBUG_PRINT_COMPILED_PATTERN (bufp, pattern_place, pend); \
+PUSH_FAILURE_POINTER (pattern_place); \
 \
-DEBUG_PRINT2 ("  Pushing string 0x%x: `", string_place);		\
-DEBUG_PRINT_DOUBLE_STRING (string_place, string1, size1, string2,	\
-size2);				\
-DEBUG_PRINT1 ("'\n");						\
-PUSH_FAILURE_POINTER (string_place);				\
+DEBUG_PRINT2 ("  Pushing string 0x%x: `", string_place); \
+DEBUG_PRINT_DOUBLE_STRING (string_place, string1, size1, string2, \
+size2); \
+DEBUG_PRINT1 ("'\n"); \
+PUSH_FAILURE_POINTER (string_place); \
 \
-DEBUG_PRINT2 ("  Pushing failure id: %u\n", failure_id);		\
-DEBUG_PUSH (failure_id);						\
+DEBUG_PRINT2 ("  Pushing failure id: %u\n", failure_id); \
+DEBUG_PUSH (failure_id); \
 } while (0)
-#define NUM_REG_ITEMS  3
+#define NUM_REG_ITEMS 3
 #ifdef DEBUG
 #define NUM_NONREG_ITEMS 5
 #else
 #define NUM_NONREG_ITEMS 4
 #endif
 #define TYPICAL_FAILURE_SIZE 20
-#define NUM_FAILURE_ITEMS				\
-(((0							\
-? 0 : highest_active_reg - lowest_active_reg + 1)	\
-* NUM_REG_ITEMS)					\
+#define NUM_FAILURE_ITEMS \
+(((0 \
+? 0 : highest_active_reg - lowest_active_reg + 1) \
+* NUM_REG_ITEMS) \
 + NUM_NONREG_ITEMS)
 #define REMAINING_AVAIL_SLOTS ((fail_stack).size - (fail_stack).avail)
 #define POP_FAILURE_POINT(str, pat, low_reg, high_reg, regstart, regend, reg_info)\
-{									\
-DEBUG_STATEMENT (fail_stack_elt_t failure_id;)			\
-int this_reg;								\
-const unsigned char *string_temp;					\
+{ \
+DEBUG_STATEMENT (fail_stack_elt_t failure_id;) \
+int this_reg; \
+const unsigned char *string_temp; \
 \
-assert (!FAIL_STACK_EMPTY ());					\
-\
-\
-DEBUG_PRINT1 ("POP_FAILURE_POINT:\n");				\
-DEBUG_PRINT2 ("  Before pop, next avail: %d\n", fail_stack.avail);	\
-DEBUG_PRINT2 ("		     size: %d\n", fail_stack.size);	\
-\
-assert (fail_stack.avail >= NUM_NONREG_ITEMS);			\
-\
-DEBUG_POP (&failure_id);						\
-DEBUG_PRINT2 ("  Popping failure id: %u\n", failure_id);		\
+assert (!FAIL_STACK_EMPTY ()); \
 \
 \
-string_temp = POP_FAILURE_POINTER ();					\
-if (string_temp != NULL)						\
-str = (const char *) string_temp;					\
+DEBUG_PRINT1 ("POP_FAILURE_POINT:\n"); \
+DEBUG_PRINT2 ("  Before pop, next avail: %d\n", fail_stack.avail); \
+DEBUG_PRINT2 ("		     size: %d\n", fail_stack.size); \
 \
-DEBUG_PRINT2 ("  Popping string 0x%x: `", str);			\
-DEBUG_PRINT_DOUBLE_STRING (str, string1, size1, string2, size2);	\
-DEBUG_PRINT1 ("'\n");							\
+assert (fail_stack.avail >= NUM_NONREG_ITEMS); \
 \
-pat = (unsigned char *) POP_FAILURE_POINTER ();			\
-DEBUG_PRINT2 ("  Popping pattern 0x%x: ", pat);			\
-DEBUG_PRINT_COMPILED_PATTERN (bufp, pat, pend);			\
+DEBUG_POP (&failure_id); \
+DEBUG_PRINT2 ("  Popping failure id: %u\n", failure_id); \
 \
 \
-high_reg = (unsigned) POP_FAILURE_INT ();				\
-DEBUG_PRINT2 ("  Popping high active reg: %d\n", high_reg);		\
+string_temp = POP_FAILURE_POINTER (); \
+if (string_temp != NULL) \
+str = (const char *) string_temp; \
 \
-low_reg = (unsigned) POP_FAILURE_INT ();				\
-DEBUG_PRINT2 ("  Popping  low active reg: %d\n", low_reg);		\
+DEBUG_PRINT2 ("  Popping string 0x%x: `", str); \
+DEBUG_PRINT_DOUBLE_STRING (str, string1, size1, string2, size2); \
+DEBUG_PRINT1 ("'\n"); \
 \
-if (1)								\
-for (this_reg = high_reg; this_reg >= low_reg; this_reg--)		\
-{									\
-DEBUG_PRINT2 ("	   Popping reg: %d\n", this_reg);		\
+pat = (unsigned char *) POP_FAILURE_POINTER (); \
+DEBUG_PRINT2 ("  Popping pattern 0x%x: ", pat); \
+DEBUG_PRINT_COMPILED_PATTERN (bufp, pat, pend); \
 \
-reg_info[this_reg].word = POP_FAILURE_ELT ();			\
-DEBUG_PRINT2 ("	     info: 0x%x\n", reg_info[this_reg]);	\
 \
-regend[this_reg] = (const char *) POP_FAILURE_POINTER ();	\
-DEBUG_PRINT2 ("	     end: 0x%x\n", regend[this_reg]);		\
+high_reg = (unsigned) POP_FAILURE_INT (); \
+DEBUG_PRINT2 ("  Popping high active reg: %d\n", high_reg); \
 \
-regstart[this_reg] = (const char *) POP_FAILURE_POINTER ();	\
-DEBUG_PRINT2 ("	     start: 0x%x\n", regstart[this_reg]);	\
-}									\
-else									\
-{									\
+low_reg = (unsigned) POP_FAILURE_INT (); \
+DEBUG_PRINT2 ("  Popping  low active reg: %d\n", low_reg); \
+\
+if (1) \
+for (this_reg = high_reg; this_reg >= low_reg; this_reg--) \
+{ \
+DEBUG_PRINT2 ("	   Popping reg: %d\n", this_reg); \
+\
+reg_info[this_reg].word = POP_FAILURE_ELT (); \
+DEBUG_PRINT2 ("	     info: 0x%x\n", reg_info[this_reg]); \
+\
+regend[this_reg] = (const char *) POP_FAILURE_POINTER (); \
+DEBUG_PRINT2 ("	     end: 0x%x\n", regend[this_reg]); \
+\
+regstart[this_reg] = (const char *) POP_FAILURE_POINTER (); \
+DEBUG_PRINT2 ("	     start: 0x%x\n", regstart[this_reg]); \
+} \
+else \
+{ \
 for (this_reg = highest_active_reg; this_reg > high_reg; this_reg--) \
-{								\
-reg_info[this_reg].word.integer = 0;				\
-regend[this_reg] = 0;						\
-regstart[this_reg] = 0;					\
-}								\
-highest_active_reg = high_reg;					\
-}									\
+{ \
+reg_info[this_reg].word.integer = 0; \
+regend[this_reg] = 0; \
+regstart[this_reg] = 0; \
+} \
+highest_active_reg = high_reg; \
+} \
 \
-set_regs_matched_done = 0;						\
-DEBUG_STATEMENT (nfailure_points_popped++);				\
+set_regs_matched_done = 0; \
+DEBUG_STATEMENT (nfailure_points_popped++); \
 }
 typedef union
 {
@@ -912,25 +912,25 @@ unsigned matched_something : 1;
 unsigned ever_matched_something : 1;
 } bits;
 } register_info_type;
-#define REG_MATCH_NULL_STRING_P(R)  ((R).bits.match_null_string_p)
-#define IS_ACTIVE(R)  ((R).bits.is_active)
-#define MATCHED_SOMETHING(R)  ((R).bits.matched_something)
-#define EVER_MATCHED_SOMETHING(R)  ((R).bits.ever_matched_something)
-#define SET_REGS_MATCHED()						\
-do									\
-{									\
-if (!set_regs_matched_done)					\
-{								\
-unsigned r;							\
-set_regs_matched_done = 1;					\
-for (r = lowest_active_reg; r <= highest_active_reg; r++)	\
-{								\
-MATCHED_SOMETHING (reg_info[r])				\
-= EVER_MATCHED_SOMETHING (reg_info[r])			\
-= 1;							\
-}								\
-}								\
-}									\
+#define REG_MATCH_NULL_STRING_P(R) ((R).bits.match_null_string_p)
+#define IS_ACTIVE(R) ((R).bits.is_active)
+#define MATCHED_SOMETHING(R) ((R).bits.matched_something)
+#define EVER_MATCHED_SOMETHING(R) ((R).bits.ever_matched_something)
+#define SET_REGS_MATCHED() \
+do \
+{ \
+if (!set_regs_matched_done) \
+{ \
+unsigned r; \
+set_regs_matched_done = 1; \
+for (r = lowest_active_reg; r <= highest_active_reg; r++) \
+{ \
+MATCHED_SOMETHING (reg_info[r]) \
+= EVER_MATCHED_SOMETHING (reg_info[r]) \
+= 1; \
+} \
+} \
+} \
 while (0)
 static char reg_unset_dummy;
 #define REG_UNSET_VALUE (&reg_unset_dummy)
@@ -941,15 +941,15 @@ static boolean at_begline_loc_p (), at_endline_loc_p ();
 static boolean group_in_compile_stack ();
 static reg_errcode_t compile_range ();
 #ifndef PATFETCH
-#define PATFETCH(c)							\
-do {if (p == pend) return REG_EEND;					\
-c = (unsigned char) *p++;						\
-if (RE_TRANSLATE_P (translate)) c = RE_TRANSLATE (translate, c);	\
+#define PATFETCH(c) \
+do {if (p == pend) return REG_EEND; \
+c = (unsigned char) *p++; \
+if (RE_TRANSLATE_P (translate)) c = RE_TRANSLATE (translate, c); \
 } while (0)
 #endif
-#define PATFETCH_RAW(c)							\
-do {if (p == pend) return REG_EEND;					\
-c = (unsigned char) *p++;						\
+#define PATFETCH_RAW(c) \
+do {if (p == pend) return REG_EEND; \
+c = (unsigned char) *p++; \
 } while (0)
 #define PATUNFETCH p--
 #ifndef TRANSLATE
@@ -957,27 +957,27 @@ c = (unsigned char) *p++;						\
 (RE_TRANSLATE_P (translate) \
 ? (unsigned) RE_TRANSLATE (translate, (unsigned) (d)) : (d))
 #endif
-#define INIT_BUF_SIZE  32
-#define GET_BUFFER_SPACE(n)						\
-while (b - bufp->buffer + (n) > bufp->allocated)			\
+#define INIT_BUF_SIZE 32
+#define GET_BUFFER_SPACE(n) \
+while (b - bufp->buffer + (n) > bufp->allocated) \
 EXTEND_BUFFER ()
-#define BUF_PUSH(c)							\
-do {									\
-GET_BUFFER_SPACE (1);						\
-*b++ = (unsigned char) (c);						\
+#define BUF_PUSH(c) \
+do { \
+GET_BUFFER_SPACE (1); \
+*b++ = (unsigned char) (c); \
 } while (0)
-#define BUF_PUSH_2(c1, c2)						\
-do {									\
-GET_BUFFER_SPACE (2);						\
-*b++ = (unsigned char) (c1);					\
-*b++ = (unsigned char) (c2);					\
+#define BUF_PUSH_2(c1, c2) \
+do { \
+GET_BUFFER_SPACE (2); \
+*b++ = (unsigned char) (c1); \
+*b++ = (unsigned char) (c2); \
 } while (0)
-#define BUF_PUSH_3(c1, c2, c3)						\
-do {									\
-GET_BUFFER_SPACE (3);						\
-*b++ = (unsigned char) (c1);					\
-*b++ = (unsigned char) (c2);					\
-*b++ = (unsigned char) (c3);					\
+#define BUF_PUSH_3(c1, c2, c3) \
+do { \
+GET_BUFFER_SPACE (3); \
+*b++ = (unsigned char) (c1); \
+*b++ = (unsigned char) (c2); \
+*b++ = (unsigned char) (c3); \
 } while (0)
 #define STORE_JUMP(op, loc, to) \
 store_op1 (op, loc, (to) - (loc) - 3)
@@ -988,29 +988,29 @@ insert_op1 (op, loc, (to) - (loc) - 3, b)
 #define INSERT_JUMP2(op, loc, to, arg) \
 insert_op2 (op, loc, (to) - (loc) - 3, arg, b)
 #define MAX_BUF_SIZE (1L << 16)
-#define EXTEND_BUFFER()							\
-do {									\
-unsigned char *old_buffer = bufp->buffer;				\
-if (bufp->allocated == MAX_BUF_SIZE)				\
-return REG_ESIZE;							\
-bufp->allocated <<= 1;						\
-if (bufp->allocated > MAX_BUF_SIZE)					\
-bufp->allocated = MAX_BUF_SIZE;					\
+#define EXTEND_BUFFER() \
+do { \
+unsigned char *old_buffer = bufp->buffer; \
+if (bufp->allocated == MAX_BUF_SIZE) \
+return REG_ESIZE; \
+bufp->allocated <<= 1; \
+if (bufp->allocated > MAX_BUF_SIZE) \
+bufp->allocated = MAX_BUF_SIZE; \
 bufp->buffer = (unsigned char *) realloc (bufp->buffer, bufp->allocated);\
-if (bufp->buffer == NULL)						\
-return REG_ESPACE;						\
+if (bufp->buffer == NULL) \
+return REG_ESPACE; \
 \
-if (old_buffer != bufp->buffer)					\
-{									\
-b = (b - old_buffer) + bufp->buffer;				\
-begalt = (begalt - old_buffer) + bufp->buffer;			\
-if (fixup_alt_jump)						\
+if (old_buffer != bufp->buffer) \
+{ \
+b = (b - old_buffer) + bufp->buffer; \
+begalt = (begalt - old_buffer) + bufp->buffer; \
+if (fixup_alt_jump) \
 fixup_alt_jump = (fixup_alt_jump - old_buffer) + bufp->buffer;\
-if (laststart)							\
-laststart = (laststart - old_buffer) + bufp->buffer;		\
-if (pending_exact)						\
-pending_exact = (pending_exact - old_buffer) + bufp->buffer;	\
-}									\
+if (laststart) \
+laststart = (laststart - old_buffer) + bufp->buffer; \
+if (pending_exact) \
+pending_exact = (pending_exact - old_buffer) + bufp->buffer; \
+} \
 } while (0)
 #define MAX_REGNUM 255
 typedef unsigned regnum_t;
@@ -1030,8 +1030,8 @@ unsigned size;
 unsigned avail;
 } compile_stack_type;
 #define INIT_COMPILE_STACK_SIZE 32
-#define COMPILE_STACK_EMPTY  (compile_stack.avail == 0)
-#define COMPILE_STACK_FULL  (compile_stack.avail == compile_stack.size)
+#define COMPILE_STACK_EMPTY (compile_stack.avail == 0)
+#define COMPILE_STACK_FULL (compile_stack.avail == compile_stack.size)
 #define COMPILE_STACK_TOP (compile_stack.stack[compile_stack.avail])
 struct range_table_work_area
 {
@@ -1039,65 +1039,65 @@ int *table;
 int allocated;
 int used;
 };
-#define EXTEND_RANGE_TABLE_WORK_AREA(work_area, n)			  \
-do {									  \
-if (((work_area).used + (n)) * sizeof (int) > (work_area).allocated)  \
-{									  \
-(work_area).allocated += 16 * sizeof (int);			  \
-if ((work_area).table)						  \
-(work_area).table						  \
+#define EXTEND_RANGE_TABLE_WORK_AREA(work_area, n) \
+do { \
+if (((work_area).used + (n)) * sizeof (int) > (work_area).allocated) \
+{ \
+(work_area).allocated += 16 * sizeof (int); \
+if ((work_area).table) \
+(work_area).table \
 = (int *) realloc ((work_area).table, (work_area).allocated); \
-else								  \
-(work_area).table						  \
-= (int *) malloc ((work_area).allocated);			  \
-if ((work_area).table == 0)					  \
-FREE_STACK_RETURN (REG_ESPACE);				  \
-}									  \
+else \
+(work_area).table \
+= (int *) malloc ((work_area).allocated); \
+if ((work_area).table == 0) \
+FREE_STACK_RETURN (REG_ESPACE); \
+} \
 } while (0)
-#define SET_RANGE_TABLE_WORK_AREA(work_area, range_start, range_end)	\
-do {									\
-EXTEND_RANGE_TABLE_WORK_AREA ((work_area), 2);			\
-(work_area).table[(work_area).used++] = (range_start);		\
-(work_area).table[(work_area).used++] = (range_end);		\
+#define SET_RANGE_TABLE_WORK_AREA(work_area, range_start, range_end) \
+do { \
+EXTEND_RANGE_TABLE_WORK_AREA ((work_area), 2); \
+(work_area).table[(work_area).used++] = (range_start); \
+(work_area).table[(work_area).used++] = (range_end); \
 } while (0)
-#define FREE_RANGE_TABLE_WORK_AREA(work_area)	\
-do {						\
-if ((work_area).table)			\
-free ((work_area).table);			\
+#define FREE_RANGE_TABLE_WORK_AREA(work_area) \
+do { \
+if ((work_area).table) \
+free ((work_area).table); \
 } while (0)
 #define CLEAR_RANGE_TABLE_WORK_USED(work_area) ((work_area).used = 0)
 #define RANGE_TABLE_WORK_USED(work_area) ((work_area).used)
 #define RANGE_TABLE_WORK_ELT(work_area, i) ((work_area).table[i])
-#define SET_LIST_BIT(c)				      \
-(b[((unsigned char) (c)) / BYTEWIDTH]		      \
+#define SET_LIST_BIT(c) \
+(b[((unsigned char) (c)) / BYTEWIDTH] \
 |= 1 << (((unsigned char) c) % BYTEWIDTH))
-#define GET_UNSIGNED_NUMBER(num)					\
-{ if (p != pend)							\
-{									\
-PATFETCH (c);							\
-while (ISDIGIT (c))						\
-{								\
-if (num < 0)							\
-num = 0;							\
-num = num * 10 + c - '0';					\
-if (p == pend)						\
-break;							\
-PATFETCH (c);						\
-}								\
-}								\
+#define GET_UNSIGNED_NUMBER(num) \
+{ if (p != pend) \
+{ \
+PATFETCH (c); \
+while (ISDIGIT (c)) \
+{ \
+if (num < 0) \
+num = 0; \
+num = num * 10 + c - '0'; \
+if (p == pend) \
+break; \
+PATFETCH (c); \
+} \
+} \
 }
-#define CHAR_CLASS_MAX_LENGTH  6
-#define IS_CHAR_CLASS(string)						\
-(STREQ (string, "alpha") || STREQ (string, "upper")			\
-|| STREQ (string, "lower") || STREQ (string, "digit")		\
-|| STREQ (string, "alnum") || STREQ (string, "xdigit")		\
-|| STREQ (string, "space") || STREQ (string, "print")		\
-|| STREQ (string, "punct") || STREQ (string, "graph")		\
+#define CHAR_CLASS_MAX_LENGTH 6
+#define IS_CHAR_CLASS(string) \
+(STREQ (string, "alpha") || STREQ (string, "upper") \
+|| STREQ (string, "lower") || STREQ (string, "digit") \
+|| STREQ (string, "alnum") || STREQ (string, "xdigit") \
+|| STREQ (string, "space") || STREQ (string, "print") \
+|| STREQ (string, "punct") || STREQ (string, "graph") \
 || STREQ (string, "cntrl") || STREQ (string, "blank"))
 #ifndef MATCH_MAY_ALLOCATE
 static fail_stack_type fail_stack;
 static int regs_allocated_size;
-static const char **	 regstart, **	  regend;
+static const char ** regstart, ** regend;
 static const char ** old_regstart, ** old_regend;
 static const char **best_regstart, **best_regend;
 static register_info_type *reg_info;
@@ -1109,24 +1109,24 @@ int num_regs;
 {
 if (num_regs > regs_allocated_size)
 {
-RETALLOC_IF (regstart,	 num_regs, const char *);
-RETALLOC_IF (regend,	 num_regs, const char *);
+RETALLOC_IF (regstart, num_regs, const char *);
+RETALLOC_IF (regend, num_regs, const char *);
 RETALLOC_IF (old_regstart, num_regs, const char *);
-RETALLOC_IF (old_regend,	 num_regs, const char *);
+RETALLOC_IF (old_regend, num_regs, const char *);
 RETALLOC_IF (best_regstart, num_regs, const char *);
-RETALLOC_IF (best_regend,	 num_regs, const char *);
-RETALLOC_IF (reg_info,	 num_regs, register_info_type);
-RETALLOC_IF (reg_dummy,	 num_regs, const char *);
+RETALLOC_IF (best_regend, num_regs, const char *);
+RETALLOC_IF (reg_info, num_regs, register_info_type);
+RETALLOC_IF (reg_dummy, num_regs, const char *);
 RETALLOC_IF (reg_info_dummy, num_regs, register_info_type);
 regs_allocated_size = num_regs;
 }
 }
 #endif
-#define FREE_STACK_RETURN(value)		\
-do {							\
-FREE_RANGE_TABLE_WORK_AREA (range_table_work);	\
-free (compile_stack.stack);				\
-return value;					\
+#define FREE_STACK_RETURN(value) \
+do { \
+FREE_RANGE_TABLE_WORK_AREA (range_table_work); \
+free (compile_stack.stack); \
+return value; \
 } while (0)
 static reg_errcode_t
 regex_compile (pattern, size, syntax, bufp)
@@ -1250,7 +1250,7 @@ PATFETCH (c);
 if (c == '*'
 || (!(syntax & RE_BK_PLUS_QM) && (c == '+' || c == '?')))
 ;
-else if (syntax & RE_BK_PLUS_QM	 &&  c == '\\')
+else if (syntax & RE_BK_PLUS_QM && c == '\\')
 {
 if (p == pend) FREE_STACK_RETURN (REG_EESCAPE);
 PATFETCH (c1);
@@ -1381,19 +1381,19 @@ if (p == pend) FREE_STACK_RETURN (REG_EBRACK);
 for (ch = 0; ch < 1 << BYTEWIDTH; ch++)
 {
 int translated = TRANSLATE (ch);
-if (   (is_alnum  && ISALNUM (ch))
-|| (is_alpha  && ISALPHA (ch))
-|| (is_blank  && ISBLANK (ch))
-|| (is_cntrl  && ISCNTRL (ch)))
+if ( (is_alnum && ISALNUM (ch))
+|| (is_alpha && ISALPHA (ch))
+|| (is_blank && ISBLANK (ch))
+|| (is_cntrl && ISCNTRL (ch)))
 SET_LIST_BIT (translated);
-if (   (is_digit  && ISDIGIT (ch))
-|| (is_graph  && ISGRAPH (ch))
-|| (is_lower  && ISLOWER (ch))
-|| (is_print  && ISPRINT (ch)))
+if ( (is_digit && ISDIGIT (ch))
+|| (is_graph && ISGRAPH (ch))
+|| (is_lower && ISLOWER (ch))
+|| (is_print && ISPRINT (ch)))
 SET_LIST_BIT (translated);
-if (   (is_punct  && ISPUNCT (ch))
-|| (is_space  && ISSPACE (ch))
-|| (is_upper  && ISUPPER (ch))
+if ( (is_punct && ISPUNCT (ch))
+|| (is_space && ISSPACE (ch))
+|| (is_upper && ISUPPER (ch))
 || (is_xdigit && ISXDIGIT (ch)))
 SET_LIST_BIT (translated);
 }
@@ -1585,7 +1585,7 @@ break;
 case '{':
 if (!(syntax & RE_INTERVALS)
 || ((syntax & RE_INTERVALS) && (syntax & RE_NO_BK_BRACES))
-|| (p - 2 == pattern	&&  p == pend))
+|| (p - 2 == pattern && p == pend))
 goto normal_backslash;
 handle_interval:
 {
@@ -1672,7 +1672,7 @@ beg_interval = NULL;
 PATFETCH (c);
 if (!(syntax & RE_NO_BK_BRACES))
 {
-if (p > pattern  &&	p[-1] == '\\')
+if (p > pattern && p[-1] == '\\')
 goto normal_backslash;
 }
 goto normal_char;
@@ -2238,9 +2238,9 @@ struct re_registers *regs;
 return re_search_2 (bufp, NULL, 0, string, size, startpos, range,
 regs, size);
 }
-#define STOP_ADDR_VSTRING(P)				\
+#define STOP_ADDR_VSTRING(P) \
 (((P) >= size1 ? string2 + size2 : string1 + size1))
-#define POS_ADDR_VSTRING(POS)					\
+#define POS_ADDR_VSTRING(POS) \
 (((POS) >= size1 ? string2 - size1 : string1) + (POS))
 int
 re_search_2 (bufp, string1, size1, string2, size2, startpos, range, regs, stop)
@@ -2427,46 +2427,46 @@ static int bcmp_translate ();
 static boolean alt_match_null_string_p (),
 common_op_match_null_string_p (),
 group_match_null_string_p ();
-#define POINTER_TO_OFFSET(ptr)			\
-(FIRST_STRING_P (ptr)				\
-? ((regoff_t) ((ptr) - string1))		\
+#define POINTER_TO_OFFSET(ptr) \
+(FIRST_STRING_P (ptr) \
+? ((regoff_t) ((ptr) - string1)) \
 : ((regoff_t) ((ptr) - string2 + size1)))
-#define MATCHING_IN_FIRST_STRING  (dend == end_match_1)
-#define PREFETCH()							\
-while (d == dend)							\
-{									\
+#define MATCHING_IN_FIRST_STRING (dend == end_match_1)
+#define PREFETCH() \
+while (d == dend) \
+{ \
 \
-if (dend == end_match_2)						\
-goto fail;							\
+if (dend == end_match_2) \
+goto fail; \
 \
-d = string2;							\
-dend = end_match_2;						\
+d = string2; \
+dend = end_match_2; \
 }
 #define AT_STRINGS_BEG(d) ((d) == (size1 ? string1 : string2) || !size2)
 #define AT_STRINGS_END(d) ((d) == end2)
-#define WORDCHAR_P(d)							\
-(SYNTAX ((d) == end1 ? *string2					\
-: (d) == string2 - 1 ? *(end1 - 1) : *(d))			\
+#define WORDCHAR_P(d) \
+(SYNTAX ((d) == end1 ? *string2 \
+: (d) == string2 - 1 ? *(end1 - 1) : *(d)) \
 == Sword)
 #if 0
-#define AT_WORD_BOUNDARY(d)						\
-(AT_STRINGS_BEG (d) || AT_STRINGS_END (d)				\
+#define AT_WORD_BOUNDARY(d) \
+(AT_STRINGS_BEG (d) || AT_STRINGS_END (d) \
 || WORDCHAR_P (d - 1) != WORDCHAR_P (d))
 #endif
 #ifdef MATCH_MAY_ALLOCATE
 #define FREE_VAR(var) if (var) { REGEX_FREE (var); var = NULL; } else
-#define FREE_VARIABLES()						\
-do {									\
-REGEX_FREE_STACK (fail_stack.stack);				\
-FREE_VAR (regstart);						\
-FREE_VAR (regend);							\
-FREE_VAR (old_regstart);						\
-FREE_VAR (old_regend);						\
-FREE_VAR (best_regstart);						\
-FREE_VAR (best_regend);						\
-FREE_VAR (reg_info);						\
-FREE_VAR (reg_dummy);						\
-FREE_VAR (reg_info_dummy);						\
+#define FREE_VARIABLES() \
+do { \
+REGEX_FREE_STACK (fail_stack.stack); \
+FREE_VAR (regstart); \
+FREE_VAR (regend); \
+FREE_VAR (old_regstart); \
+FREE_VAR (old_regend); \
+FREE_VAR (best_regstart); \
+FREE_VAR (best_regend); \
+FREE_VAR (reg_info); \
+FREE_VAR (reg_dummy); \
+FREE_VAR (reg_info_dummy); \
 } while (0)
 #else
 #define FREE_VARIABLES() ((void)0)
@@ -3836,7 +3836,7 @@ if (regs.start == NULL || regs.end == NULL)
 return (int) REG_NOMATCH;
 }
 ret = re_search (&private_preg, string, len,
-0,  len,
+0, len,
 want_reg_info ? &regs : (struct re_registers *) 0);
 if (want_reg_info)
 {

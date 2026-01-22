@@ -2,12 +2,12 @@
 autoload=std
 load std
 if{! ~ $
-	echo usage: mkendpoint addr >[1=2]
-	raise usage
+echo usage: mkendpoint addr >[1=2]
+raise usage
 }
 addr:=$1
 if{! ftest -e /n/endpoint/dsgdsfgeafreqeq}{
-	mount {mntgen} /n/endpoint
+mount {mntgen} /n/endpoint
 }
 mount {pctl forkns; alphabet/endpointsrv $addr /n; export /n} /n/endpoint/$addr
 bind /n/endpoint/$addr /n/endpoint/local

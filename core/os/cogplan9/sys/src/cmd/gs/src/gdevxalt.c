@@ -16,10 +16,10 @@ dev_proc_map_color_rgb((*alt_map_color));
 } gx_device_X_wrapper;
 #define X_WRAPPER_DATA(amc_proc)\
 \
-{0},			\
-0,				\
+{0}, \
+0, \
 \
-{0},			\
+{0}, \
 amc_proc
 gs_private_st_suffix_add0_final(st_device_X_wrapper, gx_device_X_wrapper,
 "gx_device_X_wrapper", gdevx_wrapper_enum_ptrs, gdevx_wrapper_reloc_ptrs,
@@ -28,7 +28,7 @@ private int get_dev_target(gx_device **, gx_device *);
 private int get_target_info(gx_device *);
 private gx_color_index x_alt_map_color(gx_device *, gx_color_index);
 private void
-x_clear_color_cache(gx_device   * dev)
+x_clear_color_cache(gx_device * dev)
 {
 gx_device_X_wrapper *xdev = (gx_device_X_wrapper *) dev;
 int i;
@@ -164,7 +164,7 @@ case 3:
 *p++ = (byte) (cindex >> 16);
 case 2:
 *p++ = (byte) (cindex >> 8);
-default  :
+default :
 *p++ = (byte) cindex;
 }
 }
@@ -596,7 +596,7 @@ gx_forward_get_initial_matrix,\
 x_forward_sync_output,\
 x_forward_output_page,\
 x_wrap_close,\
-map_rgb_proc,		\
+map_rgb_proc, \
 x_wrap_map_color_rgb,\
 x_wrap_fill_rectangle,\
 gx_default_tile_rectangle,\

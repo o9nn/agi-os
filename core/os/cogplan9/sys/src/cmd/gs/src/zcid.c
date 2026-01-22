@@ -31,7 +31,7 @@ return (code < 0 ? code : 0);
 private bool
 TT_char_code_from_CID_no_subst(const gs_memory_t *mem,
 const ref *Decoding, const ref *TT_cmap, uint nCID, uint *c)
-{   ref *DecodingArray, char_code, ih, glyph_index;
+{ ref *DecodingArray, char_code, ih, glyph_index;
 make_int(&ih, nCID / 256);
 if (dict_find(Decoding, &ih, &DecodingArray) <= 0 ||
 !r_has_type(DecodingArray, t_array) ||
@@ -117,7 +117,7 @@ int
 cid_fill_CIDMap(const gs_memory_t *mem,
 const ref *Decoding, const ref *TT_cmap, const ref *SubstNWP, int GDBytes,
 ref *CIDMap)
-{   int dict_enum;
+{ int dict_enum;
 ref el[2];
 int count, i;
 if (GDBytes != 2)

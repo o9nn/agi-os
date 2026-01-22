@@ -9,46 +9,46 @@
 # include <i386/pic.h>
 #endif
 #include <chips/busses.h>
-#define	SPL_FIVE	(vm_offset_t)SPL5
-#define	SPL_SIX		(vm_offset_t)SPL6
-#define	SPL_TTY		(vm_offset_t)SPLTTY
+#define SPL_FIVE (vm_offset_t)SPL5
+#define SPL_SIX (vm_offset_t)SPL6
+#define SPL_TTY (vm_offset_t)SPLTTY
 #if NCOM > 0
-extern	struct	bus_driver	comdriver;
+extern struct bus_driver comdriver;
 #include <i386at/com.h>
 #endif
 #if NLPR > 0
-extern	struct	bus_driver	lprdriver;
+extern struct bus_driver lprdriver;
 #include <i386at/lpr.h>
 #endif
-struct	bus_ctlr	bus_master_init[] = {
+struct bus_ctlr bus_master_init[] = {
 {0}
 };
-struct	bus_device	bus_device_init[] = {
+struct bus_device bus_device_init[] = {
 #if NCOM > 0
 {&comdriver, "com", 0, comintr, 0x3f8, 8, 0x3f8,
-'?',    0,   -1,    -1,    0,   0,        0,   SPL_TTY, 4},
+'?', 0, -1, -1, 0, 0, 0, SPL_TTY, 4},
 {&comdriver, "com", 1, comintr, 0x2f8, 8, 0x2f8,
-'?',    0,   -1,    -1,    0,   0,        0,   SPL_TTY, 3},
+'?', 0, -1, -1, 0, 0, 0, SPL_TTY, 3},
 {&comdriver, "com", 2, comintr, 0x3e8, 8, 0x3e8,
-'?',    0,   -1,    -1,    0,   0,        0,   SPL_TTY, 5},
+'?', 0, -1, -1, 0, 0, 0, SPL_TTY, 5},
 #endif
 #ifdef MACH_LPR
 #if NLPR > 0
 {&lprdriver, "lpr", 0, lprintr, 0x378, 3, 0x378,
-'?',    0,   -1,    -1,    0,   0,        0,   SPL_TTY, 7},
+'?', 0, -1, -1, 0, 0, 0, SPL_TTY, 7},
 {&lprdriver, "lpr", 0, lprintr, 0x278, 3, 0x278,
-'?',    0,   -1,    -1,    0,   0,        0,   SPL_TTY, 7},
+'?', 0, -1, -1, 0, 0, 0, SPL_TTY, 7},
 {&lprdriver, "lpr", 0, lprintr, 0x3bc, 3, 0x3bc,
-'?',    0,   -1,    -1,    0,   0,        0,   SPL_TTY, 7},
+'?', 0, -1, -1, 0, 0, 0, SPL_TTY, 7},
 #endif
 #endif
 {0}
 };
 void probeio(void)
 {
-struct	bus_device	*device;
-struct	bus_ctlr	*master;
-int			i = 0;
+struct bus_device *device;
+struct bus_ctlr *master;
+int i = 0;
 for (master = bus_master_init; master->driver; master++)
 {
 if (configure_bus_master(master->name, master->address,
@@ -63,7 +63,7 @@ if (configure_bus_device(device->name, device->address,
 device->phys_address, i, "atbus"))
 i++;
 }
-#if	MACH_TTD
+#if MACH_TTD
 ttd_init();
 #endif
 }

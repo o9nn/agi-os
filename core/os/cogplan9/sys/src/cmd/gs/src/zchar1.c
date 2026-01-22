@@ -25,7 +25,7 @@
 #include "iutil.h"
 #include "store.h"
 #define GS_CHAR_FILL gs_eofill
-#undef  GS_CHAR_FILL
+#undef GS_CHAR_FILL
 #define GS_CHAR_FILL gs_fill
 private bool
 font_uses_charstrings(const gs_font *pfont)
@@ -57,7 +57,7 @@ typedef struct gs_type1exec_state_s {
 gs_type1_state cis;
 i_ctx_t *i_ctx_p;
 double sbw[4];
-int  present;
+int present;
 gs_rect char_bbox;
 bool use_FontBBox_as_Metrics2;
 ref save_args[6];
@@ -130,7 +130,7 @@ if (code < 0)
 return code;
 cxs.present = code;
 cxs.use_FontBBox_as_Metrics2 = false;
-}  else {
+} else {
 cxs.sbw[0] = penum->FontBBox_as_Metrics2.x / 2;
 cxs.sbw[1] = penum->FontBBox_as_Metrics2.y;
 cxs.sbw[2] = 0;
@@ -402,7 +402,7 @@ if (code < 0)
 return code;
 cxs.present = code;
 cxs.use_FontBBox_as_Metrics2 = false;
-}  else {
+} else {
 cxs.sbw[0] = penum->FontBBox_as_Metrics2.x / 2;
 cxs.sbw[1] = penum->FontBBox_as_Metrics2.y;
 cxs.sbw[2] = 0;

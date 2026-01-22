@@ -8,7 +8,7 @@ include "lock.m";
 include "modem.m";
 modem: Modem;
 include "script.m";
-delim:	con "-";			# expect-send delimiter
+delim: con "-"; # expect-send delimiter
 BUFSIZE: con (1024 * 32);
 execute( modmod: Modem, m: ref Modem->Device, scriptinfo: ref ScriptInfo )
 {
@@ -31,14 +31,14 @@ if (scriptinfo.timeout == 0)
 scriptinfo.timeout = 20;
 tend := sys->millisec() + 1000*scriptinfo.timeout;
 conv := scriptinfo.content;
-while (conv != nil)  {
-e, s:	string = nil;
+while (conv != nil) {
+e, s: string = nil;
 p := hd conv;
 conv = tl conv;
 if (len p == 0)
 continue;
 sys->print("script: %s\n",p);
-if (p[0] == '-') {	# just send
+if (p[0] == '-') { # just send
 if (len p == 1)
 continue;
 s = p[1:];
@@ -51,7 +51,7 @@ if (n > 1)
 s = hd esl;
 }
 }
-if (e  != nil) {
+if (e != nil) {
 if (match(m, special(e,scriptinfo), tend-sys->millisec()) == 0) {
 sys->print("script: match failed\n");
 raise "fail: Script Failed";
@@ -67,7 +67,7 @@ match(m: ref Modem->Device, s: string, timo: int): int
 {
 for(;;) {
 c := modem->getc(m, timo);
-if (c ==  '\r')
+if (c == '\r')
 c = '\n';
 sys->print("%c",c);
 if (c == 0)
@@ -89,7 +89,7 @@ i++;
 return 1;
 }
 if(c == '~')
-return 1;	# assume PPP for now
+return 1; # assume PPP for now
 }
 }
 #
@@ -97,7 +97,7 @@ return 1;	# assume PPP for now
 #
 special(s: string, scriptinfo: ref ScriptInfo ): string
 {
-if (s == "$username") 					# special variable
+if (s == "$username") # special variable
 s = scriptinfo.username;
 else if (s == "$password")
 s = scriptinfo.password;
@@ -108,18 +108,18 @@ deparse(s : string) : string
 r: string = "";
 for(i:=0; i < len s; i++) {
 c := s[i];
-if (c == '\\'  && i+1 < len s) {
+if (c == '\\' && i+1 < len s) {
 c = s[++i];
 case c {
 't' => c = '\t';
-'n'	=> c = '\n';
-'r'	=> c = '\r';
-'b'	=> c = '\b';
-'a'	=> c = '\a';
-'v'	=> c = '\v';
-'0'	=> c = '\0';
+'n' => c = '\n';
+'r' => c = '\r';
+'b' => c = '\b';
+'a' => c = '\a';
+'v' => c = '\v';
+'0' => c = '\0';
 '$' => c = '$';
-'u'	=>
+'u' =>
 if (i+4 < len s) {
 i++;
 (c, nil) = str->toint(s[i:i+4], 16);

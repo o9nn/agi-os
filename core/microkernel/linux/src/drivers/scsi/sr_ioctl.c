@@ -69,7 +69,7 @@ return result;
 }
 int sr_ioctl(struct inode * inode, struct file * file, unsigned int cmd, unsigned long arg)
 {
-u_char  sr_cmd[12];
+u_char sr_cmd[12];
 kdev_t dev = inode->i_rdev;
 int result, target, err;
 target = MINOR(dev);
@@ -396,8 +396,8 @@ case CDROMREADMODE2:
 return -EINVAL;
 case CDROMMULTISESSION:
 {
-struct cdrom_multisession  ms_info;
-long                       lba;
+struct cdrom_multisession ms_info;
+long lba;
 err = verify_area(VERIFY_READ, (void *) arg,
 sizeof(struct cdrom_multisession));
 if (err) return (err);
@@ -407,7 +407,7 @@ lba = scsi_CDs[target].mpcd_sector+CD_BLOCK_OFFSET;
 ms_info.addr.msf.minute = lba / (CD_SECS*CD_FRAMES);
 lba %= CD_SECS*CD_FRAMES;
 ms_info.addr.msf.second = lba / CD_FRAMES;
-ms_info.addr.msf.frame  = lba % CD_FRAMES;
+ms_info.addr.msf.frame = lba % CD_FRAMES;
 } else if (ms_info.addr_format==CDROM_LBA)
 ms_info.addr.lba=scsi_CDs[target].mpcd_sector;
 else return (-EINVAL);

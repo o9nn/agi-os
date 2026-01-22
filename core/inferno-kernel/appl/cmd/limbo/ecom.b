@@ -1,4 +1,4 @@
-maxstack:	int;				# max size of a stack frame called
+maxstack: int; # max size of a stack frame called
 precasttab := array[Tend] of array of ref Type;
 optabinit()
 {
@@ -16,7 +16,7 @@ casttab[Tbig][Tbig] = IMOVL;
 casttab[Treal][Treal] = IMOVF;
 casttab[Tbyte][Tbyte] = IMOVB;
 casttab[Tstring][Tstring] = IMOVP;
-casttab[Tfix][Tfix] = ICVTXX;	# never same type
+casttab[Tfix][Tfix] = ICVTXX; # never same type
 casttab[Tint][Tbyte] = ICVTWB;
 casttab[Tint][Treal] = ICVTWF;
 casttab[Tint][Tstring] = ICVTWC;
@@ -205,7 +205,7 @@ t = left.ty;
 if(t.kind == Tref)
 t = t.tof;
 if(t.kind == Tfn){
-if(left.ty.kind == Tref){	# call by function reference
+if(left.ty.kind == Tref){ # call by function reference
 n.left = mkunary(Oind, left);
 n.left.ty = t;
 return rewrite(n);
@@ -341,7 +341,7 @@ Dtype =>
 return n;
 }
 if(istuple(left))
-return n;	# handled by fold
+return n; # handled by fold
 right.op = Oconst;
 right.c = ref Const(big d.offset, 0.);
 right.ty = tint;
@@ -442,31 +442,31 @@ return n;
 # so a change here mandates a change there.
 #
 # addressable:
-#	const			Rconst	$value		 may also be Roff or Rdesc or Rnoff
-#	Asmall(local)		Rreg	value(FP)
-#	Asmall(global)		Rmreg	value(MP)
-#	ind(Rareg)		Rreg	value(FP)
-#	ind(Ramreg)		Rmreg	value(MP)
-#	ind(Rreg)		Radr	*value(FP)
-#	ind(Rmreg)		Rmadr	*value(MP)
-#	ind(Raadr)		Radr	value(value(FP))
-#	ind(Ramadr)		Rmadr	value(value(MP))
+# const Rconst $value may also be Roff or Rdesc or Rnoff
+# Asmall(local) Rreg value(FP)
+# Asmall(global) Rmreg value(MP)
+# ind(Rareg) Rreg value(FP)
+# ind(Ramreg) Rmreg value(MP)
+# ind(Rreg) Radr *value(FP)
+# ind(Rmreg) Rmadr *value(MP)
+# ind(Raadr) Radr value(value(FP))
+# ind(Ramadr) Rmadr value(value(MP))
 #
 # almost addressable:
-#	adr(Rreg)		Rareg
-#	adr(Rmreg)		Ramreg
-#	add(const, Rareg)	Rareg
-#	add(const, Ramreg)	Ramreg
-#	add(const, Rreg)	Raadr
-#	add(const, Rmreg)	Ramadr
-#	add(const, Raadr)	Raadr
-#	add(const, Ramadr)	Ramadr
-#	adr(Radr)		Raadr
-#	adr(Rmadr)		Ramadr
+# adr(Rreg) Rareg
+# adr(Rmreg) Ramreg
+# add(const, Rareg) Rareg
+# add(const, Ramreg) Ramreg
+# add(const, Rreg) Raadr
+# add(const, Rmreg) Ramadr
+# add(const, Raadr) Raadr
+# add(const, Ramadr) Ramadr
+# adr(Radr) Raadr
+# adr(Rmadr) Ramadr
 #
 # strangely addressable:
-#	fn			Rpc
-#	mdot(module,exp)	Rmpc
+# fn Rpc
+# mdot(module,exp) Rmpc
 #
 sumark(n: ref Node): ref Node
 {
@@ -832,7 +832,7 @@ if(left.addable >= Rcant)
 (right, tright) = eacom(right, nil);
 }
 p = genrawop(n.src, ISEND, right, nil, left);
-p.m.offset = n.ty.size;	# for optimizer
+p.m.offset = n.ty.size; # for optimizer
 if(nto != nil)
 genmove(src, Mas, right.ty, right, nto);
 tfree(tleft);
@@ -847,7 +847,7 @@ if(left.addable >= Rcant)
 (left, tleft) = eacom(left, nto);
 if(left.ty.kind == Tchan){
 p = genrawop(src, IRECV, left, nil, nto);
-p.m.offset = n.ty.size;	# for optimizer
+p.m.offset = n.ty.size; # for optimizer
 }else{
 recvacom(src, nto, n);
 }
@@ -1023,7 +1023,7 @@ else
 callcom(esrc(src, n.src, nto), op, n, nto);
 Oref =>
 t = left.ty;
-if(left.op == Oname && left.decl.store == Dfn || left.op == Omdot && left.right.op == Oname && left.right.decl.store == Dfn){	# create a function reference
+if(left.op == Oname && left.decl.store == Dfn || left.op == Omdot && left.right.op == Oname && left.right.decl.store == Dfn){ # create a function reference
 mod, ind: ref Node;
 d := left.decl;
 if(left.op == Omdot){
@@ -1312,7 +1312,7 @@ right = ecom(right.src, tright = talloc(right.ty, nto), right);
 if(left.addable >= Rcant)
 (left, tleft) = eacom(left, nil);
 }else{
-(left, tleft) = eacom(left, nil);		# dangle on right and v
+(left, tleft) = eacom(left, nil); # dangle on right and v
 right = ecom(right.src, tright = talloc(right.ty, nil), right);
 }
 case n.op{
@@ -1345,7 +1345,7 @@ right = ecom(right.src, tright = talloc(right.ty, nto), right);
 if(left.addable >= Rcant)
 (left, tleft) = eacom(left, nil);
 }else{
-(left, tleft) = eacom(left, nil);		# dangle on right and v
+(left, tleft) = eacom(left, nil); # dangle on right and v
 right = ecom(right.src, tright = talloc(right.ty, nil), right);
 }
 case n.op{
@@ -1427,7 +1427,7 @@ mod := nfn.left;
 ind := nfn.right;
 if(nfn.addable == Rmpc){
 if(mod.addable >= Rcant)
-(mod, tmod) = eacom(mod, nil);		# dangle always
+(mod, tmod) = eacom(mod, nil); # dangle always
 if(ind.op != Oname && ind.addable >= Ralways){
 tind = talloc(ind.ty, nil);
 ecom(ind.src, tind, ind);
@@ -1467,7 +1467,7 @@ toff := ref znode;
 tadd := ref znode;
 pass := ref znode;
 toff.op = Oconst;
-toff.c = ref Const(big 0, 0.0);	# jrf - added initialization
+toff.c = ref Const(big 0, 0.0); # jrf - added initialization
 toff.addable = Rconst;
 toff.ty = tint;
 tadd.op = Oadd;
@@ -1504,7 +1504,7 @@ if(ret != nil){
 toff.c.val = big(REGRET*IBY2WD);
 pass.ty = nfn.ty.tof;
 p := genrawop(src, ILEA, ret, nil, pass);
-p.m.offset = ret.ty.size;	# for optimizer
+p.m.offset = ret.ty.size; # for optimizer
 }
 #
 # call it
@@ -1615,11 +1615,11 @@ tfree(tmp);
 #
 # default initialization code for arrays.
 # compiles to
-#	n = len a;
-#	while(n){
-#		n--;
-#		a[n] = elem;
-#	}
+# n = len a;
+# while(n){
+# n--;
+# a[n] = elem;
+# }
 #
 arraydefault(a, elem: ref Node)
 {
@@ -1666,7 +1666,7 @@ tadd := ref znode;
 fake := ref znode;
 tadr := ref znode;
 toff.op = Oconst;
-toff.c = ref Const(big 0, 0.0);	# no val => may get fatal error below (jrf)
+toff.c = ref Const(big 0, 0.0); # no val => may get fatal error below (jrf)
 toff.ty = tint;
 tadr.op = Oadr;
 tadr.left = nto;
@@ -1703,7 +1703,7 @@ tadd := ref znode;
 fake := ref znode;
 tadr := ref znode;
 toff.op = Oconst;
-toff.c = ref Const(big 0, 0.0);	# no val => may get fatal error below (jrf)
+toff.c = ref Const(big 0, 0.0); # no val => may get fatal error below (jrf)
 toff.ty = tint;
 tadr.op = Oadr;
 tadr.left = n;
@@ -1885,7 +1885,7 @@ adr := ref znode;
 add := ref znode;
 slot := ref znode;
 off.op = Oconst;
-off.c = ref Const(big 0, 0.0);		# jrf - added initialization
+off.c = ref Const(big 0, 0.0); # jrf - added initialization
 off.ty = tint;
 off.addable = Rconst;
 adr.op = Oadr;
@@ -1915,7 +1915,7 @@ slot.ty = nil;
 #
 off.c.val += big IBY2WD;
 p = genrawop(left.src, ILEA, nto, nil, slot);
-p.m.offset = nto.ty.size;	# for optimizer
+p.m.offset = nto.ty.size; # for optimizer
 #
 # number of senders and receivers
 #
@@ -1925,7 +1925,7 @@ off.c.val += big IBY2WD;
 genmove(src, Mas, tint, sumark(mkconst(src, big 1)), slot);
 off.c.val += big IBY2WD;
 p = genrawop(src, IALT, tab, nil, which);
-p.m.offset = talt.size;	# for optimizer
+p.m.offset = talt.size; # for optimizer
 tfree(which);
 tfree(tab);
 }

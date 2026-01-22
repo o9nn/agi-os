@@ -1,5 +1,5 @@
 #
-# Copyright © 1998 Vita Nuova Limited.  All rights reserved.
+# Copyright © 1998 Vita Nuova Limited. All rights reserved.
 #
 implement Miniterm;
 include "sys.m";
@@ -16,11 +16,11 @@ dial: Dial;
 include "miniterm.m";
 Miniterm: module
 {
-init:		fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
-pgrp: 		int 			= 0;
-debug:		array of int	= array[256] of {* => 0};
-stderr:		ref Sys->FD;
+pgrp: int = 0;
+debug: array of int = array[256] of {* => 0};
+stderr: ref Sys->FD;
 # Minitel terminal identification request - reply sequence
 TERMINALID1 := array [] of {
 byte SOH,
@@ -36,34 +36,34 @@ byte EOT
 Mscreen, Mmodem, Mkeyb, Msocket, Nmodule: con iota;
 Pscreen, Pmodem, Pkeyb, Psocket: con (1 << iota);
 Modname := array [Nmodule] of {
-Mscreen		=> "S",
-Mmodem		=> "M",
-Mkeyb 		=> "K",
-Msocket		=> "C",
-*			=> "?",
+Mscreen => "S",
+Mmodem => "M",
+Mkeyb => "K",
+Msocket => "C",
+* => "?",
 };
 # attributes common to all modules
 Module: adt {
-path:		int;					# bitset to connected modules
-disabled:	int;
+path: int; # bitset to connected modules
+disabled: int;
 };
 # A BufChan queues events from the terminal to the modules
 BufChan: adt {
-path:		int;					# id bit
-ch:		chan of ref Event;		# set to `in' or `dummy' channel
-ev:		ref Event;				# next event to send
-in:		chan of ref Event;		# real channel for Events to the device
-q:		array of ref Event;		# subsequent events to send
+path: int; # id bit
+ch: chan of ref Event; # set to `in' or `dummy' channel
+ev: ref Event; # next event to send
+in: chan of ref Event; # real channel for Events to the device
+q: array of ref Event; # subsequent events to send
 };
 # holds state information for the minitel `protocol` (chapter 6)
 PState: adt {
-state:		int;
-arg:			array of int;		# up to 3 arguments: X,Y,Z
-nargs:		int;				# expected number of arguments
-n:			int;				# progress
-skip:			int;				# transparency; bytes to skip
+state: int;
+arg: array of int; # up to 3 arguments: X,Y,Z
+nargs: int; # expected number of arguments
+n: int; # progress
+skip: int; # transparency; bytes to skip
 };
-PSstart, PSesc, PSarg: con iota;	# states
+PSstart, PSesc, PSarg: con iota; # states
 # Terminal display modes
 Videotex, Mixed, Ascii,
 # Connection methods
@@ -74,26 +74,26 @@ Local, Connecting, Online,
 Echo
 : con (1 << iota);
 Terminal: adt {
-in:		chan of ref Event;
-out:		array of ref BufChan;	# buffered output to the minitel modules
-mode:	int;					# display mode
-state:	int;					# connection state
-spec:	int;					# special features
-connect:	int;					# Direct, or Network
-toplevel:	ref Tk->Toplevel;
-cmd:		chan of string;			# from Tk
-proto:	array of ref PState;		# minitel protocol state
-netaddr:	string;				# network address to dial
-buttonsleft: int;				# display buttons on the LHS (40 cols)
-terminalid: array of byte;			# ENQROM response
-kbctl:	chan of string;			# softkeyboard control
-kbmode:	string;				# softkeyboard mode
-init:		fn(t: self ref Terminal, toplevel: ref Tk->Toplevel, connect: int);
-run:		fn(t: self ref Terminal, done: chan of int);
-reset:	fn(t: self ref Terminal);
-quit:		fn(t: self ref Terminal);
-layout:	fn(t: self ref Terminal, cols: int);
-setkbmode:	fn(t: self ref Terminal, tmode: int);
+in: chan of ref Event;
+out: array of ref BufChan; # buffered output to the minitel modules
+mode: int; # display mode
+state: int; # connection state
+spec: int; # special features
+connect: int; # Direct, or Network
+toplevel: ref Tk->Toplevel;
+cmd: chan of string; # from Tk
+proto: array of ref PState; # minitel protocol state
+netaddr: string; # network address to dial
+buttonsleft: int; # display buttons on the LHS (40 cols)
+terminalid: array of byte; # ENQROM response
+kbctl: chan of string; # softkeyboard control
+kbmode: string; # softkeyboard mode
+init: fn(t: self ref Terminal, toplevel: ref Tk->Toplevel, connect: int);
+run: fn(t: self ref Terminal, done: chan of int);
+reset: fn(t: self ref Terminal);
+quit: fn(t: self ref Terminal);
+layout: fn(t: self ref Terminal, cols: int);
+setkbmode: fn(t: self ref Terminal, tmode: int);
 };
 include "arg.m";
 include "event.m";
@@ -102,12 +102,12 @@ include "keyb.b";
 include "modem.b";
 include "socket.b";
 include "screen.b";
-K:		ref Keyb;
-M:		ref Modem;
-C:		ref Socket;
-S:		ref Screen;
-T:		ref Terminal;
-Modules:	array of ref Module;
+K: ref Keyb;
+M: ref Modem;
+C: ref Socket;
+S: ref Screen;
+T: ref Terminal;
+Modules: array of ref Module;
 init(ctxt: ref Draw->Context, argv: list of string)
 {
 s: string;
@@ -144,12 +144,12 @@ argv = tl argv;
 if(argv != nil)
 arg->usage();
 arg = nil;
-# usage:	miniterm modem[!init[!number]]
-#	or	miniterm tcp!a.b.c.d
+# usage: miniterm modem[!init[!number]]
+# or miniterm tcp!a.b.c.d
 connect: int;
 initstr := dialstr := string nil;
 if(netaddr == nil)
-netaddr = "tcp!pdc.minitelfr.com!513";	# gateway
+netaddr = "tcp!pdc.minitelfr.com!513"; # gateway
 (nil, words) := sys->tokenize(netaddr, "!");
 if(len words == 0) {
 connect = Direct;
@@ -178,10 +178,10 @@ M = ref Modem;
 C = ref Socket;
 S = ref Screen;
 Modules = array [Nmodule] of {
-Mscreen	=> S.m,
-Mmodem	=> M.m,
-Mkeyb 	=> K.m,
-Msocket	=> C.m,
+Mscreen => S.m,
+Mmodem => M.m,
+Mkeyb => K.m,
+Msocket => C.m,
 };
 toplevel := tk->toplevel(ctxt.display, "");
 inittk(toplevel, connect);
@@ -226,7 +226,7 @@ tkinitbs := array[] of {
 "button .repet -text {Répét.} -command {send keyb skey Repeat}",
 "button .envoi -text {Envoi} -command {send keyb skey Send}",
 "button .play -text {P} -command {send term play}",
-#	"button .db -text {D} -command {send term debug}" ,
+# "button .db -text {D} -command {send term debug}" ,
 "button .kb -text {Clavier} -command {send term keyboard}",
 "button .move -text {<-} -command {send term buttonsleft} " + BTN40x25,
 };
@@ -243,8 +243,8 @@ tkinitdirect := array [] of {
 ".suite configure " + BTNMAIN,
 ".repet configure " + BTNMAIN,
 ".envoi configure " + BTNMAIN,
-#	".play configure " + BTNCTL,
-#	".db configure " + BTNCTL,
+# ".play configure " + BTNCTL,
+# ".db configure " + BTNCTL,
 ".kb configure " + BTNCTL,
 "canvas .c -height 425 -width 640 -background black",
 "bind .c <Configure> {send term resize}",
@@ -318,14 +318,14 @@ tkip40x25show := array [] of {
 ".repet configure " + BTN40x25,
 ".envoi configure " + BTN40x25,
 ".play configure " + BTN40x25,
-#	".db configure " + BTN40x25,
+# ".db configure " + BTN40x25,
 ".kb configure " + BTN40x25,
 "pack .cxfin -in .k -side top -fill x",
 "pack .gap1 -in .k -side top -expand 1",
 "pack .guide .repet .somm .annul .corr .retour .suite .envoi -in .k -side top -fill x",
 "pack .gap2 -in .k -side top -expand 1",
 "pack .done .hup .kb .move -in .k -side bottom -pady 2 -fill x",
-#	"pack .db -in .k -side bottom",
+# "pack .db -in .k -side bottom",
 };
 tkip40x25lhs := array [] of {
 ".move configure -text {->} -command {send term buttonsright}",
@@ -354,8 +354,8 @@ tkip80x25show := array [] of {
 ".suite configure " + BTNMAIN,
 ".repet configure " + BTNMAIN,
 ".envoi configure " + BTNMAIN,
-#	".play configure " + BTNCTL,
-#	".db configure " + BTNCTL,
+# ".play configure " + BTNCTL,
+# ".db configure " + BTNCTL,
 ".kb configure " + BTNCTL,
 "pack .cxfin .hup -in .klhs -anchor w -pady 2",
 "pack .somm .annul .retour .repet -in .krow1 -side left -padx 2",
@@ -396,10 +396,10 @@ Terminal.init(t: self ref Terminal, toplevel: ref Tk->Toplevel, connect: int)
 {
 t.in = chan of ref Event;
 t.proto = array [Nmodule] of {
-Mscreen	=>	ref PState(PSstart, array [] of {0,0,0}, 0, 0, 0),
-Mmodem	=>	ref PState(PSstart, array [] of {0,0,0}, 0, 0, 0),
-Mkeyb	=>	ref PState(PSstart, array [] of {0,0,0}, 0, 0, 0),
-Msocket	=>	ref PState(PSstart, array [] of {0,0,0}, 0, 0, 0),
+Mscreen => ref PState(PSstart, array [] of {0,0,0}, 0, 0, 0),
+Mmodem => ref PState(PSstart, array [] of {0,0,0}, 0, 0, 0),
+Mkeyb => ref PState(PSstart, array [] of {0,0,0}, 0, 0, 0),
+Msocket => ref PState(PSstart, array [] of {0,0,0}, 0, 0, 0),
 };
 t.toplevel = toplevel;
 t.connect = connect;
@@ -408,7 +408,7 @@ t.spec = 0;
 else
 t.spec = Echo;
 t.cmd = chan of string;
-tk->namechan(t.toplevel, t.cmd, "term");		# Tk -> terminal
+tk->namechan(t.toplevel, t.cmd, "term"); # Tk -> terminal
 t.state = Local;
 t.buttonsleft = 0;
 t.kbctl = nil;
@@ -422,10 +422,10 @@ t.mode = Videotex;
 Terminal.run(t: self ref Terminal, done: chan of int)
 {
 t.out = array [Nmodule] of {
-Mscreen	=> ref BufChan(Pscreen, nil, nil, S.in, array [0] of ref Event),
-Mmodem	=> ref BufChan(Pmodem, nil, nil, M.in, array [0] of ref Event),
-Mkeyb 	=> ref BufChan(Pkeyb, nil, nil, K.in, array [0] of ref Event),
-Msocket	=> ref BufChan(Psocket, nil, nil, C.in, array [0] of ref Event),
+Mscreen => ref BufChan(Pscreen, nil, nil, S.in, array [0] of ref Event),
+Mmodem => ref BufChan(Pmodem, nil, nil, M.in, array [0] of ref Event),
+Mkeyb => ref BufChan(Pkeyb, nil, nil, K.in, array [0] of ref Event),
+Msocket => ref BufChan(Psocket, nil, nil, C.in, array [0] of ref Event),
 };
 modcount := Nmodule;
 if(debug['P'])
@@ -437,13 +437,13 @@ post(nil);
 alt {
 # recv message from one of the modules
 ev =<- t.in =>
-if(ev == nil) {			# modules ack Equit with nil
+if(ev == nil) { # modules ack Equit with nil
 if(--modcount == 0)
 break Evloop;
 continue;
 }
 pick e := ev {
-Equit =>		# close modules down
+Equit => # close modules down
 post(ref Event.Equit(Pscreen|Pmodem|Pkeyb|Psocket,0));
 continue;
 }
@@ -453,20 +453,20 @@ post(eva[0]);
 eva = eva[1:];
 }
 # send message to `plumbed' modules
-t.out[Mscreen].ch	<- = t.out[Mscreen].ev	=>
+t.out[Mscreen].ch <- = t.out[Mscreen].ev =>
 t.out[Mscreen].ev = nil;
-t.out[Mmodem].ch	<- = t.out[Mmodem].ev	=>
+t.out[Mmodem].ch <- = t.out[Mmodem].ev =>
 t.out[Mmodem].ev = nil;
-t.out[Mkeyb].ch		<- = t.out[Mkeyb].ev		=>
+t.out[Mkeyb].ch <- = t.out[Mkeyb].ev =>
 t.out[Mkeyb].ev = nil;
-t.out[Msocket].ch	<- = t.out[Msocket].ev	=>
+t.out[Msocket].ch <- = t.out[Msocket].ev =>
 t.out[Msocket].ev = nil;
 # recv message from Tk
 cmd := <- t.cmd =>
 (n, word) := sys->tokenize(cmd, " ");
 if(n >0)
 case hd word {
-"resize" =>	;
+"resize" => ;
 "play" => # for testing only
 post(ref Event.Eproto(Pmodem, Mmodem, Cplay, "play", 0,0,0));
 "keyboard" =>
@@ -543,7 +543,7 @@ keyboard->chaninit(top, S.ctxt, ".keys", kbctl);
 tk->cmd(top, "pack .keys");
 kbctl <-= t.kbmode ;
 kbon := 1;
-c <- = nil;	# all ok, we are now ready to accept commands
+c <- = nil; # all ok, we are now ready to accept commands
 for (;;) alt {
 mcmd := <- m =>
 if (mcmd == "exit") {
@@ -568,13 +568,13 @@ kbon = 1;
 }
 "mode" =>
 kbctl <- = t.kbmode;
-"quit"	=>
+"quit" =>
 kbctl <- = "kill";
 top = nil;
 # ensure tkclient not blocked on a send to us (probably overkill!)
 alt {
-<- m =>	;
-* =>	;
+<- m => ;
+* => ;
 }
 return;
 }
@@ -612,9 +612,9 @@ pick de := e {
 fprint(stderr, "[%s<-%s] %s\n", Modname[i], Modname[e.from], e.str());
 }
 }
-if(b.ev == nil)		# nothing queued
+if(b.ev == nil) # nothing queued
 b.ev = e;
-else {				# enqueue it
+else { # enqueue it
 l = len b.q;
 na := array [l+1] of ref Event;
 na[0:] = b.q[0:];
@@ -638,19 +638,19 @@ protocol(ev: ref Event): array of ref Event
 # ESC,0x39,X
 # ESC,0x3a,X,Y
 # ESC,0x3b,X,Y,Z
-# ESC,0x61	- cursor position request
-ea := array [0] of ref Event;	# resulting sequence of Events
-changed := 0;				# if set, results are found in `ea'
+# ESC,0x61 - cursor position request
+ea := array [0] of ref Event; # resulting sequence of Events
+changed := 0; # if set, results are found in `ea'
 pick e := ev {
 Edata =>
-d0 := 0;				# offset of start of last data sequence
+d0 := 0; # offset of start of last data sequence
 p := T.proto[e.from];
 for(i:=0; i<len e.data; i++) {
 ch := int e.data[i];
-#			if(debug['p'])
-#				fprint(stderr, "protocol: [%s] %d %ux (%c)\n", Modname[e.from], p.state, ch, ch);
-if(p.skip > 0) {		# in transparency mode
-if(ch == 0 && e.from == Mmodem)	# 5.0
+# if(debug['p'])
+# fprint(stderr, "protocol: [%s] %d %ux (%c)\n", Modname[e.from], p.state, ch, ch);
+if(p.skip > 0) { # in transparency mode
+if(ch == 0 && e.from == Mmodem) # 5.0
 continue;
 p.skip--;
 continue;
@@ -669,9 +669,9 @@ p.state = PSarg;
 p.n = 0;
 d0 = i+1;
 changed = 1;
-if(ch >= 16r39 && ch <= 16r3b)	#PRO1,2,3
+if(ch >= 16r39 && ch <= 16r3b) #PRO1,2,3
 p.nargs = ch - 16r39 + 1;
-else if(ch == 16r61)			# cursor position request
+else if(ch == 16r61) # cursor position request
 p.nargs = 0;
 else if(ch == ESC) {
 ea = eappend(ea, ref Event.Edata(e.path, e.from, array [] of { byte ESC }));
@@ -681,7 +681,7 @@ p.state = PSesc;
 ea = eappend(ea, ref Event.Edata(e.path, e.from, array [] of { byte ESC, byte ch }));
 p.state = PSstart;
 }
-PSarg =>		# expect `nargs' bytes
+PSarg => # expect `nargs' bytes
 d0 = i+1;
 changed =1;
 if(p.n < p.nargs)
@@ -695,7 +695,7 @@ p.state = PSstart;
 }
 }
 }
-if(changed) {			# some interpretation, results in `ea'
+if(changed) { # some interpretation, results in `ea'
 if(i > d0)
 ea = eappend(ea, ref Event.Edata(e.path, e.from, e.data[d0:i]));
 return ea;
@@ -728,38 +728,38 @@ fprint(stderr, " %ux", p.arg[2]);
 fprint(stderr, " (%s)\n", Modname[from]);
 }
 case p.nargs {
-0 =>							# cursor position request ESC 0x61
+0 => # cursor position request ESC 0x61
 reply := array [] of { byte US, byte S.pos.y, byte S.pos.x };
 post(ref Event.Edata(Pmodem, from, reply));
 1 =>
 case p.arg[0] {
-PROTOCOLSTATUS =>	;
-ENQROM =>				# identification request
+PROTOCOLSTATUS => ;
+ENQROM => # identification request
 post(ref Event.Edata(Pmodem, from, T.terminalid));
 if(T.terminalid == TERMINALID1)
 T.terminalid = TERMINALID2;
-SETRAM1 or SETRAM2 =>	;
-FUNCTIONINGSTATUS =>		# 11.3
+SETRAM1 or SETRAM2 => ;
+FUNCTIONINGSTATUS => # 11.3
 PRO2(Pmodem, from, REPFUNCTIONINGSTATUS, osb());
-CONNECT =>	;
+CONNECT => ;
 DISCONNECT =>
 return ref Event.Eproto(Pscreen, from, Cscreenoff, "",0,0,0);
-RESET =>					# reset the minitel terminal
+RESET => # reset the minitel terminal
 all := Pscreen|Pmodem|Pkeyb|Psocket;
-post(ref Event.Eproto(all, from, Creset, "",0,0,0));	# check
+post(ref Event.Eproto(all, from, Creset, "",0,0,0)); # check
 T.reset();
 reply := array [] of { byte SEP, byte 16r5E };
 post(ref Event.Edata(Pmodem, from, reply));
 }
 2 =>
 case p.arg[0] {
-TO =>					# request for module status
+TO => # request for module status
 PRO3(Pmodem, from, FROM, p.arg[1], psb(p.arg[1]));
-NOBROADCAST =>	;
-BROADCAST =>	;
-TRANSPARENCY =>			# transparency mode - skip bytes
+NOBROADCAST => ;
+BROADCAST => ;
+TRANSPARENCY => # transparency mode - skip bytes
 p.skip = p.arg[1];
-if(p.skip < 1 || p.skip > 127)	# 5.0
+if(p.skip < 1 || p.skip > 127) # 5.0
 p.skip = 0;
 else {
 reply := array [] of { byte SEP, byte 16r57 };
@@ -776,12 +776,12 @@ if(p.arg[1] == SCROLLING)
 x |= 16r02;
 PRO2(Pmodem, from, REPFUNCTIONINGSTATUS, x);
 case p.arg[1] {
-PROCEDURE =>			# activate error correction procedure
+PROCEDURE => # activate error correction procedure
 sys->print("activate error correction\n");
 return ref Event.Eproto(Pmodem, from, Cstartecp, "",0,0,0);
-SCROLLING =>			# set screen to scroll
+SCROLLING => # set screen to scroll
 return ref Event.Eproto(Pscreen, from, Cproto, "",START,SCROLLING,0);
-LOWERCASE =>			# set keyb to invert case
+LOWERCASE => # set keyb to invert case
 return ref Event.Eproto(Pkeyb, from, Cproto, "",START,LOWERCASE,0);
 }
 STOP =>
@@ -790,53 +790,53 @@ if(p.arg[1] == SCROLLING)
 x &= ~16r02;
 PRO2(Pmodem, from, REPFUNCTIONINGSTATUS, osb());
 case p.arg[1] {
-PROCEDURE =>			# deactivate error correction procedure
+PROCEDURE => # deactivate error correction procedure
 sys->print("deactivate error correction\n");
 return ref Event.Eproto(Pmodem, from, Cstopecp, "",0,0,0);
-SCROLLING =>			# set screen to no scroll
+SCROLLING => # set screen to no scroll
 return ref Event.Eproto(Pscreen, from, Cproto, "",STOP,SCROLLING,0);
-LOWERCASE =>			# set keyb to not invert case
+LOWERCASE => # set keyb to not invert case
 return ref Event.Eproto(Pkeyb, from, Cproto, "",STOP,LOWERCASE,0);
 }
-COPY =>					# copy screen to socket
+COPY => # copy screen to socket
 # not implemented
 ;
-MIXED =>					# change video mode (12.1)
+MIXED => # change video mode (12.1)
 case p.arg[1] {
-MIXED1 =>			# videotex -> mixed
+MIXED1 => # videotex -> mixed
 reply := array [] of { byte SEP, byte 16r70 };
 return ref Event.Eproto(Pscreen, from, Cproto, "",MIXED,MIXED1,0);
-MIXED2 =>			# mixed -> videotex
+MIXED2 => # mixed -> videotex
 reply := array [] of { byte SEP, byte 16r71 };
 return ref Event.Eproto(Pscreen, from, Cproto, "",MIXED,MIXED2,0);
 }
-ASCII =>					# change video mode (12.2)
+ASCII => # change video mode (12.2)
 # TODO
 ;
 }
 3 =>
 case p.arg[0] {
-OFF or ON =>				# link, unlink, enable, disable
+OFF or ON => # link, unlink, enable, disable
 modcmd(p.arg[0], p.arg[1], p.arg[2]);
 PRO3(Pmodem, from, FROM, p.arg[1], psb(TxCode(p.arg[1])));
 START =>
 case p.arg[1] {
-RxKeyb =>			# keyboard mode
+RxKeyb => # keyboard mode
 case p.arg[2] {
-ETEN =>			# extended keyboard
+ETEN => # extended keyboard
 K.spec |= Extend;
-C0 =>			# cursor control key coding from col 0
+C0 => # cursor control key coding from col 0
 K.spec |= C0keys;
 }
 PRO3(Pmodem, from, REPKEYBOARDSTATUS, RxKeyb, kosb());
 }
-STOP =>					# keyboard mode
+STOP => # keyboard mode
 case p.arg[1] {
-RxKeyb =>			# keyboard mode
+RxKeyb => # keyboard mode
 case p.arg[2] {
-ETEN =>			# extended keyboard
+ETEN => # extended keyboard
 K.spec &= ~Extend;
-C0 =>			# cursor control key coding from col 0
+C0 => # cursor control key coding from col 0
 K.spec &= ~C0keys;
 }
 PRO3(Pmodem, from, REPKEYBOARDSTATUS, RxKeyb, kosb());
@@ -868,12 +868,12 @@ modcmd(cmd, from, targ: int)
 {
 from = RxTx(from);
 targ = RxTx(targ);
-if(from == targ)						# enable or disable module
+if(from == targ) # enable or disable module
 if(cmd == ON)
 Modules[from].disabled = 0;
 else
 Modules[from].disabled = 1;
-else 								# modify path
+else # modify path
 if(cmd == ON)
 Modules[from].path |= (1<<targ);
 else
@@ -885,8 +885,8 @@ Modules[from].path &= ~(1<<targ);
 psb(code: int): int
 {
 this := RxTx(code);
-b := 16r40;			# bit 6 always set
-if(code == RxCode(code)) { 	# want a receive path status byte
+b := 16r40; # bit 6 always set
+if(code == RxCode(code)) { # want a receive path status byte
 mask := (1<<this);
 if(Modules[Mscreen].path & mask)
 b |= 16r01;
@@ -907,8 +907,8 @@ b |= 16r04;
 if(mod.path & Msocket)
 b |= 16r08;
 }
-#	if(parity(b))
-#		b ^= 16r80;
+# if(parity(b))
+# b ^= 16r80;
 return b;
 }
 # convert `code' to a receive code by setting bit 3
@@ -939,10 +939,10 @@ RxTx(code: int): int
 {
 rv := 0;
 case code {
-TxScreen or RxScreen	=> rv = Mscreen;
-TxKeyb or RxKeyb		=> rv = Mkeyb;
-TxModem or RxModem	=> rv = Mmodem;
-TxSocket or RxSocket	=> rv = Msocket;
+TxScreen or RxScreen => rv = Mscreen;
+TxKeyb or RxKeyb => rv = Mkeyb;
+TxModem or RxModem => rv = Mmodem;
+TxSocket or RxSocket => rv = Msocket;
 * =>
 fatal("invalid module code");
 }
@@ -960,8 +960,8 @@ if(M.spec & Ecp)
 b |= 16r04;
 if(K.spec & Invert)
 b |= 16r08;
-#	if(parity(b))
-#		b ^= 16r80;
+# if(parity(b))
+# b ^= 16r80;
 return b;
 }
 # generate a keyboard operating status byte (9.1.2)
@@ -972,8 +972,8 @@ if(K.spec & Extend)
 b |= 16r01;
 if(K.spec & C0keys)
 b |= 16r04;
-#	if(parity(b))
-#		b ^= 16r80;
+# if(parity(b))
+# b ^= 16r80;
 return b;
 }
 hex(v, n: int): string
@@ -1052,7 +1052,7 @@ exits(msg);
 exits(s: string)
 {
 if(s==nil);
-#	raise "fail: miniterm " + s;
+# raise "fail: miniterm " + s;
 fd := sys->open("#p/" + string pgrp + "/ctl", sys->OWRITE);
 if(fd != nil)
 sys->fprint(fd, "killgrp");

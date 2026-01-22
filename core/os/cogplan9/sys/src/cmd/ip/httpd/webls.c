@@ -6,11 +6,11 @@
 #include <fcall.h>
 #include "httpd.h"
 #include "httpsrv.h"
-static	Hio		*hout;
-static	Hio		houtb;
-static	HConnect	*connect;
-static	int		vermaj, gidwidth, uidwidth, lenwidth, devwidth;
-static	Biobuf		*aio, *dio;
+static Hio *hout;
+static Hio houtb;
+static HConnect *connect;
+static int vermaj, gidwidth, uidwidth, lenwidth, devwidth;
+static Biobuf *aio, *dio;
 static void
 doctype(void)
 {
@@ -46,10 +46,10 @@ exits(nil);
 static Reprog *
 getre(Biobuf *buf)
 {
-Reprog	*re;
-char	*p, *t;
-char	*bbuf;
-int	n;
+Reprog *re;
+char *p, *t;
+char *bbuf;
+int n;
 if (buf == nil)
 return(nil);
 for ( ; ; free(p)) {
@@ -81,9 +81,9 @@ return(re);
 static int
 allowed(char *dir)
 {
-Reprog	*re;
-int	okay;
-Resub	match;
+Reprog *re;
+int okay;
+Resub match;
 if (strcmp(dir, "..") == 0 || strncmp(dir, "../", 3) == 0)
 return(0);
 if (aio == nil)
@@ -115,8 +115,8 @@ return(strcmp(a->name, b->name));
 static void
 maxwidths(Dir *dp, long n)
 {
-long	i;
-char	scratch[64];
+long i;
+char scratch[64];
 for (i = 0; i < n; i++) {
 if (snprint(scratch, sizeof scratch, "%ud", dp[i].dev) > devwidth)
 devwidth = strlen(scratch);
@@ -147,10 +147,10 @@ return buf;
 static void
 dols(char *dir)
 {
-Dir	*d;
-char	*f, *p,*nm;
-long	i, n;
-int	fd;
+Dir *d;
+char *f, *p,*nm;
+long i, n;
+int fd;
 cleanname(dir);
 if (!allowed(dir)) {
 error("Permission denied", "<p>Cannot list directory %s: Access prohibited</p>", dir);

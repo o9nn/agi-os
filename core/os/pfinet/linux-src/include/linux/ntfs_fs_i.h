@@ -4,11 +4,11 @@ struct ntfs_attribute;
 struct ntfs_sb_info;
 #ifndef NTFS_INTEGRAL_TYPES
 #define NTFS_INTEGRAL_TYPES
-typedef u8  ntfs_u8;
+typedef u8 ntfs_u8;
 typedef u16 ntfs_u16;
 typedef u32 ntfs_u32;
 typedef u64 ntfs_u64;
-typedef s8  ntfs_s8;
+typedef s8 ntfs_s8;
 typedef s16 ntfs_s16;
 typedef s32 ntfs_s32;
 typedef s64 ntfs_s64;
@@ -35,7 +35,7 @@ typedef __kernel_time_t ntfs_time_t;
 #endif
 #ifndef NTFS_WCHAR_T
 #define NTFS_WCHAR_T
-typedef unsigned short     ntfs_wchar_t;
+typedef unsigned short ntfs_wchar_t;
 #endif
 #ifndef NTFS_OFFSET_T
 #define NTFS_OFFSET_T

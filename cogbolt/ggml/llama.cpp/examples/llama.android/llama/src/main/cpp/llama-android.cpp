@@ -42,7 +42,7 @@ bytes += 1;
 return true;
 }
 static void log_callback(ggml_log_level level, const char * fmt, void * data) {
-if (level == GGML_LOG_LEVEL_ERROR)     __android_log_print(ANDROID_LOG_ERROR, TAG, fmt, data);
+if (level == GGML_LOG_LEVEL_ERROR) __android_log_print(ANDROID_LOG_ERROR, TAG, fmt, data);
 else if (level == GGML_LOG_LEVEL_INFO) __android_log_print(ANDROID_LOG_INFO, TAG, fmt, data);
 else if (level == GGML_LOG_LEVEL_WARN) __android_log_print(ANDROID_LOG_WARN, TAG, fmt, data);
 else __android_log_print(ANDROID_LOG_DEFAULT, TAG, fmt, data);
@@ -79,8 +79,8 @@ return 0;
 int n_threads = std::max(1, std::min(8, (int) sysconf(_SC_NPROCESSORS_ONLN) - 2));
 LOGi("Using %d threads", n_threads);
 llama_context_params ctx_params = llama_context_default_params();
-ctx_params.n_ctx           = 2048;
-ctx_params.n_threads       = n_threads;
+ctx_params.n_ctx = 2048;
+ctx_params.n_threads = n_threads;
 ctx_params.n_threads_batch = n_threads;
 llama_context * context = llama_new_context_with_model(model, ctx_params);
 if (!context) {
@@ -180,9 +180,9 @@ tg_std = 0;
 }
 char model_desc[128];
 llama_model_desc(model, model_desc, sizeof(model_desc));
-const auto model_size     = double(llama_model_size(model)) / 1024.0 / 1024.0 / 1024.0;
+const auto model_size = double(llama_model_size(model)) / 1024.0 / 1024.0 / 1024.0;
 const auto model_n_params = double(llama_model_n_params(model)) / 1e9;
-const auto backend    = "(Android)";
+const auto backend = "(Android)";
 std::stringstream result;
 result << std::setprecision(2);
 result << "| model | size | params | backend | test | t/s |\n";
@@ -208,13 +208,13 @@ batch->embd = (float *) malloc(sizeof(float) * n_tokens * embd);
 } else {
 batch->token = (llama_token *) malloc(sizeof(llama_token) * n_tokens);
 }
-batch->pos      = (llama_pos *)     malloc(sizeof(llama_pos)      * n_tokens);
-batch->n_seq_id = (int32_t *)       malloc(sizeof(int32_t)        * n_tokens);
-batch->seq_id   = (llama_seq_id **) malloc(sizeof(llama_seq_id *) * n_tokens);
+batch->pos = (llama_pos *) malloc(sizeof(llama_pos) * n_tokens);
+batch->n_seq_id = (int32_t *) malloc(sizeof(int32_t) * n_tokens);
+batch->seq_id = (llama_seq_id **) malloc(sizeof(llama_seq_id *) * n_tokens);
 for (int i = 0; i < n_tokens; ++i) {
 batch->seq_id[i] = (llama_seq_id *) malloc(sizeof(llama_seq_id) * n_seq_max);
 }
-batch->logits   = (int8_t *)        malloc(sizeof(int8_t)         * n_tokens);
+batch->logits = (int8_t *) malloc(sizeof(int8_t) * n_tokens);
 return reinterpret_cast<jlong>(batch);
 }
 extern "C"
@@ -296,7 +296,7 @@ jint n_len,
 jobject intvar_ncur
 ) {
 const auto context = reinterpret_cast<llama_context *>(context_pointer);
-const auto batch   = reinterpret_cast<llama_batch   *>(batch_pointer);
+const auto batch = reinterpret_cast<llama_batch *>(batch_pointer);
 const auto sampler = reinterpret_cast<llama_sampler *>(sampler_pointer);
 const auto model = llama_get_model(context);
 const auto vocab = llama_model_get_vocab(model);

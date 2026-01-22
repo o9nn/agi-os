@@ -9,49 +9,49 @@ typedef struct Request Request;
 typedef struct Memory Memory;
 struct RequestType
 {
-char		*file;
-void		(*f)(Request*);
-void		(*r)(Controlset*);
-int		fd;
-Channel		*rc;
-Controlset	*cs;
+char *file;
+void (*f)(Request*);
+void (*r)(Controlset*);
+int fd;
+Channel *rc;
+Controlset *cs;
 };
 struct Request
 {
-RequestType	*rt;
-Attr		*a;
-Attr		*tag;
+RequestType *rt;
+Attr *a;
+Attr *tag;
 };
 struct Memory
 {
-Memory	*next;
-Attr	*a;
-Attr	*val;
+Memory *next;
+Attr *a;
+Attr *val;
 };
 Memory *mem;
-static void	readreq(void*);
-static void	hide(void);
-static void	unhide(void);
-static void	openkmr(void);
-static void	closekmr(void);
-static Memory*	searchmem(Attr*);
-static void	addmem(Attr*, Attr*);
-static void	confirm(Request*);
-static void	resizeconfirm(Controlset*);
-static void	needkey(Request*);
-static void	resizeneedkey(Controlset*);
+static void readreq(void*);
+static void hide(void);
+static void unhide(void);
+static void openkmr(void);
+static void closekmr(void);
+static Memory* searchmem(Attr*);
+static void addmem(Attr*, Attr*);
+static void confirm(Request*);
+static void resizeconfirm(Controlset*);
+static void needkey(Request*);
+static void resizeneedkey(Controlset*);
 Control *b_remember;
 Control *b_accept;
 Control *b_refuse;
 RequestType rt[] =
 {
-{ "/mnt/factotum/confirm",	confirm,	resizeconfirm, },
-{ "/mnt/factotum/needkey",	needkey,	resizeneedkey, },
+{ "/mnt/factotum/confirm", confirm, resizeconfirm, },
+{ "/mnt/factotum/needkey", needkey, resizeneedkey, },
 { 0 },
 };
 enum
 {
-ButtonDim=	15,
+ButtonDim= 15,
 };
 void
 threadmain(int argc, char *argv[])
@@ -66,7 +66,7 @@ if(newwindow("-hide") < 0)
 sysfatal("newwindow: %r");
 fmtinstall('A', _attrfmt);
 rc = chancreate(sizeof(Request), 0);
-for(p = rt;  p->file != 0; p++){
+for(p = rt; p->file != 0; p++){
 p->fd = -1;
 p->rc = rc;
 proccreate(readreq, p, 16*1024);
@@ -189,7 +189,7 @@ void
 resizecontrolset(Controlset *cs)
 {
 RequestType *p;
-for(p = rt;  p->file != 0; p++){
+for(p = rt; p->file != 0; p++){
 if(p->cs == cs){
 (*p->r)(cs);
 break;
@@ -390,8 +390,8 @@ mem = m;
 Control *msg;
 Control *b_done;
 enum {
-Pprivate=	1<<0,
-Pneed=		1<<1,
+Pprivate= 1<<0,
+Pneed= 1<<1,
 };
 typedef struct Entry Entry;
 struct Entry {

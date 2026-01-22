@@ -12,7 +12,7 @@ void* ptr = nullptr;
 dpct::err0 err = CHECK_TRY_ERROR(
 ptr = (void*)sycl::malloc_host(size, dpct::get_in_order_queue()));
 if (err != 0) {
-GGML_LOG_ERROR("WARNING: failed to allocate %.2f MB of pinned memory: %s\n", size / 1024.0 / 1024.0,    "syclGetErrorString is not supported");
+GGML_LOG_ERROR("WARNING: failed to allocate %.2f MB of pinned memory: %s\n", size / 1024.0 / 1024.0, "syclGetErrorString is not supported");
 return nullptr;
 }
 return ptr;

@@ -2,17 +2,17 @@
 #include <libc.h>
 #include <ip.h>
 #include "dns.h"
-typedef struct Scan	Scan;
+typedef struct Scan Scan;
 struct Scan
 {
-uchar	*base;
-uchar	*p;
-uchar	*ep;
-char	*err;
-char	errbuf[256];
-int	rcode;
-int	stop;
-int	trunc;
+uchar *base;
+uchar *p;
+uchar *ep;
+char *err;
+char errbuf[256];
+int rcode;
+int stop;
+int trunc;
 };
 static int
 errneg(RR *rp, Scan *sp, int actual)
@@ -27,7 +27,7 @@ errtoolong(RR *rp, Scan *sp, int remain, int need, char *where)
 {
 char *p, *ep;
 char ptype[64];
-p =  sp->errbuf;
+p = sp->errbuf;
 ep = sp->errbuf + sizeof sp->errbuf - 1;
 if (where)
 p = seprint(p, ep, "%s: ", where);
@@ -256,15 +256,15 @@ type >>= 8;
 }
 return type;
 }
-#define NAME(x)		gname(x, rp, sp)
-#define SYMBOL(x)	((x) = gsym(rp, sp))
-#define STRING(x)	((x) = gstr(rp, sp))
-#define USHORT(x)	((x) = gshort(rp, sp))
-#define ULONG(x)	((x) = glong(rp, sp))
-#define UCHAR(x)	((x) = gchar(rp, sp))
-#define V4ADDR(x)	((x) = gv4addr(rp, sp))
-#define V6ADDR(x)	((x) = gv6addr(rp, sp))
-#define BYTES(x, y)	((y) = gbytes(rp, sp, &(x), len - (sp->p - data)))
+#define NAME(x) gname(x, rp, sp)
+#define SYMBOL(x) ((x) = gsym(rp, sp))
+#define STRING(x) ((x) = gstr(rp, sp))
+#define USHORT(x) ((x) = gshort(rp, sp))
+#define ULONG(x) ((x) = glong(rp, sp))
+#define UCHAR(x) ((x) = gchar(rp, sp))
+#define V4ADDR(x) ((x) = gv4addr(rp, sp))
+#define V6ADDR(x) ((x) = gv6addr(rp, sp))
+#define BYTES(x, y) ((y) = gbytes(rp, sp, &(x), len - (sp->p - data)))
 static RR*
 convM2RR(Scan *sp, char *what)
 {
@@ -317,11 +317,11 @@ rp->host = dnlookup(NAME(dname), Cin, 1);
 break;
 case Tmg:
 case Tmr:
-rp->mb  = dnlookup(NAME(dname), Cin, 1);
+rp->mb = dnlookup(NAME(dname), Cin, 1);
 break;
 case Tminfo:
 rp->rmb = dnlookup(NAME(dname), Cin, 1);
-rp->mb  = dnlookup(NAME(dname), Cin, 1);
+rp->mb = dnlookup(NAME(dname), Cin, 1);
 break;
 case Tmx:
 USHORT(rp->pref);
@@ -343,7 +343,7 @@ rp->ptr = dnlookup(NAME(dname), Cin, 1);
 break;
 case Tsoa:
 rp->host = dnlookup(NAME(dname), Cin, 1);
-rp->rmb  = dnlookup(NAME(dname), Cin, 1);
+rp->rmb = dnlookup(NAME(dname), Cin, 1);
 ULONG(rp->soa->serial);
 ULONG(rp->soa->refresh);
 ULONG(rp->soa->retry);
@@ -370,7 +370,7 @@ BYTES(rp->null->data, rp->null->dlen);
 break;
 case Trp:
 rp->rmb = dnlookup(NAME(dname), Cin, 1);
-rp->rp  = dnlookup(NAME(dname), Cin, 1);
+rp->rp = dnlookup(NAME(dname), Cin, 1);
 break;
 case Tkey:
 USHORT(rp->key->flags);
@@ -473,14 +473,14 @@ USHORT(m->qdcount);
 USHORT(m->ancount);
 USHORT(m->nscount);
 USHORT(m->arcount);
-m->qd = rrloop(sp, "questions",	m->qdcount, 1);
-m->an = rrloop(sp, "answers",	m->ancount, 0);
+m->qd = rrloop(sp, "questions", m->qdcount, 1);
+m->an = rrloop(sp, "answers", m->ancount, 0);
 m->ns = rrloop(sp, "nameservers",m->nscount, 0);
 if (sp->stop)
 sp->err = nil;
 if (sp->err)
 err = strdup(sp->err);
-m->ar = rrloop(sp, "hints",	m->arcount, 0);
+m->ar = rrloop(sp, "hints", m->arcount, 0);
 if (sp->trunc)
 m->flags |= Ftrunc;
 if (sp->stop)

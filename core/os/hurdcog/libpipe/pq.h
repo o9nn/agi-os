@@ -22,9 +22,9 @@ mach_port_t *ports;
 size_t num_ports, ports_alloced;
 struct packet *next, *prev;
 };
-#define PACKET_TYPE_ANY		0
-#define PACKET_TYPE_DATA	1
-#define PACKET_TYPE_CONTROL	2
+#define PACKET_TYPE_ANY 0
+#define PACKET_TYPE_DATA 1
+#define PACKET_TYPE_CONTROL 2
 error_t packet_set_ports (struct packet *packet,
 const mach_port_t *ports, size_t num_ports);
 void packet_dealloc_ports (struct packet *packet);
@@ -53,7 +53,7 @@ packet_read_source (struct packet *packet, void **source)
 packet->source = 0;
 }
 #endif
-#define PACKET_SIZE_LARGE	8192
+#define PACKET_SIZE_LARGE 8192
 size_t packet_new_size (struct packet *packet, size_t extra);
 int packet_extend (struct packet *packet, size_t new_len);
 error_t packet_realloc (struct packet *packet, size_t new_len);

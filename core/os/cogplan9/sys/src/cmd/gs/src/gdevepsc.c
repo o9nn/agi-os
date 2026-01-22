@@ -1,19 +1,19 @@
 #include "gdevprn.h"
 #ifndef X_DPI
-#  define X_DPI 180
+# define X_DPI 180
 #endif
 #ifndef Y_DPI
-#  define Y_DPI 180
+# define Y_DPI 180
 #endif
-#define BLACK	0
+#define BLACK 0
 #define MAGENTA 1
-#define CYAN	2
-#define VIOLET	3
-#define YELLOW	4
-#define RED		5
-#define GREEN	6
-#define WHITE	7
-static char rgb_color[2][2][2] =	{
+#define CYAN 2
+#define VIOLET 3
+#define YELLOW 4
+#define RED 5
+#define GREEN 6
+#define WHITE 7
+static char rgb_color[2][2][2] = {
 {{BLACK, VIOLET}, {GREEN, CYAN}},
 {{RED, MAGENTA}, {YELLOW, WHITE}}
 };
@@ -45,13 +45,13 @@ case GREEN:
 prgb[0] = 0; prgb[1] = c1; prgb[2] = 0; break;
 case CYAN:
 prgb[0] = 0; prgb[1] = c1; prgb[2] = c1; break;
-case  RED:
+case RED:
 prgb[0] = c1; prgb[1] = 0; prgb[2] = 0; break;
-case  MAGENTA:
+case MAGENTA:
 prgb[0] = c1; prgb[1] = 0; prgb[2] = c1; break;
 case YELLOW:
 prgb[0] = c1; prgb[1] = c1; prgb[2] = 0; break;
-case  WHITE:
+case WHITE:
 prgb[0] = c1; prgb[1] = c1; prgb[2] = c1; break;
 }
 else
@@ -72,11 +72,11 @@ private void epsc_output_run(byte *, int, int, char, FILE *, int);
 #define DD 0x80
 private int
 epsc_print_page(gx_device_printer *pdev, FILE *prn_stream)
-{	static int graphics_modes_9[5] =
-{	-1, 0 , 1	, -1, DD+3
+{ static int graphics_modes_9[5] =
+{ -1, 0 , 1 , -1, DD+3
 };
 static int graphics_modes_24[7] =
-{	-1, 32 , 33 , 39 ,
+{ -1, 32 , 33 , 39 ,
 -1, -1, DD+40
 };
 int y_24pin = pdev->y_pixels_per_inch > 72;
@@ -99,7 +99,7 @@ int color_line_size, color_in_size;
 int spare_bits = (pdev->width % 8);
 int whole_bits = pdev->width - spare_bits;
 if ( in == 0 || out == 0 )
-{	if ( in ) gs_free(pdev->memory, (char *)in, in_size+1, 1, "epsc_print_page(in)");
+{ if ( in ) gs_free(pdev->memory, (char *)in, in_size+1, 1, "epsc_print_page(in)");
 if ( out ) gs_free(pdev->memory, (char *)out, out_size+1, 1, "epsc_print_page(out)");
 return -1;
 }
@@ -131,12 +131,12 @@ gdev_prn_copy_scan_lines(pdev, lnum, color_in, color_line_size);
 if ( color_in[0] == 0 &&
 !memcmp((char *)color_in, (char *)color_in + 1, color_line_size - 1)
 )
-{	lnum++;
+{ lnum++;
 skip += 3 / y_mult;
 continue;
 }
 while ( skip > 255 )
-{	fputs("\033J\377", prn_stream);
+{ fputs("\033J\377", prn_stream);
 skip -= 255;
 }
 if ( skip )
@@ -250,7 +250,7 @@ outp[1] == 0 && outp[2] == 0 &&
 (outp[6] | outp[7] | outp[8]) == 0 &&
 (outp[9] | outp[10] | outp[11]) == 0
 )
-{	byte *zp = outp;
+{ byte *zp = outp;
 int tpos;
 byte *newp;
 outp += 12;
@@ -293,13 +293,13 @@ return 0;
 private void
 epsc_output_run(byte *data, int count, int y_mult,
 char start_graphics, FILE *prn_stream, int pass)
-{	int xcount = count / y_mult;
+{ int xcount = count / y_mult;
 fputc(033, prn_stream);
 if ( !(start_graphics & ~3) )
-{	fputc("KLYZ"[(int)start_graphics], prn_stream);
+{ fputc("KLYZ"[(int)start_graphics], prn_stream);
 }
 else
-{	fputc('*', prn_stream);
+{ fputc('*', prn_stream);
 fputc(start_graphics & ~DD, prn_stream);
 }
 fputc(xcount & 0xff, prn_stream);
@@ -313,7 +313,7 @@ byte *dp = data;
 register int i, j;
 for ( i = 0; i < xcount; i++, which++ )
 for ( j = 0; j < y_mult; j++, dp++ )
-{	putc(((which & 1) ? *dp : 0), prn_stream);
+{ putc(((which & 1) ? *dp : 0), prn_stream);
 }
 }
 }

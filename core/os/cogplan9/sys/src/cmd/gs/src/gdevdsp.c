@@ -98,11 +98,11 @@ NULL,
 NULL,
 NULL,
 NULL,
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
 display_update_spot_equivalent_colors
 };
 public_st_device_display();
@@ -125,7 +125,7 @@ if (ddev->mdev) {
 ddev->mdev = (gx_device_memory *)
 gx_device_reloc_ptr((gx_device *)ddev->mdev, gcst);
 }
-{   int i;
+{ int i;
 for (i = 0; i < ddev->devn_params.separations.num_separations; ++i) {
 RELOC_PTR(gx_device_display, devn_params.separations.names[i].data);
 }
@@ -384,7 +384,7 @@ prgb[0] = (gx_color_value)
 ((value << 11) + (value << 6) + (value << 1) +
 (value >> 4)) >> (16 - gx_color_value_bits);
 value = (ushort)
-(((color << 3) & 0x18) +  ((color >> 13) & 0x7));
+(((color << 3) & 0x18) + ((color >> 13) & 0x7));
 prgb[1] = (gx_color_value)
 ((value << 11) + (value << 6) + (value << 1) +
 (value >> 4)) >> (16 - gx_color_value_bits);
@@ -399,7 +399,7 @@ prgb[0] = (gx_color_value)
 (((value << 11) + (value << 6) + (value << 1) +
 (value >> 4)) >> (16 - gx_color_value_bits));
 value = (ushort)
-(((color << 3) & 0x38) +  ((color >> 13) & 0x7));
+(((color << 3) & 0x38) + ((color >> 13) & 0x7));
 prgb[1] = (gx_color_value)
 (((value << 10) + (value << 4) + (value >> 2))
 >> (16 - gx_color_value_bits));
@@ -420,7 +420,7 @@ gx_color_value g = cv[1];
 gx_color_value b = cv[2];
 int drop = gx_color_value_bits - 8;
 gx_color_value red, green, blue;
-red  = r >> drop;
+red = r >> drop;
 green = g >> drop;
 blue = b >> drop;
 switch (ddev->nFormat & DISPLAY_ALPHA_MASK) {
@@ -487,7 +487,7 @@ prgb[0] = (gx_color_value)
 (((color) & color_mask) *
 (ulong) gx_max_color_value / color_mask);
 prgb[1] = (gx_color_value)
-(((color >> bits_per_color)   & color_mask) *
+(((color >> bits_per_color) & color_mask) *
 (ulong) gx_max_color_value / color_mask);
 prgb[2] = (gx_color_value)
 (((color >> 2*bits_per_color) & color_mask) *
@@ -504,12 +504,12 @@ prgb[1] = (gx_color_value)
 (((color >> 2*bits_per_color) & color_mask) *
 (ulong) gx_max_color_value / color_mask);
 prgb[2] = (gx_color_value)
-(((color >> bits_per_color)   & color_mask) *
+(((color >> bits_per_color) & color_mask) *
 (ulong) gx_max_color_value / color_mask);
 }
 else {
 prgb[0] = (gx_color_value)
-(((color >> bits_per_color)   & color_mask) *
+(((color >> bits_per_color) & color_mask) *
 (ulong) gx_max_color_value / color_mask);
 prgb[1] = (gx_color_value)
 (((color >> 2*bits_per_color) & color_mask) *

@@ -5,9 +5,9 @@ import { ipcMain } from 'electron'
 import { electronOpenSettingsDevtools } from '../../../../shared/eventa'
 import { createScreenService, createWindowService } from '../../../services/electron'
 export async function setupSettingsWindowInvokes(params: { settingsWindow: BrowserWindow }) {
-  ipcMain.setMaxListeners(0)
-  const { context } = createContext(ipcMain, params.settingsWindow)
-  createScreenService({ context, window: params.settingsWindow })
-  createWindowService({ context, window: params.settingsWindow })
-  defineInvokeHandler(context, electronOpenSettingsDevtools, async () => params.settingsWindow.webContents.openDevTools({ mode: 'detach' }))
+ipcMain.setMaxListeners(0)
+const { context } = createContext(ipcMain, params.settingsWindow)
+createScreenService({ context, window: params.settingsWindow })
+createWindowService({ context, window: params.settingsWindow })
+defineInvokeHandler(context, electronOpenSettingsDevtools, async () => params.settingsWindow.webContents.openDevTools({ mode: 'detach' }))
 }

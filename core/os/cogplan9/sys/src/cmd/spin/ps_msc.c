@@ -88,28 +88,28 @@ static char *PsPre[] = {
 "%%%%EndSetup",
 0,
 };
-static int MH  = 600;
+static int MH = 600;
 static int oMH = 600;
-#define MW	500
-#define LH	100
-#define RH	100
-#define WW	 50
-#define HH	  8
-#define PH	 14
-static FILE	*pfd;
-static char	**I;
-static int	*D,*R;
-static short	*M;
-static short	*T;
-static char	**L;
-static char	*ProcLine;
-static int	pspno = 0;
-static int	ldepth = 1;
-static int	maxx, TotSteps = 2*4096;
-static float	Scaler = (float) 1.0;
-extern int	ntrail, s_trail, pno, depth;
-extern Symbol	*oFname;
-extern void	exit(int);
+#define MW 500
+#define LH 100
+#define RH 100
+#define WW 50
+#define HH 8
+#define PH 14
+static FILE *pfd;
+static char **I;
+static int *D,*R;
+static short *M;
+static short *T;
+static char **L;
+static char *ProcLine;
+static int pspno = 0;
+static int ldepth = 1;
+static int maxx, TotSteps = 2*4096;
+static float Scaler = (float) 1.0;
+extern int ntrail, s_trail, pno, depth;
+extern Symbol *oFname;
+extern void exit(int);
 void putpages(void);
 void spitbox(int, int, int, char *);
 void
@@ -126,12 +126,12 @@ fprintf(pfd, "false DrawText\ngrestore\n");
 }
 void
 startpage(void)
-{	int i;
+{ int i;
 pspno++;
 fprintf(pfd, "%%%%Page: %d %d\n", pspno, pspno);
 putlegend();
 for (i = TotSteps-1; i >= 0; i--)
-{	if (!I[i]) continue;
+{ if (!I[i]) continue;
 spitbox(i, RH, -PH, I[i]);
 }
 fprintf(pfd, "save\n");
@@ -148,7 +148,7 @@ fprintf(pfd, "%f %f scale\n", Scaler, Scaler);
 }
 void
 putprelude(void)
-{	char snap[256]; FILE *fd;
+{ char snap[256]; FILE *fd;
 sprintf(snap, "%s.ps", oFname?oFname->name:"msc");
 if (!(pfd = fopen(snap, MFLAGS)))
 fatal("cannot create file '%s'", snap);
@@ -158,12 +158,12 @@ fprintf(pfd, "%%%%Title: MSC %s\n", oFname?oFname->name:"--");
 fprintf(pfd, "%%%%BoundingBox: 119 154 494 638\n");
 ntimes(pfd, 0, 1, PsPre);
 if (s_trail)
-{	if (ntrail)
+{ if (ntrail)
 sprintf(snap, "%s%d.trail", oFname?oFname->name:"msc", ntrail);
 else
 sprintf(snap, "%s.trail", oFname?oFname->name:"msc");
 if (!(fd = fopen(snap, "r")))
-{	snap[strlen(snap)-2] = '\0';
+{ snap[strlen(snap)-2] = '\0';
 if (!(fd = fopen(snap, "r")))
 fatal("cannot open trail file", (char *) 0);
 }
@@ -172,8 +172,8 @@ while (fgets(snap, 256, fd)) TotSteps++;
 fclose(fd);
 }
 TotSteps += 10;
-R = (int   *) emalloc(TotSteps * sizeof(int));
-D = (int   *) emalloc(TotSteps * sizeof(int));
+R = (int *) emalloc(TotSteps * sizeof(int));
+D = (int *) emalloc(TotSteps * sizeof(int));
 M = (short *) emalloc(TotSteps * sizeof(short));
 T = (short *) emalloc(TotSteps * sizeof(short));
 L = (char **) emalloc(TotSteps * sizeof(char *));
@@ -183,7 +183,7 @@ startpage();
 }
 void
 putpostlude(void)
-{	putpages();
+{ putpages();
 fprintf(pfd, "%%%%Trailer\n");
 fprintf(pfd, "end\n");
 fprintf(pfd, "%%%%Pages: %d\n", pspno);
@@ -195,7 +195,7 @@ exit(0);
 }
 void
 psline(int x0, int iy0, int x1, int iy1, float r, float g, float b, int w)
-{	int y0 = MH-iy0;
+{ int y0 = MH-iy0;
 int y1 = MH-iy1;
 if (y1 > y0) y1 -= MH;
 fprintf(pfd, "gsave\n");
@@ -209,7 +209,7 @@ fprintf(pfd, "stroke\ngrestore\n");
 }
 void
 colbox(int x, int y, int w, int h, float r, float g, float b)
-{	fprintf(pfd, "%d %d moveto\n", x - w, y-h);
+{ fprintf(pfd, "%d %d moveto\n", x - w, y-h);
 fprintf(pfd, "%d %d lineto\n", x + w, y-h);
 fprintf(pfd, "%d %d lineto\n", x + w, y+h);
 fprintf(pfd, "%d %d lineto\n", x - w, y+h);
@@ -219,12 +219,12 @@ fprintf(pfd, "closepath fill\n");
 }
 void
 putgrid(int p)
-{	int i;
+{ int i;
 for (i = p ; i >= 0; i--)
-{	if (!ProcLine[i])
-{	psline(i, 0, i, MH-1, (float) (0.4), (float) (0.4), (float) (1.0), 1);
+{ if (!ProcLine[i])
+{ psline(i, 0, i, MH-1, (float) (0.4), (float) (0.4), (float) (1.0), 1);
 ProcLine[i] = 1;
-}	}
+} }
 }
 void
 putarrow(int from, int to)
@@ -233,7 +233,7 @@ T[D[from]] = D[to];
 }
 void
 stepnumber(int i)
-{	int y = MH-(i*HH)%MH;
+{ int y = MH-(i*HH)%MH;
 fprintf(pfd, "gsave\n");
 fprintf(pfd, "/Courier-Bold findfont 6 scalefont ");
 fprintf(pfd, "ISOEncode setfont\n");
@@ -249,16 +249,16 @@ fprintf(pfd, "stroke\n");
 }
 void
 spitbox(int x, int dx, int y, char *s)
-{	float r,g,b, bw; int a; char d[256];
+{ float r,g,b, bw; int a; char d[256];
 if (!dx)
-{	stepnumber(y);
+{ stepnumber(y);
 putgrid(x);
 }
 bw = (float)2.7*(float)strlen(s);
 colbox(x*WW+dx, MH-(y*HH)%MH, (int) (bw+1.0),
 5, (float) 0.,(float) 0.,(float) 0.);
 if (s[0] == '~')
-{	switch (s[1]) {
+{ switch (s[1]) {
 case 'B': r = (float) 0.2; g = (float) 0.2; b = (float) 1.;
 break;
 case 'G': r = (float) 0.2; g = (float) 1.; b = (float) 0.2;
@@ -269,19 +269,19 @@ break;
 }
 s += 2;
 } else if (strchr(s, '!'))
-{	r = (float) 1.; g = (float) 1.; b = (float) 1.;
+{ r = (float) 1.; g = (float) 1.; b = (float) 1.;
 } else if (strchr(s, '?'))
-{	r = (float) 0.; g = (float) 1.; b = (float) 1.;
+{ r = (float) 0.; g = (float) 1.; b = (float) 1.;
 } else
-{	r = (float) 1.; g = (float) 1.; b = (float) 0.;
+{ r = (float) 1.; g = (float) 1.; b = (float) 0.;
 if (!dx
-&&  sscanf(s, "%d:%250s", &a, d) == 2
-&&  a >= 0 && a < TotSteps)
-{	if (!I[a]
-||  strlen(I[a]) <= strlen(s))
+&& sscanf(s, "%d:%250s", &a, d) == 2
+&& a >= 0 && a < TotSteps)
+{ if (!I[a]
+|| strlen(I[a]) <= strlen(s))
 I[a] = emalloc((int) strlen(s)+1);
 strcpy(I[a], s);
-}	}
+} }
 colbox(x*WW+dx, MH-(y*HH)%MH, (int) bw, 4, r,g,b);
 fprintf(pfd, "gsave\n");
 fprintf(pfd, "/Courier-Bold findfont 8 scalefont ");
@@ -293,46 +293,46 @@ fprintf(pfd, "false DrawText\ngrestore\n");
 }
 void
 putpages(void)
-{	int i, lasti=0; float nmh;
+{ int i, lasti=0; float nmh;
 if (maxx*WW > MW-RH/2)
-{	Scaler = (float) (MW-RH/2) / (float) (maxx*WW);
+{ Scaler = (float) (MW-RH/2) / (float) (maxx*WW);
 fprintf(pfd, "%f %f scale\n", Scaler, Scaler);
 nmh = (float) MH; nmh /= Scaler; MH = (int) nmh;
 }
 for (i = TotSteps-1; i >= 0; i--)
-{	if (!I[i]) continue;
+{ if (!I[i]) continue;
 spitbox(i, 0, 0, I[i]);
 }
 if (ldepth >= TotSteps) ldepth = TotSteps-1;
 for (i = 0; i <= ldepth; i++)
-{	if (!M[i] && !L[i]) continue;
+{ if (!M[i] && !L[i]) continue;
 if (6+i*HH >= MH*pspno)
 { fprintf(pfd, "showpage\nrestore\n"); startpage(); }
 if (T[i] > 0)
-{	int reali = i*HH;
+{ int reali = i*HH;
 int realt = T[i]*HH;
 int topop = (reali)/MH; topop *= MH;
-reali -= topop;  realt -= topop;
+reali -= topop; realt -= topop;
 if (M[i] == M[T[i]] && reali == realt)
 psline( M[lasti], reali+2-3*HH/2,
 M[i], reali,
 (float) 1.,(float) 0.,(float) 0., 2);
 else
-psline(	M[i],    reali,
+psline( M[i], reali,
 M[T[i]], realt,
 (float) 1.,(float) 0.,(float) 0., 2);
 if (realt >= MH) T[T[i]] = -i;
 } else if (T[i] < 0)
-{	int reali = (-T[i])*HH;
+{ int reali = (-T[i])*HH;
 int realt = i*HH;
 int topop = (realt)/MH; topop *= MH;
-reali -= topop;  realt -= topop;
-psline(	M[-T[i]], reali,
-M[i],     realt,
+reali -= topop; realt -= topop;
+psline( M[-T[i]], reali,
+M[i], realt,
 (float) 1., (float) 0., (float) 0., 2);
 }
 if (L[i])
-{	spitbox(M[i], 0, i, L[i]);
+{ spitbox(M[i], 0, i, L[i]);
 lasti = i;
 }
 }
@@ -342,7 +342,7 @@ void
 putbox(int x)
 {
 if (ldepth >= TotSteps)
-{	fprintf(stderr, "max length of %d steps exceeded - ps file truncated\n",
+{ fprintf(stderr, "max length of %d steps exceeded - ps file truncated\n",
 TotSteps);
 putpostlude();
 }
@@ -351,14 +351,14 @@ if (x > maxx) maxx = x;
 }
 void
 pstext(int x, char *s)
-{	char *tmp = emalloc((int) strlen(s)+1);
+{ char *tmp = emalloc((int) strlen(s)+1);
 strcpy(tmp, s);
 if (depth == 0)
 I[x] = tmp;
 else
-{	putbox(x);
+{ putbox(x);
 if (depth >= TotSteps || ldepth >= TotSteps)
-{	fprintf(stderr, "max nr of %d steps exceeded\n",
+{ fprintf(stderr, "max nr of %d steps exceeded\n",
 TotSteps);
 fatal("aborting", (char *) 0);
 }
@@ -370,14 +370,14 @@ ldepth += 2;
 }
 void
 dotag(FILE *fd, char *s)
-{	extern int columns, notabs; extern RunList *X;
+{ extern int columns, notabs; extern RunList *X;
 int i = (!strncmp(s, "MSC: ", 5))?5:0;
 int pid = s_trail ? pno : (X?X->pid:0);
 if (columns == 2)
 pstext(pid, &s[i]);
 else
-{	if (!notabs)
-{	printf("  ");
+{ if (!notabs)
+{ printf("  ");
 for (i = 0; i <= pid; i++)
 printf("    ");
 }

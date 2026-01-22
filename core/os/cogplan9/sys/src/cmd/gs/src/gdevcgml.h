@@ -1,5 +1,5 @@
 #ifndef gdevcgml_INCLUDED
-#  define gdevcgml_INCLUDED
+# define gdevcgml_INCLUDED
 typedef struct cgm_state_s cgm_state;
 typedef struct cgm_allocator_s {
 void *private_data;
@@ -207,20 +207,20 @@ int metafile_element_list_count;
 const cgm_string *font_list;
 int font_list_count;
 } cgm_metafile_elements;
-#define cgm_set_METAFILE_VERSION	(1L<<0)
-#define cgm_set_METAFILE_DESCRIPTION	(1L<<1)
-#define cgm_set_VDC_TYPE		(1L<<2)
-#define cgm_set_INTEGER_PRECISION	(1L<<3)
-#define cgm_set_REAL_PRECISION		(1L<<4)
-#define cgm_set_INDEX_PRECISION		(1L<<5)
-#define cgm_set_COLOR_PRECISION		(1L<<6)
-#define cgm_set_COLOR_INDEX_PRECISION	(1L<<7)
-#define cgm_set_MAXIMUM_COLOR_INDEX	(1L<<8)
-#define cgm_set_COLOR_VALUE_EXTENT	(1L<<9)
-#define cgm_set_METAFILE_ELEMENT_LIST	(1L<<10)
-#define cgm_set_FONT_LIST		(1L<<11)
-#define cgm_set_CHARACTER_SET_LIST	(1L<<12)
-#define cgm_set_CHARACTER_CODING_ANNOUNCER	(1L<<13)
+#define cgm_set_METAFILE_VERSION (1L<<0)
+#define cgm_set_METAFILE_DESCRIPTION (1L<<1)
+#define cgm_set_VDC_TYPE (1L<<2)
+#define cgm_set_INTEGER_PRECISION (1L<<3)
+#define cgm_set_REAL_PRECISION (1L<<4)
+#define cgm_set_INDEX_PRECISION (1L<<5)
+#define cgm_set_COLOR_PRECISION (1L<<6)
+#define cgm_set_COLOR_INDEX_PRECISION (1L<<7)
+#define cgm_set_MAXIMUM_COLOR_INDEX (1L<<8)
+#define cgm_set_COLOR_VALUE_EXTENT (1L<<9)
+#define cgm_set_METAFILE_ELEMENT_LIST (1L<<10)
+#define cgm_set_FONT_LIST (1L<<11)
+#define cgm_set_CHARACTER_SET_LIST (1L<<12)
+#define cgm_set_CHARACTER_CODING_ANNOUNCER (1L<<13)
 cgm_result
 cgm_BEGIN_METAFILE(cgm_state *, const char *, uint),
 cgm_set_metafile_elements(cgm_state *,
@@ -236,13 +236,13 @@ cgm_edge_width_specification_mode edge_width_specification_mode;
 cgm_point vdc_extent[2];
 cgm_color background_color;
 } cgm_picture_elements;
-#define cgm_set_SCALING_MODE		(1L<<0)
-#define cgm_set_COLOR_SELECTION_MODE	(1L<<1)
-#define cgm_set_LINE_WIDTH_SPECIFICATION_MODE	(1L<<2)
-#define cgm_set_MARKER_SIZE_SPECIFICATION_MODE	(1L<<3)
-#define cgm_set_EDGE_WIDTH_SPECIFICATION_MODE	(1L<<4)
-#define cgm_set_VDC_EXTENT		(1L<<5)
-#define cgm_set_BACKGROUND_COLOR	(1L<<6)
+#define cgm_set_SCALING_MODE (1L<<0)
+#define cgm_set_COLOR_SELECTION_MODE (1L<<1)
+#define cgm_set_LINE_WIDTH_SPECIFICATION_MODE (1L<<2)
+#define cgm_set_MARKER_SIZE_SPECIFICATION_MODE (1L<<3)
+#define cgm_set_EDGE_WIDTH_SPECIFICATION_MODE (1L<<4)
+#define cgm_set_VDC_EXTENT (1L<<5)
+#define cgm_set_BACKGROUND_COLOR (1L<<6)
 cgm_result
 cgm_BEGIN_PICTURE(cgm_state *, const char *, uint),
 cgm_set_picture_elements(cgm_state *,
@@ -266,7 +266,7 @@ const cgm_point *, bool, const char *, uint),
 cgm_APPEND_TEXT(cgm_state *, bool, const char *, uint),
 cgm_POLYGON(cgm_state *, const cgm_point *, int),
 cgm_POLYGON_SET(cgm_state *, const cgm_polygon_edge *, int),
-cgm_CELL_ARRAY(cgm_state *, const cgm_point *  , cgm_int,
+cgm_CELL_ARRAY(cgm_state *, const cgm_point * , cgm_int,
 cgm_int, cgm_int, cgm_cell_representation_mode,
 const byte *, uint, uint),
 cgm_RECTANGLE(cgm_state *, const cgm_point *, const cgm_point *),

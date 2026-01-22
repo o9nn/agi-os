@@ -8,22 +8,22 @@ DIALUP,
 BLOCKED,
 DELAY,
 NONE,
-Subchar	=	'#',
+Subchar = '#',
 };
-static	Keyword actions[] = {
-"allow",		ACCEPT,
-"accept",		ACCEPT,
-"block",		BLOCKED,
-"deny",			DENIED,
-"dial",			DIALUP,
-"relay",		DELAY,
-"delay",		DELAY,
-0,			NONE,
+static Keyword actions[] = {
+"allow", ACCEPT,
+"accept", ACCEPT,
+"block", BLOCKED,
+"deny", DENIED,
+"dial", DIALUP,
+"relay", DELAY,
+"delay", DELAY,
+0, NONE,
 };
-static void	acctinsert(Node*, char*);
-static char*	getline(Biobuf*);
-static void	ipinsert(Node*, char*);
-static void	ipsort(void);
+static void acctinsert(Node*, char*);
+static char* getline(Biobuf*);
+static void ipinsert(Node*, char*);
+static void ipsort(void);
 void
 getconf(void)
 {

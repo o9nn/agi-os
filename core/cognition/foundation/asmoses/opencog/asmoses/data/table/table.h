@@ -177,9 +177,9 @@ return seq.empty();
 };
 struct equal_visitor : public boost::static_visitor<bool>
 {
-#define __FALSE_EQ__(seql_t, seqr_t)                          \
+#define __FALSE_EQ__(seql_t, seqr_t) \
 bool operator()(const seql_t& l, const seqr_t& r) const { \
-return false;                                         \
+return false; \
 }
 __FALSE_EQ__(builtin_seq, contin_seq);
 __FALSE_EQ__(builtin_seq, string_seq);

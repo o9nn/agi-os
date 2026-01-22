@@ -88,28 +88,28 @@ elseif n == 2
 return [[1, 2]]
 elseif n == 3
 return [
-[1, 2, 3],  # Linear tree
-[1, 2, 2]   # Branched tree
+[1, 2, 3], # Linear tree
+[1, 2, 2] # Branched tree
 ]
 elseif n == 4
 return [
-[1, 2, 3, 4],  # Linear
-[1, 2, 3, 3],  # One branch at level 2
-[1, 2, 3, 2],  # Branch at different position
-[1, 2, 2, 2]   # Three branches from root
+[1, 2, 3, 4], # Linear
+[1, 2, 3, 3], # One branch at level 2
+[1, 2, 3, 2], # Branch at different position
+[1, 2, 2, 2] # Three branches from root
 ]
 elseif n == 5
 # 9 trees for order 5
 return [
-[1, 2, 3, 4, 5],  # Linear
-[1, 2, 3, 4, 4],  # Branch at end
-[1, 2, 3, 4, 3],  # Branch at level 3
-[1, 2, 3, 4, 2],  # Branch at level 2
-[1, 2, 3, 3, 3],  # Two branches at level 2
-[1, 2, 3, 3, 2],  # Mixed branches
-[1, 2, 3, 2, 2],  # Different configuration
-[1, 2, 2, 3, 3],  # Symmetric branches
-[1, 2, 2, 2, 2]   # Four branches from root
+[1, 2, 3, 4, 5], # Linear
+[1, 2, 3, 4, 4], # Branch at end
+[1, 2, 3, 4, 3], # Branch at level 3
+[1, 2, 3, 4, 2], # Branch at level 2
+[1, 2, 3, 3, 3], # Two branches at level 2
+[1, 2, 3, 3, 2], # Mixed branches
+[1, 2, 3, 2, 2], # Different configuration
+[1, 2, 2, 3, 3], # Symmetric branches
+[1, 2, 2, 2, 2] # Four branches from root
 ]
 else
 # For higher orders, generate recursively
@@ -234,7 +234,7 @@ n = length(state.tree_population)
 for i in 1:n
 tree = state.tree_population[i]
 # Complexity score
-complexity = length(tree) / 20.0  # Normalize
+complexity = length(tree) / 20.0 # Normalize
 # Balance score (how balanced the tree is)
 balance = compute_tree_balance(tree)
 # Diversity contribution

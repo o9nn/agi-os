@@ -12,8 +12,8 @@ size_t newlen;
 unsigned long __unused[4];
 };
 #ifdef __KERNEL__
-#define CTL_ANY		-1
-#define CTL_NONE	0
+#define CTL_ANY -1
+#define CTL_NONE 0
 #endif
 enum
 {

@@ -24,7 +24,7 @@ template<typename _CharT, typename _Traits = char_traits<_CharT>,
 typename _Alloc = allocator<_CharT> >
 class basic_string;
 _GLIBCXX_END_NAMESPACE_CXX11
-typedef basic_string<char>    string;
+typedef basic_string<char> string;
 #ifdef _GLIBCXX_USE_WCHAR_T
 typedef basic_string<wchar_t> wstring;
 #endif

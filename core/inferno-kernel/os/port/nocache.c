@@ -1,9 +1,9 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
 void
 cinit(void)
 {
@@ -31,7 +31,7 @@ USED(n);
 USED(off);
 }
 void
-cupdate(Chan *c, uchar *buf,  int n, vlong off)
+cupdate(Chan *c, uchar *buf, int n, vlong off)
 {
 USED(c);
 USED(buf);

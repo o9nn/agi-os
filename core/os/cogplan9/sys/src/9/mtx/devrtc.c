@@ -1,19 +1,19 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"io.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "io.h"
 enum{
 STB0 = 0x74,
 STB1 = 0x75,
 Data = 0x77,
-NVOFF=	0,
-NVLEN=	0x1ff0,
-NVflags=		0x1ff0,
-NVwatchdog=	0x1ff7,
-NVctl=		0x1ff8,
+NVOFF= 0,
+NVLEN= 0x1ff0,
+NVflags= 0x1ff0,
+NVwatchdog= 0x1ff7,
+NVctl= 0x1ff8,
 NVsec,
 NVmin,
 NVhour,
@@ -37,25 +37,25 @@ Qnvram,
 };
 typedef struct
 {
-int	sec;
-int	min;
-int	hour;
-int	mday;
-int	mon;
-int	year;
+int sec;
+int min;
+int hour;
+int mday;
+int mon;
+int year;
 } Rtc;
-QLock	rtclock;
+QLock rtclock;
 static Dirtab rtcdir[]={
-".",		{Qdir, 0, QTDIR},	0,	DMDIR|0555,
-"rtc",		{Qrtc, 0},	0,	0644,
-"nvram",	{Qnvram, 0},	0,	0600,
+".", {Qdir, 0, QTDIR}, 0, DMDIR|0555,
+"rtc", {Qrtc, 0}, 0, 0644,
+"nvram", {Qnvram, 0}, 0, 0600,
 };
-static ulong	rtc2sec(Rtc*);
-static void	sec2rtc(ulong, Rtc*);
-static void	setrtc(Rtc*);
-static void	nvcksum(void);
-static void	nvput(int, uchar);
-static uchar	nvget(int);
+static ulong rtc2sec(Rtc*);
+static void sec2rtc(ulong, Rtc*);
+static void setrtc(Rtc*);
+static void nvcksum(void);
+static void nvput(int, uchar);
+static uchar nvget(int);
 static Chan*
 rtcattach(char *spec)
 {
@@ -261,11 +261,11 @@ nvput(NVctl, ctl);
 #define SEC2MIN 60L
 #define SEC2HOUR (60L*SEC2MIN)
 #define SEC2DAY (24L*SEC2HOUR)
-static	int	dmsize[] =
+static int dmsize[] =
 {
 365, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 };
-static	int	ldmsize[] =
+static int ldmsize[] =
 {
 366, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 };

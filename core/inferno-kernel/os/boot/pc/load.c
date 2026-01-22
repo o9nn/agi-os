@@ -23,7 +23,7 @@ static char *etherinis[] = {
 0
 };
 Type types[] = {
-{	Tfloppy,
+{ Tfloppy,
 Fini|Ffs,
 floppyinit, floppyinitdev,
 floppygetfspart, 0, floppyboot,
@@ -31,7 +31,7 @@ floppyprintdevs,
 diskparts,
 diskinis,
 },
-{	Tether,
+{ Tether,
 Fini|Fbootp,
 etherinit, etherinitdev,
 pxegetfspart, 0, bootpboot,
@@ -39,7 +39,7 @@ etherprintdevs,
 etherparts,
 etherinis,
 },
-{	Tbios,
+{ Tbios,
 Fini|Ffs,
 biosinit, biosinitdev,
 biosgetfspart, nil, biosboot,
@@ -47,7 +47,7 @@ biosprintdevs,
 diskparts,
 diskinis,
 },
-{	Tcd,
+{ Tcd,
 Fini|Ffs,
 cdinit, sdinitdev,
 sdgetfspart, sdaddconf, sdboot,
@@ -55,7 +55,7 @@ sdprintdevs,
 diskparts,
 diskinis,
 },
-{	Tsd,
+{ Tsd,
 Fini|Ffs,
 sdinit, sdinitdev,
 sdgetfspart, sdaddconf, sdboot,
@@ -63,7 +63,7 @@ sdprintdevs,
 diskparts,
 diskinis,
 },
-{	Tnil,
+{ Tnil,
 0,
 nil, nil, nil, nil, nil, nil,
 nil,
@@ -73,12 +73,12 @@ nil,
 },
 };
 static char *typenm[] = {
-[Tnil]		"nil",
-[Tfloppy]	"floppy",
-[Tsd]		"sd",
-[Tether]	"ether",
-[Tcd]		"cd",
-[Tbios]		"bios",
+[Tnil] "nil",
+[Tfloppy] "floppy",
+[Tsd] "sd",
+[Tether] "ether",
+[Tcd] "cd",
+[Tbios] "bios",
 };
 static char *
 typename(int type)
@@ -114,38 +114,38 @@ nil,
 #endif NOSCSI
 typedef struct Mode Mode;
 enum {
-Maxdev		= 7,
-Dany		= -1,
-Nmedia		= 16,
-Nini		= 10,
+Maxdev = 7,
+Dany = -1,
+Nmedia = 16,
+Nini = 10,
 };
 enum {
-Mauto		= 0x00,
-Mlocal		= 0x01,
-Manual		= 0x02,
-NMode		= 0x03,
+Mauto = 0x00,
+Mlocal = 0x01,
+Manual = 0x02,
+NMode = 0x03,
 };
 typedef struct Medium Medium;
 struct Medium {
-Type*	type;
-int	flag;
-int	dev;
+Type* type;
+int flag;
+int dev;
 char name[NAMELEN];
 Fs *inifs;
 char *part;
 char *ini;
-Medium*	next;
+Medium* next;
 };
 typedef struct Mode {
-char*	name;
-int	mode;
+char* name;
+int mode;
 } Mode;
 static Medium media[Nmedia];
 static Medium *curmedium = media;
 static Mode modes[NMode+1] = {
-[Mauto]		{ "auto",   Mauto,  },
-[Mlocal]	{ "local",  Mlocal, },
-[Manual]	{ "manual", Manual, },
+[Mauto] { "auto", Mauto, },
+[Mlocal] { "local", Mlocal, },
+[Manual] { "manual", Manual, },
 };
 char **ini;
 int scsi0port;
@@ -409,8 +409,8 @@ break;
 }
 return 0;
 }
-#define PSTART		( 8*1024*1024)
-#define PEND		(16*1024*1024)
+#define PSTART ( 8*1024*1024)
+#define PEND (16*1024*1024)
 ulong palloc = PSTART;
 void*
 ialloc(ulong n, int align)
@@ -486,8 +486,8 @@ allocbp = bp;
 bp->flag = 0;
 }
 enum {
-Paddr=		0x70,
-Pdata=		0x71,
+Paddr= 0x70,
+Pdata= 0x71,
 };
 uchar
 nvramread(int offset)

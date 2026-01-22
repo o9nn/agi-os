@@ -1,49 +1,49 @@
 (ImplicationScopeLink (stv 1 1)
-   (TypedVariableLink
-      (VariableNode "$X")
-      (TypeNode "ConceptNode"))
-   (EvaluationLink (stv 0.2 0.9)
-      (PredicateNode "P")
-      (VariableNode "$X"))
-   (EvaluationLink
-      (PredicateNode "Q")
-      (VariableNode "$X")))
+(TypedVariableLink
+(VariableNode "$X")
+(TypeNode "ConceptNode"))
+(EvaluationLink (stv 0.2 0.9)
+(PredicateNode "P")
+(VariableNode "$X"))
+(EvaluationLink
+(PredicateNode "Q")
+(VariableNode "$X")))
 (EvaluationLink (stv 1 1)
-   (PredicateNode "P")
-   (ConceptNode "A"))
+(PredicateNode "P")
+(ConceptNode "A"))
 (ImplicationScopeLink (stv 1 1)
-   (VariableList
-      (TypedVariableLink
-         (VariableNode "$X")
-         (TypeNode "ConceptNode"))
-      (TypedVariableLink
-         (VariableNode "$Y")
-         (TypeNode "ConceptNode")))
-   (EvaluationLink (stv 0.04 0.6)
-      (PredicateNode "P")
-      (ListLink
-         (VariableNode "$X")
-         (VariableNode "$Y")))
-   (EvaluationLink
-      (PredicateNode "Q")
-      (ListLink
-         (VariableNode "$Y")
-         (VariableNode "$X"))))
+(VariableList
+(TypedVariableLink
+(VariableNode "$X")
+(TypeNode "ConceptNode"))
+(TypedVariableLink
+(VariableNode "$Y")
+(TypeNode "ConceptNode")))
+(EvaluationLink (stv 0.04 0.6)
+(PredicateNode "P")
+(ListLink
+(VariableNode "$X")
+(VariableNode "$Y")))
+(EvaluationLink
+(PredicateNode "Q")
+(ListLink
+(VariableNode "$Y")
+(VariableNode "$X"))))
 (EvaluationLink (stv 1 1)
-   (PredicateNode "P")
-   (ListLink
-      (ConceptNode "A")
-      (ConceptNode "B")))
+(PredicateNode "P")
+(ListLink
+(ConceptNode "A")
+(ConceptNode "B")))
 (ImplicationScopeLink (stv 1 1)
-   (TypedVariableLink
-      (VariableNode "$X")
-      (TypeNode "ConceptNode"))
-   (EvaluationLink
-      (PredicateNode "dummy-implicant")
-      (VariableNode "$X"))
-   (EvaluationLink
-      (PredicateNode "dummy-implicand")
-      (VariableNode "$X")))
+(TypedVariableLink
+(VariableNode "$X")
+(TypeNode "ConceptNode"))
+(EvaluationLink
+(PredicateNode "dummy-implicant")
+(VariableNode "$X"))
+(EvaluationLink
+(PredicateNode "dummy-implicand")
+(VariableNode "$X")))
 (ImplicationLink (stv 1 1)
-   (PredicateNode "P")
-   (PredicateNode "Q"))
+(PredicateNode "P")
+(PredicateNode "Q"))

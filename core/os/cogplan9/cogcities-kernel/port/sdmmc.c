@@ -6,44 +6,44 @@
 #include "fns.h"
 #include "io.h"
 #include "../port/sd.h"
-#define CSD(end, start)	rbits(csd, start, (end)-(start)+1)
+#define CSD(end, start) rbits(csd, start, (end)-(start)+1)
 typedef struct Ctlr Ctlr;
 enum {
-Inittimeout	= 15,
-Multiblock	= 1,
-GO_IDLE_STATE	= 0,
-ALL_SEND_CID	= 2,
+Inittimeout = 15,
+Multiblock = 1,
+GO_IDLE_STATE = 0,
+ALL_SEND_CID = 2,
 SEND_RELATIVE_ADDR= 3,
-SELECT_CARD	= 7,
-SD_SEND_IF_COND	= 8,
-SEND_CSD	= 9,
+SELECT_CARD = 7,
+SD_SEND_IF_COND = 8,
+SEND_CSD = 9,
 STOP_TRANSMISSION= 12,
-SEND_STATUS	= 13,
-SET_BLOCKLEN	= 16,
+SEND_STATUS = 13,
+SET_BLOCKLEN = 16,
 READ_SINGLE_BLOCK= 17,
 READ_MULTIPLE_BLOCK= 18,
-WRITE_BLOCK	= 24,
+WRITE_BLOCK = 24,
 WRITE_MULTIPLE_BLOCK= 25,
-APP_CMD		= 55,
-SET_BUS_WIDTH	= 6,
-SD_SEND_OP_COND	= 41,
-Voltage		= 1<<8,
-Checkpattern	= 0x42,
-Rcashift	= 16,
-Hcs	= 1<<30,
-Ccs	= 1<<30,
-V3_3	= 3<<20,
-Width1	= 0<<0,
-Width4	= 2<<0,
-Powerup	= 1<<31,
+APP_CMD = 55,
+SET_BUS_WIDTH = 6,
+SD_SEND_OP_COND = 41,
+Voltage = 1<<8,
+Checkpattern = 0x42,
+Rcashift = 16,
+Hcs = 1<<30,
+Ccs = 1<<30,
+V3_3 = 3<<20,
+Width1 = 0<<0,
+Width4 = 2<<0,
+Powerup = 1<<31,
 };
 struct Ctlr {
-SDev	*dev;
-SDio	*io;
-u16int	rca;
-u32int	ocr;
-u32int	cid[4];
-u32int	csd[4];
+SDev *dev;
+SDio *io;
+u16int rca;
+u32int ocr;
+u32int cid[4];
+u32int csd[4];
 };
 extern SDifc sdmmcifc;
 extern SDio sdio;
@@ -51,7 +51,7 @@ static uint
 rbits(u32int *p, uint start, uint len)
 {
 uint w, off, v;
-w   = start / 32;
+w = start / 32;
 off = start % 32;
 if(off == 0)
 v = p[w];
@@ -256,12 +256,12 @@ mmcrio(SDreq*)
 return -1;
 }
 SDifc sdmmcifc = {
-.name	= "mmc",
-.pnp	= mmcpnp,
-.enable	= mmcenable,
-.verify	= mmcverify,
-.online	= mmconline,
-.rctl	= mmcrctl,
-.bio	= mmcbio,
-.rio	= mmcrio,
+.name = "mmc",
+.pnp = mmcpnp,
+.enable = mmcenable,
+.verify = mmcverify,
+.online = mmconline,
+.rctl = mmcrctl,
+.bio = mmcbio,
+.rio = mmcrio,
 };

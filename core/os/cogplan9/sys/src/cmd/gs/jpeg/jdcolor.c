@@ -9,9 +9,9 @@ INT32 * Cr_g_tab;
 INT32 * Cb_g_tab;
 } my_color_deconverter;
 typedef my_color_deconverter * my_cconvert_ptr;
-#define SCALEBITS	16
-#define ONE_HALF	((INT32) 1 << (SCALEBITS-1))
-#define FIX(x)		((INT32) ((x) * (1L<<SCALEBITS) + 0.5))
+#define SCALEBITS 16
+#define ONE_HALF ((INT32) 1 << (SCALEBITS-1))
+#define FIX(x) ((INT32) ((x) * (1L<<SCALEBITS) + 0.5))
 LOCAL(void)
 build_ycc_rgb_table (j_decompress_ptr cinfo)
 {
@@ -64,14 +64,14 @@ inptr2 = input_buf[2][input_row];
 input_row++;
 outptr = *output_buf++;
 for (col = 0; col < num_cols; col++) {
-y  = GETJSAMPLE(inptr0[col]);
+y = GETJSAMPLE(inptr0[col]);
 cb = GETJSAMPLE(inptr1[col]);
 cr = GETJSAMPLE(inptr2[col]);
-outptr[RGB_RED] =   range_limit[y + Crrtab[cr]];
+outptr[RGB_RED] = range_limit[y + Crrtab[cr]];
 outptr[RGB_GREEN] = range_limit[y +
 ((int) RIGHT_SHIFT(Cbgtab[cb] + Crgtab[cr],
 SCALEBITS))];
-outptr[RGB_BLUE] =  range_limit[y + Cbbtab[cb]];
+outptr[RGB_BLUE] = range_limit[y + Cbbtab[cb]];
 outptr += RGB_PIXELSIZE;
 }
 }
@@ -149,7 +149,7 @@ inptr3 = input_buf[3][input_row];
 input_row++;
 outptr = *output_buf++;
 for (col = 0; col < num_cols; col++) {
-y  = GETJSAMPLE(inptr0[col]);
+y = GETJSAMPLE(inptr0[col]);
 cb = GETJSAMPLE(inptr1[col]);
 cr = GETJSAMPLE(inptr2[col]);
 outptr[0] = range_limit[MAXJSAMPLE - (y + Crrtab[cr])];

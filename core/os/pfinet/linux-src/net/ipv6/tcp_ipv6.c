@@ -20,11 +20,11 @@
 #include <net/ip6_route.h>
 #include <asm/uaccess.h>
 extern int sysctl_max_syn_backlog;
-static void	tcp_v6_send_reset(struct sk_buff *skb);
-static void	tcp_v6_send_check(struct sock *sk, struct tcphdr *th, int len,
+static void tcp_v6_send_reset(struct sk_buff *skb);
+static void tcp_v6_send_check(struct sock *sk, struct tcphdr *th, int len,
 struct sk_buff *skb);
-static int	tcp_v6_do_rcv(struct sock *sk, struct sk_buff *skb);
-static void	tcp_v6_xmit(struct sk_buff *skb);
+static int tcp_v6_do_rcv(struct sock *sk, struct sk_buff *skb);
+static void tcp_v6_xmit(struct sk_buff *skb);
 static struct open_request *tcp_v6_search_req(struct tcp_opt *tp,
 struct ipv6hdr *ip6h,
 struct tcphdr *th,
@@ -85,7 +85,7 @@ int low = sysctl_local_port_range[0];
 int high = sysctl_local_port_range[1];
 int rover = net_random() % (high - low) + low;
 int remaining = (high - low) + 1;
-do {	rover++;
+do { rover++;
 if ((rover < low) || (rover > high))
 rover = low;
 tb = tcp_bhash[tcp_bhashfn(rover)];
@@ -116,8 +116,8 @@ int sk_reuse = sk->reuse;
 int addr_type = ipv6_addr_type(&sk->net_pinfo.af_inet6.rcv_saddr);
 for( ; sk2 != NULL; sk2 = sk2->bind_next) {
 if (sk->bound_dev_if == sk2->bound_dev_if) {
-if ((!sk_reuse	||
-!sk2->reuse	||
+if ((!sk_reuse ||
+!sk2->reuse ||
 sk2->state == TCP_LISTEN) &&
 ipv6_rcv_saddr_equal(sk, sk2))
 break;
@@ -236,10 +236,10 @@ goto hit;
 }
 }
 for(sk = tcp_ehash[hash+(tcp_ehash_size/2)]; sk; sk = sk->next) {
-if(*((__u32 *)&(sk->dport))	== ports	&&
-sk->family			== PF_INET6) {
+if(*((__u32 *)&(sk->dport)) == ports &&
+sk->family == PF_INET6) {
 struct tcp_tw_bucket *tw = (struct tcp_tw_bucket *)sk;
-if(!ipv6_addr_cmp(&tw->v6_daddr, saddr)	&&
+if(!ipv6_addr_cmp(&tw->v6_daddr, saddr) &&
 !ipv6_addr_cmp(&tw->v6_rcv_saddr, daddr) &&
 (!sk->bound_dev_if || sk->bound_dev_if == dif))
 goto hit;
@@ -783,8 +783,8 @@ if (np->opt)
 newtp->ext_header_len = np->opt->opt_nflen + np->opt->opt_flen;
 tcp_sync_mss(newsk, dst->pmtu);
 newtp->rcv_mss = newtp->mss_clamp;
-newsk->daddr	= LOOPBACK4_IPV6;
-newsk->saddr	= LOOPBACK4_IPV6;
+newsk->daddr = LOOPBACK4_IPV6;
+newsk->saddr = LOOPBACK4_IPV6;
 newsk->rcv_saddr= LOOPBACK4_IPV6;
 newsk->prot->hash(newsk);
 tcp_inherit_port(sk, newsk);
@@ -1158,7 +1158,7 @@ struct ipv6_pinfo * np = &sk->net_pinfo.af_inet6;
 struct sockaddr_in6 *sin6 = (struct sockaddr_in6 *) uaddr;
 sin6->sin6_family = AF_INET6;
 memcpy(&sin6->sin6_addr, &np->daddr, sizeof(struct in6_addr));
-sin6->sin6_port	= sk->dport;
+sin6->sin6_port = sk->dport;
 sin6->sin6_flowinfo = 0;
 sin6->sin6_scope_id = 0;
 if (sk->bound_dev_if &&
@@ -1196,7 +1196,7 @@ static int tcp_v6_init_sock(struct sock *sk)
 struct tcp_opt *tp = &(sk->tp_pinfo.af_tcp);
 skb_queue_head_init(&tp->out_of_order_queue);
 tcp_init_xmit_timers(sk);
-tp->rto  = TCP_TIMEOUT_INIT;
+tp->rto = TCP_TIMEOUT_INIT;
 tp->mdev = TCP_TIMEOUT_INIT;
 tp->mss_clamp = ~0;
 tp->snd_cwnd = 2;

@@ -1,11 +1,11 @@
-#include	"l.h"
+#include "l.h"
 static struct {
-ulong	start;
-ulong	size;
-ulong	extra;
+ulong start;
+ulong size;
+ulong extra;
 } pool;
-int	checkpool(Prog*, int);
-int 	flushpool(Prog*, int, int);
+int checkpool(Prog*, int);
+int flushpool(Prog*, int, int);
 int
 isbranch(Prog *p)
 {
@@ -374,7 +374,7 @@ switch(c) {
 default:
 t.to = *a;
 break;
-case	C_SROREG:
+case C_SROREG:
 case C_LOREG:
 case C_ROREG:
 case C_FOREG:
@@ -1018,7 +1018,7 @@ p = s;
 while(*s)
 cput(*s++);
 cput(0);
-return  s-p+1;
+return s-p+1;
 }
 void
 asmdyn()

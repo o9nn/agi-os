@@ -317,12 +317,12 @@ BN_ULONG ln, lo, *p;
 fprintf(stderr, " bn_mul_recursive %d%+d * %d%+d\n", n2, dna, n2, dnb);
 # endif
 # ifdef BN_MUL_COMBA
-#  if 0
+# if 0
 if (n2 == 4) {
 bn_mul_comba4(r, a, b);
 return;
 }
-#  endif
+# endif
 if (n2 == 8 && dna == 0 && dnb == 0) {
 bn_mul_comba8(r, a, b);
 return;

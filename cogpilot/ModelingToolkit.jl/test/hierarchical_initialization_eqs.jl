@@ -95,7 +95,7 @@ L * D(i) ~ v]
 return System(eqs, t, vars, params; systems, name)
 end
 """
-This is an RLC model.  This should support markdown.  That includes
+This is an RLC model. This should support markdown. That includes
 HTML as well.
 """
 @component function RLCModel(; name)

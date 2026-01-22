@@ -19,16 +19,16 @@ BIO *mem;
 unsigned long asn1_len;
 };
 #define OCSP_MAX_REQUEST_LENGTH (100 * 1024)
-#define OCSP_MAX_LINE_LEN       4096;
-#define OHS_NOREAD              0x1000
-#define OHS_ERROR               (0 | OHS_NOREAD)
-#define OHS_FIRSTLINE           1
-#define OHS_HEADERS             2
-#define OHS_ASN1_HEADER         3
-#define OHS_ASN1_CONTENT        4
-#define OHS_ASN1_WRITE          (6 | OHS_NOREAD)
-#define OHS_ASN1_FLUSH          (7 | OHS_NOREAD)
-#define OHS_DONE                (8 | OHS_NOREAD)
+#define OCSP_MAX_LINE_LEN 4096;
+#define OHS_NOREAD 0x1000
+#define OHS_ERROR (0 | OHS_NOREAD)
+#define OHS_FIRSTLINE 1
+#define OHS_HEADERS 2
+#define OHS_ASN1_HEADER 3
+#define OHS_ASN1_CONTENT 4
+#define OHS_ASN1_WRITE (6 | OHS_NOREAD)
+#define OHS_ASN1_FLUSH (7 | OHS_NOREAD)
+#define OHS_DONE (8 | OHS_NOREAD)
 static int parse_http_line1(char *line);
 void OCSP_REQ_CTX_free(OCSP_REQ_CTX *rctx)
 {

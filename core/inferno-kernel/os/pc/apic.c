@@ -6,78 +6,78 @@
 #include "io.h"
 #include "mp.h"
 enum {
-LapicID		= 0x0020,
-LapicVER	= 0x0030,
-LapicTPR	= 0x0080,
-LapicAPR	= 0x0090,
-LapicPPR	= 0x00A0,
-LapicEOI	= 0x00B0,
-LapicLDR	= 0x00D0,
-LapicDFR	= 0x00E0,
-LapicSVR	= 0x00F0,
-LapicISR	= 0x0100,
-LapicTMR	= 0x0180,
-LapicIRR	= 0x0200,
-LapicESR	= 0x0280,
-LapicICRLO	= 0x0300,
-LapicICRHI	= 0x0310,
-LapicTIMER	= 0x0320,
-LapicPCINT	= 0x0340,
-LapicLINT0	= 0x0350,
-LapicLINT1	= 0x0360,
-LapicERROR	= 0x0370,
-LapicTICR	= 0x0380,
-LapicTCCR	= 0x0390,
-LapicTDCR	= 0x03E0,
+LapicID = 0x0020,
+LapicVER = 0x0030,
+LapicTPR = 0x0080,
+LapicAPR = 0x0090,
+LapicPPR = 0x00A0,
+LapicEOI = 0x00B0,
+LapicLDR = 0x00D0,
+LapicDFR = 0x00E0,
+LapicSVR = 0x00F0,
+LapicISR = 0x0100,
+LapicTMR = 0x0180,
+LapicIRR = 0x0200,
+LapicESR = 0x0280,
+LapicICRLO = 0x0300,
+LapicICRHI = 0x0310,
+LapicTIMER = 0x0320,
+LapicPCINT = 0x0340,
+LapicLINT0 = 0x0350,
+LapicLINT1 = 0x0360,
+LapicERROR = 0x0370,
+LapicTICR = 0x0380,
+LapicTCCR = 0x0390,
+LapicTDCR = 0x03E0,
 };
 enum {
-LapicENABLE	= 0x00000100,
-LapicFOCUS	= 0x00000200,
+LapicENABLE = 0x00000100,
+LapicFOCUS = 0x00000200,
 };
 enum {
-LapicDEASSERT	= 0x00000000,
-LapicASSERT	= 0x00004000,
-LapicINVALID	= 0x00000000,
-LapicWAIT	= 0x00010000,
-LapicVALID	= 0x00020000,
-LapicFIELD	= 0x00000000,
-LapicSELF	= 0x00040000,
-LapicALLINC	= 0x00080000,
-LapicALLEXC	= 0x000C0000,
+LapicDEASSERT = 0x00000000,
+LapicASSERT = 0x00004000,
+LapicINVALID = 0x00000000,
+LapicWAIT = 0x00010000,
+LapicVALID = 0x00020000,
+LapicFIELD = 0x00000000,
+LapicSELF = 0x00040000,
+LapicALLINC = 0x00080000,
+LapicALLEXC = 0x000C0000,
 };
 enum {
-LapicSENDCS	= 0x00000001,
-LapicRCVCS	= 0x00000002,
-LapicSENDACCEPT	= 0x00000004,
-LapicRCVACCEPT	= 0x00000008,
-LapicSENDVECTOR	= 0x00000020,
-LapicRCVVECTOR	= 0x00000040,
-LapicREGISTER	= 0x00000080,
+LapicSENDCS = 0x00000001,
+LapicRCVCS = 0x00000002,
+LapicSENDACCEPT = 0x00000004,
+LapicRCVACCEPT = 0x00000008,
+LapicSENDVECTOR = 0x00000020,
+LapicRCVVECTOR = 0x00000040,
+LapicREGISTER = 0x00000080,
 };
 enum {
-LapicONESHOT	= 0x00000000,
-LapicPERIODIC	= 0x00020000,
-LapicCLKIN	= 0x00000000,
-LapicTMBASE	= 0x00040000,
-LapicDIVIDER	= 0x00080000,
+LapicONESHOT = 0x00000000,
+LapicPERIODIC = 0x00020000,
+LapicCLKIN = 0x00000000,
+LapicTMBASE = 0x00040000,
+LapicDIVIDER = 0x00080000,
 };
 enum {
-LapicX2		= 0x00000000,
-LapicX4		= 0x00000001,
-LapicX8		= 0x00000002,
-LapicX16	= 0x00000003,
-LapicX32	= 0x00000008,
-LapicX64	= 0x00000009,
-LapicX128	= 0x0000000A,
-LapicX1		= 0x0000000B,
+LapicX2 = 0x00000000,
+LapicX4 = 0x00000001,
+LapicX8 = 0x00000002,
+LapicX16 = 0x00000003,
+LapicX32 = 0x00000008,
+LapicX64 = 0x00000009,
+LapicX128 = 0x0000000A,
+LapicX1 = 0x0000000B,
 };
 static ulong* lapicbase;
 struct
 {
-uvlong	hz;
-ulong	max;
-ulong	min;
-ulong	div;
+uvlong hz;
+ulong max;
+ulong min;
+ulong div;
 } lapictimer;
 static int
 lapicr(int r)

@@ -219,7 +219,7 @@ q++;
 vtDebug(z, "version string in: %s\n", buf);
 p = buf + strlen(prefix);
 for(;;) {
-for(pp=p; *pp && *pp != ':'  && *pp != '-'; pp++)
+for(pp=p; *pp && *pp != ':' && *pp != '-'; pp++)
 ;
 for(i=0; vtVersions[i].version; i++) {
 if(strlen(vtVersions[i].s) != pp-p)

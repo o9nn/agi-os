@@ -16,10 +16,10 @@ extern int notify(Ureg*);
 extern int ldrexvalid;
 typedef struct Vctl Vctl;
 typedef struct Vctl {
-Vctl*	next;
-char	*name;
-void	(*f)(Ureg*, void*);
-void*	a;
+Vctl* next;
+char *name;
+void (*f)(Ureg*, void*);
+void* a;
 } Vctl;
 static Lock vctllock;
 static Vctl* vctl[32];
@@ -28,9 +28,9 @@ uvlong ninterruptticks;
 ulong intrtimes[Nvecs][Ntimevec];
 typedef struct Handler Handler;
 struct Handler {
-void	(*r)(Ureg*, void*);
-void	*a;
-char	name[KNAMELEN];
+void (*r)(Ureg*, void*);
+void *a;
+char name[KNAMELEN];
 };
 static Handler irqlo[32];
 static Handler irqhi[32];
@@ -39,16 +39,16 @@ static Lock irqlock;
 static int probing, trapped;
 typedef struct Irq Irq;
 struct Irq {
-ulong	*irq;
-ulong	*irqmask;
-Handler	*irqvec;
-int	nirqvec;
-char	*name;
+ulong *irq;
+ulong *irqmask;
+Handler *irqvec;
+int nirqvec;
+char *name;
 };
 static Irq irqs[] = {
-[Irqlo]		{nil, nil, irqlo,	nelem(irqlo),	"lo"},
-[Irqhi]		{nil, nil, irqhi,	nelem(irqhi),	"hi"},
-[Irqbridge]	{nil, nil, irqbridge,	nelem(irqbridge), "bridge"},
+[Irqlo] {nil, nil, irqlo, nelem(irqlo), "lo"},
+[Irqhi] {nil, nil, irqhi, nelem(irqhi), "hi"},
+[Irqbridge] {nil, nil, irqbridge, nelem(irqbridge), "bridge"},
 };
 void
 intrtime(Mach*, int vno)
@@ -209,7 +209,7 @@ setr13(PsrMirq, m->irqstack + nelem(m->irqstack));
 setr13(PsrMabt, m->abtstack + nelem(m->abtstack));
 setr13(PsrMund, m->undstack + nelem(m->undstack));
 memmove(page0->vectors, vectors, sizeof page0->vectors);
-memmove(page0->vtable,  vtable,  sizeof page0->vtable);
+memmove(page0->vtable, vtable, sizeof page0->vtable);
 cacheuwbinv();
 l2cacheuwbinv();
 cpu->cpucfg &= ~Cfgvecinithi;
@@ -221,7 +221,7 @@ for(i = 0; i < nelem(irqbridge); i++)
 intrunset(&irqbridge[i]);
 intr->lo.fiqmask = intr->hi.fiqmask = 0;
 intr->lo.irqmask = intr->hi.irqmask = 0;
-intr->lo.epmask =  intr->hi.epmask = 0;
+intr->lo.epmask = intr->hi.epmask = 0;
 cpu->irqmask = 0;
 coherence();
 intr->lo.irq = intr->hi.irq = ~0;

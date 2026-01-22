@@ -20,8 +20,8 @@ void add_timer (struct timer_list *);
 int del_timer (struct timer_list *);
 void mod_timer (struct timer_list *, unsigned long);
 void init_timer (struct timer_list *);
-#define time_after(a,b)		((long)(b) - (long)(a) < 0)
-#define time_before(a,b)	time_after(b,a)
-#define time_after_eq(a,b)	((long)(a) - (long)(b) >= 0)
-#define time_before_eq(a,b)	time_after_eq(b,a)
+#define time_after(a,b) ((long)(b) - (long)(a) < 0)
+#define time_before(a,b) time_after(b,a)
+#define time_after_eq(a,b) ((long)(a) - (long)(b) >= 0)
+#define time_before_eq(a,b) time_after_eq(b,a)
 #endif

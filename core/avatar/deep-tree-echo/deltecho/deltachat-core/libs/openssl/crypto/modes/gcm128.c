@@ -4,30 +4,30 @@
 #include <string.h>
 #ifndef MODES_DEBUG
 # ifndef NDEBUG
-#  define NDEBUG
+# define NDEBUG
 # endif
 #endif
 #include <assert.h>
 #if defined(BSWAP4) && defined(STRICT_ALIGNMENT)
-# undef  GETU32
-# define GETU32(p)       BSWAP4(*(const u32 *)(p))
-# undef  PUTU32
-# define PUTU32(p,v)     *(u32 *)(p) = BSWAP4(v)
+# undef GETU32
+# define GETU32(p) BSWAP4(*(const u32 *)(p))
+# undef PUTU32
+# define PUTU32(p,v) *(u32 *)(p) = BSWAP4(v)
 #endif
-#define PACK(s)         ((size_t)(s)<<(sizeof(size_t)*8-16))
-#define REDUCE1BIT(V)   do { \
+#define PACK(s) ((size_t)(s)<<(sizeof(size_t)*8-16))
+#define REDUCE1BIT(V) do { \
 if (sizeof(size_t)==8) { \
 u64 T = U64(0xe100000000000000) & (0-(V.lo&1)); \
-V.lo  = (V.hi<<63)|(V.lo>>1); \
-V.hi  = (V.hi>>1 )^T; \
+V.lo = (V.hi<<63)|(V.lo>>1); \
+V.hi = (V.hi>>1 )^T; \
 } \
 else { \
 u32 T = 0xe1000000U & (0-(u32)(V.lo&1)); \
-V.lo  = (V.hi<<63)|(V.lo>>1); \
-V.hi  = (V.hi>>1 )^((u64)T<<32); \
+V.lo = (V.hi<<63)|(V.lo>>1); \
+V.hi = (V.hi>>1 )^((u64)T<<32); \
 } \
 } while(0)
-#if     TABLE_BITS==8
+#if TABLE_BITS==8
 static void gcm_init_8bit(u128 Htable[256], u64 H[2])
 {
 int i, j;
@@ -160,8 +160,8 @@ Xi[0] = Z.hi;
 Xi[1] = Z.lo;
 }
 }
-# define GCM_MUL(ctx,Xi)   gcm_gmult_8bit(ctx->Xi.u,ctx->Htable)
-#elif   TABLE_BITS==4
+# define GCM_MUL(ctx,Xi) gcm_gmult_8bit(ctx->Xi.u,ctx->Htable)
+#elif TABLE_BITS==4
 static void gcm_init_4bit(u128 Htable[16], u64 H[2])
 {
 u128 V;
@@ -279,10 +279,10 @@ Z.hi ^= Htable[nlo].hi;
 Z.lo ^= Htable[nlo].lo;
 }
 if (is_endian.little) {
-#  ifdef BSWAP8
+# ifdef BSWAP8
 Xi[0] = BSWAP8(Z.hi);
 Xi[1] = BSWAP8(Z.lo);
-#  else
+# else
 u8 *p = (u8 *)Xi;
 u32 v;
 v = (u32)(Z.hi >> 32);
@@ -293,13 +293,13 @@ v = (u32)(Z.lo >> 32);
 PUTU32(p + 8, v);
 v = (u32)(Z.lo);
 PUTU32(p + 12, v);
-#  endif
+# endif
 } else {
 Xi[0] = Z.hi;
 Xi[1] = Z.lo;
 }
 }
-#  if !defined(OPENSSL_SMALL_FOOTPRINT)
+# if !defined(OPENSSL_SMALL_FOOTPRINT)
 static void gcm_ghash_4bit(u64 Xi[2], const u128 Htable[16],
 const u8 *inp, size_t len)
 {
@@ -312,7 +312,7 @@ char little;
 } is_endian = {
 1
 };
-#   if 1
+# if 1
 do {
 cnt = 15;
 nlo = ((const u8 *)Xi)[15];
@@ -347,7 +347,7 @@ Z.hi ^= (u64)rem_4bit[rem] << 32;
 Z.hi ^= Htable[nlo].hi;
 Z.lo ^= Htable[nlo].lo;
 }
-#   else
+# else
 u128 Hshr4[16];
 u8 Hshl4[16];
 static const unsigned short rem_8bit[256] = {
@@ -418,12 +418,12 @@ Z.hi = (Z.hi >> 4);
 Z.hi ^= Htable[nhi].hi;
 Z.lo ^= Htable[nhi].lo;
 Z.hi ^= ((u64)rem_8bit[rem << 4]) << 48;
-#   endif
+# endif
 if (is_endian.little) {
-#   ifdef BSWAP8
+# ifdef BSWAP8
 Xi[0] = BSWAP8(Z.hi);
 Xi[1] = BSWAP8(Z.lo);
-#   else
+# else
 u8 *p = (u8 *)Xi;
 u32 v;
 v = (u32)(Z.hi >> 32);
@@ -434,23 +434,23 @@ v = (u32)(Z.lo >> 32);
 PUTU32(p + 8, v);
 v = (u32)(Z.lo);
 PUTU32(p + 12, v);
-#   endif
+# endif
 } else {
 Xi[0] = Z.hi;
 Xi[1] = Z.lo;
 }
 } while (inp += 16, len -= 16);
 }
-#  endif
+# endif
 # else
 void gcm_gmult_4bit(u64 Xi[2], const u128 Htable[16]);
 void gcm_ghash_4bit(u64 Xi[2], const u128 Htable[16], const u8 *inp,
 size_t len);
 # endif
-# define GCM_MUL(ctx,Xi)   gcm_gmult_4bit(ctx->Xi.u,ctx->Htable)
+# define GCM_MUL(ctx,Xi) gcm_gmult_4bit(ctx->Xi.u,ctx->Htable)
 # if defined(GHASH_ASM) || !defined(OPENSSL_SMALL_FOOTPRINT)
-#  define GHASH(ctx,in,len) gcm_ghash_4bit((ctx)->Xi.u,(ctx)->Htable,in,len)
-#  define GHASH_CHUNK       (3*1024)
+# define GHASH(ctx,in,len) gcm_ghash_4bit((ctx)->Xi.u,(ctx)->Htable,in,len)
+# define GHASH_CHUNK (3*1024)
 # endif
 #else
 static void gcm_gmult_1bit(u64 Xi[2], const u64 H[2])
@@ -510,46 +510,46 @@ Xi[0] = Z.hi;
 Xi[1] = Z.lo;
 }
 }
-# define GCM_MUL(ctx,Xi)   gcm_gmult_1bit(ctx->Xi.u,ctx->H.u)
+# define GCM_MUL(ctx,Xi) gcm_gmult_1bit(ctx->Xi.u,ctx->H.u)
 #endif
-#if     TABLE_BITS==4 && defined(GHASH_ASM)
-# if    !defined(I386_ONLY) && \
-(defined(__i386)        || defined(__i386__)    || \
-defined(__x86_64)      || defined(__x86_64__)  || \
-defined(_M_IX86)       || defined(_M_AMD64)    || defined(_M_X64))
-#  define GHASH_ASM_X86_OR_64
-#  define GCM_FUNCREF_4BIT
+#if TABLE_BITS==4 && defined(GHASH_ASM)
+# if !defined(I386_ONLY) && \
+(defined(__i386) || defined(__i386__) || \
+defined(__x86_64) || defined(__x86_64__) || \
+defined(_M_IX86) || defined(_M_AMD64) || defined(_M_X64))
+# define GHASH_ASM_X86_OR_64
+# define GCM_FUNCREF_4BIT
 extern unsigned int OPENSSL_ia32cap_P[2];
 void gcm_init_clmul(u128 Htable[16], const u64 Xi[2]);
 void gcm_gmult_clmul(u64 Xi[2], const u128 Htable[16]);
 void gcm_ghash_clmul(u64 Xi[2], const u128 Htable[16], const u8 *inp,
 size_t len);
-#  if   defined(__i386) || defined(__i386__) || defined(_M_IX86)
-#   define GHASH_ASM_X86
+# if defined(__i386) || defined(__i386__) || defined(_M_IX86)
+# define GHASH_ASM_X86
 void gcm_gmult_4bit_mmx(u64 Xi[2], const u128 Htable[16]);
 void gcm_ghash_4bit_mmx(u64 Xi[2], const u128 Htable[16], const u8 *inp,
 size_t len);
 void gcm_gmult_4bit_x86(u64 Xi[2], const u128 Htable[16]);
 void gcm_ghash_4bit_x86(u64 Xi[2], const u128 Htable[16], const u8 *inp,
 size_t len);
-#  endif
+# endif
 # elif defined(__arm__) || defined(__arm)
-#  include "arm_arch.h"
-#  if __ARM_ARCH__>=7
-#   define GHASH_ASM_ARM
-#   define GCM_FUNCREF_4BIT
+# include "arm_arch.h"
+# if __ARM_ARCH__>=7
+# define GHASH_ASM_ARM
+# define GCM_FUNCREF_4BIT
 void gcm_gmult_neon(u64 Xi[2], const u128 Htable[16]);
 void gcm_ghash_neon(u64 Xi[2], const u128 Htable[16], const u8 *inp,
 size_t len);
-#  endif
+# endif
 # endif
 #endif
 #ifdef GCM_FUNCREF_4BIT
-# undef  GCM_MUL
-# define GCM_MUL(ctx,Xi)        (*gcm_gmult_p)(ctx->Xi.u,ctx->Htable)
+# undef GCM_MUL
+# define GCM_MUL(ctx,Xi) (*gcm_gmult_p)(ctx->Xi.u,ctx->Htable)
 # ifdef GHASH
-#  undef  GHASH
-#  define GHASH(ctx,in,len)     (*gcm_ghash_p)(ctx->Xi.u,ctx->Htable,in,len)
+# undef GHASH
+# define GHASH(ctx,in,len) (*gcm_ghash_p)(ctx->Xi.u,ctx->Htable,in,len)
 # endif
 #endif
 void CRYPTO_gcm128_init(GCM128_CONTEXT *ctx, void *key, block128_f block)
@@ -577,11 +577,11 @@ ctx->H.u[0] = hi;
 ctx->H.u[1] = lo;
 #endif
 }
-#if     TABLE_BITS==8
+#if TABLE_BITS==8
 gcm_init_8bit(ctx->Htable, ctx->H.u);
-#elif   TABLE_BITS==4
-# if    defined(GHASH_ASM_X86_OR_64)
-#  if   !defined(GHASH_ASM_X86) || defined(OPENSSL_IA32_SSE2)
+#elif TABLE_BITS==4
+# if defined(GHASH_ASM_X86_OR_64)
+# if !defined(GHASH_ASM_X86) || defined(OPENSSL_IA32_SSE2)
 if (OPENSSL_ia32cap_P[0] & (1 << 24) &&
 OPENSSL_ia32cap_P[1] & (1 << 1)) {
 gcm_init_clmul(ctx->Htable, ctx->H.u);
@@ -589,25 +589,25 @@ ctx->gmult = gcm_gmult_clmul;
 ctx->ghash = gcm_ghash_clmul;
 return;
 }
-#  endif
+# endif
 gcm_init_4bit(ctx->Htable, ctx->H.u);
-#  if   defined(GHASH_ASM_X86)
-#   if  defined(OPENSSL_IA32_SSE2)
+# if defined(GHASH_ASM_X86)
+# if defined(OPENSSL_IA32_SSE2)
 if (OPENSSL_ia32cap_P[0] & (1 << 25)) {
-#   else
+# else
 if (OPENSSL_ia32cap_P[0] & (1 << 23)) {
-#   endif
+# endif
 ctx->gmult = gcm_gmult_4bit_mmx;
 ctx->ghash = gcm_ghash_4bit_mmx;
 } else {
 ctx->gmult = gcm_gmult_4bit_x86;
 ctx->ghash = gcm_ghash_4bit_x86;
 }
-#  else
+# else
 ctx->gmult = gcm_gmult_4bit;
 ctx->ghash = gcm_ghash_4bit;
-#  endif
-# elif  defined(GHASH_ASM_ARM)
+# endif
+# elif defined(GHASH_ASM_ARM)
 if (OPENSSL_armcap_P & ARMV7_NEON) {
 ctx->gmult = gcm_gmult_neon;
 ctx->ghash = gcm_ghash_neon;
@@ -825,11 +825,11 @@ const size_t *in_t = (const size_t *)in;
 (*block) (ctx->Yi.c, ctx->EKi.c, key);
 ++ctr;
 if (is_endian.little)
-#  ifdef BSWAP4
+# ifdef BSWAP4
 ctx->Yi.d[3] = BSWAP4(ctr);
-#  else
+# else
 PUTU32(ctx->Yi.c + 12, ctr);
-#  endif
+# endif
 else
 ctx->Yi.d[3] = ctr;
 for (i = 0; i < 16 / sizeof(size_t); ++i)
@@ -849,11 +849,11 @@ const size_t *in_t = (const size_t *)in;
 (*block) (ctx->Yi.c, ctx->EKi.c, key);
 ++ctr;
 if (is_endian.little)
-#  ifdef BSWAP4
+# ifdef BSWAP4
 ctx->Yi.d[3] = BSWAP4(ctr);
-#  else
+# else
 PUTU32(ctx->Yi.c + 12, ctr);
-#  endif
+# endif
 else
 ctx->Yi.d[3] = ctr;
 for (i = 0; i < 16 / sizeof(size_t); ++i)
@@ -871,11 +871,11 @@ const size_t *in_t = (const size_t *)in;
 (*block) (ctx->Yi.c, ctx->EKi.c, key);
 ++ctr;
 if (is_endian.little)
-#  ifdef BSWAP4
+# ifdef BSWAP4
 ctx->Yi.d[3] = BSWAP4(ctr);
-#  else
+# else
 PUTU32(ctx->Yi.c + 12, ctr);
-#  endif
+# endif
 else
 ctx->Yi.d[3] = ctr;
 for (i = 0; i < 16 / sizeof(size_t); ++i)
@@ -999,11 +999,11 @@ const size_t *in_t = (const size_t *)in;
 (*block) (ctx->Yi.c, ctx->EKi.c, key);
 ++ctr;
 if (is_endian.little)
-#  ifdef BSWAP4
+# ifdef BSWAP4
 ctx->Yi.d[3] = BSWAP4(ctr);
-#  else
+# else
 PUTU32(ctx->Yi.c + 12, ctr);
-#  endif
+# endif
 else
 ctx->Yi.d[3] = ctr;
 for (i = 0; i < 16 / sizeof(size_t); ++i)
@@ -1022,11 +1022,11 @@ const size_t *in_t = (const size_t *)in;
 (*block) (ctx->Yi.c, ctx->EKi.c, key);
 ++ctr;
 if (is_endian.little)
-#  ifdef BSWAP4
+# ifdef BSWAP4
 ctx->Yi.d[3] = BSWAP4(ctr);
-#  else
+# else
 PUTU32(ctx->Yi.c + 12, ctr);
-#  endif
+# endif
 else
 ctx->Yi.d[3] = ctr;
 for (i = 0; i < 16 / sizeof(size_t); ++i)
@@ -1043,11 +1043,11 @@ const size_t *in_t = (const size_t *)in;
 (*block) (ctx->Yi.c, ctx->EKi.c, key);
 ++ctr;
 if (is_endian.little)
-#  ifdef BSWAP4
+# ifdef BSWAP4
 ctx->Yi.d[3] = BSWAP4(ctr);
-#  else
+# else
 PUTU32(ctx->Yi.c + 12, ctr);
-#  endif
+# endif
 else
 ctx->Yi.d[3] = ctr;
 for (i = 0; i < 16 / sizeof(size_t); ++i) {
@@ -1858,24 +1858,24 @@ static const u8 T20[] = {
 0x8b, 0x30, 0x7f, 0x6b, 0x33, 0x28, 0x6d, 0x0a,
 0xb0, 0x26, 0xa9, 0xed, 0x3f, 0xe1, 0xe8, 0x5f
 };
-# define TEST_CASE(n)    do {                                    \
-u8 out[sizeof(P##n)];                                   \
-AES_set_encrypt_key(K##n,sizeof(K##n)*8,&key);          \
-CRYPTO_gcm128_init(&ctx,&key,(block128_f)AES_encrypt);  \
-CRYPTO_gcm128_setiv(&ctx,IV##n,sizeof(IV##n));          \
-memset(out,0,sizeof(out));                              \
-if (A##n) CRYPTO_gcm128_aad(&ctx,A##n,sizeof(A##n));    \
-if (P##n) CRYPTO_gcm128_encrypt(&ctx,P##n,out,sizeof(out));     \
-if (CRYPTO_gcm128_finish(&ctx,T##n,16) ||               \
-(C##n && memcmp(out,C##n,sizeof(out))))             \
-ret++, printf ("encrypt test#%d failed.\n",n);  \
-CRYPTO_gcm128_setiv(&ctx,IV##n,sizeof(IV##n));          \
-memset(out,0,sizeof(out));                              \
-if (A##n) CRYPTO_gcm128_aad(&ctx,A##n,sizeof(A##n));    \
-if (C##n) CRYPTO_gcm128_decrypt(&ctx,C##n,out,sizeof(out));     \
-if (CRYPTO_gcm128_finish(&ctx,T##n,16) ||               \
-(P##n && memcmp(out,P##n,sizeof(out))))             \
-ret++, printf ("decrypt test#%d failed.\n",n);  \
+# define TEST_CASE(n) do { \
+u8 out[sizeof(P##n)]; \
+AES_set_encrypt_key(K##n,sizeof(K##n)*8,&key); \
+CRYPTO_gcm128_init(&ctx,&key,(block128_f)AES_encrypt); \
+CRYPTO_gcm128_setiv(&ctx,IV##n,sizeof(IV##n)); \
+memset(out,0,sizeof(out)); \
+if (A##n) CRYPTO_gcm128_aad(&ctx,A##n,sizeof(A##n)); \
+if (P##n) CRYPTO_gcm128_encrypt(&ctx,P##n,out,sizeof(out)); \
+if (CRYPTO_gcm128_finish(&ctx,T##n,16) || \
+(C##n && memcmp(out,C##n,sizeof(out)))) \
+ret++, printf ("encrypt test#%d failed.\n",n); \
+CRYPTO_gcm128_setiv(&ctx,IV##n,sizeof(IV##n)); \
+memset(out,0,sizeof(out)); \
+if (A##n) CRYPTO_gcm128_aad(&ctx,A##n,sizeof(A##n)); \
+if (C##n) CRYPTO_gcm128_decrypt(&ctx,C##n,out,sizeof(out)); \
+if (CRYPTO_gcm128_finish(&ctx,T##n,16) || \
+(P##n && memcmp(out,P##n,sizeof(out)))) \
+ret++, printf ("decrypt test#%d failed.\n",n); \
 } while(0)
 int main()
 {
@@ -1929,7 +1929,7 @@ printf("%.2f-%.2f=%.2f\n",
 gcm_t / (double)sizeof(buf),
 ctr_t / (double)sizeof(buf),
 (gcm_t - ctr_t) / (double)sizeof(buf));
-#  ifdef GHASH
+# ifdef GHASH
 {
 void (*gcm_ghash_p) (u64 Xi[2], const u128 Htable[16],
 const u8 *inp, size_t len) = ctx.ghash;
@@ -1940,7 +1940,7 @@ GHASH((&ctx), buf.c, sizeof(buf));
 gcm_t = OPENSSL_rdtsc() - start;
 printf("%.2f\n", gcm_t / (double)sizeof(buf) / (double)i);
 }
-#  endif
+# endif
 }
 # endif
 return ret;

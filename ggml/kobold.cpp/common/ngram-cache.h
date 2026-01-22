@@ -3,8 +3,8 @@
 #include <unordered_map>
 #include <string>
 #include <vector>
-#define LLAMA_NGRAM_MIN    1
-#define LLAMA_NGRAM_MAX    4
+#define LLAMA_NGRAM_MIN 1
+#define LLAMA_NGRAM_MAX 4
 #define LLAMA_NGRAM_STATIC 2
 struct common_ngram {
 llama_token tokens[LLAMA_NGRAM_MAX];

@@ -21,12 +21,12 @@ uint32_t optimization_flags;
 .enabled = TRUE,
 .optimization_flags = MK_OPT_ALL
 };
-#define MK_OPT_IPC_FASTPATH      0x0001
-#define MK_OPT_SCHED_PRIORITY    0x0002
-#define MK_OPT_MEMORY_CACHE      0x0004
-#define MK_OPT_PORT_LOOKUP       0x0008
-#define MK_OPT_THREAD_SWITCH     0x0010
-#define MK_OPT_ALL               0xFFFF
+#define MK_OPT_IPC_FASTPATH 0x0001
+#define MK_OPT_SCHED_PRIORITY 0x0002
+#define MK_OPT_MEMORY_CACHE 0x0004
+#define MK_OPT_PORT_LOOKUP 0x0008
+#define MK_OPT_THREAD_SWITCH 0x0010
+#define MK_OPT_ALL 0xFFFF
 void microkernel_optimization_init(void)
 {
 simple_lock_init(&global_mk_optimizer.lock, 0);

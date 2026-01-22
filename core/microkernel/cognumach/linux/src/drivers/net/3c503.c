@@ -19,7 +19,7 @@ int el2_pio_probe(struct device *dev);
 int el2_probe1(struct device *dev, int ioaddr);
 static unsigned int netcard_portlist[] =
 { 0x300,0x310,0x330,0x350,0x250,0x280,0x2a0,0x2e0,0};
-#define EL2_IO_EXTENT	16
+#define EL2_IO_EXTENT 16
 #ifdef HAVE_DEVLIST
 struct netdev_entry el2_drv =
 {"3c503", el2_probe, EL1_IO_EXTENT, 0};
@@ -96,7 +96,7 @@ return ENODEV;
 }
 iobase_reg = inb(ioaddr+0x403);
 membase_reg = inb(ioaddr+0x404);
-if (   (iobase_reg  & (iobase_reg - 1))
+if ( (iobase_reg & (iobase_reg - 1))
 || (membase_reg & (membase_reg - 1))) {
 return ENODEV;
 }
@@ -113,7 +113,7 @@ if (dev == NULL) {
 printk("3c503.c: Passed a NULL device.\n");
 dev = init_etherdev(0, 0);
 }
-if (ei_debug  &&  version_printed++ == 0)
+if (ei_debug && version_printed++ == 0)
 printk("%s", version);
 dev->base_addr = ioaddr;
 if (ethdev_init(dev)) {
@@ -271,11 +271,11 @@ el2_init_card(struct device *dev)
 {
 outb_p(ei_status.interface_num==0 ? ECNTRL_THIN : ECNTRL_AUI, E33G_CNTRL);
 outb(ei_status.rx_start_page, E33G_STARTPG);
-outb(ei_status.stop_page,  E33G_STOPPG);
+outb(ei_status.stop_page, E33G_STOPPG);
 outb(0xff, E33G_VP2);
 outb(0xff, E33G_VP1);
 outb(0x00, E33G_VP0);
-outb_p(0x00,  dev->base_addr + EN0_IMR);
+outb_p(0x00, dev->base_addr + EN0_IMR);
 outb(EGACFR_NORM, E33G_GACFR);
 outb_p((0x04 << (dev->irq == 9 ? 2 : dev->irq)), E33G_IDCFR);
 outb_p((WRD_COUNT << 1), E33G_DRQCNT);
@@ -307,7 +307,7 @@ outb(word>>8, E33G_DMAAL);
 outb_p((ei_status.interface_num ? ECNTRL_AUI : ECNTRL_THIN ) | ECNTRL_OUTPUT
 | ECNTRL_START, E33G_CNTRL);
 wrd = (unsigned short int *) buf;
-count  = (count + 1) >> 1;
+count = (count + 1) >> 1;
 for(;;)
 {
 boguscount = 0x1000;
@@ -323,7 +323,7 @@ goto blocked;
 if(count > WRD_COUNT)
 {
 outsw(E33G_FIFOH, wrd, WRD_COUNT);
-wrd   += WRD_COUNT;
+wrd += WRD_COUNT;
 count -= WRD_COUNT;
 }
 else
@@ -390,8 +390,8 @@ outb(word>>8, E33G_DMAAH);
 outb(word&0xFF, E33G_DMAAL);
 outb_p((ei_status.interface_num == 0 ? ECNTRL_THIN : ECNTRL_AUI) | ECNTRL_INPUT
 | ECNTRL_START, E33G_CNTRL);
-buf =  (unsigned short int *) skb->data;
-count =  (count + 1) >> 1;
+buf = (unsigned short int *) skb->data;
+count = (count + 1) >> 1;
 for(;;)
 {
 boguscount = 0x1000;
@@ -407,7 +407,7 @@ goto blocked;
 if(count > WRD_COUNT)
 {
 insw(E33G_FIFOH, buf, WRD_COUNT);
-buf   += WRD_COUNT;
+buf += WRD_COUNT;
 count -= WRD_COUNT;
 }
 else
@@ -421,8 +421,8 @@ outb_p(ei_status.interface_num == 0 ? ECNTRL_THIN : ECNTRL_AUI, E33G_CNTRL);
 return;
 }
 #ifdef MODULE
-#define MAX_EL2_CARDS	4
-#define NAMELEN 	8
+#define MAX_EL2_CARDS 4
+#define NAMELEN 8
 static char namelist[NAMELEN * MAX_EL2_CARDS] = { 0, };
 static struct device dev_el2[MAX_EL2_CARDS] = {
 {
@@ -433,7 +433,7 @@ NULL,
 },
 };
 static int io[MAX_EL2_CARDS] = { 0, };
-static int irq[MAX_EL2_CARDS]  = { 0, };
+static int irq[MAX_EL2_CARDS] = { 0, };
 static int xcvr[MAX_EL2_CARDS] = { 0, };
 int
 init_module(void)
@@ -446,7 +446,7 @@ dev->irq = irq[this_dev];
 dev->base_addr = io[this_dev];
 dev->mem_end = xcvr[this_dev];
 dev->init = el2_probe;
-if (io[this_dev] == 0)  {
+if (io[this_dev] == 0) {
 if (this_dev != 0) break;
 printk(KERN_NOTICE "3c503.c: Presently autoprobing (not recommended) for a single card.\n");
 }

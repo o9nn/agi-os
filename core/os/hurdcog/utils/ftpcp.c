@@ -17,16 +17,16 @@ const char *argp_program_version = STANDARD_HURD_VERSION (ftpcp);
 #define OPT_DST_P -8
 static struct argp_option options[] =
 {
-{"user",        'u',       "USER",0, "User to login as on both ftp servers"},
-{"password",    'p',       "PWD", 0, "USER's password"},
-{"account",     'a',       "ACCT",0, "Account to login as"},
-{"src-user",    OPT_SRC_U, "USER",0, "User to login as on the src ftp server"},
+{"user", 'u', "USER",0, "User to login as on both ftp servers"},
+{"password", 'p', "PWD", 0, "USER's password"},
+{"account", 'a', "ACCT",0, "Account to login as"},
+{"src-user", OPT_SRC_U, "USER",0, "User to login as on the src ftp server"},
 {"src-password",OPT_SRC_P, "PWD", 0, "The src USER's password"},
 {"src-account", OPT_SRC_A, "ACCT",0, "Account to login as on the source server"},
-{"dst-user",    OPT_DST_U, "USER",0, "User to login as on the dst ftp server"},
+{"dst-user", OPT_DST_U, "USER",0, "User to login as on the dst ftp server"},
 {"dst-password",OPT_DST_P, "PWD", 0, "The dst USER's password"},
 {"dst-account", OPT_DST_A, "ACCT",0, "Account to login as on the source server"},
-{"debug",    'D', 0,     0, "Turn on debugging output for ftp connections"},
+{"debug", 'D', 0, 0, "Turn on debugging output for ftp connections"},
 {0, 0}
 };
 static char *args_doc = "SRC [DST]";
@@ -42,7 +42,7 @@ cntl_debug (struct ftp_conn *conn, int type, const char *txt)
 char *type_str;
 switch (type)
 {
-case FTP_CONN_CNTL_DEBUG_CMD:   type_str = ">"; break;
+case FTP_CONN_CNTL_DEBUG_CMD: type_str = ">"; break;
 case FTP_CONN_CNTL_DEBUG_REPLY: type_str = "="; break;
 default: type_str = "?"; break;
 }

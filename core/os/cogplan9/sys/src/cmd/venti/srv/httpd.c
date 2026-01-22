@@ -2,38 +2,38 @@
 #include "dat.h"
 #include "fns.h"
 #include "xml.h"
-typedef struct HttpObj	HttpObj;
+typedef struct HttpObj HttpObj;
 extern QLock memdrawlock;
 enum
 {
-ObjNameSize	= 64,
-MaxObjs		= 64
+ObjNameSize = 64,
+MaxObjs = 64
 };
 struct HttpObj
 {
-char	name[ObjNameSize];
-int	(*f)(HConnect*);
+char name[ObjNameSize];
+int (*f)(HConnect*);
 };
-static HttpObj	objs[MaxObjs];
+static HttpObj objs[MaxObjs];
 static char *webroot;
-static	void		listenproc(void*);
-static	int		estats(HConnect *c);
-static	int		dindex(HConnect *c);
-static	int		xindex(HConnect *c);
-static	int		xlog(HConnect *c);
-static	int		sindex(HConnect *c);
-static	int		hempty(HConnect *c);
-static	int		hlcacheempty(HConnect *c);
-static	int		hdcacheempty(HConnect *c);
-static	int		hicacheempty(HConnect *c);
-static	int		hicachekick(HConnect *c);
-static	int		hdcachekick(HConnect *c);
-static	int		hicacheflush(HConnect *c);
-static	int		hdcacheflush(HConnect *c);
-static	int		httpdobj(char *name, int (*f)(HConnect*));
-static	int		xgraph(HConnect *c);
-static	int		xset(HConnect *c);
-static	int		fromwebdir(HConnect *c);
+static void listenproc(void*);
+static int estats(HConnect *c);
+static int dindex(HConnect *c);
+static int xindex(HConnect *c);
+static int xlog(HConnect *c);
+static int sindex(HConnect *c);
+static int hempty(HConnect *c);
+static int hlcacheempty(HConnect *c);
+static int hdcacheempty(HConnect *c);
+static int hicacheempty(HConnect *c);
+static int hicachekick(HConnect *c);
+static int hdcachekick(HConnect *c);
+static int hicacheflush(HConnect *c);
+static int hdcacheflush(HConnect *c);
+static int httpdobj(char *name, int (*f)(HConnect*));
+static int xgraph(HConnect *c);
+static int xset(HConnect *c);
+static int fromwebdir(HConnect *c);
 int
 httpdinit(char *address, char *dir)
 {
@@ -266,11 +266,11 @@ struct {
 char *ext;
 char *type;
 } exttab[] = {
-".html",	"text/html",
-".txt",	"text/plain",
-".xml",	"text/xml",
-".png",	"image/png",
-".gif",	"image/gif",
+".html", "text/html",
+".txt", "text/plain",
+".xml", "text/xml",
+".png", "image/png",
+".gif", "image/gif",
 0
 };
 static int
@@ -329,19 +329,19 @@ char *name;
 int *p;
 } namedints[] =
 {
-"compress",	&compressblocks,
-"devnull",	&writestodevnull,
-"logging",	&ventilogging,
-"stats",	&collectstats,
-"icachesleeptime",	&icachesleeptime,
-"minicachesleeptime",	&minicachesleeptime,
-"arenasumsleeptime",	&arenasumsleeptime,
-"l0quantum",	&l0quantum,
-"l1quantum",	&l1quantum,
-"manualscheduling",	&manualscheduling,
-"ignorebloom",	&ignorebloom,
-"syncwrites",	&syncwrites,
-"icacheprefetch",	&icacheprefetch,
+"compress", &compressblocks,
+"devnull", &writestodevnull,
+"logging", &ventilogging,
+"stats", &collectstats,
+"icachesleeptime", &icachesleeptime,
+"minicachesleeptime", &minicachesleeptime,
+"arenasumsleeptime", &arenasumsleeptime,
+"l0quantum", &l0quantum,
+"l1quantum", &l1quantum,
+"manualscheduling", &manualscheduling,
+"ignorebloom", &ignorebloom,
+"syncwrites", &syncwrites,
+"icacheprefetch", &icacheprefetch,
 0
 };
 static int

@@ -1,5 +1,5 @@
 # ifdef HAVE_CONFIG_H
-#  include "config.h"
+# include "config.h"
 # endif
 # include "global.h"
 # include "fixed.h"

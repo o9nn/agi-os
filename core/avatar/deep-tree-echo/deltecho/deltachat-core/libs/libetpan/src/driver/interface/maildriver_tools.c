@@ -1,5 +1,5 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #include "maildriver_tools.h"
 #include "libetpan-config.h"
@@ -7,12 +7,12 @@
 #include <ctype.h>
 #include <string.h>
 #ifdef WIN32
-#	include "win_etpan.h"
+# include "win_etpan.h"
 #else
-#	include <dirent.h>
+# include <dirent.h>
 #endif
 #ifdef HAVE_UNISTD_H
-#	include <unistd.h>
+# include <unistd.h>
 #endif
 #include "maildriver.h"
 #include "mailmessage.h"
@@ -314,7 +314,7 @@ goto free_list;
 if (message != NULL)
 mailsession_fetch_result_free(session, message);
 }
-search_result =  mail_search_result_new(list);
+search_result = mail_search_result_new(list);
 if (search_result == NULL) {
 res = MAIL_ERROR_MEMORY;
 goto free_list;

@@ -12,16 +12,16 @@ TOKSB,
 TOKFP
 };
 #include "tab.h"
-typedef struct Addr	Addr;
+typedef struct Addr Addr;
 struct Addr
 {
-uchar	mode;
-Adr	a;
+uchar mode;
+Adr a;
 };
-#pragma	varargck	type	"a"	Addr*
-char*	opnam[256];
-int	iconv(Fmt*);
-int	aconv(Fmt*);
+#pragma varargck type "a" Addr*
+char* opnam[256];
+int iconv(Fmt*);
+int aconv(Fmt*);
 int
 aconv(Fmt *f)
 {
@@ -31,11 +31,11 @@ a = va_arg(f->args, Addr*);
 if(a == nil)
 return fmtstrcpy(f, "AZ");
 switch(a->mode & AMASK) {
-case AFP:	sprint(buf, "%d(fp)", a->a.ind);	break;
-case AMP:	sprint(buf, "%d(mp)", a->a.ind);	break;
-case AIMM:	sprint(buf, "$%d", a->a.imm);		break;
-case AIND|AFP:	sprint(buf, "%d(%d(fp))", a->a.i.s, a->a.i.f); break;
-case AIND|AMP:	sprint(buf, "%d(%d(mp))", a->a.i.s, a->a.i.f); break;
+case AFP: sprint(buf, "%d(fp)", a->a.ind); break;
+case AMP: sprint(buf, "%d(mp)", a->a.ind); break;
+case AIMM: sprint(buf, "$%d", a->a.imm); break;
+case AIND|AFP: sprint(buf, "%d(%d(fp))", a->a.i.s, a->a.i.f); break;
+case AIND|AMP: sprint(buf, "%d(%d(mp))", a->a.i.s, a->a.i.f); break;
 }
 return fmtstrcpy(f, buf);
 }

@@ -1,5 +1,5 @@
 #ifndef ierrors_INCLUDED
-#  define ierrors_INCLUDED
+# define ierrors_INCLUDED
 extern const char *const gs_error_names[];
 #define e_unknownerror (-1)
 #define e_dictfull (-2)
@@ -43,7 +43,7 @@ extern const char *const gs_error_names[];
 #define LEVEL2_ERROR_NAMES\
 "configurationerror", "invalidcontext", "undefinedresource",\
 "unregistered", "invalidid"
-#define ERROR_NAMES   LEVEL1_ERROR_NAMES, LEVEL2_ERROR_NAMES
+#define ERROR_NAMES LEVEL1_ERROR_NAMES, LEVEL2_ERROR_NAMES
 #define e_Fatal (-100)
 #define e_Quit (-101)
 #define e_InterpreterExit (-102)

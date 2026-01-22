@@ -9,301 +9,301 @@
 #include "../port/sd.h"
 extern SDifc sdataifc;
 enum {
-DbgCONFIG	= 0x0001,
-DbgIDENTIFY	= 0x0002,
-DbgSTATE	= 0x0004,
-DbgPROBE	= 0x0008,
-DbgDEBUG	= 0x0080,
-DbgINL		= 0x0100,
-Dbg48BIT	= 0x0200,
-DbgBsy		= 0x0400,
+DbgCONFIG = 0x0001,
+DbgIDENTIFY = 0x0002,
+DbgSTATE = 0x0004,
+DbgPROBE = 0x0008,
+DbgDEBUG = 0x0080,
+DbgINL = 0x0100,
+Dbg48BIT = 0x0200,
+DbgBsy = 0x0400,
 };
-#define DEBUG		(DbgDEBUG|DbgSTATE)
+#define DEBUG (DbgDEBUG|DbgSTATE)
 enum {
-Data		= 0,
-Error		= 1,
-Features	= 1,
-Count		= 2,
-Ir		= 2,
-Sector		= 3,
-Lbalo		= 3,
-Cyllo		= 4,
-Bytelo		= 4,
-Lbamid		= 4,
-Cylhi		= 5,
-Bytehi		= 5,
-Lbahi		= 5,
-Dh		= 6,
-Status		= 7,
-Command		= 7,
-As		= 2,
-Dc		= 2,
-};
-enum {
-Med		= 0x01,
-Ili		= 0x01,
-Nm		= 0x02,
-Eom		= 0x02,
-Abrt		= 0x04,
-Mcr		= 0x08,
-Idnf		= 0x10,
-Mc		= 0x20,
-Unc		= 0x40,
-Wp		= 0x40,
-Icrc		= 0x80,
+Data = 0,
+Error = 1,
+Features = 1,
+Count = 2,
+Ir = 2,
+Sector = 3,
+Lbalo = 3,
+Cyllo = 4,
+Bytelo = 4,
+Lbamid = 4,
+Cylhi = 5,
+Bytehi = 5,
+Lbahi = 5,
+Dh = 6,
+Status = 7,
+Command = 7,
+As = 2,
+Dc = 2,
 };
 enum {
-Dma		= 0x01,
-Ovl		= 0x02,
+Med = 0x01,
+Ili = 0x01,
+Nm = 0x02,
+Eom = 0x02,
+Abrt = 0x04,
+Mcr = 0x08,
+Idnf = 0x10,
+Mc = 0x20,
+Unc = 0x40,
+Wp = 0x40,
+Icrc = 0x80,
 };
 enum {
-Cd		= 0x01,
-Io		= 0x02,
-Rel		= 0x04,
+Dma = 0x01,
+Ovl = 0x02,
 };
 enum {
-Dev0		= 0xA0,
-Dev1		= 0xB0,
-Lba		= 0x40,
+Cd = 0x01,
+Io = 0x02,
+Rel = 0x04,
 };
 enum {
-Err		= 0x01,
-Chk		= 0x01,
-Drq		= 0x08,
-Dsc		= 0x10,
-Serv		= 0x10,
-Df		= 0x20,
-Dmrd		= 0x20,
-Drdy		= 0x40,
-Bsy		= 0x80,
+Dev0 = 0xA0,
+Dev1 = 0xB0,
+Lba = 0x40,
 };
 enum {
-Cnop		= 0x00,
-Cdr		= 0x08,
-Crs		= 0x20,
-Crs48		= 0x24,
-Crd48		= 0x25,
-Crdq48		= 0x26,
-Crsm48		= 0x29,
-Cws		= 0x30,
-Cws48		= 0x34,
-Cwd48		= 0x35,
-Cwdq48		= 0x36,
-Cwsm48		= 0x39,
-Cedd		= 0x90,
-Cpkt		= 0xA0,
-Cidpkt		= 0xA1,
-Crsm		= 0xC4,
-Cwsm		= 0xC5,
-Csm		= 0xC6,
-Crdq		= 0xC7,
-Crd		= 0xC8,
-Cwd		= 0xCA,
-Cwdq		= 0xCC,
-Cstandby	= 0xE2,
-Cid		= 0xEC,
-Csf		= 0xEF,
+Err = 0x01,
+Chk = 0x01,
+Drq = 0x08,
+Dsc = 0x10,
+Serv = 0x10,
+Df = 0x20,
+Dmrd = 0x20,
+Drdy = 0x40,
+Bsy = 0x80,
 };
 enum {
-Nien		= 0x02,
-Srst		= 0x04,
-Hob		= 0x80,
+Cnop = 0x00,
+Cdr = 0x08,
+Crs = 0x20,
+Crs48 = 0x24,
+Crd48 = 0x25,
+Crdq48 = 0x26,
+Crsm48 = 0x29,
+Cws = 0x30,
+Cws48 = 0x34,
+Cwd48 = 0x35,
+Cwdq48 = 0x36,
+Cwsm48 = 0x39,
+Cedd = 0x90,
+Cpkt = 0xA0,
+Cidpkt = 0xA1,
+Crsm = 0xC4,
+Cwsm = 0xC5,
+Csm = 0xC6,
+Crdq = 0xC7,
+Crd = 0xC8,
+Cwd = 0xCA,
+Cwdq = 0xCC,
+Cstandby = 0xE2,
+Cid = 0xEC,
+Csf = 0xEF,
 };
 enum {
-Bmiba		= 0x20,
-Idetim		= 0x40,
-Sidetim		= 0x44,
-Udmactl		= 0x48,
-Udmatim		= 0x4A,
+Nien = 0x02,
+Srst = 0x04,
+Hob = 0x80,
 };
 enum {
-Bmicx		= 0,
-Bmisx		= 2,
-Bmidtpx		= 4,
+Bmiba = 0x20,
+Idetim = 0x40,
+Sidetim = 0x44,
+Udmactl = 0x48,
+Udmatim = 0x4A,
 };
 enum {
-Ssbm		= 0x01,
-Rwcon		= 0x08,
+Bmicx = 0,
+Bmisx = 2,
+Bmidtpx = 4,
 };
 enum {
-Bmidea		= 0x01,
-Idedmae		= 0x02,
-Ideints		= 0x04,
-Dma0cap		= 0x20,
-Dma1cap		= 0x40,
+Ssbm = 0x01,
+Rwcon = 0x08,
 };
 enum {
-PrdEOT		= 0x80000000,
+Bmidea = 0x01,
+Idedmae = 0x02,
+Ideints = 0x04,
+Dma0cap = 0x20,
+Dma1cap = 0x40,
 };
 enum {
-Iconfig		= 0,
-Ilcyl		= 1,
-Ilhead		= 3,
-Ilsec		= 6,
-Iserial		= 10,
-Ifirmware	= 23,
-Imodel		= 27,
-Imaxrwm		= 47,
-Icapabilities	= 49,
-Istandby	= 50,
-Ipiomode	= 51,
-Ivalid		= 53,
-Iccyl		= 54,
-Ichead		= 55,
-Icsec		= 56,
-Iccap		= 57,
-Irwm		= 59,
-Ilba		= 60,
-Imwdma		= 63,
-Iapiomode	= 64,
-Iminmwdma	= 65,
-Irecmwdma	= 66,
-Iminpio		= 67,
-Iminiordy	= 68,
-Ipcktbr		= 71,
-Iserbsy		= 72,
-Iqdepth		= 75,
-Imajor		= 80,
-Iminor		= 81,
-Icsfs		= 82,
-Icsfe		= 85,
-Iudma		= 88,
-Ierase		= 89,
-Ieerase		= 90,
-Ipower		= 91,
-Ilba48		= 100,
-Irmsn		= 127,
-Isecstat	= 128,
-Icfapwr		= 160,
-Imediaserial	= 176,
-Icksum		= 255,
+PrdEOT = 0x80000000,
 };
 enum {
-Mpktsz		= 0x0003,
-Mincomplete	= 0x0004,
-Mdrq		= 0x0060,
-Mrmdev		= 0x0080,
-Mtype		= 0x1F00,
-Mproto		= 0x8000,
+Iconfig = 0,
+Ilcyl = 1,
+Ilhead = 3,
+Ilsec = 6,
+Iserial = 10,
+Ifirmware = 23,
+Imodel = 27,
+Imaxrwm = 47,
+Icapabilities = 49,
+Istandby = 50,
+Ipiomode = 51,
+Ivalid = 53,
+Iccyl = 54,
+Ichead = 55,
+Icsec = 56,
+Iccap = 57,
+Irwm = 59,
+Ilba = 60,
+Imwdma = 63,
+Iapiomode = 64,
+Iminmwdma = 65,
+Irecmwdma = 66,
+Iminpio = 67,
+Iminiordy = 68,
+Ipcktbr = 71,
+Iserbsy = 72,
+Iqdepth = 75,
+Imajor = 80,
+Iminor = 81,
+Icsfs = 82,
+Icsfe = 85,
+Iudma = 88,
+Ierase = 89,
+Ieerase = 90,
+Ipower = 91,
+Ilba48 = 100,
+Irmsn = 127,
+Isecstat = 128,
+Icfapwr = 160,
+Imediaserial = 176,
+Icksum = 255,
 };
 enum {
-Mdma		= 0x0100,
-Mlba		= 0x0200,
-Mnoiordy	= 0x0400,
-Miordy		= 0x0800,
-Msoftrst	= 0x1000,
-Mstdby		= 0x2000,
-Mqueueing	= 0x4000,
-Midma		= 0x8000,
+Mpktsz = 0x0003,
+Mincomplete = 0x0004,
+Mdrq = 0x0060,
+Mrmdev = 0x0080,
+Mtype = 0x1F00,
+Mproto = 0x8000,
 };
 enum {
-Msmart		= 0x0001,
-Msecurity	= 0x0002,
-Mrmmedia	= 0x0004,
-Mpwrmgmt	= 0x0008,
-Mpkt		= 0x0010,
-Mwcache		= 0x0020,
-Mlookahead	= 0x0040,
-Mrelirq		= 0x0080,
-Msvcirq		= 0x0100,
-Mreset		= 0x0200,
-Mprotected	= 0x0400,
-Mwbuf		= 0x1000,
-Mrbuf		= 0x2000,
-Mnop		= 0x4000,
-Mmicrocode	= 0x0001,
-Mqueued		= 0x0002,
-Mcfa		= 0x0004,
-Mapm		= 0x0008,
-Mnotify		= 0x0010,
-Mstandby	= 0x0020,
-Mspinup		= 0x0040,
-Mmaxsec		= 0x0100,
-Mautoacoustic	= 0x0200,
-Maddr48		= 0x0400,
-Mdevconfov	= 0x0800,
-Mflush		= 0x1000,
-Mflush48	= 0x2000,
-Msmarterror	= 0x0001,
-Msmartselftest	= 0x0002,
-Mmserial	= 0x0004,
-Mmpassthru	= 0x0008,
-Mlogging	= 0x0020,
+Mdma = 0x0100,
+Mlba = 0x0200,
+Mnoiordy = 0x0400,
+Miordy = 0x0800,
+Msoftrst = 0x1000,
+Mstdby = 0x2000,
+Mqueueing = 0x4000,
+Midma = 0x8000,
+};
+enum {
+Msmart = 0x0001,
+Msecurity = 0x0002,
+Mrmmedia = 0x0004,
+Mpwrmgmt = 0x0008,
+Mpkt = 0x0010,
+Mwcache = 0x0020,
+Mlookahead = 0x0040,
+Mrelirq = 0x0080,
+Msvcirq = 0x0100,
+Mreset = 0x0200,
+Mprotected = 0x0400,
+Mwbuf = 0x1000,
+Mrbuf = 0x2000,
+Mnop = 0x4000,
+Mmicrocode = 0x0001,
+Mqueued = 0x0002,
+Mcfa = 0x0004,
+Mapm = 0x0008,
+Mnotify = 0x0010,
+Mstandby = 0x0020,
+Mspinup = 0x0040,
+Mmaxsec = 0x0100,
+Mautoacoustic = 0x0200,
+Maddr48 = 0x0400,
+Mdevconfov = 0x0800,
+Mflush = 0x1000,
+Mflush48 = 0x2000,
+Msmarterror = 0x0001,
+Msmartselftest = 0x0002,
+Mmserial = 0x0004,
+Mmpassthru = 0x0008,
+Mlogging = 0x0020,
 };
 typedef struct Ctlr Ctlr;
 typedef struct Drive Drive;
 typedef struct Prd {
-ulong	pa;
-int	count;
+ulong pa;
+int count;
 } Prd;
 enum {
-BMspan		= 64*1024,
-Nprd		= SDmaxio/BMspan+2,
+BMspan = 64*1024,
+Nprd = SDmaxio/BMspan+2,
 };
 typedef struct Ctlr {
-int	cmdport;
-int	ctlport;
-int	irq;
-int	tbdf;
-int	bmiba;
-int	maxio;
-int	span;
-Pcidev*	pcidev;
-void	(*ienable)(Ctlr*);
-void	(*idisable)(Ctlr*);
-SDev*	sdev;
-Drive*	drive[2];
-Prd*	prdt;
-void	(*irqack)(Ctlr*);
+int cmdport;
+int ctlport;
+int irq;
+int tbdf;
+int bmiba;
+int maxio;
+int span;
+Pcidev* pcidev;
+void (*ienable)(Ctlr*);
+void (*idisable)(Ctlr*);
+SDev* sdev;
+Drive* drive[2];
+Prd* prdt;
+void (*irqack)(Ctlr*);
 QLock;
-Drive*	curdrive;
-int	command;
+Drive* curdrive;
+int command;
 Rendez;
-int	done;
-ulong	intnil;
-ulong	intbusy;
-ulong	intok;
+int done;
+ulong intnil;
+ulong intbusy;
+ulong intok;
 Lock;
 } Ctlr;
 typedef struct Drive {
-Ctlr*	ctlr;
-int	dev;
-ushort	info[256];
-int	c;
-int	h;
-int	s;
-vlong	sectors;
-int	secsize;
-int	dma;
-int	dmactl;
-int	rwm;
-int	rwmctl;
-int	pkt;
-uchar	pktcmd[16];
-int	pktdma;
-uchar	sense[18];
-uchar	inquiry[48];
+Ctlr* ctlr;
+int dev;
+ushort info[256];
+int c;
+int h;
+int s;
+vlong sectors;
+int secsize;
+int dma;
+int dmactl;
+int rwm;
+int rwmctl;
+int pkt;
+uchar pktcmd[16];
+int pktdma;
+uchar sense[18];
+uchar inquiry[48];
 QLock;
-int	command;
-int	write;
-uchar*	data;
-int	dlen;
-uchar*	limit;
-int	count;
-int	block;
-int	status;
-int	error;
-int	flags;
-ulong	intcmd;
-ulong	intrd;
-ulong	intwr;
+int command;
+int write;
+uchar* data;
+int dlen;
+uchar* limit;
+int count;
+int block;
+int status;
+int error;
+int flags;
+ulong intcmd;
+ulong intrd;
+ulong intwr;
 } Drive;
 enum {
-Lba48		= 0x1,
-Lba48always	= 0x2,
+Lba48 = 0x1,
+Lba48always = 0x2,
 };
 enum {
-Last28		= (1<<28) - 1 - 1,
+Last28 = (1<<28) - 1 - 1,
 };
 static void
 pc87415ienable(Ctlr* ctlr)
@@ -1057,14 +1057,14 @@ r = SDcheck;
 return r;
 }
 static uchar cmd48[256] = {
-[Crs]	Crs48,
-[Crd]	Crd48,
-[Crdq]	Crdq48,
-[Crsm]	Crsm48,
-[Cws]	Cws48,
-[Cwd]	Cwd48,
-[Cwdq]	Cwdq48,
-[Cwsm]	Cwsm48,
+[Crs] Crs48,
+[Crd] Crd48,
+[Crdq] Crdq48,
+[Crsm] Crsm48,
+[Cws] Cws48,
+[Cwd] Cwd48,
+[Cwdq] Cwdq48,
+[Cwsm] Cwsm48,
 };
 static int
 atageniostart(Drive* drive, uvlong lba)
@@ -1733,7 +1733,7 @@ Ctlr *ctlr;
 char name[32];
 ctlr = sdev->ctlr;
 if(ctlr->bmiba){
-#define ALIGN	(4 * 1024)
+#define ALIGN (4 * 1024)
 if(ctlr->pcidev != nil)
 pcisetbme(ctlr->pcidev);
 ctlr->prdt = mallocalign(Nprd*sizeof(Prd), 4, 0, 4*1024);

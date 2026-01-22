@@ -810,7 +810,7 @@ return size + 1;
 }
 private int
 start_XObject(gx_device_pdf * pdev, bool compress, cos_stream_t **ppcs)
-{   pdf_resource_t *pres;
+{ pdf_resource_t *pres;
 cos_stream_t *pcs;
 int code;
 code = pdf_open_page(pdev, PDF_IN_STREAM);
@@ -1131,7 +1131,7 @@ return_error(gs_error_limitcheck);
 code = start_XObject(pdev, pdev->params.CompressPages, &pcs);
 if (code < 0)
 return code;
-{	byte *s = gs_alloc_string(pdev->memory, objname->size, "pdfmark_PS");
+{ byte *s = gs_alloc_string(pdev->memory, objname->size, "pdfmark_PS");
 if (s == NULL)
 return_error(gs_error_VMerror);
 memcpy(s, objname->data, objname->size);
@@ -1478,49 +1478,49 @@ return 0;
 }
 private const pdfmark_name mark_names[] =
 {
-{"ANN",          pdfmark_ANN,         PDFMARK_NAMEABLE},
-{"LNK",          pdfmark_LNK,         PDFMARK_NAMEABLE},
-{"OUT",          pdfmark_OUT,         0},
-{"ARTICLE",      pdfmark_ARTICLE,     0},
-{"DEST",         pdfmark_DEST,        PDFMARK_NAMEABLE},
-{"PS",           pdfmark_PS,          PDFMARK_NAMEABLE},
-{"PAGES",        pdfmark_PAGES,       0},
-{"PAGE",         pdfmark_PAGE,        0},
-{"PAGELABEL",    pdfmark_PAGELABEL,   0},
-{"DOCINFO",      pdfmark_DOCINFO,     0},
-{"DOCVIEW",      pdfmark_DOCVIEW,     0},
-{"BP",           pdfmark_BP,          PDFMARK_NAMEABLE | PDFMARK_TRUECTM},
-{"EP",           pdfmark_EP,          0},
-{"SP",           pdfmark_SP,          PDFMARK_ODD_OK | PDFMARK_KEEP_NAME | PDFMARK_TRUECTM},
-{"OBJ",          pdfmark_OBJ,         PDFMARK_NAMEABLE},
-{"PUT",          pdfmark_PUT,         PDFMARK_ODD_OK | PDFMARK_KEEP_NAME},
-{".PUTDICT",     pdfmark_PUTDICT,     PDFMARK_ODD_OK | PDFMARK_KEEP_NAME},
+{"ANN", pdfmark_ANN, PDFMARK_NAMEABLE},
+{"LNK", pdfmark_LNK, PDFMARK_NAMEABLE},
+{"OUT", pdfmark_OUT, 0},
+{"ARTICLE", pdfmark_ARTICLE, 0},
+{"DEST", pdfmark_DEST, PDFMARK_NAMEABLE},
+{"PS", pdfmark_PS, PDFMARK_NAMEABLE},
+{"PAGES", pdfmark_PAGES, 0},
+{"PAGE", pdfmark_PAGE, 0},
+{"PAGELABEL", pdfmark_PAGELABEL, 0},
+{"DOCINFO", pdfmark_DOCINFO, 0},
+{"DOCVIEW", pdfmark_DOCVIEW, 0},
+{"BP", pdfmark_BP, PDFMARK_NAMEABLE | PDFMARK_TRUECTM},
+{"EP", pdfmark_EP, 0},
+{"SP", pdfmark_SP, PDFMARK_ODD_OK | PDFMARK_KEEP_NAME | PDFMARK_TRUECTM},
+{"OBJ", pdfmark_OBJ, PDFMARK_NAMEABLE},
+{"PUT", pdfmark_PUT, PDFMARK_ODD_OK | PDFMARK_KEEP_NAME},
+{".PUTDICT", pdfmark_PUTDICT, PDFMARK_ODD_OK | PDFMARK_KEEP_NAME},
 {".PUTINTERVAL", pdfmark_PUTINTERVAL, PDFMARK_ODD_OK | PDFMARK_KEEP_NAME},
-{".PUTSTREAM",   pdfmark_PUTSTREAM,   PDFMARK_ODD_OK | PDFMARK_KEEP_NAME |
+{".PUTSTREAM", pdfmark_PUTSTREAM, PDFMARK_ODD_OK | PDFMARK_KEEP_NAME |
 PDFMARK_NO_REFS},
-{"APPEND",       pdfmark_APPEND,      PDFMARK_KEEP_NAME},
-{"CLOSE",        pdfmark_CLOSE,       PDFMARK_ODD_OK | PDFMARK_KEEP_NAME},
+{"APPEND", pdfmark_APPEND, PDFMARK_KEEP_NAME},
+{"CLOSE", pdfmark_CLOSE, PDFMARK_ODD_OK | PDFMARK_KEEP_NAME},
 {"NamespacePush", pdfmark_NamespacePush, 0},
 {"NamespacePop", pdfmark_NamespacePop, 0},
-{"NI",           pdfmark_NI,          PDFMARK_NAMEABLE},
-{"MP",           pdfmark_MP,          PDFMARK_ODD_OK},
-{"DP",           pdfmark_DP,          0},
-{"BMC",          pdfmark_BMC,         PDFMARK_ODD_OK},
-{"BDC",          pdfmark_BDC,         0},
-{"EMC",          pdfmark_EMC,         0},
-{"StRoleMap",    pdfmark_StRoleMap,   0},
-{"StClassMap",   pdfmark_StClassMap,  0},
-{"StPNE",        pdfmark_StPNE,       PDFMARK_NAMEABLE},
+{"NI", pdfmark_NI, PDFMARK_NAMEABLE},
+{"MP", pdfmark_MP, PDFMARK_ODD_OK},
+{"DP", pdfmark_DP, 0},
+{"BMC", pdfmark_BMC, PDFMARK_ODD_OK},
+{"BDC", pdfmark_BDC, 0},
+{"EMC", pdfmark_EMC, 0},
+{"StRoleMap", pdfmark_StRoleMap, 0},
+{"StClassMap", pdfmark_StClassMap, 0},
+{"StPNE", pdfmark_StPNE, PDFMARK_NAMEABLE},
 {"StBookmarkRoot", pdfmark_StBookmarkRoot, 0},
-{"StPush",       pdfmark_StPush,       0},
-{"StPop",        pdfmark_StPop,        0},
-{"StPopAll",     pdfmark_StPopAll,     0},
-{"StBMC",        pdfmark_StBMC,        0},
-{"StBDC",        pdfmark_StBDC,        0},
-{"StOBJ",        pdfmark_StOBJ,        0},
-{"StAttr",       pdfmark_StAttr,       0},
-{"StStore",      pdfmark_StStore,      0},
-{"StRetrieve",   pdfmark_StRetrieve,   0},
+{"StPush", pdfmark_StPush, 0},
+{"StPop", pdfmark_StPop, 0},
+{"StPopAll", pdfmark_StPopAll, 0},
+{"StBMC", pdfmark_StBMC, 0},
+{"StBDC", pdfmark_StBDC, 0},
+{"StOBJ", pdfmark_StOBJ, 0},
+{"StAttr", pdfmark_StAttr, 0},
+{"StStore", pdfmark_StStore, 0},
+{"StRetrieve", pdfmark_StRetrieve, 0},
 {0, 0}
 };
 int

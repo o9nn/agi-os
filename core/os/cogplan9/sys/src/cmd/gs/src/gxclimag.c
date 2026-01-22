@@ -646,11 +646,11 @@ return code;
 int
 cmd_put_halftone(gx_device_clist_writer * cldev, const gx_device_halftone * pdht)
 {
-uint    ht_size = 0, req_size;
-byte *  dp;
-byte *  dp0 = 0;
-byte *  pht_buff = 0;
-int     code = gx_ht_write(pdht, (gx_device *)cldev, 0, &ht_size);
+uint ht_size = 0, req_size;
+byte * dp;
+byte * dp0 = 0;
+byte * pht_buff = 0;
+int code = gx_ht_write(pdht, (gx_device *)cldev, 0, &ht_size);
 if (code < 0 && code != gs_error_rangecheck)
 return code;
 req_size = 2 + enc_u_sizew(ht_size);
@@ -687,9 +687,9 @@ cldev->cnext = dp0;
 return code;
 }
 if (ht_size > cbuf_ht_seg_max_size) {
-byte *  pbuff = pht_buff;
+byte * pbuff = pht_buff;
 while (ht_size > 0 && code >= 0) {
-int     seg_size, tmp_size;
+int seg_size, tmp_size;
 seg_size = ( ht_size > cbuf_ht_seg_max_size ? cbuf_ht_seg_max_size
 : ht_size );
 tmp_size = 2 + enc_u_sizew(seg_size) + seg_size;
@@ -1065,7 +1065,7 @@ if (gx_cpath_includes_rectangle(pcpath,
 imgbox.p.x, imgbox.p.y,
 imgbox.q.x, imgbox.q.y))
 return true;
-return (gx_cpath_outer_box(pcpath, &obox)  &&
+return (gx_cpath_outer_box(pcpath, &obox) &&
 obox.p.x <= imgbox.q.x && obox.q.x >= imgbox.p.x &&
 obox.p.y <= imgbox.q.y && obox.q.y >= imgbox.p.y );
 }

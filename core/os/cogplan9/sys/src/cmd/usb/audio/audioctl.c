@@ -4,44 +4,44 @@
 #include "usb.h"
 #include "audio.h"
 #include "audioctl.h"
-int endpt[2] =		{-1, -1};
-int interface[2] =	{-1, -1};
-int featureid[2] =	{-1, -1};
-int selectorid[2] =	{-1, -1};
-int mixerid[2] =	{-1, -1};
-int curalt[2] =		{-1, -1};
-int buttonendpt =	-1;
+int endpt[2] = {-1, -1};
+int interface[2] = {-1, -1};
+int featureid[2] = {-1, -1};
+int selectorid[2] = {-1, -1};
+int mixerid[2] = {-1, -1};
+int curalt[2] = {-1, -1};
+int buttonendpt = -1;
 int id;
 Dev *ad;
 Audiocontrol controls[2][Ncontrol] = {
 {
-[Speed_control] = {		"speed",	0, {0}, 0,	44100,	Undef},
-[Mute_control] = {		"mute",		0, {0}, 0,	0,	Undef},
-[Volume_control] = {		"volume",	0, {0}, 0,	0,	Undef},
-[Bass_control] = {		"bass",		0, {0}, 0,	0,	Undef},
-[Mid_control] = {		"mid",		0, {0}, 0,	0,	Undef},
-[Treble_control] = {		"treble",	0, {0}, 0,	0,	Undef},
-[Equalizer_control] = {		"equalizer",	0, {0}, 0,	0,	Undef},
-[Agc_control] = {		"agc",		0, {0}, 0,	0,	Undef},
-[Delay_control] = {		"delay",	0, {0}, 0,	0,	Undef},
-[Bassboost_control] = {		"bassboost",	0, {0}, 0,	0,	Undef},
-[Loudness_control] = {		"loudness",	0, {0}, 0,	0,	Undef},
-[Channel_control] = {		"channels",	0, {0}, 0,	2,	Undef},
-[Resolution_control] = {	"resolution",	0, {0}, 0,	16,	Undef},
+[Speed_control] = { "speed", 0, {0}, 0, 44100, Undef},
+[Mute_control] = { "mute", 0, {0}, 0, 0, Undef},
+[Volume_control] = { "volume", 0, {0}, 0, 0, Undef},
+[Bass_control] = { "bass", 0, {0}, 0, 0, Undef},
+[Mid_control] = { "mid", 0, {0}, 0, 0, Undef},
+[Treble_control] = { "treble", 0, {0}, 0, 0, Undef},
+[Equalizer_control] = { "equalizer", 0, {0}, 0, 0, Undef},
+[Agc_control] = { "agc", 0, {0}, 0, 0, Undef},
+[Delay_control] = { "delay", 0, {0}, 0, 0, Undef},
+[Bassboost_control] = { "bassboost", 0, {0}, 0, 0, Undef},
+[Loudness_control] = { "loudness", 0, {0}, 0, 0, Undef},
+[Channel_control] = { "channels", 0, {0}, 0, 2, Undef},
+[Resolution_control] = { "resolution", 0, {0}, 0, 16, Undef},
 }, {
-[Speed_control] = {		"speed",	0, {0}, 0,	44100,	Undef},
-[Mute_control] = {		"mute",		0, {0}, 0,	0,	Undef},
-[Volume_control] = {		"volume",	0, {0}, 0,	0,	Undef},
-[Bass_control] = {		"bass",		0, {0}, 0,	0,	Undef},
-[Mid_control] = {		"mid",		0, {0}, 0,	0,	Undef},
-[Treble_control] = {		"treble",	0, {0}, 0,	0,	Undef},
-[Equalizer_control] = {		"equalizer",	0, {0}, 0,	0,	Undef},
-[Agc_control] = {		"agc",		0, {0}, 0,	0,	Undef},
-[Delay_control] = {		"delay",	0, {0}, 0,	0,	Undef},
-[Bassboost_control] = {		"bassboost",	0, {0}, 0,	0,	Undef},
-[Loudness_control] = {		"loudness",	0, {0}, 0,	0,	Undef},
-[Channel_control] = {		"channels",	0, {0}, 0,	2,	Undef},
-[Resolution_control] = {	"resolution",	0, {0}, 0,	16,	Undef},
+[Speed_control] = { "speed", 0, {0}, 0, 44100, Undef},
+[Mute_control] = { "mute", 0, {0}, 0, 0, Undef},
+[Volume_control] = { "volume", 0, {0}, 0, 0, Undef},
+[Bass_control] = { "bass", 0, {0}, 0, 0, Undef},
+[Mid_control] = { "mid", 0, {0}, 0, 0, Undef},
+[Treble_control] = { "treble", 0, {0}, 0, 0, Undef},
+[Equalizer_control] = { "equalizer", 0, {0}, 0, 0, Undef},
+[Agc_control] = { "agc", 0, {0}, 0, 0, Undef},
+[Delay_control] = { "delay", 0, {0}, 0, 0, Undef},
+[Bassboost_control] = { "bassboost", 0, {0}, 0, 0, Undef},
+[Loudness_control] = { "loudness", 0, {0}, 0, 0, Undef},
+[Channel_control] = { "channels", 0, {0}, 0, 2, Undef},
+[Resolution_control] = { "resolution", 0, {0}, 0, 16, Undef},
 }
 };
 int
@@ -78,8 +78,8 @@ return 0;
 }
 if(ep->iface->csp != CSP(Claudio, 2, 0))
 continue;
-if((rec == Play && (ep->addr &  0x80))
-|| (rec == Record && (ep->addr &  0x80) == 0))
+if((rec == Play && (ep->addr & 0x80))
+|| (rec == Record && (ep->addr & 0x80) == 0))
 continue;
 for(j = 0; j < 16; j++){
 if((da = ep->iface->altc[j]) == nil || (a = da->aux) == nil)
@@ -441,7 +441,7 @@ switch(ctl){
 default:
 return Undef;
 case Speed_control:
-value[0] =  getspeed(rec, req);
+value[0] = getspeed(rec, req);
 return 0;
 case Channel_control:
 case Resolution_control:

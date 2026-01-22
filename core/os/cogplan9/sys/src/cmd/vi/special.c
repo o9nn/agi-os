@@ -4,95 +4,95 @@
 #include <mach.h>
 #define Extern extern
 #include "mips.h"
-void	Snor(ulong);
-void	Ssll(ulong);
-void	Ssra(ulong);
-void	Sslt(ulong);
-void	Ssltu(ulong);
-void	Sand(ulong);
-void	Saddu(ulong);
-void	Sadd(ulong);
-void	Sjr(ulong);
-void	Sor(ulong);
-void	Ssubu(ulong);
-void	Sjalr(ulong);
-void	Sdivu(ulong);
-void	Smfhi(ulong);
-void	Smflo(ulong);
-void	Sxor(ulong);
-void	Smult(ulong);
-void	Smultu(ulong);
-void	Sdiv(ulong);
-void	Ssrl(ulong);
-void	Ssllv(ulong);
-void	Ssrlv(ulong);
-void	Ssrav(ulong);
+void Snor(ulong);
+void Ssll(ulong);
+void Ssra(ulong);
+void Sslt(ulong);
+void Ssltu(ulong);
+void Sand(ulong);
+void Saddu(ulong);
+void Sadd(ulong);
+void Sjr(ulong);
+void Sor(ulong);
+void Ssubu(ulong);
+void Sjalr(ulong);
+void Sdivu(ulong);
+void Smfhi(ulong);
+void Smflo(ulong);
+void Sxor(ulong);
+void Smult(ulong);
+void Smultu(ulong);
+void Sdiv(ulong);
+void Ssrl(ulong);
+void Ssllv(ulong);
+void Ssrlv(ulong);
+void Ssrav(ulong);
 Inst ispec[] =
 {
-{ Ssll,		"sll",	Iarith },
-{ undef,		"" },
-{ Ssrl,		"srl",	Iarith },
-{ Ssra,		"sra",	Iarith },
-{ Ssllv,	"sllv",	Iarith },
-{ undef,	"" },
-{ Ssrlv,	"srlv",	Iarith },
-{ Ssrav,	"srav",	Iarith },
-{ Sjr,		"jr",	Ibranch },
-{ Sjalr,	"jalr",	Ibranch },
-{ undef,	"" },
-{ undef,	"" },
-{ Ssyscall,	"sysc", Isyscall },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ Smfhi,	"mfhi",	Ireg },
-{ undef,	"" },
-{ Smflo,	"mflo",	Ireg },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ Smult,	"mult",	Iarith },
-{ Smultu,	"multu" },
-{ Sdiv,		"div",	Iarith },
-{ Sdivu,	"divu", Iarith },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ Sadd,		"add",	Iarith },
-{ Saddu,	"addu", Iarith },
-{ undef,	"" },
-{ Ssubu,	"subu", Iarith },
-{ Sand,		"and",	Iarith },
-{ Sor,		"or", 	Iarith },
-{ Sxor,		"xor",	Iarith },
-{ Snor,		"nor",	Iarith },
-{ undef,	"" },
-{ undef,	"" },
-{ Sslt,		"slt", 	Iarith },
-{ Ssltu,	"sltu",	Iarith },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
+{ Ssll, "sll", Iarith },
+{ undef, "" },
+{ Ssrl, "srl", Iarith },
+{ Ssra, "sra", Iarith },
+{ Ssllv, "sllv", Iarith },
+{ undef, "" },
+{ Ssrlv, "srlv", Iarith },
+{ Ssrav, "srav", Iarith },
+{ Sjr, "jr", Ibranch },
+{ Sjalr, "jalr", Ibranch },
+{ undef, "" },
+{ undef, "" },
+{ Ssyscall, "sysc", Isyscall },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ Smfhi, "mfhi", Ireg },
+{ undef, "" },
+{ Smflo, "mflo", Ireg },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ Smult, "mult", Iarith },
+{ Smultu, "multu" },
+{ Sdiv, "div", Iarith },
+{ Sdivu, "divu", Iarith },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ Sadd, "add", Iarith },
+{ Saddu, "addu", Iarith },
+{ undef, "" },
+{ Ssubu, "subu", Iarith },
+{ Sand, "and", Iarith },
+{ Sor, "or", Iarith },
+{ Sxor, "xor", Iarith },
+{ Snor, "nor", Iarith },
+{ undef, "" },
+{ undef, "" },
+{ Sslt, "slt", Iarith },
+{ Ssltu, "sltu", Iarith },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
 { 0 }
 };
 void

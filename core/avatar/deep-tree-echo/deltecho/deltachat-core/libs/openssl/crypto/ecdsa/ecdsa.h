@@ -2,12 +2,12 @@
 # define HEADER_ECDSA_H
 # include <openssl/opensslconf.h>
 # ifdef OPENSSL_NO_ECDSA
-#  error ECDSA is disabled.
+# error ECDSA is disabled.
 # endif
 # include <openssl/ec.h>
 # include <openssl/ossl_typ.h>
 # ifndef OPENSSL_NO_DEPRECATED
-#  include <openssl/bn.h>
+# include <openssl/bn.h>
 # endif
 #ifdef __cplusplus
 extern "C" {
@@ -46,20 +46,20 @@ CRYPTO_EX_free *free_func);
 int ECDSA_set_ex_data(EC_KEY *d, int idx, void *arg);
 void *ECDSA_get_ex_data(EC_KEY *d, int idx);
 void ERR_load_ECDSA_strings(void);
-# define ECDSA_F_ECDSA_CHECK                              104
-# define ECDSA_F_ECDSA_DATA_NEW_METHOD                    100
-# define ECDSA_F_ECDSA_DO_SIGN                            101
-# define ECDSA_F_ECDSA_DO_VERIFY                          102
-# define ECDSA_F_ECDSA_SIGN_SETUP                         103
-# define ECDSA_R_BAD_SIGNATURE                            100
-# define ECDSA_R_DATA_TOO_LARGE_FOR_KEY_SIZE              101
-# define ECDSA_R_ERR_EC_LIB                               102
-# define ECDSA_R_MISSING_PARAMETERS                       103
-# define ECDSA_R_NEED_NEW_SETUP_VALUES                    106
-# define ECDSA_R_NON_FIPS_METHOD                          107
-# define ECDSA_R_RANDOM_NUMBER_GENERATION_FAILED          104
-# define ECDSA_R_SIGNATURE_MALLOC_FAILED                  105
-#ifdef  __cplusplus
+# define ECDSA_F_ECDSA_CHECK 104
+# define ECDSA_F_ECDSA_DATA_NEW_METHOD 100
+# define ECDSA_F_ECDSA_DO_SIGN 101
+# define ECDSA_F_ECDSA_DO_VERIFY 102
+# define ECDSA_F_ECDSA_SIGN_SETUP 103
+# define ECDSA_R_BAD_SIGNATURE 100
+# define ECDSA_R_DATA_TOO_LARGE_FOR_KEY_SIZE 101
+# define ECDSA_R_ERR_EC_LIB 102
+# define ECDSA_R_MISSING_PARAMETERS 103
+# define ECDSA_R_NEED_NEW_SETUP_VALUES 106
+# define ECDSA_R_NON_FIPS_METHOD 107
+# define ECDSA_R_RANDOM_NUMBER_GENERATION_FAILED 104
+# define ECDSA_R_SIGNATURE_MALLOC_FAILED 105
+#ifdef __cplusplus
 }
 #endif
 #endif

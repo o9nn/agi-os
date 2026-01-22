@@ -10,54 +10,54 @@ Minute = 60,
 Hour = 60 * Minute,
 Day = 24 * Hour,
 };
-typedef struct Job	Job;
-typedef struct Time	Time;
-typedef struct User	User;
+typedef struct Job Job;
+typedef struct Time Time;
+typedef struct User User;
 struct Time{
-uvlong	min;
-ulong	hour;
-ulong	mday;
-ulong	wday;
-ulong	mon;
+uvlong min;
+ulong hour;
+ulong mday;
+ulong wday;
+ulong mon;
 };
 struct Job{
-char	*host;
-Time	time;
-char	*cmd;
-Job	*next;
+char *host;
+Time time;
+char *cmd;
+Job *next;
 };
 struct User{
-Qid	lastqid;
-char	*name;
-Job	*jobs;
+Qid lastqid;
+char *name;
+Job *jobs;
 };
-User	*users;
-int	nuser;
-int	maxuser;
-char	*savec;
-char	*savetok;
-int	tok;
-int	debug;
-ulong	lexval;
-void	rexec(User*, Job*);
-void	readalljobs(void);
-Job	*readjobs(char*, User*);
-int	getname(char**);
-uvlong	gettime(int, int);
-int	gettok(int, int);
-void	initcap(void);
-void	pushtok(void);
-void	usage(void);
-void	freejobs(Job*);
-User	*newuser(char*);
-void	*emalloc(ulong);
-void	*erealloc(void*, ulong);
-int	myauth(int, char*);
-void	createuser(void);
-int	mkcmd(char*, char*, int);
-void	printjobs(void);
-int	qidcmp(Qid, Qid);
-int	becomeuser(char*);
+User *users;
+int nuser;
+int maxuser;
+char *savec;
+char *savetok;
+int tok;
+int debug;
+ulong lexval;
+void rexec(User*, Job*);
+void readalljobs(void);
+Job *readjobs(char*, User*);
+int getname(char**);
+uvlong gettime(int, int);
+int gettok(int, int);
+void initcap(void);
+void pushtok(void);
+void usage(void);
+void freejobs(Job*);
+User *newuser(char*);
+void *emalloc(ulong);
+void *erealloc(void*, ulong);
+int myauth(int, char*);
+void createuser(void);
+int mkcmd(char*, char*, int);
+void printjobs(void);
+int qidcmp(Qid, Qid);
+int becomeuser(char*);
 ulong
 minute(ulong tm)
 {
@@ -72,8 +72,8 @@ return sleep((tm - now)*1000);
 else
 return 0;
 }
-#pragma varargck	argpos clog 1
-#pragma varargck	argpos fatal 1
+#pragma varargck argpos clog 1
+#pragma varargck argpos fatal 1
 static void
 clog(char *fmt, ...)
 {
@@ -176,7 +176,7 @@ t.min = 1ULL << tm.min;
 t.hour = 1 << tm.hour;
 t.wday = 1 << tm.wday;
 t.mday = 1 << tm.mday;
-t.mon =  1 << (tm.mon + 1);
+t.mon = 1 << (tm.mon + 1);
 for(i = 0; i < nuser; i++)
 for(j = users[i].jobs; j; j = j->next)
 if(j->time.min & t.min

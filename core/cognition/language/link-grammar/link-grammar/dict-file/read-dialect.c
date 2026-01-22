@@ -295,7 +295,7 @@ dfile->pin);
 return false;
 }
 }
-while  (*dfile->pin == '\n')
+while (*dfile->pin == '\n')
 {
 dfile->pin++;
 dfile->line_number++;

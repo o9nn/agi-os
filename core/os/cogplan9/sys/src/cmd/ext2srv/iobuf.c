@@ -5,12 +5,12 @@
 #include <9p.h>
 #include "dat.h"
 #include "fns.h"
-#define	NIOBUF		100
-#define	HIOB		(NIOBUF/3)
-static Iobuf*	hiob[HIOB];
-static Iobuf	iobuf[NIOBUF];
-static Iobuf*	iohead;
-static Iobuf*	iotail;
+#define NIOBUF 100
+#define HIOB (NIOBUF/3)
+static Iobuf* hiob[HIOB];
+static Iobuf iobuf[NIOBUF];
+static Iobuf* iohead;
+static Iobuf* iotail;
 Iobuf*
 getbuf(Xfs *dev, long addr)
 {

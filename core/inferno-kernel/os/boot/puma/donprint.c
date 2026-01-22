@@ -1,37 +1,37 @@
-#include	"u.h"
-#include	"lib.h"
-#define	PTR	sizeof(char*)
-#define	SHORT	sizeof(int)
-#define	INT	sizeof(int)
-#define	LONG	sizeof(long)
-#define	IDIGIT	30
-#define	MAXCON	30
-#define	FLONG	(1<<0)
-#define	FSHORT	(1<<1)
-#define	FUNSIGN	(1<<2)
-typedef struct Op	Op;
+#include "u.h"
+#include "lib.h"
+#define PTR sizeof(char*)
+#define SHORT sizeof(int)
+#define INT sizeof(int)
+#define LONG sizeof(long)
+#define IDIGIT 30
+#define MAXCON 30
+#define FLONG (1<<0)
+#define FSHORT (1<<1)
+#define FUNSIGN (1<<2)
+typedef struct Op Op;
 struct Op
 {
-char	*p;
-char	*ep;
-void	*argp;
-int	f1;
-int	f2;
-int	f3;
+char *p;
+char *ep;
+void *argp;
+int f1;
+int f2;
+int f3;
 };
-static	int	noconv(Op*);
-static	int	cconv(Op*);
-static	int	dconv(Op*);
-static	int	hconv(Op*);
-static	int	lconv(Op*);
-static	int	oconv(Op*);
-static	int	sconv(Op*);
-static	int	uconv(Op*);
-static	int	xconv(Op*);
-static	int	Xconv(Op*);
-static	int	percent(Op*);
+static int noconv(Op*);
+static int cconv(Op*);
+static int dconv(Op*);
+static int hconv(Op*);
+static int lconv(Op*);
+static int oconv(Op*);
+static int sconv(Op*);
+static int uconv(Op*);
+static int xconv(Op*);
+static int Xconv(Op*);
+static int percent(Op*);
 static
-int	(*fmtconv[MAXCON])(Op*) =
+int (*fmtconv[MAXCON])(Op*) =
 {
 noconv,
 cconv, dconv, hconv, lconv,
@@ -39,7 +39,7 @@ oconv, sconv, uconv, xconv,
 Xconv, percent,
 };
 static
-char	fmtindex[128] =
+char fmtindex[128] =
 {
 ['c'] 1,
 ['d'] 2,
@@ -52,8 +52,8 @@ char	fmtindex[128] =
 ['X'] 9,
 ['%'] 10,
 };
-static	int	convcount  = { 11 };
-static	int	ucase;
+static int convcount = { 11 };
+static int ucase;
 static void
 PUT(Op *o, int c)
 {
@@ -227,13 +227,13 @@ b[--i] = '-';
 strconv(b+i, op, op->f1, -1);
 return r;
 }
-static	int
+static int
 noconv(Op *op)
 {
 strconv("***", op, 0, -1);
 return 0;
 }
-static	int
+static int
 cconv(Op *op)
 {
 char b[2];
@@ -242,43 +242,43 @@ b[1] = 0;
 strconv(b, op, op->f1, -1);
 return INT;
 }
-static	int
+static int
 dconv(Op *op)
 {
 return numbconv(op, 10);
 }
-static	int
+static int
 hconv(Op*)
 {
 return -FSHORT;
 }
-static	int
+static int
 lconv(Op*)
 {
 return -FLONG;
 }
-static	int
+static int
 oconv(Op *op)
 {
 return numbconv(op, 8);
 }
-static	int
+static int
 sconv(Op *op)
 {
 strconv(*(char**)op->argp, op, op->f1, op->f2);
 return PTR;
 }
-static	int
+static int
 uconv(Op*)
 {
 return -FUNSIGN;
 }
-static	int
+static int
 xconv(Op *op)
 {
 return numbconv(op, 16);
 }
-static	int
+static int
 Xconv(Op *op)
 {
 int r;
@@ -287,7 +287,7 @@ r = numbconv(op, 16);
 ucase = 0;
 return r;
 }
-static	int
+static int
 percent(Op *op)
 {
 PUT(op, '%');

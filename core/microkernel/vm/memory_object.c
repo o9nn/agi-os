@@ -20,32 +20,32 @@
 #include <vm/vm_kern.h>
 #include <vm/vm_map.h>
 #include <ipc/ipc_port.h>
-#if	MACH_PAGEMAP
+#if MACH_PAGEMAP
 #include <vm/vm_external.h>
 #endif
-typedef	int		memory_object_lock_result_t;
-ipc_port_t	memory_manager_default = IP_NULL;
+typedef int memory_object_lock_result_t;
+ipc_port_t memory_manager_default = IP_NULL;
 def_simple_lock_data(static,memory_manager_default_lock)
 kern_return_t memory_object_data_supply(
-vm_object_t		object,
-vm_offset_t		offset,
-vm_offset_t		vm_data_copy,
-unsigned int		data_cnt,
-vm_prot_t		lock_value,
-boolean_t		precious,
-ipc_port_t		reply_to,
-mach_msg_type_name_t	reply_to_type)
+vm_object_t object,
+vm_offset_t offset,
+vm_offset_t vm_data_copy,
+unsigned int data_cnt,
+vm_prot_t lock_value,
+boolean_t precious,
+ipc_port_t reply_to,
+mach_msg_type_name_t reply_to_type)
 {
-kern_return_t	result = KERN_SUCCESS;
-vm_offset_t	error_offset = 0;
-vm_page_t	m;
-vm_page_t	data_m;
-vm_size_t	original_length;
-vm_offset_t	original_offset;
-vm_page_t	*page_list;
-boolean_t	was_absent;
+kern_return_t result = KERN_SUCCESS;
+vm_offset_t error_offset = 0;
+vm_page_t m;
+vm_page_t data_m;
+vm_size_t original_length;
+vm_offset_t original_offset;
+vm_page_t *page_list;
+boolean_t was_absent;
 vm_map_copy_t data_copy = (vm_map_copy_t)vm_data_copy;
-vm_map_copy_t	orig_copy = data_copy;
+vm_map_copy_t orig_copy = data_copy;
 if (object == VM_OBJECT_NULL) {
 return(KERN_INVALID_ARGUMENT);
 }
@@ -110,7 +110,7 @@ vm_page_unlock_queues();
 *page_list++ = VM_PAGE_NULL;
 if (--(data_copy->cpy_npages) == 0 &&
 vm_map_copy_has_cont(data_copy)) {
-vm_map_copy_t	new_copy;
+vm_map_copy_t new_copy;
 vm_object_unlock(object);
 vm_map_copy_invoke_cont(data_copy, &new_copy, &result);
 if (result == KERN_SUCCESS) {
@@ -150,10 +150,10 @@ vm_map_copy_discard(orig_copy);
 return(result);
 }
 kern_return_t memory_object_data_error(
-vm_object_t	object,
-vm_offset_t	offset,
-vm_size_t	size,
-kern_return_t	error_value)
+vm_object_t object,
+vm_offset_t offset,
+vm_size_t size,
+kern_return_t error_value)
 {
 if (object == VM_OBJECT_NULL)
 return(KERN_INVALID_ARGUMENT);
@@ -181,25 +181,25 @@ vm_object_deallocate(object);
 return(KERN_SUCCESS);
 }
 kern_return_t memory_object_data_unavailable(
-vm_object_t	object,
-vm_offset_t	offset,
-vm_size_t	size)
+vm_object_t object,
+vm_offset_t offset,
+vm_size_t size)
 {
-#if	MACH_PAGEMAP
-vm_external_t	existence_info = VM_EXTERNAL_NULL;
+#if MACH_PAGEMAP
+vm_external_t existence_info = VM_EXTERNAL_NULL;
 #endif
 if (object == VM_OBJECT_NULL)
 return(KERN_INVALID_ARGUMENT);
 if (size != round_page(size))
 return(KERN_INVALID_ARGUMENT);
-#if	MACH_PAGEMAP
+#if MACH_PAGEMAP
 if ((offset == 0) && (size > VM_EXTERNAL_LARGE_SIZE) &&
 (object->existence_info == VM_EXTERNAL_NULL)) {
 existence_info = vm_external_create(VM_EXTERNAL_SMALL_SIZE);
 }
 #endif
 vm_object_lock(object);
-#if	MACH_PAGEMAP
+#if MACH_PAGEMAP
 if (existence_info != VM_EXTERNAL_NULL) {
 object->existence_info = existence_info;
 }
@@ -226,15 +226,15 @@ vm_object_unlock(object);
 vm_object_deallocate(object);
 return(KERN_SUCCESS);
 }
-#define	MEMORY_OBJECT_LOCK_RESULT_DONE		0
-#define	MEMORY_OBJECT_LOCK_RESULT_MUST_BLOCK	1
-#define	MEMORY_OBJECT_LOCK_RESULT_MUST_CLEAN	2
-#define	MEMORY_OBJECT_LOCK_RESULT_MUST_RETURN	3
+#define MEMORY_OBJECT_LOCK_RESULT_DONE 0
+#define MEMORY_OBJECT_LOCK_RESULT_MUST_BLOCK 1
+#define MEMORY_OBJECT_LOCK_RESULT_MUST_CLEAN 2
+#define MEMORY_OBJECT_LOCK_RESULT_MUST_RETURN 3
 static memory_object_lock_result_t memory_object_lock_page(
-vm_page_t		m,
-memory_object_return_t	should_return,
-boolean_t		should_flush,
-vm_prot_t		prot)
+vm_page_t m,
+memory_object_return_t should_return,
+boolean_t should_flush,
+vm_prot_t prot)
 {
 if (m->absent)
 return(MEMORY_OBJECT_LOCK_RESULT_DONE);
@@ -296,26 +296,26 @@ return(MEMORY_OBJECT_LOCK_RESULT_DONE);
 }
 kern_return_t
 memory_object_lock_request(
-vm_object_t		object,
-vm_offset_t		offset,
-vm_size_t		size,
-memory_object_return_t	should_return,
-boolean_t		should_flush,
-vm_prot_t		prot,
-ipc_port_t		reply_to,
-mach_msg_type_name_t	reply_to_type)
+vm_object_t object,
+vm_offset_t offset,
+vm_size_t size,
+memory_object_return_t should_return,
+boolean_t should_flush,
+vm_prot_t prot,
+ipc_port_t reply_to,
+mach_msg_type_name_t reply_to_type)
 {
-vm_page_t		m;
-vm_offset_t		original_offset = offset;
-vm_size_t		original_size = size;
-vm_offset_t		paging_offset = 0;
-vm_object_t		new_object = VM_OBJECT_NULL;
-vm_offset_t		new_offset = 0;
-vm_offset_t		last_offset = offset;
-int			page_lock_result;
-int			pageout_action = 0;
-#define	DATA_WRITE_MAX	32
-vm_page_t		holding_pages[DATA_WRITE_MAX];
+vm_page_t m;
+vm_offset_t original_offset = offset;
+vm_size_t original_size = size;
+vm_offset_t paging_offset = 0;
+vm_object_t new_object = VM_OBJECT_NULL;
+vm_offset_t new_offset = 0;
+vm_offset_t last_offset = offset;
+int page_lock_result;
+int pageout_action = 0;
+#define DATA_WRITE_MAX 32
+vm_page_t holding_pages[DATA_WRITE_MAX];
 if (object == VM_OBJECT_NULL ||
 ((prot & ~VM_PROT_ALL) != 0 && prot != VM_PROT_NO_CHANGE))
 return (KERN_INVALID_ARGUMENT);
@@ -323,34 +323,34 @@ size = round_page(size);
 vm_object_lock(object);
 vm_object_paging_begin(object);
 offset -= object->paging_offset;
-#define	PAGEOUT_PAGES							\
-MACRO_BEGIN								\
-vm_map_copy_t		copy;					\
-unsigned		i;					\
-vm_page_t		hp;					\
+#define PAGEOUT_PAGES \
+MACRO_BEGIN \
+vm_map_copy_t copy; \
+unsigned i; \
+vm_page_t hp; \
 \
-vm_object_unlock(object);					\
+vm_object_unlock(object); \
 \
-(void) vm_map_copyin_object(new_object, 0, new_offset, &copy);	\
+(void) vm_map_copyin_object(new_object, 0, new_offset, &copy); \
 \
-(void) memory_object_data_return(				\
-object->pager,						\
-object->pager_request,					\
-paging_offset,						\
-(pointer_t) copy,					\
-new_offset,						\
-(pageout_action == MEMORY_OBJECT_LOCK_RESULT_MUST_CLEAN),	\
-!should_flush);						\
+(void) memory_object_data_return( \
+object->pager, \
+object->pager_request, \
+paging_offset, \
+(pointer_t) copy, \
+new_offset, \
+(pageout_action == MEMORY_OBJECT_LOCK_RESULT_MUST_CLEAN), \
+!should_flush); \
 \
-vm_object_lock(object);						\
+vm_object_lock(object); \
 \
-for (i = 0; i < atop(new_offset); i++) {			\
-hp = holding_pages[i];					\
-if (hp != VM_PAGE_NULL)					\
-VM_PAGE_FREE(hp);					\
-}								\
+for (i = 0; i < atop(new_offset); i++) { \
+hp = holding_pages[i]; \
+if (hp != VM_PAGE_NULL) \
+VM_PAGE_FREE(hp); \
+} \
 \
-new_object = VM_OBJECT_NULL;					\
+new_object = VM_OBJECT_NULL; \
 MACRO_END
 for (;
 size != 0;
@@ -429,8 +429,8 @@ return (KERN_SUCCESS);
 }
 static kern_return_t
 memory_object_set_attributes_common(
-vm_object_t	object,
-boolean_t	may_cache,
+vm_object_t object,
+boolean_t may_cache,
 memory_object_copy_strategy_t copy_strategy)
 {
 if (object == VM_OBJECT_NULL)
@@ -462,14 +462,14 @@ vm_object_unlock(object);
 vm_object_deallocate(object);
 return(KERN_SUCCESS);
 }
-kern_return_t	memory_object_change_attributes(
-vm_object_t		object,
-boolean_t		may_cache,
+kern_return_t memory_object_change_attributes(
+vm_object_t object,
+boolean_t may_cache,
 memory_object_copy_strategy_t copy_strategy,
-ipc_port_t		reply_to,
-mach_msg_type_name_t	reply_to_type)
+ipc_port_t reply_to,
+mach_msg_type_name_t reply_to_type)
 {
-kern_return_t	result;
+kern_return_t result;
 result = memory_object_set_attributes_common(object, may_cache,
 copy_strategy);
 if (IP_VALID(reply_to)) {
@@ -478,18 +478,18 @@ may_cache, copy_strategy);
 }
 return(result);
 }
-kern_return_t	memory_object_ready(
-vm_object_t	object,
-boolean_t	may_cache,
+kern_return_t memory_object_ready(
+vm_object_t object,
+boolean_t may_cache,
 memory_object_copy_strategy_t copy_strategy)
 {
 return memory_object_set_attributes_common(object, may_cache,
 copy_strategy);
 }
-kern_return_t	memory_object_get_attributes(
-vm_object_t	object,
-boolean_t	*object_ready,
-boolean_t	*may_cache,
+kern_return_t memory_object_get_attributes(
+vm_object_t object,
+boolean_t *object_ready,
+boolean_t *may_cache,
 memory_object_copy_strategy_t *copy_strategy)
 {
 if (object == VM_OBJECT_NULL)
@@ -502,7 +502,7 @@ vm_object_unlock(object);
 vm_object_deallocate(object);
 return(KERN_SUCCESS);
 }
-kern_return_t	vm_set_default_memory_manager(
+kern_return_t vm_set_default_memory_manager(
 const host_t host,
 ipc_port_t *default_manager)
 {
@@ -525,7 +525,7 @@ simple_unlock(&memory_manager_default_lock);
 *default_manager = returned_manager;
 return(KERN_SUCCESS);
 }
-ipc_port_t	memory_manager_default_reference(void)
+ipc_port_t memory_manager_default_reference(void)
 {
 ipc_port_t current_manager;
 simple_lock(&memory_manager_default_lock);
@@ -539,7 +539,7 @@ simple_lock(&memory_manager_default_lock);
 simple_unlock(&memory_manager_default_lock);
 return current_manager;
 }
-boolean_t	memory_manager_default_port(const ipc_port_t port)
+boolean_t memory_manager_default_port(const ipc_port_t port)
 {
 ipc_port_t current;
 boolean_t result;
@@ -552,7 +552,7 @@ result = FALSE;
 simple_unlock(&memory_manager_default_lock);
 return result;
 }
-void		memory_manager_default_init(void)
+void memory_manager_default_init(void)
 {
 memory_manager_default = IP_NULL;
 simple_lock_init(&memory_manager_default_lock);

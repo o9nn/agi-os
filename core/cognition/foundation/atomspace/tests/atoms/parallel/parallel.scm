@@ -2,38 +2,38 @@
 (define nnn 0)
 (define (incr) (set! nnn (+ nnn 1)) (stv 1 0))
 (define pllel
-	(Parallel
-		(SequentialAnd
-			(True (Sleep (Number 1)))
-			(EvaluationLink
-				(GroundedPredicate "scm:incr") (List)))
-		(SequentialAnd
-			(True (Sleep (Number 3)))
-			(EvaluationLink
-				(GroundedPredicate "scm:incr") (List)))
-		(SequentialAnd
-			(True (Sleep (Number 5)))
-			(EvaluationLink
-				(GroundedPredicate "scm:incr") (List)))
-	))
+(Parallel
+(SequentialAnd
+(True (Sleep (Number 1)))
+(EvaluationLink
+(GroundedPredicate "scm:incr") (List)))
+(SequentialAnd
+(True (Sleep (Number 3)))
+(EvaluationLink
+(GroundedPredicate "scm:incr") (List)))
+(SequentialAnd
+(True (Sleep (Number 5)))
+(EvaluationLink
+(GroundedPredicate "scm:incr") (List)))
+))
 (define wait
-	(ThreadJoin
-		(SequentialAnd
-			(True (Sleep (Number 1)))
-			(EvaluationLink
-				(GroundedPredicate "scm:incr") (List)))
-		(SequentialAnd
-			(False (Sleep (Number 3)))
-			(EvaluationLink
-				(GroundedPredicate "scm:incr") (List)))
-		(SequentialAnd
-			(True (Sleep (Number 5)))
-			(EvaluationLink
-				(GroundedPredicate "scm:incr") (List)))
-	))
+(ThreadJoin
+(SequentialAnd
+(True (Sleep (Number 1)))
+(EvaluationLink
+(GroundedPredicate "scm:incr") (List)))
+(SequentialAnd
+(False (Sleep (Number 3)))
+(EvaluationLink
+(GroundedPredicate "scm:incr") (List)))
+(SequentialAnd
+(True (Sleep (Number 5)))
+(EvaluationLink
+(GroundedPredicate "scm:incr") (List)))
+))
 (define pllel-bad
-	(Parallel (SequentialAnd
-		(EvaluationLink (GroundedPredicate "scm:insdfasdfascr") (List)))))
+(Parallel (SequentialAnd
+(EvaluationLink (GroundedPredicate "scm:insdfasdfascr") (List)))))
 (define wait-bad
-	(ThreadJoin (SequentialAnd
-		(EvaluationLink (GroundedPredicate "scm:insdfasdfascr") (List)))))
+(ThreadJoin (SequentialAnd
+(EvaluationLink (GroundedPredicate "scm:insdfasdfascr") (List)))))

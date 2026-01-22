@@ -3,9 +3,9 @@
 #include <mach/mach.h>
 #include <mach/vm_map.h>
 #include <mach/vm_param.h>
-#define ZCOPY_IPC_MIN_SIZE      4096
-#define ZCOPY_IPC_MAX_SIZE      (64*1024)
-#define ZCOPY_IPC_MAX_PAGES     16
+#define ZCOPY_IPC_MIN_SIZE 4096
+#define ZCOPY_IPC_MAX_SIZE (64*1024)
+#define ZCOPY_IPC_MAX_PAGES 16
 typedef enum {
 ZCOPY_MSG_SMALL,
 ZCOPY_MSG_LARGE,
@@ -13,31 +13,31 @@ ZCOPY_MSG_SHARED,
 ZCOPY_MSG_MAPPED
 } zcopy_message_type_t;
 typedef struct {
-vm_address_t    page_addr;
-vm_size_t       page_size;
-vm_prot_t       protection;
-unsigned int    ref_count;
-boolean_t       is_wired;
+vm_address_t page_addr;
+vm_size_t page_size;
+vm_prot_t protection;
+unsigned int ref_count;
+boolean_t is_wired;
 } zcopy_page_desc_t;
 typedef struct {
-mach_msg_header_t   header;
+mach_msg_header_t header;
 zcopy_message_type_t msg_type;
-unsigned int        page_count;
-vm_size_t           total_size;
-unsigned int        checksum;
-zcopy_page_desc_t   pages[ZCOPY_IPC_MAX_PAGES];
+unsigned int page_count;
+vm_size_t total_size;
+unsigned int checksum;
+zcopy_page_desc_t pages[ZCOPY_IPC_MAX_PAGES];
 } zcopy_message_header_t;
 typedef struct {
-task_t              sender_task;
-task_t              receiver_task;
-mach_port_t         shared_port;
-vm_address_t        shared_base;
-vm_size_t           shared_size;
-unsigned int        *allocation_bitmap;
-unsigned long       total_messages;
-unsigned long       zero_copy_messages;
-unsigned long       bytes_saved;
-double              avg_latency_us;
+task_t sender_task;
+task_t receiver_task;
+mach_port_t shared_port;
+vm_address_t shared_base;
+vm_size_t shared_size;
+unsigned int *allocation_bitmap;
+unsigned long total_messages;
+unsigned long zero_copy_messages;
+unsigned long bytes_saved;
+double avg_latency_us;
 } zcopy_ipc_context_t;
 kern_return_t zcopy_ipc_init(zcopy_ipc_context_t *context,
 task_t sender,
@@ -88,8 +88,8 @@ vm_address_t src_addr,
 vm_size_t size,
 vm_address_t *cow_addr);
 typedef struct {
-vm_address_t    addr;
-vm_size_t       size;
+vm_address_t addr;
+vm_size_t size;
 } zcopy_sg_element_t;
 kern_return_t zcopy_send_scatter_gather(zcopy_ipc_context_t *context,
 zcopy_sg_element_t *elements,

@@ -49,14 +49,14 @@ DEF(TIME, haproxy_timeout),
 SETTING_DEFINE_LIST_END
 };
 #ifdef HAVE_LIBSYSTEMD
-#  define ENV_SYSTEMD " LISTEN_PID LISTEN_FDS NOTIFY_SOCKET"
+# define ENV_SYSTEMD " LISTEN_PID LISTEN_FDS NOTIFY_SOCKET"
 #else
-#  define ENV_SYSTEMD ""
+# define ENV_SYSTEMD ""
 #endif
 #ifdef DEBUG
-#  define ENV_GDB " GDB DEBUG_SILENT"
+# define ENV_GDB " GDB DEBUG_SILENT"
 #else
-#  define ENV_GDB ""
+# define ENV_GDB ""
 #endif
 static const struct master_service_settings master_service_default_settings = {
 .base_dir = PKG_RUNDIR,

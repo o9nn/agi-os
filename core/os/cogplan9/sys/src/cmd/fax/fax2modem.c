@@ -46,7 +46,7 @@ return Rrerror;
 while(*++p == ' ')
 ;
 *q = 0;
-if((m->valid &  Vftsi) == 0){
+if((m->valid & Vftsi) == 0){
 strncpy(m->ftsi, p, sizeof(m->ftsi)-1);
 m->valid |= Vftsi;
 }

@@ -1,5 +1,5 @@
 #ifndef gspaint_INCLUDED
-#  define gspaint_INCLUDED
+# define gspaint_INCLUDED
 int gs_erasepage(gs_state *),
 gs_fillpage(gs_state *),
 gs_fill(gs_state *),

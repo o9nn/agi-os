@@ -11,32 +11,32 @@ V6maxrevdomdepth = 128 / Nibwidth,
 Ptrttl = 120,
 };
 static Ndb *db;
-static Lock	dblock;
-static RR*	addrrr(Ndbtuple*, Ndbtuple*);
-static RR*	cnamerr(Ndbtuple*, Ndbtuple*);
-static void	createptrs(void);
-static RR*	dblookup1(char*, int, int, int);
-static RR*	doaxfr(Ndb*, char*);
+static Lock dblock;
+static RR* addrrr(Ndbtuple*, Ndbtuple*);
+static RR* cnamerr(Ndbtuple*, Ndbtuple*);
+static void createptrs(void);
+static RR* dblookup1(char*, int, int, int);
+static RR* doaxfr(Ndb*, char*);
 static Ndbtuple*look(Ndbtuple*, Ndbtuple*, char*);
-static RR*	mxrr(Ndbtuple*, Ndbtuple*);
-static RR*	nsrr(Ndbtuple*, Ndbtuple*);
-static RR*	nullrr(Ndbtuple*, Ndbtuple*);
-static RR*	ptrrr(Ndbtuple*, Ndbtuple*);
-static RR*	soarr(Ndbtuple*, Ndbtuple*);
-static RR*	srvrr(Ndbtuple*, Ndbtuple*);
-static RR*	txtrr(Ndbtuple*, Ndbtuple*);
-static int	implemented[Tall] =
+static RR* mxrr(Ndbtuple*, Ndbtuple*);
+static RR* nsrr(Ndbtuple*, Ndbtuple*);
+static RR* nullrr(Ndbtuple*, Ndbtuple*);
+static RR* ptrrr(Ndbtuple*, Ndbtuple*);
+static RR* soarr(Ndbtuple*, Ndbtuple*);
+static RR* srvrr(Ndbtuple*, Ndbtuple*);
+static RR* txtrr(Ndbtuple*, Ndbtuple*);
+static int implemented[Tall] =
 {
-[Ta]		1,
-[Taaaa]		1,
-[Tcname]	1,
-[Tmx]		1,
-[Tns]		1,
-[Tnull]		1,
-[Tptr]		1,
-[Tsoa]		1,
-[Tsrv]		1,
-[Ttxt]		1,
+[Ta] 1,
+[Taaaa] 1,
+[Tcname] 1,
+[Tmx] 1,
+[Tns] 1,
+[Tnull] 1,
+[Tptr] 1,
+[Tsoa] 1,
+[Tsrv] 1,
+[Ttxt] 1,
 };
 static Ndbtuple *indoms, *innmsrvs, *outnmsrvs;
 static void
@@ -349,7 +349,7 @@ rp->soa->serial = 1;
 for(ndb = db; ndb; ndb = ndb->next)
 if(ndb->mtime > rp->soa->serial)
 rp->soa->serial = ndb->mtime;
-rp->soa->retry  = intval(entry, pair, "retry", Hour);
+rp->soa->retry = intval(entry, pair, "retry", Hour);
 rp->soa->expire = intval(entry, pair, "expire", Day);
 rp->soa->minttl = intval(entry, pair, "ttl", Day);
 rp->soa->refresh = intval(entry, pair, "refresh", Day);
@@ -443,7 +443,7 @@ if(cistrcmp(pair->attr, "ip") == 0 ||
 cistrcmp(pair->attr, "ipv6") == 0){
 dp->ordinal = ord++;
 rp = addrrr(entry, pair);
-} else 	if(cistrcmp(pair->attr, "ns") == 0)
+} else if(cistrcmp(pair->attr, "ns") == 0)
 rp = nsrr(entry, pair);
 else if(cistrcmp(pair->attr, "soa") == 0) {
 rp = soarr(entry, pair);
@@ -512,8 +512,8 @@ indoms = innmsrvs = outnmsrvs = nil;
 if (db == nil)
 opendatabase();
 free(ndbgetvalue(db, &s, "sys", "inside-dom", "dom", &indoms));
-free(ndbgetvalue(db, &s, "sys", "inside-ns",  "ip",  &innmsrvs));
-free(ndbgetvalue(db, &s, "sys", "outside-ns", "ip",  &outnmsrvs));
+free(ndbgetvalue(db, &s, "sys", "inside-ns", "ip", &innmsrvs));
+free(ndbgetvalue(db, &s, "sys", "outside-ns", "ip", &outnmsrvs));
 dnslog("[%d] ndb changed: reloaded inside-dom, inside-ns, outside-ns",
 getpid());
 }
@@ -571,7 +571,7 @@ lock(&dblock);
 dnageall(1);
 unlock(&dblock);
 }
-extern uchar	ipaddr[IPaddrlen];
+extern uchar ipaddr[IPaddrlen];
 Ndbtuple*
 lookupinfo(char *attr)
 {
@@ -589,7 +589,7 @@ t = ndbipinfo(db, "ip", buf, a, 1);
 unlock(&dblock);
 return t;
 }
-char *localservers =	  "local#dns#servers";
+char *localservers = "local#dns#servers";
 char *localserverprefix = "local#dns#server";
 int
 baddelegation(RR *rp, RR *nsrp, uchar *addr)

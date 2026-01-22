@@ -1,20 +1,20 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
-#define ALIGNUP(a)	ROUND((uintptr)(a), BLOCKALIGN)
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
+#define ALIGNUP(a) ROUND((uintptr)(a), BLOCKALIGN)
 enum
 {
-Hdrspc		= 64,
-Bdead		= 0x51494F42,
-Bmagic		= 0x0910b10c,
+Hdrspc = 64,
+Bdead = 0x51494F42,
+Bmagic = 0x0910b10c,
 };
 struct
 {
 Lock;
-ulong	bytes;
+ulong bytes;
 } ialloc;
 ulong
 blocksize(ulong size)

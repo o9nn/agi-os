@@ -9,11 +9,11 @@ typedef struct Radio Radio;
 struct Radio
 {
 Control;
-int		value;
-int		lastbut;
-Control	**buttons;
-int		nbuttons;
-char		*eventstr;
+int value;
+int lastbut;
+Control **buttons;
+int nbuttons;
+char *eventstr;
 };
 enum{
 EAdd,
@@ -28,20 +28,20 @@ ESize,
 EValue,
 };
 static char *cmds[] = {
-[EAdd] =		"add",
-[EButton] =	"button",
-[EFocus] = 	"focus",
-[EFormat] = 	"format",
-[EHide] =		"hide",
-[ERect] =		"rect",
-[EReveal] =	"reveal",
-[EShow] =		"show",
-[ESize] =		"size",
-[EValue] =		"value",
+[EAdd] = "add",
+[EButton] = "button",
+[EFocus] = "focus",
+[EFormat] = "format",
+[EHide] = "hide",
+[ERect] = "rect",
+[EReveal] = "reveal",
+[EShow] = "show",
+[ESize] = "size",
+[EValue] = "value",
 nil
 };
-static void	radioshow(Radio*);
-static void	radiofree(Radio*);
+static void radioshow(Radio*);
+static void radiofree(Radio*);
 static void
 radiomouse(Control *c, Mouse *m)
 {

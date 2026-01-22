@@ -5,7 +5,7 @@
 #include "imapc-storage.h"
 #include "imapc-attribute.h"
 #define DEPTH_INFINITY (-1)
-#define DEPTH_NONE     0
+#define DEPTH_NONE 0
 #define ITER_CONTAINER(_iter) \
 container_of(_iter, struct imapc_storage_attribute_iter, iter);
 enum imapc_attribute_command_enum {
@@ -74,7 +74,7 @@ return;
 }
 ARRAY_TYPE(const_string) keys;
 p_array_init(&keys, actx->pool, actx->iterating ? 8 : 1);
-for (; list_len > 0; list += 2, list_len -= 2)  {
+for (; list_len > 0; list += 2, list_len -= 2) {
 const char *key;
 if (!imap_arg_get_astring(&list[0], &key)) {
 actx->error = "attribute's key is not an ASTRING";
@@ -176,10 +176,10 @@ return imapc_storage_attribute_run_cmd(
 mbox, line, command == GETMETADATA && depth != 0, actx);
 }
 enum handling {
-HANDLE_ERROR 	   = -1,
+HANDLE_ERROR = -1,
 HANDLE_UNAVAILABLE = -2,
-HANDLE_IMAPC 	   =  0,
-HANDLE_INDEX 	   =  1,
+HANDLE_IMAPC = 0,
+HANDLE_INDEX = 1,
 };
 static enum handling
 imapc_storage_attribute_handling(struct mailbox *box,

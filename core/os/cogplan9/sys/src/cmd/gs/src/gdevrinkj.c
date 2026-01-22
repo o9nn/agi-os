@@ -13,10 +13,10 @@
 #include "rinkj/rinkj-screen-eb.h"
 #include "rinkj/rinkj-epson870.h"
 #ifndef X_DPI
-#  define X_DPI 720
+# define X_DPI 720
 #endif
 #ifndef Y_DPI
-#  define Y_DPI 720
+# define Y_DPI 720
 #endif
 private dev_proc_get_params(rinkj_get_params);
 private dev_proc_put_params(rinkj_put_params);
@@ -53,59 +53,59 @@ icmLuBase *lu_out;
 char setup_fn[256];
 } rinkj_device;
 #define device_procs(get_color_mapping_procs)\
-{	gdev_prn_open,\
+{ gdev_prn_open,\
 gx_default_get_initial_matrix,\
-NULL,				\
-gdev_prn_output_page,		\
-gdev_prn_close,			\
-NULL,				\
-rinkj_map_color_rgb,		\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-rinkj_get_params,		\
-rinkj_put_params,		\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-gx_page_device_get_page_device,	\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-get_color_mapping_procs,	\
-rinkj_get_color_comp_index,	\
-rinkj_encode_color,		\
-rinkj_decode_color		\
+NULL, \
+gdev_prn_output_page, \
+gdev_prn_close, \
+NULL, \
+rinkj_map_color_rgb, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+rinkj_get_params, \
+rinkj_put_params, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+gx_page_device_get_page_device, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+get_color_mapping_procs, \
+rinkj_get_color_comp_index, \
+rinkj_encode_color, \
+rinkj_decode_color \
 }
 private const fixed_colorant_names_list DeviceGrayComponents = {
 "Gray",
@@ -397,15 +397,15 @@ switch (code = pread(plist, (param_name = pname), &(pa))) {\
 case 0:\
 if ((pa).size != psize) {\
 ecode = gs_note_error(gs_error_rangecheck);\
-(pa).data = 0;	\
+(pa).data = 0; \
 } else
 #define END_ARRAY_PARAM(pa, e)\
 goto e;\
 default:\
 ecode = code;\
-e:	param_signal_error(plist, param_name, ecode);\
+e: param_signal_error(plist, param_name, ecode);\
 case 1:\
-(pa).data = 0;		\
+(pa).data = 0; \
 }\
 END
 private int

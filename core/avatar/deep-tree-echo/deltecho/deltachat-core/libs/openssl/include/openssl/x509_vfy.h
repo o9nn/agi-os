@@ -5,12 +5,12 @@
 # define HEADER_X509_VFY_H
 # include <openssl/opensslconf.h>
 # ifndef OPENSSL_NO_LHASH
-#  include <openssl/lhash.h>
+# include <openssl/lhash.h>
 # endif
 # include <openssl/bio.h>
 # include <openssl/crypto.h>
 # include <openssl/symhacks.h>
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 # if 0
@@ -27,11 +27,11 @@ int num_alloced;
 char **paths;
 int *path_type;
 } X509_CERT_FILE_CTX;
-# define X509_LU_RETRY           -1
-# define X509_LU_FAIL            0
-# define X509_LU_X509            1
-# define X509_LU_CRL             2
-# define X509_LU_PKEY            3
+# define X509_LU_RETRY -1
+# define X509_LU_FAIL 0
+# define X509_LU_X509 1
+# define X509_LU_CRL 2
+# define X509_LU_PKEY 3
 typedef struct x509_object_st {
 int type;
 union {
@@ -91,17 +91,17 @@ STACK_OF(X509_CRL) *(*lookup_crls) (X509_STORE_CTX *ctx, X509_NAME *nm);
 int (*cleanup) (X509_STORE_CTX *ctx);
 CRYPTO_EX_DATA ex_data;
 int references;
-}  ;
+} ;
 int X509_STORE_set_depth(X509_STORE *store, int depth);
 # define X509_STORE_set_verify_cb_func(ctx,func) ((ctx)->verify_cb=(func))
-# define X509_STORE_set_verify_func(ctx,func)    ((ctx)->verify=(func))
+# define X509_STORE_set_verify_func(ctx,func) ((ctx)->verify=(func))
 struct x509_lookup_st {
 int init;
 int skip;
 X509_LOOKUP_METHOD *method;
 char *method_data;
 X509_STORE *store_ctx;
-}  ;
+} ;
 struct x509_store_ctx_st {
 X509_STORE *ctx;
 int current_method;
@@ -136,94 +136,94 @@ int current_crl_score;
 unsigned int current_reasons;
 X509_STORE_CTX *parent;
 CRYPTO_EX_DATA ex_data;
-}  ;
+} ;
 void X509_STORE_CTX_set_depth(X509_STORE_CTX *ctx, int depth);
 # define X509_STORE_CTX_set_app_data(ctx,data) \
 X509_STORE_CTX_set_ex_data(ctx,0,data)
 # define X509_STORE_CTX_get_app_data(ctx) \
 X509_STORE_CTX_get_ex_data(ctx,0)
-# define X509_L_FILE_LOAD        1
-# define X509_L_ADD_DIR          2
+# define X509_L_FILE_LOAD 1
+# define X509_L_ADD_DIR 2
 # define X509_LOOKUP_load_file(x,name,type) \
 X509_LOOKUP_ctrl((x),X509_L_FILE_LOAD,(name),(long)(type),NULL)
 # define X509_LOOKUP_add_dir(x,name,type) \
 X509_LOOKUP_ctrl((x),X509_L_ADD_DIR,(name),(long)(type),NULL)
-# define         X509_V_OK                                       0
-# define         X509_V_ERR_UNSPECIFIED                          1
-# define         X509_V_ERR_UNABLE_TO_GET_ISSUER_CERT            2
-# define         X509_V_ERR_UNABLE_TO_GET_CRL                    3
-# define         X509_V_ERR_UNABLE_TO_DECRYPT_CERT_SIGNATURE     4
-# define         X509_V_ERR_UNABLE_TO_DECRYPT_CRL_SIGNATURE      5
-# define         X509_V_ERR_UNABLE_TO_DECODE_ISSUER_PUBLIC_KEY   6
-# define         X509_V_ERR_CERT_SIGNATURE_FAILURE               7
-# define         X509_V_ERR_CRL_SIGNATURE_FAILURE                8
-# define         X509_V_ERR_CERT_NOT_YET_VALID                   9
-# define         X509_V_ERR_CERT_HAS_EXPIRED                     10
-# define         X509_V_ERR_CRL_NOT_YET_VALID                    11
-# define         X509_V_ERR_CRL_HAS_EXPIRED                      12
-# define         X509_V_ERR_ERROR_IN_CERT_NOT_BEFORE_FIELD       13
-# define         X509_V_ERR_ERROR_IN_CERT_NOT_AFTER_FIELD        14
-# define         X509_V_ERR_ERROR_IN_CRL_LAST_UPDATE_FIELD       15
-# define         X509_V_ERR_ERROR_IN_CRL_NEXT_UPDATE_FIELD       16
-# define         X509_V_ERR_OUT_OF_MEM                           17
-# define         X509_V_ERR_DEPTH_ZERO_SELF_SIGNED_CERT          18
-# define         X509_V_ERR_SELF_SIGNED_CERT_IN_CHAIN            19
-# define         X509_V_ERR_UNABLE_TO_GET_ISSUER_CERT_LOCALLY    20
-# define         X509_V_ERR_UNABLE_TO_VERIFY_LEAF_SIGNATURE      21
-# define         X509_V_ERR_CERT_CHAIN_TOO_LONG                  22
-# define         X509_V_ERR_CERT_REVOKED                         23
-# define         X509_V_ERR_INVALID_CA                           24
-# define         X509_V_ERR_PATH_LENGTH_EXCEEDED                 25
-# define         X509_V_ERR_INVALID_PURPOSE                      26
-# define         X509_V_ERR_CERT_UNTRUSTED                       27
-# define         X509_V_ERR_CERT_REJECTED                        28
-# define         X509_V_ERR_SUBJECT_ISSUER_MISMATCH              29
-# define         X509_V_ERR_AKID_SKID_MISMATCH                   30
-# define         X509_V_ERR_AKID_ISSUER_SERIAL_MISMATCH          31
-# define         X509_V_ERR_KEYUSAGE_NO_CERTSIGN                 32
-# define         X509_V_ERR_UNABLE_TO_GET_CRL_ISSUER             33
-# define         X509_V_ERR_UNHANDLED_CRITICAL_EXTENSION         34
-# define         X509_V_ERR_KEYUSAGE_NO_CRL_SIGN                 35
-# define         X509_V_ERR_UNHANDLED_CRITICAL_CRL_EXTENSION     36
-# define         X509_V_ERR_INVALID_NON_CA                       37
-# define         X509_V_ERR_PROXY_PATH_LENGTH_EXCEEDED           38
-# define         X509_V_ERR_KEYUSAGE_NO_DIGITAL_SIGNATURE        39
-# define         X509_V_ERR_PROXY_CERTIFICATES_NOT_ALLOWED       40
-# define         X509_V_ERR_INVALID_EXTENSION                    41
-# define         X509_V_ERR_INVALID_POLICY_EXTENSION             42
-# define         X509_V_ERR_NO_EXPLICIT_POLICY                   43
-# define         X509_V_ERR_DIFFERENT_CRL_SCOPE                  44
-# define         X509_V_ERR_UNSUPPORTED_EXTENSION_FEATURE        45
-# define         X509_V_ERR_UNNESTED_RESOURCE                    46
-# define         X509_V_ERR_PERMITTED_VIOLATION                  47
-# define         X509_V_ERR_EXCLUDED_VIOLATION                   48
-# define         X509_V_ERR_SUBTREE_MINMAX                       49
-# define         X509_V_ERR_UNSUPPORTED_CONSTRAINT_TYPE          51
-# define         X509_V_ERR_UNSUPPORTED_CONSTRAINT_SYNTAX        52
-# define         X509_V_ERR_UNSUPPORTED_NAME_SYNTAX              53
-# define         X509_V_ERR_CRL_PATH_VALIDATION_ERROR            54
-# define         X509_V_ERR_APPLICATION_VERIFICATION             50
-# define X509_V_FLAG_CB_ISSUER_CHECK             0x1
-# define X509_V_FLAG_USE_CHECK_TIME              0x2
-# define X509_V_FLAG_CRL_CHECK                   0x4
-# define X509_V_FLAG_CRL_CHECK_ALL               0x8
-# define X509_V_FLAG_IGNORE_CRITICAL             0x10
-# define X509_V_FLAG_X509_STRICT                 0x20
-# define X509_V_FLAG_ALLOW_PROXY_CERTS           0x40
-# define X509_V_FLAG_POLICY_CHECK                0x80
-# define X509_V_FLAG_EXPLICIT_POLICY             0x100
-# define X509_V_FLAG_INHIBIT_ANY                 0x200
-# define X509_V_FLAG_INHIBIT_MAP                 0x400
-# define X509_V_FLAG_NOTIFY_POLICY               0x800
-# define X509_V_FLAG_EXTENDED_CRL_SUPPORT        0x1000
-# define X509_V_FLAG_USE_DELTAS                  0x2000
-# define X509_V_FLAG_CHECK_SS_SIGNATURE          0x4000
-# define X509_V_FLAG_NO_ALT_CHAINS               0x100000
-# define X509_VP_FLAG_DEFAULT                    0x1
-# define X509_VP_FLAG_OVERWRITE                  0x2
-# define X509_VP_FLAG_RESET_FLAGS                0x4
-# define X509_VP_FLAG_LOCKED                     0x8
-# define X509_VP_FLAG_ONCE                       0x10
+# define X509_V_OK 0
+# define X509_V_ERR_UNSPECIFIED 1
+# define X509_V_ERR_UNABLE_TO_GET_ISSUER_CERT 2
+# define X509_V_ERR_UNABLE_TO_GET_CRL 3
+# define X509_V_ERR_UNABLE_TO_DECRYPT_CERT_SIGNATURE 4
+# define X509_V_ERR_UNABLE_TO_DECRYPT_CRL_SIGNATURE 5
+# define X509_V_ERR_UNABLE_TO_DECODE_ISSUER_PUBLIC_KEY 6
+# define X509_V_ERR_CERT_SIGNATURE_FAILURE 7
+# define X509_V_ERR_CRL_SIGNATURE_FAILURE 8
+# define X509_V_ERR_CERT_NOT_YET_VALID 9
+# define X509_V_ERR_CERT_HAS_EXPIRED 10
+# define X509_V_ERR_CRL_NOT_YET_VALID 11
+# define X509_V_ERR_CRL_HAS_EXPIRED 12
+# define X509_V_ERR_ERROR_IN_CERT_NOT_BEFORE_FIELD 13
+# define X509_V_ERR_ERROR_IN_CERT_NOT_AFTER_FIELD 14
+# define X509_V_ERR_ERROR_IN_CRL_LAST_UPDATE_FIELD 15
+# define X509_V_ERR_ERROR_IN_CRL_NEXT_UPDATE_FIELD 16
+# define X509_V_ERR_OUT_OF_MEM 17
+# define X509_V_ERR_DEPTH_ZERO_SELF_SIGNED_CERT 18
+# define X509_V_ERR_SELF_SIGNED_CERT_IN_CHAIN 19
+# define X509_V_ERR_UNABLE_TO_GET_ISSUER_CERT_LOCALLY 20
+# define X509_V_ERR_UNABLE_TO_VERIFY_LEAF_SIGNATURE 21
+# define X509_V_ERR_CERT_CHAIN_TOO_LONG 22
+# define X509_V_ERR_CERT_REVOKED 23
+# define X509_V_ERR_INVALID_CA 24
+# define X509_V_ERR_PATH_LENGTH_EXCEEDED 25
+# define X509_V_ERR_INVALID_PURPOSE 26
+# define X509_V_ERR_CERT_UNTRUSTED 27
+# define X509_V_ERR_CERT_REJECTED 28
+# define X509_V_ERR_SUBJECT_ISSUER_MISMATCH 29
+# define X509_V_ERR_AKID_SKID_MISMATCH 30
+# define X509_V_ERR_AKID_ISSUER_SERIAL_MISMATCH 31
+# define X509_V_ERR_KEYUSAGE_NO_CERTSIGN 32
+# define X509_V_ERR_UNABLE_TO_GET_CRL_ISSUER 33
+# define X509_V_ERR_UNHANDLED_CRITICAL_EXTENSION 34
+# define X509_V_ERR_KEYUSAGE_NO_CRL_SIGN 35
+# define X509_V_ERR_UNHANDLED_CRITICAL_CRL_EXTENSION 36
+# define X509_V_ERR_INVALID_NON_CA 37
+# define X509_V_ERR_PROXY_PATH_LENGTH_EXCEEDED 38
+# define X509_V_ERR_KEYUSAGE_NO_DIGITAL_SIGNATURE 39
+# define X509_V_ERR_PROXY_CERTIFICATES_NOT_ALLOWED 40
+# define X509_V_ERR_INVALID_EXTENSION 41
+# define X509_V_ERR_INVALID_POLICY_EXTENSION 42
+# define X509_V_ERR_NO_EXPLICIT_POLICY 43
+# define X509_V_ERR_DIFFERENT_CRL_SCOPE 44
+# define X509_V_ERR_UNSUPPORTED_EXTENSION_FEATURE 45
+# define X509_V_ERR_UNNESTED_RESOURCE 46
+# define X509_V_ERR_PERMITTED_VIOLATION 47
+# define X509_V_ERR_EXCLUDED_VIOLATION 48
+# define X509_V_ERR_SUBTREE_MINMAX 49
+# define X509_V_ERR_UNSUPPORTED_CONSTRAINT_TYPE 51
+# define X509_V_ERR_UNSUPPORTED_CONSTRAINT_SYNTAX 52
+# define X509_V_ERR_UNSUPPORTED_NAME_SYNTAX 53
+# define X509_V_ERR_CRL_PATH_VALIDATION_ERROR 54
+# define X509_V_ERR_APPLICATION_VERIFICATION 50
+# define X509_V_FLAG_CB_ISSUER_CHECK 0x1
+# define X509_V_FLAG_USE_CHECK_TIME 0x2
+# define X509_V_FLAG_CRL_CHECK 0x4
+# define X509_V_FLAG_CRL_CHECK_ALL 0x8
+# define X509_V_FLAG_IGNORE_CRITICAL 0x10
+# define X509_V_FLAG_X509_STRICT 0x20
+# define X509_V_FLAG_ALLOW_PROXY_CERTS 0x40
+# define X509_V_FLAG_POLICY_CHECK 0x80
+# define X509_V_FLAG_EXPLICIT_POLICY 0x100
+# define X509_V_FLAG_INHIBIT_ANY 0x200
+# define X509_V_FLAG_INHIBIT_MAP 0x400
+# define X509_V_FLAG_NOTIFY_POLICY 0x800
+# define X509_V_FLAG_EXTENDED_CRL_SUPPORT 0x1000
+# define X509_V_FLAG_USE_DELTAS 0x2000
+# define X509_V_FLAG_CHECK_SS_SIGNATURE 0x4000
+# define X509_V_FLAG_NO_ALT_CHAINS 0x100000
+# define X509_VP_FLAG_DEFAULT 0x1
+# define X509_VP_FLAG_OVERWRITE 0x2
+# define X509_VP_FLAG_RESET_FLAGS 0x4
+# define X509_VP_FLAG_LOCKED 0x8
+# define X509_VP_FLAG_ONCE 0x10
 # define X509_V_FLAG_POLICY_MASK (X509_V_FLAG_POLICY_CHECK \
 | X509_V_FLAG_EXPLICIT_POLICY \
 | X509_V_FLAG_INHIBIT_ANY \
@@ -363,7 +363,7 @@ X509_POLICY_NODE
 *node);
 const X509_POLICY_NODE *X509_policy_node_get0_parent(const X509_POLICY_NODE
 *node);
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif
 #endif

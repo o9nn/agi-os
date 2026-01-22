@@ -9,21 +9,21 @@ typedef struct Menu0 Menu0;
 struct Menu0
 {
 Control;
-CImage	*image;
-CImage	*bordercolor;
-CImage	*textcolor;
-CImage	*selectcolor;
-CImage	*selecttextcolor;
-CFont	*font;
-char		**line;
-int		nline;
-int		border;
-int		align;
-Image	*window;
-int		visible;
-int		selection;
-int		prevsel;
-int		lastbut;
+CImage *image;
+CImage *bordercolor;
+CImage *textcolor;
+CImage *selectcolor;
+CImage *selecttextcolor;
+CFont *font;
+char **line;
+int nline;
+int border;
+int align;
+Image *window;
+int visible;
+int selection;
+int prevsel;
+int lastbut;
 };
 enum{
 EAdd,
@@ -45,26 +45,26 @@ ETextcolor,
 EWindow,
 };
 static char *cmds[] = {
-[EAdd] = 			"add",
-[EAlign] = 			"align",
-[EBorder] = 		"border",
-[EBordercolor] =	"bordercolor",
-[EFocus] = 		"focus",
-[EFont] =			"font",
-[EFormat] = 		"format",
-[EHide] =			"hide",
-[EImage] =		"image",
-[ERect] =			"rect",
-[EReveal] =		"reveal",
-[ESelectcolor] =	"selectcolor",
-[ESelecttextcolor] =	"selecttextcolor",
-[EShow] =			"show",
-[ESize] =			"size",
-[ETextcolor] =		"textcolor",
-[EWindow] =		"window",
+[EAdd] = "add",
+[EAlign] = "align",
+[EBorder] = "border",
+[EBordercolor] = "bordercolor",
+[EFocus] = "focus",
+[EFont] = "font",
+[EFormat] = "format",
+[EHide] = "hide",
+[EImage] = "image",
+[ERect] = "rect",
+[EReveal] = "reveal",
+[ESelectcolor] = "selectcolor",
+[ESelecttextcolor] = "selecttextcolor",
+[EShow] = "show",
+[ESize] = "size",
+[ETextcolor] = "textcolor",
+[EWindow] = "window",
 nil
 };
-static void	menushow(Menu0*);
+static void menushow(Menu0*);
 static void menuhide(Menu0*);
 static void
 menufree(Control *c)

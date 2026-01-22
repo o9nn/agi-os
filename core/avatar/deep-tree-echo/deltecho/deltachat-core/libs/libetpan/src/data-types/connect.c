@@ -1,5 +1,5 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #include "connect.h"
 #include "mailstream.h"
@@ -12,16 +12,16 @@
 #include <errno.h>
 #include <fcntl.h>
 #ifdef WIN32
-#	include "win_etpan.h"
+# include "win_etpan.h"
 #else
-#	include <netdb.h>
-#	include <netinet/in.h>
-#	include <sys/socket.h>
-#	ifdef HAVE_SYS_POLL_H
-#		include <sys/poll.h>
-#	endif
-#	include <unistd.h>
-#	include <arpa/inet.h>
+# include <netdb.h>
+# include <netinet/in.h>
+# include <sys/socket.h>
+# ifdef HAVE_SYS_POLL_H
+# include <sys/poll.h>
+# endif
+# include <unistd.h>
+# include <arpa/inet.h>
 #endif
 uint16_t mail_get_service_port(const char * name, char * protocol)
 {

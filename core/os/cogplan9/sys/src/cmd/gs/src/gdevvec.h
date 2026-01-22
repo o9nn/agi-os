@@ -1,5 +1,5 @@
 #ifndef gdevvec_INCLUDED
-#  define gdevvec_INCLUDED
+# define gdevvec_INCLUDED
 #include "gp.h"
 #include "gsropt.h"
 #include "gxdevice.h"
@@ -75,7 +75,7 @@ FILE *file;\
 stream *strm;\
 byte *strmbuf;\
 uint strmbuf_size;\
-int open_options;	\
+int open_options; \
 \
 gs_imager_state state;\
 float dash_pattern[max_dash];\
@@ -83,44 +83,44 @@ bool fill_used_process_color;\
 bool stroke_used_process_color;\
 gx_hl_saved_color saved_fill_color;\
 gx_hl_saved_color saved_stroke_color;\
-gs_id no_clip_path_id;	\
+gs_id no_clip_path_id; \
 gs_id clip_path_id;\
 \
-gx_path_type_t fill_options, stroke_options;  \
-gs_point scale;		\
-bool in_page;		\
-gx_device_bbox *bbox_device;	\
+gx_path_type_t fill_options, stroke_options; \
+gs_point scale; \
+bool in_page; \
+gx_device_bbox *bbox_device; \
 \
 gx_color_index black, white
 #define vdev_proc(vdev, p) ((vdev)->vec_procs->p)
 #define vector_initial_values\
-0,		\
-0,		\
-{ 0 },		\
-0,		\
-0,		\
-0,		\
-0,		\
-0,		\
-{ 0 },		\
-{ 0 },		\
-true,		\
-true,		\
-{ 0 },		\
-{ 0 },		\
-gs_no_id,	\
-gs_no_id,	\
-0, 0,		\
-{ X_DPI/72.0, Y_DPI/72.0 },	\
-0,	\
-0,		\
-gx_no_color_index,	\
+0, \
+0, \
+{ 0 }, \
+0, \
+0, \
+0, \
+0, \
+0, \
+{ 0 }, \
+{ 0 }, \
+true, \
+true, \
+{ 0 }, \
+{ 0 }, \
+gs_no_id, \
+gs_no_id, \
+0, 0, \
+{ X_DPI/72.0, Y_DPI/72.0 }, \
+0, \
+0, \
+gx_no_color_index, \
 gx_no_color_index
 struct gx_device_vector_s {
 gx_device_vector_common;
 };
 extern_st(st_device_vector);
-#define public_st_device_vector()	\
+#define public_st_device_vector() \
 gs_public_st_suffix_add3_final(st_device_vector, gx_device_vector,\
 "gx_device_vector", device_vector_enum_ptrs,\
 device_vector_reloc_ptrs, gx_device_finalize, st_device, strm, strmbuf,\
@@ -184,19 +184,19 @@ int gdev_vector_close_file(gx_device_vector * vdev);
 #define gdev_vector_image_enum_common\
 gx_image_enum_common;\
 \
-gs_memory_t *memory;	\
-gx_image_enum_common_t *default_info;	\
-gx_image_enum_common_t *bbox_info;	\
+gs_memory_t *memory; \
+gx_image_enum_common_t *default_info; \
+gx_image_enum_common_t *bbox_info; \
 int width, height;\
-int bits_per_pixel;	\
-uint bits_per_row;	\
+int bits_per_pixel; \
+uint bits_per_row; \
 \
 int y
 typedef struct gdev_vector_image_enum_s {
 gdev_vector_image_enum_common;
 } gdev_vector_image_enum_t;
 extern_st(st_vector_image_enum);
-#define public_st_vector_image_enum()	\
+#define public_st_vector_image_enum() \
 gs_public_st_ptrs2(st_vector_image_enum, gdev_vector_image_enum_t,\
 "gdev_vector_image_enum_t", vector_image_enum_enum_ptrs,\
 vector_image_enum_reloc_ptrs, default_info, bbox_info)

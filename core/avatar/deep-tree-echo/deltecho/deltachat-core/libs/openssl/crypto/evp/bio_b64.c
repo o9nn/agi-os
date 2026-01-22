@@ -10,11 +10,11 @@ static long b64_ctrl(BIO *h, int cmd, long arg1, void *arg2);
 static int b64_new(BIO *h);
 static int b64_free(BIO *data);
 static long b64_callback_ctrl(BIO *h, int cmd, bio_info_cb *fp);
-#define B64_BLOCK_SIZE  1024
+#define B64_BLOCK_SIZE 1024
 #define B64_BLOCK_SIZE2 768
-#define B64_NONE        0
-#define B64_ENCODE      1
-#define B64_DECODE      2
+#define B64_NONE 0
+#define B64_ENCODE 1
+#define B64_DECODE 2
 typedef struct b64_struct {
 int buf_len;
 int buf_off;

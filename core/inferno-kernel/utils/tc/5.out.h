@@ -1,23 +1,23 @@
-#define	NSNAME		8
-#define	NSYM		50
-#define	NREG		16
-#define NOPROF		(1<<0)
-#define DUPOK		(1<<1)
-#define	ALLTHUMBS	(1<<2)
-#define	REGRET		0
-#define	REGARG		0
-#define	REGEXT		6
-#define	REGTMPT		7
-#define	REGTMP		11
-#define	REGSB		12
-#define	REGSP		13
-#define	REGLINK		14
-#define	REGPC		15
-#define	NFREG		8
-#define	FREGRET		0
-#define	FREGEXT		7
-#define	FREGTMP		7
-enum	as
+#define NSNAME 8
+#define NSYM 50
+#define NREG 16
+#define NOPROF (1<<0)
+#define DUPOK (1<<1)
+#define ALLTHUMBS (1<<2)
+#define REGRET 0
+#define REGARG 0
+#define REGEXT 6
+#define REGTMPT 7
+#define REGTMP 11
+#define REGSB 12
+#define REGSP 13
+#define REGLINK 14
+#define REGPC 15
+#define NFREG 8
+#define FREGRET 0
+#define FREGEXT 7
+#define FREGTMP 7
+enum as
 {
 AXXX,
 AAND,
@@ -115,30 +115,30 @@ ADWORD,
 ASIGNAME,
 ALAST,
 };
-#define	D_GOK	0
-#define	D_NONE	1
-#define	D_BRANCH	(D_NONE+1)
-#define	D_OREG		(D_NONE+2)
-#define	D_CONST		(D_NONE+7)
-#define	D_FCONST	(D_NONE+8)
-#define	D_SCONST	(D_NONE+9)
-#define	D_PSR		(D_NONE+10)
-#define	D_REG		(D_NONE+12)
-#define	D_FREG		(D_NONE+13)
-#define	D_FILE		(D_NONE+16)
-#define	D_OCONST	(D_NONE+17)
-#define	D_FILE1		(D_NONE+18)
-#define	D_SHIFT		(D_NONE+19)
-#define	D_FPCR		(D_NONE+20)
-#define 	D_REGREG	(D_NONE+21)
-#define	D_EXTERN	(D_NONE+3)
-#define	D_STATIC		(D_NONE+4)
-#define	D_AUTO		(D_NONE+5)
-#define	D_PARAM		(D_NONE+6)
-#define	SYMDEF	"__.SYMDEF"
-typedef	struct	ieee	Ieee;
-struct	ieee
+#define D_GOK 0
+#define D_NONE 1
+#define D_BRANCH (D_NONE+1)
+#define D_OREG (D_NONE+2)
+#define D_CONST (D_NONE+7)
+#define D_FCONST (D_NONE+8)
+#define D_SCONST (D_NONE+9)
+#define D_PSR (D_NONE+10)
+#define D_REG (D_NONE+12)
+#define D_FREG (D_NONE+13)
+#define D_FILE (D_NONE+16)
+#define D_OCONST (D_NONE+17)
+#define D_FILE1 (D_NONE+18)
+#define D_SHIFT (D_NONE+19)
+#define D_FPCR (D_NONE+20)
+#define D_REGREG (D_NONE+21)
+#define D_EXTERN (D_NONE+3)
+#define D_STATIC (D_NONE+4)
+#define D_AUTO (D_NONE+5)
+#define D_PARAM (D_NONE+6)
+#define SYMDEF "__.SYMDEF"
+typedef struct ieee Ieee;
+struct ieee
 {
-long	l;
-long	h;
+long l;
+long h;
 };

@@ -9,20 +9,20 @@
 #include "etherif.h"
 #include "ethermii.h"
 #include "../ip/ip.h"
-#define	MIIDBG	if(0)iprint
-#define WINATTR(v)      (((v) & MASK(8)) << 8)
-#define WINSIZE(v)      (((v)/(64*1024) - 1) << 16)
+#define MIIDBG if(0)iprint
+#define WINATTR(v) (((v) & MASK(8)) << 8)
+#define WINSIZE(v) (((v)/(64*1024) - 1) << 16)
 enum {
-Nrx		= 512,
-Ntx		= 32,
-Nrxblks		= 1024,
-Rxblklen	= 2+1522,
-Maxrxintrsec	= 20*1000,
-Etherstuck	= 70,
-Descralign	= 16,
-Bufalign	= 8,
-Pass		= 1,
-Qno		= 0,
+Nrx = 512,
+Ntx = 32,
+Nrxblks = 1024,
+Rxblklen = 2+1522,
+Maxrxintrsec = 20*1000,
+Etherstuck = 70,
+Descralign = 16,
+Bufalign = 8,
+Pass = 1,
+Qno = 0,
 };
 typedef struct Ctlr Ctlr;
 typedef struct Gbereg Gbereg;
@@ -31,349 +31,349 @@ typedef struct Rx Rx;
 typedef struct Tx Tx;
 static struct {
 Lock;
-Block	*head;
+Block *head;
 } freeblocks;
 struct Rx {
-ulong	cs;
-ulong	countsize;
-ulong	buf;
-ulong	next;
+ulong cs;
+ulong countsize;
+ulong buf;
+ulong next;
 };
 struct Tx {
-ulong	cs;
-ulong	countchk;
-ulong	buf;
-ulong	next;
+ulong cs;
+ulong countchk;
+ulong buf;
+ulong next;
 };
 struct Mibstats {
 union {
-uvlong	rxby;
+uvlong rxby;
 struct {
-ulong	rxbylo;
-ulong	rxbyhi;
+ulong rxbylo;
+ulong rxbyhi;
 };
 };
-ulong	badrxby;
-ulong	mactxerr;
-ulong	rxpkt;
-ulong	badrxpkt;
-ulong	rxbcastpkt;
-ulong	rxmcastpkt;
-ulong	rx64;
-ulong	rx65_127;
-ulong	rx128_255;
-ulong	rx256_511;
-ulong	rx512_1023;
-ulong	rx1024_max;
+ulong badrxby;
+ulong mactxerr;
+ulong rxpkt;
+ulong badrxpkt;
+ulong rxbcastpkt;
+ulong rxmcastpkt;
+ulong rx64;
+ulong rx65_127;
+ulong rx128_255;
+ulong rx256_511;
+ulong rx512_1023;
+ulong rx1024_max;
 union {
-uvlong	txby;
+uvlong txby;
 struct {
-ulong	txbylo;
-ulong	txbyhi;
+ulong txbylo;
+ulong txbyhi;
 };
 };
-ulong	txpkt;
-ulong	txcollpktdrop;
-ulong	txmcastpkt;
-ulong	txbcastpkt;
-ulong	badmacctlpkts;
-ulong	txflctl;
-ulong	rxflctl;
-ulong	badrxflctl;
-ulong	rxundersized;
-ulong	rxfrags;
-ulong	rxtoobig;
-ulong	rxjabber;
-ulong	rxerr;
-ulong	crcerr;
-ulong	collisions;
-ulong	latecoll;
+ulong txpkt;
+ulong txcollpktdrop;
+ulong txmcastpkt;
+ulong txbcastpkt;
+ulong badmacctlpkts;
+ulong txflctl;
+ulong rxflctl;
+ulong badrxflctl;
+ulong rxundersized;
+ulong rxfrags;
+ulong rxtoobig;
+ulong rxjabber;
+ulong rxerr;
+ulong crcerr;
+ulong collisions;
+ulong latecoll;
 };
 struct Ctlr {
 Lock;
-Ether	*ether;
-Gbereg	*reg;
-Lock	initlock;
-int	init;
-Rx	*rx;
-Block	*rxb[Nrx];
-int	rxhead;
-int	rxtail;
-Rendez	rrendez;
-int	haveinput;
-Tx	*tx;
-Block	*txb[Ntx];
-int	txhead;
-int	txtail;
-Mii	*mii;
-int	port;
-ulong	intrs;
-ulong	newintrs;
-ulong	txunderrun;
-ulong	txringfull;
-ulong	rxdiscard;
-ulong	rxoverrun;
-ulong	nofirstlast;
+Ether *ether;
+Gbereg *reg;
+Lock initlock;
+int init;
+Rx *rx;
+Block *rxb[Nrx];
+int rxhead;
+int rxtail;
+Rendez rrendez;
+int haveinput;
+Tx *tx;
+Block *txb[Ntx];
+int txhead;
+int txtail;
+Mii *mii;
+int port;
+ulong intrs;
+ulong newintrs;
+ulong txunderrun;
+ulong txringfull;
+ulong rxdiscard;
+ulong rxoverrun;
+ulong nofirstlast;
 Mibstats;
 };
-#define	Rxqon(q)	(1<<(q))
-#define	Txqon(q)	(1<<(q))
+#define Rxqon(q) (1<<(q))
+#define Txqon(q) (1<<(q))
 enum {
-Portreset	= 1 << 20,
-Burst1		= 0,
+Portreset = 1 << 20,
+Burst1 = 0,
 Burst2,
 Burst4,
 Burst8,
 Burst16,
-SDCrifb		= 1<<0,
-#define SDCrxburst(v)	((v)<<1)
-SDCrxnobyteswap	= 1<<4,
-SDCtxnobyteswap	= 1<<5,
-SDCswap64byte	= 1<<6,
-#define SDCtxburst(v)	((v)<<22)
-#define SDCipgintrx(v)	((((v)>>15) & 1)<<25) | (((v) & MASK(15))<<7)
-PCFGupromisc		= 1<<0,
-#define Rxqdefault(q)	((q)<<1)
-#define Rxqarp(q)	((q)<<4)
-PCFGbcrejectnoiparp	= 1<<7,
-PCFGbcrejectip		= 1<<8,
-PCFGbcrejectarp		= 1<<9,
-PCFGamnotxes		= 1<<12,
-PCFGtcpq	= 1<<14,
-PCFGudpq	= 1<<15,
-#define	Rxqtcp(q)	((q)<<16)
-#define	Rxqudp(q)	((q)<<19)
-#define	Rxqbpdu(q)	((q)<<22)
-PCFGrxcs	= 1<<25,
-PCFGXspanq	= 1<<1,
-PCFGXcrcoff	= 1<<2,
-PSC0porton		= 1<<0,
-PSC0forcelinkup		= 1<<1,
-PSC0an_dplxoff		= 1<<2,
-PSC0an_flctloff		= 1<<3,
-PSC0an_pauseadv		= 1<<4,
-PSC0nofrclinkdown	= 1<<10,
-PSC0an_spdoff		= 1<<13,
-PSC0dteadv		= 1<<14,
-#define PSC0mru(v)	((v)<<17)
-PSC0mrumask	= PSC0mru(MASK(3)),
-PSC0mru1518	= 0,
+SDCrifb = 1<<0,
+#define SDCrxburst(v) ((v)<<1)
+SDCrxnobyteswap = 1<<4,
+SDCtxnobyteswap = 1<<5,
+SDCswap64byte = 1<<6,
+#define SDCtxburst(v) ((v)<<22)
+#define SDCipgintrx(v) ((((v)>>15) & 1)<<25) | (((v) & MASK(15))<<7)
+PCFGupromisc = 1<<0,
+#define Rxqdefault(q) ((q)<<1)
+#define Rxqarp(q) ((q)<<4)
+PCFGbcrejectnoiparp = 1<<7,
+PCFGbcrejectip = 1<<8,
+PCFGbcrejectarp = 1<<9,
+PCFGamnotxes = 1<<12,
+PCFGtcpq = 1<<14,
+PCFGudpq = 1<<15,
+#define Rxqtcp(q) ((q)<<16)
+#define Rxqudp(q) ((q)<<19)
+#define Rxqbpdu(q) ((q)<<22)
+PCFGrxcs = 1<<25,
+PCFGXspanq = 1<<1,
+PCFGXcrcoff = 1<<2,
+PSC0porton = 1<<0,
+PSC0forcelinkup = 1<<1,
+PSC0an_dplxoff = 1<<2,
+PSC0an_flctloff = 1<<3,
+PSC0an_pauseadv = 1<<4,
+PSC0nofrclinkdown = 1<<10,
+PSC0an_spdoff = 1<<13,
+PSC0dteadv = 1<<14,
+#define PSC0mru(v) ((v)<<17)
+PSC0mrumask = PSC0mru(MASK(3)),
+PSC0mru1518 = 0,
 PSC0mru1522,
 PSC0mru1552,
 PSC0mru9022,
 PSC0mru9192,
 PSC0mru9700,
-PSC0fd_frc		= 1<<21,
-PSC0flctlfrc		= 1<<22,
-PSC0gmiispd_gbfrc	= 1<<23,
-PSC0miispdfrc100mbps	= 1<<24,
-PS0linkup	= 1<<1,
-PS0fd		= 1<<2,
-PS0flctl	= 1<<3,
-PS0gmii_gb	= 1<<4,
-PS0mii100mbps	= 1<<5,
-PS0txbusy	= 1<<7,
-PS0txfifoempty	= 1<<10,
-PS0rxfifo1empty	= 1<<11,
-PS0rxfifo2empty	= 1<<12,
-PSC1loopback	= 1<<1,
-PSC1mii		= 0<<2,
-PSC1rgmii	= 1<<3,
-PSC1portreset	= 1<<4,
-PSC1clockbypass	= 1<<5,
-PSC1iban	= 1<<6,
-PSC1iban_bypass	= 1<<7,
+PSC0fd_frc = 1<<21,
+PSC0flctlfrc = 1<<22,
+PSC0gmiispd_gbfrc = 1<<23,
+PSC0miispdfrc100mbps = 1<<24,
+PS0linkup = 1<<1,
+PS0fd = 1<<2,
+PS0flctl = 1<<3,
+PS0gmii_gb = 1<<4,
+PS0mii100mbps = 1<<5,
+PS0txbusy = 1<<7,
+PS0txfifoempty = 1<<10,
+PS0rxfifo1empty = 1<<11,
+PS0rxfifo2empty = 1<<12,
+PSC1loopback = 1<<1,
+PSC1mii = 0<<2,
+PSC1rgmii = 1<<3,
+PSC1portreset = 1<<4,
+PSC1clockbypass = 1<<5,
+PSC1iban = 1<<6,
+PSC1iban_bypass = 1<<7,
 PSC1iban_restart= 1<<8,
-PSC1_gbonly	= 1<<11,
-PSC1encolonbp	= 1<<15,
+PSC1_gbonly = 1<<11,
+PSC1encolonbp = 1<<15,
 PSC1coldomlimmask= MASK(6)<<16,
 #define PSC1coldomlim(v) (((v) & MASK(6))<<16)
-PSC1miiallowoddpreamble	= 1<<22,
-PS1rxpause	= 1<<0,
-PS1txpause	= 1<<1,
-PS1pressure	= 1<<2,
-PS1syncfail10ms	= 1<<3,
-PS1an_done	= 1<<4,
-PS1inbandan_bypassed	= 1<<5,
-PS1serdesplllocked	= 1<<6,
-PS1syncok	= 1<<7,
-PS1nosquelch	= 1<<8,
-Irx		= 1<<0,
-Iextend		= 1<<1,
-#define Irxbufferq(q)	(1<<((q)+2))
-Irxerr		= 1<<10,
-#define Irxerrq(q)	(1<<((q)+11))
-#define Itxendq(q)	(1<<((q)+19))
-Isum		= 1<<31,
-#define	IEtxbufferq(q)	(1<<((q)+0))
-#define	IEtxerrq(q)	(1<<((q)+8))
-IEphystschg	= 1<<16,
-IEptp		= 1<<17,
-IErxoverrun	= 1<<18,
-IEtxunderrun	= 1<<19,
-IElinkchg	= 1<<20,
-IEintaddrerr	= 1<<23,
-IEprbserr	= 1<<25,
-IEsum		= 1<<31,
-#define TFUTipginttx(v)	(((v) & MASK(16))<<4);
-MFS40by	= 10<<2,
-MFS44by	= 11<<2,
-MFS48by	= 12<<2,
-MFS52by	= 13<<2,
-MFS56by	= 14<<2,
-MFS60by	= 15<<2,
-MFS64by	= 16<<2,
-RCSmacerr	= 1<<0,
-RCSmacmask	= 3<<1,
-RCSmacce	= 0<<1,
-RCSmacor	= 1<<1,
-RCSmacmf	= 2<<1,
-RCSl4chkshift	= 3,
-RCSl4chkmask	= MASK(16),
-RCSvlan		= 1<<17,
-RCSbpdu		= 1<<18,
-RCSl4mask	= 3<<21,
-RCSl4tcp4	= 0<<21,
-RCSl4udp4	= 1<<21,
-RCSl4other	= 2<<21,
-RCSl4rsvd	= 3<<21,
-RCSl2ev2	= 1<<23,
-RCSl3ip4	= 1<<24,
-RCSip4headok	= 1<<25,
-RCSlast		= 1<<26,
-RCSfirst	= 1<<27,
-RCSunknownaddr	= 1<<28,
-RCSenableintr	= 1<<29,
-RCSl4chkok	= 1<<30,
-RCSdmaown	= 1<<31,
-TCSmacerr	= 1<<0,
-TCSmacmask	= 3<<1,
-TCSmaclc	= 0<<1,
-TCSmacur	= 1<<1,
-TCSmacrl	= 2<<1,
-TCSllc		= 1<<9,
-TCSl4chkmode	= 1<<10,
+PSC1miiallowoddpreamble = 1<<22,
+PS1rxpause = 1<<0,
+PS1txpause = 1<<1,
+PS1pressure = 1<<2,
+PS1syncfail10ms = 1<<3,
+PS1an_done = 1<<4,
+PS1inbandan_bypassed = 1<<5,
+PS1serdesplllocked = 1<<6,
+PS1syncok = 1<<7,
+PS1nosquelch = 1<<8,
+Irx = 1<<0,
+Iextend = 1<<1,
+#define Irxbufferq(q) (1<<((q)+2))
+Irxerr = 1<<10,
+#define Irxerrq(q) (1<<((q)+11))
+#define Itxendq(q) (1<<((q)+19))
+Isum = 1<<31,
+#define IEtxbufferq(q) (1<<((q)+0))
+#define IEtxerrq(q) (1<<((q)+8))
+IEphystschg = 1<<16,
+IEptp = 1<<17,
+IErxoverrun = 1<<18,
+IEtxunderrun = 1<<19,
+IElinkchg = 1<<20,
+IEintaddrerr = 1<<23,
+IEprbserr = 1<<25,
+IEsum = 1<<31,
+#define TFUTipginttx(v) (((v) & MASK(16))<<4);
+MFS40by = 10<<2,
+MFS44by = 11<<2,
+MFS48by = 12<<2,
+MFS52by = 13<<2,
+MFS56by = 14<<2,
+MFS60by = 15<<2,
+MFS64by = 16<<2,
+RCSmacerr = 1<<0,
+RCSmacmask = 3<<1,
+RCSmacce = 0<<1,
+RCSmacor = 1<<1,
+RCSmacmf = 2<<1,
+RCSl4chkshift = 3,
+RCSl4chkmask = MASK(16),
+RCSvlan = 1<<17,
+RCSbpdu = 1<<18,
+RCSl4mask = 3<<21,
+RCSl4tcp4 = 0<<21,
+RCSl4udp4 = 1<<21,
+RCSl4other = 2<<21,
+RCSl4rsvd = 3<<21,
+RCSl2ev2 = 1<<23,
+RCSl3ip4 = 1<<24,
+RCSip4headok = 1<<25,
+RCSlast = 1<<26,
+RCSfirst = 1<<27,
+RCSunknownaddr = 1<<28,
+RCSenableintr = 1<<29,
+RCSl4chkok = 1<<30,
+RCSdmaown = 1<<31,
+TCSmacerr = 1<<0,
+TCSmacmask = 3<<1,
+TCSmaclc = 0<<1,
+TCSmacur = 1<<1,
+TCSmacrl = 2<<1,
+TCSllc = 1<<9,
+TCSl4chkmode = 1<<10,
 TCSipv4hdlenshift= 11,
-TCSvlan		= 1<<15,
-TCSl4type	= 1<<16,
-TCSgl4chk	= 1<<17,
-TCSgip4chk	= 1<<18,
-TCSpadding	= 1<<19,
-TCSlast		= 1<<20,
-TCSfirst	= 1<<21,
-TCSenableintr	= 1<<23,
-TCSautomode	= 1<<30,
-TCSdmaown	= 1<<31,
+TCSvlan = 1<<15,
+TCSl4type = 1<<16,
+TCSgl4chk = 1<<17,
+TCSgip4chk = 1<<18,
+TCSpadding = 1<<19,
+TCSlast = 1<<20,
+TCSfirst = 1<<21,
+TCSenableintr = 1<<23,
+TCSautomode = 1<<30,
+TCSdmaown = 1<<31,
 };
 enum {
-PhysmiTimeout	= 10000,
-Physmidataoff	= 0,
-Physmidatamask	= 0xffff<<Physmidataoff,
-Physmiaddroff 	= 16,
-Physmiaddrmask	= 0x1f << Physmiaddroff,
-Physmiop	= 26,
-Physmiopmask	= 3<<Physmiop,
-PhysmiopWr	= 0<<Physmiop,
-PhysmiopRd	= 1<<Physmiop,
-PhysmiReadok	= 1<<27,
-PhysmiBusy	= 1<<28,
-SmiRegaddroff	= 21,
-SmiRegaddrmask	= 0x1f << SmiRegaddroff,
+PhysmiTimeout = 10000,
+Physmidataoff = 0,
+Physmidatamask = 0xffff<<Physmidataoff,
+Physmiaddroff = 16,
+Physmiaddrmask = 0x1f << Physmiaddroff,
+Physmiop = 26,
+Physmiopmask = 3<<Physmiop,
+PhysmiopWr = 0<<Physmiop,
+PhysmiopRd = 1<<Physmiop,
+PhysmiReadok = 1<<27,
+PhysmiBusy = 1<<28,
+SmiRegaddroff = 21,
+SmiRegaddrmask = 0x1f << SmiRegaddroff,
 };
 struct Gbereg {
-ulong	phy;
-ulong	smi;
-ulong	euda;
-ulong	eudid;
-uchar	_pad0[0x80-0x10];
-ulong	euirq;
-ulong	euirqmask;
-uchar	_pad1[0x94-0x88];
-ulong	euea;
-ulong	euiae;
-uchar	_pad2[0xb0-0x9c];
-ulong	euc;
-uchar	_pad3[0x200-0xb4];
+ulong phy;
+ulong smi;
+ulong euda;
+ulong eudid;
+uchar _pad0[0x80-0x10];
+ulong euirq;
+ulong euirqmask;
+uchar _pad1[0x94-0x88];
+ulong euea;
+ulong euiae;
+uchar _pad2[0xb0-0x9c];
+ulong euc;
+uchar _pad3[0x200-0xb4];
 struct {
-ulong	base;
-ulong	size;
+ulong base;
+ulong size;
 } base[6];
-uchar	_pad4[0x280-0x230];
-ulong	harr[4];
-ulong	bare;
-ulong	epap;
-uchar	_pad5[0x400-0x298];
-ulong	portcfg;
-ulong	portcfgx;
-ulong	mii;
-ulong	_pad6;
-ulong	evlane;
-ulong	macal;
-ulong	macah;
-ulong	sdc;
-ulong	dscp[7];
-ulong	psc0;
-ulong	vpt2p;
-ulong	ps0;
-ulong	tqc;
-ulong	psc1;
-ulong	ps1;
-ulong	mvhdr;
-ulong	_pad8[2];
-ulong	irq;
-ulong	irqe;
-ulong	irqmask;
-ulong	irqemask;
-ulong	_pad9;
-ulong	pxtfut;
-ulong	_pad10;
-ulong	pxmfs;
-ulong	_pad11;
-ulong	pxdfc;
-ulong	pxofc;
-ulong	_pad12[2];
-ulong	piae;
-uchar	_pad13[0x4bc-0x498];
-ulong	etherprio;
-uchar	_pad14[0x4dc-0x4c0];
-ulong	tqfpc;
-ulong	pttbrc;
-ulong	tqc1;
-ulong	pmtu;
-ulong	pmtbs;
-uchar	_pad15[0x600-0x4f0];
+uchar _pad4[0x280-0x230];
+ulong harr[4];
+ulong bare;
+ulong epap;
+uchar _pad5[0x400-0x298];
+ulong portcfg;
+ulong portcfgx;
+ulong mii;
+ulong _pad6;
+ulong evlane;
+ulong macal;
+ulong macah;
+ulong sdc;
+ulong dscp[7];
+ulong psc0;
+ulong vpt2p;
+ulong ps0;
+ulong tqc;
+ulong psc1;
+ulong ps1;
+ulong mvhdr;
+ulong _pad8[2];
+ulong irq;
+ulong irqe;
+ulong irqmask;
+ulong irqemask;
+ulong _pad9;
+ulong pxtfut;
+ulong _pad10;
+ulong pxmfs;
+ulong _pad11;
+ulong pxdfc;
+ulong pxofc;
+ulong _pad12[2];
+ulong piae;
+uchar _pad13[0x4bc-0x498];
+ulong etherprio;
+uchar _pad14[0x4dc-0x4c0];
+ulong tqfpc;
+ulong pttbrc;
+ulong tqc1;
+ulong pmtu;
+ulong pmtbs;
+uchar _pad15[0x600-0x4f0];
 struct {
-ulong	_pad[3];
-ulong	r;
+ulong _pad[3];
+ulong r;
 } crdp[8];
-ulong	rqc;
-ulong	tcsdp;
-uchar	_pad16[0x6c0-0x688];
-ulong	tcqdp[8];
-uchar	_pad17[0x700-0x6e0];
+ulong rqc;
+ulong tcsdp;
+uchar _pad16[0x6c0-0x688];
+ulong tcqdp[8];
+uchar _pad17[0x700-0x6e0];
 struct {
-ulong	tbctr;
-ulong	tbcfg;
-ulong	acfg;
-ulong	_pad;
+ulong tbctr;
+ulong tbcfg;
+ulong acfg;
+ulong _pad;
 } tq[8];
-ulong	pttbc;
-uchar	_pad18[0x7a8-0x784];
-ulong	ipg2;
-ulong	_pad19[3];
-ulong	ipg3;
-ulong	_pad20;
-ulong	htlp;
-ulong	htap;
-ulong	ltap;
-ulong	_pad21;
-ulong	ts;
-uchar	_pad22[0x1000-0x7d4];
+ulong pttbc;
+uchar _pad18[0x7a8-0x784];
+ulong ipg2;
+ulong _pad19[3];
+ulong ipg3;
+ulong _pad20;
+ulong htlp;
+ulong htap;
+ulong ltap;
+ulong _pad21;
+ulong ts;
+uchar _pad22[0x1000-0x7d4];
 Mibstats;
-uchar	_pad23[0x1400-0x1080];
-ulong	dfsmt[64];
-ulong	dfomt[64];
-ulong	dfut[4];
+uchar _pad23[0x1400-0x1080];
+ulong dfsmt[64];
+ulong dfomt[64];
+ulong dfut[4];
 };
 static Ctlr *ctlrs[MaxEther];
 static uchar zeroea[Eaddrlen];
@@ -574,7 +574,7 @@ ctlr->txhead = NEXT(ctlr->txhead, Ntx);
 }
 if (kick) {
 txkick(ctlr);
-reg->irqmask  |= Itxendq(Qno);
+reg->irqmask |= Itxendq(Qno);
 reg->irqemask |= IEtxerrq(Qno) | IEtxunderrun;
 }
 iunlock(ctlr);
@@ -644,7 +644,7 @@ handled++;
 } else
 rxkick(ctlr);
 if(irq & Itxendq(Qno)) {
-reg->irqmask  &= ~Itxendq(Qno);
+reg->irqmask &= ~Itxendq(Qno);
 reg->irqemask &= ~(IEtxerrq(Qno) | IEtxunderrun);
 transmit(ether);
 irq &= ~Itxendq(Qno);
@@ -673,7 +673,7 @@ wakeup(&ctlr->rrendez);
 }
 if(irq & (Irxerr | Irxerrq(Qno)))
 handled++;
-irq  &= ~(Irxerr | Irxerrq(Qno));
+irq &= ~(Irxerr | Irxerrq(Qno));
 }
 if(ether->linkchg && (reg->ps1 & PS1an_done)) {
 handled++;
@@ -682,7 +682,7 @@ ether->linkchg = 0;
 }
 ctlr->newintrs++;
 if (!handled) {
-irq  &= ~Isum;
+irq &= ~Isum;
 irqe &= ~IEtxbufferq(Qno);
 if (irq == 0 && irqe == 0) {
 } else
@@ -743,7 +743,7 @@ enum {
 CMjumbo,
 };
 static Cmdtab ctlmsg[] = {
-CMjumbo,	"jumbo",	2,
+CMjumbo, "jumbo", 2,
 };
 long
 ctl(Ether *e, void *p, long n)
@@ -833,26 +833,26 @@ reg->smi = smi_reg & ~PhysmiopRd;
 coherence();
 return 0;
 }
-#define MIIMODEL(idr2)	(((idr2) >> 4) & MASK(6))
+#define MIIMODEL(idr2) (((idr2) >> 4) & MASK(6))
 enum {
 Hacknone,
 Hackdual,
-Ouimarvell	= 0x005043,
-Phy1000		= 0x00,
-Phy1011		= 0x02,
-Phy1000_3	= 0x03,
-Phy1000s	= 0x04,
-Phy1000_5	= 0x05,
-Phy1000_6	= 0x06,
-Phy3082		= 0x08,
-Phy1112		= 0x09,
-Phy1121r	= 0x0b,
-Phy1149		= 0x0b,
-Phy1111		= 0x0c,
-Phy1116		= 0x21,
-Phy1116r	= 0x24,
-Phy1118		= 0x22,
-Phy3016		= 0x26,
+Ouimarvell = 0x005043,
+Phy1000 = 0x00,
+Phy1011 = 0x02,
+Phy1000_3 = 0x03,
+Phy1000s = 0x04,
+Phy1000_5 = 0x05,
+Phy1000_6 = 0x06,
+Phy3082 = 0x08,
+Phy1112 = 0x09,
+Phy1121r = 0x0b,
+Phy1149 = 0x0b,
+Phy1111 = 0x0c,
+Phy1116 = 0x21,
+Phy1116r = 0x24,
+Phy1118 = 0x22,
+Phy3016 = 0x26,
 };
 static int hackflavour;
 int
@@ -1040,7 +1040,7 @@ static void
 p16(uchar *p, ulong v)
 {
 *p++ = v>>8;
-*p   = v;
+*p = v;
 }
 static void
 p32(uchar *p, ulong v)
@@ -1048,7 +1048,7 @@ p32(uchar *p, ulong v)
 *p++ = v>>24;
 *p++ = v>>16;
 *p++ = v>>8;
-*p   = v;
+*p = v;
 }
 void
 archetheraddr(Ether *ether, Gbereg *reg, int rxqno)
@@ -1056,13 +1056,13 @@ archetheraddr(Ether *ether, Gbereg *reg, int rxqno)
 uchar *ea;
 ulong nibble, ucreg, tbloff, regoff;
 ea = ether->ea;
-p32(ea,   reg->macah);
+p32(ea, reg->macah);
 p16(ea+4, reg->macal);
 if (memcmp(ea, zeroea, sizeof zeroea) == 0 && ether->ctlrno > 0) {
 memmove(ea, ctlrs[0]->ether->ea, Eaddrlen);
 ea[Eaddrlen-1] += ether->ctlrno;
 reg->macah = ea[0] << 24 | ea[1] << 16 | ea[2] << 8 | ea[3];
-reg->macal = ea[4] <<  8 | ea[5];
+reg->macal = ea[4] << 8 | ea[5];
 coherence();
 }
 nibble = ea[5] & 0xf;
@@ -1154,7 +1154,7 @@ reg->crdp[i].r = 0;
 coherence();
 cfgdramacc(reg);
 ctlralloc(ctlr);
-reg->tcqdp[Qno]  = PADDR(&ctlr->tx[ctlr->txhead]);
+reg->tcqdp[Qno] = PADDR(&ctlr->tx[ctlr->txhead]);
 reg->crdp[Qno].r = PADDR(&ctlr->rx[ctlr->rxhead]);
 coherence();
 getmibstats(&fakectlr);
@@ -1208,36 +1208,36 @@ static void
 getmibstats(Ctlr *ctlr)
 {
 Gbereg *reg = ctlr->reg;
-ctlr->rxby	+= reg->rxbylo;
-ctlr->txby	+= reg->txbylo;
-ctlr->badrxby	+= reg->badrxby;
-ctlr->mactxerr	+= reg->mactxerr;
-ctlr->rxpkt	+= reg->rxpkt;
-ctlr->badrxpkt	+= reg->badrxpkt;
+ctlr->rxby += reg->rxbylo;
+ctlr->txby += reg->txbylo;
+ctlr->badrxby += reg->badrxby;
+ctlr->mactxerr += reg->mactxerr;
+ctlr->rxpkt += reg->rxpkt;
+ctlr->badrxpkt += reg->badrxpkt;
 ctlr->rxbcastpkt+= reg->rxbcastpkt;
 ctlr->rxmcastpkt+= reg->rxmcastpkt;
-ctlr->rx64	+= reg->rx64;
-ctlr->rx65_127	+= reg->rx65_127;
-ctlr->rx128_255	+= reg->rx128_255;
-ctlr->rx256_511	+= reg->rx256_511;
+ctlr->rx64 += reg->rx64;
+ctlr->rx65_127 += reg->rx65_127;
+ctlr->rx128_255 += reg->rx128_255;
+ctlr->rx256_511 += reg->rx256_511;
 ctlr->rx512_1023+= reg->rx512_1023;
 ctlr->rx1024_max+= reg->rx1024_max;
-ctlr->txpkt	+= reg->txpkt;
+ctlr->txpkt += reg->txpkt;
 ctlr->txcollpktdrop+= reg->txcollpktdrop;
 ctlr->txmcastpkt+= reg->txmcastpkt;
 ctlr->txbcastpkt+= reg->txbcastpkt;
 ctlr->badmacctlpkts+= reg->badmacctlpkts;
-ctlr->txflctl	+= reg->txflctl;
-ctlr->rxflctl	+= reg->rxflctl;
+ctlr->txflctl += reg->txflctl;
+ctlr->rxflctl += reg->rxflctl;
 ctlr->badrxflctl+= reg->badrxflctl;
 ctlr->rxundersized+= reg->rxundersized;
-ctlr->rxfrags	+= reg->rxfrags;
-ctlr->rxtoobig	+= reg->rxtoobig;
-ctlr->rxjabber	+= reg->rxjabber;
-ctlr->rxerr	+= reg->rxerr;
-ctlr->crcerr	+= reg->crcerr;
+ctlr->rxfrags += reg->rxfrags;
+ctlr->rxtoobig += reg->rxtoobig;
+ctlr->rxjabber += reg->rxjabber;
+ctlr->rxerr += reg->rxerr;
+ctlr->crcerr += reg->crcerr;
 ctlr->collisions+= reg->collisions;
-ctlr->latecoll	+= reg->latecoll;
+ctlr->latecoll += reg->latecoll;
 }
 long
 ifstat(Ether *ether, void *a, long n, ulong off)

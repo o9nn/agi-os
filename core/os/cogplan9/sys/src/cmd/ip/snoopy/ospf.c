@@ -4,34 +4,34 @@
 #include <libsec.h>
 #include "dat.h"
 #include "protos.h"
-typedef struct Ospfpkt	Ospfpkt;
+typedef struct Ospfpkt Ospfpkt;
 struct Ospfpkt
 {
-uchar	version;
-uchar	type;
-uchar	length[2];
-uchar	router[4];
-uchar	area[4];
-uchar	sum[2];
-uchar	autype[2];
-uchar	auth[8];
-uchar	data[1];
+uchar version;
+uchar type;
+uchar length[2];
+uchar router[4];
+uchar area[4];
+uchar sum[2];
+uchar autype[2];
+uchar auth[8];
+uchar data[1];
 };
-#define OSPF_HDRSIZE	24
+#define OSPF_HDRSIZE 24
 enum
 {
-OSPFhello=	1,
-OSPFdd=		2,
-OSPFlsrequest=	3,
-OSPFlsupdate=	4,
-OSPFlsack=	5,
+OSPFhello= 1,
+OSPFdd= 2,
+OSPFlsrequest= 3,
+OSPFlsupdate= 4,
+OSPFlsack= 5,
 };
 char *ospftype[] = {
-[OSPFhello]	"hello",
-[OSPFdd]	"data definition",
-[OSPFlsrequest]	"link state request",
-[OSPFlsupdate]	"link state update",
-[OSPFlsack]	"link state ack",
+[OSPFhello] "hello",
+[OSPFdd] "data definition",
+[OSPFlsrequest] "link state request",
+[OSPFlsupdate] "link state update",
+[OSPFlsack] "link state ack",
 };
 char*
 ospfpkttype(int x)
@@ -63,17 +63,17 @@ NetL(ospf->auth+4));
 }
 return auth;
 }
-typedef struct Ospfhello	Ospfhello;
+typedef struct Ospfhello Ospfhello;
 struct Ospfhello
 {
-uchar	mask[4];
-uchar	interval[2];
-uchar	options;
-uchar	pri;
-uchar	deadint[4];
-uchar	designated[4];
-uchar	bdesignated[4];
-uchar	neighbor[1];
+uchar mask[4];
+uchar interval[2];
+uchar options;
+uchar pri;
+uchar deadint[4];
+uchar designated[4];
+uchar bdesignated[4];
+uchar neighbor[1];
 };
 char*
 seprintospfhello(char *p, char *e, void *a)
@@ -86,18 +86,18 @@ NetL(h->deadint), h->designated, h->bdesignated);
 }
 enum
 {
-LSARouter=	1,
-LSANetwork=	2,
-LSASummN=	3,
-LSASummR=	4,
-LSAASext=	5
+LSARouter= 1,
+LSANetwork= 2,
+LSASummN= 3,
+LSASummR= 4,
+LSAASext= 5
 };
 char *lsatype[] = {
-[LSARouter]	"Router LSA",
-[LSANetwork]	"Network LSA",
-[LSASummN]	"Summary LSA (Network)",
-[LSASummR]	"Summary LSA (Router)",
-[LSAASext]	"LSA AS external",
+[LSARouter] "Router LSA",
+[LSANetwork] "Network LSA",
+[LSASummN] "Summary LSA (Network)",
+[LSASummR] "Summary LSA (Router)",
+[LSAASext] "LSA AS external",
 };
 char*
 lsapkttype(int x)
@@ -109,59 +109,59 @@ sprint(type, "type %d", x);
 return type;
 }
 struct OspfLSAhdr {
-uchar	lsage[2];
-uchar	options;
-uchar	lstype;
-uchar	lsid[4];
-uchar	advtrt[4];
-uchar	lsseqno[4];
-uchar	lscksum[2];
-uchar	lsalen[2];
+uchar lsage[2];
+uchar options;
+uchar lstype;
+uchar lsid[4];
+uchar advtrt[4];
+uchar lsseqno[4];
+uchar lscksum[2];
+uchar lsalen[2];
 };
 struct Ospfrt {
-uchar	linkid[4];
-uchar	linkdata[4];
-uchar	typ;
-uchar	numtos;
-uchar	metric[2];
+uchar linkid[4];
+uchar linkdata[4];
+uchar typ;
+uchar numtos;
+uchar metric[2];
 };
 struct OspfrtLSA {
-struct OspfLSAhdr	hdr;
-uchar			netmask[4];
+struct OspfLSAhdr hdr;
+uchar netmask[4];
 };
 struct OspfntLSA {
-struct OspfLSAhdr	hdr;
-uchar			netmask[4];
-uchar			attrt[4];
+struct OspfLSAhdr hdr;
+uchar netmask[4];
+uchar attrt[4];
 };
 struct Ospfsumm {
-uchar	flag;
-uchar	metric[3];
+uchar flag;
+uchar metric[3];
 };
 struct OspfsummLSA {
-struct OspfLSAhdr	hdr;
-uchar			netmask[4];
-struct Ospfsumm		lsa;
+struct OspfLSAhdr hdr;
+uchar netmask[4];
+struct Ospfsumm lsa;
 };
 struct OspfASext {
-uchar	flag;
-uchar	metric[3];
-uchar	fwdaddr[4];
-uchar	exrttag[4];
+uchar flag;
+uchar metric[3];
+uchar fwdaddr[4];
+uchar exrttag[4];
 };
 struct OspfASextLSA {
-struct OspfLSAhdr	hdr;
-uchar			netmask[4];
-struct OspfASext	lsa;
+struct OspfLSAhdr hdr;
+uchar netmask[4];
+struct OspfASext lsa;
 };
 struct OspfLSupdpkt {
-uchar	lsacnt[4];
+uchar lsacnt[4];
 union {
-uchar			hdr[1];
-struct OspfrtLSA	rt[1];
-struct OspfntLSA	nt[1];
-struct OspfsummLSA	sum[1];
-struct OspfASextLSA	as[1];
+uchar hdr[1];
+struct OspfrtLSA rt[1];
+struct OspfntLSA nt[1];
+struct OspfsummLSA sum[1];
+struct OspfASextLSA as[1];
 };
 };
 char*
@@ -173,11 +173,11 @@ h->lsid, h->advtrt, NetL(h->lsseqno), NetS(h->lscksum),
 NetS(h->lsalen));
 }
 struct OspfDDpkt {
-uchar	intMTU[2];
-uchar	options;
-uchar	bits;
-uchar	DDseqno[4];
-struct OspfLSAhdr	hdr[1];
+uchar intMTU[2];
+uchar options;
+uchar bits;
+uchar DDseqno[4];
+struct OspfLSAhdr hdr[1];
 };
 char*
 seprintospfdatadesc(char *p, char *e, void *a, int len)

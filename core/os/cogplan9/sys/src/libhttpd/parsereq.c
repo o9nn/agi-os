@@ -2,17 +2,17 @@
 #include <libc.h>
 #include <bin.h>
 #include <httpd.h>
-typedef struct Strings		Strings;
+typedef struct Strings Strings;
 struct Strings
 {
-char	*s1;
-char	*s2;
+char *s1;
+char *s2;
 };
-static	char*		abspath(HConnect *cc, char *origpath, char *curdir);
-static	int		getc(HConnect*);
-static	char*		getword(HConnect*);
-static	Strings		parseuri(HConnect *c, char*);
-static	Strings		stripsearch(char*);
+static char* abspath(HConnect *cc, char *origpath, char *curdir);
+static int getc(HConnect*);
+static char* getword(HConnect*);
+static Strings parseuri(HConnect *c, char*);
+static Strings stripsearch(char*);
 int
 hparsereq(HConnect *c, int timeout)
 {

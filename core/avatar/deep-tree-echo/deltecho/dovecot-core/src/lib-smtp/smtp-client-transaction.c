@@ -1072,7 +1072,7 @@ trans->rcpts_send;
 trans->rcpts_send = trans->rcpts_send->next;
 rcpt->cmd_rcpt_to = trans->cmd_last =
 smtp_client_command_rcpt_submit_after(
-trans->conn, 0,	trans->cmd_last,
+trans->conn, 0, trans->cmd_last,
 rcpt->rcpt_to, &rcpt->rcpt_params,
 smtp_client_transaction_rcpt_cb, rcpt);
 }
@@ -1125,7 +1125,7 @@ smtp_client_transaction_try_complete(struct smtp_client_transaction *trans)
 {
 i_assert(trans->conn != NULL);
 if (trans->rcpts_queue_count > 0) {
-e_debug(trans->event,  "RCPT replies are still pending (%u/%u)",
+e_debug(trans->event, "RCPT replies are still pending (%u/%u)",
 trans->rcpts_queue_count,
 (trans->rcpts_queue_count + trans->rcpts_count));
 return;

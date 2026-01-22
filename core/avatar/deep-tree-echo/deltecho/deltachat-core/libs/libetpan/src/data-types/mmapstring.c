@@ -1,15 +1,15 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #include "mmapstring.h"
 #include "mmapstring_private.h"
 #include "chash.h"
 #include <stdlib.h>
 #ifdef WIN32
-#	include "win_etpan.h"
+# include "win_etpan.h"
 #else
-#	include <unistd.h>
-#	include <sys/mman.h>
+# include <unistd.h>
+# include <sys/mman.h>
 #endif
 #include <string.h>
 #include "libetpan-config.h"
@@ -28,20 +28,20 @@
 static char tmpdir[PATH_MAX] = DEFAULT_TMP_PATH;
 static size_t mmap_string_ceil = MMAP_STRING_DEFAULT_CEIL;
 #ifdef LIBETPAN_REENTRANT
-#	if HAVE_PTHREAD_H
+# if HAVE_PTHREAD_H
 static pthread_mutex_t mmapstring_lock = PTHREAD_MUTEX_INITIALIZER;
-#		define MUTEX_LOCK(x) pthread_mutex_lock(x)
-#		define MUTEX_UNLOCK(x) pthread_mutex_unlock(x)
-#	elif (defined WIN32)
-static	CRITICAL_SECTION mmapstring_lock ;
-#		define MUTEX_LOCK(x) EnterCriticalSection(x)
-#		define MUTEX_UNLOCK(x) LeaveCriticalSection(x)
-#	else
-#		error "What are your threads?"
-#	endif
+# define MUTEX_LOCK(x) pthread_mutex_lock(x)
+# define MUTEX_UNLOCK(x) pthread_mutex_unlock(x)
+# elif (defined WIN32)
+static CRITICAL_SECTION mmapstring_lock ;
+# define MUTEX_LOCK(x) EnterCriticalSection(x)
+# define MUTEX_UNLOCK(x) LeaveCriticalSection(x)
+# else
+# error "What are your threads?"
+# endif
 #else
-#	define MUTEX_LOCK(x)
-#	define MUTEX_UNLOCK(x)
+# define MUTEX_LOCK(x)
+# define MUTEX_UNLOCK(x)
 #endif
 static chash * mmapstring_hashtable = NULL;
 void mmapstring_init_lock(void)
@@ -197,7 +197,7 @@ return string;
 static MMAPString * mmap_string_realloc_memory(MMAPString * string)
 {
 char * tmp;
-tmp =  realloc (string->str, string->allocated_len);
+tmp = realloc (string->str, string->allocated_len);
 if (tmp == NULL)
 string = NULL;
 else
@@ -239,9 +239,9 @@ string = malloc(sizeof(* string));
 if (string == NULL)
 return NULL;
 string->allocated_len = 0;
-string->len   = 0;
-string->str   = NULL;
-string->fd    = -1;
+string->len = 0;
+string->str = NULL;
+string->fd = -1;
 string->mmapped_size = 0;
 if (mmap_string_maybe_expand (string, MMAPSTRING_MAX (dfl_size, 2)) == NULL) {
 free(string);
@@ -296,7 +296,7 @@ free (string->str);
 free(string);
 }
 MMAPString*
-mmap_string_assign (MMAPString     *string,
+mmap_string_assign (MMAPString *string,
 const char *rval)
 {
 mmap_string_truncate (string, 0);
@@ -306,7 +306,7 @@ return string;
 }
 MMAPString*
 mmap_string_truncate (MMAPString *string,
-size_t    len)
+size_t len)
 {
 string->len = MMAPSTRING_MIN (len, string->len);
 string->str[string->len] = 0;
@@ -314,7 +314,7 @@ return string;
 }
 MMAPString*
 mmap_string_set_size (MMAPString *string,
-size_t    len)
+size_t len)
 {
 if (len >= string->allocated_len)
 if (mmap_string_maybe_expand (string, len - string->len) == NULL)
@@ -324,10 +324,10 @@ string->str[len] = 0;
 return string;
 }
 MMAPString*
-mmap_string_insert_len (MMAPString     *string,
-size_t       pos,
+mmap_string_insert_len (MMAPString *string,
+size_t pos,
 const char *val,
-size_t       len)
+size_t len)
 {
 if (mmap_string_maybe_expand (string, len) == NULL)
 return NULL;
@@ -339,54 +339,54 @@ string->str[string->len] = 0;
 return string;
 }
 MMAPString*
-mmap_string_append (MMAPString     *string,
+mmap_string_append (MMAPString *string,
 const char *val)
 {
 return mmap_string_insert_len (string, string->len, val, strlen(val));
 }
 MMAPString*
-mmap_string_append_len (MMAPString	 *string,
+mmap_string_append_len (MMAPString *string,
 const char *val,
-size_t       len)
+size_t len)
 {
 return mmap_string_insert_len (string, string->len, val, len);
 }
 MMAPString*
 mmap_string_append_c (MMAPString *string,
-char    c)
+char c)
 {
 return mmap_string_insert_c (string, string->len, c);
 }
 MMAPString*
-mmap_string_prepend (MMAPString     *string,
+mmap_string_prepend (MMAPString *string,
 const char *val)
 {
 return mmap_string_insert_len (string, 0, val, strlen(val));
 }
 MMAPString*
-mmap_string_prepend_len (MMAPString	  *string,
+mmap_string_prepend_len (MMAPString *string,
 const char *val,
-size_t       len)
+size_t len)
 {
 return mmap_string_insert_len (string, 0, val, len);
 }
 MMAPString*
 mmap_string_prepend_c (MMAPString *string,
-char    c)
+char c)
 {
 return mmap_string_insert_c (string, 0, c);
 }
 MMAPString*
-mmap_string_insert (MMAPString     *string,
-size_t       pos,
+mmap_string_insert (MMAPString *string,
+size_t pos,
 const char *val)
 {
 return mmap_string_insert_len (string, pos, val, strlen(val));
 }
 MMAPString*
 mmap_string_insert_c (MMAPString *string,
-size_t   pos,
-char    c)
+size_t pos,
+char c)
 {
 if (mmap_string_maybe_expand (string, 1) == NULL)
 return NULL;
@@ -399,8 +399,8 @@ return string;
 }
 MMAPString*
 mmap_string_erase (MMAPString *string,
-size_t    pos,
-size_t    len)
+size_t pos,
+size_t len)
 {
 if ((pos + len) < string->len)
 memmove (string->str + pos, string->str + pos + len,

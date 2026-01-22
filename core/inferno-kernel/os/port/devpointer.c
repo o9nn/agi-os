@@ -1,9 +1,9 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
 #include <draw.h>
 #include <memdraw.h>
 #include <cursor.h>
@@ -15,37 +15,37 @@ Qcursor,
 };
 typedef struct Pointer Pointer;
 struct Pointer {
-int	x;
-int	y;
-int	b;
-ulong	msec;
+int x;
+int y;
+int b;
+ulong msec;
 };
 static struct
 {
 Pointer;
-int	modify;
-int	lastb;
-Rendez	r;
-Ref	ref;
-QLock	q;
+int modify;
+int lastb;
+Rendez r;
+Ref ref;
+QLock q;
 } mouse;
 static
 Dirtab pointertab[]={
-".",			{Qdir, 0, QTDIR},	0,	0555,
-"pointer",		{Qpointer},	0,	0666,
-"cursor",		{Qcursor},		0,	0222,
+".", {Qdir, 0, QTDIR}, 0, 0555,
+"pointer", {Qpointer}, 0, 0666,
+"cursor", {Qcursor}, 0, 0222,
 };
 enum {
 Nevent = 16
 };
 static struct {
-int	rd;
-int	wr;
-Pointer	clicks[Nevent];
+int rd;
+int wr;
+Pointer clicks[Nevent];
 Rendez r;
-int	full;
-int	put;
-int	get;
+int full;
+int put;
+int get;
 } ptrq;
 void
 mousetrack(int b, int x, int y, int isdelta)

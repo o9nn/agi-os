@@ -1,5 +1,5 @@
-#include	"mk.h"
-#define		MKFILE		"mkfile"
+#include "mk.h"
+#define MKFILE "mkfile"
 static char *version = "@(#)mk general release 4 (plan 9)";
 int debug;
 Rule *rules, *metarules;
@@ -16,7 +16,7 @@ Job *jobs;
 Biobuf bout;
 Rule *patrule;
 void badusage(void);
-#ifdef	PROF
+#ifdef PROF
 short buf[10000];
 #endif
 void
@@ -48,9 +48,9 @@ case 'd':
 if(*(s = &argv[0][2]))
 while(*s) switch(*s++)
 {
-case 'p':	debug |= D_PARSE; break;
-case 'g':	debug |= D_GRAPH; break;
-case 'e':	debug |= D_EXEC; break;
+case 'p': debug |= D_PARSE; break;
+case 'g': debug |= D_GRAPH; break;
+case 'e': debug |= D_EXEC; break;
 }
 else
 debug = 0xFFFF;
@@ -100,7 +100,7 @@ default:
 badusage();
 }
 }
-#ifdef	PROF
+#ifdef PROF
 {
 extern etext();
 monitor(main, etext, buf, sizeof buf, 300);

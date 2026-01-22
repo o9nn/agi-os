@@ -1,19 +1,19 @@
-#include	"u.h"
-#include	"lib.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
-#include 	"keyboard.h"
-void	(*consdebug)(void) = 0;
-void	(*screenputs)(char*, int) = 0;
-Queue*	kbdq;
-Queue*	lineq;
-Queue*	serialoq;
-Queue*	kprintoq;
-long	kprintinuse;
-Lock	kprintlock;
-int	iprintscreenputs = 0;
-int	panicking;
+#include "u.h"
+#include "lib.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
+#include "keyboard.h"
+void (*consdebug)(void) = 0;
+void (*screenputs)(char*, int) = 0;
+Queue* kbdq;
+Queue* lineq;
+Queue* serialoq;
+Queue* kprintoq;
+long kprintinuse;
+Lock kprintlock;
+int iprintscreenputs = 0;
+int panicking;
 struct
 {
 int exiting;
@@ -22,17 +22,17 @@ int machs;
 static struct
 {
 QLock lk;
-int	raw;
-int	ctl;
-int	x;
-char	line[1024];
-int	count;
-int	ctlpoff;
-Lock	lockputc;
-char	istage[1024];
-char	*iw;
-char	*ir;
-char	*ie;
+int raw;
+int ctl;
+int x;
+char line[1024];
+int count;
+int ctlpoff;
+Lock lockputc;
+char istage[1024];
+char *iw;
+char *ir;
+char *ie;
 } kbd = {
 { 0 },
 0,
@@ -47,12 +47,12 @@ kbd.istage,
 kbd.istage,
 kbd.istage + sizeof(kbd.istage),
 };
-char	*sysname;
-vlong	fasthz;
-static int	readtime(ulong, char*, int);
-static int	readbintime(char*, int);
-static int	writetime(char*, int);
-static int	writebintime(char*, int);
+char *sysname;
+vlong fasthz;
+static int readtime(ulong, char*, int);
+static int readbintime(char*, int);
+static int writetime(char*, int);
+static int writebintime(char*, int);
 enum
 {
 CMreboot,
@@ -60,8 +60,8 @@ CMpanic,
 };
 Cmdtab rebootmsg[] =
 {
-CMreboot,	"reboot",	0,
-CMpanic,	"panic",	0,
+CMreboot, "reboot", 0,
+CMpanic, "panic", 0,
 };
 int
 return0(void *v)
@@ -333,7 +333,7 @@ echo(buf, n);
 int
 kbdputc(Queue *q, int c)
 {
-int	i;
+int i;
 static int collecting, nk;
 static Rune kc[5];
 if(c == Kalt){
@@ -388,35 +388,35 @@ Qzero,
 };
 enum
 {
-VLNUMSIZE=	22,
+VLNUMSIZE= 22,
 };
 static Dirtab consdir[]={
-".",	{Qdir, 0, QTDIR},	0,		DMDIR|0555,
-"bintime",	{Qbintime},	24,		0664,
-"cons",		{Qcons},	0,		0660,
-"consctl",	{Qconsctl},	0,		0220,
-"cpunote",	{Qcpunote},	0,		0444,
-"cputime",	{Qcputime},	6*NUMSIZE,	0444,
-"drivers",	{Qdrivers},	0,		0444,
-"hostdomain",	{Qhostdomain},	DOMLEN,		0664,
-"hostowner",	{Qhostowner},	0,	0664,
-"kprint",		{Qkprint, 0, QTEXCL},	0,	DMEXCL|0440,
-"null",		{Qnull},	0,		0666,
-"osversion",	{Qosversion},	0,		0444,
-"pgrpid",	{Qpgrpid},	NUMSIZE,	0444,
-"pid",		{Qpid},		NUMSIZE,	0444,
-"ppid",		{Qppid},	NUMSIZE,	0444,
-"random",	{Qrandom},	0,		0444,
-"reboot",	{Qreboot},	0,		0664,
-"secstore",	{Qsecstore},	0,		0666,
-"showfile",	{Qshowfile},	0,	0220,
-"snarf",	{Qsnarf},		0,		0666,
-"swap",		{Qswap},	0,		0664,
-"sysname",	{Qsysname},	0,		0664,
-"sysstat",	{Qsysstat},	0,		0666,
-"time",		{Qtime},	NUMSIZE+3*VLNUMSIZE,	0664,
-"user",		{Quser},	0,	0666,
-"zero",		{Qzero},	0,		0444,
+".", {Qdir, 0, QTDIR}, 0, DMDIR|0555,
+"bintime", {Qbintime}, 24, 0664,
+"cons", {Qcons}, 0, 0660,
+"consctl", {Qconsctl}, 0, 0220,
+"cpunote", {Qcpunote}, 0, 0444,
+"cputime", {Qcputime}, 6*NUMSIZE, 0444,
+"drivers", {Qdrivers}, 0, 0444,
+"hostdomain", {Qhostdomain}, DOMLEN, 0664,
+"hostowner", {Qhostowner}, 0, 0664,
+"kprint", {Qkprint, 0, QTEXCL}, 0, DMEXCL|0440,
+"null", {Qnull}, 0, 0666,
+"osversion", {Qosversion}, 0, 0444,
+"pgrpid", {Qpgrpid}, NUMSIZE, 0444,
+"pid", {Qpid}, NUMSIZE, 0444,
+"ppid", {Qppid}, NUMSIZE, 0444,
+"random", {Qrandom}, 0, 0444,
+"reboot", {Qreboot}, 0, 0664,
+"secstore", {Qsecstore}, 0, 0666,
+"showfile", {Qshowfile}, 0, 0220,
+"snarf", {Qsnarf}, 0, 0666,
+"swap", {Qswap}, 0, 0664,
+"sysname", {Qsysname}, 0, 0664,
+"sysstat", {Qsysstat}, 0, 0666,
+"time", {Qtime}, NUMSIZE+3*VLNUMSIZE, 0664,
+"user", {Quser}, 0, 0666,
+"zero", {Qzero}, 0, 0444,
 };
 char secstorebuf[65536];
 Dirtab *secstoretab = &consdir[Qsecstore];
@@ -652,7 +652,7 @@ if(b == nil)
 error(Enomem);
 n = 0;
 for(i = 0; devtab[i] != nil; i++)
-n += snprint(b+n, READSTR-n, "#%C %s\n", devtab[i]->dc,  devtab[i]->name);
+n += snprint(b+n, READSTR-n, "#%C %s\n", devtab[i]->dc, devtab[i]->name);
 if(waserror()){
 free(b);
 nexterror();
@@ -870,7 +870,7 @@ char *Ebadtimectl = "bad time control";
 static int
 readtime(ulong off, char *buf, int n)
 {
-vlong	nsec, ticks;
+vlong nsec, ticks;
 long sec;
 char str[7*NUMSIZE];
 nsec = todget(&ticks);

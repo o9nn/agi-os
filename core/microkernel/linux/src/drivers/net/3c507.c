@@ -26,15 +26,15 @@ static unsigned int net_debug = NET_DEBUG;
 static unsigned int netcard_portlist[] =
 { 0x300, 0x320, 0x340, 0x280, 0};
 static void init_rx_bufs(struct device *dev);
-#define	 CUC_START	 0x0100
-#define	 CUC_RESUME	 0x0200
-#define	 CUC_SUSPEND 0x0300
-#define	 RX_START	 0x0010
-#define	 RX_RESUME	 0x0020
-#define	 RX_SUSPEND	 0x0030
-#define CMD_EOL		0x8000
-#define CMD_SUSP	0x4000
-#define CMD_INTR	0x2000
+#define CUC_START 0x0100
+#define CUC_RESUME 0x0200
+#define CUC_SUSPEND 0x0300
+#define RX_START 0x0010
+#define RX_RESUME 0x0020
+#define RX_SUSPEND 0x0030
+#define CMD_EOL 0x8000
+#define CMD_SUSP 0x4000
+#define CMD_INTR 0x2000
 enum commands {
 CmdNOp = 0, CmdSASetup = 1, CmdConfigure = 2, CmdMulticastList = 3,
 CmdTx = 4, CmdTDR = 5, CmdDump = 6, CmdDiagnose = 7};
@@ -47,36 +47,36 @@ ushort tx_head;
 ushort tx_cmd_link;
 ushort tx_reap;
 };
-#define	SA_DATA		0
-#define MISC_CTRL	6
-#define RESET_IRQ	10
-#define SIGNAL_CA	11
-#define ROM_CONFIG	13
-#define MEM_CONFIG	14
-#define IRQ_CONFIG	15
+#define SA_DATA 0
+#define MISC_CTRL 6
+#define RESET_IRQ 10
+#define SIGNAL_CA 11
+#define ROM_CONFIG 13
+#define MEM_CONFIG 14
+#define IRQ_CONFIG 15
 #define EL16_IO_EXTENT 16
-#define ID_PORT		0x100
-#define iSCB_STATUS	0x8
-#define iSCB_CMD		0xA
-#define iSCB_CBL		0xC
-#define iSCB_RFA		0xE
-#define SCB_BASE		((unsigned)64*1024 - (dev->mem_end - dev->mem_start))
-#define CONFIG_CMD	0x0018
-#define SET_SA_CMD	0x0024
-#define SA_OFFSET	0x002A
-#define IDLELOOP	0x30
-#define TDR_CMD		0x38
-#define TDR_TIME	0x3C
-#define DUMP_CMD	0x40
-#define DIAG_CMD	0x48
-#define SET_MC_CMD	0x4E
-#define DUMP_DATA	0x56
-#define TX_BUF_START	0x0100
-#define NUM_TX_BUFS 	4
-#define TX_BUF_SIZE 	(1518+14+20+16)
-#define RX_BUF_START	0x2000
-#define RX_BUF_SIZE 	(1518+14+18)
-#define RX_BUF_END		(dev->mem_end - dev->mem_start)
+#define ID_PORT 0x100
+#define iSCB_STATUS 0x8
+#define iSCB_CMD 0xA
+#define iSCB_CBL 0xC
+#define iSCB_RFA 0xE
+#define SCB_BASE ((unsigned)64*1024 - (dev->mem_end - dev->mem_start))
+#define CONFIG_CMD 0x0018
+#define SET_SA_CMD 0x0024
+#define SA_OFFSET 0x002A
+#define IDLELOOP 0x30
+#define TDR_CMD 0x38
+#define TDR_TIME 0x3C
+#define DUMP_CMD 0x40
+#define DIAG_CMD 0x48
+#define SET_MC_CMD 0x4E
+#define DUMP_DATA 0x56
+#define TX_BUF_START 0x0100
+#define NUM_TX_BUFS 4
+#define TX_BUF_SIZE (1518+14+20+16)
+#define RX_BUF_START 0x2000
+#define RX_BUF_SIZE (1518+14+18)
+#define RX_BUF_END (dev->mem_end - dev->mem_start)
 unsigned short init_words[] = {
 0x0000,
 0,0,
@@ -102,12 +102,12 @@ SET_MC_CMD,
 0, CmdMulticastList, IDLELOOP, 0,
 };
 extern int el16_probe(struct device *dev);
-static int	el16_probe1(struct device *dev, int ioaddr);
-static int	el16_open(struct device *dev);
-static int	el16_send_packet(struct sk_buff *skb, struct device *dev);
-static void	el16_interrupt(int irq, void *dev_id, struct pt_regs *regs);
+static int el16_probe1(struct device *dev, int ioaddr);
+static int el16_open(struct device *dev);
+static int el16_send_packet(struct sk_buff *skb, struct device *dev);
+static void el16_interrupt(int irq, void *dev_id, struct pt_regs *regs);
 static void el16_rx(struct device *dev);
-static int	el16_close(struct device *dev);
+static int el16_close(struct device *dev);
 static struct enet_statistics *el16_get_stats(struct device *dev);
 static void hardware_send_packet(struct device *dev, void *buf, short length);
 void init_82586_mem(struct device *dev);
@@ -156,7 +156,7 @@ else
 return ENODEV;
 if (dev == NULL)
 dev = init_etherdev(0, sizeof(struct net_local));
-if (net_debug  &&  version_printed++ == 0)
+if (net_debug && version_printed++ == 0)
 printk("%s", version);
 printk("%s: 3c507 at %#x,", dev->name, ioaddr);
 irq = inb(ioaddr + IRQ_CONFIG) & 0x0f;
@@ -204,10 +204,10 @@ dev->priv = kmalloc(sizeof(struct net_local), GFP_KERNEL);
 if (dev->priv == NULL)
 return -ENOMEM;
 memset(dev->priv, 0, sizeof(struct net_local));
-dev->open		= el16_open;
-dev->stop		= el16_close;
+dev->open = el16_open;
+dev->stop = el16_close;
 dev->hard_start_xmit = el16_send_packet;
-dev->get_stats	= el16_get_stats;
+dev->get_stats = el16_get_stats;
 ether_setup(dev);
 dev->flags&=~IFF_MULTICAST;
 return 0;
@@ -290,7 +290,7 @@ outb(0x80, ioaddr + MISC_CTRL);
 while (lp->tx_reap != lp->tx_head) {
 unsigned short tx_status = shmem[lp->tx_reap>>1];
 if (tx_status == 0) {
-if (net_debug > 5)  printk("Couldn't reap %#x.\n", lp->tx_reap);
+if (net_debug > 5) printk("Couldn't reap %#x.\n", lp->tx_reap);
 break;
 }
 if (tx_status & 0x2000) {
@@ -300,10 +300,10 @@ dev->tbusy = 0;
 mark_bh(NET_BH);
 } else {
 lp->stats.tx_errors++;
-if (tx_status & 0x0600)  lp->stats.tx_carrier_errors++;
-if (tx_status & 0x0100)  lp->stats.tx_fifo_errors++;
-if (!(tx_status & 0x0040))  lp->stats.tx_heartbeat_errors++;
-if (tx_status & 0x0020)  lp->stats.tx_aborted_errors++;
+if (tx_status & 0x0600) lp->stats.tx_carrier_errors++;
+if (tx_status & 0x0100) lp->stats.tx_fifo_errors++;
+if (!(tx_status & 0x0040)) lp->stats.tx_heartbeat_errors++;
+if (tx_status & 0x0020) lp->stats.tx_aborted_errors++;
 }
 if (net_debug > 5)
 printk("Reaped %x, Tx status %04x.\n" , lp->tx_reap, tx_status);
@@ -325,7 +325,7 @@ printk("%s: Command unit stopped, status %04x, restarting.\n",
 dev->name, status);
 ack_cmd |= CUC_RESUME;
 }
-if ((status & 0x0070) != 0x0040  &&  dev->start) {
+if ((status & 0x0070) != 0x0040 && dev->start) {
 if (net_debug)
 printk("%s: Rx unit stopped, status %04x, restarting.\n",
 dev->name, status);
@@ -433,7 +433,7 @@ hardware_send_packet(struct device *dev, void *buf, short length)
 struct net_local *lp = (struct net_local *)dev->priv;
 short ioaddr = dev->base_addr;
 ushort tx_block = lp->tx_head;
-ushort *write_ptr =	  (ushort *)(dev->mem_start + tx_block);
+ushort *write_ptr = (ushort *)(dev->mem_start + tx_block);
 *write_ptr++ = 0x0000;
 *write_ptr++ = CMD_INTR|CmdTx;
 *write_ptr++ = tx_block+16;
@@ -468,7 +468,7 @@ ushort rx_tail = lp->rx_tail;
 ushort boguscount = 10;
 short frame_status;
 while ((frame_status = shmem[rx_head>>1]) < 0) {
-ushort *read_frame =  (short *)(dev->mem_start + rx_head);
+ushort *read_frame = (short *)(dev->mem_start + rx_head);
 ushort rfd_cmd = read_frame[1];
 ushort next_rx_frame = read_frame[2];
 ushort data_buffer_addr = read_frame[3];
@@ -529,7 +529,7 @@ int init_module(void)
 if (io == 0)
 printk("3c507: You should not use auto-probing with insmod!\n");
 dev_3c507.base_addr = io;
-dev_3c507.irq       = irq;
+dev_3c507.irq = irq;
 if (register_netdev(&dev_3c507) != 0) {
 printk("3c507: register_netdev() returned non-zero.\n");
 return -EIO;

@@ -1,62 +1,62 @@
 #ifndef _LINUX_FB_H
 #define _LINUX_FB_H
 #include <asm/types.h>
-#define FB_MAJOR	29
-#define FB_MODES_SHIFT		5
-#define FB_NUM_MINORS		256
-#define FB_MAX			(FB_NUM_MINORS / (1 << FB_MODES_SHIFT))
-#define GET_FB_IDX(node)	(MINOR(node) >> FB_MODES_SHIFT)
-#define FBIOGET_VSCREENINFO	0x4600
-#define FBIOPUT_VSCREENINFO	0x4601
-#define FBIOGET_FSCREENINFO	0x4602
-#define FBIOGETCMAP		0x4604
-#define FBIOPUTCMAP		0x4605
-#define FBIOPAN_DISPLAY		0x4606
-#define FBIOGET_CON2FBMAP	0x460F
-#define FBIOPUT_CON2FBMAP	0x4610
-#define FBIOBLANK		0x4611
-#define FB_TYPE_PACKED_PIXELS		0
-#define FB_TYPE_PLANES			1
-#define FB_TYPE_INTERLEAVED_PLANES	2
-#define FB_TYPE_TEXT			3
-#define FB_TYPE_VGA_PLANES		4
-#define FB_AUX_TEXT_MDA		0
-#define FB_AUX_TEXT_CGA		1
-#define FB_AUX_TEXT_S3_MMIO	2
-#define FB_AUX_TEXT_MGA_STEP16	3
-#define FB_AUX_TEXT_MGA_STEP8	4
-#define FB_VISUAL_MONO01		0
-#define FB_VISUAL_MONO10		1
-#define FB_VISUAL_TRUECOLOR		2
-#define FB_VISUAL_PSEUDOCOLOR		3
-#define FB_VISUAL_DIRECTCOLOR		4
-#define FB_VISUAL_STATIC_PSEUDOCOLOR	5
-#define FB_ACCEL_NONE		0
-#define FB_ACCEL_ATARIBLITT	1
-#define FB_ACCEL_AMIGABLITT	2
-#define FB_ACCEL_S3_TRIO64	3
-#define FB_ACCEL_NCR_77C32BLT	4
-#define FB_ACCEL_S3_VIRGE	5
-#define FB_ACCEL_ATI_MACH64GX	6
-#define FB_ACCEL_DEC_TGA	7
-#define FB_ACCEL_ATI_MACH64CT	8
-#define FB_ACCEL_ATI_MACH64VT	9
-#define FB_ACCEL_ATI_MACH64GT	10
-#define FB_ACCEL_SUN_CREATOR	11
-#define FB_ACCEL_SUN_CGSIX	12
-#define FB_ACCEL_SUN_LEO	13
-#define FB_ACCEL_IMS_TWINTURBO	14
+#define FB_MAJOR 29
+#define FB_MODES_SHIFT 5
+#define FB_NUM_MINORS 256
+#define FB_MAX (FB_NUM_MINORS / (1 << FB_MODES_SHIFT))
+#define GET_FB_IDX(node) (MINOR(node) >> FB_MODES_SHIFT)
+#define FBIOGET_VSCREENINFO 0x4600
+#define FBIOPUT_VSCREENINFO 0x4601
+#define FBIOGET_FSCREENINFO 0x4602
+#define FBIOGETCMAP 0x4604
+#define FBIOPUTCMAP 0x4605
+#define FBIOPAN_DISPLAY 0x4606
+#define FBIOGET_CON2FBMAP 0x460F
+#define FBIOPUT_CON2FBMAP 0x4610
+#define FBIOBLANK 0x4611
+#define FB_TYPE_PACKED_PIXELS 0
+#define FB_TYPE_PLANES 1
+#define FB_TYPE_INTERLEAVED_PLANES 2
+#define FB_TYPE_TEXT 3
+#define FB_TYPE_VGA_PLANES 4
+#define FB_AUX_TEXT_MDA 0
+#define FB_AUX_TEXT_CGA 1
+#define FB_AUX_TEXT_S3_MMIO 2
+#define FB_AUX_TEXT_MGA_STEP16 3
+#define FB_AUX_TEXT_MGA_STEP8 4
+#define FB_VISUAL_MONO01 0
+#define FB_VISUAL_MONO10 1
+#define FB_VISUAL_TRUECOLOR 2
+#define FB_VISUAL_PSEUDOCOLOR 3
+#define FB_VISUAL_DIRECTCOLOR 4
+#define FB_VISUAL_STATIC_PSEUDOCOLOR 5
+#define FB_ACCEL_NONE 0
+#define FB_ACCEL_ATARIBLITT 1
+#define FB_ACCEL_AMIGABLITT 2
+#define FB_ACCEL_S3_TRIO64 3
+#define FB_ACCEL_NCR_77C32BLT 4
+#define FB_ACCEL_S3_VIRGE 5
+#define FB_ACCEL_ATI_MACH64GX 6
+#define FB_ACCEL_DEC_TGA 7
+#define FB_ACCEL_ATI_MACH64CT 8
+#define FB_ACCEL_ATI_MACH64VT 9
+#define FB_ACCEL_ATI_MACH64GT 10
+#define FB_ACCEL_SUN_CREATOR 11
+#define FB_ACCEL_SUN_CGSIX 12
+#define FB_ACCEL_SUN_LEO 13
+#define FB_ACCEL_IMS_TWINTURBO 14
 #define FB_ACCEL_3DLABS_PERMEDIA2 15
 #define FB_ACCEL_MATROX_MGA2064W 16
 #define FB_ACCEL_MATROX_MGA1064SG 17
 #define FB_ACCEL_MATROX_MGA2164W 18
 #define FB_ACCEL_MATROX_MGA2164W_AGP 19
-#define FB_ACCEL_MATROX_MGAG100	20
-#define FB_ACCEL_MATROX_MGAG200	21
-#define FB_ACCEL_SUN_CG14	22
-#define FB_ACCEL_SUN_BWTWO	23
-#define FB_ACCEL_SUN_CGTHREE	24
-#define FB_ACCEL_SUN_TCX	25
+#define FB_ACCEL_MATROX_MGAG100 20
+#define FB_ACCEL_MATROX_MGAG200 21
+#define FB_ACCEL_SUN_CG14 22
+#define FB_ACCEL_SUN_BWTWO 23
+#define FB_ACCEL_SUN_CGTHREE 24
+#define FB_ACCEL_SUN_TCX 25
 #define FB_ACCEL_MATROX_MGAG400 26
 struct fb_fix_screeninfo {
 char id[16];
@@ -79,28 +79,28 @@ __u32 offset;
 __u32 length;
 __u32 msb_right;
 };
-#define FB_NONSTD_HAM		1
-#define FB_ACTIVATE_NOW		0
-#define FB_ACTIVATE_NXTOPEN	1
-#define FB_ACTIVATE_TEST	2
-#define FB_ACTIVATE_MASK       15
-#define FB_ACTIVATE_VBL	       16
-#define FB_CHANGE_CMAP_VBL     32
-#define FB_ACTIVATE_ALL	       64
-#define FB_ACCELF_TEXT		1
-#define FB_SYNC_HOR_HIGH_ACT	1
-#define FB_SYNC_VERT_HIGH_ACT	2
-#define FB_SYNC_EXT		4
-#define FB_SYNC_COMP_HIGH_ACT	8
-#define FB_SYNC_BROADCAST	16
-#define FB_SYNC_ON_GREEN	32
-#define FB_VMODE_NONINTERLACED  0
-#define FB_VMODE_INTERLACED	1
-#define FB_VMODE_DOUBLE		2
-#define FB_VMODE_MASK		255
-#define FB_VMODE_YWRAP		256
-#define FB_VMODE_SMOOTH_XPAN	512
-#define FB_VMODE_CONUPDATE	512
+#define FB_NONSTD_HAM 1
+#define FB_ACTIVATE_NOW 0
+#define FB_ACTIVATE_NXTOPEN 1
+#define FB_ACTIVATE_TEST 2
+#define FB_ACTIVATE_MASK 15
+#define FB_ACTIVATE_VBL 16
+#define FB_CHANGE_CMAP_VBL 32
+#define FB_ACTIVATE_ALL 64
+#define FB_ACCELF_TEXT 1
+#define FB_SYNC_HOR_HIGH_ACT 1
+#define FB_SYNC_VERT_HIGH_ACT 2
+#define FB_SYNC_EXT 4
+#define FB_SYNC_COMP_HIGH_ACT 8
+#define FB_SYNC_BROADCAST 16
+#define FB_SYNC_ON_GREEN 32
+#define FB_VMODE_NONINTERLACED 0
+#define FB_VMODE_INTERLACED 1
+#define FB_VMODE_DOUBLE 2
+#define FB_VMODE_MASK 255
+#define FB_VMODE_YWRAP 256
+#define FB_VMODE_SMOOTH_XPAN 512
+#define FB_VMODE_CONUPDATE 512
 struct fb_var_screeninfo {
 __u32 xres;
 __u32 yres;
@@ -218,7 +218,7 @@ struct fb_info {
 char modename[40];
 kdev_t node;
 int flags;
-#define FBINFO_FLAG_MODULE	1
+#define FBINFO_FLAG_MODULE 1
 struct fb_ops *fbops;
 struct fb_monspecs monspecs;
 struct display *disp;
@@ -230,9 +230,9 @@ int (*updatevar)(int, struct fb_info*);
 void (*blank)(int, struct fb_info*);
 };
 #ifdef MODULE
-#define FBINFO_FLAG_DEFAULT	FBINFO_FLAG_MODULE
+#define FBINFO_FLAG_DEFAULT FBINFO_FLAG_MODULE
 #else
-#define FBINFO_FLAG_DEFAULT	0
+#define FBINFO_FLAG_DEFAULT 0
 #endif
 struct fbgen_hwswitch {
 void (*detect)(void);
@@ -307,21 +307,21 @@ struct fb_info *),
 struct fb_info *fb_info);
 extern struct fb_cmap *fb_default_cmap(int len);
 extern void fb_invert_cmaps(void);
-#define VESA_NO_BLANKING	0
-#define VESA_VSYNC_SUSPEND	1
-#define VESA_HSYNC_SUSPEND	2
-#define VESA_POWERDOWN		3
+#define VESA_NO_BLANKING 0
+#define VESA_VSYNC_SUSPEND 1
+#define VESA_HSYNC_SUSPEND 2
+#define VESA_POWERDOWN 3
 #endif
 #if 1
-#define FBCMD_GET_CURRENTPAR	0xDEAD0005
-#define FBCMD_SET_CURRENTPAR	0xDEAD8005
+#define FBCMD_GET_CURRENTPAR 0xDEAD0005
+#define FBCMD_SET_CURRENTPAR 0xDEAD8005
 #endif
 #if 1
-#define FBIOGET_FCURSORINFO     0x4607
-#define FBIOGET_VCURSORINFO     0x4608
-#define FBIOPUT_VCURSORINFO     0x4609
-#define FBIOGET_CURSORSTATE     0x460A
-#define FBIOPUT_CURSORSTATE     0x460B
+#define FBIOGET_FCURSORINFO 0x4607
+#define FBIOGET_VCURSORINFO 0x4608
+#define FBIOPUT_VCURSORINFO 0x4609
+#define FBIOGET_CURSORSTATE 0x460A
+#define FBIOPUT_CURSORSTATE 0x460B
 struct fb_fix_cursorinfo {
 __u16 crsr_width;
 __u16 crsr_height;
@@ -342,8 +342,8 @@ __s16 xoffset;
 __s16 yoffset;
 __u16 mode;
 };
-#define FB_CURSOR_OFF		0
-#define FB_CURSOR_ON		1
-#define FB_CURSOR_FLASH		2
+#define FB_CURSOR_OFF 0
+#define FB_CURSOR_ON 1
+#define FB_CURSOR_FLASH 2
 #endif
 #endif

@@ -2,53 +2,53 @@
 #include "isa.h"
 #include "interp.h"
 #include "raise.h"
-#define	ROMABLE	0
-#define	RESCHED 1
-#define PATCH(ptr)		   *ptr |= ((ulong)code-(ulong)ptr) & 0xfffc
-#define T(r)	*((void**)(R.r))
-#define	XO(o,xo)	(((o)<<26)|((xo)<<1))
-#define	OPARRR(o,d,a,b)	((o)|((d)<<21)|((a)<<16)|((b)<<11))
-#define	ARRR(o,d,a,b)		gen((o)|((d)<<21)|((a)<<16)|((b)<<11))
-#define	AIRR(o,d,a,v)		gen((o)|((d)<<21)|((a)<<16)|((v)&0xFFFF))
-#define	IRR(o,v,a,d)	AIRR((o),(d),(a),(v))
-#define	RRR(o,b,a,d)	ARRR((o),(d),(a),(b))
-#define	LRRR(o,a,s,b)		ARRR((o),(s),(a),(b))
-#define	LIRR(o,a,s,v)		AIRR((o),(s),(a),(v))
-#define	Bx(li,aa)		gen((18<<26)|((li)&0x3FFFFFC)|((aa)<<1))
-#define	RLW(op,a,s,sh,mb,me) ((op)|(((s)&31L)<<21)|(((a)&31L)<<16)|(((sh)&31L)<<11)|\
+#define ROMABLE 0
+#define RESCHED 1
+#define PATCH(ptr) *ptr |= ((ulong)code-(ulong)ptr) & 0xfffc
+#define T(r) *((void**)(R.r))
+#define XO(o,xo) (((o)<<26)|((xo)<<1))
+#define OPARRR(o,d,a,b) ((o)|((d)<<21)|((a)<<16)|((b)<<11))
+#define ARRR(o,d,a,b) gen((o)|((d)<<21)|((a)<<16)|((b)<<11))
+#define AIRR(o,d,a,v) gen((o)|((d)<<21)|((a)<<16)|((v)&0xFFFF))
+#define IRR(o,v,a,d) AIRR((o),(d),(a),(v))
+#define RRR(o,b,a,d) ARRR((o),(d),(a),(b))
+#define LRRR(o,a,s,b) ARRR((o),(s),(a),(b))
+#define LIRR(o,a,s,v) AIRR((o),(s),(a),(v))
+#define Bx(li,aa) gen((18<<26)|((li)&0x3FFFFFC)|((aa)<<1))
+#define RLW(op,a,s,sh,mb,me) ((op)|(((s)&31L)<<21)|(((a)&31L)<<16)|(((sh)&31L)<<11)|\
 (((mb)&31L)<<6)|(((me)&31L)<<1))
-#define	MFSPR(s, d)	gen(XO(31,339) | ((d)<<21) | ((s)<<11))
-#define	MTSPR(s, d)	gen(XO(31,467) | ((s)<<21) | ((d)<<11));
-#define	MFCR(d)		gen(XO(31,19) | ((d)<<21))
-#define	MTCRF(s, mask)	gen(XO(31,144) | ((s)<<21) | ((mask)<<12))
-#define	MTCR(s)		MTCRF(s, 0xff)
-#define	SLWI(d,a,n)	gen(slw((d),(a),(n),0))
-#define	LRET()	gen(Oblr)
-#define	SETR0()	if(macjit){	AIRR(Oaddi, Rzero, 0, 0); }
-#define	CMPH(r)		AIRR(Ocmpi, Rcrf0, (r), (ulong)H);
-#define NOTNIL(r)	(CMPH((r)), CCALL(EQ, bounds))
+#define MFSPR(s, d) gen(XO(31,339) | ((d)<<21) | ((s)<<11))
+#define MTSPR(s, d) gen(XO(31,467) | ((s)<<21) | ((d)<<11));
+#define MFCR(d) gen(XO(31,19) | ((d)<<21))
+#define MTCRF(s, mask) gen(XO(31,144) | ((s)<<21) | ((mask)<<12))
+#define MTCR(s) MTCRF(s, 0xff)
+#define SLWI(d,a,n) gen(slw((d),(a),(n),0))
+#define LRET() gen(Oblr)
+#define SETR0() if(macjit){ AIRR(Oaddi, Rzero, 0, 0); }
+#define CMPH(r) AIRR(Ocmpi, Rcrf0, (r), (ulong)H);
+#define NOTNIL(r) (CMPH((r)), CCALL(EQ, bounds))
 enum
 {
-Rzero	= 0,
+Rzero = 0,
 Rsp = 1,
 Rsb = 2,
-Rarg	= 3,
-Ro1	= 8,
-Ro2	= 9,
-Ro3	= 10,
-Ri	= 11,
-Rj	= 12,
-Rmp	= 13,
-Rfp	= 14,
-Rreg	= 15,
-Rta	= 16,
-Rpic	= 17,
+Rarg = 3,
+Ro1 = 8,
+Ro2 = 9,
+Ro3 = 10,
+Ri = 11,
+Rj = 12,
+Rmp = 13,
+Rfp = 14,
+Rreg = 15,
+Rta = 16,
+Rpic = 17,
 Rcon = 26,
 Rlink = 31,
-Rfret	= 0,
-Rf1	= 4,
-Rf2	= 6,
-Rfcvi	= 27,
+Rfret = 0,
+Rf1 = 4,
+Rf2 = 6,
+Rfcvi = 27,
 Rfzero = 28,
 Rfhalf = 29,
 Rlr = 8<<5,
@@ -56,107 +56,107 @@ Rctr = 9<<5,
 Rcrf0 = 0,
 Rcrf1 = 1<<2,
 Rcrbrel = 31,
-Olwz	= XO(32, 0),
+Olwz = XO(32, 0),
 Olwzu = XO(33, 0),
 Olwzx = XO(31, 23),
-Olbz	= XO(34, 0),
+Olbz = XO(34, 0),
 Olbzu = XO(35, 0),
 Olbzx = XO(31, 87),
-Olfd	= XO(50, 0),
-Olhz	= XO(40, 0),
+Olfd = XO(50, 0),
+Olhz = XO(40, 0),
 Olhzx = XO(31, 279),
-Ostw	= XO(36, 0),
+Ostw = XO(36, 0),
 Ostwu = XO(37, 0),
 Ostwx = XO(31, 151),
-Ostb	= XO(38, 0),
+Ostb = XO(38, 0),
 Ostbu = XO(39, 0),
 Ostbx = XO(31, 215),
-Osth	= XO(44,0),
+Osth = XO(44,0),
 Osthx = XO(31, 407),
-Ostfd	= XO(54, 0),
-Ostfdu	= XO(55, 0),
-Oaddc	= XO(31,10),
-Oadde	= XO(31, 138),
-Oaddi	= XO(14, 0),
-Oaddic_	= XO(13, 0),
-Oaddis	= XO(15, 0),
-Ocrxor	= XO(19, 193),
-Ofadd	= XO(63, 21),
-Ofcmpo	= XO(63, 32),
-Ofctiwz	= XO(63, 15),
-Ofsub	= XO(63, 20),
-Ofmr	= XO(63, 72),
-Ofmul	= XO(63, 25),
-Ofdiv	= XO(63, 18),
-Ofneg	= XO(63, 40),
-Oori		= XO(24,0),
-Ooris	= XO(25,0),
-Odivw	= XO(31, 491),
-Odivwu	= XO(31, 459),
-Omulhw	= XO(31, 75),
-Omulhwu	= XO(31, 11),
-Omulli	= XO(7, 0),
-Omullw	= XO(31, 235),
-Osubf	= XO(31, 40),
-Osubfc	= XO(31,8),
-Osubfe	= XO(31,136),
-Osubfic	= XO(8, 0),
-Oadd	= XO(31, 266),
-Oand	= XO(31, 28),
-Oneg	= XO(31, 104),
-Oor		= XO(31, 444),
-Oxor		= XO(31, 316),
+Ostfd = XO(54, 0),
+Ostfdu = XO(55, 0),
+Oaddc = XO(31,10),
+Oadde = XO(31, 138),
+Oaddi = XO(14, 0),
+Oaddic_ = XO(13, 0),
+Oaddis = XO(15, 0),
+Ocrxor = XO(19, 193),
+Ofadd = XO(63, 21),
+Ofcmpo = XO(63, 32),
+Ofctiwz = XO(63, 15),
+Ofsub = XO(63, 20),
+Ofmr = XO(63, 72),
+Ofmul = XO(63, 25),
+Ofdiv = XO(63, 18),
+Ofneg = XO(63, 40),
+Oori = XO(24,0),
+Ooris = XO(25,0),
+Odivw = XO(31, 491),
+Odivwu = XO(31, 459),
+Omulhw = XO(31, 75),
+Omulhwu = XO(31, 11),
+Omulli = XO(7, 0),
+Omullw = XO(31, 235),
+Osubf = XO(31, 40),
+Osubfc = XO(31,8),
+Osubfe = XO(31,136),
+Osubfic = XO(8, 0),
+Oadd = XO(31, 266),
+Oand = XO(31, 28),
+Oneg = XO(31, 104),
+Oor = XO(31, 444),
+Oxor = XO(31, 316),
 Ocmpi = XO(11, 0),
 Ocmp = XO(31, 0),
 Ocmpl = XO(31, 32),
 Ocmpli = XO(10,0),
 Orlwinm = XO(21, 0),
-Oslw	= XO(31, 24),
+Oslw = XO(31, 24),
 Osraw = XO(31,792),
-Osrawi =	XO(31,824),
+Osrawi = XO(31,824),
 Osrw = XO(31,536),
-Cnone	= OPARRR(0,20,0,0),
-Ceq		= OPARRR(0,12,2,0),
-Cle		= OPARRR(0,4,1,0),
-Clt		= OPARRR(0,12,0,0),
-Cdnz	= OPARRR(0,16,0,0),
-Cgt		= OPARRR(0,12,1,0),
-Cne		= OPARRR(0,4,2,0),
-Cge		= OPARRR(0,4,0,0),
-Cle1		= OPARRR(0,4,5,0),
-Crelq	= OPARRR(0,12,Rcrbrel,0),
-Cnrelq	= OPARRR(0,4,Rcrbrel,0),
-Cpredict	= OPARRR(0,1,0,0),
-Lk		= 1,
-Aa		= 2,
-Obeq	= OPARRR(16<<26,12,2,0),
-Obge	= OPARRR(16<<26,4,0,0),
-Obgt		= OPARRR(16<<26,12,1,0),
-Oble		= OPARRR(16<<26,4,1,0),
-Oblt		= OPARRR(16<<26,12,0,0),
-Obne	= OPARRR(16<<26,4,2,0),
-Ob		= XO(18, 0),
-Obc		= XO(16, 0),
-Obcctr	= XO(19,528),
-Obcctrl	= Obcctr | Lk,
-Obctr	= Obcctr | Cnone,
-Obctrl	= Obctr | Lk,
-Obclr	= XO(19, 16),
-Oblr		= Obclr | Cnone,
-Oblrl		= Oblr | Lk,
-Olea	= 100,
-SRCOP	= (1<<0),
-DSTOP	= (1<<1),
-WRTPC	= (1<<2),
-TCHECK	= (1<<3),
-NEWPC	= (1<<4),
-DBRAN	= (1<<5),
-THREOP	= (1<<6),
-Lg2Rune	= sizeof(Rune)==4? 2: 1,
-ANDAND	= 1,
+Cnone = OPARRR(0,20,0,0),
+Ceq = OPARRR(0,12,2,0),
+Cle = OPARRR(0,4,1,0),
+Clt = OPARRR(0,12,0,0),
+Cdnz = OPARRR(0,16,0,0),
+Cgt = OPARRR(0,12,1,0),
+Cne = OPARRR(0,4,2,0),
+Cge = OPARRR(0,4,0,0),
+Cle1 = OPARRR(0,4,5,0),
+Crelq = OPARRR(0,12,Rcrbrel,0),
+Cnrelq = OPARRR(0,4,Rcrbrel,0),
+Cpredict = OPARRR(0,1,0,0),
+Lk = 1,
+Aa = 2,
+Obeq = OPARRR(16<<26,12,2,0),
+Obge = OPARRR(16<<26,4,0,0),
+Obgt = OPARRR(16<<26,12,1,0),
+Oble = OPARRR(16<<26,4,1,0),
+Oblt = OPARRR(16<<26,12,0,0),
+Obne = OPARRR(16<<26,4,2,0),
+Ob = XO(18, 0),
+Obc = XO(16, 0),
+Obcctr = XO(19,528),
+Obcctrl = Obcctr | Lk,
+Obctr = Obcctr | Cnone,
+Obctrl = Obctr | Lk,
+Obclr = XO(19, 16),
+Oblr = Obclr | Cnone,
+Oblrl = Oblr | Lk,
+Olea = 100,
+SRCOP = (1<<0),
+DSTOP = (1<<1),
+WRTPC = (1<<2),
+TCHECK = (1<<3),
+NEWPC = (1<<4),
+DBRAN = (1<<5),
+THREOP = (1<<6),
+Lg2Rune = sizeof(Rune)==4? 2: 1,
+ANDAND = 1,
 OROR,
 EQAND,
-MacRET	= 0,
+MacRET = 0,
 MacFRP,
 MacCASE,
 MacFRAM,
@@ -168,47 +168,47 @@ MacRELQ,
 MacEND,
 NMACRO
 };
-void	(*comvec)(void);
-int	macjit;
-extern	long	das(ulong*);
-static	ulong*	code;
-static	ulong*	base;
-static	ulong*	patch;
-static	int	pass;
-static	Module*	mod;
-static	ulong*	tinit;
-static	ulong*	litpool;
-static	int	nlit;
-static	ulong	macro[NMACRO];
-static	void	ldbigc(long, int);
-static	void	rdestroy(void);
-static	void	macret(void);
-static	void	macfrp(void);
-static	void	maccase(void);
-static	void	maccvtfw(void);
-static	void	macfram(void);
-static	void	maccolr(void);
-static	void	macend(void);
-static	void	macmcal(void);
-static	void	macmfra(void);
-static	void	macrelq(void);
-static	void	movmem(Inst*);
+void (*comvec)(void);
+int macjit;
+extern long das(ulong*);
+static ulong* code;
+static ulong* base;
+static ulong* patch;
+static int pass;
+static Module* mod;
+static ulong* tinit;
+static ulong* litpool;
+static int nlit;
+static ulong macro[NMACRO];
+static void ldbigc(long, int);
+static void rdestroy(void);
+static void macret(void);
+static void macfrp(void);
+static void maccase(void);
+static void maccvtfw(void);
+static void macfram(void);
+static void maccolr(void);
+static void macend(void);
+static void macmcal(void);
+static void macmfra(void);
+static void macrelq(void);
+static void movmem(Inst*);
 struct
 {
-int	o;
-void	(*f)(void);
+int o;
+void (*f)(void);
 } macinit[] =
 {
-MacFRP,		macfrp,
-MacRET,		macret,
-MacCASE,	maccase,
-MacCOLR,	maccolr,
-MacFRAM,	macfram,
-MacMCAL,	macmcal,
-MacMFRA,	macmfra,
-MacCVTFW,	maccvtfw,
-MacRELQ,		macrelq,
-MacEND,		macend,
+MacFRP, macfrp,
+MacRET, macret,
+MacCASE, maccase,
+MacCOLR, maccolr,
+MacFRAM, macfram,
+MacMCAL, macmcal,
+MacMFRA, macmfra,
+MacCVTFW, maccvtfw,
+MacRELQ, macrelq,
+MacEND, macend,
 0
 };
 static void
@@ -397,14 +397,14 @@ mem(int inst, long disp, int rm, int r)
 if(bigc(disp)) {
 ldc(disp, Rcon);
 switch(inst){
-default: 		urk("mem op"); break;
-case Olea:		inst = Oadd; break;
-case Olwz:	inst = Olwzx; break;
-case Olbz:		inst = Olbzx; break;
-case Olhz:		inst = Olhzx; break;
-case Ostw:	inst = Ostwx; break;
-case Ostb:		inst = Ostbx; break;
-case Osth:		inst = Osthx; break;
+default: urk("mem op"); break;
+case Olea: inst = Oadd; break;
+case Olwz: inst = Olwzx; break;
+case Olbz: inst = Olbzx; break;
+case Olhz: inst = Olhzx; break;
+case Ostw: inst = Ostwx; break;
+case Ostb: inst = Ostbx; break;
+case Osth: inst = Osthx; break;
 }
 ARRR(inst, r, Rcon, rm);
 } else {
@@ -1166,10 +1166,10 @@ break;
 case ISHRL:
 shrl(i);
 break;
-case IADDF:	o = Ofadd; goto f1;
-case ISUBF:	o = Ofsub; goto f1;
-case IMULF:	o = Ofmul; goto f1;
-case IDIVF:	o = Ofdiv; goto f1;
+case IADDF: o = Ofadd; goto f1;
+case ISUBF: o = Ofsub; goto f1;
+case IMULF: o = Ofmul; goto f1;
+case IDIVF: o = Ofdiv; goto f1;
 f1:
 opwld(i, Olfd, Rf1);
 op2(i, Olfd, Rf2);
@@ -1282,30 +1282,30 @@ s2:
 q = 0;
 switch(i->op) {
 case ISUBB:
-case ISUBW:	o = Osubf; q = Osubfic;
+case ISUBW: o = Osubf; q = Osubfic;
 USED(q);
 ARRR(o, Ro3, Ro1, Ro2);
 break;
 case IADDB:
-case IADDW:	o = Oadd; q = Oaddi; goto c1;
+case IADDW: o = Oadd; q = Oaddi; goto c1;
 case IMULB:
-case IMULW:	o = Omullw; q = Omulli; goto c1;
+case IMULW: o = Omullw; q = Omulli; goto c1;
 case IDIVB:
-case IDIVW:	o = Odivw; goto c1;
+case IDIVW: o = Odivw; goto c1;
 c1:
 USED(q);
 ARRR(o, Ro3, Ro2, Ro1);
 break;
 case IANDB:
-case IANDW:	o = Oand; goto c2;
+case IANDW: o = Oand; goto c2;
 case IORB:
-case IORW:	o = Oor; goto c2;
+case IORW: o = Oor; goto c2;
 case IXORB:
-case IXORW:	o = Oxor; goto c2;
+case IXORW: o = Oxor; goto c2;
 case ISHLB:
-case ISHLW:	o = Oslw; goto c2;
+case ISHLW: o = Oslw; goto c2;
 case ISHRB:
-case ISHRW:	o = Osraw; goto c2;
+case ISHRW: o = Osraw; goto c2;
 c2:
 LRRR(o, Ro3,Ro2,Ro1);
 break;
@@ -1606,7 +1606,7 @@ RRR(Oadd, Ro2, Rlink, Rlink);
 IRR(Olwz, 4,Rlink, Ro3);
 jr(Ro3);
 }
-static	void
+static void
 macmcal(void)
 {
 ulong *cp;
@@ -1645,7 +1645,7 @@ AIRR(Olwz, Rpic, Rreg,O(REG,xpc));
 mtspr(Rlr, Rpic);
 gen(Oblr);
 }
-static	void
+static void
 macmfra(void)
 {
 mfspr(Rlink, Rlr);

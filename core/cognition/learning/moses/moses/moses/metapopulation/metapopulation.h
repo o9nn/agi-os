@@ -42,7 +42,7 @@ const combo_tree& best_tree() const;
 score_t best_score() const {
 return best_composite_score().get_score();
 }
-behave_cscore& get_cscorer() const { return  _cscorer; }
+behave_cscore& get_cscorer() const { return _cscorer; }
 public:
 scored_combo_tree_ptr_set::const_iterator select_exemplar();
 const scored_combo_tree_ptr_set& get_trees() const { return _scored_trees; }

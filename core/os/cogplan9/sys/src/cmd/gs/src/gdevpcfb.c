@@ -16,22 +16,22 @@ private dev_proc_map_rgb_color(ega1_map_rgb_color);
 private dev_proc_map_color_rgb(ega01_map_color_rgb);
 #define ega2_map_color_rgb pc_4bit_map_color_rgb
 #if ega_bits_of_color == 0
-#   define ega_map_rgb_color ega0_map_rgb_color
-#   define ega_map_color_rgb ega01_map_color_rgb
+# define ega_map_rgb_color ega0_map_rgb_color
+# define ega_map_color_rgb ega01_map_color_rgb
 #else
 # if ega_bits_of_color == 1
-#   define ega_map_rgb_color ega1_map_rgb_color
-#   define ega_map_color_rgb ega01_map_color_rgb
+# define ega_map_rgb_color ega1_map_rgb_color
+# define ega_map_color_rgb ega01_map_color_rgb
 # else
-#   define ega_map_rgb_color ega2_map_rgb_color
-#   define ega_map_color_rgb ega2_map_color_rgb
+# define ega_map_rgb_color ega2_map_rgb_color
+# define ega_map_color_rgb ega2_map_color_rgb
 # endif
 #endif
 #define ega_std_procs(get_params, put_params)\
 ega_open,\
-NULL,			\
-NULL,			\
-NULL,			\
+NULL, \
+NULL, \
+NULL, \
 ega_close,\
 ega_map_rgb_color,\
 ega_map_color_rgb,\
@@ -39,14 +39,14 @@ ega_fill_rectangle,\
 ega_tile_rectangle,\
 ega_copy_mono,\
 ega_copy_color,\
-NULL,			\
+NULL, \
 ega_get_bits,\
 get_params,\
 put_params,\
-NULL,			\
-NULL,			\
-NULL,			\
-NULL,			\
+NULL, \
+NULL, \
+NULL, \
+NULL, \
 gx_page_device_get_page_device
 private const gx_device_procs ega_procs =
 {
@@ -63,7 +63,7 @@ ega_device("ega", ega_procs, 80, 350, 48.0 / 35.0, 0x10);
 gx_device_ega far_data gs_vga_device =
 ega_device("vga", ega_procs, 80, 480, 1.0, 0x12);
 gx_device_ega far_data gs_svga16_device =
-ega_device("svga16", svga16_procs, 100, 600, 1.0, 0x29  );
+ega_device("svga16", svga16_procs, 100, 600, 1.0, 0x29 );
 private pcfb_bios_state pcfb_save_state =
 {-1};
 int
@@ -224,10 +224,10 @@ while (--yc);
 #endif
 #if USE_ASM
 void memrwcol(rop_ptr);
-#  define memrwcol0(rop) memrwcol(rop)
+# define memrwcol0(rop) memrwcol(rop)
 #else
-#  define memrwcol cmemrwcol
-#  define memrwcol0 cmemrwcol0
+# define memrwcol cmemrwcol
+# define memrwcol0 cmemrwcol0
 private void
 cmemrwcol(rop_ptr rop)
 {

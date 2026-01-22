@@ -8,52 +8,52 @@
 #include "../port/netif.h"
 #include "etherif.h"
 enum {
-CommandR		= 0x000E,
-IntStatusR		= 0x000E,
+CommandR = 0x000E,
+IntStatusR = 0x000E,
 };
 enum {
-GlobalReset		= 0x0000,
-SelectRegisterWindow	= 0x0001,
-RxReset			= 0x0005,
-TxReset			= 0x000B,
-AcknowledgeInterrupt	= 0x000D,
+GlobalReset = 0x0000,
+SelectRegisterWindow = 0x0001,
+RxReset = 0x0005,
+TxReset = 0x000B,
+AcknowledgeInterrupt = 0x000D,
 };
 enum {
-commandInProgress	= 0x1000,
+commandInProgress = 0x1000,
 };
-#define COMMAND(port, cmd, a)	outs((port)+CommandR, ((cmd)<<11)|(a))
-#define STATUS(port)		ins((port)+IntStatusR)
+#define COMMAND(port, cmd, a) outs((port)+CommandR, ((cmd)<<11)|(a))
+#define STATUS(port) ins((port)+IntStatusR)
 enum {
-Wsetup			= 0x0000,
-ManufacturerID		= 0x0000,
-ProductID		= 0x0002,
-ConfigControl		= 0x0004,
-AddressConfig		= 0x0006,
-ResourceConfig		= 0x0008,
-EepromCommand		= 0x000A,
-EepromData		= 0x000C,
-autoSelect9		= 0x0080,
-xcvrMask9		= 0xC000,
-Ena			= 0x0001,
-base10TAvailable9	= 0x0200,
-coaxAvailable9		= 0x1000,
-auiAvailable9		= 0x2000,
-EepromReadRegister	= 0x0080,
-EepromBusy		= 0x8000,
-};
-enum {
-Wop			= 0x0001,
+Wsetup = 0x0000,
+ManufacturerID = 0x0000,
+ProductID = 0x0002,
+ConfigControl = 0x0004,
+AddressConfig = 0x0006,
+ResourceConfig = 0x0008,
+EepromCommand = 0x000A,
+EepromData = 0x000C,
+autoSelect9 = 0x0080,
+xcvrMask9 = 0xC000,
+Ena = 0x0001,
+base10TAvailable9 = 0x0200,
+coaxAvailable9 = 0x1000,
+auiAvailable9 = 0x2000,
+EepromReadRegister = 0x0080,
+EepromBusy = 0x8000,
 };
 enum {
-Wfifo			= 0x0003,
-InternalConfig		= 0x0000,
-xcvr10BaseT		= 0x00000000,
-xcvr10Base2		= 0x00300000,
+Wop = 0x0001,
 };
 enum {
-Wdiagnostic		= 0x0004,
-MediaStatus		= 0x000A,
-linkBeatDetect		= 0x0800,
+Wfifo = 0x0003,
+InternalConfig = 0x0000,
+xcvr10BaseT = 0x00000000,
+xcvr10Base2 = 0x00300000,
+};
+enum {
+Wdiagnostic = 0x0004,
+MediaStatus = 0x000A,
+linkBeatDetect = 0x0800,
 };
 extern int etherelnk3reset(Ether*);
 static char *tcmpcmcia[] = {

@@ -33,12 +33,12 @@
 extern int (*rarp_ioctl_hook)(unsigned int,void*);
 struct rarp_table
 {
-struct rarp_table  *next;
-unsigned long      ip;
-unsigned char      ha[MAX_ADDR_LEN];
-unsigned char      hlen;
-unsigned char      htype;
-struct device      *dev;
+struct rarp_table *next;
+unsigned long ip;
+unsigned char ha[MAX_ADDR_LEN];
+unsigned char hlen;
+unsigned char htype;
+struct device *dev;
 };
 struct rarp_table *rarp_tables = NULL;
 static int rarp_rcv(struct sk_buff *, struct device *, struct packet_type *);
@@ -353,7 +353,7 @@ break;
 }
 }
 *start = buffer+(offset-begin);
-len   -= (offset-begin);
+len -= (offset-begin);
 if (len>length)
 len = length;
 return len;

@@ -21,9 +21,9 @@ const char *argp_program_version = STANDARD_HURD_VERSION (swapon);
 static int ignore_signature, require_signature, show, quiet, ifexists;
 static struct argp_option options[] =
 {
-{"standard",	  'a', 0, 0,
+{"standard", 'a', 0, 0,
 "Use all devices marked as `swap' in " _PATH_MNTTAB},
-{"ifexists",    'e', 0, 0,
+{"ifexists", 'e', 0, 0,
 "Silently skip devices that do not exist"},
 {"no-signature",'n', 0, 0,
 "Do not check for a Linux swap signature page"},
@@ -31,9 +31,9 @@ static struct argp_option options[] =
 "Require a Linux swap signature page"},
 {"show", 'S', 0, 0,
 "Show devices currently in use"},
-{"silent",     'q', 0,      0, "Print only diagnostic messages"},
-{"quiet",      'q', 0,      OPTION_ALIAS | OPTION_HIDDEN },
-{"verbose",    'v', 0,      0, "Be verbose"},
+{"silent", 'q', 0, 0, "Print only diagnostic messages"},
+{"quiet", 'q', 0, OPTION_ALIAS | OPTION_HIDDEN },
+{"verbose", 'v', 0, 0, "Be verbose"},
 {0, 0}
 };
 static char *args_doc = "DEVICE...";
@@ -113,19 +113,19 @@ size_t start, limit;
 size_t freepages = store->size / LINUX_PAGE_SIZE;
 struct run first_run = { NULL, 0, freepages }, *runs = &first_run;
 size_t nruns = 1;
-#define BAD_PAGE(pageno)						      \
-({									      \
-size_t page = (pageno);						      \
-if (page == runs->start)						      \
-runs->start = page + 1;						      \
-else								      \
-{									      \
-runs->next = alloca (sizeof *runs);				      \
-runs->next->start = page + 1;					      \
-runs->next->limit = runs->limit;				      \
-runs->limit = page;						      \
-++nruns;							      \
-}									      \
+#define BAD_PAGE(pageno) \
+({ \
+size_t page = (pageno); \
+if (page == runs->start) \
+runs->start = page + 1; \
+else \
+{ \
+runs->next = alloca (sizeof *runs); \
+runs->next->start = page + 1; \
+runs->next->limit = runs->limit; \
+runs->limit = page; \
+++nruns; \
+} \
 })
 void *buf = 0;
 size_t len = 0;

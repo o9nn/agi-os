@@ -5,9 +5,9 @@ static const int mtu = 1500;
 static int max_interrupt_work = 20;
 #define AUTOMEDIA 1
 #define VORTEX_BUS_MASTER
-#define TX_RING_SIZE	16
-#define RX_RING_SIZE	16
-#define PKT_BUF_SZ		1536
+#define TX_RING_SIZE 16
+#define RX_RING_SIZE 16
+#define PKT_BUF_SZ 1536
 #ifdef MODULE
 #ifdef MODVERSIONS
 #include <linux/modversions.h>
@@ -40,7 +40,7 @@ static int max_interrupt_work = 20;
 #define NEW_MULTICAST
 #include <linux/delay.h>
 #else
-#define udelay(microsec)	do { int _i = 4*microsec; while (--_i > 0) { __SLOW_DOWN_IO; }} while (0)
+#define udelay(microsec) do { int _i = 4*microsec; while (--_i > 0) { __SLOW_DOWN_IO; }} while (0)
 #endif
 #define RUN_AT(x) (jiffies + (x))
 #define DEV_ALLOC_SKB(len) dev_alloc_skb(len + 2)
@@ -60,7 +60,7 @@ MODULE_PARM(max_interrupt_work, "i");
 #define DRIVER_DEBUG 1
 static int rx_nocopy = 0, rx_copy = 0, queued_packet = 0;
 #define WAIT_TX_AVAIL 200
-#define TX_TIMEOUT  40
+#define TX_TIMEOUT 40
 #define CORKSCREW_TOTAL_SIZE 0x20
 #ifdef HAVE_DEVLIST
 struct netdev_entry tc515_drv =
@@ -97,8 +97,8 @@ DMAInProgress = 1<<11,
 CmdInProgress = 1<<12,
 };
 enum Window1 {
-TX_FIFO = 0x10,  RX_FIFO = 0x10,  RxErrors = 0x14,
-RxStatus = 0x18,  Timer=0x1A, TxStatus = 0x1B,
+TX_FIFO = 0x10, RX_FIFO = 0x10, RxErrors = 0x14,
+RxStatus = 0x18, Timer=0x1A, TxStatus = 0x1B,
 TxFree = 0x1C,
 };
 enum Window0 {
@@ -197,15 +197,15 @@ mask:8,
 next:8;
 short wait;
 } media_tbl[] = {
-{	"10baseT",   Media_10TP,0x08, XCVR_10base2, (14*HZ)/10},
+{ "10baseT", Media_10TP,0x08, XCVR_10base2, (14*HZ)/10},
 { "10Mbs AUI", Media_SQE, 0x20, XCVR_Default, (1*HZ)/10},
-{ "undefined", 0,			0x80, XCVR_10baseT, 10000},
-{ "10base2",   0,			0x10, XCVR_AUI,		(1*HZ)/10},
+{ "undefined", 0, 0x80, XCVR_10baseT, 10000},
+{ "10base2", 0, 0x10, XCVR_AUI, (1*HZ)/10},
 { "100baseTX", Media_Lnk, 0x02, XCVR_100baseFx, (14*HZ)/10},
-{ "100baseFX", Media_Lnk, 0x04, XCVR_MII,		(14*HZ)/10},
-{ "MII",		 0,			0x40, XCVR_10baseT, 3*HZ },
-{ "undefined", 0,			0x01, XCVR_10baseT, 10000},
-{ "Default",	 0,			0xFF, XCVR_10baseT, 10000},
+{ "100baseFX", Media_Lnk, 0x04, XCVR_MII, (14*HZ)/10},
+{ "MII", 0, 0x40, XCVR_10baseT, 3*HZ },
+{ "undefined", 0, 0x01, XCVR_10baseT, 10000},
+{ "Default", 0, 0xFF, XCVR_10baseT, 10000},
 };
 static int vortex_scan(struct device *dev);
 static struct device *vortex_found_device(struct device *dev, int ioaddr,
@@ -243,7 +243,7 @@ int tc515_probe(struct device *dev)
 {
 int cards_found = 0;
 cards_found = vortex_scan(dev);
-if (vortex_debug > 0  &&  cards_found)
+if (vortex_debug > 0 && cards_found)
 printk("%s", version);
 return cards_found ? 0 : -ENODEV;
 }
@@ -301,7 +301,7 @@ dev->init = vortex_probe1;
 vp->product_name = "3c515";
 vp->options = options;
 if (options >= 0) {
-vp->media_override = ((options & 7) == 2)  ?  0  :  options & 7;
+vp->media_override = ((options & 7) == 2) ? 0 : options & 7;
 vp->full_duplex = (options & 8) ? 1 : 0;
 vp->bus_master = (options & 16) ? 1 : 0;
 } else {
@@ -323,11 +323,11 @@ dev = init_etherdev(dev, sizeof(struct vortex_private));
 dev->base_addr = ioaddr;
 dev->irq = irq;
 dev->dma = (product_index == CORKSCREW_ID ? inw(ioaddr + 0x2000) & 7 : 0);
-vp  = (struct vortex_private *)dev->priv;
+vp = (struct vortex_private *)dev->priv;
 vp->product_name = "3c515";
 vp->options = options;
 if (options >= 0) {
-vp->media_override = ((options & 7) == 2)  ?  0  :  options & 7;
+vp->media_override = ((options & 7) == 2) ? 0 : options & 7;
 vp->full_duplex = (options & 8) ? 1 : 0;
 vp->bus_master = (options & 16) ? 1 : 0;
 } else {
@@ -556,13 +556,13 @@ int ok = 0;
 if (vortex_debug > 1)
 printk("%s: Media selection timer tick happened, %s.\n",
 dev->name, media_tbl[dev->if_port].name);
-save_flags(flags);	cli(); {
+save_flags(flags); cli(); {
 int old_window = inw(ioaddr + EL3_CMD) >> 13;
 int media_status;
 EL3WINDOW(4);
 media_status = inw(ioaddr + Wn4_Media);
 switch (dev->if_port) {
-case 0:  case 4:  case 5:
+case 0: case 4: case 5:
 if (media_status & Media_LnkBeat) {
 ok = 1;
 if (vortex_debug > 1)
@@ -604,7 +604,7 @@ outl(config.i, ioaddr + Wn3_Config);
 outw(dev->if_port == 3 ? StartCoax : StopCoax, ioaddr + EL3_CMD);
 }
 EL3WINDOW(old_window);
-}   restore_flags(flags);
+} restore_flags(flags);
 if (vortex_debug > 1)
 printk("%s: Media selection timer finished, %s.\n",
 dev->name, media_tbl[dev->if_port].name);
@@ -723,7 +723,7 @@ dev->trans_start = jiffies;
 {
 short tx_status;
 int i = 4;
-while (--i > 0	&&	(tx_status = inb(ioaddr + TxStatus)) > 0) {
+while (--i > 0 && (tx_status = inb(ioaddr + TxStatus)) > 0) {
 if (tx_status & 0x3C) {
 if (vortex_debug > 2)
 printk("%s: Tx error, status %2.2x.\n",
@@ -826,7 +826,7 @@ static int DoneDidThat = 0;
 if (vortex_debug > 4)
 printk("%s: Updating stats.\n", dev->name);
 update_stats(ioaddr, dev);
-if (DoneDidThat == 0  &&
+if (DoneDidThat == 0 &&
 inw(ioaddr + EL3_STATUS) & StatsFull) {
 int win, reg;
 printk("%s: Updating stats failed, disabling stats as an"
@@ -882,11 +882,11 @@ unsigned char rx_error = inb(ioaddr + RxErrors);
 if (vortex_debug > 2)
 printk(" Rx error: status %2.2x.\n", rx_error);
 vp->stats.rx_errors++;
-if (rx_error & 0x01)  vp->stats.rx_over_errors++;
-if (rx_error & 0x02)  vp->stats.rx_length_errors++;
-if (rx_error & 0x04)  vp->stats.rx_frame_errors++;
-if (rx_error & 0x08)  vp->stats.rx_crc_errors++;
-if (rx_error & 0x10)  vp->stats.rx_length_errors++;
+if (rx_error & 0x01) vp->stats.rx_over_errors++;
+if (rx_error & 0x02) vp->stats.rx_length_errors++;
+if (rx_error & 0x04) vp->stats.rx_frame_errors++;
+if (rx_error & 0x08) vp->stats.rx_crc_errors++;
+if (rx_error & 0x10) vp->stats.rx_length_errors++;
 } else {
 short pkt_len = rx_status & 0x1fff;
 struct sk_buff *skb;
@@ -942,11 +942,11 @@ unsigned char rx_error = rx_status >> 16;
 if (vortex_debug > 2)
 printk(" Rx error: status %2.2x.\n", rx_error);
 vp->stats.rx_errors++;
-if (rx_error & 0x01)  vp->stats.rx_over_errors++;
-if (rx_error & 0x02)  vp->stats.rx_length_errors++;
-if (rx_error & 0x04)  vp->stats.rx_frame_errors++;
-if (rx_error & 0x08)  vp->stats.rx_crc_errors++;
-if (rx_error & 0x10)  vp->stats.rx_length_errors++;
+if (rx_error & 0x01) vp->stats.rx_over_errors++;
+if (rx_error & 0x02) vp->stats.rx_length_errors++;
+if (rx_error & 0x04) vp->stats.rx_frame_errors++;
+if (rx_error & 0x08) vp->stats.rx_crc_errors++;
+if (rx_error & 0x10) vp->stats.rx_length_errors++;
 } else {
 short pkt_len = rx_status & 0x1fff;
 struct sk_buff *skb;
@@ -1072,14 +1072,14 @@ static void update_stats(int ioaddr, struct device *dev)
 {
 struct vortex_private *vp = (struct vortex_private *)dev->priv;
 EL3WINDOW(6);
-vp->stats.tx_carrier_errors		+= inb(ioaddr + 0);
-vp->stats.tx_heartbeat_errors	+= inb(ioaddr + 1);
+vp->stats.tx_carrier_errors += inb(ioaddr + 0);
+vp->stats.tx_heartbeat_errors += inb(ioaddr + 1);
 inb(ioaddr + 2);
-vp->stats.collisions			+= inb(ioaddr + 3);
-vp->stats.tx_window_errors		+= inb(ioaddr + 4);
-vp->stats.rx_fifo_errors		+= inb(ioaddr + 5);
-vp->stats.tx_packets			+= inb(ioaddr + 6);
-vp->stats.tx_packets			+= (inb(ioaddr + 9)&0x30) << 4;
+vp->stats.collisions += inb(ioaddr + 3);
+vp->stats.tx_window_errors += inb(ioaddr + 4);
+vp->stats.rx_fifo_errors += inb(ioaddr + 5);
+vp->stats.tx_packets += inb(ioaddr + 6);
+vp->stats.tx_packets += (inb(ioaddr + 9)&0x30) << 4;
 inb(ioaddr + 7);
 inb(ioaddr + 8);
 inw(ioaddr + 10);
@@ -1098,7 +1098,7 @@ if (dev->flags & IFF_PROMISC) {
 if (vortex_debug > 3)
 printk("%s: Setting promiscuous mode.\n", dev->name);
 new_mode = SetRxFilter|RxStation|RxMulticast|RxBroadcast|RxProm;
-} else	if ((dev->mc_list)  ||  (dev->flags & IFF_ALLMULTI)) {
+} else if ((dev->mc_list) || (dev->flags & IFF_ALLMULTI)) {
 new_mode = SetRxFilter|RxStation|RxMulticast|RxBroadcast;
 } else
 new_mode = SetRxFilter | RxStation | RxBroadcast;

@@ -5,7 +5,7 @@ print, sprint, fprint: import sys;
 stdin, stderr: ref sys->FD;
 include "draw.m";
 include "arg.m";
-TBLOCK: con 512;	# tar logical blocksize
+TBLOCK: con 512; # tar logical blocksize
 Header: adt{
 name: string;
 size: int;
@@ -15,7 +15,7 @@ skip: int;
 };
 Gettar: module
 {
-init:   fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 error(mess: string)
 {
@@ -23,10 +23,10 @@ fprint(stderr,"gettar: %s\n",mess);
 raise "fail:error";
 }
 verbose := 0;
-NBLOCK: con 20;		# traditional blocking factor for efficient read
-tarbuf := array[NBLOCK*TBLOCK] of byte;	# static buffer
-nblock := NBLOCK;			# how many blocks of data are in tarbuf
-recno := NBLOCK;			# how many blocks in tarbuf have been consumed
+NBLOCK: con 20; # traditional blocking factor for efficient read
+tarbuf := array[NBLOCK*TBLOCK] of byte; # static buffer
+nblock := NBLOCK; # how many blocks of data are in tarbuf
+recno := NBLOCK; # how many blocks in tarbuf have been consumed
 getblock(): array of byte
 {
 if(recno>=nblock){
@@ -125,10 +125,10 @@ arg->init(args);
 arg->setusage("gettar [-kTRv] [file ...]");
 while((o := arg->opt()) != 0)
 case o {
-'k' =>	keep = 1;
-'v' =>	verbose = 1;
-'R' =>	absolute = 1;
-* =>	arg->usage();
+'k' => keep = 1;
+'v' => verbose = 1;
+'R' => absolute = 1;
+* => arg->usage();
 }
 args = arg->argv();
 arg = nil;

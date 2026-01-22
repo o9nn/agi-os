@@ -30,7 +30,7 @@ return true;
 return false;
 }
 };
-struct multiplex  : public iterator_function<bool>
+struct multiplex : public iterator_function<bool>
 {
 multiplex(unsigned int n) : arity(n) { }
 unsigned int arity;

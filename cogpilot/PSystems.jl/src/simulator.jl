@@ -109,7 +109,7 @@ for rule in selected
 # Consume left-hand side
 result = current_multiset - rule.lhs
 if result === nothing
-continue  # Should not happen if selection is correct
+continue # Should not happen if selection is correct
 end
 current_multiset = result
 # Produce right-hand side
@@ -140,8 +140,8 @@ if membrane.parent !== nothing && is_active(config, membrane.parent)
 parent_ms = get(next_multisets, membrane.parent, Multiset())
 next_multisets[membrane.parent] = parent_ms + current_multiset
 end
-current_multiset = Multiset()  # Empty the membrane
-break  # Stop processing rules for this membrane
+current_multiset = Multiset() # Empty the membrane
+break # Stop processing rules for this membrane
 end
 end
 # Update membrane multiset

@@ -21,9 +21,9 @@ import '@fontsource/kiwi-maru'
 import '@fontsource/m-plus-rounded-1c'
 import '@fontsource/sniglet'
 export const setupVue3 = defineSetupVue3(({ app }) => {
-  app.use(MotionPlugin)
-  app.use(i18n)
-  app.use(autoAnimatePlugin as unknown as Plugin)
-  app.component('ThemeColorsHueControl', ThemeColorsHueControl)
-  app.component('CharacterCardColorControls', CharacterCardColorControls)
+app.use(MotionPlugin)
+app.use(i18n)
+app.use(autoAnimatePlugin as unknown as Plugin)
+app.component('ThemeColorsHueControl', ThemeColorsHueControl)
+app.component('CharacterCardColorControls', CharacterCardColorControls)
 })

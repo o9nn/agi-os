@@ -1,7 +1,7 @@
 #ifndef _HURD_PROCESSES_H
 #define _HURD_PROCESSES_H
-#define HURD_PID_INIT		1
-#define HURD_PID_STARTUP	2
-#define HURD_PID_KERNEL		3
-#define HURD_PID_PROC		4
+#define HURD_PID_INIT 1
+#define HURD_PID_STARTUP 2
+#define HURD_PID_KERNEL 3
+#define HURD_PID_PROC 4
 #endif

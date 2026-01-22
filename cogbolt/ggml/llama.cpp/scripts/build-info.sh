@@ -5,16 +5,16 @@ build_commit="unknown"
 build_compiler="unknown"
 build_target="unknown"
 if out=$(git rev-list --count HEAD); then
-    build_number=$(printf '%s' "$out" | tr -d '\n')
+build_number=$(printf '%s' "$out" | tr -d '\n')
 fi
 if out=$(git rev-parse --short HEAD); then
-    build_commit=$(printf '%s' "$out" | tr -d '\n')
+build_commit=$(printf '%s' "$out" | tr -d '\n')
 fi
 if out=$($CC --version | head -1); then
-    build_compiler=$out
+build_compiler=$out
 fi
 if out=$($CC -dumpmachine); then
-    build_target=$out
+build_target=$out
 fi
 echo "int LLAMA_BUILD_NUMBER = ${build_number};"
 echo "char const *LLAMA_COMMIT = \"${build_commit}\";"

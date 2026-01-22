@@ -12,16 +12,16 @@ DATE_TIME=$(date +%H:%M)
 DATE_YEAR=$(date +%Y)
 PROMPT_FILE=$(mktemp -t llamacpp_prompt.XXXXXXX.txt)
 sed -e "s/\[\[USER_NAME\]\]/$USER_NAME/g" \
-    -e "s/\[\[AI_NAME\]\]/$AI_NAME/g" \
-    -e "s/\[\[DATE_TIME\]\]/$DATE_TIME/g" \
-    -e "s/\[\[DATE_YEAR\]\]/$DATE_YEAR/g" \
-     $PROMPT_TEMPLATE > $PROMPT_FILE
+-e "s/\[\[AI_NAME\]\]/$AI_NAME/g" \
+-e "s/\[\[DATE_TIME\]\]/$DATE_TIME/g" \
+-e "s/\[\[DATE_YEAR\]\]/$DATE_YEAR/g" \
+$PROMPT_TEMPLATE > $PROMPT_FILE
 ./bin/llama-cli $GEN_OPTIONS \
-  --model "$MODEL" \
-  --threads "$N_THREAD" \
-  --n_predict "$N_PREDICTS" \
-  --color --interactive \
-  --file ${PROMPT_FILE} \
-  --reverse-prompt "
-  --in-prefix ' ' \
-  "$@"
+--model "$MODEL" \
+--threads "$N_THREAD" \
+--n_predict "$N_PREDICTS" \
+--color --interactive \
+--file ${PROMPT_FILE} \
+--reverse-prompt "
+--in-prefix ' ' \
+"$@"

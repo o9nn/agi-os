@@ -36,7 +36,7 @@ if (test_bit(i, &irqs_busy) == 0
 set_bit(i, (void *)&irq_handled);
 }
 irqs_used |= ~irq_handled;
-while (timeout > jiffies  &&  --boguscount > 0)
+while (timeout > jiffies && --boguscount > 0)
 ;
 irq_handled &= ~irq_bitmap;
 irq_number = 0;
@@ -47,7 +47,7 @@ int autoirq_report(int waittime)
 int i;
 unsigned long timeout = jiffies+waittime;
 unsigned long boguscount = (waittime*loops_per_sec) / 100;
-while (timeout > jiffies  &&  --boguscount > 0)
+while (timeout > jiffies && --boguscount > 0)
 if (irq_number)
 break;
 irq_handled &= ~irq_bitmap;

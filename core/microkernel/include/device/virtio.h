@@ -5,31 +5,31 @@
 #include <kern/queue.h>
 #include <mach/kern_return.h>
 #include <stddef.h>
-#define VIRTIO_ID_NET        1
-#define VIRTIO_ID_BLOCK      2
-#define VIRTIO_ID_CONSOLE    3
-#define VIRTIO_ID_SCSI       8
-#define VIRTIO_ID_BALLOON    5
-#define VIRTIO_F_RING_INDIRECT_DESC  28
-#define VIRTIO_F_RING_EVENT_IDX      29
-#define VIRTIO_F_VERSION_1           32
-#define VIRTIO_PCI_HOST_FEATURES     0
-#define VIRTIO_PCI_GUEST_FEATURES    4
-#define VIRTIO_PCI_QUEUE_PFN         8
-#define VIRTIO_PCI_QUEUE_NUM         12
-#define VIRTIO_PCI_QUEUE_SEL         14
-#define VIRTIO_PCI_QUEUE_NOTIFY      16
-#define VIRTIO_PCI_STATUS            18
-#define VIRTIO_PCI_ISR               19
-#define VIRTIO_PCI_CONFIG            20
-#define VIRTIO_STATUS_RESET          0x00
-#define VIRTIO_STATUS_ACKNOWLEDGE    0x01
-#define VIRTIO_STATUS_DRIVER         0x02
-#define VIRTIO_STATUS_DRIVER_OK      0x04
-#define VIRTIO_STATUS_FEATURES_OK    0x08
-#define VIRTIO_STATUS_FAILED         0x80
-#define VRING_DESC_F_NEXT     1
-#define VRING_DESC_F_WRITE    2
+#define VIRTIO_ID_NET 1
+#define VIRTIO_ID_BLOCK 2
+#define VIRTIO_ID_CONSOLE 3
+#define VIRTIO_ID_SCSI 8
+#define VIRTIO_ID_BALLOON 5
+#define VIRTIO_F_RING_INDIRECT_DESC 28
+#define VIRTIO_F_RING_EVENT_IDX 29
+#define VIRTIO_F_VERSION_1 32
+#define VIRTIO_PCI_HOST_FEATURES 0
+#define VIRTIO_PCI_GUEST_FEATURES 4
+#define VIRTIO_PCI_QUEUE_PFN 8
+#define VIRTIO_PCI_QUEUE_NUM 12
+#define VIRTIO_PCI_QUEUE_SEL 14
+#define VIRTIO_PCI_QUEUE_NOTIFY 16
+#define VIRTIO_PCI_STATUS 18
+#define VIRTIO_PCI_ISR 19
+#define VIRTIO_PCI_CONFIG 20
+#define VIRTIO_STATUS_RESET 0x00
+#define VIRTIO_STATUS_ACKNOWLEDGE 0x01
+#define VIRTIO_STATUS_DRIVER 0x02
+#define VIRTIO_STATUS_DRIVER_OK 0x04
+#define VIRTIO_STATUS_FEATURES_OK 0x08
+#define VIRTIO_STATUS_FAILED 0x80
+#define VRING_DESC_F_NEXT 1
+#define VRING_DESC_F_WRITE 2
 #define VRING_DESC_F_INDIRECT 4
 struct vring_desc {
 uint64_t addr;

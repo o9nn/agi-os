@@ -20,10 +20,10 @@ return(gdth_get_info(buffer,start,offset,length,i,hanum,busnum));
 }
 static int gdth_set_info(char *buffer,int length,int vh,int hanum,int busnum)
 {
-int             ret_val;
-Scsi_Cmnd       scp;
-Scsi_Device     sdev;
-gdth_iowr_str   *piowr;
+int ret_val;
+Scsi_Cmnd scp;
+Scsi_Device sdev;
+gdth_iowr_str *piowr;
 TRACE2(("gdth_set_info() ha %d bus %d\n",hanum,busnum));
 piowr = (gdth_iowr_str *)buffer;
 memset(&sdev,0,sizeof(Scsi_Device));
@@ -53,12 +53,12 @@ return ret_val;
 }
 static int gdth_set_asc_info(char *buffer,int length,int hanum,Scsi_Cmnd scp)
 {
-int             orig_length, drive, wb_mode;
-char            cmnd[12];
-int             i, j, found;
-gdth_ha_str     *ha;
-gdth_cmd_str    gdtcmd;
-gdth_cpar_str   *pcpar;
+int orig_length, drive, wb_mode;
+char cmnd[12];
+int i, j, found;
+gdth_ha_str *ha;
+gdth_cmd_str gdtcmd;
+gdth_cpar_str *pcpar;
 TRACE2(("gdth_set_asc_info() ha %d\n",hanum));
 ha = HADATA(gdth_ctr_tab[hanum]);
 memset(cmnd, 0,10);
@@ -176,15 +176,15 @@ return(-EINVAL);
 }
 static int gdth_set_bin_info(char *buffer,int length,int hanum,Scsi_Cmnd scp)
 {
-char            cmnd[12];
-int             id;
-unchar          i, j, k, found;
-gdth_ha_str     *ha;
-gdth_iowr_str   *piowr;
-gdth_iord_str   *piord;
-gdth_cmd_str    *pcmd;
-ulong           *ppadd;
-ulong           add_size, flags;
+char cmnd[12];
+int id;
+unchar i, j, k, found;
+gdth_ha_str *ha;
+gdth_iowr_str *piowr;
+gdth_iord_str *piord;
+gdth_cmd_str *pcmd;
+ulong *ppadd;
+ulong add_size, flags;
 TRACE2(("gdth_set_bin_info() ha %d\n",hanum));
 ha = HADATA(gdth_ctr_tab[hanum]);
 memset(cmnd, 0,10);
@@ -403,12 +403,12 @@ size = sprintf(buffer+len,
 "%s SCSI Disk Array Controller (SCSI Bus %d)\n",
 ha->ctr_name,busnum);
 #endif
-len += size;  pos = begin + len;
+len += size; pos = begin + len;
 size = sprintf(buffer+len,
 "Firmware Version: %d.%2d\tDriver Version: %s\n",
 (unchar)(ha->cpar.version>>8),
 (unchar)(ha->cpar.version),GDTH_VERSION_STR);
-len += size;  pos = begin + len;
+len += size; pos = begin + len;
 if (pos < offset) {
 len = 0;
 begin = pos;

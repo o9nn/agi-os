@@ -1,5 +1,5 @@
 #ifndef gdevpsds_INCLUDED
-#  define gdevpsds_INCLUDED
+# define gdevpsds_INCLUDED
 #include "strimpl.h"
 #include "gsiparam.h"
 typedef struct stream_1248_state_s {
@@ -20,7 +20,7 @@ typedef struct stream_C2R_state_s {
 stream_state_common;
 const gs_imager_state *pis;
 } stream_C2R_state;
-#define private_st_C2R_state()	\
+#define private_st_C2R_state() \
 gs_private_st_ptrs1(st_C2R_state, stream_C2R_state, "stream_C2R_state",\
 c2r_enum_ptrs, c2r_reloc_ptrs, pis)
 extern const stream_template s_C2R_template;
@@ -41,7 +41,7 @@ int next_component;
 uint byte_out;
 int x;
 } stream_IE_state;
-#define private_st_IE_state()	\
+#define private_st_IE_state() \
 gs_public_st_composite(st_IE_state, stream_IE_state, "stream_IE_state",\
 ie_state_enum_ptrs, ie_state_reloc_ptrs)
 extern const stream_template s_IE_template;
@@ -52,7 +52,7 @@ int Colors;\
 int WidthIn, HeightIn;\
 int XFactor, YFactor;\
 bool AntiAlias;\
-bool padX, padY;	\
+bool padX, padY; \
 \
 int x, y
 #define s_Downsample_set_defaults_inline(ss)\
@@ -71,7 +71,7 @@ uint sum_size;
 uint copy_size;
 uint *sums;
 } stream_Average_state;
-#define private_st_Average_state()	\
+#define private_st_Average_state() \
 gs_private_st_ptrs1(st_Average_state, stream_Average_state,\
 "stream_Average_state", avg_enum_ptrs, avg_reloc_ptrs, sums)
 extern const stream_template s_Average_template;
@@ -85,7 +85,7 @@ byte *sample;
 ulong upper_plateaus, lower_plateaus;
 ulong gradients;
 } stream_compr_chooser_state;
-#define private_st_compr_chooser_state()	\
+#define private_st_compr_chooser_state() \
 gs_private_st_ptrs1(st_compr_chooser_state, stream_compr_chooser_state, \
 "stream_compr_chooser_state",\
 compr_chooser_enum_ptrs, compr_chooser_reloc_ptrs, sample)
@@ -95,7 +95,7 @@ s_compr_chooser_set_dimensions(stream_compr_chooser_state * st, int width,
 int height, int depth, int bits_per_sample);
 uint s_compr_chooser__get_choice(stream_compr_chooser_state *st, bool force);
 #ifndef gx_device_DEFINED
-#  define gx_device_DEFINED
+# define gx_device_DEFINED
 typedef struct gx_device_s gx_device;
 #endif
 typedef struct stream_image_colors_state_s stream_image_colors_state;
@@ -124,7 +124,7 @@ gx_device *pdev;
 const gs_imager_state *pis;
 int (*convert_color)(stream_image_colors_state *);
 };
-#define private_st_image_colors_state()	\
+#define private_st_image_colors_state() \
 gs_private_st_ptrs3(st_stream_image_colors_state, stream_image_colors_state,\
 "stream_image_colors_state", stream_image_colors_enum_ptrs,\
 stream_image_colors_reloc_ptrs, pcs, pdev, pis)

@@ -19,15 +19,15 @@ Yellow = Bright|Brown,
 White = Bright|Grey,
 };
 enum {
-Width		= 80*2,
-Height		= 25,
-Attr		= (Black<<4)|Grey,
-Poststrlen	= 0,
-Postcodelen	= 2,
-Postlen		= Poststrlen+Postcodelen,
+Width = 80*2,
+Height = 25,
+Attr = (Black<<4)|Grey,
+Poststrlen = 0,
+Postcodelen = 2,
+Postlen = Poststrlen+Postcodelen,
 };
-#define CGASCREENBASE	((uchar*)KADDR(0xB8000))
-#define CGA		CGASCREENBASE
+#define CGASCREENBASE ((uchar*)KADDR(0xB8000))
+#define CGA CGASCREENBASE
 static int cgapos;
 static Lock cgascreenlock;
 static uchar

@@ -24,14 +24,14 @@ static uint buf_out_avail();
 int inentry(char *name, Stat *asb)
 #else
 int inentry(name, asb)
-char           *name;
-Stat           *asb;
+char *name;
+Stat *asb;
 #endif
 {
-Link           *linkp;
-int             ifd;
-int             ofd;
-time_t          tstamp[2];
+Link *linkp;
+int ifd;
+int ofd;
+time_t tstamp[2];
 if ((ofd = openout(name, asb, linkp = linkfrom(name, asb), 0)) > 0) {
 if (asb->sb_size || linkp == (Link *)NULL || linkp->l_size == 0) {
 close(indata(ofd, asb->sb_size, name));
@@ -54,17 +54,17 @@ return (0);
 void outdata(int fd, char *name, OFFSET size)
 #else
 void outdata(fd, name, size)
-int             fd;
-char           *name;
-OFFSET          size;
+int fd;
+char *name;
+OFFSET size;
 #endif
 {
-uint            chunk;
-int             got;
-int             oops;
-uint            avail;
-int		    pad;
-char           *buf;
+uint chunk;
+int got;
+int oops;
+uint avail;
+int pad;
+char *buf;
 oops = got = 0;
 if (pad = (size % BLOCKSIZE)) {
 pad = (BLOCKSIZE - pad);
@@ -99,8 +99,8 @@ void write_eot(void)
 void write_eot()
 #endif
 {
-OFFSET           pad;
-char            header[M_STRLEN + H_STRLEN + 1];
+OFFSET pad;
+char header[M_STRLEN + H_STRLEN + 1];
 if (ar_format == TAR) {
 pad = 2 * BLOCKSIZE;
 } else {
@@ -120,13 +120,13 @@ outflush();
 void outwrite(char *idx, uint len)
 #else
 void outwrite(idx, len)
-char           *idx;
-uint            len;
+char *idx;
+uint len;
 #endif
 {
-uint            have;
-uint            want;
-char           *endx;
+uint have;
+uint want;
+char *endx;
 endx = idx + len;
 while (want = endx - idx) {
 if (bufend - bufidx < 0) {
@@ -148,15 +148,15 @@ total += have;
 void passdata(char *from, int ifd, char *to, int ofd)
 #else
 void passdata(from, ifd, to, ofd)
-char           *from;
-int             ifd;
-char           *to;
-int             ofd;
+char *from;
+int ifd;
+char *to;
+int ofd;
 #endif
 {
-int             got;
-int             sparse;
-char            block[BUFSIZ];
+int got;
+int sparse;
+char block[BUFSIZ];
 if (ifd) {
 lseek(ifd, (OFFSET) 0, 0);
 sparse = 0;
@@ -178,7 +178,7 @@ close(ofd);
 void buf_allocate(OFFSET size)
 #else
 void buf_allocate(size)
-OFFSET            size;
+OFFSET size;
 #endif
 {
 if (size <= 0) {
@@ -194,11 +194,11 @@ bufend += size;
 int buf_skip(OFFSET len)
 #else
 int buf_skip(len)
-OFFSET           len;
+OFFSET len;
 #endif
 {
-uint            chunk;
-int             corrupt = 0;
+uint chunk;
+int corrupt = 0;
 while (len) {
 if (bufend - bufidx < 0) {
 fatal("Buffer overlow in buf_skip\n");
@@ -219,14 +219,14 @@ return (corrupt);
 int buf_read(char *dst, uint len)
 #else
 int buf_read(dst, len)
-char           *dst;
-uint            len;
+char *dst;
+uint len;
 #endif
 {
-int             have;
-int             want;
-int             corrupt = 0;
-char           *endx = dst + len;
+int have;
+int want;
+int corrupt = 0;
+char *endx = dst + len;
 while (want = endx - dst) {
 if (bufend - bufidx < 0) {
 fatal("Buffer overlow in buf_read\n");
@@ -249,17 +249,17 @@ return (corrupt);
 static int indata(int fd, OFFSET size, char *name)
 #else
 static int indata(fd, size, name)
-int             fd;
-OFFSET          size;
-char           *name;
+int fd;
+OFFSET size;
+char *name;
 #endif
 {
-uint            chunk;
-char           *oops;
-int             sparse;
-int             corrupt;
-char           *buf;
-uint            avail;
+uint chunk;
+char *oops;
+int sparse;
+int corrupt;
+char *buf;
+uint avail;
 corrupt = sparse = 0;
 oops = (char *)NULL;
 while (size) {
@@ -287,9 +287,9 @@ static void outflush(void)
 static void outflush()
 #endif
 {
-char           *buf;
-int             got;
-uint            len;
+char *buf;
+int got;
+uint len;
 for (buf = bufstart; len = bufidx - buf;) {
 if ((got = write(archivefd, buf, MIN(len, blocksize))) > 0) {
 buf += got;
@@ -305,8 +305,8 @@ int ar_read(void)
 int ar_read()
 #endif
 {
-int             got;
-static int      failed;
+int got;
+static int failed;
 bufend = bufidx = bufstart;
 if (!failed) {
 if (areof) {
@@ -340,13 +340,13 @@ return (0);
 static int ar_write(int fd, char *buf, uint len)
 #else
 static int ar_write(fd, buf, len)
-int             fd;
-char           *buf;
-uint            len;
+int fd;
+char *buf;
+uint len;
 #endif
 {
-char           *bidx;
-char           *bend;
+char *bidx;
+char *bend;
 bend = (bidx = buf) + len;
 while (bidx < bend) {
 if (*bidx++) {
@@ -359,11 +359,11 @@ return (lseek(fd, (OFFSET) len, 1) < 0 ? -1 : len);
 static void buf_pad(OFFSET pad)
 #else
 static void buf_pad(pad)
-OFFSET           pad;
+OFFSET pad;
 #endif
 {
-int             idx;
-int             have;
+int idx;
+int have;
 while (pad) {
 if ((have = bufend - bufidx) > pad) {
 have = pad;
@@ -382,7 +382,7 @@ outflush();
 static void buf_use(uint len)
 #else
 static void buf_use(len)
-uint            len;
+uint len;
 #endif
 {
 bufidx += len;
@@ -392,12 +392,12 @@ total += len;
 static int buf_in_avail(char **bufp, uint *lenp)
 #else
 static int buf_in_avail(bufp, lenp)
-char          **bufp;
-uint           *lenp;
+char **bufp;
+uint *lenp;
 #endif
 {
-uint            have;
-int             corrupt = 0;
+uint have;
+int corrupt = 0;
 while ((have = bufend - bufidx) == 0) {
 corrupt |= ar_read();
 }
@@ -409,10 +409,10 @@ return (corrupt);
 static uint buf_out_avail(char **bufp)
 #else
 static uint buf_out_avail(bufp)
-char          **bufp;
+char **bufp;
 #endif
 {
-int             have;
+int have;
 if (bufend - bufidx < 0) {
 fatal("Buffer overlow in buf_out_avail\n");
 }

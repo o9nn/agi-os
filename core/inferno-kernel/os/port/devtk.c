@@ -1,9 +1,9 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
 #include <interp.h>
 #include "draw.h"
 enum{
@@ -12,13 +12,13 @@ Qtkevents
 };
 static
 Dirtab tkdirtab[]={
-{".",	{Qdir,0,QTDIR},	0,	0500},
-{"tkevents",		{Qtkevents, 0},		0,	0600},
+{".", {Qdir,0,QTDIR}, 0, 0500},
+{"tkevents", {Qtkevents, 0}, 0, 0600},
 };
 static struct {
-QLock	l;
-Queue*	eq;
-Ref	inuse;
+QLock l;
+Queue* eq;
+Ref inuse;
 } tkevents;
 static void
 tkwiretapper(void *top, char *cmd, char *result, void *image, Rectangle *rp)
@@ -69,7 +69,7 @@ qunlock(&tkevents.l);
 acquire();
 }
 }
-void	(*tkwiretap)(void*, char*, char*, void*, Rectangle*);
+void (*tkwiretap)(void*, char*, char*, void*, Rectangle*);
 static Chan*
 tkattach(char* spec)
 {

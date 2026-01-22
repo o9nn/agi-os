@@ -1,5 +1,5 @@
 #ifndef gstparam_INCLUDED
-#  define gstparam_INCLUDED
+# define gstparam_INCLUDED
 #include "gsccolor.h"
 #include "gsrefct.h"
 typedef enum {
@@ -44,12 +44,12 @@ typedef struct gs_transparency_mask_s {
 GS_TRANSPARENCY_MASK_COMMON;
 } gs_transparency_mask_t;
 #ifndef gs_color_space_DEFINED
-#  define gs_color_space_DEFINED
+# define gs_color_space_DEFINED
 typedef struct gs_color_space_s gs_color_space;
 #endif
 #ifndef gs_function_DEFINED
 typedef struct gs_function_s gs_function_t;
-#  define gs_function_DEFINED
+# define gs_function_DEFINED
 #endif
 typedef struct gs_transparency_group_params_s {
 const gs_color_space *ColorSpace;

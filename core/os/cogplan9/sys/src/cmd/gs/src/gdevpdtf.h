@@ -1,24 +1,24 @@
 #ifndef gdevpdtf_INCLUDED
-#  define gdevpdtf_INCLUDED
+# define gdevpdtf_INCLUDED
 #include "gdevpdtx.h"
 #ifndef gs_cmap_DEFINED
-#  define gs_cmap_DEFINED
+# define gs_cmap_DEFINED
 typedef struct gs_cmap_s gs_cmap_t;
 #endif
 #ifndef gs_font_type0_DEFINED
-#  define gs_font_type0_DEFINED
+# define gs_font_type0_DEFINED
 typedef struct gs_font_type0_s gs_font_type0;
 #endif
 #ifndef pdf_base_font_DEFINED
-#  define pdf_base_font_DEFINED
+# define pdf_base_font_DEFINED
 typedef struct pdf_base_font_s pdf_base_font_t;
 #endif
 #ifndef pdf_font_descriptor_DEFINED
-#  define pdf_font_descriptor_DEFINED
+# define pdf_font_descriptor_DEFINED
 typedef struct pdf_font_descriptor_s pdf_font_descriptor_t;
 #endif
 #ifndef pdf_char_glyph_pair_DEFINED
-#  define pdf_char_glyph_pair_DEFINED
+# define pdf_char_glyph_pair_DEFINED
 typedef struct pdf_char_glyph_pair_s pdf_char_glyph_pair_t;
 #endif
 struct pdf_char_glyph_pair_s {
@@ -57,7 +57,7 @@ byte *used;
 pdf_resource_t *res_ToUnicode;
 gs_cmap_t *cmap_ToUnicode;
 union {
-struct  {
+struct {
 pdf_font_resource_t *DescendantFont;
 char Encoding_name[max(
 17,
@@ -68,7 +68,7 @@ gs_const_string CMapName;
 bool cmap_is_standard;
 int WMode;
 } type0;
-struct  {
+struct {
 long CIDSystemInfo_id;
 ushort *CIDToGIDMap;
 gs_id glyphshow_font_id;
@@ -77,19 +77,19 @@ double *v;
 byte *used2;
 pdf_font_resource_t *parent;
 } cidfont;
-struct  {
+struct {
 int FirstChar, LastChar;
 gs_encoding_index_t BaseEncoding;
 pdf_encoding_element_t *Encoding;
 gs_point *v;
 union {
-struct  {
+struct {
 bool is_MM_instance;
 } type1;
-struct  {
+struct {
 int _dummy;
 } truetype;
-struct  {
+struct {
 gs_int_rect FontBBox;
 gs_matrix FontMatrix;
 pdf_char_proc_t *char_procs;

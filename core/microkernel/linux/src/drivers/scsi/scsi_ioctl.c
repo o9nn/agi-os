@@ -64,7 +64,7 @@ SCpnt = allocate_device(NULL, dev, 1);
 {
 struct semaphore sem = MUTEX_LOCKED;
 SCpnt->request.sem = &sem;
-scsi_do_cmd(SCpnt,  cmd, NULL,  0, scsi_ioctl_done,  timeout, retries);
+scsi_do_cmd(SCpnt, cmd, NULL, 0, scsi_ioctl_done, timeout, retries);
 down(&sem);
 }
 if(driver_byte(SCpnt->result) != 0)
@@ -119,8 +119,8 @@ result = verify_area(VERIFY_READ, buffer, 2*sizeof(long) + 1);
 if (result) return result;
 inlen = get_user((unsigned int *) buffer);
 outlen = get_user( ((unsigned int *) buffer) + 1);
-if( inlen > MAX_BUF )  return -EINVAL;
-if( outlen > MAX_BUF )  return -EINVAL;
+if( inlen > MAX_BUF ) return -EINVAL;
+if( outlen > MAX_BUF ) return -EINVAL;
 cmd_in = (char *) ( ((int *)buffer) + 2);
 opcode = get_user(cmd_in);
 needed = buf_needed = (inlen > outlen ? inlen : outlen);
@@ -136,7 +136,7 @@ cmdlen = COMMAND_SIZE(opcode);
 result = verify_area(VERIFY_READ, cmd_in,
 cmdlen + inlen > MAX_BUF ? MAX_BUF : inlen);
 if (result) return result;
-memcpy_fromfs ((void *) cmd,  cmd_in,  cmdlen);
+memcpy_fromfs ((void *) cmd, cmd_in, cmdlen);
 memcpy_fromfs ((void *) buf,
 (void *) (cmd_in + cmdlen),
 inlen);
@@ -169,7 +169,7 @@ SCpnt = allocate_device(NULL, dev, 1);
 {
 struct semaphore sem = MUTEX_LOCKED;
 SCpnt->request.sem = &sem;
-scsi_do_cmd(SCpnt,  cmd,  buf, needed,  scsi_ioctl_done,
+scsi_do_cmd(SCpnt, cmd, buf, needed, scsi_ioctl_done,
 timeout, retries);
 down(&sem);
 }
@@ -184,7 +184,7 @@ sizeof(SCpnt->sense_buffer));
 } else {
 result = verify_area(VERIFY_WRITE, cmd_in, outlen);
 if (result) return result;
-memcpy_tofs ((void *) cmd_in,  buf,  outlen);
+memcpy_tofs ((void *) cmd_in, buf, outlen);
 }
 result = SCpnt->result;
 SCpnt->request.rq_status = RQ_INACTIVE;
@@ -232,13 +232,13 @@ if (result) return result;
 put_user( dev->host->host_no, (int *) arg);
 return 0;
 case SCSI_IOCTL_TAGGED_ENABLE:
-if(!suser())  return -EACCES;
+if(!suser()) return -EACCES;
 if(!dev->tagged_supported) return -EINVAL;
 dev->tagged_queue = 1;
 dev->current_tag = 1;
 return 0;
 case SCSI_IOCTL_TAGGED_DISABLE:
-if(!suser())  return -EACCES;
+if(!suser()) return -EACCES;
 if(!dev->tagged_supported) return -EINVAL;
 dev->tagged_queue = 0;
 dev->current_tag = 0;
@@ -246,7 +246,7 @@ return 0;
 case SCSI_IOCTL_PROBE_HOST:
 return ioctl_probe(dev->host, arg);
 case SCSI_IOCTL_SEND_COMMAND:
-if(!suser() || securelevel > 0)  return -EACCES;
+if(!suser() || securelevel > 0) return -EACCES;
 return scsi_ioctl_send_command((Scsi_Device *) dev, arg);
 case SCSI_IOCTL_DOORLOCK:
 if (!dev->removable || !dev->lockable) return 0;

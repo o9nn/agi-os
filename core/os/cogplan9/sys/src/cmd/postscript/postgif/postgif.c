@@ -3,7 +3,7 @@
 #include <signal.h>
 #include <ctype.h>
 #ifdef plan9
-#define	isascii(c)	((unsigned char)(c)<=0177)
+#define isascii(c) ((unsigned char)(c)<=0177)
 #endif
 #include <sys/types.h>
 #include <fcntl.h>
@@ -11,14 +11,14 @@
 #include "gen.h"
 #include "path.h"
 #include "ext.h"
-#define dbprt	if (debug) fprintf
-char	*optnames = "a:c:fglm:n:o:p:x:y:C:E:DG:IL:P:";
-char    *prologue = POSTGIF;
-char    *formfile = FORMFILE;
-int     formsperpage = 1;
-int	copies = 1;
-int     page = 0;
-int     printed = 0;
+#define dbprt if (debug) fprintf
+char *optnames = "a:c:fglm:n:o:p:x:y:C:E:DG:IL:P:";
+char *prologue = POSTGIF;
+char *formfile = FORMFILE;
+int formsperpage = 1;
+int copies = 1;
+int page = 0;
+int printed = 0;
 extern char *malloc();
 extern void free();
 extern double atof(), pow();
@@ -428,9 +428,9 @@ fprintf(fp_out, "%s %d %d\n", ENDPAGE, page, printed);
 }
 void
 redirect(pg)
-int		pg;
+int pg;
 {
-static FILE	*fp_null = NULL;
+static FILE *fp_null = NULL;
 if ( pg >= 0 && in_olist(pg) == ON )
 fp_out = stdout;
 else if ( (fp_out = fp_null) == NULL )
@@ -487,7 +487,7 @@ free(ggmap);
 void
 init_signals()
 {
-if ( signal(SIGINT, interrupt) == SIG_IGN )  {
+if ( signal(SIGINT, interrupt) == SIG_IGN ) {
 signal(SIGINT, SIG_IGN);
 signal(SIGQUIT, SIG_IGN);
 signal(SIGHUP, SIG_IGN);
@@ -501,8 +501,8 @@ signal(SIGTERM, interrupt);
 void
 header()
 {
-int         ch;
-int         old_optind = optind;
+int ch;
+int old_optind = optind;
 while ( (ch = getopt(argc, argv, optnames)) != EOF )
 if ( ch == 'L' )
 prologue = optarg;
@@ -523,9 +523,9 @@ fprintf(stdout, "mark\n");
 void
 options()
 {
-int		ch;
-while ( (ch = getopt(argc, argv, optnames)) != EOF )  {
-switch ( ch )  {
+int ch;
+while ( (ch = getopt(argc, argv, optnames)) != EOF ) {
+switch ( ch ) {
 case 'a':
 fprintf(stdout, "/aspectratio %s def\n", optarg);
 break;
@@ -602,7 +602,7 @@ void
 setup()
 {
 fprintf(stdout, "setup\n");
-if ( formsperpage > 1 )  {
+if ( formsperpage > 1 ) {
 if ( cat(formfile) == FALSE )
 error(FATAL, "can't read %s", formfile);
 fprintf(stdout, "%d setupforms\n", formsperpage);
@@ -616,8 +616,8 @@ if ( argc < 1 ) {
 fp_in = stdin;
 readgif();
 }
-else  {
-while ( argc > 0 )  {
+else {
+while ( argc > 0 ) {
 if ( strcmp(*argv, "-") == 0 )
 fp_in = stdin;
 else if ( (fp_in = fopen(*argv, "r")) == NULL )

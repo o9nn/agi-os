@@ -2,8 +2,8 @@
 int
 mach_atoi(const u_char *cp, int *nump)
 {
-int		number;
-const u_char	*original;
+int number;
+const u_char *original;
 original = cp;
 for (number = 0; ('0' <= *cp) && (*cp <= '9'); cp++)
 number = (number * 10) + (*cp - '0');

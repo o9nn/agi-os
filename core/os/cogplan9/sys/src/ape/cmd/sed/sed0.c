@@ -2,13 +2,13 @@
 #include <unistd.h>
 #include <stdio.h>
 #include "sed.h"
-struct label	*labtab = ltab;
-char	CGMES[]	= "sed: Command garbled: %s\n";
-char	TMMES[]	= "sed: Too much text: %s\n";
-char	LTL[]	= "sed: Label too long: %s\n";
-char	AD0MES[]	= "sed: No addresses allowed: %s\n";
-char	AD1MES[]	= "sed: Only one address allowed: %s\n";
-uchar	bittab[]  = {
+struct label *labtab = ltab;
+char CGMES[] = "sed: Command garbled: %s\n";
+char TMMES[] = "sed: Too much text: %s\n";
+char LTL[] = "sed: Label too long: %s\n";
+char AD0MES[] = "sed: No addresses allowed: %s\n";
+char AD1MES[] = "sed: Only one address allowed: %s\n";
+uchar bittab[] = {
 1,
 2,
 4,
@@ -51,7 +51,7 @@ case 'n':
 nflag++;
 continue;
 case 'f':
-if(eargc-- <= 0)	exit(2);
+if(eargc-- <= 0) exit(2);
 if((fin = fopen((char*)(*++eargv), "r")) == NULL) {
 fprintf(stderr, "sed: Cannot open pattern-file: %s\n", *eargv);
 exit(2);
@@ -97,11 +97,11 @@ exit(0);
 void
 fcomp(void)
 {
-uchar	*p, *op, *tp;
+uchar *p, *op, *tp;
 uchar *address(uchar*);
-union reptr	*pt, *pt1;
-int	i;
-struct label	*lpt;
+union reptr *pt, *pt1;
+int i;
+struct label *lpt;
 compfl = 1;
 op = lastre;
 if(rline(linebuf) < 0) {
@@ -117,11 +117,11 @@ cp = linebuf;
 goto comploop;
 }
 for(;;) {
-if(rline(linebuf) < 0)	break;
+if(rline(linebuf) < 0) break;
 cp = linebuf;
 comploop:
-while(*cp == ' ' || *cp == '\t')	cp++;
-if(*cp == '\0' || *cp == '#')		continue;
+while(*cp == ' ' || *cp == '\t') cp++;
+if(*cp == '\0' || *cp == '#') continue;
 if(*cp == ';') {
 cp++;
 goto comploop;
@@ -169,7 +169,7 @@ if(p > reend) {
 fprintf(stderr, "sed: Too much text: %s\n", linebuf);
 exit(2);
 }
-while(*cp == ' ' || *cp == '\t')	cp++;
+while(*cp == ' ' || *cp == '\t') cp++;
 swit:
 switch(*cp++) {
 default:
@@ -187,7 +187,7 @@ fprintf(stderr, "sed: Too many commands: %s\n", linebuf);
 exit(2);
 }
 rep->r1.ad1 = p;
-if(*cp == '\0')	continue;
+if(*cp == '\0') continue;
 goto comploop;
 case '}':
 if(rep->r1.ad1) {
@@ -200,7 +200,7 @@ exit(2);
 }
 *cmpend[depth] = rep;
 rep->r1.ad1 = p;
-if(*cp == 0)	continue;
+if(*cp == 0) continue;
 goto comploop;
 case '=':
 rep->r1.command = EQCOM;
@@ -249,7 +249,7 @@ if(rep->r1.ad2) {
 fprintf(stderr, AD1MES, linebuf);
 exit(2);
 }
-if(*cp == '\\')	cp++;
+if(*cp == '\\') cp++;
 if(*cp++ != '\n') {
 fprintf(stderr, CGMES, linebuf);
 exit(2);
@@ -259,7 +259,7 @@ p = text(rep->r1.re1);
 break;
 case 'c':
 rep->r1.command = CCOM;
-if(*cp == '\\')	cp++;
+if(*cp == '\\') cp++;
 if(*cp++ != ('\n')) {
 fprintf(stderr, CGMES, linebuf);
 exit(2);
@@ -273,7 +273,7 @@ if(rep->r1.ad2) {
 fprintf(stderr, AD1MES, linebuf);
 exit(2);
 }
-if(*cp == '\\')	cp++;
+if(*cp == '\\') cp++;
 if(*cp++ != ('\n')) {
 fprintf(stderr, CGMES, linebuf);
 exit(2);
@@ -423,7 +423,7 @@ rep->r1.pfl = 2;
 }
 if(*cp == 'w') {
 cp++;
-if(*cp++ !=  ' ') {
+if(*cp++ != ' ') {
 fprintf(stderr, CGMES, linebuf);
 exit(2);
 }
@@ -499,10 +499,10 @@ exit(2);
 }
 }
 }
-uchar	*
+uchar *
 compsub(uchar *rhsbuf)
 {
-uchar	*p, *q, *r;
+uchar *p, *q, *r;
 p = rhsbuf;
 q = cp;
 for(;;) {
@@ -527,11 +527,11 @@ compile(uchar *expbuf)
 {
 int c;
 uchar *ep, *sp;
-uchar	neg;
+uchar neg;
 uchar *lastep, *cstart;
 int cclcnt;
-int	closed;
-uchar	bracket[NBRA], *bracketp;
+int closed;
+uchar bracket[NBRA], *bracketp;
 if(*cp == seof) {
 cp++;
 return(expbuf);
@@ -667,9 +667,9 @@ default:
 int
 rline(uchar *lbuf)
 {
-uchar	*p, *q;
-int	t;
-static uchar	*saveq;
+uchar *p, *q;
+int t;
+static uchar *saveq;
 p = lbuf - 1;
 if(eflag) {
 if(eflag > 0) {
@@ -694,7 +694,7 @@ return(1);
 saveq = 0;
 return(1);
 }
-if((q = saveq) == 0)	return(-1);
+if((q = saveq) == 0) return(-1);
 while(*++p = *q++) {
 if(*p == '\\') {
 if((*++p = *q++) == '0') {
@@ -729,8 +729,8 @@ return(-1);
 uchar *
 address(uchar *expbuf)
 {
-uchar	*rcp;
-long	lno;
+uchar *rcp;
+long lno;
 if(*cp == '$') {
 cp++;
 *expbuf++ = CEND;
@@ -765,20 +765,20 @@ return(0);
 int
 cmp(uchar *a, uchar *b)
 {
-uchar	*ra, *rb;
+uchar *ra, *rb;
 ra = a - 1;
 rb = b - 1;
 while(*++ra == *++rb)
-if(*ra == '\0')	return(0);
+if(*ra == '\0') return(0);
 return(1);
 }
 uchar *
 text(uchar *textbuf)
 {
-uchar	*p, *q;
+uchar *p, *q;
 p = textbuf;
 q = cp;
-while(*q == '\t' || *q == ' ')	q++;
+while(*q == '\t' || *q == ' ') q++;
 for(;;) {
 if((*p = *q++) == '\\')
 *p = *q++;
@@ -787,7 +787,7 @@ cp = --q;
 return(++p);
 }
 if(*p == '\n') {
-while(*q == '\t' || *q == ' ')	q++;
+while(*q == '\t' || *q == ' ') q++;
 }
 p++;
 }
@@ -795,7 +795,7 @@ p++;
 struct label *
 search(struct label *ptr)
 {
-struct label	*rp;
+struct label *rp;
 rp = labtab;
 while(rp < ptr) {
 if(cmp(rp->asc, ptr->asc) == 0)
@@ -807,8 +807,8 @@ return(0);
 void
 dechain(void)
 {
-struct label	*lptr;
-union reptr	*rptr, *trptr;
+struct label *lptr;
+union reptr *rptr, *trptr;
 for(lptr = labtab; lptr < lab; lptr++) {
 if(lptr->address == 0) {
 fprintf(stderr, "sed: Undefined label: %s\n", lptr->asc);
@@ -829,7 +829,7 @@ ycomp(uchar *expbuf)
 {
 uchar *ep, *tsp;
 int c;
-uchar	*sp;
+uchar *sp;
 ep = expbuf;
 sp = cp;
 for(tsp = cp; *tsp != seof; tsp++) {

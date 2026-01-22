@@ -48,8 +48,8 @@ int ip_options_echo(struct ip_options * dopt, struct sk_buff * skb)
 struct ip_options *sopt;
 unsigned char *sptr, *dptr;
 int soffset, doffset;
-int	optlen;
-u32	daddr;
+int optlen;
+u32 daddr;
 memset(dopt, 0, sizeof(struct ip_options));
 dopt->is_data = 1;
 sopt = &(IPCB(skb)->opt);
@@ -64,7 +64,7 @@ daddr = ((struct rtable*)skb->dst)->rt_spec_dst;
 else
 daddr = skb->nh.iph->daddr;
 if (sopt->rr) {
-optlen  = sptr[sopt->rr+1];
+optlen = sptr[sopt->rr+1];
 soffset = sptr[sopt->rr+2];
 dopt->rr = dopt->optlen + sizeof(struct iphdr);
 memcpy(dptr, sptr+sopt->rr, optlen);
@@ -115,7 +115,7 @@ dopt->optlen += optlen;
 if (sopt->srr) {
 unsigned char * start = sptr+sopt->srr;
 u32 faddr;
-optlen  = start[1];
+optlen = start[1];
 soffset = start[2];
 doffset = 0;
 if (soffset > optlen)
@@ -150,8 +150,8 @@ void ip_options_fragment(struct sk_buff * skb)
 {
 unsigned char * optptr = skb->nh.raw;
 struct ip_options * opt = &(IPCB(skb)->opt);
-int  l = opt->optlen;
-int  optlen;
+int l = opt->optlen;
+int optlen;
 while (l > 0) {
 switch (*optptr) {
 case IPOPT_END:
@@ -336,7 +336,7 @@ break;
 }
 if (timeptr) {
 struct timeval tv;
-__u32  midtime;
+__u32 midtime;
 do_gettimeofday(&tv);
 midtime = htonl((tv.tv_sec % 86400) * 1000 + tv.tv_usec / 1000);
 memcpy(timeptr, &midtime, sizeof(__u32));
@@ -387,17 +387,17 @@ return -EINVAL;
 void ip_options_undo(struct ip_options * opt)
 {
 if (opt->srr) {
-unsigned  char * optptr = opt->__data+opt->srr-sizeof(struct  iphdr);
+unsigned char * optptr = opt->__data+opt->srr-sizeof(struct iphdr);
 memmove(optptr+7, optptr+3, optptr[1]-7);
 memcpy(optptr+3, &opt->faddr, 4);
 }
 if (opt->rr_needaddr) {
-unsigned  char * optptr = opt->__data+opt->rr-sizeof(struct  iphdr);
+unsigned char * optptr = opt->__data+opt->rr-sizeof(struct iphdr);
 optptr[2] -= 4;
 memset(&optptr[optptr[2]-1], 0, 4);
 }
 if (opt->ts) {
-unsigned  char * optptr = opt->__data+opt->ts-sizeof(struct  iphdr);
+unsigned char * optptr = opt->__data+opt->ts-sizeof(struct iphdr);
 if (opt->ts_needtime) {
 optptr[2] -= 4;
 memset(&optptr[optptr[2]-1], 0, 4);
@@ -441,7 +441,7 @@ return 0;
 }
 void ip_forward_options(struct sk_buff *skb)
 {
-struct   ip_options * opt	= &(IPCB(skb)->opt);
+struct ip_options * opt = &(IPCB(skb)->opt);
 unsigned char * optptr;
 struct rtable *rt = (struct rtable*)skb->dst;
 unsigned char *raw = skb->nh.raw;

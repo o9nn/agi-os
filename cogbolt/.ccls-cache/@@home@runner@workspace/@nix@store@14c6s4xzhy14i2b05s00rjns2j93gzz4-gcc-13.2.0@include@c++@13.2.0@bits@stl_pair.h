@@ -655,7 +655,7 @@ make_pair(_T1&& __x, _T2&& __y)
 {
 typedef typename __decay_and_strip<_T1>::__type __ds_type1;
 typedef typename __decay_and_strip<_T2>::__type __ds_type2;
-typedef pair<__ds_type1, __ds_type2> 	      __pair_type;
+typedef pair<__ds_type1, __ds_type2> __pair_type;
 return __pair_type(std::forward<_T1>(__x), std::forward<_T2>(__y));
 }
 #else

@@ -13,104 +13,104 @@ import { DownloadLive2DSDK } from '@proj-airi/unplugin-live2d-sdk'
 import { templateCompilerOptions } from '@tresjs/core'
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
 export default defineConfig({
-  main: {
-    plugins: [externalizeDepsPlugin()],
-  },
-  preload: {
-    plugins: [externalizeDepsPlugin()],
-  },
-  renderer: {
-    base: './',
-    optimizeDeps: {
-      exclude: [
-        '@proj-airi/stage-ui/*',
-        '@proj-airi/drizzle-duckdb-wasm',
-        '@proj-airi/drizzle-duckdb-wasm/*',
-        'src/renderer/public/assets/*',
-        '@framework/live2dcubismframework',
-        '@framework/math/cubismmatrix44',
-        '@framework/type/csmvector',
-        '@framework/math/cubismviewmatrix',
-        '@framework/cubismdefaultparameterid',
-        '@framework/cubismmodelsettingjson',
-        '@framework/effect/cubismbreath',
-        '@framework/effect/cubismeyeblink',
-        '@framework/model/cubismusermodel',
-        '@framework/motion/acubismmotion',
-        '@framework/motion/cubismmotionqueuemanager',
-        '@framework/type/csmmap',
-        '@framework/utils/cubismdebug',
-        '@framework/model/cubismmoc',
-      ],
-    },
-    resolve: {
-      alias: {
-        '@proj-airi/server-sdk': resolve(join(import.meta.dirname, '..', '..', 'packages', 'server-sdk', 'src')),
-        '@proj-airi/i18n': resolve(join(import.meta.dirname, '..', '..', 'packages', 'i18n', 'src')),
-        '@proj-airi/stage-ui': resolve(join(import.meta.dirname, '..', '..', 'packages', 'stage-ui', 'src')),
-        '@proj-airi/stage-pages': resolve(join(import.meta.dirname, '..', '..', 'packages', 'stage-pages', 'src')),
-        '@proj-airi/stage-shared': resolve(join(import.meta.dirname, '..', '..', 'packages', 'stage-shared', 'src')),
-      },
-    },
-    server: {
-      warmup: {
-        clientFiles: [
-          `${resolve(join(import.meta.dirname, '..', '..', 'packages', 'stage-ui', 'src'))}/*.vue`,
-          `${resolve(join(import.meta.dirname, '..', '..', 'packages', 'stage-pages', 'src'))}/*.vue`,
-        ],
-      },
-    },
-    plugins: [
-      {
-        name: 'proj-airi:defines',
-        config(ctx) {
-          const define: Record<string, any> = {
-            'import.meta.env.RUNTIME_ENVIRONMENT': '\'electron\'',
-          }
-          if (ctx.mode === 'development') {
-            define['import.meta.env.URL_MODE'] = '\'server\''
-          }
-          if (ctx.mode === 'production') {
-            define['import.meta.env.URL_MODE'] = '\'file\''
-          }
-          return { define }
-        },
-      },
-      Inspect(),
-      Yaml(),
-      VueMacros({
-        plugins: {
-          vue: Vue({
-            include: [/\.vue$/, /\.md$/],
-            ...templateCompilerOptions,
-          }),
-          vueJsx: false,
-        },
-        betterDefine: false,
-      }),
-      VueRouter({
-        dts: resolve(import.meta.dirname, 'src/renderer/typed-router.d.ts'),
-        routesFolder: [
-          resolve(import.meta.dirname, 'src', 'renderer', 'pages'),
-          resolve(import.meta.dirname, '..', '..', 'packages', 'stage-pages', 'src', 'pages'),
-        ],
-      }),
-      VitePluginVueDevTools(),
-      Layouts({
-        layoutsDirs: [resolve(import.meta.dirname, 'src', 'renderer', 'layouts')],
-        pagesDirs: [resolve(import.meta.dirname, 'src', 'renderer', 'pages')],
-      }),
-      UnoCss(),
-      VueI18n({
-        runtimeOnly: true,
-        compositionOnly: true,
-        fullInstall: true,
-      }),
-      DownloadLive2DSDK(),
-      Download('https://dist.ayaka.moe/live2d-models/hiyori_free_zh.zip', 'hiyori_free_zh.zip', 'assets/live2d/models'),
-      Download('https://dist.ayaka.moe/live2d-models/hiyori_pro_zh.zip', 'hiyori_pro_zh.zip', 'assets/live2d/models'),
-      Download('https://dist.ayaka.moe/vrm-models/VRoid-Hub/AvatarSample-A/AvatarSample_A.vrm', 'AvatarSample_A.vrm', 'assets/vrm/models/AvatarSample-A'),
-      Download('https://dist.ayaka.moe/vrm-models/VRoid-Hub/AvatarSample-B/AvatarSample_B.vrm', 'AvatarSample_B.vrm', 'assets/vrm/models/AvatarSample-B'),
-    ],
-  },
+main: {
+plugins: [externalizeDepsPlugin()],
+},
+preload: {
+plugins: [externalizeDepsPlugin()],
+},
+renderer: {
+base: './',
+optimizeDeps: {
+exclude: [
+'@proj-airi/stage-ui/*',
+'@proj-airi/drizzle-duckdb-wasm',
+'@proj-airi/drizzle-duckdb-wasm/*',
+'src/renderer/public/assets/*',
+'@framework/live2dcubismframework',
+'@framework/math/cubismmatrix44',
+'@framework/type/csmvector',
+'@framework/math/cubismviewmatrix',
+'@framework/cubismdefaultparameterid',
+'@framework/cubismmodelsettingjson',
+'@framework/effect/cubismbreath',
+'@framework/effect/cubismeyeblink',
+'@framework/model/cubismusermodel',
+'@framework/motion/acubismmotion',
+'@framework/motion/cubismmotionqueuemanager',
+'@framework/type/csmmap',
+'@framework/utils/cubismdebug',
+'@framework/model/cubismmoc',
+],
+},
+resolve: {
+alias: {
+'@proj-airi/server-sdk': resolve(join(import.meta.dirname, '..', '..', 'packages', 'server-sdk', 'src')),
+'@proj-airi/i18n': resolve(join(import.meta.dirname, '..', '..', 'packages', 'i18n', 'src')),
+'@proj-airi/stage-ui': resolve(join(import.meta.dirname, '..', '..', 'packages', 'stage-ui', 'src')),
+'@proj-airi/stage-pages': resolve(join(import.meta.dirname, '..', '..', 'packages', 'stage-pages', 'src')),
+'@proj-airi/stage-shared': resolve(join(import.meta.dirname, '..', '..', 'packages', 'stage-shared', 'src')),
+},
+},
+server: {
+warmup: {
+clientFiles: [
+`${resolve(join(import.meta.dirname, '..', '..', 'packages', 'stage-ui', 'src'))}/*.vue`,
+`${resolve(join(import.meta.dirname, '..', '..', 'packages', 'stage-pages', 'src'))}/*.vue`,
+],
+},
+},
+plugins: [
+{
+name: 'proj-airi:defines',
+config(ctx) {
+const define: Record<string, any> = {
+'import.meta.env.RUNTIME_ENVIRONMENT': '\'electron\'',
+}
+if (ctx.mode === 'development') {
+define['import.meta.env.URL_MODE'] = '\'server\''
+}
+if (ctx.mode === 'production') {
+define['import.meta.env.URL_MODE'] = '\'file\''
+}
+return { define }
+},
+},
+Inspect(),
+Yaml(),
+VueMacros({
+plugins: {
+vue: Vue({
+include: [/\.vue$/, /\.md$/],
+...templateCompilerOptions,
+}),
+vueJsx: false,
+},
+betterDefine: false,
+}),
+VueRouter({
+dts: resolve(import.meta.dirname, 'src/renderer/typed-router.d.ts'),
+routesFolder: [
+resolve(import.meta.dirname, 'src', 'renderer', 'pages'),
+resolve(import.meta.dirname, '..', '..', 'packages', 'stage-pages', 'src', 'pages'),
+],
+}),
+VitePluginVueDevTools(),
+Layouts({
+layoutsDirs: [resolve(import.meta.dirname, 'src', 'renderer', 'layouts')],
+pagesDirs: [resolve(import.meta.dirname, 'src', 'renderer', 'pages')],
+}),
+UnoCss(),
+VueI18n({
+runtimeOnly: true,
+compositionOnly: true,
+fullInstall: true,
+}),
+DownloadLive2DSDK(),
+Download('https://dist.ayaka.moe/live2d-models/hiyori_free_zh.zip', 'hiyori_free_zh.zip', 'assets/live2d/models'),
+Download('https://dist.ayaka.moe/live2d-models/hiyori_pro_zh.zip', 'hiyori_pro_zh.zip', 'assets/live2d/models'),
+Download('https://dist.ayaka.moe/vrm-models/VRoid-Hub/AvatarSample-A/AvatarSample_A.vrm', 'AvatarSample_A.vrm', 'assets/vrm/models/AvatarSample-A'),
+Download('https://dist.ayaka.moe/vrm-models/VRoid-Hub/AvatarSample-B/AvatarSample_B.vrm', 'AvatarSample_B.vrm', 'assets/vrm/models/AvatarSample-B'),
+],
+},
 })

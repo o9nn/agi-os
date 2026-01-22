@@ -13,192 +13,192 @@ REDIS_HOST="${REDIS_HOST:-localhost}"
 REDIS_PORT="${REDIS_PORT:-6379}"
 LOG_FILE="/var/log/deep-echo-backup.log"
 log() {
-    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" | tee -a "$LOG_FILE"
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" | tee -a "$LOG_FILE"
 }
 error() {
-    echo "[$(date '+%Y-%m-%d %H:%M:%S')] ERROR: $1" | tee -a "$LOG_FILE" >&2
-    exit 1
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] ERROR: $1" | tee -a "$LOG_FILE" >&2
+exit 1
 }
 create_backup_dir() {
-    local backup_path="$BACKUP_DIR/$ENVIRONMENT/$TIMESTAMP"
-    mkdir -p "$backup_path"
-    echo "$backup_path"
+local backup_path="$BACKUP_DIR/$ENVIRONMENT/$TIMESTAMP"
+mkdir -p "$backup_path"
+echo "$backup_path"
 }
 backup_database() {
-    local backup_path="$1"
-    local db_backup_file="$backup_path/database_backup.sql"
-    log "Starting database backup..."
-    PGPASSWORD="$DB_PASSWORD" pg_dump \
-        -h "$DB_HOST" \
-        -p "$DB_PORT" \
-        -U "$DB_USER" \
-        -d "$DB_NAME" \
-        --format=custom \
-        --compress=9 \
-        --verbose \
-        --file="$db_backup_file" \
-        || error "Database backup failed"
-    PGPASSWORD="$DB_PASSWORD" pg_dump \
-        -h "$DB_HOST" \
-        -p "$DB_PORT" \
-        -U "$DB_USER" \
-        -d "$DB_NAME" \
-        --format=plain \
-        --file="$backup_path/database_backup_plain.sql" \
-        || error "Plain database backup failed"
-    log "Database backup completed: $db_backup_file"
-    pg_restore --list "$db_backup_file" > /dev/null || error "Database backup verification failed"
-    log "Database backup verification successful"
+local backup_path="$1"
+local db_backup_file="$backup_path/database_backup.sql"
+log "Starting database backup..."
+PGPASSWORD="$DB_PASSWORD" pg_dump \
+-h "$DB_HOST" \
+-p "$DB_PORT" \
+-U "$DB_USER" \
+-d "$DB_NAME" \
+--format=custom \
+--compress=9 \
+--verbose \
+--file="$db_backup_file" \
+|| error "Database backup failed"
+PGPASSWORD="$DB_PASSWORD" pg_dump \
+-h "$DB_HOST" \
+-p "$DB_PORT" \
+-U "$DB_USER" \
+-d "$DB_NAME" \
+--format=plain \
+--file="$backup_path/database_backup_plain.sql" \
+|| error "Plain database backup failed"
+log "Database backup completed: $db_backup_file"
+pg_restore --list "$db_backup_file" > /dev/null || error "Database backup verification failed"
+log "Database backup verification successful"
 }
 backup_redis() {
-    local backup_path="$1"
-    local redis_backup_file="$backup_path/redis_backup.rdb"
-    log "Starting Redis backup..."
-    redis-cli -h "$REDIS_HOST" -p "$REDIS_PORT" BGSAVE
-    while [ "$(redis-cli -h "$REDIS_HOST" -p "$REDIS_PORT" LASTSAVE)" = "$(redis-cli -h "$REDIS_HOST" -p "$REDIS_PORT" LASTSAVE)" ]; do
-        sleep 1
-    done
-    docker cp $(docker ps --filter "name=deep-echo-redis" --format "{{.ID}}"):/data/dump.rdb "$redis_backup_file" \
-        || error "Redis backup failed"
-    log "Redis backup completed: $redis_backup_file"
+local backup_path="$1"
+local redis_backup_file="$backup_path/redis_backup.rdb"
+log "Starting Redis backup..."
+redis-cli -h "$REDIS_HOST" -p "$REDIS_PORT" BGSAVE
+while [ "$(redis-cli -h "$REDIS_HOST" -p "$REDIS_PORT" LASTSAVE)" = "$(redis-cli -h "$REDIS_HOST" -p "$REDIS_PORT" LASTSAVE)" ]; do
+sleep 1
+done
+docker cp $(docker ps --filter "name=deep-echo-redis" --format "{{.ID}}"):/data/dump.rdb "$redis_backup_file" \
+|| error "Redis backup failed"
+log "Redis backup completed: $redis_backup_file"
 }
 backup_config() {
-    local backup_path="$1"
-    local config_backup_dir="$backup_path/config"
-    log "Starting configuration backup..."
-    mkdir -p "$config_backup_dir"
-    if [ -f ".env" ]; then
-        cp .env "$config_backup_dir/"
-    fi
-    if [ -d "config" ]; then
-        cp -r config/* "$config_backup_dir/"
-    fi
-    cp docker-compose.yml "$config_backup_dir/" || true
-    cp docker-compose.override.yml "$config_backup_dir/" 2>/dev/null || true
-    if [ -d "infrastructure/kubernetes" ]; then
-        cp -r infrastructure/kubernetes "$config_backup_dir/"
-    fi
-    if [ -f "infrastructure/terraform/terraform.tfstate" ]; then
-        cp infrastructure/terraform/terraform.tfstate "$config_backup_dir/"
-    fi
-    log "Configuration backup completed: $config_backup_dir"
+local backup_path="$1"
+local config_backup_dir="$backup_path/config"
+log "Starting configuration backup..."
+mkdir -p "$config_backup_dir"
+if [ -f ".env" ]; then
+cp .env "$config_backup_dir/"
+fi
+if [ -d "config" ]; then
+cp -r config/* "$config_backup_dir/"
+fi
+cp docker-compose.yml "$config_backup_dir/" || true
+cp docker-compose.override.yml "$config_backup_dir/" 2>/dev/null || true
+if [ -d "infrastructure/kubernetes" ]; then
+cp -r infrastructure/kubernetes "$config_backup_dir/"
+fi
+if [ -f "infrastructure/terraform/terraform.tfstate" ]; then
+cp infrastructure/terraform/terraform.tfstate "$config_backup_dir/"
+fi
+log "Configuration backup completed: $config_backup_dir"
 }
 backup_logs() {
-    local backup_path="$1"
-    local logs_backup_dir="$backup_path/logs"
-    log "Starting logs backup..."
-    mkdir -p "$logs_backup_dir"
-    if [ -d "logs" ]; then
-        cp -r logs/* "$logs_backup_dir/" || true
-    fi
-    docker compose logs --no-color > "$logs_backup_dir/container_logs.txt" 2>/dev/null || true
-    log "Logs backup completed: $logs_backup_dir"
+local backup_path="$1"
+local logs_backup_dir="$backup_path/logs"
+log "Starting logs backup..."
+mkdir -p "$logs_backup_dir"
+if [ -d "logs" ]; then
+cp -r logs/* "$logs_backup_dir/" || true
+fi
+docker compose logs --no-color > "$logs_backup_dir/container_logs.txt" 2>/dev/null || true
+log "Logs backup completed: $logs_backup_dir"
 }
 create_metadata() {
-    local backup_path="$1"
-    local metadata_file="$backup_path/backup_metadata.json"
-    log "Creating backup metadata..."
-    cat > "$metadata_file" << EOF
+local backup_path="$1"
+local metadata_file="$backup_path/backup_metadata.json"
+log "Creating backup metadata..."
+cat > "$metadata_file" << EOF
 {
-    "timestamp": "$TIMESTAMP",
-    "environment": "$ENVIRONMENT",
-    "backup_type": "full",
-    "components": [
-        "database",
-        "redis",
-        "configuration",
-        "logs"
-    ],
-    "database": {
-        "host": "$DB_HOST",
-        "port": "$DB_PORT",
-        "name": "$DB_NAME"
-    },
-    "redis": {
-        "host": "$REDIS_HOST",
-        "port": "$REDIS_PORT"
-    },
-    "version": "$(git rev-parse HEAD 2>/dev/null || echo 'unknown')",
-    "size_bytes": $(du -sb "$backup_path" | cut -f1)
+"timestamp": "$TIMESTAMP",
+"environment": "$ENVIRONMENT",
+"backup_type": "full",
+"components": [
+"database",
+"redis",
+"configuration",
+"logs"
+],
+"database": {
+"host": "$DB_HOST",
+"port": "$DB_PORT",
+"name": "$DB_NAME"
+},
+"redis": {
+"host": "$REDIS_HOST",
+"port": "$REDIS_PORT"
+},
+"version": "$(git rev-parse HEAD 2>/dev/null || echo 'unknown')",
+"size_bytes": $(du -sb "$backup_path" | cut -f1)
 }
 EOF
-    log "Backup metadata created: $metadata_file"
+log "Backup metadata created: $metadata_file"
 }
 compress_backup() {
-    local backup_path="$1"
-    local compressed_file="$backup_path.tar.gz"
-    log "Compressing backup..."
-    tar -czf "$compressed_file" -C "$(dirname "$backup_path")" "$(basename "$backup_path")" \
-        || error "Backup compression failed"
-    rm -rf "$backup_path"
-    log "Backup compressed: $compressed_file"
-    echo "$compressed_file"
+local backup_path="$1"
+local compressed_file="$backup_path.tar.gz"
+log "Compressing backup..."
+tar -czf "$compressed_file" -C "$(dirname "$backup_path")" "$(basename "$backup_path")" \
+|| error "Backup compression failed"
+rm -rf "$backup_path"
+log "Backup compressed: $compressed_file"
+echo "$compressed_file"
 }
 upload_to_s3() {
-    local backup_file="$1"
-    local s3_key="$ENVIRONMENT/$(basename "$backup_file")"
-    log "Uploading backup to S3..."
-    aws s3 cp "$backup_file" "s3://$S3_BUCKET/$s3_key" \
-        --storage-class STANDARD_IA \
-        || error "S3 upload failed"
-    log "Backup uploaded to S3: s3://$S3_BUCKET/$s3_key"
+local backup_file="$1"
+local s3_key="$ENVIRONMENT/$(basename "$backup_file")"
+log "Uploading backup to S3..."
+aws s3 cp "$backup_file" "s3://$S3_BUCKET/$s3_key" \
+--storage-class STANDARD_IA \
+|| error "S3 upload failed"
+log "Backup uploaded to S3: s3://$S3_BUCKET/$s3_key"
 }
 cleanup_old_backups() {
-    log "Cleaning up old backups..."
-    find "$BACKUP_DIR/$ENVIRONMENT" -name "*.tar.gz" -mtime +$RETENTION_DAYS -delete || true
-    aws s3 ls "s3://$S3_BUCKET/$ENVIRONMENT/" | while read -r line; do
-        createDate=$(echo "$line" | awk '{print $1" "$2}')
-        createDate=$(date -d "$createDate" +%s)
-        olderThan=$(date -d "$RETENTION_DAYS days ago" +%s)
-        if [[ $createDate -lt $olderThan ]]; then
-            fileName=$(echo "$line" | awk '{print $4}')
-            aws s3 rm "s3://$S3_BUCKET/$ENVIRONMENT/$fileName"
-            log "Deleted old backup: $fileName"
-        fi
-    done
+log "Cleaning up old backups..."
+find "$BACKUP_DIR/$ENVIRONMENT" -name "*.tar.gz" -mtime +$RETENTION_DAYS -delete || true
+aws s3 ls "s3://$S3_BUCKET/$ENVIRONMENT/" | while read -r line; do
+createDate=$(echo "$line" | awk '{print $1" "$2}')
+createDate=$(date -d "$createDate" +%s)
+olderThan=$(date -d "$RETENTION_DAYS days ago" +%s)
+if [[ $createDate -lt $olderThan ]]; then
+fileName=$(echo "$line" | awk '{print $4}')
+aws s3 rm "s3://$S3_BUCKET/$ENVIRONMENT/$fileName"
+log "Deleted old backup: $fileName"
+fi
+done
 }
 test_restore() {
-    local backup_file="$1"
-    log "Testing backup restore capability..."
-    local test_dir="/tmp/backup_test_$TIMESTAMP"
-    mkdir -p "$test_dir"
-    tar -xzf "$backup_file" -C "$test_dir" || error "Backup extraction test failed"
-    local extracted_dir="$test_dir/$(basename "$backup_file" .tar.gz)"
-    [ -f "$extracted_dir/database_backup.sql" ] || error "Database backup file missing"
-    [ -f "$extracted_dir/backup_metadata.json" ] || error "Metadata file missing"
-    rm -rf "$test_dir"
-    log "Backup restore test passed"
+local backup_file="$1"
+log "Testing backup restore capability..."
+local test_dir="/tmp/backup_test_$TIMESTAMP"
+mkdir -p "$test_dir"
+tar -xzf "$backup_file" -C "$test_dir" || error "Backup extraction test failed"
+local extracted_dir="$test_dir/$(basename "$backup_file" .tar.gz)"
+[ -f "$extracted_dir/database_backup.sql" ] || error "Database backup file missing"
+[ -f "$extracted_dir/backup_metadata.json" ] || error "Metadata file missing"
+rm -rf "$test_dir"
+log "Backup restore test passed"
 }
 send_notification() {
-    local status="$1"
-    local message="$2"
-    if [ -n "${WEBHOOK_URL:-}" ]; then
-        curl -X POST "$WEBHOOK_URL" \
-            -H "Content-Type: application/json" \
-            -d "{\"text\": \"Deep Echo Backup $status: $message\"}" \
-            || log "Failed to send notification"
-    fi
-    log "Notification sent: $status - $message"
+local status="$1"
+local message="$2"
+if [ -n "${WEBHOOK_URL:-}" ]; then
+curl -X POST "$WEBHOOK_URL" \
+-H "Content-Type: application/json" \
+-d "{\"text\": \"Deep Echo Backup $status: $message\"}" \
+|| log "Failed to send notification"
+fi
+log "Notification sent: $status - $message"
 }
 main() {
-    log "Starting Deep Echo backup process..."
-    command -v pg_dump >/dev/null 2>&1 || error "pg_dump not found"
-    command -v redis-cli >/dev/null 2>&1 || error "redis-cli not found"
-    command -v aws >/dev/null 2>&1 || error "aws cli not found"
-    local backup_path
-    backup_path=$(create_backup_dir)
-    backup_database "$backup_path"
-    backup_redis "$backup_path"
-    backup_config "$backup_path"
-    backup_logs "$backup_path"
-    create_metadata "$backup_path"
-    local compressed_file
-    compressed_file=$(compress_backup "$backup_path")
-    test_restore "$compressed_file"
-    upload_to_s3 "$compressed_file"
-    cleanup_old_backups
-    send_notification "SUCCESS" "Backup completed successfully at $TIMESTAMP"
-    log "Backup process completed successfully"
+log "Starting Deep Echo backup process..."
+command -v pg_dump >/dev/null 2>&1 || error "pg_dump not found"
+command -v redis-cli >/dev/null 2>&1 || error "redis-cli not found"
+command -v aws >/dev/null 2>&1 || error "aws cli not found"
+local backup_path
+backup_path=$(create_backup_dir)
+backup_database "$backup_path"
+backup_redis "$backup_path"
+backup_config "$backup_path"
+backup_logs "$backup_path"
+create_metadata "$backup_path"
+local compressed_file
+compressed_file=$(compress_backup "$backup_path")
+test_restore "$compressed_file"
+upload_to_s3 "$compressed_file"
+cleanup_old_backups
+send_notification "SUCCESS" "Backup completed successfully at $TIMESTAMP"
+log "Backup process completed successfully"
 }
 trap 'send_notification "FAILED" "Backup process failed"; exit 1' ERR
 main "$@"

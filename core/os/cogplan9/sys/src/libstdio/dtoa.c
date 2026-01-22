@@ -1,32 +1,32 @@
 #include <u.h>
 #include <libc.h>
 static Lock _dtoalk[2];
-#define ACQUIRE_DTOA_LOCK(n)	lock(&_dtoalk[n])
-#define FREE_DTOA_LOCK(n)	unlock(&_dtoalk[n])
+#define ACQUIRE_DTOA_LOCK(n) lock(&_dtoalk[n])
+#define FREE_DTOA_LOCK(n) unlock(&_dtoalk[n])
 #define PRIVATE_mem ((2000+sizeof(double)-1)/sizeof(double))
 static double private_mem[PRIVATE_mem], *pmem_next = private_mem;
-#define FLT_ROUNDS	1
-#define DBL_DIG		15
-#define DBL_MAX_10_EXP	308
-#define DBL_MAX_EXP	1024
-#define FLT_RADIX	2
+#define FLT_ROUNDS 1
+#define DBL_DIG 15
+#define DBL_MAX_10_EXP 308
+#define DBL_MAX_EXP 1024
+#define FLT_RADIX 2
 #define Storeinc(a,b,c) (*a++ = b << 16 | c & 0xffff)
-#define Exp_shift  20
+#define Exp_shift 20
 #define Exp_shift1 20
-#define Exp_msk1    0x100000
-#define Exp_msk11   0x100000
-#define Exp_mask  0x7ff00000
+#define Exp_msk1 0x100000
+#define Exp_msk11 0x100000
+#define Exp_mask 0x7ff00000
 #define P 53
 #define Bias 1023
 #define Emin (-1022)
-#define Exp_1  0x3ff00000
+#define Exp_1 0x3ff00000
 #define Exp_11 0x3ff00000
 #define Ebits 11
-#define Frac_mask  0xfffff
+#define Frac_mask 0xfffff
 #define Frac_mask1 0xfffff
 #define Ten_pmax 22
 #define Bletch 0x10
-#define Bndry_mask  0xfffff
+#define Bndry_mask 0xfffff
 #define Bndry_mask1 0xfffff
 #define LSB 1
 #define Sign_bit 0x80000000
@@ -46,12 +46,12 @@ typedef struct Bigint Bigint;
 typedef struct Ulongs Ulongs;
 struct Bigint {
 Bigint *next;
-int	k, maxwds, sign, wds;
+int k, maxwds, sign, wds;
 unsigned x[1];
 };
 struct Ulongs {
-ulong	hi;
-ulong	lo;
+ulong hi;
+ulong lo;
 };
 static Bigint *freelist[Kmax+1];
 Ulongs
@@ -75,9 +75,9 @@ return dw.x;
 static Bigint *
 Balloc(int k)
 {
-int	x;
+int x;
 Bigint * rv;
-unsigned int	len;
+unsigned int len;
 ACQUIRE_DTOA_LOCK(0);
 if (rv = freelist[k]) {
 freelist[k] = rv->next;
@@ -112,7 +112,7 @@ y->wds*sizeof(int) + 2*sizeof(int))
 static Bigint *
 multadd(Bigint *b, int m, int a)
 {
-int	i, wds;
+int i, wds;
 unsigned int carry, *x, y;
 unsigned int xi, z;
 Bigint * b1;
@@ -143,7 +143,7 @@ static Bigint *
 s2b(const char *s, int nd0, int nd, unsigned int y9)
 {
 Bigint * b;
-int	i, k;
+int i, k;
 int x, y;
 x = (nd + 8) / 9;
 for (k = 0, y = 1; x > y; y <<= 1, k++)
@@ -167,7 +167,7 @@ return b;
 static int
 hi0bits(register unsigned int x)
 {
-register int	k = 0;
+register int k = 0;
 if (!(x & 0xffff0000)) {
 k = 16;
 x <<= 16;
@@ -194,7 +194,7 @@ return k;
 static int
 lo0bits(unsigned int *y)
 {
-register int	k;
+register int k;
 register unsigned int x = *y;
 if (x & 7) {
 if (x & 1)
@@ -245,7 +245,7 @@ static Bigint *
 mult(Bigint *a, Bigint *b)
 {
 Bigint * c;
-int	k, wa, wb, wc;
+int k, wa, wb, wc;
 unsigned int * x, *xa, *xae, *xb, *xbe, *xc, *xc0;
 unsigned int y;
 unsigned int carry, z;
@@ -308,9 +308,9 @@ static Bigint *
 pow5mult(Bigint *b, int k)
 {
 Bigint * b1, *p5, *p51;
-int	i;
-static int	p05[3] = {
-5, 25, 125 	};
+int i;
+static int p05[3] = {
+5, 25, 125 };
 if (i = k & 3)
 b = multadd(b, p05[i-1], 0);
 if (!(k >>= 2))
@@ -346,7 +346,7 @@ return b;
 static Bigint *
 lshift(Bigint *b, int k)
 {
-int	i, k1, n, n1;
+int i, k1, n, n1;
 Bigint * b1;
 unsigned int * x, *x1, *xe, z;
 n = k >> 5;
@@ -381,7 +381,7 @@ static int
 cmp(Bigint *a, Bigint *b)
 {
 unsigned int * xa, *xa0, *xb, *xb0;
-int	i, j;
+int i, j;
 i = a->wds;
 j = b->wds;
 if (i -= j)
@@ -402,7 +402,7 @@ static Bigint *
 diff(Bigint *a, Bigint *b)
 {
 Bigint * c;
-int	i, wa, wb;
+int i, wa, wb;
 unsigned int * xa, *xae, *xb, *xbe, *xc;
 unsigned int borrow, y;
 unsigned int z;
@@ -462,7 +462,7 @@ static double
 b2d(Bigint *a, int *e)
 {
 unsigned *xa, *xa0, w, y, z;
-int	k;
+int k;
 ulong d0, d1;
 xa0 = a->x;
 xa = xa0 + a->wds;
@@ -489,7 +489,7 @@ static Bigint *
 d2b(double d, int *e, int *bits)
 {
 Bigint * b;
-int	de, i, k;
+int de, i, k;
 unsigned *x, y, z;
 Ulongs uls;
 b = Balloc(1);
@@ -520,8 +520,8 @@ return b;
 static double
 ratio(Bigint *a, Bigint *b)
 {
-double	da, db;
-int	k, ka, kb;
+double da, db;
+int k, ka, kb;
 Ulongs uls;
 da = b2d(a, &ka);
 db = b2d(b, &kb);
@@ -558,7 +558,7 @@ static const double tinytens[] = {
 static int
 match(const char **sp, char *t)
 {
-int	c, d;
+int c, d;
 const char * s = *sp;
 while (d = *t++) {
 if ((c = *++s) >= 'A' && c <= 'Z')
@@ -574,7 +574,7 @@ gethex(double *rvp, const char **sp)
 {
 unsigned int c, x[2];
 const char * s;
-int	havedig, udx0, xshift;
+int havedig, udx0, xshift;
 x[0] = x[1] = 0;
 havedig = xshift = 0;
 udx0 = 1;
@@ -613,7 +613,7 @@ if ((x[0] &= 0xfffff) || x[1])
 static int
 quorem(Bigint *b, Bigint *S)
 {
-int	n;
+int n;
 unsigned int * bx, *bxe, q, *sx, *sxe;
 unsigned int borrow, carry, y, ys;
 unsigned int si, z, zs;
@@ -673,10 +673,10 @@ b->wds = n;
 }
 return q;
 }
-static char	*
+static char *
 rv_alloc(int i)
 {
-int	j, k, *r;
+int j, k, *r;
 j = sizeof(unsigned int);
 for (k = 0;
 sizeof(Bigint) - sizeof(unsigned int) - sizeof(int) + j <= i;
@@ -687,10 +687,10 @@ r = (int * )Balloc(k);
 return
 (char *)(r + 1);
 }
-static char	*
+static char *
 nrv_alloc(char *s, char **rve, int n)
 {
-char	*rv, *t;
+char *rv, *t;
 t = rv = rv_alloc(n);
 while (*t = *s++)
 t++;
@@ -705,15 +705,15 @@ Bigint * b = (Bigint * )((int *)s - 1);
 b->maxwds = 1 << (b->k = *(int * )b);
 Bfree(b);
 }
-char	*
+char *
 dtoa(double d, int mode, int ndigits, int *decpt, int *sign, char **rve)
 {
-int	bbits, b2, b5, be, dig, i, ieps, ilim, ilim0, ilim1,
+int bbits, b2, b5, be, dig, i, ieps, ilim, ilim0, ilim1,
 j, j1, k, k0, k_check, L, leftright, m2, m5, s2, s5,
 spec_case, try_quick;
 Bigint * b, *b1, *delta, *mlo=nil, *mhi, *S;
-double	d2, ds, eps;
-char	*s, *s0;
+double d2, ds, eps;
+char *s, *s0;
 Ulongs ulsd, ulsd2;
 ulsd = double2ulongs(d);
 if (ulsd.hi & Sign_bit) {

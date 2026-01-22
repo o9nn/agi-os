@@ -7,7 +7,7 @@ sys: Sys;
 FD, Connection, sprint, Dir: import sys;
 print, fprint, open, bind, mount, dial, sleep, read: import sys;
 include "security.m";
-auth:	Auth;
+auth: Auth;
 include "draw.m";
 draw: Draw;
 Context: import draw;
@@ -15,11 +15,11 @@ include "keyring.m";
 kr: Keyring;
 Init: module
 {
-init:	fn();
+init: fn();
 };
 Command: module
 {
-init:	fn(ctxt: ref Context, argv: list of string);
+init: fn(ctxt: ref Context, argv: list of string);
 };
 rootfs(server: string): int
 {
@@ -127,10 +127,10 @@ sys->print("done\n");
 #
 # default namespace
 #
-bind("#c", "/dev", sys->MREPL);		# console
-bind("#l", "/net", sys->MREPL);			# ethernet
-bind("#I", "/net", sys->MBEFORE);		# TCP/IP
-bind("#p", "/prog", sys->MREPL);		# prog device
+bind("#c", "/dev", sys->MREPL); # console
+bind("#l", "/net", sys->MREPL); # ethernet
+bind("#I", "/net", sys->MBEFORE); # TCP/IP
+bind("#p", "/prog", sys->MREPL); # prog device
 sys->bind("#d", "/fd", Sys->MREPL);
 sys->print("clock...\n");
 setclock();

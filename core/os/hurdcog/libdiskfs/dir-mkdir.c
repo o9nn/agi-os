@@ -19,7 +19,7 @@ error = diskfs_lookup (dnp, name, CREATE, 0, ds, dircred);
 if (error == EAGAIN)
 error = EEXIST;
 if (!error)
-error =  EEXIST;
+error = EEXIST;
 if (error != ENOENT)
 {
 diskfs_drop_dirstat (dnp, ds);

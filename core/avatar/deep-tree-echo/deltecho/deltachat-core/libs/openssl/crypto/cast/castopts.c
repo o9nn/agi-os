@@ -29,9 +29,9 @@ OPENSSL_DECLARE_EXIT
 #include <openssl/cast.h>
 #define CAST_DEFAULT_OPTIONS
 #undef E_CAST
-#define CAST_encrypt  CAST_encrypt_normal
-#define CAST_decrypt  CAST_decrypt_normal
-#define CAST_cbc_encrypt  CAST_cbc_encrypt_normal
+#define CAST_encrypt CAST_encrypt_normal
+#define CAST_decrypt CAST_decrypt_normal
+#define CAST_cbc_encrypt CAST_cbc_encrypt_normal
 #undef HEADER_CAST_LOCL_H
 #include "c_enc.c"
 #define CAST_PTR
@@ -40,9 +40,9 @@ OPENSSL_DECLARE_EXIT
 #undef CAST_encrypt
 #undef CAST_decrypt
 #undef CAST_cbc_encrypt
-#define CAST_encrypt  CAST_encrypt_ptr
-#define CAST_decrypt  CAST_decrypt_ptr
-#define CAST_cbc_encrypt  CAST_cbc_encrypt_ptr
+#define CAST_encrypt CAST_encrypt_ptr
+#define CAST_decrypt CAST_decrypt_ptr
+#define CAST_cbc_encrypt CAST_cbc_encrypt_ptr
 #undef HEADER_CAST_LOCL_H
 #include "c_enc.c"
 #undef CAST_PTR
@@ -51,20 +51,20 @@ OPENSSL_DECLARE_EXIT
 #undef CAST_encrypt
 #undef CAST_decrypt
 #undef CAST_cbc_encrypt
-#define CAST_encrypt  CAST_encrypt_ptr2
-#define CAST_decrypt  CAST_decrypt_ptr2
-#define CAST_cbc_encrypt  CAST_cbc_encrypt_ptr2
+#define CAST_encrypt CAST_encrypt_ptr2
+#define CAST_decrypt CAST_decrypt_ptr2
+#define CAST_cbc_encrypt CAST_cbc_encrypt_ptr2
 #undef HEADER_CAST_LOCL_H
 #include "c_enc.c"
 #ifndef HZ
 # ifndef CLK_TCK
-#  ifndef _BSD_CLK_TCK_
-#   define HZ   100.0
-#  else
-#   define HZ ((double)_BSD_CLK_TCK_)
-#  endif
+# ifndef _BSD_CLK_TCK_
+# define HZ 100.0
 # else
-#  define HZ ((double)CLK_TCK)
+# define HZ ((double)_BSD_CLK_TCK_)
+# endif
+# else
+# define HZ ((double)CLK_TCK)
 # endif
 #endif
 #define BUFSIZE ((long)1024)
@@ -72,9 +72,9 @@ long run = 0;
 double Time_F(int s);
 #ifdef SIGALRM
 # if defined(__STDC__) || defined(sgi)
-#  define SIGRETTYPE void
+# define SIGRETTYPE void
 # else
-#  define SIGRETTYPE int
+# define SIGRETTYPE int
 # endif
 SIGRETTYPE sig_done(int sig);
 SIGRETTYPE sig_done(int sig)
@@ -86,8 +86,8 @@ sig = sig;
 # endif
 }
 #endif
-#define START   0
-#define STOP    1
+#define START 0
+#define STOP 1
 double Time_F(int s)
 {
 double ret;

@@ -1,6 +1,6 @@
 implement PPPlink;
 #
-# Copyright © 2001 Vita Nuova Holdings Limited.  All rights reserved.
+# Copyright © 2001 Vita Nuova Holdings Limited. All rights reserved.
 #
 include "sys.m";
 sys: Sys;
@@ -19,48 +19,48 @@ Dict: import translate;
 dict: ref Dict;
 PPPlink: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 PPPInfo: adt {
-ipaddr:		string;
-ipmask:		string;
-peeraddr:		string;
-maxmtu:		string;
-username:	string;
-password:		string;
+ipaddr: string;
+ipmask: string;
+peeraddr: string;
+maxmtu: string;
+username: string;
+password: string;
 };
 modeminfo: ref Modem->ModemInfo;
 context: ref Draw->Context;
 pppinfo: ref PPPInfo;
 scriptinfo: ref Script->ScriptInfo;
 isp_number: string;
-lastCdir:		ref Sys->Dir;	# state of file when last read
+lastCdir: ref Sys->Dir; # state of file when last read
 netdir := "/net";
 Packet: adt {
-src:	array of byte;
-dst:	array of byte;
-data:	array of byte;
+src: array of byte;
+dst: array of byte;
+data: array of byte;
 };
-DEFAULT_ISP_DB_PATH:	con "/services/ppp/isp.cfg";	# contains pppinfo & scriptinfo
-DEFAULT_MODEM_DB_PATH:	con	"/services/ppp/modem.cfg";			# contains modeminfo
-MODEM_DB_PATH:	con	"modem.cfg";			# contains modeminfo
-ISP_DB_PATH:	con "isp.cfg";		# contains pppinfo & scriptinfo
+DEFAULT_ISP_DB_PATH: con "/services/ppp/isp.cfg"; # contains pppinfo & scriptinfo
+DEFAULT_MODEM_DB_PATH: con "/services/ppp/modem.cfg"; # contains modeminfo
+MODEM_DB_PATH: con "modem.cfg"; # contains modeminfo
+ISP_DB_PATH: con "isp.cfg"; # contains pppinfo & scriptinfo
 primary := 0;
 framing := 1;
 Disconnected, Modeminit, Dialling, Modemup, Scriptstart, Scriptdone, Startingppp, Startedppp, Login, Linkup: con iota;
 Error: con -1;
-Ignorems: con 10*1000;	# time to ignore outgoing packets between dial attempts
+Ignorems: con 10*1000; # time to ignore outgoing packets between dial attempts
 statustext := array[] of {
 Disconnected => "Disconnected",
-Modeminit =>	"Initializing Modem",
-Dialling =>	"Dialling Service Provider",
-Modemup =>	"Logging Into Network",
-Scriptstart =>	"Executing Login Script",
-Scriptdone =>	"Script Execution Complete",
-Startingppp =>	"Logging Into Network",
+Modeminit => "Initializing Modem",
+Dialling => "Dialling Service Provider",
+Modemup => "Logging Into Network",
+Scriptstart => "Executing Login Script",
+Scriptdone => "Script Execution Complete",
+Startingppp => "Logging Into Network",
 Startedppp => "Logging Into Network",
-Login =>	"Verifying Password",
-Linkup =>	"Connected",
+Login => "Verifying Password",
+Linkup => "Connected",
 };
 usage()
 {
@@ -96,7 +96,7 @@ usage();
 }
 args = arg->argv();
 arg = nil;
-localip := "10.9.8.7";	# should be something locally unique
+localip := "10.9.8.7"; # should be something locally unique
 fake := 1;
 if(args != nil){
 fake = 0;
@@ -132,14 +132,14 @@ spawn servestatus(iocmd.read, logger);
 starteduser := 0;
 lasttime := 0;
 for(;;) alt{
-(nil, data, nil, wc) := <-iocmd.write =>	# remote io control
+(nil, data, nil, wc) := <-iocmd.write => # remote io control
 if(wc == nil)
 break;
 (nil, flds) := sys->tokenize(string data, " \t");
 if(len flds > 1){
 case hd flds {
 "cancel" or "disconnect" or "hangup" =>
-;	# ignore it
+; # ignore it
 "connect" =>
 # start connection ...
 ;
@@ -245,14 +245,14 @@ return (err, pppdir);
 pkt := <-packets =>
 # ignore packets whilst connecting
 sys->print("ppplink: ignored packet %s->%s: %d byten", ipa(pkt.src), ipa(pkt.dst), len pkt.data);
-(nil, data, nil, wc) := <-writer =>	# user control
+(nil, data, nil, wc) := <-writer => # user control
 if(wc == nil)
 break;
 (nil, flds) := sys->tokenize(string data, " \t");
 if(len flds > 1){
 case hd flds {
 "connect" =>
-;	# ignore it
+; # ignore it
 "cancel" or "disconnect" or "hangup"=>
 kill(pid, "killgrp");
 wreply(wc, (len data, nil));
@@ -311,16 +311,16 @@ if(fd == nil)
 return -1;
 return sys->fprint(fd, "add %s %s %s", addr, mask, gate);
 }
-#	uchar	vihl;
-#	uchar	tos;
-#	uchar	length[2];
-#	uchar	id[2];
-#	uchar	frag[2];
-#	uchar	ttl;
-#	uchar	proto;
-#	uchar	cksum[2];
-#	uchar	src[4];
-#	uchar	dst[4];
+# uchar vihl;
+# uchar tos;
+# uchar length[2];
+# uchar id[2];
+# uchar frag[2];
+# uchar ttl;
+# uchar proto;
+# uchar cksum[2];
+# uchar src[4];
+# uchar dst[4];
 IPhdrlen: con 20;
 netreader(dfd: ref Sys->FD, dir: string, localip: string, fake: int, outc: chan of ref Packet)
 {
@@ -394,7 +394,7 @@ log <-= (Error, lasterror);
 }
 }
 }
-if(count == 0 && connected && lasterror == nil){	# should change ip/pppmedium.c instead?
+if(count == 0 && connected && lasterror == nil){ # should change ip/pppmedium.c instead?
 #hangup(nil);
 log <-= (Error, X("Lost Connection"));
 }
@@ -438,20 +438,20 @@ startppp(logchan: chan of (int, string), pppinfo: ref PPPInfo): (string, string)
 if(ifd == nil)
 return (err, nil);
 sync := chan of int;
-spawn readppplog(logchan, dir + "/err", sync);		# unbind gives eof on err
+spawn readppplog(logchan, dir + "/err", sync); # unbind gives eof on err
 <-sync;
 if(pppinfo.ipaddr == nil)
 pppinfo.ipaddr = "-";
-#	if(pppinfo.ipmask == nil)
-#		pppinfo.ipmask = "255.255.255.255";
+# if(pppinfo.ipmask == nil)
+# pppinfo.ipmask = "255.255.255.255";
 if(pppinfo.peeraddr == nil)
 pppinfo.peeraddr = "-";
 if(pppinfo.maxmtu == nil)
 pppinfo.maxmtu = "-";
-#	if(pppinfo.maxmtu <= 0)
-#		pppinfo.maxmtu = mtu;
-#	if(pppinfo.maxmtu < 576)
-#		pppinfo.maxmtu = 576;
+# if(pppinfo.maxmtu <= 0)
+# pppinfo.maxmtu = mtu;
+# if(pppinfo.maxmtu < 576)
+# pppinfo.maxmtu = 576;
 if(pppinfo.username == nil)
 pppinfo.username = "-";
 if(pppinfo.password == nil)
@@ -476,7 +476,7 @@ return script->execute(dev, scriptinfo);
 hangup(pppdir: string)
 {
 sys->print("ppplink: hangup...\n");
-if(pppdir != nil){	# shut down the PPP link
+if(pppdir != nil){ # shut down the PPP link
 fd := sys->open(pppdir + "/ctl", Sys->OWRITE);
 if(fd == nil || sys->fprint(fd, "unbind") < 0)
 sys->print("ppplink: hangup: can't unbind ppp on %s: %r\n", pppdir);
@@ -530,7 +530,7 @@ fd := sys->open("/dev/user", Sys->OREAD);
 buf := array[64] of byte;
 if(fd != nil && (n := sys->read(fd, buf, len buf)) > 0)
 return string buf[0:n];
-return "inferno";	# hmmm.
+return "inferno"; # hmmm.
 }
 cfvalue(c: ref ConfigFile, key: string) :string
 {
@@ -595,7 +595,7 @@ scriptinfo = nil;
 info = pppcfg.getcfg("TIMEOUT");
 if(info != nil)
 scriptinfo.timeout = int (hd info);
-cfg = nil;	# unload it
+cfg = nil; # unload it
 if(modeminfo.path == nil)
 return "no modem device configured";
 if(isp_number == nil)
@@ -639,14 +639,14 @@ pppconnect(result: chan of (string, string), sync: chan of int, status: chan of 
 sys->pctl(Sys->NEWPGRP|Sys->NEWFD, list of {0, 1, 2});
 sync <-= sys->pctl(0, nil);
 pppdir: string;
-(err, mc) := dialup(modeminfo, isp_number, scriptinfo, status);	# mc keeps connection open until startppp binds it to ppp
+(err, mc) := dialup(modeminfo, isp_number, scriptinfo, status); # mc keeps connection open until startppp binds it to ppp
 if(err == nil){
 if(0 && (cfd := mc.cfd) != nil){
-sys->fprint(cfd, "m1");	# cts/rts flow control/fifo's on
+sys->fprint(cfd, "m1"); # cts/rts flow control/fifo's on
 sys->fprint(cfd, "q64000"); # increase queue size to 64k
-sys->fprint(cfd, "n1");	# nonblocking writes on
-sys->fprint(cfd, "r1");	# rts on
-sys->fprint(cfd, "d1");	# dtr on
+sys->fprint(cfd, "n1"); # nonblocking writes on
+sys->fprint(cfd, "r1"); # rts on
+sys->fprint(cfd, "d1"); # dtr on
 }
 status <-= (Startingppp, nil);
 (err, pppdir) = startppp(status, pppinfo);

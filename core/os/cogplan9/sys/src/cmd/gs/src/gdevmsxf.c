@@ -92,7 +92,7 @@ private const font_entry font_names[] =
 {"Times", "Times New Roman", VARIABLE_PITCH | FF_ROMAN},
 {"Times", "Tms Rmn", VARIABLE_PITCH | FF_ROMAN}
 };
-private int  map_logical_font(HDC, win_xfont *);
+private int map_logical_font(HDC, win_xfont *);
 gx_xfont *
 win_lookup_font(gx_device * dev, const byte * fname, uint len,
 int encoding_index, const gs_uid * puid, const gs_matrix * pmat,

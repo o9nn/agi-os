@@ -29,10 +29,10 @@ struct connq *connect_queue;
 uid_t uid;
 gid_t gid;
 };
-#define PFLOCAL_SOCK_CONNECTED		0x1
-#define PFLOCAL_SOCK_NONBLOCK		0x2
-#define PFLOCAL_SOCK_SHUTDOWN_READ	0x4
-#define PFLOCAL_SOCK_SHUTDOWN_WRITE	0x8
+#define PFLOCAL_SOCK_CONNECTED 0x1
+#define PFLOCAL_SOCK_NONBLOCK 0x2
+#define PFLOCAL_SOCK_SHUTDOWN_READ 0x4
+#define PFLOCAL_SOCK_SHUTDOWN_WRITE 0x8
 error_t sock_acquire_read_pipe (struct sock *sock, struct pipe **pipe);
 error_t sock_acquire_write_pipe (struct sock *sock, struct pipe **pipe);
 error_t sock_connect (struct sock *sock1, struct sock *sock2);

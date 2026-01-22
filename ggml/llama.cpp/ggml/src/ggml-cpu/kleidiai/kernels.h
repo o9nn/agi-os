@@ -3,11 +3,11 @@
 #include <variant>
 #include "ggml.h"
 enum cpu_feature {
-CPU_FEATURE_NONE    = 0,
+CPU_FEATURE_NONE = 0,
 CPU_FEATURE_DOTPROD = 1,
-CPU_FEATURE_I8MM    = 2,
-CPU_FEATURE_SVE     = 4,
-CPU_FEATURE_SME     = 8
+CPU_FEATURE_I8MM = 2,
+CPU_FEATURE_SVE = 4,
+CPU_FEATURE_SME = 8
 };
 inline cpu_feature& operator|=(cpu_feature& lhs, cpu_feature rhs) {
 lhs = static_cast<cpu_feature>(lhs | rhs);

@@ -159,7 +159,7 @@ std::istream& stream_to_combo_tree(std::istream& in, combo_tree& tr)
 tree<std::string> tmp;
 in >> tmp;
 strtree_to_combo_tree<BUILTIN_ACTION, PERCEPTION, ACTION_SYMBOL, INDEFINITE_OBJECT>(tmp, tr);
-return  in;
+return in;
 }
 combo_tree str2combo_tree(const std::string& combo_prog_str,
 const string_seq& labels);

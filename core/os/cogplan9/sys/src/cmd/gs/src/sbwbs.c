@@ -218,9 +218,9 @@ typedef struct {
 bits16 v[256];
 } offsets_4k;
 #if arch_sizeof_int > 2
-#  define ceil_64k(n) (((n) + 0xffff) >> 16)
+# define ceil_64k(n) (((n) + 0xffff) >> 16)
 #else
-#  define ceil_64k(n) 1
+# define ceil_64k(n) 1
 #endif
 #define ceil_4k(n) (((n) + 0xfff) >> 12)
 #define offset_space(bsize)\

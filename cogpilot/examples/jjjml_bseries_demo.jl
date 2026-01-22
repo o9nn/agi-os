@@ -112,8 +112,8 @@ println("-" ^ 70)
 function harmonic(y)
 return [y[2], -y[1]]
 end
-y0_osc = [1.0, 0.0]  # Start at y=1, v=0
-t_span_osc = (0.0, 2π)  # One full period
+y0_osc = [1.0, 0.0] # Start at y=1, v=0
+t_span_osc = (0.0, 2π) # One full period
 println("System: dy₁/dt = y₂, dy₂/dt = -y₁")
 println("Initial: y₁(0) = 1, y₂(0) = 0")
 println("Exact solution: y₁(t) = cos(t), y₂(t) = -sin(t)")
@@ -142,7 +142,7 @@ println()
 println("Part 4: Stiff Problem (Van der Pol Oscillator)")
 println("-" ^ 70)
 # Van der Pol: y'' + μ(y² - 1)y' + y = 0
-μ = 5.0  # Moderate stiffness
+μ = 5.0 # Moderate stiffness
 function vanderpol(y)
 return [y[2], μ*(1 - y[1]^2)*y[2] - y[1]]
 end

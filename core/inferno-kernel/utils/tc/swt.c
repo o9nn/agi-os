@@ -7,7 +7,7 @@ p1 = (C1*)a1;
 p2 = (C1*)a2;
 if(p1->val < p2->val)
 return -1;
-return  p1->val > p2->val;
+return p1->val > p2->val;
 }
 void
 doswit(Node *n)
@@ -322,10 +322,10 @@ p->reg = w;
 if(p->to.type == D_OREG)
 p->to.type = D_CONST;
 }
-void	zname(Biobuf*, Sym*, int);
-char*	zaddr(char*, Adr*, int);
-void	zwrite(Biobuf*, Prog*, int, int);
-void	outhist(Biobuf*);
+void zname(Biobuf*, Sym*, int);
+char* zaddr(char*, Adr*, int);
+void zwrite(Biobuf*, Prog*, int, int);
+void outhist(Biobuf*);
 void
 zwrite(Biobuf *b, Prog *p, int sf, int st)
 {

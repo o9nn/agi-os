@@ -189,7 +189,7 @@ Random.seed!(100)
 # new model is always better (especially less points, more noise etc), given the correct std & enough samples.
 # std for the equation is limited ~ (var propagated via data points through chosen equation var/phystd)
 # for inverse problems ratio of datapoints and unsolved datapoints is important.
-N = 20  # choose number of nodes, enough to approximate 2n-2 degree polynomials (gauss-lobatto case)
+N = 20 # choose number of nodes, enough to approximate 2n-2 degree polynomials (gauss-lobatto case)
 # x, w = gausslegendre(N) # does not include endpoints
 x, w = gausslobatto(N)
 # x, w = clenshaw_curtis(N)
@@ -207,7 +207,7 @@ prob = ODEProblem(linear, u0, tspan, p)
 linear_analytic = (u0, p, t) -> exp(t / p) * (u0 + sin(t))
 # SOLUTION AND CREATE DATASET
 sol = solve(prob, Tsit5(); saveat = t)
-u = sol.u  # use these points for collocation
+u = sol.u # use these points for collocation
 ts = sol.t
 # old model finds less noisy signal easier to learn. (i think its overfitting)
 x̂ = u .+ (0.1 .* randn(size(u)))
@@ -318,7 +318,7 @@ function lotka_volterra(u, p, t)
 x, y = u
 # Evaluate differential equations.
 dx = (α - y) * x # prey
-dy = (x - δ) * y  # predator
+dy = (x - δ) * y # predator
 return [dx, dy]
 end
 # initial-value problem.

@@ -3,27 +3,27 @@
 #include "sh.h"
 #include "ksh_stat.h"
 #include "ksh_time.h"
-#define MBMESSAGE	"you have mail in $_"
+#define MBMESSAGE "you have mail in $_"
 typedef struct mbox {
-struct mbox    *mb_next;
-char	       *mb_path;
-char	       *mb_msg;
-time_t		mb_mtime;
+struct mbox *mb_next;
+char *mb_path;
+char *mb_msg;
+time_t mb_mtime;
 } mbox_t;
-static mbox_t	*mplist;
-static mbox_t	mbox;
-static time_t	mlastchkd;
-static time_t	mailcheck_interval;
-static void     munset      ARGS((mbox_t *mlist));
-static mbox_t * mballoc     ARGS((char *p, char *m));
-static void     mprintit    ARGS((mbox_t *mbp));
+static mbox_t *mplist;
+static mbox_t mbox;
+static time_t mlastchkd;
+static time_t mailcheck_interval;
+static void munset ARGS((mbox_t *mlist));
+static mbox_t * mballoc ARGS((char *p, char *m));
+static void mprintit ARGS((mbox_t *mbp));
 void
 mcheck()
 {
-register mbox_t	*mbp;
-time_t		 now;
-struct tbl	*vp;
-struct stat	 stbuf;
+register mbox_t *mbp;
+time_t now;
+struct tbl *vp;
+struct stat stbuf;
 now = time((time_t *) 0);
 if (mlastchkd == 0)
 mlastchkd = now;
@@ -59,9 +59,9 @@ mailcheck_interval = interval;
 }
 void
 mbset(p)
-register char	*p;
+register char *p;
 {
-struct stat	stbuf;
+struct stat stbuf;
 if (mbox.mb_msg)
 afree((void *)mbox.mb_msg, APERM);
 if (mbox.mb_path)
@@ -75,10 +75,10 @@ mbox.mb_mtime = 0;
 }
 void
 mpset(mptoparse)
-register char	*mptoparse;
+register char *mptoparse;
 {
-register mbox_t	*mbp;
-register char	*mpath, *mmsg, *mval;
+register mbox_t *mbp;
+register char *mpath, *mmsg, *mval;
 char *p;
 munset( mplist );
 mplist = NULL;
@@ -109,9 +109,9 @@ mplist = mbp;
 }
 static void
 munset(mlist)
-register mbox_t	*mlist;
+register mbox_t *mlist;
 {
-register mbox_t	*mbp;
+register mbox_t *mbp;
 while (mlist != NULL) {
 mbp = mlist;
 mlist = mbp->mb_next;
@@ -122,11 +122,11 @@ afree((void *)mbp, APERM);
 }
 static mbox_t *
 mballoc(p, m)
-char	*p;
-char	*m;
+char *p;
+char *m;
 {
-struct stat	stbuf;
-register mbox_t	*mbp;
+struct stat stbuf;
+register mbox_t *mbp;
 mbp = (mbox_t *)alloc(sizeof(mbox_t), APERM);
 mbp->mb_next = NULL;
 mbp->mb_path = p;
@@ -139,9 +139,9 @@ return(mbp);
 }
 static void
 mprintit( mbp )
-mbox_t	*mbp;
+mbox_t *mbp;
 {
-struct tbl	*vp;
+struct tbl *vp;
 setstr((vp = local("_", FALSE)), mbp->mb_path, KSH_RETURN_ERROR);
 shellf("%s\n", substitute(mbp->mb_msg ? mbp->mb_msg : MBMESSAGE, 0));
 unset(vp, 0);

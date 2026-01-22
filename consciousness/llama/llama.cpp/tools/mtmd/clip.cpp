@@ -374,10 +374,10 @@ cur);
 } else if (ctx->proj_type == PROJECTOR_TYPE_IDEFICS3) {
 const int scale_factor = model.hparams.proj_scale_factor;
 const int n_embd = cur->ne[0];
-const int seq    = cur->ne[1];
-const int bsz    = 1;
+const int seq = cur->ne[1];
+const int bsz = 1;
 const int height = std::sqrt(seq);
-const int width  = std::sqrt(seq);
+const int width = std::sqrt(seq);
 GGML_ASSERT(scale_factor != 0);
 cur = ggml_reshape_4d(ctx0, cur, n_embd * scale_factor, width / scale_factor, height, bsz);
 cur = ggml_permute(ctx0, cur, 0, 2, 1, 3);
@@ -439,10 +439,10 @@ cur = ggml_add(ctx0, cur, model.mm_2_b);
 }
 }
 {
-const int p_y             = n_merge > 0 ? n_patches_y / n_merge : n_patches_y;
-const int p_x             = n_merge > 0 ? n_patches_x / n_merge : n_patches_x;
-const int p_total         = p_x * p_y;
-const int n_embd_text     = cur->ne[0];
+const int p_y = n_merge > 0 ? n_patches_y / n_merge : n_patches_y;
+const int p_x = n_merge > 0 ? n_patches_x / n_merge : n_patches_x;
+const int p_total = p_x * p_y;
+const int n_embd_text = cur->ne[0];
 const int n_tokens_output = p_total + p_y - 1;
 ggml_tensor * tmp = ggml_reshape_3d(ctx0, cur, n_embd_text, p_x, p_y);
 ggml_tensor * tok = ggml_new_tensor_3d(ctx0, tmp->type, n_embd_text, 1, p_y);
@@ -459,10 +459,10 @@ return gf;
 ggml_cgraph * build_qwen2vl() {
 GGML_ASSERT(model.patch_bias == nullptr);
 GGML_ASSERT(model.class_embedding == nullptr);
-const int batch_size       = 1;
+const int batch_size = 1;
 const bool use_window_attn = hparams.n_wa_pattern > 0;
-const int n_wa_pattern     = hparams.n_wa_pattern;
-const int n_pos            = n_patches;
+const int n_wa_pattern = hparams.n_wa_pattern;
+const int n_pos = n_patches;
 const int num_position_ids = n_pos * 4;
 norm_type norm_t = ctx->proj_type == PROJECTOR_TYPE_QWEN25VL
 ? NORM_TYPE_RMS
@@ -487,9 +487,9 @@ inp = ggml_reshape_3d(
 ctx0, inp,
 n_embd, n_patches_x * n_patches_y, batch_size);
 }
-ggml_tensor * inpL           = inp;
-ggml_tensor * window_mask    = nullptr;
-ggml_tensor * window_idx     = nullptr;
+ggml_tensor * inpL = inp;
+ggml_tensor * window_mask = nullptr;
+ggml_tensor * window_idx = nullptr;
 ggml_tensor * inv_window_idx = nullptr;
 ggml_tensor * positions = ggml_new_tensor_1d(ctx0, GGML_TYPE_I32, num_position_ids);
 ggml_set_name(positions, "positions");
@@ -660,9 +660,9 @@ n_embd, n_patches,
 ggml_row_size(cur->type, n_embd), 0);
 {
 const int scale_factor = model.hparams.proj_scale_factor;
-const int bsz    = 1;
+const int bsz = 1;
 const int height = n_patches_y;
-const int width  = n_patches_x;
+const int width = n_patches_x;
 GGML_ASSERT(scale_factor > 0);
 cur = ggml_reshape_4d(ctx0, cur, n_embd * scale_factor, height / scale_factor, width, bsz);
 cur = ggml_permute(ctx0, cur, 0, 2, 1, 3);
@@ -1139,7 +1139,7 @@ v = ggml_cont(ctx0, v);
 ggml_tensor * cur;
 {
 const auto n_tokens = q->ne[1];
-const auto n_head   = q->ne[2];
+const auto n_head = q->ne[2];
 ggml_tensor * kq = ggml_mul_mat(ctx0, k, q);
 kq = ggml_soft_max_ext(ctx0, kq, kq_mask, kq_scale, 0.0f);
 ggml_tensor * kqv = ggml_mul_mat(ctx0, v, kq);
@@ -1162,9 +1162,9 @@ ggml_tensor * pos_h,
 ggml_tensor * pos_w,
 const float freq_base
 ) {
-const int64_t n_dim  = cur->ne[0];
+const int64_t n_dim = cur->ne[0];
 const int64_t n_head = cur->ne[1];
-const int64_t n_pos  = cur->ne[2];
+const int64_t n_pos = cur->ne[2];
 const float freq_scale_odd = std::pow(freq_base, (float)-2/n_dim);
 ggml_tensor * first;
 {
@@ -1263,12 +1263,12 @@ std::string name;
 get_string(KEY_NAME, name, false);
 std::string description;
 get_string(KEY_DESCRIPTION, description, false);
-LOG_INF("%s: model name:   %s\n",  __func__, name.c_str());
-LOG_INF("%s: description:  %s\n",  __func__, description.c_str());
-LOG_INF("%s: GGUF version: %d\n",  __func__, gguf_get_version(ctx_gguf.get()));
+LOG_INF("%s: model name:   %s\n", __func__, name.c_str());
+LOG_INF("%s: description:  %s\n", __func__, description.c_str());
+LOG_INF("%s: GGUF version: %d\n", __func__, gguf_get_version(ctx_gguf.get()));
 LOG_INF("%s: alignment:    %zu\n", __func__, gguf_get_alignment(ctx_gguf.get()));
-LOG_INF("%s: n_tensors:    %d\n",  __func__, n_tensors);
-LOG_INF("%s: n_kv:         %d\n",  __func__, (int)gguf_get_n_kv(ctx_gguf.get()));
+LOG_INF("%s: n_tensors:    %d\n", __func__, n_tensors);
+LOG_INF("%s: n_kv:         %d\n", __func__, (int)gguf_get_n_kv(ctx_gguf.get()));
 LOG_INF("\n");
 }
 {
@@ -1299,15 +1299,15 @@ throw std::runtime_error(string_format("%s: unknown projector type: %s\n", __fun
 }
 {
 get_i32(KEY_MINICPMV_VERSION, ctx_clip.minicpmv_version, false);
-get_u32(KEY_N_EMBD,         hparams.n_embd);
-get_u32(KEY_N_HEAD,         hparams.n_head);
-get_u32(KEY_N_FF,           hparams.n_ff);
-get_u32(KEY_N_BLOCK,        hparams.n_layer);
-get_u32(KEY_PROJ_DIM,       hparams.projection_dim);
+get_u32(KEY_N_EMBD, hparams.n_embd);
+get_u32(KEY_N_HEAD, hparams.n_head);
+get_u32(KEY_N_FF, hparams.n_ff);
+get_u32(KEY_N_BLOCK, hparams.n_layer);
+get_u32(KEY_PROJ_DIM, hparams.projection_dim);
 get_f32(KEY_LAYER_NORM_EPS, hparams.eps);
-get_u32(KEY_IMAGE_SIZE,     hparams.image_size);
-get_u32(KEY_PATCH_SIZE,     hparams.patch_size);
-get_u32(KEY_IMAGE_CROP_RESOLUTION,    hparams.image_crop_resolution, false);
+get_u32(KEY_IMAGE_SIZE, hparams.image_size);
+get_u32(KEY_PATCH_SIZE, hparams.patch_size);
+get_u32(KEY_IMAGE_CROP_RESOLUTION, hparams.image_crop_resolution, false);
 get_arr_int(KEY_IMAGE_GRID_PINPOINTS, hparams.image_grid_pinpoints, false);
 hparams.warmup_image_size = hparams.image_size;
 ctx_clip.has_llava_projector = ctx_clip.proj_type == PROJECTOR_TYPE_MLP
@@ -1342,14 +1342,14 @@ hparams.mm_patch_merge_type = PATCH_MERGE_SPATIAL_UNPAD;
 }
 {
 int idx_mean = gguf_find_key(ctx_gguf.get(), KEY_IMAGE_MEAN);
-int idx_std  = gguf_find_key(ctx_gguf.get(), KEY_IMAGE_STD);
+int idx_std = gguf_find_key(ctx_gguf.get(), KEY_IMAGE_STD);
 GGML_ASSERT(idx_mean >= 0 && "image_mean not found");
-GGML_ASSERT(idx_std >= 0  && "image_std not found");
+GGML_ASSERT(idx_std >= 0 && "image_std not found");
 const float * mean_data = (const float *) gguf_get_arr_data(ctx_gguf.get(), idx_mean);
-const float * std_data  = (const float *) gguf_get_arr_data(ctx_gguf.get(), idx_std);
+const float * std_data = (const float *) gguf_get_arr_data(ctx_gguf.get(), idx_std);
 for (int i = 0; i < 3; ++i) {
 ctx_clip.image_mean[i] = mean_data[i];
-ctx_clip.image_std[i]  = std_data[i];
+ctx_clip.image_std[i] = std_data[i];
 }
 }
 std::vector<int> vision_feature_layer;
@@ -1445,38 +1445,38 @@ return cur;
 auto & vision_model = ctx_clip.vision_model;
 vision_model.class_embedding = get_tensor(TN_CLASS_EMBD, false);
 vision_model.pre_ln_w = get_tensor(string_format(TN_LN_PRE, "v", "weight"), false);
-vision_model.pre_ln_b = get_tensor(string_format(TN_LN_PRE, "v", "bias"),   false);
+vision_model.pre_ln_b = get_tensor(string_format(TN_LN_PRE, "v", "bias"), false);
 vision_model.post_ln_w = get_tensor(string_format(TN_LN_POST, "v", "weight"), false);
-vision_model.post_ln_b = get_tensor(string_format(TN_LN_POST, "v", "bias"),   false);
+vision_model.post_ln_b = get_tensor(string_format(TN_LN_POST, "v", "bias"), false);
 vision_model.patch_bias = get_tensor(TN_PATCH_BIAS, false);
-vision_model.patch_embeddings_0 = get_tensor(TN_PATCH_EMBD,   false);
+vision_model.patch_embeddings_0 = get_tensor(TN_PATCH_EMBD, false);
 vision_model.patch_embeddings_1 = get_tensor(TN_PATCH_EMBD_1, false);
 vision_model.position_embeddings = get_tensor(string_format(TN_POS_EMBD, "v"), false);
 vision_model.layers.resize(hparams.n_layer);
 for (int il = 0; il < hparams.n_layer; ++il) {
 auto & layer = vision_model.layers[il];
-layer.k_w    = get_tensor(string_format(TN_ATTN_K,      "v", il, "weight"));
-layer.q_w    = get_tensor(string_format(TN_ATTN_Q,      "v", il, "weight"));
-layer.v_w    = get_tensor(string_format(TN_ATTN_V,      "v", il, "weight"));
-layer.o_w    = get_tensor(string_format(TN_ATTN_OUTPUT, "v", il, "weight"));
+layer.k_w = get_tensor(string_format(TN_ATTN_K, "v", il, "weight"));
+layer.q_w = get_tensor(string_format(TN_ATTN_Q, "v", il, "weight"));
+layer.v_w = get_tensor(string_format(TN_ATTN_V, "v", il, "weight"));
+layer.o_w = get_tensor(string_format(TN_ATTN_OUTPUT, "v", il, "weight"));
 layer.k_norm = get_tensor(string_format(TN_ATTN_K_NORM, "v", il, "weight"), false);
 layer.q_norm = get_tensor(string_format(TN_ATTN_Q_NORM, "v", il, "weight"), false);
-layer.ln_1_w = get_tensor(string_format(TN_LN_1,        "v", il, "weight"), false);
-layer.ln_2_w = get_tensor(string_format(TN_LN_2,        "v", il, "weight"), false);
-layer.ls_1_w = get_tensor(string_format(TN_LS_1,        "v", il, "weight"), false);
-layer.ls_2_w = get_tensor(string_format(TN_LS_2,        "v", il, "weight"), false);
-layer.k_b    = get_tensor(string_format(TN_ATTN_K,      "v", il, "bias"), false);
-layer.q_b    = get_tensor(string_format(TN_ATTN_Q,      "v", il, "bias"), false);
-layer.v_b    = get_tensor(string_format(TN_ATTN_V,      "v", il, "bias"), false);
-layer.o_b    = get_tensor(string_format(TN_ATTN_OUTPUT, "v", il, "bias"), false);
-layer.ln_1_b = get_tensor(string_format(TN_LN_1,        "v", il, "bias"), false);
-layer.ln_2_b = get_tensor(string_format(TN_LN_2,        "v", il, "bias"), false);
-layer.ff_up_w   = get_tensor(string_format(TN_FFN_UP,   "v", il, "weight"));
-layer.ff_up_b   = get_tensor(string_format(TN_FFN_UP,   "v", il, "bias"),   false);
+layer.ln_1_w = get_tensor(string_format(TN_LN_1, "v", il, "weight"), false);
+layer.ln_2_w = get_tensor(string_format(TN_LN_2, "v", il, "weight"), false);
+layer.ls_1_w = get_tensor(string_format(TN_LS_1, "v", il, "weight"), false);
+layer.ls_2_w = get_tensor(string_format(TN_LS_2, "v", il, "weight"), false);
+layer.k_b = get_tensor(string_format(TN_ATTN_K, "v", il, "bias"), false);
+layer.q_b = get_tensor(string_format(TN_ATTN_Q, "v", il, "bias"), false);
+layer.v_b = get_tensor(string_format(TN_ATTN_V, "v", il, "bias"), false);
+layer.o_b = get_tensor(string_format(TN_ATTN_OUTPUT, "v", il, "bias"), false);
+layer.ln_1_b = get_tensor(string_format(TN_LN_1, "v", il, "bias"), false);
+layer.ln_2_b = get_tensor(string_format(TN_LN_2, "v", il, "bias"), false);
+layer.ff_up_w = get_tensor(string_format(TN_FFN_UP, "v", il, "weight"));
+layer.ff_up_b = get_tensor(string_format(TN_FFN_UP, "v", il, "bias"), false);
 layer.ff_gate_w = get_tensor(string_format(TN_FFN_GATE, "v", il, "weight"), false);
-layer.ff_gate_b = get_tensor(string_format(TN_FFN_GATE, "v", il, "bias"),   false);
+layer.ff_gate_b = get_tensor(string_format(TN_FFN_GATE, "v", il, "bias"), false);
 layer.ff_down_w = get_tensor(string_format(TN_FFN_DOWN, "v", il, "weight"));
-layer.ff_down_b = get_tensor(string_format(TN_FFN_DOWN, "v", il, "bias"),   false);
+layer.ff_down_b = get_tensor(string_format(TN_FFN_DOWN, "v", il, "bias"), false);
 if (layer.ff_up_w && layer.ff_down_w && layer.ff_down_w->ne[0] == hparams.n_embd) {
 ggml_tensor * tmp = layer.ff_up_w;
 layer.ff_up_w = layer.ff_down_w;
@@ -1599,7 +1599,7 @@ vision_model.mm_1_b = get_tensor(string_format(TN_LLAVA_PROJ, 1, "bias"), false)
 vision_model.mm_2_w = get_tensor(string_format(TN_LLAVA_PROJ, 2, "weight"));
 vision_model.mm_2_b = get_tensor(string_format(TN_LLAVA_PROJ, 2, "bias"), false);
 vision_model.token_embd_img_break = get_tensor(TN_TOK_IMG_BREAK);
-vision_model.mm_input_norm_w   = get_tensor(TN_MM_INP_NORM,     false);
+vision_model.mm_input_norm_w = get_tensor(TN_MM_INP_NORM, false);
 vision_model.mm_patch_merger_w = get_tensor(TN_MM_PATCH_MERGER, false);
 } break;
 case PROJECTOR_TYPE_INTERNVL:
@@ -1797,7 +1797,7 @@ return;
 }
 delete load_image_size;
 }
-void clip_image_u8_free(struct clip_image_u8  * img) { if (img) delete img; }
+void clip_image_u8_free(struct clip_image_u8 * img) { if (img) delete img; }
 void clip_image_f32_free(struct clip_image_f32 * img) { if (img) delete img; }
 void clip_image_u8_batch_free(struct clip_image_u8_batch * batch) { if (batch) delete batch; }
 void clip_image_f32_batch_free(struct clip_image_f32_batch * batch) { if (batch) delete batch; }
@@ -1921,16 +1921,16 @@ d2 = img.buf[(clip(y - 1 + jj, 0, ny - 1) * nx + clip(x + 1, 0, nx - 1)) * 3 + k
 d3 = img.buf[(clip(y - 1 + jj, 0, ny - 1) * nx + clip(x + 2, 0, nx - 1)) * 3 + k] - img.buf[(clip(y - 1 + jj, 0, ny - 1) * nx + clip(x, 0, nx - 1)) * 3 + k];
 a0 = img.buf[(clip(y - 1 + jj, 0, ny - 1) * nx + clip(x, 0, nx - 1)) * 3 + k];
 a1 = -1.0 / 3 * d0 + d2 - 1.0 / 6 * d3;
-a2 =  1.0 / 2 * d0 +      1.0 / 2 * d2;
-a3 = -1.0 / 6 * d0 -      1.0 / 2 * d2 + 1.0 / 6 * d3;
+a2 = 1.0 / 2 * d0 + 1.0 / 2 * d2;
+a3 = -1.0 / 6 * d0 - 1.0 / 2 * d2 + 1.0 / 6 * d3;
 C[jj] = a0 + a1 * dx + a2 * dx * dx + a3 * dx * dx * dx;
 d0 = C[0] - C[1];
 d2 = C[2] - C[1];
 d3 = C[3] - C[1];
 a0 = C[1];
 a1 = -1.0 / 3 * d0 + d2 - 1.0 / 6 * d3;
-a2 =  1.0 / 2 * d0 +      1.0 / 2 * d2;
-a3 = -1.0 / 6 * d0 -      1.0 / 2 * d2 + 1.0 / 6 * d3;
+a2 = 1.0 / 2 * d0 + 1.0 / 2 * d2;
+a3 = -1.0 / 6 * d0 - 1.0 / 2 * d2 + 1.0 / 6 * d3;
 Cc = a0 + a1 * dy + a2 * dy * dy + a3 * dy * dy * dy;
 const uint8_t Cc2 = std::min(std::max(std::round(Cc), 0.0f), 255.0f);
 dst.buf[(i * target_width + j) * 3 + k] = float(Cc2);
@@ -1941,17 +1941,17 @@ dst.buf[(i * target_width + j) * 3 + k] = float(Cc2);
 return true;
 }
 static void resize_and_pad_image(const clip_image_u8 & image, clip_image_u8 & dst, const clip_image_size & target_resolution, std::array<uint8_t, 3> pad_color = {0, 0, 0}) {
-int target_width  = target_resolution.width;
+int target_width = target_resolution.width;
 int target_height = target_resolution.height;
 float scale_w = static_cast<float>(target_width) / image.nx;
 float scale_h = static_cast<float>(target_height) / image.ny;
 int new_width, new_height;
 if (scale_w < scale_h) {
-new_width  = target_width;
+new_width = target_width;
 new_height = std::min(static_cast<int>(std::ceil(image.ny * scale_w)), target_height);
 } else {
 new_height = target_height;
-new_width  = std::min(static_cast<int>(std::ceil(image.nx * scale_h)), target_width);
+new_width = std::min(static_cast<int>(std::ceil(image.nx * scale_h)), target_width);
 }
 clip_image_u8 resized_image;
 bicubic_resize(image, resized_image, new_width, new_height);
@@ -1960,11 +1960,11 @@ padded_image.nx = target_width;
 padded_image.ny = target_height;
 padded_image.buf.resize(3 * target_width * target_height);
 for (size_t i = 0; i < padded_image.buf.size(); i += 3) {
-padded_image.buf[i]     = pad_color[0];
+padded_image.buf[i] = pad_color[0];
 padded_image.buf[i + 1] = pad_color[1];
 padded_image.buf[i + 2] = pad_color[2];
 }
-int pad_x = (target_width  - new_width)  / 2;
+int pad_x = (target_width - new_width) / 2;
 int pad_y = (target_height - new_height) / 2;
 for (int y = 0; y < new_height; ++y) {
 for (int x = 0; x < new_width; ++x) {
@@ -1983,7 +1983,7 @@ for (int i = 0; i < h; ++i) {
 for (int j = 0; j < w; ++j) {
 int src_idx = 3 * ((y + i)*image.nx + (x + j));
 int dst_idx = 3 * (i*w + j);
-dst.buf[dst_idx]     = image.buf[src_idx];
+dst.buf[dst_idx] = image.buf[src_idx];
 dst.buf[dst_idx + 1] = image.buf[src_idx + 1];
 dst.buf[dst_idx + 2] = image.buf[src_idx + 2];
 }
@@ -1995,9 +1995,9 @@ return {0, 0};
 }
 float scale = std::min(1.0f, std::min(static_cast<float>(max_dimension) / inp_size.width,
 static_cast<float>(max_dimension) / inp_size.height));
-float target_width_f  = static_cast<float>(inp_size.width)  * scale;
+float target_width_f = static_cast<float>(inp_size.width) * scale;
 float target_height_f = static_cast<float>(inp_size.height) * scale;
-int aligned_width  = CLIP_ALIGN((int)target_width_f,  align_size);
+int aligned_width = CLIP_ALIGN((int)target_width_f, align_size);
 int aligned_height = CLIP_ALIGN((int)target_height_f, align_size);
 return {aligned_width, aligned_height};
 }
@@ -2030,10 +2030,10 @@ return 0;
 }
 static slice_instructions get_slice_instructions(struct clip_ctx * ctx, const clip_image_size & original_size) {
 slice_instructions res;
-const int patch_size      = clip_get_patch_size(ctx);
-const int slice_size      = clip_get_image_size(ctx);
-const int max_slice_nums  = get_max_slices(ctx);
-const int original_width  = original_size.width;
+const int patch_size = clip_get_patch_size(ctx);
+const int slice_size = clip_get_image_size(ctx);
+const int max_slice_nums = get_max_slices(ctx);
+const int original_width = original_size.width;
 const int original_height = original_size.height;
 const float log_ratio = log((float)original_width / original_height);
 const float ratio = (float)original_width * original_height / (slice_size * slice_size);
@@ -2044,16 +2044,16 @@ if (has_pinpoints) {
 auto refine_size = llava_uhd::select_best_resolution(
 ctx->vision_model.hparams.image_grid_pinpoints,
 original_size);
-res.overview_size   = clip_image_size{slice_size, slice_size};
-res.refined_size    = refine_size;
-res.grid_size       = clip_image_size{0, 0};
+res.overview_size = clip_image_size{slice_size, slice_size};
+res.refined_size = refine_size;
+res.grid_size = clip_image_size{0, 0};
 res.padding_refined = true;
 for (int y = 0; y < refine_size.height; y += slice_size) {
 for (int x = 0; x < refine_size.width; x += slice_size) {
 slice_coordinates slice;
 slice.x = x;
 slice.y = y;
-slice.size.width  = std::min(slice_size, refine_size.width  - x);
+slice.size.width = std::min(slice_size, refine_size.width - x);
 slice.size.height = std::min(slice_size, refine_size.height - y);
 res.slices.push_back(slice);
 if (x == 0) {
@@ -2064,30 +2064,30 @@ res.grid_size.height++;
 }
 return res;
 }
-auto best_size    = get_best_resize(original_size, slice_size, patch_size, !has_slices);
+auto best_size = get_best_resize(original_size, slice_size, patch_size, !has_slices);
 res.overview_size = best_size;
 if (!has_slices) {
 res.refined_size = clip_image_size{0, 0};
-res.grid_size    = clip_image_size{0, 0};
+res.grid_size = clip_image_size{0, 0};
 } else {
-auto best_grid   = get_best_grid(max_slice_nums, multiple, log_ratio);
+auto best_grid = get_best_grid(max_slice_nums, multiple, log_ratio);
 auto refine_size = get_refine_size(original_size, best_grid, slice_size, patch_size, true);
-res.grid_size    = best_grid;
+res.grid_size = best_grid;
 res.refined_size = refine_size;
-int width  = refine_size.width;
+int width = refine_size.width;
 int height = refine_size.height;
-int grid_x = int(width  / best_grid.width);
+int grid_x = int(width / best_grid.width);
 int grid_y = int(height / best_grid.height);
-for (int patches_y = 0,                    ic = 0;
+for (int patches_y = 0, ic = 0;
 patches_y < refine_size.height && ic < best_grid.height;
-patches_y += grid_y,              ic += 1) {
-for (int patches_x = 0,                   jc = 0;
+patches_y += grid_y, ic += 1) {
+for (int patches_x = 0, jc = 0;
 patches_x < refine_size.width && jc < best_grid.width;
-patches_x += grid_x,             jc += 1) {
+patches_x += grid_x, jc += 1) {
 slice_coordinates slice;
 slice.x = patches_x;
 slice.y = patches_y;
-slice.size.width  = grid_x;
+slice.size.width = grid_x;
 slice.size.height = grid_y;
 res.slices.push_back(slice);
 }
@@ -2122,15 +2122,15 @@ return output;
 }
 private:
 static clip_image_size get_best_resize(const clip_image_size & original_size, int scale_resolution, int patch_size, bool allow_upscale = false) {
-int width  = original_size.width;
+int width = original_size.width;
 int height = original_size.height;
 if ((width * height > scale_resolution * scale_resolution) || allow_upscale) {
 float r = static_cast<float>(width) / height;
-height  = static_cast<int>(scale_resolution / std::sqrt(r));
-width   = static_cast<int>(height * r);
+height = static_cast<int>(scale_resolution / std::sqrt(r));
+width = static_cast<int>(height * r);
 }
 clip_image_size res;
-res.width  = ensure_divide(width,  patch_size);
+res.width = ensure_divide(width, patch_size);
 res.height = ensure_divide(height, patch_size);
 return res;
 }
@@ -2141,10 +2141,10 @@ clip_image_size best_fit;
 int max_effective_resolution = 0;
 int min_wasted_resolution = std::numeric_limits<int>::max();
 for (const auto & resolution : possible_resolutions) {
-int width  = resolution.width;
+int width = resolution.width;
 int height = resolution.height;
 float scale = std::min(static_cast<float>(width) / original_width, static_cast<float>(height) / original_height);
-int downscaled_width  = static_cast<int>(original_width * scale);
+int downscaled_width = static_cast<int>(original_width * scale);
 int downscaled_height = static_cast<int>(original_height * scale);
 int effective_resolution = std::min(downscaled_width * downscaled_height, original_width * original_height);
 int wasted_resolution = (width * height) - effective_resolution;
@@ -2167,20 +2167,20 @@ static int ensure_divide(int length, int patch_size) {
 return std::max(static_cast<int>(std::round(static_cast<float>(length) / patch_size) * patch_size), patch_size);
 }
 static clip_image_size get_refine_size(const clip_image_size & original_size, const clip_image_size & grid, int scale_resolution, int patch_size, bool allow_upscale = false) {
-int width  = original_size.width;
+int width = original_size.width;
 int height = original_size.height;
 int grid_x = grid.width;
 int grid_y = grid.height;
-int refine_width  = ensure_divide(width, grid_x);
+int refine_width = ensure_divide(width, grid_x);
 int refine_height = ensure_divide(height, grid_y);
 clip_image_size grid_size;
-grid_size.width  = refine_width  / grid_x;
+grid_size.width = refine_width / grid_x;
 grid_size.height = refine_height / grid_y;
-auto best_grid_size  = get_best_resize(grid_size, scale_resolution, patch_size, allow_upscale);
-int best_grid_width  = best_grid_size.width;
+auto best_grid_size = get_best_resize(grid_size, scale_resolution, patch_size, allow_upscale);
+int best_grid_width = best_grid_size.width;
 int best_grid_height = best_grid_size.height;
 clip_image_size refine_size;
-refine_size.width  = best_grid_width  * grid_x;
+refine_size.width = best_grid_width * grid_x;
 refine_size.height = best_grid_height * grid_y;
 return refine_size;
 }
@@ -2486,14 +2486,14 @@ return false;
 ggml_backend_sched_reset(ctx->sched.get());
 ggml_cgraph * gf = clip_image_build_graph(ctx, imgs);
 ggml_backend_sched_alloc_graph(ctx->sched.get(), gf);
-const auto & model   = ctx->vision_model;
+const auto & model = ctx->vision_model;
 const auto & hparams = model.hparams;
-const int image_size_width  = imgs.entries[0]->nx;
+const int image_size_width = imgs.entries[0]->nx;
 const int image_size_height = imgs.entries[0]->ny;
-const int patch_size    = hparams.patch_size;
-const int num_patches   = ((image_size_width / patch_size) * (image_size_height / patch_size));
+const int patch_size = hparams.patch_size;
+const int num_patches = ((image_size_width / patch_size) * (image_size_height / patch_size));
 const int n_pos = num_patches + (model.class_embedding ? 1 : 0);
-const int pos_w = ctx->load_image_size.width  / patch_size;
+const int pos_w = ctx->load_image_size.width / patch_size;
 const int pos_h = ctx->load_image_size.height / patch_size;
 const bool use_window_attn = hparams.n_wa_pattern > 0;
 auto get_inp_tensor = [&gf](const char * name) {
@@ -2533,8 +2533,8 @@ float * batch_entry = inp_raw.data() + b * (3*n);
 for (int y = 0; y < ny; y++) {
 for (int x = 0; x < nx; x++) {
 size_t base_src = 3*(y * nx + x);
-size_t base_dst =    y * nx + x;
-batch_entry[      base_dst] = imgs.entries[b]->buf[base_src    ];
+size_t base_dst = y * nx + x;
+batch_entry[ base_dst] = imgs.entries[b]->buf[base_src ];
 batch_entry[1*n + base_dst] = imgs.entries[b]->buf[base_src + 1];
 batch_entry[2*n + base_dst] = imgs.entries[b]->buf[base_src + 2];
 }
@@ -2574,7 +2574,7 @@ set_input_f32("pos_embed", pos_embed);
 case PROJECTOR_TYPE_QWEN2VL:
 {
 const int merge_ratio = 2;
-const int pw = image_size_width  / patch_size;
+const int pw = image_size_width / patch_size;
 const int ph = image_size_height / patch_size;
 std::vector<int> positions(n_pos * 4);
 int ptr = 0;
@@ -2582,8 +2582,8 @@ for (int y = 0; y < ph; y += merge_ratio) {
 for (int x = 0; x < pw; x += merge_ratio) {
 for (int dy = 0; dy < 2; dy++) {
 for (int dx = 0; dx < 2; dx++) {
-positions[                  ptr] = y + dy;
-positions[    num_patches + ptr] = x + dx;
+positions[ ptr] = y + dy;
+positions[ num_patches + ptr] = x + dx;
 positions[2 * num_patches + ptr] = y + dy;
 positions[3 * num_patches + ptr] = x + dx;
 ptr++;
@@ -2596,11 +2596,11 @@ set_input_i32("positions", positions);
 case PROJECTOR_TYPE_QWEN25VL:
 {
 const int merge_ratio = 2;
-const int pw  = image_size_width  / patch_size / merge_ratio;
-const int ph  = image_size_height / patch_size / merge_ratio;
-const int ipw = image_size_width  / patch_size;
+const int pw = image_size_width / patch_size / merge_ratio;
+const int ph = image_size_height / patch_size / merge_ratio;
+const int ipw = image_size_width / patch_size;
 const int iph = image_size_height / patch_size;
-std::vector<int> idx    (ph * pw);
+std::vector<int> idx (ph * pw);
 std::vector<int> inv_idx(ph * pw);
 if (use_window_attn) {
 const int attn_window_size = 112;
@@ -2618,7 +2618,7 @@ for (int dx = 0; dx < win_w; dx++) {
 const int src = (y + dy) * pw + (x + dx);
 GGML_ASSERT(src < (int)idx.size());
 GGML_ASSERT(dst < (int)inv_idx.size());
-idx    [src] = dst;
+idx [src] = dst;
 inv_idx[dst] = src;
 dst++;
 }
@@ -2627,15 +2627,15 @@ for (int r=0; r < win_h * win_w * merge_ratio * merge_ratio; r++) {
 int row_offset = mask_row * (ipw * iph);
 std::fill(
 mask.begin() + row_offset + (dst_0 * merge_ratio * merge_ratio),
-mask.begin() + row_offset + (dst   * merge_ratio * merge_ratio),
+mask.begin() + row_offset + (dst * merge_ratio * merge_ratio),
 0.0);
 mask_row++;
 }
 }
 }
-set_input_i32("window_idx",     idx);
+set_input_i32("window_idx", idx);
 set_input_i32("inv_window_idx", inv_idx);
-set_input_f32("window_mask",    mask);
+set_input_f32("window_mask", mask);
 } else {
 for (int i = 0; i < ph * pw; i++) {
 idx[i] = i;
@@ -2650,8 +2650,8 @@ for (int dy = 0; dy < 2; dy++) {
 for (int dx = 0; dx < 2; dx++) {
 auto remap = idx[ptr / mpow];
 remap = (remap * mpow) + (ptr % mpow);
-positions[                  remap] = y + dy;
-positions[    num_patches + remap] = x + dx;
+positions[ remap] = y + dy;
+positions[ num_patches + remap] = x + dx;
 positions[2 * num_patches + remap] = y + dy;
 positions[3 * num_patches + remap] = x + dx;
 ptr++;

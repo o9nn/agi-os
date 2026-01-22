@@ -9,7 +9,7 @@ df_port: con "/dev/eia0";
 df_bps: con 38400;
 Rdp: module
 {
-init:	fn(nil: ref Draw->Context, arg: list of string);
+init: fn(nil: ref Draw->Context, arg: list of string);
 };
 dfd: ref sys->FD;
 cfd: ref sys->FD;
@@ -24,8 +24,8 @@ NREG: con 19;
 debug := 0;
 nocr := 0;
 tmode := 0;
-# echar := 16r1c;		# ctrl-\
-echar := 16r1d;		# ctrl-]  (because Tk grabs the ctrl-\ )
+# echar := 16r1c; # ctrl-\
+echar := 16r1d; # ctrl-] (because Tk grabs the ctrl-\ )
 bint(x: int): array of byte
 {
 b := array[4] of byte;
@@ -44,21 +44,21 @@ statusmsg(n: int): string
 {
 m: string;
 case n {
-0 => 	m = nil;
-1 =>	m = "Reset";
-2 =>	m = "Undefined instruction";
-3 =>	m = "Software interrupt";
-4 =>	m = "Prefetch abort";
-5 =>	m = "Data abort";
-6 =>	m = "Address exception";
-7 =>	m = "IRQ";
-8 =>	m = "FIQ";
-9 =>	m = "Error";
-10 =>	m = "Branch Through 0";
-253 =>	m = "Insufficient privilege";
-254 =>	m = "Unimplemented message";
-255 =>	m = "Undefined message";
-* =>	m = sprint("Status %d", n);
+0 => m = nil;
+1 => m = "Reset";
+2 => m = "Undefined instruction";
+3 => m = "Software interrupt";
+4 => m = "Prefetch abort";
+5 => m = "Data abort";
+6 => m = "Address exception";
+7 => m = "IRQ";
+8 => m = "FIQ";
+9 => m = "Error";
+10 => m = "Branch Through 0";
+253 => m = "Insufficient privilege";
+254 => m = "Unimplemented message";
+255 => m = "Undefined message";
+* => m = sprint("Status %d", n);
 }
 return m;
 }
@@ -144,7 +144,7 @@ argd := int b[4];
 for(i := 0; i<4; i++) {
 t := (argd >> (i*2))&3;
 case t {
-0 =>	;
+0 => ;
 1 =>
 arg[i] = int sreadn(1)[0];
 2 =>
@@ -280,7 +280,7 @@ r = int d.length;
 16r6e =>
 if(debug)
 print("SWI_IsTTY(%d)\n", arg[0]);
-r = 0;	# how can we detect if it's a TTY?
+r = 0; # how can we detect if it's a TTY?
 * =>
 print("unsupported: SWI 0x%ux\n", op);
 }
@@ -301,7 +301,7 @@ sys->write(dfd, b, 6);
 terminal()
 {
 b := array[1024] of byte;
-c := 3;	# num of invalid chars before resetting
+c := 3; # num of invalid chars before resetting
 tmode = 1;
 for(;;) {
 n: int;
@@ -373,8 +373,8 @@ print("%s", buf);
 buf = "";
 s = <- bsc =>
 #if(tpid) {
-#	kill(tpid);
-#	tpid = 0;
+# kill(tpid);
+# tpid = 0;
 #}
 if((len buf+len s) >= 1024) {
 print("%s", buf);
@@ -525,7 +525,7 @@ if(mask&(1<<i))
 n += 4;
 b := array[6+n] of byte;
 b[0] = byte 4;
-b[1] = byte 255;	# current mode
+b[1] = byte 255; # current mode
 b[2:] = bint(mask);
 sys->write(dfd, b, 6);
 (b, nil) = getreply(n);
@@ -546,7 +546,7 @@ if(mask&(1<<i))
 n += 4;
 b := array[6+n] of byte;
 b[0] = byte 5;
-b[1] = byte 255;	# current mode
+b[1] = byte 255; # current mode
 b[2:] = bint(mask);
 n = 6;
 for(i = 0; i<32; i++)
@@ -797,7 +797,7 @@ menu(fi: ref Sys->FD)
 w := israw;
 if(israw)
 raw(0);
-mloop:	for(;;) {
+mloop: for(;;) {
 out("");
 print("rdp> ");
 b := array[256] of byte;
@@ -849,7 +849,7 @@ input()
 {
 fi := sys->fildes(0);
 b := array[1024] of byte;
-iloop: 	for(;;) {
+iloop: for(;;) {
 r := sys->read(fi, b, len b);
 if(r < 0) {
 print("stdin: %r");
@@ -863,7 +863,7 @@ continue iloop;
 }
 }
 if(r == 0) {
-b[0] = byte 4;	# ctrl-d
+b[0] = byte 4; # ctrl-d
 r = 1;
 }
 if(tmode)
@@ -909,67 +909,67 @@ else
 sys->fprint(fd, "kill");
 }
 # Code for switching to previously unsupported bps rates:
-##define UTCR1	0x4
-##define UTCR2	0x8
-##define UTCR3	0xc
-##define UTDR	0x14
-##define UTSR0	0x1c
-##define UTSR1	0x20
+##define UTCR1 0x4
+##define UTCR2 0x8
+##define UTCR3 0xc
+##define UTDR 0x14
+##define UTSR0 0x1c
+##define UTSR1 0x20
 #
 #TEXT _startup(SB), $-4
-#	MOVW	$0x80000000,R2
-#	ORR	$0x00050000,R2
+# MOVW $0x80000000,R2
+# ORR $0x00050000,R2
 #
-#	MOVW	$0, R1
-#	MOVW	R1, UTDR(R2)
+# MOVW $0, R1
+# MOVW R1, UTDR(R2)
 #
 #wait:
-#	MOVW	UTSR1(R2), R1
-#	TST	$1, R1
-#	BNE	wait
+# MOVW UTSR1(R2), R1
+# TST $1, R1
+# BNE wait
 #
-#	MOVW	$0x90000000,R3
-#	ORR	$0x00000010,R3
-#	MOVW	(R4),R1
-#	ADD	$0x5a000,R1
+# MOVW $0x90000000,R3
+# ORR $0x00000010,R3
+# MOVW (R4),R1
+# ADD $0x5a000,R1
 #delay1:
-#	MOVW	(R3),R1
-#	SUB.S	$0x5a000, R1
-#	BLO	delay1
+# MOVW (R3),R1
+# SUB.S $0x5a000, R1
+# BLO delay1
 #
-#	MOVW	UTCR3(R2), R5
-#	MOVW	$0, R1
-#	MOVW	R1, UTCR3(R2)
+# MOVW UTCR3(R2), R5
+# MOVW $0, R1
+# MOVW R1, UTCR3(R2)
 #
-#	MOVW	R0, R1
-#	AND	$0xff, R1
-#	MOVW	R1, UTCR2(R2)
-#	MOVW	R0 >> 8, R1
-#	MOVW	R1, UTCR1(R2)
+# MOVW R0, R1
+# AND $0xff, R1
+# MOVW R1, UTCR2(R2)
+# MOVW R0 >> 8, R1
+# MOVW R1, UTCR1(R2)
 #
-#	MOVW	$0xff, R1
-#	MOVW	R1, UTSR0(R2)
+# MOVW $0xff, R1
+# MOVW R1, UTSR0(R2)
 #
-#	MOVW	$3, R1
-#	MOVW	R1, UTCR3(R2)
+# MOVW $3, R1
+# MOVW R1, UTCR3(R2)
 #
-#	MOVW	$0, R0
+# MOVW $0, R0
 #sync:
-#	MOVW	R0, UTDR(R2)
+# MOVW R0, UTDR(R2)
 #syncwait:
-#	MOVW	UTSR1(R2), R1
-#	TST	$1, R1
-#	BNE	syncwait
-#	TST	$2, R1
-#	BEQ	sync
-#	MOVW	UTDR(R2), R0
-#	MOVW	R0, UTDR(R2)
+# MOVW UTSR1(R2), R1
+# TST $1, R1
+# BNE syncwait
+# TST $2, R1
+# BEQ sync
+# MOVW UTDR(R2), R0
+# MOVW R0, UTDR(R2)
 #
-#	MOVW	$0xff, R1
-#	MOVW	R1, UTSR0(R2)
-#	MOVW	R5, UTCR3(R2)
+# MOVW $0xff, R1
+# MOVW R1, UTSR0(R2)
+# MOVW R5, UTCR3(R2)
 #
-#	WORD	$0xef000011
+# WORD $0xef000011
 bpscode := array[] of {
 16re3a22102, 16re3822805, 16re3a11000, 16re5821014,
 16re5921020, 16re3110001, big 16r1afffffc, 16re3a33209,
@@ -1141,7 +1141,7 @@ out("");
 if(debug)
 print("<exception: %s>\n", e);
 case e {
-"rdp:error" =>	;
+"rdp:error" => ;
 "rdp:tmode" =>
 tmode = !tmode;
 if(tmode)

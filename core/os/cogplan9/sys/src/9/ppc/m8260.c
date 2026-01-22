@@ -1,88 +1,88 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"io.h"
-#include	"fns.h"
-#include	"m8260.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "io.h"
+#include "fns.h"
+#include "m8260.h"
 enum {
 Pin4 = BIT(4),
 };
 static union {
 struct {
-ulong	hi;
-ulong	lo;
+ulong hi;
+ulong lo;
 };
-uvlong		val;
+uvlong val;
 } ticks;
 struct {
-ulong	hi;
-ulong	lo;
-} vec2mask[64]	= {
-[0]	= {0,		0	},
-[1]	= {0,		BIT(16)	},
-[2]	= {0,		BIT(17)	},
-[3]	= {0,		BIT(18)	},
-[4]	= {0,		BIT(19)	},
-[5]	= {0,		BIT(20)	},
-[6]	= {0,		BIT(21)	},
-[7]	= {0,		BIT(22)	},
-[8]	= {0,		BIT(23)	},
-[9]	= {0,		BIT(24)	},
-[10]	= {0,		BIT(25)	},
-[11]	= {0,		0	},
-[12]	= {0,		BIT(27)	},
-[13]	= {0,		BIT(28)	},
-[14]	= {0,		BIT(29)	},
-[15]	= {0,		BIT(30)	},
-[16]	= {BIT(29),	0	},
-[17]	= {BIT(30),	0	},
-[18]	= {0,		0	},
-[19]	= {BIT(17),	0	},
-[20]	= {BIT(18),	0	},
-[21]	= {BIT(19),	0	},
-[22]	= {BIT(20),	0	},
-[23]	= {BIT(21),	0	},
-[24]	= {BIT(22),	0	},
-[25]	= {BIT(23),	0	},
-[26]	= {0,		0	},
-[27]	= {0,		0	},
-[28]	= {0,		0	},
-[29]	= {0,		0	},
-[30]	= {0,		0	},
-[31]	= {0,		0	},
-[32]	= {0,		BIT(0)	},
-[33]	= {0,		BIT(1)	},
-[34]	= {0,		BIT(2)	},
-[35]	= {0,		0	},
-[36]	= {0,		BIT(4)	},
-[37]	= {0,		BIT(5)	},
-[38]	= {0,		0	},
-[39]	= {0,		0	},
-[40]	= {0,		BIT(8)	},
-[41]	= {0,		BIT(9)	},
-[42]	= {0,		BIT(10)	},
-[43]	= {0,		BIT(11)	},
-[44]	= {0,		0	},
-[45]	= {0,		0	},
-[46]	= {0,		0	},
-[47]	= {0,		0	},
-[48]	= {BIT(15),	0	},
-[49]	= {BIT(14),	0	},
-[50]	= {BIT(13),	0	},
-[51]	= {BIT(12),	0	},
-[52]	= {BIT(11),	0	},
-[53]	= {BIT(10),	0	},
-[54]	= {BIT(9),	0	},
-[55]	= {BIT(8),	0	},
-[56]	= {BIT(7),	0	},
-[57]	= {BIT(6),	0	},
-[58]	= {BIT(5),	0	},
-[59]	= {BIT(4),	0	},
-[60]	= {BIT(3),	0	},
-[61]	= {BIT(2),	0	},
-[62]	= {BIT(1),	0	},
-[63]	= {BIT(0),	0	},
+ulong hi;
+ulong lo;
+} vec2mask[64] = {
+[0] = {0, 0 },
+[1] = {0, BIT(16) },
+[2] = {0, BIT(17) },
+[3] = {0, BIT(18) },
+[4] = {0, BIT(19) },
+[5] = {0, BIT(20) },
+[6] = {0, BIT(21) },
+[7] = {0, BIT(22) },
+[8] = {0, BIT(23) },
+[9] = {0, BIT(24) },
+[10] = {0, BIT(25) },
+[11] = {0, 0 },
+[12] = {0, BIT(27) },
+[13] = {0, BIT(28) },
+[14] = {0, BIT(29) },
+[15] = {0, BIT(30) },
+[16] = {BIT(29), 0 },
+[17] = {BIT(30), 0 },
+[18] = {0, 0 },
+[19] = {BIT(17), 0 },
+[20] = {BIT(18), 0 },
+[21] = {BIT(19), 0 },
+[22] = {BIT(20), 0 },
+[23] = {BIT(21), 0 },
+[24] = {BIT(22), 0 },
+[25] = {BIT(23), 0 },
+[26] = {0, 0 },
+[27] = {0, 0 },
+[28] = {0, 0 },
+[29] = {0, 0 },
+[30] = {0, 0 },
+[31] = {0, 0 },
+[32] = {0, BIT(0) },
+[33] = {0, BIT(1) },
+[34] = {0, BIT(2) },
+[35] = {0, 0 },
+[36] = {0, BIT(4) },
+[37] = {0, BIT(5) },
+[38] = {0, 0 },
+[39] = {0, 0 },
+[40] = {0, BIT(8) },
+[41] = {0, BIT(9) },
+[42] = {0, BIT(10) },
+[43] = {0, BIT(11) },
+[44] = {0, 0 },
+[45] = {0, 0 },
+[46] = {0, 0 },
+[47] = {0, 0 },
+[48] = {BIT(15), 0 },
+[49] = {BIT(14), 0 },
+[50] = {BIT(13), 0 },
+[51] = {BIT(12), 0 },
+[52] = {BIT(11), 0 },
+[53] = {BIT(10), 0 },
+[54] = {BIT(9), 0 },
+[55] = {BIT(8), 0 },
+[56] = {BIT(7), 0 },
+[57] = {BIT(6), 0 },
+[58] = {BIT(5), 0 },
+[59] = {BIT(4), 0 },
+[60] = {BIT(3), 0 },
+[61] = {BIT(2), 0 },
+[62] = {BIT(1), 0 },
+[63] = {BIT(0), 0 },
 };
 IMM* iomem = (IMM*)IOMEM;
 uchar etheraddr[6] = { 0x90, 0x85, 0x82, 0x32, 0x83, 0x00};
@@ -242,21 +242,21 @@ flashprogpower(int)
 {
 }
 enum {
-TgcrCas 			= 0x80,
-TgcrGm 			= 0x08,
-TgcrStp 			= 0x2,
-TgcrRst 			= 0x1,
-TmrIclkCasc		= 0x00<<1,
-TmrIclkIntclock	= 0x01<<1,
-TmrIclkIntclock16	= 0x02<<1,
-TmrIclkTin		= 0x03<<1,
-TmrCERising		= 0x1 << 6,
-TmrCEFalling		= 0x2 << 6,
-TmrCEAny		= 0x3 << 6,
-TmrFrr			= SBIT(12),
-TmrOri			= SBIT(11),
-TerRef			= SBIT(14),
-TerCap			= SBIT(15),
+TgcrCas = 0x80,
+TgcrGm = 0x08,
+TgcrStp = 0x2,
+TgcrRst = 0x1,
+TmrIclkCasc = 0x00<<1,
+TmrIclkIntclock = 0x01<<1,
+TmrIclkIntclock16 = 0x02<<1,
+TmrIclkTin = 0x03<<1,
+TmrCERising = 0x1 << 6,
+TmrCEFalling = 0x2 << 6,
+TmrCEAny = 0x3 << 6,
+TmrFrr = SBIT(12),
+TmrOri = SBIT(11),
+TerRef = SBIT(14),
+TerCap = SBIT(15),
 };
 uvlong
 fastticks(uvlong *hz)

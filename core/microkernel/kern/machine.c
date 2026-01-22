@@ -21,29 +21,29 @@
 #include <machine/model_dep.h>
 #include <machine/pcb.h>
 #include <sys/reboot.h>
-struct machine_info	machine_info;
-struct machine_slot	machine_slot[NCPUS];
-queue_head_t	action_queue;
+struct machine_info machine_info;
+struct machine_slot machine_slot[NCPUS];
+queue_head_t action_queue;
 def_simple_lock_data(,action_lock);
 void cpu_up(int cpu)
 {
-struct machine_slot	*ms;
-processor_t		processor;
-spl_t 			s;
+struct machine_slot *ms;
+processor_t processor;
+spl_t s;
 processor = cpu_to_processor(cpu);
 pset_lock(&default_pset);
-#if	MACH_HOST
+#if MACH_HOST
 pset_lock(slave_pset);
 #endif
 s = splsched();
 processor_lock(processor);
-#if	NCPUS > 1
+#if NCPUS > 1
 init_ast_check(processor);
 #endif
 ms = &machine_slot[cpu];
 ms->running = TRUE;
 machine_info.avail_cpus++;
-#if	MACH_HOST
+#if MACH_HOST
 if (cpu != 0)
 pset_add_processor(slave_pset, processor);
 else
@@ -52,7 +52,7 @@ pset_add_processor(&default_pset, processor);
 processor->state = PROCESSOR_RUNNING;
 processor_unlock(processor);
 splx(s);
-#if	MACH_HOST
+#if MACH_HOST
 pset_unlock(slave_pset);
 #endif
 pset_unlock(&default_pset);
@@ -73,12 +73,12 @@ halt_all_cpus(!(options & RB_HALT));
 }
 return (KERN_SUCCESS);
 }
-#if	NCPUS > 1
+#if NCPUS > 1
 static void cpu_down(int cpu)
 {
-struct machine_slot	*ms;
-processor_t		processor;
-spl_t			s;
+struct machine_slot *ms;
+processor_t processor;
+spl_t s;
 s = splsched();
 processor = cpu_to_processor(cpu);
 processor_lock(processor);
@@ -92,8 +92,8 @@ splx(s);
 }
 static void
 processor_request_action(
-processor_t	processor,
-processor_set_t	new_pset)
+processor_t processor,
+processor_set_t new_pset)
 {
 processor_set_t pset;
 pset = processor->processor_set;
@@ -103,7 +103,7 @@ cpu_pause();
 simple_lock(&action_lock);
 switch (processor->state) {
 case PROCESSOR_IDLE:
-queue_remove(&pset->idle_queue, processor, 	processor_t,
+queue_remove(&pset->idle_queue, processor, processor_t,
 processor_queue);
 pset->idle_count--;
 case PROCESSOR_RUNNING:
@@ -127,14 +127,14 @@ simple_unlock(&action_lock);
 pset_idle_unlock();
 thread_wakeup((event_t)&action_queue);
 }
-#if	MACH_HOST
+#if MACH_HOST
 kern_return_t
 processor_assign(
-processor_t	processor,
-processor_set_t	new_pset,
-boolean_t	wait)
+processor_t processor,
+processor_set_t new_pset,
+boolean_t wait)
 {
-spl_t		s;
+spl_t s;
 if (processor == PROCESSOR_NULL || new_pset == PROCESSOR_SET_NULL ||
 processor == master_processor) {
 return(KERN_INVALID_ARGUMENT);
@@ -157,7 +157,7 @@ splx(s);
 thread_block(thread_no_continuation);
 goto Retry;
 }
-if (processor->processor_set == new_pset)  {
+if (processor->processor_set == new_pset) {
 processor_unlock(processor);
 (void) splx(s);
 pset_deallocate(new_pset);
@@ -182,9 +182,9 @@ return(KERN_SUCCESS);
 #else
 kern_return_t
 processor_assign(
-processor_t	processor,
-processor_set_t	new_pset,
-boolean_t	wait)
+processor_t processor,
+processor_set_t new_pset,
+boolean_t wait)
 {
 return KERN_FAILURE;
 }
@@ -192,7 +192,7 @@ return KERN_FAILURE;
 kern_return_t
 processor_shutdown(processor_t processor)
 {
-spl_t		s;
+spl_t s;
 if (processor == PROCESSOR_NULL)
 return KERN_INVALID_ARGUMENT;
 s = splsched();
@@ -210,20 +210,20 @@ return(KERN_SUCCESS);
 }
 static void processor_doaction(processor_t processor)
 {
-thread_t			this_thread;
-spl_t				s;
-processor_set_t			pset;
-#if	MACH_HOST
-processor_set_t			new_pset;
-thread_t			thread;
-thread_t			prev_thread = THREAD_NULL;
-boolean_t			have_pset_ref = FALSE;
+thread_t this_thread;
+spl_t s;
+processor_set_t pset;
+#if MACH_HOST
+processor_set_t new_pset;
+thread_t thread;
+thread_t prev_thread = THREAD_NULL;
+boolean_t have_pset_ref = FALSE;
 #endif
 this_thread = current_thread();
 thread_bind(this_thread, processor);
 thread_block(thread_no_continuation);
 pset = processor->processor_set;
-#if	MACH_HOST
+#if MACH_HOST
 pset_lock(pset);
 if (pset->processor_count == 1) {
 queue_iterate(&pset->threads, thread, thread_t, pset_threads) {
@@ -320,14 +320,14 @@ panic("action_thread -- bad processor state");
 }
 s = splsched();
 processor_lock(processor);
-#if	MACH_HOST
+#if MACH_HOST
 shutdown:
 #endif
 pset_remove_processor(pset, processor);
 processor_unlock(processor);
 pset_unlock(pset);
 splx(s);
-#if	MACH_HOST
+#if MACH_HOST
 if (new_pset != PROCESSOR_SET_NULL)
 pset_deallocate(new_pset);
 if (have_pset_ref)
@@ -342,8 +342,8 @@ processor);
 }
 void __attribute__((noreturn)) action_thread_continue(void)
 {
-processor_t	processor;
-spl_t		s;
+processor_t processor;
+spl_t s;
 while (TRUE) {
 s = splsched();
 simple_lock(&action_lock);
@@ -370,7 +370,7 @@ action_thread_continue();
 }
 void processor_doshutdown(processor_t processor)
 {
-int		cpu = processor->slot_num;
+int cpu = processor->slot_num;
 timer_switch(&kernel_timer[cpu]);
 PMAP_DEACTIVATE_KERNEL(cpu);
 #ifndef MIGRATING_THREADS
@@ -383,9 +383,9 @@ halt_cpu();
 #else
 kern_return_t
 processor_assign(
-processor_t	processor,
-processor_set_t	new_pset,
-boolean_t	wait)
+processor_t processor,
+processor_set_t new_pset,
+boolean_t wait)
 {
 return(KERN_FAILURE);
 }

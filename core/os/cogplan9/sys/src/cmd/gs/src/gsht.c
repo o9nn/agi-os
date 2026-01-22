@@ -11,7 +11,7 @@
 #include "gzht.h"
 #include "gswts.h"
 void gx_set_effective_transfer(gs_state *);
-private const ushort    ht_wts_suppress_release = (ushort)(-1);
+private const ushort ht_wts_suppress_release = (ushort)(-1);
 public_st_ht_order();
 private_st_ht_order_component();
 public_st_ht_order_comp_element();
@@ -263,7 +263,7 @@ return 0;
 private void
 gx_ht_move_ht_order(gx_ht_order * pdest, gx_ht_order * psrc)
 {
-uint    width = psrc->width, height = psrc->height, shift = psrc->shift;
+uint width = psrc->width, height = psrc->height, shift = psrc->shift;
 pdest->params = psrc->params;
 pdest->wse = psrc->wse;
 pdest->wts = 0;
@@ -523,23 +523,23 @@ halftonetype);
 }
 int
 gx_imager_dev_ht_install(
-gs_imager_state *       pis,
-gx_device_halftone *    pdht,
-gs_halftone_type        type,
-const gx_device *       dev )
+gs_imager_state * pis,
+gx_device_halftone * pdht,
+gs_halftone_type type,
+const gx_device * dev )
 {
-gx_device_halftone      dht;
-int                     num_comps = pdht->num_dev_comp;
-int                     i, code = 0;
-bool                    used_default = false;
-int                     lcm_width = 1, lcm_height = 1;
-gs_wts_screen_enum_t *  wse0 = pdht->order.wse;
-wts_screen_t *          wts0 = 0;
-bool                    mem_diff = pdht->rc.memory != pis->memory;
+gx_device_halftone dht;
+int num_comps = pdht->num_dev_comp;
+int i, code = 0;
+bool used_default = false;
+int lcm_width = 1, lcm_height = 1;
+gs_wts_screen_enum_t * wse0 = pdht->order.wse;
+wts_screen_t * wts0 = 0;
+bool mem_diff = pdht->rc.memory != pis->memory;
 memset(&dht.order, 0, sizeof(dht.order));
 dht.id = gs_next_ids(pis->memory, 1);
 dht.type = type;
-dht.components =  gs_alloc_struct_array(
+dht.components = gs_alloc_struct_array(
 pis->memory,
 num_comps,
 gx_ht_order_component,
@@ -552,13 +552,13 @@ memset(dht.components, 0, num_comps * sizeof(dht.components[0]));
 for (i = 0; i < num_comps; i++)
 dht.components[i].comp_number = -1;
 if (pdht->components != 0) {
-int     input_ncomps = pdht->num_comp;
+int input_ncomps = pdht->num_comp;
 for (i = 0; i < input_ncomps && code >= 0; i++) {
 gx_ht_order_component * p_s_comp = &pdht->components[i];
-gx_ht_order *           p_s_order = &p_s_comp->corder;
-int                     comp_num = p_s_comp->comp_number;
+gx_ht_order * p_s_order = &p_s_comp->corder;
+int comp_num = p_s_comp->comp_number;
 if (comp_num >= 0 && comp_num < GX_DEVICE_COLOR_MAX_COMPONENTS) {
-gx_ht_order *   p_d_order = &dht.components[comp_num].corder;
+gx_ht_order * p_d_order = &dht.components[comp_num].corder;
 dht.components[comp_num].comp_number = comp_num;
 if (mem_diff)
 code = gx_ht_copy_ht_order( p_d_order,
@@ -573,8 +573,8 @@ gx_ht_move_ht_order(p_d_order, p_s_order);
 }
 }
 for (i = 0; i < num_comps && code >= 0; i++) {
-gx_ht_order *           porder = &dht.components[i].corder;
-gs_wts_screen_enum_t *  wse;
+gx_ht_order * porder = &dht.components[i].corder;
+gs_wts_screen_enum_t * wse;
 if (dht.components[i].comp_number != i) {
 if (used_default || mem_diff)
 code = gx_ht_copy_ht_order(porder, &pdht->order, pis->memory);
@@ -585,7 +585,7 @@ used_default = true;
 dht.components[i].comp_number = i;
 }
 if ((wse = porder->wse) != 0) {
-wts_screen_t *  wts = 0;
+wts_screen_t * wts = 0;
 porder->width = 0;
 porder->wse = 0;
 if (wse != wse0)
@@ -602,15 +602,15 @@ code = gs_error_VMerror;
 else
 porder->wts = wts;
 } else {
-uint   w = porder->width, h = porder->full_height;
-int    dw = igcd(lcm_width, w), dh = igcd(lcm_height, h);
+uint w = porder->width, h = porder->full_height;
+int dw = igcd(lcm_width, w), dh = igcd(lcm_height, h);
 lcm_width /= dw;
 lcm_height /= dh;
 lcm_width = (w > max_int / lcm_width ? max_int : lcm_width * w);
 lcm_height = (h > max_int / lcm_height ? max_int : lcm_height * h);
 if (porder->cache == 0) {
-uint            tile_bytes, num_tiles;
-gx_ht_cache *   pcache;
+uint tile_bytes, num_tiles;
+gx_ht_cache * pcache;
 tile_bytes = porder->raster
 * (porder->num_bits / porder->width);
 num_tiles = 1 + max_tile_cache_bytes / tile_bytes;
@@ -629,8 +629,8 @@ gx_ht_init_cache(pis->memory, pcache, porder);
 dht.lcm_width = lcm_width;
 dht.lcm_height = lcm_height;
 if (code >= 0) {
-gx_device_halftone *    pisdht = pis->dev_ht;
-rc_header               tmp_rc;
+gx_device_halftone * pisdht = pis->dev_ht;
+rc_header tmp_rc;
 if (pisdht != 0 && pisdht->rc.ref_count == 1) {
 if (pdht != pisdht)
 gx_device_halftone_release(pisdht, pisdht->rc.memory);
@@ -644,18 +644,18 @@ BEGIN code = gs_error_VMerror; goto err; END,
 pisdht = pis->dev_ht;
 }
 if (pdht->components != 0) {
-int     input_ncomps = pdht->num_comp;
+int input_ncomps = pdht->num_comp;
 for (i = 0; i < input_ncomps; i++) {
 gx_ht_order_component * p_s_comp = &pdht->components[i];
-gx_ht_order *           p_s_order = &p_s_comp->corder;
-int                     comp_num = p_s_comp->comp_number;
-if ( comp_num >= 0                            &&
-comp_num < GX_DEVICE_COLOR_MAX_COMPONENTS  ) {
+gx_ht_order * p_s_order = &p_s_comp->corder;
+int comp_num = p_s_comp->comp_number;
+if ( comp_num >= 0 &&
+comp_num < GX_DEVICE_COLOR_MAX_COMPONENTS ) {
 if (p_s_order->wse != 0)
 gs_wts_free_enum(p_s_order->wse);
 memset(p_s_order, 0, sizeof(*p_s_order));
 } else if ( comp_num == GX_DEVICE_COLOR_MAX_COMPONENTS &&
-used_default                                 )
+used_default )
 memset(p_s_order, 0, sizeof(*p_s_order));
 }
 }
@@ -673,7 +673,7 @@ return 0;
 err:
 for (i = 0; i < num_comps; i++) {
 gx_ht_order_component * pcomp = &dht.components[i];
-gx_ht_order *           porder = &pcomp->corder;
+gx_ht_order * porder = &pcomp->corder;
 if (pcomp->comp_number == -1)
 gx_ht_order_release(porder, pis->memory, true);
 }

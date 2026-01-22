@@ -1,62 +1,62 @@
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
-#include	"mp.h"
-#include	"libsec.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
+#include "mp.h"
+#include "libsec.h"
 typedef struct OneWay OneWay;
 struct OneWay
 {
-QLock	q;
-QLock	ctlq;
-void	*state;
-int	slen;
-uchar	*secret;
-ulong	mid;
+QLock q;
+QLock ctlq;
+void *state;
+int slen;
+uchar *secret;
+ulong mid;
 };
 enum
 {
-Sincomplete=	0,
-Sclear=		1,
-Sencrypting=	2,
-Sdigesting=	4,
-Sdigenc=	Sencrypting|Sdigesting,
-Noencryption=	0,
-DESCBC=		1,
-DESECB=		2,
-RC4=		3,
-IDEACBC=	4,
-IDEAECB=		5
+Sincomplete= 0,
+Sclear= 1,
+Sencrypting= 2,
+Sdigesting= 4,
+Sdigenc= Sencrypting|Sdigesting,
+Noencryption= 0,
+DESCBC= 1,
+DESECB= 2,
+RC4= 3,
+IDEACBC= 4,
+IDEAECB= 5
 };
 typedef struct Dstate Dstate;
 struct Dstate
 {
-Chan	*c;
-uchar	state;
-int	ref;
-uchar	encryptalg;
-ushort	blocklen;
-ushort	diglen;
+Chan *c;
+uchar state;
+int ref;
+uchar encryptalg;
+ushort blocklen;
+ushort diglen;
 DigestState *(*hf)(uchar*, ulong, uchar*, DigestState*);
-int	max;
-int	maxpad;
-OneWay	in;
-Block	*processed;
-Block	*unprocessed;
-OneWay	out;
-char*	user;
-int	perm;
+int max;
+int maxpad;
+OneWay in;
+Block *processed;
+Block *unprocessed;
+OneWay out;
+char* user;
+int perm;
 };
 enum
 {
-Maxdmsg=	1<<16,
-Maxdstate=	1<<10,
+Maxdmsg= 1<<16,
+Maxdstate= 1<<10,
 };
-Lock	dslock;
-int	dshiwat;
-int	maxdstate = 20;
+Lock dslock;
+int dshiwat;
+int maxdstate = 20;
 Dstate** dstate;
 enum{
-Qtopdir		= 1,
+Qtopdir = 1,
 Qclonus,
 Qconvdir,
 Qdata,
@@ -66,24 +66,24 @@ Qsecretout,
 Qencalgs,
 Qhashalgs
 };
-#define TYPE(x) 	((ulong)(x).path & 0xf)
-#define CONV(x) 	(((ulong)(x).path >> 4)&(Maxdstate-1))
-#define QID(c, y) 	(((c)<<4) | (y))
-static char*	encalgs;
-static char*	hashalgs;
+#define TYPE(x) ((ulong)(x).path & 0xf)
+#define CONV(x) (((ulong)(x).path >> 4)&(Maxdstate-1))
+#define QID(c, y) (((c)<<4) | (y))
+static char* encalgs;
+static char* hashalgs;
 void producerand(void);
 static void alglistinit(void);
-static void	ensure(Dstate*, Block**, int);
-static void	consume(Block**, uchar*, int);
-static void	setsecret(OneWay*, uchar*, int);
-static Block*	encryptb(Dstate*, Block*, int);
-static Block*	decryptb(Dstate*, Block*);
-static Block*	digestb(Dstate*, Block*, int);
-static void	checkdigestb(Dstate*, Block*);
-static Chan*	buftochan(char*);
-static void	sslhangup(Dstate*);
+static void ensure(Dstate*, Block**, int);
+static void consume(Block**, uchar*, int);
+static void setsecret(OneWay*, uchar*, int);
+static Block* encryptb(Dstate*, Block*, int);
+static Block* decryptb(Dstate*, Block*);
+static Block* digestb(Dstate*, Block*, int);
+static void checkdigestb(Dstate*, Block*);
+static Chan* buftochan(char*);
+static void sslhangup(Dstate*);
 static void dsclone(Chan *c);
-static void	dsnew(Chan *c, Dstate **);
+static void dsnew(Chan *c, Dstate **);
 static int
 sslgen(Chan *c, char *dname, Dirtab *d, int nd, int s, Dir *dp)
 {
@@ -710,8 +710,8 @@ setupRC4state(w->state, w->secret, slen);
 typedef struct Hashalg Hashalg;
 struct Hashalg
 {
-char	*name;
-int	diglen;
+char *name;
+int diglen;
 DigestState *(*hf)(uchar*, ulong, uchar*, DigestState*);
 };
 Hashalg hashtab[] =
@@ -740,10 +740,10 @@ return -1;
 typedef struct Encalg Encalg;
 struct Encalg
 {
-char	*name;
-int	blocklen;
-int	alg;
-void	(*keyinit)(OneWay*);
+char *name;
+int blocklen;
+int alg;
+void (*keyinit)(OneWay*);
 };
 Encalg encrypttab[] =
 {

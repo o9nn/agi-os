@@ -14,7 +14,7 @@ SequentialReadProxy(Type t, const std::string&&);
 virtual ~SequentialReadProxy();
 virtual void open(void);
 virtual void close(void);
-virtual bool connected(void) { return  0 < _readers.size(); }
+virtual bool connected(void) { return 0 < _readers.size(); }
 protected:
 virtual void getAtom(const Handle&);
 virtual void fetchIncomingSet(AtomSpace*, const Handle&);

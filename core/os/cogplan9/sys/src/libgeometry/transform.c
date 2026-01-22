@@ -10,7 +10,7 @@ m=&from->t[0][0];
 q.x=*m++*p.x; q.x+=*m++*p.y; q.x+=*m++*p.z; q.x+=*m++*p.w;
 q.y=*m++*p.x; q.y+=*m++*p.y; q.y+=*m++*p.z; q.y+=*m++*p.w;
 q.z=*m++*p.x; q.z+=*m++*p.y; q.z+=*m++*p.z; q.z+=*m++*p.w;
-q.w=*m++*p.x; q.w+=*m++*p.y; q.w+=*m++*p.z; q.w+=*m  *p.w;
+q.w=*m++*p.x; q.w+=*m++*p.y; q.w+=*m++*p.z; q.w+=*m *p.w;
 }
 else
 q=p;
@@ -19,7 +19,7 @@ m=&to->tinv[0][0];
 r.x=*m++*q.x; r.x+=*m++*q.y; r.x+=*m++*q.z; r.x+=*m++*q.w;
 r.y=*m++*q.x; r.y+=*m++*q.y; r.y+=*m++*q.z; r.y+=*m++*q.w;
 r.z=*m++*q.x; r.z+=*m++*q.y; r.z+=*m++*q.z; r.z+=*m++*q.w;
-r.w=*m++*q.x; r.w+=*m++*q.y; r.w+=*m++*q.z; r.w+=*m  *q.w;
+r.w=*m++*q.x; r.w+=*m++*q.y; r.w+=*m++*q.z; r.w+=*m *q.w;
 }
 else
 r=q;
@@ -43,7 +43,7 @@ m=&from->tinv[0][0];
 q.x =*m++*p.x; q.y =*m++*p.x; q.z =*m++*p.x; q.w =*m++*p.x;
 q.x+=*m++*p.y; q.y+=*m++*p.y; q.z+=*m++*p.y; q.w+=*m++*p.y;
 q.x+=*m++*p.z; q.y+=*m++*p.z; q.z+=*m++*p.z; q.w+=*m++*p.z;
-q.x+=*m++*p.w; q.y+=*m++*p.w; q.z+=*m++*p.w; q.w+=*m  *p.w;
+q.x+=*m++*p.w; q.y+=*m++*p.w; q.z+=*m++*p.w; q.w+=*m *p.w;
 }
 else
 q=p;
@@ -52,7 +52,7 @@ m=&to->t[0][0];
 r.x =*m++*q.x; r.y =*m++*q.x; r.z =*m++*q.x; r.w =*m++*q.x;
 r.x+=*m++*q.y; r.y+=*m++*q.y; r.z+=*m++*q.y; r.w+=*m++*q.y;
 r.x+=*m++*q.z; r.y+=*m++*q.z; r.z+=*m++*q.z; r.w+=*m++*q.z;
-r.x+=*m++*q.w; r.y+=*m++*q.w; r.z+=*m++*q.w; r.w+=*m  *q.w;
+r.x+=*m++*q.w; r.y+=*m++*q.w; r.z+=*m++*q.w; r.w+=*m *q.w;
 }
 else
 r=q;

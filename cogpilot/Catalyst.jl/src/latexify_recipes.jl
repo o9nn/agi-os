@@ -9,14 +9,14 @@ const LATEX_DEFS = CatalystLatexParams()
 ### Latexify Receipt ###
 @latexrecipe function f(rs::ReactionSystem; form = :reactions, expand_functions = true)
 expand_functions && (rs = expand_registered_functions(rs))
-if form == :reactions    # Returns chemical reaction network code.
+if form == :reactions # Returns chemical reaction network code.
 mult_symbol --> ""
 env --> :chem
 return rs
-elseif form == :ode      # Returns ODE system code.
+elseif form == :ode # Returns ODE system code.
 mult_symbol --> ""
 return convert(ODESystem, rs)
-elseif form == :sde      # Returns SDE system code.
+elseif form == :sde # Returns SDE system code.
 mult_symbol --> ""
 return convert(SDESystem, rs)
 end

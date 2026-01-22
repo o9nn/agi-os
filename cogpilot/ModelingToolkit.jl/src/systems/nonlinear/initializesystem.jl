@@ -493,7 +493,7 @@ if u0 === missing && p === missing
 return odefn.initialization_data
 end
 oldinitdata = odefn.initialization_data
-# We _always_ build initialization now. So if we didn't build  it before, don't do
+# We _always_ build initialization now. So if we didn't build it before, don't do
 # it now
 oldinitdata === nothing && return nothing
 if !(eltype(u0) <: Pair) && !(eltype(p) <: Pair)

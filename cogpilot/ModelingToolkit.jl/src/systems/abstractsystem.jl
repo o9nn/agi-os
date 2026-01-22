@@ -92,7 +92,7 @@ end
 #Treat the result as a vector of symbols always
 function SymbolicIndexingInterface.is_variable(sys::AbstractSystem, sym)
 sym = unwrap(sym)
-if sym isa Int    # [x, 1] coerces 1 to a Num
+if sym isa Int # [x, 1] coerces 1 to a Num
 return sym in 1:length(variable_symbols(sys))
 end
 if has_index_cache(sys) && (ic = get_index_cache(sys)) !== nothing
@@ -1964,7 +1964,7 @@ end
 y[1:10] = foo(x)
 z = foo(x)
 end # returns `[y; z]`
-@named y 1:10 i -> foo(x*i)  # This is not recommended
+@named y 1:10 i -> foo(x*i) # This is not recommended
 Pass the LHS name to the model. When it's calling anything that's not an
 AbstractSystem, it wraps all keyword arguments in `default_to_parentscope` so
 that namespacing works intuitively when passing a symbolic default into a
@@ -2371,7 +2371,7 @@ getproperty(sys, p; namespace = false)
 end
 """
 missing_variable_defaults(sys::AbstractSystem, default = 0.0; subset = unknowns(sys))
-Returns a `Vector{Pair}` of variables set to `default` which are missing from `get_defaults(sys)`.  The `default` argument can be a single value or vector to set the missing defaults respectively.
+Returns a `Vector{Pair}` of variables set to `default` which are missing from `get_defaults(sys)`. The `default` argument can be a single value or vector to set the missing defaults respectively.
 """
 function missing_variable_defaults(
 sys::AbstractSystem, default = 0.0; subset = unknowns(sys))
@@ -2551,14 +2551,14 @@ $(TYPEDSIGNATURES)
 Return the variable in `sys` referred to by its string representation `str`.
 Roughly supports the following CFG:
 ```
-varname                  = "D(" varname ")" | "Differential(" iv ")(" varname ")" | arrvar | maybe_dummy_var
-arrvar                   = maybe_dummy_var "[idxs...]"
-idxs                     = int | int "," idxs
-maybe_dummy_var          = namespacedvar | namespacedvar "(" iv ")" |
+varname = "D(" varname ")" | "Differential(" iv ")(" varname ")" | arrvar | maybe_dummy_var
+arrvar = maybe_dummy_var "[idxs...]"
+idxs = int | int "," idxs
+maybe_dummy_var = namespacedvar | namespacedvar "(" iv ")" |
 namespacedvar "(" iv ")" "ˍ" ts | namespacedvar "ˍ" ts |
 namespacedvar "ˍ" ts "(" iv ")"
-ts                       = iv | iv ts
-namespacedvar            = ident "₊" namespacedvar | ident "." namespacedvar | ident
+ts = iv | iv ts
+namespacedvar = ident "₊" namespacedvar | ident "." namespacedvar | ident
 ```
 Where `iv` is the independent variable, `int` is an integer and `ident` is an identifier.
 """

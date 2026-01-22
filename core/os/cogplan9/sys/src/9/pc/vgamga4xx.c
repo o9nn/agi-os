@@ -5,60 +5,60 @@
 #include "fns.h"
 #include "io.h"
 #include "../port/error.h"
-#define	Image IMAGE
+#define Image IMAGE
 #include <draw.h>
 #include <memdraw.h>
 #include <cursor.h>
 #include "screen.h"
 enum {
-MATROX			= 0x102B,
-MGA550			= 0x2527,
-MGA4xx			= 0x0525,
-MGA200			= 0x0521,
-FCOL			= 0x1c24,
-FXRIGHT			= 0x1cac,
-FXLEFT			= 0x1ca8,
-YDST			= 0x1c90,
-YLEN			= 0x1c5c,
-DWGCTL			= 0x1c00,
-DWG_TRAP		= 0x04,
-DWG_BITBLT		= 0x08,
-DWG_ILOAD		= 0x09,
-DWG_LINEAR		= 0x0080,
-DWG_SOLID		= 0x0800,
-DWG_ARZERO		= 0x1000,
-DWG_SGNZERO		= 0x2000,
-DWG_SHIFTZERO	= 0x4000,
-DWG_REPLACE		= 0x000C0000,
-DWG_BFCOL		= 0x04000000,
-SRCORG			= 0x2cb4,
-PITCH			= 0x1c8c,
-DSTORG			= 0x2cb8,
-YDSTORG			= 0x1c94,
-PLNWRT			= 0x1c1c,
-ZORG			= 0x1c0c,
-MACCESS			= 0x1c04,
-STATUS			= 0x1e14,
-FXBNDRY			= 0x1C84,
-CXBNDRY			= 0x1C80,
-YTOP			= 0x1C98,
-YBOT			= 0x1C9C,
-YDSTLEN			= 0x1C88,
-AR0				= 0x1C60,
-AR1				= 0x1C64,
-AR2				= 0x1C68,
-AR3				= 0x1C6C,
-AR4				= 0x1C70,
-AR5				= 0x1C74,
-SGN				= 0x1C58,
-SGN_LEFT		= 1,
-SGN_UP			= 4,
-GO				= 0x0100,
-FIFOSTATUS		= 0x1E10,
-CACHEFLUSH		= 0x1FFF,
-CRTCEXTIDX		= 0x1FDE,
-CRTCEXTDATA		= 0x1FDF,
-FILL_OPERAND	= 0x800c7804,
+MATROX = 0x102B,
+MGA550 = 0x2527,
+MGA4xx = 0x0525,
+MGA200 = 0x0521,
+FCOL = 0x1c24,
+FXRIGHT = 0x1cac,
+FXLEFT = 0x1ca8,
+YDST = 0x1c90,
+YLEN = 0x1c5c,
+DWGCTL = 0x1c00,
+DWG_TRAP = 0x04,
+DWG_BITBLT = 0x08,
+DWG_ILOAD = 0x09,
+DWG_LINEAR = 0x0080,
+DWG_SOLID = 0x0800,
+DWG_ARZERO = 0x1000,
+DWG_SGNZERO = 0x2000,
+DWG_SHIFTZERO = 0x4000,
+DWG_REPLACE = 0x000C0000,
+DWG_BFCOL = 0x04000000,
+SRCORG = 0x2cb4,
+PITCH = 0x1c8c,
+DSTORG = 0x2cb8,
+YDSTORG = 0x1c94,
+PLNWRT = 0x1c1c,
+ZORG = 0x1c0c,
+MACCESS = 0x1c04,
+STATUS = 0x1e14,
+FXBNDRY = 0x1C84,
+CXBNDRY = 0x1C80,
+YTOP = 0x1C98,
+YBOT = 0x1C9C,
+YDSTLEN = 0x1C88,
+AR0 = 0x1C60,
+AR1 = 0x1C64,
+AR2 = 0x1C68,
+AR3 = 0x1C6C,
+AR4 = 0x1C70,
+AR5 = 0x1C74,
+SGN = 0x1C58,
+SGN_LEFT = 1,
+SGN_UP = 4,
+GO = 0x0100,
+FIFOSTATUS = 0x1E10,
+CACHEFLUSH = 0x1FFF,
+CRTCEXTIDX = 0x1FDE,
+CRTCEXTDATA = 0x1FDF,
+FILL_OPERAND = 0x800c7804,
 };
 static Pcidev *
 mgapcimatch(void)
@@ -134,15 +134,15 @@ crtcextset(scr, 3, crtcext3, 0xff);
 }
 }
 enum{
-Index		= 0x00,
-Data			= 0x0A,
-Cxlsb		= 0x0C,
-Cxmsb		= 0x0D,
-Cylsb		= 0x0E,
-Cymsb		= 0x0F,
-Icuradrl		= 0x04,
-Icuradrh		= 0x05,
-Icctl			= 0x06,
+Index = 0x00,
+Data = 0x0A,
+Cxlsb = 0x0C,
+Cxmsb = 0x0D,
+Cylsb = 0x0E,
+Cymsb = 0x0F,
+Icuradrl = 0x04,
+Icuradrh = 0x05,
+Icctl = 0x06,
 };
 static void
 dac4xxdisable(VGAscr *scr)
@@ -222,23 +222,23 @@ scr->storage = (ulong)scr->vaddr + storage;
 *(dac4xx+Index) = Icctl;
 *(dac4xx+Data) = 0x03;
 *(dac4xx+Index) = 0x08;
-*(dac4xx+Data)  = 0xff;
+*(dac4xx+Data) = 0xff;
 *(dac4xx+Index) = 0x09;
-*(dac4xx+Data)  = 0xff;
+*(dac4xx+Data) = 0xff;
 *(dac4xx+Index) = 0x0a;
-*(dac4xx+Data)  = 0xff;
+*(dac4xx+Data) = 0xff;
 *(dac4xx+Index) = 0x0c;
-*(dac4xx+Data)  = 0x00;
+*(dac4xx+Data) = 0x00;
 *(dac4xx+Index) = 0x0d;
-*(dac4xx+Data)  = 0x00;
+*(dac4xx+Data) = 0x00;
 *(dac4xx+Index) = 0x0e;
-*(dac4xx+Data)  = 0x00;
+*(dac4xx+Data) = 0x00;
 *(dac4xx+Index) = 0x10;
-*(dac4xx+Data)  = 0xff;
+*(dac4xx+Data) = 0xff;
 *(dac4xx+Index) = 0x11;
-*(dac4xx+Data)  = 0x00;
+*(dac4xx+Data) = 0x00;
 *(dac4xx+Index) = 0x12;
-*(dac4xx+Data)  = 0x00;
+*(dac4xx+Data) = 0x00;
 dac4xxload(scr, &arrow);
 dac4xxmove(scr, ZP);
 }

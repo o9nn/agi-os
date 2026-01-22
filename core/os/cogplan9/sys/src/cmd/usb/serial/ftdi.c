@@ -195,12 +195,12 @@ Cinfo ftinfo[] = {
 { FTVid, FTACGHFDUALDid },
 { FT8U232AMDid, FT4232HDid },
 { FTVid, AMONKEYDid },
-{ 0,	0 },
+{ 0, 0 },
 };
 enum {
-Packsz		= 64,
-Maxpacksz	= 512,
-Bufsiz		= 4 * 1024,
+Packsz = 64,
+Maxpacksz = 512,
+Bufsiz = 4 * 1024,
 };
 static int
 ftdiread(Serialport *p, int index, int req, uchar *buf, int len)
@@ -212,7 +212,7 @@ if(req != FTGETE2READ)
 index |= p->interfc + 1;
 dsprint(2, "serial: ftdiread %#p [%d] req: %#x val: %#x idx:%d buf:%p len:%d\n",
 p, p->interfc, req, 0, index, buf, len);
-res = usbcmd(ser->dev,  Rd2h | Rftdireq | Rdev, req, 0, index, buf, len);
+res = usbcmd(ser->dev, Rd2h | Rftdireq | Rdev, req, 0, index, buf, len);
 dsprint(2, "serial: ftdiread res:%d\n", res);
 return res;
 }
@@ -263,10 +263,10 @@ divisor = 0;
 return divisor;
 }
 enum{
-ClockNew	= 48000000,
-ClockOld	= 12000000 / 16,
-HetiraDiv	= 240,
-UirtDiv		= 77,
+ClockNew = 48000000,
+ClockOld = 12000000 / 16,
+HetiraDiv = 240,
+UirtDiv = 77,
 };
 static ushort
 ft232ambaud2div(int baud)
@@ -566,13 +566,13 @@ return count;
 }
 typedef struct Packser Packser;
 struct Packser{
-int	nb;
-uchar	b[Bufsiz];
+int nb;
+uchar b[Bufsiz];
 };
 typedef struct Areader Areader;
 struct Areader{
-Serialport	*p;
-Channel	*c;
+Serialport *p;
+Channel *c;
 };
 static void
 shutdownchan(Channel *c)
@@ -697,10 +697,10 @@ while(p->ndata != 0){
 dsprint(2, "serial %p: status reader to consume: %d\n",
 p, p->ndata);
 cl = recvul(p->w4data);
-if(cl  < 0)
+if(cl < 0)
 break;
 cl = sendul(p->gotdata, 1);
-if(cl  < 0)
+if(cl < 0)
 break;
 }
 }
@@ -746,7 +746,7 @@ FTLATENCYTIMERSZ);
 if(res < 0)
 return -1;
 dsprint(2, "serial: jtag latency timer set to %d\n", timerval);
-devctl(p->epin,  "timeout 5000");
+devctl(p->epin, "timeout 5000");
 devctl(p->epout, "timeout 5000");
 ftdiwrite(p, BMMPSSE|0x0b, 0, FTSETBITMODE);
 }
@@ -785,7 +785,7 @@ setctl(Serialport *p)
 int res;
 Serial *ser;
 ser = p->s;
-if(ser->dev->usb->vid == FTVid && ser->dev->usb->did ==  FTHETIRA1Did){
+if(ser->dev->usb->vid == FTVid && ser->dev->usb->did == FTHETIRA1Did){
 fprint(2, "serial: cannot set lines for this device\n");
 updatectlst(p, CtlRTS|CtlDTR);
 p->rts = p->dtr = 1;
@@ -825,14 +825,14 @@ free(s);
 return 0;
 }
 Serialops ftops = {
-.init		= ftinit,
-.seteps		= ftseteps,
-.setparam	= ftsetparam,
-.clearpipes	= ftclearpipes,
-.reset		= ftreset,
-.sendlines	= ftsendlines,
-.modemctl	= ftmodemctl,
-.setbreak	= ftsetbreak,
-.wait4data	= wait4data,
-.wait4write	= wait4write,
+.init = ftinit,
+.seteps = ftseteps,
+.setparam = ftsetparam,
+.clearpipes = ftclearpipes,
+.reset = ftreset,
+.sendlines = ftsendlines,
+.modemctl = ftmodemctl,
+.setbreak = ftsetbreak,
+.wait4data = wait4data,
+.wait4write = wait4write,
 };

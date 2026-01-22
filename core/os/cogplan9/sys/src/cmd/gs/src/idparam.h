@@ -1,11 +1,11 @@
 #ifndef idparam_INCLUDED
-#  define idparam_INCLUDED
+# define idparam_INCLUDED
 #ifndef gs_matrix_DEFINED
-#  define gs_matrix_DEFINED
+# define gs_matrix_DEFINED
 typedef struct gs_matrix_s gs_matrix;
 #endif
 #ifndef gs_uid_DEFINED
-#  define gs_uid_DEFINED
+# define gs_uid_DEFINED
 typedef struct gs_uid_s gs_uid;
 #endif
 int dict_bool_param(const ref * pdict, const char *kstr,

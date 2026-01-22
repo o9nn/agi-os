@@ -16,18 +16,18 @@
 #include <vm/vm_page.h>
 #include <vm/vm_pageout.h>
 #include <mach/mach_safety.h>
-static struct vm_map	kernel_map_store;
-vm_map_t		kernel_map = &kernel_map_store;
-vm_map_t	kernel_pageable_map;
+static struct vm_map kernel_map_store;
+vm_map_t kernel_map = &kernel_map_store;
+vm_map_t kernel_pageable_map;
 kern_return_t
 projected_buffer_allocate(
-vm_map_t 	map,
-vm_size_t 	size,
-int 		persistence,
-vm_offset_t 	*kernel_p,
-vm_offset_t 	*user_p,
-vm_prot_t 	protection,
-vm_inherit_t 	inheritance)
+vm_map_t map,
+vm_size_t size,
+int persistence,
+vm_offset_t *kernel_p,
+vm_offset_t *user_p,
+vm_prot_t protection,
+vm_inherit_t inheritance)
 {
 vm_object_t object;
 vm_map_entry_t u_entry, k_entry;
@@ -85,12 +85,12 @@ return(KERN_SUCCESS);
 }
 kern_return_t
 projected_buffer_map(
-vm_map_t 	map,
-vm_offset_t 	kernel_addr,
-vm_size_t 	size,
-vm_offset_t 	*user_p,
-vm_prot_t 	protection,
-vm_inherit_t 	inheritance)
+vm_map_t map,
+vm_offset_t kernel_addr,
+vm_size_t size,
+vm_offset_t *user_p,
+vm_prot_t protection,
+vm_inherit_t inheritance)
 {
 vm_map_entry_t u_entry, k_entry;
 vm_offset_t user_addr;
@@ -130,9 +130,9 @@ return(KERN_SUCCESS);
 }
 kern_return_t
 projected_buffer_deallocate(
-vm_map_t 		map,
-vm_offset_t 	start,
-vm_offset_t	end)
+vm_map_t map,
+vm_offset_t start,
+vm_offset_t end)
 {
 vm_map_entry_t entry, k_entry;
 if (map == VM_MAP_NULL || map == kernel_map)
@@ -182,9 +182,9 @@ return(KERN_SUCCESS);
 }
 boolean_t
 projected_buffer_in_range(
-vm_map_t 	map,
-vm_offset_t 	start,
-vm_offset_t	end)
+vm_map_t map,
+vm_offset_t start,
+vm_offset_t end)
 {
 vm_map_entry_t entry;
 if (map == VM_MAP_NULL || map == kernel_map)
@@ -199,9 +199,9 @@ return(entry != vm_map_to_entry(map) && entry->vme_start <= end);
 }
 kern_return_t
 kmem_alloc(
-vm_map_t 	map,
-vm_offset_t 	*addrp,
-vm_size_t 	size)
+vm_map_t map,
+vm_offset_t *addrp,
+vm_size_t size)
 {
 vm_object_t object;
 vm_map_entry_t entry;
@@ -249,9 +249,9 @@ return KERN_SUCCESS;
 }
 kern_return_t
 kmem_valloc(
-vm_map_t 	map,
-vm_offset_t 	*addrp,
-vm_size_t 	size)
+vm_map_t map,
+vm_offset_t *addrp,
+vm_size_t size)
 {
 vm_map_entry_t entry;
 vm_offset_t offset;
@@ -287,9 +287,9 @@ return KERN_SUCCESS;
 }
 kern_return_t
 kmem_alloc_wired(
-vm_map_t 	map,
-vm_offset_t 	*addrp,
-vm_size_t 	size)
+vm_map_t map,
+vm_offset_t *addrp,
+vm_size_t size)
 {
 vm_offset_t offset;
 vm_offset_t addr;
@@ -306,9 +306,9 @@ return KERN_SUCCESS;
 }
 kern_return_t
 kmem_alloc_aligned(
-vm_map_t 	map,
-vm_offset_t 	*addrp,
-vm_size_t 	size)
+vm_map_t map,
+vm_offset_t *addrp,
+vm_size_t size)
 {
 vm_map_entry_t entry;
 vm_offset_t offset;
@@ -349,9 +349,9 @@ return KERN_SUCCESS;
 }
 void*
 kmem_map_aligned_table(
-phys_addr_t	phys_address,
-vm_size_t	size,
-int		mode)
+phys_addr_t phys_address,
+vm_size_t size,
+int mode)
 {
 vm_offset_t virt_addr;
 kern_return_t ret;
@@ -368,9 +368,9 @@ return (void *) (virt_addr + into_page);
 }
 kern_return_t
 kmem_alloc_pageable(
-vm_map_t 	map,
-vm_offset_t 	*addrp,
-vm_size_t 	size)
+vm_map_t map,
+vm_offset_t *addrp,
+vm_size_t size)
 {
 vm_offset_t addr;
 kern_return_t kr;
@@ -389,9 +389,9 @@ return KERN_SUCCESS;
 }
 void
 kmem_free(
-vm_map_t 	map,
-vm_offset_t 	addr,
-vm_size_t 	size)
+vm_map_t map,
+vm_offset_t addr,
+vm_size_t size)
 {
 kern_return_t kr;
 kr = vm_map_remove(map, trunc_page(addr), round_page(addr + size));
@@ -400,15 +400,15 @@ panic("kmem_free");
 }
 void
 kmem_alloc_pages(
-vm_object_t	object,
-vm_offset_t	offset,
-vm_offset_t	start,
-vm_offset_t	end,
-vm_prot_t	protection)
+vm_object_t object,
+vm_offset_t offset,
+vm_offset_t start,
+vm_offset_t end,
+vm_prot_t protection)
 {
 pmap_pageable(kernel_pmap, start, end, FALSE);
 while (start < end) {
-vm_page_t	mem;
+vm_page_t mem;
 vm_object_lock(object);
 while ((mem = vm_page_alloc(object, offset))
 == VM_PAGE_NULL) {
@@ -431,15 +431,15 @@ offset += PAGE_SIZE;
 }
 void
 kmem_remap_pages(
-vm_object_t	object,
-vm_offset_t	offset,
-vm_offset_t	start,
-vm_offset_t	end,
-vm_prot_t	protection)
+vm_object_t object,
+vm_offset_t offset,
+vm_offset_t start,
+vm_offset_t end,
+vm_prot_t protection)
 {
 pmap_pageable(kernel_pmap, start, end, FALSE);
 while (start < end) {
-vm_page_t	mem;
+vm_page_t mem;
 vm_object_lock(object);
 if ((mem = vm_page_lookup(object, offset)) == VM_PAGE_NULL)
 panic("kmem_remap_pages");
@@ -455,11 +455,11 @@ offset += PAGE_SIZE;
 }
 void
 kmem_submap(
-vm_map_t 	map,
-vm_map_t 	parent,
-vm_offset_t 	*min,
-vm_offset_t 	*max,
-vm_size_t 	size)
+vm_map_t map,
+vm_map_t parent,
+vm_offset_t *min,
+vm_offset_t *max,
+vm_size_t size)
 {
 vm_offset_t addr;
 kern_return_t kr;
@@ -481,8 +481,8 @@ panic("kmem_submap");
 *max = addr + size;
 }
 void kmem_init(
-vm_offset_t	start,
-vm_offset_t	end)
+vm_offset_t start,
+vm_offset_t end)
 {
 vm_map_setup(kernel_map, pmap_kernel(), VM_MIN_KERNEL_ADDRESS, end);
 if (start != VM_MIN_KERNEL_ADDRESS) {
@@ -500,19 +500,19 @@ panic("vm_map_enter failed (%d)\n", rc);
 }
 kern_return_t
 kmem_io_map_copyout(
-vm_map_t 		map,
-vm_offset_t	*addr,
-vm_offset_t	*alloc_addr,
-vm_size_t		*alloc_size,
-vm_map_copy_t	copy,
-vm_size_t		min_size)
+vm_map_t map,
+vm_offset_t *addr,
+vm_offset_t *alloc_addr,
+vm_size_t *alloc_size,
+vm_map_copy_t copy,
+vm_size_t min_size)
 {
-vm_offset_t	myaddr, offset;
-vm_size_t	mysize, copy_size;
-kern_return_t	ret;
-vm_page_t	*page_list;
-vm_map_copy_t	new_copy;
-int		i;
+vm_offset_t myaddr, offset;
+vm_size_t mysize, copy_size;
+kern_return_t ret;
+vm_page_t *page_list;
+vm_map_copy_t new_copy;
+int i;
 assert(copy->type == VM_MAP_COPY_PAGE_LIST);
 assert(min_size != 0);
 min_size += copy->offset - trunc_page(copy->offset);
@@ -557,18 +557,18 @@ return(ret);
 }
 void
 kmem_io_map_deallocate(
-vm_map_t	map,
-vm_offset_t	addr,
-vm_size_t	size)
+vm_map_t map,
+vm_offset_t addr,
+vm_size_t size)
 {
 pmap_remove(vm_map_pmap(map), addr, addr + size);
 vm_map_remove(map, addr, addr + size);
 }
 int copyinmap(
-vm_map_t 	map,
-char 		*fromaddr,
-char		*toaddr,
-int 		length)
+vm_map_t map,
+char *fromaddr,
+char *toaddr,
+int length)
 {
 if (vm_map_pmap(map) == kernel_pmap) {
 memcpy(toaddr, fromaddr, length);
@@ -580,9 +580,9 @@ return 1;
 }
 int copyoutmap(
 vm_map_t map,
-char 	*fromaddr,
-char	*toaddr,
-int 	length)
+char *fromaddr,
+char *toaddr,
+int length)
 {
 if (vm_map_pmap(map) == kernel_pmap) {
 memcpy(toaddr, fromaddr, length);

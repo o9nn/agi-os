@@ -15,66 +15,66 @@ include "sh.m";
 include "arg.m";
 Iostats: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 Maxmsg: con 128*1024+Styx->IOHDRSZ;
 Ns2ms: con big 1000000;
 Rpc: adt
 {
-name:	string;
-count:	big;
-time:		big;
-lo:	big;
-hi:	big;
-bin:		big;
-bout:	big;
+name: string;
+count: big;
+time: big;
+lo: big;
+hi: big;
+bin: big;
+bout: big;
 };
 Stats: adt
 {
-totread:	big;
-totwrite:	big;
-nrpc:	int;
-nproto:	int;
-rpc:		array of ref Rpc;	# Maxrpc
+totread: big;
+totwrite: big;
+nrpc: int;
+nproto: int;
+rpc: array of ref Rpc; # Maxrpc
 };
 Fid: adt {
-nr:	int;	# fid number
-path:		ref Path;	# path used to open Fid
-qid:		Qid;
-mode:	int;
-nread:	big;
-nwrite:	big;
-bread:	big;
-bwrite:	big;
-offset:	big;	# for directories
+nr: int; # fid number
+path: ref Path; # path used to open Fid
+qid: Qid;
+mode: int;
+nread: big;
+nwrite: big;
+bread: big;
+bwrite: big;
+offset: big; # for directories
 };
 Path: adt {
-parent:	cyclic ref Path;
-name:	string;
+parent: cyclic ref Path;
+name: string;
 };
 Frec: adt
 {
-op:	ref Path;	# first name?
-qid:	Qid;
-nread:	big;
-nwrite:	big;
-bread:	big;
-bwrite:	big;
-opens:	int;
+op: ref Path; # first name?
+qid: Qid;
+nread: big;
+nwrite: big;
+bread: big;
+bwrite: big;
+opens: int;
 };
 Tag: adt {
-m: 		ref Tmsg;
-fid:		ref Fid;
-stime:	big;
-next: 	cyclic ref Tag;
+m: ref Tmsg;
+fid: ref Fid;
+stime: big;
+next: cyclic ref Tag;
 };
-NTAGHASH: con 1<<4;	# power of 2
-NFIDHASH: con 1<<4;	# power of 2
+NTAGHASH: con 1<<4; # power of 2
+NFIDHASH: con 1<<4; # power of 2
 tags := array[NTAGHASH] of ref Tag;
 fids := array[NFIDHASH] of list of ref Fid;
 dbg := 0;
 stats: Stats;
-frecs:	list of ref Frec;
+frecs: list of ref Frec;
 replymap := array[tagof Rmsg.Stat+1] of {
 tagof Rmsg.Version => tagof Tmsg.Version,
 tagof Rmsg.Auth => tagof Tmsg.Auth,
@@ -105,9 +105,9 @@ arg->init(args);
 arg->setusage("iostats [-d] [-f debugfile] cmds [args ...]");
 while((o := arg->opt()) != 0)
 case o {
-'d' =>	dbg++;
-'f' =>		dbfile = arg->earg();
-* =>		arg->usage();
+'d' => dbg++;
+'f' => dbfile = arg->earg();
+* => arg->usage();
 }
 args = arg->argv();
 if(args == nil)
@@ -170,15 +170,15 @@ if(sys->mount(fsfd, nil, "/", Sys->MREPL, "") < 0)
 fatal(sys->sprint("can't mount /: %r"));
 fsfd = nil;
 sys->bind("#e", "/env", Sys->MREPL | Sys->MCREATE);
-sys->bind("#d", "/fd", Sys->MREPL);	# better than nothing
+sys->bind("#d", "/fd", Sys->MREPL); # better than nothing
 if(sys->chdir(wdir) < 0)
 fatal(sys->sprint("can't chdir to %s: %r", wdir));
 sh->run(ctxt, args);
 }exception{
 "fail:*" =>
-;	# don't mention it
+; # don't mention it
 * =>
-raise;	# cause the fault
+raise; # cause the fault
 }
 done <-= 1;
 }
@@ -198,9 +198,9 @@ expfd = mountfd = nil;
 stderr := sys->fildes(2);
 Run:
 for(;;)alt{
-(n, t) := <-tmsgs =>	# n.b.: received on tmsgs before it goes to server
+(n, t) := <-tmsgs => # n.b.: received on tmsgs before it goes to server
 if(t == nil || tagof t == tagof Tmsg.Readerror)
-break Run;	# TO DO?
+break Run; # TO DO?
 if(dbg)
 sys->fprint(stderr, "->%s\n", t.text());
 tag := newtag(t, nsec(timefd));
@@ -228,7 +228,7 @@ Read =>
 tag.fid = findfid(pt.fid);
 Write =>
 tag.fid = findfid(pt.fid);
-pt.data = nil;	# don't need to keep data
+pt.data = nil; # don't need to keep data
 Clunk or
 Stat or
 Remove =>
@@ -238,14 +238,14 @@ tag.fid = findfid(pt.fid);
 }
 (n, r) := <-rmsgs =>
 if(r == nil || tagof r == tagof Rmsg.Readerror){
-break Run;	# TO DO
+break Run; # TO DO
 }
 if(dbg)
 sys->fprint(stderr, "<-%s\n", r.text());
 stats.nproto += n;
 tag := findtag(r.tag, 1);
 if(tag == nil)
-continue;	# client or server error TO DO: account for flush
+continue; # client or server error TO DO: account for flush
 if(tagof r < len replymap && (tt := replymap[tagof r]) >= 0 && (rpc := stats.rpc[tt]) != nil){
 update(rpc, nsec(timefd)-tag.stime);
 rpc.bout += big n;
@@ -281,13 +281,13 @@ Walk =>
 pick m := tag.m {
 Walk =>
 if(len pr.qids != len m.names)
-break;	# walk failed, no change
+break; # walk failed, no change
 if(fid == nil)
 break;
 if(m.newfid != m.fid){
 nf := newfid(m.newfid);
 nf.path = fid.path;
-fid = nf;	# walk new fid
+fid = nf; # walk new fid
 }
 for(i := 0; i < len m.names; i++){
 fid.qid = pr.qids[i];
@@ -315,7 +315,7 @@ stats.totwrite += big pr.count;
 Flush =>
 pick m := tag.m {
 Flush =>
-findtag(m.oldtag, 1);	# discard if there
+findtag(m.oldtag, 1); # discard if there
 }
 Clunk or
 Remove =>
@@ -378,10 +378,10 @@ sys->fprint(stderr, "\nOpens    Reads  (bytes)   Writes  (bytes) File\n");
 for(frl := frecs; frl != nil; frl = tl frl){
 fr := hd frl;
 case s := makepath(fr.op) {
-"/fd/0" =>	s = "(stdin)";
-"/fd/1" =>	s = "(stdout)";
-"/fd/2" =>	s = "(stderr)";
-"" =>		s = "/.";
+"/fd/0" => s = "(stdin)";
+"/fd/1" => s = "(stdout)";
+"/fd/2" => s = "(stderr)";
+"" => s = "/.";
 }
 sys->fprint(stderr, "%5ud %8bud %8bud %8bud %8bud %s\n", fr.opens, fr.nread, fr.bread,
 fr.nwrite, fr.bwrite, s);
@@ -408,7 +408,7 @@ out <-= (0, ref Tmsg.Readerror(0, "bad Styx T-message format"));
 break;
 }
 out <-= (len a, m);
-sys->write(ofd, a, len a);	# TO DO: errors
+sys->write(ofd, a, len a); # TO DO: errors
 }
 }
 Rreader(fd: ref Sys->FD, ofd: ref Sys->FD, out: chan of (int, ref Rmsg))
@@ -432,7 +432,7 @@ out <-= (0, ref Rmsg.Readerror(0, "bad Styx R-message format"));
 break;
 }
 out <-= (len a, m);
-sys->write(ofd, a, len a);	# TO DO: errors
+sys->write(ofd, a, len a); # TO DO: errors
 }
 }
 reply(fd: ref Sys->FD, m: ref Rmsg)
@@ -449,7 +449,7 @@ newfid(nr: int): ref Fid
 h := nr%NFIDHASH;
 for(fl := fids[h]; fl != nil; fl = tl fl)
 if((hd fl).nr == nr)
-return hd fl;	# shouldn't happen: faulty client
+return hd fl; # shouldn't happen: faulty client
 fid := ref Fid;
 fid.nr = nr;
 fid.nread = big 0;

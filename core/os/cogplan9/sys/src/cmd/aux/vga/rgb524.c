@@ -4,20 +4,20 @@
 #include "pci.h"
 #include "vga.h"
 enum {
-IndexLo		= 0x00,
-IndexHi		= 0x01,
-Data		= 0x02,
-IndexCtl	= 0x03,
+IndexLo = 0x00,
+IndexHi = 0x01,
+Data = 0x02,
+IndexCtl = 0x03,
 };
 enum {
-MiscClock	= 0x02,
-PixelFormat	= 0x0A,
-PLLControl1	= 0x10,
-PLLControl2	= 0x11,
-PLLReference	= 0x14,
-Frequency0	= 0x20,
-MiscControl1	= 0x70,
-MiscControl2	= 0x71,
+MiscClock = 0x02,
+PixelFormat = 0x0A,
+PLLControl1 = 0x10,
+PLLControl2 = 0x11,
+PLLReference = 0x14,
+Frequency0 = 0x20,
+MiscControl1 = 0x70,
+MiscControl2 = 0x71,
 };
 static uchar
 setrs2(void)

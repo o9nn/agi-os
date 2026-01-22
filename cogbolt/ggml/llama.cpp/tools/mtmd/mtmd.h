@@ -12,17 +12,17 @@
 #include <memory>
 #endif
 #ifdef LLAMA_SHARED
-#    if defined(_WIN32) && !defined(__MINGW32__)
-#        ifdef LLAMA_BUILD
-#            define MTMD_API __declspec(dllexport)
-#        else
-#            define MTMD_API __declspec(dllimport)
-#        endif
-#    else
-#        define MTMD_API __attribute__ ((visibility ("default")))
-#    endif
+# if defined(_WIN32) && !defined(__MINGW32__)
+# ifdef LLAMA_BUILD
+# define MTMD_API __declspec(dllexport)
+# else
+# define MTMD_API __declspec(dllimport)
+# endif
+# else
+# define MTMD_API __attribute__ ((visibility ("default")))
+# endif
 #else
-#    define MTMD_API
+# define MTMD_API
 #endif
 #define MTMD_DEFAULT_IMAGE_MARKER "<__image__>"
 #ifdef __cplusplus
@@ -43,12 +43,12 @@ const char * text;
 bool add_special;
 bool parse_special;
 };
-typedef struct mtmd_context      mtmd_context;
-typedef struct mtmd_bitmap       mtmd_bitmap;
+typedef struct mtmd_context mtmd_context;
+typedef struct mtmd_bitmap mtmd_bitmap;
 typedef struct mtmd_image_tokens mtmd_image_tokens;
-typedef struct mtmd_input_chunk  mtmd_input_chunk;
+typedef struct mtmd_input_chunk mtmd_input_chunk;
 typedef struct mtmd_input_chunks mtmd_input_chunks;
-typedef struct mtmd_input_text   mtmd_input_text;
+typedef struct mtmd_input_text mtmd_input_text;
 struct mtmd_context_params {
 bool use_gpu;
 bool print_timings;
@@ -68,33 +68,33 @@ MTMD_API bool mtmd_decode_use_mrope(mtmd_context * ctx);
 MTMD_API bool mtmd_support_vision(mtmd_context * ctx);
 MTMD_API bool mtmd_support_audio(mtmd_context * ctx);
 MTMD_API int mtmd_get_audio_bitrate(mtmd_context * ctx);
-MTMD_API mtmd_bitmap *         mtmd_bitmap_init           (uint32_t nx, uint32_t ny, const unsigned char * data);
-MTMD_API mtmd_bitmap *         mtmd_bitmap_init_from_audio(size_t n_samples,         const float         * data);
-MTMD_API uint32_t              mtmd_bitmap_get_nx     (const mtmd_bitmap * bitmap);
-MTMD_API uint32_t              mtmd_bitmap_get_ny     (const mtmd_bitmap * bitmap);
-MTMD_API const unsigned char * mtmd_bitmap_get_data   (const mtmd_bitmap * bitmap);
-MTMD_API size_t                mtmd_bitmap_get_n_bytes(const mtmd_bitmap * bitmap);
-MTMD_API bool                  mtmd_bitmap_is_audio   (const mtmd_bitmap * bitmap);
-MTMD_API void                  mtmd_bitmap_free       (mtmd_bitmap * bitmap);
+MTMD_API mtmd_bitmap * mtmd_bitmap_init (uint32_t nx, uint32_t ny, const unsigned char * data);
+MTMD_API mtmd_bitmap * mtmd_bitmap_init_from_audio(size_t n_samples, const float * data);
+MTMD_API uint32_t mtmd_bitmap_get_nx (const mtmd_bitmap * bitmap);
+MTMD_API uint32_t mtmd_bitmap_get_ny (const mtmd_bitmap * bitmap);
+MTMD_API const unsigned char * mtmd_bitmap_get_data (const mtmd_bitmap * bitmap);
+MTMD_API size_t mtmd_bitmap_get_n_bytes(const mtmd_bitmap * bitmap);
+MTMD_API bool mtmd_bitmap_is_audio (const mtmd_bitmap * bitmap);
+MTMD_API void mtmd_bitmap_free (mtmd_bitmap * bitmap);
 MTMD_API const char * mtmd_bitmap_get_id(const mtmd_bitmap * bitmap);
-MTMD_API void         mtmd_bitmap_set_id(mtmd_bitmap * bitmap, const char * id);
-MTMD_API mtmd_input_chunks *      mtmd_input_chunks_init(void);
-MTMD_API size_t                   mtmd_input_chunks_size(const mtmd_input_chunks * chunks);
+MTMD_API void mtmd_bitmap_set_id(mtmd_bitmap * bitmap, const char * id);
+MTMD_API mtmd_input_chunks * mtmd_input_chunks_init(void);
+MTMD_API size_t mtmd_input_chunks_size(const mtmd_input_chunks * chunks);
 MTMD_API const mtmd_input_chunk * mtmd_input_chunks_get (const mtmd_input_chunks * chunks, size_t idx);
-MTMD_API void                     mtmd_input_chunks_free(mtmd_input_chunks * chunks);
-MTMD_API enum mtmd_input_chunk_type mtmd_input_chunk_get_type        (const mtmd_input_chunk * chunk);
-MTMD_API const llama_token *        mtmd_input_chunk_get_tokens_text (const mtmd_input_chunk * chunk, size_t * n_tokens_output);
-MTMD_API const mtmd_image_tokens *  mtmd_input_chunk_get_tokens_image(const mtmd_input_chunk * chunk);
-MTMD_API size_t                     mtmd_input_chunk_get_n_tokens    (const mtmd_input_chunk * chunk);
-MTMD_API const char *               mtmd_input_chunk_get_id          (const mtmd_input_chunk * chunk);
-MTMD_API llama_pos                  mtmd_input_chunk_get_n_pos       (const mtmd_input_chunk * chunk);
+MTMD_API void mtmd_input_chunks_free(mtmd_input_chunks * chunks);
+MTMD_API enum mtmd_input_chunk_type mtmd_input_chunk_get_type (const mtmd_input_chunk * chunk);
+MTMD_API const llama_token * mtmd_input_chunk_get_tokens_text (const mtmd_input_chunk * chunk, size_t * n_tokens_output);
+MTMD_API const mtmd_image_tokens * mtmd_input_chunk_get_tokens_image(const mtmd_input_chunk * chunk);
+MTMD_API size_t mtmd_input_chunk_get_n_tokens (const mtmd_input_chunk * chunk);
+MTMD_API const char * mtmd_input_chunk_get_id (const mtmd_input_chunk * chunk);
+MTMD_API llama_pos mtmd_input_chunk_get_n_pos (const mtmd_input_chunk * chunk);
 MTMD_API mtmd_input_chunk * mtmd_input_chunk_copy(const mtmd_input_chunk * chunk);
-MTMD_API void               mtmd_input_chunk_free(mtmd_input_chunk * chunk);
-MTMD_API size_t       mtmd_image_tokens_get_n_tokens(const mtmd_image_tokens * image_tokens);
-MTMD_API size_t       mtmd_image_tokens_get_nx      (const mtmd_image_tokens * image_tokens);
-MTMD_API size_t       mtmd_image_tokens_get_ny      (const mtmd_image_tokens * image_tokens);
-MTMD_API const char * mtmd_image_tokens_get_id      (const mtmd_image_tokens * image_tokens);
-MTMD_API llama_pos    mtmd_image_tokens_get_n_pos   (const mtmd_image_tokens * image_tokens);
+MTMD_API void mtmd_input_chunk_free(mtmd_input_chunk * chunk);
+MTMD_API size_t mtmd_image_tokens_get_n_tokens(const mtmd_image_tokens * image_tokens);
+MTMD_API size_t mtmd_image_tokens_get_nx (const mtmd_image_tokens * image_tokens);
+MTMD_API size_t mtmd_image_tokens_get_ny (const mtmd_image_tokens * image_tokens);
+MTMD_API const char * mtmd_image_tokens_get_id (const mtmd_image_tokens * image_tokens);
+MTMD_API llama_pos mtmd_image_tokens_get_n_pos (const mtmd_image_tokens * image_tokens);
 MTMD_API int32_t mtmd_tokenize(mtmd_context * ctx,
 mtmd_input_chunks * output,
 const mtmd_input_text * text,

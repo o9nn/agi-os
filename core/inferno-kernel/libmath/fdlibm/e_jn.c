@@ -1,9 +1,9 @@
 #include "fdlibm.h"
 static const double
-invsqrtpi=  5.64189583547756279280e-01,
-two   =  2.00000000000000000000e+00,
-one   =  1.00000000000000000000e+00;
-static double zero  =  0.00000000000000000000e+00;
+invsqrtpi= 5.64189583547756279280e-01,
+two = 2.00000000000000000000e+00,
+one = 1.00000000000000000000e+00;
+static double zero = 0.00000000000000000000e+00;
 double __ieee754_jn(int n, double x)
 {
 int i,hx,ix,lx, sgn;
@@ -27,10 +27,10 @@ b = zero;
 else if((double)n<=x) {
 if(ix>=0x52D00000) {
 switch(n&3) {
-case 0: temp =  cos(x)+sin(x); break;
+case 0: temp = cos(x)+sin(x); break;
 case 1: temp = -cos(x)+sin(x); break;
 case 2: temp = -cos(x)-sin(x); break;
-case 3: temp =  cos(x)-sin(x); break;
+case 3: temp = cos(x)-sin(x); break;
 }
 b = invsqrtpi*temp/sqrt(x);
 } else {
@@ -57,8 +57,8 @@ b = b/a;
 } else {
 double t,v;
 double q0,q1,h,tmp; int k,m;
-w  = (n+n)/(double)x; h = 2.0/(double)x;
-q0 = w;  z = w+h; q1 = w*z - 1.0; k=1;
+w = (n+n)/(double)x; h = 2.0/(double)x;
+q0 = w; z = w+h; q1 = w*z - 1.0; k=1;
 while(q1<1.0e9) {
 k += 1; z += h;
 tmp = z*q1 - q0;
@@ -76,7 +76,7 @@ if(tmp<7.09782712893383973096e+02) {
 for(i=n-1,di=(double)(i+i);i>0;i--){
 temp = b;
 b *= di;
-b  = b/x - a;
+b = b/x - a;
 a = temp;
 di -= two;
 }
@@ -84,13 +84,13 @@ di -= two;
 for(i=n-1,di=(double)(i+i);i>0;i--){
 temp = b;
 b *= di;
-b  = b/x - a;
+b = b/x - a;
 a = temp;
 di -= two;
 if(b>1e100) {
 a /= b;
 t /= b;
-b  = one;
+b = one;
 }
 }
 }
@@ -120,10 +120,10 @@ if(n==1) return(sign*__ieee754_y1(x));
 if(ix==0x7ff00000) return zero;
 if(ix>=0x52D00000) {
 switch(n&3) {
-case 0: temp =  sin(x)-cos(x); break;
+case 0: temp = sin(x)-cos(x); break;
 case 1: temp = -sin(x)-cos(x); break;
 case 2: temp = -sin(x)+cos(x); break;
-case 3: temp =  sin(x)+cos(x); break;
+case 3: temp = sin(x)+cos(x); break;
 }
 b = invsqrtpi*temp/sqrt(x);
 } else {

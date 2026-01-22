@@ -3,32 +3,32 @@
 #include <ctype.h>
 #include <bio.h>
 #include <String.h>
-#define CPP		"cpp -+"
-#define RINSTERR	((Rinst *)-1)
-#define STREQ(a, b)	(*(a) == *(b) && strcmp(a, b) == 0)
-#define OTHER(rdwr)	((rdwr) == Rd? Wr: Rd)
+#define CPP "cpp -+"
+#define RINSTERR ((Rinst *)-1)
+#define STREQ(a, b) (*(a) == *(b) && strcmp(a, b) == 0)
+#define OTHER(rdwr) ((rdwr) == Rd? Wr: Rd)
 #define ISIDENT(r) (isascii(r) && isalnum(r) || (r) == '_' || (r) >= Runeself)
-#define checksys(atom)		strbsearch(atom, sysword, nelem(sysword))
+#define checksys(atom) strbsearch(atom, sysword, nelem(sysword))
 enum {
-Printstats =	0,
-Maxseen =	4000,
-Maxdepth =	300,
-Hashsize =	2048,
-Maxid =		256 + UTFmax,
-Tabwidth =	8,
-Maxwidth =	132,
-Defwidth =	80,
-Backslash =	'\\',
-Quote =		'\'',
-Rd =		0,
+Printstats = 0,
+Maxseen = 4000,
+Maxdepth = 300,
+Hashsize = 2048,
+Maxid = 256 + UTFmax,
+Tabwidth = 8,
+Maxwidth = 132,
+Defwidth = 80,
+Backslash = '\\',
+Quote = '\'',
+Rd = 0,
 Wr,
-Stdin =		0,
+Stdin = 0,
 Stdout,
 Stderr,
-Defn =		0,
+Defn = 0,
 Decl,
 Call,
-Nomore =	-1,
+Nomore = -1,
 Added,
 Found,
 };
@@ -38,31 +38,31 @@ typedef struct Root Root;
 typedef struct Rname Rname;
 typedef struct Rnamehash Rnamehash;
 struct Pushstate {
-int	kid;
-int	fd;
-int	rfd;
-int	input;
-int	open;
+int kid;
+int fd;
+int rfd;
+int input;
+int open;
 };
 struct Rname {
-Rinst	*dlistp;
-int	rnameout;
-char	rnamecalled;
-char	rnamedefined;
-char	*namer;
-Rname	*next;
+Rinst *dlistp;
+int rnameout;
+char rnamecalled;
+char rnamedefined;
+char *namer;
+Rname *next;
 };
 struct Rnamehash {
-Rname	*head;
+Rname *head;
 };
 struct Rinst {
-Rname	*namep;
-Rinst	*calls;
-Rinst	*calledby;
+Rname *namep;
+Rinst *calls;
+Rinst *calledby;
 };
 struct Root {
-char	*func;
-Root	*next;
+char *func;
+Root *next;
 };
 char *aseen[Maxseen];
 Rnamehash nameshash[Hashsize];
@@ -70,10 +70,10 @@ Rname *activelist[Maxdepth];
 String *cppopt;
 Root *roots;
 static struct stats {
-long	highestseen;
-long	highestname;
-long	highestact;
-long	highgetfree;
+long highestseen;
+long highestname;
+long highestact;
+long highgetfree;
 } stats;
 static long getfrees = 0;
 int bracket = 0;
@@ -310,7 +310,7 @@ tflag = 0;
 USED(tflag);
 }
 } else if (nextp != nil)
-print(" ... [see line %d]",  func->rnameout);
+print(" ... [see line %d]", func->rnameout);
 }
 backup();
 }

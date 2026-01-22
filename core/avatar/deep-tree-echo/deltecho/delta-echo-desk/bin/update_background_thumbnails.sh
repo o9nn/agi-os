@@ -4,5 +4,5 @@ rm -r "$DIR/../images/backgrounds/thumb"
 mkdir "$DIR/../images/backgrounds/thumb"
 cd "$DIR/../images/backgrounds"
 for filename in *.*; do
-    magick $filename -resize 128x128 thumb/$filename
+magick $filename -resize 128x128 thumb/$filename
 done

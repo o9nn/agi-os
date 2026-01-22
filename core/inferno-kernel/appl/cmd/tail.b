@@ -17,7 +17,7 @@ units := LINES;
 dir := FWD;
 Tail: module
 {
-init:	fn(nil: ref Draw->Context, argv: list of string);
+init: fn(nil: ref Draw->Context, argv: list of string);
 };
 init(nil: ref Draw->Context, argv: list of string)
 {
@@ -90,7 +90,7 @@ if(d.length < length)
 d.length = tseek(big 0, sys->SEEKSTART);
 return d;
 }
-skip()	# read past head of the file to find tail
+skip() # read past head of the file to find tail
 {
 n : int;
 buf := array[BSize] of byte;
@@ -127,8 +127,8 @@ twrite(buf[0:n]);
 }
 bout.flush();
 }
-keep()	# read whole file, keeping the tail
-{	# complexity=length(file)*length(tail).  could be linear
+keep() # read whole file, keeping the tail
+{ # complexity=length(file)*length(tail). could be linear
 j, k : int;
 length:=0;
 buf : array of byte;
@@ -149,7 +149,7 @@ if(units == CHARS)
 j = length - count;
 else{ # units == LINES
 if (int buf[length-1]=='\n')
-j =  length-1;
+j = length-1;
 else
 j=length;
 for(k=0; j>0; j--)
@@ -175,7 +175,7 @@ if(count > 0 && length > 0)
 twrite(buf[0:length]);
 bout.flush();
 }
-reverse()	# count backward and print tail of file
+reverse() # count backward and print tail of file
 {
 length := 0;
 n := 0;
@@ -276,7 +276,7 @@ fail("excess option");
 if (s[0]=='-')
 s=s[1:];
 (count,nil) = str->toint(s,10);
-if(count < 0){	# protect int args (read, fwrite)
+if(count < 0){ # protect int args (read, fwrite)
 fail("too big");
 }
 return 1;

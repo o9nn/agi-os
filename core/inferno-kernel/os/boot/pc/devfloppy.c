@@ -1,36 +1,36 @@
 #include <u.h>
-#include	"lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"ureg.h"
-#include	"fs.h"
-#include	"devfloppy.h"
+#include "lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "ureg.h"
+#include "fs.h"
+#include "devfloppy.h"
 enum {
-Qdir=		0,
-Qdata=		(1<<2),
-Qctl=		(2<<2),
-Qmask=		(3<<2),
-DMAchan=	2,
+Qdir= 0,
+Qdata= (1<<2),
+Qctl= (2<<2),
+Qmask= (3<<2),
+DMAchan= 2,
 };
 #define DPRINT if(0)print
 FType floppytype[] =
 {
-{ "3½HD",	T1440kb, 512, 18, 2, 1, 80, 0x1B, 0x54,	0, },
-{ "3½DD",	T1440kb, 512,  9, 2, 1, 80, 0x1B, 0x54, 2, },
-{ "3½DD",	T720kb,  512,  9, 2, 1, 80, 0x1B, 0x54, 2, },
-{ "5¼HD",	T1200kb, 512, 15, 2, 1, 80, 0x2A, 0x50, 0, },
-{ "5¼DD",	T1200kb, 512,  9, 2, 2, 40, 0x2A, 0x50, 1, },
-{ "ATT3B1",	T1200kb, 512,  8, 2, 2, 48, 0x2A, 0x50, 1, },
-{ "5¼DD",	T360kb,  512,  9, 2, 1, 40, 0x2A, 0x50, 2, },
+{ "3½HD", T1440kb, 512, 18, 2, 1, 80, 0x1B, 0x54, 0, },
+{ "3½DD", T1440kb, 512, 9, 2, 1, 80, 0x1B, 0x54, 2, },
+{ "3½DD", T720kb, 512, 9, 2, 1, 80, 0x1B, 0x54, 2, },
+{ "5¼HD", T1200kb, 512, 15, 2, 1, 80, 0x2A, 0x50, 0, },
+{ "5¼DD", T1200kb, 512, 9, 2, 2, 40, 0x2A, 0x50, 1, },
+{ "ATT3B1", T1200kb, 512, 8, 2, 2, 48, 0x2A, 0x50, 1, },
+{ "5¼DD", T360kb, 512, 9, 2, 1, 40, 0x2A, 0x50, 2, },
 };
 static int b2c[] =
 {
-[1]	0,
-[2]	1,
-[4]	2,
-[8]	3,
+[1] 0,
+[2] 1,
+[4] 2,
+[8] 3,
 };
 static int c2b[] =
 {
@@ -39,19 +39,19 @@ static int c2b[] =
 512,
 1024,
 };
-FController	fl;
-#define MOTORBIT(i)	(1<<((i)+4))
-static int	cmddone(void*);
-static void	floppyformat(FDrive*, char*);
-static void	floppykproc(void*);
-static void	floppypos(FDrive*,long);
-static int	floppyrecal(FDrive*);
-static int	floppyresult(void);
-static void	floppyrevive(void);
-static vlong	pcfloppyseek(FDrive*, vlong);
-static int	floppysense(void);
-static void	floppywait(int);
-static long	floppyxfer(FDrive*, int, void*, long, long);
+FController fl;
+#define MOTORBIT(i) (1<<((i)+4))
+static int cmddone(void*);
+static void floppyformat(FDrive*, char*);
+static void floppykproc(void*);
+static void floppypos(FDrive*,long);
+static int floppyrecal(FDrive*);
+static int floppyresult(void);
+static void floppyrevive(void);
+static vlong pcfloppyseek(FDrive*, vlong);
+static int floppysense(void);
+static void floppywait(int);
+static long floppyxfer(FDrive*, int, void*, long, long);
 static void
 fldump(void)
 {

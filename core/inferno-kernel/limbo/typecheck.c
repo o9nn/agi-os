@@ -1,7 +1,7 @@
 #include "limbo.h"
 #include "y.tab.h"
-Node	**labstack;
-int	labdep;
+Node **labstack;
+int labdep;
 static Node* inexcept;
 static Decl* fndec;
 void checkraises(Node *n);
@@ -2540,7 +2540,7 @@ wild = nil;
 nlab = 0;
 ok = 1;
 for(n = inits; n != nil; n = n->right){
-if(!tcompat(t,  n->left->ty, 0)){
+if(!tcompat(t, n->left->ty, 0)){
 t = tparent(t, n->left->ty);
 if(!tcompat(t, n->left->ty, 0)){
 nerror(n->left, "inconsistent types %T and %T and in array initializer", t, n->left->ty);

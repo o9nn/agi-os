@@ -2,101 +2,101 @@
 #include <libc.h>
 #include <bio.h>
 #include <ctype.h>
-#define	ISPRINT(c)	((c) >= ' ')
-#define ESC		'\033'
-#define LENGTH		66
-#define LINEW		72
-#define NUMW		5
-#define MARGIN		10
-#define DEFTAB		8
-#define NFILES		20
-#define HEAD		"%12.12s %4.4s  %s Page %d\n\n\n", date+4, date+24, head, Page
-#define TOLOWER(c)	(isupper(c) ? tolower(c) : c)
-#define cerror(S)	fprint(2, "pr: %s", S)
-#define STDINNAME()	nulls
-#define TTY		"/dev/cons", 0
-#define PROMPT()	fprint(2, "\a")
-#define TABS(N,C)	if((N = intopt(argv, &C)) < 0) N = DEFTAB
-#define ETABS		(Inpos % Etabn)
-#define ITABS		(Itabn > 0 && Nspace > 1 && Nspace >= (nc = Itabn - Outpos % Itabn))
-#define NSEPC		'\t'
-#define EMPTY		14
-typedef	struct	Fils	Fils;
-typedef	struct	Colp*	Colp;
-typedef	struct	Err	Err;
-struct	Fils
+#define ISPRINT(c) ((c) >= ' ')
+#define ESC '\033'
+#define LENGTH 66
+#define LINEW 72
+#define NUMW 5
+#define MARGIN 10
+#define DEFTAB 8
+#define NFILES 20
+#define HEAD "%12.12s %4.4s  %s Page %d\n\n\n", date+4, date+24, head, Page
+#define TOLOWER(c) (isupper(c) ? tolower(c) : c)
+#define cerror(S) fprint(2, "pr: %s", S)
+#define STDINNAME() nulls
+#define TTY "/dev/cons", 0
+#define PROMPT() fprint(2, "\a")
+#define TABS(N,C) if((N = intopt(argv, &C)) < 0) N = DEFTAB
+#define ETABS (Inpos % Etabn)
+#define ITABS (Itabn > 0 && Nspace > 1 && Nspace >= (nc = Itabn - Outpos % Itabn))
+#define NSEPC '\t'
+#define EMPTY 14
+typedef struct Fils Fils;
+typedef struct Colp* Colp;
+typedef struct Err Err;
+struct Fils
 {
-Biobuf*	f_f;
-char*	f_name;
-long	f_nextc;
+Biobuf* f_f;
+char* f_name;
+long f_nextc;
 };
-struct	Colp
+struct Colp
 {
-Rune*	c_ptr;
-Rune*	c_ptr0;
-long	c_lno;
+Rune* c_ptr;
+Rune* c_ptr0;
+long c_lno;
 };
-struct	Err
+struct Err
 {
-Err*	e_nextp;
-char*	e_mess;
+Err* e_nextp;
+char* e_mess;
 };
-int	Balance = 0;
-Biobuf	bout;
-Rune*	Bufend;
-Rune*	Buffer = 0;
-int	C = '\0';
-Colp	Colpts;
-int	Colw;
-int	Dblspace = 1;
-Err*	err = 0;
-int	error = 0;
-int	Etabc = '\t';
-int	Etabn = 0;
-Fils*	Files;
-int	Formfeed = 0;
-int	Fpage = 1;
-char*	Head = 0;
-int	Inpos;
-int	Itabc = '\t';
-int	Itabn = 0;
-Err*	Lasterr = (Err*)&err;
-int	Lcolpos;
-int	Len = LENGTH;
-int	Line;
-int	Linew = 0;
-long	Lnumb = 0;
-int	Margin = MARGIN;
-int	Multi = 0;
-int	Ncols = 1;
-int	Nfiles = 0;
-int	Nsepc = NSEPC;
-int	Nspace;
-char	nulls[] = "";
-int	Numw;
-int	Offset = 0;
-int	Outpos;
-int	Padodd;
-int	Page;
-int	Pcolpos;
-int	Plength;
-int	Sepc = 0;
-extern	int	atoix(char**);
-extern	void	balance(int);
-extern	void	die(char*);
-extern	void	errprint(void);
-extern	char*	ffiler(char*);
-extern	int	findopt(int, char**);
-extern	int	get(int);
-extern	void*	getspace(ulong);
-extern	int	intopt(char**, int*);
-extern	void	main(int, char**);
-extern	Biobuf*	mustopen(char*, Fils*);
-extern	void	nexbuf(void);
-extern	int	pr(char*);
-extern	void	put(long);
-extern	void	putpage(void);
-extern	void	putspace(void);
+int Balance = 0;
+Biobuf bout;
+Rune* Bufend;
+Rune* Buffer = 0;
+int C = '\0';
+Colp Colpts;
+int Colw;
+int Dblspace = 1;
+Err* err = 0;
+int error = 0;
+int Etabc = '\t';
+int Etabn = 0;
+Fils* Files;
+int Formfeed = 0;
+int Fpage = 1;
+char* Head = 0;
+int Inpos;
+int Itabc = '\t';
+int Itabn = 0;
+Err* Lasterr = (Err*)&err;
+int Lcolpos;
+int Len = LENGTH;
+int Line;
+int Linew = 0;
+long Lnumb = 0;
+int Margin = MARGIN;
+int Multi = 0;
+int Ncols = 1;
+int Nfiles = 0;
+int Nsepc = NSEPC;
+int Nspace;
+char nulls[] = "";
+int Numw;
+int Offset = 0;
+int Outpos;
+int Padodd;
+int Page;
+int Pcolpos;
+int Plength;
+int Sepc = 0;
+extern int atoix(char**);
+extern void balance(int);
+extern void die(char*);
+extern void errprint(void);
+extern char* ffiler(char*);
+extern int findopt(int, char**);
+extern int get(int);
+extern void* getspace(ulong);
+extern int intopt(char**, int*);
+extern void main(int, char**);
+extern Biobuf* mustopen(char*, Fils*);
+extern void nexbuf(void);
+extern int pr(char*);
+extern void put(long);
+extern void putpage(void);
+extern void putspace(void);
 char*
 getdate(void)
 {

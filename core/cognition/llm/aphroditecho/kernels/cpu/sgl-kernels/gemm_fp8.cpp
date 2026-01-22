@@ -169,8 +169,8 @@ Unroll<ROWS * COLS>{}(storec);
 }
 };
 #endif
-#define LAUNCH_TINYGEMM_KERNEL_NN(MB_SIZE, NB_SIZE)                          \
-tinygemm_kernel_nn<scalar_t, at::Float8_e4m3fn, has_bias, MB_SIZE, NB_SIZE>::apply(         \
+#define LAUNCH_TINYGEMM_KERNEL_NN(MB_SIZE, NB_SIZE) \
+tinygemm_kernel_nn<scalar_t, at::Float8_e4m3fn, has_bias, MB_SIZE, NB_SIZE>::apply( \
 A + mb_start * lda, B + nb_start * 2, C + mb_start * ldc + nb_start, \
 has_bias ? bias + nb_start : nullptr, scale, K, lda, ldb, ldc, block_size_K);
 template <typename scalar_t, typename packed_t, bool has_bias>
@@ -216,7 +216,7 @@ int idx = k >> 7;
 unpack_B(Btmp + k * ldb_tmp, B + k * ldb, N, kb_size, ldb, ldb_tmp, scale[idx]);
 }
 at::native::cpublas::brgemm(
-M, N, K, lda, ldb_tmp, BLOCK_N,  false, A, Btmp, Ctmp);
+M, N, K, lda, ldb_tmp, BLOCK_N, false, A, Btmp, Ctmp);
 for (int m = 0; m < M; ++m) {
 if constexpr (has_bias) {
 copy_add_stub(C + m * ldc, Ctmp + m * BLOCK_N, bias, N);
@@ -348,21 +348,21 @@ bool brg,
 int64_t block_size_K) {
 tinygemm_kernel<scalar_t, false>(A, B, C, Btmp, Ctmp, scale, nullptr, M, N, K, lda, ldb, ldc, brg, block_size_K);
 }
-#define INSTANTIATE_TINYGEMM_TEMPLATE(TYPE)    \
-template void tinygemm_kernel<TYPE>(         \
-const TYPE* __restrict__ A,              \
+#define INSTANTIATE_TINYGEMM_TEMPLATE(TYPE) \
+template void tinygemm_kernel<TYPE>( \
+const TYPE* __restrict__ A, \
 const at::Float8_e4m3fn* __restrict__ B, \
-TYPE* __restrict__ C,                    \
-TYPE* __restrict__ Btmp,                 \
-float* __restrict__ Ctmp,                \
-const float* __restrict__ scale,         \
-int64_t M,                               \
-int64_t N,                               \
-int64_t K,                               \
-int64_t lda,                             \
-int64_t ldb,                             \
-int64_t ldc,                             \
-bool brg,                                \
+TYPE* __restrict__ C, \
+TYPE* __restrict__ Btmp, \
+float* __restrict__ Ctmp, \
+const float* __restrict__ scale, \
+int64_t M, \
+int64_t N, \
+int64_t K, \
+int64_t lda, \
+int64_t ldb, \
+int64_t ldc, \
+bool brg, \
 int64_t block_size_K)
 INSTANTIATE_TINYGEMM_TEMPLATE(at::BFloat16);
 INSTANTIATE_TINYGEMM_TEMPLATE(at::Half);

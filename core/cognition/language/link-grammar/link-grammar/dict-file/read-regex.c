@@ -7,7 +7,7 @@
 #include "read-regex.h"
 #define D_REGEX 10
 #define MAX_REGEX_NAME_LENGTH 50
-#define MAX_REGEX_LENGTH      10240
+#define MAX_REGEX_LENGTH 10240
 static bool expand_character_ranges(const char *file_name, int line,
 const char *name, char *regex)
 {

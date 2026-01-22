@@ -8,16 +8,16 @@
 #endif
 FT_BEGIN_HEADER
 FT_EXPORT( void )
-FT_GlyphSlot_Embolden( FT_GlyphSlot  slot );
+FT_GlyphSlot_Embolden( FT_GlyphSlot slot );
 FT_EXPORT( void )
-FT_GlyphSlot_AdjustWeight( FT_GlyphSlot  slot,
-FT_Fixed      xdelta,
-FT_Fixed      ydelta );
+FT_GlyphSlot_AdjustWeight( FT_GlyphSlot slot,
+FT_Fixed xdelta,
+FT_Fixed ydelta );
 FT_EXPORT( void )
-FT_GlyphSlot_Oblique( FT_GlyphSlot  slot );
+FT_GlyphSlot_Oblique( FT_GlyphSlot slot );
 FT_EXPORT( void )
-FT_GlyphSlot_Slant( FT_GlyphSlot  slot,
-FT_Fixed      xslant,
-FT_Fixed      yslant );
+FT_GlyphSlot_Slant( FT_GlyphSlot slot,
+FT_Fixed xslant,
+FT_Fixed yslant );
 FT_END_HEADER
 #endif

@@ -12,9 +12,9 @@
 #include <string.h>
 struct perf_monitor global_perf_monitor;
 struct perf_analysis_control perf_control;
-#define PERF_DEFAULT_SAMPLE_RATE    1000
-#define PERF_DEFAULT_BUFFER_SIZE    8192
-#define PERF_DEFAULT_LATENCY_THRESHOLD  1000
+#define PERF_DEFAULT_SAMPLE_RATE 1000
+#define PERF_DEFAULT_BUFFER_SIZE 8192
+#define PERF_DEFAULT_LATENCY_THRESHOLD 1000
 #define PERF_DEFAULT_THROUGHPUT_THRESHOLD 1000
 #define PERF_DEFAULT_ERROR_RATE_THRESHOLD 5
 static uint64_t perf_timebase_factor = 0;

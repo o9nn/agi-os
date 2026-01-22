@@ -5,29 +5,29 @@
 #include <fcall.h>
 #include <draw.h>
 #include <event.h>
-#define	MAXNUM	10
-typedef struct Graph	Graph;
-typedef struct Machine	Machine;
+#define MAXNUM 10
+typedef struct Graph Graph;
+typedef struct Machine Machine;
 struct Graph
 {
-int		colindex;
-Rectangle	r;
-uvlong		*data;
-int		ndata;
-char		*label;
-void		(*newvalue)(Machine*, uvlong*, uvlong*, int);
-void		(*update)(Graph*, uvlong, uvlong);
-Machine		*mach;
-int		overflow;
-Image		*overtmp;
+int colindex;
+Rectangle r;
+uvlong *data;
+int ndata;
+char *label;
+void (*newvalue)(Machine*, uvlong*, uvlong*, int);
+void (*update)(Graph*, uvlong, uvlong);
+Machine *mach;
+int overflow;
+Image *overtmp;
 };
 enum
 {
-Mem		= 0,
+Mem = 0,
 Maxmem,
 Swap,
 Maxswap,
-Procno	= 0,
+Procno = 0,
 Context,
 Interrupt,
 Syscall,
@@ -37,37 +37,37 @@ TLBpurge,
 Load,
 Idle,
 InIntr,
-In		= 0,
+In = 0,
 Link,
 Out,
 Err0,
 };
 struct Machine
 {
-char		*name;
-char		*shortname;
-int		remote;
-int		statsfd;
-int		swapfd;
-int		etherfd;
-int		ifstatsfd;
-int		batteryfd;
-int		bitsybatfd;
-int		tempfd;
-int		disable;
-uvlong		devswap[4];
-uvlong		devsysstat[10];
-uvlong		prevsysstat[10];
-int		nproc;
-int		lgproc;
-uvlong		netetherstats[8];
-uvlong		prevetherstats[8];
-uvlong		batterystats[2];
-uvlong		netetherifstats[2];
-uvlong		temp[10];
-char		buf[8*1024];
-char		*bufp;
-char		*ebufp;
+char *name;
+char *shortname;
+int remote;
+int statsfd;
+int swapfd;
+int etherfd;
+int ifstatsfd;
+int batteryfd;
+int bitsybatfd;
+int tempfd;
+int disable;
+uvlong devswap[4];
+uvlong devsysstat[10];
+uvlong prevsysstat[10];
+int nproc;
+int lgproc;
+uvlong netetherstats[8];
+uvlong prevetherstats[8];
+uvlong batterystats[2];
+uvlong netetherifstats[2];
+uvlong temp[10];
+char buf[8*1024];
+char *bufp;
+char *ebufp;
 };
 enum
 {
@@ -77,14 +77,14 @@ NPROC,
 };
 enum
 {
-Ncolor		= 6,
-Ysqueeze	= 2,
-Labspace	= 2,
-Dot		= 2,
-Opwid		= 5,
-Nlab		= 3,
-Lablen		= 16,
-Lx		= 4,
+Ncolor = 6,
+Ysqueeze = 2,
+Labspace = 2,
+Dot = 2,
+Opwid = 5,
+Nlab = 3,
+Lablen = 16,
+Lx = 4,
 };
 enum Menu2
 {
@@ -108,7 +108,7 @@ Msignal,
 Mtemp,
 Nmenu2,
 };
-char	*menu2str[Nmenu2+1] = {
+char *menu2str[Nmenu2+1] = {
 "add  battery ",
 "add  context ",
 "add  ether   ",
@@ -129,7 +129,7 @@ char	*menu2str[Nmenu2+1] = {
 "add  temp    ",
 nil,
 };
-void	contextval(Machine*, uvlong*, uvlong*, int),
+void contextval(Machine*, uvlong*, uvlong*, int),
 etherval(Machine*, uvlong*, uvlong*, int),
 ethererrval(Machine*, uvlong*, uvlong*, int),
 etherinval(Machine*, uvlong*, uvlong*, int),
@@ -147,9 +147,9 @@ tlbpurgeval(Machine*, uvlong*, uvlong*, int),
 batteryval(Machine*, uvlong*, uvlong*, int),
 signalval(Machine*, uvlong*, uvlong*, int),
 tempval(Machine*, uvlong*, uvlong*, int);
-Menu	menu2 = {menu2str, nil};
-int	present[Nmenu2];
-void	(*newvaluefn[Nmenu2])(Machine*, uvlong*, uvlong*, int init) = {
+Menu menu2 = {menu2str, nil};
+int present[Nmenu2];
+void (*newvaluefn[Nmenu2])(Machine*, uvlong*, uvlong*, int init) = {
 batteryval,
 contextval,
 etherval,
@@ -169,23 +169,23 @@ tlbpurgeval,
 signalval,
 tempval,
 };
-Image	*cols[Ncolor][3];
-Graph	*graph;
-Machine	*mach;
-Font	*mediumfont;
-char	*mysysname;
-char	*mycputype;
-char	argchars[] = "8bceEfiImlnpstwz";
-int	pids[NPROC];
-int 	parity;
-int	nmach;
-int	ngraph;
-double	scale = 1.0;
-int	logscale = 0;
-int	ylabels = 0;
-int	oldsystem = 0;
-int 	sleeptime = 1000;
-char	*procnames[NPROC] = {"main", "mouse"};
+Image *cols[Ncolor][3];
+Graph *graph;
+Machine *mach;
+Font *mediumfont;
+char *mysysname;
+char *mycputype;
+char argchars[] = "8bceEfiImlnpstwz";
+int pids[NPROC];
+int parity;
+int nmach;
+int ngraph;
+double scale = 1.0;
+int logscale = 0;
+int ylabels = 0;
+int oldsystem = 0;
+int sleeptime = 1000;
+char *procnames[NPROC] = {"main", "mouse"};
 void
 killall(char *s)
 {
@@ -628,7 +628,7 @@ return init | present[Mmem] | present[Mswap];
 int
 needstat(int init)
 {
-return init | present[Mcontext]  | present[Mfault] | present[Mintr] | present[Mload] | present[Midle] |
+return init | present[Mcontext] | present[Mfault] | present[Mintr] | present[Mload] | present[Midle] |
 present[Minintr] | present[Msyscall] | present[Mtlbmiss] | present[Mtlbpurge];
 }
 int

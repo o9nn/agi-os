@@ -25,10 +25,10 @@ static unsigned int eepro_portlist[] =
 #define NET_DEBUG 1
 #endif
 static unsigned int net_debug = NET_DEBUG;
-#define EEPRO_IO_EXTENT	16
-#define	LAN595		0
-#define	LAN595TX	1
-#define	LAN595FX	2
+#define EEPRO_IO_EXTENT 16
+#define LAN595 0
+#define LAN595TX 1
+#define LAN595FX 2
 struct eepro_local {
 struct enet_statistics stats;
 unsigned rx_start;
@@ -50,97 +50,97 @@ int stepping;
 #define SA3_ADDR2 0x00
 #define SA3_ADDR3 0xc9
 extern int eepro_probe(struct device *dev);
-static int	eepro_probe1(struct device *dev, short ioaddr);
-static int	eepro_open(struct device *dev);
-static int	eepro_send_packet(struct sk_buff *skb, struct device *dev);
-static void	eepro_interrupt(int irq, void *dev_id, struct pt_regs *regs);
-static void 	eepro_rx(struct device *dev);
-static void 	eepro_transmit_interrupt(struct device *dev);
-static int	eepro_close(struct device *dev);
+static int eepro_probe1(struct device *dev, short ioaddr);
+static int eepro_open(struct device *dev);
+static int eepro_send_packet(struct sk_buff *skb, struct device *dev);
+static void eepro_interrupt(int irq, void *dev_id, struct pt_regs *regs);
+static void eepro_rx(struct device *dev);
+static void eepro_transmit_interrupt(struct device *dev);
+static int eepro_close(struct device *dev);
 static struct enet_statistics *eepro_get_stats(struct device *dev);
 static void set_multicast_list(struct device *dev);
 static int read_eeprom(int ioaddr, int location);
 static void hardware_send_packet(struct device *dev, void *buf, short length);
-static int	eepro_grab_irq(struct device *dev);
-#define	RAM_SIZE	0x8000
-#define	RCV_HEADER	8
-#define RCV_RAM         0x6000
+static int eepro_grab_irq(struct device *dev);
+#define RAM_SIZE 0x8000
+#define RCV_HEADER 8
+#define RCV_RAM 0x6000
 #define RCV_LOWER_LIMIT 0x00
 #define RCV_UPPER_LIMIT (((rcv_ram) - 2) >> 8)
-#define XMT_RAM         (RAM_SIZE - (rcv_ram))
+#define XMT_RAM (RAM_SIZE - (rcv_ram))
 #define XMT_LOWER_LIMIT ((rcv_ram) >> 8)
 #define XMT_UPPER_LIMIT ((RAM_SIZE - 2) >> 8)
-#define	XMT_HEADER	8
-#define	RCV_DONE	0x0008
-#define	RX_OK		0x2000
-#define	RX_ERROR	0x0d81
-#define	TX_DONE_BIT	0x0080
-#define	CHAIN_BIT	0x8000
-#define	XMT_STATUS	0x02
-#define	XMT_CHAIN	0x04
-#define	XMT_COUNT	0x06
-#define	BANK0_SELECT	0x00
-#define	BANK1_SELECT	0x40
-#define	BANK2_SELECT	0x80
-#define	COMMAND_REG	0x00
-#define	MC_SETUP	0x03
-#define	XMT_CMD		0x04
-#define	DIAGNOSE_CMD	0x07
-#define	RCV_ENABLE_CMD	0x08
-#define	RCV_DISABLE_CMD	0x0a
-#define	STOP_RCV_CMD	0x0b
-#define	RESET_CMD	0x0e
-#define	POWER_DOWN_CMD	0x18
-#define	RESUME_XMT_CMD	0x1c
-#define	SEL_RESET_CMD	0x1e
-#define	STATUS_REG	0x01
-#define	RX_INT		0x02
-#define	TX_INT		0x04
-#define	EXEC_STATUS	0x30
-#define	ID_REG		0x02
-#define	R_ROBIN_BITS	0xc0
-#define	ID_REG_MASK	0x2c
-#define	ID_REG_SIG	0x24
-#define	AUTO_ENABLE	0x10
-#define	INT_MASK_REG	0x03
-#define	RX_STOP_MASK	0x01
-#define	RX_MASK		0x02
-#define	TX_MASK		0x04
-#define	EXEC_MASK	0x08
-#define	ALL_MASK	0x0f
-#define	IO_32_BIT	0x10
-#define	RCV_BAR		0x04
-#define	RCV_STOP	0x06
-#define	XMT_BAR		0x0a
-#define	HOST_ADDRESS_REG	0x0c
-#define	IO_PORT		0x0e
-#define	IO_PORT_32_BIT	0x0c
-#define	REG1	0x01
-#define	WORD_WIDTH	0x02
-#define	INT_ENABLE	0x80
-#define INT_NO_REG	0x02
-#define	RCV_LOWER_LIMIT_REG	0x08
-#define	RCV_UPPER_LIMIT_REG	0x09
-#define	XMT_LOWER_LIMIT_REG	0x0a
-#define	XMT_UPPER_LIMIT_REG	0x0b
-#define	XMT_Chain_Int	0x20
-#define	XMT_Chain_ErrStop	0x40
-#define	RCV_Discard_BadFrame	0x80
-#define	REG2		0x02
-#define	PRMSC_Mode	0x01
-#define	Multi_IA	0x20
-#define	REG3		0x03
-#define	TPE_BIT		0x04
-#define	BNC_BIT		0x20
-#define	REG13		0x0d
-#define	FDX		0x00
-#define	A_N_ENABLE	0x02
-#define	I_ADD_REG0	0x04
-#define	I_ADD_REG1	0x05
-#define	I_ADD_REG2	0x06
-#define	I_ADD_REG3	0x07
-#define	I_ADD_REG4	0x08
-#define	I_ADD_REG5	0x09
+#define XMT_HEADER 8
+#define RCV_DONE 0x0008
+#define RX_OK 0x2000
+#define RX_ERROR 0x0d81
+#define TX_DONE_BIT 0x0080
+#define CHAIN_BIT 0x8000
+#define XMT_STATUS 0x02
+#define XMT_CHAIN 0x04
+#define XMT_COUNT 0x06
+#define BANK0_SELECT 0x00
+#define BANK1_SELECT 0x40
+#define BANK2_SELECT 0x80
+#define COMMAND_REG 0x00
+#define MC_SETUP 0x03
+#define XMT_CMD 0x04
+#define DIAGNOSE_CMD 0x07
+#define RCV_ENABLE_CMD 0x08
+#define RCV_DISABLE_CMD 0x0a
+#define STOP_RCV_CMD 0x0b
+#define RESET_CMD 0x0e
+#define POWER_DOWN_CMD 0x18
+#define RESUME_XMT_CMD 0x1c
+#define SEL_RESET_CMD 0x1e
+#define STATUS_REG 0x01
+#define RX_INT 0x02
+#define TX_INT 0x04
+#define EXEC_STATUS 0x30
+#define ID_REG 0x02
+#define R_ROBIN_BITS 0xc0
+#define ID_REG_MASK 0x2c
+#define ID_REG_SIG 0x24
+#define AUTO_ENABLE 0x10
+#define INT_MASK_REG 0x03
+#define RX_STOP_MASK 0x01
+#define RX_MASK 0x02
+#define TX_MASK 0x04
+#define EXEC_MASK 0x08
+#define ALL_MASK 0x0f
+#define IO_32_BIT 0x10
+#define RCV_BAR 0x04
+#define RCV_STOP 0x06
+#define XMT_BAR 0x0a
+#define HOST_ADDRESS_REG 0x0c
+#define IO_PORT 0x0e
+#define IO_PORT_32_BIT 0x0c
+#define REG1 0x01
+#define WORD_WIDTH 0x02
+#define INT_ENABLE 0x80
+#define INT_NO_REG 0x02
+#define RCV_LOWER_LIMIT_REG 0x08
+#define RCV_UPPER_LIMIT_REG 0x09
+#define XMT_LOWER_LIMIT_REG 0x0a
+#define XMT_UPPER_LIMIT_REG 0x0b
+#define XMT_Chain_Int 0x20
+#define XMT_Chain_ErrStop 0x40
+#define RCV_Discard_BadFrame 0x80
+#define REG2 0x02
+#define PRMSC_Mode 0x01
+#define Multi_IA 0x20
+#define REG3 0x03
+#define TPE_BIT 0x04
+#define BNC_BIT 0x20
+#define REG13 0x0d
+#define FDX 0x00
+#define A_N_ENABLE 0x02
+#define I_ADD_REG0 0x04
+#define I_ADD_REG1 0x05
+#define I_ADD_REG2 0x06
+#define I_ADD_REG3 0x07
+#define I_ADD_REG4 0x08
+#define I_ADD_REG5 0x09
 #define EEPROM_REG 0x0a
 #define EESK 0x01
 #define EECS 0x02
@@ -222,24 +222,24 @@ if (dev->irq < 2 && eepro) {
 i = read_eeprom(ioaddr, 1);
 if (eepro == 1)
 switch (i & 0x07) {
-case 0:	dev->irq = 9; break;
-case 1:	dev->irq = 3; break;
-case 2:	dev->irq = 5; break;
-case 3:	dev->irq = 10; break;
-case 4:	dev->irq = 11; break;
+case 0: dev->irq = 9; break;
+case 1: dev->irq = 3; break;
+case 2: dev->irq = 5; break;
+case 3: dev->irq = 10; break;
+case 4: dev->irq = 11; break;
 default:
 printk(" illegal interrupt vector stored in EEPROM.\n");
 return ENODEV;
 }
 else switch (i & 0x07) {
-case 0:	dev->irq = 3; break;
-case 1:	dev->irq = 4; break;
-case 2:	dev->irq = 5; break;
-case 3:	dev->irq = 7; break;
-case 4:	dev->irq = 9; break;
-case 5:	dev->irq = 10; break;
-case 6:	dev->irq = 11; break;
-case 7:	dev->irq = 12; break;
+case 0: dev->irq = 3; break;
+case 1: dev->irq = 4; break;
+case 2: dev->irq = 5; break;
+case 3: dev->irq = 7; break;
+case 4: dev->irq = 9; break;
+case 5: dev->irq = 10; break;
+case 6: dev->irq = 11; break;
+case 7: dev->irq = 12; break;
 }
 }
 else if (dev->irq == 2)
@@ -627,7 +627,7 @@ if (i & 0x20) {
 printk("%s: multicast setup failed.\n",
 dev->name);
 break;
-} else if ((i & 0x0f) == 0x03)	{
+} else if ((i & 0x0f) == 0x03) {
 printk("%s: set Rx mode to %d addresses.\n",
 dev->name, dev->mc_count);
 break;
@@ -638,7 +638,7 @@ outb(ALL_MASK & ~(RX_MASK | TX_MASK), ioaddr + INT_MASK_REG);
 }
 outb(RCV_ENABLE_CMD, ioaddr);
 }
-#define eeprom_delay()	{ int _i = 40; while (--_i > 0) { __SLOW_DOWN_IO; }}
+#define eeprom_delay() { int _i = 40; while (--_i > 0) { __SLOW_DOWN_IO; }}
 #define EE_READ_CMD (6 << 6)
 int
 read_eeprom(int ioaddr, int location)
@@ -661,9 +661,9 @@ eeprom_delay();
 }
 outb(ctrl_val, ee_addr);
 for (i = 16; i > 0; i--) {
-outb(ctrl_val | EESK, ee_addr);	 eeprom_delay();
+outb(ctrl_val | EESK, ee_addr); eeprom_delay();
 retval = (retval << 1) | ((inb(ee_addr) & EEDO) ? 1 : 0);
-outb(ctrl_val, ee_addr);  eeprom_delay();
+outb(ctrl_val, ee_addr); eeprom_delay();
 }
 ctrl_val &= ~EECS;
 outb(ctrl_val | EESK, ee_addr);
@@ -867,8 +867,8 @@ init_module(void)
 if (io == 0)
 printk("eepro: You should not use auto-probing with insmod!\n");
 dev_eepro.base_addr = io;
-dev_eepro.irq       = irq;
-dev_eepro.mem_end   = mem;
+dev_eepro.irq = irq;
+dev_eepro.mem_end = mem;
 if (register_netdev(&dev_eepro) != 0)
 return -EIO;
 return 0;

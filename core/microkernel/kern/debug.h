@@ -5,9 +5,9 @@
 #define here() printf("@ %s:%d\n", __FILE__, __LINE__)
 #define message(args) ({ printf("@ %s:%d: ", __FILE__, __LINE__); printf args; printf("\n"); })
 #define otsan() panic("%s:%d: off the straight and narrow!", __FILE__, __LINE__)
-#define struct_id_decl		unsigned struct_id;
-#define struct_id_init(p,id)	((p)->struct_id = (id))
-#define struct_id_denit(p)	((p)->struct_id = 0)
+#define struct_id_decl unsigned struct_id;
+#define struct_id_init(p,id) ((p)->struct_id = (id))
+#define struct_id_denit(p) ((p)->struct_id = 0)
 #define struct_id_verify(p,id) \
 ({ if ((p)->struct_id != (id)) \
 panic("%s:%d: "#p" (%08x) struct_id should be "#id" (%08x), is %08x\n", \
@@ -25,7 +25,7 @@ extern void panic_init(void);
 extern void Panic (const char *file, int line, const char *fun,
 const char *s, ...)
 __attribute__ ((noreturn, format (printf, 4, 5)));
-#define panic(s, ...)							\
+#define panic(s, ...) \
 Panic (__FILE__, __LINE__, __FUNCTION__, s, ##__VA_ARGS__)
 extern void SoftDebugger (const char *message);
 extern void Debugger (const char *message) __attribute__ ((noreturn));

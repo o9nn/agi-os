@@ -214,7 +214,7 @@ gsdll.set_visual_tracer(&visual_tracer);
 gsdll.set_stdio(instance, gsdll_stdin, gsdll_stdout, gsdll_stderr);
 gsdll.set_poll(instance, gsdll_poll);
 gsdll.set_display_callback(instance, &display);
-{   int format = DISPLAY_COLORS_NATIVE | DISPLAY_ALPHA_NONE |
+{ int format = DISPLAY_COLORS_NATIVE | DISPLAY_ALPHA_NONE |
 DISPLAY_DEPTH_1 | DISPLAY_LITTLEENDIAN | DISPLAY_BOTTOMFIRST;
 HDC hdc = GetDC(NULL);
 int depth = GetDeviceCaps(hdc, PLANES) * GetDeviceCaps(hdc, BITSPIXEL);

@@ -1,49 +1,49 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-typedef struct Link	Link;
-typedef struct Loop	Loop;
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+typedef struct Link Link;
+typedef struct Loop Loop;
 struct Link
 {
 Lock;
-int	ref;
-long	packets;
-long	bytes;
-int	indrop;
-long	soverflows;
-long	droprate;
-long	drops;
-vlong	delay0ns;
-long	delaynns;
-Block	*tq;
-Block	*tqtail;
-vlong	tout;
-vlong	tin;
-long	limit;
-Queue	*oq;
-Queue	*iq;
-Timer	ci;
+int ref;
+long packets;
+long bytes;
+int indrop;
+long soverflows;
+long droprate;
+long drops;
+vlong delay0ns;
+long delaynns;
+Block *tq;
+Block *tqtail;
+vlong tout;
+vlong tin;
+long limit;
+Queue *oq;
+Queue *iq;
+Timer ci;
 };
 struct Loop
 {
 QLock;
-int	ref;
-int	minmtu;
-Loop	*next;
-ulong	path;
-Link	link[2];
+int ref;
+int minmtu;
+Loop *next;
+ulong path;
+Link link[2];
 };
 static struct
 {
 Lock;
-ulong	path;
+ulong path;
 } loopbackalloc;
 enum
 {
-Qtopdir=	1,
+Qtopdir= 1,
 Qloopdir,
 Qportdir,
 Qctl,
@@ -51,33 +51,33 @@ Qstatus,
 Qstats,
 Qdata,
 MaxQ,
-Nloopbacks	= 5,
-Statelen	= 23*1024,
-Tmsize		= 8,
-Delayn 		= 10000,
-Delay0 		= 2500000,
-Loopqlim	= 32*1024,
+Nloopbacks = 5,
+Statelen = 23*1024,
+Tmsize = 8,
+Delayn = 10000,
+Delay0 = 2500000,
+Loopqlim = 32*1024,
 };
 static Dirtab loopportdir[] =
 {
-"ctl",		{Qctl},		0,			0222,
-"status",	{Qstatus},	0,			0444,
-"stats",	{Qstats},	0,			0444,
-"data",		{Qdata},	0,			0666,
+"ctl", {Qctl}, 0, 0222,
+"status", {Qstatus}, 0, 0444,
+"stats", {Qstats}, 0, 0444,
+"data", {Qdata}, 0, 0666,
 };
 static Dirtab loopdirs[MaxQ];
-static Loop	loopbacks[Nloopbacks];
-#define TYPE(x) 	(((ulong)(x))&0xff)
-#define ID(x) 		(((ulong)(x))>>8)
-#define QID(x,y) 	((((ulong)(x))<<8)|((ulong)(y)))
-static void	looper(Loop *lb);
-static long	loopoput(Loop *lb, Link *link, Block *bp);
-static void	ptime(uchar *p, vlong t);
-static vlong	gtime(uchar *p);
-static void	closelink(Link *link, int dofree);
-static void	pushlink(Link *link, vlong now);
-static void	freelb(Loop *lb);
-static void	linkintr(Ureg*, Timer *ci);
+static Loop loopbacks[Nloopbacks];
+#define TYPE(x) (((ulong)(x))&0xff)
+#define ID(x) (((ulong)(x))>>8)
+#define QID(x,y) ((((ulong)(x))<<8)|((ulong)(y)))
+static void looper(Loop *lb);
+static long loopoput(Loop *lb, Link *link, Block *bp);
+static void ptime(uchar *p, vlong t);
+static vlong gtime(uchar *p);
+static void closelink(Link *link, int dofree);
+static void pushlink(Link *link, vlong now);
+static void freelb(Loop *lb);
+static void linkintr(Ureg*, Timer *ci);
 static void
 loopbackinit(void)
 {

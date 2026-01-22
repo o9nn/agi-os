@@ -8,8 +8,8 @@ extern int emergency_sync_scheduled;
 #define EMERG_REMOUNT 2
 void do_emergency_sync(void);
 #ifdef CONFIG_MAGIC_SYSRQ
-#define CHECK_EMERGENCY_SYNC			\
-if (emergency_sync_scheduled)		\
+#define CHECK_EMERGENCY_SYNC \
+if (emergency_sync_scheduled) \
 do_emergency_sync();
 #else
 #define CHECK_EMERGENCY_SYNC

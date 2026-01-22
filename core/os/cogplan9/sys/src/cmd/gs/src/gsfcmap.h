@@ -1,8 +1,8 @@
 #ifndef gsfcmap_INCLUDED
-#  define gsfcmap_INCLUDED
+# define gsfcmap_INCLUDED
 #include "gsccode.h"
 #ifndef gs_cmap_DEFINED
-#  define gs_cmap_DEFINED
+# define gs_cmap_DEFINED
 typedef struct gs_cmap_s gs_cmap_t;
 #endif
 int gs_cmap_create_identity(gs_cmap_t **ppcmap, int num_bytes, int wmode,

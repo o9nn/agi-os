@@ -111,7 +111,7 @@ type == XA_STRING) {
 int llx, lly, urx, ury;
 int left_margin = 0, bottom_margin = 0;
 int right_margin = 0, top_margin = 0;
-int  page_orientation;
+int page_orientation;
 float xppp, yppp;
 nitems = sscanf(buf,
 "%ld %d %d %d %d %d %f %f %d %d %d %d",
@@ -195,7 +195,7 @@ int scrno = DefaultScreen(xdev->dpy);
 if ( XMatchVisualInfo(xdev->dpy, scrno, 24, TrueColor, &xvinfo) ||
 XMatchVisualInfo(xdev->dpy, scrno, 32, TrueColor, &xvinfo) ||
 XMatchVisualInfo(xdev->dpy, scrno, 16, TrueColor, &xvinfo) ||
-XMatchVisualInfo(xdev->dpy, scrno, 15, TrueColor, &xvinfo)  ) {
+XMatchVisualInfo(xdev->dpy, scrno, 15, TrueColor, &xvinfo) ) {
 xdev->cmap = XCreateColormap (xdev->dpy,
 DefaultRootWindow(xdev->dpy),
 xvinfo.visual, AllocNone );

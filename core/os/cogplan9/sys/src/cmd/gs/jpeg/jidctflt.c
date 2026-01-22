@@ -6,7 +6,7 @@
 #if DCTSIZE != 8
 Sorry, this code only copes with 8x8 DCTs.
 #endif
-#define DEQUANTIZE(coef,quantval)  (((FAST_FLOAT) (coef)) * (quantval))
+#define DEQUANTIZE(coef,quantval) (((FAST_FLOAT) (coef)) * (quantval))
 GLOBAL(void)
 jpeg_idct_float (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 JCOEFPTR coef_block,

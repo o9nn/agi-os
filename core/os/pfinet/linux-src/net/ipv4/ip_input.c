@@ -40,7 +40,7 @@ return(-EINVAL);
 }
 static __inline__ int icmp_filter(struct sock *sk, struct sk_buff *skb)
 {
-int    type;
+int type;
 type = skb->h.icmph->type;
 if (type < 32)
 return test_bit(type, &sk->tp_pinfo.tp_raw4.filter);
@@ -168,7 +168,7 @@ return(0);
 int ip_rcv(struct sk_buff *skb, struct device *dev, struct packet_type *pt)
 {
 struct iphdr *iph = skb->nh.iph;
-#ifdef	CONFIG_FIREWALL
+#ifdef CONFIG_FIREWALL
 int fwres;
 u16 rport;
 #endif
@@ -185,7 +185,7 @@ goto inhdr_error;
 __u32 len = ntohs(iph->tot_len);
 if (skb->len < len)
 goto inhdr_error;
-if (len <  (iph->ihl << 2))
+if (len < (iph->ihl << 2))
 goto inhdr_error;
 __skb_trim(skb, len);
 }
@@ -245,7 +245,7 @@ goto drop;
 }
 }
 #ifdef CONFIG_FIREWALL
-#ifdef	CONFIG_IP_TRANSPARENT_PROXY
+#ifdef CONFIG_IP_TRANSPARENT_PROXY
 if (fwres == FW_REDIRECT && (IPCB(skb)->redirport = rport) != 0)
 return ip_local_deliver(skb);
 #endif

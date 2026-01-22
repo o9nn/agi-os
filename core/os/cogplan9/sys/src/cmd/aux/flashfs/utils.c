@@ -1,14 +1,14 @@
 #include <u.h>
 #include <libc.h>
 #include "flashfs.h"
-char*	prog;
-ulong	sectsize;
-ulong	nsects;
-uchar*	sectbuff;
-int	readonly;
-ulong	delta;
-int	eparity;
-uchar	magic[]	= { MAGIC0, MAGIC1, MAGIC2, FFSVERS };
+char* prog;
+ulong sectsize;
+ulong nsects;
+uchar* sectbuff;
+int readonly;
+ulong delta;
+int eparity;
+uchar magic[] = { MAGIC0, MAGIC1, MAGIC2, FFSVERS };
 int
 putc3(uchar *buff, ulong v)
 {
@@ -53,16 +53,16 @@ return 3;
 ulong
 get4(uchar *b)
 {
-return	(b[0] <<  0) |
-(b[1] <<  8) |
+return (b[0] << 0) |
+(b[1] << 8) |
 (b[2] << 16) |
 (b[3] << 24);
 }
 void
 put4(uchar *b, ulong v)
 {
-b[0] = v >>  0;
-b[1] = v >>  8;
+b[0] = v >> 0;
+b[1] = v >> 8;
 b[2] = v >> 16;
 b[3] = v >> 24;
 }

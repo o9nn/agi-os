@@ -57,10 +57,10 @@ const struct ps_tty_abbrev ps_tty_abbrevs[] =
 {
 { "/tmp/console", "oc" },
 { "/dev/console", "co" },
-{ "/dev/tty",     ""   },
-{ "/dev/pty",     ""   },
-{ "/dev/com",     "c"  },
-{ "/dev/",	    ""   },
+{ "/dev/tty", "" },
+{ "/dev/pty", "" },
+{ "/dev/com", "c" },
+{ "/dev/", "" },
 { 0 }
 };
 const char *

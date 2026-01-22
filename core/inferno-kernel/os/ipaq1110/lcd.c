@@ -1,13 +1,13 @@
-#include	"u.h"
-#include 	"mem.h"
-#include	"../port/lib.h"
-#include 	"dat.h"
-#include 	"draw.h"
-#include	"fns.h"
-#include	"io.h"
-#include	<memdraw.h>
-#include	"screen.h"
-#define	DPRINT	if(1)iprint
+#include "u.h"
+#include "mem.h"
+#include "../port/lib.h"
+#include "dat.h"
+#include "draw.h"
+#include "fns.h"
+#include "io.h"
+#include <memdraw.h>
+#include "screen.h"
+#define DPRINT if(1)iprint
 enum {
 EnableCtlr = 1<<0,
 IsColour = 0<<1,
@@ -30,11 +30,11 @@ OELow = 1<<23,
 typedef struct {
 Vdisplay;
 LCDparam;
-ushort*	palette;
-uchar*	upper;
-uchar*	lower;
+ushort* palette;
+uchar* upper;
+uchar* lower;
 } LCDdisplay;
-static LCDdisplay	*vd;
+static LCDdisplay *vd;
 void
 lcd_setcolor(ulong p, ulong r, ulong g, ulong b)
 {
@@ -79,15 +79,15 @@ clockdiv=0x10;
 disablelcd();
 lcd->lccr0 = 0;
 DPRINT("  pclk=%d clockdiv=%d\n", pclk, clockdiv);
-lcd->lccr3 =  (clockdiv << 0) |
+lcd->lccr3 = (clockdiv << 0) |
 (p->acbias_lines << 8) |
 (p->lines_per_int << 16) |
 VsyncLow | HsyncLow;
-lcd->lccr2 =  (((p->y/(p->dual+1))-1) << 0) |
+lcd->lccr2 = (((p->y/(p->dual+1))-1) << 0) |
 (p->vsync_hgt << 10) |
 (p->eof_wait << 16) |
 (p->sof_wait << 24);
-lcd->lccr1 =  ((p->x-16) << 0) |
+lcd->lccr1 = ((p->x-16) << 0) |
 (p->hsync_wid << 10) |
 (p->eol_wait << 16) |
 (p->sol_wait << 24);

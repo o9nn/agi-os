@@ -21,22 +21,22 @@
 #include <pcmcia/ciscode.h>
 #include <pcmcia/ds.h>
 #include <pcmcia/cisreg.h>
-#define AXNET_CMD	0x00
-#define AXNET_DATAPORT	0x10
-#define AXNET_RESET	0x1f
-#define AXNET_MII_EEP	0x14
-#define AXNET_TEST	0x15
-#define AXNET_GPIO	0x17
-#define AXNET_START_PG	0x40
-#define AXNET_STOP_PG	0x80
+#define AXNET_CMD 0x00
+#define AXNET_DATAPORT 0x10
+#define AXNET_RESET 0x1f
+#define AXNET_MII_EEP 0x14
+#define AXNET_TEST 0x15
+#define AXNET_GPIO 0x17
+#define AXNET_START_PG 0x40
+#define AXNET_STOP_PG 0x80
 #define AXNET_RDC_TIMEOUT 0x02
-#define IS_AX88190	0x0001
-#define IS_AX88790	0x0002
+#define IS_AX88190 0x0001
+#define IS_AX88790 0x0002
 MODULE_AUTHOR("David Hinds <dahinds@users.sourceforge.net>");
 MODULE_DESCRIPTION("Asix AX88190 PCMCIA ethernet driver");
 MODULE_LICENSE("GPL");
 #define INT_MODULE_PARM(n, v) static int n = v; MODULE_PARM(n, "i")
-INT_MODULE_PARM(irq_mask,	0xdeb8);
+INT_MODULE_PARM(irq_mask, 0xdeb8);
 static int irq_list[4] = { -1 };
 MODULE_PARM(irq_list, "1-4i");
 #ifdef PCMCIA_DEBUG
@@ -75,16 +75,16 @@ static int ax_open(struct net_device *dev);
 static int ax_close(struct net_device *dev);
 static void ax_interrupt(int irq, void *dev_id, struct pt_regs *regs);
 typedef struct axnet_dev_t {
-struct net_device	dev;
-dev_link_t		link;
-dev_node_t		node;
-caddr_t		base;
-struct timer_list	watchdog;
-int			stale, fast_poll;
-u_short		link_status;
-u_char		duplex_flag;
-int			phy_id;
-int			flags;
+struct net_device dev;
+dev_link_t link;
+dev_node_t node;
+caddr_t base;
+struct timer_list watchdog;
+int stale, fast_poll;
+u_short link_status;
+u_char duplex_flag;
+int phy_id;
+int flags;
 } axnet_dev_t;
 static void flush_stale_links(void)
 {
@@ -188,17 +188,17 @@ struct {
 u_char value, offset;
 } program_seq[] = {
 {E8390_NODMA+E8390_PAGE0+E8390_STOP, E8390_CMD},
-{0x01,	EN0_DCFG},
-{0x00,	EN0_RCNTLO},
-{0x00,	EN0_RCNTHI},
-{0x00,	EN0_IMR},
-{0xFF,	EN0_ISR},
+{0x01, EN0_DCFG},
+{0x00, EN0_RCNTLO},
+{0x00, EN0_RCNTHI},
+{0x00, EN0_IMR},
+{0xFF, EN0_ISR},
 {E8390_RXOFF|0x40, EN0_RXCR},
 {E8390_TXOFF, EN0_TXCR},
-{0x10,	EN0_RCNTLO},
-{0x00,	EN0_RCNTHI},
-{0x00,	EN0_RSARLO},
-{0x04,	EN0_RSARHI},
+{0x10, EN0_RCNTLO},
+{0x00, EN0_RCNTHI},
+{0x00, EN0_RSARLO},
+{0x04, EN0_RSARHI},
 {E8390_RREAD+E8390_START, E8390_CMD},
 };
 if (link->conf.ConfigBase != 0x03c0)
@@ -425,12 +425,12 @@ break;
 }
 return 0;
 }
-#define MDIO_SHIFT_CLK		0x01
-#define MDIO_DATA_WRITE0	0x00
-#define MDIO_DATA_WRITE1	0x08
-#define MDIO_DATA_READ		0x04
-#define MDIO_MASK		0x0f
-#define MDIO_ENB_IN		0x02
+#define MDIO_SHIFT_CLK 0x01
+#define MDIO_DATA_WRITE0 0x00
+#define MDIO_DATA_WRITE1 0x08
+#define MDIO_DATA_READ 0x04
+#define MDIO_MASK 0x0f
+#define MDIO_ENB_IN 0x02
 static void mdio_sync(ioaddr_t addr)
 {
 int bits;
@@ -768,7 +768,7 @@ if (ei_local->tx1 == 0)
 {
 output_page = ei_local->tx_start_page;
 ei_local->tx1 = send_length;
-if (ei_debug  &&  ei_local->tx2 > 0)
+if (ei_debug && ei_local->tx2 > 0)
 printk(KERN_DEBUG "%s: idle transmitter tx2=%d, lasttx=%d, txing=%d.\n",
 dev->name, ei_local->tx2, ei_local->lasttx, ei_local->txing);
 }
@@ -776,7 +776,7 @@ else if (ei_local->tx2 == 0)
 {
 output_page = ei_local->tx_start_page + TX_1X_PAGES;
 ei_local->tx2 = send_length;
-if (ei_debug  &&  ei_local->tx1 > 0)
+if (ei_debug && ei_local->tx1 > 0)
 printk(KERN_DEBUG "%s: idle transmitter, tx1=%d, lasttx=%d, txing=%d.\n",
 dev->name, ei_local->tx1, ei_local->lasttx, ei_local->txing);
 }
@@ -811,7 +811,7 @@ ei_local->lasttx = -2;
 }
 }
 else ei_local->txqueue++;
-if (ei_local->tx1  &&  ei_local->tx2)
+if (ei_local->tx1 && ei_local->tx2)
 netif_stop_queue(dev);
 else
 netif_start_queue(dev);
@@ -884,7 +884,7 @@ ei_tx_err(dev);
 if (interrupts & ENISR_COUNTERS)
 {
 ei_local->stat.rx_frame_errors += inb_p(e8390_base + EN0_COUNTER0);
-ei_local->stat.rx_crc_errors   += inb_p(e8390_base + EN0_COUNTER1);
+ei_local->stat.rx_crc_errors += inb_p(e8390_base + EN0_COUNTER1);
 ei_local->stat.rx_missed_errors+= inb_p(e8390_base + EN0_COUNTER2);
 }
 }
@@ -960,7 +960,7 @@ else ei_local->lasttx = 20, ei_local->txing = 0;
 }
 else if (ei_local->tx2 < 0)
 {
-if (ei_local->lasttx != 2  &&  ei_local->lasttx != -2)
+if (ei_local->lasttx != 2 && ei_local->lasttx != -2)
 printk("%s: bogus last_tx_buffer %d, tx2=%d.\n",
 ei_local->name, ei_local->lasttx, ei_local->tx2);
 ei_local->tx2 = 0;
@@ -1013,7 +1013,7 @@ rxing_page = inb_p(e8390_base + EN1_CURPAG -1);
 this_frame = inb_p(e8390_base + EN0_BOUNDARY) + 1;
 if (this_frame >= ei_local->stop_page)
 this_frame = ei_local->rx_start_page;
-if (ei_debug > 0  &&  this_frame != ei_local->current_page && (this_frame!=0x0 || rxing_page!=0xFF))
+if (ei_debug > 0 && this_frame != ei_local->current_page && (this_frame!=0x0 || rxing_page!=0xFF))
 printk(KERN_ERR "%s: mismatched read page pointers %2x vs %2x.\n",
 dev->name, this_frame, ei_local->current_page);
 if (this_frame == rxing_page)
@@ -1023,7 +1023,7 @@ ei_get_8390_hdr(dev, &rx_frame, this_frame);
 pkt_len = rx_frame.count - sizeof(struct e8390_pkt_hdr);
 pkt_stat = rx_frame.status;
 next_frame = this_frame + 1 + ((pkt_len+4)>>8);
-if (pkt_len < 60  ||  pkt_len > 1518)
+if (pkt_len < 60 || pkt_len > 1518)
 {
 if (ei_debug)
 printk(KERN_DEBUG "%s: bogus packet size: %d, status=%#2x nxpg=%#2x.\n",
@@ -1116,7 +1116,7 @@ if (!netif_running(dev))
 return &ei_local->stat;
 spin_lock_irqsave(&ei_local->page_lock,flags);
 ei_local->stat.rx_frame_errors += inb_p(ioaddr + EN0_COUNTER0);
-ei_local->stat.rx_crc_errors   += inb_p(ioaddr + EN0_COUNTER1);
+ei_local->stat.rx_crc_errors += inb_p(ioaddr + EN0_COUNTER1);
 ei_local->stat.rx_missed_errors+= inb_p(ioaddr + EN0_COUNTER2);
 spin_unlock_irqrestore(&ei_local->page_lock, flags);
 return &ei_local->stat;
@@ -1153,7 +1153,7 @@ ei_local = (struct ei_device *)dev->priv;
 spin_lock_init(&ei_local->page_lock);
 }
 dev->hard_start_xmit = &ei_start_xmit;
-dev->get_stats	= get_stats;
+dev->get_stats = get_stats;
 dev->set_multicast_list = &set_multicast_list;
 ether_setup(dev);
 return 0;
@@ -1169,8 +1169,8 @@ if(sizeof(struct e8390_pkt_hdr)!=4)
 panic("8390.c: header struct mispacked\n");
 outb_p(E8390_NODMA+E8390_PAGE0+E8390_STOP, e8390_base+E8390_CMD);
 outb_p(endcfg, e8390_base + EN0_DCFG);
-outb_p(0x00,  e8390_base + EN0_RCNTLO);
-outb_p(0x00,  e8390_base + EN0_RCNTHI);
+outb_p(0x00, e8390_base + EN0_RCNTLO);
+outb_p(0x00, e8390_base + EN0_RCNTHI);
 outb_p(E8390_RXOFF|0x40, e8390_base + EN0_RXCR);
 outb_p(E8390_TXOFF, e8390_base + EN0_TXCR);
 outb_p(ei_local->tx_start_page, e8390_base + EN0_TPSR);
@@ -1180,7 +1180,7 @@ outb_p(ei_local->stop_page-1, e8390_base + EN0_BOUNDARY);
 ei_local->current_page = ei_local->rx_start_page;
 outb_p(ei_local->stop_page, e8390_base + EN0_STOPPG);
 outb_p(0xFF, e8390_base + EN0_ISR);
-outb_p(0x00,  e8390_base + EN0_IMR);
+outb_p(0x00, e8390_base + EN0_IMR);
 outb_p(E8390_NODMA + E8390_PAGE1 + E8390_STOP, e8390_base+E8390_CMD);
 for(i = 0; i < 6; i++)
 {
@@ -1197,8 +1197,8 @@ ei_local->tx1 = ei_local->tx2 = 0;
 ei_local->txing = 0;
 if (startp)
 {
-outb_p(0xff,  e8390_base + EN0_ISR);
-outb_p(ENISR_ALL,  e8390_base + EN0_IMR);
+outb_p(0xff, e8390_base + EN0_ISR);
+outb_p(ENISR_ALL, e8390_base + EN0_IMR);
 outb_p(E8390_NODMA+E8390_PAGE0+E8390_START, e8390_base+E8390_CMD);
 outb_p(E8390_TXCONFIG | info->duplex_flag,
 e8390_base + EN0_TXCR);

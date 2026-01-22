@@ -2,9 +2,9 @@
 (use-modules (opencog persist-sql))
 (define psn (PostgresStorageNode "postgres://opencog_tester:cheese@localhost/opencog_test"))
 (cog-set-value!
-   (Concept "asdf")
-   (Predicate "my key")
-   (StringValue "Humpty" "Dumpty"))
+(Concept "asdf")
+(Predicate "my key")
+(StringValue "Humpty" "Dumpty"))
 (Concept "asdf" (stv 0.318309886 0.36787944))
 (cog-open psn)
 (store-atom (Concept "asdf"))
@@ -15,4 +15,4 @@
 (fetch-atom (Concept "asdf"))
 (cog-close psn)
 (format #t "The Atom ~A has value ~A\n" (Concept "asdf")
-	(cog-value (Concept "asdf") (Predicate "my key")))
+(cog-value (Concept "asdf") (Predicate "my key")))

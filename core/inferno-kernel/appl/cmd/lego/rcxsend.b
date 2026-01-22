@@ -15,7 +15,7 @@ init(portnum, dbg : int) : string
 {
 debug = dbg;
 sys = load Sys Sys->PATH;
-timers = load Timers Timers->PATH; 	#"timers.dis";
+timers = load Timers Timers->PATH; #"timers.dis";
 if (timers == nil)
 return sys->sprint("cannot load timer module: %r");
 rdfd : ref Sys->FD;

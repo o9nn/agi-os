@@ -8,10 +8,10 @@ unsigned int EOBRUN;
 int last_dc_val[MAX_COMPS_IN_SCAN];
 } savable_state;
 #ifndef NO_STRUCT_ASSIGN
-#define ASSIGN_STATE(dest,src)  ((dest) = (src))
+#define ASSIGN_STATE(dest,src) ((dest) = (src))
 #else
 #if MAX_COMPS_IN_SCAN == 4
-#define ASSIGN_STATE(dest,src)  \
+#define ASSIGN_STATE(dest,src) \
 ((dest).EOBRUN = (src).EOBRUN, \
 (dest).last_dc_val[0] = (src).last_dc_val[0], \
 (dest).last_dc_val[1] = (src).last_dc_val[1], \
@@ -110,9 +110,9 @@ entropy->saved.EOBRUN = 0;
 entropy->restarts_to_go = cinfo->restart_interval;
 }
 #ifdef AVOID_TABLES
-#define HUFF_EXTEND(x,s)  ((x) < (1<<((s)-1)) ? (x) + (((-1)<<(s)) + 1) : (x))
+#define HUFF_EXTEND(x,s) ((x) < (1<<((s)-1)) ? (x) + (((-1)<<(s)) + 1) : (x))
 #else
-#define HUFF_EXTEND(x,s)  ((x) < extend_test[s] ? (x) + extend_offset[s] : (x))
+#define HUFF_EXTEND(x,s) ((x) < extend_test[s] ? (x) + extend_offset[s] : (x))
 static const int extend_test[16] =
 { 0, 0x0001, 0x0002, 0x0004, 0x0008, 0x0010, 0x0020, 0x0040, 0x0080,
 0x0100, 0x0200, 0x0400, 0x0800, 0x1000, 0x2000, 0x4000 };

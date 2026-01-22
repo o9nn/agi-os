@@ -4,9 +4,9 @@
 #include <stdint.h>
 #ifdef __KERNEL__
 #ifndef __uint8_t_defined
-typedef unsigned char   uint8_t;
-typedef unsigned short  uint16_t;
-typedef unsigned int    uint32_t;
+typedef unsigned char uint8_t;
+typedef unsigned short uint16_t;
+typedef unsigned int uint32_t;
 typedef unsigned long long uint64_t;
 #define __uint8_t_defined
 #endif
@@ -73,11 +73,11 @@ __mach_trace_##category##_##name(); \
 #define TRACE_VM(name) MACH_TRACEPOINT(VM, name)
 #define TRACE_KERN(name) MACH_TRACEPOINT(KERN, name)
 #define TRACE_DEBUG(name) MACH_TRACEPOINT(DEBUG, name)
-#define MACH_TRACE_EVENT_IPC_BASE    0x1000
-#define MACH_TRACE_EVENT_SCHED_BASE  0x2000
-#define MACH_TRACE_EVENT_VM_BASE     0x3000
-#define MACH_TRACE_EVENT_KERN_BASE   0x4000
-#define MACH_TRACE_EVENT_DEBUG_BASE  0x5000
+#define MACH_TRACE_EVENT_IPC_BASE 0x1000
+#define MACH_TRACE_EVENT_SCHED_BASE 0x2000
+#define MACH_TRACE_EVENT_VM_BASE 0x3000
+#define MACH_TRACE_EVENT_KERN_BASE 0x4000
+#define MACH_TRACE_EVENT_DEBUG_BASE 0x5000
 #else
 #define MACH_TRACEPOINT_DECLARE(category, name)
 #define MACH_TRACEPOINT_DEFINE(category, name, level, id, fmt, ...)
@@ -97,7 +97,7 @@ uint32_t num_events;
 uint32_t dropped_events;
 struct mach_trace_event events[];
 };
-#define MACH_TRACE_ENABLE_CALL    3500
-#define MACH_TRACE_READ_CALL      3501
-#define MACH_TRACE_STATUS_CALL    3502
+#define MACH_TRACE_ENABLE_CALL 3500
+#define MACH_TRACE_READ_CALL 3501
+#define MACH_TRACE_STATUS_CALL 3502
 #endif

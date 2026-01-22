@@ -27,14 +27,14 @@ import '@fontsource/m-plus-rounded-1c'
 import '@fontsource/sniglet'
 const pinia = createPinia()
 const router = createRouter({
-  history: createWebHashHistory(),
-  routes: setupLayouts(routes as RouteRecordRaw[]),
+history: createWebHashHistory(),
+routes: setupLayouts(routes as RouteRecordRaw[]),
 })
 createApp(App)
-  .use(MotionPlugin)
-  .use(autoAnimatePlugin as unknown as Plugin)
-  .use(router)
-  .use(pinia)
-  .use(i18n)
-  .use(Tres)
-  .mount('#app')
+.use(MotionPlugin)
+.use(autoAnimatePlugin as unknown as Plugin)
+.use(router)
+.use(pinia)
+.use(i18n)
+.use(Tres)
+.mount('#app')

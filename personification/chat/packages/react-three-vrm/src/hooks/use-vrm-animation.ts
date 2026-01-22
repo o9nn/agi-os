@@ -6,21 +6,21 @@ import { useLoader } from '@react-three/fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import type { UseVRMExtendLoader } from './use-vrm'
 const extensions = (extendLoader?: UseVRMExtendLoader) =>
-  (loader: GLTFLoader) => {
-    loader.register(parser => new VRMAnimationLoaderPlugin(parser))
-    if (extendLoader)
-      extendLoader(loader)
-  }
+(loader: GLTFLoader) => {
+loader.register(parser => new VRMAnimationLoaderPlugin(parser))
+if (extendLoader)
+extendLoader(loader)
+}
 const useVRMAnimation = (path: string, vrm: VRM, name?: string, extendLoader?: UseVRMExtendLoader): AnimationClip => {
-  const gltf = useLoader(GLTFLoader, path, extensions(extendLoader))
-  const [vrmAnimation] = (gltf.userData as { vrmAnimations: VRMAnimation[] }).vrmAnimations
-  const clip = createVRMAnimationClip(vrmAnimation, vrm)
-  if (name != null)
-    clip.name = name
-  return clip
+const gltf = useLoader(GLTFLoader, path, extensions(extendLoader))
+const [vrmAnimation] = (gltf.userData as { vrmAnimations: VRMAnimation[] }).vrmAnimations
+const clip = createVRMAnimationClip(vrmAnimation, vrm)
+if (name != null)
+clip.name = name
+return clip
 }
 useVRMAnimation.preload = (path: string, extendLoader?: UseVRMExtendLoader) =>
-  useLoader.preload(GLTFLoader, path, extensions(extendLoader))
+useLoader.preload(GLTFLoader, path, extensions(extendLoader))
 useVRMAnimation.clear = (path: string) =>
-  useLoader.clear(GLTFLoader, path)
+useLoader.clear(GLTFLoader, path)
 export { useVRMAnimation }

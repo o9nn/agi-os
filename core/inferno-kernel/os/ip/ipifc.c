@@ -20,36 +20,36 @@ Medium *media[Maxmedia] =
 };
 struct Ipself
 {
-uchar	a[IPaddrlen];
-Ipself	*hnext;
-Iplink	*link;
-ulong	expire;
-uchar	type;
-int	ref;
-Ipself	*next;
+uchar a[IPaddrlen];
+Ipself *hnext;
+Iplink *link;
+ulong expire;
+uchar type;
+int ref;
+Ipself *next;
 };
 struct Ipselftab
 {
 QLock;
-int	inited;
-int	acceptall;
-Ipself	*hash[NHASH];
+int inited;
+int acceptall;
+Ipself *hash[NHASH];
 };
 typedef struct Ipmcast Ipmcast;
 struct Ipmcast
 {
-Ipmcast	*next;
-uchar	ma[IPaddrlen];
-uchar	ia[IPaddrlen];
+Ipmcast *next;
+uchar ma[IPaddrlen];
+uchar ia[IPaddrlen];
 };
 #define hashipa(a) ( ( ((a)[IPaddrlen-2]<<8) | (a)[IPaddrlen-1] )%NHASH )
 static char tifc[] = "ifc ";
-static void	addselfcache(Fs *f, Ipifc *ifc, Iplifc *lifc, uchar *a, int type);
-static void	remselfcache(Fs *f, Ipifc *ifc, Iplifc *lifc, uchar *a);
-static char*	ipifcjoinmulti(Ipifc *ifc, char **argv, int argc);
-static char*	ipifcleavemulti(Ipifc *ifc, char **argv, int argc);
-static void	ipifcregisterproxy(Fs*, Ipifc*, uchar*);
-static char*	ipifcremlifc(Ipifc*, Iplifc*);
+static void addselfcache(Fs *f, Ipifc *ifc, Iplifc *lifc, uchar *a, int type);
+static void remselfcache(Fs *f, Ipifc *ifc, Iplifc *lifc, uchar *a);
+static char* ipifcjoinmulti(Ipifc *ifc, char **argv, int argc);
+static char* ipifcleavemulti(Ipifc *ifc, char **argv, int argc);
+static void ipifcregisterproxy(Fs*, Ipifc*, uchar*);
+static char* ipifcremlifc(Ipifc*, Iplifc*);
 void
 addipmedium(Medium *med)
 {
@@ -1244,23 +1244,23 @@ Ngates = 3,
 char*
 ipifcaddpref6(Ipifc *ifc, char**argv, int argc)
 {
-uchar	onlink = 1;
-uchar	autoflag = 1;
-long 	validlt = 0xffffffff;
-long 	preflt = 0xffffffff;
-long	origint = NOW / 10^3;
-uchar	prefix[IPaddrlen];
-int	plen = 64;
-Iplifc	*lifc;
-char	addr[40], preflen[6];
-char	*params[3];
+uchar onlink = 1;
+uchar autoflag = 1;
+long validlt = 0xffffffff;
+long preflt = 0xffffffff;
+long origint = NOW / 10^3;
+uchar prefix[IPaddrlen];
+int plen = 64;
+Iplifc *lifc;
+char addr[40], preflen[6];
+char *params[3];
 switch(argc) {
 case 7:
 preflt = atoi(argv[6]);
 case 6:
 validlt = atoi(argv[5]);
 case 5:
-autoflag =  atoi(argv[4]);
+autoflag = atoi(argv[4]);
 case 4:
 onlink = atoi(argv[3]);
 case 3:

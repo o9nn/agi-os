@@ -11,35 +11,35 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #ifdef HAVE_LINUX_DQBLK_XFS_H
-#  include <linux/dqblk_xfs.h>
-#  define HAVE_XFS_QUOTA
+# include <linux/dqblk_xfs.h>
+# define HAVE_XFS_QUOTA
 #elif defined (HAVE_XFS_XQM_H)
-#  include <xfs/xqm.h>
-#  define HAVE_XFS_QUOTA
+# include <xfs/xqm.h>
+# define HAVE_XFS_QUOTA
 #endif
 #ifdef HAVE_RQUOTA
-#  ifdef HAVE_STRICT_BOOL
-#    pragma clang diagnostic push
-#    pragma clang diagnostic ignored "-Wstrict-bool"
-#  endif
-#  include "rquota.h"
-#  ifdef HAVE_STRICT_BOOL
-#    pragma clang diagnostic pop
-#  endif
-#  define RQUOTA_GETQUOTA_TIMEOUT_SECS 10
+# ifdef HAVE_STRICT_BOOL
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wstrict-bool"
+# endif
+# include "rquota.h"
+# ifdef HAVE_STRICT_BOOL
+# pragma clang diagnostic pop
+# endif
+# define RQUOTA_GETQUOTA_TIMEOUT_SECS 10
 #endif
 #ifndef DEV_BSIZE
-#  ifdef DQBSIZE
-#    define DEV_BSIZE DQBSIZE
-#  else
-#    define DEV_BSIZE 512
-#  endif
+# ifdef DQBSIZE
+# define DEV_BSIZE DQBSIZE
+# else
+# define DEV_BSIZE 512
+# endif
 #endif
 #ifdef HAVE_STRUCT_DQBLK_CURSPACE
-#  define dqb_curblocks dqb_curspace
+# define dqb_curblocks dqb_curspace
 #endif
 #ifndef _LINUX_QUOTA_VERSION
-#  define _LINUX_QUOTA_VERSION 2
+# define _LINUX_QUOTA_VERSION 2
 #endif
 #define mount_type_is_nfs(mount) \
 (strcmp((mount)->type, "nfs") == 0 || \

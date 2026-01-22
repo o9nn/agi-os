@@ -81,14 +81,14 @@ break;
 }
 }
 #define BYTESWAP_VALUE(d) d = byteswap(d)
-#define BYTESWAP_FILTERS(f)            \
-do {                              \
+#define BYTESWAP_FILTERS(f) \
+do { \
 for (auto & datum : f.data) { \
-datum = byteswap(datum);  \
-}                             \
+datum = byteswap(datum); \
+} \
 } while (0)
-#define BYTESWAP_TENSOR(t)       \
-do {                         \
+#define BYTESWAP_TENSOR(t) \
+do { \
 byteswap_tensor(t); \
 } while (0)
 #else
@@ -106,11 +106,11 @@ byteswap_tensor(t); \
 #define WHISPER_ATTRIBUTE_FORMAT(...)
 #endif
 WHISPER_ATTRIBUTE_FORMAT(2, 3)
-static void whisper_log_internal        (ggml_log_level level, const char * format, ...);
+static void whisper_log_internal (ggml_log_level level, const char * format, ...);
 static void whisper_log_callback_default(ggml_log_level level, const char * text, void * user_data);
 #define WHISPER_LOG_ERROR(...) whisper_log_internal(GGML_LOG_LEVEL_ERROR, __VA_ARGS__)
-#define WHISPER_LOG_WARN(...)  whisper_log_internal(GGML_LOG_LEVEL_WARN , __VA_ARGS__)
-#define WHISPER_LOG_INFO(...)  whisper_log_internal(GGML_LOG_LEVEL_INFO , __VA_ARGS__)
+#define WHISPER_LOG_WARN(...) whisper_log_internal(GGML_LOG_LEVEL_WARN , __VA_ARGS__)
+#define WHISPER_LOG_INFO(...) whisper_log_internal(GGML_LOG_LEVEL_INFO , __VA_ARGS__)
 #if defined(WHISPER_DEBUG)
 #define WHISPER_LOG_DEBUG(...) whisper_log_internal(GGML_LOG_LEVEL_DEBUG, __VA_ARGS__)
 #else
@@ -128,11 +128,11 @@ abort(); \
 static bool ggml_graph_compute_helper(
 struct ggml_cgraph * graph,
 std::vector<uint8_t> & buf,
-int   n_threads,
-ggml_abort_callback   abort_callback,
+int n_threads,
+ggml_abort_callback abort_callback,
 void * abort_callback_data) {
 struct ggml_cplan plan = ggml_graph_plan(graph, n_threads, nullptr);
-plan.abort_callback      = abort_callback;
+plan.abort_callback = abort_callback;
 plan.abort_callback_data = abort_callback_data;
 if (plan.work_size > 0) {
 buf.resize(plan.work_size);
@@ -143,7 +143,7 @@ return ggml_graph_compute(graph, &plan);
 static bool ggml_graph_compute_helper(
 struct ggml_backend * backend,
 struct ggml_cgraph * graph,
-int   n_threads) {
+int n_threads) {
 if (ggml_backend_is_cpu(backend)) {
 ggml_backend_cpu_set_n_threads(backend, n_threads);
 }
@@ -155,9 +155,9 @@ if (x->ne[0] % pad == 0 || x->ne[0] / pad < n_pad_req) {
 return ggml_mul_mat(ctx, x, y);
 }
 struct ggml_tensor * x_0 = ggml_view_3d(ctx, x, (x->ne[0]/pad)*pad, x->ne[1], x->ne[2], x->nb[1], x->nb[2], 0);
-struct ggml_tensor * x_1 = ggml_view_3d(ctx, x,  x->ne[0]%pad,      x->ne[1], x->ne[2], x->nb[1], x->nb[2], x_0->ne[0]*x_0->nb[0]);
+struct ggml_tensor * x_1 = ggml_view_3d(ctx, x, x->ne[0]%pad, x->ne[1], x->ne[2], x->nb[1], x->nb[2], x_0->ne[0]*x_0->nb[0]);
 struct ggml_tensor * y_0 = ggml_view_3d(ctx, y, (y->ne[0]/pad)*pad, y->ne[1], y->ne[2], y->nb[1], y->nb[2], 0);
-struct ggml_tensor * y_1 = ggml_view_3d(ctx, y,  y->ne[0]%pad,      y->ne[1], y->ne[2], y->nb[1], y->nb[2], y_0->ne[0]*y_0->nb[0]);
+struct ggml_tensor * y_1 = ggml_view_3d(ctx, y, y->ne[0]%pad, y->ne[1], y->ne[2], y->nb[1], y->nb[2], y_0->ne[0]*y_0->nb[0]);
 return ggml_add(ctx,
 ggml_mul_mat(ctx, x_0, y_0),
 ggml_mul_mat(ctx, x_1, y_1));
@@ -174,138 +174,138 @@ MODEL_MEDIUM,
 MODEL_LARGE,
 };
 static const std::map<e_model, std::string> g_model_name = {
-{ MODEL_UNKNOWN,  "unknown"  },
-{ MODEL_TINY,     "tiny"     },
-{ MODEL_BASE,     "base"     },
-{ MODEL_SMALL,    "small"    },
-{ MODEL_MEDIUM,   "medium"   },
-{ MODEL_LARGE,    "large"    },
+{ MODEL_UNKNOWN, "unknown" },
+{ MODEL_TINY, "tiny" },
+{ MODEL_BASE, "base" },
+{ MODEL_SMALL, "small" },
+{ MODEL_MEDIUM, "medium" },
+{ MODEL_LARGE, "large" },
 };
 static const std::map<std::string, std::pair<int, std::string>> g_lang = {
-{ "en",  { 0,  "english",         } },
-{ "zh",  { 1,  "chinese",         } },
-{ "de",  { 2,  "german",          } },
-{ "es",  { 3,  "spanish",         } },
-{ "ru",  { 4,  "russian",         } },
-{ "ko",  { 5,  "korean",          } },
-{ "fr",  { 6,  "french",          } },
-{ "ja",  { 7,  "japanese",        } },
-{ "pt",  { 8,  "portuguese",      } },
-{ "tr",  { 9,  "turkish",         } },
-{ "pl",  { 10, "polish",          } },
-{ "ca",  { 11,  "catalan",        } },
-{ "nl",  { 12,  "dutch",          } },
-{ "ar",  { 13,  "arabic",         } },
-{ "sv",  { 14,  "swedish",        } },
-{ "it",  { 15,  "italian",        } },
-{ "id",  { 16,  "indonesian",     } },
-{ "hi",  { 17,  "hindi",          } },
-{ "fi",  { 18,  "finnish",        } },
-{ "vi",  { 19,  "vietnamese",     } },
-{ "he",  { 20,  "hebrew",         } },
-{ "uk",  { 21,  "ukrainian",      } },
-{ "el",  { 22,  "greek",          } },
-{ "ms",  { 23,  "malay",          } },
-{ "cs",  { 24,  "czech",          } },
-{ "ro",  { 25,  "romanian",       } },
-{ "da",  { 26,  "danish",         } },
-{ "hu",  { 27,  "hungarian",      } },
-{ "ta",  { 28,  "tamil",          } },
-{ "no",  { 29,  "norwegian",      } },
-{ "th",  { 30,  "thai",           } },
-{ "ur",  { 31,  "urdu",           } },
-{ "hr",  { 32,  "croatian",       } },
-{ "bg",  { 33,  "bulgarian",      } },
-{ "lt",  { 34,  "lithuanian",     } },
-{ "la",  { 35,  "latin",          } },
-{ "mi",  { 36,  "maori",          } },
-{ "ml",  { 37,  "malayalam",      } },
-{ "cy",  { 38,  "welsh",          } },
-{ "sk",  { 39,  "slovak",         } },
-{ "te",  { 40,  "telugu",         } },
-{ "fa",  { 41,  "persian",        } },
-{ "lv",  { 42,  "latvian",        } },
-{ "bn",  { 43,  "bengali",        } },
-{ "sr",  { 44,  "serbian",        } },
-{ "az",  { 45,  "azerbaijani",    } },
-{ "sl",  { 46,  "slovenian",      } },
-{ "kn",  { 47,  "kannada",        } },
-{ "et",  { 48,  "estonian",       } },
-{ "mk",  { 49,  "macedonian",     } },
-{ "br",  { 50,  "breton",         } },
-{ "eu",  { 51,  "basque",         } },
-{ "is",  { 52,  "icelandic",      } },
-{ "hy",  { 53,  "armenian",       } },
-{ "ne",  { 54,  "nepali",         } },
-{ "mn",  { 55,  "mongolian",      } },
-{ "bs",  { 56,  "bosnian",        } },
-{ "kk",  { 57,  "kazakh",         } },
-{ "sq",  { 58,  "albanian",       } },
-{ "sw",  { 59,  "swahili",        } },
-{ "gl",  { 60,  "galician",       } },
-{ "mr",  { 61,  "marathi",        } },
-{ "pa",  { 62,  "punjabi",        } },
-{ "si",  { 63,  "sinhala",        } },
-{ "km",  { 64,  "khmer",          } },
-{ "sn",  { 65,  "shona",          } },
-{ "yo",  { 66,  "yoruba",         } },
-{ "so",  { 67,  "somali",         } },
-{ "af",  { 68,  "afrikaans",      } },
-{ "oc",  { 69,  "occitan",        } },
-{ "ka",  { 70,  "georgian",       } },
-{ "be",  { 71,  "belarusian",     } },
-{ "tg",  { 72,  "tajik",          } },
-{ "sd",  { 73,  "sindhi",         } },
-{ "gu",  { 74,  "gujarati",       } },
-{ "am",  { 75,  "amharic",        } },
-{ "yi",  { 76,  "yiddish",        } },
-{ "lo",  { 77,  "lao",            } },
-{ "uz",  { 78,  "uzbek",          } },
-{ "fo",  { 79,  "faroese",        } },
-{ "ht",  { 80,  "haitian creole", } },
-{ "ps",  { 81,  "pashto",         } },
-{ "tk",  { 82,  "turkmen",        } },
-{ "nn",  { 83,  "nynorsk",        } },
-{ "mt",  { 84,  "maltese",        } },
-{ "sa",  { 85,  "sanskrit",       } },
-{ "lb",  { 86,  "luxembourgish",  } },
-{ "my",  { 87,  "myanmar",        } },
-{ "bo",  { 88,  "tibetan",        } },
-{ "tl",  { 89,  "tagalog",        } },
-{ "mg",  { 90,  "malagasy",       } },
-{ "as",  { 91,  "assamese",       } },
-{ "tt",  { 92,  "tatar",          } },
-{ "haw", { 93,  "hawaiian",       } },
-{ "ln",  { 94,  "lingala",        } },
-{ "ha",  { 95,  "hausa",          } },
-{ "ba",  { 96,  "bashkir",        } },
-{ "jw",  { 97,  "javanese",       } },
-{ "su",  { 98,  "sundanese",      } },
-{ "yue", { 99,  "cantonese",      } },
+{ "en", { 0, "english", } },
+{ "zh", { 1, "chinese", } },
+{ "de", { 2, "german", } },
+{ "es", { 3, "spanish", } },
+{ "ru", { 4, "russian", } },
+{ "ko", { 5, "korean", } },
+{ "fr", { 6, "french", } },
+{ "ja", { 7, "japanese", } },
+{ "pt", { 8, "portuguese", } },
+{ "tr", { 9, "turkish", } },
+{ "pl", { 10, "polish", } },
+{ "ca", { 11, "catalan", } },
+{ "nl", { 12, "dutch", } },
+{ "ar", { 13, "arabic", } },
+{ "sv", { 14, "swedish", } },
+{ "it", { 15, "italian", } },
+{ "id", { 16, "indonesian", } },
+{ "hi", { 17, "hindi", } },
+{ "fi", { 18, "finnish", } },
+{ "vi", { 19, "vietnamese", } },
+{ "he", { 20, "hebrew", } },
+{ "uk", { 21, "ukrainian", } },
+{ "el", { 22, "greek", } },
+{ "ms", { 23, "malay", } },
+{ "cs", { 24, "czech", } },
+{ "ro", { 25, "romanian", } },
+{ "da", { 26, "danish", } },
+{ "hu", { 27, "hungarian", } },
+{ "ta", { 28, "tamil", } },
+{ "no", { 29, "norwegian", } },
+{ "th", { 30, "thai", } },
+{ "ur", { 31, "urdu", } },
+{ "hr", { 32, "croatian", } },
+{ "bg", { 33, "bulgarian", } },
+{ "lt", { 34, "lithuanian", } },
+{ "la", { 35, "latin", } },
+{ "mi", { 36, "maori", } },
+{ "ml", { 37, "malayalam", } },
+{ "cy", { 38, "welsh", } },
+{ "sk", { 39, "slovak", } },
+{ "te", { 40, "telugu", } },
+{ "fa", { 41, "persian", } },
+{ "lv", { 42, "latvian", } },
+{ "bn", { 43, "bengali", } },
+{ "sr", { 44, "serbian", } },
+{ "az", { 45, "azerbaijani", } },
+{ "sl", { 46, "slovenian", } },
+{ "kn", { 47, "kannada", } },
+{ "et", { 48, "estonian", } },
+{ "mk", { 49, "macedonian", } },
+{ "br", { 50, "breton", } },
+{ "eu", { 51, "basque", } },
+{ "is", { 52, "icelandic", } },
+{ "hy", { 53, "armenian", } },
+{ "ne", { 54, "nepali", } },
+{ "mn", { 55, "mongolian", } },
+{ "bs", { 56, "bosnian", } },
+{ "kk", { 57, "kazakh", } },
+{ "sq", { 58, "albanian", } },
+{ "sw", { 59, "swahili", } },
+{ "gl", { 60, "galician", } },
+{ "mr", { 61, "marathi", } },
+{ "pa", { 62, "punjabi", } },
+{ "si", { 63, "sinhala", } },
+{ "km", { 64, "khmer", } },
+{ "sn", { 65, "shona", } },
+{ "yo", { 66, "yoruba", } },
+{ "so", { 67, "somali", } },
+{ "af", { 68, "afrikaans", } },
+{ "oc", { 69, "occitan", } },
+{ "ka", { 70, "georgian", } },
+{ "be", { 71, "belarusian", } },
+{ "tg", { 72, "tajik", } },
+{ "sd", { 73, "sindhi", } },
+{ "gu", { 74, "gujarati", } },
+{ "am", { 75, "amharic", } },
+{ "yi", { 76, "yiddish", } },
+{ "lo", { 77, "lao", } },
+{ "uz", { 78, "uzbek", } },
+{ "fo", { 79, "faroese", } },
+{ "ht", { 80, "haitian creole", } },
+{ "ps", { 81, "pashto", } },
+{ "tk", { 82, "turkmen", } },
+{ "nn", { 83, "nynorsk", } },
+{ "mt", { 84, "maltese", } },
+{ "sa", { 85, "sanskrit", } },
+{ "lb", { 86, "luxembourgish", } },
+{ "my", { 87, "myanmar", } },
+{ "bo", { 88, "tibetan", } },
+{ "tl", { 89, "tagalog", } },
+{ "mg", { 90, "malagasy", } },
+{ "as", { 91, "assamese", } },
+{ "tt", { 92, "tatar", } },
+{ "haw", { 93, "hawaiian", } },
+{ "ln", { 94, "lingala", } },
+{ "ha", { 95, "hausa", } },
+{ "ba", { 96, "bashkir", } },
+{ "jw", { 97, "javanese", } },
+{ "su", { 98, "sundanese", } },
+{ "yue", { 99, "cantonese", } },
 };
-static const whisper_ahead g_aheads_tiny_en[]   = { {1, 0}, {2, 0}, {2, 5}, {3, 0}, {3, 1}, {3, 2}, {3, 3}, {3, 4} };
-static const whisper_ahead g_aheads_tiny[]      = { {2, 2}, {3, 0}, {3, 2}, {3, 3}, {3, 4}, {3, 5} };
-static const whisper_ahead g_aheads_base_en[]   = { {3, 3}, {4, 7}, {5, 1}, {5, 5}, {5, 7} };
-static const whisper_ahead g_aheads_base[]      = { {3, 1}, {4, 2}, {4, 3}, {4, 7}, {5, 1}, {5, 2}, {5, 4}, {5, 6} };
-static const whisper_ahead g_aheads_small_en[]  = { {6, 6}, {7, 0}, {7, 3}, {7, 8}, {8, 2}, {8, 5}, {8, 7}, {9, 0}, {9, 4}, {9, 8}, {9, 10}, {10, 0}, {10, 1}, {10, 2}, {10, 3}, {10, 6}, {10, 11}, {11, 2}, {11, 4} };
-static const whisper_ahead g_aheads_small[]     = { {5, 3}, {5, 9}, {8, 0}, {8, 4}, {8, 7}, {8, 8}, {9, 0}, {9, 7}, {9, 9}, {10, 5} };
+static const whisper_ahead g_aheads_tiny_en[] = { {1, 0}, {2, 0}, {2, 5}, {3, 0}, {3, 1}, {3, 2}, {3, 3}, {3, 4} };
+static const whisper_ahead g_aheads_tiny[] = { {2, 2}, {3, 0}, {3, 2}, {3, 3}, {3, 4}, {3, 5} };
+static const whisper_ahead g_aheads_base_en[] = { {3, 3}, {4, 7}, {5, 1}, {5, 5}, {5, 7} };
+static const whisper_ahead g_aheads_base[] = { {3, 1}, {4, 2}, {4, 3}, {4, 7}, {5, 1}, {5, 2}, {5, 4}, {5, 6} };
+static const whisper_ahead g_aheads_small_en[] = { {6, 6}, {7, 0}, {7, 3}, {7, 8}, {8, 2}, {8, 5}, {8, 7}, {9, 0}, {9, 4}, {9, 8}, {9, 10}, {10, 0}, {10, 1}, {10, 2}, {10, 3}, {10, 6}, {10, 11}, {11, 2}, {11, 4} };
+static const whisper_ahead g_aheads_small[] = { {5, 3}, {5, 9}, {8, 0}, {8, 4}, {8, 7}, {8, 8}, {9, 0}, {9, 7}, {9, 9}, {10, 5} };
 static const whisper_ahead g_aheads_medium_en[] = { {11, 4}, {14, 1}, {14, 12}, {14, 14}, {15, 4}, {16, 0}, {16, 4}, {16, 9}, {17, 12}, {17, 14}, {18, 7}, {18, 10}, {18, 15}, {20, 0}, {20, 3}, {20, 9}, {20, 14}, {21, 12} };
-static const whisper_ahead g_aheads_medium[]    = { {13, 15}, {15, 4}, {15, 15}, {16, 1}, {20, 0}, {23, 4} };
-static const whisper_ahead g_aheads_large_v1[]  = { {9, 19}, {11, 2}, {11, 4}, {11, 17}, {22, 7}, {22, 11}, {22, 17}, {23, 2}, {23, 15} };
-static const whisper_ahead g_aheads_large_v2[]  = { {10, 12}, {13, 17}, {16, 11}, {16, 12}, {16, 13}, {17, 15}, {17, 16}, {18, 4}, {18, 11}, {18, 19}, {19, 11}, {21, 2}, {21, 3}, {22, 3}, {22, 9}, {22, 12}, {23, 5}, {23, 7}, {23, 13}, {25, 5}, {26, 1}, {26, 12}, {27, 15} };
-static const whisper_ahead g_aheads_large_v3[]  = { {7, 0}, {10, 17}, {12, 18}, {13, 12}, {16, 1}, {17, 14}, {19, 11}, {21, 4}, {24, 1}, {25, 6} };
+static const whisper_ahead g_aheads_medium[] = { {13, 15}, {15, 4}, {15, 15}, {16, 1}, {20, 0}, {23, 4} };
+static const whisper_ahead g_aheads_large_v1[] = { {9, 19}, {11, 2}, {11, 4}, {11, 17}, {22, 7}, {22, 11}, {22, 17}, {23, 2}, {23, 15} };
+static const whisper_ahead g_aheads_large_v2[] = { {10, 12}, {13, 17}, {16, 11}, {16, 12}, {16, 13}, {17, 15}, {17, 16}, {18, 4}, {18, 11}, {18, 19}, {19, 11}, {21, 2}, {21, 3}, {22, 3}, {22, 9}, {22, 12}, {23, 5}, {23, 7}, {23, 13}, {25, 5}, {26, 1}, {26, 12}, {27, 15} };
+static const whisper_ahead g_aheads_large_v3[] = { {7, 0}, {10, 17}, {12, 18}, {13, 12}, {16, 1}, {17, 14}, {19, 11}, {21, 4}, {24, 1}, {25, 6} };
 static const std::map<whisper_alignment_heads_preset, whisper_aheads> g_aheads {
-{ WHISPER_AHEADS_TINY_EN,   {  8, g_aheads_tiny_en   } },
-{ WHISPER_AHEADS_TINY,      {  6, g_aheads_tiny      } },
-{ WHISPER_AHEADS_BASE_EN,   {  5, g_aheads_base_en   } },
-{ WHISPER_AHEADS_BASE,      {  8, g_aheads_base      } },
-{ WHISPER_AHEADS_SMALL_EN,  { 19, g_aheads_small_en  } },
-{ WHISPER_AHEADS_SMALL,     { 10, g_aheads_small     } },
+{ WHISPER_AHEADS_TINY_EN, { 8, g_aheads_tiny_en } },
+{ WHISPER_AHEADS_TINY, { 6, g_aheads_tiny } },
+{ WHISPER_AHEADS_BASE_EN, { 5, g_aheads_base_en } },
+{ WHISPER_AHEADS_BASE, { 8, g_aheads_base } },
+{ WHISPER_AHEADS_SMALL_EN, { 19, g_aheads_small_en } },
+{ WHISPER_AHEADS_SMALL, { 10, g_aheads_small } },
 { WHISPER_AHEADS_MEDIUM_EN, { 18, g_aheads_medium_en } },
-{ WHISPER_AHEADS_MEDIUM,    {  6, g_aheads_medium    } },
-{ WHISPER_AHEADS_LARGE_V1,  {  9, g_aheads_large_v1  } },
-{ WHISPER_AHEADS_LARGE_V2,  { 23, g_aheads_large_v2  } },
-{ WHISPER_AHEADS_LARGE_V3,  { 10, g_aheads_large_v3  } },
+{ WHISPER_AHEADS_MEDIUM, { 6, g_aheads_medium } },
+{ WHISPER_AHEADS_LARGE_V1, { 9, g_aheads_large_v1 } },
+{ WHISPER_AHEADS_LARGE_V2, { 23, g_aheads_large_v2 } },
+{ WHISPER_AHEADS_LARGE_V3, { 10, g_aheads_large_v3 } },
 };
 static std::vector<uint32_t> get_alignment_heads_by_layer(const whisper_context_params & cparams, int il, int32_t n_text_layer, int32_t n_head);
 struct whisper_mel {
@@ -320,20 +320,20 @@ int32_t n_fft;
 std::vector<float> data;
 };
 struct whisper_vocab {
-using id    = int32_t;
+using id = int32_t;
 using token = std::string;
 int n_vocab = 51864;
 std::map<token, id> token_to_id;
 std::map<id, token> id_to_token;
-id token_eot        = 50256;
-id token_sot        = 50257;
-id token_translate  = 50357;
+id token_eot = 50256;
+id token_sot = 50257;
+id token_translate = 50357;
 id token_transcribe = 50358;
-id token_solm       = 50359;
-id token_prev       = 50360;
-id token_nosp       = 50361;
-id token_not        = 50362;
-id token_beg        = 50363;
+id token_solm = 50359;
+id token_prev = 50360;
+id token_nosp = 50361;
+id token_not = 50362;
+id token_beg = 50363;
 bool is_multilingual() const {
 return n_vocab >= 51865;
 }
@@ -350,28 +350,28 @@ bool speaker_turn_next;
 };
 struct whisper_batch {
 int32_t n_tokens;
-whisper_token  *  token;
-whisper_pos    *  pos;
-int32_t        *  n_seq_id;
+whisper_token * token;
+whisper_pos * pos;
+int32_t * n_seq_id;
 whisper_seq_id ** seq_id;
-int8_t         *  logits;
+int8_t * logits;
 };
 static struct whisper_batch whisper_batch_init(int32_t n_tokens, int32_t n_seq_max) {
 whisper_batch batch = { 0, nullptr, nullptr, nullptr, nullptr, nullptr, };
-batch.token    = (whisper_token *  ) malloc(sizeof(whisper_token)    * (n_tokens));
-batch.pos      = (whisper_pos *)     malloc(sizeof(whisper_pos)      * (n_tokens));
-batch.n_seq_id = (int32_t *)         malloc(sizeof(int32_t)          * (n_tokens));
-batch.seq_id   = (whisper_seq_id **) malloc(sizeof(whisper_seq_id *) * (n_tokens + 1));
+batch.token = (whisper_token * ) malloc(sizeof(whisper_token) * (n_tokens));
+batch.pos = (whisper_pos *) malloc(sizeof(whisper_pos) * (n_tokens));
+batch.n_seq_id = (int32_t *) malloc(sizeof(int32_t) * (n_tokens));
+batch.seq_id = (whisper_seq_id **) malloc(sizeof(whisper_seq_id *) * (n_tokens + 1));
 for (int i = 0; i < n_tokens; ++i) {
-batch.seq_id[i] = (whisper_seq_id *) malloc(sizeof(whisper_seq_id)   * n_seq_max);
+batch.seq_id[i] = (whisper_seq_id *) malloc(sizeof(whisper_seq_id) * n_seq_max);
 }
 batch.seq_id[n_tokens] = nullptr;
-batch.logits   = (int8_t *)          malloc(sizeof(int8_t)           * n_tokens);
+batch.logits = (int8_t *) malloc(sizeof(int8_t) * n_tokens);
 return batch;
 }
 static void whisper_batch_free(struct whisper_batch batch) {
-if (batch.token)    free(batch.token);
-if (batch.pos)      free(batch.pos);
+if (batch.token) free(batch.token);
+if (batch.pos) free(batch.pos);
 if (batch.n_seq_id) free(batch.n_seq_id);
 if (batch.seq_id) {
 for (int i = 0; batch.seq_id[i]; ++i) {
@@ -379,7 +379,7 @@ free(batch.seq_id[i]);
 }
 free(batch.seq_id);
 }
-if (batch.logits)   free(batch.logits);
+if (batch.logits) free(batch.logits);
 }
 static void whisper_batch_prep_legacy(whisper_batch & batch, const whisper_token * tokens, int n_tokens, int n_past, int seq_id) {
 batch.n_tokens = n_tokens;
@@ -387,10 +387,10 @@ for (int i = 0; i < n_tokens; ++i) {
 if (tokens) {
 batch.token[i] = tokens[i];
 }
-batch.pos     [i]    = n_past + i;
-batch.n_seq_id[i]    = 1;
-batch.seq_id  [i][0] = seq_id;
-batch.logits  [i]    = 0;
+batch.pos [i] = n_past + i;
+batch.n_seq_id[i] = 1;
+batch.seq_id [i][0] = seq_id;
+batch.logits [i] = 0;
 }
 batch.logits[n_tokens - 1] = 1;
 }
@@ -410,7 +410,7 @@ return allocr.meta.size() + ggml_gallocr_get_buffer_size(allocr.alloc, 0);
 }
 static bool whisper_allocr_graph_init(struct whisper_allocr & allocr, ggml_backend_t backend, std::function<struct ggml_cgraph *()> && get_graph) {
 auto & alloc = allocr.alloc;
-auto & meta  = allocr.meta;
+auto & meta = allocr.meta;
 alloc = ggml_gallocr_new(ggml_backend_get_default_buffer_type(backend));
 meta.resize(ggml_tensor_overhead()*WHISPER_MAX_NODES + ggml_graph_overhead());
 if (!ggml_gallocr_alloc_graph(alloc, get_graph())) {
@@ -420,18 +420,18 @@ return false;
 return true;
 }
 struct whisper_hparams {
-int32_t n_vocab       = 51864;
-int32_t n_audio_ctx   = 1500;
+int32_t n_vocab = 51864;
+int32_t n_audio_ctx = 1500;
 int32_t n_audio_state = 384;
-int32_t n_audio_head  = 6;
+int32_t n_audio_head = 6;
 int32_t n_audio_layer = 4;
-int32_t n_text_ctx    = 448;
-int32_t n_text_state  = 384;
-int32_t n_text_head   = 6;
-int32_t n_text_layer  = 4;
-int32_t n_mels        = 80;
-int32_t ftype         = 1;
-float   eps           = 1e-5f;
+int32_t n_text_ctx = 448;
+int32_t n_text_state = 384;
+int32_t n_text_head = 6;
+int32_t n_text_layer = 4;
+int32_t n_mels = 80;
+int32_t ftype = 1;
+float eps = 1e-5f;
 };
 struct whisper_layer_encoder {
 struct ggml_tensor * attn_ln_0_w;
@@ -517,17 +517,17 @@ std::map<std::string, struct ggml_tensor *> tensors;
 };
 struct whisper_partial_utf8 {
 uint32_t value;
-int      n_remain;
+int n_remain;
 };
 struct whisper_grammar {
 std::vector<std::vector<whisper_grammar_element>> rules;
-std::vector<std::vector<const whisper_grammar_element *>>   stacks;
+std::vector<std::vector<const whisper_grammar_element *>> stacks;
 whisper_partial_utf8 partial_utf8;
 };
 struct whisper_grammar_candidate {
-whisper_token          id;
-const uint32_t       * code_points;
-whisper_partial_utf8   partial_utf8;
+whisper_token id;
+const uint32_t * code_points;
+whisper_partial_utf8 partial_utf8;
 };
 struct whisper_sequence {
 std::vector<whisper_token_data> tokens;
@@ -540,7 +540,7 @@ double score;
 };
 struct whisper_decoder {
 whisper_sequence sequence;
-whisper_grammar  grammar;
+whisper_grammar grammar;
 int i_batch;
 int seek_delta;
 bool failed;
@@ -583,12 +583,12 @@ whisper_allocr alloc_encode;
 whisper_allocr alloc_cross;
 whisper_allocr alloc_decode;
 struct ggml_tensor * embd_conv = nullptr;
-struct ggml_tensor * embd_enc  = nullptr;
+struct ggml_tensor * embd_enc = nullptr;
 std::vector<float> inp_mel;
 std::vector<float> inp_mask;
 std::vector<float> logits;
 std::vector<whisper_segment> result_all;
-std::vector<whisper_token>   prompt_past;
+std::vector<whisper_token> prompt_past;
 int lang_id = 0;
 std::string path_model;
 #ifdef WHISPER_USE_COREML
@@ -597,7 +597,7 @@ whisper_coreml_context * ctx_coreml = nullptr;
 #ifdef WHISPER_USE_OPENVINO
 whisper_openvino_context * ctx_openvino = nullptr;
 #endif
-int64_t t_beg  = 0;
+int64_t t_beg = 0;
 int64_t t_last = 0;
 whisper_token tid_last;
 std::vector<float> energy;
@@ -607,7 +607,7 @@ std::vector<float> aheads_cross_QKs_data;
 int32_t exp_n_audio_ctx = 0;
 };
 struct whisper_context {
-int64_t t_load_us  = 0;
+int64_t t_load_us = 0;
 int64_t t_start_us = 0;
 ggml_type wtype = ggml_type::GGML_TYPE_F16;
 ggml_type itype = ggml_type::GGML_TYPE_F16;
@@ -630,12 +630,12 @@ BYTESWAP_VALUE(dest);
 }
 static bool kv_cache_init(
 struct whisper_kv_cache & cache,
-ggml_backend_t   backend,
-ggml_type   wtype,
-int64_t   n_text_state,
-int64_t   n_text_layer,
-int   n_ctx) {
-const int64_t n_mem      = n_text_layer*n_ctx;
+ggml_backend_t backend,
+ggml_type wtype,
+int64_t n_text_state,
+int64_t n_text_layer,
+int n_ctx) {
+const int64_t n_mem = n_text_layer*n_ctx;
 const int64_t n_elements = n_text_state*n_mem;
 struct ggml_init_params params = {
 2*ggml_tensor_overhead(),
@@ -669,7 +669,7 @@ cache.ctx = nullptr;
 static bool whisper_kv_cache_find_slot(
 struct whisper_kv_cache & cache,
 const struct whisper_batch & batch) {
-const uint32_t n_ctx    = cache.size;
+const uint32_t n_ctx = cache.size;
 const uint32_t n_tokens = batch.n_tokens;
 if (n_tokens > n_ctx) {
 WHISPER_LOG_ERROR("%s: n_tokens=%d > n_ctx=%d\n", __func__, n_tokens, n_ctx);
@@ -687,7 +687,7 @@ for (uint32_t i = 0; i < n_tokens; i++) {
 if (cache.cells[cache.head + i].pos >= 0) {
 found = false;
 cache.head += i + 1;
-n_tested   += i + 1;
+n_tested += i + 1;
 break;
 }
 }
@@ -723,9 +723,9 @@ cache.head = 0;
 }
 static void whisper_kv_cache_seq_rm(
 struct whisper_kv_cache & cache,
-whisper_seq_id   seq_id,
-whisper_pos   p0,
-whisper_pos   p1) {
+whisper_seq_id seq_id,
+whisper_pos p0,
+whisper_pos p1) {
 uint32_t new_head = cache.size;
 if (p0 < 0) p0 = 0;
 if (p1 < 0) p1 = std::numeric_limits<whisper_pos>::max();
@@ -748,10 +748,10 @@ if (new_head != cache.size) cache.head = new_head;
 }
 static void whisper_kv_cache_seq_cp(
 struct whisper_kv_cache & cache,
-whisper_seq_id   seq_id_src,
-whisper_seq_id   seq_id_dst,
-whisper_pos   p0,
-whisper_pos   p1) {
+whisper_seq_id seq_id_src,
+whisper_seq_id seq_id_dst,
+whisper_pos p0,
+whisper_pos p1) {
 if (p0 < 0) p0 = 0;
 if (p1 < 0) p1 = std::numeric_limits<whisper_pos>::max();
 cache.head = 0;
@@ -781,7 +781,7 @@ static bool aheads_masks_init(
 const whisper_context_params & cparams,
 const whisper_hparams & hparams,
 struct whisper_aheads_masks & aheads_masks,
-ggml_backend_t   backend) {
+ggml_backend_t backend) {
 const int32_t n_text_layer = hparams.n_text_layer;
 const int32_t n_head = hparams.n_text_head;
 if (cparams.dtw_aheads_preset == WHISPER_AHEADS_NONE) {
@@ -1018,13 +1018,13 @@ if (vocab.is_multilingual()) {
 vocab.token_eot++;
 vocab.token_sot++;
 const int dt = vocab.num_languages() - 98;
-vocab.token_translate  += dt;
+vocab.token_translate += dt;
 vocab.token_transcribe += dt;
-vocab.token_solm       += dt;
-vocab.token_prev       += dt;
-vocab.token_nosp       += dt;
-vocab.token_not        += dt;
-vocab.token_beg        += dt;
+vocab.token_solm += dt;
+vocab.token_prev += dt;
+vocab.token_nosp += dt;
+vocab.token_not += dt;
+vocab.token_beg += dt;
 }
 if (n_vocab < model.hparams.n_vocab) {
 WHISPER_LOG_INFO("%s: adding %d extra tokens\n", __func__, model.hparams.n_vocab - n_vocab);
@@ -1065,8 +1065,8 @@ const ggml_type vtype = wctx.wtype == GGML_TYPE_F32 ? GGML_TYPE_F32 : GGML_TYPE_
 {
 const auto & hparams = model.hparams;
 const int n_audio_layer = hparams.n_audio_layer;
-const int n_text_layer  = hparams.n_text_layer;
-const size_t n_tensors = 10  + 15 + 15*n_audio_layer + 24*n_text_layer;
+const int n_text_layer = hparams.n_text_layer;
+const size_t n_tensors = 10 + 15 + 15*n_audio_layer + 24*n_text_layer;
 struct ggml_init_params params = {
 n_tensors*ggml_tensor_overhead(),
 nullptr,
@@ -1082,10 +1082,10 @@ return false;
 auto & ctx = model.ctx;
 const auto & hparams = model.hparams;
 const int n_vocab = hparams.n_vocab;
-const int n_audio_ctx   = hparams.n_audio_ctx;
+const int n_audio_ctx = hparams.n_audio_ctx;
 const int n_audio_state = hparams.n_audio_state;
 const int n_audio_layer = hparams.n_audio_layer;
-const int n_text_ctx   = hparams.n_text_ctx;
+const int n_text_ctx = hparams.n_text_ctx;
 const int n_text_state = hparams.n_text_state;
 const int n_text_layer = hparams.n_text_layer;
 const int n_mels = hparams.n_mels;
@@ -1093,112 +1093,112 @@ model.layers_encoder.resize(n_audio_layer);
 model.layers_decoder.resize(n_text_layer);
 {
 model.e_pe = ggml_new_tensor_2d(ctx, GGML_TYPE_F32, n_audio_state, n_audio_ctx);
-model.e_conv_1_w     = ggml_new_tensor_3d(ctx, vtype,         3, n_mels,     n_audio_state);
-model.e_conv_1_b     = ggml_new_tensor_2d(ctx, GGML_TYPE_F32,         1,     n_audio_state);
-model.e_conv_2_w     = ggml_new_tensor_3d(ctx, vtype,         3, n_audio_state, n_audio_state);
-model.e_conv_2_b     = ggml_new_tensor_2d(ctx, GGML_TYPE_F32,                1, n_audio_state);
+model.e_conv_1_w = ggml_new_tensor_3d(ctx, vtype, 3, n_mels, n_audio_state);
+model.e_conv_1_b = ggml_new_tensor_2d(ctx, GGML_TYPE_F32, 1, n_audio_state);
+model.e_conv_2_w = ggml_new_tensor_3d(ctx, vtype, 3, n_audio_state, n_audio_state);
+model.e_conv_2_b = ggml_new_tensor_2d(ctx, GGML_TYPE_F32, 1, n_audio_state);
 model.e_ln_w = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_audio_state);
 model.e_ln_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_audio_state);
 model.tensors["encoder.positional_embedding"] = model.e_pe;
-model.tensors["encoder.conv1.weight"]         = model.e_conv_1_w;
-model.tensors["encoder.conv1.bias"]           = model.e_conv_1_b;
-model.tensors["encoder.conv2.weight"]         = model.e_conv_2_w;
-model.tensors["encoder.conv2.bias"]           = model.e_conv_2_b;
-model.tensors["encoder.ln_post.weight"]       = model.e_ln_w;
-model.tensors["encoder.ln_post.bias"]         = model.e_ln_b;
+model.tensors["encoder.conv1.weight"] = model.e_conv_1_w;
+model.tensors["encoder.conv1.bias"] = model.e_conv_1_b;
+model.tensors["encoder.conv2.weight"] = model.e_conv_2_w;
+model.tensors["encoder.conv2.bias"] = model.e_conv_2_b;
+model.tensors["encoder.ln_post.weight"] = model.e_ln_w;
+model.tensors["encoder.ln_post.bias"] = model.e_ln_b;
 for (int i = 0; i < n_audio_layer; ++i) {
 auto & layer = model.layers_encoder[i];
-layer.mlp_ln_w    = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_audio_state);
-layer.mlp_ln_b    = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_audio_state);
-layer.mlp_0_w     = ggml_new_tensor_2d(ctx, wtype,           n_audio_state, 4*n_audio_state);
-layer.mlp_0_b     = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, 4*n_audio_state);
-layer.mlp_1_w     = ggml_new_tensor_2d(ctx, wtype,         4*n_audio_state, n_audio_state);
-layer.mlp_1_b     = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_audio_state);
-layer.attn_ln_0_w = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_audio_state);
-layer.attn_ln_0_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_audio_state);
-layer.attn_q_w    = ggml_new_tensor_2d(ctx, wtype,           n_audio_state, n_audio_state);
-layer.attn_q_b    = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_audio_state);
-layer.attn_k_w    = ggml_new_tensor_2d(ctx, wtype,           n_audio_state, n_audio_state);
-layer.attn_v_w    = ggml_new_tensor_2d(ctx, wtype,           n_audio_state, n_audio_state);
-layer.attn_v_b    = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_audio_state);
-layer.attn_ln_1_w = ggml_new_tensor_2d(ctx, wtype,           n_audio_state, n_audio_state);
-layer.attn_ln_1_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_audio_state);
-model.tensors["encoder.blocks." + std::to_string(i) + ".mlp_ln.weight"]     = layer.mlp_ln_w;
-model.tensors["encoder.blocks." + std::to_string(i) + ".mlp_ln.bias"]       = layer.mlp_ln_b;
-model.tensors["encoder.blocks." + std::to_string(i) + ".mlp.0.weight"]      = layer.mlp_0_w;
-model.tensors["encoder.blocks." + std::to_string(i) + ".mlp.0.bias"]        = layer.mlp_0_b;
-model.tensors["encoder.blocks." + std::to_string(i) + ".mlp.2.weight"]      = layer.mlp_1_w;
-model.tensors["encoder.blocks." + std::to_string(i) + ".mlp.2.bias"]        = layer.mlp_1_b;
-model.tensors["encoder.blocks." + std::to_string(i) + ".attn_ln.weight"]    = layer.attn_ln_0_w;
-model.tensors["encoder.blocks." + std::to_string(i) + ".attn_ln.bias"]      = layer.attn_ln_0_b;
+layer.mlp_ln_w = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_audio_state);
+layer.mlp_ln_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_audio_state);
+layer.mlp_0_w = ggml_new_tensor_2d(ctx, wtype, n_audio_state, 4*n_audio_state);
+layer.mlp_0_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, 4*n_audio_state);
+layer.mlp_1_w = ggml_new_tensor_2d(ctx, wtype, 4*n_audio_state, n_audio_state);
+layer.mlp_1_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_audio_state);
+layer.attn_ln_0_w = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_audio_state);
+layer.attn_ln_0_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_audio_state);
+layer.attn_q_w = ggml_new_tensor_2d(ctx, wtype, n_audio_state, n_audio_state);
+layer.attn_q_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_audio_state);
+layer.attn_k_w = ggml_new_tensor_2d(ctx, wtype, n_audio_state, n_audio_state);
+layer.attn_v_w = ggml_new_tensor_2d(ctx, wtype, n_audio_state, n_audio_state);
+layer.attn_v_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_audio_state);
+layer.attn_ln_1_w = ggml_new_tensor_2d(ctx, wtype, n_audio_state, n_audio_state);
+layer.attn_ln_1_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_audio_state);
+model.tensors["encoder.blocks." + std::to_string(i) + ".mlp_ln.weight"] = layer.mlp_ln_w;
+model.tensors["encoder.blocks." + std::to_string(i) + ".mlp_ln.bias"] = layer.mlp_ln_b;
+model.tensors["encoder.blocks." + std::to_string(i) + ".mlp.0.weight"] = layer.mlp_0_w;
+model.tensors["encoder.blocks." + std::to_string(i) + ".mlp.0.bias"] = layer.mlp_0_b;
+model.tensors["encoder.blocks." + std::to_string(i) + ".mlp.2.weight"] = layer.mlp_1_w;
+model.tensors["encoder.blocks." + std::to_string(i) + ".mlp.2.bias"] = layer.mlp_1_b;
+model.tensors["encoder.blocks." + std::to_string(i) + ".attn_ln.weight"] = layer.attn_ln_0_w;
+model.tensors["encoder.blocks." + std::to_string(i) + ".attn_ln.bias"] = layer.attn_ln_0_b;
 model.tensors["encoder.blocks." + std::to_string(i) + ".attn.query.weight"] = layer.attn_q_w;
-model.tensors["encoder.blocks." + std::to_string(i) + ".attn.query.bias"]   = layer.attn_q_b;
-model.tensors["encoder.blocks." + std::to_string(i) + ".attn.key.weight"]   = layer.attn_k_w;
+model.tensors["encoder.blocks." + std::to_string(i) + ".attn.query.bias"] = layer.attn_q_b;
+model.tensors["encoder.blocks." + std::to_string(i) + ".attn.key.weight"] = layer.attn_k_w;
 model.tensors["encoder.blocks." + std::to_string(i) + ".attn.value.weight"] = layer.attn_v_w;
-model.tensors["encoder.blocks." + std::to_string(i) + ".attn.value.bias"]   = layer.attn_v_b;
-model.tensors["encoder.blocks." + std::to_string(i) + ".attn.out.weight"]   = layer.attn_ln_1_w;
-model.tensors["encoder.blocks." + std::to_string(i) + ".attn.out.bias"]     = layer.attn_ln_1_b;
+model.tensors["encoder.blocks." + std::to_string(i) + ".attn.value.bias"] = layer.attn_v_b;
+model.tensors["encoder.blocks." + std::to_string(i) + ".attn.out.weight"] = layer.attn_ln_1_w;
+model.tensors["encoder.blocks." + std::to_string(i) + ".attn.out.bias"] = layer.attn_ln_1_b;
 }
 }
 {
-model.d_pe   = ggml_new_tensor_2d(ctx, GGML_TYPE_F32, n_text_state, n_text_ctx);
-model.d_te   = ggml_new_tensor_2d(ctx, wtype,         n_text_state, n_vocab);
+model.d_pe = ggml_new_tensor_2d(ctx, GGML_TYPE_F32, n_text_state, n_text_ctx);
+model.d_te = ggml_new_tensor_2d(ctx, wtype, n_text_state, n_vocab);
 model.d_ln_w = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_text_state);
 model.d_ln_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_text_state);
-model.tensors["decoder.positional_embedding"]   = model.d_pe;
+model.tensors["decoder.positional_embedding"] = model.d_pe;
 model.tensors["decoder.token_embedding.weight"] = model.d_te;
-model.tensors["decoder.ln.weight"]              = model.d_ln_w;
-model.tensors["decoder.ln.bias"]                = model.d_ln_b;
+model.tensors["decoder.ln.weight"] = model.d_ln_w;
+model.tensors["decoder.ln.bias"] = model.d_ln_b;
 for (int i = 0; i < n_text_layer; ++i) {
 auto & layer = model.layers_decoder[i];
-layer.mlp_ln_w          = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_text_state);
-layer.mlp_ln_b          = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_text_state);
-layer.mlp_0_w           = ggml_new_tensor_2d(ctx, wtype,           n_text_state, 4*n_text_state);
-layer.mlp_0_b           = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, 4*n_text_state);
-layer.mlp_1_w           = ggml_new_tensor_2d(ctx, wtype,         4*n_text_state, n_text_state);
-layer.mlp_1_b           = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_text_state);
-layer.attn_ln_0_w       = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_text_state);
-layer.attn_ln_0_b       = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_text_state);
-layer.attn_q_w          = ggml_new_tensor_2d(ctx, wtype,           n_text_state, n_text_state);
-layer.attn_q_b          = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_text_state);
-layer.attn_k_w          = ggml_new_tensor_2d(ctx, wtype,           n_text_state, n_text_state);
-layer.attn_v_w          = ggml_new_tensor_2d(ctx, wtype,           n_text_state, n_text_state);
-layer.attn_v_b          = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_text_state);
-layer.attn_ln_1_w       = ggml_new_tensor_2d(ctx, wtype,           n_text_state, n_text_state);
-layer.attn_ln_1_b       = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_text_state);
-layer.cross_attn_ln_0_w = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_text_state);
-layer.cross_attn_ln_0_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_text_state);
-layer.cross_attn_q_w    = ggml_new_tensor_2d(ctx, wtype,           n_text_state, n_text_state);
-layer.cross_attn_q_b    = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_text_state);
-layer.cross_attn_k_w    = ggml_new_tensor_2d(ctx, wtype,           n_text_state, n_text_state);
-layer.cross_attn_v_w    = ggml_new_tensor_2d(ctx, wtype,           n_text_state, n_text_state);
-layer.cross_attn_v_b    = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_text_state);
-layer.cross_attn_ln_1_w = ggml_new_tensor_2d(ctx, wtype,           n_text_state, n_text_state);
-layer.cross_attn_ln_1_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_text_state);
-model.tensors["decoder.blocks." + std::to_string(i) + ".mlp_ln.weight"]           = layer.mlp_ln_w;
-model.tensors["decoder.blocks." + std::to_string(i) + ".mlp_ln.bias"]             = layer.mlp_ln_b;
-model.tensors["decoder.blocks." + std::to_string(i) + ".mlp.0.weight"]            = layer.mlp_0_w;
-model.tensors["decoder.blocks." + std::to_string(i) + ".mlp.0.bias"]              = layer.mlp_0_b;
-model.tensors["decoder.blocks." + std::to_string(i) + ".mlp.2.weight"]            = layer.mlp_1_w;
-model.tensors["decoder.blocks." + std::to_string(i) + ".mlp.2.bias"]              = layer.mlp_1_b;
-model.tensors["decoder.blocks." + std::to_string(i) + ".attn_ln.weight"]          = layer.attn_ln_0_w;
-model.tensors["decoder.blocks." + std::to_string(i) + ".attn_ln.bias"]            = layer.attn_ln_0_b;
-model.tensors["decoder.blocks." + std::to_string(i) + ".attn.query.weight"]       = layer.attn_q_w;
-model.tensors["decoder.blocks." + std::to_string(i) + ".attn.query.bias"]         = layer.attn_q_b;
-model.tensors["decoder.blocks." + std::to_string(i) + ".attn.key.weight"]         = layer.attn_k_w;
-model.tensors["decoder.blocks." + std::to_string(i) + ".attn.value.weight"]       = layer.attn_v_w;
-model.tensors["decoder.blocks." + std::to_string(i) + ".attn.value.bias"]         = layer.attn_v_b;
-model.tensors["decoder.blocks." + std::to_string(i) + ".attn.out.weight"]         = layer.attn_ln_1_w;
-model.tensors["decoder.blocks." + std::to_string(i) + ".attn.out.bias"]           = layer.attn_ln_1_b;
-model.tensors["decoder.blocks." + std::to_string(i) + ".cross_attn_ln.weight"]    = layer.cross_attn_ln_0_w;
-model.tensors["decoder.blocks." + std::to_string(i) + ".cross_attn_ln.bias"]      = layer.cross_attn_ln_0_b;
+layer.mlp_ln_w = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_text_state);
+layer.mlp_ln_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_text_state);
+layer.mlp_0_w = ggml_new_tensor_2d(ctx, wtype, n_text_state, 4*n_text_state);
+layer.mlp_0_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, 4*n_text_state);
+layer.mlp_1_w = ggml_new_tensor_2d(ctx, wtype, 4*n_text_state, n_text_state);
+layer.mlp_1_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_text_state);
+layer.attn_ln_0_w = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_text_state);
+layer.attn_ln_0_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_text_state);
+layer.attn_q_w = ggml_new_tensor_2d(ctx, wtype, n_text_state, n_text_state);
+layer.attn_q_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_text_state);
+layer.attn_k_w = ggml_new_tensor_2d(ctx, wtype, n_text_state, n_text_state);
+layer.attn_v_w = ggml_new_tensor_2d(ctx, wtype, n_text_state, n_text_state);
+layer.attn_v_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_text_state);
+layer.attn_ln_1_w = ggml_new_tensor_2d(ctx, wtype, n_text_state, n_text_state);
+layer.attn_ln_1_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_text_state);
+layer.cross_attn_ln_0_w = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_text_state);
+layer.cross_attn_ln_0_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_text_state);
+layer.cross_attn_q_w = ggml_new_tensor_2d(ctx, wtype, n_text_state, n_text_state);
+layer.cross_attn_q_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_text_state);
+layer.cross_attn_k_w = ggml_new_tensor_2d(ctx, wtype, n_text_state, n_text_state);
+layer.cross_attn_v_w = ggml_new_tensor_2d(ctx, wtype, n_text_state, n_text_state);
+layer.cross_attn_v_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_text_state);
+layer.cross_attn_ln_1_w = ggml_new_tensor_2d(ctx, wtype, n_text_state, n_text_state);
+layer.cross_attn_ln_1_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_text_state);
+model.tensors["decoder.blocks." + std::to_string(i) + ".mlp_ln.weight"] = layer.mlp_ln_w;
+model.tensors["decoder.blocks." + std::to_string(i) + ".mlp_ln.bias"] = layer.mlp_ln_b;
+model.tensors["decoder.blocks." + std::to_string(i) + ".mlp.0.weight"] = layer.mlp_0_w;
+model.tensors["decoder.blocks." + std::to_string(i) + ".mlp.0.bias"] = layer.mlp_0_b;
+model.tensors["decoder.blocks." + std::to_string(i) + ".mlp.2.weight"] = layer.mlp_1_w;
+model.tensors["decoder.blocks." + std::to_string(i) + ".mlp.2.bias"] = layer.mlp_1_b;
+model.tensors["decoder.blocks." + std::to_string(i) + ".attn_ln.weight"] = layer.attn_ln_0_w;
+model.tensors["decoder.blocks." + std::to_string(i) + ".attn_ln.bias"] = layer.attn_ln_0_b;
+model.tensors["decoder.blocks." + std::to_string(i) + ".attn.query.weight"] = layer.attn_q_w;
+model.tensors["decoder.blocks." + std::to_string(i) + ".attn.query.bias"] = layer.attn_q_b;
+model.tensors["decoder.blocks." + std::to_string(i) + ".attn.key.weight"] = layer.attn_k_w;
+model.tensors["decoder.blocks." + std::to_string(i) + ".attn.value.weight"] = layer.attn_v_w;
+model.tensors["decoder.blocks." + std::to_string(i) + ".attn.value.bias"] = layer.attn_v_b;
+model.tensors["decoder.blocks." + std::to_string(i) + ".attn.out.weight"] = layer.attn_ln_1_w;
+model.tensors["decoder.blocks." + std::to_string(i) + ".attn.out.bias"] = layer.attn_ln_1_b;
+model.tensors["decoder.blocks." + std::to_string(i) + ".cross_attn_ln.weight"] = layer.cross_attn_ln_0_w;
+model.tensors["decoder.blocks." + std::to_string(i) + ".cross_attn_ln.bias"] = layer.cross_attn_ln_0_b;
 model.tensors["decoder.blocks." + std::to_string(i) + ".cross_attn.query.weight"] = layer.cross_attn_q_w;
-model.tensors["decoder.blocks." + std::to_string(i) + ".cross_attn.query.bias"]   = layer.cross_attn_q_b;
-model.tensors["decoder.blocks." + std::to_string(i) + ".cross_attn.key.weight"]   = layer.cross_attn_k_w;
+model.tensors["decoder.blocks." + std::to_string(i) + ".cross_attn.query.bias"] = layer.cross_attn_q_b;
+model.tensors["decoder.blocks." + std::to_string(i) + ".cross_attn.key.weight"] = layer.cross_attn_k_w;
 model.tensors["decoder.blocks." + std::to_string(i) + ".cross_attn.value.weight"] = layer.cross_attn_v_w;
-model.tensors["decoder.blocks." + std::to_string(i) + ".cross_attn.value.bias"]   = layer.cross_attn_v_b;
-model.tensors["decoder.blocks." + std::to_string(i) + ".cross_attn.out.weight"]   = layer.cross_attn_ln_1_w;
-model.tensors["decoder.blocks." + std::to_string(i) + ".cross_attn.out.bias"]     = layer.cross_attn_ln_1_b;
+model.tensors["decoder.blocks." + std::to_string(i) + ".cross_attn.value.bias"] = layer.cross_attn_v_b;
+model.tensors["decoder.blocks." + std::to_string(i) + ".cross_attn.out.weight"] = layer.cross_attn_ln_1_w;
+model.tensors["decoder.blocks." + std::to_string(i) + ".cross_attn.out.bias"] = layer.cross_attn_ln_1_b;
 }
 }
 }
@@ -1299,9 +1299,9 @@ return use_coreml || use_openvino;
 static struct ggml_cgraph * whisper_build_graph_conv(
 whisper_context & wctx,
 whisper_state & wstate) {
-const auto & model   = wctx.model;
+const auto & model = wctx.model;
 const auto & hparams = model.hparams;
-const int n_ctx   = wstate.exp_n_audio_ctx > 0 ? wstate.exp_n_audio_ctx : hparams.n_audio_ctx;
+const int n_ctx = wstate.exp_n_audio_ctx > 0 ? wstate.exp_n_audio_ctx : hparams.n_audio_ctx;
 const int n_state = hparams.n_audio_state; GGML_UNUSED(n_state);
 const int n_mels = hparams.n_mels;
 struct ggml_init_params params = {
@@ -1340,11 +1340,11 @@ return gf;
 static struct ggml_cgraph * whisper_build_graph_encoder(
 whisper_context & wctx,
 whisper_state & wstate) {
-const auto & model   = wctx.model;
+const auto & model = wctx.model;
 const auto & hparams = model.hparams;
-const int n_ctx   = wstate.exp_n_audio_ctx > 0 ? wstate.exp_n_audio_ctx : hparams.n_audio_ctx;
+const int n_ctx = wstate.exp_n_audio_ctx > 0 ? wstate.exp_n_audio_ctx : hparams.n_audio_ctx;
 const int n_state = hparams.n_audio_state;
-const int n_head  = hparams.n_audio_head;
+const int n_head = hparams.n_audio_head;
 const int n_layer = hparams.n_audio_layer;
 const int n_state_head = n_state/n_head;
 auto & kv_pad = wstate.kv_pad;
@@ -1481,11 +1481,11 @@ return gf;
 static struct ggml_cgraph * whisper_build_graph_cross(
 whisper_context & wctx,
 whisper_state & wstate) {
-const auto & model   = wctx.model;
+const auto & model = wctx.model;
 const auto & hparams = model.hparams;
-const int n_ctx   = wstate.exp_n_audio_ctx > 0 ? wstate.exp_n_audio_ctx : hparams.n_audio_ctx;
+const int n_ctx = wstate.exp_n_audio_ctx > 0 ? wstate.exp_n_audio_ctx : hparams.n_audio_ctx;
 const int n_state = hparams.n_audio_state;
-const int n_head  = hparams.n_audio_head;
+const int n_head = hparams.n_audio_head;
 const int n_state_head = n_state/n_head;
 const int n_ctx_pad = GGML_PAD(n_ctx, 256);
 struct ggml_init_params params = {
@@ -1496,7 +1496,7 @@ true,
 struct ggml_context * ctx0 = ggml_init(params);
 ggml_cgraph * gf = ggml_new_graph(ctx0);
 struct ggml_tensor * cur = ggml_view_tensor(ctx0, wstate.embd_enc);
-const float  Kscale = pow(float(n_state_head), -0.25);
+const float Kscale = pow(float(n_state_head), -0.25);
 for (int il = 0; il < model.hparams.n_text_layer; ++il) {
 auto & layer = model.layers_decoder[il];
 struct ggml_tensor * Kcross = ggml_mul_mat(ctx0,
@@ -1521,7 +1521,7 @@ Vcross = ggml_transpose(ctx0, ggml_reshape_2d(ctx0, Vcross, n_state, n_ctx));
 k = ggml_view_1d(ctx0, wstate.kv_cross.k, n_state*n_ctx,
 (ggml_element_size(wstate.kv_cross.k)*n_state)*(il*n_ctx));
 v = ggml_view_2d(ctx0, wstate.kv_cross.v, n_ctx, n_state,
-(   n_ctx)*ggml_element_size(wstate.kv_cross.v),
+( n_ctx)*ggml_element_size(wstate.kv_cross.v),
 (il*n_ctx)*ggml_element_size(wstate.kv_cross.v)*n_state);
 }
 ggml_build_forward_expand(gf, ggml_cpy(ctx0, Kcross, k));
@@ -1533,9 +1533,9 @@ return gf;
 static bool whisper_encode_internal(
 whisper_context & wctx,
 whisper_state & wstate,
-const int   mel_offset,
-const int   n_threads,
-ggml_abort_callback   abort_callback,
+const int mel_offset,
+const int n_threads,
+ggml_abort_callback abort_callback,
 void * abort_callback_data) {
 const int64_t t_start_us = ggml_time_us();
 {
@@ -1547,13 +1547,13 @@ return false;
 struct ggml_tensor * mel = ggml_graph_get_tensor(gf, "mel");
 {
 const auto & mel_inp = wstate.mel;
-const int n_ctx      = wstate.exp_n_audio_ctx > 0 ? wstate.exp_n_audio_ctx : wctx.model.hparams.n_audio_ctx;
+const int n_ctx = wstate.exp_n_audio_ctx > 0 ? wstate.exp_n_audio_ctx : wctx.model.hparams.n_audio_ctx;
 assert(mel->type == GGML_TYPE_F32);
 assert(mel_inp.n_mel == wctx.model.hparams.n_mels);
 wstate.inp_mel.resize(ggml_nelements(mel));
 float * dst = wstate.inp_mel.data();
 memset(dst, 0, ggml_nbytes(mel));
-const int i0 = std::min(mel_offset,           mel_inp.n_len);
+const int i0 = std::min(mel_offset, mel_inp.n_len);
 const int i1 = std::min(mel_offset + 2*n_ctx, mel_inp.n_len);
 for (int j = 0; j < mel_inp.n_mel; ++j) {
 for (int i = i0; i < i1; ++i) {
@@ -1600,23 +1600,23 @@ return !(abort_callback && abort_callback(abort_callback_data));
 }
 static struct ggml_cgraph * whisper_build_graph_decoder(
 whisper_context & wctx,
-whisper_state   & wstate,
+whisper_state & wstate,
 const whisper_batch & batch,
-bool   save_alignment_heads_QKs,
-bool   worst_case) {
-const auto & model   = wctx.model;
+bool save_alignment_heads_QKs,
+bool worst_case) {
+const auto & model = wctx.model;
 const auto & hparams = model.hparams;
 auto & kv_self = wstate.kv_self;
 WHISPER_ASSERT(!!kv_self.ctx);
-const int n_ctx   = kv_self.size;
+const int n_ctx = kv_self.size;
 const int n_state = hparams.n_text_state;
-const int n_head  = hparams.n_text_head;
+const int n_head = hparams.n_text_head;
 const int n_layer = hparams.n_text_layer;
 const int n_state_head = n_state/n_head;
-const int n_tokens    = batch.n_tokens;
+const int n_tokens = batch.n_tokens;
 const int n_audio_ctx = wstate.exp_n_audio_ctx > 0 ? wstate.exp_n_audio_ctx : hparams.n_audio_ctx;
 const int n_audio_ctx_pad = GGML_PAD(n_audio_ctx, 256);
-const int32_t n_kv    = worst_case ? n_ctx            : kv_self.n;
+const int32_t n_kv = worst_case ? n_ctx : kv_self.n;
 const int32_t kv_head = worst_case ? n_ctx - n_tokens : kv_self.head;
 struct ggml_init_params params = {
 wstate.alloc_decode.meta.size(),
@@ -1683,7 +1683,7 @@ Vcur = ggml_transpose(ctx0, ggml_reshape_2d(ctx0, Vcur, n_state, n_tokens));
 k = ggml_view_1d(ctx0, kv_self.k, n_tokens*n_state,
 (ggml_element_size(kv_self.k)*n_state)*(il*n_ctx + kv_head));
 v = ggml_view_2d(ctx0, kv_self.v, n_tokens, n_state,
-(   n_ctx)*ggml_element_size(kv_self.v),
+( n_ctx)*ggml_element_size(kv_self.v),
 (il*n_ctx)*ggml_element_size(kv_self.v)*n_state + kv_head*ggml_element_size(kv_self.v));
 }
 ggml_build_forward_expand(gf, ggml_cpy(ctx0, Kcur, k));
@@ -1866,14 +1866,14 @@ static bool whisper_decode_internal(
 whisper_context & wctx,
 whisper_state & wstate,
 const whisper_batch & batch,
-const int   n_threads,
-bool   save_alignment_heads_QKs,
-ggml_abort_callback   abort_callback,
+const int n_threads,
+bool save_alignment_heads_QKs,
+ggml_abort_callback abort_callback,
 void * abort_callback_data) {
 const int64_t t_start_us = ggml_time_us();
-const auto & model   = wctx.model;
+const auto & model = wctx.model;
 const auto & hparams = model.hparams;
-const int n_vocab  = hparams.n_vocab;
+const int n_vocab = hparams.n_vocab;
 const int n_tokens = batch.n_tokens;
 auto & logits_out = wstate.logits;
 struct ggml_tensor * logits;
@@ -1911,7 +1911,7 @@ float * data = wstate.inp_mask.data();
 memset(data, 0, ggml_nbytes(KQ_mask));
 for (int h = 0; h < 1; ++h) {
 for (int j = 0; j < n_tokens; ++j) {
-const whisper_pos    pos    = batch.pos[j];
+const whisper_pos pos = batch.pos[j];
 const whisper_seq_id seq_id = batch.seq_id[j][0];
 for (int i = 0; i < n_kv; ++i) {
 if (!kv_self.cells[i].has_seq_id(seq_id) || kv_self.cells[i].pos > pos) {
@@ -2094,14 +2094,14 @@ mel.data[j * mel.n_len + i] = sum;
 static bool log_mel_spectrogram(
 whisper_state & wstate,
 const float * samples,
-const int   n_samples,
-const int   ,
-const int   frame_size,
-const int   frame_step,
-const int   n_mel,
-const int   n_threads,
+const int n_samples,
+const int ,
+const int frame_size,
+const int frame_step,
+const int n_mel,
+const int n_threads,
 const whisper_filters & filters,
-const bool   debug,
+const bool debug,
 whisper_mel & mel) {
 const int64_t t_start_us = ggml_time_us();
 std::vector<float> hann;
@@ -2113,8 +2113,8 @@ samples_padded.resize(n_samples + stage_1_pad + stage_2_pad * 2);
 std::copy(samples, samples + n_samples, samples_padded.begin() + stage_2_pad);
 std::fill(samples_padded.begin() + n_samples + stage_2_pad, samples_padded.begin() + n_samples + stage_1_pad + 2 * stage_2_pad, 0);
 std::reverse_copy(samples + 1, samples + 1 + stage_2_pad, samples_padded.begin());
-mel.n_mel     = n_mel;
-mel.n_len     = (samples_padded.size() - frame_size) / frame_step;
+mel.n_mel = n_mel;
+mel.n_len = (samples_padded.size() - frame_size) / frame_step;
 mel.n_len_org = 1 + (n_samples + stage_2_pad - frame_size) / frame_step;
 mel.data.resize(mel.n_mel * mel.n_len);
 {
@@ -2304,8 +2304,8 @@ WHISPER_LOG_INFO("%s: Core ML model loaded\n", __func__);
 state->logits.reserve(ctx->vocab.n_vocab * ctx->model.hparams.n_text_ctx);
 state->batch = whisper_batch_init(ctx->model.hparams.n_text_ctx, WHISPER_MAX_DECODERS);
 state->decoders[0].sequence.tokens.reserve(ctx->model.hparams.n_text_ctx);
-state->decoders[0].probs.reserve    (ctx->vocab.n_vocab);
-state->decoders[0].logits.reserve   (ctx->vocab.n_vocab);
+state->decoders[0].probs.reserve (ctx->vocab.n_vocab);
+state->decoders[0].logits.reserve (ctx->vocab.n_vocab);
 state->decoders[0].logprobs.reserve (ctx->vocab.n_vocab);
 state->decoders[0].logits_id.reserve(ctx->model.hparams.n_vocab);
 state->decoders[0].rng = std::mt19937(0);
@@ -2350,7 +2350,7 @@ bool ok = whisper_allocr_graph_init(state->alloc_decode, ctx->backend,
 [&]() {
 const auto & hparams = ctx->model.hparams;
 const int n_tokens = hparams.n_text_ctx;
-const int n_past   = 0;
+const int n_past = 0;
 whisper_batch_prep_legacy(state->batch, nullptr, n_tokens, n_past, 0);
 return whisper_build_graph_decoder(*ctx, *state, state->batch, ctx->params.dtw_token_timestamps, true);
 });
@@ -2622,15 +2622,15 @@ int whisper_set_mel_with_state(
 struct whisper_context * ctx,
 struct whisper_state * state,
 const float * data,
-int   n_len,
-int   n_mel) {
+int n_len,
+int n_mel) {
 if (n_mel != ctx->model.filters.n_mel) {
 WHISPER_LOG_ERROR("%s: invalid number of mel bands: %d (expected %d)\n", __func__, n_mel, ctx->model.filters.n_mel);
 return -1;
 }
-state->mel.n_len     = n_len;
+state->mel.n_len = n_len;
 state->mel.n_len_org = n_len;
-state->mel.n_mel     = n_mel;
+state->mel.n_mel = n_mel;
 state->mel.data.resize(n_len*n_mel);
 memcpy(state->mel.data.data(), data, n_len*n_mel*sizeof(float));
 return 0;
@@ -2726,8 +2726,8 @@ return nullptr;
 int whisper_lang_auto_detect_with_state(
 struct whisper_context * ctx,
 struct whisper_state * state,
-int   offset_ms,
-int   n_threads,
+int offset_ms,
+int n_threads,
 float * lang_probs) {
 const int seek = offset_ms/10;
 if (seek < 0) {
@@ -2781,8 +2781,8 @@ return logits_id[0].second;
 }
 int whisper_lang_auto_detect(
 struct whisper_context * ctx,
-int   offset_ms,
-int   n_threads,
+int offset_ms,
+int n_threads,
 float * lang_probs) {
 return whisper_lang_auto_detect_with_state(ctx, ctx->state, offset_ms, n_threads, lang_probs);
 }
@@ -2947,31 +2947,31 @@ return 0;
 }
 const char * whisper_print_system_info(void) {
 static std::string s;
-s  = "";
-s += "AVX = "       + std::to_string(ggml_cpu_has_avx())       + " | ";
-s += "AVX2 = "      + std::to_string(ggml_cpu_has_avx2())      + " | ";
-s += "AVX512 = "    + std::to_string(ggml_cpu_has_avx512())    + " | ";
-s += "FMA = "       + std::to_string(ggml_cpu_has_fma())       + " | ";
-s += "NEON = "      + std::to_string(ggml_cpu_has_neon())      + " | ";
-s += "ARM_FMA = "   + std::to_string(ggml_cpu_has_arm_fma())   + " | ";
-s += "F16C = "      + std::to_string(ggml_cpu_has_f16c())      + " | ";
-s += "FP16_VA = "   + std::to_string(ggml_cpu_has_fp16_va())   + " | ";
+s = "";
+s += "AVX = " + std::to_string(ggml_cpu_has_avx()) + " | ";
+s += "AVX2 = " + std::to_string(ggml_cpu_has_avx2()) + " | ";
+s += "AVX512 = " + std::to_string(ggml_cpu_has_avx512()) + " | ";
+s += "FMA = " + std::to_string(ggml_cpu_has_fma()) + " | ";
+s += "NEON = " + std::to_string(ggml_cpu_has_neon()) + " | ";
+s += "ARM_FMA = " + std::to_string(ggml_cpu_has_arm_fma()) + " | ";
+s += "F16C = " + std::to_string(ggml_cpu_has_f16c()) + " | ";
+s += "FP16_VA = " + std::to_string(ggml_cpu_has_fp16_va()) + " | ";
 s += "WASM_SIMD = " + std::to_string(ggml_cpu_has_wasm_simd()) + " | ";
-s += "SSE3 = "      + std::to_string(ggml_cpu_has_sse3())      + " | ";
-s += "SSSE3 = "     + std::to_string(ggml_cpu_has_ssse3())     + " | ";
-s += "VSX = "       + std::to_string(ggml_cpu_has_vsx())       + " | ";
-s += "COREML = "    + std::to_string(whisper_has_coreml())     + " | ";
-s += "OPENVINO = "  + std::to_string(whisper_has_openvino())          ;
+s += "SSE3 = " + std::to_string(ggml_cpu_has_sse3()) + " | ";
+s += "SSSE3 = " + std::to_string(ggml_cpu_has_ssse3()) + " | ";
+s += "VSX = " + std::to_string(ggml_cpu_has_vsx()) + " | ";
+s += "COREML = " + std::to_string(whisper_has_coreml()) + " | ";
+s += "OPENVINO = " + std::to_string(whisper_has_openvino()) ;
 return s.c_str();
 }
 std::pair<std::vector<uint32_t>, whisper_partial_utf8> decode_utf8(
-const char         * src,
-whisper_partial_utf8   partial_start) {
-static const int      lookup[] = { 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 3, 4 };
-const char          * pos      = src;
+const char * src,
+whisper_partial_utf8 partial_start) {
+static const int lookup[] = { 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 3, 4 };
+const char * pos = src;
 std::vector<uint32_t> code_points;
-uint32_t              value    = partial_start.value;
-int                   n_remain = partial_start.n_remain;
+uint32_t value = partial_start.value;
+int n_remain = partial_start.n_remain;
 while (*pos != 0 && n_remain > 0) {
 uint8_t next_byte = static_cast<uint8_t>(*pos);
 if ((next_byte >> 6) != 2) {
@@ -2986,16 +2986,16 @@ if (partial_start.n_remain > 0 && n_remain == 0) {
 code_points.push_back(value);
 }
 while (*pos != 0) {
-uint8_t  first_byte = static_cast<uint8_t>(*pos);
-uint8_t  highbits   = first_byte >> 4;
-n_remain   = lookup[highbits] - 1;
+uint8_t first_byte = static_cast<uint8_t>(*pos);
+uint8_t highbits = first_byte >> 4;
+n_remain = lookup[highbits] - 1;
 if (n_remain < 0) {
 code_points.clear();
 code_points.push_back(0);
 return std::make_pair(std::move(code_points), whisper_partial_utf8{ 0, n_remain });
 }
-uint8_t  mask       = (1 << (7 - n_remain)) - 1;
-value      = first_byte & mask;
+uint8_t mask = (1 << (7 - n_remain)) - 1;
+value = first_byte & mask;
 ++pos;
 while (*pos != 0 && n_remain > 0) {
 value = (value << 6) + (static_cast<uint8_t>(*pos) & 0x3F);
@@ -3013,13 +3013,13 @@ static bool whisper_grammar_is_end_of_sequence(const whisper_grammar_element * p
 switch (pos->type) {
 case WHISPER_GRETYPE_END: return true;
 case WHISPER_GRETYPE_ALT: return true;
-default:                return false;
+default: return false;
 }
 }
 static std::pair<bool, const whisper_grammar_element *> whisper_grammar_match_char(
 const whisper_grammar_element * pos,
-const uint32_t                chr) {
-bool found            = false;
+const uint32_t chr) {
+bool found = false;
 bool is_positive_char = pos->type == WHISPER_GRETYPE_CHAR;
 WHISPER_ASSERT(is_positive_char || pos->type == WHISPER_GRETYPE_CHAR_NOT);
 do {
@@ -3035,15 +3035,15 @@ return std::make_pair(found == is_positive_char, pos);
 }
 static bool whisper_grammar_match_partial_char(
 const whisper_grammar_element * pos,
-const whisper_partial_utf8      partial_utf8) {
+const whisper_partial_utf8 partial_utf8) {
 bool is_positive_char = pos->type == WHISPER_GRETYPE_CHAR;
 WHISPER_ASSERT(is_positive_char || pos->type == WHISPER_GRETYPE_CHAR_NOT);
 uint32_t partial_value = partial_utf8.value;
-int      n_remain      = partial_utf8.n_remain;
+int n_remain = partial_utf8.n_remain;
 if (n_remain < 0 || (n_remain == 1 && partial_value < 2)) {
 return false;
 }
-uint32_t low  = partial_value << (n_remain * 6);
+uint32_t low = partial_value << (n_remain * 6);
 uint32_t high = low | ((1 << (n_remain * 6)) - 1);
 if (low == 0) {
 if (n_remain == 2) {
@@ -3068,8 +3068,8 @@ pos += 1;
 return !is_positive_char;
 }
 static void whisper_grammar_advance_stack(
-const std::vector<std::vector<whisper_grammar_element>>   & rules,
-const std::vector<const whisper_grammar_element *>        & stack,
+const std::vector<std::vector<whisper_grammar_element>> & rules,
+const std::vector<const whisper_grammar_element *> & stack,
 std::vector<std::vector<const whisper_grammar_element *>> & new_stacks) {
 if (stack.empty()) {
 new_stacks.push_back(stack);
@@ -3078,8 +3078,8 @@ return;
 const whisper_grammar_element * pos = stack.back();
 switch (pos->type) {
 case WHISPER_GRETYPE_RULE_REF: {
-const size_t                  rule_id = static_cast<size_t>(pos->value);
-const whisper_grammar_element * subpos  = rules[rule_id].data();
+const size_t rule_id = static_cast<size_t>(pos->value);
+const whisper_grammar_element * subpos = rules[rule_id].data();
 do {
 std::vector<const whisper_grammar_element *> new_stack(stack.begin(), stack.end() - 1);
 if (!whisper_grammar_is_end_of_sequence(pos + 1)) {
@@ -3109,9 +3109,9 @@ WHISPER_ASSERT(false);
 }
 }
 static std::vector<std::vector<const whisper_grammar_element *>> whisper_grammar_accept(
-const std::vector<std::vector<whisper_grammar_element>>         & rules,
+const std::vector<std::vector<whisper_grammar_element>> & rules,
 const std::vector<std::vector<const whisper_grammar_element *>> & stacks,
-const uint32_t                                                  chr) {
+const uint32_t chr) {
 std::vector<std::vector<const whisper_grammar_element *>> new_stacks;
 for (const auto & stack : stacks) {
 if (stack.empty()) {
@@ -3130,13 +3130,13 @@ whisper_grammar_advance_stack(rules, new_stack, new_stacks);
 return new_stacks;
 }
 static std::vector<whisper_grammar_candidate> whisper_grammar_reject_candidates(
-const std::vector<std::vector<whisper_grammar_element>>         & rules,
+const std::vector<std::vector<whisper_grammar_element>> & rules,
 const std::vector<std::vector<const whisper_grammar_element *>> & stacks,
-const std::vector<whisper_grammar_candidate>                    & candidates);
+const std::vector<whisper_grammar_candidate> & candidates);
 static std::vector<whisper_grammar_candidate> whisper_grammar_reject_candidates_for_stack(
 const std::vector<std::vector<whisper_grammar_element>> & rules,
-const std::vector<const whisper_grammar_element *>      & stack,
-const std::vector<whisper_grammar_candidate>            & candidates) {
+const std::vector<const whisper_grammar_element *> & stack,
+const std::vector<whisper_grammar_candidate> & candidates) {
 std::vector<whisper_grammar_candidate> rejects;
 if (stack.empty()) {
 for (auto tok : candidates) {
@@ -3173,9 +3173,9 @@ rejects.push_back({ tok.id, tok.code_points - 1, tok.partial_utf8 });
 return rejects;
 }
 static std::vector<whisper_grammar_candidate> whisper_grammar_reject_candidates(
-const std::vector<std::vector<whisper_grammar_element>>         & rules,
+const std::vector<std::vector<whisper_grammar_element>> & rules,
 const std::vector<std::vector<const whisper_grammar_element *>> & stacks,
-const std::vector<whisper_grammar_candidate>                    & candidates) {
+const std::vector<whisper_grammar_candidate> & candidates) {
 if (candidates.empty() || stacks.empty()) {
 return std::vector<whisper_grammar_candidate>();
 }
@@ -3187,8 +3187,8 @@ return rejects;
 }
 static struct whisper_grammar whisper_grammar_init(
 const whisper_grammar_element ** rules,
-size_t      n_rules,
-size_t      i_start_rule) {
+size_t n_rules,
+size_t i_start_rule) {
 const whisper_grammar_element * pos;
 std::vector<std::vector<whisper_grammar_element>> vec_rules(n_rules);
 for (size_t i = 0; i < n_rules; i++) {
@@ -3217,16 +3217,16 @@ break;
 return { std::move(vec_rules), std::move(stacks), {} };
 }
 static void whisper_suppress_invalid_grammar(
-whisper_context  & ctx,
+whisper_context & ctx,
 const whisper_full_params & params,
 std::vector<float> & logits,
-const     whisper_grammar & grammar) {
+const whisper_grammar & grammar) {
 if (grammar.rules.empty() || grammar.stacks.empty()) {
 return;
 }
 const whisper_token eot = whisper_token_eot(&ctx);
 std::vector<std::pair<std::vector<uint32_t>, whisper_partial_utf8>> candidates_decoded;
-std::vector<whisper_grammar_candidate>                              candidates_grammar;
+std::vector<whisper_grammar_candidate> candidates_grammar;
 for (whisper_token id = 0; id < eot; ++id) {
 const std::string & text = ctx.vocab.id_to_token[id];
 if (!text.empty()) {
@@ -3247,7 +3247,7 @@ const std::string & text = ctx.vocab.id_to_token[token];
 if (text.rfind("[_", 0) == 0) {
 return;
 }
-const auto   decoded     = decode_utf8(text.c_str(), grammar.partial_utf8);
+const auto decoded = decode_utf8(text.c_str(), grammar.partial_utf8);
 const auto & code_points = decoded.first;
 for (auto it = code_points.begin(), end = code_points.end() - 1; it != end; ++it) {
 grammar.stacks = whisper_grammar_accept(grammar.rules, grammar.stacks, *it);
@@ -3349,9 +3349,9 @@ static std::vector<float> get_signal_energy(const float * signal, int n_samples,
 static void whisper_exp_compute_token_level_timestamps(
 struct whisper_context & ctx,
 struct whisper_state & state,
-int   i_segment,
-float   thold_pt,
-float   thold_ptsum);
+int i_segment,
+float thold_pt,
+float thold_ptsum);
 static inline bool should_split_on_word(const char * txt, bool split_on_word) {
 if (!split_on_word) return true;
 return txt[0] == ' ';
@@ -3359,13 +3359,13 @@ return txt[0] == ' ';
 static void whisper_exp_compute_token_level_timestamps_dtw(
 struct whisper_context * ctx,
 struct whisper_state * state,
-struct whisper_full_params   params,
-int   i_segment,
-size_t   n_segments,
-int   seek,
-int   n_frames,
-int   medfilt_width,
-int   n_threads);
+struct whisper_full_params params,
+int i_segment,
+size_t n_segments,
+int seek,
+int n_frames,
+int medfilt_width,
+int n_threads);
 static int whisper_wrap_segment(struct whisper_context & ctx, struct whisper_state & state, int max_len, bool split_on_word) {
 auto segment = state.result_all.back();
 int res = 1;
@@ -3412,17 +3412,17 @@ static const std::vector<std::string> non_speech_tokens = {
 };
 static void whisper_process_logits(
 struct whisper_context & ctx,
-struct whisper_state  & state,
+struct whisper_state & state,
 struct whisper_decoder & decoder,
-const struct whisper_full_params   params,
-float   temperature) {
-const auto & vocab      = ctx.vocab;
+const struct whisper_full_params params,
+float temperature) {
+const auto & vocab = ctx.vocab;
 const auto & tokens_cur = decoder.sequence.tokens;
 const bool is_initial = tokens_cur.size() == 0;
-const int  n_logits   = vocab.id_to_token.size();
+const int n_logits = vocab.id_to_token.size();
 WHISPER_ASSERT(n_logits == ctx.vocab.n_vocab);
-auto & probs    = decoder.probs;
-auto & logits   = decoder.logits;
+auto & probs = decoder.probs;
+auto & logits = decoder.logits;
 auto & logprobs = decoder.logprobs;
 {
 logits.resize(n_logits);
@@ -3438,7 +3438,7 @@ logprobs.resize(n_logits);
 {
 if (params.suppress_blank) {
 if (is_initial) {
-logits[vocab.token_eot]           = -INFINITY;
+logits[vocab.token_eot] = -INFINITY;
 logits[vocab.token_to_id.at(" ")] = -INFINITY;
 }
 }
@@ -3448,14 +3448,14 @@ for (int i = vocab.token_beg; i < n_logits; ++i) {
 logits[i] = -INFINITY;
 }
 }
-logits[vocab.token_sot]  = -INFINITY;
+logits[vocab.token_sot] = -INFINITY;
 logits[vocab.token_nosp] = -INFINITY;
 if (params.tdrz_enable == false) {
 logits[vocab.token_solm] = -INFINITY;
 }
-logits[vocab.token_translate]  = -INFINITY;
+logits[vocab.token_translate] = -INFINITY;
 logits[vocab.token_transcribe] = -INFINITY;
-logits[vocab.token_prev]       = -INFINITY;
+logits[vocab.token_prev] = -INFINITY;
 for (size_t i = 0; i < g_lang.size(); ++i) {
 logits[whisper_token_lang(&ctx, i)] = -INFINITY;
 }
@@ -3488,7 +3488,7 @@ logits[vocab.token_to_id.at(" '")] = -INFINITY;
 }
 }
 {
-const bool last_was_timestamp        = tokens_cur.size() > 0 && tokens_cur.back().id >= vocab.token_beg;
+const bool last_was_timestamp = tokens_cur.size() > 0 && tokens_cur.back().id >= vocab.token_beg;
 const bool penultimate_was_timestamp = tokens_cur.size() < 2 || tokens_cur[tokens_cur.size() - 2].id >= vocab.token_beg;
 if (last_was_timestamp) {
 if (penultimate_was_timestamp) {
@@ -3504,7 +3504,7 @@ logits[i] = -INFINITY;
 }
 if (is_initial && params.max_initial_ts > 0.0f) {
 const float precision = float(WHISPER_CHUNK_SIZE)/ctx.model.hparams.n_audio_ctx;
-const int   tid0      = std::round(params.max_initial_ts/precision);
+const int tid0 = std::round(params.max_initial_ts/precision);
 for (int i = vocab.token_beg + tid0 + 1; i < n_logits; ++i) {
 logits[i] = -INFINITY;
 }
@@ -3549,7 +3549,7 @@ timestamp_logprob = logf(logsumexp) + logprob_max;
 const float max_text_token_logprob = *std::max_element(logprobs.begin(), logprobs.begin() + vocab.token_beg);
 if (timestamp_logprob > max_text_token_logprob) {
 for (int i = 0; i < vocab.token_beg; ++i) {
-logits[i]   = -INFINITY;
+logits[i] = -INFINITY;
 logprobs[i] = -INFINITY;
 }
 } else {
@@ -3595,9 +3595,9 @@ std::sort(pairs.begin(), pairs.end(), [](const std::pair<float, int>& a, const s
 return a.first > b.first;
 });
 for (int i = 0; i < 10; i++) {
-const auto token   = vocab.id_to_token.at(pairs[i].second);
-const auto prob    = pairs[i].first;
-const auto logit   = logits[pairs[i].second];
+const auto token = vocab.id_to_token.at(pairs[i].second);
+const auto prob = pairs[i].first;
+const auto logit = logits[pairs[i].second];
 const auto logprob = logprobs[pairs[i].second];
 printf("%16s : id=%6d prob=%9.5f logit=%9.5f logprob=%9.5f '%s'\n", token.c_str(), pairs[i].second, prob, logit, logprob, token.c_str());
 }
@@ -3619,12 +3619,12 @@ return true;
 static whisper_token_data whisper_sample_token(
 whisper_context & ctx,
 const whisper_decoder & decoder,
-bool   best) {
+bool best) {
 whisper_token_data result = {
 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, -1, -1, -1, 0.0f,
 };
 const auto & vocab = ctx.vocab;
-const auto & probs    = decoder.probs;
+const auto & probs = decoder.probs;
 const auto & logprobs = decoder.logprobs;
 const int n_logits = vocab.n_vocab;
 {
@@ -3640,36 +3640,36 @@ max_ts = probs[i];
 result.tid = i;
 }
 }
-result.pt    = max_ts/(sum_ts + 1e-10);
+result.pt = max_ts/(sum_ts + 1e-10);
 result.ptsum = sum_ts;
 }
 if (best) {
 for (int i = 0; i < n_logits; ++i) {
 if (result.p < probs[i]) {
-result.id   = i;
-result.p    = probs[i];
+result.id = i;
+result.p = probs[i];
 result.plog = logprobs[i];
 }
 }
 } else {
 std::discrete_distribution<> dist(probs.begin(), probs.end());
-result.id   = dist(decoder.rng);
-result.p    = probs[result.id];
+result.id = dist(decoder.rng);
+result.p = probs[result.id];
 result.plog = logprobs[result.id];
 }
 if (result.id >= vocab.token_beg) {
 result.tid = result.id;
-result.pt  = result.p;
+result.pt = result.p;
 }
 return result;
 }
 static std::vector<whisper_token_data> whisper_sample_token_topk(
 whisper_context & ctx,
 whisper_decoder & decoder,
-int   k) {
+int k) {
 const auto & vocab = ctx.vocab;
-const auto & probs    = decoder.probs;
-const auto & logits   = decoder.logits;
+const auto & probs = decoder.probs;
+const auto & logits = decoder.logits;
 const auto & logprobs = decoder.logprobs;
 const int n_logits = vocab.n_vocab;
 auto & logits_id = decoder.logits_id;
@@ -3690,7 +3690,7 @@ return a.first > b.first;
 std::vector<whisper_token_data> result;
 result.reserve(k);
 whisper_token tid = vocab.token_beg;
-float pt    = 0.0;
+float pt = 0.0;
 float ptsum = 0.0;
 {
 double sum_ts = 0.0;
@@ -3705,7 +3705,7 @@ max_ts = probs[i];
 tid = i;
 }
 }
-pt    = max_ts/(sum_ts + 1e-10);
+pt = max_ts/(sum_ts + 1e-10);
 ptsum = sum_ts;
 }
 std::discrete_distribution<> dist(probs.begin(), probs.end());
@@ -3714,7 +3714,7 @@ const auto id = dist(decoder.rng);
 result.push_back({ id, tid, probs[id], logprobs[id], pt, ptsum, -1, -1, -1, 0.0f, });
 if (result[i].id >= vocab.token_beg) {
 result[i].tid = result[i].id;
-result[i].pt  = result[i].p;
+result[i].pt = result[i].p;
 }
 }
 return result;
@@ -3755,9 +3755,9 @@ sequence.entropy = entropy;
 int whisper_full_with_state(
 struct whisper_context * ctx,
 struct whisper_state * state,
-struct whisper_full_params   params,
+struct whisper_full_params params,
 const float * samples,
-int   n_samples) {
+int n_samples) {
 auto & result_all = state->result_all;
 result_all.clear();
 if (n_samples > 0) {
@@ -3792,8 +3792,8 @@ return 0;
 }
 }
 if (params.token_timestamps) {
-state->t_beg    = 0;
-state->t_last   = 0;
+state->t_beg = 0;
+state->t_last = 0;
 state->tid_last = 0;
 if (n_samples > 0) {
 state->energy = get_signal_energy(samples, n_samples, 32);
@@ -3832,8 +3832,8 @@ return -4;
 for (int j = 1; j < n_decoders; j++) {
 auto & decoder = state->decoders[j];
 decoder.sequence.tokens.reserve(state->decoders[0].sequence.tokens.capacity());
-decoder.probs.resize   (ctx->vocab.n_vocab);
-decoder.logits.resize  (ctx->vocab.n_vocab);
+decoder.probs.resize (ctx->vocab.n_vocab);
+decoder.logits.resize (ctx->vocab.n_vocab);
 decoder.logprobs.resize(ctx->vocab.n_vocab);
 decoder.logits_id.reserve(ctx->model.hparams.n_vocab);
 decoder.rng = std::mt19937(0);
@@ -3852,7 +3852,7 @@ prompt_tokens.resize(-n_needed);
 n_needed = whisper_tokenize(ctx, params.initial_prompt, prompt_tokens.data(), prompt_tokens.size());
 }
 prompt_tokens.resize(n_needed);
-params.prompt_tokens   = prompt_tokens.data();
+params.prompt_tokens = prompt_tokens.data();
 params.prompt_n_tokens = prompt_tokens.size();
 }
 if (params.prompt_tokens && params.prompt_n_tokens > 0) {
@@ -3951,16 +3951,16 @@ WHISPER_LOG_DEBUG("\n%s: strategy = %d, decoding with %d decoders, temperature =
 for (int j = 0; j < n_decoders_cur; ++j) {
 auto & decoder = state->decoders[j];
 decoder.sequence.tokens.clear();
-decoder.sequence.result_len       = 0;
+decoder.sequence.result_len = 0;
 decoder.sequence.sum_logprobs_all = 0.0;
-decoder.sequence.sum_logprobs     = -INFINITY;
-decoder.sequence.avg_logprobs     = -INFINITY;
-decoder.sequence.entropy          = 0.0;
-decoder.sequence.score            = -INFINITY;
+decoder.sequence.sum_logprobs = -INFINITY;
+decoder.sequence.avg_logprobs = -INFINITY;
+decoder.sequence.entropy = 0.0;
+decoder.sequence.score = -INFINITY;
 decoder.seek_delta = 100*WHISPER_CHUNK_SIZE;
-decoder.failed    = false;
+decoder.failed = false;
 decoder.completed = false;
-decoder.has_ts    = false;
+decoder.has_ts = false;
 if (params.grammar_rules != nullptr) {
 decoder.grammar = whisper_grammar_init(params.grammar_rules, params.n_grammar_rules, params.i_start_rule);
 } else {
@@ -3993,8 +3993,8 @@ whisper_process_logits(*ctx, *state, state->decoders[0], params, t_cur);
 for (int j = 1; j < n_decoders_cur; ++j) {
 auto & decoder = state->decoders[j];
 whisper_kv_cache_seq_cp(state->kv_self, 0, j, -1, -1);
-memcpy(decoder.probs.data(),    state->decoders[0].probs.data(),    decoder.probs.size()*sizeof(decoder.probs[0]));
-memcpy(decoder.logits.data(),   state->decoders[0].logits.data(),   decoder.logits.size()*sizeof(decoder.logits[0]));
+memcpy(decoder.probs.data(), state->decoders[0].probs.data(), decoder.probs.size()*sizeof(decoder.probs[0]));
+memcpy(decoder.logits.data(), state->decoders[0].logits.data(), decoder.logits.size()*sizeof(decoder.logits[0]));
 memcpy(decoder.logprobs.data(), state->decoders[0].logprobs.data(), decoder.logprobs.size()*sizeof(decoder.logprobs[0]));
 }
 state->t_sample_us += ggml_time_us() - t_start_sample_us;
@@ -4086,9 +4086,9 @@ while (beam_candidates.size() > cur_c && whisper_sequence_tokens_equal(beam_cand
 ++cur_c;
 }
 decoder.seek_delta = cur.seek_delta;
-decoder.has_ts     = cur.has_ts;
-decoder.sequence   = cur.sequence;
-decoder.grammar    = cur.grammar;
+decoder.has_ts = cur.has_ts;
+decoder.sequence = cur.sequence;
+decoder.grammar = cur.grammar;
 whisper_kv_cache_seq_cp(state->kv_self, cur.decoder_idx, WHISPER_MAX_DECODERS + j, -1, -1);
 WHISPER_LOG_DEBUG("%s: beam search: decoder %d: from decoder %d: token = %10s, plog = %8.5f, sum_logprobs = %8.5f\n",
 __func__, j, cur.decoder_idx, ctx->vocab.id_to_token.at(decoder.sequence.tokens.back().id).c_str(), decoder.sequence.tokens.back().plog, decoder.sequence.sum_logprobs_all);
@@ -4098,9 +4098,9 @@ auto & decoder = state->decoders[j];
 if (decoder.completed || decoder.failed) {
 continue;
 }
-whisper_kv_cache_seq_rm(state->kv_self, j,                           -1, -1);
+whisper_kv_cache_seq_rm(state->kv_self, j, -1, -1);
 whisper_kv_cache_seq_cp(state->kv_self, WHISPER_MAX_DECODERS + j, j, -1, -1);
-whisper_kv_cache_seq_rm(state->kv_self, WHISPER_MAX_DECODERS + j,    -1, -1);
+whisper_kv_cache_seq_rm(state->kv_self, WHISPER_MAX_DECODERS + j, -1, -1);
 }
 }
 for (int j = 0; j < n_decoders_cur; ++j) {
@@ -4108,9 +4108,9 @@ auto & decoder = state->decoders[j];
 if (decoder.completed || decoder.failed) {
 continue;
 }
-auto & has_ts     = decoder.has_ts;
-auto & failed     = decoder.failed;
-auto & completed  = decoder.completed;
+auto & has_ts = decoder.has_ts;
+auto & failed = decoder.failed;
+auto & completed = decoder.completed;
 auto & seek_delta = decoder.seek_delta;
 auto & result_len = decoder.sequence.result_len;
 {
@@ -4191,11 +4191,11 @@ if (decoder.failed || decoder.completed) {
 continue;
 }
 decoder.i_batch = batch.n_tokens;
-batch.token   [batch.n_tokens]    = decoder.sequence.tokens.back().id;
-batch.pos     [batch.n_tokens]    = n_past;
-batch.n_seq_id[batch.n_tokens]    = 1;
-batch.seq_id  [batch.n_tokens][0] = j;
-batch.logits  [batch.n_tokens]    = 1;
+batch.token [batch.n_tokens] = decoder.sequence.tokens.back().id;
+batch.pos [batch.n_tokens] = n_past;
+batch.n_seq_id[batch.n_tokens] = 1;
+batch.seq_id [batch.n_tokens][0] = j;
+batch.logits [batch.n_tokens] = 1;
 batch.n_tokens++;
 }
 assert(batch.n_tokens > 0);
@@ -4289,7 +4289,7 @@ for (int i = 0; i < result_len; ++i) {
 prompt_past.push_back(tokens_cur[i].id);
 }
 if (!tokens_cur.empty() && ctx->model.n_loaded > 0) {
-int  i0 = 0;
+int i0 = 0;
 auto t0 = seek + 2*(tokens_cur.front().tid - whisper_token_beg(ctx));
 std::string text;
 bool speaker_turn_next = false;
@@ -4384,9 +4384,9 @@ return 0;
 }
 int whisper_full(
 struct whisper_context * ctx,
-struct whisper_full_params   params,
+struct whisper_full_params params,
 const float * samples,
-int   n_samples) {
+int n_samples) {
 return whisper_full_with_state(ctx, ctx->state, params, samples, n_samples);
 }
 int whisper_full_parallel(
@@ -4452,7 +4452,7 @@ ctx->state->n_batchd += states[i]->n_batchd;
 ctx->state->n_prompt += states[i]->n_prompt;
 whisper_free_state(states[i]);
 }
-ctx->state->t_mel_us    /= n_processors;
+ctx->state->t_mel_us /= n_processors;
 ctx->state->t_sample_us /= n_processors;
 ctx->state->t_encode_us /= n_processors;
 ctx->state->t_decode_us /= n_processors;
@@ -4539,10 +4539,10 @@ static std::string s;
 s = "";
 char strbuf[256];
 ggml_time_init();
-size_t n    = 20;
-size_t arr  = n_threads > 0 ? 1024llu : n_threads;
+size_t n = 20;
+size_t arr = n_threads > 0 ? 1024llu : n_threads;
 const size_t size = arr*1e6;
-double sum  = 0.0;
+double sum = 0.0;
 {
 char * src = (char *) malloc(size);
 char * dst = (char *) malloc(size);
@@ -4662,16 +4662,16 @@ k == 1 ? GGML_TYPE_Q4_1 :
 k == 2 ? GGML_TYPE_Q5_0 :
 k == 3 ? GGML_TYPE_Q5_1 :
 k == 4 ? GGML_TYPE_Q8_0 :
-k == 5 ? GGML_TYPE_F16  : GGML_TYPE_F32;
-double & s = k == 0 ? s_q4_0 : k == 1 ? s_q4_1 : k == 2 ? s_q5_0 : k == 3 ? s_q5_1 : k == 4 ? s_q8_0 : k == 5 ? s_fp16 :  s_fp32;
-int    & n = k == 0 ? n_q4_0 : k == 1 ? n_q4_1 : k == 2 ? n_q5_0 : k == 3 ? n_q5_1 : k == 4 ? n_q8_0 : k == 5 ? n_fp16 :  n_fp32;
+k == 5 ? GGML_TYPE_F16 : GGML_TYPE_F32;
+double & s = k == 0 ? s_q4_0 : k == 1 ? s_q4_1 : k == 2 ? s_q5_0 : k == 3 ? s_q5_1 : k == 4 ? s_q8_0 : k == 5 ? s_fp16 : s_fp32;
+int & n = k == 0 ? n_q4_0 : k == 1 ? n_q4_1 : k == 2 ? n_q5_0 : k == 3 ? n_q5_1 : k == 4 ? n_q8_0 : k == 5 ? n_fp16 : n_fp32;
 struct ggml_init_params gparams = {
 buf.size(),
 buf.data(),
 false,
 };
 struct ggml_context * ctx0 = ggml_init(gparams);
-struct ggml_tensor * a = ggml_new_tensor_2d(ctx0, wtype,         N, N);
+struct ggml_tensor * a = ggml_new_tensor_2d(ctx0, wtype, N, N);
 struct ggml_tensor * b = ggml_new_tensor_2d(ctx0, GGML_TYPE_F32, N, N);
 struct ggml_tensor * c = ggml_mul_mat(ctx0, a, b);
 struct ggml_cgraph * gf = ggml_new_graph(ctx0);
@@ -4750,11 +4750,11 @@ return result;
 static void whisper_exp_compute_token_level_timestamps(
 struct whisper_context & ctx,
 struct whisper_state & state,
-int   i_segment,
-float   thold_pt,
-float   thold_ptsum) {
+int i_segment,
+float thold_pt,
+float thold_ptsum) {
 auto & segment = state.result_all[i_segment];
-auto & tokens  = segment.tokens;
+auto & tokens = segment.tokens;
 const int n_samples = state.energy.size();
 if (n_samples == 0) {
 WHISPER_LOG_ERROR("%s: no signal data available\n", __func__);
@@ -4771,28 +4771,28 @@ tokens[0].t0 = t0;
 tokens[0].t1 = t1;
 return;
 }
-auto & t_beg    = state.t_beg;
-auto & t_last   = state.t_last;
+auto & t_beg = state.t_beg;
+auto & t_last = state.t_last;
 auto & tid_last = state.tid_last;
 for (int j = 0; j < n; ++j) {
 auto & token = tokens[j];
 if (j == 0) {
 if (token.id == whisper_token_beg(&ctx)) {
-tokens[j    ].t0 = t0;
-tokens[j    ].t1 = t0;
+tokens[j ].t0 = t0;
+tokens[j ].t1 = t0;
 tokens[j + 1].t0 = t0;
-t_beg    = t0;
-t_last   = t0;
+t_beg = t0;
+t_last = t0;
 tid_last = whisper_token_beg(&ctx);
 } else {
-tokens[j    ].t0 = t_last;
+tokens[j ].t0 = t_last;
 }
 }
 const int64_t tt = t_beg + 2*(token.tid - whisper_token_beg(&ctx));
-tokens[j].id    = token.id;
-tokens[j].tid   = token.tid;
-tokens[j].p     = token.p;
-tokens[j].pt    = token.pt;
+tokens[j].id = token.id;
+tokens[j].tid = token.tid;
+tokens[j].p = token.p;
+tokens[j].pt = token.pt;
 tokens[j].ptsum = token.ptsum;
 tokens[j].vlen = voice_length(whisper_token_to_str(&ctx, token.id));
 if (token.pt > thold_pt && token.ptsum > thold_ptsum && token.tid > tid_last && tt <= t1) {
@@ -4826,7 +4826,7 @@ const double dt = tokens[p1].t1 - tokens[p0].t0;
 for (int j = p0 + 1; j <= p1; j++) {
 const double ct = tokens[j - 1].t0 + dt*tokens[j - 1].vlen/psum;
 tokens[j - 1].t1 = ct;
-tokens[j    ].t0 = ct;
+tokens[j ].t0 = ct;
 }
 }
 p1++;
@@ -5028,13 +5028,13 @@ filter.clear();
 static void whisper_exp_compute_token_level_timestamps_dtw(
 struct whisper_context * ctx,
 struct whisper_state * state,
-struct whisper_full_params   params,
-int   i_segment,
-size_t   n_segments,
-int   seek,
-int   n_frames,
-int   medfilt_width,
-int   n_threads)
+struct whisper_full_params params,
+int i_segment,
+size_t n_segments,
+int seek,
+int n_frames,
+int medfilt_width,
+int n_threads)
 {
 const int n_audio_ctx = state->exp_n_audio_ctx > 0 ? state->exp_n_audio_ctx : ctx->model.hparams.n_audio_ctx;
 WHISPER_ASSERT(medfilt_width % 2);

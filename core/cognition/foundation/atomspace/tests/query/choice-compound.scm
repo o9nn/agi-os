@@ -14,35 +14,35 @@
 (State (List (Concept "George") (Predicate "called robot")) (Concept "true"))
 (State (List (Concept "George") (Predicate "movement")) (Concept "approaching"))
 (define answer
-	(Set (ConceptNode "Andrew") (ConceptNode "Betty") (ConceptNode "Cathy")))
+(Set (ConceptNode "Andrew") (ConceptNode "Betty") (ConceptNode "Cathy")))
 (define who-needs-help?
-	(Get
-		(TypedVariable (Variable "picker") (Type "Concept"))
-		(And
-			(Absent
-				(State
-					(List (Variable "picker") (Predicate "movement"))
-					(Concept "approaching")))
-			(Choice
-				(Present
-					(State
-						(List (Variable "picker") (Predicate "called robot"))
-						(Concept "true")))
-				(Present
-					(State
-						(List (Variable "picker") (Predicate "called robot"))
-						(Concept "false"))
-					(State
-						(List (Variable "picker") (Predicate "has crate"))
-						(Concept "false")))
-				(Present
-					(State
-						(List (Variable "picker") (Predicate "called robot"))
-						(Concept "false"))
-					(State
-						(List (Variable "picker") (Predicate "has crate"))
-						(Concept "true"))
-					(State
-						(List (Variable "picker") (Predicate "crate is full"))
-						(Concept "true")))
-			))))
+(Get
+(TypedVariable (Variable "picker") (Type "Concept"))
+(And
+(Absent
+(State
+(List (Variable "picker") (Predicate "movement"))
+(Concept "approaching")))
+(Choice
+(Present
+(State
+(List (Variable "picker") (Predicate "called robot"))
+(Concept "true")))
+(Present
+(State
+(List (Variable "picker") (Predicate "called robot"))
+(Concept "false"))
+(State
+(List (Variable "picker") (Predicate "has crate"))
+(Concept "false")))
+(Present
+(State
+(List (Variable "picker") (Predicate "called robot"))
+(Concept "false"))
+(State
+(List (Variable "picker") (Predicate "has crate"))
+(Concept "true"))
+(State
+(List (Variable "picker") (Predicate "crate is full"))
+(Concept "true")))
+))))

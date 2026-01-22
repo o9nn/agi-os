@@ -3,143 +3,143 @@
 #include <linux/config.h>
 #include <linux/spinlock.h>
 typedef struct erase_busy_t {
-eraseq_entry_t	*erase;
-client_handle_t	client;
-struct timer_list	timeout;
-struct erase_busy_t	*prev, *next;
+eraseq_entry_t *erase;
+client_handle_t client;
+struct timer_list timeout;
+struct erase_busy_t *prev, *next;
 } erase_busy_t;
-#define ERASEQ_MAGIC	0xFA67
+#define ERASEQ_MAGIC 0xFA67
 typedef struct eraseq_t {
-u_short		eraseq_magic;
-client_handle_t	handle;
-int			count;
-eraseq_entry_t	*entry;
+u_short eraseq_magic;
+client_handle_t handle;
+int count;
+eraseq_entry_t *entry;
 } eraseq_t;
-#define CLIENT_MAGIC 	0x51E6
+#define CLIENT_MAGIC 0x51E6
 typedef struct client_t {
-u_short		client_magic;
-socket_t		Socket;
-u_char		Function;
-dev_info_t		dev_info;
-u_int		Attributes;
-u_int		state;
-event_t		EventMask, PendingEvents;
+u_short client_magic;
+socket_t Socket;
+u_char Function;
+dev_info_t dev_info;
+u_int Attributes;
+u_int state;
+event_t EventMask, PendingEvents;
 int (*event_handler)(event_t event, int priority,
 event_callback_args_t *);
 event_callback_args_t event_callback_args;
-struct client_t 	*next;
-u_int		mtd_count;
-wait_queue_head_t	mtd_req;
-erase_busy_t	erase_busy;
+struct client_t *next;
+u_int mtd_count;
+wait_queue_head_t mtd_req;
+erase_busy_t erase_busy;
 } client_t;
-#define CLIENT_CONFIG_LOCKED	0x0001
-#define CLIENT_IRQ_REQ		0x0002
-#define CLIENT_IO_REQ		0x0004
-#define CLIENT_UNBOUND		0x0008
-#define CLIENT_STALE		0x0010
-#define CLIENT_WIN_REQ(i)	(0x20<<(i))
-#define CLIENT_CARDBUS		0x8000
+#define CLIENT_CONFIG_LOCKED 0x0001
+#define CLIENT_IRQ_REQ 0x0002
+#define CLIENT_IO_REQ 0x0004
+#define CLIENT_UNBOUND 0x0008
+#define CLIENT_STALE 0x0010
+#define CLIENT_WIN_REQ(i) (0x20<<(i))
+#define CLIENT_CARDBUS 0x8000
 typedef struct io_window_t {
-u_int		Attributes;
-ioaddr_t		BasePort, NumPorts;
-ioaddr_t		InUse, Config;
+u_int Attributes;
+ioaddr_t BasePort, NumPorts;
+ioaddr_t InUse, Config;
 } io_window_t;
-#define WINDOW_MAGIC	0xB35C
+#define WINDOW_MAGIC 0xB35C
 typedef struct window_t {
-u_short		magic;
-u_short		index;
-client_handle_t	handle;
+u_short magic;
+u_short index;
+client_handle_t handle;
 struct socket_info_t *sock;
-u_long		base;
-u_long		size;
-pccard_mem_map	ctl;
+u_long base;
+u_long size;
+pccard_mem_map ctl;
 } window_t;
-#define REGION_MAGIC	0xE3C9
+#define REGION_MAGIC 0xE3C9
 typedef struct region_t {
-u_short		region_magic;
-u_short		state;
-dev_info_t		dev_info;
-client_handle_t	mtd;
-u_int		MediaID;
-region_info_t	info;
+u_short region_magic;
+u_short state;
+dev_info_t dev_info;
+client_handle_t mtd;
+u_int MediaID;
+region_info_t info;
 } region_t;
-#define REGION_STALE	0x01
+#define REGION_STALE 0x01
 typedef struct config_t {
-u_int		state;
-u_int		Attributes;
-u_int		Vcc, Vpp1, Vpp2;
-u_int		IntType;
-u_int		ConfigBase;
-u_char		Status, Pin, Copy, Option, ExtStatus;
-u_int		Present;
-u_int		CardValues;
-io_req_t		io;
+u_int state;
+u_int Attributes;
+u_int Vcc, Vpp1, Vpp2;
+u_int IntType;
+u_int ConfigBase;
+u_char Status, Pin, Copy, Option, ExtStatus;
+u_int Present;
+u_int CardValues;
+io_req_t io;
 struct {
-u_int		Attributes;
+u_int Attributes;
 } irq;
 } config_t;
 #define MAX_IO_WIN 2
 #define MAX_WIN 4
-#define MAX_CIS_TABLE	64
-#define MAX_CIS_DATA	512
+#define MAX_CIS_TABLE 64
+#define MAX_CIS_DATA 512
 typedef struct socket_info_t {
 #ifdef __SMP__
-spinlock_t			lock;
+spinlock_t lock;
 #endif
-ss_entry_t			ss_entry;
-u_int			sock;
-socket_state_t		socket;
-socket_cap_t		cap;
-u_int			state;
-u_short			functions;
-u_short			lock_count;
-client_handle_t		clients;
-u_int			real_clients;
-client_handle_t		reset_handle;
-struct timer_list		setup, shutdown;
-u_long			setup_timeout;
-pccard_mem_map		cis_mem;
-u_char			*cis_virt;
-config_t			*config;
+ss_entry_t ss_entry;
+u_int sock;
+socket_state_t socket;
+socket_cap_t cap;
+u_int state;
+u_short functions;
+u_short lock_count;
+client_handle_t clients;
+u_int real_clients;
+client_handle_t reset_handle;
+struct timer_list setup, shutdown;
+u_long setup_timeout;
+pccard_mem_map cis_mem;
+u_char *cis_virt;
+config_t *config;
 #ifdef CONFIG_CARDBUS
-u_int			cb_cis_space;
-cb_bridge_map		cb_cis_map;
-u_char			*cb_cis_virt;
-struct cb_config_t		*cb_config;
+u_int cb_cis_space;
+cb_bridge_map cb_cis_map;
+u_char *cb_cis_virt;
+struct cb_config_t *cb_config;
 #endif
 struct {
-u_int			AssignedIRQ;
-u_int			Config;
+u_int AssignedIRQ;
+u_int Config;
 } irq;
-io_window_t			io[MAX_IO_WIN];
-window_t			win[MAX_WIN];
-region_t			*c_region, *a_region;
-erase_busy_t		erase_busy;
-int				cis_used;
+io_window_t io[MAX_IO_WIN];
+window_t win[MAX_WIN];
+region_t *c_region, *a_region;
+erase_busy_t erase_busy;
+int cis_used;
 struct {
-u_int			addr;
-u_short			len;
-u_short			attr;
-}				cis_table[MAX_CIS_TABLE];
-char			cis_cache[MAX_CIS_DATA];
-u_int			fake_cis_len;
-char			*fake_cis;
+u_int addr;
+u_short len;
+u_short attr;
+} cis_table[MAX_CIS_TABLE];
+char cis_cache[MAX_CIS_DATA];
+u_int fake_cis_len;
+char *fake_cis;
 #ifdef HAS_PROC_BUS
-struct proc_dir_entry	*proc;
+struct proc_dir_entry *proc;
 #endif
 } socket_info_t;
-#define CONFIG_LOCKED		0x01
-#define CONFIG_IRQ_REQ		0x02
-#define CONFIG_IO_REQ		0x04
-#define SOCKET_PRESENT		0x0008
-#define SOCKET_SETUP_PENDING	0x0010
-#define SOCKET_SHUTDOWN_PENDING	0x0020
-#define SOCKET_RESET_PENDING	0x0040
-#define SOCKET_SUSPEND		0x0080
-#define SOCKET_WIN_REQ(i)	(0x0100<<(i))
-#define SOCKET_IO_REQ(i)	(0x1000<<(i))
-#define SOCKET_REGION_INFO	0x4000
-#define SOCKET_CARDBUS		0x8000
+#define CONFIG_LOCKED 0x01
+#define CONFIG_IRQ_REQ 0x02
+#define CONFIG_IO_REQ 0x04
+#define SOCKET_PRESENT 0x0008
+#define SOCKET_SETUP_PENDING 0x0010
+#define SOCKET_SHUTDOWN_PENDING 0x0020
+#define SOCKET_RESET_PENDING 0x0040
+#define SOCKET_SUSPEND 0x0080
+#define SOCKET_WIN_REQ(i) (0x0100<<(i))
+#define SOCKET_IO_REQ(i) (0x1000<<(i))
+#define SOCKET_REGION_INFO 0x4000
+#define SOCKET_CARDBUS 0x8000
 #define CHECK_HANDLE(h) \
 (((h) == NULL) || ((h)->client_magic != CLIENT_MAGIC))
 #define CHECK_SOCKET(s) \

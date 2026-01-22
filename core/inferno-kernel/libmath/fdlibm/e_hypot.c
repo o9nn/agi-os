@@ -17,7 +17,7 @@ if(((ha&0xfffff)|__LO(a))==0) w = a;
 if(((hb^0x7ff00000)|__LO(b))==0) w = b;
 return w;
 }
-ha -= 0x25800000; hb -= 0x25800000;	k += 600;
+ha -= 0x25800000; hb -= 0x25800000; k += 600;
 __HI(a) = ha;
 __HI(b) = hb;
 }
@@ -42,16 +42,16 @@ if (w>b) {
 t1 = 0;
 __HI(t1) = ha;
 t2 = a-t1;
-w  = sqrt(t1*t1-(b*(-b)-t2*(a+t1)));
+w = sqrt(t1*t1-(b*(-b)-t2*(a+t1)));
 } else {
-a  = a+a;
+a = a+a;
 y1 = 0;
 __HI(y1) = hb;
 y2 = b - y1;
 t1 = 0;
 __HI(t1) = ha+0x00100000;
 t2 = a - t1;
-w  = sqrt(t1*y1-(w*(-w)-(t1*y2+t2*b)));
+w = sqrt(t1*y1-(w*(-w)-(t1*y2+t2*b)));
 }
 if(k!=0) {
 t1 = 1.0;

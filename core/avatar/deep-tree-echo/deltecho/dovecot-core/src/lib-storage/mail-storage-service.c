@@ -25,13 +25,13 @@
 #include <sys/stat.h>
 #include <time.h>
 #ifdef HAVE_SYS_TIME_H
-#  include <sys/time.h>
+# include <sys/time.h>
 #endif
 #ifdef HAVE_SYS_RESOURCE_H
-#  include <sys/resource.h>
+# include <sys/resource.h>
 #endif
-#define MAX_TIME_BACKWARDS_SLEEP_MSECS  (5*1000)
-#define MAX_NOWARN_FORWARD_MSECS        (10*1000)
+#define MAX_TIME_BACKWARDS_SLEEP_MSECS (5*1000)
+#define MAX_NOWARN_FORWARD_MSECS (10*1000)
 struct mail_storage_service_privileges {
 uid_t uid;
 gid_t gid;

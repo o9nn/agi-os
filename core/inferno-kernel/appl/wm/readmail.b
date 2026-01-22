@@ -19,11 +19,11 @@ include "keyring.m";
 kr: Keyring;
 WmReadmail: module
 {
-init:	fn(ctxt: ref Draw->Context, args: list of string);
+init: fn(ctxt: ref Draw->Context, args: list of string);
 };
 WmSendmail: module
 {
-init:	fn(ctxt: ref Draw->Context, args: list of string);
+init: fn(ctxt: ref Draw->Context, args: list of string);
 };
 srv: Sys->Connection;
 main: ref Toplevel;
@@ -306,7 +306,7 @@ cu := cl - byte ('a' - 'A');
 lc: byte;
 for(i := 0; i < len text - lk; i++) {
 t := text[i];
-if(t == byte '\n' && lc == byte '\n')		# end header
+if(t == byte '\n' && lc == byte '\n') # end header
 break;
 lc = t;
 if(t != cu && t != cl)
@@ -624,7 +624,7 @@ pa := array of byte pass;
 kr->md5(pa, len pa, digest, md5state);
 s = nil;
 for(i := 0; i < kr->MD5dlen; i++)
-s  += sys->sprint("%2.2ux", int digest[i]);
+s += sys->sprint("%2.2ux", int digest[i]);
 (err, s) = pop3cmd("APOP "+user+" "+s);
 if(err == nil) {
 status("ready to serve...");
@@ -677,7 +677,7 @@ return "-x "+string(x-2)+" -y "+string(y+h+2);
 pop3cmd(cmd: string): (string, string)
 {
 cmd += "\r\n";
-#	sys->print("->%s", cmd);
+# sys->print("->%s", cmd);
 b := array of byte cmd;
 l := len b;
 n := sys->write(srv.dfd, b, l);
@@ -699,7 +699,7 @@ break;
 s[i++] = c;
 lastc = c;
 }
-#	sys->print("<-%s\n", s);
+# sys->print("<-%s\n", s);
 if(i < 3)
 return ("short read from server", nil);
 s = s[0:i-1];
@@ -750,9 +750,9 @@ return b;
 }
 Iob: adt
 {
-nbyte:	int;
-posn:	int;
-buf:	array of byte;
+nbyte: int;
+posn: int;
+buf: array of byte;
 };
 popbuf: Iob;
 pop3getc(): int

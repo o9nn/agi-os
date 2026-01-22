@@ -4,106 +4,106 @@
 #include <mach.h>
 #define Extern extern
 #include "mips.h"
-void	Iaddi(ulong);
-void	Isw(ulong);
-void	Ilui(ulong);
-void	Iori(ulong);
-void	Ixori(ulong);
-void	Ilw(ulong);
-void	Ijal(ulong);
-void	Ispecial(ulong);
-void	Ibeq(ulong);
-void	Ibeql(ulong);
-void	Iaddiu(ulong);
-void	Ilb(ulong);
-void	Iandi(ulong);
-void	Ij(ulong);
-void	Ibne(ulong);
-void	Ibnel(ulong);
-void	Isb(ulong);
-void	Islti(ulong);
-void	Ibcond(ulong);
-void	Ibgtz(ulong);
-void	Ibgtzl(ulong);
-void	Ilbu(ulong);
-void	Ilhu(ulong);
-void	Ish(ulong);
-void	Ilh(ulong);
-void	Iblez(ulong);
-void	Iblezl(ulong);
-void	Isltiu(ulong);
-void	Iswc1(ulong);
-void	Ilwc1(ulong);
-void	Icop1(ulong);
-void	Ilwl(ulong);
-void	Ilwr(ulong);
-void	Ill(ulong);
-void	Isc(ulong);
+void Iaddi(ulong);
+void Isw(ulong);
+void Ilui(ulong);
+void Iori(ulong);
+void Ixori(ulong);
+void Ilw(ulong);
+void Ijal(ulong);
+void Ispecial(ulong);
+void Ibeq(ulong);
+void Ibeql(ulong);
+void Iaddiu(ulong);
+void Ilb(ulong);
+void Iandi(ulong);
+void Ij(ulong);
+void Ibne(ulong);
+void Ibnel(ulong);
+void Isb(ulong);
+void Islti(ulong);
+void Ibcond(ulong);
+void Ibgtz(ulong);
+void Ibgtzl(ulong);
+void Ilbu(ulong);
+void Ilhu(ulong);
+void Ish(ulong);
+void Ilh(ulong);
+void Iblez(ulong);
+void Iblezl(ulong);
+void Isltiu(ulong);
+void Iswc1(ulong);
+void Ilwc1(ulong);
+void Icop1(ulong);
+void Ilwl(ulong);
+void Ilwr(ulong);
+void Ill(ulong);
+void Isc(ulong);
 Inst itab[] = {
-{ Ispecial,	0 },
-{ Ibcond,	"bcond",	Ibranch },
-{ Ij,		"j",		Ibranch },
-{ Ijal,		"jal",		Ibranch },
-{ Ibeq,		"beq",		Ibranch },
-{ Ibne,		"bne",		Ibranch },
-{ Iblez,	"blez",		Ibranch },
-{ Ibgtz,	"bgtz",		Ibranch },
-{ Iaddi,	"addi",		Iarith },
-{ Iaddiu,	"addiu",	Iarith },
-{ Islti,	"slti",		Iarith },
-{ Isltiu,	"sltiu",	Iarith },
-{ Iandi,	"andi",		Iarith },
-{ Iori,		"ori",		Iarith },
-{ Ixori,	"xori",		Iarith },
-{ Ilui,		"lui",		Iload },
-{ undef,	"" },
-{ Icop1,	"cop1",		Ifloat },
-{ undef,	"" },
-{ undef,	"" },
-{ Ibeql,	"beql" },
-{ Ibnel,	"bnel" },
-{ Iblezl,	"blezl" },
-{ Ibgtzl,	"bgtzl" },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ Ilb,		"lb",		Iload },
-{ Ilh,		"lh",		Iload },
-{ Ilwl,		"lwl", 		Iload },
-{ Ilw,		"lw",		Iload },
-{ Ilbu,		"lbu",		Iload },
-{ Ilhu,		"lhu",		Iload },
-{ Ilwr,		"lwr",		Iload },
-{ undef,	"" },
-{ Isb,		"sb",		Istore },
-{ Ish,		"sh",		Istore },
-{ undef,	"" },
-{ Isw,		"sw",		Istore },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ Ill,			"ll",			Iload},
-{ Ilwc1,		"lwc1",		Ifloat },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ Isc,		"sc",		Istore },
-{ Iswc1,	"swc1",		Ifloat },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
-{ undef,	"" },
+{ Ispecial, 0 },
+{ Ibcond, "bcond", Ibranch },
+{ Ij, "j", Ibranch },
+{ Ijal, "jal", Ibranch },
+{ Ibeq, "beq", Ibranch },
+{ Ibne, "bne", Ibranch },
+{ Iblez, "blez", Ibranch },
+{ Ibgtz, "bgtz", Ibranch },
+{ Iaddi, "addi", Iarith },
+{ Iaddiu, "addiu", Iarith },
+{ Islti, "slti", Iarith },
+{ Isltiu, "sltiu", Iarith },
+{ Iandi, "andi", Iarith },
+{ Iori, "ori", Iarith },
+{ Ixori, "xori", Iarith },
+{ Ilui, "lui", Iload },
+{ undef, "" },
+{ Icop1, "cop1", Ifloat },
+{ undef, "" },
+{ undef, "" },
+{ Ibeql, "beql" },
+{ Ibnel, "bnel" },
+{ Iblezl, "blezl" },
+{ Ibgtzl, "bgtzl" },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ Ilb, "lb", Iload },
+{ Ilh, "lh", Iload },
+{ Ilwl, "lwl", Iload },
+{ Ilw, "lw", Iload },
+{ Ilbu, "lbu", Iload },
+{ Ilhu, "lhu", Iload },
+{ Ilwr, "lwr", Iload },
+{ undef, "" },
+{ Isb, "sb", Istore },
+{ Ish, "sh", Istore },
+{ undef, "" },
+{ Isw, "sw", Istore },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ Ill, "ll", Iload},
+{ Ilwc1, "lwc1", Ifloat },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ Isc, "sc", Istore },
+{ Iswc1, "swc1", Ifloat },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
+{ undef, "" },
 { 0 }
 };
 void
@@ -628,25 +628,25 @@ putmem_w(reg.r[rb]+off, v);
 }
 enum
 {
-Bltz	= 0,
-Bgez	= 1,
-Bltzal	= 0x10,
-Bgezal	= 0x11,
-Bltzl	= 2,
-Bgezl	= 3,
-Bltzall	= 0x12,
-Bgezall	= 0x13,
+Bltz = 0,
+Bgez = 1,
+Bltzal = 0x10,
+Bgezal = 0x11,
+Bltzl = 2,
+Bgezl = 3,
+Bltzall = 0x12,
+Bgezall = 0x13,
 };
 static char *sbcond[] =
 {
-[Bltz]		"ltz",
-[Bgez]		"gez",
-[Bltzal]	"ltzal",
-[Bgezal]	"gezal",
-[Bltzl]		"ltzl",
-[Bgezl]		"gezl",
-[Bltzall]	"ltzall",
-[Bgezall]	"gezall",
+[Bltz] "ltz",
+[Bgez] "gez",
+[Bltzal] "ltzal",
+[Bgezal] "gezal",
+[Bltzl] "ltzl",
+[Bgezl] "gezl",
+[Bltzall] "ltzall",
+[Bgezall] "gezall",
 };
 void
 Ibcond(ulong inst)

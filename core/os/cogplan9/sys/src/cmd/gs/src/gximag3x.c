@@ -159,7 +159,7 @@ midev[i] = 0;
 minfo[i] = 0;
 continue;
 }
-pmcs =  gs_alloc_struct(mem, gs_color_space, &st_color_space,
+pmcs = gs_alloc_struct(mem, gs_color_space, &st_color_space,
 "gx_begin_image3x_generic");
 if (pmcs == 0)
 return_error(gs_error_VMerror);

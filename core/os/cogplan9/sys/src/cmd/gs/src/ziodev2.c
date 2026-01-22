@@ -28,7 +28,7 @@ if (!streq1(access, 'w'))
 return_error(e_invalidfileaccess);
 return file_open_stream(gp_null_file_name,
 strlen(gp_null_file_name),
-access, 256  , ps,
+access, 256 , ps,
 iodev, iodev->procs.fopen, mem);
 }
 private int

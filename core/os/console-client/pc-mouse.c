@@ -11,10 +11,10 @@ static struct input_ops pc_mouse_ops;
 static int majordev = IBM_MOUSE;
 static int minordev = 0;
 static device_t mousedev;
-#define DEFAULT_REPEATER_NODE	"mouse"
-#define MOUSEDEVTBUFSZ	256
-#define MOUSEBUFSZ	(MOUSEDEVTBUFSZ * sizeof (kd_event))
-#define MOUSEBUF_POS(x)	((x) % MOUSEBUFSZ)
+#define DEFAULT_REPEATER_NODE "mouse"
+#define MOUSEDEVTBUFSZ 256
+#define MOUSEBUFSZ (MOUSEDEVTBUFSZ * sizeof (kd_event))
+#define MOUSEBUF_POS(x) ((x) % MOUSEBUFSZ)
 #define STRINGIFY(x) STRINGIFY_1(x)
 #define STRINGIFY_1(x) #x
 #define DEFAULT_MOUSE_SENS 1.0
@@ -199,12 +199,12 @@ vm_deallocate (mach_task_self(), buf, buf_size);
 }
 return NULL;
 }
-#define PROTO_MOUSESYSTEM	"mousesystem"
-#define PROTO_MICROSOFT		"microsoft"
-#define PROTO_PS2		"ps/2"
-#define PROTO_NOMOUSE		"nomouse"
-#define PROTO_LOGITECH		"logitech"
-#define PROTO_MOUSE7		"mouse7"
+#define PROTO_MOUSESYSTEM "mousesystem"
+#define PROTO_MICROSOFT "microsoft"
+#define PROTO_PS2 "ps/2"
+#define PROTO_NOMOUSE "nomouse"
+#define PROTO_LOGITECH "logitech"
+#define PROTO_MOUSE7 "mouse7"
 static char *mouse_protocols[] =
 {
 PROTO_MOUSESYSTEM,
@@ -217,15 +217,15 @@ PROTO_MOUSE7
 static const char doc[] = "Mouse Driver";
 static const struct argp_option options[] =
 {
-{ "protocol",	'p', "PROTOCOL", 0, "One of the protocols: "
+{ "protocol", 'p', "PROTOCOL", 0, "One of the protocols: "
 PROTO_MOUSESYSTEM ", " PROTO_MICROSOFT ", " PROTO_PS2 ", "
 PROTO_NOMOUSE ", " PROTO_LOGITECH ", " PROTO_MOUSE7 },
-{ "device",		'e', "DEVICE"  , 0,
+{ "device", 'e', "DEVICE" , 0,
 "One of the devices: " DEV_COM0 ", " DEV_COM1 },
-{ "sensitivity",    's', "SENSITIVITY", 0, "The mouse"
+{ "sensitivity", 's', "SENSITIVITY", 0, "The mouse"
 " sensitivity (default " DEFAULT_MOUSE_SENS_STRING ").  A lower value"
 " means more sensitive" },
-{ "repeat",		'r', "NODE", OPTION_ARG_OPTIONAL,
+{ "repeat", 'r', "NODE", OPTION_ARG_OPTIONAL,
 "Set a repeater translator on NODE (default: " DEFAULT_REPEATER_NODE ")"},
 { 0 }
 };

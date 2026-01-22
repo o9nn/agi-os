@@ -1,7 +1,7 @@
 #include <u.h>
 #include <libc.h>
 #include <draw.h>
-#define	PINC	32
+#define PINC 32
 typedef struct Plist Plist;
 struct Plist
 {
@@ -130,7 +130,7 @@ Plist l;
 l.np = 0;
 l.p = nil;
 _bezsplinepts(&l, pt, npt);
-*pp  = l.p;
+*pp = l.p;
 return l.np;
 }
 int

@@ -103,9 +103,9 @@ class collate_byname;
 _GLIBCXX_END_NAMESPACE_CXX11
 class time_base;
 _GLIBCXX_BEGIN_NAMESPACE_CXX11
-template<typename _CharT, typename _InIter =  istreambuf_iterator<_CharT> >
+template<typename _CharT, typename _InIter = istreambuf_iterator<_CharT> >
 class time_get;
-template<typename _CharT, typename _InIter =  istreambuf_iterator<_CharT> >
+template<typename _CharT, typename _InIter = istreambuf_iterator<_CharT> >
 class time_get_byname;
 _GLIBCXX_END_NAMESPACE_CXX11
 template<typename _CharT, typename _OutIter = ostreambuf_iterator<_CharT> >
@@ -114,7 +114,7 @@ template<typename _CharT, typename _OutIter = ostreambuf_iterator<_CharT> >
 class time_put_byname;
 class money_base;
 _GLIBCXX_BEGIN_NAMESPACE_LDBL_OR_CXX11
-template<typename _CharT, typename _InIter =  istreambuf_iterator<_CharT> >
+template<typename _CharT, typename _InIter = istreambuf_iterator<_CharT> >
 class money_get;
 template<typename _CharT, typename _OutIter = ostreambuf_iterator<_CharT> >
 class money_put;

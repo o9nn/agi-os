@@ -8,26 +8,26 @@ void index_fmt(char*,char*);
 void no_fmt(char*,char*);
 int send(HConnect*);
 Hio *hout;
-typedef struct DB	DB;
+typedef struct DB DB;
 struct DB
 {
-int	SELECT;
-char	*log;
-int	maxhit;
-char	*file;
-void	(*fmt)(char*,char*);
-char	*postlude;
+int SELECT;
+char *log;
+int maxhit;
+char *file;
+void (*fmt)(char*,char*);
+char *postlude;
 };
 DB db[] =
 {
-{0, "netlib",	250, "/srv/netlib_DEFAULT", index_fmt,
+{0, "netlib", 250, "/srv/netlib_DEFAULT", index_fmt,
 "<HR><A HREF=\"/netlib/master\">browse netlib</A></BODY>\r\n"},
-{1, "BibNet",	250, "/srv/netlib_bibnet", bib_fmt,
+{1, "BibNet", 250, "/srv/netlib_bibnet", bib_fmt,
 "<HR><A HREF=\"/netlib/bibnet\">browse BibNet</A></BODY>\r\n"},
-{2, "compgeom",	250, "/srv/netlib_compgeom", no_fmt, "</BODY>\r\n"},
-{3, "approx",	250, "/srv/netlib_approximation", no_fmt,
+{2, "compgeom", 250, "/srv/netlib_compgeom", no_fmt, "</BODY>\r\n"},
+{3, "approx", 250, "/srv/netlib_approximation", no_fmt,
 "<HR><A HREF=\"/netlib/a/catalog.html.gz\">hierarchical catalog</A></BODY>\r\n"},
-{4, "siam",	 50, "/srv/netlib_siam-Secret", no_fmt, "</BODY>\r\n"},
+{4, "siam", 50, "/srv/netlib_siam-Secret", no_fmt, "</BODY>\r\n"},
 {-1,"",0,"",no_fmt,""}
 };
 void

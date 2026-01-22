@@ -13,7 +13,7 @@
 #include <ipc/ipc_thread.h>
 #include <ipc/ipc_mqueue.h>
 #include <ipc/ipc_notify.h>
-#if	MACH_KDB
+#if MACH_KDB
 #include <ddb/db_output.h>
 #include <ipc/ipc_print.h>
 #endif
@@ -31,10 +31,10 @@ return timestamp;
 }
 kern_return_t
 ipc_port_dnrequest(
-ipc_port_t 			port,
-mach_port_name_t 		name,
-ipc_port_t 			soright,
-ipc_port_request_index_t 	*indexp)
+ipc_port_t port,
+mach_port_name_t name,
+ipc_port_t soright,
+ipc_port_request_index_t *indexp)
 {
 ipc_port_request_t ipr, table;
 ipc_port_request_index_t index;
@@ -113,9 +113,9 @@ return KERN_SUCCESS;
 }
 ipc_port_t
 ipc_port_dncancel(
-ipc_port_t			port,
-mach_port_name_t		name,
-ipc_port_request_index_t	index)
+ipc_port_t port,
+mach_port_name_t name,
+ipc_port_request_index_t index)
 {
 ipc_port_request_t ipr, table;
 ipc_port_t dnrequest;
@@ -134,9 +134,9 @@ return dnrequest;
 }
 void
 ipc_port_pdrequest(
-ipc_port_t		port,
-const ipc_port_t	notify,
-ipc_port_t		*previousp)
+ipc_port_t port,
+const ipc_port_t notify,
+ipc_port_t *previousp)
 {
 ipc_port_t previous;
 assert(ip_active(port));
@@ -147,10 +147,10 @@ ip_unlock(port);
 }
 void
 ipc_port_nsrequest(
-ipc_port_t		port,
-mach_port_mscount_t	sync,
-ipc_port_t		notify,
-ipc_port_t		*previousp)
+ipc_port_t port,
+mach_port_mscount_t sync,
+ipc_port_t notify,
+ipc_port_t *previousp)
 {
 ipc_port_t previous;
 mach_port_mscount_t mscount;
@@ -171,8 +171,8 @@ ip_unlock(port);
 }
 void
 ipc_port_set_qlimit(
-ipc_port_t		port,
-mach_port_msgcount_t	qlimit)
+ipc_port_t port,
+mach_port_msgcount_t qlimit)
 {
 assert(ip_active(port));
 if (qlimit > port->ip_qlimit) {
@@ -208,8 +208,8 @@ return &port->ip_messages;
 }
 void
 ipc_port_set_seqno(
-ipc_port_t 		port,
-mach_port_seqno_t 	seqno)
+ipc_port_t port,
+mach_port_seqno_t seqno)
 {
 ipc_mqueue_t mqueue;
 mqueue = ipc_port_lock_mqueue(port);
@@ -235,7 +235,7 @@ imq_unlock(mqueue);
 }
 void
 ipc_port_clear_receiver(
-ipc_port_t	port)
+ipc_port_t port)
 {
 ipc_pset_t pset;
 assert(ip_active(port));
@@ -256,9 +256,9 @@ imq_unlock(&port->ip_messages);
 }
 void
 ipc_port_init(
-ipc_port_t		port,
-ipc_space_t		space,
-mach_port_name_t	name)
+ipc_port_t port,
+ipc_space_t space,
+mach_port_name_t name)
 {
 ipc_target_init(&port->ip_target, name);
 port->ip_receiver = space;
@@ -280,9 +280,9 @@ ipc_thread_queue_init(&port->ip_blocked);
 }
 kern_return_t
 ipc_port_alloc(
-ipc_space_t	space,
-mach_port_name_t	*namep,
-ipc_port_t	*portp)
+ipc_space_t space,
+mach_port_name_t *namep,
+ipc_port_t *portp)
 {
 ipc_port_t port;
 mach_port_name_t name;
@@ -299,9 +299,9 @@ return KERN_SUCCESS;
 }
 kern_return_t
 ipc_port_alloc_name(
-ipc_space_t	space,
-mach_port_name_t	name,
-ipc_port_t	*portp)
+ipc_space_t space,
+mach_port_name_t name,
+ipc_port_t *portp)
 {
 ipc_port_t port;
 kern_return_t kr;
@@ -316,7 +316,7 @@ return KERN_SUCCESS;
 }
 void
 ipc_port_destroy(
-ipc_port_t	port)
+ipc_port_t port)
 {
 ipc_port_t pdrequest, nsrequest;
 ipc_mqueue_t mqueue;
@@ -398,8 +398,8 @@ ipc_port_release(port);
 }
 boolean_t
 ipc_port_check_circularity(
-ipc_port_t	port,
-ipc_port_t	dest)
+ipc_port_t port,
+ipc_port_t dest)
 {
 ipc_port_t base;
 assert(port != IP_NULL);
@@ -465,8 +465,8 @@ return FALSE;
 }
 ipc_port_t
 ipc_port_lookup_notify(
-ipc_space_t	space,
-mach_port_name_t	name)
+ipc_space_t space,
+mach_port_name_t name)
 {
 ipc_port_t port;
 ipc_entry_t entry;
@@ -489,7 +489,7 @@ return port;
 }
 ipc_port_t
 ipc_port_make_send(
-ipc_port_t	port)
+ipc_port_t port)
 {
 assert(IP_VALID(port));
 ip_lock(port);
@@ -502,7 +502,7 @@ return port;
 }
 ipc_port_t
 ipc_port_copy_send(
-ipc_port_t	port)
+ipc_port_t port)
 {
 ipc_port_t sright;
 if (!IP_VALID(port))
@@ -520,8 +520,8 @@ return sright;
 }
 mach_port_name_t
 ipc_port_copyout_send(
-ipc_port_t	sright,
-ipc_space_t	space)
+ipc_port_t sright,
+ipc_space_t space)
 {
 mach_port_name_t name;
 if (IP_VALID(sright)) {
@@ -541,7 +541,7 @@ return name;
 }
 void
 ipc_port_release_send(
-ipc_port_t	port)
+ipc_port_t port)
 {
 ipc_port_t nsrequest = IP_NULL;
 mach_port_mscount_t mscount;
@@ -566,7 +566,7 @@ ipc_notify_no_senders(nsrequest, mscount);
 }
 ipc_port_t
 ipc_port_make_sonce(
-ipc_port_t	port)
+ipc_port_t port)
 {
 assert(IP_VALID(port));
 ip_lock(port);
@@ -578,7 +578,7 @@ return port;
 }
 void
 ipc_port_release_sonce(
-ipc_port_t	port)
+ipc_port_t port)
 {
 assert(IP_VALID(port));
 ip_lock(port);
@@ -593,7 +593,7 @@ ip_unlock(port);
 }
 void
 ipc_port_release_receive(
-ipc_port_t	port)
+ipc_port_t port)
 {
 ipc_port_t dest;
 assert(IP_VALID(port));
@@ -620,8 +620,8 @@ return port;
 }
 void
 ipc_port_dealloc_special(
-ipc_port_t	port,
-ipc_space_t	space)
+ipc_port_t port,
+ipc_space_t space)
 {
 ip_lock(port);
 assert(ip_active(port));
@@ -632,8 +632,8 @@ port->ip_receiver = IS_NULL;
 ipc_port_clear_receiver(port);
 ipc_port_destroy(port);
 }
-#if	MACH_KDB
-#define	printf	kdbprintf
+#if MACH_KDB
+#define printf kdbprintf
 void
 ipc_port_print(const ipc_port_t port)
 {

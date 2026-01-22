@@ -1,3 +1,3 @@
-#define		BIG5MAX	13973
-#define		BIG5FONT 157
+#define BIG5MAX 13973
+#define BIG5FONT 157
 extern long tabbig5[BIG5MAX];

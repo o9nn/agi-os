@@ -67,12 +67,12 @@ pstr++;
 return buf;
 }
 #define DEF_INCOMING_CHARSET "iso-8859-1"
-#define DEF_DISPLAY_CHARSET  "utf-8"
-#define MAX_IMF_LINE         666
+#define DEF_DISPLAY_CHARSET "utf-8"
+#define MAX_IMF_LINE 666
 static int to_be_quoted(const char * word, size_t size)
 {
 const char* cur = word;
-size_t      i = 0;
+size_t i = 0;
 for (i = 0; i < size; i++)
 {
 switch (*cur)
@@ -110,9 +110,9 @@ return 0;
 static int quote_word(const char* display_charset, MMAPString* mmapstr, const char* word, size_t size)
 {
 const char* cur = NULL;
-size_t      i = 0;
-char        hex[4];
-int         col = 0;
+size_t i = 0;
+char hex[4];
+int col = 0;
 if (mmap_string_append(mmapstr, "=?")==NULL) {
 return 0;
 }
@@ -130,7 +130,7 @@ int do_quote_char;
 #if MAX_IMF_LINE != 666
 if (col + 2
 + 3
-+ 1  >= MAX_IMF_LINE)
++ 1 >= MAX_IMF_LINE)
 {
 int old_pos;
 if (mmap_string_append(mmapstr, "?=")==NULL) {
@@ -219,7 +219,7 @@ cur ++;
 }
 #if MAX_IMF_LINE != 666
 if (cur - begin +
-1   > MAX_IMF_LINE)
+1 > MAX_IMF_LINE)
 *pto_be_quoted = 1;
 else
 #endif
@@ -228,7 +228,7 @@ else
 }
 char* dc_encode_header_words(const char* to_encode)
 {
-char*       ret_str = NULL;
+char* ret_str = NULL;
 const char* cur = to_encode;
 MMAPString* mmapstr = mmap_string_new("");
 if (to_encode==NULL || mmapstr==NULL) {
@@ -312,24 +312,24 @@ static const char base64chars[] =
 "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+,";
 char* dc_encode_modified_utf7(const char* to_encode, int change_spaces)
 {
-#define UTF16MASK       0x03FFUL
-#define UTF16SHIFT      10
-#define UTF16BASE       0x10000UL
-#define UTF16HIGHSTART  0xD800UL
-#define UTF16HIGHEND    0xDBFFUL
-#define UTF16LOSTART    0xDC00UL
-#define UTF16LOEND      0xDFFFUL
-#define UNDEFINED       64
-unsigned int  utf8pos = 0;
-unsigned int  utf8total = 0;
-unsigned int  c = 0;
-unsigned int  utf7mode = 0;
-unsigned int  bitstogo = 0;
-unsigned int  utf16flag = 0;
+#define UTF16MASK 0x03FFUL
+#define UTF16SHIFT 10
+#define UTF16BASE 0x10000UL
+#define UTF16HIGHSTART 0xD800UL
+#define UTF16HIGHEND 0xDBFFUL
+#define UTF16LOSTART 0xDC00UL
+#define UTF16LOEND 0xDFFFUL
+#define UNDEFINED 64
+unsigned int utf8pos = 0;
+unsigned int utf8total = 0;
+unsigned int c = 0;
+unsigned int utf7mode = 0;
+unsigned int bitstogo = 0;
+unsigned int utf16flag = 0;
 unsigned long ucs4 = 0;
 unsigned long bitbuf = 0;
-char*         dst = NULL;
-char*         res = NULL;
+char* dst = NULL;
+char* res = NULL;
 if (!to_encode) {
 return dc_strdup("");
 }
@@ -352,7 +352,7 @@ if (bitstogo) {
 }
 *dst++ = '-';
 utf7mode = 0;
-utf8pos  = 0;
+utf8pos = 0;
 bitstogo = 0;
 utf8total= 0;
 }
@@ -428,20 +428,20 @@ return res;
 }
 char* dc_decode_modified_utf7(const char *to_decode, int change_spaces)
 {
-unsigned      c = 0;
-unsigned      i = 0;
-unsigned      bitcount = 0;
+unsigned c = 0;
+unsigned i = 0;
+unsigned bitcount = 0;
 unsigned long ucs4 = 0;
 unsigned long utf16 = 0;
 unsigned long bitbuf = 0;
 unsigned char base64[256];
-const char*   src = NULL;
-char*         dst = NULL;
-char*         res = NULL;
+const char* src = NULL;
+char* dst = NULL;
+char* res = NULL;
 if (to_decode==NULL) {
 return dc_strdup("");
 }
-res  = (char*)malloc(4*strlen(to_decode)+1);
+res = (char*)malloc(4*strlen(to_decode)+1);
 dst = res;
 src = to_decode;
 if(!dst) {
@@ -559,8 +559,8 @@ return buf;
 }
 char* dc_decode_ext_header(const char* to_decode)
 {
-char*       decoded = NULL;
-char*       charset = NULL;
+char* decoded = NULL;
+char* charset = NULL;
 const char* p2 = NULL;
 if (to_decode==NULL) {
 goto cleanup;

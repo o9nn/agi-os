@@ -37,7 +37,7 @@ lkg->lasz = 2 * N_words;
 lkg->link_array = (Link *) malloc(lkg->lasz * sizeof(Link));
 memset(lkg->link_array, 0, lkg->lasz * sizeof(Link));
 lkg->num_words = N_words;
-lkg->cdsz =  N_words;
+lkg->cdsz = N_words;
 lkg->chosen_disjuncts = (Disjunct **) exalloc(lkg->cdsz * sizeof(Disjunct *));
 memset(lkg->chosen_disjuncts, 0, N_words * sizeof(Disjunct *));
 lkg->disjunct_list_str = NULL;

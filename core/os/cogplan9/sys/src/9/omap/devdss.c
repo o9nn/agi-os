@@ -6,7 +6,7 @@
 #include "io.h"
 #include "ureg.h"
 #include "../port/error.h"
-#define	Image	IMAGE
+#define Image IMAGE
 #include <draw.h>
 #include <memdraw.h>
 #include <cursor.h>
@@ -20,8 +20,8 @@ extern Settings settings[];
 extern Omap3fb *framebuf;
 static QLock dsslck;
 static Dirtab dsstab[] = {
-".",		{Qdir, 0, QTDIR},	0,	0555|DMDIR,
-"vgactl",	{Qdss, 0},		0,	0666,
+".", {Qdir, 0, QTDIR}, 0, 0555|DMDIR,
+"vgactl", {Qdss, 0}, 0, 0666,
 };
 static Chan*
 screenattach(char *spec)

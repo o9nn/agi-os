@@ -2,17 +2,17 @@
 #define PACKET_SHOW_H_
 #include "packet.h"
 typedef struct {
-unsigned    size;
-unsigned    used;
-char          **strings;
+unsigned size;
+unsigned used;
+char **strings;
 } pgp_list_t;
 typedef struct {
-pgp_list_t	known;
-pgp_list_t   	unknown;
+pgp_list_t known;
+pgp_list_t unknown;
 } pgp_text_t;
 typedef struct {
-uint8_t		mask;
-const char     *string;
+uint8_t mask;
+const char *string;
 } pgp_bit_map_t;
 void pgp_text_init(pgp_text_t *);
 void pgp_text_free(pgp_text_t *);

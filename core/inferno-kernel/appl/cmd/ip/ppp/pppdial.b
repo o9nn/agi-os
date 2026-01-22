@@ -1,18 +1,18 @@
 implement PPPdial;
 #
-#	Module:		ispservice
-#	Purpose:		Simple PPP Dial-on-Demand
-#	Author:		Eric Van Hensbergen (ericvh@lucent.com)
+# Module: ispservice
+# Purpose: Simple PPP Dial-on-Demand
+# Author: Eric Van Hensbergen (ericvh@lucent.com)
 #
-# Copyright © 1998-1999 Lucent Technologies Inc.  All rights reserved.
-# Revisions copyright © 2000-2003 Vita Nuova Holdings Limited.  All rights reserved.
+# Copyright © 1998-1999 Lucent Technologies Inc. All rights reserved.
+# Revisions copyright © 2000-2003 Vita Nuova Holdings Limited. All rights reserved.
 #
 include "sys.m";
 sys: Sys;
 include "draw.m";
 draw: Draw;
 include "cfgfile.m";
-cfg:	CfgFile;
+cfg: CfgFile;
 ConfigFile: import cfg;
 include "lock.m";
 include "modem.m";
@@ -22,20 +22,20 @@ ppp: PPPClient;
 include "pppgui.m";
 PPPdial: module
 {
-init:	fn(nil: ref Draw->Context): string;
-connect:	fn(): string;
+init: fn(nil: ref Draw->Context): string;
+connect: fn(): string;
 };
-context:		ref Draw->Context;
-modeminfo:		ref Modem->ModemInfo;
-pppinfo:		ref PPPClient->PPPInfo;
-scriptinfo:		ref Script->ScriptInfo;
-isp_number:		string;						# should be part of pppinfo
-lastCdir:		ref Sys->Dir;	# state of file when last read
-DEFAULT_ISP_DB_PATH:	con "/services/ppp/isp.cfg";	# contains pppinfo & scriptinfo
-DEFAULT_MODEM_DB_PATH:	con	"/services/ppp/modem.cfg";			# contains modeminfo
-MODEM_DB_PATH:	con	"/usr/inferno/config/modem.cfg";			# contains modeminfo
-ISP_DB_PATH:	con "/usr/inferno/config/isp.cfg";		# contains pppinfo & scriptinfo
-ISP_RETRIES:	con 5;
+context: ref Draw->Context;
+modeminfo: ref Modem->ModemInfo;
+pppinfo: ref PPPClient->PPPInfo;
+scriptinfo: ref Script->ScriptInfo;
+isp_number: string; # should be part of pppinfo
+lastCdir: ref Sys->Dir; # state of file when last read
+DEFAULT_ISP_DB_PATH: con "/services/ppp/isp.cfg"; # contains pppinfo & scriptinfo
+DEFAULT_MODEM_DB_PATH: con "/services/ppp/modem.cfg"; # contains modeminfo
+MODEM_DB_PATH: con "/usr/inferno/config/modem.cfg"; # contains modeminfo
+ISP_DB_PATH: con "/usr/inferno/config/isp.cfg"; # contains pppinfo & scriptinfo
+ISP_RETRIES: con 5;
 getcfgstring(c: ref ConfigFile, key: string) :string
 {
 l := c.getcfg(key);
@@ -43,11 +43,11 @@ if (l == nil)
 return nil;
 for(ret := ""; l != nil; l = tl l)
 ret+= " " + hd l;
-return ret[1:];		# trim the first space
+return ret[1:]; # trim the first space
 }
 configinit()
 {
-mi:	Modem->ModemInfo;
+mi: Modem->ModemInfo;
 pppi: PPPClient->PPPInfo;
 info: list of string;
 cfg = load CfgFile CfgFile->PATH;
@@ -99,7 +99,7 @@ scriptinfo = nil;
 info = pppcfg.getcfg("TIMEOUT");
 if (info != nil)
 scriptinfo.timeout = int (hd info);
-cfg = nil;	# might as well unload it
+cfg = nil; # might as well unload it
 }
 #
 # Parts of the following two functions could be generalized
@@ -162,7 +162,7 @@ ppp = load PPPClient PPPClient->PATH;
 if (ppp == nil)
 raise "fail: Couldn't load ppp module";
 # Contruct Config Tables During Init - may want to change later
-#	for multiple configs (Software Download Server versus ISP)
+# for multiple configs (Software Download Server versus ISP)
 configinit();
 context = ctxt;
 }exception e {
@@ -226,7 +226,7 @@ alt {
 errc <-= nil => ;
 * => ;
 }
-} else	{		# user cancelled dial-in
+} else { # user cancelled dial-in
 dialup_cancelled = 1;
 alt {
 errc <-= "fail: dialup cancelled" => ;

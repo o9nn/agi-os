@@ -38,7 +38,7 @@ backward_subs = [x => α/(z-t) - t]
 new_sys = change_of_variables(
 sys, t, forward_subs, backward_subs; simplify = true, t0 = 0.0)
 # output should be equivalent to
-# t^2 + α - z^2 + 2   (but this simplification is not found automatically)
+# t^2 + α - z^2 + 2 (but this simplification is not found automatically)
 tspan = (0.0, 1.0)
 prob = ODEProblem(sys, [], tspan)
 new_prob = ODEProblem(new_sys, [], tspan)
@@ -112,7 +112,7 @@ new_sys = change_of_variables(sys, t, forward_subs, backward_subs)
 @test noise_eqs(new_sys)[2, 2] === value(simplify(substitute(2*α*y, backward_subs[2])))
 @test noise_eqs(new_sys)[3, 1] === value(σ)
 @test noise_eqs(new_sys)[3, 2] === value(α)
-# Test for  Brownian instead of noise
+# Test for Brownian instead of noise
 @named sys = System(eqs, t; defaults = def)
 new_sys = change_of_variables(sys, t, forward_subs, backward_subs; simplify = false)
 @test simplify(equations(new_sys)[1]) == simplify((D(z) ~ μ - 1/2*σ^2 + σ*Bx))

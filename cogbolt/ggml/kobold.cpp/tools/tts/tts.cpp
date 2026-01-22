@@ -20,7 +20,7 @@ enum outetts_version {
 OUTETTS_V0_2,
 OUTETTS_V0_3,
 };
-#define SQR(X)    ((X) * (X))
+#define SQR(X) ((X) * (X))
 #define UNCUBE(x) x < 48 ? 0 : x < 115 ? 1 : (x - 35) / 40
 static int rgb2xterm256(int r, int g, int b) {
 unsigned char cube[] = {0, 0137, 0207, 0257, 0327, 0377};
@@ -42,11 +42,11 @@ oss << "\033[38;5;" << x << "m";
 return oss.str();
 }
 const std::vector<std::string> k_colors = {
-set_xterm256_foreground(220,   5,  12),
-set_xterm256_foreground(232,  96,  28),
-set_xterm256_foreground(241, 147,  45),
-set_xterm256_foreground(246, 193,  65),
-set_xterm256_foreground(247, 240,  86),
+set_xterm256_foreground(220, 5, 12),
+set_xterm256_foreground(232, 96, 28),
+set_xterm256_foreground(241, 147, 45),
+set_xterm256_foreground(246, 193, 65),
+set_xterm256_foreground(247, 240, 86),
 set_xterm256_foreground(144, 201, 135),
 set_xterm256_foreground( 78, 178, 101),
 };
@@ -132,12 +132,12 @@ static void fold(const std::vector<float> & data, int64_t n_out, int64_t n_win, 
 int64_t output_height = n_out;
 int64_t kernel_w = n_win;
 int64_t stride_w = n_hop;
-int64_t width    = n_out;
+int64_t width = n_out;
 output.resize(width, 0.0f);
 int64_t col_idx = 0;
 for (int64_t w_col = 0; w_col < width; ++w_col) {
 int64_t start = w_col * stride_w - n_pad;
-int64_t end   = start + kernel_w;
+int64_t end = start + kernel_w;
 for (int64_t w_im = start; w_im < end; ++w_im) {
 if (w_im >= 0 && w_im < output_height && col_idx < (int64_t) data.size()) {
 output[w_im] += data[col_idx];
@@ -170,7 +170,7 @@ E[k*n_codes + l] = embd[l*n_embd + k];
 }
 for (int k = 0; k < n_embd/2; ++k) {
 for (int l = 0; l < n_codes; ++l) {
-float mag = E[(k           )*n_codes + l];
+float mag = E[(k )*n_codes + l];
 float phi = E[(k + n_embd/2)*n_codes + l];
 mag = exp(mag);
 if (mag > 1e2) {
@@ -186,7 +186,7 @@ ST[l*n_embd + 2*k + 0] = S[2*(k*n_codes + l) + 0];
 ST[l*n_embd + 2*k + 1] = S[2*(k*n_codes + l) + 1];
 }
 }
-std::vector<float> res  (n_codes*n_fft);
+std::vector<float> res (n_codes*n_fft);
 std::vector<float> hann2(n_codes*n_fft);
 std::vector<std::thread> workers(n_thread);
 for (int i = 0; i < n_thread; ++i) {
@@ -194,8 +194,8 @@ workers[i] = std::thread([&, i]() {
 for (int l = i; l < n_codes; l += n_thread) {
 irfft(n_fft, ST.data() + l*n_embd, res.data() + l*n_fft);
 for (int j = 0; j < n_fft; ++j) {
-res  [l*n_fft + j] *= hann[j];
-hann2[l*n_fft + j]  = hann[j] * hann[j];
+res [l*n_fft + j] *= hann[j];
+hann2[l*n_fft + j] = hann[j] * hann[j];
 }
 }
 });
@@ -205,7 +205,7 @@ workers[i].join();
 }
 std::vector<float> audio;
 std::vector<float> env;
-fold(res,   n_out, n_win, n_hop, n_pad, audio);
+fold(res, n_out, n_win, n_hop, n_pad, audio);
 fold(hann2, n_out, n_win, n_hop, n_pad, env);
 for (size_t i = 0; i < audio.size(); ++i) {
 audio[i] /= env[i];
@@ -404,15 +404,15 @@ common_params params;
 params.out_file = "output.wav";
 params.prompt = "";
 params.n_predict = 4096;
-params.n_batch   = 8192;
-params.n_ctx     = 8192;
+params.n_batch = 8192;
+params.n_ctx = 8192;
 params.sampling.top_k = 4;
 params.sampling.samplers = { COMMON_SAMPLER_TYPE_TOP_K, };
 if (!common_params_parse(argc, argv, params, LLAMA_EXAMPLE_TTS, print_usage)) {
 return 1;
 }
 const int n_parallel = params.n_parallel;
-const int n_predict  = params.n_predict;
+const int n_predict = params.n_predict;
 common_init();
 llama_backend_init();
 llama_numa_init(params.numa);
@@ -422,7 +422,7 @@ llama_context * ctx_ttc = NULL;
 llama_context * ctx_cts = NULL;
 common_init_result llama_init_ttc = common_init_from_params(params);
 model_ttc = llama_init_ttc.model.get();
-ctx_ttc   = llama_init_ttc.context.get();
+ctx_ttc = llama_init_ttc.context.get();
 if (model_ttc == nullptr || ctx_ttc == nullptr) {
 return ENOENT;
 }
@@ -433,7 +433,7 @@ params.ctx_shift = false;
 params.n_ubatch = params.n_batch;
 common_init_result llama_init_cts = common_init_from_params(params);
 model_cts = llama_init_cts.model.get();
-ctx_cts   = llama_init_cts.context.get();
+ctx_cts = llama_init_cts.context.get();
 if (model_cts == nullptr || ctx_cts == nullptr) {
 return ENOENT;
 }
@@ -443,9 +443,9 @@ params.sampling.no_perf = (i != 0);
 params.sampling.seed = params.sampling.seed + 1;
 smpl[i] = common_sampler_init(model_ttc, params.sampling);
 }
-LOG_INF("sampler seed: %u\n",     common_sampler_get_seed(smpl[0]));
+LOG_INF("sampler seed: %u\n", common_sampler_get_seed(smpl[0]));
 LOG_INF("sampler params: \n%s\n", params.sampling.print().c_str());
-LOG_INF("sampler chain: %s\n",    common_sampler_print(smpl[0]).c_str());
+LOG_INF("sampler chain: %s\n", common_sampler_print(smpl[0]).c_str());
 LOG_INF("%s: loading done\n", __func__);
 const auto t_main_start = ggml_time_us();
 std::vector<llama_token> codes;
@@ -657,7 +657,7 @@ llama_synchronize(ctx_ttc);
 LOG_INF("%s: time for prompt: %.3f ms\n\n", __func__, (ggml_time_us() - t_main_start) / 1000.0f);
 const auto t_dec_start = ggml_time_us();
 std::vector<int32_t> i_batch(n_parallel, batch.n_tokens - 1);
-int n_past   = batch.n_tokens;
+int n_past = batch.n_tokens;
 int n_decode = 0;
 bool next_token_uses_guide_token = true;
 while (n_decode <= n_predict) {

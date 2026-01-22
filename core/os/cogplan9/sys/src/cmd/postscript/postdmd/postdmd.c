@@ -2,7 +2,7 @@
 #include <signal.h>
 #include <ctype.h>
 #ifdef plan9
-#define	isascii(c)	((unsigned char)(c)<=0177)
+#define isascii(c) ((unsigned char)(c)<=0177)
 #endif
 #include <sys/types.h>
 #include <fcntl.h>
@@ -10,31 +10,31 @@
 #include "gen.h"
 #include "path.h"
 #include "ext.h"
-char	*optnames = "a:b:c:fm:n:o:p:ux:y:A:C:E:J:L:P:DI";
-char	*prologue = POSTDMD;
-char	*formfile = FORMFILE;
-int	bbox[2] = {0, 0};
-int	formsperpage = 1;
-int	copies = 1;
-int	bytespp = 6;
-int	flip = FALSE;
-int	v8undo = TRUE;
-int	v8format = FALSE;
-int	page = 0;
-int	printed = 0;
-int	patterns;
-int	scanlines;
-int	patcount = 0;
-char	*raster = NULL;
-char	*prevrast = NULL;
-char	*rptr;
-char	*eptr;
-FILE	*fp_in = NULL;
-FILE	*fp_out = stdout;
-FILE	*fp_acct = NULL;
+char *optnames = "a:b:c:fm:n:o:p:ux:y:A:C:E:J:L:P:DI";
+char *prologue = POSTDMD;
+char *formfile = FORMFILE;
+int bbox[2] = {0, 0};
+int formsperpage = 1;
+int copies = 1;
+int bytespp = 6;
+int flip = FALSE;
+int v8undo = TRUE;
+int v8format = FALSE;
+int page = 0;
+int printed = 0;
+int patterns;
+int scanlines;
+int patcount = 0;
+char *raster = NULL;
+char *prevrast = NULL;
+char *rptr;
+char *eptr;
+FILE *fp_in = NULL;
+FILE *fp_out = stdout;
+FILE *fp_acct = NULL;
 main(agc, agv)
-int		agc;
-char	*agv[];
+int agc;
+char *agv[];
 {
 argc = agc;
 argv = agv;
@@ -50,7 +50,7 @@ exit(x_stat);
 }
 init_signals()
 {
-if ( signal(SIGINT, interrupt) == SIG_IGN )  {
+if ( signal(SIGINT, interrupt) == SIG_IGN ) {
 signal(SIGINT, SIG_IGN);
 signal(SIGQUIT, SIG_IGN);
 signal(SIGHUP, SIG_IGN);
@@ -62,8 +62,8 @@ signal(SIGTERM, interrupt);
 }
 header()
 {
-int		ch;
-int		old_optind = optind;
+int ch;
+int old_optind = optind;
 while ( (ch = getopt(argc, argv, optnames)) != EOF )
 if ( ch == 'L' )
 prologue = optarg;
@@ -83,9 +83,9 @@ fprintf(stdout, "mark\n");
 }
 options()
 {
-int		ch;
-while ( (ch = getopt(argc, argv, optnames)) != EOF )  {
-switch ( ch )  {
+int ch;
+while ( (ch = getopt(argc, argv, optnames)) != EOF ) {
+switch ( ch ) {
 case 'a':
 fprintf(stdout, "/aspectratio %s def\n", optarg);
 break;
@@ -167,7 +167,7 @@ setup()
 writerequest(0, stdout);
 setencoding(fontencoding);
 fprintf(stdout, "setup\n");
-if ( formsperpage > 1 )  {
+if ( formsperpage > 1 ) {
 if ( cat(formfile) == FALSE )
 error(FATAL, "can't read %s", formfile);
 fprintf(stdout, "%d setupforms\n", formsperpage);
@@ -176,11 +176,11 @@ fprintf(stdout, "%s", ENDSETUP);
 }
 arguments()
 {
-FILE	*fp;
+FILE *fp;
 if ( argc < 1 )
 bitmap(stdin);
-else  {
-while ( argc > 0 )  {
+else {
+while ( argc > 0 ) {
 if ( strcmp(*argv, "-") == 0 )
 fp = stdin;
 else if ( (fp = fopen(*argv, "r")) == NULL )
@@ -206,12 +206,12 @@ if ( fp_acct != NULL )
 fprintf(fp_acct, " print %d\n copies %d\n", printed, copies);
 }
 bitmap(fp)
-FILE	*fp;
+FILE *fp;
 {
-int		count;
-long	total;
+int count;
+long total;
 fp_in = fp;
-while ( dimensions() == TRUE )  {
+while ( dimensions() == TRUE ) {
 patcount = 0;
 total = scanlines * patterns;
 bbox[0] = MAX(bbox[0], patterns*16);
@@ -223,7 +223,7 @@ writerequest(printed+1, fp_out);
 fprintf(fp_out, "%s ", (v8format == TRUE && v8undo == FALSE) ? "true" : "false");
 fprintf(fp_out, "%s ", (flip == TRUE) ? "true" : "false");
 fprintf(fp_out, "%d %d bitmap\n", patterns * 16, scanlines);
-while ( patcount != total && (count = getc(fp)) != EOF )  {
+while ( patcount != total && (count = getc(fp)) != EOF ) {
 addrast(count);
 patcount += (count & 0177);
 if ( patcount % patterns == 0 )
@@ -241,10 +241,10 @@ fprintf(fp_out, "%s %d %d\n", ENDPAGE, page, printed);
 }
 dimensions()
 {
-int		ox, oy;
-int		cx, cy;
-int		i;
-if ( (scanlines = getint()) == 0 )  {
+int ox, oy;
+int cx, cy;
+int i;
+if ( (scanlines = getint()) == 0 ) {
 ox = getint();
 oy = getint();
 cx = getint();
@@ -267,22 +267,22 @@ eptr = rptr + patterns * 2;
 return(TRUE);
 }
 addrast(count)
-int		count;
+int count;
 {
-int		size;
-int		l, h;
-int		i, j;
-if ( count & 0200 )  {
+int size;
+int l, h;
+int i, j;
+if ( count & 0200 ) {
 size = 1;
 count &= 0177;
 } else {
 size = count;
 count = 1;
 }
-for ( i = size; i > 0; i-- )  {
+for ( i = size; i > 0; i-- ) {
 if ( (l = getc(fp_in)) == EOF || (h = getc(fp_in)) == EOF )
 return;
-for ( j = count; j > 0; j-- )  {
+for ( j = count; j > 0; j-- ) {
 *rptr++ = l;
 *rptr++ = h;
 }
@@ -290,15 +290,15 @@ for ( j = count; j > 0; j-- )  {
 }
 putrast()
 {
-char	*p1, *p2;
-int		n;
-int		i;
+char *p1, *p2;
+int n;
+int i;
 n = (bytespp <= 0) ? 2 * patterns : bytespp;
 if ( v8format == TRUE && v8undo == TRUE )
 for ( i = 0; i < patterns * 2; i++ )
 *(raster+i) = (*(prevrast+i) ^= *(raster+i));
 for ( p1 = raster, p2 = raster + n; p1 < eptr; p1 = p2 )
-if ( patncmp(p1, n) == TRUE )  {
+if ( patncmp(p1, n) == TRUE ) {
 while ( patncmp(p2, n) == TRUE ) p2 += n;
 p2 += n;
 fprintf(fp_out, "%d ", n);
@@ -317,10 +317,10 @@ fprintf(fp_out, "0\n");
 rptr = raster;
 }
 patncmp(p1, n)
-char	*p1;
-int		n;
+char *p1;
+int n;
 {
-char	*p2;
+char *p2;
 p2 = p1 + n;
 for ( ; n > 0; n--, p1++, p2++ )
 if ( p2 >= eptr || *p1 != *p2 )
@@ -329,15 +329,15 @@ return(TRUE);
 }
 getint()
 {
-int		h, l;
+int h, l;
 if ( (l = getc(fp_in)) == EOF || (h = getc(fp_in)) == EOF )
 return(-1);
 return((h & 0377) << 8 | (l & 0377));
 }
 redirect(pg)
-int		pg;
+int pg;
 {
-static FILE	*fp_null = NULL;
+static FILE *fp_null = NULL;
 if ( pg >= 0 && in_olist(pg) == ON )
 fp_out = stdout;
 else if ( (fp_out = fp_null) == NULL )

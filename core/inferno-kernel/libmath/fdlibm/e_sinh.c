@@ -17,7 +17,7 @@ t = expm1(fabs(x));
 if(ix<0x3ff00000) return h*(2.0*t-t*t/(t+one));
 return h*(t+t/(t+one));
 }
-if (ix < 0x40862E42)  return h*__ieee754_exp(fabs(x));
+if (ix < 0x40862E42) return h*__ieee754_exp(fabs(x));
 lx = *( (((*(unsigned*)&one)>>29)) + (unsigned*)&x);
 if (ix<0x408633CE || (ix==0x408633ce)&&(lx<=(unsigned)0x8fb9f87d)) {
 w = __ieee754_exp(0.5*fabs(x));

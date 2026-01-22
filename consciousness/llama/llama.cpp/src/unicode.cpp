@@ -156,12 +156,12 @@ free(wbuf);
 return ret;
 #else
 #if defined(__clang__)
-#    pragma clang diagnostic push
-#    pragma clang diagnostic ignored "-Wdeprecated-declarations"
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #endif
 std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
 #if defined(__clang__)
-#    pragma clang diagnostic pop
+# pragma clang diagnostic pop
 #endif
 return conv.from_bytes(s);
 #endif
@@ -170,7 +170,7 @@ static std::vector<std::string> unicode_byte_encoding_process(const std::vector<
 std::vector<std::string> bpe_encoded_words;
 for (const auto & word : bpe_words) {
 std::string text_utf;
-auto utf_word =  unicode_cpts_from_utf8(word);
+auto utf_word = unicode_cpts_from_utf8(word);
 for (size_t i = 0; i < utf_word.size(); ++i) {
 text_utf += unicode_cpt_to_utf8(utf_word[i]);
 }
@@ -209,7 +209,7 @@ bpe_offsets.push_back(len);
 _prev_end = end;
 return len;
 };
-for (size_t pos = offset_ini; pos < offset_end;  ) {
+for (size_t pos = offset_ini; pos < offset_end; ) {
 const uint32_t cpt = _get_cpt(pos);
 const auto flags = _get_flags(pos);
 if (cpt == '\'' && pos+1 < offset_end) {
@@ -299,7 +299,7 @@ bpe_offsets.push_back(len);
 _prev_end = end;
 return len;
 };
-for (size_t pos = offset_ini; pos < offset_end;  ) {
+for (size_t pos = offset_ini; pos < offset_end; ) {
 const uint32_t cpt = _get_cpt(pos);
 const auto flags = _get_flags(pos);
 if (cpt == '\'' && pos+1 < offset_end) {
@@ -535,18 +535,18 @@ static const std::map<std::string, int> k_ucat_enum = {
 { "\\p{S}", unicode_cpt_flags::SYMBOL },
 };
 static const std::map<int, int> k_ucat_cpt = {
-{ unicode_cpt_flags::NUMBER,      0xD1 },
-{ unicode_cpt_flags::LETTER,      0xD2 },
+{ unicode_cpt_flags::NUMBER, 0xD1 },
+{ unicode_cpt_flags::LETTER, 0xD2 },
 { unicode_cpt_flags::PUNCTUATION, 0xD3 },
 { unicode_cpt_flags::ACCENT_MARK, 0xD4 },
-{ unicode_cpt_flags::SYMBOL,      0xD5 },
+{ unicode_cpt_flags::SYMBOL, 0xD5 },
 };
 static const std::map<int, std::string> k_ucat_map = {
-{ unicode_cpt_flags::NUMBER,      "\x30-\x39" },
-{ unicode_cpt_flags::LETTER,      "\x41-\x5A\x61-\x7A" },
+{ unicode_cpt_flags::NUMBER, "\x30-\x39" },
+{ unicode_cpt_flags::LETTER, "\x41-\x5A\x61-\x7A" },
 { unicode_cpt_flags::PUNCTUATION, "\x21-\x23\x25-\x2A\x2C-\x2F\x3A-\x3B\x3F-\x40\\\x5B-\\\x5D\x5F\\\x7B\\\x7D" },
 { unicode_cpt_flags::ACCENT_MARK, "" },
-{ unicode_cpt_flags::SYMBOL,      "\\\x24\\\x2B\x3C-\x3E\x5E\x60\\\x7C" },
+{ unicode_cpt_flags::SYMBOL, "\\\x24\\\x2B\x3C-\x3E\x5E\x60\\\x7C" },
 };
 bool need_collapse = false;
 for (const auto & regex_expr : regex_exprs) {

@@ -50,12 +50,12 @@ lsys, ssys = linearize(sys, r, r) # Test allow scalars
 @test lsys.D[] == 1
 ##
 ```
-r ┌─────┐       ┌─────┐     ┌─────┐
-───►│     ├──────►│     │  u  │     │
-│  F  │       │  C  ├────►│  P  │ y
-└─────┘     ┌►│     │     │     ├─┬─►
-│ └─────┘     └─────┘ │
-│                     │
+r ┌─────┐ ┌─────┐ ┌─────┐
+───►│ ├──────►│ │ u │ │
+│ F │ │ C ├────►│ P │ y
+└─────┘ ┌►│ │ │ ├─┬─►
+│ └─────┘ └─────┘ │
+│ │
 └─────────────────────┘
 ```
 function plant(; name)
@@ -195,7 +195,7 @@ using ModelingToolkit: connect
 m1 = 1
 m2 = 1
 k = 1000 # Spring stiffness
-c = 10   # Damping coefficient
+c = 10 # Damping coefficient
 @named inertia1 = Inertia(; J = m1)
 @named inertia2 = Inertia(; J = m2)
 @named spring = Spring(; c = k)

@@ -9,7 +9,7 @@ tk: Tk;
 include "wmlib.m";
 wmlib: Wmlib;
 include "string.m";
-str:	String;
+str: String;
 include "imagefile.m";
 include "xml.m";
 xml: Xml;
@@ -44,7 +44,7 @@ include "reader.m";
 # - subscript, superscript (which css attributes do they correspond to?)
 # - limit the size of the image cache.
 stderr: ref Sys->FD;
-maxblockid := 0;		# assume that increments of this are atomic
+maxblockid := 0; # assume that increments of this are atomic
 OEBpkgtype: con "http:
 OEBdoctype: con "http:
 OEBpkg, OEBdoc: con iota;
@@ -57,38 +57,38 @@ MARK: con 'm';
 VSPACE: con 'v';
 INDENT: con 20;
 Sbackground_color,
-Sborder,			# none, solid, dotted, dashed, double, groove, ridge, inset, outset, [thin, medium, thick, <abs size>]
-#Sclear,			# none, left, right, both
+Sborder, # none, solid, dotted, dashed, double, groove, ridge, inset, outset, [thin, medium, thick, <abs size>]
+#Sclear, # none, left, right, both
 Scolor,
-#Sdisplay,			# block, inline, none, oeb-page-head, oeb-page-foot
-#Sfloat,			# left, right, none
-Sfont_family,		# serif, sans-serif, monospace
-Sfont_size,		# xx-small...xx-large, smaller, larger, <abs size>
-Sfont_style,		# normal, italic
-Sfont_weight,		# normal, bold
+#Sdisplay, # block, inline, none, oeb-page-head, oeb-page-foot
+#Sfloat, # left, right, none
+Sfont_family, # serif, sans-serif, monospace
+Sfont_size, # xx-small...xx-large, smaller, larger, <abs size>
+Sfont_style, # normal, italic
+Sfont_weight, # normal, bold
 Sheight,
-Sline_height,		# normal, <number>, <length>
-Slist_style_type,	# decimal, lower-roman, upper-roman, lower-alpha, upper-alpha, none
+Sline_height, # normal, <number>, <length>
+Slist_style_type, # decimal, lower-roman, upper-roman, lower-alpha, upper-alpha, none
 Smargin_bottom,
 Smargin_top,
 Smargin_left,
 Smargin_right,
-# Soeb_column_number,	# auto, 1
-# Spage_break_before,	# auto, always, left, right
-# Spage_break_inside,	# auto, avoid
-Stext_align,		# left, right, center, justify
-Stext_decoration,		# none, underline, line-through
+# Soeb_column_number, # auto, 1
+# Spage_break_before, # auto, always, left, right
+# Spage_break_inside, # auto, avoid
+Stext_align, # left, right, center, justify
+Stext_decoration, # none, underline, line-through
 Stext_indent,
-Svertical_align,		# top, middle, bottom
+Svertical_align, # top, middle, bottom
 Swidth,
 Snumstyles: con iota;
 stylenames := array[] of {
 Sbackground_color => "background-color",
 Sborder => "border",
-#	Sclear => "clear",
+# Sclear => "clear",
 Scolor => "color",
-#	Sdisplay => "display",
-#	Sfloat => "float",
+# Sdisplay => "display",
+# Sfloat => "float",
 Sfont_family => "font-family",
 Sfont_size => "font-size",
 Sfont_style => "font-style",
@@ -100,9 +100,9 @@ Smargin_bottom => "margin-bottom",
 Smargin_left => "margin-left",
 Smargin_right => "margin-right",
 Smargin_top => "margin-top",
-#	Soeb_column_number => "oeb-column-number",
-#	Spage_break_before => "page-break-before",
-#	Spage_break_inside => "page-break-inside",
+# Soeb_column_number => "oeb-column-number",
+# Spage_break_before => "page-break-before",
+# Spage_break_inside => "page-break-inside",
 Stext_align => "text-align",
 Stext_decoration => "text-decoration",
 Stext_indent => "text-indent",
@@ -191,9 +191,9 @@ Sfont_style => byte 1,
 Sfont_weight => byte 1,
 Sline_height => byte 1,
 Slist_style_type => byte 1,
-#	Soeb_column_number => byte 1,
-#	Spage_break_before => byte 1,
-#	Spage_break_inside => byte 1,
+# Soeb_column_number => byte 1,
+# Spage_break_before => byte 1,
+# Spage_break_inside => byte 1,
 Stext_align => byte 1,
 Stext_decoration => byte 1,
 Stext_indent => byte 1,
@@ -208,8 +208,8 @@ Sfont_style => "normal",
 Sheight => "normal",
 Sline_height => "normal",
 Slist_style_type => "none",
-#	Soeb_column_number => "auto",	# ?
-#	Spage_break_before => "auto",	# ?
+# Soeb_column_number => "auto", # ?
+# Spage_break_before => "auto", # ?
 Stext_decoration => "none",
 };
 badmodule(p: string)
@@ -317,7 +317,7 @@ return nil;
 (ok, d) := sys->fstat(fd);
 if(ok < 0)
 return nil;
-if(d.length > big (128*1024))	# let's keep within bounds
+if(d.length > big (128*1024)) # let's keep within bounds
 return nil;
 l := int d.length;
 buf := array[l] of byte;
@@ -609,7 +609,7 @@ for (xi := x.next(); xi != nil; xi = x.next()) {
 pick i := xi {
 Process =>
 if (i.target != "xml")
-return (nil, nil, "not an XML file");		# XXX actually according to spec, this declaration is optional.
+return (nil, nil, "not an XML file"); # XXX actually according to spec, this declaration is optional.
 Text =>
 if (i.ch != nil)
 return (i, dtd, nil);
@@ -618,9 +618,9 @@ if (!i.public || len i.params < 2)
 return (nil, nil, "invalid document type");
 dtd = hd tl i.params;
 Stylesheet =>
-# XXX			etc etc.
+# XXX etc etc.
 Error =>
-error(d, i.msg);		# XXX should show locator held in i, not as added by error()
+error(d, i.msg); # XXX should show locator held in i, not as added by error()
 * =>
 return (xi, dtd, nil);
 }
@@ -628,32 +628,32 @@ return (xi, dtd, nil);
 return (nil, dtd, nil);
 }
 #
-#	xi := x.next();
-#	if(xi == nil)
-#		return (nil, "not valid XML");
-#	pick i := xi {
-#	Process =>
-#		if(i.target != "xml")
-#			return (nil, "not an XML file");		# XXX actually according to spec, this declaration is optional.
-#	* =>
-#		return (nil, "unexpected file structure");
-#	}
+# xi := x.next();
+# if(xi == nil)
+# return (nil, "not valid XML");
+# pick i := xi {
+# Process =>
+# if(i.target != "xml")
+# return (nil, "not an XML file"); # XXX actually according to spec, this declaration is optional.
+# * =>
+# return (nil, "unexpected file structure");
+# }
 #
-#	xi = x.next();
-#	if (xi == nil)
-#		return (nil, "invalid document");
-#	if (tagof(xi) == tagof(Item.Text)) {		# XXX limbo compiler bug: tagof(Xml->Item.Text) is invalid.
-#		xi = x.next();
-#		if (xi == nil)
-#			return (nil, "invalid document");
-#	}
-#	pick i := xi {
-#	Doctype =>
-#		if (!i.public || len i.params < 2)
-#			return (nil, "invalid document type");
-#		return (hd tl i.params, nil);
-#	}
-#	return (nil, "not OEB document (no DOCTYPE)");
+# xi = x.next();
+# if (xi == nil)
+# return (nil, "invalid document");
+# if (tagof(xi) == tagof(Item.Text)) { # XXX limbo compiler bug: tagof(Xml->Item.Text) is invalid.
+# xi = x.next();
+# if (xi == nil)
+# return (nil, "invalid document");
+# }
+# pick i := xi {
+# Doctype =>
+# if (!i.public || len i.params < 2)
+# return (nil, "invalid document type");
+# return (hd tl i.params, nil);
+# }
+# return (nil, "not OEB document (no DOCTYPE)");
 #}
 starthtml(d: ref Datasource): string
 {
@@ -817,8 +817,8 @@ if (si == nil) {
 warning(d, "empty table");
 return;
 }
-dim := Point(0, 0);		# table dimensions
-pos := Point(0, 0);		# current position in table
+dim := Point(0, 0); # table dimensions
+pos := Point(0, 0); # current position in table
 celllist: list of (Point, ref Table->Cell);
 # XXX BUG table rows with ids all get marked at the top of the table.
 # would need to change the sendlink() scheme in order to fix that.
@@ -956,7 +956,7 @@ d.t.href = " " + href;
 if ((name := i.attrs.get("name")) != nil)
 sendlink(d, name);
 e_inline_flow(d);
-d.t.href = nil;		# nesting of <a> not allowed so it's ok.
+d.t.href = nil; # nesting of <a> not allowed so it's ok.
 up(d, 0);
 Eimg =>
 e_image(d, i);
@@ -1079,16 +1079,16 @@ e_inline_text(d: ref Datasource, i: ref Item.Text)
 d.t.addtext(i.ch, i.ws1, i.ws2, i.fileoffset);
 }
 # attributes that have percentage values that refer to the width of
-# their enclosing block.  the whole thing is inevitably a crock.
+# their enclosing block. the whole thing is inevitably a crock.
 # text-indent for example is supposed to take the width from its
-# immediate ancestor...  whose width is probably determined by the
-# assigned width.  eurgh.
+# immediate ancestor... whose width is probably determined by the
+# assigned width. eurgh.
 blocksizerelative := array[] of {
 Sheight,
 Smargin_left,
 Smargin_right,
-#	Smargin_top,
-#	Smargin_bottom,
+# Smargin_top,
+# Smargin_bottom,
 Swidth,
 Stext_indent,
 };
@@ -1105,7 +1105,7 @@ style := getstyle(d);
 a := style.attrs;
 fi := *(hd d.fontinfo);
 # make relative units into absolute units so that the derived
-#  values are inherited as per the standard.
+# values are inherited as per the standard.
 # font size is relative to the parent font size, not the current font size.
 fontsize := a[Sfont_size];
 if (units->isrelative(fontsize)) {
@@ -1114,7 +1114,7 @@ if (units->isrelative(fontsize)) {
 a[Sfont_size] = fontsize;
 }
 # XXX later
-#	Sborder
+# Sborder
 (path, em, ex) := cssfont->getfont((a[Sfont_family], a[Sfont_style],
 a[Sfont_weight], a[Sfont_size]), fi.em, fi.ex);
 # symbolic font names are turned into their size so we only
@@ -1204,7 +1204,7 @@ return i;
 Text =>
 return i;
 Error =>
-error(d, i.msg);		# XXX should show locator held in i, not as added by error()
+error(d, i.msg); # XXX should show locator held in i, not as added by error()
 Process =>
 sys->print("processing request: target: '%s'; data: '%s'\n",
 i.target, i.data);
@@ -1235,18 +1235,18 @@ n++;
 }
 }
 #what about inheritance vs. units.
-#	e.g.
-#	<ul style="font-size: 150%"><li style="font-size: 150%">hello</li></ul>
-#	"hello" should come out 2.25 times the size of the font outside <ul>;
+# e.g.
+# <ul style="font-size: 150%"><li style="font-size: 150%">hello</li></ul>
+# "hello" should come out 2.25 times the size of the font outside <ul>;
 #
-#	therefore all units must be resolved properly for each tag;
-#	we can't just let them be lazy until the properties are actually needed.
-#	hmm.
+# therefore all units must be resolved properly for each tag;
+# we can't just let them be lazy until the properties are actually needed.
+# hmm.
 #
-#	actually we only need to resolve relative elements, and those
-#	measured with respect to current font size.
+# actually we only need to resolve relative elements, and those
+# measured with respect to current font size.
 #
-#	e.g. 150%, 10em, larger
+# e.g. 150%, 10em, larger
 listheader(t: ref Text, style: ref Style, n: int)
 {
 s: string;
@@ -1273,7 +1273,7 @@ s[len s] = a[i];
 "lower-roman" or
 "upper-roman" =>
 if((s = roman(n)) == nil)
-s = sys->sprint("%d", n);	# better arabic than nothing
+s = sys->sprint("%d", n); # better arabic than nothing
 s += ".";
 if (ty[0] == 'l')
 s = str->tolower(s);
@@ -1283,7 +1283,7 @@ t.addtext(s, 0, 0, -1);
 }
 #
 # derived from Python function by Mark Pilgrim
-#	``do ut des''
+# ``do ut des''
 #
 roman(n: int): string
 {
@@ -1336,7 +1336,7 @@ s := t.w + " insert end ";
 # or this text starts with whitespace and this isn't the first item
 # on the line.
 if (ws1 && !t.startofline)
-text = " " + text;			# XXX might be faster to do two inserts.
+text = " " + text; # XXX might be faster to do two inserts.
 if (ws2)
 text += " ";
 s += tk->quote(text) + " {";
@@ -1385,9 +1385,9 @@ t.margin.l += m.l;
 t.margin.r += m.r;
 t.margin.textindent = m.textindent;
 t.margin.b = 0;
-#	XXX check for margin overflow
+# XXX check for margin overflow
 # MINWIDTH: con 40;
-#	if (t.lmargin + t.rmargin >= t.width)
+# if (t.lmargin + t.rmargin >= t.width)
 }
 Text.endblock(t: self ref Text)
 {
@@ -1413,7 +1413,7 @@ t.margin.b = 0;
 }
 # get rid of any trailing newline (this doesn't work for null-sized text widgets.
 if (tk->cmd(t.win, t.w + " get {end - 1 chars} end") == "\n") {
-#		sys->print("deleting last newline\n");
+# sys->print("deleting last newline\n");
 cmd(t.win, t.w + " delete {end - 1 chars} end");
 }
 t.outerbmargin = t.margin.b;
@@ -1430,7 +1430,7 @@ if (h > 0) {
 # (which mucks things up at the end of the text widget).
 w := t.widgetname(VSPACE);
 cmd(t.win, "frame " + w + " -height " + string h); # + " -width 100 -bg red");
-tag :=  t.gettag("-lineheight " + string h);
+tag := t.gettag("-lineheight " + string h);
 t.addwidget(w, -1, 1);
 cmd(t.win, t.w + " tag add " + tag + " {end - 1 chars}");
 cmd(t.win, t.w + " insert end {\n} " + tag);
@@ -1467,14 +1467,14 @@ return s + string t.max++;
 Text.addwidget(t: self ref Text, w: string, fileoffset: int, invisible: int)
 {
 align: string;
-#	case t.style.attrs[Svertical_align] {
-#	"top" =>
-#		align = " -align top";
-#	"bottom =>
-#		align = " -align bottom";
-#	"middle" =>
-#		align = "-align center";
-#	}
+# case t.style.attrs[Svertical_align] {
+# "top" =>
+# align = " -align top";
+# "bottom =>
+# align = " -align bottom";
+# "middle" =>
+# align = "-align center";
+# }
 cmd(t.win, t.w + " window create end -window " + w + align);
 # apparently no way to add tags to an embedded window when it's created.
 cmd(t.win, t.w + " tag add o" + string fileoffset + " " + w);
@@ -1576,7 +1576,7 @@ else {
 if(u.pstart == "/")
 path = "/" + path;
 else
-path = dir+path;	# TO DO: security
+path = dir+path; # TO DO: security
 (ok, d) := sys->stat(path);
 if(ok < 0)
 return (nil, sys->sprint("'%s': %r", path));
@@ -1631,9 +1631,9 @@ return 0;
 }
 cmd(win: ref Tk->Toplevel, s: string): string
 {
-#	sys->print("	%s\n", s);
+# sys->print("	%s\n", s);
 r := tk->cmd(win, s);
-#	sys->print("		-> %s\n", r);
+# sys->print("		-> %s\n", r);
 if (len r > 0 && r[0] == '!') {
 sys->fprint(stderr, "error executing '%s': %s\n", s, r);
 raise "tk error";

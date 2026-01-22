@@ -1,5 +1,5 @@
 #ifdef _FEATURES_H
-#  error  config.h must be first file included
+# error config.h must be first file included
 #endif
 #define DBVERS 0
 #define HAVE_ARPA_INET_H 1

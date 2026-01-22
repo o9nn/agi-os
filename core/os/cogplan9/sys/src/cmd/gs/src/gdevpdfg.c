@@ -87,7 +87,7 @@ sizeof(s->dash_pattern));
 }
 int
 pdf_restore_viewer_state(gx_device_pdf *pdev, stream *s)
-{   const int i = --pdev->vgstack_depth;
+{ const int i = --pdev->vgstack_depth;
 if (i < pdev->vgstack_bottom || i < 0)
 return_error(gs_error_unregistered);
 if (s)
@@ -113,10 +113,10 @@ private void
 pdf_viewer_state_from_imager_state_aux(pdf_viewer_state *pvs, const gs_imager_state *pis)
 {
 pvs->transfer_not_identity =
-(pis->set_transfer.red   != NULL ? pis->set_transfer.red->proc   != gs_identity_transfer : 0) * 1 +
+(pis->set_transfer.red != NULL ? pis->set_transfer.red->proc != gs_identity_transfer : 0) * 1 +
 (pis->set_transfer.green != NULL ? pis->set_transfer.green->proc != gs_identity_transfer : 0) * 2 +
-(pis->set_transfer.blue  != NULL ? pis->set_transfer.blue->proc  != gs_identity_transfer : 0) * 4 +
-(pis->set_transfer.gray  != NULL ? pis->set_transfer.gray->proc  != gs_identity_transfer : 0) * 8;
+(pis->set_transfer.blue != NULL ? pis->set_transfer.blue->proc != gs_identity_transfer : 0) * 4 +
+(pis->set_transfer.gray != NULL ? pis->set_transfer.gray->proc != gs_identity_transfer : 0) * 8;
 pvs->transfer_ids[0] = (pis->set_transfer.red != NULL ? pis->set_transfer.red->id : 0);
 pvs->transfer_ids[1] = (pis->set_transfer.green != NULL ? pis->set_transfer.green->id : 0);
 pvs->transfer_ids[2] = (pis->set_transfer.blue != NULL ? pis->set_transfer.blue->id : 0);
@@ -292,7 +292,7 @@ return code;
 pprints1(pdev->strm, " %s\n", command);
 break;
 case pattern_color_sapce:
-{	pdf_resource_t *pres;
+{ pdf_resource_t *pres;
 if (pdc->type == gx_dc_type_pattern)
 code = pdf_put_colored_pattern(pdev, pdc, pcs,
 ppscc, pis->have_pattern_streams, &pres);
@@ -627,7 +627,7 @@ int i = countof(ht_functions);
 gs_memory_t *mem = pdev->pdf_memory;
 if (code < 0)
 return code;
-{	gs_screen_enum senum;
+{ gs_screen_enum senum;
 gx_ht_order order;
 int code;
 order = *porder;

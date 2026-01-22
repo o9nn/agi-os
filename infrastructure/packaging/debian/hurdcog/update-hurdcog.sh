@@ -8,25 +8,25 @@ echo "Updating ${PACKAGE_NAME} package"
 echo "Version: ${VERSION}"
 echo "=========================================="
 if [ ! -d "${SOURCE_DIR}" ]; then
-    echo "Error: Source directory ${SOURCE_DIR} not found"
-    echo "Please ensure the hurdcog repository is in the parent directory"
-    exit 1
+echo "Error: Source directory ${SOURCE_DIR} not found"
+echo "Please ensure the hurdcog repository is in the parent directory"
+exit 1
 fi
 TARBALL="${PACKAGE_NAME}_${VERSION}.orig.tar.gz"
 echo "Creating source tarball: ${TARBALL}"
 cd ..
 tar czf "${TARBALL}" \
-    --exclude=".git" \
-    --exclude="debian" \
-    --exclude="*.swp" \
-    --exclude="*~" \
-    --exclude="build" \
-    --exclude="*.o" \
-    --exclude="*.so" \
-    --exclude="*.a" \
-    --exclude="__pycache__" \
-    --exclude="*.pyc" \
-    "${PACKAGE_NAME}"
+--exclude=".git" \
+--exclude="debian" \
+--exclude="*.swp" \
+--exclude="*~" \
+--exclude="build" \
+--exclude="*.o" \
+--exclude="*.so" \
+--exclude="*.a" \
+--exclude="__pycache__" \
+--exclude="*.pyc" \
+"${PACKAGE_NAME}"
 BUILD_DIR="${PACKAGE_NAME}-${VERSION}"
 echo "Extracting to build directory: ${BUILD_DIR}"
 rm -rf "${BUILD_DIR}"

@@ -15,7 +15,7 @@ gx_device_common;
 gx_prn_device_common;
 gx_fax_device_common;
 long MaxStripSize;
-int  FillOrder;
+int FillOrder;
 gdev_tiff_state tiff;
 };
 typedef struct gx_device_tfax_s gx_device_tfax;
@@ -25,8 +25,8 @@ tfax_get_params, tfax_put_params);
 #define TFAX_DEVICE(dname, print_page)\
 {\
 FAX_DEVICE_BODY(gx_device_tfax, gdev_tfax_std_procs, dname, print_page),\
-0				,\
-1                           \
+0 ,\
+1 \
 }
 const gx_device_tfax gs_tiffcrle_device =
 TFAX_DEVICE("tiffcrle", tiffcrle_print_page);

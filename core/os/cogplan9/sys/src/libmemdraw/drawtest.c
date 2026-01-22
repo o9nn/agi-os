@@ -4,36 +4,36 @@
 #include <draw.h>
 #include <memdraw.h>
 #define DBG if(0)
-#define RGB2K(r,g,b)	((299*((ulong)(r))+587*((ulong)(g))+114*((ulong)(b)))/1000)
-void	drawonepixel(Memimage*, Point, Memimage*, Point, Memimage*, Point);
-void	verifyone(void);
-void	verifyline(void);
-void	verifyrect(void);
-void	verifyrectrepl(int, int);
+#define RGB2K(r,g,b) ((299*((ulong)(r))+587*((ulong)(g))+114*((ulong)(b)))/1000)
+void drawonepixel(Memimage*, Point, Memimage*, Point, Memimage*, Point);
+void verifyone(void);
+void verifyline(void);
+void verifyrect(void);
+void verifyrectrepl(int, int);
 void putpixel(Memimage *img, Point pt, ulong nv);
 ulong rgbatopix(uchar, uchar, uchar, uchar);
 char *dchan, *schan, *mchan;
 int dbpp, sbpp, mbpp;
 int drawdebug=0;
-int	seed;
-int	niters = 100;
-int	dbpp;
-int	sbpp;
-int	mbpp;
-int	dpm;
-int	nbytes;
-int	Xrange	= 64;
-int	Yrange	= 8;
-Memimage	*dst;
-Memimage	*src;
-Memimage	*mask;
-Memimage	*stmp;
-Memimage	*mtmp;
-Memimage	*ones;
-uchar	*dstbits;
-uchar	*srcbits;
-uchar	*maskbits;
-ulong	*savedstbits;
+int seed;
+int niters = 100;
+int dbpp;
+int sbpp;
+int mbpp;
+int dpm;
+int nbytes;
+int Xrange = 64;
+int Yrange = 8;
+Memimage *dst;
+Memimage *src;
+Memimage *mask;
+Memimage *stmp;
+Memimage *mtmp;
+Memimage *ones;
+uchar *dstbits;
+uchar *srcbits;
+uchar *maskbits;
+ulong *savedstbits;
 void
 rdb(void)
 {
@@ -73,11 +73,11 @@ dchan = "r8g8b8";
 schan = "r8g8b8";
 mchan = "r8g8b8";
 switch(argc){
-case 3:	mchan = argv[2];
-case 2:	schan = argv[1];
-case 1:	dchan = argv[0];
-case 0:	break;
-default:	goto Usage;
+case 3: mchan = argv[2];
+case 2: schan = argv[1];
+case 1: dchan = argv[0];
+case 0: break;
+default: goto Usage;
 Usage:
 fprint(2, "usage: dtest [dchan [schan [mchan]]]\n");
 exits("usage");
@@ -186,7 +186,7 @@ if(fmt == nil){
 fprint(2, "bad format\n");
 abort();
 }
-r  = img->r;
+r = img->r;
 Binit(&b, 2, OWRITE);
 data = vdata;
 bpp = img->depth;
@@ -534,13 +534,13 @@ sp.x = nrand(Xrange);
 sp.y = nrand(Yrange);
 mp.x = nrand(Xrange);
 mp.y = nrand(Yrange);
-DBG	print("smalldraws\n");
+DBG print("smalldraws\n");
 for(tp.y=sp.y,up.y=mp.y,y=dr.min.y; y<dr.max.y && tp.y<Yrange && up.y<Yrange; y++,tp.y++,up.y++)
 for(tp.x=sp.x,up.x=mp.x,x=dr.min.x; x<dr.max.x && tp.x<Xrange && up.x<Xrange; x++,tp.x++,up.x++)
 memimagedraw(dst, Rect(x, y, x+1, y+1), s, tp, m, up, SoverD);
 memmove(savedstbits, dst->data->bdata, dst->width*sizeof(ulong)*Yrange);
 memmove(dst->data->bdata, dstbits, dst->width*sizeof(ulong)*Yrange);
-DBG	print("bigdraw\n");
+DBG print("bigdraw\n");
 memimagedraw(dst, dr, src, sp, mask, mp, SoverD);
 for(y=0; y<Yrange; y++)
 checkline(dr, drawrepl(src->r, sp), drawrepl(mask->r, mp), y, srcrepl?stmp:nil, maskrepl?mtmp:nil);

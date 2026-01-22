@@ -168,10 +168,10 @@ return ggml_v3_table_f32_f16[s];
 #endif
 #define GGML_V3_HASHTABLE_FULL ((size_t)-1)
 #define GGML_V3_HASHTABLE_ALREADY_EXISTS ((size_t)-2)
-bool   ggml_v3_hash_contains      (const struct ggml_v3_hash_set hash_set, struct ggml_v3_tensor * key);
-size_t ggml_v3_hash_find          (const struct ggml_v3_hash_set hash_set, struct ggml_v3_tensor * key);
-size_t ggml_v3_hash_insert        (      struct ggml_v3_hash_set hash_set, struct ggml_v3_tensor * key);
-size_t ggml_v3_hash_find_or_insert(      struct ggml_v3_hash_set hash_set, struct ggml_v3_tensor * key);
+bool ggml_v3_hash_contains (const struct ggml_v3_hash_set hash_set, struct ggml_v3_tensor * key);
+size_t ggml_v3_hash_find (const struct ggml_v3_hash_set hash_set, struct ggml_v3_tensor * key);
+size_t ggml_v3_hash_insert ( struct ggml_v3_hash_set hash_set, struct ggml_v3_tensor * key);
+size_t ggml_v3_hash_find_or_insert( struct ggml_v3_hash_set hash_set, struct ggml_v3_tensor * key);
 #include <assert.h>
 #include <stdarg.h>
 #include <stdio.h>
@@ -631,7 +631,7 @@ AT_PRINTF("\n");
 }
 if ((alloc->parse_seq_len == 0) || alloc->parse_seq[ind] == -1) {
 int update_start = alloc->parse_seq_len ? last_barrier_pos : ind;
-int update_end   = alloc->parse_seq_len ? ind              : ind + 1;
+int update_end = alloc->parse_seq_len ? ind : ind + 1;
 for (int i = update_start; i < update_end; i++) {
 int node_i = alloc->parse_seq_len ? alloc->parse_seq[i] : i;
 struct ggml_v3_tensor * node = gf->nodes[node_i];
@@ -718,14 +718,14 @@ static_assert(sizeof(block_q5_1) == 2 * sizeof(ggml_v3_fp16_t) + sizeof(uint32_t
 #define QK8_0 32
 typedef struct {
 ggml_v3_fp16_t d;
-int8_t  qs[QK8_0];
+int8_t qs[QK8_0];
 } block_q8_0;
 static_assert(sizeof(block_q8_0) == sizeof(ggml_v3_fp16_t) + QK8_0, "wrong q8_0 block size/padding");
 #define QK8_1 32
 typedef struct {
 float d;
 float s;
-int8_t  qs[QK8_1];
+int8_t qs[QK8_1];
 } block_q8_1;
 static_assert(sizeof(block_q8_1) == 2*sizeof(float) + QK8_1, "wrong q8_1 block size/padding");
 #ifdef GGML_QKK_64
@@ -778,7 +778,7 @@ static_assert(sizeof(block_q4_K) == 2*sizeof(ggml_v3_fp16_t) + K_SCALE_SIZE + QK
 #ifdef GGML_QKK_64
 typedef struct {
 ggml_v3_fp16_t d;
-int8_t  scales[QK_K/16];
+int8_t scales[QK_K/16];
 uint8_t qh[QK_K/8];
 uint8_t qs[QK_K/2];
 } block_q5_K;
@@ -796,13 +796,13 @@ static_assert(sizeof(block_q5_K) == 2*sizeof(ggml_v3_fp16_t) + K_SCALE_SIZE + QK
 typedef struct {
 uint8_t ql[QK_K/2];
 uint8_t qh[QK_K/4];
-int8_t  scales[QK_K/16];
+int8_t scales[QK_K/16];
 ggml_v3_fp16_t d;
 } block_q6_K;
 static_assert(sizeof(block_q6_K) == sizeof(ggml_v3_fp16_t) + QK_K / 16 + 3*QK_K/4, "wrong q6_K block size/padding");
 typedef struct {
-float   d;
-int8_t  qs[QK_K];
+float d;
+int8_t qs[QK_K];
 int16_t bsums[QK_K/16];
 } block_q8_K;
 static_assert(sizeof(block_q8_K) == sizeof(float) + QK_K + QK_K/16*sizeof(int16_t), "wrong q8_K block size/padding");
@@ -814,7 +814,7 @@ static_assert(sizeof(block_iq2_xxs) == sizeof(ggml_v3_fp16_t) + QK_K/8*sizeof(ui
 typedef struct {
 ggml_v3_fp16_t d;
 uint16_t qs[QK_K/8];
-uint8_t  scales[QK_K/32];
+uint8_t scales[QK_K/32];
 } block_iq2_xs;
 static_assert(sizeof(block_iq2_xs) == sizeof(ggml_v3_fp16_t) + QK_K/8*sizeof(uint16_t) + QK_K/32, "wrong iq2_xs block size/padding");
 static void quantize_row_q4_0_reference(const float * restrict x, block_q4_0 * restrict y, int k);
@@ -830,7 +830,7 @@ static void quantize_row_q5_K_reference(const float * restrict x, block_q5_K * r
 static void quantize_row_q6_K_reference(const float * restrict x, block_q6_K * restrict y, int k);
 static void quantize_row_q8_K_reference(const float * restrict x, block_q8_K * restrict y, int k);
 static void quantize_row_iq2_xxs_reference(const float * restrict x, block_iq2_xxs * restrict y, int k);
-static void quantize_row_iq2_xs_reference (const float * restrict x, block_iq2_xs  * restrict y, int k);
+static void quantize_row_iq2_xs_reference (const float * restrict x, block_iq2_xs * restrict y, int k);
 static void quantize_row_q4_0(const float * restrict x, void * restrict y, int k);
 static void quantize_row_q4_1(const float * restrict x, void * restrict y, int k);
 static void quantize_row_q5_0(const float * restrict x, void * restrict y, int k);
@@ -857,7 +857,7 @@ static void dequantize_row_q5_K(const block_q5_K * restrict x, float * restrict 
 static void dequantize_row_q6_K(const block_q6_K * restrict x, float * restrict y, int k);
 static void dequantize_row_q8_K(const block_q8_K * restrict x, float * restrict y, int k);
 static void dequantize_row_iq2_xxs(const block_iq2_xxs * restrict x, float * restrict y, int k);
-static void dequantize_row_iq2_xs (const block_iq2_xs  * restrict x, float * restrict y, int k);
+static void dequantize_row_iq2_xs (const block_iq2_xs * restrict x, float * restrict y, int k);
 static void ggml_v3_vec_dot_q4_0_q8_0(int n, float * restrict s, const void * restrict vx, const void * restrict vy);
 static void ggml_v3_vec_dot_q4_1_q8_1(int n, float * restrict s, const void * restrict vx, const void * restrict vy);
 static void ggml_v3_vec_dot_q5_0_q8_0(int n, float * restrict s, const void * restrict vx, const void * restrict vy);
@@ -975,8 +975,8 @@ void ggml_v3_print_backtrace(void) {
 #define GGML_V3_GELU_QUICK_FP16
 #define GGML_V3_SILU_FP16
 #define GGML_V3_SOFT_MAX_UNROLL 4
-#define GGML_V3_VEC_DOT_UNROLL  2
-#define GGML_V3_VEC_MAD_UNROLL  32
+#define GGML_V3_VEC_DOT_UNROLL 2
+#define GGML_V3_VEC_MAD_UNROLL 32
 #if (GGML_V3_DEBUG >= 1)
 #define GGML_V3_PRINT_DEBUG(...) printf(__VA_ARGS__)
 #else
@@ -997,7 +997,7 @@ void ggml_v3_print_backtrace(void) {
 #endif
 #if defined(_MSC_VER) || defined(__MINGW32__)
 #define GGML_V3_ALIGNED_MALLOC(size) _aligned_malloc(size, GGML_V3_MEM_ALIGN)
-#define GGML_V3_ALIGNED_FREE(ptr)    _aligned_free(ptr)
+#define GGML_V3_ALIGNED_FREE(ptr) _aligned_free(ptr)
 #else
 inline static void * ggml_v3_aligned_malloc(size_t size) {
 if (size == 0) {
@@ -1029,9 +1029,9 @@ return aligned_memory;
 }
 #define GGML_V3_ALIGNED_MALLOC(size) ggml_v3_aligned_malloc(size)
 #ifdef GGML_USE_CPU_HBM
-#define GGML_V3_ALIGNED_FREE(ptr)    if(NULL != ptr) hbw_free(ptr)
+#define GGML_V3_ALIGNED_FREE(ptr) if(NULL != ptr) hbw_free(ptr)
 #else
-#define GGML_V3_ALIGNED_FREE(ptr)    free(ptr)
+#define GGML_V3_ALIGNED_FREE(ptr) free(ptr)
 #endif
 #endif
 #define SWAP(x, y, T) do { T SWAP = x; x = y; y = SWAP; } while (0)
@@ -1129,14 +1129,14 @@ int64_t ggml_v3_cycles_per_ms(void) {
 return CLOCKS_PER_SEC/1000;
 }
 #ifdef GGML_V3_PERF
-#define ggml_v3_perf_time_ms()       ggml_v3_time_ms()
-#define ggml_v3_perf_time_us()       ggml_v3_time_us()
-#define ggml_v3_perf_cycles()        ggml_v3_cycles()
+#define ggml_v3_perf_time_ms() ggml_v3_time_ms()
+#define ggml_v3_perf_time_us() ggml_v3_time_us()
+#define ggml_v3_perf_cycles() ggml_v3_cycles()
 #define ggml_v3_perf_cycles_per_ms() ggml_v3_cycles_per_ms()
 #else
-#define ggml_v3_perf_time_ms()       0
-#define ggml_v3_perf_time_us()       0
-#define ggml_v3_perf_cycles()        0
+#define ggml_v3_perf_time_ms() 0
+#define ggml_v3_perf_time_us() 0
+#define ggml_v3_perf_cycles() 0
 #define ggml_v3_perf_cycles_per_ms() 0
 #endif
 #if defined(__cpp_lib_hardware_interference_size)
@@ -1157,211 +1157,211 @@ g_imatrix_collect_v3 = imatrix_collect;
 }
 static const ggml_v3_type_traits_t type_traits[GGML_V3_TYPE_COUNT] = {
 [GGML_V3_TYPE_I8] = {
-.type_name                = "i8",
-.blck_size                = 1,
-.type_size                = sizeof(int8_t),
-.is_quantized             = false,
+.type_name = "i8",
+.blck_size = 1,
+.type_size = sizeof(int8_t),
+.is_quantized = false,
 },
 [GGML_V3_TYPE_I16] = {
-.type_name                = "i16",
-.blck_size                = 1,
-.type_size                = sizeof(int16_t),
-.is_quantized             = false,
+.type_name = "i16",
+.blck_size = 1,
+.type_size = sizeof(int16_t),
+.is_quantized = false,
 },
 [GGML_V3_TYPE_I32] = {
-.type_name                = "i32",
-.blck_size                = 1,
-.type_size                = sizeof(int32_t),
-.is_quantized             = false,
+.type_name = "i32",
+.blck_size = 1,
+.type_size = sizeof(int32_t),
+.is_quantized = false,
 },
 [GGML_V3_TYPE_F32] = {
-.type_name                = "f32",
-.blck_size                = 1,
-.type_size                = sizeof(float),
-.is_quantized             = false,
-.vec_dot                  = (ggml_v3_vec_dot_t) ggml_v3_vec_dot_f32,
-.vec_dot_type             = GGML_V3_TYPE_F32,
+.type_name = "f32",
+.blck_size = 1,
+.type_size = sizeof(float),
+.is_quantized = false,
+.vec_dot = (ggml_v3_vec_dot_t) ggml_v3_vec_dot_f32,
+.vec_dot_type = GGML_V3_TYPE_F32,
 },
 [GGML_V3_TYPE_F16] = {
-.type_name                = "f16",
-.blck_size                = 1,
-.type_size                = sizeof(ggml_v3_fp16_t),
-.is_quantized             = false,
-.to_float                 = (ggml_v3_to_float_t) ggml_v3_fp16_to_fp32_row,
-.from_float               = (ggml_v3_from_float_t) ggml_v3_fp32_to_fp16_row,
-.from_float_reference     = (ggml_v3_from_float_t) ggml_v3_fp32_to_fp16_row,
-.vec_dot                  = (ggml_v3_vec_dot_t) ggml_v3_vec_dot_f16,
-.vec_dot_type             = GGML_V3_TYPE_F16,
+.type_name = "f16",
+.blck_size = 1,
+.type_size = sizeof(ggml_v3_fp16_t),
+.is_quantized = false,
+.to_float = (ggml_v3_to_float_t) ggml_v3_fp16_to_fp32_row,
+.from_float = (ggml_v3_from_float_t) ggml_v3_fp32_to_fp16_row,
+.from_float_reference = (ggml_v3_from_float_t) ggml_v3_fp32_to_fp16_row,
+.vec_dot = (ggml_v3_vec_dot_t) ggml_v3_vec_dot_f16,
+.vec_dot_type = GGML_V3_TYPE_F16,
 },
 [GGML_V3_TYPE_Q4_0] = {
-.type_name                = "q4_0",
-.blck_size                = QK4_0,
-.type_size                = sizeof(block_q4_0),
-.is_quantized             = true,
-.to_float                 = (ggml_v3_to_float_t) dequantize_row_q4_0,
-.from_float               = quantize_row_q4_0,
-.from_float_reference     = (ggml_v3_from_float_t) quantize_row_q4_0_reference,
-.vec_dot                  = ggml_v3_vec_dot_q4_0_q8_0,
-.vec_dot_type             = GGML_V3_TYPE_Q8_0,
+.type_name = "q4_0",
+.blck_size = QK4_0,
+.type_size = sizeof(block_q4_0),
+.is_quantized = true,
+.to_float = (ggml_v3_to_float_t) dequantize_row_q4_0,
+.from_float = quantize_row_q4_0,
+.from_float_reference = (ggml_v3_from_float_t) quantize_row_q4_0_reference,
+.vec_dot = ggml_v3_vec_dot_q4_0_q8_0,
+.vec_dot_type = GGML_V3_TYPE_Q8_0,
 },
 [GGML_V3_TYPE_Q4_1] = {
-.type_name                = "q4_1",
-.blck_size                = QK4_1,
-.type_size                = sizeof(block_q4_1),
-.is_quantized             = true,
-.to_float                 = (ggml_v3_to_float_t) dequantize_row_q4_1,
-.from_float               = quantize_row_q4_1,
-.from_float_reference     = (ggml_v3_from_float_t) quantize_row_q4_1_reference,
-.vec_dot                  = ggml_v3_vec_dot_q4_1_q8_1,
-.vec_dot_type             = GGML_V3_TYPE_Q8_1,
+.type_name = "q4_1",
+.blck_size = QK4_1,
+.type_size = sizeof(block_q4_1),
+.is_quantized = true,
+.to_float = (ggml_v3_to_float_t) dequantize_row_q4_1,
+.from_float = quantize_row_q4_1,
+.from_float_reference = (ggml_v3_from_float_t) quantize_row_q4_1_reference,
+.vec_dot = ggml_v3_vec_dot_q4_1_q8_1,
+.vec_dot_type = GGML_V3_TYPE_Q8_1,
 },
 [4] = {
-.type_name                = "DEPRECATED",
-.blck_size                = 0,
-.type_size                = 0,
-.is_quantized             = false,
-.to_float                 = NULL,
-.from_float               = NULL,
-.from_float_reference     = NULL,
-.vec_dot                  = NULL,
-.vec_dot_type             = GGML_V3_TYPE_COUNT,
+.type_name = "DEPRECATED",
+.blck_size = 0,
+.type_size = 0,
+.is_quantized = false,
+.to_float = NULL,
+.from_float = NULL,
+.from_float_reference = NULL,
+.vec_dot = NULL,
+.vec_dot_type = GGML_V3_TYPE_COUNT,
 },
 [5] = {
-.type_name                = "DEPRECATED",
-.blck_size                = 0,
-.type_size                = 0,
-.is_quantized             = false,
-.to_float                 = NULL,
-.from_float               = NULL,
-.from_float_reference     = NULL,
-.vec_dot                  = NULL,
-.vec_dot_type             = GGML_V3_TYPE_COUNT,
+.type_name = "DEPRECATED",
+.blck_size = 0,
+.type_size = 0,
+.is_quantized = false,
+.to_float = NULL,
+.from_float = NULL,
+.from_float_reference = NULL,
+.vec_dot = NULL,
+.vec_dot_type = GGML_V3_TYPE_COUNT,
 },
 [GGML_V3_TYPE_Q5_0] = {
-.type_name                = "q5_0",
-.blck_size                = QK5_0,
-.type_size                = sizeof(block_q5_0),
-.is_quantized             = true,
-.to_float                 = (ggml_v3_to_float_t) dequantize_row_q5_0,
-.from_float               = quantize_row_q5_0,
-.from_float_reference     = (ggml_v3_from_float_t) quantize_row_q5_0_reference,
-.vec_dot                  = ggml_v3_vec_dot_q5_0_q8_0,
-.vec_dot_type             = GGML_V3_TYPE_Q8_0,
+.type_name = "q5_0",
+.blck_size = QK5_0,
+.type_size = sizeof(block_q5_0),
+.is_quantized = true,
+.to_float = (ggml_v3_to_float_t) dequantize_row_q5_0,
+.from_float = quantize_row_q5_0,
+.from_float_reference = (ggml_v3_from_float_t) quantize_row_q5_0_reference,
+.vec_dot = ggml_v3_vec_dot_q5_0_q8_0,
+.vec_dot_type = GGML_V3_TYPE_Q8_0,
 },
 [GGML_V3_TYPE_Q5_1] = {
-.type_name                = "q5_1",
-.blck_size                = QK5_1,
-.type_size                = sizeof(block_q5_1),
-.is_quantized             = true,
-.to_float                 = (ggml_v3_to_float_t) dequantize_row_q5_1,
-.from_float               = quantize_row_q5_1,
-.from_float_reference     = (ggml_v3_from_float_t) quantize_row_q5_1_reference,
-.vec_dot                  = ggml_v3_vec_dot_q5_1_q8_1,
-.vec_dot_type             = GGML_V3_TYPE_Q8_1,
+.type_name = "q5_1",
+.blck_size = QK5_1,
+.type_size = sizeof(block_q5_1),
+.is_quantized = true,
+.to_float = (ggml_v3_to_float_t) dequantize_row_q5_1,
+.from_float = quantize_row_q5_1,
+.from_float_reference = (ggml_v3_from_float_t) quantize_row_q5_1_reference,
+.vec_dot = ggml_v3_vec_dot_q5_1_q8_1,
+.vec_dot_type = GGML_V3_TYPE_Q8_1,
 },
 [GGML_V3_TYPE_Q8_0] = {
-.type_name                = "q8_0",
-.blck_size                = QK8_0,
-.type_size                = sizeof(block_q8_0),
-.is_quantized             = true,
-.to_float                 = (ggml_v3_to_float_t) dequantize_row_q8_0,
-.from_float               = quantize_row_q8_0,
-.from_float_reference     = (ggml_v3_from_float_t) quantize_row_q8_0_reference,
-.vec_dot                  = ggml_v3_vec_dot_q8_0_q8_0,
-.vec_dot_type             = GGML_V3_TYPE_Q8_0,
+.type_name = "q8_0",
+.blck_size = QK8_0,
+.type_size = sizeof(block_q8_0),
+.is_quantized = true,
+.to_float = (ggml_v3_to_float_t) dequantize_row_q8_0,
+.from_float = quantize_row_q8_0,
+.from_float_reference = (ggml_v3_from_float_t) quantize_row_q8_0_reference,
+.vec_dot = ggml_v3_vec_dot_q8_0_q8_0,
+.vec_dot_type = GGML_V3_TYPE_Q8_0,
 },
 [GGML_V3_TYPE_Q8_1] = {
-.type_name                = "q8_1",
-.blck_size                = QK8_1,
-.type_size                = sizeof(block_q8_1),
-.is_quantized             = true,
-.from_float               = quantize_row_q8_1,
-.from_float_reference     = (ggml_v3_from_float_t) quantize_row_q8_1_reference,
-.vec_dot_type             = GGML_V3_TYPE_Q8_1,
+.type_name = "q8_1",
+.blck_size = QK8_1,
+.type_size = sizeof(block_q8_1),
+.is_quantized = true,
+.from_float = quantize_row_q8_1,
+.from_float_reference = (ggml_v3_from_float_t) quantize_row_q8_1_reference,
+.vec_dot_type = GGML_V3_TYPE_Q8_1,
 },
 [GGML_V3_TYPE_Q2_K] = {
-.type_name                = "q2_K",
-.blck_size                = QK_K,
-.type_size                = sizeof(block_q2_K),
-.is_quantized             = true,
-.to_float                 = (ggml_v3_to_float_t) dequantize_row_q2_K,
-.from_float               = quantize_row_q2_K,
-.from_float_reference     = (ggml_v3_from_float_t) quantize_row_q2_K_reference,
-.vec_dot                  = ggml_v3_vec_dot_q2_K_q8_K,
-.vec_dot_type             = GGML_V3_TYPE_Q8_K,
+.type_name = "q2_K",
+.blck_size = QK_K,
+.type_size = sizeof(block_q2_K),
+.is_quantized = true,
+.to_float = (ggml_v3_to_float_t) dequantize_row_q2_K,
+.from_float = quantize_row_q2_K,
+.from_float_reference = (ggml_v3_from_float_t) quantize_row_q2_K_reference,
+.vec_dot = ggml_v3_vec_dot_q2_K_q8_K,
+.vec_dot_type = GGML_V3_TYPE_Q8_K,
 },
 [GGML_V3_TYPE_Q3_K] = {
-.type_name                = "q3_K",
-.blck_size                = QK_K,
-.type_size                = sizeof(block_q3_K),
-.is_quantized             = true,
-.to_float                 = (ggml_v3_to_float_t) dequantize_row_q3_K,
-.from_float               = quantize_row_q3_K,
-.from_float_reference     = (ggml_v3_from_float_t) quantize_row_q3_K_reference,
-.vec_dot                  = ggml_v3_vec_dot_q3_K_q8_K,
-.vec_dot_type             = GGML_V3_TYPE_Q8_K,
+.type_name = "q3_K",
+.blck_size = QK_K,
+.type_size = sizeof(block_q3_K),
+.is_quantized = true,
+.to_float = (ggml_v3_to_float_t) dequantize_row_q3_K,
+.from_float = quantize_row_q3_K,
+.from_float_reference = (ggml_v3_from_float_t) quantize_row_q3_K_reference,
+.vec_dot = ggml_v3_vec_dot_q3_K_q8_K,
+.vec_dot_type = GGML_V3_TYPE_Q8_K,
 },
 [GGML_V3_TYPE_Q4_K] = {
-.type_name                = "q4_K",
-.blck_size                = QK_K,
-.type_size                = sizeof(block_q4_K),
-.is_quantized             = true,
-.to_float                 = (ggml_v3_to_float_t) dequantize_row_q4_K,
-.from_float               = quantize_row_q4_K,
-.from_float_reference     = (ggml_v3_from_float_t) quantize_row_q4_K_reference,
-.vec_dot                  = ggml_v3_vec_dot_q4_K_q8_K,
-.vec_dot_type             = GGML_V3_TYPE_Q8_K,
+.type_name = "q4_K",
+.blck_size = QK_K,
+.type_size = sizeof(block_q4_K),
+.is_quantized = true,
+.to_float = (ggml_v3_to_float_t) dequantize_row_q4_K,
+.from_float = quantize_row_q4_K,
+.from_float_reference = (ggml_v3_from_float_t) quantize_row_q4_K_reference,
+.vec_dot = ggml_v3_vec_dot_q4_K_q8_K,
+.vec_dot_type = GGML_V3_TYPE_Q8_K,
 },
 [GGML_V3_TYPE_Q5_K] = {
-.type_name                = "q5_K",
-.blck_size                = QK_K,
-.type_size                = sizeof(block_q5_K),
-.is_quantized             = true,
-.to_float                 = (ggml_v3_to_float_t) dequantize_row_q5_K,
-.from_float               = quantize_row_q5_K,
-.from_float_reference     = (ggml_v3_from_float_t) quantize_row_q5_K_reference,
-.vec_dot                  = ggml_v3_vec_dot_q5_K_q8_K,
-.vec_dot_type             = GGML_V3_TYPE_Q8_K,
+.type_name = "q5_K",
+.blck_size = QK_K,
+.type_size = sizeof(block_q5_K),
+.is_quantized = true,
+.to_float = (ggml_v3_to_float_t) dequantize_row_q5_K,
+.from_float = quantize_row_q5_K,
+.from_float_reference = (ggml_v3_from_float_t) quantize_row_q5_K_reference,
+.vec_dot = ggml_v3_vec_dot_q5_K_q8_K,
+.vec_dot_type = GGML_V3_TYPE_Q8_K,
 },
 [GGML_V3_TYPE_Q6_K] = {
-.type_name                = "q6_K",
-.blck_size                = QK_K,
-.type_size                = sizeof(block_q6_K),
-.is_quantized             = true,
-.to_float                 = (ggml_v3_to_float_t) dequantize_row_q6_K,
-.from_float               = quantize_row_q6_K,
-.from_float_reference     = (ggml_v3_from_float_t) quantize_row_q6_K_reference,
-.vec_dot                  = ggml_v3_vec_dot_q6_K_q8_K,
-.vec_dot_type             = GGML_V3_TYPE_Q8_K,
+.type_name = "q6_K",
+.blck_size = QK_K,
+.type_size = sizeof(block_q6_K),
+.is_quantized = true,
+.to_float = (ggml_v3_to_float_t) dequantize_row_q6_K,
+.from_float = quantize_row_q6_K,
+.from_float_reference = (ggml_v3_from_float_t) quantize_row_q6_K_reference,
+.vec_dot = ggml_v3_vec_dot_q6_K_q8_K,
+.vec_dot_type = GGML_V3_TYPE_Q8_K,
 },
 [GGML_V3_TYPE_IQ2_XXS] = {
-.type_name                = "iq2_xxs",
-.blck_size                = QK_K,
-.type_size                = sizeof(block_iq2_xxs),
-.is_quantized             = true,
-.to_float                 = (ggml_v3_to_float_t) dequantize_row_iq2_xxs,
-.from_float               = quantize_row_iq2_xxs,
-.from_float_reference     = (ggml_v3_from_float_t) quantize_row_iq2_xxs_reference,
-.vec_dot                  = ggml_v3_vec_dot_iq2_xxs_q8_K,
-.vec_dot_type             = GGML_V3_TYPE_Q8_K,
+.type_name = "iq2_xxs",
+.blck_size = QK_K,
+.type_size = sizeof(block_iq2_xxs),
+.is_quantized = true,
+.to_float = (ggml_v3_to_float_t) dequantize_row_iq2_xxs,
+.from_float = quantize_row_iq2_xxs,
+.from_float_reference = (ggml_v3_from_float_t) quantize_row_iq2_xxs_reference,
+.vec_dot = ggml_v3_vec_dot_iq2_xxs_q8_K,
+.vec_dot_type = GGML_V3_TYPE_Q8_K,
 },
 [GGML_V3_TYPE_IQ2_XS] = {
-.type_name                = "iq2_xs",
-.blck_size                = QK_K,
-.type_size                = sizeof(block_iq2_xs),
-.is_quantized             = true,
-.to_float                 = (ggml_v3_to_float_t) dequantize_row_iq2_xs,
-.from_float               = quantize_row_iq2_xs,
-.from_float_reference     = (ggml_v3_from_float_t) quantize_row_iq2_xs_reference,
-.vec_dot                  = ggml_v3_vec_dot_iq2_xs_q8_K,
-.vec_dot_type             = GGML_V3_TYPE_Q8_K,
+.type_name = "iq2_xs",
+.blck_size = QK_K,
+.type_size = sizeof(block_iq2_xs),
+.is_quantized = true,
+.to_float = (ggml_v3_to_float_t) dequantize_row_iq2_xs,
+.from_float = quantize_row_iq2_xs,
+.from_float_reference = (ggml_v3_from_float_t) quantize_row_iq2_xs_reference,
+.vec_dot = ggml_v3_vec_dot_iq2_xs_q8_K,
+.vec_dot_type = GGML_V3_TYPE_Q8_K,
 },
 [GGML_V3_TYPE_Q8_K] = {
-.type_name                = "q8_K",
-.blck_size                = QK_K,
-.type_size                = sizeof(block_q8_K),
-.is_quantized             = true,
-.from_float               = quantize_row_q8_K,
+.type_name = "q8_K",
+.blck_size = QK_K,
+.type_size = sizeof(block_q8_K),
+.is_quantized = true,
+.from_float = quantize_row_q8_K,
 }
 };
 ggml_v3_type_traits_t ggml_v3_internal_get_type_traits(enum ggml_v3_type type) {
@@ -1378,152 +1378,152 @@ return vgetq_lane_f32(v, 0) + vgetq_lane_f32(v, 1) + vgetq_lane_f32(v, 2) + vget
 #if defined(__ARM_NEON) && defined(__ARM_FEATURE_FMA)
 #define GGML_V3_SIMD
 #define GGML_V3_F32_STEP 16
-#define GGML_V3_F32_EPR  4
-#define GGML_V3_F32x4              float32x4_t
-#define GGML_V3_F32x4_ZERO         vdupq_n_f32(0.0f)
-#define GGML_V3_F32x4_SET1(x)      vdupq_n_f32(x)
-#define GGML_V3_F32x4_LOAD         vld1q_f32
-#define GGML_V3_F32x4_STORE        vst1q_f32
+#define GGML_V3_F32_EPR 4
+#define GGML_V3_F32x4 float32x4_t
+#define GGML_V3_F32x4_ZERO vdupq_n_f32(0.0f)
+#define GGML_V3_F32x4_SET1(x) vdupq_n_f32(x)
+#define GGML_V3_F32x4_LOAD vld1q_f32
+#define GGML_V3_F32x4_STORE vst1q_f32
 #define GGML_V3_F32x4_FMA(a, b, c) vfmaq_f32(a, b, c)
-#define GGML_V3_F32x4_ADD          vaddq_f32
-#define GGML_V3_F32x4_MUL          vmulq_f32
+#define GGML_V3_F32x4_ADD vaddq_f32
+#define GGML_V3_F32x4_MUL vmulq_f32
 #define GGML_V3_F32x4_REDUCE_ONE(x) vaddvq_f32(x)
-#define GGML_V3_F32x4_REDUCE(res, x)              \
-{                                              \
-int offset = GGML_V3_F32_ARR >> 1;            \
-for (int i = 0; i < offset; ++i) {         \
-x[i] = vaddq_f32(x[i], x[offset+i]);   \
-}                                          \
-offset >>= 1;                              \
-for (int i = 0; i < offset; ++i) {         \
-x[i] = vaddq_f32(x[i], x[offset+i]);   \
-}                                          \
-offset >>= 1;                              \
-for (int i = 0; i < offset; ++i) {         \
-x[i] = vaddq_f32(x[i], x[offset+i]);   \
-}                                          \
-res = GGML_V3_F32x4_REDUCE_ONE(x[0]);         \
+#define GGML_V3_F32x4_REDUCE(res, x) \
+{ \
+int offset = GGML_V3_F32_ARR >> 1; \
+for (int i = 0; i < offset; ++i) { \
+x[i] = vaddq_f32(x[i], x[offset+i]); \
+} \
+offset >>= 1; \
+for (int i = 0; i < offset; ++i) { \
+x[i] = vaddq_f32(x[i], x[offset+i]); \
+} \
+offset >>= 1; \
+for (int i = 0; i < offset; ++i) { \
+x[i] = vaddq_f32(x[i], x[offset+i]); \
+} \
+res = GGML_V3_F32x4_REDUCE_ONE(x[0]); \
 }
-#define GGML_V3_F32_VEC        GGML_V3_F32x4
-#define GGML_V3_F32_VEC_ZERO   GGML_V3_F32x4_ZERO
-#define GGML_V3_F32_VEC_SET1   GGML_V3_F32x4_SET1
-#define GGML_V3_F32_VEC_LOAD   GGML_V3_F32x4_LOAD
-#define GGML_V3_F32_VEC_STORE  GGML_V3_F32x4_STORE
-#define GGML_V3_F32_VEC_FMA    GGML_V3_F32x4_FMA
-#define GGML_V3_F32_VEC_ADD    GGML_V3_F32x4_ADD
-#define GGML_V3_F32_VEC_MUL    GGML_V3_F32x4_MUL
+#define GGML_V3_F32_VEC GGML_V3_F32x4
+#define GGML_V3_F32_VEC_ZERO GGML_V3_F32x4_ZERO
+#define GGML_V3_F32_VEC_SET1 GGML_V3_F32x4_SET1
+#define GGML_V3_F32_VEC_LOAD GGML_V3_F32x4_LOAD
+#define GGML_V3_F32_VEC_STORE GGML_V3_F32x4_STORE
+#define GGML_V3_F32_VEC_FMA GGML_V3_F32x4_FMA
+#define GGML_V3_F32_VEC_ADD GGML_V3_F32x4_ADD
+#define GGML_V3_F32_VEC_MUL GGML_V3_F32x4_MUL
 #define GGML_V3_F32_VEC_REDUCE GGML_V3_F32x4_REDUCE
 #if defined(__ARM_FEATURE_FP16_VECTOR_ARITHMETIC)
 #define GGML_V3_F16_STEP 32
-#define GGML_V3_F16_EPR  8
-#define GGML_V3_F16x8              float16x8_t
-#define GGML_V3_F16x8_ZERO         vdupq_n_f16(0.0f)
-#define GGML_V3_F16x8_SET1(x)      vdupq_n_f16(x)
-#define GGML_V3_F16x8_LOAD         vld1q_f16
-#define GGML_V3_F16x8_STORE        vst1q_f16
+#define GGML_V3_F16_EPR 8
+#define GGML_V3_F16x8 float16x8_t
+#define GGML_V3_F16x8_ZERO vdupq_n_f16(0.0f)
+#define GGML_V3_F16x8_SET1(x) vdupq_n_f16(x)
+#define GGML_V3_F16x8_LOAD vld1q_f16
+#define GGML_V3_F16x8_STORE vst1q_f16
 #define GGML_V3_F16x8_FMA(a, b, c) vfmaq_f16(a, b, c)
-#define GGML_V3_F16x8_ADD          vaddq_f16
-#define GGML_V3_F16x8_MUL          vmulq_f16
-#define GGML_V3_F16x8_REDUCE(res, x)                             \
-do {                                                          \
-int offset = GGML_V3_F16_ARR >> 1;                           \
-for (int i = 0; i < offset; ++i) {                        \
-x[i] = vaddq_f16(x[i], x[offset+i]);                  \
-}                                                         \
-offset >>= 1;                                             \
-for (int i = 0; i < offset; ++i) {                        \
-x[i] = vaddq_f16(x[i], x[offset+i]);                  \
-}                                                         \
-offset >>= 1;                                             \
-for (int i = 0; i < offset; ++i) {                        \
-x[i] = vaddq_f16(x[i], x[offset+i]);                  \
-}                                                         \
+#define GGML_V3_F16x8_ADD vaddq_f16
+#define GGML_V3_F16x8_MUL vmulq_f16
+#define GGML_V3_F16x8_REDUCE(res, x) \
+do { \
+int offset = GGML_V3_F16_ARR >> 1; \
+for (int i = 0; i < offset; ++i) { \
+x[i] = vaddq_f16(x[i], x[offset+i]); \
+} \
+offset >>= 1; \
+for (int i = 0; i < offset; ++i) { \
+x[i] = vaddq_f16(x[i], x[offset+i]); \
+} \
+offset >>= 1; \
+for (int i = 0; i < offset; ++i) { \
+x[i] = vaddq_f16(x[i], x[offset+i]); \
+} \
 const float32x4_t t0 = vcvt_f32_f16(vget_low_f16 (x[0])); \
 const float32x4_t t1 = vcvt_f32_f16(vget_high_f16(x[0])); \
-res = (ggml_v3_float) vaddvq_f32(vaddq_f32(t0, t1));         \
+res = (ggml_v3_float) vaddvq_f32(vaddq_f32(t0, t1)); \
 } while (0)
-#define GGML_V3_F16_VEC                GGML_V3_F16x8
-#define GGML_V3_F16_VEC_ZERO           GGML_V3_F16x8_ZERO
-#define GGML_V3_F16_VEC_SET1           GGML_V3_F16x8_SET1
-#define GGML_V3_F16_VEC_LOAD(p, i)     GGML_V3_F16x8_LOAD(p)
+#define GGML_V3_F16_VEC GGML_V3_F16x8
+#define GGML_V3_F16_VEC_ZERO GGML_V3_F16x8_ZERO
+#define GGML_V3_F16_VEC_SET1 GGML_V3_F16x8_SET1
+#define GGML_V3_F16_VEC_LOAD(p, i) GGML_V3_F16x8_LOAD(p)
 #define GGML_V3_F16_VEC_STORE(p, r, i) GGML_V3_F16x8_STORE(p, r[i])
-#define GGML_V3_F16_VEC_FMA            GGML_V3_F16x8_FMA
-#define GGML_V3_F16_VEC_ADD            GGML_V3_F16x8_ADD
-#define GGML_V3_F16_VEC_MUL            GGML_V3_F16x8_MUL
-#define GGML_V3_F16_VEC_REDUCE         GGML_V3_F16x8_REDUCE
+#define GGML_V3_F16_VEC_FMA GGML_V3_F16x8_FMA
+#define GGML_V3_F16_VEC_ADD GGML_V3_F16x8_ADD
+#define GGML_V3_F16_VEC_MUL GGML_V3_F16x8_MUL
+#define GGML_V3_F16_VEC_REDUCE GGML_V3_F16x8_REDUCE
 #else
 #define GGML_V3_F16_STEP 16
-#define GGML_V3_F16_EPR  4
-#define GGML_V3_F32Cx4              float32x4_t
-#define GGML_V3_F32Cx4_ZERO         vdupq_n_f32(0.0f)
-#define GGML_V3_F32Cx4_SET1(x)      vdupq_n_f32(x)
-#define GGML_V3_F32Cx4_LOAD(x)      vcvt_f32_f16(vld1_f16(x))
-#define GGML_V3_F32Cx4_STORE(x, y)  vst1_f16(x, vcvt_f16_f32(y))
+#define GGML_V3_F16_EPR 4
+#define GGML_V3_F32Cx4 float32x4_t
+#define GGML_V3_F32Cx4_ZERO vdupq_n_f32(0.0f)
+#define GGML_V3_F32Cx4_SET1(x) vdupq_n_f32(x)
+#define GGML_V3_F32Cx4_LOAD(x) vcvt_f32_f16(vld1_f16(x))
+#define GGML_V3_F32Cx4_STORE(x, y) vst1_f16(x, vcvt_f16_f32(y))
 #define GGML_V3_F32Cx4_FMA(a, b, c) vfmaq_f32(a, b, c)
-#define GGML_V3_F32Cx4_ADD          vaddq_f32
-#define GGML_V3_F32Cx4_MUL          vmulq_f32
-#define GGML_V3_F32Cx4_REDUCE       GGML_V3_F32x4_REDUCE
-#define GGML_V3_F16_VEC                GGML_V3_F32Cx4
-#define GGML_V3_F16_VEC_ZERO           GGML_V3_F32Cx4_ZERO
-#define GGML_V3_F16_VEC_SET1           GGML_V3_F32Cx4_SET1
-#define GGML_V3_F16_VEC_LOAD(p, i)     GGML_V3_F32Cx4_LOAD(p)
+#define GGML_V3_F32Cx4_ADD vaddq_f32
+#define GGML_V3_F32Cx4_MUL vmulq_f32
+#define GGML_V3_F32Cx4_REDUCE GGML_V3_F32x4_REDUCE
+#define GGML_V3_F16_VEC GGML_V3_F32Cx4
+#define GGML_V3_F16_VEC_ZERO GGML_V3_F32Cx4_ZERO
+#define GGML_V3_F16_VEC_SET1 GGML_V3_F32Cx4_SET1
+#define GGML_V3_F16_VEC_LOAD(p, i) GGML_V3_F32Cx4_LOAD(p)
 #define GGML_V3_F16_VEC_STORE(p, r, i) GGML_V3_F32Cx4_STORE(p, r[i])
-#define GGML_V3_F16_VEC_FMA            GGML_V3_F32Cx4_FMA
-#define GGML_V3_F16_VEC_ADD            GGML_V3_F32Cx4_ADD
-#define GGML_V3_F16_VEC_MUL            GGML_V3_F32Cx4_MUL
-#define GGML_V3_F16_VEC_REDUCE         GGML_V3_F32Cx4_REDUCE
+#define GGML_V3_F16_VEC_FMA GGML_V3_F32Cx4_FMA
+#define GGML_V3_F16_VEC_ADD GGML_V3_F32Cx4_ADD
+#define GGML_V3_F16_VEC_MUL GGML_V3_F32Cx4_MUL
+#define GGML_V3_F16_VEC_REDUCE GGML_V3_F32Cx4_REDUCE
 #endif
 #elif defined(__AVX__)
 #define GGML_V3_SIMD
 #define GGML_V3_F32_STEP 32
-#define GGML_V3_F32_EPR  8
-#define GGML_V3_F32x8         __m256
-#define GGML_V3_F32x8_ZERO    _mm256_setzero_ps()
+#define GGML_V3_F32_EPR 8
+#define GGML_V3_F32x8 __m256
+#define GGML_V3_F32x8_ZERO _mm256_setzero_ps()
 #define GGML_V3_F32x8_SET1(x) _mm256_set1_ps(x)
-#define GGML_V3_F32x8_LOAD    _mm256_loadu_ps
-#define GGML_V3_F32x8_STORE   _mm256_storeu_ps
+#define GGML_V3_F32x8_LOAD _mm256_loadu_ps
+#define GGML_V3_F32x8_STORE _mm256_storeu_ps
 #if defined(__FMA__)
 #define GGML_V3_F32x8_FMA(a, b, c) _mm256_fmadd_ps(b, c, a)
 #else
 #define GGML_V3_F32x8_FMA(a, b, c) _mm256_add_ps(_mm256_mul_ps(b, c), a)
 #endif
-#define GGML_V3_F32x8_ADD     _mm256_add_ps
-#define GGML_V3_F32x8_MUL     _mm256_mul_ps
-#define GGML_V3_F32x8_REDUCE(res, x)                                 \
-do {                                                              \
-int offset = GGML_V3_F32_ARR >> 1;                               \
-for (int i = 0; i < offset; ++i) {                            \
-x[i] = _mm256_add_ps(x[i], x[offset+i]);                  \
-}                                                             \
-offset >>= 1;                                                 \
-for (int i = 0; i < offset; ++i) {                            \
-x[i] = _mm256_add_ps(x[i], x[offset+i]);                  \
-}                                                             \
-offset >>= 1;                                                 \
-for (int i = 0; i < offset; ++i) {                            \
-x[i] = _mm256_add_ps(x[i], x[offset+i]);                  \
-}                                                             \
-const __m128 t0 = _mm_add_ps(_mm256_castps256_ps128(x[0]),    \
+#define GGML_V3_F32x8_ADD _mm256_add_ps
+#define GGML_V3_F32x8_MUL _mm256_mul_ps
+#define GGML_V3_F32x8_REDUCE(res, x) \
+do { \
+int offset = GGML_V3_F32_ARR >> 1; \
+for (int i = 0; i < offset; ++i) { \
+x[i] = _mm256_add_ps(x[i], x[offset+i]); \
+} \
+offset >>= 1; \
+for (int i = 0; i < offset; ++i) { \
+x[i] = _mm256_add_ps(x[i], x[offset+i]); \
+} \
+offset >>= 1; \
+for (int i = 0; i < offset; ++i) { \
+x[i] = _mm256_add_ps(x[i], x[offset+i]); \
+} \
+const __m128 t0 = _mm_add_ps(_mm256_castps256_ps128(x[0]), \
 _mm256_extractf128_ps(x[0], 1)); \
-const __m128 t1 = _mm_hadd_ps(t0, t0);                        \
-res = _mm_cvtss_f32(_mm_hadd_ps(t1, t1));                     \
+const __m128 t1 = _mm_hadd_ps(t0, t0); \
+res = _mm_cvtss_f32(_mm_hadd_ps(t1, t1)); \
 } while (0)
-#define GGML_V3_F32_VEC        GGML_V3_F32x8
-#define GGML_V3_F32_VEC_ZERO   GGML_V3_F32x8_ZERO
-#define GGML_V3_F32_VEC_SET1   GGML_V3_F32x8_SET1
-#define GGML_V3_F32_VEC_LOAD   GGML_V3_F32x8_LOAD
-#define GGML_V3_F32_VEC_STORE  GGML_V3_F32x8_STORE
-#define GGML_V3_F32_VEC_FMA    GGML_V3_F32x8_FMA
-#define GGML_V3_F32_VEC_ADD    GGML_V3_F32x8_ADD
-#define GGML_V3_F32_VEC_MUL    GGML_V3_F32x8_MUL
+#define GGML_V3_F32_VEC GGML_V3_F32x8
+#define GGML_V3_F32_VEC_ZERO GGML_V3_F32x8_ZERO
+#define GGML_V3_F32_VEC_SET1 GGML_V3_F32x8_SET1
+#define GGML_V3_F32_VEC_LOAD GGML_V3_F32x8_LOAD
+#define GGML_V3_F32_VEC_STORE GGML_V3_F32x8_STORE
+#define GGML_V3_F32_VEC_FMA GGML_V3_F32x8_FMA
+#define GGML_V3_F32_VEC_ADD GGML_V3_F32x8_ADD
+#define GGML_V3_F32_VEC_MUL GGML_V3_F32x8_MUL
 #define GGML_V3_F32_VEC_REDUCE GGML_V3_F32x8_REDUCE
 #define GGML_V3_F16_STEP 32
-#define GGML_V3_F16_EPR  8
-#define GGML_V3_F32Cx8             __m256
-#define GGML_V3_F32Cx8_ZERO        _mm256_setzero_ps()
-#define GGML_V3_F32Cx8_SET1(x)     _mm256_set1_ps(x)
+#define GGML_V3_F16_EPR 8
+#define GGML_V3_F32Cx8 __m256
+#define GGML_V3_F32Cx8_ZERO _mm256_setzero_ps()
+#define GGML_V3_F32Cx8_SET1(x) _mm256_set1_ps(x)
 #if defined(__F16C__)
-#define GGML_V3_F32Cx8_LOAD(x)     _mm256_cvtph_ps(_mm_loadu_si128((__m128i *)(x)))
+#define GGML_V3_F32Cx8_LOAD(x) _mm256_cvtph_ps(_mm_loadu_si128((__m128i *)(x)))
 #define GGML_V3_F32Cx8_STORE(x, y) _mm_storeu_si128((__m128i *)(x), _mm256_cvtps_ph(y, 0))
 #else
 static inline __m256 __avx_f32cx8_load(ggml_v3_fp16_t *x) {
@@ -1539,120 +1539,120 @@ _mm256_storeu_ps(arr, y);
 for (int i = 0; i < 8; i++)
 x[i] = GGML_V3_FP32_TO_FP16(arr[i]);
 }
-#define GGML_V3_F32Cx8_LOAD(x)     __avx_f32cx8_load(x)
+#define GGML_V3_F32Cx8_LOAD(x) __avx_f32cx8_load(x)
 #define GGML_V3_F32Cx8_STORE(x, y) __avx_f32cx8_store(x, y)
 #endif
-#define GGML_V3_F32Cx8_FMA         GGML_V3_F32x8_FMA
-#define GGML_V3_F32Cx8_ADD         _mm256_add_ps
-#define GGML_V3_F32Cx8_MUL         _mm256_mul_ps
-#define GGML_V3_F32Cx8_REDUCE      GGML_V3_F32x8_REDUCE
-#define GGML_V3_F16_VEC                GGML_V3_F32Cx8
-#define GGML_V3_F16_VEC_ZERO           GGML_V3_F32Cx8_ZERO
-#define GGML_V3_F16_VEC_SET1           GGML_V3_F32Cx8_SET1
-#define GGML_V3_F16_VEC_LOAD(p, i)     GGML_V3_F32Cx8_LOAD(p)
+#define GGML_V3_F32Cx8_FMA GGML_V3_F32x8_FMA
+#define GGML_V3_F32Cx8_ADD _mm256_add_ps
+#define GGML_V3_F32Cx8_MUL _mm256_mul_ps
+#define GGML_V3_F32Cx8_REDUCE GGML_V3_F32x8_REDUCE
+#define GGML_V3_F16_VEC GGML_V3_F32Cx8
+#define GGML_V3_F16_VEC_ZERO GGML_V3_F32Cx8_ZERO
+#define GGML_V3_F16_VEC_SET1 GGML_V3_F32Cx8_SET1
+#define GGML_V3_F16_VEC_LOAD(p, i) GGML_V3_F32Cx8_LOAD(p)
 #define GGML_V3_F16_VEC_STORE(p, r, i) GGML_V3_F32Cx8_STORE(p, r[i])
-#define GGML_V3_F16_VEC_FMA            GGML_V3_F32Cx8_FMA
-#define GGML_V3_F16_VEC_ADD            GGML_V3_F32Cx8_ADD
-#define GGML_V3_F16_VEC_MUL            GGML_V3_F32Cx8_MUL
-#define GGML_V3_F16_VEC_REDUCE         GGML_V3_F32Cx8_REDUCE
+#define GGML_V3_F16_VEC_FMA GGML_V3_F32Cx8_FMA
+#define GGML_V3_F16_VEC_ADD GGML_V3_F32Cx8_ADD
+#define GGML_V3_F16_VEC_MUL GGML_V3_F32Cx8_MUL
+#define GGML_V3_F16_VEC_REDUCE GGML_V3_F32Cx8_REDUCE
 #elif defined(__POWER9_VECTOR__)
 #define GGML_V3_SIMD
 #define GGML_V3_F32_STEP 32
-#define GGML_V3_F32_EPR  4
-#define GGML_V3_F32x4              vector float
-#define GGML_V3_F32x4_ZERO         0.0f
-#define GGML_V3_F32x4_SET1         vec_splats
-#define GGML_V3_F32x4_LOAD(p)      vec_xl(0, p)
-#define GGML_V3_F32x4_STORE(p, r)  vec_xst(r, 0, p)
+#define GGML_V3_F32_EPR 4
+#define GGML_V3_F32x4 vector float
+#define GGML_V3_F32x4_ZERO 0.0f
+#define GGML_V3_F32x4_SET1 vec_splats
+#define GGML_V3_F32x4_LOAD(p) vec_xl(0, p)
+#define GGML_V3_F32x4_STORE(p, r) vec_xst(r, 0, p)
 #define GGML_V3_F32x4_FMA(a, b, c) vec_madd(b, c, a)
-#define GGML_V3_F32x4_ADD          vec_add
-#define GGML_V3_F32x4_MUL          vec_mul
-#define GGML_V3_F32x4_REDUCE(res, x)              \
-{                                              \
-int offset = GGML_V3_F32_ARR >> 1;            \
-for (int i = 0; i < offset; ++i) {         \
-x[i] = vec_add(x[i], x[offset+i]);     \
-}                                          \
-offset >>= 1;                              \
-for (int i = 0; i < offset; ++i) {         \
-x[i] = vec_add(x[i], x[offset+i]);     \
-}                                          \
-offset >>= 1;                              \
-for (int i = 0; i < offset; ++i) {         \
-x[i] = vec_add(x[i], x[offset+i]);     \
-}                                          \
-res = vec_extract(x[0], 0) +               \
-vec_extract(x[0], 1) +               \
-vec_extract(x[0], 2) +               \
-vec_extract(x[0], 3);                \
+#define GGML_V3_F32x4_ADD vec_add
+#define GGML_V3_F32x4_MUL vec_mul
+#define GGML_V3_F32x4_REDUCE(res, x) \
+{ \
+int offset = GGML_V3_F32_ARR >> 1; \
+for (int i = 0; i < offset; ++i) { \
+x[i] = vec_add(x[i], x[offset+i]); \
+} \
+offset >>= 1; \
+for (int i = 0; i < offset; ++i) { \
+x[i] = vec_add(x[i], x[offset+i]); \
+} \
+offset >>= 1; \
+for (int i = 0; i < offset; ++i) { \
+x[i] = vec_add(x[i], x[offset+i]); \
+} \
+res = vec_extract(x[0], 0) + \
+vec_extract(x[0], 1) + \
+vec_extract(x[0], 2) + \
+vec_extract(x[0], 3); \
 }
-#define GGML_V3_F32_VEC        GGML_V3_F32x4
-#define GGML_V3_F32_VEC_ZERO   GGML_V3_F32x4_ZERO
-#define GGML_V3_F32_VEC_SET1   GGML_V3_F32x4_SET1
-#define GGML_V3_F32_VEC_LOAD   GGML_V3_F32x4_LOAD
-#define GGML_V3_F32_VEC_STORE  GGML_V3_F32x4_STORE
-#define GGML_V3_F32_VEC_FMA    GGML_V3_F32x4_FMA
-#define GGML_V3_F32_VEC_ADD    GGML_V3_F32x4_ADD
-#define GGML_V3_F32_VEC_MUL    GGML_V3_F32x4_MUL
+#define GGML_V3_F32_VEC GGML_V3_F32x4
+#define GGML_V3_F32_VEC_ZERO GGML_V3_F32x4_ZERO
+#define GGML_V3_F32_VEC_SET1 GGML_V3_F32x4_SET1
+#define GGML_V3_F32_VEC_LOAD GGML_V3_F32x4_LOAD
+#define GGML_V3_F32_VEC_STORE GGML_V3_F32x4_STORE
+#define GGML_V3_F32_VEC_FMA GGML_V3_F32x4_FMA
+#define GGML_V3_F32_VEC_ADD GGML_V3_F32x4_ADD
+#define GGML_V3_F32_VEC_MUL GGML_V3_F32x4_MUL
 #define GGML_V3_F32_VEC_REDUCE GGML_V3_F32x4_REDUCE
-#define GGML_V3_F16_STEP       GGML_V3_F32_STEP
-#define GGML_V3_F16_EPR        GGML_V3_F32_EPR
-#define GGML_V3_F16_VEC        GGML_V3_F32x4
-#define GGML_V3_F16_VEC_ZERO   GGML_V3_F32x4_ZERO
-#define GGML_V3_F16_VEC_SET1   GGML_V3_F32x4_SET1
-#define GGML_V3_F16_VEC_FMA    GGML_V3_F32x4_FMA
+#define GGML_V3_F16_STEP GGML_V3_F32_STEP
+#define GGML_V3_F16_EPR GGML_V3_F32_EPR
+#define GGML_V3_F16_VEC GGML_V3_F32x4
+#define GGML_V3_F16_VEC_ZERO GGML_V3_F32x4_ZERO
+#define GGML_V3_F16_VEC_SET1 GGML_V3_F32x4_SET1
+#define GGML_V3_F16_VEC_FMA GGML_V3_F32x4_FMA
 #define GGML_V3_F16_VEC_REDUCE GGML_V3_F32x4_REDUCE
-#define GGML_V3_F16_VEC_LOAD(p, i) (i & 0x1) ?                   \
+#define GGML_V3_F16_VEC_LOAD(p, i) (i & 0x1) ? \
 vec_extract_fp32_from_shorth(vec_xl(0, p - GGML_V3_F16_EPR)) : \
 vec_extract_fp32_from_shortl(vec_xl(0, p))
 #define GGML_V3_ENDIAN_BYTE(i) ((unsigned char *)&(uint16_t){1})[i]
-#define GGML_V3_F16_VEC_STORE(p, r, i)                             \
-if (i & 0x1)                                                  \
-vec_xst(vec_pack_to_short_fp32(r[i - GGML_V3_ENDIAN_BYTE(1)],  \
+#define GGML_V3_F16_VEC_STORE(p, r, i) \
+if (i & 0x1) \
+vec_xst(vec_pack_to_short_fp32(r[i - GGML_V3_ENDIAN_BYTE(1)], \
 r[i - GGML_V3_ENDIAN_BYTE(0)]), \
 0, p - GGML_V3_F16_EPR)
 #elif defined(__wasm_simd128__)
 #define GGML_V3_SIMD
 #define GGML_V3_F32_STEP 16
-#define GGML_V3_F32_EPR  4
-#define GGML_V3_F32x4              v128_t
-#define GGML_V3_F32x4_ZERO         wasm_f32x4_splat(0.0f)
-#define GGML_V3_F32x4_SET1(x)      wasm_f32x4_splat(x)
-#define GGML_V3_F32x4_LOAD         wasm_v128_load
-#define GGML_V3_F32x4_STORE        wasm_v128_store
+#define GGML_V3_F32_EPR 4
+#define GGML_V3_F32x4 v128_t
+#define GGML_V3_F32x4_ZERO wasm_f32x4_splat(0.0f)
+#define GGML_V3_F32x4_SET1(x) wasm_f32x4_splat(x)
+#define GGML_V3_F32x4_LOAD wasm_v128_load
+#define GGML_V3_F32x4_STORE wasm_v128_store
 #define GGML_V3_F32x4_FMA(a, b, c) wasm_f32x4_add(wasm_f32x4_mul(b, c), a)
-#define GGML_V3_F32x4_ADD          wasm_f32x4_add
-#define GGML_V3_F32x4_MUL          wasm_f32x4_mul
-#define GGML_V3_F32x4_REDUCE(res, x)                  \
-{                                                  \
-int offset = GGML_V3_F32_ARR >> 1;                \
-for (int i = 0; i < offset; ++i) {             \
-x[i] = wasm_f32x4_add(x[i], x[offset+i]);  \
-}                                              \
-offset >>= 1;                                  \
-for (int i = 0; i < offset; ++i) {             \
-x[i] = wasm_f32x4_add(x[i], x[offset+i]);  \
-}                                              \
-offset >>= 1;                                  \
-for (int i = 0; i < offset; ++i) {             \
-x[i] = wasm_f32x4_add(x[i], x[offset+i]);  \
-}                                              \
-res = wasm_f32x4_extract_lane(x[0], 0) +       \
-wasm_f32x4_extract_lane(x[0], 1) +       \
-wasm_f32x4_extract_lane(x[0], 2) +       \
-wasm_f32x4_extract_lane(x[0], 3);        \
+#define GGML_V3_F32x4_ADD wasm_f32x4_add
+#define GGML_V3_F32x4_MUL wasm_f32x4_mul
+#define GGML_V3_F32x4_REDUCE(res, x) \
+{ \
+int offset = GGML_V3_F32_ARR >> 1; \
+for (int i = 0; i < offset; ++i) { \
+x[i] = wasm_f32x4_add(x[i], x[offset+i]); \
+} \
+offset >>= 1; \
+for (int i = 0; i < offset; ++i) { \
+x[i] = wasm_f32x4_add(x[i], x[offset+i]); \
+} \
+offset >>= 1; \
+for (int i = 0; i < offset; ++i) { \
+x[i] = wasm_f32x4_add(x[i], x[offset+i]); \
+} \
+res = wasm_f32x4_extract_lane(x[0], 0) + \
+wasm_f32x4_extract_lane(x[0], 1) + \
+wasm_f32x4_extract_lane(x[0], 2) + \
+wasm_f32x4_extract_lane(x[0], 3); \
 }
-#define GGML_V3_F32_VEC        GGML_V3_F32x4
-#define GGML_V3_F32_VEC_ZERO   GGML_V3_F32x4_ZERO
-#define GGML_V3_F32_VEC_SET1   GGML_V3_F32x4_SET1
-#define GGML_V3_F32_VEC_LOAD   GGML_V3_F32x4_LOAD
-#define GGML_V3_F32_VEC_STORE  GGML_V3_F32x4_STORE
-#define GGML_V3_F32_VEC_FMA    GGML_V3_F32x4_FMA
-#define GGML_V3_F32_VEC_ADD    GGML_V3_F32x4_ADD
-#define GGML_V3_F32_VEC_MUL    GGML_V3_F32x4_MUL
+#define GGML_V3_F32_VEC GGML_V3_F32x4
+#define GGML_V3_F32_VEC_ZERO GGML_V3_F32x4_ZERO
+#define GGML_V3_F32_VEC_SET1 GGML_V3_F32x4_SET1
+#define GGML_V3_F32_VEC_LOAD GGML_V3_F32x4_LOAD
+#define GGML_V3_F32_VEC_STORE GGML_V3_F32x4_STORE
+#define GGML_V3_F32_VEC_FMA GGML_V3_F32x4_FMA
+#define GGML_V3_F32_VEC_ADD GGML_V3_F32x4_ADD
+#define GGML_V3_F32_VEC_MUL GGML_V3_F32x4_MUL
 #define GGML_V3_F32_VEC_REDUCE GGML_V3_F32x4_REDUCE
 #define GGML_V3_F16_STEP 16
-#define GGML_V3_F16_EPR  4
+#define GGML_V3_F16_EPR 4
 inline static v128_t __wasm_f16x4_load(const ggml_v3_fp16_t * p) {
 float tmp[4];
 tmp[0] = GGML_V3_FP16_TO_FP32(p[0]);
@@ -1669,86 +1669,86 @@ p[1] = GGML_V3_FP32_TO_FP16(tmp[1]);
 p[2] = GGML_V3_FP32_TO_FP16(tmp[2]);
 p[3] = GGML_V3_FP32_TO_FP16(tmp[3]);
 }
-#define GGML_V3_F16x4             v128_t
-#define GGML_V3_F16x4_ZERO        wasm_f32x4_splat(0.0f)
-#define GGML_V3_F16x4_SET1(x)     wasm_f32x4_splat(x)
-#define GGML_V3_F16x4_LOAD(x)     __wasm_f16x4_load(x)
+#define GGML_V3_F16x4 v128_t
+#define GGML_V3_F16x4_ZERO wasm_f32x4_splat(0.0f)
+#define GGML_V3_F16x4_SET1(x) wasm_f32x4_splat(x)
+#define GGML_V3_F16x4_LOAD(x) __wasm_f16x4_load(x)
 #define GGML_V3_F16x4_STORE(x, y) __wasm_f16x4_store(x, y)
-#define GGML_V3_F16x4_FMA         GGML_V3_F32x4_FMA
-#define GGML_V3_F16x4_ADD         wasm_f32x4_add
-#define GGML_V3_F16x4_MUL         wasm_f32x4_mul
-#define GGML_V3_F16x4_REDUCE(res, x)                  \
-{                                                  \
-int offset = GGML_V3_F16_ARR >> 1;                \
-for (int i = 0; i < offset; ++i) {             \
-x[i] = wasm_f32x4_add(x[i], x[offset+i]);  \
-}                                              \
-offset >>= 1;                                  \
-for (int i = 0; i < offset; ++i) {             \
-x[i] = wasm_f32x4_add(x[i], x[offset+i]);  \
-}                                              \
-offset >>= 1;                                  \
-for (int i = 0; i < offset; ++i) {             \
-x[i] = wasm_f32x4_add(x[i], x[offset+i]);  \
-}                                              \
-res = wasm_f32x4_extract_lane(x[0], 0) +       \
-wasm_f32x4_extract_lane(x[0], 1) +       \
-wasm_f32x4_extract_lane(x[0], 2) +       \
-wasm_f32x4_extract_lane(x[0], 3);        \
+#define GGML_V3_F16x4_FMA GGML_V3_F32x4_FMA
+#define GGML_V3_F16x4_ADD wasm_f32x4_add
+#define GGML_V3_F16x4_MUL wasm_f32x4_mul
+#define GGML_V3_F16x4_REDUCE(res, x) \
+{ \
+int offset = GGML_V3_F16_ARR >> 1; \
+for (int i = 0; i < offset; ++i) { \
+x[i] = wasm_f32x4_add(x[i], x[offset+i]); \
+} \
+offset >>= 1; \
+for (int i = 0; i < offset; ++i) { \
+x[i] = wasm_f32x4_add(x[i], x[offset+i]); \
+} \
+offset >>= 1; \
+for (int i = 0; i < offset; ++i) { \
+x[i] = wasm_f32x4_add(x[i], x[offset+i]); \
+} \
+res = wasm_f32x4_extract_lane(x[0], 0) + \
+wasm_f32x4_extract_lane(x[0], 1) + \
+wasm_f32x4_extract_lane(x[0], 2) + \
+wasm_f32x4_extract_lane(x[0], 3); \
 }
-#define GGML_V3_F16_VEC                GGML_V3_F16x4
-#define GGML_V3_F16_VEC_ZERO           GGML_V3_F16x4_ZERO
-#define GGML_V3_F16_VEC_SET1           GGML_V3_F16x4_SET1
-#define GGML_V3_F16_VEC_LOAD(p, i)     GGML_V3_F16x4_LOAD(p)
+#define GGML_V3_F16_VEC GGML_V3_F16x4
+#define GGML_V3_F16_VEC_ZERO GGML_V3_F16x4_ZERO
+#define GGML_V3_F16_VEC_SET1 GGML_V3_F16x4_SET1
+#define GGML_V3_F16_VEC_LOAD(p, i) GGML_V3_F16x4_LOAD(p)
 #define GGML_V3_F16_VEC_STORE(p, r, i) GGML_V3_F16x4_STORE(p, r[i])
-#define GGML_V3_F16_VEC_FMA            GGML_V3_F16x4_FMA
-#define GGML_V3_F16_VEC_ADD            GGML_V3_F16x4_ADD
-#define GGML_V3_F16_VEC_MUL            GGML_V3_F16x4_MUL
-#define GGML_V3_F16_VEC_REDUCE         GGML_V3_F16x4_REDUCE
+#define GGML_V3_F16_VEC_FMA GGML_V3_F16x4_FMA
+#define GGML_V3_F16_VEC_ADD GGML_V3_F16x4_ADD
+#define GGML_V3_F16_VEC_MUL GGML_V3_F16x4_MUL
+#define GGML_V3_F16_VEC_REDUCE GGML_V3_F16x4_REDUCE
 #elif defined(__SSE3__)
 #define GGML_V3_SIMD
 #define GGML_V3_F32_STEP 32
-#define GGML_V3_F32_EPR  4
-#define GGML_V3_F32x4         __m128
-#define GGML_V3_F32x4_ZERO    _mm_setzero_ps()
+#define GGML_V3_F32_EPR 4
+#define GGML_V3_F32x4 __m128
+#define GGML_V3_F32x4_ZERO _mm_setzero_ps()
 #define GGML_V3_F32x4_SET1(x) _mm_set1_ps(x)
-#define GGML_V3_F32x4_LOAD    _mm_loadu_ps
-#define GGML_V3_F32x4_STORE   _mm_storeu_ps
+#define GGML_V3_F32x4_LOAD _mm_loadu_ps
+#define GGML_V3_F32x4_STORE _mm_storeu_ps
 #if defined(__FMA__)
 #define GGML_V3_F32x4_FMA(a, b, c) _mm_fmadd_ps(b, c, a)
 #else
 #define GGML_V3_F32x4_FMA(a, b, c) _mm_add_ps(_mm_mul_ps(b, c), a)
 #endif
-#define GGML_V3_F32x4_ADD     _mm_add_ps
-#define GGML_V3_F32x4_MUL     _mm_mul_ps
-#define GGML_V3_F32x4_REDUCE(res, x)                                 \
-{                                                                 \
-int offset = GGML_V3_F32_ARR >> 1;                               \
-for (int i = 0; i < offset; ++i) {                            \
-x[i] = _mm_add_ps(x[i], x[offset+i]);                     \
-}                                                             \
-offset >>= 1;                                                 \
-for (int i = 0; i < offset; ++i) {                            \
-x[i] = _mm_add_ps(x[i], x[offset+i]);                     \
-}                                                             \
-offset >>= 1;                                                 \
-for (int i = 0; i < offset; ++i) {                            \
-x[i] = _mm_add_ps(x[i], x[offset+i]);                     \
-}                                                             \
-const __m128 t0 = _mm_hadd_ps(x[0], x[0]);                    \
-res = _mm_cvtss_f32(_mm_hadd_ps(t0, t0));                     \
+#define GGML_V3_F32x4_ADD _mm_add_ps
+#define GGML_V3_F32x4_MUL _mm_mul_ps
+#define GGML_V3_F32x4_REDUCE(res, x) \
+{ \
+int offset = GGML_V3_F32_ARR >> 1; \
+for (int i = 0; i < offset; ++i) { \
+x[i] = _mm_add_ps(x[i], x[offset+i]); \
+} \
+offset >>= 1; \
+for (int i = 0; i < offset; ++i) { \
+x[i] = _mm_add_ps(x[i], x[offset+i]); \
+} \
+offset >>= 1; \
+for (int i = 0; i < offset; ++i) { \
+x[i] = _mm_add_ps(x[i], x[offset+i]); \
+} \
+const __m128 t0 = _mm_hadd_ps(x[0], x[0]); \
+res = _mm_cvtss_f32(_mm_hadd_ps(t0, t0)); \
 }
-#define GGML_V3_F32_VEC        GGML_V3_F32x4
-#define GGML_V3_F32_VEC_ZERO   GGML_V3_F32x4_ZERO
-#define GGML_V3_F32_VEC_SET1   GGML_V3_F32x4_SET1
-#define GGML_V3_F32_VEC_LOAD   GGML_V3_F32x4_LOAD
-#define GGML_V3_F32_VEC_STORE  GGML_V3_F32x4_STORE
-#define GGML_V3_F32_VEC_FMA    GGML_V3_F32x4_FMA
-#define GGML_V3_F32_VEC_ADD    GGML_V3_F32x4_ADD
-#define GGML_V3_F32_VEC_MUL    GGML_V3_F32x4_MUL
+#define GGML_V3_F32_VEC GGML_V3_F32x4
+#define GGML_V3_F32_VEC_ZERO GGML_V3_F32x4_ZERO
+#define GGML_V3_F32_VEC_SET1 GGML_V3_F32x4_SET1
+#define GGML_V3_F32_VEC_LOAD GGML_V3_F32x4_LOAD
+#define GGML_V3_F32_VEC_STORE GGML_V3_F32x4_STORE
+#define GGML_V3_F32_VEC_FMA GGML_V3_F32x4_FMA
+#define GGML_V3_F32_VEC_ADD GGML_V3_F32x4_ADD
+#define GGML_V3_F32_VEC_MUL GGML_V3_F32x4_MUL
 #define GGML_V3_F32_VEC_REDUCE GGML_V3_F32x4_REDUCE
 #define GGML_V3_F16_STEP 32
-#define GGML_V3_F16_EPR  4
+#define GGML_V3_F16_EPR 4
 static inline __m128 __sse_f16x4_load(ggml_v3_fp16_t *x) {
 float tmp[4];
 tmp[0] = GGML_V3_FP16_TO_FP32(x[0]);
@@ -1765,24 +1765,24 @@ x[1] = GGML_V3_FP32_TO_FP16(arr[1]);
 x[2] = GGML_V3_FP32_TO_FP16(arr[2]);
 x[3] = GGML_V3_FP32_TO_FP16(arr[3]);
 }
-#define GGML_V3_F32Cx4             __m128
-#define GGML_V3_F32Cx4_ZERO        _mm_setzero_ps()
-#define GGML_V3_F32Cx4_SET1(x)     _mm_set1_ps(x)
-#define GGML_V3_F32Cx4_LOAD(x)     __sse_f16x4_load(x)
+#define GGML_V3_F32Cx4 __m128
+#define GGML_V3_F32Cx4_ZERO _mm_setzero_ps()
+#define GGML_V3_F32Cx4_SET1(x) _mm_set1_ps(x)
+#define GGML_V3_F32Cx4_LOAD(x) __sse_f16x4_load(x)
 #define GGML_V3_F32Cx4_STORE(x, y) __sse_f16x4_store(x, y)
-#define GGML_V3_F32Cx4_FMA         GGML_V3_F32x4_FMA
-#define GGML_V3_F32Cx4_ADD         _mm_add_ps
-#define GGML_V3_F32Cx4_MUL         _mm_mul_ps
-#define GGML_V3_F32Cx4_REDUCE      GGML_V3_F32x4_REDUCE
-#define GGML_V3_F16_VEC                 GGML_V3_F32Cx4
-#define GGML_V3_F16_VEC_ZERO            GGML_V3_F32Cx4_ZERO
-#define GGML_V3_F16_VEC_SET1            GGML_V3_F32Cx4_SET1
-#define GGML_V3_F16_VEC_LOAD(p, i)      GGML_V3_F32Cx4_LOAD(p)
-#define GGML_V3_F16_VEC_STORE(p, r, i)  GGML_V3_F32Cx4_STORE(p, r[i])
-#define GGML_V3_F16_VEC_FMA             GGML_V3_F32Cx4_FMA
-#define GGML_V3_F16_VEC_ADD             GGML_V3_F32Cx4_ADD
-#define GGML_V3_F16_VEC_MUL             GGML_V3_F32Cx4_MUL
-#define GGML_V3_F16_VEC_REDUCE          GGML_V3_F32Cx4_REDUCE
+#define GGML_V3_F32Cx4_FMA GGML_V3_F32x4_FMA
+#define GGML_V3_F32Cx4_ADD _mm_add_ps
+#define GGML_V3_F32Cx4_MUL _mm_mul_ps
+#define GGML_V3_F32Cx4_REDUCE GGML_V3_F32x4_REDUCE
+#define GGML_V3_F16_VEC GGML_V3_F32Cx4
+#define GGML_V3_F16_VEC_ZERO GGML_V3_F32Cx4_ZERO
+#define GGML_V3_F16_VEC_SET1 GGML_V3_F32Cx4_SET1
+#define GGML_V3_F16_VEC_LOAD(p, i) GGML_V3_F32Cx4_LOAD(p)
+#define GGML_V3_F16_VEC_STORE(p, r, i) GGML_V3_F32Cx4_STORE(p, r[i])
+#define GGML_V3_F16_VEC_FMA GGML_V3_F32Cx4_FMA
+#define GGML_V3_F16_VEC_ADD GGML_V3_F32Cx4_ADD
+#define GGML_V3_F16_VEC_MUL GGML_V3_F32Cx4_MUL
+#define GGML_V3_F16_VEC_REDUCE GGML_V3_F32Cx4_REDUCE
 #endif
 #ifdef GGML_V3_SIMD
 #define GGML_V3_F32_ARR (GGML_V3_F32_STEP/GGML_V3_F32_EPR)
@@ -1792,16 +1792,16 @@ inline static void ggml_v3_vec_set_i8(const int n, int8_t * x, const int8_t v) {
 inline static void ggml_v3_vec_set_i16(const int n, int16_t * x, const int16_t v) { for (int i = 0; i < n; ++i) x[i] = v; }
 inline static void ggml_v3_vec_set_i32(const int n, int32_t * x, const int32_t v) { for (int i = 0; i < n; ++i) x[i] = v; }
 inline static void ggml_v3_vec_set_f16(const int n, ggml_v3_fp16_t * x, const int32_t v) { for (int i = 0; i < n; ++i) x[i] = v; }
-inline static void ggml_v3_vec_add_f32 (const int n, float * z, const float * x, const float * y) { for (int i = 0; i < n; ++i) z[i]  = x[i] + y[i]; }
-inline static void ggml_v3_vec_add1_f32(const int n, float * z, const float * x, const float   v) { for (int i = 0; i < n; ++i) z[i]  = x[i] + v;    }
-inline static void ggml_v3_vec_acc_f32 (const int n, float * y, const float * x)                  { for (int i = 0; i < n; ++i) y[i] += x[i];        }
-inline static void ggml_v3_vec_acc1_f32(const int n, float * y, const float   v)                  { for (int i = 0; i < n; ++i) y[i] += v;           }
-inline static void ggml_v3_vec_sub_f32 (const int n, float * z, const float * x, const float * y) { for (int i = 0; i < n; ++i) z[i]  = x[i] - y[i]; }
-inline static void ggml_v3_vec_set_f32 (const int n, float * x, const float   v)                  { for (int i = 0; i < n; ++i) x[i]  = v;           }
-inline static void ggml_v3_vec_cpy_f32 (const int n, float * y, const float * x)                  { for (int i = 0; i < n; ++i) y[i]  = x[i];        }
-inline static void ggml_v3_vec_neg_f32 (const int n, float * y, const float * x)                  { for (int i = 0; i < n; ++i) y[i]  = -x[i];       }
-inline static void ggml_v3_vec_mul_f32 (const int n, float * z, const float * x, const float * y) { for (int i = 0; i < n; ++i) z[i]  = x[i]*y[i];   }
-inline static void ggml_v3_vec_div_f32 (const int n, float * z, const float * x, const float * y) { for (int i = 0; i < n; ++i) z[i]  = x[i]/y[i];   }
+inline static void ggml_v3_vec_add_f32 (const int n, float * z, const float * x, const float * y) { for (int i = 0; i < n; ++i) z[i] = x[i] + y[i]; }
+inline static void ggml_v3_vec_add1_f32(const int n, float * z, const float * x, const float v) { for (int i = 0; i < n; ++i) z[i] = x[i] + v; }
+inline static void ggml_v3_vec_acc_f32 (const int n, float * y, const float * x) { for (int i = 0; i < n; ++i) y[i] += x[i]; }
+inline static void ggml_v3_vec_acc1_f32(const int n, float * y, const float v) { for (int i = 0; i < n; ++i) y[i] += v; }
+inline static void ggml_v3_vec_sub_f32 (const int n, float * z, const float * x, const float * y) { for (int i = 0; i < n; ++i) z[i] = x[i] - y[i]; }
+inline static void ggml_v3_vec_set_f32 (const int n, float * x, const float v) { for (int i = 0; i < n; ++i) x[i] = v; }
+inline static void ggml_v3_vec_cpy_f32 (const int n, float * y, const float * x) { for (int i = 0; i < n; ++i) y[i] = x[i]; }
+inline static void ggml_v3_vec_neg_f32 (const int n, float * y, const float * x) { for (int i = 0; i < n; ++i) y[i] = -x[i]; }
+inline static void ggml_v3_vec_mul_f32 (const int n, float * z, const float * x, const float * y) { for (int i = 0; i < n; ++i) z[i] = x[i]*y[i]; }
+inline static void ggml_v3_vec_div_f32 (const int n, float * z, const float * x, const float * y) { for (int i = 0; i < n; ++i) z[i] = x[i]/y[i]; }
 static void ggml_v3_vec_dot_f32(const int n, float * restrict s, const float * restrict x, const float * restrict y) {
 #ifdef GGML_V3_SIMD
 float sumf = 0.0f;
@@ -1953,7 +1953,7 @@ y[i] += x[k][i]*v[k][0];
 }
 #endif
 }
-inline static void ggml_v3_vec_scale_f32(const int n, float * y, const float   v) {
+inline static void ggml_v3_vec_scale_f32(const int n, float * y, const float v) {
 #if defined(GGML_USE_ACCELERATE)
 vDSP_vsmul(y, 1, &v, y, 1, n);
 #elif defined(GGML_V3_SIMD)
@@ -1976,20 +1976,20 @@ y[i] *= v;
 }
 #endif
 }
-inline static void ggml_v3_vec_norm_f32 (const int n, float * s, const float * x) { ggml_v3_vec_dot_f32(n, s, x, x); *s = sqrtf(*s);   }
-inline static void ggml_v3_vec_sqr_f32  (const int n, float * y, const float * x) { for (int i = 0; i < n; ++i) y[i] = x[i]*x[i];   }
+inline static void ggml_v3_vec_norm_f32 (const int n, float * s, const float * x) { ggml_v3_vec_dot_f32(n, s, x, x); *s = sqrtf(*s); }
+inline static void ggml_v3_vec_sqr_f32 (const int n, float * y, const float * x) { for (int i = 0; i < n; ++i) y[i] = x[i]*x[i]; }
 inline static void ggml_v3_vec_sqrt_f32 (const int n, float * y, const float * x) { for (int i = 0; i < n; ++i) y[i] = sqrtf(x[i]); }
-inline static void ggml_v3_vec_log_f32  (const int n, float * y, const float * x) { for (int i = 0; i < n; ++i) y[i] = logf(x[i]);   }
-inline static void ggml_v3_vec_abs_f32  (const int n, float * y, const float * x) { for (int i = 0; i < n; ++i) y[i] = fabsf(x[i]); }
-inline static void ggml_v3_vec_sgn_f32  (const int n, float * y, const float * x) { for (int i = 0; i < n; ++i) y[i] = (x[i] > 0.f) ? 1.f : ((x[i] < 0.f) ? -1.f : 0.f); }
+inline static void ggml_v3_vec_log_f32 (const int n, float * y, const float * x) { for (int i = 0; i < n; ++i) y[i] = logf(x[i]); }
+inline static void ggml_v3_vec_abs_f32 (const int n, float * y, const float * x) { for (int i = 0; i < n; ++i) y[i] = fabsf(x[i]); }
+inline static void ggml_v3_vec_sgn_f32 (const int n, float * y, const float * x) { for (int i = 0; i < n; ++i) y[i] = (x[i] > 0.f) ? 1.f : ((x[i] < 0.f) ? -1.f : 0.f); }
 inline static void ggml_v3_vec_step_f32 (const int n, float * y, const float * x) { for (int i = 0; i < n; ++i) y[i] = (x[i] > 0.f) ? 1.f : 0.f; }
-inline static void ggml_v3_vec_tanh_f32 (const int n, float * y, const float * x) { for (int i = 0; i < n; ++i) y[i] = tanhf(x[i]);  }
-inline static void ggml_v3_vec_elu_f32  (const int n, float * y, const float * x) { for (int i = 0; i < n; ++i) y[i] = (x[i] > 0.f) ? x[i] : expf(x[i])-1; }
+inline static void ggml_v3_vec_tanh_f32 (const int n, float * y, const float * x) { for (int i = 0; i < n; ++i) y[i] = tanhf(x[i]); }
+inline static void ggml_v3_vec_elu_f32 (const int n, float * y, const float * x) { for (int i = 0; i < n; ++i) y[i] = (x[i] > 0.f) ? x[i] : expf(x[i])-1; }
 inline static void ggml_v3_vec_relu_f32 (const int n, float * y, const float * x) { for (int i = 0; i < n; ++i) y[i] = (x[i] > 0.f) ? x[i] : 0.f; }
 inline static void ggml_v3_vec_leaky_relu_f32 (const int n, float * y, const float * x, const float ns) { for (int i = 0; i < n; ++i) y[i] = ((x[i] > 0.f) ? x[i] : 0.f) + ns * ((x[i] < 0.0f) ? x[i] : 0.f); }
-static const float GELU_COEF_A     = 0.044715f;
+static const float GELU_COEF_A = 0.044715f;
 static const float GELU_QUICK_COEF = -1.702f;
-static const float SQRT_2_OVER_PI  = 0.79788456080286535587989211986876f;
+static const float SQRT_2_OVER_PI = 0.79788456080286535587989211986876f;
 inline static float ggml_v3_gelu_f32(float x) {
 return 0.5f*x*(1.0f + tanhf(SQRT_2_OVER_PI*x*(1.0f + GELU_COEF_A*x*x)));
 }
@@ -2287,37 +2287,37 @@ static const char * GGML_V3_UNARY_OP_NAME[GGML_V3_UNARY_OP_COUNT] = {
 static_assert(GGML_V3_UNARY_OP_COUNT == 10, "GGML_V3_UNARY_OP_COUNT != 10");
 static_assert(sizeof(struct ggml_v3_object)%GGML_V3_MEM_ALIGN == 0, "ggml_v3_object size must be a multiple of GGML_V3_MEM_ALIGN");
 static_assert(sizeof(struct ggml_v3_tensor)%GGML_V3_MEM_ALIGN == 0, "ggml_v3_tensor size must be a multiple of GGML_V3_MEM_ALIGN");
-static bool GGML_V3_OP_HAS_INIT    [GGML_V3_OP_COUNT] = { 0 };
+static bool GGML_V3_OP_HAS_INIT [GGML_V3_OP_COUNT] = { 0 };
 static bool GGML_V3_OP_HAS_FINALIZE[GGML_V3_OP_COUNT] = { 0 };
 static void ggml_v3_setup_op_has_task_pass(void) {
 {
 bool * p = GGML_V3_OP_HAS_INIT;
-p[GGML_V3_OP_ACC                    ] = true;
-p[GGML_V3_OP_MUL_MAT                ] = true;
-p[GGML_V3_OP_MUL_MAT_ID             ] = true;
-p[GGML_V3_OP_OUT_PROD               ] = true;
-p[GGML_V3_OP_SET                    ] = true;
-p[GGML_V3_OP_GET_ROWS_BACK          ] = true;
-p[GGML_V3_OP_DIAG_MASK_INF          ] = true;
-p[GGML_V3_OP_DIAG_MASK_ZERO         ] = true;
-p[GGML_V3_OP_CONV_TRANSPOSE_1D      ] = true;
-p[GGML_V3_OP_CONV_TRANSPOSE_2D      ] = true;
-p[GGML_V3_OP_FLASH_ATTN_BACK        ] = true;
-p[GGML_V3_OP_CROSS_ENTROPY_LOSS     ] = true;
-p[GGML_V3_OP_ADD_REL_POS            ] = true;
+p[GGML_V3_OP_ACC ] = true;
+p[GGML_V3_OP_MUL_MAT ] = true;
+p[GGML_V3_OP_MUL_MAT_ID ] = true;
+p[GGML_V3_OP_OUT_PROD ] = true;
+p[GGML_V3_OP_SET ] = true;
+p[GGML_V3_OP_GET_ROWS_BACK ] = true;
+p[GGML_V3_OP_DIAG_MASK_INF ] = true;
+p[GGML_V3_OP_DIAG_MASK_ZERO ] = true;
+p[GGML_V3_OP_CONV_TRANSPOSE_1D ] = true;
+p[GGML_V3_OP_CONV_TRANSPOSE_2D ] = true;
+p[GGML_V3_OP_FLASH_ATTN_BACK ] = true;
+p[GGML_V3_OP_CROSS_ENTROPY_LOSS ] = true;
+p[GGML_V3_OP_ADD_REL_POS ] = true;
 }
 {
 bool * p = GGML_V3_OP_HAS_FINALIZE;
-p[GGML_V3_OP_CROSS_ENTROPY_LOSS     ] = true;
+p[GGML_V3_OP_CROSS_ENTROPY_LOSS ] = true;
 }
 }
 struct ggml_v3_context {
 size_t mem_size;
 void * mem_buffer;
-bool   mem_buffer_owned;
-bool   no_alloc;
-bool   no_alloc_save;
-int    n_objects;
+bool mem_buffer_owned;
+bool no_alloc;
+bool no_alloc_save;
+int n_objects;
 struct ggml_v3_object * objects_begin;
 struct ggml_v3_object * objects_end;
 struct ggml_v3_scratch scratch;
@@ -2517,34 +2517,34 @@ return 1;
 }
 static inline bool ggml_v3_can_mul_mat(const struct ggml_v3_tensor * t0, const struct ggml_v3_tensor * t1) {
 static_assert(GGML_V3_MAX_DIMS == 4, "GGML_V3_MAX_DIMS is not 4 - update this function");
-return (t0->ne[0]           == t1->ne[0])  &&
-(t1->ne[2]%t0->ne[2] == 0)          &&
+return (t0->ne[0] == t1->ne[0]) &&
+(t1->ne[2]%t0->ne[2] == 0) &&
 (t1->ne[3]%t0->ne[3] == 0);
 }
 static inline bool ggml_v3_can_out_prod(const struct ggml_v3_tensor * t0, const struct ggml_v3_tensor * t1) {
 static_assert(GGML_V3_MAX_DIMS == 4, "GGML_V3_MAX_DIMS is not 4 - update this function");
-return (t0->ne[1] == t1->ne[1])   &&
+return (t0->ne[1] == t1->ne[1]) &&
 (t1->ne[2]%t0->ne[2] == 0) &&
 (t1->ne[3]%t0->ne[3] == 0);
 }
 enum ggml_v3_type ggml_v3_ftype_to_ggml_v3_type(enum ggml_v3_ftype ftype) {
 enum ggml_v3_type wtype = GGML_V3_TYPE_COUNT;
 switch (ftype) {
-case GGML_V3_FTYPE_ALL_F32:              wtype = GGML_V3_TYPE_F32;   break;
-case GGML_V3_FTYPE_MOSTLY_F16:           wtype = GGML_V3_TYPE_F16;   break;
-case GGML_V3_FTYPE_MOSTLY_Q4_0:          wtype = GGML_V3_TYPE_Q4_0;  break;
-case GGML_V3_FTYPE_MOSTLY_Q4_1:          wtype = GGML_V3_TYPE_Q4_1;  break;
-case GGML_V3_FTYPE_MOSTLY_Q5_0:          wtype = GGML_V3_TYPE_Q5_0;  break;
-case GGML_V3_FTYPE_MOSTLY_Q5_1:          wtype = GGML_V3_TYPE_Q5_1;  break;
-case GGML_V3_FTYPE_MOSTLY_Q8_0:          wtype = GGML_V3_TYPE_Q8_0;  break;
-case GGML_V3_FTYPE_MOSTLY_Q2_K:          wtype = GGML_V3_TYPE_Q2_K;  break;
-case GGML_V3_FTYPE_MOSTLY_Q3_K:          wtype = GGML_V3_TYPE_Q3_K;  break;
-case GGML_V3_FTYPE_MOSTLY_Q4_K:          wtype = GGML_V3_TYPE_Q4_K;  break;
-case GGML_V3_FTYPE_MOSTLY_Q5_K:          wtype = GGML_V3_TYPE_Q5_K;  break;
-case GGML_V3_FTYPE_MOSTLY_Q6_K:          wtype = GGML_V3_TYPE_Q6_K;  break;
-case GGML_V3_FTYPE_MOSTLY_IQ2_XXS:       wtype = GGML_V3_TYPE_IQ2_XXS;  break;
-case GGML_V3_FTYPE_MOSTLY_IQ2_XS:        wtype = GGML_V3_TYPE_IQ2_XS;   break;
-case GGML_V3_FTYPE_UNKNOWN:              wtype = GGML_V3_TYPE_COUNT; break;
+case GGML_V3_FTYPE_ALL_F32: wtype = GGML_V3_TYPE_F32; break;
+case GGML_V3_FTYPE_MOSTLY_F16: wtype = GGML_V3_TYPE_F16; break;
+case GGML_V3_FTYPE_MOSTLY_Q4_0: wtype = GGML_V3_TYPE_Q4_0; break;
+case GGML_V3_FTYPE_MOSTLY_Q4_1: wtype = GGML_V3_TYPE_Q4_1; break;
+case GGML_V3_FTYPE_MOSTLY_Q5_0: wtype = GGML_V3_TYPE_Q5_0; break;
+case GGML_V3_FTYPE_MOSTLY_Q5_1: wtype = GGML_V3_TYPE_Q5_1; break;
+case GGML_V3_FTYPE_MOSTLY_Q8_0: wtype = GGML_V3_TYPE_Q8_0; break;
+case GGML_V3_FTYPE_MOSTLY_Q2_K: wtype = GGML_V3_TYPE_Q2_K; break;
+case GGML_V3_FTYPE_MOSTLY_Q3_K: wtype = GGML_V3_TYPE_Q3_K; break;
+case GGML_V3_FTYPE_MOSTLY_Q4_K: wtype = GGML_V3_TYPE_Q4_K; break;
+case GGML_V3_FTYPE_MOSTLY_Q5_K: wtype = GGML_V3_TYPE_Q5_K; break;
+case GGML_V3_FTYPE_MOSTLY_Q6_K: wtype = GGML_V3_TYPE_Q6_K; break;
+case GGML_V3_FTYPE_MOSTLY_IQ2_XXS: wtype = GGML_V3_TYPE_IQ2_XXS; break;
+case GGML_V3_FTYPE_MOSTLY_IQ2_XS: wtype = GGML_V3_TYPE_IQ2_XS; break;
+case GGML_V3_FTYPE_UNKNOWN: wtype = GGML_V3_TYPE_COUNT; break;
 case GGML_V3_FTYPE_MOSTLY_Q4_1_SOME_F16: wtype = GGML_V3_TYPE_COUNT; break;
 }
 GGML_V3_ASSERT(wtype != GGML_V3_TYPE_COUNT);
@@ -2626,7 +2626,7 @@ const float f = ggml_v3_table_f32_f16[i] = GGML_V3_COMPUTE_FP16_TO_FP32(ii);
 ggml_v3_table_gelu_f16[i] = GGML_V3_FP32_TO_FP16(ggml_v3_gelu_f32(f));
 ggml_v3_table_gelu_quick_f16[i] = GGML_V3_FP32_TO_FP16(ggml_v3_gelu_quick_f32(f));
 ggml_v3_table_silu_f16[i] = GGML_V3_FP32_TO_FP16(ggml_v3_silu_f32(f));
-ggml_v3_table_exp_f16[i]  = GGML_V3_FP32_TO_FP16(expf(f));
+ggml_v3_table_exp_f16[i] = GGML_V3_FP32_TO_FP16(expf(f));
 }
 const uint64_t t_end = ggml_v3_time_us(); UNUSED(t_end);
 GGML_V3_PRINT_DEBUG("%s: GELU, Quick GELU, SILU and EXP tables initialized in %f ms\n", __func__, (t_end - t_start)/1000.0f);
@@ -2739,7 +2739,7 @@ return max_size;
 }
 static void ggml_v3_scratch_save(struct ggml_v3_context * ctx) {
 ctx->no_alloc_save = ctx->no_alloc;
-ctx->no_alloc      = false;
+ctx->no_alloc = false;
 ctx->scratch_save = ctx->scratch;
 ctx->scratch.data = NULL;
 }
@@ -2751,7 +2751,7 @@ static struct ggml_v3_object * ggml_v3_new_object(struct ggml_v3_context * ctx, 
 struct ggml_v3_object * obj_cur = ctx->objects_end;
 const size_t cur_offs = obj_cur == NULL ? 0 : obj_cur->offs;
 const size_t cur_size = obj_cur == NULL ? 0 : obj_cur->size;
-const size_t cur_end  = cur_offs + cur_size;
+const size_t cur_end = cur_offs + cur_size;
 size_t size_needed = GGML_V3_PAD(size, GGML_V3_MEM_ALIGN);
 char * const mem_buffer = ctx->mem_buffer;
 struct ggml_v3_object * const obj_new = (struct ggml_v3_object *)(mem_buffer + cur_end);
@@ -2778,15 +2778,15 @@ return obj_new;
 }
 static struct ggml_v3_tensor * ggml_v3_new_tensor_impl(
 struct ggml_v3_context * ctx,
-enum   ggml_v3_type      type,
-int                   n_dims,
-const int64_t       * ne,
-struct ggml_v3_tensor  * view_src,
-size_t                view_offs) {
+enum ggml_v3_type type,
+int n_dims,
+const int64_t * ne,
+struct ggml_v3_tensor * view_src,
+size_t view_offs) {
 assert(n_dims >= 1 && n_dims <= GGML_V3_MAX_DIMS);
 if (view_src != NULL && view_src->view_src != NULL) {
 view_offs += view_src->view_offs;
-view_src   = view_src->view_src;
+view_src = view_src->view_src;
 }
 size_t data_size = ggml_v3_row_size(type, ne[0]);
 for (int i = 1; i < n_dims; i++) {
@@ -2848,20 +2848,20 @@ return result;
 }
 struct ggml_v3_tensor * ggml_v3_new_tensor(
 struct ggml_v3_context * ctx,
-enum   ggml_v3_type      type,
-int                   n_dims,
-const int64_t       * ne) {
+enum ggml_v3_type type,
+int n_dims,
+const int64_t * ne) {
 return ggml_v3_new_tensor_impl(ctx, type, n_dims, ne, NULL, 0);
 }
 struct ggml_v3_tensor * ggml_v3_new_tensor_1d(
 struct ggml_v3_context * ctx,
-enum   ggml_v3_type      type,
+enum ggml_v3_type type,
 int64_t ne0) {
 return ggml_v3_new_tensor(ctx, type, 1, &ne0);
 }
 struct ggml_v3_tensor * ggml_v3_new_tensor_2d(
 struct ggml_v3_context * ctx,
-enum   ggml_v3_type      type,
+enum ggml_v3_type type,
 int64_t ne0,
 int64_t ne1) {
 const int64_t ne[2] = { ne0, ne1 };
@@ -2869,7 +2869,7 @@ return ggml_v3_new_tensor(ctx, type, 2, ne);
 }
 struct ggml_v3_tensor * ggml_v3_new_tensor_3d(
 struct ggml_v3_context * ctx,
-enum   ggml_v3_type      type,
+enum ggml_v3_type type,
 int64_t ne0,
 int64_t ne1,
 int64_t ne2) {
@@ -2878,7 +2878,7 @@ return ggml_v3_new_tensor(ctx, type, 3, ne);
 }
 struct ggml_v3_tensor * ggml_v3_new_tensor_4d(
 struct ggml_v3_context * ctx,
-enum   ggml_v3_type type,
+enum ggml_v3_type type,
 int64_t ne0,
 int64_t ne1,
 int64_t ne2,
@@ -2921,8 +2921,8 @@ memset(tensor->data, 0, ggml_v3_nbytes(tensor));
 return tensor;
 }
 struct ggml_v3_tensor * ggml_v3_set_i32 (struct ggml_v3_tensor * tensor, int32_t value) {
-const int n     = ggml_v3_nrows(tensor);
-const int nc    = tensor->ne[0];
+const int n = ggml_v3_nrows(tensor);
+const int nc = tensor->ne[0];
 const size_t n1 = tensor->nb[1];
 char * const data = tensor->data;
 switch (tensor->type) {
@@ -2969,8 +2969,8 @@ GGML_V3_ASSERT(false);
 return tensor;
 }
 struct ggml_v3_tensor * ggml_v3_set_f32(struct ggml_v3_tensor * tensor, float value) {
-const int n     = ggml_v3_nrows(tensor);
-const int nc    = tensor->ne[0];
+const int n = ggml_v3_nrows(tensor);
+const int nc = tensor->ne[0];
 const size_t n1 = tensor->nb[1];
 char * const data = tensor->data;
 switch (tensor->type) {
@@ -3116,7 +3116,7 @@ GGML_V3_ASSERT(false);
 }
 }
 int32_t ggml_v3_get_i32_nd(const struct ggml_v3_tensor * tensor, int i0, int i1, int i2, int i3) {
-void * data   = (char *) tensor->data + i0*tensor->nb[0] + i1*tensor->nb[1] + i2*tensor->nb[2] + i3*tensor->nb[3];
+void * data = (char *) tensor->data + i0*tensor->nb[0] + i1*tensor->nb[1] + i2*tensor->nb[2] + i3*tensor->nb[3];
 switch (tensor->type) {
 case GGML_V3_TYPE_I8:
 return ((int8_t *) data)[0];
@@ -3134,7 +3134,7 @@ GGML_V3_ASSERT(false);
 return 0.0f;
 }
 void ggml_v3_set_i32_nd(const struct ggml_v3_tensor * tensor, int i0, int i1, int i2, int i3, int32_t value) {
-void * data   = (char *) tensor->data + i0*tensor->nb[0] + i1*tensor->nb[1] + i2*tensor->nb[2] + i3*tensor->nb[3];
+void * data = (char *) tensor->data + i0*tensor->nb[0] + i1*tensor->nb[1] + i2*tensor->nb[2] + i3*tensor->nb[3];
 switch (tensor->type) {
 case GGML_V3_TYPE_I8:
 {
@@ -3241,7 +3241,7 @@ GGML_V3_ASSERT(false);
 }
 }
 float ggml_v3_get_f32_nd(const struct ggml_v3_tensor * tensor, int i0, int i1, int i2, int i3) {
-void * data   = (char *) tensor->data + i0*tensor->nb[0] + i1*tensor->nb[1] + i2*tensor->nb[2] + i3*tensor->nb[3];
+void * data = (char *) tensor->data + i0*tensor->nb[0] + i1*tensor->nb[1] + i2*tensor->nb[2] + i3*tensor->nb[3];
 switch (tensor->type) {
 case GGML_V3_TYPE_I8:
 return ((int8_t *) data)[0];
@@ -3259,7 +3259,7 @@ GGML_V3_ASSERT(false);
 return 0.0f;
 }
 void ggml_v3_set_f32_nd(const struct ggml_v3_tensor * tensor, int i0, int i1, int i2, int i3, float value) {
-void * data   = (char *) tensor->data + i0*tensor->nb[0] + i1*tensor->nb[1] + i2*tensor->nb[2] + i3*tensor->nb[3];
+void * data = (char *) tensor->data + i0*tensor->nb[0] + i1*tensor->nb[1] + i2*tensor->nb[2] + i3*tensor->nb[3];
 switch (tensor->type) {
 case GGML_V3_TYPE_I8:
 {
@@ -3315,7 +3315,7 @@ return tensor;
 }
 struct ggml_v3_tensor * ggml_v3_view_tensor(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * src) {
+struct ggml_v3_tensor * src) {
 struct ggml_v3_tensor * result = ggml_v3_new_tensor_impl(ctx, src->type, GGML_V3_MAX_DIMS, src->ne, src, 0);
 ggml_v3_format_name(result, "%s (view)", src->name);
 for (int i = 0; i < GGML_V3_MAX_DIMS; i++) {
@@ -3369,7 +3369,7 @@ if (!inplace && (a->grad)) {
 is_node = true;
 }
 struct ggml_v3_tensor * result = inplace ? ggml_v3_view_tensor(ctx, a) : ggml_v3_dup_tensor(ctx, a);
-result->op   = GGML_V3_OP_DUP;
+result->op = GGML_V3_OP_DUP;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 return result;
@@ -3396,7 +3396,7 @@ GGML_V3_ASSERT(ggml_v3_are_same_shape(a, b));
 is_node = true;
 }
 struct ggml_v3_tensor * result = inplace ? ggml_v3_view_tensor(ctx, a) : ggml_v3_dup_tensor(ctx, a);
-result->op   = GGML_V3_OP_ADD;
+result->op = GGML_V3_OP_ADD;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 result->src[1] = b;
@@ -3418,7 +3418,7 @@ static struct ggml_v3_tensor * ggml_v3_add_cast_impl(
 struct ggml_v3_context * ctx,
 struct ggml_v3_tensor * a,
 struct ggml_v3_tensor * b,
-enum   ggml_v3_type     type) {
+enum ggml_v3_type type) {
 GGML_V3_ASSERT(ggml_v3_can_repeat_rows(b, a));
 GGML_V3_ASSERT(ggml_v3_is_quantized(a->type) || a->type == GGML_V3_TYPE_F16);
 bool is_node = false;
@@ -3427,7 +3427,7 @@ GGML_V3_ASSERT(ggml_v3_are_same_shape(a, b));
 is_node = true;
 }
 struct ggml_v3_tensor * result = ggml_v3_new_tensor(ctx, type, GGML_V3_MAX_DIMS, a->ne);
-result->op   = GGML_V3_OP_ADD;
+result->op = GGML_V3_OP_ADD;
 result->grad = is_node ? ggml_v3_new_tensor(ctx, GGML_V3_TYPE_F32, GGML_V3_MAX_DIMS, a->ne) : NULL;
 result->src[0] = a;
 result->src[1] = b;
@@ -3437,7 +3437,7 @@ struct ggml_v3_tensor * ggml_v3_add_cast(
 struct ggml_v3_context * ctx,
 struct ggml_v3_tensor * a,
 struct ggml_v3_tensor * b,
-enum   ggml_v3_type     type) {
+enum ggml_v3_type type) {
 return ggml_v3_add_cast_impl(ctx, a, b, type);
 }
 static struct ggml_v3_tensor * ggml_v3_add1_impl(
@@ -3452,7 +3452,7 @@ if (a->grad || b->grad) {
 is_node = true;
 }
 struct ggml_v3_tensor * result = inplace ? ggml_v3_view_tensor(ctx, a) : ggml_v3_dup_tensor(ctx, a);
-result->op   = GGML_V3_OP_ADD1;
+result->op = GGML_V3_OP_ADD1;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 result->src[1] = b;
@@ -3474,10 +3474,10 @@ static struct ggml_v3_tensor * ggml_v3_acc_impl(
 struct ggml_v3_context * ctx,
 struct ggml_v3_tensor * a,
 struct ggml_v3_tensor * b,
-size_t               nb1,
-size_t               nb2,
-size_t               nb3,
-size_t               offset,
+size_t nb1,
+size_t nb2,
+size_t nb3,
+size_t offset,
 bool inplace) {
 GGML_V3_ASSERT(ggml_v3_nelements(b) <= ggml_v3_nelements(a));
 GGML_V3_ASSERT(ggml_v3_is_contiguous(a));
@@ -3490,7 +3490,7 @@ is_node = true;
 struct ggml_v3_tensor * result = inplace ? ggml_v3_view_tensor(ctx, a) : ggml_v3_dup_tensor(ctx, a);
 int32_t params[] = { nb1, nb2, nb3, offset, inplace ? 1 : 0 };
 ggml_v3_set_op_params(result, params, sizeof(params));
-result->op   = GGML_V3_OP_ACC;
+result->op = GGML_V3_OP_ACC;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 result->src[1] = b;
@@ -3500,20 +3500,20 @@ struct ggml_v3_tensor * ggml_v3_acc(
 struct ggml_v3_context * ctx,
 struct ggml_v3_tensor * a,
 struct ggml_v3_tensor * b,
-size_t               nb1,
-size_t               nb2,
-size_t               nb3,
-size_t               offset) {
+size_t nb1,
+size_t nb2,
+size_t nb3,
+size_t offset) {
 return ggml_v3_acc_impl(ctx, a, b, nb1, nb2, nb3, offset, false);
 }
 struct ggml_v3_tensor * ggml_v3_acc_inplace(
 struct ggml_v3_context * ctx,
 struct ggml_v3_tensor * a,
 struct ggml_v3_tensor * b,
-size_t               nb1,
-size_t               nb2,
-size_t               nb3,
-size_t               offset) {
+size_t nb1,
+size_t nb2,
+size_t nb3,
+size_t offset) {
 return ggml_v3_acc_impl(ctx, a, b, nb1, nb2, nb3, offset, true);
 }
 static struct ggml_v3_tensor * ggml_v3_sub_impl(
@@ -3527,7 +3527,7 @@ if (!inplace && (a->grad || b->grad)) {
 is_node = true;
 }
 struct ggml_v3_tensor * result = inplace ? ggml_v3_view_tensor(ctx, a) : ggml_v3_dup_tensor(ctx, a);
-result->op   = GGML_V3_OP_SUB;
+result->op = GGML_V3_OP_SUB;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 result->src[1] = b;
@@ -3560,7 +3560,7 @@ if (inplace) {
 GGML_V3_ASSERT(!is_node);
 }
 struct ggml_v3_tensor * result = inplace ? ggml_v3_view_tensor(ctx, a) : ggml_v3_dup_tensor(ctx, a);
-result->op   = GGML_V3_OP_MUL;
+result->op = GGML_V3_OP_MUL;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 result->src[1] = b;
@@ -3568,14 +3568,14 @@ return result;
 }
 struct ggml_v3_tensor * ggml_v3_mul(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * b) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b) {
 return ggml_v3_mul_impl(ctx, a, b, false);
 }
 struct ggml_v3_tensor * ggml_v3_mul_inplace(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * b) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b) {
 return ggml_v3_mul_impl(ctx, a, b, true);
 }
 static struct ggml_v3_tensor * ggml_v3_div_impl(
@@ -3592,7 +3592,7 @@ if (inplace) {
 GGML_V3_ASSERT(!is_node);
 }
 struct ggml_v3_tensor * result = inplace ? ggml_v3_view_tensor(ctx, a) : ggml_v3_dup_tensor(ctx, a);
-result->op   = GGML_V3_OP_DIV;
+result->op = GGML_V3_OP_DIV;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 result->src[1] = b;
@@ -3600,14 +3600,14 @@ return result;
 }
 struct ggml_v3_tensor * ggml_v3_div(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * b) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b) {
 return ggml_v3_div_impl(ctx, a, b, false);
 }
 struct ggml_v3_tensor * ggml_v3_div_inplace(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * b) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b) {
 return ggml_v3_div_impl(ctx, a, b, true);
 }
 static struct ggml_v3_tensor * ggml_v3_sqr_impl(
@@ -3619,19 +3619,19 @@ if (!inplace && (a->grad)) {
 is_node = true;
 }
 struct ggml_v3_tensor * result = inplace ? ggml_v3_view_tensor(ctx, a) : ggml_v3_dup_tensor(ctx, a);
-result->op   = GGML_V3_OP_SQR;
+result->op = GGML_V3_OP_SQR;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 return result;
 }
 struct ggml_v3_tensor * ggml_v3_sqr(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a) {
+struct ggml_v3_tensor * a) {
 return ggml_v3_sqr_impl(ctx, a, false);
 }
 struct ggml_v3_tensor * ggml_v3_sqr_inplace(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a) {
+struct ggml_v3_tensor * a) {
 return ggml_v3_sqr_impl(ctx, a, true);
 }
 static struct ggml_v3_tensor * ggml_v3_sqrt_impl(
@@ -3643,43 +3643,43 @@ if (!inplace && (a->grad)) {
 is_node = true;
 }
 struct ggml_v3_tensor * result = inplace ? ggml_v3_view_tensor(ctx, a) : ggml_v3_dup_tensor(ctx, a);
-result->op   = GGML_V3_OP_SQRT;
+result->op = GGML_V3_OP_SQRT;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 return result;
 }
 struct ggml_v3_tensor * ggml_v3_sqrt(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a) {
+struct ggml_v3_tensor * a) {
 return ggml_v3_sqrt_impl(ctx, a, false);
 }
 struct ggml_v3_tensor * ggml_v3_sqrt_inplace(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a) {
+struct ggml_v3_tensor * a) {
 return ggml_v3_sqrt_impl(ctx, a, true);
 }
 static struct ggml_v3_tensor * ggml_v3_log_impl(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
+struct ggml_v3_tensor * a,
 bool inplace) {
 bool is_node = false;
 if (!inplace && (a->grad)) {
 is_node = true;
 }
 struct ggml_v3_tensor * result = inplace ? ggml_v3_view_tensor(ctx, a) : ggml_v3_dup_tensor(ctx, a);
-result->op   = GGML_V3_OP_LOG;
+result->op = GGML_V3_OP_LOG;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 return result;
 }
 struct ggml_v3_tensor * ggml_v3_log(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a) {
+struct ggml_v3_tensor * a) {
 return ggml_v3_log_impl(ctx, a, false);
 }
 struct ggml_v3_tensor * ggml_v3_log_inplace(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a) {
+struct ggml_v3_tensor * a) {
 return ggml_v3_log_impl(ctx, a, true);
 }
 struct ggml_v3_tensor * ggml_v3_sum(
@@ -3690,7 +3690,7 @@ if (a->grad) {
 is_node = true;
 }
 struct ggml_v3_tensor * result = ggml_v3_new_tensor_1d(ctx, a->type, 1);
-result->op   = GGML_V3_OP_SUM;
+result->op = GGML_V3_OP_SUM;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 return result;
@@ -3707,7 +3707,7 @@ for (int i = 1; i < GGML_V3_MAX_DIMS; ++i) {
 ne[i] = a->ne[i];
 }
 struct ggml_v3_tensor * result = ggml_v3_new_tensor(ctx, a->type, GGML_V3_MAX_DIMS, ne);
-result->op   = GGML_V3_OP_SUM_ROWS;
+result->op = GGML_V3_OP_SUM_ROWS;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 return result;
@@ -3722,7 +3722,7 @@ is_node = true;
 }
 int64_t ne[4] = { 1, a->ne[1], a->ne[2], a->ne[3] };
 struct ggml_v3_tensor * result = ggml_v3_new_tensor(ctx, GGML_V3_TYPE_F32, 4, ne);
-result->op   = GGML_V3_OP_MEAN;
+result->op = GGML_V3_OP_MEAN;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 return result;
@@ -3737,7 +3737,7 @@ GGML_V3_ASSERT(false);
 is_node = true;
 }
 struct ggml_v3_tensor * result = ggml_v3_new_tensor_1d(ctx, GGML_V3_TYPE_I32, a->ne[1]);
-result->op   = GGML_V3_OP_ARGMAX;
+result->op = GGML_V3_OP_ARGMAX;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 return result;
@@ -3752,7 +3752,7 @@ if (a->grad) {
 is_node = true;
 }
 struct ggml_v3_tensor * result = ggml_v3_new_tensor(ctx, a->type, GGML_V3_MAX_DIMS, b->ne);
-result->op   = GGML_V3_OP_REPEAT;
+result->op = GGML_V3_OP_REPEAT;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 return result;
@@ -3770,7 +3770,7 @@ if (ggml_v3_are_same_shape(a, b) && !is_node) {
 return a;
 }
 struct ggml_v3_tensor * result = ggml_v3_new_tensor(ctx, a->type, GGML_V3_MAX_DIMS, b->ne);
-result->op   = GGML_V3_OP_REPEAT_BACK;
+result->op = GGML_V3_OP_REPEAT_BACK;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 return result;
@@ -3793,128 +3793,128 @@ return result;
 }
 struct ggml_v3_tensor * ggml_v3_abs(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a) {
+struct ggml_v3_tensor * a) {
 return ggml_v3_unary(ctx, a, GGML_V3_UNARY_OP_ABS);
 }
 struct ggml_v3_tensor * ggml_v3_abs_inplace(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a) {
+struct ggml_v3_tensor * a) {
 return ggml_v3_unary_inplace(ctx, a, GGML_V3_UNARY_OP_ABS);
 }
 struct ggml_v3_tensor * ggml_v3_sgn(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a) {
+struct ggml_v3_tensor * a) {
 return ggml_v3_unary(ctx, a, GGML_V3_UNARY_OP_SGN);
 }
 struct ggml_v3_tensor * ggml_v3_sgn_inplace(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a) {
+struct ggml_v3_tensor * a) {
 return ggml_v3_unary_inplace(ctx, a, GGML_V3_UNARY_OP_SGN);
 }
 struct ggml_v3_tensor * ggml_v3_neg(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a) {
+struct ggml_v3_tensor * a) {
 return ggml_v3_unary(ctx, a, GGML_V3_UNARY_OP_NEG);
 }
 struct ggml_v3_tensor * ggml_v3_neg_inplace(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a) {
+struct ggml_v3_tensor * a) {
 return ggml_v3_unary_inplace(ctx, a, GGML_V3_UNARY_OP_NEG);
 }
 struct ggml_v3_tensor * ggml_v3_step(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a) {
+struct ggml_v3_tensor * a) {
 return ggml_v3_unary(ctx, a, GGML_V3_UNARY_OP_STEP);
 }
 struct ggml_v3_tensor * ggml_v3_step_inplace(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a) {
+struct ggml_v3_tensor * a) {
 return ggml_v3_unary_inplace(ctx, a, GGML_V3_UNARY_OP_STEP);
 }
 struct ggml_v3_tensor * ggml_v3_tanh(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a) {
+struct ggml_v3_tensor * a) {
 return ggml_v3_unary(ctx, a, GGML_V3_UNARY_OP_TANH);
 }
 struct ggml_v3_tensor * ggml_v3_tanh_inplace(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a) {
+struct ggml_v3_tensor * a) {
 return ggml_v3_unary_inplace(ctx, a, GGML_V3_UNARY_OP_TANH);
 }
 struct ggml_v3_tensor * ggml_v3_elu(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a) {
+struct ggml_v3_tensor * a) {
 return ggml_v3_unary(ctx, a, GGML_V3_UNARY_OP_ELU);
 }
 struct ggml_v3_tensor * ggml_v3_elu_inplace(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a) {
+struct ggml_v3_tensor * a) {
 return ggml_v3_unary_inplace(ctx, a, GGML_V3_UNARY_OP_ELU);
 }
 struct ggml_v3_tensor * ggml_v3_relu(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a) {
+struct ggml_v3_tensor * a) {
 return ggml_v3_unary(ctx, a, GGML_V3_UNARY_OP_RELU);
 }
 struct ggml_v3_tensor * ggml_v3_relu_inplace(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a) {
+struct ggml_v3_tensor * a) {
 return ggml_v3_unary_inplace(ctx, a, GGML_V3_UNARY_OP_RELU);
 }
 struct ggml_v3_tensor * ggml_v3_leaky_relu(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a, float negative_slope, bool inplace) {
+struct ggml_v3_tensor * a, float negative_slope, bool inplace) {
 bool is_node = false;
 if (!inplace && (a->grad)) {
 is_node = true;
 }
 struct ggml_v3_tensor * result = inplace ? ggml_v3_view_tensor(ctx, a) : ggml_v3_dup_tensor(ctx, a);
 ggml_v3_set_op_params(result, &negative_slope, sizeof(negative_slope));
-result->op   = GGML_V3_OP_LEAKY_RELU;
+result->op = GGML_V3_OP_LEAKY_RELU;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 return result;
 }
 struct ggml_v3_tensor * ggml_v3_gelu(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a) {
+struct ggml_v3_tensor * a) {
 return ggml_v3_unary(ctx, a, GGML_V3_UNARY_OP_GELU);
 }
 struct ggml_v3_tensor * ggml_v3_gelu_inplace(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a) {
+struct ggml_v3_tensor * a) {
 return ggml_v3_unary_inplace(ctx, a, GGML_V3_UNARY_OP_GELU);
 }
 struct ggml_v3_tensor * ggml_v3_gelu_quick(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a) {
+struct ggml_v3_tensor * a) {
 return ggml_v3_unary(ctx, a, GGML_V3_UNARY_OP_GELU_QUICK);
 }
 struct ggml_v3_tensor * ggml_v3_gelu_quick_inplace(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a) {
+struct ggml_v3_tensor * a) {
 return ggml_v3_unary_inplace(ctx, a, GGML_V3_UNARY_OP_GELU_QUICK);
 }
 struct ggml_v3_tensor * ggml_v3_silu(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a) {
+struct ggml_v3_tensor * a) {
 return ggml_v3_unary(ctx, a, GGML_V3_UNARY_OP_SILU);
 }
 struct ggml_v3_tensor * ggml_v3_silu_inplace(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a) {
+struct ggml_v3_tensor * a) {
 return ggml_v3_unary_inplace(ctx, a, GGML_V3_UNARY_OP_SILU);
 }
 struct ggml_v3_tensor * ggml_v3_silu_back(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * b) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b) {
 bool is_node = false;
 if (a->grad || b->grad) {
 is_node = true;
 }
 struct ggml_v3_tensor * result = ggml_v3_dup_tensor(ctx, a);
-result->op   = GGML_V3_OP_SILU_BACK;
+result->op = GGML_V3_OP_SILU_BACK;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 result->src[1] = b;
@@ -3922,7 +3922,7 @@ return result;
 }
 static struct ggml_v3_tensor * ggml_v3_norm_impl(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
+struct ggml_v3_tensor * a,
 float eps,
 bool inplace) {
 bool is_node = false;
@@ -3932,26 +3932,26 @@ is_node = true;
 }
 struct ggml_v3_tensor * result = inplace ? ggml_v3_view_tensor(ctx, a) : ggml_v3_dup_tensor(ctx, a);
 ggml_v3_set_op_params(result, &eps, sizeof(eps));
-result->op   = GGML_V3_OP_NORM;
+result->op = GGML_V3_OP_NORM;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 return result;
 }
 struct ggml_v3_tensor * ggml_v3_norm(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
+struct ggml_v3_tensor * a,
 float eps) {
 return ggml_v3_norm_impl(ctx, a, eps, false);
 }
 struct ggml_v3_tensor * ggml_v3_norm_inplace(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
+struct ggml_v3_tensor * a,
 float eps) {
 return ggml_v3_norm_impl(ctx, a, eps, true);
 }
 static struct ggml_v3_tensor * ggml_v3_rms_norm_impl(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
+struct ggml_v3_tensor * a,
 float eps,
 bool inplace) {
 bool is_node = false;
@@ -3960,35 +3960,35 @@ is_node = true;
 }
 struct ggml_v3_tensor * result = inplace ? ggml_v3_view_tensor(ctx, a) : ggml_v3_dup_tensor(ctx, a);
 ggml_v3_set_op_params(result, &eps, sizeof(eps));
-result->op   = GGML_V3_OP_RMS_NORM;
+result->op = GGML_V3_OP_RMS_NORM;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 return result;
 }
 struct ggml_v3_tensor * ggml_v3_rms_norm(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-float  eps) {
+struct ggml_v3_tensor * a,
+float eps) {
 return ggml_v3_rms_norm_impl(ctx, a, eps, false);
 }
 struct ggml_v3_tensor * ggml_v3_rms_norm_inplace(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
+struct ggml_v3_tensor * a,
 float eps) {
 return ggml_v3_rms_norm_impl(ctx, a, eps, true);
 }
 struct ggml_v3_tensor * ggml_v3_rms_norm_back(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * b,
-float  eps) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+float eps) {
 bool is_node = false;
 if (a->grad) {
 is_node = true;
 }
 struct ggml_v3_tensor * result = ggml_v3_dup_tensor(ctx, a);
 ggml_v3_set_op_params(result, &eps, sizeof(eps));
-result->op   = GGML_V3_OP_RMS_NORM_BACK;
+result->op = GGML_V3_OP_RMS_NORM_BACK;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 result->src[1] = b;
@@ -4025,8 +4025,8 @@ return ggml_v3_group_norm_impl(ctx, a, n_groups, true);
 }
 struct ggml_v3_tensor * ggml_v3_mul_mat(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * b) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b) {
 GGML_V3_ASSERT(ggml_v3_can_mul_mat(a, b));
 GGML_V3_ASSERT(!ggml_v3_is_transposed(a));
 bool is_node = false;
@@ -4035,7 +4035,7 @@ is_node = true;
 }
 const int64_t ne[4] = { a->ne[1], b->ne[1], b->ne[2], b->ne[3] };
 struct ggml_v3_tensor * result = ggml_v3_new_tensor(ctx, GGML_V3_TYPE_F32, 4, ne);
-result->op   = GGML_V3_OP_MUL_MAT;
+result->op = GGML_V3_OP_MUL_MAT;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 result->src[1] = b;
@@ -4043,17 +4043,17 @@ return result;
 }
 void ggml_v3_mul_mat_set_prec(
 struct ggml_v3_tensor * a,
-enum ggml_v3_prec       prec) {
+enum ggml_v3_prec prec) {
 const int32_t prec_i32 = (int32_t) prec;
 ggml_v3_set_op_params_i32(a, 0, prec_i32);
 }
 struct ggml_v3_tensor * ggml_v3_mul_mat_id(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * const as[],
-int                   n_as,
-struct ggml_v3_tensor  * ids,
-int                   id,
-struct ggml_v3_tensor  * b) {
+struct ggml_v3_tensor * const as[],
+int n_as,
+struct ggml_v3_tensor * ids,
+int id,
+struct ggml_v3_tensor * b) {
 GGML_V3_ASSERT(ids->type == GGML_V3_TYPE_I32);
 GGML_V3_ASSERT(ids->ne[2] == 1 && ids->ne[3] == 1);
 GGML_V3_ASSERT(ids->ne[1] == b->ne[1]);
@@ -4068,7 +4068,7 @@ const int64_t ne[4] = { as[0]->ne[1], b->ne[1], b->ne[2], b->ne[3] };
 struct ggml_v3_tensor * result = ggml_v3_new_tensor(ctx, GGML_V3_TYPE_F32, 4, ne);
 ggml_v3_set_op_params_i32(result, 0, id);
 ggml_v3_set_op_params_i32(result, 1, n_as);
-result->op   = GGML_V3_OP_MUL_MAT_ID;
+result->op = GGML_V3_OP_MUL_MAT_ID;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = ids;
 result->src[1] = b;
@@ -4083,8 +4083,8 @@ return result;
 }
 struct ggml_v3_tensor * ggml_v3_out_prod(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * b) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b) {
 GGML_V3_ASSERT(ggml_v3_can_out_prod(a, b));
 GGML_V3_ASSERT(!ggml_v3_is_transposed(a));
 bool is_node = false;
@@ -4093,7 +4093,7 @@ is_node = true;
 }
 const int64_t ne[4] = { a->ne[0], b->ne[0], b->ne[2], b->ne[3] };
 struct ggml_v3_tensor * result = ggml_v3_new_tensor(ctx, GGML_V3_TYPE_F32, 4, ne);
-result->op   = GGML_V3_OP_OUT_PROD;
+result->op = GGML_V3_OP_OUT_PROD;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 result->src[1] = b;
@@ -4101,8 +4101,8 @@ return result;
 }
 static struct ggml_v3_tensor * ggml_v3_scale_impl(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-float                 s,
+struct ggml_v3_tensor * a,
+float s,
 bool inplace) {
 GGML_V3_ASSERT(ggml_v3_is_padded_1d(a));
 bool is_node = false;
@@ -4111,7 +4111,7 @@ is_node = true;
 }
 struct ggml_v3_tensor * result = inplace ? ggml_v3_view_tensor(ctx, a) : ggml_v3_dup_tensor(ctx, a);
 ggml_v3_set_op_params(result, &s, sizeof(s));
-result->op   = GGML_V3_OP_SCALE;
+result->op = GGML_V3_OP_SCALE;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 return result;
@@ -4119,23 +4119,23 @@ return result;
 struct ggml_v3_tensor * ggml_v3_scale(
 struct ggml_v3_context * ctx,
 struct ggml_v3_tensor * a,
-float                s) {
+float s) {
 return ggml_v3_scale_impl(ctx, a, s, false);
 }
 struct ggml_v3_tensor * ggml_v3_scale_inplace(
 struct ggml_v3_context * ctx,
 struct ggml_v3_tensor * a,
-float                s) {
+float s) {
 return ggml_v3_scale_impl(ctx, a, s, true);
 }
 static struct ggml_v3_tensor * ggml_v3_set_impl(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * b,
-size_t                nb1,
-size_t                nb2,
-size_t                nb3,
-size_t                offset,
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+size_t nb1,
+size_t nb2,
+size_t nb3,
+size_t offset,
 bool inplace) {
 GGML_V3_ASSERT(ggml_v3_nelements(a) >= ggml_v3_nelements(b));
 bool is_node = false;
@@ -4145,7 +4145,7 @@ is_node = true;
 struct ggml_v3_tensor * result = inplace ? ggml_v3_view_tensor(ctx, a) : ggml_v3_dup_tensor(ctx, a);
 int32_t params[] = { nb1, nb2, nb3, offset, inplace ? 1 : 0 };
 ggml_v3_set_op_params(result, params, sizeof(params));
-result->op   = GGML_V3_OP_SET;
+result->op = GGML_V3_OP_SET;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 result->src[1] = b;
@@ -4153,58 +4153,58 @@ return result;
 }
 struct ggml_v3_tensor * ggml_v3_set(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor *  a,
-struct ggml_v3_tensor *  b,
-size_t                nb1,
-size_t                nb2,
-size_t                nb3,
-size_t                offset) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+size_t nb1,
+size_t nb2,
+size_t nb3,
+size_t offset) {
 return ggml_v3_set_impl(ctx, a, b, nb1, nb2, nb3, offset, false);
 }
 struct ggml_v3_tensor * ggml_v3_set_inplace(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor *  a,
-struct ggml_v3_tensor *  b,
-size_t                nb1,
-size_t                nb2,
-size_t                nb3,
-size_t                offset) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+size_t nb1,
+size_t nb2,
+size_t nb3,
+size_t offset) {
 return ggml_v3_set_impl(ctx, a, b, nb1, nb2, nb3, offset, true);
 }
 struct ggml_v3_tensor * ggml_v3_set_1d(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor *  a,
-struct ggml_v3_tensor *  b,
-size_t                offset) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+size_t offset) {
 return ggml_v3_set_impl(ctx, a, b, a->nb[1], a->nb[2], a->nb[3], offset, false);
 }
 struct ggml_v3_tensor * ggml_v3_set_1d_inplace(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor *  a,
-struct ggml_v3_tensor *  b,
-size_t                offset) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+size_t offset) {
 return ggml_v3_set_impl(ctx, a, b, a->nb[1], a->nb[2], a->nb[3], offset, true);
 }
 struct ggml_v3_tensor * ggml_v3_set_2d(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor *  a,
-struct ggml_v3_tensor *  b,
-size_t                nb1,
-size_t                offset) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+size_t nb1,
+size_t offset) {
 return ggml_v3_set_impl(ctx, a, b, nb1, a->nb[2], a->nb[3], offset, false);
 }
 struct ggml_v3_tensor * ggml_v3_set_2d_inplace(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor *  a,
-struct ggml_v3_tensor *  b,
-size_t                nb1,
-size_t                offset) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+size_t nb1,
+size_t offset) {
 return ggml_v3_set_impl(ctx, a, b, nb1, a->nb[2], a->nb[3], offset, true);
 }
 static struct ggml_v3_tensor * ggml_v3_cpy_impl(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * b) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b) {
 GGML_V3_ASSERT(ggml_v3_nelements(a) == ggml_v3_nelements(b));
 bool is_node = false;
 if (a->grad || b->grad) {
@@ -4216,7 +4216,7 @@ ggml_v3_format_name(result, "%s (copy of %s)", b->name, a->name);
 } else {
 ggml_v3_format_name(result, "%s (copy)", a->name);
 }
-result->op   = GGML_V3_OP_CPY;
+result->op = GGML_V3_OP_CPY;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 result->src[1] = b;
@@ -4230,14 +4230,14 @@ return ggml_v3_cpy_impl(ctx, a, b);
 }
 static struct ggml_v3_tensor * ggml_v3_cont_impl(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a) {
+struct ggml_v3_tensor * a) {
 bool is_node = false;
 if (a->grad) {
 is_node = true;
 }
 struct ggml_v3_tensor * result = ggml_v3_dup_tensor(ctx, a);
 ggml_v3_format_name(result, "%s (cont)", a->name);
-result->op   = GGML_V3_OP_CONT;
+result->op = GGML_V3_OP_CONT;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 return result;
@@ -4249,37 +4249,37 @@ return ggml_v3_cont_impl(ctx, a);
 }
 GGML_V3_API struct ggml_v3_tensor * ggml_v3_cont_1d(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-int64_t               ne0) {
+struct ggml_v3_tensor * a,
+int64_t ne0) {
 return ggml_v3_cont_4d(ctx, a, ne0, 1, 1, 1);
 }
 GGML_V3_API struct ggml_v3_tensor * ggml_v3_cont_2d(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-int64_t               ne0,
-int64_t               ne1) {
+struct ggml_v3_tensor * a,
+int64_t ne0,
+int64_t ne1) {
 return ggml_v3_cont_4d(ctx, a, ne0, ne1, 1, 1);
 }
 GGML_V3_API struct ggml_v3_tensor * ggml_v3_cont_3d(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-int64_t               ne0,
-int64_t               ne1,
-int64_t               ne2) {
+struct ggml_v3_tensor * a,
+int64_t ne0,
+int64_t ne1,
+int64_t ne2) {
 return ggml_v3_cont_4d(ctx, a, ne0, ne1, ne2, 1);
 }
 struct ggml_v3_tensor * ggml_v3_cont_4d(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-int64_t               ne0,
-int64_t               ne1,
-int64_t               ne2,
-int64_t               ne3) {
+struct ggml_v3_tensor * a,
+int64_t ne0,
+int64_t ne1,
+int64_t ne2,
+int64_t ne3) {
 GGML_V3_ASSERT(ggml_v3_nelements(a) == (ne0*ne1*ne2*ne3));
 bool is_node = false;
 struct ggml_v3_tensor * result = ggml_v3_new_tensor_4d(ctx, a->type, ne0, ne1, ne2, ne3);
 ggml_v3_format_name(result, "%s (cont)", a->name);
-result->op   = GGML_V3_OP_CONT;
+result->op = GGML_V3_OP_CONT;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 return result;
@@ -4298,15 +4298,15 @@ if (b->grad) {
 }
 struct ggml_v3_tensor * result = ggml_v3_new_tensor_impl(ctx, a->type, GGML_V3_MAX_DIMS, b->ne, a, 0);
 ggml_v3_format_name(result, "%s (reshaped)", a->name);
-result->op   = GGML_V3_OP_RESHAPE;
+result->op = GGML_V3_OP_RESHAPE;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 return result;
 }
 struct ggml_v3_tensor * ggml_v3_reshape_1d(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-int64_t               ne0) {
+struct ggml_v3_tensor * a,
+int64_t ne0) {
 GGML_V3_ASSERT(ggml_v3_is_contiguous(a));
 GGML_V3_ASSERT(ggml_v3_nelements(a) == ne0);
 bool is_node = false;
@@ -4316,16 +4316,16 @@ is_node = true;
 const int64_t ne[1] = { ne0 };
 struct ggml_v3_tensor * result = ggml_v3_new_tensor_impl(ctx, a->type, 1, ne, a, 0);
 ggml_v3_format_name(result, "%s (reshaped)", a->name);
-result->op   = GGML_V3_OP_RESHAPE;
+result->op = GGML_V3_OP_RESHAPE;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 return result;
 }
 struct ggml_v3_tensor * ggml_v3_reshape_2d(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-int64_t               ne0,
-int64_t               ne1) {
+struct ggml_v3_tensor * a,
+int64_t ne0,
+int64_t ne1) {
 GGML_V3_ASSERT(ggml_v3_is_contiguous(a));
 GGML_V3_ASSERT(ggml_v3_nelements(a) == ne0*ne1);
 bool is_node = false;
@@ -4335,17 +4335,17 @@ is_node = true;
 const int64_t ne[2] = { ne0, ne1 };
 struct ggml_v3_tensor * result = ggml_v3_new_tensor_impl(ctx, a->type, 2, ne, a, 0);
 ggml_v3_format_name(result, "%s (reshaped)", a->name);
-result->op   = GGML_V3_OP_RESHAPE;
+result->op = GGML_V3_OP_RESHAPE;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 return result;
 }
 struct ggml_v3_tensor * ggml_v3_reshape_3d(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-int64_t               ne0,
-int64_t               ne1,
-int64_t               ne2) {
+struct ggml_v3_tensor * a,
+int64_t ne0,
+int64_t ne1,
+int64_t ne2) {
 GGML_V3_ASSERT(ggml_v3_is_contiguous(a));
 GGML_V3_ASSERT(ggml_v3_nelements(a) == ne0*ne1*ne2);
 bool is_node = false;
@@ -4355,18 +4355,18 @@ is_node = true;
 const int64_t ne[3] = { ne0, ne1, ne2 };
 struct ggml_v3_tensor * result = ggml_v3_new_tensor_impl(ctx, a->type, 3, ne, a, 0);
 ggml_v3_format_name(result, "%s (reshaped)", a->name);
-result->op   = GGML_V3_OP_RESHAPE;
+result->op = GGML_V3_OP_RESHAPE;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 return result;
 }
 struct ggml_v3_tensor * ggml_v3_reshape_4d(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-int64_t               ne0,
-int64_t               ne1,
-int64_t               ne2,
-int64_t               ne3) {
+struct ggml_v3_tensor * a,
+int64_t ne0,
+int64_t ne1,
+int64_t ne2,
+int64_t ne3) {
 GGML_V3_ASSERT(ggml_v3_is_contiguous(a));
 GGML_V3_ASSERT(ggml_v3_nelements(a) == ne0*ne1*ne2*ne3);
 bool is_node = false;
@@ -4376,17 +4376,17 @@ is_node = true;
 const int64_t ne[4] = { ne0, ne1, ne2, ne3 };
 struct ggml_v3_tensor * result = ggml_v3_new_tensor_impl(ctx, a->type, 4, ne, a, 0);
 ggml_v3_format_name(result, "%s (reshaped)", a->name);
-result->op   = GGML_V3_OP_RESHAPE;
+result->op = GGML_V3_OP_RESHAPE;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 return result;
 }
 static struct ggml_v3_tensor * ggml_v3_view_impl(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-int                   n_dims,
-const int64_t       * ne,
-size_t                offset) {
+struct ggml_v3_tensor * a,
+int n_dims,
+const int64_t * ne,
+size_t offset) {
 bool is_node = false;
 if (a->grad) {
 is_node = true;
@@ -4394,26 +4394,26 @@ is_node = true;
 struct ggml_v3_tensor * result = ggml_v3_new_tensor_impl(ctx, a->type, n_dims, ne, a, offset);
 ggml_v3_format_name(result, "%s (view)", a->name);
 ggml_v3_set_op_params(result, &offset, sizeof(offset));
-result->op   = GGML_V3_OP_VIEW;
+result->op = GGML_V3_OP_VIEW;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 return result;
 }
 struct ggml_v3_tensor * ggml_v3_view_1d(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-int64_t               ne0,
-size_t                offset) {
+struct ggml_v3_tensor * a,
+int64_t ne0,
+size_t offset) {
 struct ggml_v3_tensor * result = ggml_v3_view_impl(ctx, a, 1, &ne0, offset);
 return result;
 }
 struct ggml_v3_tensor * ggml_v3_view_2d(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-int64_t               ne0,
-int64_t               ne1,
-size_t                nb1,
-size_t                offset) {
+struct ggml_v3_tensor * a,
+int64_t ne0,
+int64_t ne1,
+size_t nb1,
+size_t offset) {
 const int64_t ne[2] = { ne0, ne1 };
 struct ggml_v3_tensor * result = ggml_v3_view_impl(ctx, a, 2, ne, offset);
 result->nb[1] = nb1;
@@ -4423,13 +4423,13 @@ return result;
 }
 struct ggml_v3_tensor * ggml_v3_view_3d(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-int64_t               ne0,
-int64_t               ne1,
-int64_t               ne2,
-size_t                nb1,
-size_t                nb2,
-size_t                offset) {
+struct ggml_v3_tensor * a,
+int64_t ne0,
+int64_t ne1,
+int64_t ne2,
+size_t nb1,
+size_t nb2,
+size_t offset) {
 const int64_t ne[3] = { ne0, ne1, ne2 };
 struct ggml_v3_tensor * result = ggml_v3_view_impl(ctx, a, 3, ne, offset);
 result->nb[1] = nb1;
@@ -4439,15 +4439,15 @@ return result;
 }
 struct ggml_v3_tensor * ggml_v3_view_4d(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-int64_t               ne0,
-int64_t               ne1,
-int64_t               ne2,
-int64_t               ne3,
-size_t                nb1,
-size_t                nb2,
-size_t                nb3,
-size_t                offset) {
+struct ggml_v3_tensor * a,
+int64_t ne0,
+int64_t ne1,
+int64_t ne2,
+int64_t ne3,
+size_t nb1,
+size_t nb2,
+size_t nb3,
+size_t offset) {
 const int64_t ne[4] = { ne0, ne1, ne2, ne3 };
 struct ggml_v3_tensor * result = ggml_v3_view_impl(ctx, a, 4, ne, offset);
 result->nb[1] = nb1;
@@ -4457,11 +4457,11 @@ return result;
 }
 struct ggml_v3_tensor * ggml_v3_permute(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-int                   axis0,
-int                   axis1,
-int                   axis2,
-int                   axis3) {
+struct ggml_v3_tensor * a,
+int axis0,
+int axis1,
+int axis2,
+int axis3) {
 GGML_V3_ASSERT(axis0 >= 0 && axis0 < GGML_V3_MAX_DIMS);
 GGML_V3_ASSERT(axis1 >= 0 && axis1 < GGML_V3_MAX_DIMS);
 GGML_V3_ASSERT(axis2 >= 0 && axis2 < GGML_V3_MAX_DIMS);
@@ -4496,7 +4496,7 @@ result->nb[0] = nb[0];
 result->nb[1] = nb[1];
 result->nb[2] = nb[2];
 result->nb[3] = nb[3];
-result->op   = GGML_V3_OP_PERMUTE;
+result->op = GGML_V3_OP_PERMUTE;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 int32_t params[] = { axis0, axis1, axis2, axis3 };
@@ -4505,7 +4505,7 @@ return result;
 }
 struct ggml_v3_tensor * ggml_v3_transpose(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a) {
+struct ggml_v3_tensor * a) {
 bool is_node = false;
 if (a->grad) {
 is_node = true;
@@ -4516,15 +4516,15 @@ result->ne[0] = a->ne[1];
 result->ne[1] = a->ne[0];
 result->nb[0] = a->nb[1];
 result->nb[1] = a->nb[0];
-result->op   = GGML_V3_OP_TRANSPOSE;
+result->op = GGML_V3_OP_TRANSPOSE;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 return result;
 }
 struct ggml_v3_tensor * ggml_v3_get_rows(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * b) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b) {
 GGML_V3_ASSERT(a->ne[2] == b->ne[1]);
 GGML_V3_ASSERT(b->ne[3] == 1);
 GGML_V3_ASSERT(b->type == GGML_V3_TYPE_I32);
@@ -4537,7 +4537,7 @@ if (a->type == GGML_V3_TYPE_I32) {
 type = a->type;
 }
 struct ggml_v3_tensor * result = ggml_v3_new_tensor_4d(ctx, type, a->ne[0], b->ne[0], b->ne[1], b->ne[2]);
-result->op   = GGML_V3_OP_GET_ROWS;
+result->op = GGML_V3_OP_GET_ROWS;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 result->src[1] = b;
@@ -4545,9 +4545,9 @@ return result;
 }
 struct ggml_v3_tensor * ggml_v3_get_rows_back(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * b,
-struct ggml_v3_tensor  * c) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+struct ggml_v3_tensor * c) {
 GGML_V3_ASSERT(ggml_v3_is_matrix(a) && ggml_v3_is_vector(b) && b->type == GGML_V3_TYPE_I32);
 GGML_V3_ASSERT(ggml_v3_is_matrix(c) && (a->ne[0] == c->ne[0]));
 bool is_node = false;
@@ -4555,7 +4555,7 @@ if (a->grad || b->grad) {
 is_node = true;
 }
 struct ggml_v3_tensor * result = ggml_v3_new_tensor_2d(ctx, GGML_V3_TYPE_F32, c->ne[0], c->ne[1]);
-result->op   = GGML_V3_OP_GET_ROWS_BACK;
+result->op = GGML_V3_OP_GET_ROWS_BACK;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 result->src[1] = b;
@@ -4563,7 +4563,7 @@ return result;
 }
 struct ggml_v3_tensor * ggml_v3_diag(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a) {
+struct ggml_v3_tensor * a) {
 GGML_V3_ASSERT(a->ne[1] == 1);
 bool is_node = false;
 if (a->grad) {
@@ -4571,16 +4571,16 @@ is_node = true;
 }
 const int64_t ne[4] = { a->ne[0], a->ne[0], a->ne[2], a->ne[3] };
 struct ggml_v3_tensor * result = ggml_v3_new_tensor(ctx, a->type, 4, ne);
-result->op   = GGML_V3_OP_DIAG;
+result->op = GGML_V3_OP_DIAG;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 return result;
 }
 static struct ggml_v3_tensor * ggml_v3_diag_mask_inf_impl(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-int                   n_past,
-bool                  inplace) {
+struct ggml_v3_tensor * a,
+int n_past,
+bool inplace) {
 bool is_node = false;
 if (a->grad) {
 is_node = true;
@@ -4588,28 +4588,28 @@ is_node = true;
 struct ggml_v3_tensor * result = inplace ? ggml_v3_view_tensor(ctx, a) : ggml_v3_dup_tensor(ctx, a);
 int32_t params[] = { n_past };
 ggml_v3_set_op_params(result, params, sizeof(params));
-result->op   = GGML_V3_OP_DIAG_MASK_INF;
+result->op = GGML_V3_OP_DIAG_MASK_INF;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 return result;
 }
 struct ggml_v3_tensor * ggml_v3_diag_mask_inf(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-int                   n_past) {
+struct ggml_v3_tensor * a,
+int n_past) {
 return ggml_v3_diag_mask_inf_impl(ctx, a, n_past, false);
 }
 struct ggml_v3_tensor * ggml_v3_diag_mask_inf_inplace(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-int                   n_past) {
+struct ggml_v3_tensor * a,
+int n_past) {
 return ggml_v3_diag_mask_inf_impl(ctx, a, n_past, true);
 }
 static struct ggml_v3_tensor * ggml_v3_diag_mask_zero_impl(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-int                   n_past,
-bool                  inplace) {
+struct ggml_v3_tensor * a,
+int n_past,
+bool inplace) {
 bool is_node = false;
 if (a->grad) {
 is_node = true;
@@ -4617,29 +4617,29 @@ is_node = true;
 struct ggml_v3_tensor * result = inplace ? ggml_v3_view_tensor(ctx, a) : ggml_v3_dup_tensor(ctx, a);
 int32_t params[] = { n_past };
 ggml_v3_set_op_params(result, params, sizeof(params));
-result->op   = GGML_V3_OP_DIAG_MASK_ZERO;
+result->op = GGML_V3_OP_DIAG_MASK_ZERO;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 return result;
 }
 struct ggml_v3_tensor * ggml_v3_diag_mask_zero(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-int                   n_past) {
+struct ggml_v3_tensor * a,
+int n_past) {
 return ggml_v3_diag_mask_zero_impl(ctx, a, n_past, false);
 }
 struct ggml_v3_tensor * ggml_v3_diag_mask_zero_inplace(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-int                   n_past) {
+struct ggml_v3_tensor * a,
+int n_past) {
 return ggml_v3_diag_mask_zero_impl(ctx, a, n_past, true);
 }
 static struct ggml_v3_tensor * ggml_v3_soft_max_impl(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * mask,
-float                 scale,
-bool                  inplace) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * mask,
+float scale,
+bool inplace) {
 GGML_V3_ASSERT(ggml_v3_is_contiguous(a));
 if (mask) {
 GGML_V3_ASSERT(ggml_v3_is_contiguous(mask));
@@ -4654,7 +4654,7 @@ is_node = true;
 struct ggml_v3_tensor * result = inplace ? ggml_v3_view_tensor(ctx, a) : ggml_v3_dup_tensor(ctx, a);
 float params[] = { scale };
 ggml_v3_set_op_params(result, params, sizeof(params));
-result->op   = GGML_V3_OP_SOFT_MAX;
+result->op = GGML_V3_OP_SOFT_MAX;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 result->src[1] = mask;
@@ -4662,32 +4662,32 @@ return result;
 }
 struct ggml_v3_tensor * ggml_v3_soft_max(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a) {
+struct ggml_v3_tensor * a) {
 return ggml_v3_soft_max_impl(ctx, a, NULL, 1.0f, false);
 }
 struct ggml_v3_tensor * ggml_v3_soft_max_inplace(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a) {
+struct ggml_v3_tensor * a) {
 return ggml_v3_soft_max_impl(ctx, a, NULL, 1.0f, true);
 }
 struct ggml_v3_tensor * ggml_v3_soft_max_ext(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * mask,
-float                 scale) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * mask,
+float scale) {
 return ggml_v3_soft_max_impl(ctx, a, mask, scale, false);
 }
 static struct ggml_v3_tensor * ggml_v3_soft_max_back_impl(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * b,
-bool                  inplace) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+bool inplace) {
 bool is_node = false;
 if (a->grad || b->grad) {
 is_node = true;
 }
 struct ggml_v3_tensor * result = inplace ? ggml_v3_view_tensor(ctx, a) : ggml_v3_dup_tensor(ctx, a);
-result->op   = GGML_V3_OP_SOFT_MAX_BACK;
+result->op = GGML_V3_OP_SOFT_MAX_BACK;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 result->src[1] = b;
@@ -4695,33 +4695,33 @@ return result;
 }
 struct ggml_v3_tensor * ggml_v3_soft_max_back(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * b) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b) {
 return ggml_v3_soft_max_back_impl(ctx, a, b, false);
 }
 struct ggml_v3_tensor * ggml_v3_soft_max_back_inplace(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * b) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b) {
 return ggml_v3_soft_max_back_impl(ctx, a, b, true);
 }
 static struct ggml_v3_tensor * ggml_v3_rope_impl(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * b,
-int                   n_dims,
-int                   mode,
-int                   n_ctx,
-int                   n_orig_ctx,
-float                 freq_base,
-float                 freq_scale,
-float                 ext_factor,
-float                 attn_factor,
-float                 beta_fast,
-float                 beta_slow,
-float                 xpos_base,
-bool                  xpos_down,
-bool                  inplace) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+int n_dims,
+int mode,
+int n_ctx,
+int n_orig_ctx,
+float freq_base,
+float freq_scale,
+float ext_factor,
+float attn_factor,
+float beta_fast,
+float beta_slow,
+float xpos_base,
+bool xpos_down,
+bool inplace) {
 GGML_V3_ASSERT(ggml_v3_is_vector(b));
 GGML_V3_ASSERT(b->type == GGML_V3_TYPE_I32);
 GGML_V3_ASSERT(a->ne[2] == b->ne[0]);
@@ -4730,17 +4730,17 @@ if (a->grad) {
 is_node = true;
 }
 struct ggml_v3_tensor * result = inplace ? ggml_v3_view_tensor(ctx, a) : ggml_v3_dup_tensor(ctx, a);
-int32_t params[13] = {  0, n_dims, mode, n_ctx, n_orig_ctx };
-memcpy(params +  5, &freq_base,    sizeof(float));
-memcpy(params +  6, &freq_scale,   sizeof(float));
-memcpy(params +  7, &ext_factor,   sizeof(float));
-memcpy(params +  8, &attn_factor,  sizeof(float));
-memcpy(params +  9, &beta_fast,    sizeof(float));
-memcpy(params + 10, &beta_slow,    sizeof(float));
-memcpy(params + 11, &xpos_base,    sizeof(float));
-memcpy(params + 12, &xpos_down,    sizeof(bool));
+int32_t params[13] = { 0, n_dims, mode, n_ctx, n_orig_ctx };
+memcpy(params + 5, &freq_base, sizeof(float));
+memcpy(params + 6, &freq_scale, sizeof(float));
+memcpy(params + 7, &ext_factor, sizeof(float));
+memcpy(params + 8, &attn_factor, sizeof(float));
+memcpy(params + 9, &beta_fast, sizeof(float));
+memcpy(params + 10, &beta_slow, sizeof(float));
+memcpy(params + 11, &xpos_base, sizeof(float));
+memcpy(params + 12, &xpos_down, sizeof(bool));
 ggml_v3_set_op_params(result, params, sizeof(params));
-result->op   = GGML_V3_OP_ROPE;
+result->op = GGML_V3_OP_ROPE;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 result->src[1] = b;
@@ -4748,40 +4748,40 @@ return result;
 }
 struct ggml_v3_tensor * ggml_v3_rope(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * b,
-int                   n_dims,
-int                   mode,
-int                   n_ctx) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+int n_dims,
+int mode,
+int n_ctx) {
 return ggml_v3_rope_impl(
 ctx, a, b, n_dims, mode, n_ctx, 0, 10000.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, false, false
 );
 }
 struct ggml_v3_tensor * ggml_v3_rope_inplace(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * b,
-int                   n_dims,
-int                   mode,
-int                   n_ctx) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+int n_dims,
+int mode,
+int n_ctx) {
 return ggml_v3_rope_impl(
 ctx, a, b, n_dims, mode, n_ctx, 0, 10000.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, false, true
 );
 }
 struct ggml_v3_tensor * ggml_v3_rope_custom(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * b,
-int                   n_dims,
-int                   mode,
-int                   n_ctx,
-int                   n_orig_ctx,
-float                 freq_base,
-float                 freq_scale,
-float                 ext_factor,
-float                 attn_factor,
-float                 beta_fast,
-float                 beta_slow) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+int n_dims,
+int mode,
+int n_ctx,
+int n_orig_ctx,
+float freq_base,
+float freq_scale,
+float ext_factor,
+float attn_factor,
+float beta_fast,
+float beta_slow) {
 return ggml_v3_rope_impl(
 ctx, a, b, n_dims, mode, n_ctx, n_orig_ctx, freq_base, freq_scale,
 ext_factor, attn_factor, beta_fast, beta_slow, 0.0f, false, false
@@ -4789,18 +4789,18 @@ ext_factor, attn_factor, beta_fast, beta_slow, 0.0f, false, false
 }
 struct ggml_v3_tensor * ggml_v3_rope_custom_inplace(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * b,
-int                   n_dims,
-int                   mode,
-int                   n_ctx,
-int                   n_orig_ctx,
-float                 freq_base,
-float                 freq_scale,
-float                 ext_factor,
-float                 attn_factor,
-float                 beta_fast,
-float                 beta_slow) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+int n_dims,
+int mode,
+int n_ctx,
+int n_orig_ctx,
+float freq_base,
+float freq_scale,
+float ext_factor,
+float attn_factor,
+float beta_fast,
+float beta_slow) {
 return ggml_v3_rope_impl(
 ctx, a, b, n_dims, mode, n_ctx, n_orig_ctx, freq_base, freq_scale,
 ext_factor, attn_factor, beta_fast, beta_slow, 0.0f, false, true
@@ -4808,29 +4808,29 @@ ext_factor, attn_factor, beta_fast, beta_slow, 0.0f, false, true
 }
 struct ggml_v3_tensor * ggml_v3_rope_xpos_inplace(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * b,
-int                   n_dims,
-float                 base,
-bool                  down) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+int n_dims,
+float base,
+bool down) {
 return ggml_v3_rope_impl(ctx, a, b, n_dims, 0, 0, 0, 10000.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, base, down, true);
 }
 struct ggml_v3_tensor * ggml_v3_rope_back(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * b,
-int                   n_dims,
-int                   mode,
-int                   n_ctx,
-int                   n_orig_ctx,
-float                 freq_base,
-float                 freq_scale,
-float                 ext_factor,
-float                 attn_factor,
-float                 beta_fast,
-float                 beta_slow,
-float                 xpos_base,
-bool                  xpos_down) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+int n_dims,
+int mode,
+int n_ctx,
+int n_orig_ctx,
+float freq_base,
+float freq_scale,
+float ext_factor,
+float attn_factor,
+float beta_fast,
+float beta_slow,
+float xpos_base,
+bool xpos_down) {
 GGML_V3_ASSERT(ggml_v3_is_vector(b));
 GGML_V3_ASSERT(b->type == GGML_V3_TYPE_I32);
 GGML_V3_ASSERT(a->ne[2] == b->ne[0]);
@@ -4840,17 +4840,17 @@ if (a->grad) {
 is_node = false;
 }
 struct ggml_v3_tensor * result = ggml_v3_dup_tensor(ctx, a);
-int32_t params[13] = {  0, n_dims, mode, n_ctx, n_orig_ctx };
-memcpy(params +  5, &freq_base,    sizeof(float));
-memcpy(params +  6, &freq_scale,   sizeof(float));
-memcpy(params +  7, &ext_factor,   sizeof(float));
-memcpy(params +  8, &attn_factor,  sizeof(float));
-memcpy(params +  9, &beta_fast,    sizeof(float));
-memcpy(params + 10, &beta_slow,    sizeof(float));
-memcpy(params + 11, &xpos_base,    sizeof(float));
-memcpy(params + 12, &xpos_down,    sizeof(bool));
+int32_t params[13] = { 0, n_dims, mode, n_ctx, n_orig_ctx };
+memcpy(params + 5, &freq_base, sizeof(float));
+memcpy(params + 6, &freq_scale, sizeof(float));
+memcpy(params + 7, &ext_factor, sizeof(float));
+memcpy(params + 8, &attn_factor, sizeof(float));
+memcpy(params + 9, &beta_fast, sizeof(float));
+memcpy(params + 10, &beta_slow, sizeof(float));
+memcpy(params + 11, &xpos_base, sizeof(float));
+memcpy(params + 12, &xpos_down, sizeof(bool));
 ggml_v3_set_op_params(result, params, sizeof(params));
-result->op   = GGML_V3_OP_ROPE_BACK;
+result->op = GGML_V3_OP_ROPE_BACK;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 result->src[1] = b;
@@ -4858,10 +4858,10 @@ return result;
 }
 struct ggml_v3_tensor * ggml_v3_alibi(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-int                   n_past,
-int                   n_head,
-float                 bias_max) {
+struct ggml_v3_tensor * a,
+int n_past,
+int n_head,
+float bias_max) {
 GGML_V3_ASSERT(n_past >= 0);
 bool is_node = false;
 if (a->grad) {
@@ -4872,16 +4872,16 @@ struct ggml_v3_tensor * result = ggml_v3_view_tensor(ctx, a);
 int32_t op_params[3] = { n_past, n_head };
 memcpy(op_params + 2, &bias_max, sizeof(float));
 ggml_v3_set_op_params(result, op_params, sizeof(op_params));
-result->op   = GGML_V3_OP_ALIBI;
+result->op = GGML_V3_OP_ALIBI;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 return result;
 }
 struct ggml_v3_tensor * ggml_v3_clamp(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-float                 min,
-float                 max) {
+struct ggml_v3_tensor * a,
+float min,
+float max) {
 bool is_node = false;
 if (a->grad) {
 GGML_V3_ASSERT(false);
@@ -4890,7 +4890,7 @@ is_node = true;
 struct ggml_v3_tensor * result = ggml_v3_view_tensor(ctx, a);
 float params[] = { min, max };
 ggml_v3_set_op_params(result, params, sizeof(params));
-result->op   = GGML_V3_OP_CLAMP;
+result->op = GGML_V3_OP_CLAMP;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 return result;
@@ -4900,11 +4900,11 @@ return (ins + 2 * p - d * (ks - 1) - 1) / s + 1;
 }
 GGML_V3_API struct ggml_v3_tensor * ggml_v3_conv_1d(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * b,
-int                   s0,
-int                   p0,
-int                   d0) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+int s0,
+int p0,
+int d0) {
 struct ggml_v3_tensor * im2col = ggml_v3_im2col(ctx, a, b, s0, 0, p0, 0, d0, 0, false);
 struct ggml_v3_tensor * result =
 ggml_v3_mul_mat(ctx,
@@ -4915,10 +4915,10 @@ return result;
 }
 struct ggml_v3_tensor* ggml_v3_conv_1d_ph(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * b,
-int                   s,
-int                   d) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+int s,
+int d) {
 return ggml_v3_conv_1d(ctx, a, b, s, a->ne[0] / 2, d);
 }
 static int64_t ggml_v3_calc_conv_transpose_1d_output_size(int64_t ins, int64_t ks, int s, int p, int d) {
@@ -4926,11 +4926,11 @@ return (ins - 1) * s - 2 * p + d * (ks - 1) + 1;
 }
 GGML_V3_API struct ggml_v3_tensor * ggml_v3_conv_transpose_1d(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * b,
-int                   s0,
-int                   p0,
-int                   d0) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+int s0,
+int p0,
+int d0) {
 GGML_V3_ASSERT(ggml_v3_is_matrix(b));
 GGML_V3_ASSERT(a->ne[2] == b->ne[1]);
 GGML_V3_ASSERT(a->ne[3] == 1);
@@ -4956,15 +4956,15 @@ return result;
 }
 struct ggml_v3_tensor * ggml_v3_im2col(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * b,
-int                  s0,
-int                  s1,
-int                  p0,
-int                  p1,
-int                  d0,
-int                  d1,
-bool                 is_2D) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+int s0,
+int s1,
+int p0,
+int p1,
+int d0,
+int d1,
+bool is_2D) {
 if(is_2D) {
 GGML_V3_ASSERT(a->ne[2] == b->ne[2]);
 } else {
@@ -4976,12 +4976,12 @@ GGML_V3_ASSERT(false);
 is_node = true;
 }
 const int64_t OH = is_2D ? ggml_v3_calc_conv_output_size(b->ne[1], a->ne[1], s1, p1, d1) : 0;
-const int64_t OW =         ggml_v3_calc_conv_output_size(b->ne[0], a->ne[0], s0, p0, d0);
+const int64_t OW = ggml_v3_calc_conv_output_size(b->ne[0], a->ne[0], s0, p0, d0);
 const int64_t ne[4] = {
 is_2D ? (a->ne[2] * a->ne[1] * a->ne[0]) : a->ne[1] * a->ne[0],
 OW,
 is_2D ? OH : b->ne[2],
-is_2D ?      b->ne[3] : 1,
+is_2D ? b->ne[3] : 1,
 };
 struct ggml_v3_tensor * result = ggml_v3_new_tensor(ctx, GGML_V3_TYPE_F16, 4, ne);
 int32_t params[] = { s0, s1, p0, p1, d0, d1, (is_2D ? 1 : 0) };
@@ -4994,32 +4994,32 @@ return result;
 }
 struct ggml_v3_tensor * ggml_v3_conv_2d(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * b,
-int                  s0,
-int                  s1,
-int                  p0,
-int                  p1,
-int                  d0,
-int                  d1) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+int s0,
+int s1,
+int p0,
+int p1,
+int d0,
+int d1) {
 struct ggml_v3_tensor * im2col = ggml_v3_im2col(ctx, a, b, s0, s1, p0, p1, d0, d1, true);
 struct ggml_v3_tensor * result =
 ggml_v3_mul_mat(ctx,
-ggml_v3_reshape_2d(ctx, im2col, im2col->ne[0],  im2col->ne[3] * im2col->ne[2] * im2col->ne[1]),
-ggml_v3_reshape_2d(ctx, a, (a->ne[0] * a->ne[1] * a->ne[2]),  a->ne[3]));
+ggml_v3_reshape_2d(ctx, im2col, im2col->ne[0], im2col->ne[3] * im2col->ne[2] * im2col->ne[1]),
+ggml_v3_reshape_2d(ctx, a, (a->ne[0] * a->ne[1] * a->ne[2]), a->ne[3]));
 result = ggml_v3_reshape_4d(ctx, result, im2col->ne[1], im2col->ne[2], a->ne[3], im2col->ne[3]);
 return result;
 }
 struct ggml_v3_tensor * ggml_v3_conv_2d_sk_p0(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * b) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b) {
 return ggml_v3_conv_2d(ctx, a, b, a->ne[0], a->ne[1], 0, 0, 1, 1);
 }
 struct ggml_v3_tensor * ggml_v3_conv_2d_s1_ph(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * b) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b) {
 return ggml_v3_conv_2d(ctx, a, b, 1, 1, a->ne[0] / 2, a->ne[1] / 2, 1, 1);
 }
 static int64_t ggml_v3_calc_conv_transpose_output_size(int64_t ins, int64_t ks, int s, int p) {
@@ -5027,9 +5027,9 @@ return (ins - 1) * s - 2 * p + ks;
 }
 struct ggml_v3_tensor * ggml_v3_conv_transpose_2d_p0(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * b,
-int                   stride) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+int stride) {
 GGML_V3_ASSERT(a->ne[3] == b->ne[2]);
 bool is_node = false;
 if (a->grad || b->grad) {
@@ -5054,11 +5054,11 @@ return (ins + 2 * p - ks) / s + 1;
 }
 struct ggml_v3_tensor * ggml_v3_pool_1d(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-enum ggml_v3_op_pool     op,
-int                   k0,
-int                   s0,
-int                   p0) {
+struct ggml_v3_tensor * a,
+enum ggml_v3_op_pool op,
+int k0,
+int s0,
+int p0) {
 bool is_node = false;
 if (a->grad) {
 GGML_V3_ASSERT(false);
@@ -5078,14 +5078,14 @@ return result;
 }
 struct ggml_v3_tensor * ggml_v3_pool_2d(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-enum ggml_v3_op_pool     op,
-int                   k0,
-int                   k1,
-int                   s0,
-int                   s1,
-float                 p0,
-float                 p1) {
+struct ggml_v3_tensor * a,
+enum ggml_v3_op_pool op,
+int k0,
+int k1,
+int s0,
+int s1,
+float p0,
+float p1) {
 bool is_node = false;
 if (a->grad) {
 GGML_V3_ASSERT(false);
@@ -5125,7 +5125,7 @@ return result;
 }
 struct ggml_v3_tensor * ggml_v3_pad(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
+struct ggml_v3_tensor * a,
 int p0, int p1, int p2, int p3) {
 bool is_node = false;
 if (a->grad) {
@@ -5150,20 +5150,20 @@ return ggml_v3_upscale_impl(ctx, a, scale_factor);
 }
 struct ggml_v3_tensor * ggml_v3_argsort(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-enum ggml_v3_sort_order  order) {
+struct ggml_v3_tensor * a,
+enum ggml_v3_sort_order order) {
 bool is_node = false;
 struct ggml_v3_tensor * result = ggml_v3_new_tensor(ctx, GGML_V3_TYPE_I32, GGML_V3_MAX_DIMS, a->ne);
 ggml_v3_set_op_params_i32(result, 0, (int32_t) order);
-result->op   = GGML_V3_OP_ARGSORT;
+result->op = GGML_V3_OP_ARGSORT;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 return result;
 }
 struct ggml_v3_tensor * ggml_v3_top_k(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-int                   k) {
+struct ggml_v3_tensor * a,
+int k) {
 GGML_V3_ASSERT(a->ne[0] >= k);
 struct ggml_v3_tensor * result = ggml_v3_argsort(ctx, a, GGML_V3_SORT_DESC);
 result = ggml_v3_view_4d(ctx, result,
@@ -5174,10 +5174,10 @@ return result;
 }
 struct ggml_v3_tensor * ggml_v3_flash_attn(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * q,
-struct ggml_v3_tensor  * k,
-struct ggml_v3_tensor  * v,
-bool                  masked) {
+struct ggml_v3_tensor * q,
+struct ggml_v3_tensor * k,
+struct ggml_v3_tensor * v,
+bool masked) {
 GGML_V3_ASSERT(ggml_v3_can_mul_mat(k, q));
 bool is_node = false;
 if (q->grad || k->grad || v->grad) {
@@ -5186,7 +5186,7 @@ is_node = true;
 struct ggml_v3_tensor * result = ggml_v3_new_tensor(ctx, GGML_V3_TYPE_F32, GGML_V3_MAX_DIMS, q->ne);
 int32_t t = masked ? 1 : 0;
 ggml_v3_set_op_params(result, &t, sizeof(t));
-result->op   = GGML_V3_OP_FLASH_ATTN;
+result->op = GGML_V3_OP_FLASH_ATTN;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = q;
 result->src[1] = k;
@@ -5195,18 +5195,18 @@ return result;
 }
 struct ggml_v3_tensor * ggml_v3_flash_ff(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * b0,
-struct ggml_v3_tensor  * b1,
-struct ggml_v3_tensor  * c0,
-struct ggml_v3_tensor  * c1) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b0,
+struct ggml_v3_tensor * b1,
+struct ggml_v3_tensor * c0,
+struct ggml_v3_tensor * c1) {
 GGML_V3_ASSERT(ggml_v3_can_mul_mat(b0, a));
 bool is_node = false;
 if (a->grad || b0->grad || b1->grad || c0->grad || c1->grad) {
 is_node = true;
 }
 struct ggml_v3_tensor * result = ggml_v3_new_tensor(ctx, GGML_V3_TYPE_F32, GGML_V3_MAX_DIMS, a->ne);
-result->op   = GGML_V3_OP_FLASH_FF;
+result->op = GGML_V3_OP_FLASH_FF;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 result->src[1] = b0;
@@ -5217,17 +5217,17 @@ return result;
 }
 struct ggml_v3_tensor * ggml_v3_flash_attn_back(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * q,
-struct ggml_v3_tensor  * k,
-struct ggml_v3_tensor  * v,
-struct ggml_v3_tensor  * d,
-bool                  masked) {
+struct ggml_v3_tensor * q,
+struct ggml_v3_tensor * k,
+struct ggml_v3_tensor * v,
+struct ggml_v3_tensor * d,
+bool masked) {
 GGML_V3_ASSERT(ggml_v3_can_mul_mat(k, q));
-const int64_t     D = q->ne[0];
-const int64_t     N = q->ne[1];
-const int64_t     M = k->ne[1];
-const int64_t   ne2 = q->ne[2];
-const int64_t   ne3 = q->ne[3];
+const int64_t D = q->ne[0];
+const int64_t N = q->ne[1];
+const int64_t M = k->ne[1];
+const int64_t ne2 = q->ne[2];
+const int64_t ne3 = q->ne[3];
 const int64_t kvne2 = k->ne[2];
 GGML_V3_ASSERT(k->ne[0] == D);
 GGML_V3_ASSERT(v->ne[0] == M);
@@ -5254,12 +5254,12 @@ const size_t tsize = ggml_v3_type_size(result_type);
 const size_t offs_q = 0;
 const size_t offs_k = offs_q + GGML_V3_PAD(elem_q * tsize, GGML_V3_MEM_ALIGN);
 const size_t offs_v = offs_k + GGML_V3_PAD(elem_k * tsize, GGML_V3_MEM_ALIGN);
-const size_t end    = offs_v + GGML_V3_PAD(elem_v * tsize, GGML_V3_MEM_ALIGN);
+const size_t end = offs_v + GGML_V3_PAD(elem_v * tsize, GGML_V3_MEM_ALIGN);
 const size_t nelements = (end + tsize - 1)/tsize;
 struct ggml_v3_tensor * result = ggml_v3_new_tensor_1d(ctx, GGML_V3_TYPE_F32, nelements);
 int32_t masked_i = masked ? 1 : 0;
 ggml_v3_set_op_params(result, &masked_i, sizeof(masked_i));
-result->op   = GGML_V3_OP_FLASH_ATTN_BACK;
+result->op = GGML_V3_OP_FLASH_ATTN_BACK;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = q;
 result->src[1] = k;
@@ -5269,10 +5269,10 @@ return result;
 }
 struct ggml_v3_tensor * ggml_v3_win_part(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-int                   w) {
+struct ggml_v3_tensor * a,
+int w) {
 GGML_V3_ASSERT(a->ne[3] == 1);
-GGML_V3_ASSERT(a->type  == GGML_V3_TYPE_F32);
+GGML_V3_ASSERT(a->type == GGML_V3_TYPE_F32);
 bool is_node = false;
 if (a->grad) {
 GGML_V3_ASSERT(false);
@@ -5282,22 +5282,22 @@ const int px = (w - a->ne[1]%w)%w;
 const int py = (w - a->ne[2]%w)%w;
 const int npx = (px + a->ne[1])/w;
 const int npy = (py + a->ne[2])/w;
-const int np  = npx*npy;
+const int np = npx*npy;
 const int64_t ne[4] = { a->ne[0], w, w, np, };
 struct ggml_v3_tensor * result = ggml_v3_new_tensor(ctx, GGML_V3_TYPE_F32, 4, ne);
 int32_t params[] = { npx, npy, w };
 ggml_v3_set_op_params(result, params, sizeof(params));
-result->op   = GGML_V3_OP_WIN_PART;
+result->op = GGML_V3_OP_WIN_PART;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 return result;
 }
 struct ggml_v3_tensor * ggml_v3_win_unpart(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-int                   w0,
-int                   h0,
-int                   w) {
+struct ggml_v3_tensor * a,
+int w0,
+int h0,
+int w) {
 GGML_V3_ASSERT(a->type == GGML_V3_TYPE_F32);
 bool is_node = false;
 if (a->grad) {
@@ -5308,16 +5308,16 @@ const int64_t ne[4] = { a->ne[0], w0, h0, 1, };
 struct ggml_v3_tensor * result = ggml_v3_new_tensor(ctx, GGML_V3_TYPE_F32, 3, ne);
 int32_t params[] = { w };
 ggml_v3_set_op_params(result, params, sizeof(params));
-result->op   = GGML_V3_OP_WIN_UNPART;
+result->op = GGML_V3_OP_WIN_UNPART;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 return result;
 }
 struct ggml_v3_tensor * ggml_v3_get_rel_pos(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-int                   qh,
-int                   kh) {
+struct ggml_v3_tensor * a,
+int qh,
+int kh) {
 GGML_V3_ASSERT(qh == kh);
 GGML_V3_ASSERT(2*MAX(qh, kh) - 1 == a->ne[1]);
 bool is_node = false;
@@ -5327,17 +5327,17 @@ is_node = true;
 }
 const int64_t ne[4] = { a->ne[0], kh, qh, 1, };
 struct ggml_v3_tensor * result = ggml_v3_new_tensor(ctx, GGML_V3_TYPE_F16, 3, ne);
-result->op   = GGML_V3_OP_GET_REL_POS;
+result->op = GGML_V3_OP_GET_REL_POS;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 return result;
 }
 static struct ggml_v3_tensor * ggml_v3_add_rel_pos_impl(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * pw,
-struct ggml_v3_tensor  * ph,
-bool                  inplace) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * pw,
+struct ggml_v3_tensor * ph,
+bool inplace) {
 GGML_V3_ASSERT(ggml_v3_are_same_shape(pw, ph));
 GGML_V3_ASSERT(ggml_v3_is_contiguous(a));
 GGML_V3_ASSERT(ggml_v3_is_contiguous(pw));
@@ -5353,7 +5353,7 @@ is_node = true;
 }
 struct ggml_v3_tensor * result = inplace ? ggml_v3_view_tensor(ctx, a) : ggml_v3_dup_tensor(ctx, a);
 ggml_v3_set_op_params_i32(result, 0, inplace ? 1 : 0);
-result->op   = GGML_V3_OP_ADD_REL_POS;
+result->op = GGML_V3_OP_ADD_REL_POS;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 result->src[1] = pw;
@@ -5362,16 +5362,16 @@ return result;
 }
 struct ggml_v3_tensor * ggml_v3_add_rel_pos(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * pw,
-struct ggml_v3_tensor  * ph) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * pw,
+struct ggml_v3_tensor * ph) {
 return ggml_v3_add_rel_pos_impl(ctx, a, pw, ph, false);
 }
 struct ggml_v3_tensor * ggml_v3_add_rel_pos_inplace(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
-struct ggml_v3_tensor  * pw,
-struct ggml_v3_tensor  * ph) {
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * pw,
+struct ggml_v3_tensor * ph) {
 return ggml_v3_add_rel_pos_impl(ctx, a, pw, ph, true);
 }
 static struct ggml_v3_tensor * ggml_v3_unary_impl(
@@ -5385,28 +5385,28 @@ is_node = true;
 }
 struct ggml_v3_tensor * result = inplace ? ggml_v3_view_tensor(ctx, a) : ggml_v3_dup_tensor(ctx, a);
 ggml_v3_set_op_params_i32(result, 0, (int32_t) op);
-result->op   = GGML_V3_OP_UNARY;
+result->op = GGML_V3_OP_UNARY;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 return result;
 }
 struct ggml_v3_tensor * ggml_v3_unary(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
+struct ggml_v3_tensor * a,
 enum ggml_v3_unary_op op) {
 return ggml_v3_unary_impl(ctx, a, op, false);
 }
 struct ggml_v3_tensor * ggml_v3_unary_inplace(
 struct ggml_v3_context * ctx,
-struct ggml_v3_tensor  * a,
+struct ggml_v3_tensor * a,
 enum ggml_v3_unary_op op) {
 return ggml_v3_unary_impl(ctx, a, op, true);
 }
 static struct ggml_v3_tensor * ggml_v3_map_unary_impl_f32(
-struct ggml_v3_context        * ctx,
-struct ggml_v3_tensor         * a,
-const  ggml_v3_unary_op_f32_t fun,
-bool   inplace) {
+struct ggml_v3_context * ctx,
+struct ggml_v3_tensor * a,
+const ggml_v3_unary_op_f32_t fun,
+bool inplace) {
 bool is_node = false;
 if (!inplace && a->grad) {
 is_node = true;
@@ -5419,23 +5419,23 @@ result->src[0] = a;
 return result;
 }
 struct ggml_v3_tensor * ggml_v3_map_unary_f32(
-struct ggml_v3_context        * ctx,
-struct ggml_v3_tensor         * a,
-const  ggml_v3_unary_op_f32_t fun) {
+struct ggml_v3_context * ctx,
+struct ggml_v3_tensor * a,
+const ggml_v3_unary_op_f32_t fun) {
 return ggml_v3_map_unary_impl_f32(ctx, a, fun, false);
 }
 struct ggml_v3_tensor * ggml_v3_map_unary_inplace_f32(
-struct ggml_v3_context        * ctx,
-struct ggml_v3_tensor         * a,
-const  ggml_v3_unary_op_f32_t fun) {
+struct ggml_v3_context * ctx,
+struct ggml_v3_tensor * a,
+const ggml_v3_unary_op_f32_t fun) {
 return ggml_v3_map_unary_impl_f32(ctx, a, fun, true);
 }
 static struct ggml_v3_tensor * ggml_v3_map_binary_impl_f32(
-struct ggml_v3_context         * ctx,
-struct ggml_v3_tensor          * a,
-struct ggml_v3_tensor          * b,
-const  ggml_v3_binary_op_f32_t fun,
-bool   inplace) {
+struct ggml_v3_context * ctx,
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+const ggml_v3_binary_op_f32_t fun,
+bool inplace) {
 GGML_V3_ASSERT(ggml_v3_are_same_shape(a, b));
 bool is_node = false;
 if (!inplace && (a->grad || b->grad)) {
@@ -5450,24 +5450,24 @@ result->src[1] = b;
 return result;
 }
 struct ggml_v3_tensor * ggml_v3_map_binary_f32(
-struct ggml_v3_context         * ctx,
-struct ggml_v3_tensor          * a,
-struct ggml_v3_tensor          * b,
-const  ggml_v3_binary_op_f32_t fun) {
+struct ggml_v3_context * ctx,
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+const ggml_v3_binary_op_f32_t fun) {
 return ggml_v3_map_binary_impl_f32(ctx, a, b, fun, false);
 }
 struct ggml_v3_tensor * ggml_v3_map_binary_inplace_f32(
-struct ggml_v3_context         * ctx,
-struct ggml_v3_tensor          * a,
-struct ggml_v3_tensor          * b,
-const  ggml_v3_binary_op_f32_t fun) {
+struct ggml_v3_context * ctx,
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+const ggml_v3_binary_op_f32_t fun) {
 return ggml_v3_map_binary_impl_f32(ctx, a, b, fun, true);
 }
 static struct ggml_v3_tensor * ggml_v3_map_custom1_impl_f32(
-struct ggml_v3_context          * ctx,
-struct ggml_v3_tensor           * a,
-const  ggml_v3_custom1_op_f32_t   fun,
-bool   inplace) {
+struct ggml_v3_context * ctx,
+struct ggml_v3_tensor * a,
+const ggml_v3_custom1_op_f32_t fun,
+bool inplace) {
 bool is_node = false;
 if (!inplace && a->grad) {
 is_node = true;
@@ -5480,23 +5480,23 @@ result->src[0] = a;
 return result;
 }
 struct ggml_v3_tensor * ggml_v3_map_custom1_f32(
-struct ggml_v3_context          * ctx,
-struct ggml_v3_tensor           * a,
-const  ggml_v3_custom1_op_f32_t   fun) {
+struct ggml_v3_context * ctx,
+struct ggml_v3_tensor * a,
+const ggml_v3_custom1_op_f32_t fun) {
 return ggml_v3_map_custom1_impl_f32(ctx, a, fun, false);
 }
 struct ggml_v3_tensor * ggml_v3_map_custom1_inplace_f32(
-struct ggml_v3_context          * ctx,
-struct ggml_v3_tensor           * a,
-const  ggml_v3_custom1_op_f32_t   fun) {
+struct ggml_v3_context * ctx,
+struct ggml_v3_tensor * a,
+const ggml_v3_custom1_op_f32_t fun) {
 return ggml_v3_map_custom1_impl_f32(ctx, a, fun, true);
 }
 static struct ggml_v3_tensor * ggml_v3_map_custom2_impl_f32(
-struct ggml_v3_context          * ctx,
-struct ggml_v3_tensor           * a,
-struct ggml_v3_tensor           * b,
-const  ggml_v3_custom2_op_f32_t   fun,
-bool   inplace) {
+struct ggml_v3_context * ctx,
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+const ggml_v3_custom2_op_f32_t fun,
+bool inplace) {
 bool is_node = false;
 if (!inplace && (a->grad || b->grad)) {
 is_node = true;
@@ -5510,26 +5510,26 @@ result->src[1] = b;
 return result;
 }
 struct ggml_v3_tensor * ggml_v3_map_custom2_f32(
-struct ggml_v3_context          * ctx,
-struct ggml_v3_tensor           * a,
-struct ggml_v3_tensor           * b,
-const  ggml_v3_custom2_op_f32_t   fun) {
+struct ggml_v3_context * ctx,
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+const ggml_v3_custom2_op_f32_t fun) {
 return ggml_v3_map_custom2_impl_f32(ctx, a, b, fun, false);
 }
 struct ggml_v3_tensor * ggml_v3_map_custom2_inplace_f32(
-struct ggml_v3_context          * ctx,
-struct ggml_v3_tensor           * a,
-struct ggml_v3_tensor           * b,
-const  ggml_v3_custom2_op_f32_t   fun) {
+struct ggml_v3_context * ctx,
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+const ggml_v3_custom2_op_f32_t fun) {
 return ggml_v3_map_custom2_impl_f32(ctx, a, b, fun, true);
 }
 static struct ggml_v3_tensor * ggml_v3_map_custom3_impl_f32(
-struct ggml_v3_context          * ctx,
-struct ggml_v3_tensor           * a,
-struct ggml_v3_tensor           * b,
-struct ggml_v3_tensor           * c,
-const  ggml_v3_custom3_op_f32_t   fun,
-bool   inplace) {
+struct ggml_v3_context * ctx,
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+struct ggml_v3_tensor * c,
+const ggml_v3_custom3_op_f32_t fun,
+bool inplace) {
 bool is_node = false;
 if (!inplace && (a->grad || b->grad || c->grad)) {
 is_node = true;
@@ -5544,19 +5544,19 @@ result->src[2] = c;
 return result;
 }
 struct ggml_v3_tensor * ggml_v3_map_custom3_f32(
-struct ggml_v3_context          * ctx,
-struct ggml_v3_tensor           * a,
-struct ggml_v3_tensor           * b,
-struct ggml_v3_tensor           * c,
-const  ggml_v3_custom3_op_f32_t   fun) {
+struct ggml_v3_context * ctx,
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+struct ggml_v3_tensor * c,
+const ggml_v3_custom3_op_f32_t fun) {
 return ggml_v3_map_custom3_impl_f32(ctx, a, b, c, fun, false);
 }
 struct ggml_v3_tensor * ggml_v3_map_custom3_inplace_f32(
-struct ggml_v3_context          * ctx,
-struct ggml_v3_tensor           * a,
-struct ggml_v3_tensor           * b,
-struct ggml_v3_tensor           * c,
-const  ggml_v3_custom3_op_f32_t   fun) {
+struct ggml_v3_context * ctx,
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+struct ggml_v3_tensor * c,
+const ggml_v3_custom3_op_f32_t fun) {
 return ggml_v3_map_custom3_impl_f32(ctx, a, b, c, fun, true);
 }
 struct ggml_v3_map_custom1_op_params {
@@ -5565,12 +5565,12 @@ int n_tasks;
 void * userdata;
 };
 static struct ggml_v3_tensor * ggml_v3_map_custom1_impl(
-struct ggml_v3_context          * ctx,
-struct ggml_v3_tensor           * a,
-const  ggml_v3_custom1_op_t       fun,
-int                            n_tasks,
-void                         * userdata,
-bool                           inplace) {
+struct ggml_v3_context * ctx,
+struct ggml_v3_tensor * a,
+const ggml_v3_custom1_op_t fun,
+int n_tasks,
+void * userdata,
+bool inplace) {
 GGML_V3_ASSERT(n_tasks == GGML_V3_N_TASKS_MAX || n_tasks > 0);
 bool is_node = false;
 if (!inplace && a->grad) {
@@ -5589,19 +5589,19 @@ result->src[0] = a;
 return result;
 }
 struct ggml_v3_tensor * ggml_v3_map_custom1(
-struct ggml_v3_context          * ctx,
-struct ggml_v3_tensor           * a,
-const  ggml_v3_custom1_op_t       fun,
-int                            n_tasks,
-void                         * userdata) {
+struct ggml_v3_context * ctx,
+struct ggml_v3_tensor * a,
+const ggml_v3_custom1_op_t fun,
+int n_tasks,
+void * userdata) {
 return ggml_v3_map_custom1_impl(ctx, a, fun, n_tasks, userdata, false);
 }
 struct ggml_v3_tensor * ggml_v3_map_custom1_inplace(
-struct ggml_v3_context          * ctx,
-struct ggml_v3_tensor           * a,
-const  ggml_v3_custom1_op_t       fun,
-int                            n_tasks,
-void                         * userdata) {
+struct ggml_v3_context * ctx,
+struct ggml_v3_tensor * a,
+const ggml_v3_custom1_op_t fun,
+int n_tasks,
+void * userdata) {
 return ggml_v3_map_custom1_impl(ctx, a, fun, n_tasks, userdata, true);
 }
 struct ggml_v3_map_custom2_op_params {
@@ -5610,13 +5610,13 @@ int n_tasks;
 void * userdata;
 };
 static struct ggml_v3_tensor * ggml_v3_map_custom2_impl(
-struct ggml_v3_context          * ctx,
-struct ggml_v3_tensor           * a,
-struct ggml_v3_tensor           * b,
-const  ggml_v3_custom2_op_t       fun,
-int                            n_tasks,
-void                         * userdata,
-bool                           inplace) {
+struct ggml_v3_context * ctx,
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+const ggml_v3_custom2_op_t fun,
+int n_tasks,
+void * userdata,
+bool inplace) {
 GGML_V3_ASSERT(n_tasks == GGML_V3_N_TASKS_MAX || n_tasks > 0);
 bool is_node = false;
 if (!inplace && (a->grad || b->grad)) {
@@ -5636,21 +5636,21 @@ result->src[1] = b;
 return result;
 }
 struct ggml_v3_tensor * ggml_v3_map_custom2(
-struct ggml_v3_context          * ctx,
-struct ggml_v3_tensor           * a,
-struct ggml_v3_tensor           * b,
-const  ggml_v3_custom2_op_t       fun,
-int                            n_tasks,
-void                         * userdata) {
+struct ggml_v3_context * ctx,
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+const ggml_v3_custom2_op_t fun,
+int n_tasks,
+void * userdata) {
 return ggml_v3_map_custom2_impl(ctx, a, b, fun, n_tasks, userdata, false);
 }
 struct ggml_v3_tensor * ggml_v3_map_custom2_inplace(
-struct ggml_v3_context          * ctx,
-struct ggml_v3_tensor           * a,
-struct ggml_v3_tensor           * b,
-const  ggml_v3_custom2_op_t       fun,
-int                            n_tasks,
-void                         * userdata) {
+struct ggml_v3_context * ctx,
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+const ggml_v3_custom2_op_t fun,
+int n_tasks,
+void * userdata) {
 return ggml_v3_map_custom2_impl(ctx, a, b, fun, n_tasks, userdata, true);
 }
 struct ggml_v3_map_custom3_op_params {
@@ -5659,14 +5659,14 @@ int n_tasks;
 void * userdata;
 };
 static struct ggml_v3_tensor * ggml_v3_map_custom3_impl(
-struct ggml_v3_context          * ctx,
-struct ggml_v3_tensor           * a,
-struct ggml_v3_tensor           * b,
-struct ggml_v3_tensor           * c,
-const  ggml_v3_custom3_op_t       fun,
-int                            n_tasks,
-void                         * userdata,
-bool                           inplace) {
+struct ggml_v3_context * ctx,
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+struct ggml_v3_tensor * c,
+const ggml_v3_custom3_op_t fun,
+int n_tasks,
+void * userdata,
+bool inplace) {
 GGML_V3_ASSERT(n_tasks == GGML_V3_N_TASKS_MAX || n_tasks > 0);
 bool is_node = false;
 if (!inplace && (a->grad || b->grad || c->grad)) {
@@ -5687,50 +5687,50 @@ result->src[2] = c;
 return result;
 }
 struct ggml_v3_tensor * ggml_v3_map_custom3(
-struct ggml_v3_context          * ctx,
-struct ggml_v3_tensor           * a,
-struct ggml_v3_tensor           * b,
-struct ggml_v3_tensor           * c,
-const  ggml_v3_custom3_op_t       fun,
-int                            n_tasks,
-void                         * userdata) {
+struct ggml_v3_context * ctx,
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+struct ggml_v3_tensor * c,
+const ggml_v3_custom3_op_t fun,
+int n_tasks,
+void * userdata) {
 return ggml_v3_map_custom3_impl(ctx, a, b, c, fun, n_tasks, userdata, false);
 }
 struct ggml_v3_tensor * ggml_v3_map_custom3_inplace(
-struct ggml_v3_context          * ctx,
-struct ggml_v3_tensor           * a,
-struct ggml_v3_tensor           * b,
-struct ggml_v3_tensor           * c,
-const  ggml_v3_custom3_op_t       fun,
-int                            n_tasks,
-void                         * userdata) {
+struct ggml_v3_context * ctx,
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+struct ggml_v3_tensor * c,
+const ggml_v3_custom3_op_t fun,
+int n_tasks,
+void * userdata) {
 return ggml_v3_map_custom3_impl(ctx, a, b, c, fun, n_tasks, userdata, true);
 }
 struct ggml_v3_tensor * ggml_v3_cross_entropy_loss(
-struct ggml_v3_context         * ctx,
-struct ggml_v3_tensor          * a,
-struct ggml_v3_tensor          * b) {
+struct ggml_v3_context * ctx,
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b) {
 GGML_V3_ASSERT(ggml_v3_are_same_shape(a, b));
 bool is_node = false;
 if (a->grad || b->grad) {
 is_node = true;
 }
 struct ggml_v3_tensor * result = ggml_v3_new_tensor_1d(ctx, a->type, 1);
-result->op   = GGML_V3_OP_CROSS_ENTROPY_LOSS;
+result->op = GGML_V3_OP_CROSS_ENTROPY_LOSS;
 result->grad = is_node ? ggml_v3_dup_tensor(ctx, result) : NULL;
 result->src[0] = a;
 result->src[1] = b;
 return result;
 }
 struct ggml_v3_tensor * ggml_v3_cross_entropy_loss_back(
-struct ggml_v3_context         * ctx,
-struct ggml_v3_tensor          * a,
-struct ggml_v3_tensor          * b,
-struct ggml_v3_tensor          * c) {
+struct ggml_v3_context * ctx,
+struct ggml_v3_tensor * a,
+struct ggml_v3_tensor * b,
+struct ggml_v3_tensor * c) {
 GGML_V3_ASSERT(ggml_v3_are_same_shape(a, b));
 GGML_V3_ASSERT(ggml_v3_is_scalar(c));
 struct ggml_v3_tensor * result = ggml_v3_dup_tensor(ctx, a);
-result->op   = GGML_V3_OP_CROSS_ENTROPY_LOSS_BACK;
+result->op = GGML_V3_OP_CROSS_ENTROPY_LOSS_BACK;
 result->grad = NULL;
 result->src[0] = a;
 result->src[1] = b;
@@ -5765,7 +5765,7 @@ const int ie0 = dr * ith;
 const int ie1 = MIN(ie0 + dr, ne);
 if (ie0 < ie1) {
 memcpy(
-((char *)  dst->data + ie0*nb0),
+((char *) dst->data + ie0*nb0),
 ((char *) src0->data + ie0*nb00),
 (ie1 - ie0) * ggml_v3_type_size(src0->type));
 }
@@ -5797,7 +5797,7 @@ for (int64_t i03 = 0; i03 < ne03; i03++) {
 for (int64_t i02 = 0; i02 < ne02; i02++) {
 for (int64_t i01 = ir0; i01 < ir1; i01++) {
 memcpy(
-((char *)  dst->data + i01*nb1  + i02*nb2  + i03*nb3),
+((char *) dst->data + i01*nb1 + i02*nb2 + i03*nb3),
 ((char *) src0->data + i01*nb01 + i02*nb02 + i03*nb03),
 rs);
 }
@@ -5923,7 +5923,7 @@ i13 = 0;
 for (int64_t i01 = ir0; i01 < ir1; i01++) {
 for (int64_t i00 = 0; i00 < ne00; i00++) {
 const char * src0_ptr = ((char *) src0->data + i00*nb00 + i01*nb01 + i02*nb02 + i03*nb03);
-char * dst_ptr  = ((char *)  dst->data + i10*nb0  + i11*nb1  + i12*nb2  + i13*nb3);
+char * dst_ptr = ((char *) dst->data + i10*nb0 + i11*nb1 + i12*nb2 + i13*nb3);
 memcpy(dst_ptr, src0_ptr, sizeof(ggml_v3_fp16_t));
 if (++i10 == ne00) {
 i10 = 0;
@@ -5973,7 +5973,7 @@ i13 = 0;
 for (int64_t i01 = ir0; i01 < ir1; i01++) {
 for (int64_t i00 = 0; i00 < ne00; i00++) {
 const char * src0_ptr = ((char *) src0->data + i00*nb00 + i01*nb01 + i02*nb02 + i03*nb03);
-char * dst_ptr  = ((char *)  dst->data + i10*nb0  + i11*nb1  + i12*nb2  + i13*nb3);
+char * dst_ptr = ((char *) dst->data + i10*nb0 + i11*nb1 + i12*nb2 + i13*nb3);
 *(float *) dst_ptr = GGML_V3_FP16_TO_FP32(*(const ggml_v3_fp16_t *) src0_ptr);
 if (++i10 == ne0) {
 i10 = 0;
@@ -6035,7 +6035,7 @@ for (int64_t i03 = 0; i03 < ne03; i03++) {
 for (int64_t i02 = 0; i02 < ne02; i02++) {
 for (int64_t i01 = ir0; i01 < ir1; i01++) {
 memcpy(
-((char *)  dst->data + i01*nb1  + i02*nb2  + i03*nb3),
+((char *) dst->data + i01*nb1 + i02*nb2 + i03*nb3),
 ((char *) src0->data + i01*nb01 + i02*nb02 + i03*nb03),
 rs);
 }
@@ -6141,7 +6141,7 @@ i13 = 0;
 for (int64_t i01 = ir0; i01 < ir1; i01++) {
 for (int64_t i00 = 0; i00 < ne00; i00++) {
 const char * src0_ptr = ((char *) src0->data + i00*nb00 + i01*nb01 + i02*nb02 + i03*nb03);
-char * dst_ptr  = ((char *)  dst->data + i10*nb0  + i11*nb1  + i12*nb2  + i13*nb3);
+char * dst_ptr = ((char *) dst->data + i10*nb0 + i11*nb1 + i12*nb2 + i13*nb3);
 memcpy(dst_ptr, src0_ptr, sizeof(float));
 if (++i10 == ne0) {
 i10 = 0;
@@ -6191,7 +6191,7 @@ i13 = 0;
 for (int64_t i01 = ir0; i01 < ir1; i01++) {
 for (int64_t i00 = 0; i00 < ne00; i00++) {
 const char * src0_ptr = ((char *) src0->data + i00*nb00 + i01*nb01 + i02*nb02 + i03*nb03);
-char * dst_ptr  = ((char *)  dst->data + i10*nb0  + i11*nb1  + i12*nb2  + i13*nb3);
+char * dst_ptr = ((char *) dst->data + i10*nb0 + i11*nb1 + i12*nb2 + i13*nb3);
 *(ggml_v3_fp16_t *) dst_ptr = GGML_V3_FP32_TO_FP16(*(const float *) src0_ptr);
 if (++i10 == ne0) {
 i10 = 0;
@@ -6255,7 +6255,7 @@ for (int64_t i03 = 0; i03 < ne03; i03++) {
 for (int64_t i02 = 0; i02 < ne02; i02++) {
 for (int64_t i01 = ir0; i01 < ir1; i01++) {
 memcpy(
-((char *)  dst->data + i01*nb1  + i02*nb2  + i03*nb3),
+((char *) dst->data + i01*nb1 + i02*nb2 + i03*nb3),
 ((char *) src0->data + i01*nb01 + i02*nb02 + i03*nb03),
 rs);
 }
@@ -6318,7 +6318,7 @@ i13 = 0;
 for (int64_t i01 = ir0; i01 < ir1; i01++) {
 for (int64_t i00 = 0; i00 < ne00; i00++) {
 const char * src0_ptr = ((char *) src0->data + i00*nb00 + i01*nb01 + i02*nb02 + i03*nb03);
-char * dst_ptr  = ((char *)  dst->data + i10*nb0  + i11*nb1  + i12*nb2  + i13*nb3);
+char * dst_ptr = ((char *) dst->data + i10*nb0 + i11*nb1 + i12*nb2 + i13*nb3);
 memcpy(dst_ptr, src0_ptr, type_size);
 if (++i10 == ne0) {
 i10 = 0;
@@ -6384,7 +6384,7 @@ return;
 }
 const int ith = params->ith;
 const int nth = params->nth;
-const int nr  = ggml_v3_nrows(src0);
+const int nr = ggml_v3_nrows(src0);
 GGML_V3_TENSOR_BINARY_OP_LOCALS
 GGML_V3_ASSERT( nb0 == sizeof(float));
 GGML_V3_ASSERT(nb00 == sizeof(float));
@@ -6400,7 +6400,7 @@ const int64_t i13 = i03 % ne13;
 const int64_t i12 = i02 % ne12;
 const int64_t i11 = i01 % ne11;
 const int64_t nr0 = ne00 / ne10;
-float * dst_ptr  = (float *) ((char *) dst->data  + i03*nb3  + i02*nb2  + i01*nb1 );
+float * dst_ptr = (float *) ((char *) dst->data + i03*nb3 + i02*nb2 + i01*nb1 );
 float * src0_ptr = (float *) ((char *) src0->data + i03*nb03 + i02*nb02 + i01*nb01);
 float * src1_ptr = (float *) ((char *) src1->data + i13*nb13 + i12*nb12 + i11*nb11);
 for (int64_t r = 0; r < nr0; ++r) {
@@ -6419,7 +6419,7 @@ const int64_t i01 = (ir - i03*ne02*ne01 - i02*ne01);
 const int64_t i13 = i03 % ne13;
 const int64_t i12 = i02 % ne12;
 const int64_t i11 = i01 % ne11;
-float * dst_ptr  = (float *) ((char *) dst->data  + i03*nb3  + i02*nb2  + i01*nb1 );
+float * dst_ptr = (float *) ((char *) dst->data + i03*nb3 + i02*nb2 + i01*nb1 );
 float * src0_ptr = (float *) ((char *) src0->data + i03*nb03 + i02*nb02 + i01*nb01);
 for (int64_t i0 = 0; i0 < ne0; ++i0) {
 const int64_t i10 = i0 % ne10;
@@ -6440,7 +6440,7 @@ return;
 }
 const int ith = params->ith;
 const int nth = params->nth;
-const int nr  = ggml_v3_nrows(src0);
+const int nr = ggml_v3_nrows(src0);
 GGML_V3_TENSOR_BINARY_OP_LOCALS
 GGML_V3_ASSERT(src0->type == GGML_V3_TYPE_F16);
 GGML_V3_ASSERT(src1->type == GGML_V3_TYPE_F32);
@@ -6448,7 +6448,7 @@ if (dst->type == GGML_V3_TYPE_F32) {
 GGML_V3_ASSERT( nb0 == sizeof(float));
 }
 else {
-GGML_V3_ASSERT(dst->type  == GGML_V3_TYPE_F16);
+GGML_V3_ASSERT(dst->type == GGML_V3_TYPE_F16);
 GGML_V3_ASSERT( nb0 == sizeof(ggml_v3_fp16_t));
 }
 GGML_V3_ASSERT(nb00 == sizeof(ggml_v3_fp16_t));
@@ -6461,9 +6461,9 @@ for (int ir = ir0; ir < ir1; ++ir) {
 const int i3 = ir/(ne2*ne1);
 const int i2 = (ir - i3*ne2*ne1)/ne1;
 const int i1 = (ir - i3*ne2*ne1 - i2*ne1);
-ggml_v3_fp16_t * dst_ptr  = (ggml_v3_fp16_t *) ((char *) dst->data  + i3*nb3  + i2*nb2  + i1*nb1);
+ggml_v3_fp16_t * dst_ptr = (ggml_v3_fp16_t *) ((char *) dst->data + i3*nb3 + i2*nb2 + i1*nb1);
 ggml_v3_fp16_t * src0_ptr = (ggml_v3_fp16_t *) ((char *) src0->data + i3*nb03 + i2*nb02 + i1*nb01);
-float *       src1_ptr = (float *)       ((char *) src1->data + i3*nb13 + i2*nb12 + i1*nb11);
+float * src1_ptr = (float *) ((char *) src1->data + i3*nb13 + i2*nb12 + i1*nb11);
 for (int i = 0; i < ne0; i++) {
 dst_ptr[i] = GGML_V3_FP32_TO_FP16(GGML_V3_FP16_TO_FP32(src0_ptr[i]) + src1_ptr[i]);
 }
@@ -6473,9 +6473,9 @@ for (int ir = ir0; ir < ir1; ++ir) {
 const int i3 = ir/(ne2*ne1);
 const int i2 = (ir - i3*ne2*ne1)/ne1;
 const int i1 = (ir - i3*ne2*ne1 - i2*ne1);
-float *       dst_ptr  = (float *)       ((char *) dst->data  + i3*nb3  + i2*nb2  + i1*nb1);
+float * dst_ptr = (float *) ((char *) dst->data + i3*nb3 + i2*nb2 + i1*nb1);
 ggml_v3_fp16_t * src0_ptr = (ggml_v3_fp16_t *) ((char *) src0->data + i3*nb03 + i2*nb02 + i1*nb01);
-float *       src1_ptr = (float *)       ((char *) src1->data + i3*nb13 + i2*nb12 + i1*nb11);
+float * src1_ptr = (float *) ((char *) src1->data + i3*nb13 + i2*nb12 + i1*nb11);
 for (int i = 0; i < ne0; i++) {
 dst_ptr[i] = GGML_V3_FP16_TO_FP32(src0_ptr[i]) + src1_ptr[i];
 }
@@ -6497,11 +6497,11 @@ return;
 }
 const int ith = params->ith;
 const int nth = params->nth;
-const int nr  = ggml_v3_nrows(src0);
+const int nr = ggml_v3_nrows(src0);
 GGML_V3_TENSOR_BINARY_OP_LOCALS
 GGML_V3_ASSERT(src0->type == GGML_V3_TYPE_F16);
 GGML_V3_ASSERT(src1->type == GGML_V3_TYPE_F16);
-GGML_V3_ASSERT(dst->type  == GGML_V3_TYPE_F16);
+GGML_V3_ASSERT(dst->type == GGML_V3_TYPE_F16);
 GGML_V3_ASSERT( nb0 == sizeof(ggml_v3_fp16_t));
 GGML_V3_ASSERT(nb00 == sizeof(ggml_v3_fp16_t));
 const int dr = (nr + nth - 1)/nth;
@@ -6512,7 +6512,7 @@ for (int ir = ir0; ir < ir1; ++ir) {
 const int i3 = ir/(ne2*ne1);
 const int i2 = (ir - i3*ne2*ne1)/ne1;
 const int i1 = (ir - i3*ne2*ne1 - i2*ne1);
-ggml_v3_fp16_t * dst_ptr  = (ggml_v3_fp16_t *) ((char *) dst->data  + i3*nb3  + i2*nb2  + i1*nb1);
+ggml_v3_fp16_t * dst_ptr = (ggml_v3_fp16_t *) ((char *) dst->data + i3*nb3 + i2*nb2 + i1*nb1);
 ggml_v3_fp16_t * src0_ptr = (ggml_v3_fp16_t *) ((char *) src0->data + i3*nb03 + i2*nb02 + i1*nb01);
 ggml_v3_fp16_t * src1_ptr = (ggml_v3_fp16_t *) ((char *) src1->data + i3*nb13 + i2*nb12 + i1*nb11);
 for (int i = 0; i < ne0; i++) {
@@ -6533,7 +6533,7 @@ GGML_V3_ASSERT(ggml_v3_are_same_shape(src0, src1) && ggml_v3_are_same_shape(src0
 if (params->type == GGML_V3_TASK_INIT || params->type == GGML_V3_TASK_FINALIZE) {
 return;
 }
-const int nr  = ggml_v3_nrows(src0);
+const int nr = ggml_v3_nrows(src0);
 GGML_V3_TENSOR_BINARY_OP_LOCALS
 const int ith = params->ith;
 const int nth = params->nth;
@@ -6562,9 +6562,9 @@ const int i11 = i01;
 const int i3 = i03;
 const int i2 = i02;
 const int i1 = i01;
-void  * src0_row = (void *) ((char *) src0->data + (i01*nb01 + i02*nb02 + i03*nb03));
+void * src0_row = (void *) ((char *) src0->data + (i01*nb01 + i02*nb02 + i03*nb03));
 float * src1_row = (float *)((char *) src1->data + (i11*nb11 + i12*nb12 + i13*nb13));
-void  * dst_row  = (void *) ((char *)  dst->data + ( i1*nb1  +  i2*nb2  +  i3*nb3));
+void * dst_row = (void *) ((char *) dst->data + ( i1*nb1 + i2*nb2 + i3*nb3));
 assert(ne00 % 32 == 0);
 dequantize_row_q(src0_row, wdata, ne00);
 ggml_v3_vec_acc_f32(ne00, wdata, src1_row);
@@ -6630,7 +6630,7 @@ return;
 }
 const int ith = params->ith;
 const int nth = params->nth;
-const int nr  = ggml_v3_nrows(src0);
+const int nr = ggml_v3_nrows(src0);
 GGML_V3_TENSOR_UNARY_OP_LOCALS
 GGML_V3_ASSERT( nb0 == sizeof(float));
 GGML_V3_ASSERT(nb00 == sizeof(float));
@@ -6646,11 +6646,11 @@ UNUSED(ggml_v3_vec_add1_f32);
 vDSP_vadd(
 (float *) ((char *) src0->data + i3*nb03 + i2*nb02 + i1*nb01), 1,
 (float *) ((char *) src1->data), 0,
-(float *) ((char *) dst->data  + i3*nb3  + i2*nb2  + i1*nb1 ), 1,
+(float *) ((char *) dst->data + i3*nb3 + i2*nb2 + i1*nb1 ), 1,
 ne0);
 #else
 ggml_v3_vec_add1_f32(ne0,
-(float *) ((char *) dst->data  + i3*nb3  + i2*nb2  + i1*nb1 ),
+(float *) ((char *) dst->data + i3*nb3 + i2*nb2 + i1*nb1 ),
 (float *) ((char *) src0->data + i3*nb03 + i2*nb02 + i1*nb01),
 *(float *) src1->data);
 #endif
@@ -6669,11 +6669,11 @@ return;
 const float v = *(float *) src1->data;
 const int ith = params->ith;
 const int nth = params->nth;
-const int nr  = ggml_v3_nrows(src0);
+const int nr = ggml_v3_nrows(src0);
 GGML_V3_TENSOR_UNARY_OP_LOCALS
 GGML_V3_ASSERT(src0->type == GGML_V3_TYPE_F16);
 GGML_V3_ASSERT(src1->type == GGML_V3_TYPE_F32);
-GGML_V3_ASSERT(dst->type  == GGML_V3_TYPE_F16);
+GGML_V3_ASSERT(dst->type == GGML_V3_TYPE_F16);
 GGML_V3_ASSERT( nb0 == sizeof(ggml_v3_fp16_t));
 GGML_V3_ASSERT(nb00 == sizeof(ggml_v3_fp16_t));
 const int dr = (nr + nth - 1)/nth;
@@ -6683,7 +6683,7 @@ for (int ir = ir0; ir < ir1; ++ir) {
 const int i3 = ir/(ne2*ne1);
 const int i2 = (ir - i3*ne2*ne1)/ne1;
 const int i1 = (ir - i3*ne2*ne1 - i2*ne1);
-ggml_v3_fp16_t * dst_ptr  = (ggml_v3_fp16_t *) ((char *) dst->data  + i3*nb3  + i2*nb2  + i1*nb1 );
+ggml_v3_fp16_t * dst_ptr = (ggml_v3_fp16_t *) ((char *) dst->data + i3*nb3 + i2*nb2 + i1*nb1 );
 ggml_v3_fp16_t * src0_ptr = (ggml_v3_fp16_t *) ((char *) src0->data + i3*nb03 + i2*nb02 + i1*nb01);
 for (int i = 0; i < ne0; i++) {
 dst_ptr[i] = GGML_V3_FP32_TO_FP16(GGML_V3_FP16_TO_FP32(src0_ptr[i]) + v);
@@ -6703,11 +6703,11 @@ return;
 const float v = GGML_V3_FP16_TO_FP32(*(ggml_v3_fp16_t *) src1->data);
 const int ith = params->ith;
 const int nth = params->nth;
-const int nr  = ggml_v3_nrows(src0);
+const int nr = ggml_v3_nrows(src0);
 GGML_V3_TENSOR_UNARY_OP_LOCALS
 GGML_V3_ASSERT(src0->type == GGML_V3_TYPE_F16);
 GGML_V3_ASSERT(src1->type == GGML_V3_TYPE_F16);
-GGML_V3_ASSERT(dst->type  == GGML_V3_TYPE_F16);
+GGML_V3_ASSERT(dst->type == GGML_V3_TYPE_F16);
 GGML_V3_ASSERT( nb0 == sizeof(ggml_v3_fp16_t));
 GGML_V3_ASSERT(nb00 == sizeof(ggml_v3_fp16_t));
 const int dr = (nr + nth - 1)/nth;
@@ -6717,7 +6717,7 @@ for (int ir = ir0; ir < ir1; ++ir) {
 const int i3 = ir/(ne2*ne1);
 const int i2 = (ir - i3*ne2*ne1)/ne1;
 const int i1 = (ir - i3*ne2*ne1 - i2*ne1);
-ggml_v3_fp16_t * dst_ptr  = (ggml_v3_fp16_t *) ((char *) dst->data  + i3*nb3  + i2*nb2  + i1*nb1 );
+ggml_v3_fp16_t * dst_ptr = (ggml_v3_fp16_t *) ((char *) dst->data + i3*nb3 + i2*nb2 + i1*nb1 );
 ggml_v3_fp16_t * src0_ptr = (ggml_v3_fp16_t *) ((char *) src0->data + i3*nb03 + i2*nb02 + i1*nb01);
 for (int i = 0; i < ne0; i++) {
 dst_ptr[i] = GGML_V3_FP32_TO_FP16(GGML_V3_FP16_TO_FP32(src0_ptr[i]) + v);
@@ -6737,7 +6737,7 @@ return;
 const float v = *(float *) src1->data;
 const int ith = params->ith;
 const int nth = params->nth;
-const int nr  = ggml_v3_nrows(src0);
+const int nr = ggml_v3_nrows(src0);
 GGML_V3_TENSOR_UNARY_OP_LOCALS
 const enum ggml_v3_type type = src0->type;
 ggml_v3_to_float_t const dequantize_row_q = type_traits[type].to_float;
@@ -6757,8 +6757,8 @@ for (int ir = ir0; ir < ir1; ++ir) {
 const int i3 = ir/(ne2*ne1);
 const int i2 = (ir - i3*ne2*ne1)/ne1;
 const int i1 = (ir - i3*ne2*ne1 - i2*ne1);
-void  * src0_row = (void *) ((char *) src0->data + (i1*nb01 + i2*nb02 + i3*nb03));
-void  * dst_row  = (void *) ((char *)  dst->data + (i1*nb1  + i2*nb2  + i3*nb0 ));
+void * src0_row = (void *) ((char *) src0->data + (i1*nb01 + i2*nb02 + i3*nb03));
+void * dst_row = (void *) ((char *) dst->data + (i1*nb1 + i2*nb2 + i3*nb0 ));
 assert(ne0 % 32 == 0);
 dequantize_row_q(src0_row, wdata, ne0);
 ggml_v3_vec_acc1_f32(ne0, wdata, v);
@@ -6816,14 +6816,14 @@ const struct ggml_v3_tensor * src1,
 struct ggml_v3_tensor * dst) {
 GGML_V3_ASSERT(ggml_v3_are_same_shape(src0, dst));
 GGML_V3_ASSERT(ggml_v3_is_contiguous(dst) && ggml_v3_is_contiguous(src0));
-size_t nb1     = ((int32_t *) dst->op_params)[0];
-size_t nb2     = ((int32_t *) dst->op_params)[1];
-size_t nb3     = ((int32_t *) dst->op_params)[2];
-size_t offset  = ((int32_t *) dst->op_params)[3];
-bool   inplace = (bool) ((int32_t *) dst->op_params)[4];
+size_t nb1 = ((int32_t *) dst->op_params)[0];
+size_t nb2 = ((int32_t *) dst->op_params)[1];
+size_t nb3 = ((int32_t *) dst->op_params)[2];
+size_t offset = ((int32_t *) dst->op_params)[3];
+bool inplace = (bool) ((int32_t *) dst->op_params)[4];
 if (!inplace && (params->type == GGML_V3_TASK_INIT)) {
 memcpy(
-((char *)  dst->data),
+((char *) dst->data),
 ((char *) src0->data),
 ggml_v3_nbytes(dst));
 }
@@ -6835,13 +6835,13 @@ const int nth = params->nth;
 const int nr = ggml_v3_nrows(src1);
 const int nc = src1->ne[0];
 GGML_V3_TENSOR_LOCALS(int64_t, ne1, src1, ne)
-GGML_V3_TENSOR_LOCALS(size_t,  nb1, src1, nb)
+GGML_V3_TENSOR_LOCALS(size_t, nb1, src1, nb)
 const size_t nb0 = ggml_v3_element_size(src0);
 const size_t nb00 = nb0;
 const size_t nb01 = nb1;
 const size_t nb02 = nb2;
 const size_t nb03 = nb3;
-GGML_V3_ASSERT(offset + (ne10 == 0 ? 0 : ne10-1)*nb0  + (ne11 == 0 ? 0 : ne11-1)*nb1  + (ne12 == 0 ? 0 : ne12-1)*nb2  + (ne13 == 0 ? 0 : ne13-1)*nb3  < ggml_v3_nbytes(dst));
+GGML_V3_ASSERT(offset + (ne10 == 0 ? 0 : ne10-1)*nb0 + (ne11 == 0 ? 0 : ne11-1)*nb1 + (ne12 == 0 ? 0 : ne12-1)*nb2 + (ne13 == 0 ? 0 : ne13-1)*nb3 < ggml_v3_nbytes(dst));
 GGML_V3_ASSERT(offset + (ne10 == 0 ? 0 : ne10-1)*nb00 + (ne11 == 0 ? 0 : ne11-1)*nb01 + (ne12 == 0 ? 0 : ne12-1)*nb02 + (ne13 == 0 ? 0 : ne13-1)*nb03 < ggml_v3_nbytes(src0));
 GGML_V3_ASSERT(nb10 == sizeof(float));
 const int dr = (nr + nth - 1)/nth;
@@ -6855,10 +6855,10 @@ const int i1 = (ir - i3*ne12*ne11 - i2*ne11);
 vDSP_vadd(
 (float *) ((char *) src0->data + i3*nb03 + i2*nb02 + i1*nb01 + offset), 1,
 (float *) ((char *) src1->data + i3*nb13 + i2*nb12 + i1*nb11), 1,
-(float *) ((char *) dst->data  + i3*nb3  + i2*nb2  + i1*nb1  + offset), 1, nc);
+(float *) ((char *) dst->data + i3*nb3 + i2*nb2 + i1*nb1 + offset), 1, nc);
 #else
 ggml_v3_vec_add_f32(nc,
-(float *) ((char *)  dst->data + i3*nb3  + i2*nb2  + i1*nb1  + offset),
+(float *) ((char *) dst->data + i3*nb3 + i2*nb2 + i1*nb1 + offset),
 (float *) ((char *) src0->data + i3*nb03 + i2*nb02 + i1*nb01 + offset),
 (float *) ((char *) src1->data + i3*nb13 + i2*nb12 + i1*nb11));
 #endif
@@ -6904,7 +6904,7 @@ assert(ggml_v3_are_same_shape(src0, src1) && ggml_v3_are_same_shape(src0, dst));
 if (params->type == GGML_V3_TASK_INIT || params->type == GGML_V3_TASK_FINALIZE) {
 return;
 }
-const int nr  = ggml_v3_nrows(src0);
+const int nr = ggml_v3_nrows(src0);
 GGML_V3_TENSOR_BINARY_OP_LOCALS
 GGML_V3_ASSERT( nb0 == sizeof(float));
 GGML_V3_ASSERT(nb00 == sizeof(float));
@@ -6917,11 +6917,11 @@ const int i1 = (ir - i3*ne2*ne1 - i2*ne1);
 vDSP_vsub(
 (float *) ((char *) src1->data + i3*nb13 + i2*nb12 + i1*nb11), 1,
 (float *) ((char *) src0->data + i3*nb03 + i2*nb02 + i1*nb01), 1,
-(float *) ((char *) dst->data  + i3*nb3  + i2*nb2  + i1*nb1 ), 1,
+(float *) ((char *) dst->data + i3*nb3 + i2*nb2 + i1*nb1 ), 1,
 ne0);
 #else
 ggml_v3_vec_sub_f32(ne0,
-(float *) ((char *) dst->data  + i3*nb3  + i2*nb2  + i1*nb1 ),
+(float *) ((char *) dst->data + i3*nb3 + i2*nb2 + i1*nb1 ),
 (float *) ((char *) src0->data + i3*nb03 + i2*nb02 + i1*nb01),
 (float *) ((char *) src1->data + i3*nb13 + i2*nb12 + i1*nb11));
 #endif
@@ -6931,7 +6931,7 @@ for (int ir = 0; ir < nr; ++ir) {
 const int i3 = ir/(ne2*ne1);
 const int i2 = (ir - i3*ne2*ne1)/ne1;
 const int i1 = (ir - i3*ne2*ne1 - i2*ne1);
-float * dst_ptr  = (float *) ((char *) dst->data  + i3*nb3  + i2*nb2  + i1*nb1 );
+float * dst_ptr = (float *) ((char *) dst->data + i3*nb3 + i2*nb2 + i1*nb1 );
 float * src0_ptr = (float *) ((char *) src0->data + i3*nb03 + i2*nb02 + i1*nb01);
 for (int i0 = 0; i0 < ne0; i0++) {
 float * src1_ptr = (float *) ((char *) src1->data + i3*nb13 + i2*nb12 + i1*nb11 + i0*nb10);
@@ -6989,7 +6989,7 @@ const int64_t i13 = i03 % ne13;
 const int64_t i12 = i02 % ne12;
 const int64_t i11 = i01 % ne11;
 const int64_t nr0 = ne00 / ne10;
-float * dst_ptr  = (float *) ((char *) dst->data  + i03*nb3  + i02*nb2  + i01*nb1 );
+float * dst_ptr = (float *) ((char *) dst->data + i03*nb3 + i02*nb2 + i01*nb1 );
 float * src0_ptr = (float *) ((char *) src0->data + i03*nb03 + i02*nb02 + i01*nb01);
 float * src1_ptr = (float *) ((char *) src1->data + i13*nb13 + i12*nb12 + i11*nb11);
 for (int64_t r = 0 ; r < nr0; ++r) {
@@ -7009,7 +7009,7 @@ const int64_t i01 = (ir - i03*ne02*ne01 - i02*ne01);
 const int64_t i13 = i03 % ne13;
 const int64_t i12 = i02 % ne12;
 const int64_t i11 = i01 % ne11;
-float * dst_ptr  = (float *) ((char *) dst->data  + i03*nb3  + i02*nb2  + i01*nb1 );
+float * dst_ptr = (float *) ((char *) dst->data + i03*nb3 + i02*nb2 + i01*nb1 );
 float * src0_ptr = (float *) ((char *) src0->data + i03*nb03 + i02*nb02 + i01*nb01);
 for (int64_t i0 = 0; i0 < ne00; ++i0) {
 const int64_t i10 = i0 % ne10;
@@ -7060,7 +7060,7 @@ const int64_t i13 = i03 % ne13;
 const int64_t i12 = i02 % ne12;
 const int64_t i11 = i01 % ne11;
 const int64_t nr0 = ne00 / ne10;
-float * dst_ptr  = (float *) ((char *) dst->data  + i03*nb3  + i02*nb2  + i01*nb1 );
+float * dst_ptr = (float *) ((char *) dst->data + i03*nb3 + i02*nb2 + i01*nb1 );
 float * src0_ptr = (float *) ((char *) src0->data + i03*nb03 + i02*nb02 + i01*nb01);
 float * src1_ptr = (float *) ((char *) src1->data + i13*nb13 + i12*nb12 + i11*nb11);
 for (int64_t r = 0; r < nr0; ++r) {
@@ -7080,7 +7080,7 @@ const int64_t i01 = (ir - i03*ne02*ne01 - i02*ne01);
 const int64_t i13 = i03 % ne13;
 const int64_t i12 = i02 % ne12;
 const int64_t i11 = i01 % ne11;
-float * dst_ptr  = (float *) ((char *) dst->data  + i03*nb3  + i02*nb2  + i01*nb1 );
+float * dst_ptr = (float *) ((char *) dst->data + i03*nb3 + i02*nb2 + i01*nb1 );
 float * src0_ptr = (float *) ((char *) src0->data + i03*nb03 + i02*nb02 + i01*nb01);
 for (int64_t i0 = 0; i0 < ne00; ++i0) {
 const int64_t i10 = i0 % ne10;
@@ -7115,13 +7115,13 @@ assert(ggml_v3_are_same_shape(src0, dst));
 if (params->type == GGML_V3_TASK_INIT || params->type == GGML_V3_TASK_FINALIZE) {
 return;
 }
-const int n     = ggml_v3_nrows(src0);
-const int nc    = src0->ne[0];
+const int n = ggml_v3_nrows(src0);
+const int nc = src0->ne[0];
 assert( dst->nb[0] == sizeof(float));
 assert(src0->nb[0] == sizeof(float));
 for (int i = 0; i < n; i++) {
 ggml_v3_vec_sqr_f32(nc,
-(float *) ((char *) dst->data  + i*( dst->nb[1])),
+(float *) ((char *) dst->data + i*( dst->nb[1])),
 (float *) ((char *) src0->data + i*(src0->nb[1])));
 }
 }
@@ -7149,13 +7149,13 @@ assert(ggml_v3_are_same_shape(src0, dst));
 if (params->type == GGML_V3_TASK_INIT || params->type == GGML_V3_TASK_FINALIZE) {
 return;
 }
-const int n  = ggml_v3_nrows(src0);
+const int n = ggml_v3_nrows(src0);
 const int nc = src0->ne[0];
 assert( dst->nb[0] == sizeof(float));
 assert(src0->nb[0] == sizeof(float));
 for (int i = 0; i < n; i++) {
 ggml_v3_vec_sqrt_f32(nc,
-(float *) ((char *) dst->data  + i*( dst->nb[1])),
+(float *) ((char *) dst->data + i*( dst->nb[1])),
 (float *) ((char *) src0->data + i*(src0->nb[1])));
 }
 }
@@ -7183,13 +7183,13 @@ GGML_V3_ASSERT(ggml_v3_are_same_shape(src0, dst));
 if (params->type == GGML_V3_TASK_INIT || params->type == GGML_V3_TASK_FINALIZE) {
 return;
 }
-const int n  = ggml_v3_nrows(src0);
+const int n = ggml_v3_nrows(src0);
 const int nc = src0->ne[0];
 GGML_V3_ASSERT( dst->nb[0] == sizeof(float));
 GGML_V3_ASSERT(src0->nb[0] == sizeof(float));
 for (int i = 0; i < n; i++) {
 ggml_v3_vec_log_f32(nc,
-(float *) ((char *) dst->data  + i*( dst->nb[1])),
+(float *) ((char *) dst->data + i*( dst->nb[1])),
 (float *) ((char *) src0->data + i*(src0->nb[1])));
 }
 }
@@ -7220,8 +7220,8 @@ return;
 assert(ggml_v3_is_scalar(dst));
 assert(src0->nb[0] == sizeof(float));
 GGML_V3_TENSOR_LOCALS(int64_t, ne0, src0, ne)
-GGML_V3_TENSOR_LOCALS(size_t,  nb0, src0, nb)
-ggml_v3_float sum     = 0;
+GGML_V3_TENSOR_LOCALS(size_t, nb0, src0, nb)
+ggml_v3_float sum = 0;
 ggml_v3_float row_sum = 0;
 for (int64_t i03 = 0; i03 < ne03; i03++) {
 for (int64_t i02 = 0; i02 < ne02; i02++) {
@@ -7246,7 +7246,7 @@ return;
 }
 assert(src0->nb[0] == sizeof(ggml_v3_fp16_t));
 GGML_V3_TENSOR_LOCALS(int64_t, ne0, src0, ne)
-GGML_V3_TENSOR_LOCALS(size_t,  nb0, src0, nb)
+GGML_V3_TENSOR_LOCALS(size_t, nb0, src0, nb)
 float sum = 0;
 float row_sum = 0;
 for (int64_t i03 = 0; i03 < ne03; i03++) {
@@ -7299,7 +7299,7 @@ for (int64_t i3 = 0; i3 < ne03; i3++) {
 for (int64_t i2 = 0; i2 < ne02; i2++) {
 for (int64_t i1 = 0; i1 < ne01; i1++) {
 float * src_row = (float *) ((char *) src0->data + i1*nb01 + i2*nb02 + i3*nb03);
-float * dst_row = (float *) ((char *) dst->data  + i1*nb1  + i2*nb2  + i3*nb3);
+float * dst_row = (float *) ((char *) dst->data + i1*nb1 + i2*nb2 + i3*nb3);
 float row_sum = 0;
 ggml_v3_vec_sum_f32(ne00, &row_sum, src_row);
 dst_row[0] = row_sum;
@@ -7344,7 +7344,7 @@ for (int64_t i03 = 0; i03 < ne03; i03++) {
 for (int64_t i02 = 0; i02 < ne02; i02++) {
 for (int64_t i01 = 0; i01 < ne01; i01++) {
 ggml_v3_vec_sum_f32(ne00,
-(float *) ((char *)  dst->data + i01*nb1  + i02*nb2  + i03*nb3),
+(float *) ((char *) dst->data + i01*nb1 + i02*nb2 + i03*nb3),
 (float *) ((char *) src0->data + i01*nb01 + i02*nb02 + i03*nb03));
 *(float *) ((char *) dst->data + i01*nb1 + i02*nb2 + i03*nb3) /= (float) ne00;
 }
@@ -7382,7 +7382,7 @@ const size_t nb01 = src0->nb[1];
 const size_t nb0 = dst->nb[0];
 for (int64_t i1 = 0; i1 < ne01; i1++) {
 float * src = (float *) ((char *) src0->data + i1*nb01);
-int32_t * dst_ = (int32_t *) ((char *)  dst->data + i1*nb0);
+int32_t * dst_ = (int32_t *) ((char *) dst->data + i1*nb0);
 int v = 0;
 ggml_v3_vec_argmax_f32(ne00, &v, src);
 dst_[0] = v;
@@ -7417,18 +7417,18 @@ const int nr0 = (int)(ne0/ne00);
 const int nr1 = (int)(ne1/ne01);
 const int nr2 = (int)(ne2/ne02);
 const int nr3 = (int)(ne3/ne03);
-GGML_V3_ASSERT(nb0  == sizeof(float));
+GGML_V3_ASSERT(nb0 == sizeof(float));
 GGML_V3_ASSERT(nb00 == sizeof(float));
-for                         (int i3 = 0; i3 < nr3;  i3++) {
-for                     (int k3 = 0; k3 < ne03; k3++) {
-for                 (int i2 = 0; i2 < nr2;  i2++) {
-for             (int k2 = 0; k2 < ne02; k2++) {
-for         (int i1 = 0; i1 < nr1;  i1++) {
-for     (int k1 = 0; k1 < ne01; k1++) {
-for (int i0 = 0; i0 < nr0;  i0++) {
+for (int i3 = 0; i3 < nr3; i3++) {
+for (int k3 = 0; k3 < ne03; k3++) {
+for (int i2 = 0; i2 < nr2; i2++) {
+for (int k2 = 0; k2 < ne02; k2++) {
+for (int i1 = 0; i1 < nr1; i1++) {
+for (int k1 = 0; k1 < ne01; k1++) {
+for (int i0 = 0; i0 < nr0; i0++) {
 ggml_v3_vec_cpy_f32(ne00,
-(float *) ((char *)  dst->data + (i3*ne03 + k3)*nb3  + (i2*ne02 + k2)*nb2  + (i1*ne01 + k1)*nb1  + (i0*ne00)*nb0),
-(float *) ((char *) src0->data + (          k3)*nb03 + (          k2)*nb02 + (          k1)*nb01));
+(float *) ((char *) dst->data + (i3*ne03 + k3)*nb3 + (i2*ne02 + k2)*nb2 + (i1*ne01 + k1)*nb1 + (i0*ne00)*nb0),
+(float *) ((char *) src0->data + ( k3)*nb03 + ( k2)*nb02 + ( k1)*nb01));
 }
 }
 }
@@ -7451,19 +7451,19 @@ const int nr0 = (int)(ne0/ne00);
 const int nr1 = (int)(ne1/ne01);
 const int nr2 = (int)(ne2/ne02);
 const int nr3 = (int)(ne3/ne03);
-GGML_V3_ASSERT(nb0  == sizeof(ggml_v3_fp16_t));
+GGML_V3_ASSERT(nb0 == sizeof(ggml_v3_fp16_t));
 GGML_V3_ASSERT(nb00 == sizeof(ggml_v3_fp16_t));
-for                         (int i3 = 0; i3 < nr3;  i3++) {
-for                     (int k3 = 0; k3 < ne03; k3++) {
-for                 (int i2 = 0; i2 < nr2;  i2++) {
-for             (int k2 = 0; k2 < ne02; k2++) {
-for         (int i1 = 0; i1 < nr1;  i1++) {
-for     (int k1 = 0; k1 < ne01; k1++) {
-for (int i0 = 0; i0 < nr0;  i0++) {
-ggml_v3_fp16_t * y = (ggml_v3_fp16_t *) ((char *)  dst->data + (i3*ne03 + k3)*nb3  + (i2*ne02 + k2)*nb2  + (i1*ne01 + k1)*nb1  + (i0*ne00)*nb0);
-ggml_v3_fp16_t * x = (ggml_v3_fp16_t *) ((char *) src0->data + (          k3)*nb03 + (          k2)*nb02 + (          k1)*nb01);
+for (int i3 = 0; i3 < nr3; i3++) {
+for (int k3 = 0; k3 < ne03; k3++) {
+for (int i2 = 0; i2 < nr2; i2++) {
+for (int k2 = 0; k2 < ne02; k2++) {
+for (int i1 = 0; i1 < nr1; i1++) {
+for (int k1 = 0; k1 < ne01; k1++) {
+for (int i0 = 0; i0 < nr0; i0++) {
+ggml_v3_fp16_t * y = (ggml_v3_fp16_t *) ((char *) dst->data + (i3*ne03 + k3)*nb3 + (i2*ne02 + k2)*nb2 + (i1*ne01 + k1)*nb1 + (i0*ne00)*nb0);
+ggml_v3_fp16_t * x = (ggml_v3_fp16_t *) ((char *) src0->data + ( k3)*nb03 + ( k2)*nb02 + ( k1)*nb01);
 for (int i = 0; i < ne00; ++i) {
-y[i]  = x[i];
+y[i] = x[i];
 }
 }
 }
@@ -7508,13 +7508,13 @@ const int nr0 = (int)(ne00/ne0);
 const int nr1 = (int)(ne01/ne1);
 const int nr2 = (int)(ne02/ne2);
 const int nr3 = (int)(ne03/ne3);
-GGML_V3_ASSERT(nb0  == sizeof(float));
+GGML_V3_ASSERT(nb0 == sizeof(float));
 GGML_V3_ASSERT(nb00 == sizeof(float));
 if (ggml_v3_is_contiguous(dst)) {
 ggml_v3_vec_set_f32(ne0*ne1*ne2*ne3, dst->data, 0);
 } else {
-for         (int k3 = 0; k3 < ne3; k3++) {
-for     (int k2 = 0; k2 < ne2; k2++) {
+for (int k3 = 0; k3 < ne3; k3++) {
+for (int k2 = 0; k2 < ne2; k2++) {
 for (int k1 = 0; k1 < ne1; k1++) {
 ggml_v3_vec_set_f32(ne0,
 (float *) ((char *) dst->data + k1*nb1 + k2*nb2 + k3*nb3),
@@ -7523,15 +7523,15 @@ ggml_v3_vec_set_f32(ne0,
 }
 }
 }
-for                         (int i3 = 0; i3 < nr3; i3++) {
-for                     (int k3 = 0; k3 < ne3; k3++) {
-for                 (int i2 = 0; i2 < nr2; i2++) {
-for             (int k2 = 0; k2 < ne2; k2++) {
-for         (int i1 = 0; i1 < nr1; i1++) {
-for     (int k1 = 0; k1 < ne1; k1++) {
+for (int i3 = 0; i3 < nr3; i3++) {
+for (int k3 = 0; k3 < ne3; k3++) {
+for (int i2 = 0; i2 < nr2; i2++) {
+for (int k2 = 0; k2 < ne2; k2++) {
+for (int i1 = 0; i1 < nr1; i1++) {
+for (int k1 = 0; k1 < ne1; k1++) {
 for (int i0 = 0; i0 < nr0; i0++) {
 ggml_v3_vec_acc_f32(ne0,
-(float *) ((char *)  dst->data + (         k3)*nb3  + (         k2)*nb2  + (         k1)*nb1),
+(float *) ((char *) dst->data + ( k3)*nb3 + ( k2)*nb2 + ( k1)*nb1),
 (float *) ((char *) src0->data + (i3*ne3 + k3)*nb03 + (i2*ne2 + k2)*nb02 + (i1*ne1 + k1)*nb01 + (i0*ne0)*nb00));
 }
 }
@@ -7568,7 +7568,7 @@ GGML_V3_ASSERT(src0->nb[0] == sizeof(float));
 const int ith = params->ith;
 const int nth = params->nth;
 GGML_V3_TENSOR_BINARY_OP_LOCALS
-GGML_V3_ASSERT(nb0  == sizeof(float));
+GGML_V3_ASSERT(nb0 == sizeof(float));
 GGML_V3_ASSERT(nb00 == sizeof(float));
 GGML_V3_ASSERT(nb10 == sizeof(float));
 for (int i3 = 0; i3 < ne3; i3++) {
@@ -7620,13 +7620,13 @@ assert(ggml_v3_are_same_shape(src0, dst));
 if (params->type == GGML_V3_TASK_INIT || params->type == GGML_V3_TASK_FINALIZE) {
 return;
 }
-const int n  = ggml_v3_nrows(src0);
+const int n = ggml_v3_nrows(src0);
 const int nc = src0->ne[0];
-assert(dst->nb[0]  == sizeof(float));
+assert(dst->nb[0] == sizeof(float));
 assert(src0->nb[0] == sizeof(float));
 for (int i = 0; i < n; i++) {
 ggml_v3_vec_abs_f32(nc,
-(float *) ((char *) dst->data  + i*( dst->nb[1])),
+(float *) ((char *) dst->data + i*( dst->nb[1])),
 (float *) ((char *) src0->data + i*(src0->nb[1])));
 }
 }
@@ -7654,13 +7654,13 @@ assert(ggml_v3_are_same_shape(src0, dst));
 if (params->type == GGML_V3_TASK_INIT || params->type == GGML_V3_TASK_FINALIZE) {
 return;
 }
-const int n  = ggml_v3_nrows(src0);
+const int n = ggml_v3_nrows(src0);
 const int nc = src0->ne[0];
-assert(dst->nb[0]  == sizeof(float));
+assert(dst->nb[0] == sizeof(float));
 assert(src0->nb[0] == sizeof(float));
 for (int i = 0; i < n; i++) {
 ggml_v3_vec_sgn_f32(nc,
-(float *) ((char *) dst->data  + i*( dst->nb[1])),
+(float *) ((char *) dst->data + i*( dst->nb[1])),
 (float *) ((char *) src0->data + i*(src0->nb[1])));
 }
 }
@@ -7688,13 +7688,13 @@ assert(ggml_v3_are_same_shape(src0, dst));
 if (params->type == GGML_V3_TASK_INIT || params->type == GGML_V3_TASK_FINALIZE) {
 return;
 }
-const int n  = ggml_v3_nrows(src0);
+const int n = ggml_v3_nrows(src0);
 const int nc = src0->ne[0];
-assert(dst->nb[0]  == sizeof(float));
+assert(dst->nb[0] == sizeof(float));
 assert(src0->nb[0] == sizeof(float));
 for (int i = 0; i < n; i++) {
 ggml_v3_vec_neg_f32(nc,
-(float *) ((char *) dst->data  + i*( dst->nb[1])),
+(float *) ((char *) dst->data + i*( dst->nb[1])),
 (float *) ((char *) src0->data + i*(src0->nb[1])));
 }
 }
@@ -7722,13 +7722,13 @@ assert(ggml_v3_are_same_shape(src0, dst));
 if (params->type == GGML_V3_TASK_INIT || params->type == GGML_V3_TASK_FINALIZE) {
 return;
 }
-const int n  = ggml_v3_nrows(src0);
+const int n = ggml_v3_nrows(src0);
 const int nc = src0->ne[0];
-assert(dst->nb[0]  == sizeof(float));
+assert(dst->nb[0] == sizeof(float));
 assert(src0->nb[0] == sizeof(float));
 for (int i = 0; i < n; i++) {
 ggml_v3_vec_step_f32(nc,
-(float *) ((char *) dst->data  + i*( dst->nb[1])),
+(float *) ((char *) dst->data + i*( dst->nb[1])),
 (float *) ((char *) src0->data + i*(src0->nb[1])));
 }
 }
@@ -7756,13 +7756,13 @@ assert(ggml_v3_are_same_shape(src0, dst));
 if (params->type == GGML_V3_TASK_INIT || params->type == GGML_V3_TASK_FINALIZE) {
 return;
 }
-const int n  = ggml_v3_nrows(src0);
+const int n = ggml_v3_nrows(src0);
 const int nc = src0->ne[0];
-assert(dst->nb[0]  == sizeof(float));
+assert(dst->nb[0] == sizeof(float));
 assert(src0->nb[0] == sizeof(float));
 for (int i = 0; i < n; i++) {
 ggml_v3_vec_tanh_f32(nc,
-(float *) ((char *) dst->data  + i*( dst->nb[1])),
+(float *) ((char *) dst->data + i*( dst->nb[1])),
 (float *) ((char *) src0->data + i*(src0->nb[1])));
 }
 }
@@ -7790,13 +7790,13 @@ assert(ggml_v3_are_same_shape(src0, dst));
 if (params->type == GGML_V3_TASK_INIT || params->type == GGML_V3_TASK_FINALIZE) {
 return;
 }
-const int n  = ggml_v3_nrows(src0);
+const int n = ggml_v3_nrows(src0);
 const int nc = src0->ne[0];
-assert(dst->nb[0]  == sizeof(float));
+assert(dst->nb[0] == sizeof(float));
 assert(src0->nb[0] == sizeof(float));
 for (int i = 0; i < n; i++) {
 ggml_v3_vec_elu_f32(nc,
-(float *) ((char *) dst->data  + i*( dst->nb[1])),
+(float *) ((char *) dst->data + i*( dst->nb[1])),
 (float *) ((char *) src0->data + i*(src0->nb[1])));
 }
 }
@@ -7824,13 +7824,13 @@ assert(ggml_v3_are_same_shape(src0, dst));
 if (params->type == GGML_V3_TASK_INIT || params->type == GGML_V3_TASK_FINALIZE) {
 return;
 }
-const int n  = ggml_v3_nrows(src0);
+const int n = ggml_v3_nrows(src0);
 const int nc = src0->ne[0];
-assert(dst->nb[0]  == sizeof(float));
+assert(dst->nb[0] == sizeof(float));
 assert(src0->nb[0] == sizeof(float));
 for (int i = 0; i < n; i++) {
 ggml_v3_vec_relu_f32(nc,
-(float *) ((char *) dst->data  + i*( dst->nb[1])),
+(float *) ((char *) dst->data + i*( dst->nb[1])),
 (float *) ((char *) src0->data + i*(src0->nb[1])));
 }
 }
@@ -7868,7 +7868,7 @@ const int ir0 = dr*ith;
 const int ir1 = MIN(ir0 + dr, nr);
 for (int i1 = ir0; i1 < ir1; i1++) {
 ggml_v3_vec_gelu_f32(nc,
-(float *) ((char *) dst->data  + i1*( dst->nb[1])),
+(float *) ((char *) dst->data + i1*( dst->nb[1])),
 (float *) ((char *) src0->data + i1*(src0->nb[1])));
 #ifndef NDEBUG
 for (int k = 0; k < nc; k++) {
@@ -7914,7 +7914,7 @@ const int ir0 = dr*ith;
 const int ir1 = MIN(ir0 + dr, nr);
 for (int i1 = ir0; i1 < ir1; i1++) {
 ggml_v3_vec_gelu_quick_f32(nc,
-(float *) ((char *) dst->data  + i1*( dst->nb[1])),
+(float *) ((char *) dst->data + i1*( dst->nb[1])),
 (float *) ((char *) src0->data + i1*(src0->nb[1])));
 #ifndef NDEBUG
 for (int k = 0; k < nc; k++) {
@@ -7960,7 +7960,7 @@ const int ir0 = dr*ith;
 const int ir1 = MIN(ir0 + dr, nr);
 for (int i1 = ir0; i1 < ir1; i1++) {
 ggml_v3_vec_silu_f32(nc,
-(float *) ((char *) dst->data  + i1*( dst->nb[1])),
+(float *) ((char *) dst->data + i1*( dst->nb[1])),
 (float *) ((char *) src0->data + i1*(src0->nb[1])));
 #ifndef NDEBUG
 for (int k = 0; k < nc; k++) {
@@ -7996,15 +7996,15 @@ assert(ggml_v3_are_same_shape(src0, dst));
 if (params->type == GGML_V3_TASK_INIT || params->type == GGML_V3_TASK_FINALIZE) {
 return;
 }
-const int n  = ggml_v3_nrows(src0);
+const int n = ggml_v3_nrows(src0);
 const int nc = src0->ne[0];
 float negative_slope;
 memcpy(&negative_slope, dst->op_params, sizeof(float));
-assert(dst->nb[0]  == sizeof(float));
+assert(dst->nb[0] == sizeof(float));
 assert(src0->nb[0] == sizeof(float));
 for (int i = 0; i < n; i++) {
 ggml_v3_vec_leaky_relu_f32(nc,
-(float *) ((char *) dst->data  + i*( dst->nb[1])),
+(float *) ((char *) dst->data + i*( dst->nb[1])),
 (float *) ((char *) src0->data + i*(src0->nb[1])), negative_slope);
 }
 }
@@ -8045,7 +8045,7 @@ const int ir0 = dr*ith;
 const int ir1 = MIN(ir0 + dr, nr);
 for (int i1 = ir0; i1 < ir1; i1++) {
 ggml_v3_vec_silu_backward_f32(nc,
-(float *) ((char *) dst->data  + i1*( dst->nb[1])),
+(float *) ((char *) dst->data + i1*( dst->nb[1])),
 (float *) ((char *) src0->data + i1*(src0->nb[1])),
 (float *) ((char *) grad->data + i1*(grad->nb[1])));
 #ifndef NDEBUG
@@ -8197,21 +8197,21 @@ const int64_t i12 = i02;
 const int64_t i13 = i03;
 const float * x = (float *) ((char *) src0->data + i01*nb01 + i02*nb02 + i03*nb03);
 const float * dz = (float *) ((char *) src1->data + i11*nb11 + i12*nb12 + i13*nb13);
-ggml_v3_float sum_xx  = 0.0;
+ggml_v3_float sum_xx = 0.0;
 ggml_v3_float sum_xdz = 0.0;
 for (int64_t i00 = 0; i00 < ne00; i00++) {
-sum_xx  += (ggml_v3_float)(x[i00] * x[i00]);
+sum_xx += (ggml_v3_float)(x[i00] * x[i00]);
 sum_xdz += (ggml_v3_float)(x[i00] * dz[i00]);
 }
 const float mean_eps = (float)(sum_xx)/ne00 + eps;
-const float sum_eps  = (float)(sum_xx) + eps*ne00;
-const float rrms     = 1.0f / sqrtf(mean_eps);
+const float sum_eps = (float)(sum_xx) + eps*ne00;
+const float rrms = 1.0f / sqrtf(mean_eps);
 {
 }
 float * dx = (float *) ((char *) dst->data + i01*nb1 + i02*nb2 + i03*nb3);
-ggml_v3_vec_cpy_f32  (ne00, dx, x);
+ggml_v3_vec_cpy_f32 (ne00, dx, x);
 ggml_v3_vec_scale_f32(ne00, dx, (float)(-sum_xdz)/sum_eps);
-ggml_v3_vec_acc_f32  (ne00, dx, dz);
+ggml_v3_vec_acc_f32 (ne00, dx, dz);
 ggml_v3_vec_scale_f32(ne00, dx, rrms);
 }
 }
@@ -8337,8 +8337,8 @@ g_imatrix_collect_v3(src0, src1);
 }
 const enum ggml_v3_type type = src0->type;
 const bool src1_cont = ggml_v3_is_contiguous(src1);
-ggml_v3_vec_dot_t    const vec_dot               = type_traits[type].vec_dot;
-enum ggml_v3_type    const vec_dot_type          = type_traits[type].vec_dot_type;
+ggml_v3_vec_dot_t const vec_dot = type_traits[type].vec_dot;
+enum ggml_v3_type const vec_dot_type = type_traits[type].vec_dot_type;
 ggml_v3_from_float_t const from_float_to_vec_dot = type_traits[vec_dot_type].from_float;
 GGML_V3_ASSERT(ne0 == ne01);
 GGML_V3_ASSERT(ne1 == ne11);
@@ -8375,11 +8375,11 @@ for (int64_t i13 = 0; i13 < ne13; i13++) {
 for (int64_t i12 = 0; i12 < ne12; i12++) {
 const int64_t i03 = i13/r3;
 const int64_t i02 = i12/r2;
-const void  * x = (char *)            src0->data + i02*nb02 + i03*nb03;
+const void * x = (char *) src0->data + i02*nb02 + i03*nb03;
 const float * y = (float *) ((char *) src1->data + i12*nb12 + i13*nb13);
-float * d = (float *) ((char *)  dst->data + i12*nb2  + i13*nb3);
+float * d = (float *) ((char *) dst->data + i12*nb2 + i13*nb3);
 if (type != GGML_V3_TYPE_F32) {
-float * const wdata    = params->wdata;
+float * const wdata = params->wdata;
 ggml_v3_to_float_t const to_float = type_traits[type].to_float;
 size_t id = 0;
 for (int64_t i01 = 0; i01 < ne01; ++i01) {
@@ -8391,9 +8391,9 @@ x = wdata;
 }
 cblas_sgemm(CblasRowMajor, CblasNoTrans, CblasTrans,
 ne1, ne01, ne10,
-1.0f,    y, ne10,
+1.0f, y, ne10,
 x, ne00,
-0.0f,    d, ne01);
+0.0f, d, ne01);
 }
 }
 return;
@@ -8419,7 +8419,7 @@ return;
 if (params->type == GGML_V3_TASK_FINALIZE) {
 return;
 }
-const void * wdata    = (src1->type == vec_dot_type) ? src1->data : params->wdata;
+const void * wdata = (src1->type == vec_dot_type) ? src1->data : params->wdata;
 const size_t row_size = ggml_v3_row_size(vec_dot_type, ne10);
 const int64_t nr0 = ne01;
 const int64_t nr1 = ne1*ne12*ne13;
@@ -8456,7 +8456,7 @@ const int64_t i3 = i13;
 const char * src0_row = (const char *) src0->data + (0 + i02*nb02 + i03*nb03);
 const char * src1_col = (const char *) wdata +
 (src1_cont || src1->type != vec_dot_type
-? (i11      + i12*ne11 + i13*ne12*ne11)*row_size
+? (i11 + i12*ne11 + i13*ne12*ne11)*row_size
 : (i11*nb11 + i12*nb12 + i13*nb13));
 float * dst_col = (float *) ((char *) dst->data + (i1*nb1 + i2*nb2 + i3*nb3));
 for (int64_t ir0 = iir0; ir0 < iir0 + blck_0 && ir0 < ir011; ++ir0) {
@@ -8478,8 +8478,8 @@ const int ith = params->ith;
 const int nth = params->nth;
 const enum ggml_v3_type type = src0->type;
 const bool src1_cont = ggml_v3_is_contiguous(src1);
-ggml_v3_vec_dot_t    const vec_dot               = type_traits[type].vec_dot;
-enum ggml_v3_type    const vec_dot_type          = type_traits[type].vec_dot_type;
+ggml_v3_vec_dot_t const vec_dot = type_traits[type].vec_dot;
+enum ggml_v3_type const vec_dot_type = type_traits[type].vec_dot_type;
 ggml_v3_from_float_t const from_float_to_vec_dot = type_traits[vec_dot_type].from_float;
 GGML_V3_ASSERT(ne0 == ne01);
 GGML_V3_ASSERT(ne1 == ne11);
@@ -8493,13 +8493,13 @@ GGML_V3_ASSERT(nb1 <= nb2);
 GGML_V3_ASSERT(nb2 <= nb3);
 const int64_t r2 = ne12/ne02;
 const int64_t r3 = ne13/ne03;
-const int id   = ggml_v3_get_op_params_i32(dst, 0);
+const int id = ggml_v3_get_op_params_i32(dst, 0);
 const int n_as = ggml_v3_get_op_params_i32(dst, 1);
 char * wdata_src1_end = (src1->type == vec_dot_type) ?
 (char *) params->wdata :
 (char *) params->wdata + GGML_V3_PAD(ggml_v3_row_size(vec_dot_type, ggml_v3_nelements(src1)), sizeof(int64_t));
 int64_t * matrix_row_counts = (int64_t *) (wdata_src1_end);
-int64_t * matrix_rows       = matrix_row_counts + n_as;
+int64_t * matrix_rows = matrix_row_counts + n_as;
 #define MMID_MATRIX_ROW(row_id, i1) matrix_rows[(row_id)*ne11 + (i1)]
 if (params->type == GGML_V3_TASK_INIT) {
 char * wdata = params->wdata;
@@ -8538,7 +8538,7 @@ const struct ggml_v3_tensor * src0_cur = dst->src[cur_a + 2];
 if (ith == 1 && g_imatrix_collect_v3) {
 g_imatrix_collect_v3(src0_cur, src1);
 }
-const void * wdata    = (src1->type == vec_dot_type) ? src1->data : params->wdata;
+const void * wdata = (src1->type == vec_dot_type) ? src1->data : params->wdata;
 const size_t row_size = ggml_v3_row_size(vec_dot_type, ne10);
 const int64_t nr0 = ne01;
 const int64_t nr1 = cne1*ne12*ne13;
@@ -8564,10 +8564,10 @@ float tmp[16];
 for (int64_t iir1 = ir110; iir1 < ir111; iir1 += blck_1) {
 for (int64_t iir0 = ir010; iir0 < ir011; iir0 += blck_0) {
 for (int64_t ir1 = iir1; ir1 < iir1 + blck_1 && ir1 < ir111; ++ir1) {
-const int64_t  i13 = (ir1/(ne12*cne1));
-const int64_t  i12 = (ir1 - i13*ne12*cne1)/cne1;
+const int64_t i13 = (ir1/(ne12*cne1));
+const int64_t i12 = (ir1 - i13*ne12*cne1)/cne1;
 const int64_t _i11 = (ir1 - i13*ne12*cne1 - i12*cne1);
-const int64_t  i11 = MMID_MATRIX_ROW(cur_a, _i11);
+const int64_t i11 = MMID_MATRIX_ROW(cur_a, _i11);
 const int64_t i03 = i13/r3;
 const int64_t i02 = i12/r2;
 const int64_t i1 = i11;
@@ -8576,7 +8576,7 @@ const int64_t i3 = i13;
 const char * src0_row = (const char *) src0_cur->data + (0 + i02*nb02 + i03*nb03);
 const char * src1_col = (const char *) wdata +
 (src1_cont || src1->type != vec_dot_type
-? (i11      + i12*ne11 + i13*ne12*ne11)*row_size
+? (i11 + i12*ne11 + i13*ne12*ne11)*row_size
 : (i11*nb11 + i12*nb12 + i13*nb13));
 float * dst_col = (float *) ((char *) dst->data + (i1*nb1 + i2*nb2 + i3*nb3));
 for (int64_t ir0 = iir0; ir0 < iir0 + blck_0 && ir0 < ir011; ++ir0) {
@@ -8597,11 +8597,11 @@ struct ggml_v3_tensor * dst) {
 GGML_V3_TENSOR_BINARY_OP_LOCALS
 const int ith = params->ith;
 const int nth = params->nth;
-GGML_V3_ASSERT(ne0  == ne00);
-GGML_V3_ASSERT(ne1  == ne10);
-GGML_V3_ASSERT(ne2  == ne02);
+GGML_V3_ASSERT(ne0 == ne00);
+GGML_V3_ASSERT(ne1 == ne10);
+GGML_V3_ASSERT(ne2 == ne02);
 GGML_V3_ASSERT(ne02 == ne12);
-GGML_V3_ASSERT(ne3  == ne13);
+GGML_V3_ASSERT(ne3 == ne13);
 GGML_V3_ASSERT(ne03 == ne13);
 GGML_V3_ASSERT(nb00 == sizeof(float));
 GGML_V3_ASSERT(nb0 == sizeof(float));
@@ -8668,24 +8668,24 @@ const int64_t i13 = i3;
 const int64_t bne01_unroll = bne01 - (bne01 % GGML_V3_VEC_MAD_UNROLL);
 for (int64_t i01 = bi01; i01 < bne01_unroll; i01 += GGML_V3_VEC_MAD_UNROLL) {
 const int64_t i11 = i01;
-float * s0 = (float *) ((char *) src0->data + (          i01*nb01 + i02*nb02 + i03*nb03));
+float * s0 = (float *) ((char *) src0->data + ( i01*nb01 + i02*nb02 + i03*nb03));
 float * s1 = (float *) ((char *) src1->data + (i1*nb10 + i11*nb11 + i12*nb12 + i13*nb13));
-float * d  = (float *) ((char *)  dst->data + (          i1*nb1 + i2*nb2 + i3*nb3));
+float * d = (float *) ((char *) dst->data + ( i1*nb1 + i2*nb2 + i3*nb3));
 ggml_v3_vec_mad_f32_unroll(ne0, nb01, nb11, d, s0, s1);
 }
 for (int64_t i01 = bne01_unroll; i01 < bne01; ++i01) {
 const int64_t i11 = i01;
-float * s0 = (float *) ((char *) src0->data + (          i01*nb01 + i02*nb02 + i03*nb03));
+float * s0 = (float *) ((char *) src0->data + ( i01*nb01 + i02*nb02 + i03*nb03));
 float * s1 = (float *) ((char *) src1->data + (i1*nb10 + i11*nb11 + i12*nb12 + i13*nb13));
-float * d  = (float *) ((char *)  dst->data + (          i1*nb1 + i2*nb2 + i3*nb3));
+float * d = (float *) ((char *) dst->data + ( i1*nb1 + i2*nb2 + i3*nb3));
 ggml_v3_vec_mad_f32(ne0, d, s0, *s1);
 }
 #else
 for (int64_t i01 = bi01; i01 < bne01; ++i01) {
 const int64_t i11 = i01;
-float * s0 = (float *) ((char *) src0->data + (          i01*nb01 + i02*nb02 + i03*nb03));
+float * s0 = (float *) ((char *) src0->data + ( i01*nb01 + i02*nb02 + i03*nb03));
 float * s1 = (float *) ((char *) src1->data + (i1*nb10 + i11*nb11 + i12*nb12 + i13*nb13));
-float * d  = (float *) ((char *)  dst->data + (          i1*nb1 + i2*nb2 + i3*nb3));
+float * d = (float *) ((char *) dst->data + ( i1*nb1 + i2*nb2 + i3*nb3));
 ggml_v3_vec_mad_f32(ne0, d, s0, *s1);
 }
 #endif
@@ -8705,8 +8705,8 @@ const enum ggml_v3_type type = src0->type;
 ggml_v3_to_float_t const dequantize_row_q = type_traits[type].to_float;
 GGML_V3_ASSERT(ne02 == ne12);
 GGML_V3_ASSERT(ne03 == ne13);
-GGML_V3_ASSERT(ne2  == ne12);
-GGML_V3_ASSERT(ne3  == ne13);
+GGML_V3_ASSERT(ne2 == ne12);
+GGML_V3_ASSERT(ne3 == ne13);
 GGML_V3_ASSERT(nb00 == ggml_v3_type_size(type));
 GGML_V3_ASSERT(nb0 == sizeof(float));
 GGML_V3_ASSERT(ne0 == ne00);
@@ -8735,9 +8735,9 @@ const int64_t i12 = i2;
 const int64_t i13 = i3;
 for (int64_t i01 = 0; i01 < ne01; ++i01) {
 const int64_t i11 = i01;
-float * s0 = (float *) ((char *) src0->data + (          i01*nb01 + i02*nb02 + i03*nb03));
+float * s0 = (float *) ((char *) src0->data + ( i01*nb01 + i02*nb02 + i03*nb03));
 float * s1 = (float *) ((char *) src1->data + (i1*nb10 + i11*nb11 + i12*nb12 + i13*nb13));
-float * d  = (float *) ((char *)  dst->data + (          i1*nb1 + i2*nb2 + i3*nb3));
+float * d = (float *) ((char *) dst->data + ( i1*nb1 + i2*nb2 + i3*nb3));
 dequantize_row_q(s0, wdata, ne0);
 ggml_v3_vec_mad_f32(ne0, d, wdata, *s1);
 }
@@ -8828,14 +8828,14 @@ const struct ggml_v3_tensor * src1,
 struct ggml_v3_tensor * dst) {
 GGML_V3_ASSERT(ggml_v3_are_same_shape(src0, dst));
 GGML_V3_ASSERT(ggml_v3_is_contiguous(dst) && ggml_v3_is_contiguous(src0));
-size_t nb1     = ((int32_t *) dst->op_params)[0];
-size_t nb2     = ((int32_t *) dst->op_params)[1];
-size_t nb3     = ((int32_t *) dst->op_params)[2];
-size_t offset  = ((int32_t *) dst->op_params)[3];
-bool   inplace = (bool) ((int32_t *) dst->op_params)[4];
+size_t nb1 = ((int32_t *) dst->op_params)[0];
+size_t nb2 = ((int32_t *) dst->op_params)[1];
+size_t nb3 = ((int32_t *) dst->op_params)[2];
+size_t offset = ((int32_t *) dst->op_params)[3];
+bool inplace = (bool) ((int32_t *) dst->op_params)[4];
 if (!inplace && (params->type == GGML_V3_TASK_INIT)) {
 memcpy(
-((char *)  dst->data),
+((char *) dst->data),
 ((char *) src0->data),
 ggml_v3_nbytes(dst));
 }
@@ -8847,13 +8847,13 @@ const int nth = params->nth;
 const int nr = ggml_v3_nrows(src1);
 const int nc = src1->ne[0];
 GGML_V3_TENSOR_LOCALS(int64_t, ne1, src1, ne)
-GGML_V3_TENSOR_LOCALS(size_t,  nb1, src1, nb)
+GGML_V3_TENSOR_LOCALS(size_t, nb1, src1, nb)
 const size_t nb0 = ggml_v3_element_size(src0);
 const int im0 = (ne10 == 0 ? 0 : ne10-1);
 const int im1 = (ne11 == 0 ? 0 : ne11-1);
 const int im2 = (ne12 == 0 ? 0 : ne12-1);
 const int im3 = (ne13 == 0 ? 0 : ne13-1);
-GGML_V3_ASSERT(offset + im0*nb0  + im1*nb1  + im2*nb2  + im3*nb3  <= ggml_v3_nbytes(dst));
+GGML_V3_ASSERT(offset + im0*nb0 + im1*nb1 + im2*nb2 + im3*nb3 <= ggml_v3_nbytes(dst));
 GGML_V3_ASSERT(nb10 == sizeof(float));
 const int dr = (nr + nth - 1)/nth;
 const int ir0 = dr*ith;
@@ -8863,7 +8863,7 @@ const int i3 = ir/(ne12*ne11);
 const int i2 = (ir - i3*ne12*ne11)/ne11;
 const int i1 = (ir - i3*ne12*ne11 - i2*ne11);
 ggml_v3_vec_cpy_f32(nc,
-(float *) ((char *)  dst->data + i3*nb3  + i2*nb2  + i1*nb1  + offset),
+(float *) ((char *) dst->data + i3*nb3 + i2*nb2 + i1*nb1 + offset),
 (float *) ((char *) src1->data + i3*nb13 + i2*nb12 + i1*nb11));
 }
 }
@@ -8949,7 +8949,7 @@ const int64_t nc = ne00;
 const int64_t nr = ggml_v3_nelements(src1); GGML_V3_UNUSED(nr);
 const enum ggml_v3_type type = src0->type;
 ggml_v3_to_float_t const dequantize_row_q = type_traits[type].to_float;
-assert(ne0  == nc);
+assert(ne0 == nc);
 assert(ne02 == ne11);
 assert(nb00 == ggml_v3_type_size(type));
 assert(ggml_v3_nrows(dst) == nr);
@@ -8959,7 +8959,7 @@ for (int64_t i10 = 0; i10 < ne10; ++i10) {
 const int64_t i01 = *(int32_t *) ((char *) src1->data + i10*nb10 + i11*nb11 + i12*nb12);
 dequantize_row_q(
 (const void *) ((char *) src0->data + i01*nb01 + i11*nb02 + i12*nb03),
-(float *) ((char *)  dst->data + i10*nb1  + i11*nb2  + i12*nb3), nc);
+(float *) ((char *) dst->data + i10*nb1 + i11*nb2 + i12*nb3), nc);
 }
 }
 }
@@ -8976,7 +8976,7 @@ return;
 GGML_V3_TENSOR_BINARY_OP_LOCALS
 const int64_t nc = ne00;
 const int64_t nr = ggml_v3_nelements(src1); GGML_V3_UNUSED(nr);
-assert(ne0  == nc);
+assert(ne0 == nc);
 assert(ne02 == ne11);
 assert(nb00 == sizeof(ggml_v3_fp16_t));
 assert(ggml_v3_nrows(dst) == nr);
@@ -8986,7 +8986,7 @@ for (int64_t i10 = 0; i10 < ne10; ++i10) {
 const int64_t i01 = *(int32_t *) ((char *) src1->data + i10*nb10 + i11*nb11 + i12*nb12);
 ggml_v3_fp16_to_fp32_row(
 (const void *) ((char *) src0->data + i01*nb01 + i11*nb02 + i12*nb03),
-(float *) ((char *)  dst->data + i10*nb1  + i11*nb2  + i12*nb3), nc);
+(float *) ((char *) dst->data + i10*nb1 + i11*nb2 + i12*nb3), nc);
 }
 }
 }
@@ -9003,7 +9003,7 @@ return;
 GGML_V3_TENSOR_BINARY_OP_LOCALS
 const int64_t nc = ne00;
 const int64_t nr = ggml_v3_nelements(src1); GGML_V3_UNUSED(nr);
-assert(ne0  == nc);
+assert(ne0 == nc);
 assert(ne02 == ne11);
 assert(nb00 == sizeof(float));
 assert(ggml_v3_nrows(dst) == nr);
@@ -9012,7 +9012,7 @@ for (int64_t i11 = 0; i11 < ne11; ++i11) {
 for (int64_t i10 = 0; i10 < ne10; ++i10) {
 const int64_t i01 = *(int32_t *) ((char *) src1->data + i10*nb10 + i11*nb11 + i12*nb12);
 ggml_v3_vec_cpy_f32(nc,
-(float *) ((char *)  dst->data + i10*nb1  + i11*nb2  + i12*nb3),
+(float *) ((char *) dst->data + i10*nb1 + i11*nb2 + i12*nb3),
 (float *) ((char *) src0->data + i01*nb01 + i11*nb02 + i12*nb03));
 }
 }
@@ -9100,8 +9100,8 @@ GGML_V3_ASSERT(src0->nb[0] == sizeof(float));
 for (int i = 0; i < nr; ++i) {
 const int r = ((int32_t *) src1->data)[i];
 ggml_v3_vec_add_f32(nc,
-(float *) ((char *)  dst->data + r*dst->nb[1]),
-(float *) ((char *)  dst->data + r*dst->nb[1]),
+(float *) ((char *) dst->data + r*dst->nb[1]),
+(float *) ((char *) dst->data + r*dst->nb[1]),
 (float *) ((char *) src0->data + i*src0->nb[1]));
 }
 }
@@ -9140,11 +9140,11 @@ GGML_V3_ASSERT(ne01 == 1);
 GGML_V3_ASSERT(ne02 == ne2);
 GGML_V3_ASSERT(ne03 == ne3);
 GGML_V3_ASSERT(nb00 == sizeof(float));
-GGML_V3_ASSERT(nb0  == sizeof(float));
+GGML_V3_ASSERT(nb0 == sizeof(float));
 for (int i3 = 0; i3 < ne3; i3++) {
 for (int i2 = 0; i2 < ne2; i2++) {
 for (int i1 = 0; i1 < ne1; i1++) {
-float * d = (float *)((char *)  dst->data + i3*nb3  + i2*nb2 + i1*nb1);
+float * d = (float *)((char *) dst->data + i3*nb3 + i2*nb2 + i1*nb1);
 float * s = (float *)((char *) src0->data + i3*nb03 + i2*nb02);
 for (int i0 = 0; i0 < i1; i0++) {
 d[i0] = 0;
@@ -9179,21 +9179,21 @@ struct ggml_v3_tensor * dst,
 const float value) {
 const int ith = params->ith;
 const int nth = params->nth;
-const int  n_past  = ((int32_t *) dst->op_params)[0];
+const int n_past = ((int32_t *) dst->op_params)[0];
 const bool inplace = src0->data == dst->data;
 GGML_V3_ASSERT(n_past >= 0);
 if (!inplace && (params->type == GGML_V3_TASK_INIT)) {
 GGML_V3_ASSERT(ggml_v3_nelements(dst) == ggml_v3_nelements(src0));
 GGML_V3_ASSERT(ggml_v3_is_contiguous(dst) && ggml_v3_is_contiguous(src0));
 memcpy(
-((char *)  dst->data),
+((char *) dst->data),
 ((char *) src0->data),
 ggml_v3_nbytes(dst));
 }
 if (params->type == GGML_V3_TASK_INIT || params->type == GGML_V3_TASK_FINALIZE) {
 return;
 }
-const int n  = ggml_v3_nrows(src0);
+const int n = ggml_v3_nrows(src0);
 const int nc = src0->ne[0];
 const int nr = src0->ne[1];
 const int nz = n/nr;
@@ -9262,9 +9262,9 @@ const int ir1 = MIN(ir0 + dr, nr);
 float * wp = (float *) params->wdata + (nc + CACHE_LINE_SIZE_F32) * ith;
 for (int i1 = ir0; i1 < ir1; i1++) {
 float * sp = (float *)((char *) src0->data + i1*src0->nb[1]);
-float * dp = (float *)((char *)  dst->data +  i1*dst->nb[1]);
+float * dp = (float *)((char *) dst->data + i1*dst->nb[1]);
 float * mp = src1 ? (float *)((char *) src1->data + (i1%ne11)*src1->nb[1]) : NULL;
-ggml_v3_vec_cpy_f32  (nc, wp, sp);
+ggml_v3_vec_cpy_f32 (nc, wp, sp);
 ggml_v3_vec_scale_f32(nc, wp, scale);
 if (mp) {
 ggml_v3_vec_acc_f32(nc, wp, mp);
@@ -9338,8 +9338,8 @@ const int ir0 = dr*ith;
 const int ir1 = MIN(ir0 + dr, nr);
 for (int i1 = ir0; i1 < ir1; i1++) {
 float *dy = (float *)((char *) src0->data + i1*src0->nb[1]);
-float *y  = (float *)((char *) src1->data + i1*src1->nb[1]);
-float *dx = (float *)((char *) dst->data  + i1*dst->nb[1]);
+float *y = (float *)((char *) src1->data + i1*src1->nb[1]);
+float *dx = (float *)((char *) dst->data + i1*dst->nb[1]);
 #ifndef NDEBUG
 for (int i = 0; i < nc; ++i) {
 assert(!isnan(dy[i]));
@@ -9389,7 +9389,7 @@ memcpy(&max_bias, (int32_t *) dst->op_params + 2, sizeof(float));
 const int64_t ne0 = src0->ne[0];
 const int64_t ne1 = src0->ne[1];
 const int64_t ne2 = src0->ne[2];
-const int64_t n  = ggml_v3_nrows(src0);
+const int64_t n = ggml_v3_nrows(src0);
 const int64_t ne2_ne3 = n/ne1;
 const size_t nb0 = src0->nb[0];
 const size_t nb1 = src0->nb[1];
@@ -9403,7 +9403,7 @@ for (int64_t i = 0; i < ne0; i++) {
 for (int64_t j = 0; j < ne1; j++) {
 for (int64_t k = 0; k < ne2_ne3; k++) {
 float * const src = (float *)((char *) src0->data + i*nb0 + j*nb1 + k*nb2);
-float *      pdst = (float *)((char *)  dst->data + i*nb0 + j*nb1 + k*nb2);
+float * pdst = (float *)((char *) dst->data + i*nb0 + j*nb1 + k*nb2);
 float m_k;
 if (k < n_heads_log2_floor) {
 m_k = powf(m0, k + 1);
@@ -9429,7 +9429,7 @@ memcpy(&max_bias, (int32_t *) dst->op_params + 2, sizeof(float));
 const int ne0 = src0->ne[0];
 const int ne1 = src0->ne[1];
 const int ne2 = src0->ne[2];
-const int n  = ggml_v3_nrows(src0);
+const int n = ggml_v3_nrows(src0);
 const int ne2_ne3 = n/ne1;
 const int nb0 = src0->nb[0];
 const int nb1 = src0->nb[1];
@@ -9442,8 +9442,8 @@ const float m1 = powf(2.0f, -(max_bias / 2.0f) / n_heads_log2_floor);
 for (int i = 0; i < ne0; i++) {
 for (int j = 0; j < ne1; j++) {
 for (int k = 0; k < ne2_ne3; k++) {
-ggml_v3_fp16_t * const src  = (ggml_v3_fp16_t *)((char *) src0->data + i*nb0 + j*nb1 + k*nb2);
-float *      pdst  =       (float *)((char *)  dst->data + i*nb0 + j*nb1 + k*nb2);
+ggml_v3_fp16_t * const src = (ggml_v3_fp16_t *)((char *) src0->data + i*nb0 + j*nb1 + k*nb2);
+float * pdst = (float *)((char *) dst->data + i*nb0 + j*nb1 + k*nb2);
 float m_k;
 if (k < n_heads_log2_floor) {
 m_k = powf(m0, k + 1);
@@ -9505,7 +9505,7 @@ memcpy(&min, (float *) dst->op_params + 0, sizeof(float));
 memcpy(&max, (float *) dst->op_params + 1, sizeof(float));
 const int ith = params->ith;
 const int nth = params->nth;
-const int n  = ggml_v3_nrows(src0);
+const int n = ggml_v3_nrows(src0);
 const int nc = src0->ne[0];
 const size_t nb00 = src0->nb[0];
 const size_t nb01 = src0->nb[1];
@@ -9514,7 +9514,7 @@ const size_t nb1 = dst->nb[1];
 GGML_V3_ASSERT( nb0 == sizeof(float));
 GGML_V3_ASSERT(nb00 == sizeof(float));
 for (int j = ith; j < n; j += nth) {
-float * dst_ptr  = (float *) ((char *)  dst->data + j*nb1);
+float * dst_ptr = (float *) ((char *) dst->data + j*nb1);
 float * src0_ptr = (float *) ((char *) src0->data + j*nb01);
 for (int i = 0; i < nc; i++) {
 dst_ptr[i] = MAX(MIN(src0_ptr[i], max), min);
@@ -9578,7 +9578,7 @@ return n_dims * logf(n_orig_ctx / (n_rot * 2 * (float)M_PI)) / (2 * logf(base));
 void ggml_v3_rope_yarn_corr_dims(
 int n_dims, int n_orig_ctx, float freq_base, float beta_fast, float beta_slow, float dims[2]
 ) {
-dims[0] = MAX(0,         floorf(ggml_v3_rope_yarn_corr_dim(n_dims, n_orig_ctx, beta_fast, freq_base)));
+dims[0] = MAX(0, floorf(ggml_v3_rope_yarn_corr_dim(n_dims, n_orig_ctx, beta_fast, freq_base)));
 dims[1] = MIN(n_dims - 1, ceilf(ggml_v3_rope_yarn_corr_dim(n_dims, n_orig_ctx, beta_slow, freq_base)));
 }
 static void ggml_v3_compute_forward_rope_f32(
@@ -9592,19 +9592,19 @@ return;
 }
 float freq_base, freq_scale, ext_factor, attn_factor, beta_fast, beta_slow;
 float xpos_base;
-bool  xpos_down;
-const int n_dims     = ((int32_t *) dst->op_params)[1];
-const int mode       = ((int32_t *) dst->op_params)[2];
-const int n_ctx      = ((int32_t *) dst->op_params)[3];
+bool xpos_down;
+const int n_dims = ((int32_t *) dst->op_params)[1];
+const int mode = ((int32_t *) dst->op_params)[2];
+const int n_ctx = ((int32_t *) dst->op_params)[3];
 const int n_orig_ctx = ((int32_t *) dst->op_params)[4];
-memcpy(&freq_base,   (int32_t *) dst->op_params +  5, sizeof(float));
-memcpy(&freq_scale,  (int32_t *) dst->op_params +  6, sizeof(float));
-memcpy(&ext_factor,  (int32_t *) dst->op_params +  7, sizeof(float));
-memcpy(&attn_factor, (int32_t *) dst->op_params +  8, sizeof(float));
-memcpy(&beta_fast,   (int32_t *) dst->op_params +  9, sizeof(float));
-memcpy(&beta_slow,   (int32_t *) dst->op_params + 10, sizeof(float));
-memcpy(&xpos_base,   (int32_t *) dst->op_params + 11, sizeof(float));
-memcpy(&xpos_down,   (int32_t *) dst->op_params + 12, sizeof(bool));
+memcpy(&freq_base, (int32_t *) dst->op_params + 5, sizeof(float));
+memcpy(&freq_scale, (int32_t *) dst->op_params + 6, sizeof(float));
+memcpy(&ext_factor, (int32_t *) dst->op_params + 7, sizeof(float));
+memcpy(&attn_factor, (int32_t *) dst->op_params + 8, sizeof(float));
+memcpy(&beta_fast, (int32_t *) dst->op_params + 9, sizeof(float));
+memcpy(&beta_slow, (int32_t *) dst->op_params + 10, sizeof(float));
+memcpy(&xpos_base, (int32_t *) dst->op_params + 11, sizeof(float));
+memcpy(&xpos_down, (int32_t *) dst->op_params + 12, sizeof(bool));
 GGML_V3_TENSOR_UNARY_OP_LOCALS
 GGML_V3_ASSERT(nb00 == sizeof(float));
 const int ith = params->ith;
@@ -9621,7 +9621,7 @@ const float inv_ndims = -1.f/n_dims;
 float corr_dims[2];
 ggml_v3_rope_yarn_corr_dims(n_dims, n_orig_ctx, freq_base, beta_fast, beta_slow, corr_dims);
 const bool is_neox = mode & 2;
-const bool is_glm  = mode & 4;
+const bool is_glm = mode & 4;
 const float sin_sign = forward ? 1.0f : -1.0f;
 const int32_t * pos = (const int32_t *) src1->data;
 for (int64_t i3 = 0; i3 < ne3; i3++) {
@@ -9629,7 +9629,7 @@ for (int64_t i2 = 0; i2 < ne2; i2++) {
 const int64_t p = pos[i2];
 for (int64_t i1 = 0; i1 < ne1; i1++) {
 if (ir++ < ir0) continue;
-if (ir   > ir1) break;
+if (ir > ir1) break;
 float theta_base = (float)p;
 if (is_glm) {
 theta_base = MIN(p, n_ctx - 2);
@@ -9642,14 +9642,14 @@ const float sin_block_theta = sinf(block_theta) * sin_sign;
 theta_base *= theta_scale;
 block_theta *= theta_scale;
 const float * const src = (float *)((char *) src0->data + i3*nb03 + i2*nb02 + i1*nb01 + i0*nb00);
-float * dst_data  = (float *)((char *)  dst->data +  i3*nb3 + i2*nb2  + i1*nb1  + i0*nb0);
+float * dst_data = (float *)((char *) dst->data + i3*nb3 + i2*nb2 + i1*nb1 + i0*nb0);
 const float x0 = src[0];
 const float x1 = src[n_dims/2];
 const float x2 = src[n_dims];
 const float x3 = src[n_dims/2*3];
-dst_data[0]          = x0*cos_theta - x1*sin_theta;
-dst_data[n_dims/2]   = x0*sin_theta + x1*cos_theta;
-dst_data[n_dims]     = x2*cos_block_theta - x3*sin_block_theta;
+dst_data[0] = x0*cos_theta - x1*sin_theta;
+dst_data[n_dims/2] = x0*sin_theta + x1*cos_theta;
+dst_data[n_dims] = x2*cos_block_theta - x3*sin_block_theta;
 dst_data[n_dims/2*3] = x2*sin_block_theta + x3*cos_block_theta;
 }
 } else if (!is_neox) {
@@ -9663,7 +9663,7 @@ float zeta = xpos_base != 0.0f ? powf((i0 + 0.4f * ne0) / (1.4f * ne0), p / xpos
 if (xpos_down) zeta = 1.0f / zeta;
 theta_base *= theta_scale;
 const float * const src = (float *)((char *) src0->data + i3*nb03 + i2*nb02 + i1*nb01 + i0*nb00);
-float * dst_data  = (float *)((char *)  dst->data + i3*nb3  + i2*nb2  + i1*nb1  + i0*nb0);
+float * dst_data = (float *)((char *) dst->data + i3*nb3 + i2*nb2 + i1*nb1 + i0*nb0);
 const float x0 = src[0];
 const float x1 = src[1];
 dst_data[0] = x0*cos_theta*zeta - x1*sin_theta*zeta;
@@ -9684,15 +9684,15 @@ sin_theta *= sin_sign;
 theta_base *= theta_scale;
 const int64_t i0 = ib*n_dims + ic/2;
 const float * const src = (float *)((char *) src0->data + i3*nb03 + i2*nb02 + i1*nb01 + i0*nb00);
-float * dst_data  = (float *)((char *)  dst->data + i3*nb3  + i2*nb2  + i1*nb1  + i0*nb0);
+float * dst_data = (float *)((char *) dst->data + i3*nb3 + i2*nb2 + i1*nb1 + i0*nb0);
 const float x0 = src[0];
 const float x1 = src[n_dims/2];
-dst_data[0]        = x0*cos_theta - x1*sin_theta;
+dst_data[0] = x0*cos_theta - x1*sin_theta;
 dst_data[n_dims/2] = x0*sin_theta + x1*cos_theta;
 } else {
 const int64_t i0 = ic;
 const float * const src = (float *)((char *) src0->data + i3*nb03 + i2*nb02 + i1*nb01 + i0*nb00);
-float * dst_data  = (float *)((char *)  dst->data + i3*nb3  + i2*nb2  + i1*nb1  + i0*nb0);
+float * dst_data = (float *)((char *) dst->data + i3*nb3 + i2*nb2 + i1*nb1 + i0*nb0);
 dst_data[0] = src[0];
 dst_data[1] = src[1];
 }
@@ -9712,16 +9712,16 @@ if (params->type == GGML_V3_TASK_INIT || params->type == GGML_V3_TASK_FINALIZE) 
 return;
 }
 float freq_base, freq_scale, ext_factor, attn_factor, beta_fast, beta_slow;
-const int n_dims     = ((int32_t *) dst->op_params)[1];
-const int mode       = ((int32_t *) dst->op_params)[2];
-const int n_ctx      = ((int32_t *) dst->op_params)[3];
+const int n_dims = ((int32_t *) dst->op_params)[1];
+const int mode = ((int32_t *) dst->op_params)[2];
+const int n_ctx = ((int32_t *) dst->op_params)[3];
 const int n_orig_ctx = ((int32_t *) dst->op_params)[4];
-memcpy(&freq_base,   (int32_t *) dst->op_params +  5, sizeof(float));
-memcpy(&freq_scale,  (int32_t *) dst->op_params +  6, sizeof(float));
-memcpy(&ext_factor,  (int32_t *) dst->op_params +  7, sizeof(float));
-memcpy(&attn_factor, (int32_t *) dst->op_params +  8, sizeof(float));
-memcpy(&beta_fast,   (int32_t *) dst->op_params +  9, sizeof(float));
-memcpy(&beta_slow,   (int32_t *) dst->op_params + 10, sizeof(float));
+memcpy(&freq_base, (int32_t *) dst->op_params + 5, sizeof(float));
+memcpy(&freq_scale, (int32_t *) dst->op_params + 6, sizeof(float));
+memcpy(&ext_factor, (int32_t *) dst->op_params + 7, sizeof(float));
+memcpy(&attn_factor, (int32_t *) dst->op_params + 8, sizeof(float));
+memcpy(&beta_fast, (int32_t *) dst->op_params + 9, sizeof(float));
+memcpy(&beta_slow, (int32_t *) dst->op_params + 10, sizeof(float));
 GGML_V3_TENSOR_UNARY_OP_LOCALS
 GGML_V3_ASSERT(nb0 == sizeof(ggml_v3_fp16_t));
 const int ith = params->ith;
@@ -9738,7 +9738,7 @@ const float inv_ndims = -1.f/n_dims;
 float corr_dims[2];
 ggml_v3_rope_yarn_corr_dims(n_dims, n_orig_ctx, freq_base, beta_fast, beta_slow, corr_dims);
 const bool is_neox = mode & 2;
-const bool is_glm  = mode & 4;
+const bool is_glm = mode & 4;
 const float sin_sign = forward ? 1.0f : -1.0f;
 const int32_t * pos = (const int32_t *) src1->data;
 for (int64_t i3 = 0; i3 < ne3; i3++) {
@@ -9746,7 +9746,7 @@ for (int64_t i2 = 0; i2 < ne2; i2++) {
 const int64_t p = pos[i2];
 for (int64_t i1 = 0; i1 < ne1; i1++) {
 if (ir++ < ir0) continue;
-if (ir   > ir1) break;
+if (ir > ir1) break;
 float theta_base = (float)p;
 if (is_glm) {
 theta_base = MIN(p, n_ctx - 2);
@@ -9759,14 +9759,14 @@ const float sin_block_theta = sinf(block_theta) * sin_sign;
 theta_base *= theta_scale;
 block_theta *= theta_scale;
 const ggml_v3_fp16_t * const src = (ggml_v3_fp16_t *)((char *) src0->data + i3*nb03 + i2*nb02 + i1*nb01 + i0*nb00);
-ggml_v3_fp16_t * dst_data  = (ggml_v3_fp16_t *)((char *)  dst->data +  i3*nb3 + i2*nb2  + i1*nb1  + i0*nb0);
+ggml_v3_fp16_t * dst_data = (ggml_v3_fp16_t *)((char *) dst->data + i3*nb3 + i2*nb2 + i1*nb1 + i0*nb0);
 const float x0 = GGML_V3_FP16_TO_FP32(src[0]);
 const float x1 = GGML_V3_FP16_TO_FP32(src[n_dims/2]);
 const float x2 = GGML_V3_FP16_TO_FP32(src[n_dims]);
 const float x3 = GGML_V3_FP16_TO_FP32(src[n_dims/2*3]);
-dst_data[0]          = GGML_V3_FP32_TO_FP16(x0*cos_theta - x1*sin_theta);
-dst_data[n_dims/2]   = GGML_V3_FP32_TO_FP16(x0*sin_theta + x1*cos_theta);
-dst_data[n_dims]     = GGML_V3_FP32_TO_FP16(x2*cos_block_theta - x3*sin_block_theta);
+dst_data[0] = GGML_V3_FP32_TO_FP16(x0*cos_theta - x1*sin_theta);
+dst_data[n_dims/2] = GGML_V3_FP32_TO_FP16(x0*sin_theta + x1*cos_theta);
+dst_data[n_dims] = GGML_V3_FP32_TO_FP16(x2*cos_block_theta - x3*sin_block_theta);
 dst_data[n_dims/2*3] = GGML_V3_FP32_TO_FP16(x2*sin_block_theta + x3*cos_block_theta);
 }
 } else if (!is_neox) {
@@ -9778,7 +9778,7 @@ theta_base, freq_scale, corr_dims, i0, ext_factor, attn_factor, &cos_theta, &sin
 sin_theta *= sin_sign;
 theta_base *= theta_scale;
 const ggml_v3_fp16_t * const src = (ggml_v3_fp16_t *)((char *) src0->data + i3*nb03 + i2*nb02 + i1*nb01 + i0*nb00);
-ggml_v3_fp16_t * dst_data  = (ggml_v3_fp16_t *)((char *)  dst->data + i3*nb3  + i2*nb2  + i1*nb1  + i0*nb0);
+ggml_v3_fp16_t * dst_data = (ggml_v3_fp16_t *)((char *) dst->data + i3*nb3 + i2*nb2 + i1*nb1 + i0*nb0);
 const float x0 = GGML_V3_FP16_TO_FP32(src[0]);
 const float x1 = GGML_V3_FP16_TO_FP32(src[1]);
 dst_data[0] = GGML_V3_FP32_TO_FP16(x0*cos_theta - x1*sin_theta);
@@ -9799,15 +9799,15 @@ sin_theta *= sin_sign;
 theta_base *= theta_scale;
 const int64_t i0 = ib*n_dims + ic/2;
 const ggml_v3_fp16_t * const src = (ggml_v3_fp16_t *)((char *) src0->data + i3*nb03 + i2*nb02 + i1*nb01 + i0*nb00);
-ggml_v3_fp16_t * dst_data  = (ggml_v3_fp16_t *)((char *)  dst->data + i3*nb3  + i2*nb2  + i1*nb1  + i0*nb0);
+ggml_v3_fp16_t * dst_data = (ggml_v3_fp16_t *)((char *) dst->data + i3*nb3 + i2*nb2 + i1*nb1 + i0*nb0);
 const float x0 = GGML_V3_FP16_TO_FP32(src[0]);
 const float x1 = GGML_V3_FP16_TO_FP32(src[n_dims/2]);
-dst_data[0]        = GGML_V3_FP32_TO_FP16(x0*cos_theta - x1*sin_theta);
+dst_data[0] = GGML_V3_FP32_TO_FP16(x0*cos_theta - x1*sin_theta);
 dst_data[n_dims/2] = GGML_V3_FP32_TO_FP16(x0*sin_theta + x1*cos_theta);
 } else {
 const int64_t i0 = ic;
 const ggml_v3_fp16_t * const src = (ggml_v3_fp16_t *)((char *) src0->data + i3*nb03 + i2*nb02 + i1*nb01 + i0*nb00);
-ggml_v3_fp16_t * dst_data  = (ggml_v3_fp16_t *)((char *)  dst->data + i3*nb3  + i2*nb2  + i1*nb1  + i0*nb0);
+ggml_v3_fp16_t * dst_data = (ggml_v3_fp16_t *)((char *) dst->data + i3*nb3 + i2*nb2 + i1*nb1 + i0*nb0);
 dst_data[0] = src[0];
 dst_data[1] = src[1];
 }
@@ -9908,7 +9908,7 @@ const int nr = ne1;
 const int dr = (nr + nth - 1)/nth;
 const int ir0 = dr*ith;
 const int ir1 = MIN(ir0 + dr, nr);
-ggml_v3_fp16_t * const wdata     = (ggml_v3_fp16_t *) params->wdata + 0;
+ggml_v3_fp16_t * const wdata = (ggml_v3_fp16_t *) params->wdata + 0;
 ggml_v3_fp16_t * const wdata_src = wdata + nk;
 for (int i1 = ir0; i1 < ir1; i1++) {
 float * dst_data = (float *)((char *) dst->data + i1*nb1);
@@ -9918,7 +9918,7 @@ const int i1n = i10*ne11;
 for (int i00 = 0; i00 < ne00; i00++) {
 float v = 0;
 ggml_v3_vec_dot_f16(ne02, &v,
-(ggml_v3_fp16_t *)    wdata_src + i1n,
+(ggml_v3_fp16_t *) wdata_src + i1n,
 (ggml_v3_fp16_t *) wdata_kernel + i00*ne02);
 dst_data[i10*s0 + i00] += v;
 }
@@ -9976,7 +9976,7 @@ const int nr = ne1;
 const int dr = (nr + nth - 1)/nth;
 const int ir0 = dr*ith;
 const int ir1 = MIN(ir0 + dr, nr);
-float * const wdata     = (float *) params->wdata + 0;
+float * const wdata = (float *) params->wdata + 0;
 float * const wdata_src = wdata + nk;
 for (int i1 = ir0; i1 < ir1; i1++) {
 float * dst_data = (float *)((char *) dst->data + i1*nb1);
@@ -10033,7 +10033,7 @@ const int32_t d1 = ((const int32_t *)(dst->op_params))[5];
 const bool is_2D = ((const int32_t *)(dst->op_params))[6] == 1;
 const int ith = params->ith;
 const int nth = params->nth;
-const int64_t N  = is_2D ? ne13 : ne12;
+const int64_t N = is_2D ? ne13 : ne12;
 const int64_t IC = is_2D ? ne12 : ne11;
 const int64_t IH = is_2D ? ne11 : 1;
 const int64_t IW = ne10;
@@ -10192,26 +10192,26 @@ const float * const srow = (const float *)cdata;
 int j = 0;
 for (int64_t i = 0; i < rs; ++i) {
 switch (op) {
-case GGML_V3_OP_POOL_AVG:   drow[i] = 0;        break;
-case GGML_V3_OP_POOL_MAX:   drow[i] = -FLT_MAX; break;
+case GGML_V3_OP_POOL_AVG: drow[i] = 0; break;
+case GGML_V3_OP_POOL_MAX: drow[i] = -FLT_MAX; break;
 case GGML_V3_OP_POOL_COUNT: GGML_V3_ASSERT(false); break;
 }
 for (int ki = 0; ki < k; ++ki) {
 switch (op) {
-case GGML_V3_OP_POOL_AVG:                          drow[i] += srow[j]; break;
-case GGML_V3_OP_POOL_MAX:   if (srow[j] > drow[i]) drow[i]  = srow[j]; break;
-case GGML_V3_OP_POOL_COUNT:                        GGML_V3_ASSERT(false); break;
+case GGML_V3_OP_POOL_AVG: drow[i] += srow[j]; break;
+case GGML_V3_OP_POOL_MAX: if (srow[j] > drow[i]) drow[i] = srow[j]; break;
+case GGML_V3_OP_POOL_COUNT: GGML_V3_ASSERT(false); break;
 }
 ++j;
 }
 switch (op) {
-case GGML_V3_OP_POOL_AVG:         drow[i] /= k; break;
-case GGML_V3_OP_POOL_MAX:                       break;
+case GGML_V3_OP_POOL_AVG: drow[i] /= k; break;
+case GGML_V3_OP_POOL_MAX: break;
 case GGML_V3_OP_POOL_COUNT: GGML_V3_ASSERT(false); break;
 }
 }
 cdata += src->nb[1];
-drow  += rs;
+drow += rs;
 }
 }
 static void ggml_v3_compute_forward_pool_1d(
@@ -10257,10 +10257,10 @@ while (cdata < data_end) {
 for (int oy = 0; oy < py; ++oy) {
 float * const drow = dplane + oy * px;
 for (int ox = 0; ox < px; ++ox) {
-float * const out =  drow + ox;
+float * const out = drow + ox;
 switch (op) {
-case GGML_V3_OP_POOL_AVG:     *out = 0;        break;
-case GGML_V3_OP_POOL_MAX:     *out = -FLT_MAX; break;
+case GGML_V3_OP_POOL_AVG: *out = 0; break;
+case GGML_V3_OP_POOL_MAX: *out = -FLT_MAX; break;
 case GGML_V3_OP_POOL_COUNT: GGML_V3_ASSERT(false); break;
 }
 const int ix = offset0 + ox * s0;
@@ -10272,20 +10272,20 @@ for (int kx = 0; kx < k0; ++kx) {
 int j = ix + kx;
 if (j < 0 || j >= src->ne[0]) continue;
 switch (op) {
-case GGML_V3_OP_POOL_AVG:                     *out += srow[j]; break;
-case GGML_V3_OP_POOL_MAX: if (srow[j] > *out) *out  = srow[j]; break;
-case GGML_V3_OP_POOL_COUNT:                GGML_V3_ASSERT(false); break;
-}
-}
-}
-switch (op) {
-case GGML_V3_OP_POOL_AVG:           *out /= ka; break;
-case GGML_V3_OP_POOL_MAX:                       break;
+case GGML_V3_OP_POOL_AVG: *out += srow[j]; break;
+case GGML_V3_OP_POOL_MAX: if (srow[j] > *out) *out = srow[j]; break;
 case GGML_V3_OP_POOL_COUNT: GGML_V3_ASSERT(false); break;
 }
 }
 }
-cdata  += src->nb[2];
+switch (op) {
+case GGML_V3_OP_POOL_AVG: *out /= ka; break;
+case GGML_V3_OP_POOL_MAX: break;
+case GGML_V3_OP_POOL_COUNT: GGML_V3_ASSERT(false); break;
+}
+}
+}
+cdata += src->nb[2];
 dplane += pa;
 }
 }
@@ -10310,7 +10310,7 @@ const int64_t i01 = i1 / scale_factor;
 for (int64_t i0 = 0; i0 < ne0; i0++) {
 const int64_t i00 = i0 / scale_factor;
 const float * x = (float *)((char *) src0->data + i00*nb00 + i01*nb01 + i02*nb02 + i03*nb03);
-float * y = (float *)((char *)  dst->data +  i0*nb0  +  i1*nb1  +  i2*nb2  +  i3*nb3);
+float * y = (float *)((char *) dst->data + i0*nb0 + i1*nb1 + i2*nb2 + i3*nb3);
 *y = *x;
 }
 }
@@ -10431,14 +10431,14 @@ const bool masked,
 struct ggml_v3_tensor * dst) {
 int64_t t0 = ggml_v3_perf_time_us();
 UNUSED(t0);
-GGML_V3_TENSOR_LOCALS(int64_t, neq, q,   ne)
-GGML_V3_TENSOR_LOCALS(size_t,  nbq, q,   nb)
-GGML_V3_TENSOR_LOCALS(int64_t, nek, k,   ne)
-GGML_V3_TENSOR_LOCALS(size_t,  nbk, k,   nb)
-GGML_V3_TENSOR_LOCALS(int64_t, nev, v,   ne)
-GGML_V3_TENSOR_LOCALS(size_t,  nbv, v,   nb)
-GGML_V3_TENSOR_LOCALS(int64_t, ne,  dst, ne)
-GGML_V3_TENSOR_LOCALS(size_t,  nb,  dst, nb)
+GGML_V3_TENSOR_LOCALS(int64_t, neq, q, ne)
+GGML_V3_TENSOR_LOCALS(size_t, nbq, q, nb)
+GGML_V3_TENSOR_LOCALS(int64_t, nek, k, ne)
+GGML_V3_TENSOR_LOCALS(size_t, nbk, k, nb)
+GGML_V3_TENSOR_LOCALS(int64_t, nev, v, ne)
+GGML_V3_TENSOR_LOCALS(size_t, nbv, v, nb)
+GGML_V3_TENSOR_LOCALS(int64_t, ne, dst, ne)
+GGML_V3_TENSOR_LOCALS(size_t, nb, dst, nb)
 const int ith = params->ith;
 const int nth = params->nth;
 const int64_t D = neq0;
@@ -10507,7 +10507,7 @@ vDSP_vsadd(S, 1, &max, S, 1, Mup);
 vvexpf(S, S, &Mup);
 ggml_v3_vec_sum_f32(Mup, &sum, S);
 #else
-uint16_t   scvt[GGML_V3_SOFT_MAX_UNROLL]; UNUSED(scvt);
+uint16_t scvt[GGML_V3_SOFT_MAX_UNROLL]; UNUSED(scvt);
 ggml_v3_float sump[GGML_V3_SOFT_MAX_UNROLL] = { 0.0 };
 for (int i = 0; i < Mup; i += GGML_V3_SOFT_MAX_UNROLL) {
 if (i >= masked_begin) {
@@ -10554,8 +10554,8 @@ const int i3 = iq3;
 const int iv2 = iq2 % nev2;
 const int iv3 = iq3;
 ggml_v3_vec_dot_f32(masked_begin,
-(float *) ((char *) dst->data + (ic*nb0 + i1*nb1  + i2*nb2   + i3*nb3)),
-(float *) ((char *) v->data   + (         ic*nbv1 + iv2*nbv2 + iv3*nbv3)),
+(float *) ((char *) dst->data + (ic*nb0 + i1*nb1 + i2*nb2 + i3*nb3)),
+(float *) ((char *) v->data + ( ic*nbv1 + iv2*nbv2 + iv3*nbv3)),
 S);
 }
 }
@@ -10569,14 +10569,14 @@ const bool masked,
 struct ggml_v3_tensor * dst) {
 int64_t t0 = ggml_v3_perf_time_us();
 UNUSED(t0);
-GGML_V3_TENSOR_LOCALS(int64_t, neq, q,   ne)
-GGML_V3_TENSOR_LOCALS(size_t,  nbq, q,   nb)
-GGML_V3_TENSOR_LOCALS(int64_t, nek, k,   ne)
-GGML_V3_TENSOR_LOCALS(size_t,  nbk, k,   nb)
-GGML_V3_TENSOR_LOCALS(int64_t, nev, v,   ne)
-GGML_V3_TENSOR_LOCALS(size_t,  nbv, v,   nb)
-GGML_V3_TENSOR_LOCALS(int64_t, ne,  dst, ne)
-GGML_V3_TENSOR_LOCALS(size_t,  nb,  dst, nb)
+GGML_V3_TENSOR_LOCALS(int64_t, neq, q, ne)
+GGML_V3_TENSOR_LOCALS(size_t, nbq, q, nb)
+GGML_V3_TENSOR_LOCALS(int64_t, nek, k, ne)
+GGML_V3_TENSOR_LOCALS(size_t, nbk, k, nb)
+GGML_V3_TENSOR_LOCALS(int64_t, nev, v, ne)
+GGML_V3_TENSOR_LOCALS(size_t, nbv, v, nb)
+GGML_V3_TENSOR_LOCALS(int64_t, ne, dst, ne)
+GGML_V3_TENSOR_LOCALS(size_t, nb, dst, nb)
 const int ith = params->ith;
 const int nth = params->nth;
 const int64_t D = neq0;
@@ -10661,7 +10661,7 @@ vDSP_vsadd(S, 1, &max, S, 1, Mup);
 vvexpf(S, S, &Mup);
 ggml_v3_vec_sum_f32(Mup, &sum, S);
 #else
-uint16_t   scvt[GGML_V3_SOFT_MAX_UNROLL];
+uint16_t scvt[GGML_V3_SOFT_MAX_UNROLL];
 ggml_v3_float sump[GGML_V3_SOFT_MAX_UNROLL] = { 0.0 };
 for (int i = 0; i < Mup; i += GGML_V3_SOFT_MAX_UNROLL) {
 float * SS = S + i;
@@ -10704,8 +10704,8 @@ const int i3 = iq3;
 const int iv2 = iq2 % nev2;
 const int iv3 = iq3;
 ggml_v3_vec_dot_f16(nev0,
-(float *)       ((char *) dst->data + (ic*nb0 + i1*nb1  + i2*nb2   + i3*nb3)),
-(ggml_v3_fp16_t *) ((char *) v->data   + (         ic*nbv1 + iv2*nbv2 + iv3*nbv3)),
+(float *) ((char *) dst->data + (ic*nb0 + i1*nb1 + i2*nb2 + i3*nb3)),
+(ggml_v3_fp16_t *) ((char *) v->data + ( ic*nbv1 + iv2*nbv2 + iv3*nbv3)),
 S16);
 }
 } else {
@@ -10716,8 +10716,8 @@ const int i3 = iq3;
 const int iv2 = iq2 % nev2;
 const int iv3 = iq3;
 ggml_v3_vec_dot_f16_unroll(nev0, nbv1,
-(float *) ((char *) dst->data + (ic*nb0 + i1*nb1  + i2*nb2   + i3*nb3)),
-((char *)             v->data + (         ic*nbv1 + iv2*nbv2 + iv3*nbv3)),
+(float *) ((char *) dst->data + (ic*nb0 + i1*nb1 + i2*nb2 + i3*nb3)),
+((char *) v->data + ( ic*nbv1 + iv2*nbv2 + iv3*nbv3)),
 S16);
 }
 }
@@ -10755,18 +10755,18 @@ const struct ggml_v3_tensor * c1,
 struct ggml_v3_tensor * dst) {
 int64_t t0 = ggml_v3_perf_time_us();
 UNUSED(t0);
-GGML_V3_TENSOR_LOCALS(int64_t, nea,  a,   ne)
-GGML_V3_TENSOR_LOCALS(size_t,  nba,  a,   nb)
-GGML_V3_TENSOR_LOCALS(int64_t, neb0, b0,  ne)
-GGML_V3_TENSOR_LOCALS(size_t,  nbb0, b0,  nb)
-GGML_V3_TENSOR_LOCALS(int64_t, neb1, b1,  ne)
-GGML_V3_TENSOR_LOCALS(size_t,  nbb1, b1,  nb)
-GGML_V3_TENSOR_LOCALS(int64_t, nec0, c0,  ne)
-GGML_V3_TENSOR_LOCALS(size_t,  nbc0, c0,  nb)
-GGML_V3_TENSOR_LOCALS(int64_t, nec1, c1,  ne)
-GGML_V3_TENSOR_LOCALS(size_t,  nbc1, c1,  nb)
-GGML_V3_TENSOR_LOCALS(int64_t, ne,   dst, ne)
-GGML_V3_TENSOR_LOCALS(size_t,  nb,   dst, nb)
+GGML_V3_TENSOR_LOCALS(int64_t, nea, a, ne)
+GGML_V3_TENSOR_LOCALS(size_t, nba, a, nb)
+GGML_V3_TENSOR_LOCALS(int64_t, neb0, b0, ne)
+GGML_V3_TENSOR_LOCALS(size_t, nbb0, b0, nb)
+GGML_V3_TENSOR_LOCALS(int64_t, neb1, b1, ne)
+GGML_V3_TENSOR_LOCALS(size_t, nbb1, b1, nb)
+GGML_V3_TENSOR_LOCALS(int64_t, nec0, c0, ne)
+GGML_V3_TENSOR_LOCALS(size_t, nbc0, c0, nb)
+GGML_V3_TENSOR_LOCALS(int64_t, nec1, c1, ne)
+GGML_V3_TENSOR_LOCALS(size_t, nbc1, c1, nb)
+GGML_V3_TENSOR_LOCALS(int64_t, ne, dst, ne)
+GGML_V3_TENSOR_LOCALS(size_t, nb, dst, nb)
 const int ith = params->ith;
 const int nth = params->nth;
 const int64_t D = nea0;
@@ -10774,7 +10774,7 @@ const int64_t M = neb01;
 GGML_V3_ASSERT(ne0 == nea0);
 GGML_V3_ASSERT(ne1 == nea1);
 GGML_V3_ASSERT(ne2 == nea2);
-GGML_V3_ASSERT(nba0  == sizeof(ggml_v3_fp16_t));
+GGML_V3_ASSERT(nba0 == sizeof(ggml_v3_fp16_t));
 GGML_V3_ASSERT(nbb00 == sizeof(ggml_v3_fp16_t));
 GGML_V3_ASSERT(nbb10 == sizeof(float));
 GGML_V3_ASSERT(nbc00 == sizeof(ggml_v3_fp16_t));
@@ -10814,7 +10814,7 @@ const int i1 = ib01;
 ggml_v3_vec_dot_f16(nea0,
 S + i1,
 (ggml_v3_fp16_t *) ((char *) b0->data + (ib01*nbb01 + ib02*nbb02 + ib03*nbb03)),
-(ggml_v3_fp16_t *) ((char *)  a->data + ( ia1*nba1  +  ia2*nba2  +  ia3*nba3)));
+(ggml_v3_fp16_t *) ((char *) a->data + ( ia1*nba1 + ia2*nba2 + ia3*nba3)));
 }
 ggml_v3_vec_add_f32(neb01, S, S, (float *) b1->data);
 ggml_v3_fp16_t * S16 = (ggml_v3_fp16_t *) ((float *) params->wdata + ith*(2*M + CACHE_LINE_SIZE_F32) + M);
@@ -10828,8 +10828,8 @@ const int i2 = ia2;
 const int i3 = ia3;
 for (int64_t ic = 0; ic < nec01; ++ic) {
 ggml_v3_vec_dot_f16(neb01,
-(float *)       ((char *) dst->data + (ic*nb0 + i1*nb1   + i2*nb2   + i3*nb3)),
-(ggml_v3_fp16_t *) ((char *) c0->data  + (         ic*nbc01 + i2*nbc02 + i3*nbc03)),
+(float *) ((char *) dst->data + (ic*nb0 + i1*nb1 + i2*nb2 + i3*nb3)),
+(ggml_v3_fp16_t *) ((char *) c0->data + ( ic*nbc01 + i2*nbc02 + i3*nbc03)),
 S16);
 }
 ggml_v3_vec_add_f32(nec01,
@@ -10872,23 +10872,23 @@ const bool masked,
 struct ggml_v3_tensor * dst) {
 int64_t t0 = ggml_v3_perf_time_us();
 UNUSED(t0);
-GGML_V3_TENSOR_LOCALS(int64_t, neq, q,   ne)
-GGML_V3_TENSOR_LOCALS(size_t,  nbq, q,   nb)
-GGML_V3_TENSOR_LOCALS(int64_t, nek, k,   ne)
-GGML_V3_TENSOR_LOCALS(size_t,  nbk, k,   nb)
-GGML_V3_TENSOR_LOCALS(int64_t, nev, v,   ne)
-GGML_V3_TENSOR_LOCALS(size_t,  nbv, v,   nb)
-GGML_V3_TENSOR_LOCALS(int64_t, ned, d,   ne)
-GGML_V3_TENSOR_LOCALS(size_t,  nbd, d,   nb)
-GGML_V3_TENSOR_LOCALS(int64_t, ne,  dst, ne)
-GGML_V3_TENSOR_LOCALS(size_t,  nb,  dst, nb)
+GGML_V3_TENSOR_LOCALS(int64_t, neq, q, ne)
+GGML_V3_TENSOR_LOCALS(size_t, nbq, q, nb)
+GGML_V3_TENSOR_LOCALS(int64_t, nek, k, ne)
+GGML_V3_TENSOR_LOCALS(size_t, nbk, k, nb)
+GGML_V3_TENSOR_LOCALS(int64_t, nev, v, ne)
+GGML_V3_TENSOR_LOCALS(size_t, nbv, v, nb)
+GGML_V3_TENSOR_LOCALS(int64_t, ned, d, ne)
+GGML_V3_TENSOR_LOCALS(size_t, nbd, d, nb)
+GGML_V3_TENSOR_LOCALS(int64_t, ne, dst, ne)
+GGML_V3_TENSOR_LOCALS(size_t, nb, dst, nb)
 const int ith = params->ith;
 const int nth = params->nth;
 const int64_t D = neq0;
 const int64_t N = neq1;
 const int64_t P = nek1 - N;
 const int64_t M = P + N;
-const int Mup  = ggml_v3_up(M, GGML_V3_SOFT_MAX_UNROLL);
+const int Mup = ggml_v3_up(M, GGML_V3_SOFT_MAX_UNROLL);
 const int mxDM = MAX(D, Mup);
 GGML_V3_ASSERT(P >= 0);
 GGML_V3_ASSERT(nbq0 == sizeof(float));
@@ -10953,7 +10953,7 @@ const int iq2 = ik2 + irep*nek2;
 const int id2 = iq2;
 for (int iq1 = 0; iq1 < neq1; ++iq1) {
 const int id1 = iq1;
-float * S  = (float *) params->wdata + ith*2*(mxDM + CACHE_LINE_SIZE_F32) + 0*(mxDM+CACHE_LINE_SIZE_F32);
+float * S = (float *) params->wdata + ith*2*(mxDM + CACHE_LINE_SIZE_F32) + 0*(mxDM+CACHE_LINE_SIZE_F32);
 float * SM = (float *) params->wdata + ith*2*(mxDM + CACHE_LINE_SIZE_F32) + 1*(mxDM+CACHE_LINE_SIZE_F32);
 for (int i = M; i < Mup; ++i) {
 S[i] = -INFINITY;
@@ -10982,13 +10982,13 @@ vDSP_vsadd(SM, 1, &max, SM, 1, Mup);
 vvexpf(SM, SM, &Mup);
 ggml_v3_vec_sum_f32(Mup, &sum, SM);
 #else
-uint16_t   scvt[GGML_V3_SOFT_MAX_UNROLL]; UNUSED(scvt);
+uint16_t scvt[GGML_V3_SOFT_MAX_UNROLL]; UNUSED(scvt);
 ggml_v3_float sump[GGML_V3_SOFT_MAX_UNROLL] = { 0.0 };
 for (int i = 0; i < Mup; i += GGML_V3_SOFT_MAX_UNROLL) {
 if (i >= masked_begin) {
 break;
 }
-float * SR =  S + i;
+float * SR = S + i;
 float * SW = SM + i;
 for (int j = 0; j < GGML_V3_SOFT_MAX_UNROLL; ++j) {
 if (i + j >= masked_begin) {
@@ -11023,7 +11023,7 @@ ggml_v3_vec_set_f32(masked_begin, S, 0);
 for (int64_t ic = 0; ic < D; ++ic) {
 ggml_v3_vec_mad_f32(masked_begin,
 S,
-(float *) ((char *) v->data + (          ic*nbv1  + iv2*nbv2 + iv3*nbv3)),
+(float *) ((char *) v->data + ( ic*nbv1 + iv2*nbv2 + iv3*nbv3)),
 *(float *) ((char *) d->data + (ic*nbd0 + id1*nbd1 + id2*nbd2 + id3*nbd3)));
 }
 float dot_SM_gradSM = 0;
@@ -11033,21 +11033,21 @@ ggml_v3_vec_mul_f32 (masked_begin, S, S, SM);
 ggml_v3_vec_scale_f32(masked_begin, S, scale);
 for (int64_t ic = 0; ic < masked_begin; ++ic) {
 ggml_v3_vec_mad_f32(D,
-(float *) ((char *) grad_q  + (iq1*nbgq1 + iq2*nbgq2  + iq3*nbgq3)),
-(float *) ((char *) k->data + (ic*nbk1   + ik2*nbk2   + ik3*nbk3)),
+(float *) ((char *) grad_q + (iq1*nbgq1 + iq2*nbgq2 + iq3*nbgq3)),
+(float *) ((char *) k->data + (ic*nbk1 + ik2*nbk2 + ik3*nbk3)),
 S[ic]);
 }
 for (int64_t ic = 0; ic < masked_begin; ++ic) {
 ggml_v3_vec_mad_f32(D,
-(float *) ((char *) grad_k  + (ic*nbgk1  + ik2*nbgk2  + ik3*nbgk3)),
-(float *) ((char *) q->data + (iq1*nbq1  + iq2*nbq2   + iq3*nbq3)),
+(float *) ((char *) grad_k + (ic*nbgk1 + ik2*nbgk2 + ik3*nbgk3)),
+(float *) ((char *) q->data + (iq1*nbq1 + iq2*nbq2 + iq3*nbq3)),
 S[ic]);
 }
 for (int64_t ic = 0; ic < D; ++ic) {
 ggml_v3_vec_mad_f32(masked_begin,
-(float *) ((char *) grad_v   + (          ic*nbgv1 + iv2*nbgv2 + iv3*nbgv3)),
+(float *) ((char *) grad_v + ( ic*nbgv1 + iv2*nbgv2 + iv3*nbgv3)),
 SM,
-*(float *) ((char *) d->data + (ic*nbd0 + id1*nbd1 + id2*nbd2  + id3*nbd3)));
+*(float *) ((char *) d->data + (ic*nbd0 + id1*nbd1 + id2*nbd2 + id3*nbd3)));
 }
 }
 }
@@ -11080,12 +11080,12 @@ if (params->type == GGML_V3_TASK_INIT || params->type == GGML_V3_TASK_FINALIZE) 
 return;
 }
 GGML_V3_TENSOR_LOCALS(int64_t, ne0, src0, ne)
-GGML_V3_TENSOR_LOCALS(int64_t, ne,  dst,  ne)
+GGML_V3_TENSOR_LOCALS(int64_t, ne, dst, ne)
 const int32_t nep0 = ((const int32_t *)(dst->op_params))[0];
 const int32_t nep1 = ((const int32_t *)(dst->op_params))[1];
-const int32_t w    = ((const int32_t *)(dst->op_params))[2];
+const int32_t w = ((const int32_t *)(dst->op_params))[2];
 assert(ne00 == ne0);
-assert(ne3  == nep0*nep1);
+assert(ne3 == nep0*nep1);
 for (int py = 0; py < nep1; ++py) {
 for (int px = 0; px < nep0; ++px) {
 const int64_t i3 = py*nep0 + px;
@@ -11095,8 +11095,8 @@ for (int64_t i0 = 0; i0 < ne0; ++i0) {
 const int64_t i02 = py*w + i2;
 const int64_t i01 = px*w + i1;
 const int64_t i00 = i0;
-const int64_t i = i3*ne2*ne1*ne0 + i2*ne1*ne0    + i1*ne0   + i0;
-const int64_t j =                  i02*ne01*ne00 + i01*ne00 + i00;
+const int64_t i = i3*ne2*ne1*ne0 + i2*ne1*ne0 + i1*ne0 + i0;
+const int64_t j = i02*ne01*ne00 + i01*ne00 + i00;
 if (py*w + i2 >= ne02 || px*w + i1 >= ne01) {
 ((float *) dst->data)[i] = 0.0f;
 } else {
@@ -11131,7 +11131,7 @@ if (params->type == GGML_V3_TASK_INIT || params->type == GGML_V3_TASK_FINALIZE) 
 return;
 }
 GGML_V3_TENSOR_LOCALS(int64_t, ne0, src0, ne)
-GGML_V3_TENSOR_LOCALS(int64_t, ne,  dst,  ne)
+GGML_V3_TENSOR_LOCALS(int64_t, ne, dst, ne)
 const int32_t w = ((const int32_t *)(dst->op_params))[0];
 const int px = (w - ne1%w)%w;
 const int npx = (px + ne1)/w;
@@ -11145,7 +11145,7 @@ const int64_t i02 = i2%w;
 const int64_t i01 = i1%w;
 const int64_t i00 = i0;
 const int64_t i = (ip2*npx + ip1)*ne02*ne01*ne00 + i02*ne01*ne00 + i01*ne00 + i00;
-const int64_t j =                                  i2*ne1*ne0    + i1*ne0   + i0;
+const int64_t j = i2*ne1*ne0 + i1*ne0 + i0;
 ((float *) dst->data)[j] = ((float *) src0->data)[i];
 }
 }
@@ -11228,7 +11228,7 @@ return;
 GGML_V3_TENSOR_UNARY_OP_LOCALS
 const int64_t w = ne1;
 ggml_v3_fp16_t * src0_data = (ggml_v3_fp16_t *) src0->data;
-ggml_v3_fp16_t * dst_data  = (ggml_v3_fp16_t *) dst->data;
+ggml_v3_fp16_t * dst_data = (ggml_v3_fp16_t *) dst->data;
 for (int64_t i2 = 0; i2 < ne2; ++i2) {
 for (int64_t i1 = 0; i1 < ne1; ++i1) {
 const int64_t pos = (w - i1 - 1) + i2;
@@ -11271,7 +11271,7 @@ int64_t t0 = ggml_v3_perf_time_us();
 UNUSED(t0);
 float * src1_data = (float *) src1->data;
 float * src2_data = (float *) src2->data;
-float * dst_data  = (float *) dst->data;
+float * dst_data = (float *) dst->data;
 const int64_t ne10 = src1->ne[0];
 const int64_t ne11 = src1->ne[1];
 const int64_t ne12 = src1->ne[2];
@@ -11287,13 +11287,13 @@ for (int64_t i12 = 0; i12 < ne12; ++i12) {
 for (int64_t i11 = 0; i11 < ne11; ++i11) {
 const int64_t jp1 = i13*ne12*ne11*ne10 + i12*ne11*ne10 + i11*ne10;
 for (int64_t i10 = 0; i10 < ne10; ++i10) {
-const int64_t jp0  = jp1 + i10;
+const int64_t jp0 = jp1 + i10;
 const float src1_e = src1_data[jp0];
 const float src2_e = src2_data[jp0];
 const int64_t jdh = jp0 * ne10;
 const int64_t jdw = jdh - (ne10 - 1) * i10;
 for (int64_t j = 0; j < ne10; ++j) {
-dst_data[jdh + j     ] += src2_e;
+dst_data[jdh + j ] += src2_e;
 dst_data[jdw + j*ne10] += src1_e;
 }
 }
@@ -11327,13 +11327,13 @@ GGML_V3_ASSERT(ggml_v3_are_same_shape(src0, dst));
 if (params->type == GGML_V3_TASK_INIT || params->type == GGML_V3_TASK_FINALIZE) {
 return;
 }
-const int n  = ggml_v3_nrows(src0);
+const int n = ggml_v3_nrows(src0);
 const int nc = src0->ne[0];
 assert( dst->nb[0] == sizeof(float));
 assert(src0->nb[0] == sizeof(float));
 for (int i = 0; i < n; i++) {
 fun(nc,
-(float *) ((char *) dst->data  + i*( dst->nb[1])),
+(float *) ((char *) dst->data + i*( dst->nb[1])),
 (float *) ((char *) src0->data + i*(src0->nb[1])));
 }
 }
@@ -11364,14 +11364,14 @@ assert(ggml_v3_are_same_shape(src0, src1) && ggml_v3_are_same_shape(src0, dst));
 if (params->type == GGML_V3_TASK_INIT || params->type == GGML_V3_TASK_FINALIZE) {
 return;
 }
-const int n  = ggml_v3_nrows(src0);
+const int n = ggml_v3_nrows(src0);
 const int nc = src0->ne[0];
 assert( dst->nb[0] == sizeof(float));
 assert(src0->nb[0] == sizeof(float));
 assert(src1->nb[0] == sizeof(float));
 for (int i = 0; i < n; i++) {
 fun(nc,
-(float *) ((char *) dst->data  + i*( dst->nb[1])),
+(float *) ((char *) dst->data + i*( dst->nb[1])),
 (float *) ((char *) src0->data + i*(src0->nb[1])),
 (float *) ((char *) src1->data + i*(src1->nb[1])));
 }
@@ -11582,11 +11582,11 @@ const int64_t nr = ggml_v3_nrows(src0);
 const int64_t dr = (nr + nth - 1)/nth;
 const int64_t ir0 = dr*ith;
 const int64_t ir1 = MIN(ir0 + dr, nr);
-float * d   = (float *) opt0->data;
+float * d = (float *) opt0->data;
 for (int64_t i1 = ir0; i1 < ir1; i1++) {
-float * ds0 = (float *)((char *) dst->data  + i1*dst->nb[1]);
-float * s0  = (float *)((char *) src0->data + i1*src0->nb[1]);
-float * s1  = (float *)((char *) src1->data + i1*src1->nb[1]);
+float * ds0 = (float *)((char *) dst->data + i1*dst->nb[1]);
+float * s0 = (float *)((char *) src0->data + i1*src0->nb[1]);
+float * s1 = (float *)((char *) src1->data + i1*src1->nb[1]);
 #ifndef NDEBUG
 for (int i = 0; i < nc; ++i) {
 assert(!isnan(s0[i]));
@@ -12064,9 +12064,9 @@ free(map);
 }
 static struct ggml_v3_tensor * ggml_v3_recompute_graph_node(
 struct ggml_v3_context * ctx,
-struct ggml_v3_cgraph  * graph,
-struct hash_map     * replacements,
-struct ggml_v3_tensor  * node) {
+struct ggml_v3_cgraph * graph,
+struct hash_map * replacements,
+struct ggml_v3_tensor * node) {
 if (node == NULL) {
 return NULL;
 }
@@ -12094,10 +12094,10 @@ struct ggml_v3_tensor * clone = ggml_v3_new_tensor(ctx, node->type, GGML_V3_MAX_
 GGML_V3_ASSERT(replacements->set.keys[i] == NULL);
 replacements->set.keys[i] = node;
 replacements->vals[i] = clone;
-clone->op       = node->op;
-clone->grad     = node->grad;
+clone->op = node->op;
+clone->grad = node->grad;
 clone->is_param = node->is_param;
-clone->extra    = node->extra;
+clone->extra = node->extra;
 for (int k = 0; k < GGML_V3_MAX_DIMS; ++k) {
 clone->nb[k] = node->nb[k];
 }
@@ -12109,22 +12109,22 @@ clone->data = (node->view_src->data == NULL)
 ? NULL
 : (char *) node->view_src->data
 + node->view_offs;
-clone->view_src  = node->view_src;
+clone->view_src = node->view_src;
 clone->view_offs = node->view_offs;
 }
 GGML_V3_ASSERT(sizeof(node->op_params) == sizeof(int32_t) * (GGML_V3_MAX_OP_PARAMS / sizeof(int32_t)));
-GGML_V3_ASSERT(sizeof(node->name)      == GGML_V3_MAX_NAME);
+GGML_V3_ASSERT(sizeof(node->name) == GGML_V3_MAX_NAME);
 memcpy(clone->op_params, node->op_params, sizeof(node->op_params));
 ggml_v3_format_name(clone, "%s (clone)", ggml_v3_get_name(node));
 return clone;
 }
 void ggml_v3_build_backward_gradient_checkpointing(
-struct ggml_v3_context   * ctx,
-struct ggml_v3_cgraph    * gf,
-struct ggml_v3_cgraph    * gb,
-struct ggml_v3_cgraph    * gb_tmp,
-struct ggml_v3_tensor  * * checkpoints,
-int                     n_checkpoints) {
+struct ggml_v3_context * ctx,
+struct ggml_v3_cgraph * gf,
+struct ggml_v3_cgraph * gb,
+struct ggml_v3_cgraph * gb_tmp,
+struct ggml_v3_tensor * * checkpoints,
+int n_checkpoints) {
 ggml_v3_graph_cpy(gf, gb_tmp);
 ggml_v3_build_backward_expand(ctx, gf, gb_tmp, true);
 if (n_checkpoints <= 0) {
@@ -12137,7 +12137,7 @@ size_t k = ggml_v3_hash_find(replacements->set, checkpoints[i]);
 GGML_V3_ASSERT(k != GGML_V3_HASHTABLE_FULL);
 GGML_V3_ASSERT(replacements->set.keys[k] == NULL);
 replacements->set.keys[k] = checkpoints[i];
-replacements->vals[k]     = checkpoints[i];
+replacements->vals[k] = checkpoints[i];
 }
 ggml_v3_graph_cpy(gf, gb);
 for (int i = gf->n_nodes; i<gb_tmp->n_nodes; ++i) {
@@ -12215,10 +12215,10 @@ if (src0->grad) {
 src0->grad = ggml_v3_add_or_set(ctx, src0->grad, tensor->grad, zero_table);
 }
 if (src1->grad) {
-const size_t nb1     = ((int32_t *) tensor->op_params)[0];
-const size_t nb2     = ((int32_t *) tensor->op_params)[1];
-const size_t nb3     = ((int32_t *) tensor->op_params)[2];
-const size_t offset  = ((int32_t *) tensor->op_params)[3];
+const size_t nb1 = ((int32_t *) tensor->op_params)[0];
+const size_t nb2 = ((int32_t *) tensor->op_params)[1];
+const size_t nb3 = ((int32_t *) tensor->op_params)[2];
+const size_t offset = ((int32_t *) tensor->op_params)[3];
 struct ggml_v3_tensor * tensor_grad_view = ggml_v3_view_4d(ctx,
 tensor->grad,
 src1->grad->ne[0],
@@ -12449,10 +12449,10 @@ zero_table);
 } break;
 case GGML_V3_OP_SET:
 {
-const size_t nb1     = ((int32_t *) tensor->op_params)[0];
-const size_t nb2     = ((int32_t *) tensor->op_params)[1];
-const size_t nb3     = ((int32_t *) tensor->op_params)[2];
-const size_t offset  = ((int32_t *) tensor->op_params)[3];
+const size_t nb1 = ((int32_t *) tensor->op_params)[0];
+const size_t nb2 = ((int32_t *) tensor->op_params)[1];
+const size_t nb3 = ((int32_t *) tensor->op_params)[2];
+const size_t offset = ((int32_t *) tensor->op_params)[3];
 struct ggml_v3_tensor * tensor_grad_view = NULL;
 if (src0->grad || src1->grad) {
 GGML_V3_ASSERT(src0->type == tensor->type);
@@ -12519,9 +12519,9 @@ case GGML_V3_OP_VIEW:
 if (src0->grad) {
 size_t offset;
 memcpy(&offset, tensor->op_params, sizeof(offset));
-size_t nb1     = tensor->nb[1];
-size_t nb2     = tensor->nb[2];
-size_t nb3     = tensor->nb[3];
+size_t nb1 = tensor->nb[1];
+size_t nb2 = tensor->nb[2];
+size_t nb3 = tensor->nb[3];
 if (src0->type != src0->grad->type) {
 size_t ng = ggml_v3_element_size(src0->grad);
 size_t n0 = ggml_v3_element_size(src0);
@@ -12625,19 +12625,19 @@ GGML_V3_ASSERT(false);
 case GGML_V3_OP_ROPE:
 {
 if (src0->grad) {
-const int n_dims     = ((int32_t *) tensor->op_params)[1];
-const int mode       = ((int32_t *) tensor->op_params)[2];
-const int n_ctx      = ((int32_t *) tensor->op_params)[3];
+const int n_dims = ((int32_t *) tensor->op_params)[1];
+const int mode = ((int32_t *) tensor->op_params)[2];
+const int n_ctx = ((int32_t *) tensor->op_params)[3];
 const int n_orig_ctx = ((int32_t *) tensor->op_params)[4];
 float freq_base, freq_scale, ext_factor, attn_factor, beta_fast, beta_slow, xpos_base, xpos_down;
-memcpy(&freq_base,   (int32_t *) tensor->op_params +  5, sizeof(float));
-memcpy(&freq_scale,  (int32_t *) tensor->op_params +  6, sizeof(float));
-memcpy(&ext_factor,  (int32_t *) tensor->op_params +  7, sizeof(float));
-memcpy(&attn_factor, (int32_t *) tensor->op_params +  8, sizeof(float));
-memcpy(&beta_fast,   (int32_t *) tensor->op_params +  9, sizeof(float));
-memcpy(&beta_slow,   (int32_t *) tensor->op_params + 10, sizeof(float));
-memcpy(&xpos_base,   (int32_t *) tensor->op_params + 11, sizeof(float));
-memcpy(&xpos_down,   (int32_t *) tensor->op_params + 12, sizeof(bool));
+memcpy(&freq_base, (int32_t *) tensor->op_params + 5, sizeof(float));
+memcpy(&freq_scale, (int32_t *) tensor->op_params + 6, sizeof(float));
+memcpy(&ext_factor, (int32_t *) tensor->op_params + 7, sizeof(float));
+memcpy(&attn_factor, (int32_t *) tensor->op_params + 8, sizeof(float));
+memcpy(&beta_fast, (int32_t *) tensor->op_params + 9, sizeof(float));
+memcpy(&beta_slow, (int32_t *) tensor->op_params + 10, sizeof(float));
+memcpy(&xpos_base, (int32_t *) tensor->op_params + 11, sizeof(float));
+memcpy(&xpos_down, (int32_t *) tensor->op_params + 12, sizeof(bool));
 src0->grad = ggml_v3_add_or_set(ctx,
 src0->grad,
 ggml_v3_rope_back(ctx,
@@ -12661,19 +12661,19 @@ zero_table);
 case GGML_V3_OP_ROPE_BACK:
 {
 if (src0->grad) {
-const int n_dims     = ((int32_t *) tensor->op_params)[1];
-const int mode       = ((int32_t *) tensor->op_params)[2];
-const int n_ctx      = ((int32_t *) tensor->op_params)[3];
+const int n_dims = ((int32_t *) tensor->op_params)[1];
+const int mode = ((int32_t *) tensor->op_params)[2];
+const int n_ctx = ((int32_t *) tensor->op_params)[3];
 const int n_orig_ctx = ((int32_t *) tensor->op_params)[4];
 float freq_base, freq_scale, ext_factor, attn_factor, beta_fast, beta_slow, xpos_base, xpos_down;
-memcpy(&freq_base,   (int32_t *) tensor->op_params +  5, sizeof(float));
-memcpy(&freq_scale,  (int32_t *) tensor->op_params +  6, sizeof(float));
-memcpy(&ext_factor,  (int32_t *) tensor->op_params +  7, sizeof(float));
-memcpy(&attn_factor, (int32_t *) tensor->op_params +  8, sizeof(float));
-memcpy(&beta_fast,   (int32_t *) tensor->op_params +  9, sizeof(float));
-memcpy(&beta_slow,   (int32_t *) tensor->op_params + 10, sizeof(float));
-memcpy(&xpos_base,   (int32_t *) tensor->op_params + 11, sizeof(float));
-memcpy(&xpos_down,   (int32_t *) tensor->op_params + 12, sizeof(bool));
+memcpy(&freq_base, (int32_t *) tensor->op_params + 5, sizeof(float));
+memcpy(&freq_scale, (int32_t *) tensor->op_params + 6, sizeof(float));
+memcpy(&ext_factor, (int32_t *) tensor->op_params + 7, sizeof(float));
+memcpy(&attn_factor, (int32_t *) tensor->op_params + 8, sizeof(float));
+memcpy(&beta_fast, (int32_t *) tensor->op_params + 9, sizeof(float));
+memcpy(&beta_slow, (int32_t *) tensor->op_params + 10, sizeof(float));
+memcpy(&xpos_base, (int32_t *) tensor->op_params + 11, sizeof(float));
+memcpy(&xpos_down, (int32_t *) tensor->op_params + 12, sizeof(bool));
 src0->grad = ggml_v3_add_or_set(ctx,
 src0->grad,
 ggml_v3_rope_impl(ctx,
@@ -13065,7 +13065,7 @@ GGML_V3_ASSERT(dst->size >= src->n_nodes);
 GGML_V3_ASSERT(dst->visited_hash_table.size >= src->visited_hash_table.size);
 dst->n_leafs = src->n_leafs;
 dst->n_nodes = src->n_nodes;
-dst->order   = src->order;
+dst->order = src->order;
 for (int i = 0; i < src->n_leafs; ++i) {
 dst->leafs[i] = src->leafs[i];
 }
@@ -13105,28 +13105,28 @@ memset(cgraph->visited_hash_table.keys, 0, cgraph->visited_hash_table.size * siz
 }
 #ifdef __APPLE__
 typedef int ggml_v3_lock_t;
-#define ggml_v3_lock_init(x)    UNUSED(x)
+#define ggml_v3_lock_init(x) UNUSED(x)
 #define ggml_v3_lock_destroy(x) UNUSED(x)
-#define ggml_v3_lock_lock(x)    UNUSED(x)
-#define ggml_v3_lock_unlock(x)  UNUSED(x)
+#define ggml_v3_lock_lock(x) UNUSED(x)
+#define ggml_v3_lock_unlock(x) UNUSED(x)
 #define GGML_V3_LOCK_INITIALIZER 0
 typedef pthread_t ggml_v3_thread_t;
 #define ggml_v3_thread_create pthread_create
-#define ggml_v3_thread_join   pthread_join
+#define ggml_v3_thread_join pthread_join
 #else
 typedef int ggml_v3_lock_t;
-#define ggml_v3_lock_init(x)    UNUSED(x)
+#define ggml_v3_lock_init(x) UNUSED(x)
 #define ggml_v3_lock_destroy(x) UNUSED(x)
 #if defined(__x86_64__) || (defined(_MSC_VER) && defined(_M_AMD64))
-#define ggml_v3_lock_lock(x)    _mm_pause()
+#define ggml_v3_lock_lock(x) _mm_pause()
 #else
-#define ggml_v3_lock_lock(x)    UNUSED(x)
+#define ggml_v3_lock_lock(x) UNUSED(x)
 #endif
-#define ggml_v3_lock_unlock(x)  UNUSED(x)
+#define ggml_v3_lock_unlock(x) UNUSED(x)
 #define GGML_V3_LOCK_INITIALIZER 0
 typedef pthread_t ggml_v3_thread_t;
 #define ggml_v3_thread_create pthread_create
-#define ggml_v3_thread_join   pthread_join
+#define ggml_v3_thread_join pthread_join
 #endif
 #if defined(__linux__) && !defined(__BIONIC__)
 static void set_numa_thread_affinity(int thread_n, int n_threads) {
@@ -13166,12 +13166,12 @@ strerror(rv));
 CPU_FREE(cpus);
 }
 #else
-static void set_numa_thread_affinity(int thread_n, int n_threads) { UNUSED(thread_n); UNUSED(n_threads);  }
+static void set_numa_thread_affinity(int thread_n, int n_threads) { UNUSED(thread_n); UNUSED(n_threads); }
 static void clear_numa_thread_affinity(void) {}
 #endif
 struct ggml_v3_compute_state_shared {
 const struct ggml_v3_cgraph * cgraph;
-const struct ggml_v3_cplan  * cplan;
+const struct ggml_v3_cplan * cplan;
 int64_t perf_node_start_cycles;
 int64_t perf_node_start_time_us;
 const int n_threads;
@@ -13186,10 +13186,10 @@ int ith;
 struct ggml_v3_compute_state_shared * shared;
 };
 static void ggml_v3_graph_compute_perf_stats_node(struct ggml_v3_tensor * node, const struct ggml_v3_compute_state_shared * st) {
-int64_t cycles_cur  = ggml_v3_perf_cycles()  - st->perf_node_start_cycles;
+int64_t cycles_cur = ggml_v3_perf_cycles() - st->perf_node_start_cycles;
 int64_t time_us_cur = ggml_v3_perf_time_us() - st->perf_node_start_time_us;
 node->perf_runs++;
-node->perf_cycles  += cycles_cur;
+node->perf_cycles += cycles_cur;
 node->perf_time_us += time_us_cur;
 }
 static int ggml_v3_get_n_tasks(struct ggml_v3_tensor * node, int n_threads) {
@@ -13408,8 +13408,8 @@ return n_tasks;
 static thread_ret_t ggml_v3_graph_compute_thread(void * data) {
 struct ggml_v3_compute_state * state = (struct ggml_v3_compute_state *) data;
 const struct ggml_v3_cgraph * cgraph = state->shared->cgraph;
-const struct ggml_v3_cplan  * cplan  = state->shared->cplan;
-const int   n_threads   = state->shared->n_threads;
+const struct ggml_v3_cplan * cplan = state->shared->cplan;
+const int n_threads = state->shared->n_threads;
 set_numa_thread_affinity(state->ith, n_threads);
 int node_n = -1;
 while (true) {
@@ -13437,7 +13437,7 @@ while (++node_n < cgraph->n_nodes) {
 GGML_V3_PRINT_DEBUG_5("%s: %d/%d\n", __func__, node_n, cgraph->n_nodes);
 struct ggml_v3_tensor * node = cgraph->nodes[node_n];
 const int n_tasks = ggml_v3_get_n_tasks(node, n_threads);
-state->shared->perf_node_start_cycles  = ggml_v3_perf_cycles();
+state->shared->perf_node_start_cycles = ggml_v3_perf_cycles();
 state->shared->perf_node_start_time_us = ggml_v3_perf_time_us();
 params.nth = n_tasks;
 if (GGML_V3_OP_HAS_INIT[node->op]) {
@@ -13460,7 +13460,7 @@ break;
 }
 }
 atomic_store(&state->shared->n_active, n_threads);
-atomic_store(&state->shared->node_n,   node_n);
+atomic_store(&state->shared->node_n, node_n);
 } else {
 const int last = node_n;
 const bool do_yield = last < 0 || cgraph->nodes[last]->op == GGML_V3_OP_MUL_MAT;
@@ -13600,33 +13600,33 @@ case GGML_V3_OP_FLASH_ATTN:
 {
 const int64_t ne11 = ggml_v3_up(node->src[1]->ne[1], GGML_V3_SOFT_MAX_UNROLL);
 if (node->src[1]->type == GGML_V3_TYPE_F32) {
-cur  = sizeof(float)*ne11*n_tasks;
+cur = sizeof(float)*ne11*n_tasks;
 cur += sizeof(float)*ne11*n_tasks;
 } else if (node->src[1]->type == GGML_V3_TYPE_F16) {
-cur  = sizeof(float)*ne11*n_tasks;
+cur = sizeof(float)*ne11*n_tasks;
 cur += sizeof(float)*ne11*n_tasks;
 }
 } break;
 case GGML_V3_OP_FLASH_FF:
 {
 if (node->src[1]->type == GGML_V3_TYPE_F32) {
-cur  = sizeof(float)*node->src[1]->ne[1]*n_tasks;
+cur = sizeof(float)*node->src[1]->ne[1]*n_tasks;
 cur += sizeof(float)*node->src[1]->ne[1]*n_tasks;
 } else if (node->src[1]->type == GGML_V3_TYPE_F16) {
-cur  = sizeof(float)*node->src[1]->ne[1]*n_tasks;
+cur = sizeof(float)*node->src[1]->ne[1]*n_tasks;
 cur += sizeof(float)*node->src[1]->ne[1]*n_tasks;
 }
 } break;
 case GGML_V3_OP_FLASH_ATTN_BACK:
 {
-const int64_t    D = node->src[0]->ne[0];
+const int64_t D = node->src[0]->ne[0];
 const int64_t ne11 = ggml_v3_up(node->src[1]->ne[1], GGML_V3_SOFT_MAX_UNROLL);
 const int64_t mxDn = MAX(D, ne11) * 2;
 if (node->src[1]->type == GGML_V3_TYPE_F32) {
-cur  = sizeof(float)*mxDn*n_tasks;
+cur = sizeof(float)*mxDn*n_tasks;
 cur += sizeof(float)*mxDn*n_tasks;
 } else if (node->src[1]->type == GGML_V3_TYPE_F16) {
-cur  = sizeof(float)*mxDn*n_tasks;
+cur = sizeof(float)*mxDn*n_tasks;
 cur += sizeof(float)*mxDn*n_tasks;
 }
 } break;
@@ -13675,7 +13675,7 @@ struct ggml_v3_compute_state * workers = alloca(sizeof(struct ggml_v3_compute_st
 if (n_threads > 1) {
 for (int j = 1; j < n_threads; ++j) {
 workers[j] = (struct ggml_v3_compute_state) {
-.thrd   = 0,
+.thrd = 0,
 .ith = j,
 .shared = &state_shared,
 };
@@ -13686,7 +13686,7 @@ UNUSED(rc);
 }
 workers[0].ith = 0;
 workers[0].shared = &state_shared;
-const int64_t perf_start_cycles  = ggml_v3_perf_cycles();
+const int64_t perf_start_cycles = ggml_v3_perf_cycles();
 const int64_t perf_start_time_us = ggml_v3_perf_time_us();
 int compute_status = (size_t) ggml_v3_graph_compute_thread(&workers[0]);
 clear_numa_thread_affinity();
@@ -13697,16 +13697,16 @@ GGML_V3_ASSERT(rc == 0);
 }
 }
 {
-int64_t perf_cycles_cur  = ggml_v3_perf_cycles()  - perf_start_cycles;
+int64_t perf_cycles_cur = ggml_v3_perf_cycles() - perf_start_cycles;
 int64_t perf_time_us_cur = ggml_v3_perf_time_us() - perf_start_time_us;
 cgraph->perf_runs++;
-cgraph->perf_cycles  += perf_cycles_cur;
+cgraph->perf_cycles += perf_cycles_cur;
 cgraph->perf_time_us += perf_time_us_cur;
 GGML_V3_PRINT_DEBUG("%s: perf (%d) - cpu = %.3f / %.3f ms, wall = %.3f / %.3f ms\n",
 __func__, cgraph->perf_runs,
-(double) perf_cycles_cur      / (double) ggml_v3_cycles_per_ms(),
-(double) cgraph->perf_cycles  / (double) ggml_v3_cycles_per_ms() / (double) cgraph->perf_runs,
-(double) perf_time_us_cur     / 1000.0,
+(double) perf_cycles_cur / (double) ggml_v3_cycles_per_ms(),
+(double) cgraph->perf_cycles / (double) ggml_v3_cycles_per_ms() / (double) cgraph->perf_runs,
+(double) perf_time_us_cur / 1000.0,
 (double) cgraph->perf_time_us / 1000.0 / cgraph->perf_runs);
 }
 return compute_status;
@@ -13734,10 +13734,10 @@ return NULL;
 }
 static void ggml_v3_graph_export_leaf(const struct ggml_v3_tensor * tensor, FILE * fout) {
 const int64_t * ne = tensor->ne;
-const size_t  * nb = tensor->nb;
+const size_t * nb = tensor->nb;
 fprintf(fout, "%-6s %-12s %8d %" PRId64 " %" PRId64 " %" PRId64 " %" PRId64 " %16zu %16zu %16zu %16zu %16p %32s\n",
 ggml_v3_type_name(tensor->type),
-ggml_v3_op_name  (tensor->op),
+ggml_v3_op_name (tensor->op),
 ggml_v3_n_dims(tensor),
 ne[0], ne[1], ne[2], ne[3],
 nb[0], nb[1], nb[2], nb[3],
@@ -13746,11 +13746,11 @@ tensor->name);
 }
 static void ggml_v3_graph_export_node(const struct ggml_v3_tensor * tensor, const char * arg, FILE * fout) {
 const int64_t * ne = tensor->ne;
-const size_t  * nb = tensor->nb;
+const size_t * nb = tensor->nb;
 fprintf(fout, "%-6s %-6s %-12s %8d %" PRId64 " %" PRId64 " %" PRId64 " %" PRId64 " %16zu %16zu %16zu %16zu %16p %32s\n",
 arg,
 ggml_v3_type_name(tensor->type),
-ggml_v3_op_name  (tensor->op),
+ggml_v3_op_name (tensor->op),
 ggml_v3_n_dims(tensor),
 ne[0], ne[1], ne[2], ne[3],
 nb[0], nb[1], nb[2], nb[3],
@@ -13765,17 +13765,17 @@ size_eval += ggml_v3_nbytes_pad(cgraph->nodes[i]);
 {
 FILE * fout = stdout;
 fprintf(fout, "\n");
-fprintf(fout, "%-16s %8x\n", "magic",        GGML_V3_FILE_MAGIC);
-fprintf(fout, "%-16s %8d\n", "version",      GGML_V3_FILE_VERSION);
-fprintf(fout, "%-16s %8d\n", "leafs",        cgraph->n_leafs);
-fprintf(fout, "%-16s %8d\n", "nodes",        cgraph->n_nodes);
+fprintf(fout, "%-16s %8x\n", "magic", GGML_V3_FILE_MAGIC);
+fprintf(fout, "%-16s %8d\n", "version", GGML_V3_FILE_VERSION);
+fprintf(fout, "%-16s %8d\n", "leafs", cgraph->n_leafs);
+fprintf(fout, "%-16s %8d\n", "nodes", cgraph->n_nodes);
 fprintf(fout, "%-16s %" PRIu64 "\n", "eval", size_eval);
 fprintf(fout, "\n");
 fprintf(fout, "%-6s %-12s %8s %8s %8s %8s %8s %16s %16s %16s %16s %16s %16s\n",
 "TYPE", "OP", "NDIMS", "NE0", "NE1", "NE2", "NE3", "NB0", "NB1", "NB2", "NB3", "DATA", "NAME");
 for (int i = 0; i < cgraph->n_leafs; ++i) {
 ggml_v3_graph_export_leaf(cgraph->leafs[i], fout);
-GGML_V3_ASSERT(cgraph->leafs[i]->op   == GGML_V3_OP_NONE);
+GGML_V3_ASSERT(cgraph->leafs[i]->op == GGML_V3_OP_NONE);
 GGML_V3_ASSERT(cgraph->leafs[i]->src[0] == NULL);
 GGML_V3_ASSERT(cgraph->leafs[i]->src[1] == NULL);
 }
@@ -13800,30 +13800,30 @@ fprintf(stderr, "%s: failed to open %s\n", __func__, fname);
 return;
 }
 {
-const uint32_t magic   = GGML_V3_FILE_MAGIC;
+const uint32_t magic = GGML_V3_FILE_MAGIC;
 const uint32_t version = GGML_V3_FILE_VERSION;
 const uint32_t n_leafs = cgraph->n_leafs;
 const uint32_t n_nodes = cgraph->n_nodes;
-fwrite(&magic,     sizeof(uint32_t), 1, fout);
-fwrite(&version,   sizeof(uint32_t), 1, fout);
-fwrite(&n_leafs,   sizeof(uint32_t), 1, fout);
-fwrite(&n_nodes,   sizeof(uint32_t), 1, fout);
+fwrite(&magic, sizeof(uint32_t), 1, fout);
+fwrite(&version, sizeof(uint32_t), 1, fout);
+fwrite(&n_leafs, sizeof(uint32_t), 1, fout);
+fwrite(&n_nodes, sizeof(uint32_t), 1, fout);
 fwrite(&size_eval, sizeof(uint64_t), 1, fout);
 }
 {
 for (int i = 0; i < cgraph->n_leafs; ++i) {
 const struct ggml_v3_tensor * tensor = cgraph->leafs[i];
-const uint32_t type   = tensor->type;
-const uint32_t op     = tensor->op;
-fwrite(&type,   sizeof(uint32_t), 1, fout);
-fwrite(&op,     sizeof(uint32_t), 1, fout);
+const uint32_t type = tensor->type;
+const uint32_t op = tensor->op;
+fwrite(&type, sizeof(uint32_t), 1, fout);
+fwrite(&op, sizeof(uint32_t), 1, fout);
 for (int j = 0; j < GGML_V3_MAX_DIMS; ++j) {
 const uint64_t ne = tensor->ne[j];
 const uint64_t nb = tensor->nb[j];
 fwrite(&ne, sizeof(uint64_t), 1, fout);
 fwrite(&nb, sizeof(uint64_t), 1, fout);
 }
-fwrite(tensor->name,      sizeof(char), GGML_V3_MAX_NAME,      fout);
+fwrite(tensor->name, sizeof(char), GGML_V3_MAX_NAME, fout);
 fwrite(tensor->op_params, sizeof(char), GGML_V3_MAX_OP_PARAMS, fout);
 {
 const size_t size = ggml_v3_nbytes(tensor);
@@ -13834,17 +13834,17 @@ fwrite(tensor->data, sizeof(char), size, fout);
 {
 for (int i = 0; i < cgraph->n_nodes; ++i) {
 const struct ggml_v3_tensor * tensor = cgraph->nodes[i];
-const uint32_t type   = tensor->type;
-const uint32_t op     = tensor->op;
-fwrite(&type,   sizeof(uint32_t), 1, fout);
-fwrite(&op,     sizeof(uint32_t), 1, fout);
+const uint32_t type = tensor->type;
+const uint32_t op = tensor->op;
+fwrite(&type, sizeof(uint32_t), 1, fout);
+fwrite(&op, sizeof(uint32_t), 1, fout);
 for (int j = 0; j < GGML_V3_MAX_DIMS; ++j) {
 const uint64_t ne = tensor->ne[j];
 const uint64_t nb = tensor->nb[j];
 fwrite(&ne, sizeof(uint64_t), 1, fout);
 fwrite(&nb, sizeof(uint64_t), 1, fout);
 }
-fwrite(tensor->name,      sizeof(char), GGML_V3_MAX_NAME,      fout);
+fwrite(tensor->name, sizeof(char), GGML_V3_MAX_NAME, fout);
 fwrite(tensor->op_params, sizeof(char), GGML_V3_MAX_OP_PARAMS, fout);
 {
 struct ggml_v3_tensor * args[GGML_V3_MAX_SRC] = { NULL };
@@ -13905,9 +13905,9 @@ fseek(fin, 0, SEEK_SET);
 {
 const size_t overhead = 1*ggml_v3_tensor_overhead();
 struct ggml_v3_init_params params = {
-.mem_size   = fsize + overhead,
+.mem_size = fsize + overhead,
 .mem_buffer = NULL,
-.no_alloc   = false,
+.no_alloc = false,
 };
 *ctx_data = ggml_v3_init(params);
 if (!*ctx_data) {
@@ -13939,16 +13939,16 @@ if (version != GGML_V3_FILE_VERSION) {
 fprintf(stderr, "%s: invalid version number\n", __func__);
 return result;
 }
-const uint32_t n_leafs   = *(const uint32_t *) ptr; ptr += sizeof(n_leafs);
-const uint32_t n_nodes   = *(const uint32_t *) ptr; ptr += sizeof(n_nodes);
+const uint32_t n_leafs = *(const uint32_t *) ptr; ptr += sizeof(n_leafs);
+const uint32_t n_nodes = *(const uint32_t *) ptr; ptr += sizeof(n_nodes);
 const uint64_t size_eval = *(const uint64_t *) ptr; ptr += sizeof(size_eval);
-const int     graph_size = MAX(n_leafs, n_nodes);
+const int graph_size = MAX(n_leafs, n_nodes);
 {
 const size_t overhead = (n_leafs + n_nodes)*ggml_v3_tensor_overhead() + ggml_v3_graph_overhead_custom(graph_size, false);
 struct ggml_v3_init_params params = {
-.mem_size   = size_eval + overhead,
+.mem_size = size_eval + overhead,
 .mem_buffer = NULL,
-.no_alloc   = true,
+.no_alloc = true,
 };
 *ctx_eval = ggml_v3_init(params);
 if (!*ctx_eval) {
@@ -13963,10 +13963,10 @@ result->n_nodes = n_nodes;
 uint32_t type;
 uint32_t op;
 for (uint32_t i = 0; i < n_leafs; ++i) {
-type   = *(const uint32_t *) ptr; ptr += sizeof(type);
-op     = *(const uint32_t *) ptr; ptr += sizeof(op);
+type = *(const uint32_t *) ptr; ptr += sizeof(type);
+op = *(const uint32_t *) ptr; ptr += sizeof(op);
 int64_t ne[GGML_V3_MAX_DIMS];
-size_t  nb[GGML_V3_MAX_DIMS];
+size_t nb[GGML_V3_MAX_DIMS];
 for (int j = 0; j < GGML_V3_MAX_DIMS; ++j) {
 uint64_t ne_cur;
 uint64_t nb_cur;
@@ -13977,7 +13977,7 @@ nb[j] = nb_cur;
 }
 struct ggml_v3_tensor * tensor = ggml_v3_new_tensor(*ctx_eval, (enum ggml_v3_type) type, GGML_V3_MAX_DIMS, ne);
 tensor->op = (enum ggml_v3_op) op;
-memcpy(tensor->name,      ptr, GGML_V3_MAX_NAME);      ptr += GGML_V3_MAX_NAME;
+memcpy(tensor->name, ptr, GGML_V3_MAX_NAME); ptr += GGML_V3_MAX_NAME;
 memcpy(tensor->op_params, ptr, GGML_V3_MAX_OP_PARAMS); ptr += GGML_V3_MAX_OP_PARAMS;
 tensor->data = (void *) ptr;
 for (int j = 0; j < GGML_V3_MAX_DIMS; ++j) {
@@ -13993,11 +13993,11 @@ ggml_v3_set_no_alloc(*ctx_eval, false);
 uint32_t type;
 uint32_t op;
 for (uint32_t i = 0; i < n_nodes; ++i) {
-type   = *(const uint32_t *) ptr; ptr += sizeof(type);
-op     = *(const uint32_t *) ptr; ptr += sizeof(op);
+type = *(const uint32_t *) ptr; ptr += sizeof(type);
+op = *(const uint32_t *) ptr; ptr += sizeof(op);
 enum ggml_v3_op eop = (enum ggml_v3_op) op;
 int64_t ne[GGML_V3_MAX_DIMS];
-size_t  nb[GGML_V3_MAX_DIMS];
+size_t nb[GGML_V3_MAX_DIMS];
 for (int j = 0; j < GGML_V3_MAX_DIMS; ++j) {
 uint64_t ne_cur;
 uint64_t nb_cur;
@@ -14006,7 +14006,7 @@ nb_cur = *(const uint64_t *) ptr; ptr += sizeof(nb_cur);
 ne[j] = ne_cur;
 nb[j] = nb_cur;
 }
-const char * ptr_name      = ptr; ptr += GGML_V3_MAX_NAME;
+const char * ptr_name = ptr; ptr += GGML_V3_MAX_NAME;
 const char * ptr_op_params = ptr; ptr += GGML_V3_MAX_OP_PARAMS;
 const int32_t * ptr_arg_idx = (const int32_t *) ptr; ptr += GGML_V3_MAX_SRC*sizeof(int32_t);
 struct ggml_v3_tensor * args[GGML_V3_MAX_SRC] = { NULL };
@@ -14048,7 +14048,7 @@ tensor = ggml_v3_new_tensor(*ctx_eval, (enum ggml_v3_type) type, GGML_V3_MAX_DIM
 tensor->op = eop;
 } break;
 }
-memcpy(tensor->name,      ptr_name,      GGML_V3_MAX_NAME);
+memcpy(tensor->name, ptr_name, GGML_V3_MAX_NAME);
 memcpy(tensor->op_params, ptr_op_params, GGML_V3_MAX_OP_PARAMS);
 for (int j = 0; j < GGML_V3_MAX_DIMS; ++j) {
 tensor->nb[j] = nb[j];
@@ -14074,8 +14074,8 @@ GGML_V3_PRINT(" - %3d: [ %5" PRId64 ", %5" PRId64 ", %5" PRId64 "] %16s %s (%3d)
 i,
 node->ne[0], node->ne[1], node->ne[2],
 ggml_v3_op_name(node->op), node->is_param ? "x" : node->grad ? "g" : " ", node->perf_runs,
-(double) node->perf_cycles  / (double) ggml_v3_cycles_per_ms(),
-(double) node->perf_cycles  / (double) ggml_v3_cycles_per_ms() / (double) node->perf_runs,
+(double) node->perf_cycles / (double) ggml_v3_cycles_per_ms(),
+(double) node->perf_cycles / (double) ggml_v3_cycles_per_ms() / (double) node->perf_runs,
 (double) node->perf_time_us / 1000.0,
 (double) node->perf_time_us / 1000.0 / node->perf_runs);
 }
@@ -14116,7 +14116,7 @@ return parent;
 }
 return NULL;
 }
-static void ggml_v3_graph_dump_dot_node_edge(FILE * fp, const struct ggml_v3_cgraph * gb, struct ggml_v3_tensor * node, struct ggml_v3_tensor * parent, const char * label)  {
+static void ggml_v3_graph_dump_dot_node_edge(FILE * fp, const struct ggml_v3_cgraph * gb, struct ggml_v3_tensor * node, struct ggml_v3_tensor * parent, const char * label) {
 struct ggml_v3_tensor * gparent = ggml_v3_graph_get_parent(gb, node);
 struct ggml_v3_tensor * gparent0 = ggml_v3_graph_get_parent(gb, parent);
 fprintf(fp, "  \"%p\":%s -> \"%p\":%s [ arrowhead = %s; style = %s; label = \"%s\"; ]\n",
@@ -14128,7 +14128,7 @@ gparent ? "empty" : "vee",
 gparent ? "dashed" : "solid",
 label);
 }
-static void ggml_v3_graph_dump_dot_leaf_edge(FILE * fp, struct ggml_v3_tensor * node, struct ggml_v3_tensor * parent, const char * label)  {
+static void ggml_v3_graph_dump_dot_leaf_edge(FILE * fp, struct ggml_v3_tensor * node, struct ggml_v3_tensor * parent, const char * label) {
 fprintf(fp, "  \"%p\":%s -> \"%p\":%s [ label = \"%s\"; ]\n",
 (void *) parent, "x",
 (void *) node, "x",
@@ -14301,14 +14301,14 @@ const float alpha = params.adam.alpha;
 const float decay = params.adam.decay * alpha;
 const float beta1 = params.adam.beta1;
 const float beta2 = params.adam.beta2;
-const float eps   = params.adam.eps;
+const float eps = params.adam.eps;
 const float gclip = params.adam.gclip;
 const int decay_min_ndim = params.adam.decay_min_ndim;
 const int n_accum = MAX(1, params.n_gradient_accumulation);
 const float accum_norm = 1.0f / (float) n_accum;
-float * g  = opt->adam.g->data;
-float * m  = opt->adam.m->data;
-float * v  = opt->adam.v->data;
+float * g = opt->adam.g->data;
+float * m = opt->adam.m->data;
+float * v = opt->adam.v->data;
 float * pf = params.past > 0 ? opt->adam.pf->data : NULL;
 struct ggml_v3_cplan cplan = ggml_v3_graph_plan(gb, params.n_threads);
 struct ggml_v3_object * obj = ggml_v3_new_object(ctx, GGML_V3_OBJECT_WORK_BUFFER, cplan.work_size);
@@ -14323,7 +14323,7 @@ if (cancel) {
 return GGML_V3_OPT_CANCEL;
 }
 }
-ggml_v3_set_f32      (f->grad, 1.0f);
+ggml_v3_set_f32 (f->grad, 1.0f);
 ggml_v3_graph_compute(gb, &cplan);
 ggml_v3_opt_acc_grad(np, ps, g, accum_norm);
 fx += ggml_v3_get_f32_1d(f, 0);
@@ -14335,7 +14335,7 @@ if (pf) {
 pf[opt->iter % params.past] = opt->adam.fx_prev;
 }
 opt->loss_before = opt->adam.fx_prev;
-opt->loss_after  = opt->adam.fx_prev;
+opt->loss_after = opt->adam.fx_prev;
 if (opt->just_initialized) {
 opt->adam.n_no_improvement = 0;
 opt->just_initialized = false;
@@ -14346,8 +14346,8 @@ int * n_no_improvement = &opt->adam.n_no_improvement;
 int iter0 = opt->iter;
 for (int t = 0; t < params.adam.n_iter; ++t) {
 opt->iter = iter0 + t + 1;
-GGML_V3_PRINT_DEBUG  ("=== iter %d ===\n", t);
-GGML_V3_PRINT_DEBUG  ("f      = %10.6f\n", ggml_v3_get_f32_1d(f, 0));
+GGML_V3_PRINT_DEBUG ("=== iter %d ===\n", t);
+GGML_V3_PRINT_DEBUG ("f      = %10.6f\n", ggml_v3_get_f32_1d(f, 0));
 GGML_V3_PRINT_DEBUG_5("df/dx0 = %10.6f\n", ggml_v3_get_f32_1d(ps[0]->grad, 0));
 GGML_V3_PRINT_DEBUG_5("df/dx1 = %10.6f\n", ggml_v3_get_f32_1d(ps[1]->grad, 0));
 for (int i = 0; i < np; ++i) {
@@ -14371,20 +14371,20 @@ gnorm = (float) ((ggml_v3_float) gclip / norm);
 }
 }
 const float beta1h = alpha*sched/(1.0f - powf(beta1, opt->iter));
-const float beta2h =        1.0f/(1.0f - powf(beta2, opt->iter));
+const float beta2h = 1.0f/(1.0f - powf(beta2, opt->iter));
 int64_t i = 0;
 for (int p = 0; p < np; ++p) {
 const int64_t ne = ggml_v3_nelements(ps[p]);
 const float p_decay = ((ggml_v3_n_dims(ps[p]) >= decay_min_ndim) ? decay : 0.0f) * sched;
 for (int64_t j = 0; j < ne; ++j) {
-float x  = ggml_v3_get_f32_1d(ps[p], j);
+float x = ggml_v3_get_f32_1d(ps[p], j);
 float g_ = g[i]*gnorm;
-m[i] = m[i]*beta1 +    g_*(1.0f - beta1);
+m[i] = m[i]*beta1 + g_*(1.0f - beta1);
 v[i] = v[i]*beta2 + g_*g_*(1.0f - beta2);
 float mh = m[i]*beta1h;
 float vh = v[i]*beta2h;
 vh = sqrtf(vh) + eps;
-x  = x*(1.0f - p_decay) - mh/vh;
+x = x*(1.0f - p_decay) - mh/vh;
 ggml_v3_set_f32_1d(ps[p], j, x);
 ++i;
 }
@@ -14399,7 +14399,7 @@ if (cancel) {
 return GGML_V3_OPT_CANCEL;;
 }
 }
-ggml_v3_set_f32      (f->grad, 1.0f);
+ggml_v3_set_f32 (f->grad, 1.0f);
 ggml_v3_graph_compute(gb, &cplan);
 ggml_v3_opt_acc_grad(np, ps, g, accum_norm);
 fx += ggml_v3_get_f32_1d(f, 0);
@@ -14459,16 +14459,16 @@ float * step,
 const float * xp,
 struct ggml_v3_tensor * f,
 struct ggml_v3_cgraph * gb,
-struct ggml_v3_cplan  * cplan,
+struct ggml_v3_cplan * cplan,
 const int np,
 struct ggml_v3_tensor * ps[],
 bool * cancel,
 ggml_v3_opt_callback callback,
 void * callback_data) {
 int count = 0;
-float width  = 0.0f;
-float dg     = 0.0f;
-float finit  = 0.0f;
+float width = 0.0f;
+float dg = 0.0f;
+float finit = 0.0f;
 float dginit = 0.0f;
 float dgtest = 0.0f;
 const float dec = 0.5f;
@@ -14499,7 +14499,7 @@ if (*cancel) {
 return GGML_V3_OPT_CANCEL;
 }
 }
-ggml_v3_set_f32      (f->grad, 1.0f);
+ggml_v3_set_f32 (f->grad, 1.0f);
 ggml_v3_graph_compute(gb, cplan);
 ggml_v3_opt_acc_grad(np, ps, g, accum_norm);
 *fx += ggml_v3_get_f32_1d(f, 0);
@@ -14575,22 +14575,22 @@ opt->iter = iter;
 struct ggml_v3_cplan cplan = ggml_v3_graph_plan(gb, params.n_threads);
 struct ggml_v3_object * obj = ggml_v3_new_object(ctx, GGML_V3_OBJECT_WORK_BUFFER, cplan.work_size);
 cplan.work_data = (uint8_t *)ctx->mem_buffer + obj->offs;
-float * x  = opt->lbfgs.x->data;
+float * x = opt->lbfgs.x->data;
 float * xp = opt->lbfgs.xp->data;
-float * g  = opt->lbfgs.g->data;
+float * g = opt->lbfgs.g->data;
 float * gp = opt->lbfgs.gp->data;
-float * d  = opt->lbfgs.d->data;
+float * d = opt->lbfgs.d->data;
 float * pf = params.past > 0 ? opt->lbfgs.pf->data : NULL;
 const int n_accum = MAX(1, params.n_gradient_accumulation);
 const float accum_norm = 1.0f / (float) n_accum;
-float fx    = 0.0f;
+float fx = 0.0f;
 float xnorm = 0.0f;
 float gnorm = 0.0f;
 ggml_v3_opt_get_params(np, ps, x);
 float * lm_alpha = opt->lbfgs.lmal->data;
-float * lm_ys    = opt->lbfgs.lmys->data;
-float * lm_s     = opt->lbfgs.lms->data;
-float * lm_y     = opt->lbfgs.lmy->data;
+float * lm_ys = opt->lbfgs.lmys->data;
+float * lm_s = opt->lbfgs.lms->data;
+float * lm_y = opt->lbfgs.lmy->data;
 bool cancel = false;
 {
 ggml_v3_opt_set_params(np, ps, x);
@@ -14604,14 +14604,14 @@ if (cancel) {
 return GGML_V3_OPT_CANCEL;
 }
 }
-ggml_v3_set_f32      (f->grad, 1.0f);
+ggml_v3_set_f32 (f->grad, 1.0f);
 ggml_v3_graph_compute(gb, &cplan);
 ggml_v3_opt_acc_grad(np, ps, g, accum_norm);
 fx += ggml_v3_get_f32_1d(f, 0);
 }
 fx *= accum_norm;
 opt->loss_before = fx;
-opt->loss_after  = fx;
+opt->loss_after = fx;
 }
 ggml_v3_vec_neg_f32(nx, d, g);
 ggml_v3_vec_norm_f32(nx, &xnorm, x);
@@ -14628,22 +14628,22 @@ pf[0] = fx;
 }
 opt->lbfgs.fx_best = fx;
 ggml_v3_vec_norm_inv_f32(nx, &opt->lbfgs.step, d);
-opt->lbfgs.j                = 0;
-opt->lbfgs.k                = 1;
-opt->lbfgs.end              = 0;
+opt->lbfgs.j = 0;
+opt->lbfgs.k = 1;
+opt->lbfgs.end = 0;
 opt->lbfgs.n_no_improvement = 0;
-opt->just_initialized       = false;
+opt->just_initialized = false;
 }
-float * fx_best        = &opt->lbfgs.fx_best;
-float * step           = &opt->lbfgs.step;
-int * j                = &opt->lbfgs.j;
-int * k                = &opt->lbfgs.k;
-int * end              = &opt->lbfgs.end;
+float * fx_best = &opt->lbfgs.fx_best;
+float * step = &opt->lbfgs.step;
+int * j = &opt->lbfgs.j;
+int * k = &opt->lbfgs.k;
+int * end = &opt->lbfgs.end;
 int * n_no_improvement = &opt->lbfgs.n_no_improvement;
-int ls     = 0;
-int bound  = 0;
-float ys   = 0.0f;
-float yy   = 0.0f;
+int ls = 0;
+int bound = 0;
+float ys = 0.0f;
+float yy = 0.0f;
 float beta = 0.0f;
 int it = 0;
 while (true) {
@@ -14725,49 +14725,49 @@ switch (type) {
 case GGML_V3_OPT_ADAM:
 {
 result = (struct ggml_v3_opt_params) {
-.type       = GGML_V3_OPT_ADAM,
+.type = GGML_V3_OPT_ADAM,
 .graph_size = GGML_V3_DEFAULT_GRAPH_SIZE,
-.n_threads  = 1,
-.past       = 0,
-.delta      = 1e-5f,
+.n_threads = 1,
+.past = 0,
+.delta = 1e-5f,
 .max_no_improvement = 100,
-.print_forward_graph  = true,
+.print_forward_graph = true,
 .print_backward_graph = true,
 .n_gradient_accumulation = 1,
 .adam = {
 .n_iter = 10000,
-.sched  = 1.000f,
-.decay  = 0.0f,
+.sched = 1.000f,
+.decay = 0.0f,
 .decay_min_ndim = 2,
-.alpha  = 0.001f,
-.beta1  = 0.9f,
-.beta2  = 0.999f,
-.eps    = 1e-8f,
-.eps_f  = 1e-5f,
-.eps_g  = 1e-3f,
-.gclip  = 0.0f,
+.alpha = 0.001f,
+.beta1 = 0.9f,
+.beta2 = 0.999f,
+.eps = 1e-8f,
+.eps_f = 1e-5f,
+.eps_g = 1e-3f,
+.gclip = 0.0f,
 },
 };
 } break;
 case GGML_V3_OPT_LBFGS:
 {
 result = (struct ggml_v3_opt_params) {
-.type       = GGML_V3_OPT_LBFGS,
+.type = GGML_V3_OPT_LBFGS,
 .graph_size = GGML_V3_DEFAULT_GRAPH_SIZE,
-.n_threads  = 1,
-.past       = 0,
-.delta      = 1e-5f,
+.n_threads = 1,
+.past = 0,
+.delta = 1e-5f,
 .max_no_improvement = 0,
-.print_forward_graph  = true,
+.print_forward_graph = true,
 .print_backward_graph = true,
 .n_gradient_accumulation = 1,
 .lbfgs = {
-.m              = 6,
-.n_iter         = 100,
+.m = 6,
+.n_iter = 100,
 .max_linesearch = 20,
-.eps      = 1e-5f,
-.ftol     = 1e-4f,
-.wolfe    = 0.9f,
+.eps = 1e-5f,
+.ftol = 1e-4f,
+.wolfe = 0.9f,
 .min_step = 1e-20f,
 .max_step = 1e+20f,
 .linesearch = GGML_V3_LINESEARCH_DEFAULT,
@@ -14801,15 +14801,15 @@ ctx_opt_params.mem_size += GGML_V3_MEM_ALIGN + ggml_v3_tensor_overhead() + ggml_
 }
 }
 ctx_opt_params.mem_buffer = NULL;
-ctx_opt_params.no_alloc   = false;
+ctx_opt_params.no_alloc = false;
 opt->ctx = ggml_v3_init(ctx_opt_params);
 }
 switch (opt->params.type) {
 case GGML_V3_OPT_ADAM:
 {
-opt->adam.g  = ggml_v3_new_tensor_1d(opt->ctx, GGML_V3_TYPE_F32, nx);
-opt->adam.m  = ggml_v3_new_tensor_1d(opt->ctx, GGML_V3_TYPE_F32, nx);
-opt->adam.v  = ggml_v3_new_tensor_1d(opt->ctx, GGML_V3_TYPE_F32, nx);
+opt->adam.g = ggml_v3_new_tensor_1d(opt->ctx, GGML_V3_TYPE_F32, nx);
+opt->adam.m = ggml_v3_new_tensor_1d(opt->ctx, GGML_V3_TYPE_F32, nx);
+opt->adam.v = ggml_v3_new_tensor_1d(opt->ctx, GGML_V3_TYPE_F32, nx);
 opt->adam.pf = params.past > 0
 ? ggml_v3_new_tensor_1d(opt->ctx, GGML_V3_TYPE_F32, params.past)
 : NULL;
@@ -14821,18 +14821,18 @@ ggml_v3_set_zero(opt->adam.pf);
 } break;
 case GGML_V3_OPT_LBFGS:
 {
-opt->lbfgs.x  = ggml_v3_new_tensor_1d(opt->ctx, GGML_V3_TYPE_F32, nx);
+opt->lbfgs.x = ggml_v3_new_tensor_1d(opt->ctx, GGML_V3_TYPE_F32, nx);
 opt->lbfgs.xp = ggml_v3_new_tensor_1d(opt->ctx, GGML_V3_TYPE_F32, nx);
-opt->lbfgs.g  = ggml_v3_new_tensor_1d(opt->ctx, GGML_V3_TYPE_F32, nx);
+opt->lbfgs.g = ggml_v3_new_tensor_1d(opt->ctx, GGML_V3_TYPE_F32, nx);
 opt->lbfgs.gp = ggml_v3_new_tensor_1d(opt->ctx, GGML_V3_TYPE_F32, nx);
-opt->lbfgs.d  = ggml_v3_new_tensor_1d(opt->ctx, GGML_V3_TYPE_F32, nx);
+opt->lbfgs.d = ggml_v3_new_tensor_1d(opt->ctx, GGML_V3_TYPE_F32, nx);
 opt->lbfgs.pf = params.past > 0
 ? ggml_v3_new_tensor_1d(opt->ctx, GGML_V3_TYPE_F32, params.past)
 : NULL;
 opt->lbfgs.lmal = ggml_v3_new_tensor_1d(opt->ctx, GGML_V3_TYPE_F32, params.lbfgs.m);
 opt->lbfgs.lmys = ggml_v3_new_tensor_1d(opt->ctx, GGML_V3_TYPE_F32, params.lbfgs.m);
-opt->lbfgs.lms  = ggml_v3_new_tensor_2d(opt->ctx, GGML_V3_TYPE_F32, nx, params.lbfgs.m);
-opt->lbfgs.lmy  = ggml_v3_new_tensor_2d(opt->ctx, GGML_V3_TYPE_F32, nx, params.lbfgs.m);
+opt->lbfgs.lms = ggml_v3_new_tensor_2d(opt->ctx, GGML_V3_TYPE_F32, nx, params.lbfgs.m);
+opt->lbfgs.lmy = ggml_v3_new_tensor_2d(opt->ctx, GGML_V3_TYPE_F32, nx, params.lbfgs.m);
 ggml_v3_set_zero(opt->lbfgs.x);
 ggml_v3_set_zero(opt->lbfgs.xp);
 ggml_v3_set_zero(opt->lbfgs.g);
@@ -14855,9 +14855,9 @@ struct ggml_v3_tensor * f) {
 bool free_ctx = false;
 if (ctx == NULL) {
 struct ggml_v3_init_params params_ctx = {
-.mem_size   = 16*1024*1024,
+.mem_size = 16*1024*1024,
 .mem_buffer = NULL,
-.no_alloc   = false,
+.no_alloc = false,
 };
 ctx = ggml_v3_init(params_ctx);
 if (ctx == NULL) {
@@ -14904,11 +14904,11 @@ result = ggml_v3_opt_lbfgs(ctx, opt, opt->params, f, gf, gb, callback, callback_
 } break;
 }
 if (opt->params.print_forward_graph) {
-ggml_v3_graph_print   (gf);
+ggml_v3_graph_print (gf);
 ggml_v3_graph_dump_dot(gf, NULL, "opt-forward.dot");
 }
 if (opt->params.print_backward_graph) {
-ggml_v3_graph_print   (gb);
+ggml_v3_graph_print (gb);
 ggml_v3_graph_dump_dot(gb, gf, "opt-backward.dot");
 }
 return result;
@@ -14960,7 +14960,7 @@ for (int j = 0; j < QK5_0; j += 2) {
 const uint8_t vh0 = ((qh & (1u << (j/2 + 0 ))) >> (j/2 + 0 )) << 4;
 const uint8_t vh1 = ((qh & (1u << (j/2 + 16))) >> (j/2 + 12));
 const uint8_t vi0 = ((y[i].qs[j/2] & 0x0F) | vh0) / 2;
-const uint8_t vi1 = ((y[i].qs[j/2] >>   4) | vh1) / 2;
+const uint8_t vi1 = ((y[i].qs[j/2] >> 4) | vh1) / 2;
 hist[vi0]++;
 hist[vi1]++;
 }
@@ -14981,7 +14981,7 @@ for (int j = 0; j < QK5_1; j += 2) {
 const uint8_t vh0 = ((qh & (1u << (j/2 + 0 ))) >> (j/2 + 0 )) << 4;
 const uint8_t vh1 = ((qh & (1u << (j/2 + 16))) >> (j/2 + 12));
 const uint8_t vi0 = ((y[i].qs[j/2] & 0x0F) | vh0) / 2;
-const uint8_t vi1 = ((y[i].qs[j/2] >>   4) | vh1) / 2;
+const uint8_t vi1 = ((y[i].qs[j/2] >> 4) | vh1) / 2;
 hist[vi0]++;
 hist[vi1]++;
 }
@@ -15101,49 +15101,49 @@ uint64_t n;
 char * data;
 };
 static const size_t GGUF_V3_TYPE_SIZE[GGUF_V3_TYPE_COUNT] = {
-[GGUF_V3_TYPE_UINT8]   = sizeof(uint8_t),
-[GGUF_V3_TYPE_INT8]    = sizeof(int8_t),
-[GGUF_V3_TYPE_UINT16]  = sizeof(uint16_t),
-[GGUF_V3_TYPE_INT16]   = sizeof(int16_t),
-[GGUF_V3_TYPE_UINT32]  = sizeof(uint32_t),
-[GGUF_V3_TYPE_INT32]   = sizeof(int32_t),
+[GGUF_V3_TYPE_UINT8] = sizeof(uint8_t),
+[GGUF_V3_TYPE_INT8] = sizeof(int8_t),
+[GGUF_V3_TYPE_UINT16] = sizeof(uint16_t),
+[GGUF_V3_TYPE_INT16] = sizeof(int16_t),
+[GGUF_V3_TYPE_UINT32] = sizeof(uint32_t),
+[GGUF_V3_TYPE_INT32] = sizeof(int32_t),
 [GGUF_V3_TYPE_FLOAT32] = sizeof(float),
-[GGUF_V3_TYPE_BOOL]    = sizeof(bool),
-[GGUF_V3_TYPE_STRING]  = sizeof(struct gguf_v3_str),
-[GGUF_V3_TYPE_UINT64]  = sizeof(uint64_t),
-[GGUF_V3_TYPE_INT64]   = sizeof(int64_t),
+[GGUF_V3_TYPE_BOOL] = sizeof(bool),
+[GGUF_V3_TYPE_STRING] = sizeof(struct gguf_v3_str),
+[GGUF_V3_TYPE_UINT64] = sizeof(uint64_t),
+[GGUF_V3_TYPE_INT64] = sizeof(int64_t),
 [GGUF_V3_TYPE_FLOAT64] = sizeof(double),
-[GGUF_V3_TYPE_ARRAY]   = 0,
+[GGUF_V3_TYPE_ARRAY] = 0,
 };
 static_assert(GGUF_V3_TYPE_COUNT == 13, "GGUF_V3_TYPE_COUNT != 13");
 static const char * GGUF_V3_TYPE_NAME[GGUF_V3_TYPE_COUNT] = {
-[GGUF_V3_TYPE_UINT8]   = "u8",
-[GGUF_V3_TYPE_INT8]    = "i8",
-[GGUF_V3_TYPE_UINT16]  = "u16",
-[GGUF_V3_TYPE_INT16]   = "i16",
-[GGUF_V3_TYPE_UINT32]  = "u32",
-[GGUF_V3_TYPE_INT32]   = "i32",
+[GGUF_V3_TYPE_UINT8] = "u8",
+[GGUF_V3_TYPE_INT8] = "i8",
+[GGUF_V3_TYPE_UINT16] = "u16",
+[GGUF_V3_TYPE_INT16] = "i16",
+[GGUF_V3_TYPE_UINT32] = "u32",
+[GGUF_V3_TYPE_INT32] = "i32",
 [GGUF_V3_TYPE_FLOAT32] = "f32",
-[GGUF_V3_TYPE_BOOL]    = "bool",
-[GGUF_V3_TYPE_STRING]  = "str",
-[GGUF_V3_TYPE_ARRAY]   = "arr",
-[GGUF_V3_TYPE_UINT64]  = "u64",
-[GGUF_V3_TYPE_INT64]   = "i64",
+[GGUF_V3_TYPE_BOOL] = "bool",
+[GGUF_V3_TYPE_STRING] = "str",
+[GGUF_V3_TYPE_ARRAY] = "arr",
+[GGUF_V3_TYPE_UINT64] = "u64",
+[GGUF_V3_TYPE_INT64] = "i64",
 [GGUF_V3_TYPE_FLOAT64] = "f64",
 };
 static_assert(GGUF_V3_TYPE_COUNT == 13, "GGUF_V3_TYPE_COUNT != 13");
 union gguf_v3_value {
-uint8_t  uint8;
-int8_t   int8;
+uint8_t uint8;
+int8_t int8;
 uint16_t uint16;
-int16_t  int16;
+int16_t int16;
 uint32_t uint32;
-int32_t  int32;
-float    float32;
+int32_t int32;
+float float32;
 uint64_t uint64;
-int64_t  int64;
-double   float64;
-bool     bool_;
+int64_t int64;
+double float64;
+bool bool_;
 struct gguf_v3_str str;
 struct {
 enum gguf_v3_type type;
@@ -15153,7 +15153,7 @@ void * data;
 };
 struct gguf_v3_kv {
 struct gguf_v3_str key;
-enum  gguf_v3_type  type;
+enum gguf_v3_type type;
 union gguf_v3_value value;
 };
 struct gguf_v3_header {
@@ -15173,7 +15173,7 @@ size_t size;
 };
 struct gguf_v3_context {
 struct gguf_v3_header header;
-struct gguf_v3_kv          * kv;
+struct gguf_v3_kv * kv;
 struct gguf_v3_tensor_info * infos;
 size_t alignment;
 size_t offset;
@@ -15186,33 +15186,33 @@ const size_t n = fread(dst, 1, size, file);
 return n == size;
 }
 static bool gguf_v3_fread_str_cur(FILE * file, struct gguf_v3_str * p, size_t * offset) {
-p->n    = 0;
+p->n = 0;
 p->data = NULL;
 bool ok = true;
-ok = ok && gguf_v3_fread_el(file, &p->n,    sizeof(p->n), offset); p->data = calloc(p->n + 1, 1);
-ok = ok && gguf_v3_fread_el(file,  p->data, p->n,         offset);
+ok = ok && gguf_v3_fread_el(file, &p->n, sizeof(p->n), offset); p->data = calloc(p->n + 1, 1);
+ok = ok && gguf_v3_fread_el(file, p->data, p->n, offset);
 return ok;
 }
 static bool gguf_v3_fread_str_v1(FILE * file, struct gguf_v3_str * p, size_t * offset) {
-p->n    = 0;
+p->n = 0;
 p->data = NULL;
 bool ok = true;
 uint32_t n = 0;
-ok = ok && gguf_v3_fread_el(file, &n,       sizeof(n), offset); p->data = calloc(n + 1, 1); p->n = n;
-ok = ok && gguf_v3_fread_el(file,  p->data, p->n,      offset);
+ok = ok && gguf_v3_fread_el(file, &n, sizeof(n), offset); p->data = calloc(n + 1, 1); p->n = n;
+ok = ok && gguf_v3_fread_el(file, p->data, p->n, offset);
 return ok;
 }
 struct gguf_v3_context * gguf_v3_init_empty(void) {
 struct gguf_v3_context * ctx = GGML_V3_ALIGNED_MALLOC(sizeof(struct gguf_v3_context));
 memcpy(ctx->header.magic, GGUF_V3_MAGIC, sizeof(ctx->header.magic));
-ctx->header.version   = GGUF_V3_VERSION;
+ctx->header.version = GGUF_V3_VERSION;
 ctx->header.n_tensors = 0;
-ctx->header.n_kv      = 0;
-ctx->kv    = NULL;
+ctx->header.n_kv = 0;
+ctx->kv = NULL;
 ctx->infos = NULL;
 ctx->alignment = GGUF_V3_DEFAULT_ALIGNMENT;
-ctx->offset    = 0;
-ctx->size      = 0;
+ctx->offset = 0;
+ctx->size = 0;
 ctx->data = NULL;
 return ctx;
 }
@@ -15237,27 +15237,27 @@ bool ok = true;
 struct gguf_v3_context * ctx = GGML_V3_ALIGNED_MALLOC(sizeof(struct gguf_v3_context));
 {
 strncpy(ctx->header.magic, magic, 4);
-ctx->kv    = NULL;
+ctx->kv = NULL;
 ctx->infos = NULL;
-ctx->data  = NULL;
-ok = ok && gguf_v3_fread_el(file, &ctx->header.version,   sizeof(ctx->header.version),   &offset);
+ctx->data = NULL;
+ok = ok && gguf_v3_fread_el(file, &ctx->header.version, sizeof(ctx->header.version), &offset);
 if (ctx->header.version == 1) {
 uint32_t n_tensors = 0;
-uint32_t n_kv      = 0;
+uint32_t n_kv = 0;
 ok = ok && gguf_v3_fread_el(file, &n_tensors, sizeof(n_tensors), &offset);
-ok = ok && gguf_v3_fread_el(file, &n_kv,      sizeof(n_kv),      &offset);
+ok = ok && gguf_v3_fread_el(file, &n_kv, sizeof(n_kv), &offset);
 ctx->header.n_tensors = n_tensors;
-ctx->header.n_kv      = n_kv;
+ctx->header.n_kv = n_kv;
 } else {
 ok = ok && gguf_v3_fread_el(file, &ctx->header.n_tensors, sizeof(ctx->header.n_tensors), &offset);
-ok = ok && gguf_v3_fread_el(file, &ctx->header.n_kv,      sizeof(ctx->header.n_kv),      &offset);
+ok = ok && gguf_v3_fread_el(file, &ctx->header.n_kv, sizeof(ctx->header.n_kv), &offset);
 }
 if (ctx->header.version == 1) {
 fprintf(stderr, "%s: GGUFv1 is deprecated. please update if possible.\n", __func__);
 }
 ok = ok && (ctx->header.n_tensors < (SIZE_MAX/2)/sizeof(struct gguf_v3_tensor_info));
 ok = ok && (ctx->header.n_tensors < (SIZE_MAX/2)/ggml_v3_tensor_overhead());
-ok = ok && (ctx->header.n_kv      < (SIZE_MAX/2)/sizeof(struct gguf_v3_kv));
+ok = ok && (ctx->header.n_kv < (SIZE_MAX/2)/sizeof(struct gguf_v3_kv));
 if (!ok) {
 fprintf(stderr, "%s: failed to read header\n", __func__);
 fclose(file);
@@ -15273,21 +15273,21 @@ gguf_v3_fread_str = gguf_v3_fread_str_v1;
 ctx->kv = malloc(ctx->header.n_kv * sizeof(struct gguf_v3_kv));
 for (uint64_t i = 0; i < ctx->header.n_kv; ++i) {
 struct gguf_v3_kv * kv = &ctx->kv[i];
-ok = ok && gguf_v3_fread_str(file, &kv->key,                    &offset);
+ok = ok && gguf_v3_fread_str(file, &kv->key, &offset);
 ok = ok && gguf_v3_fread_el (file, &kv->type, sizeof(kv->type), &offset);
 switch (kv->type) {
-case GGUF_V3_TYPE_UINT8:   ok = ok && gguf_v3_fread_el (file, &kv->value.uint8,   sizeof(kv->value.uint8),   &offset); break;
-case GGUF_V3_TYPE_INT8:    ok = ok && gguf_v3_fread_el (file, &kv->value.int8,    sizeof(kv->value.int8),    &offset); break;
-case GGUF_V3_TYPE_UINT16:  ok = ok && gguf_v3_fread_el (file, &kv->value.uint16,  sizeof(kv->value.uint16),  &offset); break;
-case GGUF_V3_TYPE_INT16:   ok = ok && gguf_v3_fread_el (file, &kv->value.int16,   sizeof(kv->value.int16),   &offset); break;
-case GGUF_V3_TYPE_UINT32:  ok = ok && gguf_v3_fread_el (file, &kv->value.uint32,  sizeof(kv->value.uint32),  &offset); break;
-case GGUF_V3_TYPE_INT32:   ok = ok && gguf_v3_fread_el (file, &kv->value.int32,   sizeof(kv->value.int32),   &offset); break;
+case GGUF_V3_TYPE_UINT8: ok = ok && gguf_v3_fread_el (file, &kv->value.uint8, sizeof(kv->value.uint8), &offset); break;
+case GGUF_V3_TYPE_INT8: ok = ok && gguf_v3_fread_el (file, &kv->value.int8, sizeof(kv->value.int8), &offset); break;
+case GGUF_V3_TYPE_UINT16: ok = ok && gguf_v3_fread_el (file, &kv->value.uint16, sizeof(kv->value.uint16), &offset); break;
+case GGUF_V3_TYPE_INT16: ok = ok && gguf_v3_fread_el (file, &kv->value.int16, sizeof(kv->value.int16), &offset); break;
+case GGUF_V3_TYPE_UINT32: ok = ok && gguf_v3_fread_el (file, &kv->value.uint32, sizeof(kv->value.uint32), &offset); break;
+case GGUF_V3_TYPE_INT32: ok = ok && gguf_v3_fread_el (file, &kv->value.int32, sizeof(kv->value.int32), &offset); break;
 case GGUF_V3_TYPE_FLOAT32: ok = ok && gguf_v3_fread_el (file, &kv->value.float32, sizeof(kv->value.float32), &offset); break;
-case GGUF_V3_TYPE_UINT64:  ok = ok && gguf_v3_fread_el (file, &kv->value.uint64,  sizeof(kv->value.uint64),  &offset); break;
-case GGUF_V3_TYPE_INT64:   ok = ok && gguf_v3_fread_el (file, &kv->value.int64,   sizeof(kv->value.int64),   &offset); break;
+case GGUF_V3_TYPE_UINT64: ok = ok && gguf_v3_fread_el (file, &kv->value.uint64, sizeof(kv->value.uint64), &offset); break;
+case GGUF_V3_TYPE_INT64: ok = ok && gguf_v3_fread_el (file, &kv->value.int64, sizeof(kv->value.int64), &offset); break;
 case GGUF_V3_TYPE_FLOAT64: ok = ok && gguf_v3_fread_el (file, &kv->value.float64, sizeof(kv->value.float64), &offset); break;
-case GGUF_V3_TYPE_BOOL:    ok = ok && gguf_v3_fread_el (file, &kv->value.bool_,   sizeof(kv->value.bool_),   &offset); break;
-case GGUF_V3_TYPE_STRING:  ok = ok && gguf_v3_fread_str(file, &kv->value.str,                                &offset); break;
+case GGUF_V3_TYPE_BOOL: ok = ok && gguf_v3_fread_el (file, &kv->value.bool_, sizeof(kv->value.bool_), &offset); break;
+case GGUF_V3_TYPE_STRING: ok = ok && gguf_v3_fread_str(file, &kv->value.str, &offset); break;
 case GGUF_V3_TYPE_ARRAY:
 {
 ok = ok && gguf_v3_fread_el(file, &kv->value.arr.type, sizeof(kv->value.arr.type), &offset);
@@ -15345,8 +15345,8 @@ struct gguf_v3_tensor_info * info = &ctx->infos[i];
 for (int j = 0; j < GGML_V3_MAX_DIMS; ++j) {
 info->ne[j] = 1;
 }
-ok = ok && gguf_v3_fread_str(file, &info->name,                          &offset);
-ok = ok && gguf_v3_fread_el (file, &info->n_dims, sizeof(info->n_dims),  &offset);
+ok = ok && gguf_v3_fread_str(file, &info->name, &offset);
+ok = ok && gguf_v3_fread_el (file, &info->n_dims, sizeof(info->n_dims), &offset);
 for (uint32_t j = 0; j < info->n_dims; ++j) {
 if (ctx->header.version == 1) {
 uint32_t t = 0;
@@ -15356,8 +15356,8 @@ info->ne[j] = t;
 ok = ok && gguf_v3_fread_el(file, &info->ne[j], sizeof(info->ne[j]), &offset);
 }
 }
-ok = ok && gguf_v3_fread_el (file, &info->type,   sizeof(info->type),    &offset);
-ok = ok && gguf_v3_fread_el (file, &info->offset, sizeof(info->offset),  &offset);
+ok = ok && gguf_v3_fread_el (file, &info->type, sizeof(info->type), &offset);
+ok = ok && gguf_v3_fread_el (file, &info->offset, sizeof(info->offset), &offset);
 if (!ok) {
 fprintf(stderr, "%s: failed to read tensor info\n", __func__);
 fclose(file);
@@ -15402,12 +15402,12 @@ ctx->size += GGML_V3_PAD(size_cur, ctx->alignment);
 if (params.ctx != NULL) {
 const size_t mem_size =
 params.no_alloc ?
-(ctx->header.n_tensors    )*ggml_v3_tensor_overhead() :
+(ctx->header.n_tensors )*ggml_v3_tensor_overhead() :
 (ctx->header.n_tensors + 1)*ggml_v3_tensor_overhead() + ctx->size;
 struct ggml_v3_init_params pdata = {
-.mem_size   = mem_size,
+.mem_size = mem_size,
 .mem_buffer = NULL,
-.no_alloc   = params.no_alloc,
+.no_alloc = params.no_alloc,
 };
 *params.ctx = ggml_v3_init(pdata);
 struct ggml_v3_context * ctx_data = *params.ctx;
@@ -15652,107 +15652,107 @@ return idx;
 }
 const int n_kv = gguf_v3_get_n_kv(ctx);
 ctx->kv = realloc(ctx->kv, (n_kv + 1) * sizeof(struct gguf_v3_kv));
-ctx->kv[n_kv].key.n    = strlen(key);
+ctx->kv[n_kv].key.n = strlen(key);
 ctx->kv[n_kv].key.data = strdup(key);
 ctx->header.n_kv++;
 return n_kv;
 }
 void gguf_v3_set_val_u8(struct gguf_v3_context * ctx, const char * key, uint8_t val) {
 const int idx = gguf_v3_get_or_add_key(ctx, key);
-ctx->kv[idx].type        = GGUF_V3_TYPE_UINT8;
+ctx->kv[idx].type = GGUF_V3_TYPE_UINT8;
 ctx->kv[idx].value.uint8 = val;
 }
 void gguf_v3_set_val_i8(struct gguf_v3_context * ctx, const char * key, int8_t val) {
 const int idx = gguf_v3_get_or_add_key(ctx, key);
-ctx->kv[idx].type       = GGUF_V3_TYPE_INT8;
+ctx->kv[idx].type = GGUF_V3_TYPE_INT8;
 ctx->kv[idx].value.int8 = val;
 }
 void gguf_v3_set_val_u16(struct gguf_v3_context * ctx, const char * key, uint16_t val) {
 const int idx = gguf_v3_get_or_add_key(ctx, key);
-ctx->kv[idx].type         = GGUF_V3_TYPE_UINT16;
+ctx->kv[idx].type = GGUF_V3_TYPE_UINT16;
 ctx->kv[idx].value.uint16 = val;
 }
 void gguf_v3_set_val_i16(struct gguf_v3_context * ctx, const char * key, int16_t val) {
 const int idx = gguf_v3_get_or_add_key(ctx, key);
-ctx->kv[idx].type        = GGUF_V3_TYPE_INT16;
+ctx->kv[idx].type = GGUF_V3_TYPE_INT16;
 ctx->kv[idx].value.int16 = val;
 }
 void gguf_v3_set_val_u32(struct gguf_v3_context * ctx, const char * key, uint32_t val) {
 const int idx = gguf_v3_get_or_add_key(ctx, key);
-ctx->kv[idx].type         = GGUF_V3_TYPE_UINT32;
+ctx->kv[idx].type = GGUF_V3_TYPE_UINT32;
 ctx->kv[idx].value.uint32 = val;
 }
 void gguf_v3_set_val_i32(struct gguf_v3_context * ctx, const char * key, int32_t val) {
 const int idx = gguf_v3_get_or_add_key(ctx, key);
-ctx->kv[idx].type        = GGUF_V3_TYPE_INT32;
+ctx->kv[idx].type = GGUF_V3_TYPE_INT32;
 ctx->kv[idx].value.int32 = val;
 }
 void gguf_v3_set_val_f32(struct gguf_v3_context * ctx, const char * key, float val) {
 const int idx = gguf_v3_get_or_add_key(ctx, key);
-ctx->kv[idx].type          = GGUF_V3_TYPE_FLOAT32;
+ctx->kv[idx].type = GGUF_V3_TYPE_FLOAT32;
 ctx->kv[idx].value.float32 = val;
 }
 void gguf_v3_set_val_u64(struct gguf_v3_context * ctx, const char * key, uint64_t val) {
 const int idx = gguf_v3_get_or_add_key(ctx, key);
-ctx->kv[idx].type         = GGUF_V3_TYPE_UINT64;
+ctx->kv[idx].type = GGUF_V3_TYPE_UINT64;
 ctx->kv[idx].value.uint64 = val;
 }
 void gguf_v3_set_val_i64(struct gguf_v3_context * ctx, const char * key, int64_t val) {
 const int idx = gguf_v3_get_or_add_key(ctx, key);
-ctx->kv[idx].type        = GGUF_V3_TYPE_INT64;
+ctx->kv[idx].type = GGUF_V3_TYPE_INT64;
 ctx->kv[idx].value.int64 = val;
 }
 void gguf_v3_set_val_f64(struct gguf_v3_context * ctx, const char * key, double val) {
 const int idx = gguf_v3_get_or_add_key(ctx, key);
-ctx->kv[idx].type          = GGUF_V3_TYPE_FLOAT64;
+ctx->kv[idx].type = GGUF_V3_TYPE_FLOAT64;
 ctx->kv[idx].value.float64 = val;
 }
 void gguf_v3_set_val_bool(struct gguf_v3_context * ctx, const char * key, bool val) {
 const int idx = gguf_v3_get_or_add_key(ctx, key);
-ctx->kv[idx].type        = GGUF_V3_TYPE_BOOL;
+ctx->kv[idx].type = GGUF_V3_TYPE_BOOL;
 ctx->kv[idx].value.bool_ = val;
 }
 void gguf_v3_set_val_str(struct gguf_v3_context * ctx, const char * key, const char * val) {
 const int idx = gguf_v3_get_or_add_key(ctx, key);
-ctx->kv[idx].type           = GGUF_V3_TYPE_STRING;
-ctx->kv[idx].value.str.n    = strlen(val);
+ctx->kv[idx].type = GGUF_V3_TYPE_STRING;
+ctx->kv[idx].value.str.n = strlen(val);
 ctx->kv[idx].value.str.data = strdup(val);
 }
 void gguf_v3_set_arr_data(struct gguf_v3_context * ctx, const char * key, enum gguf_v3_type type, const void * data, int n) {
 const int idx = gguf_v3_get_or_add_key(ctx, key);
-ctx->kv[idx].type           = GGUF_V3_TYPE_ARRAY;
+ctx->kv[idx].type = GGUF_V3_TYPE_ARRAY;
 ctx->kv[idx].value.arr.type = type;
-ctx->kv[idx].value.arr.n    = n;
+ctx->kv[idx].value.arr.n = n;
 ctx->kv[idx].value.arr.data = malloc(n*GGUF_V3_TYPE_SIZE[type]);
 memcpy(ctx->kv[idx].value.arr.data, data, n*GGUF_V3_TYPE_SIZE[type]);
 }
 void gguf_v3_set_arr_str(struct gguf_v3_context * ctx, const char * key, const char ** data, int n) {
 const int idx = gguf_v3_get_or_add_key(ctx, key);
-ctx->kv[idx].type           = GGUF_V3_TYPE_ARRAY;
+ctx->kv[idx].type = GGUF_V3_TYPE_ARRAY;
 ctx->kv[idx].value.arr.type = GGUF_V3_TYPE_STRING;
-ctx->kv[idx].value.arr.n    = n;
+ctx->kv[idx].value.arr.n = n;
 ctx->kv[idx].value.arr.data = malloc(n*sizeof(struct gguf_v3_str));
 for (int i = 0; i < n; i++) {
 struct gguf_v3_str * str = &((struct gguf_v3_str *)ctx->kv[idx].value.arr.data)[i];
-str->n    = strlen(data[i]);
+str->n = strlen(data[i]);
 str->data = strdup(data[i]);
 }
 }
 void gguf_v3_set_kv(struct gguf_v3_context * ctx, struct gguf_v3_context * src) {
 for (uint32_t i = 0; i < src->header.n_kv; i++) {
 switch (src->kv[i].type) {
-case GGUF_V3_TYPE_UINT8:   gguf_v3_set_val_u8  (ctx, src->kv[i].key.data, src->kv[i].value.uint8);    break;
-case GGUF_V3_TYPE_INT8:    gguf_v3_set_val_i8  (ctx, src->kv[i].key.data, src->kv[i].value.int8);     break;
-case GGUF_V3_TYPE_UINT16:  gguf_v3_set_val_u16 (ctx, src->kv[i].key.data, src->kv[i].value.uint16);   break;
-case GGUF_V3_TYPE_INT16:   gguf_v3_set_val_i16 (ctx, src->kv[i].key.data, src->kv[i].value.int16);    break;
-case GGUF_V3_TYPE_UINT32:  gguf_v3_set_val_u32 (ctx, src->kv[i].key.data, src->kv[i].value.uint32);   break;
-case GGUF_V3_TYPE_INT32:   gguf_v3_set_val_i32 (ctx, src->kv[i].key.data, src->kv[i].value.int32);    break;
-case GGUF_V3_TYPE_FLOAT32: gguf_v3_set_val_f32 (ctx, src->kv[i].key.data, src->kv[i].value.float32);  break;
-case GGUF_V3_TYPE_UINT64:  gguf_v3_set_val_u64 (ctx, src->kv[i].key.data, src->kv[i].value.uint64);   break;
-case GGUF_V3_TYPE_INT64:   gguf_v3_set_val_i64 (ctx, src->kv[i].key.data, src->kv[i].value.int64);    break;
-case GGUF_V3_TYPE_FLOAT64: gguf_v3_set_val_f64 (ctx, src->kv[i].key.data, src->kv[i].value.float64);  break;
-case GGUF_V3_TYPE_BOOL:    gguf_v3_set_val_bool(ctx, src->kv[i].key.data, src->kv[i].value.bool_);    break;
-case GGUF_V3_TYPE_STRING:  gguf_v3_set_val_str (ctx, src->kv[i].key.data, src->kv[i].value.str.data); break;
+case GGUF_V3_TYPE_UINT8: gguf_v3_set_val_u8 (ctx, src->kv[i].key.data, src->kv[i].value.uint8); break;
+case GGUF_V3_TYPE_INT8: gguf_v3_set_val_i8 (ctx, src->kv[i].key.data, src->kv[i].value.int8); break;
+case GGUF_V3_TYPE_UINT16: gguf_v3_set_val_u16 (ctx, src->kv[i].key.data, src->kv[i].value.uint16); break;
+case GGUF_V3_TYPE_INT16: gguf_v3_set_val_i16 (ctx, src->kv[i].key.data, src->kv[i].value.int16); break;
+case GGUF_V3_TYPE_UINT32: gguf_v3_set_val_u32 (ctx, src->kv[i].key.data, src->kv[i].value.uint32); break;
+case GGUF_V3_TYPE_INT32: gguf_v3_set_val_i32 (ctx, src->kv[i].key.data, src->kv[i].value.int32); break;
+case GGUF_V3_TYPE_FLOAT32: gguf_v3_set_val_f32 (ctx, src->kv[i].key.data, src->kv[i].value.float32); break;
+case GGUF_V3_TYPE_UINT64: gguf_v3_set_val_u64 (ctx, src->kv[i].key.data, src->kv[i].value.uint64); break;
+case GGUF_V3_TYPE_INT64: gguf_v3_set_val_i64 (ctx, src->kv[i].key.data, src->kv[i].value.int64); break;
+case GGUF_V3_TYPE_FLOAT64: gguf_v3_set_val_f64 (ctx, src->kv[i].key.data, src->kv[i].value.float64); break;
+case GGUF_V3_TYPE_BOOL: gguf_v3_set_val_bool(ctx, src->kv[i].key.data, src->kv[i].value.bool_); break;
+case GGUF_V3_TYPE_STRING: gguf_v3_set_val_str (ctx, src->kv[i].key.data, src->kv[i].value.str.data); break;
 case GGUF_V3_TYPE_ARRAY:
 {
 if (src->kv[i].value.arr.type == GGUF_V3_TYPE_STRING) {
@@ -15768,7 +15768,7 @@ GGML_V3_ASSERT(false && "nested arrays not supported");
 gguf_v3_set_arr_data(ctx, src->kv[i].key.data, src->kv[i].value.arr.type, src->kv[i].value.arr.data, src->kv[i].value.arr.n);
 }
 } break;
-case GGUF_V3_TYPE_COUNT:  GGML_V3_ASSERT(false && "invalid type"); break;
+case GGUF_V3_TYPE_COUNT: GGML_V3_ASSERT(false && "invalid type"); break;
 }
 }
 }
@@ -15777,7 +15777,7 @@ struct gguf_v3_context * ctx,
 const struct ggml_v3_tensor * tensor) {
 const int idx = ctx->header.n_tensors;
 ctx->infos = realloc(ctx->infos, (idx + 1)*sizeof(struct gguf_v3_tensor_info));
-ctx->infos[idx].name.n    = strlen(tensor->name);
+ctx->infos[idx].name.n = strlen(tensor->name);
 ctx->infos[idx].name.data = strdup(tensor->name);
 for (int i = 0; i < GGML_V3_MAX_DIMS; ++i) {
 ctx->infos[idx].ne[i] = 1;
@@ -15786,10 +15786,10 @@ ctx->infos[idx].n_dims = ggml_v3_n_dims(tensor);
 for (uint32_t i = 0; i < ctx->infos[idx].n_dims; i++) {
 ctx->infos[idx].ne[i] = tensor->ne[i];
 }
-ctx->infos[idx].type   = tensor->type;
+ctx->infos[idx].type = tensor->type;
 ctx->infos[idx].offset = 0;
-ctx->infos[idx].data   = tensor->data;
-ctx->infos[idx].size   = ggml_v3_nbytes(tensor);
+ctx->infos[idx].data = tensor->data;
+ctx->infos[idx].size = ggml_v3_nbytes(tensor);
 if (ctx->header.n_tensors > 0) {
 ctx->infos[idx].offset = ctx->infos[idx - 1].offset + GGML_V3_PAD(ctx->infos[idx - 1].size, ctx->alignment);
 }
@@ -15858,31 +15858,31 @@ memcpy((char *) buf->data + buf->offset, val, el_size);
 buf->offset += el_size;
 }
 static void gguf_v3_write_to_buf(const struct gguf_v3_context * ctx, struct gguf_v3_buf * buf, bool only_meta) {
-gguf_v3_bwrite_el(buf, &ctx->header.magic,     sizeof(ctx->header.magic));
-gguf_v3_bwrite_el(buf, &ctx->header.version,   sizeof(ctx->header.version));
+gguf_v3_bwrite_el(buf, &ctx->header.magic, sizeof(ctx->header.magic));
+gguf_v3_bwrite_el(buf, &ctx->header.version, sizeof(ctx->header.version));
 gguf_v3_bwrite_el(buf, &ctx->header.n_tensors, sizeof(ctx->header.n_tensors));
-gguf_v3_bwrite_el(buf, &ctx->header.n_kv,      sizeof(ctx->header.n_kv));
+gguf_v3_bwrite_el(buf, &ctx->header.n_kv, sizeof(ctx->header.n_kv));
 for (uint32_t i = 0; i < ctx->header.n_kv; ++i) {
 struct gguf_v3_kv * kv = &ctx->kv[i];
 gguf_v3_bwrite_str(buf, &kv->key);
 gguf_v3_bwrite_el (buf, &kv->type, sizeof(kv->type));
 switch (kv->type) {
-case GGUF_V3_TYPE_UINT8:   gguf_v3_bwrite_el( buf, &kv->value.uint8,   sizeof(kv->value.uint8)  ); break;
-case GGUF_V3_TYPE_INT8:    gguf_v3_bwrite_el (buf, &kv->value.int8,    sizeof(kv->value.int8)   ); break;
-case GGUF_V3_TYPE_UINT16:  gguf_v3_bwrite_el (buf, &kv->value.uint16,  sizeof(kv->value.uint16) ); break;
-case GGUF_V3_TYPE_INT16:   gguf_v3_bwrite_el (buf, &kv->value.int16,   sizeof(kv->value.int16)  ); break;
-case GGUF_V3_TYPE_UINT32:  gguf_v3_bwrite_el (buf, &kv->value.uint32,  sizeof(kv->value.uint32) ); break;
-case GGUF_V3_TYPE_INT32:   gguf_v3_bwrite_el (buf, &kv->value.int32,   sizeof(kv->value.int32)  ); break;
+case GGUF_V3_TYPE_UINT8: gguf_v3_bwrite_el( buf, &kv->value.uint8, sizeof(kv->value.uint8) ); break;
+case GGUF_V3_TYPE_INT8: gguf_v3_bwrite_el (buf, &kv->value.int8, sizeof(kv->value.int8) ); break;
+case GGUF_V3_TYPE_UINT16: gguf_v3_bwrite_el (buf, &kv->value.uint16, sizeof(kv->value.uint16) ); break;
+case GGUF_V3_TYPE_INT16: gguf_v3_bwrite_el (buf, &kv->value.int16, sizeof(kv->value.int16) ); break;
+case GGUF_V3_TYPE_UINT32: gguf_v3_bwrite_el (buf, &kv->value.uint32, sizeof(kv->value.uint32) ); break;
+case GGUF_V3_TYPE_INT32: gguf_v3_bwrite_el (buf, &kv->value.int32, sizeof(kv->value.int32) ); break;
 case GGUF_V3_TYPE_FLOAT32: gguf_v3_bwrite_el (buf, &kv->value.float32, sizeof(kv->value.float32)); break;
-case GGUF_V3_TYPE_UINT64:  gguf_v3_bwrite_el (buf, &kv->value.uint64,  sizeof(kv->value.uint64) ); break;
-case GGUF_V3_TYPE_INT64:   gguf_v3_bwrite_el (buf, &kv->value.int64,   sizeof(kv->value.int64)  ); break;
+case GGUF_V3_TYPE_UINT64: gguf_v3_bwrite_el (buf, &kv->value.uint64, sizeof(kv->value.uint64) ); break;
+case GGUF_V3_TYPE_INT64: gguf_v3_bwrite_el (buf, &kv->value.int64, sizeof(kv->value.int64) ); break;
 case GGUF_V3_TYPE_FLOAT64: gguf_v3_bwrite_el (buf, &kv->value.float64, sizeof(kv->value.float64)); break;
-case GGUF_V3_TYPE_BOOL:    gguf_v3_bwrite_el (buf, &kv->value.bool_,   sizeof(kv->value.bool_)  ); break;
-case GGUF_V3_TYPE_STRING:  gguf_v3_bwrite_str(buf, &kv->value.str                               ); break;
+case GGUF_V3_TYPE_BOOL: gguf_v3_bwrite_el (buf, &kv->value.bool_, sizeof(kv->value.bool_) ); break;
+case GGUF_V3_TYPE_STRING: gguf_v3_bwrite_str(buf, &kv->value.str ); break;
 case GGUF_V3_TYPE_ARRAY:
 {
 gguf_v3_bwrite_el(buf, &kv->value.arr.type, sizeof(kv->value.arr.type));
-gguf_v3_bwrite_el(buf, &kv->value.arr.n,    sizeof(kv->value.arr.n)   );
+gguf_v3_bwrite_el(buf, &kv->value.arr.n, sizeof(kv->value.arr.n) );
 switch (kv->value.arr.type) {
 case GGUF_V3_TYPE_UINT8:
 case GGUF_V3_TYPE_INT8:
@@ -15918,11 +15918,11 @@ gguf_v3_bwrite_el (buf, &info->n_dims, sizeof(info->n_dims));
 for (uint32_t j = 0; j < info->n_dims; ++j) {
 gguf_v3_bwrite_el(buf, &info->ne[j], sizeof(info->ne[j]));
 }
-gguf_v3_bwrite_el(buf, &info->type,   sizeof(info->type));
+gguf_v3_bwrite_el(buf, &info->type, sizeof(info->type));
 gguf_v3_bwrite_el(buf, &info->offset, sizeof(info->offset));
 }
 {
-const size_t offset     = buf->offset;
+const size_t offset = buf->offset;
 const size_t offset_pad = GGML_V3_PAD(offset, ctx->alignment);
 if (offset_pad != offset) {
 uint8_t pad = 0;
@@ -15937,7 +15937,7 @@ return;
 size_t offset = 0;
 for (uint32_t i = 0; i < ctx->header.n_tensors; ++i) {
 struct gguf_v3_tensor_info * info = &ctx->infos[i];
-const size_t size     = info->size;
+const size_t size = info->size;
 const size_t size_pad = GGML_V3_PAD(size, ctx->alignment);
 gguf_v3_bwrite_el(buf, info->data, size);
 if (size_pad != size) {
@@ -16165,13 +16165,13 @@ static inline int hsum_i32_8(const __m256i a) {
 const __m128i sum128 = _mm_add_epi32(_mm256_castsi256_si128(a), _mm256_extractf128_si256(a, 1));
 const __m128i hi64 = _mm_unpackhi_epi64(sum128, sum128);
 const __m128i sum64 = _mm_add_epi32(hi64, sum128);
-const __m128i hi32  = _mm_shuffle_epi32(sum64, _MM_SHUFFLE(2, 3, 0, 1));
+const __m128i hi32 = _mm_shuffle_epi32(sum64, _MM_SHUFFLE(2, 3, 0, 1));
 return _mm_cvtsi128_si32(_mm_add_epi32(sum64, hi32));
 }
 static inline int hsum_i32_4(const __m128i a) {
 const __m128i hi64 = _mm_unpackhi_epi64(a, a);
 const __m128i sum64 = _mm_add_epi32(hi64, a);
-const __m128i hi32  = _mm_shuffle_epi32(sum64, _MM_SHUFFLE(2, 3, 0, 1));
+const __m128i hi32 = _mm_shuffle_epi32(sum64, _MM_SHUFFLE(2, 3, 0, 1));
 return _mm_cvtsi128_si32(_mm_add_epi32(sum64, hi32));
 }
 #if defined(__AVX2__) || defined(__AVX512F__)
@@ -16394,16 +16394,16 @@ res.val[3] = vld1q_s8(ptr + 48);
 return res;
 }
 #else
-#define ggml_v3_int16x8x2_t  int16x8x2_t
+#define ggml_v3_int16x8x2_t int16x8x2_t
 #define ggml_v3_uint8x16x2_t uint8x16x2_t
 #define ggml_v3_uint8x16x4_t uint8x16x4_t
-#define ggml_v3_int8x16x2_t  int8x16x2_t
-#define ggml_v3_int8x16x4_t  int8x16x4_t
+#define ggml_v3_int8x16x2_t int8x16x2_t
+#define ggml_v3_int8x16x4_t int8x16x4_t
 #define ggml_v3_vld1q_s16_x2 vld1q_s16_x2
-#define ggml_v3_vld1q_u8_x2  vld1q_u8_x2
-#define ggml_v3_vld1q_u8_x4  vld1q_u8_x4
-#define ggml_v3_vld1q_s8_x2  vld1q_s8_x2
-#define ggml_v3_vld1q_s8_x4  vld1q_s8_x4
+#define ggml_v3_vld1q_u8_x2 vld1q_u8_x2
+#define ggml_v3_vld1q_u8_x4 vld1q_u8_x4
+#define ggml_v3_vld1q_s8_x2 vld1q_s8_x2
+#define ggml_v3_vld1q_s8_x4 vld1q_s8_x4
 #endif
 #if !defined(__ARM_FEATURE_DOTPROD)
 inline static int32x4_t ggml_v3_vdotq_s32(int32x4_t acc, int8x16_t a, int8x16_t b) {
@@ -16416,14 +16416,14 @@ return vaddq_s32(acc, vaddq_s32(vpaddlq_s16(p0), vpaddlq_s16(p1)));
 #endif
 #endif
 #if defined(__ARM_NEON) || defined(__wasm_simd128__)
-#define B1(c,s,n)  0x ## n ## c ,  0x ## n ## s
+#define B1(c,s,n) 0x ## n ## c , 0x ## n ## s
 #define B2(c,s,n) B1(c,s,n ## c), B1(c,s,n ## s)
 #define B3(c,s,n) B2(c,s,n ## c), B2(c,s,n ## s)
 #define B4(c,s,n) B3(c,s,n ## c), B3(c,s,n ## s)
 #define B5(c,s,n) B4(c,s,n ## c), B4(c,s,n ## s)
 #define B6(c,s,n) B5(c,s,n ## c), B5(c,s,n ## s)
 #define B7(c,s,n) B6(c,s,n ## c), B6(c,s,n ## s)
-#define B8(c,s  ) B7(c,s,     c), B7(c,s,     s)
+#define B8(c,s ) B7(c,s, c), B7(c,s, s)
 static const uint64_t table_b2b_0[1 << 8] = { B8(00, 10) };
 static const uint64_t table_b2b_1[1 << 8] = { B8(10, 00) };
 #endif
@@ -16433,23 +16433,23 @@ assert(k % qk == 0);
 const int nb = k / qk;
 for (int i = 0; i < nb; i++) {
 float amax = 0.0f;
-float max  = 0.0f;
+float max = 0.0f;
 for (int j = 0; j < qk; j++) {
 const float v = x[i*qk + j];
 if (amax < fabsf(v)) {
 amax = fabsf(v);
-max  = v;
+max = v;
 }
 }
-const float d  = max / -8;
+const float d = max / -8;
 const float id = d ? 1.0f/d : 0.0f;
 y[i].d = GGML_V3_FP32_TO_FP16(d);
 for (int j = 0; j < qk/2; ++j) {
-const float x0 = x[i*qk + 0    + j]*id;
+const float x0 = x[i*qk + 0 + j]*id;
 const float x1 = x[i*qk + qk/2 + j]*id;
 const uint8_t xi0 = MIN(15, (int8_t)(x0 + 8.5f));
 const uint8_t xi1 = MIN(15, (int8_t)(x1 + 8.5f));
-y[i].qs[j]  = xi0;
+y[i].qs[j] = xi0;
 y[i].qs[j] |= xi1 << 4;
 }
 }
@@ -16469,16 +16469,16 @@ const float v = x[i*qk + j];
 if (v < min) min = v;
 if (v > max) max = v;
 }
-const float d  = (max - min) / ((1 << 4) - 1);
+const float d = (max - min) / ((1 << 4) - 1);
 const float id = d ? 1.0f/d : 0.0f;
 y[i].d = GGML_V3_FP32_TO_FP16(d);
 y[i].m = GGML_V3_FP32_TO_FP16(min);
 for (int j = 0; j < qk/2; ++j) {
-const float x0 = (x[i*qk + 0    + j] - min)*id;
+const float x0 = (x[i*qk + 0 + j] - min)*id;
 const float x1 = (x[i*qk + qk/2 + j] - min)*id;
 const uint8_t xi0 = MIN(15, (int8_t)(x0 + 0.5f));
 const uint8_t xi1 = MIN(15, (int8_t)(x1 + 0.5f));
-y[i].qs[j]  = xi0;
+y[i].qs[j] = xi0;
 y[i].qs[j] |= xi1 << 4;
 }
 }
@@ -16492,20 +16492,20 @@ assert(k % qk == 0);
 const int nb = k / qk;
 for (int i = 0; i < nb; i++) {
 float amax = 0.0f;
-float max  = 0.0f;
+float max = 0.0f;
 for (int j = 0; j < qk; j++) {
 const float v = x[i*qk + j];
 if (amax < fabsf(v)) {
 amax = fabsf(v);
-max  = v;
+max = v;
 }
 }
-const float d  = max / -16;
+const float d = max / -16;
 const float id = d ? 1.0f/d : 0.0f;
 y[i].d = GGML_V3_FP32_TO_FP16(d);
 uint32_t qh = 0;
 for (int j = 0; j < qk/2; ++j) {
-const float x0 = x[i*qk + 0    + j]*id;
+const float x0 = x[i*qk + 0 + j]*id;
 const float x1 = x[i*qk + qk/2 + j]*id;
 const uint8_t xi0 = MIN(31, (int8_t)(x0 + 16.5f));
 const uint8_t xi1 = MIN(31, (int8_t)(x1 + 16.5f));
@@ -16531,13 +16531,13 @@ const float v = x[i*qk + j];
 if (v < min) min = v;
 if (v > max) max = v;
 }
-const float d  = (max - min) / ((1 << 5) - 1);
+const float d = (max - min) / ((1 << 5) - 1);
 const float id = d ? 1.0f/d : 0.0f;
 y[i].d = GGML_V3_FP32_TO_FP16(d);
 y[i].m = GGML_V3_FP32_TO_FP16(min);
 uint32_t qh = 0;
 for (int j = 0; j < qk/2; ++j) {
-const float x0 = (x[i*qk + 0    + j] - min)*id;
+const float x0 = (x[i*qk + 0 + j] - min)*id;
 const float x1 = (x[i*qk + qk/2 + j] - min)*id;
 const uint8_t xi0 = (uint8_t)(x0 + 0.5f);
 const uint8_t xi1 = (uint8_t)(x1 + 0.5f);
@@ -16579,7 +16579,7 @@ for (int i = 0; i < nb; i++) {
 float32x4_t srcv [8];
 float32x4_t asrcv[8];
 float32x4_t amaxv[8];
-for (int j = 0; j < 8; j++) srcv[j]  = vld1q_f32(x + i*32 + 4*j);
+for (int j = 0; j < 8; j++) srcv[j] = vld1q_f32(x + i*32 + 4*j);
 for (int j = 0; j < 8; j++) asrcv[j] = vabsq_f32(srcv[j]);
 for (int j = 0; j < 4; j++) amaxv[2*j] = vmaxq_f32(asrcv[2*j], asrcv[2*j+1]);
 for (int j = 0; j < 2; j++) amaxv[4*j] = vmaxq_f32(amaxv[4*j], amaxv[4*j+2]);
@@ -16589,8 +16589,8 @@ const float d = amax / ((1 << 7) - 1);
 const float id = d ? 1.0f/d : 0.0f;
 y[i].d = GGML_V3_FP32_TO_FP16(d);
 for (int j = 0; j < 8; j++) {
-const float32x4_t v  = vmulq_n_f32(srcv[j], id);
-const int32x4_t   vi = vcvtnq_s32_f32(v);
+const float32x4_t v = vmulq_n_f32(srcv[j], id);
+const int32x4_t vi = vcvtnq_s32_f32(v);
 y[i].qs[4*j + 0] = vgetq_lane_s32(vi, 0);
 y[i].qs[4*j + 1] = vgetq_lane_s32(vi, 1);
 y[i].qs[4*j + 2] = vgetq_lane_s32(vi, 2);
@@ -16602,7 +16602,7 @@ for (int i = 0; i < nb; i++) {
 v128_t srcv [8];
 v128_t asrcv[8];
 v128_t amaxv[8];
-for (int j = 0; j < 8; j++) srcv[j]  = wasm_v128_load(x + i*32 + 4*j);
+for (int j = 0; j < 8; j++) srcv[j] = wasm_v128_load(x + i*32 + 4*j);
 for (int j = 0; j < 8; j++) asrcv[j] = wasm_f32x4_abs(srcv[j]);
 for (int j = 0; j < 4; j++) amaxv[2*j] = wasm_f32x4_max(asrcv[2*j], asrcv[2*j+1]);
 for (int j = 0; j < 2; j++) amaxv[4*j] = wasm_f32x4_max(amaxv[4*j], amaxv[4*j+2]);
@@ -16615,7 +16615,7 @@ const float d = amax / ((1 << 7) - 1);
 const float id = d ? 1.0f/d : 0.0f;
 y[i].d = GGML_V3_FP32_TO_FP16(d);
 for (int j = 0; j < 8; j++) {
-const v128_t v  = wasm_f32x4_mul(srcv[j], wasm_f32x4_splat(id));
+const v128_t v = wasm_f32x4_mul(srcv[j], wasm_f32x4_splat(id));
 const v128_t vi = wasm_i32x4_trunc_sat_f32x4(v);
 y[i].qs[4*j + 0] = wasm_i32x4_extract_lane(vi, 0);
 y[i].qs[4*j + 1] = wasm_i32x4_extract_lane(vi, 1);
@@ -16677,24 +16677,24 @@ ni4 = _mm_packs_epi32( ni4, ni5 );
 ni6 = _mm_packs_epi32( ni6, ni7 );
 ni0 = _mm_packs_epi16( ni0, ni2 );
 ni4 = _mm_packs_epi16( ni4, ni6 );
-_mm_storeu_si128((__m128i *)(y[i].qs +  0), ni0);
+_mm_storeu_si128((__m128i *)(y[i].qs + 0), ni0);
 _mm_storeu_si128((__m128i *)(y[i].qs + 16), ni4);
 #endif
 }
 #elif defined(__riscv_v_intrinsic)
 size_t vl = __riscv_vsetvl_e32m4(QK8_0);
 for (int i = 0; i < nb; i++) {
-vfloat32m4_t v_x   = __riscv_vle32_v_f32m4(x+i*QK8_0, vl);
+vfloat32m4_t v_x = __riscv_vle32_v_f32m4(x+i*QK8_0, vl);
 vfloat32m4_t vfabs = __riscv_vfabs_v_f32m4(v_x, vl);
-vfloat32m1_t tmp   = __riscv_vfmv_v_f_f32m1(0.0f, vl);
-vfloat32m1_t vmax  = __riscv_vfredmax_vs_f32m4_f32m1(vfabs, tmp, vl);
+vfloat32m1_t tmp = __riscv_vfmv_v_f_f32m1(0.0f, vl);
+vfloat32m1_t vmax = __riscv_vfredmax_vs_f32m4_f32m1(vfabs, tmp, vl);
 float amax = __riscv_vfmv_f_s_f32m1_f32(vmax);
 const float d = amax / ((1 << 7) - 1);
 const float id = d ? 1.0f/d : 0.0f;
 y[i].d = GGML_V3_FP32_TO_FP16(d);
 vfloat32m4_t x0 = __riscv_vfmul_vf_f32m4(v_x, id, vl);
-vint16m2_t   vi = __riscv_vfncvt_x_f_w_i16m2(x0, vl);
-vint8m1_t    vs = __riscv_vncvt_x_x_w_i8m1(vi, vl);
+vint16m2_t vi = __riscv_vfncvt_x_f_w_i16m2(x0, vl);
+vint8m1_t vs = __riscv_vncvt_x_x_w_i8m1(vi, vl);
 __riscv_vse8_v_i8m1(y[i].qs , vs, vl);
 }
 #else
@@ -16717,11 +16717,11 @@ const float id = d ? 1.0f/d : 0.0f;
 y[i].d = d;
 int sum = 0;
 for (int j = 0; j < QK8_1/2; ++j) {
-const float v0 = x[i*QK8_1           + j]*id;
+const float v0 = x[i*QK8_1 + j]*id;
 const float v1 = x[i*QK8_1 + QK8_1/2 + j]*id;
-y[i].qs[          j] = roundf(v0);
+y[i].qs[ j] = roundf(v0);
 y[i].qs[QK8_1/2 + j] = roundf(v1);
-sum += y[i].qs[          j];
+sum += y[i].qs[ j];
 sum += y[i].qs[QK8_1/2 + j];
 }
 y[i].s = sum*d;
@@ -16736,7 +16736,7 @@ for (int i = 0; i < nb; i++) {
 float32x4_t srcv [8];
 float32x4_t asrcv[8];
 float32x4_t amaxv[8];
-for (int j = 0; j < 8; j++) srcv[j]  = vld1q_f32(x + i*32 + 4*j);
+for (int j = 0; j < 8; j++) srcv[j] = vld1q_f32(x + i*32 + 4*j);
 for (int j = 0; j < 8; j++) asrcv[j] = vabsq_f32(srcv[j]);
 for (int j = 0; j < 4; j++) amaxv[2*j] = vmaxq_f32(asrcv[2*j], asrcv[2*j+1]);
 for (int j = 0; j < 2; j++) amaxv[4*j] = vmaxq_f32(amaxv[4*j], amaxv[4*j+2]);
@@ -16747,8 +16747,8 @@ const float id = d ? 1.0f/d : 0.0f;
 y[i].d = d;
 int32x4_t accv = vdupq_n_s32(0);
 for (int j = 0; j < 8; j++) {
-const float32x4_t v  = vmulq_n_f32(srcv[j], id);
-const int32x4_t   vi = vcvtnq_s32_f32(v);
+const float32x4_t v = vmulq_n_f32(srcv[j], id);
+const int32x4_t vi = vcvtnq_s32_f32(v);
 y[i].qs[4*j + 0] = vgetq_lane_s32(vi, 0);
 y[i].qs[4*j + 1] = vgetq_lane_s32(vi, 1);
 y[i].qs[4*j + 2] = vgetq_lane_s32(vi, 2);
@@ -16762,7 +16762,7 @@ for (int i = 0; i < nb; i++) {
 v128_t srcv [8];
 v128_t asrcv[8];
 v128_t amaxv[8];
-for (int j = 0; j < 8; j++) srcv[j]  = wasm_v128_load(x + i*32 + 4*j);
+for (int j = 0; j < 8; j++) srcv[j] = wasm_v128_load(x + i*32 + 4*j);
 for (int j = 0; j < 8; j++) asrcv[j] = wasm_f32x4_abs(srcv[j]);
 for (int j = 0; j < 4; j++) amaxv[2*j] = wasm_f32x4_max(asrcv[2*j], asrcv[2*j+1]);
 for (int j = 0; j < 2; j++) amaxv[4*j] = wasm_f32x4_max(amaxv[4*j], amaxv[4*j+2]);
@@ -16776,7 +16776,7 @@ const float id = d ? 1.0f/d : 0.0f;
 y[i].d = d;
 v128_t accv = wasm_i32x4_splat(0);
 for (int j = 0; j < 8; j++) {
-const v128_t v  = wasm_f32x4_mul(srcv[j], wasm_f32x4_splat(id));
+const v128_t v = wasm_f32x4_mul(srcv[j], wasm_f32x4_splat(id));
 const v128_t vi = wasm_i32x4_trunc_sat_f32x4(v);
 y[i].qs[4*j + 0] = wasm_i32x4_extract_lane(vi, 0);
 y[i].qs[4*j + 1] = wasm_i32x4_extract_lane(vi, 1);
@@ -16847,24 +16847,24 @@ ni4 = _mm_packs_epi32( ni4, ni5 );
 ni6 = _mm_packs_epi32( ni6, ni7 );
 ni0 = _mm_packs_epi16( ni0, ni2 );
 ni4 = _mm_packs_epi16( ni4, ni6 );
-_mm_storeu_si128((__m128i *)(y[i].qs +  0), ni0);
+_mm_storeu_si128((__m128i *)(y[i].qs + 0), ni0);
 _mm_storeu_si128((__m128i *)(y[i].qs + 16), ni4);
 #endif
 }
 #elif defined(__riscv_v_intrinsic)
 size_t vl = __riscv_vsetvl_e32m4(QK8_1);
 for (int i = 0; i < nb; i++) {
-vfloat32m4_t v_x   = __riscv_vle32_v_f32m4(x+i*QK8_1, vl);
+vfloat32m4_t v_x = __riscv_vle32_v_f32m4(x+i*QK8_1, vl);
 vfloat32m4_t vfabs = __riscv_vfabs_v_f32m4(v_x, vl);
-vfloat32m1_t tmp   = __riscv_vfmv_v_f_f32m1(0.0, vl);
-vfloat32m1_t vmax  = __riscv_vfredmax_vs_f32m4_f32m1(vfabs, tmp, vl);
+vfloat32m1_t tmp = __riscv_vfmv_v_f_f32m1(0.0, vl);
+vfloat32m1_t vmax = __riscv_vfredmax_vs_f32m4_f32m1(vfabs, tmp, vl);
 float amax = __riscv_vfmv_f_s_f32m1_f32(vmax);
-const float d  = amax / ((1 << 7) - 1);
+const float d = amax / ((1 << 7) - 1);
 const float id = d ? 1.0f/d : 0.0f;
 y[i].d = d;
 vfloat32m4_t x0 = __riscv_vfmul_vf_f32m4(v_x, id, vl);
-vint16m2_t   vi = __riscv_vfncvt_x_f_w_i16m2(x0, vl);
-vint8m1_t    vs = __riscv_vncvt_x_x_w_i8m1(vi, vl);
+vint16m2_t vi = __riscv_vfncvt_x_f_w_i16m2(x0, vl);
+vint8m1_t vs = __riscv_vncvt_x_x_w_i8m1(vi, vl);
 __riscv_vse8_v_i8m1(y[i].qs , vs, vl);
 vint16m1_t tmp2 = __riscv_vmv_v_x_i16m1(0, vl);
 vint16m1_t vwrs = __riscv_vwredsum_vs_i8m1_i16m1(vs, tmp2, vl);
@@ -16884,8 +16884,8 @@ for (int i = 0; i < nb; i++) {
 const float d = GGML_V3_FP16_TO_FP32(x[i].d);
 for (int j = 0; j < qk/2; ++j) {
 const int x0 = (x[i].qs[j] & 0x0F) - 8;
-const int x1 = (x[i].qs[j] >>   4) - 8;
-y[i*qk + j + 0   ] = x0*d;
+const int x1 = (x[i].qs[j] >> 4) - 8;
+y[i*qk + j + 0 ] = x0*d;
 y[i*qk + j + qk/2] = x1*d;
 }
 }
@@ -16899,8 +16899,8 @@ const float d = GGML_V3_FP16_TO_FP32(x[i].d);
 const float m = GGML_V3_FP16_TO_FP32(x[i].m);
 for (int j = 0; j < qk/2; ++j) {
 const int x0 = (x[i].qs[j] & 0x0F);
-const int x1 = (x[i].qs[j] >>   4);
-y[i*qk + j + 0   ] = x0*d + m;
+const int x1 = (x[i].qs[j] >> 4);
+y[i*qk + j + 0 ] = x0*d + m;
 y[i*qk + j + qk/2] = x1*d + m;
 }
 }
@@ -16914,11 +16914,11 @@ const float d = GGML_V3_FP16_TO_FP32(x[i].d);
 uint32_t qh;
 memcpy(&qh, x[i].qh, sizeof(qh));
 for (int j = 0; j < qk/2; ++j) {
-const uint8_t xh_0 = ((qh >> (j +  0)) << 4) & 0x10;
-const uint8_t xh_1 = ((qh >> (j + 12))     ) & 0x10;
+const uint8_t xh_0 = ((qh >> (j + 0)) << 4) & 0x10;
+const uint8_t xh_1 = ((qh >> (j + 12)) ) & 0x10;
 const int32_t x0 = ((x[i].qs[j] & 0x0F) | xh_0) - 16;
-const int32_t x1 = ((x[i].qs[j] >>   4) | xh_1) - 16;
-y[i*qk + j + 0   ] = x0*d;
+const int32_t x1 = ((x[i].qs[j] >> 4) | xh_1) - 16;
+y[i*qk + j + 0 ] = x0*d;
 y[i*qk + j + qk/2] = x1*d;
 }
 }
@@ -16933,11 +16933,11 @@ const float m = GGML_V3_FP16_TO_FP32(x[i].m);
 uint32_t qh;
 memcpy(&qh, x[i].qh, sizeof(qh));
 for (int j = 0; j < qk/2; ++j) {
-const uint8_t xh_0 = ((qh >> (j +  0)) << 4) & 0x10;
-const uint8_t xh_1 = ((qh >> (j + 12))     ) & 0x10;
+const uint8_t xh_0 = ((qh >> (j + 0)) << 4) & 0x10;
+const uint8_t xh_1 = ((qh >> (j + 12)) ) & 0x10;
 const int x0 = (x[i].qs[j] & 0x0F) | xh_0;
-const int x1 = (x[i].qs[j] >>   4) | xh_1;
-y[i*qk + j + 0   ] = x0*d + m;
+const int x1 = (x[i].qs[j] >> 4) | xh_1;
+y[i*qk + j + 0 ] = x0*d + m;
 y[i*qk + j + qk/2] = x1*d + m;
 }
 }
@@ -17176,7 +17176,7 @@ sum_xl += w*l*x[i];
 float D = sum_w * sum_l2 - sum_l * sum_l;
 if (D > 0) {
 float this_scale = (sum_w * sum_xl - sum_x * sum_l)/D;
-float this_min   = (sum_l2 * sum_x - sum_l * sum_xl)/D;
+float this_min = (sum_l2 * sum_x - sum_l * sum_xl)/D;
 if (this_min > 0) {
 this_min = 0;
 this_scale = sum_xl / sum_l2;
@@ -17207,7 +17207,7 @@ if (j < 4) {
 *d = q[j] & 63; *m = q[j + 4] & 63;
 } else {
 *d = (q[j+4] & 0xF) | ((q[j-4] >> 6) << 4);
-*m = (q[j+4] >>  4) | ((q[j-0] >> 6) << 4);
+*m = (q[j+4] >> 4) | ((q[j-0] >> 6) << 4);
 }
 }
 #endif
@@ -17216,7 +17216,7 @@ assert(k % QK_K == 0);
 const int nb = k / QK_K;
 uint8_t L[QK_K];
 uint8_t Laux[16];
-float   weights[16];
+float weights[16];
 float mins[QK_K/16];
 float scales[QK_K/16];
 const float q4scale = 15.f;
@@ -17482,9 +17482,9 @@ const float d_all = GGML_V3_FP16_TO_FP32(x[i].d);
 const uint8_t * restrict q = x[i].qs;
 const uint8_t * restrict hm = x[i].hmask;
 const float d1 = d_all * ((x[i].scales[0] & 0xF) - 8);
-const float d2 = d_all * ((x[i].scales[0] >>  4) - 8);
+const float d2 = d_all * ((x[i].scales[0] >> 4) - 8);
 const float d3 = d_all * ((x[i].scales[1] & 0xF) - 8);
-const float d4 = d_all * ((x[i].scales[1] >>  4) - 8);
+const float d4 = d_all * ((x[i].scales[1] >> 4) - 8);
 for (int l=0; l<8; ++l) {
 uint8_t h = hm[l];
 y[l+ 0] = d1 * ((int8_t)((q[l+0] >> 0) & 3) - ((h & 0x01) ? 0 : 4));
@@ -17516,7 +17516,7 @@ assert(k % QK_K == 0);
 const int nb = k / QK_K;
 uint8_t L[QK_K];
 uint8_t Laux[32];
-float   weights[32];
+float weights[32];
 float mins[QK_K/32];
 float scales[QK_K/32];
 for (int i = 0; i < nb; i++) {
@@ -17539,7 +17539,7 @@ max_min = min;
 }
 #if QK_K == 256
 float inv_scale = max_scale > 0 ? 63.f/max_scale : 0.f;
-float inv_min   = max_min   > 0 ? 63.f/max_min   : 0.f;
+float inv_min = max_min > 0 ? 63.f/max_min : 0.f;
 for (int j = 0; j < QK_K/32; ++j) {
 uint8_t ls = nearest_int(inv_scale*scales[j]);
 uint8_t lm = nearest_int(inv_min*mins[j]);
@@ -17571,7 +17571,7 @@ L[32*j + ii] = l;
 #else
 const float s_factor = 15.f;
 float inv_scale = max_scale > 0 ? s_factor/max_scale : 0.f;
-float inv_min   = max_min   > 0 ? s_factor/max_min   : 0.f;
+float inv_min = max_min > 0 ? s_factor/max_min : 0.f;
 int d1 = nearest_int(inv_scale*scales[0]);
 int m1 = nearest_int(inv_min*mins[0]);
 int d2 = nearest_int(inv_scale*scales[1]);
@@ -17581,10 +17581,10 @@ y[i].scales[1] = d2 | (m2 << 4);
 y[i].d[0] = GGML_V3_FP32_TO_FP16(max_scale/s_factor);
 y[i].d[1] = GGML_V3_FP32_TO_FP16(max_min/s_factor);
 float sumlx = 0;
-int   suml2 = 0;
+int suml2 = 0;
 for (int j = 0; j < QK_K/32; ++j) {
 const uint8_t sd = y[i].scales[j] & 0xF;
-const uint8_t sm = y[i].scales[j] >>  4;
+const uint8_t sm = y[i].scales[j] >> 4;
 const float d = GGML_V3_FP16_TO_FP32(y[i].d[0]) * sd;
 if (!d) continue;
 const float m = GGML_V3_FP16_TO_FP32(y[i].d[1]) * sm;
@@ -17614,7 +17614,7 @@ const int nb = k / QK_K;
 for (int i = 0; i < nb; i++) {
 const uint8_t * q = x[i].qs;
 #if QK_K == 256
-const float d   = GGML_V3_FP16_TO_FP32(x[i].d);
+const float d = GGML_V3_FP16_TO_FP32(x[i].d);
 const float min = GGML_V3_FP16_TO_FP32(x[i].dmin);
 int is = 0;
 uint8_t sc, m;
@@ -17624,7 +17624,7 @@ const float d1 = d * sc; const float m1 = min * m;
 get_scale_min_k4(is + 1, x[i].scales, &sc, &m);
 const float d2 = d * sc; const float m2 = min * m;
 for (int l = 0; l < 32; ++l) *y++ = d1 * (q[l] & 0xF) - m1;
-for (int l = 0; l < 32; ++l) *y++ = d2 * (q[l]  >> 4) - m2;
+for (int l = 0; l < 32; ++l) *y++ = d2 * (q[l] >> 4) - m2;
 q += 32; is += 2;
 }
 #else
@@ -17634,7 +17634,7 @@ const float d1 = dall * (x[i].scales[0] & 0xF), m1 = mall * (x[i].scales[0] >> 4
 const float d2 = dall * (x[i].scales[1] & 0xF), m2 = mall * (x[i].scales[1] >> 4);
 for (int l = 0; l < 32; ++l) {
 y[l+ 0] = d1 * (q[l] & 0xF) - m1;
-y[l+32] = d2 * (q[l] >>  4) - m2;
+y[l+32] = d2 * (q[l] >> 4) - m2;
 }
 y += QK_K;
 #endif
@@ -17687,7 +17687,7 @@ max_min = min;
 }
 }
 float inv_scale = max_scale > 0 ? 63.f/max_scale : 0.f;
-float inv_min   = max_min   > 0 ? 63.f/max_min   : 0.f;
+float inv_min = max_min > 0 ? 63.f/max_min : 0.f;
 for (int j = 0; j < QK_K/32; ++j) {
 uint8_t ls = nearest_int(inv_scale*scales[j]);
 uint8_t lm = nearest_int(inv_min*mins[j]);
@@ -17798,7 +17798,7 @@ const float d1 = d * sc; const float m1 = min * m;
 get_scale_min_k4(is + 1, x[i].scales, &sc, &m);
 const float d2 = d * sc; const float m2 = min * m;
 for (int l = 0; l < 32; ++l) *y++ = d1 * ((ql[l] & 0xF) + (qh[l] & u1 ? 16 : 0)) - m1;
-for (int l = 0; l < 32; ++l) *y++ = d2 * ((ql[l]  >> 4) + (qh[l] & u2 ? 16 : 0)) - m2;
+for (int l = 0; l < 32; ++l) *y++ = d2 * ((ql[l] >> 4) + (qh[l] & u2 ? 16 : 0)) - m2;
 ql += 32; is += 2;
 u1 <<= 2; u2 <<= 2;
 }
@@ -17810,10 +17810,10 @@ y[l+ 0] = d * s[0] * ((ql[l+ 0] & 0xF) - (qh[l] & 0x01 ? 0 : 16));
 y[l+ 8] = d * s[0] * ((ql[l+ 8] & 0xF) - (qh[l] & 0x02 ? 0 : 16));
 y[l+16] = d * s[1] * ((ql[l+16] & 0xF) - (qh[l] & 0x04 ? 0 : 16));
 y[l+24] = d * s[1] * ((ql[l+24] & 0xF) - (qh[l] & 0x08 ? 0 : 16));
-y[l+32] = d * s[2] * ((ql[l+ 0] >>  4) - (qh[l] & 0x10 ? 0 : 16));
-y[l+40] = d * s[2] * ((ql[l+ 8] >>  4) - (qh[l] & 0x20 ? 0 : 16));
-y[l+48] = d * s[3] * ((ql[l+16] >>  4) - (qh[l] & 0x40 ? 0 : 16));
-y[l+56] = d * s[3] * ((ql[l+24] >>  4) - (qh[l] & 0x80 ? 0 : 16));
+y[l+32] = d * s[2] * ((ql[l+ 0] >> 4) - (qh[l] & 0x10 ? 0 : 16));
+y[l+40] = d * s[2] * ((ql[l+ 8] >> 4) - (qh[l] & 0x20 ? 0 : 16));
+y[l+48] = d * s[3] * ((ql[l+16] >> 4) - (qh[l] & 0x40 ? 0 : 16));
+y[l+56] = d * s[3] * ((ql[l+24] >> 4) - (qh[l] & 0x80 ? 0 : 16));
 }
 y += QK_K;
 #endif
@@ -17837,7 +17837,7 @@ static void quantize_row_q6_K_reference(const float * restrict x, block_q6_K * r
 assert(k % QK_K == 0);
 const int nb = k / QK_K;
 int8_t L[QK_K];
-float   scales[QK_K/16];
+float scales[QK_K/16];
 for (int i = 0; i < nb; i++) {
 float max_scale = 0;
 float max_abs_scale = 0;
@@ -17877,7 +17877,7 @@ uint8_t * restrict qh = y[i].qh;
 #if QK_K == 256
 for (int j = 0; j < QK_K; j += 128) {
 for (int l = 0; l < 32; ++l) {
-const uint8_t q1 = L[j + l +  0] & 0xF;
+const uint8_t q1 = L[j + l + 0] & 0xF;
 const uint8_t q2 = L[j + l + 32] & 0xF;
 const uint8_t q3 = L[j + l + 64] & 0xF;
 const uint8_t q4 = L[j + l + 96] & 0xF;
@@ -17890,7 +17890,7 @@ qh += 32;
 }
 #else
 for (int l = 0; l < 32; ++l) {
-const uint8_t q1 = L[l +  0] & 0xF;
+const uint8_t q1 = L[l + 0] & 0xF;
 const uint8_t q2 = L[l + 32] & 0xF;
 ql[l] = q1 | (q2 << 4);
 }
@@ -17908,21 +17908,21 @@ for (int i = 0; i < nb; i++) {
 const float d = GGML_V3_FP16_TO_FP32(x[i].d);
 const uint8_t * restrict ql = x[i].ql;
 const uint8_t * restrict qh = x[i].qh;
-const int8_t  * restrict sc = x[i].scales;
+const int8_t * restrict sc = x[i].scales;
 #if QK_K == 256
 for (int n = 0; n < QK_K; n += 128) {
 for (int l = 0; l < 32; ++l) {
 int is = l/16;
-const int8_t q1 = (int8_t)((ql[l +  0] & 0xF) | (((qh[l] >> 0) & 3) << 4)) - 32;
+const int8_t q1 = (int8_t)((ql[l + 0] & 0xF) | (((qh[l] >> 0) & 3) << 4)) - 32;
 const int8_t q2 = (int8_t)((ql[l + 32] & 0xF) | (((qh[l] >> 2) & 3) << 4)) - 32;
-const int8_t q3 = (int8_t)((ql[l +  0]  >> 4) | (((qh[l] >> 4) & 3) << 4)) - 32;
-const int8_t q4 = (int8_t)((ql[l + 32]  >> 4) | (((qh[l] >> 6) & 3) << 4)) - 32;
-y[l +  0] = d * sc[is + 0] * q1;
+const int8_t q3 = (int8_t)((ql[l + 0] >> 4) | (((qh[l] >> 4) & 3) << 4)) - 32;
+const int8_t q4 = (int8_t)((ql[l + 32] >> 4) | (((qh[l] >> 6) & 3) << 4)) - 32;
+y[l + 0] = d * sc[is + 0] * q1;
 y[l + 32] = d * sc[is + 2] * q2;
 y[l + 64] = d * sc[is + 4] * q3;
 y[l + 96] = d * sc[is + 6] * q4;
 }
-y  += 128;
+y += 128;
 ql += 64;
 qh += 32;
 sc += 8;
@@ -17931,14 +17931,14 @@ sc += 8;
 for (int l = 0; l < 16; ++l) {
 const int8_t q1 = (int8_t)((ql[l+ 0] & 0xF) | (((qh[l] >> 0) & 3) << 4)) - 32;
 const int8_t q2 = (int8_t)((ql[l+16] & 0xF) | (((qh[l] >> 2) & 3) << 4)) - 32;
-const int8_t q3 = (int8_t)((ql[l+ 0]  >> 4) | (((qh[l] >> 4) & 3) << 4)) - 32;
-const int8_t q4 = (int8_t)((ql[l+16]  >> 4) | (((qh[l] >> 6) & 3) << 4)) - 32;
+const int8_t q3 = (int8_t)((ql[l+ 0] >> 4) | (((qh[l] >> 4) & 3) << 4)) - 32;
+const int8_t q4 = (int8_t)((ql[l+16] >> 4) | (((qh[l] >> 6) & 3) << 4)) - 32;
 y[l+ 0] = d * sc[0] * q1;
 y[l+16] = d * sc[1] * q2;
 y[l+32] = d * sc[2] * q3;
 y[l+48] = d * sc[3] * q4;
 }
-y  += 64;
+y += 64;
 #endif
 }
 }
@@ -17956,7 +17956,7 @@ quantize_row_q6_K_reference(src + j, y, k);
 }
 return (n/QK_K*sizeof(block_q6_K));
 }
-static const  uint64_t iq2xxs_grid[256] = {
+static const uint64_t iq2xxs_grid[256] = {
 0x0808080808080808, 0x080808080808082b, 0x0808080808081919, 0x0808080808082b08,
 0x0808080808082b2b, 0x0808080808190819, 0x0808080808191908, 0x08080808082b0808,
 0x08080808082b082b, 0x08080808082b2b08, 0x08080808082b2b2b, 0x0808080819080819,
@@ -18153,13 +18153,13 @@ static const uint64_t iq2xs_grid[512] = {
 0x2b2b2b2b082b2b08, 0x2b2b2b2b082b2b2b, 0x2b2b2b2b2b190819, 0x2b2b2b2b2b2b2b2b,
 };
 static const uint8_t ksigns_iq2xs[128] = {
-0, 129, 130,   3, 132,   5,   6, 135, 136,   9,  10, 139,  12, 141, 142,  15,
-144,  17,  18, 147,  20, 149, 150,  23,  24, 153, 154,  27, 156,  29,  30, 159,
-160,  33,  34, 163,  36, 165, 166,  39,  40, 169, 170,  43, 172,  45,  46, 175,
-48, 177, 178,  51, 180,  53,  54, 183, 184,  57,  58, 187,  60, 189, 190,  63,
-192,  65,  66, 195,  68, 197, 198,  71,  72, 201, 202,  75, 204,  77,  78, 207,
-80, 209, 210,  83, 212,  85,  86, 215, 216,  89,  90, 219,  92, 221, 222,  95,
-96, 225, 226,  99, 228, 101, 102, 231, 232, 105, 106, 235, 108, 237, 238, 111,
+0, 129, 130, 3, 132, 5, 6, 135, 136, 9, 10, 139, 12, 141, 142, 15,
+144, 17, 18, 147, 20, 149, 150, 23, 24, 153, 154, 27, 156, 29, 30, 159,
+160, 33, 34, 163, 36, 165, 166, 39, 40, 169, 170, 43, 172, 45, 46, 175,
+48, 177, 178, 51, 180, 53, 54, 183, 184, 57, 58, 187, 60, 189, 190, 63,
+192, 65, 66, 195, 68, 197, 198, 71, 72, 201, 202, 75, 204, 77, 78, 207,
+80, 209, 210, 83, 212, 85, 86, 215, 216, 89, 90, 219, 92, 221, 222, 95,
+96, 225, 226, 99, 228, 101, 102, 231, 232, 105, 106, 235, 108, 237, 238, 111,
 240, 113, 114, 243, 116, 245, 246, 119, 120, 249, 250, 123, 252, 125, 126, 255,
 };
 static const uint8_t kmask_iq2xs[8] = {1, 2, 4, 8, 16, 32, 64, 128};
@@ -18181,7 +18181,7 @@ memcpy(aux32, x[i].qs + 4*ib32, 2*sizeof(uint32_t));
 const float db = d * (0.5f + (aux32[1] >> 28)) * 0.25f;
 for (int l = 0; l < 4; ++l) {
 const uint8_t * grid = (const uint8_t *)(iq2xxs_grid + aux8[l]);
-const uint8_t  signs = ksigns_iq2xs[(aux32[1] >> 7*l) & 127];
+const uint8_t signs = ksigns_iq2xs[(aux32[1] >> 7*l) & 127];
 for (int j = 0; j < 8; ++j) {
 y[j] = db * grid[j] * (signs & kmask_iq2xs[j] ? -1.f : 1.f);
 }
@@ -18218,10 +18218,10 @@ for (int i = 0; i < nb; i++) {
 const float d = GGML_V3_FP16_TO_FP32(x[i].d);
 for (int ib32 = 0; ib32 < QK_K/32; ++ib32) {
 db[0] = d * (0.5f + (x[i].scales[ib32] & 0xf)) * 0.25f;
-db[1] = d * (0.5f + (x[i].scales[ib32] >>  4)) * 0.25f;
+db[1] = d * (0.5f + (x[i].scales[ib32] >> 4)) * 0.25f;
 for (int l = 0; l < 4; ++l) {
 const uint8_t * grid = (const uint8_t *)(iq2xs_grid + (x[i].qs[4*ib32 + l] & 511));
-const uint8_t  signs = ksigns_iq2xs[x[i].qs[4*ib32 + l] >> 9];
+const uint8_t signs = ksigns_iq2xs[x[i].qs[4*ib32 + l] >> 9];
 for (int j = 0; j < 8; ++j) {
 y[j] = db[l/2] * grid[j] * (signs & kmask_iq2xs[j] ? -1.f : 1.f);
 }
@@ -18293,10 +18293,10 @@ quantize_row_q8_K_reference(x, y, k);
 #if __AVX__ || __AVX2__ || __AVX512F__
 static inline __m256i get_scale_shuffle_q3k(int i) {
 static const uint8_t k_shuffle[128] = {
-0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,     2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3,
-4, 5, 4, 5, 4, 5, 4, 5, 4, 5, 4, 5, 4, 5, 4, 5,     6, 7, 6, 7, 6, 7, 6, 7, 6, 7, 6, 7, 6, 7, 6, 7,
-8, 9, 8, 9, 8, 9, 8, 9, 8, 9, 8, 9, 8, 9, 8, 9,    10,11,10,11,10,11,10,11,10,11,10,11,10,11,10,11,
-12,13,12,13,12,13,12,13,12,13,12,13,12,13,12,13,    14,15,14,15,14,15,14,15,14,15,14,15,14,15,14,15,
+0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3,
+4, 5, 4, 5, 4, 5, 4, 5, 4, 5, 4, 5, 4, 5, 4, 5, 6, 7, 6, 7, 6, 7, 6, 7, 6, 7, 6, 7, 6, 7, 6, 7,
+8, 9, 8, 9, 8, 9, 8, 9, 8, 9, 8, 9, 8, 9, 8, 9, 10,11,10,11,10,11,10,11,10,11,10,11,10,11,10,11,
+12,13,12,13,12,13,12,13,12,13,12,13,12,13,12,13, 14,15,14,15,14,15,14,15,14,15,14,15,14,15,14,15,
 };
 return _mm256_loadu_si256((const __m256i*)k_shuffle + i);
 }
@@ -18343,12 +18343,12 @@ const block_q4_0 * restrict x1 = &x[i + 1];
 const block_q8_0 * restrict y0 = &y[i + 0];
 const block_q8_0 * restrict y1 = &y[i + 1];
 const uint8x16_t m4b = vdupq_n_u8(0x0F);
-const int8x16_t  s8b = vdupq_n_s8(0x8);
+const int8x16_t s8b = vdupq_n_s8(0x8);
 const uint8x16_t v0_0 = vld1q_u8(x0->qs);
 const uint8x16_t v0_1 = vld1q_u8(x1->qs);
-const int8x16_t v0_0l = vreinterpretq_s8_u8(vandq_u8  (v0_0, m4b));
+const int8x16_t v0_0l = vreinterpretq_s8_u8(vandq_u8 (v0_0, m4b));
 const int8x16_t v0_0h = vreinterpretq_s8_u8(vshrq_n_u8(v0_0, 4));
-const int8x16_t v0_1l = vreinterpretq_s8_u8(vandq_u8  (v0_1, m4b));
+const int8x16_t v0_1l = vreinterpretq_s8_u8(vandq_u8 (v0_1, m4b));
 const int8x16_t v0_1h = vreinterpretq_s8_u8(vshrq_n_u8(v0_1, 4));
 const int8x16_t v0_0ls = vsubq_s8(v0_0l, s8b);
 const int8x16_t v0_0hs = vsubq_s8(v0_0h, s8b);
@@ -18504,7 +18504,7 @@ for (int i = 0; i < nb; i++) {
 int sumi = 0;
 for (int j = 0; j < qk/2; ++j) {
 const int v0 = (x[i].qs[j] & 0x0F) - 8;
-const int v1 = (x[i].qs[j] >>   4) - 8;
+const int v1 = (x[i].qs[j] >> 4) - 8;
 sumi += (v0 * y[i].qs[j]) + (v1 * y[i].qs[j + qk/2]);
 }
 sumf += sumi*GGML_V3_FP16_TO_FP32(x[i].d)*GGML_V3_FP16_TO_FP32(y[i].d);
@@ -18532,9 +18532,9 @@ summs += GGML_V3_FP16_TO_FP32(x0->m) * y0->s + GGML_V3_FP16_TO_FP32(x1->m) * y1-
 const uint8x16_t m4b = vdupq_n_u8(0x0F);
 const uint8x16_t v0_0 = vld1q_u8(x0->qs);
 const uint8x16_t v0_1 = vld1q_u8(x1->qs);
-const int8x16_t v0_0l = vreinterpretq_s8_u8(vandq_u8  (v0_0, m4b));
+const int8x16_t v0_0l = vreinterpretq_s8_u8(vandq_u8 (v0_0, m4b));
 const int8x16_t v0_0h = vreinterpretq_s8_u8(vshrq_n_u8(v0_0, 4));
-const int8x16_t v0_1l = vreinterpretq_s8_u8(vandq_u8  (v0_1, m4b));
+const int8x16_t v0_1l = vreinterpretq_s8_u8(vandq_u8 (v0_1, m4b));
 const int8x16_t v0_1h = vreinterpretq_s8_u8(vshrq_n_u8(v0_1, 4));
 const int8x16_t v1_0l = vld1q_s8(y0->qs);
 const int8x16_t v1_0h = vld1q_s8(y0->qs + 16);
@@ -18592,7 +18592,7 @@ for (int i = 0; i < nb; i++) {
 int sumi = 0;
 for (int j = 0; j < qk/2; ++j) {
 const int v0 = (x[i].qs[j] & 0x0F);
-const int v1 = (x[i].qs[j] >>   4);
+const int v1 = (x[i].qs[j] >> 4);
 sumi += (v0 * y[i].qs[j]) + (v1 * y[i].qs[j + qk/2]);
 }
 sumf += (GGML_V3_FP16_TO_FP32(x[i].d)*y[i].d)*sumi + GGML_V3_FP16_TO_FP32(x[i].m)*y[i].s;
@@ -18623,23 +18623,23 @@ const block_q8_0 * restrict y1 = &y[i + 1];
 const uint8x16_t m4b = vdupq_n_u8(0x0F);
 memcpy(&qh0, x0->qh, sizeof(qh0));
 memcpy(&qh1, x1->qh, sizeof(qh1));
-tmp0[0] = table_b2b_1[(qh0 >>  0) & 0xFF];
-tmp0[1] = table_b2b_1[(qh0 >>  8) & 0xFF];
+tmp0[0] = table_b2b_1[(qh0 >> 0) & 0xFF];
+tmp0[1] = table_b2b_1[(qh0 >> 8) & 0xFF];
 tmp0[2] = table_b2b_1[(qh0 >> 16) & 0xFF];
-tmp0[3] = table_b2b_1[(qh0 >> 24)       ];
-tmp1[0] = table_b2b_1[(qh1 >>  0) & 0xFF];
-tmp1[1] = table_b2b_1[(qh1 >>  8) & 0xFF];
+tmp0[3] = table_b2b_1[(qh0 >> 24) ];
+tmp1[0] = table_b2b_1[(qh1 >> 0) & 0xFF];
+tmp1[1] = table_b2b_1[(qh1 >> 8) & 0xFF];
 tmp1[2] = table_b2b_1[(qh1 >> 16) & 0xFF];
-tmp1[3] = table_b2b_1[(qh1 >> 24)       ];
+tmp1[3] = table_b2b_1[(qh1 >> 24) ];
 const int8x16_t qhl0 = vld1q_s8((const int8_t *)(tmp0 + 0));
 const int8x16_t qhh0 = vld1q_s8((const int8_t *)(tmp0 + 2));
 const int8x16_t qhl1 = vld1q_s8((const int8_t *)(tmp1 + 0));
 const int8x16_t qhh1 = vld1q_s8((const int8_t *)(tmp1 + 2));
 const uint8x16_t v0_0 = vld1q_u8(x0->qs);
 const uint8x16_t v0_1 = vld1q_u8(x1->qs);
-int8x16_t v0_0l = vreinterpretq_s8_u8(vandq_u8  (v0_0, m4b));
+int8x16_t v0_0l = vreinterpretq_s8_u8(vandq_u8 (v0_0, m4b));
 int8x16_t v0_0h = vreinterpretq_s8_u8(vshrq_n_u8(v0_0, 4));
-int8x16_t v0_1l = vreinterpretq_s8_u8(vandq_u8  (v0_1, m4b));
+int8x16_t v0_1l = vreinterpretq_s8_u8(vandq_u8 (v0_1, m4b));
 int8x16_t v0_1h = vreinterpretq_s8_u8(vshrq_n_u8(v0_1, 4));
 const int8x16_t v0_0lf = vsubq_s8(v0_0l, qhl0);
 const int8x16_t v0_0hf = vsubq_s8(v0_0h, qhh0);
@@ -18664,12 +18664,12 @@ uint64_t tmp[4];
 for (int i = 0; i < nb; ++i) {
 const block_q5_0 * restrict x0 = &x[i];
 const block_q8_0 * restrict y0 = &y[i];
-const v128_t m4b  = wasm_i8x16_splat(0x0F);
+const v128_t m4b = wasm_i8x16_splat(0x0F);
 memcpy(&qh, x0->qh, sizeof(qh));
-tmp[0] = table_b2b_1[(qh >>  0) & 0xFF];
-tmp[1] = table_b2b_1[(qh >>  8) & 0xFF];
+tmp[0] = table_b2b_1[(qh >> 0) & 0xFF];
+tmp[1] = table_b2b_1[(qh >> 8) & 0xFF];
 tmp[2] = table_b2b_1[(qh >> 16) & 0xFF];
-tmp[3] = table_b2b_1[(qh >> 24)       ];
+tmp[3] = table_b2b_1[(qh >> 24) ];
 const v128_t qhl = wasm_v128_load(tmp + 0);
 const v128_t qhh = wasm_v128_load(tmp + 2);
 const v128_t v0 = wasm_v128_load(x0->qs);
@@ -18780,7 +18780,7 @@ for (int j = 0; j < qk/2; ++j) {
 const uint8_t xh_0 = ((qh & (1u << (j + 0 ))) >> (j + 0 )) << 4;
 const uint8_t xh_1 = ((qh & (1u << (j + 16))) >> (j + 12));
 const int32_t x0 = ((x[i].qs[j] & 0x0F) | xh_0) - 16;
-const int32_t x1 = ((x[i].qs[j] >>   4) | xh_1) - 16;
+const int32_t x1 = ((x[i].qs[j] >> 4) | xh_1) - 16;
 sumi += (x0 * y[i].qs[j]) + (x1 * y[i].qs[j + qk/2]);
 }
 sumf += (GGML_V3_FP16_TO_FP32(x[i].d)*GGML_V3_FP16_TO_FP32(y[i].d)) * sumi;
@@ -18815,23 +18815,23 @@ summs0 += GGML_V3_FP16_TO_FP32(x0->m) * y0->s;
 summs1 += GGML_V3_FP16_TO_FP32(x1->m) * y1->s;
 memcpy(&qh0, x0->qh, sizeof(qh0));
 memcpy(&qh1, x1->qh, sizeof(qh1));
-tmp0[0] = table_b2b_0[(qh0 >>  0) & 0xFF];
-tmp0[1] = table_b2b_0[(qh0 >>  8) & 0xFF];
+tmp0[0] = table_b2b_0[(qh0 >> 0) & 0xFF];
+tmp0[1] = table_b2b_0[(qh0 >> 8) & 0xFF];
 tmp0[2] = table_b2b_0[(qh0 >> 16) & 0xFF];
-tmp0[3] = table_b2b_0[(qh0 >> 24)       ];
-tmp1[0] = table_b2b_0[(qh1 >>  0) & 0xFF];
-tmp1[1] = table_b2b_0[(qh1 >>  8) & 0xFF];
+tmp0[3] = table_b2b_0[(qh0 >> 24) ];
+tmp1[0] = table_b2b_0[(qh1 >> 0) & 0xFF];
+tmp1[1] = table_b2b_0[(qh1 >> 8) & 0xFF];
 tmp1[2] = table_b2b_0[(qh1 >> 16) & 0xFF];
-tmp1[3] = table_b2b_0[(qh1 >> 24)       ];
+tmp1[3] = table_b2b_0[(qh1 >> 24) ];
 const int8x16_t qhl0 = vld1q_s8((const int8_t *)(tmp0 + 0));
 const int8x16_t qhh0 = vld1q_s8((const int8_t *)(tmp0 + 2));
 const int8x16_t qhl1 = vld1q_s8((const int8_t *)(tmp1 + 0));
 const int8x16_t qhh1 = vld1q_s8((const int8_t *)(tmp1 + 2));
 const uint8x16_t v0_0 = vld1q_u8(x0->qs);
 const uint8x16_t v0_1 = vld1q_u8(x1->qs);
-const int8x16_t v0_0l = vreinterpretq_s8_u8(vandq_u8  (v0_0, m4b));
+const int8x16_t v0_0l = vreinterpretq_s8_u8(vandq_u8 (v0_0, m4b));
 const int8x16_t v0_0h = vreinterpretq_s8_u8(vshrq_n_u8(v0_0, 4));
-const int8x16_t v0_1l = vreinterpretq_s8_u8(vandq_u8  (v0_1, m4b));
+const int8x16_t v0_1l = vreinterpretq_s8_u8(vandq_u8 (v0_1, m4b));
 const int8x16_t v0_1h = vreinterpretq_s8_u8(vshrq_n_u8(v0_1, 4));
 const int8x16_t v0_0lf = vorrq_s8(v0_0l, qhl0);
 const int8x16_t v0_0hf = vorrq_s8(v0_0h, qhh0);
@@ -18860,10 +18860,10 @@ const block_q8_1 * restrict y0 = &y[i];
 summs += GGML_V3_FP16_TO_FP32(x0->m) * y0->s;
 const v128_t m4b = wasm_i8x16_splat(0x0F);
 memcpy(&qh, x0->qh, sizeof(qh));
-tmp[0] = table_b2b_0[(qh >>  0) & 0xFF];
-tmp[1] = table_b2b_0[(qh >>  8) & 0xFF];
+tmp[0] = table_b2b_0[(qh >> 0) & 0xFF];
+tmp[1] = table_b2b_0[(qh >> 8) & 0xFF];
 tmp[2] = table_b2b_0[(qh >> 16) & 0xFF];
-tmp[3] = table_b2b_0[(qh >> 24)       ];
+tmp[3] = table_b2b_0[(qh >> 24) ];
 const v128_t qhl = wasm_v128_load(tmp + 0);
 const v128_t qhh = wasm_v128_load(tmp + 2);
 const v128_t v0 = wasm_v128_load(x0->qs);
@@ -18974,10 +18974,10 @@ uint32_t qh;
 memcpy(&qh, x[i].qh, sizeof(qh));
 int sumi = 0;
 for (int j = 0; j < qk/2; ++j) {
-const uint8_t xh_0 = ((qh >> (j +  0)) << 4) & 0x10;
-const uint8_t xh_1 = ((qh >> (j + 12))     ) & 0x10;
+const uint8_t xh_0 = ((qh >> (j + 0)) << 4) & 0x10;
+const uint8_t xh_1 = ((qh >> (j + 12)) ) & 0x10;
 const int32_t x0 = (x[i].qs[j] & 0xF) | xh_0;
-const int32_t x1 = (x[i].qs[j] >>  4) | xh_1;
+const int32_t x1 = (x[i].qs[j] >> 4) | xh_1;
 sumi += (x0 * y[i].qs[j]) + (x1 * y[i].qs[j + qk/2]);
 }
 sumf += (GGML_V3_FP16_TO_FP32(x[i].d)*y[i].d)*sumi + GGML_V3_FP16_TO_FP32(x[i].m)*y[i].s;
@@ -19071,7 +19071,7 @@ for (int i = 0; i < nb; ++i) {
 const float d = y[i].d * GGML_V3_FP16_TO_FP32(x[i].d);
 const float dmin = -y[i].d * GGML_V3_FP16_TO_FP32(x[i].dmin);
 const uint8_t * restrict q2 = x[i].qs;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 const uint8_t * restrict sc = x[i].scales;
 const uint8x16_t mins_and_scales = vld1q_u8(sc);
 const uint8x16_t scales = vandq_u8(mins_and_scales, m4);
@@ -19116,7 +19116,7 @@ for (int i = 0; i < nb; ++i) {
 const float d = y[i].d * GGML_V3_FP16_TO_FP32(x[i].d);
 const float dmin = -y[i].d * GGML_V3_FP16_TO_FP32(x[i].dmin);
 const uint8_t * restrict q2 = x[i].qs;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 const __m128i mins_and_scales = _mm_loadu_si128((const __m128i*)x[i].scales);
 const __m128i scales8 = _mm_and_si128(mins_and_scales, m4);
 const __m128i mins8 = _mm_and_si128(_mm_srli_epi16(mins_and_scales, 4), m4);
@@ -19162,7 +19162,7 @@ for (int i = 0; i < nb; ++i) {
 const float dall = y[i].d * GGML_V3_FP16_TO_FP32(x[i].d);
 const float dmin = -y[i].d * GGML_V3_FP16_TO_FP32(x[i].dmin);
 const uint8_t * restrict q2 = x[i].qs;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 const __m128i mins_and_scales = _mm_loadu_si128((const __m128i*)x[i].scales);
 const __m128i scales16 = _mm_and_si128(mins_and_scales, m4);
 const __m128i mins16 = _mm_and_si128(_mm_srli_epi16(mins_and_scales, 4), m4);
@@ -19236,7 +19236,7 @@ uint8_t temp_01[32] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 for (int i = 0; i < nb; ++i) {
 const uint8_t * q2 = x[i].qs;
-const  int8_t * q8 = y[i].qs;
+const int8_t * q8 = y[i].qs;
 const uint8_t * sc = x[i].scales;
 const float dall = y[i].d * GGML_V3_FP16_TO_FP32(x[i].d);
 const float dmin = -y[i].d * GGML_V3_FP16_TO_FP32(x[i].dmin);
@@ -19249,7 +19249,7 @@ vuint8mf2_t mins8 = __riscv_vsrl_vx_u8mf2(scales_2, 0x4, vl);
 vint16m1_t mins = __riscv_vreinterpret_v_u16m1_i16m1(__riscv_vzext_vf2_u16m1(mins8, vl));
 vint32m2_t prod = __riscv_vwmul_vv_i32m2(q8sums, mins, vl);
 vint32m1_t vsums = __riscv_vredsum_vs_i32m2_i32m1(prod, __riscv_vmv_v_x_i32m1(0, 1), vl);
-sumf  += dmin * __riscv_vmv_x_s_i32m1_i32(vsums);
+sumf += dmin * __riscv_vmv_x_s_i32m1_i32(vsums);
 vl = 32;
 vint32m1_t vzero = __riscv_vmv_v_x_i32m1(0, 1);
 vuint8m1_t v_b = __riscv_vle8_v_u8m1(temp_01, vl);
@@ -19280,7 +19280,7 @@ vint32m4_t s3 = __riscv_vwmul_vv_i32m4(p3, __riscv_vwcvt_x_x_v_i16m2(q8_3, vl), 
 vint32m1_t isum0 = __riscv_vredsum_vs_i32m4_i32m1(__riscv_vadd_vv_i32m4(s0, s1, vl), vzero, vl);
 vint32m1_t isum1 = __riscv_vredsum_vs_i32m4_i32m1(__riscv_vadd_vv_i32m4(s2, s3, vl), isum0, vl);
 isum += __riscv_vmv_x_s_i32m1_i32(isum1);
-q2+=32;  q8+=128;  is=8;
+q2+=32; q8+=128; is=8;
 }
 sumf += dall * isum;
 }
@@ -19289,7 +19289,7 @@ sumf += dall * isum;
 float sumf = 0;
 for (int i = 0; i < nb; ++i) {
 const uint8_t * q2 = x[i].qs;
-const  int8_t * q8 = y[i].qs;
+const int8_t * q8 = y[i].qs;
 const uint8_t * sc = x[i].scales;
 int summs = 0;
 for (int j = 0; j < 16; ++j) {
@@ -19305,7 +19305,7 @@ int shift = 0;
 for (int j = 0; j < 4; ++j) {
 d = sc[is++] & 0xF;
 int isuml = 0;
-for (int l =  0; l < 16; ++l) isuml += q8[l] * ((q2[l] >> shift) & 3);
+for (int l = 0; l < 16; ++l) isuml += q8[l] * ((q2[l] >> shift) & 3);
 isum += d * isuml;
 d = sc[is++] & 0xF;
 isuml = 0;
@@ -19337,7 +19337,7 @@ for (int i = 0; i < nb; ++i) {
 const float d = y[i].d * (float)x[i].d;
 const float dmin = -y[i].d * (float)x[i].dmin;
 const uint8_t * restrict q2 = x[i].qs;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 const uint32_t * restrict sc = (const uint32_t *)x[i].scales;
 aux32[0] = sc[0] & 0x0f0f0f0f;
 aux32[1] = (sc[0] >> 4) & 0x0f0f0f0f;
@@ -19367,7 +19367,7 @@ for (int i = 0; i < nb; ++i) {
 const float d = y[i].d * GGML_V3_FP16_TO_FP32(x[i].d);
 const float dmin = -y[i].d * GGML_V3_FP16_TO_FP32(x[i].dmin);
 const uint8_t * restrict q2 = x[i].qs;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 const uint32_t * restrict sc = (const uint32_t *)x[i].scales;
 ud = (sc[0] >> 0) & 0x0f0f0f0f;
 um = (sc[0] >> 4) & 0x0f0f0f0f;
@@ -19401,7 +19401,7 @@ for (int i = 0; i < nb; ++i) {
 const float d = y[i].d * GGML_V3_FP16_TO_FP32(x[i].d);
 const float dmin = -y[i].d * GGML_V3_FP16_TO_FP32(x[i].dmin);
 const uint8_t * restrict q2 = x[i].qs;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 const uint32_t * restrict sc = (const uint32_t *)x[i].scales;
 ud = (sc[0] >> 0) & 0x0f0f0f0f;
 um = (sc[0] >> 4) & 0x0f0f0f0f;
@@ -19436,7 +19436,7 @@ for (int i = 0; i < nb; ++i) {
 const float d = y[i].d * (float)x[i].d;
 const float dmin = -y[i].d * (float)x[i].dmin;
 const uint8_t * restrict q2 = x[i].qs;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 const uint32_t * restrict sc = (const uint32_t *)x[i].scales;
 aux32[0] = sc[0] & 0x0f0f0f0f;
 aux32[1] = (sc[0] >> 4) & 0x0f0f0f0f;
@@ -19470,7 +19470,7 @@ float sumf = 0;
 int isum[4];
 for (int i = 0; i < nb; ++i) {
 const uint8_t * q2 = x[i].qs;
-const  int8_t * q8 = y[i].qs;
+const int8_t * q8 = y[i].qs;
 const uint8_t * sc = x[i].scales;
 int summs = 0;
 for (int j = 0; j < QK_K/16; ++j) {
@@ -19479,7 +19479,7 @@ summs += y[i].bsums[j] * (sc[j] >> 4);
 const float dall = y[i].d * GGML_V3_FP16_TO_FP32(x[i].d);
 const float dmin = y[i].d * GGML_V3_FP16_TO_FP32(x[i].dmin);
 isum[0] = isum[1] = isum[2] = isum[3] = 0;
-for (int l =  0; l < 16; ++l) {
+for (int l = 0; l < 16; ++l) {
 isum[0] += q8[l+ 0] * ((q2[l] >> 0) & 3);
 isum[1] += q8[l+16] * ((q2[l] >> 2) & 3);
 isum[2] += q8[l+32] * ((q2[l] >> 4) & 3);
@@ -19506,7 +19506,7 @@ const int nb = n / QK_K;
 uint32_t aux[3];
 uint32_t utmp[4];
 const uint8x16_t m3b = vdupq_n_u8(0x3);
-const int32x4_t  vzero = vdupq_n_s32(0);
+const int32x4_t vzero = vdupq_n_s32(0);
 const uint8x16_t m0 = vdupq_n_u8(1);
 const uint8x16_t m1 = vshlq_n_u8(m0, 1);
 const uint8x16_t m2 = vshlq_n_u8(m0, 2);
@@ -19518,7 +19518,7 @@ for (int i = 0; i < nb; ++i) {
 const float d = y[i].d * GGML_V3_FP16_TO_FP32(x[i].d);
 const uint8_t * restrict q3 = x[i].qs;
 const uint8_t * restrict qh = x[i].hmask;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 ggml_v3_uint8x16x2_t qhbits = ggml_v3_vld1q_u8_x2(qh);
 ggml_v3_uint8x16x4_t q3h;
 int32_t isum = 0;
@@ -19576,7 +19576,7 @@ uint32_t aux[3];
 for (int i = 0; i < nb; ++i) {
 const float d = y[i].d * GGML_V3_FP16_TO_FP32(x[i].d);
 const uint8_t * restrict q3 = x[i].qs;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 memcpy(aux, x[i].scales, 12);
 __m128i scales128 = _mm_set_epi32(
 ((aux[1] >> 4) & kmask2) | (((aux[2] >> 6) & kmask1) << 4),
@@ -19591,7 +19591,7 @@ const __m256i scales[2] = {MM256_SET_M128I(l_scales, l_scales), MM256_SET_M128I(
 const __m256i hbits = _mm256_loadu_si256((const __m256i*)x[i].hmask);
 __m256i sumi = _mm256_setzero_si256();
 int bit = 0;
-int is  = 0;
+int is = 0;
 for (int j = 0; j < QK_K/128; ++j) {
 const __m256i q3bits = _mm256_loadu_si256((const __m256i*)q3); q3 += 32;
 const __m256i q3l_0 = _mm256_and_si256(q3bits, m3);
@@ -19628,7 +19628,7 @@ p16_2 = _mm256_madd_epi16(_mm256_shuffle_epi8(scales[j], get_scale_shuffle_q3k(i
 p16_3 = _mm256_madd_epi16(_mm256_shuffle_epi8(scales[j], get_scale_shuffle_q3k(is + 3)), p16_3);
 p16_0 = _mm256_add_epi32(p16_0, p16_1);
 p16_2 = _mm256_add_epi32(p16_2, p16_3);
-sumi  = _mm256_add_epi32(sumi, _mm256_add_epi32(p16_0, p16_2));
+sumi = _mm256_add_epi32(sumi, _mm256_add_epi32(p16_0, p16_2));
 }
 acc = _mm256_fmadd_ps(_mm256_broadcast_ss(&d), _mm256_cvtepi32_ps(sumi), acc);
 }
@@ -19643,7 +19643,7 @@ const uint32_t *aux;
 for (int i = 0; i < nb; ++i) {
 const float d = y[i].d * GGML_V3_FP16_TO_FP32(x[i].d);
 const uint8_t * restrict q3 = x[i].qs;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 aux = (const uint32_t *)x[i].scales;
 __m128i scales128 = _mm_set_epi32(
 ((aux[1] >> 4) & kmask2) | (((aux[2] >> 6) & kmask1) << 4),
@@ -19744,7 +19744,7 @@ float sumf = 0;
 for (int i = 0; i < nb; ++i) {
 const uint8_t * restrict q3 = x[i].qs;
 const uint8_t * restrict qh = x[i].hmask;
-const  int8_t * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 memcpy(aux, x[i].scales, 12);
 utmp[3] = ((aux[1] >> 4) & kmask2) | (((aux[2] >> 6) & kmask1) << 4);
 utmp[2] = ((aux[0] >> 4) & kmask2) | (((aux[2] >> 4) & kmask1) << 4);
@@ -19753,7 +19753,7 @@ utmp[0] = (aux[0] & kmask2) | (((aux[2] >> 0) & kmask1) << 4);
 int8_t * scale = (int8_t *)utmp;
 for (int j = 0; j < 16; ++j) scale[j] -= 32;
 size_t vl = 32;
-uint8_t m =  1;
+uint8_t m = 1;
 vint32m1_t vzero = __riscv_vmv_v_x_i32m1(0, 1);
 vuint8m1_t vqh = __riscv_vle8_v_u8m1(qh, vl);
 int sum_t = 0;
@@ -19797,17 +19797,17 @@ vint32m1_t isum0 = __riscv_vredsum_vs_i32m2_i32m1(__riscv_vadd_vv_i32m2(aux0_0, 
 vint32m1_t isum1 = __riscv_vredsum_vs_i32m2_i32m1(__riscv_vadd_vv_i32m2(aux1_0, aux1_1, vl), isum0, vl);
 vint32m1_t isum2 = __riscv_vredsum_vs_i32m2_i32m1(__riscv_vadd_vv_i32m2(aux2_0, aux2_1, vl), isum1, vl);
 vint32m1_t isum3 = __riscv_vredsum_vs_i32m2_i32m1(__riscv_vadd_vv_i32m2(aux3_0, aux3_1, vl), isum2, vl);
-sum_t +=  __riscv_vmv_x_s_i32m1_i32(isum3);
-q3 += 32;    q8 += 128;   scale += 8;
+sum_t += __riscv_vmv_x_s_i32m1_i32(isum3);
+q3 += 32; q8 += 128; scale += 8;
 }
 const float d = GGML_V3_FP16_TO_FP32(x[i].d) * y[i].d;
 sumf += d*sum_t;
 }
 *s = sumf;
 #else
-int8_t  aux8[QK_K];
+int8_t aux8[QK_K];
 int16_t aux16[8];
-float   sums [8];
+float sums [8];
 int32_t aux32[8];
 memset(sums, 0, 8*sizeof(float));
 uint32_t auxs[4];
@@ -19816,7 +19816,7 @@ float sumf = 0;
 for (int i = 0; i < nb; ++i) {
 const uint8_t * restrict q3 = x[i].qs;
 const uint8_t * restrict hm = x[i].hmask;
-const  int8_t * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 memset(aux32, 0, 8*sizeof(int32_t));
 int8_t * restrict a = aux8;
 uint8_t m = 1;
@@ -19866,15 +19866,15 @@ const int nb = n / QK_K;
 #ifdef __ARM_NEON
 const int32x4_t vzero = vdupq_n_s32(0);
 const uint8x16_t m3b = vdupq_n_u8(0x3);
-const uint8x16_t mh  = vdupq_n_u8(4);
+const uint8x16_t mh = vdupq_n_u8(4);
 ggml_v3_int8x16x4_t q3bytes;
 uint16_t aux16[2];
 int8_t * scales = (int8_t *)aux16;
 float sum = 0;
 for (int i = 0; i < nb; ++i) {
 ggml_v3_uint8x16x4_t q3h;
-const uint8x8_t  hbits    = vld1_u8(x[i].hmask);
-const uint8x16_t q3bits   = vld1q_u8(x[i].qs);
+const uint8x8_t hbits = vld1_u8(x[i].hmask);
+const uint8x16_t q3bits = vld1q_u8(x[i].qs);
 const ggml_v3_int8x16x4_t q8bytes = ggml_v3_vld1q_s8_x4(y[i].qs);
 const uint16_t a = *(const uint16_t *)x[i].scales;
 aux16[0] = a & 0x0f0f;
@@ -19887,10 +19887,10 @@ q3h.val[0] = vandq_u8(mh, vshlq_n_u8(htmp, 2));
 q3h.val[1] = vandq_u8(mh, htmp);
 q3h.val[2] = vandq_u8(mh, vshrq_n_u8(htmp, 2));
 q3h.val[3] = vandq_u8(mh, vshrq_n_u8(htmp, 4));
-q3bytes.val[0] = vreinterpretq_s8_u8(vorrq_u8(vandq_u8(q3bits, m3b),                q3h.val[0]));
+q3bytes.val[0] = vreinterpretq_s8_u8(vorrq_u8(vandq_u8(q3bits, m3b), q3h.val[0]));
 q3bytes.val[1] = vreinterpretq_s8_u8(vorrq_u8(vandq_u8(vshrq_n_u8(q3bits, 2), m3b), q3h.val[1]));
 q3bytes.val[2] = vreinterpretq_s8_u8(vorrq_u8(vandq_u8(vshrq_n_u8(q3bits, 4), m3b), q3h.val[2]));
-q3bytes.val[3] = vreinterpretq_s8_u8(vorrq_u8(vshrq_n_u8(q3bits, 6),                q3h.val[3]));
+q3bytes.val[3] = vreinterpretq_s8_u8(vorrq_u8(vshrq_n_u8(q3bits, 6), q3h.val[3]));
 isum += vaddvq_s32(ggml_v3_vdotq_s32(vzero, q3bytes.val[0], q8bytes.val[0])) * scales[0];
 isum += vaddvq_s32(ggml_v3_vdotq_s32(vzero, q3bytes.val[1], q8bytes.val[1])) * scales[2];
 isum += vaddvq_s32(ggml_v3_vdotq_s32(vzero, q3bytes.val[2], q8bytes.val[2])) * scales[1];
@@ -19908,7 +19908,7 @@ const int8_t * aux8 = (const int8_t *)aux16;
 for (int i = 0; i < nb; ++i) {
 const float d = y[i].d * GGML_V3_FP16_TO_FP32(x[i].d);
 const uint8_t * restrict q3 = x[i].qs;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 const uint16_t a = *(const uint16_t *)x[i].scales;
 aux16[0] = a & 0x0f0f;
 aux16[1] = (a >> 4) & 0x0f0f;
@@ -19921,7 +19921,7 @@ __m256i q3h_1 = _mm256_srli_epi16(q3h_0, 4);
 q3h_0 = _mm256_slli_epi16(_mm256_andnot_si256(q3h_0, m1), 2);
 q3h_1 = _mm256_slli_epi16(_mm256_andnot_si256(q3h_1, m1), 2);
 const __m128i q3bits = _mm_loadu_si128((const __m128i*)q3);
-const __m256i q3aux  = MM256_SET_M128I(_mm_srli_epi16(q3bits, 2), q3bits);
+const __m256i q3aux = MM256_SET_M128I(_mm_srli_epi16(q3bits, 2), q3bits);
 const __m256i q3l_0 = _mm256_and_si256(q3aux, m3);
 const __m256i q3l_1 = _mm256_and_si256(_mm256_srli_epi16(q3aux, 4), m3);
 const __m256i q8_0 = _mm256_loadu_si256((const __m256i*)(q8+ 0));
@@ -19948,7 +19948,7 @@ const int8_t * aux8 = (const int8_t *)aux16;
 for (int i = 0; i < nb; ++i) {
 const float d = y[i].d * GGML_V3_FP16_TO_FP32(x[i].d);
 const uint8_t * restrict q3 = x[i].qs;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 const uint16_t a = *(const uint16_t *)x[i].scales;
 aux16[0] = a & 0x0f0f;
 aux16[1] = (a >> 4) & 0x0f0f;
@@ -20000,7 +20000,7 @@ int8_t * scales = (int8_t *)aux16;
 float sumf = 0;
 for (int i = 0; i < nb; ++i) {
 const uint8_t * restrict q3 = x[i].qs;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 const uint16_t a = *(const uint16_t *)x[i].scales;
 aux16[0] = a & 0x0f0f;
 aux16[1] = (a >> 4) & 0x0f0f;
@@ -20008,15 +20008,15 @@ for (int j = 0; j < 4; ++j) scales[j] -= 8;
 int32_t isum = -4*(scales[0] * y[i].bsums[0] + scales[2] * y[i].bsums[1] + scales[1] * y[i].bsums[2] + scales[3] * y[i].bsums[3]);
 const float d = y[i].d * (float)x[i].d;
 vint32m1_t vzero = __riscv_vmv_v_x_i32m1(0, 1);
-vuint8mf4_t qh_x1   = __riscv_vle8_v_u8mf4(x[i].hmask, 8);
-vuint8mf2_t qh_x2   = __riscv_vlmul_ext_v_u8mf4_u8mf2(__riscv_vsrl_vx_u8mf4(qh_x1, 1, 8));
+vuint8mf4_t qh_x1 = __riscv_vle8_v_u8mf4(x[i].hmask, 8);
+vuint8mf2_t qh_x2 = __riscv_vlmul_ext_v_u8mf4_u8mf2(__riscv_vsrl_vx_u8mf4(qh_x1, 1, 8));
 size_t vl = 16;
 vuint8mf2_t qh_x = __riscv_vslideup_vx_u8mf2(__riscv_vlmul_ext_v_u8mf4_u8mf2(qh_x1), qh_x2, vl/2, vl);
 vuint8mf2_t qh_0 = __riscv_vand_vx_u8mf2(__riscv_vsll_vx_u8mf2(qh_x, 0x2, vl), 0x4, vl);
 vuint8mf2_t qh_1 = __riscv_vand_vx_u8mf2(qh_x, 0x4, vl);
 vuint8mf2_t qh_2 = __riscv_vand_vx_u8mf2(__riscv_vsrl_vx_u8mf2(qh_x, 0x2, vl), 0x4, vl);
 vuint8mf2_t qh_3 = __riscv_vand_vx_u8mf2(__riscv_vsrl_vx_u8mf2(qh_x, 0x4, vl), 0x4, vl);
-vuint8mf2_t q3_x  = __riscv_vle8_v_u8mf2(q3, vl);
+vuint8mf2_t q3_x = __riscv_vle8_v_u8mf2(q3, vl);
 vuint8mf2_t q3h_0 = __riscv_vor_vv_u8mf2(__riscv_vand_vx_u8mf2(q3_x, 0x3, vl), qh_0, vl);
 vuint8mf2_t q3h_1 = __riscv_vor_vv_u8mf2(__riscv_vand_vx_u8mf2(__riscv_vsrl_vx_u8mf2(q3_x, 2, vl), 0x3, vl), qh_1, vl);
 vuint8mf2_t q3h_2 = __riscv_vor_vv_u8mf2(__riscv_vand_vx_u8mf2(__riscv_vsrl_vx_u8mf2(q3_x, 4, vl), 0x3, vl), qh_2, vl);
@@ -20041,9 +20041,9 @@ sumf += d * isum;
 }
 *s = sumf;
 #else
-int8_t  aux8[QK_K];
+int8_t aux8[QK_K];
 int16_t aux16[8];
-float   sums [8];
+float sums [8];
 int32_t aux32[8];
 int32_t scales[4];
 memset(sums, 0, 8*sizeof(float));
@@ -20051,7 +20051,7 @@ float sumf = 0;
 for (int i = 0; i < nb; ++i) {
 const uint8_t * restrict q3 = x[i].qs;
 const uint8_t * restrict hm = x[i].hmask;
-const  int8_t * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 int8_t * restrict a = aux8;
 for (int l = 0; l < 8; ++l) {
 a[l+ 0] = (int8_t)((q3[l+0] >> 0) & 3) - (hm[l] & 0x01 ? 0 : 4);
@@ -20064,9 +20064,9 @@ a[l+48] = (int8_t)((q3[l+0] >> 6) & 3) - (hm[l] & 0x40 ? 0 : 4);
 a[l+56] = (int8_t)((q3[l+8] >> 6) & 3) - (hm[l] & 0x80 ? 0 : 4);
 }
 scales[0] = (x[i].scales[0] & 0xF) - 8;
-scales[1] = (x[i].scales[0] >>  4) - 8;
+scales[1] = (x[i].scales[0] >> 4) - 8;
 scales[2] = (x[i].scales[1] & 0xF) - 8;
-scales[3] = (x[i].scales[1] >>  4) - 8;
+scales[3] = (x[i].scales[1] >> 4) - 8;
 memset(aux32, 0, 8*sizeof(int32_t));
 for (int j = 0; j < QK_K/16; ++j) {
 for (int l = 0; l < 8; ++l) aux16[l] = q8[l] * a[l];
@@ -20115,14 +20115,14 @@ vmull_s16(vget_high_s16(q8sums), vget_high_s16(mins)));
 sumf -= dmin * vaddvq_s32(prod);
 const uint8_t * scales = (const uint8_t *)utmp;
 const uint8_t * restrict q4 = x[i].qs;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 int32_t sumi1 = 0;
 int32_t sumi2 = 0;
 for (int j = 0; j < QK_K/64; ++j) {
 const ggml_v3_uint8x16x2_t q4bits = ggml_v3_vld1q_u8_x2(q4); q4 += 32;
 q8bytes = ggml_v3_vld1q_s8_x2(q8); q8 += 32;
-q4bytes.val[0] = vreinterpretq_s8_u8(vandq_u8  (q4bits.val[0], m4b));
-q4bytes.val[1] = vreinterpretq_s8_u8(vandq_u8  (q4bits.val[1], m4b));
+q4bytes.val[0] = vreinterpretq_s8_u8(vandq_u8 (q4bits.val[0], m4b));
+q4bytes.val[1] = vreinterpretq_s8_u8(vandq_u8 (q4bits.val[1], m4b));
 const int32x4_t p1 = ggml_v3_vdotq_s32(ggml_v3_vdotq_s32(mzero, q4bytes.val[0], q8bytes.val[0]), q4bytes.val[1], q8bytes.val[1]);
 sumi1 += vaddvq_s32(p1) * scales[2*j+0];
 q8bytes = ggml_v3_vld1q_s8_x2(q8); q8 += 32;
@@ -20148,13 +20148,13 @@ utmp[1] = (utmp[2] & kmask2) | (((utmp[0] >> 6) & kmask3) << 4);
 utmp[2] = uaux;
 utmp[0] &= kmask1;
 const uint8_t * restrict q4 = x[i].qs;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 const __m256i mins_and_scales = _mm256_cvtepu8_epi16(_mm_set_epi32(utmp[3], utmp[2], utmp[1], utmp[0]));
 const __m256i q8sums = _mm256_loadu_si256((const __m256i*)y[i].bsums);
 const __m128i q8s = _mm_hadd_epi16(_mm256_extracti128_si256(q8sums, 0), _mm256_extracti128_si256(q8sums, 1));
 const __m128i prod = _mm_madd_epi16(_mm256_extracti128_si256(mins_and_scales, 1), q8s);
 acc_m = _mm_fmadd_ps(_mm_set1_ps(dmin), _mm_cvtepi32_ps(prod), acc_m);
-const __m128i sc128  = _mm256_extracti128_si256(mins_and_scales, 0);
+const __m128i sc128 = _mm256_extracti128_si256(mins_and_scales, 0);
 const __m256i scales = MM256_SET_M128I(sc128, sc128);
 __m256i sumi = _mm256_setzero_si256();
 for (int j = 0; j < QK_K/64; ++j) {
@@ -20187,7 +20187,7 @@ for (int i = 0; i < nb; ++i) {
 const float d = y[i].d * GGML_V3_FP16_TO_FP32(x[i].d);
 const float dmin = -y[i].d * GGML_V3_FP16_TO_FP32(x[i].dmin);
 const uint8_t * restrict q4 = x[i].qs;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 memcpy(utmp, x[i].scales, 12);
 utmp[3] = ((utmp[2] >> 4) & kmask2) | (((utmp[1] >> 6) & kmask3) << 4);
 const uint32_t uaux = utmp[1] & kmask1;
@@ -20242,7 +20242,7 @@ acc_m = _mm_add_ss(acc_m, _mm_movehdup_ps(acc_m));
 *s = hsum_float_8(acc) + _mm_cvtss_f32(acc_m);
 #elif defined __riscv_v_intrinsic
 const uint8_t * scales = (const uint8_t*)&utmp[0];
-const uint8_t * mins   = (const uint8_t*)&utmp[2];
+const uint8_t * mins = (const uint8_t*)&utmp[2];
 float sumf = 0;
 for (int i = 0; i < nb; ++i) {
 size_t vl = 8;
@@ -20250,59 +20250,59 @@ const float d = y[i].d * GGML_V3_FP16_TO_FP32(x[i].d);
 const float dmin = y[i].d * GGML_V3_FP16_TO_FP32(x[i].dmin);
 vint16mf2_t q8sums_0 = __riscv_vlse16_v_i16mf2(y[i].bsums, 4, vl);
 vint16mf2_t q8sums_1 = __riscv_vlse16_v_i16mf2(y[i].bsums+1, 4, vl);
-vint16mf2_t q8sums   = __riscv_vadd_vv_i16mf2(q8sums_0, q8sums_1, vl);
+vint16mf2_t q8sums = __riscv_vadd_vv_i16mf2(q8sums_0, q8sums_1, vl);
 memcpy(utmp, x[i].scales, 12);
 utmp[3] = ((utmp[2] >> 4) & kmask2) | (((utmp[1] >> 6) & kmask3) << 4);
 const uint32_t uaux = utmp[1] & kmask1;
 utmp[1] = (utmp[2] & kmask2) | (((utmp[0] >> 6) & kmask3) << 4);
 utmp[2] = uaux;
 utmp[0] &= kmask1;
-vuint8mf4_t mins8  = __riscv_vle8_v_u8mf4(mins, vl);
+vuint8mf4_t mins8 = __riscv_vle8_v_u8mf4(mins, vl);
 vint16mf2_t v_mins = __riscv_vreinterpret_v_u16mf2_i16mf2(__riscv_vzext_vf2_u16mf2(mins8, vl));
-vint32m1_t  prod   = __riscv_vwmul_vv_i32m1(q8sums, v_mins, vl);
+vint32m1_t prod = __riscv_vwmul_vv_i32m1(q8sums, v_mins, vl);
 vint32m1_t sumi = __riscv_vredsum_vs_i32m1_i32m1(prod, __riscv_vmv_v_x_i32m1(0, 1), vl);
 sumf -= dmin * __riscv_vmv_x_s_i32m1_i32(sumi);
 const uint8_t * restrict q4 = x[i].qs;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 vl = 32;
 int32_t sum_1 = 0;
 int32_t sum_2 = 0;
 vint16m1_t vzero = __riscv_vmv_v_x_i16m1(0, 1);
 for (int j = 0; j < QK_K/64; ++j) {
 vuint8m1_t q4_x = __riscv_vle8_v_u8m1(q4, vl);
-vint8m1_t  q8_0 = __riscv_vle8_v_i8m1(q8, vl);
-vint8m1_t  q4_0 = __riscv_vreinterpret_v_u8m1_i8m1(__riscv_vand_vx_u8m1(q4_x, 0x0F, vl));
+vint8m1_t q8_0 = __riscv_vle8_v_i8m1(q8, vl);
+vint8m1_t q4_0 = __riscv_vreinterpret_v_u8m1_i8m1(__riscv_vand_vx_u8m1(q4_x, 0x0F, vl));
 vint16m2_t qv_0 = __riscv_vwmul_vv_i16m2(q4_0, q8_0, vl);
 vint16m1_t vs_0 = __riscv_vredsum_vs_i16m2_i16m1(qv_0, vzero, vl);
 sum_1 += __riscv_vmv_x_s_i16m1_i16(vs_0) * scales[2*j+0];
-vint8m1_t  q8_1 = __riscv_vle8_v_i8m1(q8+32, vl);
-vint8m1_t  q4_1 = __riscv_vreinterpret_v_u8m1_i8m1(__riscv_vsrl_vx_u8m1(q4_x, 0x04, vl));
+vint8m1_t q8_1 = __riscv_vle8_v_i8m1(q8+32, vl);
+vint8m1_t q4_1 = __riscv_vreinterpret_v_u8m1_i8m1(__riscv_vsrl_vx_u8m1(q4_x, 0x04, vl));
 vint16m2_t qv_1 = __riscv_vwmul_vv_i16m2(q4_1, q8_1, vl);
 vint16m1_t vs_1 = __riscv_vredsum_vs_i16m2_i16m1(qv_1, vzero, vl);
 sum_2 += __riscv_vmv_x_s_i16m1_i16(vs_1) * scales[2*j+1];
-q4 += 32;    q8 += 64;
+q4 += 32; q8 += 64;
 }
 sumf += d*(sum_1 + sum_2);
 }
 *s = sumf;
 #else
 const uint8_t * scales = (const uint8_t*)&utmp[0];
-const uint8_t * mins   = (const uint8_t*)&utmp[2];
-int8_t  aux8[QK_K];
+const uint8_t * mins = (const uint8_t*)&utmp[2];
+int8_t aux8[QK_K];
 int16_t aux16[8];
-float   sums [8];
+float sums [8];
 int32_t aux32[8];
 memset(sums, 0, 8*sizeof(float));
 float sumf = 0;
 for (int i = 0; i < nb; ++i) {
 const uint8_t * restrict q4 = x[i].qs;
-const  int8_t * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 memset(aux32, 0, 8*sizeof(int32_t));
 int8_t * restrict a = aux8;
 for (int j = 0; j < QK_K/64; ++j) {
 for (int l = 0; l < 32; ++l) a[l] = (int8_t)(q4[l] & 0xF);
 a += 32;
-for (int l = 0; l < 32; ++l) a[l] = (int8_t)(q4[l]  >> 4);
+for (int l = 0; l < 32; ++l) a[l] = (int8_t)(q4[l] >> 4);
 a += 32; q4 += 32;
 }
 memcpy(utmp, x[i].scales, 12);
@@ -20356,7 +20356,7 @@ uint16_t aux16[2];
 const uint8_t * restrict scales = (const uint8_t *)aux16;
 for (int i = 0; i < nb; ++i) {
 const uint8_t * restrict q4 = x[i].qs;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 const uint16_t * restrict a = (const uint16_t *)x[i].scales;
 aux16[0] = a[0] & 0x0f0f;
 aux16[1] = (a[0] >> 4) & 0x0f0f;
@@ -20365,8 +20365,8 @@ sum_mins += y[i].d * (float)x[i].d[1] * summi;
 const float d = y[i].d * (float)x[i].d[0];
 const ggml_v3_uint8x16x2_t q4bits = ggml_v3_vld1q_u8_x2(q4);
 q8bytes = ggml_v3_vld1q_s8_x4(q8);
-q4bytes.val[0] = vreinterpretq_s8_u8(vandq_u8  (q4bits.val[0], m4b));
-q4bytes.val[1] = vreinterpretq_s8_u8(vandq_u8  (q4bits.val[1], m4b));
+q4bytes.val[0] = vreinterpretq_s8_u8(vandq_u8 (q4bits.val[0], m4b));
+q4bytes.val[1] = vreinterpretq_s8_u8(vandq_u8 (q4bits.val[1], m4b));
 const int32x4_t p1 = ggml_v3_vdotq_s32(ggml_v3_vdotq_s32(mzero, q4bytes.val[0], q8bytes.val[0]), q4bytes.val[1], q8bytes.val[1]);
 const int32_t sumi1 = vaddvq_s32(p1) * scales[0];
 q4bytes.val[0] = vreinterpretq_s8_u8(vshrq_n_u8(q4bits.val[0], 4));
@@ -20391,7 +20391,7 @@ aux16[0] = a[0] & 0x0f0f;
 aux16[1] = (a[0] >> 4) & 0x0f0f;
 summs += m * (scales[2] * (y[i].bsums[0] + y[i].bsums[1]) + scales[3] * (y[i].bsums[2] + y[i].bsums[3]));
 const uint8_t * restrict q4 = x[i].qs;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 const __m256i q4bits = _mm256_loadu_si256((const __m256i*)q4);
 const __m256i q4l = _mm256_and_si256(q4bits, m4);
 const __m256i q4h = _mm256_and_si256(_mm256_srli_epi16(q4bits, 4), m4);
@@ -20420,7 +20420,7 @@ aux16[0] = a[0] & 0x0f0f;
 aux16[1] = (a[0] >> 4) & 0x0f0f;
 summs += m * (scales[2] * (y[i].bsums[0] + y[i].bsums[1]) + scales[3] * (y[i].bsums[2] + y[i].bsums[3]));
 const uint8_t * restrict q4 = x[i].qs;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 const __m256i q4bits = _mm256_loadu_si256((const __m256i*)q4);
 const __m128i q4bits_0 = _mm256_extractf128_si256(q4bits, 0);
 const __m128i q4bits_1 = _mm256_extractf128_si256(q4bits, 1);
@@ -20448,7 +20448,7 @@ const uint8_t * restrict scales = (const uint8_t *)s16;
 float sumf = 0;
 for (int i = 0; i < nb; ++i) {
 const uint8_t * restrict q4 = x[i].qs;
-const  int8_t * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 const uint16_t * restrict b = (const uint16_t *)x[i].scales;
 s16[0] = b[0] & 0x0f0f;
 s16[1] = (b[0] >> 4) & 0x0f0f;
@@ -20457,11 +20457,11 @@ const float d = y[i].d * GGML_V3_FP16_TO_FP32(x[i].d[0]);
 size_t vl = 32;
 vint16m1_t vzero = __riscv_vmv_v_x_i16m1(0, 1);
 vuint8m1_t q4_x = __riscv_vle8_v_u8m1(q4, vl);
-vint8m1_t  q4_a = __riscv_vreinterpret_v_u8m1_i8m1(__riscv_vand_vx_u8m1(q4_x, 0x0F, vl));
+vint8m1_t q4_a = __riscv_vreinterpret_v_u8m1_i8m1(__riscv_vand_vx_u8m1(q4_x, 0x0F, vl));
 vint16m2_t va_0 = __riscv_vwmul_vv_i16m2(q4_a, __riscv_vle8_v_i8m1(q8, vl), vl);
 vint16m1_t aux1 = __riscv_vredsum_vs_i16m2_i16m1(va_0, vzero, vl);
 sumf += d*scales[0]*__riscv_vmv_x_s_i16m1_i16(aux1);
-vint8m1_t  q4_s = __riscv_vreinterpret_v_u8m1_i8m1(__riscv_vsrl_vx_u8m1(q4_x, 0x04, vl));
+vint8m1_t q4_s = __riscv_vreinterpret_v_u8m1_i8m1(__riscv_vsrl_vx_u8m1(q4_x, 0x04, vl));
 vint16m2_t va_1 = __riscv_vwmul_vv_i16m2(q4_s, __riscv_vle8_v_i8m1(q8+32, vl), vl);
 vint16m1_t aux2 = __riscv_vredsum_vs_i16m2_i16m1(va_1, vzero, vl);
 sumf += d*scales[1]*__riscv_vmv_x_s_i16m1_i16(aux2);
@@ -20470,17 +20470,17 @@ sumf += d*scales[1]*__riscv_vmv_x_s_i16m1_i16(aux2);
 #else
 uint8_t aux8[QK_K];
 int16_t aux16[16];
-float   sums [8];
+float sums [8];
 memset(sums, 0, 8*sizeof(float));
 uint16_t s16[2];
 const uint8_t * restrict scales = (const uint8_t *)s16;
 float sumf = 0;
 for (int i = 0; i < nb; ++i) {
 const uint8_t * restrict q4 = x[i].qs;
-const  int8_t * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 uint8_t * restrict a = aux8;
 for (int l = 0; l < 32; ++l) a[l+ 0] = q4[l] & 0xF;
-for (int l = 0; l < 32; ++l) a[l+32] = q4[l]  >> 4;
+for (int l = 0; l < 32; ++l) a[l+32] = q4[l] >> 4;
 const uint16_t * restrict b = (const uint16_t *)x[i].scales;
 s16[0] = b[0] & 0x0f0f;
 s16[1] = (b[0] >> 4) & 0x0f0f;
@@ -20535,7 +20535,7 @@ int32_t sumi_mins = vaddvq_s32(prod);
 const uint8_t * scales = (const uint8_t *)utmp;
 const uint8_t * restrict q5 = x[i].qs;
 const uint8_t * restrict qh = x[i].qh;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 ggml_v3_uint8x16x2_t qhbits = ggml_v3_vld1q_u8_x2(qh);
 ggml_v3_uint8x16x4_t q5h;
 int32_t sumi = 0;
@@ -20561,12 +20561,12 @@ sumf += d * sumi - dmin * sumi_mins;
 #elif defined __AVX2__
 const __m256i m4 = _mm256_set1_epi8(0xF);
 const __m128i mzero = _mm_setzero_si128();
-const __m256i mone  = _mm256_set1_epi8(1);
+const __m256i mone = _mm256_set1_epi8(1);
 __m256 acc = _mm256_setzero_ps();
 float summs = 0.f;
 for (int i = 0; i < nb; ++i) {
 const uint8_t * restrict q5 = x[i].qs;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 #if QK_K == 256
 const float d = y[i].d * GGML_V3_FP16_TO_FP32(x[i].d);
 const float dmin = -y[i].d * GGML_V3_FP16_TO_FP32(x[i].dmin);
@@ -20585,7 +20585,7 @@ const __m128i q8s = _mm_hadd_epi16(_mm256_extracti128_si256(q8sums, 0), _mm256_e
 const __m128i prod = _mm_madd_epi16(_mm256_extracti128_si256(mins_and_scales, 1), q8s);
 const __m128i hsum = _mm_hadd_epi32(_mm_hadd_epi32(prod, mzero), mzero);
 summs += dmin * _mm_extract_epi32(hsum, 0);
-const __m128i sc128  = _mm256_extracti128_si256(mins_and_scales, 0);
+const __m128i sc128 = _mm256_extracti128_si256(mins_and_scales, 0);
 const __m256i scales = MM256_SET_M128I(sc128, sc128);
 const __m256i hbits = _mm256_loadu_si256((const __m256i*)x[i].qh);
 __m256i hmask = mone;
@@ -20597,11 +20597,11 @@ const __m256i scale_1 = _mm256_shuffle_epi8(scales, get_scale_shuffle_k4(2*j+1))
 const __m256i q5bits = _mm256_loadu_si256((const __m256i*)q5); q5 += 32;
 const __m256i q5l_0 = _mm256_and_si256(q5bits, m4);
 const __m256i q5h_0 = _mm256_slli_epi16(_mm256_srli_epi16(_mm256_and_si256(hbits, hmask), bit++), 4);
-const __m256i q5_0  = _mm256_add_epi8(q5l_0, q5h_0);
+const __m256i q5_0 = _mm256_add_epi8(q5l_0, q5h_0);
 hmask = _mm256_slli_epi16(hmask, 1);
 const __m256i q5l_1 = _mm256_and_si256(_mm256_srli_epi16(q5bits, 4), m4);
 const __m256i q5h_1 = _mm256_slli_epi16(_mm256_srli_epi16(_mm256_and_si256(hbits, hmask), bit++), 4);
-const __m256i q5_1  = _mm256_add_epi8(q5l_1, q5h_1);
+const __m256i q5_1 = _mm256_add_epi8(q5l_1, q5h_1);
 hmask = _mm256_slli_epi16(hmask, 1);
 const __m256i q8_0 = _mm256_loadu_si256((const __m256i*)q8); q8 += 32;
 const __m256i q8_1 = _mm256_loadu_si256((const __m256i*)q8); q8 += 32;
@@ -20618,7 +20618,7 @@ acc = _mm256_fmadd_ps(vd, _mm256_cvtepi32_ps(sumi), acc);
 #elif defined __AVX__
 const __m128i m4 = _mm_set1_epi8(0xF);
 const __m128i mzero = _mm_setzero_si128();
-const __m128i mone  = _mm_set1_epi8(1);
+const __m128i mone = _mm_set1_epi8(1);
 const __m128i m2 = _mm_set1_epi8(2);
 __m256 acc = _mm256_setzero_ps();
 float summs = 0.f;
@@ -20626,7 +20626,7 @@ for (int i = 0; i < nb; ++i) {
 const float d = y[i].d * GGML_V3_FP16_TO_FP32(x[i].d);
 const float dmin = -y[i].d * GGML_V3_FP16_TO_FP32(x[i].dmin);
 const uint8_t * restrict q5 = x[i].qs;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 memcpy(utmp, x[i].scales, 12);
 utmp[3] = ((utmp[2] >> 4) & kmask2) | (((utmp[1] >> 6) & kmask3) << 4);
 const uint32_t uaux = utmp[1] & kmask1;
@@ -20660,8 +20660,8 @@ __m128i q5l_0 = _mm_and_si128(q5bits_0, m4);
 __m128i q5l_1 = _mm_and_si128(q5bits_1, m4);
 __m128i q5h_0 = _mm_slli_epi16(_mm_srli_epi16(_mm_and_si128(hbits_0, hmask), bit), 4);
 __m128i q5h_1 = _mm_slli_epi16(_mm_srli_epi16(_mm_and_si128(hbits_1, hmask), bit++), 4);
-__m128i q5_0  = _mm_add_epi8(q5l_0, q5h_0);
-__m128i q5_1  = _mm_add_epi8(q5l_1, q5h_1);
+__m128i q5_0 = _mm_add_epi8(q5l_0, q5h_0);
+__m128i q5_1 = _mm_add_epi8(q5l_1, q5h_1);
 hmask = _mm_slli_epi16(hmask, 1);
 __m128i q8_0 = _mm_loadu_si128((const __m128i*)q8); q8 += 16;
 __m128i q8_1 = _mm_loadu_si128((const __m128i*)q8); q8 += 16;
@@ -20673,8 +20673,8 @@ q5l_0 = _mm_and_si128(_mm_srli_epi16(q5bits_0, 4), m4);
 q5l_1 = _mm_and_si128(_mm_srli_epi16(q5bits_1, 4), m4);
 q5h_0 = _mm_slli_epi16(_mm_srli_epi16(_mm_and_si128(hbits_0, hmask), bit), 4);
 q5h_1 = _mm_slli_epi16(_mm_srli_epi16(_mm_and_si128(hbits_1, hmask), bit++), 4);
-q5_0  = _mm_add_epi8(q5l_0, q5h_0);
-q5_1  = _mm_add_epi8(q5l_1, q5h_1);
+q5_0 = _mm_add_epi8(q5l_0, q5h_0);
+q5_1 = _mm_add_epi8(q5l_1, q5h_1);
 hmask = _mm_slli_epi16(hmask, 1);
 q8_0 = _mm_loadu_si128((const __m128i*)q8); q8 += 16;
 q8_1 = _mm_loadu_si128((const __m128i*)q8); q8 += 16;
@@ -20692,7 +20692,7 @@ acc = _mm256_add_ps(_mm256_mul_ps(vd, _mm256_cvtepi32_ps(sumi)), acc);
 *s = hsum_float_8(acc) + summs;
 #elif defined __riscv_v_intrinsic
 const uint8_t * scales = (const uint8_t*)&utmp[0];
-const uint8_t * mins   = (const uint8_t*)&utmp[2];
+const uint8_t * mins = (const uint8_t*)&utmp[2];
 float sumf = 0;
 float sums = 0.0;
 size_t vl;
@@ -20700,7 +20700,7 @@ for (int i = 0; i < nb; ++i) {
 vl = 8;
 const uint8_t * restrict q5 = x[i].qs;
 const uint8_t * restrict hm = x[i].qh;
-const  int8_t * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 const float d = GGML_V3_FP16_TO_FP32(x[i].d) * y[i].d;
 const float dmin = GGML_V3_FP16_TO_FP32(x[i].dmin) * y[i].d;
 vint16mf2_t q8sums_0 = __riscv_vlse16_v_i16mf2(y[i].bsums, 4, vl);
@@ -20725,8 +20725,8 @@ vint32m1_t vzero = __riscv_vmv_v_x_i32m1(0, 1);
 vuint8m1_t vqh = __riscv_vle8_v_u8m1(hm, vl);
 for (int j = 0; j < QK_K/64; ++j) {
 vuint8m1_t q5_x = __riscv_vle8_v_u8m1(q5, vl);
-vint8m1_t  q8_y1 = __riscv_vle8_v_i8m1(q8, vl);
-vint8m1_t  q8_y2 = __riscv_vle8_v_i8m1(q8+32, vl);
+vint8m1_t q8_y1 = __riscv_vle8_v_i8m1(q8, vl);
+vint8m1_t q8_y2 = __riscv_vle8_v_i8m1(q8+32, vl);
 vint8m1_t q5_a = __riscv_vreinterpret_v_u8m1_i8m1(__riscv_vand_vx_u8m1(q5_x, 0x0F, vl));
 vuint8m1_t qh_m1 = __riscv_vand_vx_u8m1(vqh, m, vl);
 vbool8_t vmask_1 = __riscv_vmsne_vx_u8m1_b8(qh_m1, 0, vl);
@@ -20744,7 +20744,7 @@ vint32m4_t vs2 = __riscv_vwmul_vx_i32m4(v1, scales[is++], vl);
 vint32m1_t vacc1 = __riscv_vredsum_vs_i32m4_i32m1(vs1, vzero, vl);
 vint32m1_t vacc2 = __riscv_vredsum_vs_i32m4_i32m1(vs2, vzero, vl);
 aux32 += __riscv_vmv_x_s_i32m1_i32(vacc1) + __riscv_vmv_x_s_i32m1_i32(vacc2);
-q5 += 32;    q8 += 64;
+q5 += 32; q8 += 64;
 }
 vfloat32m1_t vaux = __riscv_vfmul_vf_f32m1(__riscv_vfmv_v_f_f32m1(aux32, 1), d, 1);
 sums += __riscv_vfmv_f_s_f32m1_f32(vaux);
@@ -20752,17 +20752,17 @@ sums += __riscv_vfmv_f_s_f32m1_f32(vaux);
 *s = sumf+sums;
 #else
 const uint8_t * scales = (const uint8_t*)&utmp[0];
-const uint8_t * mins   = (const uint8_t*)&utmp[2];
-int8_t  aux8[QK_K];
+const uint8_t * mins = (const uint8_t*)&utmp[2];
+int8_t aux8[QK_K];
 int16_t aux16[8];
-float   sums [8];
+float sums [8];
 int32_t aux32[8];
 memset(sums, 0, 8*sizeof(float));
 float sumf = 0;
 for (int i = 0; i < nb; ++i) {
 const uint8_t * restrict q4 = x[i].qs;
 const uint8_t * restrict hm = x[i].qh;
-const  int8_t * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 memset(aux32, 0, 8*sizeof(int32_t));
 int8_t * restrict a = aux8;
 uint8_t m = 1;
@@ -20770,7 +20770,7 @@ for (int j = 0; j < QK_K/64; ++j) {
 for (int l = 0; l < 32; ++l) a[l] = (int8_t)(q4[l] & 0xF);
 for (int l = 0; l < 32; ++l) a[l] += (hm[l] & m ? 16 : 0);
 a += 32; m <<= 1;
-for (int l = 0; l < 32; ++l) a[l] = (int8_t)(q4[l]  >> 4);
+for (int l = 0; l < 32; ++l) a[l] = (int8_t)(q4[l] >> 4);
 for (int l = 0; l < 32; ++l) a[l] += (hm[l] & m ? 16 : 0);
 a += 32; m <<= 1;
 q4 += 32;
@@ -20827,7 +20827,7 @@ const float d = y[i].d * (float)x[i].d;
 const int8_t * sc = x[i].scales;
 const uint8_t * restrict q5 = x[i].qs;
 const uint8_t * restrict qh = x[i].qh;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 const uint8x8_t qhbits = vld1_u8(qh);
 const ggml_v3_uint8x16x2_t q5bits = ggml_v3_vld1q_u8_x2(q5);
 const ggml_v3_int8x16x4_t q8bytes = ggml_v3_vld1q_s8_x4(q8);
@@ -20849,11 +20849,11 @@ sumf += d * (sumi1 + sumi2 + sumi3 + sumi4);
 *s = sumf;
 #elif defined __AVX2__
 const __m256i m4 = _mm256_set1_epi8(0xF);
-const __m256i mone  = _mm256_set1_epi8(1);
+const __m256i mone = _mm256_set1_epi8(1);
 __m256 acc = _mm256_setzero_ps();
 for (int i = 0; i < nb; ++i) {
 const uint8_t * restrict q5 = x[i].qs;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 const float d = y[i].d * GGML_V3_FP16_TO_FP32(x[i].d);
 const __m256i q5bits = _mm256_loadu_si256((const __m256i*)q5);
 const __m256i scale_l = MM256_SET_M128I(_mm_set1_epi16(x[i].scales[1]), _mm_set1_epi16(x[i].scales[0]));
@@ -20878,11 +20878,11 @@ acc = _mm256_fmadd_ps(_mm256_set1_ps(d), _mm256_cvtepi32_ps(dot), acc);
 *s = hsum_float_8(acc);
 #elif defined __AVX__
 const __m128i m4 = _mm_set1_epi8(0xF);
-const __m128i mone  = _mm_set1_epi8(1);
+const __m128i mone = _mm_set1_epi8(1);
 __m256 acc = _mm256_setzero_ps();
 for (int i = 0; i < nb; ++i) {
 const uint8_t * restrict q5 = x[i].qs;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 const float d = y[i].d * GGML_V3_FP16_TO_FP32(x[i].d);
 const __m256i q5bits = _mm256_loadu_si256((const __m256i*)q5);
 const __m128i scale_0 = _mm_set1_epi16(x[i].scales[0]);
@@ -20923,10 +20923,10 @@ const float d = y[i].d * (float)x[i].d;
 const int8_t * sc = x[i].scales;
 const uint8_t * restrict q5 = x[i].qs;
 const uint8_t * restrict qh = x[i].qh;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 vint32m1_t vzero = __riscv_vmv_v_x_i32m1(0, 1);
-vuint8mf4_t qh_x1   = __riscv_vle8_v_u8mf4(qh, 8);
-vuint8mf2_t qh_x2   = __riscv_vlmul_ext_v_u8mf4_u8mf2(__riscv_vsrl_vx_u8mf4(qh_x1, 1, 8));
+vuint8mf4_t qh_x1 = __riscv_vle8_v_u8mf4(qh, 8);
+vuint8mf2_t qh_x2 = __riscv_vlmul_ext_v_u8mf4_u8mf2(__riscv_vsrl_vx_u8mf4(qh_x1, 1, 8));
 size_t vl = 16;
 vuint8mf2_t qh_x = __riscv_vslideup_vx_u8mf2(__riscv_vlmul_ext_v_u8mf4_u8mf2(qh_x1), qh_x2, vl/2, vl);
 vuint8mf2_t qh_h0 = __riscv_vand_vx_u8mf2(__riscv_vnot_v_u8mf2(__riscv_vsll_vx_u8mf2(qh_x, 0x4, vl), vl), 16, vl);
@@ -20937,8 +20937,8 @@ vint8mf2_t qh_0 = __riscv_vreinterpret_v_u8mf2_i8mf2(qh_h0);
 vint8mf2_t qh_1 = __riscv_vreinterpret_v_u8mf2_i8mf2(qh_h1);
 vint8mf2_t qh_2 = __riscv_vreinterpret_v_u8mf2_i8mf2(qh_h2);
 vint8mf2_t qh_3 = __riscv_vreinterpret_v_u8mf2_i8mf2(qh_h3);
-vuint8mf2_t q5_x1  = __riscv_vle8_v_u8mf2(q5, vl);
-vuint8mf2_t q5_x2  = __riscv_vle8_v_u8mf2(q5+16, vl);
+vuint8mf2_t q5_x1 = __riscv_vle8_v_u8mf2(q5, vl);
+vuint8mf2_t q5_x2 = __riscv_vle8_v_u8mf2(q5+16, vl);
 vint8mf2_t q5s_0 = __riscv_vreinterpret_v_u8mf2_i8mf2(__riscv_vand_vx_u8mf2(q5_x1, 0xF, vl));
 vint8mf2_t q5s_1 = __riscv_vreinterpret_v_u8mf2_i8mf2(__riscv_vand_vx_u8mf2(q5_x2, 0xF, vl));
 vint8mf2_t q5s_2 = __riscv_vreinterpret_v_u8mf2_i8mf2(__riscv_vsrl_vx_u8mf2(q5_x1, 0x4, vl));
@@ -20965,17 +20965,17 @@ sumf += d * (sumi1 + sumi2 + sumi3 + sumi4);
 #else
 int8_t aux8[QK_K];
 int16_t aux16[16];
-float   sums [8];
+float sums [8];
 memset(sums, 0, 8*sizeof(float));
 float sumf = 0;
 for (int i = 0; i < nb; ++i) {
 const uint8_t * restrict q4 = x[i].qs;
 const uint8_t * restrict hm = x[i].qh;
-const  int8_t * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 int8_t * restrict a = aux8;
 for (int l = 0; l < 32; ++l) {
 a[l+ 0] = q4[l] & 0xF;
-a[l+32] = q4[l]  >> 4;
+a[l+32] = q4[l] >> 4;
 }
 for (int is = 0; is < 8; ++is) {
 uint8_t m = 1 << is;
@@ -20986,7 +20986,7 @@ const int8_t * restrict sc = x[i].scales;
 for (int j = 0; j < QK_K/16; ++j) {
 const float dl = d * sc[j];
 for (int l = 0; l < 16; ++l) aux16[l] = q8[l] * a[l];
-for (int l = 0; l <  8; ++l) sums[l] += dl * (aux16[l] + aux16[8+l]);
+for (int l = 0; l < 8; ++l) sums[l] += dl * (aux16[l] + aux16[8+l]);
 q8 += 16; a += 16;
 }
 }
@@ -21004,7 +21004,7 @@ const int nb = n / QK_K;
 #ifdef __ARM_NEON
 float sum = 0;
 const uint8x16_t m4b = vdupq_n_u8(0xF);
-const int32x4_t  vzero = vdupq_n_s32(0);
+const int32x4_t vzero = vdupq_n_s32(0);
 const uint8x16_t mone = vdupq_n_u8(3);
 ggml_v3_int8x16x4_t q6bytes;
 ggml_v3_uint8x16x4_t q6h;
@@ -21012,7 +21012,7 @@ for (int i = 0; i < nb; ++i) {
 const float d_all = GGML_V3_FP16_TO_FP32(x[i].d);
 const uint8_t * restrict q6 = x[i].ql;
 const uint8_t * restrict qh = x[i].qh;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 const int8_t * restrict scale = x[i].scales;
 const ggml_v3_int16x8x2_t q8sums = ggml_v3_vld1q_s16_x2(y[i].bsums);
 const int8x16_t scales = vld1q_s8(scale);
@@ -21073,7 +21073,7 @@ for (int i = 0; i < nb; ++i) {
 const float d = y[i].d * GGML_V3_FP16_TO_FP32(x[i].d);
 const uint8_t * restrict q4 = x[i].ql;
 const uint8_t * restrict qh = x[i].qh;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 const __m128i scales = _mm_loadu_si128((const __m128i*)x[i].scales);
 __m256i sumi = _mm256_setzero_si256();
 int is = 0;
@@ -21130,7 +21130,7 @@ for (int i = 0; i < nb; ++i) {
 const float d = y[i].d * GGML_V3_FP16_TO_FP32(x[i].d);
 const uint8_t * restrict q4 = x[i].ql;
 const uint8_t * restrict qh = x[i].qh;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 const __m128i scales = _mm_loadu_si128((const __m128i*)x[i].scales);
 __m128i sumi_0 = _mm_setzero_si128();
 __m128i sumi_1 = _mm_setzero_si128();
@@ -21221,7 +21221,7 @@ for (int i = 0; i < nb; ++i) {
 const float d = GGML_V3_FP16_TO_FP32(x[i].d) * y[i].d;
 const uint8_t * restrict q6 = x[i].ql;
 const uint8_t * restrict qh = x[i].qh;
-const  int8_t * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 const int8_t * restrict scale = x[i].scales;
 size_t vl;
 vint32m1_t vzero = __riscv_vmv_v_x_i32m1(0, 1);
@@ -21266,32 +21266,32 @@ vint32m1_t isum1 = __riscv_vredsum_vs_i32m2_i32m1(__riscv_vadd_vv_i32m2(vaux_2, 
 vint32m1_t isum2 = __riscv_vredsum_vs_i32m2_i32m1(__riscv_vadd_vv_i32m2(vaux_4, vaux_5, vl), isum1, vl);
 vint32m1_t isum3 = __riscv_vredsum_vs_i32m2_i32m1(__riscv_vadd_vv_i32m2(vaux_6, vaux_7, vl), isum2, vl);
 sum_t += __riscv_vmv_x_s_i32m1_i32(isum3);
-q6 += 64;   qh += 32;   q8 += 128;   is=8;
+q6 += 64; qh += 32; q8 += 128; is=8;
 }
 sumf += d * sum_t;
 }
 *s = sumf;
 #else
-int8_t  aux8[QK_K];
+int8_t aux8[QK_K];
 int16_t aux16[8];
-float   sums [8];
+float sums [8];
 int32_t aux32[8];
 memset(sums, 0, 8*sizeof(float));
 float sumf = 0;
 for (int i = 0; i < nb; ++i) {
 const uint8_t * restrict q4 = x[i].ql;
 const uint8_t * restrict qh = x[i].qh;
-const  int8_t * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 memset(aux32, 0, 8*sizeof(int32_t));
 int8_t * restrict a = aux8;
 for (int j = 0; j < QK_K; j += 128) {
 for (int l = 0; l < 32; ++l) {
-a[l +  0] = (int8_t)((q4[l +  0] & 0xF) | (((qh[l] >> 0) & 3) << 4)) - 32;
+a[l + 0] = (int8_t)((q4[l + 0] & 0xF) | (((qh[l] >> 0) & 3) << 4)) - 32;
 a[l + 32] = (int8_t)((q4[l + 32] & 0xF) | (((qh[l] >> 2) & 3) << 4)) - 32;
-a[l + 64] = (int8_t)((q4[l +  0] >>  4) | (((qh[l] >> 4) & 3) << 4)) - 32;
-a[l + 96] = (int8_t)((q4[l + 32] >>  4) | (((qh[l] >> 6) & 3) << 4)) - 32;
+a[l + 64] = (int8_t)((q4[l + 0] >> 4) | (((qh[l] >> 4) & 3) << 4)) - 32;
+a[l + 96] = (int8_t)((q4[l + 32] >> 4) | (((qh[l] >> 6) & 3) << 4)) - 32;
 }
-a  += 128;
+a += 128;
 q4 += 64;
 qh += 32;
 }
@@ -21322,8 +21322,8 @@ const int nb = n / QK_K;
 #ifdef __ARM_NEON
 float sum = 0;
 const uint8x16_t m4b = vdupq_n_u8(0xF);
-const int8x16_t  m32s = vdupq_n_s8(32);
-const int32x4_t  vzero = vdupq_n_s32(0);
+const int8x16_t m32s = vdupq_n_s8(32);
+const int32x4_t vzero = vdupq_n_s32(0);
 const uint8x16_t mone = vdupq_n_u8(3);
 ggml_v3_int8x16x4_t q6bytes;
 ggml_v3_uint8x16x4_t q6h;
@@ -21331,7 +21331,7 @@ for (int i = 0; i < nb; ++i) {
 const float d_all = (float)x[i].d;
 const uint8_t * restrict q6 = x[i].ql;
 const uint8_t * restrict qh = x[i].qh;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 const int8_t * restrict scale = x[i].scales;
 int32_t isum = 0;
 uint8x16_t qhbits = vld1q_u8(qh);
@@ -21364,7 +21364,7 @@ for (int i = 0; i < nb; ++i) {
 const float d = y[i].d * GGML_V3_FP16_TO_FP32(x[i].d);
 const uint8_t * restrict q4 = x[i].ql;
 const uint8_t * restrict qh = x[i].qh;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 const __m64 scales_1 = _mm_set1_pi8(x[i].scales[0]);
 const __m64 scales_2 = _mm_set1_pi8(x[i].scales[1]);
 const __m64 scales_3 = _mm_set1_pi8(x[i].scales[2]);
@@ -21401,7 +21401,7 @@ for (int i = 0; i < nb; ++i) {
 const float d = y[i].d * GGML_V3_FP16_TO_FP32(x[i].d);
 const uint8_t * restrict q4 = x[i].ql;
 const uint8_t * restrict qh = x[i].qh;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 const __m64 scales_1 = _mm_set1_pi8(x[i].scales[0]);
 const __m64 scales_2 = _mm_set1_pi8(x[i].scales[1]);
 const __m64 scales_3 = _mm_set1_pi8(x[i].scales[2]);
@@ -21449,7 +21449,7 @@ for (int i = 0; i < nb; ++i) {
 const float d_all = (float)x[i].d;
 const uint8_t * restrict q6 = x[i].ql;
 const uint8_t * restrict qh = x[i].qh;
-const int8_t  * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 const int8_t * restrict scale = x[i].scales;
 int32_t isum = 0;
 size_t vl = 16;
@@ -21488,23 +21488,23 @@ sumf += isum * d_all * y[i].d;
 }
 *s = sumf;
 #else
-int8_t  aux8[QK_K];
+int8_t aux8[QK_K];
 int16_t aux16[8];
-float   sums [8];
+float sums [8];
 int32_t aux32[8];
 memset(sums, 0, 8*sizeof(float));
 float sumf = 0;
 for (int i = 0; i < nb; ++i) {
 const uint8_t * restrict q4 = x[i].ql;
 const uint8_t * restrict qh = x[i].qh;
-const  int8_t * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 memset(aux32, 0, 8*sizeof(int32_t));
 int8_t * restrict a = aux8;
 for (int l = 0; l < 16; ++l) {
 a[l+ 0] = (int8_t)((q4[l+ 0] & 0xF) | (((qh[l] >> 0) & 3) << 4)) - 32;
 a[l+16] = (int8_t)((q4[l+16] & 0xF) | (((qh[l] >> 2) & 3) << 4)) - 32;
-a[l+32] = (int8_t)((q4[l+ 0] >>  4) | (((qh[l] >> 4) & 3) << 4)) - 32;
-a[l+48] = (int8_t)((q4[l+16] >>  4) | (((qh[l] >> 6) & 3) << 4)) - 32;
+a[l+32] = (int8_t)((q4[l+ 0] >> 4) | (((qh[l] >> 4) & 3) << 4)) - 32;
+a[l+48] = (int8_t)((q4[l+16] >> 4) | (((qh[l] >> 6) & 3) << 4)) - 32;
 }
 int is = 0;
 for (int j = 0; j < QK_K/16; ++j) {
@@ -21525,43 +21525,43 @@ for (int l = 0; l < 8; ++l) sumf += sums[l];
 }
 #endif
 static const int8_t keven_signs_q2xs[1024] = {
-1,  1,  1,  1,  1,  1,  1,  1, -1,  1,  1,  1,  1,  1,  1, -1,  1, -1,  1,  1,  1,  1,  1, -1, -1, -1,  1,  1,  1,  1,  1,  1,
-1,  1, -1,  1,  1,  1,  1, -1, -1,  1, -1,  1,  1,  1,  1,  1,  1, -1, -1,  1,  1,  1,  1,  1, -1, -1, -1,  1,  1,  1,  1, -1,
-1,  1,  1, -1,  1,  1,  1, -1, -1,  1,  1, -1,  1,  1,  1,  1,  1, -1,  1, -1,  1,  1,  1,  1, -1, -1,  1, -1,  1,  1,  1, -1,
-1,  1, -1, -1,  1,  1,  1,  1, -1,  1, -1, -1,  1,  1,  1, -1,  1, -1, -1, -1,  1,  1,  1, -1, -1, -1, -1, -1,  1,  1,  1,  1,
-1,  1,  1,  1, -1,  1,  1, -1, -1,  1,  1,  1, -1,  1,  1,  1,  1, -1,  1,  1, -1,  1,  1,  1, -1, -1,  1,  1, -1,  1,  1, -1,
-1,  1, -1,  1, -1,  1,  1,  1, -1,  1, -1,  1, -1,  1,  1, -1,  1, -1, -1,  1, -1,  1,  1, -1, -1, -1, -1,  1, -1,  1,  1,  1,
-1,  1,  1, -1, -1,  1,  1,  1, -1,  1,  1, -1, -1,  1,  1, -1,  1, -1,  1, -1, -1,  1,  1, -1, -1, -1,  1, -1, -1,  1,  1,  1,
-1,  1, -1, -1, -1,  1,  1, -1, -1,  1, -1, -1, -1,  1,  1,  1,  1, -1, -1, -1, -1,  1,  1,  1, -1, -1, -1, -1, -1,  1,  1, -1,
-1,  1,  1,  1,  1, -1,  1, -1, -1,  1,  1,  1,  1, -1,  1,  1,  1, -1,  1,  1,  1, -1,  1,  1, -1, -1,  1,  1,  1, -1,  1, -1,
-1,  1, -1,  1,  1, -1,  1,  1, -1,  1, -1,  1,  1, -1,  1, -1,  1, -1, -1,  1,  1, -1,  1, -1, -1, -1, -1,  1,  1, -1,  1,  1,
-1,  1,  1, -1,  1, -1,  1,  1, -1,  1,  1, -1,  1, -1,  1, -1,  1, -1,  1, -1,  1, -1,  1, -1, -1, -1,  1, -1,  1, -1,  1,  1,
-1,  1, -1, -1,  1, -1,  1, -1, -1,  1, -1, -1,  1, -1,  1,  1,  1, -1, -1, -1,  1, -1,  1,  1, -1, -1, -1, -1,  1, -1,  1, -1,
-1,  1,  1,  1, -1, -1,  1,  1, -1,  1,  1,  1, -1, -1,  1, -1,  1, -1,  1,  1, -1, -1,  1, -1, -1, -1,  1,  1, -1, -1,  1,  1,
-1,  1, -1,  1, -1, -1,  1, -1, -1,  1, -1,  1, -1, -1,  1,  1,  1, -1, -1,  1, -1, -1,  1,  1, -1, -1, -1,  1, -1, -1,  1, -1,
-1,  1,  1, -1, -1, -1,  1, -1, -1,  1,  1, -1, -1, -1,  1,  1,  1, -1,  1, -1, -1, -1,  1,  1, -1, -1,  1, -1, -1, -1,  1, -1,
-1,  1, -1, -1, -1, -1,  1,  1, -1,  1, -1, -1, -1, -1,  1, -1,  1, -1, -1, -1, -1, -1,  1, -1, -1, -1, -1, -1, -1, -1,  1,  1,
-1,  1,  1,  1,  1,  1, -1, -1, -1,  1,  1,  1,  1,  1, -1,  1,  1, -1,  1,  1,  1,  1, -1,  1, -1, -1,  1,  1,  1,  1, -1, -1,
-1,  1, -1,  1,  1,  1, -1,  1, -1,  1, -1,  1,  1,  1, -1, -1,  1, -1, -1,  1,  1,  1, -1, -1, -1, -1, -1,  1,  1,  1, -1,  1,
-1,  1,  1, -1,  1,  1, -1,  1, -1,  1,  1, -1,  1,  1, -1, -1,  1, -1,  1, -1,  1,  1, -1, -1, -1, -1,  1, -1,  1,  1, -1,  1,
-1,  1, -1, -1,  1,  1, -1, -1, -1,  1, -1, -1,  1,  1, -1,  1,  1, -1, -1, -1,  1,  1, -1,  1, -1, -1, -1, -1,  1,  1, -1, -1,
-1,  1,  1,  1, -1,  1, -1,  1, -1,  1,  1,  1, -1,  1, -1, -1,  1, -1,  1,  1, -1,  1, -1, -1, -1, -1,  1,  1, -1,  1, -1,  1,
-1,  1, -1,  1, -1,  1, -1, -1, -1,  1, -1,  1, -1,  1, -1,  1,  1, -1, -1,  1, -1,  1, -1,  1, -1, -1, -1,  1, -1,  1, -1, -1,
-1,  1,  1, -1, -1,  1, -1, -1, -1,  1,  1, -1, -1,  1, -1,  1,  1, -1,  1, -1, -1,  1, -1,  1, -1, -1,  1, -1, -1,  1, -1, -1,
-1,  1, -1, -1, -1,  1, -1,  1, -1,  1, -1, -1, -1,  1, -1, -1,  1, -1, -1, -1, -1,  1, -1, -1, -1, -1, -1, -1, -1,  1, -1,  1,
-1,  1,  1,  1,  1, -1, -1,  1, -1,  1,  1,  1,  1, -1, -1, -1,  1, -1,  1,  1,  1, -1, -1, -1, -1, -1,  1,  1,  1, -1, -1,  1,
-1,  1, -1,  1,  1, -1, -1, -1, -1,  1, -1,  1,  1, -1, -1,  1,  1, -1, -1,  1,  1, -1, -1,  1, -1, -1, -1,  1,  1, -1, -1, -1,
-1,  1,  1, -1,  1, -1, -1, -1, -1,  1,  1, -1,  1, -1, -1,  1,  1, -1,  1, -1,  1, -1, -1,  1, -1, -1,  1, -1,  1, -1, -1, -1,
-1,  1, -1, -1,  1, -1, -1,  1, -1,  1, -1, -1,  1, -1, -1, -1,  1, -1, -1, -1,  1, -1, -1, -1, -1, -1, -1, -1,  1, -1, -1,  1,
-1,  1,  1,  1, -1, -1, -1, -1, -1,  1,  1,  1, -1, -1, -1,  1,  1, -1,  1,  1, -1, -1, -1,  1, -1, -1,  1,  1, -1, -1, -1, -1,
-1,  1, -1,  1, -1, -1, -1,  1, -1,  1, -1,  1, -1, -1, -1, -1,  1, -1, -1,  1, -1, -1, -1, -1, -1, -1, -1,  1, -1, -1, -1,  1,
-1,  1,  1, -1, -1, -1, -1,  1, -1,  1,  1, -1, -1, -1, -1, -1,  1, -1,  1, -1, -1, -1, -1, -1, -1, -1,  1, -1, -1, -1, -1,  1,
-1,  1, -1, -1, -1, -1, -1, -1, -1,  1, -1, -1, -1, -1, -1,  1,  1, -1, -1, -1, -1, -1, -1,  1, -1, -1, -1, -1, -1, -1, -1, -1,
+1, 1, 1, 1, 1, 1, 1, 1, -1, 1, 1, 1, 1, 1, 1, -1, 1, -1, 1, 1, 1, 1, 1, -1, -1, -1, 1, 1, 1, 1, 1, 1,
+1, 1, -1, 1, 1, 1, 1, -1, -1, 1, -1, 1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, -1, -1, -1, 1, 1, 1, 1, -1,
+1, 1, 1, -1, 1, 1, 1, -1, -1, 1, 1, -1, 1, 1, 1, 1, 1, -1, 1, -1, 1, 1, 1, 1, -1, -1, 1, -1, 1, 1, 1, -1,
+1, 1, -1, -1, 1, 1, 1, 1, -1, 1, -1, -1, 1, 1, 1, -1, 1, -1, -1, -1, 1, 1, 1, -1, -1, -1, -1, -1, 1, 1, 1, 1,
+1, 1, 1, 1, -1, 1, 1, -1, -1, 1, 1, 1, -1, 1, 1, 1, 1, -1, 1, 1, -1, 1, 1, 1, -1, -1, 1, 1, -1, 1, 1, -1,
+1, 1, -1, 1, -1, 1, 1, 1, -1, 1, -1, 1, -1, 1, 1, -1, 1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, 1, -1, 1, 1, 1,
+1, 1, 1, -1, -1, 1, 1, 1, -1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, -1, -1, 1, 1, -1, -1, -1, 1, -1, -1, 1, 1, 1,
+1, 1, -1, -1, -1, 1, 1, -1, -1, 1, -1, -1, -1, 1, 1, 1, 1, -1, -1, -1, -1, 1, 1, 1, -1, -1, -1, -1, -1, 1, 1, -1,
+1, 1, 1, 1, 1, -1, 1, -1, -1, 1, 1, 1, 1, -1, 1, 1, 1, -1, 1, 1, 1, -1, 1, 1, -1, -1, 1, 1, 1, -1, 1, -1,
+1, 1, -1, 1, 1, -1, 1, 1, -1, 1, -1, 1, 1, -1, 1, -1, 1, -1, -1, 1, 1, -1, 1, -1, -1, -1, -1, 1, 1, -1, 1, 1,
+1, 1, 1, -1, 1, -1, 1, 1, -1, 1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, -1, -1, 1, -1, 1, -1, 1, 1,
+1, 1, -1, -1, 1, -1, 1, -1, -1, 1, -1, -1, 1, -1, 1, 1, 1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, 1, -1, 1, -1,
+1, 1, 1, 1, -1, -1, 1, 1, -1, 1, 1, 1, -1, -1, 1, -1, 1, -1, 1, 1, -1, -1, 1, -1, -1, -1, 1, 1, -1, -1, 1, 1,
+1, 1, -1, 1, -1, -1, 1, -1, -1, 1, -1, 1, -1, -1, 1, 1, 1, -1, -1, 1, -1, -1, 1, 1, -1, -1, -1, 1, -1, -1, 1, -1,
+1, 1, 1, -1, -1, -1, 1, -1, -1, 1, 1, -1, -1, -1, 1, 1, 1, -1, 1, -1, -1, -1, 1, 1, -1, -1, 1, -1, -1, -1, 1, -1,
+1, 1, -1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, -1, 1, -1, 1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, 1, 1,
+1, 1, 1, 1, 1, 1, -1, -1, -1, 1, 1, 1, 1, 1, -1, 1, 1, -1, 1, 1, 1, 1, -1, 1, -1, -1, 1, 1, 1, 1, -1, -1,
+1, 1, -1, 1, 1, 1, -1, 1, -1, 1, -1, 1, 1, 1, -1, -1, 1, -1, -1, 1, 1, 1, -1, -1, -1, -1, -1, 1, 1, 1, -1, 1,
+1, 1, 1, -1, 1, 1, -1, 1, -1, 1, 1, -1, 1, 1, -1, -1, 1, -1, 1, -1, 1, 1, -1, -1, -1, -1, 1, -1, 1, 1, -1, 1,
+1, 1, -1, -1, 1, 1, -1, -1, -1, 1, -1, -1, 1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, -1, 1, 1, -1, -1,
+1, 1, 1, 1, -1, 1, -1, 1, -1, 1, 1, 1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, -1, -1, -1, -1, 1, 1, -1, 1, -1, 1,
+1, 1, -1, 1, -1, 1, -1, -1, -1, 1, -1, 1, -1, 1, -1, 1, 1, -1, -1, 1, -1, 1, -1, 1, -1, -1, -1, 1, -1, 1, -1, -1,
+1, 1, 1, -1, -1, 1, -1, -1, -1, 1, 1, -1, -1, 1, -1, 1, 1, -1, 1, -1, -1, 1, -1, 1, -1, -1, 1, -1, -1, 1, -1, -1,
+1, 1, -1, -1, -1, 1, -1, 1, -1, 1, -1, -1, -1, 1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, 1, -1, 1,
+1, 1, 1, 1, 1, -1, -1, 1, -1, 1, 1, 1, 1, -1, -1, -1, 1, -1, 1, 1, 1, -1, -1, -1, -1, -1, 1, 1, 1, -1, -1, 1,
+1, 1, -1, 1, 1, -1, -1, -1, -1, 1, -1, 1, 1, -1, -1, 1, 1, -1, -1, 1, 1, -1, -1, 1, -1, -1, -1, 1, 1, -1, -1, -1,
+1, 1, 1, -1, 1, -1, -1, -1, -1, 1, 1, -1, 1, -1, -1, 1, 1, -1, 1, -1, 1, -1, -1, 1, -1, -1, 1, -1, 1, -1, -1, -1,
+1, 1, -1, -1, 1, -1, -1, 1, -1, 1, -1, -1, 1, -1, -1, -1, 1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, 1,
+1, 1, 1, 1, -1, -1, -1, -1, -1, 1, 1, 1, -1, -1, -1, 1, 1, -1, 1, 1, -1, -1, -1, 1, -1, -1, 1, 1, -1, -1, -1, -1,
+1, 1, -1, 1, -1, -1, -1, 1, -1, 1, -1, 1, -1, -1, -1, -1, 1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, 1,
+1, 1, 1, -1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, -1, 1, -1, 1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, 1,
+1, 1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, 1, 1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, -1,
 };
 static void ggml_v3_vec_dot_iq2_xxs_q8_K(const int n, float * restrict s, const void * restrict vx, const void * restrict vy) {
 assert(n % QK_K == 0);
 const block_iq2_xxs * restrict x = vx;
-const block_q8_K    * restrict y = vy;
+const block_q8_K * restrict y = vy;
 const int nb = n / QK_K;
 #if defined(__ARM_NEON)
 const uint64_t * signs64 = (const uint64_t *)keven_signs_q2xs;
@@ -21574,7 +21574,7 @@ float sumf = 0;
 for (int i = 0; i < nb; ++i) {
 const float d = GGML_V3_FP16_TO_FP32(x[i].d) * y[i].d;
 const uint16_t * restrict q2 = x[i].qs;
-const int8_t   * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 float sumf1 = 0, sumf2 = 0;
 for (int ib32 = 0; ib32 < QK_K/32; ib32 += 2) {
 q8b = ggml_v3_vld1q_s8_x4(q8); q8 += 64;
@@ -21583,9 +21583,9 @@ q2u.val[0] = vcombine_s8(vld1_s8((const void *)(iq2xxs_grid + aux8[ 0])), vld1_s
 q2u.val[1] = vcombine_s8(vld1_s8((const void *)(iq2xxs_grid + aux8[ 2])), vld1_s8((const void *)(iq2xxs_grid + aux8[ 3])));
 q2u.val[2] = vcombine_s8(vld1_s8((const void *)(iq2xxs_grid + aux8[ 8])), vld1_s8((const void *)(iq2xxs_grid + aux8[ 9])));
 q2u.val[3] = vcombine_s8(vld1_s8((const void *)(iq2xxs_grid + aux8[10])), vld1_s8((const void *)(iq2xxs_grid + aux8[11])));
-q2s.val[0] = vcombine_s8(vld1_s8((const void *)(signs64 + ((aux32[1] >>  0) & 127))), vld1_s8((const void *)(signs64 + ((aux32[1] >>  7) & 127))));
+q2s.val[0] = vcombine_s8(vld1_s8((const void *)(signs64 + ((aux32[1] >> 0) & 127))), vld1_s8((const void *)(signs64 + ((aux32[1] >> 7) & 127))));
 q2s.val[1] = vcombine_s8(vld1_s8((const void *)(signs64 + ((aux32[1] >> 14) & 127))), vld1_s8((const void *)(signs64 + ((aux32[1] >> 21) & 127))));
-q2s.val[2] = vcombine_s8(vld1_s8((const void *)(signs64 + ((aux32[3] >>  0) & 127))), vld1_s8((const void *)(signs64 + ((aux32[3] >>  7) & 127))));
+q2s.val[2] = vcombine_s8(vld1_s8((const void *)(signs64 + ((aux32[3] >> 0) & 127))), vld1_s8((const void *)(signs64 + ((aux32[3] >> 7) & 127))));
 q2s.val[3] = vcombine_s8(vld1_s8((const void *)(signs64 + ((aux32[3] >> 14) & 127))), vld1_s8((const void *)(signs64 + ((aux32[3] >> 21) & 127))));
 q2u.val[0] = vmulq_s8(q2u.val[0], q2s.val[0]);
 q2u.val[1] = vmulq_s8(q2u.val[1], q2s.val[1]);
@@ -21607,7 +21607,7 @@ __m256 accumf = _mm256_setzero_ps();
 for (int i = 0; i < nb; ++i) {
 const float d = GGML_V3_FP16_TO_FP32(x[i].d) * y[i].d;
 const uint16_t * restrict q2 = x[i].qs;
-const int8_t   * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 __m256i sumi1 = _mm256_setzero_si256();
 __m256i sumi2 = _mm256_setzero_si256();
 for (int ib32 = 0; ib32 < QK_K/32; ib32 += 2) {
@@ -21617,13 +21617,13 @@ memcpy(aux32, q2, 4*sizeof(uint32_t)); q2 += 8;
 const __m256i q2_1 = _mm256_set_epi64x(iq2xxs_grid[aux8[ 3]], iq2xxs_grid[aux8[ 2]], iq2xxs_grid[aux8[1]], iq2xxs_grid[aux8[0]]);
 const __m256i q2_2 = _mm256_set_epi64x(iq2xxs_grid[aux8[11]], iq2xxs_grid[aux8[10]], iq2xxs_grid[aux8[9]], iq2xxs_grid[aux8[8]]);
 const __m256i s2_1 = _mm256_set_epi64x(signs64[(aux32[1] >> 21) & 127], signs64[(aux32[1] >> 14) & 127],
-signs64[(aux32[1] >>  7) & 127], signs64[(aux32[1] >>  0) & 127]);
+signs64[(aux32[1] >> 7) & 127], signs64[(aux32[1] >> 0) & 127]);
 const __m256i s2_2 = _mm256_set_epi64x(signs64[(aux32[3] >> 21) & 127], signs64[(aux32[3] >> 14) & 127],
-signs64[(aux32[3] >>  7) & 127], signs64[(aux32[3] >>  0) & 127]);
+signs64[(aux32[3] >> 7) & 127], signs64[(aux32[3] >> 0) & 127]);
 const __m256i q8s_1 = _mm256_sign_epi8(q8_1, s2_1);
 const __m256i q8s_2 = _mm256_sign_epi8(q8_2, s2_2);
-const __m256i dot1  = _mm256_maddubs_epi16(q2_1, q8s_1);
-const __m256i dot2  = _mm256_maddubs_epi16(q2_2, q8s_2);
+const __m256i dot1 = _mm256_maddubs_epi16(q2_1, q8s_1);
+const __m256i dot2 = _mm256_maddubs_epi16(q2_2, q8s_2);
 const uint16_t ls1 = aux32[1] >> 28;
 const uint16_t ls2 = aux32[3] >> 28;
 const __m256i p1 = _mm256_madd_epi16(dot1, _mm256_set1_epi16(2*ls1+1));
@@ -21641,7 +21641,7 @@ float sumf = 0.f;
 for (int i = 0; i < nb; ++i) {
 const float d = GGML_V3_FP16_TO_FP32(x[i].d) * y[i].d;
 const uint16_t * restrict q2 = x[i].qs;
-const int8_t   * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 int32_t bsum = 0;
 for (int ib32 = 0; ib32 < QK_K/32; ++ib32) {
 memcpy(aux32, q2, 2*sizeof(uint32_t));
@@ -21650,7 +21650,7 @@ const uint32_t ls = 2*(aux32[1] >> 28) + 1;
 int32_t sumi = 0;
 for (int l = 0; l < 4; ++l) {
 const uint8_t * grid = (const uint8_t *)(iq2xxs_grid + aux8[l]);
-const uint8_t  signs = ksigns_iq2xs[(aux32[1] >> 7*l) & 127];
+const uint8_t signs = ksigns_iq2xs[(aux32[1] >> 7*l) & 127];
 for (int j = 0; j < 8; ++j) {
 sumi += grid[j] * q8[j] * (signs & kmask_iq2xs[j] ? -1 : 1);
 }
@@ -21666,7 +21666,7 @@ sumf += d * bsum;
 static void ggml_v3_vec_dot_iq2_xs_q8_K(const int n, float * restrict s, const void * restrict vx, const void * restrict vy) {
 assert(n % QK_K == 0);
 const block_iq2_xs * restrict x = vx;
-const block_q8_K   * restrict y = vy;
+const block_q8_K * restrict y = vy;
 const int nb = n / QK_K;
 #if defined(__ARM_NEON)
 const uint64_t * signs64 = (const uint64_t *)keven_signs_q2xs;
@@ -21678,7 +21678,7 @@ float sumf = 0;
 for (int i = 0; i < nb; ++i) {
 const float d = GGML_V3_FP16_TO_FP32(x[i].d) * y[i].d;
 const uint16_t * restrict q2 = x[i].qs;
-const int8_t   * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 const uint8x8_t scales8 = vld1_u8(x[i].scales);
 const uint8x8_t scales_l = vand_u8(scales8, vdup_n_u8(0xf));
 const uint8x8_t scales_h = vshr_n_u8(scales8, 4);
@@ -21730,7 +21730,7 @@ __m256 accumf = _mm256_setzero_ps();
 for (int i = 0; i < nb; ++i) {
 const float d = GGML_V3_FP16_TO_FP32(x[i].d) * y[i].d;
 const uint16_t * restrict q2 = x[i].qs;
-const int8_t   * restrict q8 = y[i].qs;
+const int8_t * restrict q8 = y[i].qs;
 memcpy(&aux64, x[i].scales, 8);
 __m128i stmp = _mm_set1_epi64x(aux64);
 stmp = _mm_unpacklo_epi8(_mm_and_si128(stmp, m4), _mm_and_si128(_mm_srli_epi16(stmp, 4), m4));
@@ -21740,7 +21740,7 @@ __m256i sumi2 = _mm256_setzero_si256();
 for (int ib32 = 0; ib32 < QK_K/32; ib32 += 2) {
 const __m256i q8_1 = _mm256_loadu_si256((const __m256i *)q8); q8 += 32;
 const __m256i q8_2 = _mm256_loadu_si256((const __m256i *)q8); q8 += 32;
-const __m128i q2_data = _mm_loadu_si128((const __m128i*)q2);  q2 +=  8;
+const __m128i q2_data = _mm_loadu_si128((const __m128i*)q2); q2 += 8;
 aux_gindex = _mm_and_si128(q2_data, m511);
 aux_sindex = _mm_and_si128(_mm_srli_epi16(q2_data, 9), m127);
 const __m256i q2_1 = _mm256_set_epi64x(iq2xs_grid[gindex[3]], iq2xs_grid[gindex[2]], iq2xs_grid[gindex[1]], iq2xs_grid[gindex[0]]);
@@ -21749,8 +21749,8 @@ const __m256i s2_1 = _mm256_set_epi64x(signs64[sindex[3]], signs64[sindex[2]], s
 const __m256i s2_2 = _mm256_set_epi64x(signs64[sindex[7]], signs64[sindex[6]], signs64[sindex[5]], signs64[sindex[4]]);
 const __m256i q8s_1 = _mm256_sign_epi8(q8_1, s2_1);
 const __m256i q8s_2 = _mm256_sign_epi8(q8_2, s2_2);
-const __m256i dot1  = _mm256_maddubs_epi16(q2_1, q8s_1);
-const __m256i dot2  = _mm256_maddubs_epi16(q2_2, q8s_2);
+const __m256i dot1 = _mm256_maddubs_epi16(q2_1, q8s_1);
+const __m256i dot2 = _mm256_maddubs_epi16(q2_2, q8s_2);
 const __m256i sc1 = _mm256_cvtepi8_epi16(_mm_shuffle_epi8(scales, get_scale_shuffle(ib32+0)));
 const __m256i sc2 = _mm256_cvtepi8_epi16(_mm_shuffle_epi8(scales, get_scale_shuffle(ib32+1)));
 sumi1 = _mm256_add_epi32(sumi1, _mm256_madd_epi16(dot1, sc1));
@@ -21764,16 +21764,16 @@ float sumf = 0.f;
 for (int i = 0; i < nb; ++i) {
 const float d = GGML_V3_FP16_TO_FP32(x[i].d) * y[i].d;
 const uint16_t * restrict q2 = x[i].qs;
-const uint8_t  * restrict sc = x[i].scales;
-const int8_t   * restrict q8 = y[i].qs;
+const uint8_t * restrict sc = x[i].scales;
+const int8_t * restrict q8 = y[i].qs;
 int32_t bsum = 0;
 for (int ib32 = 0; ib32 < QK_K/32; ++ib32) {
 const uint16_t ls1 = 2*(sc[ib32] & 0xf) + 1;
-const uint16_t ls2 = 2*(sc[ib32] >>  4) + 1;
+const uint16_t ls2 = 2*(sc[ib32] >> 4) + 1;
 int32_t sumi = 0;
 for (int l = 0; l < 2; ++l) {
 const uint8_t * grid = (const uint8_t *)(iq2xs_grid + (q2[l] & 511));
-const uint8_t  signs = ksigns_iq2xs[q2[l] >> 9];
+const uint8_t signs = ksigns_iq2xs[q2[l] >> 9];
 for (int j = 0; j < 8; ++j) {
 sumi += grid[j] * q8[j] * (signs & kmask_iq2xs[j] ? -1 : 1);
 }
@@ -21783,7 +21783,7 @@ bsum += sumi * ls1;
 sumi = 0;
 for (int l = 2; l < 4; ++l) {
 const uint8_t * grid = (const uint8_t *)(iq2xs_grid + (q2[l] & 511));
-const uint8_t  signs = ksigns_iq2xs[q2[l] >> 9];
+const uint8_t signs = ksigns_iq2xs[q2[l] >> 9];
 for (int j = 0; j < 8; ++j) {
 sumi += grid[j] * q8[j] * (signs & kmask_iq2xs[j] ? -1 : 1);
 }

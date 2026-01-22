@@ -1,12 +1,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include "antiword.h"
-#define DEFAULT_LISTCHAR	0x002e
+#define DEFAULT_LISTCHAR 0x002e
 static int
 iGet8InfoLength(int iByteNbr, const UCHAR *aucGrpprl)
 {
-int	iTmp, iDel, iAdd;
-USHORT	usOpCode;
+int iTmp, iDel, iAdd;
+USHORT usOpCode;
 usOpCode = usGetWord(iByteNbr, aucGrpprl);
 switch (usOpCode & 0xe000) {
 case 0x0000: case 0x2000:
@@ -38,9 +38,9 @@ const ULONG *aulBBD, size_t tBBDLen,
 const ULONG *aulSBD, size_t tSBDLen,
 ULONG ulBeginInfo, size_t tInfoLen)
 {
-const ULONG	*aulBlockDepot;
-UCHAR	*aucBuffer;
-size_t	tBlockDepotLen, tBlockSize;
+const ULONG *aulBlockDepot;
+UCHAR *aucBuffer;
+size_t tBlockDepotLen, tBlockSize;
 fail(pFile == NULL || pTable == NULL);
 fail(aulBBD == NULL || aulSBD == NULL);
 fail(tInfoLen == 0);
@@ -74,11 +74,11 @@ const ULONG *aulBBD, size_t tBBDLen,
 const ULONG *aulSBD, size_t tSBDLen,
 const UCHAR *aucHeader)
 {
-document_block_type	tDocument;
-UCHAR	*aucBuffer;
-ULONG	ulBeginDocpInfo, ulTmp;
-size_t	tDocpInfoLen;
-USHORT	usTmp;
+document_block_type tDocument;
+UCHAR *aucBuffer;
+ULONG ulBeginDocpInfo, ulTmp;
+size_t tDocpInfoLen;
+USHORT usTmp;
 fail(pFile == NULL || pTable == NULL || aucHeader == NULL);
 fail(aulBBD == NULL || aulSBD == NULL);
 ulBeginDocpInfo = ulGetLong(0x192, aucHeader);
@@ -109,10 +109,10 @@ static void
 vGet8SectionInfo(const UCHAR *aucGrpprl, size_t tBytes,
 section_block_type *pSection)
 {
-UINT	uiIndex;
-int	iFodoOff, iInfoLen, iSize, iTmp;
-USHORT	usCcol;
-UCHAR	ucTmp;
+UINT uiIndex;
+int iFodoOff, iInfoLen, iSize, iTmp;
+USHORT usCcol;
+UCHAR ucTmp;
 fail(aucGrpprl == NULL || pSection == NULL);
 iFodoOff = 0;
 while (tBytes >= (size_t)iFodoOff + 2) {
@@ -170,12 +170,12 @@ const ULONG *aulBBD, size_t tBBDLen,
 const ULONG *aulSBD, size_t tSBDLen,
 const UCHAR *aucHeader)
 {
-section_block_type	tSection;
-ULONG	*aulSectPage, *aulCharPos;
-UCHAR	*aucBuffer, *aucFpage;
-ULONG	ulBeginOfText, ulTextOffset, ulBeginSectInfo;
-size_t	tSectInfoLen, tIndex, tOffset, tLen, tBytes;
-UCHAR	aucTmp[2];
+section_block_type tSection;
+ULONG *aulSectPage, *aulCharPos;
+UCHAR *aucBuffer, *aucFpage;
+ULONG ulBeginOfText, ulTextOffset, ulBeginSectInfo;
+size_t tSectInfoLen, tIndex, tOffset, tLen, tBytes;
+UCHAR aucTmp[2];
 fail(pFile == NULL || pPPS == NULL || aucHeader == NULL);
 fail(aulBBD == NULL || aulSBD == NULL);
 ulBeginOfText = ulGetLong(0x18, aucHeader);
@@ -247,10 +247,10 @@ const ULONG *aulBBD, size_t tBBDLen,
 const ULONG *aulSBD, size_t tSBDLen,
 const UCHAR *aucHeader)
 {
-ULONG	*aulCharPos;
-UCHAR	*aucBuffer;
-ULONG	ulHdrFtrOffset, ulBeginHdrFtrInfo;
-size_t	tHdrFtrInfoLen, tIndex, tOffset, tLen;
+ULONG *aulCharPos;
+UCHAR *aucBuffer;
+ULONG ulHdrFtrOffset, ulBeginHdrFtrInfo;
+size_t tHdrFtrInfoLen, tIndex, tOffset, tLen;
 fail(pFile == NULL || pTable == NULL || aucHeader == NULL);
 fail(aulBBD == NULL || aulSBD == NULL);
 ulBeginHdrFtrInfo = ulGetLong(0xf2, aucHeader);
@@ -287,13 +287,13 @@ row_info_enum
 eGet8RowInfo(int iFodo,
 const UCHAR *aucGrpprl, int iBytes, row_block_type *pRow)
 {
-int	iFodoOff, iInfoLen;
-int	iIndex, iSize, iCol;
-int	iPosCurr, iPosPrev;
-USHORT	usTmp;
-BOOL	bFound2416_0, bFound2416_1, bFound2417_0, bFound2417_1;
-BOOL	bFound244b_0, bFound244b_1, bFound244c_0, bFound244c_1;
-BOOL	bFoundd608;
+int iFodoOff, iInfoLen;
+int iIndex, iSize, iCol;
+int iPosCurr, iPosPrev;
+USHORT usTmp;
+BOOL bFound2416_0, bFound2416_1, bFound2417_0, bFound2417_1;
+BOOL bFound244b_0, bFound244b_1, bFound244c_0, bFound244c_1;
+BOOL bFoundd608;
 fail(iFodo < 0 || aucGrpprl == NULL || pRow == NULL);
 iFodoOff = 0;
 bFound2416_0 = FALSE;
@@ -443,12 +443,12 @@ void
 vGet8StyleInfo(int iFodo,
 const UCHAR *aucGrpprl, int iBytes, style_block_type *pStyle)
 {
-list_block_type	tList6;
-const list_block_type	*pList;
-int	iFodoOff, iInfoLen;
-int	iTmp, iDel, iAdd, iBefore;
-USHORT	usOpCode, usTmp;
-short	sTmp;
+list_block_type tList6;
+const list_block_type *pList;
+int iFodoOff, iInfoLen;
+int iTmp, iDel, iAdd, iBefore;
+USHORT usOpCode, usTmp;
+short sTmp;
 fail(iFodo < 0 || aucGrpprl == NULL || pStyle == NULL);
 NO_DBG_DEC_C(pStyle->usListIndex != 0, pStyle->usIstd);
 NO_DBG_DEC_C(pStyle->usListIndex != 0, pStyle->usListIndex);
@@ -591,8 +591,8 @@ pStyle->sLeftIndent = pList->sLeftIndent;
 static short
 sGetLeftIndent(const UCHAR *aucGrpprl, size_t tBytes)
 {
-int	iOffset, iInfoLen;
-USHORT	usOpCode, usTmp;
+int iOffset, iInfoLen;
+USHORT usOpCode, usTmp;
 fail(aucGrpprl == NULL);
 iOffset = 0;
 while (tBytes >= (size_t)iOffset + 4) {
@@ -616,18 +616,18 @@ const ULONG *aulBBD, size_t tBBDLen,
 const ULONG *aulSBD, size_t tSBDLen,
 const UCHAR *aucHeader)
 {
-list_block_type	tList;
-const ULONG	*aulBlockDepot;
-UCHAR	*aucLfoInfo, *aucLstfInfo, *aucPapx, *aucXString;
-ULONG	ulBeginLfoInfo, ulBeginLstfInfo, ulBeginLvlfInfo;
-ULONG	ulListID, ulStart;
-size_t	tBlockDepotLen, tBlockSize;
-size_t	tLfoInfoLen, tLstfInfoLen, tPapxLen, tXstLen, tOff;
-size_t	tLstfRecords, tStart, tIndex;
-int	iNums;
-USHORT	usIstd;
-UCHAR	ucTmp, ucListLevel, ucMaxLevel, ucChpxLen;
-UCHAR	aucLvlfInfo[28], aucXst[2];
+list_block_type tList;
+const ULONG *aulBlockDepot;
+UCHAR *aucLfoInfo, *aucLstfInfo, *aucPapx, *aucXString;
+ULONG ulBeginLfoInfo, ulBeginLstfInfo, ulBeginLvlfInfo;
+ULONG ulListID, ulStart;
+size_t tBlockDepotLen, tBlockSize;
+size_t tLfoInfoLen, tLstfInfoLen, tPapxLen, tXstLen, tOff;
+size_t tLstfRecords, tStart, tIndex;
+int iNums;
+USHORT usIstd;
+UCHAR ucTmp, ucListLevel, ucMaxLevel, ucChpxLen;
+UCHAR aucLvlfInfo[28], aucXst[2];
 fail(pFile == NULL || pPPS == NULL || aucHeader == NULL);
 fail(aulBBD == NULL || aulSBD == NULL);
 NO_DBG_DEC(pPPS->tTable.ulSB);
@@ -809,17 +809,17 @@ const ULONG *aulBBD, size_t tBBDLen,
 const ULONG *aulSBD, size_t tSBDLen,
 const UCHAR *aucHeader)
 {
-row_block_type		tRow;
-style_block_type	tStyle;
-ULONG		*aulParfPage;
-UCHAR	*aucBuffer;
-ULONG	ulCharPos, ulCharPosFirst, ulCharPosLast;
-ULONG	ulBeginParfInfo;
-size_t	tParfInfoLen, tOffset, tLen;
-int	iIndex, iIndex2, iRun, iFodo, iLen;
-row_info_enum	eRowInfo;
-USHORT	usIstd;
-UCHAR	aucFpage[BIG_BLOCK_SIZE];
+row_block_type tRow;
+style_block_type tStyle;
+ULONG *aulParfPage;
+UCHAR *aucBuffer;
+ULONG ulCharPos, ulCharPosFirst, ulCharPosLast;
+ULONG ulBeginParfInfo;
+size_t tParfInfoLen, tOffset, tLen;
+int iIndex, iIndex2, iRun, iFodo, iLen;
+row_info_enum eRowInfo;
+USHORT usIstd;
+UCHAR aucFpage[BIG_BLOCK_SIZE];
 fail(pFile == NULL || pPPS == NULL || aucHeader == NULL);
 fail(aulBBD == NULL || aulSBD == NULL);
 ulBeginParfInfo = ulGetLong(0x102, aucHeader);
@@ -926,10 +926,10 @@ void
 vGet8FontInfo(int iFodo, USHORT usIstd,
 const UCHAR *aucGrpprl, int iBytes, font_block_type *pFont)
 {
-long	lTmp;
-int	iFodoOff, iInfoLen;
-USHORT	usFtc0, usFtc1, usFtc2, usTmp;
-UCHAR	ucTmp;
+long lTmp;
+int iFodoOff, iInfoLen;
+USHORT usFtc0, usFtc1, usFtc2, usTmp;
+UCHAR ucTmp;
 fail(iFodo < 0 || aucGrpprl == NULL || pFont == NULL);
 usFtc0 = USHRT_MAX;
 usFtc1 = USHRT_MAX;
@@ -948,10 +948,10 @@ break;
 case 0x0835:
 ucTmp = ucGetByte(iFodo + iFodoOff + 2, aucGrpprl);
 switch (ucTmp) {
-case   0:
+case 0:
 pFont->usFontStyle &= ~FONT_BOLD;
 break;
-case   1:
+case 1:
 pFont->usFontStyle |= FONT_BOLD;
 break;
 case 128:
@@ -968,10 +968,10 @@ break;
 case 0x0836:
 ucTmp = ucGetByte(iFodo + iFodoOff + 2, aucGrpprl);
 switch (ucTmp) {
-case   0:
+case 0:
 pFont->usFontStyle &= ~FONT_ITALIC;
 break;
-case   1:
+case 1:
 pFont->usFontStyle |= FONT_ITALIC;
 break;
 case 128:
@@ -988,10 +988,10 @@ break;
 case 0x0837:
 ucTmp = ucGetByte(iFodo + iFodoOff + 2, aucGrpprl);
 switch (ucTmp) {
-case   0:
+case 0:
 pFont->usFontStyle &= ~FONT_STRIKE;
 break;
-case   1:
+case 1:
 pFont->usFontStyle |= FONT_STRIKE;
 break;
 case 128:
@@ -1008,10 +1008,10 @@ break;
 case 0x083a:
 ucTmp = ucGetByte(iFodo + iFodoOff + 2, aucGrpprl);
 switch (ucTmp) {
-case   0:
+case 0:
 pFont->usFontStyle &= ~FONT_SMALL_CAPITALS;
 break;
-case   1:
+case 1:
 pFont->usFontStyle |= FONT_SMALL_CAPITALS;
 break;
 case 128:
@@ -1028,10 +1028,10 @@ break;
 case 0x083b:
 ucTmp = ucGetByte(iFodo + iFodoOff + 2, aucGrpprl);
 switch (ucTmp) {
-case   0:
+case 0:
 pFont->usFontStyle &= ~FONT_CAPITALS;
 break;
-case   1:
+case 1:
 pFont->usFontStyle |= FONT_CAPITALS;
 break;
 case 128:
@@ -1048,10 +1048,10 @@ break;
 case 0x083c:
 ucTmp = ucGetByte(iFodo + iFodoOff + 2, aucGrpprl);
 switch (ucTmp) {
-case   0:
+case 0:
 pFont->usFontStyle &= ~FONT_HIDDEN;
 break;
-case   1:
+case 1:
 pFont->usFontStyle |= FONT_HIDDEN;
 break;
 case 128:
@@ -1196,10 +1196,10 @@ static BOOL
 bGet8PicInfo(int iFodo,
 const UCHAR *aucGrpprl, int iBytes, picture_block_type *pPicture)
 {
-ULONG	ulTmp;
-int	iFodoOff, iInfoLen;
-BOOL	bFound;
-UCHAR	ucTmp;
+ULONG ulTmp;
+int iFodoOff, iInfoLen;
+BOOL bFound;
+UCHAR ucTmp;
 fail(iFodo <= 0 || aucGrpprl == NULL || pPicture == NULL);
 iFodoOff = 0;
 bFound = FALSE;
@@ -1245,15 +1245,15 @@ const ULONG *aulBBD, size_t tBBDLen,
 const ULONG *aulSBD, size_t tSBDLen,
 const UCHAR *aucHeader)
 {
-font_block_type		tFont;
-picture_block_type	tPicture;
-ULONG		*aulCharPage;
-UCHAR	*aucBuffer;
-ULONG	ulFileOffset, ulCharPos, ulBeginCharInfo;
-size_t	tCharInfoLen, tOffset, tLen;
-int	iIndex, iIndex2, iRun, iFodo, iLen;
-USHORT	usIstd;
-UCHAR	aucFpage[BIG_BLOCK_SIZE];
+font_block_type tFont;
+picture_block_type tPicture;
+ULONG *aulCharPage;
+UCHAR *aucBuffer;
+ULONG ulFileOffset, ulCharPos, ulBeginCharInfo;
+size_t tCharInfoLen, tOffset, tLen;
+int iIndex, iIndex2, iRun, iFodo, iLen;
+USHORT usIstd;
+UCHAR aucFpage[BIG_BLOCK_SIZE];
 fail(pFile == NULL || pPPS == NULL || aucHeader == NULL);
 fail(aulBBD == NULL || aulSBD == NULL);
 ulBeginCharInfo = ulGetLong(0xfa, aucHeader);

@@ -1,6 +1,6 @@
-#include	"lib9.h"
-#include	<a.out.h>
-#include	<dynld.h>
+#include "lib9.h"
+#include <a.out.h>
+#include <dynld.h>
 static ulong
 get2(uchar *b)
 {
@@ -15,8 +15,8 @@ static ulong
 lgetbe(ulong l)
 {
 union {
-ulong	 l;
-uchar	c[4];
+ulong l;
+uchar c[4];
 } u;
 u.l = l;
 return get4(u.c);

@@ -3,9 +3,9 @@
 #include "jpeglib.h"
 #if 0
 const int jpeg_zigzag_order[DCTSIZE2] = {
-0,  1,  5,  6, 14, 15, 27, 28,
-2,  4,  7, 13, 16, 26, 29, 42,
-3,  8, 12, 17, 25, 30, 41, 43,
+0, 1, 5, 6, 14, 15, 27, 28,
+2, 4, 7, 13, 16, 26, 29, 42,
+3, 8, 12, 17, 25, 30, 41, 43,
 9, 11, 18, 24, 31, 40, 44, 53,
 10, 19, 23, 32, 39, 45, 52, 54,
 20, 22, 33, 38, 46, 51, 55, 60,
@@ -14,10 +14,10 @@ const int jpeg_zigzag_order[DCTSIZE2] = {
 };
 #endif
 const int jpeg_natural_order[DCTSIZE2+16] = {
-0,  1,  8, 16,  9,  2,  3, 10,
-17, 24, 32, 25, 18, 11,  4,  5,
+0, 1, 8, 16, 9, 2, 3, 10,
+17, 24, 32, 25, 18, 11, 4, 5,
 12, 19, 26, 33, 40, 48, 41, 34,
-27, 20, 13,  6,  7, 14, 21, 28,
+27, 20, 13, 6, 7, 14, 21, 28,
 35, 42, 49, 56, 57, 50, 43, 36,
 29, 22, 15, 23, 30, 37, 44, 51,
 58, 59, 52, 45, 38, 31, 39, 46,
@@ -37,12 +37,12 @@ a += b - 1L;
 return a - (a % b);
 }
 #ifndef NEED_FAR_POINTERS
-#define FMEMCOPY(dest,src,size)	MEMCOPY(dest,src,size)
-#define FMEMZERO(target,size)	MEMZERO(target,size)
+#define FMEMCOPY(dest,src,size) MEMCOPY(dest,src,size)
+#define FMEMZERO(target,size) MEMZERO(target,size)
 #else
 #ifdef USE_FMEM
-#define FMEMCOPY(dest,src,size)	_fmemcpy((void FAR *)(dest), (const void FAR *)(src), (size_t)(size))
-#define FMEMZERO(target,size)	_fmemset((void FAR *)(target), 0, (size_t)(size))
+#define FMEMCOPY(dest,src,size) _fmemcpy((void FAR *)(dest), (const void FAR *)(src), (size_t)(size))
+#define FMEMZERO(target,size) _fmemset((void FAR *)(target), 0, (size_t)(size))
 #endif
 #endif
 GLOBAL(void)

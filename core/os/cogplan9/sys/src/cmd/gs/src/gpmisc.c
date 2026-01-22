@@ -66,7 +66,7 @@ return true;
 }
 private inline uint
 search_separator(const char **ip, const char *ipe, const char *item, int direction)
-{   uint slen = 0;
+{ uint slen = 0;
 for (slen = 0; (*ip - ipe) * direction < 0; (*ip) += direction)
 if((slen = gs_file_name_check_separator(*ip, ipe - *ip, item)) != 0)
 break;

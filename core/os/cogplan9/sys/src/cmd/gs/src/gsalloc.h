@@ -1,7 +1,7 @@
 #ifndef gsalloc_INCLUDED
-#  define gsalloc_INCLUDED
+# define gsalloc_INCLUDED
 #ifndef gs_ref_memory_DEFINED
-#  define gs_ref_memory_DEFINED
+# define gs_ref_memory_DEFINED
 typedef struct gs_ref_memory_s gs_ref_memory_t;
 #endif
 typedef struct gs_memory_gc_status_s {

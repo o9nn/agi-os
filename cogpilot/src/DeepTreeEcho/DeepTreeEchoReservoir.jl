@@ -69,7 +69,7 @@ reservoir = initialize_deep_tree_echo(base_order=5)
 # Explicitly provide some parameters
 reservoir = initialize_deep_tree_echo(
 order = 8,
-reservoir_size = 17  # A000081-aligned
+reservoir_size = 17 # A000081-aligned
 )
 ```
 """
@@ -161,7 +161,7 @@ initial_multisets = Dict{Int, Multiset}()
 for m in membranes
 initial_multisets[m.label] = Multiset("a" => 1)
 end
-rules = Rule[]  # Start with no rules - will evolve
+rules = Rule[] # Start with no rules - will evolve
 psystem = PSystem(
 membranes = membranes,
 alphabet = alphabet,
@@ -226,7 +226,7 @@ input_dict = Dict(1 => [input_sequence[1, t]])
 step!(reservoir.membrane_network, input_dict)
 # Extract prediction (simplified - would use trained output weights)
 global_state = extract_global_state(reservoir.membrane_network)
-prediction = mean(global_state)  # Placeholder
+prediction = mean(global_state) # Placeholder
 push!(predictions, prediction)
 end
 return predictions
@@ -267,7 +267,7 @@ reservoir.bseries_genome = genome_from_jsurface(reservoir.jsurface_integrator.su
 performance_metrics = Dict{Int, Float64}()
 for (mem_id, _) in reservoir.membrane_network.membranes
 # Simplified performance metric
-performance_metrics[mem_id] = rand()  # Placeholder
+performance_metrics[mem_id] = rand() # Placeholder
 end
 # 3. Adapt membrane topology
 adapt_topology!(reservoir.membrane_network, performance_metrics)

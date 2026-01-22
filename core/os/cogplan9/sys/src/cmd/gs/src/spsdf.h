@@ -1,8 +1,8 @@
 #ifndef spsdf_INCLUDED
-#  define spsdf_INCLUDED
+# define spsdf_INCLUDED
 #include "gsparam.h"
 #ifndef stream_DEFINED
-#  define stream_DEFINED
+# define stream_DEFINED
 typedef struct stream_s stream;
 #endif
 #define PRINT_BINARY_OK 1
@@ -23,7 +23,7 @@ stream *strm;
 param_printer_params_t params;
 bool any;
 } printer_param_list_t;
-#define private_st_printer_param_list()	\
+#define private_st_printer_param_list() \
 gs_private_st_ptrs1(st_printer_param_list, printer_param_list_t,\
 "printer_param_list_t", printer_plist_enum_ptrs, printer_plist_reloc_ptrs,\
 strm)

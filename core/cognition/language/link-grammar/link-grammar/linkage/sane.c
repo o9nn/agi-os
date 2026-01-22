@@ -169,13 +169,13 @@ err_msg(lg_Debug, "\n");
 }
 return inum;
 }
-#define AFFIXTYPE_PREFIX   'p'
-#define AFFIXTYPE_STEM     't'
-#define AFFIXTYPE_SUFFIX   's'
-#define AFFIXTYPE_MIDDLE   'm'
-#define AFFIXTYPE_WORD     'w'
+#define AFFIXTYPE_PREFIX 'p'
+#define AFFIXTYPE_STEM 't'
+#define AFFIXTYPE_SUFFIX 's'
+#define AFFIXTYPE_MIDDLE 'm'
+#define AFFIXTYPE_WORD 'w'
 #ifdef WORD_BOUNDARIES
-#define AFFIXTYPE_END      'b'
+#define AFFIXTYPE_END 'b'
 #endif
 #define D_SLM 8
 bool sane_linkage_morphism(Sentence sent, Linkage lkg, Parse_Options opts)
@@ -269,7 +269,7 @@ prt_error("Category[0]:%u", cdj->category[0].num);
 match_found = false;
 for (wpp = wp_old; NULL != wpp->word; wpp++)
 {
-for (gword_set *gl = cdj->originating_gword; NULL != gl; gl =  gl->next)
+for (gword_set *gl = cdj->originating_gword; NULL != gl; gl = gl->next)
 {
 if (gl->o_gword == wpp->word)
 {
@@ -353,7 +353,7 @@ break;
 PRAGMA_END
 #if DEBUG_morpheme_type
 lgdebug(D_SLM, "Word %zu: %s affixtype=%c\n",
-i, (*w)->subword,  *affix_types_p);
+i, (*w)->subword, *affix_types_p);
 #endif
 affix_types_p++;
 }

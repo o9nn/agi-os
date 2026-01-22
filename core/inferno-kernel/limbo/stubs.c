@@ -1,6 +1,6 @@
 #include "limbo.h"
-static long	stubalign(long offset, int a, char** b, char *e);
-static void		pickadtstub(Type *t);
+static long stubalign(long offset, int a, char** b, char *e);
+static void pickadtstub(Type *t);
 void
 emit(Decl *globals)
 {

@@ -5,9 +5,9 @@
 #include <openssl/ssl.h>
 #include <openssl/err.h>
 #ifdef HAVE_OSSL_PROVIDER_try_load
-#  include <openssl/provider.h>
+# include <openssl/provider.h>
 #else
-#  include <openssl/engine.h>
+# include <openssl/engine.h>
 #endif
 #include <openssl/rand.h>
 static int openssl_init_refcount = 0;
@@ -82,18 +82,18 @@ dovecot_openssl_engine = NULL;
 OPENSSL_cleanup();
 #else
 OBJ_cleanup();
-#  if !defined(OPENSSL_NO_COMP)
+# if !defined(OPENSSL_NO_COMP)
 SSL_COMP_free_compression_methods();
-#  endif
+# endif
 ENGINE_cleanup();
 EVP_cleanup();
 CRYPTO_cleanup_all_ex_data();
-#  ifdef HAVE_OPENSSL_thread_stop
-#  elif defined(HAVE_ERR_remove_thread_state)
+# ifdef HAVE_OPENSSL_thread_stop
+# elif defined(HAVE_ERR_remove_thread_state)
 ERR_remove_thread_state(NULL);
-#  elif defined(HAVE_ERR_remove_state)
+# elif defined(HAVE_ERR_remove_state)
 ERR_remove_state(0);
-#  endif
+# endif
 ERR_free_strings();
 #endif
 return FALSE;

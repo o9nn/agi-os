@@ -19,14 +19,14 @@
 #define GROUP_MAX_EPS_IQ1_S 1e-12f
 #define UNUSED GGML_UNUSED
 #if defined(__POWER9_VECTOR__)
-#define B1(c,s,n)  0x ## n ## c ,  0x ## n ## s
+#define B1(c,s,n) 0x ## n ## c , 0x ## n ## s
 #define B2(c,s,n) B1(c,s,n ## c), B1(c,s,n ## s)
 #define B3(c,s,n) B2(c,s,n ## c), B2(c,s,n ## s)
 #define B4(c,s,n) B3(c,s,n ## c), B3(c,s,n ## s)
 #define B5(c,s,n) B4(c,s,n ## c), B4(c,s,n ## s)
 #define B6(c,s,n) B5(c,s,n ## c), B5(c,s,n ## s)
 #define B7(c,s,n) B6(c,s,n ## c), B6(c,s,n ## s)
-#define B8(c,s  ) B7(c,s,     c), B7(c,s,     s)
+#define B8(c,s ) B7(c,s, c), B7(c,s, s)
 static const uint64_t table_b2b_0[1 << 8] = { B8(00, 10) };
 static const uint64_t table_b2b_1[1 << 8] = { B8(10, 00) };
 #endif
@@ -41,7 +41,7 @@ vector float srcv [8];
 vector float asrcv[8];
 vector float amaxv[8];
 vector signed int vi[8];
-for (int j = 0; j < 8; j++) srcv[j]  = vec_xl(0, x + i*32 + 4*j);
+for (int j = 0; j < 8; j++) srcv[j] = vec_xl(0, x + i*32 + 4*j);
 for (int j = 0; j < 8; j++) asrcv[j] = vec_abs(srcv[j]);
 for (int j = 0; j < 4; j++) amaxv[2*j] = vec_max(asrcv[2*j], asrcv[2*j+1]);
 for (int j = 0; j < 2; j++) amaxv[4*j] = vec_max(amaxv[4*j], amaxv[4*j+2]);
@@ -55,10 +55,10 @@ const float id = d ? 1.0f/d : 0.0f;
 const vector float vid = vec_splats(id);
 y[i].d = GGML_CPU_FP32_TO_FP16(d);
 for (int j = 0; j < 8; j++) {
-const vector float v  = vec_round(vec_mul(srcv[j], vid));
+const vector float v = vec_round(vec_mul(srcv[j], vid));
 vi[j] = vec_cts(v, 0);
 }
-vec_xst(vec_pack(vec_pack(vi[0], vi[1]), vec_pack(vi[2], vi[3])),  0, &y[i].qs[0]);
+vec_xst(vec_pack(vec_pack(vi[0], vi[1]), vec_pack(vi[2], vi[3])), 0, &y[i].qs[0]);
 vec_xst(vec_pack(vec_pack(vi[4], vi[5]), vec_pack(vi[6], vi[7])), 16, &y[i].qs[0]);
 }
 #else
@@ -76,7 +76,7 @@ vector float srcv [8];
 vector float asrcv[8];
 vector float amaxv[8];
 vector signed int vi[8];
-for (int j = 0; j < 8; j++) srcv[j]  = vec_xl(0, x + i*32 + 4*j);
+for (int j = 0; j < 8; j++) srcv[j] = vec_xl(0, x + i*32 + 4*j);
 for (int j = 0; j < 8; j++) asrcv[j] = vec_abs(srcv[j]);
 for (int j = 0; j < 4; j++) amaxv[2*j] = vec_max(asrcv[2*j], asrcv[2*j+1]);
 for (int j = 0; j < 2; j++) amaxv[4*j] = vec_max(amaxv[4*j], amaxv[4*j+2]);
@@ -91,11 +91,11 @@ const vector float vid = vec_splats(id);
 y[i].d = GGML_CPU_FP32_TO_FP16(d);
 vector int accv = vec_splats(0);
 for (int j = 0; j < 8; j++) {
-const vector float v  = vec_round(vec_mul(srcv[j], vid));
+const vector float v = vec_round(vec_mul(srcv[j], vid));
 vi[j] = vec_cts(v, 0);
 accv = vec_add(accv, vi[j]);
 }
-vec_xst(vec_pack(vec_pack(vi[0], vi[1]), vec_pack(vi[2], vi[3])),  0, &y[i].qs[0]);
+vec_xst(vec_pack(vec_pack(vi[0], vi[1]), vec_pack(vi[2], vi[3])), 0, &y[i].qs[0]);
 vec_xst(vec_pack(vec_pack(vi[4], vi[5]), vec_pack(vi[6], vi[7])), 16, &y[i].qs[0]);
 accv = vec_add(accv, vec_sld(accv, accv, 4));
 accv = vec_add(accv, vec_sld(accv, accv, 8));
@@ -240,7 +240,7 @@ vector signed char qh1 = (vector signed char)aux64x2_1;
 vector signed char qxs = (vector signed char)vec_xl( 0, x[ib].qs);
 vector signed char q5x0 = vec_sub(vec_and (qxs, lowMask), qh0);
 vector signed char q5x1 = vec_sub(vec_sr(qxs, v4), qh1);
-vector signed char q8y0 = vec_xl(  0, y[ib].qs);
+vector signed char q8y0 = vec_xl( 0, y[ib].qs);
 vector signed char q8y1 = vec_xl( 16, y[ib].qs);
 vector signed short qv0 = vec_add(vec_mule(q5x0, q8y0), vec_mulo(q5x0, q8y0));
 vector signed short qv1 = vec_add(vec_mule(q5x1, q8y1), vec_mulo(q5x1, q8y1));
@@ -296,7 +296,7 @@ vector signed char qh1 = (vector signed char)aux64x2_1;
 vector signed char qxs = (vector signed char)vec_xl( 0, x[ib].qs);
 vector unsigned char q5x0 = (vector unsigned char)vec_or(vec_and(qxs, lowMask), qh0);
 vector unsigned char q5x1 = (vector unsigned char)vec_or(vec_sr(qxs, v4), qh1);
-vector signed char q8y0 = vec_xl(  0, y[ib].qs);
+vector signed char q8y0 = vec_xl( 0, y[ib].qs);
 vector signed char q8y1 = vec_xl( 16, y[ib].qs);
 vector signed int vsumi0 = v0;
 vsumi0 = vec_msum(q8y0, q5x0, vsumi0);
@@ -419,7 +419,7 @@ vector signed int vsumi5 = v0;
 vector signed int vsumi6 = v0;
 vector signed int vsumi7 = v0;
 const uint8_t * GGML_RESTRICT q2 = x[i].qs;
-const int8_t  * GGML_RESTRICT q8 = y[i].qs;
+const int8_t * GGML_RESTRICT q8 = y[i].qs;
 for (int j = 0; j < QK_K/128; ++j) {
 __builtin_prefetch(q2, 0, 1);
 __builtin_prefetch(q8, 0, 1);
@@ -434,7 +434,7 @@ vector unsigned char q2x10 = (vector unsigned char)vec_and(qxs1, lowMask);
 vector unsigned char q2x11 = (vector unsigned char)vec_and(vec_sr(qxs1, v2), lowMask);
 vector unsigned char q2x12 = (vector unsigned char)vec_and(vec_sr(qxs1, v4), lowMask);
 vector unsigned char q2x13 = (vector unsigned char)vec_and(vec_sr(qxs1, v6), lowMask);
-vector signed char q8y00 = vec_xl(  0, q8);
+vector signed char q8y00 = vec_xl( 0, q8);
 vector signed char q8y10 = vec_xl( 16, q8);
 vector signed char q8y01 = vec_xl( 32, q8);
 vector signed char q8y11 = vec_xl( 48, q8);
@@ -548,7 +548,7 @@ vector signed int vsumi5 = v0;
 vector signed int vsumi6 = v0;
 vector signed int vsumi7 = v0;
 const uint8_t * GGML_RESTRICT q3 = x[i].qs;
-const int8_t  * GGML_RESTRICT q8 = y[i].qs;
+const int8_t * GGML_RESTRICT q8 = y[i].qs;
 for (int j = 0; j < QK_K/128; ++j) {
 __builtin_prefetch(q3, 0, 1);
 __builtin_prefetch(q8, 0, 1);
@@ -581,7 +581,7 @@ vector signed char q3x10 = vec_sub(qxs10, qxh10);
 vector signed char q3x11 = vec_sub(qxs11, qxh11);
 vector signed char q3x12 = vec_sub(qxs12, qxh12);
 vector signed char q3x13 = vec_sub(qxs13, qxh13);
-vector signed char q8y00 = vec_xl(  0, q8);
+vector signed char q8y00 = vec_xl( 0, q8);
 vector signed char q8y10 = vec_xl( 16, q8);
 vector signed char q8y01 = vec_xl( 32, q8);
 vector signed char q8y11 = vec_xl( 48, q8);
@@ -704,7 +704,7 @@ vector signed int vsumi1 = v0;
 vector signed int vsumi2 = v0;
 vector signed int vsumi3 = v0;
 const uint8_t * GGML_RESTRICT q4 = x[i].qs;
-const int8_t  * GGML_RESTRICT q8 = y[i].qs;
+const int8_t * GGML_RESTRICT q8 = y[i].qs;
 for (int j = 0; j < QK_K/64; j+=2) {
 __builtin_prefetch(q4, 0, 1);
 __builtin_prefetch(q8, 0, 1);
@@ -721,7 +721,7 @@ vector unsigned char q4x20 = (vector unsigned char)vec_and(qxs2, lowMask);
 vector unsigned char q4x21 = (vector unsigned char)vec_sr(qxs2, v4);
 vector unsigned char q4x30 = (vector unsigned char)vec_and(qxs3, lowMask);
 vector unsigned char q4x31 = (vector unsigned char)vec_sr(qxs3, v4);
-vector signed char q8y00 = vec_xl(  0, q8);
+vector signed char q8y00 = vec_xl( 0, q8);
 vector signed char q8y10 = vec_xl( 16, q8);
 vector signed char q8y01 = vec_xl( 32, q8);
 vector signed char q8y11 = vec_xl( 48, q8);
@@ -775,7 +775,7 @@ UNUSED(utmp);
 ggml_vec_dot_q4_K_q8_K_generic(n, s, bs, vx, bx, vy, by, nrc);
 #endif
 }
-void ggml_vec_dot_q5_K_q8_K(int n, float * GGML_RESTRICT s, size_t bs, const void * GGML_RESTRICT vx, size_t bx, const void * GGML_RESTRICT vy,  size_t by, int nrc) {
+void ggml_vec_dot_q5_K_q8_K(int n, float * GGML_RESTRICT s, size_t bs, const void * GGML_RESTRICT vx, size_t bx, const void * GGML_RESTRICT vy, size_t by, int nrc) {
 assert(n % QK_K == 0);
 assert(nrc == 1);
 UNUSED(nrc);
@@ -842,7 +842,7 @@ vector signed int vsumi1 = v0;
 vector signed int vsumi2 = v0;
 vector signed int vsumi3 = v0;
 const uint8_t * GGML_RESTRICT q5 = x[i].qs;
-const int8_t  * GGML_RESTRICT q8 = y[i].qs;
+const int8_t * GGML_RESTRICT q8 = y[i].qs;
 for (int j = 0; j < QK_K/64; ++j) {
 __builtin_prefetch(q5, 0, 1);
 __builtin_prefetch(q8, 0, 1);
@@ -939,8 +939,8 @@ vector signed int vsumi6 = v0;
 vector signed int vsumi7 = v0;
 const uint8_t * GGML_RESTRICT q6 = x[i].ql;
 const uint8_t * GGML_RESTRICT qh = x[i].qh;
-const int8_t  * GGML_RESTRICT qs = x[i].scales;
-const int8_t  * GGML_RESTRICT q8 = y[i].qs;
+const int8_t * GGML_RESTRICT qs = x[i].scales;
+const int8_t * GGML_RESTRICT q8 = y[i].qs;
 for (int j = 0; j < QK_K/128; ++j) {
 __builtin_prefetch(q6, 0, 0);
 __builtin_prefetch(qh, 0, 0);
@@ -977,7 +977,7 @@ vector signed char q6x20 = vec_sub(vec_or(qxh20, qxs20), off);
 vector signed char q6x21 = vec_sub(vec_or(qxh21, qxs21), off);
 vector signed char q6x30 = vec_sub(vec_or(qxh30, qxs30), off);
 vector signed char q6x31 = vec_sub(vec_or(qxh31, qxs31), off);
-vector signed char q8y00 = vec_xl(  0, q8);
+vector signed char q8y00 = vec_xl( 0, q8);
 vector signed char q8y10 = vec_xl( 16, q8);
 vector signed char q8y20 = vec_xl( 32, q8);
 vector signed char q8y30 = vec_xl( 48, q8);
@@ -1037,38 +1037,38 @@ ggml_vec_dot_q6_K_q8_K_generic(n, s, bs, vx, bx, vy, by, nrc);
 }
 #if defined (__POWER9_VECTOR__)
 static const int8_t keven_signs_q2xs[1024] = {
-1,  1,  1,  1,  1,  1,  1,  1, -1,  1,  1,  1,  1,  1,  1, -1,  1, -1,  1,  1,  1,  1,  1, -1, -1, -1,  1,  1,  1,  1,  1,  1,
-1,  1, -1,  1,  1,  1,  1, -1, -1,  1, -1,  1,  1,  1,  1,  1,  1, -1, -1,  1,  1,  1,  1,  1, -1, -1, -1,  1,  1,  1,  1, -1,
-1,  1,  1, -1,  1,  1,  1, -1, -1,  1,  1, -1,  1,  1,  1,  1,  1, -1,  1, -1,  1,  1,  1,  1, -1, -1,  1, -1,  1,  1,  1, -1,
-1,  1, -1, -1,  1,  1,  1,  1, -1,  1, -1, -1,  1,  1,  1, -1,  1, -1, -1, -1,  1,  1,  1, -1, -1, -1, -1, -1,  1,  1,  1,  1,
-1,  1,  1,  1, -1,  1,  1, -1, -1,  1,  1,  1, -1,  1,  1,  1,  1, -1,  1,  1, -1,  1,  1,  1, -1, -1,  1,  1, -1,  1,  1, -1,
-1,  1, -1,  1, -1,  1,  1,  1, -1,  1, -1,  1, -1,  1,  1, -1,  1, -1, -1,  1, -1,  1,  1, -1, -1, -1, -1,  1, -1,  1,  1,  1,
-1,  1,  1, -1, -1,  1,  1,  1, -1,  1,  1, -1, -1,  1,  1, -1,  1, -1,  1, -1, -1,  1,  1, -1, -1, -1,  1, -1, -1,  1,  1,  1,
-1,  1, -1, -1, -1,  1,  1, -1, -1,  1, -1, -1, -1,  1,  1,  1,  1, -1, -1, -1, -1,  1,  1,  1, -1, -1, -1, -1, -1,  1,  1, -1,
-1,  1,  1,  1,  1, -1,  1, -1, -1,  1,  1,  1,  1, -1,  1,  1,  1, -1,  1,  1,  1, -1,  1,  1, -1, -1,  1,  1,  1, -1,  1, -1,
-1,  1, -1,  1,  1, -1,  1,  1, -1,  1, -1,  1,  1, -1,  1, -1,  1, -1, -1,  1,  1, -1,  1, -1, -1, -1, -1,  1,  1, -1,  1,  1,
-1,  1,  1, -1,  1, -1,  1,  1, -1,  1,  1, -1,  1, -1,  1, -1,  1, -1,  1, -1,  1, -1,  1, -1, -1, -1,  1, -1,  1, -1,  1,  1,
-1,  1, -1, -1,  1, -1,  1, -1, -1,  1, -1, -1,  1, -1,  1,  1,  1, -1, -1, -1,  1, -1,  1,  1, -1, -1, -1, -1,  1, -1,  1, -1,
-1,  1,  1,  1, -1, -1,  1,  1, -1,  1,  1,  1, -1, -1,  1, -1,  1, -1,  1,  1, -1, -1,  1, -1, -1, -1,  1,  1, -1, -1,  1,  1,
-1,  1, -1,  1, -1, -1,  1, -1, -1,  1, -1,  1, -1, -1,  1,  1,  1, -1, -1,  1, -1, -1,  1,  1, -1, -1, -1,  1, -1, -1,  1, -1,
-1,  1,  1, -1, -1, -1,  1, -1, -1,  1,  1, -1, -1, -1,  1,  1,  1, -1,  1, -1, -1, -1,  1,  1, -1, -1,  1, -1, -1, -1,  1, -1,
-1,  1, -1, -1, -1, -1,  1,  1, -1,  1, -1, -1, -1, -1,  1, -1,  1, -1, -1, -1, -1, -1,  1, -1, -1, -1, -1, -1, -1, -1,  1,  1,
-1,  1,  1,  1,  1,  1, -1, -1, -1,  1,  1,  1,  1,  1, -1,  1,  1, -1,  1,  1,  1,  1, -1,  1, -1, -1,  1,  1,  1,  1, -1, -1,
-1,  1, -1,  1,  1,  1, -1,  1, -1,  1, -1,  1,  1,  1, -1, -1,  1, -1, -1,  1,  1,  1, -1, -1, -1, -1, -1,  1,  1,  1, -1,  1,
-1,  1,  1, -1,  1,  1, -1,  1, -1,  1,  1, -1,  1,  1, -1, -1,  1, -1,  1, -1,  1,  1, -1, -1, -1, -1,  1, -1,  1,  1, -1,  1,
-1,  1, -1, -1,  1,  1, -1, -1, -1,  1, -1, -1,  1,  1, -1,  1,  1, -1, -1, -1,  1,  1, -1,  1, -1, -1, -1, -1,  1,  1, -1, -1,
-1,  1,  1,  1, -1,  1, -1,  1, -1,  1,  1,  1, -1,  1, -1, -1,  1, -1,  1,  1, -1,  1, -1, -1, -1, -1,  1,  1, -1,  1, -1,  1,
-1,  1, -1,  1, -1,  1, -1, -1, -1,  1, -1,  1, -1,  1, -1,  1,  1, -1, -1,  1, -1,  1, -1,  1, -1, -1, -1,  1, -1,  1, -1, -1,
-1,  1,  1, -1, -1,  1, -1, -1, -1,  1,  1, -1, -1,  1, -1,  1,  1, -1,  1, -1, -1,  1, -1,  1, -1, -1,  1, -1, -1,  1, -1, -1,
-1,  1, -1, -1, -1,  1, -1,  1, -1,  1, -1, -1, -1,  1, -1, -1,  1, -1, -1, -1, -1,  1, -1, -1, -1, -1, -1, -1, -1,  1, -1,  1,
-1,  1,  1,  1,  1, -1, -1,  1, -1,  1,  1,  1,  1, -1, -1, -1,  1, -1,  1,  1,  1, -1, -1, -1, -1, -1,  1,  1,  1, -1, -1,  1,
-1,  1, -1,  1,  1, -1, -1, -1, -1,  1, -1,  1,  1, -1, -1,  1,  1, -1, -1,  1,  1, -1, -1,  1, -1, -1, -1,  1,  1, -1, -1, -1,
-1,  1,  1, -1,  1, -1, -1, -1, -1,  1,  1, -1,  1, -1, -1,  1,  1, -1,  1, -1,  1, -1, -1,  1, -1, -1,  1, -1,  1, -1, -1, -1,
-1,  1, -1, -1,  1, -1, -1,  1, -1,  1, -1, -1,  1, -1, -1, -1,  1, -1, -1, -1,  1, -1, -1, -1, -1, -1, -1, -1,  1, -1, -1,  1,
-1,  1,  1,  1, -1, -1, -1, -1, -1,  1,  1,  1, -1, -1, -1,  1,  1, -1,  1,  1, -1, -1, -1,  1, -1, -1,  1,  1, -1, -1, -1, -1,
-1,  1, -1,  1, -1, -1, -1,  1, -1,  1, -1,  1, -1, -1, -1, -1,  1, -1, -1,  1, -1, -1, -1, -1, -1, -1, -1,  1, -1, -1, -1,  1,
-1,  1,  1, -1, -1, -1, -1,  1, -1,  1,  1, -1, -1, -1, -1, -1,  1, -1,  1, -1, -1, -1, -1, -1, -1, -1,  1, -1, -1, -1, -1,  1,
-1,  1, -1, -1, -1, -1, -1, -1, -1,  1, -1, -1, -1, -1, -1,  1,  1, -1, -1, -1, -1, -1, -1,  1, -1, -1, -1, -1, -1, -1, -1, -1,
+1, 1, 1, 1, 1, 1, 1, 1, -1, 1, 1, 1, 1, 1, 1, -1, 1, -1, 1, 1, 1, 1, 1, -1, -1, -1, 1, 1, 1, 1, 1, 1,
+1, 1, -1, 1, 1, 1, 1, -1, -1, 1, -1, 1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, -1, -1, -1, 1, 1, 1, 1, -1,
+1, 1, 1, -1, 1, 1, 1, -1, -1, 1, 1, -1, 1, 1, 1, 1, 1, -1, 1, -1, 1, 1, 1, 1, -1, -1, 1, -1, 1, 1, 1, -1,
+1, 1, -1, -1, 1, 1, 1, 1, -1, 1, -1, -1, 1, 1, 1, -1, 1, -1, -1, -1, 1, 1, 1, -1, -1, -1, -1, -1, 1, 1, 1, 1,
+1, 1, 1, 1, -1, 1, 1, -1, -1, 1, 1, 1, -1, 1, 1, 1, 1, -1, 1, 1, -1, 1, 1, 1, -1, -1, 1, 1, -1, 1, 1, -1,
+1, 1, -1, 1, -1, 1, 1, 1, -1, 1, -1, 1, -1, 1, 1, -1, 1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, 1, -1, 1, 1, 1,
+1, 1, 1, -1, -1, 1, 1, 1, -1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, -1, -1, 1, 1, -1, -1, -1, 1, -1, -1, 1, 1, 1,
+1, 1, -1, -1, -1, 1, 1, -1, -1, 1, -1, -1, -1, 1, 1, 1, 1, -1, -1, -1, -1, 1, 1, 1, -1, -1, -1, -1, -1, 1, 1, -1,
+1, 1, 1, 1, 1, -1, 1, -1, -1, 1, 1, 1, 1, -1, 1, 1, 1, -1, 1, 1, 1, -1, 1, 1, -1, -1, 1, 1, 1, -1, 1, -1,
+1, 1, -1, 1, 1, -1, 1, 1, -1, 1, -1, 1, 1, -1, 1, -1, 1, -1, -1, 1, 1, -1, 1, -1, -1, -1, -1, 1, 1, -1, 1, 1,
+1, 1, 1, -1, 1, -1, 1, 1, -1, 1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, -1, -1, 1, -1, 1, -1, 1, 1,
+1, 1, -1, -1, 1, -1, 1, -1, -1, 1, -1, -1, 1, -1, 1, 1, 1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, 1, -1, 1, -1,
+1, 1, 1, 1, -1, -1, 1, 1, -1, 1, 1, 1, -1, -1, 1, -1, 1, -1, 1, 1, -1, -1, 1, -1, -1, -1, 1, 1, -1, -1, 1, 1,
+1, 1, -1, 1, -1, -1, 1, -1, -1, 1, -1, 1, -1, -1, 1, 1, 1, -1, -1, 1, -1, -1, 1, 1, -1, -1, -1, 1, -1, -1, 1, -1,
+1, 1, 1, -1, -1, -1, 1, -1, -1, 1, 1, -1, -1, -1, 1, 1, 1, -1, 1, -1, -1, -1, 1, 1, -1, -1, 1, -1, -1, -1, 1, -1,
+1, 1, -1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, -1, 1, -1, 1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, 1, 1,
+1, 1, 1, 1, 1, 1, -1, -1, -1, 1, 1, 1, 1, 1, -1, 1, 1, -1, 1, 1, 1, 1, -1, 1, -1, -1, 1, 1, 1, 1, -1, -1,
+1, 1, -1, 1, 1, 1, -1, 1, -1, 1, -1, 1, 1, 1, -1, -1, 1, -1, -1, 1, 1, 1, -1, -1, -1, -1, -1, 1, 1, 1, -1, 1,
+1, 1, 1, -1, 1, 1, -1, 1, -1, 1, 1, -1, 1, 1, -1, -1, 1, -1, 1, -1, 1, 1, -1, -1, -1, -1, 1, -1, 1, 1, -1, 1,
+1, 1, -1, -1, 1, 1, -1, -1, -1, 1, -1, -1, 1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, -1, 1, 1, -1, -1,
+1, 1, 1, 1, -1, 1, -1, 1, -1, 1, 1, 1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, -1, -1, -1, -1, 1, 1, -1, 1, -1, 1,
+1, 1, -1, 1, -1, 1, -1, -1, -1, 1, -1, 1, -1, 1, -1, 1, 1, -1, -1, 1, -1, 1, -1, 1, -1, -1, -1, 1, -1, 1, -1, -1,
+1, 1, 1, -1, -1, 1, -1, -1, -1, 1, 1, -1, -1, 1, -1, 1, 1, -1, 1, -1, -1, 1, -1, 1, -1, -1, 1, -1, -1, 1, -1, -1,
+1, 1, -1, -1, -1, 1, -1, 1, -1, 1, -1, -1, -1, 1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, 1, -1, 1,
+1, 1, 1, 1, 1, -1, -1, 1, -1, 1, 1, 1, 1, -1, -1, -1, 1, -1, 1, 1, 1, -1, -1, -1, -1, -1, 1, 1, 1, -1, -1, 1,
+1, 1, -1, 1, 1, -1, -1, -1, -1, 1, -1, 1, 1, -1, -1, 1, 1, -1, -1, 1, 1, -1, -1, 1, -1, -1, -1, 1, 1, -1, -1, -1,
+1, 1, 1, -1, 1, -1, -1, -1, -1, 1, 1, -1, 1, -1, -1, 1, 1, -1, 1, -1, 1, -1, -1, 1, -1, -1, 1, -1, 1, -1, -1, -1,
+1, 1, -1, -1, 1, -1, -1, 1, -1, 1, -1, -1, 1, -1, -1, -1, 1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, 1,
+1, 1, 1, 1, -1, -1, -1, -1, -1, 1, 1, 1, -1, -1, -1, 1, 1, -1, 1, 1, -1, -1, -1, 1, -1, -1, 1, 1, -1, -1, -1, -1,
+1, 1, -1, 1, -1, -1, -1, 1, -1, 1, -1, 1, -1, -1, -1, -1, 1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, 1,
+1, 1, 1, -1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, -1, 1, -1, 1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, 1,
+1, 1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, 1, 1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, -1,
 };
 #endif
 void ggml_vec_dot_iq2_xxs_q8_K(int n, float * GGML_RESTRICT s, size_t bs, const void * GGML_RESTRICT vx, size_t bx, const void * GGML_RESTRICT vy, size_t by, int nrc) {
@@ -1079,7 +1079,7 @@ UNUSED(bx);
 UNUSED(by);
 UNUSED(bs);
 const block_iq2_xxs * GGML_RESTRICT x = vx;
-const block_q8_K    * GGML_RESTRICT y = vy;
+const block_q8_K * GGML_RESTRICT y = vy;
 const int nb = n / QK_K;
 #if defined(__POWER9_VECTOR__)
 const vector int v0 = vec_splats((int32_t)0);
@@ -1097,7 +1097,7 @@ vector signed int vsumi1 = v0;
 vector signed int vsumi2 = v0;
 vector signed int vsumi3 = v0;
 const uint16_t * GGML_RESTRICT q2 = x[i].qs;
-const int8_t  *  GGML_RESTRICT q8 = y[i].qs;
+const int8_t * GGML_RESTRICT q8 = y[i].qs;
 for (int j = 0; j < QK_K/32; j += 2) {
 __builtin_prefetch(q2, 0, 1);
 __builtin_prefetch(q8, 0, 1);
@@ -1109,9 +1109,9 @@ vector signed long long aux64x2_0 = {*(const int64_t *)(iq2xxs_grid + aux8[ 0]),
 vector signed long long aux64x2_1 = {*(const int64_t *)(iq2xxs_grid + aux8[ 2]), *(const int64_t *)(iq2xxs_grid + aux8[ 3])};
 vector signed long long aux64x2_2 = {*(const int64_t *)(iq2xxs_grid + aux8[ 8]), *(const int64_t *)(iq2xxs_grid + aux8[ 9])};
 vector signed long long aux64x2_3 = {*(const int64_t *)(iq2xxs_grid + aux8[10]), *(const int64_t *)(iq2xxs_grid + aux8[11])};
-vector signed long long vsigns0 = {*(const int64_t *)(signs64 + ((aux32[1] >>  0) & 127)), *(const int64_t *)(signs64 + ((aux32[1] >>  7) & 127))};
+vector signed long long vsigns0 = {*(const int64_t *)(signs64 + ((aux32[1] >> 0) & 127)), *(const int64_t *)(signs64 + ((aux32[1] >> 7) & 127))};
 vector signed long long vsigns1 = {*(const int64_t *)(signs64 + ((aux32[1] >> 14) & 127)), *(const int64_t *)(signs64 + ((aux32[1] >> 21) & 127))};
-vector signed long long vsigns2 = {*(const int64_t *)(signs64 + ((aux32[3] >>  0) & 127)), *(const int64_t *)(signs64 + ((aux32[3] >>  7) & 127))};
+vector signed long long vsigns2 = {*(const int64_t *)(signs64 + ((aux32[3] >> 0) & 127)), *(const int64_t *)(signs64 + ((aux32[3] >> 7) & 127))};
 vector signed long long vsigns3 = {*(const int64_t *)(signs64 + ((aux32[3] >> 14) & 127)), *(const int64_t *)(signs64 + ((aux32[3] >> 21) & 127))};
 vector signed char q2x0 = (vector signed char)vec_mul((vector signed char)vsigns0, (vector signed char)aux64x2_0);
 vector signed char q2x1 = (vector signed char)vec_mul((vector signed char)vsigns1, (vector signed char)aux64x2_1);
@@ -1161,7 +1161,7 @@ UNUSED(bx);
 UNUSED(by);
 UNUSED(bs);
 const block_iq2_xs * GGML_RESTRICT x = vx;
-const block_q8_K   * GGML_RESTRICT y = vy;
+const block_q8_K * GGML_RESTRICT y = vy;
 const int nb = n / QK_K;
 #if defined(__POWER9_VECTOR__)
 const vector int v0 = vec_splats((int32_t)0);
@@ -1179,8 +1179,8 @@ vector signed int vsumi1 = v0;
 vector signed int vsumi2 = v0;
 vector signed int vsumi3 = v0;
 const uint16_t * GGML_RESTRICT q2 = x[i].qs;
-const uint8_t  * GGML_RESTRICT sc = x[i].scales;
-const int8_t  *  GGML_RESTRICT q8 = y[i].qs;
+const uint8_t * GGML_RESTRICT sc = x[i].scales;
+const int8_t * GGML_RESTRICT q8 = y[i].qs;
 for (int j = 0; j < QK_K/64; ++j) {
 __builtin_prefetch(q2, 0, 1);
 __builtin_prefetch(q8, 0, 1);
@@ -1207,9 +1207,9 @@ vector signed short qv1 = vec_add(vec_mule(q2x1, q8y1), vec_mulo(q2x1, q8y1));
 vector signed short qv2 = vec_add(vec_mule(q2x2, q8y2), vec_mulo(q2x2, q8y2));
 vector signed short qv3 = vec_add(vec_mule(q2x3, q8y3), vec_mulo(q2x3, q8y3));
 const uint16_t ls0 = (uint16_t)(sc[0] & 0xf);
-const uint16_t ls1 = (uint16_t)(sc[0] >>  4);
+const uint16_t ls1 = (uint16_t)(sc[0] >> 4);
 const uint16_t ls2 = (uint16_t)(sc[1] & 0xf);
-const uint16_t ls3 = (uint16_t)(sc[1] >>  4);
+const uint16_t ls3 = (uint16_t)(sc[1] >> 4);
 sc += 2;
 vector signed short vscales0 = vec_splats((int16_t)(2*ls0+1));
 vector signed short vscales1 = vec_splats((int16_t)(2*ls1+1));
@@ -1246,7 +1246,7 @@ UNUSED(bx);
 UNUSED(by);
 UNUSED(bs);
 const block_iq2_s * GGML_RESTRICT x = vx;
-const block_q8_K  * GGML_RESTRICT y = vy;
+const block_q8_K * GGML_RESTRICT y = vy;
 const int nb = n / QK_K;
 #if defined(__POWER9_VECTOR__)
 static const uint8_t k_mask1[32] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
@@ -1269,11 +1269,11 @@ vector signed int vsumi0 = v0;
 vector signed int vsumi1 = v0;
 vector signed int vsumi2 = v0;
 vector signed int vsumi3 = v0;
-const uint8_t *  GGML_RESTRICT q2 = x[i].qs;
-const uint8_t *  GGML_RESTRICT qh = x[i].qh;
+const uint8_t * GGML_RESTRICT q2 = x[i].qs;
+const uint8_t * GGML_RESTRICT qh = x[i].qh;
 const uint16_t * GGML_RESTRICT signs = (const uint16_t *)(x[i].qs + QK_K/8);
-const uint8_t *  GGML_RESTRICT sc = x[i].scales;
-const int8_t  *  GGML_RESTRICT q8 = y[i].qs;
+const uint8_t * GGML_RESTRICT sc = x[i].scales;
+const int8_t * GGML_RESTRICT q8 = y[i].qs;
 for (int j = 0; j < QK_K/32; j += 2) {
 __builtin_prefetch(q2, 0, 1);
 __builtin_prefetch(q8, 0, 1);
@@ -1308,9 +1308,9 @@ vector signed short qv1 = vec_add(vec_mule(q2x1, q8y1), vec_mulo(q2x1, q8y1));
 vector signed short qv2 = vec_add(vec_mule(q2x2, q8y2), vec_mulo(q2x2, q8y2));
 vector signed short qv3 = vec_add(vec_mule(q2x3, q8y3), vec_mulo(q2x3, q8y3));
 const uint16_t ls0 = (uint16_t)(sc[0] & 0xf);
-const uint16_t ls1 = (uint16_t)(sc[0] >>  4);
+const uint16_t ls1 = (uint16_t)(sc[0] >> 4);
 const uint16_t ls2 = (uint16_t)(sc[1] & 0xf);
-const uint16_t ls3 = (uint16_t)(sc[1] >>  4);
+const uint16_t ls3 = (uint16_t)(sc[1] >> 4);
 sc += 2;
 vector signed short vscales0 = vec_splats((int16_t)(2*ls0+1));
 vector signed short vscales1 = vec_splats((int16_t)(2*ls1+1));
@@ -1347,7 +1347,7 @@ UNUSED(bx);
 UNUSED(by);
 UNUSED(bs);
 const block_iq3_xxs * GGML_RESTRICT x = vx;
-const block_q8_K    * GGML_RESTRICT y = vy;
+const block_q8_K * GGML_RESTRICT y = vy;
 const int nb = n / QK_K;
 #if defined(__POWER9_VECTOR__)
 const uint64_t * signs64 = (const uint64_t *)keven_signs_q2xs;
@@ -1366,7 +1366,7 @@ vector signed int vsumi2 = v0;
 vector signed int vsumi3 = v0;
 const uint8_t * GGML_RESTRICT q3 = x[i].qs;
 const uint32_t * GGML_RESTRICT signs = (const uint32_t *)(x[i].qs + QK_K/4);
-const int8_t  * GGML_RESTRICT q8 = y[i].qs;
+const int8_t * GGML_RESTRICT q8 = y[i].qs;
 #pragma GCC unroll 1
 for (int j = 0; j < QK_K/32; j += 2) {
 __builtin_prefetch(q3, 0, 1);
@@ -1376,9 +1376,9 @@ vector unsigned int aux32x4_1 = {iq3xxs_grid[q3[ 4]], iq3xxs_grid[q3[ 5]], iq3xx
 vector unsigned int aux32x4_2 = {iq3xxs_grid[q3[ 8]], iq3xxs_grid[q3[ 9]], iq3xxs_grid[q3[10]], iq3xxs_grid[q3[11]]};
 vector unsigned int aux32x4_3 = {iq3xxs_grid[q3[12]], iq3xxs_grid[q3[13]], iq3xxs_grid[q3[14]], iq3xxs_grid[q3[15]]};
 q3 += 16;
-vector unsigned long long aux64x2_0 = {(uint64_t)(signs64[(signs[0] >>  0) & 127]), (uint64_t)(signs64[(signs[0] >>  7) & 127])};
+vector unsigned long long aux64x2_0 = {(uint64_t)(signs64[(signs[0] >> 0) & 127]), (uint64_t)(signs64[(signs[0] >> 7) & 127])};
 vector unsigned long long aux64x2_1 = {(uint64_t)(signs64[(signs[0] >> 14) & 127]), (uint64_t)(signs64[(signs[0] >> 21) & 127])};
-vector unsigned long long aux64x2_2 = {(uint64_t)(signs64[(signs[1] >>  0) & 127]), (uint64_t)(signs64[(signs[1] >>  7) & 127])};
+vector unsigned long long aux64x2_2 = {(uint64_t)(signs64[(signs[1] >> 0) & 127]), (uint64_t)(signs64[(signs[1] >> 7) & 127])};
 vector unsigned long long aux64x2_3 = {(uint64_t)(signs64[(signs[1] >> 14) & 127]), (uint64_t)(signs64[(signs[1] >> 21) & 127])};
 vector signed char q3x0 = vec_mul((vector signed char)aux64x2_0, (vector signed char)aux32x4_0);
 vector signed char q3x1 = vec_mul((vector signed char)aux64x2_1, (vector signed char)aux32x4_1);
@@ -1429,7 +1429,7 @@ UNUSED(bx);
 UNUSED(by);
 UNUSED(bs);
 const block_iq3_s * GGML_RESTRICT x = vx;
-const block_q8_K  * GGML_RESTRICT y = vy;
+const block_q8_K * GGML_RESTRICT y = vy;
 const int nb = n / QK_K;
 #if defined(__POWER9_VECTOR__)
 static const uint8_t k_mask1[32] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
@@ -1448,11 +1448,11 @@ for (int i = 0; i < nb; ++i) {
 vector float vxd = vec_splats(GGML_CPU_FP16_TO_FP32(x[i].d));
 vector float vyd = vec_splats(y[i].d);
 vector float vd = vec_mul(vxd, vyd);
-const uint8_t *  GGML_RESTRICT q3 = x[i].qs;
-const uint8_t *  GGML_RESTRICT qh = x[i].qh;
+const uint8_t * GGML_RESTRICT q3 = x[i].qs;
+const uint8_t * GGML_RESTRICT qh = x[i].qh;
 const uint16_t * GGML_RESTRICT signs = (const uint16_t *)(x[i].signs);
-const uint8_t *  GGML_RESTRICT sc = x[i].scales;
-const int8_t  *  GGML_RESTRICT q8 = y[i].qs;
+const uint8_t * GGML_RESTRICT sc = x[i].scales;
+const int8_t * GGML_RESTRICT q8 = y[i].qs;
 vector signed int vsumi0 = v0;
 vector signed int vsumi1 = v0;
 vector signed int vsumi2 = v0;
@@ -1495,7 +1495,7 @@ vector signed short qv1 = vec_add(vec_mule(q3x1, q8y1), vec_mulo(q3x1, q8y1));
 vector signed short qv2 = vec_add(vec_mule(q3x2, q8y2), vec_mulo(q3x2, q8y2));
 vector signed short qv3 = vec_add(vec_mule(q3x3, q8y3), vec_mulo(q3x3, q8y3));
 const uint16_t ls0 = (uint16_t)(sc[0] & 0xf);
-const uint16_t ls1 = (uint16_t)(sc[0] >>  4);
+const uint16_t ls1 = (uint16_t)(sc[0] >> 4);
 sc ++;
 vector signed short vscales01 = (vector signed short)vec_splats((uint16_t)(2*ls0+1));
 vector signed short vscales23 = (vector signed short)vec_splats((uint16_t)(2*ls1+1));
@@ -1530,7 +1530,7 @@ UNUSED(bx);
 UNUSED(by);
 UNUSED(bs);
 const block_iq1_s * GGML_RESTRICT x = vx;
-const block_q8_K  * GGML_RESTRICT y = vy;
+const block_q8_K * GGML_RESTRICT y = vy;
 const int nb = n / QK_K;
 #if defined(__POWER9_VECTOR__)
 const vector unsigned char v0 = vec_splats((unsigned char)0x0);
@@ -1548,10 +1548,10 @@ vector signed int vsumi1 = vec_splats((int32_t)0);
 vector signed int vsumi2 = vec_splats((int32_t)0);
 vector signed int vsumi3 = vec_splats((int32_t)0);
 vector signed int vsumi8 = vec_splats((int32_t)0);
-const uint8_t  * GGML_RESTRICT q1 = x[i].qs;
+const uint8_t * GGML_RESTRICT q1 = x[i].qs;
 const uint16_t * GGML_RESTRICT qh = x[i].qh;
-const int8_t   * GGML_RESTRICT q8 = y[i].qs;
-const int16_t  * GGML_RESTRICT qs = y[i].bsums;
+const int8_t * GGML_RESTRICT q8 = y[i].qs;
+const int16_t * GGML_RESTRICT qs = y[i].bsums;
 for (int j = 0; j < QK_K/32; j += 2) {
 __builtin_prefetch(q1, 0, 1);
 __builtin_prefetch(qh, 0, 1);
@@ -1620,7 +1620,7 @@ UNUSED(bs);
 assert(n % QK4_NL == 0);
 static_assert(QK4_NL == QK8_0, "QK4_NL and QK8_0 must be the same");
 const block_iq4_nl * GGML_RESTRICT x = vx;
-const block_q8_0   * GGML_RESTRICT y = vy;
+const block_q8_0 * GGML_RESTRICT y = vy;
 const int nb = n / QK4_NL;
 int ib = 0;
 float sumf = 0;
@@ -1676,7 +1676,7 @@ UNUSED(by);
 UNUSED(bs);
 assert(n % QK_K == 0);
 const block_iq4_xs * GGML_RESTRICT x = vx;
-const block_q8_K   * GGML_RESTRICT y = vy;
+const block_q8_K * GGML_RESTRICT y = vy;
 const int nb = n / QK_K;
 #if defined(__POWER9_VECTOR__)
 const vector signed char lowMask = vec_splats((signed char)0xF);
@@ -1698,7 +1698,7 @@ vector signed int vsumi3 = v0;
 uint16_t h = x[ibl].scales_h;
 const uint8_t * GGML_RESTRICT q4 = x[ibl].qs;
 const uint8_t * GGML_RESTRICT sc = x[ibl].scales_l;
-const int8_t  * GGML_RESTRICT q8 = y[ibl].qs;
+const int8_t * GGML_RESTRICT q8 = y[ibl].qs;
 for (int ib = 0; ib < QK_K/64; ib ++ ) {
 __builtin_prefetch(q4, 0, 1);
 __builtin_prefetch(q8, 0, 1);
@@ -1723,7 +1723,7 @@ vector signed short qv1 = vec_add(vec_mule(q4x01, q8y1), vec_mulo(q4x01, q8y1));
 vector signed short qv2 = vec_add(vec_mule(q4x10, q8y2), vec_mulo(q4x10, q8y2));
 vector signed short qv3 = vec_add(vec_mule(q4x11, q8y3), vec_mulo(q4x11, q8y3));
 const uint16_t ls0 = (uint16_t)(((sc[0] & 0xf) | ((h << 4) & 0x30)) - 32);
-const uint16_t ls1 = (uint16_t)(((sc[0] >>  4) | ((h << 2) & 0x30)) - 32);
+const uint16_t ls1 = (uint16_t)(((sc[0] >> 4) | ((h << 2) & 0x30)) - 32);
 h >>= 4;
 sc ++;
 vector signed short vscales01 = vec_splats((int16_t)ls0);

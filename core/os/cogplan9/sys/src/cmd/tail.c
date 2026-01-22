@@ -1,13 +1,13 @@
-#include	<u.h>
-#include	<libc.h>
-#include	<ctype.h>
-#include	<bio.h>
-long	count;
-int	anycount;
-int	follow;
-int	file	= 0;
-char*	umsg	= "usage: tail [-n N] [-c N] [-f] [-r] [+-N[bc][fr]] [file]";
-Biobuf	bout;
+#include <u.h>
+#include <libc.h>
+#include <ctype.h>
+#include <bio.h>
+long count;
+int anycount;
+int follow;
+int file = 0;
+char* umsg = "usage: tail [-n N] [-c N] [-f] [-r] [+-N[bc][fr]] [file]";
+Biobuf bout;
 enum
 {
 BEG,
@@ -23,19 +23,19 @@ enum
 FWD,
 REV
 } dir = FWD;
-extern	void	copy(void);
-extern	void	fatal(char*);
-extern	int	getnumber(char*);
-extern	void	keep(void);
-extern	void	reverse(void);
-extern	void	skip(void);
-extern	void	suffix(char*);
-extern	long	tread(char*, long);
-extern	void	trunc(Dir*, Dir**);
-extern	vlong	tseek(vlong, int);
-extern	void	twrite(char*, long);
-extern	void	usage(void);
-static	int	isseekable(int fd);
+extern void copy(void);
+extern void fatal(char*);
+extern int getnumber(char*);
+extern void keep(void);
+extern void reverse(void);
+extern void skip(void);
+extern void suffix(char*);
+extern long tread(char*, long);
+extern void trunc(Dir*, Dir**);
+extern vlong tseek(vlong, int);
+extern void twrite(char*, long);
+extern void usage(void);
+static int isseekable(int fd);
 #define JUMP(o,p) tseek(o,p), copy()
 void
 main(int argc, char **argv)
@@ -163,7 +163,7 @@ n = count<Bsize? count: Bsize;
 if(!(n = tread(buf, n)))
 return;
 }
-} else  {
+} else {
 n = i = 0;
 while(count > 0) {
 if(!(n = tread(buf, Bsize)))
@@ -304,7 +304,7 @@ origin = BEG;
 if(anycount++)
 fatal("excess option");
 count = atol(s);
-if(count < 0 ||	(int)count != count)
+if(count < 0 || (int)count != count)
 fatal("too big");
 return 1;
 }

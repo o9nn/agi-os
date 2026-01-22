@@ -9,15 +9,15 @@ enum{
 Linktarget = 0x13,
 };
 typedef struct Cisdat {
-uchar	*cisbase;
-int	cispos;
-int	cisskip;
-int	cislen;
+uchar *cisbase;
+int cispos;
+int cisskip;
+int cislen;
 } Cisdat;
-static void	tcfig(PCMslot*, Cisdat*, int);
-static void	tentry(PCMslot*, Cisdat*, int);
-static void	tvers1(PCMslot*, Cisdat*, int);
-static void	tlonglnkmfc(PCMslot*, Cisdat*, int);
+static void tcfig(PCMslot*, Cisdat*, int);
+static void tentry(PCMslot*, Cisdat*, int);
+static void tvers1(PCMslot*, Cisdat*, int);
+static void tlonglnkmfc(PCMslot*, Cisdat*, int);
 static int
 readc(Cisdat *cis, uchar *x)
 {
@@ -385,7 +385,7 @@ static void
 tvers1(PCMslot *pp, Cisdat *cis, int )
 {
 uchar c, major, minor, last;
-int  i;
+int i;
 if(readc(cis, &major) != 1)
 return;
 if(readc(cis, &minor) != 1)
@@ -415,10 +415,10 @@ uchar nfn, space, expect, type, this, link;
 readc(cis, &nfn);
 for(i = 0; i < nfn; i++){
 readc(cis, &space);
-npos        = getlong(cis, 4);
-opos        = cis->cispos;
+npos = getlong(cis, 4);
+opos = cis->cispos;
 cis->cispos = npos;
-expect      = Linktarget;
+expect = Linktarget;
 while(1){
 this = cis->cispos;
 if(readc(cis, &type) != 1)

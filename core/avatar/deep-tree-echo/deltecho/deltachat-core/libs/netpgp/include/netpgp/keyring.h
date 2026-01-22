@@ -4,13 +4,13 @@
 #include "packet-parse.h"
 #include "memory.h"
 enum {
-MAX_ID_LENGTH		= 128,
-MAX_PASSPHRASE_LENGTH	= 256
+MAX_ID_LENGTH = 128,
+MAX_PASSPHRASE_LENGTH = 256
 };
-typedef struct pgp_key_t	pgp_key_t;
+typedef struct pgp_key_t pgp_key_t;
 typedef struct pgp_keyring_t {
-DYNARRAY(pgp_key_t,	key);
-pgp_hash_alg_t	hashtype;
+DYNARRAY(pgp_key_t, key);
+pgp_hash_alg_t hashtype;
 } pgp_keyring_t;
 pgp_key_t *pgp_getkeybyid(pgp_io_t *,
 const pgp_keyring_t *,
@@ -48,7 +48,7 @@ void pgp_keyring_free(pgp_keyring_t *);
 void pgp_keyring_purge(pgp_keyring_t *);
 void pgp_dump_keyring(const pgp_keyring_t *);
 pgp_pubkey_t *pgp_key_get_pubkey(pgp_key_t *);
-unsigned   pgp_is_key_secret(pgp_key_t *);
+unsigned pgp_is_key_secret(pgp_key_t *);
 pgp_seckey_t *pgp_get_seckey(pgp_key_t *);
 pgp_seckey_t *pgp_get_writable_seckey(pgp_key_t *);
 unsigned
@@ -73,7 +73,7 @@ const uint8_t *userid,
 const pgp_subpacket_t *sigpkt,
 const pgp_sig_info_t *siginfo);
 unsigned pgp_add_selfsigned_userid(pgp_key_t *skey, pgp_key_t *pkey, const uint8_t *userid, time_t duration);
-pgp_key_t  *pgp_keydata_new(void);
+pgp_key_t *pgp_keydata_new(void);
 void pgp_keydata_init(pgp_key_t *, const pgp_content_enum);
 char *pgp_export_key(pgp_io_t *, const pgp_key_t *, uint8_t *);
 int pgp_keyring_add(pgp_keyring_t *, const pgp_key_t *);

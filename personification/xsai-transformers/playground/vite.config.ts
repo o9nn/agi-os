@@ -4,21 +4,21 @@ import Unocss from 'unocss/vite'
 import VueRouter from 'unplugin-vue-router/vite'
 import { defineConfig } from 'vite'
 export default defineConfig({
-  plugins: [
-    VueRouter({
-      dts: resolve(import.meta.dirname, 'src', 'typed-router.d.ts'),
-      extensions: ['.vue', '.md'],
-    }),
-    Vue(),
-    Unocss(),
-  ],
-  resolve: {
-    alias: {
-      '@xsai-transformers/chat': resolve(import.meta.dirname, '..', 'packages', 'chat', 'src'),
-      '@xsai-transformers/embed': resolve(import.meta.dirname, '..', 'packages', 'embed', 'src'),
-      '@xsai-transformers/speech': resolve(import.meta.dirname, '..', 'packages', 'speech', 'src'),
-      '@xsai-transformers/transcription': resolve(import.meta.dirname, '..', 'packages', 'transcription', 'src'),
-      'xsai-transformers': resolve(import.meta.dirname, '..', 'packages-top', 'xsai-transformers', 'src'),
-    },
-  },
+plugins: [
+VueRouter({
+dts: resolve(import.meta.dirname, 'src', 'typed-router.d.ts'),
+extensions: ['.vue', '.md'],
+}),
+Vue(),
+Unocss(),
+],
+resolve: {
+alias: {
+'@xsai-transformers/chat': resolve(import.meta.dirname, '..', 'packages', 'chat', 'src'),
+'@xsai-transformers/embed': resolve(import.meta.dirname, '..', 'packages', 'embed', 'src'),
+'@xsai-transformers/speech': resolve(import.meta.dirname, '..', 'packages', 'speech', 'src'),
+'@xsai-transformers/transcription': resolve(import.meta.dirname, '..', 'packages', 'transcription', 'src'),
+'xsai-transformers': resolve(import.meta.dirname, '..', 'packages-top', 'xsai-transformers', 'src'),
+},
+},
 })

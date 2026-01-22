@@ -539,55 +539,55 @@ static struct dev_name_struct {
 const char *name;
 const int num;
 } devices[] = {
-{ "nfs",     0x00ff },
-{ "loop",    0x0700 },
-{ "hda",     0x0300 },
-{ "hdb",     0x0340 },
-{ "hdc",     0x1600 },
-{ "hdd",     0x1640 },
-{ "hde",     0x2100 },
-{ "hdf",     0x2140 },
-{ "hdg",     0x2200 },
-{ "hdh",     0x2240 },
-{ "sda",     0x0800 },
-{ "sdb",     0x0810 },
-{ "sdc",     0x0820 },
-{ "sdd",     0x0830 },
-{ "sde",     0x0840 },
-{ "sdf",     0x0850 },
-{ "sdg",     0x0860 },
-{ "sdh",     0x0870 },
-{ "sdi",     0x0880 },
-{ "sdj",     0x0890 },
-{ "sdk",     0x08a0 },
-{ "sdl",     0x08b0 },
-{ "sdm",     0x08c0 },
-{ "sdn",     0x08d0 },
-{ "sdo",     0x08e0 },
-{ "sdp",     0x08f0 },
-{ "fd",      0x0200 },
-{ "xda",     0x0d00 },
-{ "xdb",     0x0d40 },
-{ "ram",     0x0100 },
-{ "scd",     0x0b00 },
-{ "mcd",     0x1700 },
-{ "cdu535",  0x1800 },
-{ "aztcd",   0x1d00 },
+{ "nfs", 0x00ff },
+{ "loop", 0x0700 },
+{ "hda", 0x0300 },
+{ "hdb", 0x0340 },
+{ "hdc", 0x1600 },
+{ "hdd", 0x1640 },
+{ "hde", 0x2100 },
+{ "hdf", 0x2140 },
+{ "hdg", 0x2200 },
+{ "hdh", 0x2240 },
+{ "sda", 0x0800 },
+{ "sdb", 0x0810 },
+{ "sdc", 0x0820 },
+{ "sdd", 0x0830 },
+{ "sde", 0x0840 },
+{ "sdf", 0x0850 },
+{ "sdg", 0x0860 },
+{ "sdh", 0x0870 },
+{ "sdi", 0x0880 },
+{ "sdj", 0x0890 },
+{ "sdk", 0x08a0 },
+{ "sdl", 0x08b0 },
+{ "sdm", 0x08c0 },
+{ "sdn", 0x08d0 },
+{ "sdo", 0x08e0 },
+{ "sdp", 0x08f0 },
+{ "fd", 0x0200 },
+{ "xda", 0x0d00 },
+{ "xdb", 0x0d40 },
+{ "ram", 0x0100 },
+{ "scd", 0x0b00 },
+{ "mcd", 0x1700 },
+{ "cdu535", 0x1800 },
+{ "aztcd", 0x1d00 },
 { "cm206cd", 0x2000 },
-{ "gscd",    0x1000 },
-{ "sbpcd",   0x1900 },
-{ "sonycd",  0x1800 },
+{ "gscd", 0x1000 },
+{ "sbpcd", 0x1900 },
+{ "sonycd", 0x1800 },
 #ifdef CONFIG_PARIDE_PD
-{ "pda",     0x2d00 },
-{ "pdb",     0x2d10 },
-{ "pdc",     0x2d20 },
-{ "pdd",     0x2d30 },
+{ "pda", 0x2d00 },
+{ "pdb", 0x2d10 },
+{ "pdc", 0x2d20 },
+{ "pdd", 0x2d30 },
 #endif
 #ifdef CONFIG_PARIDE_PCD
-{ "pcd",     0x2e00 },
+{ "pcd", 0x2e00 },
 #endif
 #ifdef CONFIG_PARIDE_PF
-{ "pf",      0x2f00 },
+{ "pf", 0x2f00 },
 #endif
 { NULL, 0 }
 };
@@ -858,7 +858,7 @@ smp_begin();
 extern struct inode *pseudo_root;
 if (pseudo_root != NULL){
 current->fs->root = pseudo_root;
-current->fs->pwd  = pseudo_root;
+current->fs->pwd = pseudo_root;
 }
 }
 #endif

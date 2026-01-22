@@ -1,7 +1,7 @@
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
-#include	"interp.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
+#include "interp.h"
 enum
 {
 Qdir,
@@ -16,22 +16,22 @@ Qgc
 static
 Dirtab memdir[] =
 {
-".",			{Qdir, 0, QTDIR},	0,	DMDIR|0555,
-"memctl",		{Qctl},	0,			0666,
-"memstate",	{Qstate},	0,			0444,
-"memsum",	{Qsum},	0,			0444,
-"memevent",	{Qevent},	0,			0444,
-"memprof",	{Qprof},	0,			0444,
-"memheap",	{Qheap},	0,			0444,
-"memgc",		{Qgc},	0,			0444,
+".", {Qdir, 0, QTDIR}, 0, DMDIR|0555,
+"memctl", {Qctl}, 0, 0666,
+"memstate", {Qstate}, 0, 0444,
+"memsum", {Qsum}, 0, 0444,
+"memevent", {Qevent}, 0, 0444,
+"memprof", {Qprof}, 0, 0444,
+"memheap", {Qheap}, 0, 0444,
+"memgc", {Qgc}, 0, 0444,
 };
 enum
 {
-Pflags=	3<<30,
-Pfree=	0<<30,
-Palloc=	1<<30,
-Paend=	2<<30,
-Pimmutable=	3<<30,
+Pflags= 3<<30,
+Pfree= 0<<30,
+Palloc= 1<<30,
+Paend= 2<<30,
+Pimmutable= 3<<30,
 Npool = 3,
 Nevent = 10000,
 Nstate = 12000
@@ -39,70 +39,70 @@ Nstate = 12000
 typedef struct Pstate Pstate;
 struct Pstate
 {
-ulong	base;
-ulong	size;
+ulong base;
+ulong size;
 };
 static struct
 {
-Pstate	state[3+Nstate];
-Pstate*	lim;
-Pstate*	ptr;
-int	summary;
+Pstate state[3+Nstate];
+Pstate* lim;
+Pstate* ptr;
+int summary;
 } poolstate[Npool];
-static Ref	stateopen;
+static Ref stateopen;
 typedef struct Pevent Pevent;
 struct Pevent
 {
-int	pool;
-ulong	pc;
-ulong	base;
-ulong	size;
+int pool;
+ulong pc;
+ulong base;
+ulong size;
 };
 static struct
 {
-Lock	l;
-Ref	inuse;
-Rendez	r;
-int	open;
-Pevent	events[Nevent];
-int	rd;
-int	wr;
-int	full;
-int	want;
-ulong	lost;
+Lock l;
+Ref inuse;
+Rendez r;
+int open;
+Pevent events[Nevent];
+int rd;
+int wr;
+int full;
+int want;
+ulong lost;
 } poolevents;
 typedef struct Pprof Pprof;
 typedef struct Pbucket Pbucket;
 struct Pbucket
 {
-ulong	val;
-ulong	pool;
-ulong	count;
-ulong	size;
-Pbucket*	next;
+ulong val;
+ulong pool;
+ulong count;
+ulong size;
+Pbucket* next;
 };
 static struct {
-Ref	inuse;
-Lock	l;
-Pbucket	buckets[1000];
-Pbucket	snap[1000];
-int	used;
-int	snapped;
-Pbucket*	hash[128];
-ulong	lost;
+Ref inuse;
+Lock l;
+Pbucket buckets[1000];
+Pbucket snap[1000];
+int used;
+int snapped;
+Pbucket* hash[128];
+ulong lost;
 } memprof;
-extern	void	(*memmonitor)(int, ulong, ulong, ulong);
-extern	ulong	gcnruns;
-extern	ulong	gcsweeps;
-extern	ulong	gcbroken;
-extern	ulong	gchalted;
-extern	ulong	gcepochs;
-extern	uvlong	gcdestroys;
-extern	uvlong	gcinspects;
-extern	uvlong	gcbusy;
-extern	uvlong	gcidle;
-extern	uvlong	gcidlepass;
-extern	uvlong	gcpartial;
+extern void (*memmonitor)(int, ulong, ulong, ulong);
+extern ulong gcnruns;
+extern ulong gcsweeps;
+extern ulong gcbroken;
+extern ulong gchalted;
+extern ulong gcepochs;
+extern uvlong gcdestroys;
+extern uvlong gcinspects;
+extern uvlong gcbusy;
+extern uvlong gcidle;
+extern uvlong gcidlepass;
+extern uvlong gcpartial;
 static void
 mprofreset(void)
 {

@@ -448,13 +448,13 @@ BIO_write(bpart, linebuf, len);
 }
 return 0;
 }
-#define MIME_INVALID    0
-#define MIME_START      1
-#define MIME_TYPE       2
-#define MIME_NAME       3
-#define MIME_VALUE      4
-#define MIME_QUOTE      5
-#define MIME_COMMENT    6
+#define MIME_INVALID 0
+#define MIME_START 1
+#define MIME_TYPE 2
+#define MIME_NAME 3
+#define MIME_VALUE 4
+#define MIME_QUOTE 5
+#define MIME_COMMENT 6
 static STACK_OF(MIME_HEADER) *mime_parse_hdr(BIO *bio)
 {
 char *p, *q, c;

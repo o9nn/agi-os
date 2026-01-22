@@ -11,22 +11,22 @@
 #include "screen.h"
 typedef struct SWcursor SWcursor;
 struct SWcursor {
-ulong	*fb;
+ulong *fb;
 Rectangle r;
-int	d;
-int 	width;
-int	x;
-int	y;
-int	hotx;
-int	hoty;
-uchar	cbwid;
-uchar	f;
-uchar	cwid;
-uchar	chgt;
-int	hidecount;
-uchar	data[CURSWID*CURSHGT];
-uchar	mask[CURSWID*CURSHGT];
-uchar	save[CURSWID*CURSHGT];
+int d;
+int width;
+int x;
+int y;
+int hotx;
+int hoty;
+uchar cbwid;
+uchar f;
+uchar cwid;
+uchar chgt;
+int hidecount;
+uchar data[CURSWID*CURSHGT];
+uchar mask[CURSWID*CURSHGT];
+uchar save[CURSWID*CURSHGT];
 };
 enum {
 CUR_ENA = 0x01,
@@ -34,9 +34,9 @@ CUR_DRW = 0x02,
 CUR_SWP = 0x10,
 };
 static Rectangle cursoroffrect;
-static int	cursorisoff;
+static int cursorisoff;
 static void swcursorflush(int, int);
-static void	swcurs_draw_or_undraw(SWcursor *);
+static void swcurs_draw_or_undraw(SWcursor *);
 static void
 cursorupdate0(void)
 {

@@ -4,15 +4,15 @@
 #include "dat.h"
 #include "protos.h"
 typedef struct{
-uchar	verflags;
-uchar	error;
-uchar	major[2];
-uchar	minor;
-uchar	cmd;
-uchar	tag[4];
+uchar verflags;
+uchar error;
+uchar major[2];
+uchar minor;
+uchar cmd;
+uchar tag[4];
 }Hdr;
 enum{
-Hsize	= 10,
+Hsize = 10,
 };
 enum{
 Omajor,
@@ -20,17 +20,17 @@ Ominor,
 Ocmd,
 };
 static Mux p_mux[] = {
-{"aoeata",	0},
-{"aoecmd",	1},
-{"aoemask",	2},
-{"aoerr",	3},
+{"aoeata", 0},
+{"aoecmd", 1},
+{"aoemask", 2},
+{"aoerr", 3},
 {0},
 };
 static Field p_fields[] =
 {
-{"shelf",	Fnum,	Ominor,		"shelf", },
-{"slot",	Fnum,	Omajor,		"slot",	},
-{"cmd",		Fnum,	Ocmd,		"cmd",	},
+{"shelf", Fnum, Ominor, "shelf", },
+{"slot", Fnum, Omajor, "slot", },
+{"cmd", Fnum, Ocmd, "cmd", },
 {0}
 };
 static void

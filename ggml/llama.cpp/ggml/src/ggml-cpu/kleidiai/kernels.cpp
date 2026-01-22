@@ -17,9 +17,9 @@
 #include "kernels.h"
 #define NELEMS(x) sizeof(x) / sizeof(*x)
 static const size_t INT4_PER_BYTE = 2;
-static const size_t INT4_BITS     = 4;
-static const int Q4_0_ZERO_POINT  = 8;
-const size_t INT4_PER_UINT16      = 4;
+static const size_t INT4_BITS = 4;
+static const int Q4_0_ZERO_POINT = 8;
+const size_t INT4_PER_UINT16 = 4;
 static void dequantize_row_qsi4c32pscalef16(
 const void *packed_data,
 int32_t row_idx,
@@ -373,7 +373,7 @@ for (size_t i = 0; i < NELEMS(gemm_gemv_kernels); ++i) {
 if ((cpu_features & gemm_gemv_kernels[i].required_cpu) == gemm_gemv_kernels[i].required_cpu &&
 gemm_gemv_kernels[i].lhs_type == tensor->src[1]->type &&
 gemm_gemv_kernels[i].rhs_type == tensor->src[0]->type &&
-gemm_gemv_kernels[i].op_type  == tensor->type) {
+gemm_gemv_kernels[i].op_type == tensor->type) {
 kernel = &gemm_gemv_kernels[i];
 break;
 }

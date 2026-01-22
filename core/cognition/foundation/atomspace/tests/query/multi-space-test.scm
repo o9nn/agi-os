@@ -12,16 +12,16 @@
 (Concept "I'm in B")
 (cog-set-atomspace! c)
 (define get-concepts
-	(Get (TypedVariable (Variable "$x") (Type 'Concept))
-		(Variable "$x")))
+(Get (TypedVariable (Variable "$x") (Type 'Concept))
+(Variable "$x")))
 (define set-of-both (cog-execute! get-concepts))
 (test-assert "query for both"
-	(equal? set-of-both (Set (Concept "I'm in A") (Concept "I'm in B"))))
+(equal? set-of-both (Set (Concept "I'm in A") (Concept "I'm in B"))))
 (cog-set-atomspace! a)
 (test-assert "Just atomspace A"
-	(equal? (cog-get-atoms 'Concept) (list (ConceptNode "I'm in A"))))
+(equal? (cog-get-atoms 'Concept) (list (ConceptNode "I'm in A"))))
 (cog-set-atomspace! b)
 (test-assert "Just atomspace B"
-	(equal? (cog-get-atoms 'Concept) (list (ConceptNode "I'm in B"))))
+(equal? (cog-get-atoms 'Concept) (list (ConceptNode "I'm in B"))))
 (test-end tname)
 (opencog-test-end)

@@ -20,8 +20,8 @@
 #include <ipc/ipc_object.h>
 void
 ipc_task_init(
-task_t		task,
-task_t		parent)
+task_t task,
+task_t parent)
 {
 ipc_space_t space;
 ipc_port_t kport;
@@ -57,7 +57,7 @@ itk_unlock(parent);
 }
 void
 ipc_task_enable(
-task_t		task)
+task_t task)
 {
 ipc_port_t kport;
 itk_lock(task);
@@ -68,7 +68,7 @@ itk_unlock(task);
 }
 void
 ipc_task_disable(
-task_t		task)
+task_t task)
 {
 ipc_port_t kport;
 itk_lock(task);
@@ -79,7 +79,7 @@ itk_unlock(task);
 }
 void
 ipc_task_terminate(
-task_t		task)
+task_t task)
 {
 ipc_port_t kport;
 int i;
@@ -158,7 +158,7 @@ if (IP_VALID(thread->ith_exception))
 ipc_port_release_send(thread->ith_exception);
 ipc_port_dealloc_kernel(kport);
 }
-#if	0
+#if 0
 ipc_port_t
 retrieve_task_self(task)
 task_t task;
@@ -190,7 +190,7 @@ return port;
 #endif
 ipc_port_t
 retrieve_task_self_fast(
-task_t		task)
+task_t task)
 {
 ipc_port_t port;
 assert(task == current_task());
@@ -225,7 +225,7 @@ port = ipc_port_copy_send(port);
 ith_unlock(thread);
 return port;
 }
-#if	0
+#if 0
 ipc_port_t
 retrieve_task_exception(task)
 task_t task;
@@ -287,9 +287,9 @@ return name;
 }
 kern_return_t
 task_get_special_port(
-task_t		task,
-int		which,
-ipc_port_t	*portp)
+task_t task,
+int which,
+ipc_port_t *portp)
 {
 ipc_port_t *whichp;
 ipc_port_t port;
@@ -320,9 +320,9 @@ return KERN_SUCCESS;
 }
 kern_return_t
 task_set_special_port(
-task_t			task,
-int			which,
-const ipc_port_t 	port)
+task_t task,
+int which,
+const ipc_port_t port)
 {
 ipc_port_t *whichp;
 ipc_port_t old;
@@ -355,9 +355,9 @@ return KERN_SUCCESS;
 }
 kern_return_t
 thread_get_special_port(
-thread_t 	thread,
-int 		which,
-ipc_port_t 	*portp)
+thread_t thread,
+int which,
+ipc_port_t *portp)
 {
 ipc_port_t *whichp;
 ipc_port_t port;
@@ -385,9 +385,9 @@ return KERN_SUCCESS;
 }
 kern_return_t
 thread_set_special_port(
-thread_t 	thread,
-int 		which,
-ipc_port_t 	port)
+thread_t thread,
+int which,
+ipc_port_t port)
 {
 ipc_port_t *whichp;
 ipc_port_t old;
@@ -417,9 +417,9 @@ return KERN_SUCCESS;
 }
 kern_return_t
 mach_ports_register(
-task_t			task,
-mach_port_array_t	memory,
-mach_msg_type_number_t	portsCnt)
+task_t task,
+mach_port_array_t memory,
+mach_msg_type_number_t portsCnt)
 {
 ipc_port_t ports[TASK_PORT_REGISTER_MAX];
 unsigned i;
@@ -452,9 +452,9 @@ return KERN_SUCCESS;
 }
 kern_return_t
 mach_ports_lookup(
-task_t 			task,
-mach_port_t 		**portsp,
-mach_msg_type_number_t 	*portsCnt)
+task_t task,
+mach_port_t **portsp,
+mach_msg_type_number_t *portsCnt)
 {
 vm_offset_t memory;
 vm_size_t size;
@@ -482,7 +482,7 @@ return KERN_SUCCESS;
 }
 task_t
 convert_port_to_task(
-ipc_port_t	port)
+ipc_port_t port)
 {
 task_t task = TASK_NULL;
 if (IP_VALID(port)) {
@@ -498,7 +498,7 @@ return task;
 }
 ipc_space_t
 convert_port_to_space(
-ipc_port_t	port)
+ipc_port_t port)
 {
 ipc_space_t space = IS_NULL;
 if (IP_VALID(port)) {

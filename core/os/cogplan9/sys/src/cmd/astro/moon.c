@@ -35,7 +35,7 @@ incl = 18461.400;
 cpe = 124.986;
 chp = 3422.451;
 v0 = 342.069128 + 1.6021304820*eday;
-t0 =  98.998753 + 0.9856091138*eday;
+t0 = 98.998753 + 0.9856091138*eday;
 m0 = 293.049675 + 0.5240329445*eday;
 j0 = 237.352319 + 0.0830912295*eday;
 arg1 = 41.1 + 20.2*(capt+.5);
@@ -60,34 +60,34 @@ arg9 *= radian;
 arg10 *= radian;
 dlong +=
 (0.84 *sin(arg1)
-+  0.31 *sin(arg2)
++ 0.31 *sin(arg2)
 + 14.27 *sin(arg3)
-+  7.261*sin(arg4)
-+  0.282*sin(arg5)
-+  0.237*sin(arg6)
-+  0.108*sin(arg7)
-+  0.126*sin(arg8))/3600.;
++ 7.261*sin(arg4)
++ 0.282*sin(arg5)
++ 0.237*sin(arg6)
++ 0.108*sin(arg7)
++ 0.126*sin(arg8))/3600.;
 argp +=
 (- 2.10 *sin(arg1)
--  0.118*sin(arg3)
--  2.076*sin(arg4)
--  0.840*sin(arg5)
--  0.593*sin(arg6))/3600.;
+- 0.118*sin(arg3)
+- 2.076*sin(arg4)
+- 0.840*sin(arg5)
+- 0.593*sin(arg6))/3600.;
 node +=
 (0.63*sin(arg1)
-+  0.17*sin(arg3)
++ 0.17*sin(arg3)
 + 95.96*sin(arg4)
 + 15.58*sin(arg5)
-+  1.86*sin(arg9))/3600.;
++ 1.86*sin(arg9))/3600.;
 t0 +=
 (- 6.40*sin(arg1)
--  1.89*sin(arg6))/3600.;
+- 1.89*sin(arg6))/3600.;
 psun +=
 (6.40*sin(arg1)
-+  1.89*sin(arg6))/3600.;
-dgamma = -  4.318*cos(arg4)
--  0.698*cos(arg5)
--  0.083*cos(arg9);
++ 1.89*sin(arg6))/3600.;
+dgamma = - 4.318*cos(arg4)
+- 0.698*cos(arg5)
+- 0.083*cos(arg9);
 j0 +=
 0.33*sin(arg10);
 k1 = eccm/22639.500;

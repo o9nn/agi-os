@@ -35,9 +35,9 @@ token_count_it->second++;
 ++n_done;
 if (print_progress && n_done % 10000000 == 0) {
 const int64_t t_now_ms = ggml_time_ms();
-const int64_t eta_ms   = (inp_size*(ngram_max-ngram_min+1) - n_done) * (t_now_ms - t_start_ms) / n_done;
-const int64_t eta_min  = eta_ms / (60*1000);
-const int64_t eta_s    = (eta_ms - 60*1000*eta_min) / 1000;
+const int64_t eta_ms = (inp_size*(ngram_max-ngram_min+1) - n_done) * (t_now_ms - t_start_ms) / n_done;
+const int64_t eta_min = eta_ms / (60*1000);
+const int64_t eta_s = (eta_ms - 60*1000*eta_min) / 1000;
 fprintf(stderr, "%s: %" PRId64 "/%" PRId64 " done, ETA: %02" PRId64 ":%02" PRId64 "\n", __func__, n_done, n_todo, eta_min, eta_s);
 }
 }
@@ -46,24 +46,24 @@ fprintf(stderr, "%s: %" PRId64 "/%" PRId64 " done, ETA: %02" PRId64 ":%02" PRId6
 static llama_token get_token(const std::vector<llama_token> & inp, const std::vector<llama_token> & draft, const size_t i) {
 return i < inp.size() ? inp[i] : draft[1 + i - inp.size()];
 }
-constexpr int    draft_min_sample_size_lax[LLAMA_NGRAM_MAX] = { 2,  2,  1,  1};
-constexpr int        draft_min_percent_lax[LLAMA_NGRAM_MAX] = {66, 50, 50, 50};
-constexpr int draft_min_sample_size_strict[LLAMA_NGRAM_MAX] = { 4,  3,  2,  2};
-constexpr int     draft_min_percent_strict[LLAMA_NGRAM_MAX] = {75, 66, 66, 66};
+constexpr int draft_min_sample_size_lax[LLAMA_NGRAM_MAX] = { 2, 2, 1, 1};
+constexpr int draft_min_percent_lax[LLAMA_NGRAM_MAX] = {66, 50, 50, 50};
+constexpr int draft_min_sample_size_strict[LLAMA_NGRAM_MAX] = { 4, 3, 2, 2};
+constexpr int draft_min_percent_strict[LLAMA_NGRAM_MAX] = {75, 66, 66, 66};
 static llama_token try_draft(common_ngram_cache & nc_static, const common_ngram ngram_static) {
 common_ngram_cache::iterator part_static_it = nc_static.find(ngram_static);
 if (part_static_it == nc_static.end()) {
 return LLAMA_TOKEN_NULL;
 }
 const common_ngram_cache_part part_static = part_static_it->second;
-int max_count_static  = 0;
-int sum_count_static  = 0;
+int max_count_static = 0;
+int sum_count_static = 0;
 llama_token max_token = LLAMA_TOKEN_NULL;
 for (std::pair<llama_token, int> token_count_static : part_static) {
 const llama_token token = token_count_static.first;
-const int32_t count_static  = token_count_static.second;
+const int32_t count_static = token_count_static.second;
 if (count_static > max_count_static) {
-max_token        = token;
+max_token = token;
 max_count_static = count_static;
 }
 sum_count_static += count_static;
@@ -88,18 +88,18 @@ continue;
 }
 const common_ngram_cache_part part_primary = part_primary_it->second;
 int max_count_primary = 0;
-int max_count_static  = 0;
+int max_count_static = 0;
 int sum_count_primary = 0;
 llama_token max_token = LLAMA_TOKEN_NULL;
 for (std::pair<llama_token, int> token_count_primary : part_primary) {
 const llama_token token = token_count_primary.first;
 common_ngram_cache_part::iterator token_count_static_it = part_static.find(token);
 const int32_t count_primary = token_count_primary.second;
-const int32_t count_static  = token_count_static_it != part_static.end() ? 100*token_count_static_it->second : 1;
+const int32_t count_static = token_count_static_it != part_static.end() ? 100*token_count_static_it->second : 1;
 if (count_primary*count_static > max_count_primary*max_count_static) {
-max_token         = token;
+max_token = token;
 max_count_primary = count_primary;
-max_count_static  = count_static;
+max_count_static = count_static;
 }
 sum_count_primary += count_primary;
 }
@@ -162,16 +162,16 @@ draft.push_back(drafted_token);
 void common_ngram_cache_save(common_ngram_cache & ngram_cache, std::string & filename) {
 std::ofstream file_out(filename, std::ios::binary);
 for (std::pair<common_ngram, common_ngram_cache_part> item : ngram_cache) {
-const common_ngram      ngram        = item.first;
+const common_ngram ngram = item.first;
 common_ngram_cache_part token_counts = item.second;
 GGML_ASSERT(!token_counts.empty());
 const int32_t ntokens = token_counts.size();
 GGML_ASSERT(ntokens > 0);
-file_out.write(reinterpret_cast<const char *>(&ngram),   sizeof(common_ngram));
+file_out.write(reinterpret_cast<const char *>(&ngram), sizeof(common_ngram));
 file_out.write(reinterpret_cast<const char *>(&ntokens), sizeof(int32_t));
 for (std::pair<llama_token, int32_t> item2 : token_counts) {
 const llama_token token = item2.first;
-const int32_t     count = item2.second;
+const int32_t count = item2.second;
 GGML_ASSERT(count > 0);
 file_out.write(reinterpret_cast<const char *>(&token), sizeof(llama_token));
 file_out.write(reinterpret_cast<const char *>(&count), sizeof(int32_t));
@@ -185,13 +185,13 @@ throw std::ifstream::failure("Unable to open file " + filename);
 }
 common_ngram_cache ngram_cache;
 common_ngram ngram;
-int32_t     ntokens;
+int32_t ntokens;
 llama_token token;
-int32_t     count;
-char * ngramc   = reinterpret_cast<char*>(&ngram);
+int32_t count;
+char * ngramc = reinterpret_cast<char*>(&ngram);
 char * ntokensc = reinterpret_cast<char*>(&ntokens);
-char * tokenc   = reinterpret_cast<char*>(&token);
-char * countc   = reinterpret_cast<char*>(&count);
+char * tokenc = reinterpret_cast<char*>(&token);
+char * countc = reinterpret_cast<char*>(&count);
 while(hashmap_file.read(ngramc, sizeof(common_ngram))) {
 GGML_ASSERT(!hashmap_file.eof());
 GGML_ASSERT(hashmap_file.read(ntokensc, sizeof(int32_t)));
@@ -212,8 +212,8 @@ return ngram_cache;
 }
 void common_ngram_cache_merge(common_ngram_cache & ngram_cache_target, common_ngram_cache & ngram_cache_add) {
 for (std::pair<common_ngram, common_ngram_cache_part> ngram_part : ngram_cache_add) {
-const common_ngram      ngram = ngram_part.first;
-common_ngram_cache_part  part = ngram_part.second;
+const common_ngram ngram = ngram_part.first;
+common_ngram_cache_part part = ngram_part.second;
 common_ngram_cache::iterator part_merged_it = ngram_cache_target.find(ngram);
 if (part_merged_it == ngram_cache_target.end()) {
 ngram_cache_target.emplace(ngram, part);
@@ -221,7 +221,7 @@ continue;
 }
 for (std::pair<llama_token, int32_t> token_count : part) {
 const llama_token token = token_count.first;
-const int32_t     count = token_count.second;
+const int32_t count = token_count.second;
 GGML_ASSERT(count > 0);
 common_ngram_cache_part::iterator token_count_merged_it = part_merged_it->second.find(token);
 if (token_count_merged_it == part_merged_it->second.end()) {

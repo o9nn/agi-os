@@ -8,7 +8,7 @@ struct concap_device_ops;
 struct concap_proto{
 struct device *net_dev;
 struct concap_device_ops *dops;
-struct concap_proto_ops  *pops;
+struct concap_proto_ops *pops;
 int flags;
 void *proto_data;
 };
@@ -18,7 +18,7 @@ int (*connect_req)(struct concap_proto *);
 int (*disconn_req)(struct concap_proto *);
 };
 struct concap_proto_ops{
-struct concap_proto *  (*proto_new) (void);
+struct concap_proto * (*proto_new) (void);
 void (*proto_del)(struct concap_proto *cprot);
 int (*restart)(struct concap_proto *cprot,
 struct device *ndev,

@@ -4,22 +4,22 @@
 #include "pci.h"
 #include "vga.h"
 enum {
-dramInit0		= 0x018/4,
-dramInit1		= 0x01C/4,
-vgaInit0		= 0x028/4,
-pllCtrl0		= 0x040/4,
-pllCtrl1		= 0x044/4,
-pllCtrl2		= 0x048/4,
-dacMode			= 0x04C/4,
-vidProcCfg		= 0x05C/4,
-vidScreenSize		= 0x098/4,
-vidDesktopOverlayStride	= 0x0E8/4,
-Nior			= 0x100/4,
+dramInit0 = 0x018/4,
+dramInit1 = 0x01C/4,
+vgaInit0 = 0x028/4,
+pllCtrl0 = 0x040/4,
+pllCtrl1 = 0x044/4,
+pllCtrl2 = 0x048/4,
+dacMode = 0x04C/4,
+vidProcCfg = 0x05C/4,
+vidScreenSize = 0x098/4,
+vidDesktopOverlayStride = 0x0E8/4,
+Nior = 0x100/4,
 };
 typedef struct Tdfx {
-ulong	io;
-Pcidev*	pci;
-ulong	r[Nior];
+ulong io;
+Pcidev* pci;
+ulong r[Nior];
 } Tdfx;
 static ulong
 io32r(Tdfx* tdfx, int r)

@@ -1,33 +1,33 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"ip.h"
-#include	"ipv6.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "ip.h"
+#include "ipv6.h"
 char *v6hdrtypes[Maxhdrtype] =
 {
-[HBH]		"HopbyHop",
-[ICMP]		"ICMP",
-[IGMP]		"IGMP",
-[GGP]		"GGP",
-[IPINIP]	"IP",
-[ST]		"ST",
-[TCP]		"TCP",
-[UDP]		"UDP",
-[ISO_TP4]	"ISO_TP4",
-[RH]		"Routinghdr",
-[FH]		"Fraghdr",
-[IDRP]		"IDRP",
-[RSVP]		"RSVP",
-[AH]		"Authhdr",
-[ESP]		"ESP",
-[ICMPv6]	"ICMPv6",
-[NNH]		"Nonexthdr",
-[ISO_IP]	"ISO_IP",
-[IGRP]		"IGRP",
-[OSPF]		"OSPF",
+[HBH] "HopbyHop",
+[ICMP] "ICMP",
+[IGMP] "IGMP",
+[GGP] "GGP",
+[IPINIP] "IP",
+[ST] "ST",
+[TCP] "TCP",
+[UDP] "UDP",
+[ISO_TP4] "ISO_TP4",
+[RH] "Routinghdr",
+[FH] "Fraghdr",
+[IDRP] "IDRP",
+[RSVP] "RSVP",
+[AH] "Authhdr",
+[ESP] "ESP",
+[ICMPv6] "ICMPv6",
+[NNH] "Nonexthdr",
+[ISO_IP] "ISO_IP",
+[IGRP] "IGRP",
+[OSPF] "OSPF",
 };
 uchar v6Unspecified[IPaddrlen] = {
 0, 0, 0, 0,

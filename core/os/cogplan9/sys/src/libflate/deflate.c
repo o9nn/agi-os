@@ -1,114 +1,114 @@
 #include <u.h>
 #include <libc.h>
 #include <flate.h>
-typedef struct Chain	Chain;
-typedef struct Chains	Chains;
-typedef struct Dyncode	Dyncode;
-typedef struct Huff	Huff;
-typedef struct LZblock	LZblock;
-typedef struct LZstate	LZstate;
+typedef struct Chain Chain;
+typedef struct Chains Chains;
+typedef struct Dyncode Dyncode;
+typedef struct Huff Huff;
+typedef struct LZblock LZblock;
+typedef struct LZstate LZstate;
 enum
 {
-DeflateUnc	= 0,
-DeflateFix	= 1,
-DeflateDyn	= 2,
-DeflateEob	= 256,
-DeflateMaxBlock	= 64*1024-1,
-DeflateMaxExp	= 10,
-LenStart	= 257,
-Nlitlen		= 288,
-Noff		= 30,
-Nclen		= 19,
-MaxOff		= 32*1024,
-MinMatch	= 3,
-MaxMatch	= 258,
-MaxLeaf		= Nlitlen,
-MaxHuffBits	= 16,
-ChainMem	= 2 * (MaxHuffBits - 1) * MaxHuffBits,
-LenFlag		= 1 << 3,
-LenShift	= 4,
-MaxLitRun	= LenFlag - 1,
-DeflateOut	= 4096,
-BlockSize	= 8192,
-DeflateBlock	= DeflateMaxBlock & ~(BlockSize - 1),
-MinMatchMaxOff	= 4096,
-HistSlop	= 512,
-HistBlock	= 64*1024,
-HistSize	= HistBlock + HistSlop,
-HashLog		= 13,
-HashSize	= 1<<HashLog,
-MaxOffCode	= 256,
-EstLitBits	= 8,
-EstLenBits	= 4,
-EstOffBits	= 5,
+DeflateUnc = 0,
+DeflateFix = 1,
+DeflateDyn = 2,
+DeflateEob = 256,
+DeflateMaxBlock = 64*1024-1,
+DeflateMaxExp = 10,
+LenStart = 257,
+Nlitlen = 288,
+Noff = 30,
+Nclen = 19,
+MaxOff = 32*1024,
+MinMatch = 3,
+MaxMatch = 258,
+MaxLeaf = Nlitlen,
+MaxHuffBits = 16,
+ChainMem = 2 * (MaxHuffBits - 1) * MaxHuffBits,
+LenFlag = 1 << 3,
+LenShift = 4,
+MaxLitRun = LenFlag - 1,
+DeflateOut = 4096,
+BlockSize = 8192,
+DeflateBlock = DeflateMaxBlock & ~(BlockSize - 1),
+MinMatchMaxOff = 4096,
+HistSlop = 512,
+HistBlock = 64*1024,
+HistSize = HistBlock + HistSlop,
+HashLog = 13,
+HashSize = 1<<HashLog,
+MaxOffCode = 256,
+EstLitBits = 8,
+EstLenBits = 4,
+EstOffBits = 5,
 };
-#define hashit(c)	((((ulong)(c) & 0xffffff) * 0x6b43a9b5) >> (32 - HashLog))
+#define hashit(c) ((((ulong)(c) & 0xffffff) * 0x6b43a9b5) >> (32 - HashLog))
 struct LZstate
 {
-uchar	hist[HistSize];
-ulong	pos;
-ulong	avail;
-int	eof;
-ushort	hash[HashSize];
-ushort	nexts[MaxOff];
-int	now;
-int	dot;
-int	prevlen;
-int	prevoff;
-int	maxcheck;
-uchar	obuf[DeflateOut];
-uchar	*out;
-uchar	*eout;
-ulong	bits;
-int	nbits;
-int	rbad;
-int	wbad;
-int	(*w)(void*, void*, int);
-void	*wr;
-ulong	totr;
-ulong	totw;
-int	debug;
+uchar hist[HistSize];
+ulong pos;
+ulong avail;
+int eof;
+ushort hash[HashSize];
+ushort nexts[MaxOff];
+int now;
+int dot;
+int prevlen;
+int prevoff;
+int maxcheck;
+uchar obuf[DeflateOut];
+uchar *out;
+uchar *eout;
+ulong bits;
+int nbits;
+int rbad;
+int wbad;
+int (*w)(void*, void*, int);
+void *wr;
+ulong totr;
+ulong totw;
+int debug;
 };
 struct LZblock
 {
-ushort	parse[DeflateMaxBlock / 2 + 1];
-int	lastv;
-ulong	litlencount[Nlitlen];
-ulong	offcount[Noff];
-ushort	*eparse;
-int	bytes;
-int	excost;
+ushort parse[DeflateMaxBlock / 2 + 1];
+int lastv;
+ulong litlencount[Nlitlen];
+ulong offcount[Noff];
+ushort *eparse;
+int bytes;
+int excost;
 };
 struct Huff
 {
-short	bits;
-ushort	encode;
+short bits;
+ushort encode;
 };
 struct Dyncode
 {
-int	nlit;
-int	noff;
-int	nclen;
-int	ncode;
-Huff	codetab[Nclen];
-uchar	codes[Nlitlen+Noff];
-uchar	codeaux[Nlitlen+Noff];
+int nlit;
+int noff;
+int nclen;
+int ncode;
+Huff codetab[Nclen];
+uchar codes[Nlitlen+Noff];
+uchar codeaux[Nlitlen+Noff];
 };
-static	int	deflateb(LZstate *lz, LZblock *lzb, void *rr, int (*r)(void*, void*, int));
-static	int	lzcomp(LZstate*, LZblock*, uchar*, ushort*, int finish);
-static	void	wrblock(LZstate*, int, ushort*, ushort*, Huff*, Huff*);
-static	int	bitcost(Huff*, ulong*, int);
-static	int	huffcodes(Dyncode*, Huff*, Huff*);
-static	void	wrdyncode(LZstate*, Dyncode*);
-static	void	lzput(LZstate*, ulong bits, int nbits);
-static	void	lzflushbits(LZstate*);
-static	void	lzflush(LZstate *lz);
-static	void	lzwrite(LZstate *lz, void *buf, int n);
-static	int	hufftabinit(Huff*, int, ulong*, int);
-static	int	mkgzprecode(Huff*, ulong *, int, int);
-static	int	mkprecode(Huff*, ulong *, int, int, ulong*);
-static	void	nextchain(Chains*, int);
-static	void	leafsort(ulong*, ushort*, int, int);
+static int deflateb(LZstate *lz, LZblock *lzb, void *rr, int (*r)(void*, void*, int));
+static int lzcomp(LZstate*, LZblock*, uchar*, ushort*, int finish);
+static void wrblock(LZstate*, int, ushort*, ushort*, Huff*, Huff*);
+static int bitcost(Huff*, ulong*, int);
+static int huffcodes(Dyncode*, Huff*, Huff*);
+static void wrdyncode(LZstate*, Dyncode*);
+static void lzput(LZstate*, ulong bits, int nbits);
+static void lzflushbits(LZstate*);
+static void lzflush(LZstate *lz);
+static void lzwrite(LZstate *lz, void *buf, int n);
+static int hufftabinit(Huff*, int, ulong*, int);
+static int mkgzprecode(Huff*, ulong *, int, int);
+static int mkprecode(Huff*, ulong *, int, int, ulong*);
+static void nextchain(Chains*, int);
+static void leafsort(ulong*, ushort*, int, int);
 static int lencode[MaxMatch];
 static int offcode[MaxOffCode];
 static int bigoffcode[256];
@@ -123,21 +123,21 @@ static int litlenextra[Nlitlen-LenStart] =
 static int offbase[Noff];
 static int offextra[] =
 {
-0,  0,  0,  0,  1,  1,  2,  2,  3,  3,
-4,  4,  5,  5,  6,  6,  7,  7,  8,  8,
-9,  9,  10, 10, 11, 11, 12, 12, 13, 13,
-0,  0,
+0, 0, 0, 0, 1, 1, 2, 2, 3, 3,
+4, 4, 5, 5, 6, 6, 7, 7, 8, 8,
+9, 9, 10, 10, 11, 11, 12, 12, 13, 13,
+0, 0,
 };
 static int clenorder[Nclen] =
 {
 16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15
 };
-static	Huff	litlentab[Nlitlen];
-static	Huff	offtab[Noff];
-static	Huff	hofftab[Noff];
-static	uchar	revtab[256];
-static	ulong	nlits;
-static	ulong	nmatches;
+static Huff litlentab[Nlitlen];
+static Huff offtab[Noff];
+static Huff hofftab[Noff];
+static uchar revtab[256];
+static ulong nlits;
+static ulong nmatches;
 int
 deflateinit(void)
 {
@@ -824,23 +824,23 @@ return 1;
 }
 struct Chain
 {
-ulong	count;
-ushort	leaf;
-char	col;
-char	gen;
-Chain	*up;
+ulong count;
+ushort leaf;
+char col;
+char gen;
+Chain *up;
 };
 struct Chains
 {
-Chain	*lists[(MaxHuffBits - 1) * 2];
-ulong	leafcount[MaxLeaf];
-ushort	leafmap[MaxLeaf];
-int	nleaf;
-Chain	chains[ChainMem];
-Chain	*echains;
-Chain	*free;
-char	col;
-int	nlists;
+Chain *lists[(MaxHuffBits - 1) * 2];
+ulong leafcount[MaxLeaf];
+ushort leafmap[MaxLeaf];
+int nleaf;
+Chain chains[ChainMem];
+Chain *echains;
+Chain *free;
+char col;
+int nlists;
 };
 static int
 mkprecode(Huff *tab, ulong *count, int n, int maxbits, ulong *bitcount)
@@ -974,7 +974,7 @@ return pk;
 }
 return pj;
 }
-static	void
+static void
 leafsort(ulong *leafcount, ushort *leafmap, int a, int n)
 {
 ulong t;

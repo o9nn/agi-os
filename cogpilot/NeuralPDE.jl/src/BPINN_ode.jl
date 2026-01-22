@@ -163,7 +163,7 @@ output_matrices = [Vector{Vector{Float32}}() for _ in 1:numoutput]
 # Loop through each element in `luxar`
 for element in luxar
 for i in 1:numoutput
-push!(output_matrices[i], element[i, :])  # Append the i-th output (i-th row) to the i-th output_matrices
+push!(output_matrices[i], element[i, :]) # Append the i-th output (i-th row) to the i-th output_matrices
 end
 end
 for r in 1:numoutput

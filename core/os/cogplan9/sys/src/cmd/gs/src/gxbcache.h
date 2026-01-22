@@ -1,5 +1,5 @@
 #ifndef gxbcache_INCLUDED
-#  define gxbcache_INCLUDED
+# define gxbcache_INCLUDED
 #include "gxbitmap.h"
 typedef struct gx_cached_bits_head_s {
 uint size;
@@ -8,7 +8,7 @@ uint depth;
 #define cb_head_is_free(cbh) ((cbh)->depth == 0)
 #define cb_head_set_free(cbh) ((cbh)->depth = 0)
 #define gx_cached_bits_common\
-gx_cached_bits_head head;	\
+gx_cached_bits_head head; \
 \
 \
 ushort width, height, shift;\
@@ -30,10 +30,10 @@ uint size;
 uint allocated;
 };
 #define gx_bits_cache_common\
-gx_bits_cache_chunk *chunks;	\
-uint cnext;			\
+gx_bits_cache_chunk *chunks; \
+uint cnext; \
 \
-uint bsize;			\
+uint bsize; \
 uint csize
 typedef struct gx_bits_cache_s {
 gx_bits_cache_common;

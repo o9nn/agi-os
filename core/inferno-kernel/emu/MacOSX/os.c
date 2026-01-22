@@ -1,21 +1,21 @@
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
 #include <raise.h>
 #undef _POSIX_C_SOURCE
 #undef getwd
-#include	<unistd.h>
-#include        <pthread.h>
-#include	<time.h>
-#include	<termios.h>
-#include	<signal.h>
-#include	<pwd.h>
-#include	<sys/resource.h>
-#include	<sys/time.h>
-#include 	<sys/socket.h>
-#include	<sched.h>
-#include	<errno.h>
-#include        <sys/ucontext.h>
+#include <unistd.h>
+#include <pthread.h>
+#include <time.h>
+#include <termios.h>
+#include <signal.h>
+#include <pwd.h>
+#include <sys/resource.h>
+#include <sys/time.h>
+#include <sys/socket.h>
+#include <sched.h>
+#include <errno.h>
+#include <sys/ucontext.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <mach/mach_init.h>
@@ -32,11 +32,11 @@ char *hosttype = "MacOSX";
 char *cputype = OBJTYPE;
 typedef struct Sem Sem;
 struct Sem {
-pthread_cond_t	c;
-pthread_mutex_t	m;
-int	v;
+pthread_cond_t c;
+pthread_mutex_t m;
+int v;
 };
-static pthread_key_t  prdakey;
+static pthread_key_t prdakey;
 extern int dflag;
 Proc*
 getup(void)
@@ -242,7 +242,7 @@ pthread_attr_destroy(&attr);
 int
 segflush(void *va, ulong len)
 {
-kern_return_t   err;
+kern_return_t err;
 vm_machine_attribute_val_t value = MATTR_VAL_ICACHE_FLUSH;
 err = vm_machine_attribute( (vm_map_t)mach_task_self(),
 (vm_address_t)va,
@@ -337,7 +337,7 @@ libinit(char *imod)
 {
 struct passwd *pw;
 Proc *p;
-char	sys[64];
+char sys[64];
 setsid();
 gethostname(sys, sizeof(sys));
 kstrdup(&ossysname, sys);
@@ -362,8 +362,8 @@ emuinit(imod);
 int
 readkbd(void)
 {
-int	n;
-char	buf[1];
+int n;
+char buf[1];
 n = read(0, buf, sizeof(buf));
 if(n < 0)
 print("keyboard close (n=%d, %s)\n", n, strerror(errno));
@@ -382,7 +382,7 @@ return buf[0];
 long
 osmillisec(void)
 {
-static long	sec0 = 0, usec0;
+static long sec0 = 0, usec0;
 struct timeval t;
 if(gettimeofday(&t, NULL) < 0)
 return(0);
@@ -440,7 +440,7 @@ __typeof__(sbrk(0))
 sbrk(int size)
 {
 void *brk;
-kern_return_t   err;
+kern_return_t err;
 err = vm_allocate( (vm_map_t) mach_task_self(),
 (vm_address_t *)&brk,
 size,

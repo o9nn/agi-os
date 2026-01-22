@@ -1,5 +1,5 @@
 enum {
-Empty		= 0,
+Empty = 0,
 Background,
 Wall,
 Cargo,
@@ -12,8 +12,8 @@ Left,
 Right,
 };
 enum {
-GLeft	= 0,
-GRight 	= 1,
+GLeft = 0,
+GRight = 1,
 };
 enum {
 MazeX = 20,
@@ -39,7 +39,7 @@ Route **route;
 uint beyond;
 } Walk;
 typedef struct Visited {
-uint 	board[MazeX][MazeY];
+uint board[MazeX][MazeY];
 } Visited;
 typedef struct Animation {
 Route* route;
@@ -47,11 +47,11 @@ Step *step;
 int count;
 } Animation;
 typedef struct {
-Point 	glenda;
-Point 	max;
-uint 	index;
-uint	done;
-uint 	board[MazeX][MazeY];
+Point glenda;
+Point max;
+uint index;
+uint done;
+uint board[MazeX][MazeY];
 } Level;
 Level level;
 Level levels[Maxlevels];

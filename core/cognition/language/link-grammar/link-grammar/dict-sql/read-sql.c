@@ -355,7 +355,7 @@ static void* db_open(const char * fullname, const void * user_data)
 #if HAVE_THREADS_H
 mtx_init(&global_mutex, mtx_plain);
 #endif
-FILE * fh =  fopen(fullname, "r");
+FILE * fh = fopen(fullname, "r");
 if (NULL == fh)
 return NULL;
 struct stat buf;

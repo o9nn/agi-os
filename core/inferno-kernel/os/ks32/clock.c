@@ -6,12 +6,12 @@
 #include "io.h"
 #include "ureg.h"
 static ulong timer_incr[2] = { 0, 0, };
-#define DISABLE(t, x)		t->mod &= (x ? ~0x08 : ~0x01)
-#define ENABLE(t, x)			t->mod = (t->mod & (x ? 0x38 : 0x7)) | (x ? (1 << 3) : (1 << 0))
+#define DISABLE(t, x) t->mod &= (x ? ~0x08 : ~0x01)
+#define ENABLE(t, x) t->mod = (t->mod & (x ? 0x38 : 0x7)) | (x ? (1 << 3) : (1 << 0))
 typedef struct Clock0link Clock0link;
 typedef struct Clock0link {
-void		(*clock)(void);
-Clock0link*	link;
+void (*clock)(void);
+Clock0link* link;
 } Clock0link;
 static Clock0link *clock0link;
 static Lock clock0lock;
@@ -123,11 +123,11 @@ clockcheck(void)
 }
 ulong _mularsv(ulong m0, ulong m1, ulong a, ulong s);
 #define FXDPTDIV(a,b,n) ((ulong)(((uvlong)(a) << (n)) / (b)))
-#define MAXMUL(a,n)     ((ulong)((((uvlong)1<<(n))-1)/(a)))
+#define MAXMUL(a,n) ((ulong)((((uvlong)1<<(n))-1)/(a)))
 #define MULDIV(x,a,b,n) (((x)*FXDPTDIV(a,b,n)) >> (n))
 #define MULDIV64(x,a,b,n) ((ulong)_mularsv(x, FXDPTDIV(a,b,n), 0, (n)))
 #define FXDPTDIVR(a,b,n) ((ulong)((((uvlong)(a) << (n))+((b)/2)) / (b)))
-#define MAXMULR(a,n)     ((ulong)((((uvlong)1<<(n))-1)/(a)))
+#define MAXMULR(a,n) ((ulong)((((uvlong)1<<(n))-1)/(a)))
 #define MULDIVR(x,a,b,n) (((x)*FXDPTDIVR(a,b,n)+(1<<((n)-1))) >> (n))
 #define MULDIVR64(x,a,b,n) ((ulong)_mularsv(x, FXDPTDIVR(a,b,n), 1<<((n)-1), (n)))
 ulong

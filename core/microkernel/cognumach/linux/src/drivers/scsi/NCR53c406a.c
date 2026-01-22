@@ -2,7 +2,7 @@
 #define VERBOSE_NCR53C406A_DEBUG 0
 #define USE_PIO 1
 #define USE_BIOS 0
-#define DMA_CHAN  5
+#define DMA_CHAN 5
 #define USE_FAST_PIO 1
 #include <linux/module.h>
 #include <linux/errno.h>
@@ -31,15 +31,15 @@
 #else
 #define USE_DMA 1
 #endif
-#define C1_IMG   0x07
-#define C2_IMG   0x48
+#define C1_IMG 0x07
+#define C2_IMG 0x48
 #if USE_DMA
-#define C3_IMG   0x21
+#define C3_IMG 0x21
 #else
-#define C3_IMG   0x20
+#define C3_IMG 0x20
 #endif
-#define C4_IMG   0x04
-#define C5_IMG   0xb6
+#define C4_IMG 0x04
+#define C5_IMG 0xb6
 #define REG0 (outb(C4_IMG, CONFIG4))
 #define REG1 (outb(C5_IMG, CONFIG5))
 #if NCR53C406A_DEBUG
@@ -56,37 +56,37 @@
 outb(count & 0xff, TC_LSB); \
 outb((count >> 8) & 0xff, TC_MSB); \
 outb((count >> 16) & 0xff, TC_HIGH);
-#define DMA_OP               0x80
-#define SCSI_NOP             0x00
-#define FLUSH_FIFO           0x01
-#define CHIP_RESET           0x02
-#define SCSI_RESET           0x03
-#define RESELECT             0x40
-#define SELECT_NO_ATN        0x41
-#define SELECT_ATN           0x42
-#define SELECT_ATN_STOP      0x43
-#define ENABLE_SEL           0x44
-#define DISABLE_SEL          0x45
-#define SELECT_ATN3          0x46
-#define RESELECT3            0x47
-#define TRANSFER_INFO        0x10
-#define INIT_CMD_COMPLETE    0x11
-#define MSG_ACCEPT           0x12
-#define TRANSFER_PAD         0x18
-#define SET_ATN              0x1a
-#define RESET_ATN            0x1b
-#define SEND_MSG             0x20
-#define SEND_STATUS          0x21
-#define SEND_DATA            0x22
-#define DISCONN_SEQ          0x23
-#define TERMINATE_SEQ        0x24
-#define TARG_CMD_COMPLETE    0x25
-#define DISCONN              0x27
-#define RECV_MSG             0x28
-#define RECV_CMD             0x29
-#define RECV_DATA            0x2a
-#define RECV_CMD_SEQ         0x2b
-#define TARGET_ABORT_DMA     0x04
+#define DMA_OP 0x80
+#define SCSI_NOP 0x00
+#define FLUSH_FIFO 0x01
+#define CHIP_RESET 0x02
+#define SCSI_RESET 0x03
+#define RESELECT 0x40
+#define SELECT_NO_ATN 0x41
+#define SELECT_ATN 0x42
+#define SELECT_ATN_STOP 0x43
+#define ENABLE_SEL 0x44
+#define DISABLE_SEL 0x45
+#define SELECT_ATN3 0x46
+#define RESELECT3 0x47
+#define TRANSFER_INFO 0x10
+#define INIT_CMD_COMPLETE 0x11
+#define MSG_ACCEPT 0x12
+#define TRANSFER_PAD 0x18
+#define SET_ATN 0x1a
+#define RESET_ATN 0x1b
+#define SEND_MSG 0x20
+#define SEND_STATUS 0x21
+#define SEND_DATA 0x22
+#define DISCONN_SEQ 0x23
+#define TERMINATE_SEQ 0x24
+#define TARG_CMD_COMPLETE 0x25
+#define DISCONN 0x27
+#define RECV_MSG 0x28
+#define RECV_CMD 0x29
+#define RECV_DATA 0x2a
+#define RECV_CMD_SEQ 0x2b
+#define TARGET_ABORT_DMA 0x04
 #if NCR53C406A_DEBUG
 #define rtrc(i) {inb(0x3da);outb(0x31,0x3c0);outb((i),0x3c0);}
 #else
@@ -101,34 +101,34 @@ status_ph,
 message_out,
 message_in
 };
-static  void NCR53c406a_intr(int, void *, struct pt_regs *);
-static  void internal_done(Scsi_Cmnd *);
-static  void wait_intr(void);
-static  void chip_init(void);
-static  void calc_port_addr(void);
+static void NCR53c406a_intr(int, void *, struct pt_regs *);
+static void internal_done(Scsi_Cmnd *);
+static void wait_intr(void);
+static void chip_init(void);
+static void calc_port_addr(void);
 #ifndef IRQ_LEV
-static  int  irq_probe(void);
+static int irq_probe(void);
 #endif
 #if USE_BIOS
 static void *bios_base = (void *)0;
 #endif
 #if PORT_BASE
-static int   port_base = PORT_BASE;
+static int port_base = PORT_BASE;
 #else
-static int   port_base = 0;
+static int port_base = 0;
 #endif
 #if IRQ_LEV
-static int   irq_level = IRQ_LEV;
+static int irq_level = IRQ_LEV;
 #else
-static int   irq_level = -1;
+static int irq_level = -1;
 #endif
 #if USE_DMA
-static int   dma_chan = 0;
+static int dma_chan = 0;
 #endif
 #if USE_PIO
-static int   fast_pio = USE_FAST_PIO;
+static int fast_pio = USE_FAST_PIO;
 #endif
-static Scsi_Cmnd         *current_SC       = NULL;
+static Scsi_Cmnd *current_SC = NULL;
 static volatile int internal_done_flag = 0;
 static volatile int internal_done_errcode = 0;
 static char info_msg[256];
@@ -150,8 +150,8 @@ static unsigned short intrs[] = { 10, 11, 12, 15 };
 #if USE_BIOS
 struct signature {
 char *signature;
-int  sig_offset;
-int  sig_length;
+int sig_offset;
+int sig_length;
 } signatures[] = {
 { "Copyright (C) Acculogic, Inc.\r\n2.8M Diskette Extension Bios ver 4.04.03 03/01/1993", 61, 82 },
 };
@@ -235,8 +235,8 @@ return tmp;
 static __inline__ int NCR53c406a_pio_read(unsigned char *request,
 unsigned int reqlen)
 {
-int	i;
-int	len;
+int i;
+int len;
 unsigned long flags = 0;
 REG1;
 while (reqlen) {
@@ -283,8 +283,8 @@ return 0;
 static __inline__ int NCR53c406a_pio_write(unsigned char *request,
 unsigned int reqlen)
 {
-int	i = 0;
-int	len;
+int i = 0;
+int len;
 unsigned long flags = 0;
 REG1;
 while (reqlen && !(i&0x40)) {
@@ -356,14 +356,14 @@ if (check_region(port_base, 0x10))
 port_base = 0;
 }
 else {
-for(i=0;  i<PORT_COUNT && !port_base; i++){
+for(i=0; i<PORT_COUNT && !port_base; i++){
 if(check_region(ports[i], 0x10)){
 DEB(printk("NCR53c406a: port %x in use\n", ports[i]));
 }
 else {
 VDEB(printk("NCR53c406a: port %x available\n", ports[i]));
 outb(C5_IMG, ports[i] + 0x0d);
-if(   (inb(ports[i] + 0x0e) ^ inb(ports[i] + 0x0e)) == 7
+if( (inb(ports[i] + 0x0e) ^ inb(ports[i] + 0x0e)) == 7
 && (inb(ports[i] + 0x0e) ^ inb(ports[i] + 0x0e)) == 7
 && (inb(ports[i] + 0x0e) & 0xf8) == 0x58 ) {
 VDEB(printk("NCR53c406a: Sig register valid\n"));
@@ -799,28 +799,28 @@ outb(SYNC_MODE, SYNCOFF);
 }
 void calc_port_addr()
 {
-TC_LSB		= (port_base+0x00);
-TC_MSB		= (port_base+0x01);
-SCSI_FIFO		= (port_base+0x02);
-CMD_REG		= (port_base+0x03);
-STAT_REG		= (port_base+0x04);
-DEST_ID		= (port_base+0x04);
-INT_REG		= (port_base+0x05);
-SRTIMOUT		= (port_base+0x05);
-SEQ_REG		= (port_base+0x06);
-SYNCPRD		= (port_base+0x06);
-FIFO_FLAGS		= (port_base+0x07);
-SYNCOFF		= (port_base+0x07);
-CONFIG1		= (port_base+0x08);
-CLKCONV		= (port_base+0x09);
-CONFIG2		= (port_base+0x0B);
-CONFIG3		= (port_base+0x0C);
-CONFIG4		= (port_base+0x0D);
-TC_HIGH		= (port_base+0x0E);
-PIO_FIFO		= (port_base+0x04);
-PIO_STATUS		= (port_base+0x08);
-PIO_FLAG		= (port_base+0x0B);
-CONFIG5		= (port_base+0x0D);
+TC_LSB = (port_base+0x00);
+TC_MSB = (port_base+0x01);
+SCSI_FIFO = (port_base+0x02);
+CMD_REG = (port_base+0x03);
+STAT_REG = (port_base+0x04);
+DEST_ID = (port_base+0x04);
+INT_REG = (port_base+0x05);
+SRTIMOUT = (port_base+0x05);
+SEQ_REG = (port_base+0x06);
+SYNCPRD = (port_base+0x06);
+FIFO_FLAGS = (port_base+0x07);
+SYNCOFF = (port_base+0x07);
+CONFIG1 = (port_base+0x08);
+CLKCONV = (port_base+0x09);
+CONFIG2 = (port_base+0x0B);
+CONFIG3 = (port_base+0x0C);
+CONFIG4 = (port_base+0x0D);
+TC_HIGH = (port_base+0x0E);
+PIO_FIFO = (port_base+0x04);
+PIO_STATUS = (port_base+0x08);
+PIO_FLAG = (port_base+0x0B);
+CONFIG5 = (port_base+0x0D);
 }
 #ifdef MODULE
 Scsi_Host_Template driver_template = NCR53c406a;

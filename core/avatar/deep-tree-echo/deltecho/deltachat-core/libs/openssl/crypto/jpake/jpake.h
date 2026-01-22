@@ -2,9 +2,9 @@
 # define HEADER_JPAKE_H
 # include <openssl/opensslconf.h>
 # ifdef OPENSSL_NO_JPAKE
-#  error JPAKE is disabled.
+# error JPAKE is disabled.
 # endif
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 # include <openssl/bn.h>
@@ -51,21 +51,21 @@ int JPAKE_STEP3B_process(JPAKE_CTX *ctx, const JPAKE_STEP3B *received);
 void JPAKE_STEP3B_release(JPAKE_STEP3B *s3b);
 const BIGNUM *JPAKE_get_shared_key(JPAKE_CTX *ctx);
 void ERR_load_JPAKE_strings(void);
-# define JPAKE_F_JPAKE_STEP1_PROCESS                      101
-# define JPAKE_F_JPAKE_STEP2_PROCESS                      102
-# define JPAKE_F_JPAKE_STEP3A_PROCESS                     103
-# define JPAKE_F_JPAKE_STEP3B_PROCESS                     104
-# define JPAKE_F_VERIFY_ZKP                               100
-# define JPAKE_R_G_TO_THE_X3_IS_NOT_LEGAL                 108
-# define JPAKE_R_G_TO_THE_X4_IS_NOT_LEGAL                 109
-# define JPAKE_R_G_TO_THE_X4_IS_ONE                       105
-# define JPAKE_R_HASH_OF_HASH_OF_KEY_MISMATCH             106
-# define JPAKE_R_HASH_OF_KEY_MISMATCH                     107
-# define JPAKE_R_VERIFY_B_FAILED                          102
-# define JPAKE_R_VERIFY_X3_FAILED                         103
-# define JPAKE_R_VERIFY_X4_FAILED                         104
-# define JPAKE_R_ZKP_VERIFY_FAILED                        100
-#ifdef  __cplusplus
+# define JPAKE_F_JPAKE_STEP1_PROCESS 101
+# define JPAKE_F_JPAKE_STEP2_PROCESS 102
+# define JPAKE_F_JPAKE_STEP3A_PROCESS 103
+# define JPAKE_F_JPAKE_STEP3B_PROCESS 104
+# define JPAKE_F_VERIFY_ZKP 100
+# define JPAKE_R_G_TO_THE_X3_IS_NOT_LEGAL 108
+# define JPAKE_R_G_TO_THE_X4_IS_NOT_LEGAL 109
+# define JPAKE_R_G_TO_THE_X4_IS_ONE 105
+# define JPAKE_R_HASH_OF_HASH_OF_KEY_MISMATCH 106
+# define JPAKE_R_HASH_OF_KEY_MISMATCH 107
+# define JPAKE_R_VERIFY_B_FAILED 102
+# define JPAKE_R_VERIFY_X3_FAILED 103
+# define JPAKE_R_VERIFY_X4_FAILED 104
+# define JPAKE_R_ZKP_VERIFY_FAILED 100
+#ifdef __cplusplus
 }
 #endif
 #endif

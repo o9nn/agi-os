@@ -177,7 +177,7 @@ nnparams = length(samples[1][1:(end - ninv)])
 # get rows-ith param and col-ith sample value
 estimnnparams = [Particles(reduce(hcat, samples)[i, :])
 for i in 1:nnparams]
-#  PDE params
+# PDE params
 if ninv == 0
 estimated_params = [nothing]
 else
@@ -222,7 +222,7 @@ numensemble = floor(Int, draw_samples / 3), progress = false, verbose = false)
 * Dataset is required for accurate Parameter estimation + solving equations.
 * Returned solution is a BPINNsolution consisting of Ensemble solution, estimated PDE and NN
 parameters for chosen `saveats` grid spacing and last n = `numensemble` samples in Chain.
-the complete set of samples in the MCMC chain is returned as `fullsolution`,  refer
+the complete set of samples in the MCMC chain is returned as `fullsolution`, refer
 `BPINNsolution` for more details.
 ## Positional Arguments
 * `pde_system`: ModelingToolkit defined PDE equation or system of equations.

@@ -4,7 +4,7 @@ sys: Sys;
 include "draw.m";
 include "sh.m";
 sh: Sh;
-n_BLOCK,  n_VAR, n_BQ, n_BQ2, n_REDIR,
+n_BLOCK, n_VAR, n_BQ, n_BQ2, n_REDIR,
 n_DUP, n_LIST, n_SEQ, n_CONCAT, n_PIPE, n_ADJ,
 n_WORD, n_NOWAIT, n_SQUASH, n_COUNT,
 n_ASSIGN, n_LOCAL,

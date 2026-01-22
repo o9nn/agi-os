@@ -12,25 +12,25 @@ extern unsigned long event;
 #include <linux/smp.h>
 #include <linux/tty.h>
 #include <linux/sem.h>
-#define CSIGNAL		0x000000ff
-#define CLONE_VM	0x00000100
-#define CLONE_FS	0x00000200
-#define CLONE_FILES	0x00000400
-#define CLONE_SIGHAND	0x00000800
-#define CLONE_PID	0x00001000
+#define CSIGNAL 0x000000ff
+#define CLONE_VM 0x00000100
+#define CLONE_FS 0x00000200
+#define CLONE_FILES 0x00000400
+#define CLONE_SIGHAND 0x00000800
+#define CLONE_PID 0x00001000
 extern unsigned long avenrun[];
-#define FSHIFT		11
-#define FIXED_1		(1<<FSHIFT)
-#define LOAD_FREQ	(5*HZ)
-#define EXP_1		1884
-#define EXP_5		2014
-#define EXP_15		2037
+#define FSHIFT 11
+#define FIXED_1 (1<<FSHIFT)
+#define LOAD_FREQ (5*HZ)
+#define EXP_1 1884
+#define EXP_5 2014
+#define EXP_15 2037
 #define CALC_LOAD(load,exp,n) \
 load *= exp; \
 load += n*(FIXED_1-exp); \
 load >>= FSHIFT;
-#define CT_TO_SECS(x)	((x) / HZ)
-#define CT_TO_USECS(x)	(((x) % HZ) * 1000000/HZ)
+#define CT_TO_SECS(x) ((x) / HZ)
+#define CT_TO_USECS(x) (((x) % HZ) * 1000000/HZ)
 extern int nr_running, nr_tasks;
 extern int last_pid;
 #define FIRST_TASK task[0]
@@ -44,15 +44,15 @@ extern int last_pid;
 #include <linux/ptrace.h>
 #include <linux/timer.h>
 #include <asm/processor.h>
-#define TASK_RUNNING		0
-#define TASK_INTERRUPTIBLE	1
-#define TASK_UNINTERRUPTIBLE	2
-#define TASK_ZOMBIE		3
-#define TASK_STOPPED		4
-#define TASK_SWAPPING		5
-#define SCHED_OTHER		0
-#define SCHED_FIFO		1
-#define SCHED_RR		2
+#define TASK_RUNNING 0
+#define TASK_INTERRUPTIBLE 1
+#define TASK_UNINTERRUPTIBLE 2
+#define TASK_ZOMBIE 3
+#define TASK_STOPPED 4
+#define TASK_SWAPPING 5
+#define SCHED_OTHER 0
+#define SCHED_FIFO 1
+#define SCHED_RR 2
 struct sched_param {
 int sched_priority;
 };
@@ -128,7 +128,7 @@ long debugreg[8];
 struct exec_domain *exec_domain;
 struct linux_binfmt *binfmt;
 struct task_struct *next_task, *prev_task;
-struct task_struct *next_run,  *prev_run;
+struct task_struct *next_run, *prev_run;
 unsigned long saved_kernel_stack;
 unsigned long kernel_stack_page;
 int exit_code, exit_signal;
@@ -140,7 +140,7 @@ int pgrp;
 int tty_old_pgrp;
 int session;
 int leader;
-int	groups[NGROUPS];
+int groups[NGROUPS];
 struct task_struct *p_opptr, *p_pptr, *p_cptr, *p_ysptr, *p_osptr;
 struct wait_queue *wait_chldexit;
 unsigned short uid,euid,suid,fsuid;
@@ -175,22 +175,22 @@ int last_processor;
 int lock_depth;
 #endif
 };
-#define PF_ALIGNWARN	0x00000001
-#define PF_PTRACED	0x00000010
-#define PF_TRACESYS	0x00000020
-#define PF_FORKNOEXEC	0x00000040
-#define PF_SUPERPRIV	0x00000100
-#define PF_DUMPCORE	0x00000200
-#define PF_SIGNALED	0x00000400
-#define PF_STARTING	0x00000002
-#define PF_EXITING	0x00000004
-#define PF_USEDFPU	0x00100000
-#define PF_DTRACE	0x00200000
-#define _STK_LIM	(8*1024*1024)
-#define DEF_PRIORITY	(20*HZ/100)
+#define PF_ALIGNWARN 0x00000001
+#define PF_PTRACED 0x00000010
+#define PF_TRACESYS 0x00000020
+#define PF_FORKNOEXEC 0x00000040
+#define PF_SUPERPRIV 0x00000100
+#define PF_DUMPCORE 0x00000200
+#define PF_SIGNALED 0x00000400
+#define PF_STARTING 0x00000002
+#define PF_EXITING 0x00000004
+#define PF_USEDFPU 0x00100000
+#define PF_DTRACE 0x00200000
+#define _STK_LIM (8*1024*1024)
+#define DEF_PRIORITY (20*HZ/100)
 #define INIT_TASK \
 { 0,DEF_PRIORITY,DEF_PRIORITY,0,0,0,0, \
-{ 0, },            \
+{ 0, }, \
 &default_exec_domain, \
 NULL, \
 &init_task,&init_task, &init_task, &init_task, \
@@ -217,7 +217,7 @@ INIT_TSS, \
 &init_mm, \
 &init_signals, \
 }
-extern struct   mm_struct init_mm;
+extern struct mm_struct init_mm;
 extern struct task_struct init_task;
 extern struct task_struct *task[NR_TASKS];
 extern struct task_struct *last_task_used_math;

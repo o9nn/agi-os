@@ -1,5 +1,5 @@
 #if !defined(gpsync_INCLUDED)
-#  define gpsync_INCLUDED
+# define gpsync_INCLUDED
 typedef struct {
 void *dummy_;
 } gp_semaphore;

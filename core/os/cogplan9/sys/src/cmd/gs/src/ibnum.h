@@ -1,5 +1,5 @@
 #ifndef ibnum_INCLUDED
-#  define ibnum_INCLUDED
+# define ibnum_INCLUDED
 #define BYTE_SWAP_IEEE_NATIVE_REALS 1
 #define bt_num_array_value 149
 #define num_int32 0

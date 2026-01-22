@@ -1,9 +1,9 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
 typedef struct Power Power;
 typedef struct Puser Puser;
 enum{
@@ -13,17 +13,17 @@ Qdata
 };
 static
 Dirtab powertab[]={
-".",			{Qdir, 0, QTDIR},	0,	0500,
-"powerctl",		{Qctl, 0},		0,	0600,
-"powerdata",		{Qdata, 0},	0,	0666,
+".", {Qdir, 0, QTDIR}, 0, 0500,
+"powerctl", {Qctl, 0}, 0, 0600,
+"powerdata", {Qdata, 0}, 0, 0666,
 };
 struct Puser {
 Ref;
-ulong	alarm;
-QLock	rl;
-Rendez	r;
-int	state;
-Puser*	next;
+ulong alarm;
+QLock rl;
+Rendez r;
+int state;
+Puser* next;
 };
 enum{
 Pwridle,
@@ -32,11 +32,11 @@ Pwrack
 };
 static struct {
 QLock;
-Puser	*list;
-Lock	l;
-int	shutdown;
-int	nwaiting;
-Rendez	ackr;
+Puser *list;
+Lock l;
+int shutdown;
+int nwaiting;
+Rendez ackr;
 } pwrusers;
 static Chan*
 powerattach(char* spec)
@@ -238,13 +238,13 @@ poperror();
 return n;
 }
 struct Power {
-void	(*f)(int);
-Power*	prev;
-Power*	next;
+void (*f)(int);
+Power* prev;
+Power* next;
 };
 static struct {
 Lock;
-Power	list;
+Power list;
 } power;
 void
 powerenablereset(void)

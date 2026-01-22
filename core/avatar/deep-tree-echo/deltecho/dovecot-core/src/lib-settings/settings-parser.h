@@ -97,8 +97,8 @@ bool (*expand_check_func)(void *set, pool_t pool, const char **error_r);
 };
 ARRAY_DEFINE_TYPE(setting_parser_info, struct setting_parser_info);
 enum settings_parser_flags {
-SETTINGS_PARSER_FLAG_IGNORE_UNKNOWN_KEYS	= 0x01,
-SETTINGS_PARSER_FLAG_TRACK_CHANGES		= 0x02
+SETTINGS_PARSER_FLAG_IGNORE_UNKNOWN_KEYS = 0x01,
+SETTINGS_PARSER_FLAG_TRACK_CHANGES = 0x02
 };
 struct setting_parser_context;
 struct setting_parser_context *

@@ -12,17 +12,17 @@ total_checks=0
 passed_checks=0
 failed_checks=0
 check_item() {
-    local description="$1"
-    local condition="$2"
-    total_checks=$((total_checks + 1))
-    echo -n "Checking $description... "
-    if eval "$condition"; then
-        echo -e "${GREEN}✅ VERIFIED${NC}"
-        passed_checks=$((passed_checks + 1))
-    else
-        echo -e "${RED}❌ FAILED${NC}"
-        failed_checks=$((failed_checks + 1))
-    fi
+local description="$1"
+local condition="$2"
+total_checks=$((total_checks + 1))
+echo -n "Checking $description... "
+if eval "$condition"; then
+echo -e "${GREEN}✅ VERIFIED${NC}"
+passed_checks=$((passed_checks + 1))
+else
+echo -e "${RED}❌ FAILED${NC}"
+failed_checks=$((failed_checks + 1))
+fi
 }
 echo "=== Validating Completion Status Claims ==="
 check_item "Static analysis script exists" "[ -f 'scripts/run-static-analysis.sh' ]"
@@ -65,22 +65,22 @@ check_item "Memory enhancements" "[ -f 'MEMORY_ENHANCEMENT_VALIDATION.md' ]"
 echo
 echo "=== Validating Issue Tracking Claims ==="
 if [ -f "open-issues-gnumach.md" ]; then
-    completed_issues=$(grep -c "\[x\]" open-issues-gnumach.md || echo "0")
-    remaining_issues=$(grep -c "\[ \]" open-issues-gnumach.md || echo "0")
-    total_issues=$((completed_issues + remaining_issues))
-    if [ $total_issues -gt 0 ]; then
-        completion_rate=$((completed_issues * 100 / total_issues))
-        check_item "Issue completion rate >70%" "[ $completion_rate -gt 70 ]"
-        check_item "Completed issues >100" "[ $completed_issues -gt 100 ]"
-        echo "📊 Issue Statistics:"
-        echo "   - Total Issues: $total_issues"
-        echo "   - Completed: $completed_issues ($completion_rate%)"
-        echo "   - Remaining: $remaining_issues"
-    else
-        echo -e "${YELLOW}⚠️  Could not parse issue statistics${NC}"
-    fi
+completed_issues=$(grep -c "\[x\]" open-issues-gnumach.md || echo "0")
+remaining_issues=$(grep -c "\[ \]" open-issues-gnumach.md || echo "0")
+total_issues=$((completed_issues + remaining_issues))
+if [ $total_issues -gt 0 ]; then
+completion_rate=$((completed_issues * 100 / total_issues))
+check_item "Issue completion rate >70%" "[ $completion_rate -gt 70 ]"
+check_item "Completed issues >100" "[ $completed_issues -gt 100 ]"
+echo "📊 Issue Statistics:"
+echo "   - Total Issues: $total_issues"
+echo "   - Completed: $completed_issues ($completion_rate%)"
+echo "   - Remaining: $remaining_issues"
 else
-    echo -e "${YELLOW}⚠️  open-issues-gnumach.md not found${NC}"
+echo -e "${YELLOW}⚠️  Could not parse issue statistics${NC}"
+fi
+else
+echo -e "${YELLOW}⚠️  open-issues-gnumach.md not found${NC}"
 fi
 echo
 echo "=== Validating Validation Scripts ==="
@@ -91,16 +91,16 @@ check_item "Memory validation script" "[ -f 'validate-memory-enhancements.sh' ]"
 echo
 echo "=== Checking Current Build Status ==="
 if [ -f "build_result.txt" ]; then
-    echo "📋 Last Build Result:"
-    if grep -q "Error" build_result.txt; then
-        echo -e "   ${YELLOW}⚠️  Build issues detected (as reported in analysis)${NC}"
-        echo "   Top errors:"
-        grep "Error" build_result.txt | head -3 | sed 's/^/   /'
-    else
-        echo -e "   ${GREEN}✅ No obvious build errors in last result${NC}"
-    fi
+echo "📋 Last Build Result:"
+if grep -q "Error" build_result.txt; then
+echo -e "   ${YELLOW}⚠️  Build issues detected (as reported in analysis)${NC}"
+echo "   Top errors:"
+grep "Error" build_result.txt | head -3 | sed 's/^/   /'
 else
-    echo -e "   ${BLUE}ℹ️  No recent build result file found${NC}"
+echo -e "   ${GREEN}✅ No obvious build errors in last result${NC}"
+fi
+else
+echo -e "   ${BLUE}ℹ️  No recent build result file found${NC}"
 fi
 echo
 echo "=== Repository Structure Validation ==="
@@ -120,37 +120,37 @@ check_item "Advanced memory features" "grep -q 'NUMA\|SMP' docs/*.md"
 echo
 echo "=== Final Validation Summary ==="
 if [ $total_checks -gt 0 ]; then
-    success_rate=$((passed_checks * 100 / total_checks))
-    echo "📊 Validation Results:"
-    echo "   - Total Checks: $total_checks"
-    echo "   - Passed: $passed_checks"
-    echo "   - Failed: $failed_checks"
-    echo "   - Success Rate: $success_rate%"
-    echo
-    if [ $success_rate -gt 90 ]; then
-        echo -e "${GREEN}✅ VALIDATION PASSED: Progress report claims are highly accurate${NC}"
-        echo "   The development progress assessment is well-supported by technical evidence."
-    elif [ $success_rate -gt 80 ]; then
-        echo -e "${YELLOW}⚠️  VALIDATION MOSTLY PASSED: Progress report is largely accurate${NC}"
-        echo "   Minor discrepancies found but overall assessment is sound."
-    else
-        echo -e "${RED}❌ VALIDATION CONCERNS: Some claims need verification${NC}"
-        echo "   Progress report may contain inaccuracies that should be addressed."
-    fi
+success_rate=$((passed_checks * 100 / total_checks))
+echo "📊 Validation Results:"
+echo "   - Total Checks: $total_checks"
+echo "   - Passed: $passed_checks"
+echo "   - Failed: $failed_checks"
+echo "   - Success Rate: $success_rate%"
+echo
+if [ $success_rate -gt 90 ]; then
+echo -e "${GREEN}✅ VALIDATION PASSED: Progress report claims are highly accurate${NC}"
+echo "   The development progress assessment is well-supported by technical evidence."
+elif [ $success_rate -gt 80 ]; then
+echo -e "${YELLOW}⚠️  VALIDATION MOSTLY PASSED: Progress report is largely accurate${NC}"
+echo "   Minor discrepancies found but overall assessment is sound."
 else
-    echo -e "${RED}❌ VALIDATION ERROR: Could not perform validation checks${NC}"
+echo -e "${RED}❌ VALIDATION CONCERNS: Some claims need verification${NC}"
+echo "   Progress report may contain inaccuracies that should be addressed."
+fi
+else
+echo -e "${RED}❌ VALIDATION ERROR: Could not perform validation checks${NC}"
 fi
 echo
 echo "=== Recommendations ==="
 if [ $success_rate -gt 90 ]; then
-    echo "🎯 The progress report accurately reflects the project state."
-    echo "   Recommended action: Proceed with development plan as outlined."
+echo "🎯 The progress report accurately reflects the project state."
+echo "   Recommended action: Proceed with development plan as outlined."
 elif [ $success_rate -gt 80 ]; then
-    echo "📝 The progress report is mostly accurate with minor gaps."
-    echo "   Recommended action: Review failed validations and update assessment."
+echo "📝 The progress report is mostly accurate with minor gaps."
+echo "   Recommended action: Review failed validations and update assessment."
 else
-    echo "🔍 The progress report needs significant revision."
-    echo "   Recommended action: Conduct detailed technical review and update claims."
+echo "🔍 The progress report needs significant revision."
+echo "   Recommended action: Conduct detailed technical review and update claims."
 fi
 echo
 echo "=== Additional Validation Notes ==="

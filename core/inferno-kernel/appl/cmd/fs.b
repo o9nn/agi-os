@@ -37,7 +37,7 @@ else {
 s = "void {" + hd argv;
 for(argv = tl argv; argv != nil; argv = tl argv){
 a := hd argv;
-if(a == nil || a[0] != '{')		# }
+if(a == nil || a[0] != '{') # }
 s += sys->sprint(" %q", a);
 else
 s += " " + hd argv;

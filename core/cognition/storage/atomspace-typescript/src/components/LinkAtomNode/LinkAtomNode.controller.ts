@@ -1,5 +1,5 @@
 const LinkAtomNodeController = {
-  init: () => {
-  }
+init: () => {
+}
 }
 export default LinkAtomNodeController;

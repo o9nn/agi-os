@@ -52,7 +52,7 @@ _cons_vcons_input (vcons, event, CONS_MOUSE_EVENT_LENGTH);
 break;
 case CONS_VCONS_MOUSE_BUTTON_RELEASED:
 if (CONS_MOUSE_EVENT (event, CONS_MOUSE_RELEASE, (int) mousepos_x + 1, (int) mousepos_y + 1))
-_cons_vcons_input (vcons,  event, CONS_MOUSE_EVENT_LENGTH);
+_cons_vcons_input (vcons, event, CONS_MOUSE_EVENT_LENGTH);
 break;
 }
 }

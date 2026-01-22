@@ -4,11 +4,11 @@
 #include "plot.h"
 #include <draw.h>
 #include <event.h>
-void	define(char*);
-void	call(char*);
-void	include(char*);
-int	process(Biobuf*);
-int	server(void);
+void define(char*);
+void call(char*);
+void include(char*);
+int process(Biobuf*);
+int server(void);
 enum{
 ARC,
 BOX,
@@ -49,46 +49,46 @@ VEC,
 LAST
 };
 struct pcall {
-char	*cc;
-int	numc;
+char *cc;
+int numc;
 } plots[] = {
-[ARC] 		"a", 	1,
-[BOX] 		"bo", 	2,
-[CALL]		"ca",	2,
-[CFILL] 	"cf", 	2,
-[CIRC] 		"ci", 	2,
-[CLOSEPL] 	"cl", 	2,
-[COLOR] 	"co", 	2,
-[CSPLINE]	"cs",	2,
-[DEFINE]	"de",	2,
-[DISK]		"di",	2,
-[DSPLINE]	"ds",	2,
-[ERASE] 	"e", 	1,
-[FILL] 		"fi", 	2,
-[FRAME] 	"fr", 	2,
-[FSPLINE]	"fs",	2,
-[GRADE] 	"g", 	1,
-[IDLE] 		"id", 	2,
-[INCLUDE]	"in",	2,
-[LINE] 		"li", 	2,
-[LSPLINE]	"ls",	2,
-[MOVE] 		"m", 	1,
-[OPENPL] 	"o", 	1,
-[PARABOLA] 	"par", 	3,
-[PEN] 		"pe", 	2,
-[PAUSE] 	"pau", 	3,
-[POINT] 	"poi", 	3,
-[POLY] 		"pol", 	3,
-[RANGE] 	"ra", 	2,
-[RESTORE] 	"re", 	2,
-[RMOVE] 	"rm", 	2,
-[RVEC] 		"rv", 	2,
-[SAVE] 		"sa", 	2,
-[SBOX] 		"sb", 	2,
-[SPLINE] 	"sp", 	2,
-[TEXT] 		"t", 	1,
-[VEC] 		"v", 	1,
-[LAST]	 	0, 	0,
+[ARC] "a", 1,
+[BOX] "bo", 2,
+[CALL] "ca", 2,
+[CFILL] "cf", 2,
+[CIRC] "ci", 2,
+[CLOSEPL] "cl", 2,
+[COLOR] "co", 2,
+[CSPLINE] "cs", 2,
+[DEFINE] "de", 2,
+[DISK] "di", 2,
+[DSPLINE] "ds", 2,
+[ERASE] "e", 1,
+[FILL] "fi", 2,
+[FRAME] "fr", 2,
+[FSPLINE] "fs", 2,
+[GRADE] "g", 1,
+[IDLE] "id", 2,
+[INCLUDE] "in", 2,
+[LINE] "li", 2,
+[LSPLINE] "ls", 2,
+[MOVE] "m", 1,
+[OPENPL] "o", 1,
+[PARABOLA] "par", 3,
+[PEN] "pe", 2,
+[PAUSE] "pau", 3,
+[POINT] "poi", 3,
+[POLY] "pol", 3,
+[RANGE] "ra", 2,
+[RESTORE] "re", 2,
+[RMOVE] "rm", 2,
+[RVEC] "rv", 2,
+[SAVE] "sa", 2,
+[SBOX] "sb", 2,
+[SPLINE] "sp", 2,
+[TEXT] "t", 1,
+[VEC] "v", 1,
+[LAST] 0, 0,
 };
 struct pcall *pplots;
 #define MAXL 16
@@ -97,7 +97,7 @@ char *name;
 char *stash;
 } flibr[MAXL];
 struct fcall *fptr = flibr;
-#define	NFSTACK	50
+#define NFSTACK 50
 struct fstack{
 int peekc;
 int lineno;
@@ -106,11 +106,11 @@ Biobuf *fd;
 double scale;
 }fstack[NFSTACK];
 struct fstack *fsp=fstack;
-#define	NARGSTR	8192
+#define NARGSTR 8192
 char argstr[NARGSTR+1];
-#define	NX	8192
+#define NX 8192
 double x[NX];
-#define	NPTS	256
+#define NPTS 256
 int cnt[NPTS];
 double *pts[NPTS];
 void eresized(int new){
@@ -345,8 +345,8 @@ exits("exceeded limit");
 if(--nleft==0) return;
 }
 else switch(c){
-case Beof:  return;
-case ' ':  break;
+case Beof: return;
+case ' ': break;
 case '\t': break;
 case '\n': break;
 case '.': case '+': case '-':
@@ -430,42 +430,42 @@ fprint(2, "line %d, no command!\n", fsp->lineno);
 exits("no command");
 }
 switch(pplots-plots){
-case ARC:	numargs(7); rarc(x[0],x[1],x[2],x[3],x[4],x[5],x[6]); break;
-case BOX:	numargs(4); box(x[0], x[1], x[2], x[3]); break;
-case CALL:	strarg();   call(argstr); pplots=0; break;
-case CFILL:	strarg();   cfill(argstr); pplots=0; break;
-case CIRC:	numargs(3); circ(x[0], x[1], x[2]); break;
-case CLOSEPL:	strarg();   closepl(); pplots=0; break;
-case COLOR:	strarg();   color(argstr); pplots=0; break;
-case CSPLINE:	polyarg();  splin(4, cnt, pts); break;
-case DEFINE:	strarg();   define(argstr); pplots=0; break;
-case DISK:	numargs(3); plotdisc(x[0], x[1], x[2]); break;
-case DSPLINE:	polyarg();  splin(3, cnt, pts); break;
-case ERASE:	strarg();   erase(); pplots=0; break;
-case FILL:	polyarg();  fill(cnt, pts); break;
-case FRAME:	numargs(4); frame(x[0], x[1], x[2], x[3]); break;
-case FSPLINE:	polyarg();  splin(1, cnt, pts); break;
-case GRADE:	numargs(1); grade(x[0]); break;
-case IDLE:	strarg();   idle(); pplots=0; break;
-case INCLUDE:	strarg();   include(argstr); pplots=0; break;
-case LINE:	numargs(4); plotline(x[0], x[1], x[2], x[3]); break;
-case LSPLINE:	polyarg();  splin(2, cnt, pts); break;
-case MOVE:	numargs(2); move(x[0], x[1]); break;
-case OPENPL:	strarg();   openpl(argstr); pplots=0; break;
-case PARABOLA:	numargs(6); parabola(x[0],x[1],x[2],x[3],x[4],x[5]); break;
-case PAUSE:	strarg();   ppause(); pplots=0; break;
-case PEN:	strarg();   pen(argstr); pplots=0; break;
-case POINT:	numargs(2); dpoint(x[0], x[1]); break;
-case POLY:	polyarg();  plotpoly(cnt, pts); break;
-case RANGE:	numargs(4); range(x[0], x[1], x[2], x[3]); break;
-case RESTORE:	strarg();   restore(); pplots=0; break;
-case RMOVE:	numargs(2); rmove(x[0], x[1]); break;
-case RVEC:	numargs(2); rvec(x[0], x[1]); break;
-case SAVE:	strarg();   save(); pplots=0; break;
-case SBOX:	numargs(4); sbox(x[0], x[1], x[2], x[3]); break;
-case SPLINE:	polyarg();  splin(0, cnt, pts); break;
-case TEXT:	strarg();   text(argstr); pplots=0; break;
-case VEC:	numargs(2); vec(x[0], x[1]); break;
+case ARC: numargs(7); rarc(x[0],x[1],x[2],x[3],x[4],x[5],x[6]); break;
+case BOX: numargs(4); box(x[0], x[1], x[2], x[3]); break;
+case CALL: strarg(); call(argstr); pplots=0; break;
+case CFILL: strarg(); cfill(argstr); pplots=0; break;
+case CIRC: numargs(3); circ(x[0], x[1], x[2]); break;
+case CLOSEPL: strarg(); closepl(); pplots=0; break;
+case COLOR: strarg(); color(argstr); pplots=0; break;
+case CSPLINE: polyarg(); splin(4, cnt, pts); break;
+case DEFINE: strarg(); define(argstr); pplots=0; break;
+case DISK: numargs(3); plotdisc(x[0], x[1], x[2]); break;
+case DSPLINE: polyarg(); splin(3, cnt, pts); break;
+case ERASE: strarg(); erase(); pplots=0; break;
+case FILL: polyarg(); fill(cnt, pts); break;
+case FRAME: numargs(4); frame(x[0], x[1], x[2], x[3]); break;
+case FSPLINE: polyarg(); splin(1, cnt, pts); break;
+case GRADE: numargs(1); grade(x[0]); break;
+case IDLE: strarg(); idle(); pplots=0; break;
+case INCLUDE: strarg(); include(argstr); pplots=0; break;
+case LINE: numargs(4); plotline(x[0], x[1], x[2], x[3]); break;
+case LSPLINE: polyarg(); splin(2, cnt, pts); break;
+case MOVE: numargs(2); move(x[0], x[1]); break;
+case OPENPL: strarg(); openpl(argstr); pplots=0; break;
+case PARABOLA: numargs(6); parabola(x[0],x[1],x[2],x[3],x[4],x[5]); break;
+case PAUSE: strarg(); ppause(); pplots=0; break;
+case PEN: strarg(); pen(argstr); pplots=0; break;
+case POINT: numargs(2); dpoint(x[0], x[1]); break;
+case POLY: polyarg(); plotpoly(cnt, pts); break;
+case RANGE: numargs(4); range(x[0], x[1], x[2], x[3]); break;
+case RESTORE: strarg(); restore(); pplots=0; break;
+case RMOVE: numargs(2); rmove(x[0], x[1]); break;
+case RVEC: numargs(2); rvec(x[0], x[1]); break;
+case SAVE: strarg(); save(); pplots=0; break;
+case SBOX: numargs(4); sbox(x[0], x[1], x[2], x[3]); break;
+case SPLINE: polyarg(); splin(0, cnt, pts); break;
+case TEXT: strarg(); text(argstr); pplots=0; break;
+case VEC: numargs(2); vec(x[0], x[1]); break;
 default:
 fprint(2, "plot: missing case %ld\n", pplots-plots);
 exits("internal error");
@@ -480,8 +480,8 @@ char *estash = 0;
 unsigned size = 1024;
 char *nstash = 0;
 void define(char *a){
-char	*ap;
-short	i, j;
+char *ap;
+short i, j;
 int curly = 0;
 ap = a;
 while(isalpha(*ap))ap++;

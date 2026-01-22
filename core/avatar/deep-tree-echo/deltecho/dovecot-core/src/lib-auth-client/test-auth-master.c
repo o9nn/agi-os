@@ -17,7 +17,7 @@
 #include "auth-master.h"
 #include <unistd.h>
 #define TEST_SOCKET "./auth-master-test"
-#define SERVER_KILL_TIMEOUT_SECS    20
+#define SERVER_KILL_TIMEOUT_SECS 20
 static void main_deinit(void);
 struct server_connection {
 struct connection conn;

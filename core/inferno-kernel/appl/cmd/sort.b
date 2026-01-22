@@ -6,14 +6,14 @@ include "draw.m";
 include "arg.m";
 Sort: module
 {
-init:	fn(nil: ref Draw->Context, args: list of string);
+init: fn(nil: ref Draw->Context, args: list of string);
 };
 usage()
 {
 sys->fprint(sys->fildes(2), "usage: sort [-n] [file]\n");
 raise "fail:usage";
 }
-Incr: con 2000;		# growth quantum for record array
+Incr: con 2000; # growth quantum for record array
 init(nil : ref Draw->Context, args : list of string)
 {
 bio : ref Bufio->Iobuf;

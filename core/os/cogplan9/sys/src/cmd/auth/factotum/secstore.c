@@ -3,8 +3,8 @@
 enum{ CHK = 16};
 enum{ MAXFILESIZE = 10*1024*1024 };
 enum{
-Enabled 	= (1<<0),
-STA 		= (1<<1),
+Enabled = (1<<0),
+STA = (1<<1),
 };
 static char testmess[] = "__secstore\tPAK\nC=%s\nm=0\n";
 int
@@ -207,7 +207,7 @@ if(fd < 0)
 return nil;
 ss = (SS*)emalloc(sizeof(*ss));
 conn = (SConn*)emalloc(sizeof(*conn));
-ss->fd  = fd;
+ss->fd = fd;
 ss->alg = 0;
 conn->chan = (void*)ss;
 conn->secretlen = SHA1dlen;

@@ -7,12 +7,12 @@
 #include <unistd.h>
 #include <string.h>
 #endif
-#include	<stdio.h>
-#define ERR(str, chr)       if(opterr){fprintf(stderr, "%s%s%c\n", argv[0], str, chr);}
-int     opterr = 1;
-int     optind = 1;
-int	optopt;
-char    *optarg;
+#include <stdio.h>
+#define ERR(str, chr) if(opterr){fprintf(stderr, "%s%s%c\n", argv[0], str, chr);}
+int opterr = 1;
+int optind = 1;
+int optopt;
+char *optarg;
 int
 getopt (argc, argv, opts)
 char **argv, *opts;

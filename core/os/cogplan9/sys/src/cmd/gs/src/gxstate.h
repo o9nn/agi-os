@@ -1,7 +1,7 @@
 #ifndef gxstate_INCLUDED
-#  define gxstate_INCLUDED
+# define gxstate_INCLUDED
 #ifndef gs_state_DEFINED
-#  define gs_state_DEFINED
+# define gs_state_DEFINED
 typedef struct gs_state_s gs_state;
 #endif
 #include "gscspace.h"

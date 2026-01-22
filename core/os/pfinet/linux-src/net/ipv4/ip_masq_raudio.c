@@ -14,10 +14,10 @@
 #define TOLOWER(c) (((c) >= 'A' && (c) <= 'Z') ? ((c) - 'A' + 'a') : (c))
 #define ISDIGIT(c) (((c) >= '0') && ((c) <= '9'))
 struct raudio_priv_data {
-struct	ip_masq *data_conn;
-struct	ip_masq *error_conn;
-short	seen_start;
-short   is_rtsp;
+struct ip_masq *data_conn;
+struct ip_masq *error_conn;
+short seen_start;
+short is_rtsp;
 };
 int
 masq_rtsp_out (struct ip_masq_app *mapp,

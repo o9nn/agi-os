@@ -1,32 +1,32 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #include "mailstream_socket.h"
 #ifdef HAVE_UNISTD_H
-#	include <unistd.h>
+# include <unistd.h>
 #endif
 #include <stdlib.h>
 #include <fcntl.h>
 #ifdef HAVE_SYS_SOCKET_H
-#	include <sys/socket.h>
+# include <sys/socket.h>
 #endif
 #ifdef HAVE_STRING_H
-#  include <string.h>
+# include <string.h>
 #endif
 #ifdef WIN32
-#	include <win_etpan.h>
+# include <win_etpan.h>
 #else
-#	include <sys/time.h>
-#	include <sys/types.h>
-#   if USE_POLL
-#       ifdef HAVE_SYS_POLL_H
-#           include <sys/poll.h>
-#       endif
-#   else
-#       ifdef HAVE_SYS_SELECT_H
-#           include <sys/select.h>
-#       endif
-#   endif
+# include <sys/time.h>
+# include <sys/types.h>
+# if USE_POLL
+# ifdef HAVE_SYS_POLL_H
+# include <sys/poll.h>
+# endif
+# else
+# ifdef HAVE_SYS_SELECT_H
+# include <sys/select.h>
+# endif
+# endif
 #endif
 #include "mailstream_cancel.h"
 struct mailstream_socket_data {
@@ -276,7 +276,7 @@ FD_SET(cancellation_fd, &fds_read);
 FD_ZERO(&fds_write);
 FD_SET(socket_data->fd, &fds_write);
 max_fd = cancellation_fd > socket_data->fd ? cancellation_fd : socket_data->fd;
-r = select(max_fd + 1, &fds_read, &fds_write,  NULL, &timeout);
+r = select(max_fd + 1, &fds_read, &fds_write, NULL, &timeout);
 if (r <= 0)
 return -1;
 cancelled = FD_ISSET(cancellation_fd, &fds_read);

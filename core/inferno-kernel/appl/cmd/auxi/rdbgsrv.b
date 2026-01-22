@@ -11,9 +11,9 @@ RDbgSrv: module
 {
 init: fn(nil: ref Draw->Context, argv: list of string);
 };
-debug:=	0;
-dev:=	"/dev/eia0";
-speed:=	38400;
+debug:= 0;
+dev:= "/dev/eia0";
+speed:= 38400;
 progname: string;
 rpid := 0;
 wpid := 0;
@@ -160,7 +160,7 @@ sys->print("%s: %s: %s: exiting\n", progname, dir, e);
 quit("exception");
 }
 }
-trace(sourcept: string,  op: array of byte )
+trace(sourcept: string, op: array of byte )
 {
 if(styx->istmsg(op)){
 (nil, m) := Tmsg.unpack(op);

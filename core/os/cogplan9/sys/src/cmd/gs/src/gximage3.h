@@ -1,5 +1,5 @@
 #ifndef gximage3_INCLUDED
-#  define gximage3_INCLUDED
+# define gximage3_INCLUDED
 #include "gsiparm3.h"
 #include "gxiparam.h"
 #define IMAGE3_MAKE_MID_PROC(proc)\

@@ -1,9 +1,9 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
 enum {
 COGnop = 0,
 COGcreate,
@@ -19,38 +19,38 @@ COGlearn,
 };
 typedef struct CogInstr CogInstr;
 struct CogInstr {
-int	op;
-int	arg1;
-int	arg2;
-int	arg3;
-void	*data;
+int op;
+int arg1;
+int arg2;
+int arg3;
+void *data;
 };
 typedef struct CogProgram CogProgram;
 struct CogProgram {
-CogInstr	*instrs;
-int		ninstr;
-int		pc;
+CogInstr *instrs;
+int ninstr;
+int pc;
 Lock;
 };
 typedef struct CogProc CogProc;
 struct CogProc {
-int		cogpid;
-Proc		*proc;
-CogProgram	*program;
-int		*regs;
-int		nregs;
-short		sti;
-short		lti;
-ulong		cycles;
+int cogpid;
+Proc *proc;
+CogProgram *program;
+int *regs;
+int nregs;
+short sti;
+short lti;
+ulong cycles;
 Lock;
 };
 static struct {
-CogProc		**procs;
-int		nprocs;
-int		maxprocs;
-ulong		totalcycles;
-ulong		totalinfer;
-int		quantum;
+CogProc **procs;
+int nprocs;
+int maxprocs;
+ulong totalcycles;
+ulong totalinfer;
+int quantum;
 Lock;
 } cogvm;
 void

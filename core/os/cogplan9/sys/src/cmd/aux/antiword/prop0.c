@@ -4,9 +4,9 @@
 static time_t
 tConvertDosDate(const char *szDosDate)
 {
-struct tm	tTime;
-const char	*pcTmp;
-time_t		tResult;
+struct tm tTime;
+const char *pcTmp;
+time_t tResult;
 memset(&tTime, 0, sizeof(tTime));
 pcTmp = szDosDate;
 if (!isdigit(*pcTmp)) {
@@ -62,11 +62,11 @@ return tResult;
 void
 vGet0DopInfo(FILE *pFile, const UCHAR *aucHeader)
 {
-document_block_type	tDocument;
-UCHAR	*aucBuffer;
-ULONG	ulBeginSumdInfo, ulBeginNextBlock;
-size_t	tLen;
-USHORT	usOffset;
+document_block_type tDocument;
+UCHAR *aucBuffer;
+ULONG ulBeginSumdInfo, ulBeginNextBlock;
+size_t tLen;
+USHORT usOffset;
 tDocument.ucHdrFtrSpecification = 0;
 tDocument.usDefaultTabWidth = usGetWord(0x70, aucHeader);
 tDocument.tCreateDate = (time_t)-1;
@@ -100,8 +100,8 @@ static void
 vGet0SectionInfo(const UCHAR *aucGrpprl, size_t tBytes,
 section_block_type *pSection)
 {
-USHORT	usCcol;
-UCHAR	ucTmp;
+USHORT usCcol;
+UCHAR ucTmp;
 fail(aucGrpprl == NULL || pSection == NULL);
 if (tBytes < 2) {
 return;
@@ -120,12 +120,12 @@ DBG_DEC(usCcol);
 void
 vGet0SepInfo(FILE *pFile, const UCHAR *aucHeader)
 {
-section_block_type	tSection;
-UCHAR	*aucBuffer;
-ULONG	ulBeginOfText, ulTextOffset, ulBeginSectInfo;
-ULONG	ulCharPos, ulSectPage, ulBeginNextBlock;
-size_t	tSectInfoLen, tIndex, tSections, tBytes;
-UCHAR	aucTmp[2], aucFpage[35];
+section_block_type tSection;
+UCHAR *aucBuffer;
+ULONG ulBeginOfText, ulTextOffset, ulBeginSectInfo;
+ULONG ulCharPos, ulSectPage, ulBeginNextBlock;
+size_t tSectInfoLen, tIndex, tSections, tBytes;
+UCHAR aucTmp[2], aucFpage[35];
 fail(pFile == NULL || aucHeader == NULL);
 ulBeginOfText = 128;
 NO_DBG_HEX(ulBeginOfText);
@@ -185,8 +185,8 @@ aucBuffer = xfree(aucBuffer);
 static void
 vGet0StyleInfo(int iFodo, const UCHAR *aucGrpprl, style_block_type *pStyle)
 {
-int	iBytes;
-UCHAR	ucTmp;
+int iBytes;
+UCHAR ucTmp;
 fail(iFodo <= 0 || aucGrpprl == NULL || pStyle == NULL);
 pStyle->usIstdNext = ISTD_NORMAL;
 iBytes = (int)ucGetByte(iFodo, aucGrpprl);
@@ -244,10 +244,10 @@ NO_DBG_DEC(pStyle->usAfterIndent);
 void
 vGet0PapInfo(FILE *pFile, const UCHAR *aucHeader)
 {
-style_block_type	tStyle;
-ULONG	ulBeginParfInfo, ulCharPos, ulCharPosNext;
-int	iIndex, iRun, iFodo;
-UCHAR	aucFpage[128];
+style_block_type tStyle;
+ULONG ulBeginParfInfo, ulCharPos, ulCharPosNext;
+int iIndex, iRun, iFodo;
+UCHAR aucFpage[128];
 fail(pFile == NULL || aucHeader == NULL);
 ulBeginParfInfo = 128 * (ULONG)usGetWord(0x12, aucHeader);
 NO_DBG_HEX(ulBeginParfInfo);
@@ -278,8 +278,8 @@ ulBeginParfInfo += 128;
 static void
 vGet0FontInfo(int iFodo, const UCHAR *aucGrpprl, font_block_type *pFont)
 {
-int	iBytes;
-UCHAR	ucTmp;
+int iBytes;
+UCHAR ucTmp;
 fail(iFodo <= 0 || aucGrpprl == NULL || pFont == NULL);
 iBytes = (int)ucGetByte(iFodo, aucGrpprl);
 if (iBytes < 2) {
@@ -352,10 +352,10 @@ NO_DBG_DEC(pFont->ucFontColor);
 void
 vGet0ChrInfo(FILE *pFile, const UCHAR *aucHeader)
 {
-font_block_type		tFont;
-ULONG	ulBeginCharInfo, ulCharPos, ulCharPosNext;
-int	iIndex, iRun, iFodo;
-UCHAR	aucFpage[128];
+font_block_type tFont;
+ULONG ulBeginCharInfo, ulCharPos, ulCharPosNext;
+int iIndex, iRun, iFodo;
+UCHAR aucFpage[128];
 fail(pFile == NULL || aucHeader == NULL);
 ulBeginCharInfo = ulGetLong(0x0e, aucHeader);
 NO_DBG_HEX(ulBeginCharInfo);

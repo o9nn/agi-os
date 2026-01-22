@@ -44,7 +44,7 @@ bool synced:1;
 bool failed:1;
 bool finished:1;
 };
-#define MBOX_SAVECTX(s)		container_of(s, struct mbox_save_context, ctx)
+#define MBOX_SAVECTX(s) container_of(s, struct mbox_save_context, ctx)
 static void ostream_error(struct mbox_save_context *ctx, const char *func)
 {
 mbox_ostream_set_syscall_error(ctx->mbox, ctx->output, func);

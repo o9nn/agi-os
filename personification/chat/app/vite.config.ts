@@ -5,24 +5,24 @@ import { cp } from 'node:fs/promises'
 import { defineConfig } from 'vite'
 import tsconfigPaths from 'vite-tsconfig-paths'
 export default defineConfig(({ mode }) => ({
-  assetsInclude: ['./assets/*'],
-  build: { target: 'esnext' },
-  plugins: [
-    react({
-      babel: { plugins: [
-        ['babel-plugin-react-compiler', { target: '19' }],
-      ] },
-    }),
-    generouted(),
-    tsconfigPaths(),
-    {
-      closeBundle: async () => cp('../docs/dist', './dist/docs', { recursive: true }),
-      name: '@moeru-ai/chat-docs',
-    } satisfies Plugin,
-  ],
-  publicDir: mode === 'development' ? 'public' : false,
-  resolve: {
-    dedupe: ['react', 'three'],
-  },
-  rollupOptions: { target: 'esnext' },
+assetsInclude: ['./assets/*'],
+build: { target: 'esnext' },
+plugins: [
+react({
+babel: { plugins: [
+['babel-plugin-react-compiler', { target: '19' }],
+] },
+}),
+generouted(),
+tsconfigPaths(),
+{
+closeBundle: async () => cp('../docs/dist', './dist/docs', { recursive: true }),
+name: '@moeru-ai/chat-docs',
+} satisfies Plugin,
+],
+publicDir: mode === 'development' ? 'public' : false,
+resolve: {
+dedupe: ['react', 'three'],
+},
+rollupOptions: { target: 'esnext' },
 }))

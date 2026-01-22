@@ -2,12 +2,12 @@
 #include "fns.h"
 #include "ext.h"
 #ifdef STRICT
-#undef  isascii
-#define	isascii(a) ((a) >= 0 && (a) <= 127)
+#undef isascii
+#define isascii(a) ((a) >= 0 && (a) <= 127)
 #endif
 #define GETCH gettch
-Tchar	gettch(void);
-int	brflg;
+Tchar gettch(void);
+int brflg;
 void tbreak(void)
 {
 int pad, k;
@@ -48,7 +48,7 @@ if (admod && ad && (brflg != 2)) {
 lastl = ne;
 adsp = adrem = 0;
 if (admod == 1)
-un +=  quant(nel / 2, HOR);
+un += quant(nel / 2, HOR);
 else if (admod == 2)
 un += nel;
 }

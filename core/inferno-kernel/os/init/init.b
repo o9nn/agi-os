@@ -11,23 +11,23 @@ prefab: Prefab;
 Environ, Element, Compound, Style: import prefab;
 include "mpeg.m";
 include "ir.m";
-tirc: chan of int;	# translated remote input (from irslave)
-irstopc: chan of int;	# channel to irslave
+tirc: chan of int; # translated remote input (from irslave)
+irstopc: chan of int; # channel to irslave
 include "keyring.m";
 kr: Keyring;
 IPint: import kr;
 Init: module
 {
-init:	fn();
+init: fn();
 };
 Shell: module
 {
-init:	fn(ctxt: ref Context, argv: list of string);
+init: fn(ctxt: ref Context, argv: list of string);
 };
 Signon: con "Dialing Local Service Provider\nWait a moment ...";
-Login:  con "Connected to Service Provider";
-Intro:	con "/mpeg/youwill2";
-Garden:	con "The Garden of Delights\nHieronymus Bosch";
+Login: con "Connected to Service Provider";
+Intro: con "/mpeg/youwill2";
+Garden: con "The Garden of Delights\nHieronymus Bosch";
 rootfs(server: string): int
 {
 ok, n: int;
@@ -102,19 +102,19 @@ ones = disp.ones;
 textfont = Font.open(disp, "*default*");
 screencolor := disp.rgb(161, 195, 209);
 menustyle := ref Style(
-textfont,			# titlefont
-textfont,			# textfont
-disp.color(16r55),		# elemcolor
-disp.color(draw->Black),	# edgecolor
-disp.color(draw->Yellow),	# titlecolor
-disp.color(draw->Black),	# textcolor
-disp.color(draw->White));	# highlightcolor
+textfont, # titlefont
+textfont, # textfont
+disp.color(16r55), # elemcolor
+disp.color(draw->Black), # edgecolor
+disp.color(draw->Yellow), # titlecolor
+disp.color(draw->Black), # textcolor
+disp.color(draw->White)); # highlightcolor
 screen = Screen.allocate(disp.image, screencolor, 0);
 screen.image.draw(screen.image.r, screencolor, ones, (0, 0));
 menuenv = ref Environ(screen, menustyle);
 logo := disp.open("/lucent");
 phone := disp.open("/phone");
-if(phone == nil  || logo == nil) {
+if(phone == nil || logo == nil) {
 print("open: /phone or /lucent: %r\n");
 exit;
 }
@@ -132,7 +132,7 @@ spec = sys->sprint("#Fhd0nvram", nvramfd.fd);
 if(bind(spec, "/nvfs", sys->MAFTER|sys->MCREATE) < 0)
 print("init: bind %s: %r\n", spec);
 }
-setsysname();	# set up system name
+setsysname(); # set up system name
 fd := open("/net/ipifc", sys->OWRITE);
 if(fd == nil) {
 print("init: open /net/ipifc: %r");
@@ -181,15 +181,15 @@ sleep(1000);
 #
 # default namespace
 #
-bind("#c", "/dev", sys->MBEFORE);		# console
+bind("#c", "/dev", sys->MBEFORE); # console
 bind("#H", "/dev", sys->MAFTER);
 if(spec != nil)
-bind(spec, "/nvfs", sys->MBEFORE|sys->MCREATE);	# our keys
-bind("#E", "/dev", sys->MBEFORE);		# mpeg
-bind("#l", "/net", sys->MBEFORE);		# ethernet
-bind("#I", "/net", sys->MBEFORE);		# TCP/IP
-bind("#V", "/dev", sys->MAFTER);		# hauppauge TV
-bind("#p", "/prog", sys->MREPL);		# prog device
+bind(spec, "/nvfs", sys->MBEFORE|sys->MCREATE); # our keys
+bind("#E", "/dev", sys->MBEFORE); # mpeg
+bind("#l", "/net", sys->MBEFORE); # ethernet
+bind("#I", "/net", sys->MBEFORE); # TCP/IP
+bind("#V", "/dev", sys->MAFTER); # hauppauge TV
+bind("#p", "/prog", sys->MREPL); # prog device
 sys->bind("#d", "/fd", Sys->MREPL);
 setclock();
 le = Element.icon(menuenv, logo.r, logo, ones);
@@ -231,7 +231,7 @@ sleep(5000);
 if(bind("#/./ir", Ir->PATH, sys->MREPL) < 0)
 print("init: bind ir: %r\n");
 # Uncomment the next line to load sh.dis.
-#	shell = load Shell "/dis/sh.dis";
+# shell = load Shell "/dis/sh.dis";
 dc : ref Context;
 # Comment the next 2 lines to load sh.dis.
 shell = load Shell "/dis/mux/mux.dis";
@@ -266,13 +266,13 @@ fd := sys->open("/nvfs/ID", sys->OREAD);
 if(fd == nil){
 fd = sys->create("/nvfs/ID", sys->OWRITE, 8r664);
 if(fd == nil)
-return  (nil, "can't create /nvfs/ID");
+return (nil, "can't create /nvfs/ID");
 if(sys->fprint(fd, "LT%d", randomint()) < 0)
-return  (nil, "can't write /nvfs/ID");
+return (nil, "can't write /nvfs/ID");
 fd = sys->open("/nvfs/ID", sys->OREAD);
 }
 if(fd == nil)
-return  (nil, "can't open /nvfs/ID");
+return (nil, "can't open /nvfs/ID");
 buf := array[64] of byte;
 n := sys->read(fd, buf, (len buf) - 1);
 if(n <= 0)
@@ -293,10 +293,10 @@ return (nil, "registration not desired");
 # a holder
 info := ref Keyring->Authinfo;
 # contact signer
-#	status("looking for signer");
-#	signer := virgil->virgil("$SIGNER");
-#	if(signer == nil)
-#		return (nil, "can't find signer");
+# status("looking for signer");
+# signer := virgil->virgil("$SIGNER");
+# if(signer == nil)
+# return (nil, "can't find signer");
 status("dialing tcp!"+signer+"!6671");
 (ok, c) := sys->dial("tcp!"+signer+"!6671", nil);
 if(!ok)
@@ -377,9 +377,9 @@ return -1;
 }
 status(expl: string)
 {
-#	title := Element.text(menuenv, "registration\nstatus", ((0,0),(0,0)), Prefab->ETitle);
-#	msg := Element.text(menuenv, expl, ((0,0),(0,0)), Prefab->EText);
-#	c := Compound.box(menuenv, (100, 100), title, msg);
+# title := Element.text(menuenv, "registration\nstatus", ((0,0),(0,0)), Prefab->ETitle);
+# msg := Element.text(menuenv, expl, ((0,0),(0,0)), Prefab->EText);
+# c := Compound.box(menuenv, (100, 100), title, msg);
 c := Compound.textbox(menuenv, ((100, 100),(100,100)), "Registration status", expl);
 c.draw();
 statusbox = c;
@@ -391,7 +391,7 @@ pro:= array[] of {
 "victor", "whiskey", "xray", "yankee", "zulu"
 };
 #
-#  prompt for acceptance
+# prompt for acceptance
 #
 verify(boxid: string, hispk, mypk, cert: array of byte): int
 {
@@ -455,9 +455,9 @@ irslave(irc, stopc: chan of int)
 in, irpid: int;
 buf: list of int;
 outc: chan of int;
-irchan := chan of int;	# Untranslated Ir input channel.
-irpidch := chan of int;	# Ir reader pid channel.
-irmod := load Ir "#/./ir";	# Module built into kernel.
+irchan := chan of int; # Untranslated Ir input channel.
+irpidch := chan of int; # Ir reader pid channel.
+irmod := load Ir "#/./ir"; # Module built into kernel.
 if(irmod==nil){
 print("irslave: failed to load #/./ir");
 return;

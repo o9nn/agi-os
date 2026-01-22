@@ -945,7 +945,7 @@ function _symbol_to_var(sys, sym)
 if hasproperty(sys, sym)
 var = getproperty(sys, sym, namespace = false)
 else
-strs = split(String(sym), ModelingToolkit.NAMESPACE_SEPARATOR)   # need to check if this should be split of not!!!
+strs = split(String(sym), ModelingToolkit.NAMESPACE_SEPARATOR) # need to check if this should be split of not!!!
 if length(strs) > 1
 var = getproperty(sys, Symbol(strs[1]), namespace = false)
 for str in view(strs, 2:length(strs))
@@ -990,8 +990,8 @@ subsys₊k
 to specify initial condition and parameter mappings from *symbols* we can use
 ```julia
 symmap = [:S => 1.0, :I => 1.0, :R => 1.0, :subsys₊A => 1.0, :subsys₊B => 1.0]
-u0map  = symmap_to_varmap(sys, symmap)
-pmap   = symmap_to_varmap(sys, [:β => 1.0, :ν => 1.0, :subsys₊k => 1.0])
+u0map = symmap_to_varmap(sys, symmap)
+pmap = symmap_to_varmap(sys, [:β => 1.0, :ν => 1.0, :subsys₊k => 1.0])
 ```
 `u0map` and `pmap` can then be used as input to various problem types.
 Notes:
@@ -1001,7 +1001,7 @@ Notes:
 function symmap_to_varmap(sys, symmap::Tuple)
 if all(p -> p isa Pair{Symbol}, symmap)
 return ((_symbol_to_var(sys, sym) => val for (sym, val) in symmap)...,)
-else  # if not all entries map a symbol to value pass through
+else # if not all entries map a symbol to value pass through
 return symmap
 end
 end

@@ -7,11 +7,11 @@
 # include <ulimit.h>
 #else
 # ifdef HAVE_ULIMIT
-extern	long ulimit();
+extern long ulimit();
 # endif
 #endif
-#define SOFT	0x1
-#define HARD	0x2
+#define SOFT 0x1
+#define HARD 0x2
 #ifdef RLIM_INFINITY
 # define KSH_RLIM_INFINITY RLIM_INFINITY
 #else
@@ -22,12 +22,12 @@ c_ulimit(wp)
 char **wp;
 {
 static const struct limits {
-const char	*name;
+const char *name;
 enum { RLIMIT, ULIMIT } which;
-int	gcmd;
-int	scmd;
-int	factor;
-char	option;
+int gcmd;
+int scmd;
+int factor;
+char option;
 } limits[] = {
 #ifdef RLIMIT_CPU
 { "time(cpu-seconds)", RLIMIT, RLIMIT_CPU, RLIMIT_CPU, 1, 't' },
@@ -38,11 +38,11 @@ char	option;
 # ifdef UL_GETFSIZE
 { "file(blocks)", ULIMIT, UL_GETFSIZE, UL_SETFSIZE, 1, 'f' },
 # else
-#  ifdef UL_GFILLIM
+# ifdef UL_GFILLIM
 { "file(blocks)", ULIMIT, UL_GFILLIM, UL_SFILLIM, 1, 'f' },
-#  else
+# else
 { "file(blocks)", ULIMIT, 1, 2, 1, 'f' },
-#  endif
+# endif
 # endif
 #endif
 #ifdef RLIMIT_CORE
@@ -76,13 +76,13 @@ char	option;
 # ifdef UL_GMEMLIM
 { "vmemory(maxaddr)", ULIMIT, UL_GMEMLIM, -1, 1, 'v' },
 # else
-#  ifdef UL_GETBREAK
+# ifdef UL_GETBREAK
 { "vmemory(maxaddr)", ULIMIT, UL_GETBREAK, -1, 1, 'v' },
-#  else
-#   ifdef UL_GETMAXBRK
+# else
+# ifdef UL_GETMAXBRK
 { "vmemory(maxaddr)", ULIMIT, UL_GETMAXBRK, -1, 1, 'v' },
-#   endif
-#  endif
+# endif
+# endif
 # endif
 #endif
 #ifdef RLIMIT_SWAP
@@ -90,14 +90,14 @@ char	option;
 #endif
 { (char *) 0 }
 };
-static char	options[3 + NELEM(limits)];
-rlim_t		UNINITIALIZED(val);
-int		how = SOFT | HARD;
-const struct limits	*l;
-int		set, all = 0;
-int		optc, what;
+static char options[3 + NELEM(limits)];
+rlim_t UNINITIALIZED(val);
+int how = SOFT | HARD;
+const struct limits *l;
+int set, all = 0;
+int optc, what;
 #ifdef HAVE_SETRLIMIT
-struct rlimit	limit;
+struct rlimit limit;
 #endif
 if (!options[0]) {
 char *p = options;

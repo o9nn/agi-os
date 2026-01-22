@@ -305,181 +305,181 @@ return C_GOK;
 }
 Optab thumboptab[] =
 {
-{ ATEXT,		C_LEXT,		C_NONE,		C_LCON,		0,	0,	0 },
-{ ATEXT,		C_LEXT,		C_REG,		C_LCON,		0,	0,	0 },
-{ AMVN,		C_REG,		C_NONE,		C_REG,		1,	2,	0 },
-{ ASRL,		C_REG,		C_NONE,		C_REG,		1,	2,	0 },
-{ ACMP,		C_REG,		C_REG,		C_NONE,		1,	2,	0 },
-{ ACMN,		C_REG,		C_REG,		C_NONE,		1,	2,	0 },
-{ AADD,		C_REG,		C_REG,		C_REG,		2,	2,	0 },
-{ AADD,		C_REG,		C_NONE,		C_REG,		2,	2,	0 },
-{ AADD,		C_SCON,		C_REG,		C_REG,		3,	2,	0 },
-{ AADD,		C_LCON,		C_REG,		C_REG,		49,	4,	0 },
-{ AADD,		C_GCON,		C_REG,		C_REG,		36,	4,	0,	LFROM },
-{ ASRL,		C_SCON,		C_REG,		C_REG,		4,	2,	0 },
-{ ASRL,		C_SCON,		C_NONE,		C_REG,		4,	2,	0 },
-{ AADD,		C_SCON,		C_NONE,		C_REG,		5,	2,	0 },
-{ AADD,		C_LCON,		C_NONE,		C_REG,		37,	4,	0,	LFROM },
-{ ACMP,		C_SCON,		C_REG,		C_NONE,		5,	2,	0 },
-{ ACMP,		C_BCON,		C_REG,		C_NONE,		48,	6,	0 },
-{ ACMP,		C_LCON,		C_REG,		C_NONE,		39,	4,	0,	LFROM },
-{ AMOVW,		C_SCON,		C_NONE,		C_REG,		5,	2,	0 },
-{ AMOVW,		C_BCON,		C_NONE,		C_REG,		47,	4,	0 },
-{ AMOVW,		C_LCON,		C_NONE,		C_REG,		38,	2,	0,	LFROM },
-{ AMVN,		C_LCON,		C_NONE,		C_REG,		61,	4,	0 },
-{ AMVN,		C_LCON,		C_REG,		C_REG,		61,	4,	0 },
-{ ARSB,		C_LCON,		C_REG,		C_REG,		61,	4,	0 },
-{ AADD,		C_SCON,		C_NONE,		C_SP,		7,	2,	0 },
-{ AADD,		C_LCON,		C_NONE,		C_SP,		40,	4,	0,	LFROM },
-{ AADD,		C_REG,		C_NONE,		C_HREG,		8,	2,	0 },
-{ AADD,		C_HREG,		C_NONE,		C_REG,		8,	2,	0 },
-{ AADD,		C_HREG,		C_NONE,		C_HREG,		8,	2,	0 },
-{ AMOVW,		C_REG,		C_NONE,		C_HREG,		8,	2,	0 },
-{ AMOVW,		C_HREG,		C_NONE,		C_REG,		8,	2,	0 },
-{ AMOVW,		C_HREG,		C_NONE,		C_HREG,		8,	2,	0 },
-{ ACMP,		C_REG,		C_HREG,		C_NONE,		8,	2,	0 },
-{ ACMP,		C_HREG,		C_REG,		C_NONE,		8,	2,	0 },
-{ ACMP,		C_HREG,		C_HREG,		C_NONE,		8,	2,	0 },
-{ AB,			C_NONE,		C_NONE,		C_SBRA,		9,	2,	0,	LPOOL },
-{ ABEQ,		C_NONE,		C_NONE,		C_SBRA,		10,	2,	0 },
-{ ABL,		C_NONE,		C_NONE,		C_SBRA,		11,	4,	0 },
-{ ABX,		C_NONE,		C_NONE,		C_SBRA,		12,	10,	0 },
-{ AB,			C_NONE,		C_NONE,		C_LBRA,		41,	8,	0,	LPOOL },
-{ ABEQ,		C_NONE,		C_NONE,		C_LBRA,		46,	4,	0 },
-{ ABL,		C_NONE,		C_NONE,		C_LBRA,		43,	14,	0 },
-{ ABX,		C_NONE,		C_NONE,		C_LBRA,		44,	14,	0 },
-{ ABEQ,		C_NONE,		C_NONE,		C_GBRA,		42,  10, 	0 },
-{ ABL,		C_NONE,		C_NONE,		C_REG,		51,	4,	0 },
-{ ABX,		C_NONE,		C_NONE,		C_REG,		15,	8,	0 },
-{ ABX,		C_NONE,		C_NONE,		C_HREG,		15,	8,	0 },
-{ ABXRET,		C_NONE,		C_NONE,		C_REG,		45,	2,	0 },
-{ ABXRET,		C_NONE,		C_NONE,		C_HREG,		45,	2,	0 },
-{ ASWI,		C_NONE,		C_NONE,		C_LCON,		16,	2,	0 },
-{ AWORD,		C_NONE,		C_NONE,		C_LCON,		17,	4,	0 },
-{ AWORD,		C_NONE,		C_NONE,		C_GCON,		17,	4,	0 },
-{ AWORD,		C_NONE,		C_NONE,		C_LEXT,		17,	4, 	0 },
-{ ADWORD,	C_LCON,		C_NONE,		C_LCON,		50,	8,	0 },
-{ AMOVW,		C_SAUTO,		C_NONE,		C_REG,		18,	2,	REGSP },
-{ AMOVW,		C_LAUTO,		C_NONE,		C_REG,		33,	6,	0,	LFROM  },
-{ AMOVW,		C_SEXT,		C_NONE,		C_REG,		30,	4,	0 },
-{ AMOVW,		C_SOREG,		C_NONE,		C_REG,		19,	2,	0 },
-{ AMOVHU,	C_SEXT,		C_NONE,		C_REG,		30,	4,	0 },
-{ AMOVHU,	C_SOREG,		C_NONE,		C_REG,		19,	2,	0 },
-{ AMOVBU,	C_SEXT,		C_NONE,		C_REG,		30,	4,	0 },
-{ AMOVBU,	C_SOREG,		C_NONE,		C_REG,		19,	2,	0 },
-{ AMOVW,		C_REG,		C_NONE,		C_SAUTO,		20,	2,	0 },
-{ AMOVW,		C_REG,		C_NONE,		C_LAUTO,		34,	6,	0,	LTO },
-{ AMOVW,		C_REG,		C_NONE,		C_SEXT,		31,	4,	0 },
-{ AMOVW,		C_REG,		C_NONE,		C_SOREG,		21,	2,	0 },
-{ AMOVH,		C_REG,		C_NONE,		C_SEXT,		31,	4,	0 },
-{ AMOVH,		C_REG,		C_NONE,		C_SOREG,		21,	2,	0 },
-{ AMOVB,		C_REG,		C_NONE,		C_SEXT,		31,	4,	0 },
-{ AMOVB,		C_REG,		C_NONE,		C_SOREG,		21,	2,	0 },
-{ AMOVHU,	C_REG,		C_NONE,		C_SEXT,		31,	4,	0 },
-{ AMOVHU,	C_REG,		C_NONE,		C_SOREG,		21,	2,	0 },
-{ AMOVBU,	C_REG,		C_NONE,		C_SEXT,		31,	4,	0 },
-{ AMOVBU,	C_REG,		C_NONE,		C_SOREG,		21,	2,	0 },
-{ AMOVW,		C_REG,		C_NONE,		C_REG,		22,	2,	0 },
-{ AMOVB,		C_REG,		C_NONE,		C_REG,		23,	4,	0 },
-{ AMOVH,		C_REG,		C_NONE,		C_REG,		23,	4,	0 },
-{ AMOVBU,	C_REG,		C_NONE,		C_REG,		23,	4,	0 },
-{ AMOVHU,	C_REG,		C_NONE,		C_REG,		23,	4,	0 },
-{ AMOVH,		C_SEXT,		C_NONE,		C_REG,		32,	6,	0 },
-{ AMOVH,		C_SOREG,		C_NONE,		C_REG,		24,	4,	0 },
-{ AMOVB,		C_SEXT,		C_NONE,		C_REG,		32,	6,	0 },
-{ AMOVB,		C_SOREG,		C_NONE,		C_REG,		24,	4,	0 },
-{ AMOVW,		C_SACON,	C_NONE,		C_REG,		25,	2,	0 },
-{ AMOVW,		C_LACON,	C_NONE,		C_REG,		35,	4,	0 },
-{ AMOVW,		C_GACON,	C_NONE,		C_REG,		35,	4,	0,	LFROM },
-{ AMOVM,		C_LCON,		C_NONE,		C_REG,		26,	2,	0 },
-{ AMOVM,		C_REG,		C_NONE,		C_LCON,		27,	2,	0 },
-{ AMOVW,		C_LOREG,		C_NONE,		C_REG,		28,	4,	0 },
-{ AMOVH,		C_LOREG,		C_NONE,		C_REG,		28,	4,	0 },
-{ AMOVB,		C_LOREG,		C_NONE,		C_REG,		28,	4,	0 },
-{ AMOVHU,	C_LOREG,		C_NONE,		C_REG,		28,	4,	0 },
-{ AMOVBU,	C_LOREG,		C_NONE,		C_REG,		28,	4,	0 },
-{ AMOVW,		C_REG,		C_NONE,		C_LOREG,		29,	4,	0 },
-{ AMOVH,		C_REG,		C_NONE,		C_LOREG,		29,	4,	0 },
-{ AMOVB,		C_REG,		C_NONE,		C_LOREG,		29,	4,	0 },
-{ AMOVHU,	C_REG,		C_NONE,		C_LOREG,		29,	4,	0 },
-{ AMOVBU,	C_REG,		C_NONE,		C_LOREG,		29,	4,	0 },
-{ AMOVW,		C_GOREG,		C_NONE,		C_REG,		28,	4,	0,	LFROM },
-{ AMOVH,		C_GOREG,		C_NONE,		C_REG,		28,	4,	0,	LFROM },
-{ AMOVB,		C_GOREG,		C_NONE,		C_REG,		28,	4,	0,	LFROM },
-{ AMOVHU,	C_GOREG,		C_NONE,		C_REG,		28,	4,	0,	LFROM },
-{ AMOVBU,	C_GOREG,		C_NONE,		C_REG,		28,	4,	0,	LFROM },
-{ AMOVW,		C_REG,		C_NONE,		C_GOREG,		29,	4,	0,	LTO },
-{ AMOVH,		C_REG,		C_NONE,		C_GOREG,		29,	4,	0,	LTO },
-{ AMOVB,		C_REG,		C_NONE,		C_GOREG,		29,	4,	0,	LTO },
-{ AMOVHU,	C_REG,		C_NONE,		C_GOREG,		29,	4,	0,	LTO },
-{ AMOVBU,	C_REG,		C_NONE,		C_GOREG,		29,	4,	0,	LTO },
-{ AMOVW,		C_LEXT,		C_NONE,		C_REG,		30,	4,	0,	LFROM },
-{ AMOVH,		C_LEXT,		C_NONE,		C_REG,		32,	6,	0,	LFROM },
-{ AMOVB,		C_LEXT,		C_NONE,		C_REG,		32,	6,	0,	LFROM },
-{ AMOVHU,	C_LEXT,		C_NONE,		C_REG,		30,	4,	0,	LFROM },
-{ AMOVBU,	C_LEXT,		C_NONE,		C_REG,		30,	4,	0,	LFROM },
-{ AMOVW,		C_REG,		C_NONE,		C_LEXT,		31,	4,	0,	LTO },
-{ AMOVH,		C_REG,		C_NONE,		C_LEXT,		31,	4,	0,	LTO },
-{ AMOVB,		C_REG,		C_NONE,		C_LEXT,		31,	4,	0,	LTO },
-{ AMOVHU,	C_REG,		C_NONE,		C_LEXT,		31,	4,	0,	LTO },
-{ AMOVBU,	C_REG,		C_NONE,		C_LEXT,		31,	4,	0,	LTO },
-{ AMOVF,	C_FREG,	C_NONE,	C_FEXT,		52, 4, REGSB },
-{ AMOVF,	C_FREG,	C_NONE,	C_FAUTO,	52, 4, REGSP },
-{ AMOVF,	C_FREG,	C_NONE,	C_FOREG,	52, 4, 0 },
-{ AMOVD,	C_FREG,	C_NONE,	C_SAUTO,	52, 4, REGSP },
-{ AMOVD,	C_FREG,	C_NONE,	C_SOREG,	52, 4, 0 },
-{ AMOVF,	C_FEXT,	C_NONE,	C_FREG,		53, 4, REGSB },
-{ AMOVF,	C_FAUTO,C_NONE,	C_FREG,		53, 4, REGSP },
-{ AMOVF,	C_FOREG,C_NONE,	C_FREG,		53, 4, 0 },
-{ AMOVD,	C_SAUTO,C_NONE,	C_FREG,		53, 4, REGSP },
-{ AMOVD,	C_SOREG,C_NONE,	C_FREG,		53, 4, 0 },
-{ AMOVF,	C_FREG,	C_NONE,	C_LEXT,		54, 6, REGSB,	LTO },
-{ AMOVF,	C_FREG,	C_NONE,	C_LAUTO,	54, 8, REGSP,	LTO },
-{ AMOVF,	C_FREG,	C_NONE,	C_LOREG,	54, 8, 0,	LTO },
-{ AMOVD,	C_FREG,	C_NONE,	C_LEXT,		54, 6, REGSB,	LTO },
-{ AMOVF,	C_LEXT,	C_NONE,	C_FREG,		55, 6, REGSB,	LFROM },
-{ AMOVF,	C_LAUTO,C_NONE,	C_FREG,		55, 8, REGSP,	LFROM },
-{ AMOVF,	C_LOREG,C_NONE,	C_FREG,		55, 8, 0,	LFROM },
-{ AMOVD,	C_LEXT,	C_NONE,	C_FREG,		55, 6, REGSB,	LFROM },
-{ AMOVF,	C_FREG,	C_NONE,	C_ADDR,		68, 8, 0,	LTO },
-{ AMOVF,	C_ADDR,	C_NONE,	C_FREG,		69, 8, 0,	LFROM },
-{ AADDF,	C_FREG,	C_NONE,	C_FREG,		56, 4, 0 },
-{ AADDF,	C_FREG,	C_REG,	C_FREG,		56, 4, 0 },
-{ AADDF,	C_FCON,	C_NONE,	C_FREG,		56, 4, 0 },
-{ AADDF,	C_FCON,	C_REG,	C_FREG,		56, 4, 0 },
-{ AMOVF,	C_FCON,	C_NONE,	C_FREG,		56, 4, 0 },
-{ AMOVF,	C_FREG, C_NONE, C_FREG,		56, 4, 0 },
-{ AADDD,	C_FREG,	C_NONE,	C_FREG,		56, 4, 0 },
-{ AADDD,	C_FREG,	C_REG,	C_FREG,		56, 4, 0 },
-{ ASUBF,	C_FREG,	C_NONE,	C_FREG,		56, 4, 0 },
-{ ASUBF,	C_FREG,	C_REG,	C_FREG,		56, 4, 0 },
-{ ASUBD,	C_FREG,	C_NONE,	C_FREG,		56, 4, 0 },
-{ ASUBD,	C_FREG,	C_REG,	C_FREG,		56, 4, 0 },
-{ ADIVD,	C_FREG,	C_NONE,	C_FREG,		56, 4, 0 },
-{ ADIVF,	C_FREG,	C_NONE,	C_FREG,		56, 4, 0 },
-{ AMULF,	C_FREG,	C_NONE,	C_FREG,		56, 4, 0 },
-{ AMULD,	C_FREG,	C_NONE,	C_FREG,		56, 4, 0 },
-{ AMOVD,	C_FREG, C_NONE, C_FREG,		56, 4, 0 },
-{ AMOVD,	C_FCON,	C_NONE,	C_FREG,		56, 4, 0 },
-{ ACMPF,	C_FREG,	C_REG,	C_NONE,		57, 8, 0 },
-{ ACMPF,	C_FCON,	C_REG,	C_NONE,		57, 8, 0 },
-{ ACMPD,	C_FREG,	C_REG,	C_NONE,		57, 8, 0 },
-{ ACMPD,	C_FCON,	C_REG,	C_NONE,		57, 8, 0 },
-{ AMOVFW,	C_FREG,	C_NONE,	C_REG,		58, 8, 0 },
-{ AMOVWF,	C_REG,	C_NONE,	C_FREG,		58, 8, 0 },
-{ AMOVWD,	C_REG,	C_NONE,	C_FREG,		58, 8, 0 },
-{ AMOVDW,	C_FREG,	C_NONE,	C_REG,		58, 8, 0 },
-{ AMOVFD,	C_FREG,	C_NONE,	C_FREG,		58, 4, 0 },
-{ AMOVDF,	C_FREG,	C_NONE,	C_FREG,		58, 4, 0 },
-{ AMOVW,	C_REG,	C_NONE,	C_FCR,		59, 4, 0 },
-{ AMOVW,	C_FCR,	C_NONE,	C_REG,		60, 4, 0 },
-{ ADIV,		C_REG,	C_NONE,	C_REG,		62, 4, 0 },
-{ ADIVU,	C_REG,	C_NONE,	C_REG,		62, 4, 0 },
-{ AMOD,		C_REG,	C_NONE,	C_REG,		63, 10, 0 },
-{ AMODU,	C_REG,	C_NONE,	C_REG,		64, 10, 0 },
-{ AXXX,		C_NONE,		C_NONE,		C_NONE,		0,	2,	0 },
+{ ATEXT, C_LEXT, C_NONE, C_LCON, 0, 0, 0 },
+{ ATEXT, C_LEXT, C_REG, C_LCON, 0, 0, 0 },
+{ AMVN, C_REG, C_NONE, C_REG, 1, 2, 0 },
+{ ASRL, C_REG, C_NONE, C_REG, 1, 2, 0 },
+{ ACMP, C_REG, C_REG, C_NONE, 1, 2, 0 },
+{ ACMN, C_REG, C_REG, C_NONE, 1, 2, 0 },
+{ AADD, C_REG, C_REG, C_REG, 2, 2, 0 },
+{ AADD, C_REG, C_NONE, C_REG, 2, 2, 0 },
+{ AADD, C_SCON, C_REG, C_REG, 3, 2, 0 },
+{ AADD, C_LCON, C_REG, C_REG, 49, 4, 0 },
+{ AADD, C_GCON, C_REG, C_REG, 36, 4, 0, LFROM },
+{ ASRL, C_SCON, C_REG, C_REG, 4, 2, 0 },
+{ ASRL, C_SCON, C_NONE, C_REG, 4, 2, 0 },
+{ AADD, C_SCON, C_NONE, C_REG, 5, 2, 0 },
+{ AADD, C_LCON, C_NONE, C_REG, 37, 4, 0, LFROM },
+{ ACMP, C_SCON, C_REG, C_NONE, 5, 2, 0 },
+{ ACMP, C_BCON, C_REG, C_NONE, 48, 6, 0 },
+{ ACMP, C_LCON, C_REG, C_NONE, 39, 4, 0, LFROM },
+{ AMOVW, C_SCON, C_NONE, C_REG, 5, 2, 0 },
+{ AMOVW, C_BCON, C_NONE, C_REG, 47, 4, 0 },
+{ AMOVW, C_LCON, C_NONE, C_REG, 38, 2, 0, LFROM },
+{ AMVN, C_LCON, C_NONE, C_REG, 61, 4, 0 },
+{ AMVN, C_LCON, C_REG, C_REG, 61, 4, 0 },
+{ ARSB, C_LCON, C_REG, C_REG, 61, 4, 0 },
+{ AADD, C_SCON, C_NONE, C_SP, 7, 2, 0 },
+{ AADD, C_LCON, C_NONE, C_SP, 40, 4, 0, LFROM },
+{ AADD, C_REG, C_NONE, C_HREG, 8, 2, 0 },
+{ AADD, C_HREG, C_NONE, C_REG, 8, 2, 0 },
+{ AADD, C_HREG, C_NONE, C_HREG, 8, 2, 0 },
+{ AMOVW, C_REG, C_NONE, C_HREG, 8, 2, 0 },
+{ AMOVW, C_HREG, C_NONE, C_REG, 8, 2, 0 },
+{ AMOVW, C_HREG, C_NONE, C_HREG, 8, 2, 0 },
+{ ACMP, C_REG, C_HREG, C_NONE, 8, 2, 0 },
+{ ACMP, C_HREG, C_REG, C_NONE, 8, 2, 0 },
+{ ACMP, C_HREG, C_HREG, C_NONE, 8, 2, 0 },
+{ AB, C_NONE, C_NONE, C_SBRA, 9, 2, 0, LPOOL },
+{ ABEQ, C_NONE, C_NONE, C_SBRA, 10, 2, 0 },
+{ ABL, C_NONE, C_NONE, C_SBRA, 11, 4, 0 },
+{ ABX, C_NONE, C_NONE, C_SBRA, 12, 10, 0 },
+{ AB, C_NONE, C_NONE, C_LBRA, 41, 8, 0, LPOOL },
+{ ABEQ, C_NONE, C_NONE, C_LBRA, 46, 4, 0 },
+{ ABL, C_NONE, C_NONE, C_LBRA, 43, 14, 0 },
+{ ABX, C_NONE, C_NONE, C_LBRA, 44, 14, 0 },
+{ ABEQ, C_NONE, C_NONE, C_GBRA, 42, 10, 0 },
+{ ABL, C_NONE, C_NONE, C_REG, 51, 4, 0 },
+{ ABX, C_NONE, C_NONE, C_REG, 15, 8, 0 },
+{ ABX, C_NONE, C_NONE, C_HREG, 15, 8, 0 },
+{ ABXRET, C_NONE, C_NONE, C_REG, 45, 2, 0 },
+{ ABXRET, C_NONE, C_NONE, C_HREG, 45, 2, 0 },
+{ ASWI, C_NONE, C_NONE, C_LCON, 16, 2, 0 },
+{ AWORD, C_NONE, C_NONE, C_LCON, 17, 4, 0 },
+{ AWORD, C_NONE, C_NONE, C_GCON, 17, 4, 0 },
+{ AWORD, C_NONE, C_NONE, C_LEXT, 17, 4, 0 },
+{ ADWORD, C_LCON, C_NONE, C_LCON, 50, 8, 0 },
+{ AMOVW, C_SAUTO, C_NONE, C_REG, 18, 2, REGSP },
+{ AMOVW, C_LAUTO, C_NONE, C_REG, 33, 6, 0, LFROM },
+{ AMOVW, C_SEXT, C_NONE, C_REG, 30, 4, 0 },
+{ AMOVW, C_SOREG, C_NONE, C_REG, 19, 2, 0 },
+{ AMOVHU, C_SEXT, C_NONE, C_REG, 30, 4, 0 },
+{ AMOVHU, C_SOREG, C_NONE, C_REG, 19, 2, 0 },
+{ AMOVBU, C_SEXT, C_NONE, C_REG, 30, 4, 0 },
+{ AMOVBU, C_SOREG, C_NONE, C_REG, 19, 2, 0 },
+{ AMOVW, C_REG, C_NONE, C_SAUTO, 20, 2, 0 },
+{ AMOVW, C_REG, C_NONE, C_LAUTO, 34, 6, 0, LTO },
+{ AMOVW, C_REG, C_NONE, C_SEXT, 31, 4, 0 },
+{ AMOVW, C_REG, C_NONE, C_SOREG, 21, 2, 0 },
+{ AMOVH, C_REG, C_NONE, C_SEXT, 31, 4, 0 },
+{ AMOVH, C_REG, C_NONE, C_SOREG, 21, 2, 0 },
+{ AMOVB, C_REG, C_NONE, C_SEXT, 31, 4, 0 },
+{ AMOVB, C_REG, C_NONE, C_SOREG, 21, 2, 0 },
+{ AMOVHU, C_REG, C_NONE, C_SEXT, 31, 4, 0 },
+{ AMOVHU, C_REG, C_NONE, C_SOREG, 21, 2, 0 },
+{ AMOVBU, C_REG, C_NONE, C_SEXT, 31, 4, 0 },
+{ AMOVBU, C_REG, C_NONE, C_SOREG, 21, 2, 0 },
+{ AMOVW, C_REG, C_NONE, C_REG, 22, 2, 0 },
+{ AMOVB, C_REG, C_NONE, C_REG, 23, 4, 0 },
+{ AMOVH, C_REG, C_NONE, C_REG, 23, 4, 0 },
+{ AMOVBU, C_REG, C_NONE, C_REG, 23, 4, 0 },
+{ AMOVHU, C_REG, C_NONE, C_REG, 23, 4, 0 },
+{ AMOVH, C_SEXT, C_NONE, C_REG, 32, 6, 0 },
+{ AMOVH, C_SOREG, C_NONE, C_REG, 24, 4, 0 },
+{ AMOVB, C_SEXT, C_NONE, C_REG, 32, 6, 0 },
+{ AMOVB, C_SOREG, C_NONE, C_REG, 24, 4, 0 },
+{ AMOVW, C_SACON, C_NONE, C_REG, 25, 2, 0 },
+{ AMOVW, C_LACON, C_NONE, C_REG, 35, 4, 0 },
+{ AMOVW, C_GACON, C_NONE, C_REG, 35, 4, 0, LFROM },
+{ AMOVM, C_LCON, C_NONE, C_REG, 26, 2, 0 },
+{ AMOVM, C_REG, C_NONE, C_LCON, 27, 2, 0 },
+{ AMOVW, C_LOREG, C_NONE, C_REG, 28, 4, 0 },
+{ AMOVH, C_LOREG, C_NONE, C_REG, 28, 4, 0 },
+{ AMOVB, C_LOREG, C_NONE, C_REG, 28, 4, 0 },
+{ AMOVHU, C_LOREG, C_NONE, C_REG, 28, 4, 0 },
+{ AMOVBU, C_LOREG, C_NONE, C_REG, 28, 4, 0 },
+{ AMOVW, C_REG, C_NONE, C_LOREG, 29, 4, 0 },
+{ AMOVH, C_REG, C_NONE, C_LOREG, 29, 4, 0 },
+{ AMOVB, C_REG, C_NONE, C_LOREG, 29, 4, 0 },
+{ AMOVHU, C_REG, C_NONE, C_LOREG, 29, 4, 0 },
+{ AMOVBU, C_REG, C_NONE, C_LOREG, 29, 4, 0 },
+{ AMOVW, C_GOREG, C_NONE, C_REG, 28, 4, 0, LFROM },
+{ AMOVH, C_GOREG, C_NONE, C_REG, 28, 4, 0, LFROM },
+{ AMOVB, C_GOREG, C_NONE, C_REG, 28, 4, 0, LFROM },
+{ AMOVHU, C_GOREG, C_NONE, C_REG, 28, 4, 0, LFROM },
+{ AMOVBU, C_GOREG, C_NONE, C_REG, 28, 4, 0, LFROM },
+{ AMOVW, C_REG, C_NONE, C_GOREG, 29, 4, 0, LTO },
+{ AMOVH, C_REG, C_NONE, C_GOREG, 29, 4, 0, LTO },
+{ AMOVB, C_REG, C_NONE, C_GOREG, 29, 4, 0, LTO },
+{ AMOVHU, C_REG, C_NONE, C_GOREG, 29, 4, 0, LTO },
+{ AMOVBU, C_REG, C_NONE, C_GOREG, 29, 4, 0, LTO },
+{ AMOVW, C_LEXT, C_NONE, C_REG, 30, 4, 0, LFROM },
+{ AMOVH, C_LEXT, C_NONE, C_REG, 32, 6, 0, LFROM },
+{ AMOVB, C_LEXT, C_NONE, C_REG, 32, 6, 0, LFROM },
+{ AMOVHU, C_LEXT, C_NONE, C_REG, 30, 4, 0, LFROM },
+{ AMOVBU, C_LEXT, C_NONE, C_REG, 30, 4, 0, LFROM },
+{ AMOVW, C_REG, C_NONE, C_LEXT, 31, 4, 0, LTO },
+{ AMOVH, C_REG, C_NONE, C_LEXT, 31, 4, 0, LTO },
+{ AMOVB, C_REG, C_NONE, C_LEXT, 31, 4, 0, LTO },
+{ AMOVHU, C_REG, C_NONE, C_LEXT, 31, 4, 0, LTO },
+{ AMOVBU, C_REG, C_NONE, C_LEXT, 31, 4, 0, LTO },
+{ AMOVF, C_FREG, C_NONE, C_FEXT, 52, 4, REGSB },
+{ AMOVF, C_FREG, C_NONE, C_FAUTO, 52, 4, REGSP },
+{ AMOVF, C_FREG, C_NONE, C_FOREG, 52, 4, 0 },
+{ AMOVD, C_FREG, C_NONE, C_SAUTO, 52, 4, REGSP },
+{ AMOVD, C_FREG, C_NONE, C_SOREG, 52, 4, 0 },
+{ AMOVF, C_FEXT, C_NONE, C_FREG, 53, 4, REGSB },
+{ AMOVF, C_FAUTO,C_NONE, C_FREG, 53, 4, REGSP },
+{ AMOVF, C_FOREG,C_NONE, C_FREG, 53, 4, 0 },
+{ AMOVD, C_SAUTO,C_NONE, C_FREG, 53, 4, REGSP },
+{ AMOVD, C_SOREG,C_NONE, C_FREG, 53, 4, 0 },
+{ AMOVF, C_FREG, C_NONE, C_LEXT, 54, 6, REGSB, LTO },
+{ AMOVF, C_FREG, C_NONE, C_LAUTO, 54, 8, REGSP, LTO },
+{ AMOVF, C_FREG, C_NONE, C_LOREG, 54, 8, 0, LTO },
+{ AMOVD, C_FREG, C_NONE, C_LEXT, 54, 6, REGSB, LTO },
+{ AMOVF, C_LEXT, C_NONE, C_FREG, 55, 6, REGSB, LFROM },
+{ AMOVF, C_LAUTO,C_NONE, C_FREG, 55, 8, REGSP, LFROM },
+{ AMOVF, C_LOREG,C_NONE, C_FREG, 55, 8, 0, LFROM },
+{ AMOVD, C_LEXT, C_NONE, C_FREG, 55, 6, REGSB, LFROM },
+{ AMOVF, C_FREG, C_NONE, C_ADDR, 68, 8, 0, LTO },
+{ AMOVF, C_ADDR, C_NONE, C_FREG, 69, 8, 0, LFROM },
+{ AADDF, C_FREG, C_NONE, C_FREG, 56, 4, 0 },
+{ AADDF, C_FREG, C_REG, C_FREG, 56, 4, 0 },
+{ AADDF, C_FCON, C_NONE, C_FREG, 56, 4, 0 },
+{ AADDF, C_FCON, C_REG, C_FREG, 56, 4, 0 },
+{ AMOVF, C_FCON, C_NONE, C_FREG, 56, 4, 0 },
+{ AMOVF, C_FREG, C_NONE, C_FREG, 56, 4, 0 },
+{ AADDD, C_FREG, C_NONE, C_FREG, 56, 4, 0 },
+{ AADDD, C_FREG, C_REG, C_FREG, 56, 4, 0 },
+{ ASUBF, C_FREG, C_NONE, C_FREG, 56, 4, 0 },
+{ ASUBF, C_FREG, C_REG, C_FREG, 56, 4, 0 },
+{ ASUBD, C_FREG, C_NONE, C_FREG, 56, 4, 0 },
+{ ASUBD, C_FREG, C_REG, C_FREG, 56, 4, 0 },
+{ ADIVD, C_FREG, C_NONE, C_FREG, 56, 4, 0 },
+{ ADIVF, C_FREG, C_NONE, C_FREG, 56, 4, 0 },
+{ AMULF, C_FREG, C_NONE, C_FREG, 56, 4, 0 },
+{ AMULD, C_FREG, C_NONE, C_FREG, 56, 4, 0 },
+{ AMOVD, C_FREG, C_NONE, C_FREG, 56, 4, 0 },
+{ AMOVD, C_FCON, C_NONE, C_FREG, 56, 4, 0 },
+{ ACMPF, C_FREG, C_REG, C_NONE, 57, 8, 0 },
+{ ACMPF, C_FCON, C_REG, C_NONE, 57, 8, 0 },
+{ ACMPD, C_FREG, C_REG, C_NONE, 57, 8, 0 },
+{ ACMPD, C_FCON, C_REG, C_NONE, 57, 8, 0 },
+{ AMOVFW, C_FREG, C_NONE, C_REG, 58, 8, 0 },
+{ AMOVWF, C_REG, C_NONE, C_FREG, 58, 8, 0 },
+{ AMOVWD, C_REG, C_NONE, C_FREG, 58, 8, 0 },
+{ AMOVDW, C_FREG, C_NONE, C_REG, 58, 8, 0 },
+{ AMOVFD, C_FREG, C_NONE, C_FREG, 58, 4, 0 },
+{ AMOVDF, C_FREG, C_NONE, C_FREG, 58, 4, 0 },
+{ AMOVW, C_REG, C_NONE, C_FCR, 59, 4, 0 },
+{ AMOVW, C_FCR, C_NONE, C_REG, 60, 4, 0 },
+{ ADIV, C_REG, C_NONE, C_REG, 62, 4, 0 },
+{ ADIVU, C_REG, C_NONE, C_REG, 62, 4, 0 },
+{ AMOD, C_REG, C_NONE, C_REG, 63, 10, 0 },
+{ AMODU, C_REG, C_NONE, C_REG, 64, 10, 0 },
+{ AXXX, C_NONE, C_NONE, C_NONE, 0, 2, 0 },
 };
-#define OPCNTSZ	65
+#define OPCNTSZ 65
 int opcount[OPCNTSZ];
 int
 brextra(Prog *p)
@@ -516,7 +516,7 @@ return 10-4+2;
 return 10-2+2;
 }
 }
-#define high(r)	((r)>=8)
+#define high(r) ((r)>=8)
 static long
 mv(Prog *p, int r, int off)
 {
@@ -787,7 +787,7 @@ diag("BX $I case");
 #endif
 thumbaclass(&p->to, p);
 if(p->to.sym->thumb)
-instoffset  |= 1;
+instoffset |= 1;
 o1 = mvlh(REGPC, REGTMPT);
 o2 = (0x6<<11) | (REGTMPT<<8) | 7;
 o3 = mvlh(REGTMPT, REGLINK);
@@ -1049,7 +1049,7 @@ o1 = mv(p, REGTMPT, instoffset);
 o2 = (0x112<<6) | (REGTMPT<<3) | (REGSP-8);
 regis(p, rt, REGSP, REGSP);
 break;
-case	41:
+case 41:
 thumbaclass(&p->to, p);
 o1 = (0x9<<11) | (REGTMPT<<8);
 o2 = mvlh(REGTMPT, REGPC);
@@ -1080,7 +1080,7 @@ diag("BX LBRA case");
 #endif
 thumbaclass(&p->to, p);
 if(p->to.sym->thumb)
-instoffset  |= 1;
+instoffset |= 1;
 o1 = mvlh(REGPC, REGTMPT);
 o2 = (0x6<<11) | (REGTMPT<<8) | 11;
 o3 = mvlh(REGTMPT, REGLINK);
@@ -1475,21 +1475,21 @@ static long
 thumboprr(int a)
 {
 switch(a) {
-case AMVN:	return 0xf<<6;
-case ACMP:	return 0xa<<6;
-case ACMN:	return 0xb<<6;
-case ATST:	return 0x8<<6;
-case AADC:	return 0x5<<6;
-case ASBC:	return 0x6<<6;
+case AMVN: return 0xf<<6;
+case ACMP: return 0xa<<6;
+case ACMN: return 0xb<<6;
+case ATST: return 0x8<<6;
+case AADC: return 0x5<<6;
+case ASBC: return 0x6<<6;
 case AMUL:
-case AMULU:	return 0xd<<6;
-case AAND:	return 0x0<<6;
-case AEOR:	return 0x1<<6;
-case AORR:	return 0xc<<6;
-case ABIC:	return 0xe<<6;
-case ASRL:	return 0x3<<6;
-case ASRA:	return 0x4<<6;
-case ASLL:	return 0x2<<6;
+case AMULU: return 0xd<<6;
+case AAND: return 0x0<<6;
+case AEOR: return 0x1<<6;
+case AORR: return 0xc<<6;
+case ABIC: return 0xe<<6;
+case ASRL: return 0x3<<6;
+case ASRA: return 0x4<<6;
+case ASLL: return 0x2<<6;
 }
 diag("bad thumbop oprr %d", a);
 prasm(curp);
@@ -1501,11 +1501,11 @@ thumbopirr(int a, int ld)
 if(ld)
 diag("load in thumbopirr");
 switch(a){
-case AMOVW:	return 0xc<<11;
+case AMOVW: return 0xc<<11;
 case AMOVH:
-case AMOVHU:	return 0x10<<11;
+case AMOVHU: return 0x10<<11;
 case AMOVB:
-case AMOVBU:	return 0xe<<11;
+case AMOVBU: return 0xe<<11;
 }
 return 0;
 }
@@ -1514,20 +1514,20 @@ thumboprrr(int a, int ld)
 {
 if(ld){
 switch(a){
-case AMOVW:	return 0x2c<<9;
-case AMOVH:	return 0x2f<<9;
-case AMOVB:	return 0x2b<<9;
-case AMOVHU:	return 0x2d<<9;
-case AMOVBU:	return 0x2e<<9;
+case AMOVW: return 0x2c<<9;
+case AMOVH: return 0x2f<<9;
+case AMOVB: return 0x2b<<9;
+case AMOVHU: return 0x2d<<9;
+case AMOVBU: return 0x2e<<9;
 }
 }
 else{
 switch(a){
-case AMOVW:	return 0x28<<9;
+case AMOVW: return 0x28<<9;
 case AMOVHU:
-case AMOVH:	return 0x29<<9;
+case AMOVH: return 0x29<<9;
 case AMOVBU:
-case AMOVB:	return 0x2a<<9;
+case AMOVB: return 0x2a<<9;
 }
 }
 diag("bad thumbop oprrr %d", a);
@@ -1548,20 +1548,20 @@ case AMOVWD:
 return o | (0x0b << 24) | (0xc0 << 16) | 0xb8;
 case AMOVDW:
 return o | (0x0b << 24) | (0xc0 << 16) | 0xbd;
-case AMOVFD:	return o | (0x0a<<24) | (0xc0<<16) | 0xb7;
-case AMOVDF:	return o | (0x0b<<24) | (0xc0<<16) | 0xb7;
-case AMOVF:	return o | (0x0a<<24) | (0x40<<16) | 0xb0;
-case AMOVD:	return o | (0x0b<<24) | (0x40<<16) | 0xb0;
-case ACMPF:	return o | (0x0a<<24) | (0x40<<16) | 0xb4;
-case ACMPD:	return o | (0x0b<<24) | (0x40<<16) | 0xb4;
-case AADDD:	return o | (0x0b<<24) | 0x30;
-case AADDF:	return o | (0x0a<<24) | 0x30;
-case ASUBD:	return o | (0x0b<<24) | (0x4<<20) | 0x30;
-case ASUBF:	return o | (0x0a<<24) | (0x4<<20) | 0x30;
-case AMULD:	return o | (0x0b<<24) | 0x20;
-case AMULF:	return o | (0x0a<<24) | 0x20;
-case ADIVD:	return o | (0x0b<<24) | 0x80;
-case ADIVF:	return o | (0x0a<<24) | 0x80;
+case AMOVFD: return o | (0x0a<<24) | (0xc0<<16) | 0xb7;
+case AMOVDF: return o | (0x0b<<24) | (0xc0<<16) | 0xb7;
+case AMOVF: return o | (0x0a<<24) | (0x40<<16) | 0xb0;
+case AMOVD: return o | (0x0b<<24) | (0x40<<16) | 0xb0;
+case ACMPF: return o | (0x0a<<24) | (0x40<<16) | 0xb4;
+case ACMPD: return o | (0x0b<<24) | (0x40<<16) | 0xb4;
+case AADDD: return o | (0x0b<<24) | 0x30;
+case AADDF: return o | (0x0a<<24) | 0x30;
+case ASUBD: return o | (0x0b<<24) | (0x4<<20) | 0x30;
+case ASUBF: return o | (0x0a<<24) | (0x4<<20) | 0x30;
+case AMULD: return o | (0x0b<<24) | 0x20;
+case AMULF: return o | (0x0a<<24) | 0x20;
+case ADIVD: return o | (0x0b<<24) | 0x80;
+case ADIVF: return o | (0x0a<<24) | 0x80;
 }
 diag("bad fp %d", a);
 prasm(curp);
@@ -1598,13 +1598,13 @@ static long
 thumbopri(int a)
 {
 switch(a) {
-case ASRL:	return 0x1<<11;
-case ASRA:	return 0x2<<11;
-case ASLL:	return 0x0<<11;
-case AADD:	return 0x2<<11;
-case ASUB:	return 0x3<<11;
-case AMOVW:	return 0x0<<11;
-case ACMP:	return 0x1<<11;
+case ASRL: return 0x1<<11;
+case ASRA: return 0x2<<11;
+case ASLL: return 0x0<<11;
+case AADD: return 0x2<<11;
+case ASUB: return 0x3<<11;
+case AMOVW: return 0x0<<11;
+case ACMP: return 0x1<<11;
 }
 diag("bad thumbop opri %d", a);
 prasm(curp);
@@ -1614,9 +1614,9 @@ static long
 thumbophh(int a)
 {
 switch(a) {
-case AADD:	return 0x0<<8;
-case AMOVW:	return 0x2<<8;
-case ACMP:	return 0x1<<8;
+case AADD: return 0x0<<8;
+case AMOVW: return 0x2<<8;
+case ACMP: return 0x1<<8;
 }
 diag("bad thumbop ophh %d", a);
 prasm(curp);
@@ -1626,22 +1626,22 @@ static long
 thumbopbra(int a)
 {
 switch(a) {
-case ABEQ:	return 0x0<<8;
-case ABNE:	return 0x1<<8;
-case ABCS:	return 0x2<<8;
-case ABHS:	return 0x2<<8;
-case ABCC:	return 0x3<<8;
-case ABLO:	return 0x3<<8;
-case ABMI:	return 0x4<<8;
-case ABPL:	return 0x5<<8;
-case ABVS:	return 0x6<<8;
-case ABVC:	return 0x7<<8;
-case ABHI:	return 0x8<<8;
-case ABLS:	return 0x9<<8;
-case ABGE:	return 0xa<<8;
-case ABLT:	return 0xb<<8;
-case ABGT:	return 0xc<<8;
-case ABLE:	return 0xd<<8;
+case ABEQ: return 0x0<<8;
+case ABNE: return 0x1<<8;
+case ABCS: return 0x2<<8;
+case ABHS: return 0x2<<8;
+case ABCC: return 0x3<<8;
+case ABLO: return 0x3<<8;
+case ABMI: return 0x4<<8;
+case ABPL: return 0x5<<8;
+case ABVS: return 0x6<<8;
+case ABVC: return 0x7<<8;
+case ABHI: return 0x8<<8;
+case ABLS: return 0x9<<8;
+case ABGE: return 0xa<<8;
+case ABLT: return 0xb<<8;
+case ABGT: return 0xc<<8;
+case ABLE: return 0xd<<8;
 }
 diag("bad thumbop opbra %d", a);
 prasm(curp);
@@ -1651,11 +1651,11 @@ static long
 thumbopmv(int a, int ld)
 {
 switch(a) {
-case AMOVW: 	return (ld ? 0xd : 0xc)<<11;
+case AMOVW: return (ld ? 0xd : 0xc)<<11;
 case AMOVH:
-case AMOVHU:	return (ld ? 0x11: 0x10)<<11;
+case AMOVHU: return (ld ? 0x11: 0x10)<<11;
 case AMOVB:
-case AMOVBU:	return (ld ? 0xf : 0xe)<<11;
+case AMOVBU: return (ld ? 0xf : 0xe)<<11;
 }
 diag("bad thumbop opmv %d", a);
 prasm(curp);
@@ -1743,25 +1743,25 @@ char *op10[] = { "push", "pop" };
 char *op11[] = { "stmia", "ldmia" };
 char *cond[] = { "eq", "ne", "hs", "lo", "mi", "pl", "vs", "vc",
 "hi", "ls", "ge", "lt", "gt", "le", "al", "nv" };
-#define B(h, l)		bits(i, h, l)
-#define IMM(h, l)	B(h, l)
-#define REG(h, l)	reg(B(h, l))
-#define LHREG(h, l, lh)	lhreg(B(h, l), B(lh, lh))
-#define COND(h, l)	cond[B(h, l)]
-#define OP1(h, l)	op1[B(h, l)]
-#define OP2(h, l)	op2[B(h, l)]
-#define OP3(h, l)	op3[B(h, l)]
-#define OP4(h, l)	op4[B(h, l)]
-#define OP5(h, l)	op5[B(h, l)]
-#define OP6(h, l)	op6[B(h, l)]
-#define OP7(h, l)	op7[B(h, l)]
-#define OP8(h, l)	op8[B(h, l)]
-#define OP9(h, l)	op9[B(h, l)]
-#define OP10(h, l)	op10[B(h, l)]
-#define OP11(h, l)	op11[B(h, l)]
-#define SBZ(h, l)	if(IMM(h, l) != 0) diag("%x: %x bits %d,%d not zero", pc, i, h, l)
-#define SNBZ(h, l)	if(IMM(h, l) == 0) diag("%x: %x bits %d,%d zero", pc, i, h, l)
-#define SBO(h, l)	if(IMM(h, l) != 1) diag("%x: %x bits %d,%d not one", pc, i, h, l)
+#define B(h, l) bits(i, h, l)
+#define IMM(h, l) B(h, l)
+#define REG(h, l) reg(B(h, l))
+#define LHREG(h, l, lh) lhreg(B(h, l), B(lh, lh))
+#define COND(h, l) cond[B(h, l)]
+#define OP1(h, l) op1[B(h, l)]
+#define OP2(h, l) op2[B(h, l)]
+#define OP3(h, l) op3[B(h, l)]
+#define OP4(h, l) op4[B(h, l)]
+#define OP5(h, l) op5[B(h, l)]
+#define OP6(h, l) op6[B(h, l)]
+#define OP7(h, l) op7[B(h, l)]
+#define OP8(h, l) op8[B(h, l)]
+#define OP9(h, l) op9[B(h, l)]
+#define OP10(h, l) op10[B(h, l)]
+#define OP11(h, l) op11[B(h, l)]
+#define SBZ(h, l) if(IMM(h, l) != 0) diag("%x: %x bits %d,%d not zero", pc, i, h, l)
+#define SNBZ(h, l) if(IMM(h, l) == 0) diag("%x: %x bits %d,%d zero", pc, i, h, l)
+#define SBO(h, l) if(IMM(h, l) != 1) diag("%x: %x bits %d,%d not one", pc, i, h, l)
 static int
 bits(int i, int h, int l)
 {

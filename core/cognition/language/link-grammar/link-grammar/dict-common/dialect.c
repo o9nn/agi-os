@@ -138,7 +138,7 @@ return;
 prt_error("Dialect cost table (%u component%s):\n\\",
 dt->num, dt->num == 1 ? "" : "s");
 prt_error("%-15s %s\n", "component", "cost");
-for (unsigned int i = 1; i  <= dt->num; i++)
+for (unsigned int i = 1; i <= dt->num; i++)
 {
 prt_error("%-15s %s\n\\",
 dt->name[i], cost_stringify(dinfo->cost_table[i]));

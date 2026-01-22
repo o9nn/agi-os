@@ -5,22 +5,22 @@
 #include "fns.h"
 #include "io.h"
 #include "../port/error.h"
-#define	Image	IMAGE
+#define Image IMAGE
 #include <draw.h>
 #include <memdraw.h>
 #include <cursor.h>
 #include "screen.h"
 typedef struct {
-int	vidProcCfg;
-int	hwCurPatAddr;
-int	hwCurLoc;
-int	hwCurC0;
-int	hwCurC1;
+int vidProcCfg;
+int hwCurPatAddr;
+int hwCurLoc;
+int hwCurC0;
+int hwCurC1;
 } Cursor3dfx;
 enum {
-dramInit0	= 0x18,
-dramInit1	= 0x1C,
-hwCur		= 0x5C,
+dramInit0 = 0x18,
+dramInit1 = 0x1C,
+hwCur = 0x5C,
 };
 static ulong
 tdfxlinear(VGAscr* scr, int* size, int* align)

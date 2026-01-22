@@ -30,13 +30,13 @@ typedef unsigned short uint32;
 static const char plugin_id[] = "$Id: srp.c,v 1.59 2010/11/30 11:41:47 mel Exp $";
 #define SRP_MAXBLOCKSIZE 16
 #define SRP_MAXBUFFERSIZE 2147483643
-#define DEFAULT_MDA		"SHA-1"
-#define OPTION_MDA		"mda="
-#define OPTION_REPLAY_DETECTION	"replay_detection"
-#define OPTION_INTEGRITY	"integrity="
-#define OPTION_CONFIDENTIALITY	"confidentiality="
-#define OPTION_MANDATORY	"mandatory="
-#define OPTION_MAXBUFFERSIZE	"maxbuffersize="
+#define DEFAULT_MDA "SHA-1"
+#define OPTION_MDA "mda="
+#define OPTION_REPLAY_DETECTION "replay_detection"
+#define OPTION_INTEGRITY "integrity="
+#define OPTION_CONFIDENTIALITY "confidentiality="
+#define OPTION_MANDATORY "mandatory="
+#define OPTION_MAXBUFFERSIZE "maxbuffersize="
 struct Ng {
 char *N;
 unsigned long g;
@@ -78,21 +78,21 @@ sasl_ssf_t ssf;
 const char *evp_name;
 } layer_option_t;
 static layer_option_t digest_options[] = {
-{ "SHA-1",		0, (1<<0), 1,	"sha1" },
-{ "RIPEMD-160",	0, (1<<1), 1,	"rmd160" },
-{ "MD5",		0, (1<<2), 1,	"md5" },
-{ NULL,		0,      0, 0,	NULL }
+{ "SHA-1", 0, (1<<0), 1, "sha1" },
+{ "RIPEMD-160", 0, (1<<1), 1, "rmd160" },
+{ "MD5", 0, (1<<2), 1, "md5" },
+{ NULL, 0, 0, 0, NULL }
 };
 static layer_option_t *default_digest = &digest_options[0];
 static layer_option_t *server_mda = NULL;
 static layer_option_t cipher_options[] = {
-{ "DES",		0, (1<<0), 56,	"des-ofb" },
-{ "3DES",		0, (1<<1), 112,	"des-ede-ofb" },
-{ "AES",		0, (1<<2), 128,	"aes-128-ofb" },
-{ "Blowfish",	0, (1<<3), 128,	"bf-ofb" },
-{ "CAST-128",	0, (1<<4), 128,	"cast5-ofb" },
-{ "IDEA",		0, (1<<5), 128,	"idea-ofb" },
-{ NULL,		0,      0, 0,	NULL}
+{ "DES", 0, (1<<0), 56, "des-ofb" },
+{ "3DES", 0, (1<<1), 112, "des-ede-ofb" },
+{ "AES", 0, (1<<2), 128, "aes-128-ofb" },
+{ "Blowfish", 0, (1<<3), 128, "bf-ofb" },
+{ "CAST-128", 0, (1<<4), 128, "cast5-ofb" },
+{ "IDEA", 0, (1<<5), 128, "idea-ofb" },
+{ NULL, 0, 0, 0, NULL}
 };
 #if OPENSSL_VERSION_NUMBER < 0x00907000L
 static layer_option_t *default_cipher = &cipher_options[0];
@@ -100,9 +100,9 @@ static layer_option_t *default_cipher = &cipher_options[0];
 static layer_option_t *default_cipher = &cipher_options[2];
 #endif
 enum {
-BIT_REPLAY_DETECTION=	(1<<0),
-BIT_INTEGRITY=		(1<<1),
-BIT_CONFIDENTIALITY=	(1<<2)
+BIT_REPLAY_DETECTION= (1<<0),
+BIT_INTEGRITY= (1<<1),
+BIT_CONFIDENTIALITY= (1<<2)
 };
 typedef struct srp_options_s {
 unsigned mda;
@@ -148,8 +148,8 @@ EVP_CIPHER_CTX cipher_enc_ctx;
 EVP_CIPHER_CTX cipher_dec_ctx;
 int seqnum_out;
 int seqnum_in;
-char           *encode_buf, *decode_buf, *decode_pkt_buf;
-unsigned       encode_buf_len, decode_buf_len, decode_pkt_buf_len;
+char *encode_buf, *decode_buf, *decode_pkt_buf;
+unsigned encode_buf_len, decode_buf_len, decode_pkt_buf_len;
 decode_context_t decode_context;
 } context_t;
 static int srp_encode(void *context,
@@ -1045,18 +1045,18 @@ BN_clear_free(&text->b);
 BN_clear_free(&text->B);
 BN_clear_free(&text->a);
 BN_clear_free(&text->A);
-if (text->authid)		utils->free(text->authid);
-if (text->userid)		utils->free(text->userid);
-if (text->free_password)	_plug_free_secret(utils, &(text->password));
-if (text->salt)		utils->free(text->salt);
-if (text->client_options)	utils->free(text->client_options);
-if (text->server_options)	utils->free(text->server_options);
+if (text->authid) utils->free(text->authid);
+if (text->userid) utils->free(text->userid);
+if (text->free_password) _plug_free_secret(utils, &(text->password));
+if (text->salt) utils->free(text->salt);
+if (text->client_options) utils->free(text->client_options);
+if (text->server_options) utils->free(text->server_options);
 LayerCleanup(text);
 _plug_decode_free(&text->decode_context);
-if (text->encode_buf)	utils->free(text->encode_buf);
-if (text->decode_buf)	utils->free(text->decode_buf);
-if (text->decode_pkt_buf)	utils->free(text->decode_pkt_buf);
-if (text->out_buf)		utils->free(text->out_buf);
+if (text->encode_buf) utils->free(text->encode_buf);
+if (text->decode_buf) utils->free(text->decode_buf);
+if (text->decode_pkt_buf) utils->free(text->decode_pkt_buf);
+if (text->out_buf) utils->free(text->out_buf);
 utils->free(text);
 }
 static void
@@ -1099,7 +1099,7 @@ BN_CTX_free(ctx);
 BN_clear_free(&x);
 return r;
 }
-static int CalculateB(context_t *text  __attribute__((unused)),
+static int CalculateB(context_t *text __attribute__((unused)),
 BIGNUM *v, BIGNUM *N, BIGNUM *g, BIGNUM *b, BIGNUM *B)
 {
 BIGNUM v3;
@@ -1644,10 +1644,10 @@ goto cleanup;
 }
 sparams->utils->log(NULL, SASL_LOG_DEBUG, "Setpass for SRP successful\n");
 cleanup:
-if (user) 	_plug_free_string(sparams->utils, &user);
-if (user_only) 	_plug_free_string(sparams->utils, &user_only);
-if (realm) 	_plug_free_string(sparams->utils, &realm);
-if (sec)    _plug_free_secret(sparams->utils, &sec);
+if (user) _plug_free_string(sparams->utils, &user);
+if (user_only) _plug_free_string(sparams->utils, &user_only);
+if (realm) _plug_free_string(sparams->utils, &realm);
+if (sec) _plug_free_secret(sparams->utils, &sec);
 return r;
 }
 #endif
@@ -1751,7 +1751,7 @@ break;
 if (N_prime) utils->free(N_prime);
 return r;
 }
-static int CalculateA(context_t *text  __attribute__((unused)),
+static int CalculateA(context_t *text __attribute__((unused)),
 BIGNUM *N, BIGNUM *g, BIGNUM *a, BIGNUM *A)
 {
 BN_CTX *ctx = BN_CTX_new();

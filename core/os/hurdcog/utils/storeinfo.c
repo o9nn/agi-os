@@ -13,17 +13,17 @@
 const char *argp_program_version = STANDARD_HURD_VERSION (storeinfo);
 static struct argp_option options[] =
 {
-{"type",        't', 0, 0, "Print the type of store behind FILE"},
-{"flags",       'f', 0, 0, "Print the flags associated with FILE's store"},
-{"name",        'n', 0, 0, "Print the name of the store behind FILE"},
-{"blocks",      'b', 0, 0, "Print the number of blocks in FILE"},
-{"block-size",  'B', 0, 0, "Print the block size of FILE's store"},
-{"size",        's', 0, 0, "Print the size, in bytes, of FILE"},
-{"block-list",  'l', 0, 0, "Print the blocks that are in FILE"},
-{"children",	  'c', 0, 0, "If the store has children, show them too"},
+{"type", 't', 0, 0, "Print the type of store behind FILE"},
+{"flags", 'f', 0, 0, "Print the flags associated with FILE's store"},
+{"name", 'n', 0, 0, "Print the name of the store behind FILE"},
+{"blocks", 'b', 0, 0, "Print the number of blocks in FILE"},
+{"block-size", 'B', 0, 0, "Print the block size of FILE's store"},
+{"size", 's', 0, 0, "Print the size, in bytes, of FILE"},
+{"block-list", 'l', 0, 0, "Print the blocks that are in FILE"},
+{"children", 'c', 0, 0, "If the store has children, show them too"},
 {"dereference", 'L', 0, 0, "If FILE is a symbolic link, follow it"},
-{"prefix",      'p', 0, 0, "Always print `FILE: ' before info"},
-{"no-prefix",   'P', 0, 0, "Never print `FILE: ' before info"},
+{"prefix", 'p', 0, 0, "Always print `FILE: ' before info"},
+{"no-prefix", 'P', 0, 0, "Never print `FILE: ' before info"},
 {0, 0}
 };
 static char *args_doc = "FILE...";
@@ -34,16 +34,16 @@ static char *doc = "Show information about storage used by FILE..."
 "  If the store is a composite one and --children is specified, children"
 " are printed on lines following the main store, indented accordingly."
 "  By default, all fields, and children, are printed.";
-#define W_SOURCE	0x01
-#define W_TYPE		0x02
-#define W_NAME		0x04
-#define W_BLOCKS	0x08
-#define W_BLOCK_SIZE	0x10
-#define W_SIZE		0x20
-#define W_RUNS		0x40
-#define W_CHILDREN	0x80
-#define W_FLAGS		0x100
-#define W_ALL		0x1FF
+#define W_SOURCE 0x01
+#define W_TYPE 0x02
+#define W_NAME 0x04
+#define W_BLOCKS 0x08
+#define W_BLOCK_SIZE 0x10
+#define W_SIZE 0x20
+#define W_RUNS 0x40
+#define W_CHILDREN 0x80
+#define W_FLAGS 0x100
+#define W_ALL 0x1FF
 static void
 print_store (struct store *store, int level, unsigned what)
 {
@@ -121,10 +121,10 @@ printf ("0x%x", store->flags & ~(t | STORE_INACTIVE));
 }
 putchar (')');
 }
-pstr (store->name,       W_NAME);
+pstr (store->name, W_NAME);
 psiz (store->block_size, W_BLOCK_SIZE);
-poff (store->blocks,     W_BLOCKS);
-poff (store->size,       W_SIZE);
+poff (store->blocks, W_BLOCKS);
+poff (store->size, W_SIZE);
 if (what & W_RUNS)
 {
 psep ();

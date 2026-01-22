@@ -1,10 +1,10 @@
 #ifndef _LINUX_MCA_H
 #define _LINUX_MCA_H
-extern int  MCA_bus;
-#define MCA_MAX_SLOT_NR  8
-#define MCA_NOTFOUND	(-1)
-#define MCA_INTEGSCSI	(MCA_MAX_SLOT_NR)
-#define MCA_INTEGVIDEO	(MCA_MAX_SLOT_NR+1)
+extern int MCA_bus;
+#define MCA_MAX_SLOT_NR 8
+#define MCA_NOTFOUND (-1)
+#define MCA_INTEGSCSI (MCA_MAX_SLOT_NR)
+#define MCA_INTEGVIDEO (MCA_MAX_SLOT_NR+1)
 #define MCA_NUMADAPTERS (MCA_MAX_SLOT_NR+2)
 extern int mca_find_adapter(int id, int start);
 extern int mca_find_unused_adapter(int id, int start);

@@ -48,7 +48,7 @@ Handle member_link = _as->add_link(MEMBER_LINK,
 param, parent_param);
 std::ostringstream sstream;
 sstream << value;
-Handle hvalue  = _as->add_node(NUMBER_NODE,
+Handle hvalue = _as->add_node(NUMBER_NODE,
 sstream.str());
 _as->add_link(STATE_LINK, param, hvalue);
 }

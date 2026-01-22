@@ -154,7 +154,7 @@ if (json[0] != '{') {
 return result;
 }
 {
-bool has_key  = false;
+bool has_key = false;
 bool in_token = false;
 std::string str_key = "";
 std::string str_val = "";
@@ -195,7 +195,7 @@ has_key = false;
 }
 str_key = ::replace(str_key, "\\u0120", " " );
 str_key = ::replace(str_key, "\\u010a", "\n");
-str_key = ::replace(str_key, "\\\"",    "\"");
+str_key = ::replace(str_key, "\\\"", "\"");
 try {
 result[str_key] = std::stoi(str_val);
 } catch (...) {
@@ -334,7 +334,7 @@ return true;
 gpt_vocab::id gpt_sample_top_k_top_p(
 const gpt_vocab & vocab,
 const float * logits,
-int    top_k,
+int top_k,
 double top_p,
 double temp,
 std::mt19937 & rng) {
@@ -394,7 +394,7 @@ const gpt_vocab & vocab,
 const float * logits,
 const int32_t * last_n_tokens_data,
 size_t last_n_tokens_data_size,
-int    top_k,
+int top_k,
 double top_p,
 double temp,
 int repeat_last_n,
@@ -483,7 +483,7 @@ data[i] = y;
 }
 }
 bool vad_simple(std::vector<float> & pcmf32, int sample_rate, int last_ms, float vad_thold, float freq_thold, bool verbose) {
-const int n_samples      = pcmf32.size();
+const int n_samples = pcmf32.size();
 const int n_samples_last = (sample_rate * last_ms) / 1000;
 if (n_samples_last >= n_samples) {
 return false;
@@ -491,7 +491,7 @@ return false;
 if (freq_thold > 0.0f) {
 high_pass_filter(pcmf32, freq_thold, sample_rate);
 }
-float energy_all  = 0.0f;
+float energy_all = 0.0f;
 float energy_last = 0.0f;
 for (int i = 0; i < n_samples; i++) {
 energy_all += fabsf(pcmf32[i]);
@@ -499,7 +499,7 @@ if (i >= n_samples - n_samples_last) {
 energy_last += fabsf(pcmf32[i]);
 }
 }
-energy_all  /= n_samples;
+energy_all /= n_samples;
 energy_last /= n_samples_last;
 if (verbose) {
 fprintf(stderr, "%s: energy_all: %f, energy_last: %f, vad_thold: %f, freq_thold: %f\n", __func__, energy_all, energy_last, vad_thold, freq_thold);

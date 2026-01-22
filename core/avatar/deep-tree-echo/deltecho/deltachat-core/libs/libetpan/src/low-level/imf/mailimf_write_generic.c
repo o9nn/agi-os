@@ -1,5 +1,5 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #include "mailimf_write_generic.h"
 #include <time.h>
@@ -749,10 +749,10 @@ time_t timeval;
 #endif
 int wday;
 #if 0
-tmval.tm_sec  = date_time->sec;
-tmval.tm_min  = date_time->min;
-tmval.tm_hour  = date_time->hour;
-tmval.tm_sec  = date_time->sec;
+tmval.tm_sec = date_time->sec;
+tmval.tm_min = date_time->min;
+tmval.tm_hour = date_time->hour;
+tmval.tm_sec = date_time->sec;
 tmval.tm_mday = date_time->day;
 tmval.tm_mon = date_time->month - 1;
 tmval.tm_year = date_time->year - 1900;
@@ -870,7 +870,7 @@ r = mailimf_string_write_driver(do_write, data, col, "Bcc: ", 5);
 if (r != MAILIMF_NO_ERROR)
 return r;
 if (bcc->bcc_addr_list != NULL) {
-r =  mailimf_address_list_write_driver(do_write, data, col, bcc->bcc_addr_list);
+r = mailimf_address_list_write_driver(do_write, data, col, bcc->bcc_addr_list);
 if (r != MAILIMF_NO_ERROR)
 return r;
 }
@@ -1560,7 +1560,7 @@ r = mailimf_string_write_driver(do_write, data, col, "Resent-Bcc: ", 12);
 if (r != MAILIMF_NO_ERROR)
 return r;
 if (bcc->bcc_addr_list != NULL) {
-r =  mailimf_address_list_write_driver(do_write, data, col, bcc->bcc_addr_list);
+r = mailimf_address_list_write_driver(do_write, data, col, bcc->bcc_addr_list);
 if (r != MAILIMF_NO_ERROR)
 return r;
 }

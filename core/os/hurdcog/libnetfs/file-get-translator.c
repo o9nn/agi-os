@@ -39,7 +39,7 @@ free (string);
 else if (S_ISLNK (np->nn_stat.st_mode))
 {
 unsigned int len = sizeof _HURD_SYMLINK + np->nn_stat.st_size + 1;
-if (len  > *translen)
+if (len > *translen)
 *trans = mmap (0, len, PROT_READ|PROT_WRITE, MAP_ANON, 0, 0);
 memcpy (*trans, _HURD_SYMLINK, sizeof _HURD_SYMLINK);
 err = netfs_attempt_readlink (user->user, np,

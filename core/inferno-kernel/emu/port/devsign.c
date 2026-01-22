@@ -1,9 +1,9 @@
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
-#include	"interp.h"
-#include	<isa.h>
-#include	"runt.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
+#include "interp.h"
+#include <isa.h>
+#include "runt.h"
 #include "mp.h"
 #include "libsec.h"
 #include "../../libkeyring/keys.h"
@@ -16,20 +16,20 @@ Maxkey = 2048
 };
 static Dirtab signdir[] =
 {
-".",		{Qdir, 0, QTDIR},	0,	DMDIR|0555,
-"signerkey",	{Qkey},	0,			0644,
-"signerctl",	{Qctl},	0,			0600,
+".", {Qdir, 0, QTDIR}, 0, DMDIR|0555,
+"signerkey", {Qkey}, 0, 0644,
+"signerctl", {Qctl}, 0, 0600,
 };
 typedef struct Get Get;
 struct Get {
-uchar*	p;
-uchar*	ep;
+uchar* p;
+uchar* ep;
 };
-#define	G32(b)	((b[0]<<24)|(b[1]<<16)|(b[2]<<8)|b[3])
-static	int	vc(Get*);
-static	int	vs(void*, int, Get*, int);
+#define G32(b) ((b[0]<<24)|(b[1]<<16)|(b[2]<<8)|b[3])
+static int vc(Get*);
+static int vs(void*, int, Get*, int);
 static Signerkey* findsignerkey(Skeyset*, char*, int, char*);
-extern vlong		osusectime(void);
+extern vlong osusectime(void);
 int
 verifysigner(uchar *sign, int len, uchar *data, ulong ndata)
 {

@@ -5,38 +5,38 @@
 #include "protos.h"
 enum
 {
-OfferTimeout=	60,
-MaxLease=	60*60,
-MinLease=	15*60,
-StaticLease=	30*60,
-IPUDPHDRSIZE=	28,
-MINSUPPORTED=	576,
-Maxhwlen=	16,
-Maxfilelen=	128,
-Maxoptlen=	312-4,
-Bootrequest=	1,
-Bootreply= 	2,
-Fbroadcast=	1<<15,
+OfferTimeout= 60,
+MaxLease= 60*60,
+MinLease= 15*60,
+StaticLease= 30*60,
+IPUDPHDRSIZE= 28,
+MINSUPPORTED= 576,
+Maxhwlen= 16,
+Maxfilelen= 128,
+Maxoptlen= 312-4,
+Bootrequest= 1,
+Bootreply= 2,
+Fbroadcast= 1<<15,
 };
-typedef struct Hdr	Hdr;
+typedef struct Hdr Hdr;
 struct Hdr
 {
-uchar	op;
-uchar	htype;
-uchar	hlen;
-uchar	hops;
-uchar	xid[4];
-uchar	secs[2];
-uchar	flags[2];
-uchar	ciaddr[IPv4addrlen];
-uchar	yiaddr[IPv4addrlen];
-uchar	siaddr[IPv4addrlen];
-uchar	giaddr[IPv4addrlen];
-uchar	chaddr[Maxhwlen];
-char	sname[64];
-char	file[Maxfilelen];
-uchar	optmagic[4];
-uchar	optdata[Maxoptlen];
+uchar op;
+uchar htype;
+uchar hlen;
+uchar hops;
+uchar xid[4];
+uchar secs[2];
+uchar flags[2];
+uchar ciaddr[IPv4addrlen];
+uchar yiaddr[IPv4addrlen];
+uchar siaddr[IPv4addrlen];
+uchar giaddr[IPv4addrlen];
+uchar chaddr[Maxhwlen];
+char sname[64];
+char file[Maxfilelen];
+uchar optmagic[4];
+uchar optdata[Maxoptlen];
 };
 enum
 {
@@ -46,17 +46,17 @@ Ot,
 };
 static Field p_fields[] =
 {
-{"ca",		Fv4ip,	Oca,	"client IP addr",	} ,
-{"sa",		Fv4ip,	Osa,	"server IP addr",	} ,
+{"ca", Fv4ip, Oca, "client IP addr", } ,
+{"sa", Fv4ip, Osa, "server IP addr", } ,
 {0}
 };
 #define plan9opt ((ulong)(('p'<<24) | ('9'<<16) | (' '<<8) | ' '))
 #define genericopt (0x63825363UL)
 static Mux p_mux[] =
 {
-{"dhcp", 	genericopt,},
-{"plan9bootp",	plan9opt,},
-{"dump",	0,},
+{"dhcp", genericopt,},
+{"plan9bootp", plan9opt,},
+{"dump", 0,},
 {0}
 };
 static void

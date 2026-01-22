@@ -4,16 +4,16 @@
 #include <mach/vm_param.h>
 #include <kern/assert.h>
 #include <string.h>
-boolean_t	vm_external_unsafe = FALSE;
-struct kmem_cache	vm_external_cache;
-#define		SMALL_SIZE	(VM_EXTERNAL_SMALL_SIZE/8)
-#define		LARGE_SIZE	(VM_EXTERNAL_LARGE_SIZE/8)
-struct kmem_cache	vm_object_small_existence_map_cache;
-struct kmem_cache	vm_object_large_existence_map_cache;
-vm_external_t	vm_external_create(vm_offset_t size)
+boolean_t vm_external_unsafe = FALSE;
+struct kmem_cache vm_external_cache;
+#define SMALL_SIZE (VM_EXTERNAL_SMALL_SIZE/8)
+#define LARGE_SIZE (VM_EXTERNAL_LARGE_SIZE/8)
+struct kmem_cache vm_object_small_existence_map_cache;
+struct kmem_cache vm_object_large_existence_map_cache;
+vm_external_t vm_external_create(vm_offset_t size)
 {
-vm_external_t	result;
-vm_size_t	bytes;
+vm_external_t result;
+vm_size_t bytes;
 result = (vm_external_t) kmem_cache_alloc(&vm_external_cache);
 result->existence_map = (char *) 0;
 bytes = (atop(size) + 07) >> 3;
@@ -29,7 +29,7 @@ result->existence_size = LARGE_SIZE;
 memset (result->existence_map, 0, result->existence_size);
 return(result);
 }
-void		vm_external_destroy(vm_external_t e)
+void vm_external_destroy(vm_external_t e)
 {
 if (e == VM_EXTERNAL_NULL)
 return;
@@ -44,11 +44,11 @@ kmem_cache_free(&vm_object_large_existence_map_cache,
 }
 kmem_cache_free(&vm_external_cache, (vm_offset_t) e);
 }
-vm_external_state_t _vm_external_state_get(const vm_external_t	e,
-vm_offset_t		offset)
+vm_external_state_t _vm_external_state_get(const vm_external_t e,
+vm_offset_t offset)
 {
 unsigned
-int		bit, byte;
+int bit, byte;
 if (vm_external_unsafe ||
 (e == VM_EXTERNAL_NULL) ||
 (e->existence_map == (char *) 0))
@@ -59,13 +59,13 @@ if (byte >= e->existence_size) return (VM_EXTERNAL_STATE_UNKNOWN);
 return( (e->existence_map[byte] & (1 << (bit & 07))) ?
 VM_EXTERNAL_STATE_EXISTS : VM_EXTERNAL_STATE_ABSENT );
 }
-void		vm_external_state_set(
-vm_external_t		e,
-vm_offset_t		offset,
-vm_external_state_t 	state)
+void vm_external_state_set(
+vm_external_t e,
+vm_offset_t offset,
+vm_external_state_t state)
 {
 unsigned
-int		bit, byte;
+int bit, byte;
 if ((e == VM_EXTERNAL_NULL) || (e->existence_map == (char *) 0))
 return;
 if (state != VM_EXTERNAL_STATE_EXISTS)
@@ -75,9 +75,9 @@ byte = bit >> 3;
 if (byte >= e->existence_size) return;
 e->existence_map[byte] |= (1 << (bit & 07));
 }
-void		vm_external_module_initialize(void)
+void vm_external_module_initialize(void)
 {
-vm_size_t	size = (vm_size_t) sizeof(struct vm_external);
+vm_size_t size = (vm_size_t) sizeof(struct vm_external);
 kmem_cache_init(&vm_external_cache, "vm_external", size, 0,
 NULL, 0);
 kmem_cache_init(&vm_object_small_existence_map_cache,

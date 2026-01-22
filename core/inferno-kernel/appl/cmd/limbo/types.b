@@ -1,82 +1,82 @@
 kindname := array [Tend] of
 {
-Tnone =>	"no type",
-Tadt =>		"adt",
-Tadtpick =>	"adt",
-Tarray =>	"array",
-Tbig =>		"big",
-Tbyte =>	"byte",
-Tchan =>	"chan",
-Treal =>	"real",
-Tfn =>		"fn",
-Tint =>		"int",
-Tlist =>	"list",
-Tmodule =>	"module",
-Tref =>		"ref",
-Tstring =>	"string",
-Ttuple =>	"tuple",
+Tnone => "no type",
+Tadt => "adt",
+Tadtpick => "adt",
+Tarray => "array",
+Tbig => "big",
+Tbyte => "byte",
+Tchan => "chan",
+Treal => "real",
+Tfn => "fn",
+Tint => "int",
+Tlist => "list",
+Tmodule => "module",
+Tref => "ref",
+Tstring => "string",
+Ttuple => "tuple",
 Texception => "exception",
 Tfix => "fixed point",
 Tpoly => "polymorphic",
-Tainit =>	"array initializers",
-Talt =>		"alt channels",
-Tany =>		"polymorphic type",
-Tarrow =>	"->",
-Tcase =>	"case int labels",
-Tcasel =>	"case big labels",
-Tcasec =>	"case string labels",
-Tdot =>		".",
-Terror =>	"type error",
-Tgoto =>	"goto labels",
-Tid =>		"id",
-Tiface =>	"module interface",
-Texcept =>	"exception handler table",
-Tinst =>	"instantiated type",
+Tainit => "array initializers",
+Talt => "alt channels",
+Tany => "polymorphic type",
+Tarrow => "->",
+Tcase => "case int labels",
+Tcasel => "case big labels",
+Tcasec => "case string labels",
+Tdot => ".",
+Terror => "type error",
+Tgoto => "goto labels",
+Tid => "id",
+Tiface => "module interface",
+Texcept => "exception handler table",
+Tinst => "instantiated type",
 };
 tattr = array[Tend] of
 {
-#		     isptr	refable	conable	big	vis
-Tnone =>	Tattr(0,	0,	0,	0,	0),
-Tadt =>		Tattr(0,	1,	1,	1,	1),
-Tadtpick =>	Tattr(0,	1,	0,	1,	1),
-Tarray =>	Tattr(1,	0,	0,	0,	1),
-Tbig =>		Tattr(0,	0,	1,	1,	1),
-Tbyte =>	Tattr(0,	0,	1,	0,	1),
-Tchan =>	Tattr(1,	0,	0,	0,	1),
-Treal =>	Tattr(0,	0,	1,	1,	1),
-Tfn =>		Tattr(0,	1,	0,	0,	1),
-Tint =>		Tattr(0,	0,	1,	0,	1),
-Tlist =>	Tattr(1,	0,	0,	0,	1),
-Tmodule =>	Tattr(1,	0,	0,	0,	1),
-Tref =>		Tattr(1,	0,	0,	0,	1),
-Tstring =>	Tattr(1,	0,	1,	0,	1),
-Ttuple =>	Tattr(0,	1,	1,	1,	1),
-Texception => Tattr(0,	0,	0,	1,	1),
-Tfix =>		Tattr(0,	0,	1,	0,	1),
-Tpoly =>	Tattr(1,	0,	0,	0,	1),
-Tainit =>	Tattr(0,	0,	0,	1,	0),
-Talt =>		Tattr(0,	0,	0,	1,	0),
-Tany =>		Tattr(1,	0,	0,	0,	0),
-Tarrow =>	Tattr(0,	0,	0,	0,	1),
-Tcase =>	Tattr(0,	0,	0,	1,	0),
-Tcasel =>	Tattr(0,	0,	0,	1,	0),
-Tcasec =>	Tattr(0,	0,	0,	1,	0),
-Tdot =>		Tattr(0,	0,	0,	0,	1),
-Terror =>	Tattr(0,	1,	1,	0,	0),
-Tgoto =>	Tattr(0,	0,	0,	1,	0),
-Tid =>		Tattr(0,	0,	0,	0,	1),
-Tiface =>	Tattr(0,	0,	0,	1,	0),
-Texcept =>	Tattr(0,	0,	0,	1,	0),
-Tinst =>	Tattr(0,	1,	1,	1,	1),
+# isptr refable conable big vis
+Tnone => Tattr(0, 0, 0, 0, 0),
+Tadt => Tattr(0, 1, 1, 1, 1),
+Tadtpick => Tattr(0, 1, 0, 1, 1),
+Tarray => Tattr(1, 0, 0, 0, 1),
+Tbig => Tattr(0, 0, 1, 1, 1),
+Tbyte => Tattr(0, 0, 1, 0, 1),
+Tchan => Tattr(1, 0, 0, 0, 1),
+Treal => Tattr(0, 0, 1, 1, 1),
+Tfn => Tattr(0, 1, 0, 0, 1),
+Tint => Tattr(0, 0, 1, 0, 1),
+Tlist => Tattr(1, 0, 0, 0, 1),
+Tmodule => Tattr(1, 0, 0, 0, 1),
+Tref => Tattr(1, 0, 0, 0, 1),
+Tstring => Tattr(1, 0, 1, 0, 1),
+Ttuple => Tattr(0, 1, 1, 1, 1),
+Texception => Tattr(0, 0, 0, 1, 1),
+Tfix => Tattr(0, 0, 1, 0, 1),
+Tpoly => Tattr(1, 0, 0, 0, 1),
+Tainit => Tattr(0, 0, 0, 1, 0),
+Talt => Tattr(0, 0, 0, 1, 0),
+Tany => Tattr(1, 0, 0, 0, 0),
+Tarrow => Tattr(0, 0, 0, 0, 1),
+Tcase => Tattr(0, 0, 0, 1, 0),
+Tcasel => Tattr(0, 0, 0, 1, 0),
+Tcasec => Tattr(0, 0, 0, 1, 0),
+Tdot => Tattr(0, 0, 0, 0, 1),
+Terror => Tattr(0, 1, 1, 0, 0),
+Tgoto => Tattr(0, 0, 0, 1, 0),
+Tid => Tattr(0, 0, 0, 0, 1),
+Tiface => Tattr(0, 0, 0, 1, 0),
+Texcept => Tattr(0, 0, 0, 1, 0),
+Tinst => Tattr(0, 1, 1, 1, 1),
 };
-eqclass:	array of ref Teq;
-ztype:		Type;
-eqrec:		int;
-eqset:		int;
-adts:		array of ref Decl;
-nadts:		int;
-anontupsym:	ref Sym;
-unifysrc:	Src;
+eqclass: array of ref Teq;
+ztype: Type;
+eqrec: int;
+eqset: int;
+adts: array of ref Decl;
+nadts: int;
+anontupsym: ref Sym;
+unifysrc: Src;
 addtmap(t1: ref Type, t2: ref Type, tph: ref Tpair): ref Tpair
 {
 tp: ref Tpair;
@@ -710,7 +710,7 @@ modrefable(d.ty);
 if(m == nil){
 if(impdecls.next != nil)
 for(dl := impdecls; dl != nil; dl = dl.next)
-if(dl.d.ty.tof != impdecl.ty.tof)	# impdecl last
+if(dl.d.ty.tof != impdecl.ty.tof) # impdecl last
 addiface(dl.d, d);
 addiface(impdecl, d);
 return;
@@ -734,7 +734,7 @@ if(last == nil)
 t.ids = dd;
 else
 last.next = dd;
-dd.tag = 1;	# mark so not signed
+dd.tag = 1; # mark so not signed
 if(lastorig == nil)
 t.ids = namesort(t.ids);
 else
@@ -796,7 +796,7 @@ modglobals(mod, globals: ref Decl): ref Decl
 {
 #
 # make a copy of all the global declarations
-# 	used for making a type descriptor for globals ONLY
+# used for making a type descriptor for globals ONLY
 # note we now have two declarations for the same variables,
 # which is apt to cause problems if code changes
 #
@@ -1575,7 +1575,7 @@ tcycle(id.ty);
 Tarrow =>
 if(int(t.rec&TRvis)){
 error(t.src.start, "circularity in definition of " + typeconv(t));
-*t = *terror;	# break the cycle
+*t = *terror; # break the cycle
 return;
 }
 tt = t.tof;
@@ -1590,7 +1590,7 @@ t.rec &= ~TRvis;
 Tid =>
 if(int(t.rec&TRvis)){
 error(t.src.start, "circularity in definition of " + typeconv(t));
-*t = *terror;	# break the cycle
+*t = *terror; # break the cycle
 return;
 }
 t.rec |= TRvis;
@@ -1609,7 +1609,7 @@ ArcValue,
 ArcList,
 ArcArray,
 ArcRef,
-ArcCyc,			# cycle found
+ArcCyc, # cycle found
 ArcPolycyc:
 con 1 << iota;
 cyctype(t: ref Type)
@@ -1951,7 +1951,7 @@ if(id.store != Dfn)
 modrefable(id.ty);
 for(tg := t.tags; tg != nil; tg = tg.next){
 # if((tg.ty.ok & OKmodref) == OKmodref)
-#	continue;
+# continue;
 tg.ty.ok |= OKmodref;
 for(id = tg.ty.ids; id != nil; id = id.next)
 modrefable(id.ty);
@@ -2220,7 +2220,7 @@ if(t1.tags != nil && t2.kind == Tadtpick && !inaorc)
 t2 = t2.decl.dot.ty;
 Tadtpick =>
 #if(t2.kind == Ttuple)
-#	return idcompat(t1.tof.ids.next, t2.ids, any, inaorc);
+# return idcompat(t1.tof.ids.next, t2.ids, any, inaorc);
 break;
 Tmodule =>
 if(t2.kind == Tany)
@@ -2523,7 +2523,7 @@ raisescompat(n1: ref Node, n2: ref Node): int
 if(n1 == n2)
 return 1;
 if(n2 == nil)
-return 1;	# no need to repeat in definition if given in declaration
+return 1; # no need to repeat in definition if given in declaration
 if(n1 == nil)
 return 0;
 for((n1, n2) = (n1.left, n2.left); n1 != nil && n2 != nil; (n1, n2) = (n1.right, n2.right)){
@@ -2613,7 +2613,7 @@ swapped = !swapped;
 }
 if(t1.kind == Tpoly){
 # if(typein(t1, t2))
-# 	 return (0, tp);
+# return (0, tp);
 if(!tattr[t2.kind].isptr)
 return (0, tp);
 if(t2.kind != Tany)
@@ -3003,31 +3003,31 @@ if(debug['S'])
 print("signed %s type %s len %d sig %#ux\n", dotconv(d), typeconv(t), sigend, t.sig);
 return t.sig;
 }
-SIGSELF:	con byte 'S';
-SIGVARARGS:	con byte '*';
-SIGCYC:		con byte 'y';
-SIGREC:		con byte '@';
+SIGSELF: con byte 'S';
+SIGVARARGS: con byte '*';
+SIGCYC: con byte 'y';
+SIGREC: con byte '@';
 sigkind := array[Tend] of
 {
-Tnone =>	byte 'n',
-Tadt =>		byte 'a',
-Tadtpick =>	byte 'p',
-Tarray =>	byte 'A',
-Tbig =>		byte 'B',
-Tbyte =>	byte 'b',
-Tchan =>	byte 'C',
-Treal =>	byte 'r',
-Tfn =>		byte 'f',
-Tint =>		byte 'i',
-Tlist =>	byte 'L',
-Tmodule =>	byte 'm',
-Tref =>		byte 'R',
-Tstring =>	byte 's',
-Ttuple =>	byte 't',
+Tnone => byte 'n',
+Tadt => byte 'a',
+Tadtpick => byte 'p',
+Tarray => byte 'A',
+Tbig => byte 'B',
+Tbyte => byte 'b',
+Tchan => byte 'C',
+Treal => byte 'r',
+Tfn => byte 'f',
+Tint => byte 'i',
+Tlist => byte 'L',
+Tmodule => byte 'm',
+Tref => byte 'R',
+Tstring => byte 's',
+Ttuple => byte 't',
 Texception => byte 'e',
 Tfix => byte 'x',
 Tpoly => byte 'P',
-* => 		byte 0,
+* => byte 0,
 };
 rtsign(t: ref Type, sig: array of byte, spos: int): int
 {
@@ -3445,17 +3445,17 @@ return tprint(t);
 # generalize ref P.A, ref P.B to ref P
 # tparent(t1: ref Type, t2: ref Type): ref Type
 # {
-# 	if(t1 == nil || t2 == nil || t1.kind != Tref || t2.kind != Tref)
-# 		return t1;
-# 	t1 = t1.tof;
-# 	t2 = t2.tof;
-# 	if(t1 == nil || t2 == nil || t1.kind != Tadtpick || t2.kind != Tadtpick)
-# 		return t1;
-# 	t1 = t1.decl.dot.ty;
-# 	t2 = t2.decl.dot.ty;
-# 	if(tequal(t1, t2))
-# 		return mktype(t1.src.start, t1.src.stop, Tref, t1, nil);
-# 	return t1;
+# if(t1 == nil || t2 == nil || t1.kind != Tref || t2.kind != Tref)
+# return t1;
+# t1 = t1.tof;
+# t2 = t2.tof;
+# if(t1 == nil || t2 == nil || t1.kind != Tadtpick || t2.kind != Tadtpick)
+# return t1;
+# t1 = t1.decl.dot.ty;
+# t2 = t2.decl.dot.ty;
+# if(tequal(t1, t2))
+# return mktype(t1.src.start, t1.src.stop, Tref, t1, nil);
+# return t1;
 # }
 tparent0(t1: ref Type, t2: ref Type): int
 {
@@ -3718,7 +3718,7 @@ n = 31;
 (k, a) = round(1.0/alpha, n);
 m = n-k;
 if(m < -n-1)
-return (IMOVW, 0, 0);	# result is zero whatever the values
+return (IMOVW, 0, 0); # result is zero whatever the values
 v = 0;
 W = big 0;
 eps = real(1<<m)/(alpha*real(a)) - 1.0;
@@ -3747,7 +3747,7 @@ n = 31;
 (k, b) = round(beta, n);
 m = k-n;
 if(m <= -2*n)
-return (IMOVW, 0, 0);	#result is zero whatever the values
+return (IMOVW, 0, 0); #result is zero whatever the values
 v = 0;
 W = big 0;
 eps = (real(1<<m)*real(b))/beta - 1.0;
@@ -3894,8 +3894,8 @@ u.ty = mktype(u.src.start, u.src.stop, Tmodule, nil, nil);
 u.ty.decl = u;
 for( ; dl != nil; dl = dl.next){
 d = dl.d;
-ids = d.ty.tof.ids;	# iface
-if(ids != nil && ids.store == Dglobal)	# .mp
+ids = d.ty.tof.ids; # iface
+if(ids != nil && ids.store == Dglobal) # .mp
 sg := sign(ids);
 else
 sg = 0;

@@ -135,7 +135,7 @@ fn_common_serialize(const gs_function_t * pfn, stream *s)
 uint n;
 const gs_function_params_t * p = &pfn->params;
 int code = sputs(s, (const byte *)&pfn->head.type, sizeof(pfn->head.type), &n);
-const float dummy[8] = {0, 0, 0, 0,  0, 0, 0, 0};
+const float dummy[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 if (code < 0)
 return code;
 code = sputs(s, (const byte *)&p->m, sizeof(p->m), &n);

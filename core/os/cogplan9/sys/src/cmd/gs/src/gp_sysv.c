@@ -20,7 +20,7 @@ return (-1);
 return (0);
 }
 #ifndef HZ
-#  define	HZ	100
+# define HZ 100
 #endif
 int
 gettimeofday(struct timeval *tvp, struct timezone *tzp)

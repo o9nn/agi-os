@@ -99,7 +99,7 @@ FOR_EACH_LINE(
 *ptr = (*ptr & ~mask) | (pattern & mask);
 memset(ptr + 1, (byte) pattern, byte_count);
 ptr[last + 1] = (ptr[last + 1] & ~right_mask) |
-(pattern & right_mask); 	);
+(pattern & right_mask); );
 }
 }
 }
@@ -164,7 +164,7 @@ ptr[1] =(ptr[1] & src_mask) | pattern;
 ptr[2] = (ptr[2] & ~right_mask) | (pattern & right_mask); );
 break;
 default:{
-int     i;
+int i;
 if (pattern == 0)
 FOR_EACH_LINE( *ptr++ &= ~mask;
 for (i = 0; i < last; i++)
@@ -304,13 +304,13 @@ rlong |= *lp;
 Error_longs_are_too_large();
 #endif
 #if arch_is_big_endian
-#  define last_bits(n) ((1L << (n)) - 1)
-#  define shift_out_last(x,n) ((x) >>= (n))
-#  define right_justify_last(x,n) DO_NOTHING
+# define last_bits(n) ((1L << (n)) - 1)
+# define shift_out_last(x,n) ((x) >>= (n))
+# define right_justify_last(x,n) DO_NOTHING
 #else
-#  define last_bits(n) (-1L << ((arch_sizeof_long * 8) - (n)))
-#  define shift_out_last(x,n) ((x) <<= (n))
-#  define right_justify_last(x,n) (x) >>= ((arch_sizeof_long * 8) - (n))
+# define last_bits(n) (-1L << ((arch_sizeof_long * 8) - (n)))
+# define shift_out_last(x,n) ((x) <<= (n))
+# define right_justify_last(x,n) (x) >>= ((arch_sizeof_long * 8) - (n))
 #endif
 left <<= arch_log2_sizeof_long + 3;
 #if arch_sizeof_long == 8
@@ -483,7 +483,7 @@ dest_bit &= 7;
 switch (loop_case) {
 case EXPAND_8_TO_32: {
 #if arch_is_big_endian
-#  define word_shift (shift)
+# define word_shift (shift)
 #else
 int word_shift = 24 - shift;
 #endif

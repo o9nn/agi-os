@@ -6,7 +6,7 @@ include "draw.m";
 Context: import Draw;
 include "filepat.m";
 filepat: Filepat;
-nofilepat := 0;			# true if load Filepat has failed.
+nofilepat := 0; # true if load Filepat has failed.
 include "bufio.m";
 bufio: Bufio;
 Iobuf: import bufio;
@@ -278,10 +278,10 @@ return rev(tok);
 ismeta(char: int): int
 {
 case char {
-'*'  or '[' or '?' or
-'#'  or '\'' or '|' or
+'*' or '[' or '?' or
+'#' or '\'' or '|' or
 '&' or ';' or '>' or
-'<'  =>
+'<' =>
 return 1;
 }
 return 0;
@@ -519,7 +519,7 @@ startup(ctxt: ref Context)
 if (env == nil)
 return;
 # if (env->getenv("home") != nil)
-#	return;
+# return;
 home := gethome();
 env->setenv("home", home);
 escript(ctxt, PROFILE);

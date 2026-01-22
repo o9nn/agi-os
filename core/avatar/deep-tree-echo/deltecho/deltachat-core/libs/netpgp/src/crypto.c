@@ -27,12 +27,12 @@ const BIGNUM *g_to_k,
 const BIGNUM *encmpi,
 const pgp_seckey_t *seckey)
 {
-unsigned        mpisize;
-uint8_t		encmpibuf[NETPGP_BUFSIZ];
-uint8_t		mpibuf[NETPGP_BUFSIZ];
-uint8_t		gkbuf[NETPGP_BUFSIZ];
-int             i;
-int             n;
+unsigned mpisize;
+uint8_t encmpibuf[NETPGP_BUFSIZ];
+uint8_t mpibuf[NETPGP_BUFSIZ];
+uint8_t gkbuf[NETPGP_BUFSIZ];
+int i;
+int n;
 mpisize = (unsigned)BN_num_bytes(encmpi);
 if (mpisize > sizeof(encmpibuf)) {
 (void) fprintf(stderr, "mpisize too big %u\n", mpisize);
@@ -122,8 +122,8 @@ const size_t sz_encoded_m_buf,
 const pgp_pubkey_t * pubkey,
 pgp_pk_sesskey_params_t * skp)
 {
-uint8_t   encmpibuf[NETPGP_BUFSIZ];
-int             n;
+uint8_t encmpibuf[NETPGP_BUFSIZ];
+int n;
 if (sz_encoded_m_buf != (size_t)BN_num_bytes(pubkey->key.rsa.n)) {
 (void) fprintf(stderr, "sz_encoded_m_buf wrong\n");
 return 0;
@@ -148,9 +148,9 @@ const size_t sz_encoded_m_buf,
 const pgp_pubkey_t * pubkey,
 pgp_pk_sesskey_params_t * skp)
 {
-uint8_t   encmpibuf[NETPGP_BUFSIZ];
-uint8_t   g_to_k[NETPGP_BUFSIZ];
-int             n;
+uint8_t encmpibuf[NETPGP_BUFSIZ];
+uint8_t g_to_k[NETPGP_BUFSIZ];
+int n;
 if (sz_encoded_m_buf != (size_t)BN_num_bytes(pubkey->key.elgamal.p)) {
 (void) fprintf(stderr, "sz_encoded_m_buf wrong\n");
 return 0;
@@ -173,7 +173,7 @@ return 1;
 static pgp_cb_ret_t
 write_parsed_cb(const pgp_packet_t *pkt, pgp_cbdata_t *cbinfo)
 {
-const pgp_contents_t	*content = &pkt->u;
+const pgp_contents_t *content = &pkt->u;
 if (pgp_get_debug_level(__FILE__)) {
 printf("write_parsed_cb: ");
 }
@@ -236,10 +236,10 @@ const unsigned use_armour,
 const unsigned allow_overwrite,
 const char *cipher)
 {
-pgp_output_t	*output;
-pgp_memory_t	*inmem;
+pgp_output_t *output;
+pgp_memory_t *inmem;
 pgp_keyring_t *rcpts;
-int		 fd_out;
+int fd_out;
 __PGP_USED(io);
 inmem = pgp_memory_new();
 if (!pgp_mem_readfile(inmem, infile)) {
@@ -284,8 +284,8 @@ const unsigned use_armour,
 const char *cipher,
 unsigned raw)
 {
-pgp_output_t	*output;
-pgp_memory_t	*outmem;
+pgp_output_t *output;
+pgp_memory_t *outmem;
 __PGP_USED(io);
 if (input == NULL) {
 (void) fprintf(io->errs,
@@ -316,11 +316,11 @@ void *passfp,
 int numtries,
 pgp_cbfunc_t *getpassfunc)
 {
-pgp_stream_t	*parse = NULL;
-const int	 printerrors = 1;
-char		*filename = NULL;
-int		 fd_in;
-int		 fd_out;
+pgp_stream_t *parse = NULL;
+const int printerrors = 1;
+char *filename = NULL;
+int fd_in;
+int fd_out;
 fd_in = pgp_setup_file_read(io, &parse, infile,
 NULL,
 write_parsed_cb,
@@ -338,9 +338,9 @@ pgp_teardown_file_read(parse, fd_in);
 return 0;
 }
 } else {
-const int	suffixlen = 4;
-const char     *suffix = infile + strlen(infile) - suffixlen;
-unsigned	filenamelen;
+const int suffixlen = 4;
+const char *suffix = infile + strlen(infile) - suffixlen;
+unsigned filenamelen;
 if (strcmp(suffix, ".gpg") == 0 ||
 strcmp(suffix, ".asc") == 0) {
 filenamelen = (unsigned)(strlen(infile) - strlen(suffix));
@@ -395,10 +395,10 @@ const unsigned use_armour,
 const unsigned sshkeys,
 const char* symm_passphrase)
 {
-pgp_stream_t	*parse = NULL;
-pgp_memory_t	*outmem;
-pgp_memory_t	*inmem;
-const int	 printerrors = 1;
+pgp_stream_t *parse = NULL;
+pgp_memory_t *outmem;
+pgp_memory_t *inmem;
+const int printerrors = 1;
 if (input == NULL) {
 (void) fprintf(io->errs,
 "pgp_encrypt_buf: null memory\n");
@@ -463,11 +463,11 @@ key_id_t **recipients_key_ids,
 unsigned *recipients_count)
 {
 const unsigned sshkeys = 0;
-validate_data_cb_t	 validation;
-pgp_stream_t	*stream = NULL;
-pgp_memory_t	*outmem;
-pgp_memory_t	*inmem;
-const int	 printerrors = 1;
+validate_data_cb_t validation;
+pgp_stream_t *stream = NULL;
+pgp_memory_t *outmem;
+pgp_memory_t *inmem;
+const int printerrors = 1;
 if (input == NULL) {
 (void) fprintf(io->errs,
 "pgp_encrypt_buf: null memory\n");

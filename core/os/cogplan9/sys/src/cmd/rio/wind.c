@@ -14,21 +14,21 @@
 #define MOVEIT if(0)
 enum
 {
-HiWater	= 640000,
-LoWater	= 400000,
-MinWater	= 20000,
+HiWater = 640000,
+LoWater = 400000,
+MinWater = 20000,
 };
-static	int		topped;
-static	int		id;
-static	Image	*cols[NCOL];
-static	Image	*grey;
-static	Image	*darkgrey;
-static	Cursor	*lastcursor;
-static	Image	*titlecol;
-static	Image	*lighttitlecol;
-static	Image	*holdcol;
-static	Image	*lightholdcol;
-static	Image	*paleholdcol;
+static int topped;
+static int id;
+static Image *cols[NCOL];
+static Image *grey;
+static Image *darkgrey;
+static Cursor *lastcursor;
+static Image *titlecol;
+static Image *lighttitlecol;
+static Image *holdcol;
+static Image *lightholdcol;
+static Image *paleholdcol;
 Window*
 wmk(Image *i, Mousectl *mc, Channel *ck, Channel *cctl, int scrolling)
 {
@@ -57,9 +57,9 @@ w->ck = ck;
 w->cctl = cctl;
 w->cursorp = nil;
 w->conswrite = chancreate(sizeof(Conswritemesg), 0);
-w->consread =  chancreate(sizeof(Consreadmesg), 0);
-w->mouseread =  chancreate(sizeof(Mousereadmesg), 0);
-w->wctlread =  chancreate(sizeof(Consreadmesg), 0);
+w->consread = chancreate(sizeof(Consreadmesg), 0);
+w->mouseread = chancreate(sizeof(Mousereadmesg), 0);
+w->wctlread = chancreate(sizeof(Consreadmesg), 0);
 w->scrollr = r;
 w->scrollr.max.x = r.min.x+Scrollwid;
 w->lastsr = ZR;
@@ -830,10 +830,10 @@ frdelete(w, p0, p1);
 wfill(w);
 }
 }
-static Window	*clickwin;
-static uint	clickmsec;
-static Window	*selectwin;
-static uint	selectq;
+static Window *clickwin;
+static uint clickmsec;
+static Window *selectwin;
+static uint selectq;
 void
 framescroll(Frame *f, int dl)
 {
@@ -1104,7 +1104,7 @@ void
 wsetcursor(Window *w, int force)
 {
 Cursor *p;
-if(w==nil ||  w->i==nil || Dx(w->screenr)<=0)
+if(w==nil || w->i==nil || Dx(w->screenr)<=0)
 p = nil;
 else if(wpointto(mouse->xy) == w){
 p = w->cursorp;
@@ -1255,10 +1255,10 @@ procexec(pidc, cmd, argv);
 _exits("exec failed");
 }
 }
-static Rune left1[] =  { L'{', L'[', L'(', L'<', L'«', 0 };
+static Rune left1[] = { L'{', L'[', L'(', L'<', L'«', 0 };
 static Rune right1[] = { L'}', L']', L')', L'>', L'»', 0 };
-static Rune left2[] =  { L'\n', 0 };
-static Rune left3[] =  { L'\'', L'"', L'`', 0 };
+static Rune left2[] = { L'\n', 0 };
+static Rune left3[] = { L'\'', L'"', L'`', 0 };
 Rune *left[] = {
 left1,
 left2,

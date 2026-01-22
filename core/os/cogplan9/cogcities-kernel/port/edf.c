@@ -1,27 +1,27 @@
-#include	<u.h>
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"../port/edf.h"
-#include	<trace.h>
+#include <u.h>
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "../port/edf.h"
+#include <trace.h>
 enum {
 Dontprint = 1,
 };
-#define DPRINT	if(Dontprint){}else print
-static long	now;
-extern ulong	delayedscheds;
-extern Schedq	runq[Nrq];
-extern int	nrdy;
-extern ulong	runvec;
-ulong		nilcount;
-ulong		scheds;
-ulong		edfnrun;
-int		misseddeadlines;
-int		edfinited;
-QLock		edfschedlock;
-static Lock	thelock;
+#define DPRINT if(Dontprint){}else print
+static long now;
+extern ulong delayedscheds;
+extern Schedq runq[Nrq];
+extern int nrdy;
+extern ulong runvec;
+ulong nilcount;
+ulong scheds;
+ulong edfnrun;
+int misseddeadlines;
+int edfinited;
+QLock edfschedlock;
+static Lock thelock;
 enum{
 Dl,
 Rl,
@@ -29,10 +29,10 @@ Rl,
 static char *testschedulability(Proc*);
 static Proc *qschedulability;
 enum {
-Onemicrosecond =	1,
-Onemillisecond =	1000,
-Onesecond =		1000000,
-OneRound = 		Onemillisecond/2,
+Onemicrosecond = 1,
+Onemillisecond = 1000,
+Onesecond = 1000000,
+OneRound = Onemillisecond/2,
 };
 static int
 timeconv(Fmt *f)

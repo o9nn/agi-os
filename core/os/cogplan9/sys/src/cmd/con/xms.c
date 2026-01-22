@@ -2,12 +2,12 @@
 #include <libc.h>
 #include <ctype.h>
 enum {
-Soh=	0x1,
-Stx=	0x2,
-Eot=	0x4,
-Ack=	0x6,
-Nak=	0x15,
-Cancel=	0x18,
+Soh= 0x1,
+Stx= 0x2,
+Eot= 0x4,
+Ack= 0x6,
+Nak= 0x15,
+Cancel= 0x18,
 };
 int send(uchar*, int);
 int notifyf(void*, char*);
@@ -29,12 +29,12 @@ int count;
 for (count=8; --count>=0;) {
 if (crc & 0x8000) {
 crc <<= 1;
-crc += (((c<<=1) & 0400)  !=  0);
+crc += (((c<<=1) & 0400) != 0);
 crc ^= 0x1021;
 }
 else {
 crc <<= 1;
-crc += (((c<<=1) & 0400)  !=  0);
+crc += (((c<<=1) & 0400) != 0);
 }
 }
 return crc;

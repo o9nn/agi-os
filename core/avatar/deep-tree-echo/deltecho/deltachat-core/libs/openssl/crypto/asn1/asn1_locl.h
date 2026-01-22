@@ -4,7 +4,7 @@ unsigned long nm_flags;
 unsigned long cert_flags;
 unsigned long oid_flags;
 unsigned long str_flags;
-}  ;
+} ;
 struct evp_pkey_asn1_method_st {
 int pkey_id;
 int pkey_base_id;
@@ -43,8 +43,8 @@ X509_ALGOR *a, ASN1_BIT_STRING *sig, EVP_PKEY *pkey);
 int (*item_sign) (EVP_MD_CTX *ctx, const ASN1_ITEM *it, void *asn,
 X509_ALGOR *alg1, X509_ALGOR *alg2,
 ASN1_BIT_STRING *sig);
-}  ;
-#define X509_CRL_METHOD_DYNAMIC         1
+} ;
+#define X509_CRL_METHOD_DYNAMIC 1
 struct x509_crl_method_st {
 int flags;
 int (*crl_init) (X509_CRL *crl);

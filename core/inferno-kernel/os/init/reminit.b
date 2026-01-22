@@ -15,11 +15,11 @@ include "security.m";
 auth: Auth;
 Init: module
 {
-init:	fn();
+init: fn();
 };
 Shell: module
 {
-init:	fn(ctxt: ref Context, argv: list of string);
+init: fn(ctxt: ref Context, argv: list of string);
 };
 remotefs(server: string): int
 {
@@ -54,7 +54,7 @@ Bootpreadlen: con 128;
 bootp(): string
 {
 #
-#	BUG: if bootp fails, can't then use "add ether" correctly
+# BUG: if bootp fails, can't then use "add ether" correctly
 #
 fd := open("/net/ipifc", sys->OWRITE);
 if(fd == nil) {
@@ -134,13 +134,13 @@ fd = nil;
 # default namespace
 #
 sys->unmount(nil, "/dev");
-bind("#c", "/dev", sys->MBEFORE);			# console
-bind("#l", "/net", sys->MBEFORE);		# ethernet
-bind("#I", "/net", sys->MBEFORE);		# TCP/IP
-bind("#p", "/prog", sys->MREPL);		# prog device
+bind("#c", "/dev", sys->MBEFORE); # console
+bind("#l", "/net", sys->MBEFORE); # ethernet
+bind("#I", "/net", sys->MBEFORE); # TCP/IP
+bind("#p", "/prog", sys->MREPL); # prog device
 sys->bind("#d", "/fd", Sys->MREPL);
-bind("#T", "/dev", sys->MBEFORE);		# kprof device
-bind("#x", "/dev", sys->MBEFORE);		# bench device
+bind("#T", "/dev", sys->MBEFORE); # kprof device
+bind("#x", "/dev", sys->MBEFORE); # bench device
 print("clock...\n");
 setclock();
 print("Server...\n");
@@ -154,7 +154,7 @@ server := load Shell "/dis/lib/srv.dis";
 if(server == nil)
 print("Server not loaded\n");
 else {
-#		server->init(dc, "srv" :: nil);
+# server->init(dc, "srv" :: nil);
 }
 print("Console...\n");
 sys->chdir("/n/remote/usr/john/appl/bench");

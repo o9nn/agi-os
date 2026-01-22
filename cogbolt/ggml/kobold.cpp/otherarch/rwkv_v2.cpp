@@ -476,9 +476,9 @@ fout.write((char *) &data_type, sizeof(data_type));
 size_t total_size_orig = 0;
 size_t total_size_new = 0;
 std::vector<float> work;
-std::vector<uint8_t>     data_u8;
+std::vector<uint8_t> data_u8;
 std::vector<ggml_v2_fp16_t> data_f16;
-std::vector<float>       data_f32;
+std::vector<float> data_f32;
 std::vector<int64_t> hist_all(1 << 4, 0);
 while (true) {
 int32_t n_dims;
@@ -486,7 +486,7 @@ int32_t key_length;
 int32_t parameter_data_type;
 finp.read(reinterpret_cast<char *>(&n_dims), sizeof(n_dims));
 finp.read(reinterpret_cast<char *>(&key_length), sizeof(key_length));
-finp.read(reinterpret_cast<char *>(&parameter_data_type),  sizeof(parameter_data_type));
+finp.read(reinterpret_cast<char *>(&parameter_data_type), sizeof(parameter_data_type));
 if (finp.eof()) {
 break;
 }
@@ -533,7 +533,7 @@ finp.read(reinterpret_cast<char *>(data_u8.data()), nelements * bytes_per_elemen
 }
 fout.write(reinterpret_cast<char *>(&n_dims), sizeof(n_dims));
 fout.write(reinterpret_cast<char *>(&key_length), sizeof(key_length));
-fout.write(reinterpret_cast<char *>(&parameter_data_type),  sizeof(parameter_data_type));
+fout.write(reinterpret_cast<char *>(&parameter_data_type), sizeof(parameter_data_type));
 for (int i = 0; i < n_dims; ++i) {
 fout.write(reinterpret_cast<char *>(&ne[i]), sizeof(ne[i]));
 }
@@ -604,18 +604,18 @@ return true;
 }
 const char * rwkv_v2_get_system_info_string(void) {
 static std::string s;
-s  = "";
-s += "AVX = "       + std::to_string(ggml_v2_cpu_has_avx())       + " | ";
-s += "AVX2 = "      + std::to_string(ggml_v2_cpu_has_avx2())      + " | ";
-s += "AVX512 = "    + std::to_string(ggml_v2_cpu_has_avx512())    + " | ";
-s += "FMA = "       + std::to_string(ggml_v2_cpu_has_fma())       + " | ";
-s += "NEON = "      + std::to_string(ggml_v2_cpu_has_neon())      + " | ";
-s += "ARM_FMA = "   + std::to_string(ggml_v2_cpu_has_arm_fma())   + " | ";
-s += "F16C = "      + std::to_string(ggml_v2_cpu_has_f16c())      + " | ";
-s += "FP16_VA = "   + std::to_string(ggml_v2_cpu_has_fp16_va())   + " | ";
+s = "";
+s += "AVX = " + std::to_string(ggml_v2_cpu_has_avx()) + " | ";
+s += "AVX2 = " + std::to_string(ggml_v2_cpu_has_avx2()) + " | ";
+s += "AVX512 = " + std::to_string(ggml_v2_cpu_has_avx512()) + " | ";
+s += "FMA = " + std::to_string(ggml_v2_cpu_has_fma()) + " | ";
+s += "NEON = " + std::to_string(ggml_v2_cpu_has_neon()) + " | ";
+s += "ARM_FMA = " + std::to_string(ggml_v2_cpu_has_arm_fma()) + " | ";
+s += "F16C = " + std::to_string(ggml_v2_cpu_has_f16c()) + " | ";
+s += "FP16_VA = " + std::to_string(ggml_v2_cpu_has_fp16_va()) + " | ";
 s += "WASM_SIMD = " + std::to_string(ggml_v2_cpu_has_wasm_simd()) + " | ";
-s += "BLAS = "      + std::to_string(ggml_v2_cpu_has_blas())      + " | ";
-s += "SSE3 = "      + std::to_string(ggml_v2_cpu_has_sse3())      + " | ";
-s += "VSX = "       + std::to_string(ggml_v2_cpu_has_vsx())       + " | ";
+s += "BLAS = " + std::to_string(ggml_v2_cpu_has_blas()) + " | ";
+s += "SSE3 = " + std::to_string(ggml_v2_cpu_has_sse3()) + " | ";
+s += "VSX = " + std::to_string(ggml_v2_cpu_has_vsx()) + " | ";
 return s.c_str();
 }

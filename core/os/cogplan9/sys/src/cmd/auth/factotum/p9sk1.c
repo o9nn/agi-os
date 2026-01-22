@@ -25,14 +25,14 @@ Maxphase,
 };
 static char *phasenames[Maxphase] =
 {
-[CHaveChal]		"CHaveChal",
-[CNeedTreq]		"CNeedTreq",
-[CHaveTicket]		"CHaveTicket",
-[CNeedAuth]		"CNeedAuth",
-[SNeedChal]		"SNeedChal",
-[SHaveTreq]		"SHaveTreq",
-[SNeedTicket]		"SNeedTicket",
-[SHaveAuth]		"SHaveAuth",
+[CHaveChal] "CHaveChal",
+[CNeedTreq] "CNeedTreq",
+[CHaveTicket] "CHaveTicket",
+[CNeedAuth] "CNeedAuth",
+[SNeedChal] "SNeedChal",
+[SHaveTreq] "SHaveTreq",
+[SNeedTicket] "SNeedTicket",
+[SHaveAuth] "SHaveAuth",
 };
 static int gettickets(State*, char*, char*);
 static int
@@ -383,19 +383,19 @@ return 0;
 return mkserverticket(s, tbuf);
 }
 Proto p9sk1 = {
-.name=	"p9sk1",
-.init=		p9skinit,
-.write=	p9skwrite,
-.read=	p9skread,
-.close=	p9skclose,
-.addkey=	p9skaddkey,
-.closekey=	p9skclosekey,
-.keyprompt=	"user? !password?"
+.name= "p9sk1",
+.init= p9skinit,
+.write= p9skwrite,
+.read= p9skread,
+.close= p9skclose,
+.addkey= p9skaddkey,
+.closekey= p9skclosekey,
+.keyprompt= "user? !password?"
 };
 Proto p9sk2 = {
-.name=	"p9sk2",
-.init=		p9skinit,
-.write=	p9skwrite,
-.read=	p9skread,
-.close=	p9skclose,
+.name= "p9sk2",
+.init= p9skinit,
+.write= p9skwrite,
+.read= p9skread,
+.close= p9skclose,
 };

@@ -93,15 +93,15 @@ end
 n = length(tree)
 # For simple trees, use heuristic
 if n == 1
-return 1  # Single node
+return 1 # Single node
 elseif n == 2
-return 1  # Two nodes
+return 1 # Two nodes
 elseif tree == [1, 2, 3]
-return 1  # Linear tree (no symmetry)
+return 1 # Linear tree (no symmetry)
 elseif tree == [1, 2, 2]
-return 2  # Branched tree (2-fold symmetry)
+return 2 # Branched tree (2-fold symmetry)
 elseif tree == [1, 2, 2, 2]
-return 6  # Three branches (3! = 6)
+return 6 # Three branches (3! = 6)
 else
 # General case: count repeated subtrees
 # This is a simplified version
@@ -219,7 +219,7 @@ coeffs[i] = 1.0 / 24.0
 else
 coeffs[i] = 0.0
 end
-else  # :custom
+else # :custom
 # Initialize with 1/n!
 coeffs[i] = 1.0 / factorial(order)
 end
@@ -330,7 +330,7 @@ n = div(dim, 2)
 J = [zeros(n, n) I(n); -I(n) zeros(n, n)]
 else
 J = randn(dim, dim)
-J = (J - J') / 2  # Ensure skew-symmetry
+J = (J - J') / 2 # Ensure skew-symmetry
 end
 # Create Hamiltonian (quadratic + tree potential)
 function H(ψ::Vector{Float64})

@@ -9,11 +9,11 @@
 #include "../port/netif.h"
 #include "etherif.h"
 enum {
-Type8021Q=	0x8100,
+Type8021Q= 0x8100,
 };
 static Ether *etherxx[MaxEther];
-static Ether*	vlanalloc(Ether*, int);
-static void	vlanoq(Ether*, Block*);
+static Ether* vlanalloc(Ether*, int);
+static void vlanoq(Ether*, Block*);
 Chan*
 etherattach(char* spec)
 {
@@ -46,7 +46,7 @@ if(ether->maxmtu < ETHERMAXTU+4)
 error("interface cannot support 802.1 tags");
 vlan = vlanalloc(ether, vlanid);
 chan = devattach('l', spec);
-chan->dev = ctlrno  + (vlanid<<8);
+chan->dev = ctlrno + (vlanid<<8);
 chan->aux = vlan;
 poperror();
 runlock(ether);
@@ -505,8 +505,8 @@ qunlock(&ether->vlq);
 return vlan;
 }
 static struct {
-char*	type;
-int	(*reset)(Ether*);
+char* type;
+int (*reset)(Ether*);
 } cards[MaxEther+1];
 void
 addethercard(char* t, int (*r)(Ether*))

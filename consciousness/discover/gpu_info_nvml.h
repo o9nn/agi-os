@@ -13,7 +13,7 @@ unsigned long long used;
 } nvmlMemory_t;
 typedef enum nvmlBrandType_enum
 {
-NVML_BRAND_UNKNOWN          = 0,
+NVML_BRAND_UNKNOWN = 0,
 } nvmlBrandType_t;
 typedef struct nvml_handle {
 void *handle;

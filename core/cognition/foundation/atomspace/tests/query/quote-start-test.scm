@@ -5,11 +5,11 @@
 (test-begin tname)
 (Evaluation (Predicate "foo") (Concept "bar"))
 (define qry
-	(Get (TypedVariable (Variable "X") (Type 'Concept))
-	(Quote (Evaluation
-		(Unquote (Predicate "foo"))
-		(Unquote (Variable "X"))))))
+(Get (TypedVariable (Variable "X") (Type 'Concept))
+(Quote (Evaluation
+(Unquote (Predicate "foo"))
+(Unquote (Variable "X"))))))
 (test-assert "query for both"
-	(equal? (cog-execute! qry) (Set (Concept "bar"))))
+(equal? (cog-execute! qry) (Set (Concept "bar"))))
 (test-end tname)
 (opencog-test-end)

@@ -1,23 +1,23 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#define TODFREQ	1000000000ULL
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#define TODFREQ 1000000000ULL
 struct {
-int		init;
-ulong	cnt;
+int init;
+ulong cnt;
 Lock;
-uvlong	multiplier;
-uvlong	divider;
-vlong	hz;
-vlong	last;
-vlong	off;
-vlong	lasttime;
-vlong	delta;
-ulong	sstart;
-ulong	send;
+uvlong multiplier;
+uvlong divider;
+vlong hz;
+vlong last;
+vlong off;
+vlong lasttime;
+vlong delta;
+ulong sstart;
+ulong send;
 } tod;
 void
 todinit(void)

@@ -10,15 +10,15 @@ include "oldauth.m";
 oldauth: Oldauth;
 include "arg.m";
 # signer key never expires
-SKexpire:       con 0;
+SKexpire: con 0;
 # size in bits of modulus for public keys
-PKmodlen:		con 1024;
+PKmodlen: con 1024;
 # size in bits of modulus for diffie hellman
-DHmodlen:		con 1024;
-algs := array[] of {"rsa", "elgamal"};	# first entry is default
+DHmodlen: con 1024;
+algs := array[] of {"rsa", "elgamal"}; # first entry is default
 Createsignerkey: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 init(nil: ref Draw->Context, args: list of string)
 {

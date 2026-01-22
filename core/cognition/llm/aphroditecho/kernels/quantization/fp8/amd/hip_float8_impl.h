@@ -126,7 +126,7 @@ mantissa >>= exponent_diff;
 mantissa <<= -exponent_diff;
 }
 bool implicit_one = mantissa & (1 << mfmt);
-f8_exponent = (act_exponent + exponent_diff)  + f8_bias - (implicit_one ? 0 : 1);
+f8_exponent = (act_exponent + exponent_diff) + f8_bias - (implicit_one ? 0 : 1);
 uint32_t drop_mask = (1 << (mfmt - wm)) - 1;
 bool odd = mantissa & (1 << (mfmt - wm));
 mantissa += (stoch ? rng : (midpoint ? (odd ? mantissa : mantissa - 1) : mantissa)) & drop_mask;

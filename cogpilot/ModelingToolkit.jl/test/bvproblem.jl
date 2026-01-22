@@ -130,7 +130,7 @@ for (k, v) in u0map
 @test sol[k][1] == v
 end
 # for cons in constraints
-#     @test sol[cons.rhs - cons.lhs] ≈ 0
+# @test sol[cons.rhs - cons.lhs] ≈ 0
 # end
 for eq in equations
 @test sol[eq] ≈ 0
@@ -166,76 +166,76 @@ end
 # Cartesian pendulum from the docs.
 # DAE IVP solved using BoundaryValueDiffEq solvers.
 # let
-#     @parameters g
-#     @variables x(t) y(t) [state_priority = 10] λ(t)
-#     eqs = [D(D(x)) ~ λ * x
-#            D(D(y)) ~ λ * y - g
-#            x^2 + y^2 ~ 1]
-#     @mtkcompile pend = System(eqs, t)
+# @parameters g
+# @variables x(t) y(t) [state_priority = 10] λ(t)
+# eqs = [D(D(x)) ~ λ * x
+# D(D(y)) ~ λ * y - g
+# x^2 + y^2 ~ 1]
+# @mtkcompile pend = System(eqs, t)
 #
-#     tspan = (0.0, 1.5)
-#     u0map = [x => 1, y => 0]
-#     pmap = [g => 1]
-#     guess = [λ => 1]
+# tspan = (0.0, 1.5)
+# u0map = [x => 1, y => 0]
+# pmap = [g => 1]
+# guess = [λ => 1]
 #
-#     prob = ODEProblem(pend, u0map, tspan, pmap; guesses = guess)
-#     osol = solve(prob, Rodas5P())
+# prob = ODEProblem(pend, u0map, tspan, pmap; guesses = guess)
+# osol = solve(prob, Rodas5P())
 #
-#     zeta = [0., 0., 0., 0., 0.]
-#     bvp = SciMLBase.BVProblem{true, SciMLBase.AutoSpecialize}(pend, u0map, tspan, parammap; guesses = guess)
+# zeta = [0., 0., 0., 0., 0.]
+# bvp = SciMLBase.BVProblem{true, SciMLBase.AutoSpecialize}(pend, u0map, tspan, parammap; guesses = guess)
 #
-#     for solver in solvers
-#         sol = solve(bvp, solver(zeta), dt = 0.001)
-#         @test isapprox(sol.u[end], osol.u[end]; atol = 0.01)
-#         conditions = getfield.(equations(pend)[3:end], :rhs)
-#         @test isapprox([sol[conditions][1]; sol[x][1] - 1; sol[y][1]], zeros(5), atol = 0.001)
-#     end
+# for solver in solvers
+# sol = solve(bvp, solver(zeta), dt = 0.001)
+# @test isapprox(sol.u[end], osol.u[end]; atol = 0.01)
+# conditions = getfield.(equations(pend)[3:end], :rhs)
+# @test isapprox([sol[conditions][1]; sol[x][1] - 1; sol[y][1]], zeros(5), atol = 0.001)
+# end
 #
-#     bvp2 = SciMLBase.BVProblem{false, SciMLBase.FullSpecialize}(pend, u0map, tspan, parammap)
-#     for solver in solvers
-#         sol = solve(bvp, solver(zeta), dt = 0.01)
-#         @test isapprox(sol.u[end], osol.u[end]; atol = 0.01)
-#         conditions = getfield.(equations(pend)[3:end], :rhs)
-#         @test [sol[conditions][1]; sol[x][1] - 1; sol[y][1]] ≈ 0
-#     end
+# bvp2 = SciMLBase.BVProblem{false, SciMLBase.FullSpecialize}(pend, u0map, tspan, parammap)
+# for solver in solvers
+# sol = solve(bvp, solver(zeta), dt = 0.01)
+# @test isapprox(sol.u[end], osol.u[end]; atol = 0.01)
+# conditions = getfield.(equations(pend)[3:end], :rhs)
+# @test [sol[conditions][1]; sol[x][1] - 1; sol[y][1]] ≈ 0
+# end
 # end
 # Adding a midpoint boundary constraint.
 # Solve using BVDAE solvers.
 # let
-#     @parameters g
-#     @variables x(..) y(t) [state_priority = 10] λ(t)
-#     eqs = [D(D(x(t))) ~ λ * x(t)
-#            D(D(y)) ~ λ * y - g
-#            x(t)^2 + y^2 ~ 1]
-#     constr = [x(0.5) ~ 1]
-#     @mtkcompile pend = System(eqs, t; constr)
+# @parameters g
+# @variables x(..) y(t) [state_priority = 10] λ(t)
+# eqs = [D(D(x(t))) ~ λ * x(t)
+# D(D(y)) ~ λ * y - g
+# x(t)^2 + y^2 ~ 1]
+# constr = [x(0.5) ~ 1]
+# @mtkcompile pend = System(eqs, t; constr)
 #
-#     tspan = (0.0, 1.5)
-#     u0map = [x(t) => 0.6, y => 0.8]
-#     parammap = [g => 1]
-#     guesses = [λ => 1]
+# tspan = (0.0, 1.5)
+# u0map = [x(t) => 0.6, y => 0.8]
+# parammap = [g => 1]
+# guesses = [λ => 1]
 #
-#     bvp = SciMLBase.BVProblem{true, SciMLBase.AutoSpecialize}(pend, u0map, tspan, parammap; guesses, check_length = false)
-#     test_solvers(daesolvers, bvp, u0map, constr)
+# bvp = SciMLBase.BVProblem{true, SciMLBase.AutoSpecialize}(pend, u0map, tspan, parammap; guesses, check_length = false)
+# test_solvers(daesolvers, bvp, u0map, constr)
 #
-#     bvp2 = SciMLBase.BVProblem{false, SciMLBase.FullSpecialize}(pend, u0map, tspan, parammap)
-#     test_solvers(daesolvers, bvp2, u0map, constr, get_alg_eqs(pend))
+# bvp2 = SciMLBase.BVProblem{false, SciMLBase.FullSpecialize}(pend, u0map, tspan, parammap)
+# test_solvers(daesolvers, bvp2, u0map, constr, get_alg_eqs(pend))
 #
-#     # More complicated constr.
-#     u0map = [x(t) => 0.6]
-#     guesses = [λ => 1, y(t) => 0.8]
+# # More complicated constr.
+# u0map = [x(t) => 0.6]
+# guesses = [λ => 1, y(t) => 0.8]
 #
-#     constr = [x(0.5) ~ 1,
-#                    x(0.3)^3 + y(0.6)^2 ~ 0.5]
-#     @mtkcompile pend = System(eqs, t; constr)
-#     bvp = SciMLBase.BVProblem{true, SciMLBase.AutoSpecialize}(pend, u0map, tspan, parammap; guesses, check_length = false)
-#     test_solvers(daesolvers, bvp, u0map, constr, get_alg_eqs(pend))
+# constr = [x(0.5) ~ 1,
+# x(0.3)^3 + y(0.6)^2 ~ 0.5]
+# @mtkcompile pend = System(eqs, t; constr)
+# bvp = SciMLBase.BVProblem{true, SciMLBase.AutoSpecialize}(pend, u0map, tspan, parammap; guesses, check_length = false)
+# test_solvers(daesolvers, bvp, u0map, constr, get_alg_eqs(pend))
 #
-#     constr = [x(0.4) * g ~ y(0.2),
-#                    y(0.7) ~ 0.3]
-#     @mtkcompile pend = System(eqs, t; constr)
-#     bvp = SciMLBase.BVProblem{true, SciMLBase.AutoSpecialize}(pend, u0map, tspan, parammap; guesses, check_length = false)
-#     test_solvers(daesolvers, bvp, u0map, constr, get_alg_eqs(pend))
+# constr = [x(0.4) * g ~ y(0.2),
+# y(0.7) ~ 0.3]
+# @mtkcompile pend = System(eqs, t; constr)
+# bvp = SciMLBase.BVProblem{true, SciMLBase.AutoSpecialize}(pend, u0map, tspan, parammap; guesses, check_length = false)
+# test_solvers(daesolvers, bvp, u0map, constr, get_alg_eqs(pend))
 # end
 @testset "Cost function compilation" begin
 @parameters α=1.5 β=1.0 γ=3.0 δ=1.0

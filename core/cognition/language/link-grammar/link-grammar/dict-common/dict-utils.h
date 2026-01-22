@@ -3,7 +3,7 @@
 #include "dict-common.h"
 #include "dict-structures.h"
 void patch_subscript(char *);
-int  size_of_expression(Exp *);
+int size_of_expression(Exp *);
 Exp * copy_Exp(Exp *, Pool_desc *, Parse_Options);
 bool is_exp_like_empty_word(Dictionary dict, Exp *);
 const char *exp_stringify(const Exp *n);

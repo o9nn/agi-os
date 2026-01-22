@@ -6,22 +6,22 @@
 #include <mach/kern_return.h>
 #include <mach/port.h>
 #include "mach_factor.h"
-long	avenrun[3] = {0, 0, 0};
-long	mach_factor[3] = {0, 0, 0};
-static	long	fract[3] = {
+long avenrun[3] = {0, 0, 0};
+long mach_factor[3] = {0, 0, 0};
+static long fract[3] = {
 800,
 966,
 983,
 };
 void compute_mach_factor(void)
 {
-processor_set_t	pset;
-processor_t	processor;
-int		ncpus;
-int		nthreads;
-long		factor_now;
-long		average_now;
-long		load_now;
+processor_set_t pset;
+processor_t processor;
+int ncpus;
+int nthreads;
+long factor_now;
+long average_now;
+long load_now;
 simple_lock(&all_psets_lock);
 pset = (processor_set_t) queue_first(&all_psets);
 while (!queue_end(&all_psets, (queue_entry_t)pset)) {

@@ -223,7 +223,7 @@ return -1;
 srv = malloc(strlen(mntsrv)+10);
 sprint(srv, "/mnt/term%s", mntsrv);
 free(mntsrv);
-pid  = 0;
+pid = 0;
 }else
 pid = getpid();
 USED(pid);

@@ -1,7 +1,7 @@
 #ifndef gdevpcfb_INCLUDED
-#  define gdevpcfb_INCLUDED
+# define gdevpcfb_INCLUDED
 #ifdef __MSDOS__
-#  include "dos_.h"
+# include "dos_.h"
 typedef union REGS registers;
 #endif
 #define ega_bits_of_color 2
@@ -29,9 +29,9 @@ void pcfb_set_state(const pcfb_bios_state *);
 typedef byte *fb_ptr;
 typedef volatile byte *volatile_fb_ptr;
 #ifdef A4
-#  define PAGE_HEIGHT_INCHES 11.69
+# define PAGE_HEIGHT_INCHES 11.69
 #else
-#  define PAGE_HEIGHT_INCHES 11.0
+# define PAGE_HEIGHT_INCHES 11.0
 #endif
 typedef struct gx_device_ega_s gx_device_ega;
 struct gx_device_ega_s {
@@ -47,18 +47,18 @@ int fb_byte_mult;
 int video_mode;
 };
 #define ega_device(dev_name, procs, fb_raster, screen_height, aspect_ratio, video_mode)\
-{	std_device_dci_body(gx_device_ega, &procs, dev_name,\
+{ std_device_dci_body(gx_device_ega, &procs, dev_name,\
 fb_raster * 8, screen_height,\
-(screen_height * (aspect_ratio)) / PAGE_HEIGHT_INCHES,	\
-screen_height / PAGE_HEIGHT_INCHES,		\
-(rgb_max ? 3 : 1),	\
-4,			\
-(rgb_max ? rgb_max : 1),	\
+(screen_height * (aspect_ratio)) / PAGE_HEIGHT_INCHES, \
+screen_height / PAGE_HEIGHT_INCHES, \
+(rgb_max ? 3 : 1), \
+4, \
+(rgb_max ? rgb_max : 1), \
 rgb_max,\
-(rgb_max ? rgb_max + 1 : 2),	\
-(rgb_max ? rgb_max + 1 : 0)	\
+(rgb_max ? rgb_max + 1 : 2), \
+(rgb_max ? rgb_max + 1 : 0) \
 ),\
-{ 0 },			\
+{ 0 }, \
 fb_raster,\
 (fb_raster & 15 ? fb_raster : fb_raster >> 4),\
 (fb_raster & 15 ? fb_raster : 0),\
@@ -73,16 +73,16 @@ video_mode\
 #define g_const_map 1
 #define set_g_const_map(map) outport2(graph_addr, g_const_map, map)
 #define g_function 3
-#  define gf_WRITE 0
-#  define gf_AND 8
-#  define gf_OR 0x10
-#  define gf_XOR 0x18
+# define gf_WRITE 0
+# define gf_AND 8
+# define gf_OR 0x10
+# define gf_XOR 0x18
 #define set_g_function(func) outport2(graph_addr, g_function, func)
 #define g_read_plane 4
 #define set_g_read_plane(plane) outport2(graph_addr, g_read_plane, plane)
 #define g_mode 5
-#  define gm_DATA 0
-#  define gm_FILL 2
+# define gm_DATA 0
+# define gm_FILL 2
 #define set_g_mode(mode) outport2(graph_addr, g_mode, mode)
 #define g_mask 8
 #define set_g_mask(mask) outport2(graph_addr, g_mask, mask)
@@ -96,16 +96,16 @@ static inline void
 outportb(int port, int data)
 {
 __asm__ volatile ("outb %0,%1"::
-"a"      ((unsigned char)data),
-"d"      ((unsigned short)port));
+"a" ((unsigned char)data),
+"d" ((unsigned short)port));
 }
 static inline void
 outport2(int port, int index, int data)
 {
 __asm__ volatile ("movb %0,%%ah; movb %1,%%al; outw %%ax,%2"::
-"qmi"    ((unsigned char)data),
-"qmi"    ((unsigned char)index),
-"d"      ((unsigned short)port):
+"qmi" ((unsigned char)data),
+"qmi" ((unsigned char)index),
+"d" ((unsigned short)port):
 "eax");
 }
 #else
@@ -114,7 +114,7 @@ void outport2(uint, byte, byte);
 #endif
 #undef mk_fb_ptr
 extern fb_ptr fb_addr;
-#define mk_fb_ptr(x, y)	(fb_addr + (y) * (fb_dev->raster) + ((x) >> 3))
+#define mk_fb_ptr(x, y) (fb_addr + (y) * (fb_dev->raster) + ((x) >> 3))
 #else
 #define outport2(port, index, data)\
 (outportb(port, index), outportb((port)+1, data))

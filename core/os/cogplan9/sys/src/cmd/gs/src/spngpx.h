@@ -1,5 +1,5 @@
 #ifndef spngpx_INCLUDED
-#  define spngpx_INCLUDED
+# define spngpx_INCLUDED
 typedef struct stream_PNGP_state_s {
 stream_state_common;
 int Colors;
@@ -14,7 +14,7 @@ int case_index;
 long row_left;
 byte prev[32];
 } stream_PNGP_state;
-#define private_st_PNGP_state()	\
+#define private_st_PNGP_state() \
 gs_private_st_ptrs1(st_PNGP_state, stream_PNGP_state,\
 "PNGPredictorEncode/Decode state", pngp_enum_ptrs, pngp_reloc_ptrs,\
 prev_row)

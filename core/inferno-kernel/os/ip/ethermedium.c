@@ -10,9 +10,9 @@
 typedef struct Etherhdr Etherhdr;
 struct Etherhdr
 {
-uchar	d[6];
-uchar	s[6];
-uchar	t[2];
+uchar d[6];
+uchar s[6];
+uchar t[2];
 };
 static uchar ipbroadcast[IPaddrlen] = {
 0xff,0xff,0xff,0xff,
@@ -21,88 +21,88 @@ static uchar ipbroadcast[IPaddrlen] = {
 0xff,0xff,0xff,0xff,
 };
 static uchar etherbroadcast[] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
-static void	etherread4(void *a);
-static void	etherread6(void *a);
-static void	etherbind(Ipifc *ifc, int argc, char **argv);
-static void	etherunbind(Ipifc *ifc);
-static void	etherbwrite(Ipifc *ifc, Block *bp, int version, uchar *ip);
-static void	etheraddmulti(Ipifc *ifc, uchar *a, uchar *ia);
-static void	etherremmulti(Ipifc *ifc, uchar *a, uchar *ia);
-static Block*	multicastarp(Fs *f, Arpent *a, Medium*, uchar *mac);
-static void	sendarp(Ipifc *ifc, Arpent *a);
-static void	sendgarp(Ipifc *ifc, uchar*);
-static int	multicastea(uchar *ea, uchar *ip);
-static void	recvarpproc(void*);
-static void	resolveaddr6(Ipifc *ifc, Arpent *a);
-static void	etherpref2addr(uchar *pref, uchar *ea);
+static void etherread4(void *a);
+static void etherread6(void *a);
+static void etherbind(Ipifc *ifc, int argc, char **argv);
+static void etherunbind(Ipifc *ifc);
+static void etherbwrite(Ipifc *ifc, Block *bp, int version, uchar *ip);
+static void etheraddmulti(Ipifc *ifc, uchar *a, uchar *ia);
+static void etherremmulti(Ipifc *ifc, uchar *a, uchar *ia);
+static Block* multicastarp(Fs *f, Arpent *a, Medium*, uchar *mac);
+static void sendarp(Ipifc *ifc, Arpent *a);
+static void sendgarp(Ipifc *ifc, uchar*);
+static int multicastea(uchar *ea, uchar *ip);
+static void recvarpproc(void*);
+static void resolveaddr6(Ipifc *ifc, Arpent *a);
+static void etherpref2addr(uchar *pref, uchar *ea);
 Medium ethermedium =
 {
-.name=		"ether",
-.hsize=		14,
-.mintu=		60,
-.maxtu=		1514,
-.maclen=	6,
-.bind=		etherbind,
-.unbind=	etherunbind,
-.bwrite=	etherbwrite,
-.addmulti=	etheraddmulti,
-.remmulti=	etherremmulti,
-.ares=		arpenter,
-.areg=		sendgarp,
-.pref2addr=	etherpref2addr,
+.name= "ether",
+.hsize= 14,
+.mintu= 60,
+.maxtu= 1514,
+.maclen= 6,
+.bind= etherbind,
+.unbind= etherunbind,
+.bwrite= etherbwrite,
+.addmulti= etheraddmulti,
+.remmulti= etherremmulti,
+.ares= arpenter,
+.areg= sendgarp,
+.pref2addr= etherpref2addr,
 };
 Medium gbemedium =
 {
-.name=		"gbe",
-.hsize=		14,
-.mintu=		60,
-.maxtu=		9014,
-.maclen=	6,
-.bind=		etherbind,
-.unbind=	etherunbind,
-.bwrite=	etherbwrite,
-.addmulti=	etheraddmulti,
-.remmulti=	etherremmulti,
-.ares=		arpenter,
-.areg=		sendgarp,
-.pref2addr=	etherpref2addr,
+.name= "gbe",
+.hsize= 14,
+.mintu= 60,
+.maxtu= 9014,
+.maclen= 6,
+.bind= etherbind,
+.unbind= etherunbind,
+.bwrite= etherbwrite,
+.addmulti= etheraddmulti,
+.remmulti= etherremmulti,
+.ares= arpenter,
+.areg= sendgarp,
+.pref2addr= etherpref2addr,
 };
-typedef struct	Etherrock Etherrock;
+typedef struct Etherrock Etherrock;
 struct Etherrock
 {
-Fs	*f;
-Proc	*arpp;
-Proc	*read4p;
-Proc	*read6p;
-Chan	*mchan4;
-Chan	*achan;
-Chan	*cchan4;
-Chan	*mchan6;
-Chan	*cchan6;
+Fs *f;
+Proc *arpp;
+Proc *read4p;
+Proc *read6p;
+Chan *mchan4;
+Chan *achan;
+Chan *cchan4;
+Chan *mchan6;
+Chan *cchan6;
 };
 enum
 {
-ETARP		= 0x0806,
-ETIP4		= 0x0800,
-ETIP6		= 0x86DD,
-ARPREQUEST	= 1,
-ARPREPLY	= 2,
+ETARP = 0x0806,
+ETIP4 = 0x0800,
+ETIP6 = 0x86DD,
+ARPREQUEST = 1,
+ARPREPLY = 2,
 };
 typedef struct Etherarp Etherarp;
 struct Etherarp
 {
-uchar	d[6];
-uchar	s[6];
-uchar	type[2];
-uchar	hrd[2];
-uchar	pro[2];
-uchar	hln;
-uchar	pln;
-uchar	op[2];
-uchar	sha[6];
-uchar	spa[4];
-uchar	tha[6];
-uchar	tpa[4];
+uchar d[6];
+uchar s[6];
+uchar type[2];
+uchar hrd[2];
+uchar pro[2];
+uchar hln;
+uchar pln;
+uchar op[2];
+uchar sha[6];
+uchar spa[4];
+uchar tha[6];
+uchar tpa[4];
 };
 static char *nbmsg = "nonblocking";
 static void
@@ -618,8 +618,8 @@ addipmedium(&gbemedium);
 static void
 etherpref2addr(uchar *pref, uchar *ea)
 {
-pref[8]  = ea[0] | 0x2;
-pref[9]  = ea[1];
+pref[8] = ea[0] | 0x2;
+pref[9] = ea[1];
 pref[10] = ea[2];
 pref[11] = 0xFF;
 pref[12] = 0xFE;

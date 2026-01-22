@@ -6,14 +6,14 @@
 #include <linux/kernel.h>
 #include "scsi.h"
 #include "hosts.h"
-#define CONST_COMMAND   0x01
-#define CONST_STATUS    0x02
-#define CONST_SENSE     0x04
-#define CONST_XSENSE    0x08
-#define CONST_CMND      0x10
-#define CONST_MSG       0x20
-#define CONST_HOST	0x40
-#define CONST_DRIVER	0x80
+#define CONST_COMMAND 0x01
+#define CONST_STATUS 0x02
+#define CONST_SENSE 0x04
+#define CONST_XSENSE 0x08
+#define CONST_CMND 0x10
+#define CONST_MSG 0x20
+#define CONST_HOST 0x40
+#define CONST_DRIVER 0x80
 static const char unknown[] = "UNKNOWN";
 #ifdef CONFIG_SCSI_CONSTANTS
 #ifdef CONSTANTS
@@ -41,7 +41,7 @@ unknown, "Write (10)", "Seek (10)", unknown, unknown,
 "Search Low", "Set Limits", "Prefetch or Read Position",
 "Synchronize Cache","Lock/Unlock Cache", "Read Defect Data",
 "Medium Scan", "Compare","Copy Verify", "Write Buffer", "Read Buffer",
-"Update Block", "Read Long",  "Write Long",
+"Update Block", "Read Long", "Write Long",
 };
 static const char *group_2_commands[] = {
 "Change Definition", "Write Same",
@@ -52,9 +52,9 @@ unknown, unknown, unknown, unknown, "Mode Sense (10)", unknown,
 unknown, unknown, unknown,
 };
 #define group(opcode) (((opcode) >> 5) & 7)
-#define RESERVED_GROUP  0
-#define VENDOR_GROUP    1
-#define NOTEXT_GROUP    2
+#define RESERVED_GROUP 0
+#define VENDOR_GROUP 1
+#define NOTEXT_GROUP 2
 static const char **commands[] = {
 group_0_commands, group_1_commands, group_2_commands,
 (const char **) RESERVED_GROUP, (const char **) RESERVED_GROUP,
@@ -393,7 +393,7 @@ printk("%s%s: sns = %2x %2x\n", devclass,
 kdevname(SCpnt->request.rq_dev), sense_buffer[0], sense_buffer[2]);
 #endif
 if(sense_buffer[7] + 7 < 13 ||
-(sense_buffer[12] == 0  && sense_buffer[13] ==  0)) goto done;
+(sense_buffer[12] == 0 && sense_buffer[13] == 0)) goto done;
 #if (CONSTANTS & CONST_XSENSE)
 for(i=0; additional[i].text; i++)
 if(additional[i].code1 == sense_buffer[12] &&
@@ -401,7 +401,7 @@ additional[i].code2 == sense_buffer[13])
 printk("Additional sense indicates %s\n", additional[i].text);
 for(i=0; additional2[i].text; i++)
 if(additional2[i].code1 == sense_buffer[12] &&
-additional2[i].code2_min >= sense_buffer[13]  &&
+additional2[i].code2_min >= sense_buffer[13] &&
 additional2[i].code2_max <= sense_buffer[13]) {
 printk("Additional sense indicates ");
 printk(additional2[i].text, sense_buffer[13]);
@@ -440,17 +440,17 @@ static const char *one_byte_msgs[] = {
 "Bus device reset", "Abort Tag", "Clear Queue",
 "Initiate Recovery", "Release Recovery"
 };
-#define NO_ONE_BYTE_MSGS (sizeof(one_byte_msgs)  / sizeof (const char *))
+#define NO_ONE_BYTE_MSGS (sizeof(one_byte_msgs) / sizeof (const char *))
 static const char *two_byte_msgs[] = {
 "Simple Queue Tag", "Head of Queue Tag", "Ordered Queue Tag"
 "Ignore Wide Residue"
 };
-#define NO_TWO_BYTE_MSGS (sizeof(two_byte_msgs)  / sizeof (const char *))
+#define NO_TWO_BYTE_MSGS (sizeof(two_byte_msgs) / sizeof (const char *))
 static const char *extended_msgs[] = {
 "Modify Data Pointer", "Synchronous Data Transfer Request",
 "SCSI-I Extended Identify", "Wide Data Transfer Request"
 };
-#define NO_EXTENDED_MSGS (sizeof(two_byte_msgs)  / sizeof (const char *))
+#define NO_EXTENDED_MSGS (sizeof(two_byte_msgs) / sizeof (const char *))
 #endif
 int print_msg (const unsigned char *msg) {
 int len = 0, i;
@@ -534,7 +534,7 @@ static const char * hostbyte_table[]={
 "DID_OK", "DID_NO_CONNECT", "DID_BUS_BUSY", "DID_TIME_OUT", "DID_BAD_TARGET",
 "DID_ABORT", "DID_PARITY", "DID_ERROR", "DID_RESET", "DID_BAD_INTR",NULL};
 void print_hostbyte(int scsiresult)
-{   static int maxcode=0;
+{ static int maxcode=0;
 int i;
 if(!maxcode) {
 for(i=0;hostbyte_table[i];i++) ;
@@ -549,18 +549,18 @@ printk("(%s) ",hostbyte_table[host_byte(scsiresult)]);
 }
 #else
 void print_hostbyte(int scsiresult)
-{   printk("Hostbyte=0x%02x ",host_byte(scsiresult));
+{ printk("Hostbyte=0x%02x ",host_byte(scsiresult));
 }
 #endif
 #if (CONSTANTS & CONST_DRIVER)
 static const char * driverbyte_table[]={
-"DRIVER_OK", "DRIVER_BUSY", "DRIVER_SOFT",  "DRIVER_MEDIA", "DRIVER_ERROR",
+"DRIVER_OK", "DRIVER_BUSY", "DRIVER_SOFT", "DRIVER_MEDIA", "DRIVER_ERROR",
 "DRIVER_INVALID", "DRIVER_TIMEOUT", "DRIVER_HARD",NULL };
 static const char * driversuggest_table[]={"SUGGEST_OK",
 "SUGGEST_RETRY", "SUGGEST_ABORT", "SUGGEST_REMAP", "SUGGEST_DIE",
 unknown,unknown,unknown, "SUGGEST_SENSE",NULL};
 void print_driverbyte(int scsiresult)
-{   static int driver_max=0,suggest_max=0;
+{ static int driver_max=0,suggest_max=0;
 int i,dr=driver_byte(scsiresult)&DRIVER_MASK,
 su=(driver_byte(scsiresult)&SUGGEST_MASK)>>4;
 if(!driver_max) {
@@ -571,11 +571,11 @@ suggest_max=i;
 }
 printk("Driverbyte=0x%02x",driver_byte(scsiresult));
 printk("(%s,%s) ",
-dr<driver_max  ? driverbyte_table[dr]:"invalid",
+dr<driver_max ? driverbyte_table[dr]:"invalid",
 su<suggest_max ? driversuggest_table[su]:"invalid");
 }
 #else
 void print_driverbyte(int scsiresult)
-{   printk("Driverbyte=0x%02x ",driver_byte(scsiresult));
+{ printk("Driverbyte=0x%02x ",driver_byte(scsiresult));
 }
 #endif

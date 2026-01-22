@@ -61,7 +61,7 @@ flange)
 end
 const REL = Val(:relative)
 """
-Spring(; name, k, delta_s = 0.0,  va=0.0, v_b_0=0.0)
+Spring(; name, k, delta_s = 0.0, va=0.0, v_b_0=0.0)
 Linear 1D translational spring
 # Parameters:
 - `k`: [N/m] Spring constant

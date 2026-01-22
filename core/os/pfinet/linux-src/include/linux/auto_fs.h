@@ -30,12 +30,12 @@ struct autofs_packet_hdr hdr;
 int len;
 char name[NAME_MAX+1];
 };
-#define AUTOFS_IOC_READY      _IO(0x93,0x60)
-#define AUTOFS_IOC_FAIL       _IO(0x93,0x61)
-#define AUTOFS_IOC_CATATONIC  _IO(0x93,0x62)
-#define AUTOFS_IOC_PROTOVER   _IOR(0x93,0x63,int)
+#define AUTOFS_IOC_READY _IO(0x93,0x60)
+#define AUTOFS_IOC_FAIL _IO(0x93,0x61)
+#define AUTOFS_IOC_CATATONIC _IO(0x93,0x62)
+#define AUTOFS_IOC_PROTOVER _IOR(0x93,0x63,int)
 #define AUTOFS_IOC_SETTIMEOUT _IOWR(0x93,0x64,unsigned long)
-#define AUTOFS_IOC_EXPIRE     _IOR(0x93,0x65,struct autofs_packet_expire)
+#define AUTOFS_IOC_EXPIRE _IOR(0x93,0x65,struct autofs_packet_expire)
 #ifdef __KERNEL__
 int init_autofs_fs(void);
 #endif

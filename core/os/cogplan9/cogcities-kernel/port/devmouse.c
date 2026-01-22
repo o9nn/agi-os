@@ -1,50 +1,50 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#define	Image	IMAGE
-#include	<draw.h>
-#include	<memdraw.h>
-#include	<cursor.h>
-#include	"screen.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#define Image IMAGE
+#include <draw.h>
+#include <memdraw.h>
+#include <cursor.h>
+#include "screen.h"
 enum {
 ScrollUp = 0x08,
 ScrollDown = 0x10,
 ScrollLeft = 0x20,
 ScrollRight = 0x40,
 };
-typedef struct Mouseinfo	Mouseinfo;
-typedef struct Mousestate	Mousestate;
+typedef struct Mouseinfo Mouseinfo;
+typedef struct Mousestate Mousestate;
 struct Mousestate
 {
-Point	xy;
-int	buttons;
-ulong	counter;
-ulong	msec;
+Point xy;
+int buttons;
+ulong counter;
+ulong msec;
 };
 struct Mouseinfo
 {
 Lock;
 Mousestate;
-int	dx;
-int	dy;
-int	track;
-int	redraw;
-ulong	lastcounter;
-ulong	lastresize;
-ulong	resize;
-Rendez	r;
+int dx;
+int dy;
+int track;
+int redraw;
+ulong lastcounter;
+ulong lastresize;
+ulong resize;
+Rendez r;
 Ref;
 QLock;
-int	open;
-int	acceleration;
-int	maxacc;
-Mousestate	queue[16];
-int	ri;
-int	wi;
-uchar	qfull;
+int open;
+int acceleration;
+int maxacc;
+Mousestate queue[16];
+int ri;
+int wi;
+uchar qfull;
 };
 enum
 {
@@ -55,19 +55,19 @@ CMwildcard,
 };
 static Cmdtab mousectlmsg[] =
 {
-CMbuttonmap,	"buttonmap",	0,
-CMscrollswap,	"scrollswap",	0,
-CMswap,		"swap",		1,
-CMwildcard,	"*",		0,
+CMbuttonmap, "buttonmap", 0,
+CMscrollswap, "scrollswap", 0,
+CMswap, "swap", 1,
+CMwildcard, "*", 0,
 };
-Mouseinfo	mouse;
-Cursorinfo	cursor;
-int		mouseshifted;
-int		kbdbuttons;
-void		(*kbdmouse)(int);
-Cursor		curs;
-void	Cursortocursor(Cursor*);
-int	mousechanged(void*);
+Mouseinfo mouse;
+Cursorinfo cursor;
+int mouseshifted;
+int kbdbuttons;
+void (*kbdmouse)(int);
+Cursor curs;
+void Cursortocursor(Cursor*);
+int mousechanged(void*);
 static void mouseclock(void);
 static void xkbdmouse(int);
 enum{
@@ -78,11 +78,11 @@ Qmousein,
 Qmousectl,
 };
 static Dirtab mousedir[]={
-".",	{Qdir, 0, QTDIR},	0,			DMDIR|0555,
-"cursor",	{Qcursor},	0,			0666,
-"mouse",	{Qmouse},	0,			0666,
-"mousein",	{Qmousein},	0,			0220,
-"mousectl",	{Qmousectl},	0,			0220,
+".", {Qdir, 0, QTDIR}, 0, DMDIR|0555,
+"cursor", {Qcursor}, 0, 0666,
+"mouse", {Qmouse}, 0, 0666,
+"mousein", {Qmousein}, 0, 0220,
+"mousectl", {Qmousectl}, 0, 0220,
 };
 static uchar buttonmap[8] = {
 0, 1, 2, 3, 4, 5, 6, 7,

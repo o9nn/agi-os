@@ -57,10 +57,10 @@ return max1;
 }
 int
 count_bit_ESC(
-const int *       ix,
+const int * ix,
 const int * const end,
-int         t1,
-const int         t2,
+int t1,
+const int t2,
 int * const s )
 {
 int linbits = ht[t1].xlen * 65536 + ht[t2].xlen;
@@ -96,7 +96,7 @@ return t1;
 inline static int
 count_bit_noESC(const int * ix, const int * const end, int * const s)
 {
-int	sum1 = 0;
+int sum1 = 0;
 const char *hlen1 = ht[1].hlen;
 do {
 int x = ix[0] * 2 + ix[1];
@@ -108,9 +108,9 @@ return 1;
 }
 inline static int
 count_bit_noESC_from2(
-const int *       ix,
+const int * ix,
 const int * const end,
-int         t1,
+int t1,
 int * const s )
 {
 unsigned int sum = 0, sum2;
@@ -136,14 +136,14 @@ return t1;
 }
 inline static int
 count_bit_noESC_from3(
-const int *       ix,
+const int * ix,
 const int * const end,
-int         t1,
+int t1,
 int * const s )
 {
-int	sum1 = 0;
-int	sum2 = 0;
-int	sum3 = 0;
+int sum1 = 0;
+int sum2 = 0;
+int sum3 = 0;
 const int xlen = ht[t1].xlen;
 const char *hlen1 = ht[t1].hlen;
 const char *hlen2 = ht[t1+1].hlen;
@@ -170,7 +170,7 @@ return t;
 }
 static int
 choose_table_nonMMX(
-const int *       ix,
+const int * ix,
 const int * const end,
 int * const s )
 {
@@ -271,13 +271,13 @@ return bits;
 }
 int count_bits(
 lame_internal_flags * const gfc,
-int     * const ix,
-const FLOAT8  * const xr,
+int * const ix,
+const FLOAT8 * const xr,
 gr_info * const cod_info)
 {
 int bits=0,i;
 FLOAT8 w = (IXMAX_VAL) / IPOW20(cod_info->global_gain);
-for ( i = 0; i < 576; i++ )  {
+for ( i = 0; i < 576; i++ ) {
 if (xr[i] > w)
 return LARGE_BITS;
 }
@@ -291,12 +291,12 @@ return bits;
 inline static void
 recalc_divide_init(
 const lame_internal_flags * const gfc,
-gr_info         cod_info,
-int     * const ix,
-int             r01_bits[],
-int             r01_div [],
-int             r0_tbl  [],
-int             r1_tbl  [] )
+gr_info cod_info,
+int * const ix,
+int r01_bits[],
+int r01_div [],
+int r0_tbl [],
+int r1_tbl [] )
 {
 int r0, r1, bigv, r0t, r1t, bits;
 bigv = cod_info.big_values;
@@ -327,13 +327,13 @@ r1_tbl[r0 + r1] = r1t;
 inline static void
 recalc_divide_sub(
 const lame_internal_flags * const gfc,
-const gr_info         cod_info2,
+const gr_info cod_info2,
 gr_info * const gi,
-const int     * const ix,
-const int             r01_bits[],
-const int             r01_div [],
-const int             r0_tbl  [],
-const int             r1_tbl  [] )
+const int * const ix,
+const int r01_bits[],
+const int r01_div [],
+const int r0_tbl [],
+const int r1_tbl [] )
 {
 int bits, r2, a2, bigv, r2t;
 bigv = cod_info2.big_values;
@@ -358,10 +358,10 @@ gi->table_select[2] = r2t;
 }
 void best_huffman_divide(
 const lame_internal_flags * const gfc,
-const int             gr,
-const int             ch,
+const int gr,
+const int ch,
 gr_info * const gi,
-int     * const ix )
+int * const ix )
 {
 int i, a1, a2;
 gr_info cod_info2;
@@ -473,25 +473,25 @@ gi->scalefac_compress = i;
 }
 void best_scalefac_store(
 const lame_internal_flags *gfc,
-const int             gr,
-const int             ch,
-int             l3_enc[2][2][576],
+const int gr,
+const int ch,
+int l3_enc[2][2][576],
 III_side_info_t * const l3_side,
-III_scalefac_t          scalefac[2][2] )
+III_scalefac_t scalefac[2][2] )
 {
 gr_info *gi = &l3_side->gr[gr].ch[ch].tt;
 int sfb,i,j,j2,l,start,end;
 for ( sfb = 0; sfb < gi->sfb_lmax; sfb++ ) {
 if (scalefac[gr][ch].l[sfb]>0) {
 start = gfc->scalefac_band.l[ sfb ];
-end   = gfc->scalefac_band.l[ sfb+1 ];
+end = gfc->scalefac_band.l[ sfb+1 ];
 for ( l = start; l < end; l++ ) if (l3_enc[gr][ch][l]!=0) break;
 if (l==end) scalefac[gr][ch].l[sfb]=0;
 }
 }
 for ( j=0, sfb = gi->sfb_smin; sfb < SBPSY_s; sfb++ ) {
 start = gfc->scalefac_band.s[ sfb ];
-end   = gfc->scalefac_band.s[ sfb+1 ];
+end = gfc->scalefac_band.s[ sfb+1 ];
 for ( i = 0; i < 3; i++ ) {
 if (scalefac[gr][ch].s[sfb][i]>0) {
 j2 = j;
@@ -602,12 +602,12 @@ return ep;
 }
 static const int max_range_sfac_tab[6][4] =
 {
-{ 15, 15, 7,  7},
-{ 15, 15, 7,  0},
-{ 7,  3,  0,  0},
+{ 15, 15, 7, 7},
+{ 15, 15, 7, 0},
+{ 7, 3, 0, 0},
 { 15, 31, 31, 0},
-{ 7,  7,  7,  0},
-{ 3,  3,  0,  0}
+{ 7, 7, 7, 0},
+{ 3, 3, 0, 0}
 };
 int scale_bitcount_lsf(const lame_internal_flags *gfc,
 const III_scalefac_t * const scalefac, gr_info * const cod_info)

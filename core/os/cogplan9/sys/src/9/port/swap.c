@@ -1,21 +1,21 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-static int	canflush(Proc*, Segment*);
-static void	executeio(void);
-static int	needpages(void*);
-static void	pageout(Proc*, Segment*);
-static void	pagepte(int, Page**);
-static void	pager(void*);
-Image 	swapimage;
-static 	int	swopen;
-static	Page	**iolist;
-static	int	ioptr;
-static	ulong	genage, genclock, gencount;
-static	uvlong	gensum;
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+static int canflush(Proc*, Segment*);
+static void executeio(void);
+static int needpages(void*);
+static void pageout(Proc*, Segment*);
+static void pagepte(int, Page**);
+static void pager(void*);
+Image swapimage;
+static int swopen;
+static Page **iolist;
+static int ioptr;
+static ulong genage, genclock, gencount;
+static uvlong gensum;
 static void
 gentick(void)
 {

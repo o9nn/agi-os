@@ -309,7 +309,7 @@ return code;
 }
 private int
 clist_reinit_output_file(gx_device *dev)
-{    gx_device_clist_writer * const cdev =
+{ gx_device_clist_writer * const cdev =
 &((gx_device_clist *)dev)->writer;
 int code = 0;
 int b_block = sizeof(cmd_block) * (cdev->nbands + 2);

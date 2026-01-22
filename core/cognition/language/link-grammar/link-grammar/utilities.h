@@ -24,7 +24,7 @@
 # define alloca _alloca
 #else
 # include <stddef.h>
-# ifdef  __cplusplus
+# ifdef __cplusplus
 extern "C"
 # endif
 void *alloca (size_t);
@@ -65,7 +65,7 @@ void *alloca (size_t);
 #undef rand_r
 int rand_r(unsigned int *);
 #ifndef __MINGW32__
-#if _WINVER != 0x501  && _WINVER != 0x502
+#if _WINVER != 0x501 && _WINVER != 0x502
 #define strtok_r strtok_s
 #define HAVE_STRTOK_R
 #endif
@@ -75,13 +75,13 @@ typedef SSIZE_T ssize_t;
 #endif
 #ifdef HAVE_LOCALE_T
 #define locale_t _locale_t
-#define iswupper_l  _iswupper_l
-#define iswalpha_l  _iswalpha_l
-#define iswdigit_l  _iswdigit_l
-#define iswspace_l  _iswspace_l
-#define towlower_l  _towlower_l
-#define towupper_l  _towupper_l
-#define strtof_l    _strtof_l
+#define iswupper_l _iswupper_l
+#define iswalpha_l _iswalpha_l
+#define iswdigit_l _iswdigit_l
+#define iswspace_l _iswspace_l
+#define towlower_l _towlower_l
+#define towupper_l _towupper_l
+#define strtof_l _strtof_l
 #define freelocale _free_locale
 #endif
 char * strndup (const char *str, size_t size);
@@ -127,10 +127,10 @@ void *aligned_alloc(size_t alignment, size_t size);
 #define STR(x) #x
 #define STRINGIFY(x) STR(x)
 #if !defined(MIN)
-#define MIN(X,Y)  ( ((X) < (Y)) ? (X) : (Y))
+#define MIN(X,Y) ( ((X) < (Y)) ? (X) : (Y))
 #endif
 #if !defined(MAX)
-#define MAX(X,Y)  ( ((X) > (Y)) ? (X) : (Y))
+#define MAX(X,Y) ( ((X) > (Y)) ? (X) : (Y))
 #endif
 #ifndef strdupa
 #define strdupa(s) strcpy(alloca(strlen(s)+1), s)
@@ -170,8 +170,8 @@ typeof(&(arr)[0])))
 #define NO_SAN_DICT
 #endif
 #ifndef DONT_EXPECT
-#define likely(x)      __builtin_expect(!!(x), 1)
-#define unlikely(x)    __builtin_expect(!!(x), 0)
+#define likely(x) __builtin_expect(!!(x), 1)
+#define unlikely(x) __builtin_expect(!!(x), 0)
 #endif
 #else
 #define UNREACHABLE(x)

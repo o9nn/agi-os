@@ -5,7 +5,7 @@
 #
 implement Init;
 include "sys.m";
-sys:	Sys;
+sys: Sys;
 include "draw.m";
 include "keyring.m";
 kr: Keyring;
@@ -18,7 +18,7 @@ include "keyboard.m";
 include "sh.m";
 Init: module
 {
-init:	fn();
+init: fn();
 };
 Bootpreadlen: con 128;
 ethername := "ether0";
@@ -62,16 +62,16 @@ ethername = "ether1";
 }
 if(netok)
 configether();
-dobind("#I", "/net", sys->MAFTER);	# IP
-dobind("#p", "/prog", sys->MREPL);	# prog
-dobind("#c", "/dev", sys->MREPL); 	# console
+dobind("#I", "/net", sys->MAFTER); # IP
+dobind("#p", "/prog", sys->MREPL); # prog
+dobind("#c", "/dev", sys->MREPL); # console
 sys->bind("#d", "/fd", Sys->MREPL);
-dobind("#t", "/dev", sys->MAFTER);	# serial line
-dobind("#i", "/dev", sys->MAFTER); 	# draw
-dobind("#m", "/dev", Sys->MAFTER);	# pointer
-sys->bind("#e", "/env", sys->MREPL|sys->MCREATE);	# environment
-sys->bind("#A", "/dev", Sys->MAFTER);	# optional audio
-dobind("#T","/dev",sys->MAFTER);	# touch screen and other ipaq devices
+dobind("#t", "/dev", sys->MAFTER); # serial line
+dobind("#i", "/dev", sys->MAFTER); # draw
+dobind("#m", "/dev", Sys->MAFTER); # pointer
+sys->bind("#e", "/env", sys->MREPL|sys->MCREATE); # environment
+sys->bind("#A", "/dev", Sys->MAFTER); # optional audio
+dobind("#T","/dev",sys->MAFTER); # touch screen and other ipaq devices
 timefile: string;
 rootsource: string;
 cfd := sys->open("/dev/consctl", Sys->OWRITE);
@@ -80,7 +80,7 @@ sys->fprint(cfd, "rawon");
 for(;;){
 (rootsource, timefile) = askrootsource(localok, netok);
 if(rootsource == nil)
-break;	# internal
+break; # internal
 (rc, nil) := sys->stat(rootsource+"/dis/sh.dis");
 if(rc < 0)
 err("%s has no shell");
@@ -92,7 +92,7 @@ break;
 }
 }
 cfd = nil;
-setsysname("ipaq");			# set system name
+setsysname("ipaq"); # set system name
 now := getclock(timefile, rootsource);
 setclock("/dev/time", now);
 if(timefile != "#r/rtc")
@@ -193,7 +193,7 @@ n := sys->read(fd, b, len b-1);
 if(n > 0){
 now = big string b[0:n];
 if(now <= big 16r20000000)
-now = big 0;	# remote itself is not initialised
+now = big 0; # remote itself is not initialised
 }
 }
 }
@@ -275,7 +275,7 @@ sys->print("%s%s", cm, hd l);
 cm = ",";
 }
 sys->print(")[%s] ", hd sources);
-s = getline(stdin, hd sources);	# default
+s = getline(stdin, hd sources); # default
 }
 case s[0] {
 Keyboard->Right or Keyboard->Left =>
@@ -382,7 +382,7 @@ if(string buf[256:256+len wmagic] != wmagic)
 return 0;
 RBUFSIZE := int string buf[256+len wmagic:256+len wmagic+12];
 if(RBUFSIZE % 512)
-return 0;	# bad block size
+return 0; # bad block size
 return 1;
 }
 lkfs(file: string): int
@@ -544,7 +544,7 @@ sys->print("no file server address\n");
 return -1;
 }
 sys->print("fs=%s\n", server);
-net := "tcp";	# how to specify il?
+net := "tcp"; # how to specify il?
 svcname := net + "!" + server + "!6666";
 sys->print("dial %s...", svcname);
 (ok, c) := sys->dial(svcname, nil);

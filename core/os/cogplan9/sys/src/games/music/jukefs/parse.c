@@ -11,31 +11,31 @@ Biobuf *f;
 static int str;
 char *file;
 Token tokenlistinit[] = {
-{ "category",	Obj,	Category	, "music"	, {nil,0}},
-{ "cddata",	Obj,	Cddata		, nil		, {nil,0}},
-{ "command",	Obj,	Cmd		, nil		, {nil,0}},
-{ "file",	Obj,	File		, "file"	, {nil,0}},
-{ "include",	Obj,	Include		, nil		, {nil,0}},
-{ "key",	Obj,	Key		, nil		, {nil,0}},
-{ "lyrics",	Obj,	Lyrics		, "lyrics"	, {nil,0}},
-{ "part",	Obj,	Part		, "title"	, {nil,0}},
-{ "path",	Obj,	Path		, nil		, {nil,0}},
-{ "performance",Obj,	Performance	, "artist"	, {nil,0}},
-{ "recording",	Obj,	Recording	, "title"	, {nil,0}},
-{ "root",	Obj,	Root		, nil		, {nil,0}},
-{ "search",	Obj,	Search		, nil		, {nil,0}},
-{ "soloists",	Obj,	Soloists	, "artist"	, {nil,0}},
-{ "time",	Obj,	Time		, "time"	, {nil,0}},
-{ "track",	Obj,	Track		, "title"	, {nil,0}},
-{ "work",	Obj,	Work		, "title"	, {nil,0}},
+{ "category", Obj, Category , "music" , {nil,0}},
+{ "cddata", Obj, Cddata , nil , {nil,0}},
+{ "command", Obj, Cmd , nil , {nil,0}},
+{ "file", Obj, File , "file" , {nil,0}},
+{ "include", Obj, Include , nil , {nil,0}},
+{ "key", Obj, Key , nil , {nil,0}},
+{ "lyrics", Obj, Lyrics , "lyrics" , {nil,0}},
+{ "part", Obj, Part , "title" , {nil,0}},
+{ "path", Obj, Path , nil , {nil,0}},
+{ "performance",Obj, Performance , "artist" , {nil,0}},
+{ "recording", Obj, Recording , "title" , {nil,0}},
+{ "root", Obj, Root , nil , {nil,0}},
+{ "search", Obj, Search , nil , {nil,0}},
+{ "soloists", Obj, Soloists , "artist" , {nil,0}},
+{ "time", Obj, Time , "time" , {nil,0}},
+{ "track", Obj, Track , "title" , {nil,0}},
+{ "work", Obj, Work , "title" , {nil,0}},
 };
 Token *tokenlist;
 int ntoken = nelem(tokenlistinit);
 int catnr = 0;
 Cmdlist cmdlist[] = {
-{	Sort,	"sort"		},
-{	Enum,	"number"	},
-{	0x00,	0		},
+{ Sort, "sort" },
+{ Enum, "number" },
+{ 0x00, 0 },
 };
 static char *curtext;
 void
@@ -123,7 +123,7 @@ if(*q) return Txt;
 while(isspace(*--q)) *q = 0;
 return Newcat;
 }
-tx:	if((q = strchr(p, '}'))){
+tx: if((q = strchr(p, '}'))){
 *q = 0;
 strcpy(token, p);
 assert(strlen(token) < MAXTOKEN);
@@ -185,7 +185,7 @@ break;
 }
 break;
 case Cat:
-catcase:    nt = gettoken(token);
+catcase: nt = gettoken(token);
 if(nt != Equals)
 sysfatal("Expected Equals, not %s", token);
 nt = gettoken(token);

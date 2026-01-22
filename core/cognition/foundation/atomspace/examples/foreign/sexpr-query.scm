@@ -10,12 +10,12 @@
 (cog-incoming-set (SexprAst 'ork))
 (cog-incoming-by-type (SexprAst 'ork) 'SexprAst)
 (define qry-pair
-	(Meet (TypedVariable (Variable "$x") (Type 'SexprAst))
-		(Present
-			(SexprAst (Variable "$x") (SexprAst 'stunk)))))
+(Meet (TypedVariable (Variable "$x") (Type 'SexprAst))
+(Present
+(SexprAst (Variable "$x") (SexprAst 'stunk)))))
 (cog-execute! qry-pair)
 (define qry-list
-	(Meet (TypedVariable (Glob "$x") (Type 'SexprAst))
-		(Present
-			(SexprAst (Glob "$x") (SexprAst 'stunk)))))
+(Meet (TypedVariable (Glob "$x") (Type 'SexprAst))
+(Present
+(SexprAst (Glob "$x") (SexprAst 'stunk)))))
 (cog-execute! qry-list)

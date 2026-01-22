@@ -17,10 +17,10 @@ E: Events;
 Event: import E;
 G: Gui;
 # channel descriptions
-CRGB:   con 0;  # three channels, R, G, B, no map
-CY:     con 1;  # one channel, luminance
-CRGB1:  con 2;  # one channel, map present
-CYCbCr:  con 3;  # three channels, Y, Cb, Cr, no map
+CRGB: con 0; # three channels, R, G, B, no map
+CY: con 1; # one channel, luminance
+CRGB1: con 2; # one channel, map present
+CYCbCr: con 3; # three channels, Y, Cb, Cr, no map
 dbg := 0;
 dbgev := 0;
 warn := 0;
@@ -67,15 +67,15 @@ mtype := CU->UnknownType;
 if(bs.hdr != nil)
 mtype = bs.hdr.mtype;
 is := ref ImageSource(
-w,h,		# width, height
-0,0,		# origw, origh
-mtype,	# mtype
-0,		# i
-0,		# curframe
-bs,		# bs
-nil,		# ghdr
-nil,		# jhdr
-""		# err
+w,h, # width, height
+0,0, # origw, origh
+mtype, # mtype
+0, # i
+0, # curframe
+bs, # bs
+nil, # ghdr
+nil, # jhdr
+"" # err
 );
 return is;
 }
@@ -336,7 +336,7 @@ im.writepixels(im.r, pixels);
 return newmi(im);
 }
 # get a line, which should be of form
-#	'#define fieldname val'
+# '#define fieldname val'
 # and return (found, integer rep of val)
 getxbitmapdefine(is: ref ImageSource) : (int, int)
 {
@@ -392,11 +392,11 @@ return c;
 }
 ################# GIF ###################
 # GIF flags
-TRANSP:		con 1;
-INPUT:		con 2;
-DISPMASK:	con 7<<2;
-HASCMAP:	con 16r80;
-INTERLACED:	con 16r40;
+TRANSP: con 1;
+INPUT: con 2;
+DISPMASK: con 7<<2;
+HASCMAP: con 16r80;
+INTERLACED: con 16r40;
 Entry: adt
 {
 prefix: int;
@@ -449,34 +449,34 @@ for(;;) {
 if(is.i >= len is.bs.data)
 break;
 case c := getc(is) {
-16r2C =>	# Image Descriptor
+16r2C => # Image Descriptor
 return 1;
-16r21 =>	# Extension
+16r21 => # Extension
 hsize := 0;
 hasdata := 0;
 case getc(is){
-16r01 =>	# Plain Text Extension
+16r01 => # Plain Text Extension
 hsize = 14;
 hasdata = 1;
 if(dbg)
 sys->print("gifgettoimage: text extension\n");
-16rF9 =>	# Graphic Control Extension
-getc(is);	# blocksize (should be 4)
+16rF9 => # Graphic Control Extension
+getc(is); # blocksize (should be 4)
 h.flags = getc(is);
 h.delay = getlew(is);
 h.trindex = byte getc(is);
-getc(is);	# block terminator (should be 0)
+getc(is); # block terminator (should be 0)
 # set minimum delay
 if (h.delay < 20)
 h.delay = 20;
 if(dbg)
 sys->print("gifgettoimage: graphic control flags=16r%x, delay=%d, trindex=%d\n",
 h.flags, h.delay, int h.trindex);
-16rFE =>	# Comment Extension
+16rFE => # Comment Extension
 if(dbg)
 sys->print("gifgettoimage: comment extension\n");
 hasdata = 1;
-16rFF =>	# Application Extension
+16rFF => # Application Extension
 if(dbg)
 sys->print("gifgettoimage: application extension\n");
 hsize = getc(is);
@@ -497,13 +497,13 @@ if(dbg)
 sys->print("extension data: '%s'\n", string a[i:i+nbytes]);
 }
 }
-16r3B =>	# Trailer
+16r3B => # Trailer
 # read to end of data
 getn(is, len is.bs.data - is.i);
 break loop;
 * =>
 if(c == 0)
-continue;		# FIX for some buggy gifs
+continue; # FIX for some buggy gifs
 imgerror(is, "GIF unknown block type " + string c);
 }
 }
@@ -537,7 +537,7 @@ codesize := getc(is);
 if(codesize > 8)
 imgerror(is, "GIF bad codesize");
 if(len h.cmap!=3*(1<<codesize)
-&& len h.cmap != 3*(1<<(codesize-1))	# peculiar GIF bitmap files
+&& len h.cmap != 3*(1<<(codesize-1)) # peculiar GIF bitmap files
 && (codesize!=2 || len h.cmap!=3*2)){ # peculiar GIF bitmap files II
 if (warn)
 sys->print("warning: GIF codesize = %d doesn't match cmap len = %d\n", codesize, len h.cmap);
@@ -724,7 +724,7 @@ CU->event("IMAGE_GETGIFMIM_MASK_END", 0);
 if(dbgev)
 CU->event("IMAGE_GETGIFMIM_REMAP_START", 0);
 pic24 := remap24(pic, h.cmap);
-#	remap1(pic, width, height, h.cmap);
+# remap1(pic, width, height, h.cmap);
 if(dbgev)
 CU->event("IMAGE_GETGIFMIM_REMAP_END", 0);
 bgcolor := -1;
@@ -762,7 +762,7 @@ top = 0;
 pic = nil;
 mi := newmi(im);
 mi.mask = mask;
-mi.delay = h.delay*10;	# convert centiseconds to milliseconds
+mi.delay = h.delay*10; # convert centiseconds to milliseconds
 mi.origin = Point(left, top);
 dispmeth := (h.flags>>2)&7;
 if(dispmeth == 2) {
@@ -801,25 +801,25 @@ return map;
 }
 ################# JPG ###################
 # Constants, all preceded by byte 16rFF
-SOF:	con 16rC0;	# Start of Frame
-SOF2:	con 16rC2;	# Start of Frame; progressive Huffman
-JPG:	con 16rC8;	# Reserved for JPEG extensions
-DHT:	con 16rC4;	# Define Huffman Tables
-DAC:	con 16rCC;	# Arithmetic coding conditioning
-RST:	con 16rD0;	# Restart interval termination
-RST7:	con 16rD7;	# Restart interval termination (highest value)
-SOI:	con 16rD8;	# Start of Image
-EOI:	con 16rD9;	# End of Image
-SOS:	con 16rDA;	# Start of Scan
-DQT:	con 16rDB;	# Define quantization tables
-DNL:	con 16rDC;	# Define number of lines
-DRI:	con 16rDD;	# Define restart interval
-DHP:	con 16rDE;	# Define hierarchical progression
-EXP:	con 16rDF;	# Expand reference components
-APPn:	con 16rE0;	# Reserved for application segments
-JPGn:	con 16rF0;	# Reserved for JPEG extensions
-COM:	con 16rFE;	# Comment
-NBUF:	con 16*1024;
+SOF: con 16rC0; # Start of Frame
+SOF2: con 16rC2; # Start of Frame; progressive Huffman
+JPG: con 16rC8; # Reserved for JPEG extensions
+DHT: con 16rC4; # Define Huffman Tables
+DAC: con 16rCC; # Arithmetic coding conditioning
+RST: con 16rD0; # Restart interval termination
+RST7: con 16rD7; # Restart interval termination (highest value)
+SOI: con 16rD8; # Start of Image
+EOI: con 16rD9; # End of Image
+SOS: con 16rDA; # Start of Scan
+DQT: con 16rDB; # Define quantization tables
+DNL: con 16rDC; # Define number of lines
+DRI: con 16rDD; # Define restart interval
+DHP: con 16rDE; # Define hierarchical progression
+EXP: con 16rDF; # Expand reference components
+APPn: con 16rE0; # Reserved for application segments
+JPGn: con 16rF0; # Reserved for JPEG extensions
+COM: con 16rFE; # Comment
+NBUF: con 16*1024;
 jpegcolorspace: con CYCbCr;
 zerobytes := array[64] of { * => byte 0 };
 zeroints := array[64] of { * => 0 };
@@ -828,21 +828,21 @@ getjpeghdr(is: ref ImageSource)
 if(dbg)
 sys->print("getjpeghdr\n");
 h := ref Jpegstate(
-0, 0,		# sr, cnt
-0,		# Nf
-nil,		# comp
-byte 0,	# mode,
-0, 0,		# X, Y
-nil,		# qt
-nil, nil,	# dcht, acht
-0,		# Ns
-nil,		# scomp
-0, 0,		# Ss, Se
-0, 0,		# Ah, Al
-0, 0,		# ri, nseg
-nil,		# nblock
-nil, nil,	# dccoeff, accoeff
-0, 0, 0, 0	# nacross, ndown, Hmax, Vmax
+0, 0, # sr, cnt
+0, # Nf
+nil, # comp
+byte 0, # mode,
+0, 0, # X, Y
+nil, # qt
+nil, nil, # dcht, acht
+0, # Ns
+nil, # scomp
+0, 0, # Ss, Se
+0, 0, # Ah, Al
+0, 0, # ri, nseg
+nil, # nblock
+nil, nil, # dccoeff, accoeff
+0, 0, 0, 0 # nacross, ndown, Hmax, Vmax
 );
 is.jstate = h;
 if(jpegmarker(is) != SOI)
@@ -850,7 +850,7 @@ imgerror(is, "Jpeg expected SOI marker");
 (m, n) := jpegtabmisc(is);
 if(!(m == SOF || m == SOF2))
 imgerror(is, "Jpeg expected Frame marker");
-nil = getc(is);		# sample precision
+nil = getc(is); # sample precision
 h.Y = getbew(is);
 h.X = getbew(is);
 h.Nf = getc(is);
@@ -1097,7 +1097,7 @@ return 1+(64*(1+pq));;
 }
 # Have just read Frame header.
 # Now expect:
-#	((tabl/misc segment(s))* (scan header) (entropy coded segment)+)+ EOI
+# ((tabl/misc segment(s))* (scan header) (entropy coded segment)+)+ EOI
 getjpegmim(is: ref ImageSource) : ref MaskedImage
 {
 if(dbg)
@@ -1151,7 +1151,7 @@ if(len chans == 1) {
 im := newimagegrey(is, width, height);
 im.writepixels(im.r, chans[0]);
 return newmi(im);
-#		remapgrey(chans[0], width, height);
+# remapgrey(chans[0], width, height);
 } else {
 if (len chans == 3) {
 r := remapYCbCr(chans);
@@ -1214,8 +1214,8 @@ imgerror(is, "Jpeg baseline needs Ns==1 or 3");
 res := ResourceState.cur();
 heapavail := res.heaplim - res.heap;
 # check heap availability for
-#   chans: (3+Ns)*4 + (Ns*(3*4+h.X*h.Y)) bytes
-#   Td, Ta, data, H, V, DC: 6 arrays of (3+Ns)*4 bytes
+# chans: (3+Ns)*4 + (Ns*(3*4+h.X*h.Y)) bytes
+# Td, Ta, data, H, V, DC: 6 arrays of (3+Ns)*4 bytes
 #
 heapavail -= (3+Ns)*28 + (Ns*(12 + h.X * h.Y));
 if(heapavail <= 0) {
@@ -1394,8 +1394,8 @@ Nf := h.Nf;
 res := ResourceState.cur();
 heapavail := res.heaplim - res.heap;
 # check heap availability for
-#   H, V, data, blockno: 4 arrays of (3+Nf)*4 bytes
-#   chans: (3+Nf)*4 + (Nf*(3*4+h.X*h.Y)) bytes
+# H, V, data, blockno: 4 arrays of (3+Nf)*4 bytes
+# chans: (3+Nf)*4 + (Nf*(3*4+h.X*h.Y)) bytes
 #
 heapavail -= (3+Nf)*20 + (Nf*(12 + h.X * h.Y));
 if(heapavail <= 0) {
@@ -1476,8 +1476,8 @@ nmcu := h.nacross*h.ndown;
 res := ResourceState.cur();
 heapavail := res.heaplim - res.heap;
 # check heap availability for
-#   h.dccoeff: (3+Nf)*4 bytes
-#   h.accoeff: (3+Nf)*4 bytes
+# h.dccoeff: (3+Nf)*4 bytes
+# h.accoeff: (3+Nf)*4 bytes
 heapavail -= (3+Nf)*8;
 if(heapavail <= 0) {
 if(dbg)
@@ -1489,8 +1489,8 @@ h.accoeff = array[Nf] of array of array of int;
 for(k:=0; k<Nf; k++){
 n := h.nblock[k]*nmcu;
 # check heap availability for
-#   h.dccoeff[k]: (3+n)*4 bytes
-#   h.accoeff[k]: (3+n)*4 + n*(3+64)*4 bytes
+# h.dccoeff[k]: (3+n)*4 bytes
+# h.accoeff[k]: (3+n)*4 + n*(3+64)*4 bytes
 heapavail -= 276*n + 24;
 if(heapavail <= 0){
 if(dbg)
@@ -1727,10 +1727,10 @@ acc[k] -= Pt;
 else
 acc[k] += Pt;
 }
-jc1: con 2871;		# 1.402 * 2048
-jc2: con 705;		# 0.34414 * 2048
-jc3: con 1463;		# 0.71414 * 2048
-jc4: con 3629;		# 1.772 * 2048
+jc1: con 2871; # 1.402 * 2048
+jc2: con 705; # 0.34414 * 2048
+jc3: con 1463; # 0.71414 * 2048
+jc4: con 3629; # 1.772 * 2048
 # Fills in pixels (x,y) for x = minx=8*(mcu%nacross), minx+1, ..., minx+7 (or h.X-1, if less)
 # and for y = miny=8*(mcu/nacross), miny+1, ..., miny+7 (or h.Y-1, if less)
 colormap1(h: ref Jpegstate, pic: array of byte, data: array of int, mcu, nacross: int)
@@ -1793,7 +1793,7 @@ k += 8;
 }
 # Fills in pixels (x,y) for x = minx=8*Hmax*(mcu%nacross), minx+1, ..., minx+8*Hmax-1 (or h.X-1, if less)
 # and for y = miny=8*Vmax*(mcu/nacross), miny+1, ..., miny+8*Vmax-1 (or h.Y-1, if less)
-colormap(h: ref Jpegstate, chans: array of array of byte, data0, data1, data2: array of array of int, mcu, nacross, Hmax, Vmax: int,  H, V: array of int)
+colormap(h: ref Jpegstate, chans: array of array of byte, data0, data1, data2: array of array of int, mcu, nacross, Hmax, Vmax: int, H, V: array of int)
 {
 rpic := chans[0];
 gpic := chans[1];
@@ -1859,7 +1859,7 @@ b2++;
 pici += h.X;
 }
 }
-# decode next 8-bit value from entropy-coded input.  chart F-26
+# decode next 8-bit value from entropy-coded input. chart F-26
 jdecode(is: ref ImageSource, t: ref Huffman): int
 {
 h := is.jstate;
@@ -1978,19 +1978,19 @@ return (c>>4, c&15);
 #
 # coefficients extended to 12 bit for IEEE1180-1990
 # compliance
-W1:	con 2841;	# 2048*sqrt(2)*cos(1*pi/16)
-W2:	con 2676;	# 2048*sqrt(2)*cos(2*pi/16)
-W3:	con 2408;	# 2048*sqrt(2)*cos(3*pi/16)
-W5:	con 1609;	# 2048*sqrt(2)*cos(5*pi/16)
-W6:	con 1108;	# 2048*sqrt(2)*cos(6*pi/16)
-W7:	con 565;	# 2048*sqrt(2)*cos(7*pi/16)
-W1pW7:	con 3406;	# W1+W7
-W1mW7:	con 2276;	# W1-W7
-W3pW5:	con 4017;	# W3+W5
-W3mW5:	con 799;	# W3-W5
-W2pW6:	con 3784;	# W2+W6
-W2mW6:	con 1567;	# W2-W6
-R2:	con 181;	# 256/sqrt(2)
+W1: con 2841; # 2048*sqrt(2)*cos(1*pi/16)
+W2: con 2676; # 2048*sqrt(2)*cos(2*pi/16)
+W3: con 2408; # 2048*sqrt(2)*cos(3*pi/16)
+W5: con 1609; # 2048*sqrt(2)*cos(5*pi/16)
+W6: con 1108; # 2048*sqrt(2)*cos(6*pi/16)
+W7: con 565; # 2048*sqrt(2)*cos(7*pi/16)
+W1pW7: con 3406; # W1+W7
+W1mW7: con 2276; # W1-W7
+W3pW5: con 4017; # W3+W5
+W3mW5: con 799; # W3-W5
+W2pW6: con 3784; # W2+W6
+W2mW6: con 1567; # W2-W6
+R2: con 181; # 256/sqrt(2)
 idct(b: array of int)
 {
 # transform horizontally
@@ -2143,10 +2143,10 @@ CLAMPBOFF: con 300;
 NCLAMPB: con CLAMPBOFF+256+CLAMPBOFF;
 CLAMPNOFF: con 64;
 NCLAMPN: con CLAMPNOFF+256+CLAMPNOFF;
-clampb: array of byte;		# clamps byte values
-clampn_b: array of int;		# clamps byte values, then shifts >> 4
-clampn_g: array of int;		# clamps byte values, then masks off lower 4 bits
-clampn_r: array of int;		# clamps byte values, masks off lower 4 bits, then shifts <<4
+clampb: array of byte; # clamps byte values
+clampn_b: array of int; # clamps byte values, then shifts >> 4
+clampn_g: array of int; # clamps byte values, then masks off lower 4 bits
+clampn_r: array of int; # clamps byte values, masks off lower 4 bits, then shifts <<4
 init_tabs()
 {
 clampn_b = array[NCLAMPN] of int;
@@ -2340,13 +2340,13 @@ b := int bpic[p]+eblu[x];
 # Errors can be uncorrectable if converting from YCbCr,
 # since we can't guarantee that an extremal value of one of
 # the components selects a color with an extremal value.
-# If we don't, the errors accumulate without bound.  This
+# If we don't, the errors accumulate without bound. This
 # doesn't happen in RGB because the closest table can guarantee
 # a color on the edge of the gamut, producing a zero error in
-# that component.  For the rotation YCbCr space, there may be
+# that component. For the rotation YCbCr space, there may be
 # no color that can guarantee zero error at the edge.
 # Therefore we must clamp explicitly rather than by assuming
-# an upper error bound of CLAMPOFF.  The performance difference
+# an upper error bound of CLAMPOFF. The performance difference
 # is miniscule anyway.
 if(r < 0)
 r = 0;
@@ -2362,7 +2362,7 @@ else if(b > 255)
 b = 255;
 col := int (closest[(b>>4)+16*((g>>4)+(r&16rF0))]);
 pic[p++] = byte (255-col);
-#			col := int (pic[p++] = closest[(b>>4)+16*((g>>4)+16*(r>>4))]);
+# col := int (pic[p++] = closest[(b>>4)+16*((g>>4)+16*(r>>4))]);
 r -= map0[col];
 t := (3*r)>>4;
 ered[x] = t+er;
@@ -2435,18 +2435,18 @@ is.width, is.height, len is.bs.data);
 im := getbitimage(is, display, is.bs.data);
 if(im == nil)
 imgerror(is, "out of memory");
-is.i = is.bs.edata;		# getbitimage should do this too!
+is.i = is.bs.edata; # getbitimage should do this too!
 is.width = im.r.max.x;
 is.height = im.r.max.y;
 return newmi(im);
 }
-NMATCH: con 3;			# shortest match possible
-NCBLOCK: con 6000;		# size of compressed blocks
+NMATCH: con 3; # shortest match possible
+NCBLOCK: con 6000; # size of compressed blocks
 drawld2chan := array[] of {
-0 =>	Draw->GREY1,
-1 =>	Draw->GREY2,
-2 =>	Draw->GREY4,
-3 =>	Draw->CMAP8
+0 => Draw->GREY1,
+1 => Draw->GREY2,
+2 => Draw->GREY4,
+3 => Draw->CMAP8
 };
 getbitimage(is: ref ImageSource, disp: ref Display, d: array of byte): ref Image
 {
@@ -2510,10 +2510,10 @@ return im;
 # of bit compression
 bpl := D->bytesperline(r, im.depth);
 a := array[(ymax-ymin)*bpl] of byte;
-ai := 0;		#index into uncompressed data array a
-di := 5*12;		#index into compressed data
+ai := 0; #index into uncompressed data array a
+di := 5*12; #index into compressed data
 while(ymin < ymax){
-y := int string d[ di        : di + 1*12 ];
+y := int string d[ di : di + 1*12 ];
 n := int string d[ di + 1*12 : di + 2*12 ];
 di += 2*12;
 if (y <= ymin || ymax < y)
@@ -2552,14 +2552,14 @@ return im;
 }
 ################# PNG ###################
 Rawimage: adt {
-r:	Draw->Rect;
-cmap:    array of byte;
-transp:  int;	# transparency flag (only for nchans=1)
-trindex: byte;	# transparency index
-nchans:  int;
-chans:   array of array of byte;
+r: Draw->Rect;
+cmap: array of byte;
+transp: int; # transparency flag (only for nchans=1)
+trindex: byte; # transparency index
+nchans: int;
+chans: array of array of byte;
 chandesc:int;
-fields:	int;    # defined by format
+fields: int; # defined by format
 };
 Chunk: adt {
 size : int;
@@ -2633,7 +2633,7 @@ okcombo = 1;
 raw.nchans = 1;
 raw.chandesc = CY;
 png.alpha = 0;
-2  =>
+2 =>
 okcombo = (png.depth == 8 || png.depth == 16);
 raw.nchans = 3;
 raw.chandesc = CRGB;
@@ -2667,8 +2667,8 @@ imgerror(is, "PNG invalid filter method");
 png.interlacemethod = png_byte(is, chunk.crc_state);
 if (png.interlacemethod != 0 && png.interlacemethod != 1)
 imgerror(is, "PNG invalid interlace method");
-#	sys->print("width %d height %d depth %d colortype %d interlace %d\n",
-#		raw.r.max.x, raw.r.max.y, png.depth, png.colortype, png.interlacemethod);
+# sys->print("width %d height %d depth %d colortype %d interlace %d\n",
+# raw.r.max.x, raw.r.max.y, png.depth, png.colortype, png.interlacemethod);
 if (!png_crc_and_check(is, chunk))
 imgerror(is, "PNG invalid CRC");
 # Stash some detail in raw
@@ -2729,13 +2729,13 @@ if (!png_bytes(is, chunk.crc_state, raw.cmap, chunk.size)) {
 png.error = "eof in PLTE";
 break;
 }
-#			{
-#				x: int;
-#				sys->print("Palette:\n");
-#				for (x = 0; x < chunk.size; x += 3)
-#					sys->print("%3d: (%3d, %3d, %3d)\n",
-#						x / 3, int raw.cmap[x], int raw.cmap[x + 1], int raw.cmap[x + 2]);
-#			}
+# {
+# x: int;
+# sys->print("Palette:\n");
+# for (x = 0; x < chunk.size; x += 3)
+# sys->print("%3d: (%3d, %3d, %3d)\n",
+# x / 3, int raw.cmap[x], int raw.cmap[x + 1], int raw.cmap[x + 2]);
+# }
 seenPLTE = 1;
 "tRNS" =>
 if (seenIDAT) {
@@ -2778,11 +2778,11 @@ if (!png_bytes(is, chunk.crc_state, png.tRNS, chunk.size)) {
 png.error = "eof in tRNS";
 break;
 }
-#				{
-#					sys->print("tRNS:\n");
-#					for (x = 0; x < chunk.size; x++)
-#						sys->print("%3d: (%3d)\n", x, int png.tRNS[x]);
-#				}
+# {
+# sys->print("tRNS:\n");
+# for (x = 0; x < chunk.size; x++)
+# sys->print("%3d: (%3d)\n", x, int png.tRNS[x]);
+# }
 if (png.error == nil) {
 # analyse the tRNS chunk to see if it contains a single transparent index
 # translucent entries are treated as opaque
@@ -2795,8 +2795,8 @@ break;
 }
 raw.transp = 1;
 }
-#					if (raw.transp)
-#						sys->print("selected index %d\n", int raw.trindex);
+# if (raw.transp)
+# sys->print("selected index %d\n", int raw.trindex);
 }
 4 or 6 =>
 png.error = "tRNS invalid when alpha present";
@@ -2825,7 +2825,7 @@ remaining = chunk.size;
 while (remaining && png.error == nil) {
 pick m := <- rq {
 Fill =>
-#					sys->print("Fill(%d) remaining %d\n", len m.buf, remaining);
+# sys->print("Fill(%d) remaining %d\n", len m.buf, remaining);
 toget := len m.buf;
 if (toget > remaining)
 toget = remaining;
@@ -2837,14 +2837,14 @@ break;
 m.reply <-= toget;
 remaining -= toget;
 Result =>
-#					sys->print("Result(%d)\n", len m.buf);
+# sys->print("Result(%d)\n", len m.buf);
 m.reply <-= 0;
 processdata(png, raw, m.buf);
 Info =>
-#					sys->print("Info(%s)\n", m.msg);
+# sys->print("Info(%s)\n", m.msg);
 Finished =>
 inflateFinished = 1;
-#					sys->print("Finished\n");
+# sys->print("Finished\n");
 Error =>
 imgerror(is, "PNG inflate error\n");
 }
@@ -2870,12 +2870,12 @@ inflateFinished = 1;
 while (rq != nil && !inflateFinished) {
 pick m := <-rq {
 Fill =>
-#			sys->print("Fill(%d)\n", len m.buf);
+# sys->print("Fill(%d)\n", len m.buf);
 png.error = "eof in zlib stream";
 m.reply <-= -1;
 inflateFinished = 1;
 Result =>
-#			sys->print("Result(%d)\n", len m.buf);
+# sys->print("Result(%d)\n", len m.buf);
 if (png.error != nil) {
 m.reply <-= -1;
 inflateFinished = 1;
@@ -2885,9 +2885,9 @@ m.reply <-= 0;
 processdata(png, raw, m.buf);
 }
 Info =>
-#			sys->print("Info(%s)\n", m.msg);
+# sys->print("Info(%s)\n", m.msg);
 Finished =>
-#			sys->print("Finished\n");
+# sys->print("Finished\n");
 inflateFinished = 1;
 break;
 Error =>
@@ -2918,7 +2918,7 @@ pixels = resample(pixels, is.origw, is.origh, is.width, is.height);
 im := newimage(is, is.width, is.height);
 im.writepixels(im.r, pixels);
 mi := newmi(im);
-#	mi.mask = display.newimage(im.r, D->GREY1, 0, D->Black);
+# mi.mask = display.newimage(im.r, D->GREY1, 0, D->Black);
 return mi;
 }
 phase2stepping(phase: int): (int, int, int, int)
@@ -2957,13 +2957,13 @@ else
 png.phaserows = 0;
 png.rowsize = png.phasecols * (raw.nchans + png.alpha) * png.depth;
 png.rowsize = (png.rowsize + 7) / 8;
-png.rowsize++;		# for the filter byte
+png.rowsize++; # for the filter byte
 png.rowbytessofar = 0;
 png.thisrow = array[png.rowsize] of byte;
 png.lastrow = array[png.rowsize] of byte;
-#	sys->print("init phase %d: r (%d, %d, %d) c (%d, %d, %d) (%d)\n",
-#		png.phase, png.row, png.rowstep, png.phaserows,
-#		png.colstart, png.colstep, png.phasecols, png.rowsize);
+# sys->print("init phase %d: r (%d, %d, %d) c (%d, %d, %d) (%d)\n",
+# png.phase, png.row, png.rowstep, png.phaserows,
+# png.colstart, png.colstep, png.phasecols, png.rowsize);
 }
 processdatainit(png: ref Png, raw: ref Rawimage): int
 {
@@ -2971,10 +2971,10 @@ if (raw.nchans != 1&& raw.nchans != 3) {
 png.error = "only 1 or 3 channels supported";
 return 0;
 }
-#	if (png.interlacemethod != 0) {
-#		png.error = "only progressive supported";
-#		return 0;
-#	}
+# if (png.interlacemethod != 0) {
+# png.error = "only progressive supported";
+# return 0;
+# }
 if (png.colortype == 3 && raw.cmap == nil) {
 png.error = "PLTE chunk missing";
 return 0;
@@ -3085,7 +3085,7 @@ return;
 8 or 16 =>
 # split rgb into three channels
 bytespc := png.depth / 8;
-stride := (3  + png.alpha) * bytespc;
+stride := (3 + png.alpha) * bytespc;
 copybytes(raw.chans[0][offset + png.colstart:], png.colstep, row, stride, png.phasecols);
 copybytes(raw.chans[1][offset + png.colstart:], png.colstep, row[bytespc:], stride, png.phasecols);
 copybytes(raw.chans[2][offset + png.colstart:], png.colstep, row[bytespc * 2:], stride, png.phasecols);
@@ -3143,7 +3143,7 @@ p = int a + int b - int c;
 pa = p - int a;
 if (pa < 0)
 pa = -pa;
-pb  = p - int b;
+pb = p - int b;
 if (pb < 0)
 pb = -pb;
 pc = p - int c;
@@ -3210,7 +3210,7 @@ filteraverage(png);
 4 =>
 filterpaeth(png);
 * =>
-#				sys->print("implement filter method %d\n", int png.thisrow[0]);
+# sys->print("implement filter method %d\n", int png.thisrow[0]);
 png.error = "filter method unsupported";
 return;
 }
@@ -3280,8 +3280,8 @@ if (!png_bytes(is, crc_state, buf, 4))
 return (0, 0);
 if (signed && int buf[0] & 16r80)
 return (0, 0);
-r:int  = (int buf[0] << 24) | (int buf[1] << 16) | (int buf[2] << 8) | (int buf[3]);
-#	sys->print("got int %d\n", r);
+r:int = (int buf[0] << 24) | (int buf[1] << 16) | (int buf[2] << 8) | (int buf[3]);
+# sys->print("got int %d\n", r);
 return (1, r);
 }
 png_int(is: ref ImageSource, crc_state: ref CRCstate): int
@@ -3305,7 +3305,7 @@ crc, ok: int;
 (ok, crc) = png_get_4(is, nil, 0);
 if (!ok)
 return 0;
-#	sys->print("crc: computed %.8ux expected %.8ux\n", chunk.crc_state.crc, crc);
+# sys->print("crc: computed %.8ux expected %.8ux\n", chunk.crc_state.crc, crc);
 if (chunk.crc_state.crc != crc)
 return 1;
 return 1;
@@ -3315,7 +3315,7 @@ png_byte(is: ref ImageSource, crc_state: ref CRCstate): int
 buf := array[1] of byte;
 if (!png_bytes(is, crc_state, buf, 1))
 return -1;
-#	sys->print("got byte %d\n", int buf[0]);
+# sys->print("got byte %d\n", int buf[0]);
 return int buf[0];
 }
 png_type(is: ref ImageSource, crc_state: ref CRCstate): string
@@ -3341,6 +3341,6 @@ crc->reset(chunk.crc_state);
 chunk.typ = png_type(is, chunk.crc_state);
 if (chunk.typ == nil)
 return 0;
-#	sys->print("%s(%d)\n", chunk.typ, chunk.size);
+# sys->print("%s(%d)\n", chunk.typ, chunk.size);
 return 1;
 }

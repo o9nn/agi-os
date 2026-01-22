@@ -1,11 +1,11 @@
 static struct flagmap lines[] = {
-{"cts",         TIOCM_CTS},
-{"dsr",         TIOCM_DSR},
-{"ring",        TIOCM_RI},
-{"dcd",         TIOCM_CD},
-{"dtr",         TIOCM_DTR},
-{"rts",         TIOCM_RTS},
-{0,		-1}
+{"cts", TIOCM_CTS},
+{"dsr", TIOCM_DSR},
+{"ring", TIOCM_RI},
+{"dcd", TIOCM_CD},
+{"dtr", TIOCM_DTR},
+{"rts", TIOCM_RTS},
+{0, -1}
 };
 static void
 resxtra(int port, struct termios *ts)

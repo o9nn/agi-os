@@ -1,9 +1,9 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
 enum {
 Qdir,
 Qstats,
@@ -16,15 +16,15 @@ Qpatterns,
 Qdistributed,
 };
 static Dirtab opencogtab[] = {
-".",		{Qdir, 0, QTDIR},		0,		DMDIR|0555,
-"stats",	{Qstats},		0,		0444,
-"atomspace",	{Qatomspace},		0,		0666,
-"goals",	{Qgoals},		0,		0666,
-"reason",	{Qreason},		0,		0666,
-"think",	{Qthink},		0,		0666,
-"attention",	{Qattention},		0,		0666,
-"patterns",	{Qpatterns},		0,		0444,
-"distributed",	{Qdistributed},		0,		0666,
+".", {Qdir, 0, QTDIR}, 0, DMDIR|0555,
+"stats", {Qstats}, 0, 0444,
+"atomspace", {Qatomspace}, 0, 0666,
+"goals", {Qgoals}, 0, 0666,
+"reason", {Qreason}, 0, 0666,
+"think", {Qthink}, 0, 0666,
+"attention", {Qattention}, 0, 0666,
+"patterns", {Qpatterns}, 0, 0444,
+"distributed", {Qdistributed}, 0, 0666,
 };
 static void
 opencogreset(void)

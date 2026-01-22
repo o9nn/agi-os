@@ -1,17 +1,17 @@
 #ifndef _boot_script_h
 #define _boot_script_h
-#define BOOT_SCRIPT_NOMEM		1
-#define BOOT_SCRIPT_SYNTAX_ERROR	2
-#define BOOT_SCRIPT_INVALID_ASG		3
-#define BOOT_SCRIPT_MACH_ERROR		4
-#define BOOT_SCRIPT_UNDEF_SYM		5
-#define BOOT_SCRIPT_EXEC_ERROR		6
-#define BOOT_SCRIPT_INVALID_SYM		7
-#define BOOT_SCRIPT_BAD_TYPE		8
-#define VAL_NONE	0
-#define VAL_STR		1
-#define VAL_PORT	2
-#define VAL_TASK	3
+#define BOOT_SCRIPT_NOMEM 1
+#define BOOT_SCRIPT_SYNTAX_ERROR 2
+#define BOOT_SCRIPT_INVALID_ASG 3
+#define BOOT_SCRIPT_MACH_ERROR 4
+#define BOOT_SCRIPT_UNDEF_SYM 5
+#define BOOT_SCRIPT_EXEC_ERROR 6
+#define BOOT_SCRIPT_INVALID_SYM 7
+#define BOOT_SCRIPT_BAD_TYPE 8
+#define VAL_NONE 0
+#define VAL_STR 1
+#define VAL_PORT 2
+#define VAL_TASK 3
 struct cmd
 {
 void *hook;

@@ -83,7 +83,7 @@ cm = 1;
 break;
 }
 sc &= ~((3 << 4) | (1 << 2) | (1 << 1));
-SYSCFG = sc |  (cm << 4) | (cenable << 1) | (wbenable << 2);
+SYSCFG = sc | (cm << 4) | (cenable << 1) | (wbenable << 2);
 }
 void
 serputc()

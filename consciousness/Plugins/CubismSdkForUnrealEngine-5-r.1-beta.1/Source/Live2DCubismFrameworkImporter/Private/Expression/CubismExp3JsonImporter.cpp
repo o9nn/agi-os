@@ -30,7 +30,7 @@ return false;
 ASSERT(JsonObject->TryGetStringField(TEXT("Type"), Type), "Failed to get Type field.");
 JsonObject->TryGetNumberField(TEXT("FadeInTime"), FadeInTime);
 JsonObject->TryGetNumberField(TEXT("FadeOutTime"), FadeOutTime);
-const TArray< TSharedPtr<FJsonValue> >*  ParametersArrayObject;
+const TArray< TSharedPtr<FJsonValue> >* ParametersArrayObject;
 ASSERT(JsonObject->TryGetArrayField(TEXT("Parameters"), ParametersArrayObject), "Failed to get Parameters field.");
 {
 for (const TSharedPtr<FJsonValue>& ParameterValue : *ParametersArrayObject)

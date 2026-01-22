@@ -8,7 +8,7 @@
 #endif
 FT_BEGIN_HEADER
 FT_EXPORT( FT_Error )
-FT_Stream_OpenLZW( FT_Stream  stream,
-FT_Stream  source );
+FT_Stream_OpenLZW( FT_Stream stream,
+FT_Stream source );
 FT_END_HEADER
 #endif

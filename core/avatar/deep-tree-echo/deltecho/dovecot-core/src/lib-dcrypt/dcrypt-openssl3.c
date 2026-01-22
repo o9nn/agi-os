@@ -27,15 +27,15 @@
 #include <openssl/params.h>
 #include <openssl/err.h>
 #ifndef HAVE_BN_secure_new
-#  define BN_secure_new BN_new
+# define BN_secure_new BN_new
 #endif
 #define OID_TEXT_MAX_LEN 80
 #define t_base64url_decode_str(x) t_base64url_decode_str(BASE64_DECODE_FLAG_IGNORE_PADDING, (x))
 #ifdef HAVE_ERR_get_error_all
-#  define openssl_get_error_data(data, flags) \
+# define openssl_get_error_data(data, flags) \
 ERR_get_error_all(NULL, NULL, NULL, data, flags)
 #else
-#  define openssl_get_error_data(data, flags) \
+# define openssl_get_error_data(data, flags) \
 ERR_get_error_line_data(NULL, NULL, data, flags)
 #endif
 struct dcrypt_context_symmetric {

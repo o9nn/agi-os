@@ -1,6 +1,6 @@
-#define MAXSPECHARS 	512
-#define MAXTOKENSIZE	128
-#define CHARLIB	"/sys/lib/troff/font/devutf/charlib"
+#define MAXSPECHARS 512
+#define MAXTOKENSIZE 128
+#define CHARLIB "/sys/lib/troff/font/devutf/charlib"
 extern int debug;
 extern int fontsize;
 extern int fontpos;

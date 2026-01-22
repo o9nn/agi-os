@@ -9,7 +9,7 @@ import 'uno.css'
 import 'splitpanes/dist/splitpanes.css'
 const router = createRouter({ history: createWebHashHistory(), routes })
 createApp(App)
-  .use(router)
-  .use(MotionPlugin)
-  .use(autoAnimatePlugin)
-  .mount('#app')
+.use(router)
+.use(MotionPlugin)
+.use(autoAnimatePlugin)
+.mount('#app')

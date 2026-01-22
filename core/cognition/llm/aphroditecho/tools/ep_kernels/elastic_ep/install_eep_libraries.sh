@@ -3,39 +3,39 @@ set -ex
 WORKSPACE=$(pwd)/eep_kernels_workspace
 INSTALL_NVSHMEM=true
 while getopts "w:n" opt; do
-  case $opt in
-    w)
-      WORKSPACE="$OPTARG"
-      ;;
-    n)
-      INSTALL_NVSHMEM=false
-      ;;
-    \?)
-      echo "Invalid option: -$OPTARG" >&2
-      exit 1
-      ;;
-  esac
+case $opt in
+w)
+WORKSPACE="$OPTARG"
+;;
+n)
+INSTALL_NVSHMEM=false
+;;
+\?)
+echo "Invalid option: -$OPTARG" >&2
+exit 1
+;;
+esac
 done
 if [ ! -d "$WORKSPACE" ]; then
-    mkdir -p $WORKSPACE
+mkdir -p $WORKSPACE
 fi
 pip3 install cmake torch ninja
 pushd $WORKSPACE
 if [ "$INSTALL_NVSHMEM" = true ]; then
-    mkdir -p nvshmem_src
-    wget https://developer.download.nvidia.com/compute/redist/nvshmem/3.2.5/source/nvshmem_src_3.2.5-1.txz
-    tar -xvf nvshmem_src_3.2.5-1.txz -C nvshmem_src --strip-components=1
-    pushd nvshmem_src
-    wget https://github.com/deepseek-ai/DeepEP/raw/main/third-party/nvshmem.patch
-    git init
-    git apply -vvv nvshmem.patch
-    git apply --reject --whitespace=fix ../../eep_nvshmem.patch 
+mkdir -p nvshmem_src
+wget https://developer.download.nvidia.com/compute/redist/nvshmem/3.2.5/source/nvshmem_src_3.2.5-1.txz
+tar -xvf nvshmem_src_3.2.5-1.txz -C nvshmem_src --strip-components=1
+pushd nvshmem_src
+wget https://github.com/deepseek-ai/DeepEP/raw/main/third-party/nvshmem.patch
+git init
+git apply -vvv nvshmem.patch
+git apply --reject --whitespace=fix ../../eep_nvshmem.patch
 else
-    pushd nvshmem_src
+pushd nvshmem_src
 fi
 if [ -z "$CUDA_HOME" ]; then
-    echo "CUDA_HOME is not set, please set it to your CUDA installation directory."
-    exit 1
+echo "CUDA_HOME is not set, please set it to your CUDA installation directory."
+exit 1
 fi
 export NVSHMEM_IBGDA_SUPPORT=1
 export NVSHMEM_SHMEM_SUPPORT=0

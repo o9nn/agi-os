@@ -1,16 +1,16 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"../port/error.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "../port/error.h"
 #include "keyboard.h"
 #include <kernel.h>
 #include <draw.h>
 #include <memdraw.h>
 #include "screen.h"
-#define	DEBUG	0
+#define DEBUG 0
 enum {
 Csof = 0x02,
 Ceof = 0x03,
@@ -40,53 +40,53 @@ Qversion,
 };
 static
 Dirtab ipaqtab[]={
-".",	{Qdir, 0, QTDIR},	0,	0555,
-"ipaqctl",		{Qctl},		0,	0600,
-"battery",		{Qbattery},	0,	0444,
-"version",		{Qversion},	0,	0444,
-"touchctl",	{Qtouchctl},	0,	0644,
+".", {Qdir, 0, QTDIR}, 0, 0555,
+"ipaqctl", {Qctl}, 0, 0600,
+"battery", {Qbattery}, 0, 0444,
+"version", {Qversion}, 0, 0444,
+"touchctl", {Qtouchctl}, 0, 0644,
 };
 static struct {
 QLock;
-Chan*	c;
-Lock	rl;
-int	cmd;
-Block*	reply;
-Rendez	r;
+Chan* c;
+Lock rl;
+int cmd;
+Block* reply;
+Rendez r;
 } atmel;
-#define	FX(a,b)	(((a)<<16)/(b))
-#define	XF(v)		((v)>>16)
+#define FX(a,b) (((a)<<16)/(b))
+#define XF(v) ((v)>>16)
 static struct {
 Lock;
-int	rate;
-int	m[2][3];
-Point	avg;
-Point	diff;
-Point	pts[4];
-int	n;
-int	p;
-int	down;
-int	nout;
+int rate;
+int m[2][3];
+Point avg;
+Point diff;
+Point pts[4];
+int n;
+int p;
+int down;
+int nout;
 } touch = {
 {0},
 .m {{-FX(1,3), 0, FX(346,1)},{0, -FX(1,4), FX(256, 1)}},
 };
-static	Rune	rockermap[2][4] ={
+static Rune rockermap[2][4] ={
 {Right, Down, Up, Left},
 {Up, Right, Left, Down},
 };
-static	Rendez	powerevent;
-static	void	cmdack(int, void*, int);
-static	int	cmdio(int, void*, int, void*, int);
-static	void	ipaqreadproc(void*);
-static	void	powerwaitproc(void*);
-static	Block*	rdevent(Block**);
-static	long	touchctl(char*, long);
-static	void	touched(Block*, int);
-static	int	wrcmd(int, void*, int, void*, int);
-static	char*	acstatus(int);
-static	char*	batstatus(int);
-static	void	powerintr(Ureg*, void*);
+static Rendez powerevent;
+static void cmdack(int, void*, int);
+static int cmdio(int, void*, int, void*, int);
+static void ipaqreadproc(void*);
+static void powerwaitproc(void*);
+static Block* rdevent(Block**);
+static long touchctl(char*, long);
+static void touched(Block*, int);
+static int wrcmd(int, void*, int, void*, int);
+static char* acstatus(int);
+static char* batstatus(int);
+static void powerintr(Ureg*, void*);
 static void
 ipaqreset(void)
 {
@@ -464,9 +464,9 @@ static char *
 acstatus(int x)
 {
 switch(x){
-case 0:	return "offline";
-case 1:	return "online";
-case 2:	return "backup";
+case 0: return "offline";
+case 1: return "online";
+case 2: return "backup";
 }
 return "unknown";
 }
@@ -476,12 +476,12 @@ batstatus(int x)
 if(x & 0x40)
 return "charging";
 switch(x){
-case 0:		return "ok";
-case 1:		return "high";
-case 2:		return "low";
-case 4:		return "critical";
-case 8:		return "charging";
-case 0x80:	return "none";
+case 0: return "ok";
+case 1: return "high";
+case 2: return "low";
+case 4: return "critical";
+case 8: return "charging";
+case 0x80: return "none";
 }
 return "unknown";
 }

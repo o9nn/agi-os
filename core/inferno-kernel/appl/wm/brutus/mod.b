@@ -1,13 +1,13 @@
 implement Brutusext;
 # <Extension mod file>
 # For module descriptions (in book)
-Name:	con "Brutus mod";
+Name: con "Brutus mod";
 include "sys.m";
 sys: Sys;
 include "draw.m";
 draw: Draw;
 Context, Font: import draw;
-include	"bufio.m";
+include "bufio.m";
 bufio: Bufio;
 Iobuf: import bufio;
 include "tk.m";
@@ -16,9 +16,9 @@ include "tkclient.m";
 tkclient: Tkclient;
 include "string.m";
 S : String;
-include	"brutus.m";
+include "brutus.m";
 Size8, Index, Roman, Italic, Bold, Type, NFONT, NSIZE: import Brutus;
-include	"brutusext.m";
+include "brutusext.m";
 Mstring: adt
 {
 s: string;
@@ -27,13 +27,13 @@ indexed: int;
 width: int;
 next: cyclic ref Mstring;
 };
-fontname :=  array[NFONT] of {
+fontname := array[NFONT] of {
 "/fonts/lucidasans/unicode.7.font",
 "/fonts/lucidasans/italiclatin1.7.font",
 "/fonts/lucidasans/boldlatin1.7.font",
 "/fonts/lucidasans/typelatin1.7.font",
 };
-fontswitch :=  array[NFONT] of {
+fontswitch := array[NFONT] of {
 "\\fontseries{m}\\rmfamily ",
 "\\itshape ",
 "\\fontseries{b}\\rmfamily ",
@@ -41,7 +41,7 @@ fontswitch :=  array[NFONT] of {
 };
 fontref := array[NFONT] of ref Font;
 LEFTCHARS: con 45;
-LEFTPIX: con LEFTCHARS*7;	# 7 is width of lucidasans/typelatin1.7 chars
+LEFTPIX: con LEFTCHARS*7; # 7 is width of lucidasans/typelatin1.7 chars
 init(s: Sys, d: Draw, b: Bufio, t: Tk, w: Tkclient)
 {
 sys = s;
@@ -158,7 +158,7 @@ style = altstyle;
 dummy := ref Mstring;
 last := dummy;
 if(doindex && l != nil && S->prefix("  ", hd l))
-doindex = 0;	# continuation line
+doindex = 0; # continuation line
 while(l != nil) {
 s := hd l;
 m : ref Mstring;
@@ -203,7 +203,7 @@ style = defstyle;
 }
 return dummy.next;
 }
-measure(spec: list of (ref Mstring, ref Mstring), pixels: int) : (int, ref Mstring,  int, ref Mstring)
+measure(spec: list of (ref Mstring, ref Mstring), pixels: int) : (int, ref Mstring, int, ref Mstring)
 {
 maxl := 0;
 maxr := 0;

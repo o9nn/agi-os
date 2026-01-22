@@ -37,7 +37,7 @@ return (x > static_cast<T>(0.f)) ? x : sycl::expm1(x);
 }
 template<typename T>
 static __dpct_inline__ T op_gelu(T x) {
-const T GELU_COEF_A    = static_cast<T>(0.044715f);
+const T GELU_COEF_A = static_cast<T>(0.044715f);
 const T SQRT_2_OVER_PI = static_cast<T>(0.79788456080286535587989211986876f);
 return static_cast<T>(0.5f) * x *
 (static_cast<T>(1.0f) +
@@ -254,8 +254,8 @@ SYCL_GLOBAL_ID_LOOP(k, item_ct1) {
 dst[i] = op_clamp(x[i], min_val, max_val);
 }
 }
-template<typename  T>
-static void upscale(const T  *x, T *dst, const int nb00, const int nb01,
+template<typename T>
+static void upscale(const T *x, T *dst, const int nb00, const int nb01,
 const int nb02, const int nb03, const int ne10, const int ne11,
 const int ne12, const int ne13, const float sf0, const float sf1,
 const float sf2, const float sf3, const sycl::nd_item<1> &item_ct1) {
@@ -275,7 +275,7 @@ int i03 = static_cast<int>(i13 / sf3);
 dst[index] = *(const T *)((const char *)x + i03 * nb03 + i02 * nb02 + i01 * nb01 + i00 * nb00);
 }
 template <typename T>
-static void pad(const T  *x, T *dst, const int ne0, const int ne00, const int ne01, const int ne02,
+static void pad(const T *x, T *dst, const int ne0, const int ne00, const int ne01, const int ne02,
 const sycl::nd_item<3> &item_ct1) {
 int nidx = SYCL_LOCAL_ID_CALC(item_ct1, 2);
 if (nidx >= ne0) {
@@ -316,7 +316,7 @@ dst[i] = op_relu(x[j0]) * g[j1];
 }
 template<typename T>
 static void gated_op_fused_swiglu(const T * x, const T * g, T * dst, const uint64_t k, const uint64_t n, const uint64_t o0, const uint64_t o1, const sycl::nd_item<1> &item_ct1) {
-SYCL_GLOBAL_ID_LOOP(k, item_ct1)  {
+SYCL_GLOBAL_ID_LOOP(k, item_ct1) {
 const int64_t j0 = (i / n) * o0 + (i % n);
 const int64_t j1 = o0 == o1 ? j0 : (i / n) * o1 + (i % n);
 dst[i] = op_silu(x[j0]) * g[j1];
@@ -851,7 +851,7 @@ dpct::queue_ptr main_stream = ctx.stream();
 SYCL_CHECK(ggml_sycl_set_device(ctx.device));
 const float * src0_dd = static_cast<const float *>(dst->src[0]->data);
 const float * src1_dd = static_cast<const float*>(dst->src[1]->data);
-float *       dst_dd  = static_cast<float *>(dst->data);
+float * dst_dd = static_cast<float *>(dst->data);
 int nb1 = dst->op_params[0] / 4;
 int nb2 = dst->op_params[1] / 4;
 int offset = dst->op_params[3] / 4;

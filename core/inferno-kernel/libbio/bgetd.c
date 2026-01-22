@@ -1,9 +1,9 @@
 #include "lib9.h"
 #include <bio.h>
-struct	bgetd
+struct bgetd
 {
-Biobuf*	b;
-int		eof;
+Biobuf* b;
+int eof;
 };
 static int
 Bgetdf(void *vp)

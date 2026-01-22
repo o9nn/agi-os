@@ -5,7 +5,7 @@
 #include "gsexit.h"
 #include "gp.h"
 #ifdef __PROTOTYPES__
-#  include <stdlib.h>
+# include <stdlib.h>
 #else
 extern void exit(int);
 extern char *getenv(const char *);

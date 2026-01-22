@@ -6,10 +6,10 @@ struct mail_cache;
 struct mail_cache_view;
 struct mail_cache_transaction_ctx;
 enum mail_cache_decision_type {
-MAIL_CACHE_DECISION_NO		= 0x00,
-MAIL_CACHE_DECISION_TEMP	= 0x01,
-MAIL_CACHE_DECISION_YES		= 0x02,
-MAIL_CACHE_DECISION_FORCED	= 0x80
+MAIL_CACHE_DECISION_NO = 0x00,
+MAIL_CACHE_DECISION_TEMP = 0x01,
+MAIL_CACHE_DECISION_YES = 0x02,
+MAIL_CACHE_DECISION_FORCED = 0x80
 };
 enum mail_cache_field_type {
 MAIL_CACHE_FIELD_FIXED_SIZE,

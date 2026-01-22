@@ -1,56 +1,56 @@
 (load "formulas.scm")
 (define (gen-inversion-rule link-type)
-  (BindLink
-    (VariableList
-      (VariableNode "$A")
-      (VariableNode "$B"))
-    (link-type
-      (VariableNode "$A")
-      (VariableNode "$B"))
-    (ExecutionOutputLink
-      (GroundedSchemaNode "scm: inversion-formula")
-      (ListLink
-        (link-type
-          (VariableNode "$B")
-          (VariableNode "$A"))
-        (VariableNode "$A")
-        (VariableNode "$B")
-        (link-type
-          (VariableNode "$A")
-          (VariableNode "$B"))))))
+(BindLink
+(VariableList
+(VariableNode "$A")
+(VariableNode "$B"))
+(link-type
+(VariableNode "$A")
+(VariableNode "$B"))
+(ExecutionOutputLink
+(GroundedSchemaNode "scm: inversion-formula")
+(ListLink
+(link-type
+(VariableNode "$B")
+(VariableNode "$A"))
+(VariableNode "$A")
+(VariableNode "$B")
+(link-type
+(VariableNode "$A")
+(VariableNode "$B"))))))
 (define inversion-inheritance-rule
-    (gen-inversion-rule InheritanceLink))
+(gen-inversion-rule InheritanceLink))
 (define inversion-implication-rule
-    (gen-inversion-rule ImplicationLink))
+(gen-inversion-rule ImplicationLink))
 (define inversion-subset-rule
-    (gen-inversion-rule SubsetLink))
+(gen-inversion-rule SubsetLink))
 (define (inversion-formula conclusion . premises)
-  (if (= (length premises) 3)
-    (let*
-      ((BA conclusion)
-       (A (list-ref premises 0))
-       (B (list-ref premises 1))
-       (AB (list-ref premises 2))
-       (sA (cog-mean A))
-       (cA (cog-confidence A))
-       (sB (cog-mean B))
-       (cB (cog-confidence B))
-       (sAB (cog-mean AB))
-       (cAB (cog-confidence AB))
-       (sBA (inversion-strength-formula sA sB sAB))
-       (cBA (* 0.9 (min cA cB cAB))))
-    (if (and (< 1e-8 sBA) (< 1e-8 cBA)
-             (inversion-consistency sA sB sAB))
-        (cog-merge-hi-conf-tv! BA (stv sBA cBA))))))
+(if (= (length premises) 3)
+(let*
+((BA conclusion)
+(A (list-ref premises 0))
+(B (list-ref premises 1))
+(AB (list-ref premises 2))
+(sA (cog-mean A))
+(cA (cog-confidence A))
+(sB (cog-mean B))
+(cB (cog-confidence B))
+(sAB (cog-mean AB))
+(cAB (cog-confidence AB))
+(sBA (inversion-strength-formula sA sB sAB))
+(cBA (* 0.9 (min cA cB cAB))))
+(if (and (< 1e-8 sBA) (< 1e-8 cBA)
+(inversion-consistency sA sB sAB))
+(cog-merge-hi-conf-tv! BA (stv sBA cBA))))))
 (define inversion-inheritance-rule-name
-  (DefinedSchemaNode "inversion-inheritance-rule"))
+(DefinedSchemaNode "inversion-inheritance-rule"))
 (DefineLink inversion-inheritance-rule-name
-  inversion-inheritance-rule)
+inversion-inheritance-rule)
 (define inversion-implication-rule-name
-  (DefinedSchemaNode "inversion-implication-rule"))
+(DefinedSchemaNode "inversion-implication-rule"))
 (DefineLink inversion-implication-rule-name
-  inversion-implication-rule)
+inversion-implication-rule)
 (define inversion-subset-rule-name
-  (DefinedSchemaNode "inversion-subset-rule"))
+(DefinedSchemaNode "inversion-subset-rule"))
 (DefineLink inversion-subset-rule-name
-  inversion-subset-rule)
+inversion-subset-rule)

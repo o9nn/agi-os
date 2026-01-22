@@ -1,8 +1,8 @@
 #ifndef gsccolor_INCLUDED
-#  define gsccolor_INCLUDED
+# define gsccolor_INCLUDED
 #include "gsstype.h"
 #ifndef gs_pattern_instance_DEFINED
-#  define gs_pattern_instance_DEFINED
+# define gs_pattern_instance_DEFINED
 typedef struct gs_pattern_instance_s gs_pattern_instance_t;
 #endif
 #define GS_CLIENT_COLOR_MAX_COMPONENTS 16
@@ -10,7 +10,7 @@ typedef struct gs_paint_color_s {
 float values[GS_CLIENT_COLOR_MAX_COMPONENTS];
 } gs_paint_color;
 #ifndef gs_client_color_DEFINED
-#  define gs_client_color_DEFINED
+# define gs_client_color_DEFINED
 typedef struct gs_client_color_s gs_client_color;
 #endif
 struct gs_client_color_s {

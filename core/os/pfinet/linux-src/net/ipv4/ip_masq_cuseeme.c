@@ -12,27 +12,27 @@
 #include <net/ip_masq.h>
 #pragma pack(1)
 typedef struct {
-u_short 	dest_family;
-u_short 	dest_port;
-u_long  	dest_addr;
-short 		family;
-u_short 	port;
-u_long 		addr;
-u_long 		seq;
-u_short 	msg;
-u_short		data_type;
-u_short		packet_len;
+u_short dest_family;
+u_short dest_port;
+u_long dest_addr;
+short family;
+u_short port;
+u_long addr;
+u_long seq;
+u_short msg;
+u_short data_type;
+u_short packet_len;
 } cu_header;
-typedef struct	{
-cu_header	cu_head;
-u_short 	client_count;
-u_long		seq_no;
-char		user_name[20];
-char		stuff[4];
+typedef struct {
+cu_header cu_head;
+u_short client_count;
+u_long seq_no;
+char user_name[20];
+char stuff[4];
 }oc_header;
 typedef struct {
-u_long		address;
-char	       	stuff[8];
+u_long address;
+char stuff[8];
 } client_info;
 #pragma pack()
 static int ports[MAX_MASQ_APP_PORTS] = {7648};
@@ -64,7 +64,7 @@ cu_header *cu_head;
 char *data=(char *)&uh[1];
 if (skb->len - ((unsigned char *) data - skb->h.raw) >= sizeof(cu_header))
 {
-cu_head         = (cu_header *) data;
+cu_head = (cu_header *) data;
 if( cu_head->addr )
 cu_head->addr = (u_long) maddr;
 if(ntohs(cu_head->data_type) == 257)
@@ -79,14 +79,14 @@ struct sk_buff *skb = *skb_p;
 struct iphdr *iph = skb->nh.iph;
 struct udphdr *uh = (struct udphdr *)&(((char *)iph)[iph->ihl*4]);
 cu_header *cu_head;
-oc_header	*oc;
-client_info	*ci;
+oc_header *oc;
+client_info *ci;
 char *data=(char *)&uh[1];
 u_short len = skb->len - ((unsigned char *) data - skb->h.raw);
-int		i, off;
+int i, off;
 if (len >= sizeof(cu_header))
 {
-cu_head         = (cu_header *) data;
+cu_head = (cu_header *) data;
 if(cu_head->dest_addr)
 cu_head->dest_addr = (u_long) ms->saddr;
 if(ntohs(cu_head->data_type)==101 && len > sizeof(oc_header))

@@ -1,46 +1,46 @@
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
-#include	<a.out.h>
-#include	<dynld.h>
-#define	DBG	if(1) print
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
+#include <a.out.h>
+#include <dynld.h>
+#define DBG if(1) print
 extern ulong ndevs;
 enum
 {
 Qdir,
 Qdynld,
 Qdynsyms,
-DEVCHAR	= 'L',
+DEVCHAR = 'L',
 };
-static Dirtab	dltab[] =
+static Dirtab dltab[] =
 {
-".",			{Qdir, 0, QTDIR},	0,	DMDIR|0555,
-"dynld",		{Qdynld},	0,	0644,
-"dynsyms",	{Qdynsyms},	0,	0444,
+".", {Qdir, 0, QTDIR}, 0, DMDIR|0555,
+"dynld", {Qdynld}, 0, 0644,
+"dynsyms", {Qdynsyms}, 0, 0444,
 };
 enum
 {
 DLdev,
 DLudev,
 };
-static Cmdtab	dlcmd[] =
+static Cmdtab dlcmd[] =
 {
-DLdev,	"dev",	2,
-DLudev,	"udev",	2,
+DLdev, "dev", 2,
+DLudev, "udev", 2,
 };
 typedef struct Dyndev Dyndev;
 struct Dyndev
 {
-char	*path;
-Dynobj	*o;
-Dev	*dev;
-Dyndev	*next;
+char *path;
+Dynobj *o;
+Dev *dev;
+Dyndev *next;
 };
-static	Dyndev	*loaded;
-static	QLock	dllock;
+static Dyndev *loaded;
+static QLock dllock;
 typedef struct Fd Fd;
 struct Fd {
-int	fd;
+int fd;
 };
 static long
 readfd(void *a, void *buf, long nbytes)

@@ -17,15 +17,15 @@ private void trace_matrix_fixed(const gs_matrix_fixed *);
 private void trace_matrix(const gs_matrix *);
 #endif
 #ifdef DEBUG
-#  define print_inverse(pgs)\
+# define print_inverse(pgs)\
 if ( gs_debug_c('x') )\
 dlprintf("[x]Inverting:\n"), trace_ctm(pgs), trace_matrix(&pgs->ctm_inverse)
 #else
-#  define print_inverse(pgs) DO_NOTHING
+# define print_inverse(pgs) DO_NOTHING
 #endif
 #define ensure_inverse_valid(pgs)\
 if ( !pgs->ctm_inverse_valid )\
-{	int code = ctm_set_inverse(pgs);\
+{ int code = ctm_set_inverse(pgs);\
 if ( code < 0 ) return code;\
 }
 private int
@@ -39,11 +39,11 @@ pgs->ctm_inverse_valid = true;
 return 0;
 }
 #if ROUND_CTM_FIXED
-#  define update_t_fixed(mat, t, t_fixed, v)\
+# define update_t_fixed(mat, t, t_fixed, v)\
 (set_float2fixed_vars((mat).t_fixed, v),\
 set_fixed2float_var((mat).t, (mat).t_fixed))
 #else
-#  define update_t_fixed(mat, t, t_fixed, v)\
+# define update_t_fixed(mat, t, t_fixed, v)\
 ((mat).t = (v),\
 set_float2fixed_vars((mat).t_fixed, (mat).t))
 #endif
@@ -313,11 +313,11 @@ gx_scale_char_matrix(register gs_state * pgs, int sx, int sy)
 {
 #define scale_cxy(s, vx, vy)\
 if ( s != 1 )\
-{	pgs->ctm.vx *= s;\
+{ pgs->ctm.vx *= s;\
 pgs->ctm.vy *= s;\
 pgs->ctm_inverse_valid = false;\
 if ( pgs->char_tm_valid )\
-{	pgs->char_tm.vx *= s;\
+{ pgs->char_tm.vx *= s;\
 pgs->char_tm.vy *= s;\
 }\
 }

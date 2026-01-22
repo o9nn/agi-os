@@ -83,7 +83,7 @@ const uchar vh0 = ((blocks[i].qh & (1 << (l2 + 0))) >> (l2 + 0)) << 4;
 const uchar vh1 = ((blocks[i].qh & (1 << (l2 + 1))) >> (l2 + 1)) << 4;
 const uint index = i*32 + l2;
 result[index + 0] = (((vi & 0xf) | vh0) - 16)*d;
-result[index + 1] = (((vi >>  4) | vh1) - 16)*d;
+result[index + 1] = (((vi >> 4) | vh1) - 16)*d;
 }
 struct block_q5_1
 {
@@ -103,7 +103,7 @@ const uchar vh0 = ((blocks[i].qh & (1 << (l2 + 0))) >> (l2 + 0)) << 4;
 const uchar vh1 = ((blocks[i].qh & (1 << (l2 + 1))) >> (l2 + 1)) << 4;
 const uint index = i*32 + l2;
 result[index + 0] = ((vi & 0xf) | vh0)*d + m;
-result[index + 1] = ((vi >>  4) | vh1)*d + m;
+result[index + 1] = ((vi >> 4) | vh1)*d + m;
 }
 struct block_q8_0
 {
@@ -116,14 +116,14 @@ const uint l = get_local_id(0);
 result[i*32 + l] = blocks[i].qs[l] * blocks[i].d;
 }
 );
-#define CL_CHECK(err, name)                                                                     \
-do {                                                                                        \
-cl_int err_ = (err);                                                                    \
-if (err_ != CL_SUCCESS) {                                                               \
-fprintf(stderr, "OpenCL %s error %d at %s:%d\n", name, err_, __FILE__, __LINE__);   \
-fprintf(stderr, "You may be out of VRAM. Please check if you have enough.\n");      \
-exit(1);                                                                            \
-}                                                                                       \
+#define CL_CHECK(err, name) \
+do { \
+cl_int err_ = (err); \
+if (err_ != CL_SUCCESS) { \
+fprintf(stderr, "OpenCL %s error %d at %s:%d\n", name, err_, __FILE__, __LINE__); \
+fprintf(stderr, "You may be out of VRAM. Please check if you have enough.\n"); \
+exit(1); \
+} \
 } while (0)
 #define QK5_0 32
 typedef struct {
@@ -293,9 +293,9 @@ default:
 fprintf(stderr, "Error: Unsupported OpenCL btype %d\n", btype);
 abort();
 }
-const size_t size_a =  m * k * sizeof(float);
-const size_t size_b =  n * k * sizeof(float);
-const size_t size_c =  m * n * sizeof(float);
+const size_t size_a = m * k * sizeof(float);
+const size_t size_b = n * k * sizeof(float);
+const size_t size_c = m * n * sizeof(float);
 ggml_v2_cl_malloc(size_a, &cl_size_a, CL_MEM_READ_ONLY, &cl_buffer_a);
 if (dequant) {
 ggml_v2_cl_malloc(size_qb, &cl_size_qb, CL_MEM_READ_ONLY, &cl_buffer_qb);

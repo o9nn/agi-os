@@ -4,12 +4,12 @@
 #include "pci.h"
 #include "vga.h"
 enum {
-PciADDR		= 0xCF8,
-PciDATA		= 0xCFC,
-PciCSE		= 0xCF8,
-PciFORWARD	= 0xCFA,
-MaxFNO		= 7,
-MaxUBN		= 255,
+PciADDR = 0xCF8,
+PciDATA = 0xCFC,
+PciCSE = 0xCF8,
+PciFORWARD = 0xCFA,
+MaxFNO = 7,
+MaxUBN = 255,
 };
 static int pcicfgmode = -1;
 static int pcimaxdno;

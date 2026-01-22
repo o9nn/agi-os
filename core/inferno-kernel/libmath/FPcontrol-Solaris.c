@@ -79,10 +79,10 @@ if(fcr&UNFL) fc |= FP_X_UFL;
 if(fcr&ZDIV) fc |= FP_X_DZ;
 if(fcr&INVAL) fc |= FP_X_INV;
 switch(fcr&RND_MASK){
-case RND_NR:    round |= FP_RM; break;
-case RND_NINF:  round |= FP_RN; break;
-case RND_PINF:  round |= FP_RP; break;
-case RND_Z:     round |= FP_RZ; break;
+case RND_NR: round |= FP_RM; break;
+case RND_NINF: round |= FP_RN; break;
+case RND_PINF: round |= FP_RP; break;
+case RND_Z: round |= FP_RZ; break;
 }
 fpsetround(round);
 fpsetmask(fc);

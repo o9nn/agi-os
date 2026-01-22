@@ -5,22 +5,22 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { processVRM } from '../utils/process-vrm'
 type UseVRMExtendLoader = (loader: GLTFLoader) => void
 const extensions = (extendLoader?: UseVRMExtendLoader) =>
-  (loader: GLTFLoader) => {
-    loader.register(parser => new VRMLoaderPlugin(parser, { autoUpdateHumanBones: true }))
-    if (extendLoader)
-      extendLoader(loader)
-  }
+(loader: GLTFLoader) => {
+loader.register(parser => new VRMLoaderPlugin(parser, { autoUpdateHumanBones: true }))
+if (extendLoader)
+extendLoader(loader)
+}
 const useVRM = (
-  path: string,
-  extendLoader?: UseVRMExtendLoader,
+path: string,
+extendLoader?: UseVRMExtendLoader,
 ): VRM => {
-  const gltf = useLoader(GLTFLoader, path, extensions(extendLoader))
-  const { vrm } = gltf.userData as { vrm: VRM }
-  useFrame((_, delta) => vrm.update(delta))
-  return processVRM(vrm)
+const gltf = useLoader(GLTFLoader, path, extensions(extendLoader))
+const { vrm } = gltf.userData as { vrm: VRM }
+useFrame((_, delta) => vrm.update(delta))
+return processVRM(vrm)
 }
 useVRM.preload = (path: string, extendLoader?: UseVRMExtendLoader) =>
-  useLoader.preload(GLTFLoader, path, extensions(extendLoader))
+useLoader.preload(GLTFLoader, path, extensions(extendLoader))
 useVRM.clear = (path: string) =>
-  useLoader.clear(GLTFLoader, path)
+useLoader.clear(GLTFLoader, path)
 export { useVRM, type UseVRMExtendLoader }

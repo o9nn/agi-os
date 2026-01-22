@@ -628,7 +628,7 @@ char buf[64];
 if(peeraddr == 0 || *peeraddr == 0)
 return;
 sprint(buf, "/mail/ratify/trusted/%s#32", peeraddr);
-if(access(buf, 0) >= 0  && remove(buf) < 0)
+if(access(buf, 0) >= 0 && remove(buf) < 0)
 return;
 fd = create(buf, OREAD, 0666);
 if(fd >= 0){

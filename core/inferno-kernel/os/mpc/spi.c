@@ -7,47 +7,47 @@
 #include "../port/error.h"
 typedef struct Ctlr Ctlr;
 enum {
-BDContin=	1<<9,
-RxeOV=		1<<1,
-TxeUN=		1<<1,
-BDme=		1<<0,
-BDrxerr=		RxeOV|BDme,
-BDtxerr=		TxeUN|BDme,
-MLoop=	1<<14,
+BDContin= 1<<9,
+RxeOV= 1<<1,
+TxeUN= 1<<1,
+BDme= 1<<0,
+BDrxerr= RxeOV|BDme,
+BDtxerr= TxeUN|BDme,
+MLoop= 1<<14,
 MClockInv= 1<<13,
 MClockPhs= 1<<12,
-MDiv16=	1<<11,
-MRev=	1<<10,
-MMaster=	1<<9,
-MSlave=	0<<9,
-MEnable=	1<<8,
-STR=		1<<7,
-MME =	1<<5,
-TXE =	1<<4,
-BSY =	1<<2,
-TXB =	1<<1,
-RXB =	1<<0,
-SPIMISO =	IBIT(28),
+MDiv16= 1<<11,
+MRev= 1<<10,
+MMaster= 1<<9,
+MSlave= 0<<9,
+MEnable= 1<<8,
+STR= 1<<7,
+MME = 1<<5,
+TXE = 1<<4,
+BSY = 1<<2,
+TXB = 1<<1,
+RXB = 1<<0,
+SPIMISO = IBIT(28),
 SPIMOSI = IBIT(29),
 SPICLK = IBIT(30),
-Bufsize =	64,
+Bufsize = 64,
 };
 struct Ctlr {
 Lock;
-QLock	io;
-int	init;
-SPI*	spi;
-IOCparam*	sp;
-BD*	rd;
-BD*	td;
-int	phase;
-Rendez	r;
-char*	txbuf;
-char*	rxbuf;
+QLock io;
+int init;
+SPI* spi;
+IOCparam* sp;
+BD* rd;
+BD* td;
+int phase;
+Rendez r;
+char* txbuf;
+char* rxbuf;
 };
-static	Ctlr	spictlr[1];
-#define	DCFLUSH(a,n)
-static	void	interrupt(Ureg*, void*);
+static Ctlr spictlr[1];
+#define DCFLUSH(a,n)
+static void interrupt(Ureg*, void*);
 void
 spireset(void)
 {

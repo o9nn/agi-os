@@ -74,11 +74,11 @@ INT_MODULE_PARM(p2cclk, -1);
 INT_MODULE_PARM(pci_csc, 1);
 INT_MODULE_PARM(pci_int, 1);
 #elif defined(CONFIG_ISA) && !defined(CONFIG_PCI)
-#define pci_csc		0
-#define pci_int		0
+#define pci_csc 0
+#define pci_int 0
 #elif !defined(CONFIG_ISA) && defined(CONFIG_PCI)
-#define pci_csc		0
-#define pci_int		1
+#define pci_csc 0
+#define pci_int 1
 #else
 #error "No bus architectures defined!"
 #endif
@@ -91,32 +91,32 @@ static const char *version =
 #define DEBUG(n, args...) do { } while (0)
 #endif
 typedef struct socket_info_t {
-u_short		type, flags;
-socket_cap_t	cap;
-ioaddr_t		ioaddr;
-u_short		psock;
-u_char		cs_irq, intr;
-void		(*handler)(void *info, u_int events);
-void		*info;
+u_short type, flags;
+socket_cap_t cap;
+ioaddr_t ioaddr;
+u_short psock;
+u_char cs_irq, intr;
+void (*handler)(void *info, u_int events);
+void *info;
 #ifdef HAS_PROC_BUS
 struct proc_dir_entry *proc;
 #endif
-u_char		pci_irq_code;
+u_char pci_irq_code;
 #ifdef CONFIG_PCI
-u_short		vendor, device;
-u_char		revision, bus, devfn;
-u_short		bcr;
-u_char		pci_lat, cb_lat, sub_bus, cache;
-u_int		cb_phys;
-char		*cb_virt;
+u_short vendor, device;
+u_char revision, bus, devfn;
+u_short bcr;
+u_char pci_lat, cb_lat, sub_bus, cache;
+u_int cb_phys;
+char *cb_virt;
 #endif
 union {
-cirrus_state_t		cirrus;
-vg46x_state_t		vg46x;
-o2micro_state_t		o2micro;
-ti113x_state_t		ti113x;
-ricoh_state_t		ricoh;
-topic_state_t		topic;
+cirrus_state_t cirrus;
+vg46x_state_t vg46x;
+o2micro_state_t o2micro;
+ti113x_state_t ti113x;
+ricoh_state_t ricoh;
+topic_state_t topic;
 } state;
 } socket_info_t;
 static int sockets = 0;
@@ -155,10 +155,10 @@ static int pci_readl(socket_info_t *s, int r, u_int *v)
 static int pci_writel(socket_info_t *s, int r, u_int v)
 { return pcibios_write_config_dword(s->bus, s->devfn, r, v); }
 #endif
-#define cb_readb(s, r)		readb((s)->cb_virt + (r))
-#define cb_readl(s, r)		readl((s)->cb_virt + (r))
-#define cb_writeb(s, r, v)	writeb(v, (s)->cb_virt + (r))
-#define cb_writel(s, r, v)	writel(v, (s)->cb_virt + (r))
+#define cb_readb(s, r) readb((s)->cb_virt + (r))
+#define cb_readl(s, r) readl((s)->cb_virt + (r))
+#define cb_writeb(s, r, v) writeb(v, (s)->cb_virt + (r))
+#define cb_writel(s, r, v) writel(v, (s)->cb_virt + (r))
 typedef enum pcic_id {
 #ifdef CONFIG_ISA
 IS_I82365A, IS_I82365B, IS_I82365DF, IS_IBM, IS_RF5Cx96,
@@ -170,23 +170,23 @@ RICOH_PCIC_ID, SMC_PCIC_ID, TI_PCIC_ID, ENE_PCIC_ID,
 TOPIC_PCIC_ID, IS_UNK_PCI, IS_UNK_CARDBUS
 #endif
 } pcic_id;
-#define IS_VADEM	0x0001
-#define IS_CIRRUS	0x0002
-#define IS_TI		0x0004
-#define IS_O2MICRO	0x0008
-#define IS_TOPIC	0x0020
-#define IS_RICOH	0x0040
-#define IS_UNKNOWN	0x0400
-#define IS_VG_PWR	0x0800
-#define IS_DF_PWR	0x1000
-#define IS_PCI		0x2000
-#define IS_CARDBUS	0x4000
-#define IS_ALIVE	0x8000
+#define IS_VADEM 0x0001
+#define IS_CIRRUS 0x0002
+#define IS_TI 0x0004
+#define IS_O2MICRO 0x0008
+#define IS_TOPIC 0x0020
+#define IS_RICOH 0x0040
+#define IS_UNKNOWN 0x0400
+#define IS_VG_PWR 0x0800
+#define IS_DF_PWR 0x1000
+#define IS_PCI 0x2000
+#define IS_CARDBUS 0x4000
+#define IS_ALIVE 0x8000
 typedef struct pcic_t {
-char		*name;
-u_short		flags;
+char *name;
+u_short flags;
 #ifdef CONFIG_PCI
-u_short		vendor, device;
+u_short vendor, device;
 #endif
 } pcic_t;
 #define ID(a,b) PCI_VENDOR_ID_##a,PCI_DEVICE_ID_##a##_##b
@@ -213,7 +213,7 @@ SMC_PCIC_INFO, TI_PCIC_INFO, ENE_PCIC_INFO, TOPIC_PCIC_INFO,
 { "Unknown", IS_CARDBUS|IS_UNKNOWN, 0, 0 }
 #endif
 };
-#define PCIC_COUNT	(sizeof(pcic)/sizeof(pcic_t))
+#define PCIC_COUNT (sizeof(pcic)/sizeof(pcic_t))
 static u_char i365_get(socket_info_t *s, u_short reg)
 {
 #ifdef CONFIG_PCI
@@ -779,13 +779,13 @@ static void cb_get_power(socket_info_t *s, socket_state_t *state)
 u_int reg = cb_readl(s, CB_SOCKET_CONTROL);
 state->Vcc = state->Vpp = 0;
 switch (reg & CB_SC_VCC_MASK) {
-case CB_SC_VCC_3V:		state->Vcc = 33; break;
-case CB_SC_VCC_5V:		state->Vcc = 50; break;
+case CB_SC_VCC_3V: state->Vcc = 33; break;
+case CB_SC_VCC_5V: state->Vcc = 50; break;
 }
 switch (reg & CB_SC_VPP_MASK) {
-case CB_SC_VPP_3V:		state->Vpp = 33; break;
-case CB_SC_VPP_5V:		state->Vpp = 50; break;
-case CB_SC_VPP_12V:		state->Vpp = 120; break;
+case CB_SC_VPP_3V: state->Vpp = 33; break;
+case CB_SC_VPP_5V: state->Vpp = 50; break;
+case CB_SC_VPP_12V: state->Vpp = 120; break;
 }
 }
 static int cb_set_power(socket_info_t *s, socket_state_t *state)
@@ -795,17 +795,17 @@ if ((state->Vcc == 0) && (state->Vpp == 0) &&
 !(cb_readl(s, CB_SOCKET_STATE) & CB_SS_VSENSE))
 cb_writel(s, CB_SOCKET_FORCE, CB_SF_CVSTEST);
 switch (state->Vcc) {
-case 0:		reg = 0; break;
-case 33:		reg = CB_SC_VCC_3V; break;
-case 50:		reg = CB_SC_VCC_5V; break;
-default:		return -EINVAL;
+case 0: reg = 0; break;
+case 33: reg = CB_SC_VCC_3V; break;
+case 50: reg = CB_SC_VCC_5V; break;
+default: return -EINVAL;
 }
 switch (state->Vpp) {
-case 0:		break;
-case 33:		reg |= CB_SC_VPP_3V; break;
-case 50:		reg |= CB_SC_VPP_5V; break;
-case 120:		reg |= CB_SC_VPP_12V; break;
-default:		return -EINVAL;
+case 0: break;
+case 33: reg |= CB_SC_VPP_3V; break;
+case 50: reg |= CB_SC_VPP_5V; break;
+case 120: reg |= CB_SC_VPP_12V; break;
+default: return -EINVAL;
 }
 if (reg != cb_readl(s, CB_SOCKET_CONTROL))
 cb_writel(s, CB_SOCKET_CONTROL, reg);
@@ -1619,7 +1619,7 @@ io->stop = i365_get_pair(s, I365_IO(map)+I365_W_STOP);
 ioctl = i365_get(s, I365_IOCTL);
 addr = i365_get(s, I365_ADDRWIN);
 io->speed = (ioctl & I365_IOCTL_WAIT(map)) ? cycle_time : 0;
-io->flags  = (addr & I365_ENA_IO(map)) ? MAP_ACTIVE : 0;
+io->flags = (addr & I365_ENA_IO(map)) ? MAP_ACTIVE : 0;
 io->flags |= (ioctl & I365_IOCTL_0WS(map)) ? MAP_0WS : 0;
 io->flags |= (ioctl & I365_IOCTL_16BIT(map)) ? MAP_16BIT : 0;
 io->flags |= (ioctl & I365_IOCTL_IOCS16(map)) ? MAP_AUTOSZ : 0;
@@ -1663,7 +1663,7 @@ mem->flags |= (i & I365_MEM_16BIT) ? MAP_16BIT : 0;
 mem->flags |= (i & I365_MEM_0WS) ? MAP_0WS : 0;
 mem->sys_start = ((u_long)(i & 0x0fff) << 12);
 i = i365_get_pair(s, base+I365_W_STOP);
-mem->speed  = (i & I365_MEM_WS0) ? 1 : 0;
+mem->speed = (i & I365_MEM_WS0) ? 1 : 0;
 mem->speed += (i & I365_MEM_WS1) ? 2 : 0;
 mem->speed *= cycle_time;
 mem->sys_stop = ((u_long)(i & 0x0fff) << 12) + 0x0fff;
@@ -1715,10 +1715,10 @@ if (mem->flags & MAP_0WS) i |= I365_MEM_0WS;
 i365_set_pair(s, base+I365_W_START, i);
 i = (mem->sys_stop >> 12) & 0x0fff;
 switch (mem->speed / cycle_time) {
-case 0:	break;
-case 1:	i |= I365_MEM_WS0; break;
-case 2:	i |= I365_MEM_WS1; break;
-default:	i |= I365_MEM_WS1 | I365_MEM_WS0; break;
+case 0: break;
+case 1: i |= I365_MEM_WS0; break;
+case 2: i |= I365_MEM_WS1; break;
+default: i |= I365_MEM_WS1 | I365_MEM_WS0; break;
 }
 i365_set_pair(s, base+I365_W_STOP, i);
 i = ((mem->card_start - mem->sys_start) >> 12) & 0x3fff;

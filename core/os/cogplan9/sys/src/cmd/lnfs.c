@@ -7,81 +7,81 @@
 #include <libsec.h>
 enum
 {
-OPERM	= 0x3,
-Maxsize	= 512*1024*1024,
-Maxfdata	= 8192,
+OPERM = 0x3,
+Maxsize = 512*1024*1024,
+Maxfdata = 8192,
 NAMELEN = 28,
 };
 typedef struct Fid Fid;
 struct Fid
 {
-short	busy;
-int	fid;
-Fid	*next;
-char	*user;
-String	*path;
-int	fd;
-Qid	qid;
-int	attach;
-ulong	diroff;
-Dir	*dir;
-int	ndir;
+short busy;
+int fid;
+Fid *next;
+char *user;
+String *path;
+int fd;
+Qid qid;
+int attach;
+ulong diroff;
+Dir *dir;
+int ndir;
 };
-Fid	*fids;
-int	mfd[2];
-char	*user;
-uchar	mdata[IOHDRSZ+Maxfdata];
-uchar	rdata[Maxfdata];
-uchar	statbuf[STATMAX];
-Fcall	thdr;
-Fcall	rhdr;
-int	messagesize = sizeof mdata;
-int	readonly;
-char	*srvname;
-int	debug;
-Fid *	newfid(int);
-void	io(void);
-void	*erealloc(void*, ulong);
-void	*emalloc(ulong);
-char	*estrdup(char*);
-void	usage(void);
-void	fidqid(Fid*, Qid*);
-char*	short2long(char*);
-char*	long2short(char*, int);
-void	readnames(void);
-void	post(char*, int);
-char	*rflush(Fid*), *rversion(Fid*), *rauth(Fid*),
+Fid *fids;
+int mfd[2];
+char *user;
+uchar mdata[IOHDRSZ+Maxfdata];
+uchar rdata[Maxfdata];
+uchar statbuf[STATMAX];
+Fcall thdr;
+Fcall rhdr;
+int messagesize = sizeof mdata;
+int readonly;
+char *srvname;
+int debug;
+Fid * newfid(int);
+void io(void);
+void *erealloc(void*, ulong);
+void *emalloc(ulong);
+char *estrdup(char*);
+void usage(void);
+void fidqid(Fid*, Qid*);
+char* short2long(char*);
+char* long2short(char*, int);
+void readnames(void);
+void post(char*, int);
+char *rflush(Fid*), *rversion(Fid*), *rauth(Fid*),
 *rattach(Fid*), *rwalk(Fid*),
 *ropen(Fid*), *rcreate(Fid*),
 *rread(Fid*), *rwrite(Fid*), *rclunk(Fid*),
 *rremove(Fid*), *rstat(Fid*), *rwstat(Fid*);
-char 	*(*fcalls[])(Fid*) = {
-[Tversion]	rversion,
-[Tflush]	rflush,
-[Tauth]	rauth,
-[Tattach]	rattach,
-[Twalk]		rwalk,
-[Topen]		ropen,
-[Tcreate]	rcreate,
-[Tread]		rread,
-[Twrite]	rwrite,
-[Tclunk]	rclunk,
-[Tremove]	rremove,
-[Tstat]		rstat,
-[Twstat]	rwstat,
+char *(*fcalls[])(Fid*) = {
+[Tversion] rversion,
+[Tflush] rflush,
+[Tauth] rauth,
+[Tattach] rattach,
+[Twalk] rwalk,
+[Topen] ropen,
+[Tcreate] rcreate,
+[Tread] rread,
+[Twrite] rwrite,
+[Tclunk] rclunk,
+[Tremove] rremove,
+[Tstat] rstat,
+[Twstat] rwstat,
 };
-char	Eperm[] =	"permission denied";
-char	Enotdir[] =	"not a directory";
-char	Enoauth[] =	"lnfs: authentication not required";
-char	Enotexist[] =	"file does not exist";
-char	Einuse[] =	"file in use";
-char	Eexist[] =	"file exists";
-char	Eisdir[] =	"file is a directory";
-char	Enotowner[] =	"not owner";
-char	Eisopen[] = 	"file already open for I/O";
-char	Excl[] = 	"exclusive use file already open";
-char	Ename[] = 	"illegal name";
-char	Eversion[] =	"unknown 9P version";
+char Eperm[] = "permission denied";
+char Enotdir[] = "not a directory";
+char Enoauth[] = "lnfs: authentication not required";
+char Enotexist[] = "file does not exist";
+char Einuse[] = "file in use";
+char Eexist[] = "file exists";
+char Eisdir[] = "file is a directory";
+char Enotowner[] = "not owner";
+char Eisopen[] = "file already open for I/O";
+char Excl[] = "exclusive use file already open";
+char Ename[] = "illegal name";
+char Eversion[] = "unknown 9P version";
 void
 usage(void)
 {
@@ -545,9 +545,9 @@ free(d);
 typedef struct Name Name;
 struct Name
 {
-Name	*next;
-char	shortname[NAMELEN];
-char	*longname;
+Name *next;
+char shortname[NAMELEN];
+char *longname;
 };
 Dir *dbstat;
 char *namefile = "./.longnames";

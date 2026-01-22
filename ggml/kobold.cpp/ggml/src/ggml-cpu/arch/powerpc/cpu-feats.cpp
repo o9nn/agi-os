@@ -6,8 +6,8 @@
 #include <string>
 struct powerpc_features {
 std::string platform = "";
-int power_version    = -1;
-bool has_vsx         = false;
+int power_version = -1;
+bool has_vsx = false;
 powerpc_features() {
 #if defined(__linux__)
 unsigned long auxval = getauxval(AT_PLATFORM);

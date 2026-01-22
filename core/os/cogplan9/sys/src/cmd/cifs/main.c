@@ -5,21 +5,21 @@
 #include <libsec.h>
 #include <9p.h>
 #include "cifs.h"
-#define max(a,b)	(((a) > (b))? (a): (b))
-#define min(a,b)	(((a) < (b))? (a): (b))
+#define max(a,b) (((a) > (b))? (a): (b))
+#define min(a,b) (((a) < (b))? (a): (b))
 typedef struct Aux Aux;
 struct Aux {
-Aux	*next;
-Aux	*prev;
-char	*path;
-Share	*sp;
-long	expire;
-long	off;
-long	end;
-char	*cache;
-int	fh;
-int	sh;
-long	srch;
+Aux *next;
+Aux *prev;
+char *path;
+Share *sp;
+long expire;
+long off;
+long end;
+char *cache;
+int fh;
+int sh;
+long srch;
 };
 extern int chatty9p;
 int Checkcase = 1;
@@ -37,8 +37,8 @@ int Nshares = 0;
 Aux *Auxroot = nil;
 char *Host = nil;
 static char *Ipcname = "IPC$";
-#define ptype(x)	(((x) & 0xf))
-#define pindex(x)	(((x) & 0xff0) >> 4)
+#define ptype(x) (((x) & 0xf))
+#define pindex(x) (((x) & 0xff0) >> 4)
 void
 setup(void)
 {
@@ -73,8 +73,8 @@ mkqid(char *s, int is_dir, long vers, int subtype, long path)
 {
 Qid q;
 union {
-uchar	digest[SHA1dlen];
-uvlong	uvl;
+uchar digest[SHA1dlen];
+uvlong uvl;
 } u;
 sha1((uchar *)s, strlen(s), u.digest, nil);
 q.type = (is_dir)? QTDIR: 0;
@@ -769,18 +769,18 @@ CIFSlogoff(Sess);
 postnote(PNPROC, Keeppid, "die");
 }
 Srv fs = {
-.destroyfid =	fsdestroyfid,
-.attach=	fsattach,
-.open=		fsopen,
-.create=	fscreate,
-.read=		fsread,
-.write=		fswrite,
-.remove=	fsremove,
-.stat=		fsstat,
-.wstat=		fswstat,
-.clone= 	fsclone,
-.walk1= 	fswalk1,
-.end=		fsend,
+.destroyfid = fsdestroyfid,
+.attach= fsattach,
+.open= fsopen,
+.create= fscreate,
+.read= fsread,
+.write= fswrite,
+.remove= fsremove,
+.stat= fsstat,
+.wstat= fswstat,
+.clone= fsclone,
+.walk1= fswalk1,
+.end= fsend,
 };
 void
 usage(void)

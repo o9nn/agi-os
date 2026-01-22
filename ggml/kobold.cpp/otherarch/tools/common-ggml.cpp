@@ -56,9 +56,9 @@ return false;
 size_t total_size_org = 0;
 size_t total_size_new = 0;
 std::vector<float> work;
-std::vector<uint8_t>     data_u8;
+std::vector<uint8_t> data_u8;
 std::vector<ggml_v3_fp16_t> data_f16;
-std::vector<float>       data_f32;
+std::vector<float> data_f32;
 std::vector<int64_t> hist_all(1 << 4, 0);
 while (true) {
 int32_t n_dims;
@@ -66,7 +66,7 @@ int32_t length;
 int32_t ttype;
 finp.read(reinterpret_cast<char *>(&n_dims), sizeof(n_dims));
 finp.read(reinterpret_cast<char *>(&length), sizeof(length));
-finp.read(reinterpret_cast<char *>(&ttype),  sizeof(ttype));
+finp.read(reinterpret_cast<char *>(&ttype), sizeof(ttype));
 if (finp.eof()) {
 break;
 }
@@ -117,7 +117,7 @@ finp.read(reinterpret_cast<char *>(data_u8.data()), nelements * bpe);
 }
 fout.write(reinterpret_cast<char *>(&n_dims), sizeof(n_dims));
 fout.write(reinterpret_cast<char *>(&length), sizeof(length));
-fout.write(reinterpret_cast<char *>(&ttype),  sizeof(ttype));
+fout.write(reinterpret_cast<char *>(&ttype), sizeof(ttype));
 for (int i = 0; i < n_dims; ++i) {
 fout.write(reinterpret_cast<char *>(&ne[i]), sizeof(ne[i]));
 }

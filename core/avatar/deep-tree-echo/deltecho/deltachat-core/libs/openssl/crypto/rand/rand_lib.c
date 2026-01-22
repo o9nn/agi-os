@@ -145,10 +145,10 @@ RAND_SSLeay()->seed(in, inlen);
 return 1;
 }
 # ifndef OPENSSL_DRBG_DEFAULT_TYPE
-#  define OPENSSL_DRBG_DEFAULT_TYPE       NID_aes_256_ctr
+# define OPENSSL_DRBG_DEFAULT_TYPE NID_aes_256_ctr
 # endif
 # ifndef OPENSSL_DRBG_DEFAULT_FLAGS
-#  define OPENSSL_DRBG_DEFAULT_FLAGS      DRBG_FLAG_CTR_USE_DF
+# define OPENSSL_DRBG_DEFAULT_FLAGS DRBG_FLAG_CTR_USE_DF
 # endif
 static int fips_drbg_type = OPENSSL_DRBG_DEFAULT_TYPE;
 static int fips_drbg_flags = OPENSSL_DRBG_DEFAULT_FLAGS;

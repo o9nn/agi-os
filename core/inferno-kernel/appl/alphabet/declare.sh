@@ -13,7 +13,7 @@ autoconvert string gate /fs/match
 autoconvert entries fd /fs/print
 autoconvert endpoint fd {(endpoint); /grid/local -v $1}
 fn pretty {
-	-{
-		/echo {/pretty $1}
-	} ${rewrite $1 /status}
+-{
+/echo {/pretty $1}
+} ${rewrite $1 /status}
 }

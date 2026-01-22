@@ -1,6 +1,6 @@
 #include "zutil.h"
 #ifndef NO_DUMMY_DECL
-struct internal_state      {int dummy;};
+struct internal_state {int dummy;};
 #endif
 #ifndef STDC
 extern void exit OF((int));
@@ -25,28 +25,28 @@ uLong ZEXPORT zlibCompileFlags()
 uLong flags;
 flags = 0;
 switch (sizeof(uInt)) {
-case 2:     break;
-case 4:     flags += 1;     break;
-case 8:     flags += 2;     break;
-default:    flags += 3;
+case 2: break;
+case 4: flags += 1; break;
+case 8: flags += 2; break;
+default: flags += 3;
 }
 switch (sizeof(uLong)) {
-case 2:     break;
-case 4:     flags += 1 << 2;        break;
-case 8:     flags += 2 << 2;        break;
-default:    flags += 3 << 2;
+case 2: break;
+case 4: flags += 1 << 2; break;
+case 8: flags += 2 << 2; break;
+default: flags += 3 << 2;
 }
 switch (sizeof(voidpf)) {
-case 2:     break;
-case 4:     flags += 1 << 4;        break;
-case 8:     flags += 2 << 4;        break;
-default:    flags += 3 << 4;
+case 2: break;
+case 4: flags += 1 << 4; break;
+case 8: flags += 2 << 4; break;
+default: flags += 3 << 4;
 }
 switch (sizeof(z_off_t)) {
-case 2:     break;
-case 4:     flags += 1 << 6;        break;
-case 8:     flags += 2 << 6;        break;
-default:    flags += 3 << 6;
+case 2: break;
+case 4: flags += 1 << 6; break;
+case 8: flags += 2 << 6; break;
+default: flags += 3 << 6;
 }
 #ifdef DEBUG
 flags += 1 << 8;
@@ -76,35 +76,35 @@ flags += 1 << 20;
 flags += 1 << 21;
 #endif
 #ifdef STDC
-#  ifdef NO_vsnprintf
+# ifdef NO_vsnprintf
 flags += 1 << 25;
-#    ifdef HAS_vsprintf_void
+# ifdef HAS_vsprintf_void
 flags += 1 << 26;
-#    endif
-#  else
-#    ifdef HAS_vsnprintf_void
+# endif
+# else
+# ifdef HAS_vsnprintf_void
 flags += 1 << 26;
-#    endif
-#  endif
+# endif
+# endif
 #else
 flags += 1 << 24;
-#  ifdef NO_snprintf
+# ifdef NO_snprintf
 flags += 1 << 25;
-#    ifdef HAS_sprintf_void
+# ifdef HAS_sprintf_void
 flags += 1 << 26;
-#    endif
-#  else
-#    ifdef HAS_snprintf_void
+# endif
+# else
+# ifdef HAS_snprintf_void
 flags += 1 << 26;
-#    endif
-#  endif
+# endif
+# endif
 #endif
 return flags;
 }
 #ifdef DEBUG
-#  ifndef verbose
-#    define verbose 0
-#  endif
+# ifndef verbose
+# define verbose 0
+# endif
 int z_verbose = verbose;
 void z_error (m)
 char *m;
@@ -125,7 +125,7 @@ int errno = 0;
 void zmemcpy(dest, source, len)
 Bytef* dest;
 const Bytef* source;
-uInt  len;
+uInt len;
 {
 if (len == 0) return;
 do {
@@ -135,7 +135,7 @@ do {
 int zmemcmp(s1, s2, len)
 const Bytef* s1;
 const Bytef* s2;
-uInt  len;
+uInt len;
 {
 uInt j;
 for (j = 0; j < len; j++) {
@@ -145,7 +145,7 @@ return 0;
 }
 void zmemzero(dest, len)
 Bytef* dest;
-uInt  len;
+uInt len;
 {
 if (len == 0) return;
 do {
@@ -155,7 +155,7 @@ do {
 #endif
 #ifdef SYS16BIT
 #ifdef __TURBOC__
-#  define MY_ZCALLOC
+# define MY_ZCALLOC
 #define MAX_PTR 10
 local int next_ptr = 0;
 typedef struct ptr_table_s {
@@ -180,7 +180,7 @@ table[next_ptr].org_ptr = buf;
 table[next_ptr++].new_ptr = buf;
 return buf;
 }
-void  zcfree (voidpf opaque, voidpf ptr)
+void zcfree (voidpf opaque, voidpf ptr)
 {
 int n;
 if (*(ush*)&ptr != 0) {
@@ -201,17 +201,17 @@ Assert(0, "zcfree: ptr not found");
 }
 #endif
 #ifdef M_I86
-#  define MY_ZCALLOC
+# define MY_ZCALLOC
 #if (!defined(_MSC_VER) || (_MSC_VER <= 600))
-#  define _halloc  halloc
-#  define _hfree   hfree
+# define _halloc halloc
+# define _hfree hfree
 #endif
 voidpf zcalloc (voidpf opaque, unsigned items, unsigned size)
 {
 if (opaque) opaque = 0;
 return _halloc((long)items, size);
 }
-void  zcfree (voidpf opaque, voidpf ptr)
+void zcfree (voidpf opaque, voidpf ptr)
 {
 if (opaque) opaque = 0;
 _hfree(ptr);
@@ -220,9 +220,9 @@ _hfree(ptr);
 #endif
 #ifndef MY_ZCALLOC
 #ifndef STDC
-extern voidp  malloc OF((uInt size));
-extern voidp  calloc OF((uInt items, uInt size));
-extern void   free   OF((voidpf ptr));
+extern voidp malloc OF((uInt size));
+extern voidp calloc OF((uInt items, uInt size));
+extern void free OF((voidpf ptr));
 #endif
 voidpf zcalloc (opaque, items, size)
 voidpf opaque;
@@ -233,7 +233,7 @@ if (opaque) items += size - size;
 return sizeof(uInt) > 2 ? (voidpf)malloc(items * size) :
 (voidpf)calloc(items, size);
 }
-void  zcfree (opaque, ptr)
+void zcfree (opaque, ptr)
 voidpf opaque;
 voidpf ptr;
 {

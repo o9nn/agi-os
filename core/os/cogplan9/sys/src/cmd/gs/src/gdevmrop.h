@@ -1,5 +1,5 @@
 #ifndef gdevmrop_INCLUDED
-#  define gdevmrop_INCLUDED
+# define gdevmrop_INCLUDED
 gs_rop3_t gs_transparent_rop(gs_logical_operation_t lop);
 #ifdef DEBUG
 void trace_copy_rop(const char *cname, gx_device * dev,
@@ -11,11 +11,11 @@ int x, int y, int width, int height,
 int phase_x, int phase_y, gs_logical_operation_t lop);
 #endif
 #ifndef gx_device_color_DEFINED
-#  define gx_device_color_DEFINED
+# define gx_device_color_DEFINED
 typedef struct gx_device_color_s gx_device_color;
 #endif
 #ifndef gx_device_rop_texture_DEFINED
-#  define gx_device_rop_texture_DEFINED
+# define gx_device_rop_texture_DEFINED
 typedef struct gx_device_rop_texture_s gx_device_rop_texture;
 #endif
 struct gx_device_rop_texture_s {
@@ -23,7 +23,7 @@ gx_device_forward_common;
 gs_logical_operation_t log_op;
 gx_device_color texture;
 };
-#define private_st_device_rop_texture()	\
+#define private_st_device_rop_texture() \
 gs_private_st_composite_use_final(st_device_rop_texture,\
 gx_device_rop_texture, "gx_device_rop_texture",\
 device_rop_texture_enum_ptrs, device_rop_texture_reloc_ptrs,\

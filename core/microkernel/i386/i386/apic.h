@@ -13,17 +13,17 @@ ApicReg unused[2];
 ApicReg eoi;
 } ApicIoUnit;
 struct ioapic_route_entry {
-uint32_t vector      : 8,
-delvmode    : 3,
-destmode    : 1,
-delvstatus  : 1,
-polarity    : 1,
-irr         : 1,
-trigger     : 1,
-mask        : 1,
-reserved1   : 15;
-uint32_t reserved2   : 24,
-dest        : 8;
+uint32_t vector : 8,
+delvmode : 3,
+destmode : 1,
+delvstatus : 1,
+polarity : 1,
+irr : 1,
+trigger : 1,
+mask : 1,
+reserved1 : 15;
+uint32_t reserved2 : 24,
+dest : 8;
 } __attribute__ ((packed));
 union ioapic_route_entry_union {
 struct {
@@ -151,15 +151,15 @@ ApicReg extended_feature;
 ApicReg extended_control;
 ApicReg specific_eoi;
 } ApicLocalUnit;
-#define APIC_VERSION_HAS_EXT_APIC_SPACE	(1 << 31)
-#define APIC_VERSION_HAS_DIRECTED_EOI	(1 << 24)
-#define APIC_EXT_FEATURE_HAS_SEOI	(1 << 1)
-#define APIC_EXT_FEATURE_HAS_8BITID	(1 << 2)
-#define APIC_EXT_CTRL_ENABLE_SEOI	(1 << 1)
-#define APIC_EXT_CTRL_ENABLE_8BITID	(1 << 2)
+#define APIC_VERSION_HAS_EXT_APIC_SPACE (1 << 31)
+#define APIC_VERSION_HAS_DIRECTED_EOI (1 << 24)
+#define APIC_EXT_FEATURE_HAS_SEOI (1 << 1)
+#define APIC_EXT_FEATURE_HAS_8BITID (1 << 2)
+#define APIC_EXT_CTRL_ENABLE_SEOI (1 << 1)
+#define APIC_EXT_CTRL_ENABLE_8BITID (1 << 2)
 typedef struct IoApicData {
-uint8_t  apic_id;
-uint8_t  ngsis;
+uint8_t apic_id;
+uint8_t ngsis;
 uint32_t addr;
 uint32_t gsi_base;
 ApicIoUnit *ioapic;
@@ -169,20 +169,20 @@ ApicIoUnit *ioapic;
 #define APIC_IRQ_OVERRIDE_TRIGGER_MASK 4
 #define APIC_IRQ_OVERRIDE_LEVEL_TRIGGERED 8
 typedef struct IrqOverrideData {
-uint8_t  bus;
-uint8_t  irq;
+uint8_t bus;
+uint8_t irq;
 uint32_t gsi;
 uint16_t flags;
 } IrqOverrideData;
 #define MAX_IOAPICS 16
 #define MAX_IRQ_OVERRIDE 24
 typedef struct ApicInfo {
-uint8_t   ncpus;
-uint8_t   nioapics;
-int       nirqoverride;
+uint8_t ncpus;
+uint8_t nioapics;
+int nirqoverride;
 uint16_t* cpu_lapic_list;
-struct    IoApicData ioapic_list[MAX_IOAPICS];
-struct    IrqOverrideData irq_override_list[MAX_IRQ_OVERRIDE];
+struct IoApicData ioapic_list[MAX_IOAPICS];
+struct IrqOverrideData irq_override_list[MAX_IRQ_OVERRIDE];
 } ApicInfo;
 struct irqinfo {
 uint8_t trigger;
@@ -228,49 +228,49 @@ extern uint32_t *hpet_addr;
 extern uint8_t apic_id_mask;
 extern struct irqinfo irqinfo[];
 #endif
-#define APIC_IO_UNIT_ID			0x00
-#define APIC_IO_VERSION			0x01
-# define APIC_IO_VERSION_SHIFT		0
-# define APIC_IO_ENTRIES_SHIFT		16
-#define APIC_IO_REDIR_LOW(int_pin)	(0x10+(int_pin)*2)
-#define APIC_IO_REDIR_HIGH(int_pin)	(0x11+(int_pin)*2)
-#define IMCR_SELECT    0x22
-#define IMCR_DATA      0x23
-#define MODE_IMCR      0x70
-# define IMCR_USE_PIC  0
+#define APIC_IO_UNIT_ID 0x00
+#define APIC_IO_VERSION 0x01
+# define APIC_IO_VERSION_SHIFT 0
+# define APIC_IO_ENTRIES_SHIFT 16
+#define APIC_IO_REDIR_LOW(int_pin) (0x10+(int_pin)*2)
+#define APIC_IO_REDIR_HIGH(int_pin) (0x11+(int_pin)*2)
+#define IMCR_SELECT 0x22
+#define IMCR_DATA 0x23
+#define MODE_IMCR 0x70
+# define IMCR_USE_PIC 0
 # define IMCR_USE_APIC 1
-#define LAPIC_LOW_PRIO                 0x100
-#define LAPIC_NMI                      0x400
-#define LAPIC_EXTINT                   0x700
-#define LAPIC_LEVEL_TRIGGERED          0x8000
-#define LAPIC_ENABLE                   0x100
-#define LAPIC_FOCUS                    0x200
-#define LAPIC_ENABLE_DIRECTED_EOI      0x1000
-#define LAPIC_DISABLE                  0x10000
-#define LAPIC_TIMER_PERIODIC           0x20000
-#define LAPIC_TIMER_DIVIDE_2           0
-#define LAPIC_TIMER_DIVIDE_4           1
-#define LAPIC_TIMER_DIVIDE_8           2
-#define LAPIC_TIMER_DIVIDE_16          3
-#define LAPIC_TIMER_BASEDIV            0x100000
-#define NINTR                          64
-#define IOAPIC_FIXED                   0
-#define IOAPIC_PHYSICAL                0
-#define IOAPIC_LOGICAL                 1
-#define IOAPIC_NMI                     4
-#define IOAPIC_EXTINT                  7
-#define IOAPIC_ACTIVE_HIGH             0
-#define IOAPIC_ACTIVE_LOW              1
-#define IOAPIC_EDGE_TRIGGERED          0
-#define IOAPIC_LEVEL_TRIGGERED         1
-#define IOAPIC_MASK_ENABLED            0
-#define IOAPIC_MASK_DISABLED           1
-#define APIC_MSR                       0x1b
-#define APIC_MSR_BSP                   0x100
-#define APIC_MSR_X2APIC                0x400
-#define APIC_MSR_ENABLE                0x800
-#define APIC_LOGICAL_CPU_GROUPS        8
-#define APIC_LOGICAL_ID(cpu)           (1u << ((cpu) % APIC_LOGICAL_CPU_GROUPS))
+#define LAPIC_LOW_PRIO 0x100
+#define LAPIC_NMI 0x400
+#define LAPIC_EXTINT 0x700
+#define LAPIC_LEVEL_TRIGGERED 0x8000
+#define LAPIC_ENABLE 0x100
+#define LAPIC_FOCUS 0x200
+#define LAPIC_ENABLE_DIRECTED_EOI 0x1000
+#define LAPIC_DISABLE 0x10000
+#define LAPIC_TIMER_PERIODIC 0x20000
+#define LAPIC_TIMER_DIVIDE_2 0
+#define LAPIC_TIMER_DIVIDE_4 1
+#define LAPIC_TIMER_DIVIDE_8 2
+#define LAPIC_TIMER_DIVIDE_16 3
+#define LAPIC_TIMER_BASEDIV 0x100000
+#define NINTR 64
+#define IOAPIC_FIXED 0
+#define IOAPIC_PHYSICAL 0
+#define IOAPIC_LOGICAL 1
+#define IOAPIC_NMI 4
+#define IOAPIC_EXTINT 7
+#define IOAPIC_ACTIVE_HIGH 0
+#define IOAPIC_ACTIVE_LOW 1
+#define IOAPIC_EDGE_TRIGGERED 0
+#define IOAPIC_LEVEL_TRIGGERED 1
+#define IOAPIC_MASK_ENABLED 0
+#define IOAPIC_MASK_DISABLED 1
+#define APIC_MSR 0x1b
+#define APIC_MSR_BSP 0x100
+#define APIC_MSR_X2APIC 0x400
+#define APIC_MSR_ENABLE 0x800
+#define APIC_LOGICAL_CPU_GROUPS 8
+#define APIC_LOGICAL_ID(cpu) (1u << ((cpu) % APIC_LOGICAL_CPU_GROUPS))
 #define APIC_SET_MASK_BIT(reg, bit) \
 ((reg)[(bit) >> 5].r |= 1 << ((bit) & 0x1f))
 #define APIC_CLEAR_MASK_BIT(reg, bit) \

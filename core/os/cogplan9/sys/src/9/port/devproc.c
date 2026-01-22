@@ -1,13 +1,13 @@
-#include	"u.h"
-#include	<trace.h>
-#include	"tos.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"ureg.h"
-#include	"../port/edf.h"
+#include "u.h"
+#include <trace.h>
+#include "tos.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "ureg.h"
+#include "../port/edf.h"
 enum
 {
 Qdir,
@@ -64,69 +64,69 @@ enum{
 Nevents = 0x4000,
 Emask = Nevents - 1,
 };
-#define	STATSIZE	(2*KNAMELEN+12+9*12)
+#define STATSIZE (2*KNAMELEN+12+9*12)
 Dirtab procdir[] =
 {
-"args",		{Qargs},	0,			0660,
-"ctl",		{Qctl},		0,			0000,
-"fd",		{Qfd},		0,			0444,
-"fpregs",	{Qfpregs},	sizeof(FPsave),		0000,
-"kregs",	{Qkregs},	sizeof(Ureg),		0400,
-"mem",		{Qmem},		0,			0000,
-"note",		{Qnote},	0,			0000,
-"noteid",	{Qnoteid},	0,			0664,
-"notepg",	{Qnotepg},	0,			0000,
-"ns",		{Qns},		0,			0444,
-"proc",		{Qproc},	0,			0400,
-"regs",		{Qregs},	sizeof(Ureg),		0000,
-"segment",	{Qsegment},	0,			0444,
-"status",	{Qstatus},	STATSIZE,		0444,
-"text",		{Qtext},	0,			0000,
-"wait",		{Qwait},	0,			0400,
-"profile",	{Qprofile},	0,			0400,
-"syscall",	{Qsyscall},	0,			0400,
+"args", {Qargs}, 0, 0660,
+"ctl", {Qctl}, 0, 0000,
+"fd", {Qfd}, 0, 0444,
+"fpregs", {Qfpregs}, sizeof(FPsave), 0000,
+"kregs", {Qkregs}, sizeof(Ureg), 0400,
+"mem", {Qmem}, 0, 0000,
+"note", {Qnote}, 0, 0000,
+"noteid", {Qnoteid}, 0, 0664,
+"notepg", {Qnotepg}, 0, 0000,
+"ns", {Qns}, 0, 0444,
+"proc", {Qproc}, 0, 0400,
+"regs", {Qregs}, sizeof(Ureg), 0000,
+"segment", {Qsegment}, 0, 0444,
+"status", {Qstatus}, STATSIZE, 0444,
+"text", {Qtext}, 0, 0000,
+"wait", {Qwait}, 0, 0400,
+"profile", {Qprofile}, 0, 0400,
+"syscall", {Qsyscall}, 0, 0400,
 };
 static
 Cmdtab proccmd[] = {
-CMclose,		"close",		2,
-CMclosefiles,		"closefiles",		1,
-CMfixedpri,		"fixedpri",		2,
-CMhang,			"hang",			1,
-CMnohang,		"nohang",		1,
-CMnoswap,		"noswap",		1,
-CMkill,			"kill",			1,
-CMpri,			"pri",			2,
-CMprivate,		"private",		1,
-CMprofile,		"profile",		1,
-CMstart,		"start",		1,
-CMstartstop,		"startstop",		1,
-CMstartsyscall,		"startsyscall",		1,
-CMstop,			"stop",			1,
-CMwaitstop,		"waitstop",		1,
-CMwired,		"wired",		2,
-CMtrace,		"trace",		0,
-CMperiod,		"period",		2,
-CMdeadline,		"deadline",		2,
-CMcost,			"cost",			2,
-CMsporadic,		"sporadic",		1,
-CMdeadlinenotes,	"deadlinenotes",	1,
-CMadmit,		"admit",		1,
-CMextra,		"extra",		1,
-CMexpel,		"expel",		1,
-CMevent,		"event",		1,
+CMclose, "close", 2,
+CMclosefiles, "closefiles", 1,
+CMfixedpri, "fixedpri", 2,
+CMhang, "hang", 1,
+CMnohang, "nohang", 1,
+CMnoswap, "noswap", 1,
+CMkill, "kill", 1,
+CMpri, "pri", 2,
+CMprivate, "private", 1,
+CMprofile, "profile", 1,
+CMstart, "start", 1,
+CMstartstop, "startstop", 1,
+CMstartsyscall, "startsyscall", 1,
+CMstop, "stop", 1,
+CMwaitstop, "waitstop", 1,
+CMwired, "wired", 2,
+CMtrace, "trace", 0,
+CMperiod, "period", 2,
+CMdeadline, "deadline", 2,
+CMcost, "cost", 2,
+CMsporadic, "sporadic", 1,
+CMdeadlinenotes, "deadlinenotes", 1,
+CMadmit, "admit", 1,
+CMextra, "extra", 1,
+CMexpel, "expel", 1,
+CMevent, "event", 1,
 };
 static char *sname[]={ "Text", "Data", "Bss", "Stack", "Shared", "Phys", };
-#define	QSHIFT	5
-#define	QID(q)		((((ulong)(q).path) & ((1<<QSHIFT)-1)) >> 0)
-#define	SLOT(q)		(((((ulong)(q).path) & ~(1UL<<31)) >> QSHIFT) - 1)
-#define	PID(q)		((q).vers)
-#define	NOTEID(q)	((q).vers)
-void	procctlreq(Proc*, char*, int);
-int	procctlmemio(Proc*, ulong, int, void*, int);
-Chan*	proctext(Chan*, Proc*);
+#define QSHIFT 5
+#define QID(q) ((((ulong)(q).path) & ((1<<QSHIFT)-1)) >> 0)
+#define SLOT(q) (((((ulong)(q).path) & ~(1UL<<31)) >> QSHIFT) - 1)
+#define PID(q) ((q).vers)
+#define NOTEID(q) ((q).vers)
+void procctlreq(Proc*, char*, int);
+int procctlmemio(Proc*, ulong, int, void*, int);
+Chan* proctext(Chan*, Proc*);
 Segment* txt2data(Proc*, Segment*);
-int	procstopped(void*);
-void	mntscan(Mntwalk*, Proc*);
+int procstopped(void*);
+void mntscan(Mntwalk*, Proc*);
 static Traceevent *tevents;
 static Lock tlock;
 static int topens;
@@ -550,7 +550,7 @@ if(n <= 0)
 break;
 if(j != 0)
 buf[j++] = ' ';
-m = snprint(buf+j, nbuf-j, "%q",  a);
+m = snprint(buf+j, nbuf-j, "%q", a);
 k = strlen(a) + 1;
 a += k;
 n -= k;

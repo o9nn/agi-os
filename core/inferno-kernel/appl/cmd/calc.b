@@ -140,7 +140,7 @@ Oas, Odas,
 Oplus, Ominus, Oinv,
 Ocomma, Oscomma, Oquest, Ocolon,
 Onand, Onor, Oimp, Oimpby, Oiff,
-Olbr, Orbr, Olcbr, Orcbr,  Oscolon, Onl,
+Olbr, Orbr, Olcbr, Orcbr, Oscolon, Onl,
 Onothing,
 Oprint, Oread,
 Oif, Oelse, Ofor, Owhile, Odo, Obreak, Ocont, Oexit, Oret, Ofn, Oinclude,
@@ -148,7 +148,7 @@ Osigma, Opi, Ocfrac, Oderiv, Ointeg, Osolve,
 Olog, Olog10, Olog2, Ologb, Oexpf, Opow, Osqrt, Ocbrt, Ofloor, Oceil, Omin, Omax, Oabs, Ogamma, Osign, Oint, Ofrac, Oround, Oerf, Oatan2, Osin, Ocos, Otan, Oasin, Oacos, Oatan, Osinh, Ocosh, Otanh, Oasinh, Oacosh, Oatanh, Orand,
 Olast: con iota;
 Binary: con (1<<8);
-Preunary:	con (1<<9);
+Preunary: con (1<<9);
 Postunary: con (1<<10);
 Assoc: con (1<<11);
 Rassoc: con (1<<12);
@@ -228,73 +228,73 @@ opss := array[Olast] of
 };
 ops := array[Olast] of
 {
-Oeof =>	0,
-Ostring =>	17,
-Onum =>	17,
-Oident =>	17,
-Ocon =>	17,
-Ovar =>	17,
-Ofun =>	17,
-Olfun =>	17,
-Oadd =>	12|Binary|Assoc|Preunary,
-Osub =>	12|Binary|Preunary,
-Omul =>	13|Binary|Assoc,
-Odiv =>	13|Binary,
-Omod =>	13|Binary,
-Oidiv =>	13|Binary,
-Oexp =>	14|Binary|Rassoc,
-Oand =>	8|Binary|Assoc,
-Oor =>	6|Binary|Assoc,
-Oxor =>	7|Binary|Assoc,
-Olsh =>	11|Binary,
-Orsh =>	11|Binary,
-Oadde =>	2|Binary|Rassoc,
-Osube =>	2|Binary|Rassoc,
-Omule =>	2|Binary|Rassoc,
-Odive =>	2|Binary|Rassoc,
-Omode =>	2|Binary|Rassoc,
-Oidive =>	2|Binary|Rassoc,
-Oexpe =>	2|Binary|Rassoc,
-Oande =>	2|Binary|Rassoc,
-Oore =>	2|Binary|Rassoc,
-Oxore =>	2|Binary|Rassoc,
-Olshe =>	2|Binary|Rassoc,
-Orshe =>	2|Binary|Rassoc,
-Oeq =>	9|Binary,
-One =>	9|Binary,
-Ogt =>	10|Binary,
-Olt =>	10|Binary,
-Oge =>	10|Binary,
-Ole =>	10|Binary,
-Oinc =>	15|Rassoc|Preunary|Postunary,
-Opreinc =>	15|Rassoc|Preunary,
-Opostinc =>	15|Rassoc|Postunary,
-Odec =>	15|Rassoc|Preunary|Postunary,
-Opredec =>	15|Rassoc|Preunary,
-Opostdec =>	15|Rassoc|Postunary,
-Oandand =>	5|Binary|Assoc,
-Ooror =>	4|Binary|Assoc,
-Oexc =>	15|Rassoc|Preunary|Postunary,
-Onot =>	15|Rassoc|Preunary,
-Ofact =>	15|Rassoc|Postunary,
-Ocom =>	15|Rassoc|Preunary,
-Oas =>	2|Binary|Rassoc,
-Odas =>	2|Binary|Rassoc,
-Oplus =>	15|Rassoc|Preunary,
-Ominus =>	15|Rassoc|Preunary,
-Oinv =>	15|Rassoc|Postunary,
-Ocomma =>	1|Binary|Assoc,
-Oscomma =>	1|Binary|Assoc,
-Oquest =>	3|Binary|Rassoc,
-Ocolon =>	3|Binary|Rassoc,
-Onand =>	8|Binary,
-Onor =>	6|Binary,
-Oimp =>	9|Binary,
-Oimpby =>	9|Binary,
-Oiff =>	10|Binary|Assoc,
-Olbr =>	16,
-Orbr =>	16,
-Onothing =>	0,
+Oeof => 0,
+Ostring => 17,
+Onum => 17,
+Oident => 17,
+Ocon => 17,
+Ovar => 17,
+Ofun => 17,
+Olfun => 17,
+Oadd => 12|Binary|Assoc|Preunary,
+Osub => 12|Binary|Preunary,
+Omul => 13|Binary|Assoc,
+Odiv => 13|Binary,
+Omod => 13|Binary,
+Oidiv => 13|Binary,
+Oexp => 14|Binary|Rassoc,
+Oand => 8|Binary|Assoc,
+Oor => 6|Binary|Assoc,
+Oxor => 7|Binary|Assoc,
+Olsh => 11|Binary,
+Orsh => 11|Binary,
+Oadde => 2|Binary|Rassoc,
+Osube => 2|Binary|Rassoc,
+Omule => 2|Binary|Rassoc,
+Odive => 2|Binary|Rassoc,
+Omode => 2|Binary|Rassoc,
+Oidive => 2|Binary|Rassoc,
+Oexpe => 2|Binary|Rassoc,
+Oande => 2|Binary|Rassoc,
+Oore => 2|Binary|Rassoc,
+Oxore => 2|Binary|Rassoc,
+Olshe => 2|Binary|Rassoc,
+Orshe => 2|Binary|Rassoc,
+Oeq => 9|Binary,
+One => 9|Binary,
+Ogt => 10|Binary,
+Olt => 10|Binary,
+Oge => 10|Binary,
+Ole => 10|Binary,
+Oinc => 15|Rassoc|Preunary|Postunary,
+Opreinc => 15|Rassoc|Preunary,
+Opostinc => 15|Rassoc|Postunary,
+Odec => 15|Rassoc|Preunary|Postunary,
+Opredec => 15|Rassoc|Preunary,
+Opostdec => 15|Rassoc|Postunary,
+Oandand => 5|Binary|Assoc,
+Ooror => 4|Binary|Assoc,
+Oexc => 15|Rassoc|Preunary|Postunary,
+Onot => 15|Rassoc|Preunary,
+Ofact => 15|Rassoc|Postunary,
+Ocom => 15|Rassoc|Preunary,
+Oas => 2|Binary|Rassoc,
+Odas => 2|Binary|Rassoc,
+Oplus => 15|Rassoc|Preunary,
+Ominus => 15|Rassoc|Preunary,
+Oinv => 15|Rassoc|Postunary,
+Ocomma => 1|Binary|Assoc,
+Oscomma => 1|Binary|Assoc,
+Oquest => 3|Binary|Rassoc,
+Ocolon => 3|Binary|Rassoc,
+Onand => 8|Binary,
+Onor => 6|Binary,
+Oimp => 9|Binary,
+Oimpby => 9|Binary,
+Oiff => 10|Binary|Assoc,
+Olbr => 16,
+Orbr => 16,
+Onothing => 0,
 };
 Deg: con "degrees";
 Base: con "printbase";
@@ -302,36 +302,36 @@ Limit: con "solvelimit";
 Step: con "solvestep";
 keyw := array[] of
 {
-("include",	Oinclude),
-("if",	Oif),
-("else",	Oelse),
-("for",	Ofor),
-("while",	Owhile),
-("do",	Odo),
-("break",	Obreak),
-("continue",	Ocont),
-("exit",	Oexit),
-("return",	Oret),
-("print",	Oprint),
-("read",	Oread),
-("fn",	Ofn),
-("",	0),
+("include", Oinclude),
+("if", Oif),
+("else", Oelse),
+("for", Ofor),
+("while", Owhile),
+("do", Odo),
+("break", Obreak),
+("continue", Ocont),
+("exit", Oexit),
+("return", Oret),
+("print", Oprint),
+("read", Oread),
+("fn", Ofn),
+("", 0),
 };
 conw := array[] of
 {
-("π",	Pi),
+("π", Pi),
 ("Pi", Pi),
-("e",	Euler),
-("γ",	Gamma),
-("Gamma",	Gamma),
-("φ",	Phi),
-("Phi",	Phi),
-("∞",	Infinity),
-("Infinity",	Infinity),
-("NaN",	Nan),
-("Nan",	Nan),
-("nan",	Nan),
-("",	0.0),
+("e", Euler),
+("γ", Gamma),
+("Gamma", Gamma),
+("φ", Phi),
+("Phi", Phi),
+("∞", Infinity),
+("Infinity", Infinity),
+("NaN", Nan),
+("Nan", Nan),
+("nan", Nan),
+("", 0.0),
 };
 varw := array[] of
 {
@@ -343,52 +343,52 @@ varw := array[] of
 };
 funw := array[] of
 {
-("log",	Olog,	1),
-("ln",		Olog,	1),
-("log10",	Olog10,	1),
-("log2",	Olog2,	1),
-("logb",	Ologb,	2),
-("exp",	Oexpf,	1),
-("pow",	Opow,	2),
-("sqrt",	Osqrt,	1),
-("cbrt",	Ocbrt,	1),
-("floor",	Ofloor,	1),
-("ceiling",	Oceil,	1),
-("min",	Omin,	2),
-("max",	Omax,	2),
-("abs",	Oabs,	1),
-("Γ",	Ogamma,	1),
-("gamma",	Ogamma,	1),
-("sign",	Osign,	1),
-("int",	Oint,	1),
-("frac",	Ofrac,	1),
-("round",	Oround,	1),
-("erf",	Oerf,	1),
-("atan2",	Oatan2,	2),
-("sin",	Osin,	1),
-("cos",	Ocos,	1),
-("tan",	Otan,	1),
-("asin",	Oasin,	1),
-("acos",	Oacos,	1),
-("atan",	Oatan,	1),
-("sinh",	Osinh,	1),
-("cosh",	Ocosh,	1),
-("tanh",	Otanh,	1),
-("asinh",	Oasinh,	1),
-("acosh",	Oacosh,	1),
-("atanh",	Oatanh,	1),
-("rand",	Orand,	0),
-("Σ",	Osigma,	3),
-("sigma",	Osigma,	3),
-("Π",	Opi,	3),
-("pi",	Opi,	3),
-("cfrac", Ocfrac,	3),
-("Δ",	Oderiv,	2),
-("differential",	Oderiv,	2),
-("∫",	Ointeg,	3),
-("integral",	Ointeg,	3),
-("solve",	Osolve,	1),
-("",	0,	0),
+("log", Olog, 1),
+("ln", Olog, 1),
+("log10", Olog10, 1),
+("log2", Olog2, 1),
+("logb", Ologb, 2),
+("exp", Oexpf, 1),
+("pow", Opow, 2),
+("sqrt", Osqrt, 1),
+("cbrt", Ocbrt, 1),
+("floor", Ofloor, 1),
+("ceiling", Oceil, 1),
+("min", Omin, 2),
+("max", Omax, 2),
+("abs", Oabs, 1),
+("Γ", Ogamma, 1),
+("gamma", Ogamma, 1),
+("sign", Osign, 1),
+("int", Oint, 1),
+("frac", Ofrac, 1),
+("round", Oround, 1),
+("erf", Oerf, 1),
+("atan2", Oatan2, 2),
+("sin", Osin, 1),
+("cos", Ocos, 1),
+("tan", Otan, 1),
+("asin", Oasin, 1),
+("acos", Oacos, 1),
+("atan", Oatan, 1),
+("sinh", Osinh, 1),
+("cosh", Ocosh, 1),
+("tanh", Otanh, 1),
+("asinh", Oasinh, 1),
+("acosh", Oacosh, 1),
+("atanh", Oatanh, 1),
+("rand", Orand, 0),
+("Σ", Osigma, 3),
+("sigma", Osigma, 3),
+("Π", Opi, 3),
+("pi", Opi, 3),
+("cfrac", Ocfrac, 3),
+("Δ", Oderiv, 2),
+("differential", Oderiv, 2),
+("∫", Ointeg, 3),
+("integral", Ointeg, 3),
+("solve", Osolve, 1),
+("", 0, 0),
 };
 stdin: int;
 bin: ref Iobuf;
@@ -670,7 +670,7 @@ lexid(): int
 sp := "";
 for(;;){
 c := getc();
-if(c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c >= '0' && c <= '9' || c >= 'α' && c <=  'ω' || c >= 'Α' && c <= 'Ω' || c == '_')
+if(c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c >= '0' && c <= '9' || c >= 'α' && c <= 'ω' || c >= 'Α' && c <= 'Ω' || c == '_')
 sp[len sp] = c;
 else{
 ungetc(c);
@@ -2102,7 +2102,7 @@ lv = v;
 d.val = v;
 v = eval(e);
 # if(v < v1 || v > v2)
-#	return (0, 0.0);
+# return (0, 0.0);
 if(maths->isnan(v))
 return (0, 0.0);
 if(its > 100 || fabs(v-lv) < Eps)
@@ -2118,7 +2118,7 @@ solve(n: ref Node): real
 d: ref Dec;
 if(n == nil)
 return Nan;
-if(n.op == Ocomma){	# solve(..., var)
+if(n.op == Ocomma){ # solve(..., var)
 var(n.right);
 d = n.right.dec;
 n = n.left;
@@ -2149,7 +2149,7 @@ for(v := -lim; v <= lim; v += step){
 d.val = v;
 v1 = v2;
 v2 = eval(n);
-if(maths->isnan(v2))	# v == nan, v <= nan, v >= nan all give 1
+if(maths->isnan(v2)) # v == nan, v <= nan, v >= nan all give 1
 continue;
 if(fabs(v2) < Eps){
 if(v >= -lim && v <= lim && v != rval){
@@ -2370,7 +2370,7 @@ if(rspace[p])
 sys->print(" ");
 pnode(n.right, op, Right);
 }
-else if(op == Oinv){	# cannot print postunary -1
+else if(op == Oinv){ # cannot print postunary -1
 sys->print("%s", opstring(op));
 pnode(n.left, Odiv, Right);
 }

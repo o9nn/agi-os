@@ -5,267 +5,267 @@
 #include "fns.h"
 #include "io.h"
 typedef struct QLock { int r; } QLock;
-#define qlock(i)	while(0)
-#define qunlock(i)	while(0)
-#define iallocb		allocb
-#define iprint		print
-#define mallocalign(n, a, o, s)	ialloc((n), (a))
+#define qlock(i) while(0)
+#define qunlock(i) while(0)
+#define iallocb allocb
+#define iprint print
+#define mallocalign(n, a, o, s) ialloc((n), (a))
 #include "etherif.h"
 #include "ethermii.h"
 enum {
-Idr0		= 0x00,
-Mar0		= 0x08,
-Dtccr		= 0x10,
-Tnpds		= 0x20,
-Thpds		= 0x28,
-Flash		= 0x30,
-Erbcr		= 0x34,
-Ersr		= 0x36,
-Cr		= 0x37,
-Tppoll		= 0x38,
-Imr		= 0x3C,
-Isr		= 0x3E,
-Tcr		= 0x40,
-Rcr		= 0x44,
-Tctr		= 0x48,
-Mpc		= 0x4C,
-Cr9346		= 0x50,
-Config0		= 0x51,
-Config1		= 0x52,
-Config2		= 0x53,
-Config3		= 0x54,
-Config4		= 0x55,
-Config5		= 0x56,
-Timerint	= 0x58,
-Mulint		= 0x5C,
-Phyar		= 0x60,
-Tbicsr0		= 0x64,
-Tbianar		= 0x68,
-Tbilpar		= 0x6A,
-Phystatus	= 0x6C,
-Rms		= 0xDA,
-Cplusc		= 0xE0,
-Rdsar		= 0xE4,
-Mtps		= 0xEC,
+Idr0 = 0x00,
+Mar0 = 0x08,
+Dtccr = 0x10,
+Tnpds = 0x20,
+Thpds = 0x28,
+Flash = 0x30,
+Erbcr = 0x34,
+Ersr = 0x36,
+Cr = 0x37,
+Tppoll = 0x38,
+Imr = 0x3C,
+Isr = 0x3E,
+Tcr = 0x40,
+Rcr = 0x44,
+Tctr = 0x48,
+Mpc = 0x4C,
+Cr9346 = 0x50,
+Config0 = 0x51,
+Config1 = 0x52,
+Config2 = 0x53,
+Config3 = 0x54,
+Config4 = 0x55,
+Config5 = 0x56,
+Timerint = 0x58,
+Mulint = 0x5C,
+Phyar = 0x60,
+Tbicsr0 = 0x64,
+Tbianar = 0x68,
+Tbilpar = 0x6A,
+Phystatus = 0x6C,
+Rms = 0xDA,
+Cplusc = 0xE0,
+Rdsar = 0xE4,
+Mtps = 0xEC,
 };
 enum {
-Cmd		= 0x00000008,
+Cmd = 0x00000008,
 };
 enum {
-Te		= 0x04,
-Re		= 0x08,
-Rst		= 0x10,
+Te = 0x04,
+Re = 0x08,
+Rst = 0x10,
 };
 enum {
-Fswint		= 0x01,
-Npq		= 0x40,
-Hpq		= 0x80,
+Fswint = 0x01,
+Npq = 0x40,
+Hpq = 0x80,
 };
 enum {
-Rok		= 0x0001,
-Rer		= 0x0002,
-Tok		= 0x0004,
-Ter		= 0x0008,
-Rdu		= 0x0010,
-Punlc		= 0x0020,
-Fovw		= 0x0040,
-Tdu		= 0x0080,
-Swint		= 0x0100,
-Timeout		= 0x4000,
-Serr		= 0x8000,
+Rok = 0x0001,
+Rer = 0x0002,
+Tok = 0x0004,
+Ter = 0x0008,
+Rdu = 0x0010,
+Punlc = 0x0020,
+Fovw = 0x0040,
+Tdu = 0x0080,
+Swint = 0x0100,
+Timeout = 0x4000,
+Serr = 0x8000,
 };
 enum {
-MtxdmaSHIFT	= 8,
-MtxdmaMASK	= 0x00000700,
-Mtxdmaunlimited	= 0x00000700,
-Acrc		= 0x00010000,
-Lbk0		= 0x00020000,
-Lbk1		= 0x00040000,
-Ifg2		= 0x00080000,
-HwveridSHIFT	= 23,
-HwveridMASK	= 0x7C800000,
-Macv01		= 0x00000000,
-Macv02		= 0x00800000,
-Macv03		= 0x04000000,
-Macv04		= 0x10000000,
-Macv05		= 0x18000000,
-Macv11		= 0x30000000,
-Macv12		= 0x38000000,
-Macv13		= 0x34000000,
-Macv14		= 0x30800000,
-Macv15		= 0x38800000,
-Ifg0		= 0x01000000,
-Ifg1		= 0x02000000,
+MtxdmaSHIFT = 8,
+MtxdmaMASK = 0x00000700,
+Mtxdmaunlimited = 0x00000700,
+Acrc = 0x00010000,
+Lbk0 = 0x00020000,
+Lbk1 = 0x00040000,
+Ifg2 = 0x00080000,
+HwveridSHIFT = 23,
+HwveridMASK = 0x7C800000,
+Macv01 = 0x00000000,
+Macv02 = 0x00800000,
+Macv03 = 0x04000000,
+Macv04 = 0x10000000,
+Macv05 = 0x18000000,
+Macv11 = 0x30000000,
+Macv12 = 0x38000000,
+Macv13 = 0x34000000,
+Macv14 = 0x30800000,
+Macv15 = 0x38800000,
+Ifg0 = 0x01000000,
+Ifg1 = 0x02000000,
 };
 enum {
-Aap		= 0x00000001,
-Apm		= 0x00000002,
-Am		= 0x00000004,
-Ab		= 0x00000008,
-Ar		= 0x00000010,
-Aer		= 0x00000020,
-Sel9356		= 0x00000040,
-MrxdmaSHIFT	= 8,
-MrxdmaMASK	= 0x00000700,
-Mrxdmaunlimited	= 0x00000700,
-RxfthSHIFT	= 13,
-RxfthMASK	= 0x0000E000,
-Rxfth256	= 0x00008000,
-Rxfthnone	= 0x0000E000,
-Rer8		= 0x00010000,
-MulERINT	= 0x01000000,
+Aap = 0x00000001,
+Apm = 0x00000002,
+Am = 0x00000004,
+Ab = 0x00000008,
+Ar = 0x00000010,
+Aer = 0x00000020,
+Sel9356 = 0x00000040,
+MrxdmaSHIFT = 8,
+MrxdmaMASK = 0x00000700,
+Mrxdmaunlimited = 0x00000700,
+RxfthSHIFT = 13,
+RxfthMASK = 0x0000E000,
+Rxfth256 = 0x00008000,
+Rxfthnone = 0x0000E000,
+Rer8 = 0x00010000,
+MulERINT = 0x01000000,
 };
 enum {
-Eedo		= 0x01,
-Eedi		= 0x02,
-Eesk		= 0x04,
-Eecs		= 0x08,
-Eem0		= 0x40,
-Eem1		= 0x80,
+Eedo = 0x01,
+Eedi = 0x02,
+Eesk = 0x04,
+Eecs = 0x08,
+Eem0 = 0x40,
+Eem1 = 0x80,
 };
 enum {
-DataMASK	= 0x0000FFFF,
-DataSHIFT	= 0,
-RegaddrMASK	= 0x001F0000,
-RegaddrSHIFT	= 16,
-Flag		= 0x80000000,
+DataMASK = 0x0000FFFF,
+DataSHIFT = 0,
+RegaddrMASK = 0x001F0000,
+RegaddrSHIFT = 16,
+Flag = 0x80000000,
 };
 enum {
-Fd		= 0x01,
-Linksts		= 0x02,
-Speed10		= 0x04,
-Speed100	= 0x08,
-Speed1000	= 0x10,
-Rxflow		= 0x20,
-Txflow		= 0x40,
-Entbi		= 0x80,
+Fd = 0x01,
+Linksts = 0x02,
+Speed10 = 0x04,
+Speed100 = 0x08,
+Speed1000 = 0x10,
+Rxflow = 0x20,
+Txflow = 0x40,
+Entbi = 0x80,
 };
 enum {
-Mulrw		= 0x0008,
-Dac		= 0x0010,
-Rxchksum	= 0x0020,
-Rxvlan		= 0x0040,
-Endian		= 0x0200,
+Mulrw = 0x0008,
+Dac = 0x0010,
+Rxchksum = 0x0020,
+Rxvlan = 0x0040,
+Endian = 0x0200,
 };
 typedef struct D D;
 struct D {
-u32int	control;
-u32int	vlan;
-u32int	addrlo;
-u32int	addrhi;
+u32int control;
+u32int vlan;
+u32int addrlo;
+u32int addrhi;
 };
 enum {
-TxflMASK	= 0x0000FFFF,
-TxflSHIFT	= 0,
-Tcps		= 0x00010000,
-Udpcs		= 0x00020000,
-Ipcs		= 0x00040000,
-Lgsen		= 0x08000000,
+TxflMASK = 0x0000FFFF,
+TxflSHIFT = 0,
+Tcps = 0x00010000,
+Udpcs = 0x00020000,
+Ipcs = 0x00040000,
+Lgsen = 0x08000000,
 };
 enum {
-RxflMASK	= 0x00003FFF,
-RxflSHIFT	= 0,
-Tcpf		= 0x00004000,
-Udpf		= 0x00008000,
-Ipf		= 0x00010000,
-Pid0		= 0x00020000,
-Pid1		= 0x00040000,
-Crce		= 0x00080000,
-Runt		= 0x00100000,
-Res		= 0x00200000,
-Rwt		= 0x00400000,
-Fovf		= 0x00800000,
-Bovf		= 0x01000000,
-Bar		= 0x02000000,
-Pam		= 0x04000000,
-Mar		= 0x08000000,
+RxflMASK = 0x00003FFF,
+RxflSHIFT = 0,
+Tcpf = 0x00004000,
+Udpf = 0x00008000,
+Ipf = 0x00010000,
+Pid0 = 0x00020000,
+Pid1 = 0x00040000,
+Crce = 0x00080000,
+Runt = 0x00100000,
+Res = 0x00200000,
+Rwt = 0x00400000,
+Fovf = 0x00800000,
+Bovf = 0x01000000,
+Bar = 0x02000000,
+Pam = 0x04000000,
+Mar = 0x08000000,
 };
 enum {
-Ls		= 0x10000000,
-Fs		= 0x20000000,
-Eor		= 0x40000000,
-Own		= 0x80000000,
+Ls = 0x10000000,
+Fs = 0x20000000,
+Eor = 0x40000000,
+Own = 0x80000000,
 };
 enum {
-Ntd		= 8,
-Nrd		= 32,
-Mps		= ROUNDUP(ETHERMAXTU+4, 128),
+Ntd = 8,
+Nrd = 32,
+Mps = ROUNDUP(ETHERMAXTU+4, 128),
 };
 typedef struct Dtcc Dtcc;
 struct Dtcc {
-u64int	txok;
-u64int	rxok;
-u64int	txer;
-u32int	rxer;
-u16int	misspkt;
-u16int	fae;
-u32int	tx1col;
-u32int	txmcol;
-u64int	rxokph;
-u64int	rxokbrd;
-u32int	rxokmu;
-u16int	txabt;
-u16int	txundrn;
+u64int txok;
+u64int rxok;
+u64int txer;
+u32int rxer;
+u16int misspkt;
+u16int fae;
+u32int tx1col;
+u32int txmcol;
+u64int rxokph;
+u64int rxokbrd;
+u32int rxokmu;
+u16int txabt;
+u16int txundrn;
 };
 enum {
-Rtl8100e	= (0x8136<<16)|0x10EC,
-Rtl8169c		= (0x0116<<16)|0x16EC,
-Rtl8169sc	= (0x8167<<16)|0x10EC,
-Rtl8168b	= (0x8168<<16)|0x10EC,
-Rtl8169		= (0x8169<<16)|0x10EC,
+Rtl8100e = (0x8136<<16)|0x10EC,
+Rtl8169c = (0x0116<<16)|0x16EC,
+Rtl8169sc = (0x8167<<16)|0x10EC,
+Rtl8168b = (0x8168<<16)|0x10EC,
+Rtl8169 = (0x8169<<16)|0x10EC,
 };
 typedef struct Ctlr Ctlr;
 typedef struct Ctlr {
-int	port;
-Pcidev*	pcidev;
-Ctlr*	next;
-int	active;
-void*	nic;
-QLock	alock;
-Lock	ilock;
-int	init;
-int	pciv;
-int	macv;
-int	phyv;
-Mii*	mii;
-Lock	tlock;
-D*	td;
-Block**	tb;
-int	ntd;
-int	tdh;
-int	tdt;
-int	ntdfree;
-int	ntq;
-int	mtps;
-Lock	rlock;
-D*	rd;
-void**	rb;
-int	nrd;
-int	rdh;
-int	rdt;
-int	nrdfree;
-int	rcr;
-QLock	slock;
-Dtcc*	dtcc;
-uint	txdu;
-uint	tcpf;
-uint	udpf;
-uint	ipf;
-uint	fovf;
-uint	ierrs;
-uint	rer;
-uint	rdu;
-uint	punlc;
-uint	fovw;
+int port;
+Pcidev* pcidev;
+Ctlr* next;
+int active;
+void* nic;
+QLock alock;
+Lock ilock;
+int init;
+int pciv;
+int macv;
+int phyv;
+Mii* mii;
+Lock tlock;
+D* td;
+Block** tb;
+int ntd;
+int tdh;
+int tdt;
+int ntdfree;
+int ntq;
+int mtps;
+Lock rlock;
+D* rd;
+void** rb;
+int nrd;
+int rdh;
+int rdt;
+int nrdfree;
+int rcr;
+QLock slock;
+Dtcc* dtcc;
+uint txdu;
+uint tcpf;
+uint udpf;
+uint ipf;
+uint fovf;
+uint ierrs;
+uint rer;
+uint rdu;
+uint punlc;
+uint fovw;
 } Ctlr;
 static Ctlr* rtl8169ctlrhead;
 static Ctlr* rtl8169ctlrtail;
-#define csr8r(c, r)	(inb((c)->port+(r)))
-#define csr16r(c, r)	(ins((c)->port+(r)))
-#define csr32r(c, r)	(inl((c)->port+(r)))
-#define csr8w(c, r, b)	(outb((c)->port+(r), (int)(b)))
-#define csr16w(c, r, w)	(outs((c)->port+(r), (ushort)(w)))
-#define csr32w(c, r, l)	(outl((c)->port+(r), (ulong)(l)))
+#define csr8r(c, r) (inb((c)->port+(r)))
+#define csr16r(c, r) (ins((c)->port+(r)))
+#define csr32r(c, r) (inl((c)->port+(r)))
+#define csr8w(c, r, b) (outb((c)->port+(r), (int)(b)))
+#define csr16w(c, r, w) (outs((c)->port+(r), (ushort)(w)))
+#define csr32w(c, r, l) (outl((c)->port+(r), (ulong)(l)))
 static int
 rtl8169miimir(Mii* mii, int pa, int ra)
 {

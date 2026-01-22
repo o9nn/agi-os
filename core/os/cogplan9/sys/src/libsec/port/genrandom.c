@@ -2,10 +2,10 @@
 #include <mp.h>
 #include <libsec.h>
 typedef struct State{
-QLock		lock;
-int		seeded;
-uvlong		seed;
-DES3state	des3;
+QLock lock;
+int seeded;
+uvlong seed;
+DES3state des3;
 } State;
 static State x917state;
 static void

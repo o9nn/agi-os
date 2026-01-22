@@ -22,40 +22,40 @@ FLOAT8 xrpow[576] )
 {
 FLOAT8 tmp, sum = 0;
 int i;
-cod_info->part2_3_length      = 0;
-cod_info->big_values          = 0;
-cod_info->count1              = 0;
-cod_info->global_gain         = 210;
-cod_info->scalefac_compress   = 0;
-cod_info->table_select [0]    = 0;
-cod_info->table_select [1]    = 0;
-cod_info->table_select [2]    = 0;
-cod_info->subblock_gain[0]    = 0;
-cod_info->subblock_gain[1]    = 0;
-cod_info->subblock_gain[2]    = 0;
-cod_info->region0_count       = 0;
-cod_info->region1_count       = 0;
-cod_info->preflag             = 0;
-cod_info->scalefac_scale      = 0;
-cod_info->count1table_select  = 0;
-cod_info->part2_length        = 0;
+cod_info->part2_3_length = 0;
+cod_info->big_values = 0;
+cod_info->count1 = 0;
+cod_info->global_gain = 210;
+cod_info->scalefac_compress = 0;
+cod_info->table_select [0] = 0;
+cod_info->table_select [1] = 0;
+cod_info->table_select [2] = 0;
+cod_info->subblock_gain[0] = 0;
+cod_info->subblock_gain[1] = 0;
+cod_info->subblock_gain[2] = 0;
+cod_info->region0_count = 0;
+cod_info->region1_count = 0;
+cod_info->preflag = 0;
+cod_info->scalefac_scale = 0;
+cod_info->count1table_select = 0;
+cod_info->part2_length = 0;
 if (cod_info->block_type == SHORT_TYPE) {
-cod_info->sfb_lmax        = 0;
-cod_info->sfb_smin        = 0;
+cod_info->sfb_lmax = 0;
+cod_info->sfb_smin = 0;
 if (cod_info->mixed_block_flag) {
-cod_info->sfb_lmax    = is_mpeg1 ? 8 : 6;
-cod_info->sfb_smin    = 3;
+cod_info->sfb_lmax = is_mpeg1 ? 8 : 6;
+cod_info->sfb_smin = 3;
 }
 } else {
-cod_info->sfb_lmax        = SBPSY_l;
-cod_info->sfb_smin        = SBPSY_s;
+cod_info->sfb_lmax = SBPSY_l;
+cod_info->sfb_smin = SBPSY_s;
 }
-cod_info->count1bits          = 0;
+cod_info->count1bits = 0;
 cod_info->sfb_partition_table = nr_of_sfb_block[0][0];
-cod_info->slen[0]             = 0;
-cod_info->slen[1]             = 0;
-cod_info->slen[2]             = 0;
-cod_info->slen[3]             = 0;
+cod_info->slen[0] = 0;
+cod_info->slen[1] = 0;
+cod_info->slen[2] = 0;
+cod_info->slen[3] = 0;
 memset(scalefac, 0, sizeof(III_scalefac_t));
 for (i = 0; i < 576; ++i) {
 tmp = fabs (xr[i]);
@@ -73,15 +73,15 @@ int
 bin_search_StepSize(
 lame_internal_flags * const gfc,
 gr_info * const cod_info,
-const int             desired_rate,
-const int             start,
-const FLOAT8          xrpow [576],
-int             l3enc [576] )
+const int desired_rate,
+const int start,
+const FLOAT8 xrpow [576],
+int l3enc [576] )
 {
 int nBits;
 int CurrentStep;
 int flag_GoneOver = 0;
-int StepSize      = start;
+int StepSize = start;
 binsearchDirection_t Direction = BINSEARCH_NONE;
 assert(gfc->CurrentStep);
 CurrentStep = gfc->CurrentStep;
@@ -93,7 +93,7 @@ if (flag_GoneOver) CurrentStep /= 2;
 if (nBits > desired_rate) {
 if (Direction == BINSEARCH_DOWN && !flag_GoneOver) {
 flag_GoneOver = 1;
-CurrentStep  /= 2;
+CurrentStep /= 2;
 }
 Direction = BINSEARCH_UP;
 StepSize += CurrentStep;
@@ -102,7 +102,7 @@ if (StepSize > 255) break;
 else if (nBits < desired_rate) {
 if (Direction == BINSEARCH_UP && !flag_GoneOver) {
 flag_GoneOver = 1;
-CurrentStep  /= 2;
+CurrentStep /= 2;
 }
 Direction = BINSEARCH_DOWN;
 StepSize -= CurrentStep;
@@ -118,9 +118,9 @@ int
 inner_loop(
 lame_internal_flags * const gfc,
 gr_info * const cod_info,
-const int             max_bits,
-const FLOAT8          xrpow [576],
-int             l3enc [576] )
+const int max_bits,
+const FLOAT8 xrpow [576],
+int l3enc [576] )
 {
 int bits;
 assert(max_bits >= 0);
@@ -134,7 +134,7 @@ return bits;
 inline
 static int
 loop_break(
-const gr_info        * const cod_info,
+const gr_info * const cod_info,
 const III_scalefac_t * const scalefac )
 {
 unsigned int i, sfb;
@@ -150,7 +150,7 @@ return 1;
 inline
 static int
 quant_compare(
-const int                       experimentalX,
+const int experimentalX,
 const calc_noise_result * const best,
 const calc_noise_result * const calc )
 {
@@ -158,12 +158,12 @@ int better;
 switch (experimentalX) {
 default:
 case 0:
-better = calc->over_count  < best->over_count
-||  ( calc->over_count == best->over_count  &&
-calc->over_noise  < best->over_noise )
-||  ( calc->over_count == best->over_count  &&
-calc->over_noise == best->over_noise  &&
-calc->tot_noise   < best->tot_noise  );
+better = calc->over_count < best->over_count
+|| ( calc->over_count == best->over_count &&
+calc->over_noise < best->over_noise )
+|| ( calc->over_count == best->over_count &&
+calc->over_noise == best->over_noise &&
+calc->tot_noise < best->tot_noise );
 break;
 case 1:
 better = calc->max_noise < best->max_noise;
@@ -172,48 +172,48 @@ case 2:
 better = calc->tot_noise < best->tot_noise;
 break;
 case 3:
-better = calc->tot_noise < best->tot_noise  &&
+better = calc->tot_noise < best->tot_noise &&
 calc->max_noise < best->max_noise+2;
 break;
 case 4:
-better = ( calc->max_noise <= 0  &&
-best->max_noise >  2 )
-||  ( calc->max_noise <= 0  &&
-best->max_noise <  0  &&
-best->max_noise >  calc->max_noise-2  &&
-calc->tot_noise <  best->tot_noise )
-||  ( calc->max_noise <= 0  &&
-best->max_noise >  0  &&
-best->max_noise >  calc->max_noise-2  &&
-calc->tot_noise <  best->tot_noise+best->over_noise )
-||  ( calc->max_noise >  0  &&
-best->max_noise > -0.5  &&
-best->max_noise >  calc->max_noise-1  &&
+better = ( calc->max_noise <= 0 &&
+best->max_noise > 2 )
+|| ( calc->max_noise <= 0 &&
+best->max_noise < 0 &&
+best->max_noise > calc->max_noise-2 &&
+calc->tot_noise < best->tot_noise )
+|| ( calc->max_noise <= 0 &&
+best->max_noise > 0 &&
+best->max_noise > calc->max_noise-2 &&
+calc->tot_noise < best->tot_noise+best->over_noise )
+|| ( calc->max_noise > 0 &&
+best->max_noise > -0.5 &&
+best->max_noise > calc->max_noise-1 &&
 calc->tot_noise+calc->over_noise < best->tot_noise+best->over_noise )
-||  ( calc->max_noise >  0  &&
-best->max_noise > -1  &&
-best->max_noise >  calc->max_noise-1.5  &&
+|| ( calc->max_noise > 0 &&
+best->max_noise > -1 &&
+best->max_noise > calc->max_noise-1.5 &&
 calc->tot_noise+calc->over_noise+calc->over_noise < best->tot_noise+best->over_noise+best->over_noise );
 break;
 case 5:
-better =   calc->over_noise  < best->over_noise
-||  ( calc->over_noise == best->over_noise  &&
-calc->tot_noise   < best->tot_noise );
+better = calc->over_noise < best->over_noise
+|| ( calc->over_noise == best->over_noise &&
+calc->tot_noise < best->tot_noise );
 break;
 case 6:
-better =   calc->over_noise  < best->over_noise
-||  ( calc->over_noise == best->over_noise  &&
-( calc->max_noise   < best->max_noise
-||  ( calc->max_noise  == best->max_noise  &&
-calc->tot_noise  <= best->tot_noise )
+better = calc->over_noise < best->over_noise
+|| ( calc->over_noise == best->over_noise &&
+( calc->max_noise < best->max_noise
+|| ( calc->max_noise == best->max_noise &&
+calc->tot_noise <= best->tot_noise )
 ));
 break;
 case 7:
-better =   calc->over_count < best->over_count
-||  calc->over_noise < best->over_noise;
+better = calc->over_count < best->over_count
+|| calc->over_noise < best->over_noise;
 break;
 case 8:
-better =   calc->klemm_noise < best->klemm_noise;
+better = calc->klemm_noise < best->klemm_noise;
 break;
 }
 return better;
@@ -221,7 +221,7 @@ return better;
 static void
 amp_scalefac_bands(
 lame_global_flags *gfp,
-const gr_info  *const cod_info,
+const gr_info *const cod_info,
 III_scalefac_t *const scalefac,
 III_psy_xmin *distort,
 FLOAT8 xrpow[576] )
@@ -264,8 +264,8 @@ break;
 }
 for (sfb = 0; sfb < cod_info->sfb_lmax; sfb++ ) {
 start = gfc->scalefac_band.l[sfb];
-end   = gfc->scalefac_band.l[sfb+1];
-if (distort->l[sfb]>=trigger  ) {
+end = gfc->scalefac_band.l[sfb+1];
+if (distort->l[sfb]>=trigger ) {
 scalefac->l[sfb]++;
 for ( l = start; l < end; l++ )
 xrpow[l] *= ifqstep34;
@@ -274,7 +274,7 @@ if (gfc->noise_shaping_amp==2) goto done;
 }
 for ( j=0,sfb = cod_info->sfb_smin; sfb < SBPSY_s; sfb++ ) {
 start = gfc->scalefac_band.s[sfb];
-end   = gfc->scalefac_band.s[sfb+1];
+end = gfc->scalefac_band.s[sfb+1];
 for ( i = 0; i < 3; i++ ) {
 int j2 = j;
 if ( distort->s[sfb][i]>=trigger) {
@@ -291,10 +291,10 @@ return;
 }
 static void
 inc_scalefac_scale (
-const lame_internal_flags        * const gfc,
-gr_info        * const cod_info,
+const lame_internal_flags * const gfc,
+gr_info * const cod_info,
 III_scalefac_t * const scalefac,
-FLOAT8                 xrpow[576] )
+FLOAT8 xrpow[576] )
 {
 int start, end, l,i,j;
 int sfb;
@@ -304,16 +304,16 @@ int s = scalefac->l[sfb] + (cod_info->preflag ? pretab[sfb] : 0);
 if (s & 1) {
 s++;
 start = gfc->scalefac_band.l[sfb];
-end   = gfc->scalefac_band.l[sfb+1];
+end = gfc->scalefac_band.l[sfb+1];
 for (l = start; l < end; l++)
 xrpow[l] *= ifqstep34;
 }
-scalefac->l[sfb]  = s >> 1;
+scalefac->l[sfb] = s >> 1;
 cod_info->preflag = 0;
 }
 for (j = 0, sfb = cod_info->sfb_smin; sfb < SBPSY_s; sfb++) {
 start = gfc->scalefac_band.s[sfb];
-end   = gfc->scalefac_band.s[sfb+1];
+end = gfc->scalefac_band.s[sfb+1];
 for (i = 0; i < 3; i++) {
 int j2 = j;
 if (scalefac->s[sfb][i] & 1) {
@@ -329,10 +329,10 @@ cod_info->scalefac_scale = 1;
 }
 static int
 inc_subblock_gain (
-const lame_internal_flags        * const gfc,
-gr_info        * const cod_info,
+const lame_internal_flags * const gfc,
+gr_info * const cod_info,
 III_scalefac_t * const scalefac,
-FLOAT8                 xrpow[576] )
+FLOAT8 xrpow[576] )
 {
 int window;
 for (window = 0; window < 3; window++) {
@@ -377,11 +377,11 @@ return 0;
 inline
 static int
 balance_noise (
-lame_global_flags  *const gfp,
-gr_info        * const cod_info,
+lame_global_flags *const gfp,
+gr_info * const cod_info,
 III_scalefac_t * const scalefac,
-III_psy_xmin           *distort,
-FLOAT8                 xrpow[576] )
+III_psy_xmin *distort,
+FLOAT8 xrpow[576] )
 {
 lame_internal_flags *const gfc = (lame_internal_flags *)gfp->internal_flags;
 int status;
@@ -417,20 +417,20 @@ return !status;
 static int
 outer_loop (
 lame_global_flags *gfp,
-gr_info        * const cod_info,
-const FLOAT8                 xr[576],
-const III_psy_xmin   * const l3_xmin,
+gr_info * const cod_info,
+const FLOAT8 xr[576],
+const III_psy_xmin * const l3_xmin,
 III_scalefac_t * const scalefac,
-FLOAT8                 xrpow[576],
-int                    l3enc[576],
-const int                    ch,
-const int                    targ_bits )
+FLOAT8 xrpow[576],
+int l3enc[576],
+const int ch,
+const int targ_bits )
 {
 lame_internal_flags *gfc=gfp->internal_flags;
 III_scalefac_t save_scalefac;
 gr_info save_cod_info;
 FLOAT8 save_xrpow[576];
-III_psy_xmin   distort;
+III_psy_xmin distort;
 calc_noise_result noise_info;
 calc_noise_result best_noise_info;
 int l3_enc_w[576];
@@ -444,9 +444,9 @@ int notdone = 1;
 int copy = 0;
 int age = 0;
 noise_info.over_count = 100;
-noise_info.tot_count  = 100;
-noise_info.max_noise  = 0;
-noise_info.tot_noise  = 0;
+noise_info.tot_count = 100;
+noise_info.max_noise = 0;
+noise_info.tot_noise = 0;
 noise_info.over_noise = 0;
 best_noise_info.over_count = 100;
 bits_found = bin_search_StepSize (gfc, cod_info, targ_bits,
@@ -536,11 +536,11 @@ return best_noise_info.over_count;
 static void
 iteration_finish (
 lame_internal_flags *gfc,
-FLOAT8          xr      [2][2][576],
-int             l3_enc  [2][2][576],
-III_psy_ratio   ratio   [2][2],
-III_scalefac_t  scalefac[2][2],
-const int       mean_bits )
+FLOAT8 xr [2][2][576],
+int l3_enc [2][2][576],
+III_psy_ratio ratio [2][2],
+III_scalefac_t scalefac[2][2],
+const int mean_bits )
 {
 III_side_info_t *l3_side = &gfc->l3_side;
 int gr, ch, i;
@@ -561,21 +561,21 @@ ResvFrameEnd (gfc, l3_side, mean_bits);
 static void
 VBR_encode_granule (
 lame_global_flags *gfp,
-gr_info        * const cod_info,
-FLOAT8                 xr[576],
-const III_psy_xmin   * const l3_xmin,
+gr_info * const cod_info,
+FLOAT8 xr[576],
+const III_psy_xmin * const l3_xmin,
 III_scalefac_t * const scalefac,
-FLOAT8                 xrpow[576],
-int                    l3_enc[576],
-const int                    ch,
-int                    min_bits,
-int                    max_bits )
+FLOAT8 xrpow[576],
+int l3_enc[576],
+const int ch,
+int min_bits,
+int max_bits )
 {
-gr_info         bst_cod_info;
-III_scalefac_t  bst_scalefac;
-FLOAT8          bst_xrpow [576];
-int             bst_l3_enc[576];
-int Max_bits  = max_bits;
+gr_info bst_cod_info;
+III_scalefac_t bst_scalefac;
+FLOAT8 bst_xrpow [576];
+int bst_l3_enc[576];
+int Max_bits = max_bits;
 int real_bits = max_bits+1;
 int this_bits = min_bits+(max_bits-min_bits)/2;
 int dbits, over;
@@ -594,13 +594,13 @@ bst_cod_info = *cod_info;
 bst_scalefac = *scalefac;
 memcpy(bst_xrpow, xrpow, sizeof(FLOAT8)*576);
 memcpy(bst_l3_enc, l3_enc, sizeof(int)*576);
-max_bits  = real_bits-32;
-dbits     = max_bits-min_bits;
+max_bits = real_bits-32;
+dbits = max_bits-min_bits;
 this_bits = min_bits+dbits/2;
 }
 else {
-min_bits  = this_bits+32;
-dbits     = max_bits-min_bits;
+min_bits = this_bits+32;
+dbits = max_bits-min_bits;
 this_bits = min_bits+dbits/2;
 if (dbits>8) {
 *cod_info = bst_cod_info;
@@ -619,9 +619,9 @@ assert(cod_info->part2_3_length <= Max_bits);
 static void
 get_framebits (
 lame_global_flags *gfp,
-int     * const analog_mean_bits,
-int     * const min_mean_bits,
-int             frameBits[15] )
+int * const analog_mean_bits,
+int * const min_mean_bits,
+int frameBits[15] )
 {
 lame_internal_flags *gfc=gfp->internal_flags;
 int bitsPerFrame, mean_bits, i;
@@ -643,14 +643,14 @@ static int
 calc_min_bits (
 lame_global_flags *gfp,
 const gr_info * const cod_info,
-const int             pe,
-const FLOAT8          ms_ener_ratio,
-const int             bands,
-const int             mch_bits,
-const int             analog_mean_bits,
-const int             min_mean_bits,
-const int             analog_silence,
-const int             ch )
+const int pe,
+const FLOAT8 ms_ener_ratio,
+const int bands,
+const int mch_bits,
+const int analog_mean_bits,
+const int min_mean_bits,
+const int analog_silence,
+const int ch )
 {
 lame_internal_flags *gfc=gfp->internal_flags;
 int min_bits, min_pe_bits;
@@ -663,7 +663,7 @@ min_pe_bits = (pe-350) * bands/39;
 else
 min_pe_bits = (pe-350) * bands/22;
 if (gfc->mode_ext == MPG_MD_MS_LR && ch == 1) {
-FLOAT8 fac  = .33 * (.5 - ms_ener_ratio) / .5;
+FLOAT8 fac = .33 * (.5 - ms_ener_ratio) / .5;
 min_pe_bits = (int)(min_pe_bits * ((1-fac)/(1+fac)));
 }
 min_pe_bits = Min (min_pe_bits, (1820 * gfp->out_samplerate / 44100));
@@ -677,40 +677,40 @@ inline
 static int
 calc_max_bits (
 const lame_internal_flags * const gfc,
-const int             frameBits[15],
-const int             min_bits )
+const int frameBits[15],
+const int min_bits )
 {
 int max_bits;
-max_bits  = frameBits[gfc->VBR_max_bitrate];
+max_bits = frameBits[gfc->VBR_max_bitrate];
 max_bits /= gfc->channels_out * gfc->mode_gr;
-max_bits  = Min (1200 + max_bits, MAX_BITS - 195 * (gfc->channels_out - 1));
-max_bits  = Max (max_bits, min_bits);
+max_bits = Min (1200 + max_bits, MAX_BITS - 195 * (gfc->channels_out - 1));
+max_bits = Max (max_bits, min_bits);
 return max_bits;
 }
 static int
 VBR_prepare (
 lame_global_flags *gfp,
-FLOAT8          pe            [2][2],
-FLOAT8          ms_ener_ratio [2],
-FLOAT8          xr            [2][2][576],
-III_psy_ratio   ratio         [2][2],
-III_psy_xmin    l3_xmin       [2][2],
-int             frameBits     [16],
-int            *analog_mean_bits,
-int            *min_mean_bits,
-int             min_bits      [2][2],
-int             max_bits      [2][2],
-int             bands         [2][2] )
+FLOAT8 pe [2][2],
+FLOAT8 ms_ener_ratio [2],
+FLOAT8 xr [2][2][576],
+III_psy_ratio ratio [2][2],
+III_psy_xmin l3_xmin [2][2],
+int frameBits [16],
+int *analog_mean_bits,
+int *min_mean_bits,
+int min_bits [2][2],
+int max_bits [2][2],
+int bands [2][2] )
 {
 lame_internal_flags *gfc=gfp->internal_flags;
 static const FLOAT8 dbQ[10]={-2.,-1.0,-.66,-.33,0.,0.33,.66,1.0,1.33,1.66};
 static const FLOAT8 dbQns[10]={- 4,- 3,-2,-1,0,0.7,1.4,2.1,2.8,3.5};
 static const FLOAT8 dbQmtrh[10]=
 { -4., -3., -2., -1., 0., 0.5, 1., 1.5, 2., 2.5 };
-FLOAT8   masking_lower_db, adjust = 0.0;
-int      gr, ch;
-int      used_bits = 0, bits;
-int      analog_silence = 1;
+FLOAT8 masking_lower_db, adjust = 0.0;
+int gr, ch;
+int used_bits = 0, bits;
+int analog_silence = 1;
 assert( gfp->VBR_q <= 9 );
 assert( gfp->VBR_q >= 0 );
 get_framebits (gfp, analog_mean_bits, min_mean_bits, frameBits);
@@ -724,13 +724,13 @@ adjust = 5/(1+exp(3.5-pe[gr][ch]/300.))-0.14;
 else
 adjust = 2/(1+exp(3.5-pe[gr][ch]/300.))-0.05;
 if (vbr_mtrh == gfp->VBR) {
-masking_lower_db   = dbQmtrh[gfp->VBR_q] - adjust;
+masking_lower_db = dbQmtrh[gfp->VBR_q] - adjust;
 }
 else if (gfc->nsPsy.use && gfp->ATHtype == 0) {
-masking_lower_db   = dbQns[gfp->VBR_q] - adjust;
+masking_lower_db = dbQns[gfp->VBR_q] - adjust;
 }
 else {
-masking_lower_db   = dbQ[gfp->VBR_q] - adjust;
+masking_lower_db = dbQ[gfp->VBR_q] - adjust;
 }
 gfc->masking_lower = pow (10.0, masking_lower_db * 0.1);
 bands[gr][ch] = calc_xmin (gfp, xr[gr][ch], ratio[gr]+ch,
@@ -765,35 +765,35 @@ return analog_silence;
 void
 VBR_iteration_loop (
 lame_global_flags *gfp,
-FLOAT8             pe           [2][2],
-FLOAT8             ms_ener_ratio[2],
-FLOAT8             xr           [2][2][576],
-III_psy_ratio      ratio        [2][2],
-int                l3_enc       [2][2][576],
-III_scalefac_t     scalefac     [2][2] )
+FLOAT8 pe [2][2],
+FLOAT8 ms_ener_ratio[2],
+FLOAT8 xr [2][2][576],
+III_psy_ratio ratio [2][2],
+int l3_enc [2][2][576],
+III_scalefac_t scalefac [2][2] )
 {
 lame_internal_flags *gfc=gfp->internal_flags;
 III_psy_xmin l3_xmin[2][2];
-FLOAT8    xrpow[576];
-int       bands[2][2];
-int       frameBits[15];
-int       bitsPerFrame;
-int       save_bits[2][2];
-int       used_bits, used_bits2;
-int       bits;
-int       min_bits[2][2], max_bits[2][2];
-int       analog_mean_bits, min_mean_bits;
-int       mean_bits;
-int       ch, num_chan, gr, analog_silence;
-int       reduce_s_ch, sfb21_extra;
-gr_info             *cod_info;
-III_side_info_t     *l3_side  = &gfc->l3_side;
+FLOAT8 xrpow[576];
+int bands[2][2];
+int frameBits[15];
+int bitsPerFrame;
+int save_bits[2][2];
+int used_bits, used_bits2;
+int bits;
+int min_bits[2][2], max_bits[2][2];
+int analog_mean_bits, min_mean_bits;
+int mean_bits;
+int ch, num_chan, gr, analog_silence;
+int reduce_s_ch, sfb21_extra;
+gr_info *cod_info;
+III_side_info_t *l3_side = &gfc->l3_side;
 if (gfc->mode_ext == MPG_MD_MS_LR && gfp->quality >= 5) {
 reduce_s_ch = 1;
-num_chan    = 1;
+num_chan = 1;
 } else {
 reduce_s_ch = 0;
-num_chan    = gfc->channels_out;
+num_chan = gfc->channels_out;
 }
 analog_silence = VBR_prepare (gfp, pe, ms_ener_ratio, xr, ratio,
 l3_xmin, frameBits, &analog_mean_bits,
@@ -915,11 +915,11 @@ iteration_finish (gfc, xr, l3_enc, ratio, scalefac, mean_bits);
 static void
 calc_target_bits (
 lame_global_flags * gfp,
-FLOAT8               pe            [2][2],
-FLOAT8               ms_ener_ratio [2],
-int                  targ_bits     [2][2],
-int                 *analog_silence_bits,
-int                 *max_frame_bits )
+FLOAT8 pe [2][2],
+FLOAT8 ms_ener_ratio [2],
+int targ_bits [2][2],
+int *analog_silence_bits,
+int *max_frame_bits )
 {
 lame_internal_flags *gfc=gfp->internal_flags;
 III_side_info_t *l3_side = &gfc->l3_side;
@@ -931,13 +931,13 @@ getframebits (gfp, &bitsPerFrame, &mean_bits);
 gfc->bitrate_index = 1;
 getframebits (gfp, &bitsPerFrame, &mean_bits);
 *analog_silence_bits = mean_bits / gfc->channels_out;
-mean_bits  = gfp->VBR_mean_bitrate_kbps * gfp->framesize * 1000;
+mean_bits = gfp->VBR_mean_bitrate_kbps * gfp->framesize * 1000;
 mean_bits /= gfp->out_samplerate;
 mean_bits -= gfc->sideinfo_len*8;
 mean_bits /= gfc->mode_gr;
 res_factor = .90 + .10 * (11.0 - gfp->compression_ratio) / (11.0 - 5.5);
-if (res_factor <  .90)
-res_factor =  .90;
+if (res_factor < .90)
+res_factor = .90;
 if (res_factor > 1.00)
 res_factor = 1.00;
 for (gr = 0; gr < gfc->mode_gr; gr++) {
@@ -985,22 +985,22 @@ targ_bits[gr][ch] /= totbits;
 void
 ABR_iteration_loop(
 lame_global_flags *gfp,
-FLOAT8             pe           [2][2],
-FLOAT8             ms_ener_ratio[2],
-FLOAT8             xr           [2][2][576],
-III_psy_ratio      ratio        [2][2],
-int                l3_enc       [2][2][576],
-III_scalefac_t     scalefac     [2][2] )
+FLOAT8 pe [2][2],
+FLOAT8 ms_ener_ratio[2],
+FLOAT8 xr [2][2][576],
+III_psy_ratio ratio [2][2],
+int l3_enc [2][2][576],
+III_scalefac_t scalefac [2][2] )
 {
 lame_internal_flags *gfc=gfp->internal_flags;
 III_psy_xmin l3_xmin;
-FLOAT8    xrpow[576];
-int       targ_bits[2][2];
-int       bitsPerFrame, mean_bits, totbits, max_frame_bits;
-int       ch, gr, ath_over, ret;
-int       analog_silence_bits;
-gr_info             *cod_info = NULL;
-III_side_info_t     *l3_side  = &gfc->l3_side;
+FLOAT8 xrpow[576];
+int targ_bits[2][2];
+int bitsPerFrame, mean_bits, totbits, max_frame_bits;
+int ch, gr, ath_over, ret;
+int analog_silence_bits;
+gr_info *cod_info = NULL;
+III_side_info_t *l3_side = &gfc->l3_side;
 calc_target_bits (gfp, pe, ms_ener_ratio, targ_bits,
 &analog_silence_bits, &max_frame_bits);
 totbits=0;
@@ -1026,9 +1026,9 @@ ch, targ_bits[gr][ch]);
 totbits += cod_info->part2_3_length;
 }
 }
-for (gfc->bitrate_index =  gfc->VBR_min_bitrate ;
+for (gfc->bitrate_index = gfc->VBR_min_bitrate ;
 gfc->bitrate_index <= gfc->VBR_max_bitrate;
-gfc->bitrate_index++    ) {
+gfc->bitrate_index++ ) {
 getframebits (gfp, &bitsPerFrame, &mean_bits);
 max_frame_bits = ResvFrameBegin (gfp, l3_side, mean_bits, bitsPerFrame);
 if (totbits <= max_frame_bits) break;
@@ -1039,22 +1039,22 @@ iteration_finish (gfc, xr, l3_enc, ratio, scalefac, mean_bits);
 void
 iteration_loop(
 lame_global_flags *gfp,
-FLOAT8             pe           [2][2],
-FLOAT8             ms_ener_ratio[2],
-FLOAT8             xr           [2][2][576],
-III_psy_ratio      ratio        [2][2],
-int                l3_enc       [2][2][576],
-III_scalefac_t     scalefac     [2][2] )
+FLOAT8 pe [2][2],
+FLOAT8 ms_ener_ratio[2],
+FLOAT8 xr [2][2][576],
+III_psy_ratio ratio [2][2],
+int l3_enc [2][2][576],
+III_scalefac_t scalefac [2][2] )
 {
 lame_internal_flags *gfc=gfp->internal_flags;
 III_psy_xmin l3_xmin[2];
 FLOAT8 xrpow[576];
-int    targ_bits[2];
-int    bitsPerFrame;
-int    mean_bits, max_bits, bit_rate;
-int    gr, ch, i;
-III_side_info_t     *l3_side = &gfc->l3_side;
-gr_info             *cod_info;
+int targ_bits[2];
+int bitsPerFrame;
+int mean_bits, max_bits, bit_rate;
+int gr, ch, i;
+III_side_info_t *l3_side = &gfc->l3_side;
+gr_info *cod_info;
 bit_rate = bitrate_table [gfp->version] [gfc->bitrate_index];
 getframebits (gfp, &bitsPerFrame, &mean_bits);
 ResvFrameBegin (gfp, l3_side, mean_bits, bitsPerFrame );
@@ -1082,7 +1082,7 @@ assert (cod_info->part2_3_length <= MAX_BITS);
 best_scalefac_store (gfc, gr, ch, l3_enc, l3_side, scalefac);
 if (gfc->use_best_huffman == 1)
 best_huffman_divide (gfc, gr, ch, cod_info, l3_enc[gr][ch]);
-#undef  NORES_TEST
+#undef NORES_TEST
 #ifndef NORES_TEST
 ResvAdjust (gfc, cod_info, l3_side, mean_bits);
 #endif
@@ -1093,7 +1093,7 @@ if (xr[gr][ch][i] < 0) l3_enc[gr][ch][i] *= -1;
 }
 #ifdef NORES_TEST
 for (gr = 0; gr < gfc->mode_gr; gr++) {
-for (ch =  0; ch < gfc->channels_out; ch++) {
+for (ch = 0; ch < gfc->channels_out; ch++) {
 cod_info = &l3_side->gr[gr].ch[ch].tt;
 ResvAdjust (gfc, cod_info, l3_side, mean_bits);
 }

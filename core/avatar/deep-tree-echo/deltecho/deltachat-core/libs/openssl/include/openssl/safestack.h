@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 # ifndef CHECKED_PTR_OF
-#  define CHECKED_PTR_OF(type, p) \
+# define CHECKED_PTR_OF(type, p) \
 ((void*) (1 ? p : (type*)0))
 # endif
 # define CHECKED_STACK_OF(type, p) \
@@ -1942,7 +1942,7 @@ pass, passlen, oct, seq)
 # define sk_OPENSSL_STRING_find_ex(st, val) sk_find_ex((_STACK *)CHECKED_CONST_PTR_OF(STACK_OF(OPENSSL_STRING), st), CHECKED_CONST_PTR_OF(char, val))
 # define sk_OPENSSL_STRING_delete(st, i) SKM_sk_delete(OPENSSL_STRING, (st), (i))
 # define sk_OPENSSL_STRING_delete_ptr(st, ptr) (OPENSSL_STRING *)sk_delete_ptr(CHECKED_STACK_OF(OPENSSL_STRING, st), CHECKED_PTR_OF(char, ptr))
-# define sk_OPENSSL_STRING_set_cmp_func(st, cmp)  \
+# define sk_OPENSSL_STRING_set_cmp_func(st, cmp) \
 ((int (*)(const char * const *,const char * const *)) \
 sk_set_cmp_func(CHECKED_STACK_OF(OPENSSL_STRING, st), CHECKED_SK_CMP_FUNC(char, cmp)))
 # define sk_OPENSSL_STRING_dup(st) SKM_sk_dup(OPENSSL_STRING, st)
@@ -1965,7 +1965,7 @@ sk_set_cmp_func(CHECKED_STACK_OF(OPENSSL_STRING, st), CHECKED_SK_CMP_FUNC(char, 
 # define sk_OPENSSL_BLOCK_find_ex(st, val) sk_find_ex((_STACK *)CHECKED_CONST_PTR_OF(STACK_OF(OPENSSL_BLOCK), st), CHECKED_CONST_PTR_OF(void, val))
 # define sk_OPENSSL_BLOCK_delete(st, i) SKM_sk_delete(OPENSSL_BLOCK, (st), (i))
 # define sk_OPENSSL_BLOCK_delete_ptr(st, ptr) (OPENSSL_BLOCK *)sk_delete_ptr(CHECKED_STACK_OF(OPENSSL_BLOCK, st), CHECKED_PTR_OF(void, ptr))
-# define sk_OPENSSL_BLOCK_set_cmp_func(st, cmp)  \
+# define sk_OPENSSL_BLOCK_set_cmp_func(st, cmp) \
 ((int (*)(const void * const *,const void * const *)) \
 sk_set_cmp_func(CHECKED_STACK_OF(OPENSSL_BLOCK, st), CHECKED_SK_CMP_FUNC(void, cmp)))
 # define sk_OPENSSL_BLOCK_dup(st) SKM_sk_dup(OPENSSL_BLOCK, st)
@@ -1988,7 +1988,7 @@ sk_set_cmp_func(CHECKED_STACK_OF(OPENSSL_BLOCK, st), CHECKED_SK_CMP_FUNC(void, c
 # define sk_OPENSSL_PSTRING_find_ex(st, val) sk_find_ex((_STACK *)CHECKED_CONST_PTR_OF(STACK_OF(OPENSSL_PSTRING), st), CHECKED_CONST_PTR_OF(OPENSSL_STRING, val))
 # define sk_OPENSSL_PSTRING_delete(st, i) SKM_sk_delete(OPENSSL_PSTRING, (st), (i))
 # define sk_OPENSSL_PSTRING_delete_ptr(st, ptr) (OPENSSL_PSTRING *)sk_delete_ptr(CHECKED_STACK_OF(OPENSSL_PSTRING, st), CHECKED_PTR_OF(OPENSSL_STRING, ptr))
-# define sk_OPENSSL_PSTRING_set_cmp_func(st, cmp)  \
+# define sk_OPENSSL_PSTRING_set_cmp_func(st, cmp) \
 ((int (*)(const OPENSSL_STRING * const *,const OPENSSL_STRING * const *)) \
 sk_set_cmp_func(CHECKED_STACK_OF(OPENSSL_PSTRING, st), CHECKED_SK_CMP_FUNC(OPENSSL_STRING, cmp)))
 # define sk_OPENSSL_PSTRING_dup(st) SKM_sk_dup(OPENSSL_PSTRING, st)
@@ -2421,7 +2421,7 @@ LHM_lh_node_usage_stats_bio(SSL_SESSION,lh,out)
 # define lh_SSL_SESSION_stats_bio(lh,out) \
 LHM_lh_stats_bio(SSL_SESSION,lh,out)
 # define lh_SSL_SESSION_free(lh) LHM_lh_free(SSL_SESSION,lh)
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif
 #endif

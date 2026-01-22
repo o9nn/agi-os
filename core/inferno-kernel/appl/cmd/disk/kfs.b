@@ -5,8 +5,8 @@ implement Kfs;
 #
 #
 # TO DO:
-#	- sync proc; Bmod; process structure
-#	- swiz?
+# - sync proc; Bmod; process structure
+# - swiz?
 include "sys.m";
 sys: Sys;
 Qid, Dir: import Sys;
@@ -24,18 +24,18 @@ now: import daytime;
 include "arg.m";
 Kfs: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
-MAXBUFSIZE:	con 16*1024;
+MAXBUFSIZE: con 16*1024;
 #
-#  fundamental constants
+# fundamental constants
 #
-NAMELEN: con 28;	# size of names, including null byte
-NDBLOCK:	con 6;	# number of direct blocks in Dentry
-MAXFILESIZE:	con big 16r7FFFFFFF;	# Plan 9's limit (kfs's size is signed)
+NAMELEN: con 28; # size of names, including null byte
+NDBLOCK: con 6; # number of direct blocks in Dentry
+MAXFILESIZE: con big 16r7FFFFFFF; # Plan 9's limit (kfs's size is signed)
 SUPERADDR: con 1;
 ROOTADDR: con 2;
-QPDIR:	con int (1<<31);
+QPDIR: con int (1<<31);
 QPNONE: con 0;
 QPROOT: con 1;
 QPSUPER: con 2;
@@ -43,91 +43,91 @@ QPSUPER: con 2;
 # don't change, these are the mode bits on disc
 #
 DALLOC: con 16r8000;
-DDIR:	con 16r4000;
-DAPND:	con 16r2000;
-DLOCK:	con 16r1000;
-DREAD:	con 4;
-DWRITE:	con 2;
-DEXEC:	con 1;
+DDIR: con 16r4000;
+DAPND: con 16r2000;
+DLOCK: con 16r1000;
+DREAD: con 4;
+DWRITE: con 2;
+DEXEC: con 1;
 #
 # other constants
 #
-MINUTE:	con 60;
-TLOCK:	con 5*MINUTE;
-NTLOCK:	con 200;	# number of active file locks
+MINUTE: con 60;
+TLOCK: con 5*MINUTE;
+NTLOCK: con 200; # number of active file locks
 Buffering: con 1;
 FID1, FID2, FID3: con 1+iota;
-None: con 0;	# user ID for "none"
-Noworld: con 9999;	# conventional id for "noworld" group
+None: con 0; # user ID for "none"
+Noworld: con 9999; # conventional id for "noworld" group
 Lock: adt
 {
 c: chan of int;
-new:	fn(): ref Lock;
-lock:	fn(c: self ref Lock);
-canlock:	fn(c: self ref Lock): int;
-unlock:	fn(c: self ref Lock);
+new: fn(): ref Lock;
+lock: fn(c: self ref Lock);
+canlock: fn(c: self ref Lock): int;
+unlock: fn(c: self ref Lock);
 };
 Dentry: adt
 {
-name:	string;
-uid:	int;
-gid:	int;
-muid:	int;	# not set by plan 9's kfs
-mode:	int;	# mode bits on disc: DALLOC etc
-qid:	Qid;	# 9p1 format on disc
-size:	big;	# only 32-bits on disc, and Plan 9 limits it to signed
-atime:	int;
-mtime:	int;
-iob:	ref Iobuf;	# locked block containing directory entry, when in memory
-buf:	array of byte;	# pointer into block to packed directory entry, when in memory
-mod:	int;	# bits of buf that need updating
-unpack:	fn(a: array of byte): ref Dentry;
-get:	fn(p: ref Iobuf, slot: int): ref Dentry;
-geta:	fn(d: ref Device, addr: int, slot: int, qpath: int, mode: int): (ref Dentry, string);
-getd:	fn(f: ref File, mode: int): (ref Dentry, string);
-put:	fn(d: self ref Dentry);
-access:	fn(d: self ref Dentry, f: int, uid: int);
-change:	fn(d: self ref Dentry, f: int);
-release:	fn(d: self ref Dentry);
-getblk:	fn(d: self ref Dentry, a: int, tag: int): ref Iobuf;
-getblk1:	fn(d: self ref Dentry, a: int, tag: int): ref Iobuf;
-rel2abs:	fn(d: self ref Dentry, a: int, tag: int, putb: int): int;
-trunc:	fn(d: self ref Dentry, uid: int);
-update:	fn(d: self ref Dentry);
-print:	fn(d: self ref Dentry);
+name: string;
+uid: int;
+gid: int;
+muid: int; # not set by plan 9's kfs
+mode: int; # mode bits on disc: DALLOC etc
+qid: Qid; # 9p1 format on disc
+size: big; # only 32-bits on disc, and Plan 9 limits it to signed
+atime: int;
+mtime: int;
+iob: ref Iobuf; # locked block containing directory entry, when in memory
+buf: array of byte; # pointer into block to packed directory entry, when in memory
+mod: int; # bits of buf that need updating
+unpack: fn(a: array of byte): ref Dentry;
+get: fn(p: ref Iobuf, slot: int): ref Dentry;
+geta: fn(d: ref Device, addr: int, slot: int, qpath: int, mode: int): (ref Dentry, string);
+getd: fn(f: ref File, mode: int): (ref Dentry, string);
+put: fn(d: self ref Dentry);
+access: fn(d: self ref Dentry, f: int, uid: int);
+change: fn(d: self ref Dentry, f: int);
+release: fn(d: self ref Dentry);
+getblk: fn(d: self ref Dentry, a: int, tag: int): ref Iobuf;
+getblk1: fn(d: self ref Dentry, a: int, tag: int): ref Iobuf;
+rel2abs: fn(d: self ref Dentry, a: int, tag: int, putb: int): int;
+trunc: fn(d: self ref Dentry, uid: int);
+update: fn(d: self ref Dentry);
+print: fn(d: self ref Dentry);
 };
-Uname, Uids, Umode, Uqid, Usize, Utime: con 1<<iota;	# Dentry.mod
+Uname, Uids, Umode, Uqid, Usize, Utime: con 1<<iota; # Dentry.mod
 #
 # disc structure:
-#	Tag:	pad[2] tag[2] path[4]
+# Tag: pad[2] tag[2] path[4]
 Tagsize: con 2+2+4;
 Tag: adt
 {
-tag:	int;
-path:	int;
-unpack:	fn(a: array of byte): Tag;
-pack:	fn(t: self Tag, a: array of byte);
+tag: int;
+path: int;
+unpack: fn(a: array of byte): Tag;
+pack: fn(t: self Tag, a: array of byte);
 };
 Superb: adt
 {
-iob:	ref Iobuf;
-fstart:	int;
-fsize:	int;
-tfree:	int;
-qidgen:	int;		# generator for unique ids
-fsok:	int;
-fbuf:	array of byte;	# nfree[4] free[FEPERBLK*4]; aliased into containing block
-get:	fn(dev: ref Device, flags: int): ref Superb;
-touched:	fn(s: self ref Superb);
-put:	fn(s: self ref Superb);
-print:	fn(s: self ref Superb);
-pack:	fn(s: self ref Superb, a: array of byte);
-unpack:	fn(a: array of byte): ref Superb;
+iob: ref Iobuf;
+fstart: int;
+fsize: int;
+tfree: int;
+qidgen: int; # generator for unique ids
+fsok: int;
+fbuf: array of byte; # nfree[4] free[FEPERBLK*4]; aliased into containing block
+get: fn(dev: ref Device, flags: int): ref Superb;
+touched: fn(s: self ref Superb);
+put: fn(s: self ref Superb);
+print: fn(s: self ref Superb);
+pack: fn(s: self ref Superb, a: array of byte);
+unpack: fn(a: array of byte): ref Superb;
 };
 Device: adt
 {
-fd:	ref Sys->FD;
-ronly:	int;
+fd: ref Sys->FD;
+ronly: int;
 # could put locks here if necessary
 # partitioning by ds(3)
 };
@@ -136,82 +136,82 @@ ronly:	int;
 #
 Tlock: adt
 {
-dev:	ref Device;
-time:	int;
-qpath:	int;
-file:	cyclic ref File;	# TO DO: probably not needed
+dev: ref Device;
+time: int;
+qpath: int;
+file: cyclic ref File; # TO DO: probably not needed
 };
 File: adt
 {
-qlock:	chan of int;
-qid:	Qid;
-wpath:	ref Wpath;
-tlock:	cyclic ref Tlock;		# if file is locked
-fs:	ref Device;
-addr:	int;
-slot:	int;
-lastra:	int;		# read ahead address
-fid:	int;
-uid:	int;
-open:	int;
-cons:	int;	# if opened by console
-doffset: big;	# directory reading
-dvers:	int;
-dslot:	int;
-new:	fn(fid: int): ref File;
-access:	fn(f: self ref File, d: ref Dentry, mode: int): int;
-lock:	fn(f: self ref File);
-unlock:	fn(f: self ref File);
+qlock: chan of int;
+qid: Qid;
+wpath: ref Wpath;
+tlock: cyclic ref Tlock; # if file is locked
+fs: ref Device;
+addr: int;
+slot: int;
+lastra: int; # read ahead address
+fid: int;
+uid: int;
+open: int;
+cons: int; # if opened by console
+doffset: big; # directory reading
+dvers: int;
+dslot: int;
+new: fn(fid: int): ref File;
+access: fn(f: self ref File, d: ref Dentry, mode: int): int;
+lock: fn(f: self ref File);
+unlock: fn(f: self ref File);
 };
-FREAD, FWRITE, FREMOV, FWSTAT: con 1<<iota;	# File.open
+FREAD, FWRITE, FREMOV, FWSTAT: con 1<<iota; # File.open
 Chan: adt
 {
-fd:	ref Sys->FD;			# fd request came in on
-#	rlock, wlock: QLock;		# lock for reading/writing messages on cp
-flags:	int;
-flist:	list of ref File;			# active files
-fqlock:	chan of int;
-#	reflock:	RWLock;		# lock for Tflush
-msize:	int;			# version
-new:	fn(fd: ref Sys->FD): ref Chan;
-getfid:	fn(c: self ref Chan, fid: int, flag: int): ref File;
-putfid:	fn(c: self ref Chan, f: ref File);
+fd: ref Sys->FD; # fd request came in on
+# rlock, wlock: QLock; # lock for reading/writing messages on cp
+flags: int;
+flist: list of ref File; # active files
+fqlock: chan of int;
+# reflock: RWLock; # lock for Tflush
+msize: int; # version
+new: fn(fd: ref Sys->FD): ref Chan;
+getfid: fn(c: self ref Chan, fid: int, flag: int): ref File;
+putfid: fn(c: self ref Chan, f: ref File);
 flock: fn(nil: self ref Chan);
-funlock:	fn(nil: self ref Chan);
+funlock: fn(nil: self ref Chan);
 };
 Hiob: adt
 {
-link:	ref Iobuf;	# TO DO: eliminate circular list
-lk:	ref Lock;
+link: ref Iobuf; # TO DO: eliminate circular list
+lk: ref Lock;
 niob: int;
-newbuf:	fn(h: self ref Hiob): ref Iobuf;
+newbuf: fn(h: self ref Hiob): ref Iobuf;
 };
 Iobuf: adt
 {
-qlock:	chan of int;
-dev:	ref Device;
-fore:	cyclic ref Iobuf;		# lru hash chain
-back:	cyclic ref Iobuf;		# for lru
-iobuf:	array of byte;		# only active while locked
-xiobuf:	array of byte;	# "real" buffer pointer
-addr:	int;
-flags:	int;
-get:	fn(dev: ref Device, addr: int, flags: int):ref Iobuf;
-put:	fn(iob: self ref Iobuf);
-lock:	fn(iob: self ref Iobuf);
-canlock:	fn(iob: self ref Iobuf): int;
-unlock:	fn(iob: self ref Iobuf);
-checktag:	fn(iob: self ref Iobuf, tag: int, qpath: int): int;
-settag:	fn(iob: self ref Iobuf, tag: int, qpath: int);
+qlock: chan of int;
+dev: ref Device;
+fore: cyclic ref Iobuf; # lru hash chain
+back: cyclic ref Iobuf; # for lru
+iobuf: array of byte; # only active while locked
+xiobuf: array of byte; # "real" buffer pointer
+addr: int;
+flags: int;
+get: fn(dev: ref Device, addr: int, flags: int):ref Iobuf;
+put: fn(iob: self ref Iobuf);
+lock: fn(iob: self ref Iobuf);
+canlock: fn(iob: self ref Iobuf): int;
+unlock: fn(iob: self ref Iobuf);
+checktag: fn(iob: self ref Iobuf, tag: int, qpath: int): int;
+settag: fn(iob: self ref Iobuf, tag: int, qpath: int);
 };
 Wpath: adt
 {
-up: cyclic ref Wpath;		# pointer upwards in path
-addr: int;		# directory entry addr
-slot: int;		# directory entry slot
+up: cyclic ref Wpath; # pointer upwards in path
+addr: int; # directory entry addr
+slot: int; # directory entry slot
 };
 #
-#  error codes generated from the file server
+# error codes generated from the file server
 #
 Eaccess: con "access permission denied";
 Ealloc: con "phase error -- directory entry not allocated";
@@ -252,43 +252,43 @@ Etoolong: con "name too long";
 Etoobig: con "write -- file size limit";
 Ewalk: con "walk -- too many (system wide)";
 #
-#  tags on block
+# tags on block
 #
 Tnone,
-Tsuper,			# the super block
-Tdir,			# directory contents
-Tind1,			# points to blocks
-Tind2,			# points to Tind1
-Tfile,			# file contents
-Tfree,			# in free list
-Tbuck,			# cache fs bucket
-Tvirgo,			# fake worm virgin bits
-Tcache,			# cw cache things
+Tsuper, # the super block
+Tdir, # directory contents
+Tind1, # points to blocks
+Tind2, # points to Tind1
+Tfile, # file contents
+Tfree, # in free list
+Tbuck, # cache fs bucket
+Tvirgo, # fake worm virgin bits
+Tcache, # cw cache things
 MAXTAG: con iota;
 #
-#  flags to Iobuf.get
+# flags to Iobuf.get
 #
-Bread,	# read the block if miss
-Bprobe,	# return null if miss
-Bmod,	# set modified bit in buffer
-Bimm,	# set immediate bit in buffer
-Bres:		# never renamed
+Bread, # read the block if miss
+Bprobe, # return null if miss
+Bmod, # set modified bit in buffer
+Bimm, # set immediate bit in buffer
+Bres: # never renamed
 con 1<<iota;
 #
-#  check flags
+# check flags
 #
-Crdall,	# read all files
-Ctag,	# rebuild tags
-Cpfile,	# print files
-Cpdir,	# print directories
-Cfree,	# rebuild free list
-Cream,	# clear all bad tags
-Cbad,	# clear all bad blocks
-Ctouch,	# touch old dir and indir
-Cquiet:	# report just nasty things
+Crdall, # read all files
+Ctag, # rebuild tags
+Cpfile, # print files
+Cpdir, # print directories
+Cfree, # rebuild free list
+Cream, # clear all bad tags
+Cbad, # clear all bad blocks
+Ctouch, # touch old dir and indir
+Cquiet: # report just nasty things
 con 1<<iota;
 #
-#  buffer size variables, determined by RBUFSIZE
+# buffer size variables, determined by RBUFSIZE
 #
 RBUFSIZE: int;
 BUFSIZE: int;
@@ -332,15 +332,15 @@ nocheck := 0;
 while((o := arg->opt()) != 0)
 case o {
 'c' => nocheck = 1;
-'r' =>	ream = 1;
+'r' => ream = 1;
 'b' => bufsize = int arg->earg();
 'D' => debug = !debug;
 'P' => writeallow = 1;
 'W' => wstatallow = 1;
 'R' => readonly = 1;
-'A' => noatime = 1;	# mainly useful for flash
+'A' => noatime = 1; # mainly useful for flash
 'n' => kfsname = arg->earg();
-* =>	arg->usage();
+* => arg->usage();
 }
 args = arg->argv();
 if(args == nil)
@@ -508,8 +508,8 @@ return (r, nil);
 # optionally serves the command file, if used.
 #
 Req: adt {
-nbytes:	int;
-rc:	chan of (array of byte, string);
+nbytes: int;
+rc: chan of (array of byte, string);
 };
 consinit(c: chan of int)
 {
@@ -557,7 +557,7 @@ if(wc == nil){
 if(fid == cfid){
 cfid = -1;
 pending = nil;
-cdata = nil;	# discard unread data from last command
+cdata = nil; # discard unread data from last command
 if((consc = consoleout) == nil)
 consc = chan of string;
 }
@@ -663,7 +663,7 @@ shutdown();
 }
 apply(cp: ref Chan, t: ref Tmsg): ref Rmsg
 {
-mainlock.lock();	# TO DO: this is just to keep console and kfs from colliding
+mainlock.lock(); # TO DO: this is just to keep console and kfs from colliding
 r: ref Rmsg;
 pick m := t {
 Readerror =>
@@ -748,7 +748,7 @@ f.dvers = 0;
 f.dslot = 0;
 f.uid = None;
 f.cons = 0;
-#	f.cuid = None;
+# f.cuid = None;
 return f;
 }
 #
@@ -764,7 +764,7 @@ f := hd l;
 if(f.fid == fid){
 cp.funlock();
 if(flag)
-return nil;	# fid in use
+return nil; # fid in use
 f.lock();
 if(f.fid == fid)
 return f;
@@ -807,10 +807,10 @@ Chan.new(fd: ref Sys->FD): ref Chan
 c := ref Chan;
 c.fd = fd;
 c.fqlock = chan[1] of int;
-#	rlock, wlock: QLock;		# lock for reading/writing messages on cp
+# rlock, wlock: QLock; # lock for reading/writing messages on cp
 c.flags = 0;
-#	reflock:	RWLock;		# lock for Tflush
-c.msize = 0;	# set by rversion
+# reflock: RWLock; # lock for Tflush
+c.msize = 0; # set by rversion
 return c;
 }
 Chan.flock(c: self ref Chan)
@@ -865,7 +865,7 @@ nfile.fs = file.fs;
 nfile.addr = file.addr;
 nfile.slot = file.slot;
 nfile.uid = file.uid;
-#	nfile.cuid = None;
+# nfile.cuid = None;
 nfile.open = file.open & ~FREMOV;
 }
 walkname(file: ref File, wname: string): (string, Qid)
@@ -896,7 +896,7 @@ if(wname == "." || wname == ".." && file.wpath == nil){
 d.put();
 return (nil, file.qid);
 }
-d1: ref Dentry;	# entry for wname, if found
+d1: ref Dentry; # entry for wname, if found
 slot: int;
 if(wname == ".."){
 d.put();
@@ -1132,7 +1132,7 @@ if(l+1 > NAMELEN)
 return ferr(f, Etoolong, file, p);
 if(f.name == "." || f.name == "..")
 return ferr(f, Edot, file, p);
-addr1 := 0;	# block with first empty slot, if any
+addr1 := 0; # block with first empty slot, if any
 slot1 := 0;
 for(addr := 0; ; addr++){
 if((p1 := d.getblk(addr, 0)) == nil){
@@ -1165,7 +1165,7 @@ p1.put();
 fmod: int;
 case f.mode & 7 {
 OEXEC or
-OREAD =>		# seems only useful to make directories
+OREAD => # seems only useful to make directories
 fmod = FREAD;
 OWRITE =>
 fmod = FWRITE;
@@ -1255,7 +1255,7 @@ count = iounit;
 # otherwise must scan from the beginning.
 addr, slot: int;
 start: big;
-if(offset == file.doffset){	# && file.qid.vers == file.dvers
+if(offset == file.doffset){ # && file.qid.vers == file.dvers
 addr = file.dslot/DIRPERBUF;
 slot = file.dslot%DIRPERBUF;
 start = offset;
@@ -1359,7 +1359,7 @@ return ferr(f, e, file, nil);
 }
 addr := int (offset / big BUFSIZE);
 if(addr == file.lastra+1)
-;	# dbufread(p, d, addr+1);
+; # dbufread(p, d, addr+1);
 file.lastra = addr;
 o := int (offset % big BUFSIZE);
 n := BUFSIZE - o;
@@ -1508,7 +1508,7 @@ clunk(cp: ref Chan, file: ref File, remove: int, wok: int): string
 {
 if((t := file.tlock) != nil){
 if(t.file == file)
-t.time = 0;		# free the lock
+t.time = 0; # free the lock
 file.tlock = nil;
 }
 if(remove)
@@ -1529,7 +1529,7 @@ rremove(cp: ref Chan, t: ref Tmsg.Remove): ref Rmsg
 {
 if((file := cp.getfid(t.fid, 0)) == nil)
 return err(t, Efid);
-e :=  clunk(cp, file, 1, cp == conschan);
+e := clunk(cp, file, 1, cp == conschan);
 if(e != nil)
 return err(t, e);
 return ref Rmsg.Remove(t.tag);
@@ -1542,7 +1542,7 @@ return err(f, Efid);
 if(d == nil)
 return ferr(f, e, file, nil);
 dir := dir9p2(d);
-if(d.qid.path == big QPROOT)	# stat of root gives time
+if(d.qid.path == big QPROOT) # stat of root gives time
 dir.atime = now();
 d.put();
 if(styx->packdirsize(dir) > cp.msize-IOHDRSZ)
@@ -1662,8 +1662,8 @@ return ferr(f, Enotu, file, p1);
 }
 # if chgroup,
 # must be either
-#	a) owner and in new group
-#	b) leader of both groups
+# a) owner and in new group
+# b) leader of both groups
 # wstatallow and writeallow are set to allow chgrp during boot
 while(gid != d.gid){
 if(wstatallow || writeallow)
@@ -1717,15 +1717,15 @@ return ferr(f, Eaccess, file, p1);
 break;
 }
 # if mode/time, either
-#	a) owner
-#	b) leader of either group
+# a) owner
+# b) leader of either group
 mode = dir.mode & 8r777;
 if(dir.mode & DMAPPEND)
 mode |= DAPND;
 if(dir.mode & DMEXCL)
 mode |= DLOCK;
 while(d.mtime != dir.mtime || ((d.mode^mode) & (DAPND|DLOCK|8r777))){
-if(wstatallow)			# set to allow chmod during boot
+if(wstatallow) # set to allow chmod during boot
 break;
 if(d.uid == file.uid)
 break;
@@ -1825,22 +1825,22 @@ sb.pack(sb.iob.iobuf);
 sb.iob.put();
 sb.iob = nil;
 }
-#  this is the disk structure
+# this is the disk structure
 # Superb:
-#	Super1;
-#	Fbuf	fbuf;
+# Super1;
+# Fbuf fbuf;
 # Fbuf:
-#	nfree[4]
-#	free[]	# based on BUFSIZE
-#  Super1:
-#	long	fstart;
-#	long	fsize;
-#	long	tfree;
-#	long	qidgen;		# generator for unique ids
-#	long	fsok;		# file system ok
-#	long	roraddr;	# dump root addr
-#	long	last;		# last super block addr
-#	long	next;		# next super block addr
+# nfree[4]
+# free[] # based on BUFSIZE
+# Super1:
+# long fstart;
+# long fsize;
+# long tfree;
+# long qidgen; # generator for unique ids
+# long fsok; # file system ok
+# long roraddr; # dump root addr
+# long last; # last super block addr
+# long next; # next super block addr
 Ofstart: con 0;
 Ofsize: con Ofstart+4;
 Otfree: con Ofsize+4;
@@ -1901,7 +1901,7 @@ return (d, nil);
 }
 Dentry.getd(file: ref File, mode: int): (ref Dentry, string)
 {
-(d, e) := Dentry.geta(file.fs, file.addr, file.slot, QPNONE, mode);	# QPNONE should be file.wpath's path
+(d, e) := Dentry.geta(file.fs, file.addr, file.slot, QPNONE, mode); # QPNONE should be file.wpath's path
 if(e != nil)
 return (nil, e);
 if(file.qid.path != d.qid.path || (file.qid.qtype&QTDIR) != (d.qid.qtype&QTDIR)){
@@ -1910,27 +1910,27 @@ return (nil, Eqid);
 }
 return (d, nil);
 }
-#  this is the disk structure:
-#	char	name[NAMELEN];
-#	short	uid;
-#	short	gid;		[2*2]
-#	ushort	mode;
-#		#define	DALLOC	0x8000
-#		#define	DDIR	0x4000
-#		#define	DAPND	0x2000
-#		#define	DLOCK	0x1000
-#		#define	DREAD	0x4
-#		#define	DWRITE	0x2
-#		#define	DEXEC	0x1
-#	[ushort muid]		[2*2]
-#	Qid.path;			[4]
-#	Qid.version;		[4]
-#	long	size;			[4]
-#	long	dblock[NDBLOCK];
-#	long	iblock;
-#	long	diblock;
-#	long	atime;
-#	long	mtime;
+# this is the disk structure:
+# char name[NAMELEN];
+# short uid;
+# short gid; [2*2]
+# ushort mode;
+# #define DALLOC 0x8000
+# #define DDIR 0x4000
+# #define DAPND 0x2000
+# #define DLOCK 0x1000
+# #define DREAD 0x4
+# #define DWRITE 0x2
+# #define DEXEC 0x1
+# [ushort muid] [2*2]
+# Qid.path; [4]
+# Qid.version; [4]
+# long size; [4]
+# long dblock[NDBLOCK];
+# long iblock;
+# long diblock;
+# long atime;
+# long mtime;
 Oname: con 0;
 Ouid: con Oname+NAMELEN;
 Ogid: con Ouid+2;
@@ -1955,7 +1955,7 @@ d.name = string a[0:i];
 d.uid = get2s(a, Ouid);
 d.gid = get2s(a, Ogid);
 d.mode = get2(a, Omode);
-d.muid = get2(a, Omuid);	# note: not set by Plan 9's kfs
+d.muid = get2(a, Omuid); # note: not set by Plan 9's kfs
 d.qid = mkqid(get4(a, Opath), get4(a, Overs), d.mode);
 d.size = big get4(a, Osize) & big 16rFFFFFFFF;
 d.atime = get4(a, Oatime);
@@ -2092,7 +2092,7 @@ p.flags |= Bmod|Bimm;
 }
 if(putb)
 d.release();
-return  indfetch(dev, qpath, addr, a, Tind1, tag);
+return indfetch(dev, qpath, addr, a, Tind1, tag);
 }
 a -= INDPERBUF;
 if(a < INDPERBUF2){
@@ -2223,7 +2223,7 @@ p := Iobuf.get(dev, addr, Bmod);
 if(p == nil)
 panic("addfree: Iobuf.get");
 p.iobuf[0:] = sb.fbuf[0:(1+FEPERBUF)*4];
-sb.fbuf[0:] = emptyblock[0:(1+FEPERBUF)*4];	# clear it for debugging
+sb.fbuf[0:] = emptyblock[0:(1+FEPERBUF)*4]; # clear it for debugging
 p.settag(Tfree, QPNONE);
 p.put();
 n = 0;
@@ -2286,7 +2286,7 @@ sys->print(" %d", get4(data, Odblock+i*4));
 sys->print(" iblock=%ud diblock=%ud\n", get4(data, Oiblock), get4(data, Odiblock));
 }
 }
-HWidth: con 5;	# buffers per line
+HWidth: con 5; # buffers per line
 hiob: array of ref Hiob;
 iobufinit(niob: int)
 {
@@ -2403,7 +2403,7 @@ s = p;
 }while(p != hb.link);
 # no unlocked blocks available; add a new one
 p = hb.newbuf();
-p.lock();	# return it locked
+p.lock(); # return it locked
 break;
 }
 p.dev = dev;
@@ -2427,7 +2427,7 @@ return p;
 Iobuf.put(p: self ref Iobuf)
 {
 if(p.flags & Bmod)
-p.flags |= Bimm;	# temporary; see comment in Iobuf.get
+p.flags |= Bimm; # temporary; see comment in Iobuf.get
 if(p.flags & Bimm){
 if(!(p.flags & Bmod))
 eprint(sys->sprint("imm and no mod (%d)", p.addr));
@@ -2462,10 +2462,10 @@ if(wstatallow)
 return 0;
 # none gets only other permissions
 if(f.uid != None){
-if(f.uid == d.uid)	# owner
+if(f.uid == d.uid) # owner
 if((m<<6) & d.mode)
 return 0;
-if(ingroup(f.uid, d.gid))	# group membership
+if(ingroup(f.uid, d.gid)) # group membership
 if((m<<3) & d.mode)
 return 0;
 }
@@ -2488,8 +2488,8 @@ return 1;
 tagname(t: int): string
 {
 case t {
-Tnone =>	return "Tnone";
-Tsuper =>	return "Tsuper";
+Tnone => return "Tnone";
+Tsuper => return "Tsuper";
 Tdir => return "Tdir";
 Tind1 => return "Tind1";
 Tind2 => return "Tind2";
@@ -2498,7 +2498,7 @@ Tfree => return "Tfree";
 Tbuck => return "Tbuck";
 Tvirgo => return "Tvirgo";
 Tcache => return "Tcache";
-* =>	return sys->sprint("%d", t);
+* => return sys->sprint("%d", t);
 }
 }
 Iobuf.checktag(p: self ref Iobuf, tag: int, qpath: int): int
@@ -2513,7 +2513,7 @@ return 2;
 if(qpath != QPNONE){
 qpath &= ~QPDIR;
 if(qpath != t.path){
-if(qpath == (t.path&~QPDIR))	# old bug
+if(qpath == (t.path&~QPDIR)) # old bug
 return 0;
 if(1)
 eprint(sys->sprint("	tag/path = %ux; expected %s/%ux\n",
@@ -2616,7 +2616,7 @@ t1: ref Tlock;
 for(l := tlocks; l != nil; l = tl l){
 t := hd l;
 if(t.qpath == path && t.time >= tim && t.dev == f.fs)
-return nil;	# it's locked
+return nil; # it's locked
 if(t.file == nil || t1 == nil && t.time < tim)
 t1 = t;
 }
@@ -2704,7 +2704,7 @@ sb.qidgen = 10;
 sb.tfree = 0;
 sb.fsok = 0;
 sb.fbuf = p.iobuf[Super1size:];
-put4(sb.fbuf, 0, 1);	# nfree = 1
+put4(sb.fbuf, 0, 1); # nfree = 1
 for(i := fsize-1; i>=addr+2; i--)
 addfree(dev, i, sb);
 sb.put();
@@ -2718,10 +2718,10 @@ sys->print("kfs: %s\n", s);
 #
 # uid:user:leader:members[,...]
 User: adt {
-uid:	int;
-name:	string;
-leader:	int;
-mem:	list of int;
+uid: int;
+name: string;
+leader: int;
+mem: list of int;
 };
 users: list of ref User;
 admusers := array[] of {
@@ -2794,7 +2794,7 @@ s := hd l;
 if(s == "" || s[0] == '#')
 continue;
 name, lead, mem, r: string;
-(nil, r) = field(s, ':');	# skip id
+(nil, r) = field(s, ':'); # skip id
 (name, r) = field(r, ':');
 (lead, mem) = field(r, ':');
 (nil, mems) := sys->tokenize(mem, ",\n");
@@ -2806,7 +2806,7 @@ lu := strtouid(lead);
 if(lu != None)
 u.leader = lu;
 else if(lead != nil)
-u.leader = u.uid;	# mimic kfs not fs
+u.leader = u.uid; # mimic kfs not fs
 }
 mids: list of int = nil;
 for(; mems != nil; mems = tl mems){
@@ -2967,42 +2967,42 @@ Lock.unlock(l: self ref Lock)
 MAXDEPTH: con 100;
 MAXNAME: con 4000;
 Map: adt {
-lo, hi:	int;
-bits:	array of byte;
-nbad:	int;
-ndup:	int;
-nmark:	int;
-new:	fn(lo, hi: int): ref Map;
-isset:	fn(b: self ref Map, a: int): int;
-mark:	fn(b: self ref Map, a: int): string;
+lo, hi: int;
+bits: array of byte;
+nbad: int;
+ndup: int;
+nmark: int;
+new: fn(lo, hi: int): ref Map;
+isset: fn(b: self ref Map, a: int): int;
+mark: fn(b: self ref Map, a: int): string;
 };
 Check: adt {
-dev:	ref Device;
-amap:	ref Map;
-qmap:	ref Map;
-name:	string;
-nfiles:	int;
-maxq:	int;
-mod:	int;
-flags:	int;
-oldblock:	int;
-depth:	int;
-maxdepth:	int;
-check:	fn(c: self ref Check);
-touch:	fn(c: self ref Check, a: int): int;
-checkdir:	fn(c: self ref Check, a: int, qpath: int): int;
-checkindir:	fn(c: self ref Check, a: int, d: ref Dentry, qpath: int): int;
-maked:	fn(c: self ref Check, a: int, s: int, qpath: int): ref Dentry;
-modd:	fn(c: self ref Check, a: int, s: int, d: ref Dentry);
-fsck:		fn(c: self ref Check, d: ref Dentry): int;
-xread:	fn(c: self ref Check, a: int, qpath: int);
-xtag:		fn(c: self ref Check, a: int, tag: int, qpath: int): ref Iobuf;
-ckfreelist:	fn(c: self ref Check, sb: ref Superb);
-mkfreelist:	fn(c: self ref Check, sb: ref Superb);
-amark:	fn(c: self ref Check, a: int): int;
-fmark:	fn(c: self ref Check, a: int): int;
-missing:	fn(c: self ref Check, sb: ref Superb);
-qmark:	fn(c: self ref Check, q: int);
+dev: ref Device;
+amap: ref Map;
+qmap: ref Map;
+name: string;
+nfiles: int;
+maxq: int;
+mod: int;
+flags: int;
+oldblock: int;
+depth: int;
+maxdepth: int;
+check: fn(c: self ref Check);
+touch: fn(c: self ref Check, a: int): int;
+checkdir: fn(c: self ref Check, a: int, qpath: int): int;
+checkindir: fn(c: self ref Check, a: int, d: ref Dentry, qpath: int): int;
+maked: fn(c: self ref Check, a: int, s: int, qpath: int): ref Dentry;
+modd: fn(c: self ref Check, a: int, s: int, d: ref Dentry);
+fsck: fn(c: self ref Check, d: ref Dentry): int;
+xread: fn(c: self ref Check, a: int, qpath: int);
+xtag: fn(c: self ref Check, a: int, tag: int, qpath: int): ref Iobuf;
+ckfreelist: fn(c: self ref Check, sb: ref Superb);
+mkfreelist: fn(c: self ref Check, sb: ref Superb);
+amark: fn(c: self ref Check, a: int): int;
+fmark: fn(c: self ref Check, a: int): int;
+missing: fn(c: self ref Check, sb: ref Superb);
+qmark: fn(c: self ref Check, q: int);
 };
 check(dev: ref Device, flag: int)
 {
@@ -3024,7 +3024,7 @@ checkflags(s: string): int
 f := 0;
 for(i := 0; i < len s; i++)
 case s[i] {
-'r' =>	f |= Crdall;
+'r' => f |= Crdall;
 't' => f |= Ctag;
 'P' => f |= Cpfile;
 'p' => f |= Cpdir;
@@ -3033,8 +3033,8 @@ case s[i] {
 'd' => f |= Cbad;
 'w' => f |= Ctouch;
 'q' => f |= Cquiet;
-'v' => ;	# old verbose flag; ignored
-* =>	return -1;
+'v' => ; # old verbose flag; ignored
+* => return -1;
 }
 return f;
 }
@@ -3059,7 +3059,7 @@ cprint(sys->sprint("invalid size in superblock"));
 return;
 }
 c.amap = Map.new(fstart, fsize);
-nqid := sb.qidgen+100;		# not as much of a botch
+nqid := sb.qidgen+100; # not as much of a botch
 if(nqid > 1024*1024*8)
 nqid = 1024*1024*8;
 if(nqid < 64*1024)
@@ -3086,10 +3086,10 @@ cprint("depth not zero on return");
 if(sb.qidgen < c.maxq)
 cprint(sys->sprint("qid generator low path=%d maxq=%d", sb.qidgen, c.maxq));
 nqbad := c.qmap.nbad + c.qmap.ndup;
-c.qmap = nil;	# could use to implement resequence
+c.qmap = nil; # could use to implement resequence
 ndup := c.amap.ndup;
 nused := c.amap.nmark;
-c.amap.ndup = c.amap.nmark = 0;	# reset for free list counts
+c.amap.ndup = c.amap.nmark = 0; # reset for free list counts
 if(c.flags & Cfree){
 c.name = "free list";
 c.mkfreelist(sb);
@@ -3202,7 +3202,7 @@ c.nfiles++;
 ns := len c.name;
 i = styx->utflen(d.name);
 if(i >= NAMELEN){
-d.name[NAMELEN-1] = 0;	# TO DO: not quite right
+d.name[NAMELEN-1] = 0; # TO DO: not quite right
 cprint(sys->sprint("%q.name (%q) not terminated", c.name, d.name));
 return 0;
 }
@@ -3281,13 +3281,13 @@ p: ref Iobuf;
 lo := 0;
 hi := 0;
 for(;;){
-n := get4(fb, 0);		# nfree
+n := get4(fb, 0); # nfree
 if(n < 0 || n > FEPERBUF){
 cprint(sys->sprint("check: nfree bad %d", a));
 break;
 }
 for(i:=1; i<n; i++){
-a = get4(fb, 4+i*4);	# free[i]
+a = get4(fb, 4+i*4); # free[i]
 if(a && !c.fmark(a)){
 if(!lo || lo > a)
 lo = a;
@@ -3295,7 +3295,7 @@ if(!hi || hi < a)
 hi = a;
 }
 }
-a = get4(fb, 4);	# free[0]
+a = get4(fb, 4); # free[0]
 if(a == 0)
 break;
 if(c.fmark(a))
@@ -3322,7 +3322,7 @@ Check.mkfreelist(c: self ref Check, sb: ref Superb)
 {
 sb.fbuf[0:] = emptyblock[0:(FEPERBUF+1)*4];
 sb.tfree = 0;
-put4(sb.fbuf, 0, 1);	# nfree = 1
+put4(sb.fbuf, 0, 1); # nfree = 1
 for(a:=sb.fsize-sb.fstart-1; a >= 0; a--){
 i := a>>3;
 if(i < 0 || i >= len c.amap.bits)
@@ -3409,7 +3409,7 @@ Check.amark(c: self ref Check, a: int): int
 e := c.amap.mark(a);
 if(e != nil){
 cprint(sys->sprint("check: \"%s\": %s %d", c.name, e, a));
-return e != "dup";	# don't clear dup blocks because rm might repair
+return e != "dup"; # don't clear dup blocks because rm might repair
 }
 return 0;
 }
@@ -3461,7 +3461,7 @@ return m;
 Map.isset(m: self ref Map, i: int): int
 {
 if(i < m.lo || i >= m.hi)
-return -1;	# hard to say
+return -1; # hard to say
 i -= m.lo;
 return (m.bits[i>>3] & byte (1<<(i&7))) != byte 0;
 }

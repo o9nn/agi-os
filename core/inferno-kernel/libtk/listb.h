@@ -1,1 +1,1 @@
-extern	char*	tklistbselection(Tk*, char*, char**);
+extern char* tklistbselection(Tk*, char*, char**);

@@ -1,5 +1,5 @@
 #ifndef gsfunc4_INCLUDED
-#  define gsfunc4_INCLUDED
+# define gsfunc4_INCLUDED
 #include "gsfunc.h"
 #define function_type_PostScript_Calculator 4
 typedef enum {
@@ -20,7 +20,7 @@ typedef struct gs_function_PtCr_params_s {
 gs_function_params_common;
 gs_const_string ops;
 } gs_function_PtCr_params_t;
-#define private_st_function_PtCr()	\
+#define private_st_function_PtCr() \
 gs_private_st_suffix_add_strings1(st_function_PtCr, gs_function_PtCr_t,\
 "gs_function_PtCr_t", function_PtCr_enum_ptrs, function_PtCr_reloc_ptrs,\
 st_function, params.ops)

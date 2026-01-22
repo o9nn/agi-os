@@ -3,44 +3,44 @@
 #include <fcall.h>
 #include <thread.h>
 enum {
-Maxfdata	= 8192,
-Nqueue		= 200,
-Netclosed	= 0,
+Maxfdata = 8192,
+Nqueue = 200,
+Netclosed = 0,
 Netopen,
 };
 typedef struct Network Network;
 typedef struct Netconn Netconn;
 typedef struct Conn9p Conn9p;
 struct Network {
-int	ctlrno;
-char	iname[NAMELEN];
-char	oname[NAMELEN];
-char	*dialstr;
-char	anndir[40];
-char	lisdir[40];
-int	annfd;
+int ctlrno;
+char iname[NAMELEN];
+char oname[NAMELEN];
+char *dialstr;
+char anndir[40];
+char lisdir[40];
+int annfd;
 };
 struct Netconn {
-Queue*	reply;
-char*	raddr;
-Chan*	chan;
-int	alloc;
-int	state;
-Conn9p*	conn9p;
+Queue* reply;
+char* raddr;
+Chan* chan;
+int alloc;
+int state;
+Conn9p* conn9p;
 Lock;
 };
 struct Conn9p {
 QLock;
 Ref;
-int	fd;
-char*	dir;
+int fd;
+char* dir;
 Netconn*netconn;
-char*	raddr;
+char* raddr;
 };
 static Network netif[Maxnets];
 static struct {
 Lock;
-Chan*	chan;
+Chan* chan;
 } netchans;
 static Queue *netoq;
 char *annstrs[Maxnets] = {

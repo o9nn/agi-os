@@ -201,18 +201,18 @@ if (!tab_expand_flag && format[0] == '%')
 if (format[1] == 'l' && format[2] == '\n' && !format[3])
 {
 fwrite (linbuf[from], sizeof (char),
-linbuf[upto] + (linbuf[upto][-1] != '\n') -  linbuf[from],
+linbuf[upto] + (linbuf[upto][-1] != '\n') - linbuf[from],
 out);
 return;
 }
 if (format[1] == 'L' && !format[2])
 {
 fwrite (linbuf[from], sizeof (char),
-linbuf[upto] -  linbuf[from], out);
+linbuf[upto] - linbuf[from], out);
 return;
 }
 }
-for (;  from < upto;  from++)
+for (; from < upto; from++)
 {
 register char c;
 register char *f = format;

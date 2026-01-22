@@ -31,7 +31,7 @@ switch (js[parser->pos]) {
 case ':':
 #endif
 case '\t' : case '\r' : case '\n' : case ' ' :
-case ','  : case ']'  : case '}' :
+case ',' : case ']' : case '}' :
 goto found;
 }
 if (js[parser->pos] < 32 || js[parser->pos] >= 127) {
@@ -87,7 +87,7 @@ int i;
 parser->pos++;
 switch (js[parser->pos]) {
 case '\"': case '/' : case '\\' : case 'b' :
-case 'f' : case 'r' : case 'n'  : case 't' :
+case 'f' : case 'r' : case 'n' : case 't' :
 break;
 case 'u':
 parser->pos++;

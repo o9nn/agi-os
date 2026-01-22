@@ -11,136 +11,136 @@
 #include "../ppc/ethermii.h"
 #define DBG 1
 enum {
-Nrdre		= 128,
-Ntdre		= 128,
-Rbsize		= ETHERMAXTU+4,
-Bufsize		= Rbsize+CACHELINESZ,
+Nrdre = 128,
+Ntdre = 128,
+Rbsize = ETHERMAXTU+4,
+Bufsize = Rbsize+CACHELINESZ,
 };
 enum {
-RxMiss=		SBIT(7),
-RxeLG=		SBIT(10),
-RxeNO=		SBIT(11),
-RxeSH=		SBIT(12),
-RxeCR=		SBIT(13),
-RxeOV=		SBIT(14),
-RxeCL=		SBIT(15),
-RxError=	(RxeLG|RxeNO|RxeSH|RxeCR|RxeOV|RxeCL),
-TxPad=		SBIT(1),
-TxTC=		SBIT(5),
-TxeDEF=		SBIT(6),
-TxeHB=		SBIT(7),
-TxeLC=		SBIT(8),
-TxeRL=		SBIT(9),
-TxeUN=		SBIT(14),
-TxeCSL=		SBIT(15),
-CRCE=		BIT(24),
-FCE=		BIT(10),
-PRO=		BIT(9),
-FDE=		BIT(5),
-LPB=		BIT(3),
-ENET=		0xc,
-ENT=		BIT(27),
-ENR=		BIT(26),
-TCI=		BIT(2),
-GBL=		0x20,
-BO=		0x18,
-EB=		0x10,
-TC2=		0x04,
-DTB=		0x02,
-BDB=		0x01,
-GRA=		SBIT(8),
-RXC=		SBIT(9),
-TXC=		SBIT(10),
-TXE=		SBIT(11),
-RXF=		SBIT(12),
-BSY=		SBIT(13),
-TXB=		SBIT(14),
-RXB=		SBIT(15),
+RxMiss= SBIT(7),
+RxeLG= SBIT(10),
+RxeNO= SBIT(11),
+RxeSH= SBIT(12),
+RxeCR= SBIT(13),
+RxeOV= SBIT(14),
+RxeCL= SBIT(15),
+RxError= (RxeLG|RxeNO|RxeSH|RxeCR|RxeOV|RxeCL),
+TxPad= SBIT(1),
+TxTC= SBIT(5),
+TxeDEF= SBIT(6),
+TxeHB= SBIT(7),
+TxeLC= SBIT(8),
+TxeRL= SBIT(9),
+TxeUN= SBIT(14),
+TxeCSL= SBIT(15),
+CRCE= BIT(24),
+FCE= BIT(10),
+PRO= BIT(9),
+FDE= BIT(5),
+LPB= BIT(3),
+ENET= 0xc,
+ENT= BIT(27),
+ENR= BIT(26),
+TCI= BIT(2),
+GBL= 0x20,
+BO= 0x18,
+EB= 0x10,
+TC2= 0x04,
+DTB= 0x02,
+BDB= 0x01,
+GRA= SBIT(8),
+RXC= SBIT(9),
+TXC= SBIT(10),
+TXE= SBIT(11),
+RXF= SBIT(12),
+BSY= SBIT(13),
+TXB= SBIT(14),
+RXB= SBIT(15),
 };
 enum {
-MDIread	=	0x60020000,
-MDIwrite =	0x50020000,
+MDIread = 0x60020000,
+MDIwrite = 0x50020000,
 };
 typedef struct Etherparam Etherparam;
 struct Etherparam {
 FCCparam;
-ulong	stat_buf;
-ulong	cam_ptr;
-ulong	cmask;
-ulong	cpres;
-ulong	crcec;
-ulong	alec;
-ulong	disfc;
-ushort	retlim;
-ushort	retcnt;
-ushort	p_per;
-ushort	boff_cnt;
-ulong	gaddr[2];
-ushort	tfcstat;
-ushort	tfclen;
-ulong	tfcptr;
-ushort	mflr;
-ushort	paddr[3];
-ushort	ibd_cnt;
-ushort	ibd_start;
-ushort	ibd_end;
-ushort	tx_len;
-uchar	ibd_base[32];
-ulong	iaddr[2];
-ushort	minflr;
-ushort	taddr[3];
-ushort	padptr;
-ushort	Rsvdb2;
-ushort	cf_range;
-ushort	max_b;
-ushort	maxd1;
-ushort	maxd2;
-ushort	maxd;
-ushort	dma_cnt;
-ulong	octc;
-ulong	colc;
-ulong	broc;
-ulong	mulc;
-ulong	uspc;
-ulong	frgc;
-ulong	ospc;
-ulong	jbrc;
-ulong	p64c;
-ulong	p65c;
-ulong	p128c;
-ulong	p256c;
-ulong	p512c;
-ulong	p1024c;
-ulong	cam_buf;
-ulong	Rsvdfc;
+ulong stat_buf;
+ulong cam_ptr;
+ulong cmask;
+ulong cpres;
+ulong crcec;
+ulong alec;
+ulong disfc;
+ushort retlim;
+ushort retcnt;
+ushort p_per;
+ushort boff_cnt;
+ulong gaddr[2];
+ushort tfcstat;
+ushort tfclen;
+ulong tfcptr;
+ushort mflr;
+ushort paddr[3];
+ushort ibd_cnt;
+ushort ibd_start;
+ushort ibd_end;
+ushort tx_len;
+uchar ibd_base[32];
+ulong iaddr[2];
+ushort minflr;
+ushort taddr[3];
+ushort padptr;
+ushort Rsvdb2;
+ushort cf_range;
+ushort max_b;
+ushort maxd1;
+ushort maxd2;
+ushort maxd;
+ushort dma_cnt;
+ulong octc;
+ulong colc;
+ulong broc;
+ulong mulc;
+ulong uspc;
+ulong frgc;
+ulong ospc;
+ulong jbrc;
+ulong p64c;
+ulong p65c;
+ulong p128c;
+ulong p256c;
+ulong p512c;
+ulong p1024c;
+ulong cam_buf;
+ulong Rsvdfc;
 };
 typedef struct Ctlr Ctlr;
 struct Ctlr {
 Lock;
-int	fccid;
-int	port;
-ulong	pmdio;
-ulong	pmdck;
-int	init;
-int	active;
-int	duplex;
-FCC*	fcc;
+int fccid;
+int port;
+ulong pmdio;
+ulong pmdck;
+int init;
+int active;
+int duplex;
+FCC* fcc;
 Ring;
-Block*	rcvbufs[Nrdre];
-Mii*	mii;
+Block* rcvbufs[Nrdre];
+Mii* mii;
 Timer;
-ulong	interrupts;
-ulong	deferred;
-ulong	heartbeat;
-ulong	latecoll;
-ulong	retrylim;
-ulong	underrun;
-ulong	overrun;
-ulong	carrierlost;
-ulong	retrycount;
+ulong interrupts;
+ulong deferred;
+ulong heartbeat;
+ulong latecoll;
+ulong retrylim;
+ulong underrun;
+ulong overrun;
+ulong carrierlost;
+ulong retrycount;
 };
-static	int	fccirq[] = {0x20, 0x21, 0x22};
-static	int	fccid[] = {FCC1ID, FCC2ID, FCC3ID};
+static int fccirq[] = {0x20, 0x21, 0x22};
+static int fccid[] = {FCC1ID, FCC2ID, FCC3ID};
 #ifdef DBG
 ulong fccrhisto[16];
 ulong fccthisto[16];

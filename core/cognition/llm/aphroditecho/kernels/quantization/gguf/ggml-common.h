@@ -10,14 +10,14 @@
 #define QR4_0 2
 #define QI4_0 (QK4_0 / (4 * QR4_0))
 typedef struct {
-half    d;
+half d;
 uint8_t qs[QK4_0 / 2];
 } block_q4_0;
 #define QK4_1 32
 #define QR4_1 2
 #define QI4_1 (QK4_1 / (4 * QR4_1))
 typedef struct {
-half2   dm;
+half2 dm;
 uint8_t qs[QK4_1 / 2];
 } block_q4_1;
 #define QK5_0 32
@@ -40,15 +40,15 @@ uint8_t qs[QK5_1 / 2];
 #define QR8_0 1
 #define QI8_0 (QK8_0 / (4 * QR8_0))
 typedef struct {
-half    d;
-int8_t  qs[QK8_0];
+half d;
+int8_t qs[QK8_0];
 } block_q8_0;
 #define QK8_1 32
 #define QR8_1 1
 #define QI8_1 (QK8_1 / (4 * QR8_1))
 typedef struct {
-half2   ds;
-int8_t  qs[QK8_0];
+half2 ds;
+int8_t qs[QK8_0];
 } block_q8_1;
 #define QR2_K 4
 #define QI2_K (QK_K / (4*QR2_K))
@@ -85,8 +85,8 @@ uint8_t qs[QK_K/2];
 typedef struct {
 uint8_t ql[QK_K/2];
 uint8_t qh[QK_K/4];
-int8_t  scales[QK_K/16];
-half    d;
+int8_t scales[QK_K/16];
+half d;
 } block_q6_K;
 #define QR2_XXS 8
 #define QI2_XXS (QK_K / (4*QR2_XXS))
@@ -99,7 +99,7 @@ uint16_t qs[QK_K/8];
 typedef struct {
 half d;
 uint16_t qs[QK_K/8];
-uint8_t  scales[QK_K/32];
+uint8_t scales[QK_K/32];
 } block_iq2_xs;
 #define QR2_S 8
 #define QI2_S (QK_K / (4*QR2_S))
@@ -129,19 +129,19 @@ uint8_t scales[IQ3S_N_SCALE];
 #define QI1_S (QK_K / (4*QR1_S))
 typedef struct {
 half d;
-uint8_t  qs[QK_K/8];
+uint8_t qs[QK_K/8];
 uint16_t qh[QK_K/32];
 } block_iq1_s;
 #define QR1_M 8
 #define QI1_M (QK_K / (4*QR1_M))
 typedef struct {
-uint8_t  qs[QK_K/8];
-uint8_t  qh[QK_K/16];
-uint8_t  scales[QK_K/32];
+uint8_t qs[QK_K/8];
+uint8_t qh[QK_K/16];
+uint8_t scales[QK_K/32];
 } block_iq1_m;
 typedef union {
 half f16;
-uint16_t  u16;
+uint16_t u16;
 } iq1m_scale_t;
 #define QK4_NL 32
 #define QR4_NL 2
@@ -155,8 +155,8 @@ uint8_t qs[QK4_NL/2];
 typedef struct {
 half d;
 uint16_t scales_h;
-uint8_t  scales_l[QK_K/64];
-uint8_t  qs[QK_K/2];
+uint8_t scales_l[QK_K/64];
+uint8_t qs[QK_K/2];
 } block_iq4_xs;
 static const __device__ uint64_t iq2xxs_grid[256] = {
 0x0808080808080808, 0x080808080808082b, 0x0808080808081919, 0x0808080808082b08,
@@ -973,13 +973,13 @@ static const __device__ uint64_t iq1s_grid_gpu[2048] = {
 0x22202022, 0x22202220, 0x22202222, 0x22212121, 0x22222020, 0x22222022, 0x22222220, 0x22222222,
 };
 static const __device__ uint8_t ksigns_iq2xs[128] = {
-0, 129, 130,   3, 132,   5,   6, 135, 136,   9,  10, 139,  12, 141, 142,  15,
-144,  17,  18, 147,  20, 149, 150,  23,  24, 153, 154,  27, 156,  29,  30, 159,
-160,  33,  34, 163,  36, 165, 166,  39,  40, 169, 170,  43, 172,  45,  46, 175,
-48, 177, 178,  51, 180,  53,  54, 183, 184,  57,  58, 187,  60, 189, 190,  63,
-192,  65,  66, 195,  68, 197, 198,  71,  72, 201, 202,  75, 204,  77,  78, 207,
-80, 209, 210,  83, 212,  85,  86, 215, 216,  89,  90, 219,  92, 221, 222,  95,
-96, 225, 226,  99, 228, 101, 102, 231, 232, 105, 106, 235, 108, 237, 238, 111,
+0, 129, 130, 3, 132, 5, 6, 135, 136, 9, 10, 139, 12, 141, 142, 15,
+144, 17, 18, 147, 20, 149, 150, 23, 24, 153, 154, 27, 156, 29, 30, 159,
+160, 33, 34, 163, 36, 165, 166, 39, 40, 169, 170, 43, 172, 45, 46, 175,
+48, 177, 178, 51, 180, 53, 54, 183, 184, 57, 58, 187, 60, 189, 190, 63,
+192, 65, 66, 195, 68, 197, 198, 71, 72, 201, 202, 75, 204, 77, 78, 207,
+80, 209, 210, 83, 212, 85, 86, 215, 216, 89, 90, 219, 92, 221, 222, 95,
+96, 225, 226, 99, 228, 101, 102, 231, 232, 105, 106, 235, 108, 237, 238, 111,
 240, 113, 114, 243, 116, 245, 246, 119, 120, 249, 250, 123, 252, 125, 126, 255,
 };
 static const __device__ uint64_t ksigns64[128] = {
@@ -1091,7 +1091,7 @@ return !(neq & 0xff000000) * 0xff000000 |
 static __device__ __forceinline__ uint32_t __vsub4(const uint32_t a, const uint32_t b) {
 return (static_cast<uint8_t>(((a & 0xff000000) >> 24) - ((b & 0xff000000) >> 24)) << 24) +
 (static_cast<uint8_t>(((a & 0x00ff0000) >> 16) - ((b & 0x00ff0000) >> 16)) << 16) +
-(static_cast<uint8_t>(((a & 0x0000ff00) >>  8) - ((b & 0x0000ff00) >>  8)) <<  8) +
-(static_cast<uint8_t>(((a & 0x000000ff) >>  0) - ((b & 0x000000ff) >>  0)) <<  0);
+(static_cast<uint8_t>(((a & 0x0000ff00) >> 8) - ((b & 0x0000ff00) >> 8)) << 8) +
+(static_cast<uint8_t>(((a & 0x000000ff) >> 0) - ((b & 0x000000ff) >> 0)) << 0);
 }
 #endif

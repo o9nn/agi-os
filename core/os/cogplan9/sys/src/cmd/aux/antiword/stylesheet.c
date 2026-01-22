@@ -1,11 +1,11 @@
 #include <string.h>
 #include "antiword.h"
-#define SGC_PAP		1
-#define SGC_CHP		2
-static style_block_type	*atStyleInfo = NULL;
-static font_block_type	*atFontInfo = NULL;
-static BOOL		*abFilled = NULL;
-static size_t		tStdCount = 0;
+#define SGC_PAP 1
+#define SGC_CHP 2
+static style_block_type *atStyleInfo = NULL;
+static font_block_type *atFontInfo = NULL;
+static BOOL *abFilled = NULL;
+static size_t tStdCount = 0;
 void
 vDestroyStylesheetList(void)
 {
@@ -40,7 +40,7 @@ pFont->ucFontNumber = 0;
 static int
 iGetStyleIndex(USHORT usIstd)
 {
-int	iIndex;
+int iIndex;
 fail(abFilled == NULL);
 if (usIstd == ISTD_INVALID || abFilled == NULL) {
 return -1;
@@ -145,15 +145,15 @@ return (USHORT)ucStc;
 void
 vGet2Stylesheet(FILE *pFile, int iWordVersion, const UCHAR *aucHeader)
 {
-style_block_type	*pStyle;
-font_block_type		*pFont;
-UCHAR	*aucBuffer;
-ULONG	ulBeginStshInfo;
-size_t	tStshInfoLen, tName, tChpx, tPapx, tMaxIndex;
-int	iStIndex, iChpxIndex, iPapxIndex, iSt, iChpx, iPapx;
-int	iStd, iIndex, iBaseStyleIndex, iCounter;
-USHORT	usBaseStyle;
-UCHAR	ucStc, ucStcNext, ucStcBase;
+style_block_type *pStyle;
+font_block_type *pFont;
+UCHAR *aucBuffer;
+ULONG ulBeginStshInfo;
+size_t tStshInfoLen, tName, tChpx, tPapx, tMaxIndex;
+int iStIndex, iChpxIndex, iPapxIndex, iSt, iChpx, iPapx;
+int iStd, iIndex, iBaseStyleIndex, iCounter;
+USHORT usBaseStyle;
+UCHAR ucStc, ucStcNext, ucStcBase;
 fail(pFile == NULL || aucHeader == NULL);
 fail(iWordVersion != 1 && iWordVersion != 2);
 ulBeginStshInfo = ulGetLong(0x5e, aucHeader);
@@ -310,15 +310,15 @@ void
 vGet6Stylesheet(FILE *pFile, ULONG ulStartBlock,
 const ULONG *aulBBD, size_t tBBDLen, const UCHAR *aucHeader)
 {
-style_block_type	*pStyle;
-font_block_type		*pFont;
-UCHAR	*aucBuffer;
-ULONG	ulBeginStshInfo;
-size_t	tStshInfoLen, tOffset, tStdLen, tStdBaseInFile;
-size_t	tPos, tNameLen, tUpxLen;
-int	iIndex, iBaseStyleIndex, iCounter;
-USHORT	usTmp, usUpxCount, usStyleType, usBaseStyle;
-USHORT	usFtcStandardChpStsh;
+style_block_type *pStyle;
+font_block_type *pFont;
+UCHAR *aucBuffer;
+ULONG ulBeginStshInfo;
+size_t tStshInfoLen, tOffset, tStdLen, tStdBaseInFile;
+size_t tPos, tNameLen, tUpxLen;
+int iIndex, iBaseStyleIndex, iCounter;
+USHORT usTmp, usUpxCount, usStyleType, usBaseStyle;
+USHORT usFtcStandardChpStsh;
 fail(pFile == NULL || aucHeader == NULL);
 fail(ulStartBlock > MAX_BLOCKNUMBER && ulStartBlock != END_OF_CHAIN);
 fail(aulBBD == NULL);
@@ -470,16 +470,16 @@ const ULONG *aulBBD, size_t tBBDLen,
 const ULONG *aulSBD, size_t tSBDLen,
 const UCHAR *aucHeader)
 {
-style_block_type	*pStyle;
-font_block_type		*pFont;
-const ULONG	*aulBlockDepot;
-UCHAR	*aucBuffer;
-ULONG	ulBeginStshInfo;
-size_t	tStshInfoLen, tBlockDepotLen, tOffset, tStdLen, tStdBaseInFile;
-size_t	tBlockSize, tPos, tNameLen, tUpxLen;
-int	iIndex, iBaseStyleIndex, iCounter;
-USHORT	usTmp, usUpxCount, usStyleType, usBaseStyle;
-USHORT	usFtcStandardChpStsh;
+style_block_type *pStyle;
+font_block_type *pFont;
+const ULONG *aulBlockDepot;
+UCHAR *aucBuffer;
+ULONG ulBeginStshInfo;
+size_t tStshInfoLen, tBlockDepotLen, tOffset, tStdLen, tStdBaseInFile;
+size_t tBlockSize, tPos, tNameLen, tUpxLen;
+int iIndex, iBaseStyleIndex, iCounter;
+USHORT usTmp, usUpxCount, usStyleType, usBaseStyle;
+USHORT usFtcStandardChpStsh;
 fail(pFile == NULL || pPPS == NULL || aucHeader == NULL);
 fail(aulBBD == NULL || aulSBD == NULL);
 ulBeginStshInfo = ulGetLong(0xa2, aucHeader);
@@ -644,7 +644,7 @@ aucBuffer = xfree(aucBuffer);
 void
 vFillStyleFromStylesheet(USHORT usIstd, style_block_type *pStyle)
 {
-int	iIndex;
+int iIndex;
 fail(pStyle == NULL);
 if (usIstd != ISTD_INVALID && usIstd != STI_NIL && usIstd != STI_USER) {
 for (iIndex = 0; iIndex < (int)tStdCount; iIndex++) {
@@ -660,7 +660,7 @@ pStyle->usIstd = usIstd;
 void
 vFillFontFromStylesheet(USHORT usIstd, font_block_type *pFont)
 {
-int	iIndex;
+int iIndex;
 fail(pFont == NULL);
 if (usIstd != ISTD_INVALID && usIstd != STI_NIL && usIstd != STI_USER) {
 for (iIndex = 0; iIndex < (int)tStdCount; iIndex++) {

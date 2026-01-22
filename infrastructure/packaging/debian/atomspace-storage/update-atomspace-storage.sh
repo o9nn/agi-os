@@ -7,8 +7,8 @@ echo "=========================================="
 echo "Updating ${PACKAGE_NAME} package"
 echo "=========================================="
 if [ ! -d "${UPSTREAM_REPO}" ]; then
-    echo "ERROR: Upstream repository not found at ${UPSTREAM_REPO}"
-    exit 1
+echo "ERROR: Upstream repository not found at ${UPSTREAM_REPO}"
+exit 1
 fi
 rm -rf ${PACKAGE_NAME}-*
 PACKAGE_DIR="${PACKAGE_NAME}-${VERSION}"

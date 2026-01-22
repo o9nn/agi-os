@@ -12,10 +12,10 @@
 const char *argp_program_version = STANDARD_HURD_VERSION (showtrans);
 static struct argp_option options[] =
 {
-{"prefix",    'p', 0, 0, "Always display `FILENAME: ' before translators"},
+{"prefix", 'p', 0, 0, "Always display `FILENAME: ' before translators"},
 {"no-prefix", 'P', 0, 0, "Never display `FILENAME: ' before translators"},
-{"silent",    's', 0, 0, "No output; useful when checking error status"},
-{"quiet",     'q', 0, OPTION_ALIAS | OPTION_HIDDEN},
+{"silent", 's', 0, 0, "No output; useful when checking error status"},
+{"quiet", 'q', 0, OPTION_ALIAS | OPTION_HIDDEN},
 {"translated",'t', 0, 0, "Only display files that have translators"},
 {0, 0}
 };

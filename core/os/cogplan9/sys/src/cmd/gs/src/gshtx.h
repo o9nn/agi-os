@@ -1,5 +1,5 @@
 #ifndef gshtx_INCLUDED
-#  define gshtx_INCLUDED
+# define gshtx_INCLUDED
 #include "gsmemory.h"
 #include "gsht1.h"
 #include "gxtmap.h"
@@ -15,7 +15,7 @@
 #define ht_threshold threshold
 #define ht_multiple multiple
 #ifndef gs_state_DEFINED
-#  define gs_state_DEFINED
+# define gs_state_DEFINED
 typedef struct gs_state_s gs_state;
 #endif
 typedef gs_mapping_closure_proc_t gs_ht_transfer_proc;
@@ -51,14 +51,14 @@ const void *client_data
 );
 extern void gs_ht_reference(gs_ht * pht);
 extern void gs_ht_release(gs_ht * pht);
-#define gs_ht_assign(pto, pfrom)    \
-BEGIN                           \
-gs_ht_reference(pfrom);     \
-if (pto != 0)               \
-gs_ht_release(pto);     \
-pto = pfrom;                \
+#define gs_ht_assign(pto, pfrom) \
+BEGIN \
+gs_ht_reference(pfrom); \
+if (pto != 0) \
+gs_ht_release(pto); \
+pto = pfrom; \
 END
-#define gs_ht_init_ptr(pto, pfrom)          \
+#define gs_ht_init_ptr(pto, pfrom) \
 BEGIN gs_ht_reference(pfrom); pto = pfrom; END
 extern int gs_ht_install(gs_state * pgs, gs_ht * pht);
 #endif

@@ -1,5 +1,5 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #include "nntpdriver_cached.h"
 #include "libetpan-config.h"
@@ -9,11 +9,11 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #ifdef HAVE_UNISTD_H
-#	include <unistd.h>
+# include <unistd.h>
 #endif
 #include <stdlib.h>
 #ifdef WIN32
-#	include "win_etpan.h"
+# include "win_etpan.h"
 #endif
 #include "mail_cache_db.h"
 #include "mail.h"
@@ -121,7 +121,7 @@ mailsession_driver * nntp_cached_session_driver =
 static void read_article_seq(mailsession * session,
 uint32_t * pfirst, uint32_t * plast);
 static void write_article_seq(mailsession * session,
-uint32_t first,  uint32_t last);
+uint32_t first, uint32_t last);
 static inline struct nntp_cached_session_state_data *
 get_cached_data(mailsession * session)
 {
@@ -554,7 +554,7 @@ fclose(f);
 * plast = last;
 }
 static void write_article_seq(mailsession * session,
-uint32_t first,  uint32_t last)
+uint32_t first, uint32_t last)
 {
 FILE * f;
 struct nntp_session_state_data * ancestor_data;

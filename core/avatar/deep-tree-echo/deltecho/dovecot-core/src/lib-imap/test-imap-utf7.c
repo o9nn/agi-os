@@ -109,10 +109,10 @@ test_assert_idx(strcmp(csrc, str_c(dest2)) == 0, i);
 for (i = 0; i <= 255; ++i) {
 const char csrc[] = {
 '&',
-mb64[                       (0x00 >> 2)],
+mb64[ (0x00 >> 2)],
 mb64[((0x00 & 0x03) << 4) | (0xe4 >> 4)],
-mb64[((0xe4 & 0x0f) << 2) | (   i >> 6)],
-mb64[     i & 0x3f                     ],
+mb64[((0xe4 & 0x0f) << 2) | ( i >> 6)],
+mb64[ i & 0x3f ],
 '-',
 '\0'
 };
@@ -152,9 +152,9 @@ dest = t_str_new(256);
 test_begin("imap mutf7 unnecessary");
 for (i = 0x20; i < 0x7f; ++i) {
 csrc[0] = '&';
-csrc[1] = mb64[                       (0x00 >> 2)];
-csrc[2] = mb64[((0x00 & 0x03) << 4) | (   i >> 4)];
-csrc[3] = mb64[((   i & 0x0f) << 2) |     0      ];
+csrc[1] = mb64[ (0x00 >> 2)];
+csrc[2] = mb64[((0x00 & 0x03) << 4) | ( i >> 4)];
+csrc[3] = mb64[(( i & 0x0f) << 2) | 0 ];
 csrc[4] = '-';
 csrc[5] = '\0';
 test_assert_idx(!imap_utf7_is_valid(csrc), i);

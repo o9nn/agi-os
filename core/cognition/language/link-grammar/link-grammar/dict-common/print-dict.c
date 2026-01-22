@@ -419,7 +419,7 @@ return (flags>>(flag-'a')) & 1;
 static uint32_t make_flags(const char *flags)
 {
 if (flags == NULL) return 0;
-uint32_t r  = 0;
+uint32_t r = 0;
 for (const char *f = flags; *f != '\0'; f++)
 r |= (1<<(*f-'a'));
 return r;
@@ -489,7 +489,7 @@ static int ascending_int(const void *a, const void *b)
 {
 const int a1 = *(const int *)a;
 const int b1 = *(const int *)b;
-if (a1 <  b1) return -1;
+if (a1 < b1) return -1;
 if (a1 == b1) return 0;
 return 1;
 }
@@ -724,7 +724,7 @@ notify_ignoring_flag(is_regex);
 notify_ignoring_flag(is_anyorder);
 for (size_t i = 0; i < pat_len; i++)
 {
-const char *c =  &pattern[i];
+const char *c = &pattern[i];
 if (!isalnum((unsigned char)*c) && (strchr("*+- ", *c) == NULL))
 {
 prt_error("Warning: Invalid character \"%.*s\" in full "

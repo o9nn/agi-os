@@ -33,12 +33,12 @@ typedef int32_t gpt2_pos;
 typedef int32_t gpt2_seq_id;
 struct gpt2_hparams {
 int32_t n_vocab = 50257;
-int32_t n_ctx   = 1024;
-int32_t n_embd  = 768;
-int32_t n_head  = 12;
+int32_t n_ctx = 1024;
+int32_t n_embd = 768;
+int32_t n_head = 12;
 int32_t n_layer = 12;
-int32_t ftype   = 1;
-float   eps     = 1e-5f;
+int32_t ftype = 1;
+float eps = 1e-5f;
 };
 struct gpt2_layer {
 struct ggml_tensor * ln_1_g;
@@ -55,7 +55,7 @@ struct ggml_tensor * c_mlp_proj_w;
 struct ggml_tensor * c_mlp_proj_b;
 };
 struct gpt2_kv_cell {
-gpt2_pos pos   = -1;
+gpt2_pos pos = -1;
 gpt2_pos delta = 0;
 std::set<gpt2_seq_id> seq_id;
 bool has_seq_id(const gpt2_seq_id & id) const {
@@ -87,11 +87,11 @@ std::map<std::string, struct ggml_tensor *> tensors;
 };
 struct gpt2_batch {
 int32_t n_tokens = -1;
-gpt_vocab::id  * token  = {};
-float          * embd   = {};
-gpt2_pos       * pos    = {};
-gpt2_seq_id    * seq_id = {};
-int8_t         * logits = {};
+gpt_vocab::id * token = {};
+float * embd = {};
+gpt2_pos * pos = {};
+gpt2_seq_id * seq_id = {};
+int8_t * logits = {};
 };
 bool gpt2_model_load(const std::string & fname, gpt2_model & model, gpt_vocab & vocab, int n_ctx, int n_gpu_layers) {
 printf("%s: loading model from '%s'\n", __func__, fname.c_str());
@@ -111,11 +111,11 @@ return false;
 {
 auto & hparams = model.hparams;
 fin.read((char *) &hparams.n_vocab, sizeof(hparams.n_vocab));
-fin.read((char *) &hparams.n_ctx,   sizeof(hparams.n_ctx));
-fin.read((char *) &hparams.n_embd,  sizeof(hparams.n_embd));
-fin.read((char *) &hparams.n_head,  sizeof(hparams.n_head));
+fin.read((char *) &hparams.n_ctx, sizeof(hparams.n_ctx));
+fin.read((char *) &hparams.n_embd, sizeof(hparams.n_embd));
+fin.read((char *) &hparams.n_head, sizeof(hparams.n_head));
 fin.read((char *) &hparams.n_layer, sizeof(hparams.n_layer));
-fin.read((char *) &hparams.ftype,   sizeof(hparams.ftype));
+fin.read((char *) &hparams.ftype, sizeof(hparams.ftype));
 const int32_t qntvr = hparams.ftype / GGML_QNT_VERSION_FACTOR;
 printf("%s: n_vocab = %d\n", __func__, hparams.n_vocab);
 printf("%s: n_ctx   = %d\n", __func__, hparams.n_ctx);
@@ -156,26 +156,26 @@ auto & ctx = model.ctx_w;
 size_t buffer_size = 0;
 {
 const auto & hparams = model.hparams;
-const int n_embd  = hparams.n_embd;
+const int n_embd = hparams.n_embd;
 const int n_layer = hparams.n_layer;
-const int n_ctx   = hparams.n_ctx;
+const int n_ctx = hparams.n_ctx;
 const int n_vocab = hparams.n_vocab;
 buffer_size += ggml_row_size(GGML_TYPE_F32, n_embd);
 buffer_size += ggml_row_size(GGML_TYPE_F32, n_embd);
-buffer_size += ggml_row_size(wtype,         n_vocab*n_embd);
-buffer_size += ggml_row_size(GGML_TYPE_F32,   n_ctx*n_embd);
-buffer_size += ggml_row_size(wtype,         n_vocab*n_embd);
+buffer_size += ggml_row_size(wtype, n_vocab*n_embd);
+buffer_size += ggml_row_size(GGML_TYPE_F32, n_ctx*n_embd);
+buffer_size += ggml_row_size(wtype, n_vocab*n_embd);
 buffer_size += n_layer*(ggml_row_size(GGML_TYPE_F32, n_embd));
 buffer_size += n_layer*(ggml_row_size(GGML_TYPE_F32, n_embd));
 buffer_size += n_layer*(ggml_row_size(GGML_TYPE_F32, n_embd));
 buffer_size += n_layer*(ggml_row_size(GGML_TYPE_F32, n_embd));
-buffer_size += n_layer*(ggml_row_size(wtype,         3*n_embd*n_embd));
+buffer_size += n_layer*(ggml_row_size(wtype, 3*n_embd*n_embd));
 buffer_size += n_layer*(ggml_row_size(GGML_TYPE_F32, 3*n_embd));
-buffer_size += n_layer*(ggml_row_size(wtype,         n_embd*n_embd));
+buffer_size += n_layer*(ggml_row_size(wtype, n_embd*n_embd));
 buffer_size += n_layer*(ggml_row_size(GGML_TYPE_F32, n_embd));
-buffer_size += n_layer*(ggml_row_size(wtype,         4*n_embd*n_embd));
+buffer_size += n_layer*(ggml_row_size(wtype, 4*n_embd*n_embd));
 buffer_size += n_layer*(ggml_row_size(GGML_TYPE_F32, 4*n_embd));
-buffer_size += n_layer*(ggml_row_size(wtype,         4*n_embd*n_embd));
+buffer_size += n_layer*(ggml_row_size(wtype, 4*n_embd*n_embd));
 buffer_size += n_layer*(ggml_row_size(GGML_TYPE_F32, 4*n_embd));
 buffer_size += (6 + 12*n_layer)*128;
 printf("%s: ggml tensor size    = %d bytes\n", __func__, (int) sizeof(ggml_tensor));
@@ -224,61 +224,61 @@ return false;
 model.buffer_w = ggml_backend_alloc_buffer(model.backend, buffer_size);
 {
 const auto & hparams = model.hparams;
-const int n_embd  = hparams.n_embd;
+const int n_embd = hparams.n_embd;
 const int n_layer = hparams.n_layer;
-const int n_ctx   = hparams.n_ctx;
+const int n_ctx = hparams.n_ctx;
 const int n_vocab = hparams.n_vocab;
 model.layers.resize(n_layer);
 model.ln_f_g = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_embd);
 model.ln_f_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_embd);
-model.wte     = ggml_new_tensor_2d(ctx, wtype,         n_embd, n_vocab);
-model.wpe     = ggml_new_tensor_2d(ctx, GGML_TYPE_F32, n_embd, n_ctx);
-model.lm_head = ggml_new_tensor_2d(ctx, wtype,         n_embd, n_vocab);
+model.wte = ggml_new_tensor_2d(ctx, wtype, n_embd, n_vocab);
+model.wpe = ggml_new_tensor_2d(ctx, GGML_TYPE_F32, n_embd, n_ctx);
+model.lm_head = ggml_new_tensor_2d(ctx, wtype, n_embd, n_vocab);
 model.tensors["model/ln_f/g"] = model.ln_f_g;
 model.tensors["model/ln_f/b"] = model.ln_f_b;
-model.tensors["model/wte"]     = model.wte;
-model.tensors["model/wpe"]     = model.wpe;
+model.tensors["model/wte"] = model.wte;
+model.tensors["model/wpe"] = model.wpe;
 model.tensors["model/lm_head"] = model.lm_head;
 for (int i = 0; i < n_layer; ++i) {
 auto & layer = model.layers[i];
-layer.ln_1_g        = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_embd);
-layer.ln_1_b        = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_embd);
-layer.ln_2_g        = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_embd);
-layer.ln_2_b        = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_embd);
-layer.c_attn_attn_w = ggml_new_tensor_2d(ctx, wtype,           n_embd, 3*n_embd);
+layer.ln_1_g = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_embd);
+layer.ln_1_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_embd);
+layer.ln_2_g = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_embd);
+layer.ln_2_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_embd);
+layer.c_attn_attn_w = ggml_new_tensor_2d(ctx, wtype, n_embd, 3*n_embd);
 layer.c_attn_attn_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, 3*n_embd);
-layer.c_attn_proj_w = ggml_new_tensor_2d(ctx, wtype,           n_embd, n_embd);
-layer.c_attn_proj_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_embd);
-layer.c_mlp_fc_w    = ggml_new_tensor_2d(ctx, wtype,           n_embd, 4*n_embd);
-layer.c_mlp_fc_b    = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, 4*n_embd);
-layer.c_mlp_proj_w  = ggml_new_tensor_2d(ctx, wtype,         4*n_embd, n_embd);
-layer.c_mlp_proj_b  = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_embd);
-model.tensors["model/h" + std::to_string(i) + "/ln_1/g"]        = layer.ln_1_g;
-model.tensors["model/h" + std::to_string(i) + "/ln_1/b"]        = layer.ln_1_b;
-model.tensors["model/h" + std::to_string(i) + "/ln_2/g"]        = layer.ln_2_g;
-model.tensors["model/h" + std::to_string(i) + "/ln_2/b"]        = layer.ln_2_b;
+layer.c_attn_proj_w = ggml_new_tensor_2d(ctx, wtype, n_embd, n_embd);
+layer.c_attn_proj_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_embd);
+layer.c_mlp_fc_w = ggml_new_tensor_2d(ctx, wtype, n_embd, 4*n_embd);
+layer.c_mlp_fc_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, 4*n_embd);
+layer.c_mlp_proj_w = ggml_new_tensor_2d(ctx, wtype, 4*n_embd, n_embd);
+layer.c_mlp_proj_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_embd);
+model.tensors["model/h" + std::to_string(i) + "/ln_1/g"] = layer.ln_1_g;
+model.tensors["model/h" + std::to_string(i) + "/ln_1/b"] = layer.ln_1_b;
+model.tensors["model/h" + std::to_string(i) + "/ln_2/g"] = layer.ln_2_g;
+model.tensors["model/h" + std::to_string(i) + "/ln_2/b"] = layer.ln_2_b;
 model.tensors["model/h" + std::to_string(i) + "/attn/c_attn/w"] = layer.c_attn_attn_w;
 model.tensors["model/h" + std::to_string(i) + "/attn/c_attn/b"] = layer.c_attn_attn_b;
 model.tensors["model/h" + std::to_string(i) + "/attn/c_proj/w"] = layer.c_attn_proj_w;
 model.tensors["model/h" + std::to_string(i) + "/attn/c_proj/b"] = layer.c_attn_proj_b;
-model.tensors["model/h" + std::to_string(i) + "/mlp/c_fc/w"]    = layer.c_mlp_fc_w;
-model.tensors["model/h" + std::to_string(i) + "/mlp/c_fc/b"]    = layer.c_mlp_fc_b;
-model.tensors["model/h" + std::to_string(i) + "/mlp/c_proj/w"]  = layer.c_mlp_proj_w;
-model.tensors["model/h" + std::to_string(i) + "/mlp/c_proj/b"]  = layer.c_mlp_proj_b;
+model.tensors["model/h" + std::to_string(i) + "/mlp/c_fc/w"] = layer.c_mlp_fc_w;
+model.tensors["model/h" + std::to_string(i) + "/mlp/c_fc/b"] = layer.c_mlp_fc_b;
+model.tensors["model/h" + std::to_string(i) + "/mlp/c_proj/w"] = layer.c_mlp_proj_w;
+model.tensors["model/h" + std::to_string(i) + "/mlp/c_proj/b"] = layer.c_mlp_proj_b;
 }
 }
 model.hparams.n_ctx = n_ctx;
 {
 const auto & hparams = model.hparams;
-const int n_embd  = hparams.n_embd;
+const int n_embd = hparams.n_embd;
 const int n_layer = hparams.n_layer;
-const int n_ctx   = hparams.n_ctx;
-const int n_mem      = n_layer*n_ctx;
+const int n_ctx = hparams.n_ctx;
+const int n_mem = n_layer*n_ctx;
 const int n_elements = n_embd*n_mem;
 model.kv_cache.k = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_elements);
 model.kv_cache.v = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_elements);
-model.kv_cache.head      = 0;
-model.kv_cache.size      = n_ctx;
+model.kv_cache.head = 0;
+model.kv_cache.size = n_ctx;
 model.kv_cache.cells.resize(n_ctx);
 const size_t memory_size = ggml_nbytes(model.kv_cache.k) + ggml_nbytes(model.kv_cache.v);
 printf("%s: memory size = %8.2f MB, n_mem = %d\n", __func__, memory_size/1024.0/1024.0, n_mem);
@@ -300,7 +300,7 @@ int32_t length;
 int32_t ttype;
 fin.read(reinterpret_cast<char *>(&n_dims), sizeof(n_dims));
 fin.read(reinterpret_cast<char *>(&length), sizeof(length));
-fin.read(reinterpret_cast<char *>(&ttype),  sizeof(ttype));
+fin.read(reinterpret_cast<char *>(&ttype), sizeof(ttype));
 if (fin.eof()) {
 break;
 }
@@ -337,7 +337,7 @@ __func__, name.c_str(), ggml_nbytes(tensor), nelements*bpe);
 return false;
 }
 ggml_tallocr_alloc(&alloc, tensor);
-if (ggml_backend_is_cpu  (model.backend)
+if (ggml_backend_is_cpu (model.backend)
 #ifdef GGML_USE_METAL
 || ggml_backend_is_metal(model.backend)
 #endif
@@ -362,18 +362,18 @@ fin.close();
 return true;
 }
 struct ggml_cgraph * gpt2_graph(
-const  gpt2_model  & model,
-const  gpt2_batch  & batch,
-bool    measure) {
+const gpt2_model & model,
+const gpt2_batch & batch,
+bool measure) {
 const auto & hparams = model.hparams;
-const int n_embd  = hparams.n_embd;
+const int n_embd = hparams.n_embd;
 const int n_layer = hparams.n_layer;
-const int n_ctx   = hparams.n_ctx;
-const int n_head  = hparams.n_head;
+const int n_ctx = hparams.n_ctx;
+const int n_head = hparams.n_head;
 const auto & kv_cache = model.kv_cache;
 const int32_t n_tokens = batch.n_tokens;
-const int32_t n_kv     = measure ? n_ctx            : kv_cache.n;
-const int32_t kv_head  = measure ? n_ctx - n_tokens : kv_cache.head;
+const int32_t n_kv = measure ? n_ctx : kv_cache.n;
+const int32_t kv_head = measure ? n_ctx - n_tokens : kv_cache.head;
 static size_t buf_size = ggml_tensor_overhead()*GPT2_MAX_NODES + ggml_graph_overhead_custom(GPT2_MAX_NODES, false);
 static std::vector<uint8_t> buf(buf_size);
 struct ggml_init_params params = {
@@ -382,7 +382,7 @@ buf.data(),
 true,
 };
 struct ggml_context * ctx = ggml_init(params);
-struct ggml_cgraph  * gf = ggml_new_graph_custom(ctx, GPT2_MAX_NODES, false);
+struct ggml_cgraph * gf = ggml_new_graph_custom(ctx, GPT2_MAX_NODES, false);
 struct ggml_tensor * inpL;
 if (batch.token) {
 struct ggml_tensor * inp_tokens = ggml_new_tensor_1d(ctx, GGML_TYPE_I32, n_tokens);
@@ -513,10 +513,10 @@ return gf;
 }
 static void gpt2_kv_cache_seq_cp(
 struct gpt2_kv_cache & cache,
-gpt2_seq_id   seq_id_src,
-gpt2_seq_id   seq_id_dst,
-gpt2_pos   p0,
-gpt2_pos   p1) {
+gpt2_seq_id seq_id_src,
+gpt2_seq_id seq_id_dst,
+gpt2_pos p0,
+gpt2_pos p1) {
 if (p0 < 0) p0 = 0;
 if (p1 < 0) p1 = std::numeric_limits<gpt2_pos>::max();
 for (uint32_t i = 0; i < cache.size; ++i) {
@@ -532,27 +532,27 @@ batch.embd = (float *) malloc(sizeof(float) * n_tokens * embd);
 } else {
 batch.token = (gpt_vocab::id *) malloc(sizeof(gpt_vocab::id) * n_tokens);
 }
-batch.pos    = (gpt2_pos *)    malloc(sizeof(gpt2_pos)    * n_tokens);
+batch.pos = (gpt2_pos *) malloc(sizeof(gpt2_pos) * n_tokens);
 batch.seq_id = (gpt2_seq_id *) malloc(sizeof(gpt2_seq_id) * n_tokens);
-batch.logits = (int8_t *)      malloc(sizeof(int8_t)      * n_tokens);
+batch.logits = (int8_t *) malloc(sizeof(int8_t) * n_tokens);
 return batch;
 }
 void gpt2_batch_free(struct gpt2_batch batch) {
-if (batch.token)  free(batch.token);
-if (batch.embd)   free(batch.embd);
-if (batch.pos)    free(batch.pos);
+if (batch.token) free(batch.token);
+if (batch.embd) free(batch.embd);
+if (batch.pos) free(batch.pos);
 if (batch.seq_id) free(batch.seq_id);
 if (batch.logits) free(batch.logits);
 }
 int gpt2_decode(
-struct gpt2_model &  model,
-ggml_gallocr_t       allocr,
-struct gpt2_batch    batch,
-int                  n_threads,
+struct gpt2_model & model,
+ggml_gallocr_t allocr,
+struct gpt2_batch batch,
+int n_threads,
 std::vector<float> & logits) {
 const int32_t n_tokens = batch.n_tokens;
-const auto &  hparams  = model.hparams;
-const int     n_vocab  = hparams.n_vocab;
+const auto & hparams = model.hparams;
+const int n_vocab = hparams.n_vocab;
 if (n_tokens == 0) {
 printf("%s: n_tokens == 0", __func__);
 return -1;
@@ -582,13 +582,13 @@ ggml_backend_tensor_set(embd, batch.embd, 0, n_tokens * hparams.n_embd * ggml_el
 struct ggml_tensor * KQ_mask = ggml_graph_get_tensor(gf, "KQ_mask");
 const auto & kv_cache = model.kv_cache;
 const int32_t n_tokens = batch.n_tokens;
-const int32_t n_kv     = kv_cache.n;
+const int32_t n_kv = kv_cache.n;
 std::vector<float> data_buf(n_kv*n_tokens);
 const float neg_inf_v = -INFINITY;
 for (int h = 0; h < 1; ++h) {
 int h_offset = h*(n_kv*n_tokens);
 for (int j = 0; j < n_tokens; ++j) {
-const gpt2_pos    pos    = batch.pos[j];
+const gpt2_pos pos = batch.pos[j];
 const gpt2_seq_id seq_id = batch.seq_id[j];
 for (int i = 0; i < n_kv; ++i) {
 if (!kv_cache.cells[i].has_seq_id(seq_id) || kv_cache.cells[i].pos > pos) {
@@ -663,13 +663,13 @@ ggml_gallocr_reserve(allocr, gf);
 size_t mem_size = ggml_gallocr_get_buffer_size(allocr, 0);
 fprintf(stderr, "%s: compute buffer size: %.2f MB\n", __func__, mem_size/1024.0/1024.0);
 }
-int64_t t_sample_us  = 0;
+int64_t t_sample_us = 0;
 int64_t t_predict_us = 0;
 std::vector<float> logits;
 batch.n_tokens = embd_inp.size();
 for (int32_t i = 0; i < batch.n_tokens; i++) {
-batch.token[i]  = embd_inp[i];
-batch.pos[i]    = i;
+batch.token[i] = embd_inp[i];
+batch.pos[i] = i;
 batch.seq_id[i] = 0;
 batch.logits[i] = false;
 }
@@ -693,13 +693,13 @@ printf("%d ", embd_inp[i]);
 printf("\n\n");
 std::vector<gpt_vocab::token> streams(n_parallel);
 std::vector<int32_t> i_batch(n_parallel, batch.n_tokens - 1);
-int n_cur     = batch.n_tokens;
-int n_len     = batch.n_tokens + params.n_predict;
+int n_cur = batch.n_tokens;
+int n_len = batch.n_tokens + params.n_predict;
 int n_decoded = 0;
-const int   n_vocab = model.hparams.n_vocab;
-const int   top_k = params.top_k;
+const int n_vocab = model.hparams.n_vocab;
+const int top_k = params.top_k;
 const float top_p = params.top_p;
-const float temp  = params.temp;
+const float temp = params.temp;
 while (n_cur < n_len) {
 batch.n_tokens = 0;
 for (int32_t i = 0; i < n_parallel; ++i) {
@@ -728,7 +728,7 @@ fflush(stdout);
 }
 streams[i] += token;
 batch.token [batch.n_tokens] = id;
-batch.pos   [batch.n_tokens] = n_cur;
+batch.pos [batch.n_tokens] = n_cur;
 batch.seq_id[batch.n_tokens] = i;
 batch.logits[batch.n_tokens] = true;
 i_batch[i] = batch.n_tokens;
@@ -758,7 +758,7 @@ printf("sequence %d:\n\n%s%s\n\n", i, params.prompt.c_str(), streams[i].c_str())
 {
 const int64_t t_main_end_us = ggml_time_us();
 printf("\n\n");
-printf("%s:     n_decoded = %8d\n",      __func__, n_decoded);
+printf("%s:     n_decoded = %8d\n", __func__, n_decoded);
 printf("%s:     load time = %8.2f ms\n", __func__, t_load_us/1000.0f);
 printf("%s:   sample time = %8.2f ms\n", __func__, t_sample_us/1000.0f);
 printf("%s:  predict time = %8.2f ms\n", __func__, t_predict_us/1000.0f);

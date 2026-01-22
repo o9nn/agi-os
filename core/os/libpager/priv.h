@@ -65,12 +65,12 @@ PAGE_EIO,
 PAGE_EDQUOT,
 };
 extern int _pager_page_errors[];
-#define PM_WRITEWAIT  0x0200
-#define PM_INIT       0x0100
-#define PM_INCORE     0x0080
-#define PM_PAGINGOUT  0x0040
+#define PM_WRITEWAIT 0x0200
+#define PM_INIT 0x0100
+#define PM_INCORE 0x0080
+#define PM_PAGINGOUT 0x0040
 #define PM_PAGEINWAIT 0x0020
-#define PM_INVALID    0x0010
+#define PM_INVALID 0x0010
 #define PM_ERROR(byte) (((byte) & 0xc) >> 2)
 #define SET_PM_ERROR(byte,err) (((byte) & ~0xc) | ((err) << 2))
 #define PM_NEXTERROR(byte) ((byte) & 0x3)

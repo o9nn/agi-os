@@ -590,8 +590,8 @@ end
 state, orig_inputs
 end
 """
-(; A, B, C, D), simplified_sys, extras = linearize(sys, inputs, outputs;    t=0.0, op = Dict(), allow_input_derivatives = false, zero_dummy_der=false, kwargs...)
-(; A, B, C, D), extras                 = linearize(simplified_sys, lin_fun; t=0.0, op = Dict(), allow_input_derivatives = false, zero_dummy_der=false)
+(; A, B, C, D), simplified_sys, extras = linearize(sys, inputs, outputs; t=0.0, op = Dict(), allow_input_derivatives = false, zero_dummy_der=false, kwargs...)
+(; A, B, C, D), extras = linearize(simplified_sys, lin_fun; t=0.0, op = Dict(), allow_input_derivatives = false, zero_dummy_der=false)
 Linearize `sys` between `inputs` and `outputs`, both vectors of variables. Return a NamedTuple with the matrices of a linear statespace representation
 on the form
 ```math
@@ -614,12 +614,12 @@ The implementation and notation follows that of
 # Extended help
 This example builds the following feedback interconnection and linearizes it from the input of `F` to the output of `P`.
 ```
-r ┌─────┐       ┌─────┐     ┌─────┐
-───►│     ├──────►│     │  u  │     │
-│  F  │       │  C  ├────►│  P  │ y
-└─────┘     ┌►│     │     │     ├─┬─►
-│ └─────┘     └─────┘ │
-│                     │
+r ┌─────┐ ┌─────┐ ┌─────┐
+───►│ ├──────►│ │ u │ │
+│ F │ │ C ├────►│ P │ y
+└─────┘ ┌►│ │ │ ├─┬─►
+│ └─────┘ └─────┘ │
+│ │
 └─────────────────────┘
 ```
 ```julia

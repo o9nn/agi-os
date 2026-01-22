@@ -29,26 +29,26 @@ LOG("\n    %s \\\n"
 "       [--show-statistics] [...]\n" , argv[0]);
 LOG("\n");
 }
-static const char * const LLM_KV_IMATRIX_DATASETS    = "imatrix.datasets";
+static const char * const LLM_KV_IMATRIX_DATASETS = "imatrix.datasets";
 static const char * const LLM_KV_IMATRIX_CHUNK_COUNT = "imatrix.chunk_count";
-static const char * const LLM_KV_IMATRIX_CHUNK_SIZE  = "imatrix.chunk_size";
+static const char * const LLM_KV_IMATRIX_CHUNK_SIZE = "imatrix.chunk_size";
 struct Stats {
-std::vector<float>   values;
+std::vector<float> values;
 std::vector<int64_t> counts;
 };
 struct tensor_statistics {
 std::string tensor;
 Stats stats;
 float total_sqract = 0.0f;
-float mean_sqract  = 0.0f;
-float max_sqract   = 0.0f;
-float min_sqract   = 0.0f;
-int elements       = 0;
-float stddev       = 0.0f;
-float active       = 0.0f;
-float entropy      = 0.0f;
-float zd           = 0.0f;
-float cossim       = 0.0f;
+float mean_sqract = 0.0f;
+float max_sqract = 0.0f;
+float min_sqract = 0.0f;
+int elements = 0;
+float stddev = 0.0f;
+float active = 0.0f;
+float entropy = 0.0f;
+float zd = 0.0f;
+float cossim = 0.0f;
 };
 class IMatrixCollector {
 public:
@@ -62,12 +62,12 @@ bool load_imatrix(const char * file_name);
 const std::unordered_map<std::string, Stats> & get_mstats() const { return m_stats; }
 private:
 std::unordered_map<std::string, Stats> m_stats;
-common_params                          m_params;
-std::mutex                             m_mutex;
-std::vector<std::string>               m_datasets;
-int32_t                                m_last_chunk = 0;
-std::vector<char>                      m_src1_data;
-std::vector<char>                      m_ids;
+common_params m_params;
+std::mutex m_mutex;
+std::vector<std::string> m_datasets;
+int32_t m_last_chunk = 0;
+std::vector<char> m_src1_data;
+std::vector<char> m_ids;
 };
 static std::string filter_tensor_name(const char * name) {
 std::string wname;
@@ -129,17 +129,17 @@ for (int j = 0; j < row_size; ++j) {
 activations.push_back(e.values[i*row_size + j] / e.counts[i]);
 }
 }
-const float act_total     = std::accumulate(activations.begin(), activations.end(), 0.0f);
-const float act_max       = *std::max_element(activations.begin(), activations.end());
-const float act_min       = *std::min_element(activations.begin(), activations.end());
-const float act_mean      = act_total / activations.size();
+const float act_total = std::accumulate(activations.begin(), activations.end(), 0.0f);
+const float act_max = *std::max_element(activations.begin(), activations.end());
+const float act_min = *std::min_element(activations.begin(), activations.end());
+const float act_mean = act_total / activations.size();
 const float act_sqr_total = std::inner_product(activations.begin(), activations.end(), activations.begin(), 0.0f);
-const float act_var       = (act_sqr_total / activations.size()) - (act_mean * act_mean);
-const float act_dev       = std::sqrt(std::max(0.0f, act_var));
-float threshold           = 1e-5f;
-const int inactive_count  = std::count_if(activations.begin(), activations.end(),
+const float act_var = (act_sqr_total / activations.size()) - (act_mean * act_mean);
+const float act_dev = std::sqrt(std::max(0.0f, act_var));
+float threshold = 1e-5f;
+const int inactive_count = std::count_if(activations.begin(), activations.end(),
 [threshold](const float v) { return fabsf(v) <= threshold; });
-const float active_ratio  = 1 - static_cast<float>(inactive_count) / activations.size();
+const float active_ratio = 1 - static_cast<float>(inactive_count) / activations.size();
 float entropy = 0;
 if (act_total > 0) {
 for (const auto act : activations) {
@@ -157,17 +157,17 @@ z_score++;
 }
 }
 auto & ts = tstats.emplace_back();
-ts.tensor     = name;
-ts.stats      = e;
+ts.tensor = name;
+ts.stats = e;
 ts.total_sqract = act_total;
-ts.mean_sqract  = act_mean;
-ts.max_sqract   = act_max;
-ts.min_sqract   = act_min;
-ts.elements   = static_cast<int>(activations.size());
-ts.stddev     = act_dev;
-ts.active     = active_ratio;
-ts.entropy    = entropy;
-ts.zd         = static_cast<float>(z_score) / ts.elements;
+ts.mean_sqract = act_mean;
+ts.max_sqract = act_max;
+ts.min_sqract = act_min;
+ts.elements = static_cast<int>(activations.size());
+ts.stddev = act_dev;
+ts.active = active_ratio;
+ts.entropy = entropy;
+ts.zd = static_cast<float>(z_score) / ts.elements;
 }
 static void compute_cossim(std::vector<tensor_statistics> & tstats) {
 static const std::regex pattern(R"(blk\.(\d+)\.)");
@@ -477,7 +477,7 @@ const int32_t nval = (int32_t) stat.values.size();
 const int32_t nmat = (int32_t) stat.counts.size();
 if (nval > 0 && nmat > 0) {
 struct ggml_tensor * in_sum2 = ggml_new_tensor_2d(ctx, GGML_TYPE_F32, nval / nmat, nmat);
-struct ggml_tensor * counts  = ggml_new_tensor_2d(ctx, GGML_TYPE_F32, 1, nmat);
+struct ggml_tensor * counts = ggml_new_tensor_2d(ctx, GGML_TYPE_F32, 1, nmat);
 ggml_format_name(in_sum2, "%s.in_sum2", name.c_str());
 ggml_format_name(counts, "%s.counts", name.c_str());
 for (int32_t j = 0; j < nval; ++j) {
@@ -616,9 +616,9 @@ sums_counts_for[std::move(name)].second = cur;
 }
 }
 for (const auto & sc : sums_counts_for) {
-const std::string &        name    = sc.first;
+const std::string & name = sc.first;
 const struct ggml_tensor * in_sum2 = sc.second.first;
-const struct ggml_tensor * counts  = sc.second.second;
+const struct ggml_tensor * counts = sc.second.second;
 if (!in_sum2 || !counts) {
 LOG_ERR("%s: mismatched sums and counts for %s\n", __func__, name.c_str());
 gguf_free(ctx_gguf);
@@ -672,8 +672,8 @@ return g_collector.collect_imatrix(t, ask, user_data);
 }
 struct results_log_softmax {
 double log_softmax;
-float  logit;
-float  prob;
+float logit;
+float prob;
 };
 static std::vector<float> softmax(const std::vector<float> & logits) {
 std::vector<float> probs(logits.size());
@@ -710,7 +710,7 @@ double & nll, double & nll2, float * logit_history, float * prob_history) {
 std::mutex mutex;
 int counter = 0;
 auto compute = [&mutex, &counter, &nll, &nll2, logit_history, prob_history, n_vocab, logits, tokens, n_token] () {
-double local_nll  = 0;
+double local_nll = 0;
 double local_nll2 = 0;
 while (true) {
 std::unique_lock<std::mutex> lock(mutex);
@@ -725,7 +725,7 @@ const double v = -results.log_softmax;
 local_nll += v;
 local_nll2 += v*v;
 logit_history[i] = results.logit;
-prob_history[i]  = results.prob;
+prob_history[i] = results.prob;
 }
 };
 for (auto & w : workers) {
@@ -784,14 +784,14 @@ logits.reserve((size_t)n_ctx * n_vocab);
 LOG_INF("%s: computing over %d chunks, n_ctx=%d, batch_size=%d, n_seq=%d\n", __func__, n_chunk, n_ctx, n_batch, n_seq);
 std::vector<std::thread> workers(std::thread::hardware_concurrency() - 1);
 for (int i = 0; i < n_chunk; i += n_seq) {
-const int start =     i * n_ctx;
-const int end   = start + n_ctx;
+const int start = i * n_ctx;
+const int end = start + n_ctx;
 const int n_seq_batch = std::min(n_seq, n_chunk - i);
 const auto t_start = std::chrono::high_resolution_clock::now();
 llama_memory_clear(llama_get_memory(ctx), true);
 for (int j = 0; j < num_batches; ++j) {
 const int batch_start = start + j * n_batch;
-const int batch_size  = std::min(end - batch_start, n_batch);
+const int batch_size = std::min(end - batch_start, n_batch);
 common_batch_clear(batch);
 for (int seq = 0; seq < n_seq_batch; seq++) {
 int seq_start = batch_start + seq*n_ctx;
@@ -835,7 +835,7 @@ process_logits(n_vocab, all_logits + first*n_vocab,
 tokens_data, n_ctx - 1 - first,
 workers, nll, nll2,
 logit_history.data() + start + seq*n_ctx + first,
-prob_history.data()  + start + seq*n_ctx + first);
+prob_history.data() + start + seq*n_ctx + first);
 count += n_ctx - first - 1;
 LOG("[%d]%.4lf,", i + seq + 1, std::exp(nll / count));
 }
@@ -890,10 +890,10 @@ return name_a < name_b || (name_a == name_b && a.total_sqract > b.total_sqract);
 };
 std::sort(ts.begin(), ts.end(), tensor_comparer());
 struct weighted_stats {
-float weighted_bias   = 0.0f;
-float weighted_zd     = 0.0f;
+float weighted_bias = 0.0f;
+float weighted_zd = 0.0f;
 float weighted_cossim = 0.0f;
-int   total_elements  = 0;
+int total_elements = 0;
 };
 std::map<int, weighted_stats> ws;
 LOG_INF("\nComputing statistics for %s (%d tensors)\n", params.in_files[0].c_str(), static_cast<int>(ts.size()));
@@ -916,8 +916,8 @@ LOG_INF("%5s\t%-20s\t%10.2f\t%8.4f\t%11.4f\t%6.2f\t%6.2f\t%8.2f%%\t%6d\t%10.4f\t
 layer.c_str(), name.c_str(), tstat.total_sqract, tstat.min_sqract, tstat.max_sqract, tstat.mean_sqract,
 tstat.stddev, tstat.active * 100.0f, tstat.elements, tstat.entropy,
 100.0f * (tstat.entropy / std::log2(tstat.elements)), 100.0f * tstat.zd, tstat.cossim);
-const float weighted_bias   = tstat.elements * tstat.total_sqract;
-const float weighted_zd     = tstat.elements * tstat.zd;
+const float weighted_bias = tstat.elements * tstat.total_sqract;
+const float weighted_zd = tstat.elements * tstat.zd;
 const float weighted_cossim = tstat.elements * tstat.cossim;
 if (ws.find(blk) != ws.end()) {
 ws[blk].weighted_bias += weighted_bias;
@@ -926,11 +926,11 @@ ws[blk].weighted_cossim += weighted_cossim;
 ws[blk].total_elements += tstat.elements;
 } else {
 weighted_stats temp_ws;
-temp_ws.weighted_bias   = weighted_bias;
-temp_ws.weighted_zd     = weighted_zd;
+temp_ws.weighted_bias = weighted_bias;
+temp_ws.weighted_zd = weighted_zd;
 temp_ws.weighted_cossim = weighted_cossim;
-temp_ws.total_elements  = tstat.elements;
-ws[blk]                 = temp_ws;
+temp_ws.total_elements = tstat.elements;
+ws[blk] = temp_ws;
 }
 }
 const int layers = std::count_if(ws.begin(), ws.end(), [](const auto & kv) { return kv.first >= 0; });
@@ -944,8 +944,8 @@ if (stats.total_elements == 0) {
 continue;
 }
 if (layer >= 0) {
-const float bias   = stats.weighted_bias / stats.total_elements;
-const float zd     = stats.weighted_zd / stats.total_elements;
+const float bias = stats.weighted_bias / stats.total_elements;
+const float zd = stats.weighted_zd / stats.total_elements;
 const float cossim = stats.weighted_cossim / stats.total_elements;
 LOG_INF("%5d\t%14.2f\t%10.4f%%\t%6.4f\n", layer, bias, 100.0f * zd, cossim);
 }
@@ -977,7 +977,7 @@ return 1;
 const int32_t n_seq = std::max(1, params.n_batch / n_ctx);
 const int32_t n_kv = n_seq * n_ctx;
 params.n_parallel = n_seq;
-params.n_ctx      = n_kv;
+params.n_ctx = n_kv;
 params.n_batch = std::min(params.n_batch, n_kv);
 }
 g_collector.set_params(params);

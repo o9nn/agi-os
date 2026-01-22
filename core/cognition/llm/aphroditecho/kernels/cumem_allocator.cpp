@@ -8,17 +8,17 @@ extern "C" {
 char error_msg[10240];
 CUresult no_error = CUresult(0);
 CUresult error_code = no_error;
-#define CUDA_CHECK(condition)                                           \
-do {                                                                  \
-CUresult error = condition;                                         \
-if (error != 0) {                                                   \
-error_code = error;                                               \
-char* error_string;                                               \
-cuGetErrorString(error, (const char**)&error_string);             \
+#define CUDA_CHECK(condition) \
+do { \
+CUresult error = condition; \
+if (error != 0) { \
+error_code = error; \
+char* error_string; \
+cuGetErrorString(error, (const char**)&error_string); \
 snprintf(error_msg, sizeof(error_msg), "CUDA Error: %s at %s:%d", \
-error_string, __FILE__, __LINE__);                       \
-std::cerr << error_msg << std::endl;                              \
-}                                                                   \
+error_string, __FILE__, __LINE__); \
+std::cerr << error_msg << std::endl; \
+} \
 } while (0)
 static PyObject* g_python_malloc_callback = nullptr;
 static PyObject* g_python_free_callback = nullptr;

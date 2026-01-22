@@ -565,7 +565,7 @@ long threshold = opt->unaccessed_field_drop_secs;
 if (mail_cache_headers_check_capped(cache))
 threshold /= 4;
 ctx_r->max_yes_downgrade_time = hdr->day_stamp - threshold;
-ctx_r->max_temp_drop_time     = hdr->day_stamp - 2 * threshold;
+ctx_r->max_temp_drop_time = hdr->day_stamp - 2 * threshold;
 }
 }
 enum mail_cache_purge_drop_decision

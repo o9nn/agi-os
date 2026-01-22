@@ -10,11 +10,11 @@
 #include <unistd.h>
 #include <sql.h>
 #include <sqlext.h>
-#define max(a, b)        ((a) > (b) ? (a) : (b))
+#define max(a, b) ((a) > (b) ? (a) : (b))
 #define strnicmp strncasecmp
 #endif
-#define MAXCOLS	100
-#define BUFSIZE	8192
+#define MAXCOLS 100
+#define BUFSIZE 8192
 #define REQ_HEADER_SIZE 18
 #define RES_HEADER_SIZE 22
 #define OFFSET_LENGTH 2
@@ -22,82 +22,82 @@
 #define OFFSET_REQ_DATA 18
 #define OFFSET_RETURN 18
 #define OFFSET_RES_DATA 22
-#define	CONN_ALLOC_FAIL		1
-#define STREAM_ALLOC_FAIL	2
-#define STREAM_BAD_ID		3
-#define LAST_ERROR_NO		4
+#define CONN_ALLOC_FAIL 1
+#define STREAM_ALLOC_FAIL 2
+#define STREAM_BAD_ID 3
+#define LAST_ERROR_NO 4
 typedef int STATUS;
-#define			OK		 0
-#define			WARN	-1
-#define			ERR		-2
+#define OK 0
+#define WARN -1
+#define ERR -2
 typedef struct {
-int		state;
-#define			SQLC_FREE	0
-#define			SQLC_INUSE	1
-int		connid;
-int		refcount;
-UCHAR	user[48];
-UCHAR	passwd[48];
-UCHAR	dbname[48];
-UCHAR	errmsg[256];
-HDBC	hdbc;
+int state;
+#define SQLC_FREE 0
+#define SQLC_INUSE 1
+int connid;
+int refcount;
+UCHAR user[48];
+UCHAR passwd[48];
+UCHAR dbname[48];
+UCHAR errmsg[256];
+HDBC hdbc;
 } SQLConn;
 typedef struct {
-int		state;
-#define			SQLS_FREE	0
-#define			SQLS_INUSE	1
-int		streamid;
-int		connid;
-HSTMT	hstmt;
-UCHAR	errmsg[256];
-UCHAR	colname[MAXCOLS][32];
-SWORD	coltype[MAXCOLS];
-SWORD	colnamelen;
-SWORD	nullable;
-UDWORD	collen[MAXCOLS];
-SWORD	scale;
-SDWORD	outlen[MAXCOLS];
-UCHAR	*data[MAXCOLS];
-SWORD	nresultcols;
-SDWORD	rowcount;
-SWORD	rownum;
-RETCODE	rc;
-UCHAR	*setdata[MAXCOLS];
-SDWORD	setdatalen[MAXCOLS];
+int state;
+#define SQLS_FREE 0
+#define SQLS_INUSE 1
+int streamid;
+int connid;
+HSTMT hstmt;
+UCHAR errmsg[256];
+UCHAR colname[MAXCOLS][32];
+SWORD coltype[MAXCOLS];
+SWORD colnamelen;
+SWORD nullable;
+UDWORD collen[MAXCOLS];
+SWORD scale;
+SDWORD outlen[MAXCOLS];
+UCHAR *data[MAXCOLS];
+SWORD nresultcols;
+SDWORD rowcount;
+SWORD rownum;
+RETCODE rc;
+UCHAR *setdata[MAXCOLS];
+SDWORD setdatalen[MAXCOLS];
 } SQLStream;
 typedef struct {
-HENV		henv;
-int			maxconn;
-int			numconn;
-SQLConn		**scarray;
-int			maxstream;
-int			numstream;
-SQLStream	**ssarray;
+HENV henv;
+int maxconn;
+int numconn;
+SQLConn **scarray;
+int maxstream;
+int numstream;
+SQLStream **ssarray;
 } SQLEnv;
 typedef struct {
-char	mtype;
-char	version;
-int		nbytes;
-int		sstream;
-int		retcode;
-int		bytesNotRead;
-char	*data;
+char mtype;
+char version;
+int nbytes;
+int sstream;
+int retcode;
+int bytesNotRead;
+char *data;
 } DBMSG, *DBMSGP;
-int			getCommand		(DBMSGP msgp, UCHAR *buf, int bufsiz);
-void		sendResponse	(char type, int lendata, int sstream, int retcode, char *data);
-void		sendError		(char *errmsg, int sstream);
-void		print_err		(SQLEnv *sqle, int connid, int streamid, UCHAR * buf, int bufsiz);
-UDWORD		display_size	(SWORD coltype, UDWORD collen, UCHAR *colname);
-STATUS		newSqlEnv		(SQLEnv **sqle);
-STATUS		freeSqlEnv		(SQLEnv **sqle);
-STATUS		newSqlConn		(SQLEnv *sqle, char *info, int *connid);
-STATUS		mapSqlConn		(SQLEnv *sqle, int connid, SQLConn **sqlc);
-STATUS		freeSqlConn		(SQLEnv *sqle, int connid);
-STATUS		newSqlStream	(SQLEnv *sqle, int connid, int *streamid);
-STATUS		mapSqlStream	(SQLEnv *sqle, int streamid, SQLStream **sqls);
-STATUS		freeSqlStream	(SQLEnv *sqle, int streamid);
-STATUS		parseConnInfo	(SQLConn *sqlc, char *info);
-char	*iError[] = {
+int getCommand (DBMSGP msgp, UCHAR *buf, int bufsiz);
+void sendResponse (char type, int lendata, int sstream, int retcode, char *data);
+void sendError (char *errmsg, int sstream);
+void print_err (SQLEnv *sqle, int connid, int streamid, UCHAR * buf, int bufsiz);
+UDWORD display_size (SWORD coltype, UDWORD collen, UCHAR *colname);
+STATUS newSqlEnv (SQLEnv **sqle);
+STATUS freeSqlEnv (SQLEnv **sqle);
+STATUS newSqlConn (SQLEnv *sqle, char *info, int *connid);
+STATUS mapSqlConn (SQLEnv *sqle, int connid, SQLConn **sqlc);
+STATUS freeSqlConn (SQLEnv *sqle, int connid);
+STATUS newSqlStream (SQLEnv *sqle, int connid, int *streamid);
+STATUS mapSqlStream (SQLEnv *sqle, int streamid, SQLStream **sqls);
+STATUS freeSqlStream (SQLEnv *sqle, int streamid);
+STATUS parseConnInfo (SQLConn *sqlc, char *info);
+char *iError[] = {
 "INFDB: DB connection allocation failed",
 "INFDB: couldn't allocate SQL stream",
 "INFDB: bad SQL stream identifier"
@@ -105,16 +105,16 @@ char	*iError[] = {
 int
 main(int argc, char *argv[])
 {
-int			i;
-int			notdone = 1;
-int			infErrno;
-DBMSG		msg;
-SQLEnv		*sqle = NULL;
-SQLStream	*sqls;
-char		buf[BUFSIZE];
-char		outbuf[BUFSIZE];
-char		errmsg[256];
-STATUS		rc;
+int i;
+int notdone = 1;
+int infErrno;
+DBMSG msg;
+SQLEnv *sqle = NULL;
+SQLStream *sqls;
+char buf[BUFSIZE];
+char outbuf[BUFSIZE];
+char errmsg[256];
+STATUS rc;
 #ifdef WIN32
 _setmode(0, _O_BINARY);
 _setmode(1, _O_BINARY);
@@ -125,7 +125,7 @@ sendError("INFDB: Failed to allocate SQL environment.", -1);
 return -1;
 }
 while ( notdone ) {
-int		bytesRead;
+int bytesRead;
 bytesRead = 0;
 if ( (bytesRead = getCommand(&msg, buf, sizeof(buf))) <= 0 ) {
 continue;
@@ -189,10 +189,10 @@ SQL_C_CHAR,
 sqls->data[i], sqls->collen[i], &sqls->outlen[i]);
 if ( rc == SQL_SUCCESS_WITH_INFO &&
 (UDWORD) sqls->outlen[i] > sqls->collen[i] ) {
-UCHAR	*tmp;
+UCHAR *tmp;
 tmp = (UCHAR *) realloc(sqls->data[i], sqls->outlen[i]+1);
 if ( tmp != NULL ) {
-SDWORD	dummy;
+SDWORD dummy;
 sqls->data[i] = tmp;
 rc = SQLGetData(sqls->hstmt, (UWORD)(i+1), SQL_C_DEFAULT,
 &tmp[sqls->collen[i]], sqls->outlen[i], &dummy);
@@ -242,8 +242,8 @@ if ( (i = atoi(msg.data) + 1) < 1 || i >= MAXCOLS ) {
 sendError("Illegal param number", msg.sstream);
 }
 else {
-int		len;
-char	*p = msg.data + 4;
+int len;
+char *p = msg.data + 4;
 len = msg.nbytes - 4;
 if ( len < 0 ) {
 sendError("Write phase error II", msg.sstream);
@@ -262,7 +262,7 @@ bytesRead = &buf[bytesRead] - p;
 memcpy(sqls->setdata[i], p, bytesRead);
 len -= bytesRead;
 while ( len > 0 ) {
-int	n;
+int n;
 if ( (n = read(0, sqls->setdata[i] + bytesRead, len)) <= 0 ) {
 break;
 }
@@ -328,12 +328,12 @@ SQLFreeStmt(sqls->hstmt, SQL_CLOSE);
 SQLFreeStmt(sqls->hstmt, SQL_UNBIND);
 }
 if ( strnicmp(msg.data, "commit", 6) == 0 ) {
-SQLConn	*sqlc;
+SQLConn *sqlc;
 rc = mapSqlConn(sqle, sqls->connid, &sqlc);
 rc = SQLTransact(SQL_NULL_HENV, sqlc->hdbc, SQL_COMMIT);
 }
 else if ( strnicmp(msg.data, "rollback", 8) == 0 ) {
-SQLConn	*sqlc;
+SQLConn *sqlc;
 rc = mapSqlConn(sqle, sqls->connid, &sqlc);
 rc = SQLTransact(SQL_NULL_HENV, sqlc->hdbc, SQL_ROLLBACK);
 }
@@ -341,7 +341,7 @@ else if ( strnicmp(msg.data, "tables", 6) == 0 ) {
 rc = SQLTables(sqls->hstmt, NULL, 0, NULL, 0, NULL, 0, NULL, 0);
 }
 else if ( strnicmp(msg.data, "columns", 7) == 0 ) {
-UCHAR	*tbl;
+UCHAR *tbl;
 for ( tbl = msg.data+8; *tbl == ' ' || *tbl == '\t'; tbl++ ) { }
 rc = SQLColumns(sqls->hstmt, NULL, 0, NULL, 0, tbl, SQL_NTS, NULL, 0);
 }
@@ -350,17 +350,17 @@ rc = SQLExecDirect(sqls->hstmt, msg.data, SQL_NTS);
 }
 outbuf[0] = '\0';
 while ( rc == SQL_NEED_DATA ) {
-PTR	pToken;
+PTR pToken;
 rc = SQLParamData(sqls->hstmt, &pToken);
 #define pnum (int)pToken
 if ( rc == SQL_NEED_DATA ) {
-int	retcode;
+int retcode;
 if ( sqls->setdata[pnum] == NULL || sqls->setdatalen[pnum] <= 0 ) {
 sprintf(outbuf, "Parameter %d not set\n", pnum);
 break;
 }
 for ( i = 0; i < sqls->setdatalen[pnum]; ) {
-int		togo;
+int togo;
 togo = 1024;
 if ( sqls->setdatalen[pnum] - i < 1024 ) {
 togo = sqls->setdatalen[pnum] - i;
@@ -408,7 +408,7 @@ SQLRowCount(sqls->hstmt, &sqls->rowcount);
 }
 else {
 for ( i = 0; i < sqls->nresultcols; i++ ) {
-int	newlen;
+int newlen;
 SQLDescribeCol(sqls->hstmt, (UWORD) (i+1), sqls->colname[i],
 (SWORD)sizeof(sqls->colname[i]),
 &sqls->colnamelen, &sqls->coltype[i], &sqls->collen[i],
@@ -446,8 +446,8 @@ return 0;
 int
 getCommand(DBMSGP msgp, UCHAR *buf, int bufsiz)
 {
-int		bytesRead = 0;
-int		rc = 0;
+int bytesRead = 0;
+int rc = 0;
 msgp->mtype = '\0';
 while ( bufsiz > 0 && (rc = read(0, &buf[bytesRead], bufsiz)) > 0 ) {
 bytesRead += rc;
@@ -455,7 +455,7 @@ bufsiz -= rc;
 msgp->bytesNotRead -= rc;
 if ( msgp->mtype == '\0' && bytesRead >= REQ_HEADER_SIZE ) {
 if ( (msgp->version = buf[1]) != '1' ) {
-char	*wrong_version = "Message has wrong version number";
+char *wrong_version = "Message has wrong version number";
 sendResponse('h', strlen(wrong_version), 0, 0, wrong_version);
 return -1;
 }
@@ -480,7 +480,7 @@ return bytesRead;
 void
 sendResponse(char type, int lendata, int sstream, int retcode, char *data)
 {
-char	hdr[RES_HEADER_SIZE+2];
+char hdr[RES_HEADER_SIZE+2];
 sprintf(hdr, "%c1%11d %3d %3d ", type, lendata, sstream, retcode);
 write(1, hdr, RES_HEADER_SIZE);
 write(1, data, lendata);
@@ -494,15 +494,15 @@ sendResponse('h', strlen(errmsg), sstream, 0, errmsg);
 void
 print_err(SQLEnv *sqle, int connid, int streamid, UCHAR * buf, int bufsiz)
 {
-RETCODE		rc;
-UCHAR		stateString[40];
-SDWORD		native;
-SWORD		msglen;
-SQLConn		*sqlc;
-SQLStream	*sqls;
-HENV		*henv;
-HDBC		*hdbc;
-HSTMT		*hstmt;
+RETCODE rc;
+UCHAR stateString[40];
+SDWORD native;
+SWORD msglen;
+SQLConn *sqlc;
+SQLStream *sqls;
+HENV *henv;
+HDBC *hdbc;
+HSTMT *hstmt;
 henv = sqle->henv;
 rc = mapSqlConn(sqle, connid, &sqlc);
 hdbc = rc == OK ? sqlc->hdbc : SQL_NULL_HDBC;
@@ -547,8 +547,8 @@ return 0;
 STATUS
 newSqlEnv(SQLEnv **sqle)
 {
-SQLEnv	*newenv;
-STATUS	rc;
+SQLEnv *newenv;
+STATUS rc;
 newenv = (SQLEnv *) calloc(1, sizeof(SQLEnv));
 if (newenv == NULL) {
 return ERR;
@@ -564,8 +564,8 @@ return OK;
 STATUS
 freeSqlEnv(SQLEnv **sqle)
 {
-int		i;
-STATUS	rc;
+int i;
+STATUS rc;
 for (i = 0; i < (*sqle)->maxstream; i++) {
 rc = freeSqlStream(*sqle, i);
 }
@@ -585,9 +585,9 @@ return ERR;
 STATUS
 newSqlConn(SQLEnv *sqle, char *info, int *connid)
 {
-SQLConn		**newarray, *sqlc;
-int			newid = -1, i;
-STATUS		rc;
+SQLConn **newarray, *sqlc;
+int newid = -1, i;
+STATUS rc;
 *connid = -1;
 for ( i = 0; i < sqle->maxconn; i++ ) {
 sqlc = sqle->scarray[i];
@@ -639,8 +639,8 @@ return OK;
 STATUS
 freeSqlConn(SQLEnv *sqle, int connid)
 {
-SQLConn	*sqlc;
-STATUS	rc;
+SQLConn *sqlc;
+STATUS rc;
 rc = mapSqlConn(sqle, connid, &sqlc);
 if ( rc != OK ) {
 return WARN;
@@ -663,11 +663,11 @@ return ERR;
 STATUS
 newSqlStream(SQLEnv *sqle, int connid, int *streamid)
 {
-HSTMT		hstmt;
-SQLConn		*sqlc;
-SQLStream	**newarray, *sqls;
-int			newid = -1, i;
-STATUS		rc;
+HSTMT hstmt;
+SQLConn *sqlc;
+SQLStream **newarray, *sqls;
+int newid = -1, i;
+STATUS rc;
 rc = mapSqlConn(sqle, connid, &sqlc);
 if (rc != OK) {
 return ERR;
@@ -707,9 +707,9 @@ return OK;
 STATUS
 freeSqlStream(SQLEnv *sqle, int streamid)
 {
-SQLConn		*sqlc;
-SQLStream	*sqls;
-STATUS		rc;
+SQLConn *sqlc;
+SQLStream *sqls;
+STATUS rc;
 rc = mapSqlStream(sqle, streamid, &sqls);
 if ( rc != OK ) {
 return WARN;
@@ -732,7 +732,7 @@ return OK;
 STATUS
 parseConnInfo(SQLConn *sqlc, char *info)
 {
-UCHAR	*temp;
+UCHAR *temp;
 temp = strtok(info, "/\n");
 if ( temp == NULL ) {
 return ERR;

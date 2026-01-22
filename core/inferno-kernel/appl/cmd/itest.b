@@ -75,14 +75,14 @@ nomod(Env->PATH);
 arg->init(args);
 while((o := arg->opt()) != 0)
 case o {
-'c' =>	cflag = toint("c", arg->arg(), 0, 9);
-'e' =>	display_stderr++;
-'o' =>	display_stdout++;
-'r' =>		repcount = toint("r", arg->arg(), 0, -1);
-'v' =>	verbosity = toint("v", arg->arg(), 0, 9);
-'C' =>	configfile = arg->arg();
-'R' =>	recroot = arg->arg();
-* =>		usage();
+'c' => cflag = toint("c", arg->arg(), 0, 9);
+'e' => display_stderr++;
+'o' => display_stdout++;
+'r' => repcount = toint("r", arg->arg(), 0, -1);
+'v' => verbosity = toint("v", arg->arg(), 0, 9);
+'C' => configfile = arg->arg();
+'R' => recroot = arg->arg();
+* => usage();
 }
 args = arg->argv();
 arg = nil;
@@ -364,7 +364,7 @@ treport(mfd, S_FATAL, 0, sys->sprint("Exception %s in test %s", ex, fullspec));
 }
 severs(sevs: int): string
 {
-SEVMAP :=  array[] of {"INF", "WRN", "ERR", "FTL"};
+SEVMAP := array[] of {"INF", "WRN", "ERR", "FTL"};
 if (sevs >= len SEVMAP)
 sstr := "UNK";
 else

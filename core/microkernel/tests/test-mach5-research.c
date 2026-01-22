@@ -16,14 +16,14 @@ IPC_BENCH_SCALABILITY,
 IPC_BENCH_MEMORY_USAGE
 } ipc_benchmark_type_t;
 typedef enum {
-IPC_MSG_TINY    = 64,
-IPC_MSG_SMALL   = 256,
-IPC_MSG_MEDIUM  = 4096,
-IPC_MSG_LARGE   = 16384,
-IPC_MSG_HUGE    = 65536
+IPC_MSG_TINY = 64,
+IPC_MSG_SMALL = 256,
+IPC_MSG_MEDIUM = 4096,
+IPC_MSG_LARGE = 16384,
+IPC_MSG_HUGE = 65536
 } ipc_message_size_t;
-#define TEST_ITERATIONS     1000
-#define TEST_MESSAGE_SIZES  5
+#define TEST_ITERATIONS 1000
+#define TEST_MESSAGE_SIZES 5
 static const ipc_message_size_t test_message_sizes[] = {
 IPC_MSG_TINY,
 IPC_MSG_SMALL,
@@ -102,11 +102,11 @@ vm_size_t size;
 const char *expected_mechanism;
 boolean_t should_use_zero_copy;
 } test_cases[] = {
-{ 100,          "traditional copy",     FALSE },
-{ 1000,         "traditional copy",     FALSE },
-{ 4096,         "zero-copy",           TRUE },
-{ 16384,        "zero-copy",           TRUE },
-{ 65536,        "zero-copy",           TRUE }
+{ 100, "traditional copy", FALSE },
+{ 1000, "traditional copy", FALSE },
+{ 4096, "zero-copy", TRUE },
+{ 16384, "zero-copy", TRUE },
+{ 65536, "zero-copy", TRUE }
 };
 int i;
 for (i = 0; i < sizeof(test_cases) / sizeof(test_cases[0]); i++) {
@@ -194,12 +194,12 @@ boolean_t current_support;
 boolean_t should_improve;
 const char *improvement_area;
 } features[] = {
-{ "Formal Verification",       FALSE,  TRUE,   "Critical path verification" },
-{ "Real-time Support",         FALSE,  TRUE,   "Predictable IPC latency" },
-{ "SMP Scalability",           TRUE,   TRUE,   "Lock-free IPC paths" },
-{ "Hardware Virtualization",   FALSE,  TRUE,   "IOMMU and nested paging" },
-{ "Fine-grained Capabilities", FALSE,  TRUE,   "Enhanced permission model" },
-{ "Zero-copy IPC",             FALSE,  TRUE,   "Page mapping optimization" }
+{ "Formal Verification", FALSE, TRUE, "Critical path verification" },
+{ "Real-time Support", FALSE, TRUE, "Predictable IPC latency" },
+{ "SMP Scalability", TRUE, TRUE, "Lock-free IPC paths" },
+{ "Hardware Virtualization", FALSE, TRUE, "IOMMU and nested paging" },
+{ "Fine-grained Capabilities", FALSE, TRUE, "Enhanced permission model" },
+{ "Zero-copy IPC", FALSE, TRUE, "Page mapping optimization" }
 };
 int i;
 int improvement_areas = 0;
@@ -221,10 +221,10 @@ double ipc_latency_us;
 double context_switch_us;
 int security_score;
 } comparison[] = {
-{ "GNU Mach",     50.0,   25.0,   6 },
-{ "seL4",         15.0,   10.0,   9 },
-{ "Fiasco.OC",    12.0,    8.0,   7 },
-{ "NOVA",          8.0,    5.0,   8 }
+{ "GNU Mach", 50.0, 25.0, 6 },
+{ "seL4", 15.0, 10.0, 9 },
+{ "Fiasco.OC", 12.0, 8.0, 7 },
+{ "NOVA", 8.0, 5.0, 8 }
 };
 for (i = 0; i < sizeof(comparison) / sizeof(comparison[0]); i++) {
 printf("    %s: IPC %.1fμs, Context Switch %.1fμs, Security %d/10\n",

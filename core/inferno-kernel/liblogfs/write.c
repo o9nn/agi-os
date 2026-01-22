@@ -64,7 +64,7 @@ findgap(Pageset w, uint n)
 {
 Pageset m;
 do {
-m  = fastgap(w, n);
+m = fastgap(w, n);
 if(m)
 break;
 n--;

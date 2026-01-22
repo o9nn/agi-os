@@ -1,59 +1,59 @@
 #include <stdio.h>
 #include "zlib.h"
 #ifdef STDC
-#  include <string.h>
-#  include <stdlib.h>
+# include <string.h>
+# include <stdlib.h>
 #else
-extern void exit  OF((int));
+extern void exit OF((int));
 #endif
 #ifdef USE_MMAP
-#  include <sys/types.h>
-#  include <sys/mman.h>
-#  include <sys/stat.h>
+# include <sys/types.h>
+# include <sys/mman.h>
+# include <sys/stat.h>
 #endif
 #if defined(MSDOS) || defined(OS2) || defined(WIN32) || defined(__CYGWIN__)
-#  include <fcntl.h>
-#  include <io.h>
-#  define SET_BINARY_MODE(file) setmode(fileno(file), O_BINARY)
+# include <fcntl.h>
+# include <io.h>
+# define SET_BINARY_MODE(file) setmode(fileno(file), O_BINARY)
 #else
-#  define SET_BINARY_MODE(file)
+# define SET_BINARY_MODE(file)
 #endif
 #ifdef VMS
-#  define unlink delete
-#  define GZ_SUFFIX "-gz"
+# define unlink delete
+# define GZ_SUFFIX "-gz"
 #endif
 #ifdef RISCOS
-#  define unlink remove
-#  define GZ_SUFFIX "-gz"
-#  define fileno(file) file->__file
+# define unlink remove
+# define GZ_SUFFIX "-gz"
+# define fileno(file) file->__file
 #endif
 #if defined(__MWERKS__) && __dest_os != __be_os && __dest_os != __win32_os
-#  include <unix.h>
+# include <unix.h>
 #endif
 #ifndef WIN32
 extern int unlink OF((const char *));
 #endif
 #ifndef GZ_SUFFIX
-#  define GZ_SUFFIX ".gz"
+# define GZ_SUFFIX ".gz"
 #endif
 #define SUFFIX_LEN (sizeof(GZ_SUFFIX)-1)
-#define BUFLEN      16384
+#define BUFLEN 16384
 #define MAX_NAME_LEN 1024
 #ifdef MAXSEG_64K
-#  define local static
+# define local static
 #else
-#  define local
+# define local
 #endif
 char *prog;
-void error            OF((const char *msg));
-void gz_compress      OF((FILE   *in, gzFile out));
+void error OF((const char *msg));
+void gz_compress OF((FILE *in, gzFile out));
 #ifdef USE_MMAP
-int  gz_compress_mmap OF((FILE   *in, gzFile out));
+int gz_compress_mmap OF((FILE *in, gzFile out));
 #endif
-void gz_uncompress    OF((gzFile in, FILE   *out));
-void file_compress    OF((char  *file, char *mode));
-void file_uncompress  OF((char  *file));
-int  main             OF((int argc, char *argv[]));
+void gz_uncompress OF((gzFile in, FILE *out));
+void file_compress OF((char *file, char *mode));
+void file_uncompress OF((char *file));
+int main OF((int argc, char *argv[]));
 void error(msg)
 const char *msg;
 {
@@ -61,7 +61,7 @@ fprintf(stderr, "%s: %s\n", prog, msg);
 exit(1);
 }
 void gz_compress(in, out)
-FILE   *in;
+FILE *in;
 gzFile out;
 {
 local char buf[BUFLEN];
@@ -84,7 +84,7 @@ if (gzclose(out) != Z_OK) error("failed gzclose");
 }
 #ifdef USE_MMAP
 int gz_compress_mmap(in, out)
-FILE   *in;
+FILE *in;
 gzFile out;
 {
 int len;
@@ -108,7 +108,7 @@ return Z_OK;
 #endif
 void gz_uncompress(in, out)
 gzFile in;
-FILE   *out;
+FILE *out;
 {
 local char buf[BUFLEN];
 int len;
@@ -125,11 +125,11 @@ if (fclose(out)) error("failed fclose");
 if (gzclose(in) != Z_OK) error("failed gzclose");
 }
 void file_compress(file, mode)
-char  *file;
-char  *mode;
+char *file;
+char *mode;
 {
 local char outfile[MAX_NAME_LEN];
-FILE  *in;
+FILE *in;
 gzFile out;
 strcpy(outfile, file);
 strcat(outfile, GZ_SUFFIX);
@@ -147,11 +147,11 @@ gz_compress(in, out);
 unlink(file);
 }
 void file_uncompress(file)
-char  *file;
+char *file;
 {
 local char buf[MAX_NAME_LEN];
 char *infile, *outfile;
-FILE  *out;
+FILE *out;
 gzFile in;
 uInt len = (uInt)strlen(file);
 strcpy(buf, file);

@@ -8,12 +8,12 @@
 #include <errno.h>
 #include <math.h>
 #include <float.h>
-#define DTESN_LEARNING_DEFAULT_BATCH_SIZE       32
-#define DTESN_LEARNING_DEFAULT_CONVERGENCE      1e-6f
-#define DTESN_LEARNING_DEFAULT_LEARNING_RATE    0.01f
-#define DTESN_LEARNING_DEFAULT_ADAPTATION_RATE  0.001f
-#define DTESN_LEARNING_PLASTICITY_THRESHOLD     0.1f
-#define DTESN_LEARNING_HOMEOSTASIS_TARGET       0.5f
+#define DTESN_LEARNING_DEFAULT_BATCH_SIZE 32
+#define DTESN_LEARNING_DEFAULT_CONVERGENCE 1e-6f
+#define DTESN_LEARNING_DEFAULT_LEARNING_RATE 0.01f
+#define DTESN_LEARNING_DEFAULT_ADAPTATION_RATE 0.001f
+#define DTESN_LEARNING_PLASTICITY_THRESHOLD 0.1f
+#define DTESN_LEARNING_HOMEOSTASIS_TARGET 0.5f
 static uint64_t get_time_ns(void);
 static int validate_learning_params(const dtesn_cognitive_learn_params_t *params);
 static int apply_hebbian_learning(dtesn_cognitive_system_t *system,

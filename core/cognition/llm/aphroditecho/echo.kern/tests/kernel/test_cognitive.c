@@ -7,13 +7,13 @@
 #include <assert.h>
 #include <math.h>
 #include <unistd.h>
-#define TEST_MAX_RESERVOIR_SIZE         1000
-#define TEST_MAX_INPUT_SIZE             100
-#define TEST_MAX_OUTPUT_SIZE            50
-#define TEST_NUM_ITERATIONS             10
-#define TEST_NUM_SAMPLES                100
-#define TEST_TOLERANCE                  1e-6f
-#define TEST_PERFORMANCE_TOLERANCE_PCT  20
+#define TEST_MAX_RESERVOIR_SIZE 1000
+#define TEST_MAX_INPUT_SIZE 100
+#define TEST_MAX_OUTPUT_SIZE 50
+#define TEST_NUM_ITERATIONS 10
+#define TEST_NUM_SAMPLES 100
+#define TEST_TOLERANCE 1e-6f
+#define TEST_PERFORMANCE_TOLERANCE_PCT 20
 static struct {
 uint32_t tests_run;
 uint32_t tests_passed;

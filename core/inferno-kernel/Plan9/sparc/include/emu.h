@@ -1,9 +1,9 @@
-extern	Proc**	Xup;
-#define	up	(*Xup)
-typedef	struct	FPU	FPU;
+extern Proc** Xup;
+#define up (*Xup)
+typedef struct FPU FPU;
 struct FPU
 {
-ulong   fsr;
+ulong fsr;
 };
 typedef jmp_buf osjmpbuf;
-#define	ossetjmp(buf)	setjmp(buf)
+#define ossetjmp(buf) setjmp(buf)

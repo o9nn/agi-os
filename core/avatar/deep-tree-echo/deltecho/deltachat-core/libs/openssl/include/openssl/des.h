@@ -2,17 +2,17 @@
 # define HEADER_NEW_DES_H
 # include <openssl/e_os2.h>
 # ifdef OPENSSL_NO_DES
-#  error DES is disabled.
+# error DES is disabled.
 # endif
 # ifdef OPENSSL_BUILD_SHLIBCRYPTO
-#  undef OPENSSL_EXTERN
-#  define OPENSSL_EXTERN OPENSSL_EXPORT
+# undef OPENSSL_EXTERN
+# define OPENSSL_EXTERN OPENSSL_EXPORT
 # endif
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 typedef unsigned char DES_cblock[8];
-typedef  unsigned char const_DES_cblock[8];
+typedef unsigned char const_DES_cblock[8];
 typedef struct DES_ks {
 union {
 DES_cblock cblock;
@@ -20,19 +20,19 @@ DES_LONG deslong[2];
 } ks[16];
 } DES_key_schedule;
 # ifndef OPENSSL_DISABLE_OLD_DES_SUPPORT
-#  ifndef OPENSSL_ENABLE_OLD_DES_SUPPORT
-#   define OPENSSL_ENABLE_OLD_DES_SUPPORT
-#  endif
+# ifndef OPENSSL_ENABLE_OLD_DES_SUPPORT
+# define OPENSSL_ENABLE_OLD_DES_SUPPORT
+# endif
 # endif
 # ifdef OPENSSL_ENABLE_OLD_DES_SUPPORT
-#  include <openssl/des_old.h>
+# include <openssl/des_old.h>
 # endif
-# define DES_KEY_SZ      (sizeof(DES_cblock))
+# define DES_KEY_SZ (sizeof(DES_cblock))
 # define DES_SCHEDULE_SZ (sizeof(DES_key_schedule))
-# define DES_ENCRYPT     1
-# define DES_DECRYPT     0
-# define DES_CBC_MODE    0
-# define DES_PCBC_MODE   1
+# define DES_ENCRYPT 1
+# define DES_DECRYPT 0
+# define DES_CBC_MODE 0
+# define DES_PCBC_MODE 1
 # define DES_ecb2_encrypt(i,o,k1,k2,e) \
 DES_ecb3_encrypt((i),(o),(k1),(k2),(k1),(e))
 # define DES_ede2_cbc_encrypt(i,o,l,k1,k2,iv,e) \
@@ -136,7 +136,7 @@ int DES_read_password(DES_cblock *key, const char *prompt, int verify);
 int DES_read_2passwords(DES_cblock *key1, DES_cblock *key2,
 const char *prompt, int verify);
 # define DES_fixup_key_parity DES_set_odd_parity
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif
 #endif

@@ -9,61 +9,61 @@ Iobuf: import bufio;
 include "draw.m";
 Yacc: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 Arg: adt
 {
-argv:	list of string;
-c:	int;
-opts:	string;
-init:	fn(argv: list of string): ref Arg;
-opt:	fn(arg: self ref Arg): int;
-arg:	fn(arg: self ref Arg): string;
+argv: list of string;
+c: int;
+opts: string;
+init: fn(argv: list of string): ref Arg;
+opt: fn(arg: self ref Arg): int;
+arg: fn(arg: self ref Arg): string;
 };
-PARSER:		con "./eyaccpar";
-OFILE:		con "tab.b";
-FILEU:		con "output";
-FILED:		con "tab.m";
-FILEDEBUG:	con "debug";
+PARSER: con "./eyaccpar";
+OFILE: con "tab.b";
+FILEU: con "output";
+FILED: con "tab.m";
+FILEDEBUG: con "debug";
 # the following are adjustable
 # according to memory size
-ACTSIZE:	con 30000;
-NSTATES:	con 2000;
-TEMPSIZE:	con 2000;
-SYMINC:		con 50;				# increase for non-term or term
-RULEINC:	con 50;				# increase for max rule length	prodptr[i]
-PRODINC:	con 100;			# increase for productions	prodptr
-WSETINC:	con 50;				# increase for working sets	wsets
-STATEINC:	con 200;			# increase for states		statemem
-NAMESIZE:	con 50;
-NTYPES:		con 63;
-ISIZE:		con 400;
-PRIVATE:	con 16rE000;			# unicode private use
+ACTSIZE: con 30000;
+NSTATES: con 2000;
+TEMPSIZE: con 2000;
+SYMINC: con 50; # increase for non-term or term
+RULEINC: con 50; # increase for max rule length prodptr[i]
+PRODINC: con 100; # increase for productions prodptr
+WSETINC: con 50; # increase for working sets wsets
+STATEINC: con 200; # increase for states statemem
+NAMESIZE: con 50;
+NTYPES: con 63;
+ISIZE: con 400;
+PRIVATE: con 16rE000; # unicode private use
 # relationships which must hold:
-#	TEMPSIZE >= NTERMS + NNONTERM + 1
-#	TEMPSIZE >= NSTATES
+# TEMPSIZE >= NTERMS + NNONTERM + 1
+# TEMPSIZE >= NSTATES
 #
-NTBASE:		con 8r10000;
-ERRCODE:	con 8190;
-ACCEPTCODE:	con 8191;
-YYLEXUNK:	con 3;
-TOKSTART:	con 4;				#index of first defined token
+NTBASE: con 8r10000;
+ERRCODE: con 8190;
+ACCEPTCODE: con 8191;
+YYLEXUNK: con 3;
+TOKSTART: con 4; #index of first defined token
 # no, left, right, binary assoc.
 NOASC, LASC, RASC, BASC: con iota;
 # flags for state generation
 DONE, MUSTDO, MUSTLOOKAHEAD: con iota;
 # flags for a rule having an action, and being reduced
-ACTFLAG:	con 16r4;
-REDFLAG:	con 16r8;
+ACTFLAG: con 16r4;
+REDFLAG: con 16r8;
 # output parser flags
-YYFLAG1:	con -1000;
+YYFLAG1: con -1000;
 # parse tokens
 IDENTIFIER, MARK, TERM, LEFT, RIGHT, BINARY, PREC, LCURLY, IDENTCOLON, NUMBER, START, TYPEDEF, TYPENAME, MODULE: con PRIVATE+iota;
-ENDFILE:	con 0;
-EMPTY:		con 1;
-WHOKNOWS:	con 0;
-OK:		con 1;
-NOMORE:		con -1000;
+ENDFILE: con 0;
+EMPTY: con 1;
+WHOKNOWS: con 0;
+OK: con 1;
+NOMORE: con -1000;
 # macros for getting associativity and precedence levels
 ASSOC(i: int): int
 {
@@ -91,102 +91,102 @@ SETTYPE(i, j: int): int
 return i | (j << 10);
 }
 # I/O descriptors
-stderr:		ref Sys->FD;
-fdefine:	ref Iobuf;			# file for module definition
-fdebug:		ref Iobuf;			# y.debug for strings for debugging
-ftable:		ref Iobuf;			# y.tab.c file
-finput:		ref Iobuf;			# input file
-foutput:	ref Iobuf;			# y.output file
+stderr: ref Sys->FD;
+fdefine: ref Iobuf; # file for module definition
+fdebug: ref Iobuf; # y.debug for strings for debugging
+ftable: ref Iobuf; # y.tab.c file
+finput: ref Iobuf; # input file
+foutput: ref Iobuf; # y.output file
 CodeData, CodeMod, CodeAct: con iota;
-NCode:	con 8192;
+NCode: con 8192;
 Code: adt
 {
-kind:	int;
-data:	array of byte;
-ndata:	int;
-next:	cyclic ref Code;
+kind: int;
+data: array of byte;
+ndata: int;
+next: cyclic ref Code;
 };
-codehead:	ref Code;
-codetail:	ref Code;
-modname:	string;				# name of module
+codehead: ref Code;
+codetail: ref Code;
+modname: string; # name of module
 # communication variables between various I/O routines
-infile:		string;				# input file name
-numbval:	int;				# value of an input number
-tokname:	string;				# input token name, slop for runes and 0
+infile: string; # input file name
+numbval: int; # value of an input number
+tokname: string; # input token name, slop for runes and 0
 # structure declarations
 Lkset: type array of int;
 Pitem: adt
 {
-prod:	array of int;
-off:	int;				# offset within the production
-first:	int;				# first term or non-term in item
-prodno:	int;				# production number for sorting
+prod: array of int;
+off: int; # offset within the production
+first: int; # first term or non-term in item
+prodno: int; # production number for sorting
 };
 Item: adt
 {
-pitem:	Pitem;
-look:	Lkset;
+pitem: Pitem;
+look: Lkset;
 };
 Symb: adt
 {
-name:	string;
-value:	int;
+name: string;
+value: int;
 };
 Wset: adt
 {
-pitem:	Pitem;
-flag:	int;
-ws:	Lkset;
+pitem: Pitem;
+flag: int;
+ws: Lkset;
 };
 # storage of names
-parser :=	PARSER;
-yydebug:	string;
+parser := PARSER;
+yydebug: string;
 # storage of types
-ntypes:		int;				# number of types defined
-typeset :=	array[NTYPES] of string;	# pointers to type tags
+ntypes: int; # number of types defined
+typeset := array[NTYPES] of string; # pointers to type tags
 # token information
-ntokens :=	0;				# number of tokens
-tokset:		array of Symb;
-toklev:		array of int;			# vector with the precedence of the terminals
+ntokens := 0; # number of tokens
+tokset: array of Symb;
+toklev: array of int; # vector with the precedence of the terminals
 # nonterminal information
-nnonter :=	-1;				# the number of nonterminals
-nontrst:	array of Symb;
-start:		int;				# start symbol
+nnonter := -1; # the number of nonterminals
+nontrst: array of Symb;
+start: int; # start symbol
 # state information
-nstate := 	0;				# number of states
-pstate :=	array[NSTATES+2] of int;	# index into statemem to the descriptions of the states
-statemem :	array of Item;
-tystate :=	array[NSTATES] of int;		# contains type information about the states
-tstates :	array of int;			# states generated by terminal gotos
-ntstates :	array of int; 			# states generated by nonterminal gotos
-mstates :=	array[NSTATES] of {* => 0};	# chain of overflows of term/nonterm generation lists
-lastred: 	int; 				# number of last reduction of a state
-defact :=	array[NSTATES] of int;		# default actions of states
+nstate := 0; # number of states
+pstate := array[NSTATES+2] of int; # index into statemem to the descriptions of the states
+statemem : array of Item;
+tystate := array[NSTATES] of int; # contains type information about the states
+tstates : array of int; # states generated by terminal gotos
+ntstates : array of int; # states generated by nonterminal gotos
+mstates := array[NSTATES] of {* => 0}; # chain of overflows of term/nonterm generation lists
+lastred: int; # number of last reduction of a state
+defact := array[NSTATES] of int; # default actions of states
 # lookahead set information
 lkst: array of Lkset;
-nolook := 0;					# flag to turn off lookahead computations
-tbitset := 0;					# size of lookahead sets
-clset: Lkset;  					# temporary storage for lookahead computations
+nolook := 0; # flag to turn off lookahead computations
+tbitset := 0; # size of lookahead sets
+clset: Lkset; # temporary storage for lookahead computations
 # working set information
-wsets:	array of Wset;
-cwp:	int;
+wsets: array of Wset;
+cwp: int;
 # storage for action table
-amem:	array of int;				# action table storage
-memp:	int;					# next free action table position
-indgo := array[NSTATES] of int;			# index to the stored goto table
+amem: array of int; # action table storage
+memp: int; # next free action table position
+indgo := array[NSTATES] of int; # index to the stored goto table
 # temporary vector, indexable by states, terms, or ntokens
-temp1 :=	array[TEMPSIZE] of int;		# temporary storage, indexed by terms + ntokens or states
-lineno :=	1;				# current input line number
-fatfl :=	1;  				# if on, error is fatal
-nerrors :=	0;				# number of errors
+temp1 := array[TEMPSIZE] of int; # temporary storage, indexed by terms + ntokens or states
+lineno := 1; # current input line number
+fatfl := 1; # if on, error is fatal
+nerrors := 0; # number of errors
 # assigned token type values
-extval :=	0;
-ytabc :=	OFILE;	# name of y.tab.c
+extval := 0;
+ytabc := OFILE; # name of y.tab.c
 # grammar rule information
-nprod := 1;					# number of productions
-prdptr: array of array of int;			# pointers to descriptions of productions
-levprd: array of int;				# precedence levels for the productions
-rlines: array of int;				# line number for this rule
+nprod := 1; # number of productions
+prdptr: array of array of int; # pointers to descriptions of productions
+levprd: array of int; # precedence levels for the productions
+rlines: array of int; # line number for this rule
 # statistics collection variables
 zzgoent := 0;
 zzgobest := 0;
@@ -197,56 +197,56 @@ zzrrconf := 0;
 zzsrconf := 0;
 zzstate := 0;
 # optimizer arrays
-yypgo:	array of array of int;
-optst:	array of array of int;
-ggreed:	array of int;
-pgo:	array of int;
-maxspr: int;  		# maximum spread of any entry
-maxoff: int;  		# maximum offset into a array
-maxa:	int;
+yypgo: array of array of int;
+optst: array of array of int;
+ggreed: array of int;
+pgo: array of int;
+maxspr: int; # maximum spread of any entry
+maxoff: int; # maximum offset into a array
+maxa: int;
 # storage for information about the nonterminals
-pres: array of array of array of int;		# vector of pointers to productions yielding each nonterminal
+pres: array of array of array of int; # vector of pointers to productions yielding each nonterminal
 pfirst: array of Lkset;
-pempty:	array of int;				# vector of nonterminals nontrivially deriving e
+pempty: array of int; # vector of nonterminals nontrivially deriving e
 # random stuff picked out from between functions
-indebug	:= 0;		# debugging flag for cpfir
-pidebug	:= 0;		# debugging flag for putitem
-gsdebug	:= 0;		# debugging flag for stagen
-cldebug	:= 0;		# debugging flag for closure
-pkdebug	:= 0;		# debugging flag for apack
-g2debug	:= 0;		# debugging for go2gen
-adb	:= 0;		# debugging for callopt
+indebug := 0; # debugging flag for cpfir
+pidebug := 0; # debugging flag for putitem
+gsdebug := 0; # debugging flag for stagen
+cldebug := 0; # debugging flag for closure
+pkdebug := 0; # debugging flag for apack
+g2debug := 0; # debugging for go2gen
+adb := 0; # debugging for callopt
 Resrv : adt
 {
-name:	string;
-value:	int;
+name: string;
+value: int;
 };
 resrv := array[] of {
-Resrv("binary",		BINARY),
-Resrv("module",		MODULE),
-Resrv("left",		LEFT),
-Resrv("nonassoc",	BINARY),
-Resrv("prec",		PREC),
-Resrv("right",		RIGHT),
-Resrv("start",		START),
-Resrv("term",		TERM),
-Resrv("token",		TERM),
-Resrv("type",		TYPEDEF),};
+Resrv("binary", BINARY),
+Resrv("module", MODULE),
+Resrv("left", LEFT),
+Resrv("nonassoc", BINARY),
+Resrv("prec", PREC),
+Resrv("right", RIGHT),
+Resrv("start", START),
+Resrv("term", TERM),
+Resrv("token", TERM),
+Resrv("type", TYPEDEF),};
 zznewstate := 0;
 init(nil: ref Draw->Context, argv: list of string)
 {
 sys = load Sys Sys->PATH;
 bufio = load Bufio Bufio->PATH;
 stderr = sys->fildes(2);
-setup(argv);		# initialize and read productions
+setup(argv); # initialize and read productions
 tbitset = (ntokens+32)/32;
-cpres();		# make table of which productions yield a given nonterminal
-cempty();		# make a table of which nonterminals can match the empty string
-cpfir();		# make a table of firsts of nonterminals
-stagen();		# generate the states
+cpres(); # make table of which productions yield a given nonterminal
+cempty(); # make a table of which nonterminals can match the empty string
+cpfir(); # make a table of firsts of nonterminals
+stagen(); # generate the states
 yypgo = array[nnonter+1] of array of int;
 optst = array[nstate] of array of int;
-output();		# write the states and the tables
+output(); # write the states and the tables
 go2out();
 hideprod();
 summary();
@@ -293,7 +293,7 @@ if(finput == nil)
 error("cannot open '"+infile+"'");
 openup(stemc, dflag, vflag, ytab, ytabc);
 defin(0, "$end");
-extval = PRIVATE;	# tokens start in unicode 'private use'
+extval = PRIVATE; # tokens start in unicode 'private use'
 defin(0, "error");
 defin(1, "$accept");
 defin(0, "$unk");
@@ -397,8 +397,8 @@ if(modname == nil)
 error("missing %module specification");
 moreprod();
 prdptr[0] = array[4] of {
-NTBASE,		# added production
-start,		# if start is 0, we will overwrite with the lhs of the first rule
+NTBASE, # added production
+start, # if start is 0, we will overwrite with the lhs of the first rule
 1,
 0
 };
@@ -525,8 +525,8 @@ dumpmod();
 dumpcode(CodeAct);
 ftable.puts("YYEOFCODE: con 1;\n");
 ftable.puts("YYERRCODE: con 2;\n");
-ftable.puts("YYMAXDEPTH: con 200;\n");	# was 150
-#	ftable.puts("yyval: YYSTYPE;\n");
+ftable.puts("YYMAXDEPTH: con 200;\n"); # was 150
+# ftable.puts("yyval: YYSTYPE;\n");
 #
 # copy any postfix code
 #
@@ -597,15 +597,15 @@ val = s[1];
 if(len s == 2+1) {
 # single character escape sequence
 case s[2] {
-'\'' =>	val = '\'';
+'\'' => val = '\'';
 '"' =>	val = '"';
-'\\' =>	val = '\\';
-'a' =>	val = '\a';
-'b' =>	val = '\b';
-'n' =>	val = '\n';
-'r' =>	val = '\r';
-'t' =>	val = '\t';
-'v' =>	val = '\v';
+'\\' => val = '\\';
+'a' => val = '\a';
+'b' => val = '\b';
+'n' => val = '\n';
+'r' => val = '\r';
+'t' => val = '\t';
+'v' => val = '\v';
 * =>
 error("invalid escape "+s[1:3]);
 }
@@ -693,9 +693,9 @@ tokname[i++] = c;
 }
 '%' =>
 case c = finput.getc(){
-'%' =>	return MARK;
-'=' =>	return PREC;
-'{' =>	return LCURLY;
+'%' => return MARK;
+'=' => return PREC;
+'{' => return LCURLY;
 }
 getword(c);
 # find a reserved word
@@ -923,9 +923,9 @@ addcode(CodeAct, "\t\"");
 addcode(CodeAct, infile);
 addcode(CodeAct, "\"\n");
 brac := 0;
-loop:	for(;;){
+loop: for(;;){
 c := finput.getc();
-swt:	case c {
+swt: case c {
 ';' =>
 if(brac == 0) {
 addcodec(CodeAct, c);
@@ -1107,7 +1107,7 @@ if(!fatfl)
 return;
 summary();
 exit;
-#	exits("error");
+# exits("error");
 }
 #
 # set elements 0 through n-1 to c
@@ -1129,7 +1129,7 @@ curres := array[nprod] of array of int;
 for(i:=0; i<=nnonter; i++) {
 n := 0;
 c := i+NTBASE;
-fatfl = 0;  	# make undefined symbols nonfatal
+fatfl = 0; # make undefined symbols nonfatal
 for(j:=0; j<nprod; j++)
 if(prdptr[j][0] == c)
 curres[n++] = prdptr[j][1:];
@@ -1143,7 +1143,7 @@ pres[i][0:] = curres[:n];
 fatfl = 1;
 if(nerrors) {
 summary();
-exit;		#exits("error");
+exit; #exits("error");
 }
 }
 dumppres()
@@ -1173,7 +1173,7 @@ pempty = array[nnonter+1] of int;
 # set pempty to WHONOWS
 aryfil(pempty, nnonter+1, WHOKNOWS);
 # now, look at productions, marking nonterminals which derive something
-more:	for(;;){
+more: for(;;){
 for(i=0; i<nprod; i++) {
 prd = prdptr[i];
 if(pempty[prd[0] - NTBASE])
@@ -1202,14 +1202,14 @@ error("nonterminal " + nontrst[i].name + " never derives any token string");
 }
 if(nerrors) {
 summary();
-exit;		#exits("error");
+exit; #exits("error");
 }
 # now, compute the pempty array, to see which nonterminals derive the empty string
 # set pempty to WHOKNOWS
 aryfil(pempty, nnonter+1, WHOKNOWS);
 # loop as long as we keep finding empty nonterminals
-again:	for(;;){
-next:	for(i=1; i<nprod; i++) {
+again: for(;;){
+next: for(i=1; i<nprod; i++) {
 # not known to be empty
 prd = prdptr[i];
 if(pempty[prd[0]-NTBASE] != WHOKNOWS)
@@ -1304,7 +1304,7 @@ stagen()
 {
 # initialize
 nstate = 0;
-tstates = array[ntokens+1] of {* => 0};	# states generated by terminal gotos
+tstates = array[ntokens+1] of {* => 0}; # states generated by terminal gotos
 ntstates = array[nnonter+1] of {* => 0};# states generated by nonterminal gotos
 amem = array[ACTSIZE] of {* => 0};
 memp = 0;
@@ -1354,7 +1354,7 @@ wsets[q].flag = 1;
 }
 }
 if(c < NTBASE)
-state(c);	# register new state
+state(c); # register new state
 else
 temp1[c-NTBASE] = state(c);
 }
@@ -1382,7 +1382,7 @@ cwp = 0;
 q := pstate[i+1];
 for(p:=pstate[i]; p<q; p++) {
 wsets[cwp].pitem = statemem[p].pitem;
-wsets[cwp].flag = 1;			# this item must get closed
+wsets[cwp].flag = 1; # this item must get closed
 wsets[cwp].ws[0:] = statemem[p].look;
 cwp++;
 }
@@ -1432,7 +1432,7 @@ setunion(clset, wsets[v].ws);
 curres := pres[c - NTBASE];
 n := len curres;
 # initially fill the sets
-nexts:		for(s := 0; s < n; s++) {
+nexts: for(s := 0; s < n; s++) {
 prd := curres[s];
 #
 # put these items into the closure
@@ -1447,7 +1447,7 @@ wsets[v].flag = work = 1;
 continue nexts;
 }
 }
-#  not there; make a new entry
+# not there; make a new entry
 if(cwp >= len wsets){
 awsets := array[cwp + WSETINC] of Wset;
 awsets[0:] = wsets;
@@ -1487,10 +1487,10 @@ zzstate++;
 p1 := pstate[nstate];
 p2 := pstate[nstate+1];
 if(p1 == p2)
-return 0;	# null state
+return 0; # null state
 # sort the items
 k, l: int;
-for(k = p1+1; k < p2; k++) {	# make k the biggest
+for(k = p1+1; k < p2; k++) { # make k the biggest
 for(l = k; l > p1; l--) {
 if(statemem[l].pitem.prodno < statemem[l-1].pitem.prodno
 || statemem[l].pitem.prodno == statemem[l-1].pitem.prodno
@@ -1502,12 +1502,12 @@ statemem[l-1] = s;
 break;
 }
 }
-size1 := p2 - p1;	# size of state
+size1 := p2 - p1; # size of state
 if(c >= NTBASE)
 i := ntstates[c-NTBASE];
 else
 i = tstates[c];
-look:	for(; i != 0; i = mstates[i]) {
+look: for(; i != 0; i = mstates[i]) {
 # get ith state
 q1 := pstate[i];
 q2 := pstate[i+1];
@@ -1522,7 +1522,7 @@ continue look;
 k++;
 }
 # found it
-pstate[nstate+1] = pstate[nstate];	# delete last state
+pstate[nstate+1] = pstate[nstate]; # delete last state
 # fix up lookaheads
 if(nolook)
 return i;
@@ -1619,7 +1619,7 @@ for(; n > pp && p[n] == 0; n--)
 p = p[pp:n+1];
 # now, find a place for the elements from p to q, inclusive
 r := len amem - len p;
-nextk:	for(rr := 0; rr <= r; rr++) {
+nextk: for(rr := 0; rr <= r; rr++) {
 qq := rr;
 for(pp = 0; pp < len p; pp++) {
 if(p[pp] != 0)
@@ -1750,13 +1750,13 @@ return;
 if(PLEVEL(lt) == PLEVEL(lp))
 action = ASSOC(lt);
 else if(PLEVEL(lt) > PLEVEL(lp))
-action = RASC;  # shift
+action = RASC; # shift
 else
-action = LASC;  # reduce
+action = LASC; # reduce
 case action{
-BASC =>  # error action
+BASC => # error action
 temp1[t] = ERRCODE;
-LASC =>  # reduce
+LASC => # reduce
 temp1[t] = -r;
 }
 }
@@ -2053,7 +2053,7 @@ k = v[p];
 # nontrivial situation
 if(k <= j) {
 # j is now the range
-#			j -= k;			# call scj
+# j -= k; # call scj
 if(k > maxoff)
 maxoff = k;
 }
@@ -2132,7 +2132,7 @@ ggreed[i] = 0;
 q := yypgo[i];
 nq := len q - 1;
 # now, find amem place for it
-nextgp:	for(p := 0; p < ACTSIZE; p++) {
+nextgp: for(p := 0; p < ACTSIZE; p++) {
 if(amem[p])
 continue;
 for(r := 0; r < nq; r += 2) {
@@ -2168,7 +2168,7 @@ tystate[i] = 0;
 q := optst[i];
 nq := len q;
 # find an acceptable place
-nextn:	for(n := -maxoff; n < ACTSIZE; n++) {
+nextn: for(n := -maxoff; n < ACTSIZE; n++) {
 flag := 0;
 for(r := 0; r < nq; r += 2) {
 s = q[r] + n;

@@ -9,12 +9,12 @@ struct client_command_context;
 typedef bool command_func_t(struct client_command_context *cmd);
 typedef void command_hook_callback_t(struct client_command_context *ctx);
 enum command_flags {
-COMMAND_FLAG_USES_SEQS		= 0x01,
-COMMAND_FLAG_BREAKS_SEQS	= 0x02,
-COMMAND_FLAG_BREAKS_MAILBOX	= 0x04 | COMMAND_FLAG_BREAKS_SEQS,
-COMMAND_FLAG_USES_MAILBOX	= COMMAND_FLAG_BREAKS_MAILBOX |
+COMMAND_FLAG_USES_SEQS = 0x01,
+COMMAND_FLAG_BREAKS_SEQS = 0x02,
+COMMAND_FLAG_BREAKS_MAILBOX = 0x04 | COMMAND_FLAG_BREAKS_SEQS,
+COMMAND_FLAG_USES_MAILBOX = COMMAND_FLAG_BREAKS_MAILBOX |
 COMMAND_FLAG_USES_SEQS,
-COMMAND_FLAG_REQUIRES_SYNC	= 0x08,
+COMMAND_FLAG_REQUIRES_SYNC = 0x08,
 };
 struct command {
 const char *name;

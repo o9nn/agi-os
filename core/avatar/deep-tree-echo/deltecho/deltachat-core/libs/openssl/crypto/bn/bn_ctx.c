@@ -1,14 +1,14 @@
 #if !defined(BN_CTX_DEBUG) && !defined(BN_DEBUG)
 # ifndef NDEBUG
-#  define NDEBUG
+# define NDEBUG
 # endif
 #endif
 #include <stdio.h>
 #include <assert.h>
 #include "cryptlib.h"
 #include "bn_lcl.h"
-#define BN_CTX_POOL_SIZE        16
-#define BN_CTX_START_FRAMES     32
+#define BN_CTX_POOL_SIZE 16
+#define BN_CTX_START_FRAMES 32
 typedef struct bignum_pool_item {
 BIGNUM vals[BN_CTX_POOL_SIZE];
 struct bignum_pool_item *prev, *next;
@@ -67,12 +67,12 @@ fpidx++;
 }
 fprintf(stderr, "\n");
 }
-# define CTXDBG_ENTRY(str, ctx)  do { \
+# define CTXDBG_ENTRY(str, ctx) do { \
 ctxdbg_cur = (str); \
 fprintf(stderr,"Starting %s\n", ctxdbg_cur); \
 ctxdbg(ctx); \
 } while(0)
-# define CTXDBG_EXIT(ctx)        do { \
+# define CTXDBG_EXIT(ctx) do { \
 fprintf(stderr,"Ending %s\n", ctxdbg_cur); \
 ctxdbg(ctx); \
 } while(0)

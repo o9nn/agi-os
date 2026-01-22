@@ -6,14 +6,14 @@
 # include <ssdef.h>
 # include <starlet.h>
 # ifdef __DECC
-#  pragma message disable DOLLARID
+# pragma message disable DOLLARID
 # endif
 # if __INITIAL_POINTER_SIZE == 64
-#  define PTR_T __void_ptr64
-#  pragma pointer_size save
-#  pragma pointer_size 32
+# define PTR_T __void_ptr64
+# pragma pointer_size save
+# pragma pointer_size 32
 # else
-#  define PTR_T void *
+# define PTR_T void *
 # endif
 static struct items_data_st {
 short length, code;

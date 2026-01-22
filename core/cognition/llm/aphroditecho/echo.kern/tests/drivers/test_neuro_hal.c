@@ -6,10 +6,10 @@
 #include <assert.h>
 #include <math.h>
 #include <unistd.h>
-#define TEST_MAX_DEVICES         16
-#define TEST_MAX_EVENTS          1000
+#define TEST_MAX_DEVICES 16
+#define TEST_MAX_EVENTS 1000
 #define TEST_PERFORMANCE_ITERATIONS 100
-#define TEST_TOLERANCE           1e-6f
+#define TEST_TOLERANCE 1e-6f
 static struct {
 uint32_t tests_run;
 uint32_t tests_passed;

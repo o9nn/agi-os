@@ -1,9 +1,9 @@
 #include "gdevprn.h"
 #ifndef X_DPI
-#  define X_DPI 120
+# define X_DPI 120
 #endif
 #ifndef Y_DPI
-#  define Y_DPI 72
+# define Y_DPI 72
 #endif
 private dev_proc_print_page(okiibm_print_page);
 const gx_device_printer far_data gs_okiibm_device =
@@ -38,7 +38,7 @@ int y_passes = (y_9pin_high ? 2 : 1);
 int skip = 0, lnum = 0, pass, ypass;
 int y_step = 0;
 if ( buf1 == 0 || buf2 == 0 )
-{	if ( buf1 )
+{ if ( buf1 )
 gs_free(pdev->memory, (char *)buf1, in_size, 1, "okiibm_print_page(buf1)");
 if ( buf2 )
 gs_free(pdev->memory, (char *)buf2, in_size, 1, "okiibm_print_page(buf2)");
@@ -89,7 +89,7 @@ if ( y_9pin_high )
 byte *p;
 int i;
 static const char index[] =
-{  0, 2, 4, 6, 8, 10, 12, 14,
+{ 0, 2, 4, 6, 8, 10, 12, 14,
 1, 3, 5, 7, 9, 11, 13, 15
 };
 for ( i = 0; i < 16; i++ )
@@ -172,10 +172,10 @@ putc(((which & 1) ? *dp : 0), prn_stream);
 }
 }
 }
-private const char okiibm_init_string[]	= { 0x18 };
-private const char okiibm_end_string[]	= { 0x0c };
-private const char okiibm_one_direct[]	= { 0x1b, 0x55, 0x01 };
-private const char okiibm_two_direct[]	= { 0x1b, 0x55, 0x00 };
+private const char okiibm_init_string[] = { 0x18 };
+private const char okiibm_end_string[] = { 0x0c };
+private const char okiibm_one_direct[] = { 0x1b, 0x55, 0x01 };
+private const char okiibm_two_direct[] = { 0x1b, 0x55, 0x00 };
 private int
 okiibm_print_page(gx_device_printer *pdev, FILE *prn_stream)
 {

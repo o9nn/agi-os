@@ -92,7 +92,7 @@ if (argt == nil || (hd argt).word == "-")
 ctxt.fail("usage", sys->sprint("unknown option -%c", opt));
 }
 ctxt.pop();
-ctxt.set("args", arg.args);		# XXX backward compatibility - should go
+ctxt.set("args", arg.args); # XXX backward compatibility - should go
 ctxt.set("*", arg.args);
 return laststatus;
 }

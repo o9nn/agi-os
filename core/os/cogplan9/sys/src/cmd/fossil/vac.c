@@ -10,16 +10,16 @@ static int meCmp(MetaEntry*, char *s);
 static int meCmpOld(MetaEntry*, char *s);
 static char EBadMeta[] = "corrupted meta data";
 static char ENoFile[] = "file does not exist";
-#define	U8GET(p)	((p)[0])
-#define	U16GET(p)	(((p)[0]<<8)|(p)[1])
-#define	U32GET(p)	(((p)[0]<<24)|((p)[1]<<16)|((p)[2]<<8)|(p)[3])
-#define	U48GET(p)	(((uvlong)U16GET(p)<<32)|(uvlong)U32GET((p)+2))
-#define	U64GET(p)	(((uvlong)U32GET(p)<<32)|(uvlong)U32GET((p)+4))
-#define	U8PUT(p,v)	(p)[0]=(v)
-#define	U16PUT(p,v)	(p)[0]=(v)>>8;(p)[1]=(v)
-#define	U32PUT(p,v)	(p)[0]=(v)>>24;(p)[1]=(v)>>16;(p)[2]=(v)>>8;(p)[3]=(v)
-#define	U48PUT(p,v,t32)	t32=(v)>>32;U16PUT(p,t32);t32=(v);U32PUT((p)+2,t32)
-#define	U64PUT(p,v,t32)	t32=(v)>>32;U32PUT(p,t32);t32=(v);U32PUT((p)+4,t32)
+#define U8GET(p) ((p)[0])
+#define U16GET(p) (((p)[0]<<8)|(p)[1])
+#define U32GET(p) (((p)[0]<<24)|((p)[1]<<16)|((p)[2]<<8)|(p)[3])
+#define U48GET(p) (((uvlong)U16GET(p)<<32)|(uvlong)U32GET((p)+2))
+#define U64GET(p) (((uvlong)U32GET(p)<<32)|(uvlong)U32GET((p)+4))
+#define U8PUT(p,v) (p)[0]=(v)
+#define U16PUT(p,v) (p)[0]=(v)>>8;(p)[1]=(v)
+#define U32PUT(p,v) (p)[0]=(v)>>24;(p)[1]=(v)>>16;(p)[2]=(v)>>8;(p)[3]=(v)
+#define U48PUT(p,v,t32) t32=(v)>>32;U16PUT(p,t32);t32=(v);U32PUT((p)+2,t32)
+#define U64PUT(p,v,t32) t32=(v)>>32;U32PUT(p,t32);t32=(v);U32PUT((p)+4,t32)
 static int
 stringUnpack(char **s, uchar **p, int *n)
 {
@@ -376,7 +376,7 @@ int
 deSize(DirEntry *dir)
 {
 int n;
-n = 	4 +
+n = 4 +
 2 +
 4 +
 4 +
@@ -394,7 +394,7 @@ n += 2 + strlen(dir->uid);
 n += 2 + strlen(dir->gid);
 n += 2 + strlen(dir->mid);
 if(dir->qidSpace){
-n += 	3 +
+n += 3 +
 8 +
 8;
 }

@@ -25,8 +25,8 @@ const char *argp_program_version = STANDARD_HURD_VERSION (fifo);
 static struct argp_option options[] =
 {
 { "multiple-readers", 'm', 0, 0, "Allow multiple simultaneous readers" },
-{ "noblock",          'n', 0, 0, "Don't block on open" },
-{ "dgram",            'd', 0, 0, "Reads reflect write record boundaries" },
+{ "noblock", 'n', 0, 0, "Don't block on open" },
+{ "dgram", 'd', 0, 0, "Reads reflect write record boundaries" },
 { 0 }
 };
 static error_t
@@ -77,17 +77,17 @@ int flags = po->openmodes;
 if (flags & (O_READ | O_WRITE))
 {
 pthread_mutex_lock (&active_fifo_lock);
-#define WAIT(condition, noblock_err)					      \
-while (!err && !(condition))						      \
-{									      \
-if (flags & O_NONBLOCK)						      \
-{								      \
-err = noblock_err;						      \
-break;							      \
-}								      \
-else if (pthread_hurd_cond_wait_np (&active_fifo_changed,		      \
-&active_fifo_lock))		      \
-err = EINTR;							      \
+#define WAIT(condition, noblock_err) \
+while (!err && !(condition)) \
+{ \
+if (flags & O_NONBLOCK) \
+{ \
+err = noblock_err; \
+break; \
+} \
+else if (pthread_hurd_cond_wait_np (&active_fifo_changed, \
+&active_fifo_lock)) \
+err = EINTR; \
 }
 if (flags & O_READ)
 {

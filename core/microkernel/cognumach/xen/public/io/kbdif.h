@@ -1,8 +1,8 @@
 #ifndef __XEN_PUBLIC_IO_KBDIF_H__
 #define __XEN_PUBLIC_IO_KBDIF_H__
-#define XENKBD_TYPE_MOTION  1
-#define XENKBD_TYPE_KEY     3
-#define XENKBD_TYPE_POS     4
+#define XENKBD_TYPE_MOTION 1
+#define XENKBD_TYPE_KEY 3
+#define XENKBD_TYPE_POS 4
 struct xenkbd_motion
 {
 uint8_t type;

@@ -20,12 +20,12 @@ const OEIS_A000081 = [1, 1, 2, 4, 9, 20, 48, 115, 286, 719, 1842, 4766, 12486, 3
 # P-System Membrane Computing Structures
 mutable struct Membrane
 id::Int
-objects::Dict{String, Int}  # Multiset of objects
-rules::Vector{String}       # P-System rules
+objects::Dict{String, Int} # Multiset of objects
+rules::Vector{String} # P-System rules
 parent::Union{Nothing, Int} # Parent membrane ID
-children::Vector{Int}       # Child membrane IDs
-permeability::Float64       # Membrane permeability [0,1]
-activity_level::Float64     # Current activity
+children::Vector{Int} # Child membrane IDs
+permeability::Float64 # Membrane permeability [0,1]
+activity_level::Float64 # Current activity
 end
 function Membrane(id::Int)
 return Membrane(id, Dict{String, Int}(), String[], nothing, Int[], 0.5, 0.0)
@@ -36,7 +36,7 @@ membranes::Dict{Int, Membrane}
 global_state::Vector{Float64}
 communication_matrix::Matrix{Float64}
 evolution_step::Int
-oeis_index::Int  # Current OEIS A000081 index
+oeis_index::Int # Current OEIS A000081 index
 end
 function PSystemReservoir(num_membranes::Int)
 membranes = Dict{Int, Membrane}()
@@ -53,7 +53,7 @@ end
 comm_matrix = rand(num_membranes, num_membranes) * 0.1
 return PSystemReservoir(
 membranes,
-zeros(num_membranes * 3),  # 3 state variables per membrane
+zeros(num_membranes * 3), # 3 state variables per membrane
 comm_matrix,
 0,
 oeis_idx
@@ -63,9 +63,9 @@ end
 mutable struct BSeriesTreeRidge
 tree_coefficients::Dict{String, Float64}
 ridge_weights::Matrix{Float64}
-tree_structure::Dict{String, Vector{String}}  # Parent-child relationships
-order::Int  # B-Series order
-oeis_trees::Vector{String}  # OEIS A000081 enumerated trees
+tree_structure::Dict{String, Vector{String}} # Parent-child relationships
+order::Int # B-Series order
+oeis_trees::Vector{String} # OEIS A000081 enumerated trees
 end
 function BSeriesTreeRidge(order::Int)
 # Generate B-Series trees up to given order using OEIS A000081
@@ -73,10 +73,10 @@ trees = generate_oeis_trees(order)
 coefficients = Dict{String, Float64}()
 structure = Dict{String, Vector{String}}()
 for tree in trees
-coefficients[tree] = rand() * 0.1  # Small random coefficients
+coefficients[tree] = rand() * 0.1 # Small random coefficients
 structure[tree] = generate_tree_children(tree)
 end
-ridge_size = min(length(trees), 100)  # Cap ridge size
+ridge_size = min(length(trees), 100) # Cap ridge size
 ridge_weights = randn(ridge_size, ridge_size) * 0.01
 return BSeriesTreeRidge(
 coefficients,
@@ -90,13 +90,13 @@ function generate_oeis_trees(order::Int)::Vector{String}
 """Generate tree representations following OEIS A000081"""
 trees = String[]
 if order >= 1
-push!(trees, "∅")  # Empty tree (root only)
+push!(trees, "∅") # Empty tree (root only)
 end
 if order >= 2
-push!(trees, "•")  # Single node
+push!(trees, "•") # Single node
 end
 if order >= 3
-push!(trees, "••", "•∘•")  # Two basic tree forms
+push!(trees, "••", "•∘•") # Two basic tree forms
 end
 if order >= 4
 push!(trees, "•••", "••∘•", "•∘••", "•∘•∘•")
@@ -137,9 +137,9 @@ function JSurfaceCore()
 D = Differential(t)
 # Cognitive dynamics system (simplified Lorenz-like)
 eqs = [
-D(x) ~ α * (y - x),           # Attention dynamics
-D(y) ~ x * (β - z) - y,       # Memory formation
-D(z) ~ x * y - γ * z          # Emotional integration
+D(x) ~ α * (y - x), # Attention dynamics
+D(y) ~ x * (β - z) - y, # Memory formation
+D(z) ~ x * y - γ * z # Emotional integration
 ]
 @named cognitive_system = ODESystem(eqs)
 # Default parameters
@@ -192,9 +192,9 @@ thermo_map = rand(length(emotions), length(emotions)) * 0.1
 return DETEmotionalMapper(
 emotions,
 thermo_map,
-1.0,  # Temperature
-0.0,  # Entropy
-zeros(length(emotions))  # Gradient
+1.0, # Temperature
+0.0, # Entropy
+zeros(length(emotions)) # Gradient
 )
 end
 # Main DTESN System
@@ -218,7 +218,7 @@ b_series = BSeriesTreeRidge(bseries_order)
 j_surf = JSurfaceCore()
 det_map = DETEmotionalMapper()
 # Integration weights for combining subsystems
-weights = normalize([0.3, 0.3, 0.2, 0.2])  # P-System, B-Series, J-Surface, DET
+weights = normalize([0.3, 0.3, 0.2, 0.2]) # P-System, B-Series, J-Surface, DET
 # Global state vector
 state_size = length(p_sys.global_state) + length(b_series.oeis_trees) + 10 + length(det_map.emotion_space)
 global_state = zeros(state_size)
@@ -314,7 +314,7 @@ if i <= length(input)
 tree_coeff = get(b_series.tree_coefficients, tree, 0.0)
 tree_response = tree_coeff * input[i] +
 0.1 * sum(input) * (OEIS_A000081[min(i, length(OEIS_A000081))] / 100.0)
-output[i] = tanh(tree_response)  # Non-linear activation
+output[i] = tanh(tree_response) # Non-linear activation
 # Update tree coefficient (learning)
 learning_rate = 0.001
 b_series.tree_coefficients[tree] += learning_rate * input[i] * (1 - output[i]^2)
@@ -380,7 +380,7 @@ probs = abs_state ./ sum(abs_state)
 # Calculate entropy
 ent = 0.0
 for p in probs
-if p > 1e-10  # Avoid log(0)
+if p > 1e-10 # Avoid log(0)
 ent -= p * log(p)
 end
 end
@@ -398,7 +398,7 @@ input_mapped = input[1:min(length(input), length(emotions))]
 for (i, emotion) in enumerate(emotions)
 if i <= length(input_mapped)
 # Emotional response with thermodynamic decay
-response = input_mapped[i] * (1.0 + 0.1 * rand())  # Add noise
+response = input_mapped[i] * (1.0 + 0.1 * rand()) # Add noise
 det.emotion_space[emotion] = 0.8 * det.emotion_space[emotion] + 0.2 * response
 end
 end

@@ -3,47 +3,47 @@ import type { Component, InjectionKey, ToRefs } from 'vue'
 import type { Store } from '../components/Editor/store'
 export type EditorMode = 'js' | 'css' | 'ssr'
 export interface EditorProps {
-  value: string
-  filename: string
-  readonly?: boolean
-  mode?: EditorMode
+value: string
+filename: string
+readonly?: boolean
+mode?: EditorMode
 }
 export interface EditorEmits {
-  (e: 'change', code: string): void
+(e: 'change', code: string): void
 }
 export type EditorComponentType = Component<EditorProps>
 export type OutputModes = 'preview' | EditorMode
 export const injectKeyProps: InjectionKey<ToRefs<Required<{
-  theme?: 'dark' | 'light'
-  previewTheme?: boolean
-  editor: EditorComponentType
-  store?: Store
-  autoResize?: boolean
-  showCompileOutput?: boolean
-  showImportMap?: boolean
-  showTsConfig?: boolean
-  clearConsole?: boolean
-  layout?: 'horizontal' | 'vertical'
-  layoutReverse?: boolean
-  ssr?: boolean
-  previewOptions?: {
-    headHTML?: string
-    bodyHTML?: string
-    placeholderHTML?: string
-    customCode?: {
-      importCode?: string
-      useCode?: string
-    }
-    showRuntimeError?: boolean
-    showRuntimeWarning?: boolean
-  }
-  editorOptions?: {
-    showErrorText?: string | false
-    autoSaveText?: string | false
-    monacoOptions?: editor.IStandaloneEditorConstructionOptions
-  }
-  splitPaneOptions?: {
-    codeTogglerText?: string
-    outputTogglerText?: string
-  }
+theme?: 'dark' | 'light'
+previewTheme?: boolean
+editor: EditorComponentType
+store?: Store
+autoResize?: boolean
+showCompileOutput?: boolean
+showImportMap?: boolean
+showTsConfig?: boolean
+clearConsole?: boolean
+layout?: 'horizontal' | 'vertical'
+layoutReverse?: boolean
+ssr?: boolean
+previewOptions?: {
+headHTML?: string
+bodyHTML?: string
+placeholderHTML?: string
+customCode?: {
+importCode?: string
+useCode?: string
+}
+showRuntimeError?: boolean
+showRuntimeWarning?: boolean
+}
+editorOptions?: {
+showErrorText?: string | false
+autoSaveText?: string | false
+monacoOptions?: editor.IStandaloneEditorConstructionOptions
+}
+splitPaneOptions?: {
+codeTogglerText?: string
+outputTogglerText?: string
+}
 } & { autoSave: boolean }>>> = Symbol('props')

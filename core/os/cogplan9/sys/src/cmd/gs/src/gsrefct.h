@@ -1,5 +1,5 @@
 #ifndef gsrefct_INCLUDED
-#  define gsrefct_INCLUDED
+# define gsrefct_INCLUDED
 typedef struct rc_header_s rc_header;
 struct rc_header_s {
 long ref_count;
@@ -76,14 +76,14 @@ if ( vp ) RC_DO_ADJUST(vp, -1);\
 }\
 END
 #ifdef DEBUG
-#  define rc_check_(vp)\
+# define rc_check_(vp)\
 BEGIN\
 if (gs_debug_c('?') && (vp)->rc.ref_count < 0)\
 lprintf2("0x%lx has ref_count of %ld!\n", (ulong)(vp),\
 (vp)->rc.ref_count);\
 END
 #else
-#  define rc_check_(vp) DO_NOTHING
+# define rc_check_(vp) DO_NOTHING
 #endif
 #define rc_adjust_(vp, delta, cname, body)\
 BEGIN\

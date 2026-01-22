@@ -1,5 +1,5 @@
-#include	"l.h"
-long	OFFSET;
+#include "l.h"
+long OFFSET;
 static Prog *PP;
 long
 entryvalue(void)
@@ -399,7 +399,7 @@ else
 Bprint(&bso, "%c %.8lux %s\n", t, v, s);
 }
 }
-#define	MINLC	4
+#define MINLC 4
 void
 asmlc(void)
 {
@@ -1286,7 +1286,7 @@ v = p->cond->pc;
 if(p->to.sym->thumb)
 v |= 1;
 o1 = olr(8, REGPC, REGTMP, p->scond&C_SCOND);
-o2 = 	oprrr(AADD, p->scond) | immrot(8) | (REGPC<<16) | (REGLINK<<12);
+o2 = oprrr(AADD, p->scond) | immrot(8) | (REGPC<<16) | (REGLINK<<12);
 o3 = ((p->scond&C_SCOND)<<28) | (0x12fff<<8) | (1<<4) | REGTMP;
 o4 = opbra(AB, 14);
 o5 = v;
@@ -1299,7 +1299,7 @@ o1 = oprrr(AADD, p->scond);
 o1 |= immrot(instoffset);
 o1 |= p->to.reg << 16;
 o1 |= REGTMP << 12;
-o2 = 	oprrr(AADD, p->scond) | immrot(0) | (REGPC<<16) | (REGLINK<<12);
+o2 = oprrr(AADD, p->scond) | immrot(0) | (REGPC<<16) | (REGLINK<<12);
 o3 = ((p->scond&C_SCOND)<<28) | (0x12fff<<8) | (1<<4) | REGTMP;
 break;
 case 76:
@@ -1378,50 +1378,50 @@ if(sc & (C_PBIT|C_WBIT))
 diag(".P/.W on dp instruction");
 switch(a) {
 case AMULU:
-case AMUL:	return o | (0x0<<21) | (0x9<<4);
-case AMULA:	return o | (0x1<<21) | (0x9<<4);
-case AMULLU:	return o | (0x4<<21) | (0x9<<4);
-case AMULL:	return o | (0x6<<21) | (0x9<<4);
-case AMULALU:	return o | (0x5<<21) | (0x9<<4);
-case AMULAL:	return o | (0x7<<21) | (0x9<<4);
-case AAND:	return o | (0x0<<21);
-case AEOR:	return o | (0x1<<21);
-case ASUB:	return o | (0x2<<21);
-case ARSB:	return o | (0x3<<21);
-case AADD:	return o | (0x4<<21);
-case AADC:	return o | (0x5<<21);
-case ASBC:	return o | (0x6<<21);
-case ARSC:	return o | (0x7<<21);
-case ATST:	return o | (0x8<<21) | (1<<20);
-case ATEQ:	return o | (0x9<<21) | (1<<20);
-case ACMP:	return o | (0xa<<21) | (1<<20);
-case ACMN:	return o | (0xb<<21) | (1<<20);
-case AORR:	return o | (0xc<<21);
-case AMOVW:	return o | (0xd<<21);
-case ABIC:	return o | (0xe<<21);
-case AMVN:	return o | (0xf<<21);
-case ASLL:	return o | (0xd<<21) | (0<<5);
-case ASRL:	return o | (0xd<<21) | (1<<5);
-case ASRA:	return o | (0xd<<21) | (2<<5);
-case ASWI:	return o | (0xf<<24);
-case AADDD:	return o | (0xe<<24) | (0x0<<20) | (1<<8) | (1<<7);
-case AADDF:	return o | (0xe<<24) | (0x0<<20) | (1<<8);
-case AMULD:	return o | (0xe<<24) | (0x1<<20) | (1<<8) | (1<<7);
-case AMULF:	return o | (0xe<<24) | (0x1<<20) | (1<<8);
-case ASUBD:	return o | (0xe<<24) | (0x2<<20) | (1<<8) | (1<<7);
-case ASUBF:	return o | (0xe<<24) | (0x2<<20) | (1<<8);
-case ADIVD:	return o | (0xe<<24) | (0x4<<20) | (1<<8) | (1<<7);
-case ADIVF:	return o | (0xe<<24) | (0x4<<20) | (1<<8);
+case AMUL: return o | (0x0<<21) | (0x9<<4);
+case AMULA: return o | (0x1<<21) | (0x9<<4);
+case AMULLU: return o | (0x4<<21) | (0x9<<4);
+case AMULL: return o | (0x6<<21) | (0x9<<4);
+case AMULALU: return o | (0x5<<21) | (0x9<<4);
+case AMULAL: return o | (0x7<<21) | (0x9<<4);
+case AAND: return o | (0x0<<21);
+case AEOR: return o | (0x1<<21);
+case ASUB: return o | (0x2<<21);
+case ARSB: return o | (0x3<<21);
+case AADD: return o | (0x4<<21);
+case AADC: return o | (0x5<<21);
+case ASBC: return o | (0x6<<21);
+case ARSC: return o | (0x7<<21);
+case ATST: return o | (0x8<<21) | (1<<20);
+case ATEQ: return o | (0x9<<21) | (1<<20);
+case ACMP: return o | (0xa<<21) | (1<<20);
+case ACMN: return o | (0xb<<21) | (1<<20);
+case AORR: return o | (0xc<<21);
+case AMOVW: return o | (0xd<<21);
+case ABIC: return o | (0xe<<21);
+case AMVN: return o | (0xf<<21);
+case ASLL: return o | (0xd<<21) | (0<<5);
+case ASRL: return o | (0xd<<21) | (1<<5);
+case ASRA: return o | (0xd<<21) | (2<<5);
+case ASWI: return o | (0xf<<24);
+case AADDD: return o | (0xe<<24) | (0x0<<20) | (1<<8) | (1<<7);
+case AADDF: return o | (0xe<<24) | (0x0<<20) | (1<<8);
+case AMULD: return o | (0xe<<24) | (0x1<<20) | (1<<8) | (1<<7);
+case AMULF: return o | (0xe<<24) | (0x1<<20) | (1<<8);
+case ASUBD: return o | (0xe<<24) | (0x2<<20) | (1<<8) | (1<<7);
+case ASUBF: return o | (0xe<<24) | (0x2<<20) | (1<<8);
+case ADIVD: return o | (0xe<<24) | (0x4<<20) | (1<<8) | (1<<7);
+case ADIVF: return o | (0xe<<24) | (0x4<<20) | (1<<8);
 case ACMPD:
-case ACMPF:	return o | (0xe<<24) | (0x9<<20) | (0xF<<12) | (1<<8) | (1<<4);
+case ACMPF: return o | (0xe<<24) | (0x9<<20) | (0xF<<12) | (1<<8) | (1<<4);
 case AMOVF:
-case AMOVDF:	return o | (0xe<<24) | (0x0<<20) | (1<<15) | (1<<8);
+case AMOVDF: return o | (0xe<<24) | (0x0<<20) | (1<<15) | (1<<8);
 case AMOVD:
-case AMOVFD:	return o | (0xe<<24) | (0x0<<20) | (1<<15) | (1<<8) | (1<<7);
-case AMOVWF:	return o | (0xe<<24) | (0<<20) | (1<<8) | (1<<4);
-case AMOVWD:	return o | (0xe<<24) | (0<<20) | (1<<8) | (1<<4) | (1<<7);
-case AMOVFW:	return o | (0xe<<24) | (1<<20) | (1<<8) | (1<<4);
-case AMOVDW:	return o | (0xe<<24) | (1<<20) | (1<<8) | (1<<4) | (1<<7);
+case AMOVFD: return o | (0xe<<24) | (0x0<<20) | (1<<15) | (1<<8) | (1<<7);
+case AMOVWF: return o | (0xe<<24) | (0<<20) | (1<<8) | (1<<4);
+case AMOVWD: return o | (0xe<<24) | (0<<20) | (1<<8) | (1<<4) | (1<<7);
+case AMOVFW: return o | (0xe<<24) | (1<<20) | (1<<8) | (1<<4);
+case AMOVDW: return o | (0xe<<24) | (1<<20) | (1<<8) | (1<<4) | (1<<7);
 }
 diag("bad rrr %d", a);
 prasm(curp);
@@ -1438,23 +1438,23 @@ return (sc<<28)|(0x5<<25)|(0x1<<24);
 if(sc != 0xe)
 diag(".COND on bcond instruction");
 switch(a) {
-case ABEQ:	return (0x0<<28)|(0x5<<25);
-case ABNE:	return (0x1<<28)|(0x5<<25);
-case ABCS:	return (0x2<<28)|(0x5<<25);
-case ABHS:	return (0x2<<28)|(0x5<<25);
-case ABCC:	return (0x3<<28)|(0x5<<25);
-case ABLO:	return (0x3<<28)|(0x5<<25);
-case ABMI:	return (0x4<<28)|(0x5<<25);
-case ABPL:	return (0x5<<28)|(0x5<<25);
-case ABVS:	return (0x6<<28)|(0x5<<25);
-case ABVC:	return (0x7<<28)|(0x5<<25);
-case ABHI:	return (0x8<<28)|(0x5<<25);
-case ABLS:	return (0x9<<28)|(0x5<<25);
-case ABGE:	return (0xa<<28)|(0x5<<25);
-case ABLT:	return (0xb<<28)|(0x5<<25);
-case ABGT:	return (0xc<<28)|(0x5<<25);
-case ABLE:	return (0xd<<28)|(0x5<<25);
-case AB:	return (0xe<<28)|(0x5<<25);
+case ABEQ: return (0x0<<28)|(0x5<<25);
+case ABNE: return (0x1<<28)|(0x5<<25);
+case ABCS: return (0x2<<28)|(0x5<<25);
+case ABHS: return (0x2<<28)|(0x5<<25);
+case ABCC: return (0x3<<28)|(0x5<<25);
+case ABLO: return (0x3<<28)|(0x5<<25);
+case ABMI: return (0x4<<28)|(0x5<<25);
+case ABPL: return (0x5<<28)|(0x5<<25);
+case ABVS: return (0x6<<28)|(0x5<<25);
+case ABVC: return (0x7<<28)|(0x5<<25);
+case ABHI: return (0x8<<28)|(0x5<<25);
+case ABLS: return (0x9<<28)|(0x5<<25);
+case ABGE: return (0xa<<28)|(0x5<<25);
+case ABLT: return (0xb<<28)|(0x5<<25);
+case ABGT: return (0xc<<28)|(0x5<<25);
+case ABLE: return (0xd<<28)|(0x5<<25);
+case AB: return (0xe<<28)|(0x5<<25);
 }
 diag("bad bra %A", a);
 prasm(curp);

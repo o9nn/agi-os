@@ -247,7 +247,7 @@ using ModelingToolkitStandardLibrary.Blocks
 m1 = 1
 m2 = 1
 k = 1000 # Spring stiffness
-c = 10   # Damping coefficient
+c = 10 # Damping coefficient
 @named inertia1 = Rotational.Inertia(; J = m1)
 @named inertia2 = Rotational.Inertia(; J = m2)
 @named spring = Rotational.Spring(; c = k)

@@ -4,8 +4,8 @@ echo "GNU Mach DTrace Framework Demonstration"
 echo "======================================="
 echo
 if [ ! -f "dtrace-analyze.c" ]; then
-    echo "Error: Please run this script from the tools/ directory"
-    exit 1
+echo "Error: Please run this script from the tools/ directory"
+exit 1
 fi
 echo "1. Building analysis tools..."
 make clean && make all
@@ -40,7 +40,7 @@ echo "   ✓ Analysis and visualization tools"
 echo
 echo "6. Current instrumentation points:"
 echo "   - thread_invoke() in kern/sched_prim.c (thread switching)"
-echo "   - mach_msg_trap() in ipc/mach_msg.c (IPC messages)"  
+echo "   - mach_msg_trap() in ipc/mach_msg.c (IPC messages)"
 echo "   - vm_fault() in vm/vm_fault.c (memory faults)"
 echo
 echo "7. Usage examples:"

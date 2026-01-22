@@ -1,5 +1,5 @@
 #ifndef gsdll_INCLUDED
-#  define gsdll_INCLUDED
+# define gsdll_INCLUDED
 #include "iapi.h"
 #ifdef __MACOS__
 #define HWND char *
@@ -23,8 +23,8 @@ extern GSDLL_CALLBACK pgsdll_callback;
 #define GSDLL_PAGE 5
 #define GSDLL_SIZE 6
 #define GSDLL_POLL 7
-#define GSDLL_INIT_IN_USE  100
-#define GSDLL_INIT_QUIT    101
+#define GSDLL_INIT_IN_USE 100
+#define GSDLL_INIT_QUIT 101
 GSDLLEXPORT int GSDLLAPI gsdll_revision(const char * * product, const char * * copyright, long * gs_revision, long * gs_revisiondate);
 GSDLLEXPORT int GSDLLAPI gsdll_init(GSDLL_CALLBACK callback, HWND hwnd, int argc, char * * argv);
 GSDLLEXPORT int GSDLLAPI gsdll_execute_begin(void);

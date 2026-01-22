@@ -1,5 +1,5 @@
 #ifndef gsdcolor_INCLUDED
-#  define gsdcolor_INCLUDED
+# define gsdcolor_INCLUDED
 #include "gsccolor.h"
 #include "gxarith.h"
 #include "gxbitmap.h"
@@ -7,15 +7,15 @@
 #include "gxcindex.h"
 #include "gxwts.h"
 #ifndef gx_device_color_DEFINED
-#  define gx_device_color_DEFINED
+# define gx_device_color_DEFINED
 typedef struct gx_device_color_s gx_device_color;
 #endif
 #ifndef gx_device_saved_color_DEFINED
-#  define gx_device_saved_color_DEFINED
-typedef struct gx_device_color_saved_s  gx_device_color_saved;
+# define gx_device_saved_color_DEFINED
+typedef struct gx_device_color_saved_s gx_device_color_saved;
 #endif
 #ifndef gx_device_halftone_DEFINED
-#  define gx_device_halftone_DEFINED
+# define gx_device_halftone_DEFINED
 typedef struct gx_device_halftone_s gx_device_halftone;
 #endif
 #define gx_dc_is_pure(pdc)\
@@ -89,11 +89,11 @@ gx_device_halftone *pdht);
 (pdc)->colors.pattern.p_tile = 0,\
 (pdc)->type = gx_dc_type_pattern)
 #ifndef gx_ht_tile_DEFINED
-#  define gx_ht_tile_DEFINED
+# define gx_ht_tile_DEFINED
 typedef struct gx_ht_tile_s gx_ht_tile;
 #endif
 #ifndef gx_color_tile_DEFINED
-#  define gx_color_tile_DEFINED
+# define gx_color_tile_DEFINED
 typedef struct gx_color_tile_s gx_color_tile;
 #endif
 typedef struct gx_device_color_type_s gx_device_color_type_t;
@@ -114,7 +114,7 @@ gx_device_halftone *c_ht;
 ushort num_components;
 byte c_base[GX_DEVICE_COLOR_MAX_COMPONENTS];
 uint c_level[GX_DEVICE_COLOR_MAX_COMPONENTS];
-ushort  alpha;
+ushort alpha;
 #if GX_DEVICE_COLOR_MAX_COMPONENTS <= ARCH_SIZEOF_SHORT * 8
 ushort plane_mask;
 #else
@@ -133,7 +133,7 @@ gx_color_index plane_vector[GX_DEVICE_COLOR_MAX_COMPONENTS];
 } wts;
 struct _pat {
 gx_color_tile *p_tile;
-}  pattern;
+} pattern;
 } colors;
 gs_int_point phase;
 bool ccolor_valid;
@@ -151,31 +151,31 @@ gs_public_st_composite(st_device_color, gx_device_color, "gx_device_color",\
 device_color_enum_ptrs, device_color_reloc_ptrs)
 #define st_device_color_max_ptrs (st_client_color_max_ptrs + 2)
 struct gx_device_color_saved_s {
-gx_device_color_type    type;
+gx_device_color_type type;
 union _svc {
-gx_color_index  pure;
+gx_color_index pure;
 struct _svbin {
-gx_color_index  b_color[2];
-uint            b_level;
-int             b_index;
-}               binary;
+gx_color_index b_color[2];
+uint b_level;
+int b_index;
+} binary;
 struct _svcol {
-byte    c_base[GX_DEVICE_COLOR_MAX_COMPONENTS];
-uint    c_level[GX_DEVICE_COLOR_MAX_COMPONENTS];
-ushort  alpha;
-}               colored;
+byte c_base[GX_DEVICE_COLOR_MAX_COMPONENTS];
+uint c_level[GX_DEVICE_COLOR_MAX_COMPONENTS];
+ushort alpha;
+} colored;
 struct _swts {
 wts_screen_sample_t levels[GX_DEVICE_COLOR_MAX_COMPONENTS];
-}               wts;
+} wts;
 struct _pattern {
 gs_id id;
 gs_int_point phase;
-}		pattern;
+} pattern;
 struct _pattern2 {
 gs_id id;
-}		pattern2;
-}                       colors;
-gs_int_point            phase;
+} pattern2;
+} colors;
+gs_int_point phase;
 };
 #ifndef gx_dc_type_none
 extern const gx_device_color_type_t *const gx_dc_type_none;

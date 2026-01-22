@@ -60,12 +60,12 @@ sys->fprint(fd1, "");
 reports->quit(errorc);
 }
 # read side (when it's an argument):
-# 	read proposed new fd
-# 	write actual fd for them to write to (creating pipe in necessary)
+# read proposed new fd
+# write actual fd for them to write to (creating pipe in necessary)
 #
 # write side (when you're returning it):
-# 	write a proposed new fd (or nil if no suggestion)
-# 	read actual fd for writing
+# write a proposed new fd (or nil if no suggestion)
+# read actual fd for writing
 startfilter(f0, f1: chan of ref Sys->FD, errorc: chan of string): (ref Sys->FD, ref Sys->FD)
 {
 f1 <-= nil;

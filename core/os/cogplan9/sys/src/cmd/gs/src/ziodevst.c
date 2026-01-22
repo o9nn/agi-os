@@ -16,7 +16,7 @@ ref data;
 } iostatic_state;
 private
 CLEAR_MARKS_PROC(iostatic_state_clear_marks)
-{   iostatic_state *const pptr = vptr;
+{ iostatic_state *const pptr = vptr;
 r_clear_attrs(&pptr->data, l_mark);
 }
 private

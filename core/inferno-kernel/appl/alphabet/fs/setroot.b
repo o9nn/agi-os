@@ -62,7 +62,7 @@ createroot(src, dst: Fschan, root: string, d: ref Sys->Dir, reply: chan of int)
 {
 if(root == nil)
 root = d.name;
-(n, elems) := sys->tokenize(root, "/");		# XXX should really do a cleanname first
+(n, elems) := sys->tokenize(root, "/"); # XXX should really do a cleanname first
 if(root[0] == '/'){
 elems = "/" :: elems;
 n++;

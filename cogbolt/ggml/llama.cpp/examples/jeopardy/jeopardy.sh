@@ -14,10 +14,10 @@ counter=1
 echo 'Running'
 while IFS= read -r question
 do
-  exe_cmd="./llama-cli -p "\"$prefix$introduction$nl$prefix$question\"" "$opts" -m ""\"$MODEL\""" >> ""\"$output_file\""
-  echo $counter
-  echo "Current Question: $question"
-  eval "$exe_cmd"
-  echo -e "\n------" >> $output_file
-  counter=$((counter+1))
+exe_cmd="./llama-cli -p "\"$prefix$introduction$nl$prefix$question\"" "$opts" -m ""\"$MODEL\""" >> ""\"$output_file\""
+echo $counter
+echo "Current Question: $question"
+eval "$exe_cmd"
+echo -e "\n------" >> $output_file
+counter=$((counter+1))
 done < "$question_file"

@@ -3,17 +3,17 @@
 #include <ip.h>
 #include "dat.h"
 #include "protos.h"
-typedef struct Hdr	Hdr;
+typedef struct Hdr Hdr;
 struct Hdr
 {
-uchar	sum[2];
-uchar	len[2];
-uchar	type;
-uchar	spec;
-uchar	sport[2];
-uchar	dport[2];
-uchar	id[4];
-uchar	ack[4];
+uchar sum[2];
+uchar len[2];
+uchar type;
+uchar spec;
+uchar sport[2];
+uchar dport[2];
+uchar id[4];
+uchar ack[4];
 };
 enum
 {
@@ -27,19 +27,19 @@ Osd,
 };
 static Field p_fields[] =
 {
-{"s",		Fnum,	Os,	"source port",	} ,
-{"d",		Fnum,	Od,	"dest port",	} ,
-{"a",		Fnum,	Osd,	"source/dest port",	} ,
-{"sd",		Fnum,	Osd,	"source/dest port",	} ,
+{"s", Fnum, Os, "source port", } ,
+{"d", Fnum, Od, "dest port", } ,
+{"a", Fnum, Osd, "source/dest port", } ,
+{"sd", Fnum, Osd, "source/dest port", } ,
 {0}
 };
 static Mux p_mux[] =
 {
-{"ninep",	17007, },
-{"ninep",	17008, },
-{"ninep",	17005, },
-{"ninep",	17010, },
-{"ninep",	17013, },
+{"ninep", 17007, },
+{"ninep", 17008, },
+{"ninep", 17005, },
+{"ninep", 17010, },
+{"ninep", 17013, },
 {0},
 };
 static void

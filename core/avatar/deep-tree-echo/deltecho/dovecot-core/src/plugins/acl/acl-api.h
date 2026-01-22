@@ -5,17 +5,17 @@ struct mailbox_list;
 struct mail_storage;
 struct mailbox;
 struct acl_object;
-#define MAIL_ACL_LOOKUP		"lookup"
-#define MAIL_ACL_READ		"read"
-#define MAIL_ACL_WRITE		"write"
-#define MAIL_ACL_WRITE_SEEN	"write-seen"
-#define MAIL_ACL_WRITE_DELETED	"write-deleted"
-#define MAIL_ACL_INSERT		"insert"
-#define MAIL_ACL_POST		"post"
-#define MAIL_ACL_EXPUNGE	"expunge"
-#define MAIL_ACL_CREATE		"create"
-#define MAIL_ACL_DELETE		"delete"
-#define MAIL_ACL_ADMIN		"admin"
+#define MAIL_ACL_LOOKUP "lookup"
+#define MAIL_ACL_READ "read"
+#define MAIL_ACL_WRITE "write"
+#define MAIL_ACL_WRITE_SEEN "write-seen"
+#define MAIL_ACL_WRITE_DELETED "write-deleted"
+#define MAIL_ACL_INSERT "insert"
+#define MAIL_ACL_POST "post"
+#define MAIL_ACL_EXPUNGE "expunge"
+#define MAIL_ACL_CREATE "create"
+#define MAIL_ACL_DELETE "delete"
+#define MAIL_ACL_ADMIN "admin"
 #define MAILBOX_ATTRIBUTE_PREFIX_ACL \
 MAILBOX_ATTRIBUTE_PREFIX_DOVECOT_PVT"acl/"
 enum acl_id_type {

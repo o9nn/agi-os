@@ -219,7 +219,7 @@ say (".\n");
 }
 }
 }
-if (got_hunk < 0  &&  using_plan_a) {
+if (got_hunk < 0 && using_plan_a) {
 if (outfile)
 fatal ("out of memory using Plan A");
 say ("\n\nRan out of memory using Plan A -- trying again...\n\n");
@@ -475,7 +475,7 @@ else
 {
 fprintf (stream, "Usage: %s [OPTION]... [ORIGFILE [PATCHFILE]]\n\n",
 Argv[0]);
-for (p = option_help;  *p;  p++)
+for (p = option_help; *p; p++)
 fprintf (stream, "%s\n", *p);
 }
 exit (status);
@@ -719,7 +719,7 @@ return first_guess - offset;
 else
 return 0;
 }
-for (offset = 0;  offset <= max_offset;  offset++) {
+for (offset = 0; offset <= max_offset; offset++) {
 if (offset <= max_pos_offset
 && patch_match (first_guess, offset, prefix_fuzz, suffix_fuzz)) {
 if (debug & 1)
@@ -917,7 +917,7 @@ outstate->zero_output = 0;
 }
 do
 {
-if (! outstate->after_newline  &&  putc ('\n', fp) == EOF)
+if (! outstate->after_newline && putc ('\n', fp) == EOF)
 write_fatal ();
 outstate->after_newline = pch_write_line (new, fp);
 outstate->zero_output = 0;
@@ -977,7 +977,7 @@ while (R_last_frozen_line < lastline)
 s = ifetch (++R_last_frozen_line, 0, &size);
 if (size)
 {
-if ((! outstate->after_newline  &&  putc ('\n', fp) == EOF)
+if ((! outstate->after_newline && putc ('\n', fp) == EOF)
 || ! fwrite (s, sizeof *s, size, fp))
 write_fatal ();
 outstate->after_newline = s[size - 1] == '\n';
@@ -1037,8 +1037,8 @@ register size_t alen;
 register char const *b;
 register size_t blen;
 {
-alen  -=  alen && a[alen - 1] == '\n';
-blen  -=  blen && b[blen - 1] == '\n';
+alen -= alen && a[alen - 1] == '\n';
+blen -= blen && b[blen - 1] == '\n';
 for (;;)
 {
 if (!blen || (*b == ' ' || *b == '\t'))

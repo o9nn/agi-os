@@ -1,20 +1,20 @@
 #include "dat.h"
 enum
 {
-Maxchal=	64,
+Maxchal= 64,
 };
 typedef struct State State;
 struct State
 {
-Key	*key;
-int	astype;
-int	asfd;
-Ticket	t;
+Key *key;
+int astype;
+int asfd;
+Ticket t;
 Ticketreq tr;
-char	chal[Maxchal];
-int	challen;
-char	resp[Maxchal];
-int	resplen;
+char chal[Maxchal];
+int challen;
+char resp[Maxchal];
+int resplen;
 };
 enum
 {
@@ -26,10 +26,10 @@ Maxphase,
 };
 static char *phasenames[Maxphase] =
 {
-[CNeedChal]	"CNeedChal",
-[CHaveResp]	"CHaveResp",
-[SHaveChal]	"SHaveChal",
-[SNeedResp]	"SNeedResp",
+[CNeedChal] "CNeedChal",
+[CHaveResp] "CHaveResp",
+[SHaveChal] "SHaveChal",
+[SNeedResp] "SNeedResp",
 };
 static void
 p9crclose(Fsstate *fss)
@@ -284,20 +284,20 @@ return RpcOk;
 }
 Proto p9cr =
 {
-.name=		"p9cr",
-.init=		p9crinit,
-.write=		p9crwrite,
-.read=		p9crread,
-.close=		p9crclose,
-.keyprompt=	"user? !password?",
+.name= "p9cr",
+.init= p9crinit,
+.write= p9crwrite,
+.read= p9crread,
+.close= p9crclose,
+.keyprompt= "user? !password?",
 };
 Proto vnc =
 {
-.name=		"vnc",
-.init=		p9crinit,
-.write=		p9crwrite,
-.read=		p9crread,
-.close=		p9crclose,
-.keyprompt=	"!password?",
-.addkey=	vncaddkey,
+.name= "vnc",
+.init= p9crinit,
+.write= p9crwrite,
+.read= p9crread,
+.close= p9crclose,
+.keyprompt= "!password?",
+.addkey= vncaddkey,
 };

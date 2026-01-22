@@ -1,6 +1,6 @@
 #include "sam.h"
-#define	NSYSFILE	3
-#define	NOFILE		128
+#define NSYSFILE 3
+#define NOFILE 128
 void
 checkqid(File *f)
 {
@@ -162,8 +162,8 @@ io = 0;
 if(p >= 0)
 dprint("#%lud\n", p);
 }
-int	remotefd0 = 0;
-int	remotefd1 = 1;
+int remotefd0 = 0;
+int remotefd1 = 1;
 void
 bootterm(char *machine, char **argv)
 {

@@ -249,7 +249,7 @@ imap_metadata_transaction_get_last_error(
 struct imap_metadata_transaction *imtrans,
 enum mail_error *error_code_r)
 {
-if  (imtrans->error != MAIL_ERROR_NONE) {
+if (imtrans->error != MAIL_ERROR_NONE) {
 if (error_code_r != NULL)
 *error_code_r = imtrans->error;
 return imtrans->error_string;

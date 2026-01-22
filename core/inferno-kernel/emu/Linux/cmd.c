@@ -1,12 +1,12 @@
-#include	<sys/types.h>
-#include	<signal.h>
-#include 	<pwd.h>
-#include	<sys/resource.h>
-#include	<sys/wait.h>
-#include	<fcntl.h>
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
+#include <sys/types.h>
+#include <signal.h>
+#include <pwd.h>
+#include <sys/resource.h>
+#include <sys/wait.h>
+#include <fcntl.h>
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
 enum
 {
 Debug = 0
@@ -14,13 +14,13 @@ Debug = 0
 typedef struct Targ Targ;
 struct Targ
 {
-int	fd[3];
-char**	args;
-char*	dir;
-int	pid;
-int	wfd;
-int	uid;
-int	gid;
+int fd[3];
+char** args;
+char* dir;
+int pid;
+int wfd;
+int uid;
+int gid;
 };
 extern int gidnobody;
 extern int uidnobody;

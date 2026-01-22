@@ -1,16 +1,16 @@
-#include	<u.h>
-#include	<libc.h>
-#include	"compat.h"
-#include	"error.h"
-#define	Image	IMAGE
-#include	<draw.h>
-#include	<memdraw.h>
-#include	<memlayer.h>
-#include	<cursor.h>
-#include	"screen.h"
+#include <u.h>
+#include <libc.h>
+#include "compat.h"
+#include "error.h"
+#define Image IMAGE
+#include <draw.h>
+#include <memdraw.h>
+#include <memlayer.h>
+#include <cursor.h>
+#include "screen.h"
 enum
 {
-Qtopdir		= 0,
+Qtopdir = 0,
 Qnew,
 Q3rd,
 Q2nd,
@@ -19,12 +19,12 @@ Qctl,
 Qdata,
 Qrefresh,
 };
-#define	QSHIFT	4
-#define	QID(q)		((((ulong)(q).path)&0x0000000F)>>0)
-#define	CLIENTPATH(q)	((((ulong)q)&0x7FFFFFF0)>>QSHIFT)
-#define	CLIENT(q)	CLIENTPATH((q).path)
-#define	NHASH		(1<<5)
-#define	HASHMASK	(NHASH-1)
+#define QSHIFT 4
+#define QID(q) ((((ulong)(q).path)&0x0000000F)>>0)
+#define CLIENTPATH(q) ((((ulong)q)&0x7FFFFFF0)>>QSHIFT)
+#define CLIENT(q) CLIENTPATH((q).path)
+#define NHASH (1<<5)
+#define HASHMASK (NHASH-1)
 typedef struct Client Client;
 typedef struct Draw Draw;
 typedef struct DImage DImage;
@@ -38,119 +38,119 @@ ulong blanktime = 30;
 struct Draw
 {
 QLock;
-int		clientid;
-int		nclient;
-Client**	client;
-int		nname;
-DName*	name;
-int		vers;
-int		softscreen;
-int		blanked;
-ulong		blanktime;
-ulong		savemap[3*256];
+int clientid;
+int nclient;
+Client** client;
+int nname;
+DName* name;
+int vers;
+int softscreen;
+int blanked;
+ulong blanktime;
+ulong savemap[3*256];
 };
 struct Client
 {
-Ref		r;
-DImage*		dimage[NHASH];
-CScreen*	cscreen;
-Refresh*	refresh;
-Rendez		refrend;
-uchar*		readdata;
-int		nreaddata;
-int		busy;
-int		clientid;
-int		slot;
-int		refreshme;
-int		infoid;
-int		op;
+Ref r;
+DImage* dimage[NHASH];
+CScreen* cscreen;
+Refresh* refresh;
+Rendez refrend;
+uchar* readdata;
+int nreaddata;
+int busy;
+int clientid;
+int slot;
+int refreshme;
+int infoid;
+int op;
 };
 struct Refresh
 {
-DImage*		dimage;
-Rectangle	r;
-Refresh*	next;
+DImage* dimage;
+Rectangle r;
+Refresh* next;
 };
 struct Refx
 {
-Client*		client;
-DImage*		dimage;
+Client* client;
+DImage* dimage;
 };
 struct DName
 {
-char			*name;
-Client	*client;
-DImage*		dimage;
-int			vers;
+char *name;
+Client *client;
+DImage* dimage;
+int vers;
 };
 struct FChar
 {
-int		minx;
-int		maxx;
-uchar		miny;
-uchar		maxy;
-schar		left;
-uchar		width;
+int minx;
+int maxx;
+uchar miny;
+uchar maxy;
+schar left;
+uchar width;
 };
 struct DImage
 {
-int		id;
-int		ref;
-char		*name;
-int		vers;
-Memimage*	image;
-int		ascent;
-int		nfchar;
-FChar*		fchar;
-DScreen*	dscreen;
-DImage*	fromname;
-DImage*		next;
+int id;
+int ref;
+char *name;
+int vers;
+Memimage* image;
+int ascent;
+int nfchar;
+FChar* fchar;
+DScreen* dscreen;
+DImage* fromname;
+DImage* next;
 };
 struct CScreen
 {
-DScreen*	dscreen;
-CScreen*	next;
+DScreen* dscreen;
+CScreen* next;
 };
 struct DScreen
 {
-int		id;
-int		public;
-int		ref;
-DImage	*dimage;
-DImage	*dfill;
-Memscreen*	screen;
-Client*		owner;
-DScreen*	next;
+int id;
+int public;
+int ref;
+DImage *dimage;
+DImage *dfill;
+Memscreen* screen;
+Client* owner;
+DScreen* next;
 };
-static	Draw		sdraw;
-static	Memimage	*screenimage;
-static	Memdata	screendata;
-static	Rectangle	flushrect;
-static	int		waste;
-static	DScreen*	dscreen;
-extern	void		flushmemscreen(Rectangle);
-void		drawmesg(Client*, void*, int);
-void		drawuninstall(Client*, int);
-void		drawfreedimage(DImage*);
-Client*		drawclientofpath(ulong);
-static	char Enodrawimage[] =	"unknown id for draw image";
-static	char Enodrawscreen[] =	"unknown id for draw screen";
-static	char Eshortdraw[] =	"short draw message";
-static	char Eshortread[] =	"draw read too short";
-static	char Eimageexists[] =	"image id in use";
-static	char Escreenexists[] =	"screen id in use";
-static	char Edrawmem[] =	"image memory allocation failed";
-static	char Ereadoutside[] =	"readimage outside image";
-static	char Ewriteoutside[] =	"writeimage outside image";
-static	char Enotfont[] =	"image not a font";
-static	char Eindex[] =		"character index out of range";
-static	char Enoclient[] =	"no such draw client";
-static	char Edepth[] =	"image has bad depth";
-static	char Enameused[] =	"image name in use";
-static	char Enoname[] =	"no image with that name";
-static	char Eoldname[] =	"named image no longer valid";
-static	char Enamed[] = 	"image already has name";
-static	char Ewrongname[] = 	"wrong name for image";
+static Draw sdraw;
+static Memimage *screenimage;
+static Memdata screendata;
+static Rectangle flushrect;
+static int waste;
+static DScreen* dscreen;
+extern void flushmemscreen(Rectangle);
+void drawmesg(Client*, void*, int);
+void drawuninstall(Client*, int);
+void drawfreedimage(DImage*);
+Client* drawclientofpath(ulong);
+static char Enodrawimage[] = "unknown id for draw image";
+static char Enodrawscreen[] = "unknown id for draw screen";
+static char Eshortdraw[] = "short draw message";
+static char Eshortread[] = "draw read too short";
+static char Eimageexists[] = "image id in use";
+static char Escreenexists[] = "screen id in use";
+static char Edrawmem[] = "image memory allocation failed";
+static char Ereadoutside[] = "readimage outside image";
+static char Ewriteoutside[] = "writeimage outside image";
+static char Enotfont[] = "image not a font";
+static char Eindex[] = "character index out of range";
+static char Enoclient[] = "no such draw client";
+static char Edepth[] = "image has bad depth";
+static char Enameused[] = "image name in use";
+static char Enoname[] = "no image with that name";
+static char Eoldname[] = "named image no longer valid";
+static char Enamed[] = "image already has name";
+static char Ewrongname[] = "wrong name for image";
 void
 drawlock(void)
 {
@@ -768,7 +768,7 @@ fprint(2, "bad memimaged: %r\n");
 return 0;
 }
 screenimage->width = width;
-screenimage->clipr  = screenimage->r;
+screenimage->clipr = screenimage->r;
 return 1;
 }
 void

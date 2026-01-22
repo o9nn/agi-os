@@ -2,7 +2,7 @@
 int
 interv(int i, int c)
 {
-int	ku, kl;
+int ku, kl;
 if (c >= ncol || c == 0) {
 if (dboxflg) {
 if (i == 0)
@@ -30,7 +30,7 @@ return(0);
 int
 interh(int i, int c)
 {
-int	kl, kr;
+int kl, kr;
 if (fullbot[i] == '=' || (dboxflg && (i == 0 || i >= nlin - 1))) {
 if (c == ncol)
 return(LEFT);
@@ -46,7 +46,7 @@ kl = c > 0 ? thish(up1(i), c - 1) : 0;
 kr = thish(i, c);
 if (kr <= 1 && i > 0 && allh(up1(i)))
 kr = c > 0 ? thish(up1(i), c) : 0;
-if (kl == '=' && kr ==  '=')
+if (kl == '=' && kr == '=')
 return(THRU);
 if (kl == '=')
 return(LEFT);

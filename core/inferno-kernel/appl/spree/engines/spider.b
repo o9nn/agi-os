@@ -18,16 +18,16 @@ aCENTRERIGHT, aCENTRELEFT, aUPPERRIGHT, aUPPERCENTRE,
 EXPAND, FILLX, FILLY, Stackspec: import Cardlib;
 include "../gather.m";
 clique: ref Clique;
-open: array of ref Object;		# [10]
+open: array of ref Object; # [10]
 deck: ref Object;
 discard: ref Object;
 dealbutton: ref Object;
 CLICK, MORECARDS: con iota;
 Openspec := Stackspec(
-"display",		# style
-19,			# maxcards
-0,			# conceal
-""			# title
+"display", # style
+19, # maxcards
+0, # conceal
+"" # title
 );
 clienttype(): string
 {

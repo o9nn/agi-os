@@ -4,22 +4,22 @@
 #include <openssl/evp.h>
 static unsigned char conv_ascii2bin(unsigned char a);
 #ifndef CHARSET_EBCDIC
-# define conv_bin2ascii(a)       (data_bin2ascii[(a)&0x3f])
+# define conv_bin2ascii(a) (data_bin2ascii[(a)&0x3f])
 #else
-# define conv_bin2ascii(a)       (data_bin2ascii[(a)&0x3f])
+# define conv_bin2ascii(a) (data_bin2ascii[(a)&0x3f])
 #endif
-#define BIN_PER_LINE    (64/4*3)
+#define BIN_PER_LINE (64/4*3)
 #define CHUNKS_PER_LINE (64/4)
-#define CHAR_PER_LINE   (64+1)
+#define CHAR_PER_LINE (64+1)
 static const unsigned char data_bin2ascii[65] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ\
 abcdefghijklmnopqrstuvwxyz0123456789+/";
-#define B64_EOLN                0xF0
-#define B64_CR                  0xF1
-#define B64_EOF                 0xF2
-#define B64_WS                  0xE0
-#define B64_ERROR               0xFF
-#define B64_NOT_BASE64(a)       (((a)|0x13) == 0xF3)
-#define B64_BASE64(a)           !B64_NOT_BASE64(a)
+#define B64_EOLN 0xF0
+#define B64_CR 0xF1
+#define B64_EOF 0xF2
+#define B64_WS 0xE0
+#define B64_ERROR 0xFF
+#define B64_NOT_BASE64(a) (((a)|0x13) == 0xF3)
+#define B64_BASE64(a) !B64_NOT_BASE64(a)
 static const unsigned char data_ascii2bin[128] = {
 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
 0xFF, 0xE0, 0xF0, 0xFF, 0xFF, 0xF1, 0xFF, 0xFF,

@@ -69,11 +69,11 @@ int encoding_index, const gs_uid *puid,
 const gs_matrix *pmat, gs_memory_t *mem)
 {
 #pragma unused(encoding_index,puid)
-mac_xfont		*macxf;
-CGrafPort		*currentPort;
-int				txFont, txSize, txMode;
-StyleField		txFace;
-Fixed			spExtra;
+mac_xfont *macxf;
+CGrafPort *currentPort;
+int txFont, txSize, txMode;
+StyleField txFace;
+Fixed spExtra;
 if (((gx_device_macos*) dev)->useXFonts == false)
 return NULL;
 if (encoding_index != ENCODING_INDEX_MACROMAN && encoding_index != ENCODING_INDEX_ISOLATIN1 &&
@@ -98,10 +98,10 @@ macxf->fontEncoding = mac_get_font_encoding(macxf);
 if (macxf->fontEncoding != ENCODING_INDEX_MACROMAN && macxf->fontEncoding != ENCODING_INDEX_ISOLATIN1)
 return NULL;
 GetPort(&((GrafPort*) currentPort));
-txFont  = currentPort->txFont;
-txSize  = currentPort->txSize;
-txFace  = currentPort->txFace;
-txMode  = currentPort->txMode;
+txFont = currentPort->txFont;
+txSize = currentPort->txSize;
+txFace = currentPort->txFace;
+txMode = currentPort->txMode;
 spExtra = currentPort->spExtra;
 TextFont(macxf->fontID);
 TextSize(macxf->fontSize);
@@ -109,10 +109,10 @@ TextFace(macxf->fontFace);
 TextMode(srcOr);
 SpaceExtra(0);
 FontMetrics(&(macxf->fontMetrics));
-currentPort->txFont  = txFont;
-currentPort->txSize  = txSize;
-currentPort->txFace  = txFace;
-currentPort->txMode  = txMode;
+currentPort->txFont = txFont;
+currentPort->txSize = txSize;
+currentPort->txFace = txFace;
+currentPort->txMode = txMode;
 currentPort->spExtra = spExtra;
 return (gx_xfont*) macxf;
 }
@@ -121,20 +121,20 @@ mac_char_xglyph(gx_xfont *xf, gs_char chr, int encoding_index,
 gs_glyph glyph, const gs_const_string *glyph_name)
 {
 #pragma unused(glyph_name,glyph)
-mac_xfont			* macxf = (mac_xfont*) xf;
+mac_xfont * macxf = (mac_xfont*) xf;
 if (chr == gs_no_char)
 return gx_no_xglyph;
 if (macxf->fontEncoding == ENCODING_INDEX_MACROMAN) {
 switch (encoding_index) {
-case ENCODING_INDEX_MACROMAN:	return chr;
-case ENCODING_INDEX_STANDARD:	return gs_map_std_to_mac[chr];
-case ENCODING_INDEX_ISOLATIN1:	return gs_map_iso_to_mac[chr];
+case ENCODING_INDEX_MACROMAN: return chr;
+case ENCODING_INDEX_STANDARD: return gs_map_std_to_mac[chr];
+case ENCODING_INDEX_ISOLATIN1: return gs_map_iso_to_mac[chr];
 }
 } else if (macxf->fontEncoding == ENCODING_INDEX_ISOLATIN1) {
 switch (encoding_index) {
-case ENCODING_INDEX_MACROMAN:	return gs_map_mac_to_iso[chr];
-case ENCODING_INDEX_STANDARD:	return gs_map_std_to_iso[chr];
-case ENCODING_INDEX_ISOLATIN1:	return chr;
+case ENCODING_INDEX_MACROMAN: return gs_map_mac_to_iso[chr];
+case ENCODING_INDEX_STANDARD: return gs_map_std_to_iso[chr];
+case ENCODING_INDEX_ISOLATIN1: return chr;
 }
 }
 return gx_no_xglyph;
@@ -144,7 +144,7 @@ mac_char_metrics(gx_xfont *xf, gx_xglyph xg, int wmode,
 gs_point *pwidth, gs_int_rect *pbbox)
 {
 #pragma unused(xg)
-mac_xfont			* macxf = (mac_xfont*) xf;
+mac_xfont * macxf = (mac_xfont*) xf;
 if (wmode != 0)
 return gs_error_undefined;
 pbbox->p.x = 0;
@@ -160,10 +160,10 @@ mac_render_char(gx_xfont *xf, gx_xglyph xg, gx_device *dev,
 int xo, int yo, gx_color_index color, int required)
 {
 #pragma unused(dev,required)
-mac_xfont			* macxf = (mac_xfont*) xf;
-gx_device_macos		* mdev = (gx_device_macos*) macxf->dev;
-Str255				character;
-int					i, found;
+mac_xfont * macxf = (mac_xfont*) xf;
+gx_device_macos * mdev = (gx_device_macos*) macxf->dev;
+Str255 character;
+int i, found;
 CheckMem(10*1024, 100*1024);
 ResetPage();
 character[0] = 1;
@@ -171,7 +171,7 @@ character[1] = xg;
 GSSetFgCol(macxf->dev, mdev->currPicPos, color);
 found = 0;
 for (i=0; i<mdev->numUsedFonts; i++)
-if (mdev->usedFontIDs[i] == macxf->fontID)	found = 1;
+if (mdev->usedFontIDs[i] == macxf->fontID) found = 1;
 if (!found) {
 mdev->usedFontIDs[mdev->numUsedFonts++] = macxf->fontID;
 PICT_fontName(mdev->currPicPos, macxf->fontID, macxf->fontName);
@@ -202,23 +202,23 @@ return 0;
 private void
 mac_find_font_family(ConstStringPtr fname, int len, FMFontFamily *fontID, FMFontStyle *fontFace)
 {
-char			fontNameStr[512];
-char			*fontFamilyName;
-char			*fontStyleName;
-int				i;
-*fontID   = 0;
+char fontNameStr[512];
+char *fontFamilyName;
+char *fontStyleName;
+int i;
+*fontID = 0;
 *fontFace = 0;
 fontNameStr[0] = len;
 memcpy(fontNameStr+1, fname, len);
 *fontID = FMGetFontFamilyFromName((StringPtr) fontNameStr);
-if (*fontID > 0)	return;
+if (*fontID > 0) return;
 fontNameStr[0] = len;
 memcpy(fontNameStr+1, fname, len);
 for (i=1; i<=len; i++)
-if (fontNameStr[i] == '-')	fontNameStr[i] = ' ';
+if (fontNameStr[i] == '-') fontNameStr[i] = ' ';
 *fontID = FMGetFontFamilyFromName((StringPtr) fontNameStr);
-if (*fontID > 0)	return;
-if (*fontID > 0)	return;
+if (*fontID > 0) return;
+if (*fontID > 0) return;
 memcpy(fontNameStr, fname, len);
 fontNameStr[len] = 0;
 fontFamilyName = strtok(fontNameStr, "- ");
@@ -233,7 +233,7 @@ if (!strcmp(fontStyleName, "Narrow") || !strcmp(fontStyleName, "Condensed"))
 if (fontFamilyName == NULL) {
 return;
 } else {
-Str255	fontName;
+Str255 fontName;
 fontName[0] = strlen(fontFamilyName);
 strcpy((char*)(fontName+1), fontFamilyName);
 *fontID = FMGetFontFamilyFromName((StringPtr) fontNameStr);
@@ -243,15 +243,15 @@ if (*fontID > 0) return;
 private int
 mac_get_font_encoding(mac_xfont *macxf)
 {
-int			encoding = ENCODING_INDEX_UNKNOWN;
-ResType		resType;
-short		resID;
+int encoding = ENCODING_INDEX_UNKNOWN;
+ResType resType;
+short resID;
 mac_get_font_resource(macxf, &resType, &resID);
 if (resType == 'sfnt') {
-Handle				fontHandle;
-TTFontDir			*fontDir;
-TTFontNamingTable	*fontNamingTable;
-int					i;
+Handle fontHandle;
+TTFontDir *fontDir;
+TTFontNamingTable *fontNamingTable;
+int i;
 if ((fontHandle = GetResource(resType, resID)) == NULL)
 return encoding;
 HLock(fontHandle);
@@ -261,8 +261,8 @@ for (i=0; i<fontDir->numTables; i++) {
 if (fontDir->components[i].tagName == TTF_FONT_NAMING_TABLE) {
 fontNamingTable = (TTFontNamingTable*) ((long)(fontDir->components[i].offset) + (long)fontDir);
 switch (fontNamingTable->platformID) {
-case 1:		encoding = ENCODING_INDEX_MACROMAN;		break;
-case 2:		encoding = ENCODING_INDEX_ISOLATIN1;	break;
+case 1: encoding = ENCODING_INDEX_MACROMAN; break;
+case 2: encoding = ENCODING_INDEX_ISOLATIN1; break;
 }
 break;
 }
@@ -276,12 +276,12 @@ return encoding;
 private void
 mac_get_font_resource(mac_xfont *macxf, ResType *resType, short *resID)
 {
-FMInput		fontInput = {0, 0, 0, true, 0, {1,1}, {1,1}};
-FMOutputPtr	fontOutput;
-Str255		resName;
-fontInput.family	= macxf->fontID;
-fontInput.size		= macxf->fontSize;
-fontInput.face		= macxf->fontFace;
+FMInput fontInput = {0, 0, 0, true, 0, {1,1}, {1,1}};
+FMOutputPtr fontOutput;
+Str255 resName;
+fontInput.family = macxf->fontID;
+fontInput.size = macxf->fontSize;
+fontInput.face = macxf->fontFace;
 fontOutput = FMSwapFont(&fontInput);
 if (fontOutput == NULL || fontOutput->fontHandle == NULL)
 return;
@@ -297,7 +297,7 @@ return noErr;
 FMFontFamily
 FMGetFontFamilyFromName(ConstStr255Param fontNameStr)
 {
-int	fontID;
+int fontID;
 GetFNum(fontNameStr, &fontID);
 return (FMFontFamily)fontID;
 }

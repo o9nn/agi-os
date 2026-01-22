@@ -1,5 +1,5 @@
 #ifndef gspath_INCLUDED
-#  define gspath_INCLUDED
+# define gspath_INCLUDED
 #include "gspenum.h"
 int gs_newpath(gs_state *),
 gs_moveto(gs_state *, floatp, floatp),
@@ -14,11 +14,11 @@ gs_curveto(gs_state *, floatp, floatp, floatp, floatp, floatp, floatp),
 gs_rcurveto(gs_state *, floatp, floatp, floatp, floatp, floatp, floatp),
 gs_closepath(gs_state *);
 #ifndef gs_imager_state_DEFINED
-#  define gs_imager_state_DEFINED
+# define gs_imager_state_DEFINED
 typedef struct gs_imager_state_s gs_imager_state;
 #endif
 #ifndef gx_path_DEFINED
-#  define gx_path_DEFINED
+# define gx_path_DEFINED
 typedef struct gx_path_s gx_path;
 #endif
 #ifndef gs_matrix_fixed_DEFINED

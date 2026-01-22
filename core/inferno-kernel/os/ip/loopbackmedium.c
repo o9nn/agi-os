@@ -7,14 +7,14 @@
 #include "ip.h"
 enum
 {
-Maxtu=	16*1024,
+Maxtu= 16*1024,
 };
 typedef struct LB LB;
 struct LB
 {
-Proc	*readp;
-Queue	*q;
-Fs	*f;
+Proc *readp;
+Queue *q;
+Fs *f;
 };
 static void loopbackread(void *a);
 static void
@@ -84,14 +84,14 @@ poperror();
 }
 Medium loopbackmedium =
 {
-.hsize=		0,
-.mintu=		0,
-.maxtu=		Maxtu,
-.maclen=	0,
-.name=		"loopback",
-.bind=		loopbackbind,
-.unbind=	loopbackunbind,
-.bwrite=	loopbackbwrite,
+.hsize= 0,
+.mintu= 0,
+.maxtu= Maxtu,
+.maclen= 0,
+.name= "loopback",
+.bind= loopbackbind,
+.unbind= loopbackunbind,
+.bwrite= loopbackbwrite,
 };
 void
 loopbackmediumlink(void)

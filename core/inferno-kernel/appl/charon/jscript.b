@@ -35,14 +35,14 @@ framedone: fn(f : ref Layout->Frame, hasscripts : int);
 #
 # implement the host object interface, too
 #
-get:		fn(ex: ref Exec, o: ref Obj, property: string): ref Val;
-put:		fn(ex: ref Exec, o: ref Obj, property: string, val: ref Val);
-canput:	fn(ex: ref Exec, o: ref Obj, property: string): ref Val;
-hasproperty:	fn(ex: ref Exec, o: ref Obj, property: string): ref Val;
-delete:		fn(ex: ref Exec, o: ref Obj, property: string);
-defaultval:	fn(ex: ref Exec, o: ref Obj, tyhint: int): ref Val;
-call:		fn(ex: ref Exec, func, this: ref Obj, args: array of ref Val, eval: int): ref Ref;
-construct:	fn(ex: ref Exec, func: ref Obj, args: array of ref Val): ref Obj;
+get: fn(ex: ref Exec, o: ref Obj, property: string): ref Val;
+put: fn(ex: ref Exec, o: ref Obj, property: string, val: ref Val);
+canput: fn(ex: ref Exec, o: ref Obj, property: string): ref Val;
+hasproperty: fn(ex: ref Exec, o: ref Obj, property: string): ref Val;
+delete: fn(ex: ref Exec, o: ref Obj, property: string);
+defaultval: fn(ex: ref Exec, o: ref Obj, tyhint: int): ref Val;
+call: fn(ex: ref Exec, func, this: ref Obj, args: array of ref Val, eval: int): ref Ref;
+construct: fn(ex: ref Exec, func: ref Obj, args: array of ref Val): ref Obj;
 };
 versions = array [] of {
 "javascript",
@@ -53,27 +53,27 @@ versions = array [] of {
 };
 # Call init() before calling anything else.
 # It makes a global object (a Window) for the browser's top level frame,
-# and also puts a navaigator object in it.  The document can't be filled
+# and also puts a navaigator object in it. The document can't be filled
 # in until the first document gets loaded.
 #
 # This module keeps track of the correspondence between the Script Window
 # objects and the corresponding Layout Frames, using the ScriptWin adt to
-# build a tree mirroring the structure.  The root of the tree never changes
+# build a tree mirroring the structure. The root of the tree never changes
 # after first being set (but changing its document essentially resets all of the
-# other data structures).  After charon has built its top-level window, it
+# other data structures). After charon has built its top-level window, it
 # should call frametreechanged(top).
 #
 # When a frame gets reset or gets some frame children added, call frametreechanged(f),
-# where f is the changed frame.  This module will update its ScriptWin tree as needed.
+# where f is the changed frame. This module will update its ScriptWin tree as needed.
 #
 # Whenever the document in a (Layout) Frame f changes, call havenewdoc(f)
 # after the frame's doc field is set. This causes this module to initialize the document
 # object in the corresponding window object.
 #
 # From within the build process, call evalscript(containing frame, script) to evaluate
-# global code fragments as needed.  The return value is two strings: a possible error
+# global code fragments as needed. The return value is two strings: a possible error
 # description, and HTML that is the result of a document.write (so it should be spliced
-# in at the point where the <SCRIPT> element occurred).  evalscript() also handles
+# in at the point where the <SCRIPT> element occurred). evalscript() also handles
 # the job of synching up the Docinfo data (on the Build side) with the document object
 # (on the Script side).
 #
@@ -89,7 +89,7 @@ obj: ref Obj;
 ScriptForm : adt {
 form : ref Build->Form;
 obj : ref Obj;
-ix : int;		# index in document.forms array
+ix : int; # index in document.forms array
 fields : list of (ref Build->Formfield, ref Obj);
 };
 # Adt for keeping track of correspondence between Window
@@ -97,24 +97,24 @@ fields : list of (ref Build->Formfield, ref Obj);
 ScriptWin: adt
 {
 frame: ref Layout->Frame;
-ex: ref Exec;		# ex.global is frame's Window obj
-locobj: ref Obj;		# Location object for window
-val : ref Val;		# val of ex.global - used to side-effect entry in parent.frames[]
+ex: ref Exec; # ex.global is frame's Window obj
+locobj: ref Obj; # Location object for window
+val : ref Val; # val of ex.global - used to side-effect entry in parent.frames[]
 parent: ref ScriptWin;
-forms: list of ref ScriptForm;	# no guaranteed order
+forms: list of ref ScriptForm; # no guaranteed order
 kids: cyclic list of ref ScriptWin;
 imgs: list of ref ScriptImg;
-newloc: string;		# url to go to after script finishes executing
-newloctarg: string;	# target frame for newloc
+newloc: string; # url to go to after script finishes executing
+newloctarg: string; # target frame for newloc
 docwriteout: string;
 inbuild: int;
-active: int;		# frame or sub-frame has scripts
+active: int; # frame or sub-frame has scripts
 error: int;
 imgrelocs: list of ref Obj;
 new: fn(f: ref Layout->Frame, ex: ref Exec, loc: ref Obj, par: ref ScriptWin) : ref ScriptWin;
 addkid: fn(sw: self ref ScriptWin, f: ref Layout->Frame);
 dummy: fn(): ref ScriptWin;
-#	findbyframe: fn(sw: self ref ScriptWin, f: ref Layout->Frame) : ref ScriptWin;
+# findbyframe: fn(sw: self ref ScriptWin, f: ref Layout->Frame) : ref ScriptWin;
 findbyframeid: fn(sw: self ref ScriptWin, fid: int) : ref ScriptWin;
 findbydoc: fn(sw: self ref ScriptWin, d: ref Build->Docinfo) : ref ScriptWin;
 findbyobj: fn(sw : self ref ScriptWin, obj : ref Obj) : ref ScriptWin;
@@ -134,7 +134,7 @@ PropSpec: adt
 {
 name: string;
 attr: int;
-initval: int;	# one of IVnull, etc.
+initval: int; # one of IVnull, etc.
 };
 ObjSpec: adt
 {
@@ -328,7 +328,7 @@ array[] of {MethSpec
 ("clearInterval", array[] of { "intervalid" }),
 ("clearTimeout", array[] of { "timeoutid" }),
 ("close", nil),
-("confirm", array[] of  { "msg" }),
+("confirm", array[] of { "msg" }),
 ("focus", nil),
 ("moveBy", array[] of { "dx", "dy" }),
 ("moveTo", array[] of { "x", "y" }),
@@ -336,7 +336,7 @@ array[] of {MethSpec
 ("prompt", array[] of { "msg", "inputdflt" }),
 ("resizeBy", array[] of { "dh", "dw" }),
 ("resizeTo", array[] of { "width", "height" }),
-("scroll", array[] of { "x", "y"  }),
+("scroll", array[] of { "x", "y" }),
 ("scrollBy", array[] of { "dx", "dy" }),
 ("scrollTo", array[] of { "x", "y" }),
 ("setInterval", array[] of { "code", "msec" }),
@@ -345,11 +345,11 @@ array[] of {PropSpec
 ("closed", ReadOnly, IVfalse),
 ("defaultStatus", 0, IVnullstr),
 ("document", 0, IVnull),
-("frames", ReadOnly, IVnull),	# array, really
-("history", 0, IVnull),	# array, really
+("frames", ReadOnly, IVnull), # array, really
+("history", 0, IVnull), # array, really
 ("length", ReadOnly, IVzero),
 ("location", 0, IVnullstr),
-#		("Math", ReadOnly, IVnull),
+# ("Math", ReadOnly, IVnull),
 ("name", 0, IVnullstr),
 ("navigator", ReadOnly, IVnull),
 ("offscreenBuffering", 0, IVnullstr),
@@ -386,10 +386,10 @@ MimeSpec("X Bitmap Image",
 )
 };
 # charon's 's' debug flag:
-#	1:	basic syntax and runtime errors
-#	2:	'event' logging and DOM actions
-#	3:	print parsed code and ops as executed
-#	4:	print value of expression statements and abort on runtime errors
+# 1: basic syntax and runtime errors
+# 2: 'event' logging and DOM actions
+# 3: print parsed code and ops as executed
+# 4: print value of expression statements and abort on runtime errors
 dbg := 0;
 dbgdom := 0;
 top: ref ScriptWin;
@@ -427,12 +427,12 @@ me = load ESHostobj SELF;
 if(me == nil)
 return sys->sprint("jscript: could not load  self as a ESHostobj: %r");
 if(dbg >= 3) {
-ES->debug['p'] = 1;	# print parsed code
-ES->debug['e'] = 1;	# prinv ops as they are executed
+ES->debug['p'] = 1; # print parsed code
+ES->debug['e'] = 1; # prinv ops as they are executed
 if(dbg >= 4) {
 ES->debug['e'] = 2;
-ES->debug['v'] = 1;	# print value of expression statements
-ES->debug['r'] = 1;	# print and abort if runtime errors
+ES->debug['v'] = 1; # print value of expression statements
+ES->debug['r'] = 1; # print and abort if runtime errors
 }
 }
 # some constant values, for initialization
@@ -537,7 +537,7 @@ reinitprop(scrobj, "height", ES->numval(real scrh));
 reinitprop(scrobj, "width", ES->numval(real scrw));
 ES->put(ex, winobj, "screen", ES->objval(scrobj));
 # make the non-core constructor objects
-#	improto := mkprototype(ex, specindex("Image"));
+# improto := mkprototype(ex, specindex("Image"));
 o := ES->biinst(winobj, Builtin("Image", "Image", array[] of {"width", "height"}, 2),
 ex.funcproto, me);
 o.construct = o.call;
@@ -552,8 +552,8 @@ mknavobj(ex: ref Exec) : ref Obj
 navobj := mkhostobj(ex, "navigator");
 reinitprop(navobj, "appCodeName", ES->strval("Mozilla"));
 reinitprop(navobj, "appName", ES->strval("Netscape"));
-#	reinitprop(navobj, "appVersion", ES->strval("3.0 (Inferno, U)"));
-#	reinitprop(navobj, "userAgent", ES->strval("Mozilla/3.0 (Inferno; U)"));
+# reinitprop(navobj, "appVersion", ES->strval("3.0 (Inferno, U)"));
+# reinitprop(navobj, "userAgent", ES->strval("Mozilla/3.0 (Inferno; U)"));
 reinitprop(navobj, "appVersion", ES->strval("4.08 (Charon; Inferno)"));
 reinitprop(navobj, "userAgent", ES->strval("Mozilla/4.08 (Charon; Inferno)"));
 omty := getobj(ex, navobj, "mimeTypes");
@@ -830,7 +830,7 @@ sw.imgrelocs = nil;
 # multiple go events.
 # BUG: if multiple events are generated, later ones will
 # interrupt (STOP!) loading of pages specified by preceding
-# events.  To fix, need to queue them up, probably in
+# events. To fix, need to queue them up, probably in
 # main charon module.
 checknewlocs(sw: ref ScriptWin)
 {
@@ -846,17 +846,17 @@ checknewlocs(hd l);
 checkopener()
 {
 if(opener != nil && opener.newloc != "") {
-CH->sendopener(sys->sprint("L %s", opener.newloc));	# just location for now
+CH->sendopener(sys->sprint("L %s", opener.newloc)); # just location for now
 opener.newloc = "";
 }
 if(winclose)
 G->exitcharon();
 }
-# if e.anchorid >= 0	=> target is Link
-# if e.fieldid > 0	=> target is FormField (and e.formid > 0)
-# if e.formid > 0	=> target is Form (e.fieldid == -1)
-# if e.imageid >= 0	=> target is Image
-# otherwise		=> target is window
+# if e.anchorid >= 0 => target is Link
+# if e.fieldid > 0 => target is FormField (and e.formid > 0)
+# if e.formid > 0 => target is Form (e.fieldid == -1)
+# if e.imageid >= 0 => target is Image
+# otherwise => target is window
 do_on(e: ref ScriptEvent)
 {
 if(dbgdom)
@@ -1635,7 +1635,7 @@ ego = ref Event.Ego("", "", 0, E->EGreload);
 1 =>
 ego = ref Event.Ego("", "", 0, E->EGforward);
 * =>
-ego = ref Event.Ego("", "", delta,  E->EGdelta);
+ego = ref Event.Ego("", "", delta, E->EGdelta);
 }
 }
 if(ego != nil)
@@ -1660,9 +1660,9 @@ E->evchan <-= ref Event.Ego(url.tostring(), fname, 0, E->EGreplace);
 G->alert(ES->toString(ex, ES->biarg(args, 0)));
 "Window.prototype.blur" =>
 ;
-#		sw := top.findbyobj(this);
-#		if (sw != nil)
-#			E->evchan <-= ref Event.Eframefocus(sw.frame.id, 0);
+# sw := top.findbyobj(this);
+# if (sw != nil)
+# E->evchan <-= ref Event.Eframefocus(sw.frame.id, 0);
 "Window.prototype.clearTimeout" or
 "Window.prototype.clearInterval" =>
 v := ES->biarg(args, 0);
@@ -1679,9 +1679,9 @@ if(code != 1)
 ans = ES->valref(ES->false);
 "Window.prototype.focus" =>
 ;
-#		sw := top.findbyobj(this);
-#		if (sw != nil)
-#			E->evchan <-= ref Event.Eframefocus(sw.frame.id, 1);
+# sw := top.findbyobj(this);
+# if (sw != nil)
+# E->evchan <-= ref Event.Eframefocus(sw.frame.id, 1);
 "Window.prototype.moveBy" or
 "Window.prototype.moveTo" =>
 # no-op
@@ -1883,9 +1883,9 @@ sys->sleep(ms);
 jevchan <- = e;
 }
 # BUGS
-#	cannot set a timeout for a window just created by window.open()
-#	because it will not have an entry in the ScriptWin tree
-#	(This is really a problem with the ScriptEvent adt only taking a frame id)
+# cannot set a timeout for a window just created by window.open()
+# because it will not have an entry in the ScriptWin tree
+# (This is really a problem with the ScriptEvent adt only taking a frame id)
 #
 addtimeout(ex : ref Exec, win : ref Obj, cmd : string, ms : int, evk: int) : int
 {
@@ -1904,8 +1904,8 @@ for (ix := 0; ix < n; ix++) {
 hv := ES->get(ex, toa, string ix);
 if (hv == nil)
 break;
-# val == null		Timeout has been cancelled, but timer still running
-# val == undefined	Timeout has expired
+# val == null Timeout has been cancelled, but timer still running
+# val == undefined Timeout has expired
 if (hv == ES->undefined)
 break;
 }
@@ -2160,7 +2160,7 @@ CU->assert(i >= 0);
 o.props[i].val.val = v;
 }
 # Get the array object named aname from o, and also find its current
-# length value.  If there is any problem, return (nil, 0).
+# length value. If there is any problem, return (nil, 0).
 getarraywithlen(ex : ref Exec, o: ref Obj, aname: string) : (ref Obj, int)
 {
 varray := ES->get(ex, o, aname);
@@ -2299,7 +2299,7 @@ newformslen := len di.forms;
 oldformslen := len sw.forms;
 oforms := getobj(ex, od, "forms");
 # oforms should be non-nil, because the object is initialized
-# to an empty array and is readonly.  The following test
+# to an empty array and is readonly. The following test
 # is just defensive.
 if(oforms != nil) {
 # run through our existing list of forms, looking
@@ -2310,7 +2310,7 @@ for (sfl := sw.forms; sfl != nil; sfl = tl sfl) {
 sf := hd sfl;
 form := sf.form;
 if (form.state != B->FormTransferred) {
-#					(sf.obj, sf.fields) = forminstant(ex, form, di.frameid);
+# (sf.obj, sf.fields) = forminstant(ex, form, di.frameid);
 (newobj, newfields) := forminstant(ex, form, di.frameid);
 *sf.obj = *newobj;
 sf.fields = newfields;
@@ -2361,7 +2361,7 @@ al := di.anchors;
 for(i := newanchorslen-1; i >= oldlinkslen; i--) {
 a := hd al;
 al = tl al;
-arrayput(ex, olinks, i, a.name,  linkinstant(ex, a, f.id));
+arrayput(ex, olinks, i, a.name, linkinstant(ex, a, f.id));
 }
 }
 }
@@ -2453,7 +2453,7 @@ form.evmask |= E->SEonsubmit;
 if(hname != "")
 puthandler(ex, oform, hname, e.value);
 }
-#	form.events = nil;
+# form.events = nil;
 # private variables
 ES->varinstant(oform, ES->DontEnum|ES->DontDelete, "@PRIVformid",
 ref RefVal(ES->numval(real form.formid)));
@@ -2573,7 +2573,7 @@ field.evmask |= E->SEonselect;
 if(hname != "")
 puthandler(ex, ofield, hname, e.value);
 }
-#	field.events = nil;
+# field.events = nil;
 # private variables
 ES->varinstant(ofield, ES->DontEnum|ES->DontDelete, "@PRIVfieldid",
 ref RefVal(ES->numval(real field.fieldid)));
@@ -2609,7 +2609,7 @@ if(u.passwd != "")
 host += ":" + u.passwd;
 host += "@" + u.host;
 }
-reinitprop(olink, "host",  ES->strval(host));
+reinitprop(olink, "host", ES->strval(host));
 hostname := host;
 if(u.port != "")
 hostname += ":" + u.port;
@@ -2735,8 +2735,8 @@ im.genattr.events = nil;
 ES->varinstant(oim, ES->DontEnum|ES->DontDelete, "@PRIVimageid",
 ref RefVal(ES->numval(real im.imageid)));
 # to keep track of src as currently known in item
-#	ES->varinstant(oim, ES->DontEnum|ES->DontDelete, "@PRIVsrc",
-#			ref RefVal(ES->strval(src)));
+# ES->varinstant(oim, ES->DontEnum|ES->DontDelete, "@PRIVsrc",
+# ref RefVal(ES->strval(src)));
 return ES->objval(oim);
 }
 colorval(v: int) : ref Val
@@ -2786,14 +2786,14 @@ return csw;
 # f as frame, returning nil if none.
 #ScriptWin.findbyframe(sw: self ref ScriptWin, f: ref Layout->Frame) : ref ScriptWin
 #{
-#	if(sw.frame.id == f.id)
-#		return sw;
-#	for(l := sw.kids; l != nil; l = tl l) {
-#		x := (hd l).findbyframe(f);
-#		if(x != nil)
-#			return x;
-#	}
-#	return nil;
+# if(sw.frame.id == f.id)
+# return sw;
+# for(l := sw.kids; l != nil; l = tl l) {
+# x := (hd l).findbyframe(f);
+# if(x != nil)
+# return x;
+# }
+# return nil;
 #}
 # Find the ScriptWin in the tree with sw as root that has
 # fid as frame id, returning nil if none.

@@ -26,21 +26,21 @@ namespace std _GLIBCXX_VISIBILITY(default)
 {
 _GLIBCXX_BEGIN_NAMESPACE_VERSION
 #ifdef _GLIBCXX_HAVE_INT64_T_LONG
-typedef long          streamoff;
+typedef long streamoff;
 #elif defined(_GLIBCXX_HAVE_INT64_T_LONG_LONG)
-typedef long long     streamoff;
+typedef long long streamoff;
 #elif defined(_GLIBCXX_HAVE_INT64_T)
-typedef int64_t       streamoff;
+typedef int64_t streamoff;
 #else
-typedef long long     streamoff;
+typedef long long streamoff;
 #endif
-typedef ptrdiff_t	streamsize;
+typedef ptrdiff_t streamsize;
 template<typename _StateT>
 class fpos
 {
 private:
-streamoff	                _M_off;
-_StateT			_M_state;
+streamoff _M_off;
+_StateT _M_state;
 public:
 fpos()
 : _M_off(0), _M_state() { }

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "cryptlib.h"
 #include "bn_lcl.h"
-#define TABLE_SIZE      32
+#define TABLE_SIZE 32
 int BN_mod_exp2_mont(BIGNUM *rr, const BIGNUM *a1, const BIGNUM *p1,
 const BIGNUM *a2, const BIGNUM *p2, const BIGNUM *m,
 BN_CTX *ctx, BN_MONT_CTX *in_mont)

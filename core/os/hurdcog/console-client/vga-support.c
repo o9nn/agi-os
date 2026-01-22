@@ -222,7 +222,7 @@ vga_read_write_font_buffer (0, buffer, index, data, datalen);
 void
 vga_select_font_buffer (int font_buffer, int font_buffer_supp)
 {
-char font = ((font_buffer & 6) >> 1)  | ((font_buffer & 1) << 4)
+char font = ((font_buffer & 6) >> 1) | ((font_buffer & 1) << 4)
 | ((font_buffer_supp & 6) << 1) | ((font_buffer_supp & 1) << 5);
 outb (VGA_SEQ_FONT_ADDR, VGA_SEQ_ADDR_REG);
 outb (font, VGA_SEQ_DATA_REG);

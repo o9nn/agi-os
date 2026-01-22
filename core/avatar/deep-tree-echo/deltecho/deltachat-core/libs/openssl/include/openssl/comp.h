@@ -2,9 +2,9 @@
 # define HEADER_COMP_H
 # include <openssl/crypto.h>
 # ifdef OPENSSL_NO_COMP
-#  error COMP is disabled.
+# error COMP is disabled.
 # endif
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 typedef struct comp_ctx_st COMP_CTX;
@@ -40,19 +40,19 @@ COMP_METHOD *COMP_rle(void);
 COMP_METHOD *COMP_zlib(void);
 void COMP_zlib_cleanup(void);
 # ifdef HEADER_BIO_H
-#  ifdef ZLIB
+# ifdef ZLIB
 BIO_METHOD *BIO_f_zlib(void);
-#  endif
+# endif
 # endif
 void ERR_load_COMP_strings(void);
-# define COMP_F_BIO_ZLIB_FLUSH                            99
-# define COMP_F_BIO_ZLIB_NEW                              100
-# define COMP_F_BIO_ZLIB_READ                             101
-# define COMP_F_BIO_ZLIB_WRITE                            102
-# define COMP_R_ZLIB_DEFLATE_ERROR                        99
-# define COMP_R_ZLIB_INFLATE_ERROR                        100
-# define COMP_R_ZLIB_NOT_SUPPORTED                        101
-#ifdef  __cplusplus
+# define COMP_F_BIO_ZLIB_FLUSH 99
+# define COMP_F_BIO_ZLIB_NEW 100
+# define COMP_F_BIO_ZLIB_READ 101
+# define COMP_F_BIO_ZLIB_WRITE 102
+# define COMP_R_ZLIB_DEFLATE_ERROR 99
+# define COMP_R_ZLIB_INFLATE_ERROR 100
+# define COMP_R_ZLIB_NOT_SUPPORTED 101
+#ifdef __cplusplus
 }
 #endif
 #endif

@@ -89,27 +89,27 @@ std::string img_beg;
 std::string img_end;
 std::string aud_beg;
 std::string aud_end;
-mtmd_slice_tmpl slice_tmpl    = MTMD_SLICE_TMPL_NONE;
-llama_token tok_ov_img_start  = LLAMA_TOKEN_NULL;
-llama_token tok_ov_img_end    = LLAMA_TOKEN_NULL;
-llama_token tok_slices_start  = LLAMA_TOKEN_NULL;
-llama_token tok_slices_end    = LLAMA_TOKEN_NULL;
+mtmd_slice_tmpl slice_tmpl = MTMD_SLICE_TMPL_NONE;
+llama_token tok_ov_img_start = LLAMA_TOKEN_NULL;
+llama_token tok_ov_img_end = LLAMA_TOKEN_NULL;
+llama_token tok_slices_start = LLAMA_TOKEN_NULL;
+llama_token tok_slices_end = LLAMA_TOKEN_NULL;
 llama_token tok_sli_img_start = LLAMA_TOKEN_NULL;
-llama_token tok_sli_img_end   = LLAMA_TOKEN_NULL;
-llama_token tok_sli_img_mid   = LLAMA_TOKEN_NULL;
-llama_token tok_row_end       = LLAMA_TOKEN_NULL;
-bool        tok_row_end_trail = false;
-bool        ov_img_first      = false;
+llama_token tok_sli_img_end = LLAMA_TOKEN_NULL;
+llama_token tok_sli_img_mid = LLAMA_TOKEN_NULL;
+llama_token tok_row_end = LLAMA_TOKEN_NULL;
+bool tok_row_end_trail = false;
+bool ov_img_first = false;
 bool use_mrope = false;
 whisper_preprocessor::whisper_filters w_filters;
 mtmd_context(const char * mmproj_fname,
 const llama_model * text_model,
 const mtmd_context_params & ctx_params) :
-text_model   (text_model),
+text_model (text_model),
 print_timings(ctx_params.print_timings),
-n_threads    (ctx_params.n_threads),
+n_threads (ctx_params.n_threads),
 media_marker (ctx_params.media_marker),
-n_embd_text  (llama_model_n_embd(text_model))
+n_embd_text (llama_model_n_embd(text_model))
 {
 if (std::string(ctx_params.image_marker) != MTMD_DEFAULT_IMAGE_MARKER) {
 throw std::runtime_error("custom image_marker is not supported anymore, use media_marker instead");
@@ -118,7 +118,7 @@ if (media_marker.empty()) {
 throw std::runtime_error("media_marker must not be empty");
 }
 clip_context_params ctx_clip_params;
-ctx_clip_params.use_gpu   = ctx_params.use_gpu;
+ctx_clip_params.use_gpu = ctx_params.use_gpu;
 ctx_clip_params.verbosity = ctx_params.verbosity;
 auto res = clip_init(mmproj_fname, ctx_clip_params);
 ctx_v = res.ctx_v;
@@ -155,34 +155,34 @@ use_mrope = clip_is_qwen2vl(ctx_v);
 projector_type proj = clip_get_projector_type(ctx_v);
 int minicpmv_version = clip_is_minicpmv(ctx_v);
 if (minicpmv_version == 2) {
-slice_tmpl        = MTMD_SLICE_TMPL_MINICPMV_2_5;
-tok_ov_img_start  = lookup_token("<image>");
-tok_ov_img_end    = lookup_token("</image>");
-tok_slices_start  = lookup_token("<slice>");
-tok_slices_end    = lookup_token("</slice>");
+slice_tmpl = MTMD_SLICE_TMPL_MINICPMV_2_5;
+tok_ov_img_start = lookup_token("<image>");
+tok_ov_img_end = lookup_token("</image>");
+tok_slices_start = lookup_token("<slice>");
+tok_slices_end = lookup_token("</slice>");
 tok_sli_img_start = tok_ov_img_start;
-tok_sli_img_end   = tok_ov_img_end;
-tok_row_end       = lookup_token("\n");
+tok_sli_img_end = tok_ov_img_end;
+tok_row_end = lookup_token("\n");
 tok_row_end_trail = false;
-ov_img_first      = true;
+ov_img_first = true;
 } else if (minicpmv_version == 3 || minicpmv_version == 4 || minicpmv_version == 5) {
-slice_tmpl        = MTMD_SLICE_TMPL_MINICPMV_2_6;
-tok_ov_img_start  = lookup_token("<image>");
-tok_ov_img_end    = lookup_token("</image>");
+slice_tmpl = MTMD_SLICE_TMPL_MINICPMV_2_6;
+tok_ov_img_start = lookup_token("<image>");
+tok_ov_img_end = lookup_token("</image>");
 tok_sli_img_start = lookup_token("<slice>");
-tok_sli_img_end   = lookup_token("</slice>");
-tok_row_end       = lookup_token("\n");
+tok_sli_img_end = lookup_token("</slice>");
+tok_row_end = lookup_token("\n");
 tok_row_end_trail = false;
-ov_img_first      = true;
+ov_img_first = true;
 } else if (minicpmv_version != 0) {
 GGML_ASSERT(false && "unsupported minicpmv version");
 } else if (proj == PROJECTOR_TYPE_LLAMA4) {
-slice_tmpl        = MTMD_SLICE_TMPL_LLAMA4;
-tok_ov_img_start  = lookup_token("<|image|>");
-tok_sli_img_mid   = lookup_token("<|tile_x_separator|>");
-tok_row_end       = lookup_token("<|tile_y_separator|>");
+slice_tmpl = MTMD_SLICE_TMPL_LLAMA4;
+tok_ov_img_start = lookup_token("<|image|>");
+tok_sli_img_mid = lookup_token("<|tile_x_separator|>");
+tok_row_end = lookup_token("<|tile_y_separator|>");
 tok_row_end_trail = true;
-ov_img_first      = false;
+ov_img_first = false;
 }
 if (proj == PROJECTOR_TYPE_GEMMA3) {
 img_beg = "<start_of_image>";
@@ -290,10 +290,10 @@ mtmd_tokenizer(mtmd_context * ctx,
 const mtmd_input_text * text,
 const mtmd_bitmap ** bitmaps,
 size_t n_bitmaps) : ctx(ctx), bitmaps(bitmaps, bitmaps + n_bitmaps) {
-add_special   = text->add_special;
+add_special = text->add_special;
 parse_special = text->parse_special;
-input_text    = text->text;
-vocab         = llama_model_get_vocab(ctx->text_model);
+input_text = text->text;
+vocab = llama_model_get_vocab(ctx->text_model);
 string_replace_all(input_text, MTMD_DEFAULT_IMAGE_MARKER, ctx->media_marker);
 }
 int32_t tokenize(mtmd_input_chunks * output) {
@@ -342,7 +342,7 @@ return 0;
 }
 void add_text(const std::string & txt, bool parse_special) {
 LOG_DBG("%s: %s\n", __func__, txt.c_str());
-auto tokens = mtmd_tokenize_text_internal(vocab, txt,  false, parse_special);
+auto tokens = mtmd_tokenize_text_internal(vocab, txt, false, parse_special);
 add_text(tokens);
 }
 void add_text(const std::vector<llama_token> & tokens) {
@@ -493,8 +493,8 @@ return 2;
 }
 for (auto & mel_spec : mel_spec_chunks) {
 clip_image_f32_ptr mel_f32(clip_image_f32_init());
-mel_f32->nx  = mel_spec.n_len;
-mel_f32->ny  = mel_spec.n_mel;
+mel_f32->nx = mel_spec.n_len;
+mel_f32->ny = mel_spec.n_mel;
 mel_f32->buf = std::move(mel_spec.data);
 size_t n_tokens = clip_n_output_tokens(ctx->ctx_a, mel_f32.get());
 clip_image_f32_batch batch_f32;
@@ -559,8 +559,8 @@ return result;
 static std::vector<llama_token> mtmd_tokenize_text_internal(
 const struct llama_vocab * vocab,
 const std::string & text,
-bool   add_special,
-bool   parse_special) {
+bool add_special,
+bool parse_special) {
 int n_tokens = text.length() + 2 * add_special;
 std::vector<llama_token> result(n_tokens);
 n_tokens = llama_tokenize(vocab, text.data(), text.length(), result.data(), result.size(), add_special, parse_special);

@@ -87,10 +87,10 @@ extern void *usrd_dma_alloc(usrd_driver_t driver, size_t size,
 vm_offset_t *physical_addr);
 extern void usrd_dma_free(usrd_driver_t driver, void *ptr, size_t size,
 vm_offset_t physical_addr);
-#define USRD_LOG_ERROR      0
-#define USRD_LOG_WARNING    1
-#define USRD_LOG_INFO       2
-#define USRD_LOG_DEBUG      3
+#define USRD_LOG_ERROR 0
+#define USRD_LOG_WARNING 1
+#define USRD_LOG_INFO 2
+#define USRD_LOG_DEBUG 3
 extern void usrd_log(usrd_driver_t driver, int level, const char *fmt, ...);
 extern void usrd_dump_stats(usrd_driver_t driver);
 extern kern_return_t usrd_driver_register_interrupt(usrd_driver_t driver,

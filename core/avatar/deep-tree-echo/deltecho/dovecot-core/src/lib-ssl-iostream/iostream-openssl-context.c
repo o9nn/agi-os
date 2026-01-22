@@ -15,7 +15,7 @@
 #include <openssl/err.h>
 #include <arpa/inet.h>
 #ifndef HAVE_EVP_PKEY_get0_DH
-#  define EVP_PKEY_get0_DH(x) ((x)->pkey.dh)
+# define EVP_PKEY_get0_DH(x) ((x)->pkey.dh)
 #endif
 struct ssl_iostream_password_context {
 const char *password;
@@ -618,11 +618,11 @@ SSL_CTX_set_tmp_dh_callback(ssl_ctx, ssl_tmp_dh_callback);
 #endif
 #ifndef OPENSSL_NO_ECDH
 SSL_CTX_set_options(ssl_ctx, SSL_OP_SINGLE_ECDH_USE);
-#  ifdef HAVE_SSL_CTX_set_ecdh_auto
+# ifdef HAVE_SSL_CTX_set_ecdh_auto
 if ((long)(SSL_CTX_set_ecdh_auto(ssl_ctx, 1)) == 0) {
 i_unreached();
 }
-#  endif
+# endif
 #endif
 #ifdef SSL_OP_SINGLE_DH_USE
 SSL_CTX_set_options(ssl_ctx, SSL_OP_SINGLE_DH_USE);

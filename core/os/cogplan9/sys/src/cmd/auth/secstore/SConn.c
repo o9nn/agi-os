@@ -156,7 +156,7 @@ if(fd < 0)
 return nil;
 ss = (SS*)emalloc(sizeof(*ss));
 conn = (SConn*)emalloc(sizeof(*conn));
-ss->fd  = fd;
+ss->fd = fd;
 ss->alg = 0;
 conn->chan = (void*)ss;
 conn->secretlen = SHA1dlen;

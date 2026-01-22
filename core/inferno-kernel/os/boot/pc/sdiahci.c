@@ -7,27 +7,27 @@
 #include "error.h"
 #include "sd.h"
 #include "ahci.h"
-#define	dprint	if(debug==0){}else print
-#define	idprint	if(prid==0){}else print
-#define	aprint	if(datapi==0){}else print
+#define dprint if(debug==0){}else print
+#define idprint if(prid==0){}else print
+#define aprint if(datapi==0){}else print
 enum {
-NCtlr	= 2,
+NCtlr = 2,
 NCtlrdrv= 8,
-NDrive	= NCtlr*NCtlrdrv,
-Read	= 0,
+NDrive = NCtlr*NCtlrdrv,
+Read = 0,
 Write
 };
 enum {
-Pmap	= 0x90,
-Ppcs	= 0x91,
-Prev	= 0xa8,
+Pmap = 0x90,
+Ppcs = 0x91,
+Prev = 0xa8,
 };
 enum {
 Tesb,
 Tich,
 Tsb600,
 };
-#define Intel(x)	((x) == Tesb  || (x) == Tich)
+#define Intel(x) ((x) == Tesb || (x) == Tich)
 static char *tname[] = {
 "63xxesb",
 "ich",
@@ -68,49 +68,49 @@ static char *modename[] = {
 };
 typedef struct {
 Lock;
-Ctlr	*ctlr;
-SDunit	*unit;
-char	name[10];
-Aport	*port;
-Aportm	portm;
-Aportc	portc;
-uchar	mediachange;
-uchar	state;
-uchar	smartrs;
-uvlong	sectors;
-ulong	intick;
-int	wait;
-uchar	mode;
-uchar	active;
-char	serial[20+1];
-char	firmware[8+1];
-char	model[40+1];
-ushort	info[0x200];
-int	driveno;
-int	portno;
+Ctlr *ctlr;
+SDunit *unit;
+char name[10];
+Aport *port;
+Aportm portm;
+Aportc portc;
+uchar mediachange;
+uchar state;
+uchar smartrs;
+uvlong sectors;
+ulong intick;
+int wait;
+uchar mode;
+uchar active;
+char serial[20+1];
+char firmware[8+1];
+char model[40+1];
+ushort info[0x200];
+int driveno;
+int portno;
 } Drive;
 struct Ctlr {
 Lock;
-int	type;
-int	enabled;
-SDev	*sdev;
-Pcidev	*pci;
-uchar	*mmio;
-ulong	*lmmio;
-Ahba	*hba;
-Drive	rawdrive[NCtlrdrv];
-Drive*	drive[NCtlrdrv];
-int	ndrive;
+int type;
+int enabled;
+SDev *sdev;
+Pcidev *pci;
+uchar *mmio;
+ulong *lmmio;
+Ahba *hba;
+Drive rawdrive[NCtlrdrv];
+Drive* drive[NCtlrdrv];
+int ndrive;
 };
-static	Ctlr	iactlr[NCtlr];
-static	SDev	sdevs[NCtlr];
-static	int	niactlr;
-static	int	prid = 0;
-static	int	datapi = 0;
+static Ctlr iactlr[NCtlr];
+static SDev sdevs[NCtlr];
+static int niactlr;
+static int prid = 0;
+static int datapi = 0;
 static char stab[] = {
-[0]	'i', 'm',
-[8]	't', 'c', 'p', 'e',
-[16]	'N', 'I', 'W', 'B', 'D', 'C', 'H', 'S', 'T', 'F', 'X'
+[0] 'i', 'm',
+[8] 't', 'c', 'p', 'e',
+[16] 'N', 'I', 'W', 'B', 'D', 'C', 'H', 'S', 'T', 'F', 'X'
 };
 static void
 serrstr(ulong r, char *s, char *e)
@@ -153,8 +153,8 @@ esleep(int ms)
 delay(ms);
 }
 typedef struct {
-Aport	*p;
-int	i;
+Aport *p;
+int i;
 } Asleep;
 static int
 ahciclear(void *v)
@@ -266,7 +266,7 @@ gbit32(void *a)
 ulong j;
 uchar *i;
 i = a;
-j  = i[3] << 24;
+j = i[3] << 24;
 j |= i[2] << 16;
 j |= i[1] << 8;
 j |= i[0];
@@ -521,7 +521,7 @@ if((u & Hsam) == 0)
 h->ghc |= Hae;
 print("ahci%d port %#p: hba sss %ld; ncs %ld; coal %ld; mports %ld; "
 "led %ld; clo %ld; ems %ld;\n", count++, h,
-(u>>27) & 1, (u>>8) & 0x1f, (u>>7) & 1,	u & 0x1f, (u>>25) & 1,
+(u>>27) & 1, (u>>8) & 0x1f, (u>>7) & 1, u & 0x1f, (u>>25) & 1,
 (u>>24) & 1, (u>>6) & 1);
 return countbits(h->pi);
 }
@@ -777,10 +777,10 @@ qunlock(&d->portm);
 return -1;
 }
 enum {
-Nms		= 256,
-Mphywait	=  2*1024/Nms - 1,
-Midwait		= 16*1024/Nms - 1,
-Mcomrwait	= 64*1024/Nms - 1,
+Nms = 256,
+Mphywait = 2*1024/Nms - 1,
+Midwait = 16*1024/Nms - 1,
+Mcomrwait = 64*1024/Nms - 1,
 };
 static void
 westerndigitalhung(Drive *d)
@@ -1213,8 +1213,8 @@ print("%s: bad cmd 0x%.2ux\n", name, cmd[0]);
 r->status = SDcheck;
 return SDcheck;
 }
-lba   = cmd[2]<<24 | cmd[3]<<16 | cmd[4]<<8 | cmd[5];
-count = cmd[7]<<8  | cmd[8];
+lba = cmd[2]<<24 | cmd[3]<<16 | cmd[4]<<8 | cmd[5];
+count = cmd[7]<<8 | cmd[8];
 if(r->data == nil)
 return SDok;
 if(r->dlen < count * unit->secsize)
@@ -1314,7 +1314,7 @@ print("iapnp: %s: too many controllers\n", tname[type]);
 break;
 }
 c = iactlr + niactlr;
-s = sdevs  + niactlr;
+s = sdevs + niactlr;
 memset(c, 0, sizeof *c);
 memset(s, 0, sizeof *s);
 c->pci = p;

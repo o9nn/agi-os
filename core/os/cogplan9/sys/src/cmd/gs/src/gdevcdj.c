@@ -18,53 +18,53 @@ else {
 goto e;\
 default:\
 code = ncode;\
-e:	param_signal_error(plist, oname, code);\
+e: param_signal_error(plist, oname, code);\
 case 1:\
-pa.data = 0;		\
+pa.data = 0; \
 }
 private int cdj_param_check_bytes(gs_param_list *, gs_param_name, const byte *, uint, bool);
 private int cdj_param_check_float(gs_param_list *, gs_param_name, floatp, bool);
 #define cdj_param_check_string(plist, pname, str, is_defined)\
 cdj_param_check_bytes(plist, pname, (const byte *)(str), strlen(str),\
 is_defined)
-#define DESKJET_PRINT_LIMIT  0.04
+#define DESKJET_PRINT_LIMIT 0.04
 #define PAINTJET_PRINT_LIMIT 0.0
-#define ESC_P_PRINT_LIMIT    0.335
-#define DESKJET_MARGINS_LETTER   (float)0.25, (float)0.50, (float)0.25, (float)0.167
-#define DESKJET_MARGINS_A4       (float)0.125, (float)0.50, (float)0.143, (float)0.167
-#define LJET4_MARGINS  		 (float)0.26, (float)0.0, (float)0.0, (float)0.0
-#define PAINTJET_MARGINS         (float)0.167, (float)0.167, (float)0.167, (float)0.167
-#define DESIGNJET_MARGINS        (float)0.167, (float)0.167, (float)0.167, (float)0.167
-#define ESC_P_MARGINS_LETTER    (float)0.134, (float)(0.276+0.2), \
+#define ESC_P_PRINT_LIMIT 0.335
+#define DESKJET_MARGINS_LETTER (float)0.25, (float)0.50, (float)0.25, (float)0.167
+#define DESKJET_MARGINS_A4 (float)0.125, (float)0.50, (float)0.143, (float)0.167
+#define LJET4_MARGINS (float)0.26, (float)0.0, (float)0.0, (float)0.0
+#define PAINTJET_MARGINS (float)0.167, (float)0.167, (float)0.167, (float)0.167
+#define DESIGNJET_MARGINS (float)0.167, (float)0.167, (float)0.167, (float)0.167
+#define ESC_P_MARGINS_LETTER (float)0.134, (float)(0.276+0.2), \
 (float)(0.366+0.01), (float)0.335
-#define ESC_P_MARGINS_A4        (float)0.134, (float)(0.276+0.2), \
+#define ESC_P_MARGINS_A4 (float)0.134, (float)(0.276+0.2), \
 (float)(0.166+0.01), (float)0.335
 #ifndef BITSPERPIXEL
-#  define BITSPERPIXEL 24
+# define BITSPERPIXEL 24
 #endif
 #define W size_of(word)
 #define I size_of(int)
 #define invert_word(v)\
 ((v) >> 24) + (((v) >> 8) & 0xff00L) +\
 (((word)(v) << 8) & 0xff0000L) + ((word)(v) << 24)
-#define DJ500C   0
-#define DJ550C   1
-#define PJXL300  2
-#define PJ180    3
-#define PJXL180  4
+#define DJ500C 0
+#define DJ550C 1
+#define PJXL300 2
+#define PJ180 3
+#define PJXL180 4
 #define DECLJ250 5
-#define DNJ650C  6
-#define LJ4DITH  7
-#define ESC_P	 8
-#define BJC600	 9
-#define BJC800	 10
+#define DNJ650C 6
+#define LJ4DITH 7
+#define ESC_P 8
+#define BJC600 9
+#define BJC800 10
 #define HEAD_ROWS_MONO 50
 #define HEAD_ROWS_COLOUR 16
 private dev_proc_map_cmyk_color (gdev_cmyk_map_cmyk_color);
 private dev_proc_map_rgb_color (gdev_cmyk_map_rgb_color);
 private dev_proc_map_rgb_color (gdev_pcl_map_rgb_color);
 private dev_proc_map_color_rgb (gdev_pcl_map_color_rgb);
-private dev_proc_decode_color  (gdev_cmyk_map_color_cmyk);
+private dev_proc_decode_color (gdev_cmyk_map_color_cmyk);
 private dev_proc_open_device(dj500c_open);
 private dev_proc_open_device(dj550c_open);
 private dev_proc_open_device(dnj650c_open);
@@ -95,9 +95,9 @@ private dev_proc_put_params(bjc_put_params);
 #define ep_put_params cdj_put_params
 #define gx_prn_colour_device_common \
 gx_prn_device_common; \
-short cmyk;	  	 \
+short cmyk; \
 \
-uint default_depth;	 \
+uint default_depth; \
 uint correction
 typedef struct gx_device_cdj_s gx_device_cdj;
 struct gx_device_cdj_s {
@@ -123,13 +123,13 @@ typedef struct gx_device_bjc600_s gx_device_bjc600;
 typedef struct gx_device_bjc800_s gx_device_bjc800;
 typedef struct gx_device_bjc800_s gx_device_bjc;
 #define bjc_params_common \
-bool manualFeed;		 \
-int mediaType;		 \
-bool mediaWeight_isSet;	 \
-int mediaWeight;		 \
-int printQuality;		 \
-bool ditheringType;		 \
-int colorComponents;	 \
+bool manualFeed; \
+int mediaType; \
+bool mediaWeight_isSet; \
+int mediaWeight; \
+int printQuality; \
+bool ditheringType; \
+int colorComponents; \
 int printColors
 typedef struct {
 bjc_params_common;
@@ -156,19 +156,19 @@ typedef struct {
 gx_device_common;
 gx_prn_colour_device_common;
 } gx_device_colour_prn;
-#define cprn_device     ((gx_device_colour_prn*) pdev)
-#define cdj       ((gx_device_cdj *)pdev)
-#define pjxl      ((gx_device_pjxl *)pdev)
-#define pj	((gx_device_pj *)pdev)
-#define bjc             ((gx_device_bjc*) pdev)
-#define bjc600          ((gx_device_bjc600*) pdev)
-#define bjc800          ((gx_device_bjc800*) pdev)
-#define bjcparams	(bjc->bjc_p)
-#define bjc600params	(bjc600->bjc_p)
-#define bjc800params	(bjc800->bjc_p)
-#define bjcversion(p)	(((gx_device_bjc*) pdev)->ptype == BJC800 ? \
+#define cprn_device ((gx_device_colour_prn*) pdev)
+#define cdj ((gx_device_cdj *)pdev)
+#define pjxl ((gx_device_pjxl *)pdev)
+#define pj ((gx_device_pj *)pdev)
+#define bjc ((gx_device_bjc*) pdev)
+#define bjc600 ((gx_device_bjc600*) pdev)
+#define bjc800 ((gx_device_bjc800*) pdev)
+#define bjcparams (bjc->bjc_p)
+#define bjc600params (bjc600->bjc_p)
+#define bjc800params (bjc800->bjc_p)
+#define bjcversion(p) (((gx_device_bjc*) pdev)->ptype == BJC800 ? \
 BJC_BJC800_VERSION : BJC_BJC600_VERSION)
-#define bjcversionstring(p)	(((gx_device_bjc*) pdev)->ptype == BJC800 ? \
+#define bjcversionstring(p) (((gx_device_bjc*) pdev)->ptype == BJC800 ? \
 BJC_BJC800_VERSIONSTR : BJC_BJC600_VERSIONSTR)
 #define bjcthickpaper(l) \
 (bjcparams.mediaWeight_isSet && bjcparams.mediaWeight > l)
@@ -220,11 +220,11 @@ gdev_prn_output_page,\
 gdev_prn_close,\
 gdev_pcl_map_rgb_color,\
 gdev_pcl_map_color_rgb,\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
 gx_default_get_bits,\
 proc_get_params,\
 proc_put_params\
@@ -246,43 +246,43 @@ gx_default_get_bits,\
 proc_get_params,\
 proc_put_params,\
 gdev_cmyk_map_cmyk_color,\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-gdev_cmyk_map_cmyk_color,	\
-gdev_cmyk_map_color_cmyk	\
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+gdev_cmyk_map_cmyk_color, \
+gdev_cmyk_map_color_cmyk \
 }
 private gx_device_procs cdj500_procs =
 hp_colour_procs(dj500c_open, cdj_get_params, cdj_put_params);
@@ -412,7 +412,7 @@ dj500c_open(gx_device *pdev)
 }
 private int
 dj550c_open(gx_device *pdev)
-{  return hp_colour_open(pdev, DJ550C);
+{ return hp_colour_open(pdev, DJ550C);
 }
 private int
 dnj650c_open(gx_device *pdev)
@@ -440,7 +440,7 @@ escp_open(gx_device *pdev)
 }
 private int
 bjc_open(gx_device *pdev)
-{  return hp_colour_open(pdev, bjc->ptype);
+{ return hp_colour_open(pdev, bjc->ptype);
 }
 private int
 hp_colour_open(gx_device *pdev, int ptype)
@@ -457,7 +457,7 @@ static float bjc_letter[4] = { BJC_MARGINS_LETTER };
 static float bjc_a4[4] = { BJC_MARGINS_A4 };
 const float *m = (float *) 0;
 if (pdev->color_info.num_components == 0)
-{	int code = cdj_set_bpp(pdev, pdev->color_info.depth,
+{ int code = cdj_set_bpp(pdev, pdev->color_info.depth,
 pdev->color_info.num_components);
 if ( code < 0 )
 return code;
@@ -530,7 +530,7 @@ return gdev_prn_open(pdev);
 }
 private int
 cdj_get_params(gx_device *pdev, gs_param_list *plist)
-{	int code = gdev_prn_get_params(pdev, plist);
+{ int code = gdev_prn_get_params(pdev, plist);
 if ( code < 0 ||
 (code = param_write_int(plist, "BlackCorrect", (int *)&cdj->correction)) < 0 ||
 (code = param_write_int(plist, "Shingling", &cdj->shingling)) < 0 ||
@@ -541,7 +541,7 @@ return code;
 }
 private int
 cdj_put_params(gx_device *pdev, gs_param_list *plist)
-{	int correction = cdj->correction;
+{ int correction = cdj->correction;
 int shingling = cdj->shingling;
 int depletion = cdj->depletion;
 int bpp = 0;
@@ -562,7 +562,7 @@ return 0;
 }
 private int
 pjxl_get_params(gx_device *pdev, gs_param_list *plist)
-{	int code = gdev_prn_get_params(pdev, plist);
+{ int code = gdev_prn_get_params(pdev, plist);
 if ( code < 0 ||
 (code = param_write_int(plist, "PrintQuality", &pjxl->printqual)) < 0 ||
 (code = param_write_int(plist, "RenderType", &pjxl->rendertype)) < 0
@@ -572,7 +572,7 @@ return code;
 }
 private int
 pjxl_put_params(gx_device *pdev, gs_param_list *plist)
-{	int printqual = pjxl->printqual;
+{ int printqual = pjxl->printqual;
 int rendertype = pjxl->rendertype;
 int bpp = 0, real_bpp = 0;
 int code = 0;
@@ -596,43 +596,43 @@ return 0;
 }
 private int
 pj_put_params(gx_device *pdev, gs_param_list *plist)
-{	int bpp = 0;
+{ int bpp = 0;
 int code = cdj_put_param_int(plist, "BitsPerPixel", &bpp, 1, 32, 0);
 if ( code < 0 )
 return code;
 return cdj_put_param_bpp(pdev, plist, bpp, bpp, 0);
 }
 private stringParamDescription bjc_processColorsStrings[] = {
-{ "DeviceGray",		1 },
-{ "DeviceRGB",		3 },
-{ "DeviceCMYK",		4 },
+{ "DeviceGray", 1 },
+{ "DeviceRGB", 3 },
+{ "DeviceCMYK", 4 },
 { 0 }
 };
 private stringParamDescription bjc_mediaTypeStrings[] = {
-{ "PlainPaper",		BJC_MEDIA_PLAINPAPER },
-{ "CoatedPaper",		BJC_MEDIA_COATEDPAPER },
-{ "TransparencyFilm",	BJC_MEDIA_TRANSPARENCYFILM },
-{ "Envelope",		BJC_MEDIA_ENVELOPE },
-{ "Card",			BJC_MEDIA_CARD},
-{ "Other",		        BJC_MEDIA_OTHER },
+{ "PlainPaper", BJC_MEDIA_PLAINPAPER },
+{ "CoatedPaper", BJC_MEDIA_COATEDPAPER },
+{ "TransparencyFilm", BJC_MEDIA_TRANSPARENCYFILM },
+{ "Envelope", BJC_MEDIA_ENVELOPE },
+{ "Card", BJC_MEDIA_CARD},
+{ "Other", BJC_MEDIA_OTHER },
 { 0 }
 };
 private stringParamDescription bjc600_printQualityStrings[] = {
-{ "Normal",	0 },
-{ "High",	1 },
-{ "Draft",  2 },
+{ "Normal", 0 },
+{ "High", 1 },
+{ "Draft", 2 },
 { 0 }
 };
 private stringParamDescription bjc800_printQualityStrings[] = {
-{ "Normal",		0 },
-{ "High",		1 },
-{ "Low",    	3 },
-{ "Draft",		4 },
+{ "Normal", 0 },
+{ "High", 1 },
+{ "Low", 3 },
+{ "Draft", 4 },
 { 0 },
 };
 private stringParamDescription bjc_ditheringTypeStrings[] = {
-{ "None",			BJC_DITHER_NONE },
-{ "Floyd-Steinberg",	BJC_DITHER_FS },
+{ "None", BJC_DITHER_NONE },
+{ "Floyd-Steinberg", BJC_DITHER_FS },
 { 0 }
 };
 private int
@@ -751,7 +751,7 @@ if ((ncode = param_read_null(plist, oname)) == 0) {
 params->mediaWeight_isSet = 0;
 break;
 }
-mwe:   	    param_signal_error(plist, oname, code = ncode);
+mwe: param_signal_error(plist, oname, code = ncode);
 case 1:
 break;
 }
@@ -883,9 +883,9 @@ return hp_colour_print_page(pdev, prn_stream, bjc->ptype);
 }
 #define SHIFT ((I * 8) - 13)
 #define RSHIFT ((I * 8) - 16)
-#define RANDOM (((rand() << RSHIFT) % (MAXVALUE / 2))  - MAXVALUE / 4);
-#define MINVALUE  0
-#define MAXVALUE  (255 << SHIFT)
+#define RANDOM (((rand() << RSHIFT) % (MAXVALUE / 2)) - MAXVALUE / 4);
+#define MINVALUE 0
+#define MAXVALUE (255 << SHIFT)
 #define THRESHOLD (128 << SHIFT)
 #define C 8
 #define FSdither(inP, out, errP, Err, Bit, Offset, Element)\
@@ -900,7 +900,7 @@ errP[Element] = ((Err * 5 + oldErr + C) >> 4);
 #ifdef NEW_DITHER
 #define FSDline(scan, i, j, plane_size, cErr, mErr, yErr, kErr, cP, mP, yP, kP, n)\
 {\
-if (scan == 0) {       \
+if (scan == 0) { \
 for (i = 0; i < plane_size; i++) {\
 byte c, y, m, k, bitmask;\
 int oldErr;\
@@ -924,7 +924,7 @@ if (n >= 3) {\
 }\
 *yP++ = y;\
 }\
-} else {		\
+} else { \
 for (i = 0; i < plane_size; i++) {\
 byte c, y, m, k, bitmask;\
 int oldErr;\
@@ -953,7 +953,7 @@ if (n >= 4)\
 #else
 #define FSDline(scan, i, j, plane_size, cErr, mErr, yErr, kErr, cP, mP, yP, kP, n)\
 {\
-if (scan == 0) {       \
+if (scan == 0) { \
 for (i = 0; i < plane_size; i++) {\
 byte c, y, m, k, bitmask;\
 int oldErr;\
@@ -985,7 +985,7 @@ if (n >= 3) {\
 }\
 *yP++ = y;\
 }\
-} else {		\
+} else { \
 for (i = 0; i < plane_size; i++) {\
 byte c, y, m, k, bitmask;\
 int oldErr;\
@@ -1026,7 +1026,7 @@ out |= Bit;\
 }
 #define COPYline(scan, i, j, plane_size, cP, mP, yP, kP, n)\
 {\
-if (scan == 0) {       \
+if (scan == 0) { \
 for (i = 0; i < plane_size; i++) {\
 byte c, y, m, k, bitmask;\
 bitmask = 0x80;\
@@ -1049,7 +1049,7 @@ if (n >= 3) {\
 }\
 *yP++ = y;\
 }\
-} else {		\
+} else { \
 for (i = 0; i < plane_size; i++) {\
 byte c, y, m, k, bitmask;\
 bitmask = 0x01;\
@@ -1074,8 +1074,8 @@ if (n >= 4)\
 }\
 }\
 }
-#define x_dpi        (pdev->x_pixels_per_inch)
-#define y_dpi        (pdev->y_pixels_per_inch)
+#define x_dpi (pdev->x_pixels_per_inch)
+#define y_dpi (pdev->y_pixels_per_inch)
 #define CONFIG_16BIT "\033*v6W\000\003\000\005\006\005"
 #define CONFIG_24BIT "\033*v6W\000\003\000\010\010\010"
 #define calc_buffsize(a, b) (((((a) + ((b) * W) - 1) / ((b) * W))) * W)
@@ -1176,7 +1176,7 @@ break;
 printmode[1] = (bjcparams.mediaType >= BJC_MEDIA_ENVELOPE ? 1 :
 bjc800thickpaper());
 bjc_cmd('c', 2, printmode, pdev, f);
-} else  {
+} else {
 byte printmeth[3];
 printmeth[0] = 0x10 + ((1 - bjcparams.manualFeed) << 2);
 printmeth[1] = (bjcparams.mediaType << 4) + bjcparams.printQuality;
@@ -1499,7 +1499,7 @@ ep_num_comps = num_comps;
 if (ptype == BJC600 || ptype == BJC800) {
 bjc_init_page(pdev, prn_stream);
 } else {
-if (ptype == LJ4DITH)  {
+if (ptype == LJ4DITH) {
 fputs("\033*rB", prn_stream);
 } else {
 fputs("\033*rbC", prn_stream);
@@ -1927,14 +1927,14 @@ return 0;
 }
 private int
 gdev_pcl_mode1compress(const byte *row, const byte *end_row, byte *compressed)
-{	register const byte *in = row;
+{ register const byte *in = row;
 register byte *out = compressed;
 while ( in < end_row )
-{	byte test = *in++;
+{ byte test = *in++;
 const byte *run = in;
 while ( in < end_row && *in == test ) in++;
 while ( in - run > 255 )
-{	*out++ = 255;
+{ *out++ = 255;
 *out++ = test;
 run += 256;
 }
@@ -2138,7 +2138,7 @@ prgb[2] = gx_color_value_from_byte((gx_color_value)(c & 0xff));
 }
 break;
 case 32:
-#define  gx_maxcol gx_color_value_from_byte(gx_color_value_to_byte(gx_max_color_value))
+#define gx_maxcol gx_color_value_from_byte(gx_color_value_to_byte(gx_max_color_value))
 { gx_color_value w = gx_maxcol - gx_color_value_from_byte(color >> 24);
 prgb[0] = w - gx_color_value_from_byte((color >> 16) & 0xff);
 prgb[1] = w - gx_color_value_from_byte((color >> 8) & 0xff);
@@ -2157,7 +2157,7 @@ register byte *in, *out;
 if (cmyk > 0) {
 if (bpp == 8) {
 in = start + endline;
-out = start + (endline *=  2);
+out = start + (endline *= 2);
 while (in > start) {
 register byte b0;
 register byte bs0, bs1, bs2, bs3;
@@ -2199,7 +2199,7 @@ b1 = *--in;
 *--out = (b1 & 0xf0) + ((b1 >> 4) & 0xf);
 }
 }
-} else  {
+} else {
 if (bpp == 16)
 { register byte b0, b1;
 endline = ((endline + 1) / 2);
@@ -2209,7 +2209,7 @@ while (in > start)
 { b0 = *--in;
 b1 = *--in;
 *--out = (b0 << 3) + ((b0 >> 2) & 0x7);
-*--out = (b1 << 5) + ((b0 >> 3)  & 0x1c) + ((b1 >> 1) & 0x3);
+*--out = (b1 << 5) + ((b0 >> 3) & 0x1c) + ((b1 >> 1) & 0x3);
 *--out = (b1 & 0xf8) + (b1 >> 5);
 }
 }
@@ -2237,7 +2237,7 @@ if (c == y && c == m) {
 private int
 cdj_put_param_int(gs_param_list *plist, gs_param_name pname, int *pvalue,
 int minval, int maxval, int ecode)
-{	int code, value;
+{ int code, value;
 switch ( code = param_read_int(plist, pname, &value) )
 {
 default:
@@ -2334,7 +2334,7 @@ if (!cprn_device->cmyk) {
 break;
 }
 default:
-bppe:  return gs_error_rangecheck;
+bppe: return gs_error_rangecheck;
 }
 if (cprn_device->cmyk == -1) {
 dev_proc(pdev, map_cmyk_color) = NULL;
@@ -2359,7 +2359,7 @@ if (bpp == 1 || bpp == 3 || bpp == 8 || bpp == 16
 || bpp == 24 || bpp == 32) {
 break;
 }
-cce:  default: return gs_error_rangecheck;
+cce: default: return gs_error_rangecheck;
 }
 if (cprn_device->cmyk) {
 if (cprn_device->cmyk > 0) {
@@ -2414,7 +2414,7 @@ return code;
 pdev->color_info.depth = new_bpp;
 code = gdev_prn_put_params(pdev, plist);
 if ( code < 0 )
-{	cdj_set_bpp(pdev, save_bpp, save_ccomps);
+{ cdj_set_bpp(pdev, save_bpp, save_ccomps);
 return code;
 }
 cdj_set_bpp(pdev, real_bpp, ccomps);
@@ -2500,7 +2500,7 @@ return code;
 private int
 cdj_param_check_bytes(gs_param_list *plist, gs_param_name pname,
 const byte *str, uint size, bool is_defined)
-{       int code;
+{ int code;
 gs_param_string new_value;
 switch ( code = param_read_string(plist, pname, &new_value) )
 {
@@ -2515,7 +2515,7 @@ goto e;
 default:
 if ( param_read_null(plist, pname) == 0 )
 return 1;
-e:              param_signal_error(plist, pname, code);
+e: param_signal_error(plist, pname, code);
 case 1:
 ;
 }
@@ -2524,7 +2524,7 @@ return code;
 private int
 cdj_param_check_float(gs_param_list *plist, gs_param_name pname, floatp fval,
 bool is_defined)
-{       int code;
+{ int code;
 float new_value;
 switch ( code = param_read_float(plist, pname, &new_value) )
 {
@@ -2536,7 +2536,7 @@ goto e;
 default:
 if ( param_read_null(plist, pname) == 0 )
 return 1;
-e:              param_signal_error(plist, pname, code);
+e: param_signal_error(plist, pname, code);
 case 1:
 ;
 }
@@ -2549,23 +2549,23 @@ Pixel |= Bit;\
 Error -= Spotsize;\
 }
 #define FSdiffuse(Error,Erow,Ecol,Eprev)\
-Eprev  += (3 * Error + 8)>>4;\
-Erow    = (5 * Error + Ecol + 8)>>4;\
-Ecol    = Error;
-#define DIRECTION    direction[0]
+Eprev += (3 * Error + 8)>>4;\
+Erow = (5 * Error + Ecol + 8)>>4;\
+Ecol = Error;
+#define DIRECTION direction[0]
 #define CMYK_THRESHOLD(I) threshold[I]
-#define SPOTSIZE(I)  spotsize[I]
-#define EMIN(I)      emin[I]
-#define EMAX(I)      emax[I]
-#define NPIXEL       (plane_size * 8)
-#define IDX_C	     1
-#define IDX_M	     2
-#define IDX_Y	     3
-#define IDX_K	     0
-#define ODX_C	     2
-#define ODX_M	     1
-#define ODX_Y	     0
-#define ODX_K	     3
+#define SPOTSIZE(I) spotsize[I]
+#define EMIN(I) emin[I]
+#define EMAX(I) emax[I]
+#define NPIXEL (plane_size * 8)
+#define IDX_C 1
+#define IDX_M 2
+#define IDX_Y 3
+#define IDX_K 0
+#define ODX_C 2
+#define ODX_M 1
+#define ODX_Y 0
+#define ODX_K 3
 private int
 bjc_fscmyk(byte** inplanes, byte* outplanes[4][4], int** errplanes,
 int plane_size, int scan) {
@@ -2576,17 +2576,17 @@ int *direction,*threshold,*spotsize,*emin,*emax;
 int *errv,*errc;
 direction = (int *) err;
 threshold = direction + 4;
-spotsize  = threshold + 4;
-emin      = spotsize  + 4;
-emax      = emin      + 4;
-errc      = emax      + 4;
-errv      = errc      + 2*4;
+spotsize = threshold + 4;
+emin = spotsize + 4;
+emax = emin + 4;
+errc = emax + 4;
+errv = errc + 2*4;
 DIRECTION = -1;
 for(i = 0; i < 4; ++i) {
 int j;
 float maxv = 1.0;
 CMYK_THRESHOLD(i) = (int)(127.0 / maxv + 0.5);
-SPOTSIZE(i)  = ((int) CMYK_THRESHOLD(i)<<1)+1;
+SPOTSIZE(i) = ((int) CMYK_THRESHOLD(i)<<1)+1;
 j = CMYK_THRESHOLD(i);
 errc[3] = 0;
 FSdiffuse(CMYK_THRESHOLD(i),errv[0],errc[0],errv[-4]);
@@ -2606,7 +2606,7 @@ for(i = 0; i < 4; ++i) errc[i] = 0;
 for(p = 0; p < NPIXEL; ++p) {
 for(i = 0; i < 4; ++i) {
 if (0) v = 0;
-else                      v = (rand() % SPOTSIZE(i)) - CMYK_THRESHOLD(i);
+else v = (rand() % SPOTSIZE(i)) - CMYK_THRESHOLD(i);
 FSdiffuse(v,errv[i],errc[i],errv[i-4]);
 }
 errv += i;
@@ -2614,14 +2614,14 @@ errv += i;
 } else {
 int w,p,dir,thedir;
 byte *out[4],pixel[4],bit;
-int  *direction = (int *) err;
-int  *threshold = direction + 4;
-int  *spotsize  = threshold + 4;
-int  *emin      = spotsize  + 4;
-int  *emax      = emin      + 4;
-int  *errc      = emax      + 4;
-int  *errv      = errc      + 2*4;
-int   kerr,cerr,merr,yerr;
+int *direction = (int *) err;
+int *threshold = direction + 4;
+int *spotsize = threshold + 4;
+int *emin = spotsize + 4;
+int *emax = emin + 4;
+int *errc = emax + 4;
+int *errv = errc + 2*4;
+int kerr,cerr,merr,yerr;
 byte* in;
 if (0) {
 cerr = merr = yerr = kerr = 0;
@@ -2631,24 +2631,24 @@ merr = errc[1];
 yerr = errc[2];
 kerr = errc[3];
 }
-out[0]   = outplanes[scan + 2][ODX_C];
-out[1]   = outplanes[scan + 2][ODX_M];
-out[2]   = outplanes[scan + 2][ODX_Y];
-out[3]   = outplanes[scan + 2][ODX_K];
+out[0] = outplanes[scan + 2][ODX_C];
+out[1] = outplanes[scan + 2][ODX_M];
+out[2] = outplanes[scan + 2][ODX_Y];
+out[3] = outplanes[scan + 2][ODX_K];
 pixel[0] = pixel[1] = pixel[2] = pixel[3] = 0;
 if(DIRECTION < 0) {
-w      = NPIXEL;
-in     = inplanes[2] + 4 * (NPIXEL - 1);
-errv  += (w-1)<<2;
-dir    = -4;
+w = NPIXEL;
+in = inplanes[2] + 4 * (NPIXEL - 1);
+errv += (w-1)<<2;
+dir = -4;
 thedir = -1;
 for (p = 0; p < 4; ++p) {
 out[p] += plane_size - 1;
 }
 } else {
-w      = 1;
-in      = inplanes[3] - 4 * NPIXEL;
-dir    = 4;
+w = 1;
+in = inplanes[3] - 4 * NPIXEL;
+dir = 4;
 thedir = 1;
 for (p = 0; p < 4; ++p) {
 out[p] -= plane_size;
@@ -2656,42 +2656,42 @@ out[p] -= plane_size;
 }
 if (1) DIRECTION = -DIRECTION;
 bit = 0x80>>((w-1) & 7);
-w   = (w+7)>>3;
+w = (w+7)>>3;
 for(p = NPIXEL; p; --p) {
 int cmy = in[IDX_C] | in[IDX_M] | in[IDX_Y];
-int kv  = FSerror(in[IDX_K],errv[3],kerr);
+int kv = FSerror(in[IDX_K],errv[3],kerr);
 int cv;
 FSdecide(kv,CMYK_THRESHOLD(3),SPOTSIZE(3),pixel[3],bit);
 if(cmy) {
 if(pixel[3] & bit) {
 FSdiffuse(kv,errv[3],kerr,errv[3-dir]);
-cv  = FSerror(in[IDX_C],errv[0],cerr);
+cv = FSerror(in[IDX_C],errv[0],cerr);
 cv -= SPOTSIZE(0);
 if ((cv+CMYK_THRESHOLD(0)) < 0) cv = -CMYK_THRESHOLD(0);
 FSdiffuse(cv,errv[0],cerr,errv[0-dir]);
-cv  = FSerror(in[IDX_M],errv[1],merr);
+cv = FSerror(in[IDX_M],errv[1],merr);
 cv -= SPOTSIZE(1);
 if ((cv+CMYK_THRESHOLD(1)) < 0) cv = -CMYK_THRESHOLD(1);
 FSdiffuse(cv,errv[1],merr,errv[1-dir]);
-cv  = FSerror(in[IDX_Y],errv[2],yerr);
+cv = FSerror(in[IDX_Y],errv[2],yerr);
 cv -= SPOTSIZE(2);
 if ((cv+CMYK_THRESHOLD(2)) < 0) cv = -CMYK_THRESHOLD(2);
 FSdiffuse(cv,errv[2],yerr,errv[2-dir]);
 } else {
-cv  = FSerror(in[IDX_C],errv[0],cerr);
+cv = FSerror(in[IDX_C],errv[0],cerr);
 FSdecide(cv,CMYK_THRESHOLD(0),SPOTSIZE(0),pixel[0],bit);
 FSdiffuse(cv,errv[0],cerr,errv[0-dir]);
-cv  = FSerror(in[IDX_M],errv[1],merr);
+cv = FSerror(in[IDX_M],errv[1],merr);
 FSdecide(cv,CMYK_THRESHOLD(1),SPOTSIZE(1),pixel[1],bit);
 FSdiffuse(cv,errv[1],merr,errv[1-dir]);
-cv  = FSerror(in[IDX_Y],errv[2],yerr);
+cv = FSerror(in[IDX_Y],errv[2],yerr);
 FSdecide(cv,CMYK_THRESHOLD(2),SPOTSIZE(2),pixel[2],bit);
 FSdiffuse(cv,errv[2],yerr,errv[2-dir]);
 if(pixel[0] & pixel[1] & pixel[2] & bit) {
 pixel[0] &= ~bit;
 pixel[1] &= ~bit;
 pixel[2] &= ~bit;
-pixel[3] |=  bit;
+pixel[3] |= bit;
 kv -= SPOTSIZE(3);
 if ((kv+CMYK_THRESHOLD(3)) < 0) kv = -CMYK_THRESHOLD(0);
 FSdiffuse(kv,errv[3],kerr,errv[3-dir]);
@@ -2699,14 +2699,14 @@ FSdiffuse(kv,errv[3],kerr,errv[3-dir]);
 }
 } else {
 FSdiffuse(kv,errv[3],kerr,errv[3-dir]);
-if(     errv[0] > EMAX(0)) errv[0] = EMAX(0);
+if( errv[0] > EMAX(0)) errv[0] = EMAX(0);
 else if(errv[0] < EMIN(0)) errv[0] = EMIN(0);
-if(     errv[1] > EMAX(1)) errv[1] = EMAX(1);
+if( errv[1] > EMAX(1)) errv[1] = EMAX(1);
 else if(errv[1] < EMIN(1)) errv[1] = EMIN(1);
-if(     errv[2] > EMAX(2)) errv[2] = EMAX(2);
+if( errv[2] > EMAX(2)) errv[2] = EMAX(2);
 else if(errv[2] < EMIN(2)) errv[2] = EMIN(2);
 }
-bit   = dir > 0 ? (bit>>1) : (bit<<1);
+bit = dir > 0 ? (bit>>1) : (bit<<1);
 if(bit == 0) {
 *out[0] = pixel[0];
 *out[1] = pixel[1];
@@ -2716,8 +2716,8 @@ out[0] += thedir; out[1] += thedir;
 out[2] += thedir; out[3] += thedir;
 pixel[0] = pixel[1] = pixel[2] = pixel[3] = 0;
 if(dir > 0) bit = 0x80;
-else        bit = 0x01;
-w    += dir>>2;
+else bit = 0x01;
+w += dir>>2;
 }
 in += dir;
 errv += dir;

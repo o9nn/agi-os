@@ -2,17 +2,17 @@
 # define HEADER_TXT_DB_H
 # include <openssl/opensslconf.h>
 # ifndef OPENSSL_NO_BIO
-#  include <openssl/bio.h>
+# include <openssl/bio.h>
 # endif
 # include <openssl/stack.h>
 # include <openssl/lhash.h>
-# define DB_ERROR_OK                     0
-# define DB_ERROR_MALLOC                 1
-# define DB_ERROR_INDEX_CLASH            2
-# define DB_ERROR_INDEX_OUT_OF_RANGE     3
-# define DB_ERROR_NO_INDEX               4
-# define DB_ERROR_INSERT_INDEX_CLASH     5
-#ifdef  __cplusplus
+# define DB_ERROR_OK 0
+# define DB_ERROR_MALLOC 1
+# define DB_ERROR_INDEX_CLASH 2
+# define DB_ERROR_INDEX_OUT_OF_RANGE 3
+# define DB_ERROR_NO_INDEX 4
+# define DB_ERROR_INSERT_INDEX_CLASH 5
+#ifdef __cplusplus
 extern "C" {
 #endif
 typedef OPENSSL_STRING *OPENSSL_PSTRING;
@@ -40,7 +40,7 @@ void TXT_DB_free(TXT_DB *db);
 OPENSSL_STRING *TXT_DB_get_by_index(TXT_DB *db, int idx,
 OPENSSL_STRING *value);
 int TXT_DB_insert(TXT_DB *db, OPENSSL_STRING *value);
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif
 #endif

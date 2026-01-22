@@ -7,5 +7,5 @@ import 'uno.css'
 import 'vue-sonner/style.css'
 const app = createApp(App)
 Object.values(import.meta.glob<{ install: UserModule }>('./modules/*.ts', { eager: true }))
-  .forEach(i => i.install?.(app))
+.forEach(i => i.install?.(app))
 app.mount('#app')

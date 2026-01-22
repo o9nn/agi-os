@@ -67,7 +67,7 @@ p := info.p;
 low := p.shr(p.bits()/4);
 r0 := rand(low, p, Random->NotQuiteRandom);
 αr0 := info.alpha.expmod(r0, p);
-# trim(αr0);	the IPint library should do this for us, i think.
+# trim(αr0); the IPint library should do this for us, i think.
 # send alpha**r0 mod p, mycert, and mypk
 sendmsg(io, array of byte αr0.iptob64());
 sendmsg(io, array of byte keyring->certtostr(info.cert));
@@ -88,7 +88,7 @@ hispk := keyring->strtopk(string buf);
 if(!anysigner){
 # verify their public key
 if(verify(info.spk, hiscert, buf) == 0)
-raise Error0("pk doesn't match certificate");	# likely the signers don't match.
+raise Error0("pk doesn't match certificate"); # likely the signers don't match.
 # check expiration date - in seconds of epoch
 if(hiscert.exp != 0 && hiscert.exp <= now())
 raise Error0("certificate expired");
@@ -119,7 +119,7 @@ err = e;
 senderr(io, e);
 break;
 Error1 =>
-senderr(io, "failed");	# acknowledge error
+senderr(io, "failed"); # acknowledge error
 return remote(e);
 }
 {
@@ -144,7 +144,7 @@ return s;
 }
 # TO DO: exchange attr/value pairs, covered by hmac (use part of secret up to hmac block size of 64 bytes)
 # the old scheme can be distinguished either by a prefix "attrs " or simply because the string contains "=",
-# and the server side can then reply.  the hmac is to prevent tampering.
+# and the server side can then reply. the hmac is to prevent tampering.
 negotiatecrypto(io: ref IO, key: ref Key, ai: ref Authinfo, attrs: list of ref Sexp): string
 {
 role := authio->lookattrval(key.attrs, "role");
@@ -153,7 +153,7 @@ alg: string;
 if(role == "client"){
 alg = authio->lookattrval(key.attrs, ":alg");
 if(alg == nil)
-alg = authio->lookattrval(key.attrs, "alg");	# old way
+alg = authio->lookattrval(key.attrs, "alg"); # old way
 if(alg == nil)
 alg = "md5/rc4_256";
 sendmsg(io, array of byte alg);
@@ -195,7 +195,7 @@ return users+"@"+key;
 }
 algcompatible(nil: string, nil: list of string): int
 {
-return 1;	# XXX
+return 1; # XXX
 }
 principal(pk: ref Keyring->PK): ref Sexp
 {

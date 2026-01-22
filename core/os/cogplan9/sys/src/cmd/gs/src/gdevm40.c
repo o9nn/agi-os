@@ -40,7 +40,7 @@ byte e = (byte)color
 #define putw(ptr, wxyz)\
 *(bits32 *)(ptr) = (wxyz)
 #if arch_is_big_endian
-#  define set_color40_cache(color, a, b, c, d, e)\
+# define set_color40_cache(color, a, b, c, d, e)\
 mdev->color40.abcd = abcd = (color) >> 8, \
 mdev->color40.bcde = bcde = (abcd << 8) | (e),\
 mdev->color40.cdea = cdea = (bcde << 8) | (a),\
@@ -48,7 +48,7 @@ mdev->color40.deab = deab = (cdea << 8) | (b),\
 mdev->color40.eabc = eabc = (deab << 8) | (c),\
 mdev->color40.abcde = (color)
 #else
-#  define set_color40_cache(color, a, b, c, d, e)\
+# define set_color40_cache(color, a, b, c, d, e)\
 mdev->color40.abcd = abcd =\
 ((bits32)(d) << 24) | ((bits32)(c) << 16) |\
 ((bits16)(b) << 8) | (a),\

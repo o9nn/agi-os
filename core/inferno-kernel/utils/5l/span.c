@@ -1,10 +1,10 @@
-#include	"l.h"
+#include "l.h"
 static struct {
-ulong	start;
-ulong	size;
+ulong start;
+ulong size;
 } pool;
-void	checkpool(Prog*);
-void 	flushpool(Prog*, int);
+void checkpool(Prog*);
+void flushpool(Prog*, int);
 void
 span(void)
 {
@@ -760,7 +760,7 @@ p = s;
 while(*s)
 cput(*s++);
 cput(0);
-return  s-p+1;
+return s-p+1;
 }
 void
 asmdyn()

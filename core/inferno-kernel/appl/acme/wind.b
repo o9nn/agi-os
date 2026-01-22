@@ -138,7 +138,7 @@ br.max.y = br.min.y + b.r.dy();
 draw(mainwin, br, b, nil, b.r.min);
 }
 if(!safe || !w.body.frame.r.eq(r1)){
-if(y+1+font.height > r.max.y){		# no body
+if(y+1+font.height > r.max.y){ # no body
 r1.min.y = y;
 r1.max.y = y;
 w.body.reshape(r1);
@@ -334,7 +334,7 @@ b : ref Image;
 q0, q1 : int;
 br : Rect;
 if(w.tag.ncache!=0 || w.tag.file.mod)
-w.commit(w.tag);	# check file name; also can now modify tag
+w.commit(w.tag); # check file name; also can now modify tag
 old = utils->stralloc(w.tag.file.buf.nc);
 w.tag.file.buf.read(0, old, 0, w.tag.file.buf.nc);
 for(ii=0; ii<w.tag.file.buf.nc; ii++)
@@ -421,7 +421,7 @@ t.commit(TRUE);
 f = t.file;
 if(f.ntext > 1)
 for(i=0; i<f.ntext; i++)
-f.text[i].commit(FALSE);	# no-op for t
+f.text[i].commit(FALSE); # no-op for t
 if(t.what == Body)
 return;
 r = utils->stralloc(w.tag.file.buf.nc);
@@ -471,9 +471,9 @@ warning(nil, sprint("%s: %r\n", r));
 r = nil;
 }
 }
-Window.clean(w : self ref Window, conservative : int, exiting : int) : int	# as it stands, conservative is always TRUE
+Window.clean(w : self ref Window, conservative : int, exiting : int) : int # as it stands, conservative is always TRUE
 {
-if(w.isscratch || w.isdir)	# don't whine if it's a guide file, error window, etc.
+if(w.isscratch || w.isdir) # don't whine if it's a guide file, error window, etc.
 return TRUE;
 if((!conservative||exiting) && w.nopen[Dat->QWevent]>byte 0)
 return TRUE;
@@ -481,7 +481,7 @@ if(w.dirty){
 if(w.body.file.name != nil)
 warning(nil, sprint("%s modified\n", w.body.file.name));
 else{
-if(w.body.file.buf.nc < 100)	# don't whine if it's too small
+if(w.body.file.buf.nc < 100) # don't whine if it's too small
 return TRUE;
 warning(nil, "unnamed file modified\n");
 }

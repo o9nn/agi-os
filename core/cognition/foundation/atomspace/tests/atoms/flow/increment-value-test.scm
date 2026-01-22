@@ -16,32 +16,32 @@
 (Edge (Predicate "word-pair") (List (Item "a") (Item "lot")))
 (Edge (Predicate "word-pair") (List (Item "lot") (Item ".")))
 (define mtxpr
-	(Query (VariableList
-		(TypedVariable (Variable "$left-word") (Type 'ItemNode))
-		(TypedVariable (Variable "$right-word") (Type 'ItemNode)))
-		(Present
-			(Edge (Predicate "word-pair")
-				(List (Variable "$left-word") (Variable "$right-word"))))
-		(IncrementValue (Variable "$left-word")
-			(Predicate "counter") (NumberNode 1 0))
-		(IncrementValue (Variable "$right-word")
-			(Predicate "counter") (NumberNode 0 1))
-		(IncrementValue
-			(Edge (Predicate "word-pair")
-				(List (Variable "$left-word") (Variable "$right-word")))
-			(Predicate "counter") (NumberNode 0 0 1))))
+(Query (VariableList
+(TypedVariable (Variable "$left-word") (Type 'ItemNode))
+(TypedVariable (Variable "$right-word") (Type 'ItemNode)))
+(Present
+(Edge (Predicate "word-pair")
+(List (Variable "$left-word") (Variable "$right-word"))))
+(IncrementValue (Variable "$left-word")
+(Predicate "counter") (NumberNode 1 0))
+(IncrementValue (Variable "$right-word")
+(Predicate "counter") (NumberNode 0 1))
+(IncrementValue
+(Edge (Predicate "word-pair")
+(List (Variable "$left-word") (Variable "$right-word")))
+(Predicate "counter") (NumberNode 0 0 1))))
 (cog-execute! mtxpr)
 (test-assert "Paul" (equal? (FloatValue 1 0)
-	(cog-value (Item "Paul") (Predicate "counter"))))
+(cog-value (Item "Paul") (Predicate "counter"))))
 (test-assert "bit" (equal? (FloatValue 1 1)
-	(cog-value (Item "bit") (Predicate "counter"))))
+(cog-value (Item "bit") (Predicate "counter"))))
 (test-assert "the" (equal? (FloatValue 2 2)
-	(cog-value (Item "the") (Predicate "counter"))))
+(cog-value (Item "the") (Predicate "counter"))))
 (test-assert "period" (equal? (FloatValue 0 1)
-	(cog-value (Item ".") (Predicate "counter"))))
+(cog-value (Item ".") (Predicate "counter"))))
 (test-assert "word-pair" (equal? (FloatValue 0 0 1)
-	(cog-value
-		(Edge (Predicate "word-pair") (List (Item "leg") (Item "and")))
-		(Predicate "counter"))))
+(cog-value
+(Edge (Predicate "word-pair") (List (Item "leg") (Item "and")))
+(Predicate "counter"))))
 (test-end tname)
 (opencog-test-end)

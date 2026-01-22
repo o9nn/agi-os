@@ -1,13 +1,13 @@
 #include "sh.h"
-#define INDENT	4
-#define tputc(c, shf)	shf_putchar(c, shf);
-static void 	ptree ARGS((struct op *t, int indent, struct shf *f));
-static void 	pioact ARGS((struct shf *f, int indent, struct ioword *iop));
-static void	tputC ARGS((int c, struct shf *shf));
-static void	tputS ARGS((char *wp, struct shf *shf));
-static void	vfptreef ARGS((struct shf *shf, int indent, const char *fmt, va_list va));
+#define INDENT 4
+#define tputc(c, shf) shf_putchar(c, shf);
+static void ptree ARGS((struct op *t, int indent, struct shf *f));
+static void pioact ARGS((struct shf *f, int indent, struct ioword *iop));
+static void tputC ARGS((int c, struct shf *shf));
+static void tputS ARGS((char *wp, struct shf *shf));
+static void vfptreef ARGS((struct shf *shf, int indent, const char *fmt, va_list va));
 static struct ioword **iocopy ARGS((struct ioword **iow, Area *ap));
-static void     iofree ARGS((struct ioword **iow, Area *ap));
+static void iofree ARGS((struct ioword **iow, Area *ap));
 static void
 ptree(t, indent, shf)
 register struct op *t;
@@ -160,7 +160,7 @@ fptreef(shf, indent, "<botch>");
 break;
 }
 if ((ioact = t->ioact) != NULL) {
-int	need_nl = 0;
+int need_nl = 0;
 while (*ioact != NULL)
 pioact(shf, indent, *ioact++);
 for (ioact = t->ioact; *ioact != NULL; ) {
@@ -324,7 +324,7 @@ const char *fmt;
 va_dcl
 #endif
 {
-va_list	va;
+va_list va;
 SH_VA_START(va, fmt);
 vfptreef(shf, indent, fmt, va);
 va_end(va);
@@ -574,7 +574,7 @@ break;
 #endif
 }
 }
-static	struct ioword **
+static struct ioword **
 iocopy(iow, ap)
 register struct ioword **iow;
 Area *ap;
@@ -626,7 +626,7 @@ tfree(t->left, ap);
 tfree(t->right, ap);
 afree((void*)t, ap);
 }
-static	void
+static void
 iofree(iow, ap)
 struct ioword **iow;
 Area *ap;

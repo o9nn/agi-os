@@ -6,9 +6,9 @@ static int min_pci_latency = 32;
 #if ! defined(__KERNEL__)
 #define __KERNEL__ 1
 #endif
-#if !defined(__OPTIMIZE__) &&  0
-#warning  You must compile this file with the correct options!
-#warning  See the last lines of the source file.
+#if !defined(__OPTIMIZE__) && 0
+#warning You must compile this file with the correct options!
+#warning See the last lines of the source file.
 #error You must compile this driver with the proper options, including "-O".
 #endif
 #if defined(MODULE) && ! defined(EXPORT_SYMTAB)
@@ -25,7 +25,7 @@ static int min_pci_latency = 32;
 #if defined(MODVERSIONS)
 #include <linux/modversions.h>
 #endif
-#if LINUX_VERSION_CODE < 0x20500  &&  defined(MODVERSIONS)
+#if LINUX_VERSION_CODE < 0x20500 && defined(MODVERSIONS)
 #include <linux/module.h>
 #include <linux/modversions.h>
 #else
@@ -45,7 +45,7 @@ static int min_pci_latency = 32;
 #include <asm/io.h>
 #include "pci-scan.h"
 #include "kern_compat.h"
-#if defined(CONFIG_APM)  &&  LINUX_VERSION_CODE < 0x20400
+#if defined(CONFIG_APM) && LINUX_VERSION_CODE < 0x20400
 #include <linux/apm_bios.h>
 #endif
 #ifdef CONFIG_PM
@@ -55,13 +55,13 @@ static int min_pci_latency = 32;
 char kernel_version[] = UTS_RELEASE;
 #endif
 #if (LINUX_VERSION_CODE < 0x20100)
-#define PCI_CAPABILITY_LIST	0x34
-#define PCI_STATUS_CAP_LIST	0x10
-#define PCI_CAP_ID_PM		0x01
+#define PCI_CAPABILITY_LIST 0x34
+#define PCI_STATUS_CAP_LIST 0x10
+#define PCI_CAP_ID_PM 0x01
 #endif
 int (*register_hotswap_hook)(struct drv_id_info *did);
 void (*unregister_hotswap_hook)(struct drv_id_info *did);
-#if LINUX_VERSION_CODE > 0x20118  &&  defined(MODULE)
+#if LINUX_VERSION_CODE > 0x20118 && defined(MODULE)
 MODULE_LICENSE("GPL");
 MODULE_PARM(msg_level, "i");
 MODULE_PARM(min_pci_latency, "i");
@@ -129,7 +129,7 @@ pciaddr |= ((long)pdev->base_address[((pci_flags>>4)&7)+ 1]) << 32;
 if (msg_level > 2)
 printk(KERN_INFO "Found %s at PCI address %#lx, mapped IRQ %d.\n",
 pci_tbl[chip_idx].name, pciaddr, pdev->irq);
-if ( ! (pci_flags & PCI_UNUSED_IRQ)  &&
+if ( ! (pci_flags & PCI_UNUSED_IRQ) &&
 (pdev->irq == 0 || pdev->irq == 255)) {
 if (pdev->bus->number == 32)
 printk(KERN_WARNING "Resources for CardBus device '%s' have"
@@ -260,7 +260,7 @@ pciaddr |= ((long)pci_busaddr)<<32;
 if (msg_level > 2)
 printk(KERN_INFO "Found %s at PCI address %#lx, IRQ %d.\n",
 pci_tbl[chip_idx].name, pciaddr, irq);
-if ( ! (pci_flags & PCI_UNUSED_IRQ)  &&
+if ( ! (pci_flags & PCI_UNUSED_IRQ) &&
 (irq == 0 || irq >= 16)) {
 if (pci_bus == 32)
 printk(KERN_WARNING "Resources for CardBus device '%s' have"
@@ -298,7 +298,7 @@ PCI_COMMAND, new_command);
 }
 newdev = drv_id->probe1(pdev, initial_device,
 ioaddr, irq, chip_idx, cards_found);
-if (newdev  && (pci_flags & PCI_COMMAND_MASTER)  &&
+if (newdev && (pci_flags & PCI_COMMAND_MASTER) &&
 ! (pci_flags & PCI_NO_MIN_LATENCY)) {
 u8 pci_latency;
 pcibios_read_config_byte(pci_bus, pci_device_fn,
@@ -380,7 +380,7 @@ int acpi_wake(struct pci_dev *pdev)
 {
 u32 base[5], romaddr;
 u16 pci_command, pwr_command;
-u8  pci_latency, pci_cacheline, irq;
+u8 pci_latency, pci_cacheline, irq;
 int i, pwr_cmd_idx = pci_find_capability(pdev, PCI_CAP_ID_PM);
 if (pwr_cmd_idx == 0)
 return 0;
@@ -414,7 +414,7 @@ int pwr_cmd_idx = pci_find_capability(pdev, PCI_CAP_ID_PM);
 if (pwr_cmd_idx == 0)
 return 0;
 pci_read_config_word(pdev, pwr_cmd_idx + 4, &pwr_command);
-if ((pwr_command & 3) == ACPI_D3  &&  new_state != ACPI_D3)
+if ((pwr_command & 3) == ACPI_D3 && new_state != ACPI_D3)
 acpi_wake(pdev);
 pci_write_config_word(pdev, pwr_cmd_idx + 4,
 (pwr_command & ~3) | new_state);
@@ -457,7 +457,7 @@ devi->drv_id->pwr_event(devi->dev, DRV_RESUME);
 down = 0;
 break;
 case PM_SET_WAKEUP: pwr_cmd = DRV_PWR_WakeOn; break;
-case PM_EJECT:		pwr_cmd = DRV_DETACH;	break;
+case PM_EJECT: pwr_cmd = DRV_DETACH; break;
 default:
 printk(KERN_DEBUG "pci-scan: Unknown power management event %d.\n",
 event);
@@ -468,7 +468,7 @@ if (devi->drv_id->pwr_event)
 devi->drv_id->pwr_event(devi->dev, pwr_cmd);
 return 0;
 }
-#elif defined(CONFIG_APM)  &&  LINUX_VERSION_CODE < 0x20400
+#elif defined(CONFIG_APM) && LINUX_VERSION_CODE < 0x20400
 static int handle_apm_event(apm_event_t event)
 {
 static int down = 0;
@@ -512,7 +512,7 @@ if (msg_level)
 printk(KERN_INFO "%s", version);
 #if defined(CONFIG_PM)
 pm_register(PM_PCI_DEV, 0, &handle_pm_event);
-#elif defined(CONFIG_APM)  &&  LINUX_VERSION_CODE < 0x20400
+#elif defined(CONFIG_APM) && LINUX_VERSION_CODE < 0x20400
 apm_register_callback(&handle_apm_event);
 #endif
 return 0;
@@ -521,7 +521,7 @@ void cleanup_module(void)
 {
 #if defined(CONFIG_PM)
 pm_unregister_all(&handle_pm_event);
-#elif defined(CONFIG_APM)  &&  LINUX_VERSION_CODE < 0x20400
+#elif defined(CONFIG_APM) && LINUX_VERSION_CODE < 0x20400
 apm_unregister_callback(&handle_apm_event);
 #endif
 if (dev_list != NULL)

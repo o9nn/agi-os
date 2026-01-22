@@ -15,9 +15,9 @@ ctx_size += ggml_graph_overhead();
 ctx_size += 1024;
 }
 struct ggml_init_params params = {
-.mem_size   = ctx_size,
+.mem_size = ctx_size,
 .mem_buffer = NULL,
-.no_alloc   = false,
+.no_alloc = false,
 };
 struct ggml_context * ctx = ggml_init(params);
 struct ggml_tensor * x = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, 4);
@@ -51,9 +51,9 @@ ctx_size += ggml_graph_overhead();
 ctx_size += 1024;
 }
 struct ggml_init_params params = {
-.mem_size   = ctx_size,
+.mem_size = ctx_size,
 .mem_buffer = NULL,
-.no_alloc   = false,
+.no_alloc = false,
 };
 struct ggml_context * ctx0 = ggml_init(params);
 struct ggml_context * ctx1 = ggml_init(params);

@@ -15,8 +15,8 @@ using ModelingToolkit, DynamicQuantities
 using ModelingToolkit: t, D
 export Pin
 @connector Pin begin
-v(t), [unit = u"V"]                    # Potential at the pin [V]
-i(t), [connect = Flow, unit = u"A"]    # Current flowing into the pin [A]
+v(t), [unit = u"V"] # Potential at the pin [V]
+i(t), [connect = Flow, unit = u"A"] # Current flowing into the pin [A]
 @icon "pin.png"
 end
 ground_logo = read(abspath(ENV["MTK_ICONS_DIR"], "ground.svg"), String)
@@ -963,7 +963,7 @@ end
 let D=ModelingToolkit.D_nounits, t=ModelingToolkit.t_nounits
 """
 ╭─────────╮
-in  │    K    │ out
+in │ K │ out
 ╶─>─┤ ------- ├──>─╴
 │ 1 + s T │
 ╰─────────╯
@@ -983,12 +983,12 @@ end
 end
 """
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃ DoubleLag                ┃
-┃ ╭─────────╮  ╭─────────╮ ┃
-in  ┃ │    K1   │  │    K2   │ ┃  out
+┃ DoubleLag ┃
+┃ ╭─────────╮ ╭─────────╮ ┃
+in ┃ │ K1 │ │ K2 │ ┃ out
 ─>──╂─┤ ------- ├──┤ ------- ├─╂──>──╴
-┃ │ 1 + sT1 │  │ 1 + sT2 │ ┃
-┃ ╰─────────╯  ╰─────────╯ ┃
+┃ │ 1 + sT1 │ │ 1 + sT2 │ ┃
+┃ ╰─────────╯ ╰─────────╯ ┃
 ┗━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 """
 @mtkmodel DoubleLag begin

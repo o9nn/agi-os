@@ -74,7 +74,7 @@ struct sk_buff *skb, *skb2;
 struct sockaddr_in6 *sin;
 struct {
 struct sock_extended_err ee;
-struct sockaddr_in6	 offender;
+struct sockaddr_in6 offender;
 } errhdr;
 int err;
 int copied;

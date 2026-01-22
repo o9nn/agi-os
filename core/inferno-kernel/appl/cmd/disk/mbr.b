@@ -11,7 +11,7 @@ Disk, PCpart, Toffset: import disks;
 include "arg.m";
 Mbr: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 #
 # Default boot block prints an error message and reboots.
@@ -27,15 +27,15 @@ byte 16r8E, byte 16rC3, byte 16rBB, byte 16r72, byte 16r00, byte 16rB8, byte 16r
 byte 16r26, byte 16r89, byte 16r07, byte 16rEA, byte 16r00, byte 16r00, byte 16rFF, byte 16rFF,
 byte 16rEB, byte 16rD6, byte 16rAC, byte 16r0A, byte 16rC0, byte 16r74, byte 16r09, byte 16rB4,
 byte 16r0E, byte 16rBB, byte 16r07, byte 16r00, byte 16rCD, byte 16r10, byte 16rEB, byte 16rF2,
-byte 16rC3,  byte 'N',  byte 'o',  byte 't',  byte ' ',  byte 'a',  byte ' ',  byte 'b',
-byte 'o',  byte 'o',  byte 't',  byte 'a',  byte 'b',  byte 'l',  byte 'e',  byte ' ',
-byte 'd',  byte 'i',  byte 's',  byte 'c',  byte ' ',  byte 'o',  byte 'r',  byte ' ',
-byte 'd',  byte 'i',  byte 's',  byte 'c',  byte ' ',  byte 'e',  byte 'r',  byte 'r',
-byte 'o',  byte 'r', byte '\r', byte '\n',  byte 'P',  byte 'r',  byte 'e',  byte 's',
-byte 's',  byte ' ',  byte 'a',  byte 'l',  byte 'm',  byte 'o',  byte 's',  byte 't',
-byte ' ',  byte 'a',  byte 'n',  byte 'y',  byte ' ',  byte 'k',  byte 'e',  byte 'y',
-byte ' ',  byte 't',  byte 'o',  byte ' ',  byte 'r',  byte 'e',  byte 'b',  byte 'o',
-byte 'o',  byte 't',  byte '.',  byte '.',  byte '.', byte 16r00, byte 16r00, byte 16r00,
+byte 16rC3, byte 'N', byte 'o', byte 't', byte ' ', byte 'a', byte ' ', byte 'b',
+byte 'o', byte 'o', byte 't', byte 'a', byte 'b', byte 'l', byte 'e', byte ' ',
+byte 'd', byte 'i', byte 's', byte 'c', byte ' ', byte 'o', byte 'r', byte ' ',
+byte 'd', byte 'i', byte 's', byte 'c', byte ' ', byte 'e', byte 'r', byte 'r',
+byte 'o', byte 'r', byte '\r', byte '\n', byte 'P', byte 'r', byte 'e', byte 's',
+byte 's', byte ' ', byte 'a', byte 'l', byte 'm', byte 'o', byte 's', byte 't',
+byte ' ', byte 'a', byte 'n', byte 'y', byte ' ', byte 'k', byte 'e', byte 'y',
+byte ' ', byte 't', byte 'o', byte ' ', byte 'r', byte 'e', byte 'b', byte 'o',
+byte 'o', byte 't', byte '.', byte '.', byte '.', byte 16r00, byte 16r00, byte 16r00,
 };
 init(nil: ref Draw->Context, args: list of string)
 {

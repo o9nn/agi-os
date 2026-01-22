@@ -2,7 +2,7 @@
 #include "gp.h"
 #include "gpcheck.h"
 #include "commdlg.h"
-#define PARENT_WINDOW  HWND_DESKTOP
+#define PARENT_WINDOW HWND_DESKTOP
 typedef struct gx_device_win_prn_s gx_device_win_prn;
 #undef wdev
 #define wdev ((gx_device_win_prn *)dev)
@@ -29,7 +29,7 @@ HBRUSH hbrush, *hbrushs;
 uint hbrushsize;
 #define select_brush(color)\
 if (wdev->hbrush != wdev->hbrushs[color])\
-{	wdev->hbrush = wdev->hbrushs[color];\
+{ wdev->hbrush = wdev->hbrushs[color];\
 SelectObject(wdev->hdcmf,wdev->hbrush);\
 }
 #define bmWidthBytes 4
@@ -118,12 +118,12 @@ Escape(wdev->hdcprn, GETPHYSPAGESIZE, 0, NULL, (LPPOINT) & size);
 dev->width = size.x;
 dev->height = size.y;
 Escape(wdev->hdcprn, GETPRINTINGOFFSET, 0, NULL, (LPPOINT) & offset);
-m[0]   = offset.x / dev->x_pixels_per_inch;
-m[3]   = offset.y / dev->y_pixels_per_inch;
-m[2]   =
+m[0] = offset.x / dev->x_pixels_per_inch;
+m[3] = offset.y / dev->y_pixels_per_inch;
+m[2] =
 (size.x - offset.x - GetDeviceCaps(wdev->hdcprn, HORZRES))
 / dev->x_pixels_per_inch;
-m[1]   =
+m[1] =
 (size.y - offset.y - GetDeviceCaps(wdev->hdcprn, VERTRES))
 / dev->y_pixels_per_inch
 + 0.15;

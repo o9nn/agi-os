@@ -4,13 +4,13 @@
 (cog-set-value! someplace key (RandomStream 1))
 (define uniform (FloatValueOfLink someplace key))
 (Define (DefinedPredicate "keep going?")
-   (GreaterThan (Number 2.5) (Plus uniform uniform uniform)))
+(GreaterThan (Number 2.5) (Plus uniform uniform uniform)))
 (define (print-stuff) (display "hi there!\n") (stv 1 1))
 (Define
-   (DefinedPredicate "My tail-recursive loop")
-   (SequentialAnd
-      (DefinedPredicate "keep going?")
-      (Evaluation (GroundedPredicate "scm: print-stuff") (List))
-      (DefinedPredicate "My tail-recursive loop")
-   ))
+(DefinedPredicate "My tail-recursive loop")
+(SequentialAnd
+(DefinedPredicate "keep going?")
+(Evaluation (GroundedPredicate "scm: print-stuff") (List))
+(DefinedPredicate "My tail-recursive loop")
+))
 (cog-execute! (DefinedPredicate "My tail-recursive loop"))

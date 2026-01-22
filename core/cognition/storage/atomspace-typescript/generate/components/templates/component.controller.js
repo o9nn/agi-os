@@ -1,11 +1,11 @@
 module.exports = (componentName) => ({
-  content: `
+content: `
 const ${componentName}Controller = {
-  init: () => {
-  }
+init: () => {
+}
 }
 export default ${componentName}Controller;
 `,
-  extension: `.ts`,
-  functions: true
+extension: `.ts`,
+functions: true
 });

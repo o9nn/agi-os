@@ -107,7 +107,7 @@ y[i].bsums[j] = 0;
 }
 for (int j = 0; j < QK_K * 4; j++) {
 int src_offset = (j / (4 * blck_size_interleave)) * blck_size_interleave;
-int src_id     = (j % (4 * blck_size_interleave)) / blck_size_interleave;
+int src_id = (j % (4 * blck_size_interleave)) / blck_size_interleave;
 src_offset += (j % blck_size_interleave);
 int index = (((j & 31) >> 3) << 2) + ((j >> 8) << 4) + ((j >> 6) & 3);
 float x0 = srcv[src_id][src_offset] * iscale[src_id];
@@ -717,9 +717,9 @@ const int v1 = (int8_t) ((b_ptr[l].qs[k * ncols_interleaved * blocklen + j * blo
 const int v2 = (int8_t) ((b_ptr[l].qs[k * ncols_interleaved * blocklen + j * blocklen + i] >> 4 ) & 3);
 const int v3 = (int8_t) ((b_ptr[l].qs[k * ncols_interleaved * blocklen + j * blocklen + i] >> 6 ) & 3);
 sumi1 = (v0 * a_ptr[l].qs[(k >> 2) * 512 + (k % 4) * 4 * blocklen + m * blocklen + i]);
-sumi2 = (v1 * a_ptr[l].qs[(k >> 2) * 512  + (k % 4) * 4 * blocklen + m * blocklen + i + 128]);
-sumi3 = (v2 * a_ptr[l].qs[(k >> 2) * 512  + (k % 4) * 4 * blocklen + m * blocklen + i + 256]);
-sumi4 = (v3 * a_ptr[l].qs[(k >> 2) * 512  + (k % 4) * 4 * blocklen + m * blocklen + i + 384]);
+sumi2 = (v1 * a_ptr[l].qs[(k >> 2) * 512 + (k % 4) * 4 * blocklen + m * blocklen + i + 128]);
+sumi3 = (v2 * a_ptr[l].qs[(k >> 2) * 512 + (k % 4) * 4 * blocklen + m * blocklen + i + 256]);
+sumi4 = (v3 * a_ptr[l].qs[(k >> 2) * 512 + (k % 4) * 4 * blocklen + m * blocklen + i + 384]);
 sumi1 = sumi1 * (scales_0[offset] & 0xF);
 sumi2 = sumi2 * (scales_1[offset] & 0xF);
 sumi3 = sumi3 * (scales_2[offset] & 0xF);
@@ -733,7 +733,7 @@ sumf[m][j] += sumi * GGML_FP16_TO_FP32(b_ptr[l].d[j]) * a_ptr[l].d[m];
 for(int sb = 0; sb < 8; sb++) {
 const uint8_t *mins = b_ptr[l].scales + sb * 16;
 for(int m = 0; m < 4; m++) {
-const int16_t *bsums = a_ptr[l].bsums + (sb * 8) + (m * 4) - ((sb % 2) *  6);
+const int16_t *bsums = a_ptr[l].bsums + (sb * 8) + (m * 4) - ((sb % 2) * 6);
 for(int j = 0; j < ncols_interleaved; j++) {
 int mins_prod = ((mins[j * 2] >> 4) * bsums[0] + (mins[(j * 2)+ 1] >> 4) * bsums[1]);
 sum_minf[m][j] += (mins_prod) * GGML_FP16_TO_FP32(b_ptr[l].dmin[j]) * a_ptr[l].d[m];
@@ -875,16 +875,16 @@ for (int j = 0; j < 8; j++) {
 s[j] = in[j].scales[i] & 63;
 m[j] = in[j].scales[i + 4] & 63;
 }
-out.scales[i * 12]      = (s[0] & 63) + ((s[4] & 48) << 2);
-out.scales[i * 12 + 1]  = (s[1] & 63) + ((s[5] & 48) << 2);
-out.scales[i * 12 + 2]  = (s[2] & 63) + ((s[6] & 48) << 2);
-out.scales[i * 12 + 3]  = (s[3] & 63) + ((s[7] & 48) << 2);
-out.scales[i * 12 + 4]  = (m[0] & 63) + ((m[4] & 48) << 2);
-out.scales[i * 12 + 5]  = (m[1] & 63) + ((m[5] & 48) << 2);
-out.scales[i * 12 + 6]  = (m[2] & 63) + ((m[6] & 48) << 2);
-out.scales[i * 12 + 7]  = (m[3] & 63) + ((m[7] & 48) << 2);
-out.scales[i * 12 + 8]  = (s[4] & 15) + ((m[4] & 15) << 4);
-out.scales[i * 12 + 9]  = (s[5] & 15) + ((m[5] & 15) << 4);
+out.scales[i * 12] = (s[0] & 63) + ((s[4] & 48) << 2);
+out.scales[i * 12 + 1] = (s[1] & 63) + ((s[5] & 48) << 2);
+out.scales[i * 12 + 2] = (s[2] & 63) + ((s[6] & 48) << 2);
+out.scales[i * 12 + 3] = (s[3] & 63) + ((s[7] & 48) << 2);
+out.scales[i * 12 + 4] = (m[0] & 63) + ((m[4] & 48) << 2);
+out.scales[i * 12 + 5] = (m[1] & 63) + ((m[5] & 48) << 2);
+out.scales[i * 12 + 6] = (m[2] & 63) + ((m[6] & 48) << 2);
+out.scales[i * 12 + 7] = (m[3] & 63) + ((m[7] & 48) << 2);
+out.scales[i * 12 + 8] = (s[4] & 15) + ((m[4] & 15) << 4);
+out.scales[i * 12 + 9] = (s[5] & 15) + ((m[5] & 15) << 4);
 out.scales[i * 12 + 10] = (s[6] & 15) + ((m[6] & 15) << 4);
 out.scales[i * 12 + 11] = (s[7] & 15) + ((m[7] & 15) << 4);
 }
@@ -972,7 +972,7 @@ return -1;
 }
 for (int b = 0; b < nrow; b += nrows_interleaved) {
 for (int64_t x = 0; x < nblocks; x++) {
-for (int i  = 0; i < nrows_interleaved; i++ ) {
+for (int i = 0; i < nrows_interleaved; i++ ) {
 dst_tmp[i] = src[x + i * nblocks];
 }
 *dst++ = make_block_q4_Kx8(dst_tmp, interleave_block);
@@ -997,7 +997,7 @@ return -1;
 }
 for (int b = 0; b < nrow; b += nrows_interleaved) {
 for (int64_t x = 0; x < nblocks; x++) {
-for (int i  = 0; i < nrows_interleaved; i++ ) {
+for (int i = 0; i < nrows_interleaved; i++ ) {
 dst_tmp[i] = src[x + i * nblocks];
 }
 *dst++ = make_block_q2_Kx8(dst_tmp, interleave_block);
@@ -1022,7 +1022,7 @@ return -1;
 }
 for (int b = 0; b < nrow; b += nrows_interleaved) {
 for (int64_t x = 0; x < nblocks; x++) {
-for (int i  = 0; i < nrows_interleaved; i++ ) {
+for (int i = 0; i < nrows_interleaved; i++ ) {
 dst_tmp[i] = src[x + i * nblocks];
 }
 *dst++ = make_block_q4_0x8(dst_tmp, interleave_block);
@@ -1179,7 +1179,7 @@ return false;
 void forward_mul_mat(ggml_compute_params * params, ggml_tensor * op) {
 const ggml_tensor * src0 = op->src[0];
 const ggml_tensor * src1 = op->src[1];
-ggml_tensor *       dst  = op;
+ggml_tensor * dst = op;
 GGML_TENSOR_BINARY_OP_LOCALS
 const int ith = params->ith;
 const int nth = params->nth;
@@ -1193,8 +1193,8 @@ GGML_ASSERT(nb1 <= nb2);
 GGML_ASSERT(nb2 <= nb3);
 GGML_ASSERT(src1->type == GGML_TYPE_F32);
 GGML_ASSERT(ggml_n_dims(op->src[0]) == 2);
-char *       wdata = static_cast<char *>(params->wdata);
-const size_t nbw1  = ggml_row_size(PARAM_TYPE, ne10);
+char * wdata = static_cast<char *>(params->wdata);
+const size_t nbw1 = ggml_row_size(PARAM_TYPE, ne10);
 assert(params->wsize >= nbw1 * ne11);
 const ggml_from_float_t from_float = ggml_get_type_traits_cpu(PARAM_TYPE)->from_float;
 int64_t i11_processed = 0;
@@ -1206,12 +1206,12 @@ for (int64_t i11 = i11_processed + ith; i11 < ne11; i11 += nth) {
 from_float((float *) ((char *) src1->data + i11 * nb11), (void *) (wdata + i11 * nbw1), ne10);
 }
 ggml_barrier(params->threadpool);
-const void * src1_wdata      = params->wdata;
+const void * src1_wdata = params->wdata;
 const size_t src1_col_stride = ggml_row_size(PARAM_TYPE, ne10);
-int64_t      src0_start      = (ith * ne01) / nth;
-int64_t      src0_end        = ((ith + 1) * ne01) / nth;
+int64_t src0_start = (ith * ne01) / nth;
+int64_t src0_end = ((ith + 1) * ne01) / nth;
 src0_start = (src0_start % NB_COLS) ? src0_start + NB_COLS - (src0_start % NB_COLS) : src0_start;
-src0_end   = (src0_end   % NB_COLS) ? src0_end   + NB_COLS - (src0_end   % NB_COLS) : src0_end;
+src0_end = (src0_end % NB_COLS) ? src0_end + NB_COLS - (src0_end % NB_COLS) : src0_end;
 if (src0_start >= src0_end) {
 return;
 }
@@ -1232,8 +1232,8 @@ src0_end - src0_start);
 void forward_mul_mat_id(ggml_compute_params * params, ggml_tensor * op) {
 const ggml_tensor * src0 = op->src[0];
 const ggml_tensor * src1 = op->src[1];
-const ggml_tensor * ids  = op->src[2];
-ggml_tensor *       dst  = op;
+const ggml_tensor * ids = op->src[2];
+ggml_tensor * dst = op;
 GGML_TENSOR_BINARY_OP_LOCALS
 const int ith = params->ith;
 const int nth = params->nth;
@@ -1246,10 +1246,10 @@ GGML_ASSERT(nb1 <= nb2);
 GGML_ASSERT(nb2 <= nb3);
 GGML_ASSERT(ne03 == 1);
 GGML_ASSERT(ne13 == 1);
-GGML_ASSERT(ne3  == 1);
+GGML_ASSERT(ne3 == 1);
 GGML_ASSERT(src1->type == GGML_TYPE_F32);
 const int n_ids = ids->ne[0];
-const int n_as  = ne02;
+const int n_as = ne02;
 const size_t nbw1 = ggml_row_size(PARAM_TYPE, ne10);
 const size_t nbw2 = nbw1*ne11;
 const size_t nbw3 = nbw2*ne12;
@@ -1261,14 +1261,14 @@ GGML_ASSERT(params->wsize >=
 (GGML_PAD(nbw3, sizeof(int64_t)) +
 n_as*(ne12 + 1)*sizeof(mmid_row_mapping))
 );
-auto * wdata          = (char *)params->wdata;
+auto * wdata = (char *)params->wdata;
 auto * wdata_src1_end = (char *)wdata + GGML_PAD(nbw3, sizeof(int64_t));
 auto * matrix_row_counts = (int64_t *) (wdata_src1_end);
 struct mmid_row_mapping * matrix_rows = (struct mmid_row_mapping *) (matrix_row_counts + n_as);
 for (int64_t i12 = 0; i12 < ne12; ++i12) {
 for (int64_t i11 = ith; i11 < ne11; i11 += nth) {
 from_float((float *)((char *) src1->data + i12 * nb12 + i11 * nb11),
-(void *)               (wdata + i12 * nbw2 + i11 * nbw1),
+(void *) (wdata + i12 * nbw2 + i11 * nbw1),
 ne10);
 }
 }
@@ -1294,9 +1294,9 @@ continue;
 const auto * src0_cur = (const char *) src0->data + cur_a*nb02;
 const int64_t nr1 = cne1;
 int64_t src0_cur_start = (ith * ne01) / nth;
-int64_t src0_cur_end   = ((ith + 1) * ne01) / nth;
+int64_t src0_cur_end = ((ith + 1) * ne01) / nth;
 src0_cur_start = (src0_cur_start % NB_COLS) ? src0_cur_start + NB_COLS - (src0_cur_start % NB_COLS) : src0_cur_start;
-src0_cur_end   = (src0_cur_end   % NB_COLS) ? src0_cur_end   + NB_COLS - (src0_cur_end   % NB_COLS) : src0_cur_end;
+src0_cur_end = (src0_cur_end % NB_COLS) ? src0_cur_end + NB_COLS - (src0_cur_end % NB_COLS) : src0_cur_end;
 if (src0_cur_start >= src0_cur_end) {
 return;
 }
@@ -1377,7 +1377,7 @@ const void * data, size_t offset, size_t size) {
 GGML_ASSERT(offset == 0);
 GGML_ASSERT(size == ggml_nbytes(tensor));
 auto tensor_traits = (ggml::cpu::repack::tensor_traits_base *) tensor->extra;
-auto OK            = tensor_traits->repack(tensor, data, size);
+auto OK = tensor_traits->repack(tensor, data, size);
 GGML_ASSERT(OK == 0);
 GGML_UNUSED(buffer);
 }
@@ -1390,11 +1390,11 @@ ggml_backend_buffer_t buffer = ggml_backend_buft_alloc_buffer(ggml_backend_cpu_b
 if (buffer == nullptr) {
 return nullptr;
 }
-buffer->buft              = buft;
+buffer->buft = buft;
 buffer->iface.init_tensor = ggml_backend_cpu_repack_buffer_init_tensor;
-buffer->iface.set_tensor  = ggml_backend_cpu_repack_buffer_set_tensor;
-buffer->iface.get_tensor  = nullptr;
-buffer->iface.cpy_tensor  = nullptr;
+buffer->iface.set_tensor = ggml_backend_cpu_repack_buffer_set_tensor;
+buffer->iface.get_tensor = nullptr;
+buffer->iface.cpy_tensor = nullptr;
 return buffer;
 }
 static size_t ggml_backend_cpu_repack_buffer_type_get_alignment(ggml_backend_buffer_type_t buft) {
@@ -1404,7 +1404,7 @@ GGML_UNUSED(buft);
 namespace ggml::cpu::repack {
 class extra_buffer_type : ggml::cpu::extra_buffer_type {
 bool supports_op(ggml_backend_dev_t, const struct ggml_tensor * op) override {
-if (    op->op == GGML_OP_MUL_MAT &&
+if ( op->op == GGML_OP_MUL_MAT &&
 op->src[0]->buffer &&
 (ggml_n_dims(op->src[0]) == 2) &&
 op->src[0]->buffer->buft == ggml_backend_cpu_repack_buffer_type() &&

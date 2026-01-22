@@ -1,12 +1,12 @@
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
-#include	"audio.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
+#include "audio.h"
 Dirtab audiotab[] =
 {
-".",		{Qdir, 0, QTDIR},	0,	0555,
-"audio",	{Qaudio},	0,	0666,
-"audioctl",	{Qaudioctl},	0,	0666,
+".", {Qdir, 0, QTDIR}, 0, 0555,
+"audio", {Qaudio}, 0, 0666,
+"audioctl", {Qaudioctl}, 0, 0666,
 };
 static void
 audioinit(void)
@@ -278,7 +278,7 @@ static int
 ctlsummary(char *buf, int bsize, Audio_t *adev)
 {
 Audio_d *in, *out;
-char	*p, *e;
+char *p, *e;
 in = &adev->in;
 out = &adev->out;
 p = buf;

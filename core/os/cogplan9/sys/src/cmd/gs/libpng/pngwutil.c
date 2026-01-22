@@ -1283,9 +1283,9 @@ PNG_tIME;
 #endif
 png_byte buf[7];
 png_debug(1, "in png_write_tIME\n");
-if (mod_time->month  > 12 || mod_time->month  < 1 ||
-mod_time->day    > 31 || mod_time->day    < 1 ||
-mod_time->hour   > 23 || mod_time->second > 60)
+if (mod_time->month > 12 || mod_time->month < 1 ||
+mod_time->day > 31 || mod_time->day < 1 ||
+mod_time->hour > 23 || mod_time->second > 60)
 {
 png_warning(png_ptr, "Invalid time specified for tIME chunk");
 return;

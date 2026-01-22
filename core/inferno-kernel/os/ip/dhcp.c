@@ -8,50 +8,50 @@
 #include "ip.h"
 #include "ppp.h"
 Ipaddr pppdns[2];
-static	ulong	fsip;
-static	ulong	auip;
-static	ulong	gwip;
-static	ulong	ipmask;
-static	ulong	ipaddr;
-static	ulong	dns1ip;
-static	ulong	dns2ip;
-int		dhcpmsgtype;
-int		debug=0;
+static ulong fsip;
+static ulong auip;
+static ulong gwip;
+static ulong ipmask;
+static ulong ipaddr;
+static ulong dns1ip;
+static ulong dns2ip;
+int dhcpmsgtype;
+int debug=0;
 enum
 {
 Bootrequest = 1,
-Bootreply   = 2,
+Bootreply = 2,
 };
 typedef struct Bootp
 {
-uchar	raddr[IPaddrlen];
-uchar	laddr[IPaddrlen];
-uchar	rport[2];
-uchar	lport[2];
-uchar	op;
-uchar	htype;
-uchar	hlen;
-uchar	hops;
-uchar	xid[4];
-uchar	secs[2];
-uchar	flags[2];
-uchar	ciaddr[4];
-uchar	yiaddr[4];
-uchar	siaddr[4];
-uchar	giaddr[4];
-uchar	chaddr[16];
-uchar	sname[64];
-uchar	file[128];
-uchar	vend[128];
+uchar raddr[IPaddrlen];
+uchar laddr[IPaddrlen];
+uchar rport[2];
+uchar lport[2];
+uchar op;
+uchar htype;
+uchar hlen;
+uchar hops;
+uchar xid[4];
+uchar secs[2];
+uchar flags[2];
+uchar ciaddr[4];
+uchar yiaddr[4];
+uchar siaddr[4];
+uchar giaddr[4];
+uchar chaddr[16];
+uchar sname[64];
+uchar file[128];
+uchar vend[128];
 } Bootp;
-static	Bootp	req;
-static	Proc*	rcvprocp;
-static	int	recv;
-static	int	done;
-static	Rendez	bootpr;
-static	char	rcvbuf[512+2*IPaddrlen+2*2];
-static	uchar sid[4];
-static	ulong iplease;
+static Bootp req;
+static Proc* rcvprocp;
+static int recv;
+static int done;
+static Rendez bootpr;
+static char rcvbuf[512+2*IPaddrlen+2*2];
+static uchar sid[4];
+static ulong iplease;
 static int
 parsevend(uchar* pvend)
 {
@@ -251,7 +251,7 @@ memset(req.vend, 0, sizeof(req.vend));
 vend=req.vend;
 memmove(vend, vend_rfc1048, 4);vend+=4;
 *vend++=53; *vend++=1;*vend++=3;
-*vend++=50;	*vend++=4;
+*vend++=50; *vend++=4;
 *vend++=(ipaddr >> 24)&0xff;
 *vend++=(ipaddr >> 16)&0xff;
 *vend++=(ipaddr >> 8) & 0xff;
@@ -259,7 +259,7 @@ memmove(vend, vend_rfc1048, 4);vend+=4;
 *vend++=51;*vend++=4;
 *vend++=(iplease>>24)&0xff; *vend++=(iplease>>16)&0xff; *vend++=(iplease>>8)&0xff; *vend++=iplease&0xff;
 *vend++=54; *vend++=4;
-memmove(vend, sid, 4);	vend+=4;
+memmove(vend, sid, 4); vend+=4;
 *vend++=61;*vend++=07;*vend++=01;
 memmove(vend, ifc->mac, 6);vend+=6;
 *vend=0xff;
@@ -340,5 +340,5 @@ poperror();
 free(buf);
 return len;
 }
-char*	(*bootp)(Ipifc*) = rbootp;
-int	(*bootpread)(char*, ulong, int) = rbootpread;
+char* (*bootp)(Ipifc*) = rbootp;
+int (*bootpread)(char*, ulong, int) = rbootpread;

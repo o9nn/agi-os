@@ -105,7 +105,7 @@ X_DPI, Y_DPI,
 32, default_print_page);
 private void bmpa_reader_thread(void *);
 private int
-bmpa_open_writer(gx_device *pdev  ,
+bmpa_open_writer(gx_device *pdev ,
 dev_proc_print_page_copies((*reader_print_page_copies)),
 prn_dev_proc_buffer_page((*reader_buffer_page)))
 {
@@ -135,13 +135,13 @@ max_raster, min_band_height,
 max_src_image_row);
 }
 private int
-bmpa_writer_open(gx_device *pdev  )
+bmpa_writer_open(gx_device *pdev )
 {
 return bmpa_open_writer(pdev, bmpa_reader_print_page_copies,
 bmpa_reader_buffer_page);
 }
 private int
-bmpa_cmyk_writer_open(gx_device *pdev  )
+bmpa_cmyk_writer_open(gx_device *pdev )
 {
 return bmpa_open_writer(pdev, bmpa_cmyk_reader_print_copies,
 bmpa_cmyk_reader_buffer_page);
@@ -363,7 +363,7 @@ int writer_space;
 const int tile_cache_space = 50 * 1024;
 const int min_image_rows = 2;
 int min_row_space =
-min_image_rows * (  4 * ( pdev->width + sizeof(int) - 1 )  );
+min_image_rows * ( 4 * ( pdev->width + sizeof(int) - 1 ) );
 int min_band_height = max(1, pdev->height / 100);
 space_params->band.BandWidth = pdev->width;
 space_params->band.BandHeight = min_band_height;

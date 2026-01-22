@@ -2,8 +2,8 @@
 (define P2 (Predicate "P2" (stv 0.01 0.7)))
 (define Q (Predicate "Q" (stv 0.05 0.8)))
 (Implication (stv 0.1 0.7)
-   P1
-   Q)
+P1
+Q)
 (Implication (stv 0.2 0.6)
-   P2
-   Q)
+P2
+Q)

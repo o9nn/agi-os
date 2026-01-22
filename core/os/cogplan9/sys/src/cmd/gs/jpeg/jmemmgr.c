@@ -9,7 +9,7 @@ extern char * getenv JPP((const char * name));
 #endif
 #endif
 #ifndef ALIGN_TYPE
-#define ALIGN_TYPE  double
+#define ALIGN_TYPE double
 #endif
 typedef union small_pool_struct * small_pool_ptr;
 typedef union small_pool_struct {
@@ -109,7 +109,7 @@ static const size_t extra_pool_slop[JPOOL_NUMPOOLS] =
 0,
 5000
 };
-#define MIN_SLOP  50
+#define MIN_SLOP 50
 METHODDEF(void *)
 alloc_small (j_common_ptr cinfo, int pool_id, size_t sizeofobject)
 {

@@ -1,56 +1,56 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"ip.h"
-#define BLKIPVER(xp)	(((Ip4hdr*)((xp)->rp))->vihl&0xF0)
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "ip.h"
+#define BLKIPVER(xp) (((Ip4hdr*)((xp)->rp))->vihl&0xF0)
 static char *statnames[] =
 {
-[Forwarding]	"Forwarding",
-[DefaultTTL]	"DefaultTTL",
-[InReceives]	"InReceives",
-[InHdrErrors]	"InHdrErrors",
-[InAddrErrors]	"InAddrErrors",
-[ForwDatagrams]	"ForwDatagrams",
-[InUnknownProtos]	"InUnknownProtos",
-[InDiscards]	"InDiscards",
-[InDelivers]	"InDelivers",
-[OutRequests]	"OutRequests",
-[OutDiscards]	"OutDiscards",
-[OutNoRoutes]	"OutNoRoutes",
-[ReasmTimeout]	"ReasmTimeout",
-[ReasmReqds]	"ReasmReqds",
-[ReasmOKs]	"ReasmOKs",
-[ReasmFails]	"ReasmFails",
-[FragOKs]	"FragOKs",
-[FragFails]	"FragFails",
-[FragCreates]	"FragCreates",
+[Forwarding] "Forwarding",
+[DefaultTTL] "DefaultTTL",
+[InReceives] "InReceives",
+[InHdrErrors] "InHdrErrors",
+[InAddrErrors] "InAddrErrors",
+[ForwDatagrams] "ForwDatagrams",
+[InUnknownProtos] "InUnknownProtos",
+[InDiscards] "InDiscards",
+[InDelivers] "InDelivers",
+[OutRequests] "OutRequests",
+[OutDiscards] "OutDiscards",
+[OutNoRoutes] "OutNoRoutes",
+[ReasmTimeout] "ReasmTimeout",
+[ReasmReqds] "ReasmReqds",
+[ReasmOKs] "ReasmOKs",
+[ReasmFails] "ReasmFails",
+[FragOKs] "FragOKs",
+[FragFails] "FragFails",
+[FragCreates] "FragCreates",
 };
-#define BLKIP(xp)	((Ip4hdr*)((xp)->rp))
-#define BKFG(xp)	((Ipfrag*)((xp)->base))
-ushort		ipcsum(uchar*);
-Block*		ip4reassemble(IP*, int, Block*, Ip4hdr*);
-void		ipfragfree4(IP*, Fragment4*);
-Fragment4*	ipfragallo4(IP*);
+#define BLKIP(xp) ((Ip4hdr*)((xp)->rp))
+#define BKFG(xp) ((Ipfrag*)((xp)->base))
+ushort ipcsum(uchar*);
+Block* ip4reassemble(IP*, int, Block*, Ip4hdr*);
+void ipfragfree4(IP*, Fragment4*);
+Fragment4* ipfragallo4(IP*);
 void
 ip_init_6(Fs *f)
 {
 v6params *v6p;
 v6p = smalloc(sizeof(v6params));
-v6p->rp.mflag		= 0;
-v6p->rp.oflag		= 0;
-v6p->rp.maxraint	= 600000;
-v6p->rp.minraint	= 200000;
-v6p->rp.linkmtu		= 0;
-v6p->rp.reachtime	= 0;
-v6p->rp.rxmitra		= 0;
-v6p->rp.ttl		= MAXTTL;
-v6p->rp.routerlt	= 3 * v6p->rp.maxraint;
-v6p->hp.rxmithost	= 1000;
-v6p->cdrouter 		= -1;
-f->v6p			= v6p;
+v6p->rp.mflag = 0;
+v6p->rp.oflag = 0;
+v6p->rp.maxraint = 600000;
+v6p->rp.minraint = 200000;
+v6p->rp.linkmtu = 0;
+v6p->rp.reachtime = 0;
+v6p->rp.rxmitra = 0;
+v6p->rp.ttl = MAXTTL;
+v6p->rp.routerlt = 3 * v6p->rp.maxraint;
+v6p->hp.rxmithost = 1000;
+v6p->cdrouter = -1;
+f->v6p = v6p;
 }
 void
 initfrag(IP *ip, int size)

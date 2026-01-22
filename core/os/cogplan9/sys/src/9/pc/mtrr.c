@@ -22,44 +22,44 @@ Extaddrsz,
 Paerange = 1LL << 36,
 };
 enum {
-CR4PageGlobalEnable	= 1 << 7,
-CR0CacheDisable		= 1 << 30,
+CR4PageGlobalEnable = 1 << 7,
+CR0CacheDisable = 1 << 30,
 };
 enum {
-Uncacheable	= 0,
-Writecomb	= 1,
-Unknown1	= 2,
-Unknown2	= 3,
-Writethru	= 4,
-Writeprot	= 5,
-Writeback	= 6,
+Uncacheable = 0,
+Writecomb = 1,
+Unknown1 = 2,
+Unknown2 = 3,
+Writethru = 4,
+Writeprot = 5,
+Writeback = 6,
 };
 enum {
 Capvcnt = 0xff,
-Capwc	= 1<<8,
-Capfix	= 1<<10,
+Capwc = 1<<8,
+Capfix = 1<<10,
 Deftype = 0xff,
 Deffixena = 1<<10,
-Defena	= 1<<11,
+Defena = 1<<11,
 };
 typedef struct Mtrreg Mtrreg;
 typedef struct Mtrrop Mtrrop;
 struct Mtrreg {
-vlong	base;
-vlong	mask;
+vlong base;
+vlong mask;
 };
 struct Mtrrop {
-Mtrreg	*reg;
-int	slot;
+Mtrreg *reg;
+int slot;
 };
 static char *types[] = {
-[Uncacheable]	"uc",
-[Writecomb]	"wc",
-[Unknown1]	"uk1",
-[Unknown2]	"uk2",
-[Writethru]	"wt",
-[Writeprot]	"wp",
-[Writeback]	"wb",
+[Uncacheable] "uc",
+[Writecomb] "wc",
+[Unknown1] "uk1",
+[Unknown2] "uk2",
+[Writethru] "wt",
+[Writeprot] "wp",
+[Writeback] "wb",
 nil
 };
 static Mtrrop *postedop;
@@ -110,7 +110,7 @@ static int
 mtrrdec(Mtrreg *mtrr, uvlong *ptr, uvlong *size, int *type)
 {
 sanity(mtrr);
-*ptr =  mtrr->base & ~(BY2PG-1);
+*ptr = mtrr->base & ~(BY2PG-1);
 *type = mtrr->base & 0xff;
 *size = (physmask() ^ (mtrr->mask & ~(BY2PG-1))) + 1;
 return (mtrr->mask >> 11) & 1;

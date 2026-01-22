@@ -1,6 +1,6 @@
 implement Idea;
 #
-# Copyright © 2002 Vita Nuova Holdings Limited.  All rights reserved.
+# Copyright © 2002 Vita Nuova Holdings Limited. All rights reserved.
 #
 include "sys.m";
 sys: Sys;
@@ -71,7 +71,7 @@ break;
 m += n;
 if(m == 8){
 keyring->ideaecb(is, buf, 8, dec);
-if(dec){	# leave last block around
+if(dec){ # leave last block around
 if(om > 0)
 bout.write(obuf, 8);
 obuf[0: ] = buf[0: 8];

@@ -2,92 +2,92 @@
 #include "isa.h"
 #include "interp.h"
 #include "raise.h"
-#define T(r)	*((void**)(R.r))
-#define	SRR(op,c,r1,r2)		gen((op)|((c)<<6)|((r1)<<16)|((r2)<<11))
-#define	RRR(op,r1,r2,r3)	gen((op)|((r1)<<16)|((r2)<<21)|((r3)<<11))
-#define	FRRR(op,r1,r2,r3)	gen((op)|((r1)<<16)|((r2)<<11)|((r3)<<6))
-#define	FI(op,c)		gen((op)|((c)&0xffff))
-#define	IRR(op,c,r1,r2)		gen((op)|((c)&0xffff)|((r1)<<21)|((r2)<<16))
-#define	BRRI(op,r1,r2,c)	gen((op)|((r1)<<21)|((r2)<<16)|((c)&0xffff))
-#define	BRI(op,r,c)		gen((op)|((r)<<21)|((c)&0xffff))
-#define	JR(op,r)		gen((op)|((r)<<21))
-#define	J(op,c)			gen((op)|(((ulong)(c)>>2)&0x3FFFFFFUL))
+#define T(r) *((void**)(R.r))
+#define SRR(op,c,r1,r2) gen((op)|((c)<<6)|((r1)<<16)|((r2)<<11))
+#define RRR(op,r1,r2,r3) gen((op)|((r1)<<16)|((r2)<<21)|((r3)<<11))
+#define FRRR(op,r1,r2,r3) gen((op)|((r1)<<16)|((r2)<<11)|((r3)<<6))
+#define FI(op,c) gen((op)|((c)&0xffff))
+#define IRR(op,c,r1,r2) gen((op)|((c)&0xffff)|((r1)<<21)|((r2)<<16))
+#define BRRI(op,r1,r2,c) gen((op)|((r1)<<21)|((r2)<<16)|((c)&0xffff))
+#define BRI(op,r,c) gen((op)|((r)<<21)|((c)&0xffff))
+#define JR(op,r) gen((op)|((r)<<21))
+#define J(op,c) gen((op)|(((ulong)(c)>>2)&0x3FFFFFFUL))
 #ifndef HIOFFSET
-#define	HIOFFSET	0
+#define HIOFFSET 0
 #endif
 enum
 {
-Rzero	= 0,
-Ro1	= 8,
-Ro2	= 9,
-Ro3	= 10,
-Ri	= 11,
-Rj	= 12,
-Rmp	= 13,
-Rfp	= 14,
-Rreg	= 15,
-Rpic	= 25,
-Rlink	= 31,
-Rf1	= 4,
-Rf2	= 6,
-Olw	= 0x23<<26,
-Olbu	= 0x24<<26,
-Olhu	= 0x25<<26,
-Osw	= 0x2b<<26,
-Osb	= 0x28<<26,
-Oaddui	= 0x09<<26,
-Olui	= 0x0f<<26,
-Oori	= 0x0d<<26,
-Odiv	= (0x00<<26) | 0x1a,
-Omul	= (0x00<<26) | 0x18,
-Omfhi	= (0x00<<26) | 0x10,
-Omflo	= (0x00<<26) | 0x12,
-Osubu	= (0x00<<26) | 0x23,
-Oaddu	= (0x00<<26) | 0x21,
-Oand	= (0x00<<26) | 0x24,
-Oor	= (0x00<<26) | 0x25,
-Oxor	= (0x00<<26) | 0x26,
-Odelay	= (0x00<<26) | 0x27,
-Osll	= (0x00<<26) | 0x00,
-Osrl	= (0x00<<26) | 0x02,
-Osra	= (0x00<<26) | 0x03,
-Osllv	= (0x00<<26) | 0x04,
-Osrlv	= (0x00<<26) | 0x06,
-Osrav	= (0x00<<26) | 0x07,
-Oslt	= (0x00<<26) | 0x2a,
-Osltu	= (0x00<<26) | 0x2b,
-Obeq	= 0x04<<26,
-Obne	= 0x05<<26,
-Obltz	= (0x01<<26) | (0x0<<16),
-Obgtz	= (0x07<<26) | (0x0<<16),
-Oblez	= (0x06<<26) | (0x0<<16),
-Obgez	= (0x01<<26) | (0x1<<16),
-Ojr	= (0x00<<26) | 0x08,
-Ojalr	= (0x00<<26) | 0x09 | (Rlink<<11),
-Oj	= (0x02<<26),
-Ojal	= (0x03<<26),
-Olea	= Oaddui,
-Olf	= 0x31<<26,
-Osf	= 0x39<<26,
-Oaddf	= (0x11<<26) | (17<<21) | 0,
-Osubf	= (0x11<<26) | (17<<21) | 1,
-Omulf	= (0x11<<26) | (17<<21) | 2,
-Odivf	= (0x11<<26) | (17<<21) | 3,
-Onegf	= (0x11<<26) | (17<<21) | 7,
-Ocvtwf	= (0x11<<26) | (20<<21) | 33,
-Ocvtfw	= (0x11<<26) | (17<<21) | 36,
-Ofeq	= (0x11<<26) | (17<<21) | (3<<4) | 2,
-Oflt	= (0x11<<26) | (17<<21) | (3<<4) | 12,
-Obrf	= (0x11<<26) | (0x100<<16),
-Obrt	= (0x11<<26) | (0x101<<16),
-SRCOP	= (1<<0),
-DSTOP	= (1<<1),
-WRTPC	= (1<<2),
-TCHECK	= (1<<3),
-NEWPC	= (1<<4),
-DBRAN	= (1<<5),
-THREOP	= (1<<6),
-ANDAND	= 1,
+Rzero = 0,
+Ro1 = 8,
+Ro2 = 9,
+Ro3 = 10,
+Ri = 11,
+Rj = 12,
+Rmp = 13,
+Rfp = 14,
+Rreg = 15,
+Rpic = 25,
+Rlink = 31,
+Rf1 = 4,
+Rf2 = 6,
+Olw = 0x23<<26,
+Olbu = 0x24<<26,
+Olhu = 0x25<<26,
+Osw = 0x2b<<26,
+Osb = 0x28<<26,
+Oaddui = 0x09<<26,
+Olui = 0x0f<<26,
+Oori = 0x0d<<26,
+Odiv = (0x00<<26) | 0x1a,
+Omul = (0x00<<26) | 0x18,
+Omfhi = (0x00<<26) | 0x10,
+Omflo = (0x00<<26) | 0x12,
+Osubu = (0x00<<26) | 0x23,
+Oaddu = (0x00<<26) | 0x21,
+Oand = (0x00<<26) | 0x24,
+Oor = (0x00<<26) | 0x25,
+Oxor = (0x00<<26) | 0x26,
+Odelay = (0x00<<26) | 0x27,
+Osll = (0x00<<26) | 0x00,
+Osrl = (0x00<<26) | 0x02,
+Osra = (0x00<<26) | 0x03,
+Osllv = (0x00<<26) | 0x04,
+Osrlv = (0x00<<26) | 0x06,
+Osrav = (0x00<<26) | 0x07,
+Oslt = (0x00<<26) | 0x2a,
+Osltu = (0x00<<26) | 0x2b,
+Obeq = 0x04<<26,
+Obne = 0x05<<26,
+Obltz = (0x01<<26) | (0x0<<16),
+Obgtz = (0x07<<26) | (0x0<<16),
+Oblez = (0x06<<26) | (0x0<<16),
+Obgez = (0x01<<26) | (0x1<<16),
+Ojr = (0x00<<26) | 0x08,
+Ojalr = (0x00<<26) | 0x09 | (Rlink<<11),
+Oj = (0x02<<26),
+Ojal = (0x03<<26),
+Olea = Oaddui,
+Olf = 0x31<<26,
+Osf = 0x39<<26,
+Oaddf = (0x11<<26) | (17<<21) | 0,
+Osubf = (0x11<<26) | (17<<21) | 1,
+Omulf = (0x11<<26) | (17<<21) | 2,
+Odivf = (0x11<<26) | (17<<21) | 3,
+Onegf = (0x11<<26) | (17<<21) | 7,
+Ocvtwf = (0x11<<26) | (20<<21) | 33,
+Ocvtfw = (0x11<<26) | (17<<21) | 36,
+Ofeq = (0x11<<26) | (17<<21) | (3<<4) | 2,
+Oflt = (0x11<<26) | (17<<21) | (3<<4) | 12,
+Obrf = (0x11<<26) | (0x100<<16),
+Obrt = (0x11<<26) | (0x101<<16),
+SRCOP = (1<<0),
+DSTOP = (1<<1),
+WRTPC = (1<<2),
+TCHECK = (1<<3),
+NEWPC = (1<<4),
+DBRAN = (1<<5),
+THREOP = (1<<6),
+ANDAND = 1,
 OROR,
 EQAND,
 XOR,
@@ -95,12 +95,12 @@ IOR,
 AND,
 ADD,
 SUB,
-OMASK	= (1<<4) - 1,
-REV1	= 1<<4,
-REV2	= 1<<5,
-Bhi		= HIOFFSET,
-Blo		= Bhi ^ 4,
-MacRET	= 0,
+OMASK = (1<<4) - 1,
+REV1 = 1<<4,
+REV2 = 1<<5,
+Bhi = HIOFFSET,
+Blo = Bhi ^ 4,
+MacRET = 0,
 MacFRP,
 MacINDX,
 MacCASE,
@@ -113,49 +113,49 @@ MacMFRA,
 MacEND,
 NMACRO
 };
-extern	char	Tmodule[];
-void	(*comvec)(void);
-extern	void	das(ulong*);
-static	ulong*	code;
-static	ulong*	base;
-static	ulong*	patch;
-static	int	pass;
-static	int	regdelay;
-static	Module*	mod;
-static	ulong*	tinit;
-static	ulong*	litpool;
-static	int	nlit;
-static	ulong	macro[NMACRO];
-static	void	rdestroy(void);
-static	void	macret(void);
-static	void	macfrp(void);
-static	void	macindx(void);
-static	void	maccase(void);
-static	void	maclena(void);
-static	void	macfram(void);
-static	void	macmovm(void);
-static	void	maccvtfw(void);
-static	void	maccolr(void);
-static	void	macend(void);
-static	void	macmcal(void);
-static	void	macmfra(void);
+extern char Tmodule[];
+void (*comvec)(void);
+extern void das(ulong*);
+static ulong* code;
+static ulong* base;
+static ulong* patch;
+static int pass;
+static int regdelay;
+static Module* mod;
+static ulong* tinit;
+static ulong* litpool;
+static int nlit;
+static ulong macro[NMACRO];
+static void rdestroy(void);
+static void macret(void);
+static void macfrp(void);
+static void macindx(void);
+static void maccase(void);
+static void maclena(void);
+static void macfram(void);
+static void macmovm(void);
+static void maccvtfw(void);
+static void maccolr(void);
+static void macend(void);
+static void macmcal(void);
+static void macmfra(void);
 struct
 {
-int	o;
-void	(*f)(void);
+int o;
+void (*f)(void);
 } macinit[] =
 {
-MacFRP,		macfrp,
-MacRET,		macret,
-MacCASE,	maccase,
-MacCOLR,	maccolr,
-MacFRAM,	macfram,
-MacMCAL,	macmcal,
-MacMFRA,	macmfra,
-MacMOVM,	macmovm,
-MacLENA,	maclena,
-MacINDX,	macindx,
-MacEND,		macend,
+MacFRP, macfrp,
+MacRET, macret,
+MacCASE, maccase,
+MacCOLR, maccolr,
+MacFRAM, macfram,
+MacMCAL, macmcal,
+MacMFRA, macmfra,
+MacMOVM, macmovm,
+MacLENA, maclena,
+MacINDX, macindx,
+MacEND, macend,
 0
 };
 static void
@@ -840,7 +840,7 @@ IRR(Osw, Bhi,Ro2, Ro3);
 break;
 case IHEADM:
 op1(i, Olw, Ro1, 1);
-IRR(Oaddui, OA(List,data),Ro1,  Ro1);
+IRR(Oaddui, OA(List,data),Ro1, Ro1);
 goto m1;
 case IMOVM:
 op1(i, Olea, Ro1, 0);
@@ -1032,16 +1032,16 @@ IRR(Olf, Blo,Ro1, Rf1);
 IRR(Olf, Bhi,Ro2, Rf2+1);
 IRR(Olf, Blo,Ro2, Rf2);
 switch(i->op) {
-case IADDF:	o = Oaddf; goto f1;
-case ISUBF:	o = Osubf; goto f1;
-case IMULF:	o = Omulf; goto f1;
-case IDIVF:	o = Odivf; goto f1;
-case IBEQF:	o = Ofeq; q = Obrt; goto f2;
-case IBGEF:	o = Oflt; q = Obrf; goto f3;
-case IBGTF:	o = Oflt; q = Obrt; goto f2;
-case IBLEF:	o = Oflt; q = Obrf; goto f2;
-case IBLTF:	o = Oflt; q = Obrt; goto f3;
-case IBNEF:	o = Ofeq; q = Obrf; goto f2;
+case IADDF: o = Oaddf; goto f1;
+case ISUBF: o = Osubf; goto f1;
+case IMULF: o = Omulf; goto f1;
+case IDIVF: o = Odivf; goto f1;
+case IBEQF: o = Ofeq; q = Obrt; goto f2;
+case IBGEF: o = Oflt; q = Obrf; goto f3;
+case IBGTF: o = Oflt; q = Obrt; goto f2;
+case IBLEF: o = Oflt; q = Obrf; goto f2;
+case IBLTF: o = Oflt; q = Obrt; goto f3;
+case IBNEF: o = Ofeq; q = Obrf; goto f2;
 f1:
 op3(i, Olea, Ro1, 0);
 FRRR(o, Rf1,Rf2, Rf2);
@@ -1082,24 +1082,24 @@ s1:
 op12(i, b, b);
 switch(i->op) {
 case IBLTB:
-case IBLTW:	o = Obne; goto b1;
+case IBLTW: o = Obne; goto b1;
 case IBGEB:
-case IBGEW:	o = Obeq; goto b1;
+case IBGEW: o = Obeq; goto b1;
 case IBGTB:
-case IBGTW:	o = Obne; goto b2;
+case IBGTW: o = Obne; goto b2;
 case IBLEB:
-case IBLEW:	o = Obeq; goto b2;
+case IBLEW: o = Obeq; goto b2;
 case IBEQB:
-case IBEQW:	o = Obeq; goto b3;
+case IBEQW: o = Obeq; goto b3;
 case IBNEB:
-case IBNEW:	o = Obne; goto b3;
-b1:	RRR(Oslt, Ro2,Ro1, Ro3);
+case IBNEW: o = Obne; goto b3;
+b1: RRR(Oslt, Ro2,Ro1, Ro3);
 BRI(o,Ro3, branch(i));
 break;
-b2:	RRR(Oslt, Ro1,Ro2, Ro3);
+b2: RRR(Oslt, Ro1,Ro2, Ro3);
 BRI(o,Ro3, branch(i));
 break;
-b3:	BRRI(o, Ro2,Ro1, branch(i));
+b3: BRRI(o, Ro2,Ro1, branch(i));
 break;
 }
 delay();
@@ -1153,32 +1153,32 @@ op12(i, b, b);
 s2:
 switch(i->op) {
 case IADDB:
-case IADDW:	o = Oaddu; goto c1;
+case IADDW: o = Oaddu; goto c1;
 case ISUBB:
-case ISUBW:	o = Osubu; goto c1;
+case ISUBW: o = Osubu; goto c1;
 case IANDB:
-case IANDW:	o = Oand; goto c1;
+case IANDW: o = Oand; goto c1;
 case IORB:
-case IORW:	o = Oor; goto c1;
+case IORW: o = Oor; goto c1;
 case IXORB:
-case IXORW:	o = Oxor; goto c1;
+case IXORW: o = Oxor; goto c1;
 c1:
 RRR(o, Ro1,Ro2, Ro3);
 break;
 case ISHLB:
-case ISHLW:	o = Osllv; goto c2;
-case ILSRW:	o = Osrlv; goto c2;
+case ISHLW: o = Osllv; goto c2;
+case ILSRW: o = Osrlv; goto c2;
 case ISHRB:
-case ISHRW:	o = Osrav; goto c2;
+case ISHRW: o = Osrav; goto c2;
 c2:
 RRR(o, Ro2,Ro1, Ro3);
 break;
 case IMULB:
-case IMULW:	q = Omul; o = Omflo; goto c3;
+case IMULW: q = Omul; o = Omflo; goto c3;
 case IDIVB:
-case IDIVW:	q = Odiv; o = Omflo; goto c3;
+case IDIVW: q = Odiv; o = Omflo; goto c3;
 case IMODB:
-case IMODW:	q = Odiv; o = Omfhi; goto c3;
+case IMODW: q = Odiv; o = Omfhi; goto c3;
 c3:
 RRR(q, Ro1,Ro2, Rzero);
 RRR(o, Rzero,Rzero, Ro3);
@@ -1441,7 +1441,7 @@ delay();
 JR(Ojr, Rlink);
 ldc(0, Ro1);
 }
-static	void
+static void
 macmcal(void)
 {
 ulong *cp1, *cp2;
@@ -1480,7 +1480,7 @@ IRR(Olw, O(REG,xpc),Rreg, Ro1);
 JR(Ojr, Ro1);
 IRR(Osw, O(REG,PC),Rreg, Rj);
 }
-static	void
+static void
 macmfra(void)
 {
 ldc((ulong)rmfram, Rpic);

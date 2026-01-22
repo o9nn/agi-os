@@ -1,9 +1,9 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
 enum{
 Qdir,
 Qboot,
@@ -13,10 +13,10 @@ Maxkexec = 1536*1024,
 };
 static
 Dirtab bootdir[]={
-".",			{Qdir, 0, QTDIR},	0,	0555,
-"boot",		{Qboot},	0,	0220,
-"mem",		{Qmem},		0,	0660,
-"kexec",		{Qkexec},		0,	0220,
+".", {Qdir, 0, QTDIR}, 0, 0555,
+"boot", {Qboot}, 0, 0220,
+"mem", {Qmem}, 0, 0660,
+"kexec", {Qkexec}, 0, 0220,
 };
 static Chan*
 bootattach(char *spec)

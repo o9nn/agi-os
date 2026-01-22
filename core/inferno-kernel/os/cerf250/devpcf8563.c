@@ -1,53 +1,53 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"io.h"
-typedef struct Rtc	Rtc;
-typedef struct Rtcreg	Rtcreg;
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "io.h"
+typedef struct Rtc Rtc;
+typedef struct Rtcreg Rtcreg;
 struct Rtc
 {
-int	sec;
-int	min;
-int	hour;
-int	wday;
-int	mday;
-int	mon;
-int	year;
+int sec;
+int min;
+int hour;
+int wday;
+int mday;
+int mon;
+int year;
 };
 struct Rtcreg
 {
-uchar	csr1;
-uchar	csr2;
-uchar	sec;
-uchar	min;
-uchar	hour;
-uchar	mday;
-uchar	wday;
-uchar	mon;
-uchar	year;
-uchar	amin;
-uchar	ahour;
-uchar	aday;
-uchar	awday;
+uchar csr1;
+uchar csr2;
+uchar sec;
+uchar min;
+uchar hour;
+uchar mday;
+uchar wday;
+uchar mon;
+uchar year;
+uchar amin;
+uchar ahour;
+uchar aday;
+uchar awday;
 };
 enum{
 Qdir = 0,
 Qrtc,
-Rtclen=	0x0C+1,
-VL=	0x80,
+Rtclen= 0x0C+1,
+VL= 0x80,
 };
-static QLock	rtclock;
-static I2Cdev	rtdev;
+static QLock rtclock;
+static I2Cdev rtdev;
 static Dirtab rtcdir[]={
-".",		{Qdir, 0, QTDIR},	0,	DMDIR|0555,
-"rtc",		{Qrtc, 0},	0,	0664,
+".", {Qdir, 0, QTDIR}, 0, DMDIR|0555,
+"rtc", {Qrtc, 0}, 0, 0664,
 };
-static ulong	rtc2sec(Rtc*);
-static void	sec2rtc(ulong, Rtc*);
-static void	setrtc(Rtc*);
+static ulong rtc2sec(Rtc*);
+static void sec2rtc(ulong, Rtc*);
+static void setrtc(Rtc*);
 static void
 rtcreset(void)
 {
@@ -195,7 +195,7 @@ Rtcreg d;
 memset(&d, 0, sizeof(d));
 d.year = putbcd(rtc->year % 100);
 d.mon = putbcd(rtc->mon);
-if(rtc->year <  2000)
+if(rtc->year < 2000)
 d.mon |= 1<<7;
 d.wday = rtc->wday+1;
 d.mday = putbcd(rtc->mday);
@@ -207,11 +207,11 @@ i2csend(&rtdev, &d, Rtclen, 0);
 #define SEC2MIN 60L
 #define SEC2HOUR (60L*SEC2MIN)
 #define SEC2DAY (24L*SEC2HOUR)
-static	int	dmsize[] =
+static int dmsize[] =
 {
 365, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 };
-static	int	ldmsize[] =
+static int ldmsize[] =
 {
 366, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 };

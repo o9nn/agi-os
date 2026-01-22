@@ -16,8 +16,8 @@ Qctl,
 Qdummy,
 Qaddr,
 Qtrustedfile = 100,
-Qaddrfile   = 1000,
-Directory =	0,
+Qaddrfile = 1000,
+Directory = 0,
 Addrdir,
 IPaddr,
 Acctaddr,
@@ -27,75 +27,75 @@ Trustedtemp,
 Ctlfile,
 Dummynode,
 };
-typedef struct Fid	Fid;
-typedef struct Node	Node;
-typedef	struct Address	Address;
-typedef struct Cidraddr	Cidraddr;
-typedef struct Keyword	Keyword;
+typedef struct Fid Fid;
+typedef struct Node Node;
+typedef struct Address Address;
+typedef struct Cidraddr Cidraddr;
+typedef struct Keyword Keyword;
 struct Fid
 {
-int	fid;
-int	dirindex;
-Node	*node;
-int	busy;
-int	open;
-char	*name;
+int fid;
+int dirindex;
+Node *node;
+int busy;
+int open;
+char *name;
 char *uid;
-Fid	*next;
+Fid *next;
 };
-struct	Cidraddr
+struct Cidraddr
 {
-ulong	ipaddr;
-ulong	mask;
+ulong ipaddr;
+ulong mask;
 };
-struct	Address
+struct Address
 {
-char	*name;
+char *name;
 Cidraddr ip;
 };
 struct Node
 {
-Dir	d;
-int	count;
-int	allocated;
-ulong	baseqid;
-Node	*parent;
-Node	*sibs;
+Dir d;
+int count;
+int allocated;
+ulong baseqid;
+Node *parent;
+Node *sibs;
 union {
-Node	*children;
-Address	*addrs;
+Node *children;
+Address *addrs;
 Cidraddr ip;
 };
 };
 struct Keyword {
-char	*name;
-int	code;
+char *name;
+int code;
 };
-Node	*root;
-Node	dummy;
-int	srvfd;
+Node *root;
+Node dummy;
+int srvfd;
 uchar rbuf[IOHDRSZ+MAXRPC+1];
-int	debugfd;
-char	*ctlfile;
-char	*conffile;
-long	lastconftime;
-long	lastctltime;
-int	trustedqid;
-char*	atom(char*);
-void	cidrparse(Cidraddr*, char*);
-void	cleantrusted(void);
-Node*	dirwalk(char*, Node*);
-int	dread(Fid*, int);
-void	fatal(char*, ...);
-Node*	finddir(int);
-int	findkey(char*, Keyword*);
-void	getconf(void);
-int	hread(Fid*, int);
-void	io(void);
-Node*	newnode(Node*, char*, ushort, int, ulong);
-void	printfid(Fid*);
-void	printnode(Node*);
-void	printtree(Node*);
-void	reload(void);
-char*	subslash(char*);
-char*	walk(char*, Fid*);
+int debugfd;
+char *ctlfile;
+char *conffile;
+long lastconftime;
+long lastctltime;
+int trustedqid;
+char* atom(char*);
+void cidrparse(Cidraddr*, char*);
+void cleantrusted(void);
+Node* dirwalk(char*, Node*);
+int dread(Fid*, int);
+void fatal(char*, ...);
+Node* finddir(int);
+int findkey(char*, Keyword*);
+void getconf(void);
+int hread(Fid*, int);
+void io(void);
+Node* newnode(Node*, char*, ushort, int, ulong);
+void printfid(Fid*);
+void printnode(Node*);
+void printtree(Node*);
+void reload(void);
+char* subslash(char*);
+char* walk(char*, Fid*);

@@ -2,86 +2,86 @@
 (define atom-a (Concept "A" (stv 0.8 1.0)))
 (define atom-b (Concept "B" (stv 0.6 0.9)))
 (define prod
-	(Times (StrengthOf (Concept "A")) (StrengthOf (Concept "B"))))
+(Times (StrengthOf (Concept "A")) (StrengthOf (Concept "B"))))
 (define stv-const (FormulaPredicate (Number 0.7) (Number 0.314)))
 (define formula-stv
-	(FormulaPredicate
-		(Minus
-			(Number 1)
-			(Times (StrengthOf (Concept "A")) (StrengthOf (Concept "B"))))
-		(Times (ConfidenceOf (Concept "A")) (ConfidenceOf (Concept "B")))))
+(FormulaPredicate
+(Minus
+(Number 1)
+(Times (StrengthOf (Concept "A")) (StrengthOf (Concept "B"))))
+(Times (ConfidenceOf (Concept "A")) (ConfidenceOf (Concept "B")))))
 (define my-ev-link
-	(Evaluation
-		(FormulaPredicate (Number 0.75) (Number 0.628))
-		(List
-			(Concept "A")
-			(Concept "B"))))
+(Evaluation
+(FormulaPredicate (Number 0.75) (Number 0.628))
+(List
+(Concept "A")
+(Concept "B"))))
 (define eval-formula
-	(Evaluation
-		(FormulaPredicate
-			(Minus
-				(Number 1)
-				(Times
-					(StrengthOf (Variable "$X"))
-					(StrengthOf (Variable "$Y"))))
-			(Times
-				(ConfidenceOf (Variable "$X"))
-				(ConfidenceOf (Variable "$Y"))))
-		(List
-			(Concept "A")
-			(Concept "B"))))
+(Evaluation
+(FormulaPredicate
+(Minus
+(Number 1)
+(Times
+(StrengthOf (Variable "$X"))
+(StrengthOf (Variable "$Y"))))
+(Times
+(ConfidenceOf (Variable "$X"))
+(ConfidenceOf (Variable "$Y"))))
+(List
+(Concept "A")
+(Concept "B"))))
 (define eval-lambda
-	(Evaluation
-		(FormulaPredicate
-			(Lambda
-				(Minus
-					(Number 1)
-					(Times
-						(StrengthOf (Variable "$X"))
-						(StrengthOf (Variable "$Y")))))
-			(Lambda
-				(VariableList (Variable "$X") (Variable "$Y"))
-				(Times
-					(ConfidenceOf (Variable "$X"))
-					(ConfidenceOf (Variable "$Y")))))
-		(List
-			(Concept "A")
-			(Concept "B"))))
+(Evaluation
+(FormulaPredicate
+(Lambda
+(Minus
+(Number 1)
+(Times
+(StrengthOf (Variable "$X"))
+(StrengthOf (Variable "$Y")))))
+(Lambda
+(VariableList (Variable "$X") (Variable "$Y"))
+(Times
+(ConfidenceOf (Variable "$X"))
+(ConfidenceOf (Variable "$Y")))))
+(List
+(Concept "A")
+(Concept "B"))))
 (define put-link
-		(PutLink
-			(VariableList (Variable "$VA") (Variable "$VB"))
-			(Evaluation
-				(FormulaPredicate
-					(Minus
-						(Number 1)
-						(Times
-							(StrengthOf (Variable "$VA"))
-							(StrengthOf (Variable "$VB"))))
-					(Times
-						(ConfidenceOf (Variable "$VA"))
-						(ConfidenceOf (Variable "$VB"))))
-				(List
-					(Variable "$VA") (Variable "$VB")))
-		(Set (List (Concept "A") (Concept "B")))))
+(PutLink
+(VariableList (Variable "$VA") (Variable "$VB"))
+(Evaluation
+(FormulaPredicate
+(Minus
+(Number 1)
+(Times
+(StrengthOf (Variable "$VA"))
+(StrengthOf (Variable "$VB"))))
+(Times
+(ConfidenceOf (Variable "$VA"))
+(ConfidenceOf (Variable "$VB"))))
+(List
+(Variable "$VA") (Variable "$VB")))
+(Set (List (Concept "A") (Concept "B")))))
 (DefineLink
-	(DefinedPredicate "has a reddish color")
-	(FormulaPredicate
-		(Minus
-			(Number 1)
-			(Times
-				(StrengthOf (Variable "$X"))
-				(StrengthOf (Variable "$Y"))))
-		(Times
-			(ConfidenceOf (Variable "$X"))
-			(ConfidenceOf (Variable "$Y")))))
+(DefinedPredicate "has a reddish color")
+(FormulaPredicate
+(Minus
+(Number 1)
+(Times
+(StrengthOf (Variable "$X"))
+(StrengthOf (Variable "$Y"))))
+(Times
+(ConfidenceOf (Variable "$X"))
+(ConfidenceOf (Variable "$Y")))))
 (Concept "A" (stv 0.9 0.98))
 (Concept "B" (stv 0.9 0.98))
 (define red-form
-	(Evaluation
-		(DefinedPredicate "has a reddish color")
-		(List
-			(Concept "A")
-			(Concept "B"))))
+(Evaluation
+(DefinedPredicate "has a reddish color")
+(List
+(Concept "A")
+(Concept "B"))))
 (define atom-a (Concept "A" (stv 0.8 1.0)))
 (define atom-b (Concept "B" (stv 0.6 0.9)))
 (define atom-c (Concept "C"))
@@ -91,173 +91,173 @@
 (cog-set-value! iab key (FloatValue 1 2 3))
 (cog-set-value! ibc key (FloatValue 4 5 6))
 (Define
-	(DefinedPredicate "its-about-one")
-	(Lambda
-		(VariableList (Variable "$x") (Variable "$y"))
-		(SequentialAnd
-			(GreaterThan
-				(FloatValueOf (Inheritance (Variable "$x") (Variable "$y"))  key)
-				(Number 0.99))
-			(GreaterThan
-				(Number 1.01)
-				(FloatValueOf (Inheritance (Variable "$x") (Variable "$y")) key))
-		)))
+(DefinedPredicate "its-about-one")
+(Lambda
+(VariableList (Variable "$x") (Variable "$y"))
+(SequentialAnd
+(GreaterThan
+(FloatValueOf (Inheritance (Variable "$x") (Variable "$y"))  key)
+(Number 0.99))
+(GreaterThan
+(Number 1.01)
+(FloatValueOf (Inheritance (Variable "$x") (Variable "$y")) key))
+)))
 (define (its-one a b)
-	(Evaluation (DefinedPredicate "its-about-one") (List a b)))
+(Evaluation (DefinedPredicate "its-about-one") (List a b)))
 (Define
-	(DefinedPredicate "mostly-confident")
-	(Lambda
-		(VariableList (Variable "$x") (Variable "$y"))
-		(SequentialAnd
-			(GreaterThan
-				(ConfidenceOf (Inheritance (Variable "$x") (Variable "$y")))
-				(Number 0.75))
-			(GreaterThan
-				(Number 0.85)
-				(ConfidenceOf (Inheritance (Variable "$x") (Variable "$y"))))
-		)))
+(DefinedPredicate "mostly-confident")
+(Lambda
+(VariableList (Variable "$x") (Variable "$y"))
+(SequentialAnd
+(GreaterThan
+(ConfidenceOf (Inheritance (Variable "$x") (Variable "$y")))
+(Number 0.75))
+(GreaterThan
+(Number 0.85)
+(ConfidenceOf (Inheritance (Variable "$x") (Variable "$y"))))
+)))
 (define (its-conf a b)
-	(Evaluation (DefinedPredicate "mostly-confident") (List a b)))
+(Evaluation (DefinedPredicate "mostly-confident") (List a b)))
 (define naked-pred1
-  (FormulaPredicate
-    (Number 1)
-    (Number 1)
-  )
+(FormulaPredicate
+(Number 1)
+(Number 1)
+)
 )
 (define naked-pred2
-  (FormulaPredicate
-    (Times
-      (Number 0.5)
-      (Number 1)
-    )
-    (Number 1)
-  )
+(FormulaPredicate
+(Times
+(Number 0.5)
+(Number 1)
+)
+(Number 1)
+)
 )
 (define naked-pred3
-  (FormulaPredicate
-    (Number 1)
-    (Times
-      (Number 0.5)
-      (Number 1)
-    )
-  )
+(FormulaPredicate
+(Number 1)
+(Times
+(Number 0.5)
+(Number 1)
+)
+)
 )
 (define apple-is-green (Concept "apple-is-green" (stv 1 0.5)))
 (define apple-is-red (Concept "apple-is-red" (stv 0.9 0.6)))
 (define naked-pred4
-  (FormulaPredicate
-    (Number 1)
-    (Times
-      (Number 1)
-      (Number 0.5)
-      (StrengthOf apple-is-green)
-      (ConfidenceOf apple-is-red)
-    )
-  )
+(FormulaPredicate
+(Number 1)
+(Times
+(Number 1)
+(Number 0.5)
+(StrengthOf apple-is-green)
+(ConfidenceOf apple-is-red)
+)
+)
 )
 (define (times x y)
-  (cog-execute! (Times x y))
+(cog-execute! (Times x y))
 )
 (define naked-pred5
-  (FormulaPredicate
-    (Number 1)
-    (ExecutionOutput
-      (GroundedSchema "scm:times")
-      (List (Number 0.9) (Number 0.5))
-    )
-  )
+(FormulaPredicate
+(Number 1)
+(ExecutionOutput
+(GroundedSchema "scm:times")
+(List (Number 0.9) (Number 0.5))
+)
+)
 )
 (define naked-pred-crash1
-  (FormulaPredicate
-    (Concept "blabla")
-    (Number 1)
-  )
+(FormulaPredicate
+(Concept "blabla")
+(Number 1)
+)
 )
 (define naked-pred-crash2
-  (FormulaPredicate
-    (Number 1)
-    (ExecutionOutput
-      (Lambda (Concept "blabla"))
-      (List)
-    )
-  )
+(FormulaPredicate
+(Number 1)
+(ExecutionOutput
+(Lambda (Concept "blabla"))
+(List)
+)
+)
 )
 (Define
-  (DefinedPredicate "defined-pred1")
-  (FormulaPredicate
-    (Number 1)
-    (Number 1)
-  )
+(DefinedPredicate "defined-pred1")
+(FormulaPredicate
+(Number 1)
+(Number 1)
+)
 )
 (Define
-  (DefinedPredicate "defined-pred2")
-  (FormulaPredicate
-    (Times
-      (Number 1)
-      (Number 0.5)
-    )
-    (Number 1)
-  )
+(DefinedPredicate "defined-pred2")
+(FormulaPredicate
+(Times
+(Number 1)
+(Number 0.5)
+)
+(Number 1)
+)
 )
 (Define
-  (DefinedPredicate "defined-pred3")
-  (FormulaPredicate
-    (Number 1)
-    (Times
-      (Number 1)
-      (Number 0.5)
-    )
-  )
+(DefinedPredicate "defined-pred3")
+(FormulaPredicate
+(Number 1)
+(Times
+(Number 1)
+(Number 0.5)
+)
+)
 )
 (Define
-  (DefinedPredicate "defined-pred4")
-  (FormulaPredicate
-    (Number 1)
-    (Times
-      (Number 1)
-      (Number 0.5)
-      (StrengthOf apple-is-green)
-      (ConfidenceOf apple-is-red)
-    )
-  )
+(DefinedPredicate "defined-pred4")
+(FormulaPredicate
+(Number 1)
+(Times
+(Number 1)
+(Number 0.5)
+(StrengthOf apple-is-green)
+(ConfidenceOf apple-is-red)
+)
+)
 )
 (Define
-  (DefinedPredicate "defined-pred-crash1")
-  (FormulaPredicate
-    (ExecutionOutput
-      (Lambda (Concept "ahaha"))
-      (List)
-    )
-    (Times
-      (Number 1)
-      (Number 0.5)
-      (StrengthOf apple-is-green)
-      (ConfidenceOf apple-is-red)
-    )
-  )
+(DefinedPredicate "defined-pred-crash1")
+(FormulaPredicate
+(ExecutionOutput
+(Lambda (Concept "ahaha"))
+(List)
+)
+(Times
+(Number 1)
+(Number 0.5)
+(StrengthOf apple-is-green)
+(ConfidenceOf apple-is-red)
+)
+)
 )
 (Define
-  (DefinedPredicate "defined-pred-crash2")
-  (FormulaPredicate
-    (Number 1)
-    (Concept "saboteur")
-  )
+(DefinedPredicate "defined-pred-crash2")
+(FormulaPredicate
+(Number 1)
+(Concept "saboteur")
+)
 )
 (define (eval-nullary name)
-  (Evaluation
-    (DefinedPredicate name)
-    (List)
-  )
+(Evaluation
+(DefinedPredicate name)
+(List)
+)
 )
 (State (Anchor "sum") (Number 0))
 (Define
-	(DefinedPredicate "inc")
-	(True
-		(Put
-			(State (Anchor "sum") (Variable "$x"))
-			(Plus (Number 1) (Get (State (Anchor "sum") (Variable "$y")))))))
+(DefinedPredicate "inc")
+(True
+(Put
+(State (Anchor "sum") (Variable "$x"))
+(Plus (Number 1) (Get (State (Anchor "sum") (Variable "$y")))))))
 (define (get-sum)
-	(cog-outgoing-atom (cog-execute!
-		(Get (State (Anchor "sum") (Variable "$x"))))
-		0))
+(cog-outgoing-atom (cog-execute!
+(Get (State (Anchor "sum") (Variable "$x"))))
+0))
 (*unspecified*)

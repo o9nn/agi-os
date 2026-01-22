@@ -53,7 +53,7 @@ alg = arg->earg();
 'f' or
 'k' =>
 keyfile = arg->earg();
-if (! (keyfile[0] == '/' || (len keyfile > 2 &&  keyfile[0:2] == "./")))
+if (! (keyfile[0] == '/' || (len keyfile > 2 && keyfile[0:2] == "./")))
 keyfile = "/usr/" + user() + "/keyring/" + keyfile;
 'v' =>
 verbose = 1;

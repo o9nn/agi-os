@@ -61,7 +61,7 @@ def = [x => 1.0, α => -0.5]
 prob = ODEProblem(sys, [], tspan)
 sol = solve(prob, Tsit5())
 @variables z(t)
-forward_subs  = [log(x) => z]
+forward_subs = [log(x) => z]
 backward_subs = [x => exp(z)]
 new_sys = change_of_variables(sys, t, forward_subs, backward_subs)
 @test equations(new_sys)[1] == (D(z) ~ α)
@@ -418,9 +418,9 @@ iv1name = nameof(iv1) # e.g. :t
 iv2name = nameof(operation(iv2_of_iv1)) # e.g. :u
 D1 = Differential(iv1) # e.g. d/d(t)
 # construct new terms, e.g:
-#   iv2 -> u
-#   iv1_of_iv2 -> t(u), (inverse, global because iv1 has no namespacing in sys)
-#   div2_of_iv1 -> uˍt(t)
+# iv2 -> u
+# iv1_of_iv2 -> t(u), (inverse, global because iv1 has no namespacing in sys)
+# div2_of_iv1 -> uˍt(t)
 iv2_unit = getmetadata(iv2_of_iv1, VariableUnit, nothing)
 if isnothing(iv2_unit)
 iv2, = @independent_variables $iv2name
@@ -570,7 +570,7 @@ end
 """
 $(TYPEDSIGNATURES)
 Measure transformation method that allows for a reduction in the variance of an estimator `Exp(g(X_t))`.
-Input:  Original SDE system and symbolic function `u(t,x)` with scalar output that
+Input: Original SDE system and symbolic function `u(t,x)` with scalar output that
 defines the adjustable parameters `d` in the Girsanov transformation. Optional: initial
 condition for `θ0`.
 Output: Modified SDE System with additional component `θ_t` and initial value `θ0`, as well as

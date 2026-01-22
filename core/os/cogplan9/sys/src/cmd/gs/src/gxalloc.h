@@ -1,7 +1,7 @@
 #ifndef gxalloc_INCLUDED
-#  define gxalloc_INCLUDED
+# define gxalloc_INCLUDED
 #ifndef gs_ref_memory_DEFINED
-#  define gs_ref_memory_DEFINED
+# define gs_ref_memory_DEFINED
 typedef struct gs_ref_memory_s gs_ref_memory_t;
 #endif
 #include "gsalloc.h"
@@ -54,11 +54,11 @@ byte *rescan_bot;
 byte *rescan_top;
 };
 extern_st(st_chunk);
-#define public_st_chunk()	\
+#define public_st_chunk() \
 gs_public_st_ptrs2(st_chunk, chunk_t, "chunk_t",\
 chunk_enum_ptrs, chunk_reloc_ptrs, cprev, cnext)
 #define SCAN_CHUNK_OBJECTS(cp)\
-{	obj_header_t *pre = (obj_header_t *)((cp)->cbase);\
+{ obj_header_t *pre = (obj_header_t *)((cp)->cbase);\
 obj_header_t *end = (obj_header_t *)((cp)->cbot);\
 uint size;\
 \
@@ -74,17 +74,17 @@ size = pre_obj_contents_size(pre);\
 }\
 }
 #ifdef DEBUG
-#  define END_OBJECTS_SCAN\
+# define END_OBJECTS_SCAN\
 }\
 }\
 if ( pre != end )\
-{	lprintf2("Chunk parsing error, 0x%lx != 0x%lx\n",\
+{ lprintf2("Chunk parsing error, 0x%lx != 0x%lx\n",\
 (ulong)pre, (ulong)end);\
 \
 }\
 }
 #else
-#  define END_OBJECTS_SCAN END_OBJECTS_SCAN_NO_ABORT
+# define END_OBJECTS_SCAN END_OBJECTS_SCAN_NO_ABORT
 #endif
 void alloc_init_chunk(chunk_t *, byte *, byte *, bool, chunk_t *);
 void alloc_init_free_strings(chunk_t *);
@@ -121,26 +121,26 @@ msg, (ulong)(cp), (ulong)(cp)->cbase, (ulong)(cp)->cbot,\
 struct alloc_save_s;
 struct alloc_change_s;
 #ifndef stream_DEFINED
-#  define stream_DEFINED
+# define stream_DEFINED
 typedef struct stream_s stream;
 #endif
 #ifndef ref_DEFINED
 typedef struct ref_s ref;
-#  define ref_DEFINED
+# define ref_DEFINED
 #endif
 #define max_freelist_size 800
 #define num_small_freelists\
 ((max_freelist_size + obj_align_mod - 1) / obj_align_mod + 1)
 #define num_freelists (num_small_freelists + 1)
-#define LARGE_FREELIST_INDEX	num_small_freelists
+#define LARGE_FREELIST_INDEX num_small_freelists
 struct gs_ref_memory_s {
 gs_memory_common;
 uint chunk_size;
 uint large_size;
 uint space;
-#   if IGC_PTR_STABILITY_CHECK
+# if IGC_PTR_STABILITY_CHECK
 unsigned space_id:3;
-#   endif
+# endif
 gs_memory_gc_status_t gc_status;
 bool is_controlled;
 ulong limit;
@@ -173,13 +173,13 @@ uint largest_free_size;
 obj_header_t *freelists[num_freelists];
 };
 extern_st(st_ref_memory);
-#define public_st_ref_memory()	\
+#define public_st_ref_memory() \
 gs_public_st_composite(st_ref_memory, gs_ref_memory_t,\
 "gs_ref_memory", ref_memory_enum_ptrs, ref_memory_reloc_ptrs)
 #define st_ref_memory_max_ptrs 4
 extern const gs_memory_procs_t gs_ref_memory_procs;
 #define SCAN_MEM_CHUNKS(mem, cp)\
-{	chunk_t *cp = (mem)->cfirst;\
+{ chunk_t *cp = (mem)->cfirst;\
 for ( ; cp != 0; cp = cp->cnext )\
 {
 #define END_CHUNKS_SCAN\

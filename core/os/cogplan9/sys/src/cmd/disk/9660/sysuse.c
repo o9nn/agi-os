@@ -25,8 +25,8 @@ Cwseek(cd, o);
 }
 typedef struct Cbuf Cbuf;
 struct Cbuf {
-int	len;
-uvlong	ceoffset;
+int len;
+uvlong ceoffset;
 };
 static int
 freespace(Cbuf *cp)
@@ -375,10 +375,10 @@ Cputdate(cd, d?d->ctime:0);
 }
 return 5+7*length;
 }
-#define NONPXMODES  (DMDIR | DMAPPEND | DMEXCL | DMMOUNT)
+#define NONPXMODES (DMDIR | DMAPPEND | DMEXCL | DMMOUNT)
 #define POSIXMODEMASK (0177777)
 #ifndef S_IFMT
-#define S_IFMT  (0170000)
+#define S_IFMT (0170000)
 #endif
 #ifndef S_IFDIR
 #define S_IFDIR (0040000)
@@ -389,8 +389,8 @@ return 5+7*length;
 #ifndef S_IFLNK
 #define S_IFLNK (0120000)
 #endif
-#undef  ISTYPE
-#define ISTYPE(mode, mask)  (((mode) & S_IFMT) == (mask))
+#undef ISTYPE
+#define ISTYPE(mode, mask) (((mode) & S_IFMT) == (mask))
 #ifndef S_ISDIR
 #define S_ISDIR(mode) ISTYPE(mode, S_IFDIR)
 #endif

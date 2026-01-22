@@ -46,30 +46,30 @@ Eperm := "permission denied";
 Eexist := "file does not exist";
 Enotdir := "not a directory";
 dirtab := array[10] of {
-Dirtab ( ".",		QTDIR,		Qdir,			8r500|DMDIR ),
-Dirtab ( "acme",	QTDIR,		Qacme,		8r500|DMDIR ),
-Dirtab ( "cons",		QTFILE,		Qcons,		8r600 ),
-Dirtab ( "consctl",	QTFILE,		Qconsctl,		8r000 ),
-Dirtab ( "draw",		QTDIR,		Qdraw,		8r000|DMDIR ),
-Dirtab ( "editout",	QTFILE,		Qeditout,		8r200 ),
-Dirtab ( "index",	QTFILE,		Qindex,		8r400 ),
-Dirtab ( "label",		QTFILE,		Qlabel,		8r600 ),
-Dirtab ( "new",		QTDIR,		Qnew,		8r500|DMDIR ),
-Dirtab ( nil,		0,			0,			0 ),
+Dirtab ( ".", QTDIR, Qdir, 8r500|DMDIR ),
+Dirtab ( "acme", QTDIR, Qacme, 8r500|DMDIR ),
+Dirtab ( "cons", QTFILE, Qcons, 8r600 ),
+Dirtab ( "consctl", QTFILE, Qconsctl, 8r000 ),
+Dirtab ( "draw", QTDIR, Qdraw, 8r000|DMDIR ),
+Dirtab ( "editout", QTFILE, Qeditout, 8r200 ),
+Dirtab ( "index", QTFILE, Qindex, 8r400 ),
+Dirtab ( "label", QTFILE, Qlabel, 8r600 ),
+Dirtab ( "new", QTDIR, Qnew, 8r500|DMDIR ),
+Dirtab ( nil, 0, 0, 0 ),
 };
 dirtabw := array[12] of {
-Dirtab ( ".",		QTDIR,		Qdir,			8r500|DMDIR ),
-Dirtab ( "addr",		QTFILE,		QWaddr,		8r600 ),
-Dirtab ( "body",		QTAPPEND,	QWbody,		8r600|DMAPPEND ),
-Dirtab ( "ctl",		QTFILE,		QWctl,		8r600 ),
-Dirtab ( "consctl",	QTFILE,		QWconsctl,	8r200 ),
-Dirtab ( "data",		QTFILE,		QWdata,		8r600 ),
-Dirtab ( "editout",	QTFILE,		QWeditout,	8r200 ),
-Dirtab ( "event",	QTFILE,		QWevent,		8r600 ),
-Dirtab ( "rdsel",		QTFILE,		QWrdsel,		8r400 ),
-Dirtab ( "wrsel",	QTFILE,		QWwrsel,		8r200 ),
-Dirtab ( "tag",		QTAPPEND,	QWtag,		8r600|DMAPPEND ),
-Dirtab ( nil, 		0,			0,			0 ),
+Dirtab ( ".", QTDIR, Qdir, 8r500|DMDIR ),
+Dirtab ( "addr", QTFILE, QWaddr, 8r600 ),
+Dirtab ( "body", QTAPPEND, QWbody, 8r600|DMAPPEND ),
+Dirtab ( "ctl", QTFILE, QWctl, 8r600 ),
+Dirtab ( "consctl", QTFILE, QWconsctl, 8r200 ),
+Dirtab ( "data", QTFILE, QWdata, 8r600 ),
+Dirtab ( "editout", QTFILE, QWeditout, 8r200 ),
+Dirtab ( "event", QTFILE, QWevent, 8r600 ),
+Dirtab ( "rdsel", QTFILE, QWrdsel, 8r400 ),
+Dirtab ( "wrsel", QTFILE, QWwrsel, 8r200 ),
+Dirtab ( "tag", QTAPPEND, QWtag, 8r600|DMAPPEND ),
+Dirtab ( nil, 0, 0, 0 ),
 };
 Mnt : adt {
 qlock : ref Lock;
@@ -82,7 +82,7 @@ clockfd : ref Sys->FD;
 closing := 0;
 fsysinit()
 {
-p :  array of ref Sys->FD;
+p : array of ref Sys->FD;
 p = array[2] of ref Sys->FD;
 if(sys->pipe(p) < 0)
 error("can't create pipe");
@@ -148,21 +148,21 @@ f = allocfid(fid(x.fcall));
 }
 x.f = f;
 pick fc := x.fcall {
-Readerror =>	x = fsyserror();
-Flush =>		x = fsysflush(x);
-Version =>	x = fsysversion(x);
-Auth =>		x = fsysauth(x);
-Attach =>		x = fsysattach(x, f);
-Walk =>		x = fsyswalk(x, f);
-Open =>		x = fsysopen(x, f);
-Create =>		x = fsyscreate(x);
-Read =>		x = fsysread(x, f);
-Write =>		x = fsyswrite(x);
-Clunk =>		x = fsysclunk(x, f);
-Remove =>	x = fsysremove(x);
-Stat =>		x = fsysstat(x, f);
-Wstat =>		x = fsyswstat(x);
-# Clone =>	x = fsysclone(x, f);
+Readerror => x = fsyserror();
+Flush => x = fsysflush(x);
+Version => x = fsysversion(x);
+Auth => x = fsysauth(x);
+Attach => x = fsysattach(x, f);
+Walk => x = fsyswalk(x, f);
+Open => x = fsysopen(x, f);
+Create => x = fsyscreate(x);
+Read => x = fsysread(x, f);
+Write => x = fsyswrite(x);
+Clunk => x = fsysclunk(x, f);
+Remove => x = fsysremove(x);
+Stat => x = fsysstat(x, f);
+Wstat => x = fsyswstat(x);
+# Clone => x = fsysclone(x, f);
 * =>
 x = respond(x, t, "bad fcall type");
 }
@@ -176,8 +176,8 @@ mnt.qlock.lock();
 id = ++mnt.id;
 m = ref Mntdir;
 m.id = id;
-m.dir =  dir;
-m.refs = 1;	# one for Command, one will be incremented in attach
+m.dir = dir;
+m.refs = 1; # one for Command, one will be incremented in attach
 m.ndir = ndir;
 m.next = mnt.md;
 m.incl = incl;
@@ -233,7 +233,7 @@ fsysdelid(m);
 return nil;
 }
 # cfd = nil;
-sys->bind("/mnt/acme", "/chan", Sys->MBEFORE);	# was MREPL
+sys->bind("/mnt/acme", "/chan", Sys->MBEFORE); # was MREPL
 if(sys->bind("/mnt/acme", "/dev", Sys->MBEFORE) < 0){
 fsysdelid(m);
 return nil;
@@ -256,24 +256,24 @@ if(err != nil)
 t = ref Rmsg.Error(tag, err);
 else
 pick fc := x.fcall {
-Readerror =>	t = ref Rmsg.Error(tag, err);
-Flush =>		t = ref Rmsg.Flush(tag);
-Version =>	t = ref Rmsg.Version(tag, t0.msize, t0.version);
-Auth =>		t = ref Rmsg.Auth(tag, qid);
-# Clone =>	t = ref Rmsg.Clone(tag, fid);
-Attach =>		t = ref Rmsg.Attach(tag, qid);
-Walk =>		t = ref Rmsg.Walk(tag, t0.qids);
-Open =>		t = ref Rmsg.Open(tag, qid, t0.iounit);
-Create =>		t = ref Rmsg.Create(tag, qid, 0);
-Read =>		if(t0.count == len t0.data)
+Readerror => t = ref Rmsg.Error(tag, err);
+Flush => t = ref Rmsg.Flush(tag);
+Version => t = ref Rmsg.Version(tag, t0.msize, t0.version);
+Auth => t = ref Rmsg.Auth(tag, qid);
+# Clone => t = ref Rmsg.Clone(tag, fid);
+Attach => t = ref Rmsg.Attach(tag, qid);
+Walk => t = ref Rmsg.Walk(tag, t0.qids);
+Open => t = ref Rmsg.Open(tag, qid, t0.iounit);
+Create => t = ref Rmsg.Create(tag, qid, 0);
+Read => if(t0.count == len t0.data)
 t = ref Rmsg.Read(tag, t0.data);
 else
 t = ref Rmsg.Read(tag, t0.data[0: t0.count]);
-Write =>		t = ref Rmsg.Write(tag, t0.count);
-Clunk =>		t = ref Rmsg.Clunk(tag);
-Remove =>	t = ref Rmsg.Remove(tag);
-Stat =>		t = ref Rmsg.Stat(tag, t0.stat);
-Wstat =>		t = ref Rmsg.Wstat(tag);
+Write => t = ref Rmsg.Write(tag, t0.count);
+Clunk => t = ref Rmsg.Clunk(tag);
+Remove => t = ref Rmsg.Remove(tag);
+Stat => t = ref Rmsg.Stat(tag, t0.stat);
+Wstat => t = ref Rmsg.Wstat(tag);
 }
 # t.qid = t0.qid;
 # t.count = t0.count;
@@ -293,9 +293,9 @@ return x;
 }
 # fsysnop(x : ref Xfid) : ref Xfid
 # {
-# 	t : Smsg0;
+# t : Smsg0;
 #
-# 	return respond(x, t, nil);
+# return respond(x, t, nil);
 # }
 fsyserror() : ref Xfid
 {
@@ -321,11 +321,11 @@ return respond(x, t, nil);
 return respond(x, t, "acme: bad version");
 # ms := msize(x.fcall);
 # if(ms < 256)
-# 	return respond(x, t, "version: message size too small");
+# return respond(x, t, "version: message size too small");
 # t.msize = messagesize = ms;
 # v := version(x.fcall);
 # if(len v < 6 || v[0: 6] != "9P2000")
-# 	return respond(x, t, "unrecognized 9P version");
+# return respond(x, t, "unrecognized 9P version");
 # t.version = "9P2000";
 # return respond(x, t, nil);
 }
@@ -389,10 +389,10 @@ f.mntdir.refs++;
 nf.dir = f.dir;
 nf.qid = f.qid;
 nf.w = f.w;
-nf.nrpart = 0;	# not open, so must be zero
+nf.nrpart = 0; # not open, so must be zero
 if(nf.w != nil)
 nf.w.refx.inc();
-f = nf;	# walk f
+f = nf; # walk f
 }
 qtype = QTFILE;
 wqids: list of Qid;
@@ -437,7 +437,7 @@ break;
 }
 if (!regular) {
 # yes: it's a directory
-if(w != nil)	# name has form 27/23; get out before losing w
+if(w != nil) # name has form 27/23; get out before losing w
 break;
 id = int name;
 row.qlock.lock();
@@ -462,8 +462,8 @@ wqids = q :: wqids;
 continue;
 }
 else {
-# if(FILE(f.qid) == Qacme) 	# empty directory
-#	break;
+# if(FILE(f.qid) == Qacme) # empty directory
+# break;
 if(name == "new"){
 if(w != nil)
 error("w set in walk to new");
@@ -490,7 +490,7 @@ if(id == 0)
 d = dirtab;
 else
 d = dirtabw;
-k := 1;	# skip '.'
+k := 1; # skip '.'
 found := 0;
 for( ; d[k].name != nil; k++){
 if(name == d[k].name){
@@ -511,7 +511,7 @@ break;
 }
 if(found)
 continue;
-break;	# file not found
+break; # file not found
 }
 }
 if(i == 0 && err == nil)
@@ -621,8 +621,8 @@ clock : int;
 b = nil;
 if(f.qid.qtype & QTDIR){
 # if(int offset(x.fcall) % DIRLEN)
-#	return respond(x, t, "illegal offset in directory");
-if(FILE(f.qid) == Qacme){	# empty dir
+# return respond(x, t, "illegal offset in directory");
+if(FILE(f.qid) == Qacme){ # empty dir
 t.data = nil;
 t.count = 0;
 respond(x, t, nil);
@@ -638,7 +638,7 @@ if(id > 0)
 d = dirtabw;
 else
 d = dirtab;
-k = 1;	# first entry is '.'
+k = 1; # first entry is '.'
 leng := 0;
 for(i=0; d[k].name!=nil && i<e; i+=leng){
 bb := styx->packdir(dostat(WIN(x.f.qid), d[k], clock));
@@ -772,7 +772,7 @@ d.qid.path = big QID(id, dir.qid);
 d.qid.vers = 0;
 d.qid.qtype = dir.qtype;
 d.mode = dir.perm;
-d.length = big 0;	# would be nice to do better
+d.length = big 0; # would be nice to do better
 d.name = dir.name;
 d.uid = user;
 d.gid = user;

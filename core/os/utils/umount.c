@@ -114,13 +114,13 @@ children: argp_kids,
 };
 static const struct argp_option fstab_argp_mtab_opts[] =
 {
-{"all",	 'a', 0,      0, "Do all filesystems in " _PATH_MOUNTED},
-{0,		 'A', 0,      OPTION_ALIAS },
-{"fstab",	 'F', "FILE", 0, "File to use instead of " _PATH_MOUNTED},
-{"fstype",	 't', "TYPE", 0, "Do only filesystems of given type(s)"},
-{"exclude-root",'R',0,      0,
+{"all", 'a', 0, 0, "Do all filesystems in " _PATH_MOUNTED},
+{0, 'A', 0, OPTION_ALIAS },
+{"fstab", 'F', "FILE", 0, "File to use instead of " _PATH_MOUNTED},
+{"fstype", 't', "TYPE", 0, "Do only filesystems of given type(s)"},
+{"exclude-root",'R',0, 0,
 "Exclude root (/) filesystem from " _PATH_MOUNTED " list"},
-{"exclude",	 'X', "PATTERN", 0, "Exclude directories matching PATTERN"},
+{"exclude", 'X', "PATTERN", 0, "Exclude directories matching PATTERN"},
 {}
 };
 static error_t

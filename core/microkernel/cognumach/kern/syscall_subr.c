@@ -14,20 +14,20 @@
 #include <kern/task.h>
 #include <kern/thread.h>
 #include <machine/spl.h>
-#if	MACH_FIXPRI
+#if MACH_FIXPRI
 #include <mach/policy.h>
 #endif
 static void swtch_continue(void)
 {
-processor_t	myprocessor;
+processor_t myprocessor;
 myprocessor = current_processor();
 thread_syscall_return(myprocessor->runq.count > 0 ||
 myprocessor->processor_set->runq.count > 0);
 }
 boolean_t swtch(void)
 {
-processor_t	myprocessor;
-#if	NCPUS > 1
+processor_t myprocessor;
+#if NCPUS > 1
 myprocessor = current_processor();
 if (myprocessor->runq.count == 0 &&
 myprocessor->processor_set->runq.count == 0)
@@ -41,19 +41,19 @@ myprocessor->processor_set->runq.count > 0);
 }
 static void swtch_pri_continue(void)
 {
-thread_t	thread = current_thread();
-processor_t	myprocessor;
+thread_t thread = current_thread();
+processor_t myprocessor;
 if (thread->depress_priority >= 0)
 (void) thread_depress_abort(thread);
 myprocessor = current_processor();
 thread_syscall_return(myprocessor->runq.count > 0 ||
 myprocessor->processor_set->runq.count > 0);
 }
-boolean_t  swtch_pri(int pri)
+boolean_t swtch_pri(int pri)
 {
-thread_t	thread = current_thread();
-processor_t	myprocessor;
-#if	NCPUS > 1
+thread_t thread = current_thread();
+processor_t myprocessor;
+#if NCPUS > 1
 myprocessor = current_processor();
 if (myprocessor->runq.count == 0 &&
 myprocessor->processor_set->runq.count == 0)
@@ -70,19 +70,19 @@ myprocessor->processor_set->runq.count > 0);
 }
 static void thread_switch_continue(void)
 {
-thread_t	cur_thread = current_thread();
+thread_t cur_thread = current_thread();
 if (cur_thread->depress_priority >= 0)
 (void) thread_depress_abort(cur_thread);
 thread_syscall_return(KERN_SUCCESS);
 }
 kern_return_t thread_switch(
-mach_port_name_t 	thread_name,
-int					option,
-mach_msg_timeout_t 	option_time)
+mach_port_name_t thread_name,
+int option,
+mach_msg_timeout_t option_time)
 {
-thread_t			cur_thread = current_thread();
-processor_t			myprocessor;
-ipc_port_t			port;
+thread_t cur_thread = current_thread();
+processor_t myprocessor;
+ipc_port_t port;
 switch (option) {
 case SWITCH_OPTION_NONE:
 break;
@@ -110,7 +110,7 @@ if ((thread->processor_set == cur_thread->processor_set)
 thread_unlock(thread);
 (void) splx(s);
 ip_unlock(port);
-#if	MACH_FIXPRI
+#if MACH_FIXPRI
 if (thread->policy == POLICY_FIXEDPRI) {
 myprocessor = current_processor();
 myprocessor->quantum = thread->sched_data;
@@ -129,7 +129,7 @@ thread_unlock(thread);
 ip_unlock(port);
 }
 #endif
-#if	NCPUS > 1
+#if NCPUS > 1
 myprocessor = current_processor();
 if (myprocessor->processor_set->runq.count > 0 ||
 myprocessor->runq.count > 0)
@@ -144,11 +144,11 @@ return(KERN_SUCCESS);
 }
 void
 thread_depress_priority(
-thread_t 		thread,
-mach_msg_timeout_t 	depress_time)
+thread_t thread,
+mach_msg_timeout_t depress_time)
 {
 unsigned int ticks;
-spl_t	s;
+spl_t s;
 ticks = convert_ipc_timeout_to_ticks(depress_time);
 s = splsched();
 thread_lock(thread);
@@ -164,7 +164,7 @@ thread_unlock(thread);
 void
 thread_depress_timeout(thread_t thread)
 {
-spl_t	s;
+spl_t s;
 s = splsched();
 thread_lock(thread);
 if (thread->depress_priority >= 0) {
@@ -178,7 +178,7 @@ thread_unlock(thread);
 kern_return_t
 thread_depress_abort(thread_t thread)
 {
-spl_t	s;
+spl_t s;
 if (thread == THREAD_NULL)
 return(KERN_INVALID_ARGUMENT);
 s = splsched();

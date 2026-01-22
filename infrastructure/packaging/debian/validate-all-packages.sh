@@ -9,74 +9,74 @@ echo "" >> "$REPORT_FILE"
 echo "
 echo "" >> "$REPORT_FILE"
 CORE_PACKAGES=(
-    "cogutil"
-    "atomspace"
-    "atomspace-storage"
-    "cogserver"
-    "pln"
-    "ure"
-    "unify"
-    "spacetime"
-    "attention"
-    "learn"
-    "miner"
-    "asmoses"
-    "lg-atomese"
-    "generate"
-    "vision"
+"cogutil"
+"atomspace"
+"atomspace-storage"
+"cogserver"
+"pln"
+"ure"
+"unify"
+"spacetime"
+"attention"
+"learn"
+"miner"
+"asmoses"
+"lg-atomese"
+"generate"
+"vision"
 )
 OS_PACKAGES=(
-    "cognumach"
-    "hurdcog"
-    "hurdcog-atomspace-bridge"
-    "hurdcog-cogkernel-core"
-    "hurdcog-machspace"
-    "hurdcog-occ-bridge"
+"cognumach"
+"hurdcog"
+"hurdcog-atomspace-bridge"
+"hurdcog-cogkernel-core"
+"hurdcog-machspace"
+"hurdcog-occ-bridge"
 )
 INTEGRATION_PACKAGES=(
-    "cognitive-grip"
-    "agi-os-unified"
+"cognitive-grip"
+"agi-os-unified"
 )
 echo "
 echo "" >> "$REPORT_FILE"
 for pkg in "${CORE_PACKAGES[@]}"; do
-    if [ -d "$DEBIAN_DIR/$pkg" ]; then
-        if [ -f "$DEBIAN_DIR/$pkg/debian/control" ]; then
-            echo "- ✅ **$pkg**: Package directory and control file present" >> "$REPORT_FILE"
-        else
-            echo "- ⚠️  **$pkg**: Package directory exists but missing debian/control" >> "$REPORT_FILE"
-        fi
-    else
-        echo "- ❌ **$pkg**: Package directory missing" >> "$REPORT_FILE"
-    fi
+if [ -d "$DEBIAN_DIR/$pkg" ]; then
+if [ -f "$DEBIAN_DIR/$pkg/debian/control" ]; then
+echo "- ✅ **$pkg**: Package directory and control file present" >> "$REPORT_FILE"
+else
+echo "- ⚠️  **$pkg**: Package directory exists but missing debian/control" >> "$REPORT_FILE"
+fi
+else
+echo "- ❌ **$pkg**: Package directory missing" >> "$REPORT_FILE"
+fi
 done
 echo "" >> "$REPORT_FILE"
 echo "
 echo "" >> "$REPORT_FILE"
 for pkg in "${OS_PACKAGES[@]}"; do
-    if [ -d "$DEBIAN_DIR/$pkg" ]; then
-        if [ -f "$DEBIAN_DIR/$pkg/debian/control" ]; then
-            echo "- ✅ **$pkg**: Package directory and control file present" >> "$REPORT_FILE"
-        else
-            echo "- ⚠️  **$pkg**: Package directory exists but missing debian/control" >> "$REPORT_FILE"
-        fi
-    else
-        echo "- ❌ **$pkg**: Package directory missing" >> "$REPORT_FILE"
-    fi
+if [ -d "$DEBIAN_DIR/$pkg" ]; then
+if [ -f "$DEBIAN_DIR/$pkg/debian/control" ]; then
+echo "- ✅ **$pkg**: Package directory and control file present" >> "$REPORT_FILE"
+else
+echo "- ⚠️  **$pkg**: Package directory exists but missing debian/control" >> "$REPORT_FILE"
+fi
+else
+echo "- ❌ **$pkg**: Package directory missing" >> "$REPORT_FILE"
+fi
 done
 echo "" >> "$REPORT_FILE"
 echo "
 echo "" >> "$REPORT_FILE"
 for pkg in "${INTEGRATION_PACKAGES[@]}"; do
-    if [ -d "$DEBIAN_DIR/$pkg" ]; then
-        if [ -f "$DEBIAN_DIR/$pkg/debian/control" ]; then
-            echo "- ✅ **$pkg**: Package directory and control file present" >> "$REPORT_FILE"
-        else
-            echo "- ⚠️  **$pkg**: Package directory exists but missing debian/control" >> "$REPORT_FILE"
-        fi
-    else
-        echo "- ❌ **$pkg**: Package directory missing" >> "$REPORT_FILE"
-    fi
+if [ -d "$DEBIAN_DIR/$pkg" ]; then
+if [ -f "$DEBIAN_DIR/$pkg/debian/control" ]; then
+echo "- ✅ **$pkg**: Package directory and control file present" >> "$REPORT_FILE"
+else
+echo "- ⚠️  **$pkg**: Package directory exists but missing debian/control" >> "$REPORT_FILE"
+fi
+else
+echo "- ❌ **$pkg**: Package directory missing" >> "$REPORT_FILE"
+fi
 done
 echo "" >> "$REPORT_FILE"
 echo "

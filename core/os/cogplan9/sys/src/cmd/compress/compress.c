@@ -11,46 +11,46 @@
 #include <utime.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#define	min(a,b)	((a>b) ? b : a)
-#define BITS	16
-#define HSIZE	69001
-typedef long	code_int;
-typedef long	count_int;
+#define min(a,b) ((a>b) ? b : a)
+#define BITS 16
+#define HSIZE 69001
+typedef long code_int;
+typedef long count_int;
 static char rcs_ident[] = "$Header: compress.c,v 4.0 85/07/30 12:50:00 joe Release $";
 uchar magic_header[] = { 0x1F, 0x9D };
-#define BIT_MASK	0x1f
-#define BLOCK_MASK	0x80
+#define BIT_MASK 0x1f
+#define BLOCK_MASK 0x80
 #define INIT_BITS 9
 #define ARGVAL() (*++(*argv) || (--argc && *++argv))
 int n_bits;
 int maxbits = BITS;
 code_int maxcode;
 code_int maxmaxcode = 1 << BITS;
-#define MAXCODE(n_bits)	((1 << (n_bits)) - 1)
+#define MAXCODE(n_bits) ((1 << (n_bits)) - 1)
 count_int htab[HSIZE];
 ushort codetab[HSIZE];
-#define htabof(i)	htab[i]
-#define codetabof(i)	codetab[i]
+#define htabof(i) htab[i]
+#define codetabof(i) codetab[i]
 code_int hsize = HSIZE;
 count_int fsize;
-#define tab_prefixof(i)	codetabof(i)
-#define tab_suffixof(i)	((uchar *)(htab))[i]
-#define de_stack		((uchar *)&tab_suffixof(1<<BITS))
+#define tab_prefixof(i) codetabof(i)
+#define tab_suffixof(i) ((uchar *)(htab))[i]
+#define de_stack ((uchar *)&tab_suffixof(1<<BITS))
 code_int free_ent = 0;
 int exit_stat = 0;
-void	cl_block(void);
-void	cl_hash(count_int);
-void	compress(void);
-void	copystat(char *, char *);
-void	decompress(void);
-int	foreground(void);
+void cl_block(void);
+void cl_hash(count_int);
+void compress(void);
+void copystat(char *, char *);
+void decompress(void);
+int foreground(void);
 code_int getcode(void);
-void	onintr(int);
-void	oops(int);
-void	output(code_int);
-void	prratio(FILE *, long, long);
-void	version(void);
-void	writeerr(void);
+void onintr(int);
+void oops(int);
+void output(code_int);
+void prratio(FILE *, long, long);
+void version(void);
+void writeerr(void);
 void
 Usage(void)
 {
@@ -69,8 +69,8 @@ int clear_flg = 0;
 long ratio = 0;
 #define CHECK_GAP 10000
 count_int checkpoint = CHECK_GAP;
-#define FIRST	257
-#define	CLEAR	256
+#define FIRST 257
+#define CLEAR 256
 int force = 0;
 char ofname [100];
 #ifdef DEBUG
@@ -359,7 +359,7 @@ maxcode = MAXCODE(n_bits = INIT_BITS);
 free_ent = (block_compress? FIRST: 256);
 ent = getchar ();
 hshift = 0;
-for (fcode = (long)hsize;  fcode < 65536L; fcode *= 2)
+for (fcode = (long)hsize; fcode < 65536L; fcode *= 2)
 hshift++;
 hshift = 8 - hshift;
 hsize_reg = hsize;
@@ -423,7 +423,7 @@ uchar lmask[9] = {0xff, 0xfe, 0xfc, 0xf8, 0xf0, 0xe0, 0xc0, 0x80, 0x00};
 uchar rmask[9] = {0x00, 0x01, 0x03, 0x07, 0x0f, 0x1f, 0x3f, 0x7f, 0xff};
 void
 output( code )
-code_int  code;
+code_int code;
 {
 #ifdef DEBUG
 static int col = 0;
@@ -440,7 +440,7 @@ bp += (r_off >> 3);
 r_off &= 7;
 *bp = (*bp & rmask[r_off]) | (code << r_off) & lmask[r_off];
 bp++;
-bits -=  8 - r_off;
+bits -= 8 - r_off;
 code >>= 8 - r_off;
 if ( bits >= 8 ) {
 *bp++ = code;
@@ -618,7 +618,7 @@ putc( '\n', stderr );
 exit( 0 );
 }
 code_int sorttab[1<<BITS];
-#define STACK_SIZE	15000
+#define STACK_SIZE 15000
 dump_tab()
 {
 int i, first, c, ent;

@@ -10,8 +10,8 @@ class llama_kv_cells_unified {
 public:
 void reset() {
 for (uint32_t i = 0; i < pos.size(); ++i) {
-pos[i]   = -1;
-shift[i] =  0;
+pos[i] = -1;
+shift[i] = 0;
 seq[i].reset();
 }
 has_shift = false;
@@ -57,12 +57,12 @@ assert(isrc < pos.size());
 assert(idst < pos.size());
 assert(pos[idst] == -1);
 assert(pos[isrc] != -1);
-pos  [idst] = pos  [isrc];
+pos [idst] = pos [isrc];
 shift[idst] = shift[isrc];
-seq  [idst] = seq  [isrc];
-pos  [isrc] = -1;
-shift[isrc] =  0;
-seq  [isrc].reset();
+seq [idst] = seq [isrc];
+pos [isrc] = -1;
+shift[isrc] = 0;
+seq [isrc].reset();
 used.erase (isrc);
 used.insert(idst);
 }
@@ -244,7 +244,7 @@ bool pos_add(uint32_t i, llama_pos d) {
 assert(i < pos.size());
 assert(pos[i] != -1);
 seq_pos_rm(i);
-pos[i]   += d;
+pos[i] += d;
 shift[i] += d;
 has_shift = true;
 if (pos[i] < 0) {
@@ -262,7 +262,7 @@ assert(i < pos.size());
 assert(pos[i] != -1);
 const llama_pos p_old = pos[i];
 seq_pos_rm(i);
-pos[i]   /= d;
+pos[i] /= d;
 shift[i] += p_old - pos[i];
 seq_pos_add(i);
 has_shift = true;

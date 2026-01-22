@@ -5,12 +5,12 @@ include "draw.m";
 include "arg.m";
 Tee: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 File: adt
 {
-fd:	ref Sys->FD;
-name:	string;
+fd: ref Sys->FD;
+name: string;
 };
 usage()
 {
@@ -27,8 +27,8 @@ append := 0;
 arg->init(args);
 while((c := arg->opt()) != 0)
 case c {
-'a' =>	append = 1;
-* =>		usage();
+'a' => append = 1;
+* => usage();
 }
 names := arg->argv();
 arg = nil;

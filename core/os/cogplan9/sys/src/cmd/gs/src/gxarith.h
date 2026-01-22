@@ -1,5 +1,5 @@
 #ifndef gxarith_INCLUDED
-#  define gxarith_INCLUDED
+# define gxarith_INCLUDED
 #define any_abs(x) ((x) < 0 ? -(x) : (x))
 int imod(int m, int n);
 int igcd(int x, int y);

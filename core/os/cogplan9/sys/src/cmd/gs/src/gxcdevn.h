@@ -1,9 +1,9 @@
 #ifndef gxcdevn_INCLUDED
-#  define gxcdevn_INCLUDED
+# define gxcdevn_INCLUDED
 #include "gsrefct.h"
 #include "gxcindex.h"
 #ifndef gs_device_n_map_DEFINED
-#  define gs_device_n_map_DEFINED
+# define gs_device_n_map_DEFINED
 typedef struct gs_device_n_map_s gs_device_n_map;
 #endif
 struct gs_device_n_map_s {

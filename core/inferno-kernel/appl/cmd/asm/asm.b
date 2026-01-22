@@ -1,5 +1,5 @@
 implement Asm;
-#line	2	"asm.y"
+#line 2 "asm.y"
 include "sys.m";
 sys: Sys;
 include "draw.m";
@@ -14,22 +14,22 @@ str: String;
 include "arg.m";
 include "../limbo/isa.m";
 YYSTYPE: adt {
-inst:	ref Inst;
-addr:	ref Addr;
-op:	int;
-ival:	big;
-fval:	real;
-str:	string;
-sym:	ref Sym;
-listv:	ref List;
+inst: ref Inst;
+addr: ref Addr;
+op: int;
+ival: big;
+fval: real;
+str: string;
+sym: ref Sym;
+listv: ref List;
 };
 YYLEX: adt {
-lval:	YYSTYPE;
-EOF:	con -1;
-lex:	fn(l: self ref YYLEX): int;
-error:	fn(l: self ref YYLEX, msg: string);
-numsym:	fn(l: self ref YYLEX, first: int): int;
-eatstring:	fn(l: self ref YYLEX);
+lval: YYSTYPE;
+EOF: con -1;
+lex: fn(l: self ref YYLEX): int;
+error: fn(l: self ref YYLEX, msg: string);
+numsym: fn(l: self ref YYLEX, first: int): int;
+eatstring: fn(l: self ref YYLEX);
 };
 Eof: con -1;
 False: con 0;
@@ -38,79 +38,79 @@ Strsize: con 1024;
 Hashsize: con 128;
 Addr: adt
 {
-mode:	int;
-off:	int;
-val:	int;
-sym:	ref Sym;
-text:	fn(a: self ref Addr): string;
+mode: int;
+off: int;
+val: int;
+sym: ref Sym;
+text: fn(a: self ref Addr): string;
 };
 List: adt
 {
-link:	cyclic ref List;
-addr:	int;
-typ:	int;
+link: cyclic ref List;
+addr: int;
+typ: int;
 pick{
-Int =>	ival: big;	# DEFB, DEFW, DEFL
-Bytes =>	b: array of byte;	# DEFF, DEFS
-Array =>	a: ref Array;	# DEFA
+Int => ival: big; # DEFB, DEFW, DEFL
+Bytes => b: array of byte; # DEFF, DEFS
+Array => a: ref Array; # DEFA
 }
 };
 Inst: adt
 {
-op:	int;
-typ:	int;
-size:	int;
-reg:	ref Addr;
-src:	ref Addr;
-dst:	ref Addr;
-pc:	int;
-sym:	ref Sym;
-link:	cyclic ref Inst;
-text:	fn(i: self ref Inst): string;
+op: int;
+typ: int;
+size: int;
+reg: ref Addr;
+src: ref Addr;
+dst: ref Addr;
+pc: int;
+sym: ref Sym;
+link: cyclic ref Inst;
+text: fn(i: self ref Inst): string;
 };
 Sym: adt
 {
-name:	string;
-lexval:	int;
-value:	int;
-ds:	int;
+name: string;
+lexval: int;
+value: int;
+ds: int;
 };
 Desc: adt
 {
-id:	int;
-size:	int;
-np:	int;
-map:	array of byte;
-link:	cyclic ref Desc;
+id: int;
+size: int;
+np: int;
+map: array of byte;
+link: cyclic ref Desc;
 };
 Array: adt
 {
-i:	int;
-size:	int;
+i: int;
+size: int;
 };
 Link: adt
 {
-desc:	int;
-addr:	int;
-typ:	int;
-name:	string;
-link:	cyclic ref Link;
+desc: int;
+addr: int;
+typ: int;
+name: string;
+link: cyclic ref Link;
 };
 Keywd: adt
 {
-name:	string;
-op:	int;
-terminal:	int;
+name: string;
+op: int;
+terminal: int;
 };
 Ldts: adt
 {
-n:	int;
-ldt:	list of ref Ldt;
+n: int;
+ldt: list of ref Ldt;
 };
 Ldt: adt
 {
-sign:	int;
-name:	string;
+sign: int;
+name: string;
 };
 Exc: adt
 {
@@ -120,44 +120,44 @@ etab: list of ref Etab;
 Etab: adt
 {
 n: int;
-name:	string;
+name: string;
 };
 Asm: module {
-init:	fn(nil: ref Draw->Context, nil: list of string);
-TOKI0: con	57346;
-TOKI1: con	57347;
-TOKI2: con	57348;
-TOKI3: con	57349;
-TCONST: con	57350;
-TOKSB: con	57351;
-TOKFP: con	57352;
-TOKHEAP: con	57353;
-TOKDB: con	57354;
-TOKDW: con	57355;
-TOKDL: con	57356;
-TOKDF: con	57357;
-TOKDS: con	57358;
-TOKVAR: con	57359;
-TOKEXT: con	57360;
-TOKMOD: con	57361;
-TOKLINK: con	57362;
-TOKENTRY: con	57363;
-TOKARRAY: con	57364;
-TOKINDIR: con	57365;
-TOKAPOP: con	57366;
-TOKLDTS: con	57367;
-TOKEXCS: con	57368;
-TOKEXC: con	57369;
-TOKETAB: con	57370;
-TOKSRC: con	57371;
-TID: con	57372;
-TFCONST: con	57373;
-TSTRING: con	57374;
+init: fn(nil: ref Draw->Context, nil: list of string);
+TOKI0: con 57346;
+TOKI1: con 57347;
+TOKI2: con 57348;
+TOKI3: con 57349;
+TCONST: con 57350;
+TOKSB: con 57351;
+TOKFP: con 57352;
+TOKHEAP: con 57353;
+TOKDB: con 57354;
+TOKDW: con 57355;
+TOKDL: con 57356;
+TOKDF: con 57357;
+TOKDS: con 57358;
+TOKVAR: con 57359;
+TOKEXT: con 57360;
+TOKMOD: con 57361;
+TOKLINK: con 57362;
+TOKENTRY: con 57363;
+TOKARRAY: con 57364;
+TOKINDIR: con 57365;
+TOKAPOP: con 57366;
+TOKLDTS: con 57367;
+TOKEXCS: con 57368;
+TOKEXC: con 57369;
+TOKETAB: con 57370;
+TOKSRC: con 57371;
+TID: con 57372;
+TFCONST: con 57373;
+TSTRING: con 57374;
 };
 YYEOFCODE: con 1;
 YYERRCODE: con 2;
 YYMAXDEPTH: con 200;
-#line	527	"asm.y"
+#line 527 "asm.y"
 kinit()
 {
 for(i := 0; keywds[i].name != nil; i++) {
@@ -590,10 +590,10 @@ arg->setusage("asm [-l] file.s");
 arg->init(args);
 while((c := arg->opt()) != 0){
 case c {
-'C' =>	dontcompile++;
-'c' =>	mustcompile++;
-'l' =>		listing++;
-* =>		arg->usage();
+'C' => dontcompile++;
+'c' => mustcompile++;
+'l' => listing++;
+* => arg->usage();
 }
 }
 args = arg->argv();
@@ -904,8 +904,8 @@ hints |= DONTCOMPILE;
 hints |= HASLDT;
 if(nexcs > 0)
 hints |= HASEXCEPT;
-conout(hints);		# Runtime flags
-conout(1024);		# default stack size
+conout(hints); # Runtime flags
+conout(1024); # default stack size
 conout(pc);
 conout(dseg);
 conout(dcount);
@@ -1238,182 +1238,182 @@ return b;
 }
 keywds: array of Keywd = array[] of
 {
-("nop",		INOP,		TOKI0),
-("alt",		IALT,		TOKI3),
-("nbalt",	INBALT,		TOKI3),
-("goto",		IGOTO,		TOKI2),
-("call",		ICALL,		TOKI2),
-("frame",	IFRAME,		TOKI2),
-("spawn",	ISPAWN,		TOKI2),
-("runt",		IRUNT,		TOKI2),
-("load",		ILOAD,		TOKI3),
-("mcall",	IMCALL,		TOKI3),
-("mspawn",	IMSPAWN,	TOKI3),
-("mframe",	IMFRAME,	TOKI3),
-("ret",		IRET,		TOKI0),
-("jmp",		IJMP,		TOKI1),
-("case",		ICASE,		TOKI2),
-("exit",		IEXIT,		TOKI0),
-("new",		INEW,		TOKI2),
-("newa",		INEWA,		TOKI3),
-("newcb",	INEWCB,		TOKI1),
-("newcw",	INEWCW,		TOKI1),
-("newcf",	INEWCF,		TOKI1),
-("newcp",	INEWCP,		TOKI1),
-("newcm",	INEWCM,		TOKI2),
-("newcmp",	INEWCMP,	TOKI2),
-("send",		ISEND,		TOKI2),
-("recv",		IRECV,		TOKI2),
-("consb",	ICONSB,		TOKI2),
-("consw",	ICONSW,		TOKI2),
-("consp",	ICONSP,		TOKI2),
-("consf",	ICONSF,		TOKI2),
-("consm",	ICONSM,		TOKI3),
-("consmp",	ICONSMP,	TOKI3),
-("headb",	IHEADB,		TOKI2),
-("headw",	IHEADW,		TOKI2),
-("headp",	IHEADP,		TOKI2),
-("headf",	IHEADF,		TOKI2),
-("headm",	IHEADM,		TOKI3),
-("headmp",	IHEADMP,	TOKI3),
-("tail",		ITAIL,		TOKI2),
-("lea",		ILEA,		TOKI2),
-("indx",		IINDX,		TOKI3),
-("movp",		IMOVP,		TOKI2),
-("movm",		IMOVM,		TOKI3),
-("movmp",	IMOVMP,		TOKI3),
-("movb",		IMOVB,		TOKI2),
-("movw",		IMOVW,		TOKI2),
-("movf",		IMOVF,		TOKI2),
-("cvtbw",	ICVTBW,		TOKI2),
-("cvtwb",	ICVTWB,		TOKI2),
-("cvtfw",	ICVTFW,		TOKI2),
-("cvtwf",	ICVTWF,		TOKI2),
-("cvtca",	ICVTCA,		TOKI2),
-("cvtac",	ICVTAC,		TOKI2),
-("cvtwc",	ICVTWC,		TOKI2),
-("cvtcw",	ICVTCW,		TOKI2),
-("cvtfc",	ICVTFC,		TOKI2),
-("cvtcf",	ICVTCF,		TOKI2),
-("addb",		IADDB,		TOKI3),
-("addw",		IADDW,		TOKI3),
-("addf",		IADDF,		TOKI3),
-("subb",		ISUBB,		TOKI3),
-("subw",		ISUBW,		TOKI3),
-("subf",		ISUBF,		TOKI3),
-("mulb",		IMULB,		TOKI3),
-("mulw",		IMULW,		TOKI3),
-("mulf",		IMULF,		TOKI3),
-("divb",		IDIVB,		TOKI3),
-("divw",		IDIVW,		TOKI3),
-("divf",		IDIVF,		TOKI3),
-("modw",		IMODW,		TOKI3),
-("modb",		IMODB,		TOKI3),
-("andb",		IANDB,		TOKI3),
-("andw",		IANDW,		TOKI3),
-("orb",		IORB,		TOKI3),
-("orw",		IORW,		TOKI3),
-("xorb",		IXORB,		TOKI3),
-("xorw",		IXORW,		TOKI3),
-("shlb",		ISHLB,		TOKI3),
-("shlw",		ISHLW,		TOKI3),
-("shrb",		ISHRB,		TOKI3),
-("shrw",		ISHRW,		TOKI3),
-("insc",		IINSC,		TOKI3),
-("indc",		IINDC,		TOKI3),
-("addc",		IADDC,		TOKI3),
-("lenc",		ILENC,		TOKI2),
-("lena",		ILENA,		TOKI2),
-("lenl",		ILENL,		TOKI2),
-("beqb",		IBEQB,		TOKI3),
-("bneb",		IBNEB,		TOKI3),
-("bltb",		IBLTB,		TOKI3),
-("bleb",		IBLEB,		TOKI3),
-("bgtb",		IBGTB,		TOKI3),
-("bgeb",		IBGEB,		TOKI3),
-("beqw",		IBEQW,		TOKI3),
-("bnew",		IBNEW,		TOKI3),
-("bltw",		IBLTW,		TOKI3),
-("blew",		IBLEW,		TOKI3),
-("bgtw",		IBGTW,		TOKI3),
-("bgew",		IBGEW,		TOKI3),
-("beqf",		IBEQF,		TOKI3),
-("bnef",		IBNEF,		TOKI3),
-("bltf",		IBLTF,		TOKI3),
-("blef",		IBLEF,		TOKI3),
-("bgtf",		IBGTF,		TOKI3),
-("bgef",		IBGEF,		TOKI3),
-("beqc",		IBEQC,		TOKI3),
-("bnec",		IBNEC,		TOKI3),
-("bltc",		IBLTC,		TOKI3),
-("blec",		IBLEC,		TOKI3),
-("bgtc",		IBGTC,		TOKI3),
-("bgec",		IBGEC,		TOKI3),
-("slicea",	ISLICEA,	TOKI3),
-("slicela",	ISLICELA,	TOKI3),
-("slicec",	ISLICEC,	TOKI3),
-("indw",		IINDW,		TOKI3),
-("indf",		IINDF,		TOKI3),
-("indb",		IINDB,		TOKI3),
-("negf",		INEGF,		TOKI2),
-("movl",		IMOVL,		TOKI2),
-("addl",		IADDL,		TOKI3),
-("subl",		ISUBL,		TOKI3),
-("divl",		IDIVL,		TOKI3),
-("modl",		IMODL,		TOKI3),
-("mull",		IMULL,		TOKI3),
-("andl",		IANDL,		TOKI3),
-("orl",		IORL,		TOKI3),
-("xorl",		IXORL,		TOKI3),
-("shll",		ISHLL,		TOKI3),
-("shrl",		ISHRL,		TOKI3),
-("bnel",		IBNEL,		TOKI3),
-("bltl",		IBLTL,		TOKI3),
-("blel",		IBLEL,		TOKI3),
-("bgtl",		IBGTL,		TOKI3),
-("bgel",		IBGEL,		TOKI3),
-("beql",		IBEQL,		TOKI3),
-("cvtlf",	ICVTLF,		TOKI2),
-("cvtfl",	ICVTFL,		TOKI2),
-("cvtlw",	ICVTLW,		TOKI2),
-("cvtwl",	ICVTWL,		TOKI2),
-("cvtlc",	ICVTLC,		TOKI2),
-("cvtcl",	ICVTCL,		TOKI2),
-("headl",	IHEADL,		TOKI2),
-("consl",	ICONSL,		TOKI2),
-("newcl",	INEWCL,		TOKI1),
-("casec",	ICASEC,		TOKI2),
-("indl",		IINDL,		TOKI3),
-("movpc",	IMOVPC,		TOKI2),
-("tcmp",		ITCMP,		TOKI2),
-("mnewz",	IMNEWZ,		TOKI3),
-("cvtrf",	ICVTRF,		TOKI2),
-("cvtfr",	ICVTFR,		TOKI2),
-("cvtws",	ICVTWS,		TOKI2),
-("cvtsw",	ICVTSW,		TOKI2),
-("lsrw",		ILSRW,		TOKI3),
-("lsrl",		ILSRL,		TOKI3),
-("eclr",		IECLR,		TOKI0),
-("newz",		INEWZ,		TOKI2),
-("newaz",	INEWAZ,		TOKI3),
-("raise",	IRAISE,	TOKI1),
-("casel",	ICASEL,	TOKI2),
-("mulx",	IMULX,	TOKI3),
-("divx",	IDIVX,	TOKI3),
-("cvtxx",	ICVTXX,	TOKI3),
-("mulx0",	IMULX0,	TOKI3),
-("divx0",	IDIVX0,	TOKI3),
-("cvtxx0",	ICVTXX0,	TOKI3),
-("mulx1",	IMULX1,	TOKI3),
-("divx1",	IDIVX1,	TOKI3),
-("cvtxx1",	ICVTXX1,	TOKI3),
-("cvtfx",	ICVTFX,	TOKI3),
-("cvtxf",	ICVTXF,	TOKI3),
-("expw",	IEXPW,	TOKI3),
-("expl",	IEXPL,	TOKI3),
-("expf",	IEXPF,	TOKI3),
-("self",	ISELF,	TOKI1),
-(nil,	0, 0),
+("nop", INOP, TOKI0),
+("alt", IALT, TOKI3),
+("nbalt", INBALT, TOKI3),
+("goto", IGOTO, TOKI2),
+("call", ICALL, TOKI2),
+("frame", IFRAME, TOKI2),
+("spawn", ISPAWN, TOKI2),
+("runt", IRUNT, TOKI2),
+("load", ILOAD, TOKI3),
+("mcall", IMCALL, TOKI3),
+("mspawn", IMSPAWN, TOKI3),
+("mframe", IMFRAME, TOKI3),
+("ret", IRET, TOKI0),
+("jmp", IJMP, TOKI1),
+("case", ICASE, TOKI2),
+("exit", IEXIT, TOKI0),
+("new", INEW, TOKI2),
+("newa", INEWA, TOKI3),
+("newcb", INEWCB, TOKI1),
+("newcw", INEWCW, TOKI1),
+("newcf", INEWCF, TOKI1),
+("newcp", INEWCP, TOKI1),
+("newcm", INEWCM, TOKI2),
+("newcmp", INEWCMP, TOKI2),
+("send", ISEND, TOKI2),
+("recv", IRECV, TOKI2),
+("consb", ICONSB, TOKI2),
+("consw", ICONSW, TOKI2),
+("consp", ICONSP, TOKI2),
+("consf", ICONSF, TOKI2),
+("consm", ICONSM, TOKI3),
+("consmp", ICONSMP, TOKI3),
+("headb", IHEADB, TOKI2),
+("headw", IHEADW, TOKI2),
+("headp", IHEADP, TOKI2),
+("headf", IHEADF, TOKI2),
+("headm", IHEADM, TOKI3),
+("headmp", IHEADMP, TOKI3),
+("tail", ITAIL, TOKI2),
+("lea", ILEA, TOKI2),
+("indx", IINDX, TOKI3),
+("movp", IMOVP, TOKI2),
+("movm", IMOVM, TOKI3),
+("movmp", IMOVMP, TOKI3),
+("movb", IMOVB, TOKI2),
+("movw", IMOVW, TOKI2),
+("movf", IMOVF, TOKI2),
+("cvtbw", ICVTBW, TOKI2),
+("cvtwb", ICVTWB, TOKI2),
+("cvtfw", ICVTFW, TOKI2),
+("cvtwf", ICVTWF, TOKI2),
+("cvtca", ICVTCA, TOKI2),
+("cvtac", ICVTAC, TOKI2),
+("cvtwc", ICVTWC, TOKI2),
+("cvtcw", ICVTCW, TOKI2),
+("cvtfc", ICVTFC, TOKI2),
+("cvtcf", ICVTCF, TOKI2),
+("addb", IADDB, TOKI3),
+("addw", IADDW, TOKI3),
+("addf", IADDF, TOKI3),
+("subb", ISUBB, TOKI3),
+("subw", ISUBW, TOKI3),
+("subf", ISUBF, TOKI3),
+("mulb", IMULB, TOKI3),
+("mulw", IMULW, TOKI3),
+("mulf", IMULF, TOKI3),
+("divb", IDIVB, TOKI3),
+("divw", IDIVW, TOKI3),
+("divf", IDIVF, TOKI3),
+("modw", IMODW, TOKI3),
+("modb", IMODB, TOKI3),
+("andb", IANDB, TOKI3),
+("andw", IANDW, TOKI3),
+("orb", IORB, TOKI3),
+("orw", IORW, TOKI3),
+("xorb", IXORB, TOKI3),
+("xorw", IXORW, TOKI3),
+("shlb", ISHLB, TOKI3),
+("shlw", ISHLW, TOKI3),
+("shrb", ISHRB, TOKI3),
+("shrw", ISHRW, TOKI3),
+("insc", IINSC, TOKI3),
+("indc", IINDC, TOKI3),
+("addc", IADDC, TOKI3),
+("lenc", ILENC, TOKI2),
+("lena", ILENA, TOKI2),
+("lenl", ILENL, TOKI2),
+("beqb", IBEQB, TOKI3),
+("bneb", IBNEB, TOKI3),
+("bltb", IBLTB, TOKI3),
+("bleb", IBLEB, TOKI3),
+("bgtb", IBGTB, TOKI3),
+("bgeb", IBGEB, TOKI3),
+("beqw", IBEQW, TOKI3),
+("bnew", IBNEW, TOKI3),
+("bltw", IBLTW, TOKI3),
+("blew", IBLEW, TOKI3),
+("bgtw", IBGTW, TOKI3),
+("bgew", IBGEW, TOKI3),
+("beqf", IBEQF, TOKI3),
+("bnef", IBNEF, TOKI3),
+("bltf", IBLTF, TOKI3),
+("blef", IBLEF, TOKI3),
+("bgtf", IBGTF, TOKI3),
+("bgef", IBGEF, TOKI3),
+("beqc", IBEQC, TOKI3),
+("bnec", IBNEC, TOKI3),
+("bltc", IBLTC, TOKI3),
+("blec", IBLEC, TOKI3),
+("bgtc", IBGTC, TOKI3),
+("bgec", IBGEC, TOKI3),
+("slicea", ISLICEA, TOKI3),
+("slicela", ISLICELA, TOKI3),
+("slicec", ISLICEC, TOKI3),
+("indw", IINDW, TOKI3),
+("indf", IINDF, TOKI3),
+("indb", IINDB, TOKI3),
+("negf", INEGF, TOKI2),
+("movl", IMOVL, TOKI2),
+("addl", IADDL, TOKI3),
+("subl", ISUBL, TOKI3),
+("divl", IDIVL, TOKI3),
+("modl", IMODL, TOKI3),
+("mull", IMULL, TOKI3),
+("andl", IANDL, TOKI3),
+("orl", IORL, TOKI3),
+("xorl", IXORL, TOKI3),
+("shll", ISHLL, TOKI3),
+("shrl", ISHRL, TOKI3),
+("bnel", IBNEL, TOKI3),
+("bltl", IBLTL, TOKI3),
+("blel", IBLEL, TOKI3),
+("bgtl", IBGTL, TOKI3),
+("bgel", IBGEL, TOKI3),
+("beql", IBEQL, TOKI3),
+("cvtlf", ICVTLF, TOKI2),
+("cvtfl", ICVTFL, TOKI2),
+("cvtlw", ICVTLW, TOKI2),
+("cvtwl", ICVTWL, TOKI2),
+("cvtlc", ICVTLC, TOKI2),
+("cvtcl", ICVTCL, TOKI2),
+("headl", IHEADL, TOKI2),
+("consl", ICONSL, TOKI2),
+("newcl", INEWCL, TOKI1),
+("casec", ICASEC, TOKI2),
+("indl", IINDL, TOKI3),
+("movpc", IMOVPC, TOKI2),
+("tcmp", ITCMP, TOKI2),
+("mnewz", IMNEWZ, TOKI3),
+("cvtrf", ICVTRF, TOKI2),
+("cvtfr", ICVTFR, TOKI2),
+("cvtws", ICVTWS, TOKI2),
+("cvtsw", ICVTSW, TOKI2),
+("lsrw", ILSRW, TOKI3),
+("lsrl", ILSRL, TOKI3),
+("eclr", IECLR, TOKI0),
+("newz", INEWZ, TOKI2),
+("newaz", INEWAZ, TOKI3),
+("raise", IRAISE, TOKI1),
+("casel", ICASEL, TOKI2),
+("mulx", IMULX, TOKI3),
+("divx", IDIVX, TOKI3),
+("cvtxx", ICVTXX, TOKI3),
+("mulx0", IMULX0, TOKI3),
+("divx0", IDIVX0, TOKI3),
+("cvtxx0", ICVTXX0, TOKI3),
+("mulx1", IMULX1, TOKI3),
+("divx1", IDIVX1, TOKI3),
+("cvtxx1", ICVTXX1, TOKI3),
+("cvtfx", ICVTFX, TOKI3),
+("cvtxf", ICVTXF, TOKI3),
+("expw", IEXPW, TOKI3),
+("expl", IEXPL, TOKI3),
+("expf", IEXPF, TOKI3),
+("self", ISELF, TOKI1),
+(nil, 0, 0),
 };
 yyexca := array[] of {-1, 1,
 1, -1,
@@ -1444,167 +1444,167 @@ yytoknames: array of string;
 yystates: array of string;
 include "y.debug";
 yydebug: con 1;
-YYLAST:	con 561;
+YYLAST: con 561;
 yyact := array[] of {
-64,  59, 107,  65, 162, 161,  31, 160, 158,  34,
-42,  43,  44,  45, 156,  47,  48,  33,  50,  51,
-52,  30,  32,  54,  55, 148,  39,  38,  63,  66,
-67, 105, 100,  70,  99,  36,  98,  96,  90,  69,
-57, 172,  85,  81,  80,  79,  77,  78,  72,  73,
-74,  75,  76, 165, 163, 126, 151,  61,  58,  53,
-49, 101,  60,  41, 103,  40,  46, 102, 143, 144,
-106,  56, 108, 109, 110, 111, 112, 113, 153, 152,
-116, 117, 118,   7, 115, 114, 119, 108, 108, 120,
-121, 127, 128, 129, 130,   6, 132, 133, 134, 135,
-136, 131, 137,   1, 140, 103,  35, 145, 142, 146,
-29,  28,  27,  26,  68, 149, 150,   5,   8,   9,
-10,  11,  12,  13,  14,  16,  15,  17,  18,  19,
-20,  21,  22,  23,  24,  25,   4,  74,  75,  76,
-159,  62, 138, 125,   2,  82,  83,  84,   3, 164,
-0, 122,  29,  28,  27,  26, 166, 167, 168,   0,
-169,  81,  80,  79,  77,  78,  72,  73,  74,  75,
-76,   0, 173, 124, 123, 175,   0, 177,  81,  80,
-79,  77,  78,  72,  73,  74,  75,  76,  39,  38,
-0,   0,  39,  38,  63,   0,   0,  36, 143, 144,
-0,  36,   0, 141,  81,  80,  79,  77,  78,  72,
-73,  74,  75,  76,  72,  73,  74,  75,  76,  37,
-104,   0,   0,  61,   0,  41,   0,  40, 139,  41,
-0,  40,  81,  80,  79,  77,  78,  72,  73,  74,
-75,  76,   0,   0, 176,  81,  80,  79,  77,  78,
-72,  73,  74,  75,  76,  81,  80,  79,  77,  78,
-72,  73,  74,  75,  76,  77,  78,  72,  73,  74,
-75,  76, 174,  81,  80,  79,  77,  78,  72,  73,
-74,  75,  76,   0,   0, 171,  80,  79,  77,  78,
-72,  73,  74,  75,  76, 170,  81,  80,  79,  77,
-78,  72,  73,  74,  75,  76,   0,   0,   0,   0,
-0,   0,   0, 157,  81,  80,  79,  77,  78,  72,
-73,  74,  75,  76,  81,  80,  79,  77,  78,  72,
-73,  74,  75,  76,   0,   0, 155,  81,  80,  79,
-77,  78,  72,  73,  74,  75,  76,   0,   0,   0,
-0,   0,   0,   0, 154,  79,  77,  78,  72,  73,
-74,  75,  76,   0, 147,  81,  80,  79,  77,  78,
-72,  73,  74,  75,  76,   0,   0,  97,  81,  80,
-79,  77,  78,  72,  73,  74,  75,  76,  81,  80,
-79,  77,  78,  72,  73,  74,  75,  76,   0,   0,
-0,   0,   0,   0,   0,  95,  81,  80,  79,  77,
-78,  72,  73,  74,  75,  76,   0,   0,  94,   0,
-0,   0,   0,   0,   0,   0,   0,   0,  93,  81,
-80,  79,  77,  78,  72,  73,  74,  75,  76,   0,
-0,   0,   0,   0,   0,   0,  92,  81,  80,  79,
-77,  78,  72,  73,  74,  75,  76,  81,  80,  79,
-77,  78,  72,  73,  74,  75,  76,   0,   0,  91,
-81,  80,  79,  77,  78,  72,  73,  74,  75,  76,
-0,   0,   0,   0,   0,   0,   0,  89,   0,   0,
-0,   0,   0,   0,   0,   0,   0,  88,  81,  80,
-79,  77,  78,  72,  73,  74,  75,  76,   0,   0,
-87,  81,  80,  79,  77,  78,  72,  73,  74,  75,
-76,  39,  38,   0,   0,   0,   0,   0,   0,   0,
-36,   0,   0,   0,   0,   0,   0,   0,  86,  81,
-80,  79,  77,  78,  72,  73,  74,  75,  76,   0,
-0,  71,  37,   0,   0,   0,   0,   0,  41,   0,
+64, 59, 107, 65, 162, 161, 31, 160, 158, 34,
+42, 43, 44, 45, 156, 47, 48, 33, 50, 51,
+52, 30, 32, 54, 55, 148, 39, 38, 63, 66,
+67, 105, 100, 70, 99, 36, 98, 96, 90, 69,
+57, 172, 85, 81, 80, 79, 77, 78, 72, 73,
+74, 75, 76, 165, 163, 126, 151, 61, 58, 53,
+49, 101, 60, 41, 103, 40, 46, 102, 143, 144,
+106, 56, 108, 109, 110, 111, 112, 113, 153, 152,
+116, 117, 118, 7, 115, 114, 119, 108, 108, 120,
+121, 127, 128, 129, 130, 6, 132, 133, 134, 135,
+136, 131, 137, 1, 140, 103, 35, 145, 142, 146,
+29, 28, 27, 26, 68, 149, 150, 5, 8, 9,
+10, 11, 12, 13, 14, 16, 15, 17, 18, 19,
+20, 21, 22, 23, 24, 25, 4, 74, 75, 76,
+159, 62, 138, 125, 2, 82, 83, 84, 3, 164,
+0, 122, 29, 28, 27, 26, 166, 167, 168, 0,
+169, 81, 80, 79, 77, 78, 72, 73, 74, 75,
+76, 0, 173, 124, 123, 175, 0, 177, 81, 80,
+79, 77, 78, 72, 73, 74, 75, 76, 39, 38,
+0, 0, 39, 38, 63, 0, 0, 36, 143, 144,
+0, 36, 0, 141, 81, 80, 79, 77, 78, 72,
+73, 74, 75, 76, 72, 73, 74, 75, 76, 37,
+104, 0, 0, 61, 0, 41, 0, 40, 139, 41,
+0, 40, 81, 80, 79, 77, 78, 72, 73, 74,
+75, 76, 0, 0, 176, 81, 80, 79, 77, 78,
+72, 73, 74, 75, 76, 81, 80, 79, 77, 78,
+72, 73, 74, 75, 76, 77, 78, 72, 73, 74,
+75, 76, 174, 81, 80, 79, 77, 78, 72, 73,
+74, 75, 76, 0, 0, 171, 80, 79, 77, 78,
+72, 73, 74, 75, 76, 170, 81, 80, 79, 77,
+78, 72, 73, 74, 75, 76, 0, 0, 0, 0,
+0, 0, 0, 157, 81, 80, 79, 77, 78, 72,
+73, 74, 75, 76, 81, 80, 79, 77, 78, 72,
+73, 74, 75, 76, 0, 0, 155, 81, 80, 79,
+77, 78, 72, 73, 74, 75, 76, 0, 0, 0,
+0, 0, 0, 0, 154, 79, 77, 78, 72, 73,
+74, 75, 76, 0, 147, 81, 80, 79, 77, 78,
+72, 73, 74, 75, 76, 0, 0, 97, 81, 80,
+79, 77, 78, 72, 73, 74, 75, 76, 81, 80,
+79, 77, 78, 72, 73, 74, 75, 76, 0, 0,
+0, 0, 0, 0, 0, 95, 81, 80, 79, 77,
+78, 72, 73, 74, 75, 76, 0, 0, 94, 0,
+0, 0, 0, 0, 0, 0, 0, 0, 93, 81,
+80, 79, 77, 78, 72, 73, 74, 75, 76, 0,
+0, 0, 0, 0, 0, 0, 92, 81, 80, 79,
+77, 78, 72, 73, 74, 75, 76, 81, 80, 79,
+77, 78, 72, 73, 74, 75, 76, 0, 0, 91,
+81, 80, 79, 77, 78, 72, 73, 74, 75, 76,
+0, 0, 0, 0, 0, 0, 0, 89, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 88, 81, 80,
+79, 77, 78, 72, 73, 74, 75, 76, 0, 0,
+87, 81, 80, 79, 77, 78, 72, 73, 74, 75,
+76, 39, 38, 0, 0, 0, 0, 0, 0, 0,
+36, 0, 0, 0, 0, 0, 0, 0, 86, 81,
+80, 79, 77, 78, 72, 73, 74, 75, 76, 0,
+0, 71, 37, 0, 0, 0, 0, 0, 41, 0,
 40,
 };
 yypact := array[] of {
--1000,-1000,  96,-1000, -22, -23,-1000,-1000, 512, 512,
-512, 512, 512,  26, 512, 512,  20, 512, 512, 512,
--1000,  19, 512, 512,  29,  16,  17,  17,  17,-1000,
-138,  -5, 512,-1000, 507,-1000,-1000,-1000, 512, 512,
-512, 512, 494, 466, 453, 443,  -6, 425, 402,-1000,
-384, 374, 361,  -7, 535, 333,  -8, -10,-1000, -12,
+-1000,-1000, 96,-1000, -22, -23,-1000,-1000, 512, 512,
+512, 512, 512, 26, 512, 512, 20, 512, 512, 512,
+-1000, 19, 512, 512, 29, 16, 17, 17, 17,-1000,
+138, -5, 512,-1000, 507,-1000,-1000,-1000, 512, 512,
+512, 512, 494, 466, 453, 443, -6, 425, 402,-1000,
+384, 374, 361, -7, 535, 333, -8, -10,-1000, -12,
 512,-1000,-1000, 512, 174,-1000, -13,-1000,-1000, 512,
-535, 512, 512, 512, 512, 512, 512,  78,  76, 512,
-512, 512,-1000,-1000,-1000,  39, 512, 512, 133,  13,
+535, 512, 512, 512, 512, 512, 512, 78, 76, 512,
+512, 512,-1000,-1000,-1000, 39, 512, 512, 133, 13,
 512, 512, 512, 512, -23, 512, 512, 512, 512, 512,
-183, 535,-1000, 157, 179,  17, 320, -19, 535, 126,
+183, 535,-1000, 157, 179, 17, 320, -19, 535, 126,
 126,-1000,-1000,-1000, 512, 512, 258, 349, 281,-1000,
--19, -19,-1000,-1000,-1000,  38,-1000, 535, 310, 292,
+-19, -19,-1000,-1000,-1000, 38,-1000, 535, 310, 292,
 535, -30, 535, 535, 269, 535, 535,-1000, -36, 512,
--1000,  49, -40, -42, -43,-1000,-1000,  12, 512, 205,
-205,-1000,-1000,-1000,  11, 512, 512, 512,  17, 535,
+-1000, 49, -40, -42, -43,-1000,-1000, 12, 512, 205,
+205,-1000,-1000,-1000, 11, 512, 512, 512, 17, 535,
 -1000,-1000,-1000,-1000, 535,-1000, 251, 535, 241,-1000,
 -1, 512,-1000, 228, 512, 200, 512, 535,
 };
 yypgo := array[] of {
-0, 148, 144,  83, 106,   0,   6,   1, 142, 141,
-3,   2, 109, 103,  95,
+0, 148, 144, 83, 106, 0, 6, 1, 142, 141,
+3, 2, 109, 103, 95,
 };
 yyr1 := array[] of {
-0,  13,   2,   2,   1,   1,   1,   1,   6,   6,
-12,  12,  11,  11,   3,   3,   3,   3,   3,  14,
-14,  14,  14,  14,  14,  14,  14,  14,  14,  14,
-14,  14,  14,  14,  14,  14,  14,  14,  14,  14,
-14,  14,  14,   8,   8,   7,   7,   7,   9,   9,
-9,  10,  10,   4,   4,   4,   4,   4,   4,   5,
-5,   5,   5,   5,   5,   5,   5,   5,   5,   5,
+0, 13, 2, 2, 1, 1, 1, 1, 6, 6,
+12, 12, 11, 11, 3, 3, 3, 3, 3, 14,
+14, 14, 14, 14, 14, 14, 14, 14, 14, 14,
+14, 14, 14, 14, 14, 14, 14, 14, 14, 14,
+14, 14, 14, 8, 8, 7, 7, 7, 9, 9,
+9, 10, 10, 4, 4, 4, 4, 4, 4, 5,
+5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
 };
 yyr2 := array[] of {
-0,   1,   0,   2,   3,   5,   1,   1,   2,   1,
-0,   2,   1,   3,   4,   6,   4,   2,   1,   4,
-4,   4,   4,   4,   4,   5,   5,   5,   4,   4,
-6,   8,   2,   4,   6,   4,   1,   4,   2,  12,
-4,   4,   2,   2,   1,   2,   1,   1,   2,   4,
-1,   4,   4,   1,   1,   2,   2,   2,   3,   1,
-3,   3,   3,   3,   3,   4,   4,   3,   3,   3,
+0, 1, 0, 2, 3, 5, 1, 1, 2, 1,
+0, 2, 1, 3, 4, 6, 4, 2, 1, 4,
+4, 4, 4, 4, 4, 5, 5, 5, 4, 4,
+6, 8, 2, 4, 6, 4, 1, 4, 2, 12,
+4, 4, 2, 2, 1, 2, 1, 1, 2, 4,
+1, 4, 4, 1, 1, 2, 2, 2, 3, 1,
+3, 3, 3, 3, 3, 4, 4, 3, 3, 3,
 };
 yychk := array[] of {
--1000, -13,  -2,  -1,  40,  21, -14,  -3,  22,  23,
-24,  25,  26,  27,  28,  30,  29,  31,  32,  33,
-34,  35,  36,  37,  38,  39,  17,  16,  15,  14,
-43,  -6,  45,  40,  -5,  -4,  18,  40,  10,   9,
-48,  46,  -5,  -5,  -5,  -5,  40,  -5,  -5,  40,
--5,  -5,  -5,  40,  -5,  -5,  42,  11,  42,  -7,
-45,  40,  -9,  11,  -5, -10,  -7,  -7,  -3,  44,
--5,  44,   9,  10,  11,  12,  13,   7,   8,   6,
-5,   4,  -4,  -4,  -4,  -5,  44,  44,  44,  44,
-44,  44,  44,  44,  44,  44,  44,  44,  44,  44,
-44,  -5, -10,  -5,  46,  44,  -5, -11,  -5,  -5,
--5,  -5,  -5,  -5,   7,   8,  -5,  -5,  -5,  47,
--11, -11,  18,  41,  40,  10,  42,  -5,  -5,  -5,
--5,  -6,  -5,  -5,  -5,  -5,  -5,  -7,  -8,  45,
--10,  46, -10,  19,  20,  -7, -12,  44,  44,  -5,
--5,  18,  41,  40,  44,  44,  44,  44,  44,  -5,
-47,  47,  47,  42,  -5,  42,  -5,  -5,  -5,  -7,
-44,  44,  42,  -5,  44,  -5,  44,  -5,
+-1000, -13, -2, -1, 40, 21, -14, -3, 22, 23,
+24, 25, 26, 27, 28, 30, 29, 31, 32, 33,
+34, 35, 36, 37, 38, 39, 17, 16, 15, 14,
+43, -6, 45, 40, -5, -4, 18, 40, 10, 9,
+48, 46, -5, -5, -5, -5, 40, -5, -5, 40,
+-5, -5, -5, 40, -5, -5, 42, 11, 42, -7,
+45, 40, -9, 11, -5, -10, -7, -7, -3, 44,
+-5, 44, 9, 10, 11, 12, 13, 7, 8, 6,
+5, 4, -4, -4, -4, -5, 44, 44, 44, 44,
+44, 44, 44, 44, 44, 44, 44, 44, 44, 44,
+44, -5, -10, -5, 46, 44, -5, -11, -5, -5,
+-5, -5, -5, -5, 7, 8, -5, -5, -5, 47,
+-11, -11, 18, 41, 40, 10, 42, -5, -5, -5,
+-5, -6, -5, -5, -5, -5, -5, -7, -8, 45,
+-10, 46, -10, 19, 20, -7, -12, 44, 44, -5,
+-5, 18, 41, 40, 44, 44, 44, 44, 44, -5,
+47, 47, 47, 42, -5, 42, -5, -5, -5, -7,
+44, 44, 42, -5, 44, -5, 44, -5,
 };
 yydef := array[] of {
-2,  -2,   1,   3,   0,   0,   6,   7,   0,   0,
-0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
-36,   0,   0,   0,   0,   0,   0,   0,   0,  18,
-0,   0,   0,   9,   0,  59,  53,  54,   0,   0,
-0,   0,   0,   0,   0,   0,   0,   0,   0,  32,
-0,   0,   0,   0,  38,   0,   0,   0,  42,   0,
-0,  -2,  47,   0,   0,  50,   0,  17,   4,   0,
-8,   0,   0,   0,   0,   0,   0,   0,   0,   0,
-0,   0,  55,  56,  57,   0,   0,   0,   0,   0,
-0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
-0,  45,  48,   0,   0,   0,  10,  19,  12,  60,
-61,  62,  63,  64,   0,   0,  67,  68,  69,  58,
-20,  21,  22,  23,  24,   0,  28,  29,   0,   0,
-33,   0,  35,  37,   0,  40,  41,  14,   0,   0,
--2,   0,   0,   0,   0,  16,   5,   0,   0,  65,
-66,  25,  26,  27,   0,   0,   0,   0,   0,  -2,
-49,  51,  52,  11,  13,  30,   0,  34,   0,  15,
-0,   0,  31,   0,   0,   0,   0,  39,
+2, -2, 1, 3, 0, 0, 6, 7, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+36, 0, 0, 0, 0, 0, 0, 0, 0, 18,
+0, 0, 0, 9, 0, 59, 53, 54, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0, 0, 32,
+0, 0, 0, 0, 38, 0, 0, 0, 42, 0,
+0, -2, 47, 0, 0, 50, 0, 17, 4, 0,
+8, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 55, 56, 57, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+0, 45, 48, 0, 0, 0, 10, 19, 12, 60,
+61, 62, 63, 64, 0, 0, 67, 68, 69, 58,
+20, 21, 22, 23, 24, 0, 28, 29, 0, 0,
+33, 0, 35, 37, 0, 40, 41, 14, 0, 0,
+-2, 0, 0, 0, 0, 16, 5, 0, 0, 65,
+66, 25, 26, 27, 0, 0, 0, 0, 0, -2,
+49, 51, 52, 11, 13, 30, 0, 34, 0, 15,
+0, 0, 31, 0, 0, 0, 0, 39,
 };
 yytok1 := array[] of {
-1,   3,   3,   3,   3,   3,   3,   3,   3,   3,
-3,   3,   3,   3,   3,   3,   3,   3,   3,   3,
-3,   3,   3,   3,   3,   3,   3,   3,   3,   3,
-3,   3,   3,   3,   3,   3,  45,  13,   6,   3,
-46,  47,  11,   9,  44,  10,   3,  12,   3,   3,
-3,   3,   3,   3,   3,   3,   3,   3,  43,   3,
-7,   3,   8,   3,   3,   3,   3,   3,   3,   3,
-3,   3,   3,   3,   3,   3,   3,   3,   3,   3,
-3,   3,   3,   3,   3,   3,   3,   3,   3,   3,
-3,   3,   3,   3,   5,   3,   3,   3,   3,   3,
-3,   3,   3,   3,   3,   3,   3,   3,   3,   3,
-3,   3,   3,   3,   3,   3,   3,   3,   3,   3,
-3,   3,   3,   3,   4,   3,  48,
+1, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+3, 3, 3, 3, 3, 3, 45, 13, 6, 3,
+46, 47, 11, 9, 44, 10, 3, 12, 3, 3,
+3, 3, 3, 3, 3, 3, 3, 3, 43, 3,
+7, 3, 8, 3, 3, 3, 3, 3, 3, 3,
+3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+3, 3, 3, 3, 5, 3, 3, 3, 3, 3,
+3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+3, 3, 3, 3, 4, 3, 48,
 };
 yytok2 := array[] of {
-2,   3,  14,  15,  16,  17,  18,  19,  20,  21,
-22,  23,  24,  25,  26,  27,  28,  29,  30,  31,
-32,  33,  34,  35,  36,  37,  38,  39,  40,  41,
+2, 3, 14, 15, 16, 17, 18, 19, 20, 21,
+22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+32, 33, 34, 35, 36, 37, 38, 39, 40, 41,
 42,
 };
 yytok3 := array[] of {
@@ -1614,10 +1614,10 @@ YYSys: module
 {
 FD: adt
 {
-fd:	int;
+fd: int;
 };
-fildes:		fn(fd: int): ref FD;
-fprint:		fn(fd: ref FD, s: string, *): int;
+fildes: fn(fd: int): ref FD;
+fprint: fn(fd: ref FD, s: string, *): int;
 };
 yysys: YYSys;
 yystderr: ref YYSys->FD;
@@ -1655,7 +1655,7 @@ break;
 }
 }
 if(c == 0)
-c = yytok2[1];	# unknown char
+c = yytok2[1]; # unknown char
 }
 if(yydebug >= 3)
 yysys->fprint(yystderr, "lex %.4ux %s\n", yychar, yytokname(c));
@@ -1676,8 +1676,8 @@ yys := array[YYMAXDEPTH] of YYS;
 yyval: YYSTYPE;
 yystate := 0;
 yychar := -1;
-yynerrs := 0;		# number of errors
-yyerrflag := 0;		# error recovery flag
+yynerrs := 0; # number of errors
+yyerrflag := 0; # error recovery flag
 yyp := -1;
 yyn := 0;
 yystack:
@@ -1692,7 +1692,7 @@ yys[yyp].yys = yystate;
 yys[yyp].yyv = yyval;
 for(;;){
 yyn = yypact[yystate];
-if(yyn > YYFLAG) {	# simple state
+if(yyn > YYFLAG) { # simple state
 if(yychar < 0)
 yychar = yylex1(yylex);
 yyn += yychar;
@@ -1751,7 +1751,7 @@ yyerrflag = 3;
 while(yyp >= 0) {
 yyn = yypact[yys[yyp].yys] + YYERRCODE;
 if(yyn >= 0 && yyn < YYLAST) {
-yystate = yyact[yyn];  # simulate a shift of "error"
+yystate = yyact[yyn]; # simulate a shift of "error"
 if(yychk[yystate] == YYERRCODE)
 continue yystack;
 }
@@ -1780,7 +1780,7 @@ if(yydebug >= 2)
 yysys->fprint(yystderr, "reduce %d in:\n\t%s", yyn, yystatname(yystate));
 yypt := yyp;
 yyp -= yyr2[yyn];
-#		yyval = yys[yyp+1].yyv;
+# yyval = yys[yyp+1].yyv;
 yym := yyn;
 # consult goto table to find next state
 yyn = yyr1[yyn];
@@ -1790,15 +1790,15 @@ if(yyj >= YYLAST || yychk[yystate=yyact[yyj]] != -yyn)
 yystate = yyact[yyg];
 case yym {
 1=>
-#line	178	"asm.y"
+#line 178 "asm.y"
 {
 assem(yys[yypt-0].yyv.inst);
 }
 2=>
-#line	184	"asm.y"
+#line 184 "asm.y"
 { yyval.inst = nil; }
 3=>
-#line	186	"asm.y"
+#line 186 "asm.y"
 {
 if(yys[yypt-0].yyv.inst != nil) {
 yys[yypt-0].yyv.inst.link = yys[yypt-1].yyv.inst;
@@ -1808,62 +1808,62 @@ else
 yyval.inst = yys[yypt-1].yyv.inst;
 }
 4=>
-#line	197	"asm.y"
+#line 197 "asm.y"
 {
 yys[yypt-0].yyv.inst.sym = yys[yypt-2].yyv.sym;
 yyval.inst = yys[yypt-0].yyv.inst;
 }
 5=>
-#line	202	"asm.y"
+#line 202 "asm.y"
 {
 heap(int yys[yypt-3].yyv.ival, int yys[yypt-1].yyv.ival, yys[yypt-0].yyv.str);
 yyval.inst = nil;
 }
 6=>
-#line	207	"asm.y"
+#line 207 "asm.y"
 {
 yyval.inst = nil;
 }
 7=>
 yyval.inst = yys[yyp+1].yyv.inst;
 8=>
-#line	214	"asm.y"
+#line 214 "asm.y"
 {
 yyval.ival = yys[yypt-0].yyv.ival;
 }
 9=>
-#line	218	"asm.y"
+#line 218 "asm.y"
 {
 yys[yypt-0].yyv.sym.value = heapid++;
 yyval.ival = big yys[yypt-0].yyv.sym.value;
 }
 10=>
-#line	225	"asm.y"
+#line 225 "asm.y"
 { yyval.str = nil; }
 11=>
-#line	227	"asm.y"
+#line 227 "asm.y"
 {
 yyval.str = yys[yypt-0].yyv.str;
 }
 12=>
-#line	233	"asm.y"
+#line 233 "asm.y"
 {
 yyval.listv = newi(yys[yypt-0].yyv.ival, nil);
 }
 13=>
-#line	237	"asm.y"
+#line 237 "asm.y"
 {
 yyval.listv = newi(yys[yypt-0].yyv.ival, yys[yypt-2].yyv.listv);
 }
 14=>
-#line	243	"asm.y"
+#line 243 "asm.y"
 {
 yyval.inst = ai(yys[yypt-3].yyv.op);
 yyval.inst.src = yys[yypt-2].yyv.addr;
 yyval.inst.dst = yys[yypt-0].yyv.addr;
 }
 15=>
-#line	249	"asm.y"
+#line 249 "asm.y"
 {
 yyval.inst = ai(yys[yypt-5].yyv.op);
 yyval.inst.src = yys[yypt-4].yyv.addr;
@@ -1871,50 +1871,50 @@ yyval.inst.reg = yys[yypt-2].yyv.addr;
 yyval.inst.dst = yys[yypt-0].yyv.addr;
 }
 16=>
-#line	256	"asm.y"
+#line 256 "asm.y"
 {
 yyval.inst = ai(yys[yypt-3].yyv.op);
 yyval.inst.src = yys[yypt-2].yyv.addr;
 yyval.inst.dst = yys[yypt-0].yyv.addr;
 }
 17=>
-#line	262	"asm.y"
+#line 262 "asm.y"
 {
 yyval.inst = ai(yys[yypt-1].yyv.op);
 yyval.inst.dst = yys[yypt-0].yyv.addr;
 }
 18=>
-#line	267	"asm.y"
+#line 267 "asm.y"
 {
 yyval.inst = ai(yys[yypt-0].yyv.op);
 }
 19=>
-#line	273	"asm.y"
+#line 273 "asm.y"
 {
 data(DEFB, yys[yypt-2].yyv.ival, yys[yypt-0].yyv.listv);
 }
 20=>
-#line	277	"asm.y"
+#line 277 "asm.y"
 {
 data(DEFW, yys[yypt-2].yyv.ival, yys[yypt-0].yyv.listv);
 }
 21=>
-#line	281	"asm.y"
+#line 281 "asm.y"
 {
 data(DEFL, yys[yypt-2].yyv.ival, yys[yypt-0].yyv.listv);
 }
 22=>
-#line	285	"asm.y"
+#line 285 "asm.y"
 {
 data(DEFF, yys[yypt-2].yyv.ival, newb(dtocanon(real yys[yypt-0].yyv.ival), nil));
 }
 23=>
-#line	289	"asm.y"
+#line 289 "asm.y"
 {
 data(DEFF, yys[yypt-2].yyv.ival, newb(dtocanon(yys[yypt-0].yyv.fval), nil));
 }
 24=>
-#line	293	"asm.y"
+#line 293 "asm.y"
 {
 case yys[yypt-0].yyv.sym.name {
 "Inf" or "Infinity" =>
@@ -1928,17 +1928,17 @@ diag(sys->sprint("bad value for real: %s", yys[yypt-0].yyv.sym.name));
 }
 }
 25=>
-#line	306	"asm.y"
+#line 306 "asm.y"
 {
 data(DEFF, yys[yypt-3].yyv.ival, newb(dtocanon(-real yys[yypt-0].yyv.ival), nil));
 }
 26=>
-#line	310	"asm.y"
+#line 310 "asm.y"
 {
 data(DEFF, yys[yypt-3].yyv.ival, newb(dtocanon(-yys[yypt-0].yyv.fval), nil));
 }
 27=>
-#line	314	"asm.y"
+#line 314 "asm.y"
 {
 case yys[yypt-0].yyv.sym.name {
 "Inf" or "Infinity" =>
@@ -1949,12 +1949,12 @@ diag(sys->sprint("bad value for real: %s", yys[yypt-0].yyv.sym.name));
 }
 }
 28=>
-#line	324	"asm.y"
+#line 324 "asm.y"
 {
 data(DEFS, yys[yypt-2].yyv.ival, news(yys[yypt-0].yyv.str, nil));
 }
 29=>
-#line	328	"asm.y"
+#line 328 "asm.y"
 {
 if(yys[yypt-2].yyv.sym.ds != 0)
 diag(sys->sprint("%s declared twice", yys[yypt-2].yyv.sym.name));
@@ -1963,17 +1963,17 @@ yys[yypt-2].yyv.sym.value = dseg;
 dseg += int yys[yypt-0].yyv.ival;
 }
 30=>
-#line	336	"asm.y"
+#line 336 "asm.y"
 {
 ext(int yys[yypt-4].yyv.ival, int yys[yypt-2].yyv.ival, yys[yypt-0].yyv.str);
 }
 31=>
-#line	340	"asm.y"
+#line 340 "asm.y"
 {
 mklink(int yys[yypt-6].yyv.ival, int yys[yypt-4].yyv.ival, int yys[yypt-2].yyv.ival, yys[yypt-0].yyv.str);
 }
 32=>
-#line	344	"asm.y"
+#line 344 "asm.y"
 {
 if(amodule != nil)
 diag(sys->sprint("this module already defined as %s", yys[yypt-0].yyv.sym.name));
@@ -1981,7 +1981,7 @@ else
 amodule = yys[yypt-0].yyv.sym;
 }
 33=>
-#line	351	"asm.y"
+#line 351 "asm.y"
 {
 if(pcentry >= 0)
 diag(sys->sprint("this module already has entry point %d, %d" , pcentry, dentry));
@@ -1989,52 +1989,52 @@ pcentry = int yys[yypt-2].yyv.ival;
 dentry = int yys[yypt-0].yyv.ival;
 }
 34=>
-#line	358	"asm.y"
+#line 358 "asm.y"
 {
 data(DEFA, yys[yypt-4].yyv.ival, newa(int yys[yypt-2].yyv.ival, int yys[yypt-0].yyv.ival));
 }
 35=>
-#line	362	"asm.y"
+#line 362 "asm.y"
 {
 data(DIND, yys[yypt-2].yyv.ival, newa(int yys[yypt-0].yyv.ival, 0));
 }
 36=>
-#line	366	"asm.y"
+#line 366 "asm.y"
 {
 data(DAPOP, big 0, newa(0, 0));
 }
 37=>
-#line	370	"asm.y"
+#line 370 "asm.y"
 {
 ldts(int yys[yypt-0].yyv.ival);
 }
 38=>
-#line	374	"asm.y"
+#line 374 "asm.y"
 {
 excs(int yys[yypt-0].yyv.ival);
 }
 39=>
-#line	378	"asm.y"
+#line 378 "asm.y"
 {
 exc(int yys[yypt-10].yyv.ival, int yys[yypt-8].yyv.ival, int yys[yypt-6].yyv.ival, int yys[yypt-4].yyv.ival, int yys[yypt-2].yyv.ival, int yys[yypt-0].yyv.ival);
 }
 40=>
-#line	382	"asm.y"
+#line 382 "asm.y"
 {
 etab(yys[yypt-2].yyv.str, int yys[yypt-0].yyv.ival);
 }
 41=>
-#line	386	"asm.y"
+#line 386 "asm.y"
 {
 etab(nil, int yys[yypt-0].yyv.ival);
 }
 42=>
-#line	390	"asm.y"
+#line 390 "asm.y"
 {
 source(yys[yypt-0].yyv.str);
 }
 43=>
-#line	396	"asm.y"
+#line 396 "asm.y"
 {
 yyval.addr = aa(yys[yypt-0].yyv.ival);
 yyval.addr.mode = AXIMM;
@@ -2042,7 +2042,7 @@ if(yyval.addr.val > 16r7FFF || yyval.addr.val < -16r8000)
 diag(sys->sprint("immediate %d too large for middle operand", yyval.addr.val));
 }
 44=>
-#line	403	"asm.y"
+#line 403 "asm.y"
 {
 if(yys[yypt-0].yyv.addr.mode == AMP)
 yys[yypt-0].yyv.addr.mode = AXINM;
@@ -2055,13 +2055,13 @@ diag(sys->sprint("register offset %d(fp) too large", yys[yypt-0].yyv.addr.val));
 yyval.addr = yys[yypt-0].yyv.addr;
 }
 45=>
-#line	417	"asm.y"
+#line 417 "asm.y"
 {
 yyval.addr = aa(yys[yypt-0].yyv.ival);
 yyval.addr.mode = AIMM;
 }
 46=>
-#line	422	"asm.y"
+#line 422 "asm.y"
 {
 yyval.addr = aa(big 0);
 yyval.addr.sym = yys[yypt-0].yyv.sym;
@@ -2069,13 +2069,13 @@ yyval.addr.sym = yys[yypt-0].yyv.sym;
 47=>
 yyval.addr = yys[yyp+1].yyv.addr;
 48=>
-#line	430	"asm.y"
+#line 430 "asm.y"
 {
 yys[yypt-0].yyv.addr.mode |= AIND;
 yyval.addr = yys[yypt-0].yyv.addr;
 }
 49=>
-#line	435	"asm.y"
+#line 435 "asm.y"
 {
 yys[yypt-1].yyv.addr.mode |= AIND;
 if(yys[yypt-1].yyv.addr.val & 3)
@@ -2091,13 +2091,13 @@ yyval.addr = yys[yypt-1].yyv.addr;
 50=>
 yyval.addr = yys[yyp+1].yyv.addr;
 51=>
-#line	451	"asm.y"
+#line 451 "asm.y"
 {
 yyval.addr = aa(yys[yypt-3].yyv.ival);
 yyval.addr.mode = AMP;
 }
 52=>
-#line	456	"asm.y"
+#line 456 "asm.y"
 {
 yyval.addr = aa(yys[yypt-3].yyv.ival);
 yyval.addr.mode = AFP;
@@ -2105,79 +2105,79 @@ yyval.addr.mode = AFP;
 53=>
 yyval.ival = yys[yyp+1].yyv.ival;
 54=>
-#line	464	"asm.y"
+#line 464 "asm.y"
 {
 yyval.ival = big yys[yypt-0].yyv.sym.value;
 }
 55=>
-#line	468	"asm.y"
+#line 468 "asm.y"
 {
 yyval.ival = -yys[yypt-0].yyv.ival;
 }
 56=>
-#line	472	"asm.y"
+#line 472 "asm.y"
 {
 yyval.ival = yys[yypt-0].yyv.ival;
 }
 57=>
-#line	476	"asm.y"
+#line 476 "asm.y"
 {
 yyval.ival = ~yys[yypt-0].yyv.ival;
 }
 58=>
-#line	480	"asm.y"
+#line 480 "asm.y"
 {
 yyval.ival = yys[yypt-1].yyv.ival;
 }
 59=>
 yyval.ival = yys[yyp+1].yyv.ival;
 60=>
-#line	487	"asm.y"
+#line 487 "asm.y"
 {
 yyval.ival = yys[yypt-2].yyv.ival + yys[yypt-0].yyv.ival;
 }
 61=>
-#line	491	"asm.y"
+#line 491 "asm.y"
 {
 yyval.ival = yys[yypt-2].yyv.ival - yys[yypt-0].yyv.ival;
 }
 62=>
-#line	495	"asm.y"
+#line 495 "asm.y"
 {
 yyval.ival = yys[yypt-2].yyv.ival * yys[yypt-0].yyv.ival;
 }
 63=>
-#line	499	"asm.y"
+#line 499 "asm.y"
 {
 yyval.ival = yys[yypt-2].yyv.ival / yys[yypt-0].yyv.ival;
 }
 64=>
-#line	503	"asm.y"
+#line 503 "asm.y"
 {
 yyval.ival = yys[yypt-2].yyv.ival % yys[yypt-0].yyv.ival;
 }
 65=>
-#line	507	"asm.y"
+#line 507 "asm.y"
 {
 yyval.ival = yys[yypt-3].yyv.ival << int yys[yypt-0].yyv.ival;
 }
 66=>
-#line	511	"asm.y"
+#line 511 "asm.y"
 {
 yyval.ival = yys[yypt-3].yyv.ival >> int yys[yypt-0].yyv.ival;
 }
 67=>
-#line	515	"asm.y"
+#line 515 "asm.y"
 {
 yyval.ival = yys[yypt-2].yyv.ival & yys[yypt-0].yyv.ival;
 }
 68=>
-#line	519	"asm.y"
+#line 519 "asm.y"
 {
 yyval.ival = yys[yypt-2].yyv.ival ^ yys[yypt-0].yyv.ival;
 }
 69=>
-#line	523	"asm.y"
+#line 523 "asm.y"
 {
 yyval.ival = yys[yypt-2].yyv.ival | yys[yypt-0].yyv.ival;
 }

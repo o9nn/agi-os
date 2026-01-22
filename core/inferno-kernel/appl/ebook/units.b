@@ -2,7 +2,7 @@ implement Units;
 include "sys.m";
 sys: Sys;
 include "units.m";
-Dpi:	con 100;			# pixels per inch on an average display (pinched from tk)
+Dpi: con 100; # pixels per inch on an average display (pinched from tk)
 init()
 {
 sys = load Sys Sys->PATH;

@@ -20,7 +20,7 @@
 #include <sys/stat.h>
 #include <sys/signal.h>
 #include <fcntl.h>
-#define SERVER_KILL_TIMEOUT_SECS    20
+#define SERVER_KILL_TIMEOUT_SECS 20
 static void main_deinit(void);
 static const char *test_message1 =
 "Subject: Test message\r\n"
@@ -1116,7 +1116,7 @@ smtp_submit_set = *submit_set;
 smtp_submit_set.submission_timeout = 5;
 test_smtp_submit_input_init(&smtp_input);
 smtp_submit_set.submission_host =
-t_strdup_printf("127.0.0.1:%u",  bind_ports[0]);
+t_strdup_printf("127.0.0.1:%u", bind_ports[0]);
 smtp_submit1 = smtp_submit_init_simple(
 &smtp_input, &smtp_submit_set, &((struct smtp_address){
 .localpart = "sender",
@@ -1131,7 +1131,7 @@ smtp_submit_run_async(
 smtp_submit1, test_client_parallel_delivery_callback, ctx);
 test_smtp_submit_input_init(&smtp_input);
 smtp_submit_set.submission_host =
-t_strdup_printf("127.0.0.1:%u",  bind_ports[1]);
+t_strdup_printf("127.0.0.1:%u", bind_ports[1]);
 smtp_submit2 = smtp_submit_init_simple(
 &smtp_input, &smtp_submit_set, &((struct smtp_address){
 .localpart = "sender",

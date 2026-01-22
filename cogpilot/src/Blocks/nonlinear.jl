@@ -29,13 +29,13 @@ The DeadZone block defines a region of zero output.
 If the input is within `u_min` ... `u_max`, the output is zero. Outside of this zone, the output is a linear function of the input with a slope of 1.
 ```
 y▲
-│     /
-│    /
-u_min │   /
+│ /
+│ /
+u_min │ /
 ─────|──┼──|───────► u
-/   │   u_max
-/    │
-/     │
+/ │ u_max
+/ │
+/ │
 ```
 # Parameters:
 - `u_max`: Upper limit of dead zone

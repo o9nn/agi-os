@@ -2,24 +2,24 @@
 # Occasional references are made to sections and tables in the
 # France Telecom Minitel specification
 #
-# Copyright © 1998 Vita Nuova Limited.  All rights reserved.
+# Copyright © 1998 Vita Nuova Limited. All rights reserved.
 #
 include "mdisplay.m";
 disp: MDisplay;
-Rect, Point		: import Draw;
+Rect, Point : import Draw;
 # display character sets
-videotex, semigraphic, french, american	:import MDisplay;
+videotex, semigraphic, french, american :import MDisplay;
 # display foreground colour attributes
 fgBlack, fgBlue, fgRed, fgMagenta,
-fgGreen, fgCyan, fgYellow, fgWhite		:import MDisplay;
+fgGreen, fgCyan, fgYellow, fgWhite :import MDisplay;
 # display background colour attributes
 bgBlack, bgBlue, bgRed, bgMagenta,
-bgGreen, bgCyan, bgYellow, bgWhite	:import MDisplay;
+bgGreen, bgCyan, bgYellow, bgWhite :import MDisplay;
 fgMask, bgMask : import MDisplay;
 # display formatting attributes
-attrB, attrW, attrH, attrP, attrF, attrC, attrL, attrD	:import MDisplay;
+attrB, attrW, attrH, attrP, attrF, attrC, attrL, attrD :import MDisplay;
 # Initial attributes - white on black
-ATTR0:	con fgWhite|bgBlack&~(attrB|attrW|attrH|attrP|attrF|attrC|attrL|attrD);
+ATTR0: con fgWhite|bgBlack&~(attrB|attrW|attrH|attrP|attrF|attrC|attrL|attrD);
 # special features
 Cursor, Scroll, Insert
 : con (1 << iota);
@@ -30,42 +30,42 @@ Siso2022, Siso6429, Stransparent, Sdrcs, Sconceal, Swaitfor
 # Filter states
 FSstart, FSesc, FSsep, FS6429, FS2022: con iota;
 Screen: adt {
-m:		ref Module;			# common attributes
-ctxt:		ref Draw->Context;
-in:		chan of ref Event;		# from the terminal
-image:	ref Draw->Image;		# Mdisplay image
-dispr40, dispr80: Rect;			# 40 and 80 column display region
-oldtmode:	int;					# old terminal mode
-rows:	int;					# number of screen rows (25 for minitel)
-cols:		int;					# number of screen cols (40 or 80)
-cset:		int;					# current display charset
-pos:		Point;				# current writing position (x:1, y:0)
-attr:		int;					# display attribute set
-spec:	int;					# special features
-savepos:	Point;				# `pos' before moving to row zero
-saveattr:	int;					# `attr' before moving to row zero
-savech:	int;					# last character `Put'
-delimit:	int;					# attr changed, make next space a delimiter
-cursor:	int;					# update cursor soon
-state:	int;					# recogniser state
-a0:		int;					# recogniser arg 0
-a1:		int;					# recogniser arg 1
-fstate: int;						# filter state
-fsaved: array of byte;			# filter `chars so far'
-badp: int;						# filter because of bad parameter
-ignoredata: int;					# ignore data from
-init:		fn(s: self ref Screen, ctxt: ref Draw->Context, r40, r80: Rect);
-reset:	fn(s: self ref Screen);
-run:		fn(s: self ref Screen);
-quit:		fn(s: self ref Screen);
-setmode:	fn(s: self ref Screen, tmode: int);
-runstate:	fn(s: self ref Screen, data: array of byte);
-put:		fn(s: self ref Screen, str: string);
-msg:		fn(s: self ref Screen, str: string);
+m: ref Module; # common attributes
+ctxt: ref Draw->Context;
+in: chan of ref Event; # from the terminal
+image: ref Draw->Image; # Mdisplay image
+dispr40, dispr80: Rect; # 40 and 80 column display region
+oldtmode: int; # old terminal mode
+rows: int; # number of screen rows (25 for minitel)
+cols: int; # number of screen cols (40 or 80)
+cset: int; # current display charset
+pos: Point; # current writing position (x:1, y:0)
+attr: int; # display attribute set
+spec: int; # special features
+savepos: Point; # `pos' before moving to row zero
+saveattr: int; # `attr' before moving to row zero
+savech: int; # last character `Put'
+delimit: int; # attr changed, make next space a delimiter
+cursor: int; # update cursor soon
+state: int; # recogniser state
+a0: int; # recogniser arg 0
+a1: int; # recogniser arg 1
+fstate: int; # filter state
+fsaved: array of byte; # filter `chars so far'
+badp: int; # filter because of bad parameter
+ignoredata: int; # ignore data from
+init: fn(s: self ref Screen, ctxt: ref Draw->Context, r40, r80: Rect);
+reset: fn(s: self ref Screen);
+run: fn(s: self ref Screen);
+quit: fn(s: self ref Screen);
+setmode: fn(s: self ref Screen, tmode: int);
+runstate: fn(s: self ref Screen, data: array of byte);
+put: fn(s: self ref Screen, str: string);
+msg: fn(s: self ref Screen, str: string);
 };
 Screen.init(s: self ref Screen, ctxt: ref Draw->Context, r40, r80: Rect)
 {
-disp =  load MDisplay MDisplay->PATH;
+disp = load MDisplay MDisplay->PATH;
 if(disp == nil)
 fatal("can't load the display module: "+MDisplay->PATH);
 s.m = ref Module(0, 0);
@@ -114,17 +114,17 @@ s.spec &= ~Scroll;
 }
 MIXED =>
 case e.a1 {
-MIXED1 =>		# videotex -> mixed
+MIXED1 => # videotex -> mixed
 if(T.mode != Mixed)
 s.setmode(Mixed);
 T.mode = Mixed;
-MIXED2 =>		# mixed -> videotex
+MIXED2 => # mixed -> videotex
 if(T.mode != Videotex)
 s.setmode(Videotex);
 T.mode = Videotex;
 }
 }
-Ccursor =>			# update the cursor soon
+Ccursor => # update the cursor soon
 s.cursor = 1;
 Cindicators =>
 indicators(s);
@@ -160,7 +160,7 @@ refresh();
 }
 send(nil);
 }
-# row0 indicators	(1.2.2)
+# row0 indicators (1.2.2)
 indicators(s: ref Screen)
 {
 col: int;
@@ -203,8 +203,8 @@ ulheight = 2;
 s.pos = Point(1,1);
 s.spec &= ~Cursor;
 Mixed =>
-#		s.cset  = french;
-s.cset  = videotex;
+# s.cset = french;
+s.cset = videotex;
 s.cols = 80;
 dispr = s.dispr80;
 delims = 0;
@@ -225,7 +225,7 @@ fontpath := sprint("/fonts/minitel/f%dx%d", s.cols, s.rows);
 (nil, s.image) = disp->Mode(dispr, s.cols, s.rows, ulheight, delims, fontpath);
 T.setkbmode(tmode);
 }
-disp->Reveal(0);	# concealing enabled (1.2.2)
+disp->Reveal(0); # concealing enabled (1.2.2)
 disp->Cursor(Point(-1,-1));
 s.oldtmode = tmode;
 }
@@ -249,24 +249,24 @@ data = astate(s, data);
 vc0(s: ref Screen, ch: int)
 {
 case ch {
-#	SOH =>							# not in spec, wait for 16r04
-#		s.a0 = 16r04;
-#		s.state = Swaitfor;
+# SOH => # not in spec, wait for 16r04
+# s.a0 = 16r04;
+# s.state = Swaitfor;
 SS2 =>
 s.state = Sss2;
 SYN =>
-s.state = Sss2;					# not in the spec, but acts like SS2
+s.state = Sss2; # not in the spec, but acts like SS2
 ESC =>
 s.state = Sesc;
 SO =>
 s.cset = semigraphic;
-s.attr &= ~(attrH|attrW|attrP);	# 1.2.4.2
-s.attr &= ~attrL;				# 1.2.4.3
+s.attr &= ~(attrH|attrW|attrP); # 1.2.4.2
+s.attr &= ~attrL; # 1.2.4.3
 SI =>
 s.cset = videotex;
-s.attr &= ~attrL;				# 1.2.4.3
-s.attr &= ~(attrH|attrW|attrP);			# some servers seem to assume this too
-SEP or SS3 =>					# 1.2.7
+s.attr &= ~attrL; # 1.2.4.3
+s.attr &= ~(attrH|attrW|attrP); # some servers seem to assume this too
+SEP or SS3 => # 1.2.7
 s.state = Sskip;
 BS =>
 if(s.pos.x == 1) {
@@ -296,7 +296,7 @@ if(s.spec&Scroll)
 scroll(1, 1);
 else
 s.pos.y = 1;
-else if(s.pos.y == 0) {		# restore attributes on leaving row zero
+else if(s.pos.y == 0) { # restore attributes on leaving row zero
 s.pos = s.savepos;
 s.attr = s.saveattr;
 } else
@@ -372,47 +372,47 @@ case ch {
 16r35 or
 16r36 or
 16r37 =>
-s.state = Sskip;				# skip next char unless C0
+s.state = Sskip; # skip next char unless C0
 return;
-16r5b =>						# CSI sequence
+16r5b => # CSI sequence
 s.a0 = s.a1 = 0;
-if(s.pos.y > 0)				# 1.2.5.2
+if(s.pos.y > 0) # 1.2.5.2
 s.state = Scsi0;
 return;
 # foreground colour
-16r40 =>	fg = fgBlack;
-16r41 =>	fg = fgRed;
-16r42 =>	fg = fgGreen;
-16r43 =>	fg = fgYellow;
-16r44 =>	fg = fgBlue;
-16r45 =>	fg = fgMagenta;
-16r46 =>	fg = fgCyan;
-16r47 =>	fg = fgWhite;
+16r40 => fg = fgBlack;
+16r41 => fg = fgRed;
+16r42 => fg = fgGreen;
+16r43 => fg = fgYellow;
+16r44 => fg = fgBlue;
+16r45 => fg = fgMagenta;
+16r46 => fg = fgCyan;
+16r47 => fg = fgWhite;
 # background colour
-16r50 =>	bg = bgBlack;
-16r51 =>	bg = bgRed;
-16r52 =>	bg = bgGreen;
-16r53 =>	bg = bgYellow;
-16r54 =>	bg = bgBlue;
-16r55 =>	bg = bgMagenta;
-16r56 =>	bg = bgCyan;
-16r57 =>	bg = bgWhite;
+16r50 => bg = bgBlack;
+16r51 => bg = bgRed;
+16r52 => bg = bgGreen;
+16r53 => bg = bgYellow;
+16r54 => bg = bgBlue;
+16r55 => bg = bgMagenta;
+16r56 => bg = bgCyan;
+16r57 => bg = bgWhite;
 # flashing
-16r48 =>	s.attr |= attrF;
-16r49 =>	s.attr &= ~attrF;
+16r48 => s.attr |= attrF;
+16r49 => s.attr &= ~attrF;
 # conceal (serial attribute)
-16r58 =>	s.attr |= attrC;
+16r58 => s.attr |= attrC;
 s.delimit = 1;
-16r5f =>	s.attr &= ~attrC;
+16r5f => s.attr &= ~attrC;
 s.delimit = 1;
 # start lining (+separated graphics) (serial attribute)
-16r5a =>	s.attr |= attrL;
+16r5a => s.attr |= attrL;
 s.delimit = 1;
-16r59 =>	s.attr &= ~attrL;
+16r59 => s.attr &= ~attrL;
 s.delimit = 1;
 # reverse polarity
-16r5d =>	s.attr |= attrP;
-16r5c =>	s.attr &= ~attrP;
+16r5d => s.attr |= attrP;
+16r5c => s.attr &= ~attrP;
 # normal size
 16r4c =>
 s.attr &= ~(attrW|attrH);
@@ -454,31 +454,31 @@ vc0(s, ch);
 return;
 }
 case ch {
-16r41 or	# grave				# 5.1.2
-16r42 or	# acute
-16r43 or	# circumflex
-16r48 or	# umlaut
-16r4b =>	# cedilla
+16r41 or # grave # 5.1.2
+16r42 or # acute
+16r43 or # circumflex
+16r48 or # umlaut
+16r4b => # cedilla
 s.a0 = ch;
 s.state = Saccent;
 return;
-16r23 =>	ch = '£';				# Figure 2.8
-16r24 =>	ch = '$';
-16r26 =>	ch = '#';
-16r27 =>	ch = '§';
-16r2c =>	ch = 16rc3;	# '←';
-16r2d =>	ch = 16rc0;	# '↑';
-16r2e =>	ch = 16rc4;	# '→';
-16r2f =>	ch = 16rc5;	# '↓';
-16r30 =>	ch = '°';
-16r31 =>	ch = '±';
-16r38 =>	ch = '÷';
-16r3c =>	ch = '¼';
-16r3d =>	ch = '½';
-16r3e =>	ch = '¾';
-16r7a =>	ch = 'œ';
-16r6a =>	ch = 'Œ';
-16r7b =>	ch = 'ß';
+16r23 => ch = '£'; # Figure 2.8
+16r24 => ch = '$';
+16r26 => ch = '#';
+16r27 => ch = '§';
+16r2c => ch = 16rc3; # '←';
+16r2d => ch = 16rc0; # '↑';
+16r2e => ch = 16rc4; # '→';
+16r2f => ch = 16rc5; # '↓';
+16r30 => ch = '°';
+16r31 => ch = '±';
+16r38 => ch = '÷';
+16r3c => ch = '¼';
+16r3d => ch = '½';
+16r3e => ch = '¾';
+16r7a => ch = 'œ';
+16r6a => ch = 'Œ';
+16r7b => ch = 'ß';
 }
 s.put(tostr(ch));
 s.savech = ch;
@@ -533,7 +533,7 @@ clear(s);
 'K' =>
 case s.a0 {
 # clears from the cursor to the end of the row
-0 =>	rowclear(s.pos.y, s.pos.x, s.cols);
+0 => rowclear(s.pos.y, s.pos.x, s.cols);
 # clears from the start of the row to the cursor
 1 => rowclear(s.pos.y, 1, s.pos.x);
 # clears the entire row in which the cursor is positioned
@@ -549,7 +549,7 @@ disp->Put(dup(' ', s.a0), Point(s.pos.x,s.pos.y), s.cset, s.attr, 1);
 'h' =>
 if(s.a0 == 4)
 s.spec |= Insert;
-'l' =>		# ends cursor insert mode
+'l' => # ends cursor insert mode
 if(s.a0 == 4)
 s.spec &= ~Insert;
 # deletes n rows from cursor row
@@ -610,9 +610,9 @@ s.put(tostr(ch));
 s.savech = ch;
 }
 Sss2 =>
-if(ch == NUL)			# 1.2.6.1
+if(ch == NUL) # 1.2.6.1
 continue;
-if(s.cset == semigraphic)	# 1.2.3.4
+if(s.cset == semigraphic) # 1.2.3.4
 continue;
 vss2(s, ch);
 Sesc =>
@@ -634,35 +634,35 @@ s.put(dup(s.savech, (ch-16r40)));
 s.state = Sstart;
 Saccent =>
 case s.a0 {
-16r41 =>	# grave
+16r41 => # grave
 case ch {
-'a' =>	ch = 'à';
-'e' =>	ch = 'è';
-'u' =>	ch = 'ù';
+'a' => ch = 'à';
+'e' => ch = 'è';
+'u' => ch = 'ù';
 }
-16r42 =>	# acute
+16r42 => # acute
 case ch {
-'e' =>	ch = 'é';
+'e' => ch = 'é';
 }
-16r43 =>	# circumflex
+16r43 => # circumflex
 case ch {
-'a' =>	ch = 'â';
-'e' =>	ch = 'ê';
-'i' =>		ch = 'î';
-'o' =>	ch = 'ô';
-'u' =>	ch = 'û';
+'a' => ch = 'â';
+'e' => ch = 'ê';
+'i' => ch = 'î';
+'o' => ch = 'ô';
+'u' => ch = 'û';
 }
-16r48 =>	# umlaut
+16r48 => # umlaut
 case ch {
-'a' =>	ch = 'ä';
-'e' =>	ch = 'ë';
-'i' =>		ch = 'ï';
-'o' =>	ch = 'ö';
-'u' =>	ch = 'ü';
+'a' => ch = 'ä';
+'e' => ch = 'ë';
+'i' => ch = 'ï';
+'o' => ch = 'ö';
+'u' => ch = 'ü';
 }
-16r4b =>	# cedilla
+16r4b => # cedilla
 case ch {
-'c' =>	ch = 'ç';
+'c' => ch = 'ç';
 }
 }
 s.put(tostr(ch));
@@ -672,7 +672,7 @@ Scsi0 =>
 if(ch >= 16r30 && ch <= 16r39) {
 s.a0 *= 10;
 s.a0 += (ch - 16r30);
-} else if((ch >= 16r20 && ch <= 16r29) || (ch >= 16r3a && ch <= 16r3f)) {	# 1.2.7
+} else if((ch >= 16r20 && ch <= 16r29) || (ch >= 16r3a && ch <= 16r3f)) { # 1.2.7
 s.a0 = 0;
 s.state = Siso6429;
 } else
@@ -684,7 +684,7 @@ s.a1 += (ch - 16r30);
 } else
 vcsi(s, ch);
 Sus0 =>
-if(ch == 16r23) {		# start DRCS definition
+if(ch == 16r23) { # start DRCS definition
 s.state = Sdrcs;
 s.a0 = 0;
 break;
@@ -701,7 +701,7 @@ if(ch >= 16r40 && ch < 16r80)
 s.a1 = (ch - 16r40);
 else if(ch >= 16r30 && ch <= 16r39) {
 s.a1 = (ch - 16r30);
-s.a0 = s.a0*10 + s.a1;	# shouldn't be used any more
+s.a0 = s.a0*10 + s.a1; # shouldn't be used any more
 s.a1 = 1;
 } else
 s.a1 = -1;
@@ -712,7 +712,7 @@ s.savepos = s.pos;
 s.saveattr = s.attr;
 }
 s.pos = Point(s.a1, s.a0);
-s.delimit = 0;		# 1.2.5.3, don't reset serial attributes
+s.delimit = 0; # 1.2.5.3, don't reset serial attributes
 s.attr = ATTR0;
 s.cset = videotex;
 }
@@ -770,8 +770,8 @@ Stransparent =>
 # ignore all codes until ESC, 25, 40 or ESC, 2F, 3F
 # progress in s.a0 and s.a1
 match := array [] of {
-array [] of { ESC,	16r25,	16r40 },
-array [] of { ESC,	16r2f,	16r3f },
+array [] of { ESC, 16r25, 16r40 },
+array [] of { ESC, 16r2f, 16r3f },
 };
 if(ch == ESC) {
 s.a0 = s.a1 = 1;
@@ -788,15 +788,15 @@ s.a1 = 0;
 if(s.a0 == 3 || s.a1 == 3)
 s.state = Sstart;
 Sdrcs =>
-if(s.a0 > 0) {			# fixed number of bytes to skip in a0
+if(s.a0 > 0) { # fixed number of bytes to skip in a0
 s.a0--;
 if(s.a0 == 0) {
 s.state = Sstart;
 break;
 }
-} else if(ch == US)		# US XX YY - end of DRCS
+} else if(ch == US) # US XX YY - end of DRCS
 s.state = Sus0;
-else if(ch == 16r20)	# US 23 20 20 20 4[23] 49
+else if(ch == 16r20) # US 23 20 20 20 4[23] 49
 s.a0 = 4;
 Sconceal =>
 # 1.2.4.4
@@ -880,7 +880,7 @@ s.a0 += (ch - 16r30);
 s.a0 = '?';
 } else
 mcsi(s, ch);
-if(T.mode != Mixed)	# CSI ? { changes to Videotex mode
+if(T.mode != Mixed) # CSI ? { changes to Videotex mode
 break Stateloop;
 Scsi1 =>
 if(ch >= 16r30 && ch <= 16r39) {
@@ -901,7 +901,7 @@ if(ch >= 16r40 && ch < 16r80)
 s.a1 = (ch - 16r40);
 else if(ch >= 16r30 && ch <= 16r39) {
 s.a1 = (ch - 16r30);
-s.a0 = s.a0*10 + s.a1;	# shouldn't be used any more
+s.a0 = s.a0*10 + s.a1; # shouldn't be used any more
 s.a1 = 1;
 } else
 s.a1 = -1;
@@ -912,7 +912,7 @@ s.savepos = s.pos;
 s.saveattr = s.attr;
 }
 s.pos = Point(s.a1, s.a0);
-s.delimit = 0;		# 1.2.5.3, don't reset serial attributes
+s.delimit = 0; # 1.2.5.3, don't reset serial attributes
 s.attr = ATTR0;
 s.cset = videotex;
 }
@@ -949,10 +949,10 @@ case ch {
 ESC =>
 s.state = Sesc;
 SO =>
-#		s.cset = french;
+# s.cset = french;
 ;
 SI =>
-#		s.cset = american;
+# s.cset = american;
 ;
 BS =>
 if(s.pos.x > 1)
@@ -967,8 +967,8 @@ if(s.spec&Scroll)
 scroll(1, 1);
 else
 s.pos.y = 1;
-else if(s.pos.y == 0) {		# restore attributes on leaving row zero
-if(ch == LF) {		# 4.5
+else if(s.pos.y == 0) { # restore attributes on leaving row zero
+if(ch == LF) { # 4.5
 s.pos = s.savepos;
 s.attr = s.saveattr;
 }
@@ -976,7 +976,7 @@ s.attr = s.saveattr;
 s.pos.y += 1;
 CR =>
 s.pos.x = 1;
-CAN or SUB =>	# displays the error symbol - filled in rectangle
+CAN or SUB => # displays the error symbol - filled in rectangle
 disp->Put(dup(16r5f, 1), Point(s.pos.x,s.pos.y), s.cset, s.attr, 0);
 NUL =>
 # padding character - ignore, but may appear anywhere
@@ -984,9 +984,9 @@ NUL =>
 BEL =>
 # ah ...
 ;
-XON =>	# screen copying
+XON => # screen copying
 ;
-XOFF =>	# screen copying
+XOFF => # screen copying
 ;
 US =>
 # expect US row, col
@@ -1002,13 +1002,13 @@ mc0(s, ch);
 return;
 }
 case ch {
-16r5b =>						# CSI sequence
+16r5b => # CSI sequence
 s.a0 = s.a1 = 0;
-if(s.pos.y > 0)				# 1.2.5.2
+if(s.pos.y > 0) # 1.2.5.2
 s.state = Scsi0;
 return;
-16r44 or						# IND like LF
-16r45 =>						# NEL like CR LF
+16r44 or # IND like LF
+16r45 => # NEL like CR LF
 if(ch == 16r45)
 s.pos.x = 1;
 if(s.pos.y == s.rows - 1)
@@ -1016,12 +1016,12 @@ if(s.spec&Scroll)
 scroll(1, 1);
 else
 s.pos.y = 1;
-else if(s.pos.y == 0) {		# restore attributes on leaving row zero
+else if(s.pos.y == 0) { # restore attributes on leaving row zero
 s.pos = s.savepos;
 s.attr = s.saveattr;
 } else
 s.pos.y += 1;
-16r4d =>						# RI
+16r4d => # RI
 if(s.pos.y == 1)
 if(s.spec&Scroll)
 scroll(1, -1);
@@ -1091,7 +1091,7 @@ clear(s);
 'K' =>
 case s.a0 {
 # clears from the cursor to the end of the row
-0 =>	rowclear(s.pos.y, s.pos.x, s.cols);
+0 => rowclear(s.pos.y, s.pos.x, s.cols);
 # clears from the start of the row to the cursor
 1 => rowclear(s.pos.y, 1, s.pos.x);
 # clears the entire row in which the cursor is positioned
@@ -1104,7 +1104,7 @@ disp->Put(dup(' ', s.a0), Point(s.pos.x,s.pos.y), s.cset, s.attr, 1);
 'h' =>
 if(s.a0 == 4)
 s.spec |= Insert;
-'l' =>		# ends cursor insert mode
+'l' => # ends cursor insert mode
 if(s.a0 == 4)
 s.spec &= ~Insert;
 # inserts n rows from cursor row
@@ -1127,15 +1127,15 @@ s.setmode(T.mode);
 # display attributes
 'm' =>
 case s.a0 {
-0 =>		s.attr &= ~(attrL|attrF|attrP|attrB);
-1 =>		s.attr |= attrB;
-4 =>		s.attr |= attrL;
-5 =>		s.attr |= attrF;
-7 =>		s.attr |= attrP;
-22 =>	s.attr &= ~attrB;
-24 =>	s.attr &= ~attrL;
-25 =>	s.attr &= ~attrF;
-27 =>	s.attr &= ~attrP;
+0 => s.attr &= ~(attrL|attrF|attrP|attrB);
+1 => s.attr |= attrB;
+4 => s.attr |= attrL;
+5 => s.attr |= attrF;
+7 => s.attr |= attrP;
+22 => s.attr &= ~attrB;
+24 => s.attr &= ~attrL;
+25 => s.attr &= ~attrF;
+27 => s.attr &= ~attrP;
 }
 # direct cursor addressing
 'H' =>
@@ -1170,14 +1170,14 @@ return nil;
 Screen.put(s: self ref Screen, str: string)
 {
 while((l := len str) > 0) {
-n := s.cols - s.pos.x + 1;		# characters that will fit on this row
+n := s.cols - s.pos.x + 1; # characters that will fit on this row
 if(s.attr & attrW) {
-if(n > 1)				# fit normal width character in last column
+if(n > 1) # fit normal width character in last column
 n /= 2;
 }
 if(n > l)
 n = l;
-if(s.delimit) {		# set delimiter bit on 1st space (if any)
+if(s.delimit) { # set delimiter bit on 1st space (if any)
 for(i:=0; i<n; i++)
 if(str[i] == ' ')
 break;
@@ -1216,8 +1216,8 @@ str = str[n:];
 else
 str = nil;
 }
-#	if(T.state == Local || T.spec&Echo)
-#		refresh();
+# if(T.state == Local || T.spec&Echo)
+# refresh();
 }
 # increment the current writing position by `n' cells.
 # caller must ensure that `n' characters can fit
@@ -1228,7 +1228,7 @@ s.pos.x += 2*n;
 else
 s.pos.x += n;
 if(s.pos.x > s.cols)
-if(s.pos.y == 0)			# no wraparound from row zero
+if(s.pos.y == 0) # no wraparound from row zero
 s.pos.x = s.cols;
 else {
 s.pos.x = 1;
@@ -1254,7 +1254,7 @@ rowclear(r, first, last: int)
 {
 # 16r5f is the semi-graphic black rectangle
 disp->Put(dup(16r5f, last-first+1), Point(first,r), semigraphic, fgBlack, 0);
-#	disp->Put(dup(' ', last-first+1), Point(first,r), S.cset, fgBlack, 0);
+# disp->Put(dup(' ', last-first+1), Point(first,r), S.cset, fgBlack, 0);
 }
 clear(s: ref Screen)
 {
@@ -1310,9 +1310,9 @@ if(ch == '[') {
 s.fstate = FS6429;
 s.fsaved = array [0] of byte;
 s.badp = 0;
-#			} else if(ch == 16r20) {
-#				s.fstate = FS2022;
-#				s.fsaved = array [0] of byte;
+# } else if(ch == 16r20) {
+# s.fstate = FS2022;
+# s.fsaved = array [0] of byte;
 s.badp = 0;
 } else if(ch == ESC) {
 ba = dappend(ba, array [] of { byte ESC });
@@ -1322,7 +1322,7 @@ s.fstate = FSesc;
 ba = dappend(ba, array [] of { byte ESC, byte ch });
 s.fstate = FSstart;
 }
-FS6429 =>	# filter out invalid CSI sequences
+FS6429 => # filter out invalid CSI sequences
 d0 = i+1;
 changed = 1;
 if(ch >= 16r20 && ch <= 16r3f) {
@@ -1334,20 +1334,20 @@ a[len a - 1] = byte ch;
 s.fsaved = a;
 } else {
 valid := 1;
-case  ch {
-'A' =>	;
-'B' =>	;
-'C' =>	;
-'D' =>	;
-'H' =>	;
-'J' =>		;
-'K' =>	;
-'P' =>	;
-'@' =>	;
-'h' =>	;
-'l' =>		;
-'M' =>	;
-'L' =>	;
+case ch {
+'A' => ;
+'B' => ;
+'C' => ;
+'D' => ;
+'H' => ;
+'J' => ;
+'K' => ;
+'P' => ;
+'@' => ;
+'h' => ;
+'l' => ;
+'M' => ;
+'L' => ;
 * =>
 valid = 0;
 }
@@ -1355,14 +1355,14 @@ if(s.badp)
 valid = 0;
 if(debug['f'])
 fprint(stderr, "vfilter %d: %s%c\n", valid, string s.fsaved, ch);
-if(valid) {		# false alarm - don't filter
+if(valid) { # false alarm - don't filter
 ba = dappend(ba, array [] of { byte ESC, byte '[' });
 ba = dappend(ba, s.fsaved);
 ba = dappend(ba, array [] of { byte ch } );
 }
 s.fstate = FSstart;
 }
-FS2022 =>	;
+FS2022 => ;
 }
 }
 if(changed) {
@@ -1426,7 +1426,7 @@ ba = dappend(ba, array [] of { byte SEP , byte ch });
 # consume the character
 s.fstate = FSstart;
 }
-FS6429 =>	# filter out invalid CSI sequences
+FS6429 => # filter out invalid CSI sequences
 d0 = i+1;
 changed = 1;
 if(ch >= 16r20 && ch <= 16r3f) {
@@ -1438,40 +1438,40 @@ a[len a - 1] = byte ch;
 s.fsaved = a;
 } else {
 valid := 1;
-case  ch {
-'m' =>	;
-'A' =>	;
-'B' =>	;
-'C' =>	;
-'D' =>	;
-'H' =>	;
-'J' =>		;
-'K' =>	;
-'@' =>	;
-'h' =>	;
-'l' =>		;
-'L' =>	;
-'M' =>	;
-'P' =>	;
-'{' =>	# allow CSI ? {
+case ch {
+'m' => ;
+'A' => ;
+'B' => ;
+'C' => ;
+'D' => ;
+'H' => ;
+'J' => ;
+'K' => ;
+'@' => ;
+'h' => ;
+'l' => ;
+'L' => ;
+'M' => ;
+'P' => ;
+'{' => # allow CSI ? {
 n := len s.fsaved;
 if(n == 0 || s.fsaved[n-1] != byte '?')
 s.badp = 1;
 * =>
 valid = 0;
 }
-if(s.badp)	# only decimal params
+if(s.badp) # only decimal params
 valid = 0;
 if(debug['f'])
 fprint(stderr, "mfilter %d: %s%c\n", valid, string s.fsaved, ch);
-if(valid) {		# false alarm - don't filter
+if(valid) { # false alarm - don't filter
 ba = dappend(ba, array [] of { byte ESC, byte '[' });
 ba = dappend(ba, s.fsaved);
 ba = dappend(ba, array [] of { byte ch } );
 }
 s.fstate = FSstart;
 }
-FS2022 =>	;
+FS2022 => ;
 }
 }
 if(changed) {

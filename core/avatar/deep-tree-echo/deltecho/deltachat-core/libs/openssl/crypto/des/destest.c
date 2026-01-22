@@ -3,12 +3,12 @@
 #include <openssl/e_os2.h>
 #if defined(OPENSSL_SYS_WIN32) || defined(OPENSSL_SYS_WIN16) || defined(OPENSSL_SYS_WINDOWS)
 # ifndef OPENSSL_SYS_MSDOS
-#  define OPENSSL_SYS_MSDOS
+# define OPENSSL_SYS_MSDOS
 # endif
 #endif
 #ifndef OPENSSL_SYS_MSDOS
 # if !defined(OPENSSL_SYS_VMS) || defined(OPENSSL_SYS_VMS_DECC)
-#  include OPENSSL_UNISTD
+# include OPENSSL_UNISTD
 # endif
 #else
 # include <io.h>
@@ -189,8 +189,8 @@ static unsigned char cbc_ok[32] = {
 0x1d, 0x26, 0x93, 0x97, 0xf7, 0xfe, 0x62, 0xb4
 };
 # ifdef SCREW_THE_PARITY
-#  error "SCREW_THE_PARITY is not ment to be defined."
-#  error "Original vectors are preserved for reference only."
+# error "SCREW_THE_PARITY is not ment to be defined."
+# error "Original vectors are preserved for reference only."
 static unsigned char cbc2_key[8] =
 { 0xf0, 0xe1, 0xd2, 0xc3, 0xb4, 0xa5, 0x96, 0x87 };
 static unsigned char xcbc_ok[32] = {
@@ -612,7 +612,7 @@ printf("quad_cksum error, ret %08lx should be 70d7a63a\n",
 (unsigned long)cs);
 err = 1;
 }
-#  ifdef _CRAY
+# ifdef _CRAY
 if (lqret[0].a != 0x327eba8dL) {
 printf("quad_cksum error, out[0] %08lx is not %08lx\n",
 (unsigned long)lqret[0].a, 0x327eba8dUL);
@@ -633,7 +633,7 @@ printf("quad_cksum error, out[3] %08lx is not %08lx\n",
 (unsigned long)lqret[1].b, 0x501c2c26UL);
 err = 1;
 }
-#  else
+# else
 if (lqret[0] != 0x327eba8dL) {
 printf("quad_cksum error, out[0] %08lx is not %08lx\n",
 (unsigned long)lqret[0], 0x327eba8dUL);
@@ -654,7 +654,7 @@ printf("quad_cksum error, out[3] %08lx is not %08lx\n",
 (unsigned long)lqret[3], 0x501c2c26UL);
 err = 1;
 }
-#  endif
+# endif
 # endif
 printf("input word alignment test");
 for (i = 0; i < 4; i++) {

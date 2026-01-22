@@ -2,90 +2,90 @@
 #include "isa.h"
 #include "interp.h"
 #include "raise.h"
-#define	RESCHED 1
-#define	SOFTFP	1
+#define RESCHED 1
+#define SOFTFP 1
 enum
 {
-R0	= 0,
-R1	= 1,
-R2	= 2,
-R3	= 3,
-R4	= 4,
-R5	= 5,
-R6	= 6,
-R7	= 7,
-R8	= 8,
-R9	= 9,
-R10	= 10,
-R11	= 11,
-R12	= 12,
-R13	= 13,
-R14	= 14,
-R15	= 15,
-RLINK	= 14,
-RFP	= R9,
-RMP	= R8,
-RTA	= R7,
-RCON	= R6,
-RREG	= R5,
-RA3	= R4,
-RA2	= R3,
-RA1	= R2,
-RA0	= R1,
-FA2	= 2,
-FA3	= 3,
-FA4	= 4,
-FA5	= 5,
-EQ	= 0,
-NE	= 1,
-CS	= 2,
-CC	= 3,
-MI	= 4,
-PL	= 5,
-VS	= 6,
-VC	= 7,
-HI	= 8,
-LS	= 9,
-GE	= 10,
-LT	= 11,
-GT	= 12,
-LE	= 13,
-AL	= 14,
-NV	= 15,
-HS	= CS,
-LO	= CC,
-And	= 0,
-Eor	= 1,
-Sub	= 2,
-Rsb	= 3,
-Add	= 4,
-Adc	= 5,
-Sbc	= 6,
-Rsc	= 7,
-Tst	= 8,
-Teq	= 9,
-Cmp	= 10,
-Cmn	= 11,
-Orr	= 12,
-Mov	= 13,
-Bic	= 14,
-Mvn	= 15,
-Adf	= 0,
-Muf	= 1,
-Suf	= 2,
-Rsf	= 3,
-Dvf	= 4,
-Rdf	= 5,
-Rmf	= 8,
-Mvf	= 0,
-Mnf	= 1,
-Abs	= 2,
-Rnd	= 3,
-Flt	= 0,
-Fix	= 1,
-Cmf	= 4,
-Cnf	= 5,
-Lea	= 100,
+R0 = 0,
+R1 = 1,
+R2 = 2,
+R3 = 3,
+R4 = 4,
+R5 = 5,
+R6 = 6,
+R7 = 7,
+R8 = 8,
+R9 = 9,
+R10 = 10,
+R11 = 11,
+R12 = 12,
+R13 = 13,
+R14 = 14,
+R15 = 15,
+RLINK = 14,
+RFP = R9,
+RMP = R8,
+RTA = R7,
+RCON = R6,
+RREG = R5,
+RA3 = R4,
+RA2 = R3,
+RA1 = R2,
+RA0 = R1,
+FA2 = 2,
+FA3 = 3,
+FA4 = 4,
+FA5 = 5,
+EQ = 0,
+NE = 1,
+CS = 2,
+CC = 3,
+MI = 4,
+PL = 5,
+VS = 6,
+VC = 7,
+HI = 8,
+LS = 9,
+GE = 10,
+LT = 11,
+GT = 12,
+LE = 13,
+AL = 14,
+NV = 15,
+HS = CS,
+LO = CC,
+And = 0,
+Eor = 1,
+Sub = 2,
+Rsb = 3,
+Add = 4,
+Adc = 5,
+Sbc = 6,
+Rsc = 7,
+Tst = 8,
+Teq = 9,
+Cmp = 10,
+Cmn = 11,
+Orr = 12,
+Mov = 13,
+Bic = 14,
+Mvn = 15,
+Adf = 0,
+Muf = 1,
+Suf = 2,
+Rsf = 3,
+Dvf = 4,
+Rdf = 5,
+Rmf = 8,
+Mvf = 0,
+Mnf = 1,
+Abs = 2,
+Rnd = 3,
+Flt = 0,
+Fix = 1,
+Cmf = 4,
+Cnf = 5,
+Lea = 100,
 Ldw,
 Ldb,
 Stw,
@@ -93,21 +93,21 @@ Stb,
 Ldf,
 Stf,
 Ldh,
-Blo	= 0,
-Bhi	= 4,
-Lg2Rune	= 2,
-NCON	= (0xFFC-8)/4,
-SRCOP	= (1<<0),
-DSTOP	= (1<<1),
-WRTPC	= (1<<2),
-TCHECK	= (1<<3),
-NEWPC	= (1<<4),
-DBRAN	= (1<<5),
-THREOP	= (1<<6),
-ANDAND	= 1,
-OROR	= 2,
-EQAND	= 3,
-MacFRP	= 0,
+Blo = 0,
+Bhi = 4,
+Lg2Rune = 2,
+NCON = (0xFFC-8)/4,
+SRCOP = (1<<0),
+DSTOP = (1<<1),
+WRTPC = (1<<2),
+TCHECK = (1<<3),
+NEWPC = (1<<4),
+DBRAN = (1<<5),
+THREOP = (1<<6),
+ANDAND = 1,
+OROR = 2,
+EQAND = 3,
+MacFRP = 0,
 MacRET,
 MacCASE,
 MacCOLR,
@@ -117,133 +117,133 @@ MacMFRA,
 MacRELQ,
 NMACRO
 };
-#define BITS(B)				(1<<B)
-#define IMM(O)				(O & ((1<<12)-1))
-#define SBIT	(1<<20)
-#define PBIT	(1<<24)
-#define UPBIT	(1<<23)
-#define LDW(C, Rn, Rd, O)		*code++ = (C<<28)|(1<<26)|(1<<24)|(1<<23)|(1<<20)|\
+#define BITS(B) (1<<B)
+#define IMM(O) (O & ((1<<12)-1))
+#define SBIT (1<<20)
+#define PBIT (1<<24)
+#define UPBIT (1<<23)
+#define LDW(C, Rn, Rd, O) *code++ = (C<<28)|(1<<26)|(1<<24)|(1<<23)|(1<<20)|\
 (Rn<<16)|(Rd<<12)|IMM(O)
-#define STW(C, Rn, Rd, O)		*code++ = (C<<28)|(1<<26)|(1<<24)|(1<<23)|\
+#define STW(C, Rn, Rd, O) *code++ = (C<<28)|(1<<26)|(1<<24)|(1<<23)|\
 (Rn<<16)|(Rd<<12)|IMM(O)
-#define LDB(C, Rn, Rd, O)		*code++ = (C<<28)|(1<<26)|(1<<24)|(1<<23)|(1<<20)|(1<<22)|\
+#define LDB(C, Rn, Rd, O) *code++ = (C<<28)|(1<<26)|(1<<24)|(1<<23)|(1<<20)|(1<<22)|\
 (Rn<<16)|(Rd<<12)|IMM(O)
-#define STB(C, Rn, Rd, O)		*code++ = (C<<28)|(1<<26)|(1<<24)|(1<<23)|(1<<22)|\
+#define STB(C, Rn, Rd, O) *code++ = (C<<28)|(1<<26)|(1<<24)|(1<<23)|(1<<22)|\
 (Rn<<16)|(Rd<<12)|IMM(O)
-#define LDxP(C, Rn, Rd, O, B)		*code++ = (C<<28)|(1<<26)|(B<<22)|(1<<23)|(1<<20)|\
+#define LDxP(C, Rn, Rd, O, B) *code++ = (C<<28)|(1<<26)|(B<<22)|(1<<23)|(1<<20)|\
 (Rn<<16)|(Rd<<12)|IMM(O)
-#define STxP(C, Rn, Rd, O, B)		*code++ = (C<<28)|(1<<26)|(B<<22)|(1<<23)|\
+#define STxP(C, Rn, Rd, O, B) *code++ = (C<<28)|(1<<26)|(B<<22)|(1<<23)|\
 (Rn<<16)|(Rd<<12)|IMM(O)
-#define LDRW(C, Rn, Rd, SH, R)		*code++ = (C<<28)|(3<<25)|(1<<24)|(1<<23)|(1<<20)|\
+#define LDRW(C, Rn, Rd, SH, R) *code++ = (C<<28)|(3<<25)|(1<<24)|(1<<23)|(1<<20)|\
 (Rn<<16)|(Rd<<12)|(SH<<4)|R
-#define STRW(C, Rn, Rd, SH, R)		*code++ = (C<<28)|(3<<25)|(1<<24)|(1<<23)|\
+#define STRW(C, Rn, Rd, SH, R) *code++ = (C<<28)|(3<<25)|(1<<24)|(1<<23)|\
 (Rn<<16)|(Rd<<12)|(SH<<4)|R
-#define LDRB(C, Rn, Rd, SH, R)		*code++ = (C<<28)|(3<<25)|(1<<24)|(1<<23)|(1<<20)|(1<<22)|\
+#define LDRB(C, Rn, Rd, SH, R) *code++ = (C<<28)|(3<<25)|(1<<24)|(1<<23)|(1<<20)|(1<<22)|\
 (Rn<<16)|(Rd<<12)|(SH<<4)|R
-#define STRB(C, Rn, Rd, SH, R)		*code++ = (C<<28)|(3<<25)|(1<<24)|(1<<23)|(1<<22)|\
+#define STRB(C, Rn, Rd, SH, R) *code++ = (C<<28)|(3<<25)|(1<<24)|(1<<23)|(1<<22)|\
 (Rn<<16)|(Rd<<12)|(SH<<4)|R
-#define DPI(C, Op, Rn, Rd, RO, O)	*code++ = (C<<28)|(1<<25)|(Op<<21)|\
+#define DPI(C, Op, Rn, Rd, RO, O) *code++ = (C<<28)|(1<<25)|(Op<<21)|\
 (Rn<<16)|(Rd<<12)|(RO<<8)|((O)&0xff)
-#define DP(C, Op, Rn, Rd, Sh, Ro)	*code++ = (C<<28)|(Op<<21)|(Rn<<16)|\
+#define DP(C, Op, Rn, Rd, Sh, Ro) *code++ = (C<<28)|(Op<<21)|(Rn<<16)|\
 (Rd<<12)|((Sh)<<4)|Ro
-#define CMPI(C, Rn, Rd, RO, O)	*code++ = (C<<28)|(1<<25)|(Cmp<<21)|(1<<20)|\
+#define CMPI(C, Rn, Rd, RO, O) *code++ = (C<<28)|(1<<25)|(Cmp<<21)|(1<<20)|\
 (Rn<<16)|(Rd<<12)|(RO<<8)|((O)&0xff)
-#define CMNI(C, Rn, Rd, RO, O)	*code++ = (C<<28)|(1<<25)|(Cmn<<21)|(1<<20)|\
+#define CMNI(C, Rn, Rd, RO, O) *code++ = (C<<28)|(1<<25)|(Cmn<<21)|(1<<20)|\
 (Rn<<16)|(Rd<<12)|(RO<<8)|((O)&0xff)
-#define CMP(C, Rn, Rd, Sh, Ro)	*code++ = (C<<28)|(Cmp<<21)|(Rn<<16)|(1<<20)|\
+#define CMP(C, Rn, Rd, Sh, Ro) *code++ = (C<<28)|(Cmp<<21)|(Rn<<16)|(1<<20)|\
 (Rd<<12)|((Sh)<<4)|Ro
-#define CMN(C, Rn, Rd, Sh, Ro)	*code++ = (C<<28)|(Cmn<<21)|(Rn<<16)|(1<<20)|\
+#define CMN(C, Rn, Rd, Sh, Ro) *code++ = (C<<28)|(Cmn<<21)|(Rn<<16)|(1<<20)|\
 (Rd<<12)|((Sh)<<4)|Ro
-#define MUL(C, Rm, Rs, Rd)		*code++ = (C<<28)|(Rd<<16)|(Rm<<0)|(Rs<<8)|\
+#define MUL(C, Rm, Rs, Rd) *code++ = (C<<28)|(Rd<<16)|(Rm<<0)|(Rs<<8)|\
 (9<<4)
-#define LDF(C, Rn, Fd, O)		*code++ = (C<<28)|(6<<25)|(1<<24)|(1<<23)|(1<<20)|\
+#define LDF(C, Rn, Fd, O) *code++ = (C<<28)|(6<<25)|(1<<24)|(1<<23)|(1<<20)|\
 (Rn<<16)|(1<<15)|(Fd<<12)|(1<<8)|((O)&0xff)
-#define STF(C, Rn, Fd, O)		*code++ = (C<<28)|(6<<25)|(1<<24)|(1<<23)|\
+#define STF(C, Rn, Fd, O) *code++ = (C<<28)|(6<<25)|(1<<24)|(1<<23)|\
 (Rn<<16)|(1<<15)|(Fd<<12)|(1<<8)|((O)&0xff)
-#define CMF(C, Fn, Fm)	*code++ = (C<<28)|(7<<25)|(4<<21)|(1<<20)|(Fn<<16)|\
+#define CMF(C, Fn, Fm) *code++ = (C<<28)|(7<<25)|(4<<21)|(1<<20)|(Fn<<16)|\
 (0xF<<12)|(1<<8)|(1<<4)|(Fm)
-#define LDH(C, Rn, Rd, O)		*code++ = (C<<28)|(0<<25)|(1<<24)|(1<<23)|(1<<22)|(1<<20)|\
+#define LDH(C, Rn, Rd, O) *code++ = (C<<28)|(0<<25)|(1<<24)|(1<<23)|(1<<22)|(1<<20)|\
 (Rn<<16)|(Rd<<12)|(((O)&0xf0)<<4)|(0xb<<4)|((O)&0xf)
-#define LDRH(C, Rn, Rd, Rm)		*code++ = (C<<28)|(0<<25)|(1<<24)|(1<<23)|(1<<20)|\
+#define LDRH(C, Rn, Rd, Rm) *code++ = (C<<28)|(0<<25)|(1<<24)|(1<<23)|(1<<20)|\
 (Rn<<16)|(Rd<<12)|(0xb<<4)|Rm
-#define CPDO2(C, Op, Fn, Fd, Fm)	*code++ = (C<<28)|(0xE<<24)|(Op<<20)|(Fn<<16)|(Fd<<12)|(1<<8)|(1<<7)|(Fm)
-#define CPDO1(C, Op, Fd, Fm)	CPDO2((C),(Op),0,(Fd),(Fm))|(1<<15)
-#define CPFLT(C, Fn, Rd)	*code++ = (C<<28)|(0xE<<24)|(0<<20)|(Fn<<16)|(Rd<<12)|(1<<8)|(9<<4)
-#define CPFIX(C, Rd, Fm)	*code++ = (C<<28)|(0xE<<24)|(1<<20)|(0<<16)|(Rd<<12)|(1<<8)|(9<<4)|(Fm)
-#define BRAW(C, o)			((C<<28)|(5<<25)|((o) & 0x00ffffff))
-#define BRA(C, o)			gen(BRAW((C),(o)))
-#define IA(s, o)			(ulong)(base+s[o])
-#define BRADIS(C, o)			BRA(C, (IA(patch, o)-(ulong)code-8)>>2)
-#define BRAMAC(r, o)			BRA(r, (IA(macro, o)-(ulong)code-8)>>2)
-#define BRANCH(C, o)				gen(BRAW(C, ((ulong)(o)-(ulong)code-8)>>2))
-#define CALL(o)				gen(BRAW(AL, ((ulong)(o)-(ulong)code-8)>>2)|(1<<24))
-#define CCALL(C,o)				gen(BRAW((C), ((ulong)(o)-(ulong)code-8)>>2)|(1<<24))
-#define CALLMAC(C,o)			gen(BRAW((C), (IA(macro, o)-(ulong)code-8)>>2)|(1<<24))
-#define RELPC(pc)			(ulong)(base+(pc))
-#define RETURN				DPI(AL, Add, RLINK, R15, 0, 0)
-#define CRETURN(C)				DPI(C, Add, RLINK, R15, 0, 0)
-#define PATCH(ptr)			*ptr |= (((ulong)code-(ulong)(ptr)-8)>>2) & 0x00ffffff
-#define MOV(src, dst)			DP(AL, Mov, 0, dst, 0, src)
-#define FITS12(v)	((ulong)(v)<BITS(12))
-#define FITS8(v)	((ulong)(v)<BITS(8))
-#define FITS5(v)	((ulong)(v)<BITS(5))
-#define CMPH(C, r)		CMNI(C, r, 0, 0, 1)
-#define NOTNIL(r)	(CMPH(AL, (r)), CCALL(EQ, nullity))
-#define BCK(r, rb)	(CMP(AL, rb, 0, 0, r), CCALL(LS, bounds))
-#define BCKI(i, rb)	(CMPI(AL, rb, 0, 0, i), CCALL(LS, bounds))
-#define BCKR(i, rb)	(CMPI(AL, rb, 0, 0, 0)|(i), CCALL(LS, bounds))
-static	ulong*	code;
-static	ulong*	base;
-static	ulong*	patch;
-static	ulong	codeoff;
-static	int	pass;
-static	int	puntpc = 1;
-static	Module*	mod;
-static	uchar*	tinit;
-static	ulong*	litpool;
-static	int	nlit;
-static	ulong	macro[NMACRO];
-void	(*comvec)(void);
-static	void	macfrp(void);
-static	void	macret(void);
-static	void	maccase(void);
-static	void	maccolr(void);
-static	void	macmcal(void);
-static	void	macfram(void);
-static	void	macmfra(void);
-static	void	macrelq(void);
-static	void movmem(Inst*);
-static	void mid(Inst*, int, int);
-extern	void	das(ulong*, int);
-#define T(r)	*((void**)(R.r))
+#define CPDO2(C, Op, Fn, Fd, Fm) *code++ = (C<<28)|(0xE<<24)|(Op<<20)|(Fn<<16)|(Fd<<12)|(1<<8)|(1<<7)|(Fm)
+#define CPDO1(C, Op, Fd, Fm) CPDO2((C),(Op),0,(Fd),(Fm))|(1<<15)
+#define CPFLT(C, Fn, Rd) *code++ = (C<<28)|(0xE<<24)|(0<<20)|(Fn<<16)|(Rd<<12)|(1<<8)|(9<<4)
+#define CPFIX(C, Rd, Fm) *code++ = (C<<28)|(0xE<<24)|(1<<20)|(0<<16)|(Rd<<12)|(1<<8)|(9<<4)|(Fm)
+#define BRAW(C, o) ((C<<28)|(5<<25)|((o) & 0x00ffffff))
+#define BRA(C, o) gen(BRAW((C),(o)))
+#define IA(s, o) (ulong)(base+s[o])
+#define BRADIS(C, o) BRA(C, (IA(patch, o)-(ulong)code-8)>>2)
+#define BRAMAC(r, o) BRA(r, (IA(macro, o)-(ulong)code-8)>>2)
+#define BRANCH(C, o) gen(BRAW(C, ((ulong)(o)-(ulong)code-8)>>2))
+#define CALL(o) gen(BRAW(AL, ((ulong)(o)-(ulong)code-8)>>2)|(1<<24))
+#define CCALL(C,o) gen(BRAW((C), ((ulong)(o)-(ulong)code-8)>>2)|(1<<24))
+#define CALLMAC(C,o) gen(BRAW((C), (IA(macro, o)-(ulong)code-8)>>2)|(1<<24))
+#define RELPC(pc) (ulong)(base+(pc))
+#define RETURN DPI(AL, Add, RLINK, R15, 0, 0)
+#define CRETURN(C) DPI(C, Add, RLINK, R15, 0, 0)
+#define PATCH(ptr) *ptr |= (((ulong)code-(ulong)(ptr)-8)>>2) & 0x00ffffff
+#define MOV(src, dst) DP(AL, Mov, 0, dst, 0, src)
+#define FITS12(v) ((ulong)(v)<BITS(12))
+#define FITS8(v) ((ulong)(v)<BITS(8))
+#define FITS5(v) ((ulong)(v)<BITS(5))
+#define CMPH(C, r) CMNI(C, r, 0, 0, 1)
+#define NOTNIL(r) (CMPH(AL, (r)), CCALL(EQ, nullity))
+#define BCK(r, rb) (CMP(AL, rb, 0, 0, r), CCALL(LS, bounds))
+#define BCKI(i, rb) (CMPI(AL, rb, 0, 0, i), CCALL(LS, bounds))
+#define BCKR(i, rb) (CMPI(AL, rb, 0, 0, 0)|(i), CCALL(LS, bounds))
+static ulong* code;
+static ulong* base;
+static ulong* patch;
+static ulong codeoff;
+static int pass;
+static int puntpc = 1;
+static Module* mod;
+static uchar* tinit;
+static ulong* litpool;
+static int nlit;
+static ulong macro[NMACRO];
+void (*comvec)(void);
+static void macfrp(void);
+static void macret(void);
+static void maccase(void);
+static void maccolr(void);
+static void macmcal(void);
+static void macfram(void);
+static void macmfra(void);
+static void macrelq(void);
+static void movmem(Inst*);
+static void mid(Inst*, int, int);
+extern void das(ulong*, int);
+#define T(r) *((void**)(R.r))
 struct
 {
-int	idx;
-void	(*gen)(void);
-char*	name;
+int idx;
+void (*gen)(void);
+char* name;
 } mactab[] =
 {
-MacFRP,		macfrp,		"FRP",
-MacRET,		macret,		"RET",
-MacCASE,	maccase,	"CASE",
-MacCOLR,	maccolr,	"COLR",
-MacMCAL,	macmcal,	"MCAL",
-MacFRAM,	macfram,	"FRAM",
-MacMFRA,	macmfra,	"MFRA",
-MacRELQ,		macrelq,
+MacFRP, macfrp, "FRP",
+MacRET, macret, "RET",
+MacCASE, maccase, "CASE",
+MacCOLR, maccolr, "COLR",
+MacMCAL, macmcal, "MCAL",
+MacFRAM, macfram, "FRAM",
+MacMFRA, macmfra, "MFRA",
+MacRELQ, macrelq,
 };
 typedef struct Const Const;
 struct Const
 {
-ulong	o;
-ulong*	code;
-ulong*	pc;
+ulong o;
+ulong* code;
+ulong* pc;
 };
 typedef struct Con Con;
 struct Con
 {
-int	ptr;
-Const	table[NCON];
+int ptr;
+Const table[NCON];
 };
 static Con rcon;
 static void

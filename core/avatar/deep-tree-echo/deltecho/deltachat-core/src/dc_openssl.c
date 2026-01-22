@@ -3,10 +3,10 @@
 #include <openssl/rsa.h>
 #include <openssl/evp.h>
 #include "dc_context.h"
-static pthread_mutex_t  s_init_lock         = PTHREAD_MUTEX_INITIALIZER;
-static int              s_init_not_required = 0;
-static int              s_init_counter      = 0;
-static pthread_mutex_t* s_mutex_buf         = NULL;
+static pthread_mutex_t s_init_lock = PTHREAD_MUTEX_INITIALIZER;
+static int s_init_not_required = 0;
+static int s_init_counter = 0;
+static pthread_mutex_t* s_mutex_buf = NULL;
 void dc_openssl_init_not_required(void)
 {
 pthread_mutex_lock(&s_init_lock);

@@ -4,16 +4,16 @@
 #include <ar.h>
 #include <mach.h>
 #include "obj.h"
-#define islocal(t)	((t)=='a' || (t)=='p')
+#define islocal(t) ((t)=='a' || (t)=='p')
 enum
 {
-NNAMES	= 50,
-MAXIS	= 8,
-MAXOFF	= 0x7fffffff,
-NHASH	= 1024,
-HASHMUL	= 79L,
+NNAMES = 50,
+MAXIS = 8,
+MAXOFF = 0x7fffffff,
+NHASH = 1024,
+HASHMUL = 79L,
 };
-int	_is2(char*),
+int _is2(char*),
 _is5(char*),
 _is6(char*),
 _is7(char*),
@@ -33,39 +33,39 @@ _readk(Biobuf*, Prog*),
 _readq(Biobuf*, Prog*),
 _readv(Biobuf*, Prog*),
 _readu(Biobuf*, Prog*);
-typedef struct Obj	Obj;
-typedef struct Symtab	Symtab;
-struct	Obj
+typedef struct Obj Obj;
+typedef struct Symtab Symtab;
+struct Obj
 {
-char	*name;
-int	(*is)(char*);
-int	(*read)(Biobuf*, Prog*);
+char *name;
+int (*is)(char*);
+int (*read)(Biobuf*, Prog*);
 };
-static Obj	obj[] =
+static Obj obj[] =
 {
-[Obj68020]	"68020 .2",	_is2, _read2,
-[ObjAmd64]	"amd64 .6",	_is6, _read6,
-[ObjArm]	"arm .5",	_is5, _read5,
-[ObjAlpha]	"alpha .7",	_is7, _read7,
-[Obj386]	"386 .8",	_is8, _read8,
-[ObjSparc]	"sparc .k",	_isk, _readk,
-[ObjPower]	"power .q",	_isq, _readq,
-[ObjMips]	"mips .v",	_isv, _readv,
-[ObjSparc64]	"sparc64 .u",	_isu, _readu,
-[ObjPower64]	"power64 .9",	_is9, _read9,
-[Maxobjtype]	0, 0
+[Obj68020] "68020 .2", _is2, _read2,
+[ObjAmd64] "amd64 .6", _is6, _read6,
+[ObjArm] "arm .5", _is5, _read5,
+[ObjAlpha] "alpha .7", _is7, _read7,
+[Obj386] "386 .8", _is8, _read8,
+[ObjSparc] "sparc .k", _isk, _readk,
+[ObjPower] "power .q", _isq, _readq,
+[ObjMips] "mips .v", _isv, _readv,
+[ObjSparc64] "sparc64 .u", _isu, _readu,
+[ObjPower64] "power64 .9", _is9, _read9,
+[Maxobjtype] 0, 0
 };
-struct	Symtab
+struct Symtab
 {
-struct	Sym 	s;
-struct	Symtab	*next;
+struct Sym s;
+struct Symtab *next;
 };
-static	Symtab *hash[NHASH];
-static	Sym	*names[NNAMES];
-static	int	processprog(Prog*,int);
-static	void	objreset(void);
-static	void	objlookup(int, char *, int, uint);
-static	void 	objupdate(int, int);
+static Symtab *hash[NHASH];
+static Sym *names[NNAMES];
+static int processprog(Prog*,int);
+static void objreset(void);
+static void objlookup(int, char *, int, uint);
+static void objupdate(int, int);
 int
 objtype(Biobuf *bp, char **name)
 {
@@ -117,7 +117,7 @@ if (!processprog(&p, doautos))
 return 0;
 return 1;
 }
-static	int
+static int
 processprog(Prog *p, int doautos)
 {
 if(p->kind == aNone)

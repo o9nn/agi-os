@@ -4,18 +4,18 @@ typedef ushort word;
 #if arch_sizeof_int == 4
 typedef uint dword;
 #else
-#  if arch_sizeof_long == 4
+# if arch_sizeof_long == 4
 typedef ulong dword;
-#  endif
+# endif
 #endif
 #if arch_is_big_endian
-#  define BMP_ASSIGN_WORD(a,v) a = ((v) >> 8) + ((v) << 8)
-#  define BMP_ASSIGN_DWORD(a,v)\
+# define BMP_ASSIGN_WORD(a,v) a = ((v) >> 8) + ((v) << 8)
+# define BMP_ASSIGN_DWORD(a,v)\
 a = ((v) >> 24) + (((v) >> 8) & 0xff00L) +\
 (((dword)(v) << 8) & 0xff0000L) + ((dword)(v) << 24)
 #else
-#  define BMP_ASSIGN_WORD(a,v) a = (v)
-#  define BMP_ASSIGN_DWORD(a,v) a = (v)
+# define BMP_ASSIGN_WORD(a,v) a = (v)
+# define BMP_ASSIGN_DWORD(a,v) a = (v)
 #endif
 typedef struct bmp_file_header_s {
 dword size;
@@ -73,7 +73,7 @@ BMP_ASSIGN_WORD(ihdr.planes, 1);
 BMP_ASSIGN_WORD(ihdr.bitCount, depth);
 BMP_ASSIGN_DWORD(ihdr.compression, 0);
 BMP_ASSIGN_DWORD(ihdr.sizeImage, bmp_raster * height);
-#define INCHES_PER_METER (100  / 2.54 )
+#define INCHES_PER_METER (100 / 2.54 )
 BMP_ASSIGN_DWORD(ihdr.xPelsPerMeter,
 (dword)(pdev->x_pixels_per_inch * INCHES_PER_METER + 0.5));
 BMP_ASSIGN_DWORD(ihdr.yPelsPerMeter,

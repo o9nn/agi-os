@@ -1,5 +1,5 @@
 #ifndef gxclip_INCLUDED
-#  define gxclip_INCLUDED
+# define gxclip_INCLUDED
 typedef struct clip_callback_data_s {
 gx_device *tdev;
 int x, y, w, h;

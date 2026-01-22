@@ -6,18 +6,18 @@ include "math.m";
 math: Math;
 cos, sin, Degree, Pi: import math;
 include "ffts.m";
-#  by r. c. singleton, stanford research institute, sept. 1968
-#  translated to limbo by eric grosse, jan 1997
-#  arrays at(maxf), ck(maxf), bt(maxf), sk(maxf), and np(maxp)
-#    are used for temporary storage.  if the available storage
-#    is insufficient, the program exits.
-#    maxf must be >= the maximum prime factor of n.
-#    maxp must be > the number of prime factors of n.
-#    in addition, if the square-free portion k of n has two or
-#    more prime factors, then maxp must be >= k-1.
-#  array storage in nfac for a maximum of 15 prime factors of n.
-#  if n has more than one square-free factor, the product of the
-#    square-free factors must be <= 210
+# by r. c. singleton, stanford research institute, sept. 1968
+# translated to limbo by eric grosse, jan 1997
+# arrays at(maxf), ck(maxf), bt(maxf), sk(maxf), and np(maxp)
+# are used for temporary storage. if the available storage
+# is insufficient, the program exits.
+# maxf must be >= the maximum prime factor of n.
+# maxp must be > the number of prime factors of n.
+# in addition, if the square-free portion k of n has two or
+# more prime factors, then maxp must be >= k-1.
+# array storage in nfac for a maximum of 15 prime factors of n.
+# if n has more than one square-free factor, the product of the
+# square-free factors must be <= 210
 ffts(a,b:array of real, ntot,n,nspan,isn:int){
 maxp: con 209;
 i,ii,inc,j,jc,jf,jj,k,k1,k2,k3,k4,kk:int;
@@ -55,7 +55,7 @@ jc = ks/n;
 radf = rad*real(jc)*0.5;
 i = 0;
 jf = 0;
-#  determine the factors of n
+# determine the factors of n
 m = 0;
 k = n;
 while(k==k/16*16){
@@ -106,14 +106,14 @@ nfac[m] = nfac[j];
 j = j-1;
 }while(j!=0);
 }
-for(;;){ #  compute fourier transform
+for(;;){ # compute fourier transform
 sd = radf/real(kspan);
 cd = sin(sd);
 cd = 2.0*cd*cd;
 sd = sin(sd+sd);
 kk = 1;
 i = i+1;
-if(nfac[i]==2){ #  transform for factor of 2 (including rotation factor)
+if(nfac[i]==2){ # transform for factor of 2 (including rotation factor)
 kspan = kspan/2;
 k1 = kspan+2;
 for(;;){
@@ -164,15 +164,15 @@ break;
 k1 = k1+inc+inc;
 kk = (k1-kspan)/2+jc;
 }while(kk<=jc+jc);
-}else{	#  transform for factor of 4
+}else{ # transform for factor of 4
 if(nfac[i]!=4){
-#  transform for odd factors
+# transform for odd factors
 k = nfac[i];
 kspnn = kspan;
 kspan = kspan/k;
 if(k==3)
 for(;;){
-#  transform for factor of 3 (optional code)
+# transform for factor of 3 (optional code)
 k1 = kk+kspan;
 k2 = k1+kspan;
 ak = a[kk-1];
@@ -197,7 +197,7 @@ break;
 }
 }
 else if(k==5){
-#  transform for factor of 5 (optional code)
+# transform for factor of 5 (optional code)
 c2 = c72*c72-s72*s72;
 s2 = 2.0*c72*s72;
 for(;;){
@@ -323,7 +323,7 @@ break;
 }
 }
 }
-#  multiply by rotation factor (except for factors of 2 and 4)
+# multiply by rotation factor (except for factors of 2 and 4)
 if(i==m)
 break;
 kk = jc+1;
@@ -434,8 +434,8 @@ break;
 }
 }
 } # end "compute fourier transform"
-#  permute the results to normal order---done in two stages
-#  permutation for square factors of n
+# permute the results to normal order---done in two stages
+# permutation for square factors of n
 np[0] = ks;
 if(kt!=0){
 k = kt+kt+1;
@@ -456,7 +456,7 @@ k2 = kspan+1;
 j = 1;
 if(n!=ntot){
 for(;;){
-#  permutation for multivariate transform
+# permutation for multivariate transform
 k = kk+jc;
 do{
 ak = a[kk-1];
@@ -474,7 +474,7 @@ if(kk>=nt){
 k2 = k2-nt+kspan;
 kk = kk-nt+jc;
 if(k2>=ks)
-permm:					for(;;){
+permm: for(;;){
 k2 = k2-np[j-1];
 j = j+1;
 k2 = np[j]+k2;
@@ -495,7 +495,7 @@ break permm;
 jc = k3;
 }else{
 for(;;){
-#  permutation for single-variate transform (optional code)
+# permutation for single-variate transform (optional code)
 ak = a[kk-1];
 a[kk-1] = a[k2-1];
 a[k2-1] = ak;
@@ -505,7 +505,7 @@ b[k2-1] = bk;
 kk = kk+inc;
 k2 = kspan+k2;
 if(k2>=ks)
-perms:				for(;;){
+perms: for(;;){
 k2 = k2-np[j-1];
 j = j+1;
 k2 = np[j]+k2;
@@ -528,7 +528,7 @@ jc = k3;
 if(2*kt+1>=m)
 return;
 kspnn = np[kt];
-#  permutation for square-free factors of n
+# permutation for square-free factors of n
 j = m-kt;
 nfac[j+1] = 1;
 do{
@@ -558,7 +558,7 @@ kk = nfac[k];
 }
 np[j-1] = jj;
 }
-#  determine the permutation cycles of length greater than 1
+# determine the permutation cycles of length greater than 1
 j = 0;
 for(;;){
 j = j+1;

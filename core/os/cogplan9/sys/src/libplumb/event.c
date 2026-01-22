@@ -6,13 +6,13 @@
 typedef struct EQueue EQueue;
 struct EQueue
 {
-int		id;
-char		*buf;
-int		nbuf;
-EQueue	*next;
+int id;
+char *buf;
+int nbuf;
+EQueue *next;
 };
-static	EQueue	*equeue;
-static	Lock		eqlock;
+static EQueue *equeue;
+static Lock eqlock;
 static
 int
 partial(int id, Event *e, uchar *b, int n)

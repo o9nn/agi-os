@@ -16,9 +16,9 @@ static int sig_out(BIO *b);
 static int sig_in(BIO *b);
 static int block_out(BIO *b);
 static int block_in(BIO *b);
-#define OK_BLOCK_SIZE   (1024*4)
-#define OK_BLOCK_BLOCK  4
-#define IOBS            (OK_BLOCK_SIZE+ OK_BLOCK_BLOCK+ 3*EVP_MAX_MD_SIZE)
+#define OK_BLOCK_SIZE (1024*4)
+#define OK_BLOCK_BLOCK 4
+#define IOBS (OK_BLOCK_SIZE+ OK_BLOCK_BLOCK+ 3*EVP_MAX_MD_SIZE)
 #define WELLKNOWN "The quick brown fox jumped over the lazy dog's back."
 typedef struct ok_struct {
 size_t buf_len;

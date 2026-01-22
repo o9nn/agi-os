@@ -11,15 +11,15 @@
 #include <ttd/ttd_types.h>
 #include <ttd/ttd_stub.h>
 #include <machine/kttd_machdep.h>
-struct	 i386_saved_state *kttd_last_saved_statep;
-struct	 i386_saved_state kttd_nested_saved_state;
+struct i386_saved_state *kttd_last_saved_statep;
+struct i386_saved_state kttd_nested_saved_state;
 unsigned last_kttd_sp;
 struct i386_saved_state kttd_regs;
-extern int		kttd_debug;
-extern boolean_t	kttd_enabled;
-extern vm_offset_t	virtual_end;
-#define	I386_BREAKPOINT	I386_BREAKPOINT_OPCODE
-extern vm_map_t	kernel_map;
+extern int kttd_debug;
+extern boolean_t kttd_enabled;
+extern vm_offset_t virtual_end;
+#define I386_BREAKPOINT I386_BREAKPOINT_OPCODE
+extern vm_map_t kernel_map;
 boolean_t kttd_console_init(void)
 {
 return(ttd_ip_bootp());
@@ -132,7 +132,7 @@ if (kttd_debug)
 printf("efl 0x%x:0x%x, ", kttd_regs.efl, ttd_state->efl);
 kttd_regs.efl = ttd_state->efl;
 }
-#if	0
+#if 0
 if (kttd_regs.ss != ttd_state->ss) {
 if (kttd_debug)
 printf("ss 0x%x:0x%x, ", kttd_regs.ss, ttd_state->ss);
@@ -142,7 +142,7 @@ kttd_regs.ss = ttd_state->ss;
 }
 boolean_t kttd_mem_access(vm_offset_t offset, vm_prot_t access)
 {
-kern_return_t	code;
+kern_return_t code;
 if (offset >= VM_MIN_KERNEL_ADDRESS && offset < virtual_end)
 return TRUE;
 if (offset >= virtual_end) {
@@ -152,7 +152,7 @@ trunc_page(offset), access);
 code = vm_fault(kernel_map, trunc_page(offset), access, FALSE,
 FALSE, (void (*)()) 0);
 } else {
-#if	1
+#if 1
 if ((current_thread() != THREAD_NULL) &&
 (current_thread()->task->map->pmap != kernel_pmap) &&
 (current_thread()->task->map->pmap != PMAP_NULL)) {
@@ -201,7 +201,7 @@ return TRUE;
 void kttd_type_to_ttdtrap(int type)
 {
 }
-boolean_t kttd_trap(int	type, int code, struct i386_saved_state *regs)
+boolean_t kttd_trap(int type, int code, struct i386_saved_state *regs)
 {
 int s;
 if (kttd_debug)
@@ -219,7 +219,7 @@ printf("kttd_TRAP, after splhigh()\n");
 kttd_regs = *regs;
 if ((regs->cs & 0x3) == KERNEL_RING) {
 kttd_regs.uesp = (int)&regs->uesp;
-kttd_regs.ss   = KERNEL_DS;
+kttd_regs.ss = KERNEL_DS;
 }
 if (type != -1) {
 kttd_current_request = NULL;
@@ -235,24 +235,24 @@ printf("kttd_trap: INSANITY!!!\n");
 }
 }
 kttd_task_trap(type, code, (regs->cs & 0x3) != 0);
-regs->eip    = kttd_regs.eip;
-regs->efl    = kttd_regs.efl;
-regs->eax    = kttd_regs.eax;
-regs->ecx    = kttd_regs.ecx;
-regs->edx    = kttd_regs.edx;
-regs->ebx    = kttd_regs.ebx;
+regs->eip = kttd_regs.eip;
+regs->efl = kttd_regs.efl;
+regs->eax = kttd_regs.eax;
+regs->ecx = kttd_regs.ecx;
+regs->edx = kttd_regs.edx;
+regs->ebx = kttd_regs.ebx;
 if ((regs->cs & 0x3) != KERNEL_RING) {
 regs->uesp = kttd_regs.uesp;
-regs->ss   = kttd_regs.ss & SEGMENT_SELECTOR_MASK;
+regs->ss = kttd_regs.ss & SEGMENT_SELECTOR_MASK;
 }
-regs->ebp    = kttd_regs.ebp;
-regs->esi    = kttd_regs.esi;
-regs->edi    = kttd_regs.edi;
-regs->es     = kttd_regs.es & SEGMENT_SELECTOR_MASK;
-regs->cs     = kttd_regs.cs & SEGMENT_SELECTOR_MASK;
-regs->ds     = kttd_regs.ds & SEGMENT_SELECTOR_MASK;
-regs->fs     = kttd_regs.fs & SEGMENT_SELECTOR_MASK;
-regs->gs     = kttd_regs.gs & SEGMENT_SELECTOR_MASK;
+regs->ebp = kttd_regs.ebp;
+regs->esi = kttd_regs.esi;
+regs->edi = kttd_regs.edi;
+regs->es = kttd_regs.es & SEGMENT_SELECTOR_MASK;
+regs->cs = kttd_regs.cs & SEGMENT_SELECTOR_MASK;
+regs->ds = kttd_regs.ds & SEGMENT_SELECTOR_MASK;
+regs->fs = kttd_regs.fs & SEGMENT_SELECTOR_MASK;
+regs->gs = kttd_regs.gs & SEGMENT_SELECTOR_MASK;
 if (--kttd_active < MIN_KTTD_ACTIVE)
 printf("ttd_trap: kttd_active < 0\n");
 if (kttd_debug) {
@@ -268,17 +268,17 @@ kttd_run_status = RUNNING;
 return TRUE;
 }
 struct int_regs {
-int	edi;
-int	esi;
-int	ebp;
-int	ebx;
+int edi;
+int esi;
+int ebp;
+int ebx;
 struct i386_interrupt_state *is;
 };
 void
 kttd_netentry(struct int_regs *int_regs)
 {
 struct i386_interrupt_state *is = int_regs->is;
-int	s;
+int s;
 if (kttd_debug)
 printf("kttd_NETENTRY before slphigh()\n");
 s = splhigh();
@@ -287,14 +287,14 @@ printf("kttd_NETENTRY after slphigh()\n");
 if ((is->cs & 0x3) != KERNEL_RING) {
 struct i386_interrupt_state_user *user_is = (struct i386_interrupt_state_user *)is;
 kttd_regs.uesp = user_is->uesp;
-kttd_regs.ss   = user_is->ss;
+kttd_regs.ss = user_is->ss;
 }
 else {
-kttd_regs.ss  = KERNEL_DS;
+kttd_regs.ss = KERNEL_DS;
 kttd_regs.uesp= (int)(is+1);
 }
 kttd_regs.efl = is->efl;
-kttd_regs.cs  = is->cs;
+kttd_regs.cs = is->cs;
 kttd_regs.eip = is->eip;
 kttd_regs.eax = is->eax;
 kttd_regs.ecx = is->ecx;
@@ -303,10 +303,10 @@ kttd_regs.ebx = int_regs->ebx;
 kttd_regs.ebp = int_regs->ebp;
 kttd_regs.esi = int_regs->esi;
 kttd_regs.edi = int_regs->edi;
-kttd_regs.ds  = is->ds;
-kttd_regs.es  = is->es;
-kttd_regs.fs  = is->fs;
-kttd_regs.gs  = is->gs;
+kttd_regs.ds = is->ds;
+kttd_regs.es = is->es;
+kttd_regs.fs = is->fs;
+kttd_regs.gs = is->gs;
 kttd_active++;
 kttd_task_trap(-1, 0, (kttd_regs.cs & 0x3) != 0);
 kttd_active--;
@@ -316,7 +316,7 @@ user_is->uesp = kttd_regs.uesp;
 user_is->ss = kttd_regs.ss & 0xffff;
 }
 is->efl = kttd_regs.efl;
-is->cs  = kttd_regs.cs & SEGMENT_SELECTOR_MASK;
+is->cs = kttd_regs.cs & SEGMENT_SELECTOR_MASK;
 is->eip = kttd_regs.eip;
 is->eax = kttd_regs.eax;
 is->ecx = kttd_regs.ecx;
@@ -325,10 +325,10 @@ int_regs->ebx = kttd_regs.ebx;
 int_regs->ebp = kttd_regs.ebp;
 int_regs->esi = kttd_regs.esi;
 int_regs->edi = kttd_regs.edi;
-is->ds  = kttd_regs.ds & SEGMENT_SELECTOR_MASK;
-is->es  = kttd_regs.es & SEGMENT_SELECTOR_MASK;
-is->fs  = kttd_regs.fs & SEGMENT_SELECTOR_MASK;
-is->gs  = kttd_regs.gs & SEGMENT_SELECTOR_MASK;
+is->ds = kttd_regs.ds & SEGMENT_SELECTOR_MASK;
+is->es = kttd_regs.es & SEGMENT_SELECTOR_MASK;
+is->fs = kttd_regs.fs & SEGMENT_SELECTOR_MASK;
+is->gs = kttd_regs.gs & SEGMENT_SELECTOR_MASK;
 if (kttd_run_status == RUNNING)
 printf("kttd_netentry: %%%%% run_status already RUNNING! %%%%%\n");
 kttd_run_status = RUNNING;

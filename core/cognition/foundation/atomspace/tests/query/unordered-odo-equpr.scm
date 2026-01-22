@@ -14,59 +14,59 @@
 (Evaluation (Predicate "equal") (List (Concept "Y") (Concept "Y")))
 (Evaluation (Predicate "equal") (List (Concept "Z") (Concept "Z")))
 (List (Concept "B")
-	(Set (Concept "P") (Concept "Q") (Concept "R"))
-	(Set (Concept "R") (Concept "S") (Concept "T")))
+(Set (Concept "P") (Concept "Q") (Concept "R"))
+(Set (Concept "R") (Concept "S") (Concept "T")))
 (define epr-dim-two
-	(Bind
-		(And
-			(Present (List (Variable "$CPT")
-				(Set (Variable "$U") (Variable "$V") (Variable "$W"))
-				(Set (Variable "$X") (Variable "$Y") (Variable "$Z"))))
-			(Present (Evaluation (Predicate "equal")
-				(List (Variable "$W") (Variable "$X")))))
-		(Associative
-			(Variable "$U") (Variable "$V") (Variable "$W")
-			(Variable "$X") (Variable "$Y") (Variable "$Z"))))
+(Bind
+(And
+(Present (List (Variable "$CPT")
+(Set (Variable "$U") (Variable "$V") (Variable "$W"))
+(Set (Variable "$X") (Variable "$Y") (Variable "$Z"))))
+(Present (Evaluation (Predicate "equal")
+(List (Variable "$W") (Variable "$X")))))
+(Associative
+(Variable "$U") (Variable "$V") (Variable "$W")
+(Variable "$X") (Variable "$Y") (Variable "$Z"))))
 (List (Concept "C")
-	(Set (Concept "P") (Concept "Q") (Concept "R"))
-	(Set (Concept "R") (Concept "S") (Concept "T"))
-	(Set (Concept "T") (Concept "U") (Concept "V")))
+(Set (Concept "P") (Concept "Q") (Concept "R"))
+(Set (Concept "R") (Concept "S") (Concept "T"))
+(Set (Concept "T") (Concept "U") (Concept "V")))
 (define epr-dim-three
-	(Bind
-		(And
-			(Present (List (Variable "$CPT")
-				(Set (Variable "$A") (Variable "$B") (Variable "$C"))
-				(Set (Variable "$U") (Variable "$V") (Variable "$W"))
-				(Set (Variable "$X") (Variable "$Y") (Variable "$Z"))))
-			(Present (Evaluation (Predicate "equal")
-				(List (Variable "$C") (Variable "$U"))))
-			(Present (Evaluation (Predicate "equal")
-				(List (Variable "$W") (Variable "$X")))))
-		(Associative
-			(Variable "$A") (Variable "$B") (Variable "$C")
-			(Variable "$U") (Variable "$V") (Variable "$W")
-			(Variable "$X") (Variable "$Y") (Variable "$Z"))))
+(Bind
+(And
+(Present (List (Variable "$CPT")
+(Set (Variable "$A") (Variable "$B") (Variable "$C"))
+(Set (Variable "$U") (Variable "$V") (Variable "$W"))
+(Set (Variable "$X") (Variable "$Y") (Variable "$Z"))))
+(Present (Evaluation (Predicate "equal")
+(List (Variable "$C") (Variable "$U"))))
+(Present (Evaluation (Predicate "equal")
+(List (Variable "$W") (Variable "$X")))))
+(Associative
+(Variable "$A") (Variable "$B") (Variable "$C")
+(Variable "$U") (Variable "$V") (Variable "$W")
+(Variable "$X") (Variable "$Y") (Variable "$Z"))))
 (List (Concept "D")
-   (Set (Concept "P") (Concept "Q") (Concept "R"))
-   (Set (Concept "R") (Concept "S") (Concept "T"))
-   (Set (Concept "T") (Concept "U") (Concept "V"))
-   (Set (Concept "V") (Concept "W") (Concept "X")))
+(Set (Concept "P") (Concept "Q") (Concept "R"))
+(Set (Concept "R") (Concept "S") (Concept "T"))
+(Set (Concept "T") (Concept "U") (Concept "V"))
+(Set (Concept "V") (Concept "W") (Concept "X")))
 (define epr-dim-four
-	(Bind
-		(And
-			(Present (List (Variable "$CPT")
-				(Set (Variable "$A") (Variable "$B") (Variable "$C"))
-				(Set (Variable "$D") (Variable "$E") (Variable "$F"))
-				(Set (Variable "$U") (Variable "$V") (Variable "$W"))
-				(Set (Variable "$X") (Variable "$Y") (Variable "$Z"))))
-			(Present (Evaluation (Predicate "equal")
-				(List (Variable "$C") (Variable "$D"))))
-			(Present (Evaluation (Predicate "equal")
-				(List (Variable "$F") (Variable "$U"))))
-			(Present (Evaluation (Predicate "equal")
-				(List (Variable "$W") (Variable "$X")))))
-		(Associative
-			(Variable "$A") (Variable "$B") (Variable "$C")
-			(Variable "$D") (Variable "$E") (Variable "$F")
-			(Variable "$U") (Variable "$V") (Variable "$W")
-			(Variable "$X") (Variable "$Y") (Variable "$Z"))))
+(Bind
+(And
+(Present (List (Variable "$CPT")
+(Set (Variable "$A") (Variable "$B") (Variable "$C"))
+(Set (Variable "$D") (Variable "$E") (Variable "$F"))
+(Set (Variable "$U") (Variable "$V") (Variable "$W"))
+(Set (Variable "$X") (Variable "$Y") (Variable "$Z"))))
+(Present (Evaluation (Predicate "equal")
+(List (Variable "$C") (Variable "$D"))))
+(Present (Evaluation (Predicate "equal")
+(List (Variable "$F") (Variable "$U"))))
+(Present (Evaluation (Predicate "equal")
+(List (Variable "$W") (Variable "$X")))))
+(Associative
+(Variable "$A") (Variable "$B") (Variable "$C")
+(Variable "$D") (Variable "$E") (Variable "$F")
+(Variable "$U") (Variable "$V") (Variable "$W")
+(Variable "$X") (Variable "$Y") (Variable "$Z"))))

@@ -501,7 +501,7 @@ bool strtofC(const char *s, float *r)
 #define FP_BY_POS(p) \
 { \
 p*DFP(0), p*DFP(1), p*DFP(2), p*DFP(3), p*DFP(4), \
-p*DFP(5), p*DFP(6), p*DFP(7), p*DFP(8), p*DFP(9)  \
+p*DFP(5), p*DFP(6), p*DFP(7), p*DFP(8), p*DFP(9) \
 }
 static float fpconv[][10] =
 {

@@ -6,10 +6,10 @@
 #include "gdevpxop.h"
 #include "gdevpxut.h"
 #ifndef X_DPI
-#  define X_DPI 600
+# define X_DPI 600
 #endif
 #ifndef Y_DPI
-#  define Y_DPI 600
+# define Y_DPI 600
 #endif
 #define MIN_SKIP_LINES 2
 #define W sizeof(word)

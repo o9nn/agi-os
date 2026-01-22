@@ -3,9 +3,9 @@
 struct mailbox;
 struct sdbox_mailbox;
 enum sdbox_sync_flags {
-SDBOX_SYNC_FLAG_FORCE		= 0x01,
-SDBOX_SYNC_FLAG_FSYNC		= 0x02,
-SDBOX_SYNC_FLAG_FORCE_REBUILD	= 0x04
+SDBOX_SYNC_FLAG_FORCE = 0x01,
+SDBOX_SYNC_FLAG_FSYNC = 0x02,
+SDBOX_SYNC_FLAG_FORCE_REBUILD = 0x04
 };
 enum sdbox_sync_entry_type {
 SDBOX_SYNC_ENTRY_TYPE_EXPUNGE,

@@ -1,5 +1,5 @@
 #if MACH_KDB
-#if	MACH_DEBUG
+#if MACH_DEBUG
 #include <mach/mach_types.h>
 #include <mach/std_types.h>
 #include <mach/vm_param.h>
@@ -12,17 +12,17 @@
 #include <ddb/db_sym.h>
 kern_return_t
 host_load_symbol_table(
-host_t		host,
-task_t		task,
-const char *	name,
-pointer_t	symtab,
-unsigned int	symtab_count)
+host_t host,
+task_t task,
+const char * name,
+pointer_t symtab,
+unsigned int symtab_count)
 {
-kern_return_t	result;
-vm_offset_t	symtab_start;
-vm_offset_t	symtab_end;
-vm_map_t	map;
-vm_map_copy_t	symtab_copy_object;
+kern_return_t result;
+vm_offset_t symtab_start;
+vm_offset_t symtab_end;
+vm_map_t map;
+vm_map_copy_t symtab_copy_object;
 if (host == HOST_NULL)
 return (KERN_INVALID_ARGUMENT);
 symtab_copy_object = (vm_map_copy_t) symtab;

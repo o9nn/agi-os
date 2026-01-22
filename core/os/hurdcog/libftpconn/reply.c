@@ -97,15 +97,15 @@ if (err)
 return err;
 if (!multi && len == 0)
 return EPIPE;
-#define ACCUM(txt, len)							      \
-do {									      \
-if (reply_txt)			      \
-{									      \
-error_t err =							      \
-ftp_conn_add_reply_txt (conn, &reply_txt_offs, txt, len);	      \
-if (err)							      \
-return err;							      \
-}									      \
+#define ACCUM(txt, len) \
+do { \
+if (reply_txt) \
+{ \
+error_t err = \
+ftp_conn_add_reply_txt (conn, &reply_txt_offs, txt, len); \
+if (err) \
+return err; \
+} \
 } while (0)
 if (conn->hooks && conn->hooks->cntl_debug)
 (*conn->hooks->cntl_debug) (conn, FTP_CONN_CNTL_DEBUG_REPLY, l);

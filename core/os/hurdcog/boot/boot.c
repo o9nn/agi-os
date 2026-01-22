@@ -102,8 +102,8 @@ fgets (buf, buf_len, stdin);
 extern char *useropen_dir;
 void
 mig_reply_setup (
-const mach_msg_header_t	*in,
-mach_msg_header_t	*out)
+const mach_msg_header_t *in,
+mach_msg_header_t *out)
 {
 static const mach_msg_type_t RetCodeType = {
 .msgt_name = MACH_MSG_TYPE_INTEGER_32,
@@ -114,8 +114,8 @@ static const mach_msg_type_t RetCodeType = {
 .msgt_deallocate = FALSE,
 .msgt_unused = 0
 };
-#define	InP	(in)
-#define	OutP	((mig_reply_header_t *) out)
+#define InP (in)
+#define OutP ((mig_reply_header_t *) out)
 OutP->Head.msgh_bits =
 MACH_MSGH_BITS(MACH_MSGH_BITS_REMOTE(InP->msgh_bits), 0);
 OutP->Head.msgh_size = sizeof *OutP;
@@ -181,26 +181,26 @@ return FALSE;
 static void read_reply (void);
 static void * msg_thread (void *);
 const char *argp_program_version = STANDARD_HURD_VERSION (boot);
-#define OPT_PRIVILEGED	-1
-#define OPT_BOOT_SCRIPT	-2
+#define OPT_PRIVILEGED -1
+#define OPT_BOOT_SCRIPT -2
 static struct argp_option options[] =
 {
 { NULL, 0, NULL, 0, "Boot options:" },
 { "boot-script", OPT_BOOT_SCRIPT, "BOOT-SCRIPT", 0,
 "boot script to execute" },
-{ "boot-root",   'D', "DIR", 0,
+{ "boot-root", 'D', "DIR", 0,
 "Root of a directory tree in which to find files specified in BOOT-SCRIPT" },
 { "single-user", 's', 0, 0,
 "Boot in single user mode" },
 { "kernel-command-line", 'c', "COMMAND LINE", 0,
 "Simulated multiboot command line to supply" },
-{ "verbose",     'v', 0, 0,
+{ "verbose", 'v', 0, 0,
 "Be verbose" },
-{ "pause" ,      'd', 0, 0,
+{ "pause" , 'd', 0, 0,
 "Pause for user confirmation at various times during booting" },
-{ "isig",      'I', 0, 0,
+{ "isig", 'I', 0, 0,
 "Do not disable terminal signals, so you can suspend and interrupt boot"},
-{ "device",	   'f', "SUBHURD_NAME=DEVICE_FILE", 0,
+{ "device", 'f', "SUBHURD_NAME=DEVICE_FILE", 0,
 "Pass the given DEVICE_FILE to the Subhurd as device SUBHURD_NAME"},
 { "privileged", OPT_PRIVILEGED, NULL, 0,
 "Allow the subhurd to access privileged kernel ports"},
@@ -249,9 +249,9 @@ char *dev_file;
 switch (key)
 {
 size_t len;
-case 'c':  kernel_command_line = arg; break;
-case 'D':  useropen_dir = arg; break;
-case 'I':  isig = 1; break;
+case 'c': kernel_command_line = arg; break;
+case 'D': useropen_dir = arg; break;
+case 'I': isig = 1; break;
 case 'v':
 verbose += 1;
 break;
@@ -558,7 +558,7 @@ if (err)
 char *str = boot_script_error_string (err);
 int i = strlen (str);
 write (2, str, i);
-write (2, "\n",  1);
+write (2, "\n", 1);
 host_exit (1);
 }
 free (buf);

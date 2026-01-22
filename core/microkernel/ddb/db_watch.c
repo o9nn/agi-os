@@ -15,17 +15,17 @@
 #include <ddb/db_run.h>
 #include <ddb/db_sym.h>
 #include <ddb/db_task_thread.h>
-boolean_t	db_watchpoints_inserted = TRUE;
-#define	NWATCHPOINTS	100
-struct db_watchpoint	db_watch_table[NWATCHPOINTS];
-db_watchpoint_t		db_next_free_watchpoint = &db_watch_table[0];
-db_watchpoint_t		db_free_watchpoints = 0;
-db_watchpoint_t		db_watchpoint_list = 0;
-extern vm_map_t		kernel_map;
+boolean_t db_watchpoints_inserted = TRUE;
+#define NWATCHPOINTS 100
+struct db_watchpoint db_watch_table[NWATCHPOINTS];
+db_watchpoint_t db_next_free_watchpoint = &db_watch_table[0];
+db_watchpoint_t db_free_watchpoints = 0;
+db_watchpoint_t db_watchpoint_list = 0;
+extern vm_map_t kernel_map;
 static db_watchpoint_t
 db_watchpoint_alloc(void)
 {
-db_watchpoint_t	watch;
+db_watchpoint_t watch;
 if ((watch = db_free_watchpoints) != 0) {
 db_free_watchpoints = watch->link;
 return (watch);
@@ -46,11 +46,11 @@ db_free_watchpoints = watch;
 }
 void
 db_set_watchpoint(
-const task_t	task,
-db_addr_t	addr,
-vm_size_t	size)
+const task_t task,
+db_addr_t addr,
+vm_size_t size)
 {
-db_watchpoint_t	watch;
+db_watchpoint_t watch;
 for (watch = db_watchpoint_list; watch != 0; watch = watch->link) {
 if (watch->task == task &&
 (watch->loaddr == addr) &&
@@ -74,8 +74,8 @@ db_watchpoints_inserted = FALSE;
 void
 db_delete_watchpoint(const task_t task, db_addr_t addr)
 {
-db_watchpoint_t	watch;
-db_watchpoint_t	*prev;
+db_watchpoint_t watch;
+db_watchpoint_t *prev;
 for (prev = &db_watchpoint_list; (watch = *prev) != 0;
 prev = &watch->link) {
 if (watch->task == task &&
@@ -92,13 +92,13 @@ void
 db_list_watchpoints(void)
 {
 db_watchpoint_t watch;
-int	 	task_id;
+int task_id;
 if (db_watchpoint_list == 0) {
 db_printf("No watchpoints set\n");
 return;
 }
 db_printf("Space      Address  Size\n");
-for (watch = db_watchpoint_list; watch != 0; watch = watch->link)  {
+for (watch = db_watchpoint_list; watch != 0; watch = watch->link) {
 if (watch->task == TASK_NULL)
 db_printf("kernel  ");
 else {
@@ -115,9 +115,9 @@ watch->hiaddr - watch->loaddr);
 static int
 db_get_task(const char *modif, task_t *taskp, db_addr_t addr)
 {
-task_t		task = TASK_NULL;
-db_expr_t	value;
-boolean_t	user_space;
+task_t task = TASK_NULL;
+db_expr_t value;
+boolean_t user_space;
 user_space = db_option(modif, 'T');
 if (user_space) {
 if (db_expression(&value)) {
@@ -146,26 +146,26 @@ return(0);
 }
 void
 db_deletewatch_cmd(
-db_expr_t	addr,
-int		have_addr,
-db_expr_t	count,
-const char *	modif)
+db_expr_t addr,
+int have_addr,
+db_expr_t count,
+const char * modif)
 {
-task_t		task;
+task_t task;
 if (db_get_task(modif, &task, addr) < 0)
 return;
 db_delete_watchpoint(task, addr);
 }
 void
 db_watchpoint_cmd(
-db_expr_t	addr,
-int		have_addr,
-db_expr_t	count,
-const char *	modif)
+db_expr_t addr,
+int have_addr,
+db_expr_t count,
+const char * modif)
 {
-vm_size_t	size;
-db_expr_t	value;
-task_t		task;
+vm_size_t size;
+db_expr_t value;
+task_t task;
 if (db_get_task(modif, &task, addr) < 0)
 return;
 if (db_expression(&value))
@@ -176,18 +176,18 @@ db_set_watchpoint(task, addr, size);
 }
 void
 db_listwatch_cmd(
-db_expr_t	addr,
-int		have_addr,
-db_expr_t	count,
-const char *	modif)
+db_expr_t addr,
+int have_addr,
+db_expr_t count,
+const char * modif)
 {
 db_list_watchpoints();
 }
 void
 db_set_watchpoints(void)
 {
-db_watchpoint_t		watch;
-vm_map_t		map;
+db_watchpoint_t watch;
+vm_map_t map;
 unsigned hw_idx = 0;
 if (!db_watchpoints_inserted) {
 for (watch = db_watchpoint_list; watch != 0; watch = watch->link) {
@@ -214,13 +214,13 @@ db_watchpoints_inserted = FALSE;
 }
 boolean_t
 db_find_watchpoint(
-vm_map_t	map,
-db_addr_t	addr,
-db_regs_t	*regs)
+vm_map_t map,
+db_addr_t addr,
+db_regs_t *regs)
 {
 db_watchpoint_t watch;
 db_watchpoint_t found = 0;
-task_t		task_space;
+task_t task_space;
 task_space = (map == kernel_map)? TASK_NULL: db_current_task();
 for (watch = db_watchpoint_list; watch != 0; watch = watch->link) {
 if (watch->task == task_space) {

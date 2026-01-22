@@ -15,27 +15,27 @@
 #endif
 #endif
 #ifdef DONT_USE_B_MODE
-#define READ_BINARY	"r"
+#define READ_BINARY "r"
 #else
 #ifdef VMS
-#define READ_BINARY	"rb", "ctx=stm"
+#define READ_BINARY "rb", "ctx=stm"
 #else
-#define READ_BINARY	"rb"
+#define READ_BINARY "rb"
 #endif
 #endif
 #ifndef EXIT_FAILURE
-#define EXIT_FAILURE  1
+#define EXIT_FAILURE 1
 #endif
 #ifndef EXIT_SUCCESS
 #ifdef VMS
-#define EXIT_SUCCESS  1
+#define EXIT_SUCCESS 1
 #else
-#define EXIT_SUCCESS  0
+#define EXIT_SUCCESS 0
 #endif
 #endif
 static FILE * infile;
-#define NEXTBYTE()  getc(infile)
-#define ERREXIT(msg)  (fprintf(stderr, "%s\n", msg), exit(EXIT_FAILURE))
+#define NEXTBYTE() getc(infile)
+#define ERREXIT(msg) (fprintf(stderr, "%s\n", msg), exit(EXIT_FAILURE))
 static int
 read_1_byte (void)
 {
@@ -57,25 +57,25 @@ if (c2 == EOF)
 ERREXIT("Premature EOF in JPEG file");
 return (((unsigned int) c1) << 8) + ((unsigned int) c2);
 }
-#define M_SOF0  0xC0
-#define M_SOF1  0xC1
-#define M_SOF2  0xC2
-#define M_SOF3  0xC3
-#define M_SOF5  0xC5
-#define M_SOF6  0xC6
-#define M_SOF7  0xC7
-#define M_SOF9  0xC9
+#define M_SOF0 0xC0
+#define M_SOF1 0xC1
+#define M_SOF2 0xC2
+#define M_SOF3 0xC3
+#define M_SOF5 0xC5
+#define M_SOF6 0xC6
+#define M_SOF7 0xC7
+#define M_SOF9 0xC9
 #define M_SOF10 0xCA
 #define M_SOF11 0xCB
 #define M_SOF13 0xCD
 #define M_SOF14 0xCE
 #define M_SOF15 0xCF
-#define M_SOI   0xD8
-#define M_EOI   0xD9
-#define M_SOS   0xDA
-#define M_APP0	0xE0
-#define M_APP12	0xEC
-#define M_COM   0xFE
+#define M_SOI 0xD8
+#define M_EOI 0xD9
+#define M_SOS 0xDA
+#define M_APP0 0xE0
+#define M_APP12 0xEC
+#define M_COM 0xFE
 static int
 next_marker (void)
 {
@@ -160,20 +160,20 @@ image_height = read_2_bytes();
 image_width = read_2_bytes();
 num_components = read_1_byte();
 switch (marker) {
-case M_SOF0:	process = "Baseline";  break;
-case M_SOF1:	process = "Extended sequential";  break;
-case M_SOF2:	process = "Progressive";  break;
-case M_SOF3:	process = "Lossless";  break;
-case M_SOF5:	process = "Differential sequential";  break;
-case M_SOF6:	process = "Differential progressive";  break;
-case M_SOF7:	process = "Differential lossless";  break;
-case M_SOF9:	process = "Extended sequential, arithmetic coding";  break;
-case M_SOF10:	process = "Progressive, arithmetic coding";  break;
-case M_SOF11:	process = "Lossless, arithmetic coding";  break;
-case M_SOF13:	process = "Differential sequential, arithmetic coding";  break;
-case M_SOF14:	process = "Differential progressive, arithmetic coding"; break;
-case M_SOF15:	process = "Differential lossless, arithmetic coding";  break;
-default:	process = "Unknown";  break;
+case M_SOF0: process = "Baseline"; break;
+case M_SOF1: process = "Extended sequential"; break;
+case M_SOF2: process = "Progressive"; break;
+case M_SOF3: process = "Lossless"; break;
+case M_SOF5: process = "Differential sequential"; break;
+case M_SOF6: process = "Differential progressive"; break;
+case M_SOF7: process = "Differential lossless"; break;
+case M_SOF9: process = "Extended sequential, arithmetic coding"; break;
+case M_SOF10: process = "Progressive, arithmetic coding"; break;
+case M_SOF11: process = "Lossless, arithmetic coding"; break;
+case M_SOF13: process = "Differential sequential, arithmetic coding"; break;
+case M_SOF14: process = "Differential progressive, arithmetic coding"; break;
+case M_SOF15: process = "Differential lossless, arithmetic coding"; break;
+default: process = "Unknown"; break;
 }
 printf("JPEG image is %uw * %uh, %d color components, %d bits per sample\n",
 image_width, image_height, num_components, data_precision);

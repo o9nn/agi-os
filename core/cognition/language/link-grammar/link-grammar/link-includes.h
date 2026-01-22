@@ -7,13 +7,13 @@
 LINK_BEGIN_DECLS
 #ifndef __bool_true_false_are_defined
 #ifdef _Bool
-#define bool                        _Bool
+#define bool _Bool
 #else
-#define bool                        int
+#define bool int
 #endif
-#define true                            1
-#define false                           0
-#define __bool_true_false_are_defined   1
+#define true 1
+#define false 0
+#define __bool_true_false_are_defined 1
 #endif
 #endif
 typedef struct Dictionary_s * Dictionary;
@@ -126,11 +126,11 @@ parse_options_set_short_length(Parse_Options opts, int short_length);
 link_public_api(int)
 parse_options_get_short_length(Parse_Options opts);
 link_public_api(void)
-parse_options_set_max_memory(Parse_Options  opts, int mem);
+parse_options_set_max_memory(Parse_Options opts, int mem);
 link_public_api(int)
 parse_options_get_max_memory(Parse_Options opts);
 link_public_api(void)
-parse_options_set_max_parse_time(Parse_Options  opts, int secs);
+parse_options_set_max_parse_time(Parse_Options opts, int secs);
 link_public_api(int)
 parse_options_get_max_parse_time(Parse_Options opts);
 link_public_api(void)
@@ -288,15 +288,15 @@ link_public_api(char *)
 dict_display_word_info(Dictionary dict, const char *, Parse_Options opts);
 link_public_api(void)
 parse_options_print_total_time(Parse_Options opts);
-#if     __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ > 4)
-#define GNUC_PRINTF( format_idx, arg_idx )    \
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ > 4)
+#define GNUC_PRINTF( format_idx, arg_idx ) \
 __attribute__((__format__ (__printf__, format_idx, arg_idx)))
 #else
 #define GNUC_PRINTF( format_idx, arg_idx )
 #endif
 link_public_api(int)
 prt_error(const char *fmt, ...) GNUC_PRINTF(1,2);
-#if  __GNUC__ > 2
+#if __GNUC__ > 2
 #define GNUC_DEPRECATED __attribute__((deprecated))
 #else
 #define GNUC_DEPRECATED

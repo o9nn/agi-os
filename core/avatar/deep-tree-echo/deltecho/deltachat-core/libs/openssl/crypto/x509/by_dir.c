@@ -258,7 +258,7 @@ BIO_snprintf(b->data, b->max,
 }
 #ifndef OPENSSL_NO_POSIX_IO
 # ifdef _WIN32
-#  define stat _stat
+# define stat _stat
 # endif
 {
 struct stat st;

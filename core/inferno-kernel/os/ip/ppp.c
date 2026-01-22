@@ -1,15 +1,15 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	<libcrypt.h>
-#include	<kernel.h>
-#include	"ip.h"
-#include	"ppp.h"
-int	nocompress;
-Ipaddr	pppdns[2];
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include <libcrypt.h>
+#include <kernel.h>
+#include "ip.h"
+#include "ppp.h"
+int nocompress;
+Ipaddr pppdns[2];
 ushort fcstab[256] =
 {
 0x0000, 0x1189, 0x2312, 0x329b, 0x4624, 0x57ad, 0x6536, 0x74bf,
@@ -54,32 +54,32 @@ static char *snames[] =
 "Sacksent",
 "Sopened",
 };
-static void	init(PPP*);
-static void	setphase(PPP*, int);
-static void	pinit(PPP*, Pstate*);
-static void	ppptimer(void*);
-static void	ptimer(PPP*, Pstate*);
-static int	getframe(PPP*, Block**);
-static Block*	putframe(PPP*, int, Block*);
-static uchar*	escapebyte(PPP*, ulong, uchar*, ushort*);
-static void	config(PPP*, Pstate*, int);
-static int	getopts(PPP*, Pstate*, Block*);
-static void	rejopts(PPP*, Pstate*, Block*, int);
-static void	newstate(PPP*, Pstate*, int);
-static void	rcv(PPP*, Pstate*, Block*);
-static void	getchap(PPP*, Block*);
-static void	getpap(PPP*, Block*);
-static void	sendpap(PPP*);
-static void	getlqm(PPP*, Block*);
-static void	putlqm(PPP*);
-static void	hangup(PPP*);
-static void	remove(PPP*);
-static	int		validv4(Ipaddr);
-static	void		invalidate(Ipaddr);
-static	void		ipconnect(PPP *);
-static	void		setdefroute(PPP *, Ipaddr);
-static	void		printopts(PPP *, Pstate*, Block*, int);
-static	void		sendtermreq(PPP*, Pstate*);
+static void init(PPP*);
+static void setphase(PPP*, int);
+static void pinit(PPP*, Pstate*);
+static void ppptimer(void*);
+static void ptimer(PPP*, Pstate*);
+static int getframe(PPP*, Block**);
+static Block* putframe(PPP*, int, Block*);
+static uchar* escapebyte(PPP*, ulong, uchar*, ushort*);
+static void config(PPP*, Pstate*, int);
+static int getopts(PPP*, Pstate*, Block*);
+static void rejopts(PPP*, Pstate*, Block*, int);
+static void newstate(PPP*, Pstate*, int);
+static void rcv(PPP*, Pstate*, Block*);
+static void getchap(PPP*, Block*);
+static void getpap(PPP*, Block*);
+static void sendpap(PPP*);
+static void getlqm(PPP*, Block*);
+static void putlqm(PPP*);
+static void hangup(PPP*);
+static void remove(PPP*);
+static int validv4(Ipaddr);
+static void invalidate(Ipaddr);
+static void ipconnect(PPP *);
+static void setdefroute(PPP *, Ipaddr);
+static void printopts(PPP *, Pstate*, Block*, int);
+static void sendtermreq(PPP*, Pstate*);
 static void
 errlog(PPP *ppp, char *err)
 {

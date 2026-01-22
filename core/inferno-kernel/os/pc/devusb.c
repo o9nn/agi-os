@@ -1,24 +1,24 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"../port/error.h"
-#include	"usb.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "../port/error.h"
+#include "usb.h"
 static int debug = 0;
-#define Chatty	1
+#define Chatty 1
 #define DPRINT if(Chatty)print
 #define XPRINT if(debug)iprint
-Usbhost*	usbhost[MaxUsb];
+Usbhost* usbhost[MaxUsb];
 static char *devstates[] = {
-[Disabled]		"Disabled",
-[Attached]	"Attached",
-[Enabled]		"Enabled",
-[Assigned]	"Assigned",
-[Configured]	"Configured",
+[Disabled] "Disabled",
+[Attached] "Attached",
+[Enabled] "Enabled",
+[Assigned] "Assigned",
+[Configured] "Configured",
 };
-static	char	Ebadusbmsg[] = "invalid parameters to USB ctl message";
+static char Ebadusbmsg[] = "invalid parameters to USB ctl message";
 enum
 {
 Qtopdir = 0,
@@ -31,27 +31,27 @@ Qstatus,
 Qep0,
 };
 enum {
-TYPEBITS	= 8,
-SLOTBITS	= 8,
-CTLRBITS	= 4,
-SLOTSHIFT	= TYPEBITS,
-CTLRSHIFT	= SLOTSHIFT+SLOTBITS,
-TYPEMASK	= (1<<TYPEBITS)-1,
-SLOTMASK	= (1<<SLOTBITS)-1,
-CTLRMASK	= (1<<CTLRBITS)-1,
+TYPEBITS = 8,
+SLOTBITS = 8,
+CTLRBITS = 4,
+SLOTSHIFT = TYPEBITS,
+CTLRSHIFT = SLOTSHIFT+SLOTBITS,
+TYPEMASK = (1<<TYPEBITS)-1,
+SLOTMASK = (1<<SLOTBITS)-1,
+CTLRMASK = (1<<CTLRBITS)-1,
 };
-#define	TYPE(q)		(((ulong)(q).path)&TYPEMASK)
-#define	SLOT(q)		((((ulong)(q).path)>>SLOTSHIFT)&SLOTMASK)
-#define	CTLR(q)		((((ulong)(q).path)>>CTLRSHIFT)&CTLRMASK)
-#define	PATH(t, s, c)	((t)|((s)<<SLOTSHIFT)|((c)<<CTLRSHIFT))
+#define TYPE(q) (((ulong)(q).path)&TYPEMASK)
+#define SLOT(q) ((((ulong)(q).path)>>SLOTSHIFT)&SLOTMASK)
+#define CTLR(q) ((((ulong)(q).path)>>CTLRSHIFT)&CTLRMASK)
+#define PATH(t, s, c) ((t)|((s)<<SLOTSHIFT)|((c)<<CTLRSHIFT))
 static Dirtab usbdir2[] = {
-"new",	{Qnew},			0,	0666,
-"port",	{Qport},			0,	0666,
+"new", {Qnew}, 0, 0666,
+"port", {Qport}, 0, 0666,
 };
 static Dirtab usbdir3[]={
-"ctl",		{Qctl},			0,	0666,
-"status",	{Qstatus},			0,	0444,
-"setup",	{Qep0},			0,	0666,
+"ctl", {Qctl}, 0, 0666,
+"status", {Qstatus}, 0, 0444,
+"setup", {Qep0}, 0, 0666,
 };
 enum
 {
@@ -72,25 +72,25 @@ CMunstall,
 };
 static Cmdtab usbportmsg[] =
 {
-PMdisable,	"disable",	2,
-PMenable,		"enable",	2,
-PMreset,		"reset",	2,
+PMdisable, "disable", 2,
+PMenable, "enable", 2,
+PMreset, "reset", 2,
 };
 static Cmdtab usbctlmsg[] =
 {
-CMclass,		"class",	0,
-CMdata,		"data",	3,
-CMdebug,		"debug",	3,
-CMep,		"ep",		6,
-CMmaxpkt,	"maxpkt",	3,
-CMadjust,		"adjust",	3,
-CMspeed,		"speed",	2,
-CMunstall,	"unstall",	2,
+CMclass, "class", 0,
+CMdata, "data", 3,
+CMdebug, "debug", 3,
+CMep, "ep", 6,
+CMmaxpkt, "maxpkt", 3,
+CMadjust, "adjust", 3,
+CMspeed, "speed", 2,
+CMunstall, "unstall", 2,
 };
 static struct
 {
-char*	type;
-int	(*reset)(Usbhost*);
+char* type;
+int (*reset)(Usbhost*);
 } usbtypes[MaxUsb+1];
 void
 addusbtype(char* t, int (*r)(Usbhost*))

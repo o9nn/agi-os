@@ -6,7 +6,7 @@ dc_chatlist_t* chatlist = NULL;
 if ((chatlist=calloc(1, sizeof(dc_chatlist_t)))==NULL) {
 exit(20);
 }
-chatlist->magic   = DC_CHATLIST_MAGIC;
+chatlist->magic = DC_CHATLIST_MAGIC;
 chatlist->context = context;
 if ((chatlist->chatNlastmsg_ids=dc_array_new(context, 128))==NULL) {
 exit(32);
@@ -54,11 +54,11 @@ return dc_array_get_id(chatlist->chatNlastmsg_ids, index*DC_CHATLIST_IDS_PER_RES
 }
 dc_lot_t* dc_chatlist_get_summary(const dc_chatlist_t* chatlist, size_t index, dc_chat_t* chat )
 {
-dc_lot_t*      ret = dc_lot_new();
-uint32_t       lastmsg_id = 0;
-dc_msg_t*      lastmsg = NULL;
-dc_contact_t*  lastcontact = NULL;
-dc_chat_t*     chat_to_delete = NULL;
+dc_lot_t* ret = dc_lot_new();
+uint32_t lastmsg_id = 0;
+dc_msg_t* lastmsg = NULL;
+dc_contact_t* lastcontact = NULL;
+dc_chat_t* chat_to_delete = NULL;
 if (chatlist==NULL || chatlist->magic!=DC_CHATLIST_MAGIC || index>=chatlist->cnt) {
 ret->text2 = dc_strdup("ErrBadChatlistIndex");
 goto cleanup;
@@ -76,7 +76,7 @@ if (lastmsg_id)
 {
 lastmsg = dc_msg_new_untyped(chatlist->context);
 dc_msg_load_from_db(lastmsg, chatlist->context, lastmsg_id);
-if (lastmsg->from_id!=DC_CONTACT_ID_SELF  &&  DC_CHAT_TYPE_IS_MULTI(chat->type))
+if (lastmsg->from_id!=DC_CONTACT_ID_SELF && DC_CHAT_TYPE_IS_MULTI(chat->type))
 {
 lastcontact = dc_contact_new(chatlist->context);
 dc_contact_load_from_db(lastcontact, chatlist->context->sql, lastmsg->from_id);
@@ -109,7 +109,7 @@ return chatlist->context;
 }
 static uint32_t get_last_deaddrop_fresh_msg(dc_context_t* context)
 {
-uint32_t      ret = 0;
+uint32_t ret = 0;
 sqlite3_stmt* stmt = NULL;
 stmt = dc_sqlite3_prepare(context->sql,
 "SELECT m.id "
@@ -129,11 +129,11 @@ return ret;
 }
 static int dc_chatlist_load_from_db(dc_chatlist_t* chatlist, int listflags, const char* query__, uint32_t query_contact_id)
 {
-int           success = 0;
-int           add_archived_link_item = 0;
+int success = 0;
+int add_archived_link_item = 0;
 sqlite3_stmt* stmt = NULL;
-char*         strLikeCmd = NULL;
-char*         query = NULL;
+char* strLikeCmd = NULL;
+char* query = NULL;
 if (chatlist==NULL || chatlist->magic!=DC_CHATLIST_MAGIC || chatlist->context==NULL) {
 goto cleanup;
 }
@@ -222,7 +222,7 @@ return ret;
 }
 dc_chatlist_t* dc_get_chatlist(dc_context_t* context, int listflags, const char* query_str, uint32_t query_id)
 {
-int            success = 0;
+int success = 0;
 dc_chatlist_t* obj = dc_chatlist_new(context);
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC) {
 goto cleanup;

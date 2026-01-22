@@ -23,5 +23,5 @@ error_t (*change_flags) (struct netif * netif, uint16_t flags);
 err_t if_init (struct netif *netif);
 error_t if_terminate (struct netif *netif);
 error_t if_change_flags (struct netif *netif, uint16_t flags);
-#define netif_get_state(netif)  ((struct ifcommon *)netif->state)
+#define netif_get_state(netif) ((struct ifcommon *)netif->state)
 #endif

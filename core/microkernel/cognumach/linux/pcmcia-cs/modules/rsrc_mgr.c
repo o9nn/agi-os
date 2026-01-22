@@ -19,24 +19,24 @@
 #include <pcmcia/cistpl.h>
 #include "cs_internal.h"
 #define INT_MODULE_PARM(n, v) static int n = v; MODULE_PARM(n, "i")
-INT_MODULE_PARM(probe_mem,	1);
+INT_MODULE_PARM(probe_mem, 1);
 #ifdef CONFIG_ISA
-INT_MODULE_PARM(probe_io,	1);
-INT_MODULE_PARM(mem_limit,	0x10000);
+INT_MODULE_PARM(probe_io, 1);
+INT_MODULE_PARM(mem_limit, 0x10000);
 #endif
 typedef struct resource_map_t {
-u_long			base, num;
-struct resource_map_t	*next;
+u_long base, num;
+struct resource_map_t *next;
 } resource_map_t;
 static resource_map_t mem_db = { 0, 0, &mem_db };
 static resource_map_t io_db = { 0, 0, &io_db };
 #ifdef CONFIG_ISA
 typedef struct irq_info_t {
-u_int			Attributes;
-int				time_share, dyn_share;
-struct socket_info_t	*Socket;
+u_int Attributes;
+int time_share, dyn_share;
+struct socket_info_t *Socket;
 } irq_info_t;
-static irq_info_t irq_table[16] = { { 0, 0, 0 },  };
+static irq_info_t irq_table[16] = { { 0, 0, 0 }, };
 #endif
 #ifndef CONFIG_PNP_BIOS
 #define check_io_region(b,n) (0)
@@ -46,9 +46,9 @@ static irq_info_t irq_table[16] = { { 0, 0, 0 },  };
 static spinlock_t rsrc_lock = SPIN_LOCK_UNLOCKED;
 #endif
 typedef struct resource_entry_t {
-u_long			base, num;
-char			*name;
-struct resource_entry_t	*next;
+u_long base, num;
+char *name;
+struct resource_entry_t *next;
 } resource_entry_t;
 #ifdef CONFIG_PNP_BIOS
 static resource_entry_t io_list = { 0, 0, NULL, NULL };

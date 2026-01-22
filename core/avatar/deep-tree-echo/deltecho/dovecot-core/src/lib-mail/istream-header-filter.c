@@ -568,7 +568,7 @@ mstream->pool = pool_alloconly_create(MEMPOOL_GROWING
 mstream->istream.max_buffer_size = input->real_stream->max_buffer_size;
 mstream->headers = headers_count == 0 ? NULL :
 p_new(mstream->pool, const char *, headers_count);
-for (i = j = 0; i < headers_count; i++)  {
+for (i = j = 0; i < headers_count; i++) {
 ret = j == 0 ? -1 :
 strcasecmp(mstream->headers[j-1], headers[i]);
 if (ret == 0) {

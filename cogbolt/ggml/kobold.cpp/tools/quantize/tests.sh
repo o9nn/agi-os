@@ -2,15 +2,15 @@
 set -eu
 if [ $
 then
-    echo "usage:   $0 path_to_build_binary [path_to_temp_folder]"
-    echo "example: $0 ../../build/bin ../../tmp"
-    exit 1
+echo "usage:   $0 path_to_build_binary [path_to_temp_folder]"
+echo "example: $0 ../../build/bin ../../tmp"
+exit 1
 fi
 if [ $
 then
-    TMP_DIR=$2
+TMP_DIR=$2
 else
-    TMP_DIR=/tmp
+TMP_DIR=/tmp
 fi
 set -x
 SPLIT=$1/llama-gguf-split

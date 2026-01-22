@@ -151,7 +151,7 @@ sys = mtkcompile(model)
 prob = ODEProblem(sys, Pair[], (0.0, 100.0))
 sol = solve(prob, Rodas4())
 @test sol.retcode == Success
-@test all(isapprox.(sol[ref.output.u], re_val, atol = 1e-3))  # check reference
+@test all(isapprox.(sol[ref.output.u], re_val, atol = 1e-3)) # check reference
 @test sol[plant.output.u][end]≈re_val atol=1e-3 # zero control error after 100s
 end
 @testset "PID" begin
@@ -173,7 +173,7 @@ sys = mtkcompile(model)
 prob = ODEProblem(sys, Pair[], (0.0, 100.0))
 sol = solve(prob, Rodas4())
 @test sol.retcode == Success
-@test all(isapprox.(sol[ref.output.u], re_val, atol = 1e-3))  # check reference
+@test all(isapprox.(sol[ref.output.u], re_val, atol = 1e-3)) # check reference
 @test sol[plant.output.u][end]≈re_val atol=1e-3 # zero control error after 100s
 @testset "PI" begin
 @named pid_controller = PID(k = 3, Ti = 0.5, Td = false)
@@ -190,7 +190,7 @@ sys = mtkcompile(model)
 prob = ODEProblem(sys, Pair[], (0.0, 100.0))
 sol = solve(prob, Rodas4())
 @test sol.retcode == Success
-@test all(isapprox.(sol[ref.output.u], re_val, atol = 1e-3))  # check reference
+@test all(isapprox.(sol[ref.output.u], re_val, atol = 1e-3)) # check reference
 @test sol[plant.output.u][end]≈re_val atol=1e-3 # zero control error after 100s
 end
 @testset "PD" begin
@@ -208,7 +208,7 @@ sys = mtkcompile(model)
 prob = ODEProblem(sys, Pair[], (0.0, 100.0))
 sol = solve(prob, Rodas4())
 @test sol.retcode == Success
-@test all(isapprox.(sol[ref.output.u], re_val, atol = 1e-3))  # check reference
+@test all(isapprox.(sol[ref.output.u], re_val, atol = 1e-3)) # check reference
 @test sol[plant.output.u][end] > 1 # without I there will be a steady-state error
 end
 end
@@ -258,8 +258,8 @@ sol = solve(prob, Rodas4())
 end
 @test sol.retcode == Success
 @test sol_lim.retcode == ReturnCode.Success
-@test all(isapprox.(sol[ref.output.u], re_val, atol = 1e-3))  # check reference
-@test all(isapprox.(sol_lim[ref.output.u], re_val, atol = 1e-3))  # check reference
+@test all(isapprox.(sol[ref.output.u], re_val, atol = 1e-3)) # check reference
+@test all(isapprox.(sol_lim[ref.output.u], re_val, atol = 1e-3)) # check reference
 @test sol[plant.output.u][end]≈re_val atol=1e-3 # zero control error after 100s
 @test sol_lim[plant.output.u][end]≈re_val atol=1e-3 # zero control error after 100s
 @test all(-1.5 .<= sol_lim[pi_controller_lim.ctr_output.u] .<= 1.5) # test limit
@@ -286,7 +286,7 @@ prob = ODEProblem(sys, Pair[], (0.0, 100.0))
 sol = solve(prob, Rodas4())
 # Plots.plot(sol, vars=[plant.output.u, plant.input.u])
 @test sol.retcode == Success
-@test all(isapprox.(sol[ref.output.u], re_val, atol = 1e-3))  # check reference
+@test all(isapprox.(sol[ref.output.u], re_val, atol = 1e-3)) # check reference
 @test sol[plant.output.u][end]≈re_val atol=1e-3 # zero control error after 100s
 @test all(-1.5 .<= sol[pid_controller.ctr_output.u] .<= 1.5) # test limit
 @testset "PI" begin
@@ -305,7 +305,7 @@ prob = ODEProblem(sys, Pair[], (0.0, 100.0))
 sol = solve(prob, Rodas4())
 # Plots.plot(sol, vars=[plant.output.u, plant.input.u])
 @test sol.retcode == Success
-@test all(isapprox.(sol[ref.output.u], re_val, atol = 1e-3))  # check reference
+@test all(isapprox.(sol[ref.output.u], re_val, atol = 1e-3)) # check reference
 @test sol[plant.output.u][end]≈re_val atol=1e-3 # zero control error after 100s
 @test all(-1.5 .<= sol[pid_controller.ctr_output.u] .<= 1.5) # test limit
 end
@@ -325,7 +325,7 @@ prob = ODEProblem(sys, Pair[], (0.0, 100.0))
 sol = solve(prob, Rodas4())
 # Plots.plot(sol, vars=[plant.output.u, plant.input.u])
 @test sol.retcode == Success
-@test all(isapprox.(sol[ref.output.u], re_val, atol = 1e-3))  # check reference
+@test all(isapprox.(sol[ref.output.u], re_val, atol = 1e-3)) # check reference
 @test sol[plant.output.u][end] > 0.5 # without I there will be a steady-state error
 @test all(-1.5 .<= sol[pid_controller.ctr_output.u] .<= 1.5) # test limit
 end
@@ -346,7 +346,7 @@ prob = ODEProblem(sys, Pair[], (0.0, 100.0))
 sol = solve(prob, Rodas4())
 # Plots.plot(sol, vars=[plant.output.u, plant.input.u])
 @test sol.retcode == Success
-@test all(isapprox.(sol[ref.output.u], re_val, atol = 1e-3))  # check reference
+@test all(isapprox.(sol[ref.output.u], re_val, atol = 1e-3)) # check reference
 sol[pid_controller.addP.output.u] == -sol[pid_controller.measurement.u]
 @test sol[plant.output.u][end]≈re_val atol=1e-3 # zero control error after 100s
 @test all(-1.5 .<= sol[pid_controller.ctr_output.u] .<= 1.5) # test limit
@@ -367,7 +367,7 @@ prob = ODEProblem(sys, Pair[], (0.0, 100.0))
 sol = solve(prob, Rodas4())
 # Plots.plot(sol, vars=[plant.output.u, plant.input.u])
 @test sol.retcode == Success
-@test all(isapprox.(sol[ref.output.u], re_val, atol = 1e-3))  # check reference
+@test all(isapprox.(sol[ref.output.u], re_val, atol = 1e-3)) # check reference
 @test sol[plant.output.u][end]≈re_val atol=1e-3 # zero control error after 100s
 sol[pid_controller.addD.output.u] == -sol[pid_controller.measurement.u]
 @test all(-1.5 .<= sol[pid_controller.ctr_output.u] .<= 1.5) # test limit
@@ -389,7 +389,7 @@ prob = ODEProblem(sys, Pair[], (0.0, 100.0))
 sol = solve(prob, Rodas4())
 # Plots.plot(sol, vars=[plant.output.u, plant.input.u])
 @test sol.retcode == Success
-@test all(isapprox.(sol[ref.output.u], re_val, atol = 1e-3))  # check reference
+@test all(isapprox.(sol[ref.output.u], re_val, atol = 1e-3)) # check reference
 @test sol[plant.output.u][end]≈re_val atol=1e-3 # zero control error after 100s
 @test all(-1.5 .<= sol[pid_controller.ctr_output.u] .<= 1.5) # test limit
 end

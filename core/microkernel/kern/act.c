@@ -236,7 +236,7 @@ none_avail:
 ipt_unlock(ipt);
 return act;
 }
-kern_return_t	act_upcall(struct Act *act, unsigned init_alert_mask,
+kern_return_t act_upcall(struct Act *act, unsigned init_alert_mask,
 vm_offset_t user_entrypoint, vm_offset_t user_data)
 {
 thread_t cur_thread = current_thread();
@@ -587,10 +587,10 @@ return KERN_SUCCESS;
 }
 kern_return_t
 act_get_state_immediate(
-Act			*act,
-int			flavor,
-void			*old_state,
-unsigned int		*old_state_count)
+Act *act,
+int flavor,
+void *old_state,
+unsigned int *old_state_count)
 {
 act_lock(act);
 if (act->thread && act->thread->top_act != act) {
@@ -604,10 +604,10 @@ return act_get_state(act, flavor, old_state, old_state_count);
 }
 kern_return_t
 act_set_state_immediate(
-Act			*act,
-int			flavor,
-void			*new_state,
-unsigned int		new_state_count)
+Act *act,
+int flavor,
+void *new_state,
+unsigned int new_state_count)
 {
 act_lock(act);
 if (act->thread && act->thread->top_act != act) {

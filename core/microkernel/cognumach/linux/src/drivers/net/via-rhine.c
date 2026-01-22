@@ -9,17 +9,17 @@ static int rx_copybreak = 0;
 static int options[MAX_UNITS] = {-1, -1, -1, -1, -1, -1, -1, -1};
 static int full_duplex[MAX_UNITS] = {-1, -1, -1, -1, -1, -1, -1, -1};
 static const int multicast_filter_limit = 32;
-#define TX_RING_SIZE	16
-#define TX_QUEUE_LEN	10
-#define RX_RING_SIZE	32
-#define TX_TIMEOUT  (6*HZ)
-#define PKT_BUF_SZ		1536
+#define TX_RING_SIZE 16
+#define TX_QUEUE_LEN 10
+#define RX_RING_SIZE 32
+#define TX_TIMEOUT (6*HZ)
+#define PKT_BUF_SZ 1536
 #ifndef __KERNEL__
 #define __KERNEL__
 #endif
 #if !defined(__OPTIMIZE__)
-#warning  You must compile this file with the correct options!
-#warning  See the last lines of the source file.
+#warning You must compile this file with the correct options!
+#warning See the last lines of the source file.
 #error You must compile this driver with "-O".
 #endif
 #include <linux/config.h>
@@ -58,8 +58,8 @@ static const int multicast_filter_limit = 32;
 #include "pci-scan.h"
 #include "kern_compat.h"
 #endif
-#define virt_to_le32desc(addr)	cpu_to_le32(virt_to_bus(addr))
-#define le32desc_to_virt(addr)	bus_to_virt(le32_to_cpu(addr))
+#define virt_to_le32desc(addr) cpu_to_le32(virt_to_bus(addr))
+#define le32desc_to_virt(addr) bus_to_virt(le32_to_cpu(addr))
 #if defined(VIA_USE_MEMORY)
 #warning Many adapters using the VIA Rhine chip are not configured to work
 #warning with PCI memory space accesses.
@@ -78,7 +78,7 @@ static const int multicast_filter_limit = 32;
 #define writew outw
 #define writel outl
 #endif
-#if (LINUX_VERSION_CODE >= 0x20100)  &&  defined(MODULE)
+#if (LINUX_VERSION_CODE >= 0x20100) && defined(MODULE)
 char kernel_version[] = UTS_RELEASE;
 #endif
 MODULE_AUTHOR("Donald Becker <becker@scyld.com>");
@@ -112,7 +112,7 @@ ReqTxAlign=0x10, HasWOL=0x20, HasIPChecksum=0x40, HasVLAN=0x80,
 #define RHINE_I_IOSIZE 128
 #define RHINEII_IOSIZE 4096
 #else
-#define RHINE_IOTYPE (PCI_USES_IO  | PCI_USES_MASTER | PCI_ADDR0)
+#define RHINE_IOTYPE (PCI_USES_IO | PCI_USES_MASTER | PCI_ADDR0)
 #define RHINE_I_IOSIZE 128
 #define RHINEII_IOSIZE 256
 #endif
@@ -185,7 +185,7 @@ CmdTxOn=0x0010, CmdTxDemand=0x0020, CmdRxDemand=0x0040,
 CmdEarlyRx=0x0100, CmdEarlyTx=0x0200, CmdFDuplex=0x0400,
 CmdNoTxPoll=0x0800, CmdReset=0x8000,
 };
-#define PRIV_ALIGN	15
+#define PRIV_ALIGN 15
 struct netdev_private {
 struct rx_desc rx_ring[RX_RING_SIZE];
 struct tx_desc tx_ring[TX_RING_SIZE];
@@ -221,21 +221,21 @@ int mii_cnt;
 u16 advertising;
 unsigned char phys[2];
 };
-static int  mdio_read(struct net_device *dev, int phy_id, int location);
+static int mdio_read(struct net_device *dev, int phy_id, int location);
 static void mdio_write(struct net_device *dev, int phy_id, int location, int value);
-static int  netdev_open(struct net_device *dev);
+static int netdev_open(struct net_device *dev);
 static void check_duplex(struct net_device *dev);
 static void netdev_timer(unsigned long data);
 static void tx_timeout(struct net_device *dev);
 static void init_ring(struct net_device *dev);
-static int  start_tx(struct sk_buff *skb, struct net_device *dev);
+static int start_tx(struct sk_buff *skb, struct net_device *dev);
 static void intr_handler(int irq, void *dev_instance, struct pt_regs *regs);
-static int  netdev_rx(struct net_device *dev);
+static int netdev_rx(struct net_device *dev);
 static void netdev_error(struct net_device *dev, int intr_status);
 static void set_rx_mode(struct net_device *dev);
 static struct net_device_stats *get_stats(struct net_device *dev);
 static int mii_ioctl(struct net_device *dev, struct ifreq *rq, int cmd);
-static int  netdev_close(struct net_device *dev);
+static int netdev_close(struct net_device *dev);
 static struct net_device *root_net_dev = NULL;
 #ifndef MODULE
 int via_rhine_probe(struct net_device *dev)
@@ -303,7 +303,7 @@ np->default_port = option & 15;
 if (np->default_port)
 np->medialock = 1;
 }
-if (card_idx < MAX_UNITS  &&  full_duplex[card_idx] > 0)
+if (card_idx < MAX_UNITS && full_duplex[card_idx] > 0)
 np->full_duplex = 1;
 if (np->full_duplex) {
 printk(KERN_INFO "%s: Set to forced full duplex, autonegotiation"
@@ -321,7 +321,7 @@ int phy, phy_idx = 0;
 np->phys[0] = 1;
 for (phy = 1; phy < 32 && phy_idx < 4; phy++) {
 int mii_status = mdio_read(dev, phy, 1);
-if (mii_status != 0xffff  &&  mii_status != 0x0000) {
+if (mii_status != 0xffff && mii_status != 0x0000) {
 np->phys[phy_idx++] = phy;
 np->advertising = mdio_read(dev, phy, 4);
 printk(KERN_INFO "%s: MII PHY found at address %d, status "
@@ -447,7 +447,7 @@ long ioaddr = dev->base_addr;
 int mii_reg5 = mdio_read(dev, np->phys[0], 5);
 int negotiated = mii_reg5 & np->advertising;
 int duplex;
-if (np->duplex_lock  ||  mii_reg5 == 0xffff)
+if (np->duplex_lock || mii_reg5 == 0xffff)
 return;
 duplex = (negotiated & 0x0100) || (negotiated & 0x01C0) == 0x0040;
 if (np->full_duplex != duplex) {
@@ -546,7 +546,7 @@ return 1;
 }
 entry = np->cur_tx % TX_RING_SIZE;
 np->tx_skbuff[entry] = skb;
-if ((np->drv_flags & ReqTxAlign)  && ((long)skb->data & 3)) {
+if ((np->drv_flags & ReqTxAlign) && ((long)skb->data & 3)) {
 if (np->tx_buf[entry] == NULL &&
 (np->tx_buf[entry] = kmalloc(PKT_BUF_SZ, GFP_KERNEL)) == NULL)
 return 1;
@@ -630,7 +630,7 @@ np->stats.tx_packets++;
 dev_free_skb_irq(np->tx_skbuff[entry]);
 np->tx_skbuff[entry] = 0;
 }
-if (np->tx_full  &&  np->cur_tx - np->dirty_tx < TX_QUEUE_LEN - 4) {
+if (np->tx_full && np->cur_tx - np->dirty_tx < TX_QUEUE_LEN - 4) {
 np->tx_full = 0;
 netif_resume_tx_queue(dev);
 }
@@ -667,8 +667,8 @@ printk(KERN_DEBUG "  netdev_rx() status is %4.4x.\n",
 desc_status);
 if (--boguscnt < 0)
 break;
-if ( (desc_status & (RxWholePkt | RxErr)) !=  RxWholePkt) {
-if ((desc_status & RxWholePkt) !=  RxWholePkt) {
+if ( (desc_status & (RxWholePkt | RxErr)) != RxWholePkt) {
+if ((desc_status & RxWholePkt) != RxWholePkt) {
 printk(KERN_WARNING "%s: Oversized Ethernet frame spanned "
 "multiple buffers, entry %#x length %d status %4.4x!\n",
 dev->name, np->cur_rx, data_size, desc_status);
@@ -758,8 +758,8 @@ mdio_read(dev, np->phys[0], 4),
 mdio_read(dev, np->phys[0], 5));
 }
 if (intr_status & IntrStatsMax) {
-np->stats.rx_crc_errors	+= readw(ioaddr + RxCRCErrs);
-np->stats.rx_missed_errors	+= readw(ioaddr + RxMissed);
+np->stats.rx_crc_errors += readw(ioaddr + RxCRCErrs);
+np->stats.rx_missed_errors += readw(ioaddr + RxMissed);
 writel(0, ioaddr + RxMissed);
 }
 if (intr_status & IntrTxAbort) {
@@ -786,8 +786,8 @@ static struct net_device_stats *get_stats(struct net_device *dev)
 {
 struct netdev_private *np = (struct netdev_private *)dev->priv;
 long ioaddr = dev->base_addr;
-np->stats.rx_crc_errors	+= readw(ioaddr + RxCRCErrs);
-np->stats.rx_missed_errors	+= readw(ioaddr + RxMissed);
+np->stats.rx_crc_errors += readw(ioaddr + RxCRCErrs);
+np->stats.rx_missed_errors += readw(ioaddr + RxMissed);
 writel(0, ioaddr + RxMissed);
 return &np->stats;
 }
@@ -815,7 +815,7 @@ if (dev->flags & IFF_PROMISC) {
 printk(KERN_NOTICE "%s: Promiscuous mode enabled.\n", dev->name);
 rx_mode = 0x1C;
 } else if ((dev->mc_count > np->multicast_filter_limit)
-||  (dev->flags & IFF_ALLMULTI)) {
+|| (dev->flags & IFF_ALLMULTI)) {
 writel(0xffffffff, ioaddr + MulticastFilter0);
 writel(0xffffffff, ioaddr + MulticastFilter1);
 rx_mode = 0x0C;

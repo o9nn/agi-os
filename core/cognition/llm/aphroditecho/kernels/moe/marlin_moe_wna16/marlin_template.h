@@ -5,8 +5,8 @@
 #include "quantization/gptq_marlin/marlin_dtypes.cuh"
 #include "quantization/gptq_marlin/dequant.h"
 #include "core/scalar_type.hpp"
-#define STATIC_ASSERT_SCALAR_TYPE_VALID(scalar_t)               \
-static_assert(std::is_same<scalar_t, half>::value ||          \
+#define STATIC_ASSERT_SCALAR_TYPE_VALID(scalar_t) \
+static_assert(std::is_same<scalar_t, half>::value || \
 std::is_same<scalar_t, nv_bfloat16>::value, \
 "only float16 and bfloat16 is supported");
 namespace MARLIN_NAMESPACE_NAME {

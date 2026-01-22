@@ -4,7 +4,7 @@ implement Cs;
 # /net/tcp/clone 135.104.9.53!564
 #
 include "sys.m";
-sys:	Sys;
+sys: Sys;
 include "draw.m";
 include "srv.m";
 srv: Srv;
@@ -19,26 +19,26 @@ ipattr: IPattr;
 include "arg.m";
 Cs: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 # signature of dial-on-demand module
 CSdial: module
 {
-init:	fn(nil: ref Draw->Context): string;
-connect:	fn(): string;
+init: fn(nil: ref Draw->Context): string;
+connect: fn(): string;
 };
 Reply: adt
 {
-fid:	int;
-pid:	int;
-addrs:	list of string;
-err:	string;
+fid: int;
+pid: int;
+addrs: list of string;
+err: string;
 };
 Cached: adt
 {
-expire:	int;
-query:	string;
-addrs:	list of string;
+expire: int;
+query: string;
+addrs: list of string;
 };
 Ncache: con 16;
 cache:= array[Ncache] of ref Cached;
@@ -77,7 +77,7 @@ while((c := arg->opt()) != 0)
 case c {
 'v' or 'D' =>
 verbose++;
-'d' =>	# undocumented hack to replace svc/cs/cs
+'d' => # undocumented hack to replace svc/cs/cs
 f := arg->arg();
 if(f != nil){
 dialmod = load CSdial f;
@@ -95,7 +95,7 @@ arg->usage();
 if(arg->argv() != nil)
 arg->usage();
 arg = nil;
-srv = load Srv Srv->PATH;	# hosted Inferno only
+srv = load Srv Srv->PATH; # hosted Inferno only
 if(srv != nil)
 srv->init();
 sys->remove(svcname+"/cs");
@@ -145,9 +145,9 @@ if(ndb == nil){
 ndb2 := Db.open(ndbfile);
 if(ndb2 == nil){
 err := sys->sprint("%r");
-ndb2 = Db.open("/lib/ndb/inferno");	# try to get service map at least
+ndb2 = Db.open("/lib/ndb/inferno"); # try to get service map at least
 if(ndb2 == nil)
-sys->fprint(sys->fildes(2), "cs: warning: can't open %s: %s\n", ndbfile, err);	# continue without it
+sys->fprint(sys->fildes(2), "cs: warning: can't open %s: %s\n", ndbfile, err); # continue without it
 }
 ndb = Db.open(mntpt+"/ndb");
 if(ndb != nil)
@@ -197,7 +197,7 @@ donec := chan of ref Reply;
 for (;;) {
 alt {
 (nil, buf, fid, wc) := <-file.write =>
-cleanfid(fid);	# each write cancels previous requests
+cleanfid(fid); # each write cancels previous requests
 if(dialmod != nil){
 e := dialmod->connect();
 if(e != nil){
@@ -232,7 +232,7 @@ reply(r, off, nbytes, rc);
 else
 rc <-= (nil, "unknown request");
 } else
-;	# cleanfid(fid);		# compensate for csendq in file2chan
+; # cleanfid(fid); # compensate for csendq in file2chan
 r := <-donec =>
 r.pid = 0;
 }
@@ -297,7 +297,7 @@ if(r.addrs != nil){
 addr = hd r.addrs;
 r.addrs = tl r.addrs;
 }
-off = 0;	# this version ignores offset
+off = 0; # this version ignores offset
 rc <-= reads(addr, off, nbytes);
 }
 #
@@ -349,7 +349,7 @@ if(n < 2)
 return (nil, "bad format request");
 netw = hd l;
 if(netw == "net")
-netw = "tcp";	# TO DO: better (needs lib/ndb)
+netw = "tcp"; # TO DO: better (needs lib/ndb)
 if(!isnetwork(netw))
 return (nil, "network unavailable "+netw);
 l = tl l;
@@ -361,7 +361,7 @@ if((l = tl l) == nil)
 break;
 repl += "!";
 }
-return (repl :: nil, nil);	# no need to cache
+return (repl :: nil, nil); # no need to cache
 }
 if(n != 3)
 return (nil, "bad format request");
@@ -423,7 +423,7 @@ if(s != nil){
 if(err == nil && divert != nil){
 dnetw = divert;
 if(!isnetwork(dnetw))
-return (nil, "network unavailable "+dnetw);	# XXX should only give up if all addresses fail?
+return (nil, "network unavailable "+dnetw); # XXX should only give up if all addresses fail?
 }
 }
 if(s != "")
@@ -556,7 +556,7 @@ return int ((big string buf[0:n]) / big 1000000);
 }
 #
 # general query: attr1=val1 attr2=val2 ... finds matching tuple(s)
-#	where attr1 is the key and val1 can't be *
+# where attr1 is the key and val1 can't be *
 #
 genquery(query: string): (list of string, string)
 {
@@ -571,7 +571,7 @@ if(a0 == "ipinfo")
 return (nil, "ipinfo not yet supported");
 v0 := (hd pairs).val;
 # if((a0 == "dom" || a0 == "ip") && v0 != nil){
-# 	query dns ...
+# query dns ...
 # }
 ptr: ref Attrdb->Dbptr;
 e: ref Dbentry;
@@ -587,7 +587,7 @@ ls = tuptext(hd l) :: ls;
 return (reverse(ls), nil);
 }
 }
-return  (nil, "no match");
+return (nil, "no match");
 }
 #
 # see if set of tuples t contains every non-* attr/val pair

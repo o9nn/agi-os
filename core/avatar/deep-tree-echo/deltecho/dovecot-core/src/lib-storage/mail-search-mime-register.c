@@ -148,7 +148,7 @@ return NULL;
 key = t_str_ucase(key);
 if (strcmp(key, "LARGER") == 0)
 type = SEARCH_MIME_SIZE_LARGER;
-else 	if (strcmp(key, "SMALLER") == 0)
+else if (strcmp(key, "SMALLER") == 0)
 type = SEARCH_MIME_SIZE_SMALLER;
 else {
 type = SEARCH_MIME_SIZE_EQUAL;
@@ -255,7 +255,7 @@ smarg = mail_search_mime_build_new
 (ctx, SEARCH_MIME_DISPOSITION_TYPE);
 smarg->value.str = p_strdup(ctx->ctx->pool, value);
 return smarg;
-} else 	if (strcmp(key, "PARAM") == 0) {
+} else if (strcmp(key, "PARAM") == 0) {
 return arg_new_field
 (ctx, SEARCH_MIME_DISPOSITION_PARAM);
 }
@@ -276,7 +276,7 @@ return NULL;
 key = t_str_ucase(key);
 if (strcmp(key, "MIN") == 0)
 type = SEARCH_MIME_DEPTH_MIN;
-else 	if (strcmp(key, "MAX") == 0)
+else if (strcmp(key, "MAX") == 0)
 type = SEARCH_MIME_DEPTH_MAX;
 else {
 type = SEARCH_MIME_DEPTH_EQUAL;
@@ -327,11 +327,11 @@ return NULL;
 key = t_str_ucase(key);
 if (strcmp(key, "IS") == 0)
 type = SEARCH_MIME_FILENAME_IS;
-else 	if (strcmp(key, "CONTAINS") == 0)
+else if (strcmp(key, "CONTAINS") == 0)
 type = SEARCH_MIME_FILENAME_CONTAINS;
-else 	if (strcmp(key, "BEGINS") == 0)
+else if (strcmp(key, "BEGINS") == 0)
 type = SEARCH_MIME_FILENAME_BEGINS;
-else 	if (strcmp(key, "ENDS") == 0)
+else if (strcmp(key, "ENDS") == 0)
 type = SEARCH_MIME_FILENAME_ENDS;
 else {
 ctx->ctx->_error = "Invalid MIMEPART FILENAME match type";

@@ -7,13 +7,13 @@
 #include "faces.h"
 enum
 {
-Nsave	= 20,
+Nsave = 20,
 };
-static Facefile	*facefiles;
-static int		nsaved;
-static char	*facedom;
+static Facefile *facefiles;
+static int nsaved;
+static char *facedom;
 static char *homeface;
-typedef struct Readcache	Readcache;
+typedef struct Readcache Readcache;
 struct Readcache {
 char *file;
 char *data;

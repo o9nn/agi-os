@@ -27,15 +27,15 @@
 #include "ktss.h"
 #include "pcb.h"
 #include <machine/tss.h>
-#if	NCPUS > 1
+#if NCPUS > 1
 #include <i386/mp_desc.h>
 #endif
-struct kmem_cache	pcb_cache;
-vm_offset_t	kernel_stack[NCPUS];
+struct kmem_cache pcb_cache;
+vm_offset_t kernel_stack[NCPUS];
 void stack_attach(
-thread_t 	thread,
-vm_offset_t 	stack,
-void 		(*continuation)(thread_t))
+thread_t thread,
+vm_offset_t stack,
+void (*continuation)(thread_t))
 {
 counter(if (++c_stacks_current > c_stacks_max)
 c_stacks_max = c_stacks_current);
@@ -48,27 +48,27 @@ STACK_IEL(stack)->saved_state = USER_REGS(thread);
 }
 vm_offset_t stack_detach(thread_t thread)
 {
-vm_offset_t	stack;
+vm_offset_t stack;
 counter(if (--c_stacks_current < c_stacks_min)
 c_stacks_min = c_stacks_current);
 stack = thread->kernel_stack;
 thread->kernel_stack = 0;
 return stack;
 }
-#if	NCPUS > 1
-#define	curr_gdt(mycpu)		(mp_gdt[mycpu])
-#define	curr_ktss(mycpu)	(mp_ktss[mycpu])
+#if NCPUS > 1
+#define curr_gdt(mycpu) (mp_gdt[mycpu])
+#define curr_ktss(mycpu) (mp_ktss[mycpu])
 #else
-#define	curr_gdt(mycpu)		((void)(mycpu), gdt)
-#define	curr_ktss(mycpu)	((void)(mycpu), (struct task_tss *)&ktss)
+#define curr_gdt(mycpu) ((void)(mycpu), gdt)
+#define curr_ktss(mycpu) ((void)(mycpu), (struct task_tss *)&ktss)
 #endif
-#define	gdt_desc_p(mycpu,sel) \
+#define gdt_desc_p(mycpu,sel) \
 ((struct real_descriptor *)&curr_gdt(mycpu)[sel_idx(sel)])
 void switch_ktss(pcb_t pcb)
 {
-int			mycpu = cpu_number();
+int mycpu = cpu_number();
 {
-vm_offset_t		pcb_stack_top;
+vm_offset_t pcb_stack_top;
 #if !defined(__x86_64__) || defined(USER32)
 pcb_stack_top = (pcb->iss.efl & EFL_VM)
 ? (long) (&pcb->iss + 1)
@@ -79,7 +79,7 @@ pcb_stack_top = (vm_offset_t) (&pcb->iss + 1);
 #ifdef __x86_64__
 assert((pcb_stack_top & 0xF) == 0);
 #endif
-#ifdef	MACH_RING1
+#ifdef MACH_RING1
 if (hyp_stack_switch(KERNEL_DS, pcb_stack_top))
 panic("stack_switch");
 #else
@@ -91,9 +91,9 @@ curr_ktss(mycpu)->tss.esp0 = pcb_stack_top;
 #endif
 }
 {
-user_ldt_t	tldt = pcb->ims.ldt;
+user_ldt_t tldt = pcb->ims.ldt;
 if (tldt == 0) {
-#ifdef	MACH_PV_DESCRIPTORS
+#ifdef MACH_PV_DESCRIPTORS
 hyp_set_ldt(&ldt, LDTSZ);
 #else
 if (get_ldt() != KERNEL_LDT)
@@ -101,7 +101,7 @@ set_ldt(KERNEL_LDT);
 #endif
 }
 else {
-#ifdef	MACH_PV_DESCRIPTORS
+#ifdef MACH_PV_DESCRIPTORS
 hyp_set_ldt(tldt->ldt,
 (tldt->desc.limit_low|(tldt->desc.limit_high<<16)) /
 sizeof(struct real_descriptor));
@@ -111,7 +111,7 @@ set_ldt(USER_LDT);
 #endif
 }
 }
-#ifdef	MACH_PV_DESCRIPTORS
+#ifdef MACH_PV_DESCRIPTORS
 {
 int i;
 for (i=0; i < USER_GDT_SLOTS; i++) {
@@ -151,11 +151,11 @@ else
 tss->tss.io_bit_map_offset = IOPB_INVAL;
 }
 void stack_handoff(
-thread_t	old,
-thread_t	new)
+thread_t old,
+thread_t new)
 {
-int		mycpu = cpu_number();
-vm_offset_t	stack;
+int mycpu = cpu_number();
+vm_offset_t stack;
 fpu_save_context(old);
 {
 task_t old_task, new_task;
@@ -188,14 +188,14 @@ switch_ktss(new->pcb);
 Load_context(new);
 }
 thread_t switch_context(
-thread_t	old,
-continuation_t	continuation,
-thread_t	new)
+thread_t old,
+continuation_t continuation,
+thread_t new)
 {
 fpu_save_context(old);
 {
 task_t old_task, new_task;
-int	mycpu = cpu_number();
+int mycpu = cpu_number();
 if ((old_task = old->task) != (new_task = new->task)) {
 PMAP_DEACTIVATE_USER(vm_map_pmap(old_task->map),
 old, mycpu);
@@ -223,7 +223,7 @@ fpu_module_init();
 }
 void pcb_init(task_t parent_task, thread_t thread)
 {
-pcb_t		pcb;
+pcb_t pcb;
 pcb = (pcb_t) kmem_cache_alloc(&pcb_cache);
 if (pcb == 0)
 panic("pcb_init");
@@ -246,7 +246,7 @@ fpinherit(current_thread(), thread);
 }
 void pcb_terminate(thread_t thread)
 {
-pcb_t		pcb = thread->pcb;
+pcb_t pcb = thread->pcb;
 counter(if (--c_threads_current < c_threads_min)
 c_threads_min = c_threads_current);
 if (pcb->ims.ifps != 0)
@@ -260,17 +260,17 @@ void pcb_collect(__attribute__((unused)) const thread_t thread)
 {
 }
 kern_return_t thread_setstatus(
-thread_t		thread,
-int			flavor,
-thread_state_t		tstate,
-unsigned int		count)
+thread_t thread,
+int flavor,
+thread_state_t tstate,
+unsigned int count)
 {
 switch (flavor) {
 case i386_THREAD_STATE:
 case i386_REGS_SEGS_STATE:
 {
-struct i386_thread_state	*state;
-struct i386_saved_state	*saved_state;
+struct i386_thread_state *state;
+struct i386_saved_state *saved_state;
 if (count < i386_THREAD_STATE_COUNT) {
 return(KERN_INVALID_ARGUMENT);
 }
@@ -398,8 +398,8 @@ break;
 case i386_V86_ASSIST_STATE:
 {
 struct i386_v86_assist_state *state;
-vm_offset_t	int_table;
-int		int_count;
+vm_offset_t int_table;
+int int_count;
 if (count < i386_V86_ASSIST_STATE_COUNT)
 return KERN_INVALID_ARGUMENT;
 state = (struct i386_v86_assist_state *) tstate;
@@ -451,12 +451,12 @@ return(KERN_INVALID_ARGUMENT);
 return(KERN_SUCCESS);
 }
 kern_return_t thread_getstatus(
-thread_t		thread,
-int			flavor,
-thread_state_t		tstate,
-unsigned int		*count)
+thread_t thread,
+int flavor,
+thread_state_t tstate,
+unsigned int *count)
 {
-switch (flavor)  {
+switch (flavor) {
 case THREAD_STATE_FLAVOR_LIST:
 #if !defined(__x86_64__) || defined(USER32)
 unsigned int ncount = 4;
@@ -476,8 +476,8 @@ break;
 case i386_THREAD_STATE:
 case i386_REGS_SEGS_STATE:
 {
-struct i386_thread_state	*state;
-struct i386_saved_state	*saved_state;
+struct i386_thread_state *state;
+struct i386_saved_state *saved_state;
 if (*count < i386_THREAD_STATE_COUNT)
 return(KERN_INVALID_ARGUMENT);
 state = (struct i386_thread_state *) tstate;
@@ -616,8 +616,8 @@ return(KERN_SUCCESS);
 }
 void
 thread_set_syscall_return(
-thread_t	thread,
-kern_return_t	retval)
+thread_t thread,
+kern_return_t retval)
 {
 thread->pcb->iss.eax = retval;
 }
@@ -632,7 +632,7 @@ vm_offset_t stack_size,
 const struct exec_info *exec_info,
 vm_size_t arg_size)
 {
-vm_offset_t	arg_addr;
+vm_offset_t arg_addr;
 struct i386_saved_state *saved_state;
 assert(P2ALIGNED(stack_size, USER_STACK_ALIGN));
 assert(P2ALIGNED(stack_base, USER_STACK_ALIGN));

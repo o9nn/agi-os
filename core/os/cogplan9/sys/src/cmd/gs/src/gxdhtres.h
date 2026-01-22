@@ -1,8 +1,8 @@
 #ifndef gxdhtres_INCLUDED
-#  define gxdhtres_INCLUDED
+# define gxdhtres_INCLUDED
 #include "stdpre.h"
 #ifndef gx_device_halftone_resource_DEFINED
-#  define gx_device_halftone_resource_DEFINED
+# define gx_device_halftone_resource_DEFINED
 typedef struct gx_device_halftone_resource_s gx_device_halftone_resource_t;
 #endif
 struct gx_device_halftone_resource_s {

@@ -27,7 +27,7 @@ static struct vd_trace_host_s host = {false, NULL, NULL};
 vd_trace_interface visual_tracer = { &host, 1, 1, 0, 0, 0, 0 };
 static const char *vdtrace_ini = "gs_vdtrace.ini";
 private void get_window()
-{   if (!host.inited) {
+{ if (!host.inited) {
 host.tw = image_new(NULL, NULL);
 if (host.tw) {
 image_open(host.tw);
@@ -42,15 +42,15 @@ host.inited = true;
 }
 }
 private inline int ScaleX(struct vd_trace_host_s *h, double x)
-{   return (int)(x + 0.5);
+{ return (int)(x + 0.5);
 }
 private inline int ScaleY(struct vd_trace_host_s *h, double y)
-{   return h->window_height - (int)(y + 0.5);
+{ return h->window_height - (int)(y + 0.5);
 }
 #define SX(x) ScaleX(I->host,x)
 #define SY(y) ScaleY(I->host,y)
 private inline void delete_pen_brush(vd_trace_interface *I)
-{   SelectObject(I->host->hdc, I->host->pen0);
+{ SelectObject(I->host->hdc, I->host->pen0);
 SelectObject(I->host->hdc, I->host->brush0);
 if(I->host->pen != NULL)
 DeleteObject(I->host->pen);
@@ -60,14 +60,14 @@ DeleteObject(I->host->brush);
 I->host->brush = NULL;
 }
 private inline void new_pen_brush(vd_trace_interface *I)
-{   delete_pen_brush(I);
+{ delete_pen_brush(I);
 I->host->pen = CreatePen(PS_SOLID, I->host->line_width, WindowsColor(I->host->color));
 I->host->brush = CreateSolidBrush(WindowsColor(I->host->color));
 SelectObject(I->host->hdc, I->host->pen);
 SelectObject(I->host->hdc, I->host->brush);
 }
 private double dw_gt_get_size_x(vd_trace_interface *I)
-{   RECT r;
+{ RECT r;
 get_window();
 if (host.tw == NULL)
 return(100);
@@ -75,7 +75,7 @@ GetClientRect(I->host->tw->hwnd,&r);
 return r.right - r.left;
 }
 private double dw_gt_get_size_y(vd_trace_interface *I)
-{   RECT r;
+{ RECT r;
 get_window();
 if (host.tw == NULL)
 return(100);
@@ -83,7 +83,7 @@ GetClientRect(I->host->tw->hwnd,&r);
 return r.bottom - r.top;
 }
 private void dw_gt_get_dc(vd_trace_interface *I, vd_trace_interface **I1)
-{   get_window();
+{ get_window();
 if (host.tw == NULL)
 return;
 if (I->host->hdc == NULL) {
@@ -102,7 +102,7 @@ I->host->count_GetDC = 1;
 ++I->host->count_GetDC;
 }
 private void dw_gt_release_dc(vd_trace_interface *I, vd_trace_interface **I1)
-{   get_window();
+{ get_window();
 if (host.tw == NULL)
 return;
 --I->host->count_GetDC;
@@ -117,7 +117,7 @@ I->host->count_GetDC = 0;
 }
 }
 private void dw_gt_erase(vd_trace_interface *I, unsigned long rgbcolor)
-{   HWND hwnd;
+{ HWND hwnd;
 RECT r;
 HBRUSH hbr;
 get_window();
@@ -130,19 +130,19 @@ FillRect(I->host->hdc, &r, hbr);
 DeleteObject(hbr);
 }
 private void dw_gt_beg_path(vd_trace_interface *I)
-{   get_window();
+{ get_window();
 if (host.tw == NULL)
 return;
 BeginPath(I->host->hdc);
 }
 private void dw_gt_end_path(vd_trace_interface *I)
-{   get_window();
+{ get_window();
 if (host.tw == NULL)
 return;
 EndPath(I->host->hdc);
 }
 private void dw_gt_moveto(vd_trace_interface *I, double x, double y)
-{   POINT p;
+{ POINT p;
 get_window();
 if (host.tw == NULL)
 return;
@@ -154,13 +154,13 @@ MoveTo(I->host->hdc, SX(x), SY(y));
 I->host->bx = x; I->host->by = y;
 }
 private void dw_gt_lineto(vd_trace_interface *I, double x, double y)
-{   get_window();
+{ get_window();
 if (host.tw == NULL)
 return;
 LineTo(I->host->hdc, SX(x), SY(y));
 }
 private void dw_gt_curveto(vd_trace_interface *I, double x0, double y0, double x1, double y1, double x2, double y2)
-{   POINT p[3];
+{ POINT p[3];
 get_window();
 if (host.tw == NULL)
 return;
@@ -170,14 +170,14 @@ p[2].x = SX(x2), p[2].y = SY(y2);
 PolyBezierTo(I->host->hdc, p, 3);
 }
 private void dw_gt_closepath(vd_trace_interface *I)
-{   get_window();
+{ get_window();
 if (host.tw == NULL)
 return;
 LineTo(I->host->hdc, SX(I->host->bx), SY(I->host->by));
 CloseFigure(I->host->hdc);
 }
 private void dw_gt_circle(vd_trace_interface *I, double x, double y, int r)
-{   HBRUSH h;
+{ HBRUSH h;
 get_window();
 if (host.tw == NULL)
 return;
@@ -186,7 +186,7 @@ Ellipse(I->host->hdc, SX(x)-r, SY(y)-r, SX(x)+r, SY(y)+r);
 SelectObject(I->host->hdc, h);
 }
 private void dw_gt_round(vd_trace_interface *I, double x, double y, int r)
-{   HPEN h;
+{ HPEN h;
 get_window();
 if (host.tw == NULL)
 return;
@@ -195,19 +195,19 @@ Ellipse(I->host->hdc, SX(x)-r, SY(y)-r, SX(x)+r, SY(y)+r);
 SelectObject(I->host->hdc, h);
 }
 private void dw_gt_fill(vd_trace_interface *I)
-{   get_window();
+{ get_window();
 if (host.tw == NULL)
 return;
 FillPath(I->host->hdc);
 }
 private void dw_gt_stroke(vd_trace_interface *I)
-{   get_window();
+{ get_window();
 if (host.tw == NULL)
 return;
 StrokePath(I->host->hdc);
 }
 private void dw_gt_setcolor(vd_trace_interface *I, unsigned long rgbcolor)
-{   get_window();
+{ get_window();
 if (host.tw == NULL)
 return;
 if (I->host->color != rgbcolor) {
@@ -217,7 +217,7 @@ SetTextColor(I->host->hdc, rgbcolor);
 }
 }
 private void dw_gt_setlinewidth(vd_trace_interface *I, unsigned int width)
-{   get_window();
+{ get_window();
 if (host.tw == NULL)
 return;
 if (I->host->line_width != width) {
@@ -226,44 +226,44 @@ new_pen_brush(I);
 }
 }
 private void dw_gt_text(vd_trace_interface *I, double x, double y, char *ASCIIZ)
-{   get_window();
+{ get_window();
 if (host.tw == NULL)
 return;
 TextOut(I->host->hdc, SX(x), SY(y), ASCIIZ, strlen(ASCIIZ));
 }
 private void dw_gt_wait(vd_trace_interface *I)
-{   get_window();
+{ get_window();
 if (host.tw == NULL)
 return;
 }
 private void dw_gt_set_scale(vd_trace_interface *I)
-{   get_window();
+{ get_window();
 if (host.tw == NULL)
 return;
 I->scale_x *= GetPrivateProfileInt("VDTRACE", "ScaleX", 1000, vdtrace_ini) / 1000.0;
 I->scale_y *= GetPrivateProfileInt("VDTRACE", "ScaleY", 1000, vdtrace_ini) / 1000.0;
 }
 private void dw_gt_set_shift(vd_trace_interface *I)
-{   get_window();
+{ get_window();
 if (host.tw == NULL)
 return;
 I->shift_x += (int)GetPrivateProfileInt("VDTRACE", "ShiftX", 0, vdtrace_ini);
 I->shift_y += (int)GetPrivateProfileInt("VDTRACE", "ShiftY", 0, vdtrace_ini);
 }
 private void dw_gt_set_origin(vd_trace_interface *I)
-{   get_window();
+{ get_window();
 if (host.tw == NULL)
 return;
 I->orig_x += (int)GetPrivateProfileInt("VDTRACE", "OrigX", 0, vdtrace_ini);
 I->orig_y += (int)GetPrivateProfileInt("VDTRACE", "OrigY", 0, vdtrace_ini);
 }
 #ifdef __WIN32__
-#    define SET_CALLBACK(I,a) I.a = dw_gt_##a
+# define SET_CALLBACK(I,a) I.a = dw_gt_##a
 #else
-#    define SET_CALLBACK(I,a) I.a = 0
+# define SET_CALLBACK(I,a) I.a = 0
 #endif
 void visual_tracer_init(void)
-{   SET_CALLBACK(visual_tracer, get_dc);
+{ SET_CALLBACK(visual_tracer, get_dc);
 SET_CALLBACK(visual_tracer, release_dc);
 SET_CALLBACK(visual_tracer, erase);
 SET_CALLBACK(visual_tracer, get_size_x);
@@ -288,7 +288,7 @@ SET_CALLBACK(visual_tracer, set_shift);
 SET_CALLBACK(visual_tracer, set_origin);
 }
 void visual_tracer_close(void)
-{   if (host.tw != NULL) {
+{ if (host.tw != NULL) {
 image_delete(host.tw);
 image_close(host.tw);
 }

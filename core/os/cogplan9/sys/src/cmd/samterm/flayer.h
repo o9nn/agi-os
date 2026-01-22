@@ -9,36 +9,36 @@ Clicktime=1000,
 typedef struct Flayer Flayer;
 struct Flayer
 {
-Frame		f;
-long		origin;
-long		p0, p1;
-long		click;
-Rune		*(*textfn)(Flayer*, long, ulong*);
-int		user0;
-void		*user1;
-Rectangle	entire;
-Rectangle	scroll;
-Rectangle	lastsr;
-Vis		visible;
+Frame f;
+long origin;
+long p0, p1;
+long click;
+Rune *(*textfn)(Flayer*, long, ulong*);
+int user0;
+void *user1;
+Rectangle entire;
+Rectangle scroll;
+Rectangle lastsr;
+Vis visible;
 };
-void	flborder(Flayer*, int);
-void	flclose(Flayer*);
-void	fldelete(Flayer*, long, long);
-void	flfp0p1(Flayer*, ulong*, ulong*);
-void	flinit(Flayer*, Rectangle, Font*, Image**);
-void	flinsert(Flayer*, Rune*, Rune*, long);
-void	flnew(Flayer*, Rune *(*fn)(Flayer*, long, ulong*), int, void*);
-int	flprepare(Flayer*);
+void flborder(Flayer*, int);
+void flclose(Flayer*);
+void fldelete(Flayer*, long, long);
+void flfp0p1(Flayer*, ulong*, ulong*);
+void flinit(Flayer*, Rectangle, Font*, Image**);
+void flinsert(Flayer*, Rune*, Rune*, long);
+void flnew(Flayer*, Rune *(*fn)(Flayer*, long, ulong*), int, void*);
+int flprepare(Flayer*);
 Rectangle flrect(Flayer*, Rectangle);
-void	flrefresh(Flayer*, Rectangle, int);
-void	flresize(Rectangle);
-int	flselect(Flayer*);
-void	flsetselect(Flayer*, long, long);
-void	flstart(Rectangle);
-void	flupfront(Flayer*);
-Flayer	*flwhich(Point);
-#define	FLMARGIN	4
-#define	FLSCROLLWID	12
-#define	FLGAP		4
-extern	Image	*maincols[NCOL];
-extern	Image	*cmdcols[NCOL];
+void flrefresh(Flayer*, Rectangle, int);
+void flresize(Rectangle);
+int flselect(Flayer*);
+void flsetselect(Flayer*, long, long);
+void flstart(Rectangle);
+void flupfront(Flayer*);
+Flayer *flwhich(Point);
+#define FLMARGIN 4
+#define FLSCROLLWID 12
+#define FLGAP 4
+extern Image *maincols[NCOL];
+extern Image *cmdcols[NCOL];

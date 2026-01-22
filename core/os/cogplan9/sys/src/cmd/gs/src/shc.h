@@ -1,5 +1,5 @@
 #ifndef shc_INCLUDED
-#  define shc_INCLUDED
+# define shc_INCLUDED
 #include "gsbittab.h"
 #include "scommon.h"
 #define max_hc_length 16
@@ -14,9 +14,9 @@ stream_state_common;\
 \
 bool FirstBitLowOrder;\
 \
-uint bits;		\
+uint bits; \
 \
-int bits_left		\
+int bits_left \
 \
 typedef struct stream_hc_state_s {
 stream_hc_state_common;
@@ -38,13 +38,13 @@ hce_code *codes;
 #define hce_bits_available(n)\
 (ss->bits_left >= (n) || wlimit - q > ((n) - ss->bits_left - 1) >> 3)
 #ifdef DEBUG
-#  define hc_print_value(code, clen)\
+# define hc_print_value(code, clen)\
 (gs_debug_c('W') ?\
 (dlprintf2("[W]0x%x,%d\n", code, clen), 0) : 0)
-#  define hc_print_value_then(code, clen) hc_print_value(code, clen),
+# define hc_print_value_then(code, clen) hc_print_value(code, clen),
 #else
-#  define hc_print_value(code, clen) 0
-#  define hc_print_value_then(code, clen)
+# define hc_print_value(code, clen) 0
+# define hc_print_value_then(code, clen)
 #endif
 #define hc_print_code(rp) hc_print_value((rp)->code, (rp)->code_length)
 #define hce_declare_state\
@@ -108,9 +108,9 @@ c = byte_reverse_bits[c];\
 bits = (bits << 8) + c, bits_left += 8;\
 } else
 #if hc_bits_size == 16
-#  define HCD_MORE_BITS_ELSE HCD_MORE_BITS_1_ELSE
+# define HCD_MORE_BITS_ELSE HCD_MORE_BITS_1_ELSE
 #else
-#  define HCD_MORE_BITS_ELSE\
+# define HCD_MORE_BITS_ELSE\
 if (rlimit - p >= 3) {\
 if (ss->FirstBitLowOrder)\
 bits = (bits << 24) + ((uint)byte_reverse_bits[p[1]] << 16) + ((uint)byte_reverse_bits[p[2]] << 8) + byte_reverse_bits[p[3]];\

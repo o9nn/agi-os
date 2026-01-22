@@ -30,21 +30,21 @@ for (auto& v : values) v = mean + drawFromGaussianPdf(rndm);
 }
 #define QK4_0 32
 typedef struct {
-float   d;
+float d;
 uint8_t qs[QK4_0 / 2];
 } block_q4_0;
 static_assert(sizeof(block_q4_0) == sizeof(float) + QK4_0 / 2, "wrong q4_0 block size/padding");
 #define QK4_1 32
 typedef struct {
-float   d;
-float   m;
+float d;
+float m;
 uint8_t qs[QK4_1 / 2];
 } block_q4_1;
 static_assert(sizeof(block_q4_1) == sizeof(float) * 2 + QK4_1 / 2, "wrong q4_1 block size/padding");
 #define QK8_0 32
 typedef struct {
-float   d;
-int8_t  qs[QK8_0];
+float d;
+int8_t qs[QK8_0];
 } block_q8_0;
 static_assert(sizeof(block_q8_0) == sizeof(float) + QK8_0, "wrong q8_0 block size/padding");
 inline double dot(int n, const block_q4_0* x, const float* y) {
@@ -90,22 +90,22 @@ const static std::pair<float,float> kValues[256] = {
 { 0.f, -2.f}, { 1.f, -2.f}, { 2.f, -2.f}, { 3.f, -2.f}, { 4.f, -2.f}, { 5.f, -2.f}, { 6.f, -2.f}, { 7.f, -2.f},
 {-8.f, -1.f}, {-7.f, -1.f}, {-6.f, -1.f}, {-5.f, -1.f}, {-4.f, -1.f}, {-3.f, -1.f}, {-2.f, -1.f}, {-1.f, -1.f},
 { 0.f, -1.f}, { 1.f, -1.f}, { 2.f, -1.f}, { 3.f, -1.f}, { 4.f, -1.f}, { 5.f, -1.f}, { 6.f, -1.f}, { 7.f, -1.f},
-{-8.f,  0.f}, {-7.f,  0.f}, {-6.f,  0.f}, {-5.f,  0.f}, {-4.f,  0.f}, {-3.f,  0.f}, {-2.f,  0.f}, {-1.f,  0.f},
-{ 0.f,  0.f}, { 1.f,  0.f}, { 2.f,  0.f}, { 3.f,  0.f}, { 4.f,  0.f}, { 5.f,  0.f}, { 6.f,  0.f}, { 7.f,  0.f},
-{-8.f,  1.f}, {-7.f,  1.f}, {-6.f,  1.f}, {-5.f,  1.f}, {-4.f,  1.f}, {-3.f,  1.f}, {-2.f,  1.f}, {-1.f,  1.f},
-{ 0.f,  1.f}, { 1.f,  1.f}, { 2.f,  1.f}, { 3.f,  1.f}, { 4.f,  1.f}, { 5.f,  1.f}, { 6.f,  1.f}, { 7.f,  1.f},
-{-8.f,  2.f}, {-7.f,  2.f}, {-6.f,  2.f}, {-5.f,  2.f}, {-4.f,  2.f}, {-3.f,  2.f}, {-2.f,  2.f}, {-1.f,  2.f},
-{ 0.f,  2.f}, { 1.f,  2.f}, { 2.f,  2.f}, { 3.f,  2.f}, { 4.f,  2.f}, { 5.f,  2.f}, { 6.f,  2.f}, { 7.f,  2.f},
-{-8.f,  3.f}, {-7.f,  3.f}, {-6.f,  3.f}, {-5.f,  3.f}, {-4.f,  3.f}, {-3.f,  3.f}, {-2.f,  3.f}, {-1.f,  3.f},
-{ 0.f,  3.f}, { 1.f,  3.f}, { 2.f,  3.f}, { 3.f,  3.f}, { 4.f,  3.f}, { 5.f,  3.f}, { 6.f,  3.f}, { 7.f,  3.f},
-{-8.f,  4.f}, {-7.f,  4.f}, {-6.f,  4.f}, {-5.f,  4.f}, {-4.f,  4.f}, {-3.f,  4.f}, {-2.f,  4.f}, {-1.f,  4.f},
-{ 0.f,  4.f}, { 1.f,  4.f}, { 2.f,  4.f}, { 3.f,  4.f}, { 4.f,  4.f}, { 5.f,  4.f}, { 6.f,  4.f}, { 7.f,  4.f},
-{-8.f,  5.f}, {-7.f,  5.f}, {-6.f,  5.f}, {-5.f,  5.f}, {-4.f,  5.f}, {-3.f,  5.f}, {-2.f,  5.f}, {-1.f,  5.f},
-{ 0.f,  5.f}, { 1.f,  5.f}, { 2.f,  5.f}, { 3.f,  5.f}, { 4.f,  5.f}, { 5.f,  5.f}, { 6.f,  5.f}, { 7.f,  5.f},
-{-8.f,  6.f}, {-7.f,  6.f}, {-6.f,  6.f}, {-5.f,  6.f}, {-4.f,  6.f}, {-3.f,  6.f}, {-2.f,  6.f}, {-1.f,  6.f},
-{ 0.f,  6.f}, { 1.f,  6.f}, { 2.f,  6.f}, { 3.f,  6.f}, { 4.f,  6.f}, { 5.f,  6.f}, { 6.f,  6.f}, { 7.f,  6.f},
-{-8.f,  7.f}, {-7.f,  7.f}, {-6.f,  7.f}, {-5.f,  7.f}, {-4.f,  7.f}, {-3.f,  7.f}, {-2.f,  7.f}, {-1.f,  7.f},
-{ 0.f,  7.f}, { 1.f,  7.f}, { 2.f,  7.f}, { 3.f,  7.f}, { 4.f,  7.f}, { 5.f,  7.f}, { 6.f,  7.f}, { 7.f,  7.f}
+{-8.f, 0.f}, {-7.f, 0.f}, {-6.f, 0.f}, {-5.f, 0.f}, {-4.f, 0.f}, {-3.f, 0.f}, {-2.f, 0.f}, {-1.f, 0.f},
+{ 0.f, 0.f}, { 1.f, 0.f}, { 2.f, 0.f}, { 3.f, 0.f}, { 4.f, 0.f}, { 5.f, 0.f}, { 6.f, 0.f}, { 7.f, 0.f},
+{-8.f, 1.f}, {-7.f, 1.f}, {-6.f, 1.f}, {-5.f, 1.f}, {-4.f, 1.f}, {-3.f, 1.f}, {-2.f, 1.f}, {-1.f, 1.f},
+{ 0.f, 1.f}, { 1.f, 1.f}, { 2.f, 1.f}, { 3.f, 1.f}, { 4.f, 1.f}, { 5.f, 1.f}, { 6.f, 1.f}, { 7.f, 1.f},
+{-8.f, 2.f}, {-7.f, 2.f}, {-6.f, 2.f}, {-5.f, 2.f}, {-4.f, 2.f}, {-3.f, 2.f}, {-2.f, 2.f}, {-1.f, 2.f},
+{ 0.f, 2.f}, { 1.f, 2.f}, { 2.f, 2.f}, { 3.f, 2.f}, { 4.f, 2.f}, { 5.f, 2.f}, { 6.f, 2.f}, { 7.f, 2.f},
+{-8.f, 3.f}, {-7.f, 3.f}, {-6.f, 3.f}, {-5.f, 3.f}, {-4.f, 3.f}, {-3.f, 3.f}, {-2.f, 3.f}, {-1.f, 3.f},
+{ 0.f, 3.f}, { 1.f, 3.f}, { 2.f, 3.f}, { 3.f, 3.f}, { 4.f, 3.f}, { 5.f, 3.f}, { 6.f, 3.f}, { 7.f, 3.f},
+{-8.f, 4.f}, {-7.f, 4.f}, {-6.f, 4.f}, {-5.f, 4.f}, {-4.f, 4.f}, {-3.f, 4.f}, {-2.f, 4.f}, {-1.f, 4.f},
+{ 0.f, 4.f}, { 1.f, 4.f}, { 2.f, 4.f}, { 3.f, 4.f}, { 4.f, 4.f}, { 5.f, 4.f}, { 6.f, 4.f}, { 7.f, 4.f},
+{-8.f, 5.f}, {-7.f, 5.f}, {-6.f, 5.f}, {-5.f, 5.f}, {-4.f, 5.f}, {-3.f, 5.f}, {-2.f, 5.f}, {-1.f, 5.f},
+{ 0.f, 5.f}, { 1.f, 5.f}, { 2.f, 5.f}, { 3.f, 5.f}, { 4.f, 5.f}, { 5.f, 5.f}, { 6.f, 5.f}, { 7.f, 5.f},
+{-8.f, 6.f}, {-7.f, 6.f}, {-6.f, 6.f}, {-5.f, 6.f}, {-4.f, 6.f}, {-3.f, 6.f}, {-2.f, 6.f}, {-1.f, 6.f},
+{ 0.f, 6.f}, { 1.f, 6.f}, { 2.f, 6.f}, { 3.f, 6.f}, { 4.f, 6.f}, { 5.f, 6.f}, { 6.f, 6.f}, { 7.f, 6.f},
+{-8.f, 7.f}, {-7.f, 7.f}, {-6.f, 7.f}, {-5.f, 7.f}, {-4.f, 7.f}, {-3.f, 7.f}, {-2.f, 7.f}, {-1.f, 7.f},
+{ 0.f, 7.f}, { 1.f, 7.f}, { 2.f, 7.f}, { 3.f, 7.f}, { 4.f, 7.f}, { 5.f, 7.f}, { 6.f, 7.f}, { 7.f, 7.f}
 };
 double sum = 0;
 for (int i=0; i<n; ++i) {
@@ -162,7 +162,7 @@ const float d = amax / ((1 << 7) - 1);
 const float id = d ? 1.0f/d : 0.0f;
 y[i].d = d;
 for (int l = 0; l < QK8_0; ++l) {
-const float   v  = x[i*QK8_0 + l]*id;
+const float v = x[i*QK8_0 + l]*id;
 y[i].qs[l] = roundf(v);
 }
 }
@@ -176,12 +176,12 @@ for (int i = 0; i < nb; i++) {
 const float d0 = x[i].d;
 const float d1 = y[i].d;
 const uint8_t * p0 = x[i].qs;
-const  int8_t * p1 = y[i].qs;
+const int8_t * p1 = y[i].qs;
 int sumi = 0;
 for (int j = 0; j < QK8_0/2; j++) {
 const uint8_t v0 = p0[j];
 const int i0 = (int8_t) (v0 & 0xf) - 8;
-const int i1 = (int8_t) (v0 >> 4)  - 8;
+const int i1 = (int8_t) (v0 >> 4) - 8;
 const int i2 = p1[2*j + 0];
 const int i3 = p1[2*j + 1];
 sumi += i0*i2 + i1*i3;

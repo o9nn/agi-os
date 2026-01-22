@@ -9,115 +9,115 @@ typedef struct Match Match;
 typedef struct Search Search;
 enum
 {
-OPERM	= 0x3,
-Nfidhash	= 32,
-Qroot	= 1,
-Qsearch	= 2,
-Qstats	= 3,
+OPERM = 0x3,
+Nfidhash = 32,
+Qroot = 1,
+Qsearch = 2,
+Qstats = 3,
 };
 struct Quick
 {
-char	*pat;
-char	*up;
-int	len;
-uchar 	jump[256];
-int	miss;
+char *pat;
+char *up;
+int len;
+uchar jump[256];
+int miss;
 };
-extern void	quickmk(Quick*, char*, int);
-extern void	quickfree(Quick*);
-extern char*	quicksearch(Quick*, char*, char*);
+extern void quickmk(Quick*, char*, int);
+extern void quickfree(Quick*);
+extern char* quicksearch(Quick*, char*, char*);
 struct Match
 {
-Match	*next;
-char	*pat;
-char	*up;
-int	len;
-int	(*op)(Match*, char*, char*);
+Match *next;
+char *pat;
+char *up;
+int len;
+int (*op)(Match*, char*, char*);
 };
 struct Search
 {
-Quick		quick;
-Match		*match;
-int		skip;
+Quick quick;
+Match *match;
+int skip;
 };
-extern char*	searchsearch(Search*, char*, char*, int*);
-extern Search*	searchparse(char*, char*);
-extern void	searchfree(Search*);
+extern char* searchsearch(Search*, char*, char*, int*);
+extern Search* searchparse(char*, char*);
+extern void searchfree(Search*);
 struct Fid
 {
 Lock;
-Fid	*next;
-Fid	**last;
-uint	fid;
-int	ref;
-int	attached;
-int	open;
-Qid	qid;
-Search	*search;
-char	*where;
-int	n;
+Fid *next;
+Fid **last;
+uint fid;
+int ref;
+int attached;
+int open;
+Qid qid;
+Search *search;
+char *where;
+int n;
 };
-int			dostat(int, uchar*, int);
-void*			emalloc(uint);
-void			fatal(char*, ...);
-Match*			mkmatch(Match*, int(*)(Match*, char*, char*), char*);
-Match*			mkstrmatch(Match*, char*);
-char*		nextsearch(char*, char*, char**, char**);
-int			strlook(Match*, char*, char*);
-char*			strndup(char*, int);
-int			tolower(int);
-int			toupper(int);
-char*			urlunesc(char*, char*);
-void			usage(void);
+int dostat(int, uchar*, int);
+void* emalloc(uint);
+void fatal(char*, ...);
+Match* mkmatch(Match*, int(*)(Match*, char*, char*), char*);
+Match* mkstrmatch(Match*, char*);
+char* nextsearch(char*, char*, char**, char**);
+int strlook(Match*, char*, char*);
+char* strndup(char*, int);
+int tolower(int);
+int toupper(int);
+char* urlunesc(char*, char*);
+void usage(void);
 struct Fs
 {
 Lock;
-Fid	*hash[Nfidhash];
-uchar	statbuf[1024];
+Fid *hash[Nfidhash];
+uchar statbuf[1024];
 };
-extern	void	fsrun(Fs*, int);
-extern	Fid*	getfid(Fs*, uint);
-extern	Fid*	mkfid(Fs*, uint);
-extern	void	putfid(Fs*, Fid*);
-extern	char*	fsversion(Fs*, Fcall*);
-extern	char*	fsauth(Fs*, Fcall*);
-extern	char*	fsattach(Fs*, Fcall*);
-extern	char*	fswalk(Fs*, Fcall*);
-extern	char*	fsopen(Fs*, Fcall*);
-extern	char*	fscreate(Fs*, Fcall*);
-extern	char*	fsread(Fs*, Fcall*);
-extern	char*	fswrite(Fs*, Fcall*);
-extern	char*	fsclunk(Fs*, Fcall*);
-extern	char*	fsremove(Fs*, Fcall*);
-extern	char*	fsstat(Fs*, Fcall*);
-extern	char*	fswstat(Fs*, Fcall*);
-char	*(*fcalls[])(Fs*, Fcall*) =
+extern void fsrun(Fs*, int);
+extern Fid* getfid(Fs*, uint);
+extern Fid* mkfid(Fs*, uint);
+extern void putfid(Fs*, Fid*);
+extern char* fsversion(Fs*, Fcall*);
+extern char* fsauth(Fs*, Fcall*);
+extern char* fsattach(Fs*, Fcall*);
+extern char* fswalk(Fs*, Fcall*);
+extern char* fsopen(Fs*, Fcall*);
+extern char* fscreate(Fs*, Fcall*);
+extern char* fsread(Fs*, Fcall*);
+extern char* fswrite(Fs*, Fcall*);
+extern char* fsclunk(Fs*, Fcall*);
+extern char* fsremove(Fs*, Fcall*);
+extern char* fsstat(Fs*, Fcall*);
+extern char* fswstat(Fs*, Fcall*);
+char *(*fcalls[])(Fs*, Fcall*) =
 {
-[Tversion]		fsversion,
-[Tattach]	fsattach,
-[Tauth]	fsauth,
-[Twalk]		fswalk,
-[Topen]		fsopen,
-[Tcreate]	fscreate,
-[Tread]		fsread,
-[Twrite]	fswrite,
-[Tclunk]	fsclunk,
-[Tremove]	fsremove,
-[Tstat]		fsstat,
-[Twstat]	fswstat
+[Tversion] fsversion,
+[Tattach] fsattach,
+[Tauth] fsauth,
+[Twalk] fswalk,
+[Topen] fsopen,
+[Tcreate] fscreate,
+[Tread] fsread,
+[Twrite] fswrite,
+[Tclunk] fsclunk,
+[Tremove] fsremove,
+[Tstat] fsstat,
+[Twstat] fswstat
 };
-char	Eperm[] =	"permission denied";
-char	Enotdir[] =	"not a directory";
-char	Enotexist[] =	"file does not exist";
-char	Eisopen[] = 	"file already open for I/O";
-char	Einuse[] =	"fid is already in use";
-char	Enofid[] = 	"no such fid";
-char	Enotopen[] =	"file is not open";
-char	Ebadsearch[] =	"bad search string";
-Fs	fs;
-char	*database;
-char	*edatabase;
-int	messagesize = 8192+IOHDRSZ;
+char Eperm[] = "permission denied";
+char Enotdir[] = "not a directory";
+char Enotexist[] = "file does not exist";
+char Eisopen[] = "file already open for I/O";
+char Einuse[] = "fid is already in use";
+char Enofid[] = "no such fid";
+char Enotopen[] = "file is not open";
+char Ebadsearch[] = "bad search string";
+Fs fs;
+char *database;
+char *edatabase;
+int messagesize = 8192+IOHDRSZ;
 void
 main(int argc, char **argv)
 {

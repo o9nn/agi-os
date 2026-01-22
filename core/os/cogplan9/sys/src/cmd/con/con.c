@@ -9,7 +9,7 @@ int outfd = 1;
 int cooked;
 int returns;
 int crtonl;
-int	strip;
+int strip;
 char firsterr[2*ERRMAX];
 char transerr[2*ERRMAX];
 int limited;
@@ -20,26 +20,26 @@ int notkbd;
 int nltocr;
 static char *srv;
 #define MAXMSG (2*8192)
-int	dodial(char*, char*, char*);
-void	fromkbd(int);
-void	fromnet(int);
-long	iread(int, void*, int);
-long	iwrite(int, void*, int);
-int	menu(int);
-void	notifyf(void*, char*);
-void	pass(int, int, int);
-void	rawoff(void);
-void	rawon(void);
-void	stdcon(int);
-char*	system(int, char*);
-void	dosystem(int, char*);
-int	wasintr(void);
-void	punt(char*);
-char*	syserr(void);
-void	seterr(char*);
-void	device(char*, char*);
-void	rlogin(char*, char*);
-void	simple(char*, char*);
+int dodial(char*, char*, char*);
+void fromkbd(int);
+void fromnet(int);
+long iread(int, void*, int);
+long iwrite(int, void*, int);
+int menu(int);
+void notifyf(void*, char*);
+void pass(int, int, int);
+void rawoff(void);
+void rawon(void);
+void stdcon(int);
+char* system(int, char*);
+void dosystem(int, char*);
+int wasintr(void);
+void punt(char*);
+char* syserr(void);
+void seterr(char*);
+void device(char*, char*);
+void rlogin(char*, char*);
+void simple(char*, char*);
 void
 usage(void)
 {
@@ -243,7 +243,7 @@ return;
 write(consctl, "rawoff", 6);
 raw = 0;
 }
-#define STDHELP	"\t(b)reak, (q)uit, (i)nterrupt, toggle printing (r)eturns, (.)continue, (!cmd)\n"
+#define STDHELP "\t(b)reak, (q)uit, (i)nterrupt, toggle printing (r)eturns, (.)continue, (!cmd)\n"
 int
 menu(int net)
 {
@@ -303,7 +303,7 @@ post(char *srv, int fd)
 {
 int f;
 char buf[32];
-f = create(srv, OWRITE  , 0666);
+f = create(srv, OWRITE , 0666);
 if(f < 0)
 sysfatal("create %s: %r", srv);
 snprint(buf, sizeof buf, "%d", fd);

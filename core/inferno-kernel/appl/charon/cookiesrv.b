@@ -18,23 +18,23 @@ name: string;
 value: string;
 dom: string;
 path: string;
-expire: int;		# seconds from epoch, -1 => not set, 0 => expire now
+expire: int; # seconds from epoch, -1 => not set, 0 => expire now
 secure: int;
 touched: int;
-link: cyclic ref Cookielist;	# linkage for list of cookies in the same domain
+link: cyclic ref Cookielist; # linkage for list of cookies in the same domain
 };
 Domain: adt {
 name: string;
 doms: cyclic list of ref Domain;
 cookies: ref Cookielist;
 };
-MAXCOOKIES: con 300;		# total number of cookies allowed
-LISTMAX: con 20;			# max number of cookies per Domain
-PURGENUM: con 30;			# number of cookies to delete when freeing up space
-MAXCKLEN: con 4*1024;		# max cookie length
+MAXCOOKIES: con 300; # total number of cookies allowed
+LISTMAX: con 20; # max number of cookies per Domain
+PURGENUM: con 30; # number of cookies to delete when freeing up space
+MAXCKLEN: con 4*1024; # max cookie length
 ncookies := 0;
 doms: list of ref Domain;
-now: int;	# seconds since epoch
+now: int; # seconds since epoch
 cookiepath: string;
 touch := 0;
 start(path: string, saveinterval: int): ref Client
@@ -229,7 +229,7 @@ if (fd == nil)
 return;
 fd = nil;
 tick := chan of int;
-spawn ticker(tick, 1*60*1000);	# clock tick once a minute
+spawn ticker(tick, 1*60*1000); # clock tick once a minute
 tickerpid := <- tick;
 modified := 0;
 savetime := now + saveinterval;
@@ -356,7 +356,7 @@ else {
 # to get around the netscape '.' count check
 # this messes up our domain checking
 # putting a '.' on the front of host is a safe way of handling this
-#		host = "." + host;
+# host = "." + host;
 dl = getdoms(doms, host, nil);
 }
 cookies: list of ref Cookie;
@@ -448,8 +448,8 @@ return 1;
 # netscape does no path check on accpeting a cookie
 # any page can set a cookie on any path within its domain.
 # the filtering is done when sending cookies back to the server
-#	if (!S->prefix(ck.path, path))
-#		return 0;
+# if (!S->prefix(ck.path, path))
+# return 0;
 if (host == ck.dom)
 return 1;
 if (ck.dom[0] != '.' || len host < len ck.dom)

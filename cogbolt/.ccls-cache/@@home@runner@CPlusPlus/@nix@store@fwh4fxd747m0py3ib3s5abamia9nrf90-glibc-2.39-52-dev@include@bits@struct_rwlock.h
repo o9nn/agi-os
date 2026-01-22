@@ -12,12 +12,12 @@ unsigned int __pad4;
 int __cur_writer;
 int __shared;
 signed char __rwelision;
-# ifdef  __ILP32__
+# ifdef __ILP32__
 unsigned char __pad1[3];
-#  define __PTHREAD_RWLOCK_ELISION_EXTRA 0, { 0, 0, 0 }
+# define __PTHREAD_RWLOCK_ELISION_EXTRA 0, { 0, 0, 0 }
 # else
 unsigned char __pad1[7];
-#  define __PTHREAD_RWLOCK_ELISION_EXTRA 0, { 0, 0, 0, 0, 0, 0, 0 }
+# define __PTHREAD_RWLOCK_ELISION_EXTRA 0, { 0, 0, 0, 0, 0, 0, 0 }
 # endif
 unsigned long int __pad2;
 unsigned int __flags;

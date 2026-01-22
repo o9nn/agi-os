@@ -1,5 +1,5 @@
 # ifdef HAVE_CONFIG_H
-#  include "config.h"
+# include "config.h"
 # endif
 # include "global.h"
 # include "bit.h"
@@ -9,16 +9,16 @@
 # include "layer3.h"
 static
 unsigned long const bitrate_table[5][15] = {
-{ 0,  32000,  64000,  96000, 128000, 160000, 192000, 224000,
+{ 0, 32000, 64000, 96000, 128000, 160000, 192000, 224000,
 256000, 288000, 320000, 352000, 384000, 416000, 448000 },
-{ 0,  32000,  48000,  56000,  64000,  80000,  96000, 112000,
+{ 0, 32000, 48000, 56000, 64000, 80000, 96000, 112000,
 128000, 160000, 192000, 224000, 256000, 320000, 384000 },
-{ 0,  32000,  40000,  48000,  56000,  64000,  80000,  96000,
+{ 0, 32000, 40000, 48000, 56000, 64000, 80000, 96000,
 112000, 128000, 160000, 192000, 224000, 256000, 320000 },
-{ 0,  32000,  48000,  56000,  64000,  80000,  96000, 112000,
+{ 0, 32000, 48000, 56000, 64000, 80000, 96000, 112000,
 128000, 144000, 160000, 176000, 192000, 224000, 256000 },
-{ 0,   8000,  16000,  24000,  32000,  40000,  48000,  56000,
-64000,  80000,  96000, 112000, 128000, 144000, 160000 }
+{ 0, 8000, 16000, 24000, 32000, 40000, 48000, 56000,
+64000, 80000, 96000, 112000, 128000, 144000, 160000 }
 };
 static
 unsigned int const samplerate_table[3] = { 44100, 48000, 32000 };
@@ -30,16 +30,16 @@ mad_layer_III
 };
 void mad_header_init(struct mad_header *header)
 {
-header->layer          = 0;
-header->mode           = 0;
+header->layer = 0;
+header->mode = 0;
 header->mode_extension = 0;
-header->emphasis       = 0;
-header->bitrate        = 0;
-header->samplerate     = 0;
-header->crc_check      = 0;
-header->crc_target     = 0;
-header->flags          = 0;
-header->private_bits   = 0;
+header->emphasis = 0;
+header->bitrate = 0;
+header->samplerate = 0;
+header->crc_check = 0;
+header->crc_target = 0;
+header->flags = 0;
+header->private_bits = 0;
 }
 void mad_frame_init(struct mad_frame *frame)
 {
@@ -60,7 +60,7 @@ static
 int decode_header(struct mad_header *header, struct mad_stream *stream)
 {
 unsigned int index;
-header->flags        = 0;
+header->flags = 0;
 header->private_bits = 0;
 mad_bit_skip(&stream->ptr, 11);
 if (mad_bit_read(&stream->ptr, 1) == 0)
@@ -77,7 +77,7 @@ stream->error = MAD_ERROR_BADLAYER;
 return -1;
 }
 if (mad_bit_read(&stream->ptr, 1) == 0) {
-header->flags    |= MAD_FLAG_PROTECTION;
+header->flags |= MAD_FLAG_PROTECTION;
 header->crc_check = mad_bit_crc(stream->ptr, 16, 0xffff);
 }
 index = mad_bit_read(&stream->ptr, 4);
@@ -178,7 +178,7 @@ if (stream->skiplen) {
 if (!stream->sync)
 ptr = stream->this_frame;
 if (end - ptr < stream->skiplen) {
-stream->skiplen   -= end - ptr;
+stream->skiplen -= end - ptr;
 stream->next_frame = end;
 stream->error = MAD_ERROR_BUFLEN;
 goto fail;
@@ -222,7 +222,7 @@ if ((stream->freerate == 0 || !stream->sync ||
 free_bitrate(stream, header) == -1)
 goto fail;
 header->bitrate = stream->freerate;
-header->flags  |= MAD_FLAG_FREEFORMAT;
+header->flags |= MAD_FLAG_FREEFORMAT;
 }
 pad_slot = (header->flags & MAD_FLAG_PADDING) ? 1 : 0;
 if (header->layer == MAD_LAYER_I)
@@ -268,7 +268,7 @@ goto fail;
 if (frame->header.layer != MAD_LAYER_III) {
 struct mad_bitptr next_frame;
 mad_bit_init(&next_frame, stream->next_frame);
-stream->anc_ptr    = stream->ptr;
+stream->anc_ptr = stream->ptr;
 stream->anc_bitlen = mad_bit_length(&stream->ptr, &next_frame);
 mad_bit_finish(&next_frame);
 }

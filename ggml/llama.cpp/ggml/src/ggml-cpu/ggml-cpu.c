@@ -43,7 +43,7 @@
 #ifdef GGML_USE_LLAMAFILE
 #include "llamafile/sgemm.h"
 #endif
-#define GGML_CACHE_LINE  64
+#define GGML_CACHE_LINE 64
 #if defined(__clang__) || defined(__GNUC__)
 #define GGML_CACHE_ALIGN __attribute__((aligned(GGML_CACHE_LINE)))
 #endif
@@ -156,230 +156,230 @@ typedef pthread_t ggml_thread_t;
 #endif
 static const struct ggml_type_traits_cpu type_traits_cpu[GGML_TYPE_COUNT] = {
 [GGML_TYPE_F32] = {
-.from_float               = (ggml_from_float_t) ggml_cpu_fp32_to_fp32,
-.vec_dot                  = (ggml_vec_dot_t) ggml_vec_dot_f32,
-.vec_dot_type             = GGML_TYPE_F32,
-.nrows                    = 1,
+.from_float = (ggml_from_float_t) ggml_cpu_fp32_to_fp32,
+.vec_dot = (ggml_vec_dot_t) ggml_vec_dot_f32,
+.vec_dot_type = GGML_TYPE_F32,
+.nrows = 1,
 },
 [GGML_TYPE_F16] = {
-.from_float               = (ggml_from_float_t) ggml_cpu_fp32_to_fp16,
-.vec_dot                  = (ggml_vec_dot_t) ggml_vec_dot_f16,
-.vec_dot_type             = GGML_TYPE_F16,
-.nrows                    = 1,
+.from_float = (ggml_from_float_t) ggml_cpu_fp32_to_fp16,
+.vec_dot = (ggml_vec_dot_t) ggml_vec_dot_f16,
+.vec_dot_type = GGML_TYPE_F16,
+.nrows = 1,
 },
 [GGML_TYPE_Q4_0] = {
-.from_float               = quantize_row_q4_0,
-.vec_dot                  = ggml_vec_dot_q4_0_q8_0,
-.vec_dot_type             = GGML_TYPE_Q8_0,
+.from_float = quantize_row_q4_0,
+.vec_dot = ggml_vec_dot_q4_0_q8_0,
+.vec_dot_type = GGML_TYPE_Q8_0,
 #if defined (__ARM_FEATURE_MATMUL_INT8)
-.nrows                    = 2,
+.nrows = 2,
 #else
-.nrows                    = 1,
+.nrows = 1,
 #endif
 },
 [GGML_TYPE_Q4_1] = {
-.from_float               = quantize_row_q4_1,
-.vec_dot                  = ggml_vec_dot_q4_1_q8_1,
-.vec_dot_type             = GGML_TYPE_Q8_1,
+.from_float = quantize_row_q4_1,
+.vec_dot = ggml_vec_dot_q4_1_q8_1,
+.vec_dot_type = GGML_TYPE_Q8_1,
 #if defined (__ARM_FEATURE_MATMUL_INT8)
-.nrows                    = 2,
+.nrows = 2,
 #else
-.nrows                    = 1,
+.nrows = 1,
 #endif
 },
 [GGML_TYPE_Q5_0] = {
-.from_float               = quantize_row_q5_0,
-.vec_dot                  = ggml_vec_dot_q5_0_q8_0,
-.vec_dot_type             = GGML_TYPE_Q8_0,
-.nrows                    = 1,
+.from_float = quantize_row_q5_0,
+.vec_dot = ggml_vec_dot_q5_0_q8_0,
+.vec_dot_type = GGML_TYPE_Q8_0,
+.nrows = 1,
 },
 [GGML_TYPE_Q5_1] = {
-.from_float               = quantize_row_q5_1,
-.vec_dot                  = ggml_vec_dot_q5_1_q8_1,
-.vec_dot_type             = GGML_TYPE_Q8_1,
-.nrows                    = 1,
+.from_float = quantize_row_q5_1,
+.vec_dot = ggml_vec_dot_q5_1_q8_1,
+.vec_dot_type = GGML_TYPE_Q8_1,
+.nrows = 1,
 },
 [GGML_TYPE_Q8_0] = {
-.from_float               = quantize_row_q8_0,
-.vec_dot                  = ggml_vec_dot_q8_0_q8_0,
-.vec_dot_type             = GGML_TYPE_Q8_0,
+.from_float = quantize_row_q8_0,
+.vec_dot = ggml_vec_dot_q8_0_q8_0,
+.vec_dot_type = GGML_TYPE_Q8_0,
 #if defined (__ARM_FEATURE_MATMUL_INT8)
-.nrows                    = 2,
+.nrows = 2,
 #else
-.nrows                    = 1,
+.nrows = 1,
 #endif
 },
 [GGML_TYPE_Q8_1] = {
-.from_float               = quantize_row_q8_1,
-.vec_dot_type             = GGML_TYPE_Q8_1,
-.nrows                    = 1,
+.from_float = quantize_row_q8_1,
+.vec_dot_type = GGML_TYPE_Q8_1,
+.nrows = 1,
 },
 [GGML_TYPE_MXFP4] = {
-.from_float               = quantize_row_mxfp4,
-.vec_dot                  = ggml_vec_dot_mxfp4_q8_0,
-.vec_dot_type             = GGML_TYPE_Q8_0,
-.nrows                    = 1,
+.from_float = quantize_row_mxfp4,
+.vec_dot = ggml_vec_dot_mxfp4_q8_0,
+.vec_dot_type = GGML_TYPE_Q8_0,
+.nrows = 1,
 },
 [GGML_TYPE_Q2_K] = {
-.from_float               = quantize_row_q2_K,
-.vec_dot                  = ggml_vec_dot_q2_K_q8_K,
-.vec_dot_type             = GGML_TYPE_Q8_K,
-.nrows                    = 1,
+.from_float = quantize_row_q2_K,
+.vec_dot = ggml_vec_dot_q2_K_q8_K,
+.vec_dot_type = GGML_TYPE_Q8_K,
+.nrows = 1,
 },
 [GGML_TYPE_Q3_K] = {
-.from_float               = quantize_row_q3_K,
-.vec_dot                  = ggml_vec_dot_q3_K_q8_K,
-.vec_dot_type             = GGML_TYPE_Q8_K,
-.nrows                    = 1,
+.from_float = quantize_row_q3_K,
+.vec_dot = ggml_vec_dot_q3_K_q8_K,
+.vec_dot_type = GGML_TYPE_Q8_K,
+.nrows = 1,
 },
 [GGML_TYPE_Q4_K] = {
-.from_float               = quantize_row_q4_K,
-.vec_dot                  = ggml_vec_dot_q4_K_q8_K,
-.vec_dot_type             = GGML_TYPE_Q8_K,
+.from_float = quantize_row_q4_K,
+.vec_dot = ggml_vec_dot_q4_K_q8_K,
+.vec_dot_type = GGML_TYPE_Q8_K,
 #if defined (__ARM_FEATURE_MATMUL_INT8)
-.nrows                    = 2,
+.nrows = 2,
 #else
-.nrows                    = 1,
+.nrows = 1,
 #endif
 },
 [GGML_TYPE_Q5_K] = {
-.from_float               = quantize_row_q5_K,
-.vec_dot                  = ggml_vec_dot_q5_K_q8_K,
-.vec_dot_type             = GGML_TYPE_Q8_K,
-.nrows                    = 1,
+.from_float = quantize_row_q5_K,
+.vec_dot = ggml_vec_dot_q5_K_q8_K,
+.vec_dot_type = GGML_TYPE_Q8_K,
+.nrows = 1,
 },
 [GGML_TYPE_Q6_K] = {
-.from_float               = quantize_row_q6_K,
-.vec_dot                  = ggml_vec_dot_q6_K_q8_K,
-.vec_dot_type             = GGML_TYPE_Q8_K,
+.from_float = quantize_row_q6_K,
+.vec_dot = ggml_vec_dot_q6_K_q8_K,
+.vec_dot_type = GGML_TYPE_Q8_K,
 #if defined (__ARM_FEATURE_MATMUL_INT8)
-.nrows                    = 2,
+.nrows = 2,
 #else
-.nrows                    = 1,
+.nrows = 1,
 #endif
 },
 [GGML_TYPE_IQ2_XXS] = {
-.from_float               = NULL,
-.vec_dot                  = ggml_vec_dot_iq2_xxs_q8_K,
-.vec_dot_type             = GGML_TYPE_Q8_K,
-.nrows                    = 1,
+.from_float = NULL,
+.vec_dot = ggml_vec_dot_iq2_xxs_q8_K,
+.vec_dot_type = GGML_TYPE_Q8_K,
+.nrows = 1,
 },
 [GGML_TYPE_IQ2_XS] = {
-.from_float               = NULL,
-.vec_dot                  = ggml_vec_dot_iq2_xs_q8_K,
-.vec_dot_type             = GGML_TYPE_Q8_K,
-.nrows                    = 1,
+.from_float = NULL,
+.vec_dot = ggml_vec_dot_iq2_xs_q8_K,
+.vec_dot_type = GGML_TYPE_Q8_K,
+.nrows = 1,
 },
 [GGML_TYPE_IQ3_XXS] = {
-.vec_dot                  = ggml_vec_dot_iq3_xxs_q8_K,
-.vec_dot_type             = GGML_TYPE_Q8_K,
-.nrows                    = 1,
+.vec_dot = ggml_vec_dot_iq3_xxs_q8_K,
+.vec_dot_type = GGML_TYPE_Q8_K,
+.nrows = 1,
 },
 [GGML_TYPE_IQ3_S] = {
-.vec_dot                  = ggml_vec_dot_iq3_s_q8_K,
-.vec_dot_type             = GGML_TYPE_Q8_K,
-.nrows                    = 1,
+.vec_dot = ggml_vec_dot_iq3_s_q8_K,
+.vec_dot_type = GGML_TYPE_Q8_K,
+.nrows = 1,
 },
 [GGML_TYPE_IQ2_S] = {
-.vec_dot                  = ggml_vec_dot_iq2_s_q8_K,
-.vec_dot_type             = GGML_TYPE_Q8_K,
-.nrows                    = 1,
+.vec_dot = ggml_vec_dot_iq2_s_q8_K,
+.vec_dot_type = GGML_TYPE_Q8_K,
+.nrows = 1,
 },
 [GGML_TYPE_IQ1_S] = {
-.from_float               = NULL,
-.vec_dot                  = ggml_vec_dot_iq1_s_q8_K,
-.vec_dot_type             = GGML_TYPE_Q8_K,
-.nrows                    = 1,
+.from_float = NULL,
+.vec_dot = ggml_vec_dot_iq1_s_q8_K,
+.vec_dot_type = GGML_TYPE_Q8_K,
+.nrows = 1,
 },
 [GGML_TYPE_IQ1_M] = {
-.from_float               = NULL,
-.vec_dot                  = ggml_vec_dot_iq1_m_q8_K,
-.vec_dot_type             = GGML_TYPE_Q8_K,
-.nrows                    = 1,
+.from_float = NULL,
+.vec_dot = ggml_vec_dot_iq1_m_q8_K,
+.vec_dot_type = GGML_TYPE_Q8_K,
+.nrows = 1,
 },
 [GGML_TYPE_IQ4_NL] = {
-.from_float               = quantize_row_iq4_nl,
-.vec_dot                  = ggml_vec_dot_iq4_nl_q8_0,
-.vec_dot_type             = GGML_TYPE_Q8_0,
-.nrows                    = 1,
+.from_float = quantize_row_iq4_nl,
+.vec_dot = ggml_vec_dot_iq4_nl_q8_0,
+.vec_dot_type = GGML_TYPE_Q8_0,
+.nrows = 1,
 },
 [GGML_TYPE_IQ4_XS] = {
-.from_float               = quantize_row_iq4_xs,
-.vec_dot                  = ggml_vec_dot_iq4_xs_q8_K,
-.vec_dot_type             = GGML_TYPE_Q8_K,
-.nrows                    = 1,
+.from_float = quantize_row_iq4_xs,
+.vec_dot = ggml_vec_dot_iq4_xs_q8_K,
+.vec_dot_type = GGML_TYPE_Q8_K,
+.nrows = 1,
 },
 [GGML_TYPE_Q8_K] = {
-.from_float               = quantize_row_q8_K,
+.from_float = quantize_row_q8_K,
 },
 [GGML_TYPE_BF16] = {
-.from_float               = (ggml_from_float_t) ggml_cpu_fp32_to_bf16,
-.vec_dot                  = (ggml_vec_dot_t) ggml_vec_dot_bf16,
-.vec_dot_type             = GGML_TYPE_BF16,
-.nrows                    = 1,
+.from_float = (ggml_from_float_t) ggml_cpu_fp32_to_bf16,
+.vec_dot = (ggml_vec_dot_t) ggml_vec_dot_bf16,
+.vec_dot_type = GGML_TYPE_BF16,
+.nrows = 1,
 },
 [GGML_TYPE_TQ1_0] = {
-.from_float               = quantize_row_tq1_0,
-.vec_dot                  = ggml_vec_dot_tq1_0_q8_K,
-.vec_dot_type             = GGML_TYPE_Q8_K,
-.nrows                    = 1,
+.from_float = quantize_row_tq1_0,
+.vec_dot = ggml_vec_dot_tq1_0_q8_K,
+.vec_dot_type = GGML_TYPE_Q8_K,
+.nrows = 1,
 },
 [GGML_TYPE_TQ2_0] = {
-.from_float               = quantize_row_tq2_0,
-.vec_dot                  = ggml_vec_dot_tq2_0_q8_K,
-.vec_dot_type             = GGML_TYPE_Q8_K,
-.nrows                    = 1,
+.from_float = quantize_row_tq2_0,
+.vec_dot = ggml_vec_dot_tq2_0_q8_K,
+.vec_dot_type = GGML_TYPE_Q8_K,
+.nrows = 1,
 },
 };
 const struct ggml_type_traits_cpu * ggml_get_type_traits_cpu(enum ggml_type type) {
 return &type_traits_cpu[type];
 }
-typedef pthread_t          ggml_thread_t;
+typedef pthread_t ggml_thread_t;
 #if defined(_WIN32)
 typedef CONDITION_VARIABLE ggml_cond_t;
-typedef SRWLOCK            ggml_mutex_t;
-#define ggml_mutex_init(m)   InitializeSRWLock(m)
+typedef SRWLOCK ggml_mutex_t;
+#define ggml_mutex_init(m) InitializeSRWLock(m)
 #define ggml_mutex_destroy(m)
-#define ggml_mutex_lock(m)   AcquireSRWLockExclusive(m)
+#define ggml_mutex_lock(m) AcquireSRWLockExclusive(m)
 #define ggml_mutex_unlock(m) ReleaseSRWLockExclusive(m)
-#define ggml_mutex_lock_shared(m)   AcquireSRWLockShared(m)
+#define ggml_mutex_lock_shared(m) AcquireSRWLockShared(m)
 #define ggml_mutex_unlock_shared(m) ReleaseSRWLockShared(m)
-#define ggml_cond_init(c)    InitializeConditionVariable(c)
+#define ggml_cond_init(c) InitializeConditionVariable(c)
 #define ggml_cond_destroy(c)
 #define ggml_cond_wait(c, m) SleepConditionVariableSRW(c, m, INFINITE, CONDITION_VARIABLE_LOCKMODE_SHARED)
 #define ggml_cond_broadcast(c) WakeAllConditionVariable(c)
 #define ggml_thread_create pthread_create
-#define ggml_thread_join   pthread_join
+#define ggml_thread_join pthread_join
 #else
-typedef pthread_cond_t     ggml_cond_t;
-typedef pthread_mutex_t    ggml_mutex_t;
-#define ggml_mutex_init(m)          pthread_mutex_init(m, NULL)
-#define ggml_mutex_destroy(m)       pthread_mutex_destroy(m)
-#define ggml_mutex_lock(m)          pthread_mutex_lock(m)
-#define ggml_mutex_unlock(m)        pthread_mutex_unlock(m)
-#define ggml_mutex_lock_shared(m)   pthread_mutex_lock(m)
+typedef pthread_cond_t ggml_cond_t;
+typedef pthread_mutex_t ggml_mutex_t;
+#define ggml_mutex_init(m) pthread_mutex_init(m, NULL)
+#define ggml_mutex_destroy(m) pthread_mutex_destroy(m)
+#define ggml_mutex_lock(m) pthread_mutex_lock(m)
+#define ggml_mutex_unlock(m) pthread_mutex_unlock(m)
+#define ggml_mutex_lock_shared(m) pthread_mutex_lock(m)
 #define ggml_mutex_unlock_shared(m) pthread_mutex_unlock(m)
-#define ggml_lock_init(x)    UNUSED(x)
+#define ggml_lock_init(x) UNUSED(x)
 #define ggml_lock_destroy(x) UNUSED(x)
 #if defined(__x86_64__) || (defined(_MSC_VER) && defined(_M_AMD64))
-#define ggml_lock_lock(x)    _mm_pause()
+#define ggml_lock_lock(x) _mm_pause()
 #else
-#define ggml_lock_lock(x)    UNUSED(x)
+#define ggml_lock_lock(x) UNUSED(x)
 #endif
-#define ggml_lock_unlock(x)  UNUSED(x)
+#define ggml_lock_unlock(x) UNUSED(x)
 #define GGML_LOCK_INITIALIZER 0
-#define ggml_cond_init(c)      pthread_cond_init(c, NULL)
-#define ggml_cond_destroy(c)   pthread_cond_destroy(c)
-#define ggml_cond_wait(c, m)   pthread_cond_wait(c, m)
+#define ggml_cond_init(c) pthread_cond_init(c, NULL)
+#define ggml_cond_destroy(c) pthread_cond_destroy(c)
+#define ggml_cond_wait(c, m) pthread_cond_wait(c, m)
 #define ggml_cond_broadcast(c) pthread_cond_broadcast(c)
 #define ggml_thread_create pthread_create
-#define ggml_thread_join   pthread_join
+#define ggml_thread_join pthread_join
 #endif
 struct ggml_threadpool {
 ggml_mutex_t mutex;
-ggml_cond_t  cond;
+ggml_cond_t cond;
 struct ggml_cgraph * cgraph;
-struct ggml_cplan  * cplan;
+struct ggml_cplan * cplan;
 atomic_int n_graph;
 atomic_int GGML_CACHE_ALIGN n_barrier;
 atomic_int GGML_CACHE_ALIGN n_barrier_passed;
@@ -388,17 +388,17 @@ atomic_bool stop;
 atomic_bool pause;
 atomic_int abort;
 struct ggml_compute_state * workers;
-int          n_threads_max;
-atomic_int   n_threads_cur;
-int32_t      prio;
-uint32_t     poll;
+int n_threads_max;
+atomic_int n_threads_cur;
+int32_t prio;
+uint32_t poll;
 enum ggml_status ec;
 };
 struct ggml_compute_state {
 #ifndef GGML_USE_OPENMP
 ggml_thread_t thrd;
 bool cpumask[GGML_MAX_N_THREADS];
-int  last_graph;
+int last_graph;
 bool pending;
 #endif
 struct ggml_threadpool * threadpool;
@@ -512,9 +512,9 @@ int getcpu_ret = 0;
 #if __GLIBC__ > 2 || (__GLIBC__ == 2 && __GLIBC_MINOR__ > 33) || defined(__COSMOPOLITAN__)
 getcpu_ret = getcpu(&current_cpu, &g_state.numa.current_node);
 #else
-#   if !defined(SYS_getcpu) && defined(SYS_get_cpu)
-#       define SYS_getcpu SYS_get_cpu
-#   endif
+# if !defined(SYS_getcpu) && defined(SYS_get_cpu)
+# define SYS_getcpu SYS_get_cpu
+# endif
 getcpu_ret = syscall(SYS_getcpu, &current_cpu, &g_state.numa.current_node);
 #endif
 if (g_state.numa.n_nodes < 1 || g_state.numa.total_cpus < 1 || getcpu_ret != 0) {
@@ -576,8 +576,8 @@ ggml_set_f32(result, value);
 return result;
 }
 struct ggml_tensor * ggml_set_i32 (struct ggml_tensor * tensor, int32_t value) {
-const int n     = ggml_nrows(tensor);
-const int nc    = tensor->ne[0];
+const int n = ggml_nrows(tensor);
+const int nc = tensor->ne[0];
 const size_t n1 = tensor->nb[1];
 char * const data = tensor->data;
 switch (tensor->type) {
@@ -631,8 +631,8 @@ GGML_ABORT("fatal error");
 return tensor;
 }
 struct ggml_tensor * ggml_set_f32(struct ggml_tensor * tensor, float value) {
-const int n     = ggml_nrows(tensor);
-const int nc    = tensor->ne[0];
+const int n = ggml_nrows(tensor);
+const int nc = tensor->ne[0];
 const size_t n1 = tensor->nb[1];
 char * const data = tensor->data;
 switch (tensor->type) {
@@ -773,7 +773,7 @@ GGML_ABORT("fatal error");
 }
 }
 int32_t ggml_get_i32_nd(const struct ggml_tensor * tensor, int i0, int i1, int i2, int i3) {
-void * data   = (char *) tensor->data + i0*tensor->nb[0] + i1*tensor->nb[1] + i2*tensor->nb[2] + i3*tensor->nb[3];
+void * data = (char *) tensor->data + i0*tensor->nb[0] + i1*tensor->nb[1] + i2*tensor->nb[2] + i3*tensor->nb[3];
 switch (tensor->type) {
 case GGML_TYPE_I8:
 return ((int8_t *) data)[0];
@@ -792,7 +792,7 @@ GGML_ABORT("fatal error");
 }
 }
 void ggml_set_i32_nd(const struct ggml_tensor * tensor, int i0, int i1, int i2, int i3, int32_t value) {
-void * data   = (char *) tensor->data + i0*tensor->nb[0] + i1*tensor->nb[1] + i2*tensor->nb[2] + i3*tensor->nb[3];
+void * data = (char *) tensor->data + i0*tensor->nb[0] + i1*tensor->nb[1] + i2*tensor->nb[2] + i3*tensor->nb[3];
 switch (tensor->type) {
 case GGML_TYPE_I8:
 {
@@ -900,7 +900,7 @@ GGML_ABORT("fatal error");
 }
 }
 float ggml_get_f32_nd(const struct ggml_tensor * tensor, int i0, int i1, int i2, int i3) {
-void * data   = (char *) tensor->data + i0*tensor->nb[0] + i1*tensor->nb[1] + i2*tensor->nb[2] + i3*tensor->nb[3];
+void * data = (char *) tensor->data + i0*tensor->nb[0] + i1*tensor->nb[1] + i2*tensor->nb[2] + i3*tensor->nb[3];
 switch (tensor->type) {
 case GGML_TYPE_I8:
 return ((int8_t *) data)[0];
@@ -919,7 +919,7 @@ GGML_ABORT("fatal error");
 }
 }
 void ggml_set_f32_nd(const struct ggml_tensor * tensor, int i0, int i1, int i2, int i3, float value) {
-void * data   = (char *) tensor->data + i0*tensor->nb[0] + i1*tensor->nb[1] + i2*tensor->nb[2] + i3*tensor->nb[3];
+void * data = (char *) tensor->data + i0*tensor->nb[0] + i1*tensor->nb[1] + i2*tensor->nb[2] + i3*tensor->nb[3];
 switch (tensor->type) {
 case GGML_TYPE_I8:
 {
@@ -964,7 +964,7 @@ const struct ggml_tensor * src0 = dst->src[0];
 const struct ggml_tensor * src1 = dst->src[1];
 GGML_TENSOR_BINARY_OP_LOCALS
 const bool src1_cont = ggml_is_contiguous(src1);
-ggml_vec_dot_t const vec_dot      = type_traits_cpu[type].vec_dot;
+ggml_vec_dot_t const vec_dot = type_traits_cpu[type].vec_dot;
 enum ggml_type const vec_dot_type = type_traits_cpu[type].vec_dot_type;
 const int64_t r2 = ne12 / ne02;
 const int64_t r3 = ne13 / ne03;
@@ -1014,9 +1014,9 @@ const struct ggml_tensor * src1 = dst->src[1];
 GGML_TENSOR_BINARY_OP_LOCALS
 const int ith = params->ith;
 const int nth = params->nth;
-enum ggml_type           const vec_dot_type         = type_traits_cpu[src0->type].vec_dot_type;
-ggml_from_float_t        const from_float           = type_traits_cpu[vec_dot_type].from_float;
-int64_t                  const vec_dot_num_rows     = type_traits_cpu[src0->type].nrows;
+enum ggml_type const vec_dot_type = type_traits_cpu[src0->type].vec_dot_type;
+ggml_from_float_t const from_float = type_traits_cpu[vec_dot_type].from_float;
+int64_t const vec_dot_num_rows = type_traits_cpu[src0->type].nrows;
 GGML_ASSERT(ne0 == ne01);
 GGML_ASSERT(ne1 == ne11);
 GGML_ASSERT(ne2 == ne12);
@@ -1063,7 +1063,7 @@ for (int64_t i13 = 0; i13 < ne13; ++i13) {
 for (int64_t i12 = 0; i12 < ne12; ++i12) {
 for (int64_t i11 = ith; i11 < ne11; i11 += nth) {
 from_float((float *)((char *) src1->data + i13*nb13 + i12*nb12 + i11*nb11),
-(void *)               (wdata + i13*nbw3 + i12*nbw2 + i11*nbw1),
+(void *) (wdata + i13*nbw3 + i12*nbw2 + i11*nbw1),
 ne10);
 }
 }
@@ -1074,9 +1074,9 @@ for (int64_t i12 = 0; i12 < ne12; ++i12) {
 for (int64_t i11 = 0; i11 < ne11; ++i11) {
 size_t bs = ggml_blck_size(vec_dot_type);
 int64_t ne10_block_start = (ith * ne10/bs) / nth;
-int64_t ne10_block_end   = ((ith + 1) * ne10/bs) / nth;
+int64_t ne10_block_end = ((ith + 1) * ne10/bs) / nth;
 from_float((float *)((char *) src1->data + i13*nb13 + i12*nb12 + i11*nb11 + ne10_block_start*bs*nb10),
-(void *)               (wdata + i13*nbw3 + i12*nbw2 + i11*nbw1 + ne10_block_start*nbw0),
+(void *) (wdata + i13*nbw3 + i12*nbw2 + i11*nbw1 + ne10_block_start*nbw0),
 (ne10_block_end - ne10_block_start) * bs);
 }
 }
@@ -1164,8 +1164,8 @@ const bool src1_cont,
 const void * wdata) {
 GGML_TENSOR_BINARY_OP_LOCALS
 const enum ggml_type type = src0->type;
-ggml_vec_dot_t    const vec_dot      = type_traits_cpu[type].vec_dot;
-enum ggml_type    const vec_dot_type = type_traits_cpu[type].vec_dot_type;
+ggml_vec_dot_t const vec_dot = type_traits_cpu[type].vec_dot;
+enum ggml_type const vec_dot_type = type_traits_cpu[type].vec_dot_type;
 const int64_t blck_0 = 16;
 const int64_t blck_1 = 16;
 float tmp[16];
@@ -1174,14 +1174,14 @@ for (int64_t iir0 = ir0_start; iir0 < ir0_end; iir0 += blck_0) {
 for (int64_t ir1 = iir1; ir1 < iir1 + blck_1 && ir1 < ir1_end; ++ir1) {
 const int64_t _i12 = ir1;
 struct mmid_row_mapping row_mapping = MMID_MATRIX_ROW(cur_a, _i12);
-const int id       = row_mapping.i1;
-const int64_t  i11 = id % ne11;
-const int64_t  i12 = row_mapping.i2;
-const int64_t  i1 = id;
-const int64_t  i2 = i12;
+const int id = row_mapping.i1;
+const int64_t i11 = id % ne11;
+const int64_t i12 = row_mapping.i2;
+const int64_t i1 = id;
+const int64_t i2 = i12;
 const char * src1_col = (const char *) wdata +
 (src1_cont || src1->type != vec_dot_type
-? (i11      + i12*ne11)*row_size
+? (i11 + i12*ne11)*row_size
 : (i11*nb11 + i12*nb12));
 float * dst_col = (float *) ((char *) dst->data + (i1*nb1 + i2*nb2));
 for (int64_t ir0 = iir0; ir0 < iir0 + blck_0 && ir0 < ir0_end; ++ir0) {
@@ -1209,8 +1209,8 @@ const int ith = params->ith;
 const int nth = params->nth;
 const enum ggml_type type = src0->type;
 const bool src1_cont = ggml_is_contiguous(src1);
-enum ggml_type    const vec_dot_type    = type_traits_cpu[type].vec_dot_type;
-ggml_from_float_t const from_float      = type_traits_cpu[vec_dot_type].from_float;
+enum ggml_type const vec_dot_type = type_traits_cpu[type].vec_dot_type;
+ggml_from_float_t const from_float = type_traits_cpu[vec_dot_type].from_float;
 GGML_ASSERT(nb00 == ggml_type_size(type));
 GGML_ASSERT(nb10 == ggml_type_size(src1->type));
 GGML_ASSERT(nb0 == sizeof(float));
@@ -1218,7 +1218,7 @@ GGML_ASSERT(nb0 <= nb1);
 GGML_ASSERT(nb1 <= nb2);
 GGML_ASSERT(nb2 <= nb3);
 const int n_ids = ids->ne[0];
-const int n_as  = ne02;
+const int n_as = ne02;
 void * wdata_cur = params->wdata;
 if (src1->type != vec_dot_type) {
 incr_ptr_aligned(&wdata_cur, ggml_row_size(vec_dot_type, ggml_nelements(src1)), sizeof(int64_t));
@@ -1243,7 +1243,7 @@ for (int64_t i13 = 0; i13 < ne13; ++i13) {
 for (int64_t i12 = ith; i12 < ne12; i12 += nth) {
 for (int64_t i11 = 0; i11 < ne11; ++i11) {
 from_float((float *)((char *) src1->data + i13*nb13 + i12*nb12 + i11*nb11),
-(void *)               (wdata + i13*nbw3 + i12*nbw2 + i11*nbw1),
+(void *) (wdata + i13*nbw3 + i12*nbw2 + i11*nbw1),
 ne10);
 }
 }
@@ -1254,9 +1254,9 @@ for (int64_t i12 = 0; i12 < ne12; ++i12) {
 for (int64_t i11 = 0; i11 < ne11; ++i11) {
 size_t bs = ggml_blck_size(vec_dot_type);
 int64_t ne10_block_start = (ith * ne10/bs) / nth;
-int64_t ne10_block_end   = ((ith + 1) * ne10/bs) / nth;
+int64_t ne10_block_end = ((ith + 1) * ne10/bs) / nth;
 from_float((float *)((char *) src1->data + i13*nb13 + i12*nb12 + i11*nb11 + ne10_block_start*bs*nb10),
-(void *)               (wdata + i13*nbw3 + i12*nbw2 + i11*nbw1 + ne10_block_start*nbw0),
+(void *) (wdata + i13*nbw3 + i12*nbw2 + i11*nbw1 + ne10_block_start*nbw0),
 (ne10_block_end - ne10_block_start) * bs);
 }
 }
@@ -1752,7 +1752,7 @@ fprintf(stderr, "warning: pthread_setaffinity_np() failed: %s\n", strerror(rv));
 CPU_FREE(cpus);
 }
 #else
-static void set_numa_thread_affinity(int thread_n) { UNUSED(thread_n);  }
+static void set_numa_thread_affinity(int thread_n) { UNUSED(thread_n); }
 static void clear_numa_thread_affinity(void) {}
 #endif
 static int ggml_get_n_tasks(struct ggml_tensor * node, int n_threads) {
@@ -1995,8 +1995,8 @@ static thread_ret_t ggml_graph_compute_secondary_thread(void* data);
 #if defined(_WIN32)
 #include "windows.h"
 static bool ggml_thread_apply_affinity(bool * mask) {
-HANDLE    h = GetCurrentThread();
-uint64_t  bitmask = 0ULL;
+HANDLE h = GetCurrentThread();
+uint64_t bitmask = 0ULL;
 assert(GGML_MAX_N_THREADS >= 64);
 for (int32_t i = 0; i < 8; i++) {
 int32_t idx = i * 8;
@@ -2024,19 +2024,19 @@ return m != 0;
 static bool ggml_thread_apply_priority(int32_t prio) {
 DWORD p = THREAD_PRIORITY_NORMAL;
 switch (prio) {
-case GGML_SCHED_PRIO_LOW:      p = THREAD_PRIORITY_BELOW_NORMAL;  break;
-case GGML_SCHED_PRIO_NORMAL:   p = THREAD_PRIORITY_NORMAL;        break;
-case GGML_SCHED_PRIO_MEDIUM:   p = THREAD_PRIORITY_ABOVE_NORMAL;  break;
-case GGML_SCHED_PRIO_HIGH:     p = THREAD_PRIORITY_HIGHEST;       break;
+case GGML_SCHED_PRIO_LOW: p = THREAD_PRIORITY_BELOW_NORMAL; break;
+case GGML_SCHED_PRIO_NORMAL: p = THREAD_PRIORITY_NORMAL; break;
+case GGML_SCHED_PRIO_MEDIUM: p = THREAD_PRIORITY_ABOVE_NORMAL; break;
+case GGML_SCHED_PRIO_HIGH: p = THREAD_PRIORITY_HIGHEST; break;
 case GGML_SCHED_PRIO_REALTIME: p = THREAD_PRIORITY_TIME_CRITICAL; break;
 }
 if (prio != GGML_SCHED_PRIO_LOW) {
 #if _WIN32_WINNT >= 0x0602
 THREAD_POWER_THROTTLING_STATE t;
 ZeroMemory(&t, sizeof(t));
-t.Version     = THREAD_POWER_THROTTLING_CURRENT_VERSION;
+t.Version = THREAD_POWER_THROTTLING_CURRENT_VERSION;
 t.ControlMask = THREAD_POWER_THROTTLING_EXECUTION_SPEED;
-t.StateMask   = 0;
+t.StateMask = 0;
 if (!SetThreadInformation(GetCurrentThread(), ThreadPowerThrottling, &t, sizeof(t))) {
 GGML_LOG_DEBUG("failed to disable thread power throttling %d : (%d)\n", prio, (int) GetLastError());
 return false;
@@ -2063,11 +2063,11 @@ static bool ggml_thread_apply_priority(int32_t prio) {
 struct sched_param p;
 int32_t policy = SCHED_OTHER;
 switch (prio) {
-case GGML_SCHED_PRIO_LOW:      policy = SCHED_OTHER; p.sched_priority = 0;  break;
-case GGML_SCHED_PRIO_NORMAL:   policy = SCHED_OTHER; p.sched_priority = 0;  break;
-case GGML_SCHED_PRIO_MEDIUM:   policy = SCHED_FIFO;  p.sched_priority = 40; break;
-case GGML_SCHED_PRIO_HIGH:     policy = SCHED_FIFO;  p.sched_priority = 80; break;
-case GGML_SCHED_PRIO_REALTIME: policy = SCHED_FIFO;  p.sched_priority = 90; break;
+case GGML_SCHED_PRIO_LOW: policy = SCHED_OTHER; p.sched_priority = 0; break;
+case GGML_SCHED_PRIO_NORMAL: policy = SCHED_OTHER; p.sched_priority = 0; break;
+case GGML_SCHED_PRIO_MEDIUM: policy = SCHED_FIFO; p.sched_priority = 40; break;
+case GGML_SCHED_PRIO_HIGH: policy = SCHED_FIFO; p.sched_priority = 80; break;
+case GGML_SCHED_PRIO_REALTIME: policy = SCHED_FIFO; p.sched_priority = 90; break;
 }
 if (prio == GGML_SCHED_PRIO_NORMAL) {
 return true;
@@ -2108,11 +2108,11 @@ static bool ggml_thread_apply_priority(int32_t prio) {
 struct sched_param p;
 int32_t policy = SCHED_OTHER;
 switch (prio) {
-case GGML_SCHED_PRIO_LOW:      policy = SCHED_BATCH; p.sched_priority = 0;  break;
-case GGML_SCHED_PRIO_NORMAL:   policy = SCHED_OTHER; p.sched_priority = 0;  break;
-case GGML_SCHED_PRIO_MEDIUM:   policy = SCHED_FIFO;  p.sched_priority = 40; break;
-case GGML_SCHED_PRIO_HIGH:     policy = SCHED_FIFO;  p.sched_priority = 80; break;
-case GGML_SCHED_PRIO_REALTIME: policy = SCHED_FIFO;  p.sched_priority = 90; break;
+case GGML_SCHED_PRIO_LOW: policy = SCHED_BATCH; p.sched_priority = 0; break;
+case GGML_SCHED_PRIO_NORMAL: policy = SCHED_OTHER; p.sched_priority = 0; break;
+case GGML_SCHED_PRIO_MEDIUM: policy = SCHED_FIFO; p.sched_priority = 40; break;
+case GGML_SCHED_PRIO_HIGH: policy = SCHED_FIFO; p.sched_priority = 80; break;
+case GGML_SCHED_PRIO_REALTIME: policy = SCHED_FIFO; p.sched_priority = 90; break;
 }
 if (prio == GGML_SCHED_PRIO_NORMAL) {
 return true;
@@ -2218,7 +2218,7 @@ UNUSED(threadpool);
 }
 struct ggml_cplan ggml_graph_plan(
 const struct ggml_cgraph * cgraph,
-int   n_threads,
+int n_threads,
 struct ggml_threadpool * threadpool) {
 if (threadpool == NULL) {
 }
@@ -2240,7 +2240,7 @@ case GGML_OP_CPY:
 case GGML_OP_DUP:
 {
 if (ggml_is_quantized(node->type) ||
-(node->src[0]->type == GGML_TYPE_F16  && node->src[1] && node->src[1]->type == GGML_TYPE_BF16) ||
+(node->src[0]->type == GGML_TYPE_F16 && node->src[1] && node->src[1]->type == GGML_TYPE_BF16) ||
 (node->src[0]->type == GGML_TYPE_BF16 && node->src[1] && node->src[1]->type == GGML_TYPE_F16)) {
 cur = ggml_type_size(GGML_TYPE_F32) * node->ne[0] * n_tasks;
 }
@@ -2344,17 +2344,17 @@ cur = sizeof(float)*(1*ne10 + 2*ne20)*n_tasks;
 } break;
 case GGML_OP_FLASH_ATTN_BACK:
 {
-const int64_t    D = node->src[0]->ne[0];
+const int64_t D = node->src[0]->ne[0];
 const int64_t ne11 = ggml_up(node->src[1]->ne[1], GGML_SOFT_MAX_UNROLL);
 const int64_t mxDn = MAX(D, ne11) * 2;
 if (node->src[1]->type == GGML_TYPE_F32) {
-cur  = sizeof(float)*mxDn*n_tasks;
+cur = sizeof(float)*mxDn*n_tasks;
 cur += sizeof(float)*mxDn*n_tasks;
 } else if (node->src[1]->type == GGML_TYPE_F16) {
-cur  = sizeof(float)*mxDn*n_tasks;
+cur = sizeof(float)*mxDn*n_tasks;
 cur += sizeof(float)*mxDn*n_tasks;
 } else if (node->src[1]->type == GGML_TYPE_BF16) {
-cur  = sizeof(float)*mxDn*n_tasks;
+cur = sizeof(float)*mxDn*n_tasks;
 cur += sizeof(float)*mxDn*n_tasks;
 }
 } break;
@@ -2376,16 +2376,16 @@ if (work_size > 0) {
 work_size += CACHE_LINE_SIZE*(n_threads);
 }
 cplan.threadpool = threadpool;
-cplan.n_threads  = MIN(max_tasks, n_threads);
-cplan.work_size  = work_size;
-cplan.work_data  = NULL;
+cplan.n_threads = MIN(max_tasks, n_threads);
+cplan.work_size = work_size;
+cplan.work_data = NULL;
 return cplan;
 }
 static thread_ret_t ggml_graph_compute_thread(void * data) {
 struct ggml_compute_state * state = (struct ggml_compute_state *) data;
-struct ggml_threadpool    * tp    = state->threadpool;
+struct ggml_threadpool * tp = state->threadpool;
 const struct ggml_cgraph * cgraph = tp->cgraph;
-const struct ggml_cplan  * cplan  = tp->cplan;
+const struct ggml_cplan * cplan = tp->cplan;
 set_numa_thread_affinity(state->ith);
 struct ggml_compute_params params = {
 state->ith,
@@ -2400,7 +2400,7 @@ ggml_compute_forward(&params, node);
 if (state->ith == 0 && cplan->abort_callback &&
 cplan->abort_callback(cplan->abort_callback_data)) {
 atomic_store_explicit(&tp->abort, node_n + 1, memory_order_relaxed);
-tp->ec    = GGML_STATUS_ABORTED;
+tp->ec = GGML_STATUS_ABORTED;
 }
 if (node_n + 1 < cgraph->n_nodes) {
 ggml_barrier(state->threadpool);
@@ -2420,7 +2420,7 @@ struct ggml_threadpool * threadpool = state->threadpool;
 if (state->pending || threadpool->stop || threadpool->pause) { return true; }
 int new_graph = atomic_load_explicit(&threadpool->n_graph, memory_order_relaxed);
 if (new_graph != state->last_graph) {
-state->pending    = ggml_graph_compute_thread_active(state);
+state->pending = ggml_graph_compute_thread_active(state);
 state->last_graph = new_graph;
 }
 return state->pending;
@@ -2509,28 +2509,28 @@ struct ggml_cplan * cplan) {
 struct ggml_threadpool * threadpool =
 ggml_aligned_malloc(sizeof(struct ggml_threadpool));
 {
-threadpool->cgraph           = cgraph;
-threadpool->cplan            = cplan;
-threadpool->n_graph          = 0;
-threadpool->n_barrier        = 0;
+threadpool->cgraph = cgraph;
+threadpool->cplan = cplan;
+threadpool->n_graph = 0;
+threadpool->n_barrier = 0;
 threadpool->n_barrier_passed = 0;
-threadpool->current_chunk    = 0;
-threadpool->stop             = false;
-threadpool->pause            = tpp->paused;
-threadpool->abort            = -1;
-threadpool->workers          = NULL;
-threadpool->n_threads_max    = tpp->n_threads;
-threadpool->n_threads_cur    = tpp->n_threads;
-threadpool->poll             = tpp->poll;
-threadpool->prio             = tpp->prio;
-threadpool->ec               = GGML_STATUS_SUCCESS;
+threadpool->current_chunk = 0;
+threadpool->stop = false;
+threadpool->pause = tpp->paused;
+threadpool->abort = -1;
+threadpool->workers = NULL;
+threadpool->n_threads_max = tpp->n_threads;
+threadpool->n_threads_cur = tpp->n_threads;
+threadpool->poll = tpp->poll;
+threadpool->prio = tpp->prio;
+threadpool->ec = GGML_STATUS_SUCCESS;
 }
 const size_t workers_size = sizeof(struct ggml_compute_state) * tpp->n_threads;
 struct ggml_compute_state * workers = ggml_aligned_malloc(workers_size);
 memset(workers, 0, workers_size);
 for (int j = 0; j < tpp->n_threads; j++) {
 workers[j].threadpool = threadpool;
-workers[j].ith        = j;
+workers[j].ith = j;
 }
 threadpool->workers = workers;
 #ifndef GGML_USE_OPENMP
@@ -2560,7 +2560,7 @@ ggml_cpu_init();
 GGML_ASSERT(cplan);
 GGML_ASSERT(cplan->n_threads > 0);
 GGML_ASSERT(cplan->work_size == 0 || cplan->work_data != NULL);
-int n_threads                               = cplan->n_threads;
+int n_threads = cplan->n_threads;
 struct ggml_threadpool * threadpool = cplan->threadpool;
 bool disposable_threadpool = false;
 if (threadpool == NULL) {
@@ -2568,11 +2568,11 @@ disposable_threadpool = true;
 struct ggml_threadpool_params ttp = ggml_threadpool_params_default(n_threads);
 threadpool = ggml_threadpool_new_impl(&ttp, cgraph, cplan);
 } else {
-threadpool->cgraph           = cgraph;
-threadpool->cplan            = cplan;
-threadpool->current_chunk    = 0;
-threadpool->abort            = -1;
-threadpool->ec               = GGML_STATUS_SUCCESS;
+threadpool->cgraph = cgraph;
+threadpool->cplan = cplan;
+threadpool->current_chunk = 0;
+threadpool->abort = -1;
+threadpool->ec = GGML_STATUS_SUCCESS;
 }
 #ifdef GGML_USE_OPENMP
 if (n_threads > 1) {

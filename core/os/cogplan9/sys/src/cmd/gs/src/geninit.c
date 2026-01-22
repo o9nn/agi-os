@@ -35,7 +35,7 @@ fin = arg_v[1], fconfig = arg_v[2], fout = arg_v[4], to_c = true;
 else {
 fprintf(stderr, "\
 Usage: geninit [-(I|i) lib/] gs_init.ps gconfig.h gs_xinit.ps\n\
-or     geninit [-(I|i) lib/] gs_init.ps gconfig.h -c gs_init.c\n");
+or geninit [-(I|i) lib/] gs_init.ps gconfig.h -c gs_init.c\n");
 exit(1);
 }
 in = prefix_open(prefix, fin);

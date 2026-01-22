@@ -11,8 +11,8 @@
 #include <html.h>
 #include "dat.h"
 #include "fns.h"
-Image	*tagcols[NCOL];
-Image	*textcols[NCOL];
+Image *tagcols[NCOL];
+Image *textcols[NCOL];
 void
 textinit(Text *t, Image *b, Rectangle r, Font *f, Image *cols[NCOL])
 {
@@ -263,10 +263,10 @@ textsetselect(t, t->q0+nr, t->q0+nr);
 if(t->what == Textarea)
 textscrdraw(t);
 }
-static	Text	*clicktext;
-static	uint	clickmsec;
-static	Text	*selecttext;
-static	uint	selectq;
+static Text *clicktext;
+static uint clickmsec;
+static Text *selecttext;
+static uint selectq;
 void
 framescroll(Frame *f, int dl)
 {
@@ -594,10 +594,10 @@ int h;
 h = (textselect23(t, q0, q1, but3col, 1|2) == 0);
 return h;
 }
-static Rune left1[] =  { L'{', L'[', L'(', L'<', L'«', 0 };
+static Rune left1[] = { L'{', L'[', L'(', L'<', L'«', 0 };
 static Rune right1[] = { L'}', L']', L')', L'>', L'»', 0 };
-static Rune left2[] =  { L'\n', 0 };
-static Rune left3[] =  { L'\'', L'"', L'`', 0 };
+static Rune left2[] = { L'\n', 0 };
+static Rune left3[] = { L'\'', L'"', L'`', 0 };
 static
 Rune *left[] = {
 left1,

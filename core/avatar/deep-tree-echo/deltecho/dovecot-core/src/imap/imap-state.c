@@ -15,13 +15,13 @@
 #include "imap-search-args.h"
 #include "imap-state.h"
 enum imap_state_type_public {
-IMAP_STATE_TYPE_MAILBOX			= 'B',
-IMAP_STATE_TYPE_ENABLED_FEATURE		= 'F',
-IMAP_STATE_TYPE_SEARCHRES		= '1',
+IMAP_STATE_TYPE_MAILBOX = 'B',
+IMAP_STATE_TYPE_ENABLED_FEATURE = 'F',
+IMAP_STATE_TYPE_SEARCHRES = '1',
 };
 enum imap_state_type_internal {
-IMAP_STATE_TYPE_ID_LOGGED		= 'I',
-IMAP_STATE_TYPE_TLS_COMPRESSION		= 'C',
+IMAP_STATE_TYPE_ID_LOGGED = 'I',
+IMAP_STATE_TYPE_TLS_COMPRESSION = 'C',
 };
 struct mailbox_import_state {
 const char *vname;

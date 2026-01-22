@@ -49,7 +49,7 @@ assert(nlines > 0, "unknown command");
 (n, toks) := sys->tokenize(hd lines, " ");
 assert(n > 0, "unknown command");
 case hd toks {
-"new" =>			# new parent visibility\nvisibility attr val\nvisibility attr val...
+"new" => # new parent visibility\nvisibility attr val\nvisibility attr val...
 assert(n == 3, Eusage);
 setattrs(clique.newobject(obj(int hd tl toks), int hd tl tl toks), tl lines);
 "deck" =>
@@ -75,20 +75,20 @@ for (; start < end; start++)
 flip(o.children[start]);
 } else
 flip(o);
-"set" =>			# set objid attr val
+"set" => # set objid attr val
 assert(n == 4, Eusage);
 obj(int hd tl toks).setattr(hd tl tl toks, hd tl tl tl toks, ~0);
-"vis" =>			# vis objid flags
+"vis" => # vis objid flags
 assert(n == 3, Eusage);
 obj(int hd tl toks).setvisibility(int hd tl tl toks);
-"attrvis" =>		# attrvis objid attr flags
+"attrvis" => # attrvis objid attr flags
 assert(n == 4, Eusage);
 o := obj(int hd tl toks);
 name := hd tl tl toks;
 attr := o.attrs.get(name);
 assert(attr != nil, "attribute not found");
 o.setattrvisibility(name, int hd tl tl tl toks);
-"show" =>			# show [memberid]
+"show" => # show [memberid]
 p: ref Member = nil;
 if (n == 2) {
 memberid := int hd tl toks;
@@ -96,10 +96,10 @@ p = clique.member(memberid);
 assert(p != nil, "bad memberid");
 }
 clique.show(p);
-"del" or "delete" =>			# del obj
+"del" or "delete" => # del obj
 assert(n == 2, Eusage);
 obj(int hd tl toks).delete();
-"tx" =>					# tx src from to dest [index]
+"tx" => # tx src from to dest [index]
 assert(n == 5 || n == 6, Eusage);
 src, dest: ref Object;
 r: Range;

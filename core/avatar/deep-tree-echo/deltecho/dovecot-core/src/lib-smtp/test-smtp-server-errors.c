@@ -929,7 +929,7 @@ struct istream *payload_input;
 struct io *io;
 };
 static void
-test_server_big_data_trans_free(void *conn_ctx  ATTR_UNUSED,
+test_server_big_data_trans_free(void *conn_ctx ATTR_UNUSED,
 struct smtp_server_transaction *trans)
 {
 struct _big_data *ctx = (struct _big_data *)trans->context;
@@ -967,7 +967,7 @@ struct smtp_server_cmd_ctx *cmd,
 struct smtp_server_transaction *trans)
 {
 static const size_t max_size = 32;
-struct _big_data *ctx =	(struct _big_data *)trans->context;
+struct _big_data *ctx = (struct _big_data *)trans->context;
 const unsigned char *data;
 size_t size;
 int ret;
@@ -2221,7 +2221,7 @@ test_client_run(index);
 }
 static void
 test_server_data_no_rcpt_trans_free(
-void *conn_ctx  ATTR_UNUSED,
+void *conn_ctx ATTR_UNUSED,
 struct smtp_server_transaction *trans ATTR_UNUSED)
 {
 io_loop_stop(ioloop);
@@ -2287,7 +2287,7 @@ test_client_run(index);
 }
 static void
 test_server_bad_pipelined_data_trans_free(
-void *conn_ctx  ATTR_UNUSED,
+void *conn_ctx ATTR_UNUSED,
 struct smtp_server_transaction *trans ATTR_UNUSED)
 {
 io_loop_stop(ioloop);
@@ -2450,7 +2450,7 @@ test_client_run(index);
 }
 static void
 test_server_data_binarymime_trans_free(
-void *conn_ctx  ATTR_UNUSED,
+void *conn_ctx ATTR_UNUSED,
 struct smtp_server_transaction *trans ATTR_UNUSED)
 {
 io_loop_stop(ioloop);

@@ -24,12 +24,12 @@ if base_order < 1 || base_order >= length(A000081_SEQUENCE)
 error("base_order must be between 1 and $(length(A000081_SEQUENCE)-1)")
 end
 # Get A000081 values
-a_n = A000081_SEQUENCE[base_order + 1]  # +1 because sequence starts at n=0
+a_n = A000081_SEQUENCE[base_order + 1] # +1 because sequence starts at n=0
 a_n_plus_1 = A000081_SEQUENCE[base_order + 2]
 # Derive parameters
 return (
 # Reservoir parameters
-reservoir_size = sum(A000081_SEQUENCE[2:(base_order+1)]),  # Skip first 0
+reservoir_size = sum(A000081_SEQUENCE[2:(base_order+1)]), # Skip first 0
 num_reservoirs = a_n,
 # Learning rates
 learning_rate = 1.0 / a_n,
@@ -54,7 +54,7 @@ function get_a000081_value(n::Int)
 if n < 0 || n >= length(A000081_SEQUENCE)
 error("Index $n out of bounds for A000081 sequence")
 end
-return A000081_SEQUENCE[n + 1]  # +1 for 0-indexing
+return A000081_SEQUENCE[n + 1] # +1 for 0-indexing
 end
 """
 cumulative_a000081(n::Int)

@@ -1,8 +1,8 @@
 #ifndef gxdevbuf_INCLUDED
-#  define gxdevbuf_INCLUDED
+# define gxdevbuf_INCLUDED
 #include "gxrplane.h"
 #ifndef gx_device_DEFINED
-#  define gx_device_DEFINED
+# define gx_device_DEFINED
 typedef struct gx_device_s gx_device;
 #endif
 typedef struct gx_device_buf_space_s {

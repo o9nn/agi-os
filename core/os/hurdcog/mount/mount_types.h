@@ -1,4 +1,4 @@
-#define MOUNT_READ  0x1
+#define MOUNT_READ 0x1
 #define MOUNT_WRITE 0x2
 #define MOUNT_FORCE 0x4
 enum mount_state

@@ -1,27 +1,27 @@
 import { GLOB_MARKDOWN_CODE, GLOB_TESTS } from '@antfu/eslint-config'
 import { defineConfig } from '@importantimport/eslint-config'
 export default defineConfig({
-  typescript: { tsconfigPath: './tsconfig.json' },
+typescript: { tsconfigPath: './tsconfig.json' },
 }, [{
-  ignores: [
-    'docs/components/ui*.tsx',
-  ],
+ignores: [
+'docs/components/ui*.tsx',
+],
 }, {
-  rules: {
-    '@masknet/no-default-error': 'off',
-    '@masknet/no-then': 'off',
-    'sonarjs/fixme-tag': 'warn',
-    'sonarjs/todo-tag': 'warn',
-  },
+rules: {
+'@masknet/no-default-error': 'off',
+'@masknet/no-then': 'off',
+'sonarjs/fixme-tag': 'warn',
+'sonarjs/todo-tag': 'warn',
+},
 }, {
-  files: [...GLOB_TESTS, GLOB_MARKDOWN_CODE],
-  rules: {
-    '@masknet/no-top-level': 'off',
-    '@masknet/unicode-specific-set': 'off',
-  },
+files: [...GLOB_TESTS, GLOB_MARKDOWN_CODE],
+rules: {
+'@masknet/no-top-level': 'off',
+'@masknet/unicode-specific-set': 'off',
+},
 }, {
-  ignores: [
-    'cspell.config.yaml',
-    'cspell.config.yml',
-  ],
+ignores: [
+'cspell.config.yaml',
+'cspell.config.yml',
+],
 }])

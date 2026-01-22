@@ -1,26 +1,26 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"ureg.h"
-#include	"io.h"
-#include	<tos.h>
-#include	"../port/error.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "ureg.h"
+#include "io.h"
+#include <tos.h>
+#include "../port/error.h"
 #define setstatus(v)
 typedef struct Handler Handler;
 struct Handler {
-void	(*handler)(void *);
-void	*arg;
-Handler	*next;
-ulong	intrs;
+void (*handler)(void *);
+void *arg;
+Handler *next;
+ulong intrs;
 };
 ulong offintrs;
 ulong intrcauses[ILmax+1];
-int	intr(Ureg*);
-void	kernfault(Ureg*, int);
-void	noted(Ureg*, Ureg**, ulong);
-void	rfnote(Ureg**);
+int intr(Ureg*);
+void kernfault(Ureg*, int);
+void noted(Ureg*, Ureg**, ulong);
+void rfnote(Ureg**);
 char *excname[] =
 {
 "trap: external interrupt",
@@ -64,50 +64,50 @@ char *fpcause[] =
 "division by zero",
 "invalid operation",
 };
-char	*fpexcname(Ureg*, ulong, char*, uint);
-#define FPEXPMASK	(0x3f<<12)
+char *fpexcname(Ureg*, ulong, char*, uint);
+#define FPEXPMASK (0x3f<<12)
 struct {
-char	*name;
-uint	off;
+char *name;
+uint off;
 } regname[] = {
 "STATUS", Ureg_status,
-"PC",	Ureg_pc,
-"SP",	Ureg_sp,
+"PC", Ureg_pc,
+"SP", Ureg_sp,
 "CAUSE",Ureg_cause,
 "BADADDR", Ureg_badvaddr,
 "TLBVIRT", Ureg_tlbvirt,
-"HI",	Ureg_hi,
-"LO",	Ureg_lo,
-"R31",	Ureg_r31,
-"R30",	Ureg_r30,
-"R28",	Ureg_r28,
-"R27",	Ureg_r27,
-"R26",	Ureg_r26,
-"R25",	Ureg_r25,
-"R24",	Ureg_r24,
-"R23",	Ureg_r23,
-"R22",	Ureg_r22,
-"R21",	Ureg_r21,
-"R20",	Ureg_r20,
-"R19",	Ureg_r19,
-"R18",	Ureg_r18,
-"R17",	Ureg_r17,
-"R16",	Ureg_r16,
-"R15",	Ureg_r15,
-"R14",	Ureg_r14,
-"R13",	Ureg_r13,
-"R12",	Ureg_r12,
-"R11",	Ureg_r11,
-"R10",	Ureg_r10,
-"R9",	Ureg_r9,
-"R8",	Ureg_r8,
-"R7",	Ureg_r7,
-"R6",	Ureg_r6,
-"R5",	Ureg_r5,
-"R4",	Ureg_r4,
-"R3",	Ureg_r3,
-"R2",	Ureg_r2,
-"R1",	Ureg_r1,
+"HI", Ureg_hi,
+"LO", Ureg_lo,
+"R31", Ureg_r31,
+"R30", Ureg_r30,
+"R28", Ureg_r28,
+"R27", Ureg_r27,
+"R26", Ureg_r26,
+"R25", Ureg_r25,
+"R24", Ureg_r24,
+"R23", Ureg_r23,
+"R22", Ureg_r22,
+"R21", Ureg_r21,
+"R20", Ureg_r20,
+"R19", Ureg_r19,
+"R18", Ureg_r18,
+"R17", Ureg_r17,
+"R16", Ureg_r16,
+"R15", Ureg_r15,
+"R14", Ureg_r14,
+"R13", Ureg_r13,
+"R12", Ureg_r12,
+"R11", Ureg_r11,
+"R10", Ureg_r10,
+"R9", Ureg_r9,
+"R8", Ureg_r8,
+"R7", Ureg_r7,
+"R6", Ureg_r6,
+"R5", Ureg_r5,
+"R4", Ureg_r4,
+"R3", Ureg_r3,
+"R2", Ureg_r2,
+"R1", Ureg_r1,
 };
 static Lock intrlock;
 static Handler handlers[ILmax+1];
@@ -305,7 +305,7 @@ if(fpchk) {
 fpfcr31 = up->fpsave.fpstatus;
 if((fpfcr31>>12) & ((fpfcr31>>7)|0x20) & 0x3f) {
 spllo();
-fpexcep	= fpexcname(ur, fpfcr31, buf1, sizeof buf1);
+fpexcep = fpexcname(ur, fpfcr31, buf1, sizeof buf1);
 snprint(buf, sizeof buf, "sys: fp: %s", fpexcep);
 postnote(up, 1, buf, NDebug);
 }
@@ -535,7 +535,7 @@ else
 print("registers for kernel\n");
 for(i = 0; i < nelem(regname); i += 2)
 print("%s\t%#.8lux\t%s\t%#.8lux\n",
-regname[i].name,   R(ur, i),
+regname[i].name, R(ur, i),
 regname[i+1].name, R(ur, i+1));
 }
 int

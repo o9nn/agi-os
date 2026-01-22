@@ -18,7 +18,7 @@ if (ix < 0x40360000) {
 t = __ieee754_exp(fabs(x));
 return half*t+half/t;
 }
-if (ix < 0x40862E42)  return half*__ieee754_exp(fabs(x));
+if (ix < 0x40862E42) return half*__ieee754_exp(fabs(x));
 lx = *( (((*(unsigned*)&one)>>29)) + (unsigned*)&x);
 if (ix<0x408633CE ||
 (ix==0x408633ce)&&(lx<=(unsigned)0x8fb9f87d)) {

@@ -1,7 +1,7 @@
 #ifndef XEN_HYPCALL_H
 #define XEN_HYPCALL_H
-#ifdef	MACH_XEN
-#ifndef	__ASSEMBLER__
+#ifdef MACH_XEN
+#ifndef __ASSEMBLER__
 #include <kern/macros.h>
 #include <kern/printf.h>
 #include <mach/machine/vm_types.h>
@@ -146,11 +146,11 @@ return count;
 _hypcall2(long, set_gdt, vm_offset_t , frame_list, unsigned int, entries)
 _hypcall2(long, stack_switch, unsigned long, ss, unsigned long, esp);
 #ifdef __i386__
-_hypcall4(long, set_callbacks,  unsigned long, es,  void *, ea,
+_hypcall4(long, set_callbacks, unsigned long, es, void *, ea,
 unsigned long, fss, void *, fsa);
 #endif
 #ifdef __x86_64__
-_hypcall3(long, set_callbacks,  void *, ea, void *, fsa, void *, sc);
+_hypcall3(long, set_callbacks, void *, ea, void *, fsa, void *, sc);
 #endif
 _hypcall1(long, fpu_taskswitch, int, set);
 #ifdef PAE
@@ -203,7 +203,7 @@ unsigned long mfn = pfn_to_mfn(pfn);
 #ifdef MACH_PV_PAGETABLES
 if (hyp_do_update_va_mapping(kvtolin(va), 0, UVMF_INVLPG|UVMF_ALL))
 panic("couldn't clear page %lu at %p\n", pfn, va);
-#ifdef  MACH_PSEUDO_PHYS
+#ifdef MACH_PSEUDO_PHYS
 mfn_list[pfn] = ~0;
 #endif
 #endif
@@ -278,7 +278,7 @@ evtchn_op_t op = {
 return hyp_event_channel_op(kvtolin(&op));
 }
 static inline evtchn_port_t hyp_event_channel_alloc(domid_t domid) {
-evtchn_op_t op  = {
+evtchn_op_t op = {
 .cmd = EVTCHNOP_alloc_unbound,
 .u.alloc_unbound.dom = DOMID_SELF,
 .u.alloc_unbound.remote_dom = domid,

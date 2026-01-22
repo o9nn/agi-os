@@ -104,7 +104,7 @@ cpuidex(cpui.data(), i, 0);
 data.push_back(cpui);
 }
 char vendor[0x20] = {};
-*reinterpret_cast<int *>(vendor)     = data[0][1];
+*reinterpret_cast<int *>(vendor) = data[0][1];
 *reinterpret_cast<int *>(vendor + 4) = data[0][3];
 *reinterpret_cast<int *>(vendor + 8) = data[0][2];
 this->vendor = vendor;

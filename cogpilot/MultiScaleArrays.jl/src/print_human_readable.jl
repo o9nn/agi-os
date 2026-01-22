@@ -52,20 +52,20 @@ end
 """
 ```julia
 print_human_readable(embryo)
-# +|Tissue;                                                 |Tissue
-#  +|Popula;           |Popula;           |Popula;          +|Popula;           |Popula;           |Popula
-#   +Cell; Cell; Cell; +Cell; Cell; Cell; +Cell; Cell; Cell; +Cell; Cell; Cell; +Cell; Cell; Cell; +Cell; Cell; Cell
+# +|Tissue; |Tissue
+# +|Popula; |Popula; |Popula; +|Popula; |Popula; |Popula
+# +Cell; Cell; Cell; +Cell; Cell; Cell; +Cell; Cell; Cell; +Cell; Cell; Cell; +Cell; Cell; Cell; +Cell; Cell; Cell
 print_human_readable(embryo; NcharPerName = 2)
-# +|Ti;                                   |Ti
-#  +|Po;         |Po;         |Po;        +|Po;         |Po;         |Po
-#   +Ce; Ce; Ce; +Ce; Ce; Ce; +Ce; Ce; Ce; +Ce; Ce; Ce; +Ce; Ce; Ce; +Ce; Ce; Ce
+# +|Ti; |Ti
+# +|Po; |Po; |Po; +|Po; |Po; |Po
+# +Ce; Ce; Ce; +Ce; Ce; Ce; +Ce; Ce; Ce; +Ce; Ce; Ce; +Ce; Ce; Ce; +Ce; Ce; Ce
 ```
 Here, if the 'AbstractMultiScaleArrayLeaf's contain several fields, you can specify them with fields = [field1,field2,...]
 ```julia
 print_human_readable(embryo; NcharPerName = 2, fields = [:values])
-# +|Ti;                                                                                                                                                                             |Ti
-#  +|Po;                                                       |Po;                                                       |Po;                                                      +|Po;                                                       |Po;                                                       |Po
-#   +va: [1.0, 2.0, 3.0]; va: [3.0, 2.0, 5.0]; va: [4.0, 6.0]; +va: [1.0, 2.0, 3.0]; va: [3.0, 2.0, 5.0]; va: [4.0, 6.0]; +va: [1.0, 2.0, 3.0]; va: [3.0, 2.0, 5.0]; va: [4.0, 6.0]; +va: [1.0, 2.0, 3.0]; va: [3.0, 2.0, 5.0]; va: [4.0, 6.0]; +va: [1.0, 2.0, 3.0]; va: [3.0, 2.0, 5.0]; va: [4.0, 6.0]; +va: [1.0, 2.0, 3.0]; va: [3.0, 2.0, 5.0]; va: [4.0, 6.0]
+# +|Ti; |Ti
+# +|Po; |Po; |Po; +|Po; |Po; |Po
+# +va: [1.0, 2.0, 3.0]; va: [3.0, 2.0, 5.0]; va: [4.0, 6.0]; +va: [1.0, 2.0, 3.0]; va: [3.0, 2.0, 5.0]; va: [4.0, 6.0]; +va: [1.0, 2.0, 3.0]; va: [3.0, 2.0, 5.0]; va: [4.0, 6.0]; +va: [1.0, 2.0, 3.0]; va: [3.0, 2.0, 5.0]; va: [4.0, 6.0]; +va: [1.0, 2.0, 3.0]; va: [3.0, 2.0, 5.0]; va: [4.0, 6.0]; +va: [1.0, 2.0, 3.0]; va: [3.0, 2.0, 5.0]; va: [4.0, 6.0]
 ```
 if your screen is small, then print a sub-part of the AbstractMultiScaleArray:
 ```julia
@@ -75,13 +75,13 @@ print_human_readable(embryo.nodes[1].nodes[1]; fields = [:values])
 """
 function print_human_readable(X::AbstractMultiScaleArray; n_char_per_name = 6,
 fields = nothing, levelmax = Inf, n_item_max_per_levels = Inf) # fields = nothing OR [field1,field2,...]
-#     if X isa AbstractMultiScaleArrayLeaf
-#         println(X)
-#     else
+# if X isa AbstractMultiScaleArrayLeaf
+# println(X)
+# else
 toprint = Vector{Vector{String}}([[]]) # one vector per row, one string per element
 toprint_AbstractMultiScaleArray!(toprint, X, fields, levelmax, n_char_per_name)
 toprint = map(x -> join(x, "; "), toprint)
-#     toprint[1] = join(split(toprint[1]," "),"; ")
+# toprint[1] = join(split(toprint[1]," "),"; ")
 Done = false
 while !Done
 Done = true # temporary
@@ -107,7 +107,7 @@ toprint[level1] = toprint1_
 end
 end
 # handle "ula; +         |Popu" cases
-#              ^^^^^^^^^^^
+# ^^^^^^^^^^^
 for level in length(toprint):-1:1
 while occursin("+ ", toprint[level])
 Move = findfirst("+ ", toprint[level])[1]
@@ -129,5 +129,5 @@ end
 end
 end
 println(join(toprint, "\n"))
-#     end
+# end
 end

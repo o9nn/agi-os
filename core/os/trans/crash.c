@@ -32,8 +32,8 @@ crash_suspend,
 crash_kill,
 crash_corefile
 };
-#define CRASH_DEFAULT		crash_suspend
-#define CRASH_ORPHANS_DEFAULT	crash_corefile
+#define CRASH_DEFAULT crash_suspend
+#define CRASH_ORPHANS_DEFAULT crash_corefile
 static enum crash_action crash_how, crash_orphans_how;
 static char *corefile_template;
 pthread_mutex_t corefile_template_lock = PTHREAD_MUTEX_INITIALIZER;
@@ -407,13 +407,13 @@ ports_enable_class (trivfs_control_class);
 static const struct argp_option options[] =
 {
 {0,0,0,0,"These options specify the disposition of a crashing process:", 1},
-{"action",	'a', "ACTION",	0, "Action taken on crashing processes", 1},
+{"action", 'a', "ACTION", 0, "Action taken on crashing processes", 1},
 {"orphan-action", 'O', "ACTION", 0, "Action taken on crashing orphans", 1},
 {0,0,0,0,"These options are synonyms for --action=OPTION:", 2},
-{"suspend",	's', 0,		0, "Suspend the process", 2},
-{"kill",	'k', 0,		0, "Kill the process", 2},
-{"core-file", 'c', 0,		0, "Dump a core file", 2},
-{"dump-core",   0, 0,		OPTION_ALIAS },
+{"suspend", 's', 0, 0, "Suspend the process", 2},
+{"kill", 'k', 0, 0, "Kill the process", 2},
+{"core-file", 'c', 0, 0, "Dump a core file", 2},
+{"dump-core", 0, 0, OPTION_ALIAS },
 {"core-file-name", 'C', "TEMPLATE", 0,
 "Specify core file name (see below)", 2},
 {0}
@@ -463,9 +463,9 @@ case 'a':
 return parse_action (&crash_how);
 case 'O':
 return parse_action (&crash_orphans_how);
-case 's': crash_how = crash_suspend;	break;
-case 'k': crash_how = crash_kill;		break;
-case 'c': crash_how = crash_corefile;	break;
+case 's': crash_how = crash_suspend; break;
+case 'k': crash_how = crash_kill; break;
+case 'c': crash_how = crash_corefile; break;
 case 'C':
 {
 const char *errp;
@@ -509,9 +509,9 @@ error_t err;
 const char *opt;
 switch (crash_how)
 {
-case crash_suspend:		opt = "--action=suspend";	break;
-case crash_kill:		opt = "--action=kill";		break;
-case crash_corefile:	opt = "--action=core-file";	break;
+case crash_suspend: opt = "--action=suspend"; break;
+case crash_kill: opt = "--action=kill"; break;
+case crash_corefile: opt = "--action=core-file"; break;
 default:
 return EGRATUITOUS;
 }
@@ -520,9 +520,9 @@ if (!err)
 {
 switch (crash_orphans_how)
 {
-case crash_suspend:	opt = "--orphan-action=suspend";	break;
-case crash_kill:	opt = "--orphan-action=kill";		break;
-case crash_corefile:	opt = "--orphan-action=core-file";	break;
+case crash_suspend: opt = "--orphan-action=suspend"; break;
+case crash_kill: opt = "--orphan-action=kill"; break;
+case crash_corefile: opt = "--orphan-action=core-file"; break;
 default:
 return EGRATUITOUS;
 }

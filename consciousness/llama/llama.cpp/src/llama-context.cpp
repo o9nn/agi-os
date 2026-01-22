@@ -13,29 +13,29 @@ llama_context_params params) :
 model(model) {
 LLAMA_LOG_INFO("%s: constructing llama_context\n", __func__);
 t_start_us = model.t_start_us;
-t_load_us  = model.t_load_us;
+t_load_us = model.t_load_us;
 const auto & hparams = model.hparams;
-cparams.n_seq_max        = std::max(1u, params.n_seq_max);
-cparams.n_threads        = params.n_threads;
-cparams.n_threads_batch  = params.n_threads_batch;
-cparams.yarn_ext_factor  = params.yarn_ext_factor;
+cparams.n_seq_max = std::max(1u, params.n_seq_max);
+cparams.n_threads = params.n_threads;
+cparams.n_threads_batch = params.n_threads_batch;
+cparams.yarn_ext_factor = params.yarn_ext_factor;
 cparams.yarn_attn_factor = params.yarn_attn_factor;
-cparams.yarn_beta_fast   = params.yarn_beta_fast;
-cparams.yarn_beta_slow   = params.yarn_beta_slow;
-cparams.defrag_thold     = params.defrag_thold;
-cparams.embeddings       = params.embeddings;
-cparams.offload_kqv      = params.offload_kqv;
-cparams.flash_attn       = params.flash_attn;
-cparams.no_perf          = params.no_perf;
-cparams.pooling_type     = params.pooling_type;
-cparams.warmup           = false;
-cparams.n_ctx            = params.n_ctx           == 0    ? hparams.n_ctx_train           : params.n_ctx;
-cparams.rope_freq_base   = params.rope_freq_base  == 0.0f ? hparams.rope_freq_base_train  : params.rope_freq_base;
-cparams.rope_freq_scale  = params.rope_freq_scale == 0.0f ? hparams.rope_freq_scale_train : params.rope_freq_scale;
-cparams.n_ctx_orig_yarn  = params.yarn_orig_ctx    != 0 ? params.yarn_orig_ctx    :
+cparams.yarn_beta_fast = params.yarn_beta_fast;
+cparams.yarn_beta_slow = params.yarn_beta_slow;
+cparams.defrag_thold = params.defrag_thold;
+cparams.embeddings = params.embeddings;
+cparams.offload_kqv = params.offload_kqv;
+cparams.flash_attn = params.flash_attn;
+cparams.no_perf = params.no_perf;
+cparams.pooling_type = params.pooling_type;
+cparams.warmup = false;
+cparams.n_ctx = params.n_ctx == 0 ? hparams.n_ctx_train : params.n_ctx;
+cparams.rope_freq_base = params.rope_freq_base == 0.0f ? hparams.rope_freq_base_train : params.rope_freq_base;
+cparams.rope_freq_scale = params.rope_freq_scale == 0.0f ? hparams.rope_freq_scale_train : params.rope_freq_scale;
+cparams.n_ctx_orig_yarn = params.yarn_orig_ctx != 0 ? params.yarn_orig_ctx :
 hparams.n_ctx_orig_yarn != 0 ? hparams.n_ctx_orig_yarn :
 hparams.n_ctx_train;
-cparams.cb_eval           = params.cb_eval;
+cparams.cb_eval = params.cb_eval;
 cparams.cb_eval_user_data = params.cb_eval_user_data;
 auto rope_scaling_type = params.rope_scaling_type;
 if (rope_scaling_type == LLAMA_ROPE_SCALING_TYPE_UNSPECIFIED) {
@@ -68,15 +68,15 @@ cparams.n_batch = GGML_KQ_MASK_PAD;
 cparams.n_ubatch = std::min(cparams.n_batch, params.n_ubatch == 0 ? params.n_batch : params.n_ubatch);
 cparams.op_offload = params.op_offload;
 const uint32_t n_ctx_per_seq = cparams.n_ctx / cparams.n_seq_max;
-LLAMA_LOG_INFO("%s: n_seq_max     = %u\n",   __func__, cparams.n_seq_max);
-LLAMA_LOG_INFO("%s: n_ctx         = %u\n",   __func__, cparams.n_ctx);
-LLAMA_LOG_INFO("%s: n_ctx_per_seq = %u\n",   __func__, n_ctx_per_seq);
-LLAMA_LOG_INFO("%s: n_batch       = %u\n",   __func__, cparams.n_batch);
-LLAMA_LOG_INFO("%s: n_ubatch      = %u\n",   __func__, cparams.n_ubatch);
-LLAMA_LOG_INFO("%s: causal_attn   = %d\n",   __func__, cparams.causal_attn);
-LLAMA_LOG_INFO("%s: flash_attn    = %d\n",   __func__, cparams.flash_attn);
+LLAMA_LOG_INFO("%s: n_seq_max     = %u\n", __func__, cparams.n_seq_max);
+LLAMA_LOG_INFO("%s: n_ctx         = %u\n", __func__, cparams.n_ctx);
+LLAMA_LOG_INFO("%s: n_ctx_per_seq = %u\n", __func__, n_ctx_per_seq);
+LLAMA_LOG_INFO("%s: n_batch       = %u\n", __func__, cparams.n_batch);
+LLAMA_LOG_INFO("%s: n_ubatch      = %u\n", __func__, cparams.n_ubatch);
+LLAMA_LOG_INFO("%s: causal_attn   = %d\n", __func__, cparams.causal_attn);
+LLAMA_LOG_INFO("%s: flash_attn    = %d\n", __func__, cparams.flash_attn);
 LLAMA_LOG_INFO("%s: freq_base     = %.1f\n", __func__, cparams.rope_freq_base);
-LLAMA_LOG_INFO("%s: freq_scale    = %g\n",   __func__, cparams.rope_freq_scale);
+LLAMA_LOG_INFO("%s: freq_scale    = %g\n", __func__, cparams.rope_freq_scale);
 if (n_ctx_per_seq < hparams.n_ctx_train) {
 LLAMA_LOG_WARN("%s: n_ctx_per_seq (%u) < n_ctx_train (%u) -- the full capacity of the model will not be utilized\n",
 __func__, n_ctx_per_seq, hparams.n_ctx_train);
@@ -124,7 +124,7 @@ if ((uint32_t) output_reserve(params.n_seq_max) < params.n_seq_max) {
 throw std::runtime_error("failed to reserve initial output buffer");
 }
 LLAMA_LOG_INFO("%s: %10s  output buffer size = %8.2f MiB\n", __func__,
-ggml_backend_buffer_name    (buf_output.get()),
+ggml_backend_buffer_name (buf_output.get()),
 ggml_backend_buffer_get_size(buf_output.get()) / 1024.0 / 1024.0);
 }
 }
@@ -189,9 +189,9 @@ llama_token token = model.vocab.token_bos();
 const auto n_outputs_save = n_outputs;
 LLAMA_LOG_DEBUG("%s: worst-case: n_tokens = %d, n_seqs = %d, n_outputs = %d\n", __func__, n_tokens, n_seqs, n_outputs);
 int n_splits_pp = -1;
-int n_nodes_pp  = -1;
+int n_nodes_pp = -1;
 int n_splits_tg = -1;
-int n_nodes_tg  = -1;
+int n_nodes_tg = -1;
 llama_kv_cache * kv_self = static_cast<llama_kv_cache *>(memory.get());
 kv_self->set_full();
 cross.v_embd.clear();
@@ -205,7 +205,7 @@ if (!ggml_backend_sched_reserve(sched.get(), gf)) {
 throw std::runtime_error("failed to allocate compute pp buffers");
 }
 n_splits_pp = ggml_backend_sched_get_n_splits(sched.get());
-n_nodes_pp  = ggml_graph_n_nodes(gf);
+n_nodes_pp = ggml_graph_n_nodes(gf);
 }
 {
 llama_ubatch ubatch_tg = { true, 1, 1, n_seqs, &token, nullptr, nullptr, nullptr, nullptr, nullptr};
@@ -217,7 +217,7 @@ if (!ggml_backend_sched_reserve(sched.get(), gf)) {
 throw std::runtime_error("failed to allocate compute tg buffers");
 }
 n_splits_tg = ggml_backend_sched_get_n_splits(sched.get());
-n_nodes_tg  = ggml_graph_n_nodes(gf);
+n_nodes_tg = ggml_graph_n_nodes(gf);
 }
 {
 llama_ubatch ubatch_pp = { true, n_tokens, n_tokens / n_seqs, n_seqs, &token, nullptr, nullptr, nullptr, nullptr, nullptr};
@@ -231,8 +231,8 @@ throw std::runtime_error("failed to allocate compute pp buffers");
 }
 n_outputs = n_outputs_save;
 for (size_t i = 0; i < backend_ptrs.size(); ++i) {
-ggml_backend_t             backend = backend_ptrs[i];
-ggml_backend_buffer_type_t buft    = backend_buft[i];
+ggml_backend_t backend = backend_ptrs[i];
+ggml_backend_buffer_type_t buft = backend_buft[i];
 size_t size = ggml_backend_sched_get_buffer_size(sched.get(), backend);
 if (size > 1) {
 LLAMA_LOG_INFO("%s: %10s compute buffer size = %8.2f MiB\n", __func__,
@@ -419,22 +419,22 @@ void llama_context::attach_threadpool(
 ggml_threadpool_t threadpool,
 ggml_threadpool_t threadpool_batch) {
 LLAMA_LOG_DEBUG("%s: call\n", __func__);
-this->threadpool       = threadpool;
+this->threadpool = threadpool;
 this->threadpool_batch = threadpool_batch ? threadpool_batch : threadpool;
 }
 void llama_context::detach_threadpool() {
 LLAMA_LOG_DEBUG("%s: call\n", __func__);
-this->threadpool       = nullptr;
+this->threadpool = nullptr;
 this->threadpool_batch = nullptr;
 }
 void llama_context::set_n_threads(int32_t n_threads, int32_t n_threads_batch) {
 LLAMA_LOG_DEBUG("%s: n_threads = %d, n_threads_batch = %d\n", __func__, n_threads, n_threads_batch);
-cparams.n_threads       = n_threads;
+cparams.n_threads = n_threads;
 cparams.n_threads_batch = n_threads_batch;
 }
 void llama_context::set_abort_callback(bool (*abort_callback)(void * data), void * abort_callback_data) {
 LLAMA_LOG_DEBUG("%s: call\n", __func__);
-this->abort_callback      = abort_callback;
+this->abort_callback = abort_callback;
 this->abort_callback_data = abort_callback_data;
 for (auto & backend : backends) {
 auto * reg = ggml_backend_dev_backend_reg(ggml_backend_get_device(backend.get()));
@@ -478,10 +478,10 @@ loras.clear();
 }
 bool llama_context::apply_adapter_cvec(
 const float * data,
-size_t   len,
-int32_t   n_embd,
-int32_t   il_start,
-int32_t   il_end) {
+size_t len,
+int32_t n_embd,
+int32_t il_start,
+int32_t il_end) {
 LLAMA_LOG_DEBUG("%s: il_start = %d, il_end = %d\n", __func__, il_start, il_end);
 return cvec.apply(model, data, len, n_embd, il_start, il_end);
 }
@@ -510,7 +510,7 @@ t_compute_start_us = ggml_time_us();
 embd_seq.clear();
 n_queued_tokens += n_tokens;
 const int64_t n_embd = hparams.n_embd;
-llama_sbatch sbatch = llama_sbatch(batch, n_embd,  true,  true);
+llama_sbatch sbatch = llama_sbatch(batch, n_embd, true, true);
 const llama_ubatch ubatch = sbatch.split_simple(n_tokens);
 if (output_reserve(n_tokens) < n_tokens) {
 LLAMA_LOG_ERROR("%s: could not reserve space for batch with %u outputs\n", __func__, n_tokens);
@@ -590,7 +590,7 @@ ggml_backend_sched_reset(sched.get());
 if (model.arch == LLM_ARCH_T5 && t_embd) {
 synchronize();
 cross.n_embd = t_embd->ne[0];
-cross.n_enc  = t_embd->ne[1];
+cross.n_enc = t_embd->ne[1];
 cross.v_embd.resize(cross.n_embd*cross.n_enc);
 memcpy(cross.v_embd.data(), embd, ggml_nbytes(t_embd));
 cross.seq_ids_enc.resize(n_tokens);
@@ -616,11 +616,11 @@ return -1;
 llama_kv_cache * kv_self = static_cast<llama_kv_cache *>(memory.get());
 llama_batch_allocr batch_allocr(inp_batch, inp_batch.pos ? -1 : kv_self->get_pos_max() + 1);
 const llama_batch & batch = batch_allocr.batch;
-const auto & vocab   = model.vocab;
+const auto & vocab = model.vocab;
 const auto & hparams = model.hparams;
 const int32_t n_vocab = vocab.n_tokens();
 const int64_t n_tokens_all = batch.n_tokens;
-const int64_t n_embd       = hparams.n_embd;
+const int64_t n_embd = hparams.n_embd;
 llama_kv_cache_guard kv_guard(kv_self);
 GGML_ASSERT((!batch.token && batch.embd) || (batch.token && !batch.embd));
 if (batch.token) {
@@ -649,7 +649,7 @@ n_outputs_all = n_tokens_all;
 } else {
 n_outputs_all = 1;
 }
-llama_sbatch sbatch = kv_self->sbatch_init(batch,  n_outputs_all == n_tokens_all);
+llama_sbatch sbatch = kv_self->sbatch_init(batch, n_outputs_all == n_tokens_all);
 if (output_reserve(n_outputs_all) < n_outputs_all) {
 LLAMA_LOG_ERROR("%s: could not reserve space for batch with %" PRId64 " outputs\n", __func__, n_outputs_all);
 return -2;
@@ -697,7 +697,7 @@ return -3;
 }
 }
 auto * t_logits = cparams.causal_attn ? res->get_logits() : nullptr;
-auto * t_embd   = cparams.embeddings ? res->get_embd() : nullptr;
+auto * t_embd = cparams.embeddings ? res->get_embd() : nullptr;
 if (t_embd && res->get_embd_pooled()) {
 t_embd = res->get_embd_pooled();
 }
@@ -775,7 +775,7 @@ sorted_output = false;
 }
 if (!sorted_output) {
 const uint32_t n_vocab = model.vocab.n_tokens();
-const uint32_t n_embd  = model.hparams.n_embd;
+const uint32_t n_embd = model.hparams.n_embd;
 GGML_ASSERT((size_t) n_outputs == out_ids.size());
 for (int32_t i = 0; i < n_outputs - 1; ++i) {
 int32_t j_min = i;
@@ -811,24 +811,24 @@ return 0;
 }
 int32_t llama_context::output_reserve(int32_t n_outputs) {
 const auto & hparams = model.hparams;
-const auto & vocab   = model.vocab;
+const auto & vocab = model.vocab;
 const int64_t n_outputs_max = std::max<int64_t>(n_outputs, n_seq_max());
 const auto n_batch = cparams.n_batch;
 const auto n_vocab = vocab.n_tokens();
-const auto n_embd  = hparams.n_embd;
-bool has_logits =  cparams.causal_attn;
-bool has_embd   =  cparams.embeddings && (cparams.pooling_type == LLAMA_POOLING_TYPE_NONE);
+const auto n_embd = hparams.n_embd;
+bool has_logits = cparams.causal_attn;
+bool has_embd = cparams.embeddings && (cparams.pooling_type == LLAMA_POOLING_TYPE_NONE);
 if (model.arch == LLM_ARCH_T5) {
 has_logits = true;
-has_embd   = true;
+has_embd = true;
 }
 logits_size = has_logits ? n_vocab*n_outputs_max : 0;
-embd_size   = has_embd   ?  n_embd*n_outputs_max : 0;
+embd_size = has_embd ? n_embd*n_outputs_max : 0;
 if (output_ids.empty()) {
 output_ids.resize(n_batch);
 }
 const size_t prev_size = buf_output ? ggml_backend_buffer_get_size(buf_output.get()) : 0;
-const size_t new_size  = (logits_size + embd_size) * sizeof(float);
+const size_t new_size = (logits_size + embd_size) * sizeof(float);
 if (!buf_output || prev_size < new_size) {
 if (buf_output) {
 #ifndef NDEBUG
@@ -851,10 +851,10 @@ return 0;
 }
 }
 float * output_base = (float *) ggml_backend_buffer_get_base(buf_output.get());
-logits = has_logits ? output_base               : nullptr;
-embd   = has_embd   ? output_base + logits_size : nullptr;
+logits = has_logits ? output_base : nullptr;
+embd = has_embd ? output_base + logits_size : nullptr;
 std::fill(output_ids.begin(), output_ids.end(), -1);
-this->n_outputs     = 0;
+this->n_outputs = 0;
 this->n_outputs_max = n_outputs_max;
 return n_outputs_max;
 }
@@ -894,9 +894,9 @@ graph_get_cb(),
 }
 ggml_status llama_context::graph_compute(
 ggml_cgraph * gf,
-bool   batched) {
-int n_threads        = batched ? cparams.n_threads_batch : cparams.n_threads;
-ggml_threadpool_t tp = batched ? threadpool_batch        : threadpool;
+bool batched) {
+int n_threads = batched ? cparams.n_threads_batch : cparams.n_threads;
+ggml_threadpool_t tp = batched ? threadpool_batch : threadpool;
 if (backend_cpu != nullptr) {
 auto * reg = ggml_backend_dev_backend_reg(ggml_backend_get_device(backend_cpu));
 auto * set_threadpool_fn = (decltype(ggml_backend_cpu_set_threadpool) *) ggml_backend_reg_get_proc_address(reg, "ggml_backend_cpu_set_threadpool");
@@ -1104,7 +1104,7 @@ return 0;
 bool llama_context::state_load_file(const char * filepath, llama_token * tokens_out, size_t n_token_capacity, size_t * n_token_count_out) {
 llama_file file(filepath, "rb");
 {
-const uint32_t magic   = file.read_u32();
+const uint32_t magic = file.read_u32();
 const uint32_t version = file.read_u32();
 if (magic != LLAMA_SESSION_MAGIC || version != LLAMA_SESSION_VERSION) {
 LLAMA_LOG_ERROR("%s: unknown (magic, version) for session file: %08x, %08x\n", __func__, magic, version);
@@ -1144,7 +1144,7 @@ return true;
 size_t llama_context::state_seq_load_file(llama_seq_id seq_id, const char * filepath, llama_token * tokens_out, size_t n_token_capacity, size_t * n_token_count_out) {
 llama_file file(filepath, "rb");
 {
-const uint32_t magic   = file.read_u32();
+const uint32_t magic = file.read_u32();
 const uint32_t version = file.read_u32();
 if (magic != LLAMA_STATE_SEQ_MAGIC || version != LLAMA_STATE_SEQ_VERSION) {
 LLAMA_LOG_ERROR("%s: unknown (magic, version) for sequence state file: %08x, %08x\n", __func__, magic, version);
@@ -1194,7 +1194,7 @@ io.write_string(arch_str);
 }
 {
 LLAMA_LOG_DEBUG("%s: - writing output ids\n", __func__);
-const auto n_outputs    = this->n_outputs;
+const auto n_outputs = this->n_outputs;
 const auto & output_ids = this->output_ids;
 std::vector<int32_t> w_output_pos;
 GGML_ASSERT(n_outputs <= n_outputs_max);
@@ -1311,17 +1311,17 @@ return io.n_bytes();
 }
 llama_perf_context_data llama_context::perf_get_data() const {
 llama_perf_context_data data = {};
-data.t_start_ms  = 1e-3 * t_start_us;
-data.t_load_ms   = 1e-3 * t_load_us;
+data.t_start_ms = 1e-3 * t_start_us;
+data.t_load_ms = 1e-3 * t_load_us;
 data.t_p_eval_ms = 1e-3 * t_p_eval_us;
-data.t_eval_ms   = 1e-3 * t_eval_us;
-data.n_p_eval    = std::max(1, n_p_eval);
-data.n_eval      = std::max(1, n_eval);
+data.t_eval_ms = 1e-3 * t_eval_us;
+data.n_p_eval = std::max(1, n_p_eval);
+data.n_eval = std::max(1, n_eval);
 return data;
 }
 void llama_context::perf_reset() {
-t_start_us  = ggml_time_us();
-t_eval_us   = n_eval = 0;
+t_start_us = ggml_time_us();
+t_eval_us = n_eval = 0;
 t_p_eval_us = n_p_eval = 0;
 }
 static void llama_set_param(struct ggml_tensor * tensor, llama_opt_param_filter param_filter, void * userdata) {
@@ -1342,30 +1342,30 @@ ggml_set_param(tensor);
 void llama_context::opt_init(struct llama_model * model, struct llama_opt_params lopt_params) {
 GGML_ASSERT(!opt_ctx);
 model->hparams.n_ctx_train = lopt_params.n_ctx_train > 0 ? lopt_params.n_ctx_train : n_ctx();
-const uint32_t n_batch     = std::min(this->n_batch(),  model->hparams.n_ctx_train);
-const uint32_t n_ubatch    = std::min(this->n_ubatch(), n_batch);
-GGML_ASSERT(model->hparams.n_ctx_train % n_batch  == 0);
-GGML_ASSERT(n_batch                    % n_ubatch == 0);
+const uint32_t n_batch = std::min(this->n_batch(), model->hparams.n_ctx_train);
+const uint32_t n_ubatch = std::min(this->n_ubatch(), n_batch);
+GGML_ASSERT(model->hparams.n_ctx_train % n_batch == 0);
+GGML_ASSERT(n_batch % n_ubatch == 0);
 ggml_opt_params opt_params = ggml_opt_default_params(sched.get(), GGML_OPT_LOSS_TYPE_CROSS_ENTROPY);
-opt_params.opt_period      = n_batch / n_ubatch;
-opt_params.get_opt_pars    = lopt_params.get_opt_pars;
+opt_params.opt_period = n_batch / n_ubatch;
+opt_params.get_opt_pars = lopt_params.get_opt_pars;
 opt_params.get_opt_pars_ud = lopt_params.get_opt_pars_ud;
 opt_ctx = ggml_opt_init(opt_params);
 llama_opt_param_filter param_filter = lopt_params.param_filter;
-void * param_filter_ud              = lopt_params.param_filter_ud;
-llama_set_param(model->type_embd,       param_filter, param_filter_ud);
-llama_set_param(model->pos_embd,        param_filter, param_filter_ud);
-llama_set_param(model->tok_norm,        param_filter, param_filter_ud);
-llama_set_param(model->tok_norm_b,      param_filter, param_filter_ud);
-llama_set_param(model->output_norm,     param_filter, param_filter_ud);
-llama_set_param(model->output_norm_b,   param_filter, param_filter_ud);
-llama_set_param(model->output,          param_filter, param_filter_ud);
-llama_set_param(model->output_b,        param_filter, param_filter_ud);
+void * param_filter_ud = lopt_params.param_filter_ud;
+llama_set_param(model->type_embd, param_filter, param_filter_ud);
+llama_set_param(model->pos_embd, param_filter, param_filter_ud);
+llama_set_param(model->tok_norm, param_filter, param_filter_ud);
+llama_set_param(model->tok_norm_b, param_filter, param_filter_ud);
+llama_set_param(model->output_norm, param_filter, param_filter_ud);
+llama_set_param(model->output_norm_b, param_filter, param_filter_ud);
+llama_set_param(model->output, param_filter, param_filter_ud);
+llama_set_param(model->output_b, param_filter, param_filter_ud);
 llama_set_param(model->output_norm_enc, param_filter, param_filter_ud);
-llama_set_param(model->cls,             param_filter, param_filter_ud);
-llama_set_param(model->cls_b,           param_filter, param_filter_ud);
-llama_set_param(model->cls_out,         param_filter, param_filter_ud);
-llama_set_param(model->cls_out_b,       param_filter, param_filter_ud);
+llama_set_param(model->cls, param_filter, param_filter_ud);
+llama_set_param(model->cls_b, param_filter, param_filter_ud);
+llama_set_param(model->cls_out, param_filter, param_filter_ud);
+llama_set_param(model->cls_out_b, param_filter, param_filter_ud);
 for (struct llama_layer & layer : model->layers) {
 for (size_t i = 0; i < sizeof(layer)/sizeof(struct ggml_tensor *); ++i) {
 llama_set_param(reinterpret_cast<struct ggml_tensor **>(&layer)[i], param_filter, param_filter_ud);
@@ -1373,19 +1373,19 @@ llama_set_param(reinterpret_cast<struct ggml_tensor **>(&layer)[i], param_filter
 }
 }
 void llama_context::opt_epoch_iter(
-ggml_opt_dataset_t               dataset,
-ggml_opt_result_t                result,
+ggml_opt_dataset_t dataset,
+ggml_opt_result_t result,
 const std::vector<llama_token> & tokens,
 const std::vector<llama_token> & labels_sparse,
-llama_batch                    & batch,
-ggml_opt_epoch_callback          callback,
-bool                             train,
-int64_t                          idata_in_loop,
-int64_t                          ndata_in_loop,
-int64_t                          t_loop_start) {
+llama_batch & batch,
+ggml_opt_epoch_callback callback,
+bool train,
+int64_t idata_in_loop,
+int64_t ndata_in_loop,
+int64_t t_loop_start) {
 GGML_ASSERT(opt_ctx);
-const uint32_t n_ctx    = llama_model_n_ctx_train(&model);
-const uint32_t n_batch  = std::min(this->n_batch(),  n_ctx);
+const uint32_t n_ctx = llama_model_n_ctx_train(&model);
+const uint32_t n_batch = std::min(this->n_batch(), n_ctx);
 const uint32_t n_ubatch = std::min(this->n_ubatch(), n_batch);
 llama_kv_cache * kv_self = static_cast<llama_kv_cache *>(memory.get());
 kv_self->clear();
@@ -1393,18 +1393,18 @@ llama_kv_cache_guard kv_guard(kv_self);
 for (uint32_t pos_ctx = 0; pos_ctx < n_ctx; pos_ctx += n_batch) {
 batch.n_tokens = n_batch;
 for (uint32_t pos_batch = 0; pos_batch < n_batch; ++pos_batch) {
-batch.token   [pos_batch]    = tokens[pos_ctx + pos_batch];
-batch.pos     [pos_batch]    = pos_ctx + pos_batch;
-batch.n_seq_id[pos_batch]    = 1;
-batch.seq_id  [pos_batch][0] = 0;
-batch.logits  [pos_batch]    = true;
+batch.token [pos_batch] = tokens[pos_ctx + pos_batch];
+batch.pos [pos_batch] = pos_ctx + pos_batch;
+batch.n_seq_id[pos_batch] = 1;
+batch.seq_id [pos_batch][0] = 0;
+batch.logits [pos_batch] = true;
 }
 const auto n_tokens_all = batch.n_tokens;
 n_queued_tokens += n_tokens_all;
 const bool embd_pooled = cparams.embeddings && cparams.pooling_type != LLAMA_POOLING_TYPE_NONE;
 embd_seq.clear();
 int64_t n_outputs_all = n_tokens_all;
-llama_sbatch sbatch = kv_self->sbatch_init(batch,  true);
+llama_sbatch sbatch = kv_self->sbatch_init(batch, true);
 if (output_reserve(n_outputs_all) < n_outputs_all) {
 LLAMA_LOG_ERROR("%s: could not reserve space for batch with %" PRId64 " outputs\n", __func__, n_outputs_all);
 GGML_ABORT("TODO: handle this error");
@@ -1425,7 +1425,7 @@ auto res = graph_build(ctx_compute.get(), gf, ubatch, LLM_GRAPH_TYPE_DEFAULT);
 struct ggml_context * ctx_compute_opt;
 {
 const size_t size_gf = ggml_graph_size(gf);
-const size_t size_meta = 4*size_gf*ggml_tensor_overhead() + 2*ggml_graph_overhead_custom(size_gf,  true);
+const size_t size_meta = 4*size_gf*ggml_tensor_overhead() + 2*ggml_graph_overhead_custom(size_gf, true);
 struct ggml_init_params params = {
 size_meta,
 nullptr,
@@ -1457,21 +1457,21 @@ ggml_free(ctx_compute_opt);
 kv_guard.commit();
 }
 void llama_context::opt_epoch(
-ggml_opt_dataset_t        dataset,
-ggml_opt_result_t         result_train,
-ggml_opt_result_t         result_eval,
-int64_t                   idata_split,
-ggml_opt_epoch_callback   callback_train,
-ggml_opt_epoch_callback   callback_eval) {
-const uint32_t n_ctx    = this->n_ctx();
-const uint32_t n_batch  = std::min(cparams.n_batch,  n_ctx);
+ggml_opt_dataset_t dataset,
+ggml_opt_result_t result_train,
+ggml_opt_result_t result_eval,
+int64_t idata_split,
+ggml_opt_epoch_callback callback_train,
+ggml_opt_epoch_callback callback_eval) {
+const uint32_t n_ctx = this->n_ctx();
+const uint32_t n_batch = std::min(cparams.n_batch, n_ctx);
 const uint32_t n_ubatch = std::min(cparams.n_ubatch, n_batch);
-const  int64_t ndata    = ggml_opt_dataset_ndata(dataset);
+const int64_t ndata = ggml_opt_dataset_ndata(dataset);
 GGML_ASSERT(idata_split >= 0);
 GGML_ASSERT(idata_split <= ndata);
 const uint32_t ubatch_per_ctx = n_ctx / n_ubatch;
 struct llama_batch batch = llama_batch_init(n_batch, 0, 1);
-std::vector<llama_token>        tokens(n_ctx);
+std::vector<llama_token> tokens(n_ctx);
 std::vector<llama_token> labels_sparse(n_ctx);
 int64_t idata = 0;
 int64_t t_loop_start = ggml_time_us();
@@ -1529,7 +1529,7 @@ return result;
 }
 llama_context * llama_init_from_model(
 llama_model * model,
-llama_context_params   params) {
+llama_context_params params) {
 if (!model) {
 LLAMA_LOG_ERROR("%s: model cannot be NULL\n", __func__);
 return nullptr;
@@ -1560,7 +1560,7 @@ return nullptr;
 }
 llama_context * llama_new_context_with_model(
 llama_model * model,
-llama_context_params   params) {
+llama_context_params params) {
 return llama_init_from_model(model, params);
 }
 void llama_free(llama_context * ctx) {
@@ -1592,8 +1592,8 @@ return ctx->pooling_type();
 }
 void llama_attach_threadpool(
 llama_context * ctx,
-ggml_threadpool_t   threadpool,
-ggml_threadpool_t   threadpool_batch) {
+ggml_threadpool_t threadpool,
+ggml_threadpool_t threadpool_batch) {
 ctx->attach_threadpool(threadpool, threadpool_batch);
 }
 void llama_detach_threadpool(llama_context * ctx) {
@@ -1662,10 +1662,10 @@ ctx->clear_adapter_lora();
 int32_t llama_apply_adapter_cvec(
 llama_context * ctx,
 const float * data,
-size_t   len,
-int32_t   n_embd,
-int32_t   il_start,
-int32_t   il_end) {
+size_t len,
+int32_t n_embd,
+int32_t il_start,
+int32_t il_end) {
 bool res = ctx->apply_adapter_cvec(data, len, n_embd, il_start, il_end);
 return res ? 0 : -1;
 }
@@ -1717,16 +1717,16 @@ kv->clear();
 }
 bool llama_kv_cache_seq_rm(
 llama_context * ctx,
-llama_seq_id   seq_id,
-llama_pos   p0,
-llama_pos   p1) {
+llama_seq_id seq_id,
+llama_pos p0,
+llama_pos p1) {
 return llama_kv_self_seq_rm(ctx, seq_id, p0, p1);
 }
 bool llama_kv_self_seq_rm(
 llama_context * ctx,
-llama_seq_id   seq_id,
-llama_pos   p0,
-llama_pos   p1) {
+llama_seq_id seq_id,
+llama_pos p0,
+llama_pos p1) {
 auto * kv = ctx->get_kv_self();
 if (!kv) {
 return true;
@@ -1735,18 +1735,18 @@ return kv->seq_rm(seq_id, p0, p1);
 }
 void llama_kv_cache_seq_cp(
 llama_context * ctx,
-llama_seq_id   seq_id_src,
-llama_seq_id   seq_id_dst,
-llama_pos   p0,
-llama_pos   p1) {
+llama_seq_id seq_id_src,
+llama_seq_id seq_id_dst,
+llama_pos p0,
+llama_pos p1) {
 llama_kv_self_seq_cp(ctx, seq_id_src, seq_id_dst, p0, p1);
 }
 void llama_kv_self_seq_cp(
 llama_context * ctx,
-llama_seq_id   seq_id_src,
-llama_seq_id   seq_id_dst,
-llama_pos   p0,
-llama_pos   p1) {
+llama_seq_id seq_id_src,
+llama_seq_id seq_id_dst,
+llama_pos p0,
+llama_pos p1) {
 auto * kv = ctx->get_kv_self();
 if (!kv) {
 return;
@@ -1755,7 +1755,7 @@ kv->seq_cp(seq_id_src, seq_id_dst, p0, p1);
 }
 void llama_kv_cache_seq_keep(
 llama_context * ctx,
-llama_seq_id   seq_id) {
+llama_seq_id seq_id) {
 llama_kv_self_seq_keep(ctx, seq_id);
 }
 void llama_kv_self_seq_keep(llama_context * ctx, llama_seq_id seq_id) {
@@ -1767,18 +1767,18 @@ kv->seq_keep(seq_id);
 }
 void llama_kv_cache_seq_add(
 llama_context * ctx,
-llama_seq_id   seq_id,
-llama_pos   p0,
-llama_pos   p1,
-llama_pos   delta) {
+llama_seq_id seq_id,
+llama_pos p0,
+llama_pos p1,
+llama_pos delta) {
 llama_kv_self_seq_add(ctx, seq_id, p0, p1, delta);
 }
 void llama_kv_self_seq_add(
 llama_context * ctx,
-llama_seq_id   seq_id,
-llama_pos   p0,
-llama_pos   p1,
-llama_pos   delta) {
+llama_seq_id seq_id,
+llama_pos p0,
+llama_pos p1,
+llama_pos delta) {
 auto * kv = ctx->get_kv_self();
 if (!kv) {
 return;
@@ -1787,18 +1787,18 @@ kv->seq_add(seq_id, p0, p1, delta);
 }
 void llama_kv_cache_seq_div(
 llama_context * ctx,
-llama_seq_id   seq_id,
-llama_pos   p0,
-llama_pos   p1,
-int   d) {
+llama_seq_id seq_id,
+llama_pos p0,
+llama_pos p1,
+int d) {
 llama_kv_self_seq_div(ctx, seq_id, p0, p1, d);
 }
 void llama_kv_self_seq_div(
 llama_context * ctx,
-llama_seq_id   seq_id,
-llama_pos   p0,
-llama_pos   p1,
-int   d) {
+llama_seq_id seq_id,
+llama_pos p0,
+llama_pos p1,
+int d) {
 auto * kv = ctx->get_kv_self();
 if (!kv) {
 return;
@@ -1913,7 +1913,7 @@ return 0;
 }
 int32_t llama_encode(
 llama_context * ctx,
-llama_batch   batch) {
+llama_batch batch) {
 const int ret = ctx->encode(batch);
 if (ret != 0) {
 LLAMA_LOG_ERROR("%s: failed to encode, ret = %d\n", __func__, ret);
@@ -1922,7 +1922,7 @@ return ret;
 }
 int32_t llama_decode(
 llama_context * ctx,
-llama_batch   batch) {
+llama_batch batch) {
 const int ret = ctx->decode(batch);
 if (ret != 0) {
 LLAMA_LOG_ERROR("%s: failed to decode, ret = %d\n", __func__, ret);
@@ -1959,13 +1959,13 @@ void llama_opt_init(struct llama_context * ctx, struct llama_model * model, stru
 ctx->opt_init(model, lopt_params);
 }
 void llama_opt_epoch(
-struct llama_context    * ctx,
-ggml_opt_dataset_t        dataset,
-ggml_opt_result_t         result_train,
-ggml_opt_result_t         result_eval,
-int64_t                   idata_split,
-ggml_opt_epoch_callback   callback_train,
-ggml_opt_epoch_callback   callback_eval) {
+struct llama_context * ctx,
+ggml_opt_dataset_t dataset,
+ggml_opt_result_t result_train,
+ggml_opt_result_t result_eval,
+int64_t idata_split,
+ggml_opt_epoch_callback callback_train,
+ggml_opt_epoch_callback callback_eval) {
 ctx->opt_epoch(
 dataset,
 result_train,

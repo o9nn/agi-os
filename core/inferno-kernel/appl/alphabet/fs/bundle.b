@@ -39,7 +39,7 @@ badmod(Readdir->PATH);
 bufio = load Bufio Bufio->PATH;
 if(bufio == nil)
 badmod(Readdir->PATH);
-bufio->fopen(nil, Sys->OREAD);		# XXX no bufio->init!
+bufio->fopen(nil, Sys->OREAD); # XXX no bufio->init!
 fs = load Fs Fs->PATH;
 if(fs == nil)
 badmod(Readdir->PATH);
@@ -59,9 +59,9 @@ return ref Value.Vf(f);
 bundle(nil: ref Report, nil: ref Iobuf, nil: Fschan): chan of string
 {
 return nil;
-#	sync := chan[1] of string;
-#	spawn bundleproc(c, sync, iob, r.start("bundle"));
-#	return sync;
+# sync := chan[1] of string;
+# spawn bundleproc(c, sync, iob, r.start("bundle"));
+# return sync;
 }
 bundleproc(c: Fschan, f: chan of ref Sys->FD, errorc: chan of string)
 {
@@ -133,7 +133,7 @@ reply <-= Quit;
 quit(errorc);
 }
 n += big len buf;
-if(n > length){		# should never happen
+if(n > length){ # should never happen
 report(errorc, sys->sprint("%q is longer than expected (fatal)", path));
 reply <-= Quit;
 quit(errorc);

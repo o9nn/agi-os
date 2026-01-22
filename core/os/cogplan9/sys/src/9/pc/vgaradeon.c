@@ -5,15 +5,15 @@
 #include "fns.h"
 #include "io.h"
 #include "../port/error.h"
-#define Image	IMAGE
+#define Image IMAGE
 #include <draw.h>
 #include <memdraw.h>
 #include <cursor.h>
 #include "screen.h"
 #include "/sys/src/cmd/aux/vga/radeon.h"
 enum {
-Kilo	= 1024,
-Meg	= Kilo * Kilo,
+Kilo = 1024,
+Meg = Kilo * Kilo,
 };
 static Pcidev*
 radeonpci(void)
@@ -353,13 +353,13 @@ radeonwaitfifo(scr, 1);
 OUTREG((ulong)scr->mmio, DP_GUI_MASTER_CNTL,
 dp_gui_master_cntl | GMC_BRUSH_SOLID_COLOR | GMC_SRC_DATATYPE_COLOR);
 radeonwaitfifo(scr, 7);
-OUTREG((ulong)scr->mmio, DST_LINE_START,    0);
-OUTREG((ulong)scr->mmio, DST_LINE_END,      0);
+OUTREG((ulong)scr->mmio, DST_LINE_START, 0);
+OUTREG((ulong)scr->mmio, DST_LINE_END, 0);
 OUTREG((ulong)scr->mmio, DP_BRUSH_FRGD_CLR, ~0ul);
 OUTREG((ulong)scr->mmio, DP_BRUSH_BKGD_CLR, 0);
-OUTREG((ulong)scr->mmio, DP_SRC_FRGD_CLR,   ~0ul);
-OUTREG((ulong)scr->mmio, DP_SRC_BKGD_CLR,   0);
-OUTREG((ulong)scr->mmio, DP_WRITE_MASK,     ~0ul);
+OUTREG((ulong)scr->mmio, DP_SRC_FRGD_CLR, ~0ul);
+OUTREG((ulong)scr->mmio, DP_SRC_BKGD_CLR, 0);
+OUTREG((ulong)scr->mmio, DP_WRITE_MASK, ~0ul);
 radeonwaitidle(scr);
 scr->fill = radeonfill;
 scr->scroll = radeonscroll;

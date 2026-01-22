@@ -7,7 +7,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/param.h>
-#define	REDIALTIMEOUT	15
+#define REDIALTIMEOUT 15
 #ifdef PLAN9
 #include <Plan9libnet.h>
 #endif
@@ -38,7 +38,7 @@ alarmhandler(int sig)
 fprintf(stderr, "timeout occurred, check printer.\n");
 exit(2);
 }
-#define WARNPC	5
+#define WARNPC 5
 int
 copyfile(int in, int out, long tosend)
 {
@@ -74,7 +74,7 @@ fprintf(stderr, "lpdsend: copyfile read %d bytes from %d\n",
 n, in);
 return(!n);
 }
-char  strbuf[120];
+char strbuf[120];
 char hostname[MAXHOSTNAMELEN], *username, *printername, *killarg;
 char *inputname;
 char filetype = 'o';

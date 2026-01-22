@@ -5,13 +5,13 @@
 #include <regexp.h>
 #include <bio.h>
 #include "faces.h"
-static int		showfd = -1;
-static int		seefd = -1;
-static int		logfd = -1;
-static char	*user;
-static char	*logtag;
-char		**maildirs;
-int		nmaildirs;
+static int showfd = -1;
+static int seefd = -1;
+static int logfd = -1;
+static char *user;
+static char *logtag;
+char **maildirs;
+int nmaildirs;
 void
 initplumb(void)
 {

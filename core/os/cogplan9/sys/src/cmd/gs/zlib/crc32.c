@@ -1,40 +1,40 @@
 #ifdef MAKECRCH
-#  include <stdio.h>
-#  ifndef DYNAMIC_CRC_TABLE
-#    define DYNAMIC_CRC_TABLE
-#  endif
+# include <stdio.h>
+# ifndef DYNAMIC_CRC_TABLE
+# define DYNAMIC_CRC_TABLE
+# endif
 #endif
 #include "zutil.h"
 #define local static
 #ifndef NOBYFOUR
-#  ifdef STDC
-#    include <limits.h>
-#    define BYFOUR
-#    if (UINT_MAX == 0xffffffffUL)
+# ifdef STDC
+# include <limits.h>
+# define BYFOUR
+# if (UINT_MAX == 0xffffffffUL)
 typedef unsigned int u4;
-#    else
-#      if (ULONG_MAX == 0xffffffffUL)
+# else
+# if (ULONG_MAX == 0xffffffffUL)
 typedef unsigned long u4;
-#      else
-#        if (USHRT_MAX == 0xffffffffUL)
+# else
+# if (USHRT_MAX == 0xffffffffUL)
 typedef unsigned short u4;
-#        else
-#          undef BYFOUR
-#        endif
-#      endif
-#    endif
-#  endif
+# else
+# undef BYFOUR
+# endif
+# endif
+# endif
+# endif
 #endif
 #ifdef BYFOUR
-#  define REV(w) (((w)>>24)+(((w)>>8)&0xff00)+ \
+# define REV(w) (((w)>>24)+(((w)>>8)&0xff00)+ \
 (((w)&0xff00)<<8)+(((w)&0xff)<<24))
 local unsigned long crc32_little OF((unsigned long,
 const unsigned char FAR *, unsigned));
 local unsigned long crc32_big OF((unsigned long,
 const unsigned char FAR *, unsigned));
-#  define TBLS 8
+# define TBLS 8
 #else
-#  define TBLS 1
+# define TBLS 1
 #endif
 #ifdef DYNAMIC_CRC_TABLE
 local volatile int crc_table_empty = 1;
@@ -87,14 +87,14 @@ fprintf(out, "\n\n");
 fprintf(out, "local const unsigned long FAR ");
 fprintf(out, "crc_table[TBLS][256] =\n{\n  {\n");
 write_table(out, crc_table[0]);
-#  ifdef BYFOUR
+# ifdef BYFOUR
 fprintf(out, "#ifdef BYFOUR\n");
 for (k = 1; k < 8; k++) {
 fprintf(out, "  },\n  {\n");
 write_table(out, crc_table[k]);
 }
 fprintf(out, "#endif\n");
-#  endif
+# endif
 fprintf(out, "  }\n};\n");
 fclose(out);
 }

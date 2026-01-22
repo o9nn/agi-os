@@ -13,10 +13,10 @@
 #include <pthread.h>
 #include <sys/time.h>
 #include <math.h>
-#define PERF_TEST_ITERATIONS        1000
+#define PERF_TEST_ITERATIONS 1000
 #define PERF_TEST_WARMUP_ITERATIONS 100
-#define PERF_TEST_TIMEOUT_MS        5000
-#define PERF_REGRESSION_THRESHOLD   10.0
+#define PERF_TEST_TIMEOUT_MS 5000
+#define PERF_REGRESSION_THRESHOLD 10.0
 typedef struct {
 const char *test_name;
 dtesn_component_id_t component;

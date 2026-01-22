@@ -126,15 +126,15 @@ static const USHORT usPrivateArea[] = {
 0x23a0, 0x23a4, 0x23a5, 0x23a6, 0x23ab, 0x23ac, 0x23ad, 0x003f,
 };
 typedef struct char_table_tag {
-UCHAR	ucLocal;
-USHORT	usUnicode;
+UCHAR ucLocal;
+USHORT usUnicode;
 } char_table_type;
-static char_table_type	atCharTable[256];
-static size_t		tNextPosFree = 0;
+static char_table_type atCharTable[256];
+static size_t tNextPosFree = 0;
 static int
 iCompare(const void *pvRecord1, const void *pvRecord2)
 {
-USHORT	usUnicode1, usUnicode2;
+USHORT usUnicode1, usUnicode2;
 usUnicode1 = ((char_table_type *)pvRecord1)->usUnicode;
 usUnicode2 = ((char_table_type *)pvRecord2)->usUnicode;
 if (usUnicode1 < usUnicode2) {
@@ -148,7 +148,7 @@ return 0;
 static const char_table_type *
 pGetCharTableRecord(USHORT usUnicode)
 {
-char_table_type	tKey;
+char_table_type tKey;
 if (tNextPosFree == 0) {
 return NULL;
 }
@@ -165,7 +165,7 @@ ucGetBulletCharacter(conversion_type eConversionType, encoding_type eEncoding)
 #if defined(__riscos)
 return 0x8f;
 #else
-const char_table_type	*pRec;
+const char_table_type *pRec;
 fail(eEncoding == encoding_utf_8);
 if (eEncoding == encoding_latin_1 &&
 (eConversionType == conversion_ps ||
@@ -193,7 +193,7 @@ return (UCHAR)'.';
 UCHAR
 ucGetNbspCharacter(void)
 {
-const char_table_type	*pRec;
+const char_table_type *pRec;
 pRec = pGetCharTableRecord(0x00a0);
 if (pRec == NULL) {
 DBG_MSG("Non-breaking space record not found");
@@ -204,11 +204,11 @@ return pRec->ucLocal;
 BOOL
 bReadCharacterMappingTable(FILE *pFile)
 {
-char	*pcTmp;
-ULONG	ulUnicode;
-UINT	uiLocal;
-int	iFields;
-char	szLine[81];
+char *pcTmp;
+ULONG ulUnicode;
+UINT uiLocal;
+int iFields;
+char szLine[81];
 if (pFile == NULL) {
 return FALSE;
 }
@@ -264,8 +264,8 @@ ulTranslateCharacters(USHORT usChar, ULONG ulFileOffset, int iWordVersion,
 conversion_type eConversionType, encoding_type eEncoding,
 BOOL bUseMacCharSet)
 {
-const char_table_type	*pTmp;
-const USHORT	*usCharSet;
+const char_table_type *pTmp;
+const USHORT *usCharSet;
 usCharSet = NULL;
 if (bUseMacCharSet) {
 usCharSet = usMacRoman;

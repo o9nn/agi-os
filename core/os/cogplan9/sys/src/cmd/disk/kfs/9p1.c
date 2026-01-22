@@ -1,5 +1,5 @@
-#include	"all.h"
-#include	"9p1.h"
+#include "all.h"
+#include "9p1.h"
 void
 mkqid(Qid* qid, Dentry *d, int buggery)
 {
@@ -1139,23 +1139,23 @@ ou->fid = in->fid;
 void
 (*call9p1[MAXSYSCALL])(Chan*, Oldfcall*, Oldfcall*) =
 {
-[Tnop9p1]		f_nop,
-[Tosession9p1]	f_session,
-[Tsession9p1]	f_session,
-[Tflush9p1]	f_flush,
-[Toattach9p1]	f_attach,
-[Tattach9p1]	f_attach,
-[Tclone9p1]	f_clone,
-[Twalk9p1]		f_walk,
-[Topen9p1]		f_open,
-[Tcreate9p1]	f_create,
-[Tread9p1]		f_read,
-[Twrite9p1]	f_write,
-[Tclunk9p1]	f_clunk,
-[Tremove9p1]	f_remove,
-[Tstat9p1]		f_stat,
-[Twstat9p1]	f_wstat,
-[Tclwalk9p1]	f_clwalk,
+[Tnop9p1] f_nop,
+[Tosession9p1] f_session,
+[Tsession9p1] f_session,
+[Tflush9p1] f_flush,
+[Toattach9p1] f_attach,
+[Tattach9p1] f_attach,
+[Tclone9p1] f_clone,
+[Twalk9p1] f_walk,
+[Topen9p1] f_open,
+[Tcreate9p1] f_create,
+[Tread9p1] f_read,
+[Twrite9p1] f_write,
+[Tclunk9p1] f_clunk,
+[Tremove9p1] f_remove,
+[Tstat9p1] f_stat,
+[Twstat9p1] f_wstat,
+[Tclwalk9p1] f_clwalk,
 };
 static void
 send(Chan *c, uchar *buf, int n)

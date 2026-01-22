@@ -1,5 +1,5 @@
 #ifndef gxclip2_INCLUDED
-#  define gxclip2_INCLUDED
+# define gxclip2_INCLUDED
 #include "gxmclip.h"
 typedef gx_device_mask_clip gx_device_tile_clip;
 #define st_device_tile_clip st_device_mask_clip

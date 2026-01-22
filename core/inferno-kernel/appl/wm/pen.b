@@ -2,9 +2,9 @@ implement Pen;
 #
 # pen input on touch screen
 #
-#	Copyright © 2001,2002 Vita Nuova Holdings Limited.  All rights reserved.
+# Copyright © 2001,2002 Vita Nuova Holdings Limited. All rights reserved.
 #
-#	This may be used or modified by anyone for any purpose.
+# This may be used or modified by anyone for any purpose.
 #
 include "sys.m";
 sys: Sys;
@@ -25,7 +25,7 @@ readstrokes: Readstrokes;
 include "arg.m";
 Pen: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 debug := 0;
 stderr: ref Sys->FD;
@@ -36,8 +36,8 @@ tkconfig := array[] of{
 "bind .c <Button-1> {grab set .c; send cmd push %x %y}",
 "bind .c <Motion-Button-1> {send cmd move %x %y}",
 "bind .c <ButtonRelease-1> {grab release .c; send cmd release %x %y}",
-"bind .c <Enter> {send cmd move %x %y}",	# does nothing if not previously down
-#	"bind .c <Leave> {send cmd leave %x %y}",	# ditto
+"bind .c <Enter> {send cmd move %x %y}", # does nothing if not previously down
+# "bind .c <Leave> {send cmd leave %x %y}", # ditto
 "pack .c -expand 1 -fill both -padx 5 -pady 5",
 };
 usage()
@@ -107,7 +107,7 @@ readstrokes = nil;
 rec := csets[0];
 digits: ref Classifier;
 if(len csets > 1)
-digits = csets[1];	# need not actually be digits
+digits = csets[1]; # need not actually be digits
 sys->pctl(Sys->NEWPGRP, nil);
 tkclient->init();
 (top, ctl) := tkclient->toplevel(ctxt, nil, "Pen", winopts);
@@ -204,7 +204,7 @@ else
 rec = digits;
 name = nil;
 * =>
-if(c >= 'A' && c <= 'Z'){	# other gestures, not yet implemented
+if(c >= 'A' && c <= 'Z'){ # other gestures, not yet implemented
 shift = 0;
 punct = 0;
 rec = csets[0];
@@ -242,7 +242,7 @@ if(name != nil){
 drawchars(top, name);
 for(i := 0; i < len name; i++)
 sys->fprint(top.ctxt.connfd, "key %d", name[i]);
-#	tk->keyboard(top, name[i]);
+# tk->keyboard(top, name[i]);
 }
 tkcmd(top, ".c delete stuff");
 npoint = 0;
@@ -270,10 +270,10 @@ t := "";
 for(i := 0; i < len s; i++){
 c := s[i];
 case c {
-'\n' =>	t += "\\n";
-'\b' =>	t += "\\b";
-'\t' =>	t += "\\t";
-4 =>		t += "eot";
+'\n' => t += "\\n";
+'\b' => t += "\\b";
+'\t' => t += "\\t";
+4 => t += "eot";
 * =>
 if(c < ' ')
 t += sys->sprint("\\%3.3o", c);
@@ -332,21 +332,21 @@ tk->cmd(top, "update");
 # duplicate function of strokes module temporarily
 # to allow for experiment
 #
-#DIST_THLD: con 3200;	# x100
-DIST_THLD: con 3300;	# x100
-#  Tap-handling parameters
-TAP_TIME_THLD: con 150;	# msec
-TAP_DIST_THLD: con 75;		# dx*dx + dy*dy
-TAP_PATHLEN: con 10*100;		# x100
+#DIST_THLD: con 3200; # x100
+DIST_THLD: con 3300; # x100
+# Tap-handling parameters
+TAP_TIME_THLD: con 150; # msec
+TAP_DIST_THLD: con 75; # dx*dx + dy*dy
+TAP_PATHLEN: con 10*100; # x100
 recognize_stroke(top: ref Tk->Toplevel, rec: ref Classifier, stroke: ref Stroke, debug: int): (int, string)
 {
 if(stroke.npts < 1)
 return (-1, nil);
-stroke = stroke.filter();	 # filter out close points
+stroke = stroke.filter(); # filter out close points
 if(stroke.npts == 1 || stroke.length() < TAP_PATHLEN)
-return (-1, ".");		# considered a tap regardless of elapsed time
+return (-1, "."); # considered a tap regardless of elapsed time
 strokes->preprocess_stroke(stroke);
-#  Compute its dominant points.
+# Compute its dominant points.
 dompts := stroke.interpolate().dominant();
 if(debug)
 drawshape(top, "stuff", stroke, "green", dompts, "red");
@@ -354,7 +354,7 @@ if(rec == nil)
 return (-1, nil);
 best_dist := Strokes->MAXDIST;
 best_i := -1;
-#  Score input stroke against every class in classifier.
+# Score input stroke against every class in classifier.
 for(i := 0; i < rec.nclasses; i++){
 name := rec.cnames[i];
 (sim, dist) := strokes->score_stroke(dompts, rec.dompts[i]);
@@ -363,7 +363,7 @@ sys->fprint(stderr, "(%s, %d, %d) ", name, sim, dist);
 if(dist < DIST_THLD){
 if(debug > 1)
 sys->fprint(stderr, "(%s, %d, %d) ", name, sim, dist);
-#  Is it the best so far?
+# Is it the best so far?
 if(dist < best_dist){
 best_dist = dist;
 best_i = i;

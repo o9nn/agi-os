@@ -354,17 +354,17 @@ return memory;
 int
 gs_state_update_overprint(gs_state * pgs, const gs_overprint_params_t * pparams)
 {
-gs_composite_t *    pct = 0;
-gs_imager_state *   pis = (gs_imager_state *)pgs;
-int                 code;
-gx_device *         dev = pgs->device;
-gx_device *         ovptdev;
+gs_composite_t * pct = 0;
+gs_imager_state * pis = (gs_imager_state *)pgs;
+int code;
+gx_device * dev = pgs->device;
+gx_device * ovptdev;
 if ( (code = gs_create_overprint(&pct, pparams, pgs->memory)) >= 0 &&
 (code = dev_proc(dev, create_compositor)( dev,
 &ovptdev,
 pct,
 pis,
-pgs->memory )) >= 0   ) {
+pgs->memory )) >= 0 ) {
 if (ovptdev != dev)
 gx_set_device_only(pgs, ovptdev);
 }
@@ -377,9 +377,9 @@ return code;
 int
 gs_do_set_overprint(gs_state * pgs)
 {
-const gs_color_space *  pcs = pgs->color_space;
+const gs_color_space * pcs = pgs->color_space;
 const gs_client_color * pcc = pgs->ccolor;
-int                     code = 0;
+int code = 0;
 if (cs_num_components(pcs) < 0 && pcc->pattern != 0)
 code = pcc->pattern->type->procs.set_color(pcc, pgs);
 else
@@ -389,7 +389,7 @@ return code;
 void
 gs_setoverprint(gs_state * pgs, bool ovp)
 {
-bool    prior_ovp = pgs->overprint;
+bool prior_ovp = pgs->overprint;
 pgs->overprint = ovp;
 if (prior_ovp != ovp)
 (void)gs_do_set_overprint(pgs);
@@ -402,8 +402,8 @@ return pgs->overprint;
 int
 gs_setoverprintmode(gs_state * pgs, int mode)
 {
-int     prior_mode = pgs->effective_overprint_mode;
-int     code = 0;
+int prior_mode = pgs->effective_overprint_mode;
+int code = 0;
 if (mode < 0 || mode > 1)
 return_error(gs_error_rangecheck);
 pgs->overprint_mode = mode;

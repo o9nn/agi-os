@@ -5,41 +5,41 @@ RDEBUG,
 RNODEBUG,
 RNONE,
 };
-static void	rflush(Fcall*),		rnop(Fcall*),
-rauth(Fcall*),	rattach(Fcall*),
-rclone(Fcall*),		rwalk(Fcall*),
-rclwalk(Fcall*),	ropen(Fcall*),
-rcreate(Fcall*),	rread(Fcall*),
-rwrite(Fcall*),		rclunk(Fcall*),
-rremove(Fcall*),	rstat(Fcall*),
-rwstat(Fcall*),	rversion(Fcall*);
-static	Fid*	newfid(int);
-static	void	reply(Fcall*, char*);
-static	void 	(*fcalls[])(Fcall*) = {
-[Tversion]	rversion,
-[Tflush]	rflush,
-[Tauth]	rauth,
-[Tattach]	rattach,
-[Twalk]		rwalk,
-[Topen]		ropen,
-[Tcreate]	rcreate,
-[Tread]		rread,
-[Twrite]	rwrite,
-[Tclunk]	rclunk,
-[Tremove]	rremove,
-[Tstat]		rstat,
-[Twstat]	rwstat,
+static void rflush(Fcall*), rnop(Fcall*),
+rauth(Fcall*), rattach(Fcall*),
+rclone(Fcall*), rwalk(Fcall*),
+rclwalk(Fcall*), ropen(Fcall*),
+rcreate(Fcall*), rread(Fcall*),
+rwrite(Fcall*), rclunk(Fcall*),
+rremove(Fcall*), rstat(Fcall*),
+rwstat(Fcall*), rversion(Fcall*);
+static Fid* newfid(int);
+static void reply(Fcall*, char*);
+static void (*fcalls[])(Fcall*) = {
+[Tversion] rversion,
+[Tflush] rflush,
+[Tauth] rauth,
+[Tattach] rattach,
+[Twalk] rwalk,
+[Topen] ropen,
+[Tcreate] rcreate,
+[Tread] rread,
+[Twrite] rwrite,
+[Tclunk] rclunk,
+[Tremove] rremove,
+[Tstat] rstat,
+[Twstat] rwstat,
 };
-static	Keyword cmds[] = {
-"reload",		RELOAD,
-"debug",		RDEBUG,
-"nodebug",		RNODEBUG,
-0,			RNONE,
+static Keyword cmds[] = {
+"reload", RELOAD,
+"debug", RDEBUG,
+"nodebug", RNODEBUG,
+0, RNONE,
 };
 void
 io(void)
 {
-Fcall	rhdr;
+Fcall rhdr;
 int n;
 for(;;){
 n = read9pmsg(srvfd, rbuf, sizeof rbuf-1);

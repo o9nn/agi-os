@@ -749,7 +749,7 @@ return_error(gs_error_VMerror);
 cvd->pdev = pdev;
 gs_make_mem_device(&cvd->mdev, gdev_mem_device_for_bits(pdev->color_info.depth),
 mem, 0, (gx_device *)pdev);
-cvd->mdev.width  = w;
+cvd->mdev.width = w;
 cvd->mdev.height = h;
 cvd->mdev.mapped_x = x;
 cvd->mdev.mapped_y = y;

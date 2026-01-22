@@ -2,33 +2,33 @@
 #include "dat.h"
 #include "fns.h"
 #define CHECK(x)
-typedef struct LumpCache	LumpCache;
+typedef struct LumpCache LumpCache;
 enum
 {
-HashLog		= 9,
-HashSize	= 1<<HashLog,
-HashMask	= HashSize - 1,
+HashLog = 9,
+HashSize = 1<<HashLog,
+HashMask = HashSize - 1,
 };
 struct LumpCache
 {
-QLock		lock;
-Rendez		full;
-Lump		*free;
-u32int		allowed;
-u32int		avail;
-u32int		now;
-Lump		**heads;
-int		nheap;
-Lump		**heap;
-int		nblocks;
-Lump		*blocks;
+QLock lock;
+Rendez full;
+Lump *free;
+u32int allowed;
+u32int avail;
+u32int now;
+Lump **heads;
+int nheap;
+Lump **heap;
+int nblocks;
+Lump *blocks;
 };
-static LumpCache	lumpcache;
-static void	delheap(Lump *db);
-static int	downheap(int i, Lump *b);
-static void	fixheap(int i, Lump *b);
-static int	upheap(int i, Lump *b);
-static Lump	*bumplump(void);
+static LumpCache lumpcache;
+static void delheap(Lump *db);
+static int downheap(int i, Lump *b);
+static void fixheap(int i, Lump *b);
+static int upheap(int i, Lump *b);
+static Lump *bumplump(void);
 void
 initlumpcache(u32int size, u32int nblocks)
 {

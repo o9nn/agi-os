@@ -5,8 +5,8 @@
 void
 vUpdateIcon(window_handle tWindow, icon_block *pIcon)
 {
-window_redrawblock	tRedraw;
-BOOL		bMore;
+window_redrawblock tRedraw;
+BOOL bMore;
 tRedraw.window = tWindow;
 tRedraw.rect = pIcon->workarearect;
 Error_CheckFatal(Wimp_UpdateWindow(&tRedraw, &bMore));
@@ -19,7 +19,7 @@ void
 vUpdateRadioButton(window_handle tWindow, icon_handle tIconNumber,
 BOOL bSelected)
 {
-icon_block	tIcon;
+icon_block tIcon;
 Error_CheckFatal(Wimp_GetIconState(tWindow, tIconNumber, &tIcon));
 DBG_DEC(tIconNumber);
 DBG_HEX(tIcon.flags.data.selected);
@@ -34,9 +34,9 @@ void
 vUpdateWriteable(window_handle tWindow, icon_handle tIconNumber,
 const char *szString)
 {
-icon_block	tIcon;
-caret_block	tCaret;
-int		iLen;
+icon_block tIcon;
+caret_block tCaret;
+int iLen;
 fail(szString == NULL);
 NO_DBG_DEC(tIconNumber);
 NO_DBG_MSG(szString);
@@ -64,7 +64,7 @@ void
 vUpdateWriteableNumber(window_handle tWindow, icon_handle tIconNumber,
 int iNumber)
 {
-char	szTmp[1+3*sizeof(int)+1];
+char szTmp[1+3*sizeof(int)+1];
 (void)sprintf(szTmp, "%d", iNumber);
 vUpdateWriteable(tWindow, tIconNumber, szTmp);
 }

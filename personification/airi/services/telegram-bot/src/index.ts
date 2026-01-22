@@ -11,30 +11,30 @@ import { initDb } from './db'
 setGlobalFormat(Format.Pretty)
 setGlobalLogLevel(LogLevel.Debug)
 async function main() {
-  const sdk = new NodeSDK({
-    resource: resourceFromAttributes({
-      [ATTR_SERVICE_NAME]: 'moeru_ai.airi.telegram_bot',
-      [ATTR_SERVICE_VERSION]: '1.0.0',
-    }),
-    traceExporter: new OTLPTraceExporter({
-      url: env.OTEL_EXPORTER_OTLP_TRACES_ENDPOINT || 'http://localhost:4318/v1/traces',
-    }),
-    metricReader: new PeriodicExportingMetricReader({
-      exporter: new OTLPMetricExporter({
-        url: env.OTEL_EXPORTER_OTLP_METRICS_ENDPOINT || 'http://localhost:4318/v1/metrics',
-      }),
-      exportIntervalMillis: 5000,
-    }),
-  })
-  sdk.start()
-  await initDb()
-  await startTelegramBot()
+const sdk = new NodeSDK({
+resource: resourceFromAttributes({
+[ATTR_SERVICE_NAME]: 'moeru_ai.airi.telegram_bot',
+[ATTR_SERVICE_VERSION]: '1.0.0',
+}),
+traceExporter: new OTLPTraceExporter({
+url: env.OTEL_EXPORTER_OTLP_TRACES_ENDPOINT || 'http://localhost:4318/v1/traces',
+}),
+metricReader: new PeriodicExportingMetricReader({
+exporter: new OTLPMetricExporter({
+url: env.OTEL_EXPORTER_OTLP_METRICS_ENDPOINT || 'http://localhost:4318/v1/metrics',
+}),
+exportIntervalMillis: 5000,
+}),
+})
+sdk.start()
+await initDb()
+await startTelegramBot()
 }
 process.on('unhandledRejection', (err) => {
-  const log = useLogg('UnhandledRejection').useGlobalConfig()
-  log
-    .withError(err)
-    .withField('cause', (err as any).cause)
-    .error('Unhandled rejection')
+const log = useLogg('UnhandledRejection').useGlobalConfig()
+log
+.withError(err)
+.withField('cause', (err as any).cause)
+.error('Unhandled rejection')
 })
 main().catch(console.error)

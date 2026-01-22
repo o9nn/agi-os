@@ -38,7 +38,7 @@ nm: string;
 si: string;
 so: string;
 };
-#	"@@",  "'EKSTYZekstyz   ",	"ьЕКСТЫЗекстызъЁё",
+# "@@", "'EKSTYZekstyz   ", "ьЕКСТЫЗекстызъЁё",
 latintab := array[] of {
 cvlist(
 ALPHA_LATIN,
@@ -60,7 +60,7 @@ ALPHA_CYRILLIC,
 ),
 cvlist(-1, nil, nil, nil)
 };
-alphabet := ALPHA_LATIN;	# per window perhaps
+alphabet := ALPHA_LATIN; # per window perhaps
 setalphabet(s: string)
 {
 for(a := 0; latintab[a].ld != -1; a++){
@@ -111,7 +111,7 @@ columnm = mods.columnm;
 windowm = mods.windowm;
 exec = mods.exec;
 }
-TABDIR : con 3;	# width of tabs in directory windows
+TABDIR : con 3; # width of tabs in directory windows
 # remove eventually
 KF : con 16rF000;
 Kup : con KF | 16r0E;
@@ -146,7 +146,7 @@ Text.redraw(t : self ref Text, r : Rect, f : ref Draw->Font, b : ref Image, odx 
 {
 framem->frinit(t.frame, r, f, b, t.frame.cols);
 rr := t.frame.r;
-rr.min.x -= Scrollwid;	# back fill to scroll bar
+rr.min.x -= Scrollwid; # back fill to scroll bar
 draw(t.frame.b, rr, t.frame.cols[Framem->BACK], nil, (0, 0));
 # use no wider than 3-space tabs in a directory
 maxt := dat->maxtab;
@@ -159,12 +159,12 @@ maxt = t.tabstop;
 t.frame.maxtab = maxt*charwidth(f, '0');
 # c = '0';
 # if(t.what==Body && t.w!=nil && t.w.isdir)
-#	c = ' ';
+# c = ' ';
 # t.frame.maxtab = Dat->Maxtab*charwidth(f, c);
 if(t.what==Body && t.w.isdir && odx!=t.all.dx()){
 if(t.frame.maxlines > 0){
 t.reset();
-t.columnate(t.w.dlp,  t.w.ndl);
+t.columnate(t.w.dlp, t.w.ndl);
 t.show(0, 0, TRUE);
 }
 }else{
@@ -388,10 +388,10 @@ rp = nil;
 for(i=0; i<t.file.ntext; i++){
 u = t.file.text[i];
 if(u != t){
-if(u.org > u.file.buf.nc)	# will be 0 because of reset(), but safety first
+if(u.org > u.file.buf.nc) # will be 0 because of reset(), but safety first
 u.org = 0;
 u.reshape(u.all);
-u.backnl(u.org, 0);	# go to beginning of line
+u.backnl(u.org, 0); # go to beginning of line
 }
 u.setselect(q0, q0);
 }
@@ -410,7 +410,7 @@ tp : ref Astring;
 bp, up : int;
 i, initial : int;
 {
-if(t.what == Tag)	# can't happen but safety first: mustn't backspace over file name
+if(t.what == Tag) # can't happen but safety first: mustn't backspace over file name
 raise "e";
 bp = 0;
 for(i=0; i<n; i++)
@@ -471,7 +471,7 @@ if(t.file.ntext > 1)
 for(i=0; i<t.file.ntext; i++){
 u = t.file.text[i];
 if(u != t){
-u.w.dirty = TRUE;	# always a body
+u.w.dirty = TRUE; # always a body
 u.insert(q0, r, n, FALSE, echomode);
 u.setselect(u.q0, u.q1);
 scrdraw(u);
@@ -517,7 +517,7 @@ do{
 n = t.file.buf.nc-(t.org+t.frame.nchars);
 if(n == 0)
 break;
-if(n > 2000)	# educated guess at reasonable amount
+if(n > 2000) # educated guess at reasonable amount
 n = 2000;
 t.file.buf.read(t.org+t.frame.nchars, rp, 0, n);
 #
@@ -558,7 +558,7 @@ if(t.file.ntext > 1)
 for(i=0; i<t.file.ntext; i++){
 u = t.file.text[i];
 if(u != t){
-u.w.dirty = TRUE;	# always a body
+u.w.dirty = TRUE; # always a body
 u.delete(q0, q1, FALSE);
 u.setselect(u.q0, u.q1);
 scrdraw(u);
@@ -606,20 +606,20 @@ q, eq : int;
 r : int;
 skipping : int;
 # there is known to be at least one character to erase
-if(c == 16r08)	# ^H: erase character
+if(c == 16r08) # ^H: erase character
 return 1;
 q = t.q0;
 skipping = TRUE;
 while(q > 0){
 r = t.readc(q-1);
-if(r == '\n'){		# eat at most one more character
-if(q == t.q0)	# eat the newline
+if(r == '\n'){ # eat at most one more character
+if(q == t.q0) # eat the newline
 --q;
 break;
 }
 if(c == 16r17){
 eq = isalnum(r);
-if(eq && skipping)	# found one; stop skipping
+if(eq && skipping) # found one; stop skipping
 skipping = FALSE;
 else if(!eq && !skipping)
 break;
@@ -700,7 +700,7 @@ t.show(t.q1, t.q1, TRUE);
 else if(t.q1 != t.file.buf.nc)
 t.show(t.q1+1, t.q1+1, TRUE);
 return;
-1 =>  	# ^A: beginning of line
+1 => # ^A: beginning of line
 t.commit(TRUE);
 # go to where ^U would erase, if not already at BOL
 nnb = 0;
@@ -708,7 +708,7 @@ if(t.q0>0 && t.readc(t.q0-1)!='\n')
 nnb = t.bswidth(16r15);
 t.show(t.q0-nnb, t.q0-nnb, TRUE);
 return;
-5 =>  	# ^E: end of line
+5 => # ^E: end of line
 t.commit(TRUE);
 q0 = t.q0;
 while(q0<t.file.buf.nc && t.readc(q0)!='\n')
@@ -725,7 +725,7 @@ if(t.ncache != 0)
 error("text.type");
 exec->cut(t, t, TRUE, TRUE);
 t.eq0 = ~0;
-if (r == 16r08 || r == 16r7f){	# erase character : odd if a char then erased
+if (r == 16r08 || r == 16r7f){ # erase character : odd if a char then erased
 t.show(t.q0, t.q0,TRUE);
 return;
 }
@@ -746,7 +746,7 @@ return;
 # ^H: erase character or ^U: erase line or ^W: erase word
 if(t.q0 == 0)
 return;
-if(0)	# DEBUGGING
+if(0) # DEBUGGING
 for(i=0; i<t.file.ntext; i++){
 u = t.file.text[i];
 if(u.cq0!=t.cq0 && (u.ncache!=t.ncache || t.ncache!=0))
@@ -810,7 +810,7 @@ t.file.text[i].fill();
 return;
 }
 # otherwise ordinary character; just insert, typically in caches of all texts
-if(0)	# DEBUGGING
+if(0) # DEBUGGING
 for(i=0; i<t.file.ntext; i++){
 u = t.file.text[i];
 if(u.cq0!=t.cq0 && (u.ncache!=t.ncache || t.ncache!=0))
@@ -914,9 +914,9 @@ y = mouse.xy.y;
 do
 frgetmouse();
 while(mouse.buttons==b && utils->abs(mouse.xy.x-x)<3 && utils->abs(mouse.xy.y-y)<3);
-mouse.xy.x = x;	# in case we're calling frselect
+mouse.xy.x = x; # in case we're calling frselect
 mouse.xy.y = y;
-q0 = t.q0;	# may have changed
+q0 = t.q0; # may have changed
 q1 = t.q1;
 selectq = q0;
 }
@@ -948,7 +948,7 @@ clickmsec = mouse.msec;
 clicktext = nil;
 t.setselect(q0, q1);
 bflush();
-state = 0;	# undo when possible; +1 for cut, -1 for paste
+state = 0; # undo when possible; +1 for cut, -1 for paste
 while(mouse.buttons){
 mouse.msec = 0;
 b = mouse.buttons;
@@ -1122,7 +1122,7 @@ q = frcharofpt(f, mc.xy);
 if(p1 != q){
 if(p0 == p1)
 frtick(f, pt0, 0);
-if(reg != region(q, p0)){	# crossed starting point; reset
+if(reg != region(q, p0)){ # crossed starting point; reset
 if(reg > 0)
 selrestore(f, pt0, p0, p1);
 else if(reg < 0)
@@ -1188,7 +1188,7 @@ buts : int;
 (buts, q0, q1) = t.select23(q0, q1, acme->but2col, acme->but2colt, 4);
 if(buts & 4)
 return (0, nil, q0, q1);
-if(buts & 1)	# pick up argument
+if(buts & 1) # pick up argument
 return (1, dat->argtext, q0, q1);
 return (1, nil, q0, q1);
 }
@@ -1306,7 +1306,7 @@ if(n==0 && p>0 && t.readc(p-1)!='\n')
 n = 1;
 i = n;
 while(i-- > 0 && p>0){
---p;	# it's at a newline now; back over it
+--p; # it's at a newline now; back over it
 if(p == 0)
 break;
 # at 128 chars, call it a line anyway
@@ -1337,7 +1337,7 @@ a = org-t.org;
 fixup := 0;
 if(a>=0 && a<t.frame.nchars){
 frdelete(t.frame, 0, a);
-fixup = 1;		# frdelete can leave end of last line in wrong selection mode; it doesn't know what follows
+fixup = 1; # frdelete can leave end of last line in wrong selection mode; it doesn't know what follows
 }
 else if(a<0 && -a<t.frame.nchars){
 n = t.org - org;

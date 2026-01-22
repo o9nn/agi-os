@@ -12,69 +12,69 @@
 char Eperm[] = "permission denied";
 char Eexist[] = "file does not exist";
 char Enotdir[] = "not a directory";
-char	Ebadfcall[] = "bad fcall type";
-char	Eoffset[] = "illegal offset";
-int	messagesize = 8192+IOHDRSZ;
+char Ebadfcall[] = "bad fcall type";
+char Eoffset[] = "illegal offset";
+int messagesize = 8192+IOHDRSZ;
 enum{
 DEBUG = 0
 };
 Dirtab dirtab[]=
 {
-{ ".",			QTDIR,	Qdir,			0500|DMDIR },
-{ "cons",		QTFILE,	Qcons,		0600 },
-{ "cursor",		QTFILE,	Qcursor,		0600 },
-{ "consctl",	QTFILE,	Qconsctl,		0200 },
-{ "winid",		QTFILE,	Qwinid,		0400 },
-{ "winname",	QTFILE,	Qwinname,	0400 },
-{ "kbdin",		QTFILE,	Qkbdin,		0200 },
-{ "label",		QTFILE,	Qlabel,		0600 },
-{ "mouse",	QTFILE,	Qmouse,		0600 },
-{ "screen",		QTFILE,	Qscreen,		0400 },
-{ "snarf",		QTFILE,	Qsnarf,		0600 },
-{ "text",		QTFILE,	Qtext,		0400 },
-{ "wdir",		QTFILE,	Qwdir,		0600 },
-{ "wctl",		QTFILE,	Qwctl,		0600 },
-{ "window",	QTFILE,	Qwindow,		0400 },
-{ "wsys",		QTDIR,	Qwsys,		0500|DMDIR },
+{ ".", QTDIR, Qdir, 0500|DMDIR },
+{ "cons", QTFILE, Qcons, 0600 },
+{ "cursor", QTFILE, Qcursor, 0600 },
+{ "consctl", QTFILE, Qconsctl, 0200 },
+{ "winid", QTFILE, Qwinid, 0400 },
+{ "winname", QTFILE, Qwinname, 0400 },
+{ "kbdin", QTFILE, Qkbdin, 0200 },
+{ "label", QTFILE, Qlabel, 0600 },
+{ "mouse", QTFILE, Qmouse, 0600 },
+{ "screen", QTFILE, Qscreen, 0400 },
+{ "snarf", QTFILE, Qsnarf, 0600 },
+{ "text", QTFILE, Qtext, 0400 },
+{ "wdir", QTFILE, Qwdir, 0600 },
+{ "wctl", QTFILE, Qwctl, 0600 },
+{ "window", QTFILE, Qwindow, 0400 },
+{ "wsys", QTDIR, Qwsys, 0500|DMDIR },
 { nil, }
 };
-static uint		getclock(void);
-static void		filsysproc(void*);
-static Fid*		newfid(Filsys*, int);
-static int		dostat(Filsys*, int, Dirtab*, uchar*, int, uint);
-int	clockfd;
-int	firstmessage = 1;
-char	srvpipe[64];
-char	srvwctl[64];
-static	Xfid*	filsysflush(Filsys*, Xfid*, Fid*);
-static	Xfid*	filsysversion(Filsys*, Xfid*, Fid*);
-static	Xfid*	filsysauth(Filsys*, Xfid*, Fid*);
-static	Xfid*	filsysnop(Filsys*, Xfid*, Fid*);
-static	Xfid*	filsysattach(Filsys*, Xfid*, Fid*);
-static	Xfid*	filsyswalk(Filsys*, Xfid*, Fid*);
-static	Xfid*	filsysopen(Filsys*, Xfid*, Fid*);
-static	Xfid*	filsyscreate(Filsys*, Xfid*, Fid*);
-static	Xfid*	filsysread(Filsys*, Xfid*, Fid*);
-static	Xfid*	filsyswrite(Filsys*, Xfid*, Fid*);
-static	Xfid*	filsysclunk(Filsys*, Xfid*, Fid*);
-static	Xfid*	filsysremove(Filsys*, Xfid*, Fid*);
-static	Xfid*	filsysstat(Filsys*, Xfid*, Fid*);
-static	Xfid*	filsyswstat(Filsys*, Xfid*, Fid*);
-Xfid* 	(*fcall[Tmax])(Filsys*, Xfid*, Fid*) =
+static uint getclock(void);
+static void filsysproc(void*);
+static Fid* newfid(Filsys*, int);
+static int dostat(Filsys*, int, Dirtab*, uchar*, int, uint);
+int clockfd;
+int firstmessage = 1;
+char srvpipe[64];
+char srvwctl[64];
+static Xfid* filsysflush(Filsys*, Xfid*, Fid*);
+static Xfid* filsysversion(Filsys*, Xfid*, Fid*);
+static Xfid* filsysauth(Filsys*, Xfid*, Fid*);
+static Xfid* filsysnop(Filsys*, Xfid*, Fid*);
+static Xfid* filsysattach(Filsys*, Xfid*, Fid*);
+static Xfid* filsyswalk(Filsys*, Xfid*, Fid*);
+static Xfid* filsysopen(Filsys*, Xfid*, Fid*);
+static Xfid* filsyscreate(Filsys*, Xfid*, Fid*);
+static Xfid* filsysread(Filsys*, Xfid*, Fid*);
+static Xfid* filsyswrite(Filsys*, Xfid*, Fid*);
+static Xfid* filsysclunk(Filsys*, Xfid*, Fid*);
+static Xfid* filsysremove(Filsys*, Xfid*, Fid*);
+static Xfid* filsysstat(Filsys*, Xfid*, Fid*);
+static Xfid* filsyswstat(Filsys*, Xfid*, Fid*);
+Xfid* (*fcall[Tmax])(Filsys*, Xfid*, Fid*) =
 {
-[Tflush]	= filsysflush,
-[Tversion]	= filsysversion,
-[Tauth]	= filsysauth,
-[Tattach]	= filsysattach,
-[Twalk]	= filsyswalk,
-[Topen]	= filsysopen,
-[Tcreate]	= filsyscreate,
-[Tread]	= filsysread,
-[Twrite]	= filsyswrite,
-[Tclunk]	= filsysclunk,
+[Tflush] = filsysflush,
+[Tversion] = filsysversion,
+[Tauth] = filsysauth,
+[Tattach] = filsysattach,
+[Twalk] = filsyswalk,
+[Topen] = filsysopen,
+[Tcreate] = filsyscreate,
+[Tread] = filsysread,
+[Twrite] = filsyswrite,
+[Tclunk] = filsysclunk,
 [Tremove]= filsysremove,
-[Tstat]	= filsysstat,
-[Twstat]	= filsyswstat,
+[Tstat] = filsysstat,
+[Twstat] = filsyswstat,
 };
 void
 post(char *name, char *envname, int srvfd)
@@ -183,7 +183,7 @@ f = nil;
 else
 f = newfid(fs, x->fid);
 x->f = f;
-x  = (*fcall[x->type])(fs, x, f);
+x = (*fcall[x->type])(fs, x, f);
 }
 firstmessage = 0;
 }
@@ -308,7 +308,7 @@ Qid qid;
 if(f->open)
 return filsysrespond(fs, x, &t, "walk of open file");
 nf = nil;
-if(x->fid  != x->newfid){
+if(x->fid != x->newfid){
 nf = newfid(fs, x->newfid);
 if(nf->busy)
 return filsysrespond(fs, x, &t, "clone to busy fid");

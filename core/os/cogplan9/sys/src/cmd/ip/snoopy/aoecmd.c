@@ -4,21 +4,21 @@
 #include "dat.h"
 #include "protos.h"
 typedef struct{
-uchar	bc[2];
-uchar	fw[2];
-uchar	sc;
-uchar	ccmd;
-uchar	len[2];
+uchar bc[2];
+uchar fw[2];
+uchar sc;
+uchar ccmd;
+uchar len[2];
 }Hdr;
 enum{
-Hsize	= 8,
+Hsize = 8,
 };
 enum{
 Ocmd,
 };
 static Field p_fields[] =
 {
-{"cmd",		Fnum,	Ocmd,		"cmd",	},
+{"cmd", Fnum, Ocmd, "cmd", },
 {0}
 };
 static void

@@ -4,14 +4,14 @@ import { registerMySQL2DatabaseDialect } from './mysql'
 import { registerPGLiteWebSocketDatabaseDialect } from './pglite-ws'
 import { registerPostgresJsDatabaseDialect } from './postgres'
 export function registerDatabaseDialects(window: BrowserWindow) {
-  registerMySQL2DatabaseDialect(window)
-  registerPostgresJsDatabaseDialect(window)
-  registerPGLiteDatabaseDialect(window)
-  registerPGLiteWebSocketDatabaseDialect(window)
+registerMySQL2DatabaseDialect(window)
+registerPostgresJsDatabaseDialect(window)
+registerPGLiteDatabaseDialect(window)
+registerPGLiteWebSocketDatabaseDialect(window)
 }
 export {
-  registerMySQL2DatabaseDialect,
-  registerPGLiteDatabaseDialect,
-  registerPGLiteWebSocketDatabaseDialect,
-  registerPostgresJsDatabaseDialect,
+registerMySQL2DatabaseDialect,
+registerPGLiteDatabaseDialect,
+registerPGLiteWebSocketDatabaseDialect,
+registerPostgresJsDatabaseDialect,
 }

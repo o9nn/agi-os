@@ -1,13 +1,13 @@
 #ifndef gxiparam_INCLUDED
-#  define gxiparam_INCLUDED
+# define gxiparam_INCLUDED
 #include "gsstype.h"
 #include "gxdevcli.h"
 #ifndef stream_DEFINED
-#  define stream_DEFINED
+# define stream_DEFINED
 typedef struct stream_s stream;
 #endif
 #ifndef gx_image_type_DEFINED
-#  define gx_image_type_DEFINED
+# define gx_image_type_DEFINED
 typedef struct gx_image_type_s gx_image_type_t;
 #endif
 struct gx_image_type_s {
@@ -45,7 +45,7 @@ int sget_variable_uint(stream *s, uint *pw);
 #define DECODE_DEFAULT(i, dd1)\
 ((i) == 1 ? dd1 : (i) & 1)
 #ifndef gx_image_enum_common_t_DEFINED
-#  define gx_image_enum_common_t_DEFINED
+# define gx_image_enum_common_t_DEFINED
 typedef struct gx_image_enum_common_s gx_image_enum_common_t;
 #endif
 typedef struct gx_image_enum_procs_s {
@@ -69,13 +69,13 @@ const gx_image_enum_procs_t *procs;\
 gx_device *dev;\
 gs_id id;\
 int num_planes;\
-int plane_depths[gs_image_max_planes];	\
+int plane_depths[gs_image_max_planes]; \
 int plane_widths[gs_image_max_planes]
 struct gx_image_enum_common_s {
 gx_image_enum_common;
 };
 extern_st(st_gx_image_enum_common);
-#define public_st_gx_image_enum_common()	\
+#define public_st_gx_image_enum_common() \
 gs_public_st_composite(st_gx_image_enum_common, gx_image_enum_common_t,\
 "gx_image_enum_common_t",\
 image_enum_common_enum_ptrs, image_enum_common_reloc_ptrs)

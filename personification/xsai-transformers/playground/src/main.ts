@@ -6,5 +6,5 @@ import '@unocss/reset/tailwind.css'
 import 'uno.css'
 const router = createRouter({ history: createWebHashHistory(), routes })
 createApp(App)
-  .use(router)
-  .mount('#app')
+.use(router)
+.mount('#app')

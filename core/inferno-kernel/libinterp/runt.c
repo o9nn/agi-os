@@ -4,7 +4,7 @@
 #include "runt.h"
 #include "sysmod.h"
 #include "raise.h"
-static	int		utfnleng(char*, int, int*);
+static int utfnleng(char*, int, int*);
 void
 sysmodinit(void)
 {

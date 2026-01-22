@@ -1,87 +1,87 @@
 package integration
 import (
-	"context"
-	"log/slog"
-	"os"
-	"runtime"
-	"testing"
-	"time"
-	"github.com/EchoCog/echollama/api"
-	"github.com/stretchr/testify/require"
+"context"
+"log/slog"
+"os"
+"runtime"
+"testing"
+"time"
+"github.com/EchoCog/echollama/api"
+"github.com/stretchr/testify/require"
 )
 func TestBlueSky(t *testing.T) {
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
-	defer cancel()
-	req := api.GenerateRequest{
-		Model:  smol,
-		Prompt: "why is the sky blue?",
-		Stream: &stream,
-		Options: map[string]any{
-			"temperature": 0,
-			"seed":        123,
-		},
-	}
-	GenerateTestHelper(ctx, t, req, []string{"rayleigh", "scattering"})
+ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
+defer cancel()
+req := api.GenerateRequest{
+Model:  smol,
+Prompt: "why is the sky blue?",
+Stream: &stream,
+Options: map[string]any{
+"temperature": 0,
+"seed":        123,
+},
+}
+GenerateTestHelper(ctx, t, req, []string{"rayleigh", "scattering"})
 }
 func TestUnicode(t *testing.T) {
-	skipUnderMinVRAM(t, 6)
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Minute)
-	defer cancel()
-	req := api.GenerateRequest{
-		Model:  "deepseek-coder-v2:16b-lite-instruct-q2_K",
-		Prompt: "天空为什么是蓝色的?",
-		Stream: &stream,
-		Options: map[string]any{
-			"temperature": 0,
-			"seed":        123,
-			"num_ctx":     8192,
-			"num_predict": 2048,
-		},
-	}
-	client, _, cleanup := InitServerConnection(ctx, t)
-	defer cleanup()
-	require.NoError(t, PullIfMissing(ctx, client, req.Model))
-	DoGenerate(ctx, t, client, req, []string{"散射", "频率"}, 120*time.Second, 120*time.Second)
+skipUnderMinVRAM(t, 6)
+ctx, cancel := context.WithTimeout(context.Background(), 3*time.Minute)
+defer cancel()
+req := api.GenerateRequest{
+Model:  "deepseek-coder-v2:16b-lite-instruct-q2_K",
+Prompt: "天空为什么是蓝色的?",
+Stream: &stream,
+Options: map[string]any{
+"temperature": 0,
+"seed":        123,
+"num_ctx":     8192,
+"num_predict": 2048,
+},
+}
+client, _, cleanup := InitServerConnection(ctx, t)
+defer cleanup()
+require.NoError(t, PullIfMissing(ctx, client, req.Model))
+DoGenerate(ctx, t, client, req, []string{"散射", "频率"}, 120*time.Second, 120*time.Second)
 }
 func TestExtendedUnicodeOutput(t *testing.T) {
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
-	defer cancel()
-	req := api.GenerateRequest{
-		Model:  "gemma2:2b",
-		Prompt: "Output some smily face emoji",
-		Stream: &stream,
-		Options: map[string]any{
-			"temperature": 0,
-			"seed":        123,
-		},
-	}
-	client, _, cleanup := InitServerConnection(ctx, t)
-	defer cleanup()
-	require.NoError(t, PullIfMissing(ctx, client, req.Model))
-	DoGenerate(ctx, t, client, req, []string{"😀", "😊", "😁", "😂", "😄", "😃"}, 120*time.Second, 120*time.Second)
+ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
+defer cancel()
+req := api.GenerateRequest{
+Model:  "gemma2:2b",
+Prompt: "Output some smily face emoji",
+Stream: &stream,
+Options: map[string]any{
+"temperature": 0,
+"seed":        123,
+},
+}
+client, _, cleanup := InitServerConnection(ctx, t)
+defer cleanup()
+require.NoError(t, PullIfMissing(ctx, client, req.Model))
+DoGenerate(ctx, t, client, req, []string{"😀", "😊", "😁", "😂", "😄", "😃"}, 120*time.Second, 120*time.Second)
 }
 func TestUnicodeModelDir(t *testing.T) {
-	if runtime.GOOS != "windows" {
-		t.Skip("Unicode test only applicable to windows")
-	}
-	if os.Getenv("OLLAMA_TEST_EXISTING") != "" {
-		t.Skip("TestUnicodeModelDir only works for local testing, skipping")
-	}
-	modelDir, err := os.MkdirTemp("", "ollama_埃")
-	require.NoError(t, err)
-	defer os.RemoveAll(modelDir)
-	slog.Info("unicode", "OLLAMA_MODELS", modelDir)
-	t.Setenv("OLLAMA_MODELS", modelDir)
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
-	defer cancel()
-	req := api.GenerateRequest{
-		Model:  smol,
-		Prompt: "why is the sky blue?",
-		Stream: &stream,
-		Options: map[string]any{
-			"temperature": 0,
-			"seed":        123,
-		},
-	}
-	GenerateTestHelper(ctx, t, req, []string{"rayleigh", "scattering"})
+if runtime.GOOS != "windows" {
+t.Skip("Unicode test only applicable to windows")
+}
+if os.Getenv("OLLAMA_TEST_EXISTING") != "" {
+t.Skip("TestUnicodeModelDir only works for local testing, skipping")
+}
+modelDir, err := os.MkdirTemp("", "ollama_埃")
+require.NoError(t, err)
+defer os.RemoveAll(modelDir)
+slog.Info("unicode", "OLLAMA_MODELS", modelDir)
+t.Setenv("OLLAMA_MODELS", modelDir)
+ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
+defer cancel()
+req := api.GenerateRequest{
+Model:  smol,
+Prompt: "why is the sky blue?",
+Stream: &stream,
+Options: map[string]any{
+"temperature": 0,
+"seed":        123,
+},
+}
+GenerateTestHelper(ctx, t, req, []string{"rayleigh", "scattering"})
 }

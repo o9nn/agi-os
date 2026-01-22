@@ -7,47 +7,47 @@
 #include "../port/error.h"
 extern PhysUart oxphysuart;
 enum {
-Ccr		= 0x0000/4,
-Nuart		= 0x0004/4,
-Gis		= 0x0008/4,
-Gie		= 0x000C/4,
-Gid		= 0x0010/4,
-Gwe		= 0x0014/4,
-Gwd		= 0x0018/4,
+Ccr = 0x0000/4,
+Nuart = 0x0004/4,
+Gis = 0x0008/4,
+Gie = 0x000C/4,
+Gid = 0x0010/4,
+Gwe = 0x0014/4,
+Gwd = 0x0018/4,
 };
 enum {
-Thr		= 0x00,
-Rhr		= 0x00,
-Ier		= 0x01,
-Fcr		= 0x02,
-Isr		= 0x02,
-Lcr		= 0x03,
-Mcr		= 0x04,
-Lsr		= 0x05,
-Msr		= 0x06,
-Spr		= 0x07,
-Dll		= 0x00,
-Dlm		= 0x01,
-Efr		= 0x02,
+Thr = 0x00,
+Rhr = 0x00,
+Ier = 0x01,
+Fcr = 0x02,
+Isr = 0x02,
+Lcr = 0x03,
+Mcr = 0x04,
+Lsr = 0x05,
+Msr = 0x06,
+Spr = 0x07,
+Dll = 0x00,
+Dlm = 0x01,
+Efr = 0x02,
 };
 typedef struct Port Port;
 typedef struct Ctlr Ctlr;
 struct Port {
 Uart;
-Ctlr	*ctlr;
-u8int	*mem;
-int	level;
-int	dtr, rts;
-int	ri;
+Ctlr *ctlr;
+u8int *mem;
+int level;
+int dtr, rts;
+int ri;
 };
 struct Ctlr {
 Lock;
-char	*name;
-Pcidev	*pcidev;
-u32int	*mem;
-u32int	im;
-Port	port[0x10];
-int	nport;
+char *name;
+Pcidev *pcidev;
+u32int *mem;
+u32int im;
+Port port[0x10];
+int nport;
 };
 static Uart *
 oxpnp(void)
@@ -196,7 +196,7 @@ break;
 }
 iunlock(ctlr);
 }
-#define MASK(p)	(1UL<<((p)-(p)->ctlr->port))
+#define MASK(p) (1UL<<((p)-(p)->ctlr->port))
 static void
 oxenable(Uart *uart, int)
 {
@@ -483,19 +483,19 @@ port->level = level;
 iunlock(ctlr);
 }
 PhysUart oxphysuart = {
-.name		= "OXPCIe95x",
-.pnp		= oxpnp,
-.enable		= oxenable,
-.disable	= oxdisable,
-.kick		= oxkick,
-.dobreak	= oxdobreak,
-.baud		= oxbaud,
-.bits		= oxbits,
-.stop		= oxstop,
-.parity		= oxparity,
-.modemctl	= oxmodemctl,
-.rts		= oxrts,
-.dtr		= oxdtr,
-.status		= oxstatus,
-.fifo		= oxfifo,
+.name = "OXPCIe95x",
+.pnp = oxpnp,
+.enable = oxenable,
+.disable = oxdisable,
+.kick = oxkick,
+.dobreak = oxdobreak,
+.baud = oxbaud,
+.bits = oxbits,
+.stop = oxstop,
+.parity = oxparity,
+.modemctl = oxmodemctl,
+.rts = oxrts,
+.dtr = oxdtr,
+.status = oxstatus,
+.fifo = oxfifo,
 };

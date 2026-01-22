@@ -6,9 +6,9 @@
 #include <keyboard.h>
 #include "cons.h"
 enum{
-Ehost		= 4,
+Ehost = 4,
 };
-char	*menutext2[] = {
+char *menutext2[] = {
 "backup",
 "forward",
 "reset",
@@ -17,7 +17,7 @@ char	*menutext2[] = {
 "page",
 0
 };
-char	*menutext3[] = {
+char *menutext3[] = {
 "24x80",
 "crnl",
 "nl",
@@ -25,34 +25,34 @@ char	*menutext3[] = {
 "exit",
 0
 };
-int	x, y;
-char	*backp;
-int	backc;
-int	atend;
-int	nbacklines;
-int	xmax, ymax;
-int	blocked;
-int	resize_flag;
-int	pagemode;
-int	olines;
-int	peekc;
-int	cursoron = 1;
-Menu	menu2;
-Menu	menu3;
-char	*histp;
-char	hist[HISTSIZ];
-int	yscrmin, yscrmax;
-int	attr, defattr;
-int	wctlout;
-Image	*bordercol;
-Image	*cursback;
-Image	*colors[8];
-Image	*hicolors[8];
-Image	*red;
-Image	*fgcolor;
-Image	*bgcolor;
-Image	*fgdefault;
-Image	*bgdefault;
+int x, y;
+char *backp;
+int backc;
+int atend;
+int nbacklines;
+int xmax, ymax;
+int blocked;
+int resize_flag;
+int pagemode;
+int olines;
+int peekc;
+int cursoron = 1;
+Menu menu2;
+Menu menu3;
+char *histp;
+char hist[HISTSIZ];
+int yscrmin, yscrmax;
+int attr, defattr;
+int wctlout;
+Image *bordercol;
+Image *cursback;
+Image *colors[8];
+Image *hicolors[8];
+Image *red;
+Image *fgcolor;
+Image *bgcolor;
+Image *fgdefault;
+Image *bgdefault;
 uint rgbacolors[8] = {
 0x000000FF,
 0xAA0000FF,
@@ -74,38 +74,38 @@ ulong rgbahicolors[8] = {
 0xFFFFFFFF,
 };
 struct ttystate ttystate[2] = { {0, 1}, {0, 1} };
-int	NS;
-int	CW;
+int NS;
+int CW;
 Consstate *cs;
-Mouse	mouse;
-int	debug;
-int	nocolor;
-int	logfd = -1;
-int	outfd = -1;
-Biobuf	*snarffp = 0;
-char	*host_buf;
-char	*hostp;
-int	host_bsize = 2*BSIZE;
-int	hostlength;
-char	echo_input[BSIZE];
-char	*echop = echo_input;
-char	sendbuf[BSIZE];
-char	*sendp = sendbuf;
+Mouse mouse;
+int debug;
+int nocolor;
+int logfd = -1;
+int outfd = -1;
+Biobuf *snarffp = 0;
+char *host_buf;
+char *hostp;
+int host_bsize = 2*BSIZE;
+int hostlength;
+char echo_input[BSIZE];
+char *echop = echo_input;
+char sendbuf[BSIZE];
+char *sendp = sendbuf;
 char *term;
 struct funckey *fk;
-void	initialize(int, char **);
-void	ebegin(int);
-int	waitchar(void);
-int	rcvchar(void);
-void	set_input(char *);
-void	set_host(Event *);
-void	bigscroll(void);
-void	readmenu(void);
-void	eresized(int);
-void	resize(void);
-void	send_interrupt(void);
-int	alnum(int);
-void	escapedump(int,uchar *,int);
+void initialize(int, char **);
+void ebegin(int);
+int waitchar(void);
+int rcvchar(void);
+void set_input(char *);
+void set_host(Event *);
+void bigscroll(void);
+void readmenu(void);
+void eresized(int);
+void resize(void);
+void send_interrupt(void);
+int alnum(int);
+void escapedump(int,uchar *,int);
 void
 main(int argc, char **argv)
 {

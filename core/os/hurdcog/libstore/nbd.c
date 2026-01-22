@@ -11,10 +11,10 @@
 #include <unistd.h>
 #include <sys/mman.h>
 #pragma weak gethostbyname
-#define NBD_INIT_MAGIC		"NBDMAGIC\x00\x00\x42\x02\x81\x86\x12\x53"
-#define NBD_REQUEST_MAGIC	(htonl (0x25609513))
-#define NBD_REPLY_MAGIC		(htonl (0x67446698))
-#define NBD_IO_MAX		10240
+#define NBD_INIT_MAGIC "NBDMAGIC\x00\x00\x42\x02\x81\x86\x12\x53"
+#define NBD_REQUEST_MAGIC (htonl (0x25609513))
+#define NBD_REPLY_MAGIC (htonl (0x67446698))
+#define NBD_IO_MAX 10240
 struct nbd_startup
 {
 char magic[16];
@@ -36,10 +36,10 @@ uint32_t error;
 uint64_t handle;
 } __attribute__ ((packed));
 #if BYTE_ORDER == BIG_ENDIAN
-# define htonll(x)	(x)
+# define htonll(x) (x)
 #elif BYTE_ORDER == LITTLE_ENDIAN
 # include <byteswap.h>
-# define htonll(x)	(bswap_64 (x))
+# define htonll(x) (bswap_64 (x))
 #else
 # error what endian?
 #endif

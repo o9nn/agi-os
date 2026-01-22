@@ -7,7 +7,7 @@
 #if defined(OPENSSL_SYS_NETWARE) && defined(NETWARE_BSDSOCK)
 # include <netdb.h>
 # if defined(NETWARE_CLIB)
-#  include <sys/ioctl.h>
+# include <sys/ioctl.h>
 NETDB_DEFINE_CONTEXT
 # endif
 #endif
@@ -15,22 +15,22 @@ NETDB_DEFINE_CONTEXT
 # include <openssl/dso.h>
 # define SOCKET_PROTOCOL IPPROTO_TCP
 # ifdef SO_MAXCONN
-#  define MAX_LISTEN  SO_MAXCONN
+# define MAX_LISTEN SO_MAXCONN
 # elif defined(SOMAXCONN)
-#  define MAX_LISTEN  SOMAXCONN
+# define MAX_LISTEN SOMAXCONN
 # else
-#  define MAX_LISTEN  32
+# define MAX_LISTEN 32
 # endif
 # if defined(OPENSSL_SYS_WINDOWS) || (defined(OPENSSL_SYS_NETWARE) && !defined(NETWARE_BSDSOCK))
 static int wsa_init_done = 0;
 # endif
 # ifndef WSAAPI
-#  define WSAAPI
+# define WSAAPI
 # endif
 # if 0
 static unsigned long BIO_ghbn_hits = 0L;
 static unsigned long BIO_ghbn_miss = 0L;
-#  define GHBN_NUM        4
+# define GHBN_NUM 4
 static struct ghbn_cache_st {
 char name[129];
 struct hostent *ent;
@@ -247,18 +247,18 @@ OPENSSL_free(a);
 struct hostent *BIO_gethostbyname(const char *name)
 {
 # if 1
-#  if (defined(NETWARE_BSDSOCK) && !defined(__NOVELL_LIBC__))
+# if (defined(NETWARE_BSDSOCK) && !defined(__NOVELL_LIBC__))
 return gethostbyname((char *)name);
-#  else
+# else
 return gethostbyname(name);
-#  endif
+# endif
 # else
 struct hostent *ret;
 int i, lowi = 0, j;
 unsigned long low = (unsigned long)-1;
-#  if 0
+# if 0
 CRYPTO_w_lock(CRYPTO_LOCK_GETHOSTBYNAME);
-#  endif
+# endif
 j = strlen(name);
 if (j < 128) {
 for (i = 0; i < GHBN_NUM; i++) {
@@ -275,17 +275,17 @@ break;
 i = GHBN_NUM;
 if (i == GHBN_NUM) {
 BIO_ghbn_miss++;
-#  ifndef CONST_STRICT
+# ifndef CONST_STRICT
 ret = gethostbyname((char *)name);
-#  else
+# else
 ret = gethostbyname(name);
-#  endif
+# endif
 if (ret == NULL)
 goto end;
 if (j > 128) {
-#  if 0
+# if 0
 ret = NULL;
-#  endif
+# endif
 goto end;
 }
 if (ghbn_cache[lowi].ent != NULL)
@@ -303,9 +303,9 @@ ret = ghbn_cache[i].ent;
 ghbn_cache[i].order = BIO_ghbn_miss + BIO_ghbn_hits;
 }
 end:
-#  if 0
+# if 0
 CRYPTO_w_unlock(CRYPTO_LOCK_GETHOSTBYNAME);
-#  endif
+# endif
 return (ret);
 # endif
 }
@@ -353,9 +353,9 @@ void BIO_sock_cleanup(void)
 # ifdef OPENSSL_SYS_WINDOWS
 if (wsa_init_done) {
 wsa_init_done = 0;
-#  if 0
+# if 0
 WSACancelBlockingCall();
-#  endif
+# endif
 WSACleanup();
 }
 # elif defined(OPENSSL_SYS_NETWARE) && !defined(NETWARE_BSDSOCK)
@@ -369,27 +369,27 @@ WSACleanup();
 int BIO_socket_ioctl(int fd, long type, void *arg)
 {
 int i;
-#  ifdef __DJGPP__
+# ifdef __DJGPP__
 i = ioctlsocket(fd, type, (char *)arg);
-#  else
-#   if defined(OPENSSL_SYS_VMS)
-#    if __INITIAL_POINTER_SIZE == 64
-#     define ARG arg_32p
-#     pragma pointer_size save
-#     pragma pointer_size 32
+# else
+# if defined(OPENSSL_SYS_VMS)
+# if __INITIAL_POINTER_SIZE == 64
+# define ARG arg_32p
+# pragma pointer_size save
+# pragma pointer_size 32
 unsigned long arg_32;
 unsigned long *arg_32p;
-#     pragma pointer_size restore
+# pragma pointer_size restore
 arg_32p = &arg_32;
 arg_32 = *((unsigned long *)arg);
-#    else
-#     define ARG arg
-#    endif
-#   else
-#    define ARG arg
-#   endif
+# else
+# define ARG arg
+# endif
+# else
+# define ARG arg
+# endif
 i = ioctlsocket(fd, type, ARG);
-#  endif
+# endif
 if (i < 0)
 SYSerr(SYS_F_IOCTLSOCKET, get_last_socket_error());
 return (i);
@@ -490,11 +490,11 @@ if (h) {
 if (strchr(h, ':')) {
 if (h[1] == '\0')
 h = NULL;
-#  if OPENSSL_USE_IPV6
+# if OPENSSL_USE_IPV6
 hint.ai_family = AF_INET6;
-#  else
+# else
 h = NULL;
-#  endif
+# endif
 } else if (h[0] == '*' && h[1] == '\0') {
 hint.ai_family = AF_INET;
 h = NULL;
@@ -545,21 +545,21 @@ if (bind(s, &server.sa, addrlen) == -1) {
 # ifdef SO_REUSEADDR
 err_num = get_last_socket_error();
 if ((bind_mode == BIO_BIND_REUSEADDR_IF_UNUSED) &&
-#  ifdef OPENSSL_SYS_WINDOWS
+# ifdef OPENSSL_SYS_WINDOWS
 (err_num == WSAEADDRINUSE))
-#  else
+# else
 (err_num == EADDRINUSE))
-#  endif
+# endif
 {
 client = server;
 if (h == NULL || strcmp(h, "*") == 0) {
-#  if OPENSSL_USE_IPV6
+# if OPENSSL_USE_IPV6
 if (client.sa.sa_family == AF_INET6) {
 memset(&client.sa_in6.sin6_addr, 0,
 sizeof(client.sa_in6.sin6_addr));
 client.sa_in6.sin6_addr.s6_addr[15] = 1;
 } else
-#  endif
+# endif
 if (client.sa.sa_family == AF_INET) {
 client.sa_in.sin_addr.s_addr = htonl(0x7F000001);
 } else
@@ -641,7 +641,7 @@ char h[NI_MAXHOST], s[NI_MAXSERV];
 size_t nl;
 static union {
 void *p;
-int (WSAAPI *f) (const struct sockaddr *, size_t  ,
+int (WSAAPI *f) (const struct sockaddr *, size_t ,
 char *, size_t, char *, size_t, int);
 } p_getnameinfo = {
 NULL
@@ -696,13 +696,13 @@ int BIO_set_tcp_ndelay(int s, int on)
 int ret = 0;
 # if defined(TCP_NODELAY) && (defined(IPPROTO_TCP) || defined(SOL_TCP))
 int opt;
-#  ifdef SOL_TCP
+# ifdef SOL_TCP
 opt = SOL_TCP;
-#  else
-#   ifdef IPPROTO_TCP
+# else
+# ifdef IPPROTO_TCP
 opt = IPPROTO_TCP;
-#   endif
-#  endif
+# endif
+# endif
 ret = setsockopt(s, opt, TCP_NODELAY, (char *)&on, sizeof(on));
 # endif
 return (ret == 0);

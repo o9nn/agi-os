@@ -3,7 +3,7 @@ static char *ident = "$Id: tar.c,v 1.2 89/02/12 10:06:05 mark Exp $";
 static char *copyright ="Copyright (c) 1989 Mark H. Colburn.\nAll rights reserved.";
 #endif
 #include "pax.h"
-#define DEF_BLOCKING	20
+#define DEF_BLOCKING 20
 #ifdef __STDC__
 static int taropt(int , char **, char *);
 static void usage(void);
@@ -15,11 +15,11 @@ static void usage();
 int do_tar(int argc, char **argv)
 #else
 int do_tar(argc, argv)
-int             argc;
-char          **argv;
+int argc;
+char **argv;
 #endif
 {
-int             c;
+int c;
 names_from_stdin = 0;
 ar_file = getenv("TAPE");
 if (ar_file == 0) {
@@ -120,17 +120,17 @@ return (0);
 static int taropt(int argc, char **argv, char *optstring)
 #else
 static int taropt(argc, argv, optstring)
-int             argc;
-char          **argv;
-char           *optstring;
+int argc;
+char **argv;
+char *optstring;
 #endif
 {
-extern char    *optarg;
-extern int      optind;
-static char    *key;
-static char     use_getopt;
-char            c;
-char           *place;
+extern char *optarg;
+extern int optind;
+static char *key;
+static char use_getopt;
+char c;
+char *place;
 optarg = (char *)NULL;
 if (key == (char *)NULL) {
 if (argc < 2)

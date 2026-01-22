@@ -10,183 +10,183 @@
 (EvaluationLink (PredicateNode "IsNumber") (ConceptNode "eight"))
 (EvaluationLink (PredicateNode "IsNumber") (ConceptNode "nine"))
 (EvaluationLink
-	(PredicateNode "2x2 sudoku")
-	(SetLink
-		(ConceptNode "one")
-		(ConceptNode "two")
-	)
+(PredicateNode "2x2 sudoku")
+(SetLink
+(ConceptNode "one")
+(ConceptNode "two")
+)
 )
 (define (x2_row1)
-	(EvaluationLink
-		(PredicateNode "2x2 sudoku")
-		(SetLink
-			(VariableNode "$cell_11")
-			(VariableNode "$cell_12")
-		)
-	)
+(EvaluationLink
+(PredicateNode "2x2 sudoku")
+(SetLink
+(VariableNode "$cell_11")
+(VariableNode "$cell_12")
+)
+)
 )
 (define (x2_row2)
-	(EvaluationLink
-		(PredicateNode "2x2 sudoku")
-		(SetLink
-			(VariableNode "$cell_21")
-			(VariableNode "$cell_22")
-		)
-	)
+(EvaluationLink
+(PredicateNode "2x2 sudoku")
+(SetLink
+(VariableNode "$cell_21")
+(VariableNode "$cell_22")
+)
+)
 )
 (define (x2_col1)
-	(EvaluationLink
-		(PredicateNode "2x2 sudoku")
-		(SetLink
-			(VariableNode "$cell_11")
-			(VariableNode "$cell_21")
-		)
-	)
+(EvaluationLink
+(PredicateNode "2x2 sudoku")
+(SetLink
+(VariableNode "$cell_11")
+(VariableNode "$cell_21")
+)
+)
 )
 (define (x2_col2)
-	(EvaluationLink
-		(PredicateNode "2x2 sudoku")
-		(SetLink
-			(VariableNode "$cell_12")
-			(VariableNode "$cell_22")
-		)
-	)
+(EvaluationLink
+(PredicateNode "2x2 sudoku")
+(SetLink
+(VariableNode "$cell_12")
+(VariableNode "$cell_22")
+)
+)
 )
 (define (x2-sudoku-constraints)
-	(list
-		(x2_row1)
-		(x2_row2)
-		(x2_col1)
-		(x2_col2)
-	)
+(list
+(x2_row1)
+(x2_row2)
+(x2_col1)
+(x2_col2)
+)
 )
 (define (x2-variable-decls lnk)
-	(cog-new-link lnk
-		(VariableNode "$cell_11")
-		(VariableNode "$cell_12")
-		(VariableNode "$cell_21")
-		(VariableNode "$cell_22")
-	)
+(cog-new-link lnk
+(VariableNode "$cell_11")
+(VariableNode "$cell_12")
+(VariableNode "$cell_21")
+(VariableNode "$cell_22")
+)
 )
 (EvaluationLink (PredicateNode "x2-fix11") (ConceptNode "one"))
 (define (x2-puzzle)
-	(BindLink
-		(x2-variable-decls 'VariableList)
-		(AndLink
-			(EvaluationLink (PredicateNode "x2-fix11") (VariableNode "$cell_11"))
-			(x2-sudoku-constraints)
-		)
-		(x2-variable-decls 'ListLink)
-	)
+(BindLink
+(x2-variable-decls 'VariableList)
+(AndLink
+(EvaluationLink (PredicateNode "x2-fix11") (VariableNode "$cell_11"))
+(x2-sudoku-constraints)
+)
+(x2-variable-decls 'ListLink)
+)
 )
 (define (x2-any)
-	(BindLink
-		(x2-variable-decls 'VariableList)
-		(AndLink
-			(x2-sudoku-constraints)
-		)
-		(x2-variable-decls 'ListLink)
-	)
+(BindLink
+(x2-variable-decls 'VariableList)
+(AndLink
+(x2-sudoku-constraints)
+)
+(x2-variable-decls 'ListLink)
+)
 )
 (EvaluationLink
-	(PredicateNode "3x3 sudoku")
-	(SetLink
-		(ConceptNode "one")
-		(ConceptNode "two")
-		(ConceptNode "three")
-	)
+(PredicateNode "3x3 sudoku")
+(SetLink
+(ConceptNode "one")
+(ConceptNode "two")
+(ConceptNode "three")
+)
 )
 (define (x3_row1)
-	(EvaluationLink
-		(PredicateNode "3x3 sudoku")
-		(SetLink
-			(VariableNode "$cell_11")
-			(VariableNode "$cell_12")
-			(VariableNode "$cell_13")
-		)
-	)
+(EvaluationLink
+(PredicateNode "3x3 sudoku")
+(SetLink
+(VariableNode "$cell_11")
+(VariableNode "$cell_12")
+(VariableNode "$cell_13")
+)
+)
 )
 (define (x3_row2)
-	(EvaluationLink
-		(PredicateNode "3x3 sudoku")
-		(SetLink
-			(VariableNode "$cell_21")
-			(VariableNode "$cell_22")
-			(VariableNode "$cell_23")
-		)
-	)
+(EvaluationLink
+(PredicateNode "3x3 sudoku")
+(SetLink
+(VariableNode "$cell_21")
+(VariableNode "$cell_22")
+(VariableNode "$cell_23")
+)
+)
 )
 (define (x3_row3)
-	(EvaluationLink
-		(PredicateNode "3x3 sudoku")
-		(SetLink
-			(VariableNode "$cell_31")
-			(VariableNode "$cell_32")
-			(VariableNode "$cell_33")
-		)
-	)
+(EvaluationLink
+(PredicateNode "3x3 sudoku")
+(SetLink
+(VariableNode "$cell_31")
+(VariableNode "$cell_32")
+(VariableNode "$cell_33")
+)
+)
 )
 (define (x3_col1)
-	(EvaluationLink
-		(PredicateNode "3x3 sudoku")
-		(SetLink
-			(VariableNode "$cell_11")
-			(VariableNode "$cell_21")
-			(VariableNode "$cell_31")
-		)
-	)
+(EvaluationLink
+(PredicateNode "3x3 sudoku")
+(SetLink
+(VariableNode "$cell_11")
+(VariableNode "$cell_21")
+(VariableNode "$cell_31")
+)
+)
 )
 (define (x3_col2)
-	(EvaluationLink
-		(PredicateNode "3x3 sudoku")
-		(SetLink
-			(VariableNode "$cell_12")
-			(VariableNode "$cell_22")
-			(VariableNode "$cell_32")
-		)
-	)
+(EvaluationLink
+(PredicateNode "3x3 sudoku")
+(SetLink
+(VariableNode "$cell_12")
+(VariableNode "$cell_22")
+(VariableNode "$cell_32")
+)
+)
 )
 (define (x3_col3)
-	(EvaluationLink
-		(PredicateNode "3x3 sudoku")
-		(SetLink
-			(VariableNode "$cell_13")
-			(VariableNode "$cell_23")
-			(VariableNode "$cell_33")
-		)
-	)
+(EvaluationLink
+(PredicateNode "3x3 sudoku")
+(SetLink
+(VariableNode "$cell_13")
+(VariableNode "$cell_23")
+(VariableNode "$cell_33")
+)
+)
 )
 (define (x3-sudoku-constraints)
-	(list
-		(x3_row1)
-		(x3_row2)
-		(x3_row3)
-		(x3_col1)
-		(x3_col2)
-		(x3_col3)
-	)
+(list
+(x3_row1)
+(x3_row2)
+(x3_row3)
+(x3_col1)
+(x3_col2)
+(x3_col3)
+)
 )
 (define (x3-variable-decls lnk)
-	(cog-new-link lnk
-		(VariableNode "$cell_11")
-		(VariableNode "$cell_12")
-		(VariableNode "$cell_13")
-		(VariableNode "$cell_21")
-		(VariableNode "$cell_22")
-		(VariableNode "$cell_23")
-		(VariableNode "$cell_31")
-		(VariableNode "$cell_32")
-		(VariableNode "$cell_33")
-	)
+(cog-new-link lnk
+(VariableNode "$cell_11")
+(VariableNode "$cell_12")
+(VariableNode "$cell_13")
+(VariableNode "$cell_21")
+(VariableNode "$cell_22")
+(VariableNode "$cell_23")
+(VariableNode "$cell_31")
+(VariableNode "$cell_32")
+(VariableNode "$cell_33")
+)
 )
 (EvaluationLink (PredicateNode "x3-fix11") (ConceptNode "one"))
 (define (x3-puzzle)
-	(BindLink
-		(x3-variable-decls 'VariableList)
-		(AndLink
-			(EvaluationLink (PredicateNode "x3-fix11") (VariableNode "$cell_11"))
-			(x3-sudoku-constraints)
-		)
-		(x3-variable-decls 'ListLink)
-	)
+(BindLink
+(x3-variable-decls 'VariableList)
+(AndLink
+(EvaluationLink (PredicateNode "x3-fix11") (VariableNode "$cell_11"))
+(x3-sudoku-constraints)
+)
+(x3-variable-decls 'ListLink)
+)
 )

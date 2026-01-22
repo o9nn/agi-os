@@ -5,13 +5,13 @@
 static char ENotDir[] = "walk in non-directory";
 static char ETooBig[] = "file too big";
 static char ELabelMismatch[] = "label mismatch";
-static int	sizetodepth(uvlong s, int psize, int dsize);
-static VtBlock 	*fileload(VtFile *r, VtEntry *e);
-static int	shrinkdepth(VtFile*, VtBlock*, VtEntry*, int);
-static int	shrinksize(VtFile*, VtEntry*, uvlong);
-static int	growdepth(VtFile*, VtBlock*, VtEntry*, int);
-#define ISLOCKED(r)	((r)->b != nil)
-#define DEPTH(t)	((t)&VtTypeDepthMask)
+static int sizetodepth(uvlong s, int psize, int dsize);
+static VtBlock *fileload(VtFile *r, VtEntry *e);
+static int shrinkdepth(VtFile*, VtBlock*, VtEntry*, int);
+static int shrinksize(VtFile*, VtEntry*, uvlong);
+static int growdepth(VtFile*, VtBlock*, VtEntry*, int);
+#define ISLOCKED(r) ((r)->b != nil)
+#define DEPTH(t) ((t)&VtTypeDepthMask)
 static VtFile *
 vtfilealloc(VtCache *c, VtBlock *b, VtFile *p, u32int offset, int mode)
 {

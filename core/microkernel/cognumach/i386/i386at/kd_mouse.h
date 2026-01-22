@@ -1,7 +1,7 @@
 #ifndef _KD_MOUSE_H_
 #define _KD_MOUSE_H_
 #include <sys/types.h>
-#define MOUSEBUFSIZE	5
+#define MOUSEBUFSIZE 5
 extern void mouse_button (kev_type which, u_char direction);
 extern void mouse_enqueue (kd_event *ev);
 extern void mouse_moved (struct mouse_motion where);
@@ -19,10 +19,10 @@ extern int mouseopen(dev_t dev, int flags, io_req_t ior);
 extern void mouseclose(dev_t dev, int flags);
 extern int mouseread(dev_t dev, io_req_t ior);
 extern io_return_t mousegetstat(
-dev_t		  dev,
-dev_flavor_t	  flavor,
-dev_status_t	  data,
-mach_msg_type_number_t	  *count);
+dev_t dev,
+dev_flavor_t flavor,
+dev_status_t data,
+mach_msg_type_number_t *count);
 void mouseintr(int unit);
 boolean_t mouse_read_done(io_req_t ior);
 #endif

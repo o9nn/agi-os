@@ -11,18 +11,18 @@
 uchar elementmap[] = Prefab_Element_map;
 uchar compoundmap[] = Prefab_Compound_map;
 uchar layoutmap[] = Prefab_Layout_map;
-void	freeprefabcompound(Heap*, int);
-Type*	TCompound;
-Type*	TElement;
-Type*	TLayout;
+void freeprefabcompound(Heap*, int);
+Type* TCompound;
+Type* TElement;
+Type* TLayout;
 enum
 {
-IRFF		= 14,
-IRRew		= 15,
-IRUp		= 16,
-IRDn		= 17,
-IRSelect	= 18,
-IREnter	= 20,
+IRFF = 14,
+IRRew = 15,
+IRUp = 16,
+IRDn = 17,
+IRSelect = 18,
+IREnter = 20,
 };
 void
 prefabmodinit(void)

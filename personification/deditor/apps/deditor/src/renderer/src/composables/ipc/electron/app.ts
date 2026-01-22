@@ -5,22 +5,22 @@ import { defineClientMethod } from '../define-client-method'
 export const app = <TMethod extends keyof AppMethods>(method: TMethod) => defineClientMethod<AppMethods, TMethod>('electron/app', method)
 export type AppGetPathParameterName = Parameters<AppMethods['getPath']>[0]['name']
 export function useAppPath(name?: MaybeRefOrGetter<AppGetPathParameterName>) {
-  const _name = ref<AppGetPathParameterName | undefined>()
-  if (name == null) {
-    _name.value = 'appData'
-  }
-  else {
-    if (isRef(name))
-      watch(name, v => _name.value = v, { immediate: true })
-    else
-      _name.value = toValue(name)
-  }
-  const path = ref<string>()
-  async function update(name?: AppGetPathParameterName) {
-    if (name)
-      path.value = await app('getPath').call({ name })
-  }
-  watch(_name, async name => update(name), { immediate: true })
-  onMounted(async () => update(_name.value))
-  return path
+const _name = ref<AppGetPathParameterName | undefined>()
+if (name == null) {
+_name.value = 'appData'
+}
+else {
+if (isRef(name))
+watch(name, v => _name.value = v, { immediate: true })
+else
+_name.value = toValue(name)
+}
+const path = ref<string>()
+async function update(name?: AppGetPathParameterName) {
+if (name)
+path.value = await app('getPath').call({ name })
+}
+watch(_name, async name => update(name), { immediate: true })
+onMounted(async () => update(_name.value))
+return path
 }

@@ -1,5 +1,5 @@
 #ifndef gsmalloc_INCLUDED
-#  define gsmalloc_INCLUDED
+# define gsmalloc_INCLUDED
 typedef struct gs_malloc_block_s gs_malloc_block_t;
 typedef struct gs_malloc_memory_s {
 gs_memory_common;

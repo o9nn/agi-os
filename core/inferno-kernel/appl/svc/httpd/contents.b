@@ -50,7 +50,7 @@ raise "fail:no suffix file";;
 while((s := iob.gets('\n'))!=nil) {
 (i, su) := parsesuffix(s);
 if (i != 0)
-suffixes =  su :: suffixes;
+suffixes = su :: suffixes;
 }
 dbg_log = log;
 }
@@ -113,7 +113,7 @@ slist = tl slist;
 s.encoding = hd slist;
 if (s.encoding == "-") s.encoding="";
 }
-if (((s.generic ==  "")||(s.specific ==  "")) && s.encoding=="")
+if (((s.generic == "")||(s.specific == "")) && s.encoding=="")
 return (0,s);
 return (1,s);
 }

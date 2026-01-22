@@ -1,5 +1,5 @@
 #
-# Copyright © 2001 Vita Nuova (Holdings) Limited.  All rights reserved.
+# Copyright © 2001 Vita Nuova (Holdings) Limited. All rights reserved.
 #
 implement Wrap2list;
 # make a version list suitable for SDS from /wrap
@@ -173,8 +173,8 @@ g := f;
 f[l-3] = 'e';
 f[l-2] = 'x';
 f[l-1] = 'e';
-outl(f, g, init);		# try emu.exe
-outl(f[0: l-4], g, init);	# try emu
+outl(f, g, init); # try emu.exe
+outl(f[0: l-4], g, init); # try emu
 # sys->fprint(sys->fildes(2), "%s %s\n", f, g);
 }
 }

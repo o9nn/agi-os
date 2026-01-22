@@ -6,87 +6,87 @@ import { arch, platform } from 'os'
 import { getLogsPath } from '../application-constants'
 const log = getLogger('DC-RPC')
 export class StdioServer {
-  serverProcess: ChildProcessWithoutNullStreams | null
-  constructor(
-    public on_data: (reponse: string) => void,
-    public accounts_path: string,
-    private cmd_path: string
-  ) {
-    this.serverProcess = null
-  }
-  start() {
-    this.serverProcess = spawn(this.cmd_path, {
-      env: {
-        DC_ACCOUNTS_PATH: this.accounts_path,
-        RUST_LOG: process.env.RUST_LOG,
-        NO_COLOR: '1',
-      },
-    })
-    this.serverProcess.on('error', err => {
-      if (err.message.endsWith('ENOENT')) {
-        dialog.showErrorBox(
-          'Fatal Error: Core Library Missing',
-          `The DeltaChat Module is missing! This could be due to your antivirus program. Please check the quarantine to restore it and notify the developers about this issue.
+serverProcess: ChildProcessWithoutNullStreams | null
+constructor(
+public on_data: (reponse: string) => void,
+public accounts_path: string,
+private cmd_path: string
+) {
+this.serverProcess = null
+}
+start() {
+this.serverProcess = spawn(this.cmd_path, {
+env: {
+DC_ACCOUNTS_PATH: this.accounts_path,
+RUST_LOG: process.env.RUST_LOG,
+NO_COLOR: '1',
+},
+})
+this.serverProcess.on('error', err => {
+if (err.message.endsWith('ENOENT')) {
+dialog.showErrorBox(
+'Fatal Error: Core Library Missing',
+`The DeltaChat Module is missing! This could be due to your antivirus program. Please check the quarantine to restore it and notify the developers about this issue.
 You can reach us on delta@merlinux.eu or on github.com/deltachat/deltachat-desktop/issues.
 The missing module should be located at "${this.cmd_path}".
 The Log file is located in this folder: ${getLogsPath()}
 --------------------
 Error: ${err.message}
 `
-        )
-      } else {
-        dialog.showErrorBox(
-          'Fatal Error',
-          `Error with core has been detected, please contact developers: You can reach us on delta@merlinux.eu or on github.com/deltachat/deltachat-desktop/issues .
-          ${err.name}: ${err.message}
-          The Log file is located in this folder: ${getLogsPath()}\n
-          `
-        )
-      }
-      app.exit(1)
-    })
-    let buffer = ''
-    this.serverProcess.stdout.on('data', data => {
-      buffer += data.toString()
-      while (buffer.includes('\n')) {
-        const n = buffer.indexOf('\n')
-        const message = buffer.substring(0, n)
-        this.on_data(message)
-        buffer = buffer.substring(n + 1)
-      }
-    })
-    let errorLog = ''
-    const ERROR_LOG_LENGTH = 800
-    this.serverProcess.stderr.on('data', data => {
-      log.error(`stderr: ${data}`.trimEnd())
-      errorLog = (errorLog + data).slice(-ERROR_LOG_LENGTH)
-    })
-    this.serverProcess.on('close', (code, signal) => {
-      if (code !== null) {
-        log.info(`child process close all stdio with code ${code}`)
-      } else {
-        log.info(`child process close all stdio with signal ${signal}`)
-      }
-    })
-    this.serverProcess.on('exit', (code, signal) => {
-      if (code !== null) {
-        log.info(`child process exited with code ${code}`)
-        if (code !== 0) {
-          log.critical('Fatal: The Delta Chat Core exited unexpectedly', code)
-          dialog.showErrorBox(
-            'Fatal Error',
-            `[Version: ${
-              BuildInfo.VERSION
-            } | ${platform()} | ${arch()}]\nThe Delta Chat Core exited unexpectedly with code ${code}\n${errorLog}`
-          )
-          app.exit(1)
-        }
-      } else {
-        log.warn(`child process exited with signal ${signal}`)
-      }
-    })
-  }
-  send(message: string) {
-    this.serverProcess?.stdin.write(message + '\n')
-  }
+)
+} else {
+dialog.showErrorBox(
+'Fatal Error',
+`Error with core has been detected, please contact developers: You can reach us on delta@merlinux.eu or on github.com/deltachat/deltachat-desktop/issues .
+${err.name}: ${err.message}
+The Log file is located in this folder: ${getLogsPath()}\n
+`
+)
+}
+app.exit(1)
+})
+let buffer = ''
+this.serverProcess.stdout.on('data', data => {
+buffer += data.toString()
+while (buffer.includes('\n')) {
+const n = buffer.indexOf('\n')
+const message = buffer.substring(0, n)
+this.on_data(message)
+buffer = buffer.substring(n + 1)
+}
+})
+let errorLog = ''
+const ERROR_LOG_LENGTH = 800
+this.serverProcess.stderr.on('data', data => {
+log.error(`stderr: ${data}`.trimEnd())
+errorLog = (errorLog + data).slice(-ERROR_LOG_LENGTH)
+})
+this.serverProcess.on('close', (code, signal) => {
+if (code !== null) {
+log.info(`child process close all stdio with code ${code}`)
+} else {
+log.info(`child process close all stdio with signal ${signal}`)
+}
+})
+this.serverProcess.on('exit', (code, signal) => {
+if (code !== null) {
+log.info(`child process exited with code ${code}`)
+if (code !== 0) {
+log.critical('Fatal: The Delta Chat Core exited unexpectedly', code)
+dialog.showErrorBox(
+'Fatal Error',
+`[Version: ${
+BuildInfo.VERSION
+} | ${platform()} | ${arch()}]\nThe Delta Chat Core exited unexpectedly with code ${code}\n${errorLog}`
+)
+app.exit(1)
+}
+} else {
+log.warn(`child process exited with signal ${signal}`)
+}
+})
+}
+send(message: string) {
+this.serverProcess?.stdin.write(message + '\n')
+}
 }

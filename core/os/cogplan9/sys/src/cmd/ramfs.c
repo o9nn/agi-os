@@ -4,71 +4,71 @@
 #include <fcall.h>
 enum
 {
-OPERM	= 0x3,
-Nram	= 4096,
-Maxsize	= 768*1024*1024,
-Maxfdata	= 8192,
+OPERM = 0x3,
+Nram = 4096,
+Maxsize = 768*1024*1024,
+Maxfdata = 8192,
 Maxulong= (1ULL << 32) - 1,
 };
 typedef struct Fid Fid;
 typedef struct Ram Ram;
 struct Fid
 {
-short	busy;
-short	open;
-short	rclose;
-int	fid;
-Fid	*next;
-char	*user;
-Ram	*ram;
+short busy;
+short open;
+short rclose;
+int fid;
+Fid *next;
+char *user;
+Ram *ram;
 };
 struct Ram
 {
-short	busy;
-short	open;
-long	parent;
-Qid	qid;
-long	perm;
-char	*name;
-ulong	atime;
-ulong	mtime;
-char	*user;
-char	*group;
-char	*muid;
-char	*data;
-long	ndata;
+short busy;
+short open;
+long parent;
+Qid qid;
+long perm;
+char *name;
+ulong atime;
+ulong mtime;
+char *user;
+char *group;
+char *muid;
+char *data;
+long ndata;
 };
 enum
 {
-Pexec =		1,
-Pwrite = 	2,
-Pread = 	4,
-Pother = 	1,
-Pgroup = 	8,
-Powner =	64,
+Pexec = 1,
+Pwrite = 2,
+Pread = 4,
+Pother = 1,
+Pgroup = 8,
+Powner = 64,
 };
-ulong	path;
-Fid	*fids;
-Ram	ram[Nram];
-int	nram;
-int	mfd[2];
-char	*user;
-uchar	mdata[IOHDRSZ+Maxfdata];
-uchar	rdata[Maxfdata];
+ulong path;
+Fid *fids;
+Ram ram[Nram];
+int nram;
+int mfd[2];
+char *user;
+uchar mdata[IOHDRSZ+Maxfdata];
+uchar rdata[Maxfdata];
 uchar statbuf[STATMAX];
 Fcall thdr;
-Fcall	rhdr;
-int	messagesize = sizeof mdata;
-Fid *	newfid(int);
-uint	ramstat(Ram*, uchar*, uint);
-void	error(char*);
-void	io(void);
-void	*erealloc(void*, ulong);
-void	*emalloc(ulong);
-char	*estrdup(char*);
-void	usage(void);
-int	perm(Fid*, Ram*, int);
-char	*rflush(Fid*), *rversion(Fid*), *rauth(Fid*),
+Fcall rhdr;
+int messagesize = sizeof mdata;
+Fid * newfid(int);
+uint ramstat(Ram*, uchar*, uint);
+void error(char*);
+void io(void);
+void *erealloc(void*, ulong);
+void *emalloc(ulong);
+char *estrdup(char*);
+void usage(void);
+int perm(Fid*, Ram*, int);
+char *rflush(Fid*), *rversion(Fid*), *rauth(Fid*),
 *rattach(Fid*), *rwalk(Fid*),
 *ropen(Fid*), *rcreate(Fid*),
 *rread(Fid*), *rwrite(Fid*), *rclunk(Fid*),
@@ -88,34 +88,34 @@ int needfid[] = {
 [Tstat] 1,
 [Twstat] 1,
 };
-char 	*(*fcalls[])(Fid*) = {
-[Tversion]	rversion,
-[Tflush]	rflush,
-[Tauth]	rauth,
-[Tattach]	rattach,
-[Twalk]		rwalk,
-[Topen]		ropen,
-[Tcreate]	rcreate,
-[Tread]		rread,
-[Twrite]	rwrite,
-[Tclunk]	rclunk,
-[Tremove]	rremove,
-[Tstat]		rstat,
-[Twstat]	rwstat,
+char *(*fcalls[])(Fid*) = {
+[Tversion] rversion,
+[Tflush] rflush,
+[Tauth] rauth,
+[Tattach] rattach,
+[Twalk] rwalk,
+[Topen] ropen,
+[Tcreate] rcreate,
+[Tread] rread,
+[Twrite] rwrite,
+[Tclunk] rclunk,
+[Tremove] rremove,
+[Tstat] rstat,
+[Twstat] rwstat,
 };
-char	Eperm[] =	"permission denied";
-char	Enotdir[] =	"not a directory";
-char	Enoauth[] =	"ramfs: authentication not required";
-char	Enotexist[] =	"file does not exist";
-char	Einuse[] =	"file in use";
-char	Eexist[] =	"file exists";
-char	Eisdir[] =	"file is a directory";
-char	Enotowner[] =	"not owner";
-char	Eisopen[] = 	"file already open for I/O";
-char	Excl[] = 	"exclusive use file already open";
-char	Ename[] = 	"illegal name";
-char	Eversion[] =	"unknown 9P version";
-char	Enotempty[] =	"directory not empty";
+char Eperm[] = "permission denied";
+char Enotdir[] = "not a directory";
+char Enoauth[] = "ramfs: authentication not required";
+char Enotexist[] = "file does not exist";
+char Einuse[] = "file in use";
+char Eexist[] = "file exists";
+char Eisdir[] = "file is a directory";
+char Enotowner[] = "not owner";
+char Eisopen[] = "file already open for I/O";
+char Excl[] = "exclusive use file already open";
+char Ename[] = "illegal name";
+char Eversion[] = "unknown 9P version";
+char Enotempty[] = "directory not empty";
 int debug;
 int private;
 static int memlim = 1;

@@ -8,18 +8,18 @@
 #include "arm.h"
 #include "../port/netif.h"
 #include "etherif.h"
-#define	POWERREGS	(VIRTIO+0x100000)
+#define POWERREGS (VIRTIO+0x100000)
 enum {
-Wdogfreq	= 65536,
-Wdogtime	= 5,
+Wdogfreq = 65536,
+Wdogtime = 5,
 };
 enum {
-Rstc		= 0x1c>>2,
-Password	= 0x5A<<24,
-CfgMask		= 0x03<<4,
-CfgReset	= 0x02<<4,
-Rsts		= 0x20>>2,
-Wdog		= 0x24>>2,
+Rstc = 0x1c>>2,
+Password = 0x5A<<24,
+CfgMask = 0x03<<4,
+CfgReset = 0x02<<4,
+Rsts = 0x20>>2,
+Wdog = 0x24>>2,
 };
 void
 archreset(void)

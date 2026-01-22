@@ -5,33 +5,33 @@
 #include <plumb.h>
 #include <ctype.h>
 #include "dat.h"
-char	*maildir = "/mail/fs/";
-char	*mailtermdir = "/mnt/term/mail/fs/";
+char *maildir = "/mail/fs/";
+char *mailtermdir = "/mnt/term/mail/fs/";
 char *mboxname = "mbox";
-char	*mailboxdir = nil;
+char *mailboxdir = nil;
 char *fsname;
-char	*user;
-char	*outgoing;
-Window	*wbox;
-Message	mbox;
-Message	replies;
-char		*home;
-int		plumbsendfd;
-int		plumbseemailfd;
-int		plumbshowmailfd;
-int		plumbsendmailfd;
-Channel	*cplumb;
-Channel	*cplumbshow;
-Channel	*cplumbsend;
-int		wctlfd;
-void		mainctl(void*);
-void		plumbproc(void*);
-void		plumbshowproc(void*);
-void		plumbsendproc(void*);
-void		plumbthread(void);
-void		plumbshowthread(void*);
-void		plumbsendthread(void*);
-int			shortmenu;
+char *user;
+char *outgoing;
+Window *wbox;
+Message mbox;
+Message replies;
+char *home;
+int plumbsendfd;
+int plumbseemailfd;
+int plumbshowmailfd;
+int plumbsendmailfd;
+Channel *cplumb;
+Channel *cplumbshow;
+Channel *cplumbsend;
+int wctlfd;
+void mainctl(void*);
+void plumbproc(void*);
+void plumbshowproc(void*);
+void plumbsendproc(void*);
+void plumbthread(void);
+void plumbshowthread(void*);
+void plumbsendthread(void*);
+int shortmenu;
 void
 usage(void)
 {

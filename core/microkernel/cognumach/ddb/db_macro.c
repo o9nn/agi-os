@@ -9,17 +9,17 @@
 #include <ddb/db_expr.h>
 #include <ddb/db_macro.h>
 #include <ddb/db_output.h>
-#define DB_MACRO_LEVEL	5
-#define DB_NARGS	10
-#define DB_NUSER_MACRO	10
-int		db_macro_free = DB_NUSER_MACRO;
+#define DB_MACRO_LEVEL 5
+#define DB_NARGS 10
+#define DB_NUSER_MACRO 10
+int db_macro_free = DB_NUSER_MACRO;
 struct db_user_macro {
-char	m_name[TOK_STRING_SIZE];
-char	m_lbuf[DB_LEX_LINE_SIZE];
-int	m_size;
+char m_name[TOK_STRING_SIZE];
+char m_lbuf[DB_LEX_LINE_SIZE];
+int m_size;
 } db_user_macro[DB_NUSER_MACRO];
-int		db_macro_level = 0;
-db_expr_t	db_macro_args[DB_MACRO_LEVEL][DB_NARGS];
+int db_macro_level = 0;
+db_expr_t db_macro_args[DB_MACRO_LEVEL][DB_NARGS];
 static struct db_user_macro *
 db_lookup_macro(const char *name)
 {
@@ -34,10 +34,10 @@ return(0);
 }
 void
 db_def_macro_cmd(
-db_expr_t	addr,
-int		have_addr,
-db_expr_t	count,
-const char *	modif)
+db_expr_t addr,
+int have_addr,
+db_expr_t count,
+const char * modif)
 {
 char *p;
 int c;
@@ -64,10 +64,10 @@ mp->m_size = p - mp->m_lbuf;
 }
 void
 db_del_macro_cmd(
-db_expr_t	addr,
-int		have_addr,
-db_expr_t	count,
-const char *	modif)
+db_expr_t addr,
+int have_addr,
+db_expr_t count,
+const char * modif)
 {
 struct db_user_macro *mp;
 if (db_read_token() != tIDENT
@@ -81,13 +81,13 @@ db_macro_free++;
 }
 void
 db_show_macro(
-db_expr_t	addr,
-int		have_addr,
-db_expr_t	count,
-const char *	modif)
+db_expr_t addr,
+int have_addr,
+db_expr_t count,
+const char * modif)
 {
 struct db_user_macro *mp;
-int  t;
+int t;
 char *name = 0;
 if ((t = db_read_token()) == tIDENT)
 name = db_tok_string;
@@ -125,10 +125,10 @@ return(0);
 }
 void
 db_arg_variable(
-struct db_variable	*vp,
-db_expr_t		*valuep,
-int			flag,
-db_var_aux_param_t	ap)
+struct db_variable *vp,
+db_expr_t *valuep,
+int flag,
+db_var_aux_param_t ap)
 {
 if (ap->level != 1 || ap->suffix[0] < 1 || ap->suffix[0] > DB_NARGS) {
 db_error("Bad $arg variable\n");

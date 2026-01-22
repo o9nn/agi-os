@@ -21,20 +21,20 @@ type in documentation due to limitations in Documenter.jl and Plots.jl. It shoul
 used for any other purpose or exported.
 """
 # _showables = [
-#     (:Text, "text/plain")
-#     (:MD, "text/markdown")
-#     (:HTML, "text/html")
-#     (:JSON, "application/json")
-#     (:SVG, "image/svg+xml")
-#     (:PNG, "image/png")
-#     (:GIF, "image/gif")
-#     (:PDF, "application/pdf")
-#     (:EPS, "application/eps")
-#     (:JPEG, "image/jpeg")
-#     (:PS, "application/postscript")
-#     (:LaTeX, "text/latex")
-#     (:CSV, "text/csv")
-#     (:TSV, "text/tab-separated-values")
+# (:Text, "text/plain")
+# (:MD, "text/markdown")
+# (:HTML, "text/html")
+# (:JSON, "application/json")
+# (:SVG, "image/svg+xml")
+# (:PNG, "image/png")
+# (:GIF, "image/gif")
+# (:PDF, "application/pdf")
+# (:EPS, "application/eps")
+# (:JPEG, "image/jpeg")
+# (:PS, "application/postscript")
+# (:LaTeX, "text/latex")
+# (:CSV, "text/csv")
+# (:TSV, "text/tab-separated-values")
 # ]
 # currently we only use PNG conversion, but others can be added from above as needed
 _showables = [(:PNG, "image/png")]

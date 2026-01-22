@@ -1,13 +1,13 @@
 #
-# Copyright © 1998 Vita Nuova Limited.  All rights reserved.
+# Copyright © 1998 Vita Nuova Limited. All rights reserved.
 #
 Socket: adt {
-m:		ref Module;		# common attributes
-in:		chan of ref Event;
-init:		fn(c: self ref Socket);
-reset:	fn(c: self ref Socket);
-run:		fn(c: self ref Socket);
-quit:		fn(c: self ref Socket);
+m: ref Module; # common attributes
+in: chan of ref Event;
+init: fn(c: self ref Socket);
+reset: fn(c: self ref Socket);
+run: fn(c: self ref Socket);
+quit: fn(c: self ref Socket);
 };
 Socket.init(c: self ref Socket)
 {

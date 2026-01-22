@@ -1,11 +1,11 @@
-#define free			ucfree
-#define malloc			myucalloc
-#define mallocz			ucallocz
-#define smalloc			myucalloc
-#define xspanalloc		ucallocalign
-#define allocb			ucallocb
-#define iallocb			uciallocb
-#define freeb			ucfreeb
+#define free ucfree
+#define malloc myucalloc
+#define mallocz ucallocz
+#define smalloc myucalloc
+#define xspanalloc ucallocalign
+#define allocb ucallocb
+#define iallocb uciallocb
+#define freeb ucfreeb
 static void *
 ucallocz(uint n, int)
 {

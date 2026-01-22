@@ -1,12 +1,12 @@
 #ifndef gxhldevc_INCLUDED
-#  define gxhldevc_INCLUDED
+# define gxhldevc_INCLUDED
 #include "gsdcolor.h"
 #ifndef gs_imager_state_DEFINED
-#  define gs_imager_state_DEFINED
+# define gs_imager_state_DEFINED
 typedef struct gs_imager_state_s gs_imager_state;
 #endif
 #ifndef gx_device_color_DEFINED
-#  define gx_device_color_DEFINED
+# define gx_device_color_DEFINED
 typedef struct gx_device_color_s gx_device_color;
 #endif
 typedef struct gx_hl_saved_color_s {

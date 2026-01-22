@@ -1,19 +1,19 @@
-#include	"u.h"
-#include	"lib.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
-#include	<draw.h>
-#include	<memdraw.h>
-#include	"screen.h"
-#define	MINX	8
-#define	Backgnd		0xFF
-Memsubfont	*memdefont;
+#include "u.h"
+#include "lib.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
+#include <draw.h>
+#include <memdraw.h>
+#include "screen.h"
+#define MINX 8
+#define Backgnd 0xFF
+Memsubfont *memdefont;
 struct{
-Point	pos;
-int	bwid;
+Point pos;
+int bwid;
 }out;
-Lock	screenlock;
+Lock screenlock;
 Memimage *conscol;
 Memimage *back;
 extern Memimage *gscreen;
@@ -21,7 +21,7 @@ static Rectangle flushr;
 static Rectangle window;
 static Point curpos;
 static int h;
-static void	termscreenputs(char*, int);
+static void termscreenputs(char*, int);
 static void
 screenflush(void)
 {

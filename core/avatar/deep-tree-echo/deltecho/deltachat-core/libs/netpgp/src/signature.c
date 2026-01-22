@@ -67,16 +67,16 @@ const pgp_rsa_pubkey_t *pubrsa,
 const pgp_rsa_seckey_t *secrsa,
 pgp_output_t *out)
 {
-unsigned        prefixsize;
-unsigned        expected;
-unsigned        hashsize;
-unsigned        keysize;
-unsigned        n;
-unsigned        t;
-uint8_t		hashbuf[NETPGP_BUFSIZ];
-uint8_t		sigbuf[NETPGP_BUFSIZ];
-uint8_t		*prefix;
-BIGNUM         *bn;
+unsigned prefixsize;
+unsigned expected;
+unsigned hashsize;
+unsigned keysize;
+unsigned n;
+unsigned t;
+uint8_t hashbuf[NETPGP_BUFSIZ];
+uint8_t sigbuf[NETPGP_BUFSIZ];
+uint8_t *prefix;
+BIGNUM *bn;
 if (strcmp(hash->name, "SHA1") == 0) {
 hashsize = PGP_SHA1_HASH_SIZE + sizeof(prefix_sha1);
 prefix = prefix_sha1;
@@ -135,10 +135,10 @@ const pgp_dsa_pubkey_t *dsa,
 const pgp_dsa_seckey_t *sdsa,
 pgp_output_t *output)
 {
-unsigned        hashsize;
-unsigned        t;
-uint8_t		hashbuf[NETPGP_BUFSIZ];
-pgp_dsa_sig_t        *pgpdsasig;
+unsigned hashsize;
+unsigned t;
+uint8_t hashbuf[NETPGP_BUFSIZ];
+pgp_dsa_sig_t *pgpdsasig;
 hashsize = 20;
 t = hash->finish(hash, &hashbuf[0]);
 if (t != 20) {
@@ -163,13 +163,13 @@ size_t hash_length,
 const pgp_rsa_sig_t *sig,
 const pgp_rsa_pubkey_t *pubrsa)
 {
-const uint8_t	*prefix;
-unsigned       	 n;
-unsigned       	 keysize;
-unsigned	 plen;
-unsigned	 debug_len_decrypted;
-uint8_t   	 sigbuf[NETPGP_BUFSIZ];
-uint8_t   	 hashbuf_from_sig[NETPGP_BUFSIZ];
+const uint8_t *prefix;
+unsigned n;
+unsigned keysize;
+unsigned plen;
+unsigned debug_len_decrypted;
+uint8_t sigbuf[NETPGP_BUFSIZ];
+uint8_t hashbuf_from_sig[NETPGP_BUFSIZ];
 keysize = BN_num_bytes(pubrsa->n);
 if (keysize > sizeof(hashbuf_from_sig)) {
 (void) fprintf(stderr, "rsa_verify: keysize too big\n");
@@ -233,9 +233,9 @@ memcmp(&hashbuf_from_sig[n + plen], hash, hash_length) == 0);
 static void
 hash_add_key(pgp_hash_t *hash, const pgp_pubkey_t *key)
 {
-pgp_memory_t	*mem = pgp_memory_new();
-const unsigned 	 dontmakepacket = 0;
-size_t		 len;
+pgp_memory_t *mem = pgp_memory_new();
+const unsigned dontmakepacket = 0;
+size_t len;
 pgp_build_pubkey(mem, key, dontmakepacket);
 len = pgp_mem_len(mem);
 pgp_hash_add_int(hash, 0x99, 1);
@@ -280,7 +280,7 @@ pgp_check_sig(const uint8_t *hash, unsigned length,
 const pgp_sig_t * sig,
 const pgp_pubkey_t * signer)
 {
-unsigned   ret;
+unsigned ret;
 if (pgp_get_debug_level(__FILE__)) {
 hexdump(stdout, "hash", hash, length);
 }
@@ -305,8 +305,8 @@ hash_and_check_sig(pgp_hash_t *hash,
 const pgp_sig_t *sig,
 const pgp_pubkey_t *signer)
 {
-uint8_t   hashout[PGP_MAX_HASH_SIZE];
-unsigned	n;
+uint8_t hashout[PGP_MAX_HASH_SIZE];
+unsigned n;
 n = hash->finish(hash, hashout);
 return pgp_check_sig(hashout, n, sig, signer);
 }
@@ -324,8 +324,8 @@ const uint8_t *id,
 const pgp_sig_t *sig,
 const pgp_pubkey_t *signer)
 {
-pgp_hash_t	hash;
-size_t          userid_len;
+pgp_hash_t hash;
+size_t userid_len;
 userid_len = strlen((const char *) id);
 init_key_sig(&hash, sig, key);
 if (sig->info.version == PGP_V4) {
@@ -341,7 +341,7 @@ const pgp_data_t *attribute,
 const pgp_sig_t *sig,
 const pgp_pubkey_t *signer)
 {
-pgp_hash_t      hash;
+pgp_hash_t hash;
 init_key_sig(&hash, sig, key);
 if (sig->info.version == PGP_V4) {
 pgp_hash_add_int(&hash, 0xd1, 1);
@@ -356,8 +356,8 @@ const pgp_pubkey_t *subkey,
 const pgp_sig_t *sig,
 const pgp_pubkey_t *signer)
 {
-pgp_hash_t	hash;
-unsigned	ret;
+pgp_hash_t hash;
+unsigned ret;
 init_key_sig(&hash, sig, key);
 hash_add_key(&hash, subkey);
 ret = finalise_sig(&hash, sig, signer);
@@ -368,8 +368,8 @@ pgp_check_direct_sig(const pgp_pubkey_t *key,
 const pgp_sig_t *sig,
 const pgp_pubkey_t *signer)
 {
-pgp_hash_t	hash;
-unsigned	ret;
+pgp_hash_t hash;
+unsigned ret;
 init_key_sig(&hash, sig, key);
 ret = finalise_sig(&hash, sig, signer);
 return ret;
@@ -471,8 +471,8 @@ pgp_create_sig_t *sig,
 const pgp_pubkey_t *key,
 const pgp_seckey_t *seckey)
 {
-unsigned	ret = 0;
-size_t		len = pgp_mem_len(sig->mem);
+unsigned ret = 0;
+size_t len = pgp_mem_len(sig->mem);
 switch (seckey->pubkey.alg) {
 case PGP_PKA_RSA:
 case PGP_PKA_RSA_ENCRYPT_ONLY:
@@ -550,7 +550,7 @@ return ret;
 unsigned
 pgp_add_creation_time(pgp_create_sig_t *sig, time_t when)
 {
-pgp_content_enum	tag;
+pgp_content_enum tag;
 tag = PGP_PTAG_SS_CREATION_TIME;
 sig->sig.info.birthtime = when;
 sig->sig.info.birthtime_set = 1;
@@ -560,7 +560,7 @@ pgp_write_scalar(sig->output, (unsigned int)when, 4);
 unsigned
 pgp_add_sig_expiration_time(pgp_create_sig_t *sig, time_t duration)
 {
-pgp_content_enum	tag;
+pgp_content_enum tag;
 tag = PGP_PTAG_SS_EXPIRATION_TIME;
 sig->sig.info.duration = duration;
 sig->sig.info.duration_set = 1;
@@ -570,7 +570,7 @@ pgp_write_scalar(sig->output, (unsigned int)duration, 4);
 unsigned
 pgp_add_key_expiration_time(pgp_create_sig_t *sig, time_t duration)
 {
-pgp_content_enum	tag;
+pgp_content_enum tag;
 tag = PGP_PTAG_SS_KEY_EXPIRY;
 sig->sig.info.key_expiry = duration;
 sig->sig.info.key_expiry_set = 1;
@@ -580,7 +580,7 @@ pgp_write_scalar(sig->output, (unsigned int)duration, 4);
 unsigned
 pgp_add_key_flags(pgp_create_sig_t *sig, uint8_t flags)
 {
-pgp_content_enum	tag;
+pgp_content_enum tag;
 tag = PGP_PTAG_SS_KEY_FLAGS;
 sig->sig.info.key_flags = flags;
 sig->sig.info.key_flags_set = 1;
@@ -612,7 +612,7 @@ pgp_write_scalar(sig->output, PGP_C_BZIP2, 1);
 unsigned
 pgp_add_key_features(pgp_create_sig_t *sig)
 {
-pgp_content_enum	tag;
+pgp_content_enum tag;
 tag = PGP_PTAG_SS_FEATURES;
 return pgp_write_ss_header(sig->output, 2, tag) &&
 pgp_write_scalar(sig->output, 0x01, 1);
@@ -639,11 +639,11 @@ uint8_t code, const char *reason)
 size_t rlen = reason ? strlen(reason) : 0;
 return pgp_write_ss_header(
 sig->output, rlen + 1,
-PGP_PTAG_SS_REVOCATION_REASON)      &&
+PGP_PTAG_SS_REVOCATION_REASON) &&
 pgp_write_scalar(sig->output, code, 1) &&
 pgp_write(sig->output, reason, (unsigned int)rlen);
 }
-pgp_hash_t     *
+pgp_hash_t *
 pgp_sig_get_hash(pgp_create_sig_t *sig)
 {
 return &sig->hash;
@@ -656,12 +656,12 @@ const char *outname,
 const char *suffix,
 const unsigned overwrite)
 {
-int             fd;
+int fd;
 if (outname) {
 fd = pgp_setup_file_write(output, outname, overwrite);
 } else {
-unsigned        flen = (unsigned)(strlen(inname) + 4 + 1);
-char           *f = NULL;
+unsigned flen = (unsigned)(strlen(inname) + 4 + 1);
+char *f = NULL;
 if ((f = calloc(1, flen)) == NULL) {
 (void) fprintf(stderr, "open_output_file: bad alloc\n");
 fd = -1;
@@ -687,15 +687,15 @@ const unsigned armored,
 const unsigned cleartext,
 const unsigned overwrite)
 {
-pgp_create_sig_t	*sig;
-pgp_sig_type_t	 sig_type;
-pgp_hash_alg_t	 hash_alg;
-pgp_memory_t		*infile;
-pgp_output_t		*output;
-pgp_hash_t		*hash;
-unsigned		 ret;
-uint8_t			 keyid[PGP_KEY_ID_SIZE];
-int			 fd_out;
+pgp_create_sig_t *sig;
+pgp_sig_type_t sig_type;
+pgp_hash_alg_t hash_alg;
+pgp_memory_t *infile;
+pgp_output_t *output;
+pgp_hash_t *hash;
+unsigned ret;
+uint8_t keyid[PGP_KEY_ID_SIZE];
+int fd_out;
 sig = NULL;
 sig_type = PGP_SIG_BINARY;
 infile = NULL;
@@ -791,15 +791,15 @@ const char *hashname,
 const unsigned armored,
 const unsigned cleartext)
 {
-pgp_litdata_enum	 ld_type;
-pgp_create_sig_t	*sig;
-pgp_sig_type_t	 sig_type;
-pgp_hash_alg_t	 hash_alg;
-pgp_output_t		*output;
-pgp_memory_t		*mem = NULL;
-uint8_t			 keyid[PGP_KEY_ID_SIZE];
-pgp_hash_t		*hash;
-unsigned		 ret;
+pgp_litdata_enum ld_type;
+pgp_create_sig_t *sig;
+pgp_sig_type_t sig_type;
+pgp_hash_alg_t hash_alg;
+pgp_output_t *output;
+pgp_memory_t *mem = NULL;
+uint8_t keyid[PGP_KEY_ID_SIZE];
+pgp_hash_t *hash;
+unsigned ret;
 sig = NULL;
 sig_type = PGP_SIG_BINARY;
 output = NULL;
@@ -872,12 +872,12 @@ const time_t from,
 const time_t duration,
 const unsigned armored, const unsigned overwrite)
 {
-pgp_create_sig_t	*sig;
-pgp_hash_alg_t	 hash_alg;
-pgp_output_t		*output;
-pgp_memory_t		*mem;
-uint8_t	 	 	 keyid[PGP_KEY_ID_SIZE];
-int			 fd;
+pgp_create_sig_t *sig;
+pgp_hash_alg_t hash_alg;
+pgp_output_t *output;
+pgp_memory_t *mem;
+uint8_t keyid[PGP_KEY_ID_SIZE];
+int fd;
 hash_alg = pgp_str_to_hash_alg(hash);
 if (hash_alg == PGP_HASH_UNKNOWN) {
 (void) fprintf(io->errs,"Unknown hash algorithm: %s\n", hash);

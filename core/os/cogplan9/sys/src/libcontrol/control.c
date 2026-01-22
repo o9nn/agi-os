@@ -15,43 +15,43 @@ AExit,
 NALT
 };
 static Controlset **controlset;
-int	ncontrolset;
-int	ctldeletequits;
+int ncontrolset;
+int ctldeletequits;
 char *alignnames[Nalignments] = {
-[Aupperleft] =		"upperleft",
-[Auppercenter] =	"uppercenter",
-[Aupperright] =		"upperright",
-[Acenterleft] =		"centerleft",
-[Acenter] =		"center",
-[Acenterright] =	"centerright",
-[Alowerleft] =		"lowerleft",
-[Alowercenter] =	"lowercenter",
-[Alowerright] =		"lowerright",
+[Aupperleft] = "upperleft",
+[Auppercenter] = "uppercenter",
+[Aupperright] = "upperright",
+[Acenterleft] = "centerleft",
+[Acenter] = "center",
+[Acenterright] = "centerright",
+[Alowerleft] = "lowerleft",
+[Alowercenter] = "lowercenter",
+[Alowerright] = "lowerright",
 };
 char *ctltypenames[Ntypes] = {
-[Ctlunknown] =		"unknown",
-[Ctlbox] =			"box",
-[Ctlbutton] =		"button",
-[Ctlentry] =		"entry",
-[Ctlkeyboard] =		"keyboard",
-[Ctllabel] =		"label",
-[Ctlmenu] =		"menu",
-[Ctlradio] =		"radio",
-[Ctlscribble] =		"scribble",
-[Ctlslider] =		"slider",
-[Ctltabs] =			"tabs",
-[Ctltext] =			"text",
-[Ctltextbutton] =	"textbutton",
-[Ctltextbutton3] =	"textbutton3",
-[Ctlgroup] =		"group",
-[Ctlboxbox] =		"boxbox",
-[Ctlcolumn] =		"column",
-[Ctlrow] =			"row",
-[Ctlstack] =		"stack",
-[Ctltab] =			"tab",
+[Ctlunknown] = "unknown",
+[Ctlbox] = "box",
+[Ctlbutton] = "button",
+[Ctlentry] = "entry",
+[Ctlkeyboard] = "keyboard",
+[Ctllabel] = "label",
+[Ctlmenu] = "menu",
+[Ctlradio] = "radio",
+[Ctlscribble] = "scribble",
+[Ctlslider] = "slider",
+[Ctltabs] = "tabs",
+[Ctltext] = "text",
+[Ctltextbutton] = "textbutton",
+[Ctltextbutton3] = "textbutton3",
+[Ctlgroup] = "group",
+[Ctlboxbox] = "boxbox",
+[Ctlcolumn] = "column",
+[Ctlrow] = "row",
+[Ctlstack] = "stack",
+[Ctltab] = "tab",
 };
-static void	_ctlcmd(Controlset*, char*);
-static void	_ctlcontrol(Controlset*, char*);
+static void _ctlcmd(Controlset*, char*);
+static void _ctlcontrol(Controlset*, char*);
 static char*
 _mkctlcmd(Control *c, char *fmt, va_list arg)
 {
@@ -383,8 +383,8 @@ static void
 _ctlcmd(Controlset *cs, char*s)
 {
 CParse cp;
-char	*rcvrs[32];
-int	ircvrs[32], n, i, hit;
+char *rcvrs[32];
+int ircvrs[32], n, i, hit;
 Control *c;
 cp.args = cp.pargs;
 if (ctlparse(&cp, s, 1) < 0)
@@ -601,32 +601,32 @@ ctlerror("%q not active\n", a->name);
 }
 static struct
 {
-char	*name;
-ulong	color;
+char *name;
+ulong color;
 }coltab[] = {
-"red",			DRed,
-"green",			DGreen,
-"blue",			DBlue,
-"cyan",			DCyan,
-"magenta",		DMagenta,
-"yellow",			DYellow,
-"paleyellow",		DPaleyellow,
-"darkyellow",		DDarkyellow,
-"darkgreen",		DDarkgreen,
-"palegreen",		DPalegreen,
-"medgreen",		DMedgreen,
-"darkblue",		DDarkblue,
-"palebluegreen",	DPalebluegreen,
-"paleblue",		DPaleblue,
-"bluegreen",		DBluegreen,
-"greygreen",		DGreygreen,
-"palegreygreen",	DPalegreygreen,
-"yellowgreen",		DYellowgreen,
-"medblue",		DMedblue,
-"greyblue",		DGreyblue,
-"palegreyblue",		DPalegreyblue,
-"purpleblue",		DPurpleblue,
-nil,	0
+"red", DRed,
+"green", DGreen,
+"blue", DBlue,
+"cyan", DCyan,
+"magenta", DMagenta,
+"yellow", DYellow,
+"paleyellow", DPaleyellow,
+"darkyellow", DDarkyellow,
+"darkgreen", DDarkgreen,
+"palegreen", DPalegreen,
+"medgreen", DMedgreen,
+"darkblue", DDarkblue,
+"palebluegreen", DPalebluegreen,
+"paleblue", DPaleblue,
+"bluegreen", DBluegreen,
+"greygreen", DGreygreen,
+"palegreygreen", DPalegreygreen,
+"yellowgreen", DYellowgreen,
+"medblue", DMedblue,
+"greyblue", DGreyblue,
+"palegreyblue", DPalegreyblue,
+"purpleblue", DPurpleblue,
+nil, 0
 };
 void
 initcontrols(void)

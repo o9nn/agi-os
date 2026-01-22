@@ -1,5 +1,5 @@
 #ifndef gsrop_INCLUDED
-#  define gsrop_INCLUDED
+# define gsrop_INCLUDED
 #include "gsropt.h"
 int gs_setrasterop(gs_state *, gs_rop3_t);
 gs_rop3_t gs_currentrasterop(const gs_state *);

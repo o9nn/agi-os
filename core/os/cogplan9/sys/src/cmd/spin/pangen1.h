@@ -6947,7 +6947,7 @@ because vsize prevents them being used
 a possible variation of iterative search for shortest counter-example
 (pan -i and pan -I) suggested by Pierre Moro (for safety properties):
 state revisits on shorter depths do not start until after
-the first counter-example is found.  this assumes that the max search
+the first counter-example is found. this assumes that the max search
 depth is set large enough that a first (possibly long) counter-example
 can be found
 if set too short, this variant can miss the counter-example, even if

@@ -4,7 +4,7 @@ sys: Sys;
 include "draw.m";
 Bind: module
 {
-init:	fn(ctxt: ref Draw->Context, args: list of string);
+init: fn(ctxt: ref Draw->Context, args: list of string);
 };
 stderr: ref Sys->FD;
 usage()
@@ -45,7 +45,7 @@ f2 := hd tl args;
 if(sys->bind(f1, f2, flags) < 0){
 if(qflag)
 exit;
-#  try to improve the error message
+# try to improve the error message
 err := sys->sprint("%r");
 if(sys->stat(f1).t0 < 0)
 sys->fprint(stderr, "bind: %s: %r\n", f1);

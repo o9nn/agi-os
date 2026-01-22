@@ -23,17 +23,17 @@ struct sk_buff *skb, int ring_offset);
 static void wd_block_output(struct device *dev, int count,
 const unsigned char *buf, const int start_page);
 static int wd_close_card(struct device *dev);
-#define WD_START_PG		0x00
-#define WD03_STOP_PG	0x20
-#define WD13_STOP_PG	0x40
-#define WD_CMDREG		0
-#define	 WD_RESET		0x80
-#define	 WD_MEMENB		0x40
-#define WD_CMDREG5		5
-#define	 ISA16			0x80
-#define	 NIC16			0x40
-#define WD_NIC_OFFSET	16
-#define WD_IO_EXTENT	32
+#define WD_START_PG 0x00
+#define WD03_STOP_PG 0x20
+#define WD13_STOP_PG 0x40
+#define WD_CMDREG 0
+#define WD_RESET 0x80
+#define WD_MEMENB 0x40
+#define WD_CMDREG5 5
+#define ISA16 0x80
+#define NIC16 0x40
+#define WD_NIC_OFFSET 16
+#define WD_IO_EXTENT 32
 #ifdef HAVE_DEVLIST
 struct netdev_entry wd_drv =
 {"wd", wd_probe1, WD_IO_EXTENT, wd_portlist};
@@ -79,7 +79,7 @@ printk(KERN_WARNING "wd.c: user supplied mem_start or mem_end not on 8kB boundar
 dev->mem_start = 0;
 dev->mem_end = 0;
 }
-if (ei_debug  &&  version_printed++ == 0)
+if (ei_debug && version_printed++ == 0)
 printk("%s", version);
 printk("%s: WD80x3 at %#3x, ", dev->name, ioaddr);
 for (i = 0; i < 6; i++)
@@ -87,10 +87,10 @@ printk(" %2.2X", dev->dev_addr[i] = inb(ioaddr + 8 + i));
 if (inb(ioaddr+0) == 'P' && inb(ioaddr+1) == 'D') {
 unsigned char reg5 = inb(ioaddr+5);
 switch (inb(ioaddr+2)) {
-case 0x03: word16 = 0; model_name = "PDI8023-8";	break;
-case 0x05: word16 = 0; model_name = "PDUC8023";	break;
+case 0x03: word16 = 0; model_name = "PDI8023-8"; break;
+case 0x05: word16 = 0; model_name = "PDUC8023"; break;
 case 0x0a: word16 = 1; model_name = "PDI8023-16"; break;
-default:	 word16 = 0; model_name = "PDI8023";	break;
+default: word16 = 0; model_name = "PDI8023"; break;
 }
 dev->mem_start = ((reg5 & 0x1c) + 0xc0) << 12;
 dev->irq = (reg5 & 0xe0) == 0xe0 ? 10 : (reg5 >> 5) + 1;
@@ -106,7 +106,7 @@ word16 = 0;
 int tmp = inb(ioaddr+1);
 outb( tmp ^ 0x01, ioaddr+1 );
 if (((inb( ioaddr+1) & 0x01) == 0x01)
-&& (tmp & 0x01) == 0x01	) {
+&& (tmp & 0x01) == 0x01 ) {
 int asic_reg5 = inb(ioaddr+WD_CMDREG5);
 outb( NIC16 | (asic_reg5&0x1f), ioaddr+WD_CMDREG5);
 outb(tmp, ioaddr+1);
@@ -283,8 +283,8 @@ MOD_DEC_USE_COUNT;
 return 0;
 }
 #ifdef MODULE
-#define MAX_WD_CARDS	4
-#define NAMELEN		8
+#define MAX_WD_CARDS 4
+#define NAMELEN 8
 static char namelist[NAMELEN * MAX_WD_CARDS] = { 0, };
 static struct device dev_wd[MAX_WD_CARDS] = {
 {
@@ -295,7 +295,7 @@ NULL,
 },
 };
 static int io[MAX_WD_CARDS] = { 0, };
-static int irq[MAX_WD_CARDS]  = { 0, };
+static int irq[MAX_WD_CARDS] = { 0, };
 static int mem[MAX_WD_CARDS] = { 0, };
 static int mem_end[MAX_WD_CARDS] = { 0, };
 int
@@ -310,7 +310,7 @@ dev->base_addr = io[this_dev];
 dev->mem_start = mem[this_dev];
 dev->mem_end = mem_end[this_dev];
 dev->init = wd_probe;
-if (io[this_dev] == 0)  {
+if (io[this_dev] == 0) {
 if (this_dev != 0) break;
 printk(KERN_NOTICE "wd.c: Presently autoprobing (not recommended) for a single card.\n");
 }

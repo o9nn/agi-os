@@ -1,6 +1,6 @@
 implement Logwindow;
 #
-# Copyright © 1999 Vita Nuova Limited.  All rights reserved.
+# Copyright © 1999 Vita Nuova Limited. All rights reserved.
 #
 include "sys.m";
 sys: Sys;

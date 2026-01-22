@@ -9,12 +9,12 @@
 extern struct timezone sys_tz;
 #undef offsetof
 #define offsetof(TYPE, MEMB) ((size_t) &((TYPE *)0)->MEMB)
-typedef __u8            hfs_u8;
-typedef __u16           hfs_u16;
-typedef __u32           hfs_u32;
-typedef __s8            hfs_s8;
-typedef __s16           hfs_s16;
-typedef __s32           hfs_s32;
+typedef __u8 hfs_u8;
+typedef __u16 hfs_u16;
+typedef __u32 hfs_u32;
+typedef __s8 hfs_s8;
+typedef __s16 hfs_s16;
+typedef __s32 hfs_s32;
 typedef unsigned char hfs_byte_t;
 typedef unsigned char hfs_word_t[2];
 typedef unsigned char hfs_lword_t[4];
@@ -95,29 +95,29 @@ return buffer->b_data;
 }
 #undef BITNR
 #if defined(__BIG_ENDIAN)
-#	define BITNR(X)	((X)^31)
-#	if !defined(__constant_htonl)
-#		define __constant_htonl(x) (x)
-#	endif
-#	if !defined(__constant_htons)
-#		define __constant_htons(x) (x)
-#	endif
+# define BITNR(X) ((X)^31)
+# if !defined(__constant_htonl)
+# define __constant_htonl(x) (x)
+# endif
+# if !defined(__constant_htons)
+# define __constant_htons(x) (x)
+# endif
 #elif defined(__LITTLE_ENDIAN)
-#	define BITNR(X)	((X)^7)
-#	if !defined(__constant_htonl)
-#		define __constant_htonl(x) \
+# define BITNR(X) ((X)^7)
+# if !defined(__constant_htonl)
+# define __constant_htonl(x) \
 ((unsigned long int)((((unsigned long int)(x) & 0x000000ffU) << 24) | \
-(((unsigned long int)(x) & 0x0000ff00U) <<  8) | \
-(((unsigned long int)(x) & 0x00ff0000U) >>  8) | \
+(((unsigned long int)(x) & 0x0000ff00U) << 8) | \
+(((unsigned long int)(x) & 0x00ff0000U) >> 8) | \
 (((unsigned long int)(x) & 0xff000000U) >> 24)))
-#	endif
-#	if !defined(__constant_htons)
-#		define __constant_htons(x) \
+# endif
+# if !defined(__constant_htons)
+# define __constant_htons(x) \
 ((unsigned short int)((((unsigned short int)(x) & 0x00ff) << 8) | \
 (((unsigned short int)(x) & 0xff00) >> 8)))
-#	endif
+# endif
 #else
-#	error "Don't know if bytes are big- or little-endian!"
+# error "Don't know if bytes are big- or little-endian!"
 #endif
 extern inline int hfs_clear_bit(int bitnr, hfs_u32 *lword) {
 return test_and_clear_bit(BITNR(bitnr), lword);
@@ -129,16 +129,16 @@ extern inline int hfs_test_bit(int bitnr, const hfs_u32 *lword) {
 return test_bit(BITNR(bitnr), (void *)lword);
 }
 #undef BITNR
-#define hfs_get_hs(addr)	ntohs(*((hfs_u16 *)(addr)))
-#define hfs_get_ns(addr)	(*((hfs_u16 *)(addr)))
-#define hfs_get_hl(addr)	ntohl(get_unaligned((hfs_u32 *)(addr)))
-#define hfs_get_nl(addr)	get_unaligned((hfs_u32 *)(addr))
-#define hfs_get_ahl(addr)	ntohl(*((hfs_u32 *)(addr)))
-#define hfs_get_anl(addr)	(*((hfs_u32 *)(addr)))
-#define hfs_put_hs(val, addr) 	((void)(*((hfs_u16 *)(addr)) = ntohs(val)))
-#define hfs_put_ns(val, addr) 	((void)(*((hfs_u16 *)(addr)) = (val)))
-#define hfs_put_hl(val, addr) 	put_unaligned(htonl(val), (hfs_u32 *)(addr))
-#define hfs_put_nl(val, addr) 	put_unaligned((val), (hfs_u32 *)(addr))
-#define hfs_put_ahl(val, addr) 	((void)(*((hfs_u32 *)(addr)) = ntohl(val)))
-#define hfs_put_anl(val, addr) 	((void)(*((hfs_u32 *)(addr)) = (val)))
+#define hfs_get_hs(addr) ntohs(*((hfs_u16 *)(addr)))
+#define hfs_get_ns(addr) (*((hfs_u16 *)(addr)))
+#define hfs_get_hl(addr) ntohl(get_unaligned((hfs_u32 *)(addr)))
+#define hfs_get_nl(addr) get_unaligned((hfs_u32 *)(addr))
+#define hfs_get_ahl(addr) ntohl(*((hfs_u32 *)(addr)))
+#define hfs_get_anl(addr) (*((hfs_u32 *)(addr)))
+#define hfs_put_hs(val, addr) ((void)(*((hfs_u16 *)(addr)) = ntohs(val)))
+#define hfs_put_ns(val, addr) ((void)(*((hfs_u16 *)(addr)) = (val)))
+#define hfs_put_hl(val, addr) put_unaligned(htonl(val), (hfs_u32 *)(addr))
+#define hfs_put_nl(val, addr) put_unaligned((val), (hfs_u32 *)(addr))
+#define hfs_put_ahl(val, addr) ((void)(*((hfs_u32 *)(addr)) = ntohl(val)))
+#define hfs_put_anl(val, addr) ((void)(*((hfs_u32 *)(addr)) = (val)))
 #endif

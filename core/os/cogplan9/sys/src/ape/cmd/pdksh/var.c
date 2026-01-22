@@ -3,16 +3,16 @@
 #include "ksh_limval.h"
 #include "ksh_stat.h"
 #include <ctype.h>
-static	struct tbl vtemp;
-static	struct table specials;
-static char	*formatstr	ARGS((struct tbl *vp, const char *s));
-static void	export		ARGS((struct tbl *vp, const char *val));
-static int	special		ARGS((const char *name));
-static void	unspecial	ARGS((const char *name));
-static void	getspec		ARGS((struct tbl *vp));
-static void	setspec		ARGS((struct tbl *vp));
-static void	unsetspec	ARGS((struct tbl *vp));
-static struct tbl *arraysearch  ARGS((struct tbl *, int));
+static struct tbl vtemp;
+static struct table specials;
+static char *formatstr ARGS((struct tbl *vp, const char *s));
+static void export ARGS((struct tbl *vp, const char *val));
+static int special ARGS((const char *name));
+static void unspecial ARGS((const char *name));
+static void getspec ARGS((struct tbl *vp));
+static void setspec ARGS((struct tbl *vp));
+static void unsetspec ARGS((struct tbl *vp));
+static struct tbl *arraysearch ARGS((struct tbl *, int));
 void
 newblock()
 {
@@ -59,30 +59,30 @@ static const struct {
 const char *name;
 int v;
 } names[] = {
-{ "COLUMNS",		V_COLUMNS },
-{ "IFS",		V_IFS },
-{ "OPTIND",		V_OPTIND },
-{ "PATH",		V_PATH },
-{ "POSIXLY_CORRECT",	V_POSIXLY_CORRECT },
-{ "TMPDIR",		V_TMPDIR },
+{ "COLUMNS", V_COLUMNS },
+{ "IFS", V_IFS },
+{ "OPTIND", V_OPTIND },
+{ "PATH", V_PATH },
+{ "POSIXLY_CORRECT", V_POSIXLY_CORRECT },
+{ "TMPDIR", V_TMPDIR },
 #ifdef HISTORY
-{ "HISTFILE",		V_HISTFILE },
-{ "HISTSIZE",		V_HISTSIZE },
+{ "HISTFILE", V_HISTFILE },
+{ "HISTSIZE", V_HISTSIZE },
 #endif
 #ifdef EDIT
-{ "EDITOR",		V_EDITOR },
-{ "VISUAL",		V_VISUAL },
+{ "EDITOR", V_EDITOR },
+{ "VISUAL", V_VISUAL },
 #endif
 #ifdef KSH
-{ "MAIL",		V_MAIL },
-{ "MAILCHECK",		V_MAILCHECK },
-{ "MAILPATH",		V_MAILPATH },
-{ "RANDOM",		V_RANDOM },
-{ "SECONDS",		V_SECONDS },
-{ "TMOUT",		V_TMOUT },
+{ "MAIL", V_MAIL },
+{ "MAILCHECK", V_MAILCHECK },
+{ "MAILPATH", V_MAILPATH },
+{ "RANDOM", V_RANDOM },
+{ "SECONDS", V_SECONDS },
+{ "TMOUT", V_TMOUT },
 #endif
-{ "LINENO",		V_LINENO },
-{ (char *) 0,	0 }
+{ "LINENO", V_LINENO },
+{ (char *) 0, 0 }
 };
 int i;
 struct tbl *tp;
@@ -124,8 +124,8 @@ register struct block *l = e->loc;
 register struct tbl *vp;
 register int c;
 unsigned h;
-bool_t	 array;
-int	 val;
+bool_t array;
+int val;
 n = array_index_calc(n, &array, &val);
 h = hash(n);
 c = n[0];
@@ -198,8 +198,8 @@ bool_t copy;
 register struct block *l = e->loc;
 register struct tbl *vp;
 unsigned h;
-bool_t	 array;
-int	 val;
+bool_t array;
+int val;
 n = array_index_calc(n, &array, &val);
 h = hash(n);
 if (!letter(*n)) {
@@ -730,9 +730,9 @@ if (tp)
 tdelete(tp);
 }
 #ifdef KSH
-static	time_t	seconds;
+static time_t seconds;
 #endif
-static	int	user_lineno;
+static int user_lineno;
 static void
 getspec(vp)
 register struct tbl *vp;

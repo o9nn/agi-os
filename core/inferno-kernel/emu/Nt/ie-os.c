@@ -1,30 +1,30 @@
 #define Unknown win_Unknown
 #define UNICODE
-#include	<windows.h>
+#include <windows.h>
 #include <winbase.h>
-#include	<winsock.h>
+#include <winsock.h>
 #undef Unknown
-#include	<excpt.h>
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
-#include	"r16.h"
-#include	"ieplugin.h"
-extern int	SYS_SLEEP = 2;
+#include <excpt.h>
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
+#include "r16.h"
+#include "ieplugin.h"
+extern int SYS_SLEEP = 2;
 extern int SOCK_SELECT = 3;
-#define	MAXSLEEPERS	1500
-extern Plugin*	plugin;
-extern void	newiop();
-extern int		sendiop();
-DWORD		PlatformId;
-static char*	path;
-static HANDLE	kbdh = INVALID_HANDLE_VALUE;
-static HANDLE	conh = INVALID_HANDLE_VALUE;
-static int		sleepers;
+#define MAXSLEEPERS 1500
+extern Plugin* plugin;
+extern void newiop();
+extern int sendiop();
+DWORD PlatformId;
+static char* path;
+static HANDLE kbdh = INVALID_HANDLE_VALUE;
+static HANDLE conh = INVALID_HANDLE_VALUE;
+static int sleepers;
 static ulong erendezvous(void*, ulong);
-__declspec(thread)       Proc    *up;
-HANDLE	ntfd2h(int);
-int	nth2fd(HANDLE);
+__declspec(thread) Proc *up;
+HANDLE ntfd2h(int);
+int nth2fd(HANDLE);
 char *hosttype = "Nt";
 static void
 pfree(Proc *p)
@@ -188,31 +188,31 @@ sendiop();
 ExitProcess(x);
 }
 struct ecodes {
-DWORD	code;
-char*	name;
+DWORD code;
+char* name;
 } ecodes[] = {
-EXCEPTION_ACCESS_VIOLATION,		"Segmentation violation",
-EXCEPTION_DATATYPE_MISALIGNMENT,	"Data Alignment",
-EXCEPTION_BREAKPOINT,                	"Breakpoint",
-EXCEPTION_SINGLE_STEP,               	"SingleStep",
-EXCEPTION_ARRAY_BOUNDS_EXCEEDED,	"Array Bounds Check",
-EXCEPTION_FLT_DENORMAL_OPERAND,		"Denormalized Float",
-EXCEPTION_FLT_DIVIDE_BY_ZERO,		"Floating Point Divide by Zero",
-EXCEPTION_FLT_INEXACT_RESULT,		"Inexact Floating Point",
-EXCEPTION_FLT_INVALID_OPERATION,	"Invalid Floating Operation",
-EXCEPTION_FLT_OVERFLOW,			"Floating Point Result Overflow",
-EXCEPTION_FLT_STACK_CHECK,		"Floating Point Stack Check",
-EXCEPTION_FLT_UNDERFLOW,		"Floating Point Result Underflow",
-EXCEPTION_INT_DIVIDE_BY_ZERO,		"Divide by Zero",
-EXCEPTION_INT_OVERFLOW,			"Integer Overflow",
-EXCEPTION_PRIV_INSTRUCTION,		"Privileged Instruction",
-EXCEPTION_IN_PAGE_ERROR,		"Page-in Error",
-EXCEPTION_ILLEGAL_INSTRUCTION,		"Illegal Instruction",
-EXCEPTION_NONCONTINUABLE_EXCEPTION,	"Non-Continuable Exception",
-EXCEPTION_STACK_OVERFLOW,		"Stack Overflow",
-EXCEPTION_INVALID_DISPOSITION,		"Invalid Disposition",
-EXCEPTION_GUARD_PAGE,			"Guard Page Violation",
-0,					nil
+EXCEPTION_ACCESS_VIOLATION, "Segmentation violation",
+EXCEPTION_DATATYPE_MISALIGNMENT, "Data Alignment",
+EXCEPTION_BREAKPOINT, "Breakpoint",
+EXCEPTION_SINGLE_STEP, "SingleStep",
+EXCEPTION_ARRAY_BOUNDS_EXCEEDED, "Array Bounds Check",
+EXCEPTION_FLT_DENORMAL_OPERAND, "Denormalized Float",
+EXCEPTION_FLT_DIVIDE_BY_ZERO, "Floating Point Divide by Zero",
+EXCEPTION_FLT_INEXACT_RESULT, "Inexact Floating Point",
+EXCEPTION_FLT_INVALID_OPERATION, "Invalid Floating Operation",
+EXCEPTION_FLT_OVERFLOW, "Floating Point Result Overflow",
+EXCEPTION_FLT_STACK_CHECK, "Floating Point Stack Check",
+EXCEPTION_FLT_UNDERFLOW, "Floating Point Result Underflow",
+EXCEPTION_INT_DIVIDE_BY_ZERO, "Divide by Zero",
+EXCEPTION_INT_OVERFLOW, "Integer Overflow",
+EXCEPTION_PRIV_INSTRUCTION, "Privileged Instruction",
+EXCEPTION_IN_PAGE_ERROR, "Page-in Error",
+EXCEPTION_ILLEGAL_INSTRUCTION, "Illegal Instruction",
+EXCEPTION_NONCONTINUABLE_EXCEPTION, "Non-Continuable Exception",
+EXCEPTION_STACK_OVERFLOW, "Stack Overflow",
+EXCEPTION_INVALID_DISPOSITION, "Invalid Disposition",
+EXCEPTION_GUARD_PAGE, "Guard Page Violation",
+0, nil
 };
 void
 dodisfault(void)
@@ -274,7 +274,7 @@ ureg->ContextRecord->FloatSave.TagWord = 0xffff;
 ureg->ContextRecord->Eip = (DWORD)dodisfault;
 return EXCEPTION_CONTINUE_EXECUTION;
 }
-static	int	rebootok = 0;
+static int rebootok = 0;
 void
 osreboot(char *file, char **argv)
 {
@@ -314,21 +314,21 @@ emuinit(imod);
 }
 enum
 {
-NHLOG	= 7,
-NHASH	= (1<<NHLOG)
+NHLOG = 7,
+NHASH = (1<<NHLOG)
 };
 typedef struct Tag Tag;
 struct Tag
 {
-void*	tag;
-ulong	val;
-HANDLE	pid;
-Tag*	next;
+void* tag;
+ulong val;
+HANDLE pid;
+Tag* next;
 };
-static	Tag*	ht[NHASH];
-static	Tag*	ft;
-static	Lock	hlock;
-static	int	nsema;
+static Tag* ht[NHASH];
+static Tag* ft;
+static Lock hlock;
+static int nsema;
 ulong
 erendezvous(void *tag, ulong value)
 {
@@ -383,16 +383,16 @@ void
 FPsave(void *fptr)
 {
 _asm {
-mov	eax, fptr
-fstenv	[eax]
+mov eax, fptr
+fstenv [eax]
 }
 }
 void
 FPrestore(void *fptr)
 {
 _asm {
-mov	eax, fptr
-fldenv	[eax]
+mov eax, fptr
+fldenv [eax]
 }
 }
 ulong
@@ -400,11 +400,11 @@ umult(ulong a, ulong b, ulong *high)
 {
 ulong lo, hi;
 _asm {
-mov	eax, a
-mov	ecx, b
-MUL	ecx
-mov	lo, eax
-mov	hi, edx
+mov eax, a
+mov ecx, b
+MUL ecx
+mov lo, eax
+mov hi, edx
 }
 *high = hi;
 return lo;
@@ -487,11 +487,11 @@ return GetTickCount();
 #define SEC2MIN 60L
 #define SEC2HOUR (60L*SEC2MIN)
 #define SEC2DAY (24L*SEC2HOUR)
-static	int	dmsize[] =
+static int dmsize[] =
 {
 365, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 };
-static	int	ldmsize[] =
+static int ldmsize[] =
 {
 366, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 };

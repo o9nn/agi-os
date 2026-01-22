@@ -1,29 +1,29 @@
 const timerMap = new Map<number, ReturnType<typeof setTimeout>>()
 export const setClockInterval = (func: (...args: any[]) => any, interval: number) => {
-  let start: number
-  let tick: number
-  let clockTimer: ReturnType<typeof setTimeout>
-  const timerId = Math.floor(Math.random() * 1e10)
-  const recurFunc = () => {
-    func()
-    const realExecuteTime = new Date().getTime()
-    if (!start) {
-      start = realExecuteTime
-    }
-    tick = tick || start
-    const diff = realExecuteTime - tick
-    tick += interval
-    clockTimer = setTimeout(recurFunc, interval - diff)
-    timerMap.set(timerId, clockTimer)
-  }
-  recurFunc()
-  return timerId
+let start: number
+let tick: number
+let clockTimer: ReturnType<typeof setTimeout>
+const timerId = Math.floor(Math.random() * 1e10)
+const recurFunc = () => {
+func()
+const realExecuteTime = new Date().getTime()
+if (!start) {
+start = realExecuteTime
+}
+tick = tick || start
+const diff = realExecuteTime - tick
+tick += interval
+clockTimer = setTimeout(recurFunc, interval - diff)
+timerMap.set(timerId, clockTimer)
+}
+recurFunc()
+return timerId
 }
 export const clearClockInterval = (timerId: number) => {
-  const timer = timerMap.get(timerId)
-  if (timer == null) {
-    return
-  }
-  clearTimeout(timer)
-  timerMap.delete(timerId)
+const timer = timerMap.get(timerId)
+if (timer == null) {
+return
+}
+clearTimeout(timer)
+timerMap.delete(timerId)
 }

@@ -5,8 +5,8 @@
 #include "dc_apeerstate.h"
 void dc_sqlite3_log_error(dc_sqlite3_t* sql, const char* msg_format, ...)
 {
-char*       msg = NULL;
-va_list     va;
+char* msg = NULL;
+va_list va;
 if (sql==NULL || msg_format==NULL) {
 return;
 }
@@ -36,15 +36,15 @@ return stmt;
 }
 int dc_sqlite3_try_execute(dc_sqlite3_t* sql, const char* querystr)
 {
-int           success = 0;
+int success = 0;
 sqlite3_stmt* stmt = NULL;
-int           sql_state = 0;
+int sql_state = 0;
 stmt = dc_sqlite3_prepare(sql, querystr);
 if (stmt==NULL) {
 goto cleanup;
 }
 sql_state = sqlite3_step(stmt);
-if (sql_state != SQLITE_DONE && sql_state != SQLITE_ROW)  {
+if (sql_state != SQLITE_DONE && sql_state != SQLITE_ROW) {
 dc_log_warning(sql->context, 0, "Try-execute for \"%s\" failed: %s",
 querystr, sqlite3_errmsg(sql->cobj));
 goto cleanup;
@@ -56,15 +56,15 @@ return success;
 }
 int dc_sqlite3_execute(dc_sqlite3_t* sql, const char* querystr)
 {
-int           success = 0;
+int success = 0;
 sqlite3_stmt* stmt = NULL;
-int           sqlState = 0;
+int sqlState = 0;
 stmt = dc_sqlite3_prepare(sql, querystr);
 if (stmt==NULL) {
 goto cleanup;
 }
 sqlState = sqlite3_step(stmt);
-if (sqlState != SQLITE_DONE && sqlState != SQLITE_ROW)  {
+if (sqlState != SQLITE_DONE && sqlState != SQLITE_ROW) {
 dc_sqlite3_log_error(sql, "Cannot execute \"%s\".", querystr);
 goto cleanup;
 }
@@ -107,7 +107,7 @@ dc_sqlite3_t* sql = NULL;
 if ((sql=calloc(1, sizeof(dc_sqlite3_t)))==NULL) {
 exit(24);
 }
-sql->context          = context;
+sql->context = context;
 return sql;
 }
 void dc_sqlite3_unref(dc_sqlite3_t* sql)
@@ -181,7 +181,7 @@ dc_sqlite3_execute(sql, "INSERT INTO chats (id,type,name) VALUES (1,120,'deaddro
 #if !defined(DC_CHAT_TYPE_SINGLE) || DC_CHAT_TYPE_SINGLE!=100 || DC_CHAT_TYPE_GROUP!=120 || \
 DC_CHAT_ID_DEADDROP!=1 || DC_CHAT_ID_TRASH!=3 || \
 DC_CHAT_ID_MSGS_IN_CREATION!=4 || DC_CHAT_ID_STARRED!=5 || DC_CHAT_ID_ARCHIVED_LINK!=6 || \
-DC_CHAT_NOT_BLOCKED!=0  || DC_CHAT_MANUALLY_BLOCKED!=1 || DC_CHAT_DEADDROP_BLOCKED!=2
+DC_CHAT_NOT_BLOCKED!=0 || DC_CHAT_MANUALLY_BLOCKED!=1 || DC_CHAT_DEADDROP_BLOCKED!=2
 #error
 #endif
 dc_sqlite3_execute(sql, "CREATE TABLE msgs (id INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -526,10 +526,10 @@ return 1;
 }
 int dc_sqlite3_table_exists(dc_sqlite3_t* sql, const char* name)
 {
-int           ret = 0;
-char*         querystr = NULL;
+int ret = 0;
+char* querystr = NULL;
 sqlite3_stmt* stmt = NULL;
-int           sqlState = 0;
+int sqlState = 0;
 if ((querystr=sqlite3_mprintf("PRAGMA table_info(%s)", name))==NULL) {
 dc_log_error(sql->context, 0, "dc_sqlite3_table_exists_(): Out of memory.");
 goto cleanup;
@@ -553,7 +553,7 @@ return ret;
 }
 int dc_sqlite3_set_config(dc_sqlite3_t* sql, const char* key, const char* value)
 {
-int           state = 0;
+int state = 0;
 sqlite3_stmt* stmt = NULL;
 if (key==NULL) {
 dc_log_error(sql->context, 0, "dc_sqlite3_set_config(): Bad parameter.");
@@ -572,7 +572,7 @@ state = sqlite3_step(stmt);
 sqlite3_finalize(stmt);
 if (state==SQLITE_DONE) {
 stmt = dc_sqlite3_prepare(sql, "INSERT INTO config (keyname, value) VALUES (?, ?);");
-sqlite3_bind_text (stmt, 1, key,   -1, SQLITE_STATIC);
+sqlite3_bind_text (stmt, 1, key, -1, SQLITE_STATIC);
 sqlite3_bind_text (stmt, 2, value, -1, SQLITE_STATIC);
 state = sqlite3_step(stmt);
 sqlite3_finalize(stmt);
@@ -580,7 +580,7 @@ sqlite3_finalize(stmt);
 else if (state==SQLITE_ROW) {
 stmt = dc_sqlite3_prepare(sql, "UPDATE config SET value=? WHERE keyname=?;");
 sqlite3_bind_text (stmt, 1, value, -1, SQLITE_STATIC);
-sqlite3_bind_text (stmt, 2, key,   -1, SQLITE_STATIC);
+sqlite3_bind_text (stmt, 2, key, -1, SQLITE_STATIC);
 state = sqlite3_step(stmt);
 sqlite3_finalize(stmt);
 }
@@ -592,11 +592,11 @@ return 0;
 else
 {
 stmt = dc_sqlite3_prepare(sql, "DELETE FROM config WHERE keyname=?;");
-sqlite3_bind_text (stmt, 1, key,   -1, SQLITE_STATIC);
+sqlite3_bind_text (stmt, 1, key, -1, SQLITE_STATIC);
 state = sqlite3_step(stmt);
 sqlite3_finalize(stmt);
 }
-if (state != SQLITE_DONE)  {
+if (state != SQLITE_DONE) {
 dc_log_error(sql->context, 0, "dc_sqlite3_set_config(): Cannot change value.");
 return 0;
 }
@@ -697,7 +697,7 @@ sqlite3_finalize(stmt);
 }
 static void maybe_add_file(dc_hash_t* files_in_use, const char* file)
 {
-#define PREFIX     "$BLOBDIR/"
+#define PREFIX "$BLOBDIR/"
 #define PREFIX_LEN 9
 if (strncmp(file, PREFIX, PREFIX_LEN)!=0) {
 return;
@@ -708,7 +708,7 @@ dc_hash_insert_str(files_in_use, raw_name, (void*)1);
 static void maybe_add_from_param(dc_context_t* context, dc_hash_t* files_in_use,
 const char* query, int param_id)
 {
-dc_param_t*   param = dc_param_new();
+dc_param_t* param = dc_param_new();
 sqlite3_stmt* stmt = dc_sqlite3_prepare(context->sql, query);
 while (sqlite3_step(stmt)==SQLITE_ROW)
 {
@@ -740,12 +740,12 @@ return ret;
 }
 void dc_housekeeping(dc_context_t* context)
 {
-sqlite3_stmt*  stmt = NULL;
-DIR*           dir_handle = NULL;
+sqlite3_stmt* stmt = NULL;
+DIR* dir_handle = NULL;
 struct dirent* dir_entry = NULL;
-dc_hash_t      files_in_use;
-char*          path = NULL;
-int            unreferenced_count = 0;
+dc_hash_t files_in_use;
+char* path = NULL;
+int unreferenced_count = 0;
 dc_hash_init(&files_in_use, DC_HASH_STRING, DC_HASH_COPY_KEY);
 dc_log_info(context, 0, "Start housekeeping...");
 maybe_add_from_param(context, &files_in_use,

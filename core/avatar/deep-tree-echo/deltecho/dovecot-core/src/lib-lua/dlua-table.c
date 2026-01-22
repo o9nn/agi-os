@@ -40,154 +40,154 @@ int dlua_table_get_by_thread(lua_State *L, int idx, int type)
 lua_pushthread(L);
 return dlua_table_get(L, adj(idx, 1), type);
 }
-#define GET_INTTYPE(fxn, ctype, minval, maxval, unsigned_check)		\
-int fxn##_by_str(lua_State *L, int idx, const char *field,		\
-ctype *value_r)					\
-{									\
-lua_Integer tmp;						\
-int ret;							\
+#define GET_INTTYPE(fxn, ctype, minval, maxval, unsigned_check) \
+int fxn##_by_str(lua_State *L, int idx, const char *field, \
+ctype *value_r) \
+{ \
+lua_Integer tmp; \
+int ret; \
 \
-ret = dlua_table_get_luainteger_by_str(L, idx, field, &tmp);	\
-if (ret < 1)							\
-return ret;						\
+ret = dlua_table_get_luainteger_by_str(L, idx, field, &tmp); \
+if (ret < 1) \
+return ret; \
 \
-if (unsigned_check) {						\
-if ((tmp < 0) || (((uintmax_t) tmp) > (maxval)))	\
-return -1;					\
-} else {							\
-if ((tmp < (minval)) || (tmp > (intmax_t) (maxval)))	\
-return -1;					\
-}								\
+if (unsigned_check) { \
+if ((tmp < 0) || (((uintmax_t) tmp) > (maxval))) \
+return -1; \
+} else { \
+if ((tmp < (minval)) || (tmp > (intmax_t) (maxval))) \
+return -1; \
+} \
 \
-*value_r = (ctype) tmp;						\
+*value_r = (ctype) tmp; \
 \
-return 1;							\
-}									\
-int fxn##_by_int(lua_State *L, int idx, lua_Integer field,		\
-ctype *value_r)					\
-{									\
-lua_Integer tmp;						\
-int ret;							\
+return 1; \
+} \
+int fxn##_by_int(lua_State *L, int idx, lua_Integer field, \
+ctype *value_r) \
+{ \
+lua_Integer tmp; \
+int ret; \
 \
-ret = dlua_table_get_luainteger_by_int(L, idx, field, &tmp);	\
-if (ret < 1)							\
-return ret;						\
+ret = dlua_table_get_luainteger_by_int(L, idx, field, &tmp); \
+if (ret < 1) \
+return ret; \
 \
-if (unsigned_check) {						\
-if ((tmp < 0) || (((uintmax_t) tmp) > (maxval)))	\
-return -1;					\
-} else {							\
-if ((tmp < (minval)) || (tmp > (intmax_t) (maxval)))	\
-return -1;					\
-}								\
+if (unsigned_check) { \
+if ((tmp < 0) || (((uintmax_t) tmp) > (maxval))) \
+return -1; \
+} else { \
+if ((tmp < (minval)) || (tmp > (intmax_t) (maxval))) \
+return -1; \
+} \
 \
-*value_r = (ctype) tmp;						\
+*value_r = (ctype) tmp; \
 \
-return 1;							\
-}									\
-int fxn##_by_thread(lua_State *L, int idx, ctype *value_r)		\
-{									\
-lua_Integer tmp;						\
-int ret;							\
+return 1; \
+} \
+int fxn##_by_thread(lua_State *L, int idx, ctype *value_r) \
+{ \
+lua_Integer tmp; \
+int ret; \
 \
-ret = dlua_table_get_luainteger_by_thread(L, idx, &tmp);	\
-if (ret < 1)							\
-return ret;						\
+ret = dlua_table_get_luainteger_by_thread(L, idx, &tmp); \
+if (ret < 1) \
+return ret; \
 \
-if (unsigned_check) {						\
-if ((tmp < 0) || (((uintmax_t) tmp) > (maxval)))	\
-return -1;					\
-} else {							\
-if ((tmp < (minval)) || (tmp > (intmax_t) (maxval)))	\
-return -1;					\
-}								\
+if (unsigned_check) { \
+if ((tmp < 0) || (((uintmax_t) tmp) > (maxval))) \
+return -1; \
+} else { \
+if ((tmp < (minval)) || (tmp > (intmax_t) (maxval))) \
+return -1; \
+} \
 \
-*value_r = (ctype) tmp;						\
+*value_r = (ctype) tmp; \
 \
-return 1;							\
+return 1; \
 }
-#define GET_DATAPTR(fxn)						\
-int fxn##_by_str(lua_State *L, int idx, const char *field,		\
-const unsigned char **value_r,	size_t *len_r)		\
-{									\
-int ret;							\
+#define GET_DATAPTR(fxn) \
+int fxn##_by_str(lua_State *L, int idx, const char *field, \
+const unsigned char **value_r, size_t *len_r) \
+{ \
+int ret; \
 \
-ret = dlua_table_get_by_str(L, idx, LUA_TSTRING, field);	\
-if (ret < 1)							\
-return ret;						\
+ret = dlua_table_get_by_str(L, idx, LUA_TSTRING, field); \
+if (ret < 1) \
+return ret; \
 \
-*value_r = (const unsigned char *) lua_tolstring(L, -1, len_r);	\
-lua_pop(L, 1);							\
+*value_r = (const unsigned char *) lua_tolstring(L, -1, len_r); \
+lua_pop(L, 1); \
 \
-return 1;							\
-}									\
-int fxn##_by_int(lua_State *L, int idx, lua_Integer field,		\
-const unsigned char **value_r,	size_t *len_r)		\
-{									\
-int ret;							\
+return 1; \
+} \
+int fxn##_by_int(lua_State *L, int idx, lua_Integer field, \
+const unsigned char **value_r, size_t *len_r) \
+{ \
+int ret; \
 \
-ret = dlua_table_get_by_int(L, idx, LUA_TSTRING, field);	\
-if (ret < 1)							\
-return ret;						\
+ret = dlua_table_get_by_int(L, idx, LUA_TSTRING, field); \
+if (ret < 1) \
+return ret; \
 \
-*value_r = (const unsigned char *) lua_tolstring(L, -1, len_r);	\
-lua_pop(L, 1);							\
+*value_r = (const unsigned char *) lua_tolstring(L, -1, len_r); \
+lua_pop(L, 1); \
 \
-return 1;							\
-}									\
-int fxn##_by_thread(lua_State *L, int idx,				\
-const unsigned char **value_r, size_t *len_r)	\
-{									\
-int ret;							\
+return 1; \
+} \
+int fxn##_by_thread(lua_State *L, int idx, \
+const unsigned char **value_r, size_t *len_r) \
+{ \
+int ret; \
 \
-ret = dlua_table_get_by_thread(L, idx, LUA_TSTRING);		\
-if (ret < 1)							\
-return ret;						\
+ret = dlua_table_get_by_thread(L, idx, LUA_TSTRING); \
+if (ret < 1) \
+return ret; \
 \
-*value_r = (const unsigned char *) lua_tolstring(L, -1, len_r);	\
-lua_pop(L, 1);							\
+*value_r = (const unsigned char *) lua_tolstring(L, -1, len_r); \
+lua_pop(L, 1); \
 \
-return 1;							\
+return 1; \
 }
-#define GET_GENERIC(fxn, ctype, ltype, cvt)				\
+#define GET_GENERIC(fxn, ctype, ltype, cvt) \
 int fxn##_by_str(lua_State *L, int idx, const char *field, ctype *value_r)\
-{									\
-int ret;							\
+{ \
+int ret; \
 \
-ret = dlua_table_get_by_str(L, idx, (ltype), field);		\
-if (ret < 1)							\
-return ret;						\
+ret = dlua_table_get_by_str(L, idx, (ltype), field); \
+if (ret < 1) \
+return ret; \
 \
-*value_r = cvt(L, -1);						\
-lua_pop(L, 1);							\
+*value_r = cvt(L, -1); \
+lua_pop(L, 1); \
 \
-return 1;							\
-}									\
+return 1; \
+} \
 int fxn##_by_int(lua_State *L, int idx, lua_Integer field, ctype *value_r)\
-{									\
-int ret;							\
+{ \
+int ret; \
 \
-ret = dlua_table_get_by_int(L, idx, (ltype), field);		\
-if (ret < 1)							\
-return ret;						\
+ret = dlua_table_get_by_int(L, idx, (ltype), field); \
+if (ret < 1) \
+return ret; \
 \
-*value_r = cvt(L, -1);						\
-lua_pop(L, 1);							\
+*value_r = cvt(L, -1); \
+lua_pop(L, 1); \
 \
-return 1;							\
-}									\
-int fxn##_by_thread(lua_State *L, int idx, ctype *value_r)		\
-{									\
-int ret;							\
+return 1; \
+} \
+int fxn##_by_thread(lua_State *L, int idx, ctype *value_r) \
+{ \
+int ret; \
 \
-ret = dlua_table_get_by_thread(L, idx, (ltype));		\
-if (ret < 1)							\
-return ret;						\
+ret = dlua_table_get_by_thread(L, idx, (ltype)); \
+if (ret < 1) \
+return ret; \
 \
-*value_r = cvt(L, -1);						\
-lua_pop(L, 1);							\
+*value_r = cvt(L, -1); \
+lua_pop(L, 1); \
 \
-return 1;							\
+return 1; \
 }
 GET_INTTYPE(dlua_table_get_int, int, INT_MIN, INT_MAX, FALSE);
 GET_INTTYPE(dlua_table_get_intmax, intmax_t, INTMAX_MIN, INTMAX_MAX, FALSE);

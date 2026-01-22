@@ -7,26 +7,26 @@ echo "=================================================" | tee -a "$REPORT"
 echo "Date: $(date)" | tee -a "$REPORT"
 echo "" | tee -a "$REPORT"
 check_package() {
-    local pkg_dir="$1"
-    local pkg_name=$(basename "$pkg_dir")
-    if [ -d "${pkg_dir}/debian" ]; then
-        if [ -f "${pkg_dir}/debian/control" ]; then
-            echo "[OK] $pkg_name: debian/control found" | tee -a "$REPORT"
-            return 0
-        else
-            echo "[WARN] $pkg_name: debian directory exists but no control file" | tee -a "$REPORT"
-            return 1
-        fi
-    else
-        echo "[MISSING] $pkg_name: No debian directory" | tee -a "$REPORT"
-        return 1
-    fi
+local pkg_dir="$1"
+local pkg_name=$(basename "$pkg_dir")
+if [ -d "${pkg_dir}/debian" ]; then
+if [ -f "${pkg_dir}/debian/control" ]; then
+echo "[OK] $pkg_name: debian/control found" | tee -a "$REPORT"
+return 0
+else
+echo "[WARN] $pkg_name: debian directory exists but no control file" | tee -a "$REPORT"
+return 1
+fi
+else
+echo "[MISSING] $pkg_name: No debian directory" | tee -a "$REPORT"
+return 1
+fi
 }
 create_minimal_packaging() {
-    local pkg_dir="$1"
-    local pkg_name=$(basename "$pkg_dir")
-    mkdir -p "${pkg_dir}/debian"
-    cat > "${pkg_dir}/debian/control" << CONTROL
+local pkg_dir="$1"
+local pkg_name=$(basename "$pkg_dir")
+mkdir -p "${pkg_dir}/debian"
+cat > "${pkg_dir}/debian/control" << CONTROL
 Source: ${pkg_name}
 Section: devel
 Priority: optional
@@ -40,14 +40,14 @@ Package: ${pkg_name}
 Architecture: any
 Depends: \${shlibs:Depends}, \${misc:Depends}
 Description: ${pkg_name} component for AGI-OS
- Part of the AGI Operating System framework.
+Part of the AGI Operating System framework.
 CONTROL
-    cat > "${pkg_dir}/debian/changelog" << CHANGELOG
+cat > "${pkg_dir}/debian/changelog" << CHANGELOG
 ${pkg_name} (1.0.0-1) unstable; urgency=medium
-  * Initial release for AGI-OS
- -- OpenCog Developers <opencog@googlegroups.com>  $(date -R)
+* Initial release for AGI-OS
+-- OpenCog Developers <opencog@googlegroups.com>  $(date -R)
 CHANGELOG
-    cat > "${pkg_dir}/debian/rules" << RULES
+cat > "${pkg_dir}/debian/rules" << RULES
 %:
 dh \$@
 override_dh_auto_configure:
@@ -57,17 +57,17 @@ dh_auto_build
 override_dh_auto_install:
 dh_auto_install
 RULES
-    chmod +x "${pkg_dir}/debian/rules"
-    echo "[CREATED] $pkg_name: Minimal debian packaging created" | tee -a "$REPORT"
+chmod +x "${pkg_dir}/debian/rules"
+echo "[CREATED] $pkg_name: Minimal debian packaging created" | tee -a "$REPORT"
 }
 echo "Validating existing packages..." | tee -a "$REPORT"
 echo "" | tee -a "$REPORT"
 for pkg_dir in "${SCRIPT_DIR}"/*; do
-    if [ -d "$pkg_dir" ] && [ "$(basename "$pkg_dir")" != "generate" ]; then
-        if ! check_package "$pkg_dir"; then
-            create_minimal_packaging "$pkg_dir"
-        fi
-    fi
+if [ -d "$pkg_dir" ] && [ "$(basename "$pkg_dir")" != "generate" ]; then
+if ! check_package "$pkg_dir"; then
+create_minimal_packaging "$pkg_dir"
+fi
+fi
 done
 echo "" | tee -a "$REPORT"
 echo "Packaging validation and completion finished!" | tee -a "$REPORT"

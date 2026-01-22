@@ -1,8 +1,8 @@
 #include <u.h>
 #include <libc.h>
-typedef ulong	Sumfn(ulong, void*, uvlong);
-extern Sumfn	sumr, sum5, sum32;
-char		*sumfile(char*, Sumfn*);
+typedef ulong Sumfn(ulong, void*, uvlong);
+extern Sumfn sumr, sum5, sum32;
+char *sumfile(char*, Sumfn*);
 void
 usage(void)
 {
@@ -70,7 +70,7 @@ print(" %s", file);
 print("\n");
 return 0;
 }
-#define	VBSIZE		512
+#define VBSIZE 512
 ulong
 sum5(ulong sum, void *buf, uvlong uvn)
 {
@@ -86,7 +86,7 @@ for(s=buf, send=s+n; s<send; s++)
 sum += 0xffff & *s;
 return sum;
 }
-#define	RBSIZE		1024
+#define RBSIZE 1024
 ulong
 sumr(ulong sum, void *buf, uvlong uvn)
 {

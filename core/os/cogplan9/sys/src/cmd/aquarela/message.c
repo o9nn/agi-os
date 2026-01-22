@@ -15,7 +15,7 @@ s->id = id;
 s->opcode = NbnsOpQuery;
 s->broadcast = broadcast;
 s->recursiondesired = 1;
-q =  nbnsmessagequestionnew(name, NbnsQuestionTypeNb, NbnsQuestionClassIn);
+q = nbnsmessagequestionnew(name, NbnsQuestionTypeNb, NbnsQuestionClassIn);
 if (q == nil) {
 nbnsmessagefree(&s);
 return nil;
@@ -37,7 +37,7 @@ s->id = id;
 s->opcode = NbnsOpRegistration;
 s->broadcast = broadcast;
 s->recursiondesired = 1;
-q =  nbnsmessagequestionnew(name, NbnsQuestionTypeNb, NbnsQuestionClassIn);
+q = nbnsmessagequestionnew(name, NbnsQuestionTypeNb, NbnsQuestionClassIn);
 if (q == nil) {
 nbnsmessagefree(&s);
 return nil;

@@ -7,110 +7,110 @@
 #include "../port/error.h"
 #include "../port/netif.h"
 #include "etherif.h"
-#define	chatty 1
-#define	DPRINT	if(chatty)print
+#define chatty 1
+#define DPRINT if(chatty)print
 enum {
-Lognrdre	= 6,
-Nrdre		= (1<<Lognrdre),
-Logntdre	= 4,
-Ntdre		= (1<<Logntdre),
-Rbsize		= ETHERMAXTU+4,
+Lognrdre = 6,
+Nrdre = (1<<Lognrdre),
+Logntdre = 4,
+Ntdre = (1<<Logntdre),
+Rbsize = ETHERMAXTU+4,
 };
 enum {
-Aprom		= 0x0000,
-Rdp		= 0x0010,
-Rap		= 0x0012,
-Sreset		= 0x0014,
-Idp		= 0x0016,
+Aprom = 0x0000,
+Rdp = 0x0010,
+Rap = 0x0012,
+Sreset = 0x0014,
+Idp = 0x0016,
 };
 enum {
-Isa10		= 0x0001,
-Isamedia		= 0x0003,
-Isaawake		= 0x0004,
+Isa10 = 0x0001,
+Isamedia = 0x0003,
+Isaawake = 0x0004,
 };
 enum {
-Init		= 0x0001,
-Strt		= 0x0002,
-Stop		= 0x0004,
-Tdmd		= 0x0008,
-Txon		= 0x0010,
-Rxon		= 0x0020,
-Iena		= 0x0040,
-Intr		= 0x0080,
-Idon		= 0x0100,
-Tint		= 0x0200,
-Rint		= 0x0400,
-Merr		= 0x0800,
-Miss		= 0x1000,
-Cerr		= 0x2000,
-Babl		= 0x4000,
-Err		= 0x8000,
+Init = 0x0001,
+Strt = 0x0002,
+Stop = 0x0004,
+Tdmd = 0x0008,
+Txon = 0x0010,
+Rxon = 0x0020,
+Iena = 0x0040,
+Intr = 0x0080,
+Idon = 0x0100,
+Tint = 0x0200,
+Rint = 0x0400,
+Merr = 0x0800,
+Miss = 0x1000,
+Cerr = 0x2000,
+Babl = 0x4000,
+Err = 0x8000,
 };
 enum {
-Emba		= 0x0008,
-Dxmt2pd		= 0x0010,
-Lappen		= 0x0020,
-Idonm		= 0x0100,
-Tintm		= 0x0200,
-Rintm		= 0x0400,
-Merrm		= 0x0800,
-Missm		= 0x1000,
-Bablm		= 0x4000,
+Emba = 0x0008,
+Dxmt2pd = 0x0010,
+Lappen = 0x0020,
+Idonm = 0x0100,
+Tintm = 0x0200,
+Rintm = 0x0400,
+Merrm = 0x0800,
+Missm = 0x1000,
+Bablm = 0x4000,
 };
 enum {
-ApadXmt		= 0x0800,
+ApadXmt = 0x0800,
 };
 enum {
-Prom		= 0x8000,
-TenBaseT		= 0x0080,
+Prom = 0x8000,
+TenBaseT = 0x0080,
 };
 typedef struct {
-ushort	mode;
-uchar	padr[6];
-uchar	ladr[8];
-ushort	rdra0;
-uchar	rdra16;
-uchar	rlen;
-ushort	tdra0;
-uchar	tdra16;
-uchar	tlen;
+ushort mode;
+uchar padr[6];
+uchar ladr[8];
+ushort rdra0;
+uchar rdra16;
+uchar rlen;
+ushort tdra0;
+uchar tdra16;
+uchar tlen;
 } Iblock;
 typedef struct {
-ushort	rbadr;
-ushort	rmd1;
-ushort	rmd2;
-ushort	rmd3;
+ushort rbadr;
+ushort rmd1;
+ushort rmd2;
+ushort rmd3;
 } Rdre;
 typedef struct {
-ushort	tbadr;
-ushort	tmd1;
-ushort	tmd2;
-ushort	tmd3;
+ushort tbadr;
+ushort tmd1;
+ushort tmd2;
+ushort tmd3;
 } Tdre;
 enum {
-Enp		= 0x0100,
-Stp		= 0x0200,
-RxBuff		= 0x0400,
-TxDef		= 0x0400,
-RxCrc		= 0x0800,
-TxOne		= 0x0800,
-RxOflo		= 0x1000,
-TxMore		= 0x1000,
-Fram		= 0x2000,
-RxErr		= 0x4000,
-TxErr		= 0x4000,
-Own			= 0x8000,
+Enp = 0x0100,
+Stp = 0x0200,
+RxBuff = 0x0400,
+TxDef = 0x0400,
+RxCrc = 0x0800,
+TxOne = 0x0800,
+RxOflo = 0x1000,
+TxMore = 0x1000,
+Fram = 0x2000,
+RxErr = 0x4000,
+TxErr = 0x4000,
+Own = 0x8000,
 };
 typedef struct {
 Lock;
-int	init;
-Iblock	iblock;
-Rdre*	rdr;
-void*	rrb;
-int	rdrx;
-Tdre*	tdr;
-void*	trb;
-int	tdrx;
+int init;
+Iblock iblock;
+Rdre* rdr;
+void* rrb;
+int rdrx;
+Tdre* tdr;
+void* trb;
+int tdrx;
 } Ctlr;
 static void
 attach(Ether* ether)
@@ -373,5 +373,5 @@ return 0;
 void
 ether79c960link(void)
 {
-addethercard("AMD79C960",  reset);
+addethercard("AMD79C960", reset);
 }

@@ -8,30 +8,30 @@
 #include <ndb.h>
 #define AUTHLOG "auth"
 enum{
-R_AccessRequest	=1,
-R_AccessAccept	=2,
-R_AccessReject	=3,
+R_AccessRequest =1,
+R_AccessAccept =2,
+R_AccessReject =3,
 R_AccessChallenge=11,
-R_UserName	=1,
-R_UserPassword	=2,
-R_NASIPAddress	=4,
-R_ReplyMessage	=18,
-R_State		=24,
-R_NASIdentifier	=32,
+R_UserName =1,
+R_UserPassword =2,
+R_NASIPAddress =4,
+R_ReplyMessage =18,
+R_State =24,
+R_NASIdentifier =32,
 };
 typedef struct Secret{
-uchar	*s;
-int	len;
+uchar *s;
+int len;
 } Secret;
 typedef struct Attribute{
 struct Attribute *next;
-uchar	type;
-uchar	len;
-uchar	val[256];
+uchar type;
+uchar len;
+uchar val[256];
 } Attribute;
 typedef struct Packet{
-uchar	code, ID;
-uchar	authenticator[16];
+uchar code, ID;
+uchar authenticator[16];
 Attribute first;
 } Packet;
 void

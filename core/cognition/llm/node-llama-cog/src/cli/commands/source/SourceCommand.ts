@@ -7,17 +7,17 @@ import {ClearCommand} from "./commands/ClearCommand.js";
 type SourceCommand = {
 };
 export const SourceCommand: CommandModule<object, SourceCommand> = {
-    command: "source <command>",
-    describe: withCliCommandDescriptionDocsUrl(
-        "Manage `llama.cpp` source code",
-        documentationPageUrls.CLI.Source.index
-    ),
-    builder(yargs) {
-        return yargs
-            .command(DownloadCommand)
-            .command(BuildCommand)
-            .command(ClearCommand);
-    },
-    async handler() {
-    }
+command: "source <command>",
+describe: withCliCommandDescriptionDocsUrl(
+"Manage `llama.cpp` source code",
+documentationPageUrls.CLI.Source.index
+),
+builder(yargs) {
+return yargs
+.command(DownloadCommand)
+.command(BuildCommand)
+.command(ClearCommand);
+},
+async handler() {
+}
 };

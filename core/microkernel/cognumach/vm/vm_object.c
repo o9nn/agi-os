@@ -21,30 +21,30 @@
 #include <vm/vm_page.h>
 #include <vm/vm_pageout.h>
 #include <vm/vm_resident.h>
-#if	MACH_KDB
+#if MACH_KDB
 #include <ddb/db_output.h>
 #endif
 void memory_object_release(
-ipc_port_t	pager,
-pager_request_t	pager_request,
-ipc_port_t	pager_name);
-struct kmem_cache	vm_object_cache;
-static struct vm_object	kernel_object_store;
-vm_object_t		kernel_object = &kernel_object_store;
-queue_head_t	vm_object_cached_list;
+ipc_port_t pager,
+pager_request_t pager_request,
+ipc_port_t pager_name);
+struct kmem_cache vm_object_cache;
+static struct vm_object kernel_object_store;
+vm_object_t kernel_object = &kernel_object_store;
+queue_head_t vm_object_cached_list;
 def_simple_lock_data(static,vm_object_cached_lock_data)
-#define vm_object_cache_lock()		\
+#define vm_object_cache_lock() \
 simple_lock(&vm_object_cached_lock_data)
-#define vm_object_cache_lock_try()	\
+#define vm_object_cache_lock_try() \
 simple_lock_try(&vm_object_cached_lock_data)
-#define vm_object_cache_unlock()	\
+#define vm_object_cache_unlock() \
 simple_unlock(&vm_object_cached_lock_data)
-#define vm_object_cache_locked()		\
+#define vm_object_cache_locked() \
 simple_lock_taken(&vm_object_cached_lock_data)
-struct vm_object	vm_object_template;
+struct vm_object vm_object_template;
 static void _vm_object_setup(
-vm_object_t	object,
-vm_size_t	size)
+vm_object_t object,
+vm_size_t size)
 {
 *object = vm_object_template;
 queue_init(&object->memq);
@@ -52,7 +52,7 @@ vm_object_lock_init(object);
 object->size = size;
 }
 static vm_object_t _vm_object_allocate(
-vm_size_t		size)
+vm_size_t size)
 {
 vm_object_t object;
 object = (vm_object_t) kmem_cache_alloc(&vm_object_cache);
@@ -62,7 +62,7 @@ _vm_object_setup(object, size);
 return object;
 }
 vm_object_t vm_object_allocate(
-vm_size_t	size)
+vm_size_t size)
 {
 vm_object_t object;
 ipc_port_t port;
@@ -115,14 +115,14 @@ vm_object_template.readahead_count = 0;
 vm_object_template.readahead_window = vm_page_readahead_min;
 vm_object_template.block_cache = NULL;
 vm_object_template.block_cache_enabled = FALSE;
-#if	MACH_PAGEMAP
+#if MACH_PAGEMAP
 vm_object_template.existence_info = VM_EXTERNAL_NULL;
 #endif
 _vm_object_setup(kernel_object,
 VM_MAX_KERNEL_ADDRESS - VM_MIN_KERNEL_ADDRESS);
 _vm_object_setup(vm_submap_object,
 VM_MAX_KERNEL_ADDRESS - VM_MIN_KERNEL_ADDRESS);
-#if	MACH_PAGEMAP
+#if MACH_PAGEMAP
 vm_external_module_initialize();
 #endif
 }
@@ -134,7 +134,7 @@ ipc_kobject_set(kernel_object->pager_name,
 IKOT_PAGING_NAME);
 }
 static void vm_object_cache_add(
-vm_object_t	object)
+vm_object_t object)
 {
 assert(vm_object_lock_taken(object));
 assert(vm_object_cache_locked());
@@ -143,7 +143,7 @@ queue_enter(&vm_object_cached_list, object, vm_object_t, cached_list);
 object->cached = TRUE;
 }
 static void vm_object_cache_remove(
-vm_object_t	object)
+vm_object_t object)
 {
 assert(vm_object_lock_taken(object));
 assert(vm_object_cache_locked());
@@ -152,7 +152,7 @@ queue_remove(&vm_object_cached_list, object, vm_object_t, cached_list);
 object->cached = FALSE;
 }
 void vm_object_collect(
-vm_object_t	object)
+vm_object_t object)
 {
 vm_object_unlock(object);
 vm_object_cache_lock();
@@ -166,7 +166,7 @@ vm_object_cache_remove(object);
 vm_object_terminate(object);
 }
 void vm_object_reference(
-vm_object_t	object)
+vm_object_t object)
 {
 if (object == VM_OBJECT_NULL)
 return;
@@ -176,9 +176,9 @@ object->ref_count++;
 vm_object_unlock(object);
 }
 void vm_object_deallocate(
-vm_object_t	object)
+vm_object_t object)
 {
-vm_object_t	temp;
+vm_object_t temp;
 while (object != VM_OBJECT_NULL) {
 vm_object_cache_lock();
 vm_object_lock(object);
@@ -209,10 +209,10 @@ object = temp;
 }
 }
 void vm_object_terminate(
-vm_object_t	object)
+vm_object_t object)
 {
-vm_page_t	p;
-vm_object_t	shadow_object;
+vm_page_t p;
+vm_object_t shadow_object;
 assert(vm_object_lock_taken(object));
 assert(vm_object_cache_locked());
 assert(object->alive);
@@ -269,14 +269,14 @@ object->pager_name);
 } else if (object->pager_name != IP_NULL) {
 ipc_port_dealloc_kernel(object->pager_name);
 }
-#if	MACH_PAGEMAP
+#if MACH_PAGEMAP
 vm_external_destroy(object->existence_info);
 #endif
 kmem_cache_free(&vm_object_cache, (vm_offset_t) object);
 }
 void
 vm_object_pager_wakeup(
-ipc_port_t	pager)
+ipc_port_t pager)
 {
 boolean_t someone_waiting;
 vm_object_cache_lock();
@@ -290,9 +290,9 @@ thread_wakeup((event_t) pager);
 }
 }
 void memory_object_release(
-ipc_port_t	pager,
-pager_request_t	pager_request,
-ipc_port_t	pager_name)
+ipc_port_t pager,
+pager_request_t pager_request,
+ipc_port_t pager_name)
 {
 ip_reference(pager);
 (void) memory_object_terminate(pager, pager_request, pager_name);
@@ -300,10 +300,10 @@ vm_object_pager_wakeup(pager);
 ip_release(pager);
 }
 static void vm_object_abort_activity(
-vm_object_t	object)
+vm_object_t object)
 {
-vm_page_t	p;
-vm_page_t	next;
+vm_page_t p;
+vm_page_t next;
 assert(vm_object_lock_taken(object));
 p = (vm_page_t) queue_first(&object->memq);
 while (!queue_end(&object->memq, (queue_entry_t) p)) {
@@ -321,11 +321,11 @@ object->pager_ready = TRUE;
 vm_object_wakeup(object, VM_OBJECT_EVENT_PAGER_READY);
 }
 kern_return_t memory_object_destroy(
-vm_object_t	object,
-kern_return_t	reason)
+vm_object_t object,
+kern_return_t reason)
 {
-ipc_port_t	old_object,  old_name;
-pager_request_t	old_control;
+ipc_port_t old_object, old_name;
+pager_request_t old_control;
 if (object == VM_OBJECT_NULL)
 return KERN_SUCCESS;
 vm_object_cache_lock();
@@ -352,12 +352,12 @@ return KERN_SUCCESS;
 }
 boolean_t vm_object_pmap_protect_by_page = FALSE;
 void vm_object_pmap_protect(
-vm_object_t		object,
-vm_offset_t		offset,
-vm_size_t		size,
-pmap_t			pmap,
-vm_offset_t		pmap_start,
-vm_prot_t		prot)
+vm_object_t object,
+vm_offset_t offset,
+vm_size_t size,
+pmap_t pmap,
+vm_offset_t pmap_start,
+vm_prot_t prot)
 {
 if (object == VM_OBJECT_NULL)
 return;
@@ -371,8 +371,8 @@ pmap_protect(pmap, pmap_start, pmap_start + size, prot);
 return;
 }
 {
-vm_page_t	p;
-vm_offset_t	end;
+vm_page_t p;
+vm_offset_t end;
 end = offset + size;
 queue_iterate(&object->memq, p, vm_page_t, listq) {
 if (!p->fictitious &&
@@ -383,7 +383,7 @@ vm_object_pmap_protect_by_page) {
 pmap_page_protect(p->phys_addr,
 prot & ~p->page_lock);
 } else {
-vm_offset_t	start =
+vm_offset_t start =
 pmap_start +
 (p->offset - offset);
 pmap_protect(pmap,
@@ -395,7 +395,7 @@ prot);
 }
 }
 if (prot == VM_PROT_NONE) {
-vm_object_t	next_object;
+vm_object_t next_object;
 next_object = object->shadow;
 if (next_object != VM_OBJECT_NULL) {
 offset += object->shadow_offset;
@@ -414,11 +414,11 @@ break;
 vm_object_unlock(object);
 }
 void vm_object_pmap_remove(
-vm_object_t	object,
-vm_offset_t	start,
-vm_offset_t	end)
+vm_object_t object,
+vm_offset_t start,
+vm_offset_t end)
 {
-vm_page_t	p;
+vm_page_t p;
 if (object == VM_OBJECT_NULL)
 return;
 vm_object_lock(object);
@@ -433,7 +433,7 @@ if (object->shadow == VM_OBJECT_NULL)
 break;
 vm_object_t prev_object = object;
 start += object->shadow_offset;
-end   += object->shadow_offset;
+end += object->shadow_offset;
 object = object->shadow;
 vm_object_lock(object);
 vm_object_unlock(prev_object);
@@ -441,14 +441,14 @@ vm_object_unlock(prev_object);
 vm_object_unlock(object);
 }
 kern_return_t vm_object_copy_slowly(
-vm_object_t	src_object,
-vm_offset_t	src_offset,
-vm_size_t	size,
-boolean_t	interruptible,
-vm_object_t	*_result_object)
+vm_object_t src_object,
+vm_offset_t src_offset,
+vm_size_t size,
+boolean_t interruptible,
+vm_object_t *_result_object)
 {
-vm_object_t	new_object;
-vm_offset_t	new_offset;
+vm_object_t new_object;
+vm_offset_t new_offset;
 assert(vm_object_lock_taken(src_object));
 if (size == 0) {
 vm_object_unlock(src_object);
@@ -465,7 +465,7 @@ for ( ;
 size != 0 ;
 src_offset += PAGE_SIZE, new_offset += PAGE_SIZE, size -= PAGE_SIZE
 ) {
-vm_page_t	new_page;
+vm_page_t new_page;
 vm_fault_return_t result;
 vm_object_lock(new_object);
 while ((new_page = vm_page_alloc(new_object, new_offset))
@@ -476,10 +476,10 @@ vm_object_lock(new_object);
 }
 vm_object_unlock(new_object);
 do {
-vm_prot_t	prot = VM_PROT_READ;
-vm_page_t	_result_page;
-vm_page_t	top_page;
-vm_page_t	result_page;
+vm_prot_t prot = VM_PROT_READ;
+vm_page_t _result_page;
+vm_page_t top_page;
+vm_page_t result_page;
 vm_object_lock(src_object);
 src_object->paging_in_progress++;
 result = vm_fault_page(src_object, src_offset,
@@ -532,12 +532,12 @@ vm_object_deallocate(src_object);
 return KERN_SUCCESS;
 }
 boolean_t vm_object_copy_temporary(
-vm_object_t	*_object,
-vm_offset_t	*_offset,
-boolean_t	*_src_needs_copy,
-boolean_t	*_dst_needs_copy)
+vm_object_t *_object,
+vm_offset_t *_offset,
+boolean_t *_src_needs_copy,
+boolean_t *_dst_needs_copy)
 {
-vm_object_t	object = *_object;
+vm_object_t object = *_object;
 if (object == VM_OBJECT_NULL) {
 *_src_needs_copy = FALSE;
 *_dst_needs_copy = FALSE;
@@ -568,15 +568,15 @@ vm_object_unlock(object);
 return FALSE;
 }
 static kern_return_t vm_object_copy_call(
-vm_object_t	src_object,
-vm_offset_t	src_offset,
-vm_size_t	size,
-vm_object_t	*_result_object)
+vm_object_t src_object,
+vm_offset_t src_offset,
+vm_size_t size,
+vm_object_t *_result_object)
 {
-vm_offset_t	src_end = src_offset + size;
-ipc_port_t	new_memory_object;
-vm_object_t	new_object;
-vm_page_t	p;
+vm_offset_t src_end = src_offset + size;
+ipc_port_t new_memory_object;
+vm_object_t new_object;
+vm_page_t p;
 assert(vm_object_lock_taken(src_object));
 new_memory_object = ipc_port_alloc_kernel();
 if (new_memory_object == IP_NULL)
@@ -611,11 +611,11 @@ ipc_port_release_send(new_memory_object);
 return KERN_SUCCESS;
 }
 vm_object_t vm_object_copy_delayed(
-vm_object_t	src_object)
+vm_object_t src_object)
 {
-vm_object_t	new_copy;
-vm_object_t	old_copy;
-vm_page_t	p;
+vm_object_t new_copy;
+vm_object_t old_copy;
+vm_page_t p;
 new_copy = vm_object_allocate(src_object->size);
 vm_object_lock(src_object);
 Retry:
@@ -660,20 +660,20 @@ pmap_page_protect(p->phys_addr,
 vm_object_unlock(src_object);
 return new_copy;
 }
-kern_return_t	vm_object_copy_strategically(
-vm_object_t	src_object,
-vm_offset_t	src_offset,
-vm_size_t	size,
-vm_object_t	*dst_object,
-vm_offset_t	*dst_offset,
-boolean_t	*dst_needs_copy)
+kern_return_t vm_object_copy_strategically(
+vm_object_t src_object,
+vm_offset_t src_offset,
+vm_size_t size,
+vm_object_t *dst_object,
+vm_offset_t *dst_offset,
+boolean_t *dst_needs_copy)
 {
-kern_return_t	result = KERN_SUCCESS;
-boolean_t	interruptible = TRUE;
+kern_return_t result = KERN_SUCCESS;
+boolean_t interruptible = TRUE;
 assert(src_object != VM_OBJECT_NULL);
 vm_object_lock(src_object);
 while (!src_object->pager_ready) {
-vm_object_wait(	src_object,
+vm_object_wait( src_object,
 VM_OBJECT_EVENT_PAGER_READY,
 interruptible);
 if (interruptible &&
@@ -723,12 +723,12 @@ break;
 return result;
 }
 void vm_object_shadow(
-vm_object_t	*object,
-vm_offset_t	*offset,
-vm_size_t	length)
+vm_object_t *object,
+vm_offset_t *offset,
+vm_size_t length)
 {
-vm_object_t	source;
-vm_object_t	result;
+vm_object_t source;
+vm_object_t result;
 source = *object;
 if ((result = vm_object_allocate(length)) == VM_OBJECT_NULL)
 panic("vm_object_shadow: no object for shadowing");
@@ -738,9 +738,9 @@ result->shadow_offset = *offset;
 *object = result;
 }
 vm_object_t vm_object_lookup(
-ipc_port_t	port)
+ipc_port_t port)
 {
-vm_object_t	object = VM_OBJECT_NULL;
+vm_object_t object = VM_OBJECT_NULL;
 if (IP_VALID(port)) {
 ip_lock(port);
 if (ip_active(port) &&
@@ -760,9 +760,9 @@ ip_unlock(port);
 return object;
 }
 vm_object_t vm_object_lookup_name(
-ipc_port_t	port)
+ipc_port_t port)
 {
-vm_object_t	object = VM_OBJECT_NULL;
+vm_object_t object = VM_OBJECT_NULL;
 if (IP_VALID(port)) {
 ip_lock(port);
 if (ip_active(port) &&
@@ -782,11 +782,11 @@ ip_unlock(port);
 return object;
 }
 void vm_object_destroy(
-ipc_port_t	pager)
+ipc_port_t pager)
 {
-vm_object_t	object;
-pager_request_t	old_request;
-ipc_port_t	old_name;
+vm_object_t object;
+pager_request_t old_request;
+ipc_port_t old_name;
 vm_object_cache_lock();
 if (ip_kotype(pager) != IKOT_PAGER) {
 vm_object_cache_unlock();
@@ -818,13 +818,13 @@ vm_object_unlock(object);
 vm_object_deallocate(object);
 }
 vm_object_t vm_object_enter(
-ipc_port_t	pager,
-vm_size_t	size,
-boolean_t	internal)
+ipc_port_t pager,
+vm_size_t size,
+boolean_t internal)
 {
-vm_object_t	object;
-vm_object_t	new_object;
-boolean_t	must_init;
+vm_object_t object;
+vm_object_t new_object;
+boolean_t must_init;
 ipc_kobject_type_t po;
 restart:
 if (!IP_VALID(pager))
@@ -917,7 +917,7 @@ vm_object_wakeup(object, VM_OBJECT_EVENT_INITIALIZED);
 vm_object_lock(object);
 }
 while (!object->pager_initialized) {
-vm_object_wait(	object,
+vm_object_wait( object,
 VM_OBJECT_EVENT_INITIALIZED,
 FALSE);
 vm_object_lock(object);
@@ -926,13 +926,13 @@ vm_object_unlock(object);
 return object;
 }
 void vm_object_pager_create(
-vm_object_t	object)
+vm_object_t object)
 {
-ipc_port_t	pager;
+ipc_port_t pager;
 assert(vm_object_lock_taken(object));
 if (object->pager_created) {
 while (!object->pager_initialized) {
-vm_object_wait(	object,
+vm_object_wait( object,
 VM_OBJECT_EVENT_PAGER_READY,
 FALSE);
 vm_object_lock(object);
@@ -942,7 +942,7 @@ return;
 object->pager_created = TRUE;
 vm_object_paging_begin(object);
 vm_object_unlock(object);
-#if	MACH_PAGEMAP
+#if MACH_PAGEMAP
 object->existence_info = vm_external_create(
 object->size +
 object->paging_offset);
@@ -961,7 +961,7 @@ vm_object_lock(object);
 vm_object_paging_end(object);
 }
 void vm_object_remove(
-vm_object_t	object)
+vm_object_t object)
 {
 ipc_port_t port;
 assert(vm_object_cache_locked());
@@ -985,20 +985,20 @@ else if (ip_kotype(port) != IKOT_NONE)
 panic("vm_object_remove: bad name port");
 }
 }
-long	object_collapses = 0;
-long	object_bypasses  = 0;
-int		vm_object_collapse_debug = 0;
-boolean_t	vm_object_collapse_allowed = TRUE;
-boolean_t	vm_object_collapse_bypass_allowed = TRUE;
+long object_collapses = 0;
+long object_bypasses = 0;
+int vm_object_collapse_debug = 0;
+boolean_t vm_object_collapse_allowed = TRUE;
+boolean_t vm_object_collapse_bypass_allowed = TRUE;
 void vm_object_collapse(
-vm_object_t	object)
+vm_object_t object)
 {
-vm_object_t	backing_object;
-vm_offset_t	backing_offset;
-vm_size_t	size;
-vm_offset_t	new_offset;
-vm_page_t	p, pp;
-ipc_port_t 	old_name_port;
+vm_object_t backing_object;
+vm_offset_t backing_offset;
+vm_size_t size;
+vm_offset_t new_offset;
+vm_page_t p, pp;
+ipc_port_t old_name_port;
 assert(vm_object_lock_taken(object));
 if (!vm_object_collapse_allowed)
 return;
@@ -1090,7 +1090,7 @@ if (object->pager != IP_NULL)
 object->paging_offset =
 backing_object->paging_offset +
 backing_offset;
-#if	MACH_PAGEMAP
+#if MACH_PAGEMAP
 assert(object->existence_info == VM_EXTERNAL_NULL);
 object->existence_info = backing_object->existence_info;
 #endif
@@ -1151,11 +1151,11 @@ object_bypasses ++;
 unsigned int vm_object_page_remove_lookup = 0;
 unsigned int vm_object_page_remove_iterate = 0;
 void vm_object_page_remove(
-vm_object_t	object,
-vm_offset_t	start,
-vm_offset_t	end)
+vm_object_t object,
+vm_offset_t start,
+vm_offset_t end)
 {
-vm_page_t	p, next;
+vm_page_t p, next;
 assert(vm_object_lock_taken(object));
 if (atop(end - start) < object->resident_page_count/16) {
 vm_object_page_remove_lookup++;
@@ -1184,17 +1184,17 @@ p = next;
 }
 }
 boolean_t vm_object_coalesce(
-vm_object_t 	prev_object,
-vm_object_t	next_object,
-vm_offset_t	prev_offset,
-vm_offset_t	next_offset,
-vm_size_t	prev_size,
-vm_size_t	next_size,
-vm_object_t	*new_object,
-vm_offset_t	*new_offset)
+vm_object_t prev_object,
+vm_object_t next_object,
+vm_offset_t prev_offset,
+vm_offset_t next_offset,
+vm_size_t prev_size,
+vm_size_t next_size,
+vm_object_t *new_object,
+vm_offset_t *new_offset)
 {
-vm_object_t	object;
-vm_size_t	newsize;
+vm_object_t object;
+vm_size_t newsize;
 if (prev_object == next_object) {
 if (prev_object == VM_OBJECT_NULL) {
 *new_object = VM_OBJECT_NULL;
@@ -1249,20 +1249,20 @@ vm_object_unlock(object);
 *new_object = object;
 return TRUE;
 }
-vm_object_t	vm_object_request_object(
-ipc_port_t	p)
+vm_object_t vm_object_request_object(
+ipc_port_t p)
 {
 return vm_object_lookup(p);
 }
-ipc_port_t	vm_object_name(
-vm_object_t	object)
+ipc_port_t vm_object_name(
+vm_object_t object)
 {
-ipc_port_t	p;
+ipc_port_t p;
 if (object == VM_OBJECT_NULL)
 return IP_NULL;
 vm_object_lock(object);
 while (object->shadow != VM_OBJECT_NULL) {
-vm_object_t	new_object = object->shadow;
+vm_object_t new_object = object->shadow;
 vm_object_lock(new_object);
 vm_object_unlock(object);
 object = new_object;
@@ -1275,17 +1275,17 @@ return p;
 }
 kern_return_t
 vm_object_page_map(
-vm_object_t	object,
-vm_offset_t	offset,
-vm_size_t	size,
-phys_addr_t	(*map_fn)(void *, vm_offset_t),
-void *		map_fn_data)
+vm_object_t object,
+vm_offset_t offset,
+vm_size_t size,
+phys_addr_t (*map_fn)(void *, vm_offset_t),
+void * map_fn_data)
 {
-int	num_pages;
-int	i;
-vm_page_t	m;
-vm_page_t	old_page;
-phys_addr_t	addr;
+int num_pages;
+int i;
+vm_page_t m;
+vm_page_t old_page;
+phys_addr_t addr;
 num_pages = atop(size);
 for (i = 0; i < num_pages; i++, offset += PAGE_SIZE) {
 addr = (*map_fn)(map_fn_data, offset);
@@ -1311,17 +1311,17 @@ vm_object_unlock(object);
 }
 return KERN_SUCCESS;
 }
-#if	MACH_KDB
+#if MACH_KDB
 #include <vm/vm_print.h>
-#define printf	kdbprintf
-boolean_t	vm_object_print_pages = FALSE;
+#define printf kdbprintf
+boolean_t vm_object_print_pages = FALSE;
 void vm_object_print_part(
-vm_object_t	object,
-vm_offset_t	offset,
-vm_size_t	size)
+vm_object_t object,
+vm_offset_t offset,
+vm_size_t size)
 {
-vm_page_t	p;
-int 		count, count2;
+vm_page_t p;
+int count, count2;
 if (object == VM_OBJECT_NULL)
 return;
 iprintf("Object 0x%X: size=0x%X, %d references",
@@ -1381,7 +1381,7 @@ printf("\n");
 indent -= 2;
 }
 void vm_object_print(
-vm_object_t	object)
+vm_object_t object)
 {
 vm_object_print_part(object, 0, UINTPTR_MAX);
 }

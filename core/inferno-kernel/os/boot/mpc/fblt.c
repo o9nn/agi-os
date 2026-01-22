@@ -3,21 +3,21 @@
 #include <libg.h>
 #include <gnot.h>
 #ifndef WBITS
-#define WBITS	32
-#define LWBITS	5
-#define	W2L	1
-#define WMASK	~0UL
-typedef ulong	*WType;
+#define WBITS 32
+#define LWBITS 5
+#define W2L 1
+#define WMASK ~0UL
+typedef ulong *WType;
 #endif
 #define DEBUG
 #ifdef TEST
-int	FORCEFORW;
-int	FORCEBAKW;
-GBitmap	*curdm, *cursm;
-Point	curpt;
+int FORCEFORW;
+int FORCEBAKW;
+GBitmap *curdm, *cursm;
+Point curpt;
 Rectangle curr;
-Fcode	curf;
-void	*mem;
+Fcode curf;
+void *mem;
 #endif
 static void
 gbitexplode(ulong sw, ulong *buf, int sdep, int x)
@@ -45,34 +45,34 @@ dw |= dw << (inc << j);
 void
 gbitblt(GBitmap *dm, Point pt, GBitmap *sm, Rectangle r, Fcode fcode)
 {
-int	width;
-int	wwidth;
-int	height;
-int	sdep;
-int 	ddep;
-int	deltadep;
-int	sspan;
-int	dspan;
-int	soff;
-int	sdest;
-int	doff;
-int	delta;
-int	sign;
-ulong	*saddr;
-ulong	*daddr;
-ulong	*s;
-ulong	*d;
-ulong	mask;
-ulong	tmp;
-ulong	sw;
-ulong	dw;
-ulong	lmask;
-ulong	rmask;
-int	i;
-int	j;
-ulong	buf[32];
-ulong	*p;
-int	spare;
+int width;
+int wwidth;
+int height;
+int sdep;
+int ddep;
+int deltadep;
+int sspan;
+int dspan;
+int soff;
+int sdest;
+int doff;
+int delta;
+int sign;
+ulong *saddr;
+ulong *daddr;
+ulong *s;
+ulong *d;
+ulong mask;
+ulong tmp;
+ulong sw;
+ulong dw;
+ulong lmask;
+ulong rmask;
+int i;
+int j;
+ulong buf[32];
+ulong *p;
+int spare;
 #ifdef TEST
 curdm = dm;
 cursm = sm;
@@ -173,22 +173,22 @@ sw = *p++;
 }
 dw = *d;
 switch(fcode){
-case Zero:	*d = dw & ~mask;		break;
-case DnorS:	*d = dw ^ ((~sw | dw) & mask);	break;
-case DandnotS:	*d = dw ^ ((sw & dw) & mask);	break;
-case notS:	*d = dw ^ ((~sw ^ dw) & mask);	break;
-case notDandS:	*d = dw ^ ((sw | dw) & mask);	break;
-case notD:	*d = dw ^ mask;			break;
-case DxorS:	*d = dw ^ (sw & mask);		break;
-case DnandS:	*d = dw ^ ((sw | ~dw) & mask);	break;
-case DandS:	*d = dw ^ ((~sw & dw) & mask);	break;
-case DxnorS:	*d = dw ^ (~sw & mask);		break;
-case D:						break;
-case DornotS:	*d = dw | (~sw & mask);		break;
-case S:		*d = dw ^ ((sw ^ dw) & mask);	break;
-case notDorS:	*d = dw ^ (~(sw & dw) & mask);	break;
-case DorS:	*d = dw | (sw & mask);		break;
-case F:		*d = dw | mask;			break;
+case Zero: *d = dw & ~mask; break;
+case DnorS: *d = dw ^ ((~sw | dw) & mask); break;
+case DandnotS: *d = dw ^ ((sw & dw) & mask); break;
+case notS: *d = dw ^ ((~sw ^ dw) & mask); break;
+case notDandS: *d = dw ^ ((sw | dw) & mask); break;
+case notD: *d = dw ^ mask; break;
+case DxorS: *d = dw ^ (sw & mask); break;
+case DnandS: *d = dw ^ ((sw | ~dw) & mask); break;
+case DandS: *d = dw ^ ((~sw & dw) & mask); break;
+case DxnorS: *d = dw ^ (~sw & mask); break;
+case D: break;
+case DornotS: *d = dw | (~sw & mask); break;
+case S: *d = dw ^ ((sw ^ dw) & mask); break;
+case notDorS: *d = dw ^ (~(sw & dw) & mask); break;
+case DorS: *d = dw | (sw & mask); break;
+case F: *d = dw | mask; break;
 }
 d++;
 mask = WMASK;
@@ -201,12 +201,12 @@ daddr += dspan;
 }
 }
 #ifdef TEST
-void	prprog(void);
+void prprog(void);
 GBitmap *bb1, *bb2;
-ulong	*src, *dst, *xdst, *xans;
-int	swds, dwds;
-long	ticks;
-int	timeit;
+ulong *src, *dst, *xdst, *xans;
+int swds, dwds;
+long ticks;
+int timeit;
 long
 func(int f, long s, int sld, long d, int dld)
 {
@@ -224,22 +224,22 @@ s |= a;
 } else if(sh < 0)
 s >>= -sh;
 switch(f){
-case Zero:	d = 0;			break;
-case DnorS:	d = ~(d|s);		break;
-case DandnotS:	d = d & ~s;		break;
-case notS:	d = ~s;			break;
-case notDandS:	d = ~d & s;		break;
-case notD:	d = ~d;			break;
-case DxorS:	d = d ^ s;		break;
-case DnandS:	d = ~(d&s);		break;
-case DandS:	d = d & s;		break;
-case DxnorS:	d = ~(d^s);		break;
-case S:		d = s;			break;
-case DornotS:	d = d | ~s;		break;
-case D:		d = d;			break;
-case notDorS:	d = ~d | s;		break;
-case DorS:	d = d | s;		break;
-case F:		d = ~0;			break;
+case Zero: d = 0; break;
+case DnorS: d = ~(d|s); break;
+case DandnotS: d = d & ~s; break;
+case notS: d = ~s; break;
+case notDandS: d = ~d & s; break;
+case notD: d = ~d; break;
+case DxorS: d = d ^ s; break;
+case DnandS: d = ~(d&s); break;
+case DandS: d = d & s; break;
+case DxnorS: d = ~(d^s); break;
+case S: d = s; break;
+case DornotS: d = d | ~s; break;
+case D: d = d; break;
+case notDorS: d = ~d | s; break;
+case DorS: d = d | s; break;
+case F: d = ~0; break;
 }
 d &= ((1<<db)-1);
 return d;
@@ -360,7 +360,7 @@ swds = bb2->width * Dy(bb2->r);
 dst = bb1->base;
 src = bb2->base;
 xdst = malloc(dwds * sizeof(long));
-xans =  malloc(dwds * sizeof(long));
+xans = malloc(dwds * sizeof(long));
 for(i=0; i<swds; i++)
 src[i] = lrand();
 for(i=0; i<dwds; i++)

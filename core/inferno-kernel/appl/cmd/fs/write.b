@@ -26,7 +26,7 @@ run(nil: ref Draw->Context, report: ref Report,
 nil: list of Option, args: list of ref Value): ref Value
 {
 sync := chan of int;
-spawn  fswriteproc(sync, (hd args).s().i, (hd tl args).x().i, report.start("fswrite"));
+spawn fswriteproc(sync, (hd args).s().i, (hd tl args).x().i, report.start("fswrite"));
 <-sync;
 return ref Value.V(sync);
 }
@@ -56,7 +56,7 @@ dreply <-= Next;
 report(errorc, sys->sprint("cannot create %q, mode %uo: %r", path, d.dir.mode|8r300));
 return;
 }
-if(sys->chdir(d.dir.name) == -1){		# XXX beware of names starting with '#'
+if(sys->chdir(d.dir.name) == -1){ # XXX beware of names starting with '#'
 dreply <-= Next;
 report(errorc, sys->sprint("cannot cd to %q: %r", path));
 fd = nil;

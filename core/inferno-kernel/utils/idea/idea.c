@@ -1,17 +1,17 @@
 #include <lib9.h>
 #include <bio.h>
-#define KEYLEN	52
-#define	MODA	0x10000
-#define	MODM	0x10001
-#define	MASKA	(MODA-1)
-#define 	OP1(x, y)		((x) ^ (y))
-#define	OP2(x, y)		(((x) + (y)) & MASKA)
-#define 	OP3(x, y)		mod(x, y)
-#define	OP2INV(x)	(-(x))
-#define	OP3INV(x)	inv(x)
-#define BIGEND(k, i)	((k[i]<<8)|k[i+1])
-#define MSB(x)		((x)>>8)
-#define LSB(x)		((x)&0xff)
+#define KEYLEN 52
+#define MODA 0x10000
+#define MODM 0x10001
+#define MASKA (MODA-1)
+#define OP1(x, y) ((x) ^ (y))
+#define OP2(x, y) (((x) + (y)) & MASKA)
+#define OP3(x, y) mod(x, y)
+#define OP2INV(x) (-(x))
+#define OP3INV(x) inv(x)
+#define BIGEND(k, i) ((k[i]<<8)|k[i+1])
+#define MSB(x) ((x)>>8)
+#define LSB(x) ((x)&0xff)
 static ushort
 mod(ushort x, ushort y)
 {

@@ -32,14 +32,14 @@ double min_value;
 double max_value;
 };
 static const action_basic_description abd[] = {
-{ id::move_forward,      "move_forward",      "action_result" },
-{ id::turn_left,         "turn_left",         "action_result" },
-{ id::turn_right,        "turn_right",        "action_result" }
+{ id::move_forward, "move_forward", "action_result" },
+{ id::turn_left, "turn_left", "action_result" },
+{ id::turn_right, "turn_right", "action_result" }
 };
 static const action_property_description apd[] = {
-{ id::move_forward,   false,     true,           false,          (ant_builtin_action_enum)0 },
-{ id::turn_left,      false,     true,           true,           id::turn_right },
-{ id::turn_right,     false,     true,           true,           id::turn_left }
+{ id::move_forward, false, true, false, (ant_builtin_action_enum)0 },
+{ id::turn_left, false, true, true, id::turn_right },
+{ id::turn_right, false, true, true, id::turn_left }
 };
 static const action_argument_property_description aapd[] = {
 };

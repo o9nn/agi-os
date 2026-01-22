@@ -8,34 +8,34 @@
 #include <ddb/db_variables.h>
 #include <ddb/db_task_thread.h>
 #include <ddb/db_macro.h>
-extern unsigned long	db_maxoff;
-extern db_expr_t	db_radix;
-extern db_expr_t	db_max_width;
-extern db_expr_t	db_tab_stop_width;
-extern db_expr_t	db_max_line;
-#define DB_NWORK	32
-db_expr_t	db_work[DB_NWORK];
+extern unsigned long db_maxoff;
+extern db_expr_t db_radix;
+extern db_expr_t db_max_width;
+extern db_expr_t db_tab_stop_width;
+extern db_expr_t db_max_line;
+#define DB_NWORK 32
+db_expr_t db_work[DB_NWORK];
 struct db_variable db_vars[] = {
-{ "radix",	&db_radix,		FCN_NULL },
-{ "maxoff",	(db_expr_t*)&db_maxoff,	FCN_NULL },
-{ "maxwidth",	&db_max_width,		FCN_NULL },
-{ "tabstops",	&db_tab_stop_width,	FCN_NULL },
-{ "lines",	&db_max_line,		FCN_NULL },
-{ "thread",	0,			db_set_default_thread	},
-{ "task",	0,			db_get_task_thread,
-1,		2,			-1,	-1		},
-{ "map",	0,			db_get_map,
-1,		1,			-1,	-1		},
-{ "work",	&db_work[0],		FCN_NULL,
-1,		1,			0,	DB_NWORK-1	},
-{ "arg",	0,			db_arg_variable,
-1,		1,			-1,	-1		},
+{ "radix", &db_radix, FCN_NULL },
+{ "maxoff", (db_expr_t*)&db_maxoff, FCN_NULL },
+{ "maxwidth", &db_max_width, FCN_NULL },
+{ "tabstops", &db_tab_stop_width, FCN_NULL },
+{ "lines", &db_max_line, FCN_NULL },
+{ "thread", 0, db_set_default_thread },
+{ "task", 0, db_get_task_thread,
+1, 2, -1, -1 },
+{ "map", 0, db_get_map,
+1, 1, -1, -1 },
+{ "work", &db_work[0], FCN_NULL,
+1, 1, 0, DB_NWORK-1 },
+{ "arg", 0, db_arg_variable,
+1, 1, -1, -1 },
 };
 struct db_variable *db_evars = db_vars + sizeof(db_vars)/sizeof(db_vars[0]);
 static const char *
 db_get_suffix(
-const char	*suffix,
-short		*suffix_value)
+const char *suffix,
+short *suffix_value)
 {
 int value;
 for (value = 0; *suffix && *suffix != '.' && *suffix != ':'; suffix++) {
@@ -50,9 +50,9 @@ return(suffix);
 }
 static boolean_t
 db_cmp_variable_name(
-struct db_variable		*vp,
-char				*name,
-const db_var_aux_param_t	ap)
+struct db_variable *vp,
+char *name,
+const db_var_aux_param_t ap)
 {
 char *var_np;
 const char *np;
@@ -76,10 +76,10 @@ return(TRUE);
 }
 static int
 db_find_variable(
-struct db_variable	**varp,
-db_var_aux_param_t	ap)
+struct db_variable **varp,
+db_var_aux_param_t ap)
 {
-int	t;
+int t;
 struct db_variable *vp;
 t = db_read_token();
 if (t == tIDENT) {
@@ -105,7 +105,7 @@ db_get_variable(db_expr_t *valuep)
 {
 struct db_variable *vp;
 struct db_var_aux_param aux_param;
-char		modif[TOK_STRING_SIZE];
+char modif[TOK_STRING_SIZE];
 aux_param.modif = modif;
 if (!db_find_variable(&vp, &aux_param))
 return (0);
@@ -114,13 +114,13 @@ return (1);
 }
 void
 db_read_write_variable(
-struct db_variable	*vp,
-db_expr_t		*valuep,
-int 			rw_flag,
-db_var_aux_param_t	ap)
+struct db_variable *vp,
+db_expr_t *valuep,
+int rw_flag,
+db_var_aux_param_t ap)
 {
-void	(*func)(struct db_variable *, db_expr_t *, int, db_var_aux_param_t) = vp->fcn;
-struct  db_var_aux_param aux_param;
+void (*func)(struct db_variable *, db_expr_t *, int, db_var_aux_param_t) = vp->fcn;
+struct db_var_aux_param aux_param;
 if (ap == 0) {
 ap = &aux_param;
 ap->modif = "";
@@ -138,11 +138,11 @@ else
 void
 db_set_cmd(void)
 {
-db_expr_t	value;
-int		t;
+db_expr_t value;
+int t;
 struct db_variable *vp;
 struct db_var_aux_param aux_param;
-char		modif[TOK_STRING_SIZE];
+char modif[TOK_STRING_SIZE];
 aux_param.modif = modif;
 t = db_read_token();
 if (t != tDOLLAR) {

@@ -1,13 +1,13 @@
 #include <u.h>
 #include <libc.h>
 #include <draw.h>
-Display	*display;
-Font	*font;
-Image	*screen;
-int	_drawdebug = 0;
+Display *display;
+Font *font;
+Image *screen;
+int _drawdebug = 0;
 static char deffontname[] = "*default*";
-Screen	*_screen;
-int		debuglockdisplay = 0;
+Screen *_screen;
+int debuglockdisplay = 0;
 static void _closedisplay(Display*, int);
 static void
 drawshutdown(void)
@@ -157,7 +157,7 @@ char winname[128];
 snprint(winname, sizeof winname, "%s/winname", d->windir);
 return gengetwindow(d, winname, &screen, &_screen, ref);
 }
-#define	NINFO	12*12
+#define NINFO 12*12
 Display*
 initdisplay(char *dev, char *win, void(*error)(Display*, char*))
 {

@@ -2,7 +2,7 @@
 #include "ec_lcl.h"
 #ifndef OPENSSL_NO_EC2M
 # ifdef OPENSSL_FIPS
-#  include <openssl/fips.h>
+# include <openssl/fips.h>
 # endif
 const EC_METHOD *EC_GF2m_simple_method(void)
 {
@@ -22,8 +22,8 @@ ec_GF2m_simple_point_finish,
 ec_GF2m_simple_point_clear_finish,
 ec_GF2m_simple_point_copy,
 ec_GF2m_simple_point_set_to_infinity,
-0  ,
-0  ,
+0 ,
+0 ,
 ec_GF2m_simple_point_set_affine_coordinates,
 ec_GF2m_simple_point_get_affine_coordinates,
 0, 0, 0,
@@ -41,8 +41,8 @@ ec_GF2m_have_precompute_mult,
 ec_GF2m_simple_field_mul,
 ec_GF2m_simple_field_sqr,
 ec_GF2m_simple_field_div,
-0  ,
-0  ,
+0 ,
+0 ,
 0
 };
 # ifdef OPENSSL_FIPS

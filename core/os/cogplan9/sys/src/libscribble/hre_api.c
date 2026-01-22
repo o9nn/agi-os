@@ -7,10 +7,10 @@
 recognizer __recognizer_internal_initialize(rec_info* ri);
 char* REC_VERSION = "2.0";
 #define INTL_DOMAIN "recognition_manager"
-#define	dgettext(domain, msg)	(msg)
-#define	bindtextdomain(dirname,	domain)
-#define REC_MAGIC       0xfeed
-#define REC_END_MAGIC   0xbeef
+#define dgettext(domain, msg) (msg)
+#define bindtextdomain(dirname, domain)
+#define REC_MAGIC 0xfeed
+#define REC_END_MAGIC 0xbeef
 #define RI_CHECK_MAGIC(rec) \
 ( (rec != nil) && \
 (((recognizer)rec)->recognizer_magic == REC_MAGIC) && \
@@ -36,9 +36,9 @@ return (res);
 recognizer
 recognizer_load(char* directory, char* name, char** subset)
 {
-recognizer	rec;
-rec_info*	rinf;
-static bool	intl_init = false;
+recognizer rec;
+rec_info* rinf;
+static bool intl_init = false;
 if( intl_init == false ) {
 intl_init = true;
 intl_initialize();

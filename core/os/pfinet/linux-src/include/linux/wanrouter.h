@@ -2,48 +2,48 @@
 #if LINUX_VERSION_CODE >= 0x020100
 #define LINUX_2_1
 #endif
-#ifndef	_ROUTER_H
-#define	_ROUTER_H
-#define	ROUTER_NAME	"wanrouter"
-#define	ROUTER_VERSION	1
-#define	ROUTER_RELEASE	1
-#define	ROUTER_IOCTL	'W'
-#define	ROUTER_MAGIC	0x524D4157L
+#ifndef _ROUTER_H
+#define _ROUTER_H
+#define ROUTER_NAME "wanrouter"
+#define ROUTER_VERSION 1
+#define ROUTER_RELEASE 1
+#define ROUTER_IOCTL 'W'
+#define ROUTER_MAGIC 0x524D4157L
 enum router_ioctls
 {
-ROUTER_SETUP	= ROUTER_IOCTL<<8,
+ROUTER_SETUP = ROUTER_IOCTL<<8,
 ROUTER_DOWN,
 ROUTER_STAT,
 ROUTER_IFNEW,
 ROUTER_IFDEL,
 ROUTER_IFSTAT,
-ROUTER_USER	= (ROUTER_IOCTL<<8)+16,
-ROUTER_USER_MAX	= (ROUTER_IOCTL<<8)+31
+ROUTER_USER = (ROUTER_IOCTL<<8)+16,
+ROUTER_USER_MAX = (ROUTER_IOCTL<<8)+31
 };
 #define PROC_DATA_PORT_0 0x8000
 #define PROC_DATA_PORT_1 0x8001
-#define	NLPID_IP	0xCC
-#define	NLPID_SNAP	0x80
-#define	NLPID_CLNP	0x81
-#define	NLPID_ESIS	0x82
-#define	NLPID_ISIS	0x83
-#define	NLPID_Q933	0x08
-#define	WAN_IFNAME_SZ	15
-#define	WAN_DRVNAME_SZ	15
-#define	WAN_ADDRESS_SZ	31
-#define USED_BY_FIELD	8
-#define UDP_PTPIPE_TYPE 	0x01
-#define UDP_FPIPE_TYPE		0x02
-#define UDP_CPIPE_TYPE		0x03
-#define UDP_DRVSTATS_TYPE 	0x04
-#define UDP_INVALID_TYPE  	0x05
-#define CMD_OK		0
-#define CMD_TIMEOUT	0xFF
-#define UDP_PKT_FRM_STACK	0x00
-#define UDP_PKT_FRM_NETWORK	0x01
-#define MAX_INTR_TEST_COUNTER	100
-#define CRITICAL_IN_ISR		0xA1
-#define CRITICAL_INTR_HANDLED	0xB1
+#define NLPID_IP 0xCC
+#define NLPID_SNAP 0x80
+#define NLPID_CLNP 0x81
+#define NLPID_ESIS 0x82
+#define NLPID_ISIS 0x83
+#define NLPID_Q933 0x08
+#define WAN_IFNAME_SZ 15
+#define WAN_DRVNAME_SZ 15
+#define WAN_ADDRESS_SZ 31
+#define USED_BY_FIELD 8
+#define UDP_PTPIPE_TYPE 0x01
+#define UDP_FPIPE_TYPE 0x02
+#define UDP_CPIPE_TYPE 0x03
+#define UDP_DRVSTATS_TYPE 0x04
+#define UDP_INVALID_TYPE 0x05
+#define CMD_OK 0
+#define CMD_TIMEOUT 0xFF
+#define UDP_PKT_FRM_STACK 0x00
+#define UDP_PKT_FRM_NETWORK 0x01
+#define MAX_INTR_TEST_COUNTER 100
+#define CRITICAL_IN_ISR 0xA1
+#define CRITICAL_INTR_HANDLED 0xB1
 typedef struct wan_x25_conf
 {
 unsigned lo_pvc;
@@ -76,7 +76,7 @@ unsigned n391;
 unsigned n392;
 unsigned n393;
 unsigned dlci_num;
-unsigned  dlci[100];
+unsigned dlci[100];
 } wan_fr_conf_t;
 typedef struct wan_ppp_conf
 {
@@ -92,8 +92,8 @@ unsigned fail_retry;
 unsigned auth_retry;
 unsigned auth_options;
 unsigned ip_options;
-char	authenticator;
-char	ip_mode;
+char authenticator;
+char ip_mode;
 } wan_ppp_conf_t;
 typedef struct wan_chdlc_conf
 {
@@ -141,45 +141,45 @@ wan_fr_conf_t fr;
 wan_chdlc_conf_t chdlc;
 } u;
 } wandev_conf_t;
-#define	WANCONFIG_X25	101
-#define	WANCONFIG_FR	102
-#define	WANCONFIG_PPP	103
-#define WANCONFIG_CHDLC	104
-#define WANCONFIG_BSC	105
-#define WANCONFIG_HDLC	106
-#define	WANOPT_OFF	0
-#define	WANOPT_ON	1
-#define	WANOPT_NO	0
-#define	WANOPT_YES	1
-#define	WANOPT_RS232	0
-#define	WANOPT_V35	1
-#define	WANOPT_NRZ	0
-#define	WANOPT_NRZI	1
-#define	WANOPT_FM0	2
-#define	WANOPT_FM1	3
-#define	WANOPT_POINTTOPOINT	0
-#define	WANOPT_MULTIDROP	1
-#define	WANOPT_EXTERNAL	0
-#define	WANOPT_INTERNAL	1
-#define	WANOPT_DTE		0
-#define	WANOPT_DCE		1
-#define	WANOPT_CPE		0
-#define	WANOPT_NODE		1
-#define	WANOPT_SECONDARY	0
-#define	WANOPT_PRIMARY		1
-#define	WANOPT_PERMANENT	0
-#define	WANOPT_SWITCHED		1
-#define	WANOPT_ONDEMAND		2
-#define	WANOPT_FR_ANSI		1
-#define	WANOPT_FR_Q933		2
-#define	WANOPT_FR_LMI		3
-#define	WANOPT_PPP_STATIC	0
-#define	WANOPT_PPP_HOST		1
-#define	WANOPT_PPP_PEER		2
+#define WANCONFIG_X25 101
+#define WANCONFIG_FR 102
+#define WANCONFIG_PPP 103
+#define WANCONFIG_CHDLC 104
+#define WANCONFIG_BSC 105
+#define WANCONFIG_HDLC 106
+#define WANOPT_OFF 0
+#define WANOPT_ON 1
+#define WANOPT_NO 0
+#define WANOPT_YES 1
+#define WANOPT_RS232 0
+#define WANOPT_V35 1
+#define WANOPT_NRZ 0
+#define WANOPT_NRZI 1
+#define WANOPT_FM0 2
+#define WANOPT_FM1 3
+#define WANOPT_POINTTOPOINT 0
+#define WANOPT_MULTIDROP 1
+#define WANOPT_EXTERNAL 0
+#define WANOPT_INTERNAL 1
+#define WANOPT_DTE 0
+#define WANOPT_DCE 1
+#define WANOPT_CPE 0
+#define WANOPT_NODE 1
+#define WANOPT_SECONDARY 0
+#define WANOPT_PRIMARY 1
+#define WANOPT_PERMANENT 0
+#define WANOPT_SWITCHED 1
+#define WANOPT_ONDEMAND 2
+#define WANOPT_FR_ANSI 1
+#define WANOPT_FR_Q933 2
+#define WANOPT_FR_LMI 3
+#define WANOPT_PPP_STATIC 0
+#define WANOPT_PPP_HOST 1
+#define WANOPT_PPP_PEER 2
 #define WANOPT_PRI 0
 #define WANOPT_SEC 1
-#define	WANOPT_INTR	0
-#define WANOPT_POLL	1
+#define WANOPT_INTR 0
+#define WANOPT_POLL 1
 typedef struct wandev_stat
 {
 unsigned state;
@@ -212,10 +212,10 @@ WAN_CONNECTED,
 WAN_LIMIT,
 WAN_DUALPORT
 };
-#define	WAN_MODEM_CTS	0x0001
-#define	WAN_MODEM_DCD	0x0002
-#define	WAN_MODEM_DTR	0x0010
-#define	WAN_MODEM_RTS	0x0020
+#define WAN_MODEM_CTS 0x0001
+#define WAN_MODEM_DCD 0x0002
+#define WAN_MODEM_DTR 0x0010
+#define WAN_MODEM_RTS 0x0020
 typedef struct wanif_conf
 {
 unsigned magic;
@@ -252,7 +252,7 @@ char clocking;
 unsigned bps;
 unsigned mtu;
 } wanif_conf_t;
-#ifdef	__KERNEL__
+#ifdef __KERNEL__
 #include <linux/fs.h>
 #include <linux/proc_fs.h>
 #include <linux/inet.h>

@@ -5,233 +5,233 @@
 #include "fns.h"
 #include "io.h"
 #include "etherif.h"
-#define DEBUG		(1)
-#define debug		if(DEBUG)print
+#define DEBUG (1)
+#define debug if(DEBUG)print
 enum {
-Nrde		= 8,
-Ntde		= 8,
+Nrde = 8,
+Ntde = 8,
 };
-#define Rbsz		ROUNDUP(sizeof(Etherpkt)+4, 4)
+#define Rbsz ROUNDUP(sizeof(Etherpkt)+4, 4)
 typedef struct Des {
-ulong	next;
-int	cmdsts;
-ulong	addr;
-Block*	bp;
+ulong next;
+int cmdsts;
+ulong addr;
+Block* bp;
 } Des;
 enum {
-Own		= 1<<31,
-More	= 1<<30,
-Intr		= 1<<29,
-Supcrc	= 1<<28,
-Inccrc	= 1<<28,
-Ok		= 1<<27,
-Size		= 0xFFF,
-Txa	= 1<<26,
-Tfu	= 1<<25,
-Crs	= 1<<24,
-Td	= 1<<23,
-Ed	= 1<<22,
-Owc	= 1<<21,
-Ec	= 1<<20,
-Rxa	= 1<<26,
-Rxo	= 1<<25,
-Dest	= 3<<23,
-Drej=	0<<23,
-Duni=	1<<23,
-Dmulti=	2<<23,
-Dbroad=	3<<23,
+Own = 1<<31,
+More = 1<<30,
+Intr = 1<<29,
+Supcrc = 1<<28,
+Inccrc = 1<<28,
+Ok = 1<<27,
+Size = 0xFFF,
+Txa = 1<<26,
+Tfu = 1<<25,
+Crs = 1<<24,
+Td = 1<<23,
+Ed = 1<<22,
+Owc = 1<<21,
+Ec = 1<<20,
+Rxa = 1<<26,
+Rxo = 1<<25,
+Dest = 3<<23,
+Drej= 0<<23,
+Duni= 1<<23,
+Dmulti= 2<<23,
+Dbroad= 3<<23,
 Long = 1<<22,
-Runt =  1<<21,
-Ise =	1<<20,
-Crce =	1<<19,
-Fae =	1<<18,
-Lbp =	1<<17,
-Col =	1<<16,
+Runt = 1<<21,
+Ise = 1<<20,
+Crce = 1<<19,
+Fae = 1<<18,
+Lbp = 1<<17,
+Col = 1<<16,
 };
 enum {
-Nat83815		= (0x0020<<16)|0x100B,
+Nat83815 = (0x0020<<16)|0x100B,
 };
 typedef struct Ctlr Ctlr;
 typedef struct Ctlr {
-int	port;
-Pcidev*	pcidev;
-Ctlr*	next;
-int	active;
-int	id;
-ushort	srom[0xB+1];
-uchar	sromea[Eaddrlen];
-uchar	fd;
-int	mbps;
-Lock	ilock;
-Des*	rdr;
-int	nrdr;
-int	rdrx;
-Lock	tlock;
-Des*	tdr;
-int	ntdr;
-int	tdrh;
-int	tdri;
-int	ntq;
-int	ntqmax;
-Block*	bqhead;
-Block*	bqtail;
-ulong	rxa;
-ulong	rxo;
-ulong	rlong;
-ulong	runt;
-ulong	ise;
-ulong	crce;
-ulong	fae;
-ulong	lbp;
-ulong	col;
-ulong	rxsovr;
-ulong	rxorn;
-ulong	txa;
-ulong	tfu;
-ulong	crs;
-ulong	td;
-ulong	ed;
-ulong	owc;
-ulong	ec;
-ulong	txurn;
-ulong	dperr;
-ulong	rmabt;
-ulong	rtabt;
-ulong	sserr;
-ulong	rxsover;
+int port;
+Pcidev* pcidev;
+Ctlr* next;
+int active;
+int id;
+ushort srom[0xB+1];
+uchar sromea[Eaddrlen];
+uchar fd;
+int mbps;
+Lock ilock;
+Des* rdr;
+int nrdr;
+int rdrx;
+Lock tlock;
+Des* tdr;
+int ntdr;
+int tdrh;
+int tdri;
+int ntq;
+int ntqmax;
+Block* bqhead;
+Block* bqtail;
+ulong rxa;
+ulong rxo;
+ulong rlong;
+ulong runt;
+ulong ise;
+ulong crce;
+ulong fae;
+ulong lbp;
+ulong col;
+ulong rxsovr;
+ulong rxorn;
+ulong txa;
+ulong tfu;
+ulong crs;
+ulong td;
+ulong ed;
+ulong owc;
+ulong ec;
+ulong txurn;
+ulong dperr;
+ulong rmabt;
+ulong rtabt;
+ulong sserr;
+ulong rxsover;
 } Ctlr;
 static Ctlr* ctlrhead;
 static Ctlr* ctlrtail;
 enum {
-Rcr=		0x00,
-Rst=		1<<8,
-Rxr=		1<<5,
-Txr=		1<<4,
-Rxd=		1<<3,
-Rxe=		1<<2,
-Txd=		1<<1,
-Txe=		1<<0,
-Rcfg=	0x04,
-Lnksts=		1<<31,
-Speed100=	1<<30,
-Fdup=		1<<29,
-Pol=		1<<28,
-Aneg_dn=	1<<27,
-Pint_acen=	1<<17,
-Pause_adv=	1<<16,
-Paneg_ena=	1<<13,
-Paneg_all=	7<<13,
-Ext_phy=	1<<12,
-Phy_rst=		1<<10,
-Phy_dis=		1<<9,
-Req_alg=	1<<7,
-Sb=			1<<6,
-Pow=		1<<5,
-Exd=		1<<4,
-Pesel=		1<<3,
-Brom_dis=	1<<2,
-Bem=		1<<0,
-Rmear=	0x08,
-Mdc=		1<<6,
-Mddir=		1<<5,
-Mdio=		1<<4,
-Eesel=		1<<3,
-Eeclk=		1<<2,
-Eedo=		1<<1,
-Eedi=		1<<0,
-Rptscr=	0x0C,
-Risr=		0x10,
-Txrcmp=	1<<25,
-Rxrcmp=	1<<24,
-Dperr=		1<<23,
-Sserr=		1<<22,
-Rmabt=		1<<21,
-Rtabt=		1<<20,
-Rxsovr=		1<<16,
-Hiberr=		1<<15,
-Phy=		1<<14,
-Pme=		1<<13,
-Swi=		1<<12,
-Mib=		1<<11,
-Txurn=		1<<10,
-Txidle=		1<<9,
-Txerr=		1<<8,
-Txdesc=		1<<7,
-Txok=		1<<6,
-Rxorn=		1<<5,
-Rxidle=		1<<4,
-Rxearly=		1<<3,
-Rxerr=		1<<2,
-Rxdesc=		1<<1,
-Rxok=		1<<0,
-Rimr=	0x14,
-Rier=	0x18,
-Ie=			1<<0,
-Rtxdp=	0x20,
-Rtxcfg=	0x24,
-Csi=		1<<31,
-Hbi=		1<<30,
-Atp=		1<<28,
-Mxdma=		7<<20,
-Mxdma32=	4<<20,
-Mxdma64=	5<<20,
-Flth=		0x3F<<8,
-Drth=		0x3F<<0,
-Flth128=		4<<8,
-Drth512=	16<<0,
-Rrxdp=	0x30,
-Rrxcfg=	0x34,
-Atx=		1<<28,
-Rdrth=		0x1F<<1,
-Rdrth64=	2<<1,
-Rccsr=	0x3C,
-Pmests=		1<<15,
-Rwcsr=	0x40,
-Rpcr=	0x44,
-Rrfcr=	0x48,
-Rfen=		1<<31,
-Aab=		1<<30,
-Aam=		1<<29,
-Aau=		1<<28,
-Apm=		1<<27,
-Apat=		0xF<<23,
-Aarp=		1<<22,
-Mhen=		1<<21,
-Uhen=		1<<20,
-Ulm=		1<<19,
-Rrfdr=	0x4C,
-Rbrar=	0x50,
-Rbrdr=	0x54,
-Rsrr=	0x58,
-Rmibc=	0x5C,
-Rbmcr=	0x80,
-Reset=		1<<15,
-Sel100=		1<<13,
-Anena=		1<<12,
-Anrestart=	1<<9,
-Selfdx=		1<<8,
-Rbmsr=	0x84,
-Ancomp=	1<<5,
+Rcr= 0x00,
+Rst= 1<<8,
+Rxr= 1<<5,
+Txr= 1<<4,
+Rxd= 1<<3,
+Rxe= 1<<2,
+Txd= 1<<1,
+Txe= 1<<0,
+Rcfg= 0x04,
+Lnksts= 1<<31,
+Speed100= 1<<30,
+Fdup= 1<<29,
+Pol= 1<<28,
+Aneg_dn= 1<<27,
+Pint_acen= 1<<17,
+Pause_adv= 1<<16,
+Paneg_ena= 1<<13,
+Paneg_all= 7<<13,
+Ext_phy= 1<<12,
+Phy_rst= 1<<10,
+Phy_dis= 1<<9,
+Req_alg= 1<<7,
+Sb= 1<<6,
+Pow= 1<<5,
+Exd= 1<<4,
+Pesel= 1<<3,
+Brom_dis= 1<<2,
+Bem= 1<<0,
+Rmear= 0x08,
+Mdc= 1<<6,
+Mddir= 1<<5,
+Mdio= 1<<4,
+Eesel= 1<<3,
+Eeclk= 1<<2,
+Eedo= 1<<1,
+Eedi= 1<<0,
+Rptscr= 0x0C,
+Risr= 0x10,
+Txrcmp= 1<<25,
+Rxrcmp= 1<<24,
+Dperr= 1<<23,
+Sserr= 1<<22,
+Rmabt= 1<<21,
+Rtabt= 1<<20,
+Rxsovr= 1<<16,
+Hiberr= 1<<15,
+Phy= 1<<14,
+Pme= 1<<13,
+Swi= 1<<12,
+Mib= 1<<11,
+Txurn= 1<<10,
+Txidle= 1<<9,
+Txerr= 1<<8,
+Txdesc= 1<<7,
+Txok= 1<<6,
+Rxorn= 1<<5,
+Rxidle= 1<<4,
+Rxearly= 1<<3,
+Rxerr= 1<<2,
+Rxdesc= 1<<1,
+Rxok= 1<<0,
+Rimr= 0x14,
+Rier= 0x18,
+Ie= 1<<0,
+Rtxdp= 0x20,
+Rtxcfg= 0x24,
+Csi= 1<<31,
+Hbi= 1<<30,
+Atp= 1<<28,
+Mxdma= 7<<20,
+Mxdma32= 4<<20,
+Mxdma64= 5<<20,
+Flth= 0x3F<<8,
+Drth= 0x3F<<0,
+Flth128= 4<<8,
+Drth512= 16<<0,
+Rrxdp= 0x30,
+Rrxcfg= 0x34,
+Atx= 1<<28,
+Rdrth= 0x1F<<1,
+Rdrth64= 2<<1,
+Rccsr= 0x3C,
+Pmests= 1<<15,
+Rwcsr= 0x40,
+Rpcr= 0x44,
+Rrfcr= 0x48,
+Rfen= 1<<31,
+Aab= 1<<30,
+Aam= 1<<29,
+Aau= 1<<28,
+Apm= 1<<27,
+Apat= 0xF<<23,
+Aarp= 1<<22,
+Mhen= 1<<21,
+Uhen= 1<<20,
+Ulm= 1<<19,
+Rrfdr= 0x4C,
+Rbrar= 0x50,
+Rbrdr= 0x54,
+Rsrr= 0x58,
+Rmibc= 0x5C,
+Rbmcr= 0x80,
+Reset= 1<<15,
+Sel100= 1<<13,
+Anena= 1<<12,
+Anrestart= 1<<9,
+Selfdx= 1<<8,
+Rbmsr= 0x84,
+Ancomp= 1<<5,
 Rphyidr1= 0x88,
 Rphyidr2= 0x8C,
-Ranar=	0x90,
-Ranlpar=	0x94,
-Raner=	0x98,
-Rannptr=	0x9C,
-Rphysts=	0xC0,
-Rmicr=	0xC4,
-Inten=		1<<1,
-Rmisr=	0xC8,
-Rfcscr=	0xD0,
-Rrecr=	0xD4,
-Rpcsr=	0xD8,
-Rphycr=	0xE4,
-Rtbscr=	0xE8,
+Ranar= 0x90,
+Ranlpar= 0x94,
+Raner= 0x98,
+Rannptr= 0x9C,
+Rphysts= 0xC0,
+Rmicr= 0xC4,
+Inten= 1<<1,
+Rmisr= 0xC8,
+Rfcscr= 0xD0,
+Rrecr= 0xD4,
+Rpcsr= 0xD8,
+Rphycr= 0xE4,
+Rtbscr= 0xE8,
 };
-#define csr32r(c, r)	(inl((c)->port+(r)))
-#define csr32w(c, r, l)	(outl((c)->port+(r), (ulong)(l)))
-#define csr16r(c, r)	(ins((c)->port+(r)))
-#define csr16w(c, r, l)	(outs((c)->port+(r), (ulong)(l)))
+#define csr32r(c, r) (inl((c)->port+(r)))
+#define csr32w(c, r, l) (outl((c)->port+(r), (ulong)(l)))
+#define csr16r(c, r) (ins((c)->port+(r)))
+#define csr16w(c, r, l) (outs((c)->port+(r), (ulong)(l)))
 static void
 dumpcregs(Ctlr *ctlr)
 {

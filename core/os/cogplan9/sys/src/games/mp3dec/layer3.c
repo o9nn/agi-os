@@ -1,5 +1,5 @@
 # ifdef HAVE_CONFIG_H
-#  include "config.h"
+# include "config.h"
 # endif
 # include "global.h"
 # include "fixed.h"
@@ -11,12 +11,12 @@
 #define CHAR_BIT 8
 enum {
 count1table_select = 0x01,
-scalefac_scale     = 0x02,
-preflag	     = 0x04,
-mixed_block_flag   = 0x08
+scalefac_scale = 0x02,
+preflag = 0x04,
+mixed_block_flag = 0x08
 };
 enum {
-I_STEREO  = 0x1,
+I_STEREO = 0x1,
 MS_STEREO = 0x2
 };
 struct sideinfo {
@@ -51,152 +51,152 @@ unsigned char slen2;
 };
 static
 unsigned char const nsfb_table[6][3][4] = {
-{ {  6,  5,  5, 5 },
-{  9,  9,  9, 9 },
-{  6,  9,  9, 9 } },
-{ {  6,  5,  7, 3 },
-{  9,  9, 12, 6 },
-{  6,  9, 12, 6 } },
-{ { 11, 10,  0, 0 },
-{ 18, 18,  0, 0 },
-{ 15, 18,  0, 0 } },
-{ {  7,  7,  7, 0 },
+{ { 6, 5, 5, 5 },
+{ 9, 9, 9, 9 },
+{ 6, 9, 9, 9 } },
+{ { 6, 5, 7, 3 },
+{ 9, 9, 12, 6 },
+{ 6, 9, 12, 6 } },
+{ { 11, 10, 0, 0 },
+{ 18, 18, 0, 0 },
+{ 15, 18, 0, 0 } },
+{ { 7, 7, 7, 0 },
 { 12, 12, 12, 0 },
-{  6, 15, 12, 0 } },
-{ {  6,  6,  6, 3 },
-{ 12,  9,  9, 6 },
-{  6, 12,  9, 6 } },
-{ {  8,  8,  5, 0 },
-{ 15, 12,  9, 0 },
-{  6, 18,  9, 0 } }
+{ 6, 15, 12, 0 } },
+{ { 6, 6, 6, 3 },
+{ 12, 9, 9, 6 },
+{ 6, 12, 9, 6 } },
+{ { 8, 8, 5, 0 },
+{ 15, 12, 9, 0 },
+{ 6, 18, 9, 0 } }
 };
 static
 unsigned char const sfb_48000_long[] = {
-4,  4,  4,  4,  4,  4,  6,  6,  6,   8,  10,
-12, 16, 18, 22, 28, 34, 40, 46, 54,  54, 192
+4, 4, 4, 4, 4, 4, 6, 6, 6, 8, 10,
+12, 16, 18, 22, 28, 34, 40, 46, 54, 54, 192
 };
 static
 unsigned char const sfb_44100_long[] = {
-4,  4,  4,  4,  4,  4,  6,  6,  8,   8,  10,
-12, 16, 20, 24, 28, 34, 42, 50, 54,  76, 158
+4, 4, 4, 4, 4, 4, 6, 6, 8, 8, 10,
+12, 16, 20, 24, 28, 34, 42, 50, 54, 76, 158
 };
 static
 unsigned char const sfb_32000_long[] = {
-4,  4,  4,  4,  4,  4,  6,  6,  8,  10,  12,
-16, 20, 24, 30, 38, 46, 56, 68, 84, 102,  26
+4, 4, 4, 4, 4, 4, 6, 6, 8, 10, 12,
+16, 20, 24, 30, 38, 46, 56, 68, 84, 102, 26
 };
 static
 unsigned char const sfb_48000_short[] = {
-4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  6,
-6,  6,  6,  6,  6, 10, 10, 10, 12, 12, 12, 14, 14,
+4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 6,
+6, 6, 6, 6, 6, 10, 10, 10, 12, 12, 12, 14, 14,
 14, 16, 16, 16, 20, 20, 20, 26, 26, 26, 66, 66, 66
 };
 static
 unsigned char const sfb_44100_short[] = {
-4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  6,
-6,  6,  8,  8,  8, 10, 10, 10, 12, 12, 12, 14, 14,
+4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 6,
+6, 6, 8, 8, 8, 10, 10, 10, 12, 12, 12, 14, 14,
 14, 18, 18, 18, 22, 22, 22, 30, 30, 30, 56, 56, 56
 };
 static
 unsigned char const sfb_32000_short[] = {
-4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  6,
-6,  6,  8,  8,  8, 12, 12, 12, 16, 16, 16, 20, 20,
+4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 6,
+6, 6, 8, 8, 8, 12, 12, 12, 16, 16, 16, 20, 20,
 20, 26, 26, 26, 34, 34, 34, 42, 42, 42, 12, 12, 12
 };
 static
 unsigned char const sfb_48000_mixed[] = {
-4,  4,  4,  4,  4,  4,  6,  6,
-4,  4,  4,  6,  6,  6,  6,  6,  6, 10,
+4, 4, 4, 4, 4, 4, 6, 6,
+4, 4, 4, 6, 6, 6, 6, 6, 6, 10,
 10, 10, 12, 12, 12, 14, 14, 14, 16, 16,
 16, 20, 20, 20, 26, 26, 26, 66, 66, 66
 };
 static
 unsigned char const sfb_44100_mixed[] = {
-4,  4,  4,  4,  4,  4,  6,  6,
-4,  4,  4,  6,  6,  6,  8,  8,  8, 10,
+4, 4, 4, 4, 4, 4, 6, 6,
+4, 4, 4, 6, 6, 6, 8, 8, 8, 10,
 10, 10, 12, 12, 12, 14, 14, 14, 18, 18,
 18, 22, 22, 22, 30, 30, 30, 56, 56, 56
 };
 static
 unsigned char const sfb_32000_mixed[] = {
-4,  4,  4,  4,  4,  4,  6,  6,
-4,  4,  4,  6,  6,  6,  8,  8,  8, 12,
+4, 4, 4, 4, 4, 4, 6, 6,
+4, 4, 4, 6, 6, 6, 8, 8, 8, 12,
 12, 12, 16, 16, 16, 20, 20, 20, 26, 26,
 26, 34, 34, 34, 42, 42, 42, 12, 12, 12
 };
 static
 unsigned char const sfb_24000_long[] = {
-6,  6,  6,  6,  6,  6,  8, 10, 12,  14,  16,
-18, 22, 26, 32, 38, 46, 54, 62, 70,  76,  36
+6, 6, 6, 6, 6, 6, 8, 10, 12, 14, 16,
+18, 22, 26, 32, 38, 46, 54, 62, 70, 76, 36
 };
 static
 unsigned char const sfb_22050_long[] = {
-6,  6,  6,  6,  6,  6,  8, 10, 12,  14,  16,
-20, 24, 28, 32, 38, 46, 52, 60, 68,  58,  54
+6, 6, 6, 6, 6, 6, 8, 10, 12, 14, 16,
+20, 24, 28, 32, 38, 46, 52, 60, 68, 58, 54
 };
-# define sfb_16000_long  sfb_22050_long
+# define sfb_16000_long sfb_22050_long
 static
 unsigned char const sfb_24000_short[] = {
-4,  4,  4,  4,  4,  4,  4,  4,  4,  6,  6,  6,  8,
-8,  8, 10, 10, 10, 12, 12, 12, 14, 14, 14, 18, 18,
+4, 4, 4, 4, 4, 4, 4, 4, 4, 6, 6, 6, 8,
+8, 8, 10, 10, 10, 12, 12, 12, 14, 14, 14, 18, 18,
 18, 24, 24, 24, 32, 32, 32, 44, 44, 44, 12, 12, 12
 };
 static
 unsigned char const sfb_22050_short[] = {
-4,  4,  4,  4,  4,  4,  4,  4,  4,  6,  6,  6,  6,
-6,  6,  8,  8,  8, 10, 10, 10, 14, 14, 14, 18, 18,
+4, 4, 4, 4, 4, 4, 4, 4, 4, 6, 6, 6, 6,
+6, 6, 8, 8, 8, 10, 10, 10, 14, 14, 14, 18, 18,
 18, 26, 26, 26, 32, 32, 32, 42, 42, 42, 18, 18, 18
 };
 static
 unsigned char const sfb_16000_short[] = {
-4,  4,  4,  4,  4,  4,  4,  4,  4,  6,  6,  6,  8,
-8,  8, 10, 10, 10, 12, 12, 12, 14, 14, 14, 18, 18,
+4, 4, 4, 4, 4, 4, 4, 4, 4, 6, 6, 6, 8,
+8, 8, 10, 10, 10, 12, 12, 12, 14, 14, 14, 18, 18,
 18, 24, 24, 24, 30, 30, 30, 40, 40, 40, 18, 18, 18
 };
 static
 unsigned char const sfb_24000_mixed[] = {
-6,  6,  6,  6,  6,  6,
-6,  6,  6,  8,  8,  8, 10, 10, 10, 12,
+6, 6, 6, 6, 6, 6,
+6, 6, 6, 8, 8, 8, 10, 10, 10, 12,
 12, 12, 14, 14, 14, 18, 18, 18, 24, 24,
 24, 32, 32, 32, 44, 44, 44, 12, 12, 12
 };
 static
 unsigned char const sfb_22050_mixed[] = {
-6,  6,  6,  6,  6,  6,
-6,  6,  6,  6,  6,  6,  8,  8,  8, 10,
+6, 6, 6, 6, 6, 6,
+6, 6, 6, 6, 6, 6, 8, 8, 8, 10,
 10, 10, 14, 14, 14, 18, 18, 18, 26, 26,
 26, 32, 32, 32, 42, 42, 42, 18, 18, 18
 };
 static
 unsigned char const sfb_16000_mixed[] = {
-6,  6,  6,  6,  6,  6,
-6,  6,  6,  8,  8,  8, 10, 10, 10, 12,
+6, 6, 6, 6, 6, 6,
+6, 6, 6, 8, 8, 8, 10, 10, 10, 12,
 12, 12, 14, 14, 14, 18, 18, 18, 24, 24,
 24, 30, 30, 30, 40, 40, 40, 18, 18, 18
 };
-# define sfb_12000_long  sfb_16000_long
-# define sfb_11025_long  sfb_12000_long
+# define sfb_12000_long sfb_16000_long
+# define sfb_11025_long sfb_12000_long
 static
 unsigned char const sfb_8000_long[] = {
-12, 12, 12, 12, 12, 12, 16, 20, 24,  28,  32,
-40, 48, 56, 64, 76, 90,  2,  2,  2,   2,   2
+12, 12, 12, 12, 12, 12, 16, 20, 24, 28, 32,
+40, 48, 56, 64, 76, 90, 2, 2, 2, 2, 2
 };
-# define sfb_12000_short  sfb_16000_short
-# define sfb_11025_short  sfb_12000_short
+# define sfb_12000_short sfb_16000_short
+# define sfb_11025_short sfb_12000_short
 static
 unsigned char const sfb_8000_short[] = {
-8,  8,  8,  8,  8,  8,  8,  8,  8, 12, 12, 12, 16,
+8, 8, 8, 8, 8, 8, 8, 8, 8, 12, 12, 12, 16,
 16, 16, 20, 20, 20, 24, 24, 24, 28, 28, 28, 36, 36,
-36,  2,  2,  2,  2,  2,  2,  2,  2,  2, 26, 26, 26
+36, 2, 2, 2, 2, 2, 2, 2, 2, 2, 26, 26, 26
 };
-# define sfb_12000_mixed  sfb_16000_mixed
-# define sfb_11025_mixed  sfb_12000_mixed
+# define sfb_12000_mixed sfb_16000_mixed
+# define sfb_11025_mixed sfb_12000_mixed
 static
 unsigned char const sfb_8000_mixed[] = {
 12, 12, 12,
-4,  4,  4,  8,  8,  8, 12, 12, 12, 16, 16, 16,
+4, 4, 4, 8, 8, 8, 12, 12, 12, 16, 16, 16,
 20, 20, 20, 24, 24, 24, 28, 28, 28, 36, 36, 36,
-2,  2,  2,  2,  2,  2,  2,  2,  2, 26, 26, 26
+2, 2, 2, 2, 2, 2, 2, 2, 2, 26, 26, 26
 };
 static
 struct {
@@ -212,7 +212,7 @@ unsigned char const *m;
 { sfb_16000_long, sfb_16000_short, sfb_16000_mixed },
 { sfb_12000_long, sfb_12000_short, sfb_12000_mixed },
 { sfb_11025_long, sfb_11025_short, sfb_11025_mixed },
-{  sfb_8000_long,  sfb_8000_short,  sfb_8000_mixed }
+{ sfb_8000_long, sfb_8000_short, sfb_8000_mixed }
 };
 static
 unsigned char const pretab[22] = {
@@ -342,7 +342,7 @@ enum mad_error result = MAD_ERROR_NONE;
 *data_bitlen = 0;
 *priv_bitlen = lsf ? ((nch == 1) ? 1 : 2) : ((nch == 1) ? 5 : 3);
 si->main_data_begin = mad_bit_read(ptr, lsf ? 8 : 9);
-si->private_bits    = mad_bit_read(ptr, *priv_bitlen);
+si->private_bits = mad_bit_read(ptr, *priv_bitlen);
 ngr = 1;
 if (!lsf) {
 ngr = 2;
@@ -353,9 +353,9 @@ for (gr = 0; gr < ngr; ++gr) {
 struct granule *granule = &si->gr[gr];
 for (ch = 0; ch < nch; ++ch) {
 struct channel *channel = &granule->ch[ch];
-channel->part2_3_length    = mad_bit_read(ptr, 12);
-channel->big_values        = mad_bit_read(ptr, 9);
-channel->global_gain       = mad_bit_read(ptr, 8);
+channel->part2_3_length = mad_bit_read(ptr, 12);
+channel->big_values = mad_bit_read(ptr, 9);
+channel->global_gain = mad_bit_read(ptr, 8);
 channel->scalefac_compress = mad_bit_read(ptr, lsf ? 9 : 4);
 *data_bitlen += channel->part2_3_length;
 if (channel->big_values > 288 && result == 0)
@@ -410,14 +410,14 @@ if (scalefac_compress < 400) {
 slen[0] = (scalefac_compress >> 4) / 5;
 slen[1] = (scalefac_compress >> 4) % 5;
 slen[2] = (scalefac_compress % 16) >> 2;
-slen[3] =  scalefac_compress %  4;
+slen[3] = scalefac_compress % 4;
 nsfb = nsfb_table[0][index];
 }
 else if (scalefac_compress < 500) {
 scalefac_compress -= 400;
 slen[0] = (scalefac_compress >> 2) / 5;
 slen[1] = (scalefac_compress >> 2) % 5;
-slen[2] =  scalefac_compress %  4;
+slen[2] = scalefac_compress % 4;
 slen[3] = 0;
 nsfb = nsfb_table[1][index];
 }
@@ -441,7 +441,7 @@ channel->scalefac[n++] = 0;
 else {
 scalefac_compress >>= 1;
 if (scalefac_compress < 180) {
-slen[0] =  scalefac_compress / 36;
+slen[0] = scalefac_compress / 36;
 slen[1] = (scalefac_compress % 36) / 6;
 slen[2] = (scalefac_compress % 36) % 6;
 slen[3] = 0;
@@ -451,7 +451,7 @@ else if (scalefac_compress < 244) {
 scalefac_compress -= 180;
 slen[0] = (scalefac_compress % 64) >> 4;
 slen[1] = (scalefac_compress % 16) >> 2;
-slen[2] =  scalefac_compress %  4;
+slen[2] = scalefac_compress % 4;
 slen[3] = 0;
 nsfb = nsfb_table[4][index];
 }
@@ -571,7 +571,7 @@ exponents[sfbi + 1] = gain1 -
 (signed int) (channel->scalefac[sfbi + 1] << scalefac_multiplier);
 exponents[sfbi + 2] = gain2 -
 (signed int) (channel->scalefac[sfbi + 2] << scalefac_multiplier);
-l    += 3 * sfbwidth[sfbi];
+l += 3 * sfbwidth[sfbi];
 sfbi += 3;
 }
 }
@@ -624,9 +624,9 @@ requantized <<= exp;
 }
 return frac ? mad_f_mul(requantized, root_table[3 + frac]) : requantized;
 }
-# define MASK(cache, sz, bits)	\
+# define MASK(cache, sz, bits) \
 (((cache) >> ((sz) - (bits))) & ((1 << (bits)) - 1))
-# define MASK1BIT(cache, sz)  \
+# define MASK1BIT(cache, sz) \
 ((cache) & (1 << ((sz) - 1)))
 static
 enum mad_error III_huffdecode(struct mad_bitptr *ptr, mad_fixed_t xr[576],
@@ -647,9 +647,9 @@ return MAD_ERROR_BADPART3LEN;
 III_exponents(channel, sfbwidth, exponents);
 peek = *ptr;
 mad_bit_skip(ptr, bits_left);
-cachesz  = mad_bit_bitsleft(&peek);
+cachesz = mad_bit_bitsleft(&peek);
 cachesz += ((32 - 1 - 24) + (24 - cachesz)) & ~7;
-bitcache   = mad_bit_read(&peek, cachesz);
+bitcache = mad_bit_read(&peek, cachesz);
 bits_left -= cachesz;
 xrptr = &xr[0];
 {
@@ -659,15 +659,15 @@ struct huffpair const *table;
 unsigned int linbits, startbits, big_values, reqhits;
 mad_fixed_t reqcache[16];
 sfbound = xrptr + *sfbwidth++;
-rcount  = channel->region0_count + 1;
-entry     = &mad_huff_pair_table[channel->table_select[region = 0]];
-table     = entry->table;
-linbits   = entry->linbits;
+rcount = channel->region0_count + 1;
+entry = &mad_huff_pair_table[channel->table_select[region = 0]];
+table = entry->table;
+linbits = entry->linbits;
 startbits = entry->startbits;
 if (table == 0)
 return MAD_ERROR_BADHUFFTABLE;
-expptr  = &exponents[0];
-exp     = *expptr++;
+expptr = &exponents[0];
+exp = *expptr++;
 reqhits = 0;
 big_values = channel->big_values;
 while (big_values-- && cachesz + bits_left > 0) {
@@ -681,9 +681,9 @@ if (region == 0)
 rcount = channel->region1_count + 1;
 else
 rcount = 0;
-entry     = &mad_huff_pair_table[channel->table_select[++region]];
-table     = entry->table;
-linbits   = entry->linbits;
+entry = &mad_huff_pair_table[channel->table_select[++region]];
+table = entry->table;
+linbits = entry->linbits;
 startbits = entry->startbits;
 if (table == 0)
 return MAD_ERROR_BADHUFFTABLE;
@@ -696,17 +696,17 @@ reqhits = 0;
 }
 if (cachesz < 21) {
 unsigned int bits;
-bits       = ((32 - 1 - 21) + (21 - cachesz)) & ~7;
-bitcache   = (bitcache << bits) | mad_bit_read(&peek, bits);
-cachesz   += bits;
+bits = ((32 - 1 - 21) + (21 - cachesz)) & ~7;
+bitcache = (bitcache << bits) | mad_bit_read(&peek, bits);
+cachesz += bits;
 bits_left -= bits;
 }
 clumpsz = startbits;
-pair    = &table[MASK(bitcache, cachesz, clumpsz)];
+pair = &table[MASK(bitcache, cachesz, clumpsz)];
 while (!pair->final) {
 cachesz -= clumpsz;
 clumpsz = pair->ptr.bits;
-pair    = &table[pair->ptr.offset + MASK(bitcache, cachesz, clumpsz)];
+pair = &table[pair->ptr.offset + MASK(bitcache, cachesz, clumpsz)];
 }
 cachesz -= pair->value.hlen;
 if (linbits) {
@@ -717,8 +717,8 @@ xrptr[0] = 0;
 break;
 case 15:
 if (cachesz < linbits + 2) {
-bitcache   = (bitcache << 16) | mad_bit_read(&peek, 16);
-cachesz   += 16;
+bitcache = (bitcache << 16) | mad_bit_read(&peek, 16);
+cachesz += 16;
 bits_left -= 16;
 }
 value += MASK(bitcache, cachesz, linbits);
@@ -743,8 +743,8 @@ xrptr[1] = 0;
 break;
 case 15:
 if (cachesz < linbits + 1) {
-bitcache   = (bitcache << 16) | mad_bit_read(&peek, 16);
-cachesz   += 16;
+bitcache = (bitcache << 16) | mad_bit_read(&peek, 16);
+cachesz += 16;
 bits_left -= 16;
 }
 value += MASK(bitcache, cachesz, linbits);
@@ -804,8 +804,8 @@ requantized = III_requantize(1, exp);
 while (cachesz + bits_left > 0 && xrptr <= &xr[572]) {
 struct huffquad const *quad;
 if (cachesz < 10) {
-bitcache   = (bitcache << 16) | mad_bit_read(&peek, 16);
-cachesz   += 16;
+bitcache = (bitcache << 16) | mad_bit_read(&peek, 16);
+cachesz += 16;
 bits_left -= 16;
 }
 quad = &table[MASK(bitcache, cachesz, 4)];
@@ -881,7 +881,7 @@ l += *sfbwidth++;
 }
 for (w = 0; w < 3; ++w) {
 sbw[w] = sb;
-sw[w]  = 0;
+sw[w] = 0;
 }
 f = *sfbwidth++;
 w = 0;
@@ -1020,7 +1020,7 @@ continue;
 for (i = 0; i < n; ++i) {
 register mad_fixed_t left;
 left = xr[0][l + i];
-xr[0][l + i] = mad_f_mul(left, is_table[    is_pos]);
+xr[0][l + i] = mad_f_mul(left, is_table[ is_pos]);
 xr[1][l + i] = mad_f_mul(left, is_table[6 - is_pos]);
 }
 }
@@ -1057,16 +1057,16 @@ register mad_fixed_t a, b;
 register mad_fixed64hi_t hi;
 register mad_fixed64lo_t lo;
 a = xr[-1 - i];
-b = xr[     i];
+b = xr[ i];
 # if defined(ASO_ZEROCHECK)
 if (a | b) {
 # endif
-MAD_F_ML0(hi, lo,  a, cs[i]);
+MAD_F_ML0(hi, lo, a, cs[i]);
 MAD_F_MLA(hi, lo, -b, ca[i]);
 xr[-1 - i] = MAD_F_MLZ(hi, lo);
-MAD_F_ML0(hi, lo,  b, cs[i]);
-MAD_F_MLA(hi, lo,  a, ca[i]);
-xr[     i] = MAD_F_MLZ(hi, lo);
+MAD_F_ML0(hi, lo, b, cs[i]);
+MAD_F_MLA(hi, lo, a, ca[i]);
+xr[ i] = MAD_F_MLZ(hi, lo);
 # if defined(ASO_ZEROCHECK)
 }
 # endif
@@ -1076,20 +1076,20 @@ xr[     i] = MAD_F_MLZ(hi, lo);
 # if defined(ASO_IMDCT)
 void III_imdct_l(mad_fixed_t const [18], mad_fixed_t [36], unsigned int);
 # else
-#  if 1
+# if 1
 static
 void fastsdct(mad_fixed_t const x[9], mad_fixed_t y[18])
 {
-mad_fixed_t a0,  a1,  a2,  a3,  a4,  a5,  a6,  a7,  a8,  a9,  a10, a11, a12;
+mad_fixed_t a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12;
 mad_fixed_t a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24, a25;
-mad_fixed_t m0,  m1,  m2,  m3,  m4,  m5,  m6,  m7;
+mad_fixed_t m0, m1, m2, m3, m4, m5, m6, m7;
 enum {
-c0 =  MAD_F(0x1f838b8d),
-c1 =  MAD_F(0x1bb67ae8),
-c2 =  MAD_F(0x18836fa3),
-c3 =  MAD_F(0x1491b752),
-c4 =  MAD_F(0x0af1d43a),
-c5 =  MAD_F(0x058e86a0),
+c0 = MAD_F(0x1f838b8d),
+c1 = MAD_F(0x1bb67ae8),
+c2 = MAD_F(0x18836fa3),
+c3 = MAD_F(0x1491b752),
+c4 = MAD_F(0x0af1d43a),
+c5 = MAD_F(0x058e86a0),
 c6 = -MAD_F(0x1e11f642)
 };
 a0 = x[3] + x[5];
@@ -1100,35 +1100,35 @@ a4 = x[1] + x[7];
 a5 = x[1] - x[7];
 a6 = x[8] + x[0];
 a7 = x[8] - x[0];
-a8  = a0  + a2;
-a9  = a0  - a2;
-a10 = a0  - a6;
-a11 = a2  - a6;
-a12 = a8  + a6;
-a13 = a1  - a3;
+a8 = a0 + a2;
+a9 = a0 - a2;
+a10 = a0 - a6;
+a11 = a2 - a6;
+a12 = a8 + a6;
+a13 = a1 - a3;
 a14 = a13 + a7;
-a15 = a3  + a7;
-a16 = a1  - a7;
-a17 = a1  + a3;
+a15 = a3 + a7;
+a16 = a1 - a7;
+a17 = a1 + a3;
 m0 = mad_f_mul(a17, -c3);
 m1 = mad_f_mul(a16, -c0);
 m2 = mad_f_mul(a15, -c4);
 m3 = mad_f_mul(a14, -c1);
-m4 = mad_f_mul(a5,  -c1);
+m4 = mad_f_mul(a5, -c1);
 m5 = mad_f_mul(a11, -c6);
 m6 = mad_f_mul(a10, -c5);
-m7 = mad_f_mul(a9,  -c2);
-a18 =     x[4] + a4;
+m7 = mad_f_mul(a9, -c2);
+a18 = x[4] + a4;
 a19 = 2 * x[4] - a4;
 a20 = a19 + m5;
 a21 = a19 - m5;
 a22 = a19 + m6;
-a23 = m4  + m2;
-a24 = m4  - m2;
-a25 = m4  + m1;
+a23 = m4 + m2;
+a24 = m4 - m2;
+a25 = m4 + m1;
 y[ 0] = a18 + a12;
-y[ 2] = m0  - a25;
-y[ 4] = m7  - a20;
+y[ 2] = m0 - a25;
+y[ 4] = m7 - a20;
 y[ 6] = m3;
 y[ 8] = a21 - m6;
 y[10] = a24 - m1;
@@ -1199,12 +1199,12 @@ void imdct36(mad_fixed_t const x[18], mad_fixed_t y[36])
 mad_fixed_t tmp[18];
 int i;
 dctIV(x, tmp);
-for (i =  0; i <  9; i += 3) {
-y[i + 0] =  tmp[9 + (i + 0)];
-y[i + 1] =  tmp[9 + (i + 1)];
-y[i + 2] =  tmp[9 + (i + 2)];
+for (i = 0; i < 9; i += 3) {
+y[i + 0] = tmp[9 + (i + 0)];
+y[i + 1] = tmp[9 + (i + 1)];
+y[i + 2] = tmp[9 + (i + 2)];
 }
-for (i =  9; i < 27; i += 3) {
+for (i = 9; i < 27; i += 3) {
 y[i + 0] = -tmp[36 - (9 + (i + 0)) - 1];
 y[i + 1] = -tmp[36 - (9 + (i + 1)) - 1];
 y[i + 2] = -tmp[36 - (9 + (i + 2)) - 1];
@@ -1215,233 +1215,233 @@ y[i + 1] = -tmp[(i + 1) - 27];
 y[i + 2] = -tmp[(i + 2) - 27];
 }
 }
-#  else
+# else
 static inline
 void imdct36(mad_fixed_t const X[18], mad_fixed_t x[36])
 {
-mad_fixed_t t0, t1, t2,  t3,  t4,  t5,  t6,  t7;
+mad_fixed_t t0, t1, t2, t3, t4, t5, t6, t7;
 mad_fixed_t t8, t9, t10, t11, t12, t13, t14, t15;
 register mad_fixed64hi_t hi;
 register mad_fixed64lo_t lo;
-MAD_F_ML0(hi, lo, X[4],  MAD_F(0x0ec835e8));
+MAD_F_ML0(hi, lo, X[4], MAD_F(0x0ec835e8));
 MAD_F_MLA(hi, lo, X[13], MAD_F(0x061f78aa));
 t6 = MAD_F_MLZ(hi, lo);
 MAD_F_MLA(hi, lo, (t14 = X[1] - X[10]), -MAD_F(0x061f78aa));
 MAD_F_MLA(hi, lo, (t15 = X[7] + X[16]), -MAD_F(0x0ec835e8));
 t0 = MAD_F_MLZ(hi, lo);
-MAD_F_MLA(hi, lo, (t8  = X[0] - X[11] - X[12]),  MAD_F(0x0216a2a2));
-MAD_F_MLA(hi, lo, (t9  = X[2] - X[9]  - X[14]),  MAD_F(0x09bd7ca0));
-MAD_F_MLA(hi, lo, (t10 = X[3] - X[8]  - X[15]), -MAD_F(0x0cb19346));
-MAD_F_MLA(hi, lo, (t11 = X[5] - X[6]  - X[17]), -MAD_F(0x0fdcf549));
-x[7]  = MAD_F_MLZ(hi, lo);
+MAD_F_MLA(hi, lo, (t8 = X[0] - X[11] - X[12]), MAD_F(0x0216a2a2));
+MAD_F_MLA(hi, lo, (t9 = X[2] - X[9] - X[14]), MAD_F(0x09bd7ca0));
+MAD_F_MLA(hi, lo, (t10 = X[3] - X[8] - X[15]), -MAD_F(0x0cb19346));
+MAD_F_MLA(hi, lo, (t11 = X[5] - X[6] - X[17]), -MAD_F(0x0fdcf549));
+x[7] = MAD_F_MLZ(hi, lo);
 x[10] = -x[7];
-MAD_F_ML0(hi, lo, t8,  -MAD_F(0x0cb19346));
-MAD_F_MLA(hi, lo, t9,   MAD_F(0x0fdcf549));
-MAD_F_MLA(hi, lo, t10,  MAD_F(0x0216a2a2));
+MAD_F_ML0(hi, lo, t8, -MAD_F(0x0cb19346));
+MAD_F_MLA(hi, lo, t9, MAD_F(0x0fdcf549));
+MAD_F_MLA(hi, lo, t10, MAD_F(0x0216a2a2));
 MAD_F_MLA(hi, lo, t11, -MAD_F(0x09bd7ca0));
 x[19] = x[34] = MAD_F_MLZ(hi, lo) - t0;
 t12 = X[0] - X[3] + X[8] - X[11] - X[12] + X[15];
-t13 = X[2] + X[5] - X[6] - X[9]  - X[14] - X[17];
+t13 = X[2] + X[5] - X[6] - X[9] - X[14] - X[17];
 MAD_F_ML0(hi, lo, t12, -MAD_F(0x0ec835e8));
-MAD_F_MLA(hi, lo, t13,  MAD_F(0x061f78aa));
+MAD_F_MLA(hi, lo, t13, MAD_F(0x061f78aa));
 x[22] = x[31] = MAD_F_MLZ(hi, lo) + t0;
-MAD_F_ML0(hi, lo, X[1],  -MAD_F(0x09bd7ca0));
-MAD_F_MLA(hi, lo, X[7],   MAD_F(0x0216a2a2));
+MAD_F_ML0(hi, lo, X[1], -MAD_F(0x09bd7ca0));
+MAD_F_MLA(hi, lo, X[7], MAD_F(0x0216a2a2));
 MAD_F_MLA(hi, lo, X[10], -MAD_F(0x0fdcf549));
-MAD_F_MLA(hi, lo, X[16],  MAD_F(0x0cb19346));
+MAD_F_MLA(hi, lo, X[16], MAD_F(0x0cb19346));
 t1 = MAD_F_MLZ(hi, lo) + t6;
-MAD_F_ML0(hi, lo, X[0],   MAD_F(0x03768962));
-MAD_F_MLA(hi, lo, X[2],   MAD_F(0x0e313245));
-MAD_F_MLA(hi, lo, X[3],  -MAD_F(0x0ffc19fd));
-MAD_F_MLA(hi, lo, X[5],  -MAD_F(0x0acf37ad));
-MAD_F_MLA(hi, lo, X[6],   MAD_F(0x04cfb0e2));
-MAD_F_MLA(hi, lo, X[8],  -MAD_F(0x0898c779));
-MAD_F_MLA(hi, lo, X[9],   MAD_F(0x0d7e8807));
-MAD_F_MLA(hi, lo, X[11],  MAD_F(0x0f426cb5));
+MAD_F_ML0(hi, lo, X[0], MAD_F(0x03768962));
+MAD_F_MLA(hi, lo, X[2], MAD_F(0x0e313245));
+MAD_F_MLA(hi, lo, X[3], -MAD_F(0x0ffc19fd));
+MAD_F_MLA(hi, lo, X[5], -MAD_F(0x0acf37ad));
+MAD_F_MLA(hi, lo, X[6], MAD_F(0x04cfb0e2));
+MAD_F_MLA(hi, lo, X[8], -MAD_F(0x0898c779));
+MAD_F_MLA(hi, lo, X[9], MAD_F(0x0d7e8807));
+MAD_F_MLA(hi, lo, X[11], MAD_F(0x0f426cb5));
 MAD_F_MLA(hi, lo, X[12], -MAD_F(0x0bcbe352));
-MAD_F_MLA(hi, lo, X[14],  MAD_F(0x00b2aa3e));
+MAD_F_MLA(hi, lo, X[14], MAD_F(0x00b2aa3e));
 MAD_F_MLA(hi, lo, X[15], -MAD_F(0x07635284));
 MAD_F_MLA(hi, lo, X[17], -MAD_F(0x0f9ee890));
-x[6]  = MAD_F_MLZ(hi, lo) + t1;
+x[6] = MAD_F_MLZ(hi, lo) + t1;
 x[11] = -x[6];
-MAD_F_ML0(hi, lo, X[0],  -MAD_F(0x0f426cb5));
-MAD_F_MLA(hi, lo, X[2],  -MAD_F(0x00b2aa3e));
-MAD_F_MLA(hi, lo, X[3],   MAD_F(0x0898c779));
-MAD_F_MLA(hi, lo, X[5],   MAD_F(0x0f9ee890));
-MAD_F_MLA(hi, lo, X[6],   MAD_F(0x0acf37ad));
-MAD_F_MLA(hi, lo, X[8],  -MAD_F(0x07635284));
-MAD_F_MLA(hi, lo, X[9],  -MAD_F(0x0e313245));
+MAD_F_ML0(hi, lo, X[0], -MAD_F(0x0f426cb5));
+MAD_F_MLA(hi, lo, X[2], -MAD_F(0x00b2aa3e));
+MAD_F_MLA(hi, lo, X[3], MAD_F(0x0898c779));
+MAD_F_MLA(hi, lo, X[5], MAD_F(0x0f9ee890));
+MAD_F_MLA(hi, lo, X[6], MAD_F(0x0acf37ad));
+MAD_F_MLA(hi, lo, X[8], -MAD_F(0x07635284));
+MAD_F_MLA(hi, lo, X[9], -MAD_F(0x0e313245));
 MAD_F_MLA(hi, lo, X[11], -MAD_F(0x0bcbe352));
 MAD_F_MLA(hi, lo, X[12], -MAD_F(0x03768962));
-MAD_F_MLA(hi, lo, X[14],  MAD_F(0x0d7e8807));
-MAD_F_MLA(hi, lo, X[15],  MAD_F(0x0ffc19fd));
-MAD_F_MLA(hi, lo, X[17],  MAD_F(0x04cfb0e2));
+MAD_F_MLA(hi, lo, X[14], MAD_F(0x0d7e8807));
+MAD_F_MLA(hi, lo, X[15], MAD_F(0x0ffc19fd));
+MAD_F_MLA(hi, lo, X[17], MAD_F(0x04cfb0e2));
 x[23] = x[30] = MAD_F_MLZ(hi, lo) + t1;
-MAD_F_ML0(hi, lo, X[0],  -MAD_F(0x0bcbe352));
-MAD_F_MLA(hi, lo, X[2],   MAD_F(0x0d7e8807));
-MAD_F_MLA(hi, lo, X[3],  -MAD_F(0x07635284));
-MAD_F_MLA(hi, lo, X[5],   MAD_F(0x04cfb0e2));
-MAD_F_MLA(hi, lo, X[6],   MAD_F(0x0f9ee890));
-MAD_F_MLA(hi, lo, X[8],  -MAD_F(0x0ffc19fd));
-MAD_F_MLA(hi, lo, X[9],  -MAD_F(0x00b2aa3e));
-MAD_F_MLA(hi, lo, X[11],  MAD_F(0x03768962));
+MAD_F_ML0(hi, lo, X[0], -MAD_F(0x0bcbe352));
+MAD_F_MLA(hi, lo, X[2], MAD_F(0x0d7e8807));
+MAD_F_MLA(hi, lo, X[3], -MAD_F(0x07635284));
+MAD_F_MLA(hi, lo, X[5], MAD_F(0x04cfb0e2));
+MAD_F_MLA(hi, lo, X[6], MAD_F(0x0f9ee890));
+MAD_F_MLA(hi, lo, X[8], -MAD_F(0x0ffc19fd));
+MAD_F_MLA(hi, lo, X[9], -MAD_F(0x00b2aa3e));
+MAD_F_MLA(hi, lo, X[11], MAD_F(0x03768962));
 MAD_F_MLA(hi, lo, X[12], -MAD_F(0x0f426cb5));
-MAD_F_MLA(hi, lo, X[14],  MAD_F(0x0e313245));
-MAD_F_MLA(hi, lo, X[15],  MAD_F(0x0898c779));
+MAD_F_MLA(hi, lo, X[14], MAD_F(0x0e313245));
+MAD_F_MLA(hi, lo, X[15], MAD_F(0x0898c779));
 MAD_F_MLA(hi, lo, X[17], -MAD_F(0x0acf37ad));
 x[18] = x[35] = MAD_F_MLZ(hi, lo) - t1;
-MAD_F_ML0(hi, lo, X[4],   MAD_F(0x061f78aa));
+MAD_F_ML0(hi, lo, X[4], MAD_F(0x061f78aa));
 MAD_F_MLA(hi, lo, X[13], -MAD_F(0x0ec835e8));
 t7 = MAD_F_MLZ(hi, lo);
-MAD_F_MLA(hi, lo, X[1],  -MAD_F(0x0cb19346));
-MAD_F_MLA(hi, lo, X[7],   MAD_F(0x0fdcf549));
-MAD_F_MLA(hi, lo, X[10],  MAD_F(0x0216a2a2));
+MAD_F_MLA(hi, lo, X[1], -MAD_F(0x0cb19346));
+MAD_F_MLA(hi, lo, X[7], MAD_F(0x0fdcf549));
+MAD_F_MLA(hi, lo, X[10], MAD_F(0x0216a2a2));
 MAD_F_MLA(hi, lo, X[16], -MAD_F(0x09bd7ca0));
 t2 = MAD_F_MLZ(hi, lo);
-MAD_F_MLA(hi, lo, X[0],   MAD_F(0x04cfb0e2));
-MAD_F_MLA(hi, lo, X[2],   MAD_F(0x0ffc19fd));
-MAD_F_MLA(hi, lo, X[3],  -MAD_F(0x0d7e8807));
-MAD_F_MLA(hi, lo, X[5],   MAD_F(0x03768962));
-MAD_F_MLA(hi, lo, X[6],  -MAD_F(0x0bcbe352));
-MAD_F_MLA(hi, lo, X[8],  -MAD_F(0x0e313245));
-MAD_F_MLA(hi, lo, X[9],   MAD_F(0x07635284));
+MAD_F_MLA(hi, lo, X[0], MAD_F(0x04cfb0e2));
+MAD_F_MLA(hi, lo, X[2], MAD_F(0x0ffc19fd));
+MAD_F_MLA(hi, lo, X[3], -MAD_F(0x0d7e8807));
+MAD_F_MLA(hi, lo, X[5], MAD_F(0x03768962));
+MAD_F_MLA(hi, lo, X[6], -MAD_F(0x0bcbe352));
+MAD_F_MLA(hi, lo, X[8], -MAD_F(0x0e313245));
+MAD_F_MLA(hi, lo, X[9], MAD_F(0x07635284));
 MAD_F_MLA(hi, lo, X[11], -MAD_F(0x0acf37ad));
-MAD_F_MLA(hi, lo, X[12],  MAD_F(0x0f9ee890));
-MAD_F_MLA(hi, lo, X[14],  MAD_F(0x0898c779));
-MAD_F_MLA(hi, lo, X[15],  MAD_F(0x00b2aa3e));
-MAD_F_MLA(hi, lo, X[17],  MAD_F(0x0f426cb5));
-x[5]  = MAD_F_MLZ(hi, lo);
+MAD_F_MLA(hi, lo, X[12], MAD_F(0x0f9ee890));
+MAD_F_MLA(hi, lo, X[14], MAD_F(0x0898c779));
+MAD_F_MLA(hi, lo, X[15], MAD_F(0x00b2aa3e));
+MAD_F_MLA(hi, lo, X[17], MAD_F(0x0f426cb5));
+x[5] = MAD_F_MLZ(hi, lo);
 x[12] = -x[5];
-MAD_F_ML0(hi, lo, X[0],   MAD_F(0x0acf37ad));
-MAD_F_MLA(hi, lo, X[2],  -MAD_F(0x0898c779));
-MAD_F_MLA(hi, lo, X[3],   MAD_F(0x0e313245));
-MAD_F_MLA(hi, lo, X[5],  -MAD_F(0x0f426cb5));
-MAD_F_MLA(hi, lo, X[6],  -MAD_F(0x03768962));
-MAD_F_MLA(hi, lo, X[8],   MAD_F(0x00b2aa3e));
-MAD_F_MLA(hi, lo, X[9],  -MAD_F(0x0ffc19fd));
-MAD_F_MLA(hi, lo, X[11],  MAD_F(0x0f9ee890));
+MAD_F_ML0(hi, lo, X[0], MAD_F(0x0acf37ad));
+MAD_F_MLA(hi, lo, X[2], -MAD_F(0x0898c779));
+MAD_F_MLA(hi, lo, X[3], MAD_F(0x0e313245));
+MAD_F_MLA(hi, lo, X[5], -MAD_F(0x0f426cb5));
+MAD_F_MLA(hi, lo, X[6], -MAD_F(0x03768962));
+MAD_F_MLA(hi, lo, X[8], MAD_F(0x00b2aa3e));
+MAD_F_MLA(hi, lo, X[9], -MAD_F(0x0ffc19fd));
+MAD_F_MLA(hi, lo, X[11], MAD_F(0x0f9ee890));
 MAD_F_MLA(hi, lo, X[12], -MAD_F(0x04cfb0e2));
-MAD_F_MLA(hi, lo, X[14],  MAD_F(0x07635284));
-MAD_F_MLA(hi, lo, X[15],  MAD_F(0x0d7e8807));
+MAD_F_MLA(hi, lo, X[14], MAD_F(0x07635284));
+MAD_F_MLA(hi, lo, X[15], MAD_F(0x0d7e8807));
 MAD_F_MLA(hi, lo, X[17], -MAD_F(0x0bcbe352));
-x[0]  = MAD_F_MLZ(hi, lo) + t2;
+x[0] = MAD_F_MLZ(hi, lo) + t2;
 x[17] = -x[0];
-MAD_F_ML0(hi, lo, X[0],  -MAD_F(0x0f9ee890));
-MAD_F_MLA(hi, lo, X[2],  -MAD_F(0x07635284));
-MAD_F_MLA(hi, lo, X[3],  -MAD_F(0x00b2aa3e));
-MAD_F_MLA(hi, lo, X[5],   MAD_F(0x0bcbe352));
-MAD_F_MLA(hi, lo, X[6],   MAD_F(0x0f426cb5));
-MAD_F_MLA(hi, lo, X[8],   MAD_F(0x0d7e8807));
-MAD_F_MLA(hi, lo, X[9],   MAD_F(0x0898c779));
+MAD_F_ML0(hi, lo, X[0], -MAD_F(0x0f9ee890));
+MAD_F_MLA(hi, lo, X[2], -MAD_F(0x07635284));
+MAD_F_MLA(hi, lo, X[3], -MAD_F(0x00b2aa3e));
+MAD_F_MLA(hi, lo, X[5], MAD_F(0x0bcbe352));
+MAD_F_MLA(hi, lo, X[6], MAD_F(0x0f426cb5));
+MAD_F_MLA(hi, lo, X[8], MAD_F(0x0d7e8807));
+MAD_F_MLA(hi, lo, X[9], MAD_F(0x0898c779));
 MAD_F_MLA(hi, lo, X[11], -MAD_F(0x04cfb0e2));
 MAD_F_MLA(hi, lo, X[12], -MAD_F(0x0acf37ad));
 MAD_F_MLA(hi, lo, X[14], -MAD_F(0x0ffc19fd));
 MAD_F_MLA(hi, lo, X[15], -MAD_F(0x0e313245));
 MAD_F_MLA(hi, lo, X[17], -MAD_F(0x03768962));
 x[24] = x[29] = MAD_F_MLZ(hi, lo) + t2;
-MAD_F_ML0(hi, lo, X[1],  -MAD_F(0x0216a2a2));
-MAD_F_MLA(hi, lo, X[7],  -MAD_F(0x09bd7ca0));
-MAD_F_MLA(hi, lo, X[10],  MAD_F(0x0cb19346));
-MAD_F_MLA(hi, lo, X[16],  MAD_F(0x0fdcf549));
+MAD_F_ML0(hi, lo, X[1], -MAD_F(0x0216a2a2));
+MAD_F_MLA(hi, lo, X[7], -MAD_F(0x09bd7ca0));
+MAD_F_MLA(hi, lo, X[10], MAD_F(0x0cb19346));
+MAD_F_MLA(hi, lo, X[16], MAD_F(0x0fdcf549));
 t3 = MAD_F_MLZ(hi, lo) + t7;
-MAD_F_ML0(hi, lo, X[0],   MAD_F(0x00b2aa3e));
-MAD_F_MLA(hi, lo, X[2],   MAD_F(0x03768962));
-MAD_F_MLA(hi, lo, X[3],  -MAD_F(0x04cfb0e2));
-MAD_F_MLA(hi, lo, X[5],  -MAD_F(0x07635284));
-MAD_F_MLA(hi, lo, X[6],   MAD_F(0x0898c779));
-MAD_F_MLA(hi, lo, X[8],   MAD_F(0x0acf37ad));
-MAD_F_MLA(hi, lo, X[9],  -MAD_F(0x0bcbe352));
+MAD_F_ML0(hi, lo, X[0], MAD_F(0x00b2aa3e));
+MAD_F_MLA(hi, lo, X[2], MAD_F(0x03768962));
+MAD_F_MLA(hi, lo, X[3], -MAD_F(0x04cfb0e2));
+MAD_F_MLA(hi, lo, X[5], -MAD_F(0x07635284));
+MAD_F_MLA(hi, lo, X[6], MAD_F(0x0898c779));
+MAD_F_MLA(hi, lo, X[8], MAD_F(0x0acf37ad));
+MAD_F_MLA(hi, lo, X[9], -MAD_F(0x0bcbe352));
 MAD_F_MLA(hi, lo, X[11], -MAD_F(0x0d7e8807));
-MAD_F_MLA(hi, lo, X[12],  MAD_F(0x0e313245));
-MAD_F_MLA(hi, lo, X[14],  MAD_F(0x0f426cb5));
+MAD_F_MLA(hi, lo, X[12], MAD_F(0x0e313245));
+MAD_F_MLA(hi, lo, X[14], MAD_F(0x0f426cb5));
 MAD_F_MLA(hi, lo, X[15], -MAD_F(0x0f9ee890));
 MAD_F_MLA(hi, lo, X[17], -MAD_F(0x0ffc19fd));
 x[8] = MAD_F_MLZ(hi, lo) + t3;
 x[9] = -x[8];
-MAD_F_ML0(hi, lo, X[0],  -MAD_F(0x0e313245));
-MAD_F_MLA(hi, lo, X[2],   MAD_F(0x0bcbe352));
-MAD_F_MLA(hi, lo, X[3],   MAD_F(0x0f9ee890));
-MAD_F_MLA(hi, lo, X[5],  -MAD_F(0x0898c779));
-MAD_F_MLA(hi, lo, X[6],  -MAD_F(0x0ffc19fd));
-MAD_F_MLA(hi, lo, X[8],   MAD_F(0x04cfb0e2));
-MAD_F_MLA(hi, lo, X[9],   MAD_F(0x0f426cb5));
+MAD_F_ML0(hi, lo, X[0], -MAD_F(0x0e313245));
+MAD_F_MLA(hi, lo, X[2], MAD_F(0x0bcbe352));
+MAD_F_MLA(hi, lo, X[3], MAD_F(0x0f9ee890));
+MAD_F_MLA(hi, lo, X[5], -MAD_F(0x0898c779));
+MAD_F_MLA(hi, lo, X[6], -MAD_F(0x0ffc19fd));
+MAD_F_MLA(hi, lo, X[8], MAD_F(0x04cfb0e2));
+MAD_F_MLA(hi, lo, X[9], MAD_F(0x0f426cb5));
 MAD_F_MLA(hi, lo, X[11], -MAD_F(0x00b2aa3e));
 MAD_F_MLA(hi, lo, X[12], -MAD_F(0x0d7e8807));
 MAD_F_MLA(hi, lo, X[14], -MAD_F(0x03768962));
-MAD_F_MLA(hi, lo, X[15],  MAD_F(0x0acf37ad));
-MAD_F_MLA(hi, lo, X[17],  MAD_F(0x07635284));
+MAD_F_MLA(hi, lo, X[15], MAD_F(0x0acf37ad));
+MAD_F_MLA(hi, lo, X[17], MAD_F(0x07635284));
 x[21] = x[32] = MAD_F_MLZ(hi, lo) + t3;
-MAD_F_ML0(hi, lo, X[0],  -MAD_F(0x0d7e8807));
-MAD_F_MLA(hi, lo, X[2],   MAD_F(0x0f426cb5));
-MAD_F_MLA(hi, lo, X[3],   MAD_F(0x0acf37ad));
-MAD_F_MLA(hi, lo, X[5],  -MAD_F(0x0ffc19fd));
-MAD_F_MLA(hi, lo, X[6],  -MAD_F(0x07635284));
-MAD_F_MLA(hi, lo, X[8],   MAD_F(0x0f9ee890));
-MAD_F_MLA(hi, lo, X[9],   MAD_F(0x03768962));
+MAD_F_ML0(hi, lo, X[0], -MAD_F(0x0d7e8807));
+MAD_F_MLA(hi, lo, X[2], MAD_F(0x0f426cb5));
+MAD_F_MLA(hi, lo, X[3], MAD_F(0x0acf37ad));
+MAD_F_MLA(hi, lo, X[5], -MAD_F(0x0ffc19fd));
+MAD_F_MLA(hi, lo, X[6], -MAD_F(0x07635284));
+MAD_F_MLA(hi, lo, X[8], MAD_F(0x0f9ee890));
+MAD_F_MLA(hi, lo, X[9], MAD_F(0x03768962));
 MAD_F_MLA(hi, lo, X[11], -MAD_F(0x0e313245));
-MAD_F_MLA(hi, lo, X[12],  MAD_F(0x00b2aa3e));
-MAD_F_MLA(hi, lo, X[14],  MAD_F(0x0bcbe352));
+MAD_F_MLA(hi, lo, X[12], MAD_F(0x00b2aa3e));
+MAD_F_MLA(hi, lo, X[14], MAD_F(0x0bcbe352));
 MAD_F_MLA(hi, lo, X[15], -MAD_F(0x04cfb0e2));
 MAD_F_MLA(hi, lo, X[17], -MAD_F(0x0898c779));
 x[20] = x[33] = MAD_F_MLZ(hi, lo) - t3;
 MAD_F_ML0(hi, lo, t14, -MAD_F(0x0ec835e8));
-MAD_F_MLA(hi, lo, t15,  MAD_F(0x061f78aa));
+MAD_F_MLA(hi, lo, t15, MAD_F(0x061f78aa));
 t4 = MAD_F_MLZ(hi, lo) - t7;
 MAD_F_ML0(hi, lo, t12, MAD_F(0x061f78aa));
 MAD_F_MLA(hi, lo, t13, MAD_F(0x0ec835e8));
-x[4]  = MAD_F_MLZ(hi, lo) + t4;
+x[4] = MAD_F_MLZ(hi, lo) + t4;
 x[13] = -x[4];
-MAD_F_ML0(hi, lo, t8,   MAD_F(0x09bd7ca0));
-MAD_F_MLA(hi, lo, t9,  -MAD_F(0x0216a2a2));
-MAD_F_MLA(hi, lo, t10,  MAD_F(0x0fdcf549));
+MAD_F_ML0(hi, lo, t8, MAD_F(0x09bd7ca0));
+MAD_F_MLA(hi, lo, t9, -MAD_F(0x0216a2a2));
+MAD_F_MLA(hi, lo, t10, MAD_F(0x0fdcf549));
 MAD_F_MLA(hi, lo, t11, -MAD_F(0x0cb19346));
-x[1]  = MAD_F_MLZ(hi, lo) + t4;
+x[1] = MAD_F_MLZ(hi, lo) + t4;
 x[16] = -x[1];
-MAD_F_ML0(hi, lo, t8,  -MAD_F(0x0fdcf549));
-MAD_F_MLA(hi, lo, t9,  -MAD_F(0x0cb19346));
+MAD_F_ML0(hi, lo, t8, -MAD_F(0x0fdcf549));
+MAD_F_MLA(hi, lo, t9, -MAD_F(0x0cb19346));
 MAD_F_MLA(hi, lo, t10, -MAD_F(0x09bd7ca0));
 MAD_F_MLA(hi, lo, t11, -MAD_F(0x0216a2a2));
 x[25] = x[28] = MAD_F_MLZ(hi, lo) + t4;
-MAD_F_ML0(hi, lo, X[1],  -MAD_F(0x0fdcf549));
-MAD_F_MLA(hi, lo, X[7],  -MAD_F(0x0cb19346));
+MAD_F_ML0(hi, lo, X[1], -MAD_F(0x0fdcf549));
+MAD_F_MLA(hi, lo, X[7], -MAD_F(0x0cb19346));
 MAD_F_MLA(hi, lo, X[10], -MAD_F(0x09bd7ca0));
 MAD_F_MLA(hi, lo, X[16], -MAD_F(0x0216a2a2));
 t5 = MAD_F_MLZ(hi, lo) - t6;
-MAD_F_ML0(hi, lo, X[0],   MAD_F(0x0898c779));
-MAD_F_MLA(hi, lo, X[2],   MAD_F(0x04cfb0e2));
-MAD_F_MLA(hi, lo, X[3],   MAD_F(0x0bcbe352));
-MAD_F_MLA(hi, lo, X[5],   MAD_F(0x00b2aa3e));
-MAD_F_MLA(hi, lo, X[6],   MAD_F(0x0e313245));
-MAD_F_MLA(hi, lo, X[8],  -MAD_F(0x03768962));
-MAD_F_MLA(hi, lo, X[9],   MAD_F(0x0f9ee890));
+MAD_F_ML0(hi, lo, X[0], MAD_F(0x0898c779));
+MAD_F_MLA(hi, lo, X[2], MAD_F(0x04cfb0e2));
+MAD_F_MLA(hi, lo, X[3], MAD_F(0x0bcbe352));
+MAD_F_MLA(hi, lo, X[5], MAD_F(0x00b2aa3e));
+MAD_F_MLA(hi, lo, X[6], MAD_F(0x0e313245));
+MAD_F_MLA(hi, lo, X[8], -MAD_F(0x03768962));
+MAD_F_MLA(hi, lo, X[9], MAD_F(0x0f9ee890));
 MAD_F_MLA(hi, lo, X[11], -MAD_F(0x07635284));
-MAD_F_MLA(hi, lo, X[12],  MAD_F(0x0ffc19fd));
+MAD_F_MLA(hi, lo, X[12], MAD_F(0x0ffc19fd));
 MAD_F_MLA(hi, lo, X[14], -MAD_F(0x0acf37ad));
-MAD_F_MLA(hi, lo, X[15],  MAD_F(0x0f426cb5));
+MAD_F_MLA(hi, lo, X[15], MAD_F(0x0f426cb5));
 MAD_F_MLA(hi, lo, X[17], -MAD_F(0x0d7e8807));
-x[2]  = MAD_F_MLZ(hi, lo) + t5;
+x[2] = MAD_F_MLZ(hi, lo) + t5;
 x[15] = -x[2];
-MAD_F_ML0(hi, lo, X[0],   MAD_F(0x07635284));
-MAD_F_MLA(hi, lo, X[2],   MAD_F(0x0acf37ad));
-MAD_F_MLA(hi, lo, X[3],   MAD_F(0x03768962));
-MAD_F_MLA(hi, lo, X[5],   MAD_F(0x0d7e8807));
-MAD_F_MLA(hi, lo, X[6],  -MAD_F(0x00b2aa3e));
-MAD_F_MLA(hi, lo, X[8],   MAD_F(0x0f426cb5));
-MAD_F_MLA(hi, lo, X[9],  -MAD_F(0x04cfb0e2));
-MAD_F_MLA(hi, lo, X[11],  MAD_F(0x0ffc19fd));
+MAD_F_ML0(hi, lo, X[0], MAD_F(0x07635284));
+MAD_F_MLA(hi, lo, X[2], MAD_F(0x0acf37ad));
+MAD_F_MLA(hi, lo, X[3], MAD_F(0x03768962));
+MAD_F_MLA(hi, lo, X[5], MAD_F(0x0d7e8807));
+MAD_F_MLA(hi, lo, X[6], -MAD_F(0x00b2aa3e));
+MAD_F_MLA(hi, lo, X[8], MAD_F(0x0f426cb5));
+MAD_F_MLA(hi, lo, X[9], -MAD_F(0x04cfb0e2));
+MAD_F_MLA(hi, lo, X[11], MAD_F(0x0ffc19fd));
 MAD_F_MLA(hi, lo, X[12], -MAD_F(0x0898c779));
-MAD_F_MLA(hi, lo, X[14],  MAD_F(0x0f9ee890));
+MAD_F_MLA(hi, lo, X[14], MAD_F(0x0f9ee890));
 MAD_F_MLA(hi, lo, X[15], -MAD_F(0x0bcbe352));
-MAD_F_MLA(hi, lo, X[17],  MAD_F(0x0e313245));
-x[3]  = MAD_F_MLZ(hi, lo) + t5;
+MAD_F_MLA(hi, lo, X[17], MAD_F(0x0e313245));
+x[3] = MAD_F_MLZ(hi, lo) + t5;
 x[14] = -x[3];
-MAD_F_ML0(hi, lo, X[0],  -MAD_F(0x0ffc19fd));
-MAD_F_MLA(hi, lo, X[2],  -MAD_F(0x0f9ee890));
-MAD_F_MLA(hi, lo, X[3],  -MAD_F(0x0f426cb5));
-MAD_F_MLA(hi, lo, X[5],  -MAD_F(0x0e313245));
-MAD_F_MLA(hi, lo, X[6],  -MAD_F(0x0d7e8807));
-MAD_F_MLA(hi, lo, X[8],  -MAD_F(0x0bcbe352));
-MAD_F_MLA(hi, lo, X[9],  -MAD_F(0x0acf37ad));
+MAD_F_ML0(hi, lo, X[0], -MAD_F(0x0ffc19fd));
+MAD_F_MLA(hi, lo, X[2], -MAD_F(0x0f9ee890));
+MAD_F_MLA(hi, lo, X[3], -MAD_F(0x0f426cb5));
+MAD_F_MLA(hi, lo, X[5], -MAD_F(0x0e313245));
+MAD_F_MLA(hi, lo, X[6], -MAD_F(0x0d7e8807));
+MAD_F_MLA(hi, lo, X[8], -MAD_F(0x0bcbe352));
+MAD_F_MLA(hi, lo, X[9], -MAD_F(0x0acf37ad));
 MAD_F_MLA(hi, lo, X[11], -MAD_F(0x0898c779));
 MAD_F_MLA(hi, lo, X[12], -MAD_F(0x07635284));
 MAD_F_MLA(hi, lo, X[14], -MAD_F(0x04cfb0e2));
@@ -1449,7 +1449,7 @@ MAD_F_MLA(hi, lo, X[15], -MAD_F(0x03768962));
 MAD_F_MLA(hi, lo, X[17], -MAD_F(0x00b2aa3e));
 x[26] = x[27] = MAD_F_MLZ(hi, lo) + t5;
 }
-#  endif
+# endif
 static
 void III_imdct_l(mad_fixed_t const X[18], mad_fixed_t z[36],
 unsigned int block_type)
@@ -1492,11 +1492,11 @@ z[i + 2] = mad_f_mul(z[i + 2], window_l[i + 2]);
 z[i + 3] = mad_f_mul(z[i + 3], window_l[i + 3]);
 }
 # else
-for (i =  0; i < 36; ++i) z[i] = mad_f_mul(z[i], window_l[i]);
+for (i = 0; i < 36; ++i) z[i] = mad_f_mul(z[i], window_l[i]);
 # endif
 break;
 case 1:
-for (i =  0; i < 18; i += 3) {
+for (i = 0; i < 18; i += 3) {
 z[i + 0] = mad_f_mul(z[i + 0], window_l[i + 0]);
 z[i + 1] = mad_f_mul(z[i + 1], window_l[i + 1]);
 z[i + 2] = mad_f_mul(z[i + 2], window_l[i + 2]);
@@ -1505,8 +1505,8 @@ for (i = 24; i < 30; ++i) z[i] = mad_f_mul(z[i], window_s[i - 18]);
 for (i = 30; i < 36; ++i) z[i] = 0;
 break;
 case 3:
-for (i =  0; i <  6; ++i) z[i] = 0;
-for (i =  6; i < 12; ++i) z[i] = mad_f_mul(z[i], window_s[i - 6]);
+for (i = 0; i < 6; ++i) z[i] = 0;
+for (i = 6; i < 12; ++i) z[i] = mad_f_mul(z[i], window_s[i - 6]);
 for (i = 18; i < 36; i += 3) {
 z[i + 0] = mad_f_mul(z[i + 0], window_l[i + 0]);
 z[i + 1] = mad_f_mul(z[i + 1], window_l[i + 1]);
@@ -1549,13 +1549,13 @@ yptr[11 - i] = yptr[i + 6];
 ++s;
 }
 yptr += 12;
-X    += 6;
+X += 6;
 }
 yptr = &y[0];
 wptr = &window_s[0];
 for (i = 0; i < 6; ++i) {
-z[i +  0] = 0;
-z[i +  6] = mad_f_mul(yptr[ 0 + 0], wptr[0]);
+z[i + 0] = 0;
+z[i + 6] = mad_f_mul(yptr[ 0 + 0], wptr[0]);
 MAD_F_ML0(hi, lo, yptr[ 0 + 6], wptr[6]);
 MAD_F_MLA(hi, lo, yptr[12 + 0], wptr[0]);
 z[i + 12] = MAD_F_MLZ(hi, lo);
@@ -1579,29 +1579,29 @@ register mad_fixed_t tmp1, tmp2;
 tmp1 = overlap[0];
 tmp2 = overlap[1];
 for (i = 0; i < 16; i += 2) {
-sample[i + 0][sb] = output[i + 0 +  0] + tmp1;
-overlap[i + 0]    = output[i + 0 + 18];
+sample[i + 0][sb] = output[i + 0 + 0] + tmp1;
+overlap[i + 0] = output[i + 0 + 18];
 tmp1 = overlap[i + 2];
-sample[i + 1][sb] = output[i + 1 +  0] + tmp2;
-overlap[i + 1]    = output[i + 1 + 18];
+sample[i + 1][sb] = output[i + 1 + 0] + tmp2;
+overlap[i + 1] = output[i + 1 + 18];
 tmp2 = overlap[i + 3];
 }
-sample[16][sb] = output[16 +  0] + tmp1;
-overlap[16]    = output[16 + 18];
-sample[17][sb] = output[17 +  0] + tmp2;
-overlap[17]    = output[17 + 18];
+sample[16][sb] = output[16 + 0] + tmp1;
+overlap[16] = output[16 + 18];
+sample[17][sb] = output[17 + 0] + tmp2;
+overlap[17] = output[17 + 18];
 }
 # elif 0
 for (i = 0; i < 18; i += 2) {
-sample[i + 0][sb] = output[i + 0 +  0] + overlap[i + 0];
-overlap[i + 0]    = output[i + 0 + 18];
-sample[i + 1][sb] = output[i + 1 +  0] + overlap[i + 1];
-overlap[i + 1]    = output[i + 1 + 18];
+sample[i + 0][sb] = output[i + 0 + 0] + overlap[i + 0];
+overlap[i + 0] = output[i + 0 + 18];
+sample[i + 1][sb] = output[i + 1 + 0] + overlap[i + 1];
+overlap[i + 1] = output[i + 1 + 18];
 }
 # else
 for (i = 0; i < 18; ++i) {
-sample[i][sb] = output[i +  0] + overlap[i];
-overlap[i]    = output[i + 18];
+sample[i][sb] = output[i + 0] + overlap[i];
+overlap[i] = output[i + 18];
 }
 # endif
 }
@@ -1617,21 +1617,21 @@ tmp1 = overlap[0];
 tmp2 = overlap[1];
 for (i = 0; i < 16; i += 2) {
 sample[i + 0][sb] = tmp1;
-overlap[i + 0]    = 0;
+overlap[i + 0] = 0;
 tmp1 = overlap[i + 2];
 sample[i + 1][sb] = tmp2;
-overlap[i + 1]    = 0;
+overlap[i + 1] = 0;
 tmp2 = overlap[i + 3];
 }
 sample[16][sb] = tmp1;
-overlap[16]    = 0;
+overlap[16] = 0;
 sample[17][sb] = tmp2;
-overlap[17]    = 0;
+overlap[17] = 0;
 }
 # else
 for (i = 0; i < 18; ++i) {
 sample[i][sb] = overlap[i];
-overlap[i]    = 0;
+overlap[i] = 0;
 }
 # endif
 }
@@ -1671,7 +1671,7 @@ unsigned int sfreq;
 sfreq = header->samplerate;
 if (header->flags & MAD_FLAG_MPEG_2_5_EXT)
 sfreq *= 2;
-sfreqi = ((sfreq >>  7) & 0x000f) +
+sfreqi = ((sfreq >> 7) & 0x000f) +
 ((sfreq >> 15) & 0x0001) - 8;
 if (header->flags & MAD_FLAG_MPEG_2_5_EXT)
 sfreqi += 3;
@@ -1818,18 +1818,18 @@ if (error && result == 0) {
 stream->error = error;
 result = -1;
 }
-header->flags        |= priv_bitlen;
+header->flags |= priv_bitlen;
 header->private_bits |= si.private_bits;
 {
 struct mad_bitptr peek;
 unsigned long header;
 mad_bit_init(&peek, stream->next_frame);
 header = mad_bit_read(&peek, 32);
-if ((header & 0xffe60000L)  == 0xffe20000L) {
+if ((header & 0xffe60000L) == 0xffe20000L) {
 if (!(header & 0x00010000L))
 mad_bit_skip(&peek, 16);
 next_md_begin =
-mad_bit_read(&peek, (header & 0x00080000L)  ? 9 : 8);
+mad_bit_read(&peek, (header & 0x00080000L) ? 9 : 8);
 }
 mad_bit_finish(&peek);
 }
@@ -1870,7 +1870,7 @@ if (error) {
 stream->error = error;
 result = -1;
 }
-stream->anc_ptr    = ptr;
+stream->anc_ptr = ptr;
 stream->anc_bitlen = md_len * CHAR_BIT - data_bitlen;
 }
 # if 0 && defined(DEBUG)

@@ -10,55 +10,55 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m'
 log_info() {
-    echo -e "${BLUE}[INFO]${NC} $1"
+echo -e "${BLUE}[INFO]${NC} $1"
 }
 log_success() {
-    echo -e "${GREEN}[SUCCESS]${NC} $1"
+echo -e "${GREEN}[SUCCESS]${NC} $1"
 }
 log_warning() {
-    echo -e "${YELLOW}[WARNING]${NC} $1"
+echo -e "${YELLOW}[WARNING]${NC} $1"
 }
 log_error() {
-    echo -e "${RED}[ERROR]${NC} $1"
+echo -e "${RED}[ERROR]${NC} $1"
 }
 BUILD_TYPE="Release"
 BUILD_TESTS=OFF
 INSTALL_PREFIX="/usr/local"
 JOBS=$(nproc)
 while [[ $
-    case $1 in
-        --debug)
-            BUILD_TYPE="Debug"
-            shift
-            ;;
-        --tests)
-            BUILD_TESTS=ON
-            shift
-            ;;
-        --prefix=*)
-            INSTALL_PREFIX="${1
-            shift
-            ;;
-        -j*)
-            JOBS="${1
-            shift
-            ;;
-        --help)
-            echo "Usage: $0 [options]"
-            echo ""
-            echo "Options:"
-            echo "  --debug         Build with debug symbols"
-            echo "  --tests         Build and run tests"
-            echo "  --prefix=PATH   Installation prefix (default: /usr/local)"
-            echo "  -jN             Number of parallel jobs (default: nproc)"
-            echo "  --help          Show this help message"
-            exit 0
-            ;;
-        *)
-            log_error "Unknown option: $1"
-            exit 1
-            ;;
-    esac
+case $1 in
+--debug)
+BUILD_TYPE="Debug"
+shift
+;;
+--tests)
+BUILD_TESTS=ON
+shift
+;;
+--prefix=*)
+INSTALL_PREFIX="${1
+shift
+;;
+-j*)
+JOBS="${1
+shift
+;;
+--help)
+echo "Usage: $0 [options]"
+echo ""
+echo "Options:"
+echo "  --debug         Build with debug symbols"
+echo "  --tests         Build and run tests"
+echo "  --prefix=PATH   Installation prefix (default: /usr/local)"
+echo "  -jN             Number of parallel jobs (default: nproc)"
+echo "  --help          Show this help message"
+exit 0
+;;
+*)
+log_error "Unknown option: $1"
+exit 1
+;;
+esac
 done
 log_info "AGI-OS Native Code Build"
 log_info "========================"
@@ -71,44 +71,44 @@ mkdir -p "$BUILD_DIR"
 cd "$BUILD_DIR"
 log_info "Building OpenNARS for Applications..."
 if [ -d "$NATIVE_CODE_DIR/opennars" ]; then
-    mkdir -p opennars && cd opennars
-    cmake "$NATIVE_CODE_DIR/opennars" \
-        -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
-        -DCMAKE_INSTALL_PREFIX=$INSTALL_PREFIX \
-        -DOPENNARS_BUILD_TESTS=$BUILD_TESTS
-    make -j$JOBS
-    log_success "OpenNARS built successfully"
-    cd ..
+mkdir -p opennars && cd opennars
+cmake "$NATIVE_CODE_DIR/opennars" \
+-DCMAKE_BUILD_TYPE=$BUILD_TYPE \
+-DCMAKE_INSTALL_PREFIX=$INSTALL_PREFIX \
+-DOPENNARS_BUILD_TESTS=$BUILD_TESTS
+make -j$JOBS
+log_success "OpenNARS built successfully"
+cd ..
 else
-    log_warning "OpenNARS source not found, skipping"
+log_warning "OpenNARS source not found, skipping"
 fi
 log_info "Building GGML tensor library..."
 if [ -d "$NATIVE_CODE_DIR/ggml-core" ]; then
-    mkdir -p ggml && cd ggml
-    cmake "$NATIVE_CODE_DIR/ggml-core" \
-        -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
-        -DCMAKE_INSTALL_PREFIX=$INSTALL_PREFIX \
-        -DGGML_BUILD_TESTS=$BUILD_TESTS
-    make -j$JOBS
-    log_success "GGML built successfully"
-    cd ..
+mkdir -p ggml && cd ggml
+cmake "$NATIVE_CODE_DIR/ggml-core" \
+-DCMAKE_BUILD_TYPE=$BUILD_TYPE \
+-DCMAKE_INSTALL_PREFIX=$INSTALL_PREFIX \
+-DGGML_BUILD_TESTS=$BUILD_TESTS
+make -j$JOBS
+log_success "GGML built successfully"
+cd ..
 else
-    log_warning "GGML source not found, skipping"
+log_warning "GGML source not found, skipping"
 fi
 log_info "Building Cognitive Synergy Bridge..."
 mkdir -p integrations && cd integrations
 cmake "$NATIVE_CODE_DIR/integrations" \
-    -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
-    -DCMAKE_INSTALL_PREFIX=$INSTALL_PREFIX \
-    -DBUILD_NARS_INTEGRATION=ON \
-    -DBUILD_GGML_INTEGRATION=ON \
-    -DBUILD_METTA_INTEGRATION=ON
+-DCMAKE_BUILD_TYPE=$BUILD_TYPE \
+-DCMAKE_INSTALL_PREFIX=$INSTALL_PREFIX \
+-DBUILD_NARS_INTEGRATION=ON \
+-DBUILD_GGML_INTEGRATION=ON \
+-DBUILD_METTA_INTEGRATION=ON
 make -j$JOBS
 log_success "Cognitive Synergy Bridge built successfully"
 cd ..
 if [ "$BUILD_TESTS" = "ON" ]; then
-    log_info "Running tests..."
-    ctest --output-on-failure
+log_info "Running tests..."
+ctest --output-on-failure
 fi
 echo ""
 log_success "Build complete!"

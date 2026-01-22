@@ -16,9 +16,9 @@
 #define ELEMENT_COUNT 64
 int main(void) {
 struct ggml_init_params params = {
-.mem_size   = 96 * 1024,
+.mem_size = 96 * 1024,
 .mem_buffer = NULL,
-.no_alloc   = true,
+.no_alloc = true,
 };
 #ifdef GGML_USE_CUDA
 ggml_backend_t backend = ggml_backend_cuda_init(0);

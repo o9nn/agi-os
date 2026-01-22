@@ -8,37 +8,37 @@ import Layouts from 'vite-plugin-vue-layouts'
 import { templateCompilerOptions } from '@tresjs/core'
 import { defineConfig } from 'vite'
 export default defineConfig(async () => ({
-  root: resolve(join('src', 'renderer')),
-  optimizeDeps: {
-    exclude: [
-      '@proj-airi/ui',
-      '@proj-airi/duckdb-wasm',
-      '@proj-airi/drizzle-duckdb-wasm',
-    ],
-  },
-  resolve: {
-    alias: {
-      '@': resolve(join('src', 'renderer', 'src')),
-    },
-  },
-  plugins: [
-    VueMacros({
-      betterDefine: false,
-      plugins: {
-        vue: Vue({
-          include: [/\.vue$/],
-          ...templateCompilerOptions,
-        }),
-        vueJsx: false,
-      },
-    }),
-    VueRouter({
-      routesFolder: resolve(import.meta.dirname, join('src', 'renderer', 'src', 'pages')),
-      extensions: ['.vue'],
-      dts: resolve(import.meta.dirname, join('src', 'renderer', 'src', 'typed-router.d.ts')),
-    }),
-    DevTools(),
-    Layouts(),
-    UnoCSS(),
-  ],
+root: resolve(join('src', 'renderer')),
+optimizeDeps: {
+exclude: [
+'@proj-airi/ui',
+'@proj-airi/duckdb-wasm',
+'@proj-airi/drizzle-duckdb-wasm',
+],
+},
+resolve: {
+alias: {
+'@': resolve(join('src', 'renderer', 'src')),
+},
+},
+plugins: [
+VueMacros({
+betterDefine: false,
+plugins: {
+vue: Vue({
+include: [/\.vue$/],
+...templateCompilerOptions,
+}),
+vueJsx: false,
+},
+}),
+VueRouter({
+routesFolder: resolve(import.meta.dirname, join('src', 'renderer', 'src', 'pages')),
+extensions: ['.vue'],
+dts: resolve(import.meta.dirname, join('src', 'renderer', 'src', 'typed-router.d.ts')),
+}),
+DevTools(),
+Layouts(),
+UnoCSS(),
+],
 }))

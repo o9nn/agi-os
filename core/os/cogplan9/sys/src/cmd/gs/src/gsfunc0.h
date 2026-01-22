@@ -1,5 +1,5 @@
 #ifndef gsfunc0_INCLUDED
-#  define gsfunc0_INCLUDED
+# define gsfunc0_INCLUDED
 #include "gsfunc.h"
 #include "gsdsrc.h"
 #define function_type_Sampled 0
@@ -16,7 +16,7 @@ int *array_step;
 int *stream_step;
 int array_size;
 } gs_function_Sd_params_t;
-#define private_st_function_Sd()	\
+#define private_st_function_Sd() \
 gs_private_st_composite(st_function_Sd, gs_function_Sd_t,\
 "gs_function_Sd_t", function_Sd_enum_ptrs, function_Sd_reloc_ptrs)
 int gs_function_Sd_init(gs_function_t ** ppfn,

@@ -48,7 +48,7 @@ if(xi == nil)
 return (nil, "not OEB package");
 pick d := xi {
 Text =>
-;	# usual XML extraneous punctuation cruft
+; # usual XML extraneous punctuation cruft
 Doctype =>
 if(!d.public || len d.params < 2)
 return (nil, "not an OEB document or package");
@@ -63,7 +63,7 @@ p.uniqueid = d.name;
 p.manifest = p.spine = ref Item("doc", f, "text/x-oeb1-document", nil, f, nil) :: nil;
 return (p, nil);
 * =>
-return (nil, "unexpected DOCTYPE for OEB package: " + hd tl d.params  );
+return (nil, "unexpected DOCTYPE for OEB package: " + hd tl d.params );
 }
 * =>
 return (nil, "not OEB package (no DOCTYPE)");
@@ -107,7 +107,7 @@ a := tag.attrs;
 p.guide = ref Reference(a.get("type"), a.get("title"), a.get("href")) :: p.guide;
 }
 "tours" =>
-;	# ignore for now
+; # ignore for now
 }
 x.up();
 }
@@ -238,7 +238,7 @@ err = "non-local URLs not supported";
 else{
 path := u.path;
 if(u.pstart != "/")
-path = dir+path;	# TO DO: security
+path = dir+path; # TO DO: security
 (ok, d) := sys->stat(path);
 if(ok >= 0)
 item.file = path;

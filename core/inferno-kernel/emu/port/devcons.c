@@ -1,12 +1,12 @@
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
-#include	"version.h"
-#include	"mp.h"
-#include	"libsec.h"
-#include	"keyboard.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
+#include "version.h"
+#include "mp.h"
+#include "libsec.h"
+#include "keyboard.h"
 extern int cflag;
-int	exdebug;
+int exdebug;
 extern int keepbroken;
 enum
 {
@@ -34,55 +34,55 @@ Quser
 };
 Dirtab contab[] =
 {
-".",	{Qdir, 0, QTDIR},	0,		DMDIR|0555,
-"cons",		{Qcons},	0,	0666,
-"consctl",	{Qconsctl},	0,	0222,
-"drivers",	{Qdrivers},	0,	0444,
-"hostowner",	{Qhostowner},	0,	0644,
-"hoststdin",	{Qhoststdin},	0,	0444,
-"hoststdout",	{Qhoststdout},	0,	0222,
-"hoststderr",	{Qhoststderr},	0,	0222,
-"jit",	{Qjit},	0,	0666,
-"keyboard",	{Qkeyboard},	0,	0666,
-"kprint",	{Qkprint},	0,	0444,
-"memory",	{Qmemory},	0,	0444,
-"msec",		{Qmsec},	NUMSIZE,	0444,
-"notquiterandom",	{Qnotquiterandom},	0,	0444,
-"null",		{Qnull},	0,	0666,
-"random",	{Qrandom},	0,	0444,
-"scancode",	{Qscancode},	0,	0444,
-"sysctl",	{Qsysctl},	0,	0644,
-"sysname",	{Qsysname},	0,	0644,
-"time",		{Qtime},	0,	0644,
-"user",		{Quser},	0,	0644,
+".", {Qdir, 0, QTDIR}, 0, DMDIR|0555,
+"cons", {Qcons}, 0, 0666,
+"consctl", {Qconsctl}, 0, 0222,
+"drivers", {Qdrivers}, 0, 0444,
+"hostowner", {Qhostowner}, 0, 0644,
+"hoststdin", {Qhoststdin}, 0, 0444,
+"hoststdout", {Qhoststdout}, 0, 0222,
+"hoststderr", {Qhoststderr}, 0, 0222,
+"jit", {Qjit}, 0, 0666,
+"keyboard", {Qkeyboard}, 0, 0666,
+"kprint", {Qkprint}, 0, 0444,
+"memory", {Qmemory}, 0, 0444,
+"msec", {Qmsec}, NUMSIZE, 0444,
+"notquiterandom", {Qnotquiterandom}, 0, 0444,
+"null", {Qnull}, 0, 0666,
+"random", {Qrandom}, 0, 0444,
+"scancode", {Qscancode}, 0, 0444,
+"sysctl", {Qsysctl}, 0, 0644,
+"sysname", {Qsysname}, 0, 0644,
+"time", {Qtime}, 0, 0644,
+"user", {Quser}, 0, 0644,
 };
-Queue*	gkscanq;
-char*	gkscanid;
-Queue*	gkbdq;
-Queue*	kbdq;
-Queue*	lineq;
-char	*ossysname;
+Queue* gkscanq;
+char* gkscanid;
+Queue* gkbdq;
+Queue* kbdq;
+Queue* lineq;
+char *ossysname;
 static struct
 {
 RWlock l;
-Queue*	q;
+Queue* q;
 } kprintq;
-vlong	timeoffset;
-extern int	dflag;
-static int	sysconwrite(void*, ulong);
-extern char**	rebootargv;
+vlong timeoffset;
+extern int dflag;
+static int sysconwrite(void*, ulong);
+extern char** rebootargv;
 static struct
 {
-QLock	q;
-QLock	gq;
-int	raw;
-Ref	ctl;
-Ref	ptr;
-int	scan;
-int	x;
-char	line[1024];
-Rune	c;
-int	count;
+QLock q;
+QLock gq;
+int raw;
+Ref ctl;
+Ref ptr;
+int scan;
+int x;
+char line[1024];
+Rune c;
+int count;
 } kbd;
 void
 kbdslave(void *a)
@@ -514,7 +514,7 @@ devbwrite,
 devremove,
 devwstat
 };
-static	ulong	randn;
+static ulong randn;
 static void
 seedrand(void)
 {

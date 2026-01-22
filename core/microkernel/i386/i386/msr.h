@@ -1,13 +1,13 @@
 #ifndef _MACHINE_MSR_H_
 #define _MACHINE_MSR_H_
-#define MSR_REG_EFER  0xC0000080
-#define MSR_REG_STAR  0xC0000081
+#define MSR_REG_EFER 0xC0000080
+#define MSR_REG_STAR 0xC0000081
 #define MSR_REG_LSTAR 0xC0000082
 #define MSR_REG_CSTAR 0xC0000083
 #define MSR_REG_FMASK 0xC0000084
 #define MSR_REG_FSBASE 0xC0000100
 #define MSR_REG_GSBASE 0xC0000101
-#define MSR_EFER_SCE  0x00000001
+#define MSR_EFER_SCE 0x00000001
 #ifndef __ASSEMBLER__
 static inline void wrmsr(uint32_t regaddr, uint64_t value)
 {

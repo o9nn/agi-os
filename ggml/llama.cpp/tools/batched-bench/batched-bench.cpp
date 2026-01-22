@@ -44,12 +44,12 @@ for (int32_t i = 0; i < (int32_t) batch.n_tokens; i += n_batch) {
 const int32_t n_tokens = std::min(n_batch, (int32_t) (batch.n_tokens - i));
 llama_batch batch_view = {
 n_tokens,
-batch.token    + i,
+batch.token + i,
 nullptr,
-batch.pos      + i,
+batch.pos + i,
 batch.n_seq_id + i,
-batch.seq_id   + i,
-batch.logits   + i,
+batch.seq_id + i,
+batch.logits + i,
 };
 const int ret = llama_decode(ctx, batch_view);
 if (ret != 0) {
@@ -76,8 +76,8 @@ LOG("\n");
 LOG("|%6s | %6s | %4s | %6s | %8s | %8s | %8s | %8s | %8s | %8s |\n", "PP", "TG", "B", "N_KV", "T_PP s", "S_PP t/s", "T_TG s", "S_TG t/s", "T s", "S t/s");
 LOG("|%6s-|-%6s-|-%4s-|-%6s-|-%8s-|-%8s-|-%8s-|-%8s-|-%8s-|-%8s-|\n", "------", "------", "----", "------", "--------", "--------", "--------", "--------", "--------", "--------");
 }
-for (        int i_pp = 0; i_pp < (int) n_pp.size(); ++i_pp) {
-for (    int i_tg = 0; i_tg < (int) n_tg.size(); ++i_tg) {
+for ( int i_pp = 0; i_pp < (int) n_pp.size(); ++i_pp) {
+for ( int i_tg = 0; i_tg < (int) n_tg.size(); ++i_tg) {
 for (int i_pl = 0; i_pl < (int) n_pl.size(); ++i_pl) {
 const int pp = n_pp[i_pp];
 const int tg = n_tg[i_tg];
@@ -119,10 +119,10 @@ const auto t_tg_end = ggml_time_us();
 const int32_t n_kv = n_ctx_req;
 const float t_pp = (t_pp_end - t_pp_start) / 1000000.0f;
 const float t_tg = (t_tg_end - t_tg_start) / 1000000.0f;
-const float t    = t_pp + t_tg;
+const float t = t_pp + t_tg;
 const float speed_pp = is_pp_shared ? pp / t_pp : pl*pp / t_pp;
 const float speed_tg = pl*tg / t_tg;
-const float speed    = n_kv / t;
+const float speed = n_kv / t;
 if(params.batched_bench_output_jsonl) {
 LOG(
 "{\"n_kv_max\": %d, \"n_batch\": %d, \"n_ubatch\": %d, \"flash_attn\": %d, \"is_pp_shared\": %d, \"n_gpu_layers\": %d, \"n_threads\": %u, \"n_threads_batch\": %u, "

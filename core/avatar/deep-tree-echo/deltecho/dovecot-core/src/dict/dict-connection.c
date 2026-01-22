@@ -16,7 +16,7 @@
 static int dict_connection_dict_init(struct dict_connection *conn);
 static void dict_connection_destroy(struct connection *_conn);
 struct connection_list *dict_connections = NULL;
-static  struct event_category dict_server_event_category = {
+static struct event_category dict_server_event_category = {
 .name = "dict-server",
 };
 static int dict_connection_handshake_args(struct connection *_conn,

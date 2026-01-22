@@ -1,111 +1,111 @@
 (use-modules (opencog logger))
 (define and-introduction-rule
-  (BindLink
-     (VariableList
-        (TypedVariableLink
-           (VariableNode "$A")
-           (TypeChoice
-              (TypeNode "PredicateNode")
-              (TypeNode "ConceptNode")))
-        (TypedVariableLink
-           (VariableNode "$B")
-           (TypeChoice
-              (TypeNode "PredicateNode")
-              (TypeNode "ConceptNode"))))
-     (AndLink
-        (VariableNode "$A")
-        (VariableNode "$B")
-        (NotLink
-           (IdenticalLink
-              (VariableNode "$A")
-              (VariableNode "$B"))))
-     (ExecutionOutputLink
-        (GroundedSchemaNode "scm: and-introduction-formula")
-        (ListLink
-           (VariableNode "$A")
-           (VariableNode "$B")))))
+(BindLink
+(VariableList
+(TypedVariableLink
+(VariableNode "$A")
+(TypeChoice
+(TypeNode "PredicateNode")
+(TypeNode "ConceptNode")))
+(TypedVariableLink
+(VariableNode "$B")
+(TypeChoice
+(TypeNode "PredicateNode")
+(TypeNode "ConceptNode"))))
+(AndLink
+(VariableNode "$A")
+(VariableNode "$B")
+(NotLink
+(IdenticalLink
+(VariableNode "$A")
+(VariableNode "$B"))))
+(ExecutionOutputLink
+(GroundedSchemaNode "scm: and-introduction-formula")
+(ListLink
+(VariableNode "$A")
+(VariableNode "$B")))))
 (define (and-introduction-formula A B)
-  (cog-set-tv!
-   (AndLink A B)
-   (and-side-effect-free-formula A B))
+(cog-set-tv!
+(AndLink A B)
+(and-side-effect-free-formula A B))
 )
 (define (and-side-effect-free-formula A B)
-  (let 
-      ((sA (cog-mean A))
-       (sB (cog-mean B))
-       (cA (cog-confidence A))
-       (cB (cog-confidence B)))
-    (stv (* sA sB) (min cA cB))))
+(let
+((sA (cog-mean A))
+(sB (cog-mean B))
+(cA (cog-confidence A))
+(cB (cog-confidence B)))
+(stv (* sA sB) (min cA cB))))
 (define and-introduction-rule-name
-  (DefinedSchemaNode "and-introduction-rule"))
+(DefinedSchemaNode "and-introduction-rule"))
 (DefineLink
-   and-introduction-rule-name
-   and-introduction-rule)
+and-introduction-rule-name
+and-introduction-rule)
 (define and-introduction-grounded-evaluation-rule
-  (BindLink
-     (VariableList
-        (TypedVariableLink
-           (VariableNode "$A")
-           (TypeNode "EvaluationLink"))
-        (TypedVariableLink
-           (VariableNode "$B")
-           (TypeNode "EvaluationLink"))
-        (TypedVariableLink
-           (VariableNode "$C")
-           (TypeNode "EvaluationLink")))
-     (AndLink
-        (VariableNode "$A")
-        (VariableNode "$B")
-        (VariableNode "$C")
-        (NotLink
-           (IdenticalLink
-              (VariableNode "$A")
-              (VariableNode "$B")))
-        (NotLink
-           (IdenticalLink
-              (VariableNode "$B")
-              (VariableNode "$C")))
-        (NotLink
-           (IdenticalLink
-              (VariableNode "$C")
-              (VariableNode "$A")))
-        (EvaluationLink
-           (GroundedPredicateNode "scm: fully-grounded")
-           (ListLink
-              (VariableNode "$A")))
-        (EvaluationLink
-           (GroundedPredicateNode "scm: fully-grounded")
-           (ListLink
-              (VariableNode "$B")))
-        (EvaluationLink
-           (GroundedPredicateNode "scm: fully-grounded")
-           (ListLink
-              (VariableNode "$C"))))
-     (ExecutionOutputLink
-        (GroundedSchemaNode "scm: and-introduction-grounded-evaluation-formula")
-        (ListLink
-           (VariableNode "$A")
-           (VariableNode "$B")
-           (VariableNode "$C")))))
+(BindLink
+(VariableList
+(TypedVariableLink
+(VariableNode "$A")
+(TypeNode "EvaluationLink"))
+(TypedVariableLink
+(VariableNode "$B")
+(TypeNode "EvaluationLink"))
+(TypedVariableLink
+(VariableNode "$C")
+(TypeNode "EvaluationLink")))
+(AndLink
+(VariableNode "$A")
+(VariableNode "$B")
+(VariableNode "$C")
+(NotLink
+(IdenticalLink
+(VariableNode "$A")
+(VariableNode "$B")))
+(NotLink
+(IdenticalLink
+(VariableNode "$B")
+(VariableNode "$C")))
+(NotLink
+(IdenticalLink
+(VariableNode "$C")
+(VariableNode "$A")))
+(EvaluationLink
+(GroundedPredicateNode "scm: fully-grounded")
+(ListLink
+(VariableNode "$A")))
+(EvaluationLink
+(GroundedPredicateNode "scm: fully-grounded")
+(ListLink
+(VariableNode "$B")))
+(EvaluationLink
+(GroundedPredicateNode "scm: fully-grounded")
+(ListLink
+(VariableNode "$C"))))
+(ExecutionOutputLink
+(GroundedSchemaNode "scm: and-introduction-grounded-evaluation-formula")
+(ListLink
+(VariableNode "$A")
+(VariableNode "$B")
+(VariableNode "$C")))))
 (define (and-introduction-grounded-evaluation-formula A B C)
-  (let ((As (cog-mean A))
-        (Bs (cog-mean B))
-        (Cs (cog-mean C))
-        (Ac (cog-confidence A))
-        (Bc (cog-confidence B))
-        (Cc (cog-confidence C)))
-    (cog-set-tv! (And A B C) (stv (min As Bs Cs) (min Ac Bc Cc)))))
+(let ((As (cog-mean A))
+(Bs (cog-mean B))
+(Cs (cog-mean C))
+(Ac (cog-confidence A))
+(Bc (cog-confidence B))
+(Cc (cog-confidence C)))
+(cog-set-tv! (And A B C) (stv (min As Bs Cs) (min Ac Bc Cc)))))
 (define (is-variable atom)
-  (equal? (cog-type atom) 'VariableNode))
+(equal? (cog-type atom) 'VariableNode))
 (define (rec-fully-grounded atom)
-  (if (cog-node? atom)
-      (not (is-variable atom))
-      (every rec-fully-grounded (cog-outgoing-set atom))))
+(if (cog-node? atom)
+(not (is-variable atom))
+(every rec-fully-grounded (cog-outgoing-set atom))))
 (define (fully-grounded atom)
-  (if (rec-fully-grounded atom)
-      (stv 1 1)
-      (stv 0 1)))
+(if (rec-fully-grounded atom)
+(stv 1 1)
+(stv 0 1)))
 (define and-introduction-grounded-evaluation-rule-name
-  (DefinedSchemaNode "and-introduction-grounded-evaluation-rule"))
+(DefinedSchemaNode "and-introduction-grounded-evaluation-rule"))
 (DefineLink and-introduction-grounded-evaluation-rule-name
-  and-introduction-grounded-evaluation-rule)
+and-introduction-grounded-evaluation-rule)

@@ -3,50 +3,50 @@
 #define MYID "SSH-2.0-Plan9"
 #pragma varargck type "M" mpint*
 enum {
-Server =	0,
+Server = 0,
 Client,
-Maxpktpay =	35000,
-Connshift =	7,
-MAXCONN =	1 << Connshift,
-Chanmask =	MAXCONN - 1,
-Connmask =	Chanmask,
-Qtypeshift =	2 * Connshift,
-Qroot =		0,
-Qclone =	1 << Qtypeshift,
-Qctl =		2 << Qtypeshift,
-Qdata =		3 << Qtypeshift,
-Qlisten =	4 << Qtypeshift,
-Qlocal =	5 << Qtypeshift,
-Qreqrem =	6 << Qtypeshift,
-Qstatus =	7 << Qtypeshift,
-Qtcp =		8 << Qtypeshift,
-Qtypemask =	017 << Qtypeshift,
-Levshift =	Qtypeshift + 4,
-Top =		0,
+Maxpktpay = 35000,
+Connshift = 7,
+MAXCONN = 1 << Connshift,
+Chanmask = MAXCONN - 1,
+Connmask = Chanmask,
+Qtypeshift = 2 * Connshift,
+Qroot = 0,
+Qclone = 1 << Qtypeshift,
+Qctl = 2 << Qtypeshift,
+Qdata = 3 << Qtypeshift,
+Qlisten = 4 << Qtypeshift,
+Qlocal = 5 << Qtypeshift,
+Qreqrem = 6 << Qtypeshift,
+Qstatus = 7 << Qtypeshift,
+Qtcp = 8 << Qtypeshift,
+Qtypemask = 017 << Qtypeshift,
+Levshift = Qtypeshift + 4,
+Top = 0,
 Connection,
 Subchannel,
 };
 enum {
-SSH_MSG_DISCONNECT =		1,
-SSH_MSG_IGNORE =		2,
+SSH_MSG_DISCONNECT = 1,
+SSH_MSG_IGNORE = 2,
 SSH_MSG_UNIMPLEMENTED,
 SSH_MSG_DEBUG,
 SSH_MSG_SERVICE_REQUEST,
 SSH_MSG_SERVICE_ACCEPT,
-SSH_MSG_KEXINIT =		20,
+SSH_MSG_KEXINIT = 20,
 SSH_MSG_NEWKEYS,
-SSH_MSG_KEXDH_INIT =		30,
+SSH_MSG_KEXDH_INIT = 30,
 SSH_MSG_KEXDH_REPLY,
-SSH_MSG_USERAUTH_REQUEST =	50,
+SSH_MSG_USERAUTH_REQUEST = 50,
 SSH_MSG_USERAUTH_FAILURE,
 SSH_MSG_USERAUTH_SUCCESS,
 SSH_MSG_USERAUTH_BANNER,
-SSH_MSG_USERAUTH_PK_OK =	60,
+SSH_MSG_USERAUTH_PK_OK = 60,
 SSH_MSG_USERAUTH_PASSWD_CHANGEREQ = 60,
-SSH_MSG_GLOBAL_REQUEST =	80,
+SSH_MSG_GLOBAL_REQUEST = 80,
 SSH_MSG_REQUEST_SUCCESS,
 SSH_MSG_REQUEST_FAILURE,
-SSH_MSG_CHANNEL_OPEN =		90,
+SSH_MSG_CHANNEL_OPEN = 90,
 SSH_MSG_CHANNEL_OPEN_CONFIRMATION,
 SSH_MSG_CHANNEL_OPEN_FAILURE,
 SSH_MSG_CHANNEL_WINDOW_ADJUST,
@@ -112,146 +112,146 @@ typedef struct Plist Plist;
 typedef struct SSHChan SSHChan;
 #pragma incomplete CipherState
 struct Plist {
-Packet	*pack;
-uchar	*st;
-int	rem;
-Plist	*next;
+Packet *pack;
+uchar *st;
+int rem;
+Plist *next;
 };
 struct SSHChan {
-Rendez	r;
-int	id;
-int	otherid;
-int	state;
-int	waker;
-int	conn;
-ulong	rwindow;
-ulong	twindow;
-ulong	sent;
-ulong	inrqueue;
-char	*ann;
-Req	*lreq;
-File	*dir;
-File	*ctl;
-File	*data;
-File	*listen;
-File	*request;
-File	*status;
-File	*tcp;
-Plist	*dataq;
-Plist	*datatl;
-Plist	*reqq;
-Plist	*reqtl;
-Channel	*inchan;
-Channel	*reqchan;
-QLock	xmtlock;
-Rendez	xmtrendez;
+Rendez r;
+int id;
+int otherid;
+int state;
+int waker;
+int conn;
+ulong rwindow;
+ulong twindow;
+ulong sent;
+ulong inrqueue;
+char *ann;
+Req *lreq;
+File *dir;
+File *ctl;
+File *data;
+File *listen;
+File *request;
+File *status;
+File *tcp;
+Plist *dataq;
+Plist *datatl;
+Plist *reqq;
+Plist *reqtl;
+Channel *inchan;
+Channel *reqchan;
+QLock xmtlock;
+Rendez xmtrendez;
 };
 struct Conn {
-QLock	l;
-Rendez	r;
-Ioproc	*dio;
-Ioproc	*cio;
-Ioproc	*rio;
-int	state;
-int	role;
-int	id;
-char	*remote;
-char	*user;
-char	*password;
-char	*service;
-char	*cap;
-char	*authkey;
-int	nchan;
-int	datafd;
-int	ctlfd;
-int	stifle;
-int	poisoned;
-int	tcpconn;
-int	rpid;
-int	inseq;
-int	outseq;
-int	kexalg;
-int	pkalg;
-int	cscrypt;
-int	ncscrypt;
-int	sccrypt;
-int	nsccrypt;
-int	csmac;
-int	ncsmac;
-int	scmac;
-int	nscmac;
-int	encrypt;
-int	decrypt;
-int	outmac;
-int	inmac;
-File	*dir;
-File	*clonefile;
-File	*ctlfile;
-File	*datafile;
-File	*listenfile;
-File	*localfile;
-File	*remotefile;
-File	*statusfile;
-File	*tcpfile;
-Packet	*skexinit;
-Packet	*rkexinit;
-mpint	*x;
-mpint	*e;
-int	got_sessid;
-uchar	sessid[SHA1dlen];
-uchar	c2siv[SHA1dlen*2];
-uchar	nc2siv[SHA1dlen*2];
-uchar	s2civ[SHA1dlen*2];
-uchar	ns2civ[SHA1dlen*2];
-uchar	c2sek[SHA1dlen*2];
-uchar	nc2sek[SHA1dlen*2];
-uchar	s2cek[SHA1dlen*2];
-uchar	ns2cek[SHA1dlen*2];
-uchar	c2sik[SHA1dlen*2];
-uchar	nc2sik[SHA1dlen*2];
-uchar	s2cik[SHA1dlen*2];
-uchar	ns2cik[SHA1dlen*2];
-char	*otherid;
-uchar	*inik;
-uchar	*outik;
+QLock l;
+Rendez r;
+Ioproc *dio;
+Ioproc *cio;
+Ioproc *rio;
+int state;
+int role;
+int id;
+char *remote;
+char *user;
+char *password;
+char *service;
+char *cap;
+char *authkey;
+int nchan;
+int datafd;
+int ctlfd;
+int stifle;
+int poisoned;
+int tcpconn;
+int rpid;
+int inseq;
+int outseq;
+int kexalg;
+int pkalg;
+int cscrypt;
+int ncscrypt;
+int sccrypt;
+int nsccrypt;
+int csmac;
+int ncsmac;
+int scmac;
+int nscmac;
+int encrypt;
+int decrypt;
+int outmac;
+int inmac;
+File *dir;
+File *clonefile;
+File *ctlfile;
+File *datafile;
+File *listenfile;
+File *localfile;
+File *remotefile;
+File *statusfile;
+File *tcpfile;
+Packet *skexinit;
+Packet *rkexinit;
+mpint *x;
+mpint *e;
+int got_sessid;
+uchar sessid[SHA1dlen];
+uchar c2siv[SHA1dlen*2];
+uchar nc2siv[SHA1dlen*2];
+uchar s2civ[SHA1dlen*2];
+uchar ns2civ[SHA1dlen*2];
+uchar c2sek[SHA1dlen*2];
+uchar nc2sek[SHA1dlen*2];
+uchar s2cek[SHA1dlen*2];
+uchar ns2cek[SHA1dlen*2];
+uchar c2sik[SHA1dlen*2];
+uchar nc2sik[SHA1dlen*2];
+uchar s2cik[SHA1dlen*2];
+uchar ns2cik[SHA1dlen*2];
+char *otherid;
+uchar *inik;
+uchar *outik;
 CipherState *s2ccs;
 CipherState *c2scs;
 CipherState *enccs;
 CipherState *deccs;
-SSHChan	*chans[MAXCONN];
-char	idstring[256];
+SSHChan *chans[MAXCONN];
+char idstring[256];
 };
 struct Packet {
-Conn	*c;
-ulong	rlength;
-ulong	tlength;
-uchar	nlength[4];
-uchar	pad_len;
-uchar	payload[Maxpktpay];
+Conn *c;
+ulong rlength;
+ulong tlength;
+uchar nlength[4];
+uchar pad_len;
+uchar payload[Maxpktpay];
 };
 struct Cipher {
-char	*name;
-int	blklen;
+char *name;
+int blklen;
 CipherState *(*init)(Conn*, int);
-void	(*encrypt)(CipherState*, uchar*, int);
-void	(*decrypt)(CipherState*, uchar*, int);
+void (*encrypt)(CipherState*, uchar*, int);
+void (*decrypt)(CipherState*, uchar*, int);
 };
 struct Kex {
-char	*name;
-int	(*serverkex)(Conn *, Packet *);
-int	(*clientkex1)(Conn *, Packet *);
-int	(*clientkex2)(Conn *, Packet *);
+char *name;
+int (*serverkex)(Conn *, Packet *);
+int (*clientkex1)(Conn *, Packet *);
+int (*clientkex2)(Conn *, Packet *);
 };
 struct PKA {
-char	*name;
-Packet	*(*ks)(Conn *);
-Packet	*(*sign)(Conn *, uchar *, int);
-int	(*verify)(Conn *, uchar *, int, char *, char *, int);
+char *name;
+Packet *(*ks)(Conn *);
+Packet *(*sign)(Conn *, uchar *, int);
+int (*verify)(Conn *, uchar *, int, char *, char *, int);
 };
 struct MBox {
-Channel	*mchan;
-char	*msg;
-int	state;
+Channel *mchan;
+char *msg;
+int state;
 };
 extern Cipher cipheraes128, cipheraes192, cipheraes256;
 extern Cipher cipherblowfish, cipher3des, cipherrc4;
@@ -265,17 +265,17 @@ int findkey(char *, char *, RSApub *);
 RSApub *readpublickey(Biobuf *, char **);
 int replacekey(char *, char *, RSApub *);
 void dh_init(PKA *[]);
-void	add_block(Packet *, void *, int);
-void	add_byte(Packet *, char);
-void	add_mp(Packet *, mpint *);
-int	add_packet(Packet *, void *, int);
-void	add_string(Packet *, char *);
-void	add_uint32(Packet *, ulong);
-void	dump_packet(Packet *);
-int	finish_packet(Packet *);
-mpint	*get_mp(uchar *q);
-uchar	*get_string(Packet *, uchar *, char *, int, int *);
-ulong	get_uint32(Packet *, uchar **);
-void	init_packet(Packet *);
-Packet	*new_packet(Conn *);
-int	undo_packet(Packet *);
+void add_block(Packet *, void *, int);
+void add_byte(Packet *, char);
+void add_mp(Packet *, mpint *);
+int add_packet(Packet *, void *, int);
+void add_string(Packet *, char *);
+void add_uint32(Packet *, ulong);
+void dump_packet(Packet *);
+int finish_packet(Packet *);
+mpint *get_mp(uchar *q);
+uchar *get_string(Packet *, uchar *, char *, int, int *);
+ulong get_uint32(Packet *, uchar **);
+void init_packet(Packet *);
+Packet *new_packet(Conn *);
+int undo_packet(Packet *);

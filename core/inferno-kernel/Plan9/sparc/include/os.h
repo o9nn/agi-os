@@ -1,7 +1,7 @@
 typedef struct FPU FPU;
 struct FPU
 {
-ulong   fsr;
+ulong fsr;
 };
 extern Proc *getup();
 #define up (getup())

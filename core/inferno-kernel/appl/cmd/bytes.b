@@ -148,11 +148,11 @@ raise "fail:bad args";
 d = assure(d, j + 1);
 if (isbschar(s[i+1])) {
 case s[i+1] {
-'n' =>	d[j++] = byte '\n';
-'r' =>		d[j++] = byte '\r';
-'t' =>		d[j++] = byte '\t';
-'v' =>	d[j++] = byte '\v';
-'\\' =>	d[j++] = byte '\\';
+'n' => d[j++] = byte '\n';
+'r' => d[j++] = byte '\r';
+'t' => d[j++] = byte '\t';
+'v' => d[j++] = byte '\v';
+'\\' => d[j++] = byte '\\';
 * =>
 sys->fprint(stderr, "bytes: invalid backslash sequence\n");
 raise "fail:bad args";
@@ -192,7 +192,7 @@ return c - '0';
 'a' to 'f' =>
 return c - 'a' + 10;
 'A' to 'F' =>
-return c-  'A' + 10;
+return c- 'A' + 10;
 }
 return 0;
 }

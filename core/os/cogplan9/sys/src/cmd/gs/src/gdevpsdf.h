@@ -1,5 +1,5 @@
 #ifndef gdevpsdf_INCLUDED
-#  define gdevpsdf_INCLUDED
+# define gdevpsdf_INCLUDED
 #include "gdevvec.h"
 #include "gsparam.h"
 #include "strimpl.h"
@@ -141,7 +141,7 @@ psdf_version_ll3 = 3010
 #define gx_device_psdf_common\
 gx_device_vector_common;\
 psdf_version version;\
-bool binary_ok;		\
+bool binary_ok; \
 bool HaveCFF;\
 bool HaveTrueTypes;\
 bool HaveCIDSystem;\
@@ -163,7 +163,7 @@ psdf_mono_image_param_defaults,\
 psdf_font_param_defaults\
 }
 extern_st(st_device_psdf);
-#define public_st_device_psdf()	\
+#define public_st_device_psdf() \
 BASIC_PTRS(device_psdf_ptrs) {\
 GC_OBJ_ELT2(gx_device_psdf, params.ColorImage.ACSDict,\
 params.ColorImage.Dict),\
@@ -223,7 +223,7 @@ int psdf_encode_binary(psdf_binary_writer * pbw,
 const stream_template * template, stream_state * ss);
 int psdf_CFE_binary(psdf_binary_writer * pbw, int w, int h, bool invert);
 int psdf_DCT_filter(gs_param_list *plist ,
-stream_state  *st,
+stream_state *st,
 int Columns, int Rows, int Colors,
 psdf_binary_writer *pbw );
 bool psdf_is_converting_image_to_RGB(const gx_device_psdf * pdev,

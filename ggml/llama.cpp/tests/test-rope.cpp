@@ -129,9 +129,9 @@ for (int i = 0; i < ne[2]; ++i) {
 ((int32_t *) p2->data)[i] = n_past_2 + i;
 }
 mode = m == 0 ? 0 : m == 1 ? 2 : 4;
-r0 = ggml_rope(ctx0, x,  p0, n_rot, mode);
+r0 = ggml_rope(ctx0, x, p0, n_rot, mode);
 r1 = ggml_rope(ctx0, r0, p1, n_rot, mode);
-r2 = ggml_rope(ctx0, x,  p2, n_rot, mode);
+r2 = ggml_rope(ctx0, x, p2, n_rot, mode);
 } else {
 struct ggml_tensor * p0 = ggml_new_tensor_1d(ctx0, GGML_TYPE_I32, ne[2] * 4);
 struct ggml_tensor * p1 = ggml_new_tensor_1d(ctx0, GGML_TYPE_I32, ne[2] * 4);

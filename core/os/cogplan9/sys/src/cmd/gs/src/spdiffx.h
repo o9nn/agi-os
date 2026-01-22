@@ -1,5 +1,5 @@
 #ifndef spdiffx_INCLUDED
-#  define spdiffx_INCLUDED
+# define spdiffx_INCLUDED
 #define s_PDiff_max_Colors 16
 typedef struct stream_PDiff_state_s {
 stream_state_common;
@@ -12,7 +12,7 @@ int case_index;
 uint row_left;
 uint prev[s_PDiff_max_Colors];
 } stream_PDiff_state;
-#define private_st_PDiff_state()	\
+#define private_st_PDiff_state() \
 gs_private_st_simple(st_PDiff_state, stream_PDiff_state,\
 "PixelDifferenceEncode/Decode state")
 #define s_PDiff_set_defaults_inline(ss)\

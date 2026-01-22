@@ -1,8 +1,8 @@
 #ifndef gxwts_INCLUDED
-#  define gxwts_INCLUDED
+# define gxwts_INCLUDED
 typedef bits16 wts_screen_sample_t;
 #ifndef wts_screen_t_DEFINED
-#  define wts_screen_t_DEFINED
+# define wts_screen_t_DEFINED
 typedef struct wts_screen_s wts_screen_t;
 #endif
 typedef enum {

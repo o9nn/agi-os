@@ -29,13 +29,13 @@ extern int nperopens;
 #define CHAR_DC3 '\023'
 #define CHAR_USER_QUOTE '\377'
 #define CTRL_BIT 0x40
-#ifdef	IUCLC
-#define ILCASE	IUCLC
+#ifdef IUCLC
+#define ILCASE IUCLC
 #else
 #define ILCASE (1 << 14)
 #endif
-#ifdef	OLCUC
-#define OLCASE	OLCUC
+#ifdef OLCUC
+#define OLCASE OLCUC
 #else
 #define OLCASE (1 << 9)
 #endif
@@ -44,17 +44,17 @@ extern int nperopens;
 #define MDMCTL_SET 2
 extern struct termios termstate;
 extern long termflags;
-#define USER_OUTPUT_SUSP  0x00000001
-#define TTY_OPEN	  0x00000002
-#define LAST_SLASH	  0x00000004
-#define LAST_LNEXT        0x00000008
-#define INSIDE_HDERASE    0x00000010
-#define SENT_VSTOP        0x00000020
-#define FLUSH_OUTPUT      0x00000040
-#define NO_CARRIER        0x00000080
-#define EXCL_USE          0x00000100
-#define NO_OWNER          0x00000200
-#define ICKY_ASYNC	  0x00000400
+#define USER_OUTPUT_SUSP 0x00000001
+#define TTY_OPEN 0x00000002
+#define LAST_SLASH 0x00000004
+#define LAST_LNEXT 0x00000008
+#define INSIDE_HDERASE 0x00000010
+#define SENT_VSTOP 0x00000020
+#define FLUSH_OUTPUT 0x00000040
+#define NO_CARRIER 0x00000080
+#define EXCL_USE 0x00000100
+#define NO_OWNER 0x00000200
+#define ICKY_ASYNC 0x00000400
 #define QUEUE_LOWAT 200
 #define QUEUE_HIWAT 8100
 extern pthread_mutex_t global_lock;

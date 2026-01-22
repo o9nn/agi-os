@@ -187,15 +187,15 @@ switch (code = pread(plist, (param_name = pname), &(pa))) {\
 case 0:\
 if ((pa).size != psize) {\
 ecode = gs_note_error(gs_error_rangecheck);\
-(pa).data = 0;	\
+(pa).data = 0; \
 } else
 #define END_ARRAY_PARAM(pa, e)\
 goto e;\
 default:\
 ecode = code;\
-e:	param_signal_error(plist, param_name, ecode);\
+e: param_signal_error(plist, param_name, ecode);\
 case 1:\
-(pa).data = 0;		\
+(pa).data = 0; \
 }\
 END
 int
@@ -335,10 +335,10 @@ pdev->color_info.separable_and_linear = GX_CINFO_SEP_LIN;
 return code;
 }
 #ifndef X_DPI
-#  define X_DPI 72
+# define X_DPI 72
 #endif
 #ifndef Y_DPI
-#  define Y_DPI 72
+# define Y_DPI 72
 #endif
 private dev_proc_open_device(spotcmyk_prn_open);
 private dev_proc_get_params(spotcmyk_get_params);
@@ -383,61 +383,61 @@ gs_private_st_composite_final(st_spotcmyk_device, spotcmyk_device,
 "spotcmyk_device", spotcmyk_device_enum_ptrs, spotcmyk_device_reloc_ptrs,
 spotcmyk_device_finalize);
 #define device_procs(get_color_mapping_procs)\
-{	spotcmyk_prn_open,\
+{ spotcmyk_prn_open,\
 gx_default_get_initial_matrix,\
-NULL,				\
-gdev_prn_output_page,		\
-gdev_prn_close,			\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-spotcmyk_get_params,		\
-spotcmyk_put_params,		\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-gx_page_device_get_page_device,	\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-get_color_mapping_procs,	\
-spotcmyk_get_color_comp_index,	\
-spotcmyk_encode_color,		\
-spotcmyk_decode_color,		\
-NULL,				\
-NULL				\
+NULL, \
+gdev_prn_output_page, \
+gdev_prn_close, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+spotcmyk_get_params, \
+spotcmyk_put_params, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+gx_page_device_get_page_device, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+get_color_mapping_procs, \
+spotcmyk_get_color_comp_index, \
+spotcmyk_encode_color, \
+spotcmyk_decode_color, \
+NULL, \
+NULL \
 }
 fixed_colorant_name DeviceCMYKComponents[] = {
 "Cyan",
@@ -452,16 +452,16 @@ std_device_full_body_type_extended(spotcmyk_device, &procs, dname,\
 (int)((long)(DEFAULT_WIDTH_10THS) * (X_DPI) / 10),\
 (int)((long)(DEFAULT_HEIGHT_10THS) * (Y_DPI) / 10),\
 X_DPI, Y_DPI,\
-GX_DEVICE_COLOR_MAX_COMPONENTS,	\
-ncomp,		\
-pol,			\
-depth, 0,		\
-mg, mc,		\
-mg + 1, mc + 1,	\
-GX_CINFO_SEP_LIN,	\
-cn,			\
-0, 0,			\
-0, 0, 0, 0		\
+GX_DEVICE_COLOR_MAX_COMPONENTS, \
+ncomp, \
+pol, \
+depth, 0, \
+mg, mc, \
+mg + 1, mc + 1, \
+GX_CINFO_SEP_LIN, \
+cn, \
+0, 0, \
+0, 0, 0, 0 \
 ),\
 prn_device_body_rest_(spotcmyk_print_page)
 private const gx_device_procs spot_cmyk_procs = device_procs(get_spotcmyk_color_mapping_procs);
@@ -719,17 +719,17 @@ gs_free_object(pdev->memory, buf, "spotcmyk_print_page(buf)");
 return code;
 }
 #if arch_is_big_endian
-#  define assign_ushort(a,v) a = ((v) >> 8) + ((v) << 8)
+# define assign_ushort(a,v) a = ((v) >> 8) + ((v) << 8)
 #else
-#  define assign_ushort(a,v) a = (v)
+# define assign_ushort(a,v) a = (v)
 #endif
 typedef struct pcx_header_s {
 byte manuf;
 byte version;
-#define version_2_5			0
-#define version_2_8_with_palette	2
-#define version_2_8_without_palette	3
-#define version_3_0 	5
+#define version_2_5 0
+#define version_2_8_with_palette 2
+#define version_2_8_without_palette 3
+#define version_3_0 5
 byte encoding;
 byte bpp;
 ushort x1;
@@ -743,8 +743,8 @@ byte reserved;
 byte nplanes;
 ushort bpl;
 ushort palinfo;
-#define palinfo_color	1
-#define palinfo_gray	2
+#define palinfo_color 1
+#define palinfo_gray 2
 byte xtra[58];
 } pcx_header;
 private const pcx_header pcx_header_prototype =

@@ -1,7 +1,7 @@
 #include "os.h"
 #include <libsec.h>
 enum {
-SHA512rounds =  80,
+SHA512rounds = 80,
 };
 u64int sha512const[] = {
 0x428a2f98d728ae22ULL, 0x7137449123ef65cdULL, 0xb5c0fbcfec4d3b2fULL, 0xe9b5dba58189dbbcULL,
@@ -35,23 +35,23 @@ g64(uchar *p)
 {
 return ((u64int)g32(p)<<32)|g32(p+4);
 }
-#define CH(x,y,z)	((x&y) ^ (~x&z))
-#define MAJ(x,y,z)	((x&y) ^ (x&z) ^ (y&z))
-#define ROTR32(n, v)	((v>>n) | (v<<(32-n)))
-#define ROTR64(n, v)	((v>>n) | (v<<(64-n)))
-#define SHR(n, x)	(x>>n)
-#define SIGMA0b(x)	(ROTR64(28, x)^ROTR64(34, x)^ROTR64(39, x))
-#define SIGMA1b(x)	(ROTR64(14, x)^ROTR64(18, x)^ROTR64(41, x))
-#define sigma0b(x)	(ROTR64(1, x)^ROTR64(8, x)^SHR(7, x))
-#define sigma1b(x)	(ROTR64(19, x)^ROTR64(61, x)^SHR(6, x))
-#define A	v[0]
-#define B	v[1]
-#define C	v[2]
-#define D	v[3]
-#define E	v[4]
-#define F	v[5]
-#define G	v[6]
-#define H	v[7]
+#define CH(x,y,z) ((x&y) ^ (~x&z))
+#define MAJ(x,y,z) ((x&y) ^ (x&z) ^ (y&z))
+#define ROTR32(n, v) ((v>>n) | (v<<(32-n)))
+#define ROTR64(n, v) ((v>>n) | (v<<(64-n)))
+#define SHR(n, x) (x>>n)
+#define SIGMA0b(x) (ROTR64(28, x)^ROTR64(34, x)^ROTR64(39, x))
+#define SIGMA1b(x) (ROTR64(14, x)^ROTR64(18, x)^ROTR64(41, x))
+#define sigma0b(x) (ROTR64(1, x)^ROTR64(8, x)^SHR(7, x))
+#define sigma1b(x) (ROTR64(19, x)^ROTR64(61, x)^SHR(6, x))
+#define A v[0]
+#define B v[1]
+#define C v[2]
+#define D v[3]
+#define E v[4]
+#define F v[5]
+#define G v[6]
+#define H v[7]
 void
 _sha512block(SHA512state *s, uchar *buf)
 {
@@ -71,7 +71,7 @@ t2 = w[(t-2)&31];
 t3 = w[(t-15)&31];
 t1 = sigma1b(t2);
 t1 += w[(t-7)&31];
-t1 +=  sigma0b(t3);
+t1 += sigma0b(t3);
 t1 += w[(t-16)&31];
 w[t&31] = t1;
 }

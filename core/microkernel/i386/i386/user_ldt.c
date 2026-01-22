@@ -13,21 +13,21 @@
 #include "vm_param.h"
 kern_return_t
 i386_set_ldt(
-thread_t		thread,
-int			first_selector,
-const struct descriptor  *descriptor_list,
-unsigned int		count,
-boolean_t		desc_list_inline)
+thread_t thread,
+int first_selector,
+const struct descriptor *descriptor_list,
+unsigned int count,
+boolean_t desc_list_inline)
 {
 struct real_descriptor* desc_list = (struct real_descriptor *)descriptor_list;
-user_ldt_t	new_ldt, old_ldt, temp;
+user_ldt_t new_ldt, old_ldt, temp;
 struct real_descriptor *dp;
-unsigned	i;
-unsigned	min_selector = 0;
-pcb_t		pcb;
-vm_size_t	ldt_size_needed;
-unsigned	first_desc = sel_idx(first_selector);
-vm_map_copy_t	old_copy_object = NULL;
+unsigned i;
+unsigned min_selector = 0;
+pcb_t pcb;
+vm_size_t ldt_size_needed;
+unsigned first_desc = sel_idx(first_selector);
+vm_map_copy_t old_copy_object = NULL;
 if (thread == THREAD_NULL)
 return KERN_INVALID_ARGUMENT;
 if (thread == current_thread())
@@ -37,8 +37,8 @@ return KERN_INVALID_ARGUMENT;
 if (first_desc + count >= 8192)
 return KERN_INVALID_ARGUMENT;
 if (!desc_list_inline) {
-kern_return_t	kr;
-vm_offset_t		dst_addr;
+kern_return_t kr;
+vm_offset_t dst_addr;
 old_copy_object = (vm_map_copy_t) desc_list;
 kr = vm_map_copyout(ipc_kernel_map, &dst_addr,
 vm_map_copy_copy(old_copy_object));
@@ -89,7 +89,7 @@ old_ldt->desc.limit_low + 1 < ldt_size_needed)
 {
 if (new_ldt == 0) {
 simple_unlock(&pcb->lock);
-#ifdef	MACH_PV_DESCRIPTORS
+#ifdef MACH_PV_DESCRIPTORS
 vm_offset_t alloc = kalloc(ldt_size_needed + PAGE_SIZE + offsetof(struct user_ldt, ldt));
 new_ldt = (user_ldt_t) (round_page((alloc + offsetof(struct user_ldt, ldt))) - offsetof(struct user_ldt, ldt));
 new_ldt->alloc = alloc;
@@ -99,14 +99,14 @@ kalloc(ldt_size_needed
 + sizeof(struct real_descriptor));
 #endif
 {
-vm_offset_t	ldt_base;
+vm_offset_t ldt_base;
 ldt_base = kvtolin(&new_ldt->ldt[0]);
-new_ldt->desc.limit_low   = ldt_size_needed - 1;
-new_ldt->desc.limit_high  = 0;
-new_ldt->desc.base_low    = ldt_base & WORD_MASK;
-new_ldt->desc.base_med    = (ldt_base >> 16) & BYTE_MASK;
-new_ldt->desc.base_high   = ldt_base >> 24;
-new_ldt->desc.access      = ACC_P | ACC_LDT;
+new_ldt->desc.limit_low = ldt_size_needed - 1;
+new_ldt->desc.limit_high = 0;
+new_ldt->desc.base_low = ldt_base & WORD_MASK;
+new_ldt->desc.base_med = (ldt_base >> 16) & BYTE_MASK;
+new_ldt->desc.base_high = ldt_base >> 24;
+new_ldt->desc.access = ACC_P | ACC_LDT;
 new_ldt->desc.granularity = 0;
 }
 goto Retry;
@@ -137,9 +137,9 @@ desc_list,
 count * sizeof(struct real_descriptor));
 simple_unlock(&pcb->lock);
 if (new_ldt)
-#ifdef	MACH_PV_DESCRIPTORS
+#ifdef MACH_PV_DESCRIPTORS
 {
-#ifdef	MACH_PV_PAGETABLES
+#ifdef MACH_PV_PAGETABLES
 for (i=0; i<(new_ldt->desc.limit_low + 1)/sizeof(struct real_descriptor); i+=PAGE_SIZE/sizeof(struct real_descriptor))
 pmap_set_page_readwrite(&new_ldt->ldt[i]);
 #endif
@@ -169,12 +169,12 @@ unsigned int *count
 {
 struct real_descriptor** desc_list = (struct real_descriptor **)descriptor_list;
 struct user_ldt *user_ldt;
-pcb_t		pcb;
-int		first_desc = sel_idx(first_selector);
-unsigned	ldt_count;
-vm_size_t	ldt_size;
-vm_size_t	size, size_needed;
-vm_offset_t	addr;
+pcb_t pcb;
+int first_desc = sel_idx(first_selector);
+unsigned ldt_count;
+vm_size_t ldt_size;
+vm_size_t size, size_needed;
+vm_offset_t addr;
 if (thread == THREAD_NULL)
 return KERN_INVALID_ARGUMENT;
 if (first_desc < 0 || first_desc > 8191)
@@ -219,8 +219,8 @@ ldt_size);
 *count = ldt_count;
 simple_unlock(&pcb->lock);
 if (addr) {
-vm_size_t		size_used, size_left;
-vm_map_copy_t	memory;
+vm_size_t size_used, size_left;
+vm_map_copy_t memory;
 size_used = round_page(ldt_size);
 if (size_used != size)
 kmem_free(ipc_kernel_map,
@@ -237,9 +237,9 @@ return KERN_SUCCESS;
 void
 user_ldt_free(user_ldt_t user_ldt)
 {
-#ifdef	MACH_PV_DESCRIPTORS
+#ifdef MACH_PV_DESCRIPTORS
 unsigned i;
-#ifdef	MACH_PV_PAGETABLES
+#ifdef MACH_PV_PAGETABLES
 for (i=0; i<(user_ldt->desc.limit_low + 1)/sizeof(struct real_descriptor); i+=PAGE_SIZE/sizeof(struct real_descriptor))
 pmap_set_page_readwrite(&user_ldt->ldt[i]);
 #endif

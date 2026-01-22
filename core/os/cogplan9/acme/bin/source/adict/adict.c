@@ -10,15 +10,15 @@ STACK = 8192,
 };
 char *prog = "adict";
 char *lprog = "/bin/adict";
-char *xprog  = "/bin/dict";
+char *xprog = "/bin/dict";
 char *dict, *pattern, *curaddr[MAXMATCH], *curone, *args[6], buffer[80];
 char abuffer[80], fbuffer[80], pbuffer[80];
 int curindex, count, Eopen, Mopen;
 Win Mwin, Ewin, Dwin;
 void openwin(char*, char*, Win*, int);
-void  handle(Win*, int);
-void	rexec(void*);
-void	pexec(void*);
+void handle(Win*, int);
+void rexec(void*);
+void pexec(void*);
 int getaddr(char*);
 void
 usage(void)

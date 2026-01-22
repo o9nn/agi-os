@@ -452,8 +452,8 @@ return len;
 #ifdef CONFIG_NET_RADIO
 #ifdef CONFIG_PROC_FS
 static int
-sprintf_wireless_stats(char *		buffer,
-struct device *	dev)
+sprintf_wireless_stats(char * buffer,
+struct device * dev)
 {
 struct iw_statistics *stats = (dev->get_wireless_stats ?
 dev->get_wireless_stats(dev) :
@@ -478,17 +478,17 @@ size = 0;
 return size;
 }
 int
-dev_get_wireless_info(char *	buffer,
-char **	start,
-off_t	offset,
-int	length,
-int	dummy)
+dev_get_wireless_info(char * buffer,
+char ** start,
+off_t offset,
+int length,
+int dummy)
 {
-int		len = 0;
-off_t		begin = 0;
-off_t		pos = 0;
-int		size;
-struct device *	dev;
+int len = 0;
+off_t begin = 0;
+off_t pos = 0;
+int size;
+struct device * dev;
 size = sprintf(buffer,
 "Inter-|sta|  Quality       |  Discarded packets\n"
 " face |tus|link level noise| nwid crypt  misc\n");
@@ -678,7 +678,7 @@ ret = 0;
 break;
 case SIOCGIFMETRIC:
 ifr.ifr_metric = dev->metric;
-goto  rarok;
+goto rarok;
 case SIOCSIFMETRIC:
 dev->metric = ifr.ifr_metric;
 ret=0;
@@ -860,7 +860,7 @@ dp = &dev_base;
 while ((dev = *dp) != NULL)
 {
 int i;
-for (i = 0; i < DEV_NUMBUFFS; i++)  {
+for (i = 0; i < DEV_NUMBUFFS; i++) {
 skb_queue_head_init(dev->buffs + i);
 }
 if (dev->init && dev->init(dev))

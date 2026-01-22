@@ -11,7 +11,7 @@ return nullptr;
 }
 return tensors[il];
 }
-ggml_tensor * llama_adapter_cvec::apply_to(ggml_context * ctx, ggml_tensor * cur, int  il) const {
+ggml_tensor * llama_adapter_cvec::apply_to(ggml_context * ctx, ggml_tensor * cur, int il) const {
 ggml_tensor * layer_dir = tensor_for(il);
 if (layer_dir != nullptr) {
 cur = ggml_add(ctx, cur, layer_dir);
@@ -78,7 +78,7 @@ int32_t il_end) {
 const auto & hparams = model.hparams;
 if (data == nullptr) {
 layer_start = -1;
-layer_end   = -1;
+layer_end = -1;
 return true;
 }
 if (n_embd != (int) hparams.n_embd) {
@@ -91,7 +91,7 @@ return false;
 }
 }
 layer_start = il_start;
-layer_end   = il_end;
+layer_end = il_end;
 for (size_t il = 1; il < hparams.n_layer; il++) {
 assert(tensors[il] != nullptr);
 const size_t off = n_embd * (il - 1);
@@ -279,7 +279,7 @@ ggml_backend_tensor_set(dev, read_buf.data(), 0, size);
 };
 for (auto & it : adapter.ab_map) {
 auto orig = ab_map[it.first];
-auto dev  = it.second;
+auto dev = it.second;
 set_tensor(orig.a, dev.a);
 set_tensor(orig.b, dev.b);
 }

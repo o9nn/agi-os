@@ -4,7 +4,7 @@ sys: Sys;
 print, sprint, fprint: import sys;
 stdin, stderr: ref sys->FD;
 include "draw.m";
-TBLOCK: con 512;	# tar logical blocksize
+TBLOCK: con 512; # tar logical blocksize
 Header: adt{
 name: string;
 size: int;
@@ -12,16 +12,16 @@ mtime: int;
 skip: int;
 };
 lstar: module{
-init:   fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 Error(mess: string){
 fprint(stderr,"lstar: %s: %r\n",mess);
 exit;
 }
-NBLOCK: con 20;		# blocking factor for efficient read
-tarbuf := array[NBLOCK*TBLOCK] of byte;	# static buffer
-nblock := NBLOCK;			# how many blocks of data are in tarbuf
-recno := NBLOCK;			# how many blocks in tarbuf have been consumed
+NBLOCK: con 20; # blocking factor for efficient read
+tarbuf := array[NBLOCK*TBLOCK] of byte; # static buffer
+nblock := NBLOCK; # how many blocks of data are in tarbuf
+recno := NBLOCK; # how many blocks in tarbuf have been consumed
 getblock():array of byte{
 if(recno>=nblock){
 i := sys->read(stdin,tarbuf,TBLOCK*NBLOCK);

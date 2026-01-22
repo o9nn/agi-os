@@ -6,18 +6,18 @@
 #include <sys/filio.h>
 #include "audio.h"
 #include <soundcard.h>
-#define 	Audio_Mic_Val		SOUND_MIXER_MIC
-#define 	Audio_Linein_Val	SOUND_MIXER_LINE
-#define	Audio_Speaker_Val	SOUND_MIXER_SPEAKER
-#define	Audio_Headphone_Val	SOUND_MIXER_PHONEOUT
-#define	Audio_Lineout_Val	SOUND_MIXER_VOLUME
-#define 	Audio_Pcm_Val		AFMT_S16_LE
-#define 	Audio_Ulaw_Val		AFMT_MU_LAW
-#define 	Audio_Alaw_Val		AFMT_A_LAW
+#define Audio_Mic_Val SOUND_MIXER_MIC
+#define Audio_Linein_Val SOUND_MIXER_LINE
+#define Audio_Speaker_Val SOUND_MIXER_SPEAKER
+#define Audio_Headphone_Val SOUND_MIXER_PHONEOUT
+#define Audio_Lineout_Val SOUND_MIXER_VOLUME
+#define Audio_Pcm_Val AFMT_S16_LE
+#define Audio_Ulaw_Val AFMT_MU_LAW
+#define Audio_Alaw_Val AFMT_A_LAW
 #include "audio-tbls.c"
-#define	min(a,b)	((a) < (b) ? (a) : (b))
+#define min(a,b) ((a) < (b) ? (a) : (b))
 static int debug;
-#define AUDIO_FILE_STRING	"/dev/dsp"
+#define AUDIO_FILE_STRING "/dev/dsp"
 enum {
 A_Pause,
 A_UnPause
@@ -28,11 +28,11 @@ A_Out
 };
 static QLock inlock;
 static QLock outlock;
-static	int	audio_file  = -1;
-static	int	audio_file_in  = -1;
-static	int	audio_file_out  = -1;
-static	int	audio_swap_flag = 0;
-static	int	audio_in_pause = A_UnPause;
+static int audio_file = -1;
+static int audio_file_in = -1;
+static int audio_file_out = -1;
+static int audio_swap_flag = 0;
+static int audio_in_pause = A_UnPause;
 static Audio_t av;
 static int mixerleftvol[32];
 static int mixerrightvol[32];
@@ -164,7 +164,7 @@ audio_ctl_close(Chan *c)
 long
 audio_file_read(Chan *c, void *va, long count, vlong offset)
 {
-struct  timespec time;
+struct timespec time;
 long ba, status, chunk, total;
 char *pva = (char *) va;
 qlock(&inlock);
@@ -200,7 +200,7 @@ return count;
 long
 audio_file_write(Chan *c, void *va, long count, vlong offset)
 {
-struct  timespec time;
+struct timespec time;
 long status = -1;
 long ba, total, chunk, bufsz;
 if (debug > 1)
@@ -262,8 +262,8 @@ return fd;
 long
 audio_ctl_write(Chan *c, void *va, long count, vlong offset)
 {
-int	fd;
-int	ff;
+int fd;
+int ff;
 Audio_t tmpav = av;
 tmpav.in.flags = 0;
 tmpav.out.flags = 0;

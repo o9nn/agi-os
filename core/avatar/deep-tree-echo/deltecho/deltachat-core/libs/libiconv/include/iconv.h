@@ -6,7 +6,7 @@
 #else
 #define LIBICONV_DLL_EXPORTED
 #endif
-extern LIBICONV_DLL_EXPORTED  int _libiconv_version;
+extern LIBICONV_DLL_EXPORTED int _libiconv_version;
 #undef iconv_t
 #define iconv_t libiconv_t
 typedef void* iconv_t;
@@ -25,7 +25,7 @@ extern LIBICONV_DLL_EXPORTED iconv_t iconv_open (const char* tocode, const char*
 #ifndef LIBICONV_PLUG
 #define iconv libiconv
 #endif
-extern LIBICONV_DLL_EXPORTED size_t iconv (iconv_t cd,  char* * inbuf, size_t *inbytesleft, char* * outbuf, size_t *outbytesleft);
+extern LIBICONV_DLL_EXPORTED size_t iconv (iconv_t cd, char* * inbuf, size_t *inbytesleft, char* * outbuf, size_t *outbytesleft);
 #ifndef LIBICONV_PLUG
 #define iconv_close libiconv_close
 #endif
@@ -99,13 +99,13 @@ iconv_wchar_mb_to_wc_fallback mb_to_wc_fallback;
 iconv_wchar_wc_to_mb_fallback wc_to_mb_fallback;
 void* data;
 };
-#define ICONV_TRIVIALP            0
-#define ICONV_GET_TRANSLITERATE   1
-#define ICONV_SET_TRANSLITERATE   2
-#define ICONV_GET_DISCARD_ILSEQ   3
-#define ICONV_SET_DISCARD_ILSEQ   4
-#define ICONV_SET_HOOKS           5
-#define ICONV_SET_FALLBACKS       6
+#define ICONV_TRIVIALP 0
+#define ICONV_GET_TRANSLITERATE 1
+#define ICONV_SET_TRANSLITERATE 2
+#define ICONV_GET_DISCARD_ILSEQ 3
+#define ICONV_SET_DISCARD_ILSEQ 4
+#define ICONV_SET_HOOKS 5
+#define ICONV_SET_FALLBACKS 6
 #define iconvlist libiconvlist
 extern LIBICONV_DLL_EXPORTED void iconvlist (int (*do_one) (unsigned int namescount,
 const char * const * names,

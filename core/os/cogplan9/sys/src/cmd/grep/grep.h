@@ -1,109 +1,109 @@
-#include	<u.h>
-#include	<libc.h>
-#include	<bio.h>
-#ifndef	EXTERN
-#define	EXTERN	extern
+#include <u.h>
+#include <libc.h>
+#include <bio.h>
+#ifndef EXTERN
+#define EXTERN extern
 #endif
-typedef	struct	Re	Re;
-typedef	struct	Re2	Re2;
-typedef	struct	State	State;
-struct	State
+typedef struct Re Re;
+typedef struct Re2 Re2;
+typedef struct State State;
+struct State
 {
-int	count;
-int	match;
-Re**	re;
-State*	linkleft;
-State*	linkright;
-State*	next[256];
+int count;
+int match;
+Re** re;
+State* linkleft;
+State* linkright;
+State* next[256];
 };
-struct	Re2
+struct Re2
 {
-Re*	beg;
-Re*	end;
+Re* beg;
+Re* end;
 };
-struct	Re
+struct Re
 {
-uchar	type;
-ushort	gen;
+uchar type;
+ushort gen;
 union
 {
-Re*	alt;
-Re**	cases;
+Re* alt;
+Re** cases;
 struct
 {
-Rune	lo;
-Rune	hi;
+Rune lo;
+Rune hi;
 };
-Rune	val;
+Rune val;
 };
-Re*	next;
+Re* next;
 };
 enum
 {
-Talt		= 1,
+Talt = 1,
 Tbegin,
 Tcase,
 Tclass,
 Tend,
 Tor,
-Caselim		= 7,
-Nhunk		= 1<<16,
-Cbegin		= Runemax+1,
-Flshcnt		= (1<<9)-1,
-Cflag		= 1<<0,
-Hflag		= 1<<1,
-Iflag		= 1<<2,
-Llflag		= 1<<3,
-LLflag		= 1<<4,
-Nflag		= 1<<5,
-Sflag		= 1<<6,
-Vflag		= 1<<7,
-Bflag		= 1<<8
+Caselim = 7,
+Nhunk = 1<<16,
+Cbegin = Runemax+1,
+Flshcnt = (1<<9)-1,
+Cflag = 1<<0,
+Hflag = 1<<1,
+Iflag = 1<<2,
+Llflag = 1<<3,
+LLflag = 1<<4,
+Nflag = 1<<5,
+Sflag = 1<<6,
+Vflag = 1<<7,
+Bflag = 1<<8
 };
-EXTERN	union
+EXTERN union
 {
-char	string[16*1024];
+char string[16*1024];
 struct
 {
-uchar	pre[16*1024];
-uchar	buf[16*1024];
+uchar pre[16*1024];
+uchar buf[16*1024];
 };
 } u;
-EXTERN	char	*filename;
-EXTERN	char	*pattern;
-EXTERN	Biobuf	bout;
-EXTERN	char	flags[256];
-EXTERN	Re**	follow;
-EXTERN	ushort	gen;
-EXTERN	char*	input;
-EXTERN	long	lineno;
-EXTERN	int	literal;
-EXTERN	int	matched;
-EXTERN	long	maxfollow;
-EXTERN	long	nfollow;
-EXTERN	int	peekc;
-EXTERN	Biobuf*	rein;
-EXTERN	State*	state0;
-EXTERN	Re2	topre;
-extern	Re*	addcase(Re*);
-extern	void	appendnext(Re*, Re*);
-extern	void	error(char*);
-extern	int	fcmp(void*, void*);
-extern	void	fol1(Re*, int);
-extern	int	getrec(void);
-extern	void	increment(State*, int);
-extern	State*	initstate(Re*);
-extern	void*	mal(int);
-extern	void	patchnext(Re*, Re*);
-extern	Re*	ral(int);
-extern	Re2	re2cat(Re2, Re2);
-extern	Re2	re2class(char*);
-extern	Re2	re2or(Re2, Re2);
-extern	Re2	re2char(int, int);
-extern	Re2	re2star(Re2);
-extern	State*	sal(int);
-extern	int	search(char*, int);
-extern	void	str2top(char*);
-extern	int	yyparse(void);
-extern	void	reprint(char*, Re*);
-extern	void	yyerror(char*, ...);
+EXTERN char *filename;
+EXTERN char *pattern;
+EXTERN Biobuf bout;
+EXTERN char flags[256];
+EXTERN Re** follow;
+EXTERN ushort gen;
+EXTERN char* input;
+EXTERN long lineno;
+EXTERN int literal;
+EXTERN int matched;
+EXTERN long maxfollow;
+EXTERN long nfollow;
+EXTERN int peekc;
+EXTERN Biobuf* rein;
+EXTERN State* state0;
+EXTERN Re2 topre;
+extern Re* addcase(Re*);
+extern void appendnext(Re*, Re*);
+extern void error(char*);
+extern int fcmp(void*, void*);
+extern void fol1(Re*, int);
+extern int getrec(void);
+extern void increment(State*, int);
+extern State* initstate(Re*);
+extern void* mal(int);
+extern void patchnext(Re*, Re*);
+extern Re* ral(int);
+extern Re2 re2cat(Re2, Re2);
+extern Re2 re2class(char*);
+extern Re2 re2or(Re2, Re2);
+extern Re2 re2char(int, int);
+extern Re2 re2star(Re2);
+extern State* sal(int);
+extern int search(char*, int);
+extern void str2top(char*);
+extern int yyparse(void);
+extern void reprint(char*, Re*);
+extern void yyerror(char*, ...);

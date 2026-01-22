@@ -109,7 +109,7 @@ flat = vec(arr)
 n = length(flat)
 block_size = qtype.block_size
 # Calculate number of blocks
-num_blocks = cld(n, block_size)  # Ceiling division
+num_blocks = cld(n, block_size) # Ceiling division
 # Pad to block boundary
 padded_size = num_blocks * block_size
 if n < padded_size
@@ -117,7 +117,7 @@ flat = vcat(flat, zeros(Float32, padded_size - n))
 end
 # Allocate storage
 # 4 bits per value = 0.5 bytes per value
-bytes_per_block = div(block_size, 2)  # 4 bits = 0.5 bytes
+bytes_per_block = div(block_size, 2) # 4 bits = 0.5 bytes
 quantized_data = zeros(UInt8, num_blocks * bytes_per_block)
 scales = zeros(Float32, num_blocks)
 offsets = zeros(Float32, num_blocks)
@@ -136,7 +136,7 @@ if range_val < 1e-10
 scale = 1.0f0
 offset = min_val
 else
-scale = range_val / 15.0f0  # 15 = 2^4 - 1
+scale = range_val / 15.0f0 # 15 = 2^4 - 1
 offset = min_val
 end
 scales[block_idx] = scale
@@ -201,7 +201,7 @@ end_idx = block_idx * block_size
 block = flat[start_idx:end_idx]
 # Compute scale (use max absolute value)
 max_abs = maximum(abs, block)
-scale = max_abs / 127.0f0  # 127 = 2^7 - 1
+scale = max_abs / 127.0f0 # 127 = 2^7 - 1
 if scale < 1e-10
 scale = 1.0f0
 end
@@ -218,7 +218,7 @@ return QuantizedArray{Q8_0}(
 qtype,
 quantized_data,
 scales,
-nothing,  # No offsets for Q8_0
+nothing, # No offsets for Q8_0
 size(arr),
 num_blocks
 )
@@ -240,10 +240,10 @@ quantized_data = reinterpret(UInt8, vec(f16_arr))
 return QuantizedArray{F16}(
 qtype,
 quantized_data,
-Float32[],  # No scales
-nothing,    # No offsets
+Float32[], # No scales
+nothing, # No offsets
 size(arr),
-0  # No blocks
+0 # No blocks
 )
 end
 #

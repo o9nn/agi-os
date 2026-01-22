@@ -29,7 +29,7 @@ return false;
 }
 JsonObject->TryGetNumberField(TEXT("Version"), Version);
 JsonObject->TryGetNumberField(TEXT("FadeInTime"), FadeInTime);
-const TArray< TSharedPtr<FJsonValue> >*  PartGroupsArrayObject;
+const TArray< TSharedPtr<FJsonValue> >* PartGroupsArrayObject;
 ASSERT(JsonObject->TryGetArrayField(TEXT("Groups"), PartGroupsArrayObject), "Failed to get Groups field.");
 {
 for (const TSharedPtr<FJsonValue>& PartGroupValue : *PartGroupsArrayObject)
@@ -41,7 +41,7 @@ for (const TSharedPtr<FJsonValue>& PartValue : PartArrayObject)
 FCubismPosePart Part;
 const TSharedPtr<FJsonObject>& PartObject = PartValue->AsObject();
 ASSERT(PartObject->TryGetStringField(TEXT("Id"), Part.Id), "Failed to get Id field.");
-const TArray< TSharedPtr<FJsonValue> >*  LinksArrayObject;
+const TArray< TSharedPtr<FJsonValue> >* LinksArrayObject;
 ASSERT(PartObject->TryGetArrayField(TEXT("Link"), LinksArrayObject), "Failed to get Link field.");
 {
 for (const TSharedPtr<FJsonValue>& LinkValue : *LinksArrayObject)

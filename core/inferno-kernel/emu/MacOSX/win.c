@@ -12,23 +12,23 @@
 #include "cursor.h"
 #include "keyboard.h"
 #include "keycodes.h"
-#define	Kup	Up
-#define	Kleft	Left
-#define	Kdown	Down
-#define	Kright	Right
-#define	Kalt	LAlt
-#define	Kctl	LCtrl
-#define	Kshift	LShift
-#define	Kpgup	Pgup
-#define	Kpgdown	Pgdown
-#define	Khome	Home
-#define	Kins	Ins
-#define	Kend	End
-#define rWindowResource  128
-extern	void		flushmemscreen(Rectangle);
-Memimage	*gscreen;
+#define Kup Up
+#define Kleft Left
+#define Kdown Down
+#define Kright Right
+#define Kalt LAlt
+#define Kctl LCtrl
+#define Kshift LShift
+#define Kpgup Pgup
+#define Kpgdown Pgdown
+#define Khome Home
+#define Kins Ins
+#define Kend End
+#define rWindowResource 128
+extern void flushmemscreen(Rectangle);
+Memimage *gscreen;
 static int readybit;
-static Rendez	rend;
+static Rendez rend;
 static int triedscreen;
 static MenuRef windMenu;
 static MenuRef viewMenu;
@@ -253,7 +253,7 @@ theWindow = oldWindow;
 ShowWindow(theWindow);
 amFullScreen = 0;
 window_resized();
-Rectangle rect =  { { 0, 0 }, { bounds.size.width, bounds.size.height} };
+Rectangle rect = { { 0, 0 }, { bounds.size.width, bounds.size.height} };
 drawqlock();
 flushmemscreen(rect);
 drawqunlock();
@@ -268,7 +268,7 @@ HideWindow(theWindow);
 BeginFullScreen(&fullScreenRestore, 0, 0, 0, &theWindow, 0, 0);
 amFullScreen = 1;
 window_resized();
-Rectangle rect =  { { 0, 0 },
+Rectangle rect = { { 0, 0 },
 { bounds.size.width,
 bounds.size.height} };
 drawqlock();
@@ -436,8 +436,8 @@ result = eventNotHandledErr;
 break;
 }
 } else if(class == kEventClassWindow) {
-WindowRef     window;
-_Rect          rectPort = {0,0,0,0};
+WindowRef window;
+_Rect rectPort = {0,0,0,0};
 GetEventParameter(event, kEventParamDirectObject, typeWindowRef,
 NULL, sizeof(WindowRef), NULL, &window);
 if(window)
@@ -449,7 +449,7 @@ cleanexit(0);
 break;
 case kEventWindowBoundsChanged:
 window_resized();
-Rectangle rect =  { { 0, 0 },
+Rectangle rect = { { 0, 0 },
 { bounds.size.width,
 bounds.size.height} };
 drawqlock();
@@ -510,7 +510,7 @@ setcolor(ulong index, ulong r, ulong g, ulong b)
 USED(index); USED(r); USED(g); USED(b);
 }
 enum{
-SnarfSize=	100*1024
+SnarfSize= 100*1024
 };
 static char snarf[3*SnarfSize+1];
 static Rune rsnarf[SnarfSize+1];

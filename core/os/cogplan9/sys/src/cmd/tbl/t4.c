@@ -1,9 +1,9 @@
 # include "t.h"
-int	oncol;
+int oncol;
 void
 getspec(void)
 {
-int	icol, i;
+int icol, i;
 qcol = findcol() + 1;
 garray(qcol);
 sep[-1] = -1;
@@ -33,8 +33,8 @@ Bprint(&tabout, "\n");
 void
 readspec(void)
 {
-int	icol, c, sawchar, stopc, i;
-char	sn[10], *snp, *temp;
+int icol, c, sawchar, stopc, i;
+char sn[10], *snp, *temp;
 sawchar = icol = 0;
 while (c = get1char()) {
 switch (c) {
@@ -69,7 +69,7 @@ if (c != ' ' && c != '\t')
 error("dot not last character on format line");
 for (icol = 0; icol < ncol; icol++)
 if (sep[icol] < 0)
-sep[icol] =  icol + 1 < ncol ? 3 : 2;
+sep[icol] = icol + 1 < ncol ? 3 : 2;
 if (oncol == 0)
 oncol = ncol;
 else if (oncol + 2 < ncol)
@@ -287,8 +287,8 @@ int
 findcol(void)
 {
 # define FLNLIM 200
-char	*s, line[FLNLIM+2], *p;
-int	c, n = 0, inpar = 0;
+char *s, line[FLNLIM+2], *p;
+int c, n = 0, inpar = 0;
 while ((c = get1char()) != 0 && c == ' ')
 ;
 if (c != '\n')
@@ -331,13 +331,13 @@ return(n);
 void
 garray(int qcol)
 {
-style =  (int (*)[]) getcore(MAXHEAD * qcol, sizeof(int));
+style = (int (*)[]) getcore(MAXHEAD * qcol, sizeof(int));
 evenup = (int *) getcore(qcol, sizeof(int));
 lefline = (int (*)[]) getcore(MAXHEAD * (qcol + 1), sizeof (int));
 font = (char (*)[][2]) getcore(MAXHEAD * qcol, 2);
 csize = (char (*)[MAXHEAD][4]) getcore(MAXHEAD * qcol, 4);
 vsize = (char (*)[MAXHEAD][4]) getcore(MAXHEAD * qcol, 4);
-flags =  (int (*)[]) getcore(MAXHEAD * qcol, sizeof(int));
+flags = (int (*)[]) getcore(MAXHEAD * qcol, sizeof(int));
 cll = (char (*)[])getcore(qcol, CLLEN);
 sep = (int *) getcore(qcol + 1, sizeof(int));
 sep++;
@@ -348,10 +348,10 @@ doubled = (int *) getcore(qcol + 1, sizeof(int));
 acase = (int *) getcore(qcol + 1, sizeof(int));
 topat = (int *) getcore(qcol + 1, sizeof(int));
 }
-char	*
+char *
 getcore(int a, int b)
 {
-char	*x;
+char *x;
 x = calloc(a, b);
 if (x == 0)
 error("Couldn't get memory");

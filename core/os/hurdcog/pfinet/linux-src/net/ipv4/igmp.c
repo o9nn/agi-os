@@ -25,11 +25,11 @@
 #endif
 #define IP_MAX_MEMBERSHIPS 20
 #ifdef CONFIG_IP_MULTICAST
-#define IGMP_V1_Router_Present_Timeout		(400*HZ)
-#define IGMP_Unsolicited_Report_Interval	(10*HZ)
-#define IGMP_Query_Response_Interval		(10*HZ)
-#define IGMP_Unsolicited_Report_Count		2
-#define IGMP_Initial_Report_Delay		(1*HZ)
+#define IGMP_V1_Router_Present_Timeout (400*HZ)
+#define IGMP_Unsolicited_Report_Interval (10*HZ)
+#define IGMP_Query_Response_Interval (10*HZ)
+#define IGMP_Unsolicited_Report_Count 2
+#define IGMP_Initial_Report_Delay (1*HZ)
 #define IGMP_V1_SEEN(in_dev) ((in_dev)->mr_v1_seen && (long)(jiffies - (in_dev)->mr_v1_seen) < 0)
 static __inline__ void igmp_stop_timer(struct ip_mc_list *im)
 {
@@ -55,7 +55,7 @@ struct sk_buff *skb;
 struct iphdr *iph;
 struct igmphdr *ih;
 struct rtable *rt;
-u32	dst;
+u32 dst;
 dst = group;
 if (type == IGMP_HOST_LEAVE_MESSAGE)
 dst = IGMP_ALL_ROUTER;
@@ -73,16 +73,16 @@ return -1;
 skb->dst = &rt->u.dst;
 skb_reserve(skb, (dev->hard_header_len+15)&~15);
 skb->nh.iph = iph = (struct iphdr *)skb_put(skb, sizeof(struct iphdr)+4);
-iph->version  = 4;
-iph->ihl      = (sizeof(struct iphdr)+4)>>2;
-iph->tos      = 0;
+iph->version = 4;
+iph->ihl = (sizeof(struct iphdr)+4)>>2;
+iph->tos = 0;
 iph->frag_off = 0;
-iph->ttl      = 1;
-iph->daddr    = dst;
-iph->saddr    = rt->rt_src;
+iph->ttl = 1;
+iph->daddr = dst;
+iph->saddr = rt->rt_src;
 iph->protocol = IPPROTO_IGMP;
-iph->tot_len  = htons(IGMP_SIZE);
-iph->id	      = htons(ip_id_count++);
+iph->tot_len = htons(IGMP_SIZE);
+iph->id = htons(ip_id_count++);
 ((u8*)&iph[1])[0] = IPOPT_RA;
 ((u8*)&iph[1])[1] = 4;
 ((u8*)&iph[1])[2] = 0;
@@ -133,8 +133,8 @@ return;
 static void igmp_heard_query(struct in_device *in_dev, unsigned char max_resp_time,
 u32 group)
 {
-struct ip_mc_list	*im;
-int			max_delay;
+struct ip_mc_list *im;
+int max_delay;
 max_delay = max_resp_time*(HZ/IGMP_TIMER_SCALE);
 if (max_resp_time == 0) {
 max_delay = IGMP_Query_Response_Interval;
@@ -249,7 +249,7 @@ return;
 im->users=1;
 im->interface=in_dev;
 im->multiaddr=addr;
-#ifdef  CONFIG_IP_MULTICAST
+#ifdef CONFIG_IP_MULTICAST
 im->tm_running=0;
 init_timer(&im->timer);
 im->timer.data=(unsigned long)im;
@@ -416,7 +416,7 @@ len=sprintf(buffer,"Idx\tDevice    : Count Querier\tGroup    Users Timer\tReport
 for(dev = dev_base; dev; dev = dev->next)
 {
 struct in_device *in_dev = dev->ip_ptr;
-char   *querier = "NONE";
+char *querier = "NONE";
 if (in_dev == NULL)
 continue;
 querier = IGMP_V1_SEEN(in_dev) ? "V1" : "V2";

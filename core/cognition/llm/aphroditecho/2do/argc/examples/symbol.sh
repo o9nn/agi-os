@@ -1,11 +1,11 @@
 build () {
-    :;
+:;
 }
 check() {
-    :;
+:;
 }
 _choice_toolchain() {
-    cat <<-'EOF'
+cat <<-'EOF'
 stable
 beta
 nightly

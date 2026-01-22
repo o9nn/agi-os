@@ -1,16 +1,16 @@
 #ifndef gdevpdtx_INCLUDED
-#  define gdevpdtx_INCLUDED
+# define gdevpdtx_INCLUDED
 #include "gdevpdt.h"
 #ifndef pdf_bitmap_fonts_DEFINED
-#  define pdf_bitmap_fonts_DEFINED
+# define pdf_bitmap_fonts_DEFINED
 typedef struct pdf_bitmap_fonts_s pdf_bitmap_fonts_t;
 #endif
 #ifndef pdf_outline_fonts_DEFINED
-#  define pdf_outline_fonts_DEFINED
+# define pdf_outline_fonts_DEFINED
 typedef struct pdf_outline_fonts_s pdf_outline_fonts_t;
 #endif
 #ifndef pdf_text_state_DEFINED
-#  define pdf_text_state_DEFINED
+# define pdf_text_state_DEFINED
 typedef struct pdf_text_state_s pdf_text_state_t;
 #endif
 struct pdf_text_data_s {

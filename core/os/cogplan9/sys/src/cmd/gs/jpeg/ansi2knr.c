@@ -5,45 +5,45 @@
 #include <ctype.h>
 #if HAVE_CONFIG_H
 # if STDC_HEADERS || HAVE_STRING_H
-#  include <string.h>
+# include <string.h>
 # else
-#  include <strings.h>
+# include <strings.h>
 # endif
 #else
 # ifdef BSD
-#  include <strings.h>
+# include <strings.h>
 # else
-#  ifdef VMS
+# ifdef VMS
 extern int strlen(), strncmp();
-#  else
-#   include <string.h>
-#  endif
+# else
+# include <string.h>
+# endif
 # endif
 #endif
 #if STDC_HEADERS
 # include <stdlib.h>
 #else
 # ifdef MSDOS
-#  include <malloc.h>
+# include <malloc.h>
 # else
-#  ifdef VMS
+# ifdef VMS
 extern char *malloc();
 extern void free();
-#  else
+# else
 extern char *malloc();
 extern int free();
-#  endif
+# endif
 # endif
 #endif
 #ifdef isascii
-#  undef HAVE_ISASCII
-#  define HAVE_ISASCII 1
+# undef HAVE_ISASCII
+# define HAVE_ISASCII 1
 #else
 #endif
 #if STDC_HEADERS || !HAVE_ISASCII
-#  define is_ascii(c) 1
+# define is_ascii(c) 1
 #else
-#  define is_ascii(c) isascii(c)
+# define is_ascii(c) isascii(c)
 #endif
 #define is_space(c) (is_ascii(c) && isspace(c))
 #define is_alpha(c) (is_ascii(c) && isalpha(c))
@@ -58,20 +58,20 @@ int
 main(argc, argv)
 int argc;
 char *argv[];
-{	FILE *in, *out;
+{ FILE *in, *out;
 #define bufsize 5000
 char *buf;
 char *line;
 char *more;
 int convert_varargs = 1;
 if ( argc > 1 && argv[1][0] == '-' )
-{	if ( !strcmp(argv[1], "--varargs") )
-{	convert_varargs = 1;
+{ if ( !strcmp(argv[1], "--varargs") )
+{ convert_varargs = 1;
 argc--;
 argv++;
 }
 else
-{	fprintf(stderr, "Unrecognized switch: %s\n", argv[1]);
+{ fprintf(stderr, "Unrecognized switch: %s\n", argv[1]);
 exit(1);
 }
 }
@@ -86,13 +86,13 @@ break;
 case 3:
 out = fopen(argv[2], "w");
 if ( out == NULL )
-{	fprintf(stderr, "Cannot open output file %s\n", argv[2]);
+{ fprintf(stderr, "Cannot open output file %s\n", argv[2]);
 exit(1);
 }
 }
 in = fopen(argv[1], "r");
 if ( in == NULL )
-{	fprintf(stderr, "Cannot open input file %s\n", argv[1]);
+{ fprintf(stderr, "Cannot open input file %s\n", argv[1]);
 exit(1);
 }
 fprintf(out, "#line 1 \"%s\"\n", argv[1]);
@@ -100,7 +100,7 @@ buf = malloc(bufsize);
 line = buf;
 while ( fgets(line, (unsigned)(buf + bufsize - line), in) != NULL )
 {
-test:		line += strlen(line);
+test: line += strlen(line);
 switch ( test1(buf) )
 {
 case 2:
@@ -108,7 +108,7 @@ convert1(buf, out, 1, convert_varargs);
 break;
 case 1:
 more = ++line;
-f:			if ( line >= buf + (bufsize - 1) )
+f: if ( line >= buf + (bufsize - 1) )
 goto wl;
 if ( fgets(line, (unsigned)(buf + bufsize - line), in) == NULL )
 goto wl;
@@ -132,7 +132,7 @@ case -1:
 if ( line != buf + (bufsize - 1) )
 continue;
 default:
-wl:			fputs(buf, out);
+wl: fputs(buf, out);
 break;
 }
 line = buf;
@@ -148,18 +148,18 @@ char *
 skipspace(p, dir)
 register char *p;
 register int dir;
-{	for ( ; ; )
-{	while ( is_space(*p) )
+{ for ( ; ; )
+{ while ( is_space(*p) )
 p += dir;
 if ( !(*p == '/' && p[dir] == '*') )
 break;
-p += dir;  p += dir;
+p += dir; p += dir;
 while ( !(*p == '*' && p[dir] == '/') )
-{	if ( *p == 0 )
+{ if ( *p == 0 )
 return p;
 p += dir;
 }
-p += dir;  p += dir;
+p += dir; p += dir;
 }
 return p;
 }
@@ -167,7 +167,7 @@ int
 writeblanks(start, end)
 char *start;
 char *end;
-{	char *p;
+{ char *p;
 for ( p = start; p < end; p++ )
 if ( *p != '\r' && *p != '\n' )
 *p = ' ';
@@ -176,7 +176,7 @@ return 0;
 int
 test1(buf)
 char *buf;
-{	register char *p = buf;
+{ register char *p = buf;
 char *bend;
 char *endfn;
 int contin;
@@ -200,8 +200,8 @@ return 0;
 p = skipspace(p, 1);
 if ( *p == ')' )
 return 0;
-{	static char *words[] =
-{	"asm", "auto", "case", "char", "const", "double",
+{ static char *words[] =
+{ "asm", "auto", "case", "char", "const", "double",
 "extern", "float", "for", "if", "int", "long",
 "register", "return", "short", "signed", "sizeof",
 "static", "switch", "typedef", "unsigned",
@@ -211,7 +211,7 @@ char **key = words;
 char *kp;
 int len = endfn - buf;
 while ( (kp = *key) != 0 )
-{	if ( strlen(kp) == len && !strncmp(kp, buf, len) )
+{ if ( strlen(kp) == len && !strncmp(kp, buf, len) )
 return 0;
 key++;
 }
@@ -224,7 +224,7 @@ char *buf;
 FILE *out;
 int header;
 int convert_varargs;
-{	char *endfn;
+{ char *endfn;
 register char *p;
 char **breaks;
 unsigned num_breaks = 2;
@@ -234,7 +234,7 @@ char **ap;
 char *vararg = 0;
 for ( endfn = buf; *(endfn++) != '('; )
 ;
-top:	p = endfn;
+top: p = endfn;
 breaks = (char **)malloc(sizeof(char *) * num_breaks * 2);
 if ( breaks == 0 )
 {
@@ -245,7 +245,7 @@ return -1;
 btop = breaks + num_breaks * 2 - 2;
 bp = breaks;
 do
-{	int level = 0;
+{ int level = 0;
 char *lp = NULL;
 char *rp;
 char *end = NULL;
@@ -257,7 +257,7 @@ goto top;
 }
 *bp++ = p;
 for ( ; end == NULL; p++ )
-{	switch(*p)
+{ switch(*p)
 {
 case ',':
 if ( !level ) end = p;
@@ -281,12 +281,12 @@ if ( lp )
 writeblanks(lp + 1, rp);
 p--;
 for ( ; ; )
-{	p = skipspace(p - 1, -1);
+{ p = skipspace(p - 1, -1);
 switch ( *p )
 {
 case ']':
 case ')':
-{	int level = 1;
+{ int level = 1;
 while ( level )
 switch ( *--p )
 {
@@ -307,13 +307,13 @@ default:
 goto found;
 }
 }
-found:		if ( *p == '.' && p[-1] == '.' && p[-2] == '.' )
-{	if ( convert_varargs )
-{	*bp++ = "va_alist";
+found: if ( *p == '.' && p[-1] == '.' && p[-2] == '.' )
+{ if ( convert_varargs )
+{ *bp++ = "va_alist";
 vararg = p-2;
 }
 else
-{	p++;
+{ p++;
 if ( bp == breaks + 1 )
 writeblanks(breaks[0], p);
 else
@@ -322,7 +322,7 @@ bp--;
 }
 }
 else
-{	while ( isidchar(*p) ) p--;
+{ while ( isidchar(*p) ) p--;
 *bp++ = p+1;
 }
 p = end;
@@ -330,11 +330,11 @@ p = end;
 while ( *p++ == ',' );
 *bp = p;
 if ( bp == breaks+2 )
-{	p = skipspace(breaks[0], 1);
+{ p = skipspace(breaks[0], 1);
 if ( !strncmp(p, "void", 4) )
-{	p = skipspace(p+4, 1);
+{ p = skipspace(p+4, 1);
 if ( p == breaks[2] - 1 )
-{	bp = breaks;
+{ bp = breaks;
 writeblanks(breaks[0], p + 1);
 }
 }
@@ -342,14 +342,14 @@ writeblanks(breaks[0], p + 1);
 p = buf;
 while ( p != endfn ) putc(*p, out), p++;
 if ( header )
-{	fputs(");", out);
+{ fputs(");", out);
 for ( p = breaks[0]; *p; p++ )
 if ( *p == '\r' || *p == '\n' )
 putc(*p, out);
 }
 else
-{	for ( ap = breaks+1; ap < bp; ap += 2 )
-{	p = *ap;
+{ for ( ap = breaks+1; ap < bp; ap += 2 )
+{ p = *ap;
 while ( isidchar(*p) )
 putc(*p, out), p++;
 if ( ap < bp - 1 )
@@ -359,7 +359,7 @@ fputs(")  ", out);
 for ( ap = breaks+2; ap <= bp; ap += 2 )
 (*ap)[-1] = ';';
 if ( vararg != 0 )
-{	*vararg = 0;
+{ *vararg = 0;
 fputs(breaks[0], out);
 fputs("va_dcl", out);
 fputs(bp[0], out);

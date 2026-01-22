@@ -222,7 +222,7 @@ process_file_gc_statm (struct proc_stat *ps, char **contents)
 task_basic_info_t tbi = proc_stat_task_basic_info (ps);
 return asprintf (contents,
 "%lu %lu 0 0 0 0 0\n",
-tbi->virtual_size  / sysconf(_SC_PAGE_SIZE),
+tbi->virtual_size / sysconf(_SC_PAGE_SIZE),
 tbi->resident_size / sysconf(_SC_PAGE_SIZE));
 }
 static ssize_t

@@ -20,26 +20,26 @@ FTLDEBUG = 0,
 NPART = 4,
 };
 struct Merase {
-uchar	linktuple[5];
-uchar	orgtuple[10];
-uchar	nxfer;
-uchar	nerase[4];
-uchar	id[2];
-uchar	bshift;
-uchar	eshift;
-uchar	pstart[2];
-uchar	nunits[2];
-uchar	psize[4];
-uchar	vbmbase[4];
-uchar	nvbm[2];
-uchar	flags;
-uchar	code;
-uchar	serial[4];
-uchar	altoffset[4];
-uchar	bamoffset[4];
-uchar	rsv2[12];
+uchar linktuple[5];
+uchar orgtuple[10];
+uchar nxfer;
+uchar nerase[4];
+uchar id[2];
+uchar bshift;
+uchar eshift;
+uchar pstart[2];
+uchar nunits[2];
+uchar psize[4];
+uchar vbmbase[4];
+uchar nvbm[2];
+uchar flags;
+uchar code;
+uchar serial[4];
+uchar altoffset[4];
+uchar bamoffset[4];
+uchar rsv2[12];
 };
-#define	ERASEHDRLEN	64
+#define ERASEHDRLEN 64
 enum {
 XferID = 0xffff,
 XferBusy = 0x7fff,
@@ -53,52 +53,52 @@ DataBlock = 0x40,
 ReplacePage = 0x60,
 BadBlock = 0x70,
 };
-#define	BTYPE(b)	((b) & BlockType)
-#define	BADDR(b)	((b) & ~BlockType)
-#define	BNO(va)	(((ulong)(va))>>Bshift)
-#define	MKBAM(b,t)	(((b)<<Bshift)|(t))
+#define BTYPE(b) ((b) & BlockType)
+#define BADDR(b) ((b) & ~BlockType)
+#define BNO(va) (((ulong)(va))>>Bshift)
+#define MKBAM(b,t) (((b)<<Bshift)|(t))
 struct Terase {
-int	x;
-int	id;
-ulong	offset;
-ulong	bamoffset;
-ulong	nbam;
-ulong*	bam;
-ulong	bamx;
-ulong	nfree;
-ulong	nused;
-ulong	ndead;
-ulong	nbad;
-ulong	nerase;
+int x;
+int id;
+ulong offset;
+ulong bamoffset;
+ulong nbam;
+ulong* bam;
+ulong bamx;
+ulong nfree;
+ulong nused;
+ulong ndead;
+ulong nbad;
+ulong nerase;
 };
 struct Ftl {
 QLock;
 Ref;
-Chan*	flash;
-Chan*	flashctl;
-ulong	base;
-ulong	size;
-ulong	segsize;
-int	eshift;
-int	bshift;
-int	bsize;
-int	nunit;
-Terase**	unit;
-int	lastx;
-int	xfer;
-ulong	nfree;
-ulong	nblock;
-ulong	rwlimit;
-ulong*	vbm;
-ulong	fstart;
-int	trace;
-int	detach;
-QLock	wantq;
-Rendez	wantr;
-Rendez	workr;
-int	needspace;
-int	hasproc;
-int	npart;
+Chan* flash;
+Chan* flashctl;
+ulong base;
+ulong size;
+ulong segsize;
+int eshift;
+int bshift;
+int bsize;
+int nunit;
+Terase** unit;
+int lastx;
+int xfer;
+ulong nfree;
+ulong nblock;
+ulong rwlimit;
+ulong* vbm;
+ulong fstart;
+int trace;
+int detach;
+QLock wantq;
+Rendez wantr;
+Rendez workr;
+int needspace;
+int hasproc;
+int npart;
 struct {
 ulong start, size;
 ulong rwlimit;
@@ -109,26 +109,26 @@ enum {
 Detached = 1,
 Deferred
 };
-#define	GET2(p)	(((p)[1]<<8)|(p)[0])
-#define	GET4(p)	(((((((p)[3]<<8)|(p)[2])<<8)|(p)[1])<<8)|(p)[0])
-#define	PUT2(p,v)	(((p)[1]=(v)>>8),((p)[0]=(v)))
-#define	PUT4(p,v)	(((p)[3]=(v)>>24),((p)[2]=(v)>>16),((p)[1]=(v)>>8),((p)[0]=(v)))
-static	Lock	ftllock;
-static	Ftl	*ftls;
-static	int	ftlpct = USABLEPCT;
-static	ulong	allocblk(Ftl*);
-static	int	erasedetect(Ftl *ftl, ulong base, ulong size, ushort *pstart, ushort *nunits);
-static	void	eraseflash(Ftl*, ulong);
-static	void	erasefree(Terase*);
-static	void	eraseinit(Ftl*, ulong, int, int);
-static	Terase*	eraseload(Ftl*, int, ulong);
-static	void	ftlfree(Ftl*);
-static	void	getflash(Ftl*, void*, ulong, long);
-static	int	mapblk(Ftl*, ulong, Terase**, ulong*);
-static	Ftl*	mkftl(char*, ulong, ulong, int, char*);
-static	void	putbam(Ftl*, Terase*, int, ulong);
-static	void	putflash(Ftl*, ulong, void*, long);
-static	int	scavenge(Ftl*);
+#define GET2(p) (((p)[1]<<8)|(p)[0])
+#define GET4(p) (((((((p)[3]<<8)|(p)[2])<<8)|(p)[1])<<8)|(p)[0])
+#define PUT2(p,v) (((p)[1]=(v)>>8),((p)[0]=(v)))
+#define PUT4(p,v) (((p)[3]=(v)>>24),((p)[2]=(v)>>16),((p)[1]=(v)>>8),((p)[0]=(v)))
+static Lock ftllock;
+static Ftl *ftls;
+static int ftlpct = USABLEPCT;
+static ulong allocblk(Ftl*);
+static int erasedetect(Ftl *ftl, ulong base, ulong size, ushort *pstart, ushort *nunits);
+static void eraseflash(Ftl*, ulong);
+static void erasefree(Terase*);
+static void eraseinit(Ftl*, ulong, int, int);
+static Terase* eraseload(Ftl*, int, ulong);
+static void ftlfree(Ftl*);
+static void getflash(Ftl*, void*, ulong, long);
+static int mapblk(Ftl*, ulong, Terase**, ulong*);
+static Ftl* mkftl(char*, ulong, ulong, int, char*);
+static void putbam(Ftl*, Terase*, int, ulong);
+static void putflash(Ftl*, ulong, void*, long);
+static int scavenge(Ftl*);
 enum {
 Qdir,
 Qctl,
@@ -988,7 +988,7 @@ eraseinit(Ftl *ftl, ulong offset, int id, int nerase)
 {
 union {
 Merase;
-uchar	block[ERASEHDRLEN];
+uchar block[ERASEHDRLEN];
 } *m;
 uchar *bam, *p;
 int i, nov;
@@ -1044,12 +1044,12 @@ ulong o;
 int rv;
 union {
 Merase;
-uchar	block[ERASEHDRLEN];
+uchar block[ERASEHDRLEN];
 } *m;
 m = malloc(sizeof(*m));
 if(m == nil)
 error(Enomem);
-rv  = 0;
+rv = 0;
 for(o = base; o < base + size; o += ftl->segsize){
 if(waserror())
 continue;
@@ -1071,7 +1071,7 @@ eraseload(Ftl *ftl, int x, ulong offset)
 {
 union {
 Merase;
-uchar	block[ERASEHDRLEN];
+uchar block[ERASEHDRLEN];
 } *m;
 Terase *e;
 uchar *p;

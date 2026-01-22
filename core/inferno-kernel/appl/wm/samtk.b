@@ -3,14 +3,14 @@ include "sys.m";
 sys: Sys;
 sprint, FD: import sys;
 include "draw.m";
-draw:	Draw;
+draw: Draw;
 include "samterm.m";
 Context, Flayer, Text, Section: import Samterm;
 include "tkclient.m";
 include "samtk.m";
 ctxt: ref Context;
-tk:	Tk;
-tkclient:	Tkclient;
+tk: Tk;
+tkclient: Tkclient;
 tksam1 := array[] of {
 "frame .w",
 "scrollbar .w.s -command {send scroll}",
@@ -93,16 +93,16 @@ mkmenu2(t);
 mkmenu3(t);
 tkclient->tkcmds(t, tkcmdlist);
 f := ref Flayer(
-tag,		# tag
-t,		# t
-"SamTerm",	# tkwin
-(0, 0),		# scope
-(0, 0),		# dot
-int tk->cmd(t, ".w.t cget actwidth"),		# screen width
-int tk->cmd(t, ".w.t cget actheight") / lines,	# lineheigth
-lines,		# lines
-(0, 1),		# scrollbar
--1		# typepoint
+tag, # tag
+t, # t
+"SamTerm", # tkwin
+(0, 0), # scope
+(0, 0), # dot
+int tk->cmd(t, ".w.t cget actwidth"), # screen width
+int tk->cmd(t, ".w.t cget actheight") / lines, # lineheigth
+lines, # lines
+(0, 1), # scrollbar
+-1 # typepoint
 );
 ctxt.flayers[n] = f;
 return f;
@@ -112,8 +112,8 @@ menu2str := array [] of {
 "paste",
 "snarf",
 "look",
-#	"exch",
-"send",		# storage for last pattern
+# "exch",
+"send", # storage for last pattern
 };
 menu3str := array [] of {
 "new",
@@ -320,7 +320,7 @@ if (ctxt.which != fl) {
 if (ctxt.menus[i].text != ctxt.cmd)
 ctxt.work = fl;
 newcur(t, fl);
-#		setdot(fl, fl.dot.first, fl.dot.first);
+# setdot(fl, fl.dot.first, fl.dot.first);
 return 0;
 }
 if (hd l == "2") {
@@ -339,7 +339,7 @@ fl.dot.first = fl.dot.last = coord2pos(t, fl, s);
 } else {
 (n, l) = sys->tokenize(rg, " ");
 #if (n == 4 && hd tl l == hd tl tl l)
-#	lst := hd tl tl tl l;
+# lst := hd tl tl tl l;
 #else if (n != 2) panic("buttonselect: tag ranges");
 #else lst = hd tl l;
 # We only have one contiguous selection, so, take the
@@ -505,10 +505,10 @@ tk->cmd(fl.t, "update");
 }
 # Calculate position forward or backward nlines lines from pos.
 # If lines > 0 count forward, if lines < 0 count backward.\
-# Returns a pair, (position, nlines).  Nlines is the remaining
-# number of lines to be found.  If non-zero, beginning or end of
+# Returns a pair, (position, nlines). Nlines is the remaining
+# number of lines to be found. If non-zero, beginning or end of
 # rasp was encountered while still counting, or a hole was
-# encountered.  In the former case, position will be 0 or nrunes,
+# encountered. In the former case, position will be 0 or nrunes,
 # in the latter case, position will be set to -1.
 # To search to the beginning of the current line, set nlines to -1;
 rasplines(scts: list of ref Section, pos, nlines: int): (int, int)

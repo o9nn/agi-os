@@ -16,7 +16,7 @@
 #include <ipc/ipc_marequest.h>
 void
 ipc_mqueue_init(
-ipc_mqueue_t	mqueue)
+ipc_mqueue_t mqueue)
 {
 imq_lock_init(mqueue);
 ipc_kmsg_queue_init(&mqueue->imq_messages);
@@ -24,9 +24,9 @@ ipc_thread_queue_init(&mqueue->imq_threads);
 }
 void
 ipc_mqueue_move(
-ipc_mqueue_t		dest,
-ipc_mqueue_t		source,
-const ipc_port_t	port)
+ipc_mqueue_t dest,
+ipc_mqueue_t source,
+const ipc_port_t port)
 {
 ipc_kmsg_queue_t oldq, newq;
 ipc_thread_queue_t blockedq;
@@ -59,8 +59,8 @@ next_kmsg:;
 }
 void
 ipc_mqueue_changed(
-ipc_mqueue_t		mqueue,
-mach_msg_return_t	mr)
+ipc_mqueue_t mqueue,
+mach_msg_return_t mr)
 {
 ipc_thread_t th;
 while ((th = ipc_thread_dequeue(&mqueue->imq_threads)) != ITH_NULL) {
@@ -70,9 +70,9 @@ thread_go(th);
 }
 mach_msg_return_t
 ipc_mqueue_send(
-ipc_kmsg_t 		kmsg,
-mach_msg_option_t 	option,
-mach_msg_timeout_t 	time_out)
+ipc_kmsg_t kmsg,
+mach_msg_option_t option,
+mach_msg_timeout_t time_out)
 {
 ipc_port_t port;
 port = (ipc_port_t) kmsg->ikm_header.msgh_remote_port;
@@ -184,10 +184,10 @@ return MACH_MSG_SUCCESS;
 }
 mach_msg_return_t
 ipc_mqueue_copyin(
-ipc_space_t	space,
-mach_port_name_t	name,
-ipc_mqueue_t	*mqueuep,
-ipc_object_t	*objectp)
+ipc_space_t space,
+mach_port_name_t name,
+ipc_mqueue_t *mqueuep,
+ipc_object_t *objectp)
 {
 ipc_entry_t entry;
 ipc_entry_bits_t bits;
@@ -250,14 +250,14 @@ return MACH_MSG_SUCCESS;
 }
 mach_msg_return_t
 ipc_mqueue_receive(
-ipc_mqueue_t		mqueue,
-mach_msg_option_t	option,
-mach_msg_size_t		max_size,
-mach_msg_timeout_t	time_out,
-boolean_t		resume,
-continuation_t		continuation,
-ipc_kmsg_t		*kmsgp,
-mach_port_seqno_t	*seqnop)
+ipc_mqueue_t mqueue,
+mach_msg_option_t option,
+mach_msg_size_t max_size,
+mach_msg_timeout_t time_out,
+boolean_t resume,
+continuation_t continuation,
+ipc_kmsg_t *kmsgp,
+mach_port_seqno_t *seqnop)
 {
 ipc_port_t port;
 ipc_kmsg_t kmsg;

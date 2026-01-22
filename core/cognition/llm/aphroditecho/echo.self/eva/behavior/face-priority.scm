@@ -2,91 +2,91 @@
 (use-modules (ice-9 threads))
 (use-modules (opencog eva-model) (opencog eva-behavior))
 (Define
-    (DefinedPredicate "Set face priority")
-    (Lambda
-        (VariableList
-            (TypedVariable
-                (Variable "face-id")
-                (Type "NumberNode"))
-            (TypedVariable
-                (Variable "priority")
-                (Type "NumberNode")))
-        (True (State
-                (List
-                    (Concept "visual priority")
-                    (Variable "face-id"))
-                (Variable "priority")))))
+(DefinedPredicate "Set face priority")
+(Lambda
+(VariableList
+(TypedVariable
+(Variable "face-id")
+(Type "NumberNode"))
+(TypedVariable
+(Variable "priority")
+(Type "NumberNode")))
+(True (State
+(List
+(Concept "visual priority")
+(Variable "face-id"))
+(Variable "priority")))))
 (define (set-priority! face-id priority)
 "
-  Returns (stv 1 1) after setting the visual-priority property for the face
-  with id equaling face-id.
+Returns (stv 1 1) after setting the visual-priority property for the face
+with id equaling face-id.
 "
-    (State
-        (List
-            (Concept "visual priority")
-            (Number face-id))
-        (Number priority))
-    (stv 1 1)
+(State
+(List
+(Concept "visual priority")
+(Number face-id))
+(Number priority))
+(stv 1 1)
 )
 (Define
-    (DefinedSchema "Get face priority")
-    (Lambda
-        (TypedVariable
-            (Variable "filter-face-id")
-            (Type "NumberNode"))
-        (Get
-            (VariableList
-                (TypedVariable (Variable "face-id") (Type "NumberNode"))
-                (TypedVariable (Variable "priority") (Type "NumberNode")))
-            (And
-                (Identical (Variable "filter-face-id") (Variable "face-id"))
-                (State
-                    (List
-                        (Concept "visual priority")
-                        (Variable "face-id"))
-                    (Variable "priority"))))
-    ))
+(DefinedSchema "Get face priority")
+(Lambda
+(TypedVariable
+(Variable "filter-face-id")
+(Type "NumberNode"))
+(Get
+(VariableList
+(TypedVariable (Variable "face-id") (Type "NumberNode"))
+(TypedVariable (Variable "priority") (Type "NumberNode")))
+(And
+(Identical (Variable "filter-face-id") (Variable "face-id"))
+(State
+(List
+(Concept "visual priority")
+(Variable "face-id"))
+(Variable "priority"))))
+))
 (define (get-priority! face-id)
-    (define result (cog-execute!
-                        (PutLink
-                            (DefinedSchema "Get face priority")
-                            (Number face-id))))
-    (if (equal? (Set) result)
-        (begin
-            (set-priority! face-id ordinary-face-priority)
-            ordinary-face-priority)
-        (cog-number (gdar result))
-    )
+(define result (cog-execute!
+(PutLink
+(DefinedSchema "Get face priority")
+(Number face-id))))
+(if (equal? (Set) result)
+(begin
+(set-priority! face-id ordinary-face-priority)
+ordinary-face-priority)
+(cog-number (gdar result))
+)
 )
 (DefineLink
-    (DefinedPredicate "Delete face priority")
-    (Lambda
-        (TypedVariable
-            (Variable "del-face-id")
-            (Type "NumberNode"))
-        (True (Put
-            (Delete
-                (State
-                    (List
-                        (Concept "visual priority")
-                        (Variable "face-id"))
-                    (Variable "priority")))
-            (Get
-                (VariableList
-                    (TypedVariable (Variable "face-id") (Type "NumberNode"))
-                    (TypedVariable (Variable "priority") (Type "NumberNode")))
-                (And
-                    (Identical (Variable "del-face-id") (Variable "face-id"))
-                    (State
-                        (List
-                            (Concept "visual priority")
-                            (Variable "face-id"))
-                        (Variable "priority"))))
-        ))))
+(DefinedPredicate "Delete face priority")
+(Lambda
+(TypedVariable
+(Variable "del-face-id")
+(Type "NumberNode"))
+(True (Put
+(Delete
+(State
+(List
+(Concept "visual priority")
+(Variable "face-id"))
+(Variable "priority")))
+(Get
+(VariableList
+(TypedVariable (Variable "face-id") (Type "NumberNode"))
+(TypedVariable (Variable "priority") (Type "NumberNode")))
+(And
+(Identical (Variable "del-face-id") (Variable "face-id"))
+(State
+(List
+(Concept "visual priority")
+(Variable "face-id"))
+(Variable "priority"))))
+))))
 (define (delete-priority! face-id)
-     (cog-evaluate! (PutLink
-         (DefinedPredicate "Delete face priority")
-         (Number face-id)))
+(cog-evaluate! (PutLink
+(DefinedPredicate "Delete face priority")
+(Number face-id)))
 )
 (define fov 1.42)
 (define camera-width 640)
@@ -96,239 +96,239 @@
 (define width-of-yz-plane (/ (* camera-width  distance)  k-const))
 (define height-of-yz-plane (/ (* camera-height  distance)  k-const))
 (define diagonal-of-yz-plane
-    (sqrt (+ (expt width-of-yz-plane 2.0) (expt height-of-yz-plane 2.0))))
+(sqrt (+ (expt width-of-yz-plane 2.0) (expt height-of-yz-plane 2.0))))
 (define lowest-face-priority  0.0)
 (define ordinary-face-priority 0.5)
 (define highest-face-priority 1.0)
 (define (space-nodes at-loc-link)
-   (cog-outgoing-set (cadr
-      (cog-outgoing-set (cadr (cog-outgoing-set at-loc-link))))))
+(cog-outgoing-set (cadr
+(cog-outgoing-set (cadr (cog-outgoing-set at-loc-link))))))
 (define (loc-link-x at-loc-link)
-   (cog-number (car (space-nodes at-loc-link)))
+(cog-number (car (space-nodes at-loc-link)))
 )
 (define (loc-link-y at-loc-link)
-   (cog-number (cadr (space-nodes at-loc-link)))
+(cog-number (cadr (space-nodes at-loc-link)))
 )
 (define (loc-link-z at-loc-link)
-   (cog-number (caddr (space-nodes at-loc-link)))
+(cog-number (caddr (space-nodes at-loc-link)))
 )
 (define (get-last-xyz map-name id-node elapse)
-	(let* ((loc-atom (gar (get-last-locs-ato map-name id-node elapse))))
-		(if (not (null? loc-atom))
-			(let* ((xx (loc-link-x loc-atom))
-				    (yy (loc-link-y loc-atom))
-				    (zz (loc-link-z loc-atom)))
-				(list xx yy zz))
-			(list)
-		)
-	)
+(let* ((loc-atom (gar (get-last-locs-ato map-name id-node elapse))))
+(if (not (null? loc-atom))
+(let* ((xx (loc-link-x loc-atom))
+(yy (loc-link-y loc-atom))
+(zz (loc-link-z loc-atom)))
+(list xx yy zz))
+(list)
+)
+)
 )
 (define (get-face-coordinate-in-plane-yz face-id)
-    (let ((new-x distance)
-          (xyz (get-last-xyz "faces" (Number face-id) face-loc-time-span)))
-        (if (null? xyz)
-            '()
-            (list
-                new-x
-                (/ (* (list-ref xyz 1) new-x) (list-ref xyz 0))
-                (/ (* (list-ref xyz 2) new-x) (list-ref xyz 0)))
-        )
-    )
+(let ((new-x distance)
+(xyz (get-last-xyz "faces" (Number face-id) face-loc-time-span)))
+(if (null? xyz)
+'()
+(list
+new-x
+(/ (* (list-ref xyz 1) new-x) (list-ref xyz 0))
+(/ (* (list-ref xyz 2) new-x) (list-ref xyz 0)))
+)
+)
 )
 (define (distance-in-plane-yz face-id-1 face-id-2)
 "
-  Distance between the two faces in the yz plane.
+Distance between the two faces in the yz plane.
 "
-    (let ((coord-1 (get-face-coordinate-in-plane-yz face-id-1))
-          (coord-2 (get-face-coordinate-in-plane-yz face-id-2)))
-        (if (or (null? coord-1) (null? coord-2))
-            (inf)
-            (sqrt (+
-                (expt (- (list-ref coord-1 1) (list-ref coord-2 1)) 2.0)
-                (expt (- (list-ref coord-1 2) (list-ref coord-2 2)) 2.0)))
-        )
-    )
+(let ((coord-1 (get-face-coordinate-in-plane-yz face-id-1))
+(coord-2 (get-face-coordinate-in-plane-yz face-id-2)))
+(if (or (null? coord-1) (null? coord-2))
+(inf)
+(sqrt (+
+(expt (- (list-ref coord-1 1) (list-ref coord-2 1)) 2.0)
+(expt (- (list-ref coord-1 2) (list-ref coord-2 2)) 2.0)))
+)
+)
 )
 (define (transition-priority face-id-1 face-id-2)
 "
-  Transtion priority, T(face-id-2|face-id-1), represents if the system is
-  looking at face-id-1, then how likely should it be to shift gaze to
-  face-id-2.
-  A transition priority of 1 means that the system is very likely to shift from
-  face-id-1 to face-id-2 , while a transition priority of 0 means that the
-  system is very unlikely to shift from face-id-1 to face-id-2.
+Transtion priority, T(face-id-2|face-id-1), represents if the system is
+looking at face-id-1, then how likely should it be to shift gaze to
+face-id-2.
+A transition priority of 1 means that the system is very likely to shift from
+face-id-1 to face-id-2 , while a transition priority of 0 means that the
+system is very unlikely to shift from face-id-1 to face-id-2.
 "
-    (let ((d (distance-in-plane-yz face-id-1 face-id-2)))
-        (if (> d  width-of-yz-plane)
-            0.0001
-            (- 1 (/ d width-of-yz-plane))
-        )
-    )
+(let ((d (distance-in-plane-yz face-id-1 face-id-2)))
+(if (> d  width-of-yz-plane)
+0.0001
+(- 1 (/ d width-of-yz-plane))
+)
+)
 )
 (Define
-    (DefinedPredicate "Set face transition-priority")
-    (Lambda
-        (VariableList
-            (TypedVariable
-                (Variable "face-id")
-                (Type "NumberNode"))
-            (TypedVariable
-                (Variable "priority")
-                (Type "NumberNode")))
-        (True (State
-                (List
-                    (Concept "transition-priority")
-                    (Variable "face-id"))
-                (Variable "priority")))))
+(DefinedPredicate "Set face transition-priority")
+(Lambda
+(VariableList
+(TypedVariable
+(Variable "face-id")
+(Type "NumberNode"))
+(TypedVariable
+(Variable "priority")
+(Type "NumberNode")))
+(True (State
+(List
+(Concept "transition-priority")
+(Variable "face-id"))
+(Variable "priority")))))
 (define (set-transition-priority! face-id priority)
 "
-  Returns (stv 1 1) after setting the transition-priority property for the face
-  with id equaling face-id.
+Returns (stv 1 1) after setting the transition-priority property for the face
+with id equaling face-id.
 "
-    (State
-        (List
-            (Concept "transition-priority")
-            (Number face-id))
-        (Number priority))
-    (stv 1 1)
+(State
+(List
+(Concept "transition-priority")
+(Number face-id))
+(Number priority))
+(stv 1 1)
 )
 (Define
-    (DefinedSchema "Get face transition-priority")
-    (Lambda
-        (TypedVariable
-            (Variable "filter-face-id")
-            (Type "NumberNode"))
-        (Get
-            (VariableList
-                (TypedVariable (Variable "face-id") (Type "NumberNode"))
-                (TypedVariable (Variable "priority") (Type "NumberNode")))
-            (And
-                (Identical (Variable "filter-face-id") (Variable "face-id"))
-                (State
-                    (List
-                        (Concept "transition-priority")
-                        (Variable "face-id"))
-                    (Variable "priority"))))
-    ))
+(DefinedSchema "Get face transition-priority")
+(Lambda
+(TypedVariable
+(Variable "filter-face-id")
+(Type "NumberNode"))
+(Get
+(VariableList
+(TypedVariable (Variable "face-id") (Type "NumberNode"))
+(TypedVariable (Variable "priority") (Type "NumberNode")))
+(And
+(Identical (Variable "filter-face-id") (Variable "face-id"))
+(State
+(List
+(Concept "transition-priority")
+(Variable "face-id"))
+(Variable "priority"))))
+))
 (define (get-transition-priority! face-id)
-    (define result (cog-execute!
-                        (PutLink
-                            (DefinedSchema "Get face transition-priority")
-                            (Number face-id))))
-    (cog-number (gdar result))
+(define result (cog-execute!
+(PutLink
+(DefinedSchema "Get face transition-priority")
+(Number face-id))))
+(cog-number (gdar result))
 )
 (DefineLink
-    (DefinedPredicate "Delete face transition-priority")
-    (Lambda
-        (TypedVariable
-            (Variable "del-face-id")
-            (Type "NumberNode"))
-        (True (Put
-            (Delete
-                (State
-                    (List
-                        (Concept "transition-priority")
-                        (Variable "face-id"))
-                    (Variable "priority")))
-            (Get
-                (VariableList
-                    (TypedVariable (Variable "face-id") (Type "NumberNode"))
-                    (TypedVariable (Variable "priority") (Type "NumberNode")))
-                (And
-                    (Identical (Variable "del-face-id") (Variable "face-id"))
-                    (State
-                        (List
-                            (Concept "transition-priority")
-                            (Variable "face-id"))
-                        (Variable "priority"))))
-        ))))
+(DefinedPredicate "Delete face transition-priority")
+(Lambda
+(TypedVariable
+(Variable "del-face-id")
+(Type "NumberNode"))
+(True (Put
+(Delete
+(State
+(List
+(Concept "transition-priority")
+(Variable "face-id"))
+(Variable "priority")))
+(Get
+(VariableList
+(TypedVariable (Variable "face-id") (Type "NumberNode"))
+(TypedVariable (Variable "priority") (Type "NumberNode")))
+(And
+(Identical (Variable "del-face-id") (Variable "face-id"))
+(State
+(List
+(Concept "transition-priority")
+(Variable "face-id"))
+(Variable "priority"))))
+))))
 (define (delete-transition-priority! face-id)
-     (cog-evaluate! (PutLink
-         (DefinedPredicate "Delete face transition-priority")
-         (Number face-id)))
+(cog-evaluate! (PutLink
+(DefinedPredicate "Delete face transition-priority")
+(Number face-id)))
 )
 (Define
-    (DefinedPredicate "Update face transition-priorities")
-    (SequentialAnd
-        (True (Put
-            (Evaluation
-                (GroundedPredicate "scm: calculate-and-set-transition-priority")
-                (List (Variable "face-id")))
-            (DefinedSchema "Get acknowledged faces")))
-    ))
+(DefinedPredicate "Update face transition-priorities")
+(SequentialAnd
+(True (Put
+(Evaluation
+(GroundedPredicate "scm: calculate-and-set-transition-priority")
+(List (Variable "face-id")))
+(DefinedSchema "Get acknowledged faces")))
+))
 (define (calculate-and-set-transition-priority face-id-node)
 "
-  Returns a NumberNode for the transition-priority of the face-id-node.
+Returns a NumberNode for the transition-priority of the face-id-node.
 "
-    (let* ((current-face-id (cog-number (gar
-                (cog-execute!
-                    (DefinedSchema "Current interaction target")))))
-           (face-id (cog-number face-id-node)))
-        (if (equal? 0.0 current-face-id)
-            (set-transition-priority! face-id ordinary-face-priority)
-            (set-transition-priority! face-id
-                (transition-priority face-id current-face-id))
-        )
-    )
+(let* ((current-face-id (cog-number (gar
+(cog-execute!
+(DefinedSchema "Current interaction target")))))
+(face-id (cog-number face-id-node)))
+(if (equal? 0.0 current-face-id)
+(set-transition-priority! face-id ordinary-face-priority)
+(set-transition-priority! face-id
+(transition-priority face-id current-face-id))
+)
+)
 )
 (Define
-    (DefinedSchema "Select face by priority")
-    (ExecutionOutput
-        (GroundedSchema "scm: choose-next-face")
-        (List)))
+(DefinedSchema "Select face by priority")
+(ExecutionOutput
+(GroundedSchema "scm: choose-next-face")
+(List)))
 (define-public (choose-next-face)
 "
-  Returns the face-id Node with the highest (* priority transition-priority)
-  from among the faces that are not being interacted with.
+Returns the face-id Node with the highest (* priority transition-priority)
+from among the faces that are not being interacted with.
 "
-    (define (get-maximum lst)
-        (fold (lambda (prev next) (if (> prev next) prev next)) 0 lst))
-    (define (weighted-priority x)
-        (let ((p (get-priority! x))
-              (tp (get-transition-priority! x)))
-            (* p tp)
-        ))
-    (define interaction-face
-        (gar (cog-execute! (DefinedSchema "Current interaction target"))))
-    (define faces
-        (remove (lambda (x) (equal? interaction-face x)) (show-acked-faces)))
-    (if (null? faces)
-        interaction-face
-        (let* ((face-ids
-                    (par-map cog-number faces))
-               (wp (par-map (lambda (x) (weighted-priority x)) face-ids))
-               (max-wp (get-maximum wp))
-               (max-faces
-                    (remove (lambda (x) (equal? 0 x))
-                        (par-map (lambda (w f) (if (equal? w max-wp) f 0))
-                            wp faces))))
-            (list-ref max-faces
-                    (random (length max-faces) (random-state-from-platform)))
-        )
-    )
+(define (get-maximum lst)
+(fold (lambda (prev next) (if (> prev next) prev next)) 0 lst))
+(define (weighted-priority x)
+(let ((p (get-priority! x))
+(tp (get-transition-priority! x)))
+(* p tp)
+))
+(define interaction-face
+(gar (cog-execute! (DefinedSchema "Current interaction target"))))
+(define faces
+(remove (lambda (x) (equal? interaction-face x)) (show-acked-faces)))
+(if (null? faces)
+interaction-face
+(let* ((face-ids
+(par-map cog-number faces))
+(wp (par-map (lambda (x) (weighted-priority x)) face-ids))
+(max-wp (get-maximum wp))
+(max-faces
+(remove (lambda (x) (equal? 0 x))
+(par-map (lambda (w f) (if (equal? w max-wp) f 0))
+wp faces))))
+(list-ref max-faces
+(random (length max-faces) (random-state-from-platform)))
+)
+)
 )
 (DefineLink
-	(DefinedPredicate "Change interaction target by priority")
-	(SequentialAnd
-        (DefinedPredicate "Update face transition-priorities")
-		(True (Put
-			(StateLink request-eye-contact-state (VariableNode "$fid"))
-			(DefinedSchema "Select face by priority")))
-		(Evaluation (GroundedPredicate "scm: print-msg")
-			(ListLink (Node "Requested new interaction")))
-	))
+(DefinedPredicate "Change interaction target by priority")
+(SequentialAnd
+(DefinedPredicate "Update face transition-priorities")
+(True (Put
+(StateLink request-eye-contact-state (VariableNode "$fid"))
+(DefinedSchema "Select face by priority")))
+(Evaluation (GroundedPredicate "scm: print-msg")
+(ListLink (Node "Requested new interaction")))
+))
 (Define
-    (DefinedPredicate "Has person being intracted with changed?")
-    (SequentialOr
-        (Not (Equal
-            (GetLink
-                (TypedVariable (Variable "value") (Type "NumberNode"))
-                (State prev-interaction-state (Variable "value")))
-            (DefinedSchema "Current interaction target")))
-    ))
+(DefinedPredicate "Has person being intracted with changed?")
+(SequentialOr
+(Not (Equal
+(GetLink
+(TypedVariable (Variable "value") (Type "NumberNode"))
+(State prev-interaction-state (Variable "value")))
+(DefinedSchema "Current interaction target")))
+))
 (Define
-    (DefinedSchema "Set previous interaction value")
-    (Lambda
-        (TypedVariable (Variable "value") (Type "NumberNode"))
-        (State prev-interaction-state (Variable "value"))
-    ))
+(DefinedSchema "Set previous interaction value")
+(Lambda
+(TypedVariable (Variable "value") (Type "NumberNode"))
+(State prev-interaction-state (Variable "value"))
+))

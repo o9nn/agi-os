@@ -10,27 +10,27 @@ typedef struct Text Text;
 struct Text
 {
 Control;
-int		border;
-int		topline;
-int		scroll;
-int		nvis;
-int		lastbut;
-CFont	*font;
-CImage	*image;
-CImage	*textcolor;
-CImage	*bordercolor;
-CImage	*selectcolor;
-CImage	*selectingcolor;
-Rune		**line;
-int		selectmode;
-int		selectstyle;
-uchar	*selected;
-int		nline;
-int		warp;
-int		align;
-int		sel;
-int		but;
-int		offsel;
+int border;
+int topline;
+int scroll;
+int nvis;
+int lastbut;
+CFont *font;
+CImage *image;
+CImage *textcolor;
+CImage *bordercolor;
+CImage *selectcolor;
+CImage *selectingcolor;
+Rune **line;
+int selectmode;
+int selectstyle;
+uchar *selected;
+int nline;
+int warp;
+int align;
+int sel;
+int but;
+int offsel;
 };
 enum
 {
@@ -68,38 +68,38 @@ EValue,
 EWarp,
 };
 static char *cmds[] = {
-[EAccumulate] =	"accumulate",
-[EAdd] =			"add",
-[EAlign] =			"align",
-[EBorder] =		"border",
-[EBordercolor] =	"bordercolor",
-[EClear] =			"clear",
-[EDelete] =		"delete",
-[EFocus] = 		"focus",
-[EFont] =			"font",
-[EHide] =			"hide",
-[EImage] =		"image",
-[ERect] =			"rect",
-[EReplace] =		"replace",
-[EReveal] =		"reveal",
-[EScroll] =			"scroll",
-[ESelect] =		"select",
-[ESelectcolor] =	"selectcolor",
-[ESelectingcolor] =	"selectingcolor",
-[ESelectmode] =	"selectmode",
-[ESelectstyle] =		"selectstyle",
-[EShow] =			"show",
-[ESize] =			"size",
-[ETextcolor] =		"textcolor",
-[ETopline] =		"topline",
-[EValue] =			"value",
-[EWarp] =			"warp",
+[EAccumulate] = "accumulate",
+[EAdd] = "add",
+[EAlign] = "align",
+[EBorder] = "border",
+[EBordercolor] = "bordercolor",
+[EClear] = "clear",
+[EDelete] = "delete",
+[EFocus] = "focus",
+[EFont] = "font",
+[EHide] = "hide",
+[EImage] = "image",
+[ERect] = "rect",
+[EReplace] = "replace",
+[EReveal] = "reveal",
+[EScroll] = "scroll",
+[ESelect] = "select",
+[ESelectcolor] = "selectcolor",
+[ESelectingcolor] = "selectingcolor",
+[ESelectmode] = "selectmode",
+[ESelectstyle] = "selectstyle",
+[EShow] = "show",
+[ESize] = "size",
+[ETextcolor] = "textcolor",
+[ETopline] = "topline",
+[EValue] = "value",
+[EWarp] = "warp",
 nil
 };
-static void	textshow(Text*);
-static void	texttogglei(Text*, int);
-static int	textline(Text*, Point);
-static int	texttoggle(Text*, Point);
+static void textshow(Text*);
+static void texttogglei(Text*, int);
+static int textline(Text*, Point);
+static int texttoggle(Text*, Point);
 static void
 textmouse(Control *c, Mouse *m)
 {
@@ -136,7 +136,7 @@ t->name, sel, t->selected[sel] ? (m->buttons & 7) : 0);
 if (debug) fprint(2, "textmouse Selup no event yet %q: select %d %d\n",
 t->name, sel, t->selected[sel] ? (m->buttons & 7) : 0);
 t->sel = sel;
-t->but =  t->selected[sel] ? (m->buttons & 7) : 0;
+t->but = t->selected[sel] ? (m->buttons & 7) : 0;
 }
 }
 } else if (t->selectstyle == Selup) {
@@ -148,7 +148,7 @@ t->name, sel, t->but);
 if (debug) fprint(2, "textmouse Selup event %q: select %d %d\n",
 t->name, sel, t->but);
 } else if (sel != t->sel) {
-if  ((t->selected[t->sel] && t->but) ||
+if ((t->selected[t->sel] && t->but) ||
 ((!t->selected[t->sel]) && (!t->but))) {
 texttogglei(t, t->sel);
 } else {
@@ -439,7 +439,7 @@ _ctlargcount(t, cp, 2);
 i = cp->iargs[1];
 if(i <0 || i>=t->nline)
 ctlerror("%q: selection index out of range (nline %d): %s", t->name, t->nline, cp->str);
-if(i < t->topline || i >=  t->topline+t->nvis){
+if(i < t->topline || i >= t->topline+t->nvis){
 t->topline = i;
 }
 t->warp = cp->iargs[1];

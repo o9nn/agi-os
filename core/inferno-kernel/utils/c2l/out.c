@@ -1,6 +1,6 @@
 #include "cc.h"
-#define INCREMENT 	8
-#define DEVNULL	"/dev/null"
+#define INCREMENT 8
+#define DEVNULL "/dev/null"
 static int indent = 0;
 static int fd = -1;
 static int nf = 0;
@@ -486,18 +486,18 @@ buf[i++] = hex((c>>0)&0xf);
 else{
 e = 0;
 switch(c){
-case '\n':	e = 'n'; break;
-case '\t':	e = 't'; break;
-case '\b':	e = 'b'; break;
-case '\r':	e = 'r'; break;
-case '\f':	e = 'f'; break;
-case '\a':	e = 'a'; break;
-case '\v':	e = 'v'; break;
+case '\n': e = 'n'; break;
+case '\t': e = 't'; break;
+case '\b': e = 'b'; break;
+case '\r': e = 'r'; break;
+case '\f': e = 'f'; break;
+case '\a': e = 'a'; break;
+case '\v': e = 'v'; break;
 case '"':	if(!quote) e = '"'; break;
-case '\'':	if(quote) e = '\''; break;
-case '\\':	e = '\\'; break;
-case '%':	buf[i++] = c; break;
-case 0:	e = '0'; if(strings) prcom("nul byte in string ?", Z); break;
+case '\'': if(quote) e = '\''; break;
+case '\\': e = '\\'; break;
+case '%': buf[i++] = c; break;
+case 0: e = '0'; if(strings) prcom("nul byte in string ?", Z); break;
 }
 if(e != 0){
 buf[i++] = '\\';

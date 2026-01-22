@@ -125,7 +125,7 @@ std::getline(std::cin, user);
 if (user.empty()) {
 break;
 }
-const char * tmpl = llama_model_chat_template(model,  nullptr);
+const char * tmpl = llama_model_chat_template(model, nullptr);
 messages.push_back({"user", strdup(user.c_str())});
 int new_len = llama_chat_apply_template(tmpl, messages.data(), messages.size(), true, formatted.data(), formatted.size());
 if (new_len > (int)formatted.size()) {

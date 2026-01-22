@@ -2,17 +2,17 @@
 #ifdef TARGA_SUPPORTED
 #ifdef HAVE_UNSIGNED_CHAR
 typedef unsigned char U_CHAR;
-#define UCH(x)	((int) (x))
+#define UCH(x) ((int) (x))
 #else
 #ifdef CHAR_IS_UNSIGNED
 typedef char U_CHAR;
-#define UCH(x)	((int) (x))
+#define UCH(x) ((int) (x))
 #else
 typedef char U_CHAR;
-#define UCH(x)	((int) (x) & 0xFF)
+#define UCH(x) ((int) (x) & 0xFF)
 #endif
 #endif
-#define	ReadOK(file,buffer,len)	(JFREAD(file,buffer,len) == ((size_t) (len)))
+#define ReadOK(file,buffer,len) (JFREAD(file,buffer,len) == ((size_t) (len)))
 typedef struct _tga_source_struct * tga_source_ptr;
 typedef struct _tga_source_struct {
 struct cjpeg_source_struct pub;
@@ -29,8 +29,8 @@ JMETHOD(JDIMENSION, get_pixel_rows, (j_compress_ptr cinfo,
 cjpeg_source_ptr sinfo));
 } tga_source_struct;
 static const UINT8 c5to8bits[32] = {
-0,   8,  16,  25,  33,  41,  49,  58,
-66,  74,  82,  90,  99, 107, 115, 123,
+0, 8, 16, 25, 33, 41, 49, 58,
+66, 74, 82, 90, 99, 107, 115, 123,
 132, 140, 148, 156, 165, 173, 181, 189,
 197, 206, 214, 222, 230, 239, 247, 255
 };
@@ -153,7 +153,7 @@ for (col = cinfo->image_width; col > 0; col--) {
 }
 return 1;
 }
-#define get_32bit_row  get_24bit_row
+#define get_32bit_row get_24bit_row
 METHODDEF(JDIMENSION)
 get_memory_row (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
 {
@@ -196,7 +196,7 @@ U_CHAR targaheader[18];
 int idlen, cmaptype, subtype, flags, interlace_type, components;
 unsigned int width, height, maplen;
 boolean is_bottom_up;
-#define GET_2B(offset)	((unsigned int) UCH(targaheader[offset]) + \
+#define GET_2B(offset) ((unsigned int) UCH(targaheader[offset]) + \
 (((unsigned int) UCH(targaheader[offset+1])) << 8))
 if (! ReadOK(source->pub.input_file, targaheader, 18))
 ERREXIT(cinfo, JERR_INPUT_EOF);

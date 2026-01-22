@@ -46,14 +46,14 @@ utils->debug(sprint("%d\n", fb.nrune));
 }
 # debugcheck(f : ref Frame, n : int)
 # {
-# 	if (f.nchars != xfrstrlen(f, 0)) {
-#		utils->debug(sprint("%d : bad frame nchars\n", n));
-#		frdump(f);
-#		berror("");
-#	}
+# if (f.nchars != xfrstrlen(f, 0)) {
+# utils->debug(sprint("%d : bad frame nchars\n", n));
+# frdump(f);
+# berror("");
 # }
-xfraddbox(f : ref Frame, bn : int, n : int)		# add n boxes after bn, shift the rest up,
-#  * box[bn+n]==box[bn]
+# }
+xfraddbox(f : ref Frame, bn : int, n : int) # add n boxes after bn, shift the rest up,
+# * box[bn+n]==box[bn]
 {
 i : int;
 if(bn > f.nbox)
@@ -70,7 +70,7 @@ if (bn < f.nbox)
 *f.box[bn+n] = *f.box[bn];
 f.nbox+=n;
 }
-xfrclosebox(f : ref Frame, n0 : int, n1 : int)	# inclusive
+xfrclosebox(f : ref Frame, n0 : int, n1 : int) # inclusive
 {
 i: int;
 if(n0>=f.nbox || n1>=f.nbox || n1<n0)
@@ -83,14 +83,14 @@ f.box[i] = t;
 }
 f.nbox -= n1-n0;
 }
-xfrdelbox(f : ref Frame, n0 : int, n1 : int)		# inclusive
+xfrdelbox(f : ref Frame, n0 : int, n1 : int) # inclusive
 {
 if(n0>=f.nbox || n1>=f.nbox || n1<n0)
 berror("xfrdelbox");
 xfrfreebox(f, n0, n1);
 xfrclosebox(f, n0, n1);
 }
-xfrfreebox(f : ref Frame, n0 : int, n1 : int)		# inclusive
+xfrfreebox(f : ref Frame, n0 : int, n1 : int) # inclusive
 {
 i : int;
 if(n1<n0)
@@ -127,7 +127,7 @@ f.box[bn+1].nrune = f.box[bn].nrune;
 f.box[bn+1].ptr = f.box[bn].ptr;
 }
 }
-truncatebox(f : ref Frame, b : ref Frbox, n : int)	# drop last n chars; no allocation done
+truncatebox(f : ref Frame, b : ref Frbox, n : int) # drop last n chars; no allocation done
 {
 if(b.nrune<0 || b.nrune<n)
 berror("truncatebox");
@@ -135,7 +135,7 @@ b.nrune -= n;
 b.ptr = b.ptr[0:b.nrune];
 b.wid = strwidth(f.font, b.ptr);
 }
-chopbox(f : ref Frame, b : ref Frbox, n : int)	# drop first n chars; no allocation done
+chopbox(f : ref Frame, b : ref Frbox, n : int) # drop first n chars; no allocation done
 {
 if(b.nrune<0 || b.nrune<n)
 berror("chopbox");
@@ -149,7 +149,7 @@ dupbox(f, bn);
 truncatebox(f, f.box[bn], f.box[bn].nrune-n);
 chopbox(f, f.box[bn+1], n);
 }
-xfrmergebox(f : ref Frame, bn : int)		# merge bn and bn+1
+xfrmergebox(f : ref Frame, bn : int) # merge bn and bn+1
 {
 b0 := f.box[bn];
 b1 := f.box[bn+1];
@@ -158,15 +158,15 @@ b0.wid += b1.wid;
 b0.nrune += b1.nrune;
 xfrdelbox(f, bn+1, bn+1);
 }
-xfrfindbox(f : ref Frame, bn : int, p : int, q : int) : int	# find box containing q and put q on a box boundary
+xfrfindbox(f : ref Frame, bn : int, p : int, q : int) : int # find box containing q and put q on a box boundary
 {
 nrune : int;
 for( ; bn < f.nbox; bn++) {
 nrune = 1;
 b := f.box[bn];
 # if (b.nrune >= 0 && len b.ptr != b.nrune) {
-#	frdump(f);
-#	berror(sprint("findbox %d %d %d\n", bn, p, q));
+# frdump(f);
+# berror(sprint("findbox %d %d %d\n", bn, p, q));
 # }
 if(b.nrune >= 0)
 nrune = b.nrune;
@@ -203,12 +203,12 @@ xfrfreebox(f, n0, n1-1);
 f.modified = 1;
 #
 # Invariants:
-#  pt0 points to beginning, pt1 points to end
-#  n0 is box containing beginning of stuff being deleted
-#  n1, b are box containing beginning of stuff to be kept after deletion
+# pt0 points to beginning, pt1 points to end
+# n0 is box containing beginning of stuff being deleted
+# n1, b are box containing beginning of stuff to be kept after deletion
 # cn1 is char position of n1
 # f.p0 and f.p1 are not adjusted until after all deletion is done
-#  region between pt0 and pt1 is clear
+# region between pt0 and pt1 is clear
 #
 cn1 := p1;
 while(pt1.x!=pt0.x && n1<f.nbox){
@@ -244,7 +244,7 @@ pt1 = xfradvance(f, pt1, b);
 pt0.x += xfrnewwid(f, pt0, b);
 *f.box[n0++] = *f.box[n1++];
 }
-if(n1==f.nbox && pt0.x!=pt1.x)	# deleting last thing in window; must clean up
+if(n1==f.nbox && pt0.x!=pt1.x) # deleting last thing in window; must clean up
 frselectpaint(f, pt0, pt1, f.cols[BACK]);
 if(pt1.y != pt0.y){
 pt2 : Point;
@@ -347,13 +347,13 @@ if(pt.y > qt.y)
 draw(f.b, (qt, (f.r.max.x, pt.y)), back, nil, qt);
 }
 ptr = b.ptr;
-if(p < p0){		# beginning of region: advance into box
+if(p < p0){ # beginning of region: advance into box
 ptr = ptr[p0-p:];
 nr -= (p0-p);
 p = p0;
 }
 trim = 0;
-if(p+nr > p1){	# end of region: trim box
+if(p+nr > p1){ # end of region: trim box
 nr -= (p+nr)-p1;
 trim = 1;
 }
@@ -371,7 +371,7 @@ pt.x += w;
 p += nr;
 }
 # if this is end of last plain text box on wrapped line, fill to end of line
-if(p1>p0 &&  nb>0 && nb<f.nbox && f.box[nb-1].nrune>0 && !trim){
+if(p1>p0 && nb>0 && nb<f.nbox && f.box[nb-1].nrune>0 && !trim){
 qt = pt;
 pt = xfrcklinewrap(f, pt, f.box[nb]);
 if(pt.y > qt.y)
@@ -383,7 +383,7 @@ frtick(f : ref Frame, pt : Point, ticked : int)
 r : Rect;
 if(f.ticked==ticked || f.tick==nil || !pt.in(f.r))
 return;
-pt.x--;	# looks best just left of where requested
+pt.x--; # looks best just left of where requested
 r = (pt, (pt.x+FRTICKW, pt.y+f.font.height));
 if(ticked){
 draw(f.tickback, f.tickback.r, f.b, nil, pt);
@@ -554,7 +554,7 @@ if(c=='\t' || c=='\n')
 break;
 if(nr+1 >= TMPSIZE)
 break;
-if ((cw := charwidth(frame.font, c)) == 0) {	# used to be only for c == 0
+if ((cw := charwidth(frame.font, c)) == 0) { # used to be only for c == 0
 c = frame.noglyph;
 cw = charwidth(frame.font, c);
 nul = 1;
@@ -597,7 +597,7 @@ pt = xfradvance(f, pt, b);
 }
 f.nchars = p;
 f.nlines = f.maxlines;
-if (nb < f.nbox)				# BUG
+if (nb < f.nbox) # BUG
 xfrdelbox(f, nb, f.nbox-1);
 }
 frinsert(f : ref Frame, rp : string, l : int, p0 : int)
@@ -618,7 +618,7 @@ ppt0 = pt0;
 ppt1 = pt1;
 if(n0 < f.nbox){
 b := f.box[n0];
-pt0 = xfrcklinewrap(f, pt0, b);	# for frdrawsel()
+pt0 = xfrcklinewrap(f, pt0, b); # for frdrawsel()
 ppt1 = xfrcklinewrap0(f, ppt1, b);
 }
 f.modified = 1;
@@ -632,8 +632,8 @@ frtick(f, frptofchar(f, f.p0), 0);
 #
 # Find point where old and new x's line up
 # Invariants:
-#	pt0 is where the next box (b, n0) is now
-#	pt1 is where it will be after then insertion
+# pt0 is where the next box (b, n0) is now
+# pt1 is where it will be after then insertion
 # If pt1 goes off the rectangle, we can toss everything from there on
 #
 for(npts=0; pt1.x!= pt0.x && pt1.y!=f.r.max.y && n0<f.nbox; npts++){
@@ -701,7 +701,7 @@ draw(f.b, r, f.b, nil, pt0);
 }
 }
 #
-# Move the old stuff down to make room.  The loop will move the stuff
+# Move the old stuff down to make room. The loop will move the stuff
 # between the insertion and the point where the x's lined up.
 # The draws above moved everything down after the point they lined up.
 #
@@ -717,13 +717,13 @@ r.max = r.min;
 r.max.x += b.wid;
 r.max.y += f.font.height;
 draw(f.b, r, f.b, nil, pts[npts].pt0);
-if(pt.y < y){	# clear bit hanging off right
+if(pt.y < y){ # clear bit hanging off right
 r.min = pt;
 r.max = pt;
 r.min.x += b.wid;
 r.max.x = f.r.max.x;
 r.max.y += f.font.height;
-if(f.p0<=cn0 && cn0<f.p1)	# b+1 is inside selection
+if(f.p0<=cn0 && cn0<f.p1) # b+1 is inside selection
 col = f.cols[HIGH];
 else
 col = f.cols[BACK];
@@ -739,7 +739,7 @@ r.max.y += f.font.height;
 if(r.max.x >= f.r.max.x)
 r.max.x = f.r.max.x;
 cn0--;
-if(f.p0<=cn0 && cn0<f.p1)	# b is inside selection
+if(f.p0<=cn0 && cn0<f.p1) # b is inside selection
 col = f.cols[HIGH];
 else
 col = f.cols[BACK];
@@ -811,7 +811,7 @@ frptofchar(f : ref Frame, p : int) : Point
 {
 return xfrptofcharptb(f, p, f.r.min, 0);
 }
-xfrptofcharnb(f : ref Frame, p : int, nb : int) : Point	# doesn't do final xfradvance to next line
+xfrptofcharnb(f : ref Frame, p : int, nb : int) : Point # doesn't do final xfradvance to next line
 {
 pt : Point;
 nbox : int;
@@ -887,7 +887,7 @@ if(a == b)
 return 0;
 return 1;
 }
-frselect(f : ref Frame, m : ref Pointer)	# when called, button 1 is down
+frselect(f : ref Frame, m : ref Pointer) # when called, button 1 is down
 {
 p0, p1, q : int;
 mp, pt0, pt1, qt : Point;
@@ -924,7 +924,7 @@ reg = region(p1, p0);
 }
 q = frcharofpt(f, m.xy);
 if(p1 != q){
-if(reg != region(q, p0)){	# crossed starting point; reset
+if(reg != region(q, p0)){ # crossed starting point; reset
 if(reg > 0)
 frdrawsel(f, pt0, p0, p1, 0);
 else if(reg < 0)
@@ -1071,7 +1071,7 @@ if(x-pt.x<b.minwid || x>c)
 x = pt.x+b.minwid;
 return x-pt.x;
 }
-xfrclean(f : ref Frame, pt : Point, n0 : int, n1 : int)	# look for mergeable boxes
+xfrclean(f : ref Frame, pt : Point, n0 : int, n1 : int) # look for mergeable boxes
 {
 nb, c : int;
 c = f.r.max.x;

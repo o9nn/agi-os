@@ -20,34 +20,34 @@ MAXcon=1932,
 Ncon=88,
 Npatch=92053,
 };
-char		ngctype[NNGCrec];
-Mindexrec	mindex[NMrec];
-Namerec		name[NName];
-Bayerec		bayer[NBayer];
-long		con[MAXcon];
-ushort		conindex[Ncon+1];
-long		patchaddr[Npatch+1];
-Record	*rec;
-Record	*orec;
-Record	*cur;
-char	*dir=DIR;
-int	saodb;
-int	ngcdb;
-int	abelldb;
-int	ngctypedb;
-int	mindexdb;
-int	namedb;
-int	bayerdb;
-int	condb;
-int	conindexdb;
-int	patchdb;
-char	parsed[3];
-long	nrec;
-long	nreca;
-long	norec;
-long	noreca;
-Biobuf	bin;
-Biobuf	bout;
+char ngctype[NNGCrec];
+Mindexrec mindex[NMrec];
+Namerec name[NName];
+Bayerec bayer[NBayer];
+long con[MAXcon];
+ushort conindex[Ncon+1];
+long patchaddr[Npatch+1];
+Record *rec;
+Record *orec;
+Record *cur;
+char *dir=DIR;
+int saodb;
+int ngcdb;
+int abelldb;
+int ngctypedb;
+int mindexdb;
+int namedb;
+int bayerdb;
+int condb;
+int conindexdb;
+int patchdb;
+char parsed[3];
+long nrec;
+long nreca;
+long norec;
+long noreca;
+Biobuf bin;
+Biobuf bout;
 main(int argc, char *argv[])
 {
 char *line;
@@ -500,7 +500,7 @@ for(;;){
 if(s[0] == '>'){
 dogrtr = 1;
 mgrtr = 10 * strtod(s+1, &t);
-if(mgrtr==0  && t==s+1){
+if(mgrtr==0 && t==s+1){
 fprint(2, "bad magnitude\n");
 return 0;
 }
@@ -510,7 +510,7 @@ continue;
 if(s[0] == '<'){
 doless = 1;
 mless = 10 * strtod(s+1, &t);
-if(mless==0  && t==s+1){
+if(mless==0 && t==s+1){
 fprint(2, "bad magnitude\n");
 return 0;
 }
@@ -617,7 +617,7 @@ memmove(++s, r, sizeof(Record));
 }
 nrec = (s+1)-rec;
 }
-char	greekbuf[128];
+char greekbuf[128];
 char*
 togreek(char *s)
 {
@@ -1194,21 +1194,21 @@ return;
 }
 char *ngctypes[] =
 {
-[Galaxy] 		"Gx",
-[PlanetaryN]	"Pl",
-[OpenCl]		"OC",
-[GlobularCl]	"Gb",
-[DiffuseN]		"Nb",
-[NebularCl]	"C+N",
-[Asterism]		"Ast",
-[Knot]		"Kt",
-[Triple]		"***",
-[Double]		"D*",
-[Single]		"*",
-[Uncertain]	"?",
-[Nonexistent]	"-",
-[Unknown]	" ",
-[PlateDefect]	"PD",
+[Galaxy] "Gx",
+[PlanetaryN] "Pl",
+[OpenCl] "OC",
+[GlobularCl] "Gb",
+[DiffuseN] "Nb",
+[NebularCl] "C+N",
+[Asterism] "Ast",
+[Knot] "Kt",
+[Triple] "***",
+[Double] "D*",
+[Single] "*",
+[Uncertain] "?",
+[Nonexistent] "-",
+[Unknown] " ",
+[PlateDefect] "PD",
 };
 char*
 ngcstring(int d)
@@ -1217,7 +1217,7 @@ if(d<Galaxy || d>PlateDefect)
 return "can't happen";
 return ngctypes[d];
 }
-short	descindex[NINDEX];
+short descindex[NINDEX];
 void
 printnames(Record *r)
 {

@@ -6,38 +6,38 @@
 #include <omp.h>
 #endif
 namespace {
-#define AT_DISPATCH_BOOL(BOOL_V, BOOL_NAME, ...)                                 \
-[&] {                                                                          \
-if (BOOL_V) {                                                                \
-constexpr bool BOOL_NAME = true;                                           \
-return __VA_ARGS__();                                                      \
-} else {                                                                     \
-constexpr bool BOOL_NAME = false;                                          \
-return __VA_ARGS__();                                                      \
-}                                                                            \
+#define AT_DISPATCH_BOOL(BOOL_V, BOOL_NAME, ...) \
+[&] { \
+if (BOOL_V) { \
+constexpr bool BOOL_NAME = true; \
+return __VA_ARGS__(); \
+} else { \
+constexpr bool BOOL_NAME = false; \
+return __VA_ARGS__(); \
+} \
 }()
-#define CPU_DISPATCH_PACKED_TYPES(TYPE, ...)                                    \
-[&] {                                                                         \
-switch (TYPE) {                                                             \
-case at::ScalarType::BFloat16 : {                                         \
-using packed_t = at::BFloat16;                                          \
-return __VA_ARGS__();                                                   \
-}                                                                         \
-case at::ScalarType::Half: {                                              \
-using packed_t = at::Half;                                              \
-return __VA_ARGS__();                                                   \
-}                                                                         \
-case at::ScalarType::Char : {                                             \
-using packed_t = int8_t;                                                \
-return __VA_ARGS__();                                                   \
-}                                                                         \
-case at::ScalarType::Float8_e4m3fn : {                                    \
-using packed_t = at::Float8_e4m3fn;                                     \
-return __VA_ARGS__();                                                   \
-}                                                                         \
-default:                                                                  \
-TORCH_CHECK(false, "Unsupported floating data type.\n");                \
-}                                                                           \
+#define CPU_DISPATCH_PACKED_TYPES(TYPE, ...) \
+[&] { \
+switch (TYPE) { \
+case at::ScalarType::BFloat16 : { \
+using packed_t = at::BFloat16; \
+return __VA_ARGS__(); \
+} \
+case at::ScalarType::Half: { \
+using packed_t = at::Half; \
+return __VA_ARGS__(); \
+} \
+case at::ScalarType::Char : { \
+using packed_t = int8_t; \
+return __VA_ARGS__(); \
+} \
+case at::ScalarType::Float8_e4m3fn : { \
+using packed_t = at::Float8_e4m3fn; \
+return __VA_ARGS__(); \
+} \
+default: \
+TORCH_CHECK(false, "Unsupported floating data type.\n"); \
+} \
 }()
 #define UNUSED(x) (void)(x)
 #define CHECK_CPU(x) TORCH_CHECK(x.device().type() == at::kCPU, #x " must be a CPU tensor")
@@ -45,10 +45,10 @@ TORCH_CHECK(false, "Unsupported floating data type.\n");                \
 #define CHECK_LAST_DIM_CONTIGUOUS(x) \
 TORCH_CHECK(x.strides()[x.strides().size() - 1] == 1, #x "must be contiguous at last dimension")
 #define CHECK_INPUT(x) \
-CHECK_CPU(x);        \
+CHECK_CPU(x); \
 CHECK_CONTIGUOUS(x)
 #define CHECK_LAST_DIM_CONTIGUOUS_INPUT(x) \
-CHECK_CPU(x);                            \
+CHECK_CPU(x); \
 CHECK_LAST_DIM_CONTIGUOUS(x)
 #define CHECK_DIM(d, x) TORCH_CHECK(x.dim() == d, #x " must be a " #d "D tensor")
 #define CHECK_EQ(a, b) TORCH_CHECK((a) == (b), "CHECK_EQ(" #a ", " #b ") failed. ", a, " vs ", b)

@@ -85,15 +85,15 @@ const float expected_downscale_nearest[] = {
 1.0f, 3.0f
 };
 const float expected_downscale_bilinear[] = {
-0.1667f, -0.3750f,  0.7500f,
-1.7917f,  1.8750f,  1.7500f,
-1.3750f,  2.3750f,  3.3750f,
--0.5000f, -0.2500f,  2.5000f
+0.1667f, -0.3750f, 0.7500f,
+1.7917f, 1.8750f, 1.7500f,
+1.3750f, 2.3750f, 3.3750f,
+-0.5000f, -0.2500f, 2.5000f
 };
 const float expected_downscale_bilinear_align_corners[] = {
 0.0f , -1.5f, 0.0f,
-2.0f ,  1.5f, 1.0f,
-1.0f ,  2.5f, 4.0f,
+2.0f , 1.5f, 1.0f,
+1.0f , 2.5f, 4.0f,
 -2.0f, -1.0f, 4.0f
 };
 int main() {

@@ -157,7 +157,7 @@ Container& _c;
 template<typename Container>
 insert_output_iterator<Container> inserter(Container& c)
 {
-return   insert_output_iterator<Container>(c);
+return insert_output_iterator<Container>(c);
 }
 template<typename ResultType>
 struct nullary_function {

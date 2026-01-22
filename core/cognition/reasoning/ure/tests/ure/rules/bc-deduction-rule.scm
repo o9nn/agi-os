@@ -1,35 +1,35 @@
 (define bc-deduction-rule
-  (let* ((A (Variable "$A"))
-         (B (Variable "$B"))
-         (C (Variable "$C"))
-         (AB (Inheritance A B))
-         (BC (Inheritance B C))
-         (AC (Inheritance A C))
-         (Concept (Type "ConceptNode"))
-         (vardecl (VariableSet
-                     (TypedVariable A Concept)
-                     (TypedVariable B Concept)
-                     (TypedVariable C Concept)))
-         (precon1 (Evaluation (GroundedPredicate "scm-eager: true-enough") AB))
-         (precon2 (Evaluation (GroundedPredicate "scm-eager: true-enough") BC))
-         (precon3 (Not (Identical A C)))
-         (pattern (And (Present AB BC) precon1 precon2 precon3))
-         (rewrite (ExecutionOutput
-                     (GroundedSchema "scm-eager: bc-deduction")
-                     (List AC AB BC))))
-    (Bind
-       vardecl
-       pattern
-       rewrite)))
+(let* ((A (Variable "$A"))
+(B (Variable "$B"))
+(C (Variable "$C"))
+(AB (Inheritance A B))
+(BC (Inheritance B C))
+(AC (Inheritance A C))
+(Concept (Type "ConceptNode"))
+(vardecl (VariableSet
+(TypedVariable A Concept)
+(TypedVariable B Concept)
+(TypedVariable C Concept)))
+(precon1 (Evaluation (GroundedPredicate "scm-eager: true-enough") AB))
+(precon2 (Evaluation (GroundedPredicate "scm-eager: true-enough") BC))
+(precon3 (Not (Identical A C)))
+(pattern (And (Present AB BC) precon1 precon2 precon3))
+(rewrite (ExecutionOutput
+(GroundedSchema "scm-eager: bc-deduction")
+(List AC AB BC))))
+(Bind
+vardecl
+pattern
+rewrite)))
 (define (true-enough-bool a)
-  (let ((s (cog-mean a)) (c (cog-confidence a)))
-    (and (> s 0.5) (> c 0.5))))
+(let ((s (cog-mean a)) (c (cog-confidence a)))
+(and (> s 0.5) (> c 0.5))))
 (define (true-enough a)
-  (bool->tv (true-enough-bool a)))
+(bool->tv (true-enough-bool a)))
 (define (bc-deduction AC AB BC)
-  (if (and (true-enough-bool AB) (true-enough-bool BC))
-      (cog-set-tv! AC (stv 1 1))))
+(if (and (true-enough-bool AB) (true-enough-bool BC))
+(cog-set-tv! AC (stv 1 1))))
 (define bc-deduction-rule-name (DefinedSchema "bc-deduction-rule"))
 (DefineLink
-  bc-deduction-rule-name
-  bc-deduction-rule)
+bc-deduction-rule-name
+bc-deduction-rule)

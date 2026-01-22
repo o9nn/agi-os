@@ -1,5 +1,5 @@
 #ifndef gxftype_INCLUDED
-#  define gxftype_INCLUDED
+# define gxftype_INCLUDED
 typedef enum {
 ft_composite = 0,
 ft_encrypted = 1,

@@ -8,12 +8,12 @@
 #include <errno.h>
 #include <math.h>
 #include <float.h>
-#define DTESN_ATTENTION_DEFAULT_FOCUS_SIZE      256
-#define DTESN_ATTENTION_COMPETITIVE_THRESHOLD   0.1f
-#define DTESN_ATTENTION_COOPERATIVE_WEIGHT      0.8f
-#define DTESN_ATTENTION_DECAY_RATE             0.95f
-#define DTESN_ATTENTION_MIN_WEIGHT             0.001f
-#define DTESN_ATTENTION_MAX_FOCUS_HISTORY      10
+#define DTESN_ATTENTION_DEFAULT_FOCUS_SIZE 256
+#define DTESN_ATTENTION_COMPETITIVE_THRESHOLD 0.1f
+#define DTESN_ATTENTION_COOPERATIVE_WEIGHT 0.8f
+#define DTESN_ATTENTION_DECAY_RATE 0.95f
+#define DTESN_ATTENTION_MIN_WEIGHT 0.001f
+#define DTESN_ATTENTION_MAX_FOCUS_HISTORY 10
 typedef struct attention_focus_history {
 uint32_t channel_id;
 uint64_t timestamp_ns;

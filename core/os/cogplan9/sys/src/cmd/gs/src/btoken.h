@@ -1,5 +1,5 @@
 #ifndef btoken_INCLUDED
-#  define btoken_INCLUDED
+# define btoken_INCLUDED
 #define system_names_p (gs_imemory.space_global->names_array)
 #define user_names_p (gs_imemory.space_local->names_array)
 int create_names_array(ref **ppnames, gs_memory_t *mem,

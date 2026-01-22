@@ -67,7 +67,7 @@ pp->valid = 1;
 unit->npart++;
 }
 void
-sddelpart(SDunit* unit,  char* name)
+sddelpart(SDunit* unit, char* name)
 {
 int i;
 SDpart *pp;

@@ -29,13 +29,13 @@ if(j >= Nshares)
 sp->tid = Ipc.tid;
 if(RAPshareinfo(Sess, sp, sp->name, &si2) != -1){
 switch(si2.type){
-case STYPE_DISKTREE:	type = "disk"; break;
-case STYPE_PRINTQ:	type = "printq"; break;
-case STYPE_DEVICE:	type = "device"; break;
-case STYPE_IPC:		type = "ipc"; break;
-case STYPE_SPECIAL:	type = "special"; break;
-case STYPE_TEMP:	type = "temp"; break;
-default:		type = "unknown"; break;
+case STYPE_DISKTREE: type = "disk"; break;
+case STYPE_PRINTQ: type = "printq"; break;
+case STYPE_DEVICE: type = "device"; break;
+case STYPE_IPC: type = "ipc"; break;
+case STYPE_SPECIAL: type = "special"; break;
+case STYPE_TEMP: type = "temp"; break;
+default: type = "unknown"; break;
 }
 fmtprint(f, "%-8s %5d/%-5d %s", type,
 si2.activeusrs, si2.maxusrs, si2.comment);
@@ -52,7 +52,7 @@ return 0;
 int
 openfileinfo(Fmt *f)
 {
-int got,  i;
+int got, i;
 Fileinfo *fi;
 fi = nil;
 if((got = RAPFileenum2(Sess, &Ipc, "", "", &fi)) == -1){
@@ -76,34 +76,34 @@ conninfo(Fmt *f)
 {
 int i;
 typedef struct {
-int	val;
-char	*name;
+int val;
+char *name;
 } Tab;
 static Tab captab[] = {
-{ 1,		"raw-mode" },
-{ 2,		"mpx-mode" },
-{ 4,		"unicode" },
-{ 8,		"large-files" },
-{ 0x10,		"NT-smbs" },
-{ 0x20,		"rpc-remote-APIs" },
-{ 0x40,		"status32" },
-{ 0x80,		"l2-oplocks" },
-{ 0x100,	"lock-read" },
-{ 0x200,	"NT-find" },
-{ 0x1000,	"Dfs" },
-{ 0x2000,	"info-passthru" },
-{ 0x4000,	"large-readx" },
-{ 0x8000,	"large-writex" },
-{ 0x800000,	"Unix" },
-{ 0x20000000,	"bulk-transfer" },
-{ 0x40000000,	"compressed" },
-{ 0x80000000,	"extended-security" },
+{ 1, "raw-mode" },
+{ 2, "mpx-mode" },
+{ 4, "unicode" },
+{ 8, "large-files" },
+{ 0x10, "NT-smbs" },
+{ 0x20, "rpc-remote-APIs" },
+{ 0x40, "status32" },
+{ 0x80, "l2-oplocks" },
+{ 0x100, "lock-read" },
+{ 0x200, "NT-find" },
+{ 0x1000, "Dfs" },
+{ 0x2000, "info-passthru" },
+{ 0x4000, "large-readx" },
+{ 0x8000, "large-writex" },
+{ 0x800000, "Unix" },
+{ 0x20000000, "bulk-transfer" },
+{ 0x40000000, "compressed" },
+{ 0x80000000, "extended-security" },
 };
 static Tab sectab[] = {
-{ 1,		"user-auth" },
-{ 2,		"challange-response" },
-{ 4,		"signing-available" },
-{ 8,		"signing-required" },
+{ 1, "user-auth" },
+{ 2, "challange-response" },
+{ 4, "signing-available" },
+{ 8, "signing-required" },
 };
 fmtprint(f, "%q %q %q %q %+ldsec %dmtu %s\n",
 Sess->auth->user, Sess->cname,
@@ -128,7 +128,7 @@ return 0;
 int
 sessioninfo(Fmt *f)
 {
-int got,  i;
+int got, i;
 Sessinfo *si;
 si = nil;
 if((got = RAPsessionenum(Sess, &Ipc, &si)) == -1){
@@ -227,35 +227,35 @@ nodelist(Fmt *f, int type)
 int more, got, i, j;
 Serverinfo *si;
 static char *types[] = {
-[0]	"workstation",
-[1]	"server",
-[2]	"SQL server",
-[3]	"DC",
-[4]	"backup DC",
-[5]	"time source",
-[6]	"Apple server",
-[7]	"Novell server",
-[8]	"domain member",
-[9]	"printer server",
-[10]	"dial-up server",
-[11]	"Unix",
-[12]	"NT",
-[13]	"WFW",
-[14]	"MFPN (?)",
-[15]	"NT server",
-[16]	"potential browser",
-[17]	"backup browser",
-[18]	"LMB",
-[19]	"DMB",
-[20]	"OSF Unix",
-[21]	"VMS",
-[22]	"Win95",
-[23]	"DFS",
-[24]	"NT cluster",
-[25]	"Terminal server",
-[26]	"[26]",
-[27]	"[27]",
-[28]	"IBM DSS",
+[0] "workstation",
+[1] "server",
+[2] "SQL server",
+[3] "DC",
+[4] "backup DC",
+[5] "time source",
+[6] "Apple server",
+[7] "Novell server",
+[8] "domain member",
+[9] "printer server",
+[10] "dial-up server",
+[11] "Unix",
+[12] "NT",
+[13] "WFW",
+[14] "MFPN (?)",
+[15] "NT server",
+[16] "potential browser",
+[17] "backup browser",
+[18] "LMB",
+[19] "DMB",
+[20] "OSF Unix",
+[21] "VMS",
+[22] "Win95",
+[23] "DFS",
+[24] "NT cluster",
+[25] "Terminal server",
+[26] "[26]",
+[27] "[27]",
+[28] "IBM DSS",
 };
 si = nil;
 if((got = RAPServerenum2(Sess, &Ipc, Sess->auth->windom, type, &more,
@@ -299,11 +299,11 @@ period(long sec)
 {
 int days, hrs, min;
 static char when[32];
-days = sec  / (60L * 60L * 24L);
+days = sec / (60L * 60L * 24L);
 sec -= days * (60L * 60L * 24L);
-hrs  = sec / (60L * 60L);
+hrs = sec / (60L * 60L);
 sec -= hrs * (60L * 60L);
-min  = sec / 60L;
+min = sec / 60L;
 sec -= min * 60L;
 if(days)
 snprint(when, sizeof(when), "%d %d:%d:%ld ", days, hrs, min, sec);

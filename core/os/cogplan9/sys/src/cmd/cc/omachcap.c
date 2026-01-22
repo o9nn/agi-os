@@ -1,8 +1,6 @@
-#include	"cc.h"
-
-/* default, like old cc */
+#include "cc.h"
 int
 machcap(Node*)
 {
-	return 0;
+return 0;
 }

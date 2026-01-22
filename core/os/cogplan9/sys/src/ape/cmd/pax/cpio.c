@@ -4,21 +4,21 @@ static char *copyright = "Copyright (c) 1989 Mark H. Colburn.\nAll rights reserv
 #endif
 #include "pax.h"
 #ifdef __STDC__
-static void 	usage(void);
+static void usage(void);
 #else
-static void 	usage();
+static void usage();
 #endif
 #ifdef __STDC__
 int do_cpio(int argc, char **argv)
 #else
 int do_cpio(argc, argv)
-int             argc;
-char          **argv;
+int argc;
+char **argv;
 #endif
 {
-int             c;
-char           *dirname;
-Stat            st;
+int c;
+char *dirname;
+Stat st;
 ar_file = "-";
 names_from_stdin = 1;
 blocksize = BLOCKSIZE;

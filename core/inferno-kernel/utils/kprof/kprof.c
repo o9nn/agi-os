@@ -14,8 +14,8 @@ int pcres = 8;
 ulong uspertick;
 struct COUNTER
 {
-char 	*name;
-ulong	time;
+char *name;
+ulong time;
 };
 void
 error(int perr, char *s)

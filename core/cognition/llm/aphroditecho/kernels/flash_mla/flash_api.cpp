@@ -5,7 +5,7 @@
 #include "flash_mla.h"
 #include "static_switch.h"
 #define CHECK_DEVICE(x) TORCH_CHECK(x.is_cuda(), #x " must be on CUDA")
-#define CHECK_SHAPE(x, ...)                                   \
+#define CHECK_SHAPE(x, ...) \
 TORCH_CHECK(x.sizes() == torch::IntArrayRef({__VA_ARGS__}), \
 #x " must have shape (" #__VA_ARGS__ ")")
 #define CHECK_CONTIGUOUS(x) \

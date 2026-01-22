@@ -99,7 +99,7 @@ Generate sine signal.
 - `phase`: [rad] Phase of sine wave
 - `offset`: Offset of output signal
 - `start_time`: [s] Output `y = offset` for `t < start_time`
-- `smooth`:  If `true`, returns a smooth wave. Defaults to `false`
+- `smooth`: If `true`, returns a smooth wave. Defaults to `false`
 It uses a default smoothing factor of `δ=1e-5`, but this can be changed by supplying `smooth=δ`.
 # Connectors:
 - `output`
@@ -135,7 +135,7 @@ Generate cosine signal.
 - `phase`: [rad] Phase of cosine wave
 - `offset`: Offset of output signal
 - `start_time`: [s] Output `y = offset` for `t < start_time`
-- `smooth`:  If `true`, returns a smooth wave. Defaults to `false`
+- `smooth`: If `true`, returns a smooth wave. Defaults to `false`
 It uses a default smoothing factor of `δ=1e-5`, but this can be changed by supplying `smooth=δ`.
 # Connectors:
 - `output`
@@ -186,7 +186,7 @@ Generate ramp signal.
 - `duration`: [s] Duration of ramp (= 0.0 gives a Step)
 - `offset`: Offset of output signal
 - `start_time`: [s] Output `y = offset` for `t < start_time`
-- `smooth`:  If `true`, returns a smooth wave. Defaults to `false`
+- `smooth`: If `true`, returns a smooth wave. Defaults to `false`
 It uses a default smoothing factor of `δ=1e-5`, but this can be changed by supplying `smooth=δ`.
 # Connectors:
 - `output`
@@ -221,7 +221,7 @@ Generate smooth square signal.
 - `amplitude`: Amplitude of square wave
 - `offset`: Offset of output signal
 - `start_time`: [s] Output `y = offset` for `t < start_time`
-- `smooth`:  If `true`, returns a smooth wave. Defaults to `false`
+- `smooth`: If `true`, returns a smooth wave. Defaults to `false`
 It uses a default smoothing factor of `δ=1e-5`, but this can be changed by supplying `smooth=δ`.
 # Connectors:
 - `output`
@@ -254,7 +254,7 @@ Generate step signal.
 - `offset`: Offset of output signal
 - `start_time`: [s] Output `y = offset` for `t < start_time` and thereafter `offset+height`.
 - `duration`: [s] If `duration < Inf` is supplied, the output will revert to `offset` after `duration` seconds.
-- `smooth`:  If `true`, returns a smooth wave. Defaults to `true`
+- `smooth`: If `true`, returns a smooth wave. Defaults to `true`
 It uses a default smoothing factor of `δ=1e-5`, but this can be changed by supplying `smooth=δ`.
 # Connectors:
 - `output`
@@ -292,7 +292,7 @@ Exponentially damped sine signal.
 - `phase`: [rad] Phase of sine wave
 - `offset`: Offset of output signal
 - `start_time`: [s] Output `y = offset` for `t < start_time`
-- `smooth`:  If `true`, returns a smooth wave. Defaults to `false`
+- `smooth`: If `true`, returns a smooth wave. Defaults to `false`
 It uses a default smoothing factor of `δ=1e-5`, but this can be changed by supplying `smooth=δ`.
 # Connectors:
 - `output`
@@ -330,7 +330,7 @@ Generate smooth triangular signal for frequencies less than or equal to 25 Hz
 - `amplitude`: Amplitude of square wave
 - `offset`: Offset of output signal.
 - `start_time`: [s] Output `y = offset` for `t < start_time`
-- `smooth`:  If `true`, returns a smooth wave. Defaults to `false`
+- `smooth`: If `true`, returns a smooth wave. Defaults to `false`
 It uses a default smoothing factor of `δ=1e-5`, but this can be changed by supplying `smooth=δ`.
 # Connectors:
 - `output`
@@ -356,10 +356,10 @@ output.u ~ equation
 compose(System(eqs, t, [], pars; name = name), [output])
 end
 # TODO:
-# - Exponentials    Generate a rising and falling exponential signal
-# - Pulse   Generate pulse signal of type Real
-# - SawTooth    Generate saw tooth signal
-# - Trapezoid   Generate trapezoidal signal of type Real
+# - Exponentials Generate a rising and falling exponential signal
+# - Pulse Generate pulse signal of type Real
+# - SawTooth Generate saw tooth signal
+# - Trapezoid Generate trapezoidal signal of type Real
 # SampledData Parameter struct ----------------
 struct Parameter{T <: Real}
 data::Vector{T}
@@ -523,9 +523,9 @@ end
 SampledData(; name, buffer, sample_time, circular_buffer=true)
 data input component.
 # Parameters:
-- `buffer::Vector{Real}`:  holds the data sampled at `sample_time`
+- `buffer::Vector{Real}`: holds the data sampled at `sample_time`
 - `sample_time::Real`
-- `circular_buffer::Bool = true`: how to handle `t > length(buffer)*sample_time`.  If true data is considered circular, otherwise last data point is held.
+- `circular_buffer::Bool = true`: how to handle `t > length(buffer)*sample_time`. If true data is considered circular, otherwise last data point is held.
 # Connectors:
 - `output`
 """

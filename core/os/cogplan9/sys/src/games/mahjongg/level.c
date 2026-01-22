@@ -22,7 +22,7 @@ return 0;
 }
 level.remaining = 0;
 while((c = Bgetc(b)) > 0) {
-switch(c)  {
+switch(c) {
 case '\n':
 x = 0;
 y = (y+1) % Ly;

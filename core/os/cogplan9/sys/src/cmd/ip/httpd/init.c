@@ -11,11 +11,11 @@ fprint(2, "usage: %s [-b inbuf] [-d domain] [-p localport]"
 " method version uri [search]\n", argv0);
 exits("usage");
 }
-char	*netdir;
-char	*webroot;
-char	*HTTPLOG = "httpd/log";
-static	HConnect	connect;
-static	HSPriv		priv;
+char *netdir;
+char *webroot;
+char *HTTPLOG = "httpd/log";
+static HConnect connect;
+static HSPriv priv;
 HConnect*
 init(int argc, char **argv)
 {

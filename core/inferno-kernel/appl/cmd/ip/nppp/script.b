@@ -9,7 +9,7 @@ include "modem.m";
 modem: Modem;
 Device: import modem;
 include "script.m";
-Scriptlim: con 32*1024;		# should be enough for all
+Scriptlim: con 32*1024; # should be enough for all
 init(mm: Modem): string
 {
 sys = load Sys Sys->PATH;
@@ -37,13 +37,13 @@ if(scriptinfo.timeout == 0)
 scriptinfo.timeout = 20;
 tend := sys->millisec() + 1000*scriptinfo.timeout;
 for(conv := scriptinfo.content; conv != nil; conv = tl conv){
-e, s:	string = nil;
+e, s: string = nil;
 p := hd conv;
 if(len p == 0)
 continue;
 if(m.trace)
 sys->print("script: %s\n",p);
-if(p[0] == '-') {	# just send
+if(p[0] == '-') { # just send
 if(len p == 1)
 continue;
 s = p[1:];
@@ -56,7 +56,7 @@ if(n > 1)
 s = hd esl;
 }
 }
-if(e  != nil) {
+if(e != nil) {
 if(match(m, special(e,scriptinfo), tend-sys->millisec()) == 0) {
 if(m.trace)
 sys->print("script: match failed\n");
@@ -74,7 +74,7 @@ match(m: ref Modem->Device, s: string, msec: int): int
 {
 for(;;) {
 c := m.getc(msec);
-if(c ==  '\r')
+if(c == '\r')
 c = '\n';
 if(m.trace)
 sys->print("%c",c);
@@ -98,7 +98,7 @@ i++;
 return 1;
 }
 if(c == '~')
-return 1;	# assume PPP for now
+return 1; # assume PPP for now
 }
 }
 #
@@ -106,7 +106,7 @@ return 1;	# assume PPP for now
 #
 special(s: string, scriptinfo: ref ScriptInfo): string
 {
-if(s == "$username") 					# special variable
+if(s == "$username") # special variable
 s = scriptinfo.username;
 else if(s == "$password")
 s = scriptinfo.password;
@@ -117,18 +117,18 @@ deparse(s: string): string
 r: string = "";
 for(i:=0; i < len s; i++) {
 c := s[i];
-if(c == '\\'  && i+1 < len s) {
+if(c == '\\' && i+1 < len s) {
 c = s[++i];
 case c {
-'t'	=> c = '\t';
-'n'	=> c = '\n';
-'r'	=> c = '\r';
-'b'	=> c = '\b';
-'a'	=> c = '\a';
-'v'	=> c = '\v';
-'0'	=> c = '\0';
-'$'	=> c = '$';
-'u'	=>
+'t' => c = '\t';
+'n' => c = '\n';
+'r' => c = '\r';
+'b' => c = '\b';
+'a' => c = '\a';
+'v' => c = '\v';
+'0' => c = '\0';
+'$' => c = '$';
+'u' =>
 if(i+4 < len s) {
 i++;
 (c, nil) = str->toint(s[i:i+4], 16);

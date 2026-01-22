@@ -13,7 +13,7 @@
 #endif
 #ifndef _GLIBCXX_NOTHROW
 # ifndef __cplusplus
-#  define _GLIBCXX_NOTHROW __attribute__((__nothrow__))
+# define _GLIBCXX_NOTHROW __attribute__((__nothrow__))
 # endif
 #endif
 # define _GLIBCXX_HAVE_ATTRIBUTE_VISIBILITY 1
@@ -65,52 +65,52 @@ __attribute__ ((__deprecated__ ("use '" ALT "' instead")))
 #if __cplusplus
 #ifndef _GLIBCXX_CONSTEXPR
 # if __cplusplus >= 201103L
-#  define _GLIBCXX_CONSTEXPR constexpr
-#  define _GLIBCXX_USE_CONSTEXPR constexpr
+# define _GLIBCXX_CONSTEXPR constexpr
+# define _GLIBCXX_USE_CONSTEXPR constexpr
 # else
-#  define _GLIBCXX_CONSTEXPR
-#  define _GLIBCXX_USE_CONSTEXPR const
+# define _GLIBCXX_CONSTEXPR
+# define _GLIBCXX_USE_CONSTEXPR const
 # endif
 #endif
 #ifndef _GLIBCXX14_CONSTEXPR
 # if __cplusplus >= 201402L
-#  define _GLIBCXX14_CONSTEXPR constexpr
+# define _GLIBCXX14_CONSTEXPR constexpr
 # else
-#  define _GLIBCXX14_CONSTEXPR
+# define _GLIBCXX14_CONSTEXPR
 # endif
 #endif
 #ifndef _GLIBCXX17_CONSTEXPR
 # if __cplusplus >= 201703L
-#  define _GLIBCXX17_CONSTEXPR constexpr
+# define _GLIBCXX17_CONSTEXPR constexpr
 # else
-#  define _GLIBCXX17_CONSTEXPR
+# define _GLIBCXX17_CONSTEXPR
 # endif
 #endif
 #ifndef _GLIBCXX20_CONSTEXPR
 # if __cplusplus > 201703L
-#  define _GLIBCXX20_CONSTEXPR constexpr
+# define _GLIBCXX20_CONSTEXPR constexpr
 # else
-#  define _GLIBCXX20_CONSTEXPR
+# define _GLIBCXX20_CONSTEXPR
 # endif
 #endif
 #ifndef _GLIBCXX17_INLINE
 # if __cplusplus >= 201703L
-#  define _GLIBCXX17_INLINE inline
+# define _GLIBCXX17_INLINE inline
 # else
-#  define _GLIBCXX17_INLINE
+# define _GLIBCXX17_INLINE
 # endif
 #endif
 #ifndef _GLIBCXX_NOEXCEPT
 # if __cplusplus >= 201103L
-#  define _GLIBCXX_NOEXCEPT noexcept
-#  define _GLIBCXX_NOEXCEPT_IF(...) noexcept(__VA_ARGS__)
-#  define _GLIBCXX_USE_NOEXCEPT noexcept
-#  define _GLIBCXX_THROW(_EXC)
+# define _GLIBCXX_NOEXCEPT noexcept
+# define _GLIBCXX_NOEXCEPT_IF(...) noexcept(__VA_ARGS__)
+# define _GLIBCXX_USE_NOEXCEPT noexcept
+# define _GLIBCXX_THROW(_EXC)
 # else
-#  define _GLIBCXX_NOEXCEPT
-#  define _GLIBCXX_NOEXCEPT_IF(...)
-#  define _GLIBCXX_USE_NOEXCEPT throw()
-#  define _GLIBCXX_THROW(_EXC) throw(_EXC)
+# define _GLIBCXX_NOEXCEPT
+# define _GLIBCXX_NOEXCEPT_IF(...)
+# define _GLIBCXX_USE_NOEXCEPT throw()
+# define _GLIBCXX_THROW(_EXC) throw(_EXC)
 # endif
 #endif
 #ifndef _GLIBCXX_NOTHROW
@@ -118,9 +118,9 @@ __attribute__ ((__deprecated__ ("use '" ALT "' instead")))
 #endif
 #ifndef _GLIBCXX_THROW_OR_ABORT
 # if __cpp_exceptions
-#  define _GLIBCXX_THROW_OR_ABORT(_EXC) (throw (_EXC))
+# define _GLIBCXX_THROW_OR_ABORT(_EXC) (throw (_EXC))
 # else
-#  define _GLIBCXX_THROW_OR_ABORT(_EXC) (__builtin_abort())
+# define _GLIBCXX_THROW_OR_ABORT(_EXC) (__builtin_abort())
 # endif
 #endif
 #if __cpp_noexcept_function_type
@@ -133,10 +133,10 @@ __attribute__ ((__deprecated__ ("use '" ALT "' instead")))
 # define _GLIBCXX_EXTERN_TEMPLATE 1
 namespace std
 {
-typedef __SIZE_TYPE__ 	size_t;
-typedef __PTRDIFF_TYPE__	ptrdiff_t;
+typedef __SIZE_TYPE__ size_t;
+typedef __PTRDIFF_TYPE__ ptrdiff_t;
 #if __cplusplus >= 201103L
-typedef decltype(nullptr)	nullptr_t;
+typedef decltype(nullptr) nullptr_t;
 #endif
 }
 # define _GLIBCXX_USE_DUAL_ABI 1
@@ -212,10 +212,10 @@ inline namespace __parallel { }
 # endif
 }
 # if defined(_GLIBCXX_DEBUG) && defined(_GLIBCXX_PARALLEL)
-#  error illegal use of multiple inlined namespaces
+# error illegal use of multiple inlined namespaces
 # endif
 # if __NO_INLINE__ && !__GXX_WEAK__
-#  warning currently using inlined namespace mode which may fail \
+# warning currently using inlined namespace mode which may fail \
 without inlining due to lack of weak symbols
 # endif
 #endif
@@ -289,7 +289,7 @@ inline namespace __gnu_cxx_ldbl128 { }
 #endif
 #if __has_builtin(__builtin_is_constant_evaluated)
 # define __glibcxx_constexpr_assert(cond) \
-if (__builtin_is_constant_evaluated() && !bool(cond))	\
+if (__builtin_is_constant_evaluated() && !bool(cond)) \
 __builtin_unreachable()
 #else
 # define __glibcxx_constexpr_assert(unevaluated)
@@ -308,12 +308,12 @@ __function, __condition);
 __builtin_abort();
 }
 }
-#define __glibcxx_assert_impl(_Condition)			       \
-if (__builtin_expect(!bool(_Condition), false))		       \
-{								       \
-__glibcxx_constexpr_assert(_Condition);			       \
+#define __glibcxx_assert_impl(_Condition) \
+if (__builtin_expect(!bool(_Condition), false)) \
+{ \
+__glibcxx_constexpr_assert(_Condition); \
 std::__replacement_assert(__FILE__, __LINE__, __PRETTY_FUNCTION__, \
-#_Condition);			       \
+#_Condition); \
 }
 #endif
 #if defined(_GLIBCXX_ASSERTIONS)
@@ -324,10 +324,10 @@ do { __glibcxx_assert_impl(cond); } while (false)
 do { __glibcxx_constexpr_assert(cond); } while (false)
 #endif
 #ifndef _GLIBCXX_SYNCHRONIZATION_HAPPENS_BEFORE
-# define  _GLIBCXX_SYNCHRONIZATION_HAPPENS_BEFORE(A)
+# define _GLIBCXX_SYNCHRONIZATION_HAPPENS_BEFORE(A)
 #endif
 #ifndef _GLIBCXX_SYNCHRONIZATION_HAPPENS_AFTER
-# define  _GLIBCXX_SYNCHRONIZATION_HAPPENS_AFTER(A)
+# define _GLIBCXX_SYNCHRONIZATION_HAPPENS_AFTER(A)
 #endif
 # define _GLIBCXX_BEGIN_EXTERN_C extern "C" {
 # define _GLIBCXX_END_EXTERN_C }
@@ -352,9 +352,9 @@ do { __glibcxx_constexpr_assert(cond); } while (false)
 #ifndef _GLIBCXX_USE_WEAK_REF
 # define _GLIBCXX_USE_WEAK_REF __GXX_WEAK__
 #endif
-#if __cplusplus >= 201103L && _GLIBCXX_USE_CXX11_ABI			\
-&& _GLIBCXX_USE_DUAL_ABI && __cpp_transactional_memory >= 201500L	\
-&&  !_GLIBCXX_FULLY_DYNAMIC_STRING && _GLIBCXX_USE_WEAK_REF		\
+#if __cplusplus >= 201103L && _GLIBCXX_USE_CXX11_ABI \
+&& _GLIBCXX_USE_DUAL_ABI && __cpp_transactional_memory >= 201500L \
+&& !_GLIBCXX_FULLY_DYNAMIC_STRING && _GLIBCXX_USE_WEAK_REF \
 && _GLIBCXX_USE_ALLOCATOR_NEW
 #define _GLIBCXX_TXN_SAFE transaction_safe
 #define _GLIBCXX_TXN_SAFE_DYN transaction_safe_dynamic
@@ -372,12 +372,12 @@ do { __glibcxx_constexpr_assert(cond); } while (false)
 #else
 # define _GLIBCXX_FAST_MATH 0
 #endif
-#define __N(msgid)     (msgid)
+#define __N(msgid) (msgid)
 #undef min
 #undef max
 #if __cplusplus >= 201103L
 # ifndef _GLIBCXX_USE_C99_MATH
-#  define _GLIBCXX_USE_C99_MATH _GLIBCXX11_USE_C99_MATH
+# define _GLIBCXX_USE_C99_MATH _GLIBCXX11_USE_C99_MATH
 # endif
 # ifndef _GLIBCXX_USE_C99_COMPLEX
 # define _GLIBCXX_USE_C99_COMPLEX _GLIBCXX11_USE_C99_COMPLEX
@@ -393,7 +393,7 @@ do { __glibcxx_constexpr_assert(cond); } while (false)
 # endif
 #else
 # ifndef _GLIBCXX_USE_C99_MATH
-#  define _GLIBCXX_USE_C99_MATH _GLIBCXX98_USE_C99_MATH
+# define _GLIBCXX_USE_C99_MATH _GLIBCXX98_USE_C99_MATH
 # endif
 # ifndef _GLIBCXX_USE_C99_COMPLEX
 # define _GLIBCXX_USE_C99_COMPLEX _GLIBCXX98_USE_C99_COMPLEX
@@ -410,7 +410,7 @@ do { __glibcxx_constexpr_assert(cond); } while (false)
 #endif
 #ifndef _GLIBCXX_USE_CHAR8_T
 # ifdef __cpp_char8_t
-#  define _GLIBCXX_USE_CHAR8_T 1
+# define _GLIBCXX_USE_CHAR8_T 1
 # endif
 #endif
 #ifdef _GLIBCXX_USE_CHAR8_T
@@ -418,7 +418,7 @@ do { __glibcxx_constexpr_assert(cond); } while (false)
 #endif
 #if defined(__FLOAT128__) || defined(__SIZEOF_FLOAT128__)
 # if !(defined(_GLIBCXX_LONG_DOUBLE_ALT128_COMPAT) && defined(__LONG_DOUBLE_IEEE128__))
-#  define _GLIBCXX_USE_FLOAT128 1
+# define _GLIBCXX_USE_FLOAT128 1
 # endif
 #endif
 #if __FLT_MANT_DIG__ == 24 \
@@ -433,9 +433,9 @@ do { __glibcxx_constexpr_assert(cond); } while (false)
 #endif
 #ifdef __has_builtin
 # ifdef __is_identifier
-#  define _GLIBCXX_HAS_BUILTIN(B) __has_builtin(B) || ! __is_identifier(B)
+# define _GLIBCXX_HAS_BUILTIN(B) __has_builtin(B) || ! __is_identifier(B)
 # else
-#  define _GLIBCXX_HAS_BUILTIN(B) __has_builtin(B)
+# define _GLIBCXX_HAS_BUILTIN(B) __has_builtin(B)
 # endif
 #endif
 #if _GLIBCXX_HAS_BUILTIN(__has_unique_object_representations)
@@ -445,10 +445,10 @@ do { __glibcxx_constexpr_assert(cond); } while (false)
 # define _GLIBCXX_HAVE_BUILTIN_IS_AGGREGATE 1
 #endif
 #if _GLIBCXX_HAS_BUILTIN(__builtin_is_constant_evaluated)
-#  define _GLIBCXX_HAVE_BUILTIN_IS_CONSTANT_EVALUATED 1
+# define _GLIBCXX_HAVE_BUILTIN_IS_CONSTANT_EVALUATED 1
 #endif
 #if _GLIBCXX_HAS_BUILTIN(__is_same)
-#  define _GLIBCXX_HAVE_BUILTIN_IS_SAME 1
+# define _GLIBCXX_HAVE_BUILTIN_IS_SAME 1
 #endif
 #if _GLIBCXX_HAS_BUILTIN(__builtin_launder)
 # define _GLIBCXX_HAVE_BUILTIN_LAUNDER 1
@@ -457,12 +457,12 @@ do { __glibcxx_constexpr_assert(cond); } while (false)
 #if __cplusplus >= 201703L
 #if __has_include(<pstl/pstl_config.h>)
 # ifndef _GLIBCXX_USE_TBB_PAR_BACKEND
-#  define _GLIBCXX_USE_TBB_PAR_BACKEND __has_include(<tbb/tbb.h>)
+# define _GLIBCXX_USE_TBB_PAR_BACKEND __has_include(<tbb/tbb.h>)
 # endif
 # if _GLIBCXX_USE_TBB_PAR_BACKEND
-#  define _PSTL_PAR_BACKEND_TBB
+# define _PSTL_PAR_BACKEND_TBB
 # else
-#  define _PSTL_PAR_BACKEND_SERIAL
+# define _PSTL_PAR_BACKEND_SERIAL
 # endif
 # define _PSTL_ASSERT(_Condition) __glibcxx_assert(_Condition)
 # define _PSTL_ASSERT_MSG(_Condition, _Message) __glibcxx_assert(_Condition)

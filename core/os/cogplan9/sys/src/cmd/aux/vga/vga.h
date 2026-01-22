@@ -1,141 +1,141 @@
 enum {
-MiscW		= 0x03C2,
-MiscR		= 0x03CC,
-Status0		= 0x03C2,
-Status1		= 0x03DA,
-FeatureR	= 0x03CA,
-FeatureW	= 0x03DA,
-Seqx		= 0x03C4,
-Crtx		= 0x03D4,
-Grx		= 0x03CE,
-Attrx		= 0x03C0,
-PaddrW		= 0x03C8,
-Pdata		= 0x03C9,
-Pixmask		= 0x03C6,
-PaddrR		= 0x03C7,
-Pstatus		= 0x03C7,
-Pcolours	= 256,
-Red		= 0,
-Green		= 1,
-Blue		= 2,
-Pblack		= 0x00,
-Pwhite		= 0xFF,
+MiscW = 0x03C2,
+MiscR = 0x03CC,
+Status0 = 0x03C2,
+Status1 = 0x03DA,
+FeatureR = 0x03CA,
+FeatureW = 0x03DA,
+Seqx = 0x03C4,
+Crtx = 0x03D4,
+Grx = 0x03CE,
+Attrx = 0x03C0,
+PaddrW = 0x03C8,
+Pdata = 0x03C9,
+Pixmask = 0x03C6,
+PaddrR = 0x03C7,
+Pstatus = 0x03C7,
+Pcolours = 256,
+Red = 0,
+Green = 1,
+Blue = 2,
+Pblack = 0x00,
+Pwhite = 0xFF,
 };
 enum {
-RefFreq		= 14318180,
-VgaFreq0	= 25175000,
-VgaFreq1	= 28322000,
+RefFreq = 14318180,
+VgaFreq0 = 25175000,
+VgaFreq1 = 28322000,
 };
 enum {
-Namelen		= 32,
+Namelen = 32,
 };
 typedef struct Ctlr Ctlr;
 typedef struct Vga Vga;
 typedef struct Ctlr {
-char	name[Namelen+1];
-void	(*snarf)(Vga*, Ctlr*);
-void	(*options)(Vga*, Ctlr*);
-void	(*init)(Vga*, Ctlr*);
-void	(*load)(Vga*, Ctlr*);
-void	(*dump)(Vga*, Ctlr*);
-char*	type;
-ulong	flag;
-Ctlr*	link;
+char name[Namelen+1];
+void (*snarf)(Vga*, Ctlr*);
+void (*options)(Vga*, Ctlr*);
+void (*init)(Vga*, Ctlr*);
+void (*load)(Vga*, Ctlr*);
+void (*dump)(Vga*, Ctlr*);
+char* type;
+ulong flag;
+Ctlr* link;
 } Ctlr;
 enum {
-Fsnarf		= 0x00000001,
-Foptions	= 0x00000002,
-Finit		= 0x00000004,
-Fload		= 0x00000008,
-Fdump		= 0x00000010,
-Ferror		= 0x00000020,
-Hpclk2x8	= 0x00000100,
-Upclk2x8	= 0x00000200,
-Henhanced	= 0x00000400,
-Uenhanced	= 0x00000800,
-Hpvram		= 0x00001000,
-Upvram		= 0x00002000,
-Hextsid		= 0x00004000,
-Uextsid		= 0x00008000,
-Hclk2		= 0x00010000,
-Uclk2		= 0x00020000,
-Hlinear		= 0x00040000,
-Ulinear		= 0x00080000,
-Hclkdiv		= 0x00100000,
-Uclkdiv		= 0x00200000,
-Hsid32		= 0x00400000,
+Fsnarf = 0x00000001,
+Foptions = 0x00000002,
+Finit = 0x00000004,
+Fload = 0x00000008,
+Fdump = 0x00000010,
+Ferror = 0x00000020,
+Hpclk2x8 = 0x00000100,
+Upclk2x8 = 0x00000200,
+Henhanced = 0x00000400,
+Uenhanced = 0x00000800,
+Hpvram = 0x00001000,
+Upvram = 0x00002000,
+Hextsid = 0x00004000,
+Uextsid = 0x00008000,
+Hclk2 = 0x00010000,
+Uclk2 = 0x00020000,
+Hlinear = 0x00040000,
+Ulinear = 0x00080000,
+Hclkdiv = 0x00100000,
+Uclkdiv = 0x00200000,
+Hsid32 = 0x00400000,
 };
 typedef struct Attr Attr;
 typedef struct Attr {
-char*	attr;
-char*	val;
-Attr*	next;
+char* attr;
+char* val;
+Attr* next;
 } Attr;
 typedef struct Mode {
-char	type[Namelen+1];
-char	size[Namelen+1];
-char	chan[Namelen+1];
+char type[Namelen+1];
+char size[Namelen+1];
+char chan[Namelen+1];
 char name[Namelen+1];
-int	frequency;
-int	deffrequency;
-int	x;
-int	y;
-int	z;
-int	ht;
-int	shb;
-int	ehb;
-int	shs;
-int	ehs;
-int	vt;
-int	vrs;
-int	vre;
-int		vbs;
-int		vbe;
-ulong	videobw;
-char	hsync;
-char	vsync;
-char	interlace;
-Attr*	attr;
+int frequency;
+int deffrequency;
+int x;
+int y;
+int z;
+int ht;
+int shb;
+int ehb;
+int shs;
+int ehs;
+int vt;
+int vrs;
+int vre;
+int vbs;
+int vbe;
+ulong videobw;
+char hsync;
+char vsync;
+char interlace;
+Attr* attr;
 } Mode;
 typedef struct Vga {
-uchar	misc;
-uchar	feature;
-uchar	sequencer[256];
-ushort	crt[256];
-uchar	graphics[256];
-uchar	attribute[256];
-uchar	pixmask;
-uchar	pstatus;
-uchar	palette[Pcolours][3];
-ulong	f[2];
-ulong	d[2];
-ulong	i[2];
-ulong	m[2];
-ulong	n[2];
-ulong	p[2];
-ulong	q[2];
-ulong	r[2];
-ulong	vma;
-ulong	vmb;
-ulong	apz;
-ulong	vmz;
-ulong	membw;
-long	offset;
-char*	bios;
-Pcidev*	pci;
-Mode*	mode;
-ulong	virtx;
-ulong	virty;
-int	panning;
-Ctlr*	ctlr;
-Ctlr*	ramdac;
-Ctlr*	clock;
-Ctlr*	hwgc;
+uchar misc;
+uchar feature;
+uchar sequencer[256];
+ushort crt[256];
+uchar graphics[256];
+uchar attribute[256];
+uchar pixmask;
+uchar pstatus;
+uchar palette[Pcolours][3];
+ulong f[2];
+ulong d[2];
+ulong i[2];
+ulong m[2];
+ulong n[2];
+ulong p[2];
+ulong q[2];
+ulong r[2];
+ulong vma;
+ulong vmb;
+ulong apz;
+ulong vmz;
+ulong membw;
+long offset;
+char* bios;
+Pcidev* pci;
+Mode* mode;
+ulong virtx;
+ulong virty;
+int panning;
+Ctlr* ctlr;
+Ctlr* ramdac;
+Ctlr* clock;
+Ctlr* hwgc;
 Ctlr* vesa;
-Ctlr*	link;
-int	linear;
-Attr*	attr;
-void*	private;
+Ctlr* link;
+int linear;
+Attr* attr;
+void* private;
 } Vga;
 extern Ctlr tdfx;
 extern Ctlr tdfxhwgc;
@@ -277,5 +277,5 @@ extern Ctlr vmwarehwgc;
 extern Ctlr w30c516;
 extern Ctlr mga4xx;
 extern Ctlr mga4xxhwgc;
-#pragma	varargck	argpos	error	1
-#pragma	varargck	argpos	trace	1
+#pragma varargck argpos error 1
+#pragma varargck argpos trace 1

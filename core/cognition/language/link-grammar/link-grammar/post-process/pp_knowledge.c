@@ -93,17 +93,17 @@ return ls;
 static bool read_link_sets(pp_knowledge *k)
 {
 String_set *ss = k->string_set;
-k->domain_starter_links     =read_link_set(k,"DOMAIN_STARTER_LINKS",ss);
+k->domain_starter_links =read_link_set(k,"DOMAIN_STARTER_LINKS",ss);
 if (&LINK_SET_ERROR == k->domain_starter_links) return false;
 k->urfl_domain_starter_links=read_link_set(k,"URFL_DOMAIN_STARTER_LINKS",ss);
 if (&LINK_SET_ERROR == k->urfl_domain_starter_links) return false;
-k->domain_contains_links    =read_link_set(k,"DOMAIN_CONTAINS_LINKS",ss);
+k->domain_contains_links =read_link_set(k,"DOMAIN_CONTAINS_LINKS",ss);
 if (&LINK_SET_ERROR == k->domain_contains_links) return false;
-k->ignore_these_links       =read_link_set(k,"IGNORE_THESE_LINKS",ss);
+k->ignore_these_links =read_link_set(k,"IGNORE_THESE_LINKS",ss);
 if (&LINK_SET_ERROR == k->ignore_these_links) return false;
-k->restricted_links         =read_link_set(k,"RESTRICTED_LINKS",ss);
+k->restricted_links =read_link_set(k,"RESTRICTED_LINKS",ss);
 if (&LINK_SET_ERROR == k->domain_starter_links) return false;
-k->must_form_a_cycle_links  =read_link_set(k,"MUST_FORM_A_CYCLE_LINKS",ss);
+k->must_form_a_cycle_links =read_link_set(k,"MUST_FORM_A_CYCLE_LINKS",ss);
 if (&LINK_SET_ERROR == k->must_form_a_cycle_links) return false;
 k->urfl_only_domain_starter_links=
 read_link_set(k,"URFL_ONLY_DOMAIN_STARTER_LINKS",ss);
@@ -263,7 +263,7 @@ return true;
 static bool read_rules(pp_knowledge *k)
 {
 if (!read_form_a_cycle_rules(k, "FORM_A_CYCLE_RULES")) return false;
-if (!read_bounded_rules(k,  "BOUNDED_RULES")) return false;
+if (!read_bounded_rules(k, "BOUNDED_RULES")) return false;
 if (!read_contains_rules(k, "CONTAINS_ONE_RULES" ,
 &(k->contains_one_rules), &(k->n_contains_one_rules)))
 return false;

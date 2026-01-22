@@ -804,7 +804,7 @@ wexits("srv");
 srv = malloc(strlen(mntsrv)+10);
 sprint(srv, "/mnt/term%s", mntsrv);
 free(mntsrv);
-pid  = 0;
+pid = 0;
 }else
 pid = getpid();
 srvfd = open(srv, ORDWR);

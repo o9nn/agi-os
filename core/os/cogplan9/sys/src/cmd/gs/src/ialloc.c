@@ -43,13 +43,13 @@ igmem_stable->space = avm_global;
 ilmem->space = avm_local;
 ilmem_stable->space = avm_local;
 ismem->space = avm_system;
-#   if IGC_PTR_STABILITY_CHECK
+# if IGC_PTR_STABILITY_CHECK
 igmem->space_id = (i_vm_global << 1) + 1;
 igmem_stable->space_id = i_vm_global << 1;
 ilmem->space_id = (i_vm_local << 1) + 1;
 ilmem_stable->space_id = i_vm_local << 1;
 ismem->space_id = (i_vm_system << 1);
-#   endif
+# endif
 ialloc_set_space(dmem, avm_global);
 return 0;
 fail:

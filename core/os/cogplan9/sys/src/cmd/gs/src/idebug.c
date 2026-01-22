@@ -136,7 +136,7 @@ dprintf("<lit_name>");
 goto ptn;
 case pt_executable_name:
 dprintf("<exec_name>");
-ptn:    name_index_ref(mem, elt, &nref);
+ptn: name_index_ref(mem, elt, &nref);
 dprintf2("(0x%lx#%u)", (ulong) nref.value.pname, elt);
 debug_print_name(mem, &nref);
 break;

@@ -1,5 +1,5 @@
 #ifndef bfont_INCLUDED
-#  define bfont_INCLUDED
+# define bfont_INCLUDED
 #include "ifont.h"
 int add_FID(i_ctx_t *i_ctx_p, ref *pfdict, gs_font *pfont,
 gs_ref_memory_t *imem);
@@ -27,7 +27,7 @@ gs_memory_type_ptr_t, const build_proc_refs *,\
 build_font_options_t)
 typedef BUILD_BASE_FONT_PROC((*build_base_font_proc_t));
 BUILD_BASE_FONT_PROC(build_gs_primitive_font);
-int build_gs_FDArray_font(i_ctx_t *,  ref *, gs_font_base **,
+int build_gs_FDArray_font(i_ctx_t *, ref *, gs_font_base **,
 font_type, gs_memory_type_ptr_t,
 const build_proc_refs *);
 int build_gs_outline_font(i_ctx_t *, os_ptr, gs_font_base **, font_type,

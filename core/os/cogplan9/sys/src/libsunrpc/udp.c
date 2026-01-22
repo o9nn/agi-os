@@ -6,16 +6,16 @@
 typedef struct SunMsgUdp SunMsgUdp;
 struct SunMsgUdp
 {
-SunMsg	msg;
-Udphdr	udp;
+SunMsg msg;
+Udphdr udp;
 };
 typedef struct Arg Arg;
 struct Arg
 {
-SunSrv	*srv;
-Channel	*creply;
-Channel	*csync;
-int 	fd;
+SunSrv *srv;
+Channel *creply;
+Channel *csync;
+int fd;
 };
 enum
 {
@@ -88,7 +88,7 @@ arg = emalloc(sizeof(Arg));
 arg->fd = fd;
 arg->srv = srv;
 arg->creply = chancreate(sizeof(SunMsg*), 10);
-arg->csync =  chancreate(sizeof(void*), 10);
+arg->csync = chancreate(sizeof(void*), 10);
 proccreate(sunUdpRead, arg, SunStackSize);
 proccreate(sunUdpWrite, arg, SunStackSize);
 recvp(arg->csync);

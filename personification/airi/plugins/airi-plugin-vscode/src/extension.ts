@@ -8,112 +8,112 @@ let updateTimer: NodeJS.Timeout | null = null
 let isEnabled = true
 let eventListeners: vscode.Disposable[] = []
 export async function activate(context: vscode.ExtensionContext) {
-  initLogger(LoggerLevel.Debug, LoggerFormat.Pretty)
-  const { window, workspace, commands } = await import('vscode')
-  useLogger().log('Airi Companion is activating...')
-  const config = workspace.getConfiguration('airi.companion')
-  isEnabled = config.get<boolean>('enabled', true)
-  const contextLines = config.get<number>('contextLines', 5)
-  const sendInterval = config.get<number>('sendInterval', 3000)
-  airiClient = new AiriClient()
-  contextCollector = new ContextCollector(contextLines)
-  if (isEnabled) {
-    const connected = await airiClient.connect()
-    if (connected) {
-      window.showInformationMessage('Airi Companion connected!')
-    }
-    else {
-      window.showWarningMessage('Airi Companion failed to connect to server')
-    }
-  }
-  context.subscriptions.push(
-    commands.registerCommand('airi.companion.enable', async () => {
-      isEnabled = true
-      await airiClient.connect()
-      await registerListeners(sendInterval)
-      window.showInformationMessage('Airi Companion enabled')
-    }),
-    commands.registerCommand('airi.companion.disable', () => {
-      isEnabled = false
-      unregisterListeners()
-      airiClient.disconnect()
-      window.showInformationMessage('Airi Companion disabled')
-    }),
-    commands.registerCommand('airi.companion.status', () => {
-      const status = isEnabled && airiClient ? 'Connected' : 'Disconnected'
-      window.showInformationMessage(`Airi Companion Status: ${status}`)
-    }),
-  )
-  if (isEnabled) {
-    await registerListeners(sendInterval)
-  }
-  useLogger().log('Airi Companion activated successfully')
+initLogger(LoggerLevel.Debug, LoggerFormat.Pretty)
+const { window, workspace, commands } = await import('vscode')
+useLogger().log('Airi Companion is activating...')
+const config = workspace.getConfiguration('airi.companion')
+isEnabled = config.get<boolean>('enabled', true)
+const contextLines = config.get<number>('contextLines', 5)
+const sendInterval = config.get<number>('sendInterval', 3000)
+airiClient = new AiriClient()
+contextCollector = new ContextCollector(contextLines)
+if (isEnabled) {
+const connected = await airiClient.connect()
+if (connected) {
+window.showInformationMessage('Airi Companion connected!')
+}
+else {
+window.showWarningMessage('Airi Companion failed to connect to server')
+}
+}
+context.subscriptions.push(
+commands.registerCommand('airi.companion.enable', async () => {
+isEnabled = true
+await airiClient.connect()
+await registerListeners(sendInterval)
+window.showInformationMessage('Airi Companion enabled')
+}),
+commands.registerCommand('airi.companion.disable', () => {
+isEnabled = false
+unregisterListeners()
+airiClient.disconnect()
+window.showInformationMessage('Airi Companion disabled')
+}),
+commands.registerCommand('airi.companion.status', () => {
+const status = isEnabled && airiClient ? 'Connected' : 'Disconnected'
+window.showInformationMessage(`Airi Companion Status: ${status}`)
+}),
+)
+if (isEnabled) {
+await registerListeners(sendInterval)
+}
+useLogger().log('Airi Companion activated successfully')
 }
 async function registerListeners(sendInterval: number) {
-  unregisterListeners()
-  const { window, workspace } = await import('vscode')
-  eventListeners.push(
-    workspace.onDidSaveTextDocument(async (document) => {
-      const editor = window.activeTextEditor
-      if (editor && editor.document === document) {
-        const ctx = await contextCollector.collect(editor)
-        if (ctx) {
-          airiClient.sendEvent({
-            type: 'coding:save',
-            data: ctx,
-          })
-        }
-      }
-    }),
-  )
-  eventListeners.push(
-    window.onDidChangeActiveTextEditor(async (editor) => {
-      if (editor) {
-        const ctx = await contextCollector.collect(editor)
-        if (ctx) {
-          airiClient.sendEvent({
-            type: 'coding:switch-file',
-            data: ctx,
-          })
-        }
-      }
-    }),
-  )
-  if (sendInterval > 0) {
-    startMonitoring(sendInterval)
-  }
+unregisterListeners()
+const { window, workspace } = await import('vscode')
+eventListeners.push(
+workspace.onDidSaveTextDocument(async (document) => {
+const editor = window.activeTextEditor
+if (editor && editor.document === document) {
+const ctx = await contextCollector.collect(editor)
+if (ctx) {
+airiClient.sendEvent({
+type: 'coding:save',
+data: ctx,
+})
+}
+}
+}),
+)
+eventListeners.push(
+window.onDidChangeActiveTextEditor(async (editor) => {
+if (editor) {
+const ctx = await contextCollector.collect(editor)
+if (ctx) {
+airiClient.sendEvent({
+type: 'coding:switch-file',
+data: ctx,
+})
+}
+}
+}),
+)
+if (sendInterval > 0) {
+startMonitoring(sendInterval)
+}
 }
 function unregisterListeners() {
-  eventListeners.forEach(listener => listener.dispose())
-  eventListeners = []
-  stopMonitoring()
+eventListeners.forEach(listener => listener.dispose())
+eventListeners = []
+stopMonitoring()
 }
 function startMonitoring(interval: number) {
-  stopMonitoring()
-  updateTimer = setInterval(async () => {
-    if (!isEnabled)
-      return
-    const { window } = await import('vscode')
-    const editor = window.activeTextEditor
-    if (!editor)
-      return
-    const ctx = await contextCollector.collect(editor)
-    if (ctx) {
-      airiClient.sendEvent({
-        type: 'coding:context',
-        data: ctx,
-      })
-    }
-  }, interval)
+stopMonitoring()
+updateTimer = setInterval(async () => {
+if (!isEnabled)
+return
+const { window } = await import('vscode')
+const editor = window.activeTextEditor
+if (!editor)
+return
+const ctx = await contextCollector.collect(editor)
+if (ctx) {
+airiClient.sendEvent({
+type: 'coding:context',
+data: ctx,
+})
+}
+}, interval)
 }
 function stopMonitoring() {
-  if (updateTimer) {
-    clearInterval(updateTimer)
-    updateTimer = null
-  }
+if (updateTimer) {
+clearInterval(updateTimer)
+updateTimer = null
+}
 }
 export function deactivate() {
-  unregisterListeners()
-  airiClient?.disconnect()
-  useLogger().log('Airi Companion deactivated')
+unregisterListeners()
+airiClient?.disconnect()
+useLogger().log('Airi Companion deactivated')
 }

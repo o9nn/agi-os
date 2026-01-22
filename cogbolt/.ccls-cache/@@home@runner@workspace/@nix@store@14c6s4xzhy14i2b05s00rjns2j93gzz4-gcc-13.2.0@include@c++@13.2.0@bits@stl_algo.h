@@ -10,7 +10,7 @@
 #if _GLIBCXX_HOSTED
 # include <bits/stl_tempbuf.h>
 # if (__cplusplus <= 201103L || _GLIBCXX_USE_DEPRECATED)
-#  include <cstdlib>
+# include <cstdlib>
 # endif
 #endif
 namespace std _GLIBCXX_VISIBILITY(default)
@@ -53,7 +53,7 @@ _GLIBCXX20_CONSTEXPR
 _InputIterator
 __find_if_not_n(_InputIterator __first, _Distance& __len, _Predicate __pred)
 {
-for (; __len; --__len,  (void) ++__first)
+for (; __len; --__len, (void) ++__first)
 if (!__pred(__first))
 break;
 return __first;
@@ -64,7 +64,7 @@ _GLIBCXX20_CONSTEXPR
 _ForwardIterator1
 __search(_ForwardIterator1 __first1, _ForwardIterator1 __last1,
 _ForwardIterator2 __first2, _ForwardIterator2 __last2,
-_BinaryPredicate  __predicate)
+_BinaryPredicate __predicate)
 {
 if (__first1 == __last1 || __first2 == __last2)
 return __first1;
@@ -736,8 +736,8 @@ if (__first == __middle)
 return __last;
 else if (__last == __middle)
 return __first;
-std::__reverse(__first,  __middle, bidirectional_iterator_tag());
-std::__reverse(__middle, __last,   bidirectional_iterator_tag());
+std::__reverse(__first, __middle, bidirectional_iterator_tag());
+std::__reverse(__middle, __last, bidirectional_iterator_tag());
 while (__first != __middle && __middle != __last)
 {
 std::iter_swap(__first, --__last);
@@ -745,12 +745,12 @@ std::iter_swap(__first, --__last);
 }
 if (__first == __middle)
 {
-std::__reverse(__middle, __last,   bidirectional_iterator_tag());
+std::__reverse(__middle, __last, bidirectional_iterator_tag());
 return __last;
 }
 else
 {
-std::__reverse(__first,  __middle, bidirectional_iterator_tag());
+std::__reverse(__first, __middle, bidirectional_iterator_tag());
 return __first;
 }
 }
@@ -772,7 +772,7 @@ typedef typename iterator_traits<_RandomAccessIterator>::difference_type
 _Distance;
 typedef typename iterator_traits<_RandomAccessIterator>::value_type
 _ValueType;
-_Distance __n = __last   - __first;
+_Distance __n = __last - __first;
 _Distance __k = __middle - __first;
 if (__k == __n - __k)
 {
@@ -2625,7 +2625,7 @@ _GLIBCXX20_CONSTEXPR
 inline _ForwardIterator1
 search(_ForwardIterator1 __first1, _ForwardIterator1 __last1,
 _ForwardIterator2 __first2, _ForwardIterator2 __last2,
-_BinaryPredicate  __predicate)
+_BinaryPredicate __predicate)
 {
 __glibcxx_function_requires(_ForwardIteratorConcept<_ForwardIterator1>)
 __glibcxx_function_requires(_ForwardIteratorConcept<_ForwardIterator2>)
@@ -2850,7 +2850,7 @@ template<typename _ForwardIterator, typename _Predicate>
 _GLIBCXX20_CONSTEXPR
 inline _ForwardIterator
 partition(_ForwardIterator __first, _ForwardIterator __last,
-_Predicate   __pred)
+_Predicate __pred)
 {
 __glibcxx_function_requires(_Mutable_ForwardIteratorConcept<
 _ForwardIterator>)

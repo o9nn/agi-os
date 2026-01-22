@@ -1,5 +1,5 @@
 #ifndef gdevsvga_INCLUDED
-#  define gdevsvga_INCLUDED
+# define gdevsvga_INCLUDED
 dev_proc_close_device(svga_close);
 dev_proc_map_rgb_color(svga_map_rgb_color);
 dev_proc_map_color_rgb(svga_map_color_rgb);
@@ -43,7 +43,7 @@ std_device_color_body(gx_device_svga, &procs, name,\
 640, 480,\
 480 / PAGE_HEIGHT_INCHES, 480 / PAGE_HEIGHT_INCHES,\
 depth, maxv, dither),\
-{ 0 },		\
+{ 0 }, \
 get_mode, set_mode, set_page,\
 0 \
 }

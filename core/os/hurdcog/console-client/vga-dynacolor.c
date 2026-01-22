@@ -7,13 +7,13 @@ dynacolor_t dynacolor_init_8 = DYNACOLOR_INIT_8;
 dynacolor_t dynacolor_init_16 = DYNACOLOR_INIT_16;
 static const unsigned char std_palette[16][DYNACOLOR_COMPONENTS] =
 {
-{  0,  0,  0 },
-{ 42,  0,  0 },
-{  0, 42,  0 },
-{ 42, 21,  0 },
-{  0,  0, 42 },
-{ 42,  0, 42 },
-{  0, 42, 42 },
+{ 0, 0, 0 },
+{ 42, 0, 0 },
+{ 0, 42, 0 },
+{ 42, 21, 0 },
+{ 0, 0, 42 },
+{ 42, 0, 42 },
+{ 0, 42, 42 },
 { 42, 42, 42 },
 { 21, 21, 21 },
 { 63, 21, 21 },

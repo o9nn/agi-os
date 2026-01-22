@@ -53,54 +53,54 @@ static int panic_variables_cmd(const Switch*, int);
 static int variables_cmd(const Switch*, int);
 Switch default_switches[] =
 {
-{"bad",        Bool, "Display of bad linkages",         &local.display_bad},
-{"batch",      Bool, "Batch mode",                      &local.batch_mode},
-{"constituents", Int,  "Generate constituent output",   &local.display_constituents},
-{"cost-model", Int,  UNDOC "Cost model used for ranking", &local.cost_model},
-{"cost-max",   Float, "Largest cost to be considered",  &local.max_cost},
-{"debug",      String, "Comma-separated function names to debug", &local.debug},
-{"dialect",    String, "Comma-separated dialects",      &local.dialect},
-{"disjuncts",  Bool, "Display of disjuncts used",       &local.display_disjuncts},
-{"echo",       Bool, "Echoing of input sentence",       &local.echo_on},
-{"graphics",   Bool, "Graphical display of linkage",    &local.display_on},
-{"islands-ok", Bool, "Use of null-linked islands",      &local.islands_ok},
-{"limit",      Int,  "The maximum linkages processed",  &local.linkage_limit},
-{"links",      Bool, "Display of complete link data",   &local.display_links},
-{"memory",     Int,  UNDOC "Max memory allowed",        &local.memory},
-{"morphology", Bool, "Display word morphology",         &local.display_morphology},
-{"null",       Bool, "Allow null links",                &local.allow_null},
-{"panic",      Bool, "Use of \"panic mode\"",           &local.panic_mode},
-{"panic_short", Int, "Max length of all links",     &local.panic.short_length},
+{"bad", Bool, "Display of bad linkages", &local.display_bad},
+{"batch", Bool, "Batch mode", &local.batch_mode},
+{"constituents", Int, "Generate constituent output", &local.display_constituents},
+{"cost-model", Int, UNDOC "Cost model used for ranking", &local.cost_model},
+{"cost-max", Float, "Largest cost to be considered", &local.max_cost},
+{"debug", String, "Comma-separated function names to debug", &local.debug},
+{"dialect", String, "Comma-separated dialects", &local.dialect},
+{"disjuncts", Bool, "Display of disjuncts used", &local.display_disjuncts},
+{"echo", Bool, "Echoing of input sentence", &local.echo_on},
+{"graphics", Bool, "Graphical display of linkage", &local.display_on},
+{"islands-ok", Bool, "Use of null-linked islands", &local.islands_ok},
+{"limit", Int, "The maximum linkages processed", &local.linkage_limit},
+{"links", Bool, "Display of complete link data", &local.display_links},
+{"memory", Int, UNDOC "Max memory allowed", &local.memory},
+{"morphology", Bool, "Display word morphology", &local.display_morphology},
+{"null", Bool, "Allow null links", &local.allow_null},
+{"panic", Bool, "Use of \"panic mode\"", &local.panic_mode},
+{"panic_short", Int, "Max length of all links", &local.panic.short_length},
 {"panic_cost-max", Float, "Largest cost to be considered", &local.panic.max_cost},
-{"panic_limit",     Int, "The maximum linkages processed", &local.panic.linkage_limit},
+{"panic_limit", Int, "The maximum linkages processed", &local.panic.linkage_limit},
 {"panic_max-null-count", Int, "Max number of null links allowed", &local.panic.max_null_count},
-{"panic_spell",     Int, "Up to this many spell-guesses per unknown word", &local.panic.spell_guess},
-{"panic_timeout",   Int, "Abort panic parsing after this many seconds", &local.panic.timeout},
-{"postscript", Bool, "Generate postscript output",      &local.display_postscript},
-{"ps-header",  Bool, "Generate postscript header",      &local.display_ps_header},
-{"rand",       Bool, "Use repeatable random numbers",   &local.repeatable_rand},
-{"short",      Int,  "Max length of short links",       &local.short_length},
+{"panic_spell", Int, "Up to this many spell-guesses per unknown word", &local.panic.spell_guess},
+{"panic_timeout", Int, "Abort panic parsing after this many seconds", &local.panic.timeout},
+{"postscript", Bool, "Generate postscript output", &local.display_postscript},
+{"ps-header", Bool, "Generate postscript header", &local.display_ps_header},
+{"rand", Bool, "Use repeatable random numbers", &local.repeatable_rand},
+{"short", Int, "Max length of short links", &local.short_length},
 #if defined HAVE_HUNSPELL || defined HAVE_ASPELL
-{"spell",      Int, "Up to this many spell-guesses per unknown word", &local.spell_guess},
+{"spell", Int, "Up to this many spell-guesses per unknown word", &local.spell_guess},
 #endif
-{"test",       String, "Comma-separated test features", &local.test},
-{"timeout",    Int,  "Abort parsing after this many seconds", &local.timeout},
+{"test", String, "Comma-separated test features", &local.test},
+{"timeout", Int, "Abort parsing after this many seconds", &local.timeout},
 #ifdef USE_SAT_SOLVER
-{"use-sat",    Bool, "Use Boolean SAT-based parser",    &local.use_sat_solver},
+{"use-sat", Bool, "Use Boolean SAT-based parser", &local.use_sat_solver},
 #endif
-{"verbosity",  Int,  "Level of detail in output",       &local.verbosity},
-{"walls",      Bool, "Display wall words",              &local.display_walls},
-{"width",      Int,  "The width of the display",        &local.screen_width},
-{"wordgraph",  Int,  "Display sentence word-graph",     &local.display_wordgraph},
-{"clear",      Cmd,  "Clear the AtomSpace cache",              clear_cmd},
-{"exit",       Cmd,  "Exit the program",                       exit_cmd},
-{"file",       Cmd,  "Read input from the specified filename", file_cmd},
-{"help",       Cmd,  "List the commands and what they do",     help_cmd},
-{"panic_variables", Cmd,  "List panic mode setup",  panic_variables_cmd},
-{"quit",       Cmd,  UNDOC "Exit the program",                 exit_cmd},
-{"variables",  Cmd,  "List user-settable variables and their functions", variables_cmd},
-{"!",          Cmd,  UNDOC "Print information on dictionary words", info_cmd},
-{NULL,         Cmd,  NULL,                                     NULL}
+{"verbosity", Int, "Level of detail in output", &local.verbosity},
+{"walls", Bool, "Display wall words", &local.display_walls},
+{"width", Int, "The width of the display", &local.screen_width},
+{"wordgraph", Int, "Display sentence word-graph", &local.display_wordgraph},
+{"clear", Cmd, "Clear the AtomSpace cache", clear_cmd},
+{"exit", Cmd, "Exit the program", exit_cmd},
+{"file", Cmd, "Read input from the specified filename", file_cmd},
+{"help", Cmd, "List the commands and what they do", help_cmd},
+{"panic_variables", Cmd, "List panic mode setup", panic_variables_cmd},
+{"quit", Cmd, UNDOC "Exit the program", exit_cmd},
+{"variables", Cmd, "List user-settable variables and their functions", variables_cmd},
+{"!", Cmd, UNDOC "Print information on dictionary words", info_cmd},
+{NULL, Cmd, NULL, NULL}
 };
 void save_default_opts(Command_Options *copts)
 {
@@ -306,7 +306,7 @@ atexit(close_help_file);
 help_filename = malloc(HELPFILE_TEMPLATE_SIZE);
 strcpy(help_filename, HELPFILE_BASE);
 char *ll_pos = &help_filename[strlen(help_filename)];
-strcpy(ll_pos, HELPFILE_LANG_TEMPLATE  HELPFILE_EXT);
+strcpy(ll_pos, HELPFILE_LANG_TEMPLATE HELPFILE_EXT);
 const char *ll;
 while ((ll = get_next_locale()))
 {

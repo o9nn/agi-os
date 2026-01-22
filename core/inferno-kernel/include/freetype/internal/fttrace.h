@@ -1,4 +1,4 @@
-#define FT_MAX_TRACE_LEVEL_LENGTH  (9 + 1 + 1)
+#define FT_MAX_TRACE_LEVEL_LENGTH (9 + 1 + 1)
 FT_TRACE_DEF( any )
 FT_TRACE_DEF( calc )
 FT_TRACE_DEF( gloader )

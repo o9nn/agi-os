@@ -17,8 +17,8 @@ typedef std::pair<Handle, PatternTermPtr> AtomInClausePair;
 typedef std::map<AtomInClausePair, PatternTermSeq> ConnectTermMap;
 Pattern() : group_min_size(0), group_max_size(-1), have_evaluatables(false) {}
 std::string redex_name;
-Handle           body;
-PatternTermSeq   pmandatory;
+Handle body;
+PatternTermSeq pmandatory;
 PatternTermSeq absents;
 PatternTermSeq always;
 PatternTermSeq grouping;
@@ -28,8 +28,8 @@ bool have_evaluatables;
 HandleSet defined_terms;
 HandleSet cacheable_clauses;
 std::map<PatternTermPtr, HandleSeq> clause_variables;
-ConnectMap       connectivity_map;
-ConnectTermMap   connected_terms_map;
+ConnectMap connectivity_map;
+ConnectTermMap connected_terms_map;
 std::string to_string(const std::string& indent) const;
 };
 std::string oc_to_string(const Pattern& pattern,

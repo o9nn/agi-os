@@ -22,7 +22,7 @@ template<typename _CharT, typename _Traits = char_traits<_CharT>,
 typename _Alloc = allocator<_CharT> >
 class basic_string;
 _GLIBCXX_END_NAMESPACE_CXX11
-typedef basic_string<char>    string;
+typedef basic_string<char> string;
 typedef basic_string<wchar_t> wstring;
 #ifdef _GLIBCXX_USE_CHAR8_T
 typedef basic_string<char8_t> u8string;

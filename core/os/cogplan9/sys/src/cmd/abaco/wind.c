@@ -29,7 +29,7 @@ r1.min.y = r1.max.y++;
 draw(screen, r1, tagcols[BORD], nil, ZP);
 br.min = w->tag.scrollr.min;
 br.max.x = br.min.x + Dx(button->r);
-br.max.y  = br.min.y + Dy(button->r);
+br.max.y = br.min.y + Dy(button->r);
 draw(screen, br, button, nil, button->r.min);
 r1.min.y = r1.max.y;
 r1.max.y += font->height;
@@ -61,7 +61,7 @@ if(!safe || !eqrect(w->tag.r, r1)){
 textresize(&w->tag, screen, r1);
 br.min = w->tag.scrollr.min;
 br.max.x = r1.min.x + Dx(button->r);
-br.max.y  = r1.min.y + Dy(button->r);
+br.max.y = r1.min.y + Dy(button->r);
 draw(screen, br, button, nil, button->r.min);
 r1.min.y = r1.max.y++;
 draw(screen, r1, tagcols[BORD], nil, ZP);

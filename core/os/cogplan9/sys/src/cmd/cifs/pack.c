@@ -229,7 +229,7 @@ gl64(Pkt *p)
 uvlong n;
 if(p->pos + 8 > p->eop)
 return 0;
-n  = (uvlong)*p->pos++;
+n = (uvlong)*p->pos++;
 n |= (uvlong)*p->pos++ << 8;
 n |= (uvlong)*p->pos++ << 16;
 n |= (uvlong)*p->pos++ << 24;
@@ -245,7 +245,7 @@ gb48(Pkt *p)
 uvlong n;
 if(p->pos + 6 > p->eop)
 return 0;
-n  = (uvlong)*p->pos++ << 40;
+n = (uvlong)*p->pos++ << 40;
 n |= (uvlong)*p->pos++ << 24;
 n |= (uvlong)*p->pos++ << 32;
 n |= (uvlong)*p->pos++ << 16;
@@ -259,7 +259,7 @@ gb32(Pkt *p)
 uint n;
 if(p->pos + 4 > p->eop)
 return 0;
-n  = (uint)*p->pos++ << 24;
+n = (uint)*p->pos++ << 24;
 n |= (uint)*p->pos++ << 16;
 n |= (uint)*p->pos++ << 8;
 n |= (uint)*p->pos++;
@@ -271,7 +271,7 @@ gl32(Pkt *p)
 uint n;
 if(p->pos + 4 > p->eop)
 return 0;
-n  = (uint)*p->pos++;
+n = (uint)*p->pos++;
 n |= (uint)*p->pos++ << 8;
 n |= (uint)*p->pos++ << 16;
 n |= (uint)*p->pos++ << 24;
@@ -283,7 +283,7 @@ gb16(Pkt *p)
 uint n;
 if(p->pos + 2 > p->eop)
 return 0;
-n  = (uint)*p->pos++ << 8;
+n = (uint)*p->pos++ << 8;
 n |= (uint)*p->pos++;
 return n;
 }
@@ -293,7 +293,7 @@ gl16(Pkt *p)
 uint n;
 if(p->pos + 2 > p->eop)
 return 0;
-n  = (uint)*p->pos++;
+n = (uint)*p->pos++;
 n |= (uint)*p->pos++ << 8;
 return n;
 }
@@ -334,7 +334,7 @@ gvtime(Pkt *p)
 uvlong vl;
 if(p->pos + 8 > p->eop)
 return 0;
-vl  = (uvlong)gl32(p);
+vl = (uvlong)gl32(p);
 vl |= (uvlong)gl32(p) << 32;
 vl /= 10000000LL;
 vl -= 11644473600LL;

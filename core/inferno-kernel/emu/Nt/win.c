@@ -1,16 +1,16 @@
 #define Unknown WUnknown
-#define Colormap	WColormap
-#define Cursor		WCursor
-#define Display		WDisplay
-#define Drawable	WDrawable
-#define Font		WFont
-#define GC		WGC
-#define Point		WPoint
-#define Rectangle	WRectangle
-#define Screen		WScreen
-#define Visual		WVisual
-#define Window		WWindow
-#include	<windows.h>
+#define Colormap WColormap
+#define Cursor WCursor
+#define Display WDisplay
+#define Drawable WDrawable
+#define Font WFont
+#define GC WGC
+#define Point WPoint
+#define Rectangle WRectangle
+#define Screen WScreen
+#define Visual WVisual
+#define Window WWindow
+#include <windows.h>
 #undef Colormap
 #undef Cursor
 #undef Display
@@ -23,33 +23,33 @@
 #undef Visual
 #undef Window
 #undef Unknown
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
-#include	<draw.h>
-#include	"keyboard.h"
-#include	"cursor.h"
-#include	"r16.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
+#include <draw.h>
+#include "keyboard.h"
+#include "cursor.h"
+#include "r16.h"
 extern ulong displaychan;
-extern	int	bytesperline(Rectangle, int);
-extern	int	main(int argc, char **argv);
-static	void	dprint(char*, ...);
-static	DWORD WINAPI	winproc(LPVOID);
-static	HINSTANCE	inst;
-static	HINSTANCE	previnst;
-static	int		cmdshow;
-static	HWND		window;
-static	HDC		screen;
-static	HPALETTE	palette;
-static	int		maxxsize;
-static	int		maxysize;
-static	int		attached;
-static	int		isunicode = 1;
-static	HCURSOR		hcursor;
-char	*argv0 = "inferno";
-static	ulong	*data;
-extern	DWORD	PlatformId;
-char*	gkscanid = "emu_win32vk";
+extern int bytesperline(Rectangle, int);
+extern int main(int argc, char **argv);
+static void dprint(char*, ...);
+static DWORD WINAPI winproc(LPVOID);
+static HINSTANCE inst;
+static HINSTANCE previnst;
+static int cmdshow;
+static HWND window;
+static HDC screen;
+static HPALETTE palette;
+static int maxxsize;
+static int maxysize;
+static int attached;
+static int isunicode = 1;
+static HCURSOR hcursor;
+char *argv0 = "inferno";
+static ulong *data;
+extern DWORD PlatformId;
+char* gkscanid = "emu_win32vk";
 int WINAPI
 WinMain(HINSTANCE winst, HINSTANCE wprevinst, LPSTR cmdline, int wcmdshow)
 {

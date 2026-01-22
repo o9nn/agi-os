@@ -1,5 +1,5 @@
 #ifndef gxfont0_INCLUDED
-#  define gxfont0_INCLUDED
+# define gxfont0_INCLUDED
 typedef enum {
 fmap_8_8 = 2,
 fmap_escape = 3,
@@ -15,7 +15,7 @@ fmap_CMap = 9
 #define fmap_type_is_modal(fmt)\
 ((fmt) == fmap_escape || (fmt) == fmap_double_escape || (fmt) == fmap_shift)
 #ifndef gs_cmap_DEFINED
-#  define gs_cmap_DEFINED
+# define gs_cmap_DEFINED
 typedef struct gs_cmap_s gs_cmap_t;
 #endif
 typedef struct gs_type0_data_s {
@@ -32,7 +32,7 @@ const gs_cmap_t *CMap;
 } gs_type0_data;
 #define gs_type0_data_max_ptrs 3
 #ifndef gs_font_type0_DEFINED
-#  define gs_font_type0_DEFINED
+# define gs_font_type0_DEFINED
 typedef struct gs_font_type0_s gs_font_type0;
 #endif
 struct gs_font_type0_s {
@@ -40,7 +40,7 @@ gs_font_common;
 gs_type0_data data;
 };
 extern_st(st_gs_font_type0);
-#define public_st_gs_font_type0()	\
+#define public_st_gs_font_type0() \
 gs_public_st_complex_only(st_gs_font_type0, gs_font_type0, "gs_font_type0",\
 0, font_type0_enum_ptrs, font_type0_reloc_ptrs, gs_font_finalize)
 font_proc_define_font(gs_type0_define_font);

@@ -65,31 +65,31 @@ return (ret);
 #else
 # if !defined(OPENSSL_NO_ASM) && !defined(OPENSSL_NO_INLINE_ASM) \
 && !defined(PEDANTIC) && !defined(BN_DIV3W)
-#  if defined(__GNUC__) && __GNUC__>=2
-#   if defined(__i386) || defined (__i386__)
-#    undef bn_div_words
-#    define bn_div_words(n0,n1,d0)                \
-({  asm volatile (                      \
-"divl   %4"                     \
-: "=a"(q), "=d"(rem)            \
-: "a"(n1), "d"(n0), "g"(d0)     \
-: "cc");                        \
-q;                                  \
+# if defined(__GNUC__) && __GNUC__>=2
+# if defined(__i386) || defined (__i386__)
+# undef bn_div_words
+# define bn_div_words(n0,n1,d0) \
+({ asm volatile ( \
+"divl   %4" \
+: "=a"(q), "=d"(rem) \
+: "a"(n1), "d"(n0), "g"(d0) \
+: "cc"); \
+q; \
 })
-#    define REMAINDER_IS_ALREADY_CALCULATED
-#   elif defined(__x86_64) && defined(SIXTY_FOUR_BIT_LONG)
-#    undef bn_div_words
-#    define bn_div_words(n0,n1,d0)                \
-({  asm volatile (                      \
-"divq   %4"                     \
-: "=a"(q), "=d"(rem)            \
-: "a"(n1), "d"(n0), "g"(d0)     \
-: "cc");                        \
-q;                                  \
+# define REMAINDER_IS_ALREADY_CALCULATED
+# elif defined(__x86_64) && defined(SIXTY_FOUR_BIT_LONG)
+# undef bn_div_words
+# define bn_div_words(n0,n1,d0) \
+({ asm volatile ( \
+"divq   %4" \
+: "=a"(q), "=d"(rem) \
+: "a"(n1), "d"(n0), "g"(d0) \
+: "cc"); \
+q; \
 })
-#    define REMAINDER_IS_ALREADY_CALCULATED
-#   endif
-#  endif
+# define REMAINDER_IS_ALREADY_CALCULATED
+# endif
+# endif
 # endif
 int BN_div(BIGNUM *dv, BIGNUM *rm, const BIGNUM *num, const BIGNUM *divisor,
 BN_CTX *ctx)
@@ -199,20 +199,20 @@ n1 = wnump[-1];
 if (n0 == d0)
 q = BN_MASK2;
 else {
-#  ifdef BN_LLONG
+# ifdef BN_LLONG
 BN_ULLONG t2;
-#   if defined(BN_LLONG) && defined(BN_DIV2W) && !defined(bn_div_words)
+# if defined(BN_LLONG) && defined(BN_DIV2W) && !defined(bn_div_words)
 q = (BN_ULONG)(((((BN_ULLONG) n0) << BN_BITS2) | n1) / d0);
-#   else
+# else
 q = bn_div_words(n0, n1, d0);
-#    ifdef BN_DEBUG_LEVITTE
+# ifdef BN_DEBUG_LEVITTE
 fprintf(stderr, "DEBUG: bn_div_words(0x%08X,0x%08X,0x%08\
 X) -> 0x%08X\n", n0, n1, d0, q);
-#    endif
-#   endif
-#   ifndef REMAINDER_IS_ALREADY_CALCULATED
+# endif
+# endif
+# ifndef REMAINDER_IS_ALREADY_CALCULATED
 rem = (n1 - q * d0) & BN_MASK2;
-#   endif
+# endif
 t2 = (BN_ULLONG) d1 *q;
 for (;;) {
 if (t2 <= ((((BN_ULLONG) rem) << BN_BITS2) | wnump[-2]))
@@ -223,22 +223,22 @@ if (rem < d0)
 break;
 t2 -= d1;
 }
-#  else
+# else
 BN_ULONG t2l, t2h;
 q = bn_div_words(n0, n1, d0);
-#   ifdef BN_DEBUG_LEVITTE
+# ifdef BN_DEBUG_LEVITTE
 fprintf(stderr, "DEBUG: bn_div_words(0x%08X,0x%08X,0x%08\
 X) -> 0x%08X\n", n0, n1, d0, q);
-#   endif
-#   ifndef REMAINDER_IS_ALREADY_CALCULATED
+# endif
+# ifndef REMAINDER_IS_ALREADY_CALCULATED
 rem = (n1 - q * d0) & BN_MASK2;
-#   endif
-#   if defined(BN_UMULT_LOHI)
+# endif
+# if defined(BN_UMULT_LOHI)
 BN_UMULT_LOHI(t2l, t2h, d1, q);
-#   elif defined(BN_UMULT_HIGH)
+# elif defined(BN_UMULT_HIGH)
 t2l = d1 * q;
 t2h = BN_UMULT_HIGH(d1, q);
-#   else
+# else
 {
 BN_ULONG ql, qh;
 t2l = LBITS(d1);
@@ -247,7 +247,7 @@ ql = LBITS(q);
 qh = HBITS(q);
 mul64(t2l, t2h, ql, qh);
 }
-#   endif
+# endif
 for (;;) {
 if ((t2h < rem) || ((t2h == rem) && (t2l <= wnump[-2])))
 break;
@@ -259,7 +259,7 @@ if (t2l < d1)
 t2h--;
 t2l -= d1;
 }
-#  endif
+# endif
 }
 # endif
 l0 = bn_mul_words(tmp->d, sdiv->d, div_n, q);

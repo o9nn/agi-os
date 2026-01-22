@@ -391,7 +391,7 @@ CRYPTO_w_unlock(CRYPTO_LOCK_ERR);
 do { \
 if (((p)->err_data[i] != NULL) && \
 (p)->err_data_flags[i] & ERR_TXT_MALLOCED) \
-{  \
+{ \
 OPENSSL_free((p)->err_data[i]); \
 (p)->err_data[i]=NULL; \
 } \

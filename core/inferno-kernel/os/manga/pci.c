@@ -5,21 +5,21 @@
 #include "fns.h"
 #include "io.h"
 #include "../port/error.h"
-#define DBG	if(0) pcilog
+#define DBG if(0) pcilog
 #undef DBG
-#define DBG	if(1) iprint
+#define DBG if(1) iprint
 typedef struct Pcicfg Pcicfg;
 struct Pcicfg {
-ulong	addr;
-ulong	data;
+ulong addr;
+ulong data;
 };
-static Pcicfg*	pcicfg;
-static ulong*	pciack;
-static ulong*	pcimem;
+static Pcicfg* pcicfg;
+static ulong* pciack;
+static ulong* pcimem;
 struct
 {
-char	output[16384];
-int	ptr;
+char output[16384];
+int ptr;
 }PCICONS;
 int
 pcilog(char *fmt, ...)
@@ -36,17 +36,17 @@ return n;
 }
 enum
 {
-MaxFNO		= 7,
-MaxUBN		= 255,
+MaxFNO = 7,
+MaxUBN = 255,
 };
 enum
 {
-IOen		= (1<<0),
-MEMen		= (1<<1),
-MASen		= (1<<2),
-MemWrInv	= (1<<4),
-PErrEn		= (1<<6),
-SErrEn		= (1<<8),
+IOen = (1<<0),
+MEMen = (1<<1),
+MASen = (1<<2),
+MemWrInv = (1<<4),
+PErrEn = (1<<6),
+SErrEn = (1<<8),
 };
 static Lock pcicfglock;
 static QLock pcicfginitlock;
@@ -62,10 +62,10 @@ static void pcirouting(void);
 static void pcirootmap(Pcidev*);
 static void pcidumpdev(ulong);
 static char* bustypes[] = {
-[BusIRQ]	"IRQ",
-[BusPCI]	"PCI",
+[BusIRQ] "IRQ",
+[BusPCI] "PCI",
 };
-#pragma	varargck	type	"Y"	int
+#pragma varargck type "Y" int
 static int
 tbdffmt(Fmt* fmt)
 {
@@ -634,27 +634,27 @@ pcicfgw16(p, PciPCR, pcr);
 }
 typedef struct Pciahb Pciahb;
 struct Pciahb {
-ulong	pbm;
-ulong	pbcs;
-ulong	pmba;
-ulong	pmbac;
-ulong	pmbam;
-ulong	pmbat;
-ulong	pioba;
-ulong	piobac;
-ulong	piobam;
-ulong	piobat;
+ulong pbm;
+ulong pbcs;
+ulong pmba;
+ulong pmbac;
+ulong pmbam;
+ulong pmbat;
+ulong pioba;
+ulong piobac;
+ulong piobam;
+ulong piobat;
 };
 enum {
-PciHost=	1<<31,
-PciModePCI=	0<<29,
-PciModeMini=	1<<29,
-PciModeCbus=	2<<29,
-PciReset=	1<<31,
-PciPF4=	0<<29,
-PciPF8=	1<<29,
-PciPF16=	2<<29,
-PciTranslate=	1<<31,
+PciHost= 1<<31,
+PciModePCI= 0<<29,
+PciModeMini= 1<<29,
+PciModeCbus= 2<<29,
+PciReset= 1<<31,
+PciPF4= 0<<29,
+PciPF8= 1<<29,
+PciPF16= 2<<29,
+PciTranslate= 1<<31,
 };
 static void
 pcidumpdev(ulong tbdf)
@@ -710,18 +710,18 @@ pcicfgw32(bridge, PciBAR0, PCIWINDOW);
 }
 typedef struct Pciroute Pciroute;
 struct Pciroute {
-int	slot;
-int	pin;
-int	irq;
+int slot;
+int pin;
+int irq;
 };
 static Pciroute pciroutes[] = {
-{0,	1,	IRQext0},
-{5,	1,	IRQext3},
-{5,	2,	IRQext1},
-{5,	3,	IRQext2},
-{6,	1,	IRQext0},
-{7,	0,	IRQext3},
-{-1,	0,	IRQext0},
+{0, 1, IRQext0},
+{5, 1, IRQext3},
+{5, 2, IRQext1},
+{5, 3, IRQext2},
+{6, 1, IRQext0},
+{7, 0, IRQext3},
+{-1, 0, IRQext0},
 };
 static void
 pcirouting(void)

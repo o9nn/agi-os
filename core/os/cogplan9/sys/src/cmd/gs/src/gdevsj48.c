@@ -10,7 +10,7 @@ prn_device(prn_std_procs, "sj48",
 1, sj48_print_page);
 private int
 sj48_print_page(gx_device_printer *pdev, FILE *prn_stream)
-{	int line_size = gx_device_raster((gx_device *)pdev, 0);
+{ int line_size = gx_device_raster((gx_device *)pdev, 0);
 int xres = pdev->x_pixels_per_inch;
 int yres = pdev->y_pixels_per_inch;
 int mode = (yres == 180 ?
@@ -28,12 +28,12 @@ int code = 0;
 int last_row = dev_print_scan_lines(pdev);
 int limit = last_row - bits_per_column;
 if ( in == 0 || out == 0 )
-{	code = gs_error_VMerror;
+{ code = gs_error_VMerror;
 gs_note_error(code);
 goto fin;
 }
 if ((xres !=180 && xres != 360) || (yres !=180 && yres != 360))
-{	code = gs_error_rangecheck;
+{ code = gs_error_rangecheck;
 gs_note_error(code);
 goto fin;
 }
@@ -48,11 +48,11 @@ byte *outl = out;
 int count, bnum;
 code = gdev_prn_get_bits(pdev, lnum, in, &in_data);
 if ( code < 0 ) goto xit;
-{	register const long *zip = (const long *)in_data;
+{ register const long *zip = (const long *)in_data;
 register int zcnt = line_size;
 register const byte *zipb;
 for ( ; zcnt >= 4 * sizeof(long); zip += 4, zcnt -= 4 * sizeof(long) )
-{	if ( zip[0] | zip[1] | zip[2] | zip[3] )
+{ if ( zip[0] | zip[1] | zip[2] | zip[3] )
 goto notz;
 }
 zipb = (const byte *)zip;
@@ -64,10 +64,10 @@ goto notz;
 lnum++;
 skip++;
 continue;
-notz:			;
+notz: ;
 }
 if ( lnum > limit )
-{	skip -= (limit - lnum);
+{ skip -= (limit - lnum);
 lnum = limit;
 }
 if (yres == 180) {
@@ -80,7 +80,7 @@ lnum--;
 skips = skip/2;
 }
 while ( skips > 255 )
-{	fputs("\033J\377", prn_stream);
+{ fputs("\033J\377", prn_stream);
 skips -= 255;
 }
 if ( skips )
@@ -89,20 +89,20 @@ if ( lnum == limit )
 limit = last_row;
 skip = 0;
 for ( bnum = 0; bnum < bits_per_column; bnum += 8 )
-{	int lcnt = min(8, limit - lnum);
+{ int lcnt = min(8, limit - lnum);
 byte *inp = in;
 byte *outp = outl;
 lcnt = gdev_prn_copy_scan_lines(pdev,
 lnum, in, lcnt * line_size);
 if ( lcnt < 0 )
-{	code = lcnt;
+{ code = lcnt;
 goto xit;
 }
 if ( lcnt < 8 )
 memset(in + lcnt * line_size, 0,
 (8 - lcnt) * line_size);
 for ( ; inp < in_end; inp++, outp += bits_per_column )
-{	gdev_prn_transpose_8x8(inp, line_size,
+{ gdev_prn_transpose_8x8(inp, line_size,
 outp, bytes_per_column);
 }
 outl++;
@@ -111,14 +111,14 @@ skip += lcnt;
 }
 outl = out;
 do
-{	int count;
+{ int count;
 int n;
 byte *out_ptr;
 while(outl < out_end)
-{	n = count = min(out_end - outl, skip_unit);
+{ n = count = min(out_end - outl, skip_unit);
 out_ptr = outl;
 while ( --count >= 0 )
-{	if ( *out_ptr++ )
+{ if ( *out_ptr++ )
 break;
 }
 if ( count >= 0 )
@@ -129,17 +129,17 @@ outl = out_ptr;
 if (outl >= out_end)
 break;
 if (outl > out_beg)
-{	count = (outl - out_beg) / skip_unit;
+{ count = (outl - out_beg) / skip_unit;
 fprintf(prn_stream, "\033\\%c%c",
 count & 0xff, count >> 8);
 }
 out_beg = outl;
 outl += n;
 while(outl < out_end)
-{	n = count = min(out_end - outl, skip_unit);
+{ n = count = min(out_end - outl, skip_unit);
 out_ptr = outl;
 while ( --count >= 0 )
-{	if ( *out_ptr++ )
+{ if ( *out_ptr++ )
 break;
 }
 if ( count < 0 )
@@ -161,9 +161,9 @@ while ( out_beg < out_end );
 fputc('\r', prn_stream);
 skip = bits_per_column;
 }
-xit:	fputc(014, prn_stream);
+xit: fputc(014, prn_stream);
 fflush(prn_stream);
-fin:	if ( out != 0 )
+fin: if ( out != 0 )
 gs_free(pdev->memory, (char *)out, bits_per_column, line_size,
 "sj48_print_page(out)");
 if ( in != 0 )

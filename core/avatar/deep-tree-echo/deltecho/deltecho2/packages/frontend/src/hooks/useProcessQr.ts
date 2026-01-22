@@ -18,262 +18,262 @@ import type { WelcomeQrWithUrl } from '../contexts/InstantOnboardingContext'
 import useChat from './chat/useChat'
 import { unknownErrorToString } from '../components/helpers/unknownErrorToString'
 const ALLOWED_QR_CODES_ON_WELCOME_SCREEN: T.Qr['kind'][] = [
-  'account',
-  'askVerifyContact',
-  'askVerifyGroup',
-  'backup2',
-  'login',
-  'text',
-  'url',
+'account',
+'askVerifyContact',
+'askVerifyGroup',
+'backup2',
+'login',
+'text',
+'url',
 ]
 const log = getLogger('renderer/hooks/useProcessQr')
 export default function useProcessQR() {
-  const tx = useTranslationFunction()
-  const { addAndSelectAccount } = useContext(ScreenContext)
-  const { openDialog } = useDialog()
-  const openAlertDialog = useAlertDialog()
-  const openConfirmationDialog = useConfirmationDialog()
-  const openMailtoLink = useOpenMailtoLink()
-  const { startInstantOnboardingFlow } = useInstantOnboarding()
-  const { secureJoinGroup, secureJoinContact } = useSecureJoin()
-  const { selectChat } = useChat()
-  const processQrCode = useCallback(
-    async (accountId: number, qrContent: string) => {
-      try {
-        await BackendRemote.rpc.setConfigFromQr(accountId, qrContent)
-      } catch (error) {
-        openAlertDialog({
-          message: unknownErrorToString(error),
-        })
-      }
-    },
-    [openAlertDialog]
-  )
-  const startInstantOnboarding = useCallback(
-    async (accountId: number, qrWithUrl: WelcomeQrWithUrl) => {
-      const { qr } = qrWithUrl
-      if (await BackendRemote.rpc.isConfigured(accountId)) {
-        throw new Error(
-          'Instant onboarding can not be started on already configured account'
-        )
-      }
-      if (qr.kind === 'askVerifyGroup') {
-        const userConfirmed = await openConfirmationDialog({
-          message: tx('instant_onboarding_confirm_group', qr.grpname),
-          confirmLabel: tx('ok'),
-          dataTestid: 'ask-join-group',
-        })
-        if (!userConfirmed) {
-          return
-        }
-      } else if (qr.kind === 'askVerifyContact') {
-        const contact = await BackendRemote.rpc.getContact(
-          accountId,
-          qr.contact_id
-        )
-        const userConfirmed = await openConfirmationDialog({
-          message: tx(
-            'instant_onboarding_confirm_contact',
-            contact.displayName
-          ),
-          confirmLabel: tx('ok'),
-          dataTestid: 'ask-create-profile-and-join-chat',
-        })
-        if (!userConfirmed) {
-          return
-        }
-      }
-      await startInstantOnboardingFlow(qrWithUrl)
-    },
-    [openConfirmationDialog, startInstantOnboardingFlow, tx]
-  )
-  return useCallback(
-    async (accountId: number, url: string, callback?: () => void) => {
-      if (url.toLowerCase().startsWith('mailto:')) {
-        await openMailtoLink(accountId, url, callback)
-        return
-      }
-      let parsed: QrWithUrl
-      try {
-        parsed = await processQr(accountId, url)
-      } catch (err) {
-        log.error(err)
-        await openAlertDialog({
-          message: tx('qrscan_failed') + '\n\n' + url,
-        })
-        return callback?.()
-      }
-      const { qr } = parsed
-      if (qr.kind === 'backupTooNew') {
-        await openAlertDialog({
-          message: tx('multidevice_receiver_needs_update'),
-        })
-        callback?.()
-        return
-      }
-      const isLoggedIn = await BackendRemote.rpc.isConfigured(accountId)
-      if (
-        !ALLOWED_QR_CODES_ON_WELCOME_SCREEN.includes(qr.kind) &&
-        !isLoggedIn
-      ) {
-        await openAlertDialog({
-          message: tx('need_to_be_logged_in'),
-        })
-        return callback?.()
-      }
-      if (qr.kind === 'account') {
-        if (isLoggedIn) {
-          const userConfirmed = await openConfirmationDialog({
-            message: tx('qraccount_ask_create_and_login_another', qr.domain),
-            confirmLabel: tx('login_title'),
-            dataTestid: 'ask-create-account',
-          })
-          if (!userConfirmed) {
-            return callback?.()
-          }
-          const new_accountId = await addAndSelectAccount()
-          await startInstantOnboarding(new_accountId, { ...parsed, qr })
-        } else {
-          await startInstantOnboarding(accountId, { ...parsed, qr })
-        }
-        return callback?.()
-      }
-      if (qr.kind === 'login') {
-        if (isLoggedIn) {
-          const userConfirmed = await openConfirmationDialog({
-            message: tx('qrlogin_ask_login_another', qr.address),
-            confirmLabel: tx('login_title'),
-          })
-          if (!userConfirmed) {
-            return callback?.()
-          }
-          const new_accountId = await addAndSelectAccount()
-          await startInstantOnboarding(new_accountId, { ...parsed, qr })
-        } else {
-          await startInstantOnboarding(accountId, { ...parsed, qr })
-        }
-        return callback?.()
-      }
-      if (qr.kind === 'askVerifyContact') {
-        if (!isLoggedIn) {
-          await startInstantOnboarding(accountId, { ...parsed, qr })
-        } else {
-          const chatId = await secureJoinContact(accountId, { ...parsed, qr })
-          if (chatId) {
-            selectChat(accountId, chatId)
-          }
-        }
-        return callback?.()
-      }
-      if (qr.kind === 'askVerifyGroup') {
-        if (!isLoggedIn) {
-          await startInstantOnboarding(accountId, { ...parsed, qr })
-        } else {
-          const chatId = await secureJoinGroup(accountId, { ...parsed, qr })
-          if (chatId) {
-            selectChat(accountId, chatId)
-          }
-        }
-        return callback?.()
-      }
-      if (qr.kind === 'backup2') {
-        if (isLoggedIn) {
-          await openAlertDialog({
-            message: tx('need_to_be_logged_out'),
-          })
-          callback?.()
-        } else {
-          openDialog(ReceiveBackupProgressDialog, {
-            QrWithToken: url,
-          })
-        }
-        callback?.()
-        return
-      }
-      if (qr.kind === 'fprOk') {
-        const contact = await BackendRemote.rpc.getContact(
-          accountId,
-          qr.contact_id
-        )
-        const userConfirmed = await openConfirmationDialog({
-          message: `The fingerprint of ${contact.displayName} is valid!`,
-          confirmLabel: tx('ok'),
-        })
-        if (userConfirmed) {
-          callback?.()
-        }
-        return
-      }
-      if (qr.kind === 'withdrawVerifyContact') {
-        const userConfirmed = await openConfirmationDialog({
-          message: tx('withdraw_verifycontact_explain'),
-          header: tx('withdraw_qr_code'),
-          confirmLabel: tx('ok'),
-        })
-        if (userConfirmed) {
-          await processQrCode(accountId, url)
-        }
-        callback?.()
-        return
-      }
-      if (qr.kind === 'reviveVerifyContact') {
-        const userConfirmed = await openConfirmationDialog({
-          message: tx('revive_verifycontact_explain'),
-          header: tx('revive_qr_code'),
-          confirmLabel: tx('ok'),
-        })
-        if (userConfirmed) {
-          await processQrCode(accountId, url)
-        }
-        callback?.()
-        return
-      }
-      if (qr.kind === 'withdrawVerifyGroup') {
-        const userConfirmed = await openConfirmationDialog({
-          message: tx('withdraw_verifygroup_explain', qr.grpname),
-          header: tx('withdraw_qr_code'),
-          confirmLabel: tx('ok'),
-          dataTestid: 'withdraw-verify-group',
-        })
-        if (userConfirmed) {
-          await processQrCode(accountId, url)
-        }
-        callback?.()
-        return
-      }
-      if (qr.kind === 'reviveVerifyGroup') {
-        const userConfirmed = await openConfirmationDialog({
-          message: tx('revive_verifygroup_explain', qr.grpname),
-          header: tx('revive_qr_code'),
-          confirmLabel: tx('ok'),
-        })
-        if (userConfirmed) {
-          await processQrCode(accountId, url)
-        }
-        callback?.()
-        return
-      }
-      openDialog(CopyContentAlertDialog, {
-        message:
-          qr.kind === 'url'
-            ? tx('qrscan_contains_url', url)
-            : tx('qrscan_contains_text', url),
-        content: url,
-        cb: callback,
-      })
-    },
-    [
-      openAlertDialog,
-      openConfirmationDialog,
-      openDialog,
-      openMailtoLink,
-      secureJoinContact,
-      secureJoinGroup,
-      processQrCode,
-      startInstantOnboarding,
-      addAndSelectAccount,
-      selectChat,
-      tx,
-    ]
-  )
+const tx = useTranslationFunction()
+const { addAndSelectAccount } = useContext(ScreenContext)
+const { openDialog } = useDialog()
+const openAlertDialog = useAlertDialog()
+const openConfirmationDialog = useConfirmationDialog()
+const openMailtoLink = useOpenMailtoLink()
+const { startInstantOnboardingFlow } = useInstantOnboarding()
+const { secureJoinGroup, secureJoinContact } = useSecureJoin()
+const { selectChat } = useChat()
+const processQrCode = useCallback(
+async (accountId: number, qrContent: string) => {
+try {
+await BackendRemote.rpc.setConfigFromQr(accountId, qrContent)
+} catch (error) {
+openAlertDialog({
+message: unknownErrorToString(error),
+})
+}
+},
+[openAlertDialog]
+)
+const startInstantOnboarding = useCallback(
+async (accountId: number, qrWithUrl: WelcomeQrWithUrl) => {
+const { qr } = qrWithUrl
+if (await BackendRemote.rpc.isConfigured(accountId)) {
+throw new Error(
+'Instant onboarding can not be started on already configured account'
+)
+}
+if (qr.kind === 'askVerifyGroup') {
+const userConfirmed = await openConfirmationDialog({
+message: tx('instant_onboarding_confirm_group', qr.grpname),
+confirmLabel: tx('ok'),
+dataTestid: 'ask-join-group',
+})
+if (!userConfirmed) {
+return
+}
+} else if (qr.kind === 'askVerifyContact') {
+const contact = await BackendRemote.rpc.getContact(
+accountId,
+qr.contact_id
+)
+const userConfirmed = await openConfirmationDialog({
+message: tx(
+'instant_onboarding_confirm_contact',
+contact.displayName
+),
+confirmLabel: tx('ok'),
+dataTestid: 'ask-create-profile-and-join-chat',
+})
+if (!userConfirmed) {
+return
+}
+}
+await startInstantOnboardingFlow(qrWithUrl)
+},
+[openConfirmationDialog, startInstantOnboardingFlow, tx]
+)
+return useCallback(
+async (accountId: number, url: string, callback?: () => void) => {
+if (url.toLowerCase().startsWith('mailto:')) {
+await openMailtoLink(accountId, url, callback)
+return
+}
+let parsed: QrWithUrl
+try {
+parsed = await processQr(accountId, url)
+} catch (err) {
+log.error(err)
+await openAlertDialog({
+message: tx('qrscan_failed') + '\n\n' + url,
+})
+return callback?.()
+}
+const { qr } = parsed
+if (qr.kind === 'backupTooNew') {
+await openAlertDialog({
+message: tx('multidevice_receiver_needs_update'),
+})
+callback?.()
+return
+}
+const isLoggedIn = await BackendRemote.rpc.isConfigured(accountId)
+if (
+!ALLOWED_QR_CODES_ON_WELCOME_SCREEN.includes(qr.kind) &&
+!isLoggedIn
+) {
+await openAlertDialog({
+message: tx('need_to_be_logged_in'),
+})
+return callback?.()
+}
+if (qr.kind === 'account') {
+if (isLoggedIn) {
+const userConfirmed = await openConfirmationDialog({
+message: tx('qraccount_ask_create_and_login_another', qr.domain),
+confirmLabel: tx('login_title'),
+dataTestid: 'ask-create-account',
+})
+if (!userConfirmed) {
+return callback?.()
+}
+const new_accountId = await addAndSelectAccount()
+await startInstantOnboarding(new_accountId, { ...parsed, qr })
+} else {
+await startInstantOnboarding(accountId, { ...parsed, qr })
+}
+return callback?.()
+}
+if (qr.kind === 'login') {
+if (isLoggedIn) {
+const userConfirmed = await openConfirmationDialog({
+message: tx('qrlogin_ask_login_another', qr.address),
+confirmLabel: tx('login_title'),
+})
+if (!userConfirmed) {
+return callback?.()
+}
+const new_accountId = await addAndSelectAccount()
+await startInstantOnboarding(new_accountId, { ...parsed, qr })
+} else {
+await startInstantOnboarding(accountId, { ...parsed, qr })
+}
+return callback?.()
+}
+if (qr.kind === 'askVerifyContact') {
+if (!isLoggedIn) {
+await startInstantOnboarding(accountId, { ...parsed, qr })
+} else {
+const chatId = await secureJoinContact(accountId, { ...parsed, qr })
+if (chatId) {
+selectChat(accountId, chatId)
+}
+}
+return callback?.()
+}
+if (qr.kind === 'askVerifyGroup') {
+if (!isLoggedIn) {
+await startInstantOnboarding(accountId, { ...parsed, qr })
+} else {
+const chatId = await secureJoinGroup(accountId, { ...parsed, qr })
+if (chatId) {
+selectChat(accountId, chatId)
+}
+}
+return callback?.()
+}
+if (qr.kind === 'backup2') {
+if (isLoggedIn) {
+await openAlertDialog({
+message: tx('need_to_be_logged_out'),
+})
+callback?.()
+} else {
+openDialog(ReceiveBackupProgressDialog, {
+QrWithToken: url,
+})
+}
+callback?.()
+return
+}
+if (qr.kind === 'fprOk') {
+const contact = await BackendRemote.rpc.getContact(
+accountId,
+qr.contact_id
+)
+const userConfirmed = await openConfirmationDialog({
+message: `The fingerprint of ${contact.displayName} is valid!`,
+confirmLabel: tx('ok'),
+})
+if (userConfirmed) {
+callback?.()
+}
+return
+}
+if (qr.kind === 'withdrawVerifyContact') {
+const userConfirmed = await openConfirmationDialog({
+message: tx('withdraw_verifycontact_explain'),
+header: tx('withdraw_qr_code'),
+confirmLabel: tx('ok'),
+})
+if (userConfirmed) {
+await processQrCode(accountId, url)
+}
+callback?.()
+return
+}
+if (qr.kind === 'reviveVerifyContact') {
+const userConfirmed = await openConfirmationDialog({
+message: tx('revive_verifycontact_explain'),
+header: tx('revive_qr_code'),
+confirmLabel: tx('ok'),
+})
+if (userConfirmed) {
+await processQrCode(accountId, url)
+}
+callback?.()
+return
+}
+if (qr.kind === 'withdrawVerifyGroup') {
+const userConfirmed = await openConfirmationDialog({
+message: tx('withdraw_verifygroup_explain', qr.grpname),
+header: tx('withdraw_qr_code'),
+confirmLabel: tx('ok'),
+dataTestid: 'withdraw-verify-group',
+})
+if (userConfirmed) {
+await processQrCode(accountId, url)
+}
+callback?.()
+return
+}
+if (qr.kind === 'reviveVerifyGroup') {
+const userConfirmed = await openConfirmationDialog({
+message: tx('revive_verifygroup_explain', qr.grpname),
+header: tx('revive_qr_code'),
+confirmLabel: tx('ok'),
+})
+if (userConfirmed) {
+await processQrCode(accountId, url)
+}
+callback?.()
+return
+}
+openDialog(CopyContentAlertDialog, {
+message:
+qr.kind === 'url'
+? tx('qrscan_contains_url', url)
+: tx('qrscan_contains_text', url),
+content: url,
+cb: callback,
+})
+},
+[
+openAlertDialog,
+openConfirmationDialog,
+openDialog,
+openMailtoLink,
+secureJoinContact,
+secureJoinGroup,
+processQrCode,
+startInstantOnboarding,
+addAndSelectAccount,
+selectChat,
+tx,
+]
+)
 }

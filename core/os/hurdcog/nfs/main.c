@@ -17,13 +17,13 @@ int main_udp_socket;
 char *hostname;
 volatile struct mapped_time_value *mapped_time;
 extern char *localhost (void);
-#define DEFAULT_SOFT_RETRIES  3
-#define DEFAULT_STAT_TIMEOUT  3
+#define DEFAULT_SOFT_RETRIES 3
+#define DEFAULT_STAT_TIMEOUT 3
 #define DEFAULT_CACHE_TIMEOUT 3
 #define DEFAULT_NAME_CACHE_TIMEOUT 3
 #define DEFAULT_NAME_CACHE_NEG_TIMEOUT 3
-#define DEFAULT_READ_SIZE     8192
-#define DEFAULT_WRITE_SIZE    8192
+#define DEFAULT_READ_SIZE 8192
+#define DEFAULT_WRITE_SIZE 8192
 int stat_timeout = DEFAULT_STAT_TIMEOUT;
 int cache_timeout = DEFAULT_CACHE_TIMEOUT;
 int name_cache_timeout = DEFAULT_NAME_CACHE_TIMEOUT;
@@ -34,23 +34,23 @@ int soft_retries = DEFAULT_SOFT_RETRIES;
 int mounted_soft = 0;
 int read_size = DEFAULT_READ_SIZE;
 int write_size = DEFAULT_WRITE_SIZE;
-#define OPT_SOFT	's'
-#define OPT_HARD	'h'
-#define OPT_RSIZE	'R'
-#define OPT_WSIZE	'W'
-#define OPT_STAT_TO	-2
-#define OPT_CACHE_TO	-3
-#define OPT_INIT_TR_TO	-4
-#define OPT_MAX_TR_TO	-5
-#define OPT_MNT_PORT    -6
-#define OPT_MNT_PORT_D  -7
-#define OPT_NFS_PORT    -8
-#define OPT_NFS_PORT_D  -9
-#define OPT_HOLD	-10
-#define OPT_MNT_PROG    -11
-#define OPT_NFS_PROG    -12
-#define OPT_PMAP_PORT	-13
-#define OPT_NCACHE_TO	-14
+#define OPT_SOFT 's'
+#define OPT_HARD 'h'
+#define OPT_RSIZE 'R'
+#define OPT_WSIZE 'W'
+#define OPT_STAT_TO -2
+#define OPT_CACHE_TO -3
+#define OPT_INIT_TR_TO -4
+#define OPT_MAX_TR_TO -5
+#define OPT_MNT_PORT -6
+#define OPT_MNT_PORT_D -7
+#define OPT_NFS_PORT -8
+#define OPT_NFS_PORT_D -9
+#define OPT_HOLD -10
+#define OPT_MNT_PROG -11
+#define OPT_NFS_PROG -12
+#define OPT_PMAP_PORT -13
+#define OPT_NCACHE_TO -14
 #define OPT_NCACHE_NEG_TO -15
 #define ___D(what) #what
 #define __D(what) ___D(what)
@@ -59,31 +59,31 @@ const char *argp_program_version = STANDARD_HURD_VERSION (nfs);
 static const struct argp_option common_options[] =
 {
 {0,0,0,0,0,1},
-{"soft",		    OPT_SOFT,	   "RETRIES", OPTION_ARG_OPTIONAL,
+{"soft", OPT_SOFT, "RETRIES", OPTION_ARG_OPTIONAL,
 "File system requests will eventually fail, after RETRIES tries"
 " (default " _D(SOFT_RETRIES) ")" },
-{"hard",		    OPT_HARD, 0, 0,
+{"hard", OPT_HARD, 0, 0,
 "Retry file systems requests until they succeed"},
 {0,0,0,0,0,2},
-{"read-size",		    OPT_RSIZE,	   "BYTES", 0,
+{"read-size", OPT_RSIZE, "BYTES", 0,
 "Max packet size for reads (default " _D(READ_SIZE) ")"},
 {"rsize",0,0,OPTION_ALIAS},
-{"write-size",	    OPT_WSIZE,	   "BYTES", 0,
+{"write-size", OPT_WSIZE, "BYTES", 0,
 "Max packet size for writes (default " _D(WRITE_SIZE)")"},
 {"wsize",0,0,OPTION_ALIAS},
 {0,0,0,0,"Timeouts:",3},
-{"stat-timeout",	    OPT_STAT_TO,   "SEC", 0,
+{"stat-timeout", OPT_STAT_TO, "SEC", 0,
 "Timeout for cached stat information (default " _D(STAT_TIMEOUT) ")"},
-{"cache-timeout",	    OPT_CACHE_TO,  "SEC", 0,
+{"cache-timeout", OPT_CACHE_TO, "SEC", 0,
 "Timeout for cached file data (default " _D(CACHE_TIMEOUT) ")"},
-{"name-cache-timeout",    OPT_NCACHE_TO, "SEC", 0,
+{"name-cache-timeout", OPT_NCACHE_TO, "SEC", 0,
 "Timeout for positive directory cache entries (default "
 _D(NAME_CACHE_TIMEOUT) ")"},
 {"name-cache-neg-timeout", OPT_NCACHE_NEG_TO, "SEC", 0,
 "Timeout for negative directory cache entires (default "
 _D(NAME_CACHE_NEG_TIMEOUT) ")"},
 {"init-transmit-timeout", OPT_INIT_TR_TO,"SEC", 0},
-{"max-transmit-timeout",  OPT_MAX_TR_TO, "SEC", 0},
+{"max-transmit-timeout", OPT_MAX_TR_TO, "SEC", 0},
 {0}
 };
 static error_t
@@ -114,17 +114,17 @@ return 0;
 }
 static const struct argp_option startup_options[] = {
 {0,0,0,0,"Server specification:",10},
-{"mount-port",	    OPT_MNT_PORT,  "PORT", 0,
+{"mount-port", OPT_MNT_PORT, "PORT", 0,
 "Port for mount server"},
-{"default-mount-port",    OPT_MNT_PORT_D,"PORT", 0,
+{"default-mount-port", OPT_MNT_PORT_D,"PORT", 0,
 "Port for mount server, if none can be found automatically"},
-{"mount-program",	    OPT_MNT_PROG,  "ID[.VERS]"},
-{"nfs-port",	            OPT_NFS_PORT,  "PORT", 0,
+{"mount-program", OPT_MNT_PROG, "ID[.VERS]"},
+{"nfs-port", OPT_NFS_PORT, "PORT", 0,
 "Port for nfs operations"},
-{"default-nfs-port",      OPT_NFS_PORT_D,"PORT", 0,
+{"default-nfs-port", OPT_NFS_PORT_D,"PORT", 0,
 "Port for nfs operations, if none can be found automatically"},
-{"nfs-program",           OPT_NFS_PROG,  "[ID.]VERS"},
-{"pmap-port",             OPT_PMAP_PORT,  "SVC|PORT"},
+{"nfs-program", OPT_NFS_PROG, "[ID.]VERS"},
+{"pmap-port", OPT_PMAP_PORT, "SVC|PORT"},
 {"hold", OPT_HOLD, 0, OPTION_HIDDEN},
 { 0 }
 };

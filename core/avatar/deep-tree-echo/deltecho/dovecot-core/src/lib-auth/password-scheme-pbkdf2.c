@@ -6,8 +6,8 @@
 #include "hash-method.h"
 #include "pkcs5.h"
 #define PBKDF2_KEY_SIZE_SHA1 20
-#define PBKDF2_GENERATE_SALT_LEN      16
-#define PBKDF2_ROUNDS_DEFAULT          5000
+#define PBKDF2_GENERATE_SALT_LEN 16
+#define PBKDF2_ROUNDS_DEFAULT 5000
 static void
 pbkdf_run(const char *plaintext, const char *salt,
 unsigned int rounds, unsigned char key_r[PBKDF2_KEY_SIZE_SHA1])

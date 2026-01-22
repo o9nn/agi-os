@@ -6,7 +6,7 @@
 #endif
 int
 c_cd(wp)
-char	**wp;
+char **wp;
 {
 int optc;
 int physical = Flag(FPHYSICAL);
@@ -131,7 +131,7 @@ return 0;
 }
 int
 c_pwd(wp)
-char	**wp;
+char **wp;
 {
 int optc;
 int physical = Flag(FPHYSICAL);
@@ -175,12 +175,12 @@ int
 c_print(wp)
 char **wp;
 {
-#define PO_NL		BIT(0)
-#define PO_EXPAND	BIT(1)
-#define PO_PMINUSMINUS	BIT(2)
-#define PO_HIST		BIT(3)
-#define PO_COPROC	BIT(4)
-#define PO_FSLASH	BIT(5)
+#define PO_NL BIT(0)
+#define PO_EXPAND BIT(1)
+#define PO_PMINUSMINUS BIT(2)
+#define PO_HIST BIT(3)
+#define PO_COPROC BIT(4)
+#define PO_FSLASH BIT(5)
 int fd = 1;
 int flags = PO_EXPAND|PO_NL;
 char *s;
@@ -682,7 +682,7 @@ break;
 } else {
 if (pflag)
 shprintf("%s ",
-(flag & EXPORT) ?  "export" : "readonly");
+(flag & EXPORT) ? "export" : "readonly");
 if ((vp->flag&ARRAY) && any_set)
 shprintf("%s[%d]", vp->name, vp->index);
 else
@@ -1088,12 +1088,12 @@ int
 c_getopts(wp)
 char **wp;
 {
-int	argc;
+int argc;
 const char *options;
 const char *var;
-int	optc;
-int	ret;
-char	buf[3];
+int optc;
+int ret;
+char buf[3];
 struct tbl *vq, *voptarg;
 if (ksh_getopt(wp, &builtin_opt, null) == '?')
 return 1;

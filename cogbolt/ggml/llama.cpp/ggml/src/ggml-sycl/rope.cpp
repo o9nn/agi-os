@@ -34,9 +34,9 @@ if (i0 >= ne0) {
 return;
 }
 const int row = item_ct1.get_local_range(2) * item_ct1.get_group(2) + item_ct1.get_local_id(2);
-const int row0     = row % ne1;
+const int row0 = row % ne1;
 const int channel0 = row / ne1;
-const int i  = row * ne0 + i0;
+const int i = row * ne0 + i0;
 const int i2 = channel0 * s2 + row0 * s1 + i0;
 if (i0 >= n_dims) {
 *reinterpret_cast<sycl::vec<T, 2> *>(dst + i) = *reinterpret_cast<const sycl::vec<T, 2> *>(x + i2);
@@ -62,9 +62,9 @@ if (i0 >= ne0) {
 return;
 }
 const int row = item_ct1.get_local_range(2) * item_ct1.get_group(2) + item_ct1.get_local_id(2);
-const int row0     = row % ne1;
+const int row0 = row % ne1;
 const int channel0 = row / ne1;
-const int i  = row * ne0 + i0 / 2;
+const int i = row * ne0 + i0 / 2;
 const int i2 = channel0 * s2 + row0 * s1 + i0 / 2;
 if (i0 >= n_dims) {
 *reinterpret_cast<sycl::vec<T, 2> *>(dst + i + i0 / 2) = *reinterpret_cast<const sycl::vec<T, 2> *>(x + i2 + i0 / 2);
@@ -77,7 +77,7 @@ float sin_theta;
 rope_yarn(theta_base / freq_factor, freq_scale, corr_dims, i0, ext_factor, attn_factor, &cos_theta, &sin_theta);
 const float x0 = x[i2 + 0];
 const float x1 = x[i2 + n_dims / 2];
-dst[i + 0]          = x0 * cos_theta - x1 * sin_theta;
+dst[i + 0] = x0 * cos_theta - x1 * sin_theta;
 dst[i + n_dims / 2] = x0 * sin_theta + x1 * cos_theta;
 }
 template <typename T, bool has_ff>
@@ -90,11 +90,11 @@ const int i0 = 2 * (item_ct1.get_group(1) * item_ct1.get_local_range(1) + item_c
 if (i0 >= ne0) {
 return;
 }
-const int    row_dst   = (item_ct1.get_group(2) * item_ct1.get_local_range(2)) + item_ct1.get_local_id(2);
-const int    row_x     = row_dst % ne1;
-const int    channel_x = row_dst / ne1;
-const int    idst      = (row_dst * ne0) + (i0 / 2);
-const size_t ix        = ((size_t) channel_x * s2) + ((size_t) row_x * s1) + (i0 / 2);
+const int row_dst = (item_ct1.get_group(2) * item_ct1.get_local_range(2)) + item_ct1.get_local_id(2);
+const int row_x = row_dst % ne1;
+const int channel_x = row_dst / ne1;
+const int idst = (row_dst * ne0) + (i0 / 2);
+const size_t ix = ((size_t) channel_x * s2) + ((size_t) row_x * s1) + (i0 / 2);
 if (i0 >= n_dims) {
 *reinterpret_cast<sycl::vec<T, 2> *>(dst + idst + i0 / 2) = *reinterpret_cast<const sycl::vec<T, 2> *>(x + i0 / 2 + ix);
 return;
@@ -116,12 +116,12 @@ else if (sector >= sec_w + sections.v[2]) {
 theta_base = pos[channel_x + ne2 * 3]*sycl::pow(theta_scale, i0/2.0f);
 }
 const float freq_factor = has_ff ? freq_factors[i0 / 2] : 1.0f;
-float       cos_theta;
-float       sin_theta;
+float cos_theta;
+float sin_theta;
 rope_yarn(theta_base / freq_factor, freq_scale, corr_dims, i0, ext_factor, attn_factor, &cos_theta, &sin_theta);
 const float x0 = x[ix + 0];
 const float x1 = x[ix + n_dims/2];
-dst[idst + 0]      = x0 * cos_theta - x1 * sin_theta;
+dst[idst + 0] = x0 * cos_theta - x1 * sin_theta;
 dst[idst + n_dims/2] = x0 * sin_theta + x1 * cos_theta;
 }
 template <typename T, bool has_ff>
@@ -134,28 +134,28 @@ const int i0 = 2 * (item_ct1.get_group(1) * item_ct1.get_local_range(1) + item_c
 if (i0 >= ne0) {
 return;
 }
-const int    row_dst   = (item_ct1.get_group(2) * item_ct1.get_local_range(2)) + item_ct1.get_local_id(2);
-const int    row_x     = row_dst % ne1;
-const int    channel_x = row_dst / ne1;
-const int    idst      = (row_dst * ne0) + (i0 / 2);
-const size_t ix        = ((size_t) channel_x * s2) + ((size_t) row_x * s1) + (i0 / 2);
+const int row_dst = (item_ct1.get_group(2) * item_ct1.get_local_range(2)) + item_ct1.get_local_id(2);
+const int row_x = row_dst % ne1;
+const int channel_x = row_dst / ne1;
+const int idst = (row_dst * ne0) + (i0 / 2);
+const size_t ix = ((size_t) channel_x * s2) + ((size_t) row_x * s1) + (i0 / 2);
 const int sect_dims = sections.v[0] + sections.v[1];
-const int sector    = (i0 / 2) % sect_dims;
+const int sector = (i0 / 2) % sect_dims;
 float theta_base = 0.0f;
 if (sector < sections.v[0]) {
 const int p = sector;
-theta_base  = pos[channel_x] * sycl::pow(theta_scale, (float) p);
+theta_base = pos[channel_x] * sycl::pow(theta_scale, (float) p);
 } else {
 const int p = sector - sections.v[0];
-theta_base  = pos[channel_x + ne2] * sycl::pow(theta_scale, (float) p);
+theta_base = pos[channel_x + ne2] * sycl::pow(theta_scale, (float) p);
 }
 const float freq_factor = has_ff ? freq_factors[i0 / 2] : 1.0f;
-float       cos_theta;
-float       sin_theta;
+float cos_theta;
+float sin_theta;
 rope_yarn(theta_base / freq_factor, freq_scale, corr_dims, i0, ext_factor, attn_factor, &cos_theta, &sin_theta);
 const float x0 = x[ix + 0];
 const float x1 = x[ix + n_dims];
-dst[idst + 0]      = x0 * cos_theta - x1 * sin_theta;
+dst[idst + 0] = x0 * cos_theta - x1 * sin_theta;
 dst[idst + n_dims] = x0 * sin_theta + x1 * cos_theta;
 }
 template <typename T>
@@ -165,7 +165,7 @@ const float ext_factor, const float attn_factor, const rope_corr_dims corr_dims,
 const float * freq_factors, queue_ptr stream) {
 GGML_ASSERT(ne0 % 2 == 0);
 const sycl::range<3> block_dims(1, SYCL_ROPE_BLOCK_SIZE, 1);
-const int            num_blocks_x = ceil_div(ne0, (2 * SYCL_ROPE_BLOCK_SIZE));
+const int num_blocks_x = ceil_div(ne0, (2 * SYCL_ROPE_BLOCK_SIZE));
 const sycl::range<3> block_nums(1, num_blocks_x, nr);
 const float theta_scale = powf(freq_base, -2.0f / n_dims);
 dpct::has_capability_or_fail(stream->get_device(), { sycl::aspect::fp16 });
@@ -190,7 +190,7 @@ const float freq_base, const float ext_factor, const float attn_factor,
 const rope_corr_dims corr_dims, const float * freq_factors, queue_ptr stream) {
 GGML_ASSERT(ne0 % 2 == 0);
 const sycl::range<3> block_dims(1, SYCL_ROPE_BLOCK_SIZE, 1);
-const int            num_blocks_x = ceil_div(ne0, (2 * SYCL_ROPE_BLOCK_SIZE));
+const int num_blocks_x = ceil_div(ne0, (2 * SYCL_ROPE_BLOCK_SIZE));
 const sycl::range<3> block_nums(1, num_blocks_x, nr);
 const float theta_scale = powf(freq_base, -2.0f / n_dims);
 dpct::has_capability_or_fail(stream->get_device(), { sycl::aspect::fp16 });
@@ -215,9 +215,9 @@ const float freq_scale, const float freq_base, const float ext_factor,
 const float attn_factor, const rope_corr_dims corr_dims, const float * freq_factors,
 const mrope_sections sections, queue_ptr stream) {
 GGML_ASSERT(ne0 % 2 == 0);
-const sycl::range<3>    block_dims(1, SYCL_ROPE_BLOCK_SIZE, 1);
-const int               n_blocks_y = ceil_div(ne0, (2 * SYCL_ROPE_BLOCK_SIZE));
-const sycl::range<3>    grid_dims(1, n_blocks_y, nr);
+const sycl::range<3> block_dims(1, SYCL_ROPE_BLOCK_SIZE, 1);
+const int n_blocks_y = ceil_div(ne0, (2 * SYCL_ROPE_BLOCK_SIZE));
+const sycl::range<3> grid_dims(1, n_blocks_y, nr);
 const sycl::nd_range<3> nd_range(grid_dims * block_dims, block_dims);
 const float theta_scale = std::pow(freq_base, -2.0f / n_dims);
 if constexpr (std::is_same_v<T, sycl::half>) {
@@ -242,9 +242,9 @@ const float freq_scale, const float freq_base, const float ext_factor,
 const float attn_factor, const rope_corr_dims corr_dims, const float * freq_factors,
 const mrope_sections sections, queue_ptr stream) {
 GGML_ASSERT(ne0 % 2 == 0);
-const sycl::range<3>    block_dims(1, SYCL_ROPE_BLOCK_SIZE, 1);
-const int               n_blocks_y = ceil_div(ne0, (2 * SYCL_ROPE_BLOCK_SIZE));
-const sycl::range<3>    grid_dims(1, n_blocks_y, nr);
+const sycl::range<3> block_dims(1, SYCL_ROPE_BLOCK_SIZE, 1);
+const int n_blocks_y = ceil_div(ne0, (2 * SYCL_ROPE_BLOCK_SIZE));
+const sycl::range<3> grid_dims(1, n_blocks_y, nr);
 const sycl::nd_range<3> nd_range(grid_dims * block_dims, block_dims);
 const float theta_scale = std::pow(freq_base, -2.0f / n_dims);
 if constexpr (std::is_same_v<T, sycl::half>) {
@@ -264,7 +264,7 @@ corr_dims, theta_scale, freq_factors, sections, item_ct1);
 }
 inline void ggml_sycl_op_rope(ggml_backend_sycl_context & ctx, ggml_tensor *dst) {
 GGML_ASSERT(dst->src[0]->type == GGML_TYPE_F32 || dst->src[0]->type == GGML_TYPE_F16);
-GGML_ASSERT( dst->type == GGML_TYPE_F32 ||  dst->type == GGML_TYPE_F16);
+GGML_ASSERT( dst->type == GGML_TYPE_F32 || dst->type == GGML_TYPE_F16);
 GGML_ASSERT(dst->src[0]->type == dst->type);
 const int64_t ne00 = dst->src[0]->ne[0];
 const int64_t ne01 = dst->src[0]->ne[1];
@@ -272,9 +272,9 @@ const int64_t ne02 = dst->src[0]->ne[2];
 const int64_t nr = ggml_nrows(dst->src[0]);
 const size_t s01 = dst->src[0]->nb[1] / ggml_type_size(dst->src[0]->type);
 const size_t s02 = dst->src[0]->nb[2] / ggml_type_size(dst->src[0]->type);
-const int n_dims      = ((int32_t *) dst->op_params)[1];
-const int mode        = ((int32_t *) dst->op_params)[2];
-const int n_ctx_orig  = ((int32_t *) dst->op_params)[4];
+const int n_dims = ((int32_t *) dst->op_params)[1];
+const int mode = ((int32_t *) dst->op_params)[2];
+const int n_ctx_orig = ((int32_t *) dst->op_params)[4];
 mrope_sections sections;
 float freq_base;
 float freq_scale;
@@ -282,13 +282,13 @@ float ext_factor;
 float attn_factor;
 float beta_fast;
 float beta_slow;
-memcpy(&freq_base,   (int32_t *) dst->op_params +  5, sizeof(float));
-memcpy(&freq_scale,  (int32_t *) dst->op_params +  6, sizeof(float));
-memcpy(&ext_factor,  (int32_t *) dst->op_params +  7, sizeof(float));
-memcpy(&attn_factor, (int32_t *) dst->op_params +  8, sizeof(float));
-memcpy(&beta_fast,   (int32_t *) dst->op_params +  9, sizeof(float));
-memcpy(&beta_slow,   (int32_t *) dst->op_params + 10, sizeof(float));
-memcpy(&sections.v,  (int32_t *) dst->op_params + 11, sizeof(int)*4);
+memcpy(&freq_base, (int32_t *) dst->op_params + 5, sizeof(float));
+memcpy(&freq_scale, (int32_t *) dst->op_params + 6, sizeof(float));
+memcpy(&ext_factor, (int32_t *) dst->op_params + 7, sizeof(float));
+memcpy(&attn_factor, (int32_t *) dst->op_params + 8, sizeof(float));
+memcpy(&beta_fast, (int32_t *) dst->op_params + 9, sizeof(float));
+memcpy(&beta_slow, (int32_t *) dst->op_params + 10, sizeof(float));
+memcpy(&sections.v, (int32_t *) dst->op_params + 11, sizeof(int)*4);
 const bool is_neox = mode & GGML_ROPE_TYPE_NEOX;
 const bool is_mrope = mode & GGML_ROPE_TYPE_MROPE;
 const bool is_vision = mode == GGML_ROPE_TYPE_VISION;

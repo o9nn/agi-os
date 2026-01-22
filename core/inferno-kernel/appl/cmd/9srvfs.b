@@ -9,7 +9,7 @@ sh: Sh;
 include "arg.m";
 P9srvfs: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 init(ctxt: ref Draw->Context, args: list of string)
 {
@@ -45,7 +45,7 @@ dest := hd args;
 if(dest == nil)
 dest = ".";
 iscmd := dest[0] == '{' && dest[len dest-1] == '}';
-if(!iscmd){		# quick check before creating service file
+if(!iscmd){ # quick check before creating service file
 (ok, d) := sys->stat(dest);
 if(ok < 0)
 error(sys->sprint("can't stat %s: %r", dest));

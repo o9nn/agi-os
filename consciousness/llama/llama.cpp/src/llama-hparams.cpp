@@ -19,7 +19,7 @@ return n_ff_arr[il];
 GGML_ABORT("fatal error");
 }
 uint32_t llama_hparams::n_gqa(uint32_t il) const {
-const uint32_t n_head    = this->n_head(il);
+const uint32_t n_head = this->n_head(il);
 const uint32_t n_head_kv = this->n_head_kv(il);
 if (n_head_kv == 0) {
 return 0;

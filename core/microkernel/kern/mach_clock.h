@@ -7,24 +7,24 @@
 #include <sys/types.h>
 struct io_req;
 typedef struct io_req *io_req_t;
-extern unsigned long	elapsed_ticks;
-extern int		hz;
-extern int		tick;
-extern time_value64_t	time;
-extern time_value64_t	uptime;
+extern unsigned long elapsed_ticks;
+extern int hz;
+extern int tick;
+extern time_value64_t time;
+extern time_value64_t uptime;
 typedef void timer_func_t(void *);
 struct timer_elt {
-queue_chain_t	chain;
-timer_func_t	*fcn;
-void *		param;
-unsigned long	ticks;
-int		set;
+queue_chain_t chain;
+timer_func_t *fcn;
+void * param;
+unsigned long ticks;
+int set;
 };
-#define	TELT_UNSET	0
-#define	TELT_SET	1
-#define	TELT_ALLOC	2
-typedef	struct timer_elt	timer_elt_data_t;
-typedef	struct timer_elt	*timer_elt_t;
+#define TELT_UNSET 0
+#define TELT_SET 1
+#define TELT_ALLOC 2
+typedef struct timer_elt timer_elt_data_t;
+typedef struct timer_elt *timer_elt_t;
 extern void clock_interrupt(
 int usec,
 boolean_t usermode,
@@ -35,15 +35,15 @@ extern void set_timeout(
 timer_elt_t telt,
 unsigned int interval);
 extern boolean_t reset_timeout(timer_elt_t telt);
-#define	set_timeout_setup(telt,fcn,param,interval)	\
-((telt)->fcn = (fcn),				\
-(telt)->param = (param),			\
-(telt)->private = TRUE,			\
+#define set_timeout_setup(telt,fcn,param,interval) \
+((telt)->fcn = (fcn), \
+(telt)->param = (param), \
+(telt)->private = TRUE, \
 set_timeout((telt), (interval)))
-#define	reset_timeout_check(t)				\
-MACRO_BEGIN					\
-if ((t)->set)					\
-reset_timeout((t));				\
+#define reset_timeout_check(t) \
+MACRO_BEGIN \
+if ((t)->set) \
+reset_timeout((t)); \
 MACRO_END
 extern void init_timeout (void);
 extern void record_time_stamp (time_value64_t *stamp);

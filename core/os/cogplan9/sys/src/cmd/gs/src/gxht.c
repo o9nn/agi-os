@@ -294,28 +294,28 @@ gx_dc_binary_color0(pdevc1) == gx_dc_binary_color0(pdevc2) &&
 gx_dc_binary_color1(pdevc1) == gx_dc_binary_color1(pdevc2) &&
 pdevc1->colors.binary.b_level == pdevc2->colors.binary.b_level;
 }
-private const int   dc_ht_binary_has_color0 = 0x01;
-private const int   dc_ht_binary_has_color1 = 0x02;
-private const int   dc_ht_binary_has_level = 0x04;
-private const int   dc_ht_binary_has_index = 0x08;
+private const int dc_ht_binary_has_color0 = 0x01;
+private const int dc_ht_binary_has_color1 = 0x02;
+private const int dc_ht_binary_has_level = 0x04;
+private const int dc_ht_binary_has_index = 0x08;
 private int
 gx_dc_ht_binary_write(
-const gx_device_color *         pdevc,
-const gx_device_color_saved *   psdc0,
-const gx_device *               dev,
-byte *                          pdata,
-uint *                          psize )
+const gx_device_color * pdevc,
+const gx_device_color_saved * psdc0,
+const gx_device * dev,
+byte * pdata,
+uint * psize )
 {
-int                             req_size = 1;
-int                             flag_bits = 0;
-uint                            tmp_size;
-byte *                          pdata0 = pdata;
-const gx_device_color_saved *   psdc = psdc0;
-int                             code;
+int req_size = 1;
+int flag_bits = 0;
+uint tmp_size;
+byte * pdata0 = pdata;
+const gx_device_color_saved * psdc = psdc0;
+int code;
 if (psdc != 0 && psdc->type != pdevc->type)
 psdc = 0;
-if ( psdc == 0                                                      ||
-pdevc->colors.binary.color[0] != psdc->colors.binary.b_color[0]  ) {
+if ( psdc == 0 ||
+pdevc->colors.binary.color[0] != psdc->colors.binary.b_color[0] ) {
 flag_bits |= dc_ht_binary_has_color0;
 tmp_size = 0;
 (void)gx_dc_write_color( pdevc->colors.binary.color[0],
@@ -324,8 +324,8 @@ pdata,
 &tmp_size );
 req_size += tmp_size;
 }
-if ( psdc == 0                                                      ||
-pdevc->colors.binary.color[1] != psdc->colors.binary.b_color[1]  ) {
+if ( psdc == 0 ||
+pdevc->colors.binary.color[1] != psdc->colors.binary.b_color[1] ) {
 flag_bits |= dc_ht_binary_has_color1;
 tmp_size = 0;
 (void)gx_dc_write_color( pdevc->colors.binary.color[1],
@@ -334,13 +334,13 @@ pdata,
 &tmp_size );
 req_size += tmp_size;
 }
-if ( psdc == 0                                                  ||
-pdevc->colors.binary.b_level != psdc->colors.binary.b_level  ) {
+if ( psdc == 0 ||
+pdevc->colors.binary.b_level != psdc->colors.binary.b_level ) {
 flag_bits |= dc_ht_binary_has_level;
 req_size += enc_u_sizew(pdevc->colors.binary.b_level);
 }
-if ( psdc == 0                                                  ||
-pdevc->colors.binary.b_index != psdc->colors.binary.b_index  ) {
+if ( psdc == 0 ||
+pdevc->colors.binary.b_index != psdc->colors.binary.b_index ) {
 flag_bits |= dc_ht_binary_has_index;
 req_size += 1;
 }
@@ -382,17 +382,17 @@ return 0;
 }
 private int
 gx_dc_ht_binary_read(
-gx_device_color *       pdevc,
+gx_device_color * pdevc,
 const gs_imager_state * pis,
 const gx_device_color * prior_devc,
-const gx_device *       dev,
-const byte *            pdata,
-uint                    size,
-gs_memory_t *           mem )
+const gx_device * dev,
+const byte * pdata,
+uint size,
+gs_memory_t * mem )
 {
-gx_device_color         devc;
-const byte *            pdata0 = pdata;
-int                     code, flag_bits;
+gx_device_color devc;
+const byte * pdata0 = pdata;
+int code, flag_bits;
 if (prior_devc != 0 && prior_devc->type == gx_dc_type_ht_binary)
 devc = *prior_devc;
 else
@@ -425,7 +425,7 @@ size -= code;
 pdata += code;
 }
 if ((flag_bits & dc_ht_binary_has_level) != 0) {
-const byte *    pdata_start = pdata;
+const byte * pdata_start = pdata;
 if (size < 1)
 return_error(gs_error_rangecheck);
 enc_u_getw(devc.colors.binary.b_level, pdata);
@@ -448,20 +448,20 @@ return pdata - pdata0;
 int
 gx_dc_ht_binary_get_nonzero_comps(
 const gx_device_color * pdevc,
-const gx_device *       dev,
-gx_color_index *        pcomp_bits )
+const gx_device * dev,
+gx_color_index * pcomp_bits )
 {
-int                     code;
-gx_color_value          cvals_0[GX_DEVICE_COLOR_MAX_COMPONENTS],
+int code;
+gx_color_value cvals_0[GX_DEVICE_COLOR_MAX_COMPONENTS],
 cvals_1[GX_DEVICE_COLOR_MAX_COMPONENTS];
 if ( (code = dev_proc(dev, decode_color)( (gx_device *)dev,
 pdevc->colors.binary.color[0],
 cvals_0 )) >= 0 &&
 (code = dev_proc(dev, decode_color)( (gx_device *)dev,
 pdevc->colors.binary.color[1],
-cvals_1 )) >= 0   ) {
-int     i, ncomps = dev->color_info.num_components;
-int     mask = 0x1, comp_bits = 0;
+cvals_1 )) >= 0 ) {
+int i, ncomps = dev->color_info.num_components;
+int mask = 0x1, comp_bits = 0;
 for (i = 0; i < ncomps; i++, mask <<= 1) {
 if (cvals_0[i] != 0 || cvals_1[i] != 0)
 comp_bits |= mask;
@@ -532,7 +532,7 @@ pcache->levels_per_tile == 1 ? gx_render_ht_1_level :
 gx_render_ht_default);
 }
 private int
-render_ht(gx_ht_tile * pbt, int level  ,
+render_ht(gx_ht_tile * pbt, int level ,
 const gx_ht_order * porder, gx_bitmap_id new_id)
 {
 byte *data = pbt->tiles.data;

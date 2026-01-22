@@ -13,15 +13,15 @@
 #else
 #define MY_PRETTY_FUNCTION __PRETTY_FUNCTION__
 #endif
-#define ASSERT(expr, fmt, ...)                                                        \
-do {                                                                              \
-if (!(expr)) {                                                                \
-LOG("Assertion failed: %s:%d, func: \"%s\", expr: \"%s\", message: "  \
-fmt,                                                              \
-__FILE__, __LINE__, MY_PRETTY_FUNCTION, #expr,                    \
-##__VA_ARGS__);                                                       \
-abort();                                                                  \
-}                                                                             \
+#define ASSERT(expr, fmt, ...) \
+do { \
+if (!(expr)) { \
+LOG("Assertion failed: %s:%d, func: \"%s\", expr: \"%s\", message: " \
+fmt, \
+__FILE__, __LINE__, MY_PRETTY_FUNCTION, #expr, \
+##__VA_ARGS__); \
+abort(); \
+} \
 } while (0)
 wgpu::Instance create_instance() {
 wgpu::InstanceDescriptor instance_desc;

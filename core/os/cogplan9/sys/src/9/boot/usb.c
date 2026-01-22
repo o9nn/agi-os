@@ -9,7 +9,7 @@ Dontpost,
 Post,
 };
 static char usbdisk0[] = "/dev/sdU0.0";
-static char sdxxctl[]  = "/dev/sdXX/ctl";
+static char sdxxctl[] = "/dev/sdXX/ctl";
 static int
 start(char *name, char **argv, char *file)
 {

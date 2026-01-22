@@ -7,7 +7,7 @@ PLinguaModel
 Represents a complete P-Lingua model.
 """
 struct PLinguaModel <: ASTNode
-model_type::String  # e.g., "transition", "probabilistic"
+model_type::String # e.g., "transition", "probabilistic"
 definitions::Vector{ASTNode}
 end
 """
@@ -15,7 +15,7 @@ MembraneStructure
 Represents membrane structure definition (@mu).
 """
 struct MembraneStructure <: ASTNode
-structure::Vector{Any}  # Nested structure representation
+structure::Vector{Any} # Nested structure representation
 end
 """
 MultisetDefinition

@@ -11,40 +11,40 @@ Fmirror,
 Fcat,
 Finter,
 Fpart,
-Blksize	= 8*1024,
-Maxconf	= 1024,
+Blksize = 8*1024,
+Maxconf = 1024,
 Nfsdevs = 64,
-Ndevs	= 8,
-Qtop	= 0,
-Qdir	= 1,
-Qctl	= 2,
-Qfirst	= 3,
+Ndevs = 8,
+Qtop = 0,
+Qdir = 1,
+Qctl = 2,
+Qfirst = 3,
 };
-#define	Cfgstr	"fsdev:\n"
+#define Cfgstr "fsdev:\n"
 typedef struct Fsdev Fsdev;
 struct Fsdev
 {
-int	type;
-char	*name;
-vlong	start;
-vlong	size;
-int	ndevs;
-char	*iname[Ndevs];
-Chan	*idev[Ndevs];
-vlong	isize[Ndevs];
+int type;
+char *name;
+vlong start;
+vlong size;
+int ndevs;
+char *iname[Ndevs];
+Chan *idev[Ndevs];
+vlong isize[Ndevs];
 };
-static Fsdev	fsdev[Nfsdevs];
-static Qid	tqid = {Qtop, 0, QTDIR};
-static Qid	dqid = {Qdir, 0, QTDIR};
-static Qid	cqid = {Qctl, 0, 0};
+static Fsdev fsdev[Nfsdevs];
+static Qid tqid = {Qtop, 0, QTDIR};
+static Qid dqid = {Qdir, 0, QTDIR};
+static Qid cqid = {Qctl, 0, 0};
 static Cmdtab configs[] = {
-Fmirror,"mirror",	0,
-Fcat,	"cat",		0,
-Finter,	"inter",	0,
-Fpart,	"part",		5,
+Fmirror,"mirror", 0,
+Fcat, "cat", 0,
+Finter, "inter", 0,
+Fpart, "part", 5,
 };
-static char	confstr[Maxconf];
-static int	configed;
+static char confstr[Maxconf];
+static int configed;
 static Fsdev*
 path2dev(int i, int mustexist)
 {
@@ -60,7 +60,7 @@ return &fsdev[i];
 static Fsdev*
 devalloc(void)
 {
-int	i;
+int i;
 for (i = 0; i < nelem(fsdev); i++)
 if (fsdev[i].name == nil)
 break;
@@ -71,11 +71,11 @@ return &fsdev[i];
 static void
 setdsize(Fsdev* mp)
 {
-uchar	buf[128];
-int	i;
-Chan	*mc;
-Dir	d;
-long	l;
+uchar buf[128];
+int i;
+Chan *mc;
+Dir d;
+long l;
 if (mp->type != Fpart){
 mp->start= 0;
 mp->size = 0LL;
@@ -110,8 +110,8 @@ break;
 static void
 mpshut(Fsdev *mp)
 {
-int	i;
-char	*nm;
+int i;
+char *nm;
 nm = mp->name;
 mp->name = nil;
 if (nm)
@@ -127,14 +127,14 @@ memset(mp, 0, sizeof(*mp));
 static void
 mconfig(char* a, long n)
 {
-static	QLock	lck;
-Cmdbuf	*cb;
-Cmdtab	*ct;
-Fsdev	*mp;
-int	i;
-char	*oldc;
-char	*c;
-vlong	size, start;
+static QLock lck;
+Cmdbuf *cb;
+Cmdtab *ct;
+Fsdev *mp;
+int i;
+char *oldc;
+char *c;
+vlong size, start;
 size = 0;
 start = 0;
 if (confstr[0] == 0)
@@ -200,12 +200,12 @@ qunlock(&lck);
 static void
 rdconf(void)
 {
-int	mustrd;
-char	*s;
-char	*c;
-char	*p;
-char	*e;
-Chan	*cc;
+int mustrd;
+char *s;
+char *c;
+char *p;
+char *e;
+Chan *cc;
 s = getconf("fsconfig");
 if (s == nil){
 mustrd = 0;
@@ -250,8 +250,8 @@ poperror();
 static int
 mgen(Chan *c, char*, Dirtab*, int, int i, Dir *dp)
 {
-Qid	qid;
-Fsdev	*mp;
+Qid qid;
+Fsdev *mp;
 if (c->qid.path == Qtop){
 switch(i){
 case DEVDOTDOT:
@@ -308,9 +308,9 @@ return devwalk(c, nc, name, nname, 0, 0, mgen);
 static int
 mstat(Chan *c, uchar *db, int n)
 {
-Dir	d;
-Fsdev	*mp;
-int	p;
+Dir d;
+Fsdev *mp;
+int p;
 p = c->qid.path;
 memset(&d, 0, sizeof(d));
 switch(p){
@@ -351,9 +351,9 @@ mclose(Chan*)
 static long
 catio(Fsdev *mp, int isread, void *a, long n, vlong off)
 {
-int	i;
-Chan*	mc;
-long	l, wl, res;
+int i;
+Chan* mc;
+long l, wl, res;
 res = n;
 for (i = 0; n >= 0 && i < mp->ndevs ; i++){
 mc = mp->idev[i];
@@ -380,18 +380,18 @@ return res - n;
 static long
 interio(Fsdev *mp, int isread, void *a, long n, vlong off)
 {
-int	i;
-Chan*	mc;
-long	l, wl, wsz;
-vlong	woff, blk, mblk;
-long	boff, res;
-blk  = off / Blksize;
+int i;
+Chan* mc;
+long l, wl, wsz;
+vlong woff, blk, mblk;
+long boff, res;
+blk = off / Blksize;
 boff = off % Blksize;
-wsz  = Blksize - boff;
+wsz = Blksize - boff;
 res = n;
 while(n > 0){
-i    = blk % mp->ndevs;
-mc   = mp->idev[i];
+i = blk % mp->ndevs;
+mc = mp->idev[i];
 mblk = blk / mp->ndevs;
 woff = mblk * Blksize + boff;
 if (n > wsz)
@@ -415,11 +415,11 @@ return res;
 static long
 mread(Chan *c, void *a, long n, vlong off)
 {
-int	i;
-Fsdev	*mp;
-Chan	*mc;
-long	l;
-long	res;
+int i;
+Fsdev *mp;
+Chan *mc;
+long l;
+long res;
 if (c->qid.type & QTDIR)
 return devdirread(c, a, n, 0, 0, mgen);
 if (c->qid.path == Qctl)
@@ -469,10 +469,10 @@ return res;
 static long
 mwrite(Chan *c, void *a, long n, vlong off)
 {
-Fsdev	*mp;
-long	l, res;
-int	i;
-Chan	*mc;
+Fsdev *mp;
+long l, res;
+int i;
+Chan *mc;
 if (c->qid.type & QTDIR)
 error(Eperm);
 if (c->qid.path == Qctl){

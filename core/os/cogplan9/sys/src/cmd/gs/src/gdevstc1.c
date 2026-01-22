@@ -18,9 +18,9 @@ sdev->stc.dither->bufadd
 if(buf_size > 0) {
 memset(buf,0,buf_size * sdev->stc.alg_item);
 }
-if(sdev->color_info.num_components         !=        1) return -1;
-if((sdev->stc.dither->flags & STC_TYPE)    != STC_BYTE) return -2;
-if((sdev->stc.dither->flags & STC_DIRECT) !=        0) return -3;
+if(sdev->color_info.num_components != 1) return -1;
+if((sdev->stc.dither->flags & STC_TYPE) != STC_BYTE) return -2;
+if((sdev->stc.dither->flags & STC_DIRECT) != 0) return -3;
 }
 return 0;
 }

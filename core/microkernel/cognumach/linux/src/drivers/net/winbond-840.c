@@ -9,19 +9,19 @@ static int rx_copybreak = 0;
 #define MAX_UNITS 8
 static int options[MAX_UNITS] = {-1, -1, -1, -1, -1, -1, -1, -1};
 static int full_duplex[MAX_UNITS] = {-1, -1, -1, -1, -1, -1, -1, -1};
-#define TX_RING_SIZE	16
-#define TX_QUEUE_LEN	10
-#define RX_RING_SIZE	32
+#define TX_RING_SIZE 16
+#define TX_QUEUE_LEN 10
+#define RX_RING_SIZE 32
 #define TX_FIFO_SIZE (2048)
 #define TX_BUG_FIFO_LIMIT (TX_FIFO_SIZE-1514-16)
-#define TX_TIMEOUT  (6*HZ)
-#define PKT_BUF_SZ		1536
+#define TX_TIMEOUT (6*HZ)
+#define PKT_BUF_SZ 1536
 #ifndef __KERNEL__
 #define __KERNEL__
 #endif
 #if !defined(__OPTIMIZE__)
-#warning  You must compile this file with the correct options!
-#warning  See the last lines of the source file.
+#warning You must compile this file with the correct options!
+#warning See the last lines of the source file.
 #error You must compile this driver with "-O".
 #endif
 #include <linux/config.h>
@@ -60,7 +60,7 @@ static int full_duplex[MAX_UNITS] = {-1, -1, -1, -1, -1, -1, -1, -1};
 #include "pci-scan.h"
 #include "kern_compat.h"
 #endif
-#define TX_DESC_SIZE	16
+#define TX_DESC_SIZE 16
 #if defined(__powerpc__) || defined(__sparc__)
 static int csr0 = 0x00100000 | 0xE000 | TX_DESC_SIZE;
 #elif defined(__alpha__) || defined(__x86_64) || defined(__ia64)
@@ -71,7 +71,7 @@ static int csr0 = 0xE000 | TX_DESC_SIZE;
 static int csr0 = 0xE000 | TX_DESC_SIZE;
 #warning Processor architecture unknown!
 #endif
-#if (LINUX_VERSION_CODE >= 0x20100)  &&  defined(MODULE)
+#if (LINUX_VERSION_CODE >= 0x20100) && defined(MODULE)
 char kernel_version[] = UTS_RELEASE;
 #endif
 MODULE_AUTHOR("Donald Becker <becker@scyld.com>");
@@ -171,7 +171,7 @@ DescOwn=0x80000000, DescEndRing=0x02000000, DescUseLink=0x01000000,
 DescWholePkt=0x60000000, DescStartPkt=0x20000000, DescEndPkt=0x40000000,
 DescIntr=0x80000000,
 };
-#define PRIV_ALIGN	15
+#define PRIV_ALIGN 15
 struct netdev_private {
 struct w840_rx_desc rx_ring[RX_RING_SIZE];
 struct w840_tx_desc tx_ring[TX_RING_SIZE];
@@ -208,24 +208,24 @@ int mii_cnt;
 u16 advertising;
 unsigned char phys[2];
 };
-static int  eeprom_read(long ioaddr, int location);
-static int  mdio_read(struct net_device *dev, int phy_id, int location);
+static int eeprom_read(long ioaddr, int location);
+static int mdio_read(struct net_device *dev, int phy_id, int location);
 static void mdio_write(struct net_device *dev, int phy_id, int location, int value);
-static int  netdev_open(struct net_device *dev);
+static int netdev_open(struct net_device *dev);
 static void check_duplex(struct net_device *dev);
 static void netdev_timer(unsigned long data);
 static void tx_timeout(struct net_device *dev);
 static void init_ring(struct net_device *dev);
-static int  start_tx(struct sk_buff *skb, struct net_device *dev);
+static int start_tx(struct sk_buff *skb, struct net_device *dev);
 static void intr_handler(int irq, void *dev_instance, struct pt_regs *regs);
 static void netdev_error(struct net_device *dev, int intr_status);
-static int  netdev_rx(struct net_device *dev);
+static int netdev_rx(struct net_device *dev);
 static void netdev_error(struct net_device *dev, int intr_status);
 static inline unsigned ether_crc(int length, unsigned char *data);
 static void set_rx_mode(struct net_device *dev);
 static struct net_device_stats *get_stats(struct net_device *dev);
 static int mii_ioctl(struct net_device *dev, struct ifreq *rq, int cmd);
-static int  netdev_close(struct net_device *dev);
+static int netdev_close(struct net_device *dev);
 static struct net_device *root_net_dev = NULL;
 static void *w840_probe1(struct pci_dev *pdev, void *init_dev,
 long ioaddr, int irq, int chip_idx, int card_idx)
@@ -276,7 +276,7 @@ np->tx_ring_size = TX_RING_SIZE;
 np->rx_ring_size = RX_RING_SIZE;
 if (dev->mem_start)
 option = dev->mem_start;
-if ((card_idx < MAX_UNITS  &&  full_duplex[card_idx] > 0)
+if ((card_idx < MAX_UNITS && full_duplex[card_idx] > 0)
 || (np->drv_flags & AlwaysFDX))
 np->full_duplex = 1;
 dev->open = &netdev_open;
@@ -289,7 +289,7 @@ if (np->drv_flags & CanHaveMII) {
 int phy, phy_idx = 0;
 for (phy = 1; phy < 32 && phy_idx < 4; phy++) {
 int mii_status = mdio_read(dev, phy, 1);
-if (mii_status != 0xffff  &&  mii_status != 0x0000) {
+if (mii_status != 0xffff && mii_status != 0x0000) {
 np->phys[phy_idx++] = phy;
 np->advertising = mdio_read(dev, phy, 4);
 printk(KERN_INFO "%s: MII PHY found at address %d, status "
@@ -333,7 +333,7 @@ mdio_write(dev, np->phys[0], 0,
 }
 return dev;
 }
-#define eeprom_delay(ee_addr)	readl(ee_addr)
+#define eeprom_delay(ee_addr) readl(ee_addr)
 enum EEPROM_Ctrl_Bits {
 EE_ShiftClk=0x02, EE_Write0=0x801, EE_Write1=0x805,
 EE_ChipSelect=0x801, EE_DataIn=0x08,
@@ -471,9 +471,9 @@ static void check_duplex(struct net_device *dev)
 {
 struct netdev_private *np = (struct netdev_private *)dev->priv;
 int mii_reg5 = mdio_read(dev, np->phys[0], 5);
-int negotiated =  mii_reg5 & np->advertising;
+int negotiated = mii_reg5 & np->advertising;
 int duplex;
-if (np->duplex_lock  ||  mii_reg5 == 0xffff)
+if (np->duplex_lock || mii_reg5 == 0xffff)
 return;
 duplex = (negotiated & 0x0100) || (negotiated & 0x01C0) == 0x0040;
 if (np->full_duplex != duplex) {
@@ -510,8 +510,8 @@ next_tick = 2;
 } else if ((intr_status & 0x1ffff)) {
 np->polling = 1;
 }
-if (netif_queue_paused(dev)  &&
-np->cur_tx - np->dirty_tx > 1  &&
+if (netif_queue_paused(dev) &&
+np->cur_tx - np->dirty_tx > 1 &&
 (jiffies - dev->trans_start) > TX_TIMEOUT) {
 tx_timeout(dev);
 }
@@ -719,7 +719,7 @@ np->tx_skbuff[entry] = 0;
 }
 if (np->tx_full &&
 np->cur_tx - np->dirty_tx < TX_QUEUE_LEN - 4
-&&  np->tx_q_bytes - np->tx_unq_bytes < TX_BUG_FIFO_LIMIT) {
+&& np->tx_q_bytes - np->tx_unq_bytes < TX_BUG_FIFO_LIMIT) {
 np->tx_full = 0;
 netif_resume_tx_queue(dev);
 }
@@ -885,7 +885,7 @@ printk(KERN_NOTICE "%s: Promiscuous mode enabled.\n", dev->name);
 memset(mc_filter, ~0, sizeof(mc_filter));
 rx_mode = AcceptBroadcast | AcceptMulticast | AcceptAllPhys;
 } else if ((dev->mc_count > np->multicast_filter_limit)
-||  (dev->flags & IFF_ALLMULTI)) {
+|| (dev->flags & IFF_ALLMULTI)) {
 memset(mc_filter, 0xff, sizeof(mc_filter));
 rx_mode = AcceptBroadcast | AcceptMulticast;
 } else {

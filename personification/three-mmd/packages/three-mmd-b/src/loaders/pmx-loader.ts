@@ -2,37 +2,37 @@ import type { PmxObject } from 'babylon-mmd/esm/Loader/Parser/pmxObject'
 import type { LoadingManager } from 'three'
 import { PmxReader } from 'babylon-mmd/esm/Loader/Parser/pmxReader'
 import {
-  FileLoader,
-  Loader,
+FileLoader,
+Loader,
 } from 'three'
 export class PMXLoader extends Loader<PmxObject> {
-  constructor(manager?: LoadingManager) {
-    super(manager)
-  }
-  public load(
-    url: string,
-    onLoad: (object: PmxObject) => void,
-    onProgress?: (event: ProgressEvent) => void,
-    onError?: (event: ErrorEvent) => void,
-  ): void {
-    const loader = new FileLoader(this.manager)
-    loader.setResponseType('arraybuffer')
-    loader.setPath(this.path)
-    loader.setRequestHeader(this.requestHeader)
-    loader.setWithCredentials(this.withCredentials)
-    loader.load(
-      url,
-      buffer => void PmxReader.ParseAsync(buffer as ArrayBuffer)
-        .then(onLoad)
-        .catch(onError),
-      onProgress,
-      onError as (error: unknown) => void,
-    )
-  }
-  public async loadAsync(
-    url: string,
-    onProgress?: (event: ProgressEvent) => void,
-  ): Promise<PmxObject> {
-    return super.loadAsync(url, onProgress)
-  }
+constructor(manager?: LoadingManager) {
+super(manager)
+}
+public load(
+url: string,
+onLoad: (object: PmxObject) => void,
+onProgress?: (event: ProgressEvent) => void,
+onError?: (event: ErrorEvent) => void,
+): void {
+const loader = new FileLoader(this.manager)
+loader.setResponseType('arraybuffer')
+loader.setPath(this.path)
+loader.setRequestHeader(this.requestHeader)
+loader.setWithCredentials(this.withCredentials)
+loader.load(
+url,
+buffer => void PmxReader.ParseAsync(buffer as ArrayBuffer)
+.then(onLoad)
+.catch(onError),
+onProgress,
+onError as (error: unknown) => void,
+)
+}
+public async loadAsync(
+url: string,
+onProgress?: (event: ProgressEvent) => void,
+): Promise<PmxObject> {
+return super.loadAsync(url, onProgress)
+}
 }

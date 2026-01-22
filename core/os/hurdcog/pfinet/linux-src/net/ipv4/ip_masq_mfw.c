@@ -20,15 +20,15 @@ static int debug=0;
 MODULE_PARM(debug, "i");
 #endif
 struct ip_masq_mfw_host {
-struct 	list_head list;
-__u32 	addr;
-__u16	port;
-__u16	pad0;
-__u32 	fwmark;
-int 	pref;
-atomic_t	pref_cnt;
+struct list_head list;
+__u32 addr;
+__u16 port;
+__u16 pad0;
+__u32 fwmark;
+int pref;
+atomic_t pref_cnt;
 };
-#define IP_MASQ_MFW_HSIZE	16
+#define IP_MASQ_MFW_HSIZE 16
 struct ip_masq_mfw {
 struct ip_masq_mfw *next;
 __u32 fwmark;
@@ -309,7 +309,7 @@ ip_masq_mod_dec_nent(mmod_self);
 }
 static int mfw_ctl(int optname, struct ip_masq_ctl *mctl, int optlen)
 {
-struct ip_mfw_user *mu =  &mctl->u.mfw_user;
+struct ip_mfw_user *mu = &mctl->u.mfw_user;
 struct ip_masq_mfw *mfw;
 int ret = EINVAL;
 int arglen = optlen - IP_MASQ_CTL_BSIZE;
@@ -363,7 +363,7 @@ ret = -ENOMEM;
 }
 if (mfw) {
 ret = mfw_addhost(mfw, mu, cmd == IP_MASQ_CMD_ADD);
-if (ret == 0 && atomic_read(&mfw->nhosts) == 1)  {
+if (ret == 0 && atomic_read(&mfw->nhosts) == 1) {
 write_lock_bh(&mfw_lock);
 __mfw_add(mfw);
 write_unlock_bh(&mfw_lock);
@@ -453,10 +453,10 @@ ip_masq_listen(ms);
 }
 return ms;
 }
-#define mfw_in_update	NULL
-#define mfw_out_rule	NULL
-#define mfw_out_create	NULL
-#define mfw_out_update	NULL
+#define mfw_in_update NULL
+#define mfw_out_rule NULL
+#define mfw_out_create NULL
+#define mfw_out_update NULL
 static struct ip_masq_mod mfw_mod = {
 NULL,
 NULL,

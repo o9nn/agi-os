@@ -7,9 +7,9 @@ sh: Sh;
 Context: import sh;
 include "readdir.m";
 #include "env.m";
-#	env: Env;
+# env: Env;
 #include "string.m";
-#	str: String;
+# str: String;
 include "fslib.m";
 fslib: Fslib;
 Report, Value, type2s: import fslib;
@@ -17,58 +17,58 @@ Fschan, Fsdata, Entrychan, Entry,
 Gatechan, Gatequery, Nilentry, Option,
 Quit: import Fslib;
 # more general:
-#	eval: fn[V, M](ctxt: ref Context, r: ref Report, expr: string, args:...) with {
-#		V =>
-#			typec:	fn(t: self V): int;
-#			cvt:		fn(t: self V, tc: int): V;
-#			cvt2s:	fn(t: self V): (int, string);
-#			cvt2v:	fn(t: self V): chan of int;
-#			mkstring:	fn(s: string): V;
-#			mkcmd:	fn(c: ref Sh->Cmd): V;
-#			discard:	fn(t: self V);
-#			type2s:	fn(c: int): string;
-#			loadmod:	fn(cmd: string): M;
-#		M =>
-#			types:	fn(): string;
-#			init:		fn();
-#			run:		fn(ctxt: ref Draw->Context, r: ref Report, cmd: string,
-#						opts: list of (int, list of V), args: list of V): V;
-#		}
+# eval: fn[V, M](ctxt: ref Context, r: ref Report, expr: string, args:...) with {
+# V =>
+# typec: fn(t: self V): int;
+# cvt: fn(t: self V, tc: int): V;
+# cvt2s: fn(t: self V): (int, string);
+# cvt2v: fn(t: self V): chan of int;
+# mkstring: fn(s: string): V;
+# mkcmd: fn(c: ref Sh->Cmd): V;
+# discard: fn(t: self V);
+# type2s: fn(c: int): string;
+# loadmod: fn(cmd: string): M;
+# M =>
+# types: fn(): string;
+# init: fn();
+# run: fn(ctxt: ref Draw->Context, r: ref Report, cmd: string,
+# opts: list of (int, list of V), args: list of V): V;
+# }
 # how to call eval?
 # (eval with [V=>ref Value, M=>Fsmodule])(
 #
 # sort out error reporting; stderr is not good.
 # possible things to do:
-#	pipe [-1pP] [-t command] command fs -> void
-#		pipe all files in fs through command.
-#	extract [-r root] gate fs -> fs
-#		extract the first entry within fs which
-#		passes through the gate.
-#		if -r is specified, the entry is placed
-#		within the given root, and may be a file,
-#		otherwise files are not allowed.
-#	apply string fs
-#		for each file in fs, evaluates string as an fs expression
-#		(which should yield fs), and replace the file in the
-#		original hierarchy with the result.
-#		e.g.
-#		fs apply '{unbundle $file}' {filter {or {mode +d} *.bundle} .}
-#		a bit fanciful this...
-#	merge could take an optional boolean operator
+# pipe [-1pP] [-t command] command fs -> void
+# pipe all files in fs through command.
+# extract [-r root] gate fs -> fs
+# extract the first entry within fs which
+# passes through the gate.
+# if -r is specified, the entry is placed
+# within the given root, and may be a file,
+# otherwise files are not allowed.
+# apply string fs
+# for each file in fs, evaluates string as an fs expression
+# (which should yield fs), and replace the file in the
+# original hierarchy with the result.
+# e.g.
+# fs apply '{unbundle $file}' {filter {or {mode +d} *.bundle} .}
+# a bit fanciful this...
+# merge could take an optional boolean operator
 #
-#	venti?
+# venti?
 #
-#	Cmpgate: chan of Cmpgatequery;
-#	Cmpgatequery: type (Entry, Entry, chan of int);
-#		returns 00, 01, 10 or 11
-#	used by merge to decide what to do when merging
-#	used by write to decide what to do when writing
+# Cmpgate: chan of Cmpgatequery;
+# Cmpgatequery: type (Entry, Entry, chan of int);
+# returns 00, 01, 10 or 11
+# used by merge to decide what to do when merging
+# used by write to decide what to do when writing
 #
-#	cmpdate [-u] '>'
-#	cmpquery command
+# cmpdate [-u] '>'
+# cmpquery command
 Eval: module {
 types: fn(): string;
-init:	fn();
+init: fn();
 run: fn(ctxt: ref Draw->Context, r: ref Fslib->Report,
 opts: list of Fslib->Option, args: list of ref Fslib->Value): ref Fslib->Value;
 eval: fn(ctxt: ref Draw->Context, r: ref Fslib->Report,
@@ -76,7 +76,7 @@ expr: string, args: list of ref Fslib->Value, ret: int): ref Fslib->Value;
 };
 WORD, SHCMD, VAR: con iota;
 Evalstate: adt {
-s:	string;
+s: string;
 spos: int;
 drawctxt: ref Draw->Context;
 report: ref Report;
@@ -108,12 +108,12 @@ fslib = load Fslib Fslib->PATH;
 if(fslib == nil)
 badmod(Fslib->PATH);
 fslib->init();
-#	env = load Env Env->PATH;
-#	if(env == nil)
-#		badmod(Env->PATH);
-#	str = load String String->PATH;
-#	if(str == nil)
-#		badmod(String->PATH);
+# env = load Env Env->PATH;
+# if(env == nil)
+# badmod(Env->PATH);
+# str = load String String->PATH;
+# if(str == nil)
+# badmod(String->PATH);
 lock = chan[1] of int;
 }
 run(ctxt: ref Draw->Context, report: ref Report,
@@ -157,10 +157,10 @@ return sys->sprint("%c", t);
 }
 # expr: WORD exprs
 # exprs:
-#	| exprs '{' expr '}'
-#	| exprs WORD
-#	| exprs SHCMD
-#	| exprs VAR
+# | exprs '{' expr '}'
+# | exprs WORD
+# | exprs SHCMD
+# | exprs VAR
 Evalstate.expr(p: self ref Evalstate): ref Value
 {
 args: list of ref Value;
@@ -465,7 +465,7 @@ t = '\n';
 t = '{';
 '}' =>
 t = '}';
-'@' =>		# embedded shell command
+'@' => # embedded shell command
 while((nc := p.getc()) == ' ' || nc == '\t')
 ;
 if(nc != '{'){
@@ -533,34 +533,34 @@ raise "parse error";
 }
 return v;
 }
-#	v: string;
-#	if(c == '\''){
-#		v = getqword(p, 0);
-#		c = p.getc();
-#	} else{
-#		v[0] = c;
-#		while((c = p.getc()) != -1){
-#			if(in(c, "a-zA-Z0-9*_") == 0)		# heuristic stolen from rc
-#				break;
-#			v[len v] = c;
-#		}
-#	}
-#	vl := str->unquoted(env->getenv(v));
-#	if(vl == nil){
-#		sys->fprint(stderr(), "fs: eval: shell variable $%q has %d elements\n", v, len vl);
-#		raise "parse error";
-#	}
-#	val := hd vl;
-#	if(c == -1	|| in(c, " \t@{}\n")){
-#		p.ungetc();
-#		return (WORD, val);
-#	}
-#	(t, s) = p.gettok();
-#	if(t != WORD){
-#		sys->fprint(stderr(), "fs: eval: expected word after $%q\n", v);
-#		raise "parse error";
-#	}
-#	s = val + s;
+# v: string;
+# if(c == '\''){
+# v = getqword(p, 0);
+# c = p.getc();
+# } else{
+# v[0] = c;
+# while((c = p.getc()) != -1){
+# if(in(c, "a-zA-Z0-9*_") == 0) # heuristic stolen from rc
+# break;
+# v[len v] = c;
+# }
+# }
+# vl := str->unquoted(env->getenv(v));
+# if(vl == nil){
+# sys->fprint(stderr(), "fs: eval: shell variable $%q has %d elements\n", v, len vl);
+# raise "parse error";
+# }
+# val := hd vl;
+# if(c == -1 || in(c, " \t@{}\n")){
+# p.ungetc();
+# return (WORD, val);
+# }
+# (t, s) = p.gettok();
+# if(t != WORD){
+# sys->fprint(stderr(), "fs: eval: expected word after $%q\n", v);
+# raise "parse error";
+# }
+# s = val + s;
 #}
 in(c: int, s: string): int
 {
@@ -586,7 +586,7 @@ if(keepq)
 s[len s] = '\'';
 return s;
 }
-s[len s] = '\'';	# 'xxx''yyy' becomes WORD(xxx'yyy)
+s[len s] = '\''; # 'xxx''yyy' becomes WORD(xxx'yyy)
 if(keepq)
 s[len s] = '\'';
 }

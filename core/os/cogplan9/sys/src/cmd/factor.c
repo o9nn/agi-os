@@ -1,8 +1,8 @@
 #include <u.h>
 #include <libc.h>
 #include <bio.h>
-#define	whsiz	(sizeof(wheel)/sizeof(wheel[0]))
-double	wheel[] =
+#define whsiz (sizeof(wheel)/sizeof(wheel[0]))
+double wheel[] =
 {
 2,10, 2, 4, 2, 4, 6, 2, 6, 4,
 2, 4, 6, 6, 2, 6, 4, 2, 6, 4,
@@ -10,8 +10,8 @@ double	wheel[] =
 6, 2, 4, 6, 2, 6, 6, 4, 2, 4,
 6, 2, 6, 4, 2, 4, 2,10,
 };
-Biobuf	bin;
-void	factor(double);
+Biobuf bin;
+void factor(double);
 void
 main(int argc, char *argv[])
 {
@@ -28,7 +28,7 @@ exits(0);
 Binit(&bin, 0, OREAD);
 for(;;) {
 l = Brdline(&bin, '\n');
-if(l ==  0)
+if(l == 0)
 break;
 n = atof(l);
 if(n <= 0)

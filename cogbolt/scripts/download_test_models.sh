@@ -10,31 +10,31 @@ echo "================================================"
 echo "Model directory: $MODEL_DIR"
 echo ""
 download_file() {
-    local url="$1"
-    local output="$2"
-    local name="$3"
-    if [ -f "$output" ]; then
-        echo "✓ $name already exists, skipping download"
-        return 0
-    fi
-    echo "Downloading $name..."
-    echo "URL: $url"
-    if command -v wget &> /dev/null; then
-        wget -O "$output" "$url" --progress=bar:force 2>&1
-    elif command -v curl &> /dev/null; then
-        curl -L -o "$output" "$url" --progress-bar
-    else
-        echo "Error: Neither wget nor curl is available"
-        return 1
-    fi
-    if [ -f "$output" ]; then
-        local size=$(du -h "$output" | cut -f1)
-        echo "✓ Downloaded successfully ($size)"
-        return 0
-    else
-        echo "✗ Download failed"
-        return 1
-    fi
+local url="$1"
+local output="$2"
+local name="$3"
+if [ -f "$output" ]; then
+echo "✓ $name already exists, skipping download"
+return 0
+fi
+echo "Downloading $name..."
+echo "URL: $url"
+if command -v wget &> /dev/null; then
+wget -O "$output" "$url" --progress=bar:force 2>&1
+elif command -v curl &> /dev/null; then
+curl -L -o "$output" "$url" --progress-bar
+else
+echo "Error: Neither wget nor curl is available"
+return 1
+fi
+if [ -f "$output" ]; then
+local size=$(du -h "$output" | cut -f1)
+echo "✓ Downloaded successfully ($size)"
+return 0
+else
+echo "✗ Download failed"
+return 1
+fi
 }
 echo "================================================"
 echo "Model 1: RWKV-4-Pile-169M"
@@ -51,27 +51,27 @@ echo "  1. Find pre-converted GGUF models"
 echo "  2. Convert .pth to GGUF using rwkv.cpp tools"
 echo ""
 GGUF_SOURCES=(
-    "https://huggingface.co/latestissue/rwkv-4-pile-169m-gguf/resolve/main/rwkv-4-pile-169m-q8_0.gguf"
-    "https://huggingface.co/cmp-nct/rwkv-4-pile-169m-gguf/resolve/main/rwkv-4-pile-169m-q8_0.gguf"
+"https://huggingface.co/latestissue/rwkv-4-pile-169m-gguf/resolve/main/rwkv-4-pile-169m-q8_0.gguf"
+"https://huggingface.co/cmp-nct/rwkv-4-pile-169m-gguf/resolve/main/rwkv-4-pile-169m-q8_0.gguf"
 )
 downloaded=false
 for url in "${GGUF_SOURCES[@]}"; do
-    echo "Trying source: $url"
-    if download_file "$url" "$MODEL1_PATH" "$MODEL1_NAME"; then
-        downloaded=true
-        break
-    fi
-    echo "Source not available, trying next..."
-    echo ""
+echo "Trying source: $url"
+if download_file "$url" "$MODEL1_PATH" "$MODEL1_NAME"; then
+downloaded=true
+break
+fi
+echo "Source not available, trying next..."
+echo ""
 done
 if [ "$downloaded" = false ]; then
-    echo "⚠ Could not find pre-converted GGUF model"
-    echo ""
-    echo "Alternative options:"
-    echo "  1. Download .pth model and convert using rwkv.cpp"
-    echo "  2. Use a different model source"
-    echo "  3. Create a minimal test GGUF file for unit testing"
-    echo ""
+echo "⚠ Could not find pre-converted GGUF model"
+echo ""
+echo "Alternative options:"
+echo "  1. Download .pth model and convert using rwkv.cpp"
+echo "  2. Use a different model source"
+echo "  3. Create a minimal test GGUF file for unit testing"
+echo ""
 fi
 echo "================================================"
 echo "Model 2: RWKV-5-World-0.1B (Optional)"
@@ -88,14 +88,14 @@ echo "================================================"
 echo "Download Summary"
 echo "================================================"
 if [ -f "$MODEL1_PATH" ]; then
-    echo "✓ RWKV-4-Pile-169M: $(du -h "$MODEL1_PATH" | cut -f1)"
+echo "✓ RWKV-4-Pile-169M: $(du -h "$MODEL1_PATH" | cut -f1)"
 else
-    echo "✗ RWKV-4-Pile-169M: Not available"
+echo "✗ RWKV-4-Pile-169M: Not available"
 fi
 if [ -f "$MODEL2_PATH" ]; then
-    echo "✓ RWKV-5-World-0.1B: $(du -h "$MODEL2_PATH" | cut -f1)"
+echo "✓ RWKV-5-World-0.1B: $(du -h "$MODEL2_PATH" | cut -f1)"
 else
-    echo "✗ RWKV-5-World-0.1B: Not available"
+echo "✗ RWKV-5-World-0.1B: Not available"
 fi
 echo ""
 echo "================================================"

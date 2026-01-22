@@ -1,5 +1,5 @@
 #ifndef gsropt_INCLUDED
-#  define gsropt_INCLUDED
+# define gsropt_INCLUDED
 #define TRANSPARENCY_PER_H_P
 typedef enum {
 rop2_0 = 0,
@@ -107,5 +107,5 @@ rop_usage_ST = 6,
 rop_usage_DST = 7
 } rop_usage_t;
 extern const rop_proc rop_proc_table[256];
-extern const byte  rop_usage_table[256];
+extern const byte rop_usage_table[256];
 #endif

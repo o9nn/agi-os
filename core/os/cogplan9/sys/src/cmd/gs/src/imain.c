@@ -53,9 +53,9 @@ sizeof(gs_main_instance),
 "init_main_instance");
 memcpy(minst, &gs_main_instance_init_values, sizeof(gs_main_instance_init_values));
 minst->heap = mem;
-#       ifndef PSI_INCLUDED
+# ifndef PSI_INCLUDED
 mem->gs_lib_ctx->top_of_system = minst;
-#       endif
+# endif
 }
 return minst;
 }
@@ -68,11 +68,11 @@ int max_lib_paths)
 {
 ref *paths;
 gp_init();
-#   ifndef PSI_INCLUDED
+# ifndef PSI_INCLUDED
 memset(gs_debug, 0, 128);
 gs_log_errors = 0;
-#   else
-#   endif
+# else
+# endif
 gp_get_usertime(minst->base_time);
 paths = (ref *) gs_alloc_byte_array(minst->heap, max_lib_paths, sizeof(ref),
 "lib_path array");

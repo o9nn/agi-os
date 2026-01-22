@@ -48,9 +48,9 @@ nomap(dev_t dev, vm_offset_t off, int prot)
 return -1;
 }
 boolean_t __attribute__ ((pure))
-name_equal(const char 	*src,
-int		len,
-const char 	*target)
+name_equal(const char *src,
+int len,
+const char *target)
 {
 while (--len >= 0)
 if (*src++ != *target++)
@@ -58,16 +58,16 @@ return FALSE;
 return *target == 0;
 }
 boolean_t dev_name_lookup(
-const char 		*name,
-dev_ops_t	*ops,
-int		*unit)
+const char *name,
+dev_ops_t *ops,
+int *unit)
 {
-const char 		*cp = name;
-int		len;
-int		j = 0;
-int		c;
-dev_ops_t	dev;
-boolean_t 	found;
+const char *cp = name;
+int len;
+int j = 0;
+int c;
+dev_ops_t dev;
+boolean_t found;
 int slice_num = 0;
 while ((c = *cp) != '\0' &&
 !(c >= '0' && c <= '9'))
@@ -88,7 +88,7 @@ break;
 }
 }
 if (!found) {
-dev_indirect_t	di;
+dev_indirect_t di;
 dev_indirect_search(di) {
 if (name_equal(name, len, di->d_name)) {
 *ops = di->d_ops;

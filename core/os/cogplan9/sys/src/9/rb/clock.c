@@ -1,13 +1,13 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"ureg.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "ureg.h"
 enum {
-Cyccntres	= 2,
-Basetickfreq	= 680*Mhz / Cyccntres,
+Cyccntres = 2,
+Basetickfreq = 680*Mhz / Cyccntres,
 };
 void (*kproftimer)(ulong);
 void
@@ -77,7 +77,7 @@ silencewdog();
 timerintr(ureg, 0);
 }
 enum {
-Instrs		= 10*Mhz,
+Instrs = 10*Mhz,
 };
 static long
 issue1loop(void)

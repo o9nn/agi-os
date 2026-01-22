@@ -1,6 +1,6 @@
 #ifndef _ADVANSYS_H
 #define _ADVANSYS_H
-#define ASC_LINUX_VERSION(V, P, S)    (((V) * 65536) + ((P) * 256) + (S))
+#define ASC_LINUX_VERSION(V, P, S) (((V) * 65536) + ((P) * 256) + (S))
 #ifndef LINUX_VERSION_CODE
 #include <linux/version.h>
 #endif
@@ -25,76 +25,76 @@ int advansys_proc_info(char *, char **, off_t, int, int, int);
 void advansys_setup(char *, int *);
 #if LINUX_VERSION_CODE < ASC_LINUX_VERSION(1,3,0)
 #define ADVANSYS { \
-NULL,                      \
-NULL,                      \
-"advansys",                \
-advansys_detect,           \
-advansys_release,          \
-advansys_info,             \
-advansys_command,          \
+NULL, \
+NULL, \
+"advansys", \
+advansys_detect, \
+advansys_release, \
+advansys_info, \
+advansys_command, \
 advansys_queuecommand, \
 \
-advansys_abort,            \
-advansys_reset,            \
-NULL,                      \
-advansys_biosparam,        \
+advansys_abort, \
+advansys_reset, \
+NULL, \
+advansys_biosparam, \
 \
-0,                         \
-0,                         \
-0,                         \
-0,                         \
-0,                            \
+0, \
+0, \
+0, \
+0, \
+0, \
 \
-1,                         \
+1, \
 \
-ENABLE_CLUSTERING,         \
+ENABLE_CLUSTERING, \
 }
 #elif LINUX_VERSION_CODE < ASC_LINUX_VERSION(2,1,75)
 #define ADVANSYS { \
-NULL,                     \
+NULL, \
 NULL, \
 \
 \
-&proc_scsi_advansys,      \
-advansys_proc_info,    \
+&proc_scsi_advansys, \
+advansys_proc_info, \
 \
-"advansys",               \
-advansys_detect,          \
-advansys_release,         \
-advansys_info,            \
-advansys_command,         \
+"advansys", \
+advansys_detect, \
+advansys_release, \
+advansys_info, \
+advansys_command, \
 advansys_queuecommand, \
 \
-advansys_abort,           \
+advansys_abort, \
 advansys_reset, \
 \
 \
-NULL,                     \
-advansys_biosparam,       \
+NULL, \
+advansys_biosparam, \
 \
-0,                         \
-0,                         \
-0,                         \
-0,                         \
-0,                            \
+0, \
+0, \
+0, \
+0, \
+0, \
 \
-1,                         \
+1, \
 \
-ENABLE_CLUSTERING,         \
+ENABLE_CLUSTERING, \
 }
 #else
 #define ADVANSYS { \
-proc_dir:     &proc_scsi_advansys, \
-proc_info:    advansys_proc_info, \
-name:         "advansys", \
-detect:       advansys_detect, \
-release:      advansys_release, \
-info:         advansys_info, \
-command:      advansys_command, \
+proc_dir: &proc_scsi_advansys, \
+proc_info: advansys_proc_info, \
+name: "advansys", \
+detect: advansys_detect, \
+release: advansys_release, \
+info: advansys_info, \
+command: advansys_command, \
 queuecommand: advansys_queuecommand, \
-abort:        advansys_abort, \
-reset:        advansys_reset, \
-bios_param:    advansys_biosparam, \
+abort: advansys_abort, \
+reset: advansys_reset, \
+bios_param: advansys_biosparam, \
 \
 unchecked_isa_dma: 1, \
 \

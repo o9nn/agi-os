@@ -32,7 +32,7 @@
 #if defined(_WIN32)
 #define WIN32_LEAN_AND_MEAN
 #ifndef NOMINMAX
-#   define NOMINMAX
+# define NOMINMAX
 #endif
 #include <locale>
 #include <windows.h>
@@ -170,11 +170,11 @@ return true;
 }
 DWORD p = NORMAL_PRIORITY_CLASS;
 switch (prio) {
-case GGML_SCHED_PRIO_LOW:      p = BELOW_NORMAL_PRIORITY_CLASS; break;
-case GGML_SCHED_PRIO_NORMAL:   p = NORMAL_PRIORITY_CLASS;       break;
-case GGML_SCHED_PRIO_MEDIUM:   p = ABOVE_NORMAL_PRIORITY_CLASS; break;
-case GGML_SCHED_PRIO_HIGH:     p = HIGH_PRIORITY_CLASS;         break;
-case GGML_SCHED_PRIO_REALTIME: p = REALTIME_PRIORITY_CLASS;     break;
+case GGML_SCHED_PRIO_LOW: p = BELOW_NORMAL_PRIORITY_CLASS; break;
+case GGML_SCHED_PRIO_NORMAL: p = NORMAL_PRIORITY_CLASS; break;
+case GGML_SCHED_PRIO_MEDIUM: p = ABOVE_NORMAL_PRIORITY_CLASS; break;
+case GGML_SCHED_PRIO_HIGH: p = HIGH_PRIORITY_CLASS; break;
+case GGML_SCHED_PRIO_REALTIME: p = REALTIME_PRIORITY_CLASS; break;
 }
 if (!SetPriorityClass(GetCurrentProcess(), p)) {
 LOG_WRN("failed to set process priority class %d : (%d)\n", prio, (int) GetLastError());
@@ -191,10 +191,10 @@ return true;
 }
 int p = 0;
 switch (prio) {
-case GGML_SCHED_PRIO_LOW:      p =  5;  break;
-case GGML_SCHED_PRIO_NORMAL:   p =  0;  break;
-case GGML_SCHED_PRIO_MEDIUM:   p = -5;  break;
-case GGML_SCHED_PRIO_HIGH:     p = -10; break;
+case GGML_SCHED_PRIO_LOW: p = 5; break;
+case GGML_SCHED_PRIO_NORMAL: p = 0; break;
+case GGML_SCHED_PRIO_MEDIUM: p = -5; break;
+case GGML_SCHED_PRIO_HIGH: p = -10; break;
 case GGML_SCHED_PRIO_REALTIME: p = -20; break;
 }
 if (!setpriority(PRIO_PROCESS, 0, p)) {
@@ -274,7 +274,7 @@ id -= 'A' - 10;
 LOG_ERR("Invalid hex character '%c' at position %d\n", c, int32_t(i));
 return false;
 }
-boolmask[  n  ] = boolmask[  n  ] || ((id & 8) != 0);
+boolmask[ n ] = boolmask[ n ] || ((id & 8) != 0);
 boolmask[n - 1] = boolmask[n - 1] || ((id & 4) != 0);
 boolmask[n - 2] = boolmask[n - 2] || ((id & 2) != 0);
 boolmask[n - 3] = boolmask[n - 3] || ((id & 1) != 0);
@@ -480,12 +480,12 @@ detokenized.begin(),
 detokenized.end(),
 [](const unsigned char c) { return !std::isprint(c); }),
 detokenized.end());
-buf << "\n"          << std::to_string(i)
-<< ", token '"   << detokenized << "'"
-<< ", pos "      << std::to_string(batch.pos[i])
+buf << "\n" << std::to_string(i)
+<< ", token '" << detokenized << "'"
+<< ", pos " << std::to_string(batch.pos[i])
 << ", n_seq_id " << std::to_string(batch.n_seq_id[i])
-<< ", seq_id "   << std::to_string(batch.seq_id[i][0])
-<< ", logits "   << std::to_string(batch.logits[i]);
+<< ", seq_id " << std::to_string(batch.seq_id[i][0])
+<< ", logits " << std::to_string(batch.logits[i]);
 }
 buf << " ]";
 return buf.str();
@@ -496,9 +496,9 @@ std::size_t output_idx = 0;
 for (std::size_t input_idx = 0; input_idx < input_len; ++input_idx) {
 if (input[input_idx] == '\\' && input_idx + 1 < input_len) {
 switch (input[++input_idx]) {
-case 'n':  input[output_idx++] = '\n'; break;
-case 'r':  input[output_idx++] = '\r'; break;
-case 't':  input[output_idx++] = '\t'; break;
+case 'n': input[output_idx++] = '\n'; break;
+case 'r': input[output_idx++] = '\r'; break;
+case 't': input[output_idx++] = '\t'; break;
 case '\'': input[output_idx++] = '\''; break;
 case '\"': input[output_idx++] = '\"'; break;
 case '\\': input[output_idx++] = '\\'; break;
@@ -513,7 +513,7 @@ input[output_idx++] = char(val);
 break;
 }
 }
-default:   input[output_idx++] = '\\';
+default: input[output_idx++] = '\\';
 input[output_idx++] = input[input_idx]; break;
 }
 } else {
@@ -577,17 +577,17 @@ return false;
 std::u32string filename_utf32;
 try {
 #if defined(__clang__)
-#    pragma clang diagnostic push
-#    pragma clang diagnostic ignored "-Wdeprecated-declarations"
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #elif defined(__GNUC__)
-#    pragma GCC diagnostic push
-#    pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+# pragma GCC diagnostic push
+# pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #endif
 std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> converter;
 #if defined(__clang__)
-#    pragma clang diagnostic pop
+# pragma clang diagnostic pop
 #elif defined(__GNUC__)
-#    pragma GCC diagnostic pop
+# pragma GCC diagnostic pop
 #endif
 filename_utf32 = converter.from_bytes(filename);
 std::string filename_reencoded = converter.to_bytes(filename_utf32);
@@ -699,7 +699,7 @@ cache_directory = std::getenv("HOME") + std::string("/Library/Caches/");
 #elif defined(_WIN32)
 cache_directory = std::getenv("LOCALAPPDATA");
 #else
-#  error Unknown architecture
+# error Unknown architecture
 #endif
 cache_directory = ensure_trailing_slash(cache_directory);
 cache_directory += "llama.cpp";
@@ -737,7 +737,7 @@ params.ctx_shift = false;
 }
 if (!params.control_vectors.empty()) {
 if (params.control_vector_layer_start <= 0) params.control_vector_layer_start = 1;
-if (params.control_vector_layer_end   <= 0) params.control_vector_layer_end   = llama_model_n_layer(model);
+if (params.control_vector_layer_end <= 0) params.control_vector_layer_end = llama_model_n_layer(model);
 const auto cvec = common_control_vector_load(params.control_vectors);
 if (cvec.n_embd == -1) {
 llama_free(lctx);
@@ -881,12 +881,12 @@ mparams.devices = params.devices.data();
 if (params.n_gpu_layers != -1) {
 mparams.n_gpu_layers = params.n_gpu_layers;
 }
-mparams.main_gpu        = params.main_gpu;
-mparams.split_mode      = params.split_mode;
-mparams.tensor_split    = params.tensor_split;
-mparams.use_mmap        = params.use_mmap;
-mparams.use_mlock       = params.use_mlock;
-mparams.check_tensors   = params.check_tensors;
+mparams.main_gpu = params.main_gpu;
+mparams.split_mode = params.split_mode;
+mparams.tensor_split = params.tensor_split;
+mparams.use_mmap = params.use_mmap;
+mparams.use_mlock = params.use_mlock;
+mparams.check_tensors = params.check_tensors;
 mparams.use_extra_bufts = !params.no_extra_bufts;
 if (params.kv_overrides.empty()) {
 mparams.kv_overrides = NULL;
@@ -900,39 +900,39 @@ mparams.tensor_buft_overrides = NULL;
 GGML_ASSERT(params.tensor_buft_overrides.back().pattern == nullptr && "Tensor buffer overrides not terminated with empty pattern");
 mparams.tensor_buft_overrides = params.tensor_buft_overrides.data();
 }
-mparams.progress_callback           = params.load_progress_callback;
+mparams.progress_callback = params.load_progress_callback;
 mparams.progress_callback_user_data = params.load_progress_callback_user_data;
 return mparams;
 }
 struct llama_context_params common_context_params_to_llama(const common_params & params) {
 auto cparams = llama_context_default_params();
-cparams.n_ctx             = params.n_ctx;
-cparams.n_seq_max         = params.n_parallel;
-cparams.n_batch           = params.n_batch;
-cparams.n_ubatch          = params.n_ubatch;
-cparams.n_threads         = params.cpuparams.n_threads;
-cparams.n_threads_batch   = params.cpuparams_batch.n_threads == -1 ?
+cparams.n_ctx = params.n_ctx;
+cparams.n_seq_max = params.n_parallel;
+cparams.n_batch = params.n_batch;
+cparams.n_ubatch = params.n_ubatch;
+cparams.n_threads = params.cpuparams.n_threads;
+cparams.n_threads_batch = params.cpuparams_batch.n_threads == -1 ?
 params.cpuparams.n_threads : params.cpuparams_batch.n_threads;
-cparams.embeddings        = params.embedding;
+cparams.embeddings = params.embedding;
 cparams.rope_scaling_type = params.rope_scaling_type;
-cparams.rope_freq_base    = params.rope_freq_base;
-cparams.rope_freq_scale   = params.rope_freq_scale;
-cparams.yarn_ext_factor   = params.yarn_ext_factor;
-cparams.yarn_attn_factor  = params.yarn_attn_factor;
-cparams.yarn_beta_fast    = params.yarn_beta_fast;
-cparams.yarn_beta_slow    = params.yarn_beta_slow;
-cparams.yarn_orig_ctx     = params.yarn_orig_ctx;
-cparams.pooling_type      = params.pooling_type;
-cparams.attention_type    = params.attention_type;
-cparams.defrag_thold      = params.defrag_thold;
-cparams.cb_eval           = params.cb_eval;
+cparams.rope_freq_base = params.rope_freq_base;
+cparams.rope_freq_scale = params.rope_freq_scale;
+cparams.yarn_ext_factor = params.yarn_ext_factor;
+cparams.yarn_attn_factor = params.yarn_attn_factor;
+cparams.yarn_beta_fast = params.yarn_beta_fast;
+cparams.yarn_beta_slow = params.yarn_beta_slow;
+cparams.yarn_orig_ctx = params.yarn_orig_ctx;
+cparams.pooling_type = params.pooling_type;
+cparams.attention_type = params.attention_type;
+cparams.defrag_thold = params.defrag_thold;
+cparams.cb_eval = params.cb_eval;
 cparams.cb_eval_user_data = params.cb_eval_user_data;
-cparams.offload_kqv       = !params.no_kv_offload;
-cparams.flash_attn        = params.flash_attn;
-cparams.no_perf           = params.no_perf;
-cparams.op_offload        = !params.no_op_offload;
-cparams.swa_full          = params.swa_full;
-cparams.kv_unified        = params.kv_unified;
+cparams.offload_kqv = !params.no_kv_offload;
+cparams.flash_attn = params.flash_attn;
+cparams.no_perf = params.no_perf;
+cparams.op_offload = !params.no_op_offload;
+cparams.swa_full = params.swa_full;
+cparams.kv_unified = params.kv_unified;
 cparams.type_k = params.cache_type_k;
 cparams.type_v = params.cache_type_v;
 return cparams;
@@ -943,8 +943,8 @@ ggml_threadpool_params_init(&tpp, params.n_threads);
 if (params.mask_valid) {
 std::memcpy(&tpp.cpumask, &params.cpumask, GGML_MAX_N_THREADS);
 }
-tpp.prio       = params.priority;
-tpp.poll       = params.poll;
+tpp.prio = params.priority;
+tpp.poll = params.poll;
 tpp.strict_cpu = params.strict_cpu;
 return tpp;
 }
@@ -953,18 +953,18 @@ batch.n_tokens = 0;
 }
 void common_batch_add(
 struct llama_batch & batch,
-llama_token   id,
-llama_pos   pos,
+llama_token id,
+llama_pos pos,
 const std::vector<llama_seq_id> & seq_ids,
-bool   logits) {
+bool logits) {
 GGML_ASSERT(batch.seq_id[batch.n_tokens] && "llama_batch size exceeded");
-batch.token   [batch.n_tokens] = id;
-batch.pos     [batch.n_tokens] = pos;
+batch.token [batch.n_tokens] = id;
+batch.pos [batch.n_tokens] = pos;
 batch.n_seq_id[batch.n_tokens] = seq_ids.size();
 for (size_t i = 0; i < seq_ids.size(); ++i) {
 batch.seq_id[batch.n_tokens][i] = seq_ids[i];
 }
-batch.logits  [batch.n_tokens] = logits;
+batch.logits [batch.n_tokens] = logits;
 batch.n_tokens++;
 }
 size_t common_lcp(const llama_tokens & a, const llama_tokens & b) {
@@ -1003,8 +1003,8 @@ return max_length;
 std::vector<llama_token> common_tokenize(
 const struct llama_context * ctx,
 const std::string & text,
-bool   add_special,
-bool   parse_special) {
+bool add_special,
+bool parse_special) {
 const llama_model * model = llama_get_model(ctx);
 const llama_vocab * vocab = llama_model_get_vocab(model);
 return common_tokenize(vocab, text, add_special, parse_special);
@@ -1012,8 +1012,8 @@ return common_tokenize(vocab, text, add_special, parse_special);
 std::vector<llama_token> common_tokenize(
 const struct llama_vocab * vocab,
 const std::string & text,
-bool   add_special,
-bool   parse_special) {
+bool add_special,
+bool parse_special) {
 int n_tokens = text.length() + 2 * add_special;
 std::vector<llama_token> result(n_tokens);
 n_tokens = llama_tokenize(vocab, text.data(), text.length(), result.data(), result.size(), add_special, parse_special);
@@ -1098,11 +1098,11 @@ out[i] = inp[i] * norm;
 }
 }
 float common_embd_similarity_cos(const float * embd1, const float * embd2, int n){
-double sum  = 0.0;
+double sum = 0.0;
 double sum1 = 0.0;
 double sum2 = 0.0;
 for (int i = 0; i < n; i++) {
-sum  += embd1[i] * embd2[i];
+sum += embd1[i] * embd2[i];
 sum1 += embd1[i] * embd1[i];
 sum2 += embd2[i] * embd2[i];
 }
@@ -1213,13 +1213,13 @@ return result;
 }
 ggml_opt_dataset_t common_opt_dataset_init(struct llama_context * ctx, const std::vector<llama_token> & tokens, int64_t stride) {
 const int64_t ne_datapoint = llama_n_ctx(ctx);
-const int64_t ndata        = (tokens.size() - ne_datapoint - 1) / stride;
+const int64_t ndata = (tokens.size() - ne_datapoint - 1) / stride;
 ggml_opt_dataset_t result = ggml_opt_dataset_init(
-GGML_TYPE_I32, GGML_TYPE_I32, ne_datapoint, ne_datapoint, ndata,  1);
-llama_token * data   = (llama_token *) ggml_opt_dataset_data(result)->data;
+GGML_TYPE_I32, GGML_TYPE_I32, ne_datapoint, ne_datapoint, ndata, 1);
+llama_token * data = (llama_token *) ggml_opt_dataset_data(result)->data;
 llama_token * labels = (llama_token *) ggml_opt_dataset_labels(result)->data;
 for (int64_t idata = 0; idata < ndata; ++idata) {
-memcpy(data   + idata*ne_datapoint, tokens.data() + idata*stride + 0, ne_datapoint*sizeof(llama_token));
+memcpy(data + idata*ne_datapoint, tokens.data() + idata*stride + 0, ne_datapoint*sizeof(llama_token));
 memcpy(labels + idata*ne_datapoint, tokens.data() + idata*stride + 1, ne_datapoint*sizeof(llama_token));
 }
 return result;

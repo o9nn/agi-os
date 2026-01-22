@@ -2,13 +2,13 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include "antiword.h"
-static unsigned int	auiHdrCounter[9];
+static unsigned int auiHdrCounter[9];
 static void
 vString2Diagram(diagram_type *pDiag, output_type *pAnchor)
 {
-output_type	*pOutput;
-long		lWidth;
-USHORT		usMaxFontSize;
+output_type *pOutput;
+long lWidth;
+USHORT usMaxFontSize;
 TRACE_MSG("vString2Diagram");
 fail(pDiag == NULL);
 fail(pAnchor == NULL);
@@ -32,7 +32,7 @@ TRACE_MSG("leaving vString2Diagram");
 void
 vSetLeftIndentation(diagram_type *pDiag, long lLeftIndentation)
 {
-long	lX;
+long lX;
 TRACE_MSG("vSetLeftIndentation");
 fail(pDiag == NULL);
 fail(lLeftIndentation < 0);
@@ -46,8 +46,8 @@ pDiag->lXleft = 0;
 static long
 lComputeNetWidth(output_type *pAnchor)
 {
-output_type	*pTmp;
-long		lNetWidth;
+output_type *pTmp;
+long lNetWidth;
 TRACE_MSG("lComputeNetWidth");
 fail(pAnchor == NULL);
 lNetWidth = 0;
@@ -75,10 +75,10 @@ return lNetWidth;
 static int
 iComputeHoles(output_type *pAnchor)
 {
-output_type	*pTmp;
-size_t	tIndex;
-int	iCounter;
-BOOL	bWasSpace, bIsSpace;
+output_type *pTmp;
+size_t tIndex;
+int iCounter;
+BOOL bWasSpace, bIsSpace;
 TRACE_MSG("iComputeHoles");
 fail(pAnchor == NULL);
 iCounter = 0;
@@ -99,7 +99,7 @@ void
 vAlign2Window(diagram_type *pDiag, output_type *pAnchor,
 long lScreenWidth, UCHAR ucAlignment)
 {
-long	lNetWidth, lLeftIndentation;
+long lNetWidth, lLeftIndentation;
 TRACE_MSG("vAlign2Window");
 fail(pDiag == NULL || pAnchor == NULL);
 fail(lScreenWidth < lChar2MilliPoints(MIN_SCREEN_WIDTH));
@@ -137,10 +137,10 @@ void
 vJustify2Window(diagram_type *pDiag, output_type *pAnchor,
 long lScreenWidth, long lRightIndentation, UCHAR ucAlignment)
 {
-output_type	*pTmp;
-char	*pcNew, *pcOld, *szStorage;
-long	lNetWidth, lSpaceWidth, lToAdd;
-int	iFillerLen, iHoles;
+output_type *pTmp;
+char *pcNew, *pcOld, *szStorage;
+long lNetWidth, lSpaceWidth, lToAdd;
+int iFillerLen, iHoles;
 TRACE_MSG("vJustify2Window");
 fail(pDiag == NULL || pAnchor == NULL);
 fail(lScreenWidth < MIN_SCREEN_WIDTH);
@@ -225,11 +225,11 @@ size_t
 tStyle2Window(char *szLine, size_t tLineSize, const style_block_type *pStyle,
 const section_block_type *pSection)
 {
-char	*pcTxt;
-size_t	tIndex, tStyleIndex;
-BOOL	bNeedPrevLvl;
-level_type_enum	eNumType;
-UCHAR	ucNFC;
+char *pcTxt;
+size_t tIndex, tStyleIndex;
+BOOL bNeedPrevLvl;
+level_type_enum eNumType;
+UCHAR ucNFC;
 TRACE_MSG("tStyle2Window");
 fail(szLine == NULL || pStyle == NULL || pSection == NULL);
 if (pStyle->usIstd == 0 || pStyle->usIstd > 9) {
@@ -315,7 +315,7 @@ return (size_t)(pcTxt - szLine);
 static void
 vRemoveRowEnd(char *szRowTxt)
 {
-int	iLastIndex;
+int iLastIndex;
 TRACE_MSG("vRemoveRowEnd");
 fail(szRowTxt == NULL || szRowTxt[0] == '\0');
 iLastIndex = (int)strlen(szRowTxt) - 1;
@@ -341,8 +341,8 @@ DBG_MSG(szRowTxt);
 static size_t
 tComputeStringLengthMax(const char *szString, size_t tColumnWidthMax)
 {
-const char	*pcTmp;
-size_t	tLengthMax, tLenPrev, tLen, tWidth;
+const char *pcTmp;
+size_t tLengthMax, tLenPrev, tLen, tWidth;
 TRACE_MSG("tComputeStringLengthMax");
 fail(szString == NULL);
 fail(tColumnWidthMax == 0);
@@ -376,7 +376,7 @@ static size_t
 tGetBreakingPoint(const char *szString,
 size_t tLen, size_t tWidth, size_t tColumnWidthMax)
 {
-int	iIndex;
+int iIndex;
 TRACE_MSG("tGetBreakingPoint");
 fail(szString == NULL);
 fail(tLen > strlen(szString));
@@ -398,7 +398,7 @@ return tLen;
 static size_t
 tComputeColumnWidthMax(short sWidth, long lCharWidth, double dFactor)
 {
-size_t	tColumnWidthMax;
+size_t tColumnWidthMax;
 TRACE_MSG("tComputeColumnWidthMax");
 fail(sWidth < 0);
 fail(lCharWidth <= 0);
@@ -420,15 +420,15 @@ vTableRow2Window(diagram_type *pDiag, output_type *pOutput,
 const row_block_type *pRowInfo,
 conversion_type eConversionType, int iParagraphBreak)
 {
-output_type	tRow;
-char	*aszColTxt[TABLE_COLUMN_MAX];
-char	*szLine, *pcTxt;
-double	dMagnify;
-long	lCharWidthLarge, lCharWidthSmall;
-size_t	tColumnWidthTotal, atColumnWidthMax[TABLE_COLUMN_MAX];
-size_t	tSize, tColumnWidthMax, tWidth, tLen;
-int	iIndex, iNbrOfColumns, iTmp;
-BOOL	bNotReady;
+output_type tRow;
+char *aszColTxt[TABLE_COLUMN_MAX];
+char *szLine, *pcTxt;
+double dMagnify;
+long lCharWidthLarge, lCharWidthSmall;
+size_t tColumnWidthTotal, atColumnWidthMax[TABLE_COLUMN_MAX];
+size_t tSize, tColumnWidthMax, tWidth, tLen;
+int iIndex, iNbrOfColumns, iTmp;
+BOOL bNotReady;
 TRACE_MSG("vTableRow2Window");
 fail(pDiag == NULL || pOutput == NULL || pRowInfo == NULL);
 fail(pOutput->szStorage == NULL);

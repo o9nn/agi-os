@@ -29,9 +29,9 @@ OPENSSL_DECLARE_EXIT
 #include <openssl/cast.h>
 #ifndef HZ
 # ifndef CLK_TCK
-#  define HZ      100.0
+# define HZ 100.0
 # else
-#  define HZ ((double)CLK_TCK)
+# define HZ ((double)CLK_TCK)
 # endif
 #endif
 #define BUFSIZE ((long)1024)
@@ -39,9 +39,9 @@ long run = 0;
 double Time_F(int s);
 #ifdef SIGALRM
 # if defined(__STDC__) || defined(sgi) || defined(_AIX)
-#  define SIGRETTYPE void
+# define SIGRETTYPE void
 # else
-#  define SIGRETTYPE int
+# define SIGRETTYPE int
 # endif
 SIGRETTYPE sig_done(int sig);
 SIGRETTYPE sig_done(int sig)
@@ -53,8 +53,8 @@ sig = sig;
 # endif
 }
 #endif
-#define START   0
-#define STOP    1
+#define START 0
+#define STOP 1
 double Time_F(int s)
 {
 double ret;

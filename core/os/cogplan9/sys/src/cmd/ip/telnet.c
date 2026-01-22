@@ -16,19 +16,19 @@ int returns;
 int stopped;
 };
 Comm *comm;
-int	dodial(char*);
-void	fromkbd(int);
-void	fromnet(int);
-int	menu(Biobuf*,  int);
-void	notifyf(void*, char*);
-void	rawoff(void);
-void	rawon(void);
-void	telnet(int);
-char*	system(int, char*);
-int	echochange(Biobuf*, int);
-int	termsub(Biobuf*, uchar*, int);
-int	xlocsub(Biobuf*, uchar*, int);
-void*	share(ulong);
+int dodial(char*);
+void fromkbd(int);
+void fromnet(int);
+int menu(Biobuf*, int);
+void notifyf(void*, char*);
+void rawoff(void);
+void rawon(void);
+void telnet(int);
+char* system(int, char*);
+int echochange(Biobuf*, int);
+int termsub(Biobuf*, uchar*, int);
+int xlocsub(Biobuf*, uchar*, int);
+void* share(ulong);
 static int islikeatty(int);
 void
 usage(void)
@@ -279,7 +279,7 @@ return;
 }
 write(consctl, "rawoff", 6);
 }
-#define STDHELP	"\t(b)reak, (i)nterrupt, (q)uit, (r)eturns, (!cmd), (.)continue\n"
+#define STDHELP "\t(b)reak, (i)nterrupt, (q)uit, (r)eturns, (!cmd), (.)continue\n"
 int
 menu(Biobuf *bp, int net)
 {

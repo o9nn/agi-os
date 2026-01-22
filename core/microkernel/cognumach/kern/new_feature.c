@@ -7,8 +7,8 @@
 #include <string.h>
 struct kernel_feature global_kernel_feature;
 struct feature_stats global_feature_stats;
-#define FEATURE_MAX_OPERATIONS  1000000
-#define FEATURE_LATENCY_THRESHOLD  1000
+#define FEATURE_MAX_OPERATIONS 1000000
+#define FEATURE_LATENCY_THRESHOLD 1000
 static uint64_t
 feature_get_timestamp_us(void)
 {

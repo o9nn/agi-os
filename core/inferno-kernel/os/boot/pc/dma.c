@@ -1,48 +1,48 @@
-#include	"u.h"
-#include	"lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-typedef struct DMAport	DMAport;
-typedef struct DMA	DMA;
-typedef struct DMAxfer	DMAxfer;
+#include "u.h"
+#include "lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+typedef struct DMAport DMAport;
+typedef struct DMA DMA;
+typedef struct DMAxfer DMAxfer;
 enum
 {
-Dma0=		0x00,
-Dma0status=	Dma0+0x8,
-Dma0reset=	Dma0+0xD,
-Dma1=		0xC0,
-Dma1status=	Dma1+2*0x8,
-Dma1reset=	Dma1+2*0xD,
+Dma0= 0x00,
+Dma0status= Dma0+0x8,
+Dma0reset= Dma0+0xD,
+Dma1= 0xC0,
+Dma1status= Dma1+2*0x8,
+Dma1reset= Dma1+2*0xD,
 };
 struct DMAxfer
 {
-ulong	bpa;
-void*	bva;
-void*	va;
-long	len;
-int	isread;
+ulong bpa;
+void* bva;
+void* va;
+long len;
+int isread;
 };
 struct DMAport
 {
-uchar	addr[4];
-uchar	count[4];
-uchar	page[4];
-uchar	cmd;
-uchar	req;
-uchar	sbm;
-uchar	mode;
-uchar	cbp;
-uchar	mc;
-uchar	cmask;
-uchar	wam;
+uchar addr[4];
+uchar count[4];
+uchar page[4];
+uchar cmd;
+uchar req;
+uchar sbm;
+uchar mode;
+uchar cbp;
+uchar mc;
+uchar cmask;
+uchar wam;
 };
 struct DMA
 {
 DMAport;
-int	shift;
+int shift;
 Lock;
-DMAxfer	x[4];
+DMAxfer x[4];
 };
 DMA dma[2] = {
 { 0x00, 0x02, 0x04, 0x06,

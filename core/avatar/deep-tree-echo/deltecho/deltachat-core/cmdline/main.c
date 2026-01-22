@@ -5,7 +5,7 @@
 #include "cmdline.h"
 #include "stress.h"
 static int s_do_log_info = 1;
-#define ANSI_RED    "\e[31m"
+#define ANSI_RED "\e[31m"
 #define ANSI_YELLOW "\e[33m"
 #define ANSI_NORMAL "\e[0m"
 static uintptr_t receive_event(dc_context_t* context, int event, uintptr_t data1, uintptr_t data2)
@@ -101,7 +101,7 @@ break;
 return 0;
 }
 static pthread_t inbox_thread = 0;
-static int       run_threads = 0;
+static int run_threads = 0;
 static void* inbox_thread_entry_point (void* entry_arg)
 {
 dc_context_t* context = (dc_context_t*)entry_arg;
@@ -196,9 +196,9 @@ return cmdbuffer;
 }
 int main(int argc, char ** argv)
 {
-char*         cmd = NULL;
+char* cmd = NULL;
 dc_context_t* context = dc_context_new(receive_event, NULL, "CLI");
-int           stresstest_only = 0;
+int stresstest_only = 0;
 dc_cmdline_skip_auth(context);
 if (argc == 2) {
 if (strcmp(argv[1], "--stress")==0) {
@@ -285,7 +285,7 @@ printf("\e[1;1H\e[2J");
 else if (strcmp(cmd, "getqr")==0 || strcmp(cmd, "getbadqr")==0)
 {
 start_threads(context);
-char* qrstr  = dc_get_securejoin_qr(context, arg1? atoi(arg1) : 0);
+char* qrstr = dc_get_securejoin_qr(context, arg1? atoi(arg1) : 0);
 if (qrstr && qrstr[0]) {
 if (strcmp(cmd, "getbadqr")==0 && strlen(qrstr)>40) {
 for (int i = 12; i < 22; i++) { qrstr[i] = '0'; }

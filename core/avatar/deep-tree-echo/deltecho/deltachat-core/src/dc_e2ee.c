@@ -100,8 +100,8 @@ static int load_or_generate_self_public_key(dc_context_t* context, dc_key_t* pub
 struct mailmime* random_data_mime )
 {
 static int s_in_key_creation = 0;
-int        key_created = 0;
-int        success = 0, key_creation_here = 0;
+int key_created = 0;
+int success = 0, key_creation_here = 0;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC || public_key==NULL) {
 goto cleanup;
 }
@@ -157,9 +157,9 @@ return success;
 }
 int dc_ensure_secret_key_exists(dc_context_t* context)
 {
-int       success = 0;
+int success = 0;
 dc_key_t* public_key = dc_key_new();
-char*     self_addr = NULL;
+char* self_addr = NULL;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC || public_key==NULL) {
 goto cleanup;
 }
@@ -183,16 +183,16 @@ int min_verified,
 int do_gossip,
 struct mailmime* in_out_message, dc_e2ee_helper_t* helper)
 {
-int                     col = 0;
-int                     do_encrypt = 0;
-dc_aheader_t*           autocryptheader = dc_aheader_new();
-struct mailimf_fields*  imffields_unprotected = NULL;
-dc_keyring_t*           keyring = dc_keyring_new();
-dc_key_t*               sign_key = dc_key_new();
-MMAPString*             plain = mmap_string_new("");
-char*                   ctext = NULL;
-size_t                  ctext_bytes = 0;
-dc_array_t*             peerstates = dc_array_new(NULL, 10);
+int col = 0;
+int do_encrypt = 0;
+dc_aheader_t* autocryptheader = dc_aheader_new();
+struct mailimf_fields* imffields_unprotected = NULL;
+dc_keyring_t* keyring = dc_keyring_new();
+dc_key_t* sign_key = dc_key_new();
+MMAPString* plain = mmap_string_new("");
+char* ctext = NULL;
+size_t ctext_bytes = 0;
+dc_array_t* peerstates = dc_array_new(NULL, 10);
 if (helper) { memset(helper, 0, sizeof(dc_e2ee_helper_t)); }
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC || recipients_addr==NULL || in_out_message==NULL
 || in_out_message->mm_parent
@@ -213,7 +213,7 @@ goto cleanup;
 if (autocryptheader->prefer_encrypt==DC_PE_MUTUAL || e2ee_guaranteed)
 {
 do_encrypt = 1;
-clistiter*      iter1;
+clistiter* iter1;
 for (iter1 = clist_begin(recipients_addr); iter1!=NULL ; iter1=clist_next(iter1)) {
 const char* recipient_addr = clist_content(iter1);
 dc_apeerstate_t* peerstate = dc_apeerstate_new(context);
@@ -367,21 +367,21 @@ return 1;
 }
 return 0;
 }
-static int decrypt_part(dc_context_t*       context,
-struct mailmime*    mime,
+static int decrypt_part(dc_context_t* context,
+struct mailmime* mime,
 const dc_keyring_t* private_keyring,
 const dc_keyring_t* public_keyring_for_validate,
-dc_hash_t*          ret_valid_signatures,
-struct mailmime**   ret_decrypted_mime)
+dc_hash_t* ret_valid_signatures,
+struct mailmime** ret_decrypted_mime)
 {
-struct mailmime_data*        mime_data = NULL;
-int                          mime_transfer_encoding = MAILMIME_MECHANISM_BINARY;
-char*                        transfer_decoding_buffer = NULL;
-const char*                  decoded_data = NULL;
-size_t                       decoded_data_bytes = 0;
-void*                        plain_buf = NULL;
-size_t                       plain_bytes = 0;
-int                          sth_decrypted = 0;
+struct mailmime_data* mime_data = NULL;
+int mime_transfer_encoding = MAILMIME_MECHANISM_BINARY;
+char* transfer_decoding_buffer = NULL;
+const char* decoded_data = NULL;
+size_t decoded_data_bytes = 0;
+void* plain_buf = NULL;
+size_t plain_bytes = 0;
+int sth_decrypted = 0;
 *ret_decrypted_mime = NULL;
 mime_data = mime->mm_data.mm_single;
 if (mime_data->dt_type!=MAILMIME_DATA_TEXT
@@ -404,7 +404,7 @@ if (mime_transfer_encoding==MAILMIME_MECHANISM_7BIT
 || mime_transfer_encoding==MAILMIME_MECHANISM_8BIT
 || mime_transfer_encoding==MAILMIME_MECHANISM_BINARY)
 {
-decoded_data       = mime_data->dt_data.dt_text.dt_data;
+decoded_data = mime_data->dt_data.dt_text.dt_data;
 decoded_data_bytes = mime_data->dt_data.dt_text.dt_length;
 if (decoded_data==NULL || decoded_data_bytes <= 0) {
 goto cleanup;
@@ -448,16 +448,16 @@ mmap_string_unref(transfer_decoding_buffer);
 }
 return sth_decrypted;
 }
-static int decrypt_recursive(dc_context_t*           context,
-struct mailmime*        mime,
-const dc_keyring_t*     private_keyring,
-const dc_keyring_t*     public_keyring_for_validate,
-dc_hash_t*              ret_valid_signatures,
+static int decrypt_recursive(dc_context_t* context,
+struct mailmime* mime,
+const dc_keyring_t* private_keyring,
+const dc_keyring_t* public_keyring_for_validate,
+dc_hash_t* ret_valid_signatures,
 struct mailimf_fields** ret_gossip_headers,
-int*                    ret_has_unencrypted_parts)
+int* ret_has_unencrypted_parts)
 {
 struct mailmime_content* ct = NULL;
-clistiter*               cur = NULL;
+clistiter* cur = NULL;
 if (context==NULL || mime==NULL) {
 return 0;
 }
@@ -508,9 +508,9 @@ return 0;
 }
 static dc_hash_t* update_gossip_peerstates(dc_context_t* context, time_t message_time, struct mailimf_fields* imffields, const struct mailimf_fields* gossip_headers)
 {
-clistiter*  cur1 = NULL;
-dc_hash_t*  recipients = NULL;
-dc_hash_t*  gossipped_addr = NULL;
+clistiter* cur1 = NULL;
+dc_hash_t* recipients = NULL;
+dc_hash_t* gossipped_addr = NULL;
 for (cur1 = clist_begin(gossip_headers->fld_list); cur1!=NULL ; cur1=clist_next(cur1))
 {
 struct mailimf_field* field = (struct mailimf_field*)clist_content(cur1);
@@ -566,13 +566,13 @@ void dc_e2ee_decrypt(dc_context_t* context, struct mailmime* in_out_message,
 dc_e2ee_helper_t* helper)
 {
 struct mailimf_fields* imffields = mailmime_find_mailimf_fields(in_out_message);
-dc_aheader_t*          autocryptheader = NULL;
-time_t                 message_time = 0;
-dc_apeerstate_t*       peerstate = dc_apeerstate_new(context);
-char*                  from = NULL;
-char*                  self_addr = NULL;
-dc_keyring_t*          private_keyring = dc_keyring_new();
-dc_keyring_t*          public_keyring_for_validate = dc_keyring_new();
+dc_aheader_t* autocryptheader = NULL;
+time_t message_time = 0;
+dc_apeerstate_t* peerstate = dc_apeerstate_new(context);
+char* from = NULL;
+char* self_addr = NULL;
+dc_keyring_t* private_keyring = dc_keyring_new();
+dc_keyring_t* public_keyring_for_validate = dc_keyring_new();
 struct mailimf_fields* gossip_headers = NULL;
 if (helper) { memset(helper, 0, sizeof(dc_e2ee_helper_t)); }
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC || in_out_message==NULL

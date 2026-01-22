@@ -15,7 +15,7 @@ jvirt_barray_ptr whole_image[MAX_COMPONENTS];
 #endif
 #ifdef BLOCK_SMOOTHING_SUPPORTED
 int * coef_bits_latch;
-#define SAVED_COEFS  6
+#define SAVED_COEFS 6
 #endif
 } my_coef_controller;
 typedef my_coef_controller * my_coef_ptr;
@@ -233,11 +233,11 @@ return JPEG_SCAN_COMPLETED;
 }
 #endif
 #ifdef BLOCK_SMOOTHING_SUPPORTED
-#define Q01_POS  1
-#define Q10_POS  8
-#define Q20_POS  16
-#define Q11_POS  9
-#define Q02_POS  2
+#define Q01_POS 1
+#define Q10_POS 8
+#define Q20_POS 16
+#define Q11_POS 9
+#define Q02_POS 2
 LOCAL(boolean)
 smoothing_ok (j_decompress_ptr cinfo)
 {

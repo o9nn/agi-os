@@ -15,8 +15,8 @@
 #include <linux/fs.h>
 #include <linux/anon_inodes.h>
 #include <linux/atomic.h>
-#define DTESN_MAX_INSTANCES         256
-#define DTESN_INSTANCE_MAGIC        0xDEADBEEF
+#define DTESN_MAX_INSTANCES 256
+#define DTESN_INSTANCE_MAGIC 0xDEADBEEF
 struct dtesn_perf_tracker {
 atomic64_t syscall_count;
 atomic64_t total_syscall_time_ns;

@@ -217,10 +217,10 @@ ms.save(path_model);
 int32_t llama_chat_apply_template(
 const char * tmpl,
 const struct llama_chat_message * chat,
-size_t   n_msg,
-bool   add_ass,
+size_t n_msg,
+bool add_ass,
 char * buf,
-int32_t   length) {
+int32_t length) {
 const std::string curr_tmpl(tmpl == nullptr ? "chatml" : tmpl);
 std::vector<const llama_chat_message *> chat_vec;
 chat_vec.resize(n_msg);

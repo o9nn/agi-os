@@ -21,10 +21,10 @@ error("nullbwrite");
 }
 Medium nullmedium =
 {
-.name=		"null",
-.bind=		nullbind,
-.unbind=	nullunbind,
-.bwrite=	nullbwrite,
+.name= "null",
+.bind= nullbind,
+.unbind= nullunbind,
+.bwrite= nullbwrite,
 };
 void
 nullmediumlink(void)

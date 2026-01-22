@@ -1,19 +1,19 @@
 implement Wav2Iaf;
 include "sys.m";
 include "draw.m";
-include	"bufio.m";
-sys:	Sys;
-FD:	import sys;
-bufio:	Bufio;
-Iobuf:	import bufio;
-stderr:	ref FD;
-inf:	ref Iobuf;
-prog:	string;
-buff4:	array of byte;
-pad	:= array[] of { "  ", " ", "", "   " };
+include "bufio.m";
+sys: Sys;
+FD: import sys;
+bufio: Bufio;
+Iobuf: import bufio;
+stderr: ref FD;
+inf: ref Iobuf;
+prog: string;
+buff4: array of byte;
+pad := array[] of { "  ", " ", "", "   " };
 Wav2Iaf: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 ioerror()
 {
@@ -143,9 +143,9 @@ sys->fprint(stderr, "%s: could not fopen stdout: %r\n", prog);
 exit;
 }
 s := "rate\t" + string rate + "\n"
-+  "chans\t" + string chans + "\n"
-+  "bits\t" + string bits + "\n"
-+  "enc\tpcm";
++ "chans\t" + string chans + "\n"
++ "bits\t" + string bits + "\n"
++ "enc\tpcm";
 outf.puts(s);
 outf.puts(pad[len s % 4]);
 outf.puts("\n\n");

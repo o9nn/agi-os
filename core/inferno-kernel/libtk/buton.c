@@ -2,59 +2,59 @@
 #include "draw.h"
 #include "tk.h"
 #include "label.h"
-#define	O(t, e)		((long)(&((t*)0)->e))
+#define O(t, e) ((long)(&((t*)0)->e))
 enum {
-InvokePause	= 200,
+InvokePause = 200,
 };
 TkOption tkbutopts[] =
 {
-"text",		OPTtext,	O(TkLabel, text),	nil,
-"label",	OPTtext,	O(TkLabel, text),	nil,
-"underline",	OPTdist,	O(TkLabel, ul),		nil,
-"justify",	OPTstab,	O(TkLabel, justify),	tkjustify,
-"anchor",	OPTflag,	O(TkLabel, anchor),	tkanchor,
-"command",	OPTtext,	O(TkLabel, command),	nil,
-"bitmap",	OPTbmap,	O(TkLabel, bitmap),	nil,
-"image",	OPTimag,	O(TkLabel, img),	nil,
+"text", OPTtext, O(TkLabel, text), nil,
+"label", OPTtext, O(TkLabel, text), nil,
+"underline", OPTdist, O(TkLabel, ul), nil,
+"justify", OPTstab, O(TkLabel, justify), tkjustify,
+"anchor", OPTflag, O(TkLabel, anchor), tkanchor,
+"command", OPTtext, O(TkLabel, command), nil,
+"bitmap", OPTbmap, O(TkLabel, bitmap), nil,
+"image", OPTimag, O(TkLabel, img), nil,
 nil
 };
 TkOption tkcbopts[] =
 {
-"variable",	OPTtext,	O(TkLabel, variable),	nil,
-"indicatoron",	OPTstab,	O(TkLabel, indicator),	tkbool,
-"onvalue",	OPTtext,	O(TkLabel, value),	nil,
-"offvalue",	OPTtext,	O(TkLabel, offvalue), nil,
+"variable", OPTtext, O(TkLabel, variable), nil,
+"indicatoron", OPTstab, O(TkLabel, indicator), tkbool,
+"onvalue", OPTtext, O(TkLabel, value), nil,
+"offvalue", OPTtext, O(TkLabel, offvalue), nil,
 nil,
 };
 TkOption tkradopts[] =
 {
-"variable",	OPTtext,	O(TkLabel, variable),	nil,
-"value",	OPTtext,	O(TkLabel, value), nil,
-"indicatoron",	OPTstab,	O(TkLabel, indicator),	tkbool,
+"variable", OPTtext, O(TkLabel, variable), nil,
+"value", OPTtext, O(TkLabel, value), nil,
+"indicatoron", OPTstab, O(TkLabel, indicator), tkbool,
 nil,
 };
 static
 TkEbind bb[] =
 {
-{TkEnter,	"%W configure -state active"},
-{TkLeave,	"%W configure -state normal"},
-{TkButton1P,	"%W tkButton1P"},
-{TkButton1R,	"%W tkButton1R %x %y"},
-{TkMotion|TkButton1P, 	"" },
-{TkKey,	"%W tkButtonKey 0x%K"},
+{TkEnter, "%W configure -state active"},
+{TkLeave, "%W configure -state normal"},
+{TkButton1P, "%W tkButton1P"},
+{TkButton1R, "%W tkButton1R %x %y"},
+{TkMotion|TkButton1P, "" },
+{TkKey, "%W tkButtonKey 0x%K"},
 };
 static
 TkEbind cb[] =
 {
-{TkEnter,		"%W configure -state active"},
-{TkLeave,		"%W configure -state normal"},
-{TkButton1P,		"%W invoke"},
-{TkMotion|TkButton1P, 	"" },
-{TkKey,	"%W tkButtonKey 0x%K"},
+{TkEnter, "%W configure -state active"},
+{TkLeave, "%W configure -state normal"},
+{TkButton1P, "%W invoke"},
+{TkMotion|TkButton1P, "" },
+{TkKey, "%W tkButtonKey 0x%K"},
 };
-static char	tkselbut[] = "selectedButton";
-static char*	newbutton(TkTop*, int, char*, char**);
-static int	istransparent(Tk*);
+static char tkselbut[] = "selectedButton";
+static char* newbutton(TkTop*, int, char*, char**);
+static int istransparent(Tk*);
 static void tkvarchanged(Tk*, char*, char*);
 char*
 tkbutton(TkTop *t, char *arg, char **ret)
@@ -610,35 +610,35 @@ return nil;
 static
 TkCmdtab tkbuttoncmd[] =
 {
-"cget",			tkbuttoncget,
-"configure",		tkbuttonconf,
-"invoke",		tkbuttoninvoke,
-"tkButton1P",		tkbutton1p,
-"tkButton1R",		tkbutton1r,
-"tkButtonKey",		tkbuttonkey,
+"cget", tkbuttoncget,
+"configure", tkbuttonconf,
+"invoke", tkbuttoninvoke,
+"tkButton1P", tkbutton1p,
+"tkButton1R", tkbutton1r,
+"tkButtonKey", tkbuttonkey,
 nil
 };
 static
 TkCmdtab tkchkbuttoncmd[] =
 {
-"cget",			tkbuttoncget,
-"configure",		tkbuttonconf,
-"invoke",		tkbuttoninvoke,
-"select",		tkbuttonselect,
-"deselect",		tkbuttondeselect,
-"toggle",		tkbuttontoggle,
-"tkButtonKey",		tkbuttonkey,
+"cget", tkbuttoncget,
+"configure", tkbuttonconf,
+"invoke", tkbuttoninvoke,
+"select", tkbuttonselect,
+"deselect", tkbuttondeselect,
+"toggle", tkbuttontoggle,
+"tkButtonKey", tkbuttonkey,
 nil
 };
 static
 TkCmdtab tkradbuttoncmd[] =
 {
-"cget",			tkbuttoncget,
-"configure",		tkbuttonconf,
-"invoke",		tkbuttoninvoke,
-"select",		tkbuttonselect,
-"deselect",		tkbuttondeselect,
-"tkButtonKey",		tkbuttonkey,
+"cget", tkbuttoncget,
+"configure", tkbuttonconf,
+"invoke", tkbuttoninvoke,
+"select", tkbuttonselect,
+"deselect", tkbuttondeselect,
+"tkButtonKey", tkbuttonkey,
 nil
 };
 TkMethod buttonmethod = {

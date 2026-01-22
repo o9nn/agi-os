@@ -1,9 +1,9 @@
 #
-#	Dependency/rule routines.
+# Dependency/rule routines.
 #
-DHASH:	con 127;	# dephash size
+DHASH: con 127; # dephash size
 #
-#	Initialize.  "make -clear" calls this.
+# Initialize. "make -clear" calls this.
 #
 initdep()
 {
@@ -11,7 +11,7 @@ dephash = array[DHASH] of list of ref Target;
 rules = nil;
 }
 #
-#	Lookup a target in dephash, maybe add it.
+# Lookup a target in dephash, maybe add it.
 #
 target(s: string, insert: int): ref Target
 {
@@ -34,8 +34,8 @@ t := target(s, 1);
 t.depends = d :: t.depends;
 }
 #
-#	Dependency (:) command.
-#	Evaluate lhs and rhs, make dependency, and add to the targets.
+# Dependency (:) command.
+# Evaluate lhs and rhs, make dependency, and add to the targets.
 #
 Cmd.depend(c: self ref Cmd, e: ref Env)
 {
@@ -67,7 +67,7 @@ l = tl l;
 }
 }
 #
-#	Evaluate rule lhs and break into path components.
+# Evaluate rule lhs and break into path components.
 #
 rulelhs(e: ref Env, i: ref Item): ref Lhs
 {
@@ -87,8 +87,8 @@ return nil;
 return ref Lhs(s, p, n);
 }
 #
-#	Rule (:~) command.
-#	First pass of rhs evaluation is done here.
+# Rule (:~) command.
+# First pass of rhs evaluation is done here.
 #
 Cmd.rule(c: self ref Cmd, e: ref Env)
 {
@@ -110,7 +110,7 @@ return nil;
 return target(s, 0);
 }
 #
-#	Match a path element.
+# Match a path element.
 #
 matchelem(p, s: string): int
 {
@@ -135,7 +135,7 @@ return 0;
 return 0;
 }
 #
-#	Match a path element and return a list of sub-matches.
+# Match a path element and return a list of sub-matches.
 #
 matches(p, s: string): (int, list of string)
 {
@@ -159,7 +159,7 @@ return (0, nil);
 return (m == n, nil);
 }
 #
-#	Rule match.
+# Rule match.
 #
 Rule.match(r: self ref Rule, a, n: int, t: list of string): int
 {
@@ -174,7 +174,7 @@ t = tl t;
 return 1;
 }
 #
-#	Rule match with array of sub-matches.
+# Rule match with array of sub-matches.
 #
 Rule.matches(r: self ref Rule, t: list of string): array of string
 {
@@ -199,7 +199,7 @@ m = tl m;
 return a;
 }
 #
-#	Return list of rules that match a string.
+# Return list of rules that match a string.
 #
 rulematch(s: string): list of ref Rule
 {

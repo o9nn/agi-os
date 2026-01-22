@@ -53,7 +53,7 @@ idvec_tail_contains (const struct idvec *idvec, unsigned pos, uid_t id)
 uid_t *ids = idvec->ids, *end = ids + idvec->num, *p = ids + pos;
 while (p < end)
 if (*p++ == id)
-return  1;
+return 1;
 return 0;
 }
 error_t
@@ -222,7 +222,7 @@ error_t
 idvec_setid (struct idvec *eff, struct idvec *avail, uid_t id, int *secure)
 {
 error_t err;
-int _secure = !idvec_contains (eff, id) &&  !idvec_contains (avail, id);
+int _secure = !idvec_contains (eff, id) && !idvec_contains (avail, id);
 if (eff->num > 0)
 {
 err = idvec_add_new (avail, eff->ids[0]);

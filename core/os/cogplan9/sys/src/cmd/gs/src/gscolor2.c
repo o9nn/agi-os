@@ -12,16 +12,16 @@
 int
 gs_setcolorspace(gs_state * pgs, const gs_color_space * pcs)
 {
-int             code = 0;
-gs_color_space  cs_old = *pgs->color_space;
+int code = 0;
+gs_color_space cs_old = *pgs->color_space;
 gs_client_color cc_old = *pgs->ccolor;
 if (pgs->in_cachedevice)
 return_error(gs_error_undefined);
 if (pcs->id != pgs->color_space->id) {
 pcs->type->adjust_cspace_count(pcs, 1);
 *pgs->color_space = *pcs;
-if ( (code = pcs->type->install_cspace(pcs, pgs)) < 0          ||
-(pgs->overprint && (code = gs_do_set_overprint(pgs)) < 0)  ) {
+if ( (code = pcs->type->install_cspace(pcs, pgs)) < 0 ||
+(pgs->overprint && (code = gs_do_set_overprint(pgs)) < 0) ) {
 *pgs->color_space = cs_old;
 pcs->type->adjust_cspace_count(pcs, -1);
 } else
@@ -42,8 +42,8 @@ return pgs->color_space;
 int
 gs_setcolor(gs_state * pgs, const gs_client_color * pcc)
 {
-gs_color_space *    pcs = pgs->color_space;
-gs_client_color     cc_old = *pgs->ccolor;
+gs_color_space * pcs = pgs->color_space;
+gs_client_color cc_old = *pgs->ccolor;
 if (pgs->in_cachedevice)
 return_error(gs_error_undefined);
 gx_unset_dev_color(pgs);

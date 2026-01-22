@@ -52,10 +52,10 @@ unsigned long raddr, unsigned long laddr, int dif)
 struct sock *s = sk;
 SOCKHASH_LOCK();
 for(s = sk; s; s = s->next) {
-if((s->num == num) 				&&
-!(s->dead && (s->state == TCP_CLOSE))	&&
-!(s->daddr && s->daddr != raddr) 		&&
-!(s->rcv_saddr && s->rcv_saddr != laddr)	&&
+if((s->num == num) &&
+!(s->dead && (s->state == TCP_CLOSE)) &&
+!(s->daddr && s->daddr != raddr) &&
+!(s->rcv_saddr && s->rcv_saddr != laddr) &&
 !(s->bound_dev_if && s->bound_dev_if != dif))
 break;
 }
@@ -122,8 +122,8 @@ return 0;
 }
 struct rawfakehdr
 {
-struct  iovec *iov;
-u32	saddr;
+struct iovec *iov;
+u32 saddr;
 };
 static int raw_getfrag(const void *p, char *to, unsigned int offset, unsigned int fraglen)
 {
@@ -154,7 +154,7 @@ struct rawfakehdr rfh;
 struct rtable *rt = NULL;
 int free = 0;
 u32 daddr;
-u8  tos;
+u8 tos;
 int err;
 if (len < 0 || len > 0xFFFF)
 return -EMSGSIZE;

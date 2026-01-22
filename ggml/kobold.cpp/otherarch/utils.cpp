@@ -11,7 +11,7 @@
 #include <ctime>
 #define MINIAUDIO_IMPLEMENTATION
 #ifndef MTMD_AUDIO_DEBUG
-#   define MA_NO_ENCODING
+# define MA_NO_ENCODING
 #endif
 #define MA_NO_DEVICE_IO
 #define MA_NO_RESOURCE_MANAGER
@@ -43,7 +43,7 @@ if (json[0] != '{') {
 return result;
 }
 {
-bool has_key  = false;
+bool has_key = false;
 bool in_token = false;
 std::string str_key = "";
 std::string str_val = "";
@@ -84,7 +84,7 @@ has_key = false;
 }
 ::utreplace(str_key, "\\u0120", " " );
 ::utreplace(str_key, "\\u010a", "\n");
-::utreplace(str_key, "\\\"",    "\"");
+::utreplace(str_key, "\\\"", "\"");
 try {
 result[str_key] = std::stoi(str_val);
 } catch (...) {
@@ -219,9 +219,9 @@ for (i = 0; i <4; i++)
 {
 char_array_4[i] = kcpp_base64_chars.find(char_array_4[i]);
 }
-char_array_3[0] = ((char_array_4[0]      ) << 2) + ((char_array_4[1] & 0x30) >> 4);
+char_array_3[0] = ((char_array_4[0] ) << 2) + ((char_array_4[1] & 0x30) >> 4);
 char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
-char_array_3[2] = ((char_array_4[2] & 0x3) << 6) +   char_array_4[3];
+char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
 for (i = 0; (i < 3); i++)
 {
 ret.push_back(char_array_3[i]);
@@ -239,9 +239,9 @@ for (j = 0; j <4; j++)
 {
 char_array_4[j] = kcpp_base64_chars.find(char_array_4[j]);
 }
-char_array_3[0] = ((char_array_4[0]      ) << 2) + ((char_array_4[1] & 0x30) >> 4);
+char_array_3[0] = ((char_array_4[0] ) << 2) + ((char_array_4[1] & 0x30) >> 4);
 char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
-char_array_3[2] = ((char_array_4[2] & 0x3) << 6) +   char_array_4[3];
+char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
 for (j = 0; (j < i - 1); j++)
 {
 ret.push_back(char_array_3[j]);
@@ -413,18 +413,18 @@ logits.data(),
 if(!use_mrope)
 {
 for (int i = 0; i < n_tokens; i++) {
-batch.pos     [i] = npast + i;
+batch.pos [i] = npast + i;
 batch.n_seq_id[i] = 1;
-batch.seq_id  [i] = seq_id_0.data();
-batch.logits  [i] = false;
+batch.seq_id [i] = seq_id_0.data();
+batch.logits [i] = false;
 }
 }
 else
 {
 for (int i = 0; i < n_tokens; i++) {
 batch.n_seq_id[i] = 1;
-batch.seq_id  [i] = seq_id_0.data();
-batch.logits  [i] = false;
+batch.seq_id [i] = seq_id_0.data();
+batch.logits [i] = false;
 }
 for (int j = 0; j < batch.n_tokens * 3; j++) {
 batch.pos[j] = npast + (j % batch.n_tokens);
@@ -455,18 +455,18 @@ logits.data(),
 if(!use_mrope)
 {
 for (int i = 0; i < n_tokens; i++) {
-batch.pos     [i] = npast + i;
+batch.pos [i] = npast + i;
 batch.n_seq_id[i] = 1;
-batch.seq_id  [i] = seq_id_0.data();
-batch.logits  [i] = (return_all_logits?true:false);
+batch.seq_id [i] = seq_id_0.data();
+batch.logits [i] = (return_all_logits?true:false);
 }
 }
 else
 {
 for (int i = 0; i < n_tokens; i++) {
 batch.n_seq_id[i] = 1;
-batch.seq_id  [i] = seq_id_0.data();
-batch.logits  [i] = (return_all_logits?true:false);
+batch.seq_id [i] = seq_id_0.data();
+batch.logits [i] = (return_all_logits?true:false);
 }
 for (int j = 0; j < batch.n_tokens * 3; j++) {
 batch.pos[j] = npast + (j % batch.n_tokens);

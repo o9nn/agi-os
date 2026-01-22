@@ -2,17 +2,17 @@
 #define __LINUX_PKT_CLS_H
 struct tc_police
 {
-__u32			index;
-int			action;
-#define TC_POLICE_UNSPEC	(-1)
-#define TC_POLICE_OK		0
-#define TC_POLICE_RECLASSIFY	1
-#define TC_POLICE_SHOT		2
-__u32			limit;
-__u32			burst;
-__u32			mtu;
-struct tc_ratespec	rate;
-struct tc_ratespec	peakrate;
+__u32 index;
+int action;
+#define TC_POLICE_UNSPEC (-1)
+#define TC_POLICE_OK 0
+#define TC_POLICE_RECLASSIFY 1
+#define TC_POLICE_SHOT 2
+__u32 limit;
+__u32 burst;
+__u32 mtu;
+struct tc_ratespec rate;
+struct tc_ratespec peakrate;
 };
 enum
 {
@@ -30,8 +30,8 @@ TCA_POLICE_RESULT
 #define TC_U32_HASH(h) (((h)>>12)&0xFF)
 #define TC_U32_NODE(h) ((h)&0xFFF)
 #define TC_U32_KEY(h) ((h)&0xFFFFF)
-#define TC_U32_UNSPEC	0
-#define TC_U32_ROOT	(0xFFF00000)
+#define TC_U32_UNSPEC 0
+#define TC_U32_ROOT (0xFFF00000)
 enum
 {
 TCA_U32_UNSPEC,
@@ -45,27 +45,27 @@ TCA_U32_POLICE,
 #define TCA_U32_MAX TCA_U32_POLICE
 struct tc_u32_key
 {
-__u32		mask;
-__u32		val;
-int		off;
-int		offmask;
+__u32 mask;
+__u32 val;
+int off;
+int offmask;
 };
 struct tc_u32_sel
 {
-unsigned char		flags;
-unsigned char		offshift;
-unsigned char		nkeys;
-__u16			offmask;
-__u16			off;
-short			offoff;
-short			hoff;
-__u32			hmask;
-struct tc_u32_key	keys[0];
+unsigned char flags;
+unsigned char offshift;
+unsigned char nkeys;
+__u16 offmask;
+__u16 off;
+short offoff;
+short hoff;
+__u32 hmask;
+struct tc_u32_key keys[0];
 };
-#define TC_U32_TERMINAL		1
-#define TC_U32_OFFSET		2
-#define TC_U32_VAROFFSET	4
-#define TC_U32_EAT		8
+#define TC_U32_TERMINAL 1
+#define TC_U32_OFFSET 2
+#define TC_U32_VAROFFSET 4
+#define TC_U32_EAT 8
 #define TC_U32_MAXDEPTH 8
 enum
 {
@@ -79,17 +79,17 @@ TCA_RSVP_POLICE,
 #define TCA_RSVP_MAX TCA_RSVP_POLICE
 struct tc_rsvp_gpi
 {
-__u32	key;
-__u32	mask;
-int	offset;
+__u32 key;
+__u32 mask;
+int offset;
 };
 struct tc_rsvp_pinfo
 {
 struct tc_rsvp_gpi dpi;
 struct tc_rsvp_gpi spi;
-__u8	protocol;
-__u8	tunnelid;
-__u8	tunnelhdr;
+__u8 protocol;
+__u8 tunnelid;
+__u8 tunnelhdr;
 };
 enum
 {

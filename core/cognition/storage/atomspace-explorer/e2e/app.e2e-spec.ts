@@ -1,11 +1,11 @@
 import { FrontEndPage } from './app.po';
 describe('front-end App', function() {
-  let page: FrontEndPage;
-  beforeEach(() => {
-    page = new FrontEndPage();
-  });
-  it('should display message saying app works', () => {
-    page.navigateTo();
-    expect(page.getParagraphText()).toEqual('app works!');
-  });
+let page: FrontEndPage;
+beforeEach(() => {
+page = new FrontEndPage();
+});
+it('should display message saying app works', () => {
+page.navigateTo();
+expect(page.getParagraphText()).toEqual('app works!');
+});
 });

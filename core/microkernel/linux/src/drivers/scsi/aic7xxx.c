@@ -4,7 +4,7 @@
 #include <linux/module.h>
 #endif
 #if defined(PCMCIA)
-#  undef MODULE
+# undef MODULE
 #endif
 #include <stdarg.h>
 #include <asm/io.h>
@@ -39,83 +39,83 @@ PROC_SCSI_AIC7XXX, 7, "aic7xxx",
 S_IFDIR | S_IRUGO | S_IXUGO, 2,
 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL
 };
-#define AIC7XXX_C_VERSION  "5.1.13"
-#define NUMBER(arr)     (sizeof(arr) / sizeof(arr[0]))
-#define MIN(a,b)        (((a) < (b)) ? (a) : (b))
-#define MAX(a,b)        (((a) > (b)) ? (a) : (b))
+#define AIC7XXX_C_VERSION "5.1.13"
+#define NUMBER(arr) (sizeof(arr) / sizeof(arr[0]))
+#define MIN(a,b) (((a) < (b)) ? (a) : (b))
+#define MAX(a,b) (((a) > (b)) ? (a) : (b))
 #define ALL_TARGETS -1
 #define ALL_CHANNELS -1
 #define ALL_LUNS -1
-#define MAX_TARGETS  16
-#define MAX_LUNS     8
+#define MAX_TARGETS 16
+#define MAX_LUNS 8
 #ifndef TRUE
-#  define TRUE 1
+# define TRUE 1
 #endif
 #ifndef FALSE
-#  define FALSE 0
+# define FALSE 0
 #endif
 #ifndef KERNEL_VERSION
-#  define KERNEL_VERSION(x,y,z) (((x)<<16)+((y)<<8)+(z))
+# define KERNEL_VERSION(x,y,z) (((x)<<16)+((y)<<8)+(z))
 #endif
 #if LINUX_VERSION_CODE <= KERNEL_VERSION(2,1,92)
-#  if defined(__sparc_v9__) || defined(__powerpc__)
-#    error "PPC and Sparc platforms are only support under 2.1.92 and above"
-#  endif
-#  include <linux/bios32.h>
+# if defined(__sparc_v9__) || defined(__powerpc__)
+# error "PPC and Sparc platforms are only support under 2.1.92 and above"
+# endif
+# include <linux/bios32.h>
 #endif
 #if defined(__powerpc__)
-#  define MMAPIO
-#  ifdef mb
-#    undef mb
-#  endif
-#  define mb() \
+# define MMAPIO
+# ifdef mb
+# undef mb
+# endif
+# define mb() \
 __asm__ __volatile__("eieio" ::: "memory")
 #elif defined(__i386__)
-#  define MMAPIO
-#  ifdef mb
-#    undef mb
-#  endif
-#  define mb() \
+# define MMAPIO
+# ifdef mb
+# undef mb
+# endif
+# define mb() \
 __asm__ __volatile__("lock ; addl $0,0(%%esp)": : :"memory")
 #elif defined(__alpha__)
-#  ifdef mb
-#    undef mb
-#  endif
-#  define mb() \
+# ifdef mb
+# undef mb
+# endif
+# define mb() \
 __asm__ __volatile__("mb": : :"memory")
 #endif
 #if LINUX_VERSION_CODE > KERNEL_VERSION(2,1,0)
-#  include <asm/spinlock.h>
-#  include <linux/smp.h>
-#  define cpuid smp_processor_id()
-#  if LINUX_VERSION_CODE < KERNEL_VERSION(2,1,95)
-#    define DRIVER_LOCK_INIT \
+# include <asm/spinlock.h>
+# include <linux/smp.h>
+# define cpuid smp_processor_id()
+# if LINUX_VERSION_CODE < KERNEL_VERSION(2,1,95)
+# define DRIVER_LOCK_INIT \
 spin_lock_init(&p->spin_lock);
-#    define DRIVER_LOCK \
+# define DRIVER_LOCK \
 if(!p->cpu_lock_count[cpuid]) { \
 spin_lock_irqsave(&p->spin_lock, cpu_flags); \
 p->cpu_lock_count[cpuid]++; \
 } else { \
 p->cpu_lock_count[cpuid]++; \
 }
-#    define DRIVER_UNLOCK \
+# define DRIVER_UNLOCK \
 if(--p->cpu_lock_count[cpuid] == 0) \
 spin_unlock_irqrestore(&p->spin_lock, cpu_flags);
-#  else
-#    define DRIVER_LOCK_INIT
-#    define DRIVER_LOCK
-#    define DRIVER_UNLOCK
-#  endif
+# else
+# define DRIVER_LOCK_INIT
+# define DRIVER_LOCK
+# define DRIVER_UNLOCK
+# endif
 #else
-#  define cpuid 0
-#  define DRIVER_LOCK_INIT
-#  define DRIVER_LOCK \
+# define cpuid 0
+# define DRIVER_LOCK_INIT
+# define DRIVER_LOCK \
 save_flags(cpu_flags); \
 cli();
-#  define DRIVER_UNLOCK \
+# define DRIVER_UNLOCK \
 restore_flags(cpu_flags);
-#  define le32_to_cpu(x) (x)
-#  define cpu_to_le32(x) (x)
+# define le32_to_cpu(x) (x)
+# define cpu_to_le32(x) (x)
 #endif
 #ifdef CONFIG_AIC7XXX_CMDS_PER_DEVICE
 #define AIC7XXX_CMDS_PER_DEVICE CONFIG_AIC7XXX_CMDS_PER_DEVICE
@@ -191,230 +191,230 @@ static const char *board_names[] = {
 "Adaptec AIC-7892 Ultra 160/m SCSI host adapter",
 "Adaptec AIC-7899 Ultra 160/m SCSI host adapter",
 };
-#define DID_UNDERFLOW   DID_ERROR
+#define DID_UNDERFLOW DID_ERROR
 #define DID_RETRY_COMMAND DID_ERROR
-#define HSCSIID        0x07
-#define SCSI_RESET     0x040
-#define MINSLOT                1
-#define MAXSLOT                15
-#define SLOTBASE(x)        ((x) << 12)
+#define HSCSIID 0x07
+#define SCSI_RESET 0x040
+#define MINSLOT 1
+#define MAXSLOT 15
+#define SLOTBASE(x) ((x) << 12)
 #define BASE_TO_SLOT(x) ((x) >> 12)
-#define AHC_HID0              0x80
-#define AHC_HID1              0x81
-#define AHC_HID2              0x82
-#define AHC_HID3              0x83
-#define MINREG                0xC00
-#define MAXREG                0xCBF
-#define INTDEF                0x5C
-#define        CLASS_PROGIF_REVID        0x08
-#define                DEVREVID        0x000000FFul
-#define                PROGINFC        0x0000FF00ul
-#define                SUBCLASS        0x00FF0000ul
-#define                BASECLASS        0xFF000000ul
-#define        CSIZE_LATTIME                0x0C
-#define                CACHESIZE        0x0000003Ful
-#define                LATTIME                0x0000FF00ul
-#define        DEVCONFIG                0x40
-#define                SCBSIZE32        0x00010000ul
-#define                MPORTMODE        0x00000400ul
-#define                RAMPSM           0x00000200ul
-#define                RAMPSM_ULTRA2    0x00000004
-#define                VOLSENSE         0x00000100ul
-#define                SCBRAMSEL        0x00000080ul
-#define                SCBRAMSEL_ULTRA2 0x00000008
-#define                MRDCEN           0x00000040ul
-#define                EXTSCBTIME       0x00000020ul
-#define                EXTSCBPEN        0x00000010ul
-#define                BERREN           0x00000008ul
-#define                DACEN            0x00000004ul
-#define                STPWLEVEL        0x00000002ul
-#define                DIFACTNEGEN      0x00000001ul
-#define        SCAMCTL                  0x1a
-#define        CCSCBBADDR               0xf0
+#define AHC_HID0 0x80
+#define AHC_HID1 0x81
+#define AHC_HID2 0x82
+#define AHC_HID3 0x83
+#define MINREG 0xC00
+#define MAXREG 0xCBF
+#define INTDEF 0x5C
+#define CLASS_PROGIF_REVID 0x08
+#define DEVREVID 0x000000FFul
+#define PROGINFC 0x0000FF00ul
+#define SUBCLASS 0x00FF0000ul
+#define BASECLASS 0xFF000000ul
+#define CSIZE_LATTIME 0x0C
+#define CACHESIZE 0x0000003Ful
+#define LATTIME 0x0000FF00ul
+#define DEVCONFIG 0x40
+#define SCBSIZE32 0x00010000ul
+#define MPORTMODE 0x00000400ul
+#define RAMPSM 0x00000200ul
+#define RAMPSM_ULTRA2 0x00000004
+#define VOLSENSE 0x00000100ul
+#define SCBRAMSEL 0x00000080ul
+#define SCBRAMSEL_ULTRA2 0x00000008
+#define MRDCEN 0x00000040ul
+#define EXTSCBTIME 0x00000020ul
+#define EXTSCBPEN 0x00000010ul
+#define BERREN 0x00000008ul
+#define DACEN 0x00000004ul
+#define STPWLEVEL 0x00000002ul
+#define DIFACTNEGEN 0x00000001ul
+#define SCAMCTL 0x1a
+#define CCSCBBADDR 0xf0
 typedef enum {C46 = 6, C56_66 = 8} seeprom_chip_type;
 struct seeprom_config {
-#define CFXFER                0x0007
-#define CFSYNCH               0x0008
-#define CFDISC                0x0010
-#define CFWIDEB               0x0020
-#define CFSYNCHISULTRA        0x0040
-#define CFNEWULTRAFORMAT      0x0080
-#define CFSTART               0x0100
-#define CFINCBIOS             0x0200
-#define CFRNFOUND             0x0400
-#define CFMULTILUN            0x0800
-#define CFWBCACHEYES          0x4000
-#define CFWBCACHENC           0xc000
+#define CFXFER 0x0007
+#define CFSYNCH 0x0008
+#define CFDISC 0x0010
+#define CFWIDEB 0x0020
+#define CFSYNCHISULTRA 0x0040
+#define CFNEWULTRAFORMAT 0x0080
+#define CFSTART 0x0100
+#define CFINCBIOS 0x0200
+#define CFRNFOUND 0x0400
+#define CFMULTILUN 0x0800
+#define CFWBCACHEYES 0x4000
+#define CFWBCACHENC 0xc000
 unsigned short device_flags[16];
-#define CFSUPREM        0x0001
-#define CFSUPREMB       0x0002
-#define CFBIOSEN        0x0004
-#define CFSM2DRV        0x0010
-#define CF284XEXTEND    0x0020
-#define CFEXTEND        0x0080
+#define CFSUPREM 0x0001
+#define CFSUPREMB 0x0002
+#define CFBIOSEN 0x0004
+#define CFSM2DRV 0x0010
+#define CF284XEXTEND 0x0020
+#define CFEXTEND 0x0080
 unsigned short bios_control;
-#define CFAUTOTERM      0x0001
-#define CFULTRAEN       0x0002
-#define CF284XSELTO     0x0003
-#define CF284XFIFO      0x000C
-#define CFSTERM         0x0004
-#define CFWSTERM        0x0008
-#define CFSPARITY       0x0010
-#define CF284XSTERM     0x0020
-#define CFRESETB        0x0040
-#define CFBPRIMARY      0x0100
-#define CFSEAUTOTERM    0x0400
-#define CFLVDSTERM      0x0800
+#define CFAUTOTERM 0x0001
+#define CFULTRAEN 0x0002
+#define CF284XSELTO 0x0003
+#define CF284XFIFO 0x000C
+#define CFSTERM 0x0004
+#define CFWSTERM 0x0008
+#define CFSPARITY 0x0010
+#define CF284XSTERM 0x0020
+#define CFRESETB 0x0040
+#define CFBPRIMARY 0x0100
+#define CFSEAUTOTERM 0x0400
+#define CFLVDSTERM 0x0800
 unsigned short adapter_control;
-#define CFSCSIID        0x000F
-#define CFBRTIME        0xFF00
+#define CFSCSIID 0x000F
+#define CFBRTIME 0xFF00
 unsigned short brtime_id;
-#define CFMAXTARG        0x00FF
+#define CFMAXTARG 0x00FF
 unsigned short max_targets;
 unsigned short res_1[11];
 unsigned short checksum;
 };
-#define SELBUS_MASK                0x0a
-#define         SELNARROW        0x00
-#define         SELBUSB                0x08
-#define SINGLE_BUS                0x00
-#define SCB_TARGET(scb)         \
+#define SELBUS_MASK 0x0a
+#define SELNARROW 0x00
+#define SELBUSB 0x08
+#define SINGLE_BUS 0x00
+#define SCB_TARGET(scb) \
 (((scb)->hscb->target_channel_lun & TID) >> 4)
-#define SCB_LUN(scb)            \
+#define SCB_LUN(scb) \
 ((scb)->hscb->target_channel_lun & LID)
-#define SCB_IS_SCSIBUS_B(scb)   \
+#define SCB_IS_SCSIBUS_B(scb) \
 (((scb)->hscb->target_channel_lun & SELBUSB) != 0)
-#define aic7xxx_error(cmd)        ((cmd)->SCp.Status)
-#define aic7xxx_status(cmd)        ((cmd)->SCp.sent_command)
-#define aic7xxx_position(cmd)        ((cmd)->SCp.have_data_in)
+#define aic7xxx_error(cmd) ((cmd)->SCp.Status)
+#define aic7xxx_status(cmd) ((cmd)->SCp.sent_command)
+#define aic7xxx_position(cmd) ((cmd)->SCp.have_data_in)
 static struct aic7xxx_host *first_aic7xxx = NULL;
 struct hw_scatterlist {
 unsigned int address;
 unsigned int length;
 };
-#define        AIC7XXX_MAX_SG 128
-#define AIC7XXX_MAXSCB        255
+#define AIC7XXX_MAX_SG 128
+#define AIC7XXX_MAXSCB 255
 struct aic7xxx_hwscb {
 unsigned char control;
 unsigned char target_channel_lun;
 unsigned char target_status;
 unsigned char SG_segment_count;
-unsigned int  SG_list_pointer;
+unsigned int SG_list_pointer;
 unsigned char residual_SG_segment_count;
 unsigned char residual_data_count[3];
-unsigned int  data_pointer;
-unsigned int  data_count;
-unsigned int  SCSI_cmd_pointer;
+unsigned int data_pointer;
+unsigned int data_count;
+unsigned int SCSI_cmd_pointer;
 unsigned char SCSI_cmd_length;
 unsigned char tag;
-#define SCB_PIO_TRANSFER_SIZE  26
+#define SCB_PIO_TRANSFER_SIZE 26
 unsigned char next;
 unsigned char prev;
 unsigned int pad;
 };
 typedef enum {
-SCB_FREE                = 0x0000,
-SCB_WAITINGQ            = 0x0002,
-SCB_ACTIVE              = 0x0004,
-SCB_SENSE               = 0x0008,
-SCB_ABORT               = 0x0010,
-SCB_DEVICE_RESET        = 0x0020,
-SCB_RESET               = 0x0040,
-SCB_RECOVERY_SCB        = 0x0080,
-SCB_WAS_BUSY            = 0x0100,
-SCB_MSGOUT_SENT         = 0x0200,
-SCB_MSGOUT_SDTR         = 0x0400,
-SCB_MSGOUT_WDTR         = 0x0800,
-SCB_MSGOUT_BITS         = SCB_MSGOUT_SENT |
+SCB_FREE = 0x0000,
+SCB_WAITINGQ = 0x0002,
+SCB_ACTIVE = 0x0004,
+SCB_SENSE = 0x0008,
+SCB_ABORT = 0x0010,
+SCB_DEVICE_RESET = 0x0020,
+SCB_RESET = 0x0040,
+SCB_RECOVERY_SCB = 0x0080,
+SCB_WAS_BUSY = 0x0100,
+SCB_MSGOUT_SENT = 0x0200,
+SCB_MSGOUT_SDTR = 0x0400,
+SCB_MSGOUT_WDTR = 0x0800,
+SCB_MSGOUT_BITS = SCB_MSGOUT_SENT |
 SCB_MSGOUT_SDTR |
 SCB_MSGOUT_WDTR,
-SCB_QUEUED_ABORT        = 0x1000,
-SCB_QUEUED_FOR_DONE     = 0x2000
+SCB_QUEUED_ABORT = 0x1000,
+SCB_QUEUED_FOR_DONE = 0x2000
 } scb_flag_type;
 typedef enum {
-AHC_FNONE                 = 0x00000000,
-AHC_PAGESCBS              = 0x00000001,
-AHC_CHANNEL_B_PRIMARY     = 0x00000002,
-AHC_USEDEFAULTS           = 0x00000004,
-AHC_INDIRECT_PAGING       = 0x00000008,
-AHC_CHNLB                 = 0x00000020,
-AHC_CHNLC                 = 0x00000040,
-AHC_EXTEND_TRANS_A        = 0x00000100,
-AHC_EXTEND_TRANS_B        = 0x00000200,
-AHC_TERM_ENB_A            = 0x00000400,
-AHC_TERM_ENB_SE_LOW       = 0x00000400,
-AHC_TERM_ENB_B            = 0x00000800,
-AHC_TERM_ENB_SE_HIGH      = 0x00000800,
-AHC_HANDLING_REQINITS     = 0x00001000,
-AHC_TARGETMODE            = 0x00002000,
-AHC_NEWEEPROM_FMT         = 0x00004000,
-AHC_RESET_DELAY           = 0x00080000,
-AHC_A_SCANNED             = 0x00100000,
-AHC_B_SCANNED             = 0x00200000,
-AHC_MULTI_CHANNEL         = 0x00400000,
-AHC_BIOS_ENABLED          = 0x00800000,
-AHC_SEEPROM_FOUND         = 0x01000000,
-AHC_TERM_ENB_LVD          = 0x02000000,
-AHC_ABORT_PENDING         = 0x04000000,
-AHC_RESET_PENDING         = 0x08000000,
-#define AHC_IN_ISR_BIT              28
-AHC_IN_ISR                = 0x10000000,
-AHC_IN_ABORT              = 0x20000000,
-AHC_IN_RESET              = 0x40000000,
-AHC_EXTERNAL_SRAM         = 0x80000000
+AHC_FNONE = 0x00000000,
+AHC_PAGESCBS = 0x00000001,
+AHC_CHANNEL_B_PRIMARY = 0x00000002,
+AHC_USEDEFAULTS = 0x00000004,
+AHC_INDIRECT_PAGING = 0x00000008,
+AHC_CHNLB = 0x00000020,
+AHC_CHNLC = 0x00000040,
+AHC_EXTEND_TRANS_A = 0x00000100,
+AHC_EXTEND_TRANS_B = 0x00000200,
+AHC_TERM_ENB_A = 0x00000400,
+AHC_TERM_ENB_SE_LOW = 0x00000400,
+AHC_TERM_ENB_B = 0x00000800,
+AHC_TERM_ENB_SE_HIGH = 0x00000800,
+AHC_HANDLING_REQINITS = 0x00001000,
+AHC_TARGETMODE = 0x00002000,
+AHC_NEWEEPROM_FMT = 0x00004000,
+AHC_RESET_DELAY = 0x00080000,
+AHC_A_SCANNED = 0x00100000,
+AHC_B_SCANNED = 0x00200000,
+AHC_MULTI_CHANNEL = 0x00400000,
+AHC_BIOS_ENABLED = 0x00800000,
+AHC_SEEPROM_FOUND = 0x01000000,
+AHC_TERM_ENB_LVD = 0x02000000,
+AHC_ABORT_PENDING = 0x04000000,
+AHC_RESET_PENDING = 0x08000000,
+#define AHC_IN_ISR_BIT 28
+AHC_IN_ISR = 0x10000000,
+AHC_IN_ABORT = 0x20000000,
+AHC_IN_RESET = 0x40000000,
+AHC_EXTERNAL_SRAM = 0x80000000
 } ahc_flag_type;
 typedef enum {
-AHC_NONE             = 0x0000,
-AHC_CHIPID_MASK      = 0x00ff,
-AHC_AIC7770          = 0x0001,
-AHC_AIC7850          = 0x0002,
-AHC_AIC7860          = 0x0003,
-AHC_AIC7870          = 0x0004,
-AHC_AIC7880          = 0x0005,
-AHC_AIC7890          = 0x0006,
-AHC_AIC7895          = 0x0007,
-AHC_AIC7896          = 0x0008,
-AHC_AIC7892          = 0x0009,
-AHC_AIC7899          = 0x000a,
-AHC_VL               = 0x0100,
-AHC_EISA             = 0x0200,
-AHC_PCI              = 0x0400,
+AHC_NONE = 0x0000,
+AHC_CHIPID_MASK = 0x00ff,
+AHC_AIC7770 = 0x0001,
+AHC_AIC7850 = 0x0002,
+AHC_AIC7860 = 0x0003,
+AHC_AIC7870 = 0x0004,
+AHC_AIC7880 = 0x0005,
+AHC_AIC7890 = 0x0006,
+AHC_AIC7895 = 0x0007,
+AHC_AIC7896 = 0x0008,
+AHC_AIC7892 = 0x0009,
+AHC_AIC7899 = 0x000a,
+AHC_VL = 0x0100,
+AHC_EISA = 0x0200,
+AHC_PCI = 0x0400,
 } ahc_chip;
 typedef enum {
-AHC_FENONE           = 0x0000,
-AHC_ULTRA            = 0x0001,
-AHC_ULTRA2           = 0x0002,
-AHC_WIDE             = 0x0004,
-AHC_TWIN             = 0x0008,
-AHC_MORE_SRAM        = 0x0010,
-AHC_CMD_CHAN         = 0x0020,
-AHC_QUEUE_REGS       = 0x0040,
-AHC_SG_PRELOAD       = 0x0080,
-AHC_SPIOCAP          = 0x0100,
-AHC_ULTRA160         = 0x0200,
-AHC_AIC7770_FE       = AHC_FENONE,
-AHC_AIC7850_FE       = AHC_SPIOCAP,
-AHC_AIC7860_FE       = AHC_ULTRA|AHC_SPIOCAP,
-AHC_AIC7870_FE       = AHC_FENONE,
-AHC_AIC7880_FE       = AHC_ULTRA,
-AHC_AIC7890_FE       = AHC_MORE_SRAM|AHC_CMD_CHAN|AHC_ULTRA2|
+AHC_FENONE = 0x0000,
+AHC_ULTRA = 0x0001,
+AHC_ULTRA2 = 0x0002,
+AHC_WIDE = 0x0004,
+AHC_TWIN = 0x0008,
+AHC_MORE_SRAM = 0x0010,
+AHC_CMD_CHAN = 0x0020,
+AHC_QUEUE_REGS = 0x0040,
+AHC_SG_PRELOAD = 0x0080,
+AHC_SPIOCAP = 0x0100,
+AHC_ULTRA160 = 0x0200,
+AHC_AIC7770_FE = AHC_FENONE,
+AHC_AIC7850_FE = AHC_SPIOCAP,
+AHC_AIC7860_FE = AHC_ULTRA|AHC_SPIOCAP,
+AHC_AIC7870_FE = AHC_FENONE,
+AHC_AIC7880_FE = AHC_ULTRA,
+AHC_AIC7890_FE = AHC_MORE_SRAM|AHC_CMD_CHAN|AHC_ULTRA2|
 AHC_QUEUE_REGS|AHC_SG_PRELOAD,
-AHC_AIC7895_FE       = AHC_MORE_SRAM|AHC_CMD_CHAN|AHC_ULTRA,
-AHC_AIC7896_FE       = AHC_AIC7890_FE,
-AHC_AIC7892_FE       = AHC_AIC7890_FE|AHC_ULTRA160,
-AHC_AIC7899_FE       = AHC_AIC7890_FE|AHC_ULTRA160,
+AHC_AIC7895_FE = AHC_MORE_SRAM|AHC_CMD_CHAN|AHC_ULTRA,
+AHC_AIC7896_FE = AHC_AIC7890_FE,
+AHC_AIC7892_FE = AHC_AIC7890_FE|AHC_ULTRA160,
+AHC_AIC7899_FE = AHC_AIC7890_FE|AHC_ULTRA160,
 } ahc_feature;
 struct aic7xxx_scb {
-struct aic7xxx_hwscb  *hscb;
-Scsi_Cmnd             *cmd;
-struct aic7xxx_scb    *q_next;
+struct aic7xxx_hwscb *hscb;
+Scsi_Cmnd *cmd;
+struct aic7xxx_scb *q_next;
 volatile scb_flag_type flags;
 struct hw_scatterlist *sg_list;
-unsigned char          tag_action;
-unsigned char          sg_count;
-unsigned char          sense_cmd[6];
-unsigned int           sg_length;
-void                  *kmalloc_ptr;
+unsigned char tag_action;
+unsigned char sg_count;
+unsigned char sense_cmd[6];
+unsigned int sg_length;
+void *kmalloc_ptr;
 };
 typedef struct {
 struct aic7xxx_scb *head;
@@ -424,12 +424,12 @@ static struct {
 unsigned char errno;
 const char *errmesg;
 } hard_error[] = {
-{ ILLHADDR,  "Illegal Host Access" },
-{ ILLSADDR,  "Illegal Sequencer Address referenced" },
+{ ILLHADDR, "Illegal Host Access" },
+{ ILLSADDR, "Illegal Sequencer Address referenced" },
 { ILLOPCODE, "Illegal Opcode in sequencer program" },
-{ SQPARERR,  "Sequencer Ram Parity Error" },
-{ DPARERR,   "Data-Path Ram Parity Error" },
-{ MPARERR,   "Scratch Ram/SCB Array Ram Parity Error" },
+{ SQPARERR, "Sequencer Ram Parity Error" },
+{ DPARERR, "Data-Path Ram Parity Error" },
+{ MPARERR, "Scratch Ram/SCB Array Ram Parity Error" },
 { PCIERRSTAT,"PCI Error detected" },
 { CIOPARERR, "CIOBUS Parity Error" }
 };
@@ -437,22 +437,22 @@ static unsigned char
 generic_sense[] = { REQUEST_SENSE, 0, 0, 0, 255, 0 };
 typedef struct {
 scb_queue_type free_scbs;
-struct aic7xxx_scb   *scb_array[AIC7XXX_MAXSCB];
+struct aic7xxx_scb *scb_array[AIC7XXX_MAXSCB];
 struct aic7xxx_hwscb *hscbs;
-unsigned char  numscbs;
-unsigned char  maxhscbs;
-unsigned char  maxscbs;
-void          *hscb_kmalloc_ptr;
+unsigned char numscbs;
+unsigned char maxhscbs;
+unsigned char maxscbs;
+void *hscb_kmalloc_ptr;
 } scb_data_type;
 struct target_cmd {
 unsigned char mesg_bytes[4];
 unsigned char command[28];
 };
-#define AHC_TRANS_CUR    0x0001
+#define AHC_TRANS_CUR 0x0001
 #define AHC_TRANS_ACTIVE 0x0002
-#define AHC_TRANS_GOAL   0x0004
-#define AHC_TRANS_USER   0x0008
-#define AHC_TRANS_QUITE  0x0010
+#define AHC_TRANS_GOAL 0x0004
+#define AHC_TRANS_USER 0x0008
+#define AHC_TRANS_QUITE 0x0010
 typedef struct {
 unsigned char cur_width;
 unsigned char goal_width;
@@ -465,92 +465,92 @@ unsigned char user_period;
 unsigned char user_offset;
 } transinfo_type;
 struct aic7xxx_host {
-volatile ahc_flag_type   flags;
-ahc_feature              features;
-unsigned long            base;
-volatile unsigned char  *maddr;
-unsigned long            isr_count;
-unsigned long            spurious_int;
-scb_data_type           *scb_data;
-volatile unsigned short  needsdtr;
-volatile unsigned short  sdtr_pending;
-volatile unsigned short  needwdtr;
-volatile unsigned short  wdtr_pending;
+volatile ahc_flag_type flags;
+ahc_feature features;
+unsigned long base;
+volatile unsigned char *maddr;
+unsigned long isr_count;
+unsigned long spurious_int;
+scb_data_type *scb_data;
+volatile unsigned short needsdtr;
+volatile unsigned short sdtr_pending;
+volatile unsigned short needwdtr;
+volatile unsigned short wdtr_pending;
 struct aic7xxx_cmd_queue {
 Scsi_Cmnd *head;
 Scsi_Cmnd *tail;
 } completeq;
-volatile scb_queue_type  waiting_scbs;
-unsigned short           discenable;
-unsigned short           tagenable;
-unsigned short           orderedtag;
-unsigned char            unpause;
-unsigned char            pause;
-volatile unsigned char   qoutfifonext;
-volatile unsigned char   activescbs;
-volatile unsigned char   max_activescbs;
-volatile unsigned char   qinfifonext;
-#define  DEVICE_PRESENT                 0x01
-#define  BUS_DEVICE_RESET_PENDING       0x02
-#define  DEVICE_RESET_DELAY             0x04
-#define  DEVICE_PRINT_SDTR              0x08
-#define  DEVICE_PRINT_WDTR              0x10
-#define  DEVICE_WAS_BUSY                0x20
-#define  DEVICE_SCANNED                 0x80
-volatile unsigned char   dev_flags[MAX_TARGETS];
-volatile unsigned char   dev_active_cmds[MAX_TARGETS];
-volatile unsigned char   dev_temp_queue_depth[MAX_TARGETS];
-unsigned char            dev_commands_sent[MAX_TARGETS];
-unsigned int             dev_timer_active;
-struct timer_list        dev_timer;
-unsigned long            dev_expires[MAX_TARGETS];
+volatile scb_queue_type waiting_scbs;
+unsigned short discenable;
+unsigned short tagenable;
+unsigned short orderedtag;
+unsigned char unpause;
+unsigned char pause;
+volatile unsigned char qoutfifonext;
+volatile unsigned char activescbs;
+volatile unsigned char max_activescbs;
+volatile unsigned char qinfifonext;
+#define DEVICE_PRESENT 0x01
+#define BUS_DEVICE_RESET_PENDING 0x02
+#define DEVICE_RESET_DELAY 0x04
+#define DEVICE_PRINT_SDTR 0x08
+#define DEVICE_PRINT_WDTR 0x10
+#define DEVICE_WAS_BUSY 0x20
+#define DEVICE_SCANNED 0x80
+volatile unsigned char dev_flags[MAX_TARGETS];
+volatile unsigned char dev_active_cmds[MAX_TARGETS];
+volatile unsigned char dev_temp_queue_depth[MAX_TARGETS];
+unsigned char dev_commands_sent[MAX_TARGETS];
+unsigned int dev_timer_active;
+struct timer_list dev_timer;
+unsigned long dev_expires[MAX_TARGETS];
 #if LINUX_VERSION_CODE > KERNEL_VERSION(2,1,0)
-spinlock_t               spin_lock;
-volatile unsigned char   cpu_lock_count[NR_CPUS];
+spinlock_t spin_lock;
+volatile unsigned char cpu_lock_count[NR_CPUS];
 #endif
 #ifdef AIC7XXX_FAKE_NEGOTIATION_CMDS
-Scsi_Cmnd               *dev_wdtr_cmnd[MAX_TARGETS];
-Scsi_Cmnd               *dev_sdtr_cmnd[MAX_TARGETS];
+Scsi_Cmnd *dev_wdtr_cmnd[MAX_TARGETS];
+Scsi_Cmnd *dev_sdtr_cmnd[MAX_TARGETS];
 #endif
-unsigned char            dev_last_queue_full[MAX_TARGETS];
-unsigned char            dev_last_queue_full_count[MAX_TARGETS];
-unsigned char            dev_max_queue_depth[MAX_TARGETS];
-volatile scb_queue_type  delayed_scbs[MAX_TARGETS];
-unsigned char            msg_buf[9];
-unsigned char            msg_type;
-#define MSG_TYPE_NONE              0x00
-#define MSG_TYPE_INITIATOR_MSGOUT  0x01
-#define MSG_TYPE_INITIATOR_MSGIN   0x02
-unsigned char            msg_len;
-unsigned char            msg_index;
-transinfo_type           transinfo[MAX_TARGETS];
-volatile unsigned char   untagged_scbs[256];
-volatile unsigned char   qoutfifo[256];
-volatile unsigned char   qinfifo[256];
-unsigned int             irq;
-int                      instance;
-int                      scsi_id;
-int                      scsi_id_b;
-unsigned int             bios_address;
-int                      board_name_index;
-unsigned short           needsdtr_copy;
-unsigned short           needwdtr_copy;
-unsigned short           ultraenb;
-unsigned short           bios_control;
-unsigned short           adapter_control;
+unsigned char dev_last_queue_full[MAX_TARGETS];
+unsigned char dev_last_queue_full_count[MAX_TARGETS];
+unsigned char dev_max_queue_depth[MAX_TARGETS];
+volatile scb_queue_type delayed_scbs[MAX_TARGETS];
+unsigned char msg_buf[9];
+unsigned char msg_type;
+#define MSG_TYPE_NONE 0x00
+#define MSG_TYPE_INITIATOR_MSGOUT 0x01
+#define MSG_TYPE_INITIATOR_MSGIN 0x02
+unsigned char msg_len;
+unsigned char msg_index;
+transinfo_type transinfo[MAX_TARGETS];
+volatile unsigned char untagged_scbs[256];
+volatile unsigned char qoutfifo[256];
+volatile unsigned char qinfifo[256];
+unsigned int irq;
+int instance;
+int scsi_id;
+int scsi_id_b;
+unsigned int bios_address;
+int board_name_index;
+unsigned short needsdtr_copy;
+unsigned short needwdtr_copy;
+unsigned short ultraenb;
+unsigned short bios_control;
+unsigned short adapter_control;
 #if LINUX_VERSION_CODE > KERNEL_VERSION(2,1,92)
-struct pci_dev          *pdev;
+struct pci_dev *pdev;
 #endif
-unsigned char            pci_bus;
-unsigned char            pci_device_fn;
-struct seeprom_config    sc;
-unsigned short           sc_type;
-unsigned short           sc_size;
-struct aic7xxx_host     *next;
-struct Scsi_Host        *host;
-int                      host_no;
-unsigned long            mbase;
-ahc_chip                 chip;
+unsigned char pci_bus;
+unsigned char pci_device_fn;
+struct seeprom_config sc;
+unsigned short sc_type;
+unsigned short sc_size;
+struct aic7xxx_host *next;
+struct Scsi_Host *host;
+int host_no;
+unsigned long mbase;
+ahc_chip chip;
 struct aic7xxx_xferstats {
 long w_total;
 long r_total;
@@ -560,42 +560,42 @@ long r_bins[8];
 #endif
 } stats[MAX_TARGETS];
 #if 0
-struct target_cmd       *targetcmds;
-unsigned int             num_targetcmds;
+struct target_cmd *targetcmds;
+unsigned int num_targetcmds;
 #endif
 };
 #define AHC_SYNCRATE_ULTRA2 0
-#define AHC_SYNCRATE_ULTRA  2
-#define AHC_SYNCRATE_FAST   5
+#define AHC_SYNCRATE_ULTRA 2
+#define AHC_SYNCRATE_FAST 5
 static struct aic7xxx_syncrate {
-#define                ULTRA_SXFR 0x100
+#define ULTRA_SXFR 0x100
 int sxfr_ultra2;
 int sxfr;
 unsigned char period;
 const char *rate[2];
 } aic7xxx_syncrates[] = {
-{ 0x13,  0x000,  10,  {"40.0", "80.0"} },
-{ 0x14,  0x000,  11,  {"33.0", "66.6"} },
-{ 0x15,  0x100,  12,  {"20.0", "40.0"} },
-{ 0x16,  0x110,  15,  {"16.0", "32.0"} },
-{ 0x17,  0x120,  18,  {"13.4", "26.8"} },
-{ 0x18,  0x000,  25,  {"10.0", "20.0"} },
-{ 0x19,  0x010,  31,  {"8.0",  "16.0"} },
-{ 0x1a,  0x020,  37,  {"6.67", "13.3"} },
-{ 0x1b,  0x030,  43,  {"5.7",  "11.4"} },
-{ 0x10,  0x040,  50,  {"5.0",  "10.0"} },
-{ 0x00,  0x050,  56,  {"4.4",  "8.8" } },
-{ 0x00,  0x060,  62,  {"4.0",  "8.0" } },
-{ 0x00,  0x070,  68,  {"3.6",  "7.2" } },
-{ 0x00,  0x000,  0,   {NULL, NULL}   },
+{ 0x13, 0x000, 10, {"40.0", "80.0"} },
+{ 0x14, 0x000, 11, {"33.0", "66.6"} },
+{ 0x15, 0x100, 12, {"20.0", "40.0"} },
+{ 0x16, 0x110, 15, {"16.0", "32.0"} },
+{ 0x17, 0x120, 18, {"13.4", "26.8"} },
+{ 0x18, 0x000, 25, {"10.0", "20.0"} },
+{ 0x19, 0x010, 31, {"8.0", "16.0"} },
+{ 0x1a, 0x020, 37, {"6.67", "13.3"} },
+{ 0x1b, 0x030, 43, {"5.7", "11.4"} },
+{ 0x10, 0x040, 50, {"5.0", "10.0"} },
+{ 0x00, 0x050, 56, {"4.4", "8.8" } },
+{ 0x00, 0x060, 62, {"4.0", "8.0" } },
+{ 0x00, 0x070, 68, {"3.6", "7.2" } },
+{ 0x00, 0x000, 0, {NULL, NULL} },
 };
-#define CTL_OF_SCB(scb) (((scb->hscb)->target_channel_lun >> 3) & 0x1),  \
+#define CTL_OF_SCB(scb) (((scb->hscb)->target_channel_lun >> 3) & 0x1), \
 (((scb->hscb)->target_channel_lun >> 4) & 0xf), \
 ((scb->hscb)->target_channel_lun & 0x07)
-#define CTL_OF_CMD(cmd) ((cmd->channel) & 0x01),  \
+#define CTL_OF_CMD(cmd) ((cmd->channel) & 0x01), \
 ((cmd->target) & 0x0f), \
 ((cmd->lun) & 0x07)
-#define TARGET_INDEX(cmd)  ((cmd)->target | ((cmd)->channel << 3))
+#define TARGET_INDEX(cmd) ((cmd)->target | ((cmd)->channel << 3))
 #define WARN_LEAD KERN_WARNING "(scsi%d:%d:%d:%d) "
 #define INFO_LEAD KERN_INFO "(scsi%d:%d:%d:%d) "
 static unsigned int aic7xxx_no_reset = 0;
@@ -616,25 +616,25 @@ MODULE_PARM(aic7xxx, "s");
 #endif
 static char dummy_buffer[60] = "Please don't trounce on me insmod!!\n";
 #endif
-#define VERBOSE_NORMAL         0x0000
-#define VERBOSE_NEGOTIATION    0x0001
-#define VERBOSE_SEQINT         0x0002
-#define VERBOSE_SCSIINT        0x0004
-#define VERBOSE_PROBE          0x0008
-#define VERBOSE_PROBE2         0x0010
-#define VERBOSE_NEGOTIATION2   0x0020
-#define VERBOSE_MINOR_ERROR    0x0040
-#define VERBOSE_TRACING        0x0080
-#define VERBOSE_ABORT          0x0f00
-#define VERBOSE_ABORT_MID      0x0100
-#define VERBOSE_ABORT_FIND     0x0200
-#define VERBOSE_ABORT_PROCESS  0x0400
-#define VERBOSE_ABORT_RETURN   0x0800
-#define VERBOSE_RESET          0xf000
-#define VERBOSE_RESET_MID      0x1000
-#define VERBOSE_RESET_FIND     0x2000
-#define VERBOSE_RESET_PROCESS  0x4000
-#define VERBOSE_RESET_RETURN   0x8000
+#define VERBOSE_NORMAL 0x0000
+#define VERBOSE_NEGOTIATION 0x0001
+#define VERBOSE_SEQINT 0x0002
+#define VERBOSE_SCSIINT 0x0004
+#define VERBOSE_PROBE 0x0008
+#define VERBOSE_PROBE2 0x0010
+#define VERBOSE_NEGOTIATION2 0x0020
+#define VERBOSE_MINOR_ERROR 0x0040
+#define VERBOSE_TRACING 0x0080
+#define VERBOSE_ABORT 0x0f00
+#define VERBOSE_ABORT_MID 0x0100
+#define VERBOSE_ABORT_FIND 0x0200
+#define VERBOSE_ABORT_PROCESS 0x0400
+#define VERBOSE_ABORT_RETURN 0x0800
+#define VERBOSE_RESET 0xf000
+#define VERBOSE_RESET_MID 0x1000
+#define VERBOSE_RESET_FIND 0x2000
+#define VERBOSE_RESET_PROCESS 0x4000
+#define VERBOSE_RESET_RETURN 0x8000
 static int aic7xxx_verbose = VERBOSE_NORMAL | VERBOSE_NEGOTIATION |
 VERBOSE_PROBE;
 static void aic7xxx_panic_abort(struct aic7xxx_host *p, Scsi_Cmnd *cmd);
@@ -703,17 +703,17 @@ outb(val, p->base + port);
 void
 aic7xxx_setup(char *s, int *dummy)
 {
-int   i, n;
+int i, n;
 char *p;
 char *end;
 static struct {
 const char *name;
 unsigned int *flag;
 } options[] = {
-{ "extended",    &aic7xxx_extended },
-{ "no_reset",    &aic7xxx_no_reset },
+{ "extended", &aic7xxx_extended },
+{ "no_reset", &aic7xxx_no_reset },
 { "irq_trigger", &aic7xxx_irq_trigger },
-{ "verbose",     &aic7xxx_verbose },
+{ "verbose", &aic7xxx_verbose },
 { "reverse_scan",&aic7xxx_reverse_scan },
 { "override_term", &aic7xxx_override_term },
 { "stpwlev", &aic7xxx_stpwlev },
@@ -722,7 +722,7 @@ unsigned int *flag;
 { "pci_parity", &aic7xxx_pci_parity },
 { "dump_card", &aic7xxx_dump_card },
 { "dump_sequencer", &aic7xxx_dump_sequencer },
-{ "tag_info",    NULL }
+{ "tag_info", NULL }
 };
 end = strchr(s, '\0');
 for (p = strtok(s, ",."); p; p = strtok(NULL, ",."))
@@ -960,14 +960,14 @@ else
 {
 if (fmt3_ins != NULL)
 {
-instr.integer =  fmt3_ins->immediate |
+instr.integer = fmt3_ins->immediate |
 (fmt3_ins->source << 8) |
 (fmt3_ins->address << 16) |
 (fmt3_ins->opcode << 25);
 }
 else
 {
-instr.integer =  fmt1_ins->immediate |
+instr.integer = fmt1_ins->immediate |
 (fmt1_ins->source << 8) |
 (fmt1_ins->destination << 16) |
 (fmt1_ins->ret << 24) |
@@ -1006,7 +1006,7 @@ skip_addr = 0;
 aic_outb(p, PERRORDIS|LOADRAM|FAILDIS|FASTMODE, SEQCTL);
 aic_outb(p, 0, SEQADDR0);
 aic_outb(p, 0, SEQADDR1);
-for (i = 0; i < sizeof(seqprog) / 4;  i++)
+for (i = 0; i < sizeof(seqprog) / 4; i++)
 {
 if (aic7xxx_check_patch(p, &cur_patch, i, &skip_addr) == 0)
 {
@@ -1485,7 +1485,7 @@ return (curindex);
 static int
 aic7xxx_allocate_scb(struct aic7xxx_host *p)
 {
-struct aic7xxx_scb   *scbp = NULL;
+struct aic7xxx_scb *scbp = NULL;
 int scb_size = sizeof(struct aic7xxx_scb) +
 sizeof (struct hw_scatterlist) * AIC7XXX_MAX_SG;
 int i;
@@ -1835,7 +1835,7 @@ aic7xxx_free_scb(p, scb);
 aic7xxx_queue_cmd_complete(p, cmd);
 }
 static void
-aic7xxx_run_done_queue(struct aic7xxx_host *p,  int complete)
+aic7xxx_run_done_queue(struct aic7xxx_host *p, int complete)
 {
 struct aic7xxx_scb *scb;
 int i, found = 0;
@@ -1887,7 +1887,7 @@ aic7xxx_search_qinfifo(struct aic7xxx_host *p, int target, int channel,
 int lun, unsigned char tag, int flags, int requeue,
 volatile scb_queue_type *queue)
 {
-int      found;
+int found;
 unsigned char qinpos, qintail;
 struct aic7xxx_scb *scbp;
 found = 0;
@@ -2031,7 +2031,7 @@ else
 tcl = (i << 4) | (channel << 3) | j;
 if ( (aic7xxx_index_busy_target(p, tcl, FALSE) == tag) ||
 (tag == SCB_LIST_NULL) )
-aic7xxx_index_busy_target(p, tcl,  TRUE);
+aic7xxx_index_busy_target(p, tcl, TRUE);
 }
 j = 0;
 prev_scbp = NULL;
@@ -2081,7 +2081,7 @@ p->dev_timer_active |= (0x01 << MAX_TARGETS);
 if (aic7xxx_verbose & (VERBOSE_ABORT_PROCESS | VERBOSE_RESET_PROCESS))
 printk(INFO_LEAD "Cleaning QINFIFO.\n", p->host_no, channel, target, lun );
 aic7xxx_search_qinfifo(p, target, channel, lun, tag,
-SCB_RESET | SCB_QUEUED_FOR_DONE,  FALSE, NULL);
+SCB_RESET | SCB_QUEUED_FOR_DONE, FALSE, NULL);
 if (aic7xxx_verbose & (VERBOSE_ABORT_PROCESS | VERBOSE_RESET_PROCESS))
 printk(INFO_LEAD "Cleaning waiting_scbs.\n", p->host_no, channel,
 target, lun );
@@ -2481,12 +2481,12 @@ p->max_activescbs = p->activescbs;
 DRIVER_UNLOCK
 }
 #ifdef CONFIG_PCI
-#define  DPE 0x80
-#define  SSE 0x40
-#define  RMA 0x20
-#define  RTA 0x10
-#define  STA 0x08
-#define  DPR 0x01
+#define DPE 0x80
+#define SSE 0x40
+#define RMA 0x20
+#define RTA 0x10
+#define STA 0x08
+#define DPR 0x01
 static void
 aic7xxx_pci_intr(struct aic7xxx_host *p)
 {
@@ -2522,7 +2522,7 @@ pcibios_write_config_byte(p->pci_bus, p->pci_device_fn,
 PCI_STATUS + 1, status1);
 #endif
 if (status1 & (DPR|RMA|RTA))
-aic_outb(p,  CLRPARERR, CLRINT);
+aic_outb(p, CLRPARERR, CLRINT);
 if ( (aic7xxx_panic_on_abort) && (p->spurious_int > 500) )
 aic7xxx_panic_abort(p, NULL);
 }
@@ -2553,7 +2553,7 @@ time_after_eq(jiffies, p->dev_expires[i]) )
 {
 p->dev_timer_active &= ~(0x01 << i);
 p->dev_flags[i] &= ~(DEVICE_RESET_DELAY|DEVICE_WAS_BUSY);
-p->dev_temp_queue_depth[i] =  p->dev_max_queue_depth[i];
+p->dev_temp_queue_depth[i] = p->dev_max_queue_depth[i];
 j = 0;
 while ( ((scb = scbq_remove_head(&p->delayed_scbs[i])) != NULL) &&
 (j++ < p->scb_data->numscbs) )
@@ -2632,7 +2632,7 @@ for (i=1; i < hscb->residual_SG_segment_count; i++)
 actual -= scb->sg_list[scb->sg_count - i].length;
 }
 actual -= (hscb->residual_data_count[2] << 16) |
-(hscb->residual_data_count[1] <<  8) |
+(hscb->residual_data_count[1] << 8) |
 hscb->residual_data_count[0];
 if (actual < cmd->underflow)
 {
@@ -2668,7 +2668,7 @@ aic7xxx_reset_device(p, target, channel, ALL_LUNS, SCB_LIST_NULL);
 if (aic7xxx_verbose & VERBOSE_RESET_PROCESS)
 printk(INFO_LEAD "Bus Device Reset delivered.\n", p->host_no, channel,
 target, -1);
-aic7xxx_run_done_queue(p,  FALSE);
+aic7xxx_run_done_queue(p, FALSE);
 }
 static void
 aic7xxx_handle_seqint(struct aic7xxx_host *p, unsigned char intstat)
@@ -2715,7 +2715,7 @@ if (aic7xxx_verbose & (VERBOSE_SEQINT | VERBOSE_RESET_MID))
 printk(INFO_LEAD "Target did not send an IDENTIFY message; "
 "LASTPHASE 0x%x, SAVED_TCL 0x%x\n", p->host_no, channel, target,
 lun, aic_inb(p, LASTPHASE), aic_inb(p, SAVED_TCL));
-aic7xxx_reset_channel(p, channel,  TRUE);
+aic7xxx_reset_channel(p, channel, TRUE);
 aic7xxx_run_done_queue(p, FALSE);
 }
 break;
@@ -2780,7 +2780,7 @@ p->dev_max_queue_depth[tindex] =
 p->dev_temp_queue_depth[tindex] = 1;
 scb->tag_action = 0;
 scb->hscb->control &= ~(TAG_ENB | SCB_TAG_TYPE);
-aic_outb(p,  scb->hscb->control, SCB_CONTROL);
+aic_outb(p, scb->hscb->control, SCB_CONTROL);
 old_verbose = aic7xxx_verbose;
 aic7xxx_verbose &= ~(VERBOSE_RESET|VERBOSE_ABORT);
 for (i=0; i!=p->scb_data->numscbs; i++)
@@ -2932,7 +2932,7 @@ hscb->data_pointer = scb->sg_list[0].address;
 }
 }
 #else
-if (  (scb->cmd->cmnd[0] != TEST_UNIT_READY) &&
+if ( (scb->cmd->cmnd[0] != TEST_UNIT_READY) &&
 !(scb->flags & SCB_MSGOUT_BITS) &&
 (scb->cmd->lun == 0) &&
 (p->dev_flags[TARGET_INDEX(scb->cmd)] & DEVICE_SCANNED) )
@@ -3308,7 +3308,7 @@ p->host_no, channel, target, lun, intstat,
 aic_inb(p, SCSISIGI));
 break;
 }
-unpause_sequencer(p,  TRUE);
+unpause_sequencer(p, TRUE);
 }
 static int
 aic7xxx_parse_msg(struct aic7xxx_host *p, struct aic7xxx_scb *scb)
@@ -3589,7 +3589,7 @@ else
 {
 aic_outb(p, CLRREQINIT, CLRSINT1);
 aic_outb(p, CLRSCSIINT, CLRINT);
-aic_outb(p,  p->msg_buf[p->msg_index++], SCSIDATL);
+aic_outb(p, p->msg_buf[p->msg_index++], SCSIDATL);
 }
 break;
 }
@@ -3665,7 +3665,7 @@ channel = 0;
 if (aic7xxx_verbose & VERBOSE_RESET)
 printk(WARN_LEAD "Someone else reset the channel!!\n",
 p->host_no, channel, -1, -1);
-aic7xxx_reset_channel(p, channel,  FALSE);
+aic7xxx_reset_channel(p, channel, FALSE);
 aic7xxx_run_done_queue(p, FALSE);
 scb = NULL;
 }
@@ -3808,12 +3808,12 @@ aic_inb(p, SIMODE1), aic_inb(p, SSTAT0),
 (aic_inb(p, SEQADDR1) << 8) | aic_inb(p, SEQADDR0));
 aic_outb(p, status, CLRSINT1);
 aic_outb(p, CLRSCSIINT, CLRINT);
-unpause_sequencer(p,  TRUE);
+unpause_sequencer(p, TRUE);
 scb = NULL;
 }
 else if (status & SCSIPERR)
 {
-char  *phase;
+char *phase;
 Scsi_Cmnd *cmd;
 unsigned char mesg_out = MSG_NOOP;
 unsigned char lastphase = aic_inb(p, LASTPHASE);
@@ -3854,7 +3854,7 @@ scb = NULL;
 }
 aic_outb(p, CLRSCSIPERR, CLRSINT1);
 aic_outb(p, CLRSCSIINT, CLRINT);
-unpause_sequencer(p,  TRUE);
+unpause_sequencer(p, TRUE);
 }
 else if ( (status & REQINIT) &&
 (p->flags & AHC_HANDLING_REQINITS) )
@@ -3874,7 +3874,7 @@ printk(INFO_LEAD "Unknown SCSIINT status, SSTAT1(0x%x).\n",
 p->host_no, -1, -1, -1, status);
 aic_outb(p, status, CLRSINT1);
 aic_outb(p, CLRSCSIINT, CLRINT);
-unpause_sequencer(p,  TRUE);
+unpause_sequencer(p, TRUE);
 scb = NULL;
 }
 if (scb != NULL)
@@ -4368,10 +4368,10 @@ unsigned char bits[3];
 };
 struct seeprom_cmd seeprom_read = {3, {1, 1, 0}};
 #define CLOCK_PULSE(p) \
-while ((aic_inb(p, STATUS_2840) & EEPROM_TF) == 0)        \
-{                                                \
-;                                  \
-}                                                \
+while ((aic_inb(p, STATUS_2840) & EEPROM_TF) == 0) \
+{ \
+; \
+} \
 (void) aic_inb(p, SEECTL_2840);
 for (k = 0; k < (sizeof(*sc) / 2); k++)
 {
@@ -4475,9 +4475,9 @@ unsigned char bits[3];
 };
 struct seeprom_cmd seeprom_read = {3, {1, 1, 0}};
 #define CLOCK_PULSE(p) \
-while ((aic_inb(p, SEECTL) & SEERDY) == 0)        \
-{                                                \
-;                                  \
+while ((aic_inb(p, SEECTL) & SEERDY) == 0) \
+{ \
+; \
 }
 if (acquire_seeprom(p) == 0)
 {
@@ -4639,11 +4639,11 @@ int *enableLVD_high, int *eprom_present)
 {
 unsigned char brdctl;
 brdctl = read_brdctl(p);
-*eprom_present  = (brdctl & BRDDAT7);
-*enableSE_high  = (brdctl & BRDDAT6);
-*enableSE_low   = (brdctl & BRDDAT5);
+*eprom_present = (brdctl & BRDDAT7);
+*enableSE_high = (brdctl & BRDDAT6);
+*enableSE_low = (brdctl & BRDDAT5);
 *enableLVD_high = (brdctl & BRDDAT4);
-*enableLVD_low  = (brdctl & BRDDAT3);
+*enableLVD_low = (brdctl & BRDDAT3);
 }
 static void
 configure_termination(struct aic7xxx_host *p)
@@ -4756,7 +4756,7 @@ p->host_no);
 }
 if ( (((internal50_present ? 1 : 0) +
 (internal68_present ? 1 : 0) +
-(external_present   ? 1 : 0)) <= 1) ||
+(external_present ? 1 : 0)) <= 1) ||
 (enableSE_low != 0) )
 {
 if (p->features & AHC_ULTRA2)
@@ -5205,7 +5205,7 @@ printk(KERN_WARNING "(scsi%d) Couldn't register IRQ %d, ignoring "
 p->irq = 0;
 return (0);
 }
-unpause_sequencer(p,  TRUE);
+unpause_sequencer(p, TRUE);
 return (found);
 }
 int
@@ -5839,157 +5839,157 @@ if (pcibios_present())
 {
 struct
 {
-unsigned short      vendor_id;
-unsigned short      device_id;
-ahc_chip            chip;
-ahc_flag_type       flags;
-ahc_feature         features;
-int                 board_name_index;
-unsigned short      seeprom_size;
-unsigned short      seeprom_type;
+unsigned short vendor_id;
+unsigned short device_id;
+ahc_chip chip;
+ahc_flag_type flags;
+ahc_feature features;
+int board_name_index;
+unsigned short seeprom_size;
+unsigned short seeprom_type;
 } const aic_pdevs[] = {
 {PCI_VENDOR_ID_ADAPTEC, PCI_DEVICE_ID_ADAPTEC_7810, AHC_NONE,
-AHC_FNONE, AHC_FENONE,                                1,
+AHC_FNONE, AHC_FENONE, 1,
 32, C46 },
 {PCI_VENDOR_ID_ADAPTEC, PCI_DEVICE_ID_ADAPTEC_7850, AHC_AIC7850,
-AHC_PAGESCBS, AHC_AIC7850_FE,                         5,
+AHC_PAGESCBS, AHC_AIC7850_FE, 5,
 32, C46 },
 {PCI_VENDOR_ID_ADAPTEC, PCI_DEVICE_ID_ADAPTEC_7855, AHC_AIC7850,
-AHC_PAGESCBS, AHC_AIC7850_FE,                         6,
+AHC_PAGESCBS, AHC_AIC7850_FE, 6,
 32, C46 },
 {PCI_VENDOR_ID_ADAPTEC, PCI_DEVICE_ID_ADAPTEC_7821, AHC_AIC7860,
 AHC_PAGESCBS | AHC_NEWEEPROM_FMT | AHC_BIOS_ENABLED,
-AHC_AIC7860_FE,                                       7,
+AHC_AIC7860_FE, 7,
 32, C46 },
 {PCI_VENDOR_ID_ADAPTEC, PCI_DEVICE_ID_ADAPTEC_3860, AHC_AIC7860,
 AHC_PAGESCBS | AHC_NEWEEPROM_FMT | AHC_BIOS_ENABLED,
-AHC_AIC7860_FE,                                       7,
+AHC_AIC7860_FE, 7,
 32, C46 },
 {PCI_VENDOR_ID_ADAPTEC, PCI_DEVICE_ID_ADAPTEC_7860, AHC_AIC7860,
 AHC_PAGESCBS | AHC_NEWEEPROM_FMT | AHC_BIOS_ENABLED,
-AHC_AIC7860_FE,                                       7,
+AHC_AIC7860_FE, 7,
 32, C46 },
 {PCI_VENDOR_ID_ADAPTEC, PCI_DEVICE_ID_ADAPTEC_7861, AHC_AIC7860,
 AHC_PAGESCBS | AHC_NEWEEPROM_FMT | AHC_BIOS_ENABLED,
-AHC_AIC7860_FE,                                       8,
+AHC_AIC7860_FE, 8,
 32, C46 },
 {PCI_VENDOR_ID_ADAPTEC, PCI_DEVICE_ID_ADAPTEC_7870, AHC_AIC7870,
-AHC_PAGESCBS | AHC_BIOS_ENABLED, AHC_AIC7870_FE,      9,
+AHC_PAGESCBS | AHC_BIOS_ENABLED, AHC_AIC7870_FE, 9,
 32, C46 },
 {PCI_VENDOR_ID_ADAPTEC, PCI_DEVICE_ID_ADAPTEC_7871, AHC_AIC7870,
-AHC_PAGESCBS | AHC_BIOS_ENABLED, AHC_AIC7870_FE,     10,
+AHC_PAGESCBS | AHC_BIOS_ENABLED, AHC_AIC7870_FE, 10,
 32, C46 },
 {PCI_VENDOR_ID_ADAPTEC, PCI_DEVICE_ID_ADAPTEC_7872, AHC_AIC7870,
 AHC_PAGESCBS | AHC_BIOS_ENABLED | AHC_MULTI_CHANNEL,
-AHC_AIC7870_FE,                                      11,
+AHC_AIC7870_FE, 11,
 32, C56_66 },
 {PCI_VENDOR_ID_ADAPTEC, PCI_DEVICE_ID_ADAPTEC_7873, AHC_AIC7870,
 AHC_PAGESCBS | AHC_BIOS_ENABLED | AHC_MULTI_CHANNEL,
-AHC_AIC7870_FE,                                      12,
+AHC_AIC7870_FE, 12,
 32, C56_66 },
 {PCI_VENDOR_ID_ADAPTEC, PCI_DEVICE_ID_ADAPTEC_7874, AHC_AIC7870,
-AHC_PAGESCBS | AHC_BIOS_ENABLED, AHC_AIC7870_FE,     13,
+AHC_PAGESCBS | AHC_BIOS_ENABLED, AHC_AIC7870_FE, 13,
 32, C46 },
 {PCI_VENDOR_ID_ADAPTEC, PCI_DEVICE_ID_ADAPTEC_7880, AHC_AIC7880,
-AHC_PAGESCBS | AHC_BIOS_ENABLED, AHC_AIC7880_FE,     14,
+AHC_PAGESCBS | AHC_BIOS_ENABLED, AHC_AIC7880_FE, 14,
 32, C46 },
 {PCI_VENDOR_ID_ADAPTEC, PCI_DEVICE_ID_ADAPTEC_7881, AHC_AIC7880,
-AHC_PAGESCBS | AHC_BIOS_ENABLED, AHC_AIC7880_FE,     15,
+AHC_PAGESCBS | AHC_BIOS_ENABLED, AHC_AIC7880_FE, 15,
 32, C46 },
 {PCI_VENDOR_ID_ADAPTEC, PCI_DEVICE_ID_ADAPTEC_7882, AHC_AIC7880,
 AHC_PAGESCBS | AHC_BIOS_ENABLED | AHC_MULTI_CHANNEL,
-AHC_AIC7880_FE,                                      16,
+AHC_AIC7880_FE, 16,
 32, C56_66 },
 {PCI_VENDOR_ID_ADAPTEC, PCI_DEVICE_ID_ADAPTEC_7883, AHC_AIC7880,
 AHC_PAGESCBS | AHC_BIOS_ENABLED | AHC_MULTI_CHANNEL,
-AHC_AIC7880_FE,                                      17,
+AHC_AIC7880_FE, 17,
 32, C56_66 },
 {PCI_VENDOR_ID_ADAPTEC, PCI_DEVICE_ID_ADAPTEC_7884, AHC_AIC7880,
-AHC_PAGESCBS | AHC_BIOS_ENABLED, AHC_AIC7880_FE,     18,
+AHC_PAGESCBS | AHC_BIOS_ENABLED, AHC_AIC7880_FE, 18,
 32, C46 },
 {PCI_VENDOR_ID_ADAPTEC, PCI_DEVICE_ID_ADAPTEC_7885, AHC_AIC7880,
-AHC_PAGESCBS | AHC_BIOS_ENABLED, AHC_AIC7880_FE,     18,
+AHC_PAGESCBS | AHC_BIOS_ENABLED, AHC_AIC7880_FE, 18,
 32, C46 },
 {PCI_VENDOR_ID_ADAPTEC, PCI_DEVICE_ID_ADAPTEC_7886, AHC_AIC7880,
-AHC_PAGESCBS | AHC_BIOS_ENABLED, AHC_AIC7880_FE,     18,
+AHC_PAGESCBS | AHC_BIOS_ENABLED, AHC_AIC7880_FE, 18,
 32, C46 },
 {PCI_VENDOR_ID_ADAPTEC, PCI_DEVICE_ID_ADAPTEC_7887, AHC_AIC7880,
-AHC_PAGESCBS | AHC_BIOS_ENABLED, AHC_AIC7880_FE,     18,
+AHC_PAGESCBS | AHC_BIOS_ENABLED, AHC_AIC7880_FE, 18,
 32, C46 },
 {PCI_VENDOR_ID_ADAPTEC, PCI_DEVICE_ID_ADAPTEC_7888, AHC_AIC7880,
-AHC_PAGESCBS | AHC_BIOS_ENABLED, AHC_AIC7880_FE,     18,
+AHC_PAGESCBS | AHC_BIOS_ENABLED, AHC_AIC7880_FE, 18,
 32, C46 },
 {PCI_VENDOR_ID_ADAPTEC, PCI_DEVICE_ID_ADAPTEC_7895, AHC_AIC7895,
 AHC_PAGESCBS | AHC_NEWEEPROM_FMT | AHC_BIOS_ENABLED | AHC_MULTI_CHANNEL,
-AHC_AIC7895_FE,                                      19,
+AHC_AIC7895_FE, 19,
 32, C56_66 },
 {PCI_VENDOR_ID_ADAPTEC2, PCI_DEVICE_ID_ADAPTEC2_7890, AHC_AIC7890,
 AHC_PAGESCBS | AHC_NEWEEPROM_FMT | AHC_BIOS_ENABLED,
-AHC_AIC7890_FE,                                      20,
+AHC_AIC7890_FE, 20,
 32, C46 },
 {PCI_VENDOR_ID_ADAPTEC2, PCI_DEVICE_ID_ADAPTEC2_7890B, AHC_AIC7890,
 AHC_PAGESCBS | AHC_NEWEEPROM_FMT | AHC_BIOS_ENABLED,
-AHC_AIC7890_FE,                                      20,
+AHC_AIC7890_FE, 20,
 32, C46 },
 {PCI_VENDOR_ID_ADAPTEC2, PCI_DEVICE_ID_ADAPTEC2_2930U2, AHC_AIC7890,
 AHC_PAGESCBS | AHC_NEWEEPROM_FMT | AHC_BIOS_ENABLED,
-AHC_AIC7890_FE,                                      21,
+AHC_AIC7890_FE, 21,
 32, C46 },
 {PCI_VENDOR_ID_ADAPTEC2, PCI_DEVICE_ID_ADAPTEC2_2940U2, AHC_AIC7890,
 AHC_PAGESCBS | AHC_NEWEEPROM_FMT | AHC_BIOS_ENABLED,
-AHC_AIC7890_FE,                                      22,
+AHC_AIC7890_FE, 22,
 32, C46 },
 {PCI_VENDOR_ID_ADAPTEC2, PCI_DEVICE_ID_ADAPTEC2_7896, AHC_AIC7896,
 AHC_PAGESCBS | AHC_NEWEEPROM_FMT | AHC_BIOS_ENABLED | AHC_MULTI_CHANNEL,
-AHC_AIC7896_FE,                                      23,
+AHC_AIC7896_FE, 23,
 32, C56_66 },
 {PCI_VENDOR_ID_ADAPTEC2, PCI_DEVICE_ID_ADAPTEC2_3940U2, AHC_AIC7896,
 AHC_PAGESCBS | AHC_NEWEEPROM_FMT | AHC_BIOS_ENABLED | AHC_MULTI_CHANNEL,
-AHC_AIC7896_FE,                                      24,
+AHC_AIC7896_FE, 24,
 32, C56_66 },
 {PCI_VENDOR_ID_ADAPTEC2, PCI_DEVICE_ID_ADAPTEC2_3950U2D, AHC_AIC7896,
 AHC_PAGESCBS | AHC_NEWEEPROM_FMT | AHC_BIOS_ENABLED | AHC_MULTI_CHANNEL,
-AHC_AIC7896_FE,                                      25,
+AHC_AIC7896_FE, 25,
 32, C56_66 },
 {PCI_VENDOR_ID_ADAPTEC, PCI_DEVICE_ID_ADAPTEC_1480A, AHC_AIC7860,
 AHC_PAGESCBS | AHC_NEWEEPROM_FMT | AHC_BIOS_ENABLED,
-AHC_AIC7860_FE,                                      26,
+AHC_AIC7860_FE, 26,
 32, C46 },
 {PCI_VENDOR_ID_ADAPTEC2, PCI_DEVICE_ID_ADAPTEC2_7892A, AHC_AIC7892,
 AHC_PAGESCBS | AHC_NEWEEPROM_FMT | AHC_BIOS_ENABLED,
-AHC_AIC7892_FE,                                      27,
+AHC_AIC7892_FE, 27,
 32, C46 },
 {PCI_VENDOR_ID_ADAPTEC2, PCI_DEVICE_ID_ADAPTEC2_7892B, AHC_AIC7892,
 AHC_PAGESCBS | AHC_NEWEEPROM_FMT | AHC_BIOS_ENABLED,
-AHC_AIC7892_FE,                                      27,
+AHC_AIC7892_FE, 27,
 32, C46 },
 {PCI_VENDOR_ID_ADAPTEC2, PCI_DEVICE_ID_ADAPTEC2_7892D, AHC_AIC7892,
 AHC_PAGESCBS | AHC_NEWEEPROM_FMT | AHC_BIOS_ENABLED,
-AHC_AIC7892_FE,                                      27,
+AHC_AIC7892_FE, 27,
 32, C46 },
 {PCI_VENDOR_ID_ADAPTEC2, PCI_DEVICE_ID_ADAPTEC2_7892P, AHC_AIC7892,
 AHC_PAGESCBS | AHC_NEWEEPROM_FMT | AHC_BIOS_ENABLED,
-AHC_AIC7892_FE,                                      27,
+AHC_AIC7892_FE, 27,
 32, C46 },
 {PCI_VENDOR_ID_ADAPTEC2, PCI_DEVICE_ID_ADAPTEC2_7899A, AHC_AIC7899,
 AHC_PAGESCBS | AHC_NEWEEPROM_FMT | AHC_BIOS_ENABLED,
-AHC_AIC7899_FE,                                      28,
+AHC_AIC7899_FE, 28,
 32, C56_66 },
 {PCI_VENDOR_ID_ADAPTEC2, PCI_DEVICE_ID_ADAPTEC2_7899B, AHC_AIC7899,
 AHC_PAGESCBS | AHC_NEWEEPROM_FMT | AHC_BIOS_ENABLED,
-AHC_AIC7899_FE,                                      28,
+AHC_AIC7899_FE, 28,
 32, C56_66 },
 {PCI_VENDOR_ID_ADAPTEC2, PCI_DEVICE_ID_ADAPTEC2_7899D, AHC_AIC7899,
 AHC_PAGESCBS | AHC_NEWEEPROM_FMT | AHC_BIOS_ENABLED,
-AHC_AIC7899_FE,                                      28,
+AHC_AIC7899_FE, 28,
 32, C56_66 },
 {PCI_VENDOR_ID_ADAPTEC2, PCI_DEVICE_ID_ADAPTEC2_7899P, AHC_AIC7899,
 AHC_PAGESCBS | AHC_NEWEEPROM_FMT | AHC_BIOS_ENABLED,
-AHC_AIC7899_FE,                                      28,
+AHC_AIC7899_FE, 28,
 32, C56_66 },
 };
 unsigned short command;
-unsigned int  devconfig, i, oldverbose;
+unsigned int devconfig, i, oldverbose;
 #if LINUX_VERSION_CODE > KERNEL_VERSION(2,1,92)
 struct pci_dev *pdev = NULL;
 #else
@@ -6882,7 +6882,7 @@ return (0);
 static int
 aic7xxx_bus_device_reset(struct aic7xxx_host *p, Scsi_Cmnd *cmd)
 {
-struct aic7xxx_scb   *scb;
+struct aic7xxx_scb *scb;
 struct aic7xxx_hwscb *hscb;
 int result = -1;
 int channel;
@@ -7078,7 +7078,7 @@ printk("%d ", p->qinfifo[qinpos++]);
 printk("\n");
 printk("Current SCB: (SCBPTR/TAG/CONTROL) %d/%d/0x%x\n", aic_inb(p, SCBPTR),
 aic_inb(p, SCB_TAG), aic_inb(p, SCB_CONTROL) );
-if (aic_inb(p, SCB_TAG) == need_tag)  found=TRUE;
+if (aic_inb(p, SCB_TAG) == need_tag) found=TRUE;
 printk("WAITING_SCBS: (SCBPTR/TAG/CONTROL) %d->",
 hscbp = aic_inb(p, WAITING_SCBH));
 while (hscbp != SCB_LIST_NULL)
@@ -7086,7 +7086,7 @@ while (hscbp != SCB_LIST_NULL)
 aic_outb(p, hscbp, SCBPTR);
 printk("%d/%d/0x%x ", hscbp, aic_inb(p, SCB_TAG), aic_inb(p, SCB_CONTROL));
 hscbp = aic_inb(p, SCB_NEXT);
-if (aic_inb(p, SCB_TAG) == need_tag)  found=TRUE;
+if (aic_inb(p, SCB_TAG) == need_tag) found=TRUE;
 }
 printk("\n");
 printk("DISCONNECTED_SCBS: (SCBPTR/TAG/CONTROL) %d->",
@@ -7096,7 +7096,7 @@ while (hscbp != SCB_LIST_NULL)
 aic_outb(p, hscbp, SCBPTR);
 printk("%d/%d/0x%x ", hscbp, aic_inb(p, SCB_TAG), aic_inb(p, SCB_CONTROL));
 hscbp = aic_inb(p, SCB_NEXT);
-if (aic_inb(p, SCB_TAG) == need_tag)  found=TRUE;
+if (aic_inb(p, SCB_TAG) == need_tag) found=TRUE;
 }
 printk("\n");
 printk("FREE_SCBS: (SCBPTR/TAG/CONTROL) %d->",
@@ -7136,9 +7136,9 @@ for(;;) barrier();
 int
 aic7xxx_abort(Scsi_Cmnd *cmd)
 {
-struct aic7xxx_scb  *scb = NULL;
+struct aic7xxx_scb *scb = NULL;
 struct aic7xxx_host *p;
-int    result, found=0;
+int result, found=0;
 unsigned char tmp_char, saved_hscbptr, next_hscbptr, prev_hscbptr;
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,1,95)
 unsigned long cpu_flags = 0;
@@ -7306,7 +7306,7 @@ saved_hscbptr = aic_inb(p, SCBPTR);
 next_hscbptr = aic_inb(p, WAITING_SCBH);
 while ( next_hscbptr != SCB_LIST_NULL )
 {
-aic_outb(p,  next_hscbptr, SCBPTR );
+aic_outb(p, next_hscbptr, SCBPTR );
 if ( scb->hscb->tag == aic_inb(p, SCB_TAG) )
 {
 found = 1;
@@ -7335,7 +7335,7 @@ break;
 prev_hscbptr = next_hscbptr;
 next_hscbptr = aic_inb(p, SCB_NEXT);
 }
-aic_outb(p,  saved_hscbptr, SCBPTR );
+aic_outb(p, saved_hscbptr, SCBPTR );
 }
 if ( found == 0 )
 {
@@ -7348,7 +7348,7 @@ if ( result != SCB_LIST_NULL )
 saved_hscbptr = aic_inb(p, SCBPTR);
 aic_outb(p, result, SCBPTR);
 tmp_char = aic_inb(p, SCB_CONTROL);
-aic_outb(p,  tmp_char | MK_MESSAGE, SCB_CONTROL);
+aic_outb(p, tmp_char | MK_MESSAGE, SCB_CONTROL);
 aic_outb(p, saved_hscbptr, SCBPTR);
 }
 if (aic7xxx_verbose & VERBOSE_ABORT_PROCESS)
@@ -7378,17 +7378,17 @@ aic7xxx_reset(Scsi_Cmnd *cmd, unsigned int flags)
 {
 struct aic7xxx_scb *scb = NULL;
 struct aic7xxx_host *p;
-int    tindex;
-int    result = -1;
+int tindex;
+int result = -1;
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,1,95)
 unsigned long cpu_flags = 0;
 #endif
 #define DEVICE_RESET 0x01
-#define BUS_RESET    0x02
-#define HOST_RESET   0x04
-#define FAIL         0x08
-#define RESET_DELAY  0x10
-int        action;
+#define BUS_RESET 0x02
+#define HOST_RESET 0x04
+#define FAIL 0x08
+#define RESET_DELAY 0x10
+int action;
 Scsi_Cmnd *cmd_prev, *cmd_next;
 if ( cmd == NULL )
 {
@@ -7588,7 +7588,7 @@ result = SCSI_RESET_SUCCESS | SCSI_RESET_BUS_RESET;
 else
 {
 result = SCSI_RESET_SUCCESS | SCSI_RESET_HOST_RESET;
-aic_outb(p,  aic_inb(p, SIMODE1) & ~(ENREQINIT|ENBUSFREE),
+aic_outb(p, aic_inb(p, SIMODE1) & ~(ENREQINIT|ENBUSFREE),
 SIMODE1);
 aic7xxx_clear_intstat(p);
 p->flags &= ~AHC_HANDLING_REQINITS;
@@ -7751,7 +7751,7 @@ printk("PCI Dump:\n");
 k=0;
 for(i=0; i<cards_ns[chip].num_ranges; i++)
 {
-for(j  = cards_ns[chip].range_val[ i * 2 ];
+for(j = cards_ns[chip].range_val[ i * 2 ];
 j <= cards_ns[chip].range_val[ i * 2 + 1 ] ;
 j++)
 {
@@ -7776,7 +7776,7 @@ printk("Card Dump:\n");
 k = 0;
 for(i=0; i<cards_ds[chip].num_ranges; i++)
 {
-for(j  = cards_ds[chip].range_val[ i * 2 ];
+for(j = cards_ds[chip].range_val[ i * 2 ];
 j <= cards_ds[chip].range_val[ i * 2 + 1 ] ;
 j++)
 {

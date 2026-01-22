@@ -124,9 +124,9 @@ CU_FUNC_ATTRIBUTE_MAX_DYNAMIC_SHARED_SIZE_BYTES,
 funcInfo.mSharedMemBytes));
 }
 XQAKernelRuntimeHashKey hash_key{
-kernelMeta.mKVDataType,   kernelMeta.mHeadDim,
-kernelMeta.mBeamWidth,    kernelMeta.mNumQHeadsOverKV,
-kernelMeta.mMTileSize,    kernelMeta.mTokensPerPage,
+kernelMeta.mKVDataType, kernelMeta.mHeadDim,
+kernelMeta.mBeamWidth, kernelMeta.mNumQHeadsOverKV,
+kernelMeta.mMTileSize, kernelMeta.mTokensPerPage,
 kernelMeta.mPagedKVCache, kernelMeta.mMultiQueryTokens};
 mFunctions.insert(std::make_pair(hash_key, funcInfo));
 }
@@ -283,7 +283,7 @@ mKernels;
 inline XQAKernelList const* getXQAKernels(Data_type type, unsigned int sm) {
 return XQAKernelLoader::Get().getXQAKernels(type, sm);
 }
-#define XQA_KERNEL_RUN(DATA_TYPE)                                  \
+#define XQA_KERNEL_RUN(DATA_TYPE) \
 xqa_kernel->template run<DATA_TYPE>(xqa_params, kv_cache_buffer, \
 multi_processor_count, stream);
 void DecoderXQAImplPrecompiled::runDispatchBuffer(

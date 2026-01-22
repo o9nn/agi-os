@@ -7,70 +7,70 @@ import { wrap } from '../../../generate-object/src/_wrap'
 import { toElementStream } from './to-element-stream'
 import { toPartialObjectStream } from './to-partial-object-stream'
 export interface StreamObjectOnFinishResult<T extends Schema> {
-  object?: Infer<T>
+object?: Infer<T>
 }
 export interface StreamObjectOptions<T extends Schema> extends StreamTextOptions {
-  schema: T
-  schemaDescription?: string
-  schemaName?: string
-  strict?: boolean
+schema: T
+schemaDescription?: string
+schemaName?: string
+strict?: boolean
 }
 export interface StreamObjectResult<T extends Schema> extends StreamTextResult {
-  elementStream?: ReadableStream<Infer<T>>
-  partialObjectStream?: ReadableStream<PartialDeep<Infer<T>>>
+elementStream?: ReadableStream<Infer<T>>
+partialObjectStream?: ReadableStream<PartialDeep<Infer<T>>>
 }
 export async function streamObject<T extends Schema>(
-  options: StreamObjectOptions<T>
-    & { output: 'array' }
+options: StreamObjectOptions<T>
+& { output: 'array' }
 ): Promise<StreamObjectResult<T> & { elementStream: ReadableStream<Infer<T>>, partialObjectStream: undefined }>
 export async function streamObject<T extends Schema>(
-  options: StreamObjectOptions<T>
-    & { output: 'object' }
+options: StreamObjectOptions<T>
+& { output: 'object' }
 ): Promise<StreamObjectResult<T> & { elementStream: undefined, partialObjectStream: ReadableStream<PartialDeep<Infer<T>>> }>
 export async function streamObject<T extends Schema>(
-  options: StreamObjectOptions<T>
+options: StreamObjectOptions<T>
 ): Promise<StreamObjectResult<T> & { elementStream: undefined, partialObjectStream: ReadableStream<PartialDeep<Infer<T>>> }>
 export async function streamObject<T extends Schema>(
-  options: StreamObjectOptions<T>
-    & { output?: 'array' | 'object' },
+options: StreamObjectOptions<T>
+& { output?: 'array' | 'object' },
 ): Promise<StreamObjectResult<T>> {
-  let schema = await toJsonSchema(options.schema)
-  if (options.strict !== false)
-    schema = strictJsonSchema(schema)
-  if (options.output === 'array')
-    schema = wrap(schema)
-  let { textStream, ...rest } = streamText({
-    ...options,
-    response_format: {
-      json_schema: {
-        description: options.schemaDescription,
-        name: options.schemaName ?? 'json_schema',
-        schema,
-        strict: options.strict ?? true,
-      },
-      type: 'json_schema',
-    },
-    schema: undefined,
-    schemaDescription: undefined,
-    schemaName: undefined,
-    strict: undefined,
-  })
-  let elementStream: ReadableStream<Infer<T>> | undefined
-  let partialObjectStream: ReadableStream<PartialDeep<Infer<T>>> | undefined
-  if (options.output === 'array') {
-    let rawElementStream;
-    [rawElementStream, textStream] = textStream.tee()
-    elementStream = toElementStream<Infer<T>>(rawElementStream)
-  }
-  else {
-    let rawPartialObjectStream;
-    [textStream, rawPartialObjectStream] = textStream.tee()
-    partialObjectStream = toPartialObjectStream<Infer<T>>(rawPartialObjectStream)
-  }
-  return {
-    elementStream,
-    partialObjectStream,
-    textStream,
-    ...rest,
-  }
+let schema = await toJsonSchema(options.schema)
+if (options.strict !== false)
+schema = strictJsonSchema(schema)
+if (options.output === 'array')
+schema = wrap(schema)
+let { textStream, ...rest } = streamText({
+...options,
+response_format: {
+json_schema: {
+description: options.schemaDescription,
+name: options.schemaName ?? 'json_schema',
+schema,
+strict: options.strict ?? true,
+},
+type: 'json_schema',
+},
+schema: undefined,
+schemaDescription: undefined,
+schemaName: undefined,
+strict: undefined,
+})
+let elementStream: ReadableStream<Infer<T>> | undefined
+let partialObjectStream: ReadableStream<PartialDeep<Infer<T>>> | undefined
+if (options.output === 'array') {
+let rawElementStream;
+[rawElementStream, textStream] = textStream.tee()
+elementStream = toElementStream<Infer<T>>(rawElementStream)
+}
+else {
+let rawPartialObjectStream;
+[textStream, rawPartialObjectStream] = textStream.tee()
+partialObjectStream = toPartialObjectStream<Infer<T>>(rawPartialObjectStream)
+}
+return {
+elementStream,
+partialObjectStream,
+textStream,
+...rest,
+}
 }

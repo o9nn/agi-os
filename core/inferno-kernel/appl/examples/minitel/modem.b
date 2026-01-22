@@ -1,39 +1,39 @@
 #
-# Copyright © 1998 Vita Nuova Limited.  All rights reserved.
+# Copyright © 1998 Vita Nuova Limited. All rights reserved.
 #
 #modem states for direct connection
 MSstart, MSdialing, MSconnected, MSdisconnecting,
 # special features
-Ecp								# error correction
+Ecp # error correction
 : con (1 << iota);
-Ecplen: con 17;	# error correction block length: data[15], crc, validation (=0)
+Ecplen: con 17; # error correction block length: data[15], crc, validation (=0)
 Modem: adt {
-m:		ref Module;			# common attributes
-in:		chan of ref Event;
-connect:	int;					# None, Direct, Network
-state:	int;					# modem dialing state
-saved:	string;				# response, so far (direct dial)
-initstr:	string;				# softmodem init string (direct dial)
-dialstr:	string;				# softmodem dial string (direct dial)
-lastdialstr:	string;
-spec:	int;					# special features
-fd:		ref Sys->FD;			# modem data file, if != nil
-cfd:		ref Sys->FD;			# modem ctl file, if != nil (direct dial only)
-devpath:	string;				# path to the modem;
-avail:	array of byte;			# already read
-rd:		chan of array of byte;	# reader -> rd
-pid:		int;					# reader pid if != 0
-seq:		int;					# ECP block sequence number
-waitsyn:	int;					# awaiting restart SYN SYN ... sequence
-errforce:	int;
-addparity:	int;					# must add parity to outgoing data
-init:		fn(m: self ref Modem, connect: int, initstr, dialstr: string);
-reset:	fn(m: self ref Modem);
-run:		fn(m: self ref Modem);
-quit:		fn(m: self ref Modem);
-runstate:	fn(m: self ref Modem, data: array of byte);
-write:	fn(m: self ref Modem, data: array of byte):int;	# to network
-reader:	fn(m: self ref Modem, pidc: chan of int);
+m: ref Module; # common attributes
+in: chan of ref Event;
+connect: int; # None, Direct, Network
+state: int; # modem dialing state
+saved: string; # response, so far (direct dial)
+initstr: string; # softmodem init string (direct dial)
+dialstr: string; # softmodem dial string (direct dial)
+lastdialstr: string;
+spec: int; # special features
+fd: ref Sys->FD; # modem data file, if != nil
+cfd: ref Sys->FD; # modem ctl file, if != nil (direct dial only)
+devpath: string; # path to the modem;
+avail: array of byte; # already read
+rd: chan of array of byte; # reader -> rd
+pid: int; # reader pid if != 0
+seq: int; # ECP block sequence number
+waitsyn: int; # awaiting restart SYN SYN ... sequence
+errforce: int;
+addparity: int; # must add parity to outgoing data
+init: fn(m: self ref Modem, connect: int, initstr, dialstr: string);
+reset: fn(m: self ref Modem);
+run: fn(m: self ref Modem);
+quit: fn(m: self ref Modem);
+runstate: fn(m: self ref Modem, data: array of byte);
+write: fn(m: self ref Modem, data: array of byte):int; # to network
+reader: fn(m: self ref Modem, pidc: chan of int);
 };
 partab: array of byte;
 dump(a: array of byte, n: int): string
@@ -85,7 +85,7 @@ Edata =>
 if(debug['m'] > 0)
 fprint(stderr, "Modem <- %s\n", e.str());
 m.write(e.data);
-if(T.state == Local || T.spec & Echo) {	# loopback
+if(T.state == Local || T.spec & Echo) { # loopback
 if(e.from == Mkeyb) {
 send(ref Event.Eproto(Pscreen, Mkeyb, Ccursor, "", 0,0,0));
 send(ref Event.Edata(Pscreen, Mkeyb, e.data));
@@ -131,7 +131,7 @@ break;
 m.fd = cx.dfd;
 m.cfd = cx.cfd;
 if(len m.dialstr >= 3 && m.dialstr[0:3] == "tcp")
-m.addparity = 0;	# Internet gateway apparently doesn't require parity
+m.addparity = 0; # Internet gateway apparently doesn't require parity
 if(m.fd != nil) {
 S.msg(nil);
 m.state = MSconnected;
@@ -154,13 +154,13 @@ if(m.connect == Direct)
 hangup(m);
 else
 nethangup(m);
-Cplay =>			# for testing
+Cplay => # for testing
 case e.s {
 "play" =>
 replay(m);
 }
 Crequestecp =>
-if(m.spec & Ecp){	# for testing: if already active, force an error
+if(m.spec & Ecp){ # for testing: if already active, force an error
 m.errforce = 1;
 break;
 }
@@ -168,8 +168,8 @@ m.write(array[] of {byte SEP, byte 16r4A});
 sys->print("sending request for ecp\n");
 Cstartecp =>
 m.spec |= Ecp;
-m.seq = 0;	# not in spec
-m.waitsyn = 0;	# not in spec
+m.seq = 0; # not in spec
+m.waitsyn = 0; # not in spec
 Cstopecp =>
 m.spec &= ~Ecp;
 * => break;
@@ -208,7 +208,7 @@ Modem.runstate(m: self ref Modem, data: array of byte)
 if(debug['m']>0)
 sys->print("runstate %d %s\n", m.state, dump(data, len data));
 case m.state {
-MSstart =>	;
+MSstart => ;
 MSdialing =>
 for(i:=0; i<len data; i++) {
 ch := int data[i];
@@ -218,7 +218,7 @@ continue;
 }
 (code, str) := seenreply(m.saved);
 case code {
-Noise or Ok =>	;
+Noise or Ok => ;
 Success =>
 S.msg(nil);
 m.state = MSconnected;
@@ -235,7 +235,7 @@ m.saved = "";
 }
 MSconnected =>
 send(ref Event.Edata(m.m.path, Mmodem, data));
-MSdisconnecting =>	;
+MSdisconnecting => ;
 }
 }
 Modem.write(m: self ref Modem, data: array of byte): int
@@ -258,13 +258,13 @@ return sys->write(m.fd, data, len data);
 #
 # minitel error correction protocol
 #
-# SYN, SYN, block number	start of retransmission
+# SYN, SYN, block number start of retransmission
 # NUL ignored
 # DLE escapes {DLE, SYN, NACK, NUL}
-# NACK, block	restart request
+# NACK, block restart request
 #
 crctab: array of int;
-Crcpoly: con 16r9;	# crc7 = x^7+x^3+1
+Crcpoly: con 16r9; # crc7 = x^7+x^3+1
 # precalculate the CRC7 remainder for all bytes
 mktabs()
 {
@@ -273,12 +273,12 @@ for(c := 0; c < 256; c++){
 v := c;
 crc := 0;
 for(i := 0; i < 8; i++){
-crc <<= 1;		# align remainder's MSB with value's
+crc <<= 1; # align remainder's MSB with value's
 if((v^crc) & 16r80)
 crc ^= Crcpoly;
 v <<= 1;
 }
-crctab[c] = (crc<<1) & 16rFE;	# pre-align the result to save <<1 later
+crctab[c] = (crc<<1) & 16rFE; # pre-align the result to save <<1 later
 }
 }
 # return the index of the first non-NUL character (the start of a block)
@@ -299,9 +299,9 @@ oldcrc := int a[Ecplen-2];
 crc := 0;
 op := 0;
 dle := 0;
-for(i:=0; i<Ecplen-2; i++){	# first byte is high-order byte of polynomial (MSB first)
+for(i:=0; i<Ecplen-2; i++){ # first byte is high-order byte of polynomial (MSB first)
 c := int a[i];
-nc := c & 16r7F;	# strip parity
+nc := c & 16r7F; # strip parity
 if((c^int partab[nc]) & 16r80)
 badpar++;
 crc = crctab[crc ^ c];
@@ -312,7 +312,7 @@ dle = 1;
 continue;
 }
 if(nc == NUL)
-continue;	# strip non-escaped NULs
+continue; # strip non-escaped NULs
 }
 dle = 0;
 a[op++] = byte nc;
@@ -348,7 +348,7 @@ inbuf = 0;
 if((m.spec & Ecp) == 0){
 b := array[n] of byte;
 for(i := 0; i<n; i++)
-b[i] = byte (int a[i] & 16r7F);	# strip parity
+b[i] = byte (int a[i] & 16r7F); # strip parity
 m.rd <-= b;
 }else{
 #sys->print("IN: %s\n", dump(a,n));
@@ -376,10 +376,10 @@ b[1] = byte (m.seq | 16r40);
 sys->print("NACK #%x\n", m.seq);
 m.write(b);
 m.waitsyn = 1;
-i = n;		# discard rest of block
+i = n; # discard rest of block
 break;
 }
-m.seq = (m.seq+1) & 16rF;	# mod 16 counter
+m.seq = (m.seq+1) & 16rF; # mod 16 counter
 m.rd <-= b;
 }
 if(i < n){
@@ -391,7 +391,7 @@ inbuf = n-i;
 if(n <= 0)
 break;
 }
-#	m.fd = nil;
+# m.fd = nil;
 m.rd <-= nil;
 }
 playfd: ref Sys->FD;
@@ -399,7 +399,7 @@ in_code, in_char: con iota;
 replay(m: ref Modem)
 {
 buf := array[8192] of byte;
-DMAX:	con 10;
+DMAX: con 10;
 d := 0;
 da := array[DMAX] of byte;
 playfd = nil;
@@ -421,12 +421,12 @@ for(i:=0; i<n; i++) {
 ch := int buf[i];
 if(nl)
 case ch {
-'>' =>	discard = 0;
-'<' =>	discard = 1;
+'>' => discard = 0;
+'<' => discard = 1;
 if(start)
 sys->sleep(1000);
-'{' =>		start = 1;
-'}' =>		break mainloop;
+'{' => start = 1;
+'}' => break mainloop;
 }
 if(ch == '\n')
 nl = 1;
@@ -468,7 +468,7 @@ sys->write(fd, cmd, len cmd);
 # modem return codes
 Ok, Success, Failure, Noise, Found: con iota;
 #
-#  modem return messages
+# modem return messages
 #
 Msg: adt {
 text: string;
@@ -476,13 +476,13 @@ trans: string;
 code: int;
 };
 msgs: array of Msg = array [] of {
-("OK",			"Ok", Ok),
-("NO CARRIER",		"No carrier", Failure),
-("ERROR",			"Bad modem command", Failure),
-("NO DIALTONE",	"No dial tone", Failure),
-("BUSY",			"Busy tone", Failure),
-("NO ANSWER",		"No answer", Failure),
-("CONNECT",		"", Success),
+("OK", "Ok", Ok),
+("NO CARRIER", "No carrier", Failure),
+("ERROR", "Bad modem command", Failure),
+("NO DIALTONE", "No dial tone", Failure),
+("BUSY", "Busy tone", Failure),
+("NO ANSWER", "No answer", Failure),
+("CONNECT", "", Success),
 };
 msend(m: ref Modem, x: string): int
 {
@@ -490,14 +490,14 @@ a := array of byte x;
 return sys->write(m.fd, a, len a);
 }
 #
-#  apply a string of commands to modem
+# apply a string of commands to modem
 #
 apply(m: ref Modem, s: string): int
 {
 buf := "";
 for(i := 0; i < len s; i++){
 c := s[i];
-buf[len buf] = c;	# assume no Unicode
+buf[len buf] = c; # assume no Unicode
 if(c == '\r' || i == (len s -1)){
 if(c != '\r')
 buf[len buf] = '\r';
@@ -514,11 +514,11 @@ m.fd = sys->open(dev, Sys->ORDWR);
 m.cfd = sys->open(dev+"ctl", Sys->ORDWR);
 if(m.fd == nil || m.cfd == nil)
 return -1;
-#	hangup(m);
-#	m.fd = sys->open(dev, Sys->ORDWR);
-#	m.cfd = sys->open(dev+"ctl", Sys->ORDWR);
-#	if(m.fd == nil || m.cfd == nil)
-#		return -1;
+# hangup(m);
+# m.fd = sys->open(dev, Sys->ORDWR);
+# m.cfd = sys->open(dev+"ctl", Sys->ORDWR);
+# if(m.fd == nil || m.cfd == nil)
+# return -1;
 return 0;
 }
 hangup(m: ref Modem)
@@ -528,7 +528,7 @@ msend(m, "+++");
 sys->sleep(1020);
 apply(m, "ATH0");
 m.fd = nil;
-#	sys->write(m.cfd, array of byte "f", 1);
+# sys->write(m.cfd, array of byte "f", 1);
 sys->write(m.cfd, array of byte "h", 1);
 m.cfd = nil;
 # HACK: shannon softmodem "off-hook" bug fix
@@ -541,7 +541,7 @@ sys->write(m.cfd, array of byte "hangup", 6);
 m.cfd = nil;
 }
 #
-#  check `s' for a known reply or `substr'
+# check `s' for a known reply or `substr'
 #
 seenreply(s: string): (int, string)
 {

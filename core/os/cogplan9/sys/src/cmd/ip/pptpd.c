@@ -2,161 +2,161 @@
 #include <libc.h>
 #include <bio.h>
 #include <ip.h>
-#define	LOG	"pptpd"
-typedef struct Call	Call;
+#define LOG "pptpd"
+typedef struct Call Call;
 typedef struct Event Event;
-#define	SDB	if(debug) fprint(2,
-#define EDB	);
+#define SDB if(debug) fprint(2,
+#define EDB );
 enum {
-Magic	= 0x1a2b3c4d,
-Nhash	= 17,
-Nchan	= 10,
-Window	= 8,
-Timeout	= 60,
+Magic = 0x1a2b3c4d,
+Nhash = 17,
+Nchan = 10,
+Window = 8,
+Timeout = 60,
 Pktsize = 2000,
-Tick	= 500,
+Tick = 500,
 Sendtimeout = 4,
 };
 enum {
-Syncframe	= 0x1,
-Asyncframe	= 0x2,
-Analog		= 0x1,
-Digital		= 0x2,
-Version		= 0x100,
+Syncframe = 0x1,
+Asyncframe = 0x2,
+Analog = 0x1,
+Digital = 0x2,
+Version = 0x100,
 };
 enum {
-Tstart		= 1,
-Rstart		= 2,
-Tstop		= 3,
-Rstop		= 4,
-Techo		= 5,
-Recho		= 6,
-Tcallout	= 7,
-Rcallout	= 8,
-Tcallreq	= 9,
-Rcallreq	= 10,
-Acallcon	= 11,
-Tcallclear	= 12,
-Acalldis	= 13,
-Awaninfo	= 14,
-Alinkinfo	= 15,
+Tstart = 1,
+Rstart = 2,
+Tstop = 3,
+Rstop = 4,
+Techo = 5,
+Recho = 6,
+Tcallout = 7,
+Rcallout = 8,
+Tcallreq = 9,
+Rcallreq = 10,
+Acallcon = 11,
+Tcallclear = 12,
+Acalldis = 13,
+Awaninfo = 14,
+Alinkinfo = 15,
 };
 struct Event {
 QLock;
 QLock waitlk;
-int	wait;
+int wait;
 int ready;
 };
 struct Call {
-int	ref;
-QLock	lk;
-int	id;
-int	serial;
-int	pppfd;
-int	closed;
-int	pac;
-int	recvwindow;
-int	sendwindow;
-int	delay;
-int	sendaccm;
-int	recvaccm;
-uint	seq;
-uint	ack;
-uint	rseq;
-uint	rack;
-Event	eack;
-ulong	tick;
-uchar	remoteip[IPaddrlen];
-int	dhcpfd[2];
+int ref;
+QLock lk;
+int id;
+int serial;
+int pppfd;
+int closed;
+int pac;
+int recvwindow;
+int sendwindow;
+int delay;
+int sendaccm;
+int recvaccm;
+uint seq;
+uint ack;
+uint rseq;
+uint rack;
+Event eack;
+ulong tick;
+uchar remoteip[IPaddrlen];
+int dhcpfd[2];
 struct {
-int	crc;
-int	frame;
-int	hardware;
-int	overrun;
-int	timeout;
-int	align;
+int crc;
+int frame;
+int hardware;
+int overrun;
+int timeout;
+int align;
 } err;
 struct {
-int	send;
-int	sendack;
-int	recv;
-int	recvack;
-int	dropped;
-int	missing;
-int	sendwait;
-int	sendtimeout;
+int send;
+int sendack;
+int recv;
+int recvack;
+int dropped;
+int missing;
+int sendwait;
+int sendtimeout;
 } stat;
-Call	*next;
+Call *next;
 };
 struct {
-QLock	lk;
-int	start;
-int	grefd;
-int	grecfd;
-uchar	local[IPaddrlen];
-uchar	remote[IPaddrlen];
-char	*tcpdir;
-uchar	ipaddr[IPaddrlen];
-int	recvwindow;
-char	*pppdir;
-char	*pppexec;
-double	rcvtime;
-int	echoid;
-Call	*hash[Nhash];
+QLock lk;
+int start;
+int grefd;
+int grecfd;
+uchar local[IPaddrlen];
+uchar remote[IPaddrlen];
+char *tcpdir;
+uchar ipaddr[IPaddrlen];
+int recvwindow;
+char *pppdir;
+char *pppexec;
+double rcvtime;
+int echoid;
+Call *hash[Nhash];
 } srv;
 enum {
-GRE_chksum	= (1<<15),
-GRE_routing	= (1<<14),
-GRE_key		= (1<<13),
-GRE_seq		= (1<<12),
-GRE_srcrt	= (1<<11),
-GRE_recur	= (7<<8),
-GRE_ack		= (1<<7),
-GRE_ver		= 0x7,
+GRE_chksum = (1<<15),
+GRE_routing = (1<<14),
+GRE_key = (1<<13),
+GRE_seq = (1<<12),
+GRE_srcrt = (1<<11),
+GRE_recur = (7<<8),
+GRE_ack = (1<<7),
+GRE_ver = 0x7,
 };
 enum {
-GRE_ppp		= 0x880b,
+GRE_ppp = 0x880b,
 };
-int	debug;
-double	drop;
-void	myfatal(char *fmt, ...);
-#define	PSHORT(p, v)		((p)[0]=((v)>>8), (p)[1]=(v))
-#define	PLONG(p, v)		(PSHORT(p, (v)>>16), PSHORT(p+2, (v)))
-#define	PSTRING(d,s,n)		strncpy((char*)(d), s, n)
-#define	GSHORT(p)		(((p)[0]<<8) | ((p)[1]<<0))
-#define	GLONG(p)		((GSHORT((p))<<16) | ((GSHORT((p)+2))<<0))
-#define	GSTRING(d,s,n)		strncpy(d, (char*)(s), n), d[(n)-1] = 0
-void	serve(void);
-int	sstart(uchar*, int);
-int	sstop(uchar*, int);
-int	secho(uchar*, int);
-int	scallout(uchar*, int);
-int	scallreq(uchar*, int);
-int	scallcon(uchar*, int);
-int	scallclear(uchar*, int);
-int	scalldis(uchar*, int);
-int	swaninfo(uchar*, int);
-int	slinkinfo(uchar*, int);
-Call	*callalloc(int id);
-void	callclose(Call*);
-void	callfree(Call*);
-Call	*calllookup(int id);
-void	gretimeout(void*);
-void	pppread(void*);
-void	srvinit(void);
-void	greinit(void);
-void	greread(void*);
-void	greack(Call *c);
-void	timeoutthread(void*);
-int	argatoi(char *p);
-void	usage(void);
-int	ipaddralloc(Call *c);
-void	*emallocz(int size);
-void	esignal(Event *e);
-void	ewait(Event *e);
-int	proc(char **argv, int fd0, int fd1, int fd2);
-double	realtime(void);
-ulong	thread(void(*f)(void*), void *a);
+int debug;
+double drop;
+void myfatal(char *fmt, ...);
+#define PSHORT(p, v) ((p)[0]=((v)>>8), (p)[1]=(v))
+#define PLONG(p, v) (PSHORT(p, (v)>>16), PSHORT(p+2, (v)))
+#define PSTRING(d,s,n) strncpy((char*)(d), s, n)
+#define GSHORT(p) (((p)[0]<<8) | ((p)[1]<<0))
+#define GLONG(p) ((GSHORT((p))<<16) | ((GSHORT((p)+2))<<0))
+#define GSTRING(d,s,n) strncpy(d, (char*)(s), n), d[(n)-1] = 0
+void serve(void);
+int sstart(uchar*, int);
+int sstop(uchar*, int);
+int secho(uchar*, int);
+int scallout(uchar*, int);
+int scallreq(uchar*, int);
+int scallcon(uchar*, int);
+int scallclear(uchar*, int);
+int scalldis(uchar*, int);
+int swaninfo(uchar*, int);
+int slinkinfo(uchar*, int);
+Call *callalloc(int id);
+void callclose(Call*);
+void callfree(Call*);
+Call *calllookup(int id);
+void gretimeout(void*);
+void pppread(void*);
+void srvinit(void);
+void greinit(void);
+void greread(void*);
+void greack(Call *c);
+void timeoutthread(void*);
+int argatoi(char *p);
+void usage(void);
+int ipaddralloc(Call *c);
+void *emallocz(int size);
+void esignal(Event *e);
+void ewait(Event *e);
+int proc(char **argv, int fd0, int fd1, int fd2);
+double realtime(void);
+ulong thread(void(*f)(void*), void *a);
 void
 main(int argc, char *argv[])
 {
@@ -179,7 +179,7 @@ usage();
 srv.tcpdir = argv[0];
 srvinit();
 syslog(0, LOG, ": src=%I: pptp started: %d", srv.remote, getpid());
-SDB  "\n\n\n%I: pptp started\n", srv.remote EDB
+SDB "\n\n\n%I: pptp started\n", srv.remote EDB
 greinit();
 thread(timeoutthread, 0);
 serve();
@@ -828,7 +828,7 @@ PLONG(buf+20, c->rseq);
 c->stat.send++;
 c->rack = c->rseq;
 SDB "%I: %.3f: gre %d: send s=%ux a=%ux len=%d\n", srv.remote, realtime(),
-c->id,  c->seq, c->rseq, n EDB
+c->id, c->seq, c->rseq, n EDB
 if(drop == 0. || frand() > drop)
 if(write(srv.grefd, buf, n+24)<n+24)
 myfatal("pppread: write failed: %r");

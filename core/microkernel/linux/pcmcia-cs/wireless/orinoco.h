@@ -23,13 +23,13 @@ typedef void irqreturn_t;
 #error "orinoco driver requires Wireless extensions v10 or later."
 #endif
 #define WIRELESS_SPY
-#define ORINOCO_MAX_KEY_SIZE	14
-#define ORINOCO_MAX_KEYS	4
+#define ORINOCO_MAX_KEY_SIZE 14
+#define ORINOCO_MAX_KEYS 4
 struct orinoco_key {
 u16 len;
 char data[ORINOCO_MAX_KEY_SIZE];
 } __attribute__ ((packed));
-#define ORINOCO_INTEN	 	( HERMES_EV_RX | HERMES_EV_ALLOC | HERMES_EV_TX | \
+#define ORINOCO_INTEN ( HERMES_EV_RX | HERMES_EV_ALLOC | HERMES_EV_TX | \
 HERMES_EV_TXEXC | HERMES_EV_WTERR | HERMES_EV_INFO | \
 HERMES_EV_INFDROP )
 struct orinoco_private {
@@ -72,9 +72,9 @@ u16 ap_density, rts_thresh;
 u16 pm_on, pm_mcast, pm_period, pm_timeout;
 u16 preamble;
 #ifdef WIRELESS_SPY
-int			spy_number;
-u_char			spy_address[IW_MAX_SPY][ETH_ALEN];
-struct iw_quality	spy_stat[IW_MAX_SPY];
+int spy_number;
+u_char spy_address[IW_MAX_SPY][ETH_ALEN];
+struct iw_quality spy_stat[IW_MAX_SPY];
 #endif
 int port_type, createibss;
 int promiscuous, mc_count;
@@ -86,7 +86,7 @@ extern int orinoco_debug;
 #define DEBUG(n, args...) do { } while (0)
 #endif
 #define TRACE_ENTER(devname) DEBUG(2, "%s: -> " __FUNCTION__ "()\n", devname);
-#define TRACE_EXIT(devname)  DEBUG(2, "%s: <- " __FUNCTION__ "()\n", devname);
+#define TRACE_EXIT(devname) DEBUG(2, "%s: <- " __FUNCTION__ "()\n", devname);
 extern struct net_device *alloc_orinocodev(int sizeof_card,
 int (*hard_reset)(struct orinoco_private *));
 extern int __orinoco_up(struct net_device *dev);

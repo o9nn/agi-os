@@ -1,12 +1,12 @@
 #ifndef _I386_CONSTANTS_H_
 #define _I386_CONSTANTS_H_
-#define BYTE_MASK               0xff
-#define WORD_MASK               0xffff
-#define LIMIT_20BIT_MASK        0xfffff
-#define SEGMENT_SELECTOR_MASK   WORD_MASK
-#define SEGMENT_PL_MASK         0x3
-#define ERROR_CODE_MASK         WORD_MASK
-#define I386_BREAKPOINT_OPCODE  0xcc
-#define I386_POPL_ECX_OPCODE    0x59
-#define I386_ADDL_ESP_OPCODE    0xc483
+#define BYTE_MASK 0xff
+#define WORD_MASK 0xffff
+#define LIMIT_20BIT_MASK 0xfffff
+#define SEGMENT_SELECTOR_MASK WORD_MASK
+#define SEGMENT_PL_MASK 0x3
+#define ERROR_CODE_MASK WORD_MASK
+#define I386_BREAKPOINT_OPCODE 0xcc
+#define I386_POPL_ECX_OPCODE 0x59
+#define I386_ADDL_ESP_OPCODE 0xc483
 #endif

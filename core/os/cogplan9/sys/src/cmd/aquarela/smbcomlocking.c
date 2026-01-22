@@ -106,7 +106,7 @@ ushort pid;
 uvlong offset;
 uvlong length;
 smbbufferreadbackup(b, backupoffset);
-for (i  = 0; i < l; i++) {
+for (i = 0; i < l; i++) {
 assert(getlock(b, large, &pid, &offset, &length));
 smbsharedfileunlock(f->sf, s, h->pid, offset, offset + length);
 }

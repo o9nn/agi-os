@@ -254,15 +254,15 @@ char c;
 char *(*fn)(Edit*, int ,char**);
 };
 Cmd cmds[] = {
-'.',	editdot,
-'a',	editadd,
-'d',	editdel,
-'?',	edithelp,
-'h',	edithelp,
-'P',	editctlprint,
-'p',	editprint,
-'w',	editwrite,
-'q',	editquit,
+'.', editdot,
+'a', editadd,
+'d', editdel,
+'?', edithelp,
+'h', edithelp,
+'P', editctlprint,
+'p', editprint,
+'w', editwrite,
+'q', editquit,
 };
 void
 runcmd(Edit *edit, char *cmd)
@@ -337,7 +337,7 @@ a = strtoll(f[2], 0, 0);
 b = strtoll(f[3], 0, 0);
 if(a >= b)
 break;
-if(a < disk->offset ||  disk->offset+disk->secs < b)
+if(a < disk->offset || disk->offset+disk->secs < b)
 continue;
 a -= disk->offset;
 b -= disk->offset;

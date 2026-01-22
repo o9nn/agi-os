@@ -11,12 +11,12 @@
 #include "unistd_.h"
 #include <stdlib.h>
 #ifdef FILENAME_MAX
-#  if FILENAME_MAX < 80
-#    undef FILENAME_MAX
-#  endif
+# if FILENAME_MAX < 80
+# undef FILENAME_MAX
+# endif
 #endif
 #ifndef FILENAME_MAX
-#  define FILENAME_MAX 1024
+# define FILENAME_MAX 1024
 #endif
 extern char *mktemp(char *);
 const char gp_scratch_file_name_prefix[] = "gs_";

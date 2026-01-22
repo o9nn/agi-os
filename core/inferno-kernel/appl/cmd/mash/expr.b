@@ -1,8 +1,8 @@
 #
-#	Expression evaluation.
+# Expression evaluation.
 #
 #
-#	Filename pattern matching.
+# Filename pattern matching.
 #
 glob(e: ref Env, s: string): (string, list of string)
 {
@@ -17,7 +17,7 @@ return (nil, l);
 return (s, nil);
 }
 #
-#	RE pattern matching.
+# RE pattern matching.
 #
 match(s1, s2: string): int
 {
@@ -25,7 +25,7 @@ match(s1, s2: string): int
 return regex->execute(re, s1) != nil;
 }
 #
-#	RE match of two lists.  Two non-singleton lists never match.
+# RE match of two lists. Two non-singleton lists never match.
 #
 match2(e: ref Env, s1: string, l1: list of string, s2: string, l2: list of string): int
 {
@@ -63,7 +63,7 @@ return 1;
 return 0;
 }
 #
-#	Test list equality.  Same length and identical members.
+# Test list equality. Same length and identical members.
 #
 eqlist(l1, l2: list of string): int
 {
@@ -76,7 +76,7 @@ l2 = tl l2;
 return l1 == nil && l2 == nil;
 }
 #
-#	Equality operator.
+# Equality operator.
 #
 Cmd.evaleq(c: self ref Cmd, e: ref Env): int
 {
@@ -89,7 +89,7 @@ return eqlist(l1, l2);
 return s2 == nil && l2 == nil;
 }
 #
-#	Match operator.
+# Match operator.
 #
 Cmd.evalmatch(c: self ref Cmd, e: ref Env): int
 {
@@ -98,7 +98,7 @@ Cmd.evalmatch(c: self ref Cmd, e: ref Env): int
 return match2(e, s1, l1, s2, l2);
 }
 #
-#	Catenation operator.
+# Catenation operator.
 #
 Item.caret(i: self ref Item, e: ref Env): (string, list of string, int)
 {
@@ -107,7 +107,7 @@ Item.caret(i: self ref Item, e: ref Env): (string, list of string, int)
 return caret(s1, l1, x1, s2, l2, x2);
 }
 #
-#	Caret of lists.  A singleton distributes.  Otherwise pairwise, padded with nils.
+# Caret of lists. A singleton distributes. Otherwise pairwise, padded with nils.
 #
 caret(s1: string, l1: list of string, x1: int, s2: string, l2: list of string, x2: int): (string, list of string, int)
 {

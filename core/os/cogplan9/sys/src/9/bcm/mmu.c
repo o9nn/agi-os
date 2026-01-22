@@ -4,11 +4,11 @@
 #include "dat.h"
 #include "fns.h"
 #include "arm.h"
-#define L1X(va)		FEXT((va), 20, 12)
-#define L2X(va)		FEXT((va), 12, 8)
+#define L1X(va) FEXT((va), 20, 12)
+#define L2X(va) FEXT((va), 12, 8)
 enum {
-L1lo		= UZERO/MiB,
-L1hi		= (USTKTOP+MiB-1)/MiB,
+L1lo = UZERO/MiB,
+L1hi = (USTKTOP+MiB-1)/MiB,
 };
 void
 mmuinit(void)

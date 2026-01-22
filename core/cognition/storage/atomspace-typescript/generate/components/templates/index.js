@@ -7,12 +7,12 @@ const componentIntegrationTest = require("./component.integration.test");
 const functions = require("./component.controller");
 const functionsTest = require("./component.controller.test");
 module.exports = [
-  component,
-  componentTypes,
-  componentStories,
-  componentTests,
-  componentStyles,
-  componentIntegrationTest,
-  functions,
-  functionsTest
+component,
+componentTypes,
+componentStories,
+componentTests,
+componentStyles,
+componentIntegrationTest,
+functions,
+functionsTest
 ];

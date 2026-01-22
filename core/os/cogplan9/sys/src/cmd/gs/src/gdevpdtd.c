@@ -29,7 +29,7 @@ pdf_font_descriptor_values_t values;
 #define FONT_IS_SMALL_CAPS (1<<17)
 #define FONT_IS_FORCE_BOLD (1<<18)
 #ifndef pdf_base_font_DEFINED
-#  define pdf_base_font_DEFINED
+# define pdf_base_font_DEFINED
 typedef struct pdf_base_font_s pdf_base_font_t;
 #endif
 struct pdf_font_descriptor_s {
@@ -229,9 +229,9 @@ default:
 break;
 }
 #if 0
-#  define CONSIDER_FONT_SYMBOLIC(bfont) font_is_symbolic(bfont)
+# define CONSIDER_FONT_SYMBOLIC(bfont) font_is_symbolic(bfont)
 #else
-#  define CONSIDER_FONT_SYMBOLIC(bfont)\
+# define CONSIDER_FONT_SYMBOLIC(bfont)\
 ((bfont)->encoding_index != ENCODING_INDEX_STANDARD)
 #endif
 if (CONSIDER_FONT_SYMBOLIC(bfont))
@@ -444,7 +444,7 @@ COS_WRITE(pfd->cid.FD, pdev);
 stream_puts(s, ">>\n");
 pdf_end_separate(pdev);
 pfd->common.object->written = true;
-{	const cos_object_t *pco = (const cos_object_t *)pdf_get_FontFile_object(pfd->base_font);
+{ const cos_object_t *pco = (const cos_object_t *)pdf_get_FontFile_object(pfd->base_font);
 if (pco != NULL) {
 code = COS_WRITE_OBJECT(pco, pdev);
 if (code < 0)

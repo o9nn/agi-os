@@ -24,18 +24,18 @@ MAIL_INDEX_CACHE_FIELD_COUNT
 #define IMAP_BODY_PLAIN_7BIT_ASCII \
 "\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\""
 enum mail_cache_record_flag {
-MAIL_CACHE_FLAG_BINARY_HEADER		= 0x0001,
-MAIL_CACHE_FLAG_BINARY_BODY		= 0x0002,
-MAIL_CACHE_FLAG_HAS_NULS		= 0x0004,
-MAIL_CACHE_FLAG_HAS_NO_NULS		= 0x0020,
-MAIL_CACHE_FLAG_HAS_NO_NULS_BROKEN	= 0x0008,
-MAIL_CACHE_FLAG_TEXT_PLAIN_7BIT_ASCII	= 0x0010
+MAIL_CACHE_FLAG_BINARY_HEADER = 0x0001,
+MAIL_CACHE_FLAG_BINARY_BODY = 0x0002,
+MAIL_CACHE_FLAG_HAS_NULS = 0x0004,
+MAIL_CACHE_FLAG_HAS_NO_NULS = 0x0020,
+MAIL_CACHE_FLAG_HAS_NO_NULS_BROKEN = 0x0008,
+MAIL_CACHE_FLAG_TEXT_PLAIN_7BIT_ASCII = 0x0010
 };
 enum index_mail_access_part {
-READ_HDR	= 0x01,
-READ_BODY	= 0x02,
-PARSE_HDR	= 0x04,
-PARSE_BODY	= 0x08
+READ_HDR = 0x01,
+READ_BODY = 0x02,
+PARSE_HDR = 0x04,
+PARSE_BODY = 0x08
 };
 struct mail_sent_date {
 uint32_t time;
@@ -120,7 +120,7 @@ uint8_t header_match_value;
 bool pop3_state_set:1;
 bool freeing:1;
 };
-#define INDEX_MAIL(s)	container_of(s, struct index_mail, mail.mail)
+#define INDEX_MAIL(s) container_of(s, struct index_mail, mail.mail)
 struct mail_cache_field *index_mail_global_cache_fields_dup(void);
 struct mail *
 index_mail_alloc(struct mailbox_transaction_context *t,

@@ -10,8 +10,8 @@ styx: Styx;
 Tmsg, Rmsg: import styx;
 Dossrv: module
 {
-init:   fn(ctxt: ref Draw->Context, args: list of string);
-system:   fn(ctxt: ref Draw->Context, args: list of string): string;
+init: fn(ctxt: ref Draw->Context, args: list of string);
+system: fn(ctxt: ref Draw->Context, args: list of string): string;
 };
 arg0 := "dossrv";
 deffile: string;
@@ -48,7 +48,7 @@ init2(nil: ref Draw->Context, args: list of string, iscmd: int): string
 sys = load Sys Sys->PATH;
 pipefd := array[2] of ref Sys->FD;
 srvfile := "/n/dos";
-deffile = "";	# no default, for safety
+deffile = ""; # no default, for safety
 sectors := 0;
 stdin := 0;
 arg := load Arg Arg->PATH;
@@ -137,22 +137,22 @@ Efull,
 Eopen,
 Ephase: con iota;
 errmsg := array[] of {
-Enevermind	=> "never mind",
-Eformat		=> "unknown format",
-Eio		=> "I/O error",
-Enomem		=> "server out of memory",
-Enonexist	=> "file does not exist",
+Enevermind => "never mind",
+Eformat => "unknown format",
+Eio => "I/O error",
+Enomem => "server out of memory",
+Enonexist => "file does not exist",
 Enotdir => "not a directory",
 Enofid => "no such fid",
 Efidopen => "fid already open",
 Efidinuse => "fid in use",
-Eexist		=> "file exists",
-Eperm		=> "permission denied",
-Enofilsys	=> "no file system device specified",
-Eauth		=> "authentication failed",
-Econtig =>	"out of contiguous disk space",
-Efull =>	"file system full",
-Eopen =>	"invalid open mode",
+Eexist => "file exists",
+Eperm => "permission denied",
+Enofilsys => "no file system device specified",
+Eauth => "authentication failed",
+Econtig => "out of contiguous disk space",
+Efull => "file system full",
+Eopen => "invalid open mode",
 Ephase => "phase error -- directory entry not found",
 };
 e(n: int): ref Rmsg.Error
@@ -276,7 +276,7 @@ if(debug)
 chat(sys->sprint("qid.path=0x%bx...", f.qid.path));
 return e(Enotdir);
 }
-if(name == ".")	# can't happen
+if(name == ".") # can't happen
 return nil;
 if(name== "..") {
 if(f.qid.path == f.xf.rootqid.path) {
@@ -309,7 +309,7 @@ if(dp.addr == 0)
 f.qid.path = f.xf.rootqid.path;
 else {
 d := Dosdir.arr2Dd(dp.p.iobuf[dp.offset:dp.offset+DOSDIRSIZE]);
-if((int d.attr & DDIR) !=  0)
+if((int d.attr & DDIR) != 0)
 f.qid.qtype = Sys->QTDIR;
 }
 putfile(f);
@@ -790,8 +790,8 @@ isfrog := array[256] of {
 1, 1, 1, 1, 1, 1, 1, 1,
 # CAN
 1, 1, 1, 1, 1, 1, 1, 1,
-#	' ' =>	1,
-'/' =>	1, 16r7f =>	1, * => 0
+# ' ' => 1,
+'/' => 1, 16r7f => 1, * => 0
 };
 for(i:=0; i < len elem; i++) {
 if(isfrog[elem[i]])
@@ -807,7 +807,7 @@ return e(Enofid);
 if(getfile(f) < 0)
 return e(Eio);
 dp := f.ptr;
-if(dp.addr == 0){	# root
+if(dp.addr == 0){ # root
 putfile(f);
 return e(Eperm);
 }
@@ -854,7 +854,7 @@ return e(Eperm);
 oaddr := dp.addr;
 ooffset := dp.offset;
 d := dpd;
-#		od := *d;
+# od := *d;
 # start := getstart(f.xf, d);
 start := d.start;
 length := d.length;
@@ -868,9 +868,9 @@ putfile(f);
 pf := ref *f;
 pdp := ref Dosptr(dp.paddr, dp.poffset, 0, 0, 0, 0, -1, -1, parp, nil);
 # if(pdp.addr != 0)
-# 	pdpd := Dosdir.arr2Dd(parp.iobuf[pdp.offset: pdp.offset+DOSDIRSIZE]);
+# pdpd := Dosdir.arr2Dd(parp.iobuf[pdp.offset: pdp.offset+DOSDIRSIZE]);
 # else
-# 	pdpd = nil;
+# pdpd = nil;
 pf.ptr = pdp;
 if(wdir.name == "." || wdir.name == ".."){
 putsect(parp);
@@ -897,9 +897,9 @@ sname = b+e;
 }
 # (r, ndp) := searchdir(pf, wdir.name, 1, 1);
 # if(r < 0){
-#	putsect(parp);
-#	g.errno = Eperm;
-#	return;
+# putsect(parp);
+# g.errno = Eperm;
+# return;
 # }
 if(getfile(f) < 0){
 putsect(parp);
@@ -958,65 +958,65 @@ start: array of byte;
 length: array of byte;
 };
 Dosboot: adt {
-arr2Db:	fn(arr: array of byte): ref Dosboot;
-magic:	array of byte;
-version:	array of byte;
-sectsize:	array of byte;
-clustsize:	byte;
-nresrv:	array of byte;
-nfats:	byte;
-rootsize:	array of byte;
-volsize:	array of byte;
-mediadesc:	byte;
-fatsize:	array of byte;
-trksize:	array of byte;
-nheads:	array of byte;
-nhidden:	array of byte;
-bigvolsize:	array of byte;
-driveno:	byte;
-bootsig:	byte;
-volid:	array of byte;
-label:	array of byte;
+arr2Db: fn(arr: array of byte): ref Dosboot;
+magic: array of byte;
+version: array of byte;
+sectsize: array of byte;
+clustsize: byte;
+nresrv: array of byte;
+nfats: byte;
+rootsize: array of byte;
+volsize: array of byte;
+mediadesc: byte;
+fatsize: array of byte;
+trksize: array of byte;
+nheads: array of byte;
+nhidden: array of byte;
+bigvolsize: array of byte;
+driveno: byte;
+bootsig: byte;
+volid: array of byte;
+label: array of byte;
 };
 Dosbpb: adt {
-sectsize: int;	# in bytes
-clustsize: int;	# in sectors
-nresrv: int;	# sectors
-nfats: int;	# usually 2
-rootsize: int;	# number of entries
-volsize: int;	# in sectors
+sectsize: int; # in bytes
+clustsize: int; # in sectors
+nresrv: int; # sectors
+nfats: int; # usually 2
+rootsize: int; # number of entries
+volsize: int; # in sectors
 mediadesc: int;
-fatsize: int;	# in sectors
+fatsize: int; # in sectors
 fatclusters: int;
-fatbits: int;	# 12 or 16
-fataddr: int; #big;	# sector number
+fatbits: int; # 12 or 16
+fataddr: int; #big; # sector number
 rootaddr: int; #big;
 dataaddr: int; #big;
-freeptr: int; #big;	# next free cluster candidate
+freeptr: int; #big; # next free cluster candidate
 };
 Dosdir: adt {
-Dd2arr:	fn(d: ref Dosdir): array of byte;
-arr2Dd:	fn(arr: array of byte): ref Dosdir;
-name:	string;
-ext:		string;
-attr:		byte;
-reserved:	array of byte;
-time:		array of byte;
-date:		array of byte;
-start:		array of byte;
-length:	array of byte;
+Dd2arr: fn(d: ref Dosdir): array of byte;
+arr2Dd: fn(arr: array of byte): ref Dosdir;
+name: string;
+ext: string;
+attr: byte;
+reserved: array of byte;
+time: array of byte;
+date: array of byte;
+start: array of byte;
+length: array of byte;
 };
 Dosptr: adt {
-addr:	int;	# of file's directory entry
-offset:	int;
-paddr:	int;	# of parent's directory entry
-poffset:	int;
-iclust:	int;	# ordinal within file
-clust:	int;
-prevaddr:	int;
-naddr:	int;
-p:	ref Iosect;
-d:	ref Dosdir;
+addr: int; # of file's directory entry
+offset: int;
+paddr: int; # of parent's directory entry
+poffset: int;
+iclust: int; # ordinal within file
+clust: int;
+prevaddr: int;
+naddr: int;
+p: ref Iosect;
+d: ref Dosdir;
 };
 Asis, Clean, Clunk: con iota;
 FAT12: con byte 16r01;
@@ -1035,10 +1035,10 @@ DOSDIRSIZE: con 32;
 DOSEMPTY: con 16rE5;
 DOSRUNES: con 13;
 FATRESRV: con 2;
-Oread: con  1;
-Owrite: con  2;
-Orclose: con  4;
-Omodes: con  3;
+Oread: con 1;
+Owrite: con 2;
+Orclose: con 4;
+Omodes: con 3;
 VERBOSE, STYX_MESS, FAT_INFO, CLUSTER_INFO: con (1 << iota);
 nowt, nowt1: int;
 tzoff: int;
@@ -1046,7 +1046,7 @@ tzoff: int;
 # because we map all incoming short names from all upper to all lower case,
 # and FAT cannot store mixed case names in short name form,
 # we'll declare upper case as unacceptable to decide whether a long name
-# is needed on output.  thus, long names are always written in the case
+# is needed on output. thus, long names are always written in the case
 # in the system call, and are always read back as written; short names
 # are produced by the common case of writing all lower case letters
 #
@@ -1205,7 +1205,7 @@ int f.qid.path, int QIDPATH(dp)));
 putsect(p);
 return -1;
 }
-#	dp.d = Dosdir.arr2Dd(p.iobuf[dp.offset:dp.offset+DOSDIRSIZE]);
+# dp.d = Dosdir.arr2Dd(p.iobuf[dp.offset:dp.offset+DOSDIRSIZE]);
 }
 dp.p = p;
 return 0;
@@ -1222,28 +1222,28 @@ dp.d = nil;
 getstart(nil: ref Xfs, d: ref Dosdir): int
 {
 start := bytes2short(d.start);
-#	if(xf.isfat32)
-#		start |= bytes2short(d.hstart)<<16;
+# if(xf.isfat32)
+# start |= bytes2short(d.hstart)<<16;
 return start;
 }
 putstart(nil: ref Xfs, d: ref Dosdir, start: int)
 {
 d.start[0] = byte start;
 d.start[1] = byte (start>>8);
-#	if(xf.isfat32){
-#		d.hstart[0] = start>>16;
-#		d.hstart[1] = start>>24;
-#	}
+# if(xf.isfat32){
+# d.hstart[0] = start>>16;
+# d.hstart[1] = start>>24;
+# }
 }
 #
 # return the disk cluster for the iclust cluster in f
 #
 fileclust(f: ref Xfile, iclust: int, cflag: int): int
 {
-#	bp := f.xf.ptr;
+# bp := f.xf.ptr;
 dp := f.ptr;
 if(isroot(dp.addr))
-return -1;		# root directory for old FAT format does not start on a cluster boundary
+return -1; # root directory for old FAT format does not start on a cluster boundary
 d := dp.d;
 if(d == nil){
 if(dp.p == nil)
@@ -1272,7 +1272,7 @@ nskip = iclust;
 clust = dp.clust;
 nskip = iclust - dp.iclust;
 }
-if(debug & CLUSTER_INFO  && nskip > 0)
+if(debug & CLUSTER_INFO && nskip > 0)
 chat(sys->sprint("clust %d, skip %d...", clust, nskip));
 if(clust <= 0)
 return -1;
@@ -1332,7 +1332,7 @@ addr1 := -1;
 addr2 := -1;
 prevaddr1 := -1;
 o1 := 0;
-dp :=  ref Dosptr(0,0,0,0,0,0,-1,-1,nil,nil);	# prevaddr and naddr are -1
+dp := ref Dosptr(0,0,0,0,0,0,-1,-1,nil,nil); # prevaddr and naddr are -1
 dp.paddr = f.ptr.addr;
 dp.poffset = f.ptr.offset;
 islong :=0;
@@ -1421,7 +1421,7 @@ if((dattr & DMLONG) == DLONG) {
 if(!islong)
 buf = "";
 islong = 1;
-buf = getnamesect(p.iobuf[o:o+DOSDIRSIZE]) + buf;	# getnamesect should return sum
+buf = getnamesect(p.iobuf[o:o+DOSDIRSIZE]) + buf; # getnamesect should return sum
 continue;
 }
 if(dattr & DVLABEL) {
@@ -1499,7 +1499,7 @@ return 0;
 if(dname0 == byte DOSEMPTY || dname0 == byte '.')
 continue;
 if(dattr & DVLABEL)
-continue;		# ignore any long name entries: it's empty if there are no short ones
+continue; # ignore any long name entries: it's empty if there are no short ones
 putsect(p);
 return -1;
 }
@@ -1665,7 +1665,7 @@ return (-1,nil);
 if(debug)
 dirdump(p.iobuf[DOSDIRSIZE:],0,0);
 xd = Dosdir.arr2Dd(p.iobuf[DOSDIRSIZE:]);
-if(xd.name[0] != '.' || xd.name[1] !=  '.') {
+if(xd.name[0] != '.' || xd.name[1] != '.') {
 if(p != nil)
 putsect(p);
 return (-1,nil);
@@ -1713,7 +1713,7 @@ return (-1,nil);
 if(xdname0 == byte DOSEMPTY)
 continue;
 #xd = Dosdir.arr2Dd(p.iobuf[o:o+DOSDIRSIZE]);
-xdstart:= p.iobuf[o+26:o+28];	# TO DO: getstart
+xdstart:= p.iobuf[o+26:o+28]; # TO DO: getstart
 if(bytes2short(xdstart) == pstart) {
 putsect(p);
 ndp.paddr = k;
@@ -1852,7 +1852,7 @@ return rcnt;
 truncfile(f: ref Xfile): int
 {
 xf := f.xf;
-#	bp := xf.ptr;
+# bp := xf.ptr;
 dp := f.ptr;
 d := Dosdir.arr2Dd(dp.p.iobuf[dp.offset:dp.offset+DOSDIRSIZE]);
 clust := getstart(f.xf, d);
@@ -2199,7 +2199,7 @@ p.iobuf[o] |= byte ((val>>8)&16r0f);
 16 =>
 p.iobuf[o++] = byte val;
 p.iobuf[o] = byte (val>>8);
-32 =>	# fat32 is really fat28
+32 => # fat32 is really fat28
 p.iobuf[o++] = byte val;
 p.iobuf[o++] = byte (val>>8);
 p.iobuf[o++] = byte (val>>16);
@@ -2291,15 +2291,15 @@ xputtime(d, 0);
 gtime(a: array of byte): int
 {
 tm := ref Daytime->Tm;
-i := bytes2short(a[22:24]);	# dos time
+i := bytes2short(a[22:24]); # dos time
 tm.hour = i >> 11;
 tm.min = (i>>5) & 63;
 tm.sec = (i & 31) << 1;
-i = bytes2short(a[24:26]);	# dos date
+i = bytes2short(a[24:26]); # dos date
 tm.year = 80 + (i>>9);
 tm.mon = ((i>>5) & 15) - 1;
 tm.mday = i & 31;
-tm.tzoff = tzoff;	# DOS time is local time
+tm.tzoff = tzoff; # DOS time is local time
 return daytime->tm2epoch(tm);
 }
 dirdump(arr: array of byte, addr, offset: int)
@@ -2311,7 +2311,7 @@ d := Dosdir.arr2Dd(arr);
 buf := sys->sprint("\"%.8s.%.3s\" ", d.name, d.ext);
 p_i:=7;
 for(i := 16r80; i != 0; i >>= 1) {
-if((d.attr & byte i) ==  byte i)
+if((d.attr & byte i) == byte i)
 ch := attrchar[p_i];
 else
 ch = '-';
@@ -2420,7 +2420,7 @@ panic(s: string)
 {
 sys->fprint(sys->fildes(2), "dosfs: panic: %s\n", s);
 if(pflag)
-<-chan of int;	# hang here
+<-chan of int; # hang here
 raise "fail:panic";
 }
 Dosboot.arr2Db(arr: array of byte): ref Dosboot
@@ -2504,18 +2504,18 @@ return sum;
 # to the server and the client
 Xfs: adt {
 next:cyclic ref Xfs;
-name: string;	# of file containing external f.s.
-qid: Sys->Qid;	# of file containing external f.s.
-refn: int;		# attach count
-rootqid: Sys->Qid;	# of inferno constructed root directory
-dev: ref Sys->FD;  # FD of the file containing external f.s.
-fmt: int;		# successfully read format
-offset: int;		# offset in sectors to file system
+name: string; # of file containing external f.s.
+qid: Sys->Qid; # of file containing external f.s.
+refn: int; # attach count
+rootqid: Sys->Qid; # of inferno constructed root directory
+dev: ref Sys->FD; # FD of the file containing external f.s.
+fmt: int; # successfully read format
+offset: int; # offset in sectors to file system
 ptr: ref Dosbpb;
 };
 # An Xfile represents the mapping of fid's & qid's to the server.
 Xfile: adt {
-next: cyclic ref Xfile;		# in hash bucket
+next: cyclic ref Xfile; # in hash bucket
 client: int;
 fid: int;
 flags: int;
@@ -2535,9 +2535,9 @@ Iotrack: adt
 flags: int;
 xf: ref Xfs;
 addr: int;
-next: cyclic ref Iotrack;		# in lru list
+next: cyclic ref Iotrack; # in lru list
 prev: cyclic ref Iotrack;
-hnext: cyclic ref Iotrack;		# in hash list
+hnext: cyclic ref Iotrack; # in hash list
 hprev: cyclic ref Iotrack;
 refn: int;
 tp: cyclic ref Track;
@@ -2548,21 +2548,21 @@ create: fn(): ref Track;
 p: cyclic array of ref Iosect;
 buf: array of byte;
 };
-BMOD: con	1<<0;
-BIMM: con	1<<1;
-BSTALE: con	1<<2;
-HIOB: con 31;	# a prime
+BMOD: con 1<<0;
+BIMM: con 1<<1;
+BSTALE: con 1<<2;
+HIOB: con 31; # a prime
 NIOBUF: con 20;
 Sectorsize: con 512;
-Sect2trk: con 9;	# default
-hiob := array[HIOB+1] of ref Iotrack;		# hash buckets + lru list
-iobuf := array[NIOBUF] of ref Iotrack;		# the real ones
+Sect2trk: con 9; # default
+hiob := array[HIOB+1] of ref Iotrack; # hash buckets + lru list
+iobuf := array[NIOBUF] of ref Iotrack; # the real ones
 freelist: ref Iosect;
 sect2trk := Sect2trk;
 trksize := Sect2trk*Sectorsize;
-FIDMOD: con 127;	# prime
-xhead:		ref Xfs;
-client:		int;
+FIDMOD: con 127; # prime
+xhead: ref Xfs;
+client: int;
 xfiles := array[FIDMOD] of ref Xfile;
 iodebug := 0;
 iotrackinit(sectors: int)
@@ -2601,7 +2601,7 @@ iobuf[i].prev = hiob[HIOB];
 hiob[HIOB].next.prev = iobuf[i];
 hiob[HIOB].next = iobuf[i];
 }
-iobuf[i].tp =  Track.create();
+iobuf[i].tp = Track.create();
 }
 }
 Track.create(): ref Track
@@ -2623,9 +2623,9 @@ return getiosect(xf, addr, 0);
 getiosect(xf: ref Xfs, addr , rflag: int): ref Iosect
 {
 # offset from beginning of track.
-toff := addr %  sect2trk;
+toff := addr % sect2trk;
 # address of beginning of track.
-taddr := addr -  toff;
+taddr := addr - toff;
 t := getiotrack(xf, taddr);
 if(rflag && t.flags&BSTALE) {
 if(tread(t) < 0)
@@ -2825,7 +2825,7 @@ iobuf[p].flags &= ~(BMOD|BIMM);
 }
 newsect(): ref Iosect
 {
-if((p := freelist)!=nil)	{
+if((p := freelist)!=nil) {
 freelist = p.next;
 p.next = nil;
 } else

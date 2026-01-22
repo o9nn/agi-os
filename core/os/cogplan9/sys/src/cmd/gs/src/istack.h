@@ -1,5 +1,5 @@
 #ifndef istack_INCLUDED
-#  define istack_INCLUDED
+# define istack_INCLUDED
 #include "isdata.h"
 typedef struct ref_stack_block_s {
 ref next;
@@ -24,7 +24,7 @@ uint ref_stack_counttomark(const ref_stack_t *pstack);
 int ref_stack_store_check(const ref_stack_t *pstack, ref *parray,
 uint count, uint skip);
 #ifndef gs_dual_memory_DEFINED
-#  define gs_dual_memory_DEFINED
+# define gs_dual_memory_DEFINED
 typedef struct gs_dual_memory_s gs_dual_memory_t;
 #endif
 int ref_stack_store(const ref_stack_t *pstack, ref *parray, uint count,

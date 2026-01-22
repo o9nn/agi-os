@@ -1,9 +1,9 @@
-#define	NSYM	50
-#define	NSNAME	8
-#define	REGEXT	7
-#define	AREGEXT	5
-#define	FREGEXT	7
-enum	as
+#define NSYM 50
+#define NSNAME 8
+#define REGEXT 7
+#define AREGEXT 5
+#define FREGEXT 7
+enum as
 {
 AXXX = 0,
 AABCD,
@@ -430,11 +430,11 @@ ALAST
 };
 enum
 {
-NREG		= 8,
-D_R0		= 0,
-D_A0		= NREG,
-D_F0		= D_A0+NREG,
-D_NONE		= D_F0+NREG,
+NREG = 8,
+D_R0 = 0,
+D_A0 = NREG,
+D_F0 = D_A0+NREG,
+D_NONE = D_F0+NREG,
 D_TOS,
 D_BRANCH,
 D_STACK,
@@ -470,28 +470,28 @@ D_MMUSR,
 D_URP,
 D_SRP,
 D_FILE1,
-D_MASK		= 63/(D_SRP>=63?0:1),
-I_DIR		= (D_MASK+1)*0,
-I_INDINC	= (D_MASK+1)*1,
-I_INDDEC	= (D_MASK+1)*2,
-I_INDIR		= (D_MASK+1)*3,
-I_ADDR		= (D_MASK+1)*4,
-I_INDEX1	= (D_MASK+1)*1,
-I_INDEX2	= (D_MASK+1)*2,
-I_INDEX3	= (D_MASK+1)*3,
-I_MASK		= (D_MASK+1)*7,
-T_FIELD		= 1<<0,
-T_INDEX		= 1<<1,
-T_TYPE		= 1<<2,
-T_OFFSET	= 1<<3,
-T_FCONST	= 1<<4,
-T_SYM		= 1<<5,
-T_SCONST	= 1<<6
+D_MASK = 63/(D_SRP>=63?0:1),
+I_DIR = (D_MASK+1)*0,
+I_INDINC = (D_MASK+1)*1,
+I_INDDEC = (D_MASK+1)*2,
+I_INDIR = (D_MASK+1)*3,
+I_ADDR = (D_MASK+1)*4,
+I_INDEX1 = (D_MASK+1)*1,
+I_INDEX2 = (D_MASK+1)*2,
+I_INDEX3 = (D_MASK+1)*3,
+I_MASK = (D_MASK+1)*7,
+T_FIELD = 1<<0,
+T_INDEX = 1<<1,
+T_TYPE = 1<<2,
+T_OFFSET = 1<<3,
+T_FCONST = 1<<4,
+T_SYM = 1<<5,
+T_SCONST = 1<<6
 };
-#define	SYMDEF	"__.SYMDEF"
-typedef	struct	ieee	Ieee;
-struct	ieee
+#define SYMDEF "__.SYMDEF"
+typedef struct ieee Ieee;
+struct ieee
 {
-long	l;
-long	h;
+long l;
+long h;
 };

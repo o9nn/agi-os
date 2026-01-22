@@ -297,7 +297,7 @@ char *resp, *path;
 char zeros[24];
 Pkt *p;
 resp = Sess->auth->resp[0];
-len  = Sess->auth->len[0];
+len = Sess->auth->len[0];
 if((s->secmode & SECMODE_USER) != SECMODE_USER){
 memset(zeros, 0, sizeof(zeros));
 resp = zeros;
@@ -503,7 +503,7 @@ CIFSwrite(Session *s, Share *sp, int fh, uvlong off, void *buf, vlong n)
 {
 Pkt *p;
 vlong got;
-assert((n   & 0xffffffff00000000LL) == 0 || s->caps & CAP_LARGE_FILES);
+assert((n & 0xffffffff00000000LL) == 0 || s->caps & CAP_LARGE_FILES);
 assert((off & 0xffffffff00000000LL) == 0 || s->caps & CAP_LARGE_FILES);
 assert(n < s->mtu - T2HDRLEN || s->caps & CAP_LARGE_WRITEX);
 p = cifshdr(s, sp, SMB_COM_WRITE_ANDX);
@@ -542,7 +542,7 @@ vlong minlen)
 int doff;
 vlong got;
 Pkt *p;
-assert((n   & 0xffffffff00000000LL) == 0 || s->caps & CAP_LARGE_FILES);
+assert((n & 0xffffffff00000000LL) == 0 || s->caps & CAP_LARGE_FILES);
 assert((off & 0xffffffff00000000LL) == 0 || s->caps & CAP_LARGE_FILES);
 assert(n < s->mtu - T2HDRLEN || s->caps & CAP_LARGE_READX);
 p = cifshdr(s, sp, SMB_COM_READ_ANDX);

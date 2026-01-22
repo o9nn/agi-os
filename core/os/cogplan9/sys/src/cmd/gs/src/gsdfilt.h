@@ -1,11 +1,11 @@
 #ifndef gsdfilt_INCLUDED
-#  define gsdfilt_INCLUDED
+# define gsdfilt_INCLUDED
 #ifndef gs_device_filter_stack_DEFINED
-#  define gs_device_filter_stack_DEFINED
+# define gs_device_filter_stack_DEFINED
 typedef struct gs_device_filter_stack_s gs_device_filter_stack_t;
 #endif
 #ifndef gs_device_filter_DEFINED
-#  define gs_device_filter_DEFINED
+# define gs_device_filter_DEFINED
 typedef struct gs_device_filter_s gs_device_filter_t;
 #endif
 struct gs_device_filter_s {

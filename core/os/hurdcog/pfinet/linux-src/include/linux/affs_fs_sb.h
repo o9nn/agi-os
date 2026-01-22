@@ -1,9 +1,9 @@
 #ifndef _AFFS_FS_SB
 #define _AFFS_FS_SB
-#define MAX_ZONES		8
-#define AFFS_DATA_MIN_FREE	512
-#define AFFS_HDR_MIN_FREE	128
-#define AFFS_ZONE_SIZE		1024
+#define MAX_ZONES 8
+#define AFFS_DATA_MIN_FREE 512
+#define AFFS_HDR_MIN_FREE 128
+#define AFFS_ZONE_SIZE 1024
 struct affs_bm_info {
 struct buffer_head *bm_bh;
 s32 bm_firstblk;
@@ -45,16 +45,16 @@ char *s_prefix;
 int s_prefix_len;
 char s_volume[32];
 };
-#define SF_INTL		0x0001
-#define SF_BM_VALID	0x0002
-#define SF_IMMUTABLE	0x0004
-#define SF_QUIET	0x0008
-#define SF_SETUID	0x0010
-#define SF_SETGID	0x0020
-#define SF_SETMODE	0x0040
-#define SF_MUFS		0x0100
-#define SF_OFS		0x0200
-#define SF_PREFIX	0x0400
-#define SF_VERBOSE	0x0800
-#define SF_READONLY	0x1000
+#define SF_INTL 0x0001
+#define SF_BM_VALID 0x0002
+#define SF_IMMUTABLE 0x0004
+#define SF_QUIET 0x0008
+#define SF_SETUID 0x0010
+#define SF_SETGID 0x0020
+#define SF_SETMODE 0x0040
+#define SF_MUFS 0x0100
+#define SF_OFS 0x0200
+#define SF_PREFIX 0x0400
+#define SF_VERBOSE 0x0800
+#define SF_READONLY 0x1000
 #endif

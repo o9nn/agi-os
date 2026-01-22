@@ -1,15 +1,15 @@
 #include "all.h"
-#define	Nwork	16
+#define Nwork 16
 int localdirstat(char*, Dir*);
 int ismatch(char*);
 void conflict(char*, char*, ...);
 void error(char*, ...);
 int isdir(char*);
 void worker(int fdf, int fdt, char *from, char *to);
-vlong	nextoff(void);
-void	failure(void *, char *note);
-QLock	lk;
-vlong	off;
+vlong nextoff(void);
+void failure(void *, char *note);
+QLock lk;
+vlong off;
 int errors;
 int nconf;
 int donothing;
@@ -355,7 +355,7 @@ if(rd.mode&DMDIR){
 fd = create(local, OREAD, DMDIR);
 if(fd < 0 && isdir(local))
 fd = open(local, OREAD);
-if(fd  < 0){
+if(fd < 0){
 error("mkdir %q: %r", name);
 skip = 1;
 continue;

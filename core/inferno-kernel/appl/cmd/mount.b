@@ -13,7 +13,7 @@ include "arg.m";
 include "sh.m";
 Mount: module
 {
-init:	 fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 verbose := 0;
 doauth := 1;
@@ -75,7 +75,7 @@ persist = 1;
 showstyx = 1;
 'q' =>
 quiet = 1;
-*   =>
+* =>
 arg->usage();
 }
 }
@@ -148,7 +148,7 @@ return p[1];
 }
 c := dial->dial(dest, nil);
 if(c == nil)
-fail("dial failed",  sys->sprint("can't dial %s: %r", dest));
+fail("dial failed", sys->sprint("can't dial %s: %r", dest));
 return c.dfd;
 }
 dialler(dialc: chan of chan of ref Sys->FD, dest: string)

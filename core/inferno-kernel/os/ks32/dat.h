@@ -1,13 +1,13 @@
-typedef struct Conf	Conf;
-typedef struct FPU	FPU;
-typedef struct FPenv	FPenv;
-typedef struct Label	Label;
-typedef struct Lock	Lock;
-typedef struct Mach	Mach;
-typedef struct Ureg	Ureg;
-typedef struct ISAConf	ISAConf;
-typedef struct PCMmap	PCMmap;
-typedef struct PCIcfg	PCIcfg;
+typedef struct Conf Conf;
+typedef struct FPU FPU;
+typedef struct FPenv FPenv;
+typedef struct Label Label;
+typedef struct Lock Lock;
+typedef struct Mach Mach;
+typedef struct Ureg Ureg;
+typedef struct ISAConf ISAConf;
+typedef struct PCMmap PCMmap;
+typedef struct PCIcfg PCIcfg;
 typedef struct TouchPnt TouchPnt;
 typedef struct TouchTrans TouchTrans;
 typedef struct TouchCal TouchCal;
@@ -17,35 +17,35 @@ typedef ulong Instr;
 #define NISAOPT 8
 struct Conf
 {
-ulong	nmach;
-ulong	nproc;
-ulong	npage0;
-ulong	npage1;
-ulong	topofmem;
-ulong	npage;
-ulong	base0;
-ulong	base1;
-ulong	ialloc;
-ulong	flashbase;
-ulong	cpuspeed;
-ulong	pagetable;
-int		useminicache;
-int		cansetbacklight;
-int		cansetcontrast;
-int		remaplo;
-int		textwrite;
+ulong nmach;
+ulong nproc;
+ulong npage0;
+ulong npage1;
+ulong topofmem;
+ulong npage;
+ulong base0;
+ulong base1;
+ulong ialloc;
+ulong flashbase;
+ulong cpuspeed;
+ulong pagetable;
+int useminicache;
+int cansetbacklight;
+int cansetcontrast;
+int remaplo;
+int textwrite;
 };
 struct ISAConf {
-char	type[KNAMELEN];
-ulong	port;
-ulong	irq;
-ulong	sairq;
-ulong	dma;
-ulong	mem;
-ulong	size;
-ulong	freq;
-int	nopt;
-char	opt[NISAOPT][ISAOPTLEN];
+char type[KNAMELEN];
+ulong port;
+ulong irq;
+ulong sairq;
+ulong dma;
+ulong mem;
+ulong size;
+ulong freq;
+int nopt;
+char opt[NISAOPT][ISAOPTLEN];
 };
 enum
 {
@@ -53,66 +53,66 @@ FPINIT,
 FPACTIVE,
 FPINACTIVE,
 };
-struct	FPenv
+struct FPenv
 {
-ulong	status;
-ulong	control;
-ushort	fpistate;
-ulong	regs[8][3];
+ulong status;
+ulong control;
+ushort fpistate;
+ulong regs[8][3];
 };
-struct	FPU
+struct FPU
 {
-FPenv	env;
-uchar	regs[80];
+FPenv env;
+uchar regs[80];
 };
 struct Label
 {
-ulong	sp;
-ulong	pc;
+ulong sp;
+ulong pc;
 };
 struct Lock
 {
-ulong	key;
-ulong	sr;
-ulong	pc;
-int	pri;
+ulong key;
+ulong sr;
+ulong pc;
+int pri;
 };
 #include "../port/portdat.h"
 struct Mach
 {
-ulong	ticks;
-Proc	*proc;
-Label	sched;
-Lock	alarmlock;
-void	*alarm;
-int	machno;
-int	nrdy;
-int	stack[1];
+ulong ticks;
+Proc *proc;
+Label sched;
+Lock alarmlock;
+void *alarm;
+int machno;
+int nrdy;
+int stack[1];
 };
-#define	MACHP(n)	(n == 0 ? (Mach*)(MACHADDR) : (Mach*)0)
+#define MACHP(n) (n == 0 ? (Mach*)(MACHADDR) : (Mach*)0)
 extern Mach Mach0;
 extern Mach *m;
 extern Proc *up;
 typedef struct MemBank {
-uint	pbase;
-uint	plimit;
-uint	vbase;
-uint	vlimit;
+uint pbase;
+uint plimit;
+uint vbase;
+uint vlimit;
 } MemBank;
 enum {
-DmaOUT=		0,
-DmaIN=		1,
-DmaLittle=	0,
-DmaBig=		1,
-DmaUDC=		0,
-DmaSDLC=	2,
-DmaUART0=	4,
-DmaHSSP=	6,
-DmaUART1=	7,
-DmaUART2=	8,
-DmaMCPaudio=	10,
-DmaMCPtelecom=	12,
-DmaSSP=		14,
+DmaOUT= 0,
+DmaIN= 1,
+DmaLittle= 0,
+DmaBig= 1,
+DmaUDC= 0,
+DmaSDLC= 2,
+DmaUART0= 4,
+DmaHSSP= 6,
+DmaUART1= 7,
+DmaUART2= 8,
+DmaMCPaudio= 10,
+DmaMCPtelecom= 12,
+DmaSSP= 14,
 };
 enum touch_source {
 TOUCH_READ_X1, TOUCH_READ_X2, TOUCH_READ_X3, TOUCH_READ_X4,
@@ -123,33 +123,33 @@ TOUCH_READ_RY1, TOUCH_READ_RY2,
 TOUCH_NUMRAWCAL = 10,
 };
 struct TouchPnt {
-int	x;
-int	y;
+int x;
+int y;
 };
 struct TouchTrans {
-int	xxm;
-int	xym;
-int	yxm;
-int	yym;
-int	xa;
-int	ya;
+int xxm;
+int xym;
+int yxm;
+int yym;
+int xa;
+int ya;
 };
 struct TouchCal {
-TouchPnt	p[4];
-TouchPnt	r[4][4];
-TouchTrans 	t[4];
-TouchPnt	err;
-TouchPnt	var;
-int 		ptp;
-int		ptr;
+TouchPnt p[4];
+TouchPnt r[4][4];
+TouchTrans t[4];
+TouchPnt err;
+TouchPnt var;
+int ptp;
+int ptr;
 };
 extern TouchCal touchcal;
 struct Vmode {
-int	wid;
-int	hgt;
-uchar	d;
-uchar	hz;
-ushort	flags;
+int wid;
+int hgt;
+uchar d;
+uchar hz;
+ushort flags;
 };
 enum {
 VMODE_MONO = 0x0001,
@@ -169,4 +169,4 @@ PCMready,
 PCMeject,
 PCMstschng,
 };
-#define	swcursor	1
+#define swcursor 1

@@ -100,7 +100,7 @@ end
 @named flange_a = Flange()
 @named flange_b = Flange()
 eqs = [
-#   delta_s ~ flange_a.s - flange_b.s
+# delta_s ~ flange_a.s - flange_b.s
 f ~ k * (flange_a.s - flange_b.s - l) #delta_s
 flange_a.f ~ +f
 flange_b.f ~ -f]

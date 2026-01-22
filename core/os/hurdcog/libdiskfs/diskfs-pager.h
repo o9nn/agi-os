@@ -19,19 +19,19 @@ struct disk_image_user
 jmp_buf env;
 struct disk_image_user *next;
 };
-#define diskfs_catch_exception()					      \
-({									      \
-struct disk_image_user *diu = alloca (sizeof *diu);			      \
-error_t err;							      \
-diu->next = diskfs_exception_diu;					      \
-err = setjmp (diu->env);						      \
-if (err == 0)							      \
-diskfs_exception_diu = diu;					      \
-err;								      \
+#define diskfs_catch_exception() \
+({ \
+struct disk_image_user *diu = alloca (sizeof *diu); \
+error_t err; \
+diu->next = diskfs_exception_diu; \
+err = setjmp (diu->env); \
+if (err == 0) \
+diskfs_exception_diu = diu; \
+err; \
 })
-#define diskfs_end_catch_exception()					      \
-({									      \
-struct disk_image_user *diu = diskfs_exception_diu; 		      \
-diskfs_exception_diu = diu->next;					      \
+#define diskfs_end_catch_exception() \
+({ \
+struct disk_image_user *diu = diskfs_exception_diu; \
+diskfs_exception_diu = diu->next; \
 })
 #endif

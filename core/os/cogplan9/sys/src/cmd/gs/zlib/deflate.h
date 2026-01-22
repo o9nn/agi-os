@@ -2,36 +2,36 @@
 #define DEFLATE_H
 #include "zutil.h"
 #ifndef NO_GZIP
-#  define GZIP
+# define GZIP
 #endif
 #define LENGTH_CODES 29
-#define LITERALS  256
+#define LITERALS 256
 #define L_CODES (LITERALS+1+LENGTH_CODES)
-#define D_CODES   30
-#define BL_CODES  19
+#define D_CODES 30
+#define BL_CODES 19
 #define HEAP_SIZE (2*L_CODES+1)
 #define MAX_BITS 15
-#define INIT_STATE    42
-#define BUSY_STATE   113
+#define INIT_STATE 42
+#define BUSY_STATE 113
 #define FINISH_STATE 666
 typedef struct ct_data_s {
 union {
-ush  freq;
-ush  code;
+ush freq;
+ush code;
 } fc;
 union {
-ush  dad;
-ush  len;
+ush dad;
+ush len;
 } dl;
 } FAR ct_data;
 #define Freq fc.freq
 #define Code fc.code
-#define Dad  dl.dad
-#define Len  dl.len
-typedef struct static_tree_desc_s  static_tree_desc;
+#define Dad dl.dad
+#define Len dl.len
+typedef struct static_tree_desc_s static_tree_desc;
 typedef struct tree_desc_s {
 ct_data *dyn_tree;
-int     max_code;
+int max_code;
 static_tree_desc *stat_desc;
 } FAR tree_desc;
 typedef ush Pos;
@@ -39,26 +39,26 @@ typedef Pos FAR Posf;
 typedef unsigned IPos;
 typedef struct internal_state {
 z_streamp strm;
-int   status;
+int status;
 Bytef *pending_buf;
-ulg   pending_buf_size;
+ulg pending_buf_size;
 Bytef *pending_out;
-int   pending;
-int   wrap;
-Byte  method;
-int   last_flush;
-uInt  w_size;
-uInt  w_bits;
-uInt  w_mask;
+int pending;
+int wrap;
+Byte method;
+int last_flush;
+uInt w_size;
+uInt w_bits;
+uInt w_mask;
 Bytef *window;
 ulg window_size;
 Posf *prev;
 Posf *head;
-uInt  ins_h;
-uInt  hash_size;
-uInt  hash_bits;
-uInt  hash_mask;
-uInt  hash_shift;
+uInt ins_h;
+uInt hash_size;
+uInt hash_bits;
+uInt hash_mask;
+uInt hash_shift;
 long block_start;
 uInt match_length;
 IPos prev_match;
@@ -69,7 +69,7 @@ uInt lookahead;
 uInt prev_length;
 uInt max_chain_length;
 uInt max_lazy_match;
-#   define max_insert_length  max_lazy_match
+# define max_insert_length max_lazy_match
 int level;
 int strategy;
 uInt good_match;
@@ -86,7 +86,7 @@ int heap_len;
 int heap_max;
 uch depth[2*L_CODES+1];
 uchf *l_buf;
-uInt  lit_bufsize;
+uInt lit_bufsize;
 uInt last_lit;
 ushf *d_buf;
 ulg opt_len;
@@ -102,12 +102,12 @@ int bi_valid;
 } FAR deflate_state;
 #define put_byte(s, c) {s->pending_buf[s->pending++] = (c);}
 #define MIN_LOOKAHEAD (MAX_MATCH+MIN_MATCH+1)
-#define MAX_DIST(s)  ((s)->w_size-MIN_LOOKAHEAD)
-void _tr_init         OF((deflate_state *s));
-int  _tr_tally        OF((deflate_state *s, unsigned dist, unsigned lc));
-void _tr_flush_block  OF((deflate_state *s, charf *buf, ulg stored_len,
+#define MAX_DIST(s) ((s)->w_size-MIN_LOOKAHEAD)
+void _tr_init OF((deflate_state *s));
+int _tr_tally OF((deflate_state *s, unsigned dist, unsigned lc));
+void _tr_flush_block OF((deflate_state *s, charf *buf, ulg stored_len,
 int eof));
-void _tr_align        OF((deflate_state *s));
+void _tr_align OF((deflate_state *s));
 void _tr_stored_block OF((deflate_state *s, charf *buf, ulg stored_len,
 int eof));
 #define d_code(dist) \

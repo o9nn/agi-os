@@ -16,13 +16,13 @@
 #include "default_pager_U.h"
 const char *argp_program_version = STANDARD_HURD_VERSION (vmstat);
 static const struct argp_option options[] = {
-{"terse",	't', 0, 0, "Use short one-line output format"},
+{"terse", 't', 0, 0, "Use short one-line output format"},
 {"no-header", 'H', 0, 0, "Don't print a descriptive header line"},
-{"prefix",    'p', 0, 0, "Always display a description before stats"},
+{"prefix", 'p', 0, 0, "Always display a description before stats"},
 {"no-prefix", 'P', 0, 0, "Never display a description before stats"},
-{"pages",     'v', 0, 0, "Display sizes in pages"},
+{"pages", 'v', 0, 0, "Display sizes in pages"},
 {"kilobytes", 'k', 0, 0, "Display sizes in 1024 byte blocks"},
-{"bytes",     'b', 0, 0, "Display sizes in bytes"},
+{"bytes", 'b', 0, 0, "Display sizes in bytes"},
 {0}
 };
 static const char *args_doc = "[PERIOD [COUNT [HEADER_INTERVAL]]]";
@@ -83,7 +83,7 @@ u++;
 }
 printf ((fval >= 1000
 ? (sign ? "%+*.0f%c" : "%*.0f%c")
-: (sign ? "%+*.3g%c"  : "%*.3g%c")),
+: (sign ? "%+*.3g%c" : "%*.3g%c")),
 fwidth - 1, fval, *u);
 }
 else
@@ -93,8 +93,8 @@ val /= size_units;
 printf (sign ? "%+*lld" : "%*lld", fwidth, val);
 }
 }
-#define VAL_MAX_MEM   -1
-#define VAL_MAX_SWAP  -2
+#define VAL_MAX_MEM -1
+#define VAL_MAX_SWAP -2
 enum field_change_type
 {
 VARY,
@@ -217,54 +217,54 @@ SWAP_FIELD (get_swap_free, state->def_pager_info.dpi_free_space)
 SWAP_FIELD (get_swap_page_size, state->def_pager_info.dpi_page_size)
 SWAP_FIELD (get_swap_active, (state->def_pager_info.dpi_total_space
 - state->def_pager_info.dpi_free_space))
-#define _F(field_name)  offsetof (struct vm_state, field_name)
+#define _F(field_name) offsetof (struct vm_state, field_name)
 #define K 1024
 #define M (1024*K)
 #define G (1024LL*M)
 static const struct field fields[] =
 {
-{"pagesize",	   "pgsz", "System pagesize",
-CONST, PAGESZ, 16*K,		1, _F (vmstats.pagesize) },
-{"size",	   "size", "Usable physical memory",
-CONST, SIZE,   VAL_MAX_MEM,	1, 0, get_size },
-{"free",	   "free", "Unused physical memory",
-VARY,  SIZE,   VAL_MAX_MEM,	1, _F (vmstats.free_count) },
-{"active",	   "actv", "Physical memory in active use",
-VARY,  SIZE,   VAL_MAX_MEM,	1, _F (vmstats.active_count) },
-{"inactive", 	   "inact", "Physical memory in the inactive queue",
-VARY,  SIZE,   VAL_MAX_MEM,	1, _F (vmstats.inactive_count) },
-{"wired",    	   "wired", "Unpageable physical memory",
-VARY,  SIZE,   VAL_MAX_MEM,	1, _F (vmstats.wire_count) },
-{"zero filled",  "zeroed","Cumulative zero-filled pages",
-CUMUL, SIZE,   90*G,		1, _F (vmstats.zero_fill_count) },
-{"reactivated",  "react", "Cumulative reactivated inactive pages",
-CUMUL, SIZE,   900*M,	1, _F (vmstats.reactivations) },
-{"pageins",	   "pgins", "Cumulative pages paged in",
-CUMUL, SIZE,   90*G,		1, _F (vmstats.pageins) },
-{"pageouts",	   "pgouts","Cumulative pages paged out",
-CUMUL, SIZE,   90*G,		1, _F (vmstats.pageouts) },
-{"page faults",  "pfaults","Cumulative page faults",
-CUMUL, COUNT,  99999999,	1, _F (vmstats.faults) },
-{"cow faults",   "cowpfs", "Cumulative copy-on-write page faults",
-CUMUL, COUNT,  9999999,	1, _F (vmstats.cow_faults) },
+{"pagesize", "pgsz", "System pagesize",
+CONST, PAGESZ, 16*K, 1, _F (vmstats.pagesize) },
+{"size", "size", "Usable physical memory",
+CONST, SIZE, VAL_MAX_MEM, 1, 0, get_size },
+{"free", "free", "Unused physical memory",
+VARY, SIZE, VAL_MAX_MEM, 1, _F (vmstats.free_count) },
+{"active", "actv", "Physical memory in active use",
+VARY, SIZE, VAL_MAX_MEM, 1, _F (vmstats.active_count) },
+{"inactive", "inact", "Physical memory in the inactive queue",
+VARY, SIZE, VAL_MAX_MEM, 1, _F (vmstats.inactive_count) },
+{"wired", "wired", "Unpageable physical memory",
+VARY, SIZE, VAL_MAX_MEM, 1, _F (vmstats.wire_count) },
+{"zero filled", "zeroed","Cumulative zero-filled pages",
+CUMUL, SIZE, 90*G, 1, _F (vmstats.zero_fill_count) },
+{"reactivated", "react", "Cumulative reactivated inactive pages",
+CUMUL, SIZE, 900*M, 1, _F (vmstats.reactivations) },
+{"pageins", "pgins", "Cumulative pages paged in",
+CUMUL, SIZE, 90*G, 1, _F (vmstats.pageins) },
+{"pageouts", "pgouts","Cumulative pages paged out",
+CUMUL, SIZE, 90*G, 1, _F (vmstats.pageouts) },
+{"page faults", "pfaults","Cumulative page faults",
+CUMUL, COUNT, 99999999, 1, _F (vmstats.faults) },
+{"cow faults", "cowpfs", "Cumulative copy-on-write page faults",
+CUMUL, COUNT, 9999999, 1, _F (vmstats.cow_faults) },
 {"memobj lookups","lkups","Memory-object lookups",
-CUMUL, COUNT,  999999,	0, _F (vmstats.lookups) },
-{"memobj hits",   "hits", "Memory-object lookups with active pagers",
-CUMUL, COUNT,  999999,	0, _F (vmstats.hits) },
+CUMUL, COUNT, 999999, 0, _F (vmstats.lookups) },
+{"memobj hits", "hits", "Memory-object lookups with active pagers",
+CUMUL, COUNT, 999999, 0, _F (vmstats.hits) },
 {"memobj hit ratio","hrat","Percentage of memory-object lookups with active pagers",
-VARY, PCENT,   99,		1, -1, get_memobj_hit_ratio },
+VARY, PCENT, 99, 1, -1, get_memobj_hit_ratio },
 {"cached memobjs", "caobj", "Number of memory-objects retained in the page cache",
-VARY,  COUNT,  99999999,     1, _F (cache_stats.cache_object_count) },
-{"cache",        "cache", "Physical memory used by the page cache",
-VARY,  SIZE,   VAL_MAX_MEM,  1, _F (cache_stats.cache_count) },
-{"swap size",	   "swsize", "Size of the default-pager swap area",
-CONST, SIZE,   VAL_MAX_SWAP,	1, 0 ,get_swap_size },
-{"swap active",  "swactv", "Default-pager swap area in use",
-VARY,  SIZE,   VAL_MAX_SWAP,	0, 0 ,get_swap_active },
-{"swap free",	   "swfree", "Default-pager swap area available for swapping",
-VARY,  SIZE,   VAL_MAX_SWAP,	1, 0 ,get_swap_free },
+VARY, COUNT, 99999999, 1, _F (cache_stats.cache_object_count) },
+{"cache", "cache", "Physical memory used by the page cache",
+VARY, SIZE, VAL_MAX_MEM, 1, _F (cache_stats.cache_count) },
+{"swap size", "swsize", "Size of the default-pager swap area",
+CONST, SIZE, VAL_MAX_SWAP, 1, 0 ,get_swap_size },
+{"swap active", "swactv", "Default-pager swap area in use",
+VARY, SIZE, VAL_MAX_SWAP, 0, 0 ,get_swap_active },
+{"swap free", "swfree", "Default-pager swap area available for swapping",
+VARY, SIZE, VAL_MAX_SWAP, 1, 0 ,get_swap_free },
 {"swap pagesize","swpgsz", "Units used for swapping to the default pager",
-CONST, PAGESZ, 16*K,		0, 0 ,get_swap_page_size },
+CONST, PAGESZ, 16*K, 0, 0 ,get_swap_page_size },
 {0}
 };
 #undef _F
@@ -349,16 +349,16 @@ if (output_fields == 0)
 for (field = fields; field->name; field++)
 if (field->standard)
 output_fields |= (1 << (field - fields));
-#define SIZE_UNITS(field)						      \
-(size_units >= 0							      \
-? size_units								      \
+#define SIZE_UNITS(field) \
+(size_units >= 0 \
+? size_units \
 : ((field)->type == PAGESZ ? 0 : state.vmstats.pagesize))
 #define PVAL(val, field, width, sign) \
 print_val (val, (field)->type, SIZE_UNITS (field), width, sign)
-#define FWIDTH(field)							      \
-val_width ((field)->max == VAL_MAX_MEM ? get_size (&state, field)	      \
+#define FWIDTH(field) \
+val_width ((field)->max == VAL_MAX_MEM ? get_size (&state, field) \
 : (field)->max == VAL_MAX_SWAP ? get_swap_size (&state, field) \
-: (field)->max,						      \
+: (field)->max, \
 (field)->type, SIZE_UNITS (field))
 memset (&state, 0, sizeof (state));
 err = vm_state_refresh (&state);

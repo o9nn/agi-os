@@ -1,5 +1,5 @@
 #if !defined(ttfmemd_INCLUDED)
-#  define ttfmemd_INCLUDED
+# define ttfmemd_INCLUDED
 #include "gsstype.h"
 extern_st(st_TFace);
 extern_st(st_TInstance);

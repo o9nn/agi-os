@@ -7,17 +7,17 @@
 #include <frame.h>
 #include "flayer.h"
 #include "samterm.h"
-#define	DELTA	10
-static Flayer	**llist;
-static int	nllist;
-static int	nlalloc;
+#define DELTA 10
+static Flayer **llist;
+static int nllist;
+static int nlalloc;
 static Rectangle lDrect;
-Vis		visibility(Flayer *);
-void		newvisibilities(int);
-void		llinsert(Flayer*);
-void		lldelete(Flayer*);
-Image	*maincols[NCOL];
-Image	*cmdcols[NCOL];
+Vis visibility(Flayer *);
+void newvisibilities(int);
+void llinsert(Flayer*);
+void lldelete(Flayer*);
+Image *maincols[NCOL];
+Image *cmdcols[NCOL];
 void
 flstart(Rectangle r)
 {
@@ -141,7 +141,7 @@ l = llist[i];
 l->lastsr = ZR;
 ov = l->visible;
 l->visible = visibility(l);
-#define	V(a, b)	(((a)<<2)|((b)))
+#define V(a, b) (((a)<<2)|((b)))
 switch(V(ov, l->visible)){
 case V(Some, None):
 if(l->f.b)
@@ -386,7 +386,7 @@ scrdraw(l, scrtotal(l));
 }
 return 1;
 }
-static	int	somevis, someinvis, justvis;
+static int somevis, someinvis, justvis;
 Vis
 visibility(Flayer *l)
 {

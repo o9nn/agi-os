@@ -17,7 +17,7 @@ include "arg.m";
 myselfbuiltin: Shellbuiltin;
 Toolbar: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 initbuiltin: fn(c: ref Context, sh: Sh): string;
 runbuiltin: fn(c: ref Context, sh: Sh,
 cmd: list of ref Listnode, last: int): string;
@@ -26,7 +26,7 @@ cmd: list of ref Listnode): list of ref Listnode;
 whatis: fn(c: ref Sh->Context, sh: Sh, name: string, wtype: int): string;
 getself: fn(): Shellbuiltin;
 };
-MAXCONSOLELINES:	con 1024;
+MAXCONSOLELINES: con 1024;
 # execute this if no menu items have been created
 # by the init script.
 defaultscript :=
@@ -41,11 +41,11 @@ raise "fail:bad module";
 }
 init(ctxt: ref Draw->Context, argv: list of string)
 {
-sys  = load Sys Sys->PATH;
+sys = load Sys Sys->PATH;
 draw = load Draw Draw->PATH;
 if(draw == nil)
 badmodule(Draw->PATH);
-tk   = load Tk Tk->PATH;
+tk = load Tk Tk->PATH;
 if(tk == nil)
 badmodule(Tk->PATH);
 str = load String String->PATH;
@@ -70,7 +70,7 @@ sys->bind("#s", "/chan", sys->MBEFORE);
 arg->init(argv);
 arg->setusage("toolbar [-s] [-p]");
 startmenu := 1;
-#	ownsnarf := (sys->open("/chan/snarf", Sys->ORDWR) == nil);
+# ownsnarf := (sys->open("/chan/snarf", Sys->ORDWR) == nil);
 ownsnarf := sys->stat("/chan/snarf").t0 < 0;
 while((c := arg->opt()) != 0){
 case c {
@@ -110,7 +110,7 @@ setupfinished := chan of int;
 donesetup := 0;
 spawn setup(shctxt, setupfinished);
 snarf: array of byte;
-#	write("/prog/"+string sys->pctl(0, nil)+"/ctl", "restricted"); # for testing
+# write("/prog/"+string sys->pctl(0, nil)+"/ctl", "restricted"); # for testing
 for(;;) alt{
 k := <-tbtop.ctxt.kbd =>
 tk->keyboard(tbtop, k);
@@ -125,7 +125,7 @@ if (donesetup){
 {
 shctxt.run(ref Listnode(nil, s) :: nil, 0);
 } exception {
-"fail:*" =>	;
+"fail:*" => ;
 }
 }
 detask := <-task =>
@@ -133,7 +133,7 @@ deiconify(detask);
 (off, data, nil, wc) := <-snarfIO.write =>
 if(wc == nil)
 break;
-if (off == 0)			# write at zero truncates
+if (off == 0) # write at zero truncates
 snarf = data;
 else {
 if (off + len data > len snarf) {
@@ -148,13 +148,13 @@ wc <-= (len data, "");
 if(rc == nil)
 break;
 if (off >= len snarf) {
-rc <-= (nil, "");		# XXX alt
+rc <-= (nil, ""); # XXX alt
 break;
 }
 e := off + nbytes;
 if (e > len snarf)
 e = len snarf;
-rc <-= (snarf[off:e], "");	# XXX alt
+rc <-= (snarf[off:e], ""); # XXX alt
 donesetup = <-setupfinished =>
 ;
 }
@@ -303,8 +303,8 @@ runbuiltin(c: ref Context, sh: Sh,
 cmd: list of ref Listnode, nil: int): string
 {
 case (hd cmd).word {
-"menu" =>	return builtin_menu(c, sh, cmd);
-"delmenu" =>	return builtin_delmenu(c, sh, cmd);
+"menu" => return builtin_menu(c, sh, cmd);
+"delmenu" => return builtin_delmenu(c, sh, cmd);
 }
 return nil;
 }
@@ -439,7 +439,7 @@ con_cfg := array[] of
 "pack propagate . 0",
 "update"
 };
-nlines := 0;		# transcript length
+nlines := 0; # transcript length
 consoleproc(ctxt: ref Draw->Context, sync: chan of string)
 {
 iostdout := sys->file2chan("/chan", "wmstdout");

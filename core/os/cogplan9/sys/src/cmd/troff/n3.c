@@ -1,18 +1,18 @@
 #include "tdef.h"
 #include "fns.h"
 #include "ext.h"
-Tchar	*argtop;
-int	pagech = '%';
-int	strflg;
-#define	MHASHSIZE	128
-#define	MHASH(x)	((x>>6)^x) & (MHASHSIZE-1)
-Contab	*mhash[MHASHSIZE];
-Blockp	*blist;
-int	nblist;
-int	bfree = -1;
+Tchar *argtop;
+int pagech = '%';
+int strflg;
+#define MHASHSIZE 128
+#define MHASH(x) ((x>>6)^x) & (MHASHSIZE-1)
+Contab *mhash[MHASHSIZE];
+Blockp *blist;
+int nblist;
+int bfree = -1;
 Contab *contabp = NULL;
 #define MDELTA 500
-int	nm = 0;
+int nm = 0;
 int savname;
 int savslot;
 int freeslot = -1;
@@ -484,7 +484,7 @@ return(p->pch);
 #define SPACETEST(base, size) \
 if ((char*)base + size >= (char*)stk+STACKSIZE) \
 ERROR "Stacksize overflow in n3" WARN
-Offset pushi(Offset newip, int  mname)
+Offset pushi(Offset newip, int mname)
 {
 Stack *p;
 SPACETEST(nxf, sizeof(Stack));
@@ -553,8 +553,8 @@ goto rtn;
 char *memp;
 memp = (char *)savnxf;
 memp += sizeof(Stack);
-#define	CPERMAC	200
-#define	APERMAC	9
+#define CPERMAC 200
+#define APERMAC 9
 memp += APERMAC * sizeof(Tchar *);
 memp += CPERMAC * sizeof(Tchar);
 nxf = (Stack *)memp;
@@ -578,7 +578,7 @@ while (1) {
 i = getch();
 if (nlflg || (!quote && argpp != argppend && cbits(i) == ' '))
 break;
-if (   quote
+if ( quote
 && cbits(i) == '"'
 && cbits(i = getch()) != '"') {
 ch = i;
@@ -625,7 +625,7 @@ numtabp[DL].val = contabp[j].divsiz->diy;
 }
 }
 }
-#define FINDDIV(o) if ((o =  findmn(dip->curd)) < 0) \
+#define FINDDIV(o) if ((o = findmn(dip->curd)) < 0) \
 ERROR "lost diversion %s", unpair(dip->curd) WARN
 void casedi(void)
 {

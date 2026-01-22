@@ -1,13 +1,13 @@
 #define Unknown win_Unknown
 #define UNICODE
-#include	<windows.h>
+#include <windows.h>
 #include <winbase.h>
-#include	<winsock.h>
+#include <winsock.h>
 #undef Unknown
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
-#include	"r16.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
+#include "r16.h"
 enum{
 Qdir,
 Qarchctl,
@@ -17,26 +17,26 @@ Qhostmem
 };
 static
 Dirtab archtab[]={
-".",		{Qdir, 0, QTDIR},	0,	0555,
-"archctl",	{Qarchctl, 0},	0,	0444,
-"cputype",	{Qcputype},	0,	0444,
-"regquery",	{Qregquery}, 0,	0666,
-"hostmem",	{Qhostmem},	0,	0444,
+".", {Qdir, 0, QTDIR}, 0, 0555,
+"archctl", {Qarchctl, 0}, 0, 0444,
+"cputype", {Qcputype}, 0, 0444,
+"regquery", {Qregquery}, 0, 0666,
+"hostmem", {Qhostmem}, 0, 0444,
 };
 typedef struct Value Value;
 struct Value {
-int	type;
-int	size;
+int type;
+int size;
 union {
-ulong	w;
-vlong	q;
-char	data[1];
+ulong w;
+vlong q;
+char data[1];
 };
 };
 typedef struct Regroot Regroot;
 struct Regroot {
-char*	name;
-HKEY	root;
+char* name;
+HKEY root;
 };
 static Regroot roots[] = {
 {"HKEY_CLASSES_ROOT", HKEY_CLASSES_ROOT},
@@ -47,12 +47,12 @@ static Regroot roots[] = {
 {"HKEY_USERS", HKEY_USERS},
 };
 static struct {
-ulong	mhz;
+ulong mhz;
 int ncpu;
-char	cpu[64];
+char cpu[64];
 } arch;
-static	QLock	reglock;
-static	Value*	getregistry(HKEY, Rune16*, Rune16*);
+static QLock reglock;
+static Value* getregistry(HKEY, Rune16*, Rune16*);
 static int nprocs(void);
 static void
 archinit(void)

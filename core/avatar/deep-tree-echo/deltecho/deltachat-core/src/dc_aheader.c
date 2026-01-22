@@ -18,8 +18,8 @@ aheader->public_key = dc_key_new();
 }
 char* dc_aheader_render(const dc_aheader_t* aheader)
 {
-int             success = 0;
-char*           keybase64_wrapped = NULL;
+int success = 0;
+char* keybase64_wrapped = NULL;
 dc_strbuilder_t ret;
 dc_strbuilder_init(&ret, 0);
 if (aheader==NULL || aheader->addr==NULL || aheader->public_key->binary==NULL || aheader->public_key->type!=DC_KEY_PUBLIC) {
@@ -91,12 +91,12 @@ return 0;
 int dc_aheader_set_from_string(dc_aheader_t* aheader, const char* header_str__)
 {
 #define AHEADER_WS "\t\r\n "
-char*   header_str = NULL;
-char*   p = NULL;
-char*   beg_attr_name = NULL;
-char*   after_attr_name = NULL;
-char*   beg_attr_value = NULL;
-int     success = 0;
+char* header_str = NULL;
+char* p = NULL;
+char* beg_attr_name = NULL;
+char* after_attr_name = NULL;
+char* beg_attr_value = NULL;
+int success = 0;
 dc_aheader_empty(aheader);
 if (aheader==NULL || header_str__==NULL) {
 goto cleanup;
@@ -163,7 +163,7 @@ free(aheader);
 }
 dc_aheader_t* dc_aheader_new_from_imffields(const char* wanted_from, const struct mailimf_fields* header)
 {
-clistiter*    cur = NULL;
+clistiter* cur = NULL;
 dc_aheader_t* fine_header = NULL;
 if (wanted_from==NULL || header==NULL) {
 return 0;

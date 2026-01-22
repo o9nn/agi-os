@@ -3,34 +3,34 @@
 #include "draw.h"
 #include "tk.h"
 #include "keyboard.h"
-#define	O(t, e)		((long)(&((t*)0)->e))
+#define O(t, e) ((long)(&((t*)0)->e))
 typedef struct TkScale TkScale;
 struct TkScale
 {
-int	value;
-int	bigi;
-int	digits;
-int	digwidth;
-int	from;
-int	to;
-int	len;
-int	res;
-int	sv;
-int	sl;
-int	sw;
-int	relief;
-int	tick;
-int	orient;
-char*	command;
-char*	label;
-int	pixmin;
-int	pixmax;
-int	pixpos;
-int	center;
-int	pix;
-int	base;
-int	flag;
-int	jump;
+int value;
+int bigi;
+int digits;
+int digwidth;
+int from;
+int to;
+int len;
+int res;
+int sv;
+int sl;
+int sw;
+int relief;
+int tick;
+int orient;
+char* command;
+char* label;
+int pixmin;
+int pixmax;
+int pixpos;
+int center;
+int pix;
+int base;
+int flag;
+int jump;
 };
 enum {
 Dragging = (1<<0),
@@ -39,44 +39,44 @@ Autorepeat = (1<<1),
 static
 TkOption opts[] =
 {
-"bigincrement",		OPTnnfrac,	O(TkScale, bigi),	nil,
-"digits",		OPTdist,	O(TkScale, digits),	nil,
-"from",			OPTfrac,	O(TkScale, from),	nil,
-"to",			OPTfrac,	O(TkScale, to),		nil,
-"length",		OPTdist,	O(TkScale, len),	nil,
-"resolution",		OPTnnfrac,	O(TkScale, res),	nil,
-"showrange",	OPTignore,	0,	nil,
-"showvalue",		OPTstab,	O(TkScale, sv),		tkbool,
-"jump",		OPTstab, O(TkScale, jump),	tkbool,
-"sliderlength",		OPTdist,	O(TkScale, sl),		nil,
-"sliderrelief",		OPTstab,	O(TkScale, relief),	tkrelief,
-"tickinterval",		OPTfrac,	O(TkScale, tick),	nil,
-"tick",		OPTfrac,	O(TkScale, tick),	nil,
-"label",		OPTtext,	O(TkScale, label),	nil,
-"command",		OPTtext,	O(TkScale, command),	nil,
-"orient",		OPTstab,	O(TkScale, orient),	tkorient,
+"bigincrement", OPTnnfrac, O(TkScale, bigi), nil,
+"digits", OPTdist, O(TkScale, digits), nil,
+"from", OPTfrac, O(TkScale, from), nil,
+"to", OPTfrac, O(TkScale, to), nil,
+"length", OPTdist, O(TkScale, len), nil,
+"resolution", OPTnnfrac, O(TkScale, res), nil,
+"showrange", OPTignore, 0, nil,
+"showvalue", OPTstab, O(TkScale, sv), tkbool,
+"jump", OPTstab, O(TkScale, jump), tkbool,
+"sliderlength", OPTdist, O(TkScale, sl), nil,
+"sliderrelief", OPTstab, O(TkScale, relief), tkrelief,
+"tickinterval", OPTfrac, O(TkScale, tick), nil,
+"tick", OPTfrac, O(TkScale, tick), nil,
+"label", OPTtext, O(TkScale, label), nil,
+"command", OPTtext, O(TkScale, command), nil,
+"orient", OPTstab, O(TkScale, orient), tkorient,
 nil
 };
 static char trough1[] = "trough1";
 static char trough2[] = "trough2";
-static char slider[]  = "slider";
+static char slider[] = "slider";
 static
 TkEbind b[] =
 {
-{TkMotion,		"%W tkScaleMotion %x %y"},
-{TkButton1P|TkMotion,	"%W tkScaleDrag %x %y"},
-{TkButton1P,		"%W tkScaleMotion %x %y; %W tkScaleBut1P %x %y"},
-{TkButton1P|TkDouble,	"%W tkScaleMotion %x %y; %W tkScaleBut1P %x %y"},
-{TkButton1R,		"%W tkScaleDrag %x %y; %W tkScaleBut1R; %W tkScaleMotion %x %y"},
-{TkKey,		"%W tkScaleKey 0x%K"},
+{TkMotion, "%W tkScaleMotion %x %y"},
+{TkButton1P|TkMotion, "%W tkScaleDrag %x %y"},
+{TkButton1P, "%W tkScaleMotion %x %y; %W tkScaleBut1P %x %y"},
+{TkButton1P|TkDouble, "%W tkScaleMotion %x %y; %W tkScaleBut1P %x %y"},
+{TkButton1R, "%W tkScaleDrag %x %y; %W tkScaleBut1R; %W tkScaleMotion %x %y"},
+{TkKey, "%W tkScaleKey 0x%K"},
 };
 enum
 {
-Scalewidth	= 18,
-ScalePad	= 2,
-ScaleBW		= 1,
-ScaleSlider	= 16,
-ScaleLen	= 80,
+Scalewidth = 18,
+ScalePad = 2,
+ScaleBW = 1,
+ScaleSlider = 16,
+ScaleLen = 80,
 };
 static int
 maximum(int a, int b)
@@ -360,7 +360,7 @@ r = insetrect(r, ScalePad);
 if (tks->sv)
 r.min.x += tks->digwidth + ScalePad;
 if(tks->label != nil) {
-p =  stringsize(e->font, tks->label);
+p = stringsize(e->font, tks->label);
 r.max.x -= p.x;
 string(i, Pt(r.max.x, r.min.y), tkgc(e, fgnd), ZP, e->font, tks->label);
 r.max.x -= ScalePad;
@@ -398,7 +398,7 @@ draw(i, r2, tkgc(e, fgnd), nil, ZP);
 }
 }
 v = tks->value-tks->from;
-len  = tks->to-tks->from;
+len = tks->to-tks->from;
 if (len != 0)
 p.y += ((vlong)v*h)/len;
 p.x = sr.min.x;
@@ -750,7 +750,7 @@ tks->relief = TKsunken;
 tks->pix = z[1];
 tks->base = tks->value;
 tkscalecheckvalue(tk);
-} else  {
+} else {
 e = stepscale(tk, v, &repeat);
 if (e == nil && repeat) {
 tks->flag |= Autorepeat;
@@ -808,17 +808,17 @@ return nil;
 }
 TkCmdtab tkscalecmd[] =
 {
-"cget",			tkscalecget,
-"configure",		tkscaleconf,
-"set",			tkscaleset,
-"identify",		tkscaleident,
-"get",			tkscaleget,
-"coords",		tkscalecoords,
-"tkScaleMotion",	tkscalemotion,
-"tkScaleDrag",		tkscaledrag,
-"tkScaleBut1P",		tkscalebut1p,
-"tkScaleBut1R",		tkscalebut1r,
-"tkScaleKey",		tkscalekey,
+"cget", tkscalecget,
+"configure", tkscaleconf,
+"set", tkscaleset,
+"identify", tkscaleident,
+"get", tkscaleget,
+"coords", tkscalecoords,
+"tkScaleMotion", tkscalemotion,
+"tkScaleDrag", tkscaledrag,
+"tkScaleBut1P", tkscalebut1p,
+"tkScaleBut1R", tkscalebut1r,
+"tkScaleKey", tkscalekey,
 nil
 };
 TkMethod scalemethod = {

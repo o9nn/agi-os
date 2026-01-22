@@ -310,8 +310,8 @@ ggml_barrier(params->threadpool);
 int64_t job = params->ith;
 while (job < nb_job) {
 const int64_t ii = (job % ytiles) * RM * BM;
-const int64_t jb =  job / ytiles;
-const int64_t jr0 = BLOC_POS(jb  , jj_BN, SIZE_BN);
+const int64_t jb = job / ytiles;
+const int64_t jr0 = BLOC_POS(jb , jj_BN, SIZE_BN);
 const int64_t jrN = BLOC_POS(jb+1, jj_BN, SIZE_BN);
 const int64_t jj0 = BLOC_POS(jr0, jj_RN, RN);
 const int64_t jj2 = BLOC_POS(jrN, jj_RN, RN);
@@ -482,9 +482,9 @@ int ith, int nth)
 : A(A), B(B), C(C), k(k), lda(lda), ldb(ldb), ldc(ldc), ith(ith), nth(nth) {
 const int8_t kvalues_iq4nl[16] = {
 -127, -104, -83, -65,
--49,  -35,  -22, -10,
-1,   13,   25,  38,
-53,   69,   89, 113
+-49, -35, -22, -10,
+1, 13, 25, 38,
+53, 69, 89, 113
 };
 iq4nlt = _mm_loadu_si128((const __m128i *)kvalues_iq4nl);
 }
@@ -660,7 +660,7 @@ __m256i avec2 = load(A + lda * (ii + 2) + l);
 __m256i avec3 = load(A + lda * (ii + 3) + l);
 for (int64_t j = 0; j < RN; ++j) {
 __m128 db = _mm_set1_ps(unhalf(B[ldb * (jj + j) + l].d));
-__m256 dvec =  _mm256_castps128_ps256(_mm_mul_ps(da, db));
+__m256 dvec = _mm256_castps128_ps256(_mm_mul_ps(da, db));
 dvec = _mm256_permute2f128_ps(dvec ,dvec, 0);
 Cv[j][0] = madd(_mm256_shuffle_ps(dvec, dvec, 0),
 updot(_mm256_sign_epi8(avec0, avec0),
@@ -708,7 +708,7 @@ __m256i bvec2 = load(B + ldb * (jj + 2) + l);
 __m256i bvec3 = load(B + ldb * (jj + 3) + l);
 for (int64_t i = 0; i < RM; ++i) {
 __m128 da = _mm_set1_ps(unhalf((A[lda * (ii + i) + l].d)));
-__m256 dvec =  _mm256_castps128_ps256(_mm_mul_ps(da, db));
+__m256 dvec = _mm256_castps128_ps256(_mm_mul_ps(da, db));
 dvec = _mm256_permute2f128_ps(dvec ,dvec, 0);
 Cv[0][i] = madd(_mm256_shuffle_ps(dvec, dvec, 0),
 updot(_mm256_sign_epi8(load(A + lda * (ii + i) + l),

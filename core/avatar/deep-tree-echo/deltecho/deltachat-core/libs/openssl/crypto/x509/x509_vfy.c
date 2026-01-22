@@ -10,15 +10,15 @@
 #include <openssl/x509.h>
 #include <openssl/x509v3.h>
 #include <openssl/objects.h>
-#define CRL_SCORE_NOCRITICAL    0x100
-#define CRL_SCORE_SCOPE         0x080
-#define CRL_SCORE_TIME          0x040
-#define CRL_SCORE_ISSUER_NAME   0x020
+#define CRL_SCORE_NOCRITICAL 0x100
+#define CRL_SCORE_SCOPE 0x080
+#define CRL_SCORE_TIME 0x040
+#define CRL_SCORE_ISSUER_NAME 0x020
 #define CRL_SCORE_VALID (CRL_SCORE_NOCRITICAL|CRL_SCORE_TIME|CRL_SCORE_SCOPE)
-#define CRL_SCORE_ISSUER_CERT   0x018
-#define CRL_SCORE_SAME_PATH     0x008
-#define CRL_SCORE_AKID          0x004
-#define CRL_SCORE_TIME_DELTA    0x002
+#define CRL_SCORE_ISSUER_CERT 0x018
+#define CRL_SCORE_SAME_PATH 0x008
+#define CRL_SCORE_AKID 0x004
+#define CRL_SCORE_TIME_DELTA 0x002
 static int null_callback(int ok, X509_STORE_CTX *e);
 static int check_issued(X509_STORE_CTX *ctx, X509 *x, X509 *issuer);
 static X509 *find_issuer(X509_STORE_CTX *ctx, STACK_OF(X509) *sk, X509 *x);

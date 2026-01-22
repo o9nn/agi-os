@@ -7,25 +7,25 @@
 typedef struct Icon Icon;
 struct Icon
 {
-Icon	*next;
-uchar	w;
-uchar	h;
-ushort	ncolor;
-ushort	nplane;
-ushort	bits;
-ulong	len;
-ulong	offset;
-Image	*img;
-Image	*mask;
+Icon *next;
+uchar w;
+uchar h;
+ushort ncolor;
+ushort nplane;
+ushort bits;
+ulong len;
+ulong offset;
+Image *img;
+Image *mask;
 Rectangle r;
 Rectangle sr;
 };
 typedef struct Header Header;
 struct Header
 {
-uint	n;
-Icon	*first;
-Icon	*last;
+uint n;
+Icon *first;
+Icon *last;
 };
 int debug;
 Mouse mouse;
@@ -225,13 +225,13 @@ Mexit,
 Up= 1,
 Down= 0,
 };
-char	*menu3str[] = {
-[Mimage]	"write image",
-[Mmask]		"write mask",
-[Mexit]		"exit",
+char *menu3str[] = {
+[Mimage] "write image",
+[Mmask] "write mask",
+[Mexit] "exit",
 0,
 };
-Menu	menu3 = {
+Menu menu3 = {
 menu3str
 };
 Cursor sight = {

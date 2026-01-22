@@ -41,13 +41,13 @@ byte f = (byte)color
 #define putw(ptr, wxyz)\
 *(bits32 *)(ptr) = (wxyz)
 #if arch_is_big_endian
-#  define set_color48_cache(color, a, b, c, d, e, f)\
+# define set_color48_cache(color, a, b, c, d, e, f)\
 mdev->color48.abcd = abcd = (color) >> 16, \
 mdev->color48.cdef = cdef = (abcd << 16) | ((e) <<8) | (f),\
 mdev->color48.efab = efab = (cdef << 16) | ((a) <<8) | (b),\
 mdev->color48.abcdef = (color)
 #else
-#  define set_color48_cache(color, a, b, c, d, e, f)\
+# define set_color48_cache(color, a, b, c, d, e, f)\
 mdev->color48.abcd = abcd =\
 ((bits32)(d) << 24) | ((bits32)(c) << 16) |\
 ((bits16)(b) << 8) | (a),\

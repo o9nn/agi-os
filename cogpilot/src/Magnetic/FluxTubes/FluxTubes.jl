@@ -9,4 +9,4 @@ ElectroMagneticConverter
 include("basic.jl")
 export ConstantMagneticPotentialDifference, ConstantMagneticFlux
 include("sources.jl")
-end  #module
+end #module

@@ -1,7 +1,7 @@
-#    Last change:  R    24 May 2001   11:05 am
+# Last change: R 24 May 2001 11:05 am
 implement PPPTest;
 include "sys.m";
-sys:	Sys;
+sys: Sys;
 include "draw.m";
 include "lock.m";
 include "modem.m";
@@ -9,7 +9,7 @@ include "script.m";
 include "pppclient.m";
 include "pppgui.m";
 PPPTest: module {
-init:	fn(nil: ref Draw->Context, args: list of string);
+init: fn(nil: ref Draw->Context, args: list of string);
 };
 usage()
 {
@@ -20,10 +20,10 @@ exit;
 init( ctxt: ref Draw->Context, argv: list of string )
 {
 sys = load Sys Sys->PATH;
-mi:	Modem->ModemInfo;
-pi:	PPPClient->PPPInfo;
+mi: Modem->ModemInfo;
+pi: PPPClient->PPPInfo;
 tel : string;
-#	si:	Script->ScriptInfo;
+# si: Script->ScriptInfo;
 argv = tl argv;
 if(argv == nil)
 usage();

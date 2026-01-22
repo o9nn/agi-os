@@ -9,31 +9,31 @@ include "sh.m";
 include "arg.m";
 M4: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 NHASH: con 131;
 Name: adt {
-name:	string;
-repl:	string;
-impl:	ref fn(nil: array of string);
-dol:	int;	# repl contains $[0-9]
-asis:	int;	# replacement text not rescanned
-text:	fn(n: self ref Name): string;
+name: string;
+repl: string;
+impl: ref fn(nil: array of string);
+dol: int; # repl contains $[0-9]
+asis: int; # replacement text not rescanned
+text: fn(n: self ref Name): string;
 };
 names := array[NHASH] of list of ref Name;
 File: adt {
-name:	string;
-line:	int;
-fp:	ref Iobuf;
+name: string;
+line: int;
+fp: ref Iobuf;
 };
 Param: adt {
-s:	string;
+s: string;
 };
 pushedback: string;
-pushedp := 0;	# next available index in pushedback
+pushedp := 0; # next available index in pushedback
 diverted := array[10] of string;
 curdiv := 0;
-curarg: ref Param;	# non-nil if collecting argument string
+curarg: ref Param; # non-nil if collecting argument string
 instack: list of ref File;
 lquote := '`';
 rquote := '\'';
@@ -57,7 +57,7 @@ arg->init(args);
 while((o := arg->opt()) != 0){
 case o {
 'D' or 'Q' or 'U' =>
-;	# for second pass
+; # for second pass
 'p' =>
 prefix = arg->earg();
 't' =>
@@ -176,17 +176,17 @@ pushc(c);
 puts(tok);
 return;
 }
-if(c != '(' || def.asis){	# no parameters
+if(c != '(' || def.asis){ # no parameters
 pushc(c);
 expand(def, array[] of {tok});
 return;
 }
 # collect arguments, allowing for nested parentheses;
 # on ')' expand definition, further expanding $n references therein
-argstack := def.name :: nil;	# $0
-savearg := curarg;	# save parameter (if any) for outer call
+argstack := def.name :: nil; # $0
+savearg := curarg; # save parameter (if any) for outer call
 curarg = ref Param("");
-nesting := 0;	# () depth
+nesting := 0; # () depth
 skipws();
 mark := instack;
 for(;;){
@@ -216,7 +216,7 @@ putc(c);
 }
 }
 argstack = curarg.s :: argstack;
-curarg = savearg;	# restore outer parameter (if any)
+curarg = savearg; # restore outer parameter (if any)
 # build arguments
 narg := len argstack;
 args := array[narg] of string;
@@ -483,14 +483,14 @@ pushs(string curdiv);
 }
 doundivert(args: array of string)
 {
-if(len args <= 1){	# do all but current, in order
+if(len args <= 1){ # do all but current, in order
 for(i := 1; i < len diverted; i++){
 if(i != curdiv){
 puts(diverted[i]);
 diverted[i] = nil;
 }
 }
-}else{	# do those specified
+}else{ # do those specified
 for(i := 1; i < len args; i++){
 n := int args[i];
 if(n > 0 && n < len diverted && n != curdiv){
@@ -742,54 +742,54 @@ return 0;
 eval1(op: int, v1, v2: int): int raises Badeval
 {
 case op{
-'+' =>	return v1 + v2;
-'-' =>	return v1 - v2;
-'*' =>		return v1 * v2;
+'+' => return v1 + v2;
+'-' => return v1 - v2;
+'*' => return v1 * v2;
 '%' =>
 if(v2 == 0)
-raise Badeval;	# division by zero
+raise Badeval; # division by zero
 return v1 % v2;
 '/' =>
 if(v2 == 0)
-raise Badeval;	# division by zero
+raise Badeval; # division by zero
 return v1 / v2;
 Opow =>
 if(v2 < 0)
 raise Badeval;
 return v1 ** v2;
-'&' =>	return v1 & v2;
-'|' =>		return v1 | v2;
-'^' =>	return v1 ^ v2;
-Olsh =>	return v1 << v2;
-Orsh =>	return v1 >> v2;
-Oand =>	return v1 && v2;
-Oor =>	return v1 || v2;
-'<' =>	return v1 < v2;
-'>' =>	return v1 > v2;
-Ole =>	return v1 <= v2;
-Oge =>	return v1 >= v2;
-One =>	return v1 != v2;
-Oeq =>	return v1 == v2;
+'&' => return v1 & v2;
+'|' => return v1 | v2;
+'^' => return v1 ^ v2;
+Olsh => return v1 << v2;
+Orsh => return v1 >> v2;
+Oand => return v1 && v2;
+Oor => return v1 || v2;
+'<' => return v1 < v2;
+'>' => return v1 > v2;
+Ole => return v1 <= v2;
+Oge => return v1 >= v2;
+One => return v1 != v2;
+Oeq => return v1 == v2;
 * =>
-sys->print("unknown op: %c\n", op);	# shouldn't happen
+sys->print("unknown op: %c\n", op); # shouldn't happen
 raise Badeval;
 }
 }
 priority(c: int): int
 {
 case c {
-Oor =>	return 1;
-Oand =>	return 2;
-'|' =>		return 3;
-'^' =>	return 4;
-'&' =>	return 5;
-Oeq or One =>	return 6;
+Oor => return 1;
+Oand => return 2;
+'|' => return 3;
+'^' => return 4;
+'&' => return 5;
+Oeq or One => return 6;
 '<' or '>' or Oge or Ole => return 7;
-Olsh or Orsh =>	return 8;
+Olsh or Orsh => return 8;
 '+' or '-' => return 9;
 '*' or '/' or '%' => return 10;
-Opow =>	return 11;
-* =>	return 0;
+Opow => return 11;
+* => return 0;
 }
 }
 rightassoc(c: int): int
@@ -849,7 +849,7 @@ lex(): int
 {
 if((c := looked) >= 0){
 looked = -1;
-return c;	# if Odigits, assumes yylval untouched
+return c; # if Odigits, assumes yylval untouched
 }
 while(evalp < len evalin && isspace(evalin[evalp]))
 evalp++;

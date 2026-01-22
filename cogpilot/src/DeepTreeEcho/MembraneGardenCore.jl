@@ -24,7 +24,7 @@ fitness(τ) = performance(reservoir(τ)) + energy(jsurface(τ))
 # Feedback Loop Architecture
 ```
 Trees → Reservoir Connectivity → Performance
-↑                                    ↓
+↑ ↓
 ←─────── Fitness Feedback ──────────┘
 ↓
 Mutation & Selection
@@ -160,7 +160,7 @@ jsurface_feedback::Dict{String, Float64}
 )
 # Base fitness from tree structure
 order = length(tree.tree)
-structure_fitness = 1.0 / (1.0 + order)  # Prefer smaller trees
+structure_fitness = 1.0 / (1.0 + order) # Prefer smaller trees
 # Reservoir performance contribution
 reservoir_activity = get(reservoir_feedback, "activity", 0.0)
 reservoir_stability = get(reservoir_feedback, "stability", 0.0)
@@ -199,7 +199,7 @@ idx = rand(2:length(mutated))
 deleteat!(mutated, idx)
 elseif mutation_type == 2
 # Add a node
-if length(mutated) < 20  # Max size limit
+if length(mutated) < 20 # Max size limit
 parent_level = rand(mutated)
 push!(mutated, parent_level + 1)
 end
@@ -469,4 +469,4 @@ return Dict{String, Any}(
 garden.fitness_history[end] - garden.fitness_history[end-1] : 0.0
 )
 end
-end  # module MembraneGardenCore
+end # module MembraneGardenCore

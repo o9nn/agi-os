@@ -7,9 +7,9 @@
 #include <time.h>
 #include <math.h>
 #include <pthread.h>
-#define DTESN_BSERIES_VECTOR_BATCH_SIZE       64
-#define DTESN_BSERIES_VECTOR_THREAD_COUNT     4
-#define DTESN_BSERIES_VECTOR_CACHE_LINE       64
+#define DTESN_BSERIES_VECTOR_BATCH_SIZE 64
+#define DTESN_BSERIES_VECTOR_THREAD_COUNT 4
+#define DTESN_BSERIES_VECTOR_CACHE_LINE 64
 typedef struct {
 dtesn_bseries_tree_t **trees;
 uint32_t start_idx;

@@ -1,33 +1,33 @@
 #! /bin/bash
 if [ -z $MASTER_CONFIG_FILE ]; then
-	echo "MASTER_CONFIG_FILE not defined!"
-	exit -1
+echo "MASTER_CONFIG_FILE not defined!"
+exit -1
 fi
 if [ -r $MASTER_CONFIG_FILE ]; then
-	. $MASTER_CONFIG_FILE
+. $MASTER_CONFIG_FILE
 else
-	echo "Cannot find master configuration file!"
-	exit -1
+echo "Cannot find master configuration file!"
+exit -1
 fi
 if ! [ -z ${MST_CONF_FILE} ] && [ -r ${MST_CONF_FILE} ]; then
-	. ${MST_CONF_FILE}
+. ${MST_CONF_FILE}
 else
-	echo "Cannot find MST configuration file!"
-	exit -1
+echo "Cannot find MST configuration file!"
+exit -1
 fi
 if ! [ -z ${GRAM_CONF_FILE} ] && [ -r ${GRAM_CONF_FILE} ]; then
-	. ${GRAM_CONF_FILE}
+. ${GRAM_CONF_FILE}
 else
-	echo "Cannot find grammatical class clustering configuration file!"
-	exit -1
+echo "Cannot find grammatical class clustering configuration file!"
+exit -1
 fi
 if [[ $STORAGE_NODE = "(RocksStorageNode"* ]]; then
-	cp -pr ${MST_DB} ${GRAM_DB}
+cp -pr ${MST_DB} ${GRAM_DB}
 elif [[ $STORAGE_NODE = "(PostgresStorageNode"* ]]; then
-	createdb -T ${MST_DB} ${GRAM_DB}
+createdb -T ${MST_DB} ${GRAM_DB}
 else
-	echo "Unknown storage medium!"
-	exit -1
+echo "Unknown storage medium!"
+exit -1
 fi
 guile -l ${COMMON_DIR}/cogserver-gram.scm -c "(sleep 150000000)" &
 sleep 3

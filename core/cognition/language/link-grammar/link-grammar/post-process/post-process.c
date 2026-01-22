@@ -397,8 +397,8 @@ memset(&pp_data->domain_array[pp_data->domlen], 0, incsz);
 pp_data->domlen += DOMINC;
 }
 pp_data->domain_array[n].string = string;
-pp_data->domain_array[n].lol    = NULL;
-pp_data->domain_array[n].size   = 0;
+pp_data->domain_array[n].lol = NULL;
+pp_data->domain_array[n].size = 0;
 pp_data->domain_array[n].start_link = start_link;
 pp_data->N_domains++;
 assert(pp_data->N_domains<PP_MAX_DOMAINS, "raise value of PP_MAX_DOMAINS");

@@ -8,15 +8,15 @@ echo "========================================="
 echo "Updating $PACKAGE_NAME package"
 echo "========================================="
 if [ ! -d "KogboldAI" ]; then
-    echo "Cloning KogboldAI repository..."
-    git clone --depth 1 --branch "$BRANCH" "$REPO_URL" KogboldAI
+echo "Cloning KogboldAI repository..."
+git clone --depth 1 --branch "$BRANCH" "$REPO_URL" KogboldAI
 else
-    echo "Updating existing KogboldAI repository..."
-    cd KogboldAI
-    git fetch origin "$BRANCH"
-    git checkout "$BRANCH"
-    git pull
-    cd ..
+echo "Updating existing KogboldAI repository..."
+cd KogboldAI
+git fetch origin "$BRANCH"
+git checkout "$BRANCH"
+git pull
+cd ..
 fi
 SOURCE_DIR="${PACKAGE_NAME}-${VERSION}"
 rm -rf "$SOURCE_DIR"

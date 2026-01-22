@@ -16,18 +16,18 @@ cuGetErrorName(stat, &msg);
 fprintf(stderr, "CUDA Error: %s %s %d\n", msg, file, line);
 }
 }
-#define cuErrCheck(stat)                     \
-{                                          \
+#define cuErrCheck(stat) \
+{ \
 cuErrCheck_((stat), __FILE__, __LINE__); \
 }
-#define CUDACHECK(cmd)                                              \
-do {                                                              \
-cudaError_t e = cmd;                                            \
-if (e != cudaSuccess) {                                         \
+#define CUDACHECK(cmd) \
+do { \
+cudaError_t e = cmd; \
+if (e != cudaSuccess) { \
 printf("Failed: Cuda error %s:%d '%s'\n", __FILE__, __LINE__, \
-cudaGetErrorString(e));                                \
-exit(EXIT_FAILURE);                                           \
-}                                                               \
+cudaGetErrorString(e)); \
+exit(EXIT_FAILURE); \
+} \
 } while (0)
 inline constexpr int kMinHistoryTokensPerBlock = 128;
 inline constexpr float kEnableMinBlockFactor = 4.0;

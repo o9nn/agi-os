@@ -7,8 +7,8 @@
 #define FIRST_LDT_ENTRY (FIRST_TSS_ENTRY+1)
 #define _TSS(n) ((((unsigned long) n)<<4)+(FIRST_TSS_ENTRY<<3))
 #define _LDT(n) ((((unsigned long) n)<<4)+(FIRST_LDT_ENTRY<<3))
-#define load_TR(n) __asm__("ltr %%ax":  :"a" (_TSS(n)))
-#define load_ldt(n) __asm__("lldt %%ax":  :"a" (_LDT(n)))
+#define load_TR(n) __asm__("ltr %%ax": :"a" (_TSS(n)))
+#define load_ldt(n) __asm__("lldt %%ax": :"a" (_LDT(n)))
 #define store_TR(n) \
 __asm__("str %%ax\n\t" \
 "subl %2,%%eax\n\t" \
@@ -18,7 +18,7 @@ __asm__("str %%ax\n\t" \
 #define loaddebug(tsk,register) \
 __asm__("movl %0,%%edx\n\t" \
 "movl %%edx,%%db" #register "\n\t" \
-:  \
+: \
 :"m" (tsk->debugreg[register]) \
 :"dx");
 #ifdef __SMP__
@@ -28,7 +28,7 @@ if(prev->flags&PF_USEDFPU) \
 { \
 __asm__ __volatile__("fnsave %0":"=m" (prev->tss.i387.hard)); \
 __asm__ __volatile__("fwait"); \
-prev->flags&=~PF_USEDFPU;	 \
+prev->flags&=~PF_USEDFPU; \
 } \
 prev->lock_depth=syscall_count; \
 kernel_counter+=next->lock_depth-prev->lock_depth; \
@@ -42,7 +42,7 @@ __asm__("pushl %%edx\n\t" \
 "popl %%edx\n\t" \
 "ljmp %0\n\t" \
 "sti\n\t" \
-:  \
+: \
 :"m" (*(((char *)&next->tss.tr)-4)), \
 "c" (next)); \
 \
@@ -62,7 +62,7 @@ __asm__("movl %2,"SYMBOL_NAME_STR(current_set)"\n\t" \
 "jne 1f\n\t" \
 "clts\n" \
 "1:" \
-:  \
+: \
 :"m" (*(((char *)&next->tss.tr)-4)), \
 "r" (prev), "r" (next)); \
 \
@@ -80,7 +80,7 @@ __asm__("movw %%dx,%0\n\t" \
 "rorl $16,%%edx\n\t" \
 "movb %%dl,%1\n\t" \
 "movb %%dh,%2" \
-:  \
+: \
 :"m" (*((addr)+2)), \
 "m" (*((addr)+4)), \
 "m" (*((addr)+7)), \
@@ -93,7 +93,7 @@ __asm__("movw %%dx,%0\n\t" \
 "andb $0xf0,%%dh\n\t" \
 "orb %%dh,%%dl\n\t" \
 "movb %%dl,%1" \
-:  \
+: \
 :"m" (*(addr)), \
 "m" (*((addr)+6)), \
 "d" (limit) \
@@ -128,8 +128,8 @@ __asm__ __volatile__ ( \
 "movl %%cr0,%%eax\n\t" \
 "orl $8,%%eax\n\t" \
 "movl %%eax,%%cr0" \
-:  \
-:  \
+: \
+: \
 :"ax")
 #define xchg(ptr,x) ((__typeof__(*(ptr)))__xchg((unsigned long)(x),(ptr),sizeof(*(ptr))))
 #define tas(ptr) (xchg((ptr),1))
@@ -159,7 +159,7 @@ break;
 }
 return x;
 }
-#define mb()  __asm__ __volatile__ (""   : : :"memory")
+#define mb() __asm__ __volatile__ ("" : : :"memory")
 #define __sti() __asm__ __volatile__ ("sti": : :"memory")
 #define __cli() __asm__ __volatile__ ("cli": : :"memory")
 #define __save_flags(x) (x = ((curr_ipl[cpu_number()] > 0) ? 0 : (1 << 9)))
@@ -216,7 +216,7 @@ __asm__ __volatile__ ("movw $" #limit ",%1\n\t" \
 "movb $0x00,%5\n\t" \
 "movb %%ah,%6\n\t" \
 "rorl $16,%%eax" \
-:  \
+: \
 :"a" (addr+0xc0000000), "m" (*(n)), "m" (*(n+2)), "m" (*(n+4)), \
 "m" (*(n+5)), "m" (*(n+6)), "m" (*(n+7)) \
 )

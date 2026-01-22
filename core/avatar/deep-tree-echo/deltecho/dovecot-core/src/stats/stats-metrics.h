@@ -19,12 +19,12 @@ void (*transport)(const struct exporter *, const buffer_t *);
 struct metric_export_info {
 const struct exporter *exporter;
 enum event_exporter_includes {
-EVENT_EXPORTER_INCL_NONE       = 0,
-EVENT_EXPORTER_INCL_NAME       = 0x01,
-EVENT_EXPORTER_INCL_HOSTNAME   = 0x02,
+EVENT_EXPORTER_INCL_NONE = 0,
+EVENT_EXPORTER_INCL_NAME = 0x01,
+EVENT_EXPORTER_INCL_HOSTNAME = 0x02,
 EVENT_EXPORTER_INCL_TIMESTAMPS = 0x04,
 EVENT_EXPORTER_INCL_CATEGORIES = 0x08,
-EVENT_EXPORTER_INCL_FIELDS     = 0x10,
+EVENT_EXPORTER_INCL_FIELDS = 0x10,
 } include;
 };
 struct metric_field {

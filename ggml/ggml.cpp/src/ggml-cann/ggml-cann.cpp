@@ -1358,10 +1358,10 @@ if(opt == GGML_OP_POOL_MAX){
 return false;
 }
 #endif
-const int       k0   = opts[1];
-const int       k1   = opts[2];
-const int       p0   = opts[5];
-const int       p1   = opts[6];
+const int k0 = opts[1];
+const int k1 = opts[2];
+const int p0 = opts[5];
+const int p1 = opts[6];
 return (p0 <= (k0 / 2)) && (p1 <= (k1 / 2));
 }
 case GGML_OP_SUM:
@@ -1431,7 +1431,7 @@ if (op->src[0]->ne[3] != 1) {
 return false;
 }
 float logitSoftcap = 0.0f;
-memcpy(&logitSoftcap,  (float*)op->op_params + 2, sizeof(float));
+memcpy(&logitSoftcap, (float*)op->op_params + 2, sizeof(float));
 if(logitSoftcap != 0.0f) {
 return false;
 }
@@ -1509,9 +1509,9 @@ GGML_UNUSED(dev);
 return GGML_BACKEND_DEVICE_TYPE_GPU;
 }
 static void ggml_backend_cann_device_get_props(ggml_backend_dev_t dev, ggml_backend_dev_props * props) {
-props->name        = ggml_backend_cann_device_get_name(dev);
+props->name = ggml_backend_cann_device_get_name(dev);
 props->description = ggml_backend_cann_device_get_description(dev);
-props->type        = ggml_backend_cann_device_get_type(dev);
+props->type = ggml_backend_cann_device_get_type(dev);
 ggml_backend_cann_device_get_memory(dev, &props->memory_free, &props->memory_total);
 bool host_buffer = getenv("GGML_CANN_NO_PINNED") == nullptr;
 props->caps = {

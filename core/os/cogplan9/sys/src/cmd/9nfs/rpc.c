@@ -1,9 +1,9 @@
 #include "all.h"
-#define	SHORT(x)	r->x = (p[1] | (p[0]<<8)); p += 2
-#define	LONG(x)		r->x = (p[3] | (p[2]<<8) |\
+#define SHORT(x) r->x = (p[1] | (p[0]<<8)); p += 2
+#define LONG(x) r->x = (p[3] | (p[2]<<8) |\
 (p[1]<<16) | (p[0]<<24)); p += 4
-#define SKIPLONG	p += 4
-#define	PTR(x, n)	r->x = (void *)(p); p += ROUNDUP(n)
+#define SKIPLONG p += 4
+#define PTR(x, n) r->x = (void *)(p); p += ROUNDUP(n)
 int
 rpcM2S(void *ap, Rpccall *r, int n)
 {
@@ -121,12 +121,12 @@ r->s = strstore(s);
 free(s);
 return p - (uchar *)arg;
 }
-#undef	SHORT
-#undef	LONG
-#undef	PTR
-#define	SHORT(x)	p[1] = r->x; p[0] = r->x>>8; p += 2
-#define	LONG(x)		p[3] = r->x; p[2] = r->x>>8; p[1] = r->x>>16; p[0] = r->x>>24; p += 4
-#define	PTR(x,n)	memmove(p, r->x, n); p += ROUNDUP(n)
+#undef SHORT
+#undef LONG
+#undef PTR
+#define SHORT(x) p[1] = r->x; p[0] = r->x>>8; p += 2
+#define LONG(x) p[3] = r->x; p[2] = r->x>>8; p[1] = r->x>>16; p[0] = r->x>>24; p += 4
+#define PTR(x,n) memmove(p, r->x, n); p += ROUNDUP(n)
 int
 rpcS2M(Rpccall *r, int ndata, void *ap)
 {
@@ -196,11 +196,11 @@ break;
 }
 return p - (uchar *)ap;
 }
-#undef	SHORT
-#undef	LONG
-#undef	PTR
-#define	LONG(m, x)	fprint(fd, "%s = %ld\n", m, r->x)
-#define	PTR(m, count)	fprint(fd, "%s [%ld]\n", m, count)
+#undef SHORT
+#undef LONG
+#undef PTR
+#define LONG(m, x) fprint(fd, "%s = %ld\n", m, r->x)
+#define PTR(m, count) fprint(fd, "%s [%ld]\n", m, count)
 void
 rpcprint(int fd, Rpccall *r)
 {

@@ -70,14 +70,14 @@ insert(hd flist,hd tl flist);
 }
 }
 }
-lookup(pat : string):  ref Redir
+lookup(pat : string): ref Redir
 {
 srch : list of Redir;
-tmp :  Redir;
+tmp : Redir;
 hash : int;
 hash = hashasu(pat,HASHSIZE);
 for(srch = tab[hash]; srch!=nil; srch = tl srch){
-tmp =  hd srch;
+tmp = hd srch;
 if(tmp.pat==nil)
 return nil;
 if(pat==tmp.pat)
@@ -86,7 +86,7 @@ return ref tmp;
 return nil;
 }
 redirect(path : string): string {
-redir :  ref Redir;
+redir : ref Redir;
 newpath, oldp : string;
 s : int;
 if((redir = lookup(path))!=nil)

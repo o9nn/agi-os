@@ -15,7 +15,7 @@ _GLIBCXX_END_NAMESPACE_VERSION
 namespace std _GLIBCXX_VISIBILITY(default)
 {
 _GLIBCXX_BEGIN_NAMESPACE_VERSION
-typedef __locale_t		__c_locale;
+typedef __locale_t __c_locale;
 inline int
 __convert_from_v(const __c_locale& __cloc __attribute__ ((__unused__)),
 char* __out,

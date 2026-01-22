@@ -64,27 +64,27 @@ int verbose;
 #endif
 #define elf_32bit(elf) (ELFCLASS32 == (elf)->class)
 #define elf_64bit(elf) (ELFCLASS64 == (elf)->class)
-#define elf_msb(elf)   (ELFDATA2MSB == (elf)->data)
-#define elf_lsb(elf)   (ELFDATA2LSB == (elf)->data)
-#define elf_swap(elf)  (NATIVE_ELFDATA != (elf)->data)
-#define elf_uval(elf, str, elem)                                        \
-((ELFCLASS64 == (elf)->class)                                       \
-? elf_access_unsigned((elf), (str),                                \
-offsetof(typeof(*(str)),e64.elem),           \
-sizeof((str)->e64.elem))                     \
-: elf_access_unsigned((elf), (str),                                \
-offsetof(typeof(*(str)),e32.elem),           \
+#define elf_msb(elf) (ELFDATA2MSB == (elf)->data)
+#define elf_lsb(elf) (ELFDATA2LSB == (elf)->data)
+#define elf_swap(elf) (NATIVE_ELFDATA != (elf)->data)
+#define elf_uval(elf, str, elem) \
+((ELFCLASS64 == (elf)->class) \
+? elf_access_unsigned((elf), (str), \
+offsetof(typeof(*(str)),e64.elem), \
+sizeof((str)->e64.elem)) \
+: elf_access_unsigned((elf), (str), \
+offsetof(typeof(*(str)),e32.elem), \
 sizeof((str)->e32.elem)))
-#define elf_sval(elf, str, elem)                                        \
-((ELFCLASS64 == (elf)->class)                                       \
-? elf_access_signed((elf), (str),                                  \
-offsetof(typeof(*(str)),e64.elem),             \
-sizeof((str)->e64.elem))                       \
-: elf_access_signed((elf), (str),                                  \
-offsetof(typeof(*(str)),e32.elem),             \
+#define elf_sval(elf, str, elem) \
+((ELFCLASS64 == (elf)->class) \
+? elf_access_signed((elf), (str), \
+offsetof(typeof(*(str)),e64.elem), \
+sizeof((str)->e64.elem)) \
+: elf_access_signed((elf), (str), \
+offsetof(typeof(*(str)),e32.elem), \
 sizeof((str)->e32.elem)))
-#define elf_size(elf, str)                              \
-((ELFCLASS64 == (elf)->class)                       \
+#define elf_size(elf, str) \
+((ELFCLASS64 == (elf)->class) \
 ? sizeof((str)->e64) : sizeof((str)->e32))
 uint64_t elf_access_unsigned(struct elf_binary *elf, const void *ptr,
 uint64_t offset, size_t size);
@@ -121,11 +121,11 @@ void *elf_get_ptr(struct elf_binary *elf, unsigned long addr);
 uint64_t elf_lookup_addr(struct elf_binary *elf, const char *symbol);
 void elf_parse_bsdsyms(struct elf_binary *elf, uint64_t pstart);
 int elf_reloc(struct elf_binary *elf);
-#define UNSET_ADDR          ((uint64_t)-1)
+#define UNSET_ADDR ((uint64_t)-1)
 enum xen_elfnote_type {
 XEN_ENT_NONE = 0,
 XEN_ENT_LONG = 1,
-XEN_ENT_STR  = 2
+XEN_ENT_STR = 2
 };
 struct xen_elfnote {
 enum xen_elfnote_type type;

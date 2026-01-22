@@ -69,13 +69,13 @@ if(err == "")
 }
 if(err == "") {
 if(code != Success)
-err =  "login failed: " + msg;
+err = "login failed: " + msg;
 # image type
 err = sendrequest(nc, ctlfd, "TYPE I");
 if(err == "") {
 (code, msg) = getreply(nc, ctlfd);
 if(code != Success)
-err =  "can't set type I: " + msg;
+err = "can't set type I: " + msg;
 }
 }
 }

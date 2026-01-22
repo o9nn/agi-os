@@ -159,8 +159,8 @@ basis = Basis(h, u, parameters = w)
 # Test that get_parameter_values returns unwrapped numeric values, not symbolic
 params = get_parameter_values(basis)
 @test params isa Vector
-@test all(p -> !(p isa Num), params)  # Should not be Num/symbolic
-@test all(iszero, params)  # Parameters without defaults should be zero
+@test all(p -> !(p isa Num), params) # Should not be Num/symbolic
+@test all(iszero, params) # Parameters without defaults should be zero
 # Test that get_parameter_map also returns unwrapped numeric values
 param_map = get_parameter_map(basis)
 @test all(pair -> !(last(pair) isa Num), param_map)
@@ -168,8 +168,8 @@ param_map = get_parameter_map(basis)
 # This is the key test from issue #559 - should not throw MethodError
 # about "Cannot convert BasicSymbolic{Real} to Float64"
 u0 = [1.0, 2.0]
-tspan = (0.0, 0.1)  # Very short timespan
-p_values = [0.01, 0.01]  # Very small parameter values
+tspan = (0.0, 0.1) # Very short timespan
+p_values = [0.01, 0.01] # Very small parameter values
 recovered_model = ODEProblem(basis, u0, tspan, p_values)
 @test recovered_model isa ODEProblem
 # Test that we can initialize the integrator without the symbolic conversion error

@@ -76,17 +76,17 @@ struct proc_dir_entry proc_scsi_eata2x = {
 PROC_SCSI_EATA2X, 6, "eata2x",
 S_IFDIR | S_IRUGO | S_IXUGO, 2
 };
-#define ISA  0
+#define ISA 0
 #define ESA 1
 #undef FORCE_CONFIG
-#undef  DEBUG_LINKED_COMMANDS
-#undef  DEBUG_DETECT
-#undef  DEBUG_PCI_DETECT
-#undef  DEBUG_INTERRUPT
-#undef  DEBUG_RESET
-#undef  DEBUG_GENERATE_ERRORS
-#undef  DEBUG_GENERATE_ABORTS
-#undef  DEBUG_GEOMETRY
+#undef DEBUG_LINKED_COMMANDS
+#undef DEBUG_DETECT
+#undef DEBUG_PCI_DETECT
+#undef DEBUG_INTERRUPT
+#undef DEBUG_RESET
+#undef DEBUG_GENERATE_ERRORS
+#undef DEBUG_GENERATE_ABORTS
+#undef DEBUG_GEOMETRY
 #define MAX_ISA 4
 #define MAX_VESA 0
 #define MAX_EISA 15
@@ -105,47 +105,47 @@ S_IFDIR | S_IRUGO | S_IXUGO, 2
 #define FALSE 0
 #define TRUE 1
 #define FREE 0
-#define IN_USE   1
-#define LOCKED   2
+#define IN_USE 1
+#define LOCKED 2
 #define IN_RESET 3
-#define IGNORE   4
-#define READY    5
+#define IGNORE 4
+#define READY 5
 #define ABORTING 6
-#define NO_DMA  0xff
-#define MAXLOOP  10000
-#define TAG_MIXED    0
-#define TAG_SIMPLE   1
-#define TAG_HEAD     2
-#define TAG_ORDERED  3
-#define REG_CMD         7
-#define REG_STATUS      7
-#define REG_AUX_STATUS  8
-#define REG_DATA        0
-#define REG_DATA2       1
-#define REG_SEE         6
-#define REG_LOW         2
-#define REG_LM          3
-#define REG_MID         4
-#define REG_MSB         5
-#define REGION_SIZE     9
-#define MAX_ISA_ADDR    0x03ff
-#define MIN_EISA_ADDR   0x1c88
-#define MAX_EISA_ADDR   0xfc88
-#define BSY_ASSERTED      0x80
-#define DRQ_ASSERTED      0x08
-#define ABSY_ASSERTED     0x01
-#define IRQ_ASSERTED      0x02
-#define READ_CONFIG_PIO   0xf0
-#define SET_CONFIG_PIO    0xf1
-#define SEND_CP_PIO       0xf2
-#define RECEIVE_SP_PIO    0xf3
-#define TRUNCATE_XFR_PIO  0xf4
-#define RESET_PIO         0xf9
-#define READ_CONFIG_DMA   0xfd
-#define SET_CONFIG_DMA    0xfe
-#define SEND_CP_DMA       0xff
-#define ASOK              0x00
-#define ASST              0x01
+#define NO_DMA 0xff
+#define MAXLOOP 10000
+#define TAG_MIXED 0
+#define TAG_SIMPLE 1
+#define TAG_HEAD 2
+#define TAG_ORDERED 3
+#define REG_CMD 7
+#define REG_STATUS 7
+#define REG_AUX_STATUS 8
+#define REG_DATA 0
+#define REG_DATA2 1
+#define REG_SEE 6
+#define REG_LOW 2
+#define REG_LM 3
+#define REG_MID 4
+#define REG_MSB 5
+#define REGION_SIZE 9
+#define MAX_ISA_ADDR 0x03ff
+#define MIN_EISA_ADDR 0x1c88
+#define MAX_EISA_ADDR 0xfc88
+#define BSY_ASSERTED 0x80
+#define DRQ_ASSERTED 0x08
+#define ABSY_ASSERTED 0x01
+#define IRQ_ASSERTED 0x02
+#define READ_CONFIG_PIO 0xf0
+#define SET_CONFIG_PIO 0xf1
+#define SEND_CP_PIO 0xf2
+#define RECEIVE_SP_PIO 0xf3
+#define TRUNCATE_XFR_PIO 0xf4
+#define RESET_PIO 0xf9
+#define READ_CONFIG_DMA 0xfd
+#define SET_CONFIG_DMA 0xfe
+#define SEND_CP_DMA 0xff
+#define ASOK 0x00
+#define ASST 0x01
 #define ARRAY_SIZE(arr) (sizeof (arr) / sizeof (arr)[0])
 #define YESNO(a) ((a) ? 'y' : 'n')
 #define TLDEV(type) ((type) == TYPE_DISK || (type) == TYPE_ROM)
@@ -154,11 +154,11 @@ S_IFDIR | S_IRUGO | S_IXUGO, 2
 #define EATA_2_0B_SIZE 30
 #define EATA_2_0C_SIZE 34
 struct eata_info {
-ulong  data_len;
-ulong  sign;
-unchar        :4,
+ulong data_len;
+ulong sign;
+unchar :4,
 version:4;
-unchar  ocsena:1,
+unchar ocsena:1,
 tarsup:1,
 trnxfr:1,
 morsup:1,
@@ -168,31 +168,31 @@ ata:1,
 haaval:1;
 ushort cp_pad_len;
 unchar host_addr[4];
-ulong  cp_len;
-ulong  sp_len;
+ulong cp_len;
+ulong sp_len;
 ushort queue_size;
 ushort unused;
 ushort scatt_size;
-unchar     irq:4,
+unchar irq:4,
 irq_tr:1,
 second:1,
 drqx:2;
-unchar  sync;
-unchar  isaena:1,
+unchar sync;
+unchar isaena:1,
 forcaddr:1,
 large_sg:1,
 res1:1,
 :4;
-unchar  max_id:5,
+unchar max_id:5,
 max_chan:3;
-unchar   max_lun;
-unchar        :4,
+unchar max_lun;
+unchar :4,
 m1:1,
 idquest:1,
 pci:1,
 eisa:1;
-unchar   raidnum;
-unchar   notused;
+unchar raidnum;
+unchar notused;
 ushort ipad[247];
 };
 struct eata_config {
@@ -218,7 +218,7 @@ unsigned int address;
 unsigned int num_bytes;
 };
 struct mscp {
-unchar  sreset:1,
+unchar sreset:1,
 init:1,
 reqsen:1,
 sg:1,
@@ -228,25 +228,25 @@ dout:1,
 din:1;
 unchar sense_len;
 unchar unused[3];
-unchar  fwnest:1,
+unchar fwnest:1,
 :7;
 unchar phsunit:1,
 iat:1,
 hbaci:1,
 :5;
-unchar  target:5,
+unchar target:5,
 channel:3;
-unchar     lun:5,
+unchar lun:5,
 luntar:1,
 dispri:1,
 one:1;
 unchar mess[3];
 unchar cdb[12];
-ulong  data_len;
+ulong data_len;
 struct mscp *cpp;
-ulong  data_address;
-ulong  sp_addr;
-ulong  sense_addr;
+ulong data_address;
+ulong sp_addr;
+ulong sense_addr;
 Scsi_Cmnd *SCpnt;
 unsigned int index;
 struct sg_list *sglist;
@@ -273,14 +273,14 @@ static const char *driver_name = "EATA";
 static char sha[MAX_BOARDS];
 static unsigned int num_boards = MAX_BOARDS;
 static unsigned long io_port[] __initdata = {
-SKIP,    SKIP,   SKIP,   SKIP,   SKIP,   SKIP,   SKIP,   SKIP,
-SKIP,    SKIP,
+SKIP, SKIP, SKIP, SKIP, SKIP, SKIP, SKIP, SKIP,
+SKIP, SKIP,
 0x1f0,
-SKIP,    SKIP,   SKIP,   SKIP,   SKIP,   SKIP,   SKIP,   SKIP,
-SKIP,    SKIP,   SKIP,   SKIP,   SKIP,   SKIP,   SKIP,   SKIP,
+SKIP, SKIP, SKIP, SKIP, SKIP, SKIP, SKIP, SKIP,
+SKIP, SKIP, SKIP, SKIP, SKIP, SKIP, SKIP, SKIP,
 0x1c88, 0x2c88, 0x3c88, 0x4c88, 0x5c88, 0x6c88, 0x7c88, 0x8c88,
 0x9c88, 0xac88, 0xbc88, 0xcc88, 0xdc88, 0xec88, 0xfc88,
-0x170,  0x230,  0x330,
+0x170, 0x230, 0x330,
 0x0
 };
 #define HD(board) ((struct hostdata *) &sh[board]->hostdata)
@@ -369,8 +369,8 @@ if (wait_on_busy(iobase, (addr ? MAXLOOP * 100 : MAXLOOP))) return TRUE;
 if ((addr = V2DEV(addr))) {
 outb((char) (addr >> 24), iobase + REG_LOW);
 outb((char) (addr >> 16), iobase + REG_LM);
-outb((char) (addr >> 8),  iobase + REG_MID);
-outb((char)  addr,        iobase + REG_MSB);
+outb((char) (addr >> 8), iobase + REG_MID);
+outb((char) addr, iobase + REG_MSB);
 }
 outb(cmd, iobase + REG_CMD);
 return FALSE;
@@ -471,13 +471,13 @@ name, port_base, bus_type, info.haaval, info.ata);
 return FALSE;
 }
 if (info.drqvld) {
-if (subversion ==  ESA)
+if (subversion == ESA)
 printk("%s: warning, weird %s board using DMA.\n", name, bus_type);
 subversion = ISA;
 dma_channel = dma_channel_table[3 - info.drqx];
 }
 else {
-if (subversion ==  ISA)
+if (subversion == ISA)
 printk("%s: warning, weird %s board not using DMA.\n", name, bus_type);
 subversion = ESA;
 dma_channel = NO_DMA;
@@ -554,7 +554,7 @@ printk("%s: detect, wrong n. of SG lists %d, fixed.\n",
 BN(j), sh[j]->sg_tablesize);
 sh[j]->sg_tablesize = MAX_SGLIST;
 }
-if (sh[j]->can_queue > MAX_MAILBOXES || sh[j]->can_queue  < 2) {
+if (sh[j]->can_queue > MAX_MAILBOXES || sh[j]->can_queue < 2) {
 printk("%s: detect, wrong n. of mbox %d, fixed.\n",
 BN(j), sh[j]->can_queue);
 sh[j]->can_queue = MAX_MAILBOXES;
@@ -572,7 +572,7 @@ if (info.max_lun > 7 && info.max_lun < MAX_LUN)
 sh[j]->max_lun = info.max_lun + 1;
 }
 if (dma_channel == NO_DMA) sprintf(dma_name, "%s", "BMST");
-else                       sprintf(dma_name, "DMA %u", dma_channel);
+else sprintf(dma_name, "DMA %u", dma_channel);
 for (i = 0; i < sh[j]->can_queue; i++)
 if (! ((&HD(j)->cp[i])->sglist = kmalloc(
 sh[j]->sg_tablesize * sizeof(struct sg_list),
@@ -585,12 +585,12 @@ if (max_queue_depth > MAX_TAGGED_CMD_PER_LUN)
 max_queue_depth = MAX_TAGGED_CMD_PER_LUN;
 if (max_queue_depth < MAX_CMD_PER_LUN) max_queue_depth = MAX_CMD_PER_LUN;
 if (tagged_comm) {
-if      (tag_mode == TAG_SIMPLE)  tag_type = '1';
-else if (tag_mode == TAG_HEAD)    tag_type = '2';
+if (tag_mode == TAG_SIMPLE) tag_type = '1';
+else if (tag_mode == TAG_HEAD) tag_type = '2';
 else if (tag_mode == TAG_ORDERED) tag_type = '3';
-else                              tag_type = 'y';
+else tag_type = 'y';
 }
-else                                 tag_type = 'n';
+else tag_type = 'n';
 #if LINUX_VERSION_CODE >= LinuxVersionCode(2,1,101)
 sh[j]->hostt->use_new_eh_code = use_new_eh_code;
 #else
@@ -645,11 +645,11 @@ else val = (int) simple_strtoul(pc, NULL, 0);
 if (!strncmp(cur, "lc:", 3)) linked_comm = val;
 else if (!strncmp(cur, "tc:", 3)) tagged_comm = val;
 else if (!strncmp(cur, "tm:", 3)) tag_mode = val;
-else if (!strncmp(cur, "mq:", 3))  max_queue_depth = val;
-else if (!strncmp(cur, "ls:", 3))  link_statistics = val;
-else if (!strncmp(cur, "eh:", 3))  use_new_eh_code = val;
-else if (!strncmp(cur, "et:", 3))  ext_tran = val;
-else if (!strncmp(cur, "rs:", 3))  rev_scan = val;
+else if (!strncmp(cur, "mq:", 3)) max_queue_depth = val;
+else if (!strncmp(cur, "ls:", 3)) link_statistics = val;
+else if (!strncmp(cur, "eh:", 3)) use_new_eh_code = val;
+else if (!strncmp(cur, "et:", 3)) ext_tran = val;
+else if (!strncmp(cur, "rs:", 3)) rev_scan = val;
 if ((cur = strchr(cur, ','))) ++cur;
 }
 return;
@@ -794,8 +794,8 @@ if (SCpnt->device->tagged_queue) {
 if (HD(j)->target_redo[SCpnt->target][SCpnt->channel] ||
 HD(j)->target_to[SCpnt->target][SCpnt->channel])
 cpp->mess[0] = ORDERED_QUEUE_TAG;
-else if (tag_mode == TAG_SIMPLE)  cpp->mess[0] = SIMPLE_QUEUE_TAG;
-else if (tag_mode == TAG_HEAD)    cpp->mess[0] = HEAD_OF_QUEUE_TAG;
+else if (tag_mode == TAG_SIMPLE) cpp->mess[0] = SIMPLE_QUEUE_TAG;
+else if (tag_mode == TAG_HEAD) cpp->mess[0] = HEAD_OF_QUEUE_TAG;
 else if (tag_mode == TAG_ORDERED) cpp->mess[0] = ORDERED_QUEUE_TAG;
 else if (SCpnt->device->current_tag == 0)
 cpp->mess[0] = ORDERED_QUEUE_TAG;
@@ -1161,7 +1161,7 @@ IRQ_LOCK
 HD(j)->in_reset = FALSE;
 do_trace = FALSE;
 if (arg_done) printk("%s: reset, exit, pid %ld done.\n", BN(j), SCarg->pid);
-else          printk("%s: reset, exit.\n", BN(j));
+else printk("%s: reset, exit.\n", BN(j));
 return SUCCESS;
 }
 int eata2x_reset(Scsi_Cmnd *SCarg) {
@@ -1259,8 +1259,8 @@ batchcount++; readycount += n_ready, seeknosort += seek / 1024;
 if (input_only) inputcount++;
 if (overlap) { ovlcount++; seeksorted += iseek / 1024; }
 else seeksorted += (iseek + maxsec - minsec) / 1024;
-if (rev && !r)     {  revcount++; readysorted += n_ready; }
-if (!rev && !s)    { sortcount++; readysorted += n_ready; }
+if (rev && !r) { revcount++; readysorted += n_ready; }
+if (!rev && !s) { sortcount++; readysorted += n_ready; }
 }
 #if defined(DEBUG_LINKED_COMMANDS)
 if (link_statistics && (overlap || !(flushcount % link_statistics)))
@@ -1320,7 +1320,7 @@ BN(j), irq, reg, HD(j)->iocount);
 return;
 }
 dspp = &HD(j)->sp[0];
-spp  = &HD(j)->sp[1];
+spp = &HD(j)->sp[1];
 memcpy(spp, dspp, sizeof(struct mssp));
 memset(dspp, 0, sizeof(struct mssp));
 reg = inb(sh[j]->io_port + REG_STATUS);
@@ -1444,7 +1444,7 @@ SCpnt->result = status | spp->target_status;
 #if defined(DEBUG_INTERRUPT)
 if (SCpnt->result || do_trace)
 #else
-if ((spp->adapter_status != ASOK && HD(j)->iocount >  1000) ||
+if ((spp->adapter_status != ASOK && HD(j)->iocount > 1000) ||
 (spp->adapter_status != ASOK &&
 spp->adapter_status != ASST && HD(j)->iocount <= 1000) ||
 do_trace || msg_byte(spp->target_status))

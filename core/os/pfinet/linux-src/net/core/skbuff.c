@@ -23,7 +23,7 @@
 spinlock_t skb_queue_lock = SPIN_LOCK_UNLOCKED;
 static atomic_t net_skbcount = ATOMIC_INIT(0);
 static atomic_t net_allocs = ATOMIC_INIT(0);
-static atomic_t net_fails  = ATOMIC_INIT(0);
+static atomic_t net_fails = ATOMIC_INIT(0);
 extern atomic_t ip_frag_mem;
 static kmem_cache_t *skbuff_head_cache;
 void skb_over_panic(struct sk_buff *skb, int sz, void *here)

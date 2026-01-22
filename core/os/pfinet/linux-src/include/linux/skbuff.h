@@ -12,96 +12,96 @@
 #define CHECKSUM_HW 1
 #define CHECKSUM_UNNECESSARY 2
 struct sk_buff_head {
-struct sk_buff	* next;
-struct sk_buff	* prev;
-__u32		qlen;
+struct sk_buff * next;
+struct sk_buff * prev;
+__u32 qlen;
 };
 struct sk_buff {
-struct sk_buff	* next;
-struct sk_buff	* prev;
+struct sk_buff * next;
+struct sk_buff * prev;
 struct sk_buff_head * list;
-struct sock	*sk;
-struct timeval	stamp;
-struct device	*dev;
+struct sock *sk;
+struct timeval stamp;
+struct device *dev;
 union
 {
-struct tcphdr	*th;
-struct udphdr	*uh;
-struct icmphdr	*icmph;
-struct igmphdr	*igmph;
-struct iphdr	*ipiph;
-struct spxhdr	*spxh;
-unsigned char	*raw;
+struct tcphdr *th;
+struct udphdr *uh;
+struct icmphdr *icmph;
+struct igmphdr *igmph;
+struct iphdr *ipiph;
+struct spxhdr *spxh;
+unsigned char *raw;
 } h;
 union
 {
-struct iphdr	*iph;
-struct ipv6hdr	*ipv6h;
-struct arphdr	*arph;
-struct ipxhdr	*ipxh;
-unsigned char	*raw;
+struct iphdr *iph;
+struct ipv6hdr *ipv6h;
+struct arphdr *arph;
+struct ipxhdr *ipxh;
+unsigned char *raw;
 } nh;
 union
 {
-struct ethhdr	*ethernet;
-unsigned char 	*raw;
+struct ethhdr *ethernet;
+unsigned char *raw;
 } mac;
-struct  dst_entry *dst;
-char		cb[48];
-unsigned int 	len;
-unsigned int	csum;
-volatile char 	used;
-unsigned char	is_clone,
+struct dst_entry *dst;
+char cb[48];
+unsigned int len;
+unsigned int csum;
+volatile char used;
+unsigned char is_clone,
 cloned,
 pkt_type,
 pkt_bridged,
 ip_summed;
-__u32		priority;
-atomic_t	users;
-unsigned short	protocol;
-unsigned short	security;
-unsigned int	truesize;
-unsigned char	*head;
-unsigned char	*data;
-unsigned char	*tail;
-unsigned char 	*end;
-void 		(*destructor)(struct sk_buff *);
+__u32 priority;
+atomic_t users;
+unsigned short protocol;
+unsigned short security;
+unsigned int truesize;
+unsigned char *head;
+unsigned char *data;
+unsigned char *tail;
+unsigned char *end;
+void (*destructor)(struct sk_buff *);
 #ifdef CONFIG_IP_FIREWALL
-__u32           fwmark;
+__u32 fwmark;
 #endif
 #if defined(CONFIG_SHAPER) || defined(CONFIG_SHAPER_MODULE)
-__u32		shapelatency;
-__u32		shapeclock;
-__u32		shapelen;
-__u32		shapestamp;
-__u16		shapepend;
+__u32 shapelatency;
+__u32 shapeclock;
+__u32 shapelen;
+__u32 shapestamp;
+__u16 shapepend;
 #endif
 #if defined(CONFIG_HIPPI)
 union{
-__u32	ifield;
+__u32 ifield;
 } private;
 #endif
 };
 #ifdef CONFIG_SKB_LARGE
-#define SK_WMEM_MAX	(256*1024)
-#define SK_RMEM_MAX	(256*1024)
+#define SK_WMEM_MAX (256*1024)
+#define SK_RMEM_MAX (256*1024)
 #else
-#define SK_WMEM_MAX	32767
-#define SK_RMEM_MAX	32767
+#define SK_WMEM_MAX 32767
+#define SK_RMEM_MAX 32767
 #endif
 #ifdef __KERNEL__
 #include <linux/malloc.h>
 #include <asm/system.h>
-extern void			__kfree_skb(struct sk_buff *skb);
-extern struct sk_buff *		skb_peek_copy(struct sk_buff_head *list);
-extern struct sk_buff *		alloc_skb(unsigned int size, int priority);
-extern void			kfree_skbmem(struct sk_buff *skb);
-extern struct sk_buff *		skb_clone(struct sk_buff *skb, int priority);
-extern struct sk_buff *		skb_copy(struct sk_buff *skb, int priority);
-extern struct sk_buff *		skb_realloc_headroom(struct sk_buff *skb, int newheadroom);
-#define dev_kfree_skb(a)	kfree_skb(a)
-extern void	skb_over_panic(struct sk_buff *skb, int len, void *here);
-extern void	skb_under_panic(struct sk_buff *skb, int len, void *here);
+extern void __kfree_skb(struct sk_buff *skb);
+extern struct sk_buff * skb_peek_copy(struct sk_buff_head *list);
+extern struct sk_buff * alloc_skb(unsigned int size, int priority);
+extern void kfree_skbmem(struct sk_buff *skb);
+extern struct sk_buff * skb_clone(struct sk_buff *skb, int priority);
+extern struct sk_buff * skb_copy(struct sk_buff *skb, int priority);
+extern struct sk_buff * skb_realloc_headroom(struct sk_buff *skb, int newheadroom);
+#define dev_kfree_skb(a) kfree_skb(a)
+extern void skb_over_panic(struct sk_buff *skb, int len, void *here);
+extern void skb_under_panic(struct sk_buff *skb, int len, void *here);
 static __inline__ atomic_t *skb_datarefp(struct sk_buff *skb)
 {
 return (atomic_t *)(skb->end);
@@ -308,7 +308,7 @@ if(skb->tail>skb->end)
 {
 __label__ here;
 skb_over_panic(skb, len, &&here);
-here:		;
+here: ;
 }
 return tmp;
 }
@@ -326,14 +326,14 @@ if(skb->data<skb->head)
 {
 __label__ here;
 skb_under_panic(skb, len, &&here);
-here: 		;
+here: ;
 }
 return skb->data;
 }
 static __inline__ unsigned char *__skb_pull(struct sk_buff *skb, unsigned int len)
 {
 skb->len-=len;
-return 	skb->data+=len;
+return skb->data+=len;
 }
 static __inline__ unsigned char * skb_pull(struct sk_buff *skb, unsigned int len)
 {
@@ -350,7 +350,7 @@ static __inline__ int skb_tailroom(struct sk_buff *skb)
 return skb->end-skb->tail;
 }
 #ifndef NET_IP_ALIGN
-#define NET_IP_ALIGN	2
+#define NET_IP_ALIGN 2
 #endif
 static __inline__ void skb_reserve(struct sk_buff *skb, unsigned int len)
 {
@@ -400,11 +400,11 @@ skb = skb2;
 }
 return skb;
 }
-extern struct sk_buff *		skb_recv_datagram(struct sock *sk,unsigned flags,int noblock, int *err);
-extern unsigned int		datagram_poll(struct file *file, struct socket *sock, struct poll_table_struct *wait);
-extern int			skb_copy_datagram(struct sk_buff *from, int offset, char *to,int size);
-extern int			skb_copy_datagram_iovec(struct sk_buff *from, int offset, struct iovec *to,int size);
-extern void			skb_free_datagram(struct sock * sk, struct sk_buff *skb);
+extern struct sk_buff * skb_recv_datagram(struct sock *sk,unsigned flags,int noblock, int *err);
+extern unsigned int datagram_poll(struct file *file, struct socket *sock, struct poll_table_struct *wait);
+extern int skb_copy_datagram(struct sk_buff *from, int offset, char *to,int size);
+extern int skb_copy_datagram_iovec(struct sk_buff *from, int offset, struct iovec *to,int size);
+extern void skb_free_datagram(struct sock * sk, struct sk_buff *skb);
 extern void skb_init(void);
 extern void skb_add_mtu(int mtu);
 #endif

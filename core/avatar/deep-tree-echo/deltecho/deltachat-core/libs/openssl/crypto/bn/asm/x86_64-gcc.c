@@ -3,45 +3,45 @@
 # include "../bn_asm.c"
 #else
 # ifdef _WIN64
-#  define BN_ULONG unsigned long long
+# define BN_ULONG unsigned long long
 # else
-#  define BN_ULONG unsigned long
+# define BN_ULONG unsigned long
 # endif
 # undef mul
 # undef mul_add
 # undef sqr
-# define mul_add(r,a,word,carry) do {   \
-register BN_ULONG high,low;     \
-asm ("mulq %3"                  \
-: "=a"(low),"=d"(high)  \
-: "a"(word),"m"(a)      \
-: "cc");                \
-asm ("addq %2,%0; adcq %3,%1"   \
+# define mul_add(r,a,word,carry) do { \
+register BN_ULONG high,low; \
+asm ("mulq %3" \
+: "=a"(low),"=d"(high) \
+: "a"(word),"m"(a) \
+: "cc"); \
+asm ("addq %2,%0; adcq %3,%1" \
 : "+r"(carry),"+d"(high)\
-: "a"(low),"g"(0)       \
-: "cc");                \
-asm ("addq %2,%0; adcq %3,%1"   \
-: "+m"(r),"+d"(high)    \
-: "r"(carry),"g"(0)     \
-: "cc");                \
-carry=high;                     \
+: "a"(low),"g"(0) \
+: "cc"); \
+asm ("addq %2,%0; adcq %3,%1" \
+: "+m"(r),"+d"(high) \
+: "r"(carry),"g"(0) \
+: "cc"); \
+carry=high; \
 } while (0)
-# define mul(r,a,word,carry) do {       \
-register BN_ULONG high,low;     \
-asm ("mulq %3"                  \
-: "=a"(low),"=d"(high)  \
-: "a"(word),"g"(a)      \
-: "cc");                \
-asm ("addq %2,%0; adcq %3,%1"   \
+# define mul(r,a,word,carry) do { \
+register BN_ULONG high,low; \
+asm ("mulq %3" \
+: "=a"(low),"=d"(high) \
+: "a"(word),"g"(a) \
+: "cc"); \
+asm ("addq %2,%0; adcq %3,%1" \
 : "+r"(carry),"+d"(high)\
-: "a"(low),"g"(0)       \
-: "cc");                \
-(r)=carry, carry=high;          \
+: "a"(low),"g"(0) \
+: "cc"); \
+(r)=carry, carry=high; \
 } while (0)
-# define sqr(r0,r1,a)                    \
-asm ("mulq %2"                  \
-: "=a"(r0),"=d"(r1)     \
-: "a"(a)                \
+# define sqr(r0,r1,a) \
+asm ("mulq %2" \
+: "=a"(r0),"=d"(r1) \
+: "a"(a) \
 : "cc");
 BN_ULONG bn_mul_add_words(BN_ULONG *rp, const BN_ULONG *ap, int num,
 BN_ULONG w)
@@ -122,8 +122,8 @@ BN_ULONG bn_div_words(BN_ULONG h, BN_ULONG l, BN_ULONG d)
 {
 BN_ULONG ret, waste;
 asm("divq      %4":"=a"(ret), "=d"(waste)
-:     "a"(l), "d"(h), "g"(d)
-:     "cc");
+: "a"(l), "d"(h), "g"(d)
+: "cc");
 return ret;
 }
 BN_ULONG bn_add_words(BN_ULONG *rp, const BN_ULONG *ap, const BN_ULONG *bp,
@@ -166,7 +166,7 @@ asm volatile ("       subq    %2,%2           \n"
 return ret & 1;
 }
 # else
-#  define BN_MASK2 0xffffffffffffffffL
+# define BN_MASK2 0xffffffffffffffffL
 BN_ULONG bn_sub_words(BN_ULONG *r, BN_ULONG *a, BN_ULONG *b, int n)
 {
 BN_ULONG t1, t2;
@@ -210,67 +210,67 @@ return (c);
 }
 # endif
 # if 0
-#  define mul_add_c(a,b,c0,c1,c2) {       \
-BN_ULONG ta=(a),tb=(b);         \
-t1 = ta * tb;                   \
-t2 = BN_UMULT_HIGH(ta,tb);      \
-c0 += t1; t2 += (c0<t1)?1:0;    \
-c1 += t2; c2 += (c1<t2)?1:0;    \
+# define mul_add_c(a,b,c0,c1,c2) { \
+BN_ULONG ta=(a),tb=(b); \
+t1 = ta * tb; \
+t2 = BN_UMULT_HIGH(ta,tb); \
+c0 += t1; t2 += (c0<t1)?1:0; \
+c1 += t2; c2 += (c1<t2)?1:0; \
 }
-#  define mul_add_c2(a,b,c0,c1,c2) {      \
-BN_ULONG ta=(a),tb=(b),t0;      \
-t1 = BN_UMULT_HIGH(ta,tb);      \
-t0 = ta * tb;                   \
+# define mul_add_c2(a,b,c0,c1,c2) { \
+BN_ULONG ta=(a),tb=(b),t0; \
+t1 = BN_UMULT_HIGH(ta,tb); \
+t0 = ta * tb; \
 c0 += t0; t2 = t1+((c0<t0)?1:0);\
-c1 += t2; c2 += (c1<t2)?1:0;    \
-c0 += t0; t1 += (c0<t0)?1:0;    \
-c1 += t1; c2 += (c1<t1)?1:0;    \
+c1 += t2; c2 += (c1<t2)?1:0; \
+c0 += t0; t1 += (c0<t0)?1:0; \
+c1 += t1; c2 += (c1<t1)?1:0; \
 }
 # else
-#  define mul_add_c(a,b,c0,c1,c2) do {    \
-asm ("mulq %3"                  \
-: "=a"(t1),"=d"(t2)     \
-: "a"(a),"m"(b)         \
-: "cc");                \
-asm ("addq %2,%0; adcq %3,%1"   \
-: "+r"(c0),"+d"(t2)     \
-: "a"(t1),"g"(0)        \
-: "cc");                \
-asm ("addq %2,%0; adcq %3,%1"   \
-: "+r"(c1),"+r"(c2)     \
-: "d"(t2),"g"(0)        \
-: "cc");                \
+# define mul_add_c(a,b,c0,c1,c2) do { \
+asm ("mulq %3" \
+: "=a"(t1),"=d"(t2) \
+: "a"(a),"m"(b) \
+: "cc"); \
+asm ("addq %2,%0; adcq %3,%1" \
+: "+r"(c0),"+d"(t2) \
+: "a"(t1),"g"(0) \
+: "cc"); \
+asm ("addq %2,%0; adcq %3,%1" \
+: "+r"(c1),"+r"(c2) \
+: "d"(t2),"g"(0) \
+: "cc"); \
 } while (0)
-#  define sqr_add_c(a,i,c0,c1,c2) do {    \
-asm ("mulq %2"                  \
-: "=a"(t1),"=d"(t2)     \
-: "a"(a[i])             \
-: "cc");                \
-asm ("addq %2,%0; adcq %3,%1"   \
-: "+r"(c0),"+d"(t2)     \
-: "a"(t1),"g"(0)        \
-: "cc");                \
-asm ("addq %2,%0; adcq %3,%1"   \
-: "+r"(c1),"+r"(c2)     \
-: "d"(t2),"g"(0)        \
-: "cc");                \
+# define sqr_add_c(a,i,c0,c1,c2) do { \
+asm ("mulq %2" \
+: "=a"(t1),"=d"(t2) \
+: "a"(a[i]) \
+: "cc"); \
+asm ("addq %2,%0; adcq %3,%1" \
+: "+r"(c0),"+d"(t2) \
+: "a"(t1),"g"(0) \
+: "cc"); \
+asm ("addq %2,%0; adcq %3,%1" \
+: "+r"(c1),"+r"(c2) \
+: "d"(t2),"g"(0) \
+: "cc"); \
 } while (0)
-#  define mul_add_c2(a,b,c0,c1,c2) do {   \
-asm ("mulq %3"                  \
-: "=a"(t1),"=d"(t2)     \
-: "a"(a),"m"(b)         \
-: "cc");                \
-asm ("addq %3,%0; adcq %4,%1; adcq %5,%2"       \
-: "+r"(c0),"+r"(c1),"+r"(c2)            \
-: "r"(t1),"r"(t2),"g"(0)                \
-: "cc");                                \
-asm ("addq %3,%0; adcq %4,%1; adcq %5,%2"       \
-: "+r"(c0),"+r"(c1),"+r"(c2)            \
-: "r"(t1),"r"(t2),"g"(0)                \
-: "cc");                                \
+# define mul_add_c2(a,b,c0,c1,c2) do { \
+asm ("mulq %3" \
+: "=a"(t1),"=d"(t2) \
+: "a"(a),"m"(b) \
+: "cc"); \
+asm ("addq %3,%0; adcq %4,%1; adcq %5,%2" \
+: "+r"(c0),"+r"(c1),"+r"(c2) \
+: "r"(t1),"r"(t2),"g"(0) \
+: "cc"); \
+asm ("addq %3,%0; adcq %4,%1; adcq %5,%2" \
+: "+r"(c0),"+r"(c1),"+r"(c2) \
+: "r"(t1),"r"(t2),"g"(0) \
+: "cc"); \
 } while (0)
 # endif
-# define sqr_add_c2(a,i,j,c0,c1,c2)      \
+# define sqr_add_c2(a,i,j,c0,c1,c2) \
 mul_add_c2((a)[i],(a)[j],c0,c1,c2)
 void bn_mul_comba8(BN_ULONG *r, BN_ULONG *a, BN_ULONG *b)
 {

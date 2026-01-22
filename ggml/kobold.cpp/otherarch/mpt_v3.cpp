@@ -35,14 +35,14 @@ return false;
 }
 {
 auto & hparams = model.hparams;
-fin.read((char *) &hparams.d_model,        sizeof(hparams.d_model));
-fin.read((char *) &hparams.max_seq_len,    sizeof(hparams.max_seq_len));
-fin.read((char *) &hparams.n_heads,        sizeof(hparams.n_heads));
-fin.read((char *) &hparams.n_layers,       sizeof(hparams.n_layers));
-fin.read((char *) &hparams.n_vocab,        sizeof(hparams.n_vocab));
+fin.read((char *) &hparams.d_model, sizeof(hparams.d_model));
+fin.read((char *) &hparams.max_seq_len, sizeof(hparams.max_seq_len));
+fin.read((char *) &hparams.n_heads, sizeof(hparams.n_heads));
+fin.read((char *) &hparams.n_layers, sizeof(hparams.n_layers));
+fin.read((char *) &hparams.n_vocab, sizeof(hparams.n_vocab));
 fin.read((char *) &hparams.alibi_bias_max, sizeof(hparams.alibi_bias_max));
-fin.read((char *) &hparams.clip_qkv,       sizeof(hparams.clip_qkv));
-fin.read((char *) &hparams.ftype,          sizeof(hparams.ftype));
+fin.read((char *) &hparams.clip_qkv, sizeof(hparams.clip_qkv));
+fin.read((char *) &hparams.ftype, sizeof(hparams.ftype));
 hparams.n_ctx = std::min(hparams.max_seq_len, hparams.n_ctx);
 const int32_t qntvr = hparams.ftype / GGML_V3_QNT_VERSION_FACTOR;
 printf("%s: d_model        = %d\n", __func__, hparams.d_model);
@@ -115,32 +115,32 @@ const size_t n_embd = hparams.d_model;
 const size_t n_layer = hparams.n_layers;
 const size_t n_vocab = hparams.n_vocab;
 model.layers.resize(n_layer);
-model.wte_weight    = ggml_v3_new_tensor_2d(ctx, wtype, n_embd, n_vocab);
+model.wte_weight = ggml_v3_new_tensor_2d(ctx, wtype, n_embd, n_vocab);
 model.norm_f_weight = ggml_v3_new_tensor_1d(ctx, GGML_V3_TYPE_F32, n_embd);
-model.tensors["transformer.wte.weight"]    = model.wte_weight;
+model.tensors["transformer.wte.weight"] = model.wte_weight;
 model.tensors["transformer.norm_f.weight"] = model.norm_f_weight;
 for (int i = 0; i < (int) n_layer; ++i) {
 auto & layer = model.layers[i];
-layer.norm_1_weight          = ggml_v3_new_tensor_1d(ctx, GGML_V3_TYPE_F32,     n_embd);
-layer.c_attn_wqkv_weight     = ggml_v3_new_tensor_2d(ctx, wtype,             n_embd, 3 * n_embd);
-layer.c_attn_out_proj_weight = ggml_v3_new_tensor_2d(ctx, wtype,             n_embd,     n_embd);
-layer.norm_2_weight          = ggml_v3_new_tensor_1d(ctx, GGML_V3_TYPE_F32,     n_embd);
-layer.ffn_up_proj            = ggml_v3_new_tensor_2d(ctx, wtype,             n_embd, 4 * n_embd);
-layer.ffn_down_proj          = ggml_v3_new_tensor_2d(ctx, wtype,         4 * n_embd,     n_embd);
-model.tensors["transformer.blocks." + std::to_string(i) + ".norm_1.weight"]        = layer.norm_1_weight;
-model.tensors["transformer.blocks." + std::to_string(i) + ".attn.Wqkv.weight"]     = layer.c_attn_wqkv_weight;
+layer.norm_1_weight = ggml_v3_new_tensor_1d(ctx, GGML_V3_TYPE_F32, n_embd);
+layer.c_attn_wqkv_weight = ggml_v3_new_tensor_2d(ctx, wtype, n_embd, 3 * n_embd);
+layer.c_attn_out_proj_weight = ggml_v3_new_tensor_2d(ctx, wtype, n_embd, n_embd);
+layer.norm_2_weight = ggml_v3_new_tensor_1d(ctx, GGML_V3_TYPE_F32, n_embd);
+layer.ffn_up_proj = ggml_v3_new_tensor_2d(ctx, wtype, n_embd, 4 * n_embd);
+layer.ffn_down_proj = ggml_v3_new_tensor_2d(ctx, wtype, 4 * n_embd, n_embd);
+model.tensors["transformer.blocks." + std::to_string(i) + ".norm_1.weight"] = layer.norm_1_weight;
+model.tensors["transformer.blocks." + std::to_string(i) + ".attn.Wqkv.weight"] = layer.c_attn_wqkv_weight;
 model.tensors["transformer.blocks." + std::to_string(i) + ".attn.out_proj.weight"] = layer.c_attn_out_proj_weight;
-model.tensors["transformer.blocks." + std::to_string(i) + ".norm_2.weight"]        = layer.norm_2_weight;
-model.tensors["transformer.blocks." + std::to_string(i) + ".ffn.up_proj.weight"]   = layer.ffn_up_proj;
+model.tensors["transformer.blocks." + std::to_string(i) + ".norm_2.weight"] = layer.norm_2_weight;
+model.tensors["transformer.blocks." + std::to_string(i) + ".ffn.up_proj.weight"] = layer.ffn_up_proj;
 model.tensors["transformer.blocks." + std::to_string(i) + ".ffn.down_proj.weight"] = layer.ffn_down_proj;
 }
 }
 {
 const auto & hparams = model.hparams;
-const size_t n_embd  = hparams.d_model;
+const size_t n_embd = hparams.d_model;
 const size_t n_layer = hparams.n_layers;
-const int64_t n_mem      = n_layer * n_ctx;
-const int64_t n_elements = n_embd  * n_mem;
+const int64_t n_mem = n_layer * n_ctx;
+const int64_t n_elements = n_embd * n_mem;
 model.memory_k = ggml_v3_new_tensor_1d(ctx, GGML_V3_TYPE_F16, n_elements);
 model.memory_v = ggml_v3_new_tensor_1d(ctx, GGML_V3_TYPE_F16, n_elements);
 const size_t memory_size = ggml_v3_nbytes(model.memory_k) + ggml_v3_nbytes(model.memory_v);
@@ -250,11 +250,11 @@ const std::vector<gpt_vocab::id> & embd_inp, std::vector<float> & embd_w,
 bool logits_all, size_t & mem_per_token, bool use_scratch) {
 const int N = embd_inp.size();
 const auto & hparams = model.hparams;
-const int n_embd  = hparams.d_model;
+const int n_embd = hparams.d_model;
 const int n_layer = hparams.n_layers;
-const int n_head  = hparams.n_heads;
+const int n_head = hparams.n_heads;
 const int n_vocab = hparams.n_vocab;
-const int n_ctx   = hparams.n_ctx;
+const int n_ctx = hparams.n_ctx;
 static size_t buf_size = 256u * 1024 * 1024;
 static void * buf = malloc(buf_size);
 static size_t scr0_size = (n_embd>=7168?2048u:1024u)*1024*1024*(hparams.n_ctx>8192?2:1);
@@ -274,9 +274,9 @@ return false;
 }
 }
 struct ggml_v3_init_params params;
-params.mem_size   = buf_size;
+params.mem_size = buf_size;
 params.mem_buffer = buf;
-params.no_alloc   = false;
+params.no_alloc = false;
 struct ggml_v3_context * ctx0 = ggml_v3_init(params);
 struct ggml_v3_cgraph * gf = ggml_v3_new_graph_custom(ctx0, GGML_V3_MAX_NODES, false);
 struct ggml_v3_tensor * embd = ggml_v3_new_tensor_1d(ctx0, GGML_V3_TYPE_I32, N);

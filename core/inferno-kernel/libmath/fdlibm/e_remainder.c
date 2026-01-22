@@ -19,8 +19,8 @@ if((hx>=0x7ff00000)||
 return (x*p)/(x*p);
 if (hp<=0x7fdfffff) x = __ieee754_fmod(x,p+p);
 if (((hx-hp)|(lx-lp))==0) return zero*x;
-x  = fabs(x);
-p  = fabs(p);
+x = fabs(x);
+p = fabs(p);
 if (hp<0x00200000) {
 if(x+x>p) {
 x-=p;

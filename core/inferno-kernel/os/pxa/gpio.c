@@ -1,9 +1,9 @@
-#include	"u.h"
-#include 	"mem.h"
-#include	"../port/lib.h"
-#include 	"dat.h"
-#include	"fns.h"
-#include	"io.h"
+#include "u.h"
+#include "mem.h"
+#include "../port/lib.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
 static ulong gpioreserved[3];
 static Lock gpiolock;
 void

@@ -1,7 +1,7 @@
 #ifndef iminst_INCLUDED
-#  define iminst_INCLUDED
+# define iminst_INCLUDED
 #ifndef gs_main_instance_DEFINED
-#  define gs_main_instance_DEFINED
+# define gs_main_instance_DEFINED
 typedef struct gs_main_instance_s gs_main_instance;
 #endif
 typedef struct gs_file_path_s {

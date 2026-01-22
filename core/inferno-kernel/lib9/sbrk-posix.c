@@ -2,18 +2,18 @@
 #include "lib9.h"
 #undef _POSIX_C_SOURCE
 #undef getwd
-#include	<unistd.h>
-#include        <pthread.h>
-#include	<time.h>
-#include	<termios.h>
-#include	<signal.h>
-#include	<pwd.h>
-#include	<sys/resource.h>
-#include	<sys/time.h>
-#include 	<sys/socket.h>
-#include	<sched.h>
-#include	<errno.h>
-#include        <sys/ucontext.h>
+#include <unistd.h>
+#include <pthread.h>
+#include <time.h>
+#include <termios.h>
+#include <signal.h>
+#include <pwd.h>
+#include <sys/resource.h>
+#include <sys/time.h>
+#include <sys/socket.h>
+#include <sched.h>
+#include <errno.h>
+#include <sys/ucontext.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <mach/mach_init.h>
@@ -23,7 +23,7 @@ __typeof__(sbrk(0))
 sbrk(int size)
 {
 void *brk;
-kern_return_t   err;
+kern_return_t err;
 err = vm_allocate( (vm_map_t) mach_task_self(),
 (vm_address_t *)&brk,
 size,
@@ -33,5 +33,5 @@ brk = (void*)-1;
 return brk;
 }
 #else
-void	__fakesbrk(void){}
+void __fakesbrk(void){}
 #endif

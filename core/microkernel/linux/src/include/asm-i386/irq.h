@@ -26,8 +26,8 @@ extern void enable_irq(unsigned int);
 "mov %dx,%es\n\t" \
 "mov %dx,%gs\n\t" \
 "movl $" STR(USER_DS) ",%edx\n\t" \
-"mov %dx,%fs\n\t"   \
-"movl $0,%edx\n\t"  \
+"mov %dx,%fs\n\t" \
+"movl $0,%edx\n\t" \
 "movl %edx,%db7\n\t"
 #define SAVE_MOST \
 "cld\n\t" \
@@ -98,7 +98,7 @@ extern void enable_irq(unsigned int);
 #define IRQ_NAME(nr) IRQ_NAME2(IRQ##nr)
 #define FAST_IRQ_NAME(nr) IRQ_NAME2(fast_IRQ##nr)
 #define BAD_IRQ_NAME(nr) IRQ_NAME2(bad_IRQ##nr)
-#ifdef	__SMP__
+#ifdef __SMP__
 #ifndef __SMP_PROF__
 #define SMP_PROF_INT_SPINS
 #define SMP_PROF_IPI_CNT
@@ -111,7 +111,7 @@ extern void enable_irq(unsigned int);
 "movl 32(%edx), %eax\n\t" \
 "shrl $24,%eax\n\t" \
 "andl $0x0F,%eax\n"
-#define	ENTER_KERNEL \
+#define ENTER_KERNEL \
 "pushl %eax\n\t" \
 "pushl %ebx\n\t" \
 "pushl %ecx\n\t" \
@@ -167,7 +167,7 @@ SMP_PROF_INT_SPINS \
 "popl %ecx\n\t" \
 "popl %ebx\n\t" \
 "popl %eax\n\t"
-#define	LEAVE_KERNEL \
+#define LEAVE_KERNEL \
 GET_PROCESSOR_ID \
 "btrl $" STR(SMP_FROM_INT) ","SYMBOL_NAME_STR(smp_proc_in_lock)"(,%eax,4)\n\t" \
 "pushfl\n\t" \

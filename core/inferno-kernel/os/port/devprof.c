@@ -1,53 +1,53 @@
-#include	"u.h"
-#include	"../port/lib.h"
+#include "u.h"
+#include "../port/lib.h"
 #include "mem.h"
 #include "dat.h"
 #include "fns.h"
-#include	"../port/error.h"
-#include	<interp.h>
-#include	<isa.h>
-#include	"runt.h"
-static void	cpxec(Prog *);
+#include "../port/error.h"
+#include <interp.h>
+#include <isa.h>
+#include "runt.h"
+static void cpxec(Prog *);
 static void memprof(int, Heap*, ulong);
-extern	Inst*	pc2dispc(Inst*, Module*);
-static	int	interval = 100;
+extern Inst* pc2dispc(Inst*, Module*);
+static int interval = 100;
 enum
 {
-HSIZE	= 32,
+HSIZE = 32,
 };
-#define HASH(m)	((m)%HSIZE)
+#define HASH(m) ((m)%HSIZE)
 typedef struct Record Record;
 struct Record
 {
-int	id;
-char*	name;
-char*	path;
-Inst*	base;
-int	size;
-ulong	mtime;
-Qid	qid;
-Record*	hash;
-Record*	link;
-ulong	bucket[1];
+int id;
+char* name;
+char* path;
+Inst* base;
+int size;
+ulong mtime;
+Qid qid;
+Record* hash;
+Record* link;
+ulong bucket[1];
 };
 struct
 {
-Lock	l;
-vlong	time;
-Record*	hash[HSIZE];
-Record*	list;
+Lock l;
+vlong time;
+Record* hash[HSIZE];
+Record* list;
 } profile;
 typedef struct Pmod Pmod;
 struct Pmod
 {
-char*	name;
-Pmod*	link;
+char* name;
+Pmod* link;
 } *pmods;
-#define QSHIFT	4
-#define QID(q)		((ulong)(q).path&0xf)
-#define QPID(pid)	((pid)<<QSHIFT)
-#define PID(q)		((q).vers)
-#define PATH(q)	((ulong)(q).path&~((1<<QSHIFT)-1))
+#define QSHIFT 4
+#define QID(q) ((ulong)(q).path&0xf)
+#define QPID(pid) ((pid)<<QSHIFT)
+#define PID(q) ((q).vers)
+#define PATH(q) ((ulong)(q).path&~((1<<QSHIFT)-1))
 enum
 {
 Qdir,
@@ -59,12 +59,12 @@ Qctl,
 };
 Dirtab profdir[] =
 {
-".",			{Qdir, 0, QTDIR},	0,	DMDIR|0555,
-"name",		{Qname},	0,			0444,
-"path",		{Qpath},	0,			0444,
-"histogram",	{Qhist},	0,			0444,
-"pctl",		{Qpctl},	0,			0222,
-"ctl",			{Qctl},	0,			0222,
+".", {Qdir, 0, QTDIR}, 0, DMDIR|0555,
+"name", {Qname}, 0, 0444,
+"path", {Qpath}, 0, 0444,
+"histogram", {Qhist}, 0, 0444,
+"pctl", {Qpctl}, 0, 0222,
+"ctl", {Qctl}, 0, 0222,
 };
 enum{
 Pnil,
@@ -527,7 +527,7 @@ Halloc,
 Hfree,
 Hgcfree,
 };
-#define MPAD	sizeof(double)
+#define MPAD sizeof(double)
 static void
 memprof(int c, Heap *h, ulong n)
 {

@@ -100,7 +100,7 @@ for(; j < len sub; j++){
 s := sub[j].name;
 if(s == prevsub){
 report(errorc, sys->sprint("duplicate entry %s", pathconcat(path, s)));
-continue;			# eliminate duplicates in proto
+continue; # eliminate duplicates in proto
 }
 if(s >= a[i].name || sub[j].old != nil)
 break;
@@ -203,7 +203,7 @@ else
 break;
 }
 if(i == len s || s[i] == '#' || s[i] == '\n')
-return readline(proto, indent);	# XXX sort out tail recursion!
+return readline(proto, indent); # XXX sort out tail recursion!
 if(spc <= indent){
 proto.lastline = s;
 return nil;
@@ -255,7 +255,7 @@ return nil;
 if(s[0] == '$'){
 s = getenv(s[1:]);
 if(s == nil)
-;	# TO DO: w.warn(sys->sprint("can't read environment variable %s", s));
+; # TO DO: w.warn(sys->sprint("can't read environment variable %s", s));
 return s;
 }
 return s;
@@ -263,7 +263,7 @@ return s;
 getenv(s: string): string
 {
 if(s == "user")
-return readfile("/dev/user");	# more accurate?
+return readfile("/dev/user"); # more accurate?
 return readfile("/env/"+s);
 }
 readfile(f: string): string

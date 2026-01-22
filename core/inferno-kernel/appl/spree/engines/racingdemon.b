@@ -18,34 +18,34 @@ include "../gather.m";
 clique: ref Clique;
 CLICK, SAY, SHOW: con iota;
 KING: con 12;
-NACES: con 7;		# number of ace piles to fit across the board.
+NACES: con 7; # number of ace piles to fit across the board.
 Dmember: adt {
 pile,
 spare1,
 spare2: ref Object;
-open: array of ref Object;		# [4]
+open: array of ref Object; # [4]
 acepiles: array of ref Object;
 };
 scores: array of int;
 scorelabel: ref Object;
 dmembers: array of ref Dmember;
 Openspec := Stackspec(
-"display",		# style
-4,			# maxcards
-0,			# conceal
-""			# title
+"display", # style
+4, # maxcards
+0, # conceal
+"" # title
 );
 Pilespec := Stackspec(
-"pile",		# style
-13,			# maxcards
-0,			# conceal
-"pile"		# title
+"pile", # style
+13, # maxcards
+0, # conceal
+"pile" # title
 );
 Untitledpilespec := Stackspec(
-"pile",		# style
-13,			# maxcards
-0,			# conceal
-""			# title
+"pile", # style
+13, # maxcards
+0, # conceal
+"" # title
 );
 clienttype(): string
 {
@@ -208,7 +208,7 @@ if (card.suit != top.suit)
 return "wrong suit";
 }
 sel.transfer(stack, -1);
-if (card.number == KING)	# kings get flipped
+if (card.number == KING) # kings get flipped
 cardlib->setface(stack.children[len stack.children - 1], 0);
 "open" =>
 if (owner(stack) != cp)
@@ -376,7 +376,7 @@ acepile.transfer((k, k + 1), dmembers[back].spare1, -1);
 }
 }
 if (len d.pile.children == 0)
-scores[i] += 10;			# bonus for going out
+scores[i] += 10; # bonus for going out
 else
 scores[i] -= len d.pile.children;
 cardlib->discard(d.pile, d.spare1, 1);

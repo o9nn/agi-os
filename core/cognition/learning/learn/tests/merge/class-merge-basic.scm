@@ -31,7 +31,7 @@
 (test-equal 9 (length (cog-get-atoms 'CrossSection)))
 (define epsilon 1.0e-8)
 (test-approximate cnt-ej-klm
-	(cog-count (car (gsc 'right-stars (WordClass "e j")))) epsilon)
+(cog-count (car (gsc 'right-stars (WordClass "e j")))) epsilon)
 (expected-ej-sections)
 (test-approximate (+ cnt-ej-abc cnt-rs-abc) (cog-count sec-ej-abc) epsilon)
 (test-approximate cnt-rs-dgh (cog-count sec-ej-dgh) epsilon)
@@ -43,6 +43,6 @@
 (test-assert (check-crosses gsc epsilon))
 (test-assert (check-shapes gsc epsilon))
 (test-approximate totcnt (fold + 0 (map cog-count (cog-get-atoms 'Section)))
-	epsilon)
+epsilon)
 (test-end t-class-merge)
 (opencog-test-end)

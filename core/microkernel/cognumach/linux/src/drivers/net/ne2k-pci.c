@@ -10,8 +10,8 @@ static int options[MAX_UNITS] = {0, };
 #define __KERNEL__
 #endif
 #if !defined(__OPTIMIZE__)
-#warning  You must compile this file with the correct options!
-#warning  See the last lines of the source file.
+#warning You must compile this file with the correct options!
+#warning See the last lines of the source file.
 #error You must compile this driver with "-O".
 #endif
 #include <linux/config.h>
@@ -23,7 +23,7 @@ static int options[MAX_UNITS] = {0, };
 #endif
 #include <linux/version.h>
 #include <linux/module.h>
-#if LINUX_VERSION_CODE < 0x20300  &&  defined(MODVERSIONS)
+#if LINUX_VERSION_CODE < 0x20300 && defined(MODVERSIONS)
 #include <linux/modversions.h>
 #endif
 #include <linux/kernel.h>
@@ -64,9 +64,9 @@ FORCE_FDX=0x20,
 REALTEK_FDX=0x40, HOLTEK_FDX=0x80,
 STOP_PG_0x60=0x100,
 };
-#define NE_IO_EXTENT	0x20
+#define NE_IO_EXTENT 0x20
 #ifndef USE_MEMORY_OPS
-#define PCI_IOTYPE (PCI_USES_IO  | PCI_ADDR0)
+#define PCI_IOTYPE (PCI_USES_IO | PCI_ADDR0)
 #else
 #warning When using PCI memory mode the 8390 core must be compiled for memory
 #warning operations as well.
@@ -76,16 +76,16 @@ STOP_PG_0x60=0x100,
 static struct pci_id_info pci_id_tbl[] = {
 {"RealTek RTL-8029",{ 0x802910ec, 0xffffffff}, PCI_IOTYPE, NE_IO_EXTENT,
 REALTEK_FDX },
-{"Winbond 89C940",  { 0x09401050, 0xffffffff}, PCI_IOTYPE, NE_IO_EXTENT, 0},
-{"Winbond w89c940",	{ 0x5a5a1050, 0xffffffff}, PCI_IOTYPE, NE_IO_EXTENT, 0},
-{"KTI ET32P2",      { 0x30008e2e, 0xffffffff}, PCI_IOTYPE, NE_IO_EXTENT, 0},
+{"Winbond 89C940", { 0x09401050, 0xffffffff}, PCI_IOTYPE, NE_IO_EXTENT, 0},
+{"Winbond w89c940", { 0x5a5a1050, 0xffffffff}, PCI_IOTYPE, NE_IO_EXTENT, 0},
+{"KTI ET32P2", { 0x30008e2e, 0xffffffff}, PCI_IOTYPE, NE_IO_EXTENT, 0},
 {"NetVin NV5000SC", { 0x50004a14, 0xffffffff}, PCI_IOTYPE, NE_IO_EXTENT, 0},
-{"Via 86C926",		{ 0x09261106, 0xffffffff},
+{"Via 86C926", { 0x09261106, 0xffffffff},
 PCI_IOTYPE, NE_IO_EXTENT, ONLY_16BIT_IO},
-{"SureCom NE34",	{ 0x0e3410bd, 0xffffffff}, PCI_IOTYPE, NE_IO_EXTENT, 0},
-{"Holtek HT80232",	{ 0x005812c3, 0xffffffff},
+{"SureCom NE34", { 0x0e3410bd, 0xffffffff}, PCI_IOTYPE, NE_IO_EXTENT, 0},
+{"Holtek HT80232", { 0x005812c3, 0xffffffff},
 PCI_IOTYPE, NE_IO_EXTENT, ONLY_16BIT_IO | HOLTEK_FDX},
-{"Holtek HT80229",	{ 0x559812c3, 0xffffffff},
+{"Holtek HT80229", { 0x559812c3, 0xffffffff},
 PCI_IOTYPE, NE_IO_EXTENT, ONLY_32BIT_IO | HOLTEK_FDX | STOP_PG_0x60},
 {"Compex RL2000",
 { 0x140111f6, 0xffffffff}, PCI_IOTYPE, NE_IO_EXTENT, 0},
@@ -96,12 +96,12 @@ PCI_IOTYPE, NE_IO_EXTENT, 0},
 struct drv_id_info ne2k_pci_drv_id = {
 "ne2k-pci", 0, PCI_CLASS_NETWORK_ETHERNET<<8, pci_id_tbl, ne2k_pci_probe1,
 };
-#define NE_BASE	 (dev->base_addr)
-#define NE_CMD	 	0x00
-#define NE_DATAPORT	0x10
-#define NE_RESET	0x1f
-#define NESM_START_PG	0x40
-#define NESM_STOP_PG	0x80
+#define NE_BASE (dev->base_addr)
+#define NE_CMD 0x00
+#define NE_DATAPORT 0x10
+#define NE_RESET 0x1f
+#define NESM_START_PG 0x40
+#define NESM_STOP_PG 0x80
 int ne2k_pci_probe(struct net_device *dev);
 static int ne2k_pci_open(struct net_device *dev);
 static int ne2k_pci_close(struct net_device *dev);
@@ -169,7 +169,7 @@ unlock_8390_module();
 int ne2k_pci_probe(struct net_device *dev)
 {
 int found_cnt = pci_drv_register(&ne2k_pci_drv_id, NULL);
-if (found_cnt >= 0  &&  debug)
+if (found_cnt >= 0 && debug)
 printk(KERN_INFO "%s" KERN_INFO "%s", version1, version2);
 return found_cnt;
 }
@@ -237,17 +237,17 @@ return 0;
 {
 struct {unsigned char value, offset; } program_seq[] = {
 {E8390_NODMA+E8390_PAGE0+E8390_STOP, E8390_CMD},
-{0x49,	EN0_DCFG},
-{0x00,	EN0_RCNTLO},
-{0x00,	EN0_RCNTHI},
-{0x00,	EN0_IMR},
-{0xFF,	EN0_ISR},
+{0x49, EN0_DCFG},
+{0x00, EN0_RCNTLO},
+{0x00, EN0_RCNTHI},
+{0x00, EN0_IMR},
+{0xFF, EN0_ISR},
 {E8390_RXOFF, EN0_RXCR},
 {E8390_TXOFF, EN0_TXCR},
-{32,	EN0_RCNTLO},
-{0x00,	EN0_RCNTHI},
-{0x00,	EN0_RSARLO},
-{0x00,	EN0_RSARHI},
+{32, EN0_RCNTLO},
+{0x00, EN0_RCNTHI},
+{0x00, EN0_RSARLO},
+{0x00, EN0_RSARHI},
 {E8390_RREAD+E8390_START, E8390_CMD},
 };
 for (i = 0; i < sizeof(program_seq)/sizeof(program_seq[0]); i++)
@@ -281,7 +281,7 @@ ei_status.stop_page = stop_page;
 ei_status.word16 = 1;
 ei_status.ne2k_flags = flags;
 if (fnd_cnt < MAX_UNITS) {
-if (full_duplex[fnd_cnt] > 0  ||  (options[fnd_cnt] & FORCE_FDX)) {
+if (full_duplex[fnd_cnt] > 0 || (options[fnd_cnt] & FORCE_FDX)) {
 printk("%s:  Full duplex set by user option.\n", dev->name);
 ei_status.ne2k_flags |= FORCE_FDX;
 }
@@ -436,7 +436,7 @@ outb(E8390_RREAD+E8390_START, nic_base + NE_CMD);
 #endif
 outb(ENISR_RDC, nic_base + EN0_ISR);
 outb(count & 0xff, nic_base + EN0_RCNTLO);
-outb(count >> 8,   nic_base + EN0_RCNTHI);
+outb(count >> 8, nic_base + EN0_RCNTHI);
 outb(0x00, nic_base + EN0_RSARLO);
 outb(start_page, nic_base + EN0_RSARHI);
 outb(E8390_RWRITE+E8390_START, nic_base + NE_CMD);

@@ -1,11 +1,11 @@
 #ifndef gxpath_INCLUDED
-#  define gxpath_INCLUDED
+# define gxpath_INCLUDED
 #include "gscpm.h"
 #include "gslparam.h"
 #include "gspenum.h"
 #include "gsrect.h"
 #ifndef gx_path_DEFINED
-#  define gx_path_DEFINED
+# define gx_path_DEFINED
 typedef struct gx_path_s gx_path;
 #endif
 #define gx_rule_winding_number (-1)
@@ -93,7 +93,7 @@ gx_path_is_rectangular(const gx_path *, gs_fixed_rect *);
 #define gx_path_is_null_inline(ppath)\
 (gx_path_is_void(ppath) && !path_position_valid(ppath))
 #ifndef gs_imager_state_DEFINED
-#  define gs_imager_state_DEFINED
+# define gs_imager_state_DEFINED
 typedef struct gs_imager_state_s gs_imager_state;
 #endif
 int gx_path_copy_reducing(const gx_path * ppath_old, gx_path * ppath_new,
@@ -129,7 +129,7 @@ int gs_moveto_aux(gs_imager_state *pis, gx_path *ppath, floatp x, floatp y);
 int gx_setcurrentpoint_from_path(gs_imager_state *pis, gx_path *path);
 int gx_path_merge_contacting_contours(gx_path *ppath);
 #ifndef gx_clip_path_DEFINED
-#  define gx_clip_path_DEFINED
+# define gx_clip_path_DEFINED
 typedef struct gx_clip_path_s gx_clip_path;
 #endif
 int gx_clip_to_rectangle(gs_state *, gs_fixed_rect *);
@@ -137,7 +137,7 @@ int gx_clip_to_path(gs_state *);
 int gx_default_clip_box(const gs_state *, gs_fixed_rect *);
 int gx_effective_clip_path(gs_state *, gx_clip_path **);
 #ifndef gx_clip_list_DEFINED
-#  define gx_clip_list_DEFINED
+# define gx_clip_list_DEFINED
 typedef struct gx_clip_list_s gx_clip_list;
 #endif
 typedef struct gs_cpath_enum_s gs_cpath_enum;
@@ -163,8 +163,8 @@ int gx_cpath_assign_free(gx_clip_path * pcpto, gx_clip_path * pcpfrom);
 int
 gx_cpath_reset(gx_clip_path *),
 gx_cpath_from_rectangle(gx_clip_path *, gs_fixed_rect *),
-gx_cpath_clip(gs_state *, gx_clip_path *,  gx_path *, int),
-gx_cpath_intersect(gx_clip_path *,  gx_path *, int,
+gx_cpath_clip(gs_state *, gx_clip_path *, gx_path *, int),
+gx_cpath_intersect(gx_clip_path *, gx_path *, int,
 gs_imager_state *),
 gx_cpath_scale_exp2_shared(gx_clip_path *pcpath, int log2_scale_x,
 int log2_scale_y, bool list_shared,

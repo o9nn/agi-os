@@ -5,13 +5,13 @@
 #include <kern/thread.h>
 #include <kern/sched_prim.h>
 #define LOCK_THREAD_INVALID ((struct thread *)-1)
-#if	MACH_KDB
+#if MACH_KDB
 #include <machine/db_machdep.h>
 #include <ddb/db_output.h>
 #include <ddb/db_sym.h>
 #endif
-#if	NCPUS > 1
-#ifdef	notdef
+#if NCPUS > 1
+#ifdef notdef
 void simple_lock_init(simple_lock_t l)
 {
 *(boolean_t *)l = FALSE;
@@ -31,14 +31,14 @@ return (!test_and_set((boolean_t *)l));
 }
 #endif
 #endif
-#if	NCPUS > 1
+#if NCPUS > 1
 static int lock_wait_time = 100;
 #else
 static int lock_wait_time = 0;
 #endif
-#if	MACH_SLOCKS && NCPUS == 1
+#if MACH_SLOCKS && NCPUS == 1
 unsigned int simple_locks_taken = 0;
-#define	NSLINFO	1000
+#define NSLINFO 1000
 struct simple_locks_info {
 simple_lock_t l;
 const char *expr;
@@ -111,8 +111,8 @@ simple_locks_info[simple_locks_taken] = (struct simple_locks_info) {0};
 }
 #endif
 void lock_init(
-lock_t		l,
-boolean_t	can_sleep)
+lock_t l,
+boolean_t can_sleep)
 {
 memset(l, 0, sizeof(lock_data_t));
 simple_lock_init(&l->interlock);
@@ -124,17 +124,17 @@ l->thread = LOCK_THREAD_INVALID;
 l->recursion_depth = 0;
 }
 void lock_sleepable(
-lock_t		l,
-boolean_t	can_sleep)
+lock_t l,
+boolean_t can_sleep)
 {
 simple_lock(&l->interlock);
 l->can_sleep = can_sleep;
 simple_unlock(&l->interlock);
 }
 void lock_write(
-lock_t	l)
+lock_t l)
 {
-int	i;
+int i;
 check_simple_locks();
 simple_lock(&l->interlock);
 if (l->thread == current_thread()) {
@@ -178,7 +178,7 @@ l->writer = current_thread();
 simple_unlock(&l->interlock);
 }
 void lock_done(
-lock_t	l)
+lock_t l)
 {
 simple_lock(&l->interlock);
 if (l->read_count != 0)
@@ -207,7 +207,7 @@ thread_wakeup(l);
 simple_unlock(&l->interlock);
 }
 void lock_read(
-lock_t	l)
+lock_t l)
 {
 check_simple_locks();
 simple_lock(&l->interlock);
@@ -235,9 +235,9 @@ l->read_count++;
 simple_unlock(&l->interlock);
 }
 boolean_t lock_read_to_write(
-lock_t	l)
+lock_t l)
 {
-int	i;
+int i;
 check_simple_locks();
 simple_lock(&l->interlock);
 l->read_count--;
@@ -276,7 +276,7 @@ simple_unlock(&l->interlock);
 return FALSE;
 }
 void lock_write_to_read(
-lock_t	l)
+lock_t l)
 {
 simple_lock(&l->interlock);
 #if MACH_LDEBUG
@@ -301,7 +301,7 @@ l->writer = THREAD_NULL;
 simple_unlock(&l->interlock);
 }
 boolean_t lock_try_write(
-lock_t	l)
+lock_t l)
 {
 simple_lock(&l->interlock);
 if (l->thread == current_thread()) {
@@ -321,7 +321,7 @@ simple_unlock(&l->interlock);
 return TRUE;
 }
 boolean_t lock_try_read(
-lock_t	l)
+lock_t l)
 {
 simple_lock(&l->interlock);
 if (l->thread == current_thread()) {
@@ -338,7 +338,7 @@ simple_unlock(&l->interlock);
 return TRUE;
 }
 boolean_t lock_try_read_to_write(
-lock_t	l)
+lock_t l)
 {
 check_simple_locks();
 simple_lock(&l->interlock);
@@ -367,7 +367,7 @@ simple_unlock(&l->interlock);
 return TRUE;
 }
 void lock_set_recursive(
-lock_t		l)
+lock_t l)
 {
 simple_lock(&l->interlock);
 #if MACH_LDEBUG
@@ -380,7 +380,7 @@ l->thread = current_thread();
 simple_unlock(&l->interlock);
 }
 void lock_clear_recursive(
-lock_t		l)
+lock_t l)
 {
 simple_lock(&l->interlock);
 if (l->thread != current_thread()) {
@@ -390,8 +390,8 @@ if (l->recursion_depth == 0)
 l->thread = LOCK_THREAD_INVALID;
 simple_unlock(&l->interlock);
 }
-#if	MACH_KDB
-#if	MACH_SLOCKS && NCPUS == 1
+#if MACH_KDB
+#if MACH_SLOCKS && NCPUS == 1
 void db_show_all_slocks(void)
 {
 int i;
@@ -407,7 +407,7 @@ db_printf(") locked by %s\n", info->loc);
 #else
 void db_show_all_slocks(void)
 {
-#if	MACH_LOCK_MON
+#if MACH_LOCK_MON
 lip();
 #else
 db_printf("simple lock info not available\n");

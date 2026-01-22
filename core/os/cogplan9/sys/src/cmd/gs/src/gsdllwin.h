@@ -1,5 +1,5 @@
 #ifndef gsdllwin_INCLUDED
-#  define gsdllwin_INCLUDED
+# define gsdllwin_INCLUDED
 GSDLLEXPORT HGLOBAL GSDLLAPI gsdll_copy_dib(unsigned char * device);
 GSDLLEXPORT HPALETTE GSDLLAPI gsdll_copy_palette(unsigned char * device);
 GSDLLEXPORT void GSDLLAPI gsdll_draw(unsigned char * device, HDC hdc, LPRECT dest,

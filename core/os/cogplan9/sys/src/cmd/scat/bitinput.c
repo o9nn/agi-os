@@ -1,16 +1,16 @@
-#include	<u.h>
-#include	<libc.h>
-#include	<bio.h>
-#include	"sky.h"
+#include <u.h>
+#include <libc.h>
+#include <bio.h>
+#include "sky.h"
 static int hufvals[] = {
-1,  1,  1,  1,  1,  1,  1,  1,
-2,  2,  2,  2,  2,  2,  2,  2,
-4,  4,  4,  4,  4,  4,  4,  4,
-8,  8,  8,  8,  8,  8,  8,  8,
-3,  3,  3,  3,  5,  5,  5,  5,
+1, 1, 1, 1, 1, 1, 1, 1,
+2, 2, 2, 2, 2, 2, 2, 2,
+4, 4, 4, 4, 4, 4, 4, 4,
+8, 8, 8, 8, 8, 8, 8, 8,
+3, 3, 3, 3, 5, 5, 5, 5,
 10, 10, 10, 10, 12, 12, 12, 12,
-15, 15, 15, 15,  6,  6,  7,  7,
-9,  9, 11, 11, 13, 13,  0, 14,
+15, 15, 15, 15, 6, 6, 7, 7,
+9, 9, 11, 11, 13, 13, 0, 14,
 };
 static int huflens[] = {
 3, 3, 3, 3, 3, 3, 3, 3,
@@ -22,8 +22,8 @@ static int huflens[] = {
 4, 4, 4, 4, 5, 5, 5, 5,
 5, 5, 5, 5, 5, 5, 6, 6,
 };
-static	int	buffer;
-static	int	bits_to_go;
+static int buffer;
+static int bits_to_go;
 void
 start_inputing_bits(void)
 {

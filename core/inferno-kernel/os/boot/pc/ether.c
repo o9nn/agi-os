@@ -25,14 +25,14 @@ extern int rhinepnp(Ether*);
 extern int ga620pnp(Ether*);
 extern int dp83820pnp(Ether*);
 struct {
-char	*type;
-int	(*reset)(Ether*);
-int	noprobe;
+char *type;
+int (*reset)(Ether*);
+int noprobe;
 } ethercards[] = {
 { "21140", ether2114xreset, 0, },
 { "2114x", ether2114xreset, 0, },
 { "i82557", i82557reset, 0, },
-{ "igbe",  igbepnp, 0, },
+{ "igbe", igbepnp, 0, },
 { "i82563",i82563pnp, 0, },
 { "igbepcie",i82563pnp, 0, },
 { "elnk3", elnk3reset, 0, },
@@ -51,7 +51,7 @@ int	noprobe;
 { "rhine", rhinepnp, 0, },
 { "vt6102", rhinepnp, 0, },
 { "GA620", ga620pnp, 0, },
-{ "83820",   dp83820pnp, 0, },
+{ "83820", dp83820pnp, 0, },
 { "dp83820", dp83820pnp, 0, },
 { 0, }
 };

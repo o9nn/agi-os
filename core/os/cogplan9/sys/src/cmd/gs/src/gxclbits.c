@@ -111,7 +111,7 @@ int status;
 w.ptr = wbase;
 w.limit = w.ptr + min(wmax, short_size >> 1);
 status = cmd_compress_bitmap((stream_state *) & sstate, data,
-uncompressed_raster << 3  ,
+uncompressed_raster << 3 ,
 raster, height, &w);
 if (status == 0) {
 uint wcount = w.ptr - wbase;

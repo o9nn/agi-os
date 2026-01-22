@@ -60,14 +60,14 @@ runbuiltin(ctxt: ref Context, nil: Sh,
 cmd: list of ref Listnode, nil: int): string
 {
 case (hd cmd).word {
-"file2chan" =>		return builtin_file2chan(ctxt, cmd);
-"rblock" =>		return builtin_rblock(ctxt, cmd);
-"rread" =>			return builtin_rread(ctxt, cmd, 0);
-"rreadone" =>		return builtin_rread(ctxt, cmd, 1);
-"rwrite" =>		return builtin_rwrite(ctxt, cmd);
-"rerror" =>		return builtin_rerror(ctxt, cmd);
-"fetchwdata" =>	return builtin_fetchwdata(ctxt, cmd);
-"putrdata" =>		return builtin_putrdata(ctxt, cmd);
+"file2chan" => return builtin_file2chan(ctxt, cmd);
+"rblock" => return builtin_rblock(ctxt, cmd);
+"rread" => return builtin_rread(ctxt, cmd, 0);
+"rreadone" => return builtin_rread(ctxt, cmd, 1);
+"rwrite" => return builtin_rwrite(ctxt, cmd);
+"rerror" => return builtin_rerror(ctxt, cmd);
+"fetchwdata" => return builtin_fetchwdata(ctxt, cmd);
+"putrdata" => return builtin_putrdata(ctxt, cmd);
 }
 return nil;
 }
@@ -76,7 +76,7 @@ argv: list of ref Listnode): list of ref Listnode
 {
 # could add ${rtags} to retrieve list of currently outstanding tags
 case (hd argv).word {
-"rget" =>			return sbuiltin_rget(ctxt, argv);
+"rget" => return sbuiltin_rget(ctxt, argv);
 }
 return nil;
 }
@@ -130,7 +130,7 @@ if (rc != nil) {
 t = ref Tag.Read(0, 0, offset, fid, count, rc);
 cmd = rcmd;
 } else
-continue;		# we get a close on both read and write...
+continue; # we get a close on both read and write...
 (offset, d, fid, wc) = <-fio.write =>
 if (wc != nil) {
 t = ref Tag.Write(0, 0, offset, fid, d, wc);
@@ -319,7 +319,7 @@ return gettag(tagid);
 etw(ctxt: ref Context, cmd: string, t: ref Tag): ref Tag.Write
 {
 pick mt := t {
-Write =>	return mt;
+Write => return mt;
 }
 ctxt.fail("bad tag", cmd + ": inappropriate tag id");
 return nil;
@@ -327,7 +327,7 @@ return nil;
 etr(ctxt: ref Context, cmd: string, t: ref Tag): ref Tag.Read
 {
 pick mt := t {
-Read =>	return mt;
+Read => return mt;
 }
 ctxt.fail("bad tag", cmd + ": inappropriate tag id");
 return nil;

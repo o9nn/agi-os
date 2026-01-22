@@ -56,7 +56,7 @@ struct in6_addr *loc_addr, struct in6_addr *rmt_addr)
 struct sock *s = sk;
 int addr_type = ipv6_addr_type(loc_addr);
 for(s = sk; s; s = s->next) {
-if((s->num == num) 		&&
+if((s->num == num) &&
 !(s->dead && (s->state == TCP_CLOSE))) {
 struct ipv6_pinfo *np = &s->net_pinfo.af_inet6;
 if (!ipv6_addr_any(&np->daddr) &&
@@ -99,7 +99,7 @@ if (!dev_get_by_index(sk->bound_dev_if))
 return(-ENODEV);
 }
 v4addr = LOOPBACK4_IPV6;
-if (!(addr_type & IPV6_ADDR_MULTICAST))	{
+if (!(addr_type & IPV6_ADDR_MULTICAST)) {
 if (ipv6_chk_addr(&addr->sin6_addr, NULL, 0) == NULL)
 return(-EADDRNOTAVAIL);
 }
@@ -194,11 +194,11 @@ out:
 return err;
 }
 struct rawv6_fakehdr {
-struct iovec	*iov;
-struct sock	*sk;
-__u32		len;
-__u32		cksum;
-__u32		proto;
+struct iovec *iov;
+struct sock *sk;
+__u32 len;
+__u32 cksum;
+__u32 proto;
 struct in6_addr *daddr;
 };
 static int rawv6_getfrag(const void *data, struct in6_addr *saddr,
@@ -333,7 +333,7 @@ fl.uli_u.icmpt.code = 0;
 if (raw_opt->checksum) {
 struct rawv6_fakehdr hdr;
 hdr.iov = msg->msg_iov;
-hdr.sk  = sk;
+hdr.sk = sk;
 hdr.len = len;
 hdr.cksum = 0;
 hdr.proto = proto;

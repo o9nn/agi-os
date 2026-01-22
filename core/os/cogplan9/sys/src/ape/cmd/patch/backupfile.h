@@ -9,9 +9,9 @@ extern enum backup_type backup_type;
 extern char const *simple_backup_suffix;
 #ifndef __BACKUPFILE_P
 # if defined __STDC__ || __GNUC__
-#  define __BACKUPFILE_P(args) args
+# define __BACKUPFILE_P(args) args
 # else
-#  define __BACKUPFILE_P(args) ()
+# define __BACKUPFILE_P(args) ()
 # endif
 #endif
 char *base_name __BACKUPFILE_P ((char const *));

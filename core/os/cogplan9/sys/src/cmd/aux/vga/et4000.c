@@ -4,11 +4,11 @@
 #include "pci.h"
 #include "vga.h"
 enum {
-Crtcbx		= 0x217A,
-Sprite		= 0xE0,
-NSprite		= 0x10,
-Ima		= 0xF0,
-NIma		= 0x08,
+Crtcbx = 0x217A,
+Sprite = 0xE0,
+NSprite = 0x10,
+Ima = 0xF0,
+NIma = 0x08,
 };
 static void
 setkey(void)

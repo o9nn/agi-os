@@ -10,17 +10,17 @@ static int force32 = 0;
 #define MAX_UNITS 8
 static int options[MAX_UNITS] = {-1, -1, -1, -1, -1, -1, -1, -1};
 static int full_duplex[MAX_UNITS] = {-1, -1, -1, -1, -1, -1, -1, -1};
-#define TX_RING_SIZE	64
-#define TX_QUEUE_LEN	60
-#define RX_RING_SIZE	128
-#define TX_TIMEOUT  (6*HZ)
-#define PKT_BUF_SZ		1536
+#define TX_RING_SIZE 64
+#define TX_QUEUE_LEN 60
+#define RX_RING_SIZE 128
+#define TX_TIMEOUT (6*HZ)
+#define PKT_BUF_SZ 1536
 #ifndef __KERNEL__
 #define __KERNEL__
 #endif
 #if !defined(__OPTIMIZE__)
-#warning  You must compile this file with the correct options!
-#warning  See the last lines of the source file.
+#warning You must compile this file with the correct options!
+#warning See the last lines of the source file.
 #error You must compile this driver with "-O".
 #endif
 #include <linux/config.h>
@@ -61,12 +61,12 @@ static int full_duplex[MAX_UNITS] = {-1, -1, -1, -1, -1, -1, -1, -1};
 #include "kern_compat.h"
 #endif
 #if ADDRLEN == 64
-#define virt_to_desc(addr)  cpu_to_le64(virt_to_bus(addr))
+#define virt_to_desc(addr) cpu_to_le64(virt_to_bus(addr))
 #else
-#define virt_to_desc(addr)  cpu_to_le32(virt_to_bus(addr))
-#define le32desc_to_virt(addr)  bus_to_virt(le32_to_cpu(addr))
+#define virt_to_desc(addr) cpu_to_le32(virt_to_bus(addr))
+#define le32desc_to_virt(addr) bus_to_virt(le32_to_cpu(addr))
 #endif
-#if (LINUX_VERSION_CODE >= 0x20100)  &&  defined(MODULE)
+#if (LINUX_VERSION_CODE >= 0x20100) && defined(MODULE)
 char kernel_version[] = UTS_RELEASE;
 #endif
 MODULE_AUTHOR("Donald Becker <becker@scyld.com>");
@@ -141,7 +141,7 @@ enum desc_status_bits {
 DescOwn=0x80000000, DescEndPacket=0x40000000, DescEndRing=0x20000000,
 DescIntr=0x10000000,
 };
-#define PRIV_ALIGN	15
+#define PRIV_ALIGN 15
 struct hamachi_private {
 struct hamachi_desc rx_ring[RX_RING_SIZE];
 struct hamachi_desc tx_ring[TX_RING_SIZE];
@@ -254,7 +254,7 @@ np->default_port = option & 15;
 if (np->default_port & 0x3330)
 np->medialock = 1;
 }
-if (card_idx < MAX_UNITS  &&  full_duplex[card_idx] > 0)
+if (card_idx < MAX_UNITS && full_duplex[card_idx] > 0)
 np->full_duplex = 1;
 if (np->full_duplex) {
 if (np->msg_level & NETIF_MSG_PROBE)
@@ -275,7 +275,7 @@ if (np->drv_flags & CanHaveMII) {
 int phy, phy_idx = 0;
 for (phy = 0; phy < 32 && phy_idx < 4; phy++) {
 int mii_status = mdio_read(ioaddr, phy, 1);
-if (mii_status != 0xffff  &&  mii_status != 0x0000) {
+if (mii_status != 0xffff && mii_status != 0x0000) {
 np->phys[phy_idx++] = phy;
 np->advertising = mdio_read(ioaddr, phy, 4);
 printk(KERN_INFO "%s: MII PHY found at address %d, status "
@@ -301,7 +301,7 @@ long ioaddr = dev->base_addr;
 int bogus_cnt = 1000;
 writew(location, ioaddr + EEAddr);
 writeb(0x02, ioaddr + EECmdStatus);
-while ((readb(ioaddr + EECmdStatus) & 0x40)  && --bogus_cnt > 0)
+while ((readb(ioaddr + EECmdStatus) & 0x40) && --bogus_cnt > 0)
 ;
 if (np->msg_level & NETIF_MSG_MISC)
 printk(KERN_DEBUG "   EEPROM status is %2.2x after %d ticks.\n",
@@ -621,7 +621,7 @@ if (frame_status < 0) hmp->stats.rx_dropped++;
 } else {
 struct sk_buff *skb;
 u16 pkt_len = (frame_status & 0x07ff) - 4;
-#if ! defined(final_version)  &&  0
+#if ! defined(final_version) && 0
 if (hmp->msg_level & NETIF_MSG_RX_STATUS)
 printk(KERN_DEBUG "  hamachi_rx() normal Rx pkt length %d"
 " of %d, bogus_cnt %d.\n",
@@ -787,12 +787,12 @@ struct hamachi_private *hmp = (struct hamachi_private *)dev->priv;
 hmp->stats.rx_bytes += readl(ioaddr + 0x330);
 hmp->stats.tx_bytes += readl(ioaddr + 0x3B0);
 #endif
-hmp->stats.multicast		+= readl(ioaddr + 0x320);
-hmp->stats.rx_length_errors	+= readl(ioaddr + 0x368);
-hmp->stats.rx_over_errors	+= readl(ioaddr + 0x35C);
-hmp->stats.rx_crc_errors	+= readl(ioaddr + 0x360);
-hmp->stats.rx_frame_errors	+= readl(ioaddr + 0x364);
-hmp->stats.rx_missed_errors	+= readl(ioaddr + 0x36C);
+hmp->stats.multicast += readl(ioaddr + 0x320);
+hmp->stats.rx_length_errors += readl(ioaddr + 0x368);
+hmp->stats.rx_over_errors += readl(ioaddr + 0x35C);
+hmp->stats.rx_crc_errors += readl(ioaddr + 0x360);
+hmp->stats.rx_frame_errors += readl(ioaddr + 0x364);
+hmp->stats.rx_missed_errors += readl(ioaddr + 0x36C);
 return &hmp->stats;
 }
 static void set_rx_mode(struct net_device *dev)

@@ -51,7 +51,7 @@ ATOMIC_INIT(0),
 2*HZ,
 },
 };
-#define MASQUERADE_EXPIRE_RETRY      masq_timeout_table.timeout[IP_MASQ_S_TIME_WAIT]
+#define MASQUERADE_EXPIRE_RETRY masq_timeout_table.timeout[IP_MASQ_S_TIME_WAIT]
 static const char * state_name_table[IP_MASQ_S_LAST+1] = {
 "NONE",
 "ESTABLISHED",
@@ -179,9 +179,9 @@ case ICMP_ADDRESSREPLY: return ICMP_ADDRESS; break;
 default: return (255); break;
 }
 }
-#define icmp_id(icmph)		((icmph->un).echo.id)
-#define icmp_hv_req(icmph)	((__u16)(icmph->code+(__u16)(icmph->type<<8)))
-#define icmp_hv_rep(icmph)	((__u16)(icmph->code+(__u16)(icmp_type_request(icmph->type)<<8)))
+#define icmp_id(icmph) ((icmph->un).echo.id)
+#define icmp_hv_req(icmph) ((__u16)(icmph->code+(__u16)(icmph->type<<8)))
+#define icmp_hv_rep(icmph) ((__u16)(icmph->code+(__u16)(icmp_type_request(icmph->type)<<8)))
 static __u16 masq_port = PORT_MASQ_BEGIN;
 static spinlock_t masq_port_lock = SPIN_LOCK_UNLOCKED;
 #ifdef CONFIG_IP_MASQ_NREUSE
@@ -225,8 +225,8 @@ MASQUERADE_EXPIRE_UDP
 EXPORT_SYMBOL(ip_masq_expire);
 struct ip_fw_masq *ip_masq_expire = &ip_masq_dummy;
 #endif
-#define MASQ_DADDR_PASS	(IP_MASQ_F_NO_DADDR|IP_MASQ_F_DLOOSE)
-#define MASQ_DPORT_PASS	(IP_MASQ_F_NO_DPORT|IP_MASQ_F_DLOOSE)
+#define MASQ_DADDR_PASS (IP_MASQ_F_NO_DADDR|IP_MASQ_F_DLOOSE)
+#define MASQ_DPORT_PASS (IP_MASQ_F_NO_DPORT|IP_MASQ_F_DLOOSE)
 #define CONFIG_IP_MASQ_LOOSE_DEFAULT 1
 static void __ip_masq_set_expire(struct ip_masq *ms, unsigned long tout)
 {
@@ -443,7 +443,7 @@ struct ip_masq * ip_masq_in_get(int protocol, __u32 s_addr, __u16 s_port, __u32 
 {
 struct ip_masq *ms;
 read_lock(&__ip_masq_lock);
-ms =  __ip_masq_in_get(protocol, s_addr, s_port, d_addr, d_port);
+ms = __ip_masq_in_get(protocol, s_addr, s_port, d_addr, d_port);
 read_unlock(&__ip_masq_lock);
 if (ms)
 __ip_masq_set_expire(ms, 0);
@@ -548,16 +548,16 @@ INIT_LIST_HEAD(&ms->s_list);
 INIT_LIST_HEAD(&ms->m_list);
 INIT_LIST_HEAD(&ms->d_list);
 init_timer(&ms->timer);
-ms->timer.data     = (unsigned long)ms;
+ms->timer.data = (unsigned long)ms;
 ms->timer.function = masq_expire;
-ms->protocol	   = proto;
-ms->saddr    	   = saddr;
-ms->sport	   = sport;
-ms->daddr	   = daddr;
-ms->dport	   = dport;
-ms->flags	   = mflags;
-ms->app_data	   = NULL;
-ms->control	   = NULL;
+ms->protocol = proto;
+ms->saddr = saddr;
+ms->sport = sport;
+ms->daddr = daddr;
+ms->dport = dport;
+ms->flags = mflags;
+ms->app_data = NULL;
+ms->control = NULL;
 atomic_set(&ms->n_control,0);
 atomic_set(&ms->refcnt,0);
 if (proto == IPPROTO_UDP && !mport)
@@ -566,8 +566,8 @@ ms->flags |= IP_MASQ_F_DLOOSE;
 #else
 ms->flags |= IP_MASQ_F_NO_DADDR;
 #endif
-ms->maddr	   = maddr;
-ms->flags         |= IP_MASQ_F_NO_REPLY;
+ms->maddr = maddr;
+ms->flags |= IP_MASQ_F_NO_REPLY;
 if (masq_proto_num(proto) == -1 || mport) {
 ms->mport = mport;
 if (mflags & IP_MASQ_F_USER)
@@ -679,11 +679,11 @@ return ret;
 }
 int ip_fw_masquerade(struct sk_buff **skb_p, __u32 maddr)
 {
-struct sk_buff  *skb = *skb_p;
-struct iphdr	*iph = skb->nh.iph;
+struct sk_buff *skb = *skb_p;
+struct iphdr *iph = skb->nh.iph;
 union ip_masq_tphdr h;
-struct ip_masq	*ms;
-int		size;
+struct ip_masq *ms;
+int size;
 int doff = 0;
 int csum = 0;
 int csum_ok = 0;
@@ -876,13 +876,13 @@ return 0;
 }
 int ip_fw_masq_icmp(struct sk_buff **skb_p, __u32 maddr)
 {
-struct sk_buff 	*skb   = *skb_p;
-struct iphdr	*iph   = skb->nh.iph;
-struct icmphdr  *icmph = (struct icmphdr *)((char *)iph + (iph->ihl<<2));
-struct iphdr    *ciph;
-__u16	        *pptr;
-struct ip_masq	*ms;
-unsigned short   len   = ntohs(iph->tot_len) - (iph->ihl * 4);
+struct sk_buff *skb = *skb_p;
+struct iphdr *iph = skb->nh.iph;
+struct icmphdr *icmph = (struct icmphdr *)((char *)iph + (iph->ihl<<2));
+struct iphdr *ciph;
+__u16 *pptr;
+struct ip_masq *ms;
+unsigned short len = ntohs(iph->tot_len) - (iph->ihl * 4);
 IP_MASQ_DEBUG(2, "Incoming forward ICMP (%d,%d) %lX -> %lX\n",
 icmph->type, ntohs(icmp_id(icmph)),
 ntohl(iph->saddr), ntohl(iph->daddr));
@@ -944,7 +944,7 @@ return 0;
 ciph = (struct iphdr *) (icmph + 1);
 #ifdef CONFIG_IP_MASQUERADE_ICMP
 if (ciph->protocol == IPPROTO_ICMP) {
-struct icmphdr  *cicmph = (struct icmphdr *)((char *)ciph +
+struct icmphdr *cicmph = (struct icmphdr *)((char *)ciph +
 (ciph->ihl<<2));
 IP_MASQ_DEBUG(2, "fw icmp/icmp rcv %lX->%lX id %d type %d\n",
 ntohl(ciph->saddr),
@@ -1035,13 +1035,13 @@ return skb;
 }
 int ip_fw_demasq_icmp(struct sk_buff **skb_p)
 {
-struct sk_buff 	*skb   = *skb_p;
-struct iphdr	*iph   = skb->nh.iph;
-struct icmphdr  *icmph = (struct icmphdr *)((char *)iph + (iph->ihl<<2));
-struct iphdr    *ciph;
-__u16	        *pptr;
-struct ip_masq	*ms;
-unsigned short   len   = ntohs(iph->tot_len) - (iph->ihl * 4);
+struct sk_buff *skb = *skb_p;
+struct iphdr *iph = skb->nh.iph;
+struct icmphdr *icmph = (struct icmphdr *)((char *)iph + (iph->ihl<<2));
+struct iphdr *ciph;
+__u16 *pptr;
+struct ip_masq *ms;
+unsigned short len = ntohs(iph->tot_len) - (iph->ihl * 4);
 IP_MASQ_DEBUG(2, "icmp in/rev (%d,%d) %lX -> %lX\n",
 icmph->type, ntohs(icmp_id(icmph)),
 ntohl(iph->saddr), ntohl(iph->daddr));
@@ -1049,7 +1049,7 @@ ntohl(iph->saddr), ntohl(iph->daddr));
 if ((icmph->type == ICMP_ECHOREPLY) ||
 (icmph->type == ICMP_TIMESTAMPREPLY) ||
 (icmph->type == ICMP_INFO_REPLY) ||
-(icmph->type == ICMP_ADDRESSREPLY))	{
+(icmph->type == ICMP_ADDRESSREPLY)) {
 IP_MASQ_DEBUG(2, "icmp reply rcv %lX->%lX id %d type %d, req %d\n",
 ntohl(iph->saddr),
 ntohl(iph->daddr),
@@ -1093,7 +1093,7 @@ return 0;
 ciph = (struct iphdr *) (icmph + 1);
 #ifdef CONFIG_IP_MASQUERADE_ICMP
 if (ciph->protocol == IPPROTO_ICMP) {
-struct icmphdr  *cicmph = (struct icmphdr *)((char *)ciph +
+struct icmphdr *cicmph = (struct icmphdr *)((char *)ciph +
 (ciph->ihl<<2));
 IP_MASQ_DEBUG(2, "rv icmp/icmp rcv %lX->%lX id %d type %d\n",
 ntohl(ciph->saddr),
@@ -1178,10 +1178,10 @@ return 1;
 }
 int ip_fw_demasquerade(struct sk_buff **skb_p)
 {
-struct sk_buff 	*skb = *skb_p;
-struct iphdr	*iph = skb->nh.iph;
+struct sk_buff *skb = *skb_p;
+struct iphdr *iph = skb->nh.iph;
 union ip_masq_tphdr h;
-struct ip_masq	*ms;
+struct ip_masq *ms;
 unsigned short size;
 int doff = 0;
 int csum = 0;
@@ -1466,7 +1466,7 @@ return ret;
 static int ip_masq_user_ctl(int optname, void *arg, int arglen)
 {
 int ret = -ENOPKG;
-if (ip_masq_user_check_hook())  {
+if (ip_masq_user_check_hook()) {
 ret = ip_masq_user_hook->ctl(optname, arg, arglen);
 }
 return ret;
@@ -1499,7 +1499,7 @@ ret = 0;
 return ret;
 }
 #ifdef CONFIG_PROC_FS
-static struct proc_dir_entry	*proc_net_ip_masq = NULL;
+static struct proc_dir_entry *proc_net_ip_masq = NULL;
 #ifdef MODULE
 static void ip_masq_proc_count(struct inode *inode, int fill)
 {
@@ -1547,7 +1547,7 @@ return inet_select_addr(dev, dst, scope);
 __initfunc(int ip_masq_init(void))
 {
 int idx;
-for(idx = 0; idx < IP_MASQ_TAB_SIZE; idx++)  {
+for(idx = 0; idx < IP_MASQ_TAB_SIZE; idx++) {
 INIT_LIST_HEAD(&ip_masq_s_table[idx]);
 INIT_LIST_HEAD(&ip_masq_m_table[idx]);
 INIT_LIST_HEAD(&ip_masq_d_table[idx]);

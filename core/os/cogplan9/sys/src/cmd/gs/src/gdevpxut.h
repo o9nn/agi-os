@@ -1,5 +1,5 @@
 #ifndef gdevpxut_INCLUDED
-#  define gdevpxut_INCLUDED
+# define gdevpxut_INCLUDED
 int px_write_file_header(stream *s, const gx_device *dev);
 int px_write_page_header(stream *s, const gx_device *dev);
 int px_write_select_media(stream *s, const gx_device *dev,

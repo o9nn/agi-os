@@ -1,5 +1,5 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #include "mailimap.h"
 #include "mailimap_parser.h"
@@ -155,7 +155,7 @@ else {
 break;
 case MAILIMAP_MAILBOX_DATA_LSUB:
 if (session->imap_response_info) {
-r =  clist_append(session->imap_response_info->rsp_mailbox_lsub,
+r = clist_append(session->imap_response_info->rsp_mailbox_lsub,
 mb_data->mbd_data.mbd_lsub);
 if (r == 0)
 mb_data->mbd_data.mbd_lsub = NULL;
@@ -1280,19 +1280,19 @@ res = MAILIMAP_ERROR_BAD_STATE;
 goto err;
 }
 sasl_callback[0].id = SASL_CB_GETREALM;
-sasl_callback[0].proc =  (int(*)(void)) sasl_getrealm;
+sasl_callback[0].proc = (int(*)(void)) sasl_getrealm;
 sasl_callback[0].context = session;
 sasl_callback[1].id = SASL_CB_USER;
-sasl_callback[1].proc =  (int(*)(void)) sasl_getsimple;
+sasl_callback[1].proc = (int(*)(void)) sasl_getsimple;
 sasl_callback[1].context = session;
 sasl_callback[2].id = SASL_CB_AUTHNAME;
-sasl_callback[2].proc =  (int(*)(void)) sasl_getsimple;
+sasl_callback[2].proc = (int(*)(void)) sasl_getsimple;
 sasl_callback[2].context = session;
 sasl_callback[3].id = SASL_CB_PASS;
-sasl_callback[3].proc =  (int(*)(void)) sasl_getsecret;
+sasl_callback[3].proc = (int(*)(void)) sasl_getsecret;
 sasl_callback[3].context = session;
 sasl_callback[4].id = SASL_CB_LIST_END;
-sasl_callback[4].proc =  NULL;
+sasl_callback[4].proc = NULL;
 sasl_callback[4].context = NULL;
 len = strlen(password);
 secret = malloc(sizeof(* secret) + len);

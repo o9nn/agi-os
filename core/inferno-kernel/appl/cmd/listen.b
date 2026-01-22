@@ -56,7 +56,7 @@ doauth = 0;
 'f' or
 'k' =>
 keyfile = arg->earg();
-if (! (keyfile[0] == '/' || (len keyfile > 2 &&  keyfile[0:2] == "./")))
+if (! (keyfile[0] == '/' || (len keyfile > 2 && keyfile[0:2] == "./")))
 keyfile = "/usr/" + user() + "/keyring/" + keyfile;
 'i' =>
 initscript = arg->earg();
@@ -82,7 +82,7 @@ raise "fail:bad keyfile";
 }
 }
 if(!trusted){
-sys->unmount(nil, "/mnt/keys");	# should do for now
+sys->unmount(nil, "/mnt/keys"); # should do for now
 # become none?
 }
 argv = arg->argv();
@@ -91,7 +91,7 @@ if (n < 2)
 arg->usage();
 arg = nil;
 sync := chan[1] of string;
-spawn listen(drawctxt, hd argv, tl argv, algs,  initscript, sync);
+spawn listen(drawctxt, hd argv, tl argv, algs, initscript, sync);
 e := <-sync;
 if(e != nil)
 raise "fail:" + e;

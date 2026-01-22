@@ -1,9 +1,9 @@
 #
-#	Lexical analyzer.
+# Lexical analyzer.
 #
-lexdebug	: con 0;
+lexdebug : con 0;
 #
-#	Import tokens from parser.
+# Import tokens from parser.
 #
 Land,
 Lat,
@@ -45,41 +45,41 @@ Ltl,
 Lwhile,
 Lword
 : import Mashparse;
-KWSIZE:	con 31;	# keyword hashtable size
-NCTYPE:	con 128;	# character class array size
+KWSIZE: con 31; # keyword hashtable size
+NCTYPE: con 128; # character class array size
 ALPHA,
 NUMERIC,
 ONE,
 WS,
 META
-:	con 1 << iota;
+: con 1 << iota;
 keywords := array[] of
 {
-("case",	Lcase),
-("else",	Lelse),
-("fn",		Lfn),
-("for",	Lfor),
-("hd",	Lhd),
-("if",		Lif),
-("in",		Lin),
-("len",	Llen),
-("rescue",	Lrescue),
-("tl",		Ltl),
-("while",	Lwhile)
+("case", Lcase),
+("else", Lelse),
+("fn", Lfn),
+("for", Lfor),
+("hd", Lhd),
+("if", Lif),
+("in", Lin),
+("len", Llen),
+("rescue", Lrescue),
+("tl", Ltl),
+("while", Lwhile)
 };
 ctype := array[NCTYPE] of
 {
 0 or ' ' or '\t' or '\n' or '\r' or '\v' => WS,
 ':' or '#' or ';' or '&' or '|' or '^' or '$' or '=' or '@'
-or '~'  or '`'or '{' or '}' or '(' or ')' or '<' or '>' => ONE,
+or '~' or '`'or '{' or '}' or '(' or ')' or '<' or '>' => ONE,
 'a' to 'z' or 'A' to 'Z' or '_' => ALPHA,
 '0' to '9' => NUMERIC,
 '*' or '[' or ']' or '?' => META,
 * => 0
 };
-keytab:	ref HashTable;
+keytab: ref HashTable;
 #
-#	Initialize hashtable.
+# Initialize hashtable.
 #
 initlex()
 {
@@ -90,7 +90,7 @@ keytab.insert(s, HashVal(v, 0.0, nil));
 }
 }
 #
-#	Keyword value, or -1.
+# Keyword value, or -1.
 #
 keyval(i: ref Item): int
 {
@@ -105,7 +105,7 @@ return -1;
 return v.i;
 }
 #
-#	Attach a source file to an environment.
+# Attach a source file to an environment.
 #
 Env.fopen(e: self ref Env, fd: ref Sys->FD, s: string)
 {
@@ -115,7 +115,7 @@ e.error(sys->sprint("could not fopen %s: %r\n", s));
 e.file = ref File(in, s, 1, 0);
 }
 #
-#	Attach a source string to an environment.
+# Attach a source string to an environment.
 #
 Env.sopen(e: self ref Env, s: string)
 {
@@ -125,7 +125,7 @@ e.error(sys->sprint("Bufio->sopen failed: %r\n"));
 e.file = ref File(in, "<string>", 1, 0);
 }
 #
-#	Close source file.
+# Close source file.
 #
 fclose(e: ref Env, c: int)
 {
@@ -135,7 +135,7 @@ e.file.in.close();
 e.file = nil;
 }
 #
-#	Character class routines.
+# Character class routines.
 #
 isalpha(c: int): int
 {
@@ -162,7 +162,7 @@ isterm(c: int): int
 return c < NCTYPE && (c < 0 || (ctype[c] & (ONE | WS)) != 0);
 }
 #
-#	Test for an identifier.
+# Test for an identifier.
 #
 ident(s: string): int
 {
@@ -176,7 +176,7 @@ return 0;
 return 1;
 }
 #
-#	Quote text.
+# Quote text.
 #
 enquote(s: string): string
 {
@@ -193,7 +193,7 @@ r[j] = '\'';
 return r;
 }
 #
-#	Quote text if needed.
+# Quote text if needed.
 #
 quote(s: string): string
 {
@@ -205,7 +205,7 @@ return enquote(s);
 return s;
 }
 #
-#	Test for single word and identifier.
+# Test for single word and identifier.
 #
 Item.sword(i: self ref Item, e: ref Env): ref Item
 {
@@ -225,7 +225,7 @@ return nil;
 return e.file.name + ":" + string e.file.line + ": ";
 }
 #
-#	Suck input (on error).
+# Suck input (on error).
 #
 Env.suck(e: self ref Env)
 {
@@ -236,7 +236,7 @@ while ((c := in.getc()) >= 0 && c != '\n')
 ;
 }
 #
-#	Lexical analyzer.
+# Lexical analyzer.
 #
 Env.lex(e: self ref Env, yylval: ref Mashparse->YYSTYPE): int
 {
@@ -362,7 +362,7 @@ return Lword;
 }
 }
 #
-#	Get $n or $word.
+# Get $n or $word.
 #
 getdollar(f: ref File): (ref Item, int)
 {
@@ -397,7 +397,7 @@ o = Iword;
 return (ref Item(o, ref Word(s, 0, Src(l, f.name)), nil, nil, nil, nil), c);
 }
 #
-#	Get word with quoting.
+# Get word with quoting.
 #
 getword(e: ref Env, f: ref File, c: int): (ref Item, int)
 {
@@ -444,7 +444,7 @@ exit;
 return (ref Item(Iword, ref Word(s, wf, Src(l, f.name)), nil, nil, nil, nil), c);
 }
 #
-#	Get a line, mapping escape newline to space newline.
+# Get a line, mapping escape newline to space newline.
 #
 getline(in: ref Bufio->Iobuf): string
 {
@@ -494,7 +494,7 @@ return s;
 }
 }
 #
-#	Interactive shell loop.
+# Interactive shell loop.
 #
 Env.interactive(e: self ref Env, fd: ref Sys->FD)
 {

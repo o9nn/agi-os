@@ -16,9 +16,9 @@
 #include <rump/rump_syscalls.h>
 #include <rump/rumperrno2host.h>
 #include "ioccom-rump.h"
-#define DIOCGMEDIASIZE  _IOR('d', 132, off_t)
+#define DIOCGMEDIASIZE _IOR('d', 132, off_t)
 #define DIOCGSECTORSIZE _IOR('d', 133, unsigned int)
-#define BLKRRPART  0x125F
+#define BLKRRPART 0x125F
 #define DISK_NAME_LEN 32
 #define MAX_DISK_DEV 2
 #ifdef _RUMP_SATA

@@ -3,7 +3,7 @@ static char *ident = "$Id: extract.c,v 1.3 89/02/12 10:29:43 mark Exp Locker: ma
 static char *copyright = "Copyright (c) 1989 Mark H. Colburn.\nAll rights reserved.\n";
 #endif
 #include "pax.h"
-#define	SWAB(n)	((((ushort)(n) >> 8) & 0xff) | (((ushort)(n) << 8) & 0xff00))
+#define SWAB(n) ((((ushort)(n) >> 8) & 0xff) | (((ushort)(n) << 8) & 0xff00))
 #ifdef __STDC__
 static int inbinary(char *, char *, Stat *);
 static int inascii(char *, char *, Stat *);
@@ -23,10 +23,10 @@ int read_archive(void)
 int read_archive()
 #endif
 {
-Stat            sb;
-char            name[PATH_MAX + 1];
-int             match;
-int		    pad;
+Stat sb;
+char name[PATH_MAX + 1];
+int match;
+int pad;
 name_gather();
 name[0] = '\0';
 while (get_header(name, &sb) == 0) {
@@ -99,12 +99,12 @@ return(readcpio(name, asb));
 static int readtar(char *name, Stat *asb)
 #else
 static int readtar(name, asb)
-char	*name;
-Stat    *asb;
+char *name;
+Stat *asb;
 #endif
 {
-int             status = 3;
-static int      prev_status;
+int status = 3;
+static int prev_status;
 for (;;) {
 prev_status = status;
 status = read_header(name, asb);
@@ -134,13 +134,13 @@ return(-1);
 static int readcpio(char *name, Stat *asb)
 #else
 static int readcpio(name, asb)
-char           *name;
-Stat           *asb;
+char *name;
+Stat *asb;
 #endif
 {
-OFFSET          skipped;
-char            magic[M_STRLEN];
-static int      align;
+OFFSET skipped;
+char magic[M_STRLEN];
+static int align;
 if (align > 0) {
 buf_skip((OFFSET) align);
 }
@@ -175,7 +175,7 @@ break;
 }
 buf_skip((OFFSET) asb->sb_size + align);
 }
-#ifdef	S_IFLNK
+#ifdef S_IFLNK
 if ((asb->sb_mode & S_IFMT) == S_IFLNK) {
 if (buf_read(asb->sb_link, (uint) asb->sb_size) < 0) {
 warn(name, "Corrupt symbolic link");
@@ -204,14 +204,14 @@ return (0);
 static int inswab(char *magic, char *name, Stat *asb)
 #else
 static int inswab(magic, name, asb)
-char           *magic;
-char           *name;
-Stat           *asb;
+char *magic;
+char *name;
+Stat *asb;
 #endif
 {
-ushort          namesize;
-uint            namefull;
-Binary          binary;
+ushort namesize;
+uint namefull;
+Binary binary;
 if (*((ushort *) magic) != SWAB(M_BINARY)) {
 return (-1);
 }
@@ -254,15 +254,15 @@ return (asb->sb_size % 2);
 static int inascii(char *magic, char *name, Stat *asb)
 #else
 static int inascii(magic, name, asb)
-char           *magic;
-char           *name;
-Stat           *asb;
+char *magic;
+char *name;
+Stat *asb;
 #endif
 {
-uint            namelen;
-char            header[H_STRLEN + 1];
+uint namelen;
+char header[H_STRLEN + 1];
 #ifdef _POSIX_SOURCE
-dev_t	    dummyrdev;
+dev_t dummyrdev;
 #endif
 if (strncmp(magic, M_ASCII, M_STRLEN) != 0) {
 return (-1);
@@ -301,13 +301,13 @@ return (0);
 static int inbinary(char *magic, char *name, Stat *asb)
 #else
 static int inbinary(magic, name, asb)
-char           *magic;
-char           *name;
-Stat           *asb;
+char *magic;
+char *name;
+Stat *asb;
 #endif
 {
-uint            namefull;
-Binary          binary;
+uint namefull;
+Binary binary;
 if (*((ushort *) magic) != M_BINARY) {
 return (-1);
 }

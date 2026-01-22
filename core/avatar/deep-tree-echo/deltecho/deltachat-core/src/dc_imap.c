@@ -8,9 +8,9 @@
 #include "dc_job.h"
 #include "dc_loginparam.h"
 #include "dc_oauth2.h"
-static int  setup_handle_if_needed   (dc_imap_t*);
-static void unsetup_handle           (dc_imap_t*);
-#define FREE_SET(a)        if((a)) { mailimap_set_free((a)); (a)=NULL; }
+static int setup_handle_if_needed (dc_imap_t*);
+static void unsetup_handle (dc_imap_t*);
+#define FREE_SET(a) if((a)) { mailimap_set_free((a)); (a)=NULL; }
 #define FREE_FETCH_LIST(a) if((a)) { mailimap_fetch_list_free((a)); (a)=NULL; }
 int dc_imap_is_error(dc_imap_t* imap, int code)
 {
@@ -30,7 +30,7 @@ return 1;
 }
 static char* get_error_msg(dc_imap_t* imap, const char* what_failed, int code)
 {
-char*           stock = NULL;
+char* stock = NULL;
 dc_strbuilder_t msg;
 dc_strbuilder_init(&msg, 1000);
 switch (code) {
@@ -67,7 +67,7 @@ if (val2)
 *val2 = 0;
 val2++;
 val3 = strchr(val2, ':');
-if (val3) { *val3 = 0;  }
+if (val3) { *val3 = 0; }
 *uidvalidity = atol(val1);
 *lastseenuid = atol(val2);
 }
@@ -138,9 +138,9 @@ return 0;
 static char* unquote_rfc724_mid(const char* in)
 {
 char* out = dc_strdup(in);
-int   out_len = strlen(out);
+int out_len = strlen(out);
 if (out_len > 2) {
-if (out[0]=='<')         { out[0] = ' '; }
+if (out[0]=='<') { out[0] = ' '; }
 if (out[out_len-1]=='>') { out[out_len-1] = ' '; }
 dc_trim(out);
 }
@@ -254,14 +254,14 @@ if (item->att_data.att_static->att_type==MAILIMAP_MSG_ATT_BODY_SECTION)
 }
 static int fetch_single_msg(dc_imap_t* imap, const char* folder, uint32_t server_uid)
 {
-char*       msg_content = NULL;
-size_t      msg_bytes = 0;
-int         r = 0;
-int         retry_later = 0;
-int         deleted = 0;
-uint32_t    flags = 0;
-clist*      fetch_result = NULL;
-clistiter*  cur;
+char* msg_content = NULL;
+size_t msg_bytes = 0;
+int r = 0;
+int retry_later = 0;
+int deleted = 0;
+uint32_t flags = 0;
+clist* fetch_result = NULL;
+clistiter* cur;
 if (imap==NULL) {
 goto cleanup;
 }
@@ -287,7 +287,7 @@ goto cleanup;
 }
 struct mailimap_msg_att* msg_att = (struct mailimap_msg_att*)clist_content(cur);
 peek_body(msg_att, &msg_content, &msg_bytes, &flags, &deleted);
-if (msg_content==NULL  || msg_bytes <= 0 || deleted) {
+if (msg_content==NULL || msg_bytes <= 0 || deleted) {
 goto cleanup;
 }
 imap->receive_imf(imap, msg_content, msg_bytes, folder, server_uid, flags);
@@ -297,14 +297,14 @@ return retry_later? 0 : 1;
 }
 static int fetch_from_single_folder(dc_imap_t* imap, const char* folder)
 {
-int                  r;
-uint32_t             uidvalidity = 0;
-uint32_t             lastseenuid = 0;
-uint32_t             new_lastseenuid = 0;
-clist*               fetch_result = NULL;
-size_t               read_cnt = 0;
-size_t               read_errors = 0;
-clistiter*           cur;
+int r;
+uint32_t uidvalidity = 0;
+uint32_t lastseenuid = 0;
+uint32_t new_lastseenuid = 0;
+clist* fetch_result = NULL;
+size_t read_cnt = 0;
+size_t read_errors = 0;
+clistiter* cur;
 struct mailimap_set* set = NULL;
 if (imap==NULL) {
 goto cleanup;
@@ -415,7 +415,7 @@ return read_cnt;
 }
 int dc_imap_fetch(dc_imap_t* imap)
 {
-int   success = 0;
+int success = 0;
 if (imap==NULL || !imap->connected) {
 goto cleanup;
 }
@@ -440,7 +440,7 @@ pthread_mutex_lock(&imap->watch_condmutex);
 int r = 0;
 struct timespec wakeup_at;
 memset(&wakeup_at, 0, sizeof(wakeup_at));
-wakeup_at.tv_sec  = time(NULL)+seconds_to_wait;
+wakeup_at.tv_sec = time(NULL)+seconds_to_wait;
 while (imap->watch_condflag==0 && r==0) {
 r = pthread_cond_timedwait(&imap->watch_cond, &imap->watch_condmutex, &wakeup_at);
 if (imap->watch_condflag) {
@@ -464,8 +464,8 @@ fake_idle_start_time = 0;
 }
 void dc_imap_idle(dc_imap_t* imap)
 {
-int   r = 0;
-int   r2 = 0;
+int r = 0;
+int r2 = 0;
 if (imap==NULL) {
 goto cleanup;
 }
@@ -495,7 +495,7 @@ goto cleanup;
 #define IDLE_DELAY_SECONDS (23*60)
 r = mailstream_wait_idle(imap->etpan->imap_stream, IDLE_DELAY_SECONDS);
 r2 = mailimap_idle_done(imap->etpan);
-if (r==MAILSTREAM_IDLE_ERROR  || r==MAILSTREAM_IDLE_CANCELLED ) {
+if (r==MAILSTREAM_IDLE_ERROR || r==MAILSTREAM_IDLE_CANCELLED ) {
 dc_log_info(imap->context, 0, "IMAP-IDLE wait cancelled, r=%i, r2=%i; we'll reconnect soon.", r, r2);
 imap->should_reconnect = 1;
 }
@@ -651,7 +651,7 @@ imap->imap_pw = NULL;
 imap->watch_folder[0] = 0;
 imap->selected_folder[0] = 0;
 imap->imap_port = 0;
-imap->can_idle  = 0;
+imap->can_idle = 0;
 imap->has_xlist = 0;
 }
 int dc_imap_connect(dc_imap_t* imap, const dc_loginparam_t* lp)
@@ -665,11 +665,11 @@ if (imap->connected) {
 success = 1;
 goto cleanup;
 }
-imap->addr         = dc_strdup(lp->addr);
-imap->imap_server  = dc_strdup(lp->mail_server);
-imap->imap_port    = lp->mail_port;
-imap->imap_user    = dc_strdup(lp->mail_user);
-imap->imap_pw      = dc_strdup(lp->mail_pw);
+imap->addr = dc_strdup(lp->addr);
+imap->imap_server = dc_strdup(lp->mail_server);
+imap->imap_port = lp->mail_port;
+imap->imap_user = dc_strdup(lp->mail_user);
+imap->imap_pw = dc_strdup(lp->mail_pw);
 imap->server_flags = lp->server_flags;
 if (!setup_handle_if_needed(imap)) {
 goto cleanup;
@@ -741,12 +741,12 @@ if ((imap=calloc(1, sizeof(dc_imap_t)))==NULL) {
 exit(25);
 }
 imap->log_connect_errors = 1;
-imap->context        = context;
-imap->get_config     = get_config;
-imap->set_config     = set_config;
-imap->precheck_imf   = precheck_imf;
-imap->receive_imf    = receive_imf;
-imap->userData       = userData;
+imap->context = context;
+imap->get_config = get_config;
+imap->set_config = set_config;
+imap->precheck_imf = precheck_imf;
+imap->receive_imf = receive_imf;
+imap->userData = userData;
 pthread_mutex_init(&imap->watch_condmutex, NULL);
 pthread_cond_init(&imap->watch_cond, NULL);
 imap->watch_folder = calloc(1, 1);
@@ -771,17 +771,17 @@ pthread_cond_destroy(&imap->watch_cond);
 pthread_mutex_destroy(&imap->watch_condmutex);
 free(imap->watch_folder);
 free(imap->selected_folder);
-if (imap->fetch_type_prefetch)   { mailimap_fetch_type_free(imap->fetch_type_prefetch); }
-if (imap->fetch_type_body)       { mailimap_fetch_type_free(imap->fetch_type_body); }
-if (imap->fetch_type_flags)      { mailimap_fetch_type_free(imap->fetch_type_flags); }
+if (imap->fetch_type_prefetch) { mailimap_fetch_type_free(imap->fetch_type_prefetch); }
+if (imap->fetch_type_body) { mailimap_fetch_type_free(imap->fetch_type_body); }
+if (imap->fetch_type_flags) { mailimap_fetch_type_free(imap->fetch_type_flags); }
 free(imap);
 }
 static int add_flag(dc_imap_t* imap, uint32_t server_uid, struct mailimap_flag* flag)
 {
-int                              r = 0;
-struct mailimap_flag_list*       flag_list = NULL;
+int r = 0;
+struct mailimap_flag_list* flag_list = NULL;
 struct mailimap_store_att_flags* store_att_flags = NULL;
-struct mailimap_set*             set = mailimap_set_new_single(server_uid);
+struct mailimap_set* set = mailimap_set_new_single(server_uid);
 if (imap==NULL || imap->etpan==NULL) {
 goto cleanup;
 }
@@ -802,10 +802,10 @@ return imap->should_reconnect? 0 : 1;
 dc_imap_res dc_imap_move(dc_imap_t* imap, const char* folder, uint32_t uid,
 const char* dest_folder, uint32_t* dest_uid)
 {
-dc_imap_res          res = DC_RETRY_LATER;
-int                  r = 0;
+dc_imap_res res = DC_RETRY_LATER;
+int r = 0;
 struct mailimap_set* set = mailimap_set_new_single(uid);
-uint32_t             res_uid = 0;
+uint32_t res_uid = 0;
 struct mailimap_set* res_setsrc = NULL;
 struct mailimap_set* res_setdest = NULL;
 if (imap==NULL || folder==NULL || uid==0
@@ -882,9 +882,9 @@ return res==DC_RETRY_LATER?
 }
 dc_imap_res dc_imap_set_mdnsent(dc_imap_t* imap, const char* folder, uint32_t uid)
 {
-dc_imap_res          res = DC_RETRY_LATER;
+dc_imap_res res = DC_RETRY_LATER;
 struct mailimap_set* set = mailimap_set_new_single(uid);
-clist*               fetch_result = NULL;
+clist* fetch_result = NULL;
 if (imap==NULL || folder==NULL || uid==0 || set==NULL) {
 res = DC_FAILED;
 goto cleanup;
@@ -957,11 +957,11 @@ return res==DC_RETRY_LATER?
 }
 int dc_imap_delete_msg(dc_imap_t* imap, const char* rfc724_mid, const char* folder, uint32_t server_uid)
 {
-int    success = 0;
-int    r = 0;
+int success = 0;
+int r = 0;
 clist* fetch_result = NULL;
-char*  is_rfc724_mid = NULL;
-char*  new_folder = NULL;
+char* is_rfc724_mid = NULL;
+char* new_folder = NULL;
 if (imap==NULL || rfc724_mid==NULL || folder==NULL || folder[0]==0 || server_uid==0) {
 success = 1;
 goto cleanup;
@@ -1005,9 +1005,9 @@ return success? 1 : dc_imap_is_connected(imap);
 }
 void dc_imap_empty_folder(dc_imap_t* imap, const char* folder)
 {
-struct mailimap_flag_list*       flag_list = NULL;
+struct mailimap_flag_list* flag_list = NULL;
 struct mailimap_store_att_flags* store_att_flags = NULL;
-struct mailimap_set*             set = NULL;
+struct mailimap_set* set = NULL;
 if (imap==NULL || folder==NULL || folder[0]==0) {
 goto cleanup;
 }

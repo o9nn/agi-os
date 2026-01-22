@@ -1,10 +1,10 @@
-#ifndef	__UNISTD_H
-#define	__UNISTD_H
+#ifndef __UNISTD_H
+#define __UNISTD_H
 #ifndef _POSIX_SOURCE
 This header file is not defined in pure ANSI
 #endif
 #pragma lib "/$M/lib/ape/libap.a"
-#define _POSIX_VERSION	199309L
+#define _POSIX_VERSION 199309L
 #define _POSIX_ASYNC_IO -1
 #define _POSIX_CHOWN_RESTRICTED 1
 #define _POSIX_NO_TRUNC 1
@@ -28,48 +28,48 @@ typedef long ssize_t;
 #endif
 #endif
 #endif
-#define	R_OK		4
-#define	W_OK		2
-#define	X_OK		1
-#define	F_OK		0
-#define	F_ULOCK		0
-#define	F_LOCK		1
-#define	F_TLOCK		2
-#define	F_TEST		3
+#define R_OK 4
+#define W_OK 2
+#define X_OK 1
+#define F_OK 0
+#define F_ULOCK 0
+#define F_LOCK 1
+#define F_TLOCK 2
+#define F_TEST 3
 #ifndef SEEK_SET
-#define	SEEK_SET	0
-#define	SEEK_CUR	1
-#define	SEEK_END	2
+#define SEEK_SET 0
+#define SEEK_CUR 1
+#define SEEK_END 2
 #endif
-#define	_SC_ARG_MAX		1
-#define	_SC_CHILD_MAX		2
-#define	_SC_CLK_TCK		3
-#define	_SC_NGROUPS_MAX		4
-#define	_SC_OPEN_MAX		5
-#define _SC_STREAM_MAX		6
-#define _SC_TZNAME_MAX		7
-#define	_SC_JOB_CONTROL		8
-#define	_SC_SAVED_IDS		9
-#define	_SC_VERSION		10
-#define _SC_LOGIN_NAME_MAX	11
-#define _PC_LINK_MAX		1
-#define _PC_MAX_CANON		2
-#define _PC_MAX_INPUT		3
-#define _PC_NAME_MAX		4
-#define _PC_PATH_MAX		5
-#define _PC_PIPE_BUF		6
-#define _PC_CHOWN_RESTRICTED	7
-#define _PC_NO_TRUNC		8
-#define _PC_VDISABLE		9
-#define STDIN_FILENO		0
-#define STDOUT_FILENO		1
-#define STDERR_FILENO		2
+#define _SC_ARG_MAX 1
+#define _SC_CHILD_MAX 2
+#define _SC_CLK_TCK 3
+#define _SC_NGROUPS_MAX 4
+#define _SC_OPEN_MAX 5
+#define _SC_STREAM_MAX 6
+#define _SC_TZNAME_MAX 7
+#define _SC_JOB_CONTROL 8
+#define _SC_SAVED_IDS 9
+#define _SC_VERSION 10
+#define _SC_LOGIN_NAME_MAX 11
+#define _PC_LINK_MAX 1
+#define _PC_MAX_CANON 2
+#define _PC_MAX_INPUT 3
+#define _PC_NAME_MAX 4
+#define _PC_PATH_MAX 5
+#define _PC_PIPE_BUF 6
+#define _PC_CHOWN_RESTRICTED 7
+#define _PC_NO_TRUNC 8
+#define _PC_VDISABLE 9
+#define STDIN_FILENO 0
+#define STDOUT_FILENO 1
+#define STDERR_FILENO 2
 #ifdef __cplusplus
 extern "C" {
 #endif
 extern int execl(const char *, const char *, ...);
 extern int execv(const char *, const char **);
-extern int execle(const char *, const char *, const char *,  ...);
+extern int execle(const char *, const char *, const char *, ...);
 extern int execve(const char *, const char **, const char **);
 extern int execlp(const char *, const char *, ...);
 extern int execvp(const char *, const char **);

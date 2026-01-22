@@ -1,12 +1,12 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"ureg.h"
-#include	"io.h"
-#include	"tos.h"
-#include	"../port/error.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "ureg.h"
+#include "io.h"
+#include "tos.h"
+#include "../port/error.h"
 static Lock vctllock;
 static Vctl *vctl[256];
 void
@@ -128,8 +128,8 @@ hwintrdisable(v);
 iunlock(&vctllock);
 xfree(v);
 }
-void	syscall(Ureg*);
-void	noted(Ureg*, ulong);
+void syscall(Ureg*);
+void noted(Ureg*, ulong);
 static void _dumpstack(Ureg*);
 char *excname[] =
 {
@@ -163,29 +163,29 @@ char *fpcause[] =
 "overflow",
 "invalid operation",
 };
-char	*fpexcname(Ureg*, ulong, char*);
-#define FPEXPMASK	0xfff80300
+char *fpexcname(Ureg*, ulong, char*);
+#define FPEXPMASK 0xfff80300
 char *regname[]={
-"CAUSE",	"SRR1",
-"PC",		"GOK",
-"LR",		"CR",
-"XER",	"CTR",
-"R0",		"R1",
-"R2",		"R3",
-"R4",		"R5",
-"R6",		"R7",
-"R8",		"R9",
-"R10",	"R11",
-"R12",	"R13",
-"R14",	"R15",
-"R16",	"R17",
-"R18",	"R19",
-"R20",	"R21",
-"R22",	"R23",
-"R24",	"R25",
-"R26",	"R27",
-"R28",	"R29",
-"R30",	"R31",
+"CAUSE", "SRR1",
+"PC", "GOK",
+"LR", "CR",
+"XER", "CTR",
+"R0", "R1",
+"R2", "R3",
+"R4", "R5",
+"R6", "R7",
+"R8", "R9",
+"R10", "R11",
+"R12", "R13",
+"R14", "R15",
+"R16", "R17",
+"R18", "R19",
+"R20", "R21",
+"R22", "R23",
+"R24", "R25",
+"R26", "R27",
+"R28", "R29",
+"R30", "R31",
 };
 void
 trap(Ureg *ureg)
@@ -527,7 +527,7 @@ syscall(Ureg* ureg)
 {
 int i;
 char *e;
-long	ret;
+long ret;
 ulong sp, scallnr;
 m->syscall++;
 up->insyscall = 1;

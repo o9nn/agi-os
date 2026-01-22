@@ -1,5 +1,5 @@
 #ifdef MACH
-#define AUTOCONF	1
+#define AUTOCONF 1
 #endif
 #ifdef PCMCIA
 #define MODULE
@@ -37,23 +37,23 @@ S_IFDIR | S_IRUGO | S_IXUGO, 2
 #error define AUTOCONF or SETUP0
 #endif
 #if defined(DEBUG_AHA152X)
-#undef  SKIP_PORTS
-#undef  DEBUG_QUEUE
-#undef  DEBUG_RESET
-#undef  DEBUG_INTR
-#undef  DEBUG_SELECTION
-#undef  DEBUG_MSGO
-#undef  DEBUG_MSGI
-#undef  DEBUG_STATUS
-#undef  DEBUG_CMD
-#undef  DEBUG_DATAI
-#undef  DEBUG_DATAO
-#undef  DEBUG_ABORT
-#undef  DEBUG_DONE
-#undef  DEBUG_BIOSPARAM
-#undef  DEBUG_RACE
-#undef  DEBUG_PHASES
-#undef  DEBUG_QUEUES
+#undef SKIP_PORTS
+#undef DEBUG_QUEUE
+#undef DEBUG_RESET
+#undef DEBUG_INTR
+#undef DEBUG_SELECTION
+#undef DEBUG_MSGO
+#undef DEBUG_MSGI
+#undef DEBUG_STATUS
+#undef DEBUG_CMD
+#undef DEBUG_DATAI
+#undef DEBUG_DATAO
+#undef DEBUG_ABORT
+#undef DEBUG_DONE
+#undef DEBUG_BIOSPARAM
+#undef DEBUG_RACE
+#undef DEBUG_PHASES
+#undef DEBUG_QUEUES
 #if 0
 #endif
 #define DEBUG_SELECTION
@@ -64,31 +64,31 @@ S_IFDIR | S_IRUGO | S_IXUGO, 2
 #endif
 extern unsigned long loops_per_sec;
 #define DELAY_DEFAULT 100
-#define P_BUSFREE  1
-#define P_PARITY   2
+#define P_BUSFREE 1
+#define P_PARITY 2
 #define IRQ_MIN 9
 #define IRQ_MAX 12
-#define IRQS    IRQ_MAX-IRQ_MIN+1
+#define IRQS IRQ_MAX-IRQ_MIN+1
 enum {
-not_issued   = 0x0001,
+not_issued = 0x0001,
 in_selection = 0x0002,
 disconnected = 0x0004,
-aborted      = 0x0008,
-sent_ident   = 0x0010,
-in_other     = 0x0020,
-in_sync      = 0x0040,
-sync_ok      = 0x0080,
+aborted = 0x0008,
+sent_ident = 0x0010,
+in_other = 0x0020,
+in_sync = 0x0040,
+sync_ok = 0x0080,
 };
 #if defined(MODULE)
 #if defined(DEBUG_AHA152X)
-int aha152x[]  = { 0, 11, 7, 1, 1, 0, DELAY_DEFAULT, 0, DEBUG_DEFAULT };
+int aha152x[] = { 0, 11, 7, 1, 1, 0, DELAY_DEFAULT, 0, DEBUG_DEFAULT };
 int aha152x1[] = { 0, 11, 7, 1, 1, 0, DELAY_DEFAULT, 0, DEBUG_DEFAULT };
 #else
-int aha152x[]  = { 0, 11, 7, 1, 1, 0, DELAY_DEFAULT, 0 };
+int aha152x[] = { 0, 11, 7, 1, 1, 0, DELAY_DEFAULT, 0 };
 int aha152x1[] = { 0, 11, 7, 1, 1, 0, DELAY_DEFAULT, 0 };
 #endif
 #endif
-static int  setup_count=0;
+static int setup_count=0;
 static struct aha152x_setup {
 int io_port;
 int irq;
@@ -104,35 +104,35 @@ int debug;
 char *conf;
 } setup[2];
 static struct Scsi_Host *aha152x_host[IRQS];
-#define HOSTDATA(shpnt)   ((struct aha152x_hostdata *) &shpnt->hostdata)
-#define CURRENT_SC        (HOSTDATA(shpnt)->current_SC)
-#define ISSUE_SC          (HOSTDATA(shpnt)->issue_SC)
-#define DISCONNECTED_SC   (HOSTDATA(shpnt)->disconnected_SC)
-#define DELAY             (HOSTDATA(shpnt)->delay)
-#define EXT_TRANS         (HOSTDATA(shpnt)->ext_trans)
-#define SYNCRATE          (HOSTDATA(shpnt)->syncrate[CURRENT_SC->target])
-#define MSG(i)            (HOSTDATA(shpnt)->message[i])
-#define MSGLEN            (HOSTDATA(shpnt)->message_len)
-#define ADDMSG(x)         (MSG(MSGLEN++)=x)
+#define HOSTDATA(shpnt) ((struct aha152x_hostdata *) &shpnt->hostdata)
+#define CURRENT_SC (HOSTDATA(shpnt)->current_SC)
+#define ISSUE_SC (HOSTDATA(shpnt)->issue_SC)
+#define DISCONNECTED_SC (HOSTDATA(shpnt)->disconnected_SC)
+#define DELAY (HOSTDATA(shpnt)->delay)
+#define EXT_TRANS (HOSTDATA(shpnt)->ext_trans)
+#define SYNCRATE (HOSTDATA(shpnt)->syncrate[CURRENT_SC->target])
+#define MSG(i) (HOSTDATA(shpnt)->message[i])
+#define MSGLEN (HOSTDATA(shpnt)->message_len)
+#define ADDMSG(x) (MSG(MSGLEN++)=x)
 struct aha152x_hostdata {
-Scsi_Cmnd     *issue_SC;
-Scsi_Cmnd     *current_SC;
-Scsi_Cmnd     *disconnected_SC;
-int           aborting;
-int           abortion_complete;
-int           abort_result;
-int           commands;
-int           reconnect;
-int           parity;
-int           synchronous;
-int           delay;
-int           ext_trans;
-int           swint;
+Scsi_Cmnd *issue_SC;
+Scsi_Cmnd *current_SC;
+Scsi_Cmnd *disconnected_SC;
+int aborting;
+int abortion_complete;
+int abort_result;
+int commands;
+int reconnect;
+int parity;
+int synchronous;
+int delay;
+int ext_trans;
+int swint;
 unsigned char syncrate[8];
 unsigned char message[256];
-int           message_len;
+int message_len;
 #ifdef DEBUG_AHA152X
-int           debug;
+int debug;
 #endif
 };
 void aha152x_intr(int irq, void *dev_id, struct pt_regs *);
@@ -171,22 +171,22 @@ static void *addresses[] =
 #define ADDRESS_COUNT (sizeof(addresses) / sizeof(void *))
 static struct signature {
 char *signature;
-int  sig_offset;
-int  sig_length;
+int sig_offset;
+int sig_length;
 } signatures[] =
 {
-{ "Adaptec AHA-1520 BIOS",      0x102e, 21 },
-{ "Adaptec AHA-1520B",            0x0b, 17 },
-{ "Adaptec AHA-1520B/1522B",    0x3e20, 23 },
-{ "Adaptec ASW-B626 BIOS",      0x1029, 21 },
-{ "Adaptec BIOS: ASW-B626",       0x0f, 22 },
-{ "Adaptec ASW-B626 S2",        0x2e6c, 19 },
-{ "Adaptec BIOS:AIC-6360",         0xc, 21 },
-{ "ScsiPro SP-360 BIOS",        0x2873, 19 },
+{ "Adaptec AHA-1520 BIOS", 0x102e, 21 },
+{ "Adaptec AHA-1520B", 0x0b, 17 },
+{ "Adaptec AHA-1520B/1522B", 0x3e20, 23 },
+{ "Adaptec ASW-B626 BIOS", 0x1029, 21 },
+{ "Adaptec BIOS: ASW-B626", 0x0f, 22 },
+{ "Adaptec ASW-B626 S2", 0x2e6c, 19 },
+{ "Adaptec BIOS:AIC-6360", 0xc, 21 },
+{ "ScsiPro SP-360 BIOS", 0x2873, 19 },
 { "GA-400 LOCAL BUS SCSI BIOS", 0x102e, 26 },
-{ "Adaptec BIOS:AVA-282X",         0xc, 21 },
-{ "Adaptec IBM Dock II SCSI",   0x2edd, 24 },
-{ "Adaptec BIOS:AHA-1532P",       0x1c, 22 },
+{ "Adaptec BIOS:AVA-282X", 0xc, 21 },
+{ "Adaptec IBM Dock II SCSI", 0x2edd, 24 },
+{ "Adaptec BIOS:AHA-1532P", 0x1c, 22 },
 };
 #define SIGNATURE_COUNT (sizeof(signatures) / sizeof(struct signature))
 #endif
@@ -267,17 +267,17 @@ void aha152x_setup(char *str, int *ints)
 {
 if(setup_count>2)
 panic("aha152x: you can only configure up to two controllers\n");
-setup[setup_count].conf        = str;
-setup[setup_count].io_port     = ints[0] >= 1 ? ints[1] : 0x340;
-setup[setup_count].irq         = ints[0] >= 2 ? ints[2] : 11;
-setup[setup_count].scsiid      = ints[0] >= 3 ? ints[3] : 7;
-setup[setup_count].reconnect   = ints[0] >= 4 ? ints[4] : 1;
-setup[setup_count].parity      = ints[0] >= 5 ? ints[5] : 1;
+setup[setup_count].conf = str;
+setup[setup_count].io_port = ints[0] >= 1 ? ints[1] : 0x340;
+setup[setup_count].irq = ints[0] >= 2 ? ints[2] : 11;
+setup[setup_count].scsiid = ints[0] >= 3 ? ints[3] : 7;
+setup[setup_count].reconnect = ints[0] >= 4 ? ints[4] : 1;
+setup[setup_count].parity = ints[0] >= 5 ? ints[5] : 1;
 setup[setup_count].synchronous = ints[0] >= 6 ? ints[6] : 0 ;
-setup[setup_count].delay       = ints[0] >= 7 ? ints[7] : DELAY_DEFAULT;
-setup[setup_count].ext_trans   = ints[0] >= 8 ? ints[8] : 0;
+setup[setup_count].delay = ints[0] >= 7 ? ints[7] : DELAY_DEFAULT;
+setup[setup_count].ext_trans = ints[0] >= 8 ? ints[8] : 0;
 #ifdef DEBUG_AHA152X
-setup[setup_count].debug       = ints[0] >= 9 ? ints[9] : DEBUG_DEFAULT;
+setup[setup_count].debug = ints[0] >= 9 ? ints[9] : DEBUG_DEFAULT;
 if(ints[0]>9) {
 printk("aha152x: usage: aha152x=<IOBASE>[,<IRQ>[,<SCSI ID>"
 "[,<RECONNECT>[,<PARITY>[,<SYNCHRONOUS>[,<DELAY>[,<EXT_TRANS>[,<DEBUG>]]]]]]]]\n");
@@ -336,9 +336,9 @@ HOSTDATA(shpnt)->swint++;
 }
 int aha152x_detect(Scsi_Host_Template * tpnt)
 {
-int                 i, j, ok;
+int i, j, ok;
 #if defined(AUTOCONF)
-aha152x_config      conf;
+aha152x_config conf;
 #endif
 tpnt->proc_dir = &proc_scsi_aha152x;
 for(i=0; i<IRQS; i++)
@@ -390,17 +390,17 @@ setup[setup_count++] = override;
 #endif
 #if defined(MODULE)
 if(setup_count<2 && aha152x[0]!=0) {
-setup[setup_count].conf        = "";
-setup[setup_count].io_port     = aha152x[0];
-setup[setup_count].irq         = aha152x[1];
-setup[setup_count].scsiid      = aha152x[2];
-setup[setup_count].reconnect   = aha152x[3];
-setup[setup_count].parity      = aha152x[4];
+setup[setup_count].conf = "";
+setup[setup_count].io_port = aha152x[0];
+setup[setup_count].irq = aha152x[1];
+setup[setup_count].scsiid = aha152x[2];
+setup[setup_count].reconnect = aha152x[3];
+setup[setup_count].parity = aha152x[4];
 setup[setup_count].synchronous = aha152x[5];
-setup[setup_count].delay       = aha152x[6];
-setup[setup_count].ext_trans   = aha152x[7];
+setup[setup_count].delay = aha152x[6];
+setup[setup_count].ext_trans = aha152x[7];
 #ifdef DEBUG_AHA152X
-setup[setup_count].debug       = aha152x[8];
+setup[setup_count].debug = aha152x[8];
 #endif
 if(aha152x_checksetup(&setup[setup_count]))
 setup_count++;
@@ -416,17 +416,17 @@ setup[setup_count].delay,
 setup[setup_count].ext_trans);
 }
 if(setup_count<2 && aha152x1[0]!=0) {
-setup[setup_count].conf        = "";
-setup[setup_count].io_port     = aha152x1[0];
-setup[setup_count].irq         = aha152x1[1];
-setup[setup_count].scsiid      = aha152x1[2];
-setup[setup_count].reconnect   = aha152x1[3];
-setup[setup_count].parity      = aha152x1[4];
+setup[setup_count].conf = "";
+setup[setup_count].io_port = aha152x1[0];
+setup[setup_count].irq = aha152x1[1];
+setup[setup_count].scsiid = aha152x1[2];
+setup[setup_count].reconnect = aha152x1[3];
+setup[setup_count].parity = aha152x1[4];
 setup[setup_count].synchronous = aha152x1[5];
-setup[setup_count].delay       = aha152x1[6];
-setup[setup_count].ext_trans   = aha152x1[7];
+setup[setup_count].delay = aha152x1[6];
+setup[setup_count].ext_trans = aha152x1[7];
 #ifdef DEBUG_AHA152X
-setup[setup_count].debug       = aha152x1[8];
+setup[setup_count].debug = aha152x1[8];
 #endif
 if(aha152x_checksetup(&setup[setup_count]))
 setup_count++;
@@ -466,15 +466,15 @@ ok++;
 setup[setup_count].io_port = ports[i];
 conf.cf_port =
 (GETPORT(ports[i]+O_PORTA)<<8) + GETPORT(ports[i]+O_PORTB);
-setup[setup_count].irq         = IRQ_MIN + conf.cf_irq;
-setup[setup_count].scsiid      = conf.cf_id;
-setup[setup_count].reconnect   = conf.cf_tardisc;
-setup[setup_count].parity      = !conf.cf_parity;
+setup[setup_count].irq = IRQ_MIN + conf.cf_irq;
+setup[setup_count].scsiid = conf.cf_id;
+setup[setup_count].reconnect = conf.cf_tardisc;
+setup[setup_count].parity = !conf.cf_parity;
 setup[setup_count].synchronous = 0 ;
-setup[setup_count].delay       = DELAY_DEFAULT;
-setup[setup_count].ext_trans   = 0;
+setup[setup_count].delay = DELAY_DEFAULT;
+setup[setup_count].ext_trans = 0;
 #ifdef DEBUG_AHA152X
-setup[setup_count].debug       = DEBUG_DEFAULT;
+setup[setup_count].debug = DEBUG_DEFAULT;
 #endif
 setup_count++;
 }
@@ -485,29 +485,29 @@ printk("auto configuration: ok, ");
 #endif
 printk("detected %d controller(s)\n", setup_count);
 for(i=0; i<setup_count; i++) {
-struct Scsi_Host        *shpnt;
-unsigned long int       the_time;
+struct Scsi_Host *shpnt;
+unsigned long int the_time;
 shpnt = aha152x_host[setup[i].irq-IRQ_MIN] =
 scsi_register(tpnt, sizeof(struct aha152x_hostdata));
-shpnt->io_port                     = setup[i].io_port;
-shpnt->n_io_port                   = IO_RANGE;
-shpnt->irq                         = setup[i].irq;
-ISSUE_SC                           = (Scsi_Cmnd *) NULL;
-CURRENT_SC                         = (Scsi_Cmnd *) NULL;
-DISCONNECTED_SC                    = (Scsi_Cmnd *) NULL;
-HOSTDATA(shpnt)->reconnect         = setup[i].reconnect;
-HOSTDATA(shpnt)->parity            = setup[i].parity;
-HOSTDATA(shpnt)->synchronous       = setup[i].synchronous;
-HOSTDATA(shpnt)->delay             = setup[i].delay;
-HOSTDATA(shpnt)->ext_trans         = setup[i].ext_trans;
+shpnt->io_port = setup[i].io_port;
+shpnt->n_io_port = IO_RANGE;
+shpnt->irq = setup[i].irq;
+ISSUE_SC = (Scsi_Cmnd *) NULL;
+CURRENT_SC = (Scsi_Cmnd *) NULL;
+DISCONNECTED_SC = (Scsi_Cmnd *) NULL;
+HOSTDATA(shpnt)->reconnect = setup[i].reconnect;
+HOSTDATA(shpnt)->parity = setup[i].parity;
+HOSTDATA(shpnt)->synchronous = setup[i].synchronous;
+HOSTDATA(shpnt)->delay = setup[i].delay;
+HOSTDATA(shpnt)->ext_trans = setup[i].ext_trans;
 #ifdef DEBUG_AHA152X
-HOSTDATA(shpnt)->debug             = setup[i].debug;
+HOSTDATA(shpnt)->debug = setup[i].debug;
 #endif
-HOSTDATA(shpnt)->aborting          = 0;
+HOSTDATA(shpnt)->aborting = 0;
 HOSTDATA(shpnt)->abortion_complete = 0;
-HOSTDATA(shpnt)->abort_result      = 0;
-HOSTDATA(shpnt)->commands          = 0;
-HOSTDATA(shpnt)->message_len       = 0;
+HOSTDATA(shpnt)->abort_result = 0;
+HOSTDATA(shpnt)->commands = 0;
+HOSTDATA(shpnt)->message_len = 0;
 for(j=0; j<8; j++)
 HOSTDATA(shpnt)->syncrate[j] = 0;
 SETPORT(SCSIID, setup[i].scsiid << 4);
@@ -541,7 +541,7 @@ printk("aha152x%d: bad IRQ %d.\n", i, shpnt->irq);
 else if(ok == -EBUSY)
 printk("aha152x%d: IRQ %d already in use.\n", i, shpnt->irq);
 else
-printk("\naha152x%d: Unexpected error code %d on requesting IRQ %d.\n",                 i, ok, shpnt->irq);
+printk("\naha152x%d: Unexpected error code %d on requesting IRQ %d.\n", i, ok, shpnt->irq);
 printk("aha152x: driver needs an IRQ.\n");
 scsi_unregister(shpnt);
 shpnt=aha152x_host[shpnt->irq-IRQ_MIN]=0;
@@ -597,23 +597,23 @@ SCpnt->cmd_len, SCpnt->use_sg, SCpnt->request_bufflen);
 disp_ports(shpnt);
 }
 #endif
-SCpnt->scsi_done =       done;
+SCpnt->scsi_done = done;
 SCpnt->SCp.phase = not_issued;
 if (SCpnt->use_sg) {
 SCpnt->SCp.buffer = (struct scatterlist *) SCpnt->request_buffer;
-SCpnt->SCp.ptr              = SCpnt->SCp.buffer->address;
-SCpnt->SCp.this_residual    = SCpnt->SCp.buffer->length;
+SCpnt->SCp.ptr = SCpnt->SCp.buffer->address;
+SCpnt->SCp.this_residual = SCpnt->SCp.buffer->length;
 SCpnt->SCp.buffers_residual = SCpnt->use_sg - 1;
 } else {
-SCpnt->SCp.ptr              = (char *)SCpnt->request_buffer;
-SCpnt->SCp.this_residual    = SCpnt->request_bufflen;
-SCpnt->SCp.buffer           = NULL;
+SCpnt->SCp.ptr = (char *)SCpnt->request_buffer;
+SCpnt->SCp.this_residual = SCpnt->request_bufflen;
+SCpnt->SCp.buffer = NULL;
 SCpnt->SCp.buffers_residual = 0;
 }
-SCpnt->SCp.Status              = CHECK_CONDITION;
-SCpnt->SCp.Message             = 0;
-SCpnt->SCp.have_data_in        = 0;
-SCpnt->SCp.sent_command        = 0;
+SCpnt->SCp.Status = CHECK_CONDITION;
+SCpnt->SCp.Message = 0;
+SCpnt->SCp.have_data_in = 0;
+SCpnt->SCp.sent_command = 0;
 save_flags(flags);
 cli();
 HOSTDATA(shpnt)->commands++;
@@ -697,7 +697,7 @@ prev->host_scribble = ptr->host_scribble;
 else
 DISCONNECTED_SC = (Scsi_Cmnd *) ptr->host_scribble;
 HOSTDATA(shpnt)->commands--;
-CURRENT_SC     = ptr;
+CURRENT_SC = ptr;
 ptr->SCp.phase = in_selection|aborted;
 SETPORT(SCSIID, (shpnt->this_id << OID_) | CURRENT_SC->target);
 ADDMSG(ABORT);
@@ -768,7 +768,7 @@ else
 DISCONNECTED_SC = (Scsi_Cmnd *) ptr->host_scribble;
 next = (Scsi_Cmnd *) ptr->host_scribble;
 ptr->host_scribble = NULL;
-ptr->result        = DID_RESET << 16;
+ptr->result = DID_RESET << 16;
 ptr->scsi_done(ptr);
 ptr = next;
 } else {
@@ -1224,7 +1224,7 @@ if(HOSTDATA(shpnt)->debug & (debug_msgi|debug_phases))
 printk("target disconnected, ");
 #endif
 CURRENT_SC->SCp.Message = 0;
-CURRENT_SC->SCp.phase   |= disconnected;
+CURRENT_SC->SCp.phase |= disconnected;
 if(!HOSTDATA(shpnt)->reconnect)
 aha152x_panic(shpnt, "target was not allowed to disconnect");
 break;
@@ -1262,7 +1262,7 @@ break;
 case EXTENDED_MESSAGE:
 {
 char buffer[16];
-int  i;
+int i;
 #if defined(DEBUG_MSGI)
 if(HOSTDATA(shpnt)->debug & debug_msgi)
 printk("inbound message (EXTENDED MESSAGE), ");
@@ -1448,7 +1448,7 @@ insw(DATAPORT, CURRENT_SC->SCp.ptr, data_count);
 if(HOSTDATA(shpnt)->debug & debug_datai)
 if(done) {
 #if 0
-int           i;
+int i;
 unsigned char *data;
 #endif
 printk("data on last transfer (%d bytes) ",
@@ -1463,14 +1463,14 @@ printk("), ");
 #endif
 }
 #endif
-CURRENT_SC->SCp.ptr           += 2 * data_count;
+CURRENT_SC->SCp.ptr += 2 * data_count;
 CURRENT_SC->SCp.this_residual -= 2 * data_count;
 }
 if(!CURRENT_SC->SCp.this_residual &&
 CURRENT_SC->SCp.buffers_residual) {
 CURRENT_SC->SCp.buffers_residual--;
 CURRENT_SC->SCp.buffer++;
-CURRENT_SC->SCp.ptr           = CURRENT_SC->SCp.buffer->address;
+CURRENT_SC->SCp.ptr = CURRENT_SC->SCp.buffer->address;
 CURRENT_SC->SCp.this_residual = CURRENT_SC->SCp.buffer->length;
 }
 }
@@ -1558,7 +1558,7 @@ if(data_count>1) {
 CLRBITS(DMACNTRL0, _8BIT);
 data_count >>= 1;
 outsw(DATAPORT, CURRENT_SC->SCp.ptr, data_count);
-CURRENT_SC->SCp.ptr           += 2 * data_count;
+CURRENT_SC->SCp.ptr += 2 * data_count;
 CURRENT_SC->SCp.this_residual -= 2 * data_count;
 }
 while(TESTLO(DMASTAT, DFIFOEMP|INTSTAT))
@@ -1573,14 +1573,14 @@ if(TESTLO(SSTAT1, PHASEMIS) &&
 CURRENT_SC->SCp.buffers_residual) {
 CURRENT_SC->SCp.buffers_residual--;
 CURRENT_SC->SCp.buffer++;
-CURRENT_SC->SCp.ptr           = CURRENT_SC->SCp.buffer->address;
+CURRENT_SC->SCp.ptr = CURRENT_SC->SCp.buffer->address;
 CURRENT_SC->SCp.this_residual = CURRENT_SC->SCp.buffer->length;
 }
 }
 if(CURRENT_SC->SCp.this_residual || CURRENT_SC->SCp.buffers_residual) {
 data_count = GETPORT(SSTAT2) & (SFULL|SFCNT);
 data_count += GETPORT(FIFOSTAT) ;
-CURRENT_SC->SCp.ptr           -= data_count;
+CURRENT_SC->SCp.ptr -= data_count;
 CURRENT_SC->SCp.this_residual += data_count;
 #if defined(DEBUG_DATAO)
 if(HOSTDATA(shpnt)->debug & debug_datao)
@@ -1656,7 +1656,7 @@ SETPORT(SIMODE1, ISSUE_SC ? ENBUSFREE : 0);
 SETPORT(SCSISEQ, DISCONNECTED_SC ? ENRESELI : 0);
 SETBITS(DMACNTRL0, INTEN);
 aha152x_done(shpnt,
-(CURRENT_SC->SCp.Status  & 0xff)
+(CURRENT_SC->SCp.Status & 0xff)
 | ((CURRENT_SC->SCp.Message & 0xff) << 8)
 | (DID_OK << 16));
 #if defined(DEBUG_RACE)
@@ -1696,14 +1696,14 @@ return;
 printk("\n%s: ", CURRENT_SC ? "on bus" : "waiting");
 s=GETPORT(SCSISEQ);
 printk("SCSISEQ (");
-if(s & TEMODEO)     printk("TARGET MODE ");
-if(s & ENSELO)      printk("SELO ");
-if(s & ENSELI)      printk("SELI ");
-if(s & ENRESELI)    printk("RESELI ");
-if(s & ENAUTOATNO)  printk("AUTOATNO ");
-if(s & ENAUTOATNI)  printk("AUTOATNI ");
-if(s & ENAUTOATNP)  printk("AUTOATNP ");
-if(s & SCSIRSTO)    printk("SCSIRSTO ");
+if(s & TEMODEO) printk("TARGET MODE ");
+if(s & ENSELO) printk("SELO ");
+if(s & ENSELI) printk("SELI ");
+if(s & ENRESELI) printk("RESELI ");
+if(s & ENAUTOATNO) printk("AUTOATNO ");
+if(s & ENAUTOATNI) printk("AUTOATNI ");
+if(s & ENAUTOATNP) printk("AUTOATNP ");
+if(s & SCSIRSTO) printk("SCSIRSTO ");
 printk(");");
 printk(" SCSISIG (");
 s=GETPORT(SCSISIG);
@@ -1734,92 +1734,92 @@ printk("); ");
 printk("INTSTAT (%s); ", TESTHI(DMASTAT, INTSTAT) ? "hi" : "lo");
 printk("SSTAT (");
 s=GETPORT(SSTAT0);
-if(s & TARGET)   printk("TARGET ");
-if(s & SELDO)    printk("SELDO ");
-if(s & SELDI)    printk("SELDI ");
-if(s & SELINGO)  printk("SELINGO ");
-if(s & SWRAP)    printk("SWRAP ");
-if(s & SDONE)    printk("SDONE ");
-if(s & SPIORDY)  printk("SPIORDY ");
-if(s & DMADONE)  printk("DMADONE ");
+if(s & TARGET) printk("TARGET ");
+if(s & SELDO) printk("SELDO ");
+if(s & SELDI) printk("SELDI ");
+if(s & SELINGO) printk("SELINGO ");
+if(s & SWRAP) printk("SWRAP ");
+if(s & SDONE) printk("SDONE ");
+if(s & SPIORDY) printk("SPIORDY ");
+if(s & DMADONE) printk("DMADONE ");
 s=GETPORT(SSTAT1);
-if(s & SELTO)     printk("SELTO ");
-if(s & ATNTARG)   printk("ATNTARG ");
-if(s & SCSIRSTI)  printk("SCSIRSTI ");
-if(s & PHASEMIS)  printk("PHASEMIS ");
-if(s & BUSFREE)   printk("BUSFREE ");
-if(s & SCSIPERR)  printk("SCSIPERR ");
-if(s & PHASECHG)  printk("PHASECHG ");
-if(s & REQINIT)   printk("REQINIT ");
+if(s & SELTO) printk("SELTO ");
+if(s & ATNTARG) printk("ATNTARG ");
+if(s & SCSIRSTI) printk("SCSIRSTI ");
+if(s & PHASEMIS) printk("PHASEMIS ");
+if(s & BUSFREE) printk("BUSFREE ");
+if(s & SCSIPERR) printk("SCSIPERR ");
+if(s & PHASECHG) printk("PHASECHG ");
+if(s & REQINIT) printk("REQINIT ");
 printk("); ");
 printk("SSTAT (");
 s=GETPORT(SSTAT0) & GETPORT(SIMODE0);
-if(s & TARGET)    printk("TARGET ");
-if(s & SELDO)     printk("SELDO ");
-if(s & SELDI)     printk("SELDI ");
-if(s & SELINGO)   printk("SELINGO ");
-if(s & SWRAP)     printk("SWRAP ");
-if(s & SDONE)     printk("SDONE ");
-if(s & SPIORDY)   printk("SPIORDY ");
-if(s & DMADONE)   printk("DMADONE ");
+if(s & TARGET) printk("TARGET ");
+if(s & SELDO) printk("SELDO ");
+if(s & SELDI) printk("SELDI ");
+if(s & SELINGO) printk("SELINGO ");
+if(s & SWRAP) printk("SWRAP ");
+if(s & SDONE) printk("SDONE ");
+if(s & SPIORDY) printk("SPIORDY ");
+if(s & DMADONE) printk("DMADONE ");
 s=GETPORT(SSTAT1) & GETPORT(SIMODE1);
-if(s & SELTO)     printk("SELTO ");
-if(s & ATNTARG)   printk("ATNTARG ");
-if(s & SCSIRSTI)  printk("SCSIRSTI ");
-if(s & PHASEMIS)  printk("PHASEMIS ");
-if(s & BUSFREE)   printk("BUSFREE ");
-if(s & SCSIPERR)  printk("SCSIPERR ");
-if(s & PHASECHG)  printk("PHASECHG ");
-if(s & REQINIT)   printk("REQINIT ");
+if(s & SELTO) printk("SELTO ");
+if(s & ATNTARG) printk("ATNTARG ");
+if(s & SCSIRSTI) printk("SCSIRSTI ");
+if(s & PHASEMIS) printk("PHASEMIS ");
+if(s & BUSFREE) printk("BUSFREE ");
+if(s & SCSIPERR) printk("SCSIPERR ");
+if(s & PHASECHG) printk("PHASECHG ");
+if(s & REQINIT) printk("REQINIT ");
 printk("); ");
 printk("SXFRCTL0 (");
 s=GETPORT(SXFRCTL0);
-if(s & SCSIEN)    printk("SCSIEN ");
-if(s & DMAEN)     printk("DMAEN ");
-if(s & CH1)       printk("CH1 ");
-if(s & CLRSTCNT)  printk("CLRSTCNT ");
-if(s & SPIOEN)    printk("SPIOEN ");
-if(s & CLRCH1)    printk("CLRCH1 ");
+if(s & SCSIEN) printk("SCSIEN ");
+if(s & DMAEN) printk("DMAEN ");
+if(s & CH1) printk("CH1 ");
+if(s & CLRSTCNT) printk("CLRSTCNT ");
+if(s & SPIOEN) printk("SPIOEN ");
+if(s & CLRCH1) printk("CLRCH1 ");
 printk("); ");
 printk("SIGNAL (");
 s=GETPORT(SCSISIG);
-if(s & ATNI)  printk("ATNI ");
-if(s & SELI)  printk("SELI ");
-if(s & BSYI)  printk("BSYI ");
-if(s & REQI)  printk("REQI ");
-if(s & ACKI)  printk("ACKI ");
+if(s & ATNI) printk("ATNI ");
+if(s & SELI) printk("SELI ");
+if(s & BSYI) printk("BSYI ");
+if(s & REQI) printk("REQI ");
+if(s & ACKI) printk("ACKI ");
 printk("); ");
 printk("SELID (%02x), ", GETPORT(SELID));
 printk("SSTAT2 (");
 s=GETPORT(SSTAT2);
-if(s & SOFFSET)  printk("SOFFSET ");
-if(s & SEMPTY)   printk("SEMPTY ");
-if(s & SFULL)    printk("SFULL ");
+if(s & SOFFSET) printk("SOFFSET ");
+if(s & SEMPTY) printk("SEMPTY ");
+if(s & SFULL) printk("SFULL ");
 printk("); SFCNT (%d); ", s & (SFULL|SFCNT));
 s=GETPORT(SSTAT3);
 printk("SCSICNT (%d), OFFCNT(%d), ", (s&0xf0)>>4, s&0x0f);
 printk("SSTAT4 (");
 s=GETPORT(SSTAT4);
-if(s & SYNCERR)   printk("SYNCERR ");
-if(s & FWERR)     printk("FWERR ");
-if(s & FRERR)     printk("FRERR ");
+if(s & SYNCERR) printk("SYNCERR ");
+if(s & FWERR) printk("FWERR ");
+if(s & FRERR) printk("FRERR ");
 printk("); ");
 printk("DMACNTRL0 (");
 s=GETPORT(DMACNTRL0);
-printk("%s ", s & _8BIT      ? "8BIT"  : "16BIT");
-printk("%s ", s & DMA        ? "DMA"   : "PIO"  );
+printk("%s ", s & _8BIT ? "8BIT" : "16BIT");
+printk("%s ", s & DMA ? "DMA" : "PIO" );
 printk("%s ", s & WRITE_READ ? "WRITE" : "READ" );
-if(s & ENDMA)    printk("ENDMA ");
-if(s & INTEN)    printk("INTEN ");
-if(s & RSTFIFO)  printk("RSTFIFO ");
-if(s & SWINT)    printk("SWINT ");
+if(s & ENDMA) printk("ENDMA ");
+if(s & INTEN) printk("INTEN ");
+if(s & RSTFIFO) printk("RSTFIFO ");
+if(s & SWINT) printk("SWINT ");
 printk("); ");
 printk("DMASTAT (");
 s=GETPORT(DMASTAT);
-if(s & ATDONE)     printk("ATDONE ");
-if(s & WORDRDY)    printk("WORDRDY ");
-if(s & DFIFOFULL)  printk("DFIFOFULL ");
-if(s & DFIFOEMP)   printk("DFIFOEMP ");
+if(s & ATDONE) printk("ATDONE ");
+if(s & WORDRDY) printk("WORDRDY ");
+if(s & DFIFOFULL) printk("DFIFOFULL ");
+if(s & DFIFOEMP) printk("DFIFOEMP ");
 printk(")");
 printk("\n");
 #endif
@@ -1829,21 +1829,21 @@ static void disp_enintr(struct Scsi_Host *shpnt)
 int s;
 printk("enabled interrupts (");
 s=GETPORT(SIMODE0);
-if(s & ENSELDO)    printk("ENSELDO ");
-if(s & ENSELDI)    printk("ENSELDI ");
-if(s & ENSELINGO)  printk("ENSELINGO ");
-if(s & ENSWRAP)    printk("ENSWRAP ");
-if(s & ENSDONE)    printk("ENSDONE ");
-if(s & ENSPIORDY)  printk("ENSPIORDY ");
-if(s & ENDMADONE)  printk("ENDMADONE ");
+if(s & ENSELDO) printk("ENSELDO ");
+if(s & ENSELDI) printk("ENSELDI ");
+if(s & ENSELINGO) printk("ENSELINGO ");
+if(s & ENSWRAP) printk("ENSWRAP ");
+if(s & ENSDONE) printk("ENSDONE ");
+if(s & ENSPIORDY) printk("ENSPIORDY ");
+if(s & ENDMADONE) printk("ENDMADONE ");
 s=GETPORT(SIMODE1);
-if(s & ENSELTIMO)    printk("ENSELTIMO ");
-if(s & ENATNTARG)    printk("ENATNTARG ");
-if(s & ENPHASEMIS)   printk("ENPHASEMIS ");
-if(s & ENBUSFREE)    printk("ENBUSFREE ");
-if(s & ENSCSIPERR)   printk("ENSCSIPERR ");
-if(s & ENPHASECHG)   printk("ENPHASECHG ");
-if(s & ENREQINIT)    printk("ENREQINIT ");
+if(s & ENSELTIMO) printk("ENSELTIMO ");
+if(s & ENATNTARG) printk("ENATNTARG ");
+if(s & ENPHASEMIS) printk("ENPHASEMIS ");
+if(s & ENBUSFREE) printk("ENBUSFREE ");
+if(s & ENSCSIPERR) printk("ENSCSIPERR ");
+if(s & ENPHASECHG) printk("ENPHASECHG ");
+if(s & ENREQINIT) printk("ENREQINIT ");
 printk(")\n");
 }
 #if defined(DEBUG_RACE)
@@ -1885,11 +1885,11 @@ printk("0x%08x: target=%d; lun=%d; cmnd=(",
 print_command(ptr->cmnd);
 printk("); residual=%d; buffers=%d; phase |",
 ptr->SCp.this_residual, ptr->SCp.buffers_residual);
-if(ptr->SCp.phase & not_issued  )  printk("not issued|");
-if(ptr->SCp.phase & in_selection)  printk("in selection|");
-if(ptr->SCp.phase & disconnected)  printk("disconnected|");
-if(ptr->SCp.phase & aborted     )  printk("aborted|");
-if(ptr->SCp.phase & sent_ident  )  printk("send_ident|");
+if(ptr->SCp.phase & not_issued ) printk("not issued|");
+if(ptr->SCp.phase & in_selection) printk("in selection|");
+if(ptr->SCp.phase & disconnected) printk("disconnected|");
+if(ptr->SCp.phase & aborted ) printk("aborted|");
+if(ptr->SCp.phase & sent_ident ) printk("send_ident|");
 if(ptr->SCp.phase & in_other) {
 printk("; in other(");
 switch((ptr->SCp.phase >> 16) & P_MASK) {
@@ -1958,11 +1958,11 @@ for(i=0; i<COMMAND_SIZE(ptr->cmnd[0]); i++)
 SPRINTF("0x%02x ", ptr->cmnd[i]);
 SPRINTF("); residual=%d; buffers=%d; phase |",
 ptr->SCp.this_residual, ptr->SCp.buffers_residual);
-if(ptr->SCp.phase & not_issued  )  SPRINTF("not issued|");
-if(ptr->SCp.phase & in_selection)  SPRINTF("in selection|");
-if(ptr->SCp.phase & disconnected)  SPRINTF("disconnected|");
-if(ptr->SCp.phase & aborted     )  SPRINTF("aborted|");
-if(ptr->SCp.phase & sent_ident  )  SPRINTF("send_ident|");
+if(ptr->SCp.phase & not_issued ) SPRINTF("not issued|");
+if(ptr->SCp.phase & in_selection) SPRINTF("in selection|");
+if(ptr->SCp.phase & disconnected) SPRINTF("disconnected|");
+if(ptr->SCp.phase & aborted ) SPRINTF("aborted|");
+if(ptr->SCp.phase & sent_ident ) SPRINTF("send_ident|");
 if(ptr->SCp.phase & in_other) {
 SPRINTF("; in other(");
 switch((ptr->SCp.phase >> 16) & P_MASK) {
@@ -2006,14 +2006,14 @@ return;
 SPRINTF("\n%s: ", CURRENT_SC ? "on bus" : "waiting");
 s=GETPORT(SCSISEQ);
 SPRINTF("SCSISEQ (");
-if(s & TEMODEO)     SPRINTF("TARGET MODE ");
-if(s & ENSELO)      SPRINTF("SELO ");
-if(s & ENSELI)      SPRINTF("SELI ");
-if(s & ENRESELI)    SPRINTF("RESELI ");
-if(s & ENAUTOATNO)  SPRINTF("AUTOATNO ");
-if(s & ENAUTOATNI)  SPRINTF("AUTOATNI ");
-if(s & ENAUTOATNP)  SPRINTF("AUTOATNP ");
-if(s & SCSIRSTO)    SPRINTF("SCSIRSTO ");
+if(s & TEMODEO) SPRINTF("TARGET MODE ");
+if(s & ENSELO) SPRINTF("SELO ");
+if(s & ENSELI) SPRINTF("SELI ");
+if(s & ENRESELI) SPRINTF("RESELI ");
+if(s & ENAUTOATNO) SPRINTF("AUTOATNO ");
+if(s & ENAUTOATNI) SPRINTF("AUTOATNI ");
+if(s & ENAUTOATNP) SPRINTF("AUTOATNP ");
+if(s & SCSIRSTO) SPRINTF("SCSIRSTO ");
 SPRINTF(");");
 SPRINTF(" SCSISIG (");
 s=GETPORT(SCSISIG);
@@ -2044,110 +2044,110 @@ SPRINTF("); ");
 SPRINTF("INTSTAT (%s); ", TESTHI(DMASTAT, INTSTAT) ? "hi" : "lo");
 SPRINTF("SSTAT (");
 s=GETPORT(SSTAT0);
-if(s & TARGET)   SPRINTF("TARGET ");
-if(s & SELDO)    SPRINTF("SELDO ");
-if(s & SELDI)    SPRINTF("SELDI ");
-if(s & SELINGO)  SPRINTF("SELINGO ");
-if(s & SWRAP)    SPRINTF("SWRAP ");
-if(s & SDONE)    SPRINTF("SDONE ");
-if(s & SPIORDY)  SPRINTF("SPIORDY ");
-if(s & DMADONE)  SPRINTF("DMADONE ");
+if(s & TARGET) SPRINTF("TARGET ");
+if(s & SELDO) SPRINTF("SELDO ");
+if(s & SELDI) SPRINTF("SELDI ");
+if(s & SELINGO) SPRINTF("SELINGO ");
+if(s & SWRAP) SPRINTF("SWRAP ");
+if(s & SDONE) SPRINTF("SDONE ");
+if(s & SPIORDY) SPRINTF("SPIORDY ");
+if(s & DMADONE) SPRINTF("DMADONE ");
 s=GETPORT(SSTAT1);
-if(s & SELTO)     SPRINTF("SELTO ");
-if(s & ATNTARG)   SPRINTF("ATNTARG ");
-if(s & SCSIRSTI)  SPRINTF("SCSIRSTI ");
-if(s & PHASEMIS)  SPRINTF("PHASEMIS ");
-if(s & BUSFREE)   SPRINTF("BUSFREE ");
-if(s & SCSIPERR)  SPRINTF("SCSIPERR ");
-if(s & PHASECHG)  SPRINTF("PHASECHG ");
-if(s & REQINIT)   SPRINTF("REQINIT ");
+if(s & SELTO) SPRINTF("SELTO ");
+if(s & ATNTARG) SPRINTF("ATNTARG ");
+if(s & SCSIRSTI) SPRINTF("SCSIRSTI ");
+if(s & PHASEMIS) SPRINTF("PHASEMIS ");
+if(s & BUSFREE) SPRINTF("BUSFREE ");
+if(s & SCSIPERR) SPRINTF("SCSIPERR ");
+if(s & PHASECHG) SPRINTF("PHASECHG ");
+if(s & REQINIT) SPRINTF("REQINIT ");
 SPRINTF("); ");
 SPRINTF("SSTAT (");
 s=GETPORT(SSTAT0) & GETPORT(SIMODE0);
-if(s & TARGET)    SPRINTF("TARGET ");
-if(s & SELDO)     SPRINTF("SELDO ");
-if(s & SELDI)     SPRINTF("SELDI ");
-if(s & SELINGO)   SPRINTF("SELINGO ");
-if(s & SWRAP)     SPRINTF("SWRAP ");
-if(s & SDONE)     SPRINTF("SDONE ");
-if(s & SPIORDY)   SPRINTF("SPIORDY ");
-if(s & DMADONE)   SPRINTF("DMADONE ");
+if(s & TARGET) SPRINTF("TARGET ");
+if(s & SELDO) SPRINTF("SELDO ");
+if(s & SELDI) SPRINTF("SELDI ");
+if(s & SELINGO) SPRINTF("SELINGO ");
+if(s & SWRAP) SPRINTF("SWRAP ");
+if(s & SDONE) SPRINTF("SDONE ");
+if(s & SPIORDY) SPRINTF("SPIORDY ");
+if(s & DMADONE) SPRINTF("DMADONE ");
 s=GETPORT(SSTAT1) & GETPORT(SIMODE1);
-if(s & SELTO)     SPRINTF("SELTO ");
-if(s & ATNTARG)   SPRINTF("ATNTARG ");
-if(s & SCSIRSTI)  SPRINTF("SCSIRSTI ");
-if(s & PHASEMIS)  SPRINTF("PHASEMIS ");
-if(s & BUSFREE)   SPRINTF("BUSFREE ");
-if(s & SCSIPERR)  SPRINTF("SCSIPERR ");
-if(s & PHASECHG)  SPRINTF("PHASECHG ");
-if(s & REQINIT)   SPRINTF("REQINIT ");
+if(s & SELTO) SPRINTF("SELTO ");
+if(s & ATNTARG) SPRINTF("ATNTARG ");
+if(s & SCSIRSTI) SPRINTF("SCSIRSTI ");
+if(s & PHASEMIS) SPRINTF("PHASEMIS ");
+if(s & BUSFREE) SPRINTF("BUSFREE ");
+if(s & SCSIPERR) SPRINTF("SCSIPERR ");
+if(s & PHASECHG) SPRINTF("PHASECHG ");
+if(s & REQINIT) SPRINTF("REQINIT ");
 SPRINTF("); ");
 SPRINTF("SXFRCTL0 (");
 s=GETPORT(SXFRCTL0);
-if(s & SCSIEN)    SPRINTF("SCSIEN ");
-if(s & DMAEN)     SPRINTF("DMAEN ");
-if(s & CH1)       SPRINTF("CH1 ");
-if(s & CLRSTCNT)  SPRINTF("CLRSTCNT ");
-if(s & SPIOEN)    SPRINTF("SPIOEN ");
-if(s & CLRCH1)    SPRINTF("CLRCH1 ");
+if(s & SCSIEN) SPRINTF("SCSIEN ");
+if(s & DMAEN) SPRINTF("DMAEN ");
+if(s & CH1) SPRINTF("CH1 ");
+if(s & CLRSTCNT) SPRINTF("CLRSTCNT ");
+if(s & SPIOEN) SPRINTF("SPIOEN ");
+if(s & CLRCH1) SPRINTF("CLRCH1 ");
 SPRINTF("); ");
 SPRINTF("SIGNAL (");
 s=GETPORT(SCSISIG);
-if(s & ATNI)  SPRINTF("ATNI ");
-if(s & SELI)  SPRINTF("SELI ");
-if(s & BSYI)  SPRINTF("BSYI ");
-if(s & REQI)  SPRINTF("REQI ");
-if(s & ACKI)  SPRINTF("ACKI ");
+if(s & ATNI) SPRINTF("ATNI ");
+if(s & SELI) SPRINTF("SELI ");
+if(s & BSYI) SPRINTF("BSYI ");
+if(s & REQI) SPRINTF("REQI ");
+if(s & ACKI) SPRINTF("ACKI ");
 SPRINTF("); ");
 SPRINTF("SELID (%02x), ", GETPORT(SELID));
 SPRINTF("SSTAT2 (");
 s=GETPORT(SSTAT2);
-if(s & SOFFSET)  SPRINTF("SOFFSET ");
-if(s & SEMPTY)   SPRINTF("SEMPTY ");
-if(s & SFULL)    SPRINTF("SFULL ");
+if(s & SOFFSET) SPRINTF("SOFFSET ");
+if(s & SEMPTY) SPRINTF("SEMPTY ");
+if(s & SFULL) SPRINTF("SFULL ");
 SPRINTF("); SFCNT (%d); ", s & (SFULL|SFCNT));
 s=GETPORT(SSTAT3);
 SPRINTF("SCSICNT (%d), OFFCNT(%d), ", (s&0xf0)>>4, s&0x0f);
 SPRINTF("SSTAT4 (");
 s=GETPORT(SSTAT4);
-if(s & SYNCERR)   SPRINTF("SYNCERR ");
-if(s & FWERR)     SPRINTF("FWERR ");
-if(s & FRERR)     SPRINTF("FRERR ");
+if(s & SYNCERR) SPRINTF("SYNCERR ");
+if(s & FWERR) SPRINTF("FWERR ");
+if(s & FRERR) SPRINTF("FRERR ");
 SPRINTF("); ");
 SPRINTF("DMACNTRL0 (");
 s=GETPORT(DMACNTRL0);
-SPRINTF("%s ", s & _8BIT      ? "8BIT"  : "16BIT");
-SPRINTF("%s ", s & DMA        ? "DMA"   : "PIO"  );
+SPRINTF("%s ", s & _8BIT ? "8BIT" : "16BIT");
+SPRINTF("%s ", s & DMA ? "DMA" : "PIO" );
 SPRINTF("%s ", s & WRITE_READ ? "WRITE" : "READ" );
-if(s & ENDMA)    SPRINTF("ENDMA ");
-if(s & INTEN)    SPRINTF("INTEN ");
-if(s & RSTFIFO)  SPRINTF("RSTFIFO ");
-if(s & SWINT)    SPRINTF("SWINT ");
+if(s & ENDMA) SPRINTF("ENDMA ");
+if(s & INTEN) SPRINTF("INTEN ");
+if(s & RSTFIFO) SPRINTF("RSTFIFO ");
+if(s & SWINT) SPRINTF("SWINT ");
 SPRINTF("); ");
 SPRINTF("DMASTAT (");
 s=GETPORT(DMASTAT);
-if(s & ATDONE)     SPRINTF("ATDONE ");
-if(s & WORDRDY)    SPRINTF("WORDRDY ");
-if(s & DFIFOFULL)  SPRINTF("DFIFOFULL ");
-if(s & DFIFOEMP)   SPRINTF("DFIFOEMP ");
+if(s & ATDONE) SPRINTF("ATDONE ");
+if(s & WORDRDY) SPRINTF("WORDRDY ");
+if(s & DFIFOFULL) SPRINTF("DFIFOFULL ");
+if(s & DFIFOEMP) SPRINTF("DFIFOEMP ");
 SPRINTF(")\n\n");
 SPRINTF("enabled interrupts (");
 s=GETPORT(SIMODE0);
-if(s & ENSELDO)    SPRINTF("ENSELDO ");
-if(s & ENSELDI)    SPRINTF("ENSELDI ");
-if(s & ENSELINGO)  SPRINTF("ENSELINGO ");
-if(s & ENSWRAP)    SPRINTF("ENSWRAP ");
-if(s & ENSDONE)    SPRINTF("ENSDONE ");
-if(s & ENSPIORDY)  SPRINTF("ENSPIORDY ");
-if(s & ENDMADONE)  SPRINTF("ENDMADONE ");
+if(s & ENSELDO) SPRINTF("ENSELDO ");
+if(s & ENSELDI) SPRINTF("ENSELDI ");
+if(s & ENSELINGO) SPRINTF("ENSELINGO ");
+if(s & ENSWRAP) SPRINTF("ENSWRAP ");
+if(s & ENSDONE) SPRINTF("ENSDONE ");
+if(s & ENSPIORDY) SPRINTF("ENSPIORDY ");
+if(s & ENDMADONE) SPRINTF("ENDMADONE ");
 s=GETPORT(SIMODE1);
-if(s & ENSELTIMO)    SPRINTF("ENSELTIMO ");
-if(s & ENATNTARG)    SPRINTF("ENATNTARG ");
-if(s & ENPHASEMIS)   SPRINTF("ENPHASEMIS ");
-if(s & ENBUSFREE)    SPRINTF("ENBUSFREE ");
-if(s & ENSCSIPERR)   SPRINTF("ENSCSIPERR ");
-if(s & ENPHASECHG)   SPRINTF("ENPHASECHG ");
-if(s & ENREQINIT)    SPRINTF("ENREQINIT ");
+if(s & ENSELTIMO) SPRINTF("ENSELTIMO ");
+if(s & ENATNTARG) SPRINTF("ENATNTARG ");
+if(s & ENPHASEMIS) SPRINTF("ENPHASEMIS ");
+if(s & ENBUSFREE) SPRINTF("ENBUSFREE ");
+if(s & ENSCSIPERR) SPRINTF("ENSCSIPERR ");
+if(s & ENPHASECHG) SPRINTF("ENPHASECHG ");
+if(s & ENREQINIT) SPRINTF("ENREQINIT ");
 SPRINTF(")\n");
 return (pos-start);
 }

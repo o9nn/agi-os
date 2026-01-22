@@ -6,23 +6,23 @@ extern "C" {
 typedef struct _dc_loginparam dc_loginparam_t;
 struct _dc_loginparam
 {
-char*         addr;
-char*         mail_server;
-char*         mail_user;
-char*         mail_pw;
-uint16_t      mail_port;
-char*         send_server;
-char*         send_user;
-char*         send_pw;
-int           send_port;
-int           server_flags;
+char* addr;
+char* mail_server;
+char* mail_user;
+char* mail_pw;
+uint16_t mail_port;
+char* send_server;
+char* send_user;
+char* send_pw;
+int send_port;
+int server_flags;
 };
-dc_loginparam_t* dc_loginparam_new          ();
-void             dc_loginparam_unref        (dc_loginparam_t*);
-void             dc_loginparam_empty        (dc_loginparam_t*);
-void             dc_loginparam_read         (dc_loginparam_t*, dc_sqlite3_t*, const char* prefix);
-void             dc_loginparam_write        (const dc_loginparam_t*, dc_sqlite3_t*, const char* prefix);
-char*            dc_loginparam_get_readable (const dc_loginparam_t*);
+dc_loginparam_t* dc_loginparam_new ();
+void dc_loginparam_unref (dc_loginparam_t*);
+void dc_loginparam_empty (dc_loginparam_t*);
+void dc_loginparam_read (dc_loginparam_t*, dc_sqlite3_t*, const char* prefix);
+void dc_loginparam_write (const dc_loginparam_t*, dc_sqlite3_t*, const char* prefix);
+char* dc_loginparam_get_readable (const dc_loginparam_t*);
 #ifdef __cplusplus
 }
 #endif

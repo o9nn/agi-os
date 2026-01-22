@@ -12,16 +12,16 @@
 #include "term.h"
 thread_t reader_thread = MACH_PORT_NULL;
 static file_t ioport = MACH_PORT_NULL;
-#define TIOC_CAP_OUTQ  0x001
+#define TIOC_CAP_OUTQ 0x001
 #define TIOC_CAP_START 0x002
-#define TIOC_CAP_STOP  0x004
+#define TIOC_CAP_STOP 0x004
 #define TIOC_CAP_FLUSH 0x008
-#define TIOC_CAP_CBRK  0x010
-#define TIOC_CAP_SBRK  0x020
-#define TIOC_CAP_MODG  0x040
-#define TIOC_CAP_MODS  0x080
-#define TIOC_CAP_GETA  0x100
-#define TIOC_CAP_SETA  0x200
+#define TIOC_CAP_CBRK 0x010
+#define TIOC_CAP_SBRK 0x020
+#define TIOC_CAP_MODG 0x040
+#define TIOC_CAP_MODS 0x080
+#define TIOC_CAP_GETA 0x100
+#define TIOC_CAP_SETA 0x200
 #define TIOC_CAP_GWINSZ 0x400
 unsigned int tioc_caps;
 thread_t writer_thread = MACH_PORT_NULL;

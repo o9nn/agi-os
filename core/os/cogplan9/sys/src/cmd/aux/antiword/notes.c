@@ -1,21 +1,21 @@
 #include "antiword.h"
 typedef struct footnote_local_tag {
-footnote_block_type	tInfo;
-ULONG			ulCharPosStart;
-ULONG			ulCharPosNext;
-BOOL			bUseful;
+footnote_block_type tInfo;
+ULONG ulCharPosStart;
+ULONG ulCharPosNext;
+BOOL bUseful;
 } footnote_local_type;
-static ULONG	*aulFootnoteList = NULL;
-static size_t	tFootnoteListLength = 0;
-static ULONG	*aulEndnoteList = NULL;
-static size_t	tEndnoteListLength = 0;
-static footnote_local_type	*pFootnoteText = NULL;
-static size_t			tFootnoteTextLength = 0;
+static ULONG *aulFootnoteList = NULL;
+static size_t tFootnoteListLength = 0;
+static ULONG *aulEndnoteList = NULL;
+static size_t tEndnoteListLength = 0;
+static footnote_local_type *pFootnoteText = NULL;
+static size_t tFootnoteTextLength = 0;
 void
 vDestroyNotesInfoLists(void)
 {
-footnote_local_type	*pRecord;
-size_t			tFootnote;
+footnote_local_type *pRecord;
+size_t tFootnote;
 TRACE_MSG("vDestroyNotesInfoLists");
 aulEndnoteList = xfree(aulEndnoteList);
 aulFootnoteList = xfree(aulFootnoteList);
@@ -31,18 +31,18 @@ tFootnoteTextLength = 0;
 static void
 vGet0FootnotesInfoAndText(FILE *pFile, const UCHAR *aucHeader)
 {
-footnote_local_type	*pCurr;
-UCHAR	*aucBuffer;
-ULONG	ulFileOffset, ulBeginOfText, ulOffset, ulBeginFootnoteInfo;
-ULONG	ulCharPos, ulBeginNextBlock;
-size_t	tFootnotes, tFootnoteInfoLen;
-size_t	tIndex;
-UCHAR   aucTmp[2];
+footnote_local_type *pCurr;
+UCHAR *aucBuffer;
+ULONG ulFileOffset, ulBeginOfText, ulOffset, ulBeginFootnoteInfo;
+ULONG ulCharPos, ulBeginNextBlock;
+size_t tFootnotes, tFootnoteInfoLen;
+size_t tIndex;
+UCHAR aucTmp[2];
 TRACE_MSG("vGet0FootnotesInfoAndText");
 fail(pFile == NULL || aucHeader == NULL);
 ulBeginOfText = 128;
 NO_DBG_HEX(ulBeginOfText);
-ulBeginFootnoteInfo =  128 * (ULONG)usGetWord(0x14, aucHeader);
+ulBeginFootnoteInfo = 128 * (ULONG)usGetWord(0x14, aucHeader);
 DBG_HEX(ulBeginFootnoteInfo);
 ulBeginNextBlock = 128 * (ULONG)usGetWord(0x16, aucHeader);
 DBG_HEX(ulBeginNextBlock);
@@ -58,7 +58,7 @@ if (tFootnotes < 2) {
 DBG_MSG("No Footnotes in this document (2)");
 }
 DBG_DEC(tFootnotes);
-tFootnoteInfoLen =  8 * tFootnotes;
+tFootnoteInfoLen = 8 * tFootnotes;
 aucBuffer = xmalloc(tFootnoteInfoLen);
 if (!bReadBytes(aucBuffer,
 tFootnoteInfoLen, ulBeginFootnoteInfo + 4, pFile)) {
@@ -112,10 +112,10 @@ vGet0FootnotesInfoAndText(pFile, aucHeader);
 static void
 vGet2FootnotesInfo(FILE *pFile, const UCHAR *aucHeader)
 {
-UCHAR	*aucBuffer;
-ULONG	ulFileOffset, ulBeginOfText, ulOffset, ulBeginFootnoteInfo;
-size_t	tFootnoteInfoLen;
-size_t	tIndex;
+UCHAR *aucBuffer;
+ULONG ulFileOffset, ulBeginOfText, ulOffset, ulBeginFootnoteInfo;
+size_t tFootnoteInfoLen;
+size_t tIndex;
 TRACE_MSG("vGet2FootnotesInfo");
 fail(pFile == NULL || aucHeader == NULL);
 ulBeginOfText = ulGetLong(0x18, aucHeader);
@@ -152,11 +152,11 @@ aucBuffer = xfree(aucBuffer);
 static void
 vGet2FootnotesText(FILE *pFile, const UCHAR *aucHeader)
 {
-footnote_local_type	*pCurr;
-UCHAR	*aucBuffer;
-ULONG	ulCharPos, ulBeginOfFootnotes, ulOffset, ulBeginFootnoteText;
-size_t	tFootnoteTextLen;
-size_t	tIndex;
+footnote_local_type *pCurr;
+UCHAR *aucBuffer;
+ULONG ulCharPos, ulBeginOfFootnotes, ulOffset, ulBeginFootnoteText;
+size_t tFootnoteTextLen;
+size_t tIndex;
 TRACE_MSG("vGet2FootnotesText");
 fail(pFile == NULL || aucHeader == NULL);
 ulBeginOfFootnotes = ulGetLong(0x18, aucHeader);
@@ -215,10 +215,10 @@ vGet6FootnotesInfo(FILE *pFile, ULONG ulStartBlock,
 const ULONG *aulBBD, size_t tBBDLen,
 const UCHAR *aucHeader)
 {
-UCHAR	*aucBuffer;
-ULONG	ulFileOffset, ulBeginOfText, ulOffset, ulBeginFootnoteInfo;
-size_t	tFootnoteInfoLen;
-size_t	tIndex;
+UCHAR *aucBuffer;
+ULONG ulFileOffset, ulBeginOfText, ulOffset, ulBeginFootnoteInfo;
+size_t tFootnoteInfoLen;
+size_t tIndex;
 TRACE_MSG("vGet6FootnotesInfo");
 fail(pFile == NULL || aucHeader == NULL);
 fail(ulStartBlock > MAX_BLOCKNUMBER && ulStartBlock != END_OF_CHAIN);
@@ -261,11 +261,11 @@ vGet6FootnotesText(FILE *pFile, ULONG ulStartBlock,
 const ULONG *aulBBD, size_t tBBDLen,
 const UCHAR *aucHeader)
 {
-footnote_local_type	*pCurr;
-UCHAR	*aucBuffer;
-ULONG	ulCharPos, ulBeginOfFootnotes, ulOffset, ulBeginFootnoteText;
-size_t	tFootnoteTextLen;
-size_t	tIndex;
+footnote_local_type *pCurr;
+UCHAR *aucBuffer;
+ULONG ulCharPos, ulBeginOfFootnotes, ulOffset, ulBeginFootnoteText;
+size_t tFootnoteTextLen;
+size_t tIndex;
 TRACE_MSG("vGet6FootnotesText");
 fail(pFile == NULL || aucHeader == NULL);
 fail(ulStartBlock > MAX_BLOCKNUMBER && ulStartBlock != END_OF_CHAIN);
@@ -320,10 +320,10 @@ vGet6EndnotesInfo(FILE *pFile, ULONG ulStartBlock,
 const ULONG *aulBBD, size_t tBBDLen,
 const UCHAR *aucHeader)
 {
-UCHAR	*aucBuffer;
-ULONG	ulFileOffset, ulBeginOfText, ulOffset, ulBeginEndnoteInfo;
-size_t	tEndnoteInfoLen;
-size_t	tIndex;
+UCHAR *aucBuffer;
+ULONG ulFileOffset, ulBeginOfText, ulOffset, ulBeginEndnoteInfo;
+size_t tEndnoteInfoLen;
+size_t tIndex;
 TRACE_MSG("vGet6EndnotesInfo");
 fail(pFile == NULL || aucHeader == NULL);
 fail(ulStartBlock > MAX_BLOCKNUMBER && ulStartBlock != END_OF_CHAIN);
@@ -380,11 +380,11 @@ const ULONG *aulBBD, size_t tBBDLen,
 const ULONG *aulSBD, size_t tSBDLen,
 const UCHAR *aucHeader)
 {
-const ULONG	*aulBlockDepot;
-UCHAR	*aucBuffer;
-ULONG	ulFileOffset, ulBeginOfText, ulOffset, ulBeginFootnoteInfo;
-size_t	tFootnoteInfoLen, tBlockDepotLen, tBlockSize;
-size_t	tIndex;
+const ULONG *aulBlockDepot;
+UCHAR *aucBuffer;
+ULONG ulFileOffset, ulBeginOfText, ulOffset, ulBeginFootnoteInfo;
+size_t tFootnoteInfoLen, tBlockDepotLen, tBlockSize;
+size_t tIndex;
 TRACE_MSG("vGet8FootnotesInfo");
 ulBeginOfText = ulGetLong(0x18, aucHeader);
 NO_DBG_HEX(ulBeginOfText);
@@ -440,12 +440,12 @@ const ULONG *aulBBD, size_t tBBDLen,
 const ULONG *aulSBD, size_t tSBDLen,
 const UCHAR *aucHeader)
 {
-footnote_local_type	*pCurr;
-const ULONG	*aulBlockDepot;
-UCHAR	*aucBuffer;
-ULONG	ulCharPos, ulBeginOfFootnotes, ulOffset, ulBeginFootnoteText;
-size_t	tFootnoteTextLen, tBlockDepotLen, tBlockSize;
-size_t	tIndex;
+footnote_local_type *pCurr;
+const ULONG *aulBlockDepot;
+UCHAR *aucBuffer;
+ULONG ulCharPos, ulBeginOfFootnotes, ulOffset, ulBeginFootnoteText;
+size_t tFootnoteTextLen, tBlockDepotLen, tBlockSize;
+size_t tIndex;
 TRACE_MSG("vGet8FootnotesText");
 ulBeginOfFootnotes = ulGetLong(0x18, aucHeader);
 ulBeginOfFootnotes += ulGetLong(0x4c, aucHeader);
@@ -513,11 +513,11 @@ const ULONG *aulBBD, size_t tBBDLen,
 const ULONG *aulSBD, size_t tSBDLen,
 const UCHAR *aucHeader)
 {
-const ULONG	*aulBlockDepot;
-UCHAR	*aucBuffer;
-ULONG	ulFileOffset, ulBeginOfText, ulOffset, ulBeginEndnoteInfo;
-size_t	tEndnoteInfoLen, tBlockDepotLen, tBlockSize;
-size_t	tIndex;
+const ULONG *aulBlockDepot;
+UCHAR *aucBuffer;
+ULONG ulFileOffset, ulBeginOfText, ulOffset, ulBeginEndnoteInfo;
+size_t tEndnoteInfoLen, tBlockDepotLen, tBlockSize;
+size_t tIndex;
 TRACE_MSG("vGet8EndnotesInfo");
 ulBeginOfText = ulGetLong(0x18, aucHeader);
 NO_DBG_HEX(ulBeginOfText);
@@ -620,8 +620,8 @@ break;
 void
 vPrepareFootnoteText(FILE *pFile)
 {
-footnote_local_type	*pCurr;
-size_t		tFootnote;
+footnote_local_type *pCurr;
+size_t tFootnote;
 fail(pFile == NULL);
 fail(pFootnoteText == NULL && tFootnoteTextLength != 0);
 if (pFootnoteText == NULL || tFootnoteTextLength == 0) {
@@ -650,7 +650,7 @@ return pFootnoteText[uiFootnoteIndex].tInfo.szText;
 notetype_enum
 eGetNotetype(ULONG ulFileOffset)
 {
-size_t	tIndex;
+size_t tIndex;
 TRACE_MSG("eGetNotetype");
 fail(aulFootnoteList == NULL && tFootnoteListLength != 0);
 fail(aulEndnoteList == NULL && tEndnoteListLength != 0);

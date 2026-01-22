@@ -1,12 +1,12 @@
 implement Brutusext;
 # <Extension image imagefile>
-Name:	con "Brutus image";
+Name: con "Brutus image";
 include "sys.m";
 sys: Sys;
 include "draw.m";
 draw: Draw;
 Context, Image, Display, Rect: import draw;
-include	"bufio.m";
+include "bufio.m";
 bufio: Bufio;
 Iobuf: import bufio;
 include "imagefile.m";
@@ -15,18 +15,18 @@ readgif: RImagefile;
 readjpg: RImagefile;
 include "tk.m";
 tk: Tk;
-include	"tkclient.m";
+include "tkclient.m";
 tkclient: Tkclient;
 include "pslib.m";
 pslib: Pslib;
-include	"brutus.m";
-include	"brutusext.m";
+include "brutus.m";
+include "brutusext.m";
 stderr: ref Sys->FD;
 Cache: adt
 {
-args:		string;
-name:	string;
-r:		Rect;
+args: string;
+name: string;
+r: Rect;
 };
 init(s: Sys, d: Draw, b: Bufio, t: Tk, w: Tkclient)
 {

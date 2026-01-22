@@ -33,7 +33,7 @@ ASSERT(JsonObject->TryGetObjectField(TEXT("Meta"), Meta), "Failed to get Meta fi
 {
 ASSERT((*Meta)->TryGetNumberField(TEXT("UserDataCount"), Size), "Failed to get UserDataCount field.");
 }
-const TArray< TSharedPtr<FJsonValue> >*  UserDataArrayObject;
+const TArray< TSharedPtr<FJsonValue> >* UserDataArrayObject;
 ASSERT(JsonObject->TryGetArrayField(TEXT("UserData"), UserDataArrayObject), "Failed to get UserData field.");
 for (const TSharedPtr<FJsonValue>& UserDataValue : *UserDataArrayObject)
 {

@@ -10,81 +10,81 @@
 #define idprint if(!0){}else iprint
 #define ioprint if(!0){}else iprint
 enum {
-NCtlr		= 4,
-NCtlrdrv	= 8,
-NDrive		= NCtlr*NCtlrdrv,
-Read 		= 0,
+NCtlr = 4,
+NCtlrdrv = 8,
+NDrive = NCtlr*NCtlrdrv,
+Read = 0,
 Write,
-Coraiddebug	= 0,
+Coraiddebug = 0,
 };
 enum {
 SrbRing = 32,
-ARcmd		= 027,
-ARdev		= 026,
-ARerr		= 021,
-ARfea		= 021,
-ARlba2		= 025,
-ARlba1		= 024,
-ARlba0		= 023,
-ARseccnt	= 022,
-ARstat		= 027,
-ATAerr		= (1<<0),
-ATAdrq		= (1<<3),
-ATAdf 		= (1<<5),
-ATAdrdy 	= (1<<6),
-ATAbusy 	= (1<<7),
-ATAabort	= (1<<2),
-ATAobs		= (1<<1 | 1<<2 | 1<<4),
-ATAeIEN		= (1<<1),
-ATAsrst		= (1<<2),
-ATAhob		= (1<<7),
-ATAbad		= (ATAbusy|ATAdf|ATAdrq|ATAerr),
-SFdone 		= (1<<0),
-SFerror 	= (1<<1),
-SRBident 	= 0,
+ARcmd = 027,
+ARdev = 026,
+ARerr = 021,
+ARfea = 021,
+ARlba2 = 025,
+ARlba1 = 024,
+ARlba0 = 023,
+ARseccnt = 022,
+ARstat = 027,
+ATAerr = (1<<0),
+ATAdrq = (1<<3),
+ATAdf = (1<<5),
+ATAdrdy = (1<<6),
+ATAbusy = (1<<7),
+ATAabort = (1<<2),
+ATAobs = (1<<1 | 1<<2 | 1<<4),
+ATAeIEN = (1<<1),
+ATAsrst = (1<<2),
+ATAhob = (1<<7),
+ATAbad = (ATAbusy|ATAdf|ATAdrq|ATAerr),
+SFdone = (1<<0),
+SFerror = (1<<1),
+SRBident = 0,
 SRBread,
 SRBwrite,
 SRBsmart,
 SRBnodata = 0,
 SRBdatain,
 SRBdataout,
-RQread		= 1,
-PRDeot		= (1<<15),
-ePrtDataErr	= (1<<0),
-ePrtPRDErr	= (1<<1),
-eDevErr		= (1<<2),
-eDevDis		= (1<<3),
-eDevCon		= (1<<4),
-eOverrun	= (1<<5),
-eUnderrun	= (1<<6),
-eSelfDis	= (1<<8),
-ePrtCRQBErr	= (1<<9),
-ePrtCRPBErr	= (1<<10),
-ePrtIntErr	= (1<<11),
-eIORdyErr	= (1<<12),
-eSelfDis2	= (1<<7),
-SerrInt		= (1<<5),
-eEnEDMA	= (1<<0),
-eDsEDMA 	= (1<<1),
-eAtaRst 	= (1<<2),
-IEM		= (eDevDis | eDevCon | eSelfDis),
-IEM2		= (eDevDis | eDevCon | eSelfDis2),
-Dnull 		= 0,
+RQread = 1,
+PRDeot = (1<<15),
+ePrtDataErr = (1<<0),
+ePrtPRDErr = (1<<1),
+eDevErr = (1<<2),
+eDevDis = (1<<3),
+eDevCon = (1<<4),
+eOverrun = (1<<5),
+eUnderrun = (1<<6),
+eSelfDis = (1<<8),
+ePrtCRQBErr = (1<<9),
+ePrtCRPBErr = (1<<10),
+ePrtIntErr = (1<<11),
+eIORdyErr = (1<<12),
+eSelfDis2 = (1<<7),
+SerrInt = (1<<5),
+eEnEDMA = (1<<0),
+eDsEDMA = (1<<1),
+eAtaRst = (1<<2),
+IEM = (eDevDis | eDevCon | eSelfDis),
+IEM2 = (eDevDis | eDevCon | eSelfDis2),
+Dnull = 0,
 Dnew,
 Dready,
 Derror,
 Dmissing,
 Dreset,
 Dlast,
-Dext	 	= (1<<0),
-Dpio		= (1<<1),
-Dwanted		= (1<<2),
-Dedma		= (1<<3),
-Dpiowant	= (1<<4),
-Mpreamp	= 0x7e0,
-Dpreamp	= 0x720,
-REV60X1B2	= 0x7,
-REV60X1C0	= 0x9,
+Dext = (1<<0),
+Dpio = (1<<1),
+Dwanted = (1<<2),
+Dedma = (1<<3),
+Dpiowant = (1<<4),
+Mpreamp = 0x7e0,
+Dpreamp = 0x720,
+REV60X1B2 = 0x7,
+REV60X1C0 = 0x9,
 };
 static char* diskstates[Dlast] = {
 "null",
@@ -107,8 +107,8 @@ typedef struct Srb Srb;
 typedef struct Tx Tx;
 struct Chip
 {
-Arb	*arb;
-Edma	*edma;
+Arb *arb;
+Edma *edma;
 };
 enum {
 DMautoneg,
@@ -118,165 +118,165 @@ DMsataii,
 struct Drive
 {
 Lock;
-Ctlr	*ctlr;
-SDunit	*unit;
-char	name[10];
-ulong	magic;
-Bridge	*bridge;
-Edma	*edma;
-Chip	*chip;
-int	chipx;
-int	mediachange;
-int	state;
-int	flag;
-uvlong	sectors;
-ulong	pm2;
-ulong	intick;
-int	wait;
-int	mode;
-char	serial[20+1];
-char	firmware[8+1];
-char	model[40+1];
-ushort	info[256];
-Srb	*srb[SrbRing-1];
-int	nsrb;
-Prd	*prd;
-Tx	*tx;
-Rx	*rx;
-Srb	*srbhead;
-Srb	*srbtail;
-int	driveno;
+Ctlr *ctlr;
+SDunit *unit;
+char name[10];
+ulong magic;
+Bridge *bridge;
+Edma *edma;
+Chip *chip;
+int chipx;
+int mediachange;
+int state;
+int flag;
+uvlong sectors;
+ulong pm2;
+ulong intick;
+int wait;
+int mode;
+char serial[20+1];
+char firmware[8+1];
+char model[40+1];
+ushort info[256];
+Srb *srb[SrbRing-1];
+int nsrb;
+Prd *prd;
+Tx *tx;
+Rx *rx;
+Srb *srbhead;
+Srb *srbtail;
+int driveno;
 };
 struct Ctlr
 {
 Lock;
-int	irq;
-int	tbdf;
-int	rid;
-ulong	magic;
-int	enabled;
-int	type;
-SDev	*sdev;
-Pcidev	*pcidev;
-uchar	*mmio;
-ulong	*lmmio;
-Chip	chip[2];
-int	nchip;
-Drive	drive[NCtlrdrv];
-int	ndrive;
+int irq;
+int tbdf;
+int rid;
+ulong magic;
+int enabled;
+int type;
+SDev *sdev;
+Pcidev *pcidev;
+uchar *mmio;
+ulong *lmmio;
+Chip chip[2];
+int nchip;
+Drive drive[NCtlrdrv];
+int ndrive;
 };
 struct Srb
 {
 Lock;
 Rendez;
-Srb	*next;
-Drive	*drive;
-uvlong	blockno;
-int	count;
-int	req;
-int	flag;
-uchar	*data;
-uchar	cmd;
-uchar	lba[6];
-uchar	sectors;
-int	sta;
-int	err;
+Srb *next;
+Drive *drive;
+uvlong blockno;
+int count;
+int req;
+int flag;
+uchar *data;
+uchar cmd;
+uchar lba[6];
+uchar sectors;
+int sta;
+int err;
 };
 struct Bridge
 {
-ulong	status;
-ulong	serror;
-ulong	sctrl;
-ulong	phyctrl;
-ulong	phymode3;
-ulong	phymode4;
-uchar	fill0[0x14];
-ulong	phymode1;
-ulong	phymode2;
-char	fill1[8];
-ulong	ctrl;
-char	fill2[0x34];
-ulong	phymode;
-char	fill3[0x88];
+ulong status;
+ulong serror;
+ulong sctrl;
+ulong phyctrl;
+ulong phymode3;
+ulong phymode4;
+uchar fill0[0x14];
+ulong phymode1;
+ulong phymode2;
+char fill1[8];
+ulong ctrl;
+char fill2[0x34];
+ulong phymode;
+char fill3[0x88];
 };
 struct Arb
 {
-ulong	config;
-ulong	rqop;
-ulong	rqip;
-ulong	ict;
-ulong	itt;
-ulong	ic;
-ulong	btc;
-ulong	bts;
-ulong	bpc;
-char	fill1[0xdc];
-Bridge	bridge[4];
+ulong config;
+ulong rqop;
+ulong rqip;
+ulong ict;
+ulong itt;
+ulong ic;
+ulong btc;
+ulong bts;
+ulong bpc;
+char fill1[0xdc];
+Bridge bridge[4];
 };
 struct Edma
 {
-ulong	config;
-ulong	timer;
-ulong	iec;
-ulong	iem;
-ulong	txbasehi;
-ulong	txi;
-ulong	txo;
-ulong	rxbasehi;
-ulong	rxi;
-ulong	rxo;
-ulong	ctl;
-ulong	testctl;
-ulong	status;
-ulong	iordyto;
-char	fill[0x18];
-ulong	sataconfig;
-char	fill[0xac];
-ushort	pio;
-char	pad0[2];
-uchar	err;
-char	pad1[3];
-uchar	seccnt;
-char	pad2[3];
-uchar	lba0;
-char	pad3[3];
-uchar	lba1;
-char	pad4[3];
-uchar	lba2;
-char	pad5[3];
-uchar	lba3;
-char	pad6[3];
-uchar	cmdstat;
-char	pad7[3];
-uchar	altstat;
-uchar	fill2[0x1df];
-Bridge	port;
-char	fill3[0x1c00];
+ulong config;
+ulong timer;
+ulong iec;
+ulong iem;
+ulong txbasehi;
+ulong txi;
+ulong txo;
+ulong rxbasehi;
+ulong rxi;
+ulong rxo;
+ulong ctl;
+ulong testctl;
+ulong status;
+ulong iordyto;
+char fill[0x18];
+ulong sataconfig;
+char fill[0xac];
+ushort pio;
+char pad0[2];
+uchar err;
+char pad1[3];
+uchar seccnt;
+char pad2[3];
+uchar lba0;
+char pad3[3];
+uchar lba1;
+char pad4[3];
+uchar lba2;
+char pad5[3];
+uchar lba3;
+char pad6[3];
+uchar cmdstat;
+char pad7[3];
+uchar altstat;
+uchar fill2[0x1df];
+Bridge port;
+char fill3[0x1c00];
 };
 struct Prd
 {
-ulong	pa;
-ushort	count;
-ushort	flag;
-ulong	zero;
-ulong	reserved;
+ulong pa;
+ushort count;
+ushort flag;
+ulong zero;
+ulong reserved;
 };
 struct Tx
 {
-ulong	prdpa;
-ulong	zero;
-ushort	flag;
-ushort	regs[11];
+ulong prdpa;
+ulong zero;
+ushort flag;
+ushort regs[11];
 };
 struct Rx
 {
-ushort	cid;
-uchar	cEdmaSts;
-uchar	cDevSts;
-ulong	ts;
+ushort cid;
+uchar cEdmaSts;
+uchar cDevSts;
+ulong ts;
 };
-static Drive 	*mvsatadrive[NDrive];
-static int	nmvsatadrive;
+static Drive *mvsatadrive[NDrive];
+static int nmvsatadrive;
 static ushort
 lhgets(void *p)
 {
@@ -631,10 +631,10 @@ d->state = Derror;
 return -1;
 }
 static char stab[] = {
-[1]	'M',
-[10]	'P',
-[16]	'N',
-[18]	'W', 'B', 'D', 'C', 'H', 'S', 'T', 'F', 'X'
+[1] 'M',
+[10] 'P',
+[16] 'N',
+[18] 'W', 'B', 'D', 'C', 'H', 'S', 'T', 'F', 'X'
 };
 static ulong sbad = (7<<20)|(3<<23);
 static void
@@ -801,7 +801,7 @@ edma->txi = advance(edma->txi, 5);
 d->intick = MACHP(0)->ticks;
 }
 enum{
-Rpidx	= 0x1f<<3,
+Rpidx = 0x1f<<3,
 };
 static void
 completesrb(Drive *d)
@@ -866,9 +866,9 @@ iunlock(drive);
 iunlock(ctlr);
 }
 enum{
-Nms		= 256,
-Midwait		= 16*1024/Nms-1,
-Mphywait	= 512/Nms-1,
+Nms = 256,
+Midwait = 16*1024/Nms-1,
+Mphywait = 512/Nms-1,
 };
 static void
 westerndigitalhung(Drive *d)
@@ -905,7 +905,7 @@ dprint("%s: unknown state %8lx\n", name, s);
 case 0x100:
 if(++d->wait&Mphywait)
 break;
-reset:	d->mode ^= 1;
+reset: d->mode ^= 1;
 dprint("%s: reset; new mode %d\n", name, d->mode);
 resetdisk(d);
 break;
@@ -1165,40 +1165,40 @@ static Regs regsctlr[] =
 };
 static Regs regsarb[] =
 {
-0x0004,	"arb rqop",
-0x0008,	"arb rqip",
-0x000C,	"arb ict",
-0x0010,	"arb itt",
-0x0014,	"arb ic",
-0x0018,	"arb btc",
-0x001C,	"arb bts",
-0x0020,	"arb bpc",
+0x0004, "arb rqop",
+0x0008, "arb rqip",
+0x000C, "arb ict",
+0x0010, "arb itt",
+0x0014, "arb ic",
+0x0018, "arb btc",
+0x001C, "arb bts",
+0x0020, "arb bpc",
 };
 static Regs regsbridge[] =
 {
-0x0000,	"bridge status",
-0x0004,	"bridge serror",
-0x0008,	"bridge sctrl",
-0x000C,	"bridge phyctrl",
-0x003C,	"bridge ctrl",
-0x0074,	"bridge phymode",
+0x0000, "bridge status",
+0x0004, "bridge serror",
+0x0008, "bridge sctrl",
+0x000C, "bridge phyctrl",
+0x003C, "bridge ctrl",
+0x0074, "bridge phymode",
 };
 static Regs regsedma[] =
 {
-0x0000,	"edma config",
-0x0004,	"edma timer",
-0x0008,	"edma iec",
-0x000C,	"edma iem",
-0x0010,	"edma txbasehi",
-0x0014,	"edma txi",
-0x0018,	"edma txo",
-0x001C,	"edma rxbasehi",
-0x0020,	"edma rxi",
-0x0024,	"edma rxo",
-0x0028,	"edma c",
-0x002C,	"edma tc",
-0x0030,	"edma status",
-0x0034,	"edma iordyto",
+0x0000, "edma config",
+0x0004, "edma timer",
+0x0008, "edma iec",
+0x000C, "edma iem",
+0x0010, "edma txbasehi",
+0x0014, "edma txi",
+0x0018, "edma txo",
+0x001C, "edma rxbasehi",
+0x0020, "edma rxi",
+0x0024, "edma rxo",
+0x0028, "edma c",
+0x002C, "edma tc",
+0x0030, "edma status",
+0x0034, "edma iordyto",
 };
 static char*
 rdregs(char *p, char *e, void *base, Regs *r, int n, char *prefix)

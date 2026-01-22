@@ -2,7 +2,7 @@
 #include "kernel.h"
 #include "draw.h"
 #include "tk.h"
-#define	O(t, e)		((long)(&((t*)0)->e))
+#define O(t, e) ((long)(&((t*)0)->e))
 static char* pdist(TkTop*, TkOption*, void*, char**, char*, char*);
 static char* pstab(TkTop*, TkOption*, void*, char**, char*, char*);
 static char* ptext(TkTop*, TkOption*, void*, char**, char*, char*);
@@ -564,7 +564,7 @@ default:
 return TkBadvl;
 }
 }
-sflag =  OPTION(place, int, o->offset) & ~(Tkanchor|Tkfill);
+sflag = OPTION(place, int, o->offset) & ~(Tkanchor|Tkfill);
 OPTION(place, int, o->offset) = sflag | stickymap[flag];
 return nil;
 }
@@ -904,9 +904,9 @@ return TkBadvl;
 return e;
 }
 typedef struct Tabspec {
-int	dist;
-int	just;
-TkEnv	*env;
+int dist;
+int just;
+TkEnv *env;
 } Tabspec;
 static char*
 ptabs(TkTop *t, TkOption *o, void *place, char **str, char *buf, char *ebuf)

@@ -1,5 +1,5 @@
 #if !defined(gsmemlok_INCLUDED)
-#  define gsmemlok_INCLUDED
+# define gsmemlok_INCLUDED
 #include "gsmemory.h"
 #include "gxsync.h"
 typedef struct gs_memory_locked_s {

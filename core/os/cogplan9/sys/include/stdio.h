@@ -1,5 +1,5 @@
-#pragma	src	"/sys/src/libstdio"
-#pragma	lib	"libstdio.a"
+#pragma src "/sys/src/libstdio"
+#pragma lib "libstdio.a"
 typedef struct{
 int fd;
 char flags;
@@ -13,26 +13,26 @@ char unbuf[1];
 }FILE;
 typedef long fpos_t;
 #ifndef NULL
-#define	NULL	((void*)0)
+#define NULL ((void*)0)
 #endif
-#define	_IOFBF	1
-#define	_IOLBF	2
-#define	_IONBF	3
-#define	BUFSIZ	4096
-#define	EOF	(-1)
-#define	FOPEN_MAX	100
-#define	FILENAME_MAX	BUFSIZ
-#define	L_tmpnam	20
+#define _IOFBF 1
+#define _IOLBF 2
+#define _IONBF 3
+#define BUFSIZ 4096
+#define EOF (-1)
+#define FOPEN_MAX 100
+#define FILENAME_MAX BUFSIZ
+#define L_tmpnam 20
 #ifndef SEEK_SET
-#define	SEEK_CUR	1
-#define	SEEK_END	2
-#define	SEEK_SET	0
+#define SEEK_CUR 1
+#define SEEK_END 2
+#define SEEK_SET 0
 #endif
-#define	TMP_MAX		64
-#define	stderr	(&_IO_stream[2])
-#define	stdin	(&_IO_stream[0])
-#define	stdout	(&_IO_stream[1])
-#define	_IO_CHMASK	0377
+#define TMP_MAX 64
+#define stderr (&_IO_stream[2])
+#define stdin (&_IO_stream[0])
+#define stdout (&_IO_stream[1])
+#define _IO_CHMASK 0377
 FILE *tmpfile(void);
 char *tmpnam(char *);
 int fclose(FILE *);
@@ -59,16 +59,16 @@ char *fgets(char *, int, FILE *);
 int fputc(int, FILE *);
 int fputs(const char *, FILE *);
 int getc(FILE *);
-#define	getc(f)	((f)->rp>=(f)->wp?_IO_getc(f):*(f)->rp++&_IO_CHMASK)
+#define getc(f) ((f)->rp>=(f)->wp?_IO_getc(f):*(f)->rp++&_IO_CHMASK)
 int _IO_getc(FILE *f);
 int getchar(void);
-#define	getchar()	getc(stdin)
+#define getchar() getc(stdin)
 char *gets(char *);
 int putc(int, FILE *);
-#define	putc(c, f) ((f)->wp>=(f)->rp?_IO_putc(c, f):(*(f)->wp++=c)&_IO_CHMASK)
+#define putc(c, f) ((f)->wp>=(f)->rp?_IO_putc(c, f):(*(f)->wp++=c)&_IO_CHMASK)
 int _IO_putc(int, FILE *);
 int putchar(int);
-#define	putchar(c)	putc(c, stdout)
+#define putchar(c) putc(c, stdout)
 int puts(const char *);
 int ungetc(int, FILE *);
 long fread(void *, long, long, FILE *);

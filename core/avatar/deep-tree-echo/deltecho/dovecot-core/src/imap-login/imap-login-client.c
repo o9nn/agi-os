@@ -20,7 +20,7 @@
 #include "imap-login-commands.h"
 #include "imap-login-settings.h"
 #if LOGIN_MAX_INBUF_SIZE < 1024+2
-#  error LOGIN_MAX_INBUF_SIZE too short to fit all ID command parameters
+# error LOGIN_MAX_INBUF_SIZE too short to fit all ID command parameters
 #endif
 #define CLIENT_MAX_BAD_COMMANDS 3
 bool client_skip_line(struct imap_client *client)

@@ -1,5 +1,5 @@
 #ifndef gdevfax_INCLUDED
-#  define gdevfax_INCLUDED
+# define gdevfax_INCLUDED
 #define X_DPI 204
 #define Y_DPI 196
 #define gx_fax_device_common\
@@ -13,7 +13,7 @@ gx_fax_device_common;
 prn_device_std_body(dtype, procs, dname,\
 DEFAULT_WIDTH_10THS, DEFAULT_HEIGHT_10THS,\
 X_DPI, Y_DPI,\
-0, 0, 0, 0,	\
+0, 0, 0, 0, \
 1, print_page),\
 1
 dev_proc_open_device(gdev_fax_open);

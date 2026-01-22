@@ -120,44 +120,44 @@ static inline void list_remove(struct list *node)
 node->prev->next = node->next;
 node->next->prev = node->prev;
 }
-#define list_for_each(list, node)   \
-for (node = list_first(list);       \
-!list_end(list, node);         \
+#define list_for_each(list, node) \
+for (node = list_first(list); \
+!list_end(list, node); \
 node = list_next(node))
-#define list_for_each_safe(list, node, tmp)             \
-for (node = list_first(list), tmp = list_next(node);    \
-!list_end(list, node);                             \
+#define list_for_each_safe(list, node, tmp) \
+for (node = list_first(list), tmp = list_next(node); \
+!list_end(list, node); \
 node = tmp, tmp = list_next(node))
-#define list_for_each_reverse(list, node)   \
-for (node = list_last(list);                \
-!list_end(list, node);                 \
+#define list_for_each_reverse(list, node) \
+for (node = list_last(list); \
+!list_end(list, node); \
 node = list_prev(node))
 #define list_for_each_reverse_safe(list, node, tmp) \
 for (node = list_last(list), tmp = list_prev(node); \
-!list_end(list, node);                         \
+!list_end(list, node); \
 node = tmp, tmp = list_prev(node))
-#define list_for_each_entry(list, entry, member)                    \
-for (entry = list_entry(list_first(list), typeof(*entry), member);  \
-!list_end(list, &entry->member);                               \
-entry = list_entry(list_next(&entry->member), typeof(*entry),  \
+#define list_for_each_entry(list, entry, member) \
+for (entry = list_entry(list_first(list), typeof(*entry), member); \
+!list_end(list, &entry->member); \
+entry = list_entry(list_next(&entry->member), typeof(*entry), \
 member))
-#define list_for_each_entry_safe(list, entry, tmp, member)          \
-for (entry = list_entry(list_first(list), typeof(*entry), member),  \
-tmp = list_entry(list_next(&entry->member), typeof(*entry),  \
-member);                                    \
-!list_end(list, &entry->member);                               \
-entry = tmp, tmp = list_entry(list_next(&entry->member),       \
+#define list_for_each_entry_safe(list, entry, tmp, member) \
+for (entry = list_entry(list_first(list), typeof(*entry), member), \
+tmp = list_entry(list_next(&entry->member), typeof(*entry), \
+member); \
+!list_end(list, &entry->member); \
+entry = tmp, tmp = list_entry(list_next(&entry->member), \
 typeof(*entry), member))
-#define list_for_each_entry_reverse(list, entry, member)            \
-for (entry = list_entry(list_last(list), typeof(*entry), member);   \
-!list_end(list, &entry->member);                               \
-entry = list_entry(list_prev(&entry->member), typeof(*entry),  \
+#define list_for_each_entry_reverse(list, entry, member) \
+for (entry = list_entry(list_last(list), typeof(*entry), member); \
+!list_end(list, &entry->member); \
+entry = list_entry(list_prev(&entry->member), typeof(*entry), \
 member))
-#define list_for_each_entry_reverse_safe(list, entry, tmp, member)  \
-for (entry = list_entry(list_last(list), typeof(*entry), member),   \
-tmp = list_entry(list_prev(&entry->member), typeof(*entry),  \
-member);                                    \
-!list_end(list, &entry->member);                               \
-entry = tmp, tmp = list_entry(list_prev(&entry->member),       \
+#define list_for_each_entry_reverse_safe(list, entry, tmp, member) \
+for (entry = list_entry(list_last(list), typeof(*entry), member), \
+tmp = list_entry(list_prev(&entry->member), typeof(*entry), \
+member); \
+!list_end(list, &entry->member); \
+entry = tmp, tmp = list_entry(list_prev(&entry->member), \
 typeof(*entry), member))
 #endif

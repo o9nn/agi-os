@@ -8,7 +8,7 @@ Fid *f;
 Entry *e;
 ulong modemask;
 if(server->trace > 1)
-print("logfsserveropen(%ud, %d)\n",  fid, mode);
+print("logfsserveropen(%ud, %d)\n", fid, mode);
 f = logfsfidmapfindentry(server->fidmap, fid);
 if(f == nil)
 return logfsebadfid;

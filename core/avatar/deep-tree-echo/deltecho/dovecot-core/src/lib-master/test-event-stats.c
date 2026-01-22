@@ -4,9 +4,9 @@
 #include "ioloop.h"
 #include "stats-client.h"
 #include "test-common.h"
-#define TST_BEGIN(test_name)				\
-test_begin(test_name);				\
-ioloop_timeval.tv_sec = 0;			\
+#define TST_BEGIN(test_name) \
+test_begin(test_name); \
+ioloop_timeval.tv_sec = 0; \
 ioloop_timeval.tv_usec = 0;
 static struct event_category test_cats[5] = {
 {.name = "test1"},

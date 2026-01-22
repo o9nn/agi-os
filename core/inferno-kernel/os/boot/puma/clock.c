@@ -1,33 +1,33 @@
 #include "boot.h"
-#define PIT_RW_COUNTER0  0x30
-#define PIT_RW_COUNTER1  0x70
-#define PIT_RW_COUNTER2  0xB0
-#define PIT_COUNTERLATCH0	0x00
-#define PIT_COUNTERLATCH1	0x40
-#define PIT_COUNTERLATCH2	0x80
-#define PIT_MODE_0	0
-#define PIT_MODE_1	2
-#define PIT_MODE_2	4
-#define PIT_MODE_3	6
-#define PIT_MODE_4	8
-#define PIT_MODE_5	10
+#define PIT_RW_COUNTER0 0x30
+#define PIT_RW_COUNTER1 0x70
+#define PIT_RW_COUNTER2 0xB0
+#define PIT_COUNTERLATCH0 0x00
+#define PIT_COUNTERLATCH1 0x40
+#define PIT_COUNTERLATCH2 0x80
+#define PIT_MODE_0 0
+#define PIT_MODE_1 2
+#define PIT_MODE_2 4
+#define PIT_MODE_3 6
+#define PIT_MODE_4 8
+#define PIT_MODE_5 10
 #undef inb
 #undef outb
-#define 	inb(port)			((*(uchar *)(port))&0xff)
-#define 	outb(port, data)	(*(uchar *)(port) = (data))
+#define inb(port) ((*(uchar *)(port))&0xff)
+#define outb(port, data) (*(uchar *)(port) = (data))
 enum
 {
-Cnt0=	0xf2000000,
-Cnt1=	0xf2000004,
-Cnt2=	0xf2000008,
-Ctlw=	0xf200000c,
-Latch0=	0x00,
-Load0=	0x30,
-Latch1=	0x40,
-Load1=	0x70,
-Square=	0x06,
-RateGen=	0x04,
-Freq=	3686400,
+Cnt0= 0xf2000000,
+Cnt1= 0xf2000004,
+Cnt2= 0xf2000008,
+Ctlw= 0xf200000c,
+Latch0= 0x00,
+Load0= 0x30,
+Latch1= 0x40,
+Load1= 0x70,
+Square= 0x06,
+RateGen= 0x04,
+Freq= 3686400,
 };
 static int cpufreq = 233000000;
 static int aalcycles = 14;

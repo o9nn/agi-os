@@ -1,5 +1,5 @@
 #ifndef gxcvalue_INCLUDED
-#  define gxcvalue_INCLUDED
+# define gxcvalue_INCLUDED
 typedef unsigned short gx_color_value;
 #define arch_sizeof_gx_color_value arch_sizeof_short
 #define gx_color_value_bits (sizeof(gx_color_value) * 8)

@@ -1,7 +1,7 @@
 #include "boot.h"
 typedef struct IrqEntry {
-void	(*r)(Ureg*, void*);
-void 	*a;
+void (*r)(Ureg*, void*);
+void *a;
 } IrqEntry;
 IrqEntry Irq[V_MAXNUM+1];
 static void dumpstk(ulong *);
@@ -105,7 +105,7 @@ panic("SVC/SWI Exception\n");
 break;
 case PsrMabt:
 ureg->pc -= 4;
-case PsrMabt+1:	{
+case PsrMabt+1: {
 uint far =0;
 uint fsr =0;
 USED(far,fsr);

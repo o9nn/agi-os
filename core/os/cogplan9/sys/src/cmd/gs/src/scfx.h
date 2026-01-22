@@ -1,5 +1,5 @@
 #ifndef scfx_INCLUDED
-#  define scfx_INCLUDED
+# define scfx_INCLUDED
 #include "shc.h"
 #define stream_CF_state_common\
 stream_hc_state_common;\
@@ -12,16 +12,16 @@ int Columns;\
 int Rows;\
 bool EndOfBlock;\
 bool BlackIs1;\
-int DamagedRowsBeforeError;	\
+int DamagedRowsBeforeError; \
 \
 int DecodedByteAlign;\
 \
 uint raster;\
-byte *lbuf;		\
+byte *lbuf; \
 \
-byte *lprev;		\
+byte *lprev; \
 \
-int k_left		\
+int k_left \
 typedef struct stream_CF_state_s {
 stream_CF_state_common;
 } stream_CF_state;
@@ -49,7 +49,7 @@ int read_count;
 int write_count;
 int code_bytes;
 } stream_CFE_state;
-#define private_st_CFE_state()	\
+#define private_st_CFE_state() \
 gs_private_st_ptrs3(st_CFE_state, stream_CFE_state, "CCITTFaxEncode state",\
 cfe_enum_ptrs, cfe_reloc_ptrs, lbuf, lprev, lcode)
 #define s_CFE_set_defaults_inline(ss)\
@@ -71,7 +71,7 @@ int uncomp_run;
 int uncomp_left;
 int uncomp_exit;
 } stream_CFD_state;
-#define private_st_CFD_state()	\
+#define private_st_CFD_state() \
 gs_private_st_ptrs2(st_CFD_state, stream_CFD_state, "CCITTFaxDecode state",\
 cfd_enum_ptrs, cfd_reloc_ptrs, lbuf, lprev)
 #define s_CFD_set_defaults_inline(ss)\

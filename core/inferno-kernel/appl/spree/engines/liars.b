@@ -11,27 +11,27 @@ clique: ref Clique;
 # a member progresses through the following states:
 #
 # Notplaying
-# 	istart			-> Havedice
-# 	otherstarts	-> Waiting
+# istart -> Havedice
+# otherstarts -> Waiting
 # Havedice
-# 	declare		-> Waiting
-# 	look			-> Looking
+# declare -> Waiting
+# look -> Looking
 # Looking
-# 	expose		-> Looking
-# 	unexpose		-> Looking
-# 	declare		-> Waiting
-# 	roll			-> Rolled
+# expose -> Looking
+# unexpose -> Looking
+# declare -> Waiting
+# roll -> Rolled
 # Rolled
-# 	expose		-> Rolled
-# 	unexpose		-> Rolled
-# 	declare		-> Waiting
+# expose -> Rolled
+# unexpose -> Rolled
+# declare -> Waiting
 # Waiting
-# 	queried		-> Queried
-# 	lost			-> Havedice
+# queried -> Queried
+# lost -> Havedice
 # Queried
-# 	reject,win		-> Waiting
-# 	reject,lose	-> Havedice
-# 	accept		-> Havedice
+# reject,win -> Waiting
+# reject,lose -> Havedice
+# accept -> Havedice
 plate, cup, space, members: ref Object;
 dice := array[5] of ref Object;
 declared: int;
@@ -39,13 +39,13 @@ declared: int;
 Notplaying, Havedice, Looking, Rolled, Waiting, Queried: con iota;
 # info on a particular member
 Info: adt {
-state:	int;
-id:		int;
-member:	ref Object;
-action:	ref Object;
+state: int;
+id: int;
+member: ref Object;
+action: ref Object;
 };
 info := array[MAXPLAYERS] of ref Info;
-plorder := array[MAXPLAYERS] of int;	# map member id to their place around the table
+plorder := array[MAXPLAYERS] of int; # map member id to their place around the table
 nplaying := 0;
 nmembers := 0;
 turn := 0;
@@ -125,7 +125,7 @@ case hd toks {
 case hd toks {
 "say" =>
 clique.action("say member " + string member.id + ": '" + (hd lines)[4:] + "'", nil, nil, ~0);
-"show" =>			# show [memberid]
+"show" => # show [memberid]
 p: ref Member = nil;
 if (n == 2) {
 memberid := int hd tl toks;

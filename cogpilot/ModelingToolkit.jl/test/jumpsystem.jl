@@ -278,7 +278,7 @@ end
 end
 # basic VariableRateJump test
 @testset "VRJ test" begin
-N = 1000  # number of simulations for testing solve accuracy
+N = 1000 # number of simulations for testing solve accuracy
 Random.seed!(rng, 1111)
 @variables A(t) B(t) C(t)
 @parameters k

@@ -2,27 +2,27 @@
 #define _LINUX_LP_H
 #define MAX_LP 5
 #define LP_EXIST 0x0001
-#define LP_BUSY	 0x0004
+#define LP_BUSY 0x0004
 #define LP_ABORT 0x0040
 #define LP_CAREFUL 0x0080
 #define LP_ABORTOPEN 0x0100
 #define LP_INIT_CHAR 1000
 #define LP_INIT_WAIT 0
 #define LP_INIT_TIME 40
-#define LPCHAR   0x0601
-#define LPTIME   0x0602
-#define LPABORT  0x0604
+#define LPCHAR 0x0601
+#define LPTIME 0x0602
+#define LPABORT 0x0604
 #define LPSETIRQ 0x0605
 #define LPGETIRQ 0x0606
-#define LPWAIT   0x0608
-#define LPCAREFUL   0x0609
+#define LPWAIT 0x0608
+#define LPCAREFUL 0x0609
 #define LPABORTOPEN 0x060a
 #define LPGETSTATUS 0x060b
-#define LPRESET     0x060c
-#define LP_TIMEOUT_INTERRUPT	(60 * HZ)
-#define LP_TIMEOUT_POLLED	(10 * HZ)
+#define LPRESET 0x060c
+#define LP_TIMEOUT_INTERRUPT (60 * HZ)
+#define LP_TIMEOUT_POLLED (10 * HZ)
 #define LP_BUFFER_SIZE 1024
-enum lp_type  {
+enum lp_type {
 LP_UNKNOWN = 0,
 LP_AMIGA = 1,
 LP_ATARI = 2,

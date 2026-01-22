@@ -1,11 +1,11 @@
 #ifndef HEADER_UI_H
 # define HEADER_UI_H
 # ifndef OPENSSL_NO_DEPRECATED
-#  include <openssl/crypto.h>
+# include <openssl/crypto.h>
 # endif
 # include <openssl/safestack.h>
 # include <openssl/ossl_typ.h>
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 UI *UI_new(void);
@@ -31,8 +31,8 @@ int UI_add_info_string(UI *ui, const char *text);
 int UI_dup_info_string(UI *ui, const char *text);
 int UI_add_error_string(UI *ui, const char *text);
 int UI_dup_error_string(UI *ui, const char *text);
-# define UI_INPUT_FLAG_ECHO              0x01
-# define UI_INPUT_FLAG_DEFAULT_PWD       0x02
+# define UI_INPUT_FLAG_ECHO 0x01
+# define UI_INPUT_FLAG_DEFAULT_PWD 0x02
 # define UI_INPUT_FLAG_USER_BASE 16
 char *UI_construct_prompt(UI *ui_method,
 const char *object_desc, const char *object_name);
@@ -41,10 +41,10 @@ void *UI_get0_user_data(UI *ui);
 const char *UI_get0_result(UI *ui, int i);
 int UI_process(UI *ui);
 int UI_ctrl(UI *ui, int cmd, long i, void *p, void (*f) (void));
-# define UI_CTRL_PRINT_ERRORS            1
-# define UI_CTRL_IS_REDOABLE             2
-# define UI_set_app_data(s,arg)         UI_set_ex_data(s,0,arg)
-# define UI_get_app_data(s)             UI_get_ex_data(s,0)
+# define UI_CTRL_PRINT_ERRORS 1
+# define UI_CTRL_IS_REDOABLE 2
+# define UI_set_app_data(s,arg) UI_set_ex_data(s,0,arg)
+# define UI_get_app_data(s) UI_get_ex_data(s,0)
 int UI_get_ex_new_index(long argl, void *argp, CRYPTO_EX_new *new_func,
 CRYPTO_EX_dup *dup_func, CRYPTO_EX_free *free_func);
 int UI_set_ex_data(UI *r, int idx, void *arg);
@@ -101,26 +101,26 @@ int verify);
 int UI_UTIL_read_pw(char *buf, char *buff, int size, const char *prompt,
 int verify);
 void ERR_load_UI_strings(void);
-# define UI_F_GENERAL_ALLOCATE_BOOLEAN                    108
-# define UI_F_GENERAL_ALLOCATE_PROMPT                     109
-# define UI_F_GENERAL_ALLOCATE_STRING                     100
-# define UI_F_UI_CTRL                                     111
-# define UI_F_UI_DUP_ERROR_STRING                         101
-# define UI_F_UI_DUP_INFO_STRING                          102
-# define UI_F_UI_DUP_INPUT_BOOLEAN                        110
-# define UI_F_UI_DUP_INPUT_STRING                         103
-# define UI_F_UI_DUP_VERIFY_STRING                        106
-# define UI_F_UI_GET0_RESULT                              107
-# define UI_F_UI_NEW_METHOD                               104
-# define UI_F_UI_SET_RESULT                               105
-# define UI_R_COMMON_OK_AND_CANCEL_CHARACTERS             104
-# define UI_R_INDEX_TOO_LARGE                             102
-# define UI_R_INDEX_TOO_SMALL                             103
-# define UI_R_NO_RESULT_BUFFER                            105
-# define UI_R_RESULT_TOO_LARGE                            100
-# define UI_R_RESULT_TOO_SMALL                            101
-# define UI_R_UNKNOWN_CONTROL_COMMAND                     106
-#ifdef  __cplusplus
+# define UI_F_GENERAL_ALLOCATE_BOOLEAN 108
+# define UI_F_GENERAL_ALLOCATE_PROMPT 109
+# define UI_F_GENERAL_ALLOCATE_STRING 100
+# define UI_F_UI_CTRL 111
+# define UI_F_UI_DUP_ERROR_STRING 101
+# define UI_F_UI_DUP_INFO_STRING 102
+# define UI_F_UI_DUP_INPUT_BOOLEAN 110
+# define UI_F_UI_DUP_INPUT_STRING 103
+# define UI_F_UI_DUP_VERIFY_STRING 106
+# define UI_F_UI_GET0_RESULT 107
+# define UI_F_UI_NEW_METHOD 104
+# define UI_F_UI_SET_RESULT 105
+# define UI_R_COMMON_OK_AND_CANCEL_CHARACTERS 104
+# define UI_R_INDEX_TOO_LARGE 102
+# define UI_R_INDEX_TOO_SMALL 103
+# define UI_R_NO_RESULT_BUFFER 105
+# define UI_R_RESULT_TOO_LARGE 100
+# define UI_R_RESULT_TOO_SMALL 101
+# define UI_R_UNKNOWN_CONTROL_COMMAND 106
+#ifdef __cplusplus
 }
 #endif
 #endif

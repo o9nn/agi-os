@@ -1,10 +1,10 @@
 #ifndef MAILDRIVER_TYPES_H
 #define MAILDRIVER_TYPES_H
 #ifndef _MSC_VER
-#	ifdef HAVE_INTTYPES_H
-#		include <inttypes.h>
-#	endif
-#	include <sys/types.h>
+# ifdef HAVE_INTTYPES_H
+# include <inttypes.h>
+# endif
+# include <sys/types.h>
 #endif
 #include <libetpan/mailstream.h>
 #include <libetpan/mailimf.h>
@@ -34,11 +34,11 @@ struct mail_list * mail_list_new(clist * mb_list);
 LIBETPAN_EXPORT
 void mail_list_free(struct mail_list * resp);
 enum {
-MAIL_FLAG_NEW       = 1 << 0,
-MAIL_FLAG_SEEN      = 1 << 1,
-MAIL_FLAG_FLAGGED   = 1 << 2,
-MAIL_FLAG_DELETED   = 1 << 3,
-MAIL_FLAG_ANSWERED  = 1 << 4,
+MAIL_FLAG_NEW = 1 << 0,
+MAIL_FLAG_SEEN = 1 << 1,
+MAIL_FLAG_FLAGGED = 1 << 2,
+MAIL_FLAG_DELETED = 1 << 3,
+MAIL_FLAG_ANSWERED = 1 << 4,
 MAIL_FLAG_FORWARDED = 1 << 5,
 MAIL_FLAG_CANCELLED = 1 << 6
 };

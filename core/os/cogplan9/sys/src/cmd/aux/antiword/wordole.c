@@ -1,17 +1,17 @@
 #include <string.h>
 #include "antiword.h"
 typedef struct pps_entry_tag {
-ULONG	ulNext;
-ULONG	ulPrevious;
-ULONG	ulDir;
-ULONG	ulSB;
-ULONG	ulSize;
-int	iLevel;
-char	szName[32];
-UCHAR	ucType;
+ULONG ulNext;
+ULONG ulPrevious;
+ULONG ulDir;
+ULONG ulSB;
+ULONG ulSize;
+int iLevel;
+char szName[32];
+UCHAR ucType;
 } pps_entry_type;
-#define PPS_NUMBER_INVALID	0xffffffffUL
-#define FREE_ALL()		\
+#define PPS_NUMBER_INVALID 0xffffffffUL
+#define FREE_ALL() \
 do {\
 vDestroySmallBlockList();\
 aulRootList = xfree(aulRootList);\
@@ -23,7 +23,7 @@ aulBBD = xfree(aulBBD);\
 static ULONG
 ulReadLong(FILE *pFile, ULONG ulOffset)
 {
-UCHAR	aucBytes[4];
+UCHAR aucBytes[4];
 fail(pFile == NULL);
 if (!bReadBytes(aucBytes, 4, ulOffset, pFile)) {
 werr(1, "Read long 0x%lx not possible", ulOffset);
@@ -33,8 +33,8 @@ return ulGetLong(0, aucBytes);
 static void
 vName2String(char *szName, const UCHAR *aucBytes, size_t tNameSize)
 {
-char	*pcChar;
-size_t	tIndex;
+char *pcChar;
+size_t tIndex;
 fail(aucBytes == NULL || szName == NULL);
 if (tNameSize < 2) {
 szName[0] = '\0';
@@ -51,9 +51,9 @@ static size_t
 tReadBlockIndices(FILE *pFile, ULONG *aulBlockDepot,
 size_t tMaxRec, ULONG ulOffset)
 {
-size_t	tDone;
-int	iIndex;
-UCHAR	aucBytes[BIG_BLOCK_SIZE];
+size_t tDone;
+int iIndex;
+UCHAR aucBytes[BIG_BLOCK_SIZE];
 fail(pFile == NULL || aulBlockDepot == NULL);
 fail(tMaxRec == 0);
 if (!bReadBytes(aucBytes, BIG_BLOCK_SIZE, ulOffset, pFile)) {
@@ -72,9 +72,9 @@ static BOOL
 bGetBBD(FILE *pFile, const ULONG *aulDepot, size_t tDepotLen,
 ULONG *aulBBD, size_t tBBDLen)
 {
-ULONG	ulBegin;
-size_t	tToGo, tDone;
-int	iIndex;
+ULONG ulBegin;
+size_t tToGo, tDone;
+int iIndex;
 fail(pFile == NULL || aulDepot == NULL || aulBBD == NULL);
 DBG_MSG("bGetBBD");
 tToGo = tBBDLen;
@@ -95,9 +95,9 @@ static BOOL
 bGetSBD(FILE *pFile, const ULONG *aulDepot, size_t tDepotLen,
 ULONG *aulSBD, size_t tSBDLen)
 {
-ULONG	ulBegin;
-size_t	tToGo, tDone;
-int	iIndex;
+ULONG ulBegin;
+size_t tToGo, tDone;
+int iIndex;
 fail(pFile == NULL || aulDepot == NULL || aulSBD == NULL);
 DBG_MSG("bGetSBD");
 tToGo = tSBDLen;
@@ -154,12 +154,12 @@ static BOOL
 bGetPPS(FILE *pFile,
 const ULONG *aulRootList, size_t tRootListLen, pps_info_type *pPPS)
 {
-pps_entry_type	*atPPSlist;
-ULONG	ulBegin, ulOffset, ulTmp;
-size_t	tNbrOfPPS, tNameSize;
-int	iIndex, iStartBlock, iRootIndex;
-BOOL	bWord, bExcel;
-UCHAR	aucBytes[PROPERTY_SET_STORAGE_SIZE];
+pps_entry_type *atPPSlist;
+ULONG ulBegin, ulOffset, ulTmp;
+size_t tNbrOfPPS, tNameSize;
+int iIndex, iStartBlock, iRootIndex;
+BOOL bWord, bExcel;
+UCHAR aucBytes[PROPERTY_SET_STORAGE_SIZE];
 fail(pFile == NULL || aulRootList == NULL || pPPS == NULL);
 DBG_MSG("bGetPPS");
 NO_DBG_DEC(tRootListLen);
@@ -287,7 +287,7 @@ return FALSE;
 static void
 vGetBbdList(FILE *pFile, int iNbr, ULONG *aulBbdList, ULONG ulOffset)
 {
-int	iIndex;
+int iIndex;
 fail(pFile == NULL);
 fail(iNbr > 127);
 fail(aulBbdList == NULL);
@@ -305,13 +305,13 @@ const ULONG *aulBBD, size_t tBBDLen,
 const ULONG *aulSBD, size_t tSBDLen,
 const UCHAR *aucHeader, int iWordVersion)
 {
-ULONG	ulBeginOfText;
-ULONG	ulTextLen, ulFootnoteLen, ulEndnoteLen;
-ULONG	ulHdrFtrLen, ulMacroLen, ulAnnotationLen;
-ULONG	ulTextBoxLen, ulHdrTextBoxLen;
-UINT	uiQuickSaves;
-BOOL	bFarEastWord, bTemplate, bFastSaved, bEncrypted, bSuccess;
-USHORT	usIdent, usDocStatus;
+ULONG ulBeginOfText;
+ULONG ulTextLen, ulFootnoteLen, ulEndnoteLen;
+ULONG ulHdrFtrLen, ulMacroLen, ulAnnotationLen;
+ULONG ulTextBoxLen, ulHdrTextBoxLen;
+UINT uiQuickSaves;
+BOOL bFarEastWord, bTemplate, bFastSaved, bEncrypted, bSuccess;
+USHORT usIdent, usDocStatus;
 fail(pFile == NULL || pPPS == NULL);
 fail(aulBBD == NULL);
 fail(aulSBD == NULL);
@@ -425,10 +425,10 @@ vGetDocumentData(FILE *pFile, const pps_info_type *pPPS,
 const ULONG *aulBBD, size_t tBBDLen,
 const UCHAR *aucHeader, int iWordVersion)
 {
-options_type	tOptions;
-ULONG	ulBeginOfText;
-BOOL	bFastSaved, bHasImages, bSuccess;
-USHORT	usDocStatus;
+options_type tOptions;
+ULONG ulBeginOfText;
+BOOL bFastSaved, bHasImages, bSuccess;
+USHORT usDocStatus;
 fail(pFile == NULL);
 fail(pPPS == NULL);
 fail(aulBBD == NULL);
@@ -479,18 +479,18 @@ werr(0, "I can't find the data of this document");
 int
 iInitDocumentOLE(FILE *pFile, long lFilesize)
 {
-pps_info_type	PPS_info;
-ULONG	*aulBBD, *aulSBD;
-ULONG	*aulRootList, *aulBbdList, *aulSbdList;
-ULONG	ulBdbListStart, ulAdditionalBBDlist;
-ULONG	ulRootStartblock, ulSbdStartblock, ulSBLstartblock;
-ULONG	ulStart, ulTmp;
-long	lMaxBlock;
-size_t	tBBDLen, tSBDLen, tNumBbdBlocks, tRootListLen;
-int	iWordVersion, iIndex, iToGo;
-BOOL	bSuccess;
-USHORT	usIdent, usDocStatus;
-UCHAR	aucHeader[HEADER_SIZE];
+pps_info_type PPS_info;
+ULONG *aulBBD, *aulSBD;
+ULONG *aulRootList, *aulBbdList, *aulSbdList;
+ULONG ulBdbListStart, ulAdditionalBBDlist;
+ULONG ulRootStartblock, ulSbdStartblock, ulSBLstartblock;
+ULONG ulStart, ulTmp;
+long lMaxBlock;
+size_t tBBDLen, tSBDLen, tNumBbdBlocks, tRootListLen;
+int iWordVersion, iIndex, iToGo;
+BOOL bSuccess;
+USHORT usIdent, usDocStatus;
+UCHAR aucHeader[HEADER_SIZE];
 fail(pFile == NULL);
 lMaxBlock = lFilesize / BIG_BLOCK_SIZE - 2;
 DBG_DEC(lMaxBlock);
@@ -520,7 +520,7 @@ aulBBD = NULL;
 aulBbdList = xcalloc(tNumBbdBlocks, sizeof(ULONG));
 aulBBD = xcalloc(tBBDLen, sizeof(ULONG));
 iToGo = (int)tNumBbdBlocks;
-vGetBbdList(pFile, min(iToGo, 109),  aulBbdList, 0x4c);
+vGetBbdList(pFile, min(iToGo, 109), aulBbdList, 0x4c);
 ulStart = 109;
 iToGo -= 109;
 while (ulAdditionalBBDlist != END_OF_CHAIN && iToGo > 0) {

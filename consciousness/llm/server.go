@@ -1,862 +1,862 @@
 package llm
 import (
-	"bufio"
-	"bytes"
-	"context"
-	"encoding/json"
-	"errors"
-	"fmt"
-	"io"
-	"log"
-	"log/slog"
-	"math/rand"
-	"net"
-	"net/http"
-	"os"
-	"os/exec"
-	"path/filepath"
-	"runtime"
-	"slices"
-	"strconv"
-	"strings"
-	"sync"
-	"time"
-	"golang.org/x/sync/semaphore"
-	"github.com/EchoCog/echollama/api"
-	"github.com/EchoCog/echollama/discover"
-	"github.com/EchoCog/echollama/envconfig"
-	"github.com/EchoCog/echollama/format"
-	"github.com/EchoCog/echollama/fs/ggml"
-	"github.com/EchoCog/echollama/llama"
-	"github.com/EchoCog/echollama/logutil"
-	"github.com/EchoCog/echollama/model"
+"bufio"
+"bytes"
+"context"
+"encoding/json"
+"errors"
+"fmt"
+"io"
+"log"
+"log/slog"
+"math/rand"
+"net"
+"net/http"
+"os"
+"os/exec"
+"path/filepath"
+"runtime"
+"slices"
+"strconv"
+"strings"
+"sync"
+"time"
+"golang.org/x/sync/semaphore"
+"github.com/EchoCog/echollama/api"
+"github.com/EchoCog/echollama/discover"
+"github.com/EchoCog/echollama/envconfig"
+"github.com/EchoCog/echollama/format"
+"github.com/EchoCog/echollama/fs/ggml"
+"github.com/EchoCog/echollama/llama"
+"github.com/EchoCog/echollama/logutil"
+"github.com/EchoCog/echollama/model"
 )
 type filteredEnv []string
 func (e filteredEnv) LogValue() slog.Value {
-	var attrs []slog.Attr
-	for _, env := range e {
-		if key, value, ok := strings.Cut(env, "="); ok {
-			switch {
-			case strings.HasPrefix(key, "OLLAMA_"),
-				strings.HasPrefix(key, "CUDA_"),
-				strings.HasPrefix(key, "ROCR_"),
-				strings.HasPrefix(key, "ROCM_"),
-				strings.HasPrefix(key, "HIP_"),
-				strings.HasPrefix(key, "GPU_"),
-				strings.HasPrefix(key, "HSA_"),
-				strings.HasPrefix(key, "GGML_"),
-				slices.Contains([]string{
-					"PATH",
-					"LD_LIBRARY_PATH",
-					"DYLD_LIBRARY_PATH",
-				}, key):
-				attrs = append(attrs, slog.String(key, value))
-			}
-		}
-	}
-	return slog.GroupValue(attrs...)
+var attrs []slog.Attr
+for _, env := range e {
+if key, value, ok := strings.Cut(env, "="); ok {
+switch {
+case strings.HasPrefix(key, "OLLAMA_"),
+strings.HasPrefix(key, "CUDA_"),
+strings.HasPrefix(key, "ROCR_"),
+strings.HasPrefix(key, "ROCM_"),
+strings.HasPrefix(key, "HIP_"),
+strings.HasPrefix(key, "GPU_"),
+strings.HasPrefix(key, "HSA_"),
+strings.HasPrefix(key, "GGML_"),
+slices.Contains([]string{
+"PATH",
+"LD_LIBRARY_PATH",
+"DYLD_LIBRARY_PATH",
+}, key):
+attrs = append(attrs, slog.String(key, value))
+}
+}
+}
+return slog.GroupValue(attrs...)
 }
 type LlamaServer interface {
-	Ping(ctx context.Context) error
-	WaitUntilRunning(ctx context.Context) error
-	Completion(ctx context.Context, req CompletionRequest, fn func(CompletionResponse)) error
-	Embedding(ctx context.Context, input string) ([]float32, error)
-	Tokenize(ctx context.Context, content string) ([]int, error)
-	Detokenize(ctx context.Context, tokens []int) (string, error)
-	Close() error
-	EstimatedVRAM() uint64 
-	EstimatedTotal() uint64
-	EstimatedVRAMByGPU(gpuID string) uint64
-	Pid() int
+Ping(ctx context.Context) error
+WaitUntilRunning(ctx context.Context) error
+Completion(ctx context.Context, req CompletionRequest, fn func(CompletionResponse)) error
+Embedding(ctx context.Context, input string) ([]float32, error)
+Tokenize(ctx context.Context, content string) ([]int, error)
+Detokenize(ctx context.Context, tokens []int) (string, error)
+Close() error
+EstimatedVRAM() uint64
+EstimatedTotal() uint64
+EstimatedVRAMByGPU(gpuID string) uint64
+Pid() int
 }
 type llmServer struct {
-	port        int
-	cmd         *exec.Cmd
-	done        chan error 
-	status      *StatusWriter
-	options     api.Options
-	numParallel int
-	modelPath   string
-	llamaModel     *llama.Model
-	llamaModelLock sync.Mutex
-	textProcessor model.TextProcessor
-	estimate    MemoryEstimate
-	totalLayers uint64
-	gpus         discover.GpuInfoList 
-	loadDuration time.Duration        
-	loadProgress float32
-	sem *semaphore.Weighted
+port        int
+cmd         *exec.Cmd
+done        chan error
+status      *StatusWriter
+options     api.Options
+numParallel int
+modelPath   string
+llamaModel     *llama.Model
+llamaModelLock sync.Mutex
+textProcessor model.TextProcessor
+estimate    MemoryEstimate
+totalLayers uint64
+gpus         discover.GpuInfoList
+loadDuration time.Duration
+loadProgress float32
+sem *semaphore.Weighted
 }
 func LoadModel(model string, maxArraySize int) (*ggml.GGML, error) {
-	if _, err := os.Stat(model); err != nil {
-		return nil, err
-	}
-	f, err := os.Open(model)
-	if err != nil {
-		return nil, err
-	}
-	defer f.Close()
-	ggml, err := ggml.Decode(f, maxArraySize)
-	return ggml, err
+if _, err := os.Stat(model); err != nil {
+return nil, err
+}
+f, err := os.Open(model)
+if err != nil {
+return nil, err
+}
+defer f.Close()
+ggml, err := ggml.Decode(f, maxArraySize)
+return ggml, err
 }
 func NewLlamaServer(gpus discover.GpuInfoList, modelPath string, f *ggml.GGML, adapters, projectors []string, opts api.Options, numParallel int) (LlamaServer, error) {
-	systemInfo := discover.GetSystemInfo()
-	systemTotalMemory := systemInfo.System.TotalMemory
-	systemFreeMemory := systemInfo.System.FreeMemory
-	systemSwapFreeMemory := systemInfo.System.FreeSwap
-	slog.Info("system memory", "total", format.HumanBytes2(systemTotalMemory), "free", format.HumanBytes2(systemFreeMemory), "free_swap", format.HumanBytes2(systemSwapFreeMemory))
-	if opts.NumGPU == 0 {
-		gpus = discover.GetCPUInfo()
-	}
-	trainCtx := f.KV().ContextLength()
-	if opts.NumCtx/numParallel > int(trainCtx) && trainCtx > 0 {
-		slog.Warn("requested context size too large for model", "num_ctx", opts.NumCtx, "num_parallel", numParallel, "n_ctx_train", trainCtx)
-		opts.NumCtx = int(trainCtx) * numParallel
-	}
-	estimate := EstimateGPULayers(gpus, f, projectors, opts, numParallel)
-	if len(gpus) > 1 || gpus[0].Library != "cpu" {
-		switch {
-		case gpus[0].Library == "metal" && estimate.VRAMSize > systemTotalMemory:
-			opts.NumGPU = 0
-		case gpus[0].Library != "metal" && estimate.Layers == 0:
-			gpus = discover.GetCPUInfo()
-		case opts.NumGPU < 0 && estimate.Layers > 0 && gpus[0].Library != "cpu":
-			opts.NumGPU = estimate.Layers
-		}
-	}
-	if runtime.GOOS != "darwin" {
-		systemMemoryRequired := estimate.TotalSize - estimate.VRAMSize
-		available := systemFreeMemory + systemSwapFreeMemory
-		if systemMemoryRequired > available {
-			slog.Warn("model request too large for system", "requested", format.HumanBytes2(systemMemoryRequired), "available", available, "total", format.HumanBytes2(systemTotalMemory), "free", format.HumanBytes2(systemFreeMemory), "swap", format.HumanBytes2(systemSwapFreeMemory))
-			return nil, fmt.Errorf("model requires more system memory (%s) than is available (%s)", format.HumanBytes2(systemMemoryRequired), format.HumanBytes2(available))
-		}
-	}
-	slog.Info("offload", "", estimate)
-	params := []string{
-		"--model", modelPath,
-		"--ctx-size", strconv.Itoa(opts.NumCtx),
-		"--batch-size", strconv.Itoa(opts.NumBatch),
-	}
-	if opts.NumGPU >= 0 {
-		params = append(params, "--n-gpu-layers", strconv.Itoa(opts.NumGPU))
-	}
-	if opts.MainGPU > 0 {
-		params = append(params, "--main-gpu", strconv.Itoa(opts.MainGPU))
-	}
-	if len(adapters) > 0 {
-		for _, adapter := range adapters {
-			params = append(params, "--lora", adapter)
-		}
-	}
-	defaultThreads := systemInfo.GetOptimalThreadCount()
-	if opts.NumThread > 0 {
-		params = append(params, "--threads", strconv.Itoa(opts.NumThread))
-	} else if defaultThreads > 0 {
-		params = append(params, "--threads", strconv.Itoa(defaultThreads))
-	}
-	fa := envconfig.FlashAttention()
-	if fa && !gpus.FlashAttentionSupported() {
-		slog.Warn("flash attention enabled but not supported by gpu")
-		fa = false
-	}
-	if fa && !f.SupportsFlashAttention() {
-		slog.Warn("flash attention enabled but not supported by model")
-		fa = false
-	}
-	kvct := strings.ToLower(envconfig.KvCacheType())
-	if fa {
-		slog.Info("enabling flash attention")
-		params = append(params, "--flash-attn")
-		if kvct != "" && f.SupportsKVCacheType(kvct) {
-			params = append(params, "--kv-cache-type", kvct)
-		} else {
-			slog.Warn("kv cache type not supported by model", "type", kvct)
-		}
-	} else if kvct != "" && kvct != "f16" {
-		slog.Warn("quantized kv cache requested but flash attention disabled", "type", kvct)
-	}
-	for _, g := range gpus {
-		if g.Library == "metal" &&
-			uint64(opts.NumGPU) > 0 &&
-			uint64(opts.NumGPU) < f.KV().BlockCount()+1 {
-			opts.UseMMap = new(bool)
-			*opts.UseMMap = false
-		}
-	}
-	if (runtime.GOOS == "windows" && gpus[0].Library == "cuda" && opts.UseMMap == nil) ||
-		(runtime.GOOS == "linux" && systemFreeMemory < estimate.TotalSize && opts.UseMMap == nil) ||
-		(gpus[0].Library == "cpu" && opts.UseMMap == nil) ||
-		(opts.UseMMap != nil && !*opts.UseMMap) {
-		params = append(params, "--no-mmap")
-	}
-	params = append(params, "--parallel", strconv.Itoa(numParallel))
-	if estimate.TensorSplit != "" {
-		params = append(params, "--tensor-split", estimate.TensorSplit)
-	}
-	if envconfig.MultiUserCache() {
-		params = append(params, "--multiuser-cache")
-	}
-	libs := make(map[string]string)
-	if entries, err := os.ReadDir(discover.LibOllamaPath); err == nil {
-		for _, entry := range entries {
-			libs[entry.Name()] = filepath.Join(discover.LibOllamaPath, entry.Name())
-		}
-	}
-	lib := gpus[0].RunnerName()
-	requested := envconfig.LLMLibrary()
-	if libs[requested] != "" {
-		slog.Info("using requested gpu library", "requested", requested)
-		lib = requested
-	}
-	var compatible []string
-	for k := range libs {
-		if k == lib {
-			compatible = append([]string{k}, compatible...)
-			continue
-		}
-		if strings.Split(k, "_")[0] == strings.Split(lib, "_")[0] {
-			compatible = append(compatible, k)
-		}
-	}
-	slog.Debug("compatible gpu libraries", "compatible", compatible)
-	exe, err := os.Executable()
-	if err != nil {
-		return nil, fmt.Errorf("unable to lookup executable path: %w", err)
-	}
-	if eval, err := filepath.EvalSymlinks(exe); err == nil {
-		exe = eval
-	}
-	var llamaModel *llama.Model
-	var textProcessor model.TextProcessor
-	if envconfig.NewEngine() || f.KV().OllamaEngineRequired() {
-		textProcessor, err = model.NewTextProcessor(modelPath)
-		if err != nil {
-			slog.Debug("model not yet supported by Ollama engine, switching to compatibility mode", "model", modelPath, "error", err)
-		}
-	}
-	if textProcessor == nil {
-		llamaModel, err = llama.LoadModelFromFile(modelPath, llama.ModelParams{VocabOnly: true})
-		if err != nil {
-			return nil, err
-		}
-	}
-	if len(projectors) > 0 && llamaModel != nil {
-		params = append(params, "--mmproj", projectors[0])
-	}
-	for {
-		port := 0
-		if a, err := net.ResolveTCPAddr("tcp", "localhost:0"); err == nil {
-			var l *net.TCPListener
-			if l, err = net.ListenTCP("tcp", a); err == nil {
-				port = l.Addr().(*net.TCPAddr).Port
-				l.Close()
-			}
-		}
-		if port == 0 {
-			slog.Debug("ResolveTCPAddr failed, using random port")
-			port = rand.Intn(65535-49152) + 49152 
-		}
-		finalParams := []string{"runner"}
-		if textProcessor != nil {
-			finalParams = append(finalParams, "--ollama-engine")
-		}
-		finalParams = append(finalParams, params...)
-		finalParams = append(finalParams, "--port", strconv.Itoa(port))
-		var pathEnv string
-		switch runtime.GOOS {
-		case "windows":
-			pathEnv = "PATH"
-		case "darwin":
-			pathEnv = "DYLD_LIBRARY_PATH"
-		default:
-			pathEnv = "LD_LIBRARY_PATH"
-		}
-		libraryPaths := []string{discover.LibOllamaPath}
-		if libraryPath, ok := os.LookupEnv(pathEnv); ok {
-			libraryPaths = append(libraryPaths, filepath.SplitList(libraryPath)...)
-		}
-		ggmlPaths := []string{discover.LibOllamaPath}
-		if len(compatible) > 0 {
-			c := compatible[0]
-			if libpath, ok := libs[c]; ok {
-				slog.Debug("adding gpu library", "path", libpath)
-				libraryPaths = append([]string{libpath}, libraryPaths...)
-				ggmlPaths = append(ggmlPaths, libpath)
-			}
-		}
-		if gpus[0].DependencyPath != nil {
-			slog.Debug("adding gpu dependency paths", "paths", gpus[0].DependencyPath)
-			libraryPaths = append(gpus[0].DependencyPath, libraryPaths...)
-		}
-		libraryPaths = append(libraryPaths, discover.LibOllamaPath)
-		s := &llmServer{
-			port:          port,
-			cmd:           exec.Command(exe, finalParams...),
-			status:        NewStatusWriter(os.Stderr),
-			options:       opts,
-			modelPath:     modelPath,
-			llamaModel:    llamaModel,
-			textProcessor: textProcessor,
-			estimate:      estimate,
-			numParallel:   numParallel,
-			sem:           semaphore.NewWeighted(int64(numParallel)),
-			totalLayers:   f.KV().BlockCount() + 1,
-			gpus:          gpus,
-			done:          make(chan error, 1),
-		}
-		s.cmd.Env = os.Environ()
-		s.cmd.Stdout = os.Stdout
-		s.cmd.Stderr = s.status
-		s.cmd.SysProcAttr = LlamaServerSysProcAttr
-		s.cmd.Env = append(s.cmd.Env, "OLLAMA_LIBRARY_PATH="+strings.Join(ggmlPaths, string(filepath.ListSeparator)))
-		envWorkarounds := [][2]string{}
-		for _, gpu := range gpus {
-			envWorkarounds = append(envWorkarounds, gpu.EnvWorkarounds...)
-		}
-		visibleDevicesEnv, visibleDevicesEnvVal := gpus.GetVisibleDevicesEnv()
-		pathEnvVal := strings.Join(libraryPaths, string(filepath.ListSeparator))
-		pathNeeded := true
-		devicesNeeded := visibleDevicesEnv != ""
-		for i := range s.cmd.Env {
-			cmp := strings.SplitN(s.cmd.Env[i], "=", 2)
-			if strings.EqualFold(cmp[0], pathEnv) {
-				s.cmd.Env[i] = pathEnv + "=" + pathEnvVal
-				pathNeeded = false
-			} else if devicesNeeded && strings.EqualFold(cmp[0], visibleDevicesEnv) {
-				s.cmd.Env[i] = visibleDevicesEnv + "=" + visibleDevicesEnvVal
-				devicesNeeded = false
-			} else if len(envWorkarounds) != 0 {
-				for _, kv := range envWorkarounds {
-					if strings.EqualFold(cmp[0], kv[0]) {
-						s.cmd.Env[i] = kv[0] + "=" + kv[1]
-					}
-				}
-			}
-		}
-		if pathNeeded {
-			s.cmd.Env = append(s.cmd.Env, pathEnv+"="+pathEnvVal)
-		}
-		if devicesNeeded {
-			s.cmd.Env = append(s.cmd.Env, visibleDevicesEnv+"="+visibleDevicesEnvVal)
-		}
-		slog.Info("starting llama server", "cmd", s.cmd)
-		slog.Debug("subprocess", "", filteredEnv(s.cmd.Env))
-		if err = s.cmd.Start(); err != nil {
-			var msg string
-			if s.status != nil && s.status.LastErrMsg != "" {
-				msg = s.status.LastErrMsg
-			}
-			err := fmt.Errorf("error starting runner: %v %s", err, msg)
-			if len(compatible) == 0 {
-				if llamaModel != nil {
-					llama.FreeModel(llamaModel)
-				}
-				return nil, err
-			}
-			slog.Warn("unable to start runner with compatible gpu", "error", err, "compatible", compatible)
-			compatible = compatible[1:]
-			continue
-		}
-		go func() {
-			err := s.cmd.Wait()
-			if err != nil && s.status != nil && s.status.LastErrMsg != "" {
-				slog.Error("llama runner terminated", "error", err)
-				if strings.Contains(s.status.LastErrMsg, "unknown model") {
-					s.status.LastErrMsg = "this model is not supported by your version of Ollama. You may need to upgrade"
-				}
-				s.done <- errors.New(s.status.LastErrMsg)
-			} else {
-				s.done <- err
-			}
-		}()
-		return s, nil
-	}
+systemInfo := discover.GetSystemInfo()
+systemTotalMemory := systemInfo.System.TotalMemory
+systemFreeMemory := systemInfo.System.FreeMemory
+systemSwapFreeMemory := systemInfo.System.FreeSwap
+slog.Info("system memory", "total", format.HumanBytes2(systemTotalMemory), "free", format.HumanBytes2(systemFreeMemory), "free_swap", format.HumanBytes2(systemSwapFreeMemory))
+if opts.NumGPU == 0 {
+gpus = discover.GetCPUInfo()
+}
+trainCtx := f.KV().ContextLength()
+if opts.NumCtx/numParallel > int(trainCtx) && trainCtx > 0 {
+slog.Warn("requested context size too large for model", "num_ctx", opts.NumCtx, "num_parallel", numParallel, "n_ctx_train", trainCtx)
+opts.NumCtx = int(trainCtx) * numParallel
+}
+estimate := EstimateGPULayers(gpus, f, projectors, opts, numParallel)
+if len(gpus) > 1 || gpus[0].Library != "cpu" {
+switch {
+case gpus[0].Library == "metal" && estimate.VRAMSize > systemTotalMemory:
+opts.NumGPU = 0
+case gpus[0].Library != "metal" && estimate.Layers == 0:
+gpus = discover.GetCPUInfo()
+case opts.NumGPU < 0 && estimate.Layers > 0 && gpus[0].Library != "cpu":
+opts.NumGPU = estimate.Layers
+}
+}
+if runtime.GOOS != "darwin" {
+systemMemoryRequired := estimate.TotalSize - estimate.VRAMSize
+available := systemFreeMemory + systemSwapFreeMemory
+if systemMemoryRequired > available {
+slog.Warn("model request too large for system", "requested", format.HumanBytes2(systemMemoryRequired), "available", available, "total", format.HumanBytes2(systemTotalMemory), "free", format.HumanBytes2(systemFreeMemory), "swap", format.HumanBytes2(systemSwapFreeMemory))
+return nil, fmt.Errorf("model requires more system memory (%s) than is available (%s)", format.HumanBytes2(systemMemoryRequired), format.HumanBytes2(available))
+}
+}
+slog.Info("offload", "", estimate)
+params := []string{
+"--model", modelPath,
+"--ctx-size", strconv.Itoa(opts.NumCtx),
+"--batch-size", strconv.Itoa(opts.NumBatch),
+}
+if opts.NumGPU >= 0 {
+params = append(params, "--n-gpu-layers", strconv.Itoa(opts.NumGPU))
+}
+if opts.MainGPU > 0 {
+params = append(params, "--main-gpu", strconv.Itoa(opts.MainGPU))
+}
+if len(adapters) > 0 {
+for _, adapter := range adapters {
+params = append(params, "--lora", adapter)
+}
+}
+defaultThreads := systemInfo.GetOptimalThreadCount()
+if opts.NumThread > 0 {
+params = append(params, "--threads", strconv.Itoa(opts.NumThread))
+} else if defaultThreads > 0 {
+params = append(params, "--threads", strconv.Itoa(defaultThreads))
+}
+fa := envconfig.FlashAttention()
+if fa && !gpus.FlashAttentionSupported() {
+slog.Warn("flash attention enabled but not supported by gpu")
+fa = false
+}
+if fa && !f.SupportsFlashAttention() {
+slog.Warn("flash attention enabled but not supported by model")
+fa = false
+}
+kvct := strings.ToLower(envconfig.KvCacheType())
+if fa {
+slog.Info("enabling flash attention")
+params = append(params, "--flash-attn")
+if kvct != "" && f.SupportsKVCacheType(kvct) {
+params = append(params, "--kv-cache-type", kvct)
+} else {
+slog.Warn("kv cache type not supported by model", "type", kvct)
+}
+} else if kvct != "" && kvct != "f16" {
+slog.Warn("quantized kv cache requested but flash attention disabled", "type", kvct)
+}
+for _, g := range gpus {
+if g.Library == "metal" &&
+uint64(opts.NumGPU) > 0 &&
+uint64(opts.NumGPU) < f.KV().BlockCount()+1 {
+opts.UseMMap = new(bool)
+*opts.UseMMap = false
+}
+}
+if (runtime.GOOS == "windows" && gpus[0].Library == "cuda" && opts.UseMMap == nil) ||
+(runtime.GOOS == "linux" && systemFreeMemory < estimate.TotalSize && opts.UseMMap == nil) ||
+(gpus[0].Library == "cpu" && opts.UseMMap == nil) ||
+(opts.UseMMap != nil && !*opts.UseMMap) {
+params = append(params, "--no-mmap")
+}
+params = append(params, "--parallel", strconv.Itoa(numParallel))
+if estimate.TensorSplit != "" {
+params = append(params, "--tensor-split", estimate.TensorSplit)
+}
+if envconfig.MultiUserCache() {
+params = append(params, "--multiuser-cache")
+}
+libs := make(map[string]string)
+if entries, err := os.ReadDir(discover.LibOllamaPath); err == nil {
+for _, entry := range entries {
+libs[entry.Name()] = filepath.Join(discover.LibOllamaPath, entry.Name())
+}
+}
+lib := gpus[0].RunnerName()
+requested := envconfig.LLMLibrary()
+if libs[requested] != "" {
+slog.Info("using requested gpu library", "requested", requested)
+lib = requested
+}
+var compatible []string
+for k := range libs {
+if k == lib {
+compatible = append([]string{k}, compatible...)
+continue
+}
+if strings.Split(k, "_")[0] == strings.Split(lib, "_")[0] {
+compatible = append(compatible, k)
+}
+}
+slog.Debug("compatible gpu libraries", "compatible", compatible)
+exe, err := os.Executable()
+if err != nil {
+return nil, fmt.Errorf("unable to lookup executable path: %w", err)
+}
+if eval, err := filepath.EvalSymlinks(exe); err == nil {
+exe = eval
+}
+var llamaModel *llama.Model
+var textProcessor model.TextProcessor
+if envconfig.NewEngine() || f.KV().OllamaEngineRequired() {
+textProcessor, err = model.NewTextProcessor(modelPath)
+if err != nil {
+slog.Debug("model not yet supported by Ollama engine, switching to compatibility mode", "model", modelPath, "error", err)
+}
+}
+if textProcessor == nil {
+llamaModel, err = llama.LoadModelFromFile(modelPath, llama.ModelParams{VocabOnly: true})
+if err != nil {
+return nil, err
+}
+}
+if len(projectors) > 0 && llamaModel != nil {
+params = append(params, "--mmproj", projectors[0])
+}
+for {
+port := 0
+if a, err := net.ResolveTCPAddr("tcp", "localhost:0"); err == nil {
+var l *net.TCPListener
+if l, err = net.ListenTCP("tcp", a); err == nil {
+port = l.Addr().(*net.TCPAddr).Port
+l.Close()
+}
+}
+if port == 0 {
+slog.Debug("ResolveTCPAddr failed, using random port")
+port = rand.Intn(65535-49152) + 49152
+}
+finalParams := []string{"runner"}
+if textProcessor != nil {
+finalParams = append(finalParams, "--ollama-engine")
+}
+finalParams = append(finalParams, params...)
+finalParams = append(finalParams, "--port", strconv.Itoa(port))
+var pathEnv string
+switch runtime.GOOS {
+case "windows":
+pathEnv = "PATH"
+case "darwin":
+pathEnv = "DYLD_LIBRARY_PATH"
+default:
+pathEnv = "LD_LIBRARY_PATH"
+}
+libraryPaths := []string{discover.LibOllamaPath}
+if libraryPath, ok := os.LookupEnv(pathEnv); ok {
+libraryPaths = append(libraryPaths, filepath.SplitList(libraryPath)...)
+}
+ggmlPaths := []string{discover.LibOllamaPath}
+if len(compatible) > 0 {
+c := compatible[0]
+if libpath, ok := libs[c]; ok {
+slog.Debug("adding gpu library", "path", libpath)
+libraryPaths = append([]string{libpath}, libraryPaths...)
+ggmlPaths = append(ggmlPaths, libpath)
+}
+}
+if gpus[0].DependencyPath != nil {
+slog.Debug("adding gpu dependency paths", "paths", gpus[0].DependencyPath)
+libraryPaths = append(gpus[0].DependencyPath, libraryPaths...)
+}
+libraryPaths = append(libraryPaths, discover.LibOllamaPath)
+s := &llmServer{
+port:          port,
+cmd:           exec.Command(exe, finalParams...),
+status:        NewStatusWriter(os.Stderr),
+options:       opts,
+modelPath:     modelPath,
+llamaModel:    llamaModel,
+textProcessor: textProcessor,
+estimate:      estimate,
+numParallel:   numParallel,
+sem:           semaphore.NewWeighted(int64(numParallel)),
+totalLayers:   f.KV().BlockCount() + 1,
+gpus:          gpus,
+done:          make(chan error, 1),
+}
+s.cmd.Env = os.Environ()
+s.cmd.Stdout = os.Stdout
+s.cmd.Stderr = s.status
+s.cmd.SysProcAttr = LlamaServerSysProcAttr
+s.cmd.Env = append(s.cmd.Env, "OLLAMA_LIBRARY_PATH="+strings.Join(ggmlPaths, string(filepath.ListSeparator)))
+envWorkarounds := [][2]string{}
+for _, gpu := range gpus {
+envWorkarounds = append(envWorkarounds, gpu.EnvWorkarounds...)
+}
+visibleDevicesEnv, visibleDevicesEnvVal := gpus.GetVisibleDevicesEnv()
+pathEnvVal := strings.Join(libraryPaths, string(filepath.ListSeparator))
+pathNeeded := true
+devicesNeeded := visibleDevicesEnv != ""
+for i := range s.cmd.Env {
+cmp := strings.SplitN(s.cmd.Env[i], "=", 2)
+if strings.EqualFold(cmp[0], pathEnv) {
+s.cmd.Env[i] = pathEnv + "=" + pathEnvVal
+pathNeeded = false
+} else if devicesNeeded && strings.EqualFold(cmp[0], visibleDevicesEnv) {
+s.cmd.Env[i] = visibleDevicesEnv + "=" + visibleDevicesEnvVal
+devicesNeeded = false
+} else if len(envWorkarounds) != 0 {
+for _, kv := range envWorkarounds {
+if strings.EqualFold(cmp[0], kv[0]) {
+s.cmd.Env[i] = kv[0] + "=" + kv[1]
+}
+}
+}
+}
+if pathNeeded {
+s.cmd.Env = append(s.cmd.Env, pathEnv+"="+pathEnvVal)
+}
+if devicesNeeded {
+s.cmd.Env = append(s.cmd.Env, visibleDevicesEnv+"="+visibleDevicesEnvVal)
+}
+slog.Info("starting llama server", "cmd", s.cmd)
+slog.Debug("subprocess", "", filteredEnv(s.cmd.Env))
+if err = s.cmd.Start(); err != nil {
+var msg string
+if s.status != nil && s.status.LastErrMsg != "" {
+msg = s.status.LastErrMsg
+}
+err := fmt.Errorf("error starting runner: %v %s", err, msg)
+if len(compatible) == 0 {
+if llamaModel != nil {
+llama.FreeModel(llamaModel)
+}
+return nil, err
+}
+slog.Warn("unable to start runner with compatible gpu", "error", err, "compatible", compatible)
+compatible = compatible[1:]
+continue
+}
+go func() {
+err := s.cmd.Wait()
+if err != nil && s.status != nil && s.status.LastErrMsg != "" {
+slog.Error("llama runner terminated", "error", err)
+if strings.Contains(s.status.LastErrMsg, "unknown model") {
+s.status.LastErrMsg = "this model is not supported by your version of Ollama. You may need to upgrade"
+}
+s.done <- errors.New(s.status.LastErrMsg)
+} else {
+s.done <- err
+}
+}()
+return s, nil
+}
 }
 type ServerStatus int
-const ( 
-	ServerStatusReady ServerStatus = iota
-	ServerStatusNoSlotsAvailable
-	ServerStatusLoadingModel
-	ServerStatusNotResponding
-	ServerStatusError
+const (
+ServerStatusReady ServerStatus = iota
+ServerStatusNoSlotsAvailable
+ServerStatusLoadingModel
+ServerStatusNotResponding
+ServerStatusError
 )
 func (s ServerStatus) String() string {
-	switch s {
-	case ServerStatusReady:
-		return "llm server ready"
-	case ServerStatusNoSlotsAvailable:
-		return "llm busy - no slots available"
-	case ServerStatusLoadingModel:
-		return "llm server loading model"
-	case ServerStatusNotResponding:
-		return "llm server not responding"
-	default:
-		return "llm server error"
-	}
+switch s {
+case ServerStatusReady:
+return "llm server ready"
+case ServerStatusNoSlotsAvailable:
+return "llm busy - no slots available"
+case ServerStatusLoadingModel:
+return "llm server loading model"
+case ServerStatusNotResponding:
+return "llm server not responding"
+default:
+return "llm server error"
+}
 }
 type ServerStatusResponse struct {
-	Status   ServerStatus `json:"status"`
-	Progress float32      `json:"progress"`
+Status   ServerStatus `json:"status"`
+Progress float32      `json:"progress"`
 }
 func (s *llmServer) getServerStatus(ctx context.Context) (ServerStatus, error) {
-	if s.cmd.ProcessState != nil {
-		msg := ""
-		if s.status != nil && s.status.LastErrMsg != "" {
-			msg = s.status.LastErrMsg
-		}
-		if s.cmd.ProcessState.ExitCode() == -1 {
-			slog.Warn("llama runner process no longer running", "sys", s.cmd.ProcessState.Sys(), "string", s.cmd.ProcessState)
-		}
-		return ServerStatusError, fmt.Errorf("llama runner process no longer running: %d %s", s.cmd.ProcessState.ExitCode(), msg)
-	}
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fmt.Sprintf("http:
-	if err != nil {
-		return ServerStatusError, fmt.Errorf("error creating GET request: %v", err)
-	}
-	req.Header.Set("Content-Type", "application/json")
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		if errors.Is(err, context.DeadlineExceeded) {
-			return ServerStatusNotResponding, errors.New("server not responding")
-		}
-		if strings.Contains(err.Error(), "connection refused") {
-			return ServerStatusNotResponding, errors.New("connection refused")
-		}
-		return ServerStatusError, fmt.Errorf("health resp: %w", err)
-	}
-	defer resp.Body.Close()
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return ServerStatusError, fmt.Errorf("read health request: %w", err)
-	}
-	var ssr ServerStatusResponse
-	if err := json.Unmarshal(body, &ssr); err != nil {
-		return ServerStatusError, fmt.Errorf("health unmarshal encode response: %w", err)
-	}
-	switch ssr.Status {
-	case ServerStatusLoadingModel:
-		s.loadProgress = ssr.Progress
-		return ssr.Status, nil
-	case ServerStatusReady, ServerStatusNoSlotsAvailable:
-		return ssr.Status, nil
-	default:
-		return ssr.Status, fmt.Errorf("server error: %+v", ssr)
-	}
+if s.cmd.ProcessState != nil {
+msg := ""
+if s.status != nil && s.status.LastErrMsg != "" {
+msg = s.status.LastErrMsg
+}
+if s.cmd.ProcessState.ExitCode() == -1 {
+slog.Warn("llama runner process no longer running", "sys", s.cmd.ProcessState.Sys(), "string", s.cmd.ProcessState)
+}
+return ServerStatusError, fmt.Errorf("llama runner process no longer running: %d %s", s.cmd.ProcessState.ExitCode(), msg)
+}
+req, err := http.NewRequestWithContext(ctx, http.MethodGet, fmt.Sprintf("http:
+if err != nil {
+return ServerStatusError, fmt.Errorf("error creating GET request: %v", err)
+}
+req.Header.Set("Content-Type", "application/json")
+resp, err := http.DefaultClient.Do(req)
+if err != nil {
+if errors.Is(err, context.DeadlineExceeded) {
+return ServerStatusNotResponding, errors.New("server not responding")
+}
+if strings.Contains(err.Error(), "connection refused") {
+return ServerStatusNotResponding, errors.New("connection refused")
+}
+return ServerStatusError, fmt.Errorf("health resp: %w", err)
+}
+defer resp.Body.Close()
+body, err := io.ReadAll(resp.Body)
+if err != nil {
+return ServerStatusError, fmt.Errorf("read health request: %w", err)
+}
+var ssr ServerStatusResponse
+if err := json.Unmarshal(body, &ssr); err != nil {
+return ServerStatusError, fmt.Errorf("health unmarshal encode response: %w", err)
+}
+switch ssr.Status {
+case ServerStatusLoadingModel:
+s.loadProgress = ssr.Progress
+return ssr.Status, nil
+case ServerStatusReady, ServerStatusNoSlotsAvailable:
+return ssr.Status, nil
+default:
+return ssr.Status, fmt.Errorf("server error: %+v", ssr)
+}
 }
 func (s *llmServer) getServerStatusRetry(ctx context.Context) (ServerStatus, error) {
-	var retries int
-	for {
-		status, err := s.getServerStatus(ctx)
-		if err != nil {
-			return status, err
-		}
-		if status == ServerStatusNoSlotsAvailable {
-			if retries >= 10 {
-				return status, fmt.Errorf("no slots available after %d retries", retries)
-			}
-			time.Sleep(5 * time.Millisecond)
-			retries++
-			continue
-		}
-		return status, nil
-	}
+var retries int
+for {
+status, err := s.getServerStatus(ctx)
+if err != nil {
+return status, err
+}
+if status == ServerStatusNoSlotsAvailable {
+if retries >= 10 {
+return status, fmt.Errorf("no slots available after %d retries", retries)
+}
+time.Sleep(5 * time.Millisecond)
+retries++
+continue
+}
+return status, nil
+}
 }
 func (s *llmServer) Ping(ctx context.Context) error {
-	_, err := s.getServerStatus(ctx)
-	if err != nil {
-		slog.Debug("server unhealthy", "error", err)
-		return err
-	}
-	return nil
+_, err := s.getServerStatus(ctx)
+if err != nil {
+slog.Debug("server unhealthy", "error", err)
+return err
+}
+return nil
 }
 func (s *llmServer) WaitUntilRunning(ctx context.Context) error {
-	start := time.Now()
-	stallDuration := envconfig.LoadTimeout()    
-	stallTimer := time.Now().Add(stallDuration) 
-	slog.Info("waiting for llama runner to start responding")
-	var lastStatus ServerStatus = -1
-	fullyLoaded := false
-	for {
-		select {
-		case <-ctx.Done():
-			slog.Warn("client connection closed before server finished loading, aborting load")
-			return fmt.Errorf("timed out waiting for llama runner to start: %w", ctx.Err())
-		case err := <-s.done:
-			return fmt.Errorf("llama runner process has terminated: %w", err)
-		default:
-		}
-		if time.Now().After(stallTimer) {
-			msg := ""
-			if s.status != nil && s.status.LastErrMsg != "" {
-				msg = s.status.LastErrMsg
-			}
-			return fmt.Errorf("timed out waiting for llama runner to start - progress %0.2f - %s", s.loadProgress, msg)
-		}
-		if s.cmd.ProcessState != nil {
-			msg := ""
-			if s.status != nil && s.status.LastErrMsg != "" {
-				msg = s.status.LastErrMsg
-			}
-			return fmt.Errorf("llama runner process no longer running: %d %s", s.cmd.ProcessState.ExitCode(), msg)
-		}
-		ctx, cancel := context.WithTimeout(ctx, 200*time.Millisecond)
-		defer cancel()
-		priorProgress := s.loadProgress
-		status, _ := s.getServerStatus(ctx)
-		if lastStatus != status && status != ServerStatusReady {
-			slog.Info("waiting for server to become available", "status", status)
-		}
-		switch status {
-		case ServerStatusReady:
-			s.loadDuration = time.Since(start)
-			slog.Info(fmt.Sprintf("llama runner started in %0.2f seconds", s.loadDuration.Seconds()))
-			return nil
-		default:
-			lastStatus = status
-			if priorProgress != s.loadProgress {
-				slog.Debug(fmt.Sprintf("model load progress %0.2f", s.loadProgress))
-				stallTimer = time.Now().Add(stallDuration)
-			} else if !fullyLoaded && int(s.loadProgress*100.0) >= 100 {
-				slog.Debug("model load completed, waiting for server to become available", "status", status)
-				stallTimer = time.Now().Add(stallDuration)
-				fullyLoaded = true
-			}
-			time.Sleep(time.Millisecond * 250)
-			continue
-		}
-	}
+start := time.Now()
+stallDuration := envconfig.LoadTimeout()
+stallTimer := time.Now().Add(stallDuration)
+slog.Info("waiting for llama runner to start responding")
+var lastStatus ServerStatus = -1
+fullyLoaded := false
+for {
+select {
+case <-ctx.Done():
+slog.Warn("client connection closed before server finished loading, aborting load")
+return fmt.Errorf("timed out waiting for llama runner to start: %w", ctx.Err())
+case err := <-s.done:
+return fmt.Errorf("llama runner process has terminated: %w", err)
+default:
+}
+if time.Now().After(stallTimer) {
+msg := ""
+if s.status != nil && s.status.LastErrMsg != "" {
+msg = s.status.LastErrMsg
+}
+return fmt.Errorf("timed out waiting for llama runner to start - progress %0.2f - %s", s.loadProgress, msg)
+}
+if s.cmd.ProcessState != nil {
+msg := ""
+if s.status != nil && s.status.LastErrMsg != "" {
+msg = s.status.LastErrMsg
+}
+return fmt.Errorf("llama runner process no longer running: %d %s", s.cmd.ProcessState.ExitCode(), msg)
+}
+ctx, cancel := context.WithTimeout(ctx, 200*time.Millisecond)
+defer cancel()
+priorProgress := s.loadProgress
+status, _ := s.getServerStatus(ctx)
+if lastStatus != status && status != ServerStatusReady {
+slog.Info("waiting for server to become available", "status", status)
+}
+switch status {
+case ServerStatusReady:
+s.loadDuration = time.Since(start)
+slog.Info(fmt.Sprintf("llama runner started in %0.2f seconds", s.loadDuration.Seconds()))
+return nil
+default:
+lastStatus = status
+if priorProgress != s.loadProgress {
+slog.Debug(fmt.Sprintf("model load progress %0.2f", s.loadProgress))
+stallTimer = time.Now().Add(stallDuration)
+} else if !fullyLoaded && int(s.loadProgress*100.0) >= 100 {
+slog.Debug("model load completed, waiting for server to become available", "status", status)
+stallTimer = time.Now().Add(stallDuration)
+fullyLoaded = true
+}
+time.Sleep(time.Millisecond * 250)
+continue
+}
+}
 }
 func (s *llmServer) Pid() int {
-	if s.cmd != nil && s.cmd.Process != nil {
-		return s.cmd.Process.Pid
-	}
-	return -1
+if s.cmd != nil && s.cmd.Process != nil {
+return s.cmd.Process.Pid
+}
+return -1
 }
 var grammarJSON = `
 root   ::= object
 value  ::= object | array | string | number | ("true" | "false" | "null") ws
 object ::=
-  "{" ws (
-         string ":" ws value
-    ("," ws string ":" ws value)*
-  )? ws "}" 
+"{" ws (
+string ":" ws value
+("," ws string ":" ws value)*
+)? ws "}"
 array  ::=
-  "[" ws (
-            value
-    ("," ws value)*
-  )? ws "]" 
+"[" ws (
+value
+("," ws value)*
+)? ws "]"
 string ::=
-  "\"" (
-    [^"\\\x7F\x00-\x1F] |
-    "\\" (["\\/bfnrt] | "u" [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F]) # escapes
-  )* "\"" 
-number ::= ("-"? ([0-9] | [1-9] [0-9]*)) ("." [0-9]+)? ([eE] [-+]? [0-9]+)? 
+"\"" (
+[^"\\\x7F\x00-\x1F] |
+"\\" (["\\/bfnrt] | "u" [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F]) # escapes
+)* "\""
+number ::= ("-"? ([0-9] | [1-9] [0-9]*)) ("." [0-9]+)? ([eE] [-+]? [0-9]+)?
 # Optional space: by convention, applied in this grammar after literal chars when allowed
 ws ::= ([ \t\n] ws)?
 `
 const maxBufferSize = 512 * format.KiloByte
 type ImageData struct {
-	Data []byte `json:"data"`
-	ID   int    `json:"id"`
+Data []byte `json:"data"`
+ID   int    `json:"id"`
 }
 type CompletionRequest struct {
-	Prompt  string
-	Format  json.RawMessage
-	Images  []ImageData
-	Options *api.Options
-	Grammar string 
+Prompt  string
+Format  json.RawMessage
+Images  []ImageData
+Options *api.Options
+Grammar string
 }
 type DoneReason int
 const (
-	DoneReasonStop DoneReason = iota
-	DoneReasonLength
-	DoneReasonConnectionClosed
+DoneReasonStop DoneReason = iota
+DoneReasonLength
+DoneReasonConnectionClosed
 )
 func (d DoneReason) String() string {
-	switch d {
-	case DoneReasonLength:
-		return "length"
-	case DoneReasonStop:
-		return "stop"
-	default:
-		return "" 
-	}
+switch d {
+case DoneReasonLength:
+return "length"
+case DoneReasonStop:
+return "stop"
+default:
+return ""
+}
 }
 type CompletionResponse struct {
-	Content            string        `json:"content"`
-	DoneReason         DoneReason    `json:"done_reason"`
-	Done               bool          `json:"done"`
-	PromptEvalCount    int           `json:"prompt_eval_count"`
-	PromptEvalDuration time.Duration `json:"prompt_eval_duration"`
-	EvalCount          int           `json:"eval_count"`
-	EvalDuration       time.Duration `json:"eval_duration"`
+Content            string        `json:"content"`
+DoneReason         DoneReason    `json:"done_reason"`
+Done               bool          `json:"done"`
+PromptEvalCount    int           `json:"prompt_eval_count"`
+PromptEvalDuration time.Duration `json:"prompt_eval_duration"`
+EvalCount          int           `json:"eval_count"`
+EvalDuration       time.Duration `json:"eval_duration"`
 }
 func (s *llmServer) Completion(ctx context.Context, req CompletionRequest, fn func(CompletionResponse)) error {
-	slog.Debug("completion request", "images", len(req.Images), "prompt", len(req.Prompt), "format", string(req.Format))
-	slog.Log(ctx, logutil.LevelTrace, "completion request", "prompt", req.Prompt)
-	if len(req.Format) > 0 {
-		switch string(req.Format) {
-		case `null`, `""`:
-			break
-		case `"json"`:
-			req.Grammar = grammarJSON
-		default:
-			if req.Format[0] != '{' {
-				return fmt.Errorf("invalid format: %q; expected \"json\" or a valid JSON Schema object", req.Format)
-			}
-			g := llama.SchemaToGrammar(req.Format)
-			if g == nil {
-				return fmt.Errorf("invalid JSON schema in format")
-			}
-			req.Grammar = string(g)
-		}
-	}
-	if req.Options == nil {
-		opts := api.DefaultOptions()
-		req.Options = &opts
-	}
-	if err := s.sem.Acquire(ctx, 1); err != nil {
-		if errors.Is(err, context.Canceled) {
-			slog.Info("aborting completion request due to client closing the connection")
-		} else {
-			slog.Error("Failed to acquire semaphore", "error", err)
-		}
-		return err
-	}
-	defer s.sem.Release(1)
-	if req.Options.NumPredict < 0 || req.Options.NumPredict > 10*s.options.NumCtx {
-		req.Options.NumPredict = 10 * s.options.NumCtx
-	}
-	status, err := s.getServerStatusRetry(ctx)
-	if err != nil {
-		return err
-	} else if status != ServerStatusReady {
-		return fmt.Errorf("unexpected server status: %s", status)
-	}
-	buffer := &bytes.Buffer{}
-	enc := json.NewEncoder(buffer)
-	enc.SetEscapeHTML(false)
-	if err := enc.Encode(req); err != nil {
-		return fmt.Errorf("failed to marshal data: %v", err)
-	}
-	endpoint := fmt.Sprintf("http:
-	serverReq, err := http.NewRequestWithContext(ctx, http.MethodPost, endpoint, buffer)
-	if err != nil {
-		return fmt.Errorf("error creating POST request: %v", err)
-	}
-	serverReq.Header.Set("Content-Type", "application/json")
-	res, err := http.DefaultClient.Do(serverReq)
-	if err != nil {
-		slog.Error("post predict", "error", err)
-		return errors.New("model runner has unexpectedly stopped, this may be due to resource limitations or an internal error, check ollama server logs for details")
-	}
-	defer res.Body.Close()
-	if res.StatusCode >= 400 {
-		bodyBytes, err := io.ReadAll(res.Body)
-		if err != nil {
-			return fmt.Errorf("failed reading llm error response: %w", err)
-		}
-		log.Printf("llm predict error: %s", bodyBytes)
-		return fmt.Errorf("%s", bodyBytes)
-	}
-	scanner := bufio.NewScanner(res.Body)
-	buf := make([]byte, 0, maxBufferSize)
-	scanner.Buffer(buf, maxBufferSize)
-	var lastToken string
-	var tokenRepeat int
-	for scanner.Scan() {
-		select {
-		case <-ctx.Done():
-			return ctx.Err()
-		default:
-			line := scanner.Bytes()
-			if len(line) == 0 {
-				continue
-			}
-			evt, ok := bytes.CutPrefix(line, []byte("data: "))
-			if !ok {
-				evt = line
-			}
-			var c CompletionResponse
-			if err := json.Unmarshal(evt, &c); err != nil {
-				return fmt.Errorf("error unmarshalling llm prediction response: %v", err)
-			}
-			switch {
-			case strings.TrimSpace(c.Content) == lastToken:
-				tokenRepeat++
-			default:
-				lastToken = strings.TrimSpace(c.Content)
-				tokenRepeat = 0
-			}
-			if tokenRepeat > 30 {
-				slog.Debug("prediction aborted, token repeat limit reached")
-				return ctx.Err()
-			}
-			if c.Content != "" {
-				fn(CompletionResponse{
-					Content: c.Content,
-				})
-			}
-			if c.Done {
-				fn(c)
-				return nil
-			}
-		}
-	}
-	if err := scanner.Err(); err != nil {
-		if strings.Contains(err.Error(), "unexpected EOF") || strings.Contains(err.Error(), "forcibly closed") {
-			s.Close()
-			var msg string
-			if s.status != nil && s.status.LastErrMsg != "" {
-				msg = s.status.LastErrMsg
-			} else {
-				msg = err.Error()
-			}
-			return fmt.Errorf("an error was encountered while running the model: %s", msg)
-		}
-		return fmt.Errorf("error reading llm response: %v", err)
-	}
-	return nil
+slog.Debug("completion request", "images", len(req.Images), "prompt", len(req.Prompt), "format", string(req.Format))
+slog.Log(ctx, logutil.LevelTrace, "completion request", "prompt", req.Prompt)
+if len(req.Format) > 0 {
+switch string(req.Format) {
+case `null`, `""`:
+break
+case `"json"`:
+req.Grammar = grammarJSON
+default:
+if req.Format[0] != '{' {
+return fmt.Errorf("invalid format: %q; expected \"json\" or a valid JSON Schema object", req.Format)
+}
+g := llama.SchemaToGrammar(req.Format)
+if g == nil {
+return fmt.Errorf("invalid JSON schema in format")
+}
+req.Grammar = string(g)
+}
+}
+if req.Options == nil {
+opts := api.DefaultOptions()
+req.Options = &opts
+}
+if err := s.sem.Acquire(ctx, 1); err != nil {
+if errors.Is(err, context.Canceled) {
+slog.Info("aborting completion request due to client closing the connection")
+} else {
+slog.Error("Failed to acquire semaphore", "error", err)
+}
+return err
+}
+defer s.sem.Release(1)
+if req.Options.NumPredict < 0 || req.Options.NumPredict > 10*s.options.NumCtx {
+req.Options.NumPredict = 10 * s.options.NumCtx
+}
+status, err := s.getServerStatusRetry(ctx)
+if err != nil {
+return err
+} else if status != ServerStatusReady {
+return fmt.Errorf("unexpected server status: %s", status)
+}
+buffer := &bytes.Buffer{}
+enc := json.NewEncoder(buffer)
+enc.SetEscapeHTML(false)
+if err := enc.Encode(req); err != nil {
+return fmt.Errorf("failed to marshal data: %v", err)
+}
+endpoint := fmt.Sprintf("http:
+serverReq, err := http.NewRequestWithContext(ctx, http.MethodPost, endpoint, buffer)
+if err != nil {
+return fmt.Errorf("error creating POST request: %v", err)
+}
+serverReq.Header.Set("Content-Type", "application/json")
+res, err := http.DefaultClient.Do(serverReq)
+if err != nil {
+slog.Error("post predict", "error", err)
+return errors.New("model runner has unexpectedly stopped, this may be due to resource limitations or an internal error, check ollama server logs for details")
+}
+defer res.Body.Close()
+if res.StatusCode >= 400 {
+bodyBytes, err := io.ReadAll(res.Body)
+if err != nil {
+return fmt.Errorf("failed reading llm error response: %w", err)
+}
+log.Printf("llm predict error: %s", bodyBytes)
+return fmt.Errorf("%s", bodyBytes)
+}
+scanner := bufio.NewScanner(res.Body)
+buf := make([]byte, 0, maxBufferSize)
+scanner.Buffer(buf, maxBufferSize)
+var lastToken string
+var tokenRepeat int
+for scanner.Scan() {
+select {
+case <-ctx.Done():
+return ctx.Err()
+default:
+line := scanner.Bytes()
+if len(line) == 0 {
+continue
+}
+evt, ok := bytes.CutPrefix(line, []byte("data: "))
+if !ok {
+evt = line
+}
+var c CompletionResponse
+if err := json.Unmarshal(evt, &c); err != nil {
+return fmt.Errorf("error unmarshalling llm prediction response: %v", err)
+}
+switch {
+case strings.TrimSpace(c.Content) == lastToken:
+tokenRepeat++
+default:
+lastToken = strings.TrimSpace(c.Content)
+tokenRepeat = 0
+}
+if tokenRepeat > 30 {
+slog.Debug("prediction aborted, token repeat limit reached")
+return ctx.Err()
+}
+if c.Content != "" {
+fn(CompletionResponse{
+Content: c.Content,
+})
+}
+if c.Done {
+fn(c)
+return nil
+}
+}
+}
+if err := scanner.Err(); err != nil {
+if strings.Contains(err.Error(), "unexpected EOF") || strings.Contains(err.Error(), "forcibly closed") {
+s.Close()
+var msg string
+if s.status != nil && s.status.LastErrMsg != "" {
+msg = s.status.LastErrMsg
+} else {
+msg = err.Error()
+}
+return fmt.Errorf("an error was encountered while running the model: %s", msg)
+}
+return fmt.Errorf("error reading llm response: %v", err)
+}
+return nil
 }
 type EmbeddingRequest struct {
-	Content string `json:"content"`
+Content string `json:"content"`
 }
 type EmbeddingResponse struct {
-	Embedding []float32 `json:"embedding"`
+Embedding []float32 `json:"embedding"`
 }
 func (s *llmServer) Embedding(ctx context.Context, input string) ([]float32, error) {
-	slog.Log(ctx, logutil.LevelTrace, "embedding request", "input", input)
-	if err := s.sem.Acquire(ctx, 1); err != nil {
-		if errors.Is(err, context.Canceled) {
-			slog.Info("aborting embedding request due to client closing the connection")
-		} else {
-			slog.Error("Failed to acquire semaphore", "error", err)
-		}
-		return nil, err
-	}
-	defer s.sem.Release(1)
-	status, err := s.getServerStatusRetry(ctx)
-	if err != nil {
-		return nil, err
-	} else if status != ServerStatusReady {
-		return nil, fmt.Errorf("unexpected server status: %s", status)
-	}
-	data, err := json.Marshal(EmbeddingRequest{Content: input})
-	if err != nil {
-		return nil, fmt.Errorf("error marshaling embed data: %w", err)
-	}
-	r, err := http.NewRequestWithContext(ctx, http.MethodPost, fmt.Sprintf("http:
-	if err != nil {
-		return nil, fmt.Errorf("error creating embed request: %w", err)
-	}
-	r.Header.Set("Content-Type", "application/json")
-	resp, err := http.DefaultClient.Do(r)
-	if err != nil {
-		return nil, fmt.Errorf("do embedding request: %w", err)
-	}
-	defer resp.Body.Close()
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("error reading embed response: %w", err)
-	}
-	if resp.StatusCode >= 400 {
-		log.Printf("llm embedding error: %s", body)
-		return nil, fmt.Errorf("%s", body)
-	}
-	var e EmbeddingResponse
-	if err := json.Unmarshal(body, &e); err != nil {
-		return nil, fmt.Errorf("unmarshal tokenize response: %w", err)
-	}
-	return e.Embedding, nil
+slog.Log(ctx, logutil.LevelTrace, "embedding request", "input", input)
+if err := s.sem.Acquire(ctx, 1); err != nil {
+if errors.Is(err, context.Canceled) {
+slog.Info("aborting embedding request due to client closing the connection")
+} else {
+slog.Error("Failed to acquire semaphore", "error", err)
+}
+return nil, err
+}
+defer s.sem.Release(1)
+status, err := s.getServerStatusRetry(ctx)
+if err != nil {
+return nil, err
+} else if status != ServerStatusReady {
+return nil, fmt.Errorf("unexpected server status: %s", status)
+}
+data, err := json.Marshal(EmbeddingRequest{Content: input})
+if err != nil {
+return nil, fmt.Errorf("error marshaling embed data: %w", err)
+}
+r, err := http.NewRequestWithContext(ctx, http.MethodPost, fmt.Sprintf("http:
+if err != nil {
+return nil, fmt.Errorf("error creating embed request: %w", err)
+}
+r.Header.Set("Content-Type", "application/json")
+resp, err := http.DefaultClient.Do(r)
+if err != nil {
+return nil, fmt.Errorf("do embedding request: %w", err)
+}
+defer resp.Body.Close()
+body, err := io.ReadAll(resp.Body)
+if err != nil {
+return nil, fmt.Errorf("error reading embed response: %w", err)
+}
+if resp.StatusCode >= 400 {
+log.Printf("llm embedding error: %s", body)
+return nil, fmt.Errorf("%s", body)
+}
+var e EmbeddingResponse
+if err := json.Unmarshal(body, &e); err != nil {
+return nil, fmt.Errorf("unmarshal tokenize response: %w", err)
+}
+return e.Embedding, nil
 }
 type TokenizeRequest struct {
-	Content string `json:"content"`
+Content string `json:"content"`
 }
 type TokenizeResponse struct {
-	Tokens []int `json:"tokens"`
+Tokens []int `json:"tokens"`
 }
 func (s *llmServer) Tokenize(ctx context.Context, content string) ([]int, error) {
-	s.llamaModelLock.Lock()
-	defer s.llamaModelLock.Unlock()
-	if s.llamaModel != nil {
-		return s.llamaModel.Tokenize(content, false, true)
-	}
-	if s.textProcessor != nil {
-		tokens, err := s.textProcessor.Encode(content, false)
-		if err != nil {
-			return nil, err
-		}
-		toks := make([]int, len(tokens))
-		for i, t := range tokens {
-			toks[i] = int(t)
-		}
-		return toks, nil
-	}
-	return nil, fmt.Errorf("no tokenizer configured")
+s.llamaModelLock.Lock()
+defer s.llamaModelLock.Unlock()
+if s.llamaModel != nil {
+return s.llamaModel.Tokenize(content, false, true)
+}
+if s.textProcessor != nil {
+tokens, err := s.textProcessor.Encode(content, false)
+if err != nil {
+return nil, err
+}
+toks := make([]int, len(tokens))
+for i, t := range tokens {
+toks[i] = int(t)
+}
+return toks, nil
+}
+return nil, fmt.Errorf("no tokenizer configured")
 }
 type DetokenizeRequest struct {
-	Tokens []int `json:"tokens"`
+Tokens []int `json:"tokens"`
 }
 type DetokenizeResponse struct {
-	Content string `json:"content"`
+Content string `json:"content"`
 }
 func (s *llmServer) Detokenize(ctx context.Context, tokens []int) (string, error) {
-	s.llamaModelLock.Lock()
-	defer s.llamaModelLock.Unlock()
-	if s.llamaModel != nil {
-		var resp string
-		for _, token := range tokens {
-			resp += s.llamaModel.TokenToPiece(token)
-		}
-		return resp, nil
-	}
-	if s.textProcessor != nil {
-		toks := make([]int32, len(tokens))
-		for i, t := range tokens {
-			toks[i] = int32(t)
-		}
-		content, err := s.textProcessor.Decode(toks)
-		if err != nil {
-			return "", err
-		}
-		return content, nil
-	}
-	return "", fmt.Errorf("no tokenizer configured")
+s.llamaModelLock.Lock()
+defer s.llamaModelLock.Unlock()
+if s.llamaModel != nil {
+var resp string
+for _, token := range tokens {
+resp += s.llamaModel.TokenToPiece(token)
+}
+return resp, nil
+}
+if s.textProcessor != nil {
+toks := make([]int32, len(tokens))
+for i, t := range tokens {
+toks[i] = int32(t)
+}
+content, err := s.textProcessor.Decode(toks)
+if err != nil {
+return "", err
+}
+return content, nil
+}
+return "", fmt.Errorf("no tokenizer configured")
 }
 func (s *llmServer) Close() error {
-	s.llamaModelLock.Lock()
-	if s.llamaModel != nil {
-		llama.FreeModel(s.llamaModel)
-		s.llamaModel = nil
-	}
-	s.llamaModelLock.Unlock()
-	if s.cmd != nil {
-		slog.Debug("stopping llama server", "pid", s.Pid())
-		if err := s.cmd.Process.Kill(); err != nil {
-			return err
-		}
-		if s.cmd.ProcessState == nil {
-			slog.Debug("waiting for llama server to exit", "pid", s.Pid())
-			<-s.done
-		}
-		slog.Debug("llama server stopped", "pid", s.Pid())
-	}
-	return nil
+s.llamaModelLock.Lock()
+if s.llamaModel != nil {
+llama.FreeModel(s.llamaModel)
+s.llamaModel = nil
+}
+s.llamaModelLock.Unlock()
+if s.cmd != nil {
+slog.Debug("stopping llama server", "pid", s.Pid())
+if err := s.cmd.Process.Kill(); err != nil {
+return err
+}
+if s.cmd.ProcessState == nil {
+slog.Debug("waiting for llama server to exit", "pid", s.Pid())
+<-s.done
+}
+slog.Debug("llama server stopped", "pid", s.Pid())
+}
+return nil
 }
 func (s *llmServer) EstimatedVRAM() uint64 {
-	return s.estimate.VRAMSize
+return s.estimate.VRAMSize
 }
 func (s *llmServer) EstimatedTotal() uint64 {
-	return s.estimate.TotalSize
+return s.estimate.TotalSize
 }
 func (s *llmServer) EstimatedVRAMByGPU(gpuID string) uint64 {
-	for i, gpu := range s.gpus {
-		if gpu.ID == gpuID {
-			if i < len(s.estimate.GPUSizes) {
-				return s.estimate.GPUSizes[i]
-			}
-		}
-	}
-	return 0
+for i, gpu := range s.gpus {
+if gpu.ID == gpuID {
+if i < len(s.estimate.GPUSizes) {
+return s.estimate.GPUSizes[i]
+}
+}
+}
+return 0
 }

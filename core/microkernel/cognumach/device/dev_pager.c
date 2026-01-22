@@ -24,22 +24,22 @@
 #include <device/conf.h>
 struct dev_pager {
 decl_simple_lock_data(, lock)
-int		ref_count;
-int		client_count;
-ipc_port_t	pager;
-ipc_port_t	pager_request;
-ipc_port_t	pager_name;
-mach_device_t	device;
-vm_offset_t	offset;
-int		type;
-#define DEV_PAGER_TYPE	0
-#define CHAR_PAGER_TYPE	1
-int		prot;
-vm_size_t	size;
+int ref_count;
+int client_count;
+ipc_port_t pager;
+ipc_port_t pager_request;
+ipc_port_t pager_name;
+mach_device_t device;
+vm_offset_t offset;
+int type;
+#define DEV_PAGER_TYPE 0
+#define CHAR_PAGER_TYPE 1
+int prot;
+vm_size_t size;
 };
 typedef struct dev_pager *dev_pager_t;
-#define	DEV_PAGER_NULL	((dev_pager_t)0)
-struct kmem_cache	dev_pager_cache;
+#define DEV_PAGER_NULL ((dev_pager_t)0)
+struct kmem_cache dev_pager_cache;
 static void dev_pager_reference(dev_pager_t ds)
 {
 simple_lock(&ds->lock);
@@ -56,32 +56,32 @@ return;
 simple_unlock(&ds->lock);
 kmem_cache_free(&dev_pager_cache, (vm_offset_t)ds);
 }
-#define	DEV_HASH_COUNT		127
+#define DEV_HASH_COUNT 127
 struct dev_pager_entry {
-queue_chain_t	links;
-ipc_port_t	name;
-dev_pager_t	pager_rec;
+queue_chain_t links;
+ipc_port_t name;
+dev_pager_t pager_rec;
 };
 typedef struct dev_pager_entry *dev_pager_entry_t;
-queue_head_t	dev_pager_hashtable[DEV_HASH_COUNT];
-struct kmem_cache	dev_pager_hash_cache;
+queue_head_t dev_pager_hashtable[DEV_HASH_COUNT];
+struct kmem_cache dev_pager_hash_cache;
 def_simple_lock_data(static, dev_pager_hash_lock)
 struct dev_device_entry {
-queue_chain_t	links;
-mach_device_t	device;
-vm_offset_t	offset;
-dev_pager_t	pager_rec;
+queue_chain_t links;
+mach_device_t device;
+vm_offset_t offset;
+dev_pager_t pager_rec;
 };
 typedef struct dev_device_entry *dev_device_entry_t;
-queue_head_t	dev_device_hashtable[DEV_HASH_COUNT];
-struct kmem_cache	dev_device_hash_cache;
+queue_head_t dev_device_hashtable[DEV_HASH_COUNT];
+struct kmem_cache dev_device_hash_cache;
 def_simple_lock_data(static, dev_device_hash_lock)
-#define	dev_hash(name_port) \
+#define dev_hash(name_port) \
 (((vm_offset_t)(name_port) & 0xffffff) % DEV_HASH_COUNT)
 static void dev_pager_hash_init(void)
 {
-int		i;
-vm_size_t	size;
+int i;
+vm_size_t size;
 size = sizeof(struct dev_pager_entry);
 kmem_cache_init(&dev_pager_hash_cache, "dev_pager_entry", size, 0,
 NULL, 0);
@@ -90,8 +90,8 @@ queue_init(&dev_pager_hashtable[i]);
 simple_lock_init(&dev_pager_hash_lock);
 }
 static void dev_pager_hash_insert(
-const ipc_port_t	name_port,
-const dev_pager_t	rec)
+const ipc_port_t name_port,
+const dev_pager_t rec)
 {
 dev_pager_entry_t new_entry;
 new_entry = (dev_pager_entry_t) kmem_cache_alloc(&dev_pager_hash_cache);
@@ -104,8 +104,8 @@ simple_unlock(&dev_pager_hash_lock);
 }
 static void dev_pager_hash_delete(const ipc_port_t name_port)
 {
-queue_t			bucket;
-dev_pager_entry_t	entry;
+queue_t bucket;
+dev_pager_entry_t entry;
 bucket = &dev_pager_hashtable[dev_hash(name_port)];
 simple_lock(&dev_pager_hash_lock);
 for (entry = (dev_pager_entry_t)queue_first(bucket);
@@ -122,9 +122,9 @@ kmem_cache_free(&dev_pager_hash_cache, (vm_offset_t)entry);
 }
 static dev_pager_t dev_pager_hash_lookup(const ipc_port_t name_port)
 {
-queue_t			bucket;
-dev_pager_entry_t	entry;
-dev_pager_t		pager;
+queue_t bucket;
+dev_pager_entry_t entry;
+dev_pager_t pager;
 bucket = &dev_pager_hashtable[dev_hash(name_port)];
 simple_lock(&dev_pager_hash_lock);
 for (entry = (dev_pager_entry_t)queue_first(bucket);
@@ -142,8 +142,8 @@ return (DEV_PAGER_NULL);
 }
 static void dev_device_hash_init(void)
 {
-int		i;
-vm_size_t	size;
+int i;
+vm_size_t size;
 size = sizeof(struct dev_device_entry);
 kmem_cache_init(&dev_device_hash_cache, "dev_device_entry", size, 0,
 NULL, 0);
@@ -153,9 +153,9 @@ queue_init(&dev_device_hashtable[i]);
 simple_lock_init(&dev_device_hash_lock);
 }
 static void dev_device_hash_insert(
-const mach_device_t	device,
-const vm_offset_t	offset,
-const dev_pager_t	rec)
+const mach_device_t device,
+const vm_offset_t offset,
+const dev_pager_t rec)
 {
 dev_device_entry_t new_entry;
 new_entry = (dev_device_entry_t) kmem_cache_alloc(&dev_device_hash_cache);
@@ -168,11 +168,11 @@ new_entry, dev_device_entry_t, links);
 simple_unlock(&dev_device_hash_lock);
 }
 static void dev_device_hash_delete(
-const mach_device_t	device,
-const vm_offset_t	offset)
+const mach_device_t device,
+const vm_offset_t offset)
 {
-queue_t			bucket;
-dev_device_entry_t	entry;
+queue_t bucket;
+dev_device_entry_t entry;
 bucket = &dev_device_hashtable[dev_hash(device + offset)];
 simple_lock(&dev_device_hash_lock);
 for (entry = (dev_device_entry_t)queue_first(bucket);
@@ -188,12 +188,12 @@ if (!queue_end(bucket, &entry->links))
 kmem_cache_free(&dev_device_hash_cache, (vm_offset_t)entry);
 }
 static dev_pager_t dev_device_hash_lookup(
-const mach_device_t	device,
-const vm_offset_t	offset)
+const mach_device_t device,
+const vm_offset_t offset)
 {
-queue_t			bucket;
-dev_device_entry_t	entry;
-dev_pager_t		pager;
+queue_t bucket;
+dev_device_entry_t entry;
+dev_pager_t pager;
 bucket = &dev_device_hashtable[dev_hash(device + offset)];
 simple_lock(&dev_device_hash_lock);
 for (entry = (dev_device_entry_t)queue_first(bucket);
@@ -209,14 +209,14 @@ return (pager);
 simple_unlock(&dev_device_hash_lock);
 return (DEV_PAGER_NULL);
 }
-kern_return_t	device_pager_setup(
-const mach_device_t	device,
-int			prot,
-vm_offset_t		offset,
-vm_size_t		size,
-mach_port_t		*pager)
+kern_return_t device_pager_setup(
+const mach_device_t device,
+int prot,
+vm_offset_t offset,
+vm_size_t size,
+mach_port_t *pager)
 {
-dev_pager_t	d;
+dev_pager_t d;
 if (!device->dev_ops->d_mmap || (device->dev_ops->d_mmap == nomap))
 return (D_INVALID_OPERATION);
 d = dev_device_hash_lookup(device, offset);
@@ -253,16 +253,16 @@ dev_device_hash_insert(d->device, d->offset, d);
 *pager = (mach_port_t) ipc_port_make_send(d->pager);
 return (KERN_SUCCESS);
 }
-boolean_t	device_pager_debug = FALSE;
-kern_return_t	device_pager_data_request(
-const ipc_port_t	pager,
-const ipc_port_t	pager_request,
-vm_offset_t		offset,
-vm_size_t		length,
-vm_prot_t		protection_required)
+boolean_t device_pager_debug = FALSE;
+kern_return_t device_pager_data_request(
+const ipc_port_t pager,
+const ipc_port_t pager_request,
+vm_offset_t offset,
+vm_size_t length,
+vm_prot_t protection_required)
 {
-dev_pager_t	ds;
-kern_return_t	ret;
+dev_pager_t ds;
+kern_return_t ret;
 if (device_pager_debug)
 printf("(device_pager)data_request: pager=%p, offset=0x%lx, length=0x%lx\n",
 pager, (unsigned long) offset, (unsigned long) length);
@@ -272,7 +272,7 @@ panic("(device_pager)data_request: lookup failed");
 if (ds->pager_request != pager_request)
 panic("(device_pager)data_request: bad pager_request");
 if (ds->type == CHAR_PAGER_TYPE) {
-vm_object_t			object;
+vm_object_t object;
 object = vm_object_lookup(pager_request);
 if (object == VM_OBJECT_NULL) {
 (void) r_memory_object_data_error(pager_request,
@@ -301,11 +301,11 @@ dev_pager_deallocate(ds);
 return (KERN_SUCCESS);
 }
 kern_return_t device_pager_copy(
-const ipc_port_t	pager,
-const ipc_port_t	pager_request,
-vm_offset_t		offset,
-vm_size_t		length,
-const ipc_port_t	new_pager)
+const ipc_port_t pager,
+const ipc_port_t pager_request,
+vm_offset_t offset,
+vm_size_t length,
+const ipc_port_t new_pager)
 {
 panic("(device_pager)copy: called");
 }
@@ -322,13 +322,13 @@ panic("(device_pager)supply_completed: called");
 }
 kern_return_t
 device_pager_data_return(
-const ipc_port_t	pager,
-const ipc_port_t	pager_request,
-vm_offset_t		offset,
-pointer_t		addr,
-mach_msg_type_number_t	data_cnt,
-boolean_t		dirty,
-boolean_t		kernel_copy)
+const ipc_port_t pager,
+const ipc_port_t pager_request,
+vm_offset_t offset,
+pointer_t addr,
+mach_msg_type_number_t data_cnt,
+boolean_t dirty,
+boolean_t kernel_copy)
 {
 panic("(device_pager)data_return: called");
 }
@@ -341,11 +341,11 @@ memory_object_copy_strategy_t copy_strategy)
 panic("(device_pager)change_completed: called");
 }
 phys_addr_t device_map_page(
-void		*dsp,
-vm_offset_t	offset)
+void *dsp,
+vm_offset_t offset)
 {
-dev_pager_t	ds = (dev_pager_t) dsp;
-vm_offset_t	pagenum =
+dev_pager_t ds = (dev_pager_t) dsp;
+vm_offset_t pagenum =
 (*(ds->device->dev_ops->d_mmap))
 (ds->device->dev_number,
 ds->offset + offset,
@@ -355,12 +355,12 @@ return vm_page_fictitious_addr;
 return pmap_phys_address(pagenum);
 }
 kern_return_t device_pager_init_pager(
-const ipc_port_t	pager,
-const ipc_port_t	pager_request,
-const ipc_port_t	pager_name,
-vm_size_t		pager_page_size)
+const ipc_port_t pager,
+const ipc_port_t pager_request,
+const ipc_port_t pager_name,
+vm_size_t pager_page_size)
 {
-dev_pager_t	ds;
+dev_pager_t ds;
 if (device_pager_debug)
 printf("(device_pager)init: pager=%p, request=%p, name=%p\n",
 pager, pager_request, pager_name);
@@ -388,11 +388,11 @@ dev_pager_deallocate(ds);
 return (KERN_SUCCESS);
 }
 kern_return_t device_pager_terminate(
-const ipc_port_t	pager,
-const ipc_port_t	pager_request,
-const ipc_port_t	pager_name)
+const ipc_port_t pager,
+const ipc_port_t pager_request,
+const ipc_port_t pager_name)
 {
-dev_pager_t	ds;
+dev_pager_t ds;
 assert(IP_VALID(pager_request));
 assert(IP_VALID(pager_name));
 ds = dev_pager_hash_lookup(pager);
@@ -423,17 +423,17 @@ panic("(device_pager)data_unlock: called");
 return (KERN_FAILURE);
 }
 kern_return_t device_pager_lock_completed(
-const ipc_port_t	memory_object,
-const ipc_port_t	pager_request_port,
-vm_offset_t		offset,
-vm_size_t		length)
+const ipc_port_t memory_object,
+const ipc_port_t pager_request_port,
+vm_offset_t offset,
+vm_size_t length)
 {
 panic("(device_pager)lock_completed: called");
 return (KERN_FAILURE);
 }
 void device_pager_init(void)
 {
-vm_size_t	size;
+vm_size_t size;
 size = sizeof(struct dev_pager);
 kmem_cache_init(&dev_pager_cache, "dev_pager", size, 0,
 NULL, 0);

@@ -1,32 +1,32 @@
 #include <stdlib.h>
 #include "spin.h"
 #include "y.tab.h"
-extern int	verbose, s_trail, analyze, no_wrapup;
-extern char	*claimproc, *eventmap, Buf[];
-extern Ordered	*all_names;
-extern Symbol	*Fname, *context;
-extern int	lineno, nr_errs, dumptab, xspin, jumpsteps, columns;
-extern int	u_sync, Elcnt, interactive, TstOnly, cutoff;
-extern short	has_enabled;
-extern int	limited_vis, old_scope_rules, product, nclaims;
-RunList		*X   = (RunList  *) 0;
-RunList		*run = (RunList  *) 0;
-RunList		*LastX  = (RunList  *) 0;
-ProcList	*rdy = (ProcList *) 0;
-Element		*LastStep = ZE;
-int		nproc=0, nstop=0, Tval=0;
-int		Rvous=0, depth=0, nrRdy=0, MadeChoice;
-short		Have_claim=0, Skip_claim=0;
-static int	Priority_Sum = 0;
-static void	setlocals(RunList *);
-static void	setparams(RunList *, ProcList *, Lextok *);
-static void	talk(RunList *);
+extern int verbose, s_trail, analyze, no_wrapup;
+extern char *claimproc, *eventmap, Buf[];
+extern Ordered *all_names;
+extern Symbol *Fname, *context;
+extern int lineno, nr_errs, dumptab, xspin, jumpsteps, columns;
+extern int u_sync, Elcnt, interactive, TstOnly, cutoff;
+extern short has_enabled;
+extern int limited_vis, old_scope_rules, product, nclaims;
+RunList *X = (RunList *) 0;
+RunList *run = (RunList *) 0;
+RunList *LastX = (RunList *) 0;
+ProcList *rdy = (ProcList *) 0;
+Element *LastStep = ZE;
+int nproc=0, nstop=0, Tval=0;
+int Rvous=0, depth=0, nrRdy=0, MadeChoice;
+short Have_claim=0, Skip_claim=0;
+static int Priority_Sum = 0;
+static void setlocals(RunList *);
+static void setparams(RunList *, ProcList *, Lextok *);
+static void talk(RunList *);
 void
 runnable(ProcList *p, int weight, int noparams)
-{	RunList *r = (RunList *) emalloc(sizeof(RunList));
-r->n  = p->n;
+{ RunList *r = (RunList *) emalloc(sizeof(RunList));
+r->n = p->n;
 r->tn = p->tn;
-r->b  = p->b;
+r->b = p->b;
 r->pid = nproc++ - nstop + Skip_claim;
 if (!noparams && ((verbose&4) || (verbose&32)))
 printf("Starting %s with pid %d\n",
@@ -47,7 +47,7 @@ run = r;
 }
 ProcList *
 ready(Symbol *n, Lextok *p, Sequence *s, int det, Lextok *prov, enum btypes b)
-{	ProcList *r = (ProcList *) emalloc(sizeof(ProcList));
+{ ProcList *r = (ProcList *) emalloc(sizeof(ProcList));
 Lextok *fp, *fpt; int j; extern int Npars;
 r->n = n;
 r->p = p;
@@ -56,20 +56,20 @@ r->b = b;
 r->prov = prov;
 r->tn = nrRdy++;
 if (det != 0 && det != 1)
-{	fprintf(stderr, "spin: bad value for det (cannot happen)\n");
+{ fprintf(stderr, "spin: bad value for det (cannot happen)\n");
 }
 r->det = (short) det;
 r->nxt = rdy;
 rdy = r;
-for (fp  = p, j = 0;  fp;  fp = fp->rgt)
-for (fpt = fp->lft;  fpt; fpt = fpt->rgt)
+for (fp = p, j = 0; fp; fp = fp->rgt)
+for (fpt = fp->lft; fpt; fpt = fpt->rgt)
 j++;
 Npars = max(Npars, j);
 return rdy;
 }
 int
 find_maxel(Symbol *s)
-{	ProcList *p;
+{ ProcList *p;
 for (p = rdy; p; p = p->nxt)
 if (p->n == s)
 return p->s->maxel++;
@@ -77,15 +77,15 @@ return Elcnt++;
 }
 static void
 formdump(void)
-{	ProcList *p;
+{ ProcList *p;
 Lextok *f, *t;
 int cnt;
 for (p = rdy; p; p = p->nxt)
-{	if (!p->p) continue;
+{ if (!p->p) continue;
 cnt = -1;
 for (f = p->p; f; f = f->rgt)
 for (t = f->lft; t; t = t->rgt)
-{	if (t->ntyp != ',')
+{ if (t->ntyp != ',')
 t->sym->Nid = cnt--;
 else
 t->lft->sym->Nid = cnt--;
@@ -96,11 +96,11 @@ void
 announce(char *w)
 {
 if (columns)
-{	extern char Buf[];
+{ extern char Buf[];
 extern int firstrow;
 firstrow = 1;
 if (columns == 2)
-{	sprintf(Buf, "%d:%s",
+{ sprintf(Buf, "%d:%s",
 run->pid - Have_claim, run->n->name);
 pstext(run->pid - Have_claim, Buf);
 } else
@@ -109,9 +109,9 @@ run->pid - Have_claim, run->n->name);
 return;
 }
 if (dumptab
-||  analyze
-||  product
-||  s_trail
+|| analyze
+|| product
+|| s_trail
 || !(verbose&4))
 return;
 if (w)
@@ -126,18 +126,18 @@ printf(" priority %d", run->priority);
 printf("\n");
 }
 #ifndef MAXP
-#define MAXP	255
+#define MAXP 255
 #endif
 int
 enable(Lextok *m)
-{	ProcList *p;
+{ ProcList *p;
 Symbol *s = m->sym;
 Lextok *n = m->lft;
 if (m->val < 1) m->val = 1;
 for (p = rdy; p; p = p->nxt)
 if (strcmp(s->name, p->n->name) == 0)
-{	if (nproc-nstop >= MAXP)
-{	printf("spin: too many processes (%d max)\n", MAXP);
+{ if (nproc-nstop >= MAXP)
+{ printf("spin: too many processes (%d max)\n", MAXP);
 break;
 }
 runnable(p, m->val, 0);
@@ -150,34 +150,34 @@ return 0;
 }
 void
 check_param_count(int i, Lextok *m)
-{	ProcList *p;
+{ ProcList *p;
 Symbol *s = m->sym;
 Lextok *f, *t;
 int cnt = 0;
 for (p = rdy; p; p = p->nxt)
-{	if (strcmp(s->name, p->n->name) == 0)
-{	if (m->lft)
-{	lineno = m->lft->ln;
-Fname  = m->lft->fn;
+{ if (strcmp(s->name, p->n->name) == 0)
+{ if (m->lft)
+{ lineno = m->lft->ln;
+Fname = m->lft->fn;
 }
-for (f = p->p;   f; f = f->rgt)
+for (f = p->p; f; f = f->rgt)
 for (t = f->lft; t; t = t->rgt)
-{	cnt++;
+{ cnt++;
 }
 if (i != cnt)
-{	printf("spin: saw %d parameters, expected %d\n", i, cnt);
+{ printf("spin: saw %d parameters, expected %d\n", i, cnt);
 non_fatal("wrong number of parameters", "");
 }
 break;
-}	}
+} }
 }
 void
 start_claim(int n)
-{	ProcList *p;
-RunList  *r, *q = (RunList *) 0;
+{ ProcList *p;
+RunList *r, *q = (RunList *) 0;
 for (p = rdy; p; p = p->nxt)
 if (p->tn == n && p->b == N_CLAIM)
-{	runnable(p, 1, 1);
+{ runnable(p, 1, 1);
 goto found;
 }
 printf("spin: couldn't find claim %d (ignored)\n", n);
@@ -188,35 +188,35 @@ Skip_claim = 1;
 goto done;
 found:
 if (columns == 2)
-{	extern char Buf[];
+{ extern char Buf[];
 depth = 0;
 sprintf(Buf, "%d:%s", 0, p->n->name);
 pstext(0, Buf);
 for (r = run; r; r = r->nxt)
-{	if (r->b != N_CLAIM)
-{	sprintf(Buf, "%d:%s", r->pid+1, r->n->name);
+{ if (r->b != N_CLAIM)
+{ sprintf(Buf, "%d:%s", r->pid+1, r->n->name);
 pstext(r->pid+1, Buf);
-}	}	}
+} } }
 if (run->pid == 0) return;
 q = run; run = run->nxt;
 q->pid = 0; q->nxt = (RunList *) 0;
 done:
 Have_claim = 1;
 for (r = run; r; r = r->nxt)
-{	r->pid = r->pid+Have_claim;
+{ r->pid = r->pid+Have_claim;
 if (!r->nxt)
-{	r->nxt = q;
+{ r->nxt = q;
 break;
-}	}
+} }
 }
 int
 f_pid(char *n)
-{	RunList *r;
+{ RunList *r;
 int rval = -1;
 for (r = run; r; r = r->nxt)
 if (strcmp(n, r->n->name) == 0)
-{	if (rval >= 0)
-{	printf("spin: remote ref to proctype %s, ", n);
+{ if (rval >= 0)
+{ printf("spin: remote ref to proctype %s, ", n);
 printf("has more than one match: %d and %d\n",
 rval, r->pid);
 } else
@@ -229,7 +229,7 @@ wrapup(int fini)
 {
 limited_vis = 0;
 if (columns)
-{	extern void putpostlude(void);
+{ extern void putpostlude(void);
 if (columns == 2) putpostlude();
 if (!no_wrapup)
 printf("-------------\nfinal state:\n-------------\n");
@@ -237,7 +237,7 @@ printf("-------------\nfinal state:\n-------------\n");
 if (no_wrapup)
 goto short_cut;
 if (nproc != nstop)
-{	int ov = verbose;
+{ int ov = verbose;
 printf("#processes: %d\n", nproc-nstop - Have_claim + Skip_claim);
 verbose &= ~4;
 dumpglobals();
@@ -253,24 +253,24 @@ nproc - Have_claim + Skip_claim,
 (xspin || nproc!=1)?"es":"");
 short_cut:
 if (xspin) alldone(0);
-if (fini)  alldone(1);
+if (fini) alldone(1);
 }
 static char is_blocked[256];
 static int
 p_blocked(int p)
-{	int i, j;
+{ int i, j;
 is_blocked[p%256] = 1;
 for (i = j = 0; i < nproc - nstop; i++)
 j += is_blocked[i];
 if (j >= nproc - nstop)
-{	memset(is_blocked, 0, 256);
+{ memset(is_blocked, 0, 256);
 return 1;
 }
 return 0;
 }
 static Element *
 silent_moves(Element *e)
-{	Element *f;
+{ Element *f;
 if (e->n)
 switch (e->n->ntyp) {
 case GOTO:
@@ -292,11 +292,11 @@ return e;
 }
 static RunList *
 pickproc(RunList *Y)
-{	SeqList *z; Element *has_else;
+{ SeqList *z; Element *has_else;
 short Choices[256];
 int j, k, nr_else = 0;
 if (nproc <= nstop+1)
-{	X = run;
+{ X = run;
 return NULL;
 }
 if (!interactive || depth < jumpsteps)
@@ -305,35 +305,35 @@ if (Priority_Sum < nproc-nstop)
 fatal("cannot happen - weights", (char *)0);
 j = (int) Rand()%Priority_Sum;
 while (j - X->priority >= 0)
-{	j -= X->priority;
+{ j -= X->priority;
 Y = X;
 X = X->nxt;
 if (!X) { Y = NULL; X = run; }
 }
 } else
-{	int only_choice = -1;
+{ int only_choice = -1;
 int no_choice = 0, proc_no_ch, proc_k;
 Tval = 0;
-try_again:	printf("Select a statement\n");
-try_more:	for (X = run, k = 1; X; X = X->nxt)
-{	if (X->pid > 255) break;
+try_again: printf("Select a statement\n");
+try_more: for (X = run, k = 1; X; X = X->nxt)
+{ if (X->pid > 255) break;
 Choices[X->pid] = (short) k;
 if (!X->pc
-||  (X->prov && !eval(X->prov)))
-{	if (X == run)
+|| (X->prov && !eval(X->prov)))
+{ if (X == run)
 Choices[X->pid] = 0;
 continue;
 }
 X->pc = silent_moves(X->pc);
 if (!X->pc->sub && X->pc->n)
-{	int unex;
+{ int unex;
 unex = !Enabled0(X->pc);
 if (unex)
 no_choice++;
 else
 only_choice = k;
 if (!xspin && unex && !(verbose&32))
-{	k++;
+{ k++;
 continue;
 }
 printf("\tchoice %d: ", k++);
@@ -349,11 +349,11 @@ has_else = ZE;
 proc_no_ch = no_choice;
 proc_k = k;
 for (z = X->pc->sub, j=0; z; z = z->nxt)
-{	Element *y = silent_moves(z->this->frst);
+{ Element *y = silent_moves(z->this->frst);
 int unex;
 if (!y) continue;
 if (y->n->ntyp == ELSE)
-{	has_else = (Rvous)?ZE:y;
+{ has_else = (Rvous)?ZE:y;
 nr_else = k++;
 continue;
 }
@@ -363,7 +363,7 @@ no_choice++;
 else
 only_choice = k;
 if (!xspin && unex && !(verbose&32))
-{	k++;
+{ k++;
 continue;
 }
 printf("\tchoice %d: ", k++);
@@ -375,77 +375,77 @@ comment(stdout, y->n, 0);
 printf("]\n");
 }
 if (has_else)
-{	if (no_choice-proc_no_ch >= (k-proc_k)-1)
-{	only_choice = nr_else;
+{ if (no_choice-proc_no_ch >= (k-proc_k)-1)
+{ only_choice = nr_else;
 printf("\tchoice %d: ", nr_else);
 p_talk(X->pc, 0);
 printf(" [else]\n");
 } else
-{	no_choice++;
+{ no_choice++;
 printf("\tchoice %d: ", nr_else);
 p_talk(X->pc, 0);
 printf(" unexecutable, [else]\n");
-}	}
-}	}
+} }
+} }
 X = run;
 if (k - no_choice < 2 && Tval == 0)
-{	Tval = 1;
+{ Tval = 1;
 no_choice = 0; only_choice = -1;
 goto try_more;
 }
 if (xspin)
 printf("Make Selection %d\n\n", k-1);
 else
-{	if (k - no_choice < 2)
-{	printf("no executable choices\n");
+{ if (k - no_choice < 2)
+{ printf("no executable choices\n");
 alldone(0);
 }
 printf("Select [1-%d]: ", k-1);
 }
 if (!xspin && k - no_choice == 2)
-{	printf("%d\n", only_choice);
+{ printf("%d\n", only_choice);
 j = only_choice;
 } else
-{	char buf[256];
+{ char buf[256];
 fflush(stdout);
 if (scanf("%64s", buf) == 0)
-{	printf("\tno input\n");
+{ printf("\tno input\n");
 goto try_again;
 }
 j = -1;
 if (isdigit((int) buf[0]))
 j = atoi(buf);
 else
-{	if (buf[0] == 'q')
+{ if (buf[0] == 'q')
 alldone(0);
 }
 if (j < 1 || j >= k)
-{	printf("\tchoice is outside range\n");
+{ printf("\tchoice is outside range\n");
 goto try_again;
-}	}
+} }
 MadeChoice = 0;
 Y = NULL;
 for (X = run; X; Y = X, X = X->nxt)
-{	if (!X->nxt
-||   X->nxt->pid > 255
-||   j < Choices[X->nxt->pid])
+{ if (!X->nxt
+|| X->nxt->pid > 255
+|| j < Choices[X->nxt->pid])
 {
 MadeChoice = 1+j-Choices[X->pid];
 break;
-}	}
+} }
 }
 return Y;
 }
 void
 multi_claims(void)
-{	ProcList *p, *q = NULL;
+{ ProcList *p, *q = NULL;
 if (nclaims > 1)
-{	printf("  the model contains %d never claims:", nclaims);
+{ printf("  the model contains %d never claims:", nclaims);
 for (p = rdy; p; p = p->nxt)
-{	if (p->b == N_CLAIM)
-{	printf("%s%s", q?", ":" ", p->n->name);
+{ if (p->b == N_CLAIM)
+{ printf("%s%s", q?", ":" ", p->n->name);
 q = p;
-}	}
+} }
 printf("\n");
 printf("  only one claim is used in a verification run\n");
 printf("  choose which one with ./pan -N name (defaults to -N %s)\n",
@@ -454,7 +454,7 @@ q?q->n->name:"--");
 }
 void
 sched(void)
-{	Element *e;
+{ Element *e;
 RunList *Y = NULL;
 RunList *oX;
 int go, notbeyond = 0;
@@ -462,27 +462,27 @@ int go, notbeyond = 0;
 int bufmax = 100;
 #endif
 if (dumptab)
-{	formdump();
+{ formdump();
 symdump();
 dumplabels();
 return;
 }
 if (has_enabled && u_sync > 0)
-{	printf("spin: error, cannot use 'enabled()' in ");
+{ printf("spin: error, cannot use 'enabled()' in ");
 printf("models with synchronous channels.\n");
 nr_errs++;
 }
 if (product)
-{	sync_product();
+{ sync_product();
 alldone(0);
 }
 if (analyze)
-{	gensrc();
+{ gensrc();
 multi_claims();
 return;
 }
 if (s_trail)
-{	match_trail();
+{ match_trail();
 return;
 }
 if (claimproc)
@@ -492,19 +492,19 @@ printf("warning: trace assertion not used in random simulation\n");
 X = run;
 Y = pickproc(Y);
 while (X)
-{	context = X->n;
+{ context = X->n;
 if (X->pc && X->pc->n)
-{	lineno = X->pc->n->ln;
-Fname  = X->pc->n->fn;
+{ lineno = X->pc->n->ln;
+Fname = X->pc->n->fn;
 }
 if (cutoff > 0 && depth >= cutoff)
-{	printf("-------------\n");
+{ printf("-------------\n");
 printf("depth-limit (-u%d steps) reached\n", cutoff);
 break;
 }
 #ifdef PC
 if (xspin && !interactive && --bufmax <= 0)
-{	int c;
+{ int c;
 printf("spin: type return to proceed\n");
 fflush(stdout);
 c = getc(stdin);
@@ -518,18 +518,18 @@ go = 1;
 if (X->prov && X->pc
 && !(X->pc->status & D_ATOM)
 && !eval(X->prov))
-{	if (!xspin && ((verbose&32) || (verbose&4)))
-{	p_talk(X->pc, 1);
+{ if (!xspin && ((verbose&32) || (verbose&4)))
+{ p_talk(X->pc, 1);
 printf("\t<<Not Enabled>>\n");
 }
 go = 0;
 }
 if (go && (e = eval_sub(X->pc)))
-{	if (depth >= jumpsteps
+{ if (depth >= jumpsteps
 && ((verbose&32) || (verbose&4)))
-{	if (X == oX)
+{ if (X == oX)
 if (!(e->status & D_ATOM) || (verbose&32))
-{	p_talk(X->pc, 1);
+{ p_talk(X->pc, 1);
 printf("	[");
 if (!LastStep) LastStep = X->pc;
 comment(stdout, LastStep->n, 0);
@@ -542,36 +542,36 @@ if (xspin)
 printf("\n");
 }
 if (oX != X
-||  (X->pc->status & (ATOM|D_ATOM)))
-{	e = silent_moves(e);
+|| (X->pc->status & (ATOM|D_ATOM)))
+{ e = silent_moves(e);
 notbeyond = 0;
 }
 oX->pc = e; LastX = X;
 if (!interactive) Tval = 0;
 memset(is_blocked, 0, 256);
 if (X->pc && (X->pc->status & (ATOM|L_ATOM))
-&&  (notbeyond == 0 || oX != X))
-{	if ((X->pc->status & L_ATOM))
+&& (notbeyond == 0 || oX != X))
+{ if ((X->pc->status & L_ATOM))
 notbeyond = 1;
 continue;
 }
 } else
-{	depth--;
+{ depth--;
 if (oX->pc && (oX->pc->status & D_ATOM))
-{	non_fatal("stmnt in d_step blocks", (char *)0);
+{ non_fatal("stmnt in d_step blocks", (char *)0);
 }
 if (X->pc
-&&  X->pc->n
-&&  X->pc->n->ntyp == '@'
-&&  X->pid == (nproc-nstop-1))
-{	if (X != run && Y != NULL)
+&& X->pc->n
+&& X->pc->n->ntyp == '@'
+&& X->pid == (nproc-nstop-1))
+{ if (X != run && Y != NULL)
 Y->nxt = X->nxt;
 else
 run = X->nxt;
 nstop++;
 Priority_Sum -= X->priority;
 if (verbose&4)
-{	whoruns(1);
+{ whoruns(1);
 dotag(stdout, "terminates\n");
 }
 LastX = X;
@@ -580,15 +580,15 @@ if (nproc == nstop) break;
 memset(is_blocked, 0, 256);
 X = (X->nxt) ? X->nxt : run;
 } else
-{	if (p_blocked(X->pid))
-{	if (Tval) break;
+{ if (p_blocked(X->pid))
+{ if (Tval) break;
 Tval = 1;
 if (depth >= jumpsteps)
-{	oX = X;
+{ oX = X;
 X = (RunList *) 0;
 dotag(stdout, "timeout\n");
 X = oX;
-}	}	}	}
+} } } }
 if (!run || !X) break;
 Y = pickproc(X);
 notbeyond = 0;
@@ -598,8 +598,8 @@ wrapup(0);
 }
 int
 complete_rendez(void)
-{	RunList *orun = X, *tmp;
-Element  *s_was = LastStep;
+{ RunList *orun = X, *tmp;
+Element *s_was = LastStep;
 Element *e;
 int j, ointer = interactive;
 if (s_trail)
@@ -611,21 +611,21 @@ interactive = 0;
 j = (int) Rand()%Priority_Sum;
 X = run;
 while (j - X->priority >= 0)
-{	j -= X->priority;
+{ j -= X->priority;
 X = X->nxt;
 if (!X) X = run;
 }
 for (j = nproc - nstop; j > 0; j--)
-{	if (X != orun
+{ if (X != orun
 && (!X->prov || eval(X->prov))
 && (e = eval_sub(X->pc)))
-{	if (TstOnly)
-{	X = orun;
+{ if (TstOnly)
+{ X = orun;
 Rvous = 0;
 goto out;
 }
 if ((verbose&32) || (verbose&4))
-{	tmp = orun; orun = X; X = tmp;
+{ tmp = orun; orun = X; X = tmp;
 if (!s_was) s_was = X->pc;
 p_talk(s_was, 1);
 printf("	[");
@@ -640,7 +640,7 @@ printf("]\n");
 }
 Rvous = 0;
 X->pc = silent_moves(e);
-out:				interactive = ointer;
+out: interactive = ointer;
 return 1;
 }
 X = X->nxt;
@@ -652,8 +652,8 @@ interactive = ointer;
 return 0;
 }
 static void
-addsymbol(RunList *r, Symbol  *s)
-{	Symbol *t;
+addsymbol(RunList *r, Symbol *s)
+{ Symbol *t;
 int i;
 for (t = r->symtab; t; t = t->next)
 if (strcmp(t->name, s->name) == 0
@@ -664,26 +664,26 @@ t = (Symbol *) emalloc(sizeof(Symbol));
 t->name = s->name;
 t->type = s->type;
 t->hidden = s->hidden;
-t->nbits  = s->nbits;
-t->nel  = s->nel;
-t->ini  = s->ini;
+t->nbits = s->nbits;
+t->nel = s->nel;
+t->ini = s->ini;
 t->setat = depth;
 t->context = r->n;
-t->bscp  = (unsigned char *) emalloc(strlen((const char *)s->bscp)+1);
+t->bscp = (unsigned char *) emalloc(strlen((const char *)s->bscp)+1);
 strcpy((char *)t->bscp, (const char *)s->bscp);
 if (s->type != STRUCT)
-{	if (s->val)
-{	t->val = (int *) emalloc(s->nel*sizeof(int));
+{ if (s->val)
+{ t->val = (int *) emalloc(s->nel*sizeof(int));
 for (i = 0; i < s->nel; i++)
 t->val[i] = s->val[i];
 } else
-{	(void) checkvar(t, 0);
+{ (void) checkvar(t, 0);
 }
 } else
-{	if (s->Sval)
+{ if (s->Sval)
 fatal("saw preinitialized struct %s", s->name);
 t->Slst = s->Slst;
-t->Snm  = s->Snm;
+t->Snm = s->Snm;
 t->owner = s->owner;
 }
 t->next = r->symtab;
@@ -691,25 +691,25 @@ r->symtab = t;
 }
 static void
 setlocals(RunList *r)
-{	Ordered	*walk;
-Symbol	*sp;
-RunList	*oX = X;
+{ Ordered *walk;
+Symbol *sp;
+RunList *oX = X;
 X = r;
 for (walk = all_names; walk; walk = walk->next)
-{	sp = walk->entry;
+{ sp = walk->entry;
 if (sp
-&&  sp->context
-&&  strcmp(sp->context->name, r->n->name) == 0
-&&  sp->Nid >= 0
+&& sp->context
+&& strcmp(sp->context->name, r->n->name) == 0
+&& sp->Nid >= 0
 && (sp->type == UNSIGNED
-||  sp->type == BIT
-||  sp->type == MTYPE
-||  sp->type == BYTE
-||  sp->type == CHAN
-||  sp->type == SHORT
-||  sp->type == INT
-||  sp->type == STRUCT))
-{	if (!findloc(sp))
+|| sp->type == BIT
+|| sp->type == MTYPE
+|| sp->type == BYTE
+|| sp->type == CHAN
+|| sp->type == SHORT
+|| sp->type == INT
+|| sp->type == STRUCT))
+{ if (!findloc(sp))
 non_fatal("setlocals: cannot happen '%s'",
 sp->name);
 }
@@ -718,7 +718,7 @@ X = oX;
 }
 static void
 oneparam(RunList *r, Lextok *t, Lextok *a, ProcList *p)
-{	int k; int at, ft;
+{ int k; int at, ft;
 RunList *oX = X;
 if (!a)
 fatal("missing actual parameters: '%s'", p->n->name);
@@ -729,7 +729,7 @@ at = Sym_typ(a->lft);
 X = r;
 ft = Sym_typ(t);
 if (at != ft && (at == CHAN || ft == CHAN))
-{	char buf[256], tag1[64], tag2[64];
+{ char buf[256], tag1[64], tag2[64];
 (void) sputtype(tag1, ft);
 (void) sputtype(tag2, at);
 sprintf(buf, "type-clash in params of %s(..), (%s<-> %s)",
@@ -743,15 +743,15 @@ X = oX;
 }
 static void
 setparams(RunList *r, ProcList *p, Lextok *q)
-{	Lextok *f, *a;
+{ Lextok *f, *a;
 Lextok *t;
 if (q)
-{	lineno = q->ln;
-Fname  = q->fn;
+{ lineno = q->ln;
+Fname = q->fn;
 }
 for (f = p->p, a = q; f; f = f->rgt)
 for (t = f->lft; t; t = t->rgt, a = (a)?a->rgt:a)
-{	if (t->ntyp != ',')
+{ if (t->ntyp != ',')
 oneparam(r, t, a, p);
 else
 oneparam(r, t->lft, a, p);
@@ -759,7 +759,7 @@ oneparam(r, t->lft, a, p);
 }
 Symbol *
 findloc(Symbol *s)
-{	Symbol *r;
+{ Symbol *r;
 if (!X)
 {
 return ZS;
@@ -769,7 +769,7 @@ if (strcmp(r->name, s->name) == 0
 && (old_scope_rules || strcmp((const char *)r->bscp, (const char *)s->bscp) == 0))
 break;
 if (!r)
-{	addsymbol(X, s);
+{ addsymbol(X, s);
 r = X->symtab;
 }
 return r;
@@ -777,9 +777,9 @@ return r;
 int
 in_bound(Symbol *r, int n)
 {
-if (!r)	return 0;
+if (!r) return 0;
 if (n >= r->nel || n < 0)
-{	printf("spin: indexing %s[%d] - size is %d\n",
+{ printf("spin: indexing %s[%d] - size is %d\n",
 r->name, n, r->nel);
 non_fatal("indexing array \'%s\'", r->name);
 return 0;
@@ -788,7 +788,7 @@ return 1;
 }
 int
 getlocal(Lextok *sn)
-{	Symbol *r, *s = sn->sym;
+{ Symbol *r, *s = sn->sym;
 int n = eval(sn->lft);
 r = findloc(s);
 if (r && r->type == STRUCT)
@@ -799,10 +799,10 @@ return 0;
 }
 int
 setlocal(Lextok *p, int m)
-{	Symbol *r = findloc(p->sym);
+{ Symbol *r = findloc(p->sym);
 int n = eval(p->lft);
 if (in_bound(r, n))
-{	if (r->type == STRUCT)
+{ if (r->type == STRUCT)
 (void) Lval_struct(p, r, 1, m);
 else
 {
@@ -814,12 +814,12 @@ r->val[n] = m;
 r->val[n] = cast_val(r->type, m, r->nbits);
 #endif
 r->setat = depth;
-}	}
+} }
 return 1;
 }
 void
 whoruns(int lnr)
-{	if (!X) return;
+{ if (!X) return;
 if (lnr) printf("%3d:	", depth);
 printf("proc ");
 if (Have_claim && X->pid == 0)
@@ -832,7 +832,7 @@ static void
 talk(RunList *r)
 {
 if ((verbose&32) || (verbose&4))
-{	p_talk(r->pc, 1);
+{ p_talk(r->pc, 1);
 printf("\n");
 if (verbose&1) dumpglobals();
 if (verbose&2) dumplocal(r);
@@ -840,21 +840,21 @@ if (verbose&2) dumplocal(r);
 }
 void
 p_talk(Element *e, int lnr)
-{	static int lastnever = -1;
+{ static int lastnever = -1;
 static char nbuf[128];
 int newnever = -1;
 if (e && e->n)
 newnever = e->n->ln;
 if (Have_claim && X && X->pid == 0
-&&  lastnever != newnever && e)
-{	if (xspin)
-{	printf("MSC: ~G line %d\n", newnever);
+&& lastnever != newnever && e)
+{ if (xspin)
+{ printf("MSC: ~G line %d\n", newnever);
 #if 0
 printf("%3d:	proc  - (NEVER) line   %d \"never\" ",
 depth, newnever);
 printf("(state 0)\t[printf('MSC: never\\\\n')]\n");
 } else
-{	printf("%3d:	proc  - (NEVER) line   %d \"never\"\n",
+{ printf("%3d:	proc  - (NEVER) line   %d \"never\"\n",
 depth, newnever);
 #endif
 }
@@ -862,40 +862,40 @@ lastnever = newnever;
 }
 whoruns(lnr);
 if (e)
-{	if (e->n)
-{	char *ptr = e->n->fn->name;
+{ if (e->n)
+{ char *ptr = e->n->fn->name;
 char *qtr = nbuf;
 while (*ptr != '\0')
-{	if (*ptr != '"')
-{	*qtr++ = *ptr;
+{ if (*ptr != '"')
+{ *qtr++ = *ptr;
 }
 ptr++;
 }
 *qtr = '\0';
 } else
-{	strcpy(nbuf, "-");
+{ strcpy(nbuf, "-");
 }
 printf("%s:%d (state %d)",
 nbuf,
 e->n?e->n->ln:-1,
 e->seqno);
 if (!xspin
-&&  ((e->status&ENDSTATE) || has_lab(e, 2)))
-{	printf(" <valid end state>");
+&& ((e->status&ENDSTATE) || has_lab(e, 2)))
+{ printf(" <valid end state>");
 }
 }
 }
 int
 remotelab(Lextok *n)
-{	int i;
+{ int i;
 lineno = n->ln;
-Fname  = n->fn;
+Fname = n->fn;
 if (n->sym->type != 0 && n->sym->type != LABEL)
-{	printf("spin: error, type: %d\n", n->sym->type);
+{ printf("spin: error, type: %d\n", n->sym->type);
 fatal("not a labelname: '%s'", n->sym->name);
 }
 if (n->indstep >= 0)
-{	fatal("remote ref to label '%s' inside d_step",
+{ fatal("remote ref to label '%s' inside d_step",
 n->sym->name);
 }
 if ((i = find_lab(n->sym, n->lft->sym, 1)) == 0)
@@ -904,41 +904,41 @@ return i;
 }
 int
 remotevar(Lextok *n)
-{	int prno, i, added=0;
+{ int prno, i, added=0;
 RunList *Y, *oX;
 Lextok *onl;
 Symbol *os;
 lineno = n->ln;
-Fname  = n->fn;
+Fname = n->fn;
 if (!n->lft->lft)
 prno = f_pid(n->lft->sym->name);
 else
-{	prno = eval(n->lft->lft);
+{ prno = eval(n->lft->lft);
 #if 0
 if (n->lft->lft->ntyp == CONST)
 #endif
-{	prno += Have_claim;
+{ prno += Have_claim;
 added = Have_claim;
-}	}
+} }
 if (prno < 0)
 return 0;
 #if 0
 i = nproc - nstop;
 for (Y = run; Y; Y = Y->nxt)
-{	--i;
+{ --i;
 printf("	%s: i=%d, prno=%d, ->pid=%d\n", Y->n->name, i, prno, Y->pid);
 }
 #endif
 i = nproc - nstop + Skip_claim;
 for (Y = run; Y; Y = Y->nxt)
 if (--i == prno)
-{	if (strcmp(Y->n->name, n->lft->sym->name) != 0)
-{	printf("spin: remote reference error on '%s[%d]'\n",
+{ if (strcmp(Y->n->name, n->lft->sym->name) != 0)
+{ printf("spin: remote reference error on '%s[%d]'\n",
 n->lft->sym->name, prno-added);
 non_fatal("refers to wrong proctype '%s'", Y->n->name);
 }
 if (strcmp(n->sym->name, "_p") == 0)
-{	if (Y->pc)
+{ if (Y->pc)
 return Y->pc->seqno;
 return 0;
 }

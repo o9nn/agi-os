@@ -62,7 +62,7 @@ l = Nameval(nv.name, nv.value + " " + S->drop(line, sptab)) :: tl l;
 else {
 (nam, val) := S->splitl(line, ":");
 if(val == nil)
-continue;  # no colon
+continue; # no colon
 l = Nameval(S->tolower(nam), S->drop(val[1:], sptab)) :: l;
 }
 }
@@ -95,7 +95,7 @@ break;
 if(i == imax) {
 imax += 100;
 if(imax > 1000)
-break;	# Header lines aren't supposed to be > 1000
+break; # Header lines aren't supposed to be > 1000
 newglbuf := array[imax] of byte;
 newglbuf[0:] = glbuf[0:i];
 glbuf = newglbuf;

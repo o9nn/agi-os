@@ -1,9 +1,9 @@
 #include "stdinc.h"
 #include "9.h"
 struct DirBuf {
-DirEntryEnum*	dee;
-int		valid;
-DirEntry	de;
+DirEntryEnum* dee;
+int valid;
+DirEntry de;
 };
 static DirBuf*
 dirBufAlloc(File* file)

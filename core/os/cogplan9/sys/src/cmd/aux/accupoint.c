@@ -6,10 +6,10 @@ typedef struct M M;
 struct M
 {
 Mouse;
-int	byte;
+int byte;
 };
-int	button2;
-int	interrupted;
+int button2;
+int interrupted;
 int
 readmouse(M *m)
 {
@@ -21,10 +21,10 @@ return n;
 if(n != sizeof buf)
 return 0;
 m->byte = buf[0];
-m->xy.x =  atoi(buf+1+0*12);
-m->xy.y =  atoi(buf+1+1*12);
-m->buttons =  atoi(buf+1+2*12);
-m->msec =  atoi(buf+1+3*12);
+m->xy.x = atoi(buf+1+0*12);
+m->xy.y = atoi(buf+1+1*12);
+m->buttons = atoi(buf+1+2*12);
+m->msec = atoi(buf+1+3*12);
 return 1;
 }
 void

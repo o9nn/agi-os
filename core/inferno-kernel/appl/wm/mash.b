@@ -9,33 +9,33 @@ include "tk.m";
 tk: Tk;
 include "tkclient.m";
 tkclient: Tkclient;
-include	"plumbmsg.m";
+include "plumbmsg.m";
 plumbmsg: Plumbmsg;
 Msg: import plumbmsg;
 include "workdir.m";
 workdir: Workdir;
 WmMash: module
 {
-init:	fn(ctxt: ref Draw->Context, args: list of string);
+init: fn(ctxt: ref Draw->Context, args: list of string);
 };
 Command: module
 {
-tkinit:	fn(ctxt: ref Draw->Context, t: ref Tk->Toplevel, args: list of string);
+tkinit: fn(ctxt: ref Draw->Context, t: ref Tk->Toplevel, args: list of string);
 };
-BS:		con 8;		# ^h backspace character
-BSW:		con 23;		# ^w bacspace word
-BSL:		con 21;		# ^u backspace line
-EOT:		con 4;		# ^d end of file
-ESC:		con 27;		# hold mode
-HIWAT:	con 2000;	# maximum number of lines in transcript
-LOWAT:	con 1500;	# amount to reduce to after high water
-Name:	con "Mash";
+BS: con 8; # ^h backspace character
+BSW: con 23; # ^w bacspace word
+BSL: con 21; # ^u backspace line
+EOT: con 4; # ^d end of file
+ESC: con 27; # hold mode
+HIWAT: con 2000; # maximum number of lines in transcript
+LOWAT: con 1500; # amount to reduce to after high water
+Name: con "Mash";
 Rdreq: adt
 {
-off:	int;
-nbytes:	int;
-fid:	int;
-rc:	chan of (array of byte, string);
+off: int;
+nbytes: int;
+fid: int;
+rc: chan of (array of byte, string);
 };
 shwin_cfg := array[] of {
 "menu .m",
@@ -95,12 +95,12 @@ if(plumbmsg->init(1, nil, 0) >= 0){
 plumbed = 1;
 workdir = load Workdir Workdir->PATH;
 }
-argv = tl argv;		# strip off command name
+argv = tl argv; # strip off command name
 (t, titlectl) := tkclient->toplevel(ctxt, "", Name, Tkclient->Appl);
 edit := chan of string;
 tk->namechan(t, edit, "edit");
-#	mash := chan of string;
-#	tk->namechan(t, mash, "mash");
+# mash := chan of string;
+# tk->namechan(t, mash, "mash");
 tkcmds(t, shwin_cfg);
 tkclient->onscreen(t, nil);
 tkclient->startinput(t, "kbd"::"ptr"::nil);
@@ -179,7 +179,7 @@ tk->cmd(t, ".ft.t configure -foreground "+color+update);
 }
 c := <-but1 =>
 button1 = (c == "pressed");
-button3 = 0;	# abort any pending button 3 action
+button3 = 0; # abort any pending button 3 action
 c := <-but2 =>
 if(button1){
 cut(t, 1);
@@ -191,7 +191,7 @@ x := int hd l - 50;
 y := int hd tl l - int tk->cmd(t, ".m yposition "+menuindex) - 10;
 tk->cmd(t, ".m activate "+menuindex+"; .m post "+string x+" "+string y+
 "; grab set .m; update");
-button3 = 0;	# abort any pending button 3 action
+button3 = 0; # abort any pending button 3 action
 c := <-but3 =>
 if(c == "pressed"){
 button3 = 1;
@@ -354,12 +354,12 @@ pre := "";
 rem := "";
 if(i + 1 < l)
 rem = s[i+1:];
-if(i == 0) {	# erase existing character in line
+if(i == 0) { # erase existing character in line
 if(tk->cmd(t, ".ft.t get " +
 "{outpoint linestart} outpoint") != "")
 tk->cmd(t, ".ft.t delete outpoint-1char");
 } else {
-if(s[i-1] != '\n')	# don't erase newlines
+if(s[i-1] != '\n') # don't erase newlines
 i--;
 if(i)
 pre = s[:i];

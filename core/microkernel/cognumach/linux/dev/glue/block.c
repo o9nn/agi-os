@@ -358,8 +358,8 @@ r->sem = NULL;
 r->next = NULL;
 enqueue_request (r);
 }
-#define BSIZE	(1 << bshift)
-#define BMASK	(BSIZE - 1)
+#define BSIZE (1 << bshift)
+#define BMASK (BSIZE - 1)
 static int
 rdwr_partial (int rw, kdev_t dev, loff_t *off,
 char **buf, int *resid, int bshift)
@@ -433,8 +433,8 @@ out:
 free_buffer (bh->b_data, bh->b_size);
 return err;
 }
-#define BH_Bounce	16
-#define MAX_BUF		8
+#define BH_Bounce 16
+#define MAX_BUF 8
 static int
 rdwr_full (int rw, kdev_t dev, loff_t *off, char **buf, int *resid, int bshift)
 {
@@ -792,14 +792,14 @@ return D_NO_SUCH_DEVICE;
 }
 return 0;
 }
-#define DECL_DATA	struct temp_data td
-#define INIT_DATA()			\
-MACRO_BEGIN				\
-list_init (&td.pages);		\
-td.inode.i_rdev = bd->dev;		\
-td.file.f_mode = bd->mode;		\
-td.file.f_flags = bd->flags;		\
-current_thread ()->pcb->data = &td;	\
+#define DECL_DATA struct temp_data td
+#define INIT_DATA() \
+MACRO_BEGIN \
+list_init (&td.pages); \
+td.inode.i_rdev = bd->dev; \
+td.file.f_mode = bd->mode; \
+td.file.f_flags = bd->flags; \
+current_thread ()->pcb->data = &td; \
 MACRO_END
 static io_return_t
 device_open (ipc_port_t reply_port, mach_msg_type_name_t reply_port_type,
@@ -1005,7 +1005,7 @@ device_close (void *d)
 {
 return device_close_forced (d, 0);
 }
-#define MAX_COPY	(VM_MAP_COPY_PAGE_LIST_MAX << PAGE_SHIFT)
+#define MAX_COPY (VM_MAP_COPY_PAGE_LIST_MAX << PAGE_SHIFT)
 static int
 check_limit (struct block_data *bd, loff_t *off, long bn, int count)
 {

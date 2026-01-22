@@ -1,8 +1,8 @@
-#include	"all.h"
-#include	"9p1.h"
-static	char	elem[NAMELEN];
-static	Filsys*	cur_fs;
-static	char	conline[100];
+#include "all.h"
+#include "9p1.h"
+static char elem[NAMELEN];
+static Filsys* cur_fs;
+static char conline[100];
 void
 consserve(void)
 {
@@ -40,23 +40,23 @@ s++;
 if(*s == '\0')
 break;
 switch(*s){
-case 'f':	flags |= Cfree;			break;
-case 't':	flags |= Ctag;			break;
-case 'c':	flags |= Cream;			break;
-case 'd':	flags |= Cbad;			break;
-case 'r':	flags |= Crdall;		break;
-case 'w':	flags |= Ctouch;		break;
-case 'p':	flags |= Cpdir;			break;
-case 'P':	flags |= Cpfile;		break;
-case 'q':	flags |= Cquiet;		break;
+case 'f': flags |= Cfree; break;
+case 't': flags |= Ctag; break;
+case 'c': flags |= Cream; break;
+case 'd': flags |= Cbad; break;
+case 'r': flags |= Crdall; break;
+case 'w': flags |= Ctouch; break;
+case 'p': flags |= Cpdir; break;
+case 'P': flags |= Cpfile; break;
+case 'q': flags |= Cquiet; break;
 }
 }
 check(cur_fs, flags);
 }
 enum
 {
-Sset	= (1<<0),
-Setc	= (1<<1),
+Sset = (1<<0),
+Setc = (1<<1),
 };
 void
 cmd_stats(void)
@@ -490,29 +490,29 @@ cmd_nowritegroup(void)
 {
 writegroup = 0;
 }
-Command	command[] =
+Command command[] =
 {
-"allow",	cmd_allow,	"",
-"allowoff",	cmd_disallow,	"",
-"atime",		cmd_atime,	"",
-"cfs",		cmd_cfs,	"[filesys]",
-"chat",		cmd_chat,	"",
-"check",	cmd_check,	"[cdfpPqrtw]",
-"clri",		cmd_clri,	"filename",
-"create",	cmd_create,	"filename user group perm [ald]",
-"disallow",	cmd_disallow,	"",
-"halt",		cmd_halt,	"",
-"help",		cmd_help,	"",
-"listen",		cmd_listen,	"[address]",
-"newuser",	cmd_newuser,	"username",
-"noneattach",	cmd_noneattach,	"",
-"nowritegroup",	cmd_nowritegroup,	"",
-"remove",	cmd_remove,	"filename",
-"rename",	cmd_rename,	"file newname",
-"start",	cmd_start, "",
-"stats",	cmd_stats,	"[fw]",
-"sync",		cmd_sync,	"",
-"user",		cmd_user,	"",
+"allow", cmd_allow, "",
+"allowoff", cmd_disallow, "",
+"atime", cmd_atime, "",
+"cfs", cmd_cfs, "[filesys]",
+"chat", cmd_chat, "",
+"check", cmd_check, "[cdfpPqrtw]",
+"clri", cmd_clri, "filename",
+"create", cmd_create, "filename user group perm [ald]",
+"disallow", cmd_disallow, "",
+"halt", cmd_halt, "",
+"help", cmd_help, "",
+"listen", cmd_listen, "[address]",
+"newuser", cmd_newuser, "username",
+"noneattach", cmd_noneattach, "",
+"nowritegroup", cmd_nowritegroup, "",
+"remove", cmd_remove, "filename",
+"rename", cmd_rename, "file newname",
+"start", cmd_start, "",
+"stats", cmd_stats, "[fw]",
+"sync", cmd_sync, "",
+"user", cmd_user, "",
 0
 };
 int

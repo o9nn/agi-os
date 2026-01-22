@@ -1,19 +1,19 @@
 module.exports = (componentName, componentType) => ({
-  content: `
+content: `
 import React from "react";
 import ${componentName} from "../${componentName}";
 import { ThemeProvider } from "@mui/styles";
 import theme from "../../../util/theme";
 import StorybookWrapper from "../../../util/StorybookWrapper";
 export default {
-    title: "${componentType}/${componentName}"
+title: "${componentType}/${componentName}"
 };
-export const Default = () => 
+export const Default = () =>
 <ThemeProvider theme={theme}>
-  <StorybookWrapper fill>
-     <${componentName} />
-  </StorybookWrapper>;
+<StorybookWrapper fill>
+<${componentName} />
+</StorybookWrapper>;
 </ThemeProvider>;
 `,
-  extension: `.stories.tsx`
+extension: `.stories.tsx`
 });

@@ -1,25 +1,25 @@
-#define MIN(a,b)        (((a) < (b)) ? (a) : (b))
-#define MAX(a,b)        (((a) > (b)) ? (a) : (b))
+#define MIN(a,b) (((a) < (b)) ? (a) : (b))
+#define MAX(a,b) (((a) > (b)) ? (a) : (b))
 #if LINUX_VERSION_CODE >= LinuxVersionCode(2,3,47)
 #define SCSI_NCR_DYNAMIC_DMA_MAPPING
 #endif
-#define u_char		unsigned char
-#define u_short		unsigned short
-#define u_int		unsigned int
-#define u_long		unsigned long
+#define u_char unsigned char
+#define u_short unsigned short
+#define u_int unsigned int
+#define u_long unsigned long
 #ifndef bcopy
-#define bcopy(s, d, n)	memcpy((d), (s), (n))
+#define bcopy(s, d, n) memcpy((d), (s), (n))
 #endif
 #ifndef bcmp
-#define bcmp(s, d, n)	memcmp((d), (s), (n))
+#define bcmp(s, d, n) memcmp((d), (s), (n))
 #endif
 #ifndef bzero
-#define bzero(d, n)	memset((d), 0, (n))
+#define bzero(d, n) memset((d), 0, (n))
 #endif
 #ifndef offsetof
-#define offsetof(t, m)	((size_t) (&((t *)0)->m))
+#define offsetof(t, m) ((size_t) (&((t *)0)->m))
 #endif
-#define	assert(expression) { \
+#define assert(expression) { \
 if (!(expression)) { \
 (void)panic( \
 "assertion \"%s\" failed: file \"%s\", line %d\n", \
@@ -27,23 +27,23 @@ if (!(expression)) { \
 __FILE__, __LINE__); \
 } \
 }
-#define DEBUG_ALLOC    (0x0001)
-#define DEBUG_PHASE    (0x0002)
-#define DEBUG_QUEUE    (0x0008)
-#define DEBUG_RESULT   (0x0010)
-#define DEBUG_POINTER  (0x0020)
-#define DEBUG_SCRIPT   (0x0040)
-#define DEBUG_TINY     (0x0080)
-#define DEBUG_TIMING   (0x0100)
-#define DEBUG_NEGO     (0x0200)
-#define DEBUG_TAGS     (0x0400)
-#define DEBUG_SCATTER  (0x0800)
-#define DEBUG_IC        (0x1000)
+#define DEBUG_ALLOC (0x0001)
+#define DEBUG_PHASE (0x0002)
+#define DEBUG_QUEUE (0x0008)
+#define DEBUG_RESULT (0x0010)
+#define DEBUG_POINTER (0x0020)
+#define DEBUG_SCRIPT (0x0040)
+#define DEBUG_TINY (0x0080)
+#define DEBUG_TIMING (0x0100)
+#define DEBUG_NEGO (0x0200)
+#define DEBUG_TAGS (0x0400)
+#define DEBUG_SCATTER (0x0800)
+#define DEBUG_IC (0x1000)
 #ifdef SCSI_NCR_DEBUG_INFO_SUPPORT
 static int ncr_debug = SCSI_NCR_DEBUG_FLAGS;
 #define DEBUG_FLAGS ncr_debug
 #else
-#define DEBUG_FLAGS	SCSI_NCR_DEBUG_FLAGS
+#define DEBUG_FLAGS SCSI_NCR_DEBUG_FLAGS
 #endif
 typedef struct xpt_quehead {
 struct xpt_quehead *flink;
@@ -56,10 +56,10 @@ static inline void __xpt_que_add(struct xpt_quehead * new,
 struct xpt_quehead * blink,
 struct xpt_quehead * flink)
 {
-flink->blink	= new;
-new->flink	= flink;
-new->blink	= blink;
-blink->flink	= new;
+flink->blink = new;
+new->flink = flink;
+new->blink = blink;
+blink->flink = new;
 }
 static inline void __xpt_que_del(struct xpt_quehead * blink,
 struct xpt_quehead * flink)
@@ -77,18 +77,18 @@ struct xpt_quehead *head)
 struct xpt_quehead *first = list->flink;
 if (first != list) {
 struct xpt_quehead *last = list->blink;
-struct xpt_quehead *at   = head->flink;
+struct xpt_quehead *at = head->flink;
 first->blink = head;
-head->flink  = first;
+head->flink = first;
 last->flink = at;
-at->blink   = last;
+at->blink = last;
 }
 }
 #define xpt_que_entry(ptr, type, member) \
 ((type *)((char *)(ptr)-(unsigned long)(&((type *)0)->member)))
-#define xpt_insque(new, pos)		__xpt_que_add(new, pos, (pos)->flink)
-#define xpt_remque(el)			__xpt_que_del((el)->blink, (el)->flink)
-#define xpt_insque_head(new, head)	__xpt_que_add(new, head, (head)->flink)
+#define xpt_insque(new, pos) __xpt_que_add(new, pos, (pos)->flink)
+#define xpt_remque(el) __xpt_que_del((el)->blink, (el)->flink)
+#define xpt_insque_head(new, head) __xpt_que_add(new, head, (head)->flink)
 static inline struct xpt_quehead *xpt_remque_head(struct xpt_quehead *head)
 {
 struct xpt_quehead *elem = head->flink;
@@ -98,7 +98,7 @@ else
 elem = 0;
 return elem;
 }
-#define xpt_insque_tail(new, head)	__xpt_que_add(new, (head)->blink, head)
+#define xpt_insque_tail(new, head) __xpt_que_add(new, (head)->blink, head)
 static inline struct xpt_quehead *xpt_remque_tail(struct xpt_quehead *head)
 {
 struct xpt_quehead *elem = head->blink;
@@ -110,12 +110,12 @@ return elem;
 }
 #if LINUX_VERSION_CODE >= LinuxVersionCode(2,2,0)
 typedef struct pci_dev *pcidev_t;
-#define PCIDEV_NULL		(0)
-#define PciBusNumber(d)		(d)->bus->number
-#define PciDeviceFn(d)		(d)->devfn
-#define PciVendorId(d)		(d)->vendor
-#define PciDeviceId(d)		(d)->device
-#define PciIrqLine(d)		(d)->irq
+#define PCIDEV_NULL (0)
+#define PciBusNumber(d) (d)->bus->number
+#define PciDeviceFn(d) (d)->devfn
+#define PciVendorId(d) (d)->vendor
+#define PciDeviceId(d) (d)->device
+#define PciIrqLine(d) (d)->irq
 #if LINUX_VERSION_CODE > LinuxVersionCode(2,3,12)
 static int __init
 pci_get_base_address(struct pci_dev *pdev, int index, u_long *base)
@@ -141,10 +141,10 @@ return index;
 #endif
 #else
 typedef unsigned int pcidev_t;
-#define PCIDEV_NULL		(~0u)
-#define PciBusNumber(d)		((d)>>8)
-#define PciDeviceFn(d)		((d)&0xff)
-#define __PciDev(busn, devfn)	(((busn)<<8)+(devfn))
+#define PCIDEV_NULL (~0u)
+#define PciBusNumber(d) ((d)>>8)
+#define PciDeviceFn(d) ((d)&0xff)
+#define __PciDev(busn, devfn) (((busn)<<8)+(devfn))
 #define pci_present pcibios_present
 #define pci_read_config_byte(d, w, v) \
 pcibios_read_config_byte(PciBusNumber(d), PciDeviceFn(d), w, v)
@@ -209,46 +209,46 @@ return offset;
 #endif
 #if LINUX_VERSION_CODE >= LinuxVersionCode(2,1,93)
 spinlock_t DRIVER_SMP_LOCK = SPIN_LOCK_UNLOCKED;
-#define	NCR_LOCK_DRIVER(flags)     spin_lock_irqsave(&DRIVER_SMP_LOCK, flags)
-#define	NCR_UNLOCK_DRIVER(flags)   \
+#define NCR_LOCK_DRIVER(flags) spin_lock_irqsave(&DRIVER_SMP_LOCK, flags)
+#define NCR_UNLOCK_DRIVER(flags) \
 spin_unlock_irqrestore(&DRIVER_SMP_LOCK, flags)
-#define NCR_INIT_LOCK_NCB(np)      spin_lock_init(&np->smp_lock)
-#define	NCR_LOCK_NCB(np, flags)    spin_lock_irqsave(&np->smp_lock, flags)
-#define	NCR_UNLOCK_NCB(np, flags)  spin_unlock_irqrestore(&np->smp_lock, flags)
-#define	NCR_LOCK_SCSI_DONE(np, flags) \
+#define NCR_INIT_LOCK_NCB(np) spin_lock_init(&np->smp_lock)
+#define NCR_LOCK_NCB(np, flags) spin_lock_irqsave(&np->smp_lock, flags)
+#define NCR_UNLOCK_NCB(np, flags) spin_unlock_irqrestore(&np->smp_lock, flags)
+#define NCR_LOCK_SCSI_DONE(np, flags) \
 spin_lock_irqsave(&io_request_lock, flags)
-#define	NCR_UNLOCK_SCSI_DONE(np, flags) \
+#define NCR_UNLOCK_SCSI_DONE(np, flags) \
 spin_unlock_irqrestore(&io_request_lock, flags)
 #else
-#define	NCR_LOCK_DRIVER(flags)     do { save_flags(flags); cli(); } while (0)
-#define	NCR_UNLOCK_DRIVER(flags)   do { restore_flags(flags); } while (0)
-#define	NCR_INIT_LOCK_NCB(np)      do { } while (0)
-#define	NCR_LOCK_NCB(np, flags)    do { save_flags(flags); cli(); } while (0)
-#define	NCR_UNLOCK_NCB(np, flags)  do { restore_flags(flags); } while (0)
-#define	NCR_LOCK_SCSI_DONE(np, flags)    do {;} while (0)
-#define	NCR_UNLOCK_SCSI_DONE(np, flags)  do {;} while (0)
+#define NCR_LOCK_DRIVER(flags) do { save_flags(flags); cli(); } while (0)
+#define NCR_UNLOCK_DRIVER(flags) do { restore_flags(flags); } while (0)
+#define NCR_INIT_LOCK_NCB(np) do { } while (0)
+#define NCR_LOCK_NCB(np, flags) do { save_flags(flags); cli(); } while (0)
+#define NCR_UNLOCK_NCB(np, flags) do { restore_flags(flags); } while (0)
+#define NCR_LOCK_SCSI_DONE(np, flags) do {;} while (0)
+#define NCR_UNLOCK_SCSI_DONE(np, flags) do {;} while (0)
 #endif
 #if LINUX_VERSION_CODE < LinuxVersionCode(2,1,0)
 #define ioremap vremap
 #define iounmap vfree
 #endif
 #ifdef __sparc__
-#  include <asm/irq.h>
-#  define pcivtobus(p)			bus_dvma_to_mem(p)
-#  define memcpy_to_pci(a, b, c)	memcpy_toio((a), (b), (c))
+# include <asm/irq.h>
+# define pcivtobus(p) bus_dvma_to_mem(p)
+# define memcpy_to_pci(a, b, c) memcpy_toio((a), (b), (c))
 #elif defined(__alpha__)
-#  define pcivtobus(p)			((p) & 0xfffffffful)
-#  define memcpy_to_pci(a, b, c)	memcpy_toio((a), (b), (c))
+# define pcivtobus(p) ((p) & 0xfffffffful)
+# define memcpy_to_pci(a, b, c) memcpy_toio((a), (b), (c))
 #else
-#  define pcivtobus(p)			(p)
-#  define memcpy_to_pci(a, b, c)	memcpy_toio((a), (b), (c))
+# define pcivtobus(p) (p)
+# define memcpy_to_pci(a, b, c) memcpy_toio((a), (b), (c))
 #endif
 #ifndef SCSI_NCR_PCI_MEM_NOT_SUPPORTED
 static u_long __init remap_pci_mem(u_long base, u_long size)
 {
-u_long page_base	= ((u_long) base) & PAGE_MASK;
-u_long page_offs	= ((u_long) base) - page_base;
-u_long page_remapped	= (u_long) ioremap(page_base, page_offs+size);
+u_long page_base = ((u_long) base) & PAGE_MASK;
+u_long page_offs = ((u_long) base) - page_base;
+u_long page_remapped = (u_long) ioremap(page_base, page_offs+size);
 return page_remapped? (page_remapped + page_offs) : 0UL;
 }
 static void __init unmap_pci_mem(u_long vaddr, u_long size)
@@ -269,50 +269,50 @@ static void MDELAY(long ms) { while (ms--) UDELAY(1000); }
 #else
 #define __GetFreePages(flags, order) __get_free_pages(flags, order, 0)
 #endif
-#define MEMO_SHIFT	4
+#define MEMO_SHIFT 4
 #if PAGE_SIZE >= 8192
-#define MEMO_PAGE_ORDER	0
+#define MEMO_PAGE_ORDER 0
 #else
-#define MEMO_PAGE_ORDER	1
+#define MEMO_PAGE_ORDER 1
 #endif
 #define MEMO_FREE_UNUSED
-#define MEMO_WARN	1
-#define MEMO_GFP_FLAGS	GFP_ATOMIC
-#define MEMO_CLUSTER_SHIFT	(PAGE_SHIFT+MEMO_PAGE_ORDER)
-#define MEMO_CLUSTER_SIZE	(1UL << MEMO_CLUSTER_SHIFT)
-#define MEMO_CLUSTER_MASK	(MEMO_CLUSTER_SIZE-1)
+#define MEMO_WARN 1
+#define MEMO_GFP_FLAGS GFP_ATOMIC
+#define MEMO_CLUSTER_SHIFT (PAGE_SHIFT+MEMO_PAGE_ORDER)
+#define MEMO_CLUSTER_SIZE (1UL << MEMO_CLUSTER_SHIFT)
+#define MEMO_CLUSTER_MASK (MEMO_CLUSTER_SIZE-1)
 typedef u_long m_addr_t;
 typedef pcidev_t m_bush_t;
 typedef struct m_link {
 struct m_link *next;
 } m_link_s;
-#ifdef	SCSI_NCR_DYNAMIC_DMA_MAPPING
+#ifdef SCSI_NCR_DYNAMIC_DMA_MAPPING
 typedef struct m_vtob {
 struct m_vtob *next;
 m_addr_t vaddr;
 m_addr_t baddr;
 } m_vtob_s;
-#define VTOB_HASH_SHIFT		5
-#define VTOB_HASH_SIZE		(1UL << VTOB_HASH_SHIFT)
-#define VTOB_HASH_MASK		(VTOB_HASH_SIZE-1)
-#define VTOB_HASH_CODE(m)	\
+#define VTOB_HASH_SHIFT 5
+#define VTOB_HASH_SIZE (1UL << VTOB_HASH_SHIFT)
+#define VTOB_HASH_MASK (VTOB_HASH_SIZE-1)
+#define VTOB_HASH_CODE(m) \
 ((((m_addr_t) (m)) >> MEMO_CLUSTER_SHIFT) & VTOB_HASH_MASK)
 #endif
 typedef struct m_pool {
-#ifdef	SCSI_NCR_DYNAMIC_DMA_MAPPING
+#ifdef SCSI_NCR_DYNAMIC_DMA_MAPPING
 m_bush_t bush;
 m_addr_t (*getp)(struct m_pool *);
 void (*freep)(struct m_pool *, m_addr_t);
-#define M_GETP()		mp->getp(mp)
-#define M_FREEP(p)		mp->freep(mp, p)
-#define GetPages()		__GetFreePages(MEMO_GFP_FLAGS, MEMO_PAGE_ORDER)
-#define FreePages(p)		free_pages(p, MEMO_PAGE_ORDER)
+#define M_GETP() mp->getp(mp)
+#define M_FREEP(p) mp->freep(mp, p)
+#define GetPages() __GetFreePages(MEMO_GFP_FLAGS, MEMO_PAGE_ORDER)
+#define FreePages(p) free_pages(p, MEMO_PAGE_ORDER)
 int nump;
 m_vtob_s *(vtob[VTOB_HASH_SIZE]);
 struct m_pool *next;
 #else
-#define M_GETP()		__GetFreePages(MEMO_GFP_FLAGS, MEMO_PAGE_ORDER)
-#define M_FREEP(p)		free_pages(p, MEMO_PAGE_ORDER)
+#define M_GETP() __GetFreePages(MEMO_GFP_FLAGS, MEMO_PAGE_ORDER)
+#define M_FREEP(p) free_pages(p, MEMO_PAGE_ORDER)
 #endif
 struct m_link h[PAGE_SHIFT-MEMO_SHIFT+MEMO_PAGE_ORDER+1];
 } m_pool_s;
@@ -407,14 +407,14 @@ else if (uflags & MEMO_WARN)
 printk (NAME53C8XX ": failed to allocate %s[%d]\n", name, size);
 return p;
 }
-#define __m_calloc(mp, s, n)	__m_calloc2(mp, s, n, MEMO_WARN)
+#define __m_calloc(mp, s, n) __m_calloc2(mp, s, n, MEMO_WARN)
 static void __m_free(m_pool_s *mp, void *ptr, int size, char *name)
 {
 if (DEBUG_FLAGS & DEBUG_ALLOC)
 printk ("freeing %-10s[%4d] @%p.\n", name, size, ptr);
 ___m_free(mp, ptr, size);
 }
-#ifndef	SCSI_NCR_DYNAMIC_DMA_MAPPING
+#ifndef SCSI_NCR_DYNAMIC_DMA_MAPPING
 static m_pool_s mp0;
 #else
 static m_addr_t ___mp0_getp(m_pool_s *mp)
@@ -447,10 +447,10 @@ NCR_LOCK_DRIVER(flags);
 __m_free(&mp0, ptr, size, name);
 NCR_UNLOCK_DRIVER(flags);
 }
-#ifndef	SCSI_NCR_DYNAMIC_DMA_MAPPING
-#define __m_calloc_dma(b, s, n)		m_calloc(s, n)
-#define __m_free_dma(b, p, s, n)	m_free(p, s, n)
-#define __vtobus(b, p)			virt_to_bus(p)
+#ifndef SCSI_NCR_DYNAMIC_DMA_MAPPING
+#define __m_calloc_dma(b, s, n) m_calloc(s, n)
+#define __m_free_dma(b, p, s, n) m_free(p, s, n)
+#define __vtobus(b, p) virt_to_bus(p)
 #else
 static m_addr_t ___dma_getp(m_pool_s *mp)
 {
@@ -568,22 +568,22 @@ NCR_UNLOCK_DRIVER(flags);
 return vp ? vp->baddr + (((m_addr_t) m) - a) : 0;
 }
 #endif
-#define _m_calloc_dma(np, s, n)		__m_calloc_dma(np->pdev, s, n)
-#define _m_free_dma(np, p, s, n)	__m_free_dma(np->pdev, p, s, n)
-#define m_calloc_dma(s, n)		_m_calloc_dma(np, s, n)
-#define m_free_dma(p, s, n)		_m_free_dma(np, p, s, n)
-#define _vtobus(np, p)			__vtobus(np->pdev, p)
-#define vtobus(p)			_vtobus(np, p)
+#define _m_calloc_dma(np, s, n) __m_calloc_dma(np->pdev, s, n)
+#define _m_free_dma(np, p, s, n) __m_free_dma(np->pdev, p, s, n)
+#define m_calloc_dma(s, n) _m_calloc_dma(np, s, n)
+#define m_free_dma(p, s, n) _m_free_dma(np, p, s, n)
+#define _vtobus(np, p) __vtobus(np->pdev, p)
+#define vtobus(p) _vtobus(np, p)
 #ifndef SCSI_NCR_DYNAMIC_DMA_MAPPING
-#define __unmap_scsi_data(pdev, cmd)	do {; } while (0)
+#define __unmap_scsi_data(pdev, cmd) do {; } while (0)
 #define __map_scsi_single_data(pdev, cmd) (__vtobus(pdev,(cmd)->request_buffer))
-#define __map_scsi_sg_data(pdev, cmd)	((cmd)->use_sg)
-#define __sync_scsi_data(pdev, cmd)	do {; } while (0)
-#define scsi_sg_dma_address(sc)		vtobus((sc)->address)
-#define scsi_sg_dma_len(sc)		((sc)->length)
+#define __map_scsi_sg_data(pdev, cmd) ((cmd)->use_sg)
+#define __sync_scsi_data(pdev, cmd) do {; } while (0)
+#define scsi_sg_dma_address(sc) vtobus((sc)->address)
+#define scsi_sg_dma_len(sc) ((sc)->length)
 #else
-#define __data_mapped	SCp.phase
-#define __data_mapping	SCp.have_data_in
+#define __data_mapped SCp.phase
+#define __data_mapping SCp.have_data_in
 static void __unmap_scsi_data(pcidev_t pdev, Scsi_Cmnd *cmd)
 {
 int dma_dir = scsi_to_pci_dma_dir(cmd->sc_data_direction);
@@ -634,20 +634,20 @@ cmd->request_bufflen, dma_dir);
 break;
 }
 }
-#define scsi_sg_dma_address(sc)		sg_dma_address(sc)
-#define scsi_sg_dma_len(sc)		sg_dma_len(sc)
+#define scsi_sg_dma_address(sc) sg_dma_address(sc)
+#define scsi_sg_dma_len(sc) sg_dma_len(sc)
 #endif
-#define unmap_scsi_data(np, cmd)	__unmap_scsi_data(np->pdev, cmd)
-#define map_scsi_single_data(np, cmd)	__map_scsi_single_data(np->pdev, cmd)
-#define map_scsi_sg_data(np, cmd)	__map_scsi_sg_data(np->pdev, cmd)
-#define sync_scsi_data(np, cmd)		__sync_scsi_data(np->pdev, cmd)
-#ifdef	SCSI_DATA_UNKNOWN
-#define scsi_data_direction(cmd)	(cmd->sc_data_direction)
+#define unmap_scsi_data(np, cmd) __unmap_scsi_data(np->pdev, cmd)
+#define map_scsi_single_data(np, cmd) __map_scsi_single_data(np->pdev, cmd)
+#define map_scsi_sg_data(np, cmd) __map_scsi_sg_data(np->pdev, cmd)
+#define sync_scsi_data(np, cmd) __sync_scsi_data(np->pdev, cmd)
+#ifdef SCSI_DATA_UNKNOWN
+#define scsi_data_direction(cmd) (cmd->sc_data_direction)
 #else
-#define	SCSI_DATA_UNKNOWN	0
-#define	SCSI_DATA_WRITE		1
-#define	SCSI_DATA_READ		2
-#define	SCSI_DATA_NONE		3
+#define SCSI_DATA_UNKNOWN 0
+#define SCSI_DATA_WRITE 1
+#define SCSI_DATA_READ 2
+#define SCSI_DATA_NONE 3
 static __inline__ int scsi_data_direction(Scsi_Cmnd *cmd)
 {
 int direction;
@@ -670,28 +670,28 @@ return direction;
 }
 #endif
 static struct ncr_driver_setup
-driver_setup			= SCSI_NCR_DRIVER_SETUP;
-#ifdef	SCSI_NCR_BOOT_COMMAND_LINE_SUPPORT
+driver_setup = SCSI_NCR_DRIVER_SETUP;
+#ifdef SCSI_NCR_BOOT_COMMAND_LINE_SUPPORT
 static struct ncr_driver_setup
-driver_safe_setup __initdata	= SCSI_NCR_DRIVER_SAFE_SETUP;
+driver_safe_setup __initdata = SCSI_NCR_DRIVER_SAFE_SETUP;
 #endif
 #define initverbose (driver_setup.verbose)
 #define bootverbose (np->verbose)
 typedef struct {
-int	bus;
-u_char	device_fn;
-u_long	base;
-u_long	base_2;
-u_long	io_port;
-int	irq;
-u_long	base_io;
-volatile struct ncr_reg	*reg;
+int bus;
+u_char device_fn;
+u_long base;
+u_long base_2;
+u_long io_port;
+int irq;
+u_long base_io;
+volatile struct ncr_reg *reg;
 } ncr_slot;
 typedef struct {
 int type;
-#define	SCSI_NCR_SYMBIOS_NVRAM	(1)
-#define	SCSI_NCR_TEKRAM_NVRAM	(2)
-#ifdef	SCSI_NCR_NVRAM_SUPPORT
+#define SCSI_NCR_SYMBIOS_NVRAM (1)
+#define SCSI_NCR_TEKRAM_NVRAM (2)
+#ifdef SCSI_NCR_NVRAM_SUPPORT
 union {
 Symbios_nvram Symbios;
 Tekram_nvram Tekram;
@@ -699,12 +699,12 @@ Tekram_nvram Tekram;
 #endif
 } ncr_nvram;
 typedef struct {
-pcidev_t  pdev;
-ncr_slot  slot;
-ncr_chip  chip;
+pcidev_t pdev;
+ncr_slot slot;
+ncr_chip chip;
 ncr_nvram *nvram;
 u_char host_id;
-#ifdef	SCSI_NCR_PQS_PDS_SUPPORT
+#ifdef SCSI_NCR_PQS_PDS_SUPPORT
 u_char pqs_pds;
 #endif
 int attach_done;
@@ -797,15 +797,15 @@ S24C16_write_ack(np, ack_data, gpreg, gpcntl);
 static int __init
 sym_read_S24C16_nvram (ncr_slot *np, int offset, u_char *data, int len)
 {
-u_char	gpcntl, gpreg;
-u_char	old_gpcntl, old_gpreg;
-u_char	ack_data;
-int	retv = 1;
-int	x;
-old_gpreg	= INB (nc_gpreg);
-old_gpcntl	= INB (nc_gpcntl);
-gpcntl		= old_gpcntl & 0xfc;
-OUTB (nc_gpreg,  old_gpreg);
+u_char gpcntl, gpreg;
+u_char old_gpcntl, old_gpreg;
+u_char ack_data;
+int retv = 1;
+int x;
+old_gpreg = INB (nc_gpreg);
+old_gpcntl = INB (nc_gpcntl);
+gpcntl = old_gpcntl & 0xfc;
+OUTB (nc_gpreg, old_gpreg);
 OUTB (nc_gpcntl, gpcntl);
 gpreg = old_gpreg;
 S24C16_set_bit(np, 0, &gpreg, CLR_CLK);
@@ -835,7 +835,7 @@ S24C16_stop(np, &gpreg);
 retv = 0;
 out:
 OUTB (nc_gpcntl, old_gpcntl);
-OUTB (nc_gpreg,  old_gpreg);
+OUTB (nc_gpreg, old_gpreg);
 return retv;
 }
 #undef SET_BIT 0
@@ -846,8 +846,8 @@ static int __init sym_read_Symbios_nvram (ncr_slot *np, Symbios_nvram *nvram)
 {
 static u_char Symbios_trailer[6] = {0xfe, 0xfe, 0, 0, 0, 0};
 u_char *data = (u_char *) nvram;
-int len  = sizeof(*nvram);
-u_short	csum;
+int len = sizeof(*nvram);
+u_short csum;
 int x;
 if (sym_read_S24C16_nvram (np, SYMBIOS_NVRAM_ADDRESS, data, len))
 return 1;
@@ -909,7 +909,7 @@ u_char read_bit;
 for (x = 0; x < 16; x++) {
 T93C46_Read_Bit(np, &read_bit, gpreg);
 if (read_bit & 0x01)
-*nvram_data |=  (0x01 << (15 - x));
+*nvram_data |= (0x01 << (15 - x));
 else
 *nvram_data &= ~(0x01 << (15 - x));
 }
@@ -917,9 +917,9 @@ else
 static int __init
 T93C46_Read_Data(ncr_slot *np, u_short *data,int len,u_char *gpreg)
 {
-u_char	read_bit;
-int	x;
-for (x = 0; x < len; x++)  {
+u_char read_bit;
+int x;
+for (x = 0; x < len; x++) {
 T93C46_Send_Command(np, 0x180 | x, &read_bit, gpreg);
 if (read_bit & 0x01)
 return 1;
@@ -934,8 +934,8 @@ sym_read_T93C46_nvram (ncr_slot *np, Tekram_nvram *nvram)
 u_char gpcntl, gpreg;
 u_char old_gpcntl, old_gpreg;
 int retv = 1;
-old_gpreg	= INB (nc_gpreg);
-old_gpcntl	= INB (nc_gpcntl);
+old_gpreg = INB (nc_gpreg);
+old_gpcntl = INB (nc_gpcntl);
 gpreg = old_gpreg & 0xe9;
 OUTB (nc_gpreg, gpreg);
 gpcntl = (old_gpcntl & 0xe9) | 0x09;
@@ -943,7 +943,7 @@ OUTB (nc_gpcntl, gpcntl);
 retv = T93C46_Read_Data(np, (u_short *) nvram,
 sizeof(*nvram) / sizeof(short), &gpreg);
 OUTB (nc_gpcntl, old_gpcntl);
-OUTB (nc_gpreg,  old_gpreg);
+OUTB (nc_gpreg, old_gpreg);
 return retv;
 }
 static int __init
@@ -951,7 +951,7 @@ sym_read_Tekram_nvram (ncr_slot *np, u_short device_id, Tekram_nvram *nvram)
 {
 u_char *data = (u_char *) nvram;
 int len = sizeof(*nvram);
-u_short	csum;
+u_short csum;
 int x;
 switch (device_id) {
 case PCI_DEVICE_ID_NCR_53C885:
@@ -992,9 +992,9 @@ devp->slot.reg = (struct ncr_reg *) remap_pci_mem(devp->slot.base, 128);
 if (!devp->slot.reg)
 return;
 #endif
-if	(!sym_read_Symbios_nvram(&devp->slot, &nvp->data.Symbios))
+if (!sym_read_Symbios_nvram(&devp->slot, &nvp->data.Symbios))
 nvp->type = SCSI_NCR_SYMBIOS_NVRAM;
-else if	(!sym_read_Tekram_nvram(&devp->slot, devp->chip.device_id,
+else if (!sym_read_Tekram_nvram(&devp->slot, devp->chip.device_id,
 &nvp->data.Tekram))
 nvp->type = SCSI_NCR_TEKRAM_NVRAM;
 else {
@@ -1007,26 +1007,26 @@ release_region(devp->slot.base_io, 128);
 unmap_pci_mem((u_long) devp->slot.reg, 128ul);
 #endif
 }
-#ifdef	SCSI_NCR_DEBUG_NVRAM
+#ifdef SCSI_NCR_DEBUG_NVRAM
 static void __init ncr_display_Symbios_nvram(Symbios_nvram *nvram)
 {
 int i;
 printk(KERN_DEBUG NAME53C8XX ": HOST ID=%d%s%s%s%s%s\n",
 nvram->host_id & 0x0f,
-(nvram->flags  & SYMBIOS_SCAM_ENABLE)	? " SCAM"	:"",
-(nvram->flags  & SYMBIOS_PARITY_ENABLE)	? " PARITY"	:"",
-(nvram->flags  & SYMBIOS_VERBOSE_MSGS)	? " VERBOSE"	:"",
-(nvram->flags  & SYMBIOS_CHS_MAPPING)	? " CHS_ALT"	:"",
-(nvram->flags1 & SYMBIOS_SCAN_HI_LO)	? " HI_LO"	:"");
+(nvram->flags & SYMBIOS_SCAM_ENABLE) ? " SCAM" :"",
+(nvram->flags & SYMBIOS_PARITY_ENABLE) ? " PARITY" :"",
+(nvram->flags & SYMBIOS_VERBOSE_MSGS) ? " VERBOSE" :"",
+(nvram->flags & SYMBIOS_CHS_MAPPING) ? " CHS_ALT" :"",
+(nvram->flags1 & SYMBIOS_SCAN_HI_LO) ? " HI_LO" :"");
 for (i = 0 ; i < 15 ; i++) {
 struct Symbios_target *tn = &nvram->target[i];
 printk(KERN_DEBUG NAME53C8XX
 "-%d:%s%s%s%s WIDTH=%d SYNC=%d TMO=%d\n",
 i,
-(tn->flags & SYMBIOS_DISCONNECT_ENABLE)	? " DISC"	: "",
-(tn->flags & SYMBIOS_SCAN_AT_BOOT_TIME)	? " SCAN_BOOT"	: "",
-(tn->flags & SYMBIOS_SCAN_LUNS)		? " SCAN_LUNS"	: "",
-(tn->flags & SYMBIOS_QUEUE_TAGS_ENABLED)? " TCQ"	: "",
+(tn->flags & SYMBIOS_DISCONNECT_ENABLE) ? " DISC" : "",
+(tn->flags & SYMBIOS_SCAN_AT_BOOT_TIME) ? " SCAN_BOOT" : "",
+(tn->flags & SYMBIOS_SCAN_LUNS) ? " SCAN_LUNS" : "",
+(tn->flags & SYMBIOS_QUEUE_TAGS_ENABLED)? " TCQ" : "",
 tn->bus_width,
 tn->sync_period / 4,
 tn->timeout);
@@ -1043,21 +1043,21 @@ if (nvram->boot_delay_index < 6)
 boot_delay = Tekram_boot_delay[nvram->boot_delay_index];
 switch((nvram->flags & TEKRAM_REMOVABLE_FLAGS) >> 6) {
 default:
-case 0:	rem = "";			break;
-case 1: rem = " REMOVABLE=boot device";	break;
-case 2: rem = " REMOVABLE=all";		break;
+case 0: rem = ""; break;
+case 1: rem = " REMOVABLE=boot device"; break;
+case 2: rem = " REMOVABLE=all"; break;
 }
 printk(KERN_DEBUG NAME53C8XX
 ": HOST ID=%d%s%s%s%s%s%s%s%s%s BOOT DELAY=%d tags=%d\n",
 nvram->host_id & 0x0f,
-(nvram->flags1 & SYMBIOS_SCAM_ENABLE)	? " SCAM"	:"",
+(nvram->flags1 & SYMBIOS_SCAM_ENABLE) ? " SCAM" :"",
 (nvram->flags & TEKRAM_MORE_THAN_2_DRIVES) ? " >2DRIVES":"",
-(nvram->flags & TEKRAM_DRIVES_SUP_1GB)	? " >1GB"	:"",
-(nvram->flags & TEKRAM_RESET_ON_POWER_ON) ? " RESET"	:"",
-(nvram->flags & TEKRAM_ACTIVE_NEGATION)	? " ACT_NEG"	:"",
-(nvram->flags & TEKRAM_IMMEDIATE_SEEK)	? " IMM_SEEK"	:"",
-(nvram->flags & TEKRAM_SCAN_LUNS)	? " SCAN_LUNS"	:"",
-(nvram->flags1 & TEKRAM_F2_F6_ENABLED)	? " F2_F6"	:"",
+(nvram->flags & TEKRAM_DRIVES_SUP_1GB) ? " >1GB" :"",
+(nvram->flags & TEKRAM_RESET_ON_POWER_ON) ? " RESET" :"",
+(nvram->flags & TEKRAM_ACTIVE_NEGATION) ? " ACT_NEG" :"",
+(nvram->flags & TEKRAM_IMMEDIATE_SEEK) ? " IMM_SEEK" :"",
+(nvram->flags & TEKRAM_SCAN_LUNS) ? " SCAN_LUNS" :"",
+(nvram->flags1 & TEKRAM_F2_F6_ENABLED) ? " F2_F6" :"",
 rem, boot_delay, tags);
 for (i = 0; i <= 15; i++) {
 int sync, j;
@@ -1066,12 +1066,12 @@ j = tn->sync_index & 0xf;
 sync = Tekram_sync[j];
 printk(KERN_DEBUG NAME53C8XX "-%d:%s%s%s%s%s%s PERIOD=%d\n",
 i,
-(tn->flags & TEKRAM_PARITY_CHECK)	? " PARITY"	: "",
-(tn->flags & TEKRAM_SYNC_NEGO)		? " SYNC"	: "",
-(tn->flags & TEKRAM_DISCONNECT_ENABLE)	? " DISC"	: "",
-(tn->flags & TEKRAM_START_CMD)		? " START"	: "",
-(tn->flags & TEKRAM_TAGGED_COMMANDS)	? " TCQ"	: "",
-(tn->flags & TEKRAM_WIDE_NEGO)		? " WIDE"	: "",
+(tn->flags & TEKRAM_PARITY_CHECK) ? " PARITY" : "",
+(tn->flags & TEKRAM_SYNC_NEGO) ? " SYNC" : "",
+(tn->flags & TEKRAM_DISCONNECT_ENABLE) ? " DISC" : "",
+(tn->flags & TEKRAM_START_CMD) ? " START" : "",
+(tn->flags & TEKRAM_TAGGED_COMMANDS) ? " TCQ" : "",
+(tn->flags & TEKRAM_WIDE_NEGO) ? " WIDE" : "",
 sync);
 }
 }
@@ -1095,7 +1095,7 @@ return;
 }
 if (info->pos < info->offset) {
 data += (info->offset - info->pos);
-len  -= (info->offset - info->pos);
+len -= (info->offset - info->pos);
 }
 if (len > 0) {
 memcpy(info->buffer + info->pos, data, len);
@@ -1115,60 +1115,60 @@ return len;
 }
 #endif
 #ifdef MODULE
-#define	ARG_SEP	' '
+#define ARG_SEP ' '
 #else
-#define	ARG_SEP	','
+#define ARG_SEP ','
 #endif
-#define OPT_TAGS		1
-#define OPT_MASTER_PARITY	2
-#define OPT_SCSI_PARITY		3
-#define OPT_DISCONNECTION	4
-#define OPT_SPECIAL_FEATURES	5
-#define OPT_ULTRA_SCSI		6
-#define OPT_FORCE_SYNC_NEGO	7
-#define OPT_REVERSE_PROBE	8
-#define OPT_DEFAULT_SYNC	9
-#define OPT_VERBOSE		10
-#define OPT_DEBUG		11
-#define OPT_BURST_MAX		12
-#define OPT_LED_PIN		13
-#define OPT_MAX_WIDE		14
-#define OPT_SETTLE_DELAY	15
-#define OPT_DIFF_SUPPORT	16
-#define OPT_IRQM		17
-#define OPT_PCI_FIX_UP		18
-#define OPT_BUS_CHECK		19
-#define OPT_OPTIMIZE		20
-#define OPT_RECOVERY		21
-#define OPT_SAFE_SETUP		22
-#define OPT_USE_NVRAM		23
-#define OPT_EXCLUDE		24
-#define OPT_HOST_ID		25
+#define OPT_TAGS 1
+#define OPT_MASTER_PARITY 2
+#define OPT_SCSI_PARITY 3
+#define OPT_DISCONNECTION 4
+#define OPT_SPECIAL_FEATURES 5
+#define OPT_ULTRA_SCSI 6
+#define OPT_FORCE_SYNC_NEGO 7
+#define OPT_REVERSE_PROBE 8
+#define OPT_DEFAULT_SYNC 9
+#define OPT_VERBOSE 10
+#define OPT_DEBUG 11
+#define OPT_BURST_MAX 12
+#define OPT_LED_PIN 13
+#define OPT_MAX_WIDE 14
+#define OPT_SETTLE_DELAY 15
+#define OPT_DIFF_SUPPORT 16
+#define OPT_IRQM 17
+#define OPT_PCI_FIX_UP 18
+#define OPT_BUS_CHECK 19
+#define OPT_OPTIMIZE 20
+#define OPT_RECOVERY 21
+#define OPT_SAFE_SETUP 22
+#define OPT_USE_NVRAM 23
+#define OPT_EXCLUDE 24
+#define OPT_HOST_ID 25
 #ifdef SCSI_NCR_IARB_SUPPORT
-#define OPT_IARB		26
+#define OPT_IARB 26
 #endif
 static char setup_token[] __initdata =
-"tags:"   "mpar:"
-"spar:"   "disc:"
-"specf:"  "ultra:"
-"fsn:"    "revprob:"
-"sync:"   "verb:"
-"debug:"  "burst:"
-"led:"    "wide:"
+"tags:" "mpar:"
+"spar:" "disc:"
+"specf:" "ultra:"
+"fsn:" "revprob:"
+"sync:" "verb:"
+"debug:" "burst:"
+"led:" "wide:"
 "settle:" "diff:"
-"irqm:"   "pcifix:"
+"irqm:" "pcifix:"
 "buschk:" "optim:"
 "recovery:"
-"safe:"   "nvram:"
-"excl:"   "hostid:"
+"safe:" "nvram:"
+"excl:" "hostid:"
 #ifdef SCSI_NCR_IARB_SUPPORT
 "iarb:"
 #endif
 ;
 #ifdef MODULE
-#define	ARG_SEP	' '
+#define ARG_SEP ' '
 #else
-#define	ARG_SEP	','
+#define ARG_SEP ','
 #endif
 static int __init get_setup_token(char *p)
 {
@@ -1196,9 +1196,9 @@ char *pe;
 val = 0;
 pv = pc;
 c = *++pv;
-if	(c == 'n')
+if (c == 'n')
 val = 0;
-else if	(c == 'y')
+else if (c == 'y')
 val = 1;
 else
 val = (int) simple_strtoul(pv, &pe, 0);
@@ -1227,7 +1227,7 @@ case OPT_SPECIAL_FEATURES:
 driver_setup.special_features = val;
 break;
 case OPT_ULTRA_SCSI:
-driver_setup.ultra_scsi	= val;
+driver_setup.ultra_scsi = val;
 break;
 case OPT_FORCE_SYNC_NEGO:
 driver_setup.force_sync_nego = val;
@@ -1263,7 +1263,7 @@ case OPT_IRQM:
 driver_setup.irqm = val;
 break;
 case OPT_PCI_FIX_UP:
-driver_setup.pci_fix_up	= val;
+driver_setup.pci_fix_up = val;
 break;
 case OPT_BUS_CHECK:
 driver_setup.bus_check = val;
@@ -1303,11 +1303,11 @@ if ((cur = strchr(cur, ARG_SEP)) != NULL)
 #endif
 return 1;
 }
-#define DEF_DEPTH	(driver_setup.default_tags)
-#define ALL_TARGETS	-2
-#define NO_TARGET	-1
-#define ALL_LUNS	-2
-#define NO_LUN		-1
+#define DEF_DEPTH (driver_setup.default_tags)
+#define ALL_TARGETS -2
+#define NO_TARGET -1
+#define ALL_LUNS -2
+#define NO_LUN -1
 static int device_queue_depth(int unit, int target, int lun)
 {
 int c, h, t, u, v;
@@ -1336,7 +1336,7 @@ break;
 case 'q':
 if (h == unit &&
 (t == ALL_TARGETS || t == target) &&
-(u == ALL_LUNS    || u == lun))
+(u == ALL_LUNS || u == lun))
 return v;
 break;
 case '-':
@@ -1352,7 +1352,7 @@ return DEF_DEPTH;
 }
 static void __init ncr_print_driver_setup(void)
 {
-#define YesNo(y)	y ? 'y' : 'n'
+#define YesNo(y) y ? 'y' : 'n'
 printk (NAME53C8XX ": setup=disc:%c,specf:%d,ultra:%d,tags:%d,sync:%d,"
 "burst:%d,wide:%c,diff:%d,revprob:%c,buschk:0x%x\n",
 YesNo(driver_setup.disconnection),
@@ -1379,9 +1379,9 @@ driver_setup.use_nvram,
 driver_setup.pci_fix_up);
 #undef YesNo
 }
-static ncr_chip	ncr_chip_table[] __initdata	= SCSI_NCR_CHIP_TABLE;
-#ifdef	SCSI_NCR_PQS_PDS_SUPPORT
-#define	SCSI_NCR_MAX_PQS_BUS	16
+static ncr_chip ncr_chip_table[] __initdata = SCSI_NCR_CHIP_TABLE;
+#ifdef SCSI_NCR_PQS_PDS_SUPPORT
+#define SCSI_NCR_MAX_PQS_BUS 16
 static int pqs_bus[SCSI_NCR_MAX_PQS_BUS] __initdata = { 0 };
 static void __init ncr_detect_pqs_pds(void)
 {
@@ -1430,15 +1430,15 @@ return -1;
 #endif
 vendor_id = PciVendorId(pdev);
 device_id = PciDeviceId(pdev);
-irq	  = PciIrqLine(pdev);
-i =	0;
-i =	pci_get_base_address(pdev, i, &io_port);
-i =	pci_get_base_address(pdev, i, &base);
-(void)	pci_get_base_address(pdev, i, &base_2);
-pci_read_config_word(pdev, PCI_COMMAND,		&command);
-pci_read_config_byte(pdev, PCI_CLASS_REVISION,	&revision);
-pci_read_config_byte(pdev, PCI_CACHE_LINE_SIZE,	&cache_line_size);
-pci_read_config_byte(pdev, PCI_LATENCY_TIMER,	&latency_timer);
+irq = PciIrqLine(pdev);
+i = 0;
+i = pci_get_base_address(pdev, i, &io_port);
+i = pci_get_base_address(pdev, i, &base);
+(void) pci_get_base_address(pdev, i, &base_2);
+pci_read_config_word(pdev, PCI_COMMAND, &command);
+pci_read_config_byte(pdev, PCI_CLASS_REVISION, &revision);
+pci_read_config_byte(pdev, PCI_CACHE_LINE_SIZE, &cache_line_size);
+pci_read_config_byte(pdev, PCI_LATENCY_TIMER, &latency_timer);
 #ifdef SCSI_NCR_PQS_PDS_SUPPORT
 for(i = 0; i < SCSI_NCR_MAX_PQS_BUS && pqs_bus[i] != -1; i++) {
 u_char tmp;
@@ -1500,7 +1500,7 @@ return -1;
 if ((command & (PCI_COMMAND_IO | PCI_COMMAND_MEMORY))
 != (PCI_COMMAND_IO | PCI_COMMAND_MEMORY)) {
 printk(NAME53C8XX ": setting%s%s...\n",
-(command & PCI_COMMAND_IO)     ? "" : " PCI_COMMAND_IO",
+(command & PCI_COMMAND_IO) ? "" : " PCI_COMMAND_IO",
 (command & PCI_COMMAND_MEMORY) ? "" : " PCI_COMMAND_MEMORY");
 command |= (PCI_COMMAND_IO | PCI_COMMAND_MEMORY);
 pci_write_config_word(pdev, PCI_COMMAND, command);
@@ -1578,9 +1578,9 @@ switch(x86) {
 #else
 switch(boot_cpu_data.x86) {
 #endif
-case 4:	suggested_cache_line_size = 4; break;
+case 4: suggested_cache_line_size = 4; break;
 case 6:
-case 5:	suggested_cache_line_size = 8; break;
+case 5: suggested_cache_line_size = 8; break;
 }
 }
 #endif
@@ -1593,12 +1593,12 @@ io_port = 0;
 #endif
 if (!(command & PCI_COMMAND_MEMORY)) {
 printk(NAME53C8XX ": PCI_COMMAND_MEMORY not set.\n");
-base	= 0;
-base_2	= 0;
+base = 0;
+base_2 = 0;
 }
 io_port &= PCI_BASE_ADDRESS_IO_MASK;
-base	&= PCI_BASE_ADDRESS_MEM_MASK;
-base_2	&= PCI_BASE_ADDRESS_MEM_MASK;
+base &= PCI_BASE_ADDRESS_MEM_MASK;
+base_2 &= PCI_BASE_ADDRESS_MEM_MASK;
 #if 1
 if (io_port && check_region (io_port, 128)) {
 printk(NAME53C8XX ": IO region 0x%lx[0..127] is in use\n",
@@ -1639,7 +1639,7 @@ if (driver_setup.special_features & 4)
 chip->features &= ~FE_NOPM;
 }
 if (driver_setup.ultra_scsi < 2 && (chip->features & FE_ULTRA2)) {
-chip->features |=  FE_ULTRA;
+chip->features |= FE_ULTRA;
 chip->features &= ~FE_ULTRA2;
 }
 if (driver_setup.ultra_scsi < 1)
@@ -1647,10 +1647,10 @@ chip->features &= ~FE_ULTRA;
 if (!driver_setup.max_wide)
 chip->features &= ~FE_WIDE;
 if (device_id == PCI_DEVICE_ID_NCR_53C896 && revision <= 0x10) {
-chip->features	|= (FE_WRIE | FE_CLSE);
-pci_fix_up	|=  3;
+chip->features |= (FE_WRIE | FE_CLSE);
+pci_fix_up |= 3;
 }
-#ifdef	SCSI_NCR_PCI_FIX_UP_SUPPORT
+#ifdef SCSI_NCR_PCI_FIX_UP_SUPPORT
 if ((pci_fix_up & 1) && (chip->features & FE_CLSE) &&
 !cache_line_size && suggested_cache_line_size) {
 cache_line_size = suggested_cache_line_size;
@@ -1677,14 +1677,14 @@ PCI_LATENCY_TIMER, latency_timer);
 }
 }
 #endif
-device->pdev		= pdev;
-device->slot.bus	= PciBusNumber(pdev);
-device->slot.device_fn	= PciDeviceFn(pdev);
-device->slot.base	= base;
-device->slot.base_2	= base_2;
-device->slot.io_port	= io_port;
-device->slot.irq	= irq;
-device->attach_done	= 0;
+device->pdev = pdev;
+device->slot.bus = PciBusNumber(pdev);
+device->slot.device_fn = PciDeviceFn(pdev);
+device->slot.base = base;
+device->slot.base_2 = base_2;
+device->slot.io_port = io_port;
+device->slot.irq = irq;
+device->attach_done = 0;
 return 0;
 }
 static int __init
@@ -1695,7 +1695,7 @@ int i, j, hosts, count;
 int attach_count = 0;
 ncr_device *devtbl, *devp;
 #ifdef SCSI_NCR_NVRAM_SUPPORT
-ncr_nvram  nvram0, nvram, *nvp;
+ncr_nvram nvram0, nvram, *nvp;
 #endif
 if (!pci_present())
 return 0;
@@ -1707,10 +1707,10 @@ ncr_print_driver_setup();
 devtbl = m_calloc(PAGE_SIZE, "devtbl");
 if (!devtbl)
 return 0;
-#ifdef	SCSI_NCR_PQS_PDS_SUPPORT
+#ifdef SCSI_NCR_PQS_PDS_SUPPORT
 ncr_detect_pqs_pds();
 #endif
-hosts	= PAGE_SIZE		/ sizeof(*devtbl);
+hosts = PAGE_SIZE / sizeof(*devtbl);
 #ifdef SCSI_NCR_NVRAM_SUPPORT
 nvp = (driver_setup.use_nvram & 0x1) ? &nvram0 : 0;
 #endif
@@ -1731,7 +1731,7 @@ if (pcidev == PCIDEV_NULL) {
 continue;
 }
 for (i = 0; i < count ; i++) {
-if (devtbl[i].slot.bus	     == PciBusNumber(pcidev) &&
+if (devtbl[i].slot.bus == PciBusNumber(pcidev) &&
 devtbl[i].slot.device_fn == PciDeviceFn(pcidev))
 break;
 }
@@ -1758,7 +1758,7 @@ break;
 }
 }
 #endif
-#ifdef	SCSI_NCR_PQS_PDS_SUPPORT
+#ifdef SCSI_NCR_PQS_PDS_SUPPORT
 if (devp->pqs_pds)
 msg = "(NCR PQS/PDS)";
 #endif
@@ -1773,7 +1773,7 @@ Symbios_host *h = &nvram0.data.Symbios.host[i];
 for (j = 0 ; j < count ; j++) {
 devp = &devtbl[j];
 if (h->device_fn != devp->slot.device_fn ||
-h->bus_nr	 != devp->slot.bus	 ||
+h->bus_nr != devp->slot.bus ||
 h->device_id != devp->chip.device_id)
 continue;
 if (devp->attach_done)

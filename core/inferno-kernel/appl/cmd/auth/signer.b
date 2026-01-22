@@ -9,12 +9,12 @@ include "security.m";
 random: Random;
 Signer: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 # size in bits of modulus for public keys
-PKmodlen:		con 512;
+PKmodlen: con 512;
 # size in bits of modulus for diffie hellman
-DHmodlen:		con 512;
+DHmodlen: con 512;
 stderr, stdin, stdout: ref Sys->FD;
 init(nil: ref Draw->Context, nil: list of string)
 {

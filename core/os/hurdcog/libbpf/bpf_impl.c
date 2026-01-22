@@ -8,7 +8,7 @@
 #include "util.h"
 static struct net_hash_header filter_hash_header[N_NET_HASH];
 int
-bpf_do_filter(net_rcv_port_t infp, char *p,	unsigned int wirelen,
+bpf_do_filter(net_rcv_port_t infp, char *p, unsigned int wirelen,
 char *header, unsigned int hlen, net_hash_entry_t **hash_headpp,
 net_hash_entry_t *entpp)
 {
@@ -376,18 +376,18 @@ io_return_t
 net_set_filter(if_filter_list_t *ifp, mach_port_t rcv_port, int priority,
 filter_t *filter, unsigned int filter_count)
 {
-int               filter_bytes;
-bpf_insn_t            match;
-net_rcv_port_t   infp, my_infp;
-net_rcv_port_t        nextfp;
-net_hash_header_t     hhp;
+int filter_bytes;
+bpf_insn_t match;
+net_rcv_port_t infp, my_infp;
+net_rcv_port_t nextfp;
+net_hash_header_t hhp;
 net_hash_entry_t entp, hash_entp=NULL;
-net_hash_entry_t      *head, nextentp;
-queue_entry_t     dead_infp, dead_entp;
-int               i;
-int               ret, is_new_infp;
-io_return_t           rval;
-boolean_t         in, out;
+net_hash_entry_t *head, nextentp;
+queue_entry_t dead_infp, dead_entp;
+int i;
+int ret, is_new_infp;
+io_return_t rval;
+boolean_t in, out;
 debug ("filter_count: %d, filter[0]: %d\n", filter_count, filter[0]);
 filter_bytes = CSPF_BYTES (filter_count);
 match = (bpf_insn_t) 0;

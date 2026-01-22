@@ -708,7 +708,7 @@ else s_op++;
 void
 keep(struct op *o)
 {
-char	*s;
+char *s;
 int ok;
 if(o->blanks == NEVER)ok = NO;
 else ok = YES;
@@ -765,7 +765,7 @@ return(0);
 }
 void
 ptabs(int n){
-int	i;
+int i;
 int num;
 if(n > maxtabs){
 if(!folded){
@@ -831,7 +831,7 @@ struct keyw *
 lookup(char *first, char *last)
 {
 struct keyw *ptr;
-char	*cptr, *ckey, *k;
+char *cptr, *ckey, *k;
 if(first == last || first == 0)return(0);
 cptr = first;
 while (*cptr == ' ' || *cptr == '\t')cptr++;
@@ -854,11 +854,11 @@ comment(int ok)
 int ch;
 int hitnl;
 hitnl = 0;
-while ((ch  = getch()) != Beof){
+while ((ch = getch()) != Beof){
 putch(ch, NO);
 if (ch == '*'){
 gotstar:
-if ((ch  = getch()) == '/'){
+if ((ch = getch()) == '/'){
 putch(ch,NO);
 return(hitnl);
 }

@@ -1,65 +1,65 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	<libsec.h>
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include <libsec.h>
 #define NOSPOOKS 1
 typedef struct OneWay OneWay;
 struct OneWay
 {
-QLock	q;
-QLock	ctlq;
-void	*state;
-int	slen;
-uchar	*secret;
-ulong	mid;
+QLock q;
+QLock ctlq;
+void *state;
+int slen;
+uchar *secret;
+ulong mid;
 };
 enum
 {
-Sincomplete=	0,
-Sclear=		1,
-Sencrypting=	2,
-Sdigesting=	4,
-Sdigenc=	Sencrypting|Sdigesting,
-Noencryption=	0,
-DESCBC=		1,
-DESECB=		2,
-RC4=		3
+Sincomplete= 0,
+Sclear= 1,
+Sencrypting= 2,
+Sdigesting= 4,
+Sdigenc= Sencrypting|Sdigesting,
+Noencryption= 0,
+DESCBC= 1,
+DESECB= 2,
+RC4= 3
 };
 typedef struct Dstate Dstate;
 struct Dstate
 {
-Chan	*c;
-uchar	state;
-int	ref;
-uchar	encryptalg;
-ushort	blocklen;
-ushort	diglen;
+Chan *c;
+uchar state;
+int ref;
+uchar encryptalg;
+ushort blocklen;
+ushort diglen;
 DigestState *(*hf)(uchar*, ulong, uchar*, DigestState*);
-int	max;
-int	maxpad;
-OneWay	in;
-Block	*processed;
-Block	*unprocessed;
-OneWay	out;
-char	*user;
-int	perm;
+int max;
+int maxpad;
+OneWay in;
+Block *processed;
+Block *unprocessed;
+OneWay out;
+char *user;
+int perm;
 };
 enum
 {
-Maxdmsg=	1<<16,
-Maxdstate=	512,
+Maxdmsg= 1<<16,
+Maxdstate= 512,
 };
-static	Lock	dslock;
-static	int	dshiwat;
-static	char	*dsname[Maxdstate];
-static	Dstate	*dstate[Maxdstate];
-static	char	*encalgs;
-static	char	*hashalgs;
+static Lock dslock;
+static int dshiwat;
+static char *dsname[Maxdstate];
+static Dstate *dstate[Maxdstate];
+static char *encalgs;
+static char *hashalgs;
 enum{
-Qtopdir		= 1,
+Qtopdir = 1,
 Qprotodir,
 Qclonus,
 Qconvdir,
@@ -70,29 +70,29 @@ Qsecretout,
 Qencalgs,
 Qhashalgs,
 };
-#define TYPE(x) 	((x).path & 0xf)
-#define CONV(x) 	(((x).path >> 5)&(Maxdstate-1))
-#define QID(c, y) 	(((c)<<5) | (y))
-static void	ensure(Dstate*, Block**, int);
-static void	consume(Block**, uchar*, int);
-static void	setsecret(OneWay*, uchar*, int);
-static Block*	encryptb(Dstate*, Block*, int);
-static Block*	decryptb(Dstate*, Block*);
-static Block*	digestb(Dstate*, Block*, int);
-static void	checkdigestb(Dstate*, Block*);
-static Chan*	buftochan(char*);
-static void	sslhangup(Dstate*);
-static Dstate*	dsclone(Chan *c);
-static void	dsnew(Chan *c, Dstate **);
-static long	sslput(Dstate *s, Block * volatile b);
+#define TYPE(x) ((x).path & 0xf)
+#define CONV(x) (((x).path >> 5)&(Maxdstate-1))
+#define QID(c, y) (((c)<<5) | (y))
+static void ensure(Dstate*, Block**, int);
+static void consume(Block**, uchar*, int);
+static void setsecret(OneWay*, uchar*, int);
+static Block* encryptb(Dstate*, Block*, int);
+static Block* decryptb(Dstate*, Block*);
+static Block* digestb(Dstate*, Block*, int);
+static void checkdigestb(Dstate*, Block*);
+static Chan* buftochan(char*);
+static void sslhangup(Dstate*);
+static Dstate* dsclone(Chan *c);
+static void dsnew(Chan *c, Dstate **);
+static long sslput(Dstate *s, Block * volatile b);
 char *sslnames[] = {
-[Qclonus]	"clone",
-[Qdata]		"data",
-[Qctl]		"ctl",
-[Qsecretin]	"secretin",
-[Qsecretout]	"secretout",
-[Qencalgs]	"encalgs",
-[Qhashalgs]	"hashalgs",
+[Qclonus] "clone",
+[Qdata] "data",
+[Qctl] "ctl",
+[Qsecretin] "secretin",
+[Qsecretout] "secretout",
+[Qencalgs] "encalgs",
+[Qhashalgs] "hashalgs",
 };
 static int
 sslgen(Chan *c, char*, Dirtab *d, int nd, int s, Dir *dp)
@@ -771,8 +771,8 @@ setupRC4state(w->state, w->secret, w->slen);
 typedef struct Hashalg Hashalg;
 struct Hashalg
 {
-char	*name;
-int	diglen;
+char *name;
+int diglen;
 DigestState *(*hf)(uchar*, ulong, uchar*, DigestState*);
 };
 Hashalg hashtab[] =
@@ -801,10 +801,10 @@ return -1;
 typedef struct Encalg Encalg;
 struct Encalg
 {
-char	*name;
-int	blocklen;
-int	alg;
-void	(*keyinit)(OneWay*);
+char *name;
+int blocklen;
+int alg;
+void (*keyinit)(OneWay*);
 };
 #ifdef NOSPOOKS
 Encalg encrypttab[] =

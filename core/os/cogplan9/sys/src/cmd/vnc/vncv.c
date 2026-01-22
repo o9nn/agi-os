@@ -1,17 +1,17 @@
 #include "vnc.h"
 #include "vncv.h"
 #include <libsec.h>
-char*	encodings = "copyrect hextile corre rre raw mousewarp";
-int		bpp12;
-int		shared;
-int		verbose;
-Vnc*		vnc;
-int		mousefd;
-int		tls;
-static int	vncstart(Vnc*, int);
+char* encodings = "copyrect hextile corre rre raw mousewarp";
+int bpp12;
+int shared;
+int verbose;
+Vnc* vnc;
+int mousefd;
+int tls;
+static int vncstart(Vnc*, int);
 enum
 {
-NProcs	= 4
+NProcs = 4
 };
 static int pids[NProcs];
 static char killkin[] = "die vnc kin";

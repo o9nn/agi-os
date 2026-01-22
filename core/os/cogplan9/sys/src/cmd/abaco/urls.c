@@ -161,7 +161,7 @@ return erunestrdup(u);
 if(b==nil || !validurl(b))
 error("urlcombine: b==nil || !validurl(b)");
 if(runestrncmp(u, L"
-q =  runestrchr(b, L':');
+q = runestrchr(b, L':');
 return runesmprint("%.*S:%S", (int)(q-b), b, u);
 }
 p = runestrstr(b, L":

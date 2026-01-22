@@ -1,9 +1,9 @@
 #ifndef gdevpdtd_INCLUDED
-#  define gdevpdtd_INCLUDED
+# define gdevpdtd_INCLUDED
 #include "gdevpdtx.h"
 #include "gdevpdtb.h"
 #ifndef pdf_font_descriptor_DEFINED
-#  define pdf_font_descriptor_DEFINED
+# define pdf_font_descriptor_DEFINED
 typedef struct pdf_font_descriptor_s pdf_font_descriptor_t;
 #endif
 int pdf_font_descriptor_alloc(gx_device_pdf *pdev,

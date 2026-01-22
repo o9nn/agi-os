@@ -6,238 +6,238 @@
 #include "io.h"
 #include "../port/error.h"
 #include "../port/netif.h"
-#define malign(n)	xspanalloc((n), 32, 0)
+#define malign(n) xspanalloc((n), 32, 0)
 #include "etherif.h"
 #include "etherga620fw.h"
 enum {
-Mhc		= 0x0040,
-Mlc		= 0x0044,
-Mc		= 0x0050,
-Ps		= 0x005C,
-Wba		= 0x0068,
-Wd		= 0x006C,
-DMAas		= 0x011C,
-CPUAstate	= 0x0140,
-CPUApc		= 0x0144,
-CPUBstate	= 0x0240,
-Hi		= 0x0504,
-Cpi		= 0x050C,
-Spi		= 0x0514,
-Rspi		= 0x051C,
-Rjpi		= 0x0524,
-Rmpi		= 0x052C,
-Mac		= 0x0600,
-Gip		= 0x0608,
-Om		= 0x0618,
-DMArc		= 0x061C,
-DMAwc		= 0x0620,
-Tbr		= 0x0624,
-Eci		= 0x0628,
-Cci		= 0x062C,
-Rct		= 0x0630,
-Sct		= 0x0634,
-St		= 0x0638,
-SmcBD		= 0x063C,
-RmcBD		= 0x0640,
-Nt		= 0x0644,
-Gln		= 0x0648,
-Fln		= 0x064C,
-Ifx		= 0x065C,
-IfMTU		= 0x0660,
-Mi		= 0x0664,
-Gls		= 0x0668,
-Fls		= 0x066C,
-Cr		= 0x0700,
-Lmw		= 0x0800,
+Mhc = 0x0040,
+Mlc = 0x0044,
+Mc = 0x0050,
+Ps = 0x005C,
+Wba = 0x0068,
+Wd = 0x006C,
+DMAas = 0x011C,
+CPUAstate = 0x0140,
+CPUApc = 0x0144,
+CPUBstate = 0x0240,
+Hi = 0x0504,
+Cpi = 0x050C,
+Spi = 0x0514,
+Rspi = 0x051C,
+Rjpi = 0x0524,
+Rmpi = 0x052C,
+Mac = 0x0600,
+Gip = 0x0608,
+Om = 0x0618,
+DMArc = 0x061C,
+DMAwc = 0x0620,
+Tbr = 0x0624,
+Eci = 0x0628,
+Cci = 0x062C,
+Rct = 0x0630,
+Sct = 0x0634,
+St = 0x0638,
+SmcBD = 0x063C,
+RmcBD = 0x0640,
+Nt = 0x0644,
+Gln = 0x0648,
+Fln = 0x064C,
+Ifx = 0x065C,
+IfMTU = 0x0660,
+Mi = 0x0664,
+Gls = 0x0668,
+Fls = 0x066C,
+Cr = 0x0700,
+Lmw = 0x0800,
 };
 enum {
-Is		= 0x00000001,
-Ci		= 0x00000002,
-Hr		= 0x00000008,
-Eebs		= 0x00000010,
-Eews		= 0x00000020,
-Mpio		= 0x00000040,
+Is = 0x00000001,
+Ci = 0x00000002,
+Hr = 0x00000008,
+Eebs = 0x00000010,
+Eews = 0x00000020,
+Mpio = 0x00000040,
 };
 enum {
-SRAM512		= 0x00000200,
-SRAMmask	= 0x00000300,
-EEclk		= 0x00100000,
-EEdoe		= 0x00200000,
-EEdo		= 0x00400000,
-EEdi		= 0x00800000,
+SRAM512 = 0x00000200,
+SRAMmask = 0x00000300,
+EEclk = 0x00100000,
+EEdoe = 0x00200000,
+EEdo = 0x00400000,
+EEdi = 0x00800000,
 };
 enum {
-SyncSRAM	= 0x00100000,
+SyncSRAM = 0x00100000,
 };
 enum {
-PCIwm32		= 0x000000C0,
-PCImrm		= 0x00020000,
-PCI66		= 0x00080000,
-PCI32		= 0x00100000,
-PCIrcmd		= 0x06000000,
-PCIwcmd		= 0x70000000,
+PCIwm32 = 0x000000C0,
+PCImrm = 0x00020000,
+PCI66 = 0x00080000,
+PCI32 = 0x00100000,
+PCIrcmd = 0x06000000,
+PCIwcmd = 0x70000000,
 };
 enum {
-CPUrf		= 0x00000010,
-CPUhalt		= 0x00010000,
-CPUhie		= 0x00040000,
+CPUrf = 0x00000010,
+CPUhalt = 0x00010000,
+CPUhie = 0x00040000,
 };
 enum {
-BswapBD		= 0x00000002,
-WswapBD		= 0x00000004,
-Warn		= 0x00000008,
-BswapDMA	= 0x00000010,
-Only1DMA	= 0x00000040,
-NoJFrag		= 0x00000200,
-Fatal		= 0x40000000,
+BswapBD = 0x00000002,
+WswapBD = 0x00000004,
+Warn = 0x00000008,
+BswapDMA = 0x00000010,
+Only1DMA = 0x00000040,
+NoJFrag = 0x00000200,
+Fatal = 0x40000000,
 };
 enum {
-Lmwsz		= 2*1024,
-Sr		= 0x2000,
+Lmwsz = 2*1024,
+Sr = 0x2000,
 };
 enum {
-Lpref		= 0x00008000,
-L10MB		= 0x00010000,
-L100MB		= 0x00020000,
-L1000MB		= 0x00040000,
-Lfd		= 0x00080000,
-Lhd		= 0x00100000,
-Lefc		= 0x00200000,
-Lofc		= 0x00800000,
-Lean		= 0x20000000,
-Le		= 0x40000000,
+Lpref = 0x00008000,
+L10MB = 0x00010000,
+L100MB = 0x00020000,
+L1000MB = 0x00040000,
+Lfd = 0x00080000,
+Lhd = 0x00100000,
+Lefc = 0x00200000,
+Lofc = 0x00800000,
+Lean = 0x20000000,
+Le = 0x40000000,
 };
 typedef struct Host64 {
-uint	hi;
-uint	lo;
+uint hi;
+uint lo;
 } Host64;
 typedef struct Ere {
-int	event;
-int	unused;
+int event;
+int unused;
 } Ere;
 typedef int Cmd;
 typedef struct Rbd {
-Host64	addr;
-int	indexlen;
-int	flags;
-int	checksum;
-int	error;
-int	reserved;
-void*	opaque;
+Host64 addr;
+int indexlen;
+int flags;
+int checksum;
+int error;
+int reserved;
+void* opaque;
 } Rbd;
 typedef struct Sbd {
-Host64	addr;
-int	lenflags;
-int	reserved;
+Host64 addr;
+int lenflags;
+int reserved;
 } Sbd;
 enum {
-Fend		= 0x00000004,
-Frjr		= 0x00000010,
-Funicast	= 0x00000020,
-Fmulticast	= 0x00000040,
-Fbroadcast	= 0x00000060,
-Ferror		= 0x00000400,
-Frmr		= 0x00001000,
+Fend = 0x00000004,
+Frjr = 0x00000010,
+Funicast = 0x00000020,
+Fmulticast = 0x00000040,
+Fbroadcast = 0x00000060,
+Ferror = 0x00000400,
+Frmr = 0x00001000,
 };
 enum {
-Ecrc		= 0x00010000,
-Ecollision	= 0x00020000,
-Elink		= 0x00040000,
-Ephy		= 0x00080000,
-Eodd		= 0x00100000,
-Emac		= 0x00200000,
-Elen64		= 0x00400000,
-Eresources	= 0x00800000,
-Egiant		= 0x01000000,
+Ecrc = 0x00010000,
+Ecollision = 0x00020000,
+Elink = 0x00040000,
+Ephy = 0x00080000,
+Eodd = 0x00100000,
+Emac = 0x00200000,
+Elen64 = 0x00400000,
+Eresources = 0x00800000,
+Egiant = 0x01000000,
 };
 typedef struct Rcb {
-Host64	addr;
-int	control;
-int	unused;
+Host64 addr;
+int control;
+int unused;
 } Rcb;
 enum {
-TcpUdpCksum	= 0x0001,
-IpCksum		= 0x0002,
+TcpUdpCksum = 0x0001,
+IpCksum = 0x0002,
 NoPseudoHdrCksum= 0x0008,
-VlanAssist	= 0x0010,
-CoalUpdateOnly	= 0x0020,
-HostRing	= 0x0040,
-SnapCksum	= 0x0080,
-UseExtRxBd	= 0x0100,
-RingDisabled	= 0x0200,
+VlanAssist = 0x0010,
+CoalUpdateOnly = 0x0020,
+HostRing = 0x0040,
+SnapCksum = 0x0080,
+UseExtRxBd = 0x0100,
+RingDisabled = 0x0200,
 };
 typedef struct Gib {
-int	statistics[256];
-Rcb	ercb;
-Rcb	crcb;
-Rcb	srcb;
-Rcb	rsrcb;
-Rcb	rjrcb;
-Rcb	rmrcb;
-Rcb	rrrcb;
-Host64	epp;
-Host64	rrrpp;
-Host64	scp;
-Host64	rsp;
+int statistics[256];
+Rcb ercb;
+Rcb crcb;
+Rcb srcb;
+Rcb rsrcb;
+Rcb rjrcb;
+Rcb rmrcb;
+Rcb rrrcb;
+Host64 epp;
+Host64 rrrpp;
+Host64 scp;
+Host64 rsp;
 } Gib;
 enum {
-Ner		= 256,
-Ncr		= 64,
-Nsr		= 512,
-Nrsr		= 512,
-Nrjr		= 256,
-Nrmr		= 1024,
-Nrrr		= 2048,
+Ner = 256,
+Ncr = 64,
+Nsr = 512,
+Nrsr = 512,
+Nrjr = 256,
+Nrmr = 1024,
+Nrrr = 2048,
 };
 enum {
-NrsrHI		= 72,
-NrsrLO		= 54,
-NrjrHI		= 0,
-NrjrLO		= 0,
-NrmrHI		= 0,
-NrmrLO		= 0,
+NrsrHI = 72,
+NrsrLO = 54,
+NrjrHI = 0,
+NrjrLO = 0,
+NrmrHI = 0,
+NrmrLO = 0,
 };
 typedef struct Ctlr Ctlr;
 struct Ctlr {
-int	port;
-Pcidev*	pcidev;
-Ctlr*	next;
-int	active;
-int	id;
-uchar	ea[Eaddrlen];
-int*	nic;
-Gib*	gib;
-Ere*	er;
-Lock	srlock;
-Sbd*	sr;
-Block**	srb;
-int	nsr;
-Rbd*	rsr;
-int	nrsr;
-Rbd*	rjr;
-int	nrjr;
-Rbd*	rmr;
-int	nrmr;
-Rbd*	rrr;
-int	rrrci;
-int	epi[2];
-int	rrrpi[2];
-int	sci[3];
-int	interrupts;
-int	mi;
-uvlong	ticks;
-int	coalupdateonly;
-int	hardwarecksum;
-int	rct;
-int	sct;
-int	st;
-int	smcbd;
-int	rmcbd;
+int port;
+Pcidev* pcidev;
+Ctlr* next;
+int active;
+int id;
+uchar ea[Eaddrlen];
+int* nic;
+Gib* gib;
+Ere* er;
+Lock srlock;
+Sbd* sr;
+Block** srb;
+int nsr;
+Rbd* rsr;
+int nrsr;
+Rbd* rjr;
+int nrjr;
+Rbd* rmr;
+int nrmr;
+Rbd* rrr;
+int rrrci;
+int epi[2];
+int rrrpi[2];
+int sci[3];
+int interrupts;
+int mi;
+uvlong ticks;
+int coalupdateonly;
+int hardwarecksum;
+int rct;
+int sct;
+int st;
+int smcbd;
+int rmcbd;
 };
 static Ctlr* ctlrhead;
 static Ctlr* ctlrtail;
-#define csr32r(c, r)	(*((c)->nic+((r)/4)))
-#define csr32w(c, r, v)	(*((c)->nic+((r)/4)) = (v))
+#define csr32r(c, r) (*((c)->nic+((r)/4)))
+#define csr32w(c, r, v) (*((c)->nic+((r)/4)) = (v))
 static void
 sethost64(Host64* host64, void* addr)
 {

@@ -45,13 +45,13 @@ const char *source_filename,
 unsigned int source_linenum,
 const void **set_r, const char **error_r);
 #ifdef HAVE_TYPE_CHECKS
-#  define settings_get(event, info, flags, set_r, error_r) \
+# define settings_get(event, info, flags, set_r, error_r) \
 settings_get(event, info, flags, \
 __FILE__, __LINE__, (void *)set_r, 1 ? (error_r) : \
 COMPILE_ERROR_IF_TRUE( \
 !__builtin_types_compatible_p(typeof((*set_r)->pool), pool_t)))
 #else
-#  define settings_get(event, info, flags, set_r, error_r) \
+# define settings_get(event, info, flags, set_r, error_r) \
 settings_get(event, info, flags, \
 __FILE__, __LINE__, (void *)set_r, error_r)
 #endif
@@ -63,14 +63,14 @@ const char *source_filename,
 unsigned int source_linenum,
 const void **set_r, const char **error_r);
 #ifdef HAVE_TYPE_CHECKS
-#  define settings_get_filter(event, filter_key, filter_value, info, flags, \
+# define settings_get_filter(event, filter_key, filter_value, info, flags, \
 set_r, error_r) \
 settings_get_filter(event, filter_key, filter_value, info, flags, \
 __FILE__, __LINE__, (void *)set_r, 1 ? (error_r) : \
 COMPILE_ERROR_IF_TRUE( \
 !__builtin_types_compatible_p(typeof((*set_r)->pool), pool_t)))
 #else
-#  define settings_get_filter(event, filter_key, filter_value, info, flags, \
+# define settings_get_filter(event, filter_key, filter_value, info, flags, \
 set_r, error_r) \
 settings_get_filter(event, filter_key, filter_value, info, flags, \
 __FILE__, __LINE__, (void *)set_r, error_r)
@@ -83,27 +83,27 @@ const char *source_filename,
 unsigned int source_linenum,
 const void **set_r, const char **error_r);
 #ifdef HAVE_TYPE_CHECKS
-#  define settings_try_get_filter(event, filter_key, filter_value, info, \
+# define settings_try_get_filter(event, filter_key, filter_value, info, \
 flags, set_r, error_r) \
 settings_try_get_filter(event, filter_key, filter_value, info, flags, \
 __FILE__, __LINE__, (void *)set_r, 1 ? (error_r) : \
 COMPILE_ERROR_IF_TRUE( \
 !__builtin_types_compatible_p(typeof((*set_r)->pool), pool_t)))
 #else
-#  define settings_try_get_filter(event, filter_key, filter_value, info, flags, \
+# define settings_try_get_filter(event, filter_key, filter_value, info, flags, \
 set_r, error_r) \
 settings_try_get_filter(event, filter_key, filter_value, info, flags, \
 __FILE__, __LINE__, (void *)set_r, error_r)
 #endif
 #ifdef HAVE_TYPE_CHECKS
-#  define settings_get_filter(event, filter_key, filter_value, info, \
+# define settings_get_filter(event, filter_key, filter_value, info, \
 flags, set_r, error_r) \
 settings_get_filter(event, filter_key, filter_value, info, flags, \
 __FILE__, __LINE__, (void *)set_r, 1 ? (error_r) : \
 COMPILE_ERROR_IF_TRUE( \
 !__builtin_types_compatible_p(typeof((*set_r)->pool), pool_t)))
 #else
-#  define settings_get_filter(event, filter_key, filter_value, info, flags, \
+# define settings_get_filter(event, filter_key, filter_value, info, flags, \
 set_r, error_r) \
 settings_get_filter(event, filter_key, filter_value, info, flags, \
 __FILE__, __LINE__, (void *)set_r, error_r)

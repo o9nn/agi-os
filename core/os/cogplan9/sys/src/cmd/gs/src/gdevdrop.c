@@ -561,9 +561,9 @@ gs_rop3_t rop = lop_rop(lop);
 #define So rop3_not(rop3_S)
 #define Po rop3_not(rop3_T)
 #ifdef TRANSPARENCY_PER_H_P
-#  define MPo (rop3_not(So) | Po)
+# define MPo (rop3_not(So) | Po)
 #else
-#  define MPo Po
+# define MPo Po
 #endif
 #define source_transparent ((lop & lop_S_transparent) && rop3_uses_S(rop))
 #define pattern_transparent ((lop & lop_T_transparent) && rop3_uses_T(rop))

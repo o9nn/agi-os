@@ -17,9 +17,9 @@ membranes=[skin],
 alphabet=["a", "b", "c"],
 initial_multisets=Dict(1 => Multiset("a" => 1)),
 rules=[
-Rule(1, Multiset("a" => 1), Multiset("a" => 1, "b" => 1)),  # a -> a, b
-Rule(1, Multiset("b" => 1), Multiset("b" => 1, "c" => 1)),  # b -> b, c
-Rule(1, Multiset("c" => 1), Multiset("c" => 1, "a" => 1))   # c -> c, a
+Rule(1, Multiset("a" => 1), Multiset("a" => 1, "b" => 1)), # a -> a, b
+Rule(1, Multiset("b" => 1), Multiset("b" => 1, "c" => 1)), # b -> b, c
+Rule(1, Multiset("c" => 1), Multiset("c" => 1, "a" => 1)) # c -> c, a
 ]
 )
 println("\nSystem Overview:")

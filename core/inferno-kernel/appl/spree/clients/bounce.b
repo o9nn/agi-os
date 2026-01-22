@@ -1,6 +1,6 @@
 implement Clientmod;
-# bouncing balls demo.  it uses tk and multiple processes to animate a
-# number of balls bouncing around the screen.  each ball has its own
+# bouncing balls demo. it uses tk and multiple processes to animate a
+# number of balls bouncing around the screen. each ball has its own
 # process; CPU time is doled out fairly to each process by using
 # a central monitor loop.
 include "sys.m";
@@ -19,14 +19,14 @@ include "../client.m";
 BALLSIZE: con 5;
 ZERO: con 1e-6;
 π: con Math->Pi;
-Maxδ: con π / 4.0;			# max bat angle deflection
+Maxδ: con π / 4.0; # max bat angle deflection
 Line: adt {
-p, v:		Realpoint;
-s:		real;
-new:			fn(p1, p2: Point): ref Line;
-hittest:		fn(l: self ref Line, p: Point): (Realpoint, real, real);
-intersection:	fn(b: self ref Line, p, v: Realpoint): (int, Realpoint, real, real);
-point:		fn(b: self ref Line, s: real): Point;
+p, v: Realpoint;
+s: real;
+new: fn(p1, p2: Point): ref Line;
+hittest: fn(l: self ref Line, p: Point): (Realpoint, real, real);
+intersection: fn(b: self ref Line, p, v: Realpoint): (int, Realpoint, real, real);
+point: fn(b: self ref Line, s: real): Point;
 };
 Realpoint: adt {
 x, y: real;
@@ -52,7 +52,7 @@ cliquecmds := array[] of {
 "update",
 };
 Ballstate: adt {
-owner: int;		# index into member array
+owner: int; # index into member array
 hitobs: ref Obstacle;
 t0: int;
 p, v: Realpoint;
@@ -64,14 +64,14 @@ put: fn(q: self ref Queue, s: T);
 get: fn(q: self ref Queue): T;
 };
 Obstacle: adt {
-line: 		ref Line;
-id: 		int;
-isbat: 	int;
-s1, s2: 	real;
-srvid:	int;
-owner:	int;
-new: 	fn(id: int): ref Obstacle;
-config: 	fn(b: self ref Obstacle);
+line: ref Line;
+id: int;
+isbat: int;
+s1, s2: real;
+srvid: int;
+owner: int;
+new: fn(id: int): ref Obstacle;
+config: fn(b: self ref Obstacle);
 };
 Object: adt {
 obstacle: ref Obstacle;
@@ -89,7 +89,7 @@ myturn: int;
 stderr: ref Sys->FD;
 timeoffset := 0;
 objects: array of ref Object;
-srvobjects: array of ref Obstacle;	# all for lasthit...
+srvobjects: array of ref Obstacle; # all for lasthit...
 members: array of ref Member;
 CORNER: con 60;
 INSET: con 20;
@@ -120,8 +120,8 @@ tkclient->init();
 cliquefd = sys->fildes(0);
 Ballexit = ref Ballstate;
 Noobs = Obstacle.new(-1);
-lines = tl lines;		# XXX ahem.
-if (len argv >= 3)		# argv: modname mnt dir ...
+lines = tl lines; # XXX ahem.
+if (len argv >= 3) # argv: modname mnt dir ...
 membername = readfile(hd tl argv + "/name");
 sys->pctl(Sys->NEWPGRP, nil);
 wmctl: chan of string;
@@ -141,7 +141,7 @@ mkball = chan of (int, chan of chan of ref Ballstate);
 spawn monitor(mkball);
 balls: list of chan of ref Ballstate;
 spawn updateproc();
-sys->sleep(500);		# wait for things to calm down a little
+sys->sleep(500); # wait for things to calm down a little
 cliquecmd("time " + string sys->millisec());
 buts := 0;
 for (;;) alt {
@@ -194,7 +194,7 @@ sys->fprint(stderr, "bounce: updateproc exiting\n");
 UNKNOWN, BALL, OBSTACLE: con iota;
 applyupdate(s: string)
 {
-#	sys->print("bounce: got update %s\n", s);
+# sys->print("bounce: got update %s\n", s);
 (nt, toks) := sys->tokenize(s, " ");
 case hd toks {
 "create" =>
@@ -358,7 +358,7 @@ cvsorigin := Point(int cmd(win, ".c cget -actx"), int cmd(win, ".c cget -acty"))
 spawn sendproc(realtosrv);
 cmd(win, "grab set .c");
 cmd(win, "focus .");
-loop:	for (;;) alt {
+loop: for (;;) alt {
 tosrv <-= currevent =>
 tosrv = dummytosrv;
 (buts, p) := <-mch =>
@@ -393,7 +393,7 @@ currentlydragging = -1;
 }
 CHARGETIME: con 1000.0;
 MAXCHARGE: con 50.0;
-α: con 0.999;		# decay in one millisecond
+α: con 0.999; # decay in one millisecond
 D: con 5;
 aim(mch: chan of (int, Point), hitbat: ref Obstacle, p: Point): (int, Point)
 {
@@ -507,12 +507,12 @@ alt {
 procl = (newc, newrc) :: procl;
 spawn animproc(id, newc, newrc);
 ch <-= newc;
-if (tl procl == nil) {		# first ball
+if (tl procl == nil) { # first ball
 newc <-= nil;
 rc = newrc;
 proc = procl;
 }
-alive := <-rc =>					# got token.
+alive := <-rc => # got token.
 if (!alive) {
 # ball has exited: remove from list
 newprocl: list of (chan of ref Ballstate, chan of int);
@@ -528,7 +528,7 @@ rc = dummyrc;
 } else {
 c: chan of ref Ballstate;
 (c, rc) = hd proc;
-c <-= nil;				# hand token to next process.
+c <-= nil; # hand token to next process.
 }
 }
 }
@@ -571,14 +571,14 @@ procname("anim");
 while ((newstate := <-c) == nil)
 rc <-= 1;
 state := *newstate;
-totaldist := 0.0;		# distance ball has travelled from reference point to last intersection
+totaldist := 0.0; # distance ball has travelled from reference point to last intersection
 ballid := makeballitem(id, state.owner);
 smallcount := 0;
 version := lineversion;
 tosrv := chan of string;
 start := sys->millisec();
 spawn bufferproc(tosrv);
-loop:	for (;;) {
+loop: for (;;) {
 hitp: Realpoint;
 dist := 1000000.0;
 oldobs := state.hitobs;
@@ -606,7 +606,7 @@ t := sys->millisec() - t0;
 dt := et - t0;
 do {
 s := real t * state.speed;
-currp := Realpoint(state.p.x + s * state.v.x,  state.p.y + s * state.v.y);
+currp := Realpoint(state.p.x + s * state.v.x, state.p.y + s * state.v.y);
 ballmove(ballid, (int currp.x, int currp.y));
 cmd(win, "update");
 if (lineversion > version) {
@@ -660,22 +660,22 @@ state.v = boing(state.v, hitobs.line);
 #ballmask: ref Image;
 imageinit()
 {
-#	displ := win.image.display;
-#	ballmask = displ.newimage(((0, 0), (BALLSIZE+1, BALLSIZE+1)), 0, 0, Draw->White);
-#	ballmask.draw(ballmask.r, displ.zeros, displ.ones, (0, 0));
-#	ballmask.fillellipse((BALLSIZE/2, BALLSIZE/2), BALLSIZE/2, BALLSIZE/2, displ.ones,  (0, 0));
-#	End: con Draw->Endsquare;
-#	n := 5;
-#	θ := 0.0;
-#	δ := (2.0 * π) / real n;
-#	c := Point(BALLSIZE / 2, BALLSIZE / 2).sub((1, 1));
-#	r := real (BALLSIZE / 2);
-#	for (i := 0; i < n; i++) {
-#		p2 := Point(int (r * math->cos(θ)), int (r * math->sin(θ)));
-#		sys->print("drawing from %s to %s\n", p2s(c), p2s(p2.add(c)));
-#		ballmask.line(c, c.add(p2), End, End, 1, displ.ones, (0, 0));
-#		θ += δ;
-#	}
+# displ := win.image.display;
+# ballmask = displ.newimage(((0, 0), (BALLSIZE+1, BALLSIZE+1)), 0, 0, Draw->White);
+# ballmask.draw(ballmask.r, displ.zeros, displ.ones, (0, 0));
+# ballmask.fillellipse((BALLSIZE/2, BALLSIZE/2), BALLSIZE/2, BALLSIZE/2, displ.ones, (0, 0));
+# End: con Draw->Endsquare;
+# n := 5;
+# θ := 0.0;
+# δ := (2.0 * π) / real n;
+# c := Point(BALLSIZE / 2, BALLSIZE / 2).sub((1, 1));
+# r := real (BALLSIZE / 2);
+# for (i := 0; i < n; i++) {
+# p2 := Point(int (r * math->cos(θ)), int (r * math->sin(θ)));
+# sys->print("drawing from %s to %s\n", p2s(c), p2s(p2.add(c)));
+# ballmask.line(c, c.add(p2), End, End, 1, displ.ones, (0, 0));
+# θ += δ;
+# }
 }
 makeballitem(id, owner: int): string
 {
@@ -698,13 +698,13 @@ while ((s := <-c) != Ballexit)
 if (s == nil)
 rc <-= 1;
 else
-return *s;			# maybe we're not exiting, after all...
+return *s; # maybe we're not exiting, after all...
 }
 cmd(win, ".c delete " + ballid + ";update");
-#	cmd(win, "image delete " + ballid);
+# cmd(win, "image delete " + ballid);
 tosrv <-= nil;
 <-c;
-rc <-= 0;		# inform monitor that we've gone
+rc <-= 0; # inform monitor that we've gone
 exit;
 }
 # thread-safe access to the Rand module
@@ -743,7 +743,7 @@ if (math->sin(φ) > 0.0)
 δ = (t / batlen) * Maxδ * 2.0 - Maxδ;
 else
 δ = (t / batlen) * -Maxδ * 2.0 + Maxδ;
-θ := math->atan2(bat.line.v.y, bat.line.v.x) * 2.0 - ballθ;	# boing
+θ := math->atan2(bat.line.v.y, bat.line.v.x) * 2.0 - ballθ; # boing
 θ += δ;
 return (math->cos(θ), math->sin(θ));
 }
@@ -752,7 +752,7 @@ Line.new(p1, p2: Point): ref Line
 ln := ref Line;
 ln.p = (real p1.x, real p1.y);
 v := Realpoint(real (p2.x - p1.x), real (p2.y - p1.y));
-ln.s =  math->sqrt(v.x * v.x + v.y * v.y);
+ln.s = math->sqrt(v.x * v.x + v.y * v.y);
 if (ln.s > ZERO)
 ln.v = (v.x / ln.s, v.y / ln.s);
 else
@@ -874,5 +874,5 @@ return rs;
 }
 procname(s: string)
 {
-#	sys->procname(sys->procname(nil) + " " + s);
+# sys->procname(sys->procname(nil) + " " + s);
 }

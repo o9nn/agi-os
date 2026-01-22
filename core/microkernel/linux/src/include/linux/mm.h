@@ -28,21 +28,21 @@ unsigned long vm_offset;
 struct inode * vm_inode;
 unsigned long vm_pte;
 };
-#define VM_READ		0x0001
-#define VM_WRITE	0x0002
-#define VM_EXEC		0x0004
-#define VM_SHARED	0x0008
-#define VM_MAYREAD	0x0010
-#define VM_MAYWRITE	0x0020
-#define VM_MAYEXEC	0x0040
-#define VM_MAYSHARE	0x0080
-#define VM_GROWSDOWN	0x0100
-#define VM_GROWSUP	0x0200
-#define VM_SHM		0x0400
-#define VM_DENYWRITE	0x0800
-#define VM_EXECUTABLE	0x1000
-#define VM_LOCKED	0x2000
-#define VM_STACK_FLAGS	0x0177
+#define VM_READ 0x0001
+#define VM_WRITE 0x0002
+#define VM_EXEC 0x0004
+#define VM_SHARED 0x0008
+#define VM_MAYREAD 0x0010
+#define VM_MAYWRITE 0x0020
+#define VM_MAYEXEC 0x0040
+#define VM_MAYSHARE 0x0080
+#define VM_GROWSDOWN 0x0100
+#define VM_GROWSUP 0x0200
+#define VM_SHM 0x0400
+#define VM_DENYWRITE 0x0800
+#define VM_EXECUTABLE 0x1000
+#define VM_LOCKED 0x2000
+#define VM_STACK_FLAGS 0x0177
 extern pgprot_t protection_map[16];
 struct vm_operations_struct {
 void (*open)(struct vm_area_struct * area);
@@ -54,7 +54,7 @@ void (*advise)(struct vm_area_struct *area, unsigned long, size_t, unsigned int 
 unsigned long (*nopage)(struct vm_area_struct * area, unsigned long address, int write_access);
 unsigned long (*wppage)(struct vm_area_struct * area, unsigned long address,
 unsigned long page);
-int (*swapout)(struct vm_area_struct *,  unsigned long, pte_t *);
+int (*swapout)(struct vm_area_struct *, unsigned long, pte_t *);
 pte_t (*swapin)(struct vm_area_struct *, unsigned long, unsigned long);
 };
 typedef struct page {
@@ -73,25 +73,25 @@ struct buffer_head * buffers;
 unsigned long swap_unlock_entry;
 unsigned long map_nr;
 } mem_map_t;
-#define PG_locked		 0
-#define PG_error		 1
-#define PG_referenced		 2
-#define PG_uptodate		 3
-#define PG_free_after		 4
-#define PG_decr_after		 5
-#define PG_swap_unlock_after	 6
-#define PG_DMA			 7
-#define PG_reserved		31
-#define PageLocked(page)	(test_bit(PG_locked, &(page)->flags))
-#define PageError(page)		(test_bit(PG_error, &(page)->flags))
-#define PageReferenced(page)	(test_bit(PG_referenced, &(page)->flags))
-#define PageDirty(page)		(test_bit(PG_dirty, &(page)->flags))
-#define PageUptodate(page)	(test_bit(PG_uptodate, &(page)->flags))
-#define PageFreeAfter(page)	(test_bit(PG_free_after, &(page)->flags))
-#define PageDecrAfter(page)	(test_bit(PG_decr_after, &(page)->flags))
+#define PG_locked 0
+#define PG_error 1
+#define PG_referenced 2
+#define PG_uptodate 3
+#define PG_free_after 4
+#define PG_decr_after 5
+#define PG_swap_unlock_after 6
+#define PG_DMA 7
+#define PG_reserved 31
+#define PageLocked(page) (test_bit(PG_locked, &(page)->flags))
+#define PageError(page) (test_bit(PG_error, &(page)->flags))
+#define PageReferenced(page) (test_bit(PG_referenced, &(page)->flags))
+#define PageDirty(page) (test_bit(PG_dirty, &(page)->flags))
+#define PageUptodate(page) (test_bit(PG_uptodate, &(page)->flags))
+#define PageFreeAfter(page) (test_bit(PG_free_after, &(page)->flags))
+#define PageDecrAfter(page) (test_bit(PG_decr_after, &(page)->flags))
 #define PageSwapUnlockAfter(page) (test_bit(PG_swap_unlock_after, &(page)->flags))
-#define PageDMA(page)		(test_bit(PG_DMA, &(page)->flags))
-#define PageReserved(page)	(test_bit(PG_reserved, &(page)->flags))
+#define PageDMA(page) (test_bit(PG_DMA, &(page)->flags))
+#define PageReserved(page) (test_bit(PG_reserved, &(page)->flags))
 extern mem_map_t * mem_map;
 #define __get_free_page(priority) __get_free_pages((priority),0,0)
 #define __get_dma_pages(priority, order) __get_free_pages((priority),(order),1)
@@ -143,14 +143,14 @@ extern unsigned long get_unmapped_area(unsigned long, unsigned long);
 extern unsigned long page_unuse(unsigned long);
 extern int shrink_mmap(int, int, int);
 extern void truncate_inode_pages(struct inode *, unsigned long);
-#define GFP_BUFFER	0x00
-#define GFP_ATOMIC	0x01
-#define GFP_USER	0x02
-#define GFP_KERNEL	0x03
-#define GFP_NOBUFFER	0x04
-#define GFP_NFS		0x05
-#define GFP_IO		0x06
-#define GFP_DMA		0x80
+#define GFP_BUFFER 0x00
+#define GFP_ATOMIC 0x01
+#define GFP_USER 0x02
+#define GFP_KERNEL 0x03
+#define GFP_NOBUFFER 0x04
+#define GFP_NFS 0x05
+#define GFP_IO 0x06
+#define GFP_DMA 0x80
 #define GFP_LEVEL_MASK 0xf
 static inline int expand_stack(struct vm_area_struct * vma, unsigned long address)
 {
@@ -169,7 +169,7 @@ if (vma->vm_flags & VM_LOCKED)
 vma->vm_mm->locked_vm += grow >> PAGE_SHIFT;
 return 0;
 }
-#define avl_empty	(struct vm_area_struct *) NULL
+#define avl_empty (struct vm_area_struct *) NULL
 static inline struct vm_area_struct * find_vma(struct mm_struct * mm, unsigned long addr)
 {
 struct vm_area_struct * result = NULL;

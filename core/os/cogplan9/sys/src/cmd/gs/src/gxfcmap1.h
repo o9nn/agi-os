@@ -1,5 +1,5 @@
 #ifndef gxfcmap1_INCLUDED
-#  define gxfcmap1_INCLUDED
+# define gxfcmap1_INCLUDED
 #include "gxfcmap.h"
 typedef struct gs_cmap_adobe1_s gs_cmap_adobe1_t;
 typedef struct gx_cmap_lookup_range_s {
@@ -41,7 +41,7 @@ gs_glyph_mark_proc_t mark_glyph;
 void *mark_glyph_data;
 };
 extern_st(st_cmap_adobe1);
-#define public_st_cmap_adobe1()	\
+#define public_st_cmap_adobe1() \
 gs_public_st_suffix_add4(st_cmap_adobe1, gs_cmap_adobe1_t,\
 "gs_cmap_adobe1_t", cmap_adobe1_enum_ptrs, cmap_adobe1_reloc_ptrs,\
 st_cmap,\

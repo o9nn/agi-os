@@ -59,7 +59,7 @@ Menu menu =
 buttons
 };
 int
-dither[16] =  {
+dither[16] = {
 0, 8, 2, 10,
 12, 4, 14, 6,
 3, 11, 1, 9,

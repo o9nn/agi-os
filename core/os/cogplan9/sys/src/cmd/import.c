@@ -8,28 +8,28 @@ Encssl,
 Enctls,
 };
 static char *encprotos[] = {
-[Encnone] =	"clear",
-[Encssl] =	"ssl",
-[Enctls] = 	"tls",
+[Encnone] = "clear",
+[Encssl] = "ssl",
+[Enctls] = "tls",
 nil,
 };
-char		*keyspec = "";
-char		*filterp;
-char		*ealgs = "rc4_256 sha1";
-int		encproto = Encnone;
-char		*aan = "/bin/aan";
-AuthInfo 	*ai;
-int		debug;
-int		doauth = 1;
-int		timedout;
-int	connect(char*, char*, int);
-int	passive(void);
-int	old9p(int);
-void	catcher(void*, char*);
-void	sysfatal(char*, ...);
-void	usage(void);
-int	filter(int, char *, char *);
-static void	mksecret(char *, uchar *);
+char *keyspec = "";
+char *filterp;
+char *ealgs = "rc4_256 sha1";
+int encproto = Encnone;
+char *aan = "/bin/aan";
+AuthInfo *ai;
+int debug;
+int doauth = 1;
+int timedout;
+int connect(char*, char*, int);
+int passive(void);
+int old9p(int);
+void catcher(void*, char*);
+void sysfatal(char*, ...);
+void usage(void);
+int filter(int, char *, char *);
+static void mksecret(char *, uchar *);
 void
 procsetname(char *fmt, ...)
 {

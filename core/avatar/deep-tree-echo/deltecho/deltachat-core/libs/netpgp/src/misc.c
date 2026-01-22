@@ -36,7 +36,7 @@ __RCSID("$NetBSD$");
 #ifdef WIN32
 #define vsnprintf _vsnprintf
 #endif
-#define ERRNAME(code)	{ code, #code }
+#define ERRNAME(code) { code, #code }
 static pgp_errcode_name_map_t errcode_name_map[] = {
 ERRNAME(PGP_E_OK),
 ERRNAME(PGP_E_FAIL),
@@ -77,7 +77,7 @@ ERRNAME(PGP_E_PROTO_DECRYPTED_MSG_WRONG_LEN),
 ERRNAME(PGP_E_PROTO_BAD_SK_CHECKSUM),
 {0x00, NULL},
 };
-const char     *
+const char *
 pgp_errcode(const pgp_errcode_t errcode)
 {
 return (pgp_str_from_map((int) errcode,
@@ -86,7 +86,7 @@ return (pgp_str_from_map((int) errcode,
 void *
 pgp_new(size_t size)
 {
-void	*vp;
+void *vp;
 if ((vp = calloc(1, size)) == NULL) {
 (void) fprintf(stderr,
 "allocation failure for %" PRIsize "u bytes", size);
@@ -97,10 +97,10 @@ void
 pgp_push_error(pgp_error_t **errstack, pgp_errcode_t errcode,
 int sys_errno, const char *file, int line, const char *fmt,...)
 {
-pgp_error_t  *err;
-unsigned	maxbuf = 128;
-va_list		args;
-char           *comment;
+pgp_error_t *err;
+unsigned maxbuf = 128;
+va_list args;
+char *comment;
 if ((comment = calloc(1, maxbuf + 1)) == NULL) {
 (void) fprintf(stderr, "calloc comment failure\n");
 return;
@@ -134,7 +134,7 @@ printf("%s, %s\n", pgp_errcode(err->errcode), err->comment);
 void
 pgp_print_errors(pgp_error_t *errstack)
 {
-pgp_error_t    *err;
+pgp_error_t *err;
 for (err = errstack; err != NULL; err = err->next) {
 pgp_print_error(err);
 }
@@ -142,7 +142,7 @@ pgp_print_error(err);
 int
 pgp_has_error(pgp_error_t *errstack, pgp_errcode_t errcode)
 {
-pgp_error_t    *err;
+pgp_error_t *err;
 for (err = errstack; err != NULL; err = err->next) {
 if (err->errcode == errcode) {
 return 1;
@@ -153,7 +153,7 @@ return 0;
 void
 pgp_free_errors(pgp_error_t *errstack)
 {
-pgp_error_t    *next;
+pgp_error_t *next;
 while (errstack != NULL) {
 next = errstack->next;
 free(errstack->comment);
@@ -164,7 +164,7 @@ errstack = next;
 static int
 hash_uint32(pgp_hash_t *hash, uint32_t n)
 {
-uint8_t	ibuf[4];
+uint8_t ibuf[4];
 ibuf[0] = (uint8_t)(n >> 24) & 0xff;
 ibuf[1] = (uint8_t)(n >> 16) & 0xff;
 ibuf[2] = (uint8_t)(n >> 8) & 0xff;
@@ -185,9 +185,9 @@ return (int)(sizeof(len) + len);
 static int
 hash_bignum(pgp_hash_t *hash, BIGNUM *bignum)
 {
-uint8_t	*bn;
-size_t	 len;
-int	 padbyte;
+uint8_t *bn;
+size_t len;
+int padbyte;
 if (BN_is_zero(bignum)) {
 hash_uint32(hash, 0);
 return sizeof(len);
@@ -210,10 +210,10 @@ return (int)(sizeof(len) + len + padbyte);
 int
 pgp_fingerprint(pgp_fingerprint_t *fp, const pgp_pubkey_t *key, pgp_hash_alg_t hashtype)
 {
-pgp_memory_t	*mem;
-pgp_hash_t	 hash;
-const char	*type;
-uint32_t	 len;
+pgp_memory_t *mem;
+pgp_hash_t hash;
+const char *type;
+uint32_t len;
 mem = pgp_memory_new();
 if (key->version == 2 || key->version == 3) {
 if (key->alg != PGP_PKA_RSA &&
@@ -287,8 +287,8 @@ pgp_keyid(uint8_t *keyid, const size_t idlen, const pgp_pubkey_t *key, pgp_hash_
 {
 pgp_fingerprint_t finger;
 if (key->version == 2 || key->version == 3) {
-unsigned	n;
-uint8_t		bn[NETPGP_BUFSIZ];
+unsigned n;
+uint8_t bn[NETPGP_BUFSIZ];
 n = (unsigned) BN_num_bytes(key->key.rsa.n);
 if (n > sizeof(bn)) {
 (void) fprintf(stderr, "pgp_keyid: bad num bytes\n");
@@ -313,7 +313,7 @@ return 1;
 void
 pgp_hash_add_int(pgp_hash_t *hash, unsigned n, unsigned length)
 {
-uint8_t   c;
+uint8_t c;
 while (length--) {
 c = n >> (length * 8);
 hash->add(hash, &c, 1);
@@ -394,7 +394,7 @@ return PGP_HASH_UNKNOWN;
 unsigned
 pgp_hash(uint8_t *out, pgp_hash_alg_t alg, const void *in, size_t length)
 {
-pgp_hash_t      hash;
+pgp_hash_t hash;
 pgp_hash_any(&hash, alg);
 if (!hash.init(&hash)) {
 (void) fprintf(stderr, "pgp_hash: bad alloc\n");
@@ -409,8 +409,8 @@ const uint8_t *plaintext,
 const unsigned sz_plaintext,
 uint8_t *hashed)
 {
-pgp_hash_t	hash;
-uint8_t		c;
+pgp_hash_t hash;
+uint8_t c;
 if (pgp_get_debug_level(__FILE__)) {
 hexdump(stderr, "preamble", preamble, sz_preamble);
 hexdump(stderr, "plaintext", plaintext, sz_plaintext);
@@ -443,23 +443,23 @@ return 0;
 }
 }
 typedef struct str2cipher_t {
-const char	*s;
+const char *s;
 pgp_symm_alg_t i;
 } str2cipher_t;
-static str2cipher_t	str2cipher[] = {
-{	"cast5",		PGP_SA_CAST5		},
-{	"idea",			PGP_SA_IDEA		},
-{	"aes128",		PGP_SA_AES_128		},
-{	"aes256",		PGP_SA_AES_256		},
-{	"camellia128",		PGP_SA_CAMELLIA_128	},
-{	"camellia256",		PGP_SA_CAMELLIA_256	},
-{	"tripledes",		PGP_SA_TRIPLEDES	},
-{	NULL,			0			}
+static str2cipher_t str2cipher[] = {
+{ "cast5", PGP_SA_CAST5 },
+{ "idea", PGP_SA_IDEA },
+{ "aes128", PGP_SA_AES_128 },
+{ "aes256", PGP_SA_AES_256 },
+{ "camellia128", PGP_SA_CAMELLIA_128 },
+{ "camellia256", PGP_SA_CAMELLIA_256 },
+{ "tripledes", PGP_SA_TRIPLEDES },
+{ NULL, 0 }
 };
 pgp_symm_alg_t
 pgp_str_to_cipher(const char *cipher)
 {
-str2cipher_t	*sp;
+str2cipher_t *sp;
 for (sp = str2cipher ; cipher && sp->s ; sp++) {
 if (netpgp_strcasecmp(cipher, sp->s) == 0) {
 return sp->i;
@@ -475,7 +475,7 @@ RAND_bytes(dest, (int)length);
 void
 pgp_memory_init(pgp_memory_t *mem, size_t needed)
 {
-uint8_t	*temp;
+uint8_t *temp;
 mem->length = 0;
 if (mem->buf) {
 if (mem->allocated < needed) {
@@ -497,7 +497,7 @@ mem->allocated = needed;
 void
 pgp_memory_pad(pgp_memory_t *mem, size_t length)
 {
-uint8_t	*temp;
+uint8_t *temp;
 if (mem->allocated < mem->length) {
 (void) fprintf(stderr, "pgp_memory_pad: bad alloc in\n");
 return;
@@ -554,7 +554,7 @@ mem->length = 0;
 void
 pgp_memory_make_packet(pgp_memory_t *out, pgp_content_enum tag)
 {
-size_t          extra;
+size_t extra;
 extra = (out->length < 192) ? 1 : (out->length < 8192 + 192) ? 2 : 5;
 pgp_memory_pad(out, extra + 1);
 memmove(out->buf + extra + 1, out->buf, out->length);
@@ -573,7 +573,7 @@ out->buf[5] = (uint8_t)(out->length);
 }
 out->length += extra + 1;
 }
-pgp_memory_t   *
+pgp_memory_t *
 pgp_memory_new(void)
 {
 return calloc(1, sizeof(pgp_memory_t));
@@ -597,9 +597,9 @@ return mem->buf;
 int
 pgp_mem_readfile(pgp_memory_t *mem, const char *f)
 {
-struct stat	 st;
-FILE		*fp;
-int		 cc;
+struct stat st;
+FILE *fp;
+int cc;
 if ((fp = fopen(f, "rb")) == NULL) {
 (void) fprintf(stderr,
 "pgp_mem_readfile: can't open \"%s\"\n", f);
@@ -628,12 +628,12 @@ mem->mmapped = 1;
 return (mem->allocated == mem->length);
 }
 typedef struct {
-uint16_t  sum;
+uint16_t sum;
 } sum16_t;
 static const char *
 str_from_map_or_null(int type, pgp_map_t *map)
 {
-pgp_map_t      *row;
+pgp_map_t *row;
 for (row = map; row->string != NULL; row++) {
 if (row->type == type) {
 return row->string;
@@ -641,19 +641,19 @@ return row->string;
 }
 return NULL;
 }
-const char     *
+const char *
 pgp_str_from_map(int type, pgp_map_t *map)
 {
-const char     *str;
+const char *str;
 str = str_from_map_or_null(type, map);
 return (str) ? str : "Unknown";
 }
-#define LINELEN	16
+#define LINELEN 16
 void
 hexdump(FILE *fp, const char *header, const uint8_t *src, size_t length)
 {
-size_t	i;
-char	line[LINELEN + 1];
+size_t i;
+char line[LINELEN + 1];
 (void) fprintf(fp, "%s%s", (header) ? header : "", (header) ? "\n" : "");
 (void) fprintf(fp, "[%" PRIsize "u char%s]\n", length, (length == 1) ? "" : "s");
 for (i = 0 ; i < length ; i++) {
@@ -685,10 +685,10 @@ static int
 sum16_reader(pgp_stream_t *stream, void *dest_, size_t length, pgp_error_t **errors,
 pgp_reader_t *readinfo, pgp_cbdata_t *cbinfo)
 {
-const uint8_t	*dest = dest_;
-sum16_t		*arg = pgp_reader_get_arg(readinfo);
-int		 r;
-int		 n;
+const uint8_t *dest = dest_;
+sum16_t *arg = pgp_reader_get_arg(readinfo);
+int r;
+int n;
 r = pgp_stacked_read(stream, dest_, length, errors, readinfo, cbinfo);
 if (r < 0) {
 return r;
@@ -706,7 +706,7 @@ free(pgp_reader_get_arg(readinfo));
 void
 pgp_reader_push_sum16(pgp_stream_t *stream)
 {
-sum16_t    *arg;
+sum16_t *arg;
 if ((arg = calloc(1, sizeof(*arg))) == NULL) {
 (void) fprintf(stderr, "pgp_reader_push_sum16: bad alloc\n");
 } else {
@@ -716,8 +716,8 @@ pgp_reader_push(stream, sum16_reader, sum16_destroyer, arg);
 uint16_t
 pgp_reader_pop_sum16(pgp_stream_t *stream)
 {
-uint16_t	 sum;
-sum16_t		*arg;
+uint16_t sum;
+sum16_t *arg;
 arg = pgp_reader_get_arg(pgp_readinfo(stream));
 sum = arg->sum;
 pgp_reader_pop(stream);
@@ -728,15 +728,15 @@ return sum;
 enum {
 MAX_DEBUG_NAMES = 32
 };
-static int      debugc;
-static char    *debugv[MAX_DEBUG_NAMES];
+static int debugc;
+static char *debugv[MAX_DEBUG_NAMES];
 #endif
 #if 0
 int
 pgp_set_debug_level(const char *f)
 {
-const char     *name;
-int             i;
+const char *name;
+int i;
 if (f == NULL) {
 f = "all";
 }
@@ -761,8 +761,8 @@ int
 pgp_get_debug_level(const char *f)
 {
 #if 0
-const char     *name;
-int             i;
+const char *name;
+int i;
 if ((name = strrchr(f, '/')) == NULL) {
 name = f;
 } else {
@@ -794,8 +794,8 @@ int
 pgp_asprintf(char **ret, const char *fmt, ...)
 {
 va_list args;
-char    buf[120 * 1024];
-int     cc;
+char buf[120 * 1024];
+int cc;
 va_start(args, fmt);
 cc = vsnprintf(buf, sizeof(buf), fmt, args);
 va_end(args);
@@ -810,10 +810,10 @@ return cc;
 void
 netpgp_log(const char *fmt, ...)
 {
-va_list	 vp;
-time_t	 t;
-char	 buf[BUFSIZ * 2];
-int	 cc;
+va_list vp;
+time_t t;
+char buf[BUFSIZ * 2];
+int cc;
 (void) time(&t);
 cc = snprintf(buf, sizeof(buf), "%.24s: netpgp: ", ctime(&t));
 va_start(vp, fmt);
@@ -823,8 +823,8 @@ va_end(vp);
 char *
 netpgp_strdup(const char *s)
 {
-size_t	 len;
-char	*cp;
+size_t len;
+char *cp;
 len = strlen(s);
 if ((cp = calloc(1, len + 1)) != NULL) {
 (void) memcpy(cp, s, len);
@@ -835,7 +835,7 @@ return cp;
 int
 netpgp_strcasecmp(const char *s1, const char *s2)
 {
-int	n;
+int n;
 for (n = 0 ; *s1 && *s2 && (n = tolower((uint8_t)*s1) - tolower((uint8_t)*s2)) == 0 ; s1++, s2++) {
 }
 return n;

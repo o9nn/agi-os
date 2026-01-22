@@ -49,10 +49,10 @@ struct ggml_tensor * rw_f32 = ggml_cpy(ctx, rw, ggml_new_tensor_3d(ctx, GGML_TYP
 struct ggml_tensor * rh_f32 = ggml_cpy(ctx, rh, ggml_new_tensor_3d(ctx, GGML_TYPE_F32, 3, 2, 2));
 struct ggml_tensor * in = ggml_new_tensor_2d(ctx, GGML_TYPE_F32, 9, 4);
 struct ggml_tensor * out_inplace = ggml_new_tensor_2d(ctx, GGML_TYPE_F32, 9, 4);
-float * in_d          = (float*)in->data;
+float * in_d = (float*)in->data;
 float * out_inplace_d = (float*)out_inplace->data;
 for (int i = 0; i < ggml_nelements(in); ++i) {
-in_d[i]          = 1.f;
+in_d[i] = 1.f;
 out_inplace_d[i] = 1.f;
 }
 struct ggml_tensor * out = ggml_add_rel_pos(ctx, in, rw_f32, rh_f32);

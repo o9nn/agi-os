@@ -10,20 +10,20 @@ Trfs: module
 init: fn(nil: ref Draw->Context, nil: list of string);
 };
 Fid: adt {
-fid:	int;
-isdir:	int;
-aux:	int;
+fid: int;
+isdir: int;
+aux: int;
 };
 Table: adt[T] {
 items: array of list of (int, T);
 nilval: T;
 new: fn(nslots: int, nilval: T): ref Table[T];
-add:	fn(t: self ref Table, id: int, x: T): int;
-del:	fn(t: self ref Table, id: int): T;
-find:	fn(t: self ref Table, id: int): T;
+add: fn(t: self ref Table, id: int, x: T): int;
+del: fn(t: self ref Table, id: int): T;
+find: fn(t: self ref Table, id: int): T;
 };
-NBspace: con 16r00A0;	# Unicode `no-break' space (looks like a faint box in some fonts)
-NBspacelen: con 2;		# length of it in utf-8
+NBspace: con 16r00A0; # Unicode `no-break' space (looks like a faint box in some fonts)
+NBspacelen: con 2; # length of it in utf-8
 msize: int;
 lock: chan of int;
 fids: ref Table[ref Fid];
@@ -73,7 +73,7 @@ Read =>
 fid := fids.find(m.fid);
 addtfid(m.tag, fid);
 if(fid.isdir){
-m.count /= NBspacelen;	# translated strings might grow by this much
+m.count /= NBspacelen; # translated strings might grow by this much
 if(m.offset == big 0)
 fid.aux = 0;
 m.offset -= big fid.aux;
@@ -95,7 +95,7 @@ pick m := r {
 Version =>
 msize = m.msize;
 if(msize > len b)
-b = array[msize] of byte;	# a bit more than needed but doesn't matter
+b = array[msize] of byte; # a bit more than needed but doesn't matter
 Create or
 Open =>
 fid := deltfid(m.tag);

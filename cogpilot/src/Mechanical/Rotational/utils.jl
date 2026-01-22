@@ -14,7 +14,7 @@ phi(t), [description = "Rotation angle of flange"]
 tau(t), [connect = Flow, description = "Cut torque in flange"]
 end
 # Base.@doc """
-#     InternalSupport(;name, tau)
+# InternalSupport(;name, tau)
 # 1-dim. rotational flange of a shaft.
 # - `tau`: External support torque (must be computed via torque balance in model where InternalSupport is used; = flange.tau)
 # # States:
@@ -22,12 +22,12 @@ end
 # - `tau(t)`: [`N.m`] Cut torque in the flange
 # """ Flange
 # @connector function InternalSupport(; name, tau)
-#     @named flange = Flange()
-#     @variables phi(t)=0 [description = "Rotation angle of support $name"]
-#     # tau(t), [connect = Flow, description = "Cut torque in support $name"],)
-#     equations = [flange.tau ~ tau
-#                  flange.phi ~ phi]
-#     System(equations, t, [phi], [], name = name, systems = [flange]) # NOTE: tau not included since it belongs elsewhere
+# @named flange = Flange()
+# @variables phi(t)=0 [description = "Rotation angle of support $name"]
+# # tau(t), [connect = Flow, description = "Cut torque in support $name"],)
+# equations = [flange.tau ~ tau
+# flange.phi ~ phi]
+# System(equations, t, [phi], [], name = name, systems = [flange]) # NOTE: tau not included since it belongs elsewhere
 # end
 Base.@doc """
 Support(;name)
@@ -37,7 +37,7 @@ Support/housing of a 1-dim. rotational shaft
 - `tau(t)`: [`N.m`] Cut torque in the support/housing
 """ Support
 """
-PartialCompliant(;  name, phi_rel = 0.0, tau = 0.0)
+PartialCompliant(; name, phi_rel = 0.0, tau = 0.0)
 Partial model for the compliant connection of two rotational 1-dim. shaft flanges.
 # States:
 - `phi_rel(t)`: [`rad`] Relative rotation angle (`flange_b.phi - flange_a.phi`). It accepts an initial value, which defaults to 0.0.
@@ -126,7 +126,7 @@ Partial model for a component with two rotational 1-dim. shaft flanges and a sup
 # Connectors:
 - `flange_a` [Flange](@ref)
 - `flange_b` [Flange](@ref)
-- `support` [Support](@ref)  if `use_support == true`
+- `support` [Support](@ref) if `use_support == true`
 # Parameters:
 - `use_support`: If support flange enabled, otherwise implicitly grounded
 """

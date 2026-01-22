@@ -1,4 +1,4 @@
-#ifndef	_STDLIB_H
+#ifndef _STDLIB_H
 #define __GLIBC_INTERNAL_STARTING_HEADER_IMPLEMENTATION
 #include <bits/libc-header-start.h>
 #define __need_size_t
@@ -6,18 +6,18 @@
 #define __need_NULL
 #include <stddef.h>
 __BEGIN_DECLS
-#define	_STDLIB_H	1
+#define _STDLIB_H 1
 #if (defined __USE_XOPEN || defined __USE_XOPEN2K8) && !defined _SYS_WAIT_H
 # include <bits/waitflags.h>
 # include <bits/waitstatus.h>
-# define WEXITSTATUS(status)	__WEXITSTATUS (status)
-# define WTERMSIG(status)	__WTERMSIG (status)
-# define WSTOPSIG(status)	__WSTOPSIG (status)
-# define WIFEXITED(status)	__WIFEXITED (status)
-# define WIFSIGNALED(status)	__WIFSIGNALED (status)
-# define WIFSTOPPED(status)	__WIFSTOPPED (status)
+# define WEXITSTATUS(status) __WEXITSTATUS (status)
+# define WTERMSIG(status) __WTERMSIG (status)
+# define WSTOPSIG(status) __WSTOPSIG (status)
+# define WIFEXITED(status) __WIFEXITED (status)
+# define WIFSIGNALED(status) __WIFSIGNALED (status)
+# define WIFSTOPPED(status) __WIFSTOPPED (status)
 # ifdef __WIFCONTINUED
-#  define WIFCONTINUED(status)	__WIFCONTINUED (status)
+# define WIFCONTINUED(status) __WIFCONTINUED (status)
 # endif
 #endif
 #include <bits/floatn.h>
@@ -32,7 +32,7 @@ typedef struct
 long int quot;
 long int rem;
 } ldiv_t;
-# define __ldiv_t_defined	1
+# define __ldiv_t_defined 1
 #endif
 #if defined __USE_ISOC99 && !defined __lldiv_t_defined
 __extension__ typedef struct
@@ -40,12 +40,12 @@ __extension__ typedef struct
 long long int quot;
 long long int rem;
 } lldiv_t;
-# define __lldiv_t_defined	1
+# define __lldiv_t_defined 1
 #endif
-#define	RAND_MAX	2147483647
-#define	EXIT_FAILURE	1
-#define	EXIT_SUCCESS	0
-#define	MB_CUR_MAX	(__ctype_get_mb_cur_max ())
+#define RAND_MAX 2147483647
+#define EXIT_FAILURE 1
+#define EXIT_SUCCESS 0
+#define MB_CUR_MAX (__ctype_get_mb_cur_max ())
 extern size_t __ctype_get_mb_cur_max (void) __THROW __wur;
 extern double atof (const char *__nptr)
 __THROW __attribute_pure__ __nonnull ((1)) __wur;
@@ -60,7 +60,7 @@ __THROW __attribute_pure__ __nonnull ((1)) __wur;
 extern double strtod (const char *__restrict __nptr,
 char **__restrict __endptr)
 __THROW __nonnull ((1));
-#ifdef	__USE_ISOC99
+#ifdef __USE_ISOC99
 extern float strtof (const char *__restrict __nptr,
 char **__restrict __endptr) __THROW __nonnull ((1));
 extern long double strtold (const char *__restrict __nptr,
@@ -398,7 +398,7 @@ __THROW __asm ("at_quick_exit") __nonnull ((1));
 extern int at_quick_exit (void (*__func) (void)) __THROW __nonnull ((1));
 # endif
 #endif
-#ifdef	__USE_MISC
+#ifdef __USE_MISC
 extern int on_exit (void (*__func) (int __status, void *__arg), void *__arg)
 __THROW __nonnull ((1));
 #endif
@@ -422,7 +422,7 @@ extern int setenv (const char *__name, const char *__value, int __replace)
 __THROW __nonnull ((2));
 extern int unsetenv (const char *__name) __THROW __nonnull ((1));
 #endif
-#ifdef	__USE_MISC
+#ifdef __USE_MISC
 extern int clearenv (void) __THROW;
 #endif
 #if defined __USE_MISC \
@@ -433,12 +433,12 @@ extern char *mktemp (char *__template) __THROW __nonnull ((1));
 # ifndef __USE_FILE_OFFSET64
 extern int mkstemp (char *__template) __nonnull ((1)) __wur;
 # else
-#  ifdef __REDIRECT
+# ifdef __REDIRECT
 extern int __REDIRECT (mkstemp, (char *__template), mkstemp64)
 __nonnull ((1)) __wur;
-#  else
-#   define mkstemp mkstemp64
-#  endif
+# else
+# define mkstemp mkstemp64
+# endif
 # endif
 # ifdef __USE_LARGEFILE64
 extern int mkstemp64 (char *__template) __nonnull ((1)) __wur;
@@ -448,12 +448,12 @@ extern int mkstemp64 (char *__template) __nonnull ((1)) __wur;
 # ifndef __USE_FILE_OFFSET64
 extern int mkstemps (char *__template, int __suffixlen) __nonnull ((1)) __wur;
 # else
-#  ifdef __REDIRECT
+# ifdef __REDIRECT
 extern int __REDIRECT (mkstemps, (char *__template, int __suffixlen),
 mkstemps64) __nonnull ((1)) __wur;
-#  else
-#   define mkstemps mkstemps64
-#  endif
+# else
+# define mkstemps mkstemps64
+# endif
 # endif
 # ifdef __USE_LARGEFILE64
 extern int mkstemps64 (char *__template, int __suffixlen)
@@ -467,12 +467,12 @@ extern char *mkdtemp (char *__template) __THROW __nonnull ((1)) __wur;
 # ifndef __USE_FILE_OFFSET64
 extern int mkostemp (char *__template, int __flags) __nonnull ((1)) __wur;
 # else
-#  ifdef __REDIRECT
+# ifdef __REDIRECT
 extern int __REDIRECT (mkostemp, (char *__template, int __flags), mkostemp64)
 __nonnull ((1)) __wur;
-#  else
-#   define mkostemp mkostemp64
-#  endif
+# else
+# define mkostemp mkostemp64
+# endif
 # endif
 # ifdef __USE_LARGEFILE64
 extern int mkostemp64 (char *__template, int __flags) __nonnull ((1)) __wur;
@@ -481,13 +481,13 @@ extern int mkostemp64 (char *__template, int __flags) __nonnull ((1)) __wur;
 extern int mkostemps (char *__template, int __suffixlen, int __flags)
 __nonnull ((1)) __wur;
 # else
-#  ifdef __REDIRECT
+# ifdef __REDIRECT
 extern int __REDIRECT (mkostemps, (char *__template, int __suffixlen,
 int __flags), mkostemps64)
 __nonnull ((1)) __wur;
-#  else
-#   define mkostemps mkostemps64
-#  endif
+# else
+# define mkostemps mkostemps64
+# endif
 # endif
 # ifdef __USE_LARGEFILE64
 extern int mkostemps64 (char *__template, int __suffixlen, int __flags)
@@ -495,7 +495,7 @@ __nonnull ((1)) __wur;
 # endif
 #endif
 extern int system (const char *__command) __wur;
-#ifdef	__USE_GNU
+#ifdef __USE_GNU
 extern char *canonicalize_file_name (const char *__name)
 __THROW __nonnull ((1)) __attribute_malloc__
 __attr_dealloc_free __wur;
@@ -507,7 +507,7 @@ char *__restrict __resolved) __THROW __wur;
 #ifndef __COMPAR_FN_T
 # define __COMPAR_FN_T
 typedef int (*__compar_fn_t) (const void *, const void *);
-# ifdef	__USE_GNU
+# ifdef __USE_GNU
 typedef __compar_fn_t comparison_fn_t;
 # endif
 #endif
@@ -579,7 +579,7 @@ extern int mblen (const char *__s, size_t __n) __THROW;
 extern int mbtowc (wchar_t *__restrict __pwc,
 const char *__restrict __s, size_t __n) __THROW;
 extern int wctomb (char *__s, wchar_t __wchar) __THROW;
-extern size_t mbstowcs (wchar_t *__restrict  __pwcs,
+extern size_t mbstowcs (wchar_t *__restrict __pwcs,
 const char *__restrict __s, size_t __n) __THROW
 __attr_access ((__read_only__, 2));
 extern size_t wcstombs (char *__restrict __s,

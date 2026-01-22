@@ -8,29 +8,29 @@
 #include "../port/error.h"
 #include "../ppc/uartsmc.h"
 enum {
-Clen		= 0x7800,
-Sl		= 0x0400,
-Pen		= 0x0200,
-Pm		= 0x0100,
-Sm		= 0x0030,
-SMUart	= 0x0020,
-Dm		= 0x000c,
-Ten		= 0x0002,
-Ren		= 0x0001,
-ce_Brke	= 0x0040,
-ce_Br	= 0x0020,
-ce_Bsy	= 0x0004,
-ce_Txb	= 0x0002,
-ce_Rxb	= 0x0001,
-BDContin=	1<<9,
-BDIdle=		1<<8,
-BDPreamble=	1<<8,
-BDBreak=	1<<5,
-BDFrame=	1<<4,
-BDParity=	1<<3,
-BDOverrun=	1<<1,
-Rxsize=		CACHELINESZ,
-Txsize=		CACHELINESZ,
+Clen = 0x7800,
+Sl = 0x0400,
+Pen = 0x0200,
+Pm = 0x0100,
+Sm = 0x0030,
+SMUart = 0x0020,
+Dm = 0x000c,
+Ten = 0x0002,
+Ren = 0x0001,
+ce_Brke = 0x0040,
+ce_Br = 0x0020,
+ce_Bsy = 0x0004,
+ce_Txb = 0x0002,
+ce_Rxb = 0x0001,
+BDContin= 1<<9,
+BDIdle= 1<<8,
+BDPreamble= 1<<8,
+BDBreak= 1<<5,
+BDFrame= 1<<4,
+BDParity= 1<<3,
+BDOverrun= 1<<1,
+Rxsize= CACHELINESZ,
+Txsize= CACHELINESZ,
 };
 extern PhysUart smcphysuart;
 Uart smcuart[Nuart] = {
@@ -83,7 +83,7 @@ imm->port[SMC1PORT].ppar |= SMRXD1|SMTXD1;
 imm->port[SMC1PORT].pdir |= SMTXD1;
 imm->port[SMC1PORT].pdir &= ~SMRXD1;
 imm->port[SMC1PORT].psor &= ~(SMRXD1|SMTXD1);
-imm->brgc[ud->smcno]  = baudgen(uart->baud) | 0x10000;
+imm->brgc[ud->smcno] = baudgen(uart->baud) | 0x10000;
 imm->cmxsmr &= (ud->smcno == 0) ? ~0xb0 : ~0xb;
 iopunlock();
 m->immr->param[ud->smcno].smcbase = (ulong)p - IMMR;
@@ -147,7 +147,7 @@ if(uart->stop == 2){
 lcr |= Sl;
 bits += 1;
 }
-smc->smcmr = lcr |  bits <<11 | 0x3;
+smc->smcmr = lcr | bits <<11 | 0x3;
 ud->initialized = 1;
 }
 static void
@@ -271,7 +271,7 @@ b = bits + ((sp->smcmr & Pen) ? 1 : 0) + ((sp->smcmr & Sl) ? 2 : 1);
 if (b > 15)
 return -1;
 sp->smcmr &= ~(Ren | Ten);
-sp->smcmr = lcr |  b<<11;
+sp->smcmr = lcr | b<<11;
 uart->bits = bits;
 return 0;
 }
@@ -389,7 +389,7 @@ smcgetc(Uart *uart)
 {
 static uchar buf[128], *p;
 static int cnt;
-char	c;
+char c;
 if (cnt <= 0) {
 cnt = getchars(uart, buf);
 p = buf;
@@ -419,23 +419,23 @@ while (txb->status & BDReady)
 ;
 }
 PhysUart smcphysuart = {
-.name		= "smc",
-.pnp			= smcpnp,
-.enable		= smcenable,
-.disable		= smcdisable,
-.kick			= smckick,
-.dobreak		= smcbreak,
-.baud		= smcbaud,
-.bits			= smcbits,
-.stop			= smcstop,
-.parity		= smcparity,
-.modemctl	= smcmodemctl,
-.rts			= smcrts,
-.dtr			= smcdtr,
-.status		= smcstatus,
-.fifo			= smcfifo,
-.getc			= smcgetc,
-.putc			= smcputc,
+.name = "smc",
+.pnp = smcpnp,
+.enable = smcenable,
+.disable = smcdisable,
+.kick = smckick,
+.dobreak = smcbreak,
+.baud = smcbaud,
+.bits = smcbits,
+.stop = smcstop,
+.parity = smcparity,
+.modemctl = smcmodemctl,
+.rts = smcrts,
+.dtr = smcdtr,
+.status = smcstatus,
+.fifo = smcfifo,
+.getc = smcgetc,
+.putc = smcputc,
 };
 void
 console(void)

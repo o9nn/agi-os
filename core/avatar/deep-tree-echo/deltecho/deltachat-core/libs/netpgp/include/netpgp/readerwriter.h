@@ -2,7 +2,7 @@
 #define READERWRITER_H_
 #include "create.h"
 #include "memory.h"
-#define USE_MMAP_FOR_FILES      1
+#define USE_MMAP_FOR_FILES 1
 void pgp_reader_set_fd(pgp_stream_t *, int);
 void pgp_reader_set_mmap(pgp_stream_t *, int);
 void pgp_reader_set_memory(pgp_stream_t *, const void *, size_t);

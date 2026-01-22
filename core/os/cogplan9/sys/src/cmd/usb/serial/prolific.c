@@ -6,49 +6,49 @@
 #include "serial.h"
 #include "prolific.h"
 Cinfo plinfo[] = {
-{ PL2303Vid,	PL2303Did },
-{ PL2303Vid,	PL2303DidRSAQ2 },
-{ PL2303Vid,	PL2303DidDCU11 },
-{ PL2303Vid,	PL2303DidRSAQ3 },
-{ PL2303Vid,	PL2303DidPHAROS },
-{ PL2303Vid,	PL2303DidALDIGA },
-{ PL2303Vid,	PL2303DidMMX },
-{ PL2303Vid,	PL2303DidGPRS },
-{ IODATAVid,	IODATADid },
-{ IODATAVid,	IODATADidRSAQ5 },
-{ ATENVid,	ATENDid },
-{ ATENVid2,	ATENDid },
-{ ELCOMVid,	ELCOMDid },
-{ ELCOMVid,	ELCOMDidUCSGT },
-{ ITEGNOVid,	ITEGNODid },
-{ ITEGNOVid,	ITEGNODid2080 },
-{ MA620Vid,	MA620Did },
-{ RATOCVid,	RATOCDid },
-{ TRIPPVid,	TRIPPDid },
+{ PL2303Vid, PL2303Did },
+{ PL2303Vid, PL2303DidRSAQ2 },
+{ PL2303Vid, PL2303DidDCU11 },
+{ PL2303Vid, PL2303DidRSAQ3 },
+{ PL2303Vid, PL2303DidPHAROS },
+{ PL2303Vid, PL2303DidALDIGA },
+{ PL2303Vid, PL2303DidMMX },
+{ PL2303Vid, PL2303DidGPRS },
+{ IODATAVid, IODATADid },
+{ IODATAVid, IODATADidRSAQ5 },
+{ ATENVid, ATENDid },
+{ ATENVid2, ATENDid },
+{ ELCOMVid, ELCOMDid },
+{ ELCOMVid, ELCOMDidUCSGT },
+{ ITEGNOVid, ITEGNODid },
+{ ITEGNOVid, ITEGNODid2080 },
+{ MA620Vid, MA620Did },
+{ RATOCVid, RATOCDid },
+{ TRIPPVid, TRIPPDid },
 { RADIOSHACKVid,RADIOSHACKDid },
-{ DCU10Vid,	DCU10Did },
-{ SITECOMVid,	SITECOMDid },
-{ ALCATELVid,	ALCATELDid },
-{ SAMSUNGVid,	SAMSUNGDid },
-{ SIEMENSVid,	SIEMENSDidSX1 },
-{ SIEMENSVid,	SIEMENSDidX65 },
-{ SIEMENSVid,	SIEMENSDidX75 },
-{ SIEMENSVid,	SIEMENSDidEF81 },
-{ SYNTECHVid,	SYNTECHDid },
-{ NOKIACA42Vid,	NOKIACA42Did },
-{ CA42CA42Vid,	CA42CA42Did },
-{ SAGEMVid,	SAGEMDid },
-{ LEADTEKVid,	LEADTEK9531Did },
+{ DCU10Vid, DCU10Did },
+{ SITECOMVid, SITECOMDid },
+{ ALCATELVid, ALCATELDid },
+{ SAMSUNGVid, SAMSUNGDid },
+{ SIEMENSVid, SIEMENSDidSX1 },
+{ SIEMENSVid, SIEMENSDidX65 },
+{ SIEMENSVid, SIEMENSDidX75 },
+{ SIEMENSVid, SIEMENSDidEF81 },
+{ SYNTECHVid, SYNTECHDid },
+{ NOKIACA42Vid, NOKIACA42Did },
+{ CA42CA42Vid, CA42CA42Did },
+{ SAGEMVid, SAGEMDid },
+{ LEADTEKVid, LEADTEK9531Did },
 { SPEEDDRAGONVid,SPEEDDRAGONDid },
 { DATAPILOTU2Vid,DATAPILOTU2Did },
-{ BELKINVid,	BELKINDid },
-{ ALCORVid,	ALCORDid },
-{ WS002INVid,	WS002INDid },
-{ COREGAVid,	COREGADid },
-{ YCCABLEVid,	YCCABLEDid },
-{ SUPERIALVid,	SUPERIALDid },
-{ HPVid,	HPLD220Did },
-{ 0,		0 },
+{ BELKINVid, BELKINDid },
+{ ALCORVid, ALCORDid },
+{ WS002INVid, WS002INDid },
+{ COREGAVid, COREGADid },
+{ YCCABLEVid, YCCABLEDid },
+{ SUPERIALVid, SUPERIALDid },
+{ HPVid, HPLD220Did },
+{ 0, 0 },
 };
 int
 plmatch(char *info)
@@ -64,7 +64,7 @@ return 0;
 }
 return -1;
 }
-static void	statusreader(void *u);
+static void statusreader(void *u);
 static void
 dumpbuf(uchar *buf, int bufsz)
 {
@@ -81,7 +81,7 @@ Serial *ser;
 ser = p->s;
 dsprint(2, "serial: vendorread val: 0x%x idx:%d buf:%p\n",
 val, index, buf);
-res = usbcmd(ser->dev,  Rd2h | Rvendor | Rdev, VendorReadReq,
+res = usbcmd(ser->dev, Rd2h | Rvendor | Rdev, VendorReadReq,
 val, index, buf, 1);
 dsprint(2, "serial: vendorread res:%d\n", res);
 return res;
@@ -349,17 +349,17 @@ closedev(ser->dev);
 static int
 plseteps(Serialport *p)
 {
-devctl(p->epin,  "maxpkt 256");
+devctl(p->epin, "maxpkt 256");
 devctl(p->epout, "maxpkt 256");
 return 0;
 }
 Serialops plops = {
-.init		= plinit,
-.getparam	= plgetparam,
-.setparam	= plsetparam,
-.clearpipes	= plclearpipes,
-.sendlines	= plsendlines,
-.modemctl	= plmodemctl,
-.setbreak	= plsetbreak,
-.seteps		= plseteps,
+.init = plinit,
+.getparam = plgetparam,
+.setparam = plsetparam,
+.clearpipes = plclearpipes,
+.sendlines = plsendlines,
+.modemctl = plmodemctl,
+.setbreak = plsetbreak,
+.seteps = plseteps,
 };

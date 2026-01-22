@@ -13,16 +13,16 @@ lapicicrw(0, 0x000C0000|ApicINIT);
 }
 static int identify(void);
 PCArch archmp = {
-.id=		"_MP_",
-.ident=		identify,
-.reset=		mpshutdown,
-.intrinit=	mpinit,
-.intrenable=	mpintrenable,
-.intron=	lapicintron,
-.introff=	lapicintroff,
-.fastclock=	i8253read,
-.timerset=	lapictimerset,
-.resetothers=	mpresetothers,
+.id= "_MP_",
+.ident= identify,
+.reset= mpshutdown,
+.intrinit= mpinit,
+.intrenable= mpintrenable,
+.intron= lapicintron,
+.introff= lapicintroff,
+.fastclock= i8253read,
+.timerset= lapictimerset,
+.resetothers= mpresetothers,
 };
 static int
 identify(void)

@@ -1,20 +1,20 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"../port/error.h"
-#include	"../port/usb.h"
-#include	"../port/portusbehci.h"
-#include	"usbehci.h"
-#include	"uncached.h"
-#define diprint		if(ehcidebug || iso->debug)print
-#define ddiprint	if(ehcidebug>1 || iso->debug>1)print
-#define dqprint		if(ehcidebug || (qh->io && qh->io->debug))print
-#define ddqprint	if(ehcidebug>1 || (qh->io && qh->io->debug>1))print
-#define TRUNC(x, sz)	((x) & ((sz)-1))
-#define LPTR(q)		((ulong*)KADDR((q) & ~0x1F))
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "../port/error.h"
+#include "../port/usb.h"
+#include "../port/portusbehci.h"
+#include "usbehci.h"
+#include "uncached.h"
+#define diprint if(ehcidebug || iso->debug)print
+#define ddiprint if(ehcidebug>1 || iso->debug>1)print
+#define dqprint if(ehcidebug || (qh->io && qh->io->debug))print
+#define ddqprint if(ehcidebug>1 || (qh->io && qh->io->debug>1))print
+#define TRUNC(x, sz) ((x) & ((sz)-1))
+#define LPTR(q) ((ulong*)KADDR((q) & ~0x1F))
 typedef struct Ctlio Ctlio;
 typedef union Ed Ed;
 typedef struct Edpool Edpool;
@@ -25,229 +25,229 @@ typedef struct Sitd Sitd;
 typedef struct Td Td;
 enum
 {
-Qidle		= 0,
+Qidle = 0,
 Qinstall,
 Qrun,
 Qdone,
 Qclose,
 Qfree,
-Enabledelay	= 100,
-Abortdelay	= 5,
-Incr		= 64,
-Align		= 128,
-Nintrleafs	= 32,
-Nisoframes	= 64,
-Itdactive	= 0x80000000,
-Itddberr	= 0x40000000,
-Itdbabble	= 0x20000000,
-Itdtrerr	= 0x10000000,
-Itdlenshift	= 16,
-Itdlenmask	= 0xFFF,
-Itdioc		= 0x00008000,
-Itdpgshift	= 12,
-Itdoffshift	= 0,
-Itdepshift	= 8,
-Itddevshift	= 0,
-Itdin		= 0x800,
-Itdout		= 0,
-Itdmaxpktshift	= 0,
-Itdntdsshift	= 0,
-Itderrors	= Itddberr|Itdbabble|Itdtrerr,
-Stdin		= 0x80000000,
-Stdportshift	= 24,
-Stdhubshift	= 16,
-Stdepshift	= 8,
-Stddevshift	= 0,
-Stdssmshift	= 0,
-Stdscmshift	= 8,
-Stdioc		= 0x80000000,
-Stdpg		= 0x40000000,
-Stdlenshift	= 16,
-Stdlenmask	= 0x3FF,
-Stdactive	= 0x00000080,
-Stderr		= 0x00000040,
-Stddberr	= 0x00000020,
-Stdbabble	= 0x00000010,
-Stdtrerr	= 0x00000008,
-Stdmmf		= 0x00000004,
-Stddcs		= 0x00000002,
-Stderrors	= Stderr|Stddberr|Stdbabble|Stdtrerr|Stdmmf,
-Stdtpall	= 0x00000000,
-Stdtpbegin	= 0x00000008,
-Stdtcntmask	= 0x00000007,
-Tddata1		= 0x80000000,
-Tddata0		= 0x00000000,
-Tdlenshift	= 16,
-Tdlenmask	= 0x7FFF,
-Tdmaxpkt	= 0x5000,
-Tdioc		= 0x00008000,
-Tdpgshift	= 12,
-Tdpgmask	= 7,
-Tderr1		= 0x00000400,
-Tderr2		= 0x00000800,
-Tdtokout	= 0x00000000,
-Tdtokin		= 0x00000100,
-Tdtoksetup	= 0x00000200,
-Tdtok		= 0x00000300,
-Tdactive		= 0x00000080,
-Tdhalt		= 0x00000040,
-Tddberr		= 0x00000020,
-Tdbabble	= 0x00000010,
-Tdtrerr		= 0x00000008,
-Tdmmf		= 0x00000004,
-Tddcs		= 0x00000002,
-Tdping		= 0x00000001,
-Tderrors	= Tdhalt|Tddberr|Tdbabble|Tdtrerr|Tdmmf,
-Qhrlcmask	= 0xF,
-Qhrlcshift	= 28,
-Qhnhctl		= 0x08000000,
-Qhmplmask	= 0x7FF,
-Qhmplshift	= 16,
-Qhhrl		= 0x00008000,
-Qhdtc		= 0x00004000,
-Qhint		= 0x00000080,
-Qhspeedmask	= 0x00003000,
-Qhfull		= 0x00000000,
-Qhlow		= 0x00001000,
-Qhhigh		= 0x00002000,
-Qhmultshift	= 30,
-Qhmultmask	= 3,
-Qhportshift	= 23,
-Qhhubshift	= 16,
-Qhscmshift	= 8,
-Qhismshift	= 0,
+Enabledelay = 100,
+Abortdelay = 5,
+Incr = 64,
+Align = 128,
+Nintrleafs = 32,
+Nisoframes = 64,
+Itdactive = 0x80000000,
+Itddberr = 0x40000000,
+Itdbabble = 0x20000000,
+Itdtrerr = 0x10000000,
+Itdlenshift = 16,
+Itdlenmask = 0xFFF,
+Itdioc = 0x00008000,
+Itdpgshift = 12,
+Itdoffshift = 0,
+Itdepshift = 8,
+Itddevshift = 0,
+Itdin = 0x800,
+Itdout = 0,
+Itdmaxpktshift = 0,
+Itdntdsshift = 0,
+Itderrors = Itddberr|Itdbabble|Itdtrerr,
+Stdin = 0x80000000,
+Stdportshift = 24,
+Stdhubshift = 16,
+Stdepshift = 8,
+Stddevshift = 0,
+Stdssmshift = 0,
+Stdscmshift = 8,
+Stdioc = 0x80000000,
+Stdpg = 0x40000000,
+Stdlenshift = 16,
+Stdlenmask = 0x3FF,
+Stdactive = 0x00000080,
+Stderr = 0x00000040,
+Stddberr = 0x00000020,
+Stdbabble = 0x00000010,
+Stdtrerr = 0x00000008,
+Stdmmf = 0x00000004,
+Stddcs = 0x00000002,
+Stderrors = Stderr|Stddberr|Stdbabble|Stdtrerr|Stdmmf,
+Stdtpall = 0x00000000,
+Stdtpbegin = 0x00000008,
+Stdtcntmask = 0x00000007,
+Tddata1 = 0x80000000,
+Tddata0 = 0x00000000,
+Tdlenshift = 16,
+Tdlenmask = 0x7FFF,
+Tdmaxpkt = 0x5000,
+Tdioc = 0x00008000,
+Tdpgshift = 12,
+Tdpgmask = 7,
+Tderr1 = 0x00000400,
+Tderr2 = 0x00000800,
+Tdtokout = 0x00000000,
+Tdtokin = 0x00000100,
+Tdtoksetup = 0x00000200,
+Tdtok = 0x00000300,
+Tdactive = 0x00000080,
+Tdhalt = 0x00000040,
+Tddberr = 0x00000020,
+Tdbabble = 0x00000010,
+Tdtrerr = 0x00000008,
+Tdmmf = 0x00000004,
+Tddcs = 0x00000002,
+Tdping = 0x00000001,
+Tderrors = Tdhalt|Tddberr|Tdbabble|Tdtrerr|Tdmmf,
+Qhrlcmask = 0xF,
+Qhrlcshift = 28,
+Qhnhctl = 0x08000000,
+Qhmplmask = 0x7FF,
+Qhmplshift = 16,
+Qhhrl = 0x00008000,
+Qhdtc = 0x00004000,
+Qhint = 0x00000080,
+Qhspeedmask = 0x00003000,
+Qhfull = 0x00000000,
+Qhlow = 0x00001000,
+Qhhigh = 0x00002000,
+Qhmultshift = 30,
+Qhmultmask = 3,
+Qhportshift = 23,
+Qhhubshift = 16,
+Qhscmshift = 8,
+Qhismshift = 0,
 };
 struct Qtree
 {
-int	nel;
-int	depth;
-ulong*	bw;
-Qh**	root;
+int nel;
+int depth;
+ulong* bw;
+Qh** root;
 };
 struct Qio
 {
 QLock;
 Rendez;
-Qh*	qh;
-int	usbid;
-int	toggle;
-int	tok;
-ulong	iotime;
-int	debug;
-char*	err;
-char*	tag;
-ulong	bw;
+Qh* qh;
+int usbid;
+int toggle;
+int tok;
+ulong iotime;
+int debug;
+char* err;
+char* tag;
+ulong bw;
 };
 struct Ctlio
 {
 Qio;
-uchar*	data;
-int	ndata;
+uchar* data;
+int ndata;
 };
 struct Isoio
 {
 QLock;
 Rendez;
-int	usbid;
-int	tok;
-int	state;
-int	nframes;
-uchar*	data;
-char*	err;
-int	nerrs;
-ulong	maxsize;
-long	nleft;
-int	debug;
-int	hs;
-Isoio*	next;
-ulong	td0frno;
+int usbid;
+int tok;
+int state;
+int nframes;
+uchar* data;
+char* err;
+int nerrs;
+ulong maxsize;
+long nleft;
+int debug;
+int hs;
+Isoio* next;
+ulong td0frno;
 union{
-Itd*	tdi;
-Sitd*	stdi;
+Itd* tdi;
+Sitd* stdi;
 };
 union{
-Itd*	tdu;
-Sitd*	stdu;
+Itd* tdu;
+Sitd* stdu;
 };
 union{
-Itd**	itdps;
-Sitd**	sitdps;
-ulong**	tdps;
+Itd** itdps;
+Sitd** sitdps;
+ulong** tdps;
 };
 };
 struct Edpool
 {
 Lock;
-Ed*	free;
-int	nalloc;
-int	ninuse;
-int	nfree;
+Ed* free;
+int nalloc;
+int ninuse;
+int nfree;
 };
 struct Itd
 {
-ulong	link;
-ulong	csw[8];
-ulong	buffer[7];
-ulong	xbuffer[7];
-ulong	_pad0;
-Itd*	next;
-ulong	ndata;
-ulong	mdata;
-uchar*	data;
+ulong link;
+ulong csw[8];
+ulong buffer[7];
+ulong xbuffer[7];
+ulong _pad0;
+Itd* next;
+ulong ndata;
+ulong mdata;
+uchar* data;
 };
 struct Sitd
 {
-ulong	link;
-ulong	epc;
-ulong	mfs;
-ulong	csw;
-ulong	buffer[2];
-ulong	blink;
-ulong	xbuffer[2];
-Sitd*	next;
-ulong	ndata;
-ulong	mdata;
-uchar*	data;
+ulong link;
+ulong epc;
+ulong mfs;
+ulong csw;
+ulong buffer[2];
+ulong blink;
+ulong xbuffer[2];
+Sitd* next;
+ulong ndata;
+ulong mdata;
+uchar* data;
 };
 struct Td
 {
-ulong	nlink;
-ulong	alink;
-ulong	csw;
-ulong	buffer[5];
-ulong	xbuffer[5];
-Td*	next;
-ulong	ndata;
-uchar*	data;
-uchar*	buff;
-uchar	sbuff[1];
+ulong nlink;
+ulong alink;
+ulong csw;
+ulong buffer[5];
+ulong xbuffer[5];
+Td* next;
+ulong ndata;
+uchar* data;
+uchar* buff;
+uchar sbuff[1];
 };
 struct Qh
 {
-ulong	link;
-ulong	eps0;
-ulong	eps1;
-ulong	tclink;
-ulong	nlink;
-ulong	alink;
-ulong	csw;
-ulong	buffer[5];
-ulong	xbuffer[5];
-Qh*	next;
-int	state;
-Qio*	io;
-Td*	tds;
-int	sched;
-Qh*	inext;
+ulong link;
+ulong eps0;
+ulong eps1;
+ulong tclink;
+ulong nlink;
+ulong alink;
+ulong csw;
+ulong buffer[5];
+ulong xbuffer[5];
+Qh* next;
+int state;
+Qio* io;
+Td* tds;
+int sched;
+Qh* inext;
 };
 union Ed
 {
-Ed*	next;
-Qh	qh;
-Td	td;
-Itd	itd;
-Sitd	sitd;
-uchar	align[Align];
+Ed* next;
+Qh qh;
+Td td;
+Itd itd;
+Sitd sitd;
+uchar align[Align];
 };
 int ehcidebug = 0;
 static Edpool edpool;

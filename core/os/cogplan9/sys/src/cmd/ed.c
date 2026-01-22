@@ -4,115 +4,115 @@
 #include <regexp.h>
 enum
 {
-FNSIZE	= 128,
-LBSIZE	= 4096,
-BLKSIZE	= 4096,
-NBLK	= 8191,
-ESIZE	= 256,
-GBSIZE	= 256,
-MAXSUB	= 9,
-ESCFLG	= Runemax,
-EOF	= -1,
+FNSIZE = 128,
+LBSIZE = 4096,
+BLKSIZE = 4096,
+NBLK = 8191,
+ESIZE = 256,
+GBSIZE = 256,
+MAXSUB = 9,
+ESCFLG = Runemax,
+EOF = -1,
 };
-void	(*oldhup)(int);
-void	(*oldquit)(int);
-int*	addr1;
-int*	addr2;
-int	anymarks;
-Biobuf	bcons;
-int	col;
-long	count;
-int*	dol;
-int*	dot;
-int	fchange;
-char	file[FNSIZE];
-Rune	genbuf[LBSIZE];
-int	given;
-Rune*	globp;
-int	iblock;
-int	ichanged;
-int	io;
-Biobuf	iobuf;
-int	lastc;
-char	line[70];
-Rune*	linebp;
-Rune	linebuf[LBSIZE];
-int	listf;
-int	listn;
-Rune*	loc1;
-Rune*	loc2;
-int	names[26];
-int	nleft;
-int	oblock;
-int	oflag;
-Reprog	*pattern;
-int	peekc;
-int	pflag;
-int	rescuing;
-Rune	rhsbuf[LBSIZE/sizeof(Rune)];
-char	savedfile[FNSIZE];
-jmp_buf	savej;
-int	subnewa;
-int	subolda;
-Resub	subexp[MAXSUB];
-char*	tfname;
-int	tline;
-int	waiting;
-int	wrapp;
-int*	zero;
-char	Q[]	= "";
-char	T[]	= "TMP";
-char	WRERR[]	= "WRITE ERROR";
-int	bpagesize = 20;
-char	hex[]	= "0123456789abcdef";
-char*	linp	= line;
-ulong	nlall = 128;
-int	tfile	= -1;
-int	vflag	= 1;
-void	add(int);
-int*	address(void);
-int	append(int(*)(void), int*);
-void	browse(void);
-void	callunix(void);
-void	commands(void);
-void	compile(int);
-int	compsub(void);
-void	dosub(void);
-void	error(char*);
-int	match(int*);
-void	exfile(int);
-void	filename(int);
-Rune*	getblock(int, int);
-int	getchr(void);
-int	getcopy(void);
-int	getfile(void);
-Rune*	getline(int);
-int	getnum(void);
-int	getsub(void);
-int	gettty(void);
-void	global(int);
-void	init(void);
-void	join(void);
-void	move(int);
-void	newline(void);
-void	nonzero(void);
-void	notifyf(void*, char*);
-Rune*	place(Rune*, Rune*, Rune*);
-void	printcom(void);
-void	putchr(int);
-void	putd(void);
-void	putfile(void);
-int	putline(void);
-void	putshst(Rune*);
-void	putst(char*);
-void	quit(void);
-void	rdelete(int*, int*);
-void	regerror(char *);
-void	reverse(int*, int*);
-void	setnoaddr(void);
-void	setwide(void);
-void	squeeze(int);
-void	substitute(int);
+void (*oldhup)(int);
+void (*oldquit)(int);
+int* addr1;
+int* addr2;
+int anymarks;
+Biobuf bcons;
+int col;
+long count;
+int* dol;
+int* dot;
+int fchange;
+char file[FNSIZE];
+Rune genbuf[LBSIZE];
+int given;
+Rune* globp;
+int iblock;
+int ichanged;
+int io;
+Biobuf iobuf;
+int lastc;
+char line[70];
+Rune* linebp;
+Rune linebuf[LBSIZE];
+int listf;
+int listn;
+Rune* loc1;
+Rune* loc2;
+int names[26];
+int nleft;
+int oblock;
+int oflag;
+Reprog *pattern;
+int peekc;
+int pflag;
+int rescuing;
+Rune rhsbuf[LBSIZE/sizeof(Rune)];
+char savedfile[FNSIZE];
+jmp_buf savej;
+int subnewa;
+int subolda;
+Resub subexp[MAXSUB];
+char* tfname;
+int tline;
+int waiting;
+int wrapp;
+int* zero;
+char Q[] = "";
+char T[] = "TMP";
+char WRERR[] = "WRITE ERROR";
+int bpagesize = 20;
+char hex[] = "0123456789abcdef";
+char* linp = line;
+ulong nlall = 128;
+int tfile = -1;
+int vflag = 1;
+void add(int);
+int* address(void);
+int append(int(*)(void), int*);
+void browse(void);
+void callunix(void);
+void commands(void);
+void compile(int);
+int compsub(void);
+void dosub(void);
+void error(char*);
+int match(int*);
+void exfile(int);
+void filename(int);
+Rune* getblock(int, int);
+int getchr(void);
+int getcopy(void);
+int getfile(void);
+Rune* getline(int);
+int getnum(void);
+int getsub(void);
+int gettty(void);
+void global(int);
+void init(void);
+void join(void);
+void move(int);
+void newline(void);
+void nonzero(void);
+void notifyf(void*, char*);
+Rune* place(Rune*, Rune*, Rune*);
+void printcom(void);
+void putchr(int);
+void putd(void);
+void putfile(void);
+int putline(void);
+void putshst(Rune*);
+void putst(char*);
+void quit(void);
+void rdelete(int*, int*);
+void regerror(char *);
+void reverse(int*, int*);
+void setnoaddr(void);
+void setwide(void);
+void squeeze(int);
+void substitute(int);
 void
 main(int argc, char *argv[])
 {
@@ -1405,10 +1405,10 @@ col++;
 if(c<' ' || c>='\177') {
 *lp++ = '\\';
 *lp++ = 'x';
-*lp++ =  hex[c>>12];
-*lp++ =  hex[c>>8&0xF];
-*lp++ =  hex[c>>4&0xF];
-c     =  hex[c&0xF];
+*lp++ = hex[c>>12];
+*lp++ = hex[c>>8&0xF];
+*lp++ = hex[c>>4&0xF];
+c = hex[c&0xF];
 col += 5;
 }
 }

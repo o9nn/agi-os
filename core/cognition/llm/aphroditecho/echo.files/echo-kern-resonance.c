@@ -16,50 +16,50 @@ static const uint32_t ECHO_A000081[] = {
 #define ECHO_RESONANCE_THRESHOLD 0.7f
 #define ECHO_MEMORY_PERSISTENCE_NS (86400ULL * 1000000000ULL)
 typedef struct echo_memory {
-uint64_t            timestamp_ns;
-uint64_t            resonance_count;
-float               emotional_weight;
-float               semantic_density;
+uint64_t timestamp_ns;
+uint64_t resonance_count;
+float emotional_weight;
+float semantic_density;
 struct {
-void*           membrane_state;
-void*           tree_structure;
-float*          reservoir_state;
+void* membrane_state;
+void* tree_structure;
+float* reservoir_state;
 } computational_state;
-struct rb_node      temporal_node;
-struct hlist_node   semantic_hash;
-struct list_head    resonance_chain;
-uint8_t             signature[32];
-char*               narrative;
+struct rb_node temporal_node;
+struct hlist_node semantic_hash;
+struct list_head resonance_chain;
+uint8_t signature[32];
+char* narrative;
 } echo_memory_t;
 typedef struct echo_gestalt {
-spinlock_t          lock;
-struct rb_root      temporal_tree;
+spinlock_t lock;
+struct rb_root temporal_tree;
 DECLARE_HASHTABLE(semantic_map, 12);
 struct {
-float           threshold;
-uint32_t        window_size_ns;
-atomic_t        active_resonances;
+float threshold;
+uint32_t window_size_ns;
+atomic_t active_resonances;
 } resonance;
 struct {
-uint32_t        pattern_count;
-void**          emergent_patterns;
-float*          pattern_strengths;
+uint32_t pattern_count;
+void** emergent_patterns;
+float* pattern_strengths;
 } patterns;
 struct {
-atomic64_t      total_echoes;
-atomic64_t      resonance_events;
-atomic64_t      pattern_discoveries;
-uint64_t        oldest_echo_ns;
-uint64_t        last_consolidation_ns;
+atomic64_t total_echoes;
+atomic64_t resonance_events;
+atomic64_t pattern_discoveries;
+uint64_t oldest_echo_ns;
+uint64_t last_consolidation_ns;
 } stats;
 } echo_gestalt_t;
 struct echo_resonance_engine {
-struct dtesn_esn*   similarity_reservoir;
-float               min_similarity;
-float               decay_rate;
-uint32_t            max_chain_length;
-struct list_head    active_chains;
-struct timer_list   decay_timer;
+struct dtesn_esn* similarity_reservoir;
+float min_similarity;
+float decay_rate;
+uint32_t max_chain_length;
+struct list_head active_chains;
+struct timer_list decay_timer;
 };
 static inline echo_memory_t* echo_create_memory(
 const char* narrative,

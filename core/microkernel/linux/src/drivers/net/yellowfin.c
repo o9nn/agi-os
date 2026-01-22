@@ -21,17 +21,17 @@ static int rx_copybreak = 0;
 static int options[MAX_UNITS] = {-1, -1, -1, -1, -1, -1, -1, -1};
 static int full_duplex[MAX_UNITS] = {-1, -1, -1, -1, -1, -1, -1, -1};
 static int gx_fix = 0;
-#define TX_RING_SIZE	16
-#define TX_QUEUE_SIZE	12
-#define RX_RING_SIZE	64
-#define TX_TIMEOUT  (6*HZ)
-#define PKT_BUF_SZ		1536
+#define TX_RING_SIZE 16
+#define TX_QUEUE_SIZE 12
+#define RX_RING_SIZE 64
+#define TX_TIMEOUT (6*HZ)
+#define PKT_BUF_SZ 1536
 #ifndef __KERNEL__
 #define __KERNEL__
 #endif
 #if !defined(__OPTIMIZE__)
-#warning  You must compile this file with the correct options!
-#warning  See the last lines of the source file.
+#warning You must compile this file with the correct options!
+#warning See the last lines of the source file.
 #error You must compile this driver with "-O".
 #endif
 #include <linux/config.h>
@@ -71,9 +71,9 @@ static int gx_fix = 0;
 #include "pci-scan.h"
 #include "kern_compat.h"
 #endif
-#define virt_to_le32desc(addr)  cpu_to_le32(virt_to_bus(addr))
-#define le32desc_to_virt(addr)  bus_to_virt(le32_to_cpu(addr))
-#if (LINUX_VERSION_CODE >= 0x20100)  &&  defined(MODULE)
+#define virt_to_le32desc(addr) cpu_to_le32(virt_to_bus(addr))
+#define le32desc_to_virt(addr) bus_to_virt(le32_to_cpu(addr))
+#if (LINUX_VERSION_CODE >= 0x20100) && defined(MODULE)
 char kernel_version[] = UTS_RELEASE;
 #endif
 MODULE_AUTHOR("Donald Becker <becker@scyld.com>");
@@ -106,7 +106,7 @@ HasMACAddrBug=32,
 };
 #define YELLOWFIN_SIZE 0x100
 #ifdef USE_IO_OPS
-#define PCI_IOTYPE (PCI_USES_MASTER | PCI_USES_IO  | PCI_ADDR0)
+#define PCI_IOTYPE (PCI_USES_MASTER | PCI_USES_IO | PCI_ADDR0)
 #else
 #define PCI_IOTYPE (PCI_USES_MASTER | PCI_USES_MEM | PCI_ADDR1)
 #endif
@@ -166,7 +166,7 @@ enum intr_status_bits {
 IntrRxDone=0x01, IntrRxInvalid=0x02, IntrRxPCIFault=0x04,IntrRxPCIErr=0x08,
 IntrTxDone=0x10, IntrTxInvalid=0x20, IntrTxPCIFault=0x40,IntrTxPCIErr=0x80,
 IntrEarlyRx=0x100, IntrWakeup=0x200, };
-#define PRIV_ALIGN	31
+#define PRIV_ALIGN 31
 struct yellowfin_private {
 struct yellowfin_desc rx_ring[RX_RING_SIZE];
 struct yellowfin_desc tx_ring[TX_RING_SIZE*2];
@@ -281,7 +281,7 @@ np->default_port = option & 15;
 if (np->default_port)
 np->medialock = 1;
 }
-if (find_cnt < MAX_UNITS  &&  full_duplex[find_cnt] > 0)
+if (find_cnt < MAX_UNITS && full_duplex[find_cnt] > 0)
 np->full_duplex = 1;
 if (np->full_duplex)
 np->duplex_lock = 1;
@@ -295,7 +295,7 @@ if (np->drv_flags & HasMII) {
 int phy, phy_idx = 0;
 for (phy = 0; phy < 32 && phy_idx < 4; phy++) {
 int mii_status = mdio_read(ioaddr, phy, 1);
-if (mii_status != 0xffff  &&  mii_status != 0x0000) {
+if (mii_status != 0xffff && mii_status != 0x0000) {
 np->phys[phy_idx++] = phy;
 np->advertising = mdio_read(ioaddr, phy, 4);
 printk(KERN_INFO "%s: MII PHY found at address %d, status "
@@ -312,7 +312,7 @@ static int read_eeprom(long ioaddr, int location)
 int bogus_cnt = 10000;
 outb(location, ioaddr + EEAddr);
 outb(0x30 | ((location >> 8) & 7), ioaddr + EECtrl);
-while ((inb(ioaddr + EEStatus) & 0x80)  &&  --bogus_cnt > 0)
+while ((inb(ioaddr + EEStatus) & 0x80) && --bogus_cnt > 0)
 ;
 return inb(ioaddr + EERead);
 }
@@ -534,7 +534,7 @@ entry = yp->cur_tx % TX_RING_SIZE;
 yp->tx_skbuff[entry] = skb;
 if (gx_fix) {
 int cacheline_end = (virt_to_bus(skb->data) + skb->len) % 32;
-if (cacheline_end > 24  || cacheline_end == 0)
+if (cacheline_end > 24 || cacheline_end == 0)
 skb->len += 32 - cacheline_end + 1;
 }
 #ifdef NO_TXSTATS
@@ -739,7 +739,7 @@ if ( ! (desc_status & RX_EOP)) {
 printk(KERN_WARNING "%s: Oversized Ethernet frame spanned multiple buffers,"
 " status %4.4x!\n", dev->name, desc_status);
 yp->stats.rx_length_errors++;
-} else if ((yp->drv_flags & IsGigabit)  &&  (frame_status & 0x0038)) {
+} else if ((yp->drv_flags & IsGigabit) && (frame_status & 0x0038)) {
 if (yp->msg_level & NETIF_MSG_RX_ERR)
 printk(KERN_DEBUG "  yellowfin_rx() Rx error was %4.4x.\n",
 frame_status);
@@ -748,7 +748,7 @@ if (frame_status & 0x0060) yp->stats.rx_length_errors++;
 if (frame_status & 0x0008) yp->stats.rx_frame_errors++;
 if (frame_status & 0x0010) yp->stats.rx_crc_errors++;
 if (frame_status < 0) yp->stats.rx_dropped++;
-} else if ( !(yp->drv_flags & IsGigabit)  &&
+} else if ( !(yp->drv_flags & IsGigabit) &&
 ((buf_addr[data_size-1] & 0x85) || buf_addr[data_size-2] & 0xC0)) {
 u8 status1 = buf_addr[data_size-2];
 u8 status2 = buf_addr[data_size-1];
@@ -758,7 +758,7 @@ if (status2 & 0x03) yp->stats.rx_frame_errors++;
 if (status2 & 0x04) yp->stats.rx_crc_errors++;
 if (status2 & 0x80) yp->stats.rx_dropped++;
 #ifdef YF_PROTOTYPE
-} else if ((yp->flags & HasMACAddrBug)  &&
+} else if ((yp->flags & HasMACAddrBug) &&
 memcmp(le32desc_to_virt(yp->rx_ring[entry].addr),
 dev->dev_addr, 6) != 0
 && memcmp(le32desc_to_virt(yp->rx_ring[entry].addr),
@@ -957,7 +957,7 @@ if (dev->flags & IFF_PROMISC) {
 printk(KERN_NOTICE "%s: Promiscuous mode enabled.\n", dev->name);
 new_rx_mode = 0x000F;
 } else if (dev->mc_count > yp->multicast_filter_limit
-||  (dev->flags & IFF_ALLMULTI)) {
+|| (dev->flags & IFF_ALLMULTI)) {
 new_rx_mode = 0x000B;
 } else if (dev->mc_count > 0) {
 struct dev_mc_list *mclist;

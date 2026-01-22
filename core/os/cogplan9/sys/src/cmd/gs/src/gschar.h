@@ -1,13 +1,13 @@
 #ifndef gschar_INCLUDED
-#  define gschar_INCLUDED
+# define gschar_INCLUDED
 #include "gsccode.h"
 #include "gscpm.h"
 #ifndef gs_show_enum_DEFINED
-#  define gs_show_enum_DEFINED
+# define gs_show_enum_DEFINED
 typedef struct gs_show_enum_s gs_show_enum;
 #endif
 #ifndef gs_font_DEFINED
-#  define gs_font_DEFINED
+# define gs_font_DEFINED
 typedef struct gs_font_s gs_font;
 #endif
 gs_show_enum *gs_show_enum_alloc(gs_memory_t *, gs_state *, client_name_t);
@@ -42,12 +42,12 @@ int gs_show_current_width(const gs_show_enum *, gs_point *);
 void gs_show_width(const gs_show_enum *, gs_point *);
 gs_char_path_mode
 gs_show_in_charpath(const gs_show_enum *);
-int gs_setcachedevice_float(gs_show_enum *, gs_state *, const float *  );
-int gs_setcachedevice_double(gs_show_enum *, gs_state *, const double *  );
+int gs_setcachedevice_float(gs_show_enum *, gs_state *, const float * );
+int gs_setcachedevice_double(gs_show_enum *, gs_state *, const double * );
 #define gs_setcachedevice(penum, pgs, pw)\
 gs_setcachedevice_float(penum, pgs, pw)
-int gs_setcachedevice2_float(gs_show_enum *, gs_state *, const float *  );
-int gs_setcachedevice2_double(gs_show_enum *, gs_state *, const double *  );
+int gs_setcachedevice2_float(gs_show_enum *, gs_state *, const float * );
+int gs_setcachedevice2_double(gs_show_enum *, gs_state *, const double * );
 #define gs_setcachedevice2(penum, pgs, pw2)\
 gs_setcachedevice2_float(penum, pgs, pw2)
 int gs_setcharwidth(gs_show_enum *, gs_state *, floatp, floatp);

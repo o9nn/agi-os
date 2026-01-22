@@ -1,6 +1,6 @@
 implement Bounce;
-# bouncing balls demo.  it uses tk and multiple processes to animate a
-# number of balls bouncing around the screen.  each ball has its own
+# bouncing balls demo. it uses tk and multiple processes to animate a
+# number of balls bouncing around the screen. each ball has its own
 # process; CPU time is doled out fairly to each process by using
 # a central monitor loop.
 include "sys.m";
@@ -151,25 +151,25 @@ return real (<-randch % ((x - 1) * 100)) / 100.0 + 1.0;
 monitor(win: ref Tk->Toplevel, mkball: chan of (int, Realpoint, Realpoint))
 {
 procl := proc := chan of int :: nil;
-spawn nullproc(hd proc);	# always there to avoid deadlock when no balls.
-hd proc <-= 1;			# hand token to dummy proc
+spawn nullproc(hd proc); # always there to avoid deadlock when no balls.
+hd proc <-= 1; # hand token to dummy proc
 for (;;) {
 procc := hd proc;
 alt {
 (n, p, v) := <-mkball =>
-if (n > 0) {					# start new ball proc going.
+if (n > 0) { # start new ball proc going.
 procl = chan of int :: procl;
 spawn animproc(hd procl, win, p, v);
-} else if (tl procl != nil) {		# stop a ball proc.
-<-hd proc;			# get token.
-hd procl <-= 0;			# stop proc.
-proc = procl = tl procl;	# remove proc.
-hd proc <-= 1;			# hand out token.
+} else if (tl procl != nil) { # stop a ball proc.
+<-hd proc; # get token.
+hd procl <-= 0; # stop proc.
+proc = procl = tl procl; # remove proc.
+hd proc <-= 1; # hand out token.
 }
-<-procc =>					# got token.
+<-procc => # got token.
 if ((proc = tl proc) == nil)
 proc = procl;
-hd proc <-= 1;				# hand token to next process.
+hd proc <-= 1; # hand token to next process.
 }
 }
 }
@@ -187,7 +187,7 @@ ballid := cmd(win, sys->sprint(".c create oval 0 0 1 1 -fill #%.6x", <-randch & 
 hitlineid := -1;
 smallcount := 0;
 version := lineversion;
-loop:	for (;;) {
+loop: for (;;) {
 hitline: Line;
 hitp: Realpoint;
 dist := 1000000.0;
@@ -201,13 +201,13 @@ if (ok && hdist < dist && id != oldid && (smallcount < 10 || hdist > 1.5)) {
 }
 if (dist > 10000.0) {
 sys->print("no intersection!\n");
-#			sys->print("p: [%f, %f], v: [%f, %f]\n", p.x, p.y, v.x, v.y);
-#			for (l := lines; l != nil; l = tl l) {
-#				(id, line) := hd l;
-#				(ok, hp, hdist) := intersect(p, v, line);
-#				sys->print("line: [%d %d]->[%d %d] -> %d, [%f, %f], %f\n", line.p1.x, line.p1.y, line.p2.x, line.p2.y,
-#						ok, hp.x, hp.y, hdist);
-#			}
+# sys->print("p: [%f, %f], v: [%f, %f]\n", p.x, p.y, v.x, v.y);
+# for (l := lines; l != nil; l = tl l) {
+# (id, line) := hd l;
+# (ok, hp, hdist) := intersect(p, v, line);
+# sys->print("line: [%d %d]->[%d %d] -> %d, [%f, %f], %f\n", line.p1.x, line.p1.y, line.p2.x, line.p2.y,
+# ok, hp.x, hp.y, hdist);
+# }
 cmd(win, ".c delete " + ballid + ";update");
 while (c <-= <-c)
 ;
@@ -223,7 +223,7 @@ dt := int (dist / speed);
 t := 0;
 do {
 s := real t * speed;
-currp := Realpoint(p.x + s * v.x,  p.y + s * v.y);
+currp := Realpoint(p.x + s * v.x, p.y + s * v.y);
 bp := Point(int currp.x, int currp.y);
 cmd(win, ".c coords " + ballid + " " +
 string (bp.x-BALLSIZE)+" "+string (bp.y-BALLSIZE)+" "+

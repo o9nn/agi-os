@@ -89,12 +89,12 @@ sequential(const sequential& rhs)
 : crule<sequential>::crule(rhs.get_name()),
 rules(rhs.rules.begin(), rhs.rules.end()) { }
 #define OC_RULES_PUSH_BACK(z, n, name) rules.push_back(BOOST_PP_CAT(name, n).clone());
-#define OC_SEQ_CONSTRUCTOR(z, n, unused)                                \
+#define OC_SEQ_CONSTRUCTOR(z, n, unused) \
 sequential(const rule &r BOOST_PP_ENUM_TRAILING_PARAMS_Z(z, n, const rule& r), string name = "sequential") \
-: crule<sequential>::crule(name)                                \
-{                                                                   \
-rules.push_back(r.clone());                                     \
-BOOST_PP_CAT(BOOST_PP_REPEAT_, z)(n, OC_RULES_PUSH_BACK, r)     \
+: crule<sequential>::crule(name) \
+{ \
+rules.push_back(r.clone()); \
+BOOST_PP_CAT(BOOST_PP_REPEAT_, z)(n, OC_RULES_PUSH_BACK, r) \
 }
 BOOST_PP_REPEAT(50, OC_SEQ_CONSTRUCTOR, unused)
 #undef OC_SEQ_CONSTRUCTOR

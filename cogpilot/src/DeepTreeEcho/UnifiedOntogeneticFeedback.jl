@@ -38,30 +38,30 @@ Complete unified system integrating all components under A000081.
 """
 mutable struct UnifiedOntogeneticSystem
 # Core components (from other modules)
-jsurface_reactor::Any  # JSurfaceElementaryDifferentialReactor
-psystem_reservoir::Any  # PSystemMembraneReservoir
-enhanced_integration::Any  # EnhancedSystem
+jsurface_reactor::Any # JSurfaceElementaryDifferentialReactor
+psystem_reservoir::Any # PSystemMembraneReservoir
+enhanced_integration::Any # EnhancedSystem
 # A000081-specific structures
-a000081_trees::Vector{Vector{Vector{Int}}}  # Trees organized by order
-tree_count_by_order::Vector{Int}  # Should match A000081_SEQUENCE
+a000081_trees::Vector{Vector{Vector{Int}}} # Trees organized by order
+tree_count_by_order::Vector{Int} # Should match A000081_SEQUENCE
 current_order::Int
 max_order::Int
 # Ontogenetic state
 generation::Int
-planted_trees::Dict{Int,Vector{Int}}  # tree_id => level_sequence
+planted_trees::Dict{Int,Vector{Int}} # tree_id => level_sequence
 tree_fitness::Dict{Int,Float64}
-tree_lineage::Dict{Int,Vector{Int}}  # tree_id => parent_ids
+tree_lineage::Dict{Int,Vector{Int}} # tree_id => parent_ids
 # Feedback mechanisms
-feedback_matrix::Matrix{Float64}  # Component-to-component feedback
+feedback_matrix::Matrix{Float64} # Component-to-component feedback
 feedback_history::Vector{Dict{String,Float64}}
 resonance_patterns::Vector{Dict{String,Any}}
 # A000081-derived parameters
-reservoir_size::Int  # Cumulative tree count
-growth_rate::Float64  # A000081[n+1]/A000081[n]
-mutation_rate::Float64  # 1/A000081[n]
-complexity_measure::Float64  # Based on tree topology
+reservoir_size::Int # Cumulative tree count
+growth_rate::Float64 # A000081[n+1]/A000081[n]
+mutation_rate::Float64 # 1/A000081[n]
+complexity_measure::Float64 # Based on tree topology
 # Energy landscape
-hamiltonian::Float64  # Total system energy
+hamiltonian::Float64 # Total system energy
 hamiltonian_history::Vector{Float64}
 gradient::Vector{Float64}
 # Performance metrics
@@ -107,14 +107,14 @@ config = Dict{String,Any}(
 "diversity_target" => 5.0
 )
 return UnifiedOntogeneticSystem(
-nothing,  # Will be set during initialization
+nothing, # Will be set during initialization
 nothing,
 nothing,
 a000081_trees,
 tree_count_by_order,
 base_order,
 max_order,
-0,  # generation
+0, # generation
 Dict{Int,Vector{Int}}(),
 Dict{Int,Float64}(),
 Dict{Int,Vector{Int}}(),
@@ -146,10 +146,10 @@ tree_id = 1
 for order in 1:min(system.current_order, length(system.a000081_trees))
 for tree in system.a000081_trees[order]
 system.planted_trees[tree_id] = tree
-system.tree_fitness[tree_id] = 1.0  # Initial fitness
-system.tree_lineage[tree_id] = Int[]  # No parents
+system.tree_fitness[tree_id] = 1.0 # Initial fitness
+system.tree_lineage[tree_id] = Int[] # No parents
 tree_id += 1
-if tree_id > 20  # Limit initial population
+if tree_id > 20 # Limit initial population
 break
 end
 end
@@ -375,12 +375,12 @@ end
 function initialize_feedback_matrix()
 # Initialize with moderate coupling
 return [
-1.0  0.6  0.5  0.4  0.7  0.5;
-0.6  1.0  0.7  0.5  0.6  0.6;
-0.5  0.7  1.0  0.8  0.4  0.7;
-0.4  0.5  0.8  1.0  0.6  0.8;
-0.7  0.6  0.4  0.6  1.0  0.5;
-0.5  0.6  0.7  0.8  0.5  1.0
+1.0 0.6 0.5 0.4 0.7 0.5;
+0.6 1.0 0.7 0.5 0.6 0.6;
+0.5 0.7 1.0 0.8 0.4 0.7;
+0.4 0.5 0.8 1.0 0.6 0.8;
+0.7 0.6 0.4 0.6 1.0 0.5;
+0.5 0.6 0.7 0.8 0.5 1.0
 ]
 end
 function generate_a000081_trees_at_order(order::Int)

@@ -3,18 +3,18 @@
 #define PNG_LIBPNG_VER_STRING "1.2.8"
 #define PNG_HEADER_VERSION_STRING \
 " libpng version 1.2.8 - December 3, 2004 (header)\n"
-#define PNG_LIBPNG_VER_SONUM   0
-#define PNG_LIBPNG_VER_DLLNUM  13
-#define PNG_LIBPNG_VER_MAJOR   1
-#define PNG_LIBPNG_VER_MINOR   2
+#define PNG_LIBPNG_VER_SONUM 0
+#define PNG_LIBPNG_VER_DLLNUM 13
+#define PNG_LIBPNG_VER_MAJOR 1
+#define PNG_LIBPNG_VER_MINOR 2
 #define PNG_LIBPNG_VER_RELEASE 8
-#define PNG_LIBPNG_VER_BUILD  0
-#define PNG_LIBPNG_BUILD_ALPHA    1
-#define PNG_LIBPNG_BUILD_BETA     2
-#define PNG_LIBPNG_BUILD_RC       3
-#define PNG_LIBPNG_BUILD_STABLE   4
+#define PNG_LIBPNG_VER_BUILD 0
+#define PNG_LIBPNG_BUILD_ALPHA 1
+#define PNG_LIBPNG_BUILD_BETA 2
+#define PNG_LIBPNG_BUILD_RC 3
+#define PNG_LIBPNG_BUILD_STABLE 4
 #define PNG_LIBPNG_BUILD_RELEASE_STATUS_MASK 7
-#define PNG_LIBPNG_BUILD_PATCH    8
+#define PNG_LIBPNG_BUILD_PATCH 8
 #define PNG_LIBPNG_BUILD_PRIVATE 16
 #define PNG_LIBPNG_BUILD_SPECIAL 32
 #define PNG_LIBPNG_BUILD_BASE_TYPE PNG_LIBPNG_BUILD_STABLE
@@ -24,51 +24,51 @@
 #endif
 #include "pngconf.h"
 #if defined(PNG_USER_PRIVATEBUILD)
-#  define PNG_LIBPNG_BUILD_TYPE PNG_LIBPNG_BUILD_BASE_TYPE | \
+# define PNG_LIBPNG_BUILD_TYPE PNG_LIBPNG_BUILD_BASE_TYPE | \
 PNG_LIBPNG_BUILD_PRIVATE
 #else
-#  if defined(PNG_LIBPNG_SPECIALBUILD)
-#    define PNG_LIBPNG_BUILD_TYPE PNG_LIBPNG_BUILD_BASE_TYPE | \
+# if defined(PNG_LIBPNG_SPECIALBUILD)
+# define PNG_LIBPNG_BUILD_TYPE PNG_LIBPNG_BUILD_BASE_TYPE | \
 PNG_LIBPNG_BUILD_SPECIAL
-#  else
-#    define PNG_LIBPNG_BUILD_TYPE PNG_LIBPNG_BUILD_BASE_TYPE
-#  endif
+# else
+# define PNG_LIBPNG_BUILD_TYPE PNG_LIBPNG_BUILD_BASE_TYPE
+# endif
 #endif
 #ifndef PNG_VERSION_INFO_ONLY
 #ifdef __cplusplus
 extern "C" {
 #endif
 #ifndef PNG_NO_TYPECAST_NULL
-#define int_p_NULL                (int *)NULL
-#define png_bytep_NULL            (png_bytep)NULL
-#define png_bytepp_NULL           (png_bytepp)NULL
-#define png_doublep_NULL          (png_doublep)NULL
-#define png_error_ptr_NULL        (png_error_ptr)NULL
-#define png_flush_ptr_NULL        (png_flush_ptr)NULL
-#define png_free_ptr_NULL         (png_free_ptr)NULL
-#define png_infopp_NULL           (png_infopp)NULL
-#define png_malloc_ptr_NULL       (png_malloc_ptr)NULL
-#define png_read_status_ptr_NULL  (png_read_status_ptr)NULL
-#define png_rw_ptr_NULL           (png_rw_ptr)NULL
-#define png_structp_NULL          (png_structp)NULL
-#define png_uint_16p_NULL         (png_uint_16p)NULL
-#define png_voidp_NULL            (png_voidp)NULL
+#define int_p_NULL (int *)NULL
+#define png_bytep_NULL (png_bytep)NULL
+#define png_bytepp_NULL (png_bytepp)NULL
+#define png_doublep_NULL (png_doublep)NULL
+#define png_error_ptr_NULL (png_error_ptr)NULL
+#define png_flush_ptr_NULL (png_flush_ptr)NULL
+#define png_free_ptr_NULL (png_free_ptr)NULL
+#define png_infopp_NULL (png_infopp)NULL
+#define png_malloc_ptr_NULL (png_malloc_ptr)NULL
+#define png_read_status_ptr_NULL (png_read_status_ptr)NULL
+#define png_rw_ptr_NULL (png_rw_ptr)NULL
+#define png_structp_NULL (png_structp)NULL
+#define png_uint_16p_NULL (png_uint_16p)NULL
+#define png_voidp_NULL (png_voidp)NULL
 #define png_write_status_ptr_NULL (png_write_status_ptr)NULL
 #else
-#define int_p_NULL                NULL
-#define png_bytep_NULL            NULL
-#define png_bytepp_NULL           NULL
-#define png_doublep_NULL          NULL
-#define png_error_ptr_NULL        NULL
-#define png_flush_ptr_NULL        NULL
-#define png_free_ptr_NULL         NULL
-#define png_infopp_NULL           NULL
-#define png_malloc_ptr_NULL       NULL
-#define png_read_status_ptr_NULL  NULL
-#define png_rw_ptr_NULL           NULL
-#define png_structp_NULL          NULL
-#define png_uint_16p_NULL         NULL
-#define png_voidp_NULL            NULL
+#define int_p_NULL NULL
+#define png_bytep_NULL NULL
+#define png_bytepp_NULL NULL
+#define png_doublep_NULL NULL
+#define png_error_ptr_NULL NULL
+#define png_flush_ptr_NULL NULL
+#define png_free_ptr_NULL NULL
+#define png_infopp_NULL NULL
+#define png_malloc_ptr_NULL NULL
+#define png_read_status_ptr_NULL NULL
+#define png_rw_ptr_NULL NULL
+#define png_structp_NULL NULL
+#define png_uint_16p_NULL NULL
+#define png_voidp_NULL NULL
 #define png_write_status_ptr_NULL NULL
 #endif
 #if !defined(PNG_NO_EXTERN) || defined(PNG_ALWAYS_EXTERN)
@@ -139,7 +139,7 @@ typedef png_sPLT_t FAR * FAR * png_sPLT_tpp;
 #ifdef PNG_TEXT_SUPPORTED
 typedef struct png_text_struct
 {
-int  compression;
+int compression;
 png_charp key;
 png_charp text;
 png_size_t text_length;
@@ -154,11 +154,11 @@ typedef png_text FAR * FAR * png_textpp;
 #endif
 #define PNG_TEXT_COMPRESSION_NONE_WR -3
 #define PNG_TEXT_COMPRESSION_zTXt_WR -2
-#define PNG_TEXT_COMPRESSION_NONE    -1
-#define PNG_TEXT_COMPRESSION_zTXt     0
-#define PNG_ITXT_COMPRESSION_NONE     1
-#define PNG_ITXT_COMPRESSION_zTXt     2
-#define PNG_TEXT_COMPRESSION_LAST     3
+#define PNG_TEXT_COMPRESSION_NONE -1
+#define PNG_TEXT_COMPRESSION_zTXt 0
+#define PNG_ITXT_COMPRESSION_NONE 1
+#define PNG_ITXT_COMPRESSION_zTXt 2
+#define PNG_TEXT_COMPRESSION_LAST 3
 typedef struct png_time_struct
 {
 png_uint_16 year;
@@ -310,46 +310,46 @@ typedef png_info FAR * FAR * png_infopp;
 #define PNG_UINT_32_MAX ((png_uint_32)(-1))
 #define PNG_SIZE_MAX ((png_size_t)(-1))
 #define PNG_MAX_UINT PNG_UINT_31_MAX
-#define PNG_COLOR_MASK_PALETTE    1
-#define PNG_COLOR_MASK_COLOR      2
-#define PNG_COLOR_MASK_ALPHA      4
+#define PNG_COLOR_MASK_PALETTE 1
+#define PNG_COLOR_MASK_COLOR 2
+#define PNG_COLOR_MASK_ALPHA 4
 #define PNG_COLOR_TYPE_GRAY 0
-#define PNG_COLOR_TYPE_PALETTE  (PNG_COLOR_MASK_COLOR | PNG_COLOR_MASK_PALETTE)
-#define PNG_COLOR_TYPE_RGB        (PNG_COLOR_MASK_COLOR)
-#define PNG_COLOR_TYPE_RGB_ALPHA  (PNG_COLOR_MASK_COLOR | PNG_COLOR_MASK_ALPHA)
+#define PNG_COLOR_TYPE_PALETTE (PNG_COLOR_MASK_COLOR | PNG_COLOR_MASK_PALETTE)
+#define PNG_COLOR_TYPE_RGB (PNG_COLOR_MASK_COLOR)
+#define PNG_COLOR_TYPE_RGB_ALPHA (PNG_COLOR_MASK_COLOR | PNG_COLOR_MASK_ALPHA)
 #define PNG_COLOR_TYPE_GRAY_ALPHA (PNG_COLOR_MASK_ALPHA)
-#define PNG_COLOR_TYPE_RGBA  PNG_COLOR_TYPE_RGB_ALPHA
-#define PNG_COLOR_TYPE_GA  PNG_COLOR_TYPE_GRAY_ALPHA
+#define PNG_COLOR_TYPE_RGBA PNG_COLOR_TYPE_RGB_ALPHA
+#define PNG_COLOR_TYPE_GA PNG_COLOR_TYPE_GRAY_ALPHA
 #define PNG_COMPRESSION_TYPE_BASE 0
 #define PNG_COMPRESSION_TYPE_DEFAULT PNG_COMPRESSION_TYPE_BASE
-#define PNG_FILTER_TYPE_BASE      0
+#define PNG_FILTER_TYPE_BASE 0
 #define PNG_INTRAPIXEL_DIFFERENCING 64
-#define PNG_FILTER_TYPE_DEFAULT   PNG_FILTER_TYPE_BASE
-#define PNG_INTERLACE_NONE        0
-#define PNG_INTERLACE_ADAM7       1
-#define PNG_INTERLACE_LAST        2
-#define PNG_OFFSET_PIXEL          0
-#define PNG_OFFSET_MICROMETER     1
-#define PNG_OFFSET_LAST           2
-#define PNG_EQUATION_LINEAR       0
-#define PNG_EQUATION_BASE_E       1
-#define PNG_EQUATION_ARBITRARY    2
-#define PNG_EQUATION_HYPERBOLIC   3
-#define PNG_EQUATION_LAST         4
-#define PNG_SCALE_UNKNOWN         0
-#define PNG_SCALE_METER           1
-#define PNG_SCALE_RADIAN          2
-#define PNG_SCALE_LAST            3
-#define PNG_RESOLUTION_UNKNOWN    0
-#define PNG_RESOLUTION_METER      1
-#define PNG_RESOLUTION_LAST       2
+#define PNG_FILTER_TYPE_DEFAULT PNG_FILTER_TYPE_BASE
+#define PNG_INTERLACE_NONE 0
+#define PNG_INTERLACE_ADAM7 1
+#define PNG_INTERLACE_LAST 2
+#define PNG_OFFSET_PIXEL 0
+#define PNG_OFFSET_MICROMETER 1
+#define PNG_OFFSET_LAST 2
+#define PNG_EQUATION_LINEAR 0
+#define PNG_EQUATION_BASE_E 1
+#define PNG_EQUATION_ARBITRARY 2
+#define PNG_EQUATION_HYPERBOLIC 3
+#define PNG_EQUATION_LAST 4
+#define PNG_SCALE_UNKNOWN 0
+#define PNG_SCALE_METER 1
+#define PNG_SCALE_RADIAN 2
+#define PNG_SCALE_LAST 3
+#define PNG_RESOLUTION_UNKNOWN 0
+#define PNG_RESOLUTION_METER 1
+#define PNG_RESOLUTION_LAST 2
 #define PNG_sRGB_INTENT_PERCEPTUAL 0
-#define PNG_sRGB_INTENT_RELATIVE   1
+#define PNG_sRGB_INTENT_RELATIVE 1
 #define PNG_sRGB_INTENT_SATURATION 2
-#define PNG_sRGB_INTENT_ABSOLUTE   3
-#define PNG_sRGB_INTENT_LAST       4
-#define PNG_KEYWORD_MAX_LENGTH     79
-#define PNG_MAX_PALETTE_LENGTH    256
+#define PNG_sRGB_INTENT_ABSOLUTE 3
+#define PNG_sRGB_INTENT_LAST 4
+#define PNG_KEYWORD_MAX_LENGTH 79
+#define PNG_MAX_PALETTE_LENGTH 256
 #define PNG_INFO_gAMA 0x0001
 #define PNG_INFO_sBIT 0x0002
 #define PNG_INFO_cHRM 0x0004
@@ -404,22 +404,22 @@ typedef int (PNGAPI *png_user_chunk_ptr) PNGARG((png_structp, png_unknown_chunkp
 #if defined(PNG_UNKNOWN_CHUNKS_SUPPORTED)
 typedef void (PNGAPI *png_unknown_chunk_ptr) PNGARG((png_structp));
 #endif
-#define PNG_TRANSFORM_IDENTITY       0x0000
-#define PNG_TRANSFORM_STRIP_16       0x0001
-#define PNG_TRANSFORM_STRIP_ALPHA    0x0002
-#define PNG_TRANSFORM_PACKING        0x0004
-#define PNG_TRANSFORM_PACKSWAP       0x0008
-#define PNG_TRANSFORM_EXPAND         0x0010
-#define PNG_TRANSFORM_INVERT_MONO    0x0020
-#define PNG_TRANSFORM_SHIFT          0x0040
-#define PNG_TRANSFORM_BGR            0x0080
-#define PNG_TRANSFORM_SWAP_ALPHA     0x0100
-#define PNG_TRANSFORM_SWAP_ENDIAN    0x0200
-#define PNG_TRANSFORM_INVERT_ALPHA   0x0400
-#define PNG_TRANSFORM_STRIP_FILLER   0x0800
-#define PNG_FLAG_MNG_EMPTY_PLTE     0x01
-#define PNG_FLAG_MNG_FILTER_64      0x04
-#define PNG_ALL_MNG_FEATURES        0x05
+#define PNG_TRANSFORM_IDENTITY 0x0000
+#define PNG_TRANSFORM_STRIP_16 0x0001
+#define PNG_TRANSFORM_STRIP_ALPHA 0x0002
+#define PNG_TRANSFORM_PACKING 0x0004
+#define PNG_TRANSFORM_PACKSWAP 0x0008
+#define PNG_TRANSFORM_EXPAND 0x0010
+#define PNG_TRANSFORM_INVERT_MONO 0x0020
+#define PNG_TRANSFORM_SHIFT 0x0040
+#define PNG_TRANSFORM_BGR 0x0080
+#define PNG_TRANSFORM_SWAP_ALPHA 0x0100
+#define PNG_TRANSFORM_SWAP_ENDIAN 0x0200
+#define PNG_TRANSFORM_INVERT_ALPHA 0x0400
+#define PNG_TRANSFORM_STRIP_FILLER 0x0800
+#define PNG_FLAG_MNG_EMPTY_PLTE 0x01
+#define PNG_FLAG_MNG_FILTER_64 0x04
+#define PNG_ALL_MNG_FEATURES 0x05
 typedef png_voidp (*png_malloc_ptr) PNGARG((png_structp, png_size_t));
 typedef void (*png_free_ptr) PNGARG((png_structp, png_voidp));
 struct png_struct_def
@@ -500,9 +500,9 @@ png_uint_16 filler;
 #endif
 #if defined(PNG_bKGD_SUPPORTED)
 png_byte background_gamma_type;
-#  ifdef PNG_FLOATING_POINT_SUPPORTED
+# ifdef PNG_FLOATING_POINT_SUPPORTED
 float background_gamma;
-#  endif
+# endif
 png_color_16 background;
 #if defined(PNG_READ_GAMMA_SUPPORTED)
 png_color_16 background_1;
@@ -557,12 +557,12 @@ png_size_t buffer_size;
 png_size_t current_buffer_size;
 int process_mode;
 int cur_palette;
-#  if defined(PNG_TEXT_SUPPORTED)
+# if defined(PNG_TEXT_SUPPORTED)
 png_size_t current_text_size;
 png_size_t current_text_left;
 png_charp current_text;
 png_charp current_text_ptr;
-#  endif
+# endif
 #endif
 #if defined(__TURBOC__) && !defined(_Windows) && !defined(__FLAT__)
 png_bytepp offset_table_ptr;
@@ -626,9 +626,9 @@ png_byte filter_type;
 png_uint_32 row_buf_size;
 #endif
 #if !defined(PNG_1_0_X) && defined(PNG_ASSEMBLER_CODE_SUPPORTED)
-png_byte     mmx_bitdepth_threshold;
-png_uint_32  mmx_rowbytes_threshold;
-png_uint_32  asm_flags;
+png_byte mmx_bitdepth_threshold;
+png_uint_32 mmx_rowbytes_threshold;
+png_uint_32 asm_flags;
 #endif
 #ifdef PNG_USER_MEM_SUPPORTED
 png_voidp mem_ptr;
@@ -787,9 +787,9 @@ png_color_16p background_color, int background_gamma_code,
 int need_expand, double background_gamma));
 #endif
 #define PNG_BACKGROUND_GAMMA_UNKNOWN 0
-#define PNG_BACKGROUND_GAMMA_SCREEN  1
-#define PNG_BACKGROUND_GAMMA_FILE    2
-#define PNG_BACKGROUND_GAMMA_UNIQUE  3
+#define PNG_BACKGROUND_GAMMA_SCREEN 1
+#define PNG_BACKGROUND_GAMMA_FILE 2
+#define PNG_BACKGROUND_GAMMA_UNIQUE 3
 #endif
 #if defined(PNG_READ_16_TO_8_SUPPORTED)
 extern PNG_EXPORT(void,png_set_strip_16) PNGARG((png_structp png_ptr));
@@ -853,28 +853,28 @@ PNGARG((png_structpp png_ptr_ptr, png_infopp info_ptr_ptr));
 extern void png_write_destroy PNGARG((png_structp png_ptr));
 extern PNG_EXPORT(void,png_set_crc_action) PNGARG((png_structp png_ptr,
 int crit_action, int ancil_action));
-#define PNG_CRC_DEFAULT       0
-#define PNG_CRC_ERROR_QUIT    1
-#define PNG_CRC_WARN_DISCARD  2
-#define PNG_CRC_WARN_USE      3
-#define PNG_CRC_QUIET_USE     4
-#define PNG_CRC_NO_CHANGE     5
+#define PNG_CRC_DEFAULT 0
+#define PNG_CRC_ERROR_QUIT 1
+#define PNG_CRC_WARN_DISCARD 2
+#define PNG_CRC_WARN_USE 3
+#define PNG_CRC_QUIET_USE 4
+#define PNG_CRC_NO_CHANGE 5
 extern PNG_EXPORT(void,png_set_filter) PNGARG((png_structp png_ptr, int method,
 int filters));
-#define PNG_NO_FILTERS     0x00
-#define PNG_FILTER_NONE    0x08
-#define PNG_FILTER_SUB     0x10
-#define PNG_FILTER_UP      0x20
-#define PNG_FILTER_AVG     0x40
-#define PNG_FILTER_PAETH   0x80
+#define PNG_NO_FILTERS 0x00
+#define PNG_FILTER_NONE 0x08
+#define PNG_FILTER_SUB 0x10
+#define PNG_FILTER_UP 0x20
+#define PNG_FILTER_AVG 0x40
+#define PNG_FILTER_PAETH 0x80
 #define PNG_ALL_FILTERS (PNG_FILTER_NONE | PNG_FILTER_SUB | PNG_FILTER_UP | \
 PNG_FILTER_AVG | PNG_FILTER_PAETH)
-#define PNG_FILTER_VALUE_NONE  0
-#define PNG_FILTER_VALUE_SUB   1
-#define PNG_FILTER_VALUE_UP    2
-#define PNG_FILTER_VALUE_AVG   3
+#define PNG_FILTER_VALUE_NONE 0
+#define PNG_FILTER_VALUE_SUB 1
+#define PNG_FILTER_VALUE_UP 2
+#define PNG_FILTER_VALUE_AVG 3
 #define PNG_FILTER_VALUE_PAETH 4
-#define PNG_FILTER_VALUE_LAST  5
+#define PNG_FILTER_VALUE_LAST 5
 #if defined(PNG_WRITE_WEIGHTED_FILTER_SUPPORTED)
 #ifdef PNG_FLOATING_POINT_SUPPORTED
 extern PNG_EXPORT(void,png_set_filter_heuristics) PNGARG((png_structp png_ptr,
@@ -882,10 +882,10 @@ int heuristic_method, int num_weights, png_doublep filter_weights,
 png_doublep filter_costs));
 #endif
 #endif
-#define PNG_FILTER_HEURISTIC_DEFAULT    0
+#define PNG_FILTER_HEURISTIC_DEFAULT 0
 #define PNG_FILTER_HEURISTIC_UNWEIGHTED 1
-#define PNG_FILTER_HEURISTIC_WEIGHTED   2
-#define PNG_FILTER_HEURISTIC_LAST       3
+#define PNG_FILTER_HEURISTIC_WEIGHTED 2
+#define PNG_FILTER_HEURISTIC_LAST 3
 extern PNG_EXPORT(void,png_set_compression_level) PNGARG((png_structp png_ptr,
 int level));
 extern PNG_EXPORT(void,png_set_compression_mem_level)
@@ -956,7 +956,7 @@ png_bytep old_row, png_bytep new_row));
 extern PNG_EXPORT(png_voidp,png_malloc) PNGARG((png_structp png_ptr,
 png_uint_32 size));
 #if defined(PNG_1_0_X)
-#  define png_malloc_warn png_malloc
+# define png_malloc_warn png_malloc
 #else
 extern PNG_EXPORT(png_voidp,png_malloc_warn) PNGARG((png_structp png_ptr,
 png_uint_32 size));
@@ -987,8 +987,8 @@ png_infop info_ptr, int freer, png_uint_32 mask));
 #define PNG_FREE_PLTE 0x1000
 #define PNG_FREE_TRNS 0x2000
 #define PNG_FREE_TEXT 0x4000
-#define PNG_FREE_ALL  0x7fff
-#define PNG_FREE_MUL  0x4220
+#define PNG_FREE_ALL 0x7fff
+#define PNG_FREE_MUL 0x4220
 #ifdef PNG_USER_MEM_SUPPORTED
 extern PNG_EXPORT(png_voidp,png_malloc_default) PNGARG((png_structp png_ptr,
 png_uint_32 size));
@@ -1276,8 +1276,8 @@ png_voidp params));
 #if !defined(PNG_DEBUG_FILE) && defined(_MSC_VER)
 #include <crtdbg.h>
 #if (PNG_DEBUG > 1)
-#define png_debug(l,m)  _RPT0(_CRT_WARN,m)
-#define png_debug1(l,m,p1)  _RPT1(_CRT_WARN,m,p1)
+#define png_debug(l,m) _RPT0(_CRT_WARN,m)
+#define png_debug1(l,m,p1) _RPT1(_CRT_WARN,m,p1)
 #define png_debug2(l,m,p1,p2) _RPT2(_CRT_WARN,m,p1,p2)
 #endif
 #else
@@ -1325,33 +1325,33 @@ extern PNG_EXPORT(png_charp,png_get_libpng_ver) PNGARG((png_structp png_ptr));
 extern PNG_EXPORT(png_uint_32,png_permit_mng_features) PNGARG((png_structp
 png_ptr, png_uint_32 mng_features_permitted));
 #endif
-#define PNG_HANDLE_CHUNK_AS_DEFAULT   0
-#define PNG_HANDLE_CHUNK_NEVER        1
-#define PNG_HANDLE_CHUNK_IF_SAFE      2
-#define PNG_HANDLE_CHUNK_ALWAYS       3
+#define PNG_HANDLE_CHUNK_AS_DEFAULT 0
+#define PNG_HANDLE_CHUNK_NEVER 1
+#define PNG_HANDLE_CHUNK_IF_SAFE 2
+#define PNG_HANDLE_CHUNK_ALWAYS 3
 #if defined(PNG_ASSEMBLER_CODE_SUPPORTED)
-#define PNG_ASM_FLAG_MMX_SUPPORT_COMPILED  0x01
-#define PNG_ASM_FLAG_MMX_SUPPORT_IN_CPU    0x02
-#define PNG_ASM_FLAG_MMX_READ_COMBINE_ROW  0x04
-#define PNG_ASM_FLAG_MMX_READ_INTERLACE    0x08
-#define PNG_ASM_FLAG_MMX_READ_FILTER_SUB   0x10
-#define PNG_ASM_FLAG_MMX_READ_FILTER_UP    0x20
-#define PNG_ASM_FLAG_MMX_READ_FILTER_AVG   0x40
+#define PNG_ASM_FLAG_MMX_SUPPORT_COMPILED 0x01
+#define PNG_ASM_FLAG_MMX_SUPPORT_IN_CPU 0x02
+#define PNG_ASM_FLAG_MMX_READ_COMBINE_ROW 0x04
+#define PNG_ASM_FLAG_MMX_READ_INTERLACE 0x08
+#define PNG_ASM_FLAG_MMX_READ_FILTER_SUB 0x10
+#define PNG_ASM_FLAG_MMX_READ_FILTER_UP 0x20
+#define PNG_ASM_FLAG_MMX_READ_FILTER_AVG 0x40
 #define PNG_ASM_FLAG_MMX_READ_FILTER_PAETH 0x80
-#define PNG_ASM_FLAGS_INITIALIZED          0x80000000
-#define PNG_MMX_READ_FLAGS ( PNG_ASM_FLAG_MMX_READ_COMBINE_ROW  \
-| PNG_ASM_FLAG_MMX_READ_INTERLACE    \
-| PNG_ASM_FLAG_MMX_READ_FILTER_SUB   \
-| PNG_ASM_FLAG_MMX_READ_FILTER_UP    \
-| PNG_ASM_FLAG_MMX_READ_FILTER_AVG   \
+#define PNG_ASM_FLAGS_INITIALIZED 0x80000000
+#define PNG_MMX_READ_FLAGS ( PNG_ASM_FLAG_MMX_READ_COMBINE_ROW \
+| PNG_ASM_FLAG_MMX_READ_INTERLACE \
+| PNG_ASM_FLAG_MMX_READ_FILTER_SUB \
+| PNG_ASM_FLAG_MMX_READ_FILTER_UP \
+| PNG_ASM_FLAG_MMX_READ_FILTER_AVG \
 | PNG_ASM_FLAG_MMX_READ_FILTER_PAETH )
 #define PNG_MMX_WRITE_FLAGS ( 0 )
 #define PNG_MMX_FLAGS ( PNG_ASM_FLAG_MMX_SUPPORT_COMPILED \
-| PNG_ASM_FLAG_MMX_SUPPORT_IN_CPU   \
-| PNG_MMX_READ_FLAGS                \
+| PNG_ASM_FLAG_MMX_SUPPORT_IN_CPU \
+| PNG_MMX_READ_FLAGS \
 | PNG_MMX_WRITE_FLAGS )
-#define PNG_SELECT_READ   1
-#define PNG_SELECT_WRITE  2
+#define PNG_SELECT_READ 1
+#define PNG_SELECT_WRITE 2
 #if !defined(PNG_1_0_X)
 extern PNG_EXPORT(png_uint_32,png_get_mmx_flagmask)
 PNGARG((int flag_select, int *compilerID));
@@ -1386,98 +1386,98 @@ extern PNG_EXPORT(png_uint_32,png_get_user_height_max) PNGARG((png_structp
 png_ptr));
 #endif
 #ifdef PNG_READ_COMPOSITE_NODIV_SUPPORTED
-#  define png_composite(composite, fg, alpha, bg)                            \
+# define png_composite(composite, fg, alpha, bg) \
 { png_uint_16 temp = (png_uint_16)((png_uint_16)(fg) * (png_uint_16)(alpha) \
-+        (png_uint_16)(bg)*(png_uint_16)(255 -       \
-(png_uint_16)(alpha)) + (png_uint_16)128);           \
++ (png_uint_16)(bg)*(png_uint_16)(255 - \
+(png_uint_16)(alpha)) + (png_uint_16)128); \
 (composite) = (png_byte)((temp + (temp >> 8)) >> 8); }
-#  define png_composite_16(composite, fg, alpha, bg)                         \
+# define png_composite_16(composite, fg, alpha, bg) \
 { png_uint_32 temp = (png_uint_32)((png_uint_32)(fg) * (png_uint_32)(alpha) \
-+ (png_uint_32)(bg)*(png_uint_32)(65535L -           \
-(png_uint_32)(alpha)) + (png_uint_32)32768L);        \
++ (png_uint_32)(bg)*(png_uint_32)(65535L - \
+(png_uint_32)(alpha)) + (png_uint_32)32768L); \
 (composite) = (png_uint_16)((temp + (temp >> 16)) >> 16); }
 #else
-#  define png_composite(composite, fg, alpha, bg)                            \
-(composite) = (png_byte)(((png_uint_16)(fg) * (png_uint_16)(alpha) +    \
-(png_uint_16)(bg) * (png_uint_16)(255 - (png_uint_16)(alpha)) +       \
+# define png_composite(composite, fg, alpha, bg) \
+(composite) = (png_byte)(((png_uint_16)(fg) * (png_uint_16)(alpha) + \
+(png_uint_16)(bg) * (png_uint_16)(255 - (png_uint_16)(alpha)) + \
 (png_uint_16)127) / 255)
-#  define png_composite_16(composite, fg, alpha, bg)                         \
+# define png_composite_16(composite, fg, alpha, bg) \
 (composite) = (png_uint_16)(((png_uint_32)(fg) * (png_uint_32)(alpha) + \
-(png_uint_32)(bg)*(png_uint_32)(65535L - (png_uint_32)(alpha)) +      \
+(png_uint_32)(bg)*(png_uint_32)(65535L - (png_uint_32)(alpha)) + \
 (png_uint_32)32767) / (png_uint_32)65535L)
 #endif
 #if defined(PNG_INTERNAL)
-#define PNG_HAVE_IHDR               0x01
-#define PNG_HAVE_PLTE               0x02
-#define PNG_HAVE_IDAT               0x04
-#define PNG_AFTER_IDAT              0x08
-#define PNG_HAVE_IEND               0x10
-#define PNG_HAVE_gAMA               0x20
-#define PNG_HAVE_cHRM               0x40
-#define PNG_HAVE_sRGB               0x80
-#define PNG_HAVE_CHUNK_HEADER      0x100
-#define PNG_WROTE_tIME             0x200
+#define PNG_HAVE_IHDR 0x01
+#define PNG_HAVE_PLTE 0x02
+#define PNG_HAVE_IDAT 0x04
+#define PNG_AFTER_IDAT 0x08
+#define PNG_HAVE_IEND 0x10
+#define PNG_HAVE_gAMA 0x20
+#define PNG_HAVE_cHRM 0x40
+#define PNG_HAVE_sRGB 0x80
+#define PNG_HAVE_CHUNK_HEADER 0x100
+#define PNG_WROTE_tIME 0x200
 #define PNG_WROTE_INFO_BEFORE_PLTE 0x400
-#define PNG_BACKGROUND_IS_GRAY     0x800
-#define PNG_HAVE_PNG_SIGNATURE    0x1000
-#define PNG_BGR                0x0001
-#define PNG_INTERLACE          0x0002
-#define PNG_PACK               0x0004
-#define PNG_SHIFT              0x0008
-#define PNG_SWAP_BYTES         0x0010
-#define PNG_INVERT_MONO        0x0020
-#define PNG_DITHER             0x0040
-#define PNG_BACKGROUND         0x0080
-#define PNG_BACKGROUND_EXPAND  0x0100
-#define PNG_16_TO_8            0x0400
-#define PNG_RGBA               0x0800
-#define PNG_EXPAND             0x1000
-#define PNG_GAMMA              0x2000
-#define PNG_GRAY_TO_RGB        0x4000
-#define PNG_FILLER             0x8000L
-#define PNG_PACKSWAP          0x10000L
-#define PNG_SWAP_ALPHA        0x20000L
-#define PNG_STRIP_ALPHA       0x40000L
-#define PNG_INVERT_ALPHA      0x80000L
-#define PNG_USER_TRANSFORM   0x100000L
-#define PNG_RGB_TO_GRAY_ERR  0x200000L
+#define PNG_BACKGROUND_IS_GRAY 0x800
+#define PNG_HAVE_PNG_SIGNATURE 0x1000
+#define PNG_BGR 0x0001
+#define PNG_INTERLACE 0x0002
+#define PNG_PACK 0x0004
+#define PNG_SHIFT 0x0008
+#define PNG_SWAP_BYTES 0x0010
+#define PNG_INVERT_MONO 0x0020
+#define PNG_DITHER 0x0040
+#define PNG_BACKGROUND 0x0080
+#define PNG_BACKGROUND_EXPAND 0x0100
+#define PNG_16_TO_8 0x0400
+#define PNG_RGBA 0x0800
+#define PNG_EXPAND 0x1000
+#define PNG_GAMMA 0x2000
+#define PNG_GRAY_TO_RGB 0x4000
+#define PNG_FILLER 0x8000L
+#define PNG_PACKSWAP 0x10000L
+#define PNG_SWAP_ALPHA 0x20000L
+#define PNG_STRIP_ALPHA 0x40000L
+#define PNG_INVERT_ALPHA 0x80000L
+#define PNG_USER_TRANSFORM 0x100000L
+#define PNG_RGB_TO_GRAY_ERR 0x200000L
 #define PNG_RGB_TO_GRAY_WARN 0x400000L
-#define PNG_RGB_TO_GRAY      0x600000L
-#define PNG_ADD_ALPHA       0x1000000L
-#define PNG_STRUCT_PNG   0x0001
-#define PNG_STRUCT_INFO  0x0002
+#define PNG_RGB_TO_GRAY 0x600000L
+#define PNG_ADD_ALPHA 0x1000000L
+#define PNG_STRUCT_PNG 0x0001
+#define PNG_STRUCT_INFO 0x0002
 #define PNG_WEIGHT_SHIFT 8
 #define PNG_WEIGHT_FACTOR (1<<(PNG_WEIGHT_SHIFT))
 #define PNG_COST_SHIFT 3
 #define PNG_COST_FACTOR (1<<(PNG_COST_SHIFT))
-#define PNG_FLAG_ZLIB_CUSTOM_STRATEGY     0x0001
-#define PNG_FLAG_ZLIB_CUSTOM_LEVEL        0x0002
-#define PNG_FLAG_ZLIB_CUSTOM_MEM_LEVEL    0x0004
-#define PNG_FLAG_ZLIB_CUSTOM_WINDOW_BITS  0x0008
-#define PNG_FLAG_ZLIB_CUSTOM_METHOD       0x0010
-#define PNG_FLAG_ZLIB_FINISHED            0x0020
-#define PNG_FLAG_ROW_INIT                 0x0040
-#define PNG_FLAG_FILLER_AFTER             0x0080
-#define PNG_FLAG_CRC_ANCILLARY_USE        0x0100
-#define PNG_FLAG_CRC_ANCILLARY_NOWARN     0x0200
-#define PNG_FLAG_CRC_CRITICAL_USE         0x0400
-#define PNG_FLAG_CRC_CRITICAL_IGNORE      0x0800
-#define PNG_FLAG_FREE_PLTE                0x1000
-#define PNG_FLAG_FREE_TRNS                0x2000
-#define PNG_FLAG_FREE_HIST                0x4000
-#define PNG_FLAG_KEEP_UNKNOWN_CHUNKS      0x8000L
-#define PNG_FLAG_KEEP_UNSAFE_CHUNKS       0x10000L
-#define PNG_FLAG_LIBRARY_MISMATCH         0x20000L
-#define PNG_FLAG_STRIP_ERROR_NUMBERS      0x40000L
-#define PNG_FLAG_STRIP_ERROR_TEXT         0x80000L
-#define PNG_FLAG_MALLOC_NULL_MEM_OK       0x100000L
-#define PNG_FLAG_ADD_ALPHA                0x200000L
-#define PNG_FLAG_STRIP_ALPHA              0x400000L
+#define PNG_FLAG_ZLIB_CUSTOM_STRATEGY 0x0001
+#define PNG_FLAG_ZLIB_CUSTOM_LEVEL 0x0002
+#define PNG_FLAG_ZLIB_CUSTOM_MEM_LEVEL 0x0004
+#define PNG_FLAG_ZLIB_CUSTOM_WINDOW_BITS 0x0008
+#define PNG_FLAG_ZLIB_CUSTOM_METHOD 0x0010
+#define PNG_FLAG_ZLIB_FINISHED 0x0020
+#define PNG_FLAG_ROW_INIT 0x0040
+#define PNG_FLAG_FILLER_AFTER 0x0080
+#define PNG_FLAG_CRC_ANCILLARY_USE 0x0100
+#define PNG_FLAG_CRC_ANCILLARY_NOWARN 0x0200
+#define PNG_FLAG_CRC_CRITICAL_USE 0x0400
+#define PNG_FLAG_CRC_CRITICAL_IGNORE 0x0800
+#define PNG_FLAG_FREE_PLTE 0x1000
+#define PNG_FLAG_FREE_TRNS 0x2000
+#define PNG_FLAG_FREE_HIST 0x4000
+#define PNG_FLAG_KEEP_UNKNOWN_CHUNKS 0x8000L
+#define PNG_FLAG_KEEP_UNSAFE_CHUNKS 0x10000L
+#define PNG_FLAG_LIBRARY_MISMATCH 0x20000L
+#define PNG_FLAG_STRIP_ERROR_NUMBERS 0x40000L
+#define PNG_FLAG_STRIP_ERROR_TEXT 0x80000L
+#define PNG_FLAG_MALLOC_NULL_MEM_OK 0x100000L
+#define PNG_FLAG_ADD_ALPHA 0x200000L
+#define PNG_FLAG_STRIP_ALPHA 0x400000L
 #define PNG_FLAG_CRC_ANCILLARY_MASK (PNG_FLAG_CRC_ANCILLARY_USE | \
 PNG_FLAG_CRC_ANCILLARY_NOWARN)
-#define PNG_FLAG_CRC_CRITICAL_MASK  (PNG_FLAG_CRC_CRITICAL_USE | \
+#define PNG_FLAG_CRC_CRITICAL_MASK (PNG_FLAG_CRC_CRITICAL_USE | \
 PNG_FLAG_CRC_CRITICAL_IGNORE)
-#define PNG_FLAG_CRC_MASK           (PNG_FLAG_CRC_ANCILLARY_MASK | \
+#define PNG_FLAG_CRC_MASK (PNG_FLAG_CRC_ANCILLARY_MASK | \
 PNG_FLAG_CRC_CRITICAL_MASK)
 #define PNG_COLOR_DIST(c1, c2) (abs((int)((c1).red) - (int)((c2).red)) + \
 abs((int)((c1).green) - (int)((c2).green)) + \
@@ -1495,27 +1495,27 @@ PNG_EXPORT_VAR (const png_byte FARDATA) png_sig[8];
 #define png_sig png_sig_bytes(NULL)
 #endif
 #endif
-#define PNG_IHDR const png_byte png_IHDR[5] = { 73,  72,  68,  82, '\0'}
-#define PNG_IDAT const png_byte png_IDAT[5] = { 73,  68,  65,  84, '\0'}
-#define PNG_IEND const png_byte png_IEND[5] = { 73,  69,  78,  68, '\0'}
-#define PNG_PLTE const png_byte png_PLTE[5] = { 80,  76,  84,  69, '\0'}
-#define PNG_bKGD const png_byte png_bKGD[5] = { 98,  75,  71,  68, '\0'}
-#define PNG_cHRM const png_byte png_cHRM[5] = { 99,  72,  82,  77, '\0'}
-#define PNG_gAMA const png_byte png_gAMA[5] = {103,  65,  77,  65, '\0'}
-#define PNG_hIST const png_byte png_hIST[5] = {104,  73,  83,  84, '\0'}
-#define PNG_iCCP const png_byte png_iCCP[5] = {105,  67,  67,  80, '\0'}
-#define PNG_iTXt const png_byte png_iTXt[5] = {105,  84,  88, 116, '\0'}
-#define PNG_oFFs const png_byte png_oFFs[5] = {111,  70,  70, 115, '\0'}
-#define PNG_pCAL const png_byte png_pCAL[5] = {112,  67,  65,  76, '\0'}
-#define PNG_sCAL const png_byte png_sCAL[5] = {115,  67,  65,  76, '\0'}
-#define PNG_pHYs const png_byte png_pHYs[5] = {112,  72,  89, 115, '\0'}
-#define PNG_sBIT const png_byte png_sBIT[5] = {115,  66,  73,  84, '\0'}
-#define PNG_sPLT const png_byte png_sPLT[5] = {115,  80,  76,  84, '\0'}
-#define PNG_sRGB const png_byte png_sRGB[5] = {115,  82,  71,  66, '\0'}
-#define PNG_tEXt const png_byte png_tEXt[5] = {116,  69,  88, 116, '\0'}
-#define PNG_tIME const png_byte png_tIME[5] = {116,  73,  77,  69, '\0'}
-#define PNG_tRNS const png_byte png_tRNS[5] = {116,  82,  78,  83, '\0'}
-#define PNG_zTXt const png_byte png_zTXt[5] = {122,  84,  88, 116, '\0'}
+#define PNG_IHDR const png_byte png_IHDR[5] = { 73, 72, 68, 82, '\0'}
+#define PNG_IDAT const png_byte png_IDAT[5] = { 73, 68, 65, 84, '\0'}
+#define PNG_IEND const png_byte png_IEND[5] = { 73, 69, 78, 68, '\0'}
+#define PNG_PLTE const png_byte png_PLTE[5] = { 80, 76, 84, 69, '\0'}
+#define PNG_bKGD const png_byte png_bKGD[5] = { 98, 75, 71, 68, '\0'}
+#define PNG_cHRM const png_byte png_cHRM[5] = { 99, 72, 82, 77, '\0'}
+#define PNG_gAMA const png_byte png_gAMA[5] = {103, 65, 77, 65, '\0'}
+#define PNG_hIST const png_byte png_hIST[5] = {104, 73, 83, 84, '\0'}
+#define PNG_iCCP const png_byte png_iCCP[5] = {105, 67, 67, 80, '\0'}
+#define PNG_iTXt const png_byte png_iTXt[5] = {105, 84, 88, 116, '\0'}
+#define PNG_oFFs const png_byte png_oFFs[5] = {111, 70, 70, 115, '\0'}
+#define PNG_pCAL const png_byte png_pCAL[5] = {112, 67, 65, 76, '\0'}
+#define PNG_sCAL const png_byte png_sCAL[5] = {115, 67, 65, 76, '\0'}
+#define PNG_pHYs const png_byte png_pHYs[5] = {112, 72, 89, 115, '\0'}
+#define PNG_sBIT const png_byte png_sBIT[5] = {115, 66, 73, 84, '\0'}
+#define PNG_sPLT const png_byte png_sPLT[5] = {115, 80, 76, 84, '\0'}
+#define PNG_sRGB const png_byte png_sRGB[5] = {115, 82, 71, 66, '\0'}
+#define PNG_tEXt const png_byte png_tEXt[5] = {116, 69, 88, 116, '\0'}
+#define PNG_tIME const png_byte png_tIME[5] = {116, 73, 77, 69, '\0'}
+#define PNG_tRNS const png_byte png_tRNS[5] = {116, 82, 78, 83, '\0'}
+#define PNG_zTXt const png_byte png_zTXt[5] = {122, 84, 88, 116, '\0'}
 #ifdef PNG_USE_GLOBAL_ARRAYS
 PNG_EXPORT_VAR (const png_byte FARDATA) png_IHDR[5];
 PNG_EXPORT_VAR (const png_byte FARDATA) png_IDAT[5];
@@ -1540,15 +1540,15 @@ PNG_EXPORT_VAR (const png_byte FARDATA) png_tRNS[5];
 PNG_EXPORT_VAR (const png_byte FARDATA) png_zTXt[5];
 #endif
 #if defined(PNG_READ_BIG_ENDIAN_SUPPORTED)
-#  if defined(PNG_pCAL_SUPPORTED) || defined(PNG_oFFs_SUPPORTED)
-#    define png_get_int_32(buf) ( *((png_int_32p) (buf)))
-#  endif
-#  define png_get_uint_32(buf) ( *((png_uint_32p) (buf)))
-#  define png_get_uint_16(buf) ( *((png_uint_16p) (buf)))
+# if defined(PNG_pCAL_SUPPORTED) || defined(PNG_oFFs_SUPPORTED)
+# define png_get_int_32(buf) ( *((png_int_32p) (buf)))
+# endif
+# define png_get_uint_32(buf) ( *((png_uint_32p) (buf)))
+# define png_get_uint_16(buf) ( *((png_uint_16p) (buf)))
 #else
-#  if defined(PNG_pCAL_SUPPORTED) || defined(PNG_oFFs_SUPPORTED)
+# if defined(PNG_pCAL_SUPPORTED) || defined(PNG_oFFs_SUPPORTED)
 PNG_EXTERN png_int_32 png_get_int_32 PNGARG((png_bytep buf));
-#  endif
+# endif
 PNG_EXTERN png_uint_32 png_get_uint_32 PNGARG((png_bytep buf));
 PNG_EXTERN png_uint_16 png_get_uint_16 PNGARG((png_bytep buf));
 #endif
@@ -1557,7 +1557,7 @@ png_bytep buf));
 extern PNG_EXPORT(void,png_read_init) PNGARG((png_structp png_ptr));
 #undef png_read_init
 #define png_read_init(png_ptr) png_read_init_3(&png_ptr, \
-PNG_LIBPNG_VER_STRING,  png_sizeof(png_struct));
+PNG_LIBPNG_VER_STRING, png_sizeof(png_struct));
 extern PNG_EXPORT(void,png_read_init_3) PNGARG((png_structpp ptr_ptr,
 png_const_charp user_png_ver, png_size_t png_struct_size));
 extern PNG_EXPORT(void,png_read_init_2) PNGARG((png_structp png_ptr,
@@ -1823,10 +1823,10 @@ PNG_EXTERN void png_do_chop PNGARG((png_row_infop row_info, png_bytep row));
 #if defined(PNG_READ_DITHER_SUPPORTED)
 PNG_EXTERN void png_do_dither PNGARG((png_row_infop row_info,
 png_bytep row, png_bytep palette_lookup, png_bytep dither_lookup));
-#  if defined(PNG_CORRECT_PALETTE_SUPPORTED)
+# if defined(PNG_CORRECT_PALETTE_SUPPORTED)
 PNG_EXTERN void png_correct_palette PNGARG((png_structp png_ptr,
 png_colorp palette, int num_palette));
-#  endif
+# endif
 #endif
 #if defined(PNG_READ_BGR_SUPPORTED) || defined(PNG_WRITE_BGR_SUPPORTED)
 PNG_EXTERN void png_do_bgr PNGARG((png_row_infop row_info, png_bytep row));

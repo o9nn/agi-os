@@ -11,20 +11,20 @@
 #include "silabs.h"
 int serialdebug;
 enum {
-Qroot	= 0,
+Qroot = 0,
 Qctl,
 Qdata,
 Qmax,
 };
 typedef struct Dirtab Dirtab;
 struct Dirtab {
-char	*name;
-int	mode;
+char *name;
+int mode;
 };
 static Dirtab dirtab[] = {
-[Qroot]	"/",		DMDIR|0555,
-[Qdata]	"%s",		0660,
-[Qctl]	"%sctl",	0664,
+[Qroot] "/", DMDIR|0555,
+[Qdata] "%s", 0660,
+[Qctl] "%sctl", 0664,
 };
 static int sdebug;
 static void
@@ -403,7 +403,7 @@ filldir(fs, d, &dirtab[i], i, p);
 return 0;
 }
 enum {
-Serbufsize	= 256,
+Serbufsize = 256,
 };
 static long
 dread(Usbfs *fs, Fid *fid, void *data, long count, vlong offset)
@@ -576,7 +576,7 @@ closedev(p->epin);
 return -1;
 }
 if(!p->isjtag){
-devctl(p->epin,  "timeout 1000");
+devctl(p->epin, "timeout 1000");
 devctl(p->epout, "timeout 1000");
 }
 if(ser->hasepintr){
@@ -638,7 +638,7 @@ dprint(2, "serial: ep in %s out %s\n", ser->p[ifc].epin->dir, ser->p[ifc].epout-
 if(ser->hasepintr)
 dprint(2, "serial: ep intr %s\n", ser->p[ifc].epintr->dir);
 if(usbdebug > 1 || serialdebug > 2){
-devctl(ser->p[ifc].epin,  "debug 1");
+devctl(ser->p[ifc].epin, "debug 1");
 devctl(ser->p[ifc].epout, "debug 1");
 if(ser->hasepintr)
 devctl(ser->p[ifc].epintr, "debug 1");
@@ -677,11 +677,11 @@ chanfree(p->readc);
 free(ser);
 }
 static Usbfs serialfs = {
-.walk =	dwalk,
-.open =	dopen,
-.read =	dread,
-.write=	dwrite,
-.stat =	dstat,
+.walk = dwalk,
+.open = dopen,
+.read = dread,
+.write= dwrite,
+.stat = dstat,
 };
 static void
 serialfsend(Usbfs *fs)
@@ -749,7 +749,7 @@ if(findendpoints(ser, i) < 0){
 werrstr("serial: no endpoints found for ifc %d", i);
 return -1;
 }
-p->w4data  = chancreate(sizeof(ulong), 0);
+p->w4data = chancreate(sizeof(ulong), 0);
 p->gotdata = chancreate(sizeof(ulong), 0);
 }
 qlock(ser);

@@ -2,52 +2,52 @@
 #include <string.h>
 #include "version.h"
 #include "antiword.h"
-#define INITIAL_LOCATION_SIZE	20
-#define INITIAL_PAGEOBJECT_SIZE	 5
+#define INITIAL_LOCATION_SIZE 20
+#define INITIAL_PAGEOBJECT_SIZE 5
 #if defined(DEBUG)
-#define EXTENSION_ARRAY_SIZE	10
+#define EXTENSION_ARRAY_SIZE 10
 #else
-#define EXTENSION_ARRAY_SIZE	30
+#define EXTENSION_ARRAY_SIZE 30
 #endif
-static encoding_type	eEncoding = encoding_neutral;
-static const char	*szProducer = NULL;
-static long		lPageHeight = LONG_MAX;
-static long		lPageWidth = LONG_MAX;
-static long		lFooterHeight = 0;
-static BOOL		bInFtrSpace = FALSE;
-static drawfile_fontref	tFontRefCurr = (drawfile_fontref)-1;
-static USHORT		usFontSizeCurr = 0;
-static int		iFontColorCurr = -1;
-static long		lYtopCurr = -1;
-static int		iImageCount = 0;
-static int		iSectionIndex = 0;
-static BOOL		bFirstInSection = TRUE;
-static long		lFilePosition = 0;
-static long		*alLocation = NULL;
-static size_t		tLocations = 0;
-static int		iMaxLocationNumber = 0;
-static long		lStreamStart = -1;
-static int		*aiPageObject = NULL;
-static int		iPageCount = 0;
-static size_t		tMaxPageObjects = 0;
-static int		iObjectNumberCurr = 17;
-static void		vMoveTo(diagram_type *, long);
+static encoding_type eEncoding = encoding_neutral;
+static const char *szProducer = NULL;
+static long lPageHeight = LONG_MAX;
+static long lPageWidth = LONG_MAX;
+static long lFooterHeight = 0;
+static BOOL bInFtrSpace = FALSE;
+static drawfile_fontref tFontRefCurr = (drawfile_fontref)-1;
+static USHORT usFontSizeCurr = 0;
+static int iFontColorCurr = -1;
+static long lYtopCurr = -1;
+static int iImageCount = 0;
+static int iSectionIndex = 0;
+static BOOL bFirstInSection = TRUE;
+static long lFilePosition = 0;
+static long *alLocation = NULL;
+static size_t tLocations = 0;
+static int iMaxLocationNumber = 0;
+static long lStreamStart = -1;
+static int *aiPageObject = NULL;
+static int iPageCount = 0;
+static size_t tMaxPageObjects = 0;
+static int iObjectNumberCurr = 17;
+static void vMoveTo(diagram_type *, long);
 static const struct {
-const char	*szPDFname;
-const char	*szPSname;
+const char *szPDFname;
+const char *szPSname;
 } atFontname[] = {
-{ "Courier",			FONT_MONOSPACED_PLAIN },
-{ "Courier-Bold",		FONT_MONOSPACED_BOLD },
-{ "Courier-Oblique",		FONT_MONOSPACED_ITALIC },
-{ "Courier-BoldOblique",	FONT_MONOSPACED_BOLDITALIC },
-{ "Helvetica",			FONT_SANS_SERIF_PLAIN },
-{ "Helvetica-Bold",		FONT_SANS_SERIF_BOLD },
-{ "Helvetica-Oblique",		FONT_SANS_SERIF_ITALIC },
-{ "Helvetica-BoldOblique",	FONT_SANS_SERIF_BOLDITALIC },
-{ "Times-Roman",		FONT_SERIF_PLAIN },
-{ "Times-Bold",			FONT_SERIF_BOLD },
-{ "Times-Italic",		FONT_SERIF_ITALIC },
-{ "Times-BoldItalic",		FONT_SERIF_BOLDITALIC },
+{ "Courier", FONT_MONOSPACED_PLAIN },
+{ "Courier-Bold", FONT_MONOSPACED_BOLD },
+{ "Courier-Oblique", FONT_MONOSPACED_ITALIC },
+{ "Courier-BoldOblique", FONT_MONOSPACED_BOLDITALIC },
+{ "Helvetica", FONT_SANS_SERIF_PLAIN },
+{ "Helvetica-Bold", FONT_SANS_SERIF_BOLD },
+{ "Helvetica-Oblique", FONT_SANS_SERIF_ITALIC },
+{ "Helvetica-BoldOblique", FONT_SANS_SERIF_BOLDITALIC },
+{ "Times-Roman", FONT_SERIF_PLAIN },
+{ "Times-Bold", FONT_SERIF_BOLD },
+{ "Times-Italic", FONT_SERIF_ITALIC },
+{ "Times-BoldItalic", FONT_SERIF_BOLDITALIC },
 };
 static const char *iso_8859_1[] = {
 "128 /Euro",
@@ -98,8 +98,8 @@ static const char *iso_8859_2[] = {
 static size_t
 tGetFontIndex(drawfile_fontref tFontRef)
 {
-const char	*szFontname;
-size_t		tIndex;
+const char *szFontname;
+size_t tIndex;
 szFontname = szGetFontname(tFontRef);
 fail(szFontname == NULL);
 if (szFontname == NULL) {
@@ -149,7 +149,7 @@ aiPageObject[iPageCount] = iObjectNumberCurr;
 static void
 vFPprintf(FILE *pOutFile, const char *szFormat, ...)
 {
-va_list	tArg;
+va_list tArg;
 va_start(tArg, szFormat);
 lFilePosition += vfprintf(pOutFile, szFormat, tArg);
 va_end(tArg);
@@ -157,9 +157,9 @@ va_end(tArg);
 void
 vCreateInfoDictionary(diagram_type *pDiag, int iWordVersion)
 {
-FILE	*pOutFile;
-const char	*szTitle, *szAuthor, *szSubject, *szCreator;
-const char	*szCreationDate, *szModDate;
+FILE *pOutFile;
+const char *szTitle, *szAuthor, *szSubject, *szCreator;
+const char *szCreationDate, *szModDate;
 fail(pDiag == NULL);
 fail(pDiag->pOutFile == NULL);
 fail(iWordVersion < 0);
@@ -209,7 +209,7 @@ vFPprintf(pOutFile, "endobj\n");
 static void
 vAddHdrFtr(diagram_type *pDiag, const hdrftr_block_type *pHdrFtrInfo)
 {
-output_type	*pStart, *pPrev, *pNext;
+output_type *pStart, *pPrev, *pNext;
 fail(pDiag == NULL);
 fail(pHdrFtrInfo == NULL);
 vStartOfParagraphPDF(pDiag, 0);
@@ -326,7 +326,7 @@ bInFtrSpace = FALSE;
 static void
 vEndPageObject(FILE *pOutFile)
 {
-long	lStreamEnd;
+long lStreamEnd;
 if (lStreamStart < 0) {
 return;
 }
@@ -343,7 +343,7 @@ vFPprintf(pOutFile, "endobj\n");
 static void
 vMove2NextPage(diagram_type *pDiag, BOOL bNewSection)
 {
-FILE	*pOutFile;
+FILE *pOutFile;
 fail(pDiag == NULL);
 fail(pDiag->pOutFile == NULL);
 pOutFile = pDiag->pOutFile;
@@ -403,7 +403,7 @@ void
 vProloguePDF(diagram_type *pDiag,
 const char *szTask, const options_type *pOptions)
 {
-FILE	*pOutFile;
+FILE *pOutFile;
 fail(pDiag == NULL);
 fail(pDiag->pOutFile == NULL);
 fail(pOptions == NULL);
@@ -455,9 +455,9 @@ vFPprintf(pOutFile, "endobj\n");
 void
 vEpiloguePDF(diagram_type *pDiag)
 {
-FILE	*pOutFile;
-long	lXref;
-int	iIndex;
+FILE *pOutFile;
+long lXref;
+int iIndex;
 fail(pDiag == NULL);
 fail(pDiag->pOutFile == NULL);
 pOutFile = pDiag->pOutFile;
@@ -501,7 +501,7 @@ alLocation = xfree(alLocation);
 static void
 vPrintPalette(FILE *pOutFile, const imagedata_type *pImg)
 {
-int	iIndex;
+int iIndex;
 fail(pOutFile == NULL);
 fail(pImg == NULL);
 fail(pImg->iColorsUsed < 2);
@@ -529,7 +529,7 @@ vFPprintf(pOutFile, "> ]\n");
 void
 vImageProloguePDF(diagram_type *pDiag, const imagedata_type *pImg)
 {
-FILE	*pOutFile;
+FILE *pOutFile;
 fail(pDiag == NULL);
 fail(pDiag->pOutFile == NULL);
 fail(pImg == NULL);
@@ -625,7 +625,7 @@ vFPprintf(pOutFile, "ID\n");
 void
 vImageEpiloguePDF(diagram_type *pDiag)
 {
-FILE	*pOutFile;
+FILE *pOutFile;
 fail(pDiag == NULL);
 fail(pDiag->pOutFile == NULL);
 pOutFile = pDiag->pOutFile;
@@ -638,7 +638,7 @@ pDiag->lXleft = 0;
 BOOL
 bAddDummyImagePDF(diagram_type *pDiag, const imagedata_type *pImg)
 {
-FILE	*pOutFile;
+FILE *pOutFile;
 fail(pDiag == NULL);
 fail(pDiag->pOutFile == NULL);
 fail(pImg == NULL);
@@ -668,8 +668,8 @@ return TRUE;
 void
 vAddFontsPDF(diagram_type *pDiag)
 {
-FILE	*pOutFile;
-size_t	tIndex;
+FILE *pOutFile;
+size_t tIndex;
 fail(pDiag == NULL);
 fail(pDiag->pOutFile == NULL);
 pOutFile = pDiag->pOutFile;
@@ -739,9 +739,9 @@ static void
 vPrintPDF(FILE *pFile, const char *szString, size_t tStringLength,
 USHORT usFontstyle)
 {
-const UCHAR	*aucBytes;
-double	dMove;
-size_t	tCount;
+const UCHAR *aucBytes;
+double dMove;
+size_t tCount;
 fail(szString == NULL);
 if (szString == NULL || szString[0] == '\0' || tStringLength == 0) {
 return;
@@ -789,11 +789,11 @@ vFPprintf(pFile, "0 Ts\n");
 static void
 vSetColor(FILE *pFile, UCHAR ucFontColor)
 {
-ULONG	ulTmp, ulRed, ulGreen, ulBlue;
+ULONG ulTmp, ulRed, ulGreen, ulBlue;
 ulTmp = ulColor2Color(ucFontColor);
-ulRed   = (ulTmp & 0x0000ff00) >> 8;
+ulRed = (ulTmp & 0x0000ff00) >> 8;
 ulGreen = (ulTmp & 0x00ff0000) >> 16;
-ulBlue  = (ulTmp & 0xff000000) >> 24;
+ulBlue = (ulTmp & 0xff000000) >> 24;
 vFPprintf(pFile, "%.3f %.3f %.3f rg\n",
 ulRed / 255.0, ulGreen / 255.0, ulBlue / 255.0);
 }
@@ -810,7 +810,7 @@ char *szString, size_t tStringLength, long lStringWidth,
 UCHAR ucFontColor, USHORT usFontstyle, drawfile_fontref tFontRef,
 USHORT usFontSize, USHORT usMaxFontSize)
 {
-size_t	tFontIndex;
+size_t tFontIndex;
 fail(pDiag == NULL || szString == NULL);
 fail(pDiag->pOutFile == NULL);
 fail(pDiag->lXleft < 0);

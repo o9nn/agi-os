@@ -6,15 +6,15 @@
 #include <errno.h>
 #include "ifdef.h"
 #include "gen.h"
-FILE	*fp_ttyi, *fp_ttyo;
-char	*ptr = mesg;
-extern int	window_size;
+FILE *fp_ttyi, *fp_ttyo;
+char *ptr = mesg;
+extern int window_size;
 #ifdef SYSV
 setupline()
 {
-struct termio	termio;
+struct termio termio;
 #ifdef DKHOST
-if ( line != NULL && *line != '/' )  {
+if ( line != NULL && *line != '/' ) {
 if ( strncmp(line, "DK:", 3) == 0 )
 line += 3;
 dkhost_connect();
@@ -52,8 +52,8 @@ fp_ttyi = fdopen(ttyi, "r");
 }
 resetline()
 {
-int			flags;
-struct termio	termio;
+int flags;
+struct termio termio;
 if ( (flags = fcntl(ttyi, F_GETFL, 0)) == -1 )
 error(FATAL, "fcntl error - F_GETFL");
 flags &= ~O_NDELAY;
@@ -70,13 +70,13 @@ error(FATAL, "ioctl error - TCSETA");
 return(TRUE);
 }
 setupstdin(mode)
-int		mode;
+int mode;
 {
-struct termio		termio;
-static int			saved = FALSE;
-static struct termio	oldtermio;
+struct termio termio;
+static int saved = FALSE;
+static struct termio oldtermio;
 if ( interactive == TRUE )
-switch ( mode )  {
+switch ( mode ) {
 case 0:
 if ( isatty(0) != 1 )
 error(FATAL, "stdin not a terminal - can't run interactive mode");
@@ -99,17 +99,17 @@ break;
 }
 readline()
 {
-int		n;
-int		ch;
-static int	tries = 0;
-if ( interactive == FALSE )  {
-while ( (n = read(ttyi, ptr, 1)) != 0 )  {
+int n;
+int ch;
+static int tries = 0;
+if ( interactive == FALSE ) {
+while ( (n = read(ttyi, ptr, 1)) != 0 ) {
 if ( n < 0 )
 if ( errno == EINTR )
 continue;
 else error(FATAL, "error reading %s", line);
 tries = 0;
-if ( *ptr == '\n' || *ptr == '\004' || ptr >= endmesg )  {
+if ( *ptr == '\n' || *ptr == '\004' || ptr >= endmesg ) {
 *(ptr+1) = '\0';
 if ( *ptr == '\004' )
 strcpy(ptr, "%%[ status: endofjob ]%%\n");
@@ -132,21 +132,21 @@ return(FALSE);
 #endif
 #ifdef V9
 #include <ipc.h>
-char	tbuf[256];
-char	*nptr = tbuf;
-char	*eptr = tbuf;
+char tbuf[256];
+char *nptr = tbuf;
+char *eptr = tbuf;
 setupline()
 {
-struct sgttyb	sgtty;
-struct ttydevb	ttydev;
-static struct tchars	tchar = { '\377',
+struct sgttyb sgtty;
+struct ttydevb ttydev;
+static struct tchars tchar = { '\377',
 '\377',
 '\021',
 '\023',
 '\377',
 '\377'
 };
-if ( line == NULL )  {
+if ( line == NULL ) {
 ttyi = ttyo = 1;
 return;
 }
@@ -185,7 +185,7 @@ fp_ttyi = fdopen(ttyi, "r");
 }
 resetline()
 {
-struct sgttyb	sgtty;
+struct sgttyb sgtty;
 if ( ioctl(ttyi, TIOCGETP, &sgtty) == -1 )
 error(FATAL, "ioctl error - TIOCGETP");
 sgtty.sg_flags |= TANDEM;
@@ -194,13 +194,13 @@ error(FATAL, "ioctl error - TIOCSETP");
 return(TRUE);
 }
 setupstdin(mode)
-int		mode;
+int mode;
 {
-struct sgttyb		sgtty;
-static int			saved = FALSE;
-static struct sgttyb	oldsgtty;
+struct sgttyb sgtty;
+static int saved = FALSE;
+static struct sgttyb oldsgtty;
 if ( interactive == TRUE )
-switch ( mode )  {
+switch ( mode ) {
 case 0:
 if ( ioctl(0, TIOCGETP, &oldsgtty) == -1 )
 error(FATAL, "can't save terminal settings");
@@ -220,14 +220,14 @@ break;
 }
 readline()
 {
-int		n;
-int		ch;
-if ( interactive == FALSE )  {
-while ( 1 )  {
-while ( nptr < eptr )  {
+int n;
+int ch;
+if ( interactive == FALSE ) {
+while ( 1 ) {
+while ( nptr < eptr ) {
 *ptr = *nptr++;
 if ( *ptr == '\r' ) continue;
-if ( *ptr == '\n' || *ptr == '\004' || ptr >= endmesg )  {
+if ( *ptr == '\n' || *ptr == '\004' || ptr >= endmesg ) {
 *(ptr+1) = '\0';
 if ( *ptr == '\004' )
 strcpy(ptr, "%%[ status: endofjob ]%%\n");
@@ -254,7 +254,7 @@ else eptr = nptr + n;
 }
 if ( canwrite == TRUE )
 return(FALSE);
-while ( 1 )  {
+while ( 1 ) {
 if ( ioctl(ttyi, FIONREAD, &n) < 0 )
 error(FATAL, "ioctl error - FIONREAD");
 n = ((n < 1) ? 1 : ((n < sizeof(tbuf)) ? n : sizeof(tbuf)));
@@ -271,16 +271,16 @@ return(FALSE);
 #ifdef BSD4_2
 setupline()
 {
-struct sgttyb	sgtty;
-static struct tchars	tchar = { '\377',
+struct sgttyb sgtty;
+static struct tchars tchar = { '\377',
 '\377',
 '\021',
 '\023',
 '\377',
 '\377'
 };
-long	lmodes;
-int		disc = NTTYDISC;
+long lmodes;
+int disc = NTTYDISC;
 if ( line == NULL )
 ttyi = fileno(stdout);
 else if ( (ttyi = open(line, O_RDWR)) == -1 )
@@ -309,7 +309,7 @@ fp_ttyi = fdopen(ttyi, "r");
 }
 resetline()
 {
-struct sgttyb	sgtty;
+struct sgttyb sgtty;
 if ( ioctl(ttyi, TIOCGETP, &sgtty) == -1 )
 error(FATAL, "ioctl error - TIOCGETP");
 sgtty.sg_flags |= TANDEM;
@@ -318,13 +318,13 @@ error(FATAL, "ioctl error - TIOCSETP");
 return(TRUE);
 }
 setupstdin(mode)
-int		mode;
+int mode;
 {
-struct sgttyb		sgtty;
-static int			saved = FALSE;
-static struct sgttyb	oldsgtty;
+struct sgttyb sgtty;
+static int saved = FALSE;
+static struct sgttyb oldsgtty;
 if ( interactive == TRUE )
-switch ( mode )  {
+switch ( mode ) {
 case 0:
 if ( isatty(0) != 1 )
 error(FATAL, "stdin not a terminal - can't run interactive mode");
@@ -346,10 +346,10 @@ break;
 }
 readline()
 {
-int		n;
-int		ch;
-if ( interactive == FALSE )  {
-while ( 1 )  {
+int n;
+int ch;
+if ( interactive == FALSE ) {
+while ( 1 ) {
 if ( ioctl(ttyi, FIONREAD, &n) < 0 )
 if ( errno == EINTR )
 continue;
@@ -358,13 +358,13 @@ if ( n <= 0 )
 if ( canwrite == TRUE )
 return(FALSE);
 else n = 1;
-for ( ; n > 0; n-- )  {
+for ( ; n > 0; n-- ) {
 if ( (*ptr = getc(fp_ttyi)) == EOF )
 if ( errno == EINTR )
 continue;
 else error(FATAL, "error reading %s", line);
 if ( *ptr == '\r' ) continue;
-if ( *ptr == '\n' || *ptr == '\004' || ptr >= endmesg )  {
+if ( *ptr == '\n' || *ptr == '\004' || ptr >= endmesg ) {
 *(ptr+1) = '\0';
 if ( *ptr == '\004' )
 strcpy(ptr, "%%[ status: endofjob ]%%\n");
@@ -383,8 +383,8 @@ return(FALSE);
 }
 int
 strspn(string, charset)
-char	*string;
-register char	*charset;
+char *string;
+register char *charset;
 {
 register char *p, *q;
 for(q=string; *q != '\0'; ++q) {
@@ -413,10 +413,10 @@ extern int strspn();
 extern char *strpbrk();
 char *
 strtok(string, sepset)
-char	*string, *sepset;
+char *string, *sepset;
 {
-register char	*p, *q, *r;
-static char	*savept;
+register char *p, *q, *r;
+static char *savept;
 p = (string == (char*)0)? savept: string;
 if(p == 0)
 return((char*)0);
@@ -434,28 +434,28 @@ return(q);
 #endif
 #ifdef DKHOST
 #ifndef DKSTREAMS
-short	dkrmode[3] = {DKR_TIME, 0, 0};
+short dkrmode[3] = {DKR_TIME, 0, 0};
 #endif
 dkhost_connect()
 {
-int		ofd;
-int		dfd;
-int		retrytime = 5;
+int ofd;
+int dfd;
+int retrytime = 5;
 if ( *line == '\0' )
 error(FATAL, "incomplete Datakit line");
-if ( fp_log != NULL && fp_log != stderr )  {
+if ( fp_log != NULL && fp_log != stderr ) {
 ofd = dup(2);
 close(2);
 dup(fileno(fp_log));
 }
-while ( (dfd = ttyi = dkdial(line)) < 0 )  {
+while ( (dfd = ttyi = dkdial(line)) < 0 ) {
 if ( retrytime < 0 )
 error(FATAL, "can't connect to %s", line);
 sleep(retrytime++);
 if ( retrytime > 60 )
 retrytime = 60;
 }
-if ( fp_log != NULL && fp_log != stderr )  {
+if ( fp_log != NULL && fp_log != stderr ) {
 close(2);
 dup(ofd);
 close(ofd);
@@ -465,7 +465,7 @@ if ( ioctl(ttyi, DIOCRMODE, dkrmode) == -1 )
 error(FATAL, "ioctl error - DIOCRMODE");
 #ifdef DIOURPWD
 if ( window_size > 0 ) {
-short	dkparm[3];
+short dkparm[3];
 dkparm[0] = dkminor(ttyi);
 dkparm[1] = 1;
 dkparm[2] = window_size;

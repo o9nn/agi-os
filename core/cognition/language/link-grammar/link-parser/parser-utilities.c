@@ -110,7 +110,7 @@ snprintf(inbuf, inbuf_size, "WideCharToMultiByte CP_UTF8: Error %lu",
 err);
 return -1;
 }
-const char *invalid_char  = strstr(inbuf, "\xEF\xBF\xBD");
+const char *invalid_char = strstr(inbuf, "\xEF\xBF\xBD");
 if (NULL != invalid_char)
 {
 prt_error("Error: Unable to process UTF8 in input string.\n");
@@ -135,7 +135,7 @@ SetConsoleOutputCP(console_output_cp);
 }
 static BOOL CtrlHandler(DWORD fdwCtrlType)
 {
-if ((CTRL_C_EVENT == fdwCtrlType) || (CTRL_BREAK_EVENT  == fdwCtrlType))
+if ((CTRL_C_EVENT == fdwCtrlType) || (CTRL_BREAK_EVENT == fdwCtrlType))
 {
 fprintf(stderr, "Interrupt\n");
 restore_console_cp();
@@ -200,7 +200,7 @@ goto no_tty;
 pfni->FileName[pfni->FileNameLength / sizeof (WCHAR)] = L'\0';
 cp = pfni->FileName;
 if ((!wcsncmp(cp, L"\\cygwin-", 8) && !wcsncmp(cp + 24, L"-pty", 4)) ||
-(!wcsncmp(cp, L"\\msys-", 6)   && !wcsncmp(cp + 22, L"-pty", 4)))
+(!wcsncmp(cp, L"\\msys-", 6) && !wcsncmp(cp + 22, L"-pty", 4)))
 {
 cp = wcschr(cp + 26, '-');
 if (!cp)

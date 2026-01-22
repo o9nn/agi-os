@@ -43,27 +43,27 @@
 #include <mach/mach_safety.h>
 struct kmem_cache thread_cache;
 struct kmem_cache thread_stack_cache;
-queue_head_t		reaper_queue;
-def_simple_lock_data(static,	reaper_lock)
-struct thread	thread_template;
-#if	MACH_DEBUG
-#define	STACK_MARKER	0xdeadbeefU
-boolean_t		stack_check_usage = FALSE;
-def_simple_lock_data(static,	stack_usage_lock)
-vm_size_t		stack_max_usage = 0;
+queue_head_t reaper_queue;
+def_simple_lock_data(static, reaper_lock)
+struct thread thread_template;
+#if MACH_DEBUG
+#define STACK_MARKER 0xdeadbeefU
+boolean_t stack_check_usage = FALSE;
+def_simple_lock_data(static, stack_usage_lock)
+vm_size_t stack_max_usage = 0;
 #endif
-#ifdef	MACHINE_STACK
+#ifdef MACHINE_STACK
 #else
 def_simple_lock_data(static, stack_lock_data)
-#define stack_lock()	simple_lock(&stack_lock_data)
-#define stack_unlock()	simple_unlock(&stack_lock_data)
+#define stack_lock() simple_lock(&stack_lock_data)
+#define stack_unlock() simple_unlock(&stack_lock_data)
 vm_offset_t stack_free_list;
 unsigned int stack_free_count = 0;
 unsigned int stack_free_limit = 1;
 #define stack_next(stack) (*((vm_offset_t *)((stack) + KERNEL_STACK_SIZE) - 1))
 boolean_t stack_alloc_try(
-thread_t	thread,
-void		(*resume)(thread_t))
+thread_t thread,
+void (*resume)(thread_t))
 {
 vm_offset_t stack;
 stack_lock();
@@ -85,8 +85,8 @@ return FALSE;
 }
 }
 kern_return_t stack_alloc(
-thread_t	thread,
-void		(*resume)(thread_t))
+thread_t thread,
+void (*resume)(thread_t))
 {
 vm_offset_t stack;
 spl_t s;
@@ -102,7 +102,7 @@ stack_unlock();
 if (stack == 0) {
 stack = kmem_cache_alloc(&thread_stack_cache);
 assert(stack != 0);
-#if	MACH_DEBUG
+#if MACH_DEBUG
 stack_init(stack);
 #endif
 }
@@ -119,7 +119,7 @@ stack_lock();
 stack_next(stack) = stack_free_list;
 stack_free_list = stack;
 stack_free_count += 1;
-#if	MACH_COUNTERS
+#if MACH_COUNTERS
 if (stack_free_count > c_stack_alloc_max)
 c_stack_alloc_max = stack_free_count;
 #endif
@@ -138,7 +138,7 @@ stack_free_list = stack_next(stack);
 stack_free_count--;
 stack_unlock();
 (void) splx(s);
-#if	MACH_DEBUG
+#if MACH_DEBUG
 stack_finalize(stack);
 #endif
 kmem_cache_free(&thread_stack_cache, stack);
@@ -175,7 +175,7 @@ thread_template.wake_active = FALSE;
 thread_template.state = TH_SUSP | TH_SWAPPED;
 thread_template.swap_func = thread_bootstrap_return;
 thread_template.max_priority = BASEPRI_USER;
-#if	MACH_FIXPRI
+#if MACH_FIXPRI
 thread_template.sched_data = 0;
 thread_template.policy = POLICY_TIMESHARE;
 #endif
@@ -196,34 +196,34 @@ thread_template.sched_delta = 0;
 thread_template.active = FALSE;
 thread_template.ast = AST_ZILCH;
 thread_template.bound_processor = PROCESSOR_NULL;
-#if	MACH_HOST
+#if MACH_HOST
 thread_template.may_assign = TRUE;
 thread_template.assign_active = FALSE;
 #endif
-#if	NCPUS > 1
+#if NCPUS > 1
 thread_template.migration_count = 0;
 thread_template.cache_warmth = 0;
 thread_template.cpu_affinity = CPU_AFFINITY_ANY;
 #endif
 queue_init(&reaper_queue);
 simple_lock_init(&reaper_lock);
-#ifndef	MACHINE_STACK
+#ifndef MACHINE_STACK
 simple_lock_init(&stack_lock_data);
 #endif
-#if	MACH_DEBUG
+#if MACH_DEBUG
 simple_lock_init(&stack_usage_lock);
 #endif
 pcb_module_init();
-#if	NCPUS > 1
+#if NCPUS > 1
 smp_work_queue_init();
 #endif
 }
 kern_return_t thread_create(
-task_t	parent_task,
-thread_t	*child_thread)
+task_t parent_task,
+thread_t *child_thread)
 {
-thread_t	new_thread;
-processor_set_t	pset;
+thread_t new_thread;
+processor_set_t pset;
 if (parent_task == TASK_NULL || child_thread == NULL)
 return KERN_INVALID_ARGUMENT;
 if (!MACH_VALIDATE_PTR(parent_task, 0x1000, 0xFFFFFFFF)) {
@@ -265,7 +265,7 @@ Restart:
 pset_lock(pset);
 task_lock(parent_task);
 {
-processor_set_t	cur_pset;
+processor_set_t cur_pset;
 cur_pset = parent_task->processor_set;
 if (!cur_pset->active)
 cur_pset = &default_pset;
@@ -288,7 +288,7 @@ new_thread->suspend_count = parent_task->suspend_count + 1;
 pset_add_thread(pset, new_thread);
 if (pset->empty)
 new_thread->suspend_count++;
-#if	HW_FOOTPRINT
+#if HW_FOOTPRINT
 if (!pset->empty) {
 new_thread->last_processor =
 (processor_t)queue_first(&pset->processors);
@@ -306,7 +306,7 @@ new_thread->migration_count = 0;
 new_thread->cache_warmth = 0;
 #endif
 #endif
-#if	MACH_PCSAMPLE
+#if MACH_PCSAMPLE
 new_thread->pc_sample.seqno = 0;
 new_thread->pc_sample.sampletypes = 0;
 #endif
@@ -332,12 +332,12 @@ return KERN_SUCCESS;
 }
 unsigned int thread_deallocate_stack = 0;
 void thread_deallocate(
-thread_t	thread)
+thread_t thread)
 {
-spl_t		s;
-task_t		task;
-processor_set_t	pset;
-time_value64_t	user_time, system_time;
+spl_t s;
+task_t task;
+processor_set_t pset;
+time_value64_t user_time, system_time;
 if (thread == THREAD_NULL)
 return;
 s = splsched();
@@ -352,7 +352,7 @@ thread_unlock(thread);
 (void) splx(s);
 pset = thread->processor_set;
 pset_lock(pset);
-#if	MACH_HOST
+#if MACH_HOST
 while (pset != thread->processor_set) {
 pset_unlock(pset);
 pset = thread->processor_set;
@@ -401,9 +401,9 @@ pcb_terminate(thread);
 kmem_cache_free(&thread_cache, (vm_offset_t) thread);
 }
 void thread_reference(
-thread_t	thread)
+thread_t thread)
 {
-spl_t		s;
+spl_t s;
 if (thread == THREAD_NULL)
 return;
 s = splsched();
@@ -413,11 +413,11 @@ thread_unlock(thread);
 (void) splx(s);
 }
 kern_return_t thread_terminate(
-thread_t	thread)
+thread_t thread)
 {
-thread_t		cur_thread = current_thread();
-task_t			cur_task;
-spl_t			s;
+thread_t cur_thread = current_thread();
+task_t cur_task;
+spl_t s;
 if (thread == THREAD_NULL)
 return KERN_INVALID_ARGUMENT;
 ipc_thread_disable(thread);
@@ -462,13 +462,13 @@ return KERN_FAILURE;
 thread->active = FALSE;
 thread_unlock(thread);
 (void) splx(s);
-#if	MACH_HOST
+#if MACH_HOST
 thread_freeze(thread);
 if (thread->processor_set != &default_pset)
 thread_doassign(thread, &default_pset, FALSE);
 #endif
 (void) thread_halt(thread, TRUE);
-#if	MACH_HOST
+#if MACH_HOST
 thread_unfreeze(thread);
 #endif
 ipc_thread_terminate(thread);
@@ -496,12 +496,12 @@ return thread_terminate(thread);
 }
 void
 thread_force_terminate(
-thread_t	thread)
+thread_t thread)
 {
-boolean_t	deallocate_here;
+boolean_t deallocate_here;
 spl_t s;
 ipc_thread_disable(thread);
-#if	MACH_HOST
+#if MACH_HOST
 thread_freeze(thread);
 if (thread->processor_set != &default_pset)
 thread_doassign(thread, &default_pset, FALSE);
@@ -514,19 +514,19 @@ thread_unlock(thread);
 (void) splx(s);
 (void) thread_halt(thread, TRUE);
 ipc_thread_terminate(thread);
-#if	MACH_HOST
+#if MACH_HOST
 thread_unfreeze(thread);
 #endif
 if (deallocate_here)
 thread_deallocate(thread);
 }
 kern_return_t thread_halt(
-thread_t	thread,
-boolean_t		must_halt)
+thread_t thread,
+boolean_t must_halt)
 {
-thread_t	cur_thread = current_thread();
-kern_return_t	ret;
-spl_t	s;
+thread_t cur_thread = current_thread();
+kern_return_t ret;
+spl_t s;
 if (thread == cur_thread)
 panic("thread_halt: trying to halt current thread.");
 if (!must_halt) {
@@ -628,10 +628,10 @@ static void __attribute__((noreturn)) walking_zombie(void)
 {
 panic("the zombie walks!");
 }
-void	thread_halt_self(continuation_t continuation)
+void thread_halt_self(continuation_t continuation)
 {
-thread_t	thread = current_thread();
-spl_t	s;
+thread_t thread = current_thread();
+spl_t s;
 if (thread->ast & AST_TERMINATE) {
 ipc_thread_terminate(thread);
 thread_hold(thread);
@@ -658,9 +658,9 @@ thread_block(continuation);
 }
 }
 void thread_hold(
-thread_t	thread)
+thread_t thread)
 {
-spl_t			s;
+spl_t s;
 s = splsched();
 thread_lock(thread);
 thread->suspend_count++;
@@ -670,12 +670,12 @@ thread_unlock(thread);
 }
 kern_return_t
 thread_dowait(
-thread_t		thread,
-boolean_t		must_halt)
+thread_t thread,
+boolean_t must_halt)
 {
-boolean_t		need_wakeup;
-kern_return_t		ret = KERN_SUCCESS;
-spl_t			s;
+boolean_t need_wakeup;
+kern_return_t ret = KERN_SUCCESS;
+spl_t s;
 if (thread == current_thread())
 panic("thread_dowait");
 need_wakeup = FALSE;
@@ -683,23 +683,23 @@ s = splsched();
 thread_lock(thread);
 for (;;) {
 switch (thread->state & TH_SCHED_STATE) {
-case			TH_SUSP:
-case	      TH_WAIT | TH_SUSP:
+case TH_SUSP:
+case TH_WAIT | TH_SUSP:
 break;
-case TH_RUN	      | TH_SUSP:
+case TH_RUN | TH_SUSP:
 if (rem_runq(thread) != RUN_QUEUE_NULL) {
 thread->state &= ~TH_RUN;
 need_wakeup = thread->wake_active;
 thread->wake_active = FALSE;
 break;
 }
-#if	NCPUS > 1
+#if NCPUS > 1
 cause_ast_check(thread->last_processor);
 #endif
-case TH_RUN	      | TH_SUSP | TH_UNINT:
+case TH_RUN | TH_SUSP | TH_UNINT:
 case TH_RUN | TH_WAIT | TH_SUSP:
 case TH_RUN | TH_WAIT | TH_SUSP | TH_UNINT:
-case	      TH_WAIT | TH_SUSP | TH_UNINT:
+case TH_WAIT | TH_SUSP | TH_UNINT:
 thread->wake_active = TRUE;
 thread_sleep(TH_EV_WAKE_ACTIVE(thread),
 simple_lock_addr(thread->lock), TRUE);
@@ -720,9 +720,9 @@ thread_wakeup(TH_EV_WAKE_ACTIVE(thread));
 return ret;
 }
 void thread_release(
-thread_t	thread)
+thread_t thread)
 {
-spl_t			s;
+spl_t s;
 s = splsched();
 thread_lock(thread);
 if (--thread->suspend_count == 0) {
@@ -736,10 +736,10 @@ thread_unlock(thread);
 (void) splx(s);
 }
 kern_return_t thread_suspend(
-thread_t	thread)
+thread_t thread)
 {
-boolean_t		hold;
-spl_t			spl;
+boolean_t hold;
+spl_t spl;
 if (thread == THREAD_NULL)
 return KERN_INVALID_ARGUMENT;
 hold = FALSE;
@@ -769,10 +769,10 @@ ast_on(cpu_number(), AST_BLOCK);
 return KERN_SUCCESS;
 }
 kern_return_t thread_resume(
-thread_t	thread)
+thread_t thread)
 {
-kern_return_t		ret;
-spl_t			s;
+kern_return_t ret;
+spl_t s;
 if (thread == THREAD_NULL)
 return KERN_INVALID_ARGUMENT;
 ret = KERN_SUCCESS;
@@ -797,12 +797,12 @@ thread_unlock(thread);
 return ret;
 }
 kern_return_t thread_get_state(
-thread_t		thread,
-int			flavor,
-thread_state_t		old_state,
-natural_t		*old_state_count)
+thread_t thread,
+int flavor,
+thread_state_t old_state,
+natural_t *old_state_count)
 {
-kern_return_t		ret;
+kern_return_t ret;
 #if defined(__i386__) || defined(__x86_64__)
 if (flavor == i386_DEBUG_STATE && thread == current_thread())
 return thread_getstatus(thread, flavor, old_state, old_state_count);
@@ -816,12 +816,12 @@ thread_release(thread);
 return ret;
 }
 kern_return_t thread_set_state(
-thread_t		thread,
-int			flavor,
-thread_state_t		new_state,
-natural_t		new_state_count)
+thread_t thread,
+int flavor,
+thread_state_t new_state,
+natural_t new_state_count)
 {
-kern_return_t		ret;
+kern_return_t ret;
 #if defined(__i386__) || defined(__x86_64__)
 if (flavor == i386_DEBUG_STATE && thread == current_thread())
 return thread_setstatus(thread, flavor, new_state, new_state_count);
@@ -837,17 +837,17 @@ thread_release(thread);
 return ret;
 }
 kern_return_t thread_info(
-thread_t		thread,
-int			flavor,
-thread_info_t		thread_info_out,
-natural_t		*thread_info_count)
+thread_t thread,
+int flavor,
+thread_info_t thread_info_out,
+natural_t *thread_info_count)
 {
-int			state, flags;
-spl_t			s;
+int state, flags;
+spl_t s;
 if (thread == THREAD_NULL)
 return KERN_INVALID_ARGUMENT;
 if (flavor == THREAD_BASIC_INFO) {
-thread_basic_info_t	basic_info;
+thread_basic_info_t basic_info;
 if (*thread_info_count <
 THREAD_BASIC_INFO_COUNT - 3 * sizeof(time_value64_t)/sizeof(natural_t))
 return KERN_INVALID_ARGUMENT;
@@ -861,8 +861,8 @@ time_value64_t user_time, system_time;
 thread_read_times(thread, &user_time, &system_time);
 TIME_VALUE64_TO_TIME_VALUE(&user_time, &basic_info->user_time);
 TIME_VALUE64_TO_TIME_VALUE(&system_time, &basic_info->system_time);
-basic_info->base_priority	= thread->priority;
-basic_info->cur_priority	= thread->sched_pri;
+basic_info->base_priority = thread->priority;
+basic_info->cur_priority = thread->sched_pri;
 time_value64_t creation_time;
 read_time_stamp(&thread->creation_time, &creation_time);
 TIME_VALUE64_TO_TIME_VALUE(&creation_time, &basic_info->creation_time);
@@ -909,13 +909,13 @@ if (*thread_info_count > THREAD_BASIC_INFO_COUNT)
 return KERN_SUCCESS;
 }
 else if (flavor == THREAD_SCHED_INFO) {
-thread_sched_info_t	sched_info;
+thread_sched_info_t sched_info;
 if (*thread_info_count < THREAD_SCHED_INFO_COUNT -1)
 return KERN_INVALID_ARGUMENT;
 sched_info = (thread_sched_info_t) thread_info_out;
 s = splsched();
 thread_lock(thread);
-#if	MACH_FIXPRI
+#if MACH_FIXPRI
 sched_info->policy = thread->policy;
 if (thread->policy == POLICY_FIXEDPRI)
 sched_info->data = (thread->sched_data * tick)/1000;
@@ -943,8 +943,8 @@ return KERN_SUCCESS;
 }
 return KERN_INVALID_ARGUMENT;
 }
-kern_return_t	thread_abort(
-thread_t	thread)
+kern_return_t thread_abort(
+thread_t thread)
 {
 if (thread == THREAD_NULL || thread == current_thread()) {
 return KERN_INVALID_ARGUMENT;
@@ -960,19 +960,19 @@ return KERN_SUCCESS;
 }
 void
 thread_start(
-thread_t	thread,
-continuation_t	start)
+thread_t thread,
+continuation_t start)
 {
 thread->swap_func = start;
 }
 thread_t kernel_thread(
-task_t		task,
-const char *	name,
-continuation_t	start,
-void *		arg)
+task_t task,
+const char * name,
+continuation_t start,
+void * arg)
 {
-kern_return_t	kr;
-thread_t	thread;
+kern_return_t kr;
+thread_t thread;
 kr = thread_create(task, &thread);
 if (kr != KERN_SUCCESS)
 return THREAD_NULL;
@@ -1013,7 +1013,7 @@ void reaper_thread(void)
 {
 reaper_thread_continue();
 }
-#if	MACH_HOST
+#if MACH_HOST
 kern_return_t
 thread_assign(thread_t thread,
 processor_set_t new_pset)
@@ -1028,7 +1028,7 @@ return KERN_SUCCESS;
 void
 thread_freeze(thread_t thread)
 {
-spl_t	s;
+spl_t s;
 s = splsched();
 thread_lock(thread);
 while (thread->may_assign == FALSE) {
@@ -1043,9 +1043,9 @@ thread_unlock(thread);
 }
 void
 thread_unfreeze(
-thread_t	thread)
+thread_t thread)
 {
-spl_t 	s;
+spl_t s;
 s = splsched();
 thread_lock(thread);
 thread->may_assign = TRUE;
@@ -1058,14 +1058,14 @@ splx(s);
 }
 void
 thread_doassign(
-thread_t			thread,
-processor_set_t			new_pset,
-boolean_t			release_freeze)
+thread_t thread,
+processor_set_t new_pset,
+boolean_t release_freeze)
 {
-processor_set_t			pset;
-boolean_t			old_empty, new_empty;
-boolean_t			recompute_pri = FALSE;
-spl_t				s;
+processor_set_t pset;
+boolean_t old_empty, new_empty;
+boolean_t recompute_pri = FALSE;
+spl_t s;
 pset = thread->processor_set;
 if (pset == new_pset) {
 if (release_freeze)
@@ -1097,7 +1097,7 @@ thread_change_psets(thread, pset, new_pset);
 old_empty = pset->empty;
 new_empty = new_pset->empty;
 pset_unlock(pset);
-#if	MACH_FIXPRI
+#if MACH_FIXPRI
 if ((thread->policy & new_pset->policies) == 0) {
 thread->policy = POLICY_TIMESHARE;
 recompute_pri = TRUE;
@@ -1142,21 +1142,21 @@ ast_on(cpu_number(), AST_BLOCK);
 #else
 kern_return_t
 thread_assign(
-thread_t	thread,
-processor_set_t	new_pset)
+thread_t thread,
+processor_set_t new_pset)
 {
 return KERN_FAILURE;
 }
 #endif
 kern_return_t
 thread_assign_default(
-thread_t	thread)
+thread_t thread)
 {
 return thread_assign(thread, &default_pset);
 }
 kern_return_t thread_get_assignment(
-thread_t	thread,
-processor_set_t	*pset)
+thread_t thread,
+processor_set_t *pset)
 {
 if (thread == THREAD_NULL)
 return KERN_INVALID_ARGUMENT;
@@ -1166,12 +1166,12 @@ return KERN_SUCCESS;
 }
 kern_return_t
 thread_priority(
-thread_t	thread,
-int		priority,
-boolean_t	set_max)
+thread_t thread,
+int priority,
+boolean_t set_max)
 {
-spl_t		s;
-kern_return_t	ret = KERN_SUCCESS;
+spl_t s;
+kern_return_t ret = KERN_SUCCESS;
 if ((thread == THREAD_NULL) || invalid_pri(priority))
 return KERN_INVALID_ARGUMENT;
 s = splsched();
@@ -1194,10 +1194,10 @@ return ret;
 }
 void
 thread_set_own_priority(
-int	priority)
+int priority)
 {
-spl_t	s;
-thread_t	thread = current_thread();
+spl_t s;
+thread_t thread = current_thread();
 s = splsched();
 thread_lock(thread);
 if (priority < thread->max_priority)
@@ -1209,18 +1209,18 @@ thread_unlock(thread);
 }
 kern_return_t
 thread_max_priority(
-thread_t	thread,
-processor_set_t	pset,
-int		max_priority)
+thread_t thread,
+processor_set_t pset,
+int max_priority)
 {
-spl_t		s;
-kern_return_t	ret = KERN_SUCCESS;
+spl_t s;
+kern_return_t ret = KERN_SUCCESS;
 if ((thread == THREAD_NULL) || (pset == PROCESSOR_SET_NULL) ||
 invalid_pri(max_priority))
 return KERN_INVALID_ARGUMENT;
 s = splsched();
 thread_lock(thread);
-#if	MACH_HOST
+#if MACH_HOST
 if (pset != thread->processor_set)
 ret = KERN_FAILURE;
 else {
@@ -1235,7 +1235,7 @@ if (thread->depress_priority >= 0 &&
 max_priority > thread->depress_priority)
 thread->depress_priority = max_priority;
 }
-#if	MACH_HOST
+#if MACH_HOST
 }
 #endif
 thread_unlock(thread);
@@ -1244,18 +1244,18 @@ return ret;
 }
 kern_return_t
 thread_policy(
-thread_t	thread,
-int		policy,
-int		data)
+thread_t thread,
+int policy,
+int data)
 {
-#if	MACH_FIXPRI
-kern_return_t	ret = KERN_SUCCESS;
-int		temp;
-spl_t		s;
+#if MACH_FIXPRI
+kern_return_t ret = KERN_SUCCESS;
+int temp;
+spl_t s;
 #endif
 if ((thread == THREAD_NULL) || invalid_policy(policy))
 return KERN_INVALID_ARGUMENT;
-#if	MACH_FIXPRI
+#if MACH_FIXPRI
 s = splsched();
 thread_lock(thread);
 if (policy == thread->policy) {
@@ -1292,11 +1292,11 @@ return KERN_FAILURE;
 }
 kern_return_t
 thread_wire(
-host_t		host,
-thread_t	thread,
-boolean_t	wired)
+host_t host,
+thread_t thread,
+boolean_t wired)
 {
-spl_t		s;
+spl_t s;
 if (host == HOST_NULL)
 return KERN_INVALID_ARGUMENT;
 if (thread == THREAD_NULL)
@@ -1319,15 +1319,15 @@ return KERN_SUCCESS;
 }
 static void thread_collect_scan(void)
 {
-thread_t	thread, prev_thread;
-processor_set_t		pset, prev_pset;
+thread_t thread, prev_thread;
+processor_set_t pset, prev_pset;
 prev_thread = THREAD_NULL;
 prev_pset = PROCESSOR_SET_NULL;
 simple_lock(&all_psets_lock);
 queue_iterate(&all_psets, pset, processor_set_t, all_psets) {
 pset_lock(pset);
 queue_iterate(&pset->threads, thread, thread_t, pset_threads) {
-spl_t	s = splsched();
+spl_t s = splsched();
 thread_lock(thread);
 if ((thread->state & (TH_RUN|TH_SWAPPED))
 == TH_SWAPPED) {
@@ -1374,7 +1374,7 @@ thread_collect_last_tick = sched_tick;
 thread_collect_scan();
 }
 }
-#if	MACH_DEBUG
+#if MACH_DEBUG
 static vm_size_t stack_usage(vm_offset_t stack)
 {
 unsigned i;
@@ -1403,12 +1403,12 @@ stack_max_usage = used;
 simple_unlock(&stack_usage_lock);
 }
 }
-#ifndef	MACHINE_STACK
+#ifndef MACHINE_STACK
 static void stack_statistics(
 natural_t *totalp,
 vm_size_t *maxusagep)
 {
-spl_t	s;
+spl_t s;
 s = splsched();
 stack_lock();
 if (stack_check_usage) {
@@ -1426,13 +1426,13 @@ stack_unlock();
 }
 #endif
 kern_return_t host_stack_usage(
-host_t		host,
-vm_size_t	*reservedp,
-unsigned int	*totalp,
-vm_size_t	*spacep,
-vm_size_t	*residentp,
-vm_size_t	*maxusagep,
-vm_offset_t	*maxstackp)
+host_t host,
+vm_size_t *reservedp,
+unsigned int *totalp,
+vm_size_t *spacep,
+vm_size_t *residentp,
+vm_size_t *maxusagep,
+vm_offset_t *maxstackp)
 {
 natural_t total;
 vm_size_t maxusage;
@@ -1450,12 +1450,12 @@ stack_statistics(&total, &maxusage);
 return KERN_SUCCESS;
 }
 kern_return_t processor_set_stack_usage(
-processor_set_t	pset,
-unsigned int	*totalp,
-vm_size_t	*spacep,
-vm_size_t	*residentp,
-vm_size_t	*maxusagep,
-vm_offset_t	*maxstackp)
+processor_set_t pset,
+unsigned int *totalp,
+vm_size_t *spacep,
+vm_size_t *residentp,
+vm_size_t *maxusagep,
+vm_offset_t *maxstackp)
 {
 unsigned int total;
 vm_size_t maxusage;
@@ -1549,8 +1549,8 @@ printf("%d using rpc_reply.\n", rpcreply);
 #endif
 kern_return_t
 thread_set_name(
-thread_t	thread,
-const_kernel_debug_name_t	name)
+thread_t thread,
+const_kernel_debug_name_t name)
 {
 if (thread == THREAD_NULL)
 return KERN_INVALID_ARGUMENT;
@@ -1560,19 +1560,19 @@ return KERN_SUCCESS;
 }
 kern_return_t
 thread_get_name(
-thread_t	thread,
-kernel_debug_name_t	name)
+thread_t thread,
+kernel_debug_name_t name)
 {
 if (thread == THREAD_NULL)
 return KERN_INVALID_ARGUMENT;
 strncpy(name, thread->name, sizeof thread->name);
 return KERN_SUCCESS;
 }
-#if	NCPUS > 1
+#if NCPUS > 1
 kern_return_t
 thread_set_cpu_affinity(
-thread_t	thread,
-cpu_mask_t	affinity_mask)
+thread_t thread,
+cpu_mask_t affinity_mask)
 {
 int max_cpus;
 if (thread == THREAD_NULL)
@@ -1588,7 +1588,7 @@ return KERN_SUCCESS;
 }
 cpu_mask_t
 thread_get_cpu_affinity(
-thread_t	thread)
+thread_t thread)
 {
 cpu_mask_t affinity;
 if (thread == THREAD_NULL)
@@ -1600,8 +1600,8 @@ return affinity;
 }
 boolean_t
 thread_can_run_on_cpu(
-thread_t	thread,
-int		cpu)
+thread_t thread,
+int cpu)
 {
 cpu_mask_t affinity;
 if (thread == THREAD_NULL || cpu < 0 || cpu >= smp_get_numcpus())

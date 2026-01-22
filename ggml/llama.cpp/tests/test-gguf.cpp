@@ -8,69 +8,69 @@
 #include <random>
 #include <string>
 #include <vector>
-constexpr int offset_has_kv      = 1000;
+constexpr int offset_has_kv = 1000;
 constexpr int offset_has_tensors = 2000;
-constexpr int offset_has_data    = 3000;
+constexpr int offset_has_data = 3000;
 enum handcrafted_file_type {
-HANDCRAFTED_HEADER_BAD_MAGIC           =  10,
-HANDCRAFTED_HEADER_BAD_VERSION_0       =  15,
-HANDCRAFTED_HEADER_BAD_VERSION_1       =  20,
-HANDCRAFTED_HEADER_BAD_VERSION_FUTURE  =  30,
-HANDCRAFTED_HEADER_BAD_N_TENSORS       =  40,
-HANDCRAFTED_HEADER_BAD_N_KV            =  50,
-HANDCRAFTED_HEADER_EMPTY               = 800,
-HANDCRAFTED_KV_BAD_KEY_SIZE            =  10 + offset_has_kv,
-HANDCRAFTED_KV_BAD_TYPE                =  20 + offset_has_kv,
-HANDCRAFTED_KV_DUPLICATE_KEY           =  40 + offset_has_kv,
-HANDCRAFTED_KV_BAD_ALIGN               =  50 + offset_has_kv,
-HANDCRAFTED_KV_SUCCESS                 = 800 + offset_has_kv,
-HANDCRAFTED_TENSORS_BAD_NAME_SIZE      =  10 + offset_has_tensors,
-HANDCRAFTED_TENSORS_BAD_N_DIMS         =  20 + offset_has_tensors,
-HANDCRAFTED_TENSORS_BAD_SHAPE          =  30 + offset_has_tensors,
-HANDCRAFTED_TENSORS_NE_TOO_BIG         =  40 + offset_has_tensors,
-HANDCRAFTED_TENSORS_BAD_TYPE           =  50 + offset_has_tensors,
-HANDCRAFTED_TENSORS_BAD_OFFSET         =  60 + offset_has_tensors,
-HANDCRAFTED_TENSORS_DUPLICATE_NAME     =  70 + offset_has_tensors,
-HANDCRAFTED_TENSORS_BAD_ALIGN          =  75 + offset_has_tensors,
-HANDCRAFTED_TENSORS_INCONSISTENT_ALIGN =  80 + offset_has_tensors,
-HANDCRAFTED_TENSORS_SUCCESS            = 800 + offset_has_tensors,
-HANDCRAFTED_TENSORS_CUSTOM_ALIGN       = 810 + offset_has_tensors,
-HANDCRAFTED_DATA_NOT_ENOUGH_DATA       =  10 + offset_has_data,
-HANDCRAFTED_DATA_BAD_ALIGN             =  15 + offset_has_data,
-HANDCRAFTED_DATA_INCONSISTENT_ALIGN    =  20 + offset_has_data,
-HANDCRAFTED_DATA_SUCCESS               = 800 + offset_has_data,
-HANDCRAFTED_DATA_CUSTOM_ALIGN          = 810 + offset_has_data,
+HANDCRAFTED_HEADER_BAD_MAGIC = 10,
+HANDCRAFTED_HEADER_BAD_VERSION_0 = 15,
+HANDCRAFTED_HEADER_BAD_VERSION_1 = 20,
+HANDCRAFTED_HEADER_BAD_VERSION_FUTURE = 30,
+HANDCRAFTED_HEADER_BAD_N_TENSORS = 40,
+HANDCRAFTED_HEADER_BAD_N_KV = 50,
+HANDCRAFTED_HEADER_EMPTY = 800,
+HANDCRAFTED_KV_BAD_KEY_SIZE = 10 + offset_has_kv,
+HANDCRAFTED_KV_BAD_TYPE = 20 + offset_has_kv,
+HANDCRAFTED_KV_DUPLICATE_KEY = 40 + offset_has_kv,
+HANDCRAFTED_KV_BAD_ALIGN = 50 + offset_has_kv,
+HANDCRAFTED_KV_SUCCESS = 800 + offset_has_kv,
+HANDCRAFTED_TENSORS_BAD_NAME_SIZE = 10 + offset_has_tensors,
+HANDCRAFTED_TENSORS_BAD_N_DIMS = 20 + offset_has_tensors,
+HANDCRAFTED_TENSORS_BAD_SHAPE = 30 + offset_has_tensors,
+HANDCRAFTED_TENSORS_NE_TOO_BIG = 40 + offset_has_tensors,
+HANDCRAFTED_TENSORS_BAD_TYPE = 50 + offset_has_tensors,
+HANDCRAFTED_TENSORS_BAD_OFFSET = 60 + offset_has_tensors,
+HANDCRAFTED_TENSORS_DUPLICATE_NAME = 70 + offset_has_tensors,
+HANDCRAFTED_TENSORS_BAD_ALIGN = 75 + offset_has_tensors,
+HANDCRAFTED_TENSORS_INCONSISTENT_ALIGN = 80 + offset_has_tensors,
+HANDCRAFTED_TENSORS_SUCCESS = 800 + offset_has_tensors,
+HANDCRAFTED_TENSORS_CUSTOM_ALIGN = 810 + offset_has_tensors,
+HANDCRAFTED_DATA_NOT_ENOUGH_DATA = 10 + offset_has_data,
+HANDCRAFTED_DATA_BAD_ALIGN = 15 + offset_has_data,
+HANDCRAFTED_DATA_INCONSISTENT_ALIGN = 20 + offset_has_data,
+HANDCRAFTED_DATA_SUCCESS = 800 + offset_has_data,
+HANDCRAFTED_DATA_CUSTOM_ALIGN = 810 + offset_has_data,
 };
 static std::string handcrafted_file_type_name(const enum handcrafted_file_type hft) {
 switch (hft) {
-case HANDCRAFTED_HEADER_BAD_MAGIC:           return "HEADER_BAD_MAGIC";
-case HANDCRAFTED_HEADER_BAD_VERSION_0:       return "HEADER_BAD_VERSION_0";
-case HANDCRAFTED_HEADER_BAD_VERSION_1:       return "HEADER_BAD_VERSION_1";
-case HANDCRAFTED_HEADER_BAD_VERSION_FUTURE:  return "HEADER_BAD_VERSION_FUTURE";
-case HANDCRAFTED_HEADER_BAD_N_KV:            return "HEADER_BAD_N_KV";
-case HANDCRAFTED_HEADER_BAD_N_TENSORS:       return "HEADER_BAD_N_TENSORS";
-case HANDCRAFTED_HEADER_EMPTY:               return "HEADER_EMPTY";
-case HANDCRAFTED_KV_BAD_KEY_SIZE:            return "KV_BAD_KEY_SIZE";
-case HANDCRAFTED_KV_BAD_TYPE:                return "KV_BAD_TYPE";
-case HANDCRAFTED_KV_DUPLICATE_KEY:           return "KV_DUPLICATE_KEY";
-case HANDCRAFTED_KV_BAD_ALIGN:               return "KV_BAD_ALIGN";
-case HANDCRAFTED_KV_SUCCESS:                 return "KV_RANDOM_KV";
-case HANDCRAFTED_TENSORS_BAD_NAME_SIZE:      return "TENSORS_BAD_NAME_SIZE";
-case HANDCRAFTED_TENSORS_BAD_N_DIMS:         return "TENSORS_BAD_N_DIMS";
-case HANDCRAFTED_TENSORS_BAD_SHAPE:          return "TENSORS_BAD_SHAPE";
-case HANDCRAFTED_TENSORS_NE_TOO_BIG:         return "TENSORS_NE_TOO_BIG";
-case HANDCRAFTED_TENSORS_BAD_TYPE:           return "TENSORS_BAD_TYPE";
-case HANDCRAFTED_TENSORS_BAD_OFFSET:         return "TENSORS_BAD_OFFSET";
-case HANDCRAFTED_TENSORS_DUPLICATE_NAME:     return "TENSORS_DUPLICATE_NAME";
-case HANDCRAFTED_TENSORS_BAD_ALIGN:          return "TENSORS_BAD_ALIGN";
+case HANDCRAFTED_HEADER_BAD_MAGIC: return "HEADER_BAD_MAGIC";
+case HANDCRAFTED_HEADER_BAD_VERSION_0: return "HEADER_BAD_VERSION_0";
+case HANDCRAFTED_HEADER_BAD_VERSION_1: return "HEADER_BAD_VERSION_1";
+case HANDCRAFTED_HEADER_BAD_VERSION_FUTURE: return "HEADER_BAD_VERSION_FUTURE";
+case HANDCRAFTED_HEADER_BAD_N_KV: return "HEADER_BAD_N_KV";
+case HANDCRAFTED_HEADER_BAD_N_TENSORS: return "HEADER_BAD_N_TENSORS";
+case HANDCRAFTED_HEADER_EMPTY: return "HEADER_EMPTY";
+case HANDCRAFTED_KV_BAD_KEY_SIZE: return "KV_BAD_KEY_SIZE";
+case HANDCRAFTED_KV_BAD_TYPE: return "KV_BAD_TYPE";
+case HANDCRAFTED_KV_DUPLICATE_KEY: return "KV_DUPLICATE_KEY";
+case HANDCRAFTED_KV_BAD_ALIGN: return "KV_BAD_ALIGN";
+case HANDCRAFTED_KV_SUCCESS: return "KV_RANDOM_KV";
+case HANDCRAFTED_TENSORS_BAD_NAME_SIZE: return "TENSORS_BAD_NAME_SIZE";
+case HANDCRAFTED_TENSORS_BAD_N_DIMS: return "TENSORS_BAD_N_DIMS";
+case HANDCRAFTED_TENSORS_BAD_SHAPE: return "TENSORS_BAD_SHAPE";
+case HANDCRAFTED_TENSORS_NE_TOO_BIG: return "TENSORS_NE_TOO_BIG";
+case HANDCRAFTED_TENSORS_BAD_TYPE: return "TENSORS_BAD_TYPE";
+case HANDCRAFTED_TENSORS_BAD_OFFSET: return "TENSORS_BAD_OFFSET";
+case HANDCRAFTED_TENSORS_DUPLICATE_NAME: return "TENSORS_DUPLICATE_NAME";
+case HANDCRAFTED_TENSORS_BAD_ALIGN: return "TENSORS_BAD_ALIGN";
 case HANDCRAFTED_TENSORS_INCONSISTENT_ALIGN: return "TENSORS_INCONSISTENT_ALIGN";
-case HANDCRAFTED_TENSORS_SUCCESS:            return "TENSORS_SUCCESS";
-case HANDCRAFTED_TENSORS_CUSTOM_ALIGN:       return "TENSORS_CUSTOM_ALIGN";
-case HANDCRAFTED_DATA_NOT_ENOUGH_DATA:       return "DATA_NOT_ENOUGH_DATA";
-case HANDCRAFTED_DATA_BAD_ALIGN:             return "DATA_BAD_ALIGN";
-case HANDCRAFTED_DATA_INCONSISTENT_ALIGN:    return "DATA_INCONSISTENT_ALIGN";
-case HANDCRAFTED_DATA_SUCCESS:               return "DATA_SUCCESS";
-case HANDCRAFTED_DATA_CUSTOM_ALIGN:          return "DATA_CUSTOM_ALIGN";
+case HANDCRAFTED_TENSORS_SUCCESS: return "TENSORS_SUCCESS";
+case HANDCRAFTED_TENSORS_CUSTOM_ALIGN: return "TENSORS_CUSTOM_ALIGN";
+case HANDCRAFTED_DATA_NOT_ENOUGH_DATA: return "DATA_NOT_ENOUGH_DATA";
+case HANDCRAFTED_DATA_BAD_ALIGN: return "DATA_BAD_ALIGN";
+case HANDCRAFTED_DATA_INCONSISTENT_ALIGN: return "DATA_INCONSISTENT_ALIGN";
+case HANDCRAFTED_DATA_SUCCESS: return "DATA_SUCCESS";
+case HANDCRAFTED_DATA_CUSTOM_ALIGN: return "DATA_CUSTOM_ALIGN";
 }
 GGML_ABORT("fatal error");
 }
@@ -173,9 +173,9 @@ kv_types = get_kv_types(rng);
 }
 {
 uint64_t n_kv = kv_types.size();
-if (hft == HANDCRAFTED_KV_BAD_ALIGN      ||
+if (hft == HANDCRAFTED_KV_BAD_ALIGN ||
 hft == HANDCRAFTED_TENSORS_BAD_ALIGN || hft == HANDCRAFTED_TENSORS_CUSTOM_ALIGN ||
-hft == HANDCRAFTED_DATA_BAD_ALIGN    || hft == HANDCRAFTED_DATA_CUSTOM_ALIGN) {
+hft == HANDCRAFTED_DATA_BAD_ALIGN || hft == HANDCRAFTED_DATA_CUSTOM_ALIGN) {
 n_kv += 1;
 } else if (hft == HANDCRAFTED_HEADER_BAD_N_KV) {
 n_kv = -1;
@@ -195,7 +195,7 @@ rewind(file);
 return file;
 }
 for (int i = 0; i < int(kv_types.size()); ++i) {
-const enum gguf_type type     = gguf_type(hft == HANDCRAFTED_KV_BAD_TYPE ? GGUF_TYPE_COUNT : kv_types[i].first);
+const enum gguf_type type = gguf_type(hft == HANDCRAFTED_KV_BAD_TYPE ? GGUF_TYPE_COUNT : kv_types[i].first);
 const enum gguf_type type_arr = gguf_type(hft == HANDCRAFTED_KV_BAD_TYPE ? GGUF_TYPE_COUNT : kv_types[i].second);
 const std::string key = "my_key_" + std::to_string((hft == HANDCRAFTED_KV_DUPLICATE_KEY ? i/2 : i));
 if (hft == HANDCRAFTED_KV_BAD_KEY_SIZE) {
@@ -246,9 +246,9 @@ continue;
 }
 helper_write(file, data, hft == HANDCRAFTED_KV_BAD_TYPE ? 1 : gguf_type_size(type));
 }
-if (hft == HANDCRAFTED_KV_BAD_ALIGN      ||
+if (hft == HANDCRAFTED_KV_BAD_ALIGN ||
 hft == HANDCRAFTED_TENSORS_BAD_ALIGN || hft == HANDCRAFTED_TENSORS_CUSTOM_ALIGN ||
-hft == HANDCRAFTED_DATA_BAD_ALIGN    || hft == HANDCRAFTED_DATA_CUSTOM_ALIGN) {
+hft == HANDCRAFTED_DATA_BAD_ALIGN || hft == HANDCRAFTED_DATA_CUSTOM_ALIGN) {
 const uint64_t n = strlen(GGUF_KEY_GENERAL_ALIGNMENT);
 helper_write(file, n);
 helper_write(file, GGUF_KEY_GENERAL_ALIGNMENT, n);
@@ -274,7 +274,7 @@ alignment = 1;
 }
 uint64_t offset = 0;
 for (int i = 0; i < int(tensor_configs.size()); ++i) {
-const ggml_type                          type  = tensor_configs[i].first;
+const ggml_type type = tensor_configs[i].first;
 const std::array<int64_t, GGML_MAX_DIMS> shape = tensor_configs[i].second;
 std::string name = "my_tensor";
 if (hft != HANDCRAFTED_TENSORS_DUPLICATE_NAME) {
@@ -390,7 +390,7 @@ tensor_configs = get_tensor_configs(rng);
 std::vector<std::pair<enum gguf_type, enum gguf_type>> kv_types = get_kv_types(rng);
 bool ok = true;
 for (int i = 0; i < int(kv_types.size()); ++i) {
-const enum gguf_type type     = gguf_type(kv_types[i].first);
+const enum gguf_type type = gguf_type(kv_types[i].first);
 const enum gguf_type type_arr = gguf_type(kv_types[i].second);
 const std::string key = "my_key_" + std::to_string(i);
 uint32_t data[16];
@@ -488,7 +488,7 @@ const int id_alignment = gguf_find_key(gguf_ctx, GGUF_KEY_GENERAL_ALIGNMENT);
 const uint32_t alignment = id_alignment >= 0 ? gguf_get_val_u32(gguf_ctx, id_alignment) : GGUF_DEFAULT_ALIGNMENT;
 uint64_t expected_offset = 0;
 for (int i = 0; i < int(tensor_configs.size()); ++i) {
-const ggml_type                          type  = tensor_configs[i].first;
+const ggml_type type = tensor_configs[i].first;
 const std::array<int64_t, GGML_MAX_DIMS> shape = tensor_configs[i].second;
 const std::string name = "my_tensor_" + std::to_string(i);
 const int id = gguf_find_tensor(gguf_ctx, name.c_str());
@@ -523,7 +523,7 @@ std::mt19937 rng(seed);
 std::vector<tensor_config_t> tensor_configs = get_tensor_configs(rng);
 bool ok = true;
 for (int i = 0; i < int(tensor_configs.size()); ++i) {
-const ggml_type                          type  = tensor_configs[i].first;
+const ggml_type type = tensor_configs[i].first;
 const std::array<int64_t, GGML_MAX_DIMS> shape = tensor_configs[i].second;
 int64_t ne = shape[0];
 for (size_t j = 1; j < GGML_MAX_DIMS; ++j) {
@@ -679,18 +679,18 @@ for (int i = 0; i < 256; ++i) {
 const std::string key = "my_key_" + std::to_string(rng() % 1024);
 const enum gguf_type type = gguf_type(rng() % GGUF_TYPE_COUNT);
 switch (type) {
-case GGUF_TYPE_UINT8:   gguf_set_val_u8  (gguf_ctx, key.c_str(), rng() % (1 <<  7));             break;
-case GGUF_TYPE_INT8:    gguf_set_val_i8  (gguf_ctx, key.c_str(), rng() % (1 <<  7) - (1 <<  6)); break;
-case GGUF_TYPE_UINT16:  gguf_set_val_u16 (gguf_ctx, key.c_str(), rng() % (1 << 15));             break;
-case GGUF_TYPE_INT16:   gguf_set_val_i16 (gguf_ctx, key.c_str(), rng() % (1 << 15) - (1 << 14)); break;
-case GGUF_TYPE_UINT32:  gguf_set_val_u32 (gguf_ctx, key.c_str(), rng());                         break;
-case GGUF_TYPE_INT32:   gguf_set_val_i32 (gguf_ctx, key.c_str(), rng()             - (1 << 30)); break;
-case GGUF_TYPE_FLOAT32: gguf_set_val_f32 (gguf_ctx, key.c_str(), rng() % 1024      - 512);       break;
-case GGUF_TYPE_BOOL:    gguf_set_val_bool(gguf_ctx, key.c_str(), rng() % 2 == 0);                break;
-case GGUF_TYPE_STRING:  gguf_set_val_str (gguf_ctx, key.c_str(), std::to_string(rng()).c_str()); break;
-case GGUF_TYPE_UINT64:  gguf_set_val_u64 (gguf_ctx, key.c_str(), rng());                         break;
-case GGUF_TYPE_INT64:   gguf_set_val_i64 (gguf_ctx, key.c_str(), rng()             - (1 << 30)); break;
-case GGUF_TYPE_FLOAT64: gguf_set_val_f32 (gguf_ctx, key.c_str(), rng() % 1024      - 512);       break;
+case GGUF_TYPE_UINT8: gguf_set_val_u8 (gguf_ctx, key.c_str(), rng() % (1 << 7)); break;
+case GGUF_TYPE_INT8: gguf_set_val_i8 (gguf_ctx, key.c_str(), rng() % (1 << 7) - (1 << 6)); break;
+case GGUF_TYPE_UINT16: gguf_set_val_u16 (gguf_ctx, key.c_str(), rng() % (1 << 15)); break;
+case GGUF_TYPE_INT16: gguf_set_val_i16 (gguf_ctx, key.c_str(), rng() % (1 << 15) - (1 << 14)); break;
+case GGUF_TYPE_UINT32: gguf_set_val_u32 (gguf_ctx, key.c_str(), rng()); break;
+case GGUF_TYPE_INT32: gguf_set_val_i32 (gguf_ctx, key.c_str(), rng() - (1 << 30)); break;
+case GGUF_TYPE_FLOAT32: gguf_set_val_f32 (gguf_ctx, key.c_str(), rng() % 1024 - 512); break;
+case GGUF_TYPE_BOOL: gguf_set_val_bool(gguf_ctx, key.c_str(), rng() % 2 == 0); break;
+case GGUF_TYPE_STRING: gguf_set_val_str (gguf_ctx, key.c_str(), std::to_string(rng()).c_str()); break;
+case GGUF_TYPE_UINT64: gguf_set_val_u64 (gguf_ctx, key.c_str(), rng()); break;
+case GGUF_TYPE_INT64: gguf_set_val_i64 (gguf_ctx, key.c_str(), rng() - (1 << 30)); break;
+case GGUF_TYPE_FLOAT64: gguf_set_val_f32 (gguf_ctx, key.c_str(), rng() % 1024 - 512); break;
 case GGUF_TYPE_ARRAY: {
 const enum gguf_type type_arr = gguf_type(rng() % GGUF_TYPE_COUNT);
 const uint64_t ne = rng() % 1024;
@@ -717,11 +717,11 @@ random_data[j] &= 0x01010101;
 gguf_set_arr_data(gguf_ctx, key.c_str(), type_arr, random_data.data(), ne);
 } break;
 case GGUF_TYPE_STRING: {
-std::vector<std::string>  data_cpp(ne);
+std::vector<std::string> data_cpp(ne);
 std::vector<const char *> data_c(ne);
 for (size_t j = 0; j < data_cpp.size(); ++j) {
 data_cpp[j] = std::to_string(rng());
-data_c[j]   = data_cpp[j].c_str();
+data_c[j] = data_cpp[j].c_str();
 }
 gguf_set_arr_str(gguf_ctx, key.c_str(), data_c.data(), ne);
 } break;
@@ -801,7 +801,7 @@ ok = false;
 continue;
 }
 if (type_arr == GGUF_TYPE_BOOL) {
-const int8_t * data       = reinterpret_cast<const int8_t *>(gguf_get_arr_data(ctx,   id));
+const int8_t * data = reinterpret_cast<const int8_t *>(gguf_get_arr_data(ctx, id));
 const int8_t * data_other = reinterpret_cast<const int8_t *>(gguf_get_arr_data(other, idx_other));
 for (size_t arr_i = 0; arr_i < arr_n; ++arr_i) {
 if (bool(data[arr_i]) != bool(data_other[arr_i])) {
@@ -812,7 +812,7 @@ continue;
 }
 if (type_arr == GGUF_TYPE_STRING) {
 for (size_t arr_i = 0; arr_i < arr_n; ++arr_i) {
-const std::string str       = gguf_get_arr_str(ctx,   id,       arr_i);
+const std::string str = gguf_get_arr_str(ctx, id, arr_i);
 const std::string str_other = gguf_get_arr_str(other, idx_other, arr_i);
 if (str != str_other) {
 ok = false;
@@ -820,7 +820,7 @@ ok = false;
 }
 continue;
 }
-const int8_t * data       = reinterpret_cast<const int8_t *>(gguf_get_arr_data(ctx,   id));
+const int8_t * data = reinterpret_cast<const int8_t *>(gguf_get_arr_data(ctx, id));
 const int8_t * data_other = reinterpret_cast<const int8_t *>(gguf_get_arr_data(other, idx_other));
 if (!std::equal(data, data + arr_n*gguf_type_size(type_arr), data_other)) {
 ok = false;
@@ -828,14 +828,14 @@ ok = false;
 continue;
 }
 if (type == GGUF_TYPE_STRING) {
-const std::string str       = gguf_get_val_str(ctx,   id);
+const std::string str = gguf_get_val_str(ctx, id);
 const std::string str_other = gguf_get_val_str(other, idx_other);
 if (str != str_other) {
 ok = false;
 }
 continue;
 }
-const char * data       = reinterpret_cast<const char *>(gguf_get_val_data(ctx,   id));
+const char * data = reinterpret_cast<const char *>(gguf_get_val_data(ctx, id));
 const char * data_other = reinterpret_cast<const char *>(gguf_get_val_data(other, idx_other));
 if (!std::equal(data, data + gguf_type_size(type), data_other)) {
 ok = false;
@@ -909,8 +909,8 @@ ggml_backend_buffer_t bbuf;
 {
 struct random_gguf_context_result result = get_random_gguf_context(backend, seed);
 gguf_ctx_0 = result.gguf_ctx;
-ctx_0      = result.ctx;
-bbuf       = result.buffer;
+ctx_0 = result.ctx;
+bbuf = result.buffer;
 }
 FILE * file = tmpfile();
 #ifdef _WIN32
@@ -1021,8 +1021,8 @@ ggml_backend_buffer_t bbuf_0;
 {
 struct random_gguf_context_result result = get_random_gguf_context(backend, seed);
 gguf_ctx_0 = result.gguf_ctx;
-ctx_0      = result.ctx;
-bbuf_0     = result.buffer;
+ctx_0 = result.ctx;
+bbuf_0 = result.buffer;
 }
 struct gguf_context * gguf_ctx_1;
 struct ggml_context * ctx_1;
@@ -1030,8 +1030,8 @@ ggml_backend_buffer_t bbuf_1;
 {
 struct random_gguf_context_result result = get_random_gguf_context(backend, seed + 1);
 gguf_ctx_1 = result.gguf_ctx;
-ctx_1      = result.ctx;
-bbuf_1     = result.buffer;
+ctx_1 = result.ctx;
+bbuf_1 = result.buffer;
 }
 struct gguf_context * gguf_ctx_2 = gguf_init_empty();
 gguf_set_kv(gguf_ctx_1, gguf_ctx_0);

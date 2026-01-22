@@ -4,21 +4,21 @@ JBUF_SAVE_SOURCE,
 JBUF_CRANK_DEST,
 JBUF_SAVE_AND_PASS
 } J_BUF_MODE;
-#define CSTATE_START	100
-#define CSTATE_SCANNING	101
-#define CSTATE_RAW_OK	102
-#define CSTATE_WRCOEFS	103
-#define DSTATE_START	200
-#define DSTATE_INHEADER	201
-#define DSTATE_READY	202
-#define DSTATE_PRELOAD	203
-#define DSTATE_PRESCAN	204
-#define DSTATE_SCANNING	205
-#define DSTATE_RAW_OK	206
-#define DSTATE_BUFIMAGE	207
-#define DSTATE_BUFPOST	208
-#define DSTATE_RDCOEFS	209
-#define DSTATE_STOPPING	210
+#define CSTATE_START 100
+#define CSTATE_SCANNING 101
+#define CSTATE_RAW_OK 102
+#define CSTATE_WRCOEFS 103
+#define DSTATE_START 200
+#define DSTATE_INHEADER 201
+#define DSTATE_READY 202
+#define DSTATE_PRELOAD 203
+#define DSTATE_PRESCAN 204
+#define DSTATE_SCANNING 205
+#define DSTATE_RAW_OK 206
+#define DSTATE_BUFIMAGE 207
+#define DSTATE_BUFPOST 208
+#define DSTATE_RDCOEFS 209
+#define DSTATE_STOPPING 210
 struct jpeg_comp_master {
 JMETHOD(void, prepare_for_pass, (j_compress_ptr cinfo));
 JMETHOD(void, pass_startup, (j_compress_ptr cinfo));
@@ -170,53 +170,53 @@ JMETHOD(void, finish_pass, (j_decompress_ptr cinfo));
 JMETHOD(void, new_color_map, (j_decompress_ptr cinfo));
 };
 #undef MAX
-#define MAX(a,b)	((a) > (b) ? (a) : (b))
+#define MAX(a,b) ((a) > (b) ? (a) : (b))
 #undef MIN
-#define MIN(a,b)	((a) < (b) ? (a) : (b))
+#define MIN(a,b) ((a) < (b) ? (a) : (b))
 #ifdef RIGHT_SHIFT_IS_UNSIGNED
-#define SHIFT_TEMPS	INT32 shift_temp;
-#define RIGHT_SHIFT(x,shft)  \
+#define SHIFT_TEMPS INT32 shift_temp;
+#define RIGHT_SHIFT(x,shft) \
 ((shift_temp = (x)) < 0 ? \
 (shift_temp >> (shft)) | ((~((INT32) 0)) << (32-(shft))) : \
 (shift_temp >> (shft)))
 #else
 #define SHIFT_TEMPS
-#define RIGHT_SHIFT(x,shft)	((x) >> (shft))
+#define RIGHT_SHIFT(x,shft) ((x) >> (shft))
 #endif
 #ifdef NEED_SHORT_EXTERNAL_NAMES
-#define jinit_compress_master	jICompress
-#define jinit_c_master_control	jICMaster
-#define jinit_c_main_controller	jICMainC
-#define jinit_c_prep_controller	jICPrepC
-#define jinit_c_coef_controller	jICCoefC
-#define jinit_color_converter	jICColor
-#define jinit_downsampler	jIDownsampler
-#define jinit_forward_dct	jIFDCT
-#define jinit_huff_encoder	jIHEncoder
-#define jinit_phuff_encoder	jIPHEncoder
-#define jinit_marker_writer	jIMWriter
-#define jinit_master_decompress	jIDMaster
-#define jinit_d_main_controller	jIDMainC
-#define jinit_d_coef_controller	jIDCoefC
-#define jinit_d_post_controller	jIDPostC
-#define jinit_input_controller	jIInCtlr
-#define jinit_marker_reader	jIMReader
-#define jinit_huff_decoder	jIHDecoder
-#define jinit_phuff_decoder	jIPHDecoder
-#define jinit_inverse_dct	jIIDCT
-#define jinit_upsampler		jIUpsampler
-#define jinit_color_deconverter	jIDColor
-#define jinit_1pass_quantizer	jI1Quant
-#define jinit_2pass_quantizer	jI2Quant
-#define jinit_merged_upsampler	jIMUpsampler
-#define jinit_memory_mgr	jIMemMgr
-#define jdiv_round_up		jDivRound
-#define jround_up		jRound
-#define jcopy_sample_rows	jCopySamples
-#define jcopy_block_row		jCopyBlocks
-#define jzero_far		jZeroFar
-#define jpeg_zigzag_order	jZIGTable
-#define jpeg_natural_order	jZAGTable
+#define jinit_compress_master jICompress
+#define jinit_c_master_control jICMaster
+#define jinit_c_main_controller jICMainC
+#define jinit_c_prep_controller jICPrepC
+#define jinit_c_coef_controller jICCoefC
+#define jinit_color_converter jICColor
+#define jinit_downsampler jIDownsampler
+#define jinit_forward_dct jIFDCT
+#define jinit_huff_encoder jIHEncoder
+#define jinit_phuff_encoder jIPHEncoder
+#define jinit_marker_writer jIMWriter
+#define jinit_master_decompress jIDMaster
+#define jinit_d_main_controller jIDMainC
+#define jinit_d_coef_controller jIDCoefC
+#define jinit_d_post_controller jIDPostC
+#define jinit_input_controller jIInCtlr
+#define jinit_marker_reader jIMReader
+#define jinit_huff_decoder jIHDecoder
+#define jinit_phuff_decoder jIPHDecoder
+#define jinit_inverse_dct jIIDCT
+#define jinit_upsampler jIUpsampler
+#define jinit_color_deconverter jIDColor
+#define jinit_1pass_quantizer jI1Quant
+#define jinit_2pass_quantizer jI2Quant
+#define jinit_merged_upsampler jIMUpsampler
+#define jinit_memory_mgr jIMemMgr
+#define jdiv_round_up jDivRound
+#define jround_up jRound
+#define jcopy_sample_rows jCopySamples
+#define jcopy_block_row jCopyBlocks
+#define jzero_far jZeroFar
+#define jpeg_zigzag_order jZIGTable
+#define jpeg_natural_order jZAGTable
 #endif
 EXTERN(void) jinit_compress_master JPP((j_compress_ptr cinfo));
 EXTERN(void) jinit_c_master_control JPP((j_compress_ptr cinfo,

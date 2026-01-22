@@ -27,7 +27,7 @@ USED(n);
 USED(off);
 }
 void
-cupdate(Chan *c, uchar *buf,  int n, vlong off)
+cupdate(Chan *c, uchar *buf, int n, vlong off)
 {
 USED(c);
 USED(buf);

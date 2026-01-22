@@ -4,16 +4,16 @@
 #include <mach/std_types.h>
 #include <chips/busses.h>
 boolean_t configure_bus_master(
-const char	*name,
-vm_offset_t	 virt,
-vm_offset_t	 phys,
-int		 adpt_no,
-const char	*bus_name)
+const char *name,
+vm_offset_t virt,
+vm_offset_t phys,
+int adpt_no,
+const char *bus_name)
 {
 struct bus_device *device;
 struct bus_ctlr *master;
 struct bus_driver *driver;
-boolean_t             found = FALSE;
+boolean_t found = FALSE;
 for (master = bus_master_init; master->driver; master++) {
 if (master->alive)
 continue;
@@ -33,7 +33,7 @@ master->adaptor = adpt_no;
 driver->minfo[master->unit] = master;
 printf("%s%d: at %s%d\n", master->name, master->unit, bus_name, adpt_no);
 for (device = bus_device_init; device->driver; device++) {
-int	ctlr;
+int ctlr;
 if (device->alive || device->driver != driver ||
 (device->adaptor != '?' && device->adaptor != adpt_no))
 continue;
@@ -63,15 +63,15 @@ printf("\n");
 return TRUE;
 }
 boolean_t configure_bus_device(
-const char	*name,
-vm_offset_t	 virt,
-vm_offset_t	 phys,
-int 		 adpt_no,
-const char	*bus_name)
+const char *name,
+vm_offset_t virt,
+vm_offset_t phys,
+int adpt_no,
+const char *bus_name)
 {
 struct bus_device *device;
 struct bus_driver *driver;
-boolean_t             found = FALSE;
+boolean_t found = FALSE;
 for (device = bus_device_init; device->driver; device++) {
 if (device->alive)
 continue;

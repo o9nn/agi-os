@@ -1,10 +1,10 @@
 set -ex
 WORKSPACE=$1
 if [ -z "$WORKSPACE" ]; then
-    export WORKSPACE=$(pwd)/ep_kernels_workspace
+export WORKSPACE=$(pwd)/ep_kernels_workspace
 fi
 if [ ! -d "$WORKSPACE" ]; then
-    mkdir -p $WORKSPACE
+mkdir -p $WORKSPACE
 fi
 pip3 install cmake torch ninja
 pushd $WORKSPACE
@@ -16,12 +16,12 @@ wget https://github.com/deepseek-ai/DeepEP/raw/main/third-party/nvshmem.patch
 git init
 git apply -vvv nvshmem.patch
 if [ -z "$CUDA_HOME" ]; then
-    echo "CUDA_HOME is not set, please set it to your CUDA installation directory."
-    exit 1
+echo "CUDA_HOME is not set, please set it to your CUDA installation directory."
+exit 1
 fi
 if [ -z "$TORCH_CUDA_ARCH_LIST" ]; then
-    echo "TORCH_CUDA_ARCH_LIST is not set, please set it to your desired architecture."
-    exit 1
+echo "TORCH_CUDA_ARCH_LIST is not set, please set it to your desired architecture."
+exit 1
 fi
 export NVSHMEM_IBGDA_SUPPORT=1
 export NVSHMEM_SHMEM_SUPPORT=0
@@ -42,33 +42,33 @@ cmake --build $WORKSPACE/nvshmem_build/ --target install
 popd
 export CMAKE_PREFIX_PATH=$WORKSPACE/nvshmem_install:$CMAKE_PREFIX_PATH
 is_git_dirty() {
-    local dir=$1
-    pushd "$dir" > /dev/null
-    if [ -d ".git" ] && [ -n "$(git status --porcelain 2>/dev/null)" ]; then
-        popd > /dev/null
-        return 0
-    else
-        popd > /dev/null
-        return 1
-    fi
+local dir=$1
+pushd "$dir" > /dev/null
+if [ -d ".git" ] && [ -n "$(git status --porcelain 2>/dev/null)" ]; then
+popd > /dev/null
+return 0
+else
+popd > /dev/null
+return 1
+fi
 }
 clone_repo() {
-    local repo_url=$1
-    local dir_name=$2
-    local key_file=$3
-    if [ -d "$dir_name" ]; then
-        if is_git_dirty "$dir_name"; then
-            echo "$dir_name directory is dirty, skipping clone"
-        elif [ ! -d "$dir_name/.git" ] || [ ! -f "$dir_name/$key_file" ]; then
-            echo "$dir_name directory exists but clone appears incomplete, cleaning up and re-cloning"
-            rm -rf "$dir_name"
-            git clone "$repo_url"
-        else
-            echo "$dir_name directory exists and appears complete; manually update if needed"
-        fi
-    else
-        git clone "$repo_url"
-    fi
+local repo_url=$1
+local dir_name=$2
+local key_file=$3
+if [ -d "$dir_name" ]; then
+if is_git_dirty "$dir_name"; then
+echo "$dir_name directory is dirty, skipping clone"
+elif [ ! -d "$dir_name/.git" ] || [ ! -f "$dir_name/$key_file" ]; then
+echo "$dir_name directory exists but clone appears incomplete, cleaning up and re-cloning"
+rm -rf "$dir_name"
+git clone "$repo_url"
+else
+echo "$dir_name directory exists and appears complete; manually update if needed"
+fi
+else
+git clone "$repo_url"
+fi
 }
 pushd $WORKSPACE
 clone_repo "https://github.com/ppl-ai/pplx-kernels" "pplx-kernels" "setup.py"

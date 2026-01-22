@@ -28,23 +28,23 @@ Anone, Aleft, Acenter, Aright, Ajustify, Atop, Amiddle, Abottom, Abaseline: con 
 # Each Item is a string in one font.
 Item: adt
 {
-itemid: int;	# canvas text item id
+itemid: int; # canvas text item id
 s: string;
-fontnum: int;	# (style*NumSizes + size)
-pos: Point;	# nw corner of text item, relative to line origin
-width: int;		# of s, in pixels,  when displayed in font
-line: cyclic ref Line;   # containing line
+fontnum: int; # (style*NumSizes + size)
+pos: Point; # nw corner of text item, relative to line origin
+width: int; # of s, in pixels, when displayed in font
+line: cyclic ref Line; # containing line
 prev: cyclic ref Item;
 next: cyclic ref Item;
 };
 Line: adt
 {
 items: cyclic ref Item;
-pos: Point;	# nw corner of Line relative to containing cell;
+pos: Point; # nw corner of Line relative to containing cell;
 height: int;
 ascent: int;
 width: int;
-cell: cyclic ref Tablecell;  # containing cell
+cell: cyclic ref Tablecell; # containing cell
 next: cyclic ref Line;
 };
 Align: adt
@@ -66,7 +66,7 @@ height: int;
 ascent: int;
 row: int;
 col: int;
-pos: Point;	# nw corner of cell, in canvas coords
+pos: Point; # nw corner of cell, in canvas coords
 };
 Tablegcell: adt
 {
@@ -80,16 +80,16 @@ height: int;
 ascent: int;
 align: Align;
 pos: Point;
-rule: int;			# width of rule below row, if > 0
-ruleids: list of int;	# canvas ids of lines used to draw rule
+rule: int; # width of rule below row, if > 0
+ruleids: list of int; # canvas ids of lines used to draw rule
 };
 Tablecol: adt
 {
 width: int;
 align: Align;
 pos: Point;
-rule: int;			# width of rule to right of col, if > 0
-ruleids: list of int;	# canvas ids of lines used to draw rule
+rule: int; # width of rule to right of col, if > 0
+ruleids: list of int; # canvas ids of lines used to draw rule
 };
 Table: adt
 {
@@ -213,11 +213,11 @@ return (buf, "");
 # for col and tr meaning that a rule of given width is to
 # follow the given column or row).
 # DTD elements:
-#	table: - O (caption?, col*, tr*)
-#	caption: - - (%text+)
-#	col: - O empty
-#	tr: - O td*
-#	td: - O (%body.content)
+# table: - O (caption?, col*, tr*)
+# caption: - - (%text+)
+# col: - O empty
+# tr: - O td*
+# td: - O (%body.content)
 parsetab(toks: array of ref Lex) : string
 {
 tabletlex := toks[0];
@@ -239,8 +239,8 @@ captoks := toks[i+1:j];
 if(e != nil)
 return e;
 # we ignore caption now
-#			capcell = ref Tablecell(0, captoks, caplines, 1, 1, 1, Align(Anone, Anone),
-#						0, 0, 0, 0, 0, Point(0,0));
+# capcell = ref Tablecell(0, captoks, caplines, 1, 1, 1, Align(Anone, Anone),
+# 0, 0, 0, 0, 0, Point(0,0));
 }
 (tlex, i) = nexttok(toks, n, j);
 }
@@ -547,7 +547,7 @@ setgrid()
 {
 gcells := array[tab.nrow] of { * => array[tab.ncol] of { * => ref Tablegcell(nil, 1)} };
 # The following arrays keep track of cells that are spanning
-# multiple rows;  rowspancnt[i] is the number of rows left
+# multiple rows; rowspancnt[i] is the number of rows left
 # to be spanned in column i.
 # When done, cell's (row,col) is upper left grid point.
 rowspancnt := array[tab.ncol] of { * => 0};
@@ -601,7 +601,7 @@ tab.grid = gcells;
 build() : string
 {
 ri, ci: int;
-#	sys->print("\n\ninitial table\n"); printtable();
+# sys->print("\n\ninitial table\n"); printtable();
 if(tab.ncol == 0 || tab.nrow == 0)
 return "";
 setgrid();
@@ -616,7 +616,7 @@ for(ri = 0; ri < tab.nrow; ri++)
 row_geom(ri);
 caption_geom();
 table_geom();
-#	sys->print("\n\ntable after geometry set\n"); printtable();
+# sys->print("\n\ntable after geometry set\n"); printtable();
 h := tab.height;
 w := tab.width;
 if(tab.capcell != nil) {

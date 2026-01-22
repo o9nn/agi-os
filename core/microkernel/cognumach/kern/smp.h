@@ -19,7 +19,7 @@ unsigned long long idle_time;
 unsigned long long busy_time;
 };
 struct smp_work_item {
-queue_chain_t  chain;
+queue_chain_t chain;
 void (*func)(void *arg);
 void *arg;
 int flags;
@@ -54,8 +54,8 @@ void smp_work_queue_init(void);
 kern_return_t smp_queue_work(int cpu, void (*func)(void *), void *arg);
 kern_return_t smp_queue_work_on(int cpu, void (*func)(void *), void *arg);
 void smp_work_thread(void);
-#define CPU_AFFINITY_ANY    ((cpu_mask_t)-1)
-#define CPU_AFFINITY_NONE   ((cpu_mask_t)0)
+#define CPU_AFFINITY_ANY ((cpu_mask_t)-1)
+#define CPU_AFFINITY_NONE ((cpu_mask_t)0)
 static inline boolean_t cpu_affinity_test(cpu_mask_t mask, int cpu) {
 return (mask & (1U << cpu)) != 0;
 }

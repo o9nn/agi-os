@@ -1,10 +1,10 @@
 #ifndef gxtext_INCLUDED
-#  define gxtext_INCLUDED
+# define gxtext_INCLUDED
 #include "gstext.h"
 #include "gsrefct.h"
 typedef struct gs_text_enum_procs_s gs_text_enum_procs_t;
 #ifndef cached_fm_pair_DEFINED
-#  define cached_fm_pair_DEFINED
+# define cached_fm_pair_DEFINED
 typedef struct cached_fm_pair_s cached_fm_pair;
 #endif
 typedef struct gs_text_returned_s {
@@ -24,14 +24,14 @@ gx_font_stack_item_t items[1 + MAX_FONT_STACK];
 rc_free_proc(rc_free_text_enum);
 #define gs_text_enum_common\
 \
-gs_text_params_t text;	\
+gs_text_params_t text; \
 gx_device *dev;\
-gx_device *imaging_dev;	\
+gx_device *imaging_dev; \
 gs_imager_state *pis;\
 gs_font *orig_font;\
-gx_path *path;			\
-const gx_device_color *pdcolor;	\
-const gx_clip_path *pcpath;		\
+gx_path *path; \
+const gx_device_color *pdcolor; \
+const gx_clip_path *pcpath; \
 gs_memory_t *memory;\
 \
 const gs_text_enum_procs_t *procs;\
@@ -41,14 +41,14 @@ rc_header rc;\
 gs_font *current_font; \
 gs_glyph outer_CID; \
 bool is_pure_color; \
-gs_log2_scale_point log2_scale;	\
+gs_log2_scale_point log2_scale; \
 cached_fm_pair *pair; \
-uint index;			\
-uint xy_index;		\
+uint index; \
+uint xy_index; \
 gx_font_stack_t fstack;\
-int cmap_code;		\
+int cmap_code; \
 \
-gs_point FontBBox_as_Metrics2;  \
+gs_point FontBBox_as_Metrics2; \
 \
 bool device_disabled_grid_fitting;\
 \
@@ -57,7 +57,7 @@ struct gs_text_enum_s {
 gs_text_enum_common;
 };
 #define st_gs_text_enum_max_ptrs (st_gs_text_params_max_ptrs + 8)
-#define public_st_gs_text_enum()	\
+#define public_st_gs_text_enum() \
 gs_public_st_composite(st_gs_text_enum, gs_text_enum_t, "gs_text_enum_t",\
 text_enum_enum_ptrs, text_enum_reloc_ptrs)
 int gs_text_enum_init(gs_text_enum_t *pte,
@@ -75,17 +75,17 @@ bool for_return);
 (((penum)->text.operation & (op_mask)) != 0)
 #define SHOW_IS_ALL_OF(penum, op_mask)\
 (((penum)->text.operation & (op_mask)) == (op_mask))
-#define SHOW_IS_ADD_TO_ALL(penum)	\
+#define SHOW_IS_ADD_TO_ALL(penum) \
 SHOW_IS(penum, TEXT_ADD_TO_ALL_WIDTHS)
-#define SHOW_IS_ADD_TO_SPACE(penum)	\
+#define SHOW_IS_ADD_TO_SPACE(penum) \
 SHOW_IS(penum, TEXT_ADD_TO_SPACE_WIDTH)
-#define SHOW_IS_DO_KERN(penum)		\
+#define SHOW_IS_DO_KERN(penum) \
 SHOW_IS(penum, TEXT_INTERVENE)
-#define SHOW_IS_SLOW(penum)		\
+#define SHOW_IS_SLOW(penum) \
 SHOW_IS(penum, TEXT_REPLACE_WIDTHS | TEXT_ADD_TO_ALL_WIDTHS | TEXT_ADD_TO_SPACE_WIDTH | TEXT_INTERVENE)
-#define SHOW_IS_DRAWING(penum)		\
+#define SHOW_IS_DRAWING(penum) \
 !SHOW_IS(penum, TEXT_DO_NONE)
-#define SHOW_IS_STRINGWIDTH(penum)	\
+#define SHOW_IS_STRINGWIDTH(penum) \
 SHOW_IS_ALL_OF(penum, TEXT_DO_NONE | TEXT_RETURN_WIDTH)
 struct gs_text_enum_procs_s {
 #define text_enum_proc_resync(proc)\

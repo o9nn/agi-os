@@ -6,11 +6,11 @@
 #include <linux/tqueue.h>
 struct request {
 volatile int rq_status;
-#define RQ_INACTIVE		(-1)
-#define RQ_ACTIVE		1
-#define RQ_SCSI_BUSY		0xffff
-#define RQ_SCSI_DONE		0xfffe
-#define RQ_SCSI_DISCONNECTING	0xffe0
+#define RQ_INACTIVE (-1)
+#define RQ_ACTIVE 1
+#define RQ_SCSI_BUSY 0xffff
+#define RQ_SCSI_DONE 0xfffe
+#define RQ_SCSI_DISCONNECTING 0xffe0
 kdev_t rq_dev;
 int cmd;
 int errors;
@@ -27,7 +27,7 @@ struct request * next;
 struct blk_dev_struct {
 void (*request_fn)(void);
 struct request * current_request;
-struct request   plug;
+struct request plug;
 struct tq_struct plug_tq;
 };
 struct sec_size {

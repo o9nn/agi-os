@@ -4,14 +4,14 @@
 #include "dat.h"
 #include "fns.h"
 #include "../port/error.h"
-#define	Image	IMAGE
+#define Image IMAGE
 #include <draw.h>
 #include <memdraw.h>
 #include <cursor.h>
 #include "screen.h"
 enum {
-Index		= 0x06,
-Data		= 0x07,
+Index = 0x06,
+Data = 0x07,
 };
 static ushort dacxreg[4] = {
 PaddrW, Pdata, Pixmask, PaddrR

@@ -53,7 +53,7 @@ flags |= NOWRITE;
 flags |= VERBOSE;
 }
 }
-spawn  fswriteproc(sync, flags, (hd args).x().i, (hd tl args).s().i, (hd tl tl args).m().i, report.start("mergewrite"));
+spawn fswriteproc(sync, flags, (hd args).x().i, (hd tl args).s().i, (hd tl tl args).m().i, report.start("mergewrite"));
 sync <-= nil;
 return ref Value.Vr(sync);
 }
@@ -72,7 +72,7 @@ d.name = root;
 }
 fswritedir(d.name, cmp, d, reply, c, errorc, flags);
 errorc <-= nil;
-sync <-= nil;		# XXX should return result here...
+sync <-= nil; # XXX should return result here...
 }
 fswritedir(path: string, cmp: Cmpchan, dir: ref Sys->Dir, dreply: chan of int, c: Fschan,
 errorc: chan of string, flags: int)
@@ -105,7 +105,7 @@ report(errorc, sys->sprint("cannot create %q, mode %uo: %r", path, dir.mode|8r30
 return;
 }
 # XXX if we haven't just made it, we should chmod the old entry u+w to enable writing.
-if(sys->chdir(dir.name) == -1){		# XXX beware of names starting with '#'
+if(sys->chdir(dir.name) == -1){ # XXX beware of names starting with '#'
 dreply <-= Next;
 report(errorc, sys->sprint("cannot cd to %q: %r", path));
 fd = nil;

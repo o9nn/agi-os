@@ -6,185 +6,185 @@
 #include "io.h"
 #include "etherif.h"
 enum {
-Idr0		= 0x0000,
-Mar0		= 0x0008,
-Tsd0		= 0x0010,
-Tsad0		= 0x0020,
-Rbstart		= 0x0030,
-Erbcr		= 0x0034,
-Ersr		= 0x0036,
-Cr		= 0x0037,
-Capr		= 0x0038,
-Cbr		= 0x003A,
-Imr		= 0x003C,
-Isr		= 0x003E,
-Tcr		= 0x0040,
-Rcr		= 0x0044,
-Tctr		= 0x0048,
-Mpc		= 0x004C,
-Cr9346		= 0x0050,
-Config0		= 0x0051,
-Config1		= 0x0052,
-TimerInt	= 0x0054,
-Msr		= 0x0058,
-Config3		= 0x0059,
-Config4		= 0x005A,
-Mulint		= 0x005C,
-RerID		= 0x005E,
-Tsad		= 0x0060,
-Bmcr		= 0x0062,
-Bmsr		= 0x0064,
-Anar		= 0x0066,
-Anlpar		= 0x0068,
-Aner		= 0x006A,
-Dis		= 0x006C,
-Fcsc		= 0x006E,
-Nwaytr		= 0x0070,
-Rec		= 0x0072,
-Cscr		= 0x0074,
-Phy1parm	= 0x0078,
-Twparm		= 0x007C,
-Phy2parm	= 0x0080,
+Idr0 = 0x0000,
+Mar0 = 0x0008,
+Tsd0 = 0x0010,
+Tsad0 = 0x0020,
+Rbstart = 0x0030,
+Erbcr = 0x0034,
+Ersr = 0x0036,
+Cr = 0x0037,
+Capr = 0x0038,
+Cbr = 0x003A,
+Imr = 0x003C,
+Isr = 0x003E,
+Tcr = 0x0040,
+Rcr = 0x0044,
+Tctr = 0x0048,
+Mpc = 0x004C,
+Cr9346 = 0x0050,
+Config0 = 0x0051,
+Config1 = 0x0052,
+TimerInt = 0x0054,
+Msr = 0x0058,
+Config3 = 0x0059,
+Config4 = 0x005A,
+Mulint = 0x005C,
+RerID = 0x005E,
+Tsad = 0x0060,
+Bmcr = 0x0062,
+Bmsr = 0x0064,
+Anar = 0x0066,
+Anlpar = 0x0068,
+Aner = 0x006A,
+Dis = 0x006C,
+Fcsc = 0x006E,
+Nwaytr = 0x0070,
+Rec = 0x0072,
+Cscr = 0x0074,
+Phy1parm = 0x0078,
+Twparm = 0x007C,
+Phy2parm = 0x0080,
 };
 enum {
-Bufe		= 0x01,
-Te		= 0x04,
-Re		= 0x08,
-Rst		= 0x10,
+Bufe = 0x01,
+Te = 0x04,
+Re = 0x08,
+Rst = 0x10,
 };
 enum {
-Rok		= 0x0001,
-Rer		= 0x0002,
-Tok		= 0x0004,
-Ter		= 0x0008,
-Rxovw		= 0x0010,
-PunLc		= 0x0020,
-Fovw		= 0x0040,
-Clc		= 0x2000,
-Timer		= 0x4000,
-Serr		= 0x8000,
+Rok = 0x0001,
+Rer = 0x0002,
+Tok = 0x0004,
+Ter = 0x0008,
+Rxovw = 0x0010,
+PunLc = 0x0020,
+Fovw = 0x0040,
+Clc = 0x2000,
+Timer = 0x4000,
+Serr = 0x8000,
 };
 enum {
-Clrabt		= 0x00000001,
-TxrrSHIFT	= 4,
-TxrrMASK	= 0x000000F0,
-MtxdmaSHIFT	= 8,
-MtxdmaMASK	= 0x00000700,
-Mtxdma2048	= 0x00000700,
-Acrc		= 0x00010000,
-LbkSHIFT	= 17,
-LbkMASK		= 0x00060000,
-IfgSHIFT	= 24,
-IfgMASK		= 0x03000000,
-HwveridSHIFT	= 22,
-HwveridMASK	= 0x7CC00000,
+Clrabt = 0x00000001,
+TxrrSHIFT = 4,
+TxrrMASK = 0x000000F0,
+MtxdmaSHIFT = 8,
+MtxdmaMASK = 0x00000700,
+Mtxdma2048 = 0x00000700,
+Acrc = 0x00010000,
+LbkSHIFT = 17,
+LbkMASK = 0x00060000,
+IfgSHIFT = 24,
+IfgMASK = 0x03000000,
+HwveridSHIFT = 22,
+HwveridMASK = 0x7CC00000,
 };
 enum {
-Aap		= 0x00000001,
-Apm		= 0x00000002,
-Am		= 0x00000004,
-Ab		= 0x00000008,
-Ar		= 0x00000010,
-Aer		= 0x00000020,
-Sel9356		= 0x00000040,
-Wrap		= 0x00000080,
-MrxdmaSHIFT	= 8,
-MrxdmaMASK	= 0x00000700,
-Mrxdmaunlimited	= 0x00000700,
-RblenSHIFT	= 11,
-RblenMASK	= 0x00001800,
-Rblen8K		= 0x00000000,
-Rblen16K	= 0x00000800,
-Rblen32K	= 0x00001000,
-Rblen64K	= 0x00001800,
-RxfthSHIFT	= 13,
-RxfthMASK	= 0x0000E000,
-Rxfth256	= 0x00008000,
-Rxfthnone	= 0x0000E000,
-Rer8		= 0x00010000,
-MulERINT	= 0x00020000,
-ErxthSHIFT	= 24,
-ErxthMASK	= 0x0F000000,
-Erxthnone	= 0x00000000,
+Aap = 0x00000001,
+Apm = 0x00000002,
+Am = 0x00000004,
+Ab = 0x00000008,
+Ar = 0x00000010,
+Aer = 0x00000020,
+Sel9356 = 0x00000040,
+Wrap = 0x00000080,
+MrxdmaSHIFT = 8,
+MrxdmaMASK = 0x00000700,
+Mrxdmaunlimited = 0x00000700,
+RblenSHIFT = 11,
+RblenMASK = 0x00001800,
+Rblen8K = 0x00000000,
+Rblen16K = 0x00000800,
+Rblen32K = 0x00001000,
+Rblen64K = 0x00001800,
+RxfthSHIFT = 13,
+RxfthMASK = 0x0000E000,
+Rxfth256 = 0x00008000,
+Rxfthnone = 0x0000E000,
+Rer8 = 0x00010000,
+MulERINT = 0x00020000,
+ErxthSHIFT = 24,
+ErxthMASK = 0x0F000000,
+Erxthnone = 0x00000000,
 };
 enum {
-Rcok		= 0x0001,
-Fae		= 0x0002,
-Crc		= 0x0004,
-Long		= 0x0008,
-Runt		= 0x0010,
-Ise		= 0x0020,
-Bar		= 0x2000,
-Pam		= 0x4000,
-Mar		= 0x8000,
+Rcok = 0x0001,
+Fae = 0x0002,
+Crc = 0x0004,
+Long = 0x0008,
+Runt = 0x0010,
+Ise = 0x0020,
+Bar = 0x2000,
+Pam = 0x4000,
+Mar = 0x8000,
 };
 enum {
-Rxpf		= 0x01,
-Txpf		= 0x02,
-Linkb		= 0x04,
-Speed10		= 0x08,
-Auxstatus	= 0x10,
-Rxfce		= 0x40,
-Txfce		= 0x80,
+Rxpf = 0x01,
+Txpf = 0x02,
+Linkb = 0x04,
+Speed10 = 0x08,
+Auxstatus = 0x10,
+Rxfce = 0x40,
+Txfce = 0x80,
 };
 typedef struct {
-int	tsd;
-int	tsad;
-uchar*	data;
+int tsd;
+int tsad;
+uchar* data;
 } Td;
 enum {
-SizeSHIFT	= 0,
-SizeMASK	= 0x00001FFF,
-Own		= 0x00002000,
-Tun		= 0x00004000,
-Tcok		= 0x00008000,
-EtxthSHIFT	= 16,
-EtxthMASK	= 0x001F0000,
-NccSHIFT	= 24,
-NccMASK		= 0x0F000000,
-Cdh		= 0x10000000,
-Owc		= 0x20000000,
-Tabt		= 0x40000000,
-Crs		= 0x80000000,
+SizeSHIFT = 0,
+SizeMASK = 0x00001FFF,
+Own = 0x00002000,
+Tun = 0x00004000,
+Tcok = 0x00008000,
+EtxthSHIFT = 16,
+EtxthMASK = 0x001F0000,
+NccSHIFT = 24,
+NccMASK = 0x0F000000,
+Cdh = 0x10000000,
+Owc = 0x20000000,
+Tabt = 0x40000000,
+Crs = 0x80000000,
 };
 enum {
-Rblen		= Rblen64K,
-Ntd		= 4,
-Tdbsz		= ROUNDUP(sizeof(Etherpkt), 4),
+Rblen = Rblen64K,
+Ntd = 4,
+Tdbsz = ROUNDUP(sizeof(Etherpkt), 4),
 };
 typedef struct Ctlr Ctlr;
 typedef struct Ctlr {
-int	port;
-Pcidev*	pcidev;
-Ctlr*	next;
-int	active;
-int	id;
-Lock	ilock;
-void*	alloc;
-int	rcr;
-uchar*	rbstart;
-int	rblen;
-int	ierrs;
-Lock	tlock;
-Td	td[Ntd];
-int	ntd;
-int	tdh;
-int	tdi;
-int	etxth;
-int	taligned;
-int	tunaligned;
-int	dis;
-int	fcsc;
-int	rec;
+int port;
+Pcidev* pcidev;
+Ctlr* next;
+int active;
+int id;
+Lock ilock;
+void* alloc;
+int rcr;
+uchar* rbstart;
+int rblen;
+int ierrs;
+Lock tlock;
+Td td[Ntd];
+int ntd;
+int tdh;
+int tdi;
+int etxth;
+int taligned;
+int tunaligned;
+int dis;
+int fcsc;
+int rec;
 } Ctlr;
 static Ctlr* ctlrhead;
 static Ctlr* ctlrtail;
-#define csr8r(c, r)	(inb((c)->port+(r)))
-#define csr16r(c, r)	(ins((c)->port+(r)))
-#define csr32r(c, r)	(inl((c)->port+(r)))
-#define csr8w(c, r, b)	(outb((c)->port+(r), (int)(b)))
-#define csr16w(c, r, w)	(outs((c)->port+(r), (ushort)(w)))
-#define csr32w(c, r, l)	(outl((c)->port+(r), (ulong)(l)))
+#define csr8r(c, r) (inb((c)->port+(r)))
+#define csr16r(c, r) (ins((c)->port+(r)))
+#define csr32r(c, r) (inl((c)->port+(r)))
+#define csr8w(c, r, b) (outb((c)->port+(r), (int)(b)))
+#define csr16w(c, r, w) (outs((c)->port+(r), (ushort)(w)))
+#define csr32w(c, r, l) (outl((c)->port+(r), (ulong)(l)))
 static int
 rtl8139reset(Ctlr* ctlr)
 {
@@ -405,13 +405,13 @@ return ctlr;
 return nil;
 }
 static struct {
-char*	name;
-int	id;
+char* name;
+int id;
 } rtl8139pci[] = {
-{ "rtl8139",	(0x8139<<16)|0x10EC, },
-{ "smc1211",	(0x1211<<16)|0x1113, },
-{ "dfe-538tx",	(0x1300<<16)|0x1186, },
-{ "dfe-560txd",	(0x1340<<16)|0x1186, },
+{ "rtl8139", (0x8139<<16)|0x10EC, },
+{ "smc1211", (0x1211<<16)|0x1113, },
+{ "dfe-538tx", (0x1300<<16)|0x1186, },
+{ "dfe-560txd", (0x1340<<16)|0x1186, },
 { nil },
 };
 int

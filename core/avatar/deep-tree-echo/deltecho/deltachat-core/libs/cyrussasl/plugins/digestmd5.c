@@ -10,22 +10,22 @@
 #include <ctype.h>
 #ifdef WITH_DES
 # ifdef WITH_SSL_DES
-#  include <openssl/des.h>
-#  include <openssl/opensslv.h>
-#  if (OPENSSL_VERSION_NUMBER >= 0x0090700f) && \
+# include <openssl/des.h>
+# include <openssl/opensslv.h>
+# if (OPENSSL_VERSION_NUMBER >= 0x0090700f) && \
 !defined(OPENSSL_ENABLE_OLD_DES_SUPPORT)
-#   define des_cblock DES_cblock
-#   define des_key_schedule DES_key_schedule
-#   define des_key_sched(k,ks) \
+# define des_cblock DES_cblock
+# define des_key_schedule DES_key_schedule
+# define des_key_sched(k,ks) \
 DES_key_sched((k),&(ks))
-#   define des_cbc_encrypt(i,o,l,k,iv,e) \
+# define des_cbc_encrypt(i,o,l,k,iv,e) \
 DES_cbc_encrypt((i),(o),(l),&(k),(iv),(e))
-#   define des_ede2_cbc_encrypt(i,o,l,k1,k2,iv,e) \
+# define des_ede2_cbc_encrypt(i,o,l,k1,k2,iv,e) \
 DES_ede2_cbc_encrypt((i),(o),(l),&(k1),&(k2),(iv),(e))
-#  endif
+# endif
 # else
 #ifdef HAVE_DES_H
-#  include <des.h>
+# include <des.h>
 #endif
 # endif
 #endif
@@ -44,22 +44,22 @@ extern int strcasecmp(const char *s1, const char *s2);
 #include <sasl_md5_plugin_decl.h>
 #endif
 #ifdef sun
-extern int      gethostname(char *, int);
+extern int gethostname(char *, int);
 #endif
 #define bool int
 #ifndef TRUE
-#define TRUE  (1)
+#define TRUE (1)
 #define FALSE (0)
 #endif
-#define MAX_UIN32_DIV_10    429496729
-#define MAX_UIN32_MOD_10    5
-#define DEFAULT_BUFSIZE	    0xFFFF
-#define MAX_SASL_BUFSIZE    0xFFFFFF
+#define MAX_UIN32_DIV_10 429496729
+#define MAX_UIN32_MOD_10 5
+#define DEFAULT_BUFSIZE 0xFFFF
+#define MAX_SASL_BUFSIZE 0xFFFFFF
 static const char plugin_id[] = "$Id: digestmd5.c,v 1.205 2011/05/13 19:18:37 murch Exp $";
 #define NONCE_SIZE (32)
-#define DIGEST_NOLAYER    (1)
-#define DIGEST_INTEGRITY  (2)
-#define DIGEST_PRIVACY    (4)
+#define DIGEST_NOLAYER (1)
+#define DIGEST_INTEGRITY (2)
+#define DIGEST_PRIVACY (4)
 #define HASHLEN 16
 typedef unsigned char HASH[HASHLEN + 1];
 #define HASHHEXLEN 32
@@ -70,13 +70,13 @@ const char *SEALING_CLIENT_SERVER="Digest H(A1) to client-to-server sealing key 
 const char *SEALING_SERVER_CLIENT="Digest H(A1) to server-to-client sealing key magic constant";
 const char *SIGNING_CLIENT_SERVER="Digest session key to client-to-server signing key magic constant";
 const char *SIGNING_SERVER_CLIENT="Digest session key to server-to-client signing key magic constant";
-#define HT	(9)
-#define CR	(13)
-#define LF	(10)
-#define SP	(32)
-#define DEL	(127)
-#define NEED_ESCAPING	"\"\\"
-#define REALM_CHAL_PREFIX	"Available realms:"
+#define HT (9)
+#define CR (13)
+#define LF (10)
+#define SP (32)
+#define DEL (127)
+#define NEED_ESCAPING "\"\\"
+#define REALM_CHAL_PREFIX "Available realms:"
 static char *quote (char *str);
 struct context;
 typedef int cipher_function_t(struct context *,
@@ -181,8 +181,8 @@ return val;
 }
 static void CvtHex(HASH Bin, HASHHEX Hex)
 {
-unsigned short  i;
-unsigned char   j;
+unsigned short i;
+unsigned char j;
 for (i = 0; i < HASHLEN; i++) {
 j = (Bin[i] >> 4) & 0xf;
 if (j <= 9)
@@ -210,10 +210,10 @@ HASHHEX HEntity,
 HASHHEX Response
 )
 {
-MD5_CTX         Md5Ctx;
-HASH            HA2;
-HASH            RespHash;
-HASHHEX         HA2Hex;
+MD5_CTX Md5Ctx;
+HASH HA2;
+HASH RespHash;
+HASHHEX HA2Hex;
 unsigned char ncvalue[10];
 utils->MD5Init(&Md5Ctx);
 if (pszMethod != NULL) {
@@ -266,7 +266,7 @@ const unsigned char *base,
 int len)
 {
 const unsigned char *scan, *end;
-unsigned char   cbuf;
+unsigned char cbuf;
 end = base + len;
 if (!In_ISO_8859_1) {
 utils->MD5Update(ctx, base, len);
@@ -292,9 +292,9 @@ int PasswordLen,
 bool Ignore_8859,
 HASH HA1)
 {
-bool            In_8859_1;
-bool            Any_8859_1 = FALSE;
-MD5_CTX         Md5Ctx;
+bool In_8859_1;
+bool Any_8859_1 = FALSE;
+MD5_CTX Md5Ctx;
 utils->MD5Init(&Md5Ctx);
 if (Ignore_8859 == FALSE) {
 In_8859_1 = UTF8_In_8859_1(pszUserName, strlen((char *) pszUserName));
@@ -329,9 +329,9 @@ return Any_8859_1;
 }
 static unsigned char *create_nonce(const sasl_utils_t * utils)
 {
-unsigned char  *base64buf;
-int             base64len;
-char           *ret = (char *) utils->malloc(NONCE_SIZE);
+unsigned char *base64buf;
+int base64len;
+char *ret = (char *) utils->malloc(NONCE_SIZE);
 if (ret == NULL)
 return NULL;
 utils->rand(utils->rpool, (char *) ret, NONCE_SIZE);
@@ -355,10 +355,10 @@ char *name,
 unsigned char *value,
 bool need_quotes)
 {
-size_t          namesize = strlen(name);
-size_t          valuesize = strlen((char *) value);
-unsigned        newlen;
-int             ret;
+size_t namesize = strlen(name);
+size_t valuesize = strlen((char *) value);
+unsigned newlen;
+int ret;
 newlen = (unsigned) (*curlen + 1 + namesize + 2 + valuesize + 2);
 ret = _plug_buf_alloc(utils, str, buflen, newlen);
 if(ret != SASL_OK) return ret;
@@ -473,7 +473,7 @@ return (TRUE);
 static char *unquote (char *qstr)
 {
 char *endvalue;
-int   escaped = 0;
+int escaped = 0;
 char *outptr;
 if(!qstr) return NULL;
 if (qstr[0] == '"') {
@@ -539,8 +539,8 @@ return (result);
 }
 static void get_pair(char **in, char **name, char **value)
 {
-char  *endpair;
-char  *curp = *in;
+char *endpair;
+char *curp = *in;
 *name = NULL;
 *value = NULL;
 if (curp == NULL) return;
@@ -1212,11 +1212,11 @@ HASH Secret,
 char *authorization_id,
 char **response_value)
 {
-HASHHEX         SessionKey;
-HASH            EntityHash;
-HASHHEX         HEntity;
-HASHHEX         Response;
-char           *result;
+HASHHEX SessionKey;
+HASH EntityHash;
+HASHHEX HEntity;
+HASHHEX Response;
+char *result;
 if (qop == NULL) qop = "auth";
 DigestCalcHA1FromSecret(text,
 utils,
@@ -1295,7 +1295,7 @@ return SASL_OK;
 }
 static int htoi(unsigned char *hexin, unsigned int *res)
 {
-size_t             lup, inlen;
+size_t lup, inlen;
 inlen = strlen((char *) hexin);
 *res = 0;
 for (lup = 0; lup < inlen; lup++) {
@@ -1362,13 +1362,13 @@ unsigned *serveroutlen,
 sasl_out_params_t * oparams __attribute__((unused)))
 {
 context_t *text = (context_t *) stext;
-int             result;
-char           *realm;
-unsigned char  *nonce;
-char           *charset = "utf-8";
+int result;
+char *realm;
+unsigned char *nonce;
+char *charset = "utf-8";
 char qop[1024], cipheropts[1024];
 struct digest_cipher *cipher;
-unsigned       resplen;
+unsigned resplen;
 int added_conf = 0;
 char maxbufstr[64];
 sparams->utils->log(sparams->utils->conn, SASL_LOG_DEBUG,
@@ -1518,39 +1518,39 @@ unsigned *serveroutlen,
 sasl_out_params_t * oparams)
 {
 context_t *text = (context_t *) stext;
-sasl_secret_t  *sec = NULL;
-int             result;
-char           *serverresponse = NULL;
-char           *username = NULL;
-char           *authorization_id = NULL;
-char           *realm = NULL;
-unsigned char  *nonce = NULL, *cnonce = NULL;
-unsigned int   noncecount = 0;
-char           *qop = NULL;
-char           *digesturi = NULL;
+sasl_secret_t *sec = NULL;
+int result;
+char *serverresponse = NULL;
+char *username = NULL;
+char *authorization_id = NULL;
+char *realm = NULL;
+unsigned char *nonce = NULL, *cnonce = NULL;
+unsigned int noncecount = 0;
+char *qop = NULL;
+char *digesturi = NULL;
 sasl_http_request_t rfc2831_request;
 const sasl_http_request_t *request;
-char           *response = NULL;
-unsigned long  client_maxbuf = 65536;
-int            maxbuf_count = 0;
-char           *charset = NULL;
-char           *cipher = NULL;
-unsigned int   n = 0;
-HASH           Secret;
-HASH           SecretBogus;
-bool           Try_8859_1 = FALSE;
-int            client_ignores_realm = 0;
-char           *full_username = NULL;
-char           *internal_username = NULL;
-int            canon_flags;
+char *response = NULL;
+unsigned long client_maxbuf = 65536;
+int maxbuf_count = 0;
+char *charset = NULL;
+char *cipher = NULL;
+unsigned int n = 0;
+HASH Secret;
+HASH SecretBogus;
+bool Try_8859_1 = FALSE;
+int client_ignores_realm = 0;
+char *full_username = NULL;
+char *internal_username = NULL;
+int canon_flags;
 const char *password_request[] = { SASL_AUX_PASSWORD,
 "*cmusaslsecretDIGEST-MD5",
 NULL };
 size_t len;
 struct propval auxprop_values[2];
-char           *in_start = NULL;
-char           *in = NULL;
-cipher_free_t  *old_cipher_free = NULL;
+char *in_start = NULL;
+char *in = NULL;
+cipher_free_t *old_cipher_free = NULL;
 sparams->utils->log(sparams->utils->conn, SASL_LOG_DEBUG,
 "DIGEST-MD5 server step 2");
 if (clientinlen == 0) {
@@ -1580,7 +1580,7 @@ memcpy(in, clientin, clientinlen);
 in[clientinlen] = 0;
 in_start = in;
 while (in[0] != '\0') {
-char           *name = NULL, *value = NULL;
+char *name = NULL, *value = NULL;
 get_pair(&in, &name, &value);
 if (name == NULL) {
 SETERROR(sparams->utils,
@@ -2302,8 +2302,8 @@ unsigned char *pszNonce,
 unsigned char *pszCNonce,
 HASHHEX SessionKey)
 {
-MD5_CTX         Md5Ctx;
-HASH            HA1;
+MD5_CTX Md5Ctx;
+HASH HA1;
 DigestCalcSecret(utils,
 pszUserName,
 pszRealm,
@@ -2350,11 +2350,11 @@ sasl_secret_t * passwd,
 unsigned char *authorization_id,
 char **response_value)
 {
-HASHHEX         SessionKey;
-HASH            EntityHash;
-HASHHEX         HEntity;
-HASHHEX         Response;
-char           *result;
+HASHHEX SessionKey;
+HASH EntityHash;
+HASHHEX HEntity;
+HASHHEX Response;
+char *result;
 if(!username || !cnonce || !nonce || !ncvalue || !request || !passwd) {
 PARAMERROR( utils );
 return NULL;
@@ -2431,14 +2431,14 @@ sasl_out_params_t *oparams)
 client_context_t *ctext = (client_context_t *) text;
 char *qop = NULL;
 unsigned nbits = 0;
-char  *digesturi = NULL;
-bool            IsUTF8 = FALSE;
-char           ncvalue[10];
-char           maxbufstr[64];
-char           *response = NULL;
-unsigned        resplen = 0;
+char *digesturi = NULL;
+bool IsUTF8 = FALSE;
+char ncvalue[10];
+char maxbufstr[64];
+char *response = NULL;
+unsigned resplen = 0;
 int result = SASL_OK;
-cipher_free_t  *old_cipher_free = NULL;
+cipher_free_t *old_cipher_free = NULL;
 sasl_http_request_t rfc2831_request;
 const sasl_http_request_t *request;
 params->utils->log(params->utils->conn, SASL_LOG_DEBUG,
@@ -3224,8 +3224,8 @@ unsigned *clientoutlen __attribute__((unused)),
 sasl_out_params_t *oparams)
 {
 context_t *text = (context_t *) ctext;
-char           *in = NULL;
-char           *in_start;
+char *in = NULL;
+char *in_start;
 int result = SASL_FAIL;
 params->utils->log(params->utils->conn, SASL_LOG_DEBUG,
 "DIGEST-MD5 client step 3");

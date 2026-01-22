@@ -96,7 +96,7 @@ i : int;
 d = nil;
 r = row.r;
 r.min.y = row.tag.frame.r.max.y+Border;
-if(x<r.min.x && row.ncol>0){	#steal 40% of last column by default
+if(x<r.min.x && row.ncol>0){ #steal 40% of last column by default
 d = row.col[row.ncol-1];
 x = d.r.min.x + 3*d.r.dx()/5;
 }
@@ -108,7 +108,7 @@ break;
 }
 if(row.ncol > 0){
 if(i < row.ncol)
-i++;	# new column will go after d
+i++; # new column will go after d
 r = d.r;
 if(r.dx() < 100)
 return nil;
@@ -204,9 +204,9 @@ if((i>0 && p.x<row.col[i-1].r.min.x) || (i<row.ncol-1 && p.x>c.r.max.x)){
 # shuffle
 x = c.r.min.x;
 row.close(c, FALSE);
-if(row.add(c, p.x) == nil)	# whoops!
-if(row.add(c, x) == nil)		# WHOOPS!
-if(row.add(c, -1)==nil){		# shit!
+if(row.add(c, p.x) == nil) # whoops!
+if(row.add(c, x) == nil) # WHOOPS!
+if(row.add(c, -1)==nil){ # shit!
 row.close(c, TRUE);
 return;
 }
@@ -255,11 +255,11 @@ if(row.ncol == 0){
 draw(mainwin, r, white, nil, (0, 0));
 return;
 }
-if(i == row.ncol){		# extend last column right
+if(i == row.ncol){ # extend last column right
 c = row.col[i-1];
 r.min.x = c.r.min.x;
 r.max.x = row.r.max.x;
-}else{			# extend next window left
+}else{ # extend next window left
 c = row.col[i];
 r.max.x = c.r.max.x;
 }
@@ -399,7 +399,7 @@ b.puts(sprint("e%11d %11d %11d %11d %11d %s\n", i, t.file.dumpid,
 0, 0,
 100*(w.r.min.y-c.r.min.y)/c.r.dy(),
 fontname));
-}else if(len a == 0){	# don't save unnamed windows
+}else if(len a == 0){ # don't save unnamed windows
 continue;
 }else if((!w.dirty && utils->access(a)==0) || w.isdir){
 dumped = FALSE;
@@ -553,10 +553,10 @@ case(l[0]){
 'e' =>
 if(len l < 1+5*12+1)
 raise "e";
-(line, l) = rdline(b, line);	# ctl line; ignored
+(line, l) = rdline(b, line); # ctl line; ignored
 if(l == nil)
 raise "e";
-(line, l) = rdline(b, line);	# directory
+(line, l) = rdline(b, line); # directory
 if(l == nil)
 raise "e";
 l = l[0:len l -1];
@@ -569,7 +569,7 @@ else
 r = home+"/";
 }
 nr = len r;
-(line, l) = rdline(b, line);	# command
+(line, l) = rdline(b, line); # command
 if(l == nil)
 raise "e";
 t = l[0:len l -1];
@@ -697,7 +697,7 @@ exception{
 return;
 }
 }
-allwindows(o: int, aw: ref  Dat->Allwin)
+allwindows(o: int, aw: ref Dat->Allwin)
 {
 for(i:=0; i<row.ncol; i++){
 c := row.col[i];

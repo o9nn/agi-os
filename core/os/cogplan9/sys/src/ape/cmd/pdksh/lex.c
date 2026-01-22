@@ -27,31 +27,31 @@ Lex_state *base;
 };
 typedef struct State_info State_info;
 struct State_info {
-Lex_state	*base;
-Lex_state	*end;
+Lex_state *base;
+Lex_state *end;
 };
-static void	readhere ARGS((struct ioword *iop));
-static int	getsc__ ARGS((void));
-static void	getsc_line ARGS((Source *s));
-static int	getsc_bn ARGS((void));
-static char	*get_brace_var ARGS((XString *wsp, char *wp));
-static int	arraysub ARGS((char **strp));
+static void readhere ARGS((struct ioword *iop));
+static int getsc__ ARGS((void));
+static void getsc_line ARGS((Source *s));
+static int getsc_bn ARGS((void));
+static char *get_brace_var ARGS((XString *wsp, char *wp));
+static int arraysub ARGS((char **strp));
 static const char *ungetsc ARGS((int c));
-static void	gethere ARGS((void));
+static void gethere ARGS((void));
 static Lex_state *push_state_ ARGS((State_info *si, Lex_state *old_end));
 static Lex_state *pop_state_ ARGS((State_info *si, Lex_state *old_end));
 static int backslash_skip;
 static int ignore_backslash_newline;
-#define getsc()		(*source->str != '\0' && *source->str != '\\' \
+#define getsc() (*source->str != '\0' && *source->str != '\\' \
 && !backslash_skip ? *source->str++ : getsc_bn())
-#define	getsc_()	((*source->str != '\0') ? *source->str++ : getsc__())
-#define STATE_BSIZE	32
-#define PUSH_STATE(s)	do { \
+#define getsc_() ((*source->str != '\0') ? *source->str++ : getsc__())
+#define STATE_BSIZE 32
+#define PUSH_STATE(s) do { \
 if (++statep == state_info.end) \
 statep = push_state_(&state_info, statep); \
 state = statep->ls_state = (s); \
 } while (0)
-#define POP_STATE()	do { \
+#define POP_STATE() do { \
 if (--statep == state_info.base) \
 statep = pop_state_(&state_info, statep); \
 state = statep->ls_state; \
@@ -145,7 +145,7 @@ if (c == '*' || c == '@' || c == '+' || c == '?'
 || c == '!')
 {
 c2 = getsc();
-if (c2 == '('  ) {
+if (c2 == '(' ) {
 *wp++ = OPAT;
 *wp++ = c;
 PUSH_STATE(SPATTERN);
@@ -200,9 +200,9 @@ break;
 break;
 case '$':
 c = getsc();
-if (c == '(')  {
+if (c == '(') {
 c = getsc();
-if (c == '(')  {
+if (c == '(') {
 PUSH_STATE(SASPAREN);
 statep->ls_sasparen.nparen = 2;
 statep->ls_sasparen.start =
@@ -215,7 +215,7 @@ statep->ls_scsparen.nparen = 1;
 statep->ls_scsparen.csstate = 0;
 *wp++ = COMSUB;
 }
-} else if (c == '{')  {
+} else if (c == '{') {
 *wp++ = OSUBST;
 *wp++ = '{';
 wp = get_brace_var(&ws, wp);
@@ -374,7 +374,7 @@ case SBRACE:
 if (c == '}') {
 POP_STATE();
 *wp++ = CSUBST;
-*wp++ =  '}';
+*wp++ = '}';
 } else
 goto Sbase1;
 break;
@@ -382,7 +382,7 @@ case STBRACE:
 if (c == '}') {
 POP_STATE();
 *wp++ = CSUBST;
-*wp++ =  '}';
+*wp++ = '}';
 } else if (c == '|') {
 *wp++ = SPAT;
 } else if (c == '(') {
@@ -476,7 +476,7 @@ break;
 }
 break;
 case SPATTERN:
-if (  c == ')') {
+if ( c == ')') {
 *wp++ = CPAT;
 POP_STATE();
 } else if (c == '|') {
@@ -1036,9 +1036,9 @@ arraysub(strp)
 char **strp;
 {
 XString ws;
-char	*wp;
-char	c;
-int 	depth = 1;
+char *wp;
+char c;
+int depth = 1;
 Xinit(ws, wp, 32, ATEMP);
 do {
 c = getsc();
@@ -1100,7 +1100,7 @@ push_state_(si, old_end)
 State_info *si;
 Lex_state *old_end;
 {
-Lex_state	*new = alloc(sizeof(Lex_state) * STATE_BSIZE, ATEMP);
+Lex_state *new = alloc(sizeof(Lex_state) * STATE_BSIZE, ATEMP);
 new[0].ls_info.base = old_end;
 si->base = &new[0];
 si->end = &new[STATE_BSIZE];

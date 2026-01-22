@@ -68,7 +68,7 @@ system = get_basis(res)
 # We have recovered the correct equations of motion!
 # Another visual check using the problem and the result yields
 #md plot(
-#md     plot(ddprob), plot(res), layout = (1,2)
+#md plot(ddprob), plot(res), layout = (1,2)
 #md )
 #md # ## [Copy-Pasteable Code](@id cartpole_copy_paste)
 #md #

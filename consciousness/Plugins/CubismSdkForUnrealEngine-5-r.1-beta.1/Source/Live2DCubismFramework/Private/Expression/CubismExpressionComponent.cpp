@@ -278,8 +278,8 @@ break;
 }
 if (ExpressionIndex == 0)
 {
-ParameterValue.AdditiveValue  = NewAdditiveValue;
-ParameterValue.MultiplyValue  = NewMultiplyValue;
+ParameterValue.AdditiveValue = NewAdditiveValue;
+ParameterValue.MultiplyValue = NewMultiplyValue;
 ParameterValue.OverwriteValue = NewOverwriteValue;
 }
 else

@@ -1,9 +1,7 @@
-#include	"cc.h"
-
-/* default, like old cc */
+#include "cc.h"
 int
 machcap(Node *n)
 {
-	USED(n);
-	return 0;
+USED(n);
+return 0;
 }

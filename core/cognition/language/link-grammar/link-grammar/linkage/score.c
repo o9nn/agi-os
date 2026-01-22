@@ -10,7 +10,7 @@ return length-1;
 static size_t compute_link_cost(Linkage lkg)
 {
 size_t lcost, i;
-lcost =  0;
+lcost = 0;
 for (i = 0; i < lkg->num_links; i++)
 {
 lcost += cost_for_length(lkg->link_array[i].rw - lkg->link_array[i].lw);
@@ -21,7 +21,7 @@ static int unused_word_cost(Linkage lkg)
 {
 int lcost;
 size_t i;
-lcost =  0;
+lcost = 0;
 for (i = 0; i < lkg->num_words; i++)
 lcost += (lkg->chosen_disjuncts[i] == NULL);
 return lcost;
@@ -30,7 +30,7 @@ static float compute_disjunct_cost(Linkage lkg)
 {
 size_t i;
 float lcost;
-lcost =  0.0;
+lcost = 0.0;
 for (i = 0; i < lkg->num_words; i++)
 {
 Disjunct * dj = lkg->chosen_disjuncts[i];

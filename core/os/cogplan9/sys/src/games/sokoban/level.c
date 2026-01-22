@@ -24,7 +24,7 @@ return 0;
 }
 memset(levels, 0, Maxlevels*sizeof(Level));
 while((c = Bgetc(b)) > 0) {
-switch(c)  {
+switch(c) {
 case ';':
 consumeline(b);
 break;

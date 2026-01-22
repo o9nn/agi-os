@@ -7,328 +7,328 @@
 #include "etherif.h"
 #define iallocb allocb
 #ifndef CACHELINESZ
-#define CACHELINESZ	32
+#define CACHELINESZ 32
 #endif
 enum
 {
-IOen		= 1<<0,
-MEMen		= 1<<1,
-MASen		= 1<<2,
-MemWrInv	= 1<<4,
-PErrEn		= 1<<6,
-SErrEn		= 1<<8,
+IOen = 1<<0,
+MEMen = 1<<1,
+MASen = 1<<2,
+MemWrInv = 1<<4,
+PErrEn = 1<<6,
+SErrEn = 1<<8,
 };
 enum {
-Ctrl		= 0x00000000,
-Status		= 0x00000008,
-Eec		= 0x00000010,
-Eerd		= 0x00000014,
-Ctrlext		= 0x00000018,
-Fla		= 0x0000001c,
-Mdic		= 0x00000020,
-Seresctl	= 0x00000024,
-Fcal		= 0x00000028,
-Fcah		= 0x0000002C,
-Fct		= 0x00000030,
-Kumctrlsta	= 0x00000034,
-Vet		= 0x00000038,
-Fcttv		= 0x00000170,
-Txcw		= 0x00000178,
-Rxcw		= 0x00000180,
-Ledctl		= 0x00000E00,
-Pba		= 0x00001000,
-Icr		= 0x000000C0,
-Ics		= 0x000000C8,
-Ims		= 0x000000D0,
-Imc		= 0x000000D8,
-Iam		= 0x000000E0,
-Rctl		= 0x00000100,
-Ert		= 0x00002008,
-Fcrtl		= 0x00002160,
-Fcrth		= 0x00002168,
-Psrctl		= 0x00002170,
-Rdbal		= 0x00002800,
-Rdbah		= 0x00002804,
-Rdlen		= 0x00002808,
-Rdh		= 0x00002810,
-Rdt		= 0x00002818,
-Rdtr		= 0x00002820,
-Rxdctl		= 0x00002828,
-Radv		= 0x0000282C,
-Rdbal1		= 0x00002900,
-Rdbah1		= 0x00002804,
-Rdlen1		= 0x00002908,
-Rdh1		= 0x00002910,
-Rdt1		= 0x00002918,
-Rxdctl1		= 0x00002928,
-Rsrpd		= 0x00002c00,
-Raid		= 0x00002c08,
-Cpuvec		= 0x00002c10,
-Rxcsum		= 0x00005000,
-Rfctl		= 0x00005008,
-Mta		= 0x00005200,
-Ral		= 0x00005400,
-Rah		= 0x00005404,
-Vfta		= 0x00005600,
-Mrqc		= 0x00005818,
-Rssim		= 0x00005864,
-Rssir		= 0x00005868,
-Reta		= 0x00005c00,
-Rssrk		= 0x00005c80,
-Tctl		= 0x00000400,
-Tipg		= 0x00000410,
-Tdbal		= 0x00003800,
-Tdbah		= 0x00003804,
-Tdlen		= 0x00003808,
-Tdh		= 0x00003810,
-Tdt		= 0x00003818,
-Tidv		= 0x00003820,
-Txdctl		= 0x00003828,
-Tadv		= 0x0000382C,
-Tarc0		= 0x00003840,
-Tdbal1		= 0x00003900,
-Tdbah1		= 0x00003904,
-Tdlen1		= 0x00003908,
-Tdh1		= 0x00003910,
-Tdt1		= 0x00003918,
-Txdctl1		= 0x00003928,
-Tarc1		= 0x00003940,
-Statistics	= 0x00004000,
-Gorcl		= 0x88/4,
-Gotcl		= 0x90/4,
-Torl		= 0xC0/4,
-Totl		= 0xC8/4,
-Nstatistics	= 64,
+Ctrl = 0x00000000,
+Status = 0x00000008,
+Eec = 0x00000010,
+Eerd = 0x00000014,
+Ctrlext = 0x00000018,
+Fla = 0x0000001c,
+Mdic = 0x00000020,
+Seresctl = 0x00000024,
+Fcal = 0x00000028,
+Fcah = 0x0000002C,
+Fct = 0x00000030,
+Kumctrlsta = 0x00000034,
+Vet = 0x00000038,
+Fcttv = 0x00000170,
+Txcw = 0x00000178,
+Rxcw = 0x00000180,
+Ledctl = 0x00000E00,
+Pba = 0x00001000,
+Icr = 0x000000C0,
+Ics = 0x000000C8,
+Ims = 0x000000D0,
+Imc = 0x000000D8,
+Iam = 0x000000E0,
+Rctl = 0x00000100,
+Ert = 0x00002008,
+Fcrtl = 0x00002160,
+Fcrth = 0x00002168,
+Psrctl = 0x00002170,
+Rdbal = 0x00002800,
+Rdbah = 0x00002804,
+Rdlen = 0x00002808,
+Rdh = 0x00002810,
+Rdt = 0x00002818,
+Rdtr = 0x00002820,
+Rxdctl = 0x00002828,
+Radv = 0x0000282C,
+Rdbal1 = 0x00002900,
+Rdbah1 = 0x00002804,
+Rdlen1 = 0x00002908,
+Rdh1 = 0x00002910,
+Rdt1 = 0x00002918,
+Rxdctl1 = 0x00002928,
+Rsrpd = 0x00002c00,
+Raid = 0x00002c08,
+Cpuvec = 0x00002c10,
+Rxcsum = 0x00005000,
+Rfctl = 0x00005008,
+Mta = 0x00005200,
+Ral = 0x00005400,
+Rah = 0x00005404,
+Vfta = 0x00005600,
+Mrqc = 0x00005818,
+Rssim = 0x00005864,
+Rssir = 0x00005868,
+Reta = 0x00005c00,
+Rssrk = 0x00005c80,
+Tctl = 0x00000400,
+Tipg = 0x00000410,
+Tdbal = 0x00003800,
+Tdbah = 0x00003804,
+Tdlen = 0x00003808,
+Tdh = 0x00003810,
+Tdt = 0x00003818,
+Tidv = 0x00003820,
+Txdctl = 0x00003828,
+Tadv = 0x0000382C,
+Tarc0 = 0x00003840,
+Tdbal1 = 0x00003900,
+Tdbah1 = 0x00003904,
+Tdlen1 = 0x00003908,
+Tdh1 = 0x00003910,
+Tdt1 = 0x00003918,
+Txdctl1 = 0x00003928,
+Tarc1 = 0x00003940,
+Statistics = 0x00004000,
+Gorcl = 0x88/4,
+Gotcl = 0x90/4,
+Torl = 0xC0/4,
+Totl = 0xC8/4,
+Nstatistics = 64,
 };
 enum {
-GIOmd		= 1<<2,
-Lrst		= 1<<3,
-Slu		= 1<<6,
-SspeedMASK	= 3<<8,
-SspeedSHIFT	= 8,
-Sspeed10	= 0x00000000,
-Sspeed100	= 0x00000100,
-Sspeed1000	= 0x00000200,
-Frcspd		= 1<<11,
-Frcdplx		= 1<<12,
-SwdpinsloMASK	= 0x003C0000,
-SwdpinsloSHIFT	= 18,
-SwdpioloMASK	= 0x03C00000,
-SwdpioloSHIFT	= 22,
-Devrst		= 1<<26,
-Rfce		= 1<<27,
-Tfce		= 1<<28,
-Vme		= 1<<30,
-Phy_rst		= 1<<31,
+GIOmd = 1<<2,
+Lrst = 1<<3,
+Slu = 1<<6,
+SspeedMASK = 3<<8,
+SspeedSHIFT = 8,
+Sspeed10 = 0x00000000,
+Sspeed100 = 0x00000100,
+Sspeed1000 = 0x00000200,
+Frcspd = 1<<11,
+Frcdplx = 1<<12,
+SwdpinsloMASK = 0x003C0000,
+SwdpinsloSHIFT = 18,
+SwdpioloMASK = 0x03C00000,
+SwdpioloSHIFT = 22,
+Devrst = 1<<26,
+Rfce = 1<<27,
+Tfce = 1<<28,
+Vme = 1<<30,
+Phy_rst = 1<<31,
 };
 enum {
-Lu		= 1<<1,
-Lanid		= 3<<2,
-Txoff		= 1<<4,
-Tbimode		= 1<<5,
-SpeedMASK	= 0x000000C0,
-Speed10		= 0x00000000,
-Speed100	= 0x00000040,
-Speed1000	= 0x00000080,
-Phyra		= 1<<10,
-GIOme		= 1<<19,
+Lu = 1<<1,
+Lanid = 3<<2,
+Txoff = 1<<4,
+Tbimode = 1<<5,
+SpeedMASK = 0x000000C0,
+Speed10 = 0x00000000,
+Speed100 = 0x00000040,
+Speed1000 = 0x00000080,
+Phyra = 1<<10,
+GIOme = 1<<19,
 };
 enum {
-Fd		= 0x00000001,
-AsdvMASK	= 0x00000300,
-Asdv10		= 0x00000000,
-Asdv100		= 0x00000100,
-Asdv1000	= 0x00000200,
+Fd = 0x00000001,
+AsdvMASK = 0x00000300,
+Asdv10 = 0x00000000,
+Asdv100 = 0x00000100,
+Asdv1000 = 0x00000200,
 };
 enum {
-Sk		= 1<<0,
-Cs		= 1<<1,
-Di		= 1<<2,
-Do		= 1<<3,
-Areq		= 1<<6,
-Agnt		= 1<<7,
+Sk = 1<<0,
+Cs = 1<<1,
+Di = 1<<2,
+Do = 1<<3,
+Areq = 1<<6,
+Agnt = 1<<7,
 };
 enum {
-ee_start	= 1<<0,
-ee_done		= 1<<1,
-ee_addr		= 0xfff8<<2,
-ee_data		= 0xffff<<16,
+ee_start = 1<<0,
+ee_done = 1<<1,
+ee_addr = 0xfff8<<2,
+ee_data = 0xffff<<16,
 };
 enum {
-Asdchk		= 1<<12,
-Eerst		= 1<<13,
-Spdbyps		= 1<<15,
+Asdchk = 1<<12,
+Eerst = 1<<13,
+Spdbyps = 1<<15,
 };
 enum {
-Ea		= 0x00,
-Cf		= 0x03,
-Icw1		= 0x0A,
-Sid		= 0x0B,
-Svid		= 0x0C,
-Did		= 0x0D,
-Vid		= 0x0E,
-Icw2		= 0x0F,
+Ea = 0x00,
+Cf = 0x03,
+Icw1 = 0x0A,
+Sid = 0x0B,
+Svid = 0x0C,
+Did = 0x0D,
+Vid = 0x0E,
+Icw2 = 0x0F,
 };
 enum {
-MDIdMASK	= 0x0000FFFF,
-MDIdSHIFT	= 0,
-MDIrMASK	= 0x001F0000,
-MDIrSHIFT	= 16,
-MDIpMASK	= 0x03E00000,
-MDIpSHIFT	= 21,
-MDIwop		= 0x04000000,
-MDIrop		= 0x08000000,
-MDIready	= 0x10000000,
-MDIie		= 0x20000000,
-MDIe		= 0x40000000,
+MDIdMASK = 0x0000FFFF,
+MDIdSHIFT = 0,
+MDIrMASK = 0x001F0000,
+MDIrSHIFT = 16,
+MDIpMASK = 0x03E00000,
+MDIpSHIFT = 21,
+MDIwop = 0x04000000,
+MDIrop = 0x08000000,
+MDIready = 0x10000000,
+MDIie = 0x20000000,
+MDIe = 0x40000000,
 };
 enum {
-Txdw		= 0x00000001,
-Txqe		= 0x00000002,
-Lsc		= 0x00000004,
-Rxseq		= 0x00000008,
-Rxdmt0		= 0x00000010,
-Rxo		= 0x00000040,
-Rxt0		= 0x00000080,
-Mdac		= 0x00000200,
-Rxcfg		= 0x00000400,
-Gpi0		= 0x00000800,
-Gpi1		= 0x00001000,
-Gpi2		= 0x00002000,
-Gpi3		= 0x00004000,
-Ack		= 0x00020000,
+Txdw = 0x00000001,
+Txqe = 0x00000002,
+Lsc = 0x00000004,
+Rxseq = 0x00000008,
+Rxdmt0 = 0x00000010,
+Rxo = 0x00000040,
+Rxt0 = 0x00000080,
+Mdac = 0x00000200,
+Rxcfg = 0x00000400,
+Gpi0 = 0x00000800,
+Gpi1 = 0x00001000,
+Gpi2 = 0x00002000,
+Gpi3 = 0x00004000,
+Ack = 0x00020000,
 };
 enum {
-TxcwFd		= 0x00000020,
-TxcwHd		= 0x00000040,
-TxcwPauseMASK	= 0x00000180,
-TxcwPauseSHIFT	= 7,
-TxcwPs		= 1<<TxcwPauseSHIFT,
-TxcwAs		= 2<<TxcwPauseSHIFT,
-TxcwRfiMASK	= 0x00003000,
-TxcwRfiSHIFT	= 12,
-TxcwNpr		= 0x00008000,
-TxcwConfig	= 0x40000000,
-TxcwAne		= 0x80000000,
+TxcwFd = 0x00000020,
+TxcwHd = 0x00000040,
+TxcwPauseMASK = 0x00000180,
+TxcwPauseSHIFT = 7,
+TxcwPs = 1<<TxcwPauseSHIFT,
+TxcwAs = 2<<TxcwPauseSHIFT,
+TxcwRfiMASK = 0x00003000,
+TxcwRfiSHIFT = 12,
+TxcwNpr = 0x00008000,
+TxcwConfig = 0x40000000,
+TxcwAne = 0x80000000,
 };
 enum {
-Rrst		= 0x00000001,
-Ren		= 0x00000002,
-Sbp		= 0x00000004,
-Upe		= 0x00000008,
-Mpe		= 0x00000010,
-Lpe		= 0x00000020,
-LbmMASK		= 0x000000C0,
-LbmOFF		= 0x00000000,
-LbmTBI		= 0x00000040,
-LbmMII		= 0x00000080,
-LbmXCVR		= 0x000000C0,
-RdtmsMASK	= 0x00000300,
-RdtmsHALF	= 0x00000000,
-RdtmsQUARTER	= 0x00000100,
-RdtmsEIGHTH	= 0x00000200,
-MoMASK		= 0x00003000,
-Bam		= 0x00008000,
-BsizeMASK	= 0x00030000,
-Bsize2048	= 0x00000000,
-Bsize1024	= 0x00010000,
-Bsize512	= 0x00020000,
-Bsize256	= 0x00030000,
-Vfe		= 0x00040000,
-Cfien		= 0x00080000,
-Cfi		= 0x00100000,
-Dpf		= 0x00400000,
-Pmcf		= 0x00800000,
-Bsex		= 0x02000000,
-Secrc		= 0x04000000,
+Rrst = 0x00000001,
+Ren = 0x00000002,
+Sbp = 0x00000004,
+Upe = 0x00000008,
+Mpe = 0x00000010,
+Lpe = 0x00000020,
+LbmMASK = 0x000000C0,
+LbmOFF = 0x00000000,
+LbmTBI = 0x00000040,
+LbmMII = 0x00000080,
+LbmXCVR = 0x000000C0,
+RdtmsMASK = 0x00000300,
+RdtmsHALF = 0x00000000,
+RdtmsQUARTER = 0x00000100,
+RdtmsEIGHTH = 0x00000200,
+MoMASK = 0x00003000,
+Bam = 0x00008000,
+BsizeMASK = 0x00030000,
+Bsize2048 = 0x00000000,
+Bsize1024 = 0x00010000,
+Bsize512 = 0x00020000,
+Bsize256 = 0x00030000,
+Vfe = 0x00040000,
+Cfien = 0x00080000,
+Cfi = 0x00100000,
+Dpf = 0x00400000,
+Pmcf = 0x00800000,
+Bsex = 0x02000000,
+Secrc = 0x04000000,
 };
 enum {
-Trst		= 0x00000001,
-Ten		= 0x00000002,
-Psp		= 0x00000008,
-Mulr		= 0x10000000,
-CtMASK		= 0x00000FF0,
-CtSHIFT		= 4,
-ColdMASK	= 0x003FF000,
-ColdSHIFT	= 12,
-Swxoff		= 0x00400000,
-Pbe		= 0x00800000,
-Rtlc		= 0x01000000,
-Nrtu		= 0x02000000,
+Trst = 0x00000001,
+Ten = 0x00000002,
+Psp = 0x00000008,
+Mulr = 0x10000000,
+CtMASK = 0x00000FF0,
+CtSHIFT = 4,
+ColdMASK = 0x003FF000,
+ColdSHIFT = 12,
+Swxoff = 0x00400000,
+Pbe = 0x00800000,
+Rtlc = 0x01000000,
+Nrtu = 0x02000000,
 };
 enum {
-PthreshMASK	= 0x0000003F,
-PthreshSHIFT	= 0,
-HthreshMASK	= 0x00003F00,
-HthreshSHIFT	= 8,
-WthreshMASK	= 0x003F0000,
-WthreshSHIFT	= 16,
-Gran		= 0x01000000,
+PthreshMASK = 0x0000003F,
+PthreshSHIFT = 0,
+HthreshMASK = 0x00003F00,
+HthreshSHIFT = 8,
+WthreshMASK = 0x003F0000,
+WthreshSHIFT = 16,
+Gran = 0x01000000,
 };
 enum {
-PcssMASK	= 0x000000FF,
-PcssSHIFT	= 0,
-Ipofl		= 0x00000100,
-Tuofl		= 0x00000200,
+PcssMASK = 0x000000FF,
+PcssSHIFT = 0,
+Ipofl = 0x00000100,
+Tuofl = 0x00000200,
 };
 typedef struct Rdesc {
-uint	addr[2];
-ushort	length;
-ushort	checksum;
-uchar	status;
-uchar	errors;
-ushort	special;
+uint addr[2];
+ushort length;
+ushort checksum;
+uchar status;
+uchar errors;
+ushort special;
 } Rdesc;
 enum {
-Rdd		= 0x01,
-Reop		= 0x02,
-Ixsm		= 0x04,
-Vp		= 0x08,
-Tcpcs		= 0x20,
-Ipcs		= 0x40,
-Pif		= 0x80,
+Rdd = 0x01,
+Reop = 0x02,
+Ixsm = 0x04,
+Vp = 0x08,
+Tcpcs = 0x20,
+Ipcs = 0x40,
+Pif = 0x80,
 };
 enum {
-Ce		= 0x01,
-Se		= 0x02,
-Seq		= 0x04,
-Cxe		= 0x10,
-Tcpe		= 0x20,
-Ipe		= 0x40,
-Rxe		= 0x80,
+Ce = 0x01,
+Se = 0x02,
+Seq = 0x04,
+Cxe = 0x10,
+Tcpe = 0x20,
+Ipe = 0x40,
+Rxe = 0x80,
 };
 typedef struct Tdesc {
-uint	addr[2];
-uint	control;
-uint	status;
+uint addr[2];
+uint control;
+uint status;
 } Tdesc;
 enum {
-LenMASK		= 0x000FFFFF,
-LenSHIFT	= 0,
-DtypeCD		= 0x00000000,
-DtypeDD		= 0x00100000,
-PtypeTCP	= 0x01000000,
-Teop		= 0x01000000,
-PtypeIP		= 0x02000000,
-Ifcs		= 0x02000000,
-Tse		= 0x04000000,
-Rs		= 0x08000000,
-Rps		= 0x10000000,
-Dext		= 0x20000000,
-Vle		= 0x40000000,
-Ide		= 0x80000000,
+LenMASK = 0x000FFFFF,
+LenSHIFT = 0,
+DtypeCD = 0x00000000,
+DtypeDD = 0x00100000,
+PtypeTCP = 0x01000000,
+Teop = 0x01000000,
+PtypeIP = 0x02000000,
+Ifcs = 0x02000000,
+Tse = 0x04000000,
+Rs = 0x08000000,
+Rps = 0x10000000,
+Dext = 0x20000000,
+Vle = 0x40000000,
+Ide = 0x80000000,
 };
 enum {
-Tdd		= 0x00000001,
-Ec		= 0x00000002,
-Lc		= 0x00000004,
-Tu		= 0x00000008,
-CssMASK		= 0x0000FF00,
-CssSHIFT	= 8,
+Tdd = 0x00000001,
+Ec = 0x00000002,
+Lc = 0x00000004,
+Tu = 0x00000008,
+CssMASK = 0x0000FF00,
+CssSHIFT = 8,
 };
 enum {
-Nrdesc		= 128,
-Ntdesc		= 128,
+Nrdesc = 128,
+Ntdesc = 128,
 };
 enum {
 i82563,
@@ -340,41 +340,41 @@ static char *tname[] = {
 "i82571",
 "i82573",
 };
-#define Type	tname[ctlr->type]
+#define Type tname[ctlr->type]
 typedef struct Ctlr Ctlr;
 struct Ctlr {
-int	port;
-Pcidev	*pcidev;
-Ctlr	*next;
-int	active;
-int	cls;
-ushort	eeprom[0x40];
-uchar	ra[Eaddrlen];
-int	type;
-int*	nic;
-Lock	imlock;
-int	im;
-Lock	slock;
-uint	statistics[Nstatistics];
-Rdesc	*rdba;
-Block	**rb;
-int	rdh;
-int	rdt;
-Tdesc	*tdba;
-Lock	tdlock;
-Block	**tb;
-int	tdh;
-int	tdt;
-int	txcw;
-int	fcrtl;
-int	fcrth;
-Block	*bqhead;
-Block	*bqtail;
+int port;
+Pcidev *pcidev;
+Ctlr *next;
+int active;
+int cls;
+ushort eeprom[0x40];
+uchar ra[Eaddrlen];
+int type;
+int* nic;
+Lock imlock;
+int im;
+Lock slock;
+uint statistics[Nstatistics];
+Rdesc *rdba;
+Block **rb;
+int rdh;
+int rdt;
+Tdesc *tdba;
+Lock tdlock;
+Block **tb;
+int tdh;
+int tdt;
+int txcw;
+int fcrtl;
+int fcrth;
+Block *bqhead;
+Block *bqtail;
 };
-static Ctlr	*ctlrhead;
-static Ctlr	*ctlrtail;
-#define csr32r(c, r)	(*((c)->nic+((r)/4)))
-#define csr32w(c, r, v)	(*((c)->nic+((r)/4)) = (v))
+static Ctlr *ctlrhead;
+static Ctlr *ctlrtail;
+#define csr32r(c, r) (*((c)->nic+((r)/4)))
+#define csr32w(c, r, v) (*((c)->nic+((r)/4)) = (v))
 static void
 i82563im(Ctlr* ctlr, int im)
 {
@@ -412,7 +412,7 @@ ctlr->bqtail = nil;
 tdesc = &ctlr->tdba[tdt];
 tdesc->addr[0] = PCIWADDR(bp->rp);
 tdesc->addr[1] = 0;
-tdesc->control =  Rs | Ifcs | Teop | BLEN(bp);
+tdesc->control = Rs | Ifcs | Teop | BLEN(bp);
 ctlr->tb[tdt] = bp;
 }
 ctlr->tdt = tdt;
@@ -669,7 +669,7 @@ print("%s: bad EEPROM checksum - 0x%4.4ux\n", Type, r);
 return -1;
 }
 for(i = Ea; i < Eaddrlen/2; i++){
-ctlr->ra[2*i]   = ctlr->eeprom[i];
+ctlr->ra[2*i] = ctlr->eeprom[i];
 ctlr->ra[2*i+1] = ctlr->eeprom[i]>>8;
 }
 r = (csr32r(ctlr, Status) & Lanid) >> 2;
@@ -686,7 +686,7 @@ for(i = 0; i < 128; i++)
 csr32w(ctlr, Mta+i*4, 0);
 csr32w(ctlr, Fcal, 0x00C28001);
 csr32w(ctlr, Fcah, 0x00000100);
-csr32w(ctlr, Fct,  0x00008808);
+csr32w(ctlr, Fct, 0x00008808);
 csr32w(ctlr, Fcttv, 0x00000100);
 csr32w(ctlr, Fcrtl, ctlr->fcrtl);
 csr32w(ctlr, Fcrth, ctlr->fcrth);

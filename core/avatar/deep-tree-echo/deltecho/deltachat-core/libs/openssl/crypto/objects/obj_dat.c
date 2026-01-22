@@ -22,10 +22,10 @@ static const unsigned int obj_objs[1];
 DECLARE_OBJ_BSEARCH_CMP_FN(const ASN1_OBJECT *, unsigned int, sn);
 DECLARE_OBJ_BSEARCH_CMP_FN(const ASN1_OBJECT *, unsigned int, ln);
 DECLARE_OBJ_BSEARCH_CMP_FN(const ASN1_OBJECT *, unsigned int, obj);
-#define ADDED_DATA      0
-#define ADDED_SNAME     1
-#define ADDED_LNAME     2
-#define ADDED_NID       3
+#define ADDED_DATA 0
+#define ADDED_SNAME 1
+#define ADDED_LNAME 2
+#define ADDED_NID 3
 typedef struct added_obj_st {
 int type;
 ASN1_OBJECT *obj;

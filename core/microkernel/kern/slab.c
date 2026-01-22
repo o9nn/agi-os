@@ -20,12 +20,12 @@
 #include <mach_debug/slab_info.h>
 #endif
 #define P2ALIGNED(x, a) (((x) & ((a) - 1)) == 0)
-#define ISP2(x)         P2ALIGNED(x, x)
-#define P2ALIGN(x, a)   ((x) & -(a))
-#define P2ROUND(x, a)   (-(-(x) & -(a)))
-#define P2END(x, a)     (-(~(x) & -(a)))
-#define likely(expr)    __builtin_expect(!!(expr), 1)
-#define unlikely(expr)  __builtin_expect(!!(expr), 0)
+#define ISP2(x) P2ALIGNED(x, x)
+#define P2ALIGN(x, a) ((x) & -(a))
+#define P2ROUND(x, a) (-(-(x) & -(a)))
+#define P2END(x, a) (-(~(x) & -(a)))
+#define likely(expr) __builtin_expect(!!(expr), 1)
+#define unlikely(expr) __builtin_expect(!!(expr), 0)
 #define KMEM_ALIGN_MIN 8
 #define KMEM_BUF_SIZE_THRESHOLD (PAGE_SIZE / 8)
 #define KMEM_GC_INTERVAL (5 * hz)
@@ -48,47 +48,47 @@
 #define KALLOC_NR_CACHES 13
 #ifdef __LP64__
 #if _HOST_BIG_ENDIAN
-#define KMEM_BUFTAG_ALLOC   0xa110c8eda110c8edUL
-#define KMEM_BUFTAG_FREE    0xf4eeb10cf4eeb10cUL
+#define KMEM_BUFTAG_ALLOC 0xa110c8eda110c8edUL
+#define KMEM_BUFTAG_FREE 0xf4eeb10cf4eeb10cUL
 #else
-#define KMEM_BUFTAG_ALLOC   0xedc810a1edc810a1UL
-#define KMEM_BUFTAG_FREE    0x0cb1eef40cb1eef4UL
+#define KMEM_BUFTAG_ALLOC 0xedc810a1edc810a1UL
+#define KMEM_BUFTAG_FREE 0x0cb1eef40cb1eef4UL
 #endif
 #else
 #if _HOST_BIG_ENDIAN
-#define KMEM_BUFTAG_ALLOC   0xa110c8edUL
-#define KMEM_BUFTAG_FREE    0xf4eeb10cUL
+#define KMEM_BUFTAG_ALLOC 0xa110c8edUL
+#define KMEM_BUFTAG_FREE 0xf4eeb10cUL
 #else
-#define KMEM_BUFTAG_ALLOC   0xedc810a1UL
-#define KMEM_BUFTAG_FREE    0x0cb1eef4UL
+#define KMEM_BUFTAG_ALLOC 0xedc810a1UL
+#define KMEM_BUFTAG_FREE 0x0cb1eef4UL
 #endif
 #endif
 #if _HOST_BIG_ENDIAN
-#define KMEM_FREE_PATTERN   0xdeadbeefdeadbeefULL
+#define KMEM_FREE_PATTERN 0xdeadbeefdeadbeefULL
 #define KMEM_UNINIT_PATTERN 0xbaddcafebaddcafeULL
 #else
-#define KMEM_FREE_PATTERN   0xefbeaddeefbeaddeULL
+#define KMEM_FREE_PATTERN 0xefbeaddeefbeaddeULL
 #define KMEM_UNINIT_PATTERN 0xfecaddbafecaddbaULL
 #endif
-#define KMEM_CF_SLAB_EXTERNAL   0x01
-#define KMEM_CF_PHYSMEM         0x02
-#define KMEM_CF_DIRECT          0x04
-#define KMEM_CF_USE_TREE        0x08
-#define KMEM_CF_USE_PAGE        0x10
-#define KMEM_CF_VERIFY          0x20
+#define KMEM_CF_SLAB_EXTERNAL 0x01
+#define KMEM_CF_PHYSMEM 0x02
+#define KMEM_CF_DIRECT 0x04
+#define KMEM_CF_USE_TREE 0x08
+#define KMEM_CF_USE_PAGE 0x10
+#define KMEM_CF_VERIFY 0x20
 #define KMEM_AV_NOCONSTRUCT 0
-#define KMEM_AV_CONSTRUCT   1
-#define KMEM_ERR_INVALID    0
+#define KMEM_AV_CONSTRUCT 1
+#define KMEM_ERR_INVALID 0
 #define KMEM_ERR_DOUBLEFREE 1
-#define KMEM_ERR_BUFTAG     2
-#define KMEM_ERR_MODIFIED   3
-#define KMEM_ERR_REDZONE    4
+#define KMEM_ERR_BUFTAG 2
+#define KMEM_ERR_MODIFIED 3
+#define KMEM_ERR_REDZONE 4
 #if SLAB_USE_CPU_POOLS
 static struct kmem_cpu_pool_type kmem_cpu_pool_types[] = {
-{  32768,   1, 0,           NULL },
-{   4096,   8, CPU_L1_SIZE, NULL },
-{    256,  64, CPU_L1_SIZE, NULL },
-{      0, 128, CPU_L1_SIZE, NULL }
+{ 32768, 1, 0, NULL },
+{ 4096, 8, CPU_L1_SIZE, NULL },
+{ 256, 64, CPU_L1_SIZE, NULL },
+{ 0, 128, CPU_L1_SIZE, NULL }
 };
 static struct kmem_cache kmem_cpu_array_caches[ARRAY_SIZE(kmem_cpu_pool_types)];
 #endif
@@ -98,11 +98,11 @@ static struct list kmem_cache_list;
 static unsigned int kmem_nr_caches;
 static simple_lock_data_t __attribute__((used)) kmem_cache_list_lock;
 static unsigned long kmem_gc_last_tick;
-#define kmem_error(format, ...)                         \
-panic("mem: error: %s(): " format "\n", __func__,   \
+#define kmem_error(format, ...) \
+panic("mem: error: %s(): " format "\n", __func__, \
 ## __VA_ARGS__)
-#define kmem_warn(format, ...)                              \
-printf("mem: warning: %s(): " format "\n", __func__,    \
+#define kmem_warn(format, ...) \
+printf("mem: warning: %s(): " format "\n", __func__, \
 ## __VA_ARGS__)
 #define kmem_print(format, ...) \
 printf(format "\n", ## __VA_ARGS__)

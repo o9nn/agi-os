@@ -9,40 +9,40 @@
 #include <utf.h>
 #include "awk.h"
 #include "y.tab.h"
-#define tempfree(x)	if (istemp(x)) tfree(x); else
+#define tempfree(x) if (istemp(x)) tfree(x); else
 #ifdef _NFILE
 #ifndef FOPEN_MAX
 #define FOPEN_MAX _NFILE
 #endif
 #endif
-#ifndef	FOPEN_MAX
-#define	FOPEN_MAX	40
+#ifndef FOPEN_MAX
+#define FOPEN_MAX 40
 #endif
 #ifndef RAND_MAX
-#define RAND_MAX	32767
+#define RAND_MAX 32767
 #endif
 jmp_buf env;
-extern	int	pairstack[];
-Node	*winner = NULL;
-Cell	*tmps;
-static Cell	truecell	={ OBOOL, BTRUE, 0, 0, 1.0, NUM };
-Cell	*True	= &truecell;
-static Cell	falsecell	={ OBOOL, BFALSE, 0, 0, 0.0, NUM };
-Cell	*False	= &falsecell;
-static Cell	breakcell	={ OJUMP, JBREAK, 0, 0, 0.0, NUM };
-Cell	*jbreak	= &breakcell;
-static Cell	contcell	={ OJUMP, JCONT, 0, 0, 0.0, NUM };
-Cell	*jcont	= &contcell;
-static Cell	nextcell	={ OJUMP, JNEXT, 0, 0, 0.0, NUM };
-Cell	*jnext	= &nextcell;
-static Cell	nextfilecell	={ OJUMP, JNEXTFILE, 0, 0, 0.0, NUM };
-Cell	*jnextfile	= &nextfilecell;
-static Cell	exitcell	={ OJUMP, JEXIT, 0, 0, 0.0, NUM };
-Cell	*jexit	= &exitcell;
-static Cell	retcell		={ OJUMP, JRET, 0, 0, 0.0, NUM };
-Cell	*jret	= &retcell;
-static Cell	tempcell	={ OCELL, CTEMP, 0, "", 0.0, NUM|STR|DONTFREE };
-Node	*curnode = NULL;
+extern int pairstack[];
+Node *winner = NULL;
+Cell *tmps;
+static Cell truecell ={ OBOOL, BTRUE, 0, 0, 1.0, NUM };
+Cell *True = &truecell;
+static Cell falsecell ={ OBOOL, BFALSE, 0, 0, 0.0, NUM };
+Cell *False = &falsecell;
+static Cell breakcell ={ OJUMP, JBREAK, 0, 0, 0.0, NUM };
+Cell *jbreak = &breakcell;
+static Cell contcell ={ OJUMP, JCONT, 0, 0, 0.0, NUM };
+Cell *jcont = &contcell;
+static Cell nextcell ={ OJUMP, JNEXT, 0, 0, 0.0, NUM };
+Cell *jnext = &nextcell;
+static Cell nextfilecell ={ OJUMP, JNEXTFILE, 0, 0, 0.0, NUM };
+Cell *jnextfile = &nextfilecell;
+static Cell exitcell ={ OJUMP, JEXIT, 0, 0, 0.0, NUM };
+Cell *jexit = &exitcell;
+static Cell retcell ={ OJUMP, JRET, 0, 0, 0.0, NUM };
+Cell *jret = &retcell;
+static Cell tempcell ={ OCELL, CTEMP, 0, "", 0.0, NUM|STR|DONTFREE };
+Node *curnode = NULL;
 int adjbuf(char **pbuf, int *psiz, int minlen, int quantum, char **pbptr,
 char *whatrtn)
 {
@@ -146,9 +146,9 @@ Cell *fcncell;
 Cell **args;
 Cell *retval;
 };
-#define	NARGS	50
+#define NARGS 50
 struct Frame *frame = NULL;
-int	nframe = 0;
+int nframe = 0;
 struct Frame *fp = NULL;
 Cell *call(Node **a, int n)
 {
@@ -551,17 +551,17 @@ i = strcmp(getsval(x), getsval(y));
 tempfree(x);
 tempfree(y);
 switch (n) {
-case LT:	if (i<0) return(True);
+case LT: if (i<0) return(True);
 else return(False);
-case LE:	if (i<=0) return(True);
+case LE: if (i<=0) return(True);
 else return(False);
-case NE:	if (i!=0) return(True);
+case NE: if (i!=0) return(True);
 else return(False);
-case EQ:	if (i == 0) return(True);
+case EQ: if (i == 0) return(True);
 else return(False);
-case GE:	if (i>=0) return(True);
+case GE: if (i>=0) return(True);
 else return(False);
-case GT:	if (i>0) return(True);
+case GT: if (i>0) return(True);
 else return(False);
 default:
 FATAL("unknown relational operator %d", n);
@@ -580,7 +580,7 @@ a->cnext = tmps;
 tmps = a;
 }
 Cell *gettemp(void)
-{	int i;
+{ int i;
 Cell *x;
 if (!tmps) {
 tmps = (Cell *) calloc(100, sizeof(Cell));
@@ -682,7 +682,7 @@ tempfree(y);
 setfval(z, v);
 return(z);
 }
-#define	MAXNUMSIZE	50
+#define MAXNUMSIZE 50
 int format(char **pbuf, int *pbufsize, char *s, Node *a)
 {
 char *fmt;
@@ -766,7 +766,7 @@ if (fmtwd > n)
 n = fmtwd;
 adjbuf(&buf, &bufsize, 1+n+p-buf, recsize, &p, "format");
 switch (flag) {
-case 0:	sprintf(p, "%s", fmt);
+case 0: sprintf(p, "%s", fmt);
 t = getsval(x);
 n = strlen(t);
 if (fmtwd > n)
@@ -775,9 +775,9 @@ adjbuf(&buf, &bufsize, 1+strlen(p)+n+p-buf, recsize, &p, "format");
 p += strlen(p);
 sprintf(p, "%s", t);
 break;
-case 1:	sprintf(p, fmt, getfval(x)); break;
-case 2:	sprintf(p, fmt, (long) getfval(x)); break;
-case 3:	sprintf(p, fmt, (int) getfval(x)); break;
+case 1: sprintf(p, fmt, getfval(x)); break;
+case 2: sprintf(p, fmt, (long) getfval(x)); break;
+case 3: sprintf(p, fmt, (int) getfval(x)); break;
 case 4:
 t = getsval(x);
 n = strlen(t);
@@ -1446,11 +1446,11 @@ tempfree(x);
 return fp;
 }
 struct files {
-FILE	*fp;
-char	*fname;
-int	mode;
+FILE *fp;
+char *fname;
+int mode;
 } files[FOPEN_MAX] ={
-{ NULL,  "/dev/stdin",  LT },
+{ NULL, "/dev/stdin", LT },
 { NULL, "/dev/stdout", GT },
 { NULL, "/dev/stderr", GT }
 };
@@ -1701,7 +1701,7 @@ sptr = c;
 adjbuf(&buf, &bufsz, 1+strlen(sptr)+pb-buf, 0, &pb, "gsub");
 while ((*pb++ = *sptr++) != 0)
 ;
-done:	if (pb > buf + bufsz)
+done: if (pb > buf + bufsz)
 FATAL("gsub result2 %.30s too big; can't happen", buf);
 *pb = '\0';
 setsval(x, buf);

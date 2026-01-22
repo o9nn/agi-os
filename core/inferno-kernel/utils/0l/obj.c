@@ -1,13 +1,13 @@
-#define	EXTERN
-#include	"l.h"
-#include	<ar.h>
-#ifndef	DEFAULT
-#define	DEFAULT	'9'
+#define EXTERN
+#include "l.h"
+#include <ar.h>
+#ifndef DEFAULT
+#define DEFAULT '9'
 #endif
-char	*noname		= "<none>";
-char	symname[]	= SYMDEF;
-char	thechar		= '0';
-char	*thestring 	= "spim";
+char *noname = "<none>";
+char symname[] = SYMDEF;
+char thechar = '0';
+char *thestring = "spim";
 void
 main(int argc, char *argv[])
 {

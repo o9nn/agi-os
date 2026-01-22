@@ -66,7 +66,7 @@ base_address = (void *) ints[1];
 irq = ints[2];
 }
 #ifndef OVERRIDE
-static const char *  seagate_bases[] = {
+static const char * seagate_bases[] = {
 (char *) 0xc8000, (char *) 0xca000, (char *) 0xcc000,
 (char *) 0xce000, (char *) 0xdc000, (char *) 0xde000
 };
@@ -87,9 +87,9 @@ static const Signature signatures[] = {
 {"FUTURE DOMAIN CORP. (C) 1986-1990 V6.0105/31/90",5, 47, FD},
 {"FUTURE DOMAIN CORP. (C) 1986-1990 V6.0209/18/90",5, 47, FD},
 {"FUTURE DOMAIN CORP. (C) 1986-1990 V7.009/18/90", 5, 46, FD},
-{"FUTURE DOMAIN CORP. (C) 1992 V8.00.004/02/92",   5, 44, FD},
-{"IBM F1 BIOS V1.1004/30/92",			   5, 25, FD},
-{"FUTURE DOMAIN TMC-950",                        5, 21, FD},
+{"FUTURE DOMAIN CORP. (C) 1992 V8.00.004/02/92", 5, 44, FD},
+{"IBM F1 BIOS V1.1004/30/92", 5, 25, FD},
+{"FUTURE DOMAIN TMC-950", 5, 21, FD},
 #endif
 }
 ;
@@ -106,7 +106,7 @@ static void borken_init (void) {
 register int count = 0, start = jiffies + 1, stop = start + 25;
 while (jiffies < start);
 for (;jiffies < stop; ++count);
-borken_calibration =  (count * 4) / (SLOW_RATE*1024);
+borken_calibration = (count * 4) / (SLOW_RATE*1024);
 if (borken_calibration < 1)
 borken_calibration = 1;
 #if (DEBUG & DEBUG_BORKEN)
@@ -152,7 +152,7 @@ printk("Base address overridden to %x, controller type is %s\n",
 base_address,controller_type == SEAGATE ? "SEAGATE" : "FD");
 #endif
 #else
-for (i = 0; i < (sizeof (seagate_bases) / sizeof (char  * )); ++i)
+for (i = 0; i < (sizeof (seagate_bases) / sizeof (char * )); ++i)
 for (j = 0; !base_address && j < NUM_SIGNATURES; ++j)
 if (!memcmp ((const void *) (seagate_bases[i] +
 signatures[j].offset), (const void *) signatures[j].signature,
@@ -251,12 +251,12 @@ static unsigned char linked_target, linked_lun;
 #endif
 static void (*done_fn)(Scsi_Cmnd *) = NULL;
 static Scsi_Cmnd * SCint = NULL;
-#define NO_RECONNECT 	0
-#define RECONNECT_NOW 	1
-#define CAN_RECONNECT	2
+#define NO_RECONNECT 0
+#define RECONNECT_NOW 1
+#define CAN_RECONNECT 2
 #ifdef LINKED
-#define LINKED_RIGHT 	3
-#define LINKED_WRONG	4
+#define LINKED_RIGHT 3
+#define LINKED_WRONG 4
 #endif
 static int should_reconnect = 0;
 static void seagate_reconnect_intr(int irq, void *dev_id, struct pt_regs *regs)
@@ -276,7 +276,7 @@ printk("scsi%d : internal_command("
 "%d, %08x, %08x, %d, RECONNECT_NOW\n", hostno,
 current_target, current_data, current_bufflen);
 #endif
-temp =  internal_command (current_target, current_lun,
+temp = internal_command (current_target, current_lun,
 current_cmnd, current_data, current_bufflen,
 RECONNECT_NOW);
 if (msg_byte(temp) != DISCONNECT) {
@@ -296,7 +296,7 @@ printk("done_fn() not defined.\n");
 }
 }
 static int recursion_depth = 0;
-int seagate_st0x_queue_command (Scsi_Cmnd * SCpnt,  void (*done)(Scsi_Cmnd *))
+int seagate_st0x_queue_command (Scsi_Cmnd * SCpnt, void (*done)(Scsi_Cmnd *))
 {
 int result, reconnect;
 Scsi_Cmnd * SCtmp;
@@ -337,7 +337,7 @@ reconnect = CAN_RECONNECT;
 result = internal_command (SCint->target, SCint->lun, SCint->cmnd, SCint->request_buffer,
 SCint->request_bufflen,
 reconnect);
-if (msg_byte(result) == DISCONNECT)  break;
+if (msg_byte(result) == DISCONNECT) break;
 SCtmp = SCint;
 SCint = NULL;
 SCtmp->result = result;
@@ -452,7 +452,7 @@ CONTROL = (BASE_CMD | CMD_DRVR_ENABLE | CMD_BSY);
 #else
 CONTROL = (BASE_CMD | CMD_BSY);
 #endif
-for (clock = jiffies + 10; (jiffies < clock) &&  (STATUS & STAT_SEL););
+for (clock = jiffies + 10; (jiffies < clock) && (STATUS & STAT_SEL););
 if (jiffies >= clock)
 {
 CONTROL = (BASE_CMD | CMD_INTR);
@@ -473,7 +473,7 @@ printk ("scsi%d : phase = BUS FREE \n", hostno);
 #endif
 clock = jiffies + ST0X_BUS_FREE_DELAY;
 #if !defined (ARBITRATE)
-while (((STATUS |  STATUS | STATUS) &
+while (((STATUS | STATUS | STATUS) &
 (STAT_BSY | STAT_SEL)) &&
 (!st0x_aborted) && (jiffies < clock));
 if (jiffies > clock)
@@ -526,7 +526,7 @@ hostno, status_read, temp, st0x_aborted);
 #else
 ;
 #endif
-if ((jiffies >= clock)  && !(status_read & STAT_BSY))
+if ((jiffies >= clock) && !(status_read & STAT_BSY))
 {
 #if (DEBUG & PHASE_SELECTION)
 printk ("scsi%d : NO CONNECT with target %d, status = %x \n",
@@ -582,7 +582,7 @@ CONTROL = BASE_CMD | CMD_DRVR_ENABLE |
 #ifdef LINKED
 || (reselect == LINKED_WRONG)
 #endif
-)  ? CMD_ATTN : 0) ;
+) ? CMD_ATTN : 0) ;
 #if ((DEBUG & PHASE_ETC) == PHASE_ETC)
 printk("scsi%d : phase = INFORMATION TRANSFER\n", hostno);
 #endif
@@ -893,7 +893,7 @@ hostno, target, message & 7);
 } else {
 #if (DEBUG & PHASE_MSGIN)
 printk("scsi%d : unknown message %d from target %d.\n",
-hostno,  message,   target);
+hostno, message, target);
 #endif
 }
 }
@@ -977,7 +977,7 @@ unsigned clock;
 #ifdef DEBUG
 printk("In seagate_st0x_reset()\n");
 #endif
-CONTROL = BASE_CMD  | CMD_RST;
+CONTROL = BASE_CMD | CMD_RST;
 clock=jiffies+2;
 while (jiffies < clock);
 CONTROL = BASE_CMD;

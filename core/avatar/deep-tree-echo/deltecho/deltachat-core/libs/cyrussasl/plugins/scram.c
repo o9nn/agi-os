@@ -19,34 +19,34 @@
 #include <openssl/hmac.h>
 static const char plugin_id[] = "$Id: scram.c,v 1.26 2011/09/07 16:09:40 murch Exp $";
 #define NONCE_SIZE (32)
-#define SALT_SIZE  (16)
-#define DEFAULT_ITERATION_COUNTER   4096
-#define MIN_ITERATION_COUNTER	    4096
-#define MAX_ITERATION_COUNTER	    0x10000
-#define ITERATION_COUNTER_BUF_LEN   20
-#define SCRAM_HASH_SIZE		    20
-#define BASE64_LEN(size)	    (((size) / 3 * 4) + (((size) % 3) ? 4 : 0))
-#define MAX_CLIENTIN_LEN	    2048
-#define MAX_SERVERIN_LEN	    2048
-#define STRINGIZE(x)		    #x
-#define MAX_CLIENTIN_LEN_STR	    STRINGIZE((MAX_CLIENTIN_LEN))
-#define MAX_SERVERIN_LEN_STR	    STRINGIZE((MAX_SERVERIN_LEN))
-#define CLIENT_KEY_CONSTANT	    "Client Key"
-#define SERVER_KEY_CONSTANT	    "Server Key"
-#define CLIENT_KEY_CONSTANT_LEN	    sizeof(CLIENT_KEY_CONSTANT)-1
-#define SERVER_KEY_CONSTANT_LEN	    sizeof(SERVER_KEY_CONSTANT)-1
-#define SCRAM_CB_FLAG_MASK    0x0F
-#define SCRAM_CB_FLAG_N       0x00
-#define SCRAM_CB_FLAG_P       0x01
-#define SCRAM_CB_FLAG_Y       0x02
+#define SALT_SIZE (16)
+#define DEFAULT_ITERATION_COUNTER 4096
+#define MIN_ITERATION_COUNTER 4096
+#define MAX_ITERATION_COUNTER 0x10000
+#define ITERATION_COUNTER_BUF_LEN 20
+#define SCRAM_HASH_SIZE 20
+#define BASE64_LEN(size) (((size) / 3 * 4) + (((size) % 3) ? 4 : 0))
+#define MAX_CLIENTIN_LEN 2048
+#define MAX_SERVERIN_LEN 2048
+#define STRINGIZE(x) #x
+#define MAX_CLIENTIN_LEN_STR STRINGIZE((MAX_CLIENTIN_LEN))
+#define MAX_SERVERIN_LEN_STR STRINGIZE((MAX_SERVERIN_LEN))
+#define CLIENT_KEY_CONSTANT "Client Key"
+#define SERVER_KEY_CONSTANT "Server Key"
+#define CLIENT_KEY_CONSTANT_LEN sizeof(CLIENT_KEY_CONSTANT)-1
+#define SERVER_KEY_CONSTANT_LEN sizeof(SERVER_KEY_CONSTANT)-1
+#define SCRAM_CB_FLAG_MASK 0x0F
+#define SCRAM_CB_FLAG_N 0x00
+#define SCRAM_CB_FLAG_P 0x01
+#define SCRAM_CB_FLAG_Y 0x02
 #ifdef SCRAM_DEBUG
-#define PRINT_HASH(func,hash)	    print_hash(func,hash)
+#define PRINT_HASH(func,hash) print_hash(func,hash)
 #else
 #define PRINT_HASH(func,hash)
 #endif
-#define SASL_SCRAM_INTERNAL	    SASL_NOMEM
-#define SCRAM_SASL_MECH		"SCRAM-SHA-1"
-#define SCRAM_SASL_MECH_LEN	11
+#define SASL_SCRAM_INTERNAL SASL_NOMEM
+#define SCRAM_SASL_MECH "SCRAM-SHA-1"
+#define SCRAM_SASL_MECH_LEN 11
 static unsigned char g_salt_key[SALT_SIZE];
 static int
 decode_saslname (char *buf)
@@ -1281,10 +1281,10 @@ goto cleanup;
 }
 sparams->utils->log(NULL, SASL_LOG_DEBUG, "Setpass for " SCRAM_SASL_MECH " successful\n");
 cleanup:
-if (user) 	_plug_free_string(sparams->utils, &user);
-if (user_only)     _plug_free_string(sparams->utils, &user_only);
-if (realm) 	_plug_free_string(sparams->utils, &realm);
-if (sec)    _plug_free_secret(sparams->utils, &sec);
+if (user) _plug_free_string(sparams->utils, &user);
+if (user_only) _plug_free_string(sparams->utils, &user_only);
+if (realm) _plug_free_string(sparams->utils, &realm);
+if (sec) _plug_free_secret(sparams->utils, &sec);
 return r;
 }
 static void scram_server_mech_dispose(void *conn_context,

@@ -1,12 +1,12 @@
 #include "gdevprn.h"
 #include <stdlib.h>
 #ifdef USE_BYTE_STREAM
-#  define BYTE_STREAM 1
+# define BYTE_STREAM 1
 #else
-#  define BYTE_STREAM 0
+# define BYTE_STREAM 0
 #endif
 #define QUOTE_CHAR (char) 0x02
-#define EOF_CHAR   (char) 0x04
+#define EOF_CHAR (char) 0x04
 #define EXTRA_QUOTE1 (char) 0x11
 #define EXTRA_QUOTE2 (char) 0x13
 #define EXTRA_QUOTE3 EOF_CHAR
@@ -14,26 +14,26 @@
 #define IMPRESSHEADER "jobheader onerror, prerasterization off"
 #define CANON_CX
 #ifdef CANON_CX
-#  define MAX_DPI 300
+# define MAX_DPI 300
 #endif
 #ifndef MAX_DPI
-#  define MAX_DPI 300
+# define MAX_DPI 300
 #endif
-#define getMagnification  ( \
+#define getMagnification ( \
 ( pdev->x_pixels_per_inch > (MAX_DPI >> 1) ) ? 0 : \
 ( pdev->x_pixels_per_inch > (MAX_DPI >> 2) ) ? 1 : \
 2 )
-#define WIDTH_10THS   DEFAULT_WIDTH_10THS
-#define HEIGHT_10THS  DEFAULT_HEIGHT_10THS
+#define WIDTH_10THS DEFAULT_WIDTH_10THS
+#define HEIGHT_10THS DEFAULT_HEIGHT_10THS
 #ifdef CANON_CX
-#  define MARG_L 0.15
-#  define MARG_R ( (float)WIDTH_10THS / 10.0 - 8.0 - MARG_L)
+# define MARG_L 0.15
+# define MARG_R ( (float)WIDTH_10THS / 10.0 - 8.0 - MARG_L)
 #endif
 #ifndef MARG_L
-#  define MARG_L 0.2
+# define MARG_L 0.2
 #endif
 #ifndef MARG_R
-#  define MARG_R 0.2
+# define MARG_R 0.2
 #endif
 #define MARG_T 0.1
 #define MARG_B 0.2
@@ -44,39 +44,39 @@
 #define VertBytesPerSw 32
 #define TotalBytesPerSw (HorzBytesPerSw * VertBytesPerSw)
 #if arch_sizeof_long == 4
-#  define BIGTYPE unsigned long int
+# define BIGTYPE unsigned long int
 #else
-#  if arch_sizeof_short == 4
-#    define BIGTYPE unsigned short int
-#  else
-#    if arch_sizeof_short == 2
-#      define BIGTYPE unsigned short
-#    endif
-#  endif
+# if arch_sizeof_short == 4
+# define BIGTYPE unsigned short int
+# else
+# if arch_sizeof_short == 2
+# define BIGTYPE unsigned short
+# endif
+# endif
 #endif
 #ifndef BIGTYPE
 #define BIGTYPE byte
 #endif
 #define BIGSIZE ( sizeof( BIGTYPE ) )
-#define iSP		128
-#define	iSP1		129
-#define iMPLUS		131
-#define	iMMINUS		132
-#define iMMOVE		133
-#define iSMOVE		134
-#define iABS_H		135
-#define iREL_H		136
-#define iABS_V		137
-#define iREL_V		138
-#define	iCRLF		197
-#define	iSET_HV_SYSTEM	205
-#define	iSET_ADV_DIRS	206
-#define	iPAGE		213
-#define iENDPAGE	219
-#define iBITMAP		235
+#define iSP 128
+#define iSP1 129
+#define iMPLUS 131
+#define iMMINUS 132
+#define iMMOVE 133
+#define iSMOVE 134
+#define iABS_H 135
+#define iREL_H 136
+#define iABS_V 137
+#define iREL_V 138
+#define iCRLF 197
+#define iSET_HV_SYSTEM 205
+#define iSET_ADV_DIRS 206
+#define iPAGE 213
+#define iENDPAGE 219
+#define iBITMAP 235
 #define iSET_MAGNIFICATION 236
-#define iNOOP		254
-#define iEOF		255
+#define iNOOP 254
+#define iEOF 255
 private dev_proc_print_page(imagen_print_page);
 private dev_proc_open_device(imagen_prn_open);
 private dev_proc_close_device(imagen_prn_close);
@@ -97,7 +97,7 @@ iWrite(FILE *Out, byte Val)
 {
 char *hexList = "0123456789ABCDEF";
 if (BYTE_STREAM &&
-(   Val == QUOTE_CHAR   || Val == EOF_CHAR
+( Val == QUOTE_CHAR || Val == EOF_CHAR
 || Val == EXTRA_QUOTE1 || Val == EXTRA_QUOTE2
 || Val == EXTRA_QUOTE3 || Val == EXTRA_QUOTE4 ) ) {
 fputc (QUOTE_CHAR, Out);
@@ -111,12 +111,12 @@ void
 iWrite2(FILE *Out, int Val)
 {
 iWrite(Out,(byte) (Val >> 8) & 0x00FF );
-iWrite(Out,(byte) Val        & 0x00FF );
+iWrite(Out,(byte) Val & 0x00FF );
 }
 private int
 imagen_prn_open(gx_device *pdev)
 {
-int	code;
+int code;
 char *impHeader;
 DebugMsg(1,"%s\n","Start of imagen_prn_open");
 DebugMsg(2,"BIGSIZE = %ld \n",BIGSIZE);
@@ -138,7 +138,7 @@ return code;
 private int
 imagen_prn_close(gx_device *pdev)
 {
-int		code;
+int code;
 DebugMsg(1,"%s\n","Start of imagen_prn_close");
 code = gdev_prn_open_printer(pdev, 1);
 if ( code < 0 ) return code;
@@ -215,7 +215,7 @@ while ( temp < in + line_size ) {
 if ( * (BIGTYPE *)temp ) {
 swatchMap[(swatch - out)/TotalBytesPerSw] = (byte) 1 ;
 }
-temp   += (BIGSIZE > HorzBytesPerSw) ? HorzBytesPerSw : BIGSIZE ;
+temp += (BIGSIZE > HorzBytesPerSw) ? HorzBytesPerSw : BIGSIZE ;
 swatch += (BIGSIZE > HorzBytesPerSw) ? HorzBytesPerSw : BIGSIZE ;
 if ( ((temp - in) % HorzBytesPerSw ) == 0 ) {
 swatch += (TotalBytesPerSw - HorzBytesPerSw) ;

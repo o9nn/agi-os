@@ -2,7 +2,7 @@ implement Palmdb, Desklink;
 #
 # Palm Desk Link Protocol (DLP)
 #
-# Copyright © 2003 Vita Nuova Holdings Limited.  All rights reserved.
+# Copyright © 2003 Vita Nuova Holdings Limited. All rights reserved.
 #
 # Request and response formats were extracted from
 # include/Core/System/DLCommon.h in the PalmOS SDK-5
@@ -38,8 +38,8 @@ T_LoopBackTest, T_ExpSlotEnumerate, T_ExpCardPresent, T_ExpCardInfo: con 16r10+i
 # then there's a group of VFS requests that we don't currently use
 Response: con 16r80;
 Maxname: con 32;
-A1, A2: con Palm->ArgIDbase+iota;	# argument IDs have request-specific interpretation (most have only one ID)
-Timeout: con 30;	# seconds time out used by Palm's headers
+A1, A2: con Palm->ArgIDbase+iota; # argument IDs have request-specific interpretation (most have only one ID)
+Timeout: con 30; # seconds time out used by Palm's headers
 srvfd: ref Sys->FD;
 selfdb: Palmdb;
 errorlist := array [] of {
@@ -122,15 +122,15 @@ return nil;
 s := ref SysInfo;
 s.romversion = get4(reply);
 s.locale = get4(reply[4:]);
-l := int reply[9];	# should be at most 4 apparently?
+l := int reply[9]; # should be at most 4 apparently?
 s.product = gets(reply[10:10+l]);
 return s;
 }
 ReadSysInfoVer(): (int, int, int)
 {
 req := array[4] of byte;
-put2(req, 1);	# major version
-put2(req, 2);	# minor version
+put2(req, 1); # major version
+put2(req, 2); # minor version
 if((reply := dexec(T_ReadSysInfo, A2, req, 12)) == nil)
 return (0, 0, 0);
 return (get4(reply), get4(reply[4:]), get4(reply[8:]));
@@ -197,7 +197,7 @@ return (a, more, nil);
 }
 unpackcard(a: array of byte): (ref CardInfo, int)
 {
-nb := int a[0];	# total size of this card's info
+nb := int a[0]; # total size of this card's info
 c := ref CardInfo;
 c.cardno = int a[1];
 c.version = get2(a[2:]);
@@ -249,7 +249,7 @@ put2(req[2:], start);
 if(reply == nil || int reply[3] == 0)
 return (nil, 0, err);
 # lastindex[2] flags[1] actcount[1]
-#	flags is 16r80 => more to list
+# flags is 16r80 => more to list
 more := (reply[2] & byte 16r80) != byte 0;
 dbs := array[int reply[3]] of ref DBInfo;
 #sys->print("ndb=%d more=%d lastindex=#%4.4ux\n", len dbs, more, get2(reply));
@@ -347,7 +347,7 @@ db.x = int reply[0];
 inf := db.stat();
 if(inf == nil)
 return (nil, sys->sprint("can't get DBInfo: %r"));
-db.attr = inf.attr;	# mainly need to know whether it's Fresource or not
+db.attr = inf.attr; # mainly need to know whether it's Fresource or not
 return (db, nil);
 }
 DB.create(name: string, nil: int, nil: int, inf: ref DBInfo): (ref DB, string)
@@ -431,8 +431,8 @@ DB.rdappinfo(db: self ref DB): (array of byte, string)
 req := array[6] of byte;
 req[0] = byte db.x;
 req[1] = byte 0;
-put2(req[2:], 0);	# offset
-put2(req[4:], -1);	# to end
+put2(req[2:], 0); # offset
+put2(req[4:], -1); # to end
 (reply, err) := rexec(T_ReadAppBlock, A1, req, 2);
 if(reply == nil)
 return (nil, err);
@@ -495,7 +495,7 @@ req := array[8] of byte;
 req[0] = byte db.db.x;
 req[1] = byte 0;
 put2(req[2:], index);
-put2(req[4:], 0);	# offset
+put2(req[4:], 0); # offset
 put2(req[6:], Maxrecbytes);
 return unpackrec(dexec(T_ReadRecord, A2, req, 10)).t0;
 }
@@ -601,7 +601,7 @@ req := array[8] of byte;
 req[0] = byte db.db.x;
 req[1] = byte 0;
 put2(req[2:], index);
-put2(req[4:], 0);	# offset
+put2(req[4:], 0); # offset
 put2(req[6:], Maxrecbytes);
 return unpackresource(dexec(T_ReadResource, A1, req, 12)).t0;
 }
@@ -609,15 +609,15 @@ return unpackresource(dexec(T_ReadResource, A1, req, 12)).t0;
 # DL protocol
 #
 # request
-#	id: byte	# operation
-#	argc: byte	# arg count
-#	args: byte[]
+# id: byte # operation
+# argc: byte # arg count
+# args: byte[]
 #
 # response
-#	id: byte	# cmd|16r80
-#	argc: byte	# argc response arguments follow header
-#	error: byte[2]	# error code
-#	args: byte[]
+# id: byte # cmd|16r80
+# argc: byte # argc response arguments follow header
+# error: byte[2] # error code
+# args: byte[]
 #
 # args wrapped by Palm->packargs etc.
 #
@@ -647,7 +647,7 @@ if(rc < 0 || rc >= len errorlist)
 return (nil, e(sys->sprint("unknown error %d", rc)));
 return (nil, e(errorlist[rc]));
 }
-argc := int reply[1];	# count of following arguments
+argc := int reply[1]; # count of following arguments
 if(argc == 0)
 return (nil, nil);
 return unpackargs(argc, reply[4:nb]);
@@ -729,7 +729,7 @@ getdate(data: array of byte): int
 {
 yr := (int data[0] << 8) | int data[1];
 if(yr == 0)
-return 0;	# unspecified
+return 0; # unspecified
 t := ref Tm;
 t.sec = int data[6];
 t.min = int data[5];
@@ -746,7 +746,7 @@ putdate(data: array of byte, time: int): array of byte
 t := daytime->local(time);
 y := t.year + 1900;
 if(time == 0)
-y = 0;	# `unchanged'
+y = 0; # `unchanged'
 data[7] = byte 0; # pad
 data[6] = byte t.sec;
 data[5] = byte t.min;

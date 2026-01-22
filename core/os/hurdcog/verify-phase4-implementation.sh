@@ -12,86 +12,86 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m'
 success() {
-    echo -e "${GREEN}✓${NC} $1"
+echo -e "${GREEN}✓${NC} $1"
 }
 warning() {
-    echo -e "${YELLOW}⚠${NC} $1"
+echo -e "${YELLOW}⚠${NC} $1"
 }
 error() {
-    echo -e "${RED}✗${NC} $1"
+echo -e "${RED}✗${NC} $1"
 }
 info() {
-    echo "  $1"
+echo "  $1"
 }
 echo "[1/6] Verifying File Structure..."
 files=(
-    "cogkernel/embodiment/api_server.py"
-    "cogkernel/embodiment/test_api.py"
-    "cogkernel/embodiment/unity3d/CognitiveAgent.cs"
-    "cogkernel/embodiment/unity3d/AttentionVisualizer.cs"
-    "cogkernel/embodiment/unity3d/CognitiveWebSocketClient.cs"
-    "cogkernel/embodiment/ros/cognitive_planner.py"
-    "cogkernel/embodiment/ros/CMakeLists.txt"
-    "cogkernel/embodiment/ros/package.xml"
-    "cogkernel/embodiment/websocket/cognitive_client.js"
-    "cogkernel/embodiment/websocket/example.html"
-    "cogkernel/embodiment/PHASE4_API_IMPLEMENTATION.md"
-    "cogkernel/embodiment/SECURITY_REVIEW.md"
-    "cogkernel/embodiment/QUICKSTART.md"
+"cogkernel/embodiment/api_server.py"
+"cogkernel/embodiment/test_api.py"
+"cogkernel/embodiment/unity3d/CognitiveAgent.cs"
+"cogkernel/embodiment/unity3d/AttentionVisualizer.cs"
+"cogkernel/embodiment/unity3d/CognitiveWebSocketClient.cs"
+"cogkernel/embodiment/ros/cognitive_planner.py"
+"cogkernel/embodiment/ros/CMakeLists.txt"
+"cogkernel/embodiment/ros/package.xml"
+"cogkernel/embodiment/websocket/cognitive_client.js"
+"cogkernel/embodiment/websocket/example.html"
+"cogkernel/embodiment/PHASE4_API_IMPLEMENTATION.md"
+"cogkernel/embodiment/SECURITY_REVIEW.md"
+"cogkernel/embodiment/QUICKSTART.md"
 )
 all_files_exist=true
 for file in "${files[@]}"; do
-    if [ -f "$file" ]; then
-        success "$file"
-    else
-        error "$file (MISSING)"
-        all_files_exist=false
-    fi
+if [ -f "$file" ]; then
+success "$file"
+else
+error "$file (MISSING)"
+all_files_exist=false
+fi
 done
 if [ "$all_files_exist" = true ]; then
-    success "All 13 implementation files present"
+success "All 13 implementation files present"
 else
-    error "Some files are missing!"
-    exit 1
+error "Some files are missing!"
+exit 1
 fi
 echo ""
 echo "[2/6] Checking Dependencies..."
 if command -v python3 &> /dev/null; then
-    success "Python 3 installed ($(python3 --version))"
+success "Python 3 installed ($(python3 --version))"
 else
-    error "Python 3 not found"
-    exit 1
+error "Python 3 not found"
+exit 1
 fi
 if command -v pip3 &> /dev/null; then
-    success "pip3 installed"
+success "pip3 installed"
 else
-    error "pip3 not found"
-    exit 1
+error "pip3 not found"
+exit 1
 fi
 if python3 -c "import fastapi" 2>/dev/null; then
-    success "FastAPI installed"
+success "FastAPI installed"
 else
-    warning "FastAPI not installed (run: pip3 install -r requirements.txt)"
+warning "FastAPI not installed (run: pip3 install -r requirements.txt)"
 fi
 echo ""
 echo "[3/6] Verifying Code Quality..."
 python3 -m py_compile cogkernel/embodiment/api_server.py 2>/dev/null
 if [ $? -eq 0 ]; then
-    success "api_server.py syntax valid"
+success "api_server.py syntax valid"
 else
-    error "api_server.py has syntax errors"
+error "api_server.py has syntax errors"
 fi
 python3 -m py_compile cogkernel/embodiment/test_api.py 2>/dev/null
 if [ $? -eq 0 ]; then
-    success "test_api.py syntax valid"
+success "test_api.py syntax valid"
 else
-    error "test_api.py has syntax errors"
+error "test_api.py has syntax errors"
 fi
 python3 -m py_compile cogkernel/embodiment/ros/cognitive_planner.py 2>/dev/null
 if [ $? -eq 0 ]; then
-    success "cognitive_planner.py syntax valid"
+success "cognitive_planner.py syntax valid"
 else
-    error "cognitive_planner.py has syntax errors"
+error "cognitive_planner.py has syntax errors"
 fi
 echo ""
 echo "[4/6] Verifying Implementation Scope..."
@@ -110,37 +110,37 @@ success "Total implementation: ~$total_lines lines of code"
 echo ""
 echo "[5/6] Verifying Documentation..."
 docs=(
-    "cogkernel/embodiment/PHASE4_API_IMPLEMENTATION.md"
-    "cogkernel/embodiment/SECURITY_REVIEW.md"
-    "cogkernel/embodiment/QUICKSTART.md"
-    "cogkernel/embodiment/README.md"
+"cogkernel/embodiment/PHASE4_API_IMPLEMENTATION.md"
+"cogkernel/embodiment/SECURITY_REVIEW.md"
+"cogkernel/embodiment/QUICKSTART.md"
+"cogkernel/embodiment/README.md"
 )
 for doc in "${docs[@]}"; do
-    if [ -f "$doc" ]; then
-        lines=$(wc -l < "$doc")
-        success "$doc ($lines lines)"
-    else
-        warning "$doc not found"
-    fi
+if [ -f "$doc" ]; then
+lines=$(wc -l < "$doc")
+success "$doc ($lines lines)"
+else
+warning "$doc not found"
+fi
 done
 echo ""
 echo "[6/6] API Endpoint Implementation..."
 endpoints=(
-    "GET /"
-    "GET /api/v1/cognitive/state"
-    "POST /api/v1/cognitive/process"
-    "GET /api/v1/cognitive/task/{id}"
-    "GET /api/v1/attention/allocation"
-    "POST /api/v1/attention/focus"
-    "POST /api/v1/agents/register"
-    "GET /api/v1/agents/{id}"
-    "GET /api/v1/agents"
-    "DELETE /api/v1/agents/{id}"
-    "GET /api/v1/health"
-    "WebSocket /ws"
+"GET /"
+"GET /api/v1/cognitive/state"
+"POST /api/v1/cognitive/process"
+"GET /api/v1/cognitive/task/{id}"
+"GET /api/v1/attention/allocation"
+"POST /api/v1/attention/focus"
+"POST /api/v1/agents/register"
+"GET /api/v1/agents/{id}"
+"GET /api/v1/agents"
+"DELETE /api/v1/agents/{id}"
+"GET /api/v1/health"
+"WebSocket /ws"
 )
 for endpoint in "${endpoints[@]}"; do
-    success "$endpoint"
+success "$endpoint"
 done
 echo ""
 echo "=================================================="

@@ -15,9 +15,9 @@
 #include <ipc/ipc_notify.h>
 kern_return_t
 ipc_right_lookup_write(
-ipc_space_t		space,
-mach_port_name_t	name,
-ipc_entry_t		*entryp)
+ipc_space_t space,
+mach_port_name_t name,
+ipc_entry_t *entryp)
 {
 ipc_entry_t entry;
 assert(space != IS_NULL);
@@ -35,10 +35,10 @@ return KERN_SUCCESS;
 }
 boolean_t
 ipc_right_reverse(
-ipc_space_t	space,
-ipc_object_t	object,
-mach_port_name_t	*namep,
-ipc_entry_t	*entryp)
+ipc_space_t space,
+ipc_object_t object,
+mach_port_name_t *namep,
+ipc_entry_t *entryp)
 {
 ipc_port_t port;
 mach_port_name_t name;
@@ -74,11 +74,11 @@ return FALSE;
 }
 kern_return_t
 ipc_right_dnrequest(
-ipc_space_t		space,
-mach_port_name_t	name,
-boolean_t		immediate,
-ipc_port_t		notify,
-ipc_port_t		*previousp)
+ipc_space_t space,
+mach_port_name_t name,
+boolean_t immediate,
+ipc_port_t notify,
+ipc_port_t *previousp)
 {
 ipc_port_t previous;
 for (;;) {
@@ -149,10 +149,10 @@ return KERN_SUCCESS;
 }
 ipc_port_t
 ipc_right_dncancel(
-ipc_space_t		space,
-ipc_port_t		port,
-mach_port_name_t	name,
-ipc_entry_t		entry)
+ipc_space_t space,
+ipc_port_t port,
+mach_port_name_t name,
+ipc_entry_t entry)
 {
 ipc_port_t dnrequest;
 assert(ip_active(port));
@@ -176,10 +176,10 @@ return FALSE;
 }
 boolean_t
 ipc_right_check(
-ipc_space_t 	space,
-ipc_port_t 	port,
-mach_port_name_t 	name,
-ipc_entry_t 	entry)
+ipc_space_t space,
+ipc_port_t port,
+mach_port_name_t name,
+ipc_entry_t entry)
 {
 ipc_entry_bits_t bits;
 assert(space->is_active);
@@ -216,9 +216,9 @@ return TRUE;
 }
 void
 ipc_right_clean(
-ipc_space_t	space,
-mach_port_name_t	name,
-ipc_entry_t	entry)
+ipc_space_t space,
+mach_port_name_t name,
+ipc_entry_t entry)
 {
 ipc_entry_bits_t bits = entry->ie_bits;
 mach_port_type_t type = IE_BITS_TYPE(bits);
@@ -295,9 +295,9 @@ panic("ipc_right_clean: strange type");
 }
 kern_return_t
 ipc_right_destroy(
-ipc_space_t		space,
-mach_port_name_t	name,
-ipc_entry_t		entry)
+ipc_space_t space,
+mach_port_name_t name,
+ipc_entry_t entry)
 {
 ipc_entry_bits_t bits = entry->ie_bits;
 mach_port_type_t type = IE_BITS_TYPE(bits);
@@ -514,11 +514,11 @@ return KERN_SUCCESS;
 }
 kern_return_t
 ipc_right_delta(
-ipc_space_t 		space,
-mach_port_name_t 	name,
-ipc_entry_t 		entry,
-mach_port_right_t 	right,
-mach_port_delta_t 	delta)
+ipc_space_t space,
+mach_port_name_t name,
+ipc_entry_t entry,
+mach_port_right_t right,
+mach_port_delta_t delta)
 {
 ipc_entry_bits_t bits = entry->ie_bits;
 assert(space->is_active);
@@ -734,11 +734,11 @@ return KERN_UREFS_OVERFLOW;
 }
 kern_return_t
 ipc_right_info(
-ipc_space_t		space,
-mach_port_name_t	name,
-ipc_entry_t		entry,
-mach_port_type_t	*typep,
-mach_port_urefs_t	*urefsp)
+ipc_space_t space,
+mach_port_name_t name,
+ipc_entry_t entry,
+mach_port_type_t *typep,
+mach_port_urefs_t *urefsp)
 {
 ipc_entry_bits_t bits = entry->ie_bits;
 ipc_port_request_index_t request;
@@ -763,10 +763,10 @@ return KERN_SUCCESS;
 }
 boolean_t
 ipc_right_copyin_check(
-ipc_space_t		space,
-mach_port_name_t	name,
-ipc_entry_t		entry,
-mach_msg_type_name_t	msgt_name)
+ipc_space_t space,
+mach_port_name_t name,
+ipc_entry_t entry,
+mach_msg_type_name_t msgt_name)
 {
 ipc_entry_bits_t bits = entry->ie_bits;
 assert(space->is_active);
@@ -814,13 +814,13 @@ return TRUE;
 }
 kern_return_t
 ipc_right_copyin(
-ipc_space_t		space,
-mach_port_name_t	name,
-ipc_entry_t		entry,
-mach_msg_type_name_t	msgt_name,
-boolean_t		deadok,
-ipc_object_t		*objectp,
-ipc_port_t		*sorightp)
+ipc_space_t space,
+mach_port_name_t name,
+ipc_entry_t entry,
+mach_msg_type_name_t msgt_name,
+boolean_t deadok,
+ipc_object_t *objectp,
+ipc_port_t *sorightp)
 {
 ipc_entry_bits_t bits = entry->ie_bits;
 assert(space->is_active);
@@ -1046,12 +1046,12 @@ return KERN_INVALID_RIGHT;
 }
 void
 ipc_right_copyin_undo(
-ipc_space_t		space,
-mach_port_name_t	name,
-ipc_entry_t		entry,
-mach_msg_type_name_t	msgt_name,
-ipc_object_t		object,
-ipc_port_t		soright)
+ipc_space_t space,
+mach_port_name_t name,
+ipc_entry_t entry,
+mach_msg_type_name_t msgt_name,
+ipc_object_t object,
+ipc_port_t soright)
 {
 ipc_entry_bits_t bits = entry->ie_bits;
 assert(space->is_active);
@@ -1099,11 +1099,11 @@ ipc_object_release(object);
 }
 kern_return_t
 ipc_right_copyin_two(
-ipc_space_t		space,
-mach_port_name_t	name,
-ipc_entry_t		entry,
-ipc_object_t		*objectp,
-ipc_port_t		*sorightp)
+ipc_space_t space,
+mach_port_name_t name,
+ipc_entry_t entry,
+ipc_object_t *objectp,
+ipc_port_t *sorightp)
 {
 ipc_entry_bits_t bits = entry->ie_bits;
 mach_port_urefs_t urefs;
@@ -1158,12 +1158,12 @@ return KERN_INVALID_RIGHT;
 }
 kern_return_t
 ipc_right_copyout(
-ipc_space_t		space,
-mach_port_name_t	name,
-ipc_entry_t		entry,
-mach_msg_type_name_t	msgt_name,
-boolean_t		overflow,
-ipc_object_t		object)
+ipc_space_t space,
+mach_port_name_t name,
+ipc_entry_t entry,
+mach_msg_type_name_t msgt_name,
+boolean_t overflow,
+ipc_object_t object)
 {
 ipc_entry_bits_t bits = entry->ie_bits;
 ipc_port_t port;
@@ -1250,11 +1250,11 @@ return KERN_SUCCESS;
 }
 kern_return_t
 ipc_right_rename(
-ipc_space_t		space,
-mach_port_name_t	oname,
-ipc_entry_t		oentry,
-mach_port_name_t	nname,
-ipc_entry_t		nentry)
+ipc_space_t space,
+mach_port_name_t oname,
+ipc_entry_t oentry,
+mach_port_name_t nname,
+ipc_entry_t nentry)
 {
 ipc_entry_bits_t bits = oentry->ie_bits;
 ipc_port_request_index_t request = oentry->ie_request;

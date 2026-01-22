@@ -73,7 +73,7 @@ i, t : int;
 v = nil;
 r = c.r;
 r.min.y = c.tag.frame.r.max.y+Border;
-if(y<r.min.y && c.nw>0){	# steal half of last window by default
+if(y<r.min.y && c.nw>0){ # steal half of last window by default
 v = c.w[c.nw-1];
 y = v.body.frame.r.min.y+v.body.frame.r.dy()/2;
 }
@@ -85,7 +85,7 @@ break;
 }
 if(c.nw > 0){
 if(i < c.nw)
-i++;	# new window will go after v
+i++; # new window will go after v
 #
 # if v's too small, grow it first.
 #
@@ -166,11 +166,11 @@ if(c.nw == 0){
 draw(mainwin, r, white, nil, (0, 0));
 return;
 }
-if(i == c.nw){		# extend last window down
+if(i == c.nw){ # extend last window down
 w = c.w[i-1];
 r.min.y = w.r.min.y;
 r.max.y = c.r.max.y;
-}else{			# extend next window up
+}else{ # extend next window up
 w = c.w[i];
 r.max.y = w.r.max.y;
 }
@@ -317,7 +317,7 @@ break;
 if (i == c.nw)
 error("can't find window");
 cr = c.r;
-if(but < 0){	# make sure window fills its own space properly
+if(but < 0){ # make sure window fills its own space properly
 r = w.r;
 if(i == c.nw-1)
 r.max.y = cr.max.y;
@@ -327,7 +327,7 @@ w.reshape(r, FALSE);
 return;
 }
 cr.min.y = c.w[0].r.min.y;
-if(but == 3){	# full size
+if(but == 3){ # full size
 if(i != 0){
 v = c.w[0];
 c.w[0] = w;
@@ -351,7 +351,7 @@ nl[j] = l;
 tot += l;
 }
 # approximate new #lines for this window
-if(but == 2){	# as big as can be
+if(but == 2){ # as big as can be
 for (j = 0; j < c.nw; j++)
 nl[j] = 0;
 nl[i] = tot;
@@ -447,7 +447,7 @@ if(!c.safe || !v.r.eq(r)){
 draw(mainwin, r, textcols[BACK], nil, (0, 0));
 v.reshape(r, c.safe);
 }
-if(j < c.nw-1){	# no border on last window
+if(j < c.nw-1){ # no border on last window
 r.min.y = v.r.max.y;
 r.max.y += Border;
 draw(mainwin, r, black, nil, (0, 0));
@@ -496,7 +496,7 @@ return;
 }
 # is it a flick to the right?
 if(abs(p.y-op.y)<10 && p.x>op.x+30 && c.row.whichcol(p) == c)
-p.x += w.r.dx();	# yes: toss to next column
+p.x += w.r.dx(); # yes: toss to next column
 nc = c.row.whichcol(p);
 if(nc!=nil && nc!=c){
 c.close(w, FALSE);
@@ -505,7 +505,7 @@ w.mousebut();
 return;
 }
 if(i==0 && c.nw==1)
-return;			# can't do it
+return; # can't do it
 if((i>0 && p.y<c.w[i-1].r.min.y) || (i<c.nw-1 && p.y>w.r.max.y)
 || (i==0 && p.y>w.r.max.y)){
 # shuffle

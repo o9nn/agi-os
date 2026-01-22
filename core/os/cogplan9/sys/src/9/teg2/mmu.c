@@ -4,26 +4,26 @@
 #include "dat.h"
 #include "fns.h"
 #include "arm.h"
-#define L1X(va)		FEXT((va), 20, 12)
-#define L2X(va)		FEXT((va), 12, 8)
+#define L1X(va) FEXT((va), 20, 12)
+#define L2X(va) FEXT((va), 12, 8)
 enum {
-Debug		= 0,
-L1lo		= UZERO/MiB,
+Debug = 0,
+L1lo = UZERO/MiB,
 #ifdef SMALL_ARM
-L1hi		= (USTKTOP+MiB-1)/MiB,
+L1hi = (USTKTOP+MiB-1)/MiB,
 #else
-L1hi		= DRAMSIZE/MiB,
+L1hi = DRAMSIZE/MiB,
 #endif
 };
-#define ISHOLE(type)	((type) == 0)
+#define ISHOLE(type) ((type) == 0)
 typedef struct Range Range;
 struct Range {
-uintptr	startva;
-uvlong	endva;
-uintptr	startpa;
-uvlong	endpa;
-ulong	attrs;
-int	type;
+uintptr startva;
+uvlong endva;
+uintptr startpa;
+uvlong endpa;
+ulong attrs;
+int type;
 };
 static void mmul1empty(void);
 static char *

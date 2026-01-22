@@ -81,7 +81,7 @@ continue;
 }
 map = malloc(sizeof *map);
 map->from = strdup(fields[0]);
-map->to =   strdup(fields[1]);
+map->to = strdup(fields[1]);
 map->fdev = iconfig(fields[0]);
 map->tdev = nil;
 if (access(map->to, AEXIST) < 0) {
@@ -105,7 +105,7 @@ conf.nlgmsg = 100;
 conf.nsmmsg = 500;
 localconfinit();
 conf.nwpath = conf.nfile*8;
-conf.nauth =  conf.nfile/10;
+conf.nauth = conf.nfile/10;
 conf.gidspace = conf.nuid*3;
 cons.flags = 0;
 if (conf.devmap)

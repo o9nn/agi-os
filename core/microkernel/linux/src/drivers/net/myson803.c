@@ -9,17 +9,17 @@ static int rx_copybreak = 0;
 #define MAX_UNITS 8
 static int options[MAX_UNITS] = {-1, -1, -1, -1, -1, -1, -1, -1};
 static int full_duplex[MAX_UNITS] = {-1, -1, -1, -1, -1, -1, -1, -1};
-#define TX_RING_SIZE	16
-#define TX_QUEUE_LEN	10
-#define RX_RING_SIZE	32
-#define TX_TIMEOUT  (6*HZ)
-#define PKT_BUF_SZ		1536
+#define TX_RING_SIZE 16
+#define TX_QUEUE_LEN 10
+#define RX_RING_SIZE 32
+#define TX_TIMEOUT (6*HZ)
+#define PKT_BUF_SZ 1536
 #ifndef __KERNEL__
 #define __KERNEL__
 #endif
 #if !defined(__OPTIMIZE__)
-#warning  You must compile this file with the correct options!
-#warning  See the last lines of the source file.
+#warning You must compile this file with the correct options!
+#warning See the last lines of the source file.
 #error You must compile this driver with "-O".
 #endif
 #include <linux/config.h>
@@ -60,12 +60,12 @@ static int full_duplex[MAX_UNITS] = {-1, -1, -1, -1, -1, -1, -1, -1};
 #include "pci-scan.h"
 #include "kern_compat.h"
 #endif
-#define virt_to_le32desc(addr)  cpu_to_le32(virt_to_bus(addr))
-#define le32desc_to_virt(addr)  bus_to_virt(le32_to_cpu(addr))
-#if (LINUX_VERSION_CODE >= 0x20100)  &&  defined(MODULE)
+#define virt_to_le32desc(addr) cpu_to_le32(virt_to_bus(addr))
+#define le32desc_to_virt(addr) bus_to_virt(le32_to_cpu(addr))
+#if (LINUX_VERSION_CODE >= 0x20100) && defined(MODULE)
 char kernel_version[] = UTS_RELEASE;
 #endif
-#if (LINUX_VERSION_CODE < 0x20100)  ||  ! defined(MODULE)
+#if (LINUX_VERSION_CODE < 0x20100) || ! defined(MODULE)
 #define USE_IO_OPS
 #endif
 MODULE_AUTHOR("Donald Becker <becker@scyld.com>");
@@ -92,11 +92,11 @@ long ioaddr, int irq, int chip_idx, int find_cnt);
 static int netdev_pwr_event(void *dev_instance, int event);
 enum chip_capability_flags { HasMIIXcvr=1, HasChipXcvr=2 };
 #ifdef USE_IO_OPS
-#define PCI_IOTYPE (PCI_USES_MASTER | PCI_USES_IO  | PCI_ADDR0)
-#define PCI_IOSIZE	256
+#define PCI_IOTYPE (PCI_USES_MASTER | PCI_USES_IO | PCI_ADDR0)
+#define PCI_IOSIZE 256
 #else
 #define PCI_IOTYPE (PCI_USES_MASTER | PCI_USES_MEM | PCI_ADDR1)
-#define PCI_IOSIZE	1024
+#define PCI_IOSIZE 1024
 #endif
 static struct pci_id_info pci_id_tbl[] = {
 {"Myson mtd803 Fast Ethernet", {0x08031516, 0xffffffff, },
@@ -169,7 +169,7 @@ TxIntrOnDone=0x80000000, TxIntrOnFIFO=0x40000000,
 TxDescEndPacket=0x20000000, TxDescStartPacket=0x10000000,
 TxAppendCRC=0x08000000, TxPadTo64=0x04000000, TxNormalPkt=0x3C000000,
 };
-#define PRIV_ALIGN	15
+#define PRIV_ALIGN 15
 struct netdev_private {
 struct netdev_desc rx_ring[RX_RING_SIZE];
 struct netdev_desc tx_ring[TX_RING_SIZE];
@@ -202,25 +202,25 @@ int mii_cnt;
 u16 advertising;
 unsigned char phys[2];
 };
-static int  eeprom_read(long ioaddr, int location);
-static int  mdio_read(struct net_device *dev, int phy_id,
+static int eeprom_read(long ioaddr, int location);
+static int mdio_read(struct net_device *dev, int phy_id,
 unsigned int location);
 static void mdio_write(struct net_device *dev, int phy_id,
 unsigned int location, int value);
-static int  netdev_open(struct net_device *dev);
+static int netdev_open(struct net_device *dev);
 static void check_duplex(struct net_device *dev);
 static void netdev_timer(unsigned long data);
 static void tx_timeout(struct net_device *dev);
 static void init_ring(struct net_device *dev);
-static int  start_tx(struct sk_buff *skb, struct net_device *dev);
+static int start_tx(struct sk_buff *skb, struct net_device *dev);
 static void intr_handler(int irq, void *dev_instance, struct pt_regs *regs);
 static void netdev_error(struct net_device *dev, int intr_status);
-static int  netdev_rx(struct net_device *dev);
+static int netdev_rx(struct net_device *dev);
 static void netdev_error(struct net_device *dev, int intr_status);
 static void set_rx_mode(struct net_device *dev);
 static struct net_device_stats *get_stats(struct net_device *dev);
 static int mii_ioctl(struct net_device *dev, struct ifreq *rq, int cmd);
-static int  netdev_close(struct net_device *dev);
+static int netdev_close(struct net_device *dev);
 static struct net_device *root_net_dev = NULL;
 #ifndef MODULE
 int myson803_probe(struct net_device *dev)
@@ -288,7 +288,7 @@ np->default_port = option & 0x3ff;
 if (np->default_port)
 np->medialock = 1;
 }
-if (card_idx < MAX_UNITS  &&  full_duplex[card_idx] > 0)
+if (card_idx < MAX_UNITS && full_duplex[card_idx] > 0)
 np->full_duplex = 1;
 if (np->full_duplex) {
 if (np->msg_level & NETIF_MSG_PROBE)
@@ -306,7 +306,7 @@ if (np->drv_flags & HasMIIXcvr) {
 int phy, phy_idx = 0;
 for (phy = 0; phy < 32 && phy_idx < 4; phy++) {
 int mii_status = mdio_read(dev, phy, 1);
-if (mii_status != 0xffff  &&  mii_status != 0x0000) {
+if (mii_status != 0xffff && mii_status != 0x0000) {
 np->phys[phy_idx++] = phy;
 np->advertising = mdio_read(dev, phy, 4);
 if (np->msg_level & NETIF_MSG_PROBE)
@@ -337,7 +337,7 @@ mdio_write(dev, np->phys[0], 0,
 }
 return dev;
 }
-#define eeprom_delay(ee_addr)	readl(ee_addr); udelay(2); readl(ee_addr)
+#define eeprom_delay(ee_addr) readl(ee_addr); udelay(2); readl(ee_addr)
 enum EEPROM_Ctrl_Bits {
 EE_ShiftClk=0x04<<16, EE_ChipSelect=0x88<<16,
 EE_DataOut=0x02<<16, EE_DataIn=0x01<<16,
@@ -378,7 +378,7 @@ static char mii_preamble_required = 0;
 enum mii_reg_bits {
 MDIO_ShiftClk=0x0001, MDIO_Data=0x0002, MDIO_EnbOutput=0x0004,
 };
-#define MDIO_EnbIn  (0)
+#define MDIO_EnbIn (0)
 #define MDIO_WRITE0 (MDIO_EnbOutput)
 #define MDIO_WRITE1 (MDIO_Data | MDIO_EnbOutput)
 static void mdio_sync(long mdio_addr)
@@ -437,7 +437,7 @@ long ioaddr = dev->base_addr;
 long mdio_addr = ioaddr + MIICtrl;
 int mii_cmd = (0x5002 << 16) | (phy_id << 23) | (location<<18) | value;
 int i;
-if (location == 4  &&  phy_id == np->phys[0])
+if (location == 4 && phy_id == np->phys[0])
 np->advertising = value;
 else if (location >= 32)
 return;
@@ -522,7 +522,7 @@ if (np->medialock) {
 int mii_reg5 = mdio_read(dev, np->phys[0], 5);
 int negotiated = mii_reg5 & np->advertising;
 int duplex = (negotiated & 0x0100) || (negotiated & 0x01C0) == 0x0040;
-if (np->duplex_lock  ||  mii_reg5 == 0xffff)
+if (np->duplex_lock || mii_reg5 == 0xffff)
 return;
 if (duplex)
 new_tx_mode |= TxModeFDX;
@@ -547,8 +547,8 @@ if (np->msg_level & NETIF_MSG_TIMER) {
 printk(KERN_DEBUG "%s: Media selection timer tick, status %8.8x.\n",
 dev->name, (int)readw(ioaddr + PHYMgmt + 10));
 }
-if (netif_queue_paused(dev)  &&
-np->cur_tx - np->dirty_tx > 1  &&
+if (netif_queue_paused(dev) &&
+np->cur_tx - np->dirty_tx > 1 &&
 (jiffies - dev->trans_start) > TX_TIMEOUT) {
 tx_timeout(dev);
 }
@@ -667,7 +667,7 @@ return;
 ioaddr = dev->base_addr;
 np = (struct netdev_private *)dev->priv;
 boguscnt = np->max_interrupt_work;
-#if defined(__i386__)  &&  LINUX_VERSION_CODE < 0x020300
+#if defined(__i386__) && LINUX_VERSION_CODE < 0x020300
 if (test_and_set_bit(0, (void*)&dev->interrupt)) {
 printk(KERN_ERR"%s: SMP simultaneous entry of an interrupt handler.\n",
 dev->name);
@@ -722,7 +722,7 @@ if (tx_status & TxErrDefer) np->stats.tx_deferred++;
 dev_free_skb_irq(np->tx_skbuff[entry]);
 np->tx_skbuff[entry] = 0;
 }
-if (np->tx_full  &&  np->cur_tx - np->dirty_tx < TX_QUEUE_LEN - 4) {
+if (np->tx_full && np->cur_tx - np->dirty_tx < TX_QUEUE_LEN - 4) {
 np->tx_full = 0;
 netif_resume_tx_queue(dev);
 }
@@ -739,7 +739,7 @@ break;
 if (np->msg_level & NETIF_MSG_INTR)
 printk(KERN_DEBUG "%s: exiting interrupt, status=%#4.4x.\n",
 dev->name, (int)readl(ioaddr + IntrStatus));
-#if defined(__i386__)  &&  LINUX_VERSION_CODE < 0x020300
+#if defined(__i386__) && LINUX_VERSION_CODE < 0x020300
 clear_bit(0, (void*)&dev->interrupt);
 #endif
 return;
@@ -911,8 +911,8 @@ long ioaddr = dev->base_addr;
 struct netdev_private *np = (struct netdev_private *)dev->priv;
 unsigned int rxerrs = readl(ioaddr + RxErrCnts);
 unsigned int txerrs = readl(ioaddr + TxErrCnts);
-np->stats.rx_crc_errors	+= rxerrs >> 16;
-np->stats.rx_missed_errors	+= rxerrs & 0xffff;
+np->stats.rx_crc_errors += rxerrs >> 16;
+np->stats.rx_missed_errors += rxerrs & 0xffff;
 np->stats.tx_aborted_errors += txerrs >> 24;
 np->stats.tx_window_errors += (txerrs >> 16) & 0xff;
 np->stats.collisions += txerrs & 0xffff;
@@ -943,7 +943,7 @@ mc_filter[1] = mc_filter[0] = ~0;
 rx_mode = AcceptBroadcast | AcceptMulticast | AcceptAllPhys
 | AcceptMyPhys;
 } else if ((dev->mc_count > np->multicast_filter_limit)
-||  (dev->flags & IFF_ALLMULTI)) {
+|| (dev->flags & IFF_ALLMULTI)) {
 mc_filter[1] = mc_filter[0] = ~0;
 rx_mode = AcceptBroadcast | AcceptMulticast | AcceptMyPhys;
 } else {
@@ -957,7 +957,7 @@ mc_filter);
 }
 rx_mode = AcceptBroadcast | AcceptMulticast | AcceptMyPhys;
 }
-if (mc_filter[0] != np->mcast_filter[0]  ||
+if (mc_filter[0] != np->mcast_filter[0] ||
 mc_filter[1] != np->mcast_filter[1]) {
 writel(mc_filter[0], ioaddr + MulticastFilter0);
 writel(mc_filter[1], ioaddr + MulticastFilter1);

@@ -3,7 +3,7 @@
 #include "priv.h"
 #include "fs_S.h"
 #ifndef ST_RELATIME
-#  define ST_RELATIME 64
+# define ST_RELATIME 64
 #endif
 kern_return_t
 diskfs_S_file_statfs (struct protid *file,

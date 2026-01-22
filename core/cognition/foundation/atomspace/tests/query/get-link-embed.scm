@@ -3,37 +3,37 @@
 (Inheritance (Concept "Linas") (Concept "human"))
 (Inheritance (Concept "Sparky") (Concept "dog"))
 (define is-human
-	(GetLink
-		(Present (Inheritance (Variable "$H") (Concept "human")))))
+(GetLink
+(Present (Inheritance (Variable "$H") (Concept "human")))))
 (define is-something
-	(GetLink
-		(And
-			(Present (Inheritance (Variable "$A") (Variable "$B")))
-			(TypedVariable (Variable "$A") (Type 'Concept))
-		)))
+(GetLink
+(And
+(Present (Inheritance (Variable "$A") (Variable "$B")))
+(TypedVariable (Variable "$A") (Type 'Concept))
+)))
 (define is-nothing
-	(GetLink
-		(And
-			(Present (Inheritance (Variable "$H") (Concept "human")))
-			(TypedVariable (Variable "$H") (TypeChoice))
-		)))
+(GetLink
+(And
+(Present (Inheritance (Variable "$H") (Concept "human")))
+(TypedVariable (Variable "$H") (TypeChoice))
+)))
 (define g-take-contain
-   (Get
-      (And
-			(Present
-         	(Evaluation
-            	(Predicate "take")
-            	(List (Variable "$X") (Concept "treatment-1"))))
-         (TypedVariable (Variable "$X") (Type "Concept"))
-			(Present
-         	(Evaluation
-            	(Predicate "contain")
-            	(List (Concept "treatment-1") (Variable "$Z"))))
-         (TypedVariable (Variable "$Z") (Type "Concept"))
-      )))
+(Get
+(And
+(Present
 (Evaluation
-   (Predicate "take")
-   (List (Concept "John") (Concept "treatment-1")))
+(Predicate "take")
+(List (Variable "$X") (Concept "treatment-1"))))
+(TypedVariable (Variable "$X") (Type "Concept"))
+(Present
 (Evaluation
-   (Predicate "contain")
-   (List (Concept "treatment-1") (Concept "compound-A")))
+(Predicate "contain")
+(List (Concept "treatment-1") (Variable "$Z"))))
+(TypedVariable (Variable "$Z") (Type "Concept"))
+)))
+(Evaluation
+(Predicate "take")
+(List (Concept "John") (Concept "treatment-1")))
+(Evaluation
+(Predicate "contain")
+(List (Concept "treatment-1") (Concept "compound-A")))

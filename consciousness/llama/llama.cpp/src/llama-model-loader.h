@@ -17,11 +17,11 @@ GGUF_FILE_VERSION_V3 = 3,
 const char * llama_file_version_name(llama_fver version);
 struct llama_model_loader {
 struct llama_tensor_weight {
-uint16_t  idx;
-size_t   offs;
+uint16_t idx;
+size_t offs;
 ggml_tensor * tensor;
 llama_tensor_weight(const llama_file * file, uint16_t idx, const struct gguf_context * gguf_ctx, ggml_tensor * tensor) : idx(idx), tensor(tensor) {
-const int tensor_idx = gguf_find_tensor(gguf_ctx,  ggml_get_name(tensor));
+const int tensor_idx = gguf_find_tensor(gguf_ctx, ggml_get_name(tensor));
 if (tensor_idx < 0) {
 throw std::runtime_error(format("tensor '%s' not found in the model", ggml_get_name(tensor)));
 }
@@ -44,17 +44,17 @@ return a < b;
 }
 };
 static const int TENSOR_NOT_REQUIRED = 1;
-static const int TENSOR_DUPLICATED   = 2;
-int n_kv      = 0;
+static const int TENSOR_DUPLICATED = 2;
+int n_kv = 0;
 int n_tensors = 0;
 int n_created = 0;
 uint64_t n_elements = 0;
-size_t   n_bytes    = 0;
+size_t n_bytes = 0;
 bool use_mmap = false;
 bool check_tensors;
 llama_files files;
 llama_ftype ftype;
-llama_fver  fver;
+llama_fver fver;
 llama_mmaps mappings;
 std::map<std::string, llama_tensor_weight, weight_name_comparer> weights_map;
 std::unordered_map<std::string, llama_model_kv_override> kv_overrides;
@@ -62,7 +62,7 @@ const llama_model_tensor_buft_override * tensor_buft_overrides;
 gguf_context_ptr meta;
 std::vector<ggml_context_ptr> contexts;
 std::string arch_name;
-LLM_KV      llm_kv    = LLM_KV(LLM_ARCH_UNKNOWN);
+LLM_KV llm_kv = LLM_KV(LLM_ARCH_UNKNOWN);
 size_t size_done = 0;
 size_t size_data = 0;
 std::vector<std::pair<size_t, size_t>> mmaps_used;

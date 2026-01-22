@@ -96,7 +96,7 @@ assert(params.cpuparams.n_threads == 1010);
 if (common_has_curl()) {
 printf("test-arg-parser: test curl-related functions\n\n");
 const char * GOOD_URL = "https:
-const char * BAD_URL  = "https:
+const char * BAD_URL = "https:
 const char * BIG_FILE = "https:
 {
 printf("test-arg-parser: test good URL\n\n");

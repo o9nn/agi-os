@@ -9,8 +9,8 @@ int open_tty(void)
 int open_tty()
 #endif
 {
-int             fd;
-SIG_T         (*intr)();
+int fd;
+SIG_T (*intr)();
 if ((intr = signal(SIGINT, SIG_IGN)) == SIG_IGN) {
 return (-1);
 }
@@ -28,14 +28,14 @@ return (-1);
 int nextask(char *msg, char *answer, int limit)
 #else
 int nextask(msg, answer, limit)
-char           *msg;
-char           *answer;
-int             limit;
+char *msg;
+char *answer;
+int limit;
 #endif
 {
-int             idx;
-int             got;
-char            c;
+int idx;
+int got;
+char c;
 if (ttyf < 0) {
 fatal("/dev/tty Unavailable");
 }
@@ -63,11 +63,11 @@ return(0);
 int lineget(FILE *stream, char *buf)
 #else
 int lineget(stream, buf)
-FILE           *stream;
-char           *buf;
+FILE *stream;
+char *buf;
 #endif
 {
-int             c;
+int c;
 for (;;) {
 if ((c = getc(stream)) == EOF) {
 return (-1);
@@ -84,12 +84,12 @@ return (0);
 void next(int mode)
 #else
 void next(mode)
-int             mode;
+int mode;
 #endif
 {
-char            msg[200];
-char            answer[20];
-int             ret;
+char msg[200];
+char answer[20];
+int ret;
 close_archive();
 sprintf(msg, "%s: Ready for volume %u\n%s: Type \"go\" when ready to proceed (or \"quit\" to abort): \07",
 myname, arvolume + 1, myname);

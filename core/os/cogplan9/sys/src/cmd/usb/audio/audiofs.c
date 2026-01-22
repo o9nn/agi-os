@@ -11,46 +11,46 @@ int attachok;
 #define STACKSIZE 16*1024
 enum
 {
-OPERM	= 0x3,
+OPERM = 0x3,
 };
 typedef struct Fid Fid;
 typedef struct Audioctldata Audioctldata;
 typedef struct Worker Worker;
 struct Audioctldata
 {
-long	offoff;
-long	values[2][Ncontrol][8];
-char	*s;
-int	ns;
+long offoff;
+long values[2][Ncontrol][8];
+char *s;
+int ns;
 };
 enum {
-Busy =	0x01,
-Open =	0x02,
-Eof =	0x04,
+Busy = 0x01,
+Open = 0x02,
+Eof = 0x04,
 };
 struct Fid
 {
 QLock;
-int	fid;
-Dir	*dir;
-ushort	flags;
-short	readers;
-void	*fiddata;
-Fid	*next;
+int fid;
+Dir *dir;
+ushort flags;
+short readers;
+void *fiddata;
+Fid *next;
 };
 struct Worker
 {
-Fid	*fid;
-ushort	tag;
-Fcall	*rhdr;
-Dir	*dir;
-Channel	*eventc;
-Worker	*next;
+Fid *fid;
+ushort tag;
+Fcall *rhdr;
+Dir *dir;
+Channel *eventc;
+Worker *next;
 };
 enum {
-Work =	0x01,
-Check =	0x02,
-Flush =	0x03,
+Work = 0x01,
+Check = 0x02,
+Flush = 0x03,
 };
 enum {
 Qdir,
@@ -60,16 +60,16 @@ Qaudiostat,
 Nqid,
 };
 Dir dirs[] = {
-[Qdir] =		{0,0,{Qdir,      0,QTDIR},0555|DMDIR,0,0,0, ".",  nil,nil,nil},
-[Qvolume] =	{0,0,{Qvolume,   0,QTFILE},0666,0,0,0,	"volume", nil,nil,nil},
-[Qaudioctl] =	{0,0,{Qaudioctl, 0,QTFILE},0666,0,0,0,	"audioctl",nil,nil,nil},
-[Qaudiostat] =	{0,0,{Qaudiostat,0,QTFILE},0666,0,0,0,	"audiostat",nil,nil,nil},
+[Qdir] = {0,0,{Qdir, 0,QTDIR},0555|DMDIR,0,0,0, ".", nil,nil,nil},
+[Qvolume] = {0,0,{Qvolume, 0,QTFILE},0666,0,0,0, "volume", nil,nil,nil},
+[Qaudioctl] = {0,0,{Qaudioctl, 0,QTFILE},0666,0,0,0, "audioctl",nil,nil,nil},
+[Qaudiostat] = {0,0,{Qaudiostat,0,QTFILE},0666,0,0,0, "audiostat",nil,nil,nil},
 };
-int	messagesize = 4*1024+IOHDRSZ;
-uchar	mdata[8*1024+IOHDRSZ];
-uchar	mbuf[8*1024+IOHDRSZ];
-Fcall	thdr;
-Fcall	rhdr;
+int messagesize = 4*1024+IOHDRSZ;
+uchar mdata[8*1024+IOHDRSZ];
+uchar mbuf[8*1024+IOHDRSZ];
+Fcall thdr;
+Fcall rhdr;
 Worker *workers;
 char srvfile[64], mntdir[64], epdata[64], audiofile[64];
 int mfd[2], p[2];
@@ -78,42 +78,42 @@ char *srvpost;
 Channel *procchan;
 Channel *replchan;
 Fid *fids;
-Fid*		newfid(int);
-void		io(void *);
-void		usage(void);
+Fid* newfid(int);
+void io(void *);
+void usage(void);
 extern char *mntpt;
-char	*rflush(Fid*), *rauth(Fid*),
+char *rflush(Fid*), *rauth(Fid*),
 *rattach(Fid*), *rwalk(Fid*),
 *ropen(Fid*), *rcreate(Fid*),
 *rread(Fid*), *rwrite(Fid*), *rclunk(Fid*),
 *rremove(Fid*), *rstat(Fid*), *rwstat(Fid*),
 *rversion(Fid*);
-char 	*(*fcalls[])(Fid*) = {
-[Tflush]	rflush,
-[Tversion]	rversion,
-[Tauth]		rauth,
-[Tattach]	rattach,
-[Twalk]		rwalk,
-[Topen]		ropen,
-[Tcreate]	rcreate,
-[Tread]		rread,
-[Twrite]	rwrite,
-[Tclunk]	rclunk,
-[Tremove]	rremove,
-[Tstat]		rstat,
-[Twstat]	rwstat,
+char *(*fcalls[])(Fid*) = {
+[Tflush] rflush,
+[Tversion] rversion,
+[Tauth] rauth,
+[Tattach] rattach,
+[Twalk] rwalk,
+[Topen] ropen,
+[Tcreate] rcreate,
+[Tread] rread,
+[Twrite] rwrite,
+[Tclunk] rclunk,
+[Tremove] rremove,
+[Tstat] rstat,
+[Twstat] rwstat,
 };
-char	Eperm[] =	"permission denied";
-char	Enotdir[] =	"not a directory";
-char	Enoauth[] =	"no authentication in ramfs";
-char	Enotexist[] =	"file does not exist";
-char	Einuse[] =	"file in use";
-char	Eexist[] =	"file exists";
-char	Enotowner[] =	"not owner";
-char	Eisopen[] = 	"file already open for I/O";
-char	Excl[] = 	"exclusive use file already open";
-char	Ename[] = 	"illegal name";
-char	Ebadctl[] =	"unknown control message";
+char Eperm[] = "permission denied";
+char Enotdir[] = "not a directory";
+char Enoauth[] = "no authentication in ramfs";
+char Enotexist[] = "file does not exist";
+char Einuse[] = "file in use";
+char Eexist[] = "file exists";
+char Enotowner[] = "not owner";
+char Eisopen[] = "file already open for I/O";
+char Excl[] = "exclusive use file already open";
+char Ename[] = "illegal name";
+char Ebadctl[] = "unknown control message";
 int
 notifyf(void *, char *s)
 {

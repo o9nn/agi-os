@@ -4,13 +4,13 @@ import { TranslateService } from './translate.service';
 import { TranslatePipe } from './translate.pipe';
 import { TRANSLATION_PROVIDERS } from './translations';
 @NgModule({
-  declarations: [
-    TranslatePipe
-  ],
-  imports: [
-    CommonModule,
-  ],
-  providers: [TranslateService, TRANSLATION_PROVIDERS],
-  exports: [TranslatePipe]
+declarations: [
+TranslatePipe
+],
+imports: [
+CommonModule,
+],
+providers: [TranslateService, TRANSLATION_PROVIDERS],
+exports: [TranslatePipe]
 })
 export class TranslateModule { }

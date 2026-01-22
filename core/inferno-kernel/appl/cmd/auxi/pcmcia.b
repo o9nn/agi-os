@@ -1,7 +1,7 @@
 implement Pcmcia;
 #
-# Copyright © 1995-2001 Lucent Technologies Inc.  All rights reserved.
-# Revisions Copyright © 2001-2003 Vita Nuova Holdings Limited.  All rights reserved.
+# Copyright © 1995-2001 Lucent Technologies Inc. All rights reserved.
+# Revisions Copyright © 2001-2003 Vita Nuova Holdings Limited. All rights reserved.
 #
 include "sys.m";
 sys: Sys;
@@ -9,9 +9,9 @@ print, fprint: import sys;
 include "draw.m";
 Pcmcia: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
-End:	con 16rFF;
+End: con 16rFF;
 fd: ref Sys->FD;
 stderr: ref Sys->FD;
 pos := 0;
@@ -66,12 +66,12 @@ return -1;
 if((link := readc()) < 0)
 return -1;
 case ttype {
-* =>	print("unknown tuple type #%2.2ux\n", ttype);
-16r01 =>	tdevice(ttype, link);
-16r15 =>	tvers1(ttype, link);
-16r17 =>	tdevice(ttype, link);
-16r1A =>	tcfig(ttype, link);
-16r1B =>	tentry(ttype, link);
+* => print("unknown tuple type #%2.2ux\n", ttype);
+16r01 => tdevice(ttype, link);
+16r15 => tvers1(ttype, link);
+16r17 => tdevice(ttype, link);
+16r1A => tcfig(ttype, link);
+16r1B => tentry(ttype, link);
 }
 if(link == End)
 next = -1;
@@ -81,27 +81,27 @@ return next;
 }
 speedtab := array[16] of {
 0 => 0,
-1 =>	250,
-2 =>	200,
-3 =>	150,
-4 =>	100,
+1 => 250,
+2 => 200,
+3 => 150,
+4 => 100,
 };
 mantissa := array[16] of {
-1 =>	10,
-2 =>	12,
-3 =>	13,
-4 =>	15,
-5 =>	20,
-6 =>	25,
-7 =>	30,
-8 =>	35,
-9 =>	40,
-10=>	45,
-11=>	50,
-12=>	55,
-13=>	60,
-14=>	70,
-15=>	80,
+1 => 10,
+2 => 12,
+3 => 13,
+4 => 15,
+5 => 20,
+6 => 25,
+7 => 30,
+8 => 35,
+9 => 40,
+10=> 45,
+11=> 50,
+12=> 55,
+13=> 60,
+14=> 70,
+15=> 80,
 };
 exponent := array[] of {
 1,
@@ -114,14 +114,14 @@ exponent := array[] of {
 10000000,
 };
 typetab := array [256] of {
-1=>	"Masked ROM",
-2=>	"PROM",
-3=>	"EPROM",
-4=>	"EEPROM",
-5=>	"FLASH",
-6=>	"SRAM",
-7=>	"DRAM",
-16rD=>	"IO+MEM",
+1=> "Masked ROM",
+2=> "PROM",
+3=> "EPROM",
+4=> "EEPROM",
+5=> "FLASH",
+6=> "SRAM",
+7=> "DRAM",
+16rD=> "IO+MEM",
 * => "Unknown",
 };
 getlong(size: int): int
@@ -219,13 +219,13 @@ print(" (%d) #%ux", i, caddr + i*2);
 print("\n");
 }
 intrname := array[16] of {
-0 =>	"memory",
-1 =>	"I/O",
-4 =>	"Custom 0",
-5 =>	"Custom 1",
-6 =>	"Custom 2",
-7 =>	"Custom 3",
-* =>	"unknown"
+0 => "memory",
+1 => "I/O",
+4 => "Custom 0",
+5 => "Custom 1",
+6 => "Custom 2",
+7 => "Custom 3",
+* => "unknown"
 };
 vexp := array[8] of {
 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000
@@ -244,9 +244,9 @@ if((c = readc()) < 0)
 return;
 case c {
 16r7d =>
-break;		# high impedence when sleeping
+break; # high impedence when sleeping
 16r7e or 16r7f =>
-microv = 0;	# no connection
+microv = 0; # no connection
 * =>
 exp /= 10;
 microv += exp*(c&16r7f);

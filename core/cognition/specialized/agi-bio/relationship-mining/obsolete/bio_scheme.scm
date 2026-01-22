@@ -6,77 +6,77 @@
 (define knowledge-dir "../../bio-data/scheme-representations/")
 (define subgraph-dir (string-append knowledge-dir "subgraphs/"))
 (define (loadf f)
-    (load (string-append knowledge-dir f)))
+(load (string-append knowledge-dir f)))
 (define (loadsub f) (load (string-append subgraph-dir f)))
 (define (loadGO1K)
-    (loadf "subgraphs/subgraph_1K_GO.scm")
-    (set_bio_tvs))
+(loadf "subgraphs/subgraph_1K_GO.scm")
+(set_bio_tvs))
 (define (load1K)
-    (loadf "subgraphs/subgraph_1K.scm")
-    (set_bio_tvs))
+(loadf "subgraphs/subgraph_1K.scm")
+(set_bio_tvs))
 (define (set_bio_tvs)
-    (default_gene_tvs)
-    (default_concept_tvs))
+(default_gene_tvs)
+(default_concept_tvs))
 (define (load-bio-rules) (load "../bio-ure-config.scm"))
 (define countall count-all)
 (define prt cog-prt-atomspace)
 (define (set_gene_tvs strength confidence)
-    (let ([genes (cog-get-atoms 'GeneNode)])
-       (for-each (lambda (gene)       
-            (cog-set-tv! gene (cog-new-stv strength confidence))) 
-            genes)))
+(let ([genes (cog-get-atoms 'GeneNode)])
+(for-each (lambda (gene)
+(cog-set-tv! gene (cog-new-stv strength confidence)))
+genes)))
 (define (set_concept_tvs strength confidence)
-    (let ([nodes (cog-get-atoms 'ConceptNode)])
-        (for-each (lambda (node)
-            (cog-set-tv! node (cog-new-stv strength confidence)))
-            nodes)))
+(let ([nodes (cog-get-atoms 'ConceptNode)])
+(for-each (lambda (node)
+(cog-set-tv! node (cog-new-stv strength confidence)))
+nodes)))
 (define (default_gene_tvs) (set_gene_tvs .00001 .9))
 (define (default_concept_tvs) (set_concept_tvs .001 .9))
 (define (do_one_steps source)
-    (do ((i 1 (1+ i)))
-        ((> i 100))
-      (cog-fc-em source cpolicy)))
+(do ((i 1 (1+ i)))
+((> i 100))
+(cog-fc-em source cpolicy)))
 (define (do_one_steps_def)
-    (do_one_steps (GeneNode "SHANK2")))
+(do_one_steps (GeneNode "SHANK2")))
 (define pattern_match_go_terms
-    (BindLink
-        (VariableNode "$go")
-        (ImplicationLink
-            (InheritanceLink
-                (VariableNode "$go")
-                (ConceptNode "GO_term"))
-            (VariableNode "$go"))))
+(BindLink
+(VariableNode "$go")
+(ImplicationLink
+(InheritanceLink
+(VariableNode "$go")
+(ConceptNode "GO_term"))
+(VariableNode "$go"))))
 (define (loadtemp)
-  (load "temp.scm"))
+(load "temp.scm"))
 #|
 (define get_go_terms
-    (cog-outgoing-set (cog-bind pattern_match_go_terms)))
+(cog-outgoing-set (cog-bind pattern_match_go_terms)))
 (define (get_inheritance_child_nodes parent)
-    (cog-bind
-        (BindLink
-            (ListLink
-                (VariableNode "$child"))
-            (ImplicationLink
-                    (InheritanceLink
-                        (VariableNode "$child")
-                        (ConceptNode parent))
-                (VariableNode "$child")))))
+(cog-bind
+(BindLink
+(ListLink
+(VariableNode "$child"))
+(ImplicationLink
+(InheritanceLink
+(VariableNode "$child")
+(ConceptNode parent))
+(VariableNode "$child")))))
 (define (get_members_of setname)
-    (cog-bind
-        (BindLink
-            (VariableNode "$member") 
-            (ImplicationLink
-                (MemberLink
-                    (VariableNode "$member")
-                    (ConceptNode setname))
-                (VariableNode "$member")))))
+(cog-bind
+(BindLink
+(VariableNode "$member")
+(ImplicationLink
+(MemberLink
+(VariableNode "$member")
+(ConceptNode setname))
+(VariableNode "$member")))))
 (define (get_sets_for_member membername)
-    (cog-bind
-        (BindLink
-            (VariableNode "$setname")
-            (ImplicationLink
-                (MemberLink
-                    (GeneNode membername)
-                    (VariableNode "$setname"))
-                (VariableNode "$setname")))))
+(cog-bind
+(BindLink
+(VariableNode "$setname")
+(ImplicationLink
+(MemberLink
+(GeneNode membername)
+(VariableNode "$setname"))
+(VariableNode "$setname")))))
 |#

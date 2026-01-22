@@ -1,5 +1,5 @@
 #ifndef gxfrac_INCLUDED
-#  define gxfrac_INCLUDED
+# define gxfrac_INCLUDED
 typedef short frac;
 typedef short signed_frac;
 #define arch_log2_sizeof_frac arch_log2_sizeof_short

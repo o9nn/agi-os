@@ -1,17 +1,17 @@
-#define	EXTERN
-#include	"l.h"
-#include	<ar.h>
-#ifndef	DEFAULT
-#define	DEFAULT	'9'
+#define EXTERN
+#include "l.h"
+#include <ar.h>
+#ifndef DEFAULT
+#define DEFAULT '9'
 #endif
-#define	OANAME	229
-char	*noname		= "<none>";
-char	symname[]	= SYMDEF;
-char	thechar		= 'q';
-char	*thestring 	= "power";
-char**	libdir;
-int	nlibdir	= 0;
-static	int	maxlibdir = 0;
+#define OANAME 229
+char *noname = "<none>";
+char symname[] = SYMDEF;
+char thechar = 'q';
+char *thestring = "power";
+char** libdir;
+int nlibdir = 0;
+static int maxlibdir = 0;
 void
 usage(void)
 {

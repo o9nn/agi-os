@@ -23,20 +23,20 @@ m[3][3]=1;
 #else
 double Nq = q.r*q.r+q.i*q.i+q.j*q.j+q.k*q.k;
 double s = (Nq > 0.0) ? (2.0 / Nq) : 0.0;
-double xs = q.i*s,		ys = q.j*s,		zs = q.k*s;
-double wx = q.r*xs,		wy = q.r*ys,		wz = q.r*zs;
-double xx = q.i*xs,		xy = q.i*ys,		xz = q.i*zs;
-double yy = q.j*ys,		yz = q.j*zs,		zz = q.k*zs;
-m[0][0] = 1.0 - (yy + zz); m[1][0] = xy + wz;         m[2][0] = xz - wy;
-m[0][1] = xy - wz;         m[1][1] = 1.0 - (xx + zz); m[2][1] = yz + wx;
-m[0][2] = xz + wy;         m[1][2] = yz - wx;         m[2][2] = 1.0 - (xx + yy);
+double xs = q.i*s, ys = q.j*s, zs = q.k*s;
+double wx = q.r*xs, wy = q.r*ys, wz = q.r*zs;
+double xx = q.i*xs, xy = q.i*ys, xz = q.i*zs;
+double yy = q.j*ys, yz = q.j*zs, zz = q.k*zs;
+m[0][0] = 1.0 - (yy + zz); m[1][0] = xy + wz; m[2][0] = xz - wy;
+m[0][1] = xy - wz; m[1][1] = 1.0 - (xx + zz); m[2][1] = yz + wx;
+m[0][2] = xz + wy; m[1][2] = yz - wx; m[2][2] = 1.0 - (xx + yy);
 m[0][3] = m[1][3] = m[2][3] = m[3][0] = m[3][1] = m[3][2] = 0.0;
 m[3][3] = 1.0;
 #endif
 }
 Quaternion mtoq(Matrix mat){
 #ifndef new
-#define	EPS	1.387778780781445675529539585113525e-17
+#define EPS 1.387778780781445675529539585113525e-17
 double t;
 Quaternion q;
 q.r=0.;

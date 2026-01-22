@@ -1,5 +1,5 @@
 #ifndef stdpn_INCLUDED
-#  define stdpn_INCLUDED
+# define stdpn_INCLUDED
 #define P0() void
 #define P1(t1) t1
 #define P2(t1,t2) t1,t2

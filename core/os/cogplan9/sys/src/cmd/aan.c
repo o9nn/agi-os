@@ -3,11 +3,11 @@
 #include <auth.h>
 #include <fcall.h>
 #include <thread.h>
-#define NS(x)		((vlong)x)
-#define US(x)		(NS(x) * 1000LL)
-#define MS(x)		(US(x) * 1000LL)
-#define S(x)		(MS(x) * 1000LL)
-#define LOGNAME	"aan"
+#define NS(x) ((vlong)x)
+#define US(x) (NS(x) * 1000LL)
+#define MS(x) (US(x) * 1000LL)
+#define S(x) (MS(x) * 1000LL)
+#define LOGNAME "aan"
 enum {
 Synctime = S(8),
 Nbuf = 10,
@@ -21,49 +21,49 @@ Hdrsz = 12,
 };
 typedef struct Endpoints Endpoints;
 struct Endpoints {
-char	*lsys;
-char	*lserv;
-char	*rsys;
-char	*rserv;
+char *lsys;
+char *lserv;
+char *rsys;
+char *rserv;
 };
 typedef struct {
-ulong	nb;
-ulong	msg;
-ulong	acked;
+ulong nb;
+ulong msg;
+ulong acked;
 } Hdr;
 typedef struct {
-Hdr	hdr;
-uchar	buf[Bufsize];
+Hdr hdr;
+uchar buf[Bufsize];
 } Buf;
-static char	*Logname = LOGNAME;
-static int	client;
-static int	debug;
-static char	*devdir;
-static char	*dialstring;
-static int	done;
-static int	inmsg;
-static int	maxto = Maxto;
-static int	netfd;
-static Channel	*empty;
-static Channel	*unacked;
-static Channel	*unsent;
+static char *Logname = LOGNAME;
+static int client;
+static int debug;
+static char *devdir;
+static char *dialstring;
+static int done;
+static int inmsg;
+static int maxto = Maxto;
+static int netfd;
+static Channel *empty;
+static Channel *unacked;
+static Channel *unsent;
 static Alt a[] = {
-{ 	nil,	nil,	CHANRCV	},
-{	nil,	nil,	CHANRCV	},
-{ 	nil,	nil,	CHANEND	},
+{ nil, nil, CHANRCV },
+{ nil, nil, CHANRCV },
+{ nil, nil, CHANEND },
 };
-static void	dmessage(int, char *, ...);
-static void	freeendpoints(Endpoints *);
-static void	fromclient(void*);
-static void	fromnet(void*);
+static void dmessage(int, char *, ...);
+static void freeendpoints(Endpoints *);
+static void fromclient(void*);
+static void fromnet(void*);
 static Endpoints *getendpoints(char *);
-static void	packhdr(Hdr *, uchar *);
-static void	reconnect(void);
-static void	showmsg(int, char *, Buf *);
-static void	synchronize(void);
-static void	timerproc(void *);
-static void	unpackhdr(Hdr *, uchar *);
-static int	writen(int, uchar *, int);
+static void packhdr(Hdr *, uchar *);
+static void reconnect(void);
+static void showmsg(int, char *, Buf *);
+static void synchronize(void);
+static void timerproc(void *);
+static void unpackhdr(Hdr *, uchar *);
+static int writen(int, uchar *, int);
 static void
 usage(void)
 {
@@ -119,8 +119,8 @@ fmtinstall('F', fcallfmt);
 atnotify(catch, 1);
 unsent = chancreate(sizeof(Buf *), Nbuf);
 unacked= chancreate(sizeof(Buf *), Nbuf);
-empty  = chancreate(sizeof(Buf *), Nbuf);
-timer  = chancreate(sizeof(uchar *), 1);
+empty = chancreate(sizeof(Buf *), Nbuf);
+timer = chancreate(sizeof(uchar *), 1);
 for (i = 0; i != Nbuf; i++) {
 eb = malloc(sizeof(Buf));
 sendp(empty, eb);
@@ -231,7 +231,7 @@ unpackhdr(&b->hdr, buf);
 dmessage(2, "fromnet: Got message, size %d, nb %d, msg %d\n",
 len, b->hdr.nb, b->hdr.msg);
 if (b->hdr.nb == 0) {
-if  ((long)b->hdr.msg >= 0) {
+if ((long)b->hdr.msg >= 0) {
 dmessage(1, "fromnet; network closed\n");
 break;
 }
@@ -418,8 +418,8 @@ free(ep->lserv);
 free(ep->rserv);
 free(ep);
 }
-#define	U32GET(p)	(p[0] | p[1]<<8 | p[2]<<16 | p[3]<<24)
-#define	U32PUT(p,v)	(p)[0] = (v); (p)[1] = (v)>>8; \
+#define U32GET(p) (p[0] | p[1]<<8 | p[2]<<16 | p[3]<<24)
+#define U32PUT(p,v) (p)[0] = (v); (p)[1] = (v)>>8; \
 (p)[2] = (v)>>16; (p)[3] = (v)>>24
 static void
 packhdr(Hdr *hdr, uchar *buf)

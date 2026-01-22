@@ -19,42 +19,42 @@ const char *argp_program_version = STANDARD_HURD_VERSION (settrans);
 #define DEFAULT_TIMEOUT 60
 #define _STRINGIFY(arg) #arg
 #define STRINGIFY(arg) _STRINGIFY (arg)
-#define OPT_CHROOT_CHDIR	-1
-#define OPT_STACK		-2
+#define OPT_CHROOT_CHDIR -1
+#define OPT_STACK -2
 static struct argp_option options[] =
 {
-{"active",      'a', 0, 0, "Start TRANSLATOR and set it as NODE's active translator" },
-{"start",       's', 0, 0, "Start the translator specified by the NODE's passive translator record and set it as NODE's active translator" },
-{"passive",     'p', 0, 0, "Change NODE's passive translator record (default)" },
-{"create",      'c', 0, 0, "Create NODE if it doesn't exist" },
+{"active", 'a', 0, 0, "Start TRANSLATOR and set it as NODE's active translator" },
+{"start", 's', 0, 0, "Start the translator specified by the NODE's passive translator record and set it as NODE's active translator" },
+{"passive", 'p', 0, 0, "Change NODE's passive translator record (default)" },
+{"create", 'c', 0, 0, "Create NODE if it doesn't exist" },
 {"dereference", 'L', 0, 0, "If a translator exists, put the new one on top"},
-{"pid-file",    'F', "FILENAME", 0, "When starting an active translator,"
+{"pid-file", 'F', "FILENAME", 0, "When starting an active translator,"
 " write its pid to this file"},
-{"pause",       'P', 0, 0, "When starting an active translator, prompt and"
+{"pause", 'P', 0, 0, "When starting an active translator, prompt and"
 " wait for a newline on stdin before completing the startup handshake"},
-{"timeout",     't',"SEC",0, "Timeout for translator startup, in seconds"
+{"timeout", 't',"SEC",0, "Timeout for translator startup, in seconds"
 " (default " STRINGIFY (DEFAULT_TIMEOUT) "); 0 means no timeout"},
-{"exclusive",   'x', 0, 0, "Only set the translator if there is not one already"},
-{"orphan",      'o', 0, 0, "Disconnect old translator from the filesystem "
+{"exclusive", 'x', 0, 0, "Only set the translator if there is not one already"},
+{"orphan", 'o', 0, 0, "Disconnect old translator from the filesystem "
 "(do not ask it to go away)"},
-{"underlying",  'U', "NODE", 0, "Open NODE and hand it to the translator "
+{"underlying", 'U', "NODE", 0, "Open NODE and hand it to the translator "
 "as the underlying node"},
 {"stack", OPT_STACK, 0, 0, "Replace an existing translator, but keep it "
 "running, and put the new one on top"},
-{"chroot",      'C', 0, 0,
+{"chroot", 'C', 0, 0,
 "Instead of setting the node's translator, take following arguments up to"
 " `--' and run that command chroot'd to the translated node."},
-{"chroot-chdir",      OPT_CHROOT_CHDIR, "DIR", 0,
+{"chroot-chdir", OPT_CHROOT_CHDIR, "DIR", 0,
 "Change to DIR before running the chrooted command.  "
 "DIR must be an absolute path."},
 {0,0,0,0, "When setting the passive translator, if there's an active translator:"},
-{"goaway",      'g', 0, 0, "Ask the active translator to go away"},
+{"goaway", 'g', 0, 0, "Ask the active translator to go away"},
 {"keep-active", 'k', 0, 0, "Leave any existing active translator running"},
 {0,0,0,0, "When an active translator is told to go away:"},
-{"recursive",   'R', 0, 0, "Shutdown its children too"},
-{"force",       'f', 0, 0, "Ask it to ignore current users and shutdown "
+{"recursive", 'R', 0, 0, "Shutdown its children too"},
+{"force", 'f', 0, 0, "Ask it to ignore current users and shutdown "
 "anyway." },
-{"nosync",      'S', 0, 0, "Don't sync it before killing it"},
+{"nosync", 'S', 0, 0, "Don't sync it before killing it"},
 {0, 0}
 };
 static char *args_doc = "NODE [TRANSLATOR ARG...]";

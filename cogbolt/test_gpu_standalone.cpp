@@ -15,11 +15,11 @@ std::cout << "GPU acceleration available: " << (gpuAvailable ? "Yes" : "No") << 
 GPUConfig recommendedConfig = gpu_utils::getRecommendedGPUConfig();
 std::cout << "Recommended backend: ";
 switch (recommendedConfig.preferredBackend) {
-case GPUBackendType::CUDA:   std::cout << "CUDA"; break;
+case GPUBackendType::CUDA: std::cout << "CUDA"; break;
 case GPUBackendType::OpenCL: std::cout << "OpenCL"; break;
 case GPUBackendType::Vulkan: std::cout << "Vulkan"; break;
-case GPUBackendType::CPU:    std::cout << "CPU"; break;
-default:                     std::cout << "Unknown"; break;
+case GPUBackendType::CPU: std::cout << "CPU"; break;
+default: std::cout << "Unknown"; break;
 }
 std::cout << std::endl;
 std::cout << "\n2. Testing GPU manager initialization..." << std::endl;
@@ -37,11 +37,11 @@ const auto& device = devices[i];
 std::cout << "  Device " << i << ": " << device.name << std::endl;
 std::cout << "    Type: ";
 switch (device.backendType) {
-case GPUBackendType::CUDA:   std::cout << "CUDA"; break;
+case GPUBackendType::CUDA: std::cout << "CUDA"; break;
 case GPUBackendType::OpenCL: std::cout << "OpenCL"; break;
 case GPUBackendType::Vulkan: std::cout << "Vulkan"; break;
-case GPUBackendType::CPU:    std::cout << "CPU"; break;
-default:                     std::cout << "Unknown"; break;
+case GPUBackendType::CPU: std::cout << "CPU"; break;
+default: std::cout << "Unknown"; break;
 }
 std::cout << std::endl;
 std::cout << "    Available: " << (device.isAvailable ? "Yes" : "No") << std::endl;
@@ -54,11 +54,11 @@ auto currentDevice = gpuManager.getCurrentDevice();
 std::cout << "Current device: " << currentDevice.name << std::endl;
 std::cout << "Backend type: ";
 switch (gpuManager.getCurrentBackendType()) {
-case GPUBackendType::CUDA:   std::cout << "CUDA"; break;
+case GPUBackendType::CUDA: std::cout << "CUDA"; break;
 case GPUBackendType::OpenCL: std::cout << "OpenCL"; break;
 case GPUBackendType::Vulkan: std::cout << "Vulkan"; break;
-case GPUBackendType::CPU:    std::cout << "CPU"; break;
-default:                     std::cout << "Unknown"; break;
+case GPUBackendType::CPU: std::cout << "CPU"; break;
+default: std::cout << "Unknown"; break;
 }
 std::cout << std::endl;
 std::cout << "\n5. Testing memory management..." << std::endl;
@@ -110,11 +110,11 @@ std::cout << "\n9. Testing backend benchmarking..." << std::endl;
 GPUBackendType bestBackend = gpu_utils::benchmarkGPUBackends();
 std::cout << "Best backend: ";
 switch (bestBackend) {
-case GPUBackendType::CUDA:   std::cout << "CUDA"; break;
+case GPUBackendType::CUDA: std::cout << "CUDA"; break;
 case GPUBackendType::OpenCL: std::cout << "OpenCL"; break;
 case GPUBackendType::Vulkan: std::cout << "Vulkan"; break;
-case GPUBackendType::CPU:    std::cout << "CPU"; break;
-default:                     std::cout << "Unknown"; break;
+case GPUBackendType::CPU: std::cout << "CPU"; break;
+default: std::cout << "Unknown"; break;
 }
 std::cout << std::endl;
 std::cout << "\n10. Cleaning up..." << std::endl;

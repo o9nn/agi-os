@@ -19,7 +19,7 @@ include("../src/DeepTreeEcho/DeepTreeEcho.jl")
 using .DeepTreeEcho
 println("""
 ╔════════════════════════════════════════════════════════════════╗
-║  DEEP TREE ECHO TEST SUITE                                     ║
+║ DEEP TREE ECHO TEST SUITE ║
 ╚════════════════════════════════════════════════════════════════╝
 """)
 Random.seed!(42)
@@ -35,12 +35,12 @@ using .DeepTreeEcho.A000081Parameters
 @test A000081_SEQUENCE[5] == 9
 @test A000081_SEQUENCE[6] == 20
 # Test reservoir size derivation
-@test derive_reservoir_size(1) == 1      # 1
-@test derive_reservoir_size(2) == 2      # 1+1
-@test derive_reservoir_size(3) == 4      # 1+1+2
-@test derive_reservoir_size(4) == 8      # 1+1+2+4
-@test derive_reservoir_size(5) == 17     # 1+1+2+4+9
-@test derive_reservoir_size(6) == 37     # 1+1+2+4+9+20
+@test derive_reservoir_size(1) == 1 # 1
+@test derive_reservoir_size(2) == 2 # 1+1
+@test derive_reservoir_size(3) == 4 # 1+1+2
+@test derive_reservoir_size(4) == 8 # 1+1+2+4
+@test derive_reservoir_size(5) == 17 # 1+1+2+4+9
+@test derive_reservoir_size(6) == 37 # 1+1+2+4+9+20
 # Test membrane count derivation
 @test derive_num_membranes(1) == 1
 @test derive_num_membranes(3) == 2
@@ -48,10 +48,10 @@ using .DeepTreeEcho.A000081Parameters
 @test derive_num_membranes(5) == 9
 # Test growth rate derivation
 growth_5 = derive_growth_rate(5)
-@test abs(growth_5 - 20/9) < 0.001   # A000081[6]/A000081[5] = 20/9
+@test abs(growth_5 - 20/9) < 0.001 # A000081[6]/A000081[5] = 20/9
 # Test mutation rate derivation
 mutation_5 = derive_mutation_rate(5)
-@test abs(mutation_5 - 1/9) < 0.001  # 1/A000081[5] = 1/9
+@test abs(mutation_5 - 1/9) < 0.001 # 1/A000081[5] = 1/9
 # Test parameter set creation
 params = get_parameter_set(5, membrane_order=3)
 @test params.base_order == 5
@@ -83,11 +83,11 @@ generator = A000081Generator(10)
 @test generator.max_order == 10
 @test length(generator.a000081) >= 10
 # Test known values of A000081
-@test generator.a000081[1] == 1  # 1 tree of order 1
-@test generator.a000081[2] == 1  # 1 tree of order 2
-@test generator.a000081[3] == 2  # 2 trees of order 3
-@test generator.a000081[4] == 4  # 4 trees of order 4
-@test generator.a000081[5] == 9  # 9 trees of order 5
+@test generator.a000081[1] == 1 # 1 tree of order 1
+@test generator.a000081[2] == 1 # 1 tree of order 2
+@test generator.a000081[3] == 2 # 2 trees of order 3
+@test generator.a000081[4] == 4 # 4 trees of order 4
+@test generator.a000081[5] == 9 # 9 trees of order 5
 # Test tree generation
 trees_order_3 = generate_a000081_trees(generator, 3)
 @test length(trees_order_3) == 2
@@ -119,7 +119,7 @@ ridge = create_ridge(6)
 @test ridge.dimension > 0
 @test length(ridge.coefficients) == ridge.dimension
 # Test ridge evaluation
-f(y) = -y  # Simple ODE: y' = -y
+f(y) = -y # Simple ODE: y' = -y
 y0 = [1.0]
 increment = evaluate_ridge(ridge, y0, f)
 @test length(increment) == length(y0)
@@ -217,9 +217,9 @@ println("\n[6/9] Testing Integrated System...")
 # base_order=4 → reservoir=8, max_order=7, membranes=2
 params = get_parameter_set(4, membrane_order=3)
 system = DeepTreeEchoSystem(
-reservoir_size = params.reservoir_size,    # 8
-max_tree_order = params.max_tree_order,    # 7
-num_membranes = params.num_membranes,      # 2
+reservoir_size = params.reservoir_size, # 8
+max_tree_order = params.max_tree_order, # 7
+num_membranes = params.num_membranes, # 2
 symplectic = true,
 growth_rate = params.growth_rate,
 mutation_rate = params.mutation_rate
@@ -303,7 +303,7 @@ count_5 = count_trees_of_order(5)
 @test count_5 == 9
 # Test tree generation
 trees = generate_trees_up_to_order(4)
-@test length(trees) >= 8  # 1 + 1 + 2 + 4
+@test length(trees) >= 8 # 1 + 1 + 2 + 4
 println("  ✓ Integration status reporting works")
 println("  ✓ A000081 counting correct")
 println("  ✓ Tree generation functional")
@@ -312,9 +312,9 @@ end
 println("\n[9/9] Testing Complete A000081 Alignment...")
 # Test system with auto-derived parameters
 system_auto = DeepTreeEchoSystem(base_order=4)
-@test system_auto.config["reservoir_size"] == 8   # 1+1+2+4
-@test system_auto.config["max_tree_order"] == 7   # 4+3
-@test system_auto.config["num_membranes"] == 2    # A000081[3]
+@test system_auto.config["reservoir_size"] == 8 # 1+1+2+4
+@test system_auto.config["max_tree_order"] == 7 # 4+3
+@test system_auto.config["num_membranes"] == 2 # A000081[3]
 # Test system with explicit A000081 parameters
 params = get_parameter_set(5, membrane_order=4)
 system_explicit = DeepTreeEchoSystem(
@@ -324,10 +324,10 @@ num_membranes = params.num_membranes,
 growth_rate = params.growth_rate,
 mutation_rate = params.mutation_rate
 )
-@test system_explicit.config["reservoir_size"] == 17  # 1+1+2+4+9
-@test system_explicit.config["num_membranes"] == 4    # A000081[4]
+@test system_explicit.config["reservoir_size"] == 17 # 1+1+2+4+9
+@test system_explicit.config["num_membranes"] == 4 # A000081[4]
 # Initialize and evolve with A000081 seed count
-seed_count = A000081Parameters.A000081_SEQUENCE[3]  # 2
+seed_count = A000081Parameters.A000081_SEQUENCE[3] # 2
 initialize!(system_auto, seed_trees=seed_count)
 evolve!(system_auto, 3, verbose=false)
 @test system_auto.step_count == 3

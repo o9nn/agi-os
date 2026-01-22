@@ -4,8 +4,8 @@
 #if BITS_IN_JSAMPLE != 8
 Sorry, this code only copes with 8-bit JSAMPLEs.
 #endif
-#define CMAPBITS	8
-#define CMAPLENGTH	(1<<(CMAPBITS))
+#define CMAPBITS 8
+#define CMAPLENGTH (1<<(CMAPBITS))
 typedef struct {
 struct djpeg_dest_struct pub;
 jvirt_sarray_ptr image;
@@ -82,19 +82,19 @@ cd_progress_ptr progress = (cd_progress_ptr) cinfo->progress;
 #endif
 header = *rle_hdr_init(NULL);
 header.rle_file = dest->pub.output_file;
-header.xmin     = 0;
-header.xmax     = cinfo->output_width  - 1;
-header.ymin     = 0;
-header.ymax     = cinfo->output_height - 1;
-header.alpha    = 0;
-header.ncolors  = cinfo->output_components;
+header.xmin = 0;
+header.xmax = cinfo->output_width - 1;
+header.ymin = 0;
+header.ymax = cinfo->output_height - 1;
+header.alpha = 0;
+header.ncolors = cinfo->output_components;
 for (ci = 0; ci < cinfo->output_components; ci++) {
 RLE_SET_BIT(header, ci);
 }
 if (cinfo->quantize_colors) {
-header.ncmap   = cinfo->out_color_components;
+header.ncmap = cinfo->out_color_components;
 header.cmaplen = CMAPBITS;
-header.cmap    = dest->colormap;
+header.cmap = dest->colormap;
 sprintf(cmapcomment, "color_map_length=%d", cinfo->actual_number_of_colors);
 rle_putcom(cmapcomment, &header);
 }

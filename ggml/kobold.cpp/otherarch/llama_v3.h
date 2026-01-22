@@ -11,36 +11,36 @@
 #include <stdint.h>
 #include <stdbool.h>
 #ifdef LLAMA_V3_SHARED
-#    if defined(_WIN32) && !defined(__MINGW32__)
-#        ifdef LLAMA_V3_BUILD
-#            define LLAMA_V3_API __declspec(dllexport)
-#        else
-#            define LLAMA_V3_API __declspec(dllimport)
-#        endif
-#    else
-#        define LLAMA_V3_API __attribute__ ((visibility ("default")))
-#    endif
+# if defined(_WIN32) && !defined(__MINGW32__)
+# ifdef LLAMA_V3_BUILD
+# define LLAMA_V3_API __declspec(dllexport)
+# else
+# define LLAMA_V3_API __declspec(dllimport)
+# endif
+# else
+# define LLAMA_V3_API __attribute__ ((visibility ("default")))
+# endif
 #else
-#    define LLAMA_V3_API
+# define LLAMA_V3_API
 #endif
 #ifdef __GNUC__
-#    define DEPRECATED(func, hint) func __attribute__((deprecated(hint)))
+# define DEPRECATED(func, hint) func __attribute__((deprecated(hint)))
 #elif defined(_MSC_VER)
-#    define DEPRECATED(func, hint) __declspec(deprecated(hint)) func
+# define DEPRECATED(func, hint) __declspec(deprecated(hint)) func
 #else
-#    define DEPRECATED(func, hint) func
+# define DEPRECATED(func, hint) func
 #endif
-#define LLAMA_V3_FILE_MAGIC_GGJT        0x67676a74u
-#define LLAMA_V3_FILE_MAGIC_GGLA        0x67676c61u
-#define LLAMA_V3_FILE_MAGIC_GGMF        0x67676d66u
-#define LLAMA_V3_FILE_MAGIC_GGML        0x67676d6cu
-#define LLAMA_V3_FILE_MAGIC_GGSN        0x6767736eu
-#define LLAMA_V3_FILE_VERSION           3
-#define LLAMA_V3_FILE_MAGIC             LLAMA_V3_FILE_MAGIC_GGJT
+#define LLAMA_V3_FILE_MAGIC_GGJT 0x67676a74u
+#define LLAMA_V3_FILE_MAGIC_GGLA 0x67676c61u
+#define LLAMA_V3_FILE_MAGIC_GGMF 0x67676d66u
+#define LLAMA_V3_FILE_MAGIC_GGML 0x67676d6cu
+#define LLAMA_V3_FILE_MAGIC_GGSN 0x6767736eu
+#define LLAMA_V3_FILE_VERSION 3
+#define LLAMA_V3_FILE_MAGIC LLAMA_V3_FILE_MAGIC_GGJT
 #define LLAMA_V3_FILE_MAGIC_UNVERSIONED LLAMA_V3_FILE_MAGIC_GGML
-#define LLAMA_V3_SESSION_MAGIC          LLAMA_V3_FILE_MAGIC_GGSN
-#define LLAMA_V3_SESSION_VERSION        1
-#define LLAMA_V3_DEFAULT_SEED           0xFFFFFFFF
+#define LLAMA_V3_SESSION_MAGIC LLAMA_V3_FILE_MAGIC_GGSN
+#define LLAMA_V3_SESSION_VERSION 1
+#define LLAMA_V3_DEFAULT_SEED 0xFFFFFFFF
 #if defined(GGML_USE_CUDA) || defined(GGML_USE_CLBLAST) || defined(GGML_USE_METAL)
 #define LLAMA_V3_SUPPORTS_GPU_OFFLOAD
 #endif
@@ -66,21 +66,21 @@ bool sorted;
 typedef void (*llama_v3_progress_callback)(float progress, void *ctx);
 enum llama_v3_log_level {
 LLAMA_V3_LOG_LEVEL_ERROR = 2,
-LLAMA_V3_LOG_LEVEL_WARN  = 3,
-LLAMA_V3_LOG_LEVEL_INFO  = 4
+LLAMA_V3_LOG_LEVEL_WARN = 3,
+LLAMA_V3_LOG_LEVEL_INFO = 4
 };
 typedef void (*llama_v3_log_callback)(enum llama_v3_log_level level, const char * text, void * user_data);
 struct llama_v3_context_params {
 uint32_t seed;
-int32_t  n_ctx;
-int32_t  n_batch;
-int32_t  n_gqa;
-float    rms_norm_eps;
-int32_t  n_gpu_layers;
-int32_t  main_gpu;
+int32_t n_ctx;
+int32_t n_batch;
+int32_t n_gqa;
+float rms_norm_eps;
+int32_t n_gpu_layers;
+int32_t main_gpu;
 const float * tensor_split;
-float    rope_freq_base;
-float    rope_freq_scale;
+float rope_freq_base;
+float rope_freq_scale;
 llama_v3_progress_callback progress_callback;
 void * progress_callback_user_data;
 bool low_vram;
@@ -93,43 +93,43 @@ bool use_mlock;
 bool embedding;
 };
 enum llama_v3_ftype {
-LLAMA_V3_FTYPE_ALL_F32              = 0,
-LLAMA_V3_FTYPE_MOSTLY_F16           = 1,
-LLAMA_V3_FTYPE_MOSTLY_Q4_0          = 2,
-LLAMA_V3_FTYPE_MOSTLY_Q4_1          = 3,
+LLAMA_V3_FTYPE_ALL_F32 = 0,
+LLAMA_V3_FTYPE_MOSTLY_F16 = 1,
+LLAMA_V3_FTYPE_MOSTLY_Q4_0 = 2,
+LLAMA_V3_FTYPE_MOSTLY_Q4_1 = 3,
 LLAMA_V3_FTYPE_MOSTLY_Q4_1_SOME_F16 = 4,
-LLAMA_V3_FTYPE_MOSTLY_Q8_0          = 7,
-LLAMA_V3_FTYPE_MOSTLY_Q5_0          = 8,
-LLAMA_V3_FTYPE_MOSTLY_Q5_1          = 9,
-LLAMA_V3_FTYPE_MOSTLY_Q2_K          = 10,
-LLAMA_V3_FTYPE_MOSTLY_Q3_K_S        = 11,
-LLAMA_V3_FTYPE_MOSTLY_Q3_K_M        = 12,
-LLAMA_V3_FTYPE_MOSTLY_Q3_K_L        = 13,
-LLAMA_V3_FTYPE_MOSTLY_Q4_K_S        = 14,
-LLAMA_V3_FTYPE_MOSTLY_Q4_K_M        = 15,
-LLAMA_V3_FTYPE_MOSTLY_Q5_K_S        = 16,
-LLAMA_V3_FTYPE_MOSTLY_Q5_K_M        = 17,
-LLAMA_V3_FTYPE_MOSTLY_Q6_K          = 18,
+LLAMA_V3_FTYPE_MOSTLY_Q8_0 = 7,
+LLAMA_V3_FTYPE_MOSTLY_Q5_0 = 8,
+LLAMA_V3_FTYPE_MOSTLY_Q5_1 = 9,
+LLAMA_V3_FTYPE_MOSTLY_Q2_K = 10,
+LLAMA_V3_FTYPE_MOSTLY_Q3_K_S = 11,
+LLAMA_V3_FTYPE_MOSTLY_Q3_K_M = 12,
+LLAMA_V3_FTYPE_MOSTLY_Q3_K_L = 13,
+LLAMA_V3_FTYPE_MOSTLY_Q4_K_S = 14,
+LLAMA_V3_FTYPE_MOSTLY_Q4_K_M = 15,
+LLAMA_V3_FTYPE_MOSTLY_Q5_K_S = 16,
+LLAMA_V3_FTYPE_MOSTLY_Q5_K_M = 17,
+LLAMA_V3_FTYPE_MOSTLY_Q6_K = 18,
 };
 typedef struct llama_v3_model_quantize_params {
 int nthread;
-enum llama_v3_ftype   ftype;
+enum llama_v3_ftype ftype;
 bool allow_requantize;
 bool quantize_output_tensor;
 } llama_v3_model_quantize_params;
 struct llama_v3_grammar;
 enum llama_v3_gretype {
-LLAMA_V3_GRETYPE_END            = 0,
-LLAMA_V3_GRETYPE_ALT            = 1,
-LLAMA_V3_GRETYPE_RULE_REF       = 2,
-LLAMA_V3_GRETYPE_CHAR           = 3,
-LLAMA_V3_GRETYPE_CHAR_NOT       = 4,
+LLAMA_V3_GRETYPE_END = 0,
+LLAMA_V3_GRETYPE_ALT = 1,
+LLAMA_V3_GRETYPE_RULE_REF = 2,
+LLAMA_V3_GRETYPE_CHAR = 3,
+LLAMA_V3_GRETYPE_CHAR_NOT = 4,
 LLAMA_V3_GRETYPE_CHAR_RNG_UPPER = 5,
-LLAMA_V3_GRETYPE_CHAR_ALT       = 6,
+LLAMA_V3_GRETYPE_CHAR_ALT = 6,
 };
 typedef struct llama_v3_grammar_element {
 enum llama_v3_gretype type;
-uint32_t           value;
+uint32_t value;
 } llama_v3_grammar_element;
 struct llama_v3_timings {
 double t_start_ms;
@@ -153,14 +153,14 @@ LLAMA_V3_API void llama_v3_backend_free();
 LLAMA_V3_API int64_t llama_v3_time_us();
 LLAMA_V3_API struct llama_v3_model * llama_v3_load_model_from_file(
 const char * path_model,
-struct llama_v3_context_params   params);
+struct llama_v3_context_params params);
 LLAMA_V3_API void llama_v3_free_model(struct llama_v3_model * model);
 LLAMA_V3_API struct llama_v3_context * llama_v3_new_context_with_model(
 struct llama_v3_model * model,
-struct llama_v3_context_params   params);
+struct llama_v3_context_params params);
 LLAMA_V3_API struct llama_v3_context * llama_v3_init_from_file(
 const char * path_model,
-struct llama_v3_context_params   params);
+struct llama_v3_context_params params);
 LLAMA_V3_API void llama_v3_free(struct llama_v3_context * ctx);
 LLAMA_V3_API int llama_v3_model_quantize(
 const char * fname_inp,
@@ -170,12 +170,12 @@ LLAMA_V3_API int llama_v3_apply_lora_from_file(
 struct llama_v3_context * ctx,
 const char * path_lora,
 const char * path_base_model,
-int   n_threads);
+int n_threads);
 LLAMA_V3_API int llama_v3_model_apply_lora_from_file(
 const struct llama_v3_model * model,
 const char * path_lora,
 const char * path_base_model,
-int   n_threads);
+int n_threads);
 LLAMA_V3_API int llama_v3_get_kv_cache_token_count(const struct llama_v3_context * ctx);
 LLAMA_V3_API void llama_v3_set_rng_seed(struct llama_v3_context * ctx, uint32_t seed);
 LLAMA_V3_API size_t llama_v3_get_state_size(const struct llama_v3_context * ctx);
@@ -186,60 +186,60 @@ LLAMA_V3_API bool llama_v3_save_session_file(struct llama_v3_context * ctx, cons
 LLAMA_V3_API int llama_v3_eval(
 struct llama_v3_context * ctx,
 const llama_v3_token * tokens,
-int   n_tokens,
-int   n_past,
-int   n_threads);
+int n_tokens,
+int n_past,
+int n_threads);
 LLAMA_V3_API int llama_v3_eval_embd(
 struct llama_v3_context * ctx,
 const float * embd,
-int   n_tokens,
-int   n_past,
-int   n_threads);
+int n_tokens,
+int n_past,
+int n_threads);
 LLAMA_V3_API int llama_v3_eval_export(struct llama_v3_context * ctx, const char * fname);
 LLAMA_V3_API int llama_v3_tokenize(
 struct llama_v3_context * ctx,
 const char * text,
 llama_v3_token * tokens,
-int   n_max_tokens,
-bool   add_bos);
+int n_max_tokens,
+bool add_bos);
 LLAMA_V3_API int llama_v3_tokenize_with_model(
 const struct llama_v3_model * model,
 const char * text,
 llama_v3_token * tokens,
-int   n_max_tokens,
-bool   add_bos);
+int n_max_tokens,
+bool add_bos);
 LLAMA_V3_API int llama_v3_n_vocab(const struct llama_v3_context * ctx);
-LLAMA_V3_API int llama_v3_n_ctx  (const struct llama_v3_context * ctx);
+LLAMA_V3_API int llama_v3_n_ctx (const struct llama_v3_context * ctx);
 LLAMA_V3_API int llama_v3_n_embd (const struct llama_v3_context * ctx);
 LLAMA_V3_API int llama_v3_n_vocab_from_model(const struct llama_v3_model * model);
-LLAMA_V3_API int llama_v3_n_ctx_from_model  (const struct llama_v3_model * model);
+LLAMA_V3_API int llama_v3_n_ctx_from_model (const struct llama_v3_model * model);
 LLAMA_V3_API int llama_v3_n_embd_from_model (const struct llama_v3_model * model);
 LLAMA_V3_API int llama_v3_model_type(const struct llama_v3_model * model, char * buf, size_t buf_size);
 LLAMA_V3_API int llama_v3_get_vocab(
 const struct llama_v3_context * ctx,
 const char * * strings,
 float * scores,
-int   capacity);
+int capacity);
 LLAMA_V3_API int llama_v3_get_vocab_from_model(
 const struct llama_v3_model * model,
 const char * * strings,
 float * scores,
-int   capacity);
+int capacity);
 LLAMA_V3_API float * llama_v3_get_logits(struct llama_v3_context * ctx);
 LLAMA_V3_API float * llama_v3_get_embeddings(struct llama_v3_context * ctx);
 LLAMA_V3_API const char * llama_v3_token_to_str(
 const struct llama_v3_context * ctx,
-llama_v3_token   token);
+llama_v3_token token);
 LLAMA_V3_API const char * llama_v3_token_to_str_with_model(
 const struct llama_v3_model * model,
-llama_v3_token   token);
+llama_v3_token token);
 LLAMA_V3_API llama_v3_token llama_v3_token_bos();
 LLAMA_V3_API llama_v3_token llama_v3_token_eos();
 LLAMA_V3_API llama_v3_token llama_v3_token_nl();
 LLAMA_V3_API struct llama_v3_grammar * llama_v3_grammar_init(
 const llama_v3_grammar_element ** rules,
-size_t    n_rules,
-size_t    start_rule_index);
+size_t n_rules,
+size_t start_rule_index);
 LLAMA_V3_API void llama_v3_grammar_free(struct llama_v3_grammar * grammar);
 LLAMA_V3_API void llama_v3_sample_repetition_penalty(struct llama_v3_context * ctx, llama_v3_token_data_array * candidates, const llama_v3_token * last_tokens, size_t last_tokens_size, float penalty);
 LLAMA_V3_API void llama_v3_sample_frequency_and_presence_penalties(struct llama_v3_context * ctx, llama_v3_token_data_array * candidates, const llama_v3_token * last_tokens, size_t last_tokens_size, float alpha_frequency, float alpha_presence);
@@ -247,7 +247,7 @@ LLAMA_V3_API void llama_v3_sample_classifier_free_guidance(
 struct llama_v3_context * ctx,
 llama_v3_token_data_array * candidates,
 struct llama_v3_context * guidance_ctx,
-float   scale);
+float scale);
 LLAMA_V3_API void llama_v3_sample_softmax(struct llama_v3_context * ctx, llama_v3_token_data_array * candidates);
 LLAMA_V3_API void llama_v3_sample_top_k(struct llama_v3_context * ctx, llama_v3_token_data_array * candidates, int k, size_t min_keep);
 LLAMA_V3_API void llama_v3_sample_top_p(struct llama_v3_context * ctx, llama_v3_token_data_array * candidates, float p, size_t min_keep);

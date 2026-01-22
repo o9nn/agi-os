@@ -1,12 +1,12 @@
 #ifndef gxfcopy_INCLUDED
-#  define gxfcopy_INCLUDED
+# define gxfcopy_INCLUDED
 #include "gsccode.h"
 #ifndef gs_font_DEFINED
-#  define gs_font_DEFINED
+# define gs_font_DEFINED
 typedef struct gs_font_s gs_font;
 #endif
 #ifndef gs_matrix_DEFINED
-#  define gs_matrix_DEFINED
+# define gs_matrix_DEFINED
 typedef struct gs_matrix_s gs_matrix;
 #endif
 int gs_copy_font(gs_font *font, const gs_matrix *orig_matrix,

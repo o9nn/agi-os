@@ -1,7 +1,7 @@
 export const rekaName = 'Project AIRI'
 export const rekaShortName = 'AIRI'
 export const rekaDescription
-  = 'An open-source attempt to re-create Neuro-sama, the most famous AI VTuber on this earth, but also forming a cyber companion for everyone.'
+= 'An open-source attempt to re-create Neuro-sama, the most famous AI VTuber on this earth, but also forming a cyber companion for everyone.'
 export const ogUrl = 'https://airi.moeru.ai/docs/'
 export const ogImage = `${ogUrl}og.jpg`
 export const github = 'https://github.com/moeru-ai/airi'

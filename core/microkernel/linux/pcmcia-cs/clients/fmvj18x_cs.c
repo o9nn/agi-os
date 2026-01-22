@@ -74,80 +74,80 @@ u_short sent;
 u_char mc_filter[8];
 } local_info_t;
 #define MC_FILTERBREAK 64
-#define TX_STATUS               0
-#define RX_STATUS               1
-#define TX_INTR                 2
-#define RX_INTR                 3
-#define TX_MODE                 4
-#define RX_MODE                 5
-#define CONFIG_0                6
-#define CONFIG_1                7
-#define NODE_ID                 8
-#define MAR_ADR                 8
-#define DATAPORT                8
-#define TX_START               10
-#define COL_CTRL               11
-#define BMPR12                 12
-#define BMPR13                 13
-#define RX_SKIP                14
-#define LAN_CTRL               16
-#define MAC_ID               0x1a
-#define UNGERMANN_MAC_ID     0x18
-#define ENA_TMT_OK           0x80
-#define ENA_TMT_REC          0x20
-#define ENA_COL              0x04
-#define ENA_16_COL           0x02
-#define ENA_TBUS_ERR         0x01
-#define ENA_PKT_RDY          0x80
-#define ENA_BUS_ERR          0x40
-#define ENA_LEN_ERR          0x08
-#define ENA_ALG_ERR          0x04
-#define ENA_CRC_ERR          0x02
-#define ENA_OVR_FLO          0x01
-#define F_TMT_RDY            0x80
-#define F_NET_BSY            0x40
-#define F_TMT_OK             0x20
-#define F_SRT_PKT            0x10
-#define F_COL_ERR            0x04
-#define F_16_COL             0x02
-#define F_TBUS_ERR           0x01
-#define F_PKT_RDY            0x80
-#define F_BUS_ERR            0x40
-#define F_LEN_ERR            0x08
-#define F_ALG_ERR            0x04
-#define F_CRC_ERR            0x02
-#define F_OVR_FLO            0x01
-#define F_BUF_EMP            0x40
-#define F_SKP_PKT            0x05
-#define D_TX_INTR  ( ENA_TMT_OK )
-#define D_RX_INTR  ( ENA_PKT_RDY | ENA_LEN_ERR \
+#define TX_STATUS 0
+#define RX_STATUS 1
+#define TX_INTR 2
+#define RX_INTR 3
+#define TX_MODE 4
+#define RX_MODE 5
+#define CONFIG_0 6
+#define CONFIG_1 7
+#define NODE_ID 8
+#define MAR_ADR 8
+#define DATAPORT 8
+#define TX_START 10
+#define COL_CTRL 11
+#define BMPR12 12
+#define BMPR13 13
+#define RX_SKIP 14
+#define LAN_CTRL 16
+#define MAC_ID 0x1a
+#define UNGERMANN_MAC_ID 0x18
+#define ENA_TMT_OK 0x80
+#define ENA_TMT_REC 0x20
+#define ENA_COL 0x04
+#define ENA_16_COL 0x02
+#define ENA_TBUS_ERR 0x01
+#define ENA_PKT_RDY 0x80
+#define ENA_BUS_ERR 0x40
+#define ENA_LEN_ERR 0x08
+#define ENA_ALG_ERR 0x04
+#define ENA_CRC_ERR 0x02
+#define ENA_OVR_FLO 0x01
+#define F_TMT_RDY 0x80
+#define F_NET_BSY 0x40
+#define F_TMT_OK 0x20
+#define F_SRT_PKT 0x10
+#define F_COL_ERR 0x04
+#define F_16_COL 0x02
+#define F_TBUS_ERR 0x01
+#define F_PKT_RDY 0x80
+#define F_BUS_ERR 0x40
+#define F_LEN_ERR 0x08
+#define F_ALG_ERR 0x04
+#define F_CRC_ERR 0x02
+#define F_OVR_FLO 0x01
+#define F_BUF_EMP 0x40
+#define F_SKP_PKT 0x05
+#define D_TX_INTR ( ENA_TMT_OK )
+#define D_RX_INTR ( ENA_PKT_RDY | ENA_LEN_ERR \
 | ENA_ALG_ERR | ENA_CRC_ERR | ENA_OVR_FLO )
-#define TX_STAT_M  ( F_TMT_RDY )
-#define RX_STAT_M  ( F_PKT_RDY | F_LEN_ERR \
+#define TX_STAT_M ( F_TMT_RDY )
+#define RX_STAT_M ( F_PKT_RDY | F_LEN_ERR \
 | F_ALG_ERR | F_CRC_ERR | F_OVR_FLO )
-#define D_TX_MODE            0x06
-#define ID_MATCHED           0x02
-#define RECV_ALL             0x03
-#define CONFIG0_DFL          0x5a
-#define CONFIG0_DFL_1        0x5e
-#define CONFIG0_RST          0xda
-#define CONFIG0_RST_1        0xde
-#define BANK_0               0xa0
-#define BANK_1               0xa4
-#define BANK_2               0xa8
-#define CHIP_OFF             0x80
-#define DO_TX                0x80
-#define SEND_PKT             0x81
-#define AUTO_MODE            0x07
-#define MANU_MODE            0x03
-#define TDK_AUTO_MODE        0x47
-#define TDK_MANU_MODE        0x43
-#define INTR_OFF             0x0d
-#define INTR_ON              0x1d
-#define TX_TIMEOUT		((400*HZ)/1000)
-#define BANK_0U              0x20
-#define BANK_1U              0x24
-#define BANK_2U              0x28
+#define D_TX_MODE 0x06
+#define ID_MATCHED 0x02
+#define RECV_ALL 0x03
+#define CONFIG0_DFL 0x5a
+#define CONFIG0_DFL_1 0x5e
+#define CONFIG0_RST 0xda
+#define CONFIG0_RST_1 0xde
+#define BANK_0 0xa0
+#define BANK_1 0xa4
+#define BANK_2 0xa8
+#define CHIP_OFF 0x80
+#define DO_TX 0x80
+#define SEND_PKT 0x81
+#define AUTO_MODE 0x07
+#define MANU_MODE 0x03
+#define TDK_AUTO_MODE 0x47
+#define TDK_MANU_MODE 0x43
+#define INTR_OFF 0x0d
+#define INTR_ON 0x1d
+#define TX_TIMEOUT ((400*HZ)/1000)
+#define BANK_0U 0x20
+#define BANK_1U 0x24
+#define BANK_2U 0x28
 static void flush_stale_links(void)
 {
 dev_link_t *link, *next;
@@ -914,7 +914,7 @@ printk("%s: Promiscuous mode enabled.\n", dev->name);
 memset(mc_filter, 0xff, sizeof(mc_filter));
 outb(3, ioaddr + RX_MODE);
 } else if (dev->mc_count > MC_FILTERBREAK
-||  (dev->flags & IFF_ALLMULTI)) {
+|| (dev->flags & IFF_ALLMULTI)) {
 memset(mc_filter, 0xff, sizeof(mc_filter));
 outb(2, ioaddr + RX_MODE);
 } else if (dev->mc_count == 0) {

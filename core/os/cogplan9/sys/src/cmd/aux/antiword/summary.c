@@ -1,32 +1,32 @@
 #include <time.h>
 #include <string.h>
 #include "antiword.h"
-#define P_HEADER_SZ		28
-#define P_SECTIONLIST_SZ	20
-#define P_LENGTH_SZ		 4
-#define P_SECTION_MAX_SZ	(2 * P_SECTIONLIST_SZ + P_LENGTH_SZ)
-#define P_SECTION_SZ(x)		((x) * P_SECTIONLIST_SZ + P_LENGTH_SZ)
-#define PID_TITLE		 2
-#define PID_SUBJECT		 3
-#define PID_AUTHOR		 4
-#define PID_CREATE_DTM		12
-#define PID_LASTSAVE_DTM	13
-#define PID_APPNAME		18
-#define PIDD_MANAGER		14
-#define PIDD_COMPANY		15
-#define VT_LPSTR		30
-#define VT_FILETIME		64
-#define TIME_OFFSET_HI		0x019db1de
-#define TIME_OFFSET_LO		0xd53e8000
-static char	*szTitle = NULL;
-static char	*szSubject = NULL;
-static char	*szAuthor = NULL;
-static time_t	tCreateDtm = (time_t)-1;
-static time_t	tLastSaveDtm= (time_t)-1;
-static char	*szAppName = NULL;
-static char	*szManager = NULL;
-static char	*szCompany = NULL;
-static USHORT	usLid = (USHORT)-1;
+#define P_HEADER_SZ 28
+#define P_SECTIONLIST_SZ 20
+#define P_LENGTH_SZ 4
+#define P_SECTION_MAX_SZ (2 * P_SECTIONLIST_SZ + P_LENGTH_SZ)
+#define P_SECTION_SZ(x) ((x) * P_SECTIONLIST_SZ + P_LENGTH_SZ)
+#define PID_TITLE 2
+#define PID_SUBJECT 3
+#define PID_AUTHOR 4
+#define PID_CREATE_DTM 12
+#define PID_LASTSAVE_DTM 13
+#define PID_APPNAME 18
+#define PIDD_MANAGER 14
+#define PIDD_COMPANY 15
+#define VT_LPSTR 30
+#define VT_FILETIME 64
+#define TIME_OFFSET_HI 0x019db1de
+#define TIME_OFFSET_LO 0xd53e8000
+static char *szTitle = NULL;
+static char *szSubject = NULL;
+static char *szAuthor = NULL;
+static time_t tCreateDtm = (time_t)-1;
+static time_t tLastSaveDtm= (time_t)-1;
+static char *szAppName = NULL;
+static char *szManager = NULL;
+static char *szCompany = NULL;
+static USHORT usLid = (USHORT)-1;
 void
 vDestroySummaryInfo(void)
 {
@@ -44,9 +44,9 @@ usLid = (USHORT)-1;
 static time_t
 tConvertDosDate(const char *szDosDate)
 {
-struct tm	tTime;
-const char	*pcTmp;
-time_t		tResult;
+struct tm tTime;
+const char *pcTmp;
+time_t tResult;
 memset(&tTime, 0, sizeof(tTime));
 pcTmp = szDosDate;
 if (!isdigit(*pcTmp)) {
@@ -102,8 +102,8 @@ return tResult;
 static char *
 szLpstr(ULONG ulOffset, const UCHAR *aucBuffer)
 {
-char	*szStart, *szResult, *szTmp;
-size_t	tSize;
+char *szStart, *szResult, *szTmp;
+size_t tSize;
 tSize = (size_t)ulGetLong(ulOffset + 4, aucBuffer);
 NO_DBG_DEC(tSize);
 if (tSize == 0) {
@@ -130,9 +130,9 @@ return szResult;
 static time_t
 tFiletime(ULONG ulOffset, const UCHAR *aucBuffer)
 {
-double	dHi, dLo, dTmp;
-ULONG	ulHi, ulLo;
-time_t	tResult;
+double dHi, dLo, dTmp;
+ULONG ulHi, ulLo;
+time_t tResult;
 ulLo = ulGetLong(ulOffset + 4, aucBuffer);
 ulHi = ulGetLong(ulOffset + 8, aucBuffer);
 NO_DBG_HEX(ulHi);
@@ -141,7 +141,7 @@ dHi = (double)ulHi - (double)TIME_OFFSET_HI;
 dLo = (double)ulLo - (double)TIME_OFFSET_LO;
 NO_DBG_FLT(dHi);
 NO_DBG_FLT(dLo);
-dTmp  = dLo / 10000000.0;
+dTmp = dLo / 10000000.0;
 dTmp += dHi * 429.4967926;
 NO_DBG_FLT(dTmp);
 if (dTmp - 0.5 < TIME_T_MIN || dTmp + 0.5 > TIME_T_MAX) {
@@ -154,8 +154,8 @@ return tResult;
 static void
 vAnalyseSummaryInfo(const UCHAR *aucBuffer)
 {
-ULONG	ulOffset;
-size_t	tIndex, tCount, tPropID, tPropType;
+ULONG ulOffset;
+size_t tIndex, tCount, tPropID, tPropType;
 tCount = (size_t)ulGetLong(4, aucBuffer);
 DBG_DEC(tCount);
 for (tIndex = 0; tIndex < tCount; tIndex++) {
@@ -206,8 +206,8 @@ break;
 static void
 vAnalyseDocumentSummaryInfo(const UCHAR *aucBuffer)
 {
-ULONG	ulOffset;
-size_t	tIndex, tCount, tPropID, tPropType;
+ULONG ulOffset;
+size_t tIndex, tCount, tPropID, tPropType;
 tCount = (size_t)ulGetLong(4, aucBuffer);
 DBG_DEC(tCount);
 for (tIndex = 0; tIndex < tCount; tIndex++) {
@@ -239,12 +239,12 @@ ULONG ulStartBlock, ULONG ulSize,
 const ULONG *aulBBD, size_t tBBDLen,
 const ULONG *aulSBD, size_t tSBDLen)
 {
-const ULONG	*aulBlockDepot;
-UCHAR	*aucBuffer;
-size_t	tBlockDepotLen, tBlockSize, tSectionCount, tLength;
-ULONG	ulTmp, ulOffset;
-USHORT	usLittleEndian, usEmpty, usOS, usVersion;
-UCHAR	aucHdr[P_HEADER_SZ], aucSecLst[P_SECTION_MAX_SZ];
+const ULONG *aulBlockDepot;
+UCHAR *aucBuffer;
+size_t tBlockDepotLen, tBlockSize, tSectionCount, tLength;
+ULONG ulTmp, ulOffset;
+USHORT usLittleEndian, usEmpty, usOS, usVersion;
+UCHAR aucHdr[P_HEADER_SZ], aucSecLst[P_SECTION_MAX_SZ];
 if (ulSize < MIN_SIZE_FOR_BBD_USE) {
 aulBlockDepot = aulSBD;
 tBlockDepotLen = tSBDLen;
@@ -264,13 +264,13 @@ aucHdr, 0, P_HEADER_SZ)) {
 return NULL;
 }
 NO_DBG_PRINT_BLOCK(aucHdr, P_HEADER_SZ);
-usLittleEndian =  usGetWord(0, aucHdr);
+usLittleEndian = usGetWord(0, aucHdr);
 if (usLittleEndian != 0xfffe) {
 DBG_HEX(usLittleEndian);
 DBG_MSG_C(usLittleEndian == 0xfeff, "Big endian");
 return NULL;
 }
-usEmpty =  usGetWord(2, aucHdr);
+usEmpty = usGetWord(2, aucHdr);
 if (usEmpty != 0x0000) {
 DBG_DEC(usEmpty);
 return NULL;
@@ -339,10 +339,10 @@ return aucBuffer;
 void
 vSet0SummaryInfo(FILE *pFile, const UCHAR *aucHeader)
 {
-UCHAR	*aucBuffer;
-ULONG	ulBeginSumdInfo, ulBeginNextBlock;
-size_t	tLen;
-USHORT	usCodepage, usOffset;
+UCHAR *aucBuffer;
+ULONG ulBeginSumdInfo, ulBeginNextBlock;
+size_t tLen;
+USHORT usCodepage, usOffset;
 TRACE_MSG("vSet0SummaryInfo");
 fail(pFile == NULL || aucHeader == NULL);
 usCodepage = usGetWord(0x7e, aucHeader);
@@ -392,9 +392,9 @@ aucBuffer = xfree(aucBuffer);
 void
 vSet2SummaryInfo(FILE *pFile, int iWordVersion, const UCHAR *aucHeader)
 {
-UCHAR	*aucBuffer;
-ULONG	ulBeginSumdInfo, ulBeginDocpInfo, ulTmp;
-size_t	tSumdInfoLen, tDocpInfoLen, tLen, tCounter, tStart;
+UCHAR *aucBuffer;
+ULONG ulBeginSumdInfo, ulBeginDocpInfo, ulTmp;
+size_t tSumdInfoLen, tDocpInfoLen, tLen, tCounter, tStart;
 TRACE_MSG("vSet2SummaryInfo");
 fail(pFile == NULL || aucHeader == NULL);
 fail(iWordVersion != 1 && iWordVersion != 2);
@@ -402,19 +402,19 @@ usLid = usGetWord(0x06, aucHeader);
 DBG_HEX(usLid);
 if (usLid < 999 && iWordVersion == 1) {
 switch (usLid) {
-case   1: usLid = 0x0409; break;
-case   2: usLid = 0x0c0c; break;
-case  31: usLid = 0x0413; break;
-case  33: usLid = 0x040c; break;
-case  34: usLid = 0x040a; break;
-case  36: usLid = 0x040e; break;
-case  39: usLid = 0x0410; break;
-case  44: usLid = 0x0809; break;
-case  45: usLid = 0x0406; break;
-case  46: usLid = 0x041f; break;
-case  47: usLid = 0x0414; break;
-case  48: usLid = 0x0415; break;
-case  49: usLid = 0x0407; break;
+case 1: usLid = 0x0409; break;
+case 2: usLid = 0x0c0c; break;
+case 31: usLid = 0x0413; break;
+case 33: usLid = 0x040c; break;
+case 34: usLid = 0x040a; break;
+case 36: usLid = 0x040e; break;
+case 39: usLid = 0x0410; break;
+case 44: usLid = 0x0809; break;
+case 45: usLid = 0x0406; break;
+case 46: usLid = 0x041f; break;
+case 47: usLid = 0x0414; break;
+case 48: usLid = 0x0415; break;
+case 49: usLid = 0x0407; break;
 case 351: usLid = 0x0816; break;
 case 358: usLid = 0x040b; break;
 default:
@@ -501,7 +501,7 @@ vSetSummaryInfoOLE(FILE *pFile, const pps_info_type *pPPS,
 const ULONG *aulBBD, size_t tBBDLen,
 const ULONG *aulSBD, size_t tSBDLen)
 {
-UCHAR	*pucBuffer;
+UCHAR *pucBuffer;
 fail(pFile == NULL || pPPS == NULL);
 fail(aulBBD == NULL || aulSBD == NULL);
 pucBuffer = pucAnalyseSummaryInfoHeader(pFile,
@@ -536,7 +536,7 @@ const ULONG *aulBBD, size_t tBBDLen,
 const ULONG *aulSBD, size_t tSBDLen,
 const UCHAR *aucHeader)
 {
-USHORT	usTmp;
+USHORT usTmp;
 TRACE_MSG("vSet8SummaryInfo");
 usTmp = usGetWord(0x0a, aucHeader);
 if (usTmp & BIT(14)) {
@@ -565,8 +565,8 @@ return szAuthor;
 const char *
 szGetLastSaveDtm(void)
 {
-static char	szTime[12];
-struct tm	*pTime;
+static char szTime[12];
+struct tm *pTime;
 if (tLastSaveDtm == (time_t)-1) {
 return NULL;
 }
@@ -581,8 +581,8 @@ return szTime;
 const char *
 szGetModDate(void)
 {
-static char	szTime[20];
-struct tm	*pTime;
+static char szTime[20];
+struct tm *pTime;
 if (tLastSaveDtm == (time_t)-1) {
 return NULL;
 }
@@ -598,8 +598,8 @@ return szTime;
 const char *
 szGetCreationDate(void)
 {
-static char	szTime[20];
-struct tm	*pTime;
+static char szTime[20];
+struct tm *pTime;
 if (tCreateDtm == (time_t)-1) {
 return NULL;
 }

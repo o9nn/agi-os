@@ -1,16 +1,16 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
 enum{
 Qdir = 0,
 Qrtc,
 };
 Dirtab rtcdir[]={
-".",	{Qdir, 0, QTDIR},	0,	0555,
-"rtc",		{Qrtc, 0},	0,	0664,
+".", {Qdir, 0, QTDIR}, 0, 0555,
+"rtc", {Qrtc, 0}, 0, 0664,
 };
 extern ulong kerndate;
 static ulong rtcsecs;

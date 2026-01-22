@@ -11,8 +11,8 @@
 #include <cursor.h>
 #include "softcursor.h"
 #include "screen.h"
-#define	Backgnd		(0xFF)
-ulong	consbits = 0xC0;
+#define Backgnd (0xFF)
+ulong consbits = 0xC0;
 Memdata consdata = {
 nil,
 &consbits
@@ -27,12 +27,12 @@ Memimage conscol =
 0,
 1
 };
-ulong	onesbits = ~0;
+ulong onesbits = ~0;
 Memdata onesdata = {
 nil,
 &onesbits,
 };
-Memimage	xones =
+Memimage xones =
 {
 { 0, 0, 1, 1 },
 { -100000, -100000, 100000, 100000 },
@@ -43,12 +43,12 @@ Memimage	xones =
 1
 };
 Memimage *memones = &xones;
-ulong	zerosbits = 0;
+ulong zerosbits = 0;
 Memdata zerosdata = {
 nil,
 &zerosbits,
 };
-Memimage	xzeros =
+Memimage xzeros =
 {
 { 0, 0, 1, 1 },
 { -100000, -100000, 100000, 100000 },
@@ -59,12 +59,12 @@ Memimage	xzeros =
 1
 };
 Memimage *memzeros = &xzeros;
-ulong	backbits = (Backgnd<<24)|(Backgnd<<16)|(Backgnd<<8)|Backgnd;
+ulong backbits = (Backgnd<<24)|(Backgnd<<16)|(Backgnd<<8)|Backgnd;
 Memdata backdata = {
 nil,
 &backbits
 };
-Memimage	xback =
+Memimage xback =
 {
 { 0, 0, 1, 1 },
 { -100000, -100000, 100000, 100000 },
@@ -334,7 +334,7 @@ return;
 vctlr->disable();
 }
 static Rectangle cursoroffrect;
-static int	cursorisoff;
+static int cursorisoff;
 static Point hot;
 void
 cursorupdate0(void)

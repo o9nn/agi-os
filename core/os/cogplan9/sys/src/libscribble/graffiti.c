@@ -14,11 +14,11 @@ Rune
 recognize (Scribble *s)
 {
 struct graffiti *graf = s->graf;
-Stroke	    *ps = &s->ps;
-Rune		    rune;
-int		    	c;
-int				nr;
-rec_alternative	*ret;
+Stroke *ps = &s->ps;
+Rune rune;
+int c;
+int nr;
+rec_alternative *ret;
 if (ps->npts == 0)
 return '\0';
 c = recognizer_translate(

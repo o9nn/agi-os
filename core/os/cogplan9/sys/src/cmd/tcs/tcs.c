@@ -1,25 +1,25 @@
 #ifndef PLAN9
-#include	<sys/types.h>
-#include	<stdio.h>
-#include	<unistd.h>
-#include	<stdlib.h>
-#include	<fcntl.h>
-#include	<string.h>
-#include	<errno.h>
-#include	"plan9.h"
+#include <sys/types.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <string.h>
+#include <errno.h>
+#include "plan9.h"
 #else
-#include	<u.h>
-#include	<libc.h>
-#include	<bio.h>
+#include <u.h>
+#include <libc.h>
+#include <bio.h>
 #endif
-#include	"cyrillic.h"
-#include	"misc.h"
-#include	"ms.h"
-#include	"8859.h"
-#include	"big5.h"
-#include	"gb.h"
-#include	"hdr.h"
-#include	"conv.h"
+#include "cyrillic.h"
+#include "misc.h"
+#include "ms.h"
+#include "8859.h"
+#include "big5.h"
+#include "gb.h"
+#include "hdr.h"
+#include "conv.h"
 void usage(void);
 void list(void);
 int squawk = 1;
@@ -31,7 +31,7 @@ char *argv0;
 Rune runes[N];
 char obuf[UTFmax*N];
 long tab[NRUNE];
-#ifndef	PLAN9
+#ifndef PLAN9
 extern char version[];
 #endif
 void intable(int, long *, struct convert *);
@@ -79,7 +79,7 @@ if(!from || !to)
 usage();
 f = conv(from, 1);
 t = conv(to, 0);
-#define	PROC	{if(f->flags&Table)\
+#define PROC {if(f->flags&Table)\
 intable(fd, (long *)f->data, t);\
 else\
 ((Infn)(f->fn))(fd, (long *)0, t);}
@@ -122,7 +122,7 @@ list(void)
 {
 struct convert *c;
 char ch = verbose?'\t':' ';
-#ifndef	PLAN9
+#ifndef PLAN9
 EPR "%s version = '%s'\n", argv0, version);
 #endif
 if(verbose)
@@ -341,7 +341,7 @@ OUT(out, runes, r-runes);
 }
 OUT(out, runes, 0);
 if(n < 0){
-#ifdef	PLAN9
+#ifdef PLAN9
 EPR "%s: input read: %r\n", argv0);
 #else
 EPR "%s: input read: %s\n", argv0, strerror(errno));
@@ -386,14 +386,14 @@ long tabascii[256] =
 0x50,0x51,0x52,0x53,0x54,0x55,0x56,0x57,0x58,0x59,0x5a,0x5b,0x5c,0x5d,0x5e,0x5f,
 0x60,0x61,0x62,0x63,0x64,0x65,0x66,0x67,0x68,0x69,0x6a,0x6b,0x6c,0x6d,0x6e,0x6f,
 0x70,0x71,0x72,0x73,0x74,0x75,0x76,0x77,0x78,0x79,0x7a,0x7b,0x7c,0x7d,0x7e,0x7f,
--1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
--1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
--1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
--1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
--1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
--1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
--1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
--1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
+-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 };
 long tabmsdos[256] =
 {

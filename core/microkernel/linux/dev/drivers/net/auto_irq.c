@@ -14,7 +14,7 @@ static const char *version =
 #include <asm/io.h>
 #include <asm/irq.h>
 #include <linux/netdevice.h>
-void *irq2dev_map[NR_IRQS] = {0, 0,  };
+void *irq2dev_map[NR_IRQS] = {0, 0, };
 unsigned long irqs_busy = 0x2147;
 unsigned long irqs_used = 0x0001;
 unsigned long irqs_reserved = 0x0000;

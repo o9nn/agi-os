@@ -26,10 +26,10 @@
 #include <machine/vm_param.h>
 #include <i386at/acpi_parse_apic.h>
 #include <string.h>
-vm_offset_t	int_stack_top[NCPUS];
-vm_offset_t	int_stack_base[NCPUS];
+vm_offset_t int_stack_top[NCPUS];
+vm_offset_t int_stack_base[NCPUS];
 #ifdef MACH_LDEBUG
-unsigned long	in_interrupt[NCPUS];
+unsigned long in_interrupt[NCPUS];
 #endif
 uint8_t solid_intstack[NCPUS*INTSTACK_SIZE] __aligned(NCPUS*INTSTACK_SIZE);
 void
@@ -41,16 +41,16 @@ int_stack_base[i] = (vm_offset_t) &solid_intstack[i * INTSTACK_SIZE];
 int_stack_top[i] = (vm_offset_t) &solid_intstack[(i + 1) * INTSTACK_SIZE] - 4;
 }
 }
-#if	NCPUS > 1
+#if NCPUS > 1
 phys_addr_t apboot_addr;
 extern void *apboot, *apbootend;
 extern volatile ApicLocalUnit* lapic;
-struct mp_desc_table	*mp_desc_table[NCPUS] = { 0 };
-struct task_tss		*mp_ktss[NCPUS] = { 0 };
-struct real_descriptor	*mp_gdt[NCPUS] = { 0 };
-extern struct real_gate		idt[IDTSZ];
-extern struct real_descriptor	gdt[GDTSZ];
-extern struct real_descriptor	ldt[LDTSZ];
+struct mp_desc_table *mp_desc_table[NCPUS] = { 0 };
+struct task_tss *mp_ktss[NCPUS] = { 0 };
+struct real_descriptor *mp_gdt[NCPUS] = { 0 };
+extern struct real_gate idt[IDTSZ];
+extern struct real_descriptor gdt[GDTSZ];
+extern struct real_descriptor ldt[LDTSZ];
 int
 mp_desc_init(int mycpu)
 {

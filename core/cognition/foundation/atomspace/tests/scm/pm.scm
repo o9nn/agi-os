@@ -5,23 +5,23 @@
 (define bug-as (cog-new-atomspace))
 (cog-set-atomspace! bug-as)
 (define (my-precondition X)
-  (stv 1 1))
+(stv 1 1))
 (define query
 (Bind
-   (TypedVariable (Variable "$X") (TypeNode "ConceptNode"))
-   (AndLink
-      (Evaluation
-         (GroundedPredicate "scm: my-precondition")
-         (Variable "$X")
-      )
-      (Present (Variable "$X"))
-      (Concept "I")
-   )
-   (Concept "O")
+(TypedVariable (Variable "$X") (TypeNode "ConceptNode"))
+(AndLink
+(Evaluation
+(GroundedPredicate "scm: my-precondition")
+(Variable "$X")
+)
+(Present (Variable "$X"))
+(Concept "I")
+)
+(Concept "O")
 )
 )
 (define (run-bug i)
-  (cog-logger-debug "run-bug ~a" i)
-  (cog-execute! query)
-  (gc))
+(cog-logger-debug "run-bug ~a" i)
+(cog-execute! query)
+(gc))
 (for-each run-bug (iota 100))

@@ -10,46 +10,46 @@ Maxloglen = 1024,
 typedef struct Req Req;
 struct Req
 {
-int	fd;
-Bootp	*bp;
-Udphdr	*up;
-uchar	*e;
-uchar	*p;
-uchar	*max;
-uchar	ciaddr[IPaddrlen];
-uchar	giaddr[IPaddrlen];
-int	p9request;
-int	genrequest;
-int	broadcast;
-int	dhcptype;
-int	leasetime;
-uchar	ip[IPaddrlen];
-uchar	server[IPaddrlen];
-char	msg[ERRMAX];
-char	vci[32];
-char	*id;
-uchar	requested[32];
-uchar	vendorclass[32];
-char	cputype[32-3];
-Info	gii;
-Info	ii;
-int	staticbinding;
+int fd;
+Bootp *bp;
+Udphdr *up;
+uchar *e;
+uchar *p;
+uchar *max;
+uchar ciaddr[IPaddrlen];
+uchar giaddr[IPaddrlen];
+int p9request;
+int genrequest;
+int broadcast;
+int dhcptype;
+int leasetime;
+uchar ip[IPaddrlen];
+uchar server[IPaddrlen];
+char msg[ERRMAX];
+char vci[32];
+char *id;
+uchar requested[32];
+uchar vendorclass[32];
+char cputype[32-3];
+Info gii;
+Info ii;
+int staticbinding;
 uchar buf[2*1024];
 };
 #define TFTP "/lib/tftpd"
-char	*blog = "ipboot";
-char	mysysname[64];
-Ipifc	*ipifcs;
-int	debug;
-int	nobootp;
-long	now;
-int	slowstat, slowdyn;
-char	net[256];
-int	pptponly;
-int	mute, mutestat;
-int	minlease = MinLease;
-int	staticlease = StaticLease;
-uvlong	start;
+char *blog = "ipboot";
+char mysysname[64];
+Ipifc *ipifcs;
+int debug;
+int nobootp;
+long now;
+int slowstat, slowdyn;
+char net[256];
+int pptponly;
+int mute, mutestat;
+int minlease = MinLease;
+int staticlease = StaticLease;
+uvlong start;
 static int v6opts;
 char plan9opt[4] = { 'p', '9', ' ', ' ' };
 char genericopt[4] = { 0x63, 0x82, 0x53, 0x63 };
@@ -59,116 +59,116 @@ char *op;
 char *oe = optbuf + sizeof(optbuf);
 char *optname[256] =
 {
-[OBend]			"end",
-[OBpad]			"pad",
-[OBmask]		"mask",
-[OBtimeoff]		"timeoff",
-[OBrouter]		"router",
-[OBtimeserver]		"time",
-[OBnameserver]		"name",
-[OBdnserver]		"dns",
-[OBlogserver]		"log",
-[OBcookieserver]	"cookie",
-[OBlprserver]		"lpr",
-[OBimpressserver]	"impress",
-[OBrlserver]		"rl",
-[OBhostname]		"host",
-[OBbflen]		"bflen",
-[OBdumpfile]		"dumpfile",
-[OBdomainname]		"dom",
-[OBswapserver]		"swap",
-[OBrootpath]		"rootpath",
-[OBextpath]		"extpath",
-[OBipforward]		"ipforward",
-[OBnonlocal]		"nonlocal",
-[OBpolicyfilter]	"policyfilter",
-[OBmaxdatagram]		"maxdatagram",
-[OBttl]			"ttl",
-[OBpathtimeout]		"pathtimeout",
-[OBpathplateau]		"pathplateau",
-[OBmtu]			"mtu",
-[OBsubnetslocal]	"subnetslocal",
-[OBbaddr]		"baddr",
-[OBdiscovermask]	"discovermask",
-[OBsupplymask]		"supplymask",
-[OBdiscoverrouter]	"discoverrouter",
-[OBrsserver]		"rsserver",
-[OBstaticroutes]	"staticroutes",
-[OBtrailerencap]	"trailerencap",
-[OBarptimeout]		"arptimeout",
-[OBetherencap]		"etherencap",
-[OBtcpttl]		"tcpttl",
-[OBtcpka]		"tcpka",
-[OBtcpkag]		"tcpkag",
-[OBnisdomain]		"nisdomain",
-[OBniserver]		"niserver",
-[OBntpserver]		"ntpserver",
-[OBvendorinfo]		"vendorinfo",
-[OBnetbiosns]		"NBns",
-[OBnetbiosdds]		"NBdds",
-[OBnetbiostype]		"NBtype",
-[OBnetbiosscope]	"NBscope",
-[OBxfontserver]		"xfont",
-[OBxdispmanager]	"xdisp",
-[OBnisplusdomain]	"NPdomain",
-[OBnisplusserver]	"NP",
-[OBhomeagent]		"homeagent",
-[OBsmtpserver]		"smtp",
-[OBpop3server]		"pop3",
-[OBnntpserver]		"nntp",
-[OBwwwserver]		"www",
-[OBfingerserver]	"finger",
-[OBircserver]		"ircserver",
-[OBstserver]		"stserver",
-[OBstdaserver]		"stdaserver",
-[ODipaddr]		"ip",
-[ODlease]		"leas",
-[ODoverload]		"overload",
-[ODtype]		"typ",
-[ODserverid]		"sid",
-[ODparams]		"params",
-[ODmessage]		"message",
-[ODmaxmsg]		"maxmsg",
-[ODrenewaltime]		"renewaltime",
-[ODrebindingtime]	"rebindingtime",
-[ODvendorclass]		"vendorclass",
-[ODclientid]		"cid",
-[ODtftpserver]		"tftpserver",
-[ODbootfile]		"bf",
+[OBend] "end",
+[OBpad] "pad",
+[OBmask] "mask",
+[OBtimeoff] "timeoff",
+[OBrouter] "router",
+[OBtimeserver] "time",
+[OBnameserver] "name",
+[OBdnserver] "dns",
+[OBlogserver] "log",
+[OBcookieserver] "cookie",
+[OBlprserver] "lpr",
+[OBimpressserver] "impress",
+[OBrlserver] "rl",
+[OBhostname] "host",
+[OBbflen] "bflen",
+[OBdumpfile] "dumpfile",
+[OBdomainname] "dom",
+[OBswapserver] "swap",
+[OBrootpath] "rootpath",
+[OBextpath] "extpath",
+[OBipforward] "ipforward",
+[OBnonlocal] "nonlocal",
+[OBpolicyfilter] "policyfilter",
+[OBmaxdatagram] "maxdatagram",
+[OBttl] "ttl",
+[OBpathtimeout] "pathtimeout",
+[OBpathplateau] "pathplateau",
+[OBmtu] "mtu",
+[OBsubnetslocal] "subnetslocal",
+[OBbaddr] "baddr",
+[OBdiscovermask] "discovermask",
+[OBsupplymask] "supplymask",
+[OBdiscoverrouter] "discoverrouter",
+[OBrsserver] "rsserver",
+[OBstaticroutes] "staticroutes",
+[OBtrailerencap] "trailerencap",
+[OBarptimeout] "arptimeout",
+[OBetherencap] "etherencap",
+[OBtcpttl] "tcpttl",
+[OBtcpka] "tcpka",
+[OBtcpkag] "tcpkag",
+[OBnisdomain] "nisdomain",
+[OBniserver] "niserver",
+[OBntpserver] "ntpserver",
+[OBvendorinfo] "vendorinfo",
+[OBnetbiosns] "NBns",
+[OBnetbiosdds] "NBdds",
+[OBnetbiostype] "NBtype",
+[OBnetbiosscope] "NBscope",
+[OBxfontserver] "xfont",
+[OBxdispmanager] "xdisp",
+[OBnisplusdomain] "NPdomain",
+[OBnisplusserver] "NP",
+[OBhomeagent] "homeagent",
+[OBsmtpserver] "smtp",
+[OBpop3server] "pop3",
+[OBnntpserver] "nntp",
+[OBwwwserver] "www",
+[OBfingerserver] "finger",
+[OBircserver] "ircserver",
+[OBstserver] "stserver",
+[OBstdaserver] "stdaserver",
+[ODipaddr] "ip",
+[ODlease] "leas",
+[ODoverload] "overload",
+[ODtype] "typ",
+[ODserverid] "sid",
+[ODparams] "params",
+[ODmessage] "message",
+[ODmaxmsg] "maxmsg",
+[ODrenewaltime] "renewaltime",
+[ODrebindingtime] "rebindingtime",
+[ODvendorclass] "vendorclass",
+[ODclientid] "cid",
+[ODtftpserver] "tftpserver",
+[ODbootfile] "bf",
 };
-void	addropt(Req*, int, uchar*);
-void	addrsopt(Req*, int, uchar**, int);
-void	arpenter(uchar*, uchar*);
-void	bootp(Req*);
-void	byteopt(Req*, int, uchar);
-void	dhcp(Req*);
-void	fatal(int, char*, ...);
-void	hexopt(Req*, int, char*);
-void	logdhcp(Req*);
-void	logdhcpout(Req *, char *);
-void	longopt(Req*, int, long);
-void	maskopt(Req*, int, uchar*);
-void	miscoptions(Req*, uchar*);
-int	openlisten(char *net);
-void	p9addrsopt(Req *rp, int t, uchar **ip, int i);
-void	parseoptions(Req*);
-void	proto(Req*, int);
-void	rcvdecline(Req*);
-void	rcvdiscover(Req*);
-void	rcvinform(Req*);
-void	rcvrelease(Req*);
-void	rcvrequest(Req*);
-int	readlast(int, uchar*, int);
-char*	readsysname(void);
-void	remrequested(Req*, int);
-void	sendack(Req*, uchar*, int, int);
-void	sendnak(Req*, char*);
-void	sendoffer(Req*, uchar*, int);
-void	stringopt(Req*, int, char*);
-void	termopt(Req*);
-int	validip(uchar*);
-void	vectoropt(Req*, int, uchar*, int);
-void	warning(int, char*, ...);
+void addropt(Req*, int, uchar*);
+void addrsopt(Req*, int, uchar**, int);
+void arpenter(uchar*, uchar*);
+void bootp(Req*);
+void byteopt(Req*, int, uchar);
+void dhcp(Req*);
+void fatal(int, char*, ...);
+void hexopt(Req*, int, char*);
+void logdhcp(Req*);
+void logdhcpout(Req *, char *);
+void longopt(Req*, int, long);
+void maskopt(Req*, int, uchar*);
+void miscoptions(Req*, uchar*);
+int openlisten(char *net);
+void p9addrsopt(Req *rp, int t, uchar **ip, int i);
+void parseoptions(Req*);
+void proto(Req*, int);
+void rcvdecline(Req*);
+void rcvdiscover(Req*);
+void rcvinform(Req*);
+void rcvrelease(Req*);
+void rcvrequest(Req*);
+int readlast(int, uchar*, int);
+char* readsysname(void);
+void remrequested(Req*, int);
+void sendack(Req*, uchar*, int, int);
+void sendnak(Req*, char*);
+void sendoffer(Req*, uchar*, int);
+void stringopt(Req*, int, char*);
+void termopt(Req*);
+int validip(uchar*);
+void vectoropt(Req*, int, uchar*, int);
+void warning(int, char*, ...);
 void
 timestamp(char *tag)
 {
@@ -1296,14 +1296,14 @@ close(f);
 }
 char *dhcpmsgname[] =
 {
-[Discover]	"Discover",
-[Offer]		"Offer",
-[Request]	"Request",
-[Decline]	"Decline",
-[Ack]		"Ack",
-[Nak]		"Nak",
-[Release]	"Release",
-[Inform]	"Inform",
+[Discover] "Discover",
+[Offer] "Offer",
+[Request] "Request",
+[Decline] "Decline",
+[Ack] "Ack",
+[Nak] "Nak",
+[Release] "Release",
+[Inform] "Inform",
 };
 void
 logdhcp(Req *rp)

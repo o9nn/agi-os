@@ -1,5 +1,5 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #include "imapstorage.h"
 #include <stdlib.h>
@@ -9,7 +9,7 @@
 #include "imapdriver_cached.h"
 #include "mailstorage_tools.h"
 #include "maildriver.h"
-#define IMAP_DEFAULT_PORT  143
+#define IMAP_DEFAULT_PORT 143
 #define IMAPS_DEFAULT_PORT 993
 static int imap_mailstorage_connect(struct mailstorage * storage);
 static int

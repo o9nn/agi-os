@@ -1,9 +1,9 @@
 # # [Symbolic Regression of a Linear Time Continuous Systems](@id symbolic_regression_simple)
 #
 # !!! note
-#    Symbolic regression is using regularized evolution, simulated annealing, and gradient-free optimization to find suitable equations.
-#    Hence, the performance might differ and depends strongly on the hyperparameters of the optimization.
-#    This example might not recover the groundtruth, but is showing off the use within `DataDrivenDiffEq.jl`.
+# Symbolic regression is using regularized evolution, simulated annealing, and gradient-free optimization to find suitable equations.
+# Hence, the performance might differ and depends strongly on the hyperparameters of the optimization.
+# This example might not recover the groundtruth, but is showing off the use within `DataDrivenDiffEq.jl`.
 #
 # DataDrivenDiffEq offers an interface to [`SymbolicRegression.jl`](https:
 using DataDrivenDiffEq
@@ -40,8 +40,8 @@ res = solve(prob, alg, options = DataDrivenCommonOptions(maxiters = 100))
 # We can inspect the systems metrics, here the `loglikelihood` of the result.
 loglikelihood(res)
 # !!! note
-#    Currently the parameters of the result found by [`EQSearch`](@ref) are not turned into symbolic parameters.
-#    This affects some functions like `dof`, `aicc`, `bic`.
+# Currently the parameters of the result found by [`EQSearch`](@ref) are not turned into symbolic parameters.
+# This affects some functions like `dof`, `aicc`, `bic`.
 system = get_basis(res)
 #md println(system) # hide
 #md # ## [Copy-Pasteable Code](@id symbolic_regression_simple_copy_paste)

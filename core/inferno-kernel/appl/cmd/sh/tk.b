@@ -51,9 +51,9 @@ runbuiltin(ctxt: ref Context, nil: Sh,
 cmd: list of ref Listnode, nil: int): string
 {
 case (hd cmd).word {
-"tk" =>		return builtin_tk(ctxt, cmd);
-"chan" =>		return builtin_chan(ctxt, cmd);
-"send" =>		return builtin_send(ctxt, cmd);
+"tk" => return builtin_tk(ctxt, cmd);
+"chan" => return builtin_chan(ctxt, cmd);
+"send" => return builtin_send(ctxt, cmd);
 }
 return nil;
 }
@@ -61,18 +61,18 @@ runsbuiltin(ctxt: ref Context, nil: Sh,
 cmd: list of ref Listnode): list of ref Listnode
 {
 case (hd cmd).word {
-"tk" =>		return sbuiltin_tk(ctxt, cmd);
-"recv" =>		return sbuiltin_recv(ctxt, cmd);
-"alt" =>		return sbuiltin_alt(ctxt, cmd);
-"tkquote" =>	return sbuiltin_tkquote(ctxt, cmd);
+"tk" => return sbuiltin_tk(ctxt, cmd);
+"recv" => return sbuiltin_recv(ctxt, cmd);
+"alt" => return sbuiltin_alt(ctxt, cmd);
+"tkquote" => return sbuiltin_tkquote(ctxt, cmd);
 }
 return nil;
 }
 builtin_tk(ctxt: ref Context, argv: list of ref Listnode): string
 {
-# usage:	tk window _title_ _options_
-#		tk wintitle _winid_ _title_
-#		tk _winid_ _cmd_
+# usage: tk window _title_ _options_
+# tk wintitle _winid_ _title_
+# tk _winid_ _cmd_
 if (tl argv == nil)
 ctxt.fail("usage", "usage: tk (<winid>|window|onscreen|winctlwintitle|del|namechan) args...");
 argv = tl argv;
@@ -181,8 +181,8 @@ return nil;
 }
 sbuiltin_tk(ctxt: ref Context, argv: list of ref Listnode): list of ref Listnode
 {
-# usage:	tk _winid_ _command_
-#		tk window _title_ _options_
+# usage: tk _winid_ _command_
+# tk window _title_ _options_
 argv = tl argv;
 if (argv == nil)
 ctxt.fail("usage", "tk (window|wid) args");

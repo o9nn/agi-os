@@ -32,7 +32,7 @@
 #ifdef CONFIG_SYSCTL
 #include <linux/sysctl.h>
 #endif
-#define IP_MAX_MTU	0xFFF0
+#define IP_MAX_MTU 0xFFF0
 #define RT_GC_TIMEOUT (300*HZ)
 int ip_rt_min_delay = 2*HZ;
 int ip_rt_max_delay = 10*HZ;
@@ -49,7 +49,7 @@ int ip_rt_error_burst = 5*HZ;
 int ip_rt_gc_elasticity = 8;
 int ip_rt_mtu_expires = 10*60*HZ;
 static unsigned long rt_deadline = 0;
-#define RTprint(a...)	printk(KERN_DEBUG a)
+#define RTprint(a...) printk(KERN_DEBUG a)
 static void rt_run_flush(unsigned long dummy);
 static struct timer_list rt_flush_timer =
 { NULL, NULL, 0, 0L, rt_run_flush };
@@ -59,7 +59,7 @@ static struct dst_entry * ipv4_dst_check(struct dst_entry * dst, u32);
 static struct dst_entry * ipv4_dst_reroute(struct dst_entry * dst,
 struct sk_buff *);
 static struct dst_entry * ipv4_negative_advice(struct dst_entry *);
-static void		  ipv4_link_failure(struct sk_buff *skb);
+static void ipv4_link_failure(struct sk_buff *skb);
 static int rt_garbage_collect(void);
 struct dst_ops ipv4_dst_ops =
 {
@@ -91,7 +91,7 @@ TC_PRIO_FILLER,
 TC_PRIO_INTERACTIVE_BULK,
 TC_PRIO_FILLER
 };
-struct rtable 	*rt_hash_table[RT_HASH_DIVISOR];
+struct rtable *rt_hash_table[RT_HASH_DIVISOR];
 static int rt_intern_hash(unsigned hash, struct rtable * rth, struct rtable ** res);
 static __inline__ unsigned rt_hash_code(u32 daddr, u32 saddr, u8 tos)
 {
@@ -109,7 +109,7 @@ char temp[129];
 struct rtable *r;
 int i;
 pos = 128;
-if (offset<128)	{
+if (offset<128) {
 sprintf(buffer,"%-127s\n", "Iface\tDestination\tGateway \tFlags\t\tRefCnt\tUse\tMetric\tSource\t\tMTU\tWindow\tIRTT\tTOS\tHHRef\tHHUptod\tSpecDst");
 len = 128;
 }
@@ -340,8 +340,8 @@ return 0;
 }
 static int rt_intern_hash(unsigned hash, struct rtable * rt, struct rtable ** rp)
 {
-struct rtable	*rth, **rthp;
-unsigned long	now = jiffies;
+struct rtable *rth, **rthp;
+unsigned long now = jiffies;
 int attempts = !in_interrupt();
 restart:
 start_bh_atomic();
@@ -415,8 +415,8 @@ u32 saddr, u8 tos, struct device *dev)
 int i, k;
 struct in_device *in_dev = dev->ip_ptr;
 struct rtable *rth, **rthp;
-u32  skeys[2] = { saddr, 0 };
-int  ikeys[2] = { dev->ifindex, 0 };
+u32 skeys[2] = { saddr, 0 };
+int ikeys[2] = { dev->ifindex, 0 };
 tos &= IPTOS_TOS_MASK;
 if (!in_dev)
 return;
@@ -584,9 +584,9 @@ unsigned short ip_rt_frag_needed(struct iphdr *iph, unsigned short new_mtu)
 int i;
 unsigned short old_mtu = ntohs(iph->tot_len);
 struct rtable *rth;
-u32  skeys[2] = { iph->saddr, 0, };
-u32  daddr = iph->daddr;
-u8   tos = iph->tos & IPTOS_TOS_MASK;
+u32 skeys[2] = { iph->saddr, 0, };
+u32 daddr = iph->daddr;
+u8 tos = iph->tos & IPTOS_TOS_MASK;
 unsigned short est_mtu = 0;
 if (ipv4_config.no_pmtu_disc)
 return 0;
@@ -694,18 +694,18 @@ rt->u.dst.pmtu > 576)
 rt->u.dst.pmtu = 576;
 }
 rt->u.dst.window= fi->fib_window ? : 0;
-rt->u.dst.rtt	= fi->fib_rtt ? : TCP_TIMEOUT_INIT;
+rt->u.dst.rtt = fi->fib_rtt ? : TCP_TIMEOUT_INIT;
 #ifdef CONFIG_NET_CLS_ROUTE
 rt->u.dst.tclassid = FIB_RES_NH(*res).nh_tclassid;
 #endif
 } else {
-rt->u.dst.pmtu	= rt->u.dst.dev->mtu;
+rt->u.dst.pmtu = rt->u.dst.dev->mtu;
 if (rt->u.dst.pmtu > IP_MAX_MTU)
 rt->u.dst.pmtu = IP_MAX_MTU;
 if (rt->u.dst.pmtu < 68)
 rt->u.dst.pmtu = 68;
 rt->u.dst.window= 0;
-rt->u.dst.rtt	= TCP_TIMEOUT_INIT;
+rt->u.dst.rtt = TCP_TIMEOUT_INIT;
 }
 #ifdef CONFIG_NET_CLS_ROUTE
 #ifdef CONFIG_IP_MULTIPLE_TABLES
@@ -738,29 +738,29 @@ if (!rth)
 return -ENOBUFS;
 rth->u.dst.output= ip_rt_bug;
 atomic_set(&rth->u.dst.use, 1);
-rth->key.dst	= daddr;
-rth->rt_dst	= daddr;
-rth->key.tos	= tos;
+rth->key.dst = daddr;
+rth->rt_dst = daddr;
+rth->key.tos = tos;
 #ifdef CONFIG_IP_ROUTE_FWMARK
-rth->key.fwmark	= skb->fwmark;
+rth->key.fwmark = skb->fwmark;
 #endif
-rth->key.src	= saddr;
-rth->rt_src	= saddr;
+rth->key.src = saddr;
+rth->rt_src = saddr;
 #ifdef CONFIG_IP_ROUTE_NAT
-rth->rt_dst_map	= daddr;
-rth->rt_src_map	= saddr;
+rth->rt_dst_map = daddr;
+rth->rt_src_map = saddr;
 #endif
 #ifdef CONFIG_NET_CLS_ROUTE
 rth->u.dst.tclassid = itag;
 #endif
-rth->rt_iif	=
-rth->key.iif	= dev->ifindex;
-rth->u.dst.dev	= &loopback_dev;
-rth->key.oif	= 0;
-rth->rt_gateway	= daddr;
+rth->rt_iif =
+rth->key.iif = dev->ifindex;
+rth->u.dst.dev = &loopback_dev;
+rth->key.oif = 0;
+rth->rt_gateway = daddr;
 rth->rt_spec_dst= spec_dst;
-rth->rt_type	= RTN_MULTICAST;
-rth->rt_flags	= RTCF_MULTICAST;
+rth->rt_type = RTN_MULTICAST;
+rth->rt_flags = RTCF_MULTICAST;
 if (our) {
 rth->u.dst.input= ip_local_deliver;
 rth->rt_flags |= RTCF_LOCAL;
@@ -775,16 +775,16 @@ return rt_intern_hash(hash, rth, (struct rtable**)&skb->dst);
 int ip_route_input_slow(struct sk_buff *skb, u32 daddr, u32 saddr,
 u8 tos, struct device *dev)
 {
-struct rt_key	key;
+struct rt_key key;
 struct fib_result res;
 struct in_device *in_dev = dev->ip_ptr;
 struct in_device *out_dev;
-unsigned	flags = 0;
-u32		itag = 0;
+unsigned flags = 0;
+u32 itag = 0;
 struct rtable * rth;
-unsigned	hash;
-u32		spec_dst;
-int		err = -EINVAL;
+unsigned hash;
+u32 spec_dst;
+int err = -EINVAL;
 if (!in_dev)
 return -EINVAL;
 key.dst = daddr;
@@ -868,25 +868,25 @@ rth = dst_alloc(sizeof(struct rtable), &ipv4_dst_ops);
 if (!rth)
 return -ENOBUFS;
 atomic_set(&rth->u.dst.use, 1);
-rth->key.dst	= daddr;
-rth->rt_dst	= daddr;
-rth->key.tos	= tos;
+rth->key.dst = daddr;
+rth->rt_dst = daddr;
+rth->key.tos = tos;
 #ifdef CONFIG_IP_ROUTE_FWMARK
-rth->key.fwmark	= skb->fwmark;
+rth->key.fwmark = skb->fwmark;
 #endif
-rth->key.src	= saddr;
-rth->rt_src	= saddr;
-rth->rt_gateway	= daddr;
+rth->key.src = saddr;
+rth->rt_src = saddr;
+rth->rt_gateway = daddr;
 #ifdef CONFIG_IP_ROUTE_NAT
-rth->rt_src_map	= key.src;
-rth->rt_dst_map	= key.dst;
+rth->rt_src_map = key.src;
+rth->rt_dst_map = key.dst;
 if (flags&RTCF_DNAT)
-rth->rt_gateway	= key.dst;
+rth->rt_gateway = key.dst;
 #endif
-rth->rt_iif 	=
-rth->key.iif	= dev->ifindex;
-rth->u.dst.dev	= out_dev->dev;
-rth->key.oif 	= 0;
+rth->rt_iif =
+rth->key.iif = dev->ifindex;
+rth->u.dst.dev = out_dev->dev;
+rth->key.oif = 0;
 rth->rt_spec_dst= spec_dst;
 rth->u.dst.input = ip_forward;
 rth->u.dst.output = ip_output;
@@ -923,35 +923,35 @@ if (!rth)
 return -ENOBUFS;
 rth->u.dst.output= ip_rt_bug;
 atomic_set(&rth->u.dst.use, 1);
-rth->key.dst	= daddr;
-rth->rt_dst	= daddr;
-rth->key.tos	= tos;
+rth->key.dst = daddr;
+rth->rt_dst = daddr;
+rth->key.tos = tos;
 #ifdef CONFIG_IP_ROUTE_FWMARK
-rth->key.fwmark	= skb->fwmark;
+rth->key.fwmark = skb->fwmark;
 #endif
-rth->key.src	= saddr;
-rth->rt_src	= saddr;
+rth->key.src = saddr;
+rth->rt_src = saddr;
 #ifdef CONFIG_IP_ROUTE_NAT
-rth->rt_dst_map	= key.dst;
-rth->rt_src_map	= key.src;
+rth->rt_dst_map = key.dst;
+rth->rt_src_map = key.src;
 #endif
 #ifdef CONFIG_NET_CLS_ROUTE
 rth->u.dst.tclassid = itag;
 #endif
-rth->rt_iif	=
-rth->key.iif	= dev->ifindex;
-rth->u.dst.dev	= &loopback_dev;
-rth->key.oif 	= 0;
-rth->rt_gateway	= daddr;
+rth->rt_iif =
+rth->key.iif = dev->ifindex;
+rth->u.dst.dev = &loopback_dev;
+rth->key.oif = 0;
+rth->rt_gateway = daddr;
 rth->rt_spec_dst= spec_dst;
 rth->u.dst.input= ip_local_deliver;
-rth->rt_flags 	= flags|RTCF_LOCAL;
+rth->rt_flags = flags|RTCF_LOCAL;
 if (res.type == RTN_UNREACHABLE) {
 rth->u.dst.input= ip_error;
 rth->u.dst.error= -err;
-rth->rt_flags 	&= ~RTCF_LOCAL;
+rth->rt_flags &= ~RTCF_LOCAL;
 }
-rth->rt_type	= res.type;
+rth->rt_type = res.type;
 return rt_intern_hash(hash, rth, (struct rtable**)&skb->dst);
 no_route:
 spec_dst = inet_select_addr(dev, 0, RT_SCOPE_UNIVERSE);
@@ -983,7 +983,7 @@ int ip_route_input(struct sk_buff *skb, u32 daddr, u32 saddr,
 u8 tos, struct device *dev)
 {
 struct rtable * rth;
-unsigned	hash;
+unsigned hash;
 int iif = dev->ifindex;
 tos &= IPTOS_TOS_MASK;
 hash = rt_hash_code(daddr, saddr^(iif<<5), tos);
@@ -1146,19 +1146,19 @@ rth = dst_alloc(sizeof(struct rtable), &ipv4_dst_ops);
 if (!rth)
 return -ENOBUFS;
 atomic_set(&rth->u.dst.use, 1);
-rth->key.dst	= daddr;
-rth->key.tos	= tos;
-rth->key.src	= saddr;
-rth->key.iif	= 0;
-rth->key.oif	= oif;
-rth->rt_dst	= key.dst;
-rth->rt_src	= key.src;
+rth->key.dst = daddr;
+rth->key.tos = tos;
+rth->key.src = saddr;
+rth->key.iif = 0;
+rth->key.oif = oif;
+rth->rt_dst = key.dst;
+rth->rt_src = key.src;
 #ifdef CONFIG_IP_ROUTE_NAT
-rth->rt_dst_map	= key.dst;
-rth->rt_src_map	= key.src;
+rth->rt_dst_map = key.dst;
+rth->rt_src_map = key.src;
 #endif
-rth->rt_iif	= oif ? : dev_out->ifindex;
-rth->u.dst.dev	= dev_out;
+rth->rt_iif = oif ? : dev_out->ifindex;
+rth->u.dst.dev = dev_out;
 rth->rt_gateway = key.dst;
 rth->rt_spec_dst= key.src;
 rth->u.dst.output=ip_output;
@@ -1219,8 +1219,8 @@ static int rt_fill_info(struct sk_buff *skb, u32 pid, u32 seq, int event, int no
 {
 struct rtable *rt = (struct rtable*)skb->dst;
 struct rtmsg *r;
-struct nlmsghdr  *nlh;
-unsigned char	 *b = skb->tail;
+struct nlmsghdr *nlh;
+unsigned char *b = skb->tail;
 struct rta_cacheinfo ci;
 #ifdef CONFIG_IP_MROUTE
 struct rtattr *eptr;
@@ -1369,7 +1369,7 @@ if (err < 0)
 return err;
 return 0;
 }
-int ip_rt_dump(struct sk_buff *skb,  struct netlink_callback *cb)
+int ip_rt_dump(struct sk_buff *skb, struct netlink_callback *cb)
 {
 struct rtable *rt;
 int h, s_h;

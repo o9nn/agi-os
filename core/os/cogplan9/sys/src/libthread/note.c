@@ -2,21 +2,21 @@
 #include <libc.h>
 #include <thread.h>
 #include "threadimpl.h"
-int	_threadnopasser;
-#define	NFN		33
-#define	ERRLEN	48
+int _threadnopasser;
+#define NFN 33
+#define ERRLEN 48
 typedef struct Note Note;
 struct Note
 {
-Lock		inuse;
-Proc		*proc;
-char		s[ERRMAX];
+Lock inuse;
+Proc *proc;
+char s[ERRMAX];
 };
-static Note	notes[128];
-static Note	*enotes = notes+nelem(notes);
-static int		(*onnote[NFN])(void*, char*);
-static int		onnotepid[NFN];
-static Lock	onnotelock;
+static Note notes[128];
+static Note *enotes = notes+nelem(notes);
+static int (*onnote[NFN])(void*, char*);
+static int onnotepid[NFN];
+static Lock onnotelock;
 int
 threadnotify(int (*f)(void*, char*), int in)
 {

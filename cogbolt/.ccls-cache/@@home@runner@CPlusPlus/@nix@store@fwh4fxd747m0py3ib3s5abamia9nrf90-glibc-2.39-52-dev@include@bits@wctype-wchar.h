@@ -7,16 +7,16 @@
 #include <bits/types/wint_t.h>
 typedef unsigned long int wctype_t;
 # ifndef _ISwbit
-#  include <bits/endian.h>
-#  if __BYTE_ORDER == __BIG_ENDIAN
-#   define _ISwbit(bit)	(1 << (bit))
-#  else
-#   define _ISwbit(bit)	\
-((bit) < 8 ? (int) ((1UL << (bit)) << 24)			      \
-: ((bit) < 16 ? (int) ((1UL << (bit)) << 8)			      \
-: ((bit) < 24 ? (int) ((1UL << (bit)) >> 8)			      \
+# include <bits/endian.h>
+# if __BYTE_ORDER == __BIG_ENDIAN
+# define _ISwbit(bit) (1 << (bit))
+# else
+# define _ISwbit(bit) \
+((bit) < 8 ? (int) ((1UL << (bit)) << 24) \
+: ((bit) < 16 ? (int) ((1UL << (bit)) << 8) \
+: ((bit) < 24 ? (int) ((1UL << (bit)) >> 8) \
 : (int) ((1UL << (bit)) >> 24))))
-#  endif
+# endif
 enum
 {
 __ISwupper = 0,

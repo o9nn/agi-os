@@ -2,41 +2,41 @@
 #include "draw.h"
 #include "tk.h"
 #include "canvs.h"
-#define	O(t, e)		((long)(&((t*)0)->e))
+#define O(t, e) ((long)(&((t*)0)->e))
 typedef struct TkCpoly TkCpoly;
 struct TkCpoly
 {
-int		width;
-Image*		stipple;
-Image*		pen;
-TkCanvas*	canv;
-int		smooth;
-int		steps;
-int		winding;
+int width;
+Image* stipple;
+Image* pen;
+TkCanvas* canv;
+int smooth;
+int steps;
+int winding;
 };
 static
 TkStab tkwinding[] =
 {
-"nonzero",	~0,
-"odd",		1,
+"nonzero", ~0,
+"odd", 1,
 nil
 };
 static
 TkOption polyopts[] =
 {
-"width",	OPTnnfrac,	O(TkCpoly, width),	nil,
-"stipple",	OPTbmap,	O(TkCpoly, stipple),	nil,
-"smooth",	OPTstab,	O(TkCpoly, smooth),	tkbool,
-"splinesteps",	OPTdist,	O(TkCpoly, steps),	nil,
-"winding",	OPTstab, O(TkCpoly, winding), tkwinding,
+"width", OPTnnfrac, O(TkCpoly, width), nil,
+"stipple", OPTbmap, O(TkCpoly, stipple), nil,
+"smooth", OPTstab, O(TkCpoly, smooth), tkbool,
+"splinesteps", OPTdist, O(TkCpoly, steps), nil,
+"winding", OPTstab, O(TkCpoly, winding), tkwinding,
 nil
 };
 static
 TkOption itemopts[] =
 {
-"tags",		OPTctag,	O(TkCitem, tags),	nil,
-"fill",		OPTcolr,	O(TkCitem, env),	IAUX(TkCfill),
-"outline",	OPTcolr,	O(TkCitem, env),	IAUX(TkCforegnd),
+"tags", OPTctag, O(TkCitem, tags), nil,
+"fill", OPTcolr, O(TkCitem, env), IAUX(TkCfill),
+"outline", OPTcolr, O(TkCitem, env), IAUX(TkCforegnd),
 nil
 };
 void

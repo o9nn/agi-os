@@ -11,16 +11,16 @@
 #include "ggml-cpu.h"
 #include "ggml-opt.h"
 #define MNIST_NTRAIN 60000
-#define MNIST_NTEST  10000
-#define MNIST_NBATCH_LOGICAL  1000
-#define MNIST_NBATCH_PHYSICAL  500
+#define MNIST_NTEST 10000
+#define MNIST_NBATCH_LOGICAL 1000
+#define MNIST_NBATCH_PHYSICAL 500
 static_assert(MNIST_NBATCH_LOGICAL % MNIST_NBATCH_PHYSICAL == 0, "MNIST_NBATCH_LOGICAL % MNIST_NBATCH_PHYSICAL != 0");
 static_assert(MNIST_NTRAIN % MNIST_NBATCH_LOGICAL == 0, "MNIST_NTRAIN % MNIST_NBATCH_LOGICAL != 0");
-static_assert(MNIST_NTEST  % MNIST_NBATCH_LOGICAL == 0, "MNIST_NTRAIN % MNIST_NBATCH_LOGICAL != 0");
-#define MNIST_HW       28
-#define MNIST_NINPUT   (MNIST_HW*MNIST_HW)
+static_assert(MNIST_NTEST % MNIST_NBATCH_LOGICAL == 0, "MNIST_NTRAIN % MNIST_NBATCH_LOGICAL != 0");
+#define MNIST_HW 28
+#define MNIST_NINPUT (MNIST_HW*MNIST_HW)
 #define MNIST_NCLASSES 10
-#define MNIST_NHIDDEN  500
+#define MNIST_NHIDDEN 500
 #define MNIST_CNN_NCB 8
 struct mnist_model {
 std::string arch;
@@ -28,23 +28,23 @@ ggml_backend_sched_t backend_sched;
 std::vector<ggml_backend_t> backends;
 const int nbatch_logical;
 const int nbatch_physical;
-struct ggml_tensor * images     = nullptr;
-struct ggml_tensor * logits     = nullptr;
+struct ggml_tensor * images = nullptr;
+struct ggml_tensor * logits = nullptr;
 struct ggml_tensor * fc1_weight = nullptr;
-struct ggml_tensor * fc1_bias   = nullptr;
+struct ggml_tensor * fc1_bias = nullptr;
 struct ggml_tensor * fc2_weight = nullptr;
-struct ggml_tensor * fc2_bias   = nullptr;
+struct ggml_tensor * fc2_bias = nullptr;
 struct ggml_tensor * conv1_kernel = nullptr;
-struct ggml_tensor * conv1_bias   = nullptr;
+struct ggml_tensor * conv1_bias = nullptr;
 struct ggml_tensor * conv2_kernel = nullptr;
-struct ggml_tensor * conv2_bias   = nullptr;
+struct ggml_tensor * conv2_bias = nullptr;
 struct ggml_tensor * dense_weight = nullptr;
-struct ggml_tensor * dense_bias   = nullptr;
-struct ggml_context * ctx_gguf    = nullptr;
-struct ggml_context * ctx_static  = nullptr;
+struct ggml_tensor * dense_bias = nullptr;
+struct ggml_context * ctx_gguf = nullptr;
+struct ggml_context * ctx_static = nullptr;
 struct ggml_context * ctx_compute = nullptr;
-ggml_backend_buffer_t buf_gguf    = nullptr;
-ggml_backend_buffer_t buf_static  = nullptr;
+ggml_backend_buffer_t buf_gguf = nullptr;
+ggml_backend_buffer_t buf_static = nullptr;
 mnist_model(const std::string & backend_name, const int nbatch_logical, const int nbatch_physical)
 : nbatch_logical(nbatch_logical), nbatch_physical(nbatch_physical) {
 std::vector<ggml_backend_dev_t> devices;
@@ -121,9 +121,9 @@ ggml_backend_free(backend);
 bool mnist_image_load(const std::string & fname, ggml_opt_dataset_t dataset);
 void mnist_image_print(FILE * f, ggml_opt_dataset_t dataset, const int iex);
 bool mnist_label_load(const std::string & fname, ggml_opt_dataset_t dataset);
-mnist_model       mnist_model_init_from_file(const std::string & fname, const std::string & backend, const int nbatch_logical, const int nbatch_physical);
-mnist_model       mnist_model_init_random(const std::string & arch, const std::string & backend, const int nbatch_logical, const int nbatch_physical);
-void              mnist_model_build(mnist_model & model);
+mnist_model mnist_model_init_from_file(const std::string & fname, const std::string & backend, const int nbatch_logical, const int nbatch_physical);
+mnist_model mnist_model_init_random(const std::string & arch, const std::string & backend, const int nbatch_logical, const int nbatch_physical);
+void mnist_model_build(mnist_model & model);
 ggml_opt_result_t mnist_model_eval(mnist_model & model, ggml_opt_dataset_t dataset);
-void              mnist_model_train(mnist_model & model, ggml_opt_dataset_t dataset, const int nepoch, const float val_split);
-void              mnist_model_save(mnist_model & model, const std::string & fname);
+void mnist_model_train(mnist_model & model, ggml_opt_dataset_t dataset, const int nepoch, const float val_split);
+void mnist_model_save(mnist_model & model, const std::string & fname);

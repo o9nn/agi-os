@@ -15,12 +15,12 @@ Qplaystat,
 Nqid,
 };
 enum {
-DbgPcm		= 0x01000,
-DbgPac		= 0x02000,
-DbgFs		= 0x10000,
-DbgWorker	= 0x20000,
-DbgPlayer	= 0x40000,
-DbgError	= 0x80000,
+DbgPcm = 0x01000,
+DbgPac = 0x02000,
+DbgFs = 0x10000,
+DbgWorker = 0x20000,
+DbgPlayer = 0x40000,
+DbgError = 0x80000,
 };
 enum {
 STACKSIZE = 2048*sizeof(void*),
@@ -53,71 +53,71 @@ ushort off;
 };
 struct Wmsg {
 Pmsg;
-void	*arg;
+void *arg;
 };
 struct Playlist {
-ulong	*lines;
-ulong	nlines;
-char	*data;
-ulong	ndata;
+ulong *lines;
+ulong nlines;
+char *data;
+ulong ndata;
 };
 struct File {
-Dir	dir;
-Channel	*workers;
+Dir dir;
+Channel *workers;
 };
 struct Worker
 {
-Req	*r;
-Channel	*eventc;
+Req *r;
+Channel *eventc;
 };
 struct Fid
 {
-int	fid;
-File	*file;
-ushort	flags;
-short	readers;
-ulong	vers;
-Fid	*next;
+int fid;
+File *file;
+ushort flags;
+short readers;
+ulong vers;
+Fid *next;
 };
 struct Req
 {
-uchar	indata[Messagesize];
-uchar	outdata[Messagesize];
-Fcall	ifcall;
-Fcall	ofcall;
-Fid*	fid;
+uchar indata[Messagesize];
+uchar outdata[Messagesize];
+Fcall ifcall;
+Fcall ofcall;
+Fid* fid;
 };
 struct Pacbuf {
 Pmsg;
 int len;
 char data[Pacbufsize];
 };
-void	allocwork(Req*);
-Wmsg	waitmsg(Worker*, Channel*);
-int	sendmsg(Channel*, Wmsg*);
-void	bcastmsg(Channel*, Wmsg*);
-void	reqfree(Req*);
-Req	*reqalloc(void);
-void	readbuf(Req*, void*, long);
-void	readstr(Req*, char*);
-void	volumeset(int *v);
-void	playupdate(Pmsg, char*);
-void	playinit(void);
-void	volumeproc(void*);
-void	srv(void *);
-long	robustread(int, void*, long);
-void	volumeupdate(int*);
-char	*getplaylist(int);
-char	*getplaystat(char*, char*);
-extern int		debug, aflag;
-extern char	*user;
-extern Channel	*playc;
-extern char	*statetxt[];
-extern int		volume[8];
-extern Playlist	playlist;
-extern Channel	*workers;
-extern Channel	*volumechan;
-extern Channel	*playchan;
-extern Channel	*playlistreq;
-extern File	files[];
-extern int		srvfd[];
+void allocwork(Req*);
+Wmsg waitmsg(Worker*, Channel*);
+int sendmsg(Channel*, Wmsg*);
+void bcastmsg(Channel*, Wmsg*);
+void reqfree(Req*);
+Req *reqalloc(void);
+void readbuf(Req*, void*, long);
+void readstr(Req*, char*);
+void volumeset(int *v);
+void playupdate(Pmsg, char*);
+void playinit(void);
+void volumeproc(void*);
+void srv(void *);
+long robustread(int, void*, long);
+void volumeupdate(int*);
+char *getplaylist(int);
+char *getplaystat(char*, char*);
+extern int debug, aflag;
+extern char *user;
+extern Channel *playc;
+extern char *statetxt[];
+extern int volume[8];
+extern Playlist playlist;
+extern Channel *workers;
+extern Channel *volumechan;
+extern Channel *playchan;
+extern Channel *playlistreq;
+extern File files[];
+extern int srvfd[];

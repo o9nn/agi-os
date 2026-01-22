@@ -40,7 +40,7 @@ pthread_rwlock_wrlock (&netfs_fsys_lock);
 err = ports_inhibit_class_rpcs (netfs_protid_class);
 if (err)
 {
-#ifdef  NOTYET
+#ifdef NOTYET
 pthread_rwlock_unlock (&netfs_fsys_lock);
 #endif
 return err;

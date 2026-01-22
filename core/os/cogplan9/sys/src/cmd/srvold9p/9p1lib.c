@@ -1,8 +1,8 @@
 #include <u.h>
 #include <libc.h>
 #include <auth.h>
-#include	"9p1.h"
-#pragma	varargck	type	"D"	Dir*
+#include "9p1.h"
+#pragma varargck type "D" Dir*
 static void dumpsome(char*, char*, long);
 int
 fcallfmt9p1(Fmt *f1)
@@ -124,7 +124,7 @@ sprint(buf, "old Rclwalk tag %ud fid %d qid 0x%lux|0x%lux",
 tag, fid, f->qid.path, f->qid.version);
 break;
 default:
-sprint(buf,  "unknown type %d", type);
+sprint(buf, "unknown type %d", type);
 }
 return fmtstrcpy(f1, buf);
 }
@@ -156,12 +156,12 @@ p += 2;
 *p++ = '\'';
 *p = 0;
 }
-#define	CHAR(x)		*p++ = f->x
-#define	SHORT(x)	{ ulong vvv = f->x; p[0] = vvv; p[1] = vvv>>8; p += 2; }
-#define	VLONG(q)	p[0] = (q); p[1] = (q)>>8; p[2] = (q)>>16; p[3] = (q)>>24; p += 4
-#define	LONG(x)		{ ulong vvv = f->x; VLONG(vvv); }
-#define	BYTES(x,n)	memmove(p, f->x, n); p += n
-#define	STRING(x,n)	strncpy((char*)p, f->x, n); p += n
+#define CHAR(x) *p++ = f->x
+#define SHORT(x) { ulong vvv = f->x; p[0] = vvv; p[1] = vvv>>8; p += 2; }
+#define VLONG(q) p[0] = (q); p[1] = (q)>>8; p[2] = (q)>>16; p[3] = (q)>>24; p += 4
+#define LONG(x) { ulong vvv = f->x; VLONG(vvv); }
+#define BYTES(x,n) memmove(p, f->x, n); p += n
+#define STRING(x,n) strncpy((char*)p, f->x, n); p += n
 int
 convS2M9p1(Fcall9p1 *f, char *ap)
 {
@@ -339,18 +339,18 @@ if(key)
 encrypt(key, ap, n);
 return n;
 }
-#undef	CHAR
-#undef	SHORT
-#undef	LONG
-#undef	VLONG
-#undef	BYTES
-#undef	STRING
-#define	CHAR(x)		f->x = *p++
-#define	SHORT(x)	f->x = (p[0] | (p[1]<<8)); p += 2
-#define	VLONG(q)	q = (p[0] | (p[1]<<8) | (p[2]<<16) | (p[3]<<24)); p += 4
-#define	LONG(x)		VLONG(f->x)
-#define	BYTES(x,n)	memmove(f->x, p, n); p += n
-#define	STRING(x,n)	memmove(f->x, p, n); p += n
+#undef CHAR
+#undef SHORT
+#undef LONG
+#undef VLONG
+#undef BYTES
+#undef STRING
+#define CHAR(x) f->x = *p++
+#define SHORT(x) f->x = (p[0] | (p[1]<<8)); p += 2
+#define VLONG(q) q = (p[0] | (p[1]<<8) | (p[2]<<16) | (p[3]<<24)); p += 4
+#define LONG(x) VLONG(f->x)
+#define BYTES(x,n) memmove(f->x, p, n); p += n
+#define STRING(x,n) memmove(f->x, p, n); p += n
 int
 convM2S9p1(char *ap, Fcall9p1 *f, int n)
 {

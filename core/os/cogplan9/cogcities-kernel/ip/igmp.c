@@ -7,58 +7,58 @@
 #include "ip.h"
 enum
 {
-IGMP_IPHDRSIZE	= 20,
-IGMP_HDRSIZE	= 8,
-IP_IGMPPROTO	= 2,
-IGMPquery	= 1,
-IGMPreport	= 2,
-MSPTICK		= 100,
-MAXTIMEOUT	= 10000/MSPTICK,
+IGMP_IPHDRSIZE = 20,
+IGMP_HDRSIZE = 8,
+IP_IGMPPROTO = 2,
+IGMPquery = 1,
+IGMPreport = 2,
+MSPTICK = 100,
+MAXTIMEOUT = 10000/MSPTICK,
 };
 typedef struct IGMPpkt IGMPpkt;
 struct IGMPpkt
 {
-uchar	vihl;
-uchar	tos;
-uchar	len[2];
-uchar	id[2];
-uchar	frag[2];
-uchar	Unused;
-uchar	proto;
-uchar	cksum[2];
-uchar	src[IPaddrlen];
-uchar	dst[IPaddrlen];
-uchar	vertype;
-uchar	unused;
-uchar	igmpcksum[2];
-uchar	group[IPaddrlen];
-uchar	payload[];
+uchar vihl;
+uchar tos;
+uchar len[2];
+uchar id[2];
+uchar frag[2];
+uchar Unused;
+uchar proto;
+uchar cksum[2];
+uchar src[IPaddrlen];
+uchar dst[IPaddrlen];
+uchar vertype;
+uchar unused;
+uchar igmpcksum[2];
+uchar group[IPaddrlen];
+uchar payload[];
 };
 #define IGMPPKTSZ offsetof(IGMPpkt, payload[0])
 typedef struct IGMPrep IGMPrep;
 struct IGMPrep
 {
-IGMPrep		*next;
-Medium		*m;
-int		ticks;
-Multicast	*multi;
+IGMPrep *next;
+Medium *m;
+int ticks;
+Multicast *multi;
 };
 typedef struct IGMP IGMP;
 struct IGMP
 {
 Lock;
-Rendez	r;
-IGMPrep	*reports;
+Rendez r;
+IGMPrep *reports;
 };
 IGMP igmpalloc;
-Proto	igmp;
-extern	Fs	fs;
+Proto igmp;
+extern Fs fs;
 static struct Stats
 {
-ulong 	inqueries;
-ulong	outqueries;
-ulong	inreports;
-ulong	outreports;
+ulong inqueries;
+ulong outqueries;
+ulong inreports;
+ulong outreports;
 } stats;
 void
 igmpsendreport(Medium *m, uchar *addr)

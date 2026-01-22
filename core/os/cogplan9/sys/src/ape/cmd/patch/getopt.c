@@ -19,7 +19,7 @@
 #endif
 #endif
 #ifndef ELIDE_CODE
-#ifdef	__GNU_LIBRARY__
+#ifdef __GNU_LIBRARY__
 #include <stdlib.h>
 #include <unistd.h>
 #endif
@@ -36,9 +36,9 @@
 #ifndef _
 #ifdef HAVE_LIBINTL_H
 # include <libintl.h>
-# define _(msgid)	gettext (msgid)
+# define _(msgid) gettext (msgid)
 #else
-# define _(msgid)	(msgid)
+# define _(msgid) (msgid)
 #endif
 #endif
 #include "getopt.h"
@@ -53,9 +53,9 @@ static enum
 REQUIRE_ORDER, PERMUTE, RETURN_IN_ORDER
 } ordering;
 static char *posixly_correct;
-#ifdef	__GNU_LIBRARY__
+#ifdef __GNU_LIBRARY__
 #include <string.h>
-#define	my_index	strchr
+#define my_index strchr
 #else
 char *getenv ();
 static char *
@@ -95,11 +95,11 @@ original_argv = argv;
 }
 text_set_element (__libc_subinit, store_args_and_env);
 # define SWAP_FLAGS(ch1, ch2) \
-if (nonoption_flags_len > 0)						      \
-{									      \
-char __tmp = __getopt_nonoption_flags[ch1];			      \
-__getopt_nonoption_flags[ch1] = __getopt_nonoption_flags[ch2];	      \
-__getopt_nonoption_flags[ch2] = __tmp;				      \
+if (nonoption_flags_len > 0) \
+{ \
+char __tmp = __getopt_nonoption_flags[ch1]; \
+__getopt_nonoption_flags[ch1] = __getopt_nonoption_flags[ch2]; \
+__getopt_nonoption_flags[ch2] = __tmp; \
 }
 #else
 # define SWAP_FLAGS(ch1, ch2)
@@ -241,8 +241,8 @@ optstring = _getopt_initialize (argc, argv, optstring);
 __getopt_initialized = 1;
 }
 #ifdef _LIBC
-#define NONOPTION_P (argv[optind][0] != '-' || argv[optind][1] == '\0'	      \
-|| (optind < nonoption_flags_len			      \
+#define NONOPTION_P (argv[optind][0] != '-' || argv[optind][1] == '\0' \
+|| (optind < nonoption_flags_len \
 && __getopt_nonoption_flags[optind] == '1'))
 #else
 #define NONOPTION_P (argv[optind][0] != '-' || argv[optind][1] == '\0')

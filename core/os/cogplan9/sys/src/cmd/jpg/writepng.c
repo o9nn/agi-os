@@ -8,8 +8,8 @@
 #include "imagefile.h"
 enum
 {
-IDATSIZE = 	20000,
-FilterNone =	0,
+IDATSIZE = 20000,
+FilterNone = 0,
 };
 typedef struct ZlibR ZlibR;
 typedef struct ZlibW ZlibW;

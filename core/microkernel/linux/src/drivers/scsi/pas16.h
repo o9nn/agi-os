@@ -1,29 +1,29 @@
 #ifndef PAS16_H
 #define PAS16_H
 #define PAS16_PUBLIC_RELEASE 3
-#define PDEBUG_INIT	0x1
+#define PDEBUG_INIT 0x1
 #define PDEBUG_TRANSFER 0x2
-#define PAS16_DEFAULT_BASE_1  0x388
-#define PAS16_DEFAULT_BASE_2  0x384
-#define PAS16_DEFAULT_BASE_3  0x38c
-#define PAS16_DEFAULT_BASE_4  0x288
+#define PAS16_DEFAULT_BASE_1 0x388
+#define PAS16_DEFAULT_BASE_2 0x384
+#define PAS16_DEFAULT_BASE_3 0x38c
+#define PAS16_DEFAULT_BASE_4 0x288
 #define PAS16_DEFAULT_BOARD_1_IRQ 10
 #define PAS16_DEFAULT_BOARD_2_IRQ 12
 #define PAS16_DEFAULT_BOARD_3_IRQ 14
 #define PAS16_DEFAULT_BOARD_4_IRQ 15
-#define P_TIMEOUT_COUNTER_REG	0x4000
-#define P_TC_DISABLE	0x80
-#define P_TIMEOUT_STATUS_REG_OFFSET	0x4001
-#define P_TS_TIM		0x80
-#define P_TS_ARM_DRQ_INT	0x08
+#define P_TIMEOUT_COUNTER_REG 0x4000
+#define P_TC_DISABLE 0x80
+#define P_TIMEOUT_STATUS_REG_OFFSET 0x4001
+#define P_TS_TIM 0x80
+#define P_TS_ARM_DRQ_INT 0x08
 #define P_TS_ENABLE_TO_ERR_INTERRUPT
 #define P_TS_ENABLE_WAIT
-#define P_TS_CT			0x01
-#define P_DATA_REG_OFFSET	0x5c00
-#define P_STATUS_REG_OFFSET	0x5c01
-#define P_ST_RDY		0x80
-#define P_IRQ_STATUS		0x5c03
-#define P_IS_IRQ		0x80
+#define P_TS_CT 0x01
+#define P_DATA_REG_OFFSET 0x5c00
+#define P_STATUS_REG_OFFSET 0x5c01
+#define P_ST_RDY 0x80
+#define P_IRQ_STATUS 0x5c03
+#define P_IS_IRQ 0x80
 #define PCB_CONFIG 0x803
 #define MASTER_ADDRESS_PTR 0x9a01
 #define SYS_CONFIG_4 0x8003
@@ -49,11 +49,11 @@ int length, int hostno, int inout);
 #endif
 #if defined(HOSTS_C) || defined(MODULE)
 #define MV_PAS16 {NULL, NULL, NULL, NULL, \
-"Pro Audio Spectrum-16 SCSI", 		\
-pas16_detect, NULL, NULL,					\
-NULL, pas16_queue_command, pas16_abort, pas16_reset, NULL, 	\
-pas16_biosparam, 						\
-CAN_QUEUE,  7, SG_ALL,			\
+"Pro Audio Spectrum-16 SCSI", \
+pas16_detect, NULL, NULL, \
+NULL, pas16_queue_command, pas16_abort, pas16_reset, NULL, \
+pas16_biosparam, \
+CAN_QUEUE, 7, SG_ALL, \
 CMD_PER_LUN , 0, 0, DISABLE_CLUSTERING}
 #endif
 #ifndef HOSTS_C
@@ -68,12 +68,12 @@ io_port = (instance)->io_port
 #define NCR5380_read(reg) ( inb(PAS16_io_port(reg)) )
 #define NCR5380_write(reg, value) ( outb((value),PAS16_io_port(reg)) )
 #else
-#define NCR5380_read(reg)						\
+#define NCR5380_read(reg) \
 (((unsigned char) printk("scsi%d : read register %d at io_port %04x\n"\
 , instance->hostno, (reg), PAS16_io_port(reg))), inb( PAS16_io_port(reg)) )
-#define NCR5380_write(reg, value) 					\
-(printk("scsi%d : write %02x to register %d at io_port %04x\n", 	\
-instance->hostno, (value), (reg), PAS16_io_port(reg)),	\
+#define NCR5380_write(reg, value) \
+(printk("scsi%d : write %02x to register %d at io_port %04x\n", \
+instance->hostno, (value), (reg), PAS16_io_port(reg)), \
 outb( (value),PAS16_io_port(reg) ) )
 #endif
 #define NCR5380_intr pas16_intr

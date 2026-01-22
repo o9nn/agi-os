@@ -11,5 +11,5 @@ union {
 struct baycom_debug_data dbg;
 } data;
 };
-#define BAYCOMCTL_GETDEBUG       0x92
+#define BAYCOMCTL_GETDEBUG 0x92
 #endif

@@ -1,5 +1,5 @@
 #ifndef gdevpdt_INCLUDED
-#  define gdevpdt_INCLUDED
+# define gdevpdt_INCLUDED
 pdf_text_state_t *pdf_text_state_alloc(gs_memory_t *mem);
 pdf_text_data_t *pdf_text_data_alloc(gs_memory_t *mem);
 void pdf_reset_text_page(pdf_text_data_t *ptd);

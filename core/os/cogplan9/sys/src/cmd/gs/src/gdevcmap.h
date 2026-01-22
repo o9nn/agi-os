@@ -1,5 +1,5 @@
 #ifndef gdevcmap_INCLUDED
-#  define gdevcmap_INCLUDED
+# define gdevcmap_INCLUDED
 typedef enum {
 device_cmap_identity = 0,
 device_cmap_snap_to_primaries,
@@ -12,7 +12,7 @@ gx_device_forward_common;
 gx_device_color_mapping_method_t mapping_method;
 } gx_device_cmap;
 extern_st(st_device_cmap);
-#define public_st_device_cmap()	\
+#define public_st_device_cmap() \
 gs_public_st_suffix_add0_final(st_device_cmap, gx_device_cmap,\
 "gx_device_cmap", device_cmap_enum_ptrs, device_cmap_reloc_ptrs,\
 gx_device_finalize, st_device_forward)

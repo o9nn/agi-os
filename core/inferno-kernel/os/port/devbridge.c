@@ -5,14 +5,14 @@
 #include "fns.h"
 #include "../port/netif.h"
 #include "../port/error.h"
-typedef struct Bridge 	Bridge;
-typedef struct Port 	Port;
-typedef struct Centry	Centry;
-typedef struct Iphdr	Iphdr;
-typedef struct Tcphdr	Tcphdr;
+typedef struct Bridge Bridge;
+typedef struct Port Port;
+typedef struct Centry Centry;
+typedef struct Iphdr Iphdr;
+typedef struct Tcphdr Tcphdr;
 enum
 {
-Qtopdir=	1,
+Qtopdir= 1,
 Qbridgedir,
 Qbctl,
 Qstats,
@@ -23,29 +23,29 @@ Qpctl,
 Qlocal,
 Qstatus,
 MaxQ,
-Maxbridge=	4,
-Maxport=	128,
-CacheHash=	257,
-CacheLook=	5,
-CacheSize=	(CacheHash+CacheLook-1),
-CacheTimeout=	5*60,
+Maxbridge= 4,
+Maxport= 128,
+CacheHash= 257,
+CacheLook= 5,
+CacheSize= (CacheHash+CacheLook-1),
+CacheTimeout= 5*60,
 TcpMssMax = 1300,
 TunnelMtu = 1400,
 };
 static Dirtab bridgedirtab[]={
-"ctl",		{Qbctl},	0,	0666,
-"stats",	{Qstats},	0,	0444,
-"cache",	{Qcache},	0,	0444,
-"log",		{Qlog},		0,	0666,
+"ctl", {Qbctl}, 0, 0666,
+"stats", {Qstats}, 0, 0444,
+"cache", {Qcache}, 0, 0444,
+"log", {Qlog}, 0, 0666,
 };
 static Dirtab portdirtab[]={
-"ctl",		{Qpctl},	0,	0666,
-"local",	{Qlocal},	0,	0444,
-"status",	{Qstatus},	0,	0444,
+"ctl", {Qpctl}, 0, 0666,
+"local", {Qlocal}, 0, 0444,
+"status", {Qstatus}, 0, 0444,
 };
 enum {
-Logcache=	(1<<0),
-Logmcast=	(1<<1),
+Logcache= (1<<0),
+Logmcast= (1<<1),
 };
 enum
 {
@@ -54,111 +54,111 @@ Ttun,
 };
 static Logflag logflags[] =
 {
-{ "cache",	Logcache, },
-{ "multicast",	Logmcast, },
-{ nil,		0, },
+{ "cache", Logcache, },
+{ "multicast", Logmcast, },
+{ nil, 0, },
 };
-static Dirtab	*dirtab[MaxQ];
-#define TYPE(x) 	(((ulong)(x).path) & 0xff)
-#define PORT(x) 	((((ulong)(x).path) >> 8)&(Maxport-1))
-#define QID(x, y) 	(((x)<<8) | (y))
+static Dirtab *dirtab[MaxQ];
+#define TYPE(x) (((ulong)(x).path) & 0xff)
+#define PORT(x) ((((ulong)(x).path) >> 8)&(Maxport-1))
+#define QID(x, y) (((x)<<8) | (y))
 struct Centry
 {
-uchar	d[Eaddrlen];
-int	port;
-long	expire;
-long	src;
-long	dst;
+uchar d[Eaddrlen];
+int port;
+long expire;
+long src;
+long dst;
 };
 struct Bridge
 {
 QLock;
-int	nport;
-Port	*port[Maxport];
-Centry	cache[CacheSize];
-ulong	hit;
-ulong	miss;
-ulong	copy;
-long	delay0;
-long	delayn;
+int nport;
+Port *port[Maxport];
+Centry cache[CacheSize];
+ulong hit;
+ulong miss;
+ulong copy;
+long delay0;
+long delayn;
 int tcpmss;
 Log;
 };
 struct Port
 {
-int	id;
-Bridge	*bridge;
-int	ref;
-int	closed;
-Chan	*data[2];
-int	mcast;
-Proc	*readp;
-int	type;
-char	name[KNAMELEN];
-ulong	ownhash;
-int	in;
-int	inmulti;
-int	inunknown;
-int	out;
-int	outmulti;
-int	outunknown;
+int id;
+Bridge *bridge;
+int ref;
+int closed;
+Chan *data[2];
+int mcast;
+Proc *readp;
+int type;
+char name[KNAMELEN];
+ulong ownhash;
+int in;
+int inmulti;
+int inunknown;
+int out;
+int outmulti;
+int outunknown;
 int outfrag;
-int	nentry;
+int nentry;
 };
 enum {
-IP_VER		= 0x40,
-IP_HLEN		= 0x05,
-IP_DF		= 0x4000,
-IP_MF		= 0x2000,
-IP_MAX		= (32*1024),
+IP_VER = 0x40,
+IP_HLEN = 0x05,
+IP_DF = 0x4000,
+IP_MF = 0x2000,
+IP_MAX = (32*1024),
 IP_TCPPROTO = 6,
-EOLOPT		= 0,
-NOOPOPT		= 1,
-MSSOPT		= 2,
-MSS_LENGTH	= 4,
-SYN		= 0x02,
-IPHDR		= 20,
+EOLOPT = 0,
+NOOPOPT = 1,
+MSSOPT = 2,
+MSS_LENGTH = 4,
+SYN = 0x02,
+IPHDR = 20,
 };
 struct Iphdr
 {
-uchar	vihl;
-uchar	tos;
-uchar	length[2];
-uchar	id[2];
-uchar	frag[2];
-uchar	ttl;
-uchar	proto;
-uchar	cksum[2];
-uchar	src[4];
-uchar	dst[4];
+uchar vihl;
+uchar tos;
+uchar length[2];
+uchar id[2];
+uchar frag[2];
+uchar ttl;
+uchar proto;
+uchar cksum[2];
+uchar src[4];
+uchar dst[4];
 };
 struct Tcphdr
 {
-uchar	sport[2];
-uchar	dport[2];
-uchar	seq[4];
-uchar	ack[4];
-uchar	flag[2];
-uchar	win[2];
-uchar	cksum[2];
-uchar	urg[2];
+uchar sport[2];
+uchar dport[2];
+uchar seq[4];
+uchar ack[4];
+uchar flag[2];
+uchar win[2];
+uchar cksum[2];
+uchar urg[2];
 };
 static Bridge bridgetab[Maxbridge];
 static int m2p[] = {
-[OREAD]		4,
-[OWRITE]	2,
-[ORDWR]		6
+[OREAD] 4,
+[OWRITE] 2,
+[ORDWR] 6
 };
-static int	bridgegen(Chan *c, char*, Dirtab*, int, int s, Dir *dp);
-static void	portbind(Bridge *b, int argc, char *argv[]);
-static void	portunbind(Bridge *b, int argc, char *argv[]);
-static void	etherread(void *a);
-static char	*cachedump(Bridge *b);
-static void	portfree(Port *port);
-static void	cacheflushport(Bridge *b, int port);
-static void	etherwrite(Port *port, Block *bp);
-extern ulong	parseip(uchar*, char*);
-extern ushort	ipcsum(uchar *addr);
+static int bridgegen(Chan *c, char*, Dirtab*, int, int s, Dir *dp);
+static void portbind(Bridge *b, int argc, char *argv[]);
+static void portunbind(Bridge *b, int argc, char *argv[]);
+static void etherread(void *a);
+static char *cachedump(Bridge *b);
+static void portfree(Port *port);
+static void cacheflushport(Bridge *b, int port);
+static void etherwrite(Port *port, Block *bp);
+extern ulong parseip(uchar*, char*);
+extern ushort ipcsum(uchar *addr);
 static void
 bridgeinit(void)
 {
@@ -224,7 +224,7 @@ return c;
 static void
 bridgeclose(Chan* c)
 {
-Bridge *b  = bridgetab + c->dev;
+Bridge *b = bridgetab + c->dev;
 switch(TYPE(c->qid)) {
 case Qcache:
 if(c->flag & COPEN)
@@ -366,7 +366,7 @@ Bridge *b = bridgetab + c->dev;
 int type = TYPE(c->qid);
 Dirtab *dt;
 Qid qid;
-if(s  == DEVDOTDOT){
+if(s == DEVDOTDOT){
 switch(TYPE(c->qid)){
 case Qtopdir:
 case Qbridgedir:

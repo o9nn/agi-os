@@ -6,7 +6,7 @@ import envVar from "env-var";
 import {nanoid} from "nanoid";
 import {getBinariesGithubRelease} from "./bindings/utils/binariesGithubRelease.js";
 import {
-    nodeLlamaCppGpuOptions, LlamaLogLevel, LlamaLogLevelValues, parseNodeLlamaCppGpuOption, nodeLlamaCppGpuOffStringOptions
+nodeLlamaCppGpuOptions, LlamaLogLevel, LlamaLogLevelValues, parseNodeLlamaCppGpuOption, nodeLlamaCppGpuOffStringOptions
 } from "./bindings/types.js";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const env = envVar.from(process.env);
@@ -35,83 +35,83 @@ export const xpmVersion = "^0.16.3";
 export const builtinLlamaCppGitHubRepo = "ggml-org/llama.cpp";
 export const builtinLlamaCppRelease = await getBinariesGithubRelease();
 export const isCI = env.get("CI")
-    .default("false")
-    .asBool();
+.default("false")
+.asBool();
 export const isRunningInsideGoogleColab = env.get("COLAB_RELEASE_TAG")
-    .default("")
-    .asString() !== "";
+.default("")
+.asString() !== "";
 export const useCiLogs = isCI || isRunningInsideGoogleColab;
 export const defaultLlamaCppGitHubRepo = env.get("NODE_LLAMA_CPP_REPO")
-    .default(builtinLlamaCppGitHubRepo)
-    .asString();
+.default(builtinLlamaCppGitHubRepo)
+.asString();
 export const defaultLlamaCppRelease = env.get("NODE_LLAMA_CPP_REPO_RELEASE")
-    .default(builtinLlamaCppRelease)
-    .asString();
+.default(builtinLlamaCppRelease)
+.asString();
 export const defaultLlamaCppGpuSupport = parseNodeLlamaCppGpuOption(
-    env.get("NODE_LLAMA_CPP_GPU")
-        .default("auto")
-        .asEnum(
-            nodeLlamaCppGpuOptions
-                .flatMap((option) => (
-                    option === false
-                        ? nodeLlamaCppGpuOffStringOptions
-                        : [option]
-                ))
-        )
+env.get("NODE_LLAMA_CPP_GPU")
+.default("auto")
+.asEnum(
+nodeLlamaCppGpuOptions
+.flatMap((option) => (
+option === false
+? nodeLlamaCppGpuOffStringOptions
+: [option]
+))
+)
 );
 export const defaultLlamaCppLogLevel = env.get("NODE_LLAMA_CPP_LOG_LEVEL")
-    .default(LlamaLogLevel.warn)
-    .asEnum(LlamaLogLevelValues);
+.default(LlamaLogLevel.warn)
+.asEnum(LlamaLogLevelValues);
 export const defaultLlamaCppDebugMode = env.get("NODE_LLAMA_CPP_DEBUG")
-    .default("false")
-    .asBool();
+.default("false")
+.asBool();
 export const defaultSkipDownload = env.get("NODE_LLAMA_CPP_SKIP_DOWNLOAD")
-    .default("false")
-    .asBool();
+.default("false")
+.asBool();
 export const defaultXpacksStoreDirectory = env.get("NODE_LLAMA_CPP_XPACKS_STORE_FOLDER")
-    .default(localXpacksStoreDirectory)
-    .asString();
+.default(localXpacksStoreDirectory)
+.asString();
 export const defaultXpacksCacheDirectory = env.get("NODE_LLAMA_CPP_XPACKS_CACHE_FOLDER")
-    .default(localXpacksCacheDirectory)
-    .asString();
+.default(localXpacksCacheDirectory)
+.asString();
 export const customCmakeOptionsEnvVarPrefix = "NODE_LLAMA_CPP_CMAKE_OPTION_";
 export const defaultChatSystemPrompt = "You are a helpful, respectful and honest assistant. Always answer as helpfully as possible.\n" +
-    "If a question does not make any sense, or is not factually coherent, explain why instead of answering something incorrectly. " +
-    "If you don't know the answer to a question, don't share false information.";
+"If a question does not make any sense, or is not factually coherent, explain why instead of answering something incorrectly. " +
+"If you don't know the answer to a question, don't share false information.";
 export const cliBinName = "node-llama-cpp";
 export const npxRunPrefix = "npx --no ";
 export const enableRecursiveClone = false;
 const documentationUrl = "https://node-llama-cpp.withcat.ai";
 const documentationCliUrl = documentationUrl + "/cli";
 export const documentationPageUrls = {
-    CUDA: documentationUrl + "/guide/CUDA",
-    Vulkan: documentationUrl + "/guide/vulkan",
-    CLI: {
-        index: documentationCliUrl,
-        Pull: documentationCliUrl + "/pull",
-        Chat: documentationCliUrl + "/chat",
-        Init: documentationCliUrl + "/init",
-        Complete: documentationCliUrl + "/complete",
-        Infill: documentationCliUrl + "/infill",
-        Inspect: {
-            index: documentationCliUrl + "/inspect",
-            GPU: documentationCliUrl + "/inspect/gpu",
-            GGUF: documentationCliUrl + "/inspect/gguf",
-            Measure: documentationCliUrl + "/inspect/measure",
-            Estimate: documentationCliUrl + "/inspect/estimate"
-        },
-        Source: {
-            index: documentationCliUrl + "/source",
-            Download: documentationCliUrl + "/source/download",
-            Build: documentationCliUrl + "/source/build",
-            Clear: documentationCliUrl + "/source/clear"
-        }
-    },
-    troubleshooting: {
-        RosettaIllegalHardwareInstruction: documentationUrl + "/guide/troubleshooting#illegal-hardware-instruction"
-    }
+CUDA: documentationUrl + "/guide/CUDA",
+Vulkan: documentationUrl + "/guide/vulkan",
+CLI: {
+index: documentationCliUrl,
+Pull: documentationCliUrl + "/pull",
+Chat: documentationCliUrl + "/chat",
+Init: documentationCliUrl + "/init",
+Complete: documentationCliUrl + "/complete",
+Infill: documentationCliUrl + "/infill",
+Inspect: {
+index: documentationCliUrl + "/inspect",
+GPU: documentationCliUrl + "/inspect/gpu",
+GGUF: documentationCliUrl + "/inspect/gguf",
+Measure: documentationCliUrl + "/inspect/measure",
+Estimate: documentationCliUrl + "/inspect/estimate"
+},
+Source: {
+index: documentationCliUrl + "/source",
+Download: documentationCliUrl + "/source/download",
+Build: documentationCliUrl + "/source/build",
+Clear: documentationCliUrl + "/source/clear"
+}
+},
+troubleshooting: {
+RosettaIllegalHardwareInstruction: documentationUrl + "/guide/troubleshooting#illegal-hardware-instruction"
+}
 } as const;
 export const newGithubIssueUrl = "https://github.com/withcatai/node-llama-cpp/issues";
 export const recommendedBaseDockerImage = "node:20";
 export const minAllowedContextSizeInCalculations = 24;
-export const contextSizePad = 256; 
+export const contextSizePad = 256;

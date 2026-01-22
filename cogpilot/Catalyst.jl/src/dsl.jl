@@ -340,7 +340,7 @@ return reactions
 end
 # Extract the rate, reaction, and metadata fields (the last one optional) from a reaction line.
 function read_reaction_line(line::Expr)
-# Handles rate, reaction, and arrow. A special routine is required for  the`-->` case,
+# Handles rate, reaction, and arrow. A special routine is required for the`-->` case,
 # which creates an expression different from what the other arrows create.
 rate = line.args[1]
 reaction = line.args[2]
@@ -560,7 +560,7 @@ end
 # When compound species are declared using the "@compound begin ... end" option, get a list
 # of the compound species, and also the expression that creates them.
 function read_compounds_option(options)
-# If the compound option is used, retrieve a list of compound species and  the option line
+# If the compound option is used, retrieve a list of compound species and the option line
 # that creates them (used to declare them as compounds at the end). Due to some expression
 # handling, in the case of a single compound we must change to the `@compound` macro.
 if haskey(options, :compounds)
@@ -569,7 +569,7 @@ cmpexpr_init.args[3] = option_block_form(get_block_option(cmpexpr_init))
 cmps_declared = [find_varinfo_in_declaration(arg.args[2])[1]
 for arg in cmpexpr_init.args[3].args]
 (length(cmps_declared) == 1) && (cmpexpr_init.args[1] = Symbol("@compound"))
-else  # If option is not used, return empty vectors and expressions.
+else # If option is not used, return empty vectors and expressions.
 cmpexpr_init = :()
 cmps_declared = Union{Symbol, Expr}[]
 end
@@ -874,7 +874,7 @@ function tup_leng(ex::ExprValues)
 return 1
 end
 # Gets the ith element in an expression tuple, or returns the input itself if it is not an expression tuple
-# (probably a  Symbol/Numerical). This is used to handle bundled reactions (like `d, (X,Y) --> 0`).
+# (probably a Symbol/Numerical). This is used to handle bundled reactions (like `d, (X,Y) --> 0`).
 function get_tup_arg(ex::ExprValues, i::Int)
 (tup_leng(ex) == 1) && (return ex)
 return ex.args[i]

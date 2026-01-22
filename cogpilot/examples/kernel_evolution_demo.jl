@@ -95,10 +95,10 @@ end
 end
 println("""
 ╔════════════════════════════════════════════════════════════════╗
-║  ONTOGENETIC KERNEL EVOLUTION DEMONSTRATION                    ║
-║                                                                 ║
-║  Self-evolving computational kernels with B-series genomes     ║
-║  Following OEIS A000081 mathematical foundations               ║
+║ ONTOGENETIC KERNEL EVOLUTION DEMONSTRATION ║
+║ ║
+║ Self-evolving computational kernels with B-series genomes ║
+║ Following OEIS A000081 mathematical foundations ║
 ╚════════════════════════════════════════════════════════════════╝
 """)
 Random.seed!(42)

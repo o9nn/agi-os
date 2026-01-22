@@ -71,8 +71,8 @@ sys = complete(modelingtoolkitize(prob))
 @test ModelingToolkit.getbounds(unknowns(sys)[3]) == (1.0, 2.0)
 ## SIR System Regression Test
 β = 0.01# infection rate
-λ_R = 0.05 # inverse of transition time from  infected to recovered
-λ_D = 0.83 # inverse of transition time from  infected to dead
+λ_R = 0.05 # inverse of transition time from infected to recovered
+λ_D = 0.83 # inverse of transition time from infected to dead
 i₀ = 0.075 # fraction of initial infected people in every age class
 𝒫 = vcat([β, λ_R, λ_D]...)
 # regional contact matrix and regional population

@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e -x 
+set -e -x
 curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain nightly-2019-03-23 -y
 export PATH=/root/.cargo/bin:$PATH
 rustc --version

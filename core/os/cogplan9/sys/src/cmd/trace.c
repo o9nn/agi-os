@@ -9,98 +9,98 @@
 #include <cursor.h>
 #include <keyboard.h>
 #include "trace.h"
-#pragma	varargck	type	"t"		vlong
-#pragma	varargck	type	"U"		uvlong
-#define NS(x)	((vlong)x)
-#define US(x)	(NS(x) * 1000ULL)
-#define MS(x)	(US(x) * 1000ULL)
-#define S(x)	(MS(x) * 1000ULL)
-#define numblocks(a, b)	(((a) + (b) - 1) / (b))
-#define roundup(a, b)	(numblocks((a), (b)) * (b))
+#pragma varargck type "t" vlong
+#pragma varargck type "U" uvlong
+#define NS(x) ((vlong)x)
+#define US(x) (NS(x) * 1000ULL)
+#define MS(x) (US(x) * 1000ULL)
+#define S(x) (MS(x) * 1000ULL)
+#define numblocks(a, b) (((a) + (b) - 1) / (b))
+#define roundup(a, b) (numblocks((a), (b)) * (b))
 enum {
 OneRound = MS(1)/2LL,
 MilliRound = US(1)/2LL,
 };
-typedef struct Event	Event;
-typedef struct Task	Task;
+typedef struct Event Event;
+typedef struct Task Task;
 struct Event {
 Traceevent;
-vlong	etime;
+vlong etime;
 };
 struct Task {
-int	pid;
-char	*name;
-int	nevents;
-Event	*events;
-vlong	tstart;
-vlong	total;
-vlong	runtime;
-vlong	runmax;
-vlong	runthis;
-long	runs;
-ulong	tevents[Nevent];
+int pid;
+char *name;
+int nevents;
+Event *events;
+vlong tstart;
+vlong total;
+vlong runtime;
+vlong runmax;
+vlong runthis;
+long runs;
+ulong tevents[Nevent];
 };
 enum {
 Nevents = 1024,
 Ncolor = 6,
 K = 1024,
 };
-vlong	now, prevts;
-int	newwin;
-int	Width = 1000;
-int	Height = 100;
-int	topmargin = 8;
-int	bottommargin = 4;
-int	lineht = 12;
-int	wctlfd;
-int	nevents;
+vlong now, prevts;
+int newwin;
+int Width = 1000;
+int Height = 100;
+int topmargin = 8;
+int bottommargin = 4;
+int lineht = 12;
+int wctlfd;
+int nevents;
 Traceevent *eventbuf;
-Event	*event;
+Event *event;
 void drawtrace(void);
 int schedparse(char*, char*, char*);
 int timeconv(Fmt*);
 char *schedstatename[] = {
-[SAdmit] =	"Admit",
-[SSleep] =	"Sleep",
-[SDead] =	"Dead",
-[SDeadline] =	"Deadline",
-[SEdf] =	"Edf",
-[SExpel] =	"Expel",
-[SReady] =	"Ready",
-[SRelease] =	"Release",
-[SRun] =	"Run",
-[SSlice] =	"Slice",
-[SInts] =	"Ints",
-[SInte] =	"Inte",
-[SUser] = 	"User",
-[SYield] =	"Yield",
+[SAdmit] = "Admit",
+[SSleep] = "Sleep",
+[SDead] = "Dead",
+[SDeadline] = "Deadline",
+[SEdf] = "Edf",
+[SExpel] = "Expel",
+[SReady] = "Ready",
+[SRelease] = "Release",
+[SRun] = "Run",
+[SSlice] = "Slice",
+[SInts] = "Ints",
+[SInte] = "Inte",
+[SUser] = "User",
+[SYield] = "Yield",
 };
 struct {
-vlong	scale;
-vlong	bigtics;
-vlong	littletics;
-int	sleep;
+vlong scale;
+vlong bigtics;
+vlong littletics;
+int sleep;
 } scales[] = {
-{	US(500),	US(100),	US(50),		  0},
-{	US(1000),	US(500),	US(100),	  0},
-{	US(2000),	US(1000),	US(200),	  0},
-{	US(5000),	US(1000),	US(500),	  0},
-{	MS(10),		MS(5),		MS(1),		 20},
-{	MS(20),		MS(10),		MS(2),		 20},
-{	MS(50),		MS(10),		MS(5),		 20},
-{	MS(100),	MS(50),		MS(10),		 20},
-{	MS(200),	MS(100),	MS(20),		 20},
-{	MS(500),	MS(100),	MS(50),		 50},
-{	MS(1000),	MS(500),	MS(100),	100},
-{	MS(2000),	MS(1000),	MS(200),	100},
-{	MS(5000),	MS(1000),	MS(500),	100},
-{	S(10),		S(50),		S(1),		100},
-{	S(20),		S(10),		S(2),		100},
-{	S(50),		S(10),		S(5),		100},
-{	S(100),		S(50),		S(10),		100},
-{	S(200),		S(100),		S(20),		100},
-{	S(500),		S(100),		S(50),		100},
-{	S(1000),	S(500),		S(100),		100},
+{ US(500), US(100), US(50), 0},
+{ US(1000), US(500), US(100), 0},
+{ US(2000), US(1000), US(200), 0},
+{ US(5000), US(1000), US(500), 0},
+{ MS(10), MS(5), MS(1), 20},
+{ MS(20), MS(10), MS(2), 20},
+{ MS(50), MS(10), MS(5), 20},
+{ MS(100), MS(50), MS(10), 20},
+{ MS(200), MS(100), MS(20), 20},
+{ MS(500), MS(100), MS(50), 50},
+{ MS(1000), MS(500), MS(100), 100},
+{ MS(2000), MS(1000), MS(200), 100},
+{ MS(5000), MS(1000), MS(500), 100},
+{ S(10), S(50), S(1), 100},
+{ S(20), S(10), S(2), 100},
+{ S(50), S(10), S(5), 100},
+{ S(100), S(50), S(10), 100},
+{ S(200), S(100), S(20), 100},
+{ S(500), S(100), S(50), 100},
+{ S(1000), S(500), S(100), 100},
 };
 int ntasks, verbose, triggerproc, paused;
 Task *tasks;
@@ -197,7 +197,7 @@ Point p, q;
 Rectangle r, rtime;
 Task *t;
 vlong ts, oldestts, newestts, period, ppp, scale, s, ss;
-#	define time2x(t)	((int)(((t) - oldestts) / ppp))
+# define time2x(t) ((int)(((t) - oldestts) / ppp))
 scale = scales[scaleno].scale;
 period = scale + scales[scaleno].littletics;
 ppp = period / Width;
@@ -529,10 +529,10 @@ scaleno = 7;
 now = nsec();
 for(;;) {
 Alt a[] = {
-{ mousectl->c,			nil,		CHANRCV		},
-{ mousectl->resizec,	nil,		CHANRCV		},
-{ keyboardctl->c,		&r,			CHANRCV		},
-{ nil,					nil,		CHANNOBLK	},
+{ mousectl->c, nil, CHANRCV },
+{ mousectl->resizec, nil, CHANRCV },
+{ keyboardctl->c, &r, CHANRCV },
+{ nil, nil, CHANNOBLK },
 };
 switch (alt(a)) {
 case 0:

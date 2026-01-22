@@ -1,7 +1,7 @@
 #include "defs.h"
-static int	hasslash(char *);
-static int	haspercent(char *);
-static void	rehash(void);
+static int hasslash(char *);
+static int haspercent(char *);
+static void rehash(void);
 static int
 hashloc(char *s)
 {
@@ -20,7 +20,7 @@ return i;
 nameblkp
 srchname(char *s)
 {
-return  hashtab[hashloc(s)] ;
+return hashtab[hashloc(s)] ;
 }
 nameblkp
 makename(char *s)
@@ -141,18 +141,18 @@ return 0;
 char *
 subst(char *a, char *b, char *e)
 {
-static depth	= 0;
+static depth = 0;
 char *s;
 char vname[100];
 struct varblock *vbp;
 char closer;
 if(++depth > 100)
 fatal("infinitely recursive macro?");
-if(a)  while(*a)
+if(a) while(*a)
 {
 if(*a!='$' || a[1]=='\0' || *++a=='$')
 *b++ = *a++;
-else	{
+else {
 s = vname;
 if( *a=='(' || *a=='{' )
 {
@@ -163,7 +163,7 @@ while(*a!=' ' && *a!=closer && *a!='\0') *s++ = *a++;
 while(*a!=closer && *a!='\0') ++a;
 if(*a == closer) ++a;
 }
-else	*s++ = *a++;
+else *s++ = *a++;
 *s = '\0';
 if( (vbp = varptr(vname)) ->varval != 0)
 {
@@ -238,10 +238,10 @@ eqsign(char *a)
 char *s, *t;
 char c;
 while(*a == ' ') ++a;
-for(s=a  ;   *s!='\0' && *s!=':'  ; ++s)
+for(s=a ; *s!='\0' && *s!=':' ; ++s)
 if(*s == '=')
 {
-for(t = a ; *t!='=' && *t!=' ' && *t!='\t' ;  ++t );
+for(t = a ; *t!='=' && *t!=' ' && *t!='\t' ; ++t );
 c = *t;
 *t = '\0';
 for(++s; *s==' ' || *s=='\t' ; ++s);

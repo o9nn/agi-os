@@ -43,7 +43,7 @@ byte g = (byte)color
 #define putw(ptr, wxyz)\
 *(bits32 *)(ptr) = (wxyz)
 #if arch_is_big_endian
-#  define set_color56_cache(color, a, b, c, d, e, f, g)\
+# define set_color56_cache(color, a, b, c, d, e, f, g)\
 mdev->color56.abcd = abcd = (color) >> 24, \
 mdev->color56.bcde = bcde = (abcd << 8) | (e),\
 mdev->color56.cdef = cdef = (bcde << 8) | (f),\
@@ -53,7 +53,7 @@ mdev->color56.fgab = fgab = (efga << 8) | (b),\
 mdev->color56.gabc = gabc = (fgab << 8) | (c),\
 mdev->color56.abcdefg = (color)
 #else
-#  define set_color56_cache(color, a, b, c, d, e, f, g)\
+# define set_color56_cache(color, a, b, c, d, e, f, g)\
 mdev->color56.abcd = abcd =\
 ((bits32)(d) << 24) | ((bits32)(c) << 16) |\
 ((bits16)(b) << 8) | (a),\

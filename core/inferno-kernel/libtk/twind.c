@@ -6,7 +6,7 @@
 #define iwin u.win
 #define imark u.mark
 #define iline u.line
-#define	O(t, e)		((long)(&((t*)0)->e))
+#define O(t, e) ((long)(&((t*)0)->e))
 static char* tktwincget(Tk*, char*, char**);
 static char* tktwinconfigure(Tk*, char*, char**);
 static char* tktwincreate(Tk*, char*, char**);
@@ -15,31 +15,31 @@ static int winowned(Tk *tk, Tk *sub);
 static
 TkStab tkalign[] =
 {
-"top",		Tktop,
-"bottom",	Tkbottom,
-"center",	Tkcenter,
-"baseline",	Tkbaseline,
+"top", Tktop,
+"bottom", Tkbottom,
+"center", Tkcenter,
+"baseline", Tkbaseline,
 nil
 };
 static
 TkOption twinopts[] =
 {
-"align",	OPTstab,	O(TkTwind, align),	tkalign,
-"create",	OPTtext,	O(TkTwind, create),	nil,
-"padx",		OPTnndist,	O(TkTwind, padx),	nil,
-"pady",		OPTnndist,	O(TkTwind, pady),	nil,
-"stretch",	OPTstab,	O(TkTwind, stretch),	tkbool,
-"window",	OPTwinp,	O(TkTwind, sub),	nil,
-"ascent",	OPTdist,	O(TkTwind, ascent), nil,
+"align", OPTstab, O(TkTwind, align), tkalign,
+"create", OPTtext, O(TkTwind, create), nil,
+"padx", OPTnndist, O(TkTwind, padx), nil,
+"pady", OPTnndist, O(TkTwind, pady), nil,
+"stretch", OPTstab, O(TkTwind, stretch), tkbool,
+"window", OPTwinp, O(TkTwind, sub), nil,
+"ascent", OPTdist, O(TkTwind, ascent), nil,
 nil
 };
 TkCmdtab
 tktwincmd[] =
 {
-"cget",		tktwincget,
-"configure",	tktwinconfigure,
-"create",	tktwincreate,
-"names",	tktwinnames,
+"cget", tktwincget,
+"configure", tktwinconfigure,
+"create", tktwincreate,
+"names", tktwinnames,
 nil
 };
 int

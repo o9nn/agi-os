@@ -36,7 +36,7 @@ badmod(Readdir->PATH);
 bufio = load Bufio Bufio->PATH;
 if(bufio == nil)
 badmod(Readdir->PATH);
-bufio->fopen(nil, Sys->OREAD);		# XXX no bufio->init!
+bufio->fopen(nil, Sys->OREAD); # XXX no bufio->init!
 fslib = load Fslib Fslib->PATH;
 if(fslib == nil)
 badmod(Readdir->PATH);
@@ -120,7 +120,7 @@ reply <-= Quit;
 quit(errorc);
 }
 n += big len buf;
-if(n > length){		# should never happen
+if(n > length){ # should never happen
 report(errorc, sys->sprint("%q is longer than expected (fatal)", path));
 reply <-= Quit;
 quit(errorc);

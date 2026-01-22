@@ -6,7 +6,7 @@
 # include <openssl/dsa.h>
 # include <openssl/rand.h>
 # ifdef OPENSSL_FIPS
-#  include <openssl/fips.h>
+# include <openssl/fips.h>
 # endif
 static int dsa_builtin_keygen(DSA *dsa);
 int DSA_generate_key(DSA *dsa)

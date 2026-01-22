@@ -140,7 +140,7 @@ pid = <- sync;
 SQUARE, REPLAY: con iota;
 WIDTH: con 400;
 HEIGHT: con 400;
-SZB: con 8;		# must be even
+SZB: con 8; # must be even
 SZF: con SZB+2;
 MC1: con SZB/2;
 MC2: con MC1+1;
@@ -154,8 +154,8 @@ SKILLB : con 6;
 SKILLW : con 0;
 MAXPLIES: con 6;
 moves: array of int;
-board: array of array of int;	# for display
-brd: array of array of int;		# for calculations
+board: array of array of int; # for display
+brd: array of array of int; # for calculations
 val: array of array of int;
 order: array of (int, int);
 pieces: array of int;
@@ -168,15 +168,15 @@ brdimg: ref Image;
 brdr: Rect;
 brdx, brdy: int;
 black, white, green: ref Image;
-movech: chan  of (int, int, int);
+movech: chan of (int, int, int);
 setimage()
 {
 brdw := int tk->cmd(mainwin, ".p cget -actwidth");
 brdh := int tk->cmd(mainwin, ".p cget -actheight");
-#	if (brdw > display.image.r.dx())
-#		brdw = display.image.r.dx() - 4;
-#	if (brdh > display.image.r.dy())
-#		brdh = display.image.r.dy() - 40;
+# if (brdw > display.image.r.dx())
+# brdw = display.image.r.dx() - 4;
+# if (brdh > display.image.r.dy())
+# brdh = display.image.r.dy() - 40;
 brdr = Rect((0,0), (brdw, brdh));
 brdimg = display.newimage(brdr, display.image.chans, 0, Draw->White);
 if(brdimg == nil)
@@ -436,11 +436,11 @@ mvs = tl mvs;
 else{
 plies := skill[me];
 left := PIECES-(pieces[BLACK]+pieces[WHITE]);
-if(left < plies)		# limit search
+if(left < plies) # limit search
 plies = left;
-else if(left < 2*plies)	# expand search to end
+else if(left < 2*plies) # expand search to end
 plies = left;
-else{				# expand search nearer end of game
+else{ # expand search nearer end of game
 k := left/plies;
 if(k < 3)
 plies = ((k+2)*plies)/(k+1);
@@ -450,9 +450,9 @@ visits = leaves = 0;
 (v, (m, n)) = minimax(me, you, plies, ∞, 1);
 if(0){
 # if((m==2&&n==2&&brd[1][1]!=BLACK) ||
-#    (m==2&&n==7&&brd[1][8]!=BLACK) ||
-#    (m==7&&n==2&&brd[8][1]!=BLACK) ||
-#    (m==7&&n==7&&brd[8][8]!=BLACK)){
+# (m==2&&n==7&&brd[1][8]!=BLACK) ||
+# (m==7&&n==2&&brd[8][1]!=BLACK) ||
+# (m==7&&n==7&&brd[8][8]!=BLACK)){
 while(mvs != nil){
 (a, b) := hd mvs;
 (nil, sqs) := makemove(a, b, me, you, 1, 1);
@@ -749,14 +749,14 @@ return e;
 # sfont: ref Font;
 # gettxtattrs()
 # {
-#	swidth = int cmd(mainwin, ".f1.txt cget -width");	# always initial value ?
-#	f := cmd(mainwin, ".f1.txt cget -font");
-#	sfont = Font.open(brdimg.display, f);
+# swidth = int cmd(mainwin, ".f1.txt cget -width"); # always initial value ?
+# f := cmd(mainwin, ".f1.txt cget -font");
+# sfont = Font.open(brdimg.display, f);
 # }
 puts(s: string)
 {
 # while(sfont.width(s) > swidth)
-#	s = s[0: len s -1];
+# s = s[0: len s -1];
 cmd(mainwin, ".f1.txt configure -text {" + s + "}");
 cmd(mainwin, "update");
 }
@@ -765,7 +765,7 @@ fittoscreen(win: ref Tk->Toplevel)
 Point: import draw;
 if (display.image == nil)
 return;
-r :=  display.image.r;
+r := display.image.r;
 scrsize := Point(r.dx(), r.dy());
 bd := int cmd(win, ". cget -bd");
 winsize := Point(int cmd(win, ". cget -actwidth") + bd * 2, int cmd(win, ". cget -actheight") + bd * 2);

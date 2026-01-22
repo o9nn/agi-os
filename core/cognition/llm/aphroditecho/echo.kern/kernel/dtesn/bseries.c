@@ -10,9 +10,9 @@
 #include <unistd.h>
 #include <sys/time.h>
 #include <math.h>
-#define DTESN_BSERIES_MEMORY_POOL_SIZE     (32 * 1024 * 1024)
-#define DTESN_BSERIES_COEFF_CACHE_SIZE     1024
-#define DTESN_BSERIES_DEFAULT_TOLERANCE    1e-12
+#define DTESN_BSERIES_MEMORY_POOL_SIZE (32 * 1024 * 1024)
+#define DTESN_BSERIES_COEFF_CACHE_SIZE 1024
+#define DTESN_BSERIES_DEFAULT_TOLERANCE 1e-12
 static bool g_bseries_initialized = false;
 static dtesn_bseries_system_t *g_default_system = NULL;
 static const uint32_t g_oeis_a000081[] = DTESN_BSERIES_A000081_SEQUENCE;

@@ -5,24 +5,24 @@
 #include "tty.h"
 #ifndef CHILD_MAX
 # if defined(HAVE_SYSCONF) && defined(_SC_CHILD_MAX)
-#  define CHILD_MAX sysconf(_SC_CHILD_MAX)
+# define CHILD_MAX sysconf(_SC_CHILD_MAX)
 # else
-#  ifdef _POSIX_CHILD_MAX
-#   define CHILD_MAX	((_POSIX_CHILD_MAX) * 2)
-#  else
-#   define CHILD_MAX	20
-#  endif
+# ifdef _POSIX_CHILD_MAX
+# define CHILD_MAX ((_POSIX_CHILD_MAX) * 2)
+# else
+# define CHILD_MAX 20
+# endif
 # endif
 #endif
 #ifdef JOBS
 # if defined(HAVE_TCSETPGRP) || defined(TIOCSPGRP)
-#  define TTY_PGRP
+# define TTY_PGRP
 # endif
 # ifdef BSD_PGRP
-#  define setpgid	setpgrp
-#  define getpgID()	getpgrp(0)
+# define setpgid setpgrp
+# define getpgID() getpgrp(0)
 # else
-#  define getpgID()	getpgrp()
+# define getpgID() getpgrp()
 # endif
 # if defined(TTY_PGRP) && !defined(HAVE_TCSETPGRP)
 int tcsetpgrp ARGS((int fd, pid_t grp));
@@ -36,7 +36,7 @@ return ioctl(fd, TIOCSPGRP, &grp);
 }
 int
 tcgetpgrp(fd)
-int	fd;
+int fd;
 {
 int r, grp;
 if ((r = ioctl(fd, TIOCGPGRP, &grp)) < 0)
@@ -48,111 +48,111 @@ return grp;
 # undef TTY_PGRP
 # undef NEED_PGRP_SYNC
 #endif
-#define PRUNNING	0
-#define PEXITED		1
-#define PSIGNALLED	2
-#define PSTOPPED	3
-typedef struct proc	Proc;
+#define PRUNNING 0
+#define PEXITED 1
+#define PSIGNALLED 2
+#define PSTOPPED 3
+typedef struct proc Proc;
 struct proc {
-Proc	*next;
-int	state;
-WAIT_T	status;
-pid_t	pid;
-char	command[48];
+Proc *next;
+int state;
+WAIT_T status;
+pid_t pid;
+char command[48];
 };
-#define JP_NONE		0
-#define JP_SHORT	1
-#define JP_MEDIUM	2
-#define JP_LONG		3
-#define JP_PGRP		4
-#define PJ_ON_FRONT	0
-#define PJ_PAST_STOPPED	1
-#define JF_STARTED	0x001
-#define JF_WAITING	0x002
+#define JP_NONE 0
+#define JP_SHORT 1
+#define JP_MEDIUM 2
+#define JP_LONG 3
+#define JP_PGRP 4
+#define PJ_ON_FRONT 0
+#define PJ_PAST_STOPPED 1
+#define JF_STARTED 0x001
+#define JF_WAITING 0x002
 #define JF_W_ASYNCNOTIFY 0x004
-#define JF_XXCOM	0x008
-#define JF_FG		0x010
-#define JF_SAVEDTTY	0x020
-#define JF_CHANGED	0x040
-#define JF_KNOWN	0x080
-#define JF_ZOMBIE	0x100
-#define JF_REMOVE	0x200
-#define JF_USETTYMODE	0x400
-#define JF_SAVEDTTYPGRP	0x800
+#define JF_XXCOM 0x008
+#define JF_FG 0x010
+#define JF_SAVEDTTY 0x020
+#define JF_CHANGED 0x040
+#define JF_KNOWN 0x080
+#define JF_ZOMBIE 0x100
+#define JF_REMOVE 0x200
+#define JF_USETTYMODE 0x400
+#define JF_SAVEDTTYPGRP 0x800
 typedef struct job Job;
 struct job {
-Job	*next;
-int	job;
-int	flags;
-int	state;
-int	status;
-pid_t	pgrp;
-pid_t	ppid;
-INT32	age;
-clock_t	systime;
-clock_t	usrtime;
-Proc	*proc_list;
-Proc	*last_proc;
+Job *next;
+int job;
+int flags;
+int state;
+int status;
+pid_t pgrp;
+pid_t ppid;
+INT32 age;
+clock_t systime;
+clock_t usrtime;
+Proc *proc_list;
+Proc *last_proc;
 #ifdef KSH
 Coproc_id coproc_id;
 #endif
 #ifdef TTY_PGRP
 TTY_state ttystate;
-pid_t	saved_ttypgrp;
+pid_t saved_ttypgrp;
 #endif
 };
-#define JW_NONE		0x00
-#define JW_INTERRUPT	0x01
-#define JW_ASYNCNOTIFY	0x02
-#define JW_STOPPEDWAIT	0x04
-#define JL_OK		0
-#define JL_NOSUCH	1
-#define JL_AMBIG	2
-#define JL_INVALID	3
-static const char	*const lookup_msgs[] = {
+#define JW_NONE 0x00
+#define JW_INTERRUPT 0x01
+#define JW_ASYNCNOTIFY 0x02
+#define JW_STOPPEDWAIT 0x04
+#define JL_OK 0
+#define JL_NOSUCH 1
+#define JL_AMBIG 2
+#define JL_INVALID 3
+static const char *const lookup_msgs[] = {
 null,
 "no such job",
 "ambiguous",
 "argument must be %job or process id",
 (char *) 0
 };
-clock_t	j_systime, j_usrtime;
-static Job		*job_list;
-static Job		*last_job;
-static Job		*async_job;
-static pid_t		async_pid;
-static int		nzombie;
-static INT32		njobs;
-static int		child_max;
+clock_t j_systime, j_usrtime;
+static Job *job_list;
+static Job *last_job;
+static Job *async_job;
+static pid_t async_pid;
+static int nzombie;
+static INT32 njobs;
+static int child_max;
 #ifdef JOB_SIGS
-static int		held_sigchld;
+static int held_sigchld;
 #endif
 #ifdef JOBS
-static struct shf	*shl_j;
+static struct shf *shl_j;
 #endif
 #ifdef NEED_PGRP_SYNC
-static int		j_sync_pipe[2];
-static int		j_sync_open;
+static int j_sync_pipe[2];
+static int j_sync_open;
 #endif
 #ifdef TTY_PGRP
-static int		ttypgrp_ok;
-static pid_t		restore_ttypgrp = -1;
-static pid_t		our_pgrp;
-static int const	tt_sigs[] = { SIGTSTP, SIGTTIN, SIGTTOU };
+static int ttypgrp_ok;
+static pid_t restore_ttypgrp = -1;
+static pid_t our_pgrp;
+static int const tt_sigs[] = { SIGTSTP, SIGTTIN, SIGTTOU };
 #endif
-static void		j_set_async ARGS((Job *j));
-static void		j_startjob ARGS((Job *j));
-static int		j_waitj ARGS((Job *j, int flags, const char *where));
-static RETSIGTYPE	j_sigchld ARGS((int sig));
-static void		j_print ARGS((Job *j, int how, struct shf *shf));
-static Job		*j_lookup ARGS((const char *cp, int *ecodep));
-static Job		*new_job ARGS((void));
-static Proc		*new_proc ARGS((void));
-static void		check_job ARGS((Job *j));
-static void		put_job ARGS((Job *j, int where));
-static void		remove_job ARGS((Job *j, const char *where));
-static void		kill_job ARGS((Job *j));
-static void	 	fill_command ARGS((char *c, int len, struct op *t));
+static void j_set_async ARGS((Job *j));
+static void j_startjob ARGS((Job *j));
+static int j_waitj ARGS((Job *j, int flags, const char *where));
+static RETSIGTYPE j_sigchld ARGS((int sig));
+static void j_print ARGS((Job *j, int how, struct shf *shf));
+static Job *j_lookup ARGS((const char *cp, int *ecodep));
+static Job *new_job ARGS((void));
+static Proc *new_proc ARGS((void));
+static void check_job ARGS((Job *j));
+static void put_job ARGS((Job *j, int where));
+static void remove_job ARGS((Job *j, const char *where));
+static void kill_job ARGS((Job *j));
+static void fill_command ARGS((char *c, int len, struct op *t));
 void
 j_init(mflagset)
 int mflagset;
@@ -192,8 +192,8 @@ tty_init(TRUE);
 void
 j_exit()
 {
-Job	*j;
-int	killed = 0;
+Job *j;
+int killed = 0;
 for (j = job_list; j != (Job *) 0; j = j->next) {
 if (j->ppid == procpid
 && (j->state == PSTOPPED
@@ -277,7 +277,7 @@ restore_ttypgrp = our_pgrp;
 our_pgrp = kshpid;
 }
 }
-#  if defined(NTTYDISC) && defined(TIOCSETD) && !defined(HAVE_TERMIOS_H) && !defined(HAVE_TERMIO_H)
+# if defined(NTTYDISC) && defined(TIOCSETD) && !defined(HAVE_TERMIOS_H) && !defined(HAVE_TERMIO_H)
 if (ttypgrp_ok) {
 int ldisc = NTTYDISC;
 if (ioctl(tty_fd, TIOCSETD, &ldisc) < 0)
@@ -285,7 +285,7 @@ warningf(FALSE,
 "j_init: can't set new line discipline: %s",
 strerror(errno));
 }
-#  endif
+# endif
 if (!ttypgrp_ok)
 warningf(FALSE, "warning: won't have full job control");
 # endif
@@ -314,20 +314,20 @@ tty_close();
 #endif
 int
 exchild(t, flags, close_fd)
-struct op	*t;
-int		flags;
-int		close_fd;
+struct op *t;
+int flags;
+int close_fd;
 {
-static Proc	*last_proc;
-int		i;
+static Proc *last_proc;
+int i;
 #ifdef JOB_SIGS
-sigset_t	omask;
+sigset_t omask;
 #endif
-Proc		*p;
-Job		*j;
-int		rv = 0;
-int		forksleep;
-int		ischild;
+Proc *p;
+Job *j;
+int rv = 0;
+int forksleep;
+int ischild;
 if (flags & XEXEC)
 return execute(t, flags & (XEXEC | XERROK));
 #ifdef JOB_SIGS
@@ -400,9 +400,9 @@ else
 p->pid = i;
 #ifdef JOBS
 if (Flag(FMONITOR) && !(flags&XXCOM)) {
-int	dotty = 0;
+int dotty = 0;
 # ifdef NEED_PGRP_SYNC
-int	first_child_sync = 0;
+int first_child_sync = 0;
 # endif
 # ifdef NEED_PGRP_SYNC
 if (j_sync_open) {
@@ -535,8 +535,8 @@ sigprocmask(SIG_SETMASK, &omask, (sigset_t *) 0);
 int
 waitlast()
 {
-int	rv;
-Job	*j;
+int rv;
+Job *j;
 #ifdef JOB_SIGS
 sigset_t omask;
 sigprocmask(SIG_BLOCK, &sm_sigchld, &omask);
@@ -561,12 +561,12 @@ return rv;
 int
 waitfor(cp, sigp)
 const char *cp;
-int	*sigp;
+int *sigp;
 {
-int	rv;
-Job	*j;
-int	ecode;
-int	flags = JW_INTERRUPT|JW_ASYNCNOTIFY;
+int rv;
+Job *j;
+int ecode;
+int flags = JW_INTERRUPT|JW_ASYNCNOTIFY;
 #ifdef JOB_SIGS
 sigset_t omask;
 sigprocmask(SIG_BLOCK, &sm_sigchld, &omask);
@@ -609,12 +609,12 @@ return rv;
 int
 j_kill(cp, sig)
 const char *cp;
-int	sig;
+int sig;
 {
-Job	*j;
-Proc	*p;
-int	rv = 0;
-int	ecode;
+Job *j;
+Proc *p;
+int rv = 0;
+int ecode;
 #ifdef JOB_SIGS
 sigset_t omask;
 sigprocmask(SIG_BLOCK, &sm_sigchld, &omask);
@@ -651,13 +651,13 @@ return rv;
 int
 j_resume(cp, bg)
 const char *cp;
-int	bg;
+int bg;
 {
-Job	*j;
-Proc	*p;
-int	ecode;
-int	running;
-int	rv = 0;
+Job *j;
+Proc *p;
+int ecode;
+int running;
+int rv = 0;
 sigset_t omask;
 sigprocmask(SIG_BLOCK, &sm_sigchld, &omask);
 if ((j = j_lookup(cp, &ecode)) == (Job *) 0) {
@@ -712,7 +712,7 @@ if (j == async_job)
 async_job = (Job *) 0;
 }
 if (j->state == PRUNNING && killpg(j->pgrp, SIGCONT) < 0) {
-int	err = errno;
+int err = errno;
 if (!bg) {
 j->flags &= ~JF_FG;
 # ifdef TTY_PGRP
@@ -747,8 +747,8 @@ return rv;
 int
 j_stopped_running()
 {
-Job	*j;
-int	which = 0;
+Job *j;
+int which = 0;
 for (j = job_list; j != (Job *) 0; j = j->next) {
 #ifdef JOBS
 if (j->ppid == procpid && j->state == PSTOPPED)
@@ -770,12 +770,12 @@ return 0;
 int
 j_jobs(cp, slp, nflag)
 const char *cp;
-int	slp;
-int	nflag;
+int slp;
+int nflag;
 {
-Job	*j, *tmp;
-int	how;
-int	zflag = 0;
+Job *j, *tmp;
+int how;
+int zflag = 0;
 #ifdef JOB_SIGS
 sigset_t omask;
 sigprocmask(SIG_BLOCK, &sm_sigchld, &omask);
@@ -785,7 +785,7 @@ nflag = 0;
 zflag = 1;
 }
 if (cp) {
-int	ecode;
+int ecode;
 if ((j = j_lookup(cp, &ecode)) == (Job *) 0) {
 #ifdef JOB_SIGS
 sigprocmask(SIG_SETMASK, &omask, (sigset_t *) 0);
@@ -820,7 +820,7 @@ return 0;
 void
 j_notify()
 {
-Job	*j, *tmp;
+Job *j, *tmp;
 #ifdef JOB_SIGS
 sigset_t omask;
 sigprocmask(SIG_BLOCK, &sm_sigchld, &omask);
@@ -861,7 +861,7 @@ static void
 j_set_async(j)
 Job *j;
 {
-Job	*jl, *oldest;
+Job *jl, *oldest;
 if (async_job && (async_job->flags & (JF_KNOWN|JF_ZOMBIE)) == JF_ZOMBIE)
 remove_job(async_job, "async");
 if (!(j->flags & JF_STARTED)) {
@@ -890,7 +890,7 @@ static void
 j_startjob(j)
 Job *j;
 {
-Proc	*p;
+Proc *p;
 j->flags |= JF_STARTED;
 for (p = j->proc_list; p->next; p = p->next)
 ;
@@ -910,11 +910,11 @@ kill(procpid, SIGCHLD);
 }
 static int
 j_waitj(j, flags, where)
-Job	*j;
-int	flags;
+Job *j;
+int flags;
 const char *where;
 {
-int	rv;
+int rv;
 j->flags |= JF_WAITING;
 if (flags & JW_ASYNCNOTIFY)
 j->flags |= JF_W_ASYNCNOTIFY;
@@ -942,7 +942,7 @@ return -rv;
 }
 j->flags &= ~(JF_WAITING|JF_W_ASYNCNOTIFY);
 if (j->flags & JF_FG) {
-WAIT_T	status;
+WAIT_T status;
 j->flags &= ~JF_FG;
 #ifdef TTY_PGRP
 if (Flag(FMONITOR) && ttypgrp_ok && j->pgrp) {
@@ -997,14 +997,14 @@ return rv;
 }
 static RETSIGTYPE
 j_sigchld(sig)
-int	sig;
+int sig;
 {
-int		errno_ = errno;
-Job		*j;
-Proc		UNINITIALIZED(*p);
-int		pid;
-WAIT_T		status;
-struct tms	t0, t1;
+int errno_ = errno;
+Job *j;
+Proc UNINITIALIZED(*p);
+int pid;
+WAIT_T status;
+struct tms t0, t1;
 #ifdef JOB_SIGS
 for (j = job_list; j; j = j->next)
 if (j->ppid == procpid && !(j->flags & JF_STARTED)) {
@@ -1056,10 +1056,10 @@ return RETSIGVAL;
 }
 static void
 check_job(j)
-Job	*j;
+Job *j;
 {
-int	jstate;
-Proc	*p;
+int jstate;
+Proc *p;
 if (!(j->flags & JF_STARTED)) {
 internal_errorf(0, "check_job: job started (flags 0x%x)",
 j->flags);
@@ -1131,25 +1131,25 @@ remove_job(j, "checkjob");
 }
 static void
 j_print(j, how, shf)
-Job		*j;
-int		how;
-struct shf	*shf;
+Job *j;
+int how;
+struct shf *shf;
 {
-Proc	*p;
-int	state;
-WAIT_T	status;
-int	coredumped;
-char	jobchar = ' ';
-char	buf[64];
+Proc *p;
+int state;
+WAIT_T status;
+int coredumped;
+char jobchar = ' ';
+char buf[64];
 const char *filler;
-int	output = 0;
+int output = 0;
 if (how == JP_PGRP) {
 shf_fprintf(shf, "%d\n", j->pgrp ? j->pgrp
 : (j->last_proc ? j->last_proc->pid : 0));
 return;
 }
 j->flags &= ~JF_CHANGED;
-filler = j->job > 10 ?  "\n       " : "\n      ";
+filler = j->job > 10 ? "\n       " : "\n      ";
 if (j == job_list)
 jobchar = '+';
 else if (j == job_list->next)
@@ -1223,11 +1223,11 @@ shf_fprintf(shf, newline);
 static Job *
 j_lookup(cp, ecodep)
 const char *cp;
-int	*ecodep;
+int *ecodep;
 {
-Job		*j, *last_match;
-Proc		*p;
-int		len, job = 0;
+Job *j, *last_match;
+Proc *p;
+int len, job = 0;
 if (digit(*cp)) {
 job = atoi(cp);
 for (j = job_list; j != (Job *) 0; j = j->next)
@@ -1298,13 +1298,13 @@ if (ecodep)
 *ecodep = JL_NOSUCH;
 return (Job *) 0;
 }
-static Job	*free_jobs;
-static Proc	*free_procs;
+static Job *free_jobs;
+static Proc *free_procs;
 static Job *
 new_job()
 {
-int	i;
-Job	*newj, *j;
+int i;
+Job *newj, *j;
 if (free_jobs != (Job *) 0) {
 newj = free_jobs;
 free_jobs = free_jobs->next;
@@ -1322,7 +1322,7 @@ return newj;
 static Proc *
 new_proc()
 {
-Proc	*p;
+Proc *p;
 if (free_procs != (Proc *) 0) {
 p = free_procs;
 free_procs = free_procs->next;
@@ -1332,11 +1332,11 @@ return p;
 }
 static void
 remove_job(j, where)
-Job	*j;
+Job *j;
 const char *where;
 {
-Proc	*p, *tmp;
-Job	**prev, *curr;
+Proc *p, *tmp;
+Job **prev, *curr;
 prev = &job_list;
 curr = *prev;
 for (; curr != (Job *) 0 && curr != j; prev = &curr->next, curr = *prev)
@@ -1363,10 +1363,10 @@ async_job = (Job *) 0;
 }
 static void
 put_job(j, where)
-Job	*j;
-int	where;
+Job *j;
+int where;
 {
-Job	**prev, *curr;
+Job **prev, *curr;
 prev = &job_list;
 curr = job_list;
 for (; curr && curr != j; prev = &curr->next, curr = *prev)
@@ -1391,21 +1391,21 @@ break;
 }
 static void
 kill_job(j)
-Job	*j;
+Job *j;
 {
-Proc	*p;
+Proc *p;
 for (p = j->proc_list; p != (Proc *) 0; p = p->next)
 if (p->pid != 0)
 (void) kill(p->pid, SIGKILL);
 }
 static void
 fill_command(c, len, t)
-char		*c;
-int		len;
-struct op	*t;
+char *c;
+int len;
+struct op *t;
 {
-int		alen;
-char		**ap;
+int alen;
+char **ap;
 if (t->type == TEXEC || t->type == TCOM) {
 ap = t->args;
 --len;

@@ -1,8 +1,8 @@
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
-#include	"mp.h"
-#include	"libsec.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
+#include "mp.h"
+#include "libsec.h"
 enum {
 Captimeout = 15,
 Capidletime = 60
@@ -10,14 +10,14 @@ Capidletime = 60
 typedef struct Caps Caps;
 struct Caps
 {
-uchar	hash[SHA1dlen];
-ulong	time;
-Caps*	next;
+uchar hash[SHA1dlen];
+ulong time;
+Caps* next;
 };
 struct {
-QLock	l;
-Caps*	caps;
-int	kpstarted;
+QLock l;
+Caps* caps;
+int kpstarted;
 } allcaps;
 enum {
 Qdir,
@@ -26,9 +26,9 @@ Quse
 };
 static Dirtab capdir[] =
 {
-".",			{Qdir, 0, QTDIR},	0,	DMDIR|0555,
-"capuse",		{Quse, 0},			0,	0222,
-"caphash",	{Qhash, 0},		0,	0200,
+".", {Qdir, 0, QTDIR}, 0, DMDIR|0555,
+"capuse", {Quse, 0}, 0, 0222,
+"caphash", {Qhash, 0}, 0, 0200,
 };
 static int ncapdir = nelem(capdir);
 static void

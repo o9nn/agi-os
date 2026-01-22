@@ -1,5 +1,5 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #include "pop3storage.h"
 #include <stdlib.h>
@@ -7,7 +7,7 @@
 #include "mail.h"
 #include "mailstorage_tools.h"
 #include "maildriver.h"
-#define POP3_DEFAULT_PORT  110
+#define POP3_DEFAULT_PORT 110
 #define POP3S_DEFAULT_PORT 995
 static int pop3_mailstorage_connect(struct mailstorage * storage);
 static int pop3_mailstorage_get_folder_session(struct mailstorage * storage,

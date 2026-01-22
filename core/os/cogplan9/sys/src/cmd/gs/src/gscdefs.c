@@ -2,22 +2,22 @@
 #include "gscdefs.h"
 #include "gconfigd.h"
 #ifndef GS_BUILDTIME
-#  define GS_BUILDTIME\
+# define GS_BUILDTIME\
 0
 #endif
 CONFIG_CONST long gs_buildtime = GS_BUILDTIME;
 #ifndef GS_COPYRIGHT
-#  define GS_COPYRIGHT\
+# define GS_COPYRIGHT\
 "Copyright (C) 2005 artofcode LLC, Benicia, CA.  All rights reserved."
 #endif
 const char *CONFIG_CONST gs_copyright = GS_COPYRIGHT;
 #ifndef GS_PRODUCTFAMILY
-#  define GS_PRODUCTFAMILY\
+# define GS_PRODUCTFAMILY\
 "AFPL Ghostscript"
 #endif
 const char *CONFIG_CONST gs_productfamily = GS_PRODUCTFAMILY;
 #ifndef GS_PRODUCT
-#  define GS_PRODUCT\
+# define GS_PRODUCT\
 GS_PRODUCTFAMILY
 #endif
 const char *CONFIG_CONST gs_product = GS_PRODUCT;
@@ -34,7 +34,7 @@ return gs_revision;
 }
 CONFIG_CONST long gs_revisiondate = GS_REVISIONDATE;
 #ifndef GS_SERIALNUMBER
-#  define GS_SERIALNUMBER\
+# define GS_SERIALNUMBER\
 42
 #endif
 CONFIG_CONST long gs_serialnumber = GS_SERIALNUMBER;

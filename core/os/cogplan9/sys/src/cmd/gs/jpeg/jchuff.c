@@ -8,10 +8,10 @@ int put_bits;
 int last_dc_val[MAX_COMPS_IN_SCAN];
 } savable_state;
 #ifndef NO_STRUCT_ASSIGN
-#define ASSIGN_STATE(dest,src)  ((dest) = (src))
+#define ASSIGN_STATE(dest,src) ((dest) = (src))
 #else
 #if MAX_COMPS_IN_SCAN == 4
-#define ASSIGN_STATE(dest,src)  \
+#define ASSIGN_STATE(dest,src) \
 ((dest).put_buffer = (src).put_buffer, \
 (dest).put_bits = (src).put_bits, \
 (dest).last_dc_val[0] = (src).last_dc_val[0], \
@@ -152,10 +152,10 @@ dtbl->ehufco[i] = huffcode[p];
 dtbl->ehufsi[i] = huffsize[p];
 }
 }
-#define emit_byte(state,val,action)  \
-{ *(state)->next_output_byte++ = (JOCTET) (val);  \
-if (--(state)->free_in_buffer == 0)  \
-if (! dump_buffer(state))  \
+#define emit_byte(state,val,action) \
+{ *(state)->next_output_byte++ = (JOCTET) (val); \
+if (--(state)->free_in_buffer == 0) \
+if (! dump_buffer(state)) \
 { action; } }
 LOCAL(boolean)
 dump_buffer (working_state * state)

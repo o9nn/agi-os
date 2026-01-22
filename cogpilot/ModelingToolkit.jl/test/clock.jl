@@ -44,11 +44,11 @@ ud(t) := kp*(r(t) - yd(t))
 =#
 #=
 D(x) ~ Shift(x, 0, dt) + 1 # this should never meet with continuous variables
-=>   (Shift(x, 0, dt) - Shift(x, -1, dt))/dt ~ Shift(x, 0, dt) + 1
-=>   Shift(x, 0, dt) - Shift(x, -1, dt) ~ Shift(x, 0, dt) * dt + dt
-=>   Shift(x, 0, dt) - Shift(x, 0, dt) * dt ~ Shift(x, -1, dt) + dt
-=>   (1 - dt) * Shift(x, 0, dt) ~ Shift(x, -1, dt) + dt
-=>   Shift(x, 0, dt) := (Shift(x, -1, dt) + dt) / (1 - dt) # Discrete system
+=> (Shift(x, 0, dt) - Shift(x, -1, dt))/dt ~ Shift(x, 0, dt) + 1
+=> Shift(x, 0, dt) - Shift(x, -1, dt) ~ Shift(x, 0, dt) * dt + dt
+=> Shift(x, 0, dt) - Shift(x, 0, dt) * dt ~ Shift(x, -1, dt) + dt
+=> (1 - dt) * Shift(x, 0, dt) ~ Shift(x, -1, dt) + dt
+=> Shift(x, 0, dt) := (Shift(x, -1, dt) + dt) / (1 - dt) # Discrete system
 =#
 ci, varmap = infer_clocks(sys)
 eqmap = ci.eq_domain
@@ -188,7 +188,7 @@ end
 saved_values = SavedValues(Float64, Vector{Float64})
 cb = PeriodicCallback(
 Base.Fix2(affect!, saved_values), 0.1; final_affect = true, initial_affect = true)
-#                                           kp   ud
+# kp ud
 prob = ODEProblem(foo!, [0.1], (0.0, Tf), [1.0, 2.1, 2.0], callback = cb)
 sol2 = solve(prob, Tsit5())
 @test sol.u == sol2.u
@@ -254,7 +254,7 @@ end
 @named f = filt()
 @named c = controller(1)
 @named p = plant()
-connections = [f.u ~ -1#(t >= 1)  # step input
+connections = [f.u ~ -1#(t >= 1) # step input
 f.y ~ c.r # filtered reference to controller reference
 Hold(c.ud) ~ p.u # controller output to plant input
 p.y ~ c.y]
@@ -327,7 +327,7 @@ end
 cb1 = PeriodicCallback(affect1!, dt; final_affect = true, initial_affect = true)
 cb2 = PeriodicCallback(affect2!, dt2; final_affect = true, initial_affect = true)
 cb = CallbackSet(cb1, cb2)
-#                                           kp   ud1  ud2
+# kp ud1 ud2
 prob = ODEProblem(foo!, [0.0], (0.0, 1.0), [1.0, 1.0, 1.0], callback = cb)
 sol2 = solve(prob, Tsit5())
 @test sol.u≈sol2.u atol=1e-6

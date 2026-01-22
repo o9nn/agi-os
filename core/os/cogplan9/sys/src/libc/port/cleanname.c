@@ -1,6 +1,6 @@
 #include <u.h>
 #include <libc.h>
-#define SEP(x)	((x)=='/' || (x) == 0)
+#define SEP(x) ((x)=='/' || (x) == 0)
 char*
 cleanname(char *name)
 {
@@ -16,7 +16,7 @@ d0 = name;
 if(d0[0] == '#'){
 if(d0[1] == 0)
 return d0;
-d0  += 1 + chartorune(&r, d0+1);
+d0 += 1 + chartorune(&r, d0+1);
 while(!SEP(*d0))
 d0 += chartorune(&r, d0);
 if(d0 == 0)

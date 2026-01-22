@@ -1,5 +1,5 @@
 #ifndef _SYS_PROCFS_H
-#define _SYS_PROCFS_H	1
+#define _SYS_PROCFS_H 1
 #include <features.h>
 #include <inttypes.h>
 #include <mach/std_types.h>
@@ -7,7 +7,7 @@
 #include <sys/time.h>
 #include <ucontext.h>
 __BEGIN_DECLS
-#define ELF_PRARGSZ     (80)
+#define ELF_PRARGSZ (80)
 struct elf_psinfo
 {
 int pr_flag;

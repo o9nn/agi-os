@@ -13,9 +13,9 @@ double rint(double x)
 int i0,j0,sx;
 unsigned i,i1;
 double w,t;
-i0 =  __HI(x);
+i0 = __HI(x);
 sx = (i0>>31)&1;
-i1 =  __LO(x);
+i1 = __LO(x);
 j0 = ((i0>>20)&0x7ff)-0x3ff;
 if(j0<20) {
 if(j0<0) {
@@ -26,7 +26,7 @@ i0 |= ((i1|-i1)>>12)&0x80000;
 __HI(x)=i0;
 w = TWO52[sx]+x;
 dummy();
-t =  w-TWO52[sx];
+t = w-TWO52[sx];
 i0 = __HI(t);
 __HI(t) = (i0&0x7fffffff)|(sx<<31);
 return t;

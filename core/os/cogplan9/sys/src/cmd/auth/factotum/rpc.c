@@ -14,11 +14,11 @@ Vwrite,
 Vattr,
 };
 Verb rpctab[] = {
-"authinfo",	Vauthinfo,
-"read",		Vread,
-"start",		Vstart,
-"write",		Vwrite,
-"attr",		Vattr,
+"authinfo", Vauthinfo,
+"read", Vread,
+"start", Vstart,
+"write", Vwrite,
+"attr", Vattr,
 };
 static int
 classify(char *s, Verb *verbtab, int nverbtab)
@@ -307,9 +307,9 @@ Vaddkey,
 Vdebug,
 };
 Verb ctltab[] = {
-"delkey",		Vdelkey,
-"key",		Vaddkey,
-"debug",	Vdebug,
+"delkey", Vdelkey,
+"key", Vaddkey,
+"debug", Vdebug,
 };
 int
 ctlwrite(char *a, int atzero)

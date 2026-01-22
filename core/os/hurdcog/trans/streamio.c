@@ -105,17 +105,17 @@ error_t dev_write (const void *buf, size_t len, size_t *amount, int nowait);
 error_t dev_sync (int wait);
 static struct argp_option options[] =
 {
-{"rdev",     'n', "ID", 0,
+{"rdev", 'n', "ID", 0,
 "The stat rdev number for this node; may be either a"
 " single integer, or of the form MAJOR,MINOR"},
-{"readonly", 'r', 0,    0, "Disallow writing"},
-{"rdonly",   0,   0, OPTION_ALIAS | OPTION_HIDDEN},
-{"ro",       0,   0, OPTION_ALIAS | OPTION_HIDDEN},
-{"writable", 'w', 0,    0, "Allow writing"},
-{"rdwr",     0,   0, OPTION_ALIAS | OPTION_HIDDEN},
-{"rw",       0,   0, OPTION_ALIAS | OPTION_HIDDEN},
-{"writeonly", 'W',0,    0, "Disallow reading"},
-{"wronly",   0,   0, OPTION_ALIAS | OPTION_HIDDEN},
+{"readonly", 'r', 0, 0, "Disallow writing"},
+{"rdonly", 0, 0, OPTION_ALIAS | OPTION_HIDDEN},
+{"ro", 0, 0, OPTION_ALIAS | OPTION_HIDDEN},
+{"writable", 'w', 0, 0, "Allow writing"},
+{"rdwr", 0, 0, OPTION_ALIAS | OPTION_HIDDEN},
+{"rw", 0, 0, OPTION_ALIAS | OPTION_HIDDEN},
+{"writeonly", 'W',0, 0, "Disallow reading"},
+{"wronly", 0, 0, OPTION_ALIAS | OPTION_HIDDEN},
 {0}
 };
 static const char args_doc[] = "DEVICE";

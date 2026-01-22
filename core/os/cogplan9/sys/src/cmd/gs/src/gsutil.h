@@ -1,5 +1,5 @@
 #ifndef gsutil_INCLUDED
-#  define gsutil_INCLUDED
+# define gsutil_INCLUDED
 gs_id gs_next_ids(const gs_memory_t *mem, uint count);
 void memflip8x8(const byte * inp, int line_size, byte * outp, int dist);
 ulong get_u32_msb(const byte *p);

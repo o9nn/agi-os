@@ -7,8 +7,8 @@
 typedef struct Private Private;
 struct Private {
 Lock;
-char	msg[256];
-char*	cur;
+char msg[256];
+char* cur;
 };
 static Private ucprivate;
 static void
@@ -74,18 +74,18 @@ return nil;
 return uv;
 }
 static Pool ucpool = {
-.name		= "Uncached",
-.maxsize	= 4*MiB,
-.minarena	= 1*MiB-32,
-.quantum	= 32,
-.alloc		= ucarena,
-.merge		= nil,
-.flags		= 0,
-.lock		= ucpoollock,
-.unlock		= ucpoolunlock,
-.print		= ucpoolprint,
-.panic		= ucpoolpanic,
-.private	= &ucprivate,
+.name = "Uncached",
+.maxsize = 4*MiB,
+.minarena = 1*MiB-32,
+.quantum = 32,
+.alloc = ucarena,
+.merge = nil,
+.flags = 0,
+.lock = ucpoollock,
+.unlock = ucpoolunlock,
+.print = ucpoolprint,
+.panic = ucpoolpanic,
+.private = &ucprivate,
 };
 void
 ucfree(void* v)

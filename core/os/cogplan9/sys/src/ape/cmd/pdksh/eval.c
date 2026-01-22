@@ -9,29 +9,29 @@ const char **strv;
 struct shf *shf;
 } u;
 struct tbl *var;
-short	split;
+short split;
 } Expand;
-#define	XBASE		0
-#define	XSUB		1
-#define	XARGSEP		2
-#define	XARG		3
-#define	XCOM		4
-#define XNULLSUB	5
-#define IFS_WORD	0
-#define IFS_WS		1
-#define IFS_NWS		2
-static	int	varsub ARGS((Expand *xp, char *sp, char *word, int *stypep, int *slenp));
-static	int	comsub ARGS((Expand *xp, char *cp));
-static	char   *trimsub ARGS((char *str, char *pat, int how));
-static	void	glob ARGS((char *cp, XPtrV *wp, int markdirs));
-static	void	globit ARGS((XString *xs, char **xpp, char *sp, XPtrV *wp,
+#define XBASE 0
+#define XSUB 1
+#define XARGSEP 2
+#define XARG 3
+#define XCOM 4
+#define XNULLSUB 5
+#define IFS_WORD 0
+#define IFS_WS 1
+#define IFS_NWS 2
+static int varsub ARGS((Expand *xp, char *sp, char *word, int *stypep, int *slenp));
+static int comsub ARGS((Expand *xp, char *cp));
+static char *trimsub ARGS((char *str, char *pat, int how));
+static void glob ARGS((char *cp, XPtrV *wp, int markdirs));
+static void globit ARGS((XString *xs, char **xpp, char *sp, XPtrV *wp,
 int check));
-static char	*maybe_expand_tilde ARGS((char *p, XString *dsp, char **dpp,
+static char *maybe_expand_tilde ARGS((char *p, XString *dsp, char **dpp,
 int isassign));
-static	char   *tilde ARGS((char *acp));
-static	char   *homedir ARGS((char *name));
+static char *tilde ARGS((char *acp));
+static char *homedir ARGS((char *name));
 #ifdef BRACE_EXPAND
-static void	alt_expand ARGS((XPtrV *wp, char *start, char *exp_start,
+static void alt_expand ARGS((XPtrV *wp, char *start, char *exp_start,
 char *end, int fdo));
 #endif
 char *
@@ -60,13 +60,13 @@ if (*ap == NULL)
 return ap;
 XPinit(w, 32);
 XPput(w, NULL);
-#ifdef	SHARPBANG
+#ifdef SHARPBANG
 XPput(w, NULL);
 #endif
 while (*ap != NULL)
 expand(*ap++, &w, f);
 XPput(w, NULL);
-#ifdef	SHARPBANG
+#ifdef SHARPBANG
 return (char **) XPclose(w) + 2;
 #else
 return (char **) XPclose(w) + 1;
@@ -107,11 +107,11 @@ XPfree(w);
 return cp;
 }
 typedef struct SubType {
-short	stype;
-short	base;
-short	f;
+short stype;
+short base;
+short f;
 struct tbl *var;
-short	quote;
+short quote;
 struct SubType *prev;
 struct SubType *next;
 } SubType;
@@ -344,7 +344,7 @@ c = '|';
 break;
 case CPAT:
 make_magic = 1;
-c =  ')';
+c = ')';
 break;
 }
 break;
@@ -758,10 +758,10 @@ else
 qsortp(XPptrv(*wp) + oldsize, (size_t)(XPsize(*wp) - oldsize),
 xstrcmp);
 }
-#define GF_NONE		0
-#define GF_EXCHECK	BIT(0)
-#define GF_GLOBBED	BIT(1)
-#define GF_MARKDIR	BIT(2)
+#define GF_NONE 0
+#define GF_EXCHECK BIT(0)
+#define GF_GLOBBED BIT(1)
+#define GF_MARKDIR BIT(2)
 int
 glob_str(cp, wp, markdirs)
 char *cp;
@@ -793,7 +793,7 @@ if (sp == NULL) {
 if ((check & GF_EXCHECK)
 || ((check & GF_MARKDIR) && (check & GF_GLOBBED)))
 {
-#define stat_check()	(stat_done ? stat_done : \
+#define stat_check() (stat_done ? stat_done : \
 (stat_done = stat(Xstring(*xs, xp), &statb) < 0 \
 ? -1 : 1))
 struct stat lstatb, statb;
@@ -824,9 +824,9 @@ if (((check & GF_MARKDIR) && (check & GF_GLOBBED))
 }
 }
 #ifdef OS2
-# define KLUDGE_VAL	4
+# define KLUDGE_VAL 4
 #else
-# define KLUDGE_VAL	0
+# define KLUDGE_VAL 0
 #endif
 XPput(*wp, str_nsave(Xstring(*xs, xp), Xlength(*xs, xp)
 + KLUDGE_VAL, ATEMP));
@@ -888,7 +888,7 @@ if (np != NULL)
 *--np = odirsep;
 }
 #if 0
-static int	copy_non_glob ARGS((XString *xs, char **xpp, char *p));
+static int copy_non_glob ARGS((XString *xs, char **xpp, char *p));
 static int
 copy_non_glob(xs, xpp, p)
 XString *xs;

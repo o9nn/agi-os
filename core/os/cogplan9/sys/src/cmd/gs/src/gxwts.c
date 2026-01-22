@@ -219,23 +219,23 @@ return code;
 }
 private int
 gx_dc_wts_write(
-const gx_device_color *         pdevc,
-const gx_device_color_saved *   psdc,
-const gx_device *               dev,
-byte *                          pdata,
-uint *                          psize )
+const gx_device_color * pdevc,
+const gx_device_color_saved * psdc,
+const gx_device * dev,
+byte * pdata,
+uint * psize )
 {
 return_error(gs_error_unknownerror);
 }
 private int
 gx_dc_wts_read(
-gx_device_color *       pdevc,
+gx_device_color * pdevc,
 const gs_imager_state * pis,
 const gx_device_color * prior_devc,
-const gx_device *       dev,
-const byte *            pdata,
-uint                    size,
-gs_memory_t *           mem )
+const gx_device * dev,
+const byte * pdata,
+uint size,
+gs_memory_t * mem )
 {
 return_error(gs_error_unknownerror);
 }
@@ -349,10 +349,10 @@ num_comp * sizeof(pdevc1->colors.wts.levels[0]));
 int
 gx_dc_wts_get_nonzero_comps(
 const gx_device_color * pdevc,
-const gx_device *       dev_ignored,
-gx_color_index *        pcomp_bits )
+const gx_device * dev_ignored,
+gx_color_index * pcomp_bits )
 {
-int                     i, ncomps =  pdevc->colors.wts.num_components;
+int i, ncomps = pdevc->colors.wts.num_components;
 gx_color_index comp_bits = 0;
 for (i = 0; i < ncomps; i++) {
 if (pdevc->colors.wts.levels[i] != 0)

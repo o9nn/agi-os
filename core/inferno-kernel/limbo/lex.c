@@ -3,124 +3,124 @@
 #include "y.tab.h"
 enum
 {
-Leof		= -1,
-Linestart	= 0,
-Mlower		= 1,
-Mupper		= 2,
-Munder		= 4,
-Malpha		= Mupper|Mlower|Munder,
-Mdigit		= 8,
-Msign		= 16,
-Mexp		= 32,
-Mhex		= 64,
-Mradix		= 128,
-HashSize	= 1024,
-MaxPath		= 4096
+Leof = -1,
+Linestart = 0,
+Mlower = 1,
+Mupper = 2,
+Munder = 4,
+Malpha = Mupper|Mlower|Munder,
+Mdigit = 8,
+Msign = 16,
+Mexp = 32,
+Mhex = 64,
+Mradix = 128,
+HashSize = 1024,
+MaxPath = 4096
 };
-typedef	struct Keywd	Keywd;
-struct	Keywd
+typedef struct Keywd Keywd;
+struct Keywd
 {
-char	*name;
-int	token;
+char *name;
+int token;
 };
-File	**files;
-int	nfiles;
-static	int	lenfiles;
-static	int	lastfile;
-static	char	*incpath[MaxIncPath];
-static	Sym	*symbols[HashSize];
-static	Sym	*strings[HashSize];
-static	char	map[256];
-static	Biobuf	*bin;
-static	Line	linestack[MaxInclude];
-static	int	lineno;
-static	int	linepos;
-static	int	bstack;
-static	int	ineof;
-static	int	lasttok;
-static	YYSTYPE	lastyylval;
-static	char	srcdir[MaxPath];
-static	Keywd	keywords[] =
+File **files;
+int nfiles;
+static int lenfiles;
+static int lastfile;
+static char *incpath[MaxIncPath];
+static Sym *symbols[HashSize];
+static Sym *strings[HashSize];
+static char map[256];
+static Biobuf *bin;
+static Line linestack[MaxInclude];
+static int lineno;
+static int linepos;
+static int bstack;
+static int ineof;
+static int lasttok;
+static YYSTYPE lastyylval;
+static char srcdir[MaxPath];
+static Keywd keywords[] =
 {
-"adt",		Ladt,
-"alt",		Lalt,
-"array",	Larray,
-"big",		Ltid,
-"break",	Lbreak,
-"byte",		Ltid,
-"case",		Lcase,
-"chan",		Lchan,
-"con",		Lcon,
-"continue",	Lcont,
-"cyclic",	Lcyclic,
-"do",		Ldo,
-"dynamic",	Ldynamic,
-"else",		Lelse,
-"exception",	Lexcept,
-"exit",		Lexit,
-"fixed",	Lfix,
-"fn",		Lfn,
-"for",		Lfor,
-"hd",		Lhd,
-"if",		Lif,
-"implement",	Limplement,
-"import",	Limport,
-"include",	Linclude,
-"int",		Ltid,
-"len",		Llen,
-"list",		Llist,
-"load",		Lload,
-"module",	Lmodule,
-"nil",		Lnil,
-"of",		Lof,
-"or",		Lor,
-"pick",		Lpick,
-"raise",	Lraise,
-"raises",	Lraises,
-"real",		Ltid,
-"ref",		Lref,
-"return",	Lreturn,
-"self",		Lself,
-"spawn",	Lspawn,
-"string",	Ltid,
-"tagof",	Ltagof,
-"tl",		Ltl,
-"to",		Lto,
-"type",		Ltype,
-"while",	Lwhile,
+"adt", Ladt,
+"alt", Lalt,
+"array", Larray,
+"big", Ltid,
+"break", Lbreak,
+"byte", Ltid,
+"case", Lcase,
+"chan", Lchan,
+"con", Lcon,
+"continue", Lcont,
+"cyclic", Lcyclic,
+"do", Ldo,
+"dynamic", Ldynamic,
+"else", Lelse,
+"exception", Lexcept,
+"exit", Lexit,
+"fixed", Lfix,
+"fn", Lfn,
+"for", Lfor,
+"hd", Lhd,
+"if", Lif,
+"implement", Limplement,
+"import", Limport,
+"include", Linclude,
+"int", Ltid,
+"len", Llen,
+"list", Llist,
+"load", Lload,
+"module", Lmodule,
+"nil", Lnil,
+"of", Lof,
+"or", Lor,
+"pick", Lpick,
+"raise", Lraise,
+"raises", Lraises,
+"real", Ltid,
+"ref", Lref,
+"return", Lreturn,
+"self", Lself,
+"spawn", Lspawn,
+"string", Ltid,
+"tagof", Ltagof,
+"tl", Ltl,
+"to", Lto,
+"type", Ltype,
+"while", Lwhile,
 0,
 };
-static	Keywd	tokwords[] =
+static Keywd tokwords[] =
 {
-"&=",	Landeq,
-"|=",	Loreq,
-"^=",	Lxoreq,
-"<<=",	Llsheq,
-">>=",	Lrsheq,
-"+=",	Laddeq,
-"-=",	Lsubeq,
-"*=",	Lmuleq,
-"/=",	Ldiveq,
-"%=",	Lmodeq,
+"&=", Landeq,
+"|=", Loreq,
+"^=", Lxoreq,
+"<<=", Llsheq,
+">>=", Lrsheq,
+"+=", Laddeq,
+"-=", Lsubeq,
+"*=", Lmuleq,
+"/=", Ldiveq,
+"%=", Lmodeq,
 "**=", Lexpeq,
-":=",	Ldeclas,
-"||",	Loror,
-"&&",	Landand,
-"::",	Lcons,
-"==",	Leq,
-"!=",	Lneq,
-"<=",	Lleq,
-">=",	Lgeq,
-"<<",	Llsh,
-">>",	Lrsh,
-"<-",	Lcomm,
+":=", Ldeclas,
+"||", Loror,
+"&&", Landand,
+"::", Lcons,
+"==", Leq,
+"!=", Lneq,
+"<=", Lleq,
+">=", Lgeq,
+"<<", Llsh,
+">>", Lrsh,
+"<-", Lcomm,
 "++", Linc,
-"--",	Ldec,
+"--", Ldec,
 "->", Lmdot,
 "=>", Llabs,
 "**", Lexp,
-"EOF",	Leof,
-"eof",	Beof,
+"EOF", Leof,
+"eof", Beof,
 0,
 };
 void
@@ -319,7 +319,7 @@ bin = bins[bstack];
 oline = linestack[bstack].line;
 opos = linestack[bstack].pos;
 fl = fline(oline);
-f =  fl.file;
+f = fl.file;
 ln = fl.line;
 lineno++;
 linepos = opos;
@@ -593,7 +593,7 @@ double d;
 Long v;
 int i, ck;
 i = 0;
-buf[i++]  = c;
+buf[i++] = c;
 state = Int;
 if(c == '.')
 state = Frac;

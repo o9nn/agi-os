@@ -9,7 +9,7 @@ PCI_UNUSED_IRQ=0x800,
 struct pci_id_info {
 const char *name;
 struct match_info {
-int	pci, pci_mask, subsystem, subsystem_mask;
+int pci, pci_mask, subsystem, subsystem_mask;
 int revision, revision_mask;
 } id;
 enum pci_id_flags_bits pci_flags;
@@ -43,6 +43,6 @@ void *cb_ops;
 extern int pci_drv_register(struct drv_id_info *drv_id, void *initial_device);
 extern void pci_drv_unregister(struct drv_id_info *drv_id);
 int acpi_wake(struct pci_dev *pdev);
-enum  acpi_pwr_state {ACPI_D0, ACPI_D1, ACPI_D2, ACPI_D3};
+enum acpi_pwr_state {ACPI_D0, ACPI_D1, ACPI_D2, ACPI_D3};
 int acpi_set_pwr_state(struct pci_dev *pdev, enum acpi_pwr_state state);
 #endif

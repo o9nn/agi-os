@@ -7,7 +7,7 @@
 # define INCL_DOSMISC
 # define INCL_DOSMODULEMGR
 # include <os2.h>
-# define   CMD_KI_RDCNT    (0x63)
+# define CMD_KI_RDCNT (0x63)
 typedef struct _CPUUTIL {
 ULONG ulTimeLow;
 ULONG ulTimeHigh;

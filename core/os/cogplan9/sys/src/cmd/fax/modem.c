@@ -3,34 +3,34 @@
 #include <bio.h>
 #include "modem.h"
 typedef struct {
-char	*terse;
-char	*verbose;
-int	result;
-int	(*f)(Modem*);
+char *terse;
+char *verbose;
+int result;
+int (*f)(Modem*);
 } ResultCode;
 static ResultCode results[] = {
-{ "0",	"OK",		Rok,		0, },
-{ "1",	"CONNECT",	Rconnect,	0, },
-{ "2",	"RING",		Rring,		0, },
-{ "3",	"NO CARRIER", 	Rfailure,	0, },
-{ "4",	"ERROR",	Rrerror,	0, },
-{ "5",	"CONNECT 1200",	Rconnect,	0, },
-{ "6",	"NO DIALTONE",	Rfailure,	0, },
-{ "7",	"BUSY",		Rfailure,	0, },
-{ "8",	"NO ANSWER",	Rfailure,	0, },
-{ "9",	"CONNECT 2400",	Rconnect,	0, },
-{ "10",	"CONNECT 2400",	Rconnect,	0, },
-{ "11",	"CONNECT 4800",	Rconnect,	0, },
-{ "12",	"CONNECT 9600",	Rconnect,	0, },
-{ "13",	"CONNECT 14400",Rconnect,	0, },
-{ "23",	"CONNECT 1275",	Rconnect,	0, },
-{ "-1",	"+FCON",	Rcontinue,	fcon, },
-{ "-1",	"+FTSI",	Rcontinue,	ftsi, },
-{ "-1",	"+FDCS",	Rcontinue,	fdcs, },
-{ "-1",	"+FCFR",	Rcontinue,	fcfr, },
-{ "-1",	"+FPTS",	Rcontinue,	fpts, },
-{ "-1",	"+FET",		Rcontinue,	fet, },
-{ "-1",	"+FHNG",	Rcontinue,	fhng, },
+{ "0", "OK", Rok, 0, },
+{ "1", "CONNECT", Rconnect, 0, },
+{ "2", "RING", Rring, 0, },
+{ "3", "NO CARRIER", Rfailure, 0, },
+{ "4", "ERROR", Rrerror, 0, },
+{ "5", "CONNECT 1200", Rconnect, 0, },
+{ "6", "NO DIALTONE", Rfailure, 0, },
+{ "7", "BUSY", Rfailure, 0, },
+{ "8", "NO ANSWER", Rfailure, 0, },
+{ "9", "CONNECT 2400", Rconnect, 0, },
+{ "10", "CONNECT 2400", Rconnect, 0, },
+{ "11", "CONNECT 4800", Rconnect, 0, },
+{ "12", "CONNECT 9600", Rconnect, 0, },
+{ "13", "CONNECT 14400",Rconnect, 0, },
+{ "23", "CONNECT 1275", Rconnect, 0, },
+{ "-1", "+FCON", Rcontinue, fcon, },
+{ "-1", "+FTSI", Rcontinue, ftsi, },
+{ "-1", "+FDCS", Rcontinue, fdcs, },
+{ "-1", "+FCFR", Rcontinue, fcfr, },
+{ "-1", "+FPTS", Rcontinue, fpts, },
+{ "-1", "+FET", Rcontinue, fet, },
+{ "-1", "+FHNG", Rcontinue, fhng, },
 { 0 },
 };
 void

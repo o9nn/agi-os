@@ -45,27 +45,27 @@ static struct sock *ipfwsk;
 + NUM_SLOTS*sizeof(struct ip_counters))
 #ifdef DEBUG_IP_FIREWALL_LOCKING
 static unsigned int fwc_rlocks, fwc_wlocks;
-#define FWC_DEBUG_LOCK(d)			\
-do {						\
-FWC_DONT_HAVE_LOCK(d);			\
-d |= (1 << SLOT_NUMBER());		\
+#define FWC_DEBUG_LOCK(d) \
+do { \
+FWC_DONT_HAVE_LOCK(d); \
+d |= (1 << SLOT_NUMBER()); \
 } while (0)
-#define FWC_DEBUG_UNLOCK(d)			\
-do {						\
-FWC_HAVE_LOCK(d);			\
-d &= ~(1 << SLOT_NUMBER());		\
+#define FWC_DEBUG_UNLOCK(d) \
+do { \
+FWC_HAVE_LOCK(d); \
+d &= ~(1 << SLOT_NUMBER()); \
 } while (0)
-#define FWC_DONT_HAVE_LOCK(d)					\
-do {								\
-if ((d) & (1 << SLOT_NUMBER()))				\
-printk("%s:%i: Got lock on %i already!\n", 	\
-__FILE__, __LINE__, SLOT_NUMBER());	\
+#define FWC_DONT_HAVE_LOCK(d) \
+do { \
+if ((d) & (1 << SLOT_NUMBER())) \
+printk("%s:%i: Got lock on %i already!\n", \
+__FILE__, __LINE__, SLOT_NUMBER()); \
 } while(0)
-#define FWC_HAVE_LOCK(d)				\
-do {							\
-if (!((d) & (1 << SLOT_NUMBER())))		\
-printk("%s:%i:No lock on %i!\n", 		\
-__FILE__, __LINE__, SLOT_NUMBER());	\
+#define FWC_HAVE_LOCK(d) \
+do { \
+if (!((d) & (1 << SLOT_NUMBER()))) \
+printk("%s:%i:No lock on %i!\n", \
+__FILE__, __LINE__, SLOT_NUMBER()); \
 } while (0)
 #else
 #define FWC_DEBUG_LOCK(d) do { } while(0)
@@ -111,7 +111,7 @@ int policy;
 struct ip_reent reent[0];
 };
 #ifdef DEBUG_IP_FIREWALL
-#define dprintf(format, args...)  printk(format , ## args)
+#define dprintf(format, args...) printk(format , ## args)
 #else
 #define dprintf(format, args...)
 #endif
@@ -255,7 +255,7 @@ ntohs(ip->tot_len), ip->tos, ntohs(ip->id),
 ntohs(ip->frag_off), ip->ttl);
 for (opti = 0; opti < (ip->ihl - sizeof(struct iphdr) / 4); opti++)
 printk(" O=0x%8.8X", *opt++);
-printk(" %s(#%d)\n", syn ? "SYN " :  "", count);
+printk(" %s(#%d)\n", syn ? "SYN " : "", count);
 }
 static int check_label(ip_chainlabel label)
 {
@@ -384,19 +384,19 @@ struct sk_buff *skb,
 unsigned int slot,
 int testing)
 {
-struct tcphdr		*tcp=(struct tcphdr *)((__u32 *)ip+ip->ihl);
-struct udphdr		*udp=(struct udphdr *)((__u32 *)ip+ip->ihl);
-struct icmphdr		*icmp=(struct icmphdr *)((__u32 *)ip+ip->ihl);
-__u32			src, dst;
-__u16			src_port = 0xFFFF, dst_port = 0xFFFF;
-char			tcpsyn=0;
-__u16			offset;
-unsigned char		oldtos;
-struct ip_fwkernel	*f;
-int			ret = FW_SKIP+2;
-unsigned int		count;
+struct tcphdr *tcp=(struct tcphdr *)((__u32 *)ip+ip->ihl);
+struct udphdr *udp=(struct udphdr *)((__u32 *)ip+ip->ihl);
+struct icmphdr *icmp=(struct icmphdr *)((__u32 *)ip+ip->ihl);
+__u32 src, dst;
+__u16 src_port = 0xFFFF, dst_port = 0xFFFF;
+char tcpsyn=0;
+__u16 offset;
+unsigned char oldtos;
+struct ip_fwkernel *f;
+int ret = FW_SKIP+2;
+unsigned int count;
 offset = ntohs(ip->frag_off) & IP_OFFSET;
-if (offset == 1 && ip->protocol == IPPROTO_TCP)	{
+if (offset == 1 && ip->protocol == IPPROTO_TCP) {
 if (!testing && net_ratelimit()) {
 printk("Suspect TCP fragment.\n");
 dump_packet(ip,rif,NULL,NULL,0,0,0,0);

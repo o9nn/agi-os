@@ -1,58 +1,58 @@
-#include	<u.h>
-#include	<libc.h>
-#include	<draw.h>
-#define	NPJW		48
-#define	NSPLIT		6
-#define	NDOT		14
-#define	MAXTRACKS	128
-#define	MINV		6
-#define	PDUP		1
-#define	nels(a)		(sizeof(a) / sizeof(a[0]))
-#define	imin(a,b)	(((a) <= (b)) ? (a) : (b))
-#define	imax(a,b)	(((a) >= (b)) ? (a) : (b))
-#define	sqr(x)		((x) * (x))
-typedef struct vector	vector;
+#include <u.h>
+#include <libc.h>
+#include <draw.h>
+#define NPJW 48
+#define NSPLIT 6
+#define NDOT 14
+#define MAXTRACKS 128
+#define MINV 6
+#define PDUP 1
+#define nels(a) (sizeof(a) / sizeof(a[0]))
+#define imin(a,b) (((a) <= (b)) ? (a) : (b))
+#define imax(a,b) (((a) >= (b)) ? (a) : (b))
+#define sqr(x) ((x) * (x))
+typedef struct vector vector;
 struct vector
 {
-double	x;
-double	y;
+double x;
+double y;
 };
-typedef struct dot	Dot;
+typedef struct dot Dot;
 struct dot
 {
-Point	pos;
-Point	ivel;
-vector	vel;
-double	mass;
-int	charge;
-int	height;
-int	width;
-int	facei;
-int	spin;
-Image	*face;
-Image	*faces[4];
-Image	*mask;
-Image	*masks[4];
-Image	*save;
-int	ntracks;
-Point	track[MAXTRACKS];
-int	next_clear;
-int	next_write;
+Point pos;
+Point ivel;
+vector vel;
+double mass;
+int charge;
+int height;
+int width;
+int facei;
+int spin;
+Image *face;
+Image *faces[4];
+Image *mask;
+Image *masks[4];
+Image *save;
+int ntracks;
+Point track[MAXTRACKS];
+int next_clear;
+int next_write;
 };
-Dot	dot[NDOT];
-Dot	*edot		= &dot[NDOT];
-int	total_spin	= 3;
-vector	no_gravity;
-vector	gravity		=
+Dot dot[NDOT];
+Dot *edot = &dot[NDOT];
+int total_spin = 3;
+vector no_gravity;
+vector gravity =
 {
 0.0,
 1.0,
 };
-static Image	*im;
-static int	track_length;
-static int	track_width;
-static int	iflag;
-static double	k_floor		= 0.9;
+static Image *im;
+static int track_length;
+static int track_width;
+static int iflag;
+static double k_floor = 0.9;
 Image *screen;
 #include "andrew.bits"
 #include "bart.bits"
@@ -116,9 +116,9 @@ static
 int
 close_enough(Dot *p, Dot *q, double *s)
 {
-int	sepx;
-int	width;
-int	sepy;
+int sepx;
+int width;
+int sepy;
 sepx = p->pos.x - q->pos.x;
 width = p->width;
 if (sepx < -width || sepx > width)
@@ -148,7 +148,7 @@ static
 void
 exchange_spin(Dot *p, Dot *q)
 {
-int	tspin;
+int tspin;
 if (p->spin == 0 && q->spin == 0)
 return;
 tspin = p->spin + q->spin;
@@ -188,21 +188,21 @@ static
 void
 rebound(Dot *p, Dot *q, double s)
 {
-vector	pposn;
-vector	qposn;
-vector	pvel;
-vector	qvel;
-vector	newqp;
-vector	newqpu;
-vector	newqv;
-double	projp;
-double	projq;
-double	pmass;
-double	qmass;
-double	tmass;
-double	dmass;
-double	newp;
-double	newq;
+vector pposn;
+vector qposn;
+vector pvel;
+vector qvel;
+vector newqp;
+vector newqpu;
+vector newqv;
+double projp;
+double projq;
+double pmass;
+double qmass;
+double tmass;
+double dmass;
+double newp;
+double newq;
 if (s == 0.0)
 return;
 ptov(&pposn, &p->pos);
@@ -315,7 +315,7 @@ static
 void
 spin(Dot *d)
 {
-int	i;
+int i;
 if (d->spin > 0)
 {
 i = (d->facei + d->spin) % nels(d->faces);
@@ -329,7 +329,7 @@ static
 void
 restart(Dot *d)
 {
-static int	beam;
+static int beam;
 d->charge = 0;
 d->pos.x = 0;
 d->vel.x = 20.0 + (double)rrand(-2, 2);
@@ -349,11 +349,11 @@ static
 void
 upd(Dot *d)
 {
-Dot	*dd;
+Dot *dd;
 spin(d);
 for (dd = d + 1; dd != edot; dd++)
 {
-double	s;
+double s;
 if (close_enough(d, dd, &s))
 rebound(d, dd, s);
 }
@@ -372,8 +372,8 @@ d->pos.y >= Dy(screen->r)
 restart(d);
 if (d->charge != 0)
 {
-vector	f;
-double	s;
+vector f;
+double s;
 f.x = -d->vel.y;
 f.y = d->vel.x;
 if ((s = sqrt(sqr(f.x) + sqr(f.y))) != 0.0)
@@ -427,14 +427,14 @@ static
 void
 setup(Dot *d, char *who, uchar *face, int n_els)
 {
-int	i, j, k, n;
-int	repl;
-uchar	mask;
-int 	nbits, bits;
-uchar	tmpface[NPJW*NPJW];
-uchar	tmpmask[NPJW*NPJW];
-static	Image	*im;
-static	Image	*imask;
+int i, j, k, n;
+int repl;
+uchar mask;
+int nbits, bits;
+uchar tmpface[NPJW*NPJW];
+uchar tmpmask[NPJW*NPJW];
+static Image *im;
+static Image *imask;
 if(im == nil)
 {
 im = eallocimage(display, Rect(0,0,NPJW,NPJW), CMAP8, 0, DNofill);
@@ -601,7 +601,7 @@ USED(c);
 #define DELAY 100
 for (then = msec();; then = msec())
 {
-Dot	*d;
+Dot *d;
 for (d = dot; d != edot; d++)
 undraw(d);
 for (d = dot; d != edot; d++)

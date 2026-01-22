@@ -1,17 +1,17 @@
-#include	"u.h"
-#include	"lib.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
+#include "u.h"
+#include "lib.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
 enum
 {
-Hdrspc		= 64,
-Bdead		= 0x51494F42,
+Hdrspc = 64,
+Bdead = 0x51494F42,
 };
 struct
 {
-Lock	lk;
-ulong	bytes;
+Lock lk;
+ulong bytes;
 } ialloc;
 static Block*
 _allocb(int size)

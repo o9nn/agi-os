@@ -29,7 +29,7 @@ SLANG_BOUND_ASSERT(index, count) SLANG_BOUND_FIX(index, count)
 #endif
 #ifndef SLANG_BOUND_CHECK_BYTE_ADDRESS
 #define SLANG_BOUND_CHECK_BYTE_ADDRESS(index, elemSize, sizeInBytes) \
-SLANG_BOUND_ASSERT_BYTE_ADDRESS(index, elemSize, sizeInBytes)    \
+SLANG_BOUND_ASSERT_BYTE_ADDRESS(index, elemSize, sizeInBytes) \
 SLANG_BOUND_FIX_BYTE_ADDRESS(index, elemSize, sizeInBytes)
 #endif
 #ifndef SLANG_BOUND_CHECK_FIXED_ARRAY
@@ -229,66 +229,66 @@ otherElement = _slang_vector_get_element(other, i);
 return result;
 }
 typedef uint32_t uint;
-#define SLANG_VECTOR_BINARY_OP(T, op)            \
-template<int n>                              \
+#define SLANG_VECTOR_BINARY_OP(T, op) \
+template<int n> \
 SLANG_FORCE_INLINE Vector<T, n> operator op( \
-const Vector<T, n>& thisVal,             \
-const Vector<T, n>& other)               \
-{                                            \
-Vector<T, n> result;                     \
-for (int i = 0; i < n; i++)              \
-result[i] = thisVal[i] op other[i];  \
-return result;                           \
+const Vector<T, n>& thisVal, \
+const Vector<T, n>& other) \
+{ \
+Vector<T, n> result; \
+for (int i = 0; i < n; i++) \
+result[i] = thisVal[i] op other[i]; \
+return result; \
 }
-#define SLANG_VECTOR_BINARY_COMPARE_OP(T, op)       \
-template<int n>                                 \
+#define SLANG_VECTOR_BINARY_COMPARE_OP(T, op) \
+template<int n> \
 SLANG_FORCE_INLINE Vector<bool, n> operator op( \
-const Vector<T, n>& thisVal,                \
-const Vector<T, n>& other)                  \
-{                                               \
-Vector<bool, n> result;                     \
-for (int i = 0; i < n; i++)                 \
-result[i] = thisVal[i] op other[i];     \
-return result;                              \
+const Vector<T, n>& thisVal, \
+const Vector<T, n>& other) \
+{ \
+Vector<bool, n> result; \
+for (int i = 0; i < n; i++) \
+result[i] = thisVal[i] op other[i]; \
+return result; \
 }
-#define SLANG_VECTOR_UNARY_OP(T, op)                                         \
-template<int n>                                                          \
+#define SLANG_VECTOR_UNARY_OP(T, op) \
+template<int n> \
 SLANG_FORCE_INLINE Vector<T, n> operator op(const Vector<T, n>& thisVal) \
-{                                                                        \
-Vector<T, n> result;                                                 \
-for (int i = 0; i < n; i++)                                          \
-result[i] = op thisVal[i];                                       \
-return result;                                                       \
+{ \
+Vector<T, n> result; \
+for (int i = 0; i < n; i++) \
+result[i] = op thisVal[i]; \
+return result; \
 }
-#define SLANG_INT_VECTOR_OPS(T)           \
-SLANG_VECTOR_BINARY_OP(T, +)          \
-SLANG_VECTOR_BINARY_OP(T, -)          \
-SLANG_VECTOR_BINARY_OP(T, *)          \
-SLANG_VECTOR_BINARY_OP(T, /)          \
-SLANG_VECTOR_BINARY_OP(T, &)          \
-SLANG_VECTOR_BINARY_OP(T, |)          \
-SLANG_VECTOR_BINARY_OP(T, &&)         \
-SLANG_VECTOR_BINARY_OP(T, ||)         \
-SLANG_VECTOR_BINARY_OP(T, ^)          \
-SLANG_VECTOR_BINARY_OP(T, %)          \
-SLANG_VECTOR_BINARY_OP(T, >>)         \
-SLANG_VECTOR_BINARY_OP(T, <<)         \
-SLANG_VECTOR_BINARY_COMPARE_OP(T, >)  \
-SLANG_VECTOR_BINARY_COMPARE_OP(T, <)  \
+#define SLANG_INT_VECTOR_OPS(T) \
+SLANG_VECTOR_BINARY_OP(T, +) \
+SLANG_VECTOR_BINARY_OP(T, -) \
+SLANG_VECTOR_BINARY_OP(T, *) \
+SLANG_VECTOR_BINARY_OP(T, /) \
+SLANG_VECTOR_BINARY_OP(T, &) \
+SLANG_VECTOR_BINARY_OP(T, |) \
+SLANG_VECTOR_BINARY_OP(T, &&) \
+SLANG_VECTOR_BINARY_OP(T, ||) \
+SLANG_VECTOR_BINARY_OP(T, ^) \
+SLANG_VECTOR_BINARY_OP(T, %) \
+SLANG_VECTOR_BINARY_OP(T, >>) \
+SLANG_VECTOR_BINARY_OP(T, <<) \
+SLANG_VECTOR_BINARY_COMPARE_OP(T, >) \
+SLANG_VECTOR_BINARY_COMPARE_OP(T, <) \
 SLANG_VECTOR_BINARY_COMPARE_OP(T, >=) \
 SLANG_VECTOR_BINARY_COMPARE_OP(T, <=) \
 SLANG_VECTOR_BINARY_COMPARE_OP(T, ==) \
 SLANG_VECTOR_BINARY_COMPARE_OP(T, !=) \
-SLANG_VECTOR_UNARY_OP(T, !)           \
+SLANG_VECTOR_UNARY_OP(T, !) \
 SLANG_VECTOR_UNARY_OP(T, ~)
-#define SLANG_FLOAT_VECTOR_OPS(T)         \
-SLANG_VECTOR_BINARY_OP(T, +)          \
-SLANG_VECTOR_BINARY_OP(T, -)          \
-SLANG_VECTOR_BINARY_OP(T, *)          \
-SLANG_VECTOR_BINARY_OP(T, /)          \
-SLANG_VECTOR_UNARY_OP(T, -)           \
-SLANG_VECTOR_BINARY_COMPARE_OP(T, >)  \
-SLANG_VECTOR_BINARY_COMPARE_OP(T, <)  \
+#define SLANG_FLOAT_VECTOR_OPS(T) \
+SLANG_VECTOR_BINARY_OP(T, +) \
+SLANG_VECTOR_BINARY_OP(T, -) \
+SLANG_VECTOR_BINARY_OP(T, *) \
+SLANG_VECTOR_BINARY_OP(T, /) \
+SLANG_VECTOR_UNARY_OP(T, -) \
+SLANG_VECTOR_BINARY_COMPARE_OP(T, >) \
+SLANG_VECTOR_BINARY_COMPARE_OP(T, <) \
 SLANG_VECTOR_BINARY_COMPARE_OP(T, >=) \
 SLANG_VECTOR_BINARY_COMPARE_OP(T, <=) \
 SLANG_VECTOR_BINARY_COMPARE_OP(T, ==) \
@@ -304,14 +304,14 @@ SLANG_INT_VECTOR_OPS(uint16_t)
 SLANG_INT_VECTOR_OPS(uint64_t)
 SLANG_FLOAT_VECTOR_OPS(float)
 SLANG_FLOAT_VECTOR_OPS(double)
-#define SLANG_VECTOR_INT_NEG_OP(T)                      \
-template<int N>                                     \
+#define SLANG_VECTOR_INT_NEG_OP(T) \
+template<int N> \
 Vector<T, N> operator-(const Vector<T, N>& thisVal) \
-{                                                   \
-Vector<T, N> result;                            \
-for (int i = 0; i < N; i++)                     \
-result[i] = 0 - thisVal[i];                 \
-return result;                                  \
+{ \
+Vector<T, N> result; \
+for (int i = 0; i < N; i++) \
+result[i] = 0 - thisVal[i]; \
+return result; \
 }
 SLANG_VECTOR_INT_NEG_OP(int)
 SLANG_VECTOR_INT_NEG_OP(int8_t)
@@ -321,14 +321,14 @@ SLANG_VECTOR_INT_NEG_OP(uint)
 SLANG_VECTOR_INT_NEG_OP(uint8_t)
 SLANG_VECTOR_INT_NEG_OP(uint16_t)
 SLANG_VECTOR_INT_NEG_OP(uint64_t)
-#define SLANG_FLOAT_VECTOR_MOD(T)                                               \
-template<int N>                                                             \
+#define SLANG_FLOAT_VECTOR_MOD(T) \
+template<int N> \
 Vector<T, N> operator%(const Vector<T, N>& left, const Vector<T, N>& right) \
-{                                                                           \
-Vector<T, N> result;                                                    \
-for (int i = 0; i < N; i++)                                             \
-result[i] = _slang_fmod(left[i], right[i]);                         \
-return result;                                                          \
+{ \
+Vector<T, N> result; \
+for (int i = 0; i < N; i++) \
+result[i] = _slang_fmod(left[i], right[i]); \
+return result; \
 }
 SLANG_FLOAT_VECTOR_MOD(float)
 SLANG_FLOAT_VECTOR_MOD(double)
@@ -521,63 +521,63 @@ rows[3][2] = v14;
 rows[3][3] = v15;
 }
 };
-#define SLANG_MATRIX_BINARY_OP(T, op)                                                         \
-template<int R, int C>                                                                    \
+#define SLANG_MATRIX_BINARY_OP(T, op) \
+template<int R, int C> \
 Matrix<T, R, C> operator op(const Matrix<T, R, C>& thisVal, const Matrix<T, R, C>& other) \
-{                                                                                         \
-Matrix<T, R, C> result;                                                               \
-for (int i = 0; i < R; i++)                                                           \
-for (int j = 0; j < C; j++)                                                       \
-result.rows[i][j] = thisVal.rows[i][j] op other.rows[i][j];                   \
-return result;                                                                        \
+{ \
+Matrix<T, R, C> result; \
+for (int i = 0; i < R; i++) \
+for (int j = 0; j < C; j++) \
+result.rows[i][j] = thisVal.rows[i][j] op other.rows[i][j]; \
+return result; \
 }
-#define SLANG_MATRIX_BINARY_COMPARE_OP(T, op)                                                    \
-template<int R, int C>                                                                       \
+#define SLANG_MATRIX_BINARY_COMPARE_OP(T, op) \
+template<int R, int C> \
 Matrix<bool, R, C> operator op(const Matrix<T, R, C>& thisVal, const Matrix<T, R, C>& other) \
-{                                                                                            \
-Matrix<bool, R, C> result;                                                               \
-for (int i = 0; i < R; i++)                                                              \
-for (int j = 0; j < C; j++)                                                          \
-result.rows[i][j] = thisVal.rows[i][j] op other.rows[i][j];                      \
-return result;                                                                           \
+{ \
+Matrix<bool, R, C> result; \
+for (int i = 0; i < R; i++) \
+for (int j = 0; j < C; j++) \
+result.rows[i][j] = thisVal.rows[i][j] op other.rows[i][j]; \
+return result; \
 }
-#define SLANG_MATRIX_UNARY_OP(T, op)                            \
-template<int R, int C>                                      \
+#define SLANG_MATRIX_UNARY_OP(T, op) \
+template<int R, int C> \
 Matrix<T, R, C> operator op(const Matrix<T, R, C>& thisVal) \
-{                                                           \
-Matrix<T, R, C> result;                                 \
-for (int i = 0; i < R; i++)                             \
-for (int j = 0; j < C; j++)                         \
-result[i].rows[i][j] = op thisVal.rows[i][j];   \
-return result;                                          \
+{ \
+Matrix<T, R, C> result; \
+for (int i = 0; i < R; i++) \
+for (int j = 0; j < C; j++) \
+result[i].rows[i][j] = op thisVal.rows[i][j]; \
+return result; \
 }
-#define SLANG_INT_MATRIX_OPS(T)           \
-SLANG_MATRIX_BINARY_OP(T, +)          \
-SLANG_MATRIX_BINARY_OP(T, -)          \
-SLANG_MATRIX_BINARY_OP(T, *)          \
-SLANG_MATRIX_BINARY_OP(T, /)          \
-SLANG_MATRIX_BINARY_OP(T, &)          \
-SLANG_MATRIX_BINARY_OP(T, |)          \
-SLANG_MATRIX_BINARY_OP(T, &&)         \
-SLANG_MATRIX_BINARY_OP(T, ||)         \
-SLANG_MATRIX_BINARY_OP(T, ^)          \
-SLANG_MATRIX_BINARY_OP(T, %)          \
-SLANG_MATRIX_BINARY_COMPARE_OP(T, >)  \
-SLANG_MATRIX_BINARY_COMPARE_OP(T, <)  \
+#define SLANG_INT_MATRIX_OPS(T) \
+SLANG_MATRIX_BINARY_OP(T, +) \
+SLANG_MATRIX_BINARY_OP(T, -) \
+SLANG_MATRIX_BINARY_OP(T, *) \
+SLANG_MATRIX_BINARY_OP(T, /) \
+SLANG_MATRIX_BINARY_OP(T, &) \
+SLANG_MATRIX_BINARY_OP(T, |) \
+SLANG_MATRIX_BINARY_OP(T, &&) \
+SLANG_MATRIX_BINARY_OP(T, ||) \
+SLANG_MATRIX_BINARY_OP(T, ^) \
+SLANG_MATRIX_BINARY_OP(T, %) \
+SLANG_MATRIX_BINARY_COMPARE_OP(T, >) \
+SLANG_MATRIX_BINARY_COMPARE_OP(T, <) \
 SLANG_MATRIX_BINARY_COMPARE_OP(T, >=) \
 SLANG_MATRIX_BINARY_COMPARE_OP(T, <=) \
 SLANG_MATRIX_BINARY_COMPARE_OP(T, ==) \
 SLANG_MATRIX_BINARY_COMPARE_OP(T, !=) \
-SLANG_MATRIX_UNARY_OP(T, !)           \
+SLANG_MATRIX_UNARY_OP(T, !) \
 SLANG_MATRIX_UNARY_OP(T, ~)
-#define SLANG_FLOAT_MATRIX_OPS(T)         \
-SLANG_MATRIX_BINARY_OP(T, +)          \
-SLANG_MATRIX_BINARY_OP(T, -)          \
-SLANG_MATRIX_BINARY_OP(T, *)          \
-SLANG_MATRIX_BINARY_OP(T, /)          \
-SLANG_MATRIX_UNARY_OP(T, -)           \
-SLANG_MATRIX_BINARY_COMPARE_OP(T, >)  \
-SLANG_MATRIX_BINARY_COMPARE_OP(T, <)  \
+#define SLANG_FLOAT_MATRIX_OPS(T) \
+SLANG_MATRIX_BINARY_OP(T, +) \
+SLANG_MATRIX_BINARY_OP(T, -) \
+SLANG_MATRIX_BINARY_OP(T, *) \
+SLANG_MATRIX_BINARY_OP(T, /) \
+SLANG_MATRIX_UNARY_OP(T, -) \
+SLANG_MATRIX_BINARY_COMPARE_OP(T, >) \
+SLANG_MATRIX_BINARY_COMPARE_OP(T, <) \
 SLANG_MATRIX_BINARY_COMPARE_OP(T, >=) \
 SLANG_MATRIX_BINARY_COMPARE_OP(T, <=) \
 SLANG_MATRIX_BINARY_COMPARE_OP(T, ==) \
@@ -592,15 +592,15 @@ SLANG_INT_MATRIX_OPS(uint16_t)
 SLANG_INT_MATRIX_OPS(uint64_t)
 SLANG_FLOAT_MATRIX_OPS(float)
 SLANG_FLOAT_MATRIX_OPS(double)
-#define SLANG_MATRIX_INT_NEG_OP(T)                                        \
-template<int R, int C>                                                \
+#define SLANG_MATRIX_INT_NEG_OP(T) \
+template<int R, int C> \
 SLANG_FORCE_INLINE Matrix<T, R, C> operator-(Matrix<T, R, C> thisVal) \
-{                                                                     \
-Matrix<T, R, C> result;                                           \
-for (int i = 0; i < R; i++)                                       \
-for (int j = 0; j < C; j++)                                   \
-result.rows[i][j] = 0 - thisVal.rows[i][j];               \
-return result;                                                    \
+{ \
+Matrix<T, R, C> result; \
+for (int i = 0; i < R; i++) \
+for (int j = 0; j < C; j++) \
+result.rows[i][j] = 0 - thisVal.rows[i][j]; \
+return result; \
 }
 SLANG_MATRIX_INT_NEG_OP(int)
 SLANG_MATRIX_INT_NEG_OP(int8_t)
@@ -610,15 +610,15 @@ SLANG_MATRIX_INT_NEG_OP(uint)
 SLANG_MATRIX_INT_NEG_OP(uint8_t)
 SLANG_MATRIX_INT_NEG_OP(uint16_t)
 SLANG_MATRIX_INT_NEG_OP(uint64_t)
-#define SLANG_FLOAT_MATRIX_MOD(T)                                                             \
-template<int R, int C>                                                                    \
+#define SLANG_FLOAT_MATRIX_MOD(T) \
+template<int R, int C> \
 SLANG_FORCE_INLINE Matrix<T, R, C> operator%(Matrix<T, R, C> left, Matrix<T, R, C> right) \
-{                                                                                         \
-Matrix<T, R, C> result;                                                               \
-for (int i = 0; i < R; i++)                                                           \
-for (int j = 0; j < C; j++)                                                       \
-result.rows[i][j] = _slang_fmod(left.rows[i][j], right.rows[i][j]);           \
-return result;                                                                        \
+{ \
+Matrix<T, R, C> result; \
+for (int i = 0; i < R; i++) \
+for (int j = 0; j < C; j++) \
+result.rows[i][j] = _slang_fmod(left.rows[i][j], right.rows[i][j]); \
+return result; \
 }
 SLANG_FLOAT_MATRIX_MOD(float)
 SLANG_FLOAT_MATRIX_MOD(double)

@@ -1,15 +1,15 @@
 #ifndef gscie_INCLUDED
-#  define gscie_INCLUDED
+# define gscie_INCLUDED
 #include "gconfigv.h"
 #include "gsrefct.h"
 #include "gsstype.h"
 #include "gstypes.h"
 #include "gxctable.h"
 #ifndef CIE_LOG2_CACHE_SIZE
-#  define CIE_LOG2_CACHE_SIZE 9
+# define CIE_LOG2_CACHE_SIZE 9
 #endif
 #if USE_FPU < 0
-#  define CIE_CACHE_USE_FIXED
+# define CIE_CACHE_USE_FIXED
 #endif
 #define CIE_FIXED_FRACTION_BITS 12
 #define CIE_CACHE_INTERPOLATE
@@ -18,65 +18,65 @@
 #define gx_cie_log2_cache_size CIE_LOG2_CACHE_SIZE
 #define gx_cie_cache_size (1 << gx_cie_log2_cache_size)
 #ifndef CIE_FIXED_FRACTION_BITS
-#  define CIE_FIXED_FRACTION_BITS\
+# define CIE_FIXED_FRACTION_BITS\
 ((arch_sizeof_long * 8 - gx_cie_log2_cache_size) / 2 - 1)
 #endif
 #ifdef CIE_RENDER_TABLE_INTERPOLATE
-#  define CIE_CACHE_INTERPOLATE
+# define CIE_CACHE_INTERPOLATE
 #endif
 #define float_lshift(v, nb) ((v) * (1L << (nb)))
 #define float_rshift(v, nb) ((v) * (1.0 / (1L << (nb))))
 #ifdef CIE_CACHE_INTERPOLATE
-#  define _cie_interpolate_bits\
+# define _cie_interpolate_bits\
 min(arch_sizeof_int * 8 - gx_cie_log2_cache_size - 2, 10)
-#  define _cix(i) ((i) >> _cie_interpolate_bits)
-#  define _cif(i) ((int)(i) & ((1 << _cie_interpolate_bits) - 1))
-#  define cie_interpolate_between(v0, v1, i)\
+# define _cix(i) ((i) >> _cie_interpolate_bits)
+# define _cif(i) ((int)(i) & ((1 << _cie_interpolate_bits) - 1))
+# define cie_interpolate_between(v0, v1, i)\
 ((v0) + cie_cached_rshift(((v1) - (v0)) * _cif(i) +\
 (1 << (_cie_interpolate_bits - 1)),\
 _cie_interpolate_bits))
-#  define cie_interpolate(p, i)\
+# define cie_interpolate(p, i)\
 cie_interpolate_between((p)[_cix(i)], (p)[_cix(i) + 1], i)
-#  define cie_interpolate_fracs(p, i)\
+# define cie_interpolate_fracs(p, i)\
 ((p)[_cix(i)] +\
 (frac)arith_rshift((long)((p)[_cix(i) + 1] - (p)[_cix(i)]) * _cif(i), _cie_interpolate_bits))
 #else
-#  define _cie_interpolate_bits 0
-#  define cie_interpolate_between(v0, v1, i) (v0)
-#  define cie_interpolate(p, i) ((p)[i])
-#  define cie_interpolate_fracs(p, i) ((p)[i])
+# define _cie_interpolate_bits 0
+# define cie_interpolate_between(v0, v1, i) (v0)
+# define cie_interpolate(p, i) ((p)[i])
+# define cie_interpolate_fracs(p, i) ((p)[i])
 #endif
 #ifdef CIE_CACHE_USE_FIXED
 typedef long cie_cached_value;
-#  define _cie_fixed_shift CIE_FIXED_FRACTION_BITS
-#  define float2cie_cached(v)\
+# define _cie_fixed_shift CIE_FIXED_FRACTION_BITS
+# define float2cie_cached(v)\
 ((cie_cached_value)float_lshift(v, _cie_fixed_shift))
-#  define cie_cached2float(v)\
+# define cie_cached2float(v)\
 float_rshift(v, _cie_fixed_shift)
-#  define cie_cached2int(v, fbits)\
+# define cie_cached2int(v, fbits)\
 arith_rshift(v, _cie_fixed_shift - (fbits))
-#  define _cie_product_excess_bits\
+# define _cie_product_excess_bits\
 (_cie_fixed_shift * 2 + gx_cie_log2_cache_size - (arch_sizeof_long * 8 - 1))
-#  define cie_cached_product2int(v, factor, fbits)\
+# define cie_cached_product2int(v, factor, fbits)\
 (_cie_product_excess_bits > 0 ?\
 arith_rshift( (v) * arith_rshift(factor, _cie_product_excess_bits) +\
 arith_rshift(v, _cie_product_excess_bits) *\
 ((factor) & ((1 << _cie_product_excess_bits) - 1)),\
 _cie_fixed_shift * 2 - _cie_product_excess_bits - (fbits)) :\
 arith_rshift((v) * (factor), _cie_fixed_shift * 2 - (fbits)))
-#  define cie_cached_rshift(v, n) arith_rshift(v, n)
+# define cie_cached_rshift(v, n) arith_rshift(v, n)
 #else
 typedef float cie_cached_value;
-#  define float2cie_cached(v) (v)
-#  define cie_cached2float(v) (v)
-#  define cie_cached2int(v, fbits)\
+# define float2cie_cached(v) (v)
+# define cie_cached2float(v) (v)
+# define cie_cached2int(v, fbits)\
 ((int)float_lshift(v, fbits))
-#  define cie_cached_product2int(v, factor, fbits)\
+# define cie_cached_product2int(v, factor, fbits)\
 ((int)float_lshift((v) * (factor), fbits))
-#  define cie_cached_rshift(v, n) float_rshift(v, n)
+# define cie_cached_rshift(v, n) float_rshift(v, n)
 #endif
 #ifndef gs_cie_render_DEFINED
-#  define gs_cie_render_DEFINED
+# define gs_cie_render_DEFINED
 typedef struct gs_cie_render_s gs_cie_render;
 #endif
 typedef struct gs_vector3_s {
@@ -191,16 +191,16 @@ struct {
 gx_cie_scalar_cache DecodeLMN[3];
 } caches;
 };
-#define public_st_cie_common()     \
+#define public_st_cie_common() \
 gs_public_st_ptrs1(st_cie_common, gs_cie_common, "gs_cie_common",\
 cie_common_enum_ptrs, cie_common_reloc_ptrs, client_data)
 #define gs_cie_common_elements\
-gs_cie_common common;		\
+gs_cie_common common; \
 rc_header rc
 typedef struct gs_cie_common_elements_s {
 gs_cie_common_elements;
 } gs_cie_common_elements_t;
-#define public_st_cie_common_elements()  \
+#define public_st_cie_common_elements() \
 gs_public_st_suffix_add0_local( st_cie_common_elements_t,\
 gs_cie_common_elements_t,\
 "gs_cie_common_elements_t",\
@@ -216,25 +216,25 @@ struct {
 gx_cie_vector_cache DecodeA;
 } caches;
 };
-#define private_st_cie_a()	\
+#define private_st_cie_a() \
 gs_private_st_suffix_add0_local(st_cie_a, gs_cie_a, "gs_cie_a",\
 cie_common_enum_ptrs,\
 cie_common_reloc_ptrs,\
 st_cie_common_elements_t)
 #define gs_cie_abc_elements\
-gs_cie_common_elements;		\
+gs_cie_common_elements; \
 gs_range3 RangeABC;\
 gs_cie_abc_proc3 DecodeABC;\
 gs_matrix3 MatrixABC;\
 \
 struct {\
 bool skipABC;\
-gx_cie_vector_cache3_t DecodeABC;  \
+gx_cie_vector_cache3_t DecodeABC; \
 } caches
 struct gs_cie_abc_s {
 gs_cie_abc_elements;
 };
-#define private_st_cie_abc()	\
+#define private_st_cie_abc() \
 gs_private_st_suffix_add0_local(st_cie_abc, gs_cie_abc, "gs_cie_abc",\
 cie_common_enum_ptrs, cie_common_reloc_ptrs,\
 st_cie_common_elements_t)
@@ -248,7 +248,7 @@ struct {
 gx_cie_scalar_cache DecodeDEF[3];
 } caches_def;
 };
-#define private_st_cie_def()	\
+#define private_st_cie_def() \
 gs_private_st_suffix_add1(st_cie_def, gs_cie_def, "gs_cie_def",\
 cie_def_enum_ptrs, cie_def_reloc_ptrs,\
 st_cie_abc, Table.table)
@@ -262,7 +262,7 @@ struct {
 gx_cie_scalar_cache DecodeDEFG[4];
 } caches_defg;
 };
-#define private_st_cie_defg()	\
+#define private_st_cie_defg() \
 gs_private_st_suffix_add1(st_cie_defg, gs_cie_defg, "gs_cie_defg",\
 cie_defg_enum_ptrs, cie_defg_reloc_ptrs,\
 st_cie_abc, Table.table)
@@ -342,7 +342,7 @@ bool RenderTableT_is_identity;
 } caches;
 };
 extern_st(st_cie_render1);
-#define public_st_cie_render1()	\
+#define public_st_cie_render1() \
 gs_public_st_composite(st_cie_render1, gs_cie_render, "gs_cie_render",\
 cie_render1_enum_ptrs, cie_render1_reloc_ptrs)
 typedef enum {
@@ -407,26 +407,26 @@ gs_cspace_build_CIEDEF(gs_color_space ** ppcspace, void *client_data,
 gs_memory_t * pmem),
 gs_cspace_build_CIEDEFG(gs_color_space ** ppcspace, void *client_data,
 gs_memory_t * pmem);
-#define gs_cie_RangeLMN(pcspace)  (&(pcspace)->params.a->common.RangeLMN)
+#define gs_cie_RangeLMN(pcspace) (&(pcspace)->params.a->common.RangeLMN)
 #define gs_cie_DecodeLMN(pcspace) (&(pcspace)->params.a->common.DecodeLMN)
 #define gs_cie_MatrixLMN(pcspace) (&(pcspace)->params.a->common.MatrixLMN)
 #define gs_cie_WhitePoint(pcspace)\
 ((pcspace)->params.a->common.points.WhitePoint)
 #define gs_cie_BlackPoint(pcspace)\
 ((pcspace)->params.a->common.points.BlackPoint)
-#define gs_cie_a_RangeA(pcspace)      (&(pcspace)->params.a->RangeA)
-#define gs_cie_a_DecodeA(pcspace)     (&(pcspace)->params.a->DecodeA)
-#define gs_cie_a_MatrixA(pcspace)     (&(pcspace)->params.a->MatrixA)
-#define gs_cie_a_RangeA(pcspace)      (&(pcspace)->params.a->RangeA)
-#define gs_cie_abc_RangeABC(pcspace)    (&(pcspace)->params.abc->RangeABC)
-#define gs_cie_abc_DecodeABC(pcspace)   (&(pcspace)->params.abc->DecodeABC)
-#define gs_cie_abc_MatrixABC(pcspace)   (&(pcspace)->params.abc->MatrixABC)
-#define gs_cie_def_RangeDEF(pcspace)    (&(pcspace)->params.def->RangeDEF)
-#define gs_cie_def_DecodeDEF(pcspace)   (&(pcspace)->params.def->DecodeDEF)
-#define gs_cie_def_RangeHIJ(pcspace)    (&(pcspace)->params.def->RangeHIJ)
-#define gs_cie_defg_RangeDEFG(pcspace)  (&(pcspace)->params.defg->RangeDEFG)
+#define gs_cie_a_RangeA(pcspace) (&(pcspace)->params.a->RangeA)
+#define gs_cie_a_DecodeA(pcspace) (&(pcspace)->params.a->DecodeA)
+#define gs_cie_a_MatrixA(pcspace) (&(pcspace)->params.a->MatrixA)
+#define gs_cie_a_RangeA(pcspace) (&(pcspace)->params.a->RangeA)
+#define gs_cie_abc_RangeABC(pcspace) (&(pcspace)->params.abc->RangeABC)
+#define gs_cie_abc_DecodeABC(pcspace) (&(pcspace)->params.abc->DecodeABC)
+#define gs_cie_abc_MatrixABC(pcspace) (&(pcspace)->params.abc->MatrixABC)
+#define gs_cie_def_RangeDEF(pcspace) (&(pcspace)->params.def->RangeDEF)
+#define gs_cie_def_DecodeDEF(pcspace) (&(pcspace)->params.def->DecodeDEF)
+#define gs_cie_def_RangeHIJ(pcspace) (&(pcspace)->params.def->RangeHIJ)
+#define gs_cie_defg_RangeDEFG(pcspace) (&(pcspace)->params.defg->RangeDEFG)
 #define gs_cie_defg_DecodeDEFG(pcspace) (&(pcspace)->params.defg->DecodeDEFG)
-#define gs_cie_defg_RangeHIJK(pcspace)  (&(pcspace)->params.defg->RangeHIJK)
+#define gs_cie_defg_RangeHIJK(pcspace) (&(pcspace)->params.defg->RangeHIJK)
 extern int
 gs_cie_defx_set_lookup_table(gs_color_space * pcspace, int *pdims,
 const gs_const_string * ptable);

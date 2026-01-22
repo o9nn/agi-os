@@ -123,106 +123,106 @@ enum {
 IOREG = 0x10000,
 };
 static ushort ioregs[Nreg] = {
-[HTotalDisp]		IOREG|0x0000,
-[HSyncStrtWid]	IOREG|0x0100,
-[VTotalDisp]		IOREG|0x0200,
-[VSyncStrtWid]		IOREG|0x0300,
-[VlineCrntVline]	IOREG|0x0400,
-[OffPitch]			IOREG|0x0500,
-[IntCntl]			IOREG|0x0600,
-[CrtcGenCntl]		IOREG|0x0700,
-[OvrClr]			IOREG|0x0800,
-[OvrWidLR]		IOREG|0x0900,
-[OvrWidTB]		IOREG|0x0A00,
-[CurClr0]			IOREG|0x0B00,
-[CurClr1]			IOREG|0x0C00,
-[CurOffset]		IOREG|0x0D00,
-[CurHVposn]		IOREG|0x0E00,
-[CurHVoff]		IOREG|0x0F00,
-[ScratchReg0]		IOREG|0x1000,
-[ScratchReg1]		IOREG|0x1100,
-[ClockCntl]		IOREG|0x1200,
-[BusCntl]			IOREG|0x1300,
-[MemCntl]		IOREG|0x1400,
-[MemVgaWpSel]	IOREG|0x1500,
-[MemVgaRpSel]	IOREG|0x1600,
-[DacRegs]		IOREG|0x1700,
-[DacCntl]			IOREG|0x1800,
-[GenTestCntl]		IOREG|0x1900,
-[ConfigCntl]		IOREG|0x1A00,
-[ConfigChipId]		IOREG|0x1B00,
-[ConfigStat0]		IOREG|0x1C00,
-[ConfigStat1]		IOREG|0x1D00,
+[HTotalDisp] IOREG|0x0000,
+[HSyncStrtWid] IOREG|0x0100,
+[VTotalDisp] IOREG|0x0200,
+[VSyncStrtWid] IOREG|0x0300,
+[VlineCrntVline] IOREG|0x0400,
+[OffPitch] IOREG|0x0500,
+[IntCntl] IOREG|0x0600,
+[CrtcGenCntl] IOREG|0x0700,
+[OvrClr] IOREG|0x0800,
+[OvrWidLR] IOREG|0x0900,
+[OvrWidTB] IOREG|0x0A00,
+[CurClr0] IOREG|0x0B00,
+[CurClr1] IOREG|0x0C00,
+[CurOffset] IOREG|0x0D00,
+[CurHVposn] IOREG|0x0E00,
+[CurHVoff] IOREG|0x0F00,
+[ScratchReg0] IOREG|0x1000,
+[ScratchReg1] IOREG|0x1100,
+[ClockCntl] IOREG|0x1200,
+[BusCntl] IOREG|0x1300,
+[MemCntl] IOREG|0x1400,
+[MemVgaWpSel] IOREG|0x1500,
+[MemVgaRpSel] IOREG|0x1600,
+[DacRegs] IOREG|0x1700,
+[DacCntl] IOREG|0x1800,
+[GenTestCntl] IOREG|0x1900,
+[ConfigCntl] IOREG|0x1A00,
+[ConfigChipId] IOREG|0x1B00,
+[ConfigStat0] IOREG|0x1C00,
+[ConfigStat1] IOREG|0x1D00,
 };
 static ushort pciregs[Nreg] = {
-[HTotalDisp]		0x00,
-[HSyncStrtWid]	0x01,
-[VTotalDisp]		0x02,
-[VSyncStrtWid]        0x03,
-[VlineCrntVline]      0x04,
-[OffPitch]		0x05,
-[IntCntl]		0x06,
-[CrtcGenCntl]		0x07,
-[DspConfig]		0x08,
-[DspOnOff]		0x09,
-[OvrClr]		0x10,
-[OvrWidLR]		0x11,
-[OvrWidTB]		0x12,
-[CurClr0]		0x18,
-[CurClr1]		0x19,
-[CurOffset]		0x1A,
-[CurHVposn]		0x1B,
-[CurHVoff]		0x1C,
-[ScratchReg0]		0x20,
-[ScratchReg1]		0x21,
-[ClockCntl]		0x24,
-[BusCntl]		0x28,
-[LcdIndex]		0x29,
-[LcdData]		0x2A,
-[ExtMemCntl]		0x2B,
-[MemCntl]		0x2C,
-[MemVgaWpSel]		0x2D,
-[MemVgaRpSel]		0x2E,
-[DacRegs]		0x30,
-[DacCntl]		0x31,
-[GenTestCntl]		0x34,
-[ConfigCntl]		0x37,
-[ConfigChipId]	0x38,
-[ConfigStat0]		0x39,
-[ConfigStat1]		0x25,
-[ConfigStat2]		0x26,
-[DpBkgdClr]		0xB0,
-[DpChainMsk]		0xB3,
-[DpFrgdClr]		0xB1,
-[DpMix]		0xB5,
-[DpPixWidth]		0xB4,
-[DpSrc]		0xB6,
-[DpWriteMsk]		0xB2,
+[HTotalDisp] 0x00,
+[HSyncStrtWid] 0x01,
+[VTotalDisp] 0x02,
+[VSyncStrtWid] 0x03,
+[VlineCrntVline] 0x04,
+[OffPitch] 0x05,
+[IntCntl] 0x06,
+[CrtcGenCntl] 0x07,
+[DspConfig] 0x08,
+[DspOnOff] 0x09,
+[OvrClr] 0x10,
+[OvrWidLR] 0x11,
+[OvrWidTB] 0x12,
+[CurClr0] 0x18,
+[CurClr1] 0x19,
+[CurOffset] 0x1A,
+[CurHVposn] 0x1B,
+[CurHVoff] 0x1C,
+[ScratchReg0] 0x20,
+[ScratchReg1] 0x21,
+[ClockCntl] 0x24,
+[BusCntl] 0x28,
+[LcdIndex] 0x29,
+[LcdData] 0x2A,
+[ExtMemCntl] 0x2B,
+[MemCntl] 0x2C,
+[MemVgaWpSel] 0x2D,
+[MemVgaRpSel] 0x2E,
+[DacRegs] 0x30,
+[DacCntl] 0x31,
+[GenTestCntl] 0x34,
+[ConfigCntl] 0x37,
+[ConfigChipId] 0x38,
+[ConfigStat0] 0x39,
+[ConfigStat1] 0x25,
+[ConfigStat2] 0x26,
+[DpBkgdClr] 0xB0,
+[DpChainMsk] 0xB3,
+[DpFrgdClr] 0xB1,
+[DpMix] 0xB5,
+[DpPixWidth] 0xB4,
+[DpSrc] 0xB6,
+[DpWriteMsk] 0xB2,
 };
 enum {
-PLLm		= 0x02,
-PLLp		= 0x06,
-PLLn0		= 0x07,
-PLLn1		= 0x08,
-PLLn2		= 0x09,
-PLLn3		= 0x0A,
-PLLx            = 0x0B,
-Npll		= 32,
-Ntv		= 1,
+PLLm = 0x02,
+PLLp = 0x06,
+PLLn0 = 0x07,
+PLLn1 = 0x08,
+PLLn2 = 0x09,
+PLLn3 = 0x0A,
+PLLx = 0x0B,
+Npll = 32,
+Ntv = 1,
 };
-typedef struct Mach64xx	Mach64xx;
+typedef struct Mach64xx Mach64xx;
 struct Mach64xx {
-ulong	io;
-Pcidev*	pci;
-int	bigmem;
-int	lcdon;
-int	lcdpanelid;
-ulong	reg[Nreg];
-ulong	lcd[Nlcd];
-ulong	tv[Ntv];
-uchar	pll[Npll];
-ulong	(*ior32)(Mach64xx*, int);
-void	(*iow32)(Mach64xx*, int, ulong);
+ulong io;
+Pcidev* pci;
+int bigmem;
+int lcdon;
+int lcdpanelid;
+ulong reg[Nreg];
+ulong lcd[Nlcd];
+ulong tv[Ntv];
+uchar pll[Npll];
+ulong (*ior32)(Mach64xx*, int);
+void (*iow32)(Mach64xx*, int, ulong);
 };
 static ulong
 portior32(Mach64xx* mp, int r)
@@ -299,14 +299,14 @@ outportb(mp->io+(TvIndex<<2), r&0x0F);
 outportl(mp->io+(TvData<<2), v);
 }
 static int smallmem[] = {
-512*1024,	  1024*1024,	 2*1024*1024,	 4*1024*1024,
-6*1024*1024,	8*1024*1024,	12*1024*1024,	16*1024*1024,
+512*1024, 1024*1024, 2*1024*1024, 4*1024*1024,
+6*1024*1024, 8*1024*1024, 12*1024*1024, 16*1024*1024,
 };
 static int bigmem[] = {
-512*1024,	  2*512*1024,	  3*512*1024,	  4*512*1024,
-5*512*1024,	  6*512*1024,	  7*512*1024,	  8*512*1024,
-5*1024*1024,	 6*1024*1024,	 7*1024*1024,	 8*1024*1024,
-10*1024*1024,	12*1024*1024,	14*1024*1024,	16*1024*1024,
+512*1024, 2*512*1024, 3*512*1024, 4*512*1024,
+5*512*1024, 6*512*1024, 7*512*1024, 8*512*1024,
+5*1024*1024, 6*1024*1024, 7*1024*1024, 8*1024*1024,
+10*1024*1024, 12*1024*1024, 14*1024*1024, 16*1024*1024,
 };
 static void
 snarf(Vga* vga, Ctlr* ctlr)
@@ -480,7 +480,7 @@ p = 8;
 vga->p[0] = p;
 vga->n[0] = (q*p)+0.5;
 }
-typedef struct Meminfo	Meminfo;
+typedef struct Meminfo Meminfo;
 struct Meminfo {
 int latency;
 int latch;
@@ -496,10 +496,10 @@ Msdram,
 Mwram,
 };
 static Meminfo meminfo[] = {
-[Mdram]		{ 1, 0 },
-[Medo]		{ 1, 2 },
-[Msdram]	{ 3, 1 },
-[Mwram]		{ 1, 3 },
+[Mdram] { 1, 0 },
+[Medo] { 1, 2 },
+[Msdram] { 3, 1 },
+[Mwram] { 1, 3 },
 };
 static ushort looplatencytab[2][2] = {
 { 8, 6 },
@@ -589,7 +589,7 @@ fifoon += (3.0 * rcc) - 1 + pfc + ncycle;
 trace("fifoon %f...\n", fifoon);
 pw = x * (1<<(14-xprec));
 mp->reg[DspConfig] = (ulong)pw | (((lat+2)&0xF)<<16) | ((prec&7)<<20);
-dspon  = (ushort)fifoon << (11-fprec);
+dspon = (ushort)fifoon << (11-fprec);
 dspoff = (ushort)fifooff << (11-fprec);
 mp->reg[DspOnOff] = ((dspon&0x7ff) << 16) | (dspoff&0x7ff);
 }

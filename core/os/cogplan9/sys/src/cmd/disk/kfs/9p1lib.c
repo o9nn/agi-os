@@ -1,11 +1,11 @@
 #include "all.h"
 #include "9p1.h"
-#define	CHAR(x)		*p++ = f->x
-#define	SHORT(x)	{ ulong vvv = f->x; p[0] = vvv; p[1] = vvv>>8; p += 2; }
-#define	VLONG(q)	p[0] = (q); p[1] = (q)>>8; p[2] = (q)>>16; p[3] = (q)>>24; p += 4
-#define	LONG(x)		{ ulong vvv = f->x; VLONG(vvv); }
-#define	BYTES(x,n)	memmove(p, f->x, n); p += n
-#define	STRING(x,n)	strncpy((char*)p, f->x, n); p += n
+#define CHAR(x) *p++ = f->x
+#define SHORT(x) { ulong vvv = f->x; p[0] = vvv; p[1] = vvv>>8; p += 2; }
+#define VLONG(q) p[0] = (q); p[1] = (q)>>8; p[2] = (q)>>16; p[3] = (q)>>24; p += 4
+#define LONG(x) { ulong vvv = f->x; VLONG(vvv); }
+#define BYTES(x,n) memmove(p, f->x, n); p += n
+#define STRING(x,n) strncpy((char*)p, f->x, n); p += n
 int
 convS2M9p1(Oldfcall *f, uchar *ap)
 {
@@ -196,18 +196,18 @@ LONG(size); VLONG(0);
 VLONG(0);
 return p - (uchar*)ap;
 }
-#undef	CHAR
-#undef	SHORT
-#undef	LONG
-#undef	VLONG
-#undef	BYTES
-#undef	STRING
-#define	CHAR(x)		f->x = *p++
-#define	SHORT(x)	f->x = (p[0] | (p[1]<<8)); p += 2
-#define	VLONG(q)	q = (p[0] | (p[1]<<8) | (p[2]<<16) | (p[3]<<24)); p += 4
-#define	LONG(x)		VLONG(f->x)
-#define	BYTES(x,n)	memmove(f->x, p, n); p += n
-#define	STRING(x,n)	memmove(f->x, p, n); p += n
+#undef CHAR
+#undef SHORT
+#undef LONG
+#undef VLONG
+#undef BYTES
+#undef STRING
+#define CHAR(x) f->x = *p++
+#define SHORT(x) f->x = (p[0] | (p[1]<<8)); p += 2
+#define VLONG(q) q = (p[0] | (p[1]<<8) | (p[2]<<16) | (p[3]<<24)); p += 4
+#define LONG(x) VLONG(f->x)
+#define BYTES(x,n) memmove(f->x, p, n); p += n
+#define STRING(x,n) memmove(f->x, p, n); p += n
 int
 convM2S9p1(uchar *ap, Oldfcall *f, int n)
 {

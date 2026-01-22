@@ -111,7 +111,7 @@ int spare_int3;
 int spare_int4;
 int param_version;
 } sasl_out_params_t;
-typedef enum  {
+typedef enum {
 SASL_INFO_LIST_START = 0,
 SASL_INFO_LIST_MECH,
 SASL_INFO_LIST_END
@@ -121,8 +121,8 @@ SASL_CB_DISP_NONE = 0,
 SASL_CB_DISP_WANT,
 SASL_CB_DISP_USED
 } sasl_cbinding_disp_t;
-#define SASL_CB_PRESENT(params)     ((params)->cbinding != NULL)
-#define SASL_CB_CRITICAL(params)    (SASL_CB_PRESENT(params) && \
+#define SASL_CB_PRESENT(params) ((params)->cbinding != NULL)
+#define SASL_CB_CRITICAL(params) (SASL_CB_PRESENT(params) && \
 (params)->cbinding->critical)
 typedef struct sasl_client_params {
 const char *service;
@@ -154,14 +154,14 @@ int spare_int3;
 unsigned flags;
 int param_version;
 } sasl_client_params_t;
-#define SASL_FEAT_WANT_CLIENT_FIRST	0x0002
-#define SASL_FEAT_SERVER_FIRST		0x0010
-#define SASL_FEAT_ALLOWS_PROXY		0x0020
-#define SASL_FEAT_DONTUSE_USERPASSWD 	0x0080
-#define SASL_FEAT_GSS_FRAMING	 	0x0100
-#define SASL_FEAT_CHANNEL_BINDING	0x0800
-#define SASL_FEAT_SUPPORTS_HTTP	    	0x1000
-#define SASL_FEAT_NEEDSERVERFQDN	0x0001
+#define SASL_FEAT_WANT_CLIENT_FIRST 0x0002
+#define SASL_FEAT_SERVER_FIRST 0x0010
+#define SASL_FEAT_ALLOWS_PROXY 0x0020
+#define SASL_FEAT_DONTUSE_USERPASSWD 0x0080
+#define SASL_FEAT_GSS_FRAMING 0x0100
+#define SASL_FEAT_CHANNEL_BINDING 0x0800
+#define SASL_FEAT_SUPPORTS_HTTP 0x1000
+#define SASL_FEAT_NEEDSERVERFQDN 0x0001
 typedef struct sasl_client_plug {
 const char *mech_name;
 sasl_ssf_t max_ssf;
@@ -188,7 +188,7 @@ sasl_client_params_t *cparams);
 int (*spare_fptr1)(void);
 int (*spare_fptr2)(void);
 } sasl_client_plug_t;
-#define SASL_CLIENT_PLUG_VERSION         4
+#define SASL_CLIENT_PLUG_VERSION 4
 typedef int sasl_client_plug_init_t(const sasl_utils_t *utils,
 int max_version,
 int *out_version,
@@ -245,17 +245,17 @@ int spare_int3;
 unsigned flags;
 int param_version;
 } sasl_server_params_t;
-#define SASL_LOG_NONE  0
-#define SASL_LOG_ERR   1
-#define SASL_LOG_FAIL  2
-#define SASL_LOG_WARN  3
-#define SASL_LOG_NOTE  4
+#define SASL_LOG_NONE 0
+#define SASL_LOG_ERR 1
+#define SASL_LOG_FAIL 2
+#define SASL_LOG_WARN 3
+#define SASL_LOG_NOTE 4
 #define SASL_LOG_DEBUG 5
 #define SASL_LOG_TRACE 6
-#define SASL_LOG_PASS  7
-#define SASL_SET_REMOVE  SASL_SET_CREATE
-#define SASL_FEAT_SERVICE    0x0200
-#define SASL_FEAT_GETSECRET  0x0400
+#define SASL_LOG_PASS 7
+#define SASL_SET_REMOVE SASL_SET_CREATE
+#define SASL_FEAT_SERVICE 0x0200
+#define SASL_FEAT_GETSECRET 0x0400
 typedef struct sasl_server_plug {
 const char *mech_name;
 sasl_ssf_t max_ssf;
@@ -363,7 +363,7 @@ struct propctx *ctx,
 const char *user, unsigned ulen);
 } sasl_auxprop_plug_t;
 #define SASL_AUXPROP_OVERRIDE 0x01
-#define SASL_AUXPROP_AUTHZID  0x02
+#define SASL_AUXPROP_AUTHZID 0x02
 #define SASL_AUXPROP_VERIFY_AGAINST_HASH 0x10
 #define SASL_AUXPROP_PLUG_VERSION 8
 typedef int sasl_auxprop_init_t(const sasl_utils_t *utils,

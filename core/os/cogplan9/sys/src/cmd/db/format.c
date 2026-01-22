@@ -3,10 +3,10 @@
 void
 scanform(long icount, int prt, char *ifp, Map *map, int literal)
 {
-char	*fp;
-char	c;
-int	fcount;
-ADDR	savdot;
+char *fp;
+char c;
+int fcount;
+ADDR savdot;
 int firstpass;
 firstpass = 1;
 while (icount) {
@@ -37,12 +37,12 @@ dot=inkdot(dotinc);
 char *
 exform(int fcount, int prt, char *ifp, Map *map, int literal, int firstpass)
 {
-uvlong	v;
-ulong	w;
-ADDR	savdot;
-char	*fp;
-char	c, modifier;
-int	i;
+uvlong v;
+ulong w;
+ADDR savdot;
+char *fp;
+char c, modifier;
+int i;
 ushort sh, *sp;
 uchar ch, *cp;
 Symbol s;
@@ -55,7 +55,7 @@ c = *fp;
 modifier = *fp++;
 if (firstpass) {
 firstpass = 0;
-if (!literal  && (c == 'i' || c == 'I' || c == 'M')
+if (!literal && (c == 'i' || c == 'I' || c == 'M')
 && (dot & (mach->pcquant-1))) {
 dprint("warning: instruction not aligned");
 printc('\n');
@@ -157,7 +157,7 @@ case 'c':
 case 'C':
 if (literal)
 ch = (uchar) dot;
-else if (get1(map, dot, &ch, 1)  < 0)
+else if (get1(map, dot, &ch, 1) < 0)
 error("%r");
 if (modifier == 'C')
 printesc(ch);
@@ -332,10 +332,10 @@ printc(c);
 ADDR
 inkdot(int incr)
 {
-ADDR	newdot;
+ADDR newdot;
 newdot=dot+incr;
 if ((incr >= 0 && newdot < dot)
-||  (incr < 0 && newdot > dot))
+|| (incr < 0 && newdot > dot))
 error("address wraparound");
 return(newdot);
 }

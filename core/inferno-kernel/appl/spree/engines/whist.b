@@ -26,10 +26,10 @@ hands, taken: array of ref Object;
 leader, turn: ref Cmember;
 trick: ref Trick;
 Trickpilespec := Stackspec(
-"display",		# style
-4,			# maxcards
-0,			# conceal
-"trick pile"	# title
+"display", # style
+4, # maxcards
+0, # conceal
+"trick pile" # title
 );
 Handspec := Stackspec(
 "display",
@@ -167,7 +167,7 @@ err = trick.play(cp.ord, int hd tl tl toks);
 if (err != nil)
 return err;
 turn = turn.next(1);
-if (turn == leader) {			# come full circle
+if (turn == leader) { # come full circle
 winner := Cmember.index(trick.winner);
 remark(sys->sprint("%s won the trick", winner.p.name));
 cardlib->discard(pile, taken[winner.ord], 0);
@@ -190,7 +190,7 @@ leader = turn = winner;
 trick = Trick.new(pile, -1, hands, nil);
 } else {
 remark("one round down, some to go");
-leader = turn  = nil;		# XXX this round over
+leader = turn = nil; # XXX this round over
 }
 }
 canplay(turn);

@@ -46,10 +46,10 @@ nomod(Readdir->PATH);
 arg->init(args);
 while((o := arg->opt()) != 0)
 case o {
-'e' =>	display_stderr++;
-'o' =>	display_stdout++;
-'v' =>	verbosity = toint("v", arg->arg(), 0, 9);
-* =>		usage();
+'e' => display_stderr++;
+'o' => display_stdout++;
+'v' => verbosity = toint("v", arg->arg(), 0, 9);
+* => usage();
 }
 recdirl := arg->argv();
 arg = nil;
@@ -184,7 +184,7 @@ sys->print("                    %s", line);
 }
 severs(sevs: int): string
 {
-SEVMAP :=  array[] of {"INF", "WRN", "ERR", "FTL"};
+SEVMAP := array[] of {"INF", "WRN", "ERR", "FTL"};
 if (sevs >= len SEVMAP)
 sstr := "UNK";
 else

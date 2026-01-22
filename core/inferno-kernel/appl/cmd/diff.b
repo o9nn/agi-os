@@ -1,66 +1,66 @@
 implement Diff;
-#	diff - differential file comparison
+# diff - differential file comparison
 #
-#	Uses an algorithm due to Harold Stone, which finds
-#	a pair of longest identical subsequences in the two
-#	files.
+# Uses an algorithm due to Harold Stone, which finds
+# a pair of longest identical subsequences in the two
+# files.
 #
-#	The major goal is to generate the match vector J.
-#	J[i] is the index of the line in file1 corresponding
-#	to line i file0. J[i] = 0 if there is no
-#	such line in file1.
+# The major goal is to generate the match vector J.
+# J[i] is the index of the line in file1 corresponding
+# to line i file0. J[i] = 0 if there is no
+# such line in file1.
 #
-#	Lines are hashed so as to work in core. All potential
-#	matches are located by sorting the lines of each file
-#	on the hash (called value). In particular, this
-#	collects the equivalence classes in file1 together.
-#	Subroutine equiv replaces the value of each line in
-#	file0 by the index of the first element of its
-#	matching equivalence in (the reordered) file1.
-#	To save space equiv squeezes file1 into a single
-#	array member in which the equivalence classes
-#	are simply concatenated, except that their first
-#	members are flagged by changing sign.
+# Lines are hashed so as to work in core. All potential
+# matches are located by sorting the lines of each file
+# on the hash (called value). In particular, this
+# collects the equivalence classes in file1 together.
+# Subroutine equiv replaces the value of each line in
+# file0 by the index of the first element of its
+# matching equivalence in (the reordered) file1.
+# To save space equiv squeezes file1 into a single
+# array member in which the equivalence classes
+# are simply concatenated, except that their first
+# members are flagged by changing sign.
 #
-#	Next the indices that point into member are unsorted into
-#	array class according to the original order of file0.
+# Next the indices that point into member are unsorted into
+# array class according to the original order of file0.
 #
-#	The cleverness lies in routine stone. This marches
-#	through the lines of file0, developing a vector klist
-#	of "k-candidates". At step i a k-candidate is a matched
-#	pair of lines x,y (x in file0 y in file1) such that
-#	there is a common subsequence of lenght k
-#	between the first i lines of file0 and the first y
-#	lines of file1, but there is no such subsequence for
-#	any smaller y. x is the earliest possible mate to y
-#	that occurs in such a subsequence.
+# The cleverness lies in routine stone. This marches
+# through the lines of file0, developing a vector klist
+# of "k-candidates". At step i a k-candidate is a matched
+# pair of lines x,y (x in file0 y in file1) such that
+# there is a common subsequence of lenght k
+# between the first i lines of file0 and the first y
+# lines of file1, but there is no such subsequence for
+# any smaller y. x is the earliest possible mate to y
+# that occurs in such a subsequence.
 #
-#	Whenever any of the members of the equivalence class of
-#	lines in file1 matable to a line in file0 has serial number
-#	less than the y of some k-candidate, that k-candidate
-#	with the smallest such y is replaced. The new
-#	k-candidate is chained (via pred) to the current
-#	k-1 candidate so that the actual subsequence can
-#	be recovered. When a member has serial number greater
-#	that the y of all k-candidates, the klist is extended.
-#	At the end, the longest subsequence is pulled out
-#	and placed in the array J by unravel.
+# Whenever any of the members of the equivalence class of
+# lines in file1 matable to a line in file0 has serial number
+# less than the y of some k-candidate, that k-candidate
+# with the smallest such y is replaced. The new
+# k-candidate is chained (via pred) to the current
+# k-1 candidate so that the actual subsequence can
+# be recovered. When a member has serial number greater
+# that the y of all k-candidates, the klist is extended.
+# At the end, the longest subsequence is pulled out
+# and placed in the array J by unravel.
 #
-#	With J in hand, the matches there recorded are
-#	check'ed against reality to assure that no spurious
-#	matches have crept in due to hashing. If they have,
-#	they are broken, and "jackpot " is recorded--a harmless
-#	matter except that a true match for a spuriously
-#	mated line may now be unnecessarily reported as a change.
+# With J in hand, the matches there recorded are
+# check'ed against reality to assure that no spurious
+# matches have crept in due to hashing. If they have,
+# they are broken, and "jackpot " is recorded--a harmless
+# matter except that a true match for a spuriously
+# mated line may now be unnecessarily reported as a change.
 #
-#	Much of the complexity of the program comes simply
-#	from trying to minimize core utilization and
-#	maximize the range of doable problems by dynamically
-#	allocating what is needed and reusing what is not.
-#	The core requirements for problems larger than somewhat
-#	are (in words) 2*length(file0) + length(file1) +
-#	3*(number of k-candidates installed),  typically about
-#	6n words for files of length n.
+# Much of the complexity of the program comes simply
+# from trying to minimize core utilization and
+# maximize the range of doable problems by dynamically
+# allocating what is needed and reusing what is not.
+# The core requirements for problems larger than somewhat
+# are (in words) 2*length(file0) + length(file1) +
+# 3*(number of k-candidates installed), typically about
+# 6n words for files of length n.
 #
 #
 include "sys.m";
@@ -80,14 +80,14 @@ Diff : module
 init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 stderr: ref Sys->FD;
-mode : int;			# '\0', 'e', 'f', 'h'
-bflag : int;			# ignore multiple and trailing blanks
-rflag : int;			# recurse down directory trees
-mflag : int;			# pseudo flag: doing multiple files, one dir
+mode : int; # '\0', 'e', 'f', 'h'
+bflag : int; # ignore multiple and trailing blanks
+rflag : int; # recurse down directory trees
+mflag : int; # pseudo flag: doing multiple files, one dir
 REG,
 BIN: con iota;
 HALFINT : con 16;
-Usage : con  "usage: diff [ -efbwr ] file1 ... file2";
+Usage : con "usage: diff [ -efbwr ] file1 ... file2";
 cand : adt {
 x : int;
 y : int;
@@ -99,13 +99,13 @@ value : int;
 };
 out : ref Iobuf;
 file := array[2] of array of line;
-sfile := array[2] of array of line;	# shortened by pruning common prefix and suffix
+sfile := array[2] of array of line; # shortened by pruning common prefix and suffix
 slen := array[2] of int;
 ilen := array[2] of int;
-pref, suff, clen : int;			# length of prefix and suffix
+pref, suff, clen : int; # length of prefix and suffix
 firstchange : int;
-clist : array of cand;			# merely a free storage pot for candidates
-J : array of int;			# will be overlaid on class
+clist : array of cand; # merely a free storage pot for candidates
+J : array of int; # will be overlaid on class
 ixold, ixnew : array of int;
 input := array[2] of ref Iobuf ;
 file1, file2 : string;
@@ -272,7 +272,7 @@ return clen++;
 }
 search(c : array of int, k,y : int) : int
 {
-if(clist[c[k]].y < y)	# quick look for typical case
+if(clist[c[k]].y < y) # quick look for typical case
 return k+1;
 i := 0;
 j := k+1;
@@ -453,7 +453,7 @@ if (space) {
 shift += 7;
 space = 0;
 }
-sum +=  (buf[p] << (shift &= (HALFINT-1)));
+sum += (buf[p] << (shift &= (HALFINT-1)));
 p++;
 shift += 7;
 }
@@ -464,7 +464,7 @@ if (buf[p]==' ' || buf[p]=='\t') {
 p++;
 continue;
 }
-sum +=  (buf[p] << (shift &= (HALFINT-1)));
+sum += (buf[p] << (shift &= (HALFINT-1)));
 p++;
 shift += 7;
 }
@@ -692,7 +692,7 @@ REGULAR_FILE(s : Sys->Dir) : int
 return (s.qid.qtype&Sys->QTDIR) == 0 &&
 s.dtype != '|' &&
 s.dtype != 'I';
-#		&& s.length > 0;	device files have zero length.
+# && s.length > 0; device files have zero length.
 }
 rmtmpfiles()
 {

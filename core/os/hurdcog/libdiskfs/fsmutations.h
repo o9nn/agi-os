@@ -11,11 +11,11 @@
 #define IO_IMPORTS import "libdiskfs/priv.h";
 #define FSYS_IMPORTS import "libdiskfs/priv.h";
 #define IFSOCK_IMPORTS import "libdiskfs/priv.h";
-#define EXEC_STARTUP_INTRAN                             \
+#define EXEC_STARTUP_INTRAN \
 bootinfo_t diskfs_begin_using_bootinfo_port (exec_startup_t)
-#define EXEC_STARTUP_INTRAN_PAYLOAD                     \
+#define EXEC_STARTUP_INTRAN_PAYLOAD \
 bootinfo_t diskfs_begin_using_bootinfo_payload
-#define EXEC_STARTUP_DESTRUCTOR                         \
+#define EXEC_STARTUP_DESTRUCTOR \
 diskfs_end_using_bootinfo (bootinfo_t)
-#define EXEC_STARTUP_IMPORTS                            \
+#define EXEC_STARTUP_IMPORTS \
 import "libdiskfs/priv.h";

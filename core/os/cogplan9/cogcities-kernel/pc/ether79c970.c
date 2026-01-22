@@ -8,117 +8,117 @@
 #include "../port/netif.h"
 #include "etherif.h"
 enum {
-Lognrdre	= 6,
-Nrdre		= (1<<Lognrdre),
-Logntdre	= 4,
-Ntdre		= (1<<Logntdre),
-Rbsize		= ETHERMAXTU+4,
+Lognrdre = 6,
+Nrdre = (1<<Lognrdre),
+Logntdre = 4,
+Ntdre = (1<<Logntdre),
+Rbsize = ETHERMAXTU+4,
 };
 enum {
-Aprom		= 0x0000,
-Rdp		= 0x0010,
-Rap		= 0x0014,
-Sreset		= 0x0018,
-Bdp		= 0x001C,
+Aprom = 0x0000,
+Rdp = 0x0010,
+Rap = 0x0014,
+Sreset = 0x0018,
+Bdp = 0x001C,
 };
 enum {
-Init		= 0x0001,
-Strt		= 0x0002,
-Stop		= 0x0004,
-Tdmd		= 0x0008,
-Txon		= 0x0010,
-Rxon		= 0x0020,
-Iena		= 0x0040,
-Intr		= 0x0080,
-Idon		= 0x0100,
-Tint		= 0x0200,
-Rint		= 0x0400,
-Merr		= 0x0800,
-Miss		= 0x1000,
-Cerr		= 0x2000,
-Babl		= 0x4000,
-Err		= 0x8000,
+Init = 0x0001,
+Strt = 0x0002,
+Stop = 0x0004,
+Tdmd = 0x0008,
+Txon = 0x0010,
+Rxon = 0x0020,
+Iena = 0x0040,
+Intr = 0x0080,
+Idon = 0x0100,
+Tint = 0x0200,
+Rint = 0x0400,
+Merr = 0x0800,
+Miss = 0x1000,
+Cerr = 0x2000,
+Babl = 0x4000,
+Err = 0x8000,
 };
 enum {
-Bswp		= 0x0004,
-Emba		= 0x0008,
-Dxmt2pd		= 0x0010,
-Lappen		= 0x0020,
+Bswp = 0x0004,
+Emba = 0x0008,
+Dxmt2pd = 0x0010,
+Lappen = 0x0020,
 };
 enum {
-ApadXmt		= 0x0800,
+ApadXmt = 0x0800,
 };
 enum {
-Prom		= 0x8000,
+Prom = 0x8000,
 };
 typedef struct Iblock Iblock;
 struct Iblock {
-ushort	mode;
-uchar	rlen;
-uchar	tlen;
-uchar	padr[6];
-uchar	res[2];
-uchar	ladr[8];
-ulong	rdra;
-ulong	tdra;
+ushort mode;
+uchar rlen;
+uchar tlen;
+uchar padr[6];
+uchar res[2];
+uchar ladr[8];
+ulong rdra;
+ulong tdra;
 };
 typedef struct Dre Dre;
 struct Dre {
-ulong	addr;
-ulong	md1;
-ulong	md2;
-Block*	bp;
+ulong addr;
+ulong md1;
+ulong md2;
+Block* bp;
 };
 enum {
-Enp		= 0x01000000,
-Stp		= 0x02000000,
-RxBuff		= 0x04000000,
-Def		= 0x04000000,
-Crc		= 0x08000000,
-One		= 0x08000000,
-Oflo		= 0x10000000,
-More		= 0x10000000,
-Fram		= 0x20000000,
-RxErr		= 0x40000000,
-TxErr		= 0x40000000,
-Own		= 0x80000000,
+Enp = 0x01000000,
+Stp = 0x02000000,
+RxBuff = 0x04000000,
+Def = 0x04000000,
+Crc = 0x08000000,
+One = 0x08000000,
+Oflo = 0x10000000,
+More = 0x10000000,
+Fram = 0x20000000,
+RxErr = 0x40000000,
+TxErr = 0x40000000,
+Own = 0x80000000,
 };
 enum {
-Rtry		= 0x04000000,
-Lcar		= 0x08000000,
-Lcol		= 0x10000000,
-Uflo		= 0x40000000,
-TxBuff		= 0x80000000,
+Rtry = 0x04000000,
+Lcar = 0x08000000,
+Lcol = 0x10000000,
+Uflo = 0x40000000,
+TxBuff = 0x80000000,
 };
 typedef struct Ctlr Ctlr;
 struct Ctlr {
 Lock;
-int	port;
-Pcidev*	pcidev;
-Ctlr*	next;
-int	active;
-int	init;
-Iblock	iblock;
-Dre*	rdr;
-int	rdrx;
-Dre*	tdr;
-int	tdrh;
-int	tdri;
-int	ntq;
-ulong	rxbuff;
-ulong	crc;
-ulong	oflo;
-ulong	fram;
-ulong	rtry;
-ulong	lcar;
-ulong	lcol;
-ulong	uflo;
-ulong	txbuff;
-ulong	merr;
-ulong	miss;
-ulong	babl;
-int	(*ior)(Ctlr*, int);
-void	(*iow)(Ctlr*, int, int);
+int port;
+Pcidev* pcidev;
+Ctlr* next;
+int active;
+int init;
+Iblock iblock;
+Dre* rdr;
+int rdrx;
+Dre* tdr;
+int tdrh;
+int tdri;
+int ntq;
+ulong rxbuff;
+ulong crc;
+ulong oflo;
+ulong fram;
+ulong rtry;
+ulong lcar;
+ulong lcol;
+ulong uflo;
+ulong txbuff;
+ulong merr;
+ulong miss;
+ulong babl;
+int (*ior)(Ctlr*, int);
+void (*iow)(Ctlr*, int, int);
 };
 static Ctlr* ctlrhead;
 static Ctlr* ctlrtail;
@@ -486,5 +486,5 @@ return 0;
 void
 ether79c970link(void)
 {
-addethercard("AMD79C970",  reset);
+addethercard("AMD79C970", reset);
 }

@@ -1,12 +1,12 @@
 #ifndef STBIR_INCLUDE_STB_IMAGE_RESIZE_H
 #define STBIR_INCLUDE_STB_IMAGE_RESIZE_H
 #ifdef _MSC_VER
-typedef unsigned char  stbir_uint8;
+typedef unsigned char stbir_uint8;
 typedef unsigned short stbir_uint16;
-typedef unsigned int   stbir_uint32;
+typedef unsigned int stbir_uint32;
 #else
 #include <stdint.h>
-typedef uint8_t  stbir_uint8;
+typedef uint8_t stbir_uint8;
 typedef uint16_t stbir_uint16;
 typedef uint32_t stbir_uint32;
 #endif
@@ -19,24 +19,24 @@ typedef uint32_t stbir_uint32;
 #define STBIRDEF extern
 #endif
 #endif
-STBIRDEF int stbir_resize_uint8(     const unsigned char *input_pixels , int input_w , int input_h , int input_stride_in_bytes,
+STBIRDEF int stbir_resize_uint8( const unsigned char *input_pixels , int input_w , int input_h , int input_stride_in_bytes,
 unsigned char *output_pixels, int output_w, int output_h, int output_stride_in_bytes,
 int num_channels);
-STBIRDEF int stbir_resize_float(     const float *input_pixels , int input_w , int input_h , int input_stride_in_bytes,
+STBIRDEF int stbir_resize_float( const float *input_pixels , int input_w , int input_h , int input_stride_in_bytes,
 float *output_pixels, int output_w, int output_h, int output_stride_in_bytes,
 int num_channels);
-#define STBIR_ALPHA_CHANNEL_NONE       -1
-#define STBIR_FLAG_ALPHA_PREMULTIPLIED    (1 << 0)
-#define STBIR_FLAG_ALPHA_USES_COLORSPACE  (1 << 1)
+#define STBIR_ALPHA_CHANNEL_NONE -1
+#define STBIR_FLAG_ALPHA_PREMULTIPLIED (1 << 0)
+#define STBIR_FLAG_ALPHA_USES_COLORSPACE (1 << 1)
 STBIRDEF int stbir_resize_uint8_srgb(const unsigned char *input_pixels , int input_w , int input_h , int input_stride_in_bytes,
 unsigned char *output_pixels, int output_w, int output_h, int output_stride_in_bytes,
 int num_channels, int alpha_channel, int flags);
 typedef enum
 {
-STBIR_EDGE_CLAMP   = 1,
+STBIR_EDGE_CLAMP = 1,
 STBIR_EDGE_REFLECT = 2,
-STBIR_EDGE_WRAP    = 3,
-STBIR_EDGE_ZERO    = 4,
+STBIR_EDGE_WRAP = 3,
+STBIR_EDGE_ZERO = 4,
 } stbir_edge;
 STBIRDEF int stbir_resize_uint8_srgb_edgemode(const unsigned char *input_pixels , int input_w , int input_h , int input_stride_in_bytes,
 unsigned char *output_pixels, int output_w, int output_h, int output_stride_in_bytes,
@@ -44,12 +44,12 @@ int num_channels, int alpha_channel, int flags,
 stbir_edge edge_wrap_mode);
 typedef enum
 {
-STBIR_FILTER_DEFAULT      = 0,
-STBIR_FILTER_BOX          = 1,
-STBIR_FILTER_TRIANGLE     = 2,
+STBIR_FILTER_DEFAULT = 0,
+STBIR_FILTER_BOX = 1,
+STBIR_FILTER_TRIANGLE = 2,
 STBIR_FILTER_CUBICBSPLINE = 3,
-STBIR_FILTER_CATMULLROM   = 4,
-STBIR_FILTER_MITCHELL     = 5,
+STBIR_FILTER_CATMULLROM = 4,
+STBIR_FILTER_MITCHELL = 5,
 } stbir_filter;
 typedef enum
 {
@@ -62,13 +62,13 @@ unsigned char *output_pixels, int output_w, int output_h, int output_stride_in_b
 int num_channels, int alpha_channel, int flags,
 stbir_edge edge_wrap_mode, stbir_filter filter, stbir_colorspace space,
 void *alloc_context);
-STBIRDEF int stbir_resize_uint16_generic(const stbir_uint16 *input_pixels  , int input_w , int input_h , int input_stride_in_bytes,
+STBIRDEF int stbir_resize_uint16_generic(const stbir_uint16 *input_pixels , int input_w , int input_h , int input_stride_in_bytes,
 stbir_uint16 *output_pixels , int output_w, int output_h, int output_stride_in_bytes,
 int num_channels, int alpha_channel, int flags,
 stbir_edge edge_wrap_mode, stbir_filter filter, stbir_colorspace space,
 void *alloc_context);
-STBIRDEF int stbir_resize_float_generic( const float *input_pixels         , int input_w , int input_h , int input_stride_in_bytes,
-float *output_pixels        , int output_w, int output_h, int output_stride_in_bytes,
+STBIRDEF int stbir_resize_float_generic( const float *input_pixels , int input_w , int input_h , int input_stride_in_bytes,
+float *output_pixels , int output_w, int output_h, int output_stride_in_bytes,
 int num_channels, int alpha_channel, int flags,
 stbir_edge edge_wrap_mode, stbir_filter filter, stbir_colorspace space,
 void *alloc_context);
@@ -80,28 +80,28 @@ STBIR_TYPE_UINT32,
 STBIR_TYPE_FLOAT ,
 STBIR_MAX_TYPES
 } stbir_datatype;
-STBIRDEF int stbir_resize(         const void *input_pixels , int input_w , int input_h , int input_stride_in_bytes,
+STBIRDEF int stbir_resize( const void *input_pixels , int input_w , int input_h , int input_stride_in_bytes,
 void *output_pixels, int output_w, int output_h, int output_stride_in_bytes,
 stbir_datatype datatype,
 int num_channels, int alpha_channel, int flags,
 stbir_edge edge_mode_horizontal, stbir_edge edge_mode_vertical,
-stbir_filter filter_horizontal,  stbir_filter filter_vertical,
+stbir_filter filter_horizontal, stbir_filter filter_vertical,
 stbir_colorspace space, void *alloc_context);
 STBIRDEF int stbir_resize_subpixel(const void *input_pixels , int input_w , int input_h , int input_stride_in_bytes,
 void *output_pixels, int output_w, int output_h, int output_stride_in_bytes,
 stbir_datatype datatype,
 int num_channels, int alpha_channel, int flags,
 stbir_edge edge_mode_horizontal, stbir_edge edge_mode_vertical,
-stbir_filter filter_horizontal,  stbir_filter filter_vertical,
+stbir_filter filter_horizontal, stbir_filter filter_vertical,
 stbir_colorspace space, void *alloc_context,
 float x_scale, float y_scale,
 float x_offset, float y_offset);
-STBIRDEF int stbir_resize_region(  const void *input_pixels , int input_w , int input_h , int input_stride_in_bytes,
+STBIRDEF int stbir_resize_region( const void *input_pixels , int input_w , int input_h , int input_stride_in_bytes,
 void *output_pixels, int output_w, int output_h, int output_stride_in_bytes,
 stbir_datatype datatype,
 int num_channels, int alpha_channel, int flags,
 stbir_edge edge_mode_horizontal, stbir_edge edge_mode_vertical,
-stbir_filter filter_horizontal,  stbir_filter filter_vertical,
+stbir_filter filter_horizontal, stbir_filter filter_vertical,
 stbir_colorspace space, void *alloc_context,
 float s0, float t0, float s1, float t1);
 #endif
@@ -121,7 +121,7 @@ float s0, float t0, float s1, float t1);
 #ifndef STBIR_MALLOC
 #include <stdlib.h>
 #define STBIR_MALLOC(size,c) malloc(size)
-#define STBIR_FREE(ptr,c)    free(ptr)
+#define STBIR_FREE(ptr,c) free(ptr)
 #endif
 #ifndef _MSC_VER
 #ifdef __cplusplus
@@ -134,16 +134,16 @@ float s0, float t0, float s1, float t1);
 #endif
 typedef unsigned char stbir__validate_uint32[sizeof(stbir_uint32) == 4 ? 1 : -1];
 #ifdef _MSC_VER
-#define STBIR__NOTUSED(v)  (void)(v)
+#define STBIR__NOTUSED(v) (void)(v)
 #else
-#define STBIR__NOTUSED(v)  (void)sizeof(v)
+#define STBIR__NOTUSED(v) (void)sizeof(v)
 #endif
 #define STBIR__ARRAY_SIZE(a) (sizeof((a))/sizeof((a)[0]))
 #ifndef STBIR_DEFAULT_FILTER_UPSAMPLE
-#define STBIR_DEFAULT_FILTER_UPSAMPLE    STBIR_FILTER_CATMULLROM
+#define STBIR_DEFAULT_FILTER_UPSAMPLE STBIR_FILTER_CATMULLROM
 #endif
 #ifndef STBIR_DEFAULT_FILTER_DOWNSAMPLE
-#define STBIR_DEFAULT_FILTER_DOWNSAMPLE  STBIR_FILTER_MITCHELL
+#define STBIR_DEFAULT_FILTER_DOWNSAMPLE STBIR_FILTER_MITCHELL
 #endif
 #ifndef STBIR_PROGRESS_REPORT
 #define STBIR_PROGRESS_REPORT(float_0_to_1)
@@ -158,9 +158,9 @@ typedef unsigned char stbir__validate_uint32[sizeof(stbir_uint32) == 4 ? 1 : -1]
 #define STBIR_ALPHA_EPSILON ((float)1 / (1 << 20) / (1 << 20) / (1 << 20) / (1 << 20))
 #endif
 #ifdef _MSC_VER
-#define STBIR__UNUSED_PARAM(v)  (void)(v)
+#define STBIR__UNUSED_PARAM(v) (void)(v)
 #else
-#define STBIR__UNUSED_PARAM(v)  (void)sizeof(v)
+#define STBIR__UNUSED_PARAM(v) (void)sizeof(v)
 #endif
 static unsigned char stbir__type_size[] = {
 1,
@@ -349,27 +349,27 @@ return (unsigned char) ((bias + scale*t) >> 16);
 #else
 static int stbir__srgb_offset_to_linear_scaled[256] =
 {
-0,     40738,    122216,    203693,    285170,    366648,    448125,    529603,
-611080,    692557,    774035,    855852,    942009,   1033024,   1128971,   1229926,
-1335959,   1447142,   1563542,   1685229,   1812268,   1944725,   2082664,   2226148,
-2375238,   2529996,   2690481,   2856753,   3028870,   3206888,   3390865,   3580856,
-3776916,   3979100,   4187460,   4402049,   4622919,   4850123,   5083710,   5323731,
-5570236,   5823273,   6082892,   6349140,   6622065,   6901714,   7188133,   7481369,
-7781466,   8088471,   8402427,   8723380,   9051372,   9386448,   9728650,  10078021,
-10434603,  10798439,  11169569,  11548036,  11933879,  12327139,  12727857,  13136073,
-13551826,  13975156,  14406100,  14844697,  15290987,  15745007,  16206795,  16676389,
-17153826,  17639142,  18132374,  18633560,  19142734,  19659934,  20185196,  20718552,
-21260042,  21809696,  22367554,  22933648,  23508010,  24090680,  24681686,  25281066,
-25888850,  26505076,  27129772,  27762974,  28404716,  29055026,  29713942,  30381490,
-31057708,  31742624,  32436272,  33138682,  33849884,  34569912,  35298800,  36036568,
-36783260,  37538896,  38303512,  39077136,  39859796,  40651528,  41452360,  42262316,
-43081432,  43909732,  44747252,  45594016,  46450052,  47315392,  48190064,  49074096,
-49967516,  50870356,  51782636,  52704392,  53635648,  54576432,  55526772,  56486700,
-57456236,  58435408,  59424248,  60422780,  61431036,  62449032,  63476804,  64514376,
-65561776,  66619028,  67686160,  68763192,  69850160,  70947088,  72053992,  73170912,
-74297864,  75434880,  76581976,  77739184,  78906536,  80084040,  81271736,  82469648,
-83677792,  84896192,  86124888,  87363888,  88613232,  89872928,  91143016,  92423512,
-93714432,  95015816,  96327688,  97650056,  98982952, 100326408, 101680440, 103045072,
+0, 40738, 122216, 203693, 285170, 366648, 448125, 529603,
+611080, 692557, 774035, 855852, 942009, 1033024, 1128971, 1229926,
+1335959, 1447142, 1563542, 1685229, 1812268, 1944725, 2082664, 2226148,
+2375238, 2529996, 2690481, 2856753, 3028870, 3206888, 3390865, 3580856,
+3776916, 3979100, 4187460, 4402049, 4622919, 4850123, 5083710, 5323731,
+5570236, 5823273, 6082892, 6349140, 6622065, 6901714, 7188133, 7481369,
+7781466, 8088471, 8402427, 8723380, 9051372, 9386448, 9728650, 10078021,
+10434603, 10798439, 11169569, 11548036, 11933879, 12327139, 12727857, 13136073,
+13551826, 13975156, 14406100, 14844697, 15290987, 15745007, 16206795, 16676389,
+17153826, 17639142, 18132374, 18633560, 19142734, 19659934, 20185196, 20718552,
+21260042, 21809696, 22367554, 22933648, 23508010, 24090680, 24681686, 25281066,
+25888850, 26505076, 27129772, 27762974, 28404716, 29055026, 29713942, 30381490,
+31057708, 31742624, 32436272, 33138682, 33849884, 34569912, 35298800, 36036568,
+36783260, 37538896, 38303512, 39077136, 39859796, 40651528, 41452360, 42262316,
+43081432, 43909732, 44747252, 45594016, 46450052, 47315392, 48190064, 49074096,
+49967516, 50870356, 51782636, 52704392, 53635648, 54576432, 55526772, 56486700,
+57456236, 58435408, 59424248, 60422780, 61431036, 62449032, 63476804, 64514376,
+65561776, 66619028, 67686160, 68763192, 69850160, 70947088, 72053992, 73170912,
+74297864, 75434880, 76581976, 77739184, 78906536, 80084040, 81271736, 82469648,
+83677792, 84896192, 86124888, 87363888, 88613232, 89872928, 91143016, 92423512,
+93714432, 95015816, 96327688, 97650056, 98982952, 100326408, 101680440, 103045072,
 104420320, 105806224, 107202800, 108610064, 110028048, 111456776, 112896264, 114346544,
 115807632, 117279552, 118762328, 120255976, 121760536, 123276016, 124802440, 126339832,
 127888216, 129447616, 131018048, 132599544, 134192112, 135795792, 137410592, 139036528,
@@ -388,13 +388,13 @@ int x = (int) (f * (1 << 28));
 int v = 0;
 int i;
 i = v + 128; if (x >= stbir__srgb_offset_to_linear_scaled[i]) v = i;
-i = v +  64; if (x >= stbir__srgb_offset_to_linear_scaled[i]) v = i;
-i = v +  32; if (x >= stbir__srgb_offset_to_linear_scaled[i]) v = i;
-i = v +  16; if (x >= stbir__srgb_offset_to_linear_scaled[i]) v = i;
-i = v +   8; if (x >= stbir__srgb_offset_to_linear_scaled[i]) v = i;
-i = v +   4; if (x >= stbir__srgb_offset_to_linear_scaled[i]) v = i;
-i = v +   2; if (x >= stbir__srgb_offset_to_linear_scaled[i]) v = i;
-i = v +   1; if (x >= stbir__srgb_offset_to_linear_scaled[i]) v = i;
+i = v + 64; if (x >= stbir__srgb_offset_to_linear_scaled[i]) v = i;
+i = v + 32; if (x >= stbir__srgb_offset_to_linear_scaled[i]) v = i;
+i = v + 16; if (x >= stbir__srgb_offset_to_linear_scaled[i]) v = i;
+i = v + 8; if (x >= stbir__srgb_offset_to_linear_scaled[i]) v = i;
+i = v + 4; if (x >= stbir__srgb_offset_to_linear_scaled[i]) v = i;
+i = v + 2; if (x >= stbir__srgb_offset_to_linear_scaled[i]) v = i;
+i = v + 1; if (x >= stbir__srgb_offset_to_linear_scaled[i]) v = i;
 return (stbir_uint8) v;
 }
 #endif
@@ -475,12 +475,12 @@ STBIR__UNUSED_PARAM(s);
 return 2;
 }
 static stbir__filter_info stbir__filter_info_table[] = {
-{ NULL,                     stbir__support_zero },
-{ stbir__filter_trapezoid,  stbir__support_trapezoid },
-{ stbir__filter_triangle,   stbir__support_one },
-{ stbir__filter_cubic,      stbir__support_two },
+{ NULL, stbir__support_zero },
+{ stbir__filter_trapezoid, stbir__support_trapezoid },
+{ stbir__filter_triangle, stbir__support_one },
+{ stbir__filter_cubic, stbir__support_two },
 { stbir__filter_catmullrom, stbir__support_two },
-{ stbir__filter_mitchell,   stbir__support_two },
+{ stbir__filter_mitchell, stbir__support_two },
 };
 stbir__inline static int stbir__use_upsampling(float ratio)
 {
@@ -524,12 +524,12 @@ return (input_size + stbir__get_filter_pixel_margin(filter, scale) * 2);
 static int stbir__get_total_horizontal_coefficients(stbir__info* info)
 {
 return info->horizontal_num_contributors
-* stbir__get_coefficient_width      (info->horizontal_filter, info->horizontal_scale);
+* stbir__get_coefficient_width (info->horizontal_filter, info->horizontal_scale);
 }
 static int stbir__get_total_vertical_coefficients(stbir__info* info)
 {
 return info->vertical_num_contributors
-* stbir__get_coefficient_width      (info->vertical_filter, info->vertical_scale);
+* stbir__get_coefficient_width (info->vertical_filter, info->vertical_scale);
 }
 static stbir__contributors* stbir__get_contributor(stbir__contributors* contributors, int n)
 {
@@ -1165,14 +1165,14 @@ encode_buffer[pixel_index + n] *= reciprocal_alpha;
 for (x=0, num_nonalpha=0; x < channels; ++x)
 if (x != alpha_channel || (stbir_info->flags & STBIR_FLAG_ALPHA_USES_COLORSPACE))
 nonalpha[num_nonalpha++] = x;
-#define STBIR__ROUND_INT(f)    ((int)          ((f)+0.5))
-#define STBIR__ROUND_UINT(f)   ((stbir_uint32) ((f)+0.5))
+#define STBIR__ROUND_INT(f) ((int) ((f)+0.5))
+#define STBIR__ROUND_UINT(f) ((stbir_uint32) ((f)+0.5))
 #ifdef STBIR__SATURATE_INT
-#define STBIR__ENCODE_LINEAR8(f)   stbir__saturate8 (STBIR__ROUND_INT((f) * 255  ))
-#define STBIR__ENCODE_LINEAR16(f)  stbir__saturate16(STBIR__ROUND_INT((f) * 65535))
+#define STBIR__ENCODE_LINEAR8(f) stbir__saturate8 (STBIR__ROUND_INT((f) * 255 ))
+#define STBIR__ENCODE_LINEAR16(f) stbir__saturate16(STBIR__ROUND_INT((f) * 65535))
 #else
-#define STBIR__ENCODE_LINEAR8(f)   (unsigned char ) STBIR__ROUND_INT(stbir__saturate(f) * 255  )
-#define STBIR__ENCODE_LINEAR16(f)  (unsigned short) STBIR__ROUND_INT(stbir__saturate(f) * 65535)
+#define STBIR__ENCODE_LINEAR8(f) (unsigned char ) STBIR__ROUND_INT(stbir__saturate(f) * 255 )
+#define STBIR__ENCODE_LINEAR16(f) (unsigned short) STBIR__ROUND_INT(stbir__saturate(f) * 65535)
 #endif
 switch (decode)
 {
@@ -1579,9 +1579,9 @@ info->t1 = t1;
 if (transform)
 {
 info->horizontal_scale = transform[0];
-info->vertical_scale   = transform[1];
+info->vertical_scale = transform[1];
 info->horizontal_shift = transform[2];
-info->vertical_shift   = transform[3];
+info->vertical_shift = transform[3];
 }
 else
 {
@@ -1596,7 +1596,7 @@ static void stbir__choose_filter(stbir__info *info, stbir_filter h_filter, stbir
 if (h_filter == 0)
 h_filter = stbir__use_upsampling(info->horizontal_scale) ? STBIR_DEFAULT_FILTER_UPSAMPLE : STBIR_DEFAULT_FILTER_DOWNSAMPLE;
 if (v_filter == 0)
-v_filter = stbir__use_upsampling(info->vertical_scale)   ? STBIR_DEFAULT_FILTER_UPSAMPLE : STBIR_DEFAULT_FILTER_DOWNSAMPLE;
+v_filter = stbir__use_upsampling(info->vertical_scale) ? STBIR_DEFAULT_FILTER_UPSAMPLE : STBIR_DEFAULT_FILTER_DOWNSAMPLE;
 info->horizontal_filter = h_filter;
 info->vertical_filter = v_filter;
 }
@@ -1605,7 +1605,7 @@ static stbir_uint32 stbir__calculate_memory(stbir__info *info)
 int pixel_margin = stbir__get_filter_pixel_margin(info->horizontal_filter, info->horizontal_scale);
 int filter_height = stbir__get_filter_pixel_width(info->vertical_filter, info->vertical_scale);
 info->horizontal_num_contributors = stbir__get_contributors(info->horizontal_scale, info->horizontal_filter, info->input_w, info->output_w);
-info->vertical_num_contributors   = stbir__get_contributors(info->vertical_scale  , info->vertical_filter  , info->input_h, info->output_h);
+info->vertical_num_contributors = stbir__get_contributors(info->vertical_scale , info->vertical_filter , info->input_h, info->output_h);
 info->horizontal_contributors_size = info->horizontal_num_contributors * sizeof(stbir__contributors);
 info->horizontal_coefficients_size = stbir__get_total_horizontal_coefficients(info) * sizeof(float);
 info->vertical_contributors_size = info->vertical_num_contributors * sizeof(stbir__contributors);
@@ -1682,12 +1682,12 @@ info->type = type;
 info->edge_horizontal = edge_horizontal;
 info->edge_vertical = edge_vertical;
 info->colorspace = colorspace;
-info->horizontal_coefficient_width   = stbir__get_coefficient_width  (info->horizontal_filter, info->horizontal_scale);
-info->vertical_coefficient_width     = stbir__get_coefficient_width  (info->vertical_filter  , info->vertical_scale  );
-info->horizontal_filter_pixel_width  = stbir__get_filter_pixel_width (info->horizontal_filter, info->horizontal_scale);
-info->vertical_filter_pixel_width    = stbir__get_filter_pixel_width (info->vertical_filter  , info->vertical_scale  );
+info->horizontal_coefficient_width = stbir__get_coefficient_width (info->horizontal_filter, info->horizontal_scale);
+info->vertical_coefficient_width = stbir__get_coefficient_width (info->vertical_filter , info->vertical_scale );
+info->horizontal_filter_pixel_width = stbir__get_filter_pixel_width (info->horizontal_filter, info->horizontal_scale);
+info->vertical_filter_pixel_width = stbir__get_filter_pixel_width (info->vertical_filter , info->vertical_scale );
 info->horizontal_filter_pixel_margin = stbir__get_filter_pixel_margin(info->horizontal_filter, info->horizontal_scale);
-info->vertical_filter_pixel_margin   = stbir__get_filter_pixel_margin(info->vertical_filter  , info->vertical_scale  );
+info->vertical_filter_pixel_margin = stbir__get_filter_pixel_margin(info->vertical_filter , info->vertical_scale );
 info->ring_buffer_length_bytes = info->output_w * info->channels * sizeof(float);
 info->decode_buffer_pixels = info->input_w + info->horizontal_filter_pixel_margin * 2;
 #define STBIR__NEXT_MEMPTR(current, newtype) (newtype*)(((unsigned char*)current) + current##_size)
@@ -1756,7 +1756,7 @@ colorspace, extra_memory, memory_required);
 STBIR_FREE(extra_memory, alloc_context);
 return result;
 }
-STBIRDEF int stbir_resize_uint8(     const unsigned char *input_pixels , int input_w , int input_h , int input_stride_in_bytes,
+STBIRDEF int stbir_resize_uint8( const unsigned char *input_pixels , int input_w , int input_h , int input_stride_in_bytes,
 unsigned char *output_pixels, int output_w, int output_h, int output_stride_in_bytes,
 int num_channels)
 {
@@ -1765,7 +1765,7 @@ output_pixels, output_w, output_h, output_stride_in_bytes,
 0,0,1,1,NULL,num_channels,-1,0, STBIR_TYPE_UINT8, STBIR_FILTER_DEFAULT, STBIR_FILTER_DEFAULT,
 STBIR_EDGE_CLAMP, STBIR_EDGE_CLAMP, STBIR_COLORSPACE_LINEAR);
 }
-STBIRDEF int stbir_resize_float(     const float *input_pixels , int input_w , int input_h , int input_stride_in_bytes,
+STBIRDEF int stbir_resize_float( const float *input_pixels , int input_w , int input_h , int input_stride_in_bytes,
 float *output_pixels, int output_w, int output_h, int output_stride_in_bytes,
 int num_channels)
 {
@@ -1804,7 +1804,7 @@ output_pixels, output_w, output_h, output_stride_in_bytes,
 0,0,1,1,NULL,num_channels,alpha_channel,flags, STBIR_TYPE_UINT8, filter, filter,
 edge_wrap_mode, edge_wrap_mode, space);
 }
-STBIRDEF int stbir_resize_uint16_generic(const stbir_uint16 *input_pixels  , int input_w , int input_h , int input_stride_in_bytes,
+STBIRDEF int stbir_resize_uint16_generic(const stbir_uint16 *input_pixels , int input_w , int input_h , int input_stride_in_bytes,
 stbir_uint16 *output_pixels , int output_w, int output_h, int output_stride_in_bytes,
 int num_channels, int alpha_channel, int flags,
 stbir_edge edge_wrap_mode, stbir_filter filter, stbir_colorspace space,
@@ -1815,8 +1815,8 @@ output_pixels, output_w, output_h, output_stride_in_bytes,
 0,0,1,1,NULL,num_channels,alpha_channel,flags, STBIR_TYPE_UINT16, filter, filter,
 edge_wrap_mode, edge_wrap_mode, space);
 }
-STBIRDEF int stbir_resize_float_generic( const float *input_pixels         , int input_w , int input_h , int input_stride_in_bytes,
-float *output_pixels        , int output_w, int output_h, int output_stride_in_bytes,
+STBIRDEF int stbir_resize_float_generic( const float *input_pixels , int input_w , int input_h , int input_stride_in_bytes,
+float *output_pixels , int output_w, int output_h, int output_stride_in_bytes,
 int num_channels, int alpha_channel, int flags,
 stbir_edge edge_wrap_mode, stbir_filter filter, stbir_colorspace space,
 void *alloc_context)
@@ -1826,12 +1826,12 @@ output_pixels, output_w, output_h, output_stride_in_bytes,
 0,0,1,1,NULL,num_channels,alpha_channel,flags, STBIR_TYPE_FLOAT, filter, filter,
 edge_wrap_mode, edge_wrap_mode, space);
 }
-STBIRDEF int stbir_resize(         const void *input_pixels , int input_w , int input_h , int input_stride_in_bytes,
+STBIRDEF int stbir_resize( const void *input_pixels , int input_w , int input_h , int input_stride_in_bytes,
 void *output_pixels, int output_w, int output_h, int output_stride_in_bytes,
 stbir_datatype datatype,
 int num_channels, int alpha_channel, int flags,
 stbir_edge edge_mode_horizontal, stbir_edge edge_mode_vertical,
-stbir_filter filter_horizontal,  stbir_filter filter_vertical,
+stbir_filter filter_horizontal, stbir_filter filter_vertical,
 stbir_colorspace space, void *alloc_context)
 {
 return stbir__resize_arbitrary(alloc_context, input_pixels, input_w, input_h, input_stride_in_bytes,
@@ -1844,7 +1844,7 @@ void *output_pixels, int output_w, int output_h, int output_stride_in_bytes,
 stbir_datatype datatype,
 int num_channels, int alpha_channel, int flags,
 stbir_edge edge_mode_horizontal, stbir_edge edge_mode_vertical,
-stbir_filter filter_horizontal,  stbir_filter filter_vertical,
+stbir_filter filter_horizontal, stbir_filter filter_vertical,
 stbir_colorspace space, void *alloc_context,
 float x_scale, float y_scale,
 float x_offset, float y_offset)
@@ -1859,12 +1859,12 @@ output_pixels, output_w, output_h, output_stride_in_bytes,
 0,0,1,1,transform,num_channels,alpha_channel,flags, datatype, filter_horizontal, filter_vertical,
 edge_mode_horizontal, edge_mode_vertical, space);
 }
-STBIRDEF int stbir_resize_region(  const void *input_pixels , int input_w , int input_h , int input_stride_in_bytes,
+STBIRDEF int stbir_resize_region( const void *input_pixels , int input_w , int input_h , int input_stride_in_bytes,
 void *output_pixels, int output_w, int output_h, int output_stride_in_bytes,
 stbir_datatype datatype,
 int num_channels, int alpha_channel, int flags,
 stbir_edge edge_mode_horizontal, stbir_edge edge_mode_vertical,
-stbir_filter filter_horizontal,  stbir_filter filter_vertical,
+stbir_filter filter_horizontal, stbir_filter filter_vertical,
 stbir_colorspace space, void *alloc_context,
 float s0, float t0, float s1, float t1)
 {

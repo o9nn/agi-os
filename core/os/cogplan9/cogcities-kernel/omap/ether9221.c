@@ -9,87 +9,87 @@
 #include "etherif.h"
 #undef USE_KPROCS
 enum {
-Vid9221	= 0x9221,
-Slop	= 4,
+Vid9221 = 0x9221,
+Slop = 4,
 };
 typedef struct Regs Regs;
 struct Regs {
-ulong	rxdata;
-uchar	_pad0[0x20 - 4];
-ulong	txdata;
-uchar	_pad1[0x40 - 0x24];
-ulong	rxsts;
-ulong	rxstspeek;
-ulong	txsts;
-ulong	txstspeek;
-ushort	rev;
-ushort	id;
-ulong	irqcfg;
-ulong	intsts;
-ulong	inten;
-ulong	_pad2;
-ulong	bytetest;
-ulong	fifoint;
-ulong	rxcfg;
-ulong	txcfg;
-ulong	hwcfg;
-ulong	rxdpctl;
-ulong	rxfifoinf;
-ulong	txfifoinf;
-ulong	pmtctl;
-ulong	gpiocfg;
-ulong	gptcfg;
-ulong	gptcnt;
-ulong	_pad3;
-ulong	wordswap;
-ulong	freerun;
-ulong	rxdrop;
-ulong	maccsrcmd;
-ulong	maccsrdata;
-ulong	afccfg;
-ulong	eepcmd;
-ulong	eepdata;
+ulong rxdata;
+uchar _pad0[0x20 - 4];
+ulong txdata;
+uchar _pad1[0x40 - 0x24];
+ulong rxsts;
+ulong rxstspeek;
+ulong txsts;
+ulong txstspeek;
+ushort rev;
+ushort id;
+ulong irqcfg;
+ulong intsts;
+ulong inten;
+ulong _pad2;
+ulong bytetest;
+ulong fifoint;
+ulong rxcfg;
+ulong txcfg;
+ulong hwcfg;
+ulong rxdpctl;
+ulong rxfifoinf;
+ulong txfifoinf;
+ulong pmtctl;
+ulong gpiocfg;
+ulong gptcfg;
+ulong gptcnt;
+ulong _pad3;
+ulong wordswap;
+ulong freerun;
+ulong rxdrop;
+ulong maccsrcmd;
+ulong maccsrdata;
+ulong afccfg;
+ulong eepcmd;
+ulong eepdata;
 };
 enum {
-Nstatistics	= 128,
+Nstatistics = 128,
 };
 enum {
-Intcompl	= 1<<31,
-Bufendalign	= 3<<24,
-Datastoff	= 037<<16,
-Firstseg	= 1<<13,
-Lastseg		= 1<<12,
-Bufsize		= MASK(11),
-Pkttag		= MASK(16) << 16,
-Txcksumen	= 1<<14,
-Addcrcdis	= 1<<13,
-Framepaddis	= 1<<12,
-Pktlen		= (1<<1) - 1,
-Txsdump		= 1<<15,
-Txddump		= 1<<14,
-Txon		= 1<<1,
-Stoptx		= 1<<0,
-Mbo		= 1<<20,
-Srstto		= 1<<1,
-Srst		= 1<<0,
-Rxdmacntshift	= 16,
-Rxdmacntmask	= MASK(12) << Rxdmacntshift,
-Rxdump		= 1<<15,
-Rxpktlenshift	= 16,
-Rxpktlenmask	= MASK(14) << Rxpktlenshift,
-Rxerr		= 1<<15,
-Rxstsusedshift	= 16,
-Rxstsusedmask	= MASK(8) << Rxstsusedshift,
-Rxdatausedmask	= MASK(16),
-Txstsusedshift	= 16,
-Txstsusedmask	= MASK(8) << Txstsusedshift,
-Txdatafreemask	= MASK(16),
-Dready		= 1<<0,
-Csrbusy		= 1<<31,
-Csrread		= 1<<30,
-Csraddrshift	= 0,
-Csraddrmask	= MASK(8) - 1,
-Maccr		= 1,
+Intcompl = 1<<31,
+Bufendalign = 3<<24,
+Datastoff = 037<<16,
+Firstseg = 1<<13,
+Lastseg = 1<<12,
+Bufsize = MASK(11),
+Pkttag = MASK(16) << 16,
+Txcksumen = 1<<14,
+Addcrcdis = 1<<13,
+Framepaddis = 1<<12,
+Pktlen = (1<<1) - 1,
+Txsdump = 1<<15,
+Txddump = 1<<14,
+Txon = 1<<1,
+Stoptx = 1<<0,
+Mbo = 1<<20,
+Srstto = 1<<1,
+Srst = 1<<0,
+Rxdmacntshift = 16,
+Rxdmacntmask = MASK(12) << Rxdmacntshift,
+Rxdump = 1<<15,
+Rxpktlenshift = 16,
+Rxpktlenmask = MASK(14) << Rxpktlenshift,
+Rxerr = 1<<15,
+Rxstsusedshift = 16,
+Rxstsusedmask = MASK(8) << Rxstsusedshift,
+Rxdatausedmask = MASK(16),
+Txstsusedshift = 16,
+Txstsusedmask = MASK(8) << Txstsusedshift,
+Txdatafreemask = MASK(16),
+Dready = 1<<0,
+Csrbusy = 1<<31,
+Csrread = 1<<30,
+Csraddrshift = 0,
+Csraddrmask = MASK(8) - 1,
+Maccr = 1,
 Macaddrh,
 Macaddrl,
 Machashh,
@@ -102,99 +102,99 @@ Macvlan2,
 Macwuff,
 Macwucsr,
 Maccoe,
-Rxall		= 1<<31,
-Rcvown		= 1<<23,
-Fdpx		= 1<<20,
-Mcpas		= 1<<19,
-Prms		= 1<<18,
-Ho		= 1<<15,
-Hpfilt		= 1<<13,
-Padstr		= 1<<8,
-Txen		= 1<<3,
-Rxen		= 1<<2,
-Irqdeasclr	= 1<<14,
-Irqdeassts	= 1<<13,
-Irqint		= 1<<12,
-Irqen		= 1<<8,
-Irqpol		= 1<<4,
-Irqpushpull	= 1<<0,
-Swint		= 1<<31,
-Txstop		= 1<<25,
-Rxstop		= 1<<24,
-Txioc		= 1<<21,
-Rxdma		= 1<<20,
-Gptimer		= 1<<19,
-Phy		= 1<<18,
-Rxe		= 1<<14,
-Txe		= 1<<13,
-Tdfo		= 1<<10,
-Tdfa		= 1<<9,
-Tsff		= 1<<8,
-Tsfl		= 1<<7,
-Rsff		= 1<<4,
-Rsfl		= 1<<3,
-Epcbusy		= 1<<31,
-Epccmdshift	= 28,
-Epctimeout	= 1<<9,
-Epcmacloaded	= 1<<8,
-Epcaddrshift	= 0,
+Rxall = 1<<31,
+Rcvown = 1<<23,
+Fdpx = 1<<20,
+Mcpas = 1<<19,
+Prms = 1<<18,
+Ho = 1<<15,
+Hpfilt = 1<<13,
+Padstr = 1<<8,
+Txen = 1<<3,
+Rxen = 1<<2,
+Irqdeasclr = 1<<14,
+Irqdeassts = 1<<13,
+Irqint = 1<<12,
+Irqen = 1<<8,
+Irqpol = 1<<4,
+Irqpushpull = 1<<0,
+Swint = 1<<31,
+Txstop = 1<<25,
+Rxstop = 1<<24,
+Txioc = 1<<21,
+Rxdma = 1<<20,
+Gptimer = 1<<19,
+Phy = 1<<18,
+Rxe = 1<<14,
+Txe = 1<<13,
+Tdfo = 1<<10,
+Tdfa = 1<<9,
+Tsff = 1<<8,
+Tsfl = 1<<7,
+Rsff = 1<<4,
+Rsfl = 1<<3,
+Epcbusy = 1<<31,
+Epccmdshift = 28,
+Epctimeout = 1<<9,
+Epcmacloaded = 1<<8,
+Epcaddrshift = 0,
 };
 enum {
-Rxintrs		= Rsff | Rsfl | Rxe,
-Txintrs		= Tsff | Tsfl | Txe | Txioc,
+Rxintrs = Rsff | Rsfl | Rxe,
+Txintrs = Tsff | Tsfl | Txe | Txioc,
 };
 struct Wakeup {
-ulong	bytemask[4];
-uchar	filt0cmd;
-uchar	_pad0;
-uchar	filt1cmd;
-uchar	_pad1;
-uchar	filt2cmd;
-uchar	_pad2;
-uchar	filt3cmd;
-uchar	_pad3;
-uchar	offset[4];
-ushort	crc16[4];
+ulong bytemask[4];
+uchar filt0cmd;
+uchar _pad0;
+uchar filt1cmd;
+uchar _pad1;
+uchar filt2cmd;
+uchar _pad2;
+uchar filt3cmd;
+uchar _pad3;
+uchar offset[4];
+ushort crc16[4];
 };
 typedef struct Ctlr Ctlr;
 struct Ctlr {
-int	port;
-Ctlr*	next;
-Ether*	edev;
-Regs*	regs;
-int	active;
-int	started;
-int	inited;
-int	id;
-int	cls;
-ushort	eeprom[0x40];
-QLock	alock;
-int	nrb;
-int*	nic;
-Lock	imlock;
-int	im;
-int	lim;
-int	link;
-QLock	slock;
-uint	statistics[Nstatistics];
-uint	lsleep;
-uint	lintr;
-uint	rsleep;
-uint	rintr;
-int	tsleep;
-uint	tintr;
-uchar	ra[Eaddrlen];
-ulong	mta[128];
-Rendez	rrendez;
-int	gotinput;
-int	rdcpydone;
-Rendez	trendez;
-int	gotoutput;
-int	wrcpydone;
-Lock	tlock;
+int port;
+Ctlr* next;
+Ether* edev;
+Regs* regs;
+int active;
+int started;
+int inited;
+int id;
+int cls;
+ushort eeprom[0x40];
+QLock alock;
+int nrb;
+int* nic;
+Lock imlock;
+int im;
+int lim;
+int link;
+QLock slock;
+uint statistics[Nstatistics];
+uint lsleep;
+uint lintr;
+uint rsleep;
+uint rintr;
+int tsleep;
+uint tintr;
+uchar ra[Eaddrlen];
+ulong mta[128];
+Rendez rrendez;
+int gotinput;
+int rdcpydone;
+Rendez trendez;
+int gotoutput;
+int wrcpydone;
+Lock tlock;
 };
-#define csr32r(c, r)	(*((c)->nic+((r)/4)))
-#define csr32w(c, r, v)	(*((c)->nic+((r)/4)) = (v))
+#define csr32r(c, r) (*((c)->nic+((r)/4)))
+#define csr32w(c, r, v) (*((c)->nic+((r)/4)) = (v))
 static Ctlr *smcctlrhead, *smcctlrtail;
 static char* statistics[Nstatistics] = { "dummy", };
 static uchar mymac[] = { 0xb0, 0x0f, 0xba, 0xbe, 0x00, 0x00, };
@@ -418,7 +418,7 @@ ctlr->gotoutput = 0;
 smctransmit(edev);
 }
 }
-void	gpioirqclr(void);
+void gpioirqclr(void);
 static void
 smcattach(Ether* edev)
 {

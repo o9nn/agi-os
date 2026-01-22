@@ -6,10 +6,10 @@ echo "📦 Building profiling framework..."
 gcc -I. -o test_profiler tests/kernel/test_profiler.c kernel/dtesn/profiler.c -lpthread -lrt 2>/dev/null
 gcc -I. -o tools/dtesn/profile_analyzer tools/dtesn/profile_analyzer.c kernel/dtesn/profiler.c -lpthread -lrt 2>/dev/null
 if [ ! -f test_profiler ] || [ ! -f tools/dtesn/profile_analyzer ]; then
-    echo "❌ Build failed. Please run:"
-    echo "   gcc -I. -o test_profiler tests/kernel/test_profiler.c kernel/dtesn/profiler.c -lpthread -lrt"
-    echo "   gcc -I. -o tools/dtesn/profile_analyzer tools/dtesn/profile_analyzer.c kernel/dtesn/profiler.c -lpthread -lrt"
-    exit 1
+echo "❌ Build failed. Please run:"
+echo "   gcc -I. -o test_profiler tests/kernel/test_profiler.c kernel/dtesn/profiler.c -lpthread -lrt"
+echo "   gcc -I. -o tools/dtesn/profile_analyzer tools/dtesn/profile_analyzer.c kernel/dtesn/profiler.c -lpthread -lrt"
+exit 1
 fi
 echo "✅ Build successful!"
 echo

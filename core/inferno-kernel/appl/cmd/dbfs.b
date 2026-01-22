@@ -1,7 +1,7 @@
 implement Dbfs;
 #
-# Copyright © 1999 Vita Nuova Limited.  All rights reserved.
-# Revisions copyright © 2002 Vita Nuova Holdings Limited.  All rights reserved.
+# Copyright © 1999 Vita Nuova Limited. All rights reserved.
+# Revisions copyright © 2002 Vita Nuova Holdings Limited. All rights reserved.
 #
 include "sys.m";
 sys: Sys;
@@ -19,23 +19,23 @@ include "bufio.m";
 bufio: Bufio;
 Iobuf: import bufio;
 Record: adt {
-id:		int;		# file number in directory
-x:		int;		# index in file
-dirty:	int;		# modified but not written
-vers:		int;		# version
-data:		array of byte;
-new:		fn(x: array of byte): ref Record;
-print:	fn(r: self ref Record, fd: ref Sys->FD);
-qid:		fn(r: self ref Record): Sys->Qid;
+id: int; # file number in directory
+x: int; # index in file
+dirty: int; # modified but not written
+vers: int; # version
+data: array of byte;
+new: fn(x: array of byte): ref Record;
+print: fn(r: self ref Record, fd: ref Sys->FD);
+qid: fn(r: self ref Record): Sys->Qid;
 };
 Database: adt {
-name:	string;
-file:	ref Iobuf;
-records:	array of ref Record;
-dirty:	int;
-vers:		int;
-nextid:	int;
-findrec:	fn(db: self ref Database, id: int): ref Record;
+name: string;
+file: ref Iobuf;
+records: array of ref Record;
+dirty: int;
+vers: int;
+nextid: int;
+findrec: fn(db: self ref Database, id: int): ref Record;
 };
 Dbfs: module
 {
@@ -82,12 +82,12 @@ copt := 0;
 empty := 0;
 while((o := arg->opt()) != 0)
 case o {
-'a' =>	flags = Sys->MAFTER;
-'b' =>	flags = Sys->MBEFORE;
-'c' =>	copt = 1;
-'e' =>	empty = 1;
-'D' =>	styxservers->traceset(1);
-* =>		usage();
+'a' => flags = Sys->MAFTER;
+'b' => flags = Sys->MBEFORE;
+'c' => copt = 1;
+'e' => empty = 1;
+'D' => styxservers->traceset(1);
+* => usage();
 }
 args = arg->argv();
 arg = nil;
@@ -114,7 +114,7 @@ sys->fprint(stderr, "dbfs: can't read %s: %s\n", file, err);
 raise "fail:dbread";
 }
 db.file = nil;
-#	dbprint(db);
+# dbprint(db);
 database = db;
 sys->pctl(Sys->FORKFD, nil);
 user = rf("/dev/user");
@@ -156,7 +156,7 @@ n := 0;
 for(;;){
 (r, err) := getrec(db);
 if(err != nil)
-return (nil, err);		# could press on without it, or make it the `file' contents
+return (nil, err); # could press on without it, or make it the `file' contents
 if(r == nil)
 break;
 rl = r :: rl;
@@ -184,11 +184,11 @@ for(;;){
 s := db.file.gets('\n');
 if(s == nil){
 if(data == nil)
-return (nil, nil);		# BUG: distinguish i/o error from EOF?
+return (nil, nil); # BUG: distinguish i/o error from EOF?
 break;
 }
 if(s[len s - 1] != '\n')
-#			return (nil, "file missing newline");	# possibly truncated
+# return (nil, "file missing newline"); # possibly truncated
 s += "\n";
 if(s == "\n")
 break;
@@ -266,7 +266,7 @@ break Serve;
 Open =>
 c := srv.getfid(m.fid);
 if(c == nil || TYPE(c.path) != Qnew){
-srv.open(m);		# default action
+srv.open(m); # default action
 break;
 }
 if(c.uname != user) {
@@ -290,7 +290,7 @@ srv.reply(ref Rmsg.Error(m.tag, err));
 break;
 }
 if(c.qtype & Sys->QTDIR){
-srv.read(m);	# does readdir
+srv.read(m); # does readdir
 break;
 }
 r := database.records[FILENO(c.path)];
@@ -342,12 +342,12 @@ srv.reply(ref Rmsg.Remove(m.tag));
 else
 srv.reply(ref Rmsg.Error(m.tag, sys->sprint("%r")));
 Wstat =>
-srv.default(gm);	# TO DO?
+srv.default(gm); # TO DO?
 * =>
 srv.default(gm);
 }
 }
-navops <-= nil;		# shut down navigator
+navops <-= nil; # shut down navigator
 }
 dirslot(n: int): int
 {
@@ -404,11 +404,11 @@ break;
 }
 case n.name {
 ".." =>
-;	# nop
+; # nop
 "new" =>
 n.path = QPATH(0, Qnew);
 * =>
-if(len n.name < 1 || !(n.name[0]>='0' && n.name[0]<='9')){	# weak test for now
+if(len n.name < 1 || !(n.name[0]>='0' && n.name[0]<='9')){ # weak test for now
 n.reply <-= (nil, Enotfound);
 continue;
 }
@@ -429,7 +429,7 @@ i := n.offset;
 if(i == 0)
 n.reply <-= dirgen(QPATH(0,Qnew));
 for(; --n.count >= 0 && (j := dirslot(i)) >= 0; i++)
-n.reply <-= dirgen(QPATH(j,Qdata));	# n² but the file will be small
+n.reply <-= dirgen(QPATH(j,Qdata)); # n² but the file will be small
 n.reply <-= (nil, nil);
 }
 }
@@ -455,7 +455,7 @@ s: string;
 for(b := data; len b > 0;){
 (b, s) = getline(b);
 if(s == nil || s[len s - 1] != '\n' || s == "\n")
-return (nil, "partial or malformed record");	# possibly truncated
+return (nil, "partial or malformed record"); # possibly truncated
 }
 return (data, nil);
 }

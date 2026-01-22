@@ -8,12 +8,12 @@
 #include <kern/constants.h>
 #include <kern/assert.h>
 #include <kern/macros.h>
-timer_t		current_timer[NCPUS];
-timer_data_t	kernel_timer[NCPUS];
+timer_t current_timer[NCPUS];
+timer_data_t kernel_timer[NCPUS];
 void init_timers(void)
 {
-int	i;
-timer_t	this_timer;
+int i;
+timer_t this_timer;
 this_timer = &kernel_timer[0];
 for ( i=0 ; i<NCPUS ; i++, this_timer++) {
 timer_init(this_timer);
@@ -38,9 +38,9 @@ timer_normalize(timer);
 }
 }
 #endif
-#if	STAT_TIME
+#if STAT_TIME
 #else
-#ifdef	MACHINE_TIMER_ROUTINES
+#ifdef MACHINE_TIMER_ROUTINES
 #else
 void
 start_timer(timer_t timer)
@@ -51,13 +51,13 @@ current_timer[cpu_number()] = timer;
 void
 time_trap_uentry(unsigned ts)
 {
-int	elapsed;
-int	mycpu;
-timer_t	mytimer;
+int elapsed;
+int mycpu;
+timer_t mytimer;
 mycpu = cpu_number();
 mytimer = current_timer[mycpu];
 elapsed = ts - mytimer->tstamp;
-#ifdef	TIMER_MAX
+#ifdef TIMER_MAX
 if (elapsed < 0) elapsed += TIMER_MAX;
 #endif
 #ifdef TICKLESS_TIMER
@@ -76,13 +76,13 @@ mytimer->tstamp = ts;
 void
 time_trap_uexit(int ts)
 {
-int	elapsed;
-int	mycpu;
-timer_t	mytimer;
+int elapsed;
+int mycpu;
+timer_t mytimer;
 mycpu = cpu_number();
 mytimer = current_timer[mycpu];
 elapsed = ts - mytimer->tstamp;
-#ifdef	TIMER_MAX
+#ifdef TIMER_MAX
 if (elapsed < 0) elapsed += TIMER_MAX;
 #endif
 mytimer->low_bits += elapsed;
@@ -96,16 +96,16 @@ mytimer->tstamp = ts;
 }
 timer_t
 time_int_entry(
-unsigned	ts,
-timer_t		new_timer)
+unsigned ts,
+timer_t new_timer)
 {
-int	elapsed;
-int	mycpu;
-timer_t	mytimer;
+int elapsed;
+int mycpu;
+timer_t mytimer;
 mycpu = cpu_number();
 mytimer = current_timer[mycpu];
 elapsed = ts - mytimer->tstamp;
-#ifdef	TIMER_MAX
+#ifdef TIMER_MAX
 if (elapsed < 0) elapsed += TIMER_MAX;
 #endif
 mytimer->low_bits += elapsed;
@@ -116,16 +116,16 @@ return(mytimer);
 }
 void
 time_int_exit(
-unsigned	ts,
-timer_t		old_timer)
+unsigned ts,
+timer_t old_timer)
 {
-int	elapsed;
-int	mycpu;
-timer_t	mytimer;
+int elapsed;
+int mycpu;
+timer_t mytimer;
 mycpu = cpu_number();
 mytimer = current_timer[mycpu];
 elapsed = ts - mytimer->tstamp;
-#ifdef	TIMER_MAX
+#ifdef TIMER_MAX
 if (elapsed < 0) elapsed += TIMER_MAX;
 #endif
 mytimer->low_bits += elapsed;
@@ -142,15 +142,15 @@ current_timer[mycpu] = old_timer;
 void
 timer_switch(timer_t new_timer)
 {
-int		elapsed;
-int		mycpu;
-timer_t		mytimer;
-unsigned	ts;
+int elapsed;
+int mycpu;
+timer_t mytimer;
+unsigned ts;
 mycpu = cpu_number();
 mytimer = current_timer[mycpu];
 ts = get_timestamp();
 elapsed = ts - mytimer->tstamp;
-#ifdef	TIMER_MAX
+#ifdef TIMER_MAX
 if (elapsed < 0) elapsed += TIMER_MAX;
 #endif
 mytimer->low_bits += elapsed;
@@ -165,7 +165,7 @@ new_timer->tstamp = ts;
 #endif
 void timer_normalize(timer_t timer)
 {
-unsigned int	high_increment;
+unsigned int high_increment;
 high_increment = timer->low_bits/TIMER_HIGH_UNIT;
 timer->high_bits_check += high_increment;
 __sync_synchronize();
@@ -174,8 +174,8 @@ __sync_synchronize();
 timer->high_bits += high_increment;
 }
 static void timer_grab(
-timer_t		timer,
-timer_save_t	save)
+timer_t timer,
+timer_save_t save)
 {
 #if MACH_ASSERT
 unsigned int passes=0;
@@ -198,48 +198,48 @@ MACRO_BEGIN \
 MACRO_END
 void
 timer_read(
-timer_t 	timer,
-time_value64_t 	*tv)
+timer_t timer,
+time_value64_t *tv)
 {
-timer_save_data_t	temp;
+timer_save_data_t temp;
 timer_grab(timer,&temp);
-#ifdef	TIMER_ADJUST
+#ifdef TIMER_ADJUST
 TIMER_ADJUST(&temp);
 #endif
 TIMER_TO_TIME_VALUE64(tv, &temp);
 }
-void	thread_read_times(
-thread_t 	thread,
-time_value64_t	*user_time_p,
-time_value64_t	*system_time_p)
+void thread_read_times(
+thread_t thread,
+time_value64_t *user_time_p,
+time_value64_t *system_time_p)
 {
 timer_read(&thread->user_timer, user_time_p);
 timer_read(&thread->system_timer, system_time_p);
 }
-#if	MACH_DEBUG
+#if MACH_DEBUG
 static void db_timer_grab(
-timer_t		timer,
-timer_save_t	save)
+timer_t timer,
+timer_save_t save)
 {
 (save)->high = (timer)->high_bits;
 (save)->low = (timer)->low_bits;
 }
 static void
 nonblocking_timer_read(
-timer_t 	timer,
-time_value64_t 	*tv)
+timer_t timer,
+time_value64_t *tv)
 {
-timer_save_data_t	temp;
+timer_save_data_t temp;
 db_timer_grab(timer, &temp);
-#ifdef	TIMER_ADJUST
+#ifdef TIMER_ADJUST
 TIMER_ADJUST(&temp);
 #endif
 TIMER_TO_TIME_VALUE64(tv, &temp);
 }
-void	db_thread_read_times(
-thread_t 	thread,
-time_value64_t	*user_time_p,
-time_value64_t	*system_time_p)
+void db_thread_read_times(
+thread_t thread,
+time_value64_t *user_time_p,
+time_value64_t *system_time_p)
 {
 nonblocking_timer_read(&thread->user_timer, user_time_p);
 nonblocking_timer_read(&thread->system_timer, system_time_p);
@@ -247,11 +247,11 @@ nonblocking_timer_read(&thread->system_timer, system_time_p);
 #endif
 unsigned
 timer_delta(
-timer_t		timer,
-timer_save_t	save)
+timer_t timer,
+timer_save_t save)
 {
-timer_save_data_t	new_save;
-unsigned		result;
+timer_save_data_t new_save;
+unsigned result;
 timer_grab(timer,&new_save);
 result = (new_save.high - save->high) * TIMER_HIGH_UNIT +
 new_save.low - save->low;

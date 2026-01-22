@@ -13,44 +13,44 @@ test_assert_failed(what, ar.source, ar.currentline);
 }
 return 0;
 }
-#define GENERATE_GETTERS(name, ctype)					\
-static void check_table_get_##name##_ok(struct dlua_script *script,	\
-int idx, ctype expected_value,	\
-const char *str_key,		\
-lua_Integer int_key)		\
-{									\
-ctype value;							\
-int ret;							\
+#define GENERATE_GETTERS(name, ctype) \
+static void check_table_get_##name##_ok(struct dlua_script *script, \
+int idx, ctype expected_value, \
+const char *str_key, \
+lua_Integer int_key) \
+{ \
+ctype value; \
+int ret; \
 \
 \
-ret = dlua_table_get_##name##_by_str(script->L, idx,		\
-str_key, &value);		\
-test_assert(ret == 1);						\
-test_assert(value == expected_value);				\
+ret = dlua_table_get_##name##_by_str(script->L, idx, \
+str_key, &value); \
+test_assert(ret == 1); \
+test_assert(value == expected_value); \
 \
 \
-ret = dlua_table_get_##name##_by_int(script->L, idx,		\
-int_key, &value);		\
-test_assert(ret == 1);						\
-test_assert(value == expected_value);				\
-}									\
-static void check_table_get_##name##_err(struct dlua_script *script,	\
-int idx, int expected_ret,	\
-const char *str_key,		\
-lua_Integer int_key)		\
-{									\
-ctype value;							\
-int ret;							\
+ret = dlua_table_get_##name##_by_int(script->L, idx, \
+int_key, &value); \
+test_assert(ret == 1); \
+test_assert(value == expected_value); \
+} \
+static void check_table_get_##name##_err(struct dlua_script *script, \
+int idx, int expected_ret, \
+const char *str_key, \
+lua_Integer int_key) \
+{ \
+ctype value; \
+int ret; \
 \
 \
-ret = dlua_table_get_##name##_by_str(script->L, idx,		\
-str_key, &value);		\
-test_assert(ret == expected_ret);				\
+ret = dlua_table_get_##name##_by_str(script->L, idx, \
+str_key, &value); \
+test_assert(ret == expected_ret); \
 \
 \
-ret = dlua_table_get_##name##_by_int(script->L, idx,		\
-int_key, &value);		\
-test_assert(ret == expected_ret);				\
+ret = dlua_table_get_##name##_by_int(script->L, idx, \
+int_key, &value); \
+test_assert(ret == expected_ret); \
 }
 GENERATE_GETTERS(luainteger, lua_Integer);
 GENERATE_GETTERS(int, int);

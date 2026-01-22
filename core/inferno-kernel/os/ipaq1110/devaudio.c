@@ -1,48 +1,48 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"io.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "io.h"
 static int debug = 0;
 enum {
-UdaStatusDC		= 0,
-UdaStatusIF		= 1,
-UdaStatusSC		= 4,
-UdaStatusRST		= 6,
+UdaStatusDC = 0,
+UdaStatusIF = 1,
+UdaStatusSC = 4,
+UdaStatusRST = 6,
 };
 enum {
-UdaStatusPC	= 0,
-UdaStatusDS	= 2,
-UdaStatusPDA	= 3,
-UdaStatusPAD	= 4,
-UdaStatusIGS	= 5,
-UdaStatusOGS	= 6,
+UdaStatusPC = 0,
+UdaStatusDS = 2,
+UdaStatusPDA = 3,
+UdaStatusPAD = 4,
+UdaStatusIGS = 5,
+UdaStatusOGS = 6,
 };
 enum {
-UDA1341_DATA0 =	0,
+UDA1341_DATA0 = 0,
 UDA1341_DATA1,
 UDA1341_STATUS,
 UDA1341_L3Addr = 0x14,
 };
-typedef struct	AQueue	AQueue;
-typedef struct	Buf	Buf;
-typedef struct	IOstate IOstate;
+typedef struct AQueue AQueue;
+typedef struct Buf Buf;
+typedef struct IOstate IOstate;
 enum
 {
-Qdir		= 0,
+Qdir = 0,
 Qaudio,
 Qvolume,
 Qstatus,
 Qaudioctl,
-Fmono		= 1,
-Fin			= 2,
-Fout		= 4,
-Aclosed		= 0,
+Fmono = 1,
+Fin = 2,
+Fout = 4,
+Aclosed = 0,
 Aread,
 Awrite,
-Vaudio		= 0,
+Vaudio = 0,
 Vmic,
 Vtreb,
 Vbass,
@@ -50,83 +50,83 @@ Vspeed,
 Vfilter,
 Vinvert,
 Nvol,
-Bufsize		= 4*1024,
-Nbuf		= 32,
-Speed		= 44100,
-Ncmd		= 50,
+Bufsize = 4*1024,
+Nbuf = 32,
+Speed = 44100,
+Ncmd = 50,
 };
 Dirtab
 audiodir[] =
 {
-".",		{Qdir, 0, QTDIR},	0,	0555,
-"audio",	{Qaudio},		0,	0666,
-"volume",	{Qvolume},		0,	0666,
-"audioctl", {Qaudioctl},		0,	0666,
-"audiostat",{Qstatus},		0,	0444,
+".", {Qdir, 0, QTDIR}, 0, 0555,
+"audio", {Qaudio}, 0, 0666,
+"volume", {Qvolume}, 0, 0666,
+"audioctl", {Qaudioctl}, 0, 0666,
+"audiostat",{Qstatus}, 0, 0444,
 };
-struct	Buf
+struct Buf
 {
-uchar*	virt;
-ulong	phys;
-uint	nbytes;
+uchar* virt;
+ulong phys;
+uint nbytes;
 };
-struct	IOstate
+struct IOstate
 {
 QLock;
-Lock			ilock;
-Rendez			vous;
-Chan			*chan;
-Dma*				dma;
-int				bufinit;
-Buf				buf[Nbuf];
-volatile Buf	*current;
-volatile Buf	*next;
-volatile Buf	*filling;
+Lock ilock;
+Rendez vous;
+Chan *chan;
+Dma* dma;
+int bufinit;
+Buf buf[Nbuf];
+volatile Buf *current;
+volatile Buf *next;
+volatile Buf *filling;
 #define emptying filling
 };
-static	struct
+static struct
 {
 QLock;
-int		amode;
-int		intr;
-int		rivol[Nvol];
-int		livol[Nvol];
-int		rovol[Nvol];
-int		lovol[Nvol];
-uvlong	totcount;
-vlong	tottime;
-int	clockout;
-IOstate	i;
-IOstate	o;
+int amode;
+int intr;
+int rivol[Nvol];
+int livol[Nvol];
+int rovol[Nvol];
+int lovol[Nvol];
+uvlong totcount;
+vlong tottime;
+int clockout;
+IOstate i;
+IOstate o;
 } audio;
 static struct
 {
-ulong	bytes;
-ulong	totaldma;
-ulong	idledma;
-ulong	faildma;
-ulong	samedma;
+ulong bytes;
+ulong totaldma;
+ulong idledma;
+ulong faildma;
+ulong samedma;
 } iostats;
-static	struct
+static struct
 {
-char*	name;
-int	flag;
-int	ilval;
-int	irval;
+char* name;
+int flag;
+int ilval;
+int irval;
 } volumes[] =
 {
-[Vaudio]	{"audio",	Fout|Fmono,	 80,	 80},
-[Vmic]		{"mic",		Fin|Fmono,	  0,	  0},
-[Vtreb]		{"treb",	Fout|Fmono,	 50,	 50},
-[Vbass]		{"bass",	Fout|Fmono, 	 50,	 50},
-[Vspeed]	{"speed",	Fin|Fout|Fmono,	Speed,	Speed},
-[Vfilter]	{"filter",	Fout|Fmono,	  0,	  0},
-[Vinvert]	{"invert",	Fin|Fout|Fmono,	  0,	  0},
-[Nvol]		{0}
+[Vaudio] {"audio", Fout|Fmono, 80, 80},
+[Vmic] {"mic", Fin|Fmono, 0, 0},
+[Vtreb] {"treb", Fout|Fmono, 50, 50},
+[Vbass] {"bass", Fout|Fmono, 50, 50},
+[Vspeed] {"speed", Fin|Fout|Fmono, Speed, Speed},
+[Vfilter] {"filter", Fout|Fmono, 0, 0},
+[Vinvert] {"invert", Fin|Fout|Fmono, 0, 0},
+[Nvol] {0}
 };
-static void	setreg(char *name, int val, int n);
-static	char	Emode[]		= "illegal open mode";
-static	char	Evolume[]	= "illegal volume specifier";
+static void setreg(char *name, int val, int n);
+static char Emode[] = "illegal open mode";
+static char Evolume[] = "illegal volume specifier";
 static void
 bufinit(IOstate *b)
 {
@@ -167,21 +167,21 @@ audioreset(void)
 {
 MCPREG->mccr = 0;
 }
-uchar	status0[1]		= {0x22};
-uchar	status1[1]		= {0x80};
-uchar	data00[1]		= {0x00};
-uchar	data01[1]		= {0x40};
-uchar	data02[1]		= {0x80};
-uchar	data0e0[2]	= {0xc0, 0xe0};
-uchar	data0e1[2]	= {0xc1, 0xe0};
-uchar	data0e2[2]	= {0xc2, 0xf2};
-uchar	data0e4[2]	= {0xc4, 0xe0};
-uchar	data0e5[2]	= {0xc5, 0xe0};
-uchar	data0e6[2]	= {0xc6, 0xe3};
+uchar status0[1] = {0x22};
+uchar status1[1] = {0x80};
+uchar data00[1] = {0x00};
+uchar data01[1] = {0x40};
+uchar data02[1] = {0x80};
+uchar data0e0[2] = {0xc0, 0xe0};
+uchar data0e1[2] = {0xc1, 0xe0};
+uchar data0e2[2] = {0xc2, 0xf2};
+uchar data0e4[2] = {0xc4, 0xe0};
+uchar data0e5[2] = {0xc5, 0xe0};
+uchar data0e6[2] = {0xc6, 0xe3};
 static void
 enable(void)
 {
-uchar	data[1];
+uchar data[1];
 int cs;
 L3init();
 PPCREG->ppar &= ~PPAR_SPR;

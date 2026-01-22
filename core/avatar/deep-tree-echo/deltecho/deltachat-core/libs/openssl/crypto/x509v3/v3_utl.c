@@ -186,8 +186,8 @@ return 0;
 *aint = itmp;
 return 1;
 }
-#define HDR_NAME        1
-#define HDR_VALUE       2
+#define HDR_NAME 1
+#define HDR_VALUE 2
 STACK_OF(CONF_VALUE) *X509V3_parse_list(const char *line)
 {
 char *p, *q, c;

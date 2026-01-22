@@ -1,5 +1,5 @@
 #ifndef istkparm_INCLUDED
-#  define istkparm_INCLUDED
+# define istkparm_INCLUDED
 struct ref_stack_params_s {
 uint bot_guard;
 uint top_guard;

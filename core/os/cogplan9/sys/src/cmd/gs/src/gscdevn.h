@@ -1,5 +1,5 @@
 #ifndef gscdevn_INCLUDED
-#  define gscdevn_INCLUDED
+# define gscdevn_INCLUDED
 #include "gscspace.h"
 int gs_build_DeviceN(
 gs_color_space *pcspace,
@@ -25,7 +25,7 @@ void *proc_data
 );
 #ifndef gs_function_DEFINED
 typedef struct gs_function_s gs_function_t;
-#  define gs_function_DEFINED
+# define gs_function_DEFINED
 #endif
 int gs_cspace_set_devn_function(gs_color_space *pcspace,
 gs_function_t *pfn);

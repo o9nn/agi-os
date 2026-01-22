@@ -344,7 +344,7 @@ if (mem->saved == save) {
 break;
 }
 }
-if (save->state.save_level == 0  &&
+if (save->state.save_level == 0 &&
 (mem = save->space_global) != save->space_local &&
 save->space_global->num_contexts == 1
 ) {

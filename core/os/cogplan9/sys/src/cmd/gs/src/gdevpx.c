@@ -16,10 +16,10 @@
 #include "gdevpxop.h"
 #include "gdevpxut.h"
 #ifndef X_DPI
-#  define X_DPI 600
+# define X_DPI 600
 #endif
 #ifndef Y_DPI
-#  define Y_DPI 600
+# define Y_DPI 600
 #endif
 #define NUM_POINTS 40
 typedef enum {
@@ -32,8 +32,8 @@ gx_device_vector_common;
 pxeMediaSize_t media_size;
 bool ManualFeed;
 bool ManualFeed_set;
-int  MediaPosition;
-int  MediaPosition_set;
+int MediaPosition;
+int MediaPosition_set;
 gx_path_type_t fill_rule;
 gx_path_type_t clip_rule;
 pxeColorSpace_t color_space;
@@ -89,40 +89,40 @@ private dev_proc_strip_copy_rop(pclxl_strip_copy_rop);
 #define pclxl_device_procs(map_rgb_color, map_color_rgb)\
 {\
 pclxl_open_device,\
-NULL,			\
-NULL,			\
+NULL, \
+NULL, \
 pclxl_output_page,\
 pclxl_close_device,\
-map_rgb_color,		\
-map_color_rgb,		\
+map_rgb_color, \
+map_color_rgb, \
 gdev_vector_fill_rectangle,\
-NULL,			\
+NULL, \
 pclxl_copy_mono,\
 pclxl_copy_color,\
-NULL,			\
-NULL,			\
+NULL, \
+NULL, \
 pclxl_get_params,\
 pclxl_put_params,\
-NULL,			\
-NULL,			\
-NULL,			\
-NULL,			\
+NULL, \
+NULL, \
+NULL, \
+NULL, \
 gx_page_device_get_page_device,\
-NULL,			\
-NULL,			\
-NULL,			\
-NULL,			\
+NULL, \
+NULL, \
+NULL, \
+NULL, \
 gdev_vector_fill_path,\
 gdev_vector_stroke_path,\
 pclxl_fill_mask,\
 gdev_vector_fill_trapezoid,\
 gdev_vector_fill_parallelogram,\
 gdev_vector_fill_triangle,\
-NULL ,	\
+NULL , \
 pclxl_begin_image,\
-NULL,			\
-NULL,			\
-NULL,			\
+NULL, \
+NULL, \
+NULL, \
 pclxl_strip_copy_rop\
 }
 const gx_device_pclxl gs_pxlmono_device = {

@@ -43,7 +43,7 @@ typedef struct gx_device_ccr_s gx_device_ccr;
 #define DEFAULT_WIDTH_10THS_A3 117
 #define DEFAULT_HEIGHT_10THS_A3 165
 #define ccr_prn_device(procs, dev_name, margin, num_comp, depth, max_gray, max_rgb, print_page)\
-{	prn_device_body(gx_device_ccr, procs, dev_name,\
+{ prn_device_body(gx_device_ccr, procs, dev_name,\
 DEFAULT_WIDTH_10THS_A3, DEFAULT_HEIGHT_10THS_A3, X_DPI, Y_DPI,\
 margin, margin, margin, margin,\
 num_comp, depth, max_gray, max_rgb, max_gray + 1, max_rgb + 1,\
@@ -97,7 +97,7 @@ gs_free(pdev->memory, in, line_size, 1, "gsline");
 return_error(gs_error_VMerror);
 }
 for ( l = 0; l < lnum; l++ )
-{	gdev_prn_get_bits(pdev, l, in, &data);
+{ gdev_prn_get_bits(pdev, l, in, &data);
 if(alloc_line(pdev->memory, &linebuf[l], pixnum))
 {
 gs_free(pdev->memory, in, line_size, 1, "gsline");
@@ -214,6 +214,6 @@ rbuf[i].is_used = 0;
 else
 break;
 }
-gs_free( mem, rbuf, rows, sizeof(cmyrow),  "rb");
+gs_free( mem, rbuf, rows, sizeof(cmyrow), "rb");
 return;
 }

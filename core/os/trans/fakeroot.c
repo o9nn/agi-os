@@ -31,11 +31,11 @@ int openmodes;
 file_t file;
 unsigned int faked;
 };
-#define FAKE_UID	(1 << 0)
-#define FAKE_GID	(1 << 1)
-#define FAKE_AUTHOR	(1 << 2)
-#define FAKE_MODE	(1 << 3)
-#define FAKE_DEFAULT	(1 << 4)
+#define FAKE_UID (1 << 0)
+#define FAKE_GID (1 << 1)
+#define FAKE_AUTHOR (1 << 2)
+#define FAKE_MODE (1 << 3)
+#define FAKE_DEFAULT (1 << 4)
 pthread_mutex_t idport_ihash_lock = PTHREAD_MUTEX_INITIALIZER;
 struct hurd_ihash idport_ihash
 = HURD_IHASH_INITIALIZER (sizeof (struct node)
@@ -838,19 +838,19 @@ id, fsys, fileno);
 pthread_mutex_unlock (&user->po->np->lock);
 return err;
 }
-#define NETFS_S_SIMPLE(name)			\
-kern_return_t					\
-netfs_S_##name (struct protid *user)		\
-{						\
-error_t err;					\
+#define NETFS_S_SIMPLE(name) \
+kern_return_t \
+netfs_S_##name (struct protid *user) \
+{ \
+error_t err; \
 \
-if (!user)					\
-return EOPNOTSUPP;				\
+if (!user) \
+return EOPNOTSUPP; \
 \
-pthread_mutex_lock (&user->po->np->lock);	\
-err = name (netfs_node_netnode (user->po->np)->file);		\
-pthread_mutex_unlock (&user->po->np->lock);	\
-return err;					\
+pthread_mutex_lock (&user->po->np->lock); \
+err = name (netfs_node_netnode (user->po->np)->file); \
+pthread_mutex_unlock (&user->po->np->lock); \
+return err; \
 }
 NETFS_S_SIMPLE (io_get_conch)
 NETFS_S_SIMPLE (io_release_conch)
@@ -942,7 +942,7 @@ mach_port_t bootstrap;
 struct argp argp = { .doc = "\
 A translator for faking privileged access to an underlying filesystem.\v\
 This translator appears to give transparent access to the underlying \
-directory node.  However, all accesses are made using the credentials \
+directory node. However, all accesses are made using the credentials \
 of the translator regardless of the client and the translator fakes \
 success for chown and chmod operations that only root could actually do, \
 reporting the faked IDs and modes in later stat calls, and allows \

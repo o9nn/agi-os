@@ -15,24 +15,24 @@ void
 thread_go(
 thread_t thread)
 {
-int	state;
-spl_t	s;
+int state;
+spl_t s;
 s = splsched();
 thread_lock(thread);
 reset_timeout_check(&thread->timer);
 state = thread->state;
 switch (state & TH_SCHED_STATE) {
 case TH_WAIT | TH_SUSP | TH_UNINT:
-case TH_WAIT	   | TH_UNINT:
+case TH_WAIT | TH_UNINT:
 case TH_WAIT:
 thread->state = (state &~ TH_WAIT) | TH_RUN;
 thread->wait_result = THREAD_AWAKENED;
 thread_setrun(thread, TRUE);
 break;
-case	  TH_WAIT | TH_SUSP:
+case TH_WAIT | TH_SUSP:
 case TH_RUN | TH_WAIT:
 case TH_RUN | TH_WAIT | TH_SUSP:
-case TH_RUN | TH_WAIT	    | TH_UNINT:
+case TH_RUN | TH_WAIT | TH_UNINT:
 case TH_RUN | TH_WAIT | TH_SUSP | TH_UNINT:
 thread->state = state & ~TH_WAIT;
 thread->wait_result = THREAD_AWAKENED;
@@ -47,7 +47,7 @@ void
 thread_will_wait(
 thread_t thread)
 {
-spl_t	s;
+spl_t s;
 s = splsched();
 thread_lock(thread);
 assert(thread->wait_result = -1);
@@ -61,7 +61,7 @@ thread_t thread,
 mach_msg_timeout_t msecs)
 {
 natural_t ticks = convert_ipc_timeout_to_ticks(msecs);
-spl_t	s;
+spl_t s;
 s = splsched();
 thread_lock(thread);
 assert(thread->wait_result = -1);
@@ -70,18 +70,18 @@ set_timeout(&thread->timer, ticks);
 thread_unlock(thread);
 splx(s);
 }
-#if	MACH_HOST
-#define check_processor_set(thread)	\
+#if MACH_HOST
+#define check_processor_set(thread) \
 (current_processor()->processor_set == (thread)->processor_set)
 #else
-#define	check_processor_set(thread)	TRUE
+#define check_processor_set(thread) TRUE
 #endif
-#if	NCPUS > 1
-#define	check_bound_processor(thread) \
+#if NCPUS > 1
+#define check_bound_processor(thread) \
 ((thread)->bound_processor == PROCESSOR_NULL || \
 (thread)->bound_processor == current_processor())
 #else
-#define	check_bound_processor(thread)	TRUE
+#define check_bound_processor(thread) TRUE
 #endif
 boolean_t
 thread_handoff(
@@ -89,7 +89,7 @@ thread_t old,
 continuation_t continuation,
 thread_t new)
 {
-spl_t	s;
+spl_t s;
 assert(current_thread() == old);
 s = splsched();
 thread_lock(new);
@@ -105,7 +105,7 @@ return FALSE;
 reset_timeout_check(&new->timer);
 new->state = TH_RUN;
 thread_unlock(new);
-#if	NCPUS > 1
+#if NCPUS > 1
 new->last_processor = current_processor();
 #endif
 ast_context(new, cpu_number());

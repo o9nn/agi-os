@@ -12,14 +12,14 @@ unsigned int csum_partial_copy(const char *src, char *dst, int len, unsigned int
 static inline unsigned short int csum_fold(unsigned int sum)
 {
 __asm__("
-.set	noat
-sll	$1,%0,16
-addu	%0,$1
-sltu	$1,%0,$1
-srl	%0,%0,16
-addu	%0,$1
-xori	%0,0xffff
-.set	at"
+.set noat
+sll $1,%0,16
+addu %0,$1
+sltu $1,%0,$1
+srl %0,%0,16
+addu %0,$1
+xori %0,0xffff
+.set at"
 : "=r" (sum)
 : "0" (sum)
 : "$1");
@@ -31,33 +31,33 @@ unsigned int ihl)
 unsigned int sum;
 unsigned long dummy;
 __asm__ __volatile__("
-.set	noreorder
-.set	noat
-lw	%0,(%1)
-subu	%2,4
-#blez	%2,2f
-sll	%2,2			# delay slot
-lw	%3,4(%1)
-addu	%2,%1			# delay slot
-addu	%0,%3
-sltu	$1,%0,%3
-lw	%3,8(%1)
-addu	%0,$1
-addu	%0,%3
-sltu	$1,%0,%3
-lw	%3,12(%1)
-addu	%0,$1
-addu	%0,%3
-sltu	$1,%0,%3
-addu	%0,$1
-1:	lw	%3,16(%1)
-addiu	%1,4
-addu	%0,%3
-sltu	$1,%0,%3
-bne	%2,%1,1b
-addu	%0,$1			# delay slot
-2:	.set	at
-.set	reorder"
+.set noreorder
+.set noat
+lw %0,(%1)
+subu %2,4
+#blez %2,2f
+sll %2,2 # delay slot
+lw %3,4(%1)
+addu %2,%1 # delay slot
+addu %0,%3
+sltu $1,%0,%3
+lw %3,8(%1)
+addu %0,$1
+addu %0,%3
+sltu $1,%0,%3
+lw %3,12(%1)
+addu %0,$1
+addu %0,%3
+sltu $1,%0,%3
+addu %0,$1
+1: lw %3,16(%1)
+addiu %1,4
+addu %0,%3
+sltu $1,%0,%3
+bne %2,%1,1b
+addu %0,$1 # delay slot
+2: .set at
+.set reorder"
 : "=&r" (sum), "=&r" (iph), "=&r" (ihl), "=&r" (dummy)
 : "1" (iph), "2" (ihl)
 : "$1");
@@ -70,17 +70,17 @@ unsigned short proto,
 unsigned int sum)
 {
 __asm__("
-.set	noat
-addu	%0,%2
-sltu	$1,%0,%2
-addu	%0,$1
-addu	%0,%3
-sltu	$1,%0,%3
-addu	%0,$1
-addu	%0,%4
-sltu	$1,%0,%4
-addu	%0,$1
-.set	at"
+.set noat
+addu %0,%2
+sltu $1,%0,%2
+addu %0,$1
+addu %0,%3
+sltu $1,%0,%3
+addu %0,$1
+addu %0,%4
+sltu $1,%0,%4
+addu %0,$1
+.set at"
 : "=r" (sum)
 : "0" (daddr), "r"(saddr),
 #ifdef __MIPSEL__
@@ -112,47 +112,47 @@ unsigned short proto,
 unsigned int sum)
 {
 __asm__("
-.set	noreorder
-.set	noat
-addu	%0,%5		# proto (long in network byte order)
-sltu	$1,%0,%5
-addu	%0,$1
-addu	%0,%6		# csum
-sltu	$1,%0,%6
-lw	%1,0(%2)	# four words source address
-addu	%0,$1
-addu	%0,%1
-sltu	$1,%0,$1
-lw	%1,4(%2)
-addu	%0,$1
-addu	%0,%1
-sltu	$1,%0,$1
-lw	%1,8(%2)
-addu	%0,$1
-addu	%0,%1
-sltu	$1,%0,$1
-lw	%1,12(%2)
-addu	%0,$1
-addu	%0,%1
-sltu	$1,%0,$1
-lw	%1,0(%3)
-addu	%0,$1
-addu	%0,%1
-sltu	$1,%0,$1
-lw	%1,4(%3)
-addu	%0,$1
-addu	%0,%1
-sltu	$1,%0,$1
-lw	%1,8(%3)
-addu	%0,$1
-addu	%0,%1
-sltu	$1,%0,$1
-lw	%1,12(%3)
-addu	%0,$1
-addu	%0,%1
-sltu	$1,%0,$1
-.set	noat
-.set	noreorder"
+.set noreorder
+.set noat
+addu %0,%5 # proto (long in network byte order)
+sltu $1,%0,%5
+addu %0,$1
+addu %0,%6 # csum
+sltu $1,%0,%6
+lw %1,0(%2) # four words source address
+addu %0,$1
+addu %0,%1
+sltu $1,%0,$1
+lw %1,4(%2)
+addu %0,$1
+addu %0,%1
+sltu $1,%0,$1
+lw %1,8(%2)
+addu %0,$1
+addu %0,%1
+sltu $1,%0,$1
+lw %1,12(%2)
+addu %0,$1
+addu %0,%1
+sltu $1,%0,$1
+lw %1,0(%3)
+addu %0,$1
+addu %0,%1
+sltu $1,%0,$1
+lw %1,4(%3)
+addu %0,$1
+addu %0,%1
+sltu $1,%0,$1
+lw %1,8(%3)
+addu %0,$1
+addu %0,%1
+sltu $1,%0,$1
+lw %1,12(%3)
+addu %0,$1
+addu %0,%1
+sltu $1,%0,$1
+.set noat
+.set noreorder"
 : "=r" (sum),
 "=r" (proto)
 : "r" (saddr),

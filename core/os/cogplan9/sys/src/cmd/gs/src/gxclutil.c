@@ -335,7 +335,7 @@ gx_color_index data = color;
 if (color == 0) {
 bytes_dropped = num_bytes;
 }
-else  {
+else {
 while ((data & 0xff) == 0) {
 bytes_dropped++;
 data >>= 8;

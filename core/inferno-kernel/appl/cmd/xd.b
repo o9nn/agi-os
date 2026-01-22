@@ -26,21 +26,21 @@ fmtbases := array [] of {
 16,
 };
 fwidths := array [] of {
-3,	# 1o
-3,	# 1d
-2,	# 1x
-6,	# 2o
-5,	# 2d
-4,	# 2x
-11,	# 4o
-10,	# 4d
-8,	# 4x
-22,	# 8o
-20,	# 8d
-16,	# 8x
+3, # 1o
+3, # 1d
+2, # 1x
+6, # 2o
+5, # 2d
+4, # 2x
+11, # 4o
+10, # 4d
+8, # 4x
+22, # 8o
+20, # 8d
+16, # 8x
 };
 bytepos := array [16] of { * => 0 };
-formats := array [10] of (int, int, int);	# (nbytes, base, fieldwidth)
+formats := array [10] of (int, int, int); # (nbytes, base, fieldwidth)
 nformats := 0;
 addrbase := 16;
 repeats := 0;
@@ -52,7 +52,7 @@ pad : string;
 init(nil : ref Draw->Context, argv : list of string)
 {
 sys = load Sys Sys->PATH;
-stdin  = sys->fildes(0);
+stdin = sys->fildes(0);
 stdout = sys->fildes(1);
 stderr = sys->fildes(2);
 bufio = load Bufio Bufio->PATH;
@@ -95,10 +95,10 @@ case arg[1] {
 'a' =>
 addrbase = fmtbases[baseix];
 continue;
-'b' or '1' =>	n = 0;
-'w' or '2' =>	n = 1;
-'l' or '4' =>	n = 2;
-'v' or '8' =>	n = 3;
+'b' or '1' => n = 0;
+'w' or '2' => n = 1;
+'l' or '4' => n = 2;
+'v' or '8' => n = 3;
 * =>
 usage();
 }
@@ -108,7 +108,7 @@ continue;
 usage();
 }
 if (nformats == 0)
-addformat(2, 2);	# "4x"
+addformat(2, 2); # "4x"
 if (argv == nil)
 dump(nil, 0);
 else if (tl argv == nil)
@@ -227,7 +227,7 @@ break;
 output.flush();
 }
 hexchars : con "0123456789abcdef";
-big2str(b : big, minw, base, padc  : int) : string
+big2str(b : big, minw, base, padc : int) : string
 {
 s := "";
 do {
@@ -258,10 +258,10 @@ if (base == 256) {
 # special -c case
 ch := int data[i];
 case ch {
-'\t' =>	text = "\\t";
-'\r' =>	text = "\\r";
-'\n' =>	text = "\\n";
-'\b' =>	text = "\\b";
+'\t' => text = "\\t";
+'\r' => text = "\\r";
+'\n' => text = "\\n";
+'\b' => text = "\\b";
 * =>
 if (ch >= 16r7f || ' ' > ch)
 text = sys->sprint("%.2x", ch);

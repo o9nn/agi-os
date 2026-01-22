@@ -15,7 +15,7 @@ ReadWriteProxy(Type t, const std::string&&);
 virtual ~ReadWriteProxy();
 virtual void open(void);
 virtual void close(void);
-virtual bool connected(void) { return  _reader != nullptr; }
+virtual bool connected(void) { return _reader != nullptr; }
 protected:
 virtual void getAtom(const Handle&);
 virtual void fetchIncomingSet(AtomSpace*, const Handle&);

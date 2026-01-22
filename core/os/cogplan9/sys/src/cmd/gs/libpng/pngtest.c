@@ -1,37 +1,37 @@
 #include "png.h"
 #if defined(_WIN32_WCE)
-#  if _WIN32_WCE < 211
+# if _WIN32_WCE < 211
 __error__ (f|w)printf functions are not supported on old WindowsCE.;
-#  endif
-#  include <windows.h>
-#  include <stdlib.h>
-#  define READFILE(file, data, length, check) \
+# endif
+# include <windows.h>
+# include <stdlib.h>
+# define READFILE(file, data, length, check) \
 if (ReadFile(file, data, length, &check,NULL)) check = 0
-#  define WRITEFILE(file, data, length, check)) \
+# define WRITEFILE(file, data, length, check)) \
 if (WriteFile(file, data, length, &check, NULL)) check = 0
-#  define FCLOSE(file) CloseHandle(file)
+# define FCLOSE(file) CloseHandle(file)
 #else
-#  include <stdio.h>
-#  include <stdlib.h>
-#  include <assert.h>
-#  define READFILE(file, data, length, check) \
+# include <stdio.h>
+# include <stdlib.h>
+# include <assert.h>
+# define READFILE(file, data, length, check) \
 check=(png_size_t)fread(data,(png_size_t)1,length,file)
-#  define WRITEFILE(file, data, length, check) \
+# define WRITEFILE(file, data, length, check) \
 check=(png_size_t)fwrite(data,(png_size_t)1, length, file)
-#  define FCLOSE(file) fclose(file)
+# define FCLOSE(file) fclose(file)
 #endif
 #if defined(PNG_NO_STDIO)
-#  if defined(_WIN32_WCE)
-typedef HANDLE                png_FILE_p;
-#  else
-typedef FILE                * png_FILE_p;
-#  endif
+# if defined(_WIN32_WCE)
+typedef HANDLE png_FILE_p;
+# else
+typedef FILE * png_FILE_p;
+# endif
 #endif
 #ifndef PNG_DEBUG
-#  define PNG_DEBUG 0
+# define PNG_DEBUG 0
 #endif
 #if !PNG_DEBUG
-#  define SINGLE_ROWBUF_ALLOC
+# define SINGLE_ROWBUF_ALLOC
 #endif
 #ifdef PNG_NO_FLOATING_POINT_SUPPORTED
 #undef PNGTEST_TIMING
@@ -41,7 +41,7 @@ static float t_start, t_stop, t_decode, t_encode, t_misc;
 #include <time.h>
 #endif
 #ifndef png_jmpbuf
-#  define png_jmpbuf(png_ptr) png_ptr->jmpbuf
+# define png_jmpbuf(png_ptr) png_ptr->jmpbuf
 #endif
 #ifdef PNGTEST_TIMING
 static float t_start, t_stop, t_decode, t_encode, t_misc;
@@ -274,7 +274,7 @@ static void
 pngtest_write_data(png_structp png_ptr, png_bytep data, png_size_t length)
 {
 png_uint_32 check;
-WRITEFILE((png_FILE_p)png_ptr->io_ptr,  data, length, check);
+WRITEFILE((png_FILE_p)png_ptr->io_ptr, data, length, check);
 if (check != length)
 {
 png_error(png_ptr, "Write Error");
@@ -338,8 +338,8 @@ pngtest_warning(png_ptr, message);
 #if defined(PNG_USER_MEM_SUPPORTED) && PNG_DEBUG
 typedef struct memory_information
 {
-png_uint_32               size;
-png_voidp                 pointer;
+png_uint_32 size;
+png_voidp pointer;
 struct memory_information FAR *next;
 } memory_information;
 typedef memory_information FAR *memory_infop;
@@ -562,19 +562,19 @@ png_memcpy(png_jmpbuf(write_ptr),jmpbuf,png_sizeof(jmp_buf));
 png_debug(0, "Initializing input and output streams\n");
 #if !defined(PNG_NO_STDIO)
 png_init_io(read_ptr, fpin);
-#  ifdef PNG_WRITE_SUPPORTED
+# ifdef PNG_WRITE_SUPPORTED
 png_init_io(write_ptr, fpout);
-#  endif
+# endif
 #else
 png_set_read_fn(read_ptr, (png_voidp)fpin, pngtest_read_data);
-#  ifdef PNG_WRITE_SUPPORTED
-png_set_write_fn(write_ptr, (png_voidp)fpout,  pngtest_write_data,
-#    if defined(PNG_WRITE_FLUSH_SUPPORTED)
+# ifdef PNG_WRITE_SUPPORTED
+png_set_write_fn(write_ptr, (png_voidp)fpout, pngtest_write_data,
+# if defined(PNG_WRITE_FLUSH_SUPPORTED)
 pngtest_flush);
-#    else
+# else
 NULL);
-#    endif
-#  endif
+# endif
+# endif
 #endif
 if(status_dots_requested == 1)
 {
@@ -603,16 +603,16 @@ zero_samples=0;
 png_set_write_user_transform_fn(write_ptr, count_zero_samples);
 #endif
 #if defined(PNG_READ_UNKNOWN_CHUNKS_SUPPORTED)
-#  ifndef PNG_HANDLE_CHUNK_ALWAYS
-#    define PNG_HANDLE_CHUNK_ALWAYS       3
-#  endif
+# ifndef PNG_HANDLE_CHUNK_ALWAYS
+# define PNG_HANDLE_CHUNK_ALWAYS 3
+# endif
 png_set_keep_unknown_chunks(read_ptr, PNG_HANDLE_CHUNK_ALWAYS,
 png_bytep_NULL, 0);
 #endif
 #if defined(PNG_WRITE_UNKNOWN_CHUNKS_SUPPORTED)
-#  ifndef PNG_HANDLE_CHUNK_IF_SAFE
-#    define PNG_HANDLE_CHUNK_IF_SAFE      2
-#  endif
+# ifndef PNG_HANDLE_CHUNK_IF_SAFE
+# define PNG_HANDLE_CHUNK_IF_SAFE 2
+# endif
 png_set_keep_unknown_chunks(write_ptr, PNG_HANDLE_CHUNK_IF_SAFE,
 png_bytep_NULL, 0);
 #endif
@@ -863,9 +863,9 @@ png_debug(0, "Writing row data\n");
 #if defined(PNG_READ_INTERLACING_SUPPORTED) || \
 defined(PNG_WRITE_INTERLACING_SUPPORTED)
 num_pass = png_set_interlace_handling(read_ptr);
-#  ifdef PNG_WRITE_SUPPORTED
+# ifdef PNG_WRITE_SUPPORTED
 png_set_interlace_handling(write_ptr);
-#  endif
+# endif
 #else
 num_pass=1;
 #endif

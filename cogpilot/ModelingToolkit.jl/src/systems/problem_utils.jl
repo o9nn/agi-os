@@ -286,7 +286,7 @@ println(io, "$sym  => $val")
 end
 println(io,
 """
-In order to resolve this, please provide additional numeric guesses so that the chain can be resolved to assign numeric values to each variable.            """)
+In order to resolve this, please provide additional numeric guesses so that the chain can be resolved to assign numeric values to each variable. """)
 end
 const MISSING_VARIABLES_MESSAGE = """
 Initial condition underdefined. Some are missing from the variable map.
@@ -452,7 +452,7 @@ end
 """
 $(TYPEDSIGNATURES)
 For each `k => v` in `varmap` where `k` is an array (or array symbolic) add
-`k[i] => v[i]` for all `i  in eachindex(k)`. Return the modified `varmap`.
+`k[i] => v[i]` for all `i in eachindex(k)`. Return the modified `varmap`.
 """
 function scalarize_varmap!(varmap::AbstractDict)
 for k in collect(keys(varmap))

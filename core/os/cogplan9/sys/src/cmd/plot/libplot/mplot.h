@@ -3,11 +3,11 @@
 #include <stdio.h>
 #include <draw.h>
 #include <event.h>
-#define SCX(A) ((((A) - e1->xmin)*e1->scalex  + e1->left)+.5)
+#define SCX(A) ((((A) - e1->xmin)*e1->scalex + e1->left)+.5)
 #define SCY(A) ((((A) - e1->ymin)*e1->scaley + e1->bottom)+.5)
-#define	SCR(A) ((A)*e1->scalex+.5)
-#define unorm(y)	(double)(e1->sidey - y)
-#define	BIGINT	0x3FFFFFFF
+#define SCR(A) ((A)*e1->scalex+.5)
+#define unorm(y) (double)(e1->sidey - y)
+#define BIGINT 0x3FFFFFFF
 extern struct penvir {
 double left, bottom;
 double xmin, ymin;

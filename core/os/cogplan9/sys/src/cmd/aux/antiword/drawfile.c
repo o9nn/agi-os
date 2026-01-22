@@ -3,25 +3,25 @@
 #include "DeskLib:SWI.h"
 #include "drawfile.h"
 #include "antiword.h"
-#define DRAWFILE_OBJECT_TOO_SMALL	200
-#define DRAWFILE_NO_TEXT		201
-#define DRAWFILE_BAD_CHARACTER		202
-#define DRAWFILE_SMALL_MEMORY		203
-#define DRAWFILE_PATH_WITHOUT_LINES	204
-#define DRAWFILE_BAD_PATH_TYPE		205
-#define DRAWFILE_PATH_WITHOUT_END	206
-#define DRAWFILE_BAD_SPRITE_SIZE	207
-#define DRAWFILE_BAD_JPEG_SIZE		208
-#define DRAWFILE_TOO_SMALL		209
-#define DRAWFILE_NOT_A_DRAWFILE		210
-#define DRAWFILE_OBJECT_SIZE		211
-#define DRAWFILE_MANY_FONTTABLES	212
-#define DRAWFILE_TEXT_NO_FONT		213
-#define DRAWFILE_OBJECT_UNEXPECTED	214
-#define DRAWFILE_SIZE_ERROR		215
+#define DRAWFILE_OBJECT_TOO_SMALL 200
+#define DRAWFILE_NO_TEXT 201
+#define DRAWFILE_BAD_CHARACTER 202
+#define DRAWFILE_SMALL_MEMORY 203
+#define DRAWFILE_PATH_WITHOUT_LINES 204
+#define DRAWFILE_BAD_PATH_TYPE 205
+#define DRAWFILE_PATH_WITHOUT_END 206
+#define DRAWFILE_BAD_SPRITE_SIZE 207
+#define DRAWFILE_BAD_JPEG_SIZE 208
+#define DRAWFILE_TOO_SMALL 209
+#define DRAWFILE_NOT_A_DRAWFILE 210
+#define DRAWFILE_OBJECT_SIZE 211
+#define DRAWFILE_MANY_FONTTABLES 212
+#define DRAWFILE_TEXT_NO_FONT 213
+#define DRAWFILE_OBJECT_UNEXPECTED 214
+#define DRAWFILE_SIZE_ERROR 215
 typedef struct drawfile_error_tag {
-int		iErrorNumber;
-const char	*szErrorText;
+int iErrorNumber;
+const char *szErrorText;
 } drawfile_error_type;
 static const drawfile_error_type atErrors[] = {
 { DRAWFILE_OBJECT_TOO_SMALL, "Object too small"},
@@ -44,9 +44,9 @@ static const drawfile_error_type atErrors[] = {
 static os_error *
 pFillError(int iErrorNumber)
 {
-static os_error		tError;
-const drawfile_error_type	*pTmp;
-const char	*szErrorText;
+static os_error tError;
+const drawfile_error_type *pTmp;
+const char *szErrorText;
 szErrorText = "Unknown error";
 for (pTmp = atErrors; pTmp < atErrors + elementsof(atErrors); pTmp++) {
 if (iErrorNumber == pTmp->iErrorNumber) {
@@ -75,7 +75,7 @@ os_error *
 Drawfile_CreateDiagram(drawfile_info *pInfo, size_t tMemorySize,
 const char *szCreator, wimp_box tBbox)
 {
-drawfile_diagram	*pDiag;
+drawfile_diagram *pDiag;
 if (tMemorySize < offsetof(drawfile_diagram, objects)) {
 return pFillError(DRAWFILE_SMALL_MEMORY);
 }
@@ -92,9 +92,9 @@ os_error *
 Drawfile_AppendObject(drawfile_info *pInfo, size_t tMemorySize,
 const drawfile_object *pObject, BOOL bRebind)
 {
-wimp_box	*pMainBbox;
-const wimp_box	*pBbox;
-byte		*pAfter;
+wimp_box *pMainBbox;
+const wimp_box *pBbox;
+byte *pAfter;
 if (tMemorySize < pInfo->length + pObject->size) {
 return pFillError(DRAWFILE_OBJECT_TOO_SMALL);
 }
@@ -165,7 +165,7 @@ os_error *
 Drawfile_RenderDiagram(drawfile_info *pInfo, window_redrawblock *pRedraw,
 double dScale)
 {
-int	aiTransform[6];
+int aiTransform[6];
 fail(pInfo == NULL);
 fail(pInfo->data == NULL);
 fail(pRedraw == NULL);
@@ -182,7 +182,7 @@ return SWI(6, 0, DrawFile_Render | XOS_Bit,
 static os_error *
 pVerifyText(const drawfile_text *pText)
 {
-const unsigned char	*pucTmp;
+const unsigned char *pucTmp;
 if (pText->text[0] == '\0') {
 return pFillError(DRAWFILE_NO_TEXT);
 }
@@ -198,9 +198,9 @@ return NULL;
 static os_error *
 pVerifyPath(const drawfile_path *pPath, int iSize)
 {
-const int	*piTmp;
-int	iElements;
-BOOL	bLine;
+const int *piTmp;
+int iElements;
+BOOL bLine;
 bLine = FALSE;
 iElements = (iSize - offsetof(drawfile_path, path)) / 4;
 for (piTmp = pPath->path; piTmp < pPath->path + iElements; piTmp++) {
@@ -251,12 +251,12 @@ return NULL;
 os_error *
 Drawfile_VerifyDiagram(drawfile_info *pInfo)
 {
-drawfile_diagram	*pDiag;
-drawfile_object	*pObj;
-os_error	*pError;
-const char	*pcTmp;
-int		iToGo, iFontTables;
-BOOL		bTypeFontTable;
+drawfile_diagram *pDiag;
+drawfile_object *pObj;
+os_error *pError;
+const char *pcTmp;
+int iToGo, iFontTables;
+BOOL bTypeFontTable;
 TRACE_MSG("Drawfile_VerifyDiagram");
 fail(pInfo == NULL);
 if (pInfo->length < offsetof(drawfile_diagram, objects)) {

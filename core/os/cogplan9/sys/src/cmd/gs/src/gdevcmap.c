@@ -152,8 +152,8 @@ pdcolor, pcpath, memory, pinfo);
 private void
 cmap_gray_cs_to_cm(gx_device * dev, frac gray, frac out[])
 {
-gx_device_cmap *    cmdev = (gx_device_cmap *)dev;
-frac gx_max_color_frac   = cv2frac(gx_max_color_value);
+gx_device_cmap * cmdev = (gx_device_cmap *)dev;
+frac gx_max_color_frac = cv2frac(gx_max_color_value);
 switch (cmdev->mapping_method) {
 case device_cmap_snap_to_primaries:
 gray = (gray <= gx_max_color_frac / 2 ? 0 : gx_max_color_frac);
@@ -164,15 +164,15 @@ break;
 }
 {
 gx_device *target = cmdev->target ? cmdev->target : dev;
-gx_cm_color_map_procs *cm_procs =  (dev_proc( target, get_color_mapping_procs)(target));
+gx_cm_color_map_procs *cm_procs = (dev_proc( target, get_color_mapping_procs)(target));
 cm_procs->map_gray(target, gray, out );
 }
 }
 private void
 cmap_rgb_cs_to_cm(gx_device * dev, const gs_imager_state * pis, frac r, frac g, frac b, frac out[])
 {
-gx_device_cmap *    cmdev = (gx_device_cmap *)dev;
-frac gx_max_color_frac   = cv2frac(gx_max_color_value);
+gx_device_cmap * cmdev = (gx_device_cmap *)dev;
+frac gx_max_color_frac = cv2frac(gx_max_color_value);
 switch (cmdev->mapping_method) {
 case device_cmap_snap_to_primaries:
 r = (r <= gx_max_color_frac / 2 ? 0 : gx_max_color_frac);
@@ -191,15 +191,15 @@ break;
 }
 {
 gx_device *target = cmdev->target ? cmdev->target : dev;
-gx_cm_color_map_procs *cm_procs =  (dev_proc( target, get_color_mapping_procs)(target));
+gx_cm_color_map_procs *cm_procs = (dev_proc( target, get_color_mapping_procs)(target));
 cm_procs->map_rgb(target, pis, r, g, b, out );
 }
 }
 private void
 cmap_cmyk_cs_to_cm(gx_device * dev, frac c, frac m, frac y, frac k, frac out[])
 {
-gx_device_cmap *    cmdev = (gx_device_cmap *)dev;
-frac gx_max_color_frac   = cv2frac(gx_max_color_value);
+gx_device_cmap * cmdev = (gx_device_cmap *)dev;
+frac gx_max_color_frac = cv2frac(gx_max_color_value);
 switch (cmdev->mapping_method) {
 case device_cmap_snap_to_primaries:
 c = (c > gx_max_color_frac / 2 ? 0 : gx_max_color_frac);
@@ -218,7 +218,7 @@ break;
 }
 {
 gx_device *target = cmdev->target ? cmdev->target : dev;
-gx_cm_color_map_procs *cm_procs =  (dev_proc( target, get_color_mapping_procs)(target));
+gx_cm_color_map_procs *cm_procs = (dev_proc( target, get_color_mapping_procs)(target));
 cm_procs->map_cmyk(target, c, m, y, k, out );
 }
 }

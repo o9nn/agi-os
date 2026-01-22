@@ -4,85 +4,85 @@
 (export lg-conn-type-match?)
 (set-procedure-property! lg-conn-type-match? 'documentation
 "
-  lg-conn-type-match? CON-A CON-B
-     Return #t if connector CON-A matches CON-B, else return #f.
-     Both CON-A and CON-B must be of type LgConnector.
-     This does NOT check connector direction agreement
-     checks the connector strings, using the standard Link Grammar
-     connector matching rules.
+lg-conn-type-match? CON-A CON-B
+Return #t if connector CON-A matches CON-B, else return #f.
+Both CON-A and CON-B must be of type LgConnector.
+This does NOT check connector direction agreement
+checks the connector strings, using the standard Link Grammar
+connector matching rules.
 ")
 (export lg-conn-linkable?)
 (set-procedure-property! lg-conn-linkable? 'documentation
 "
-  lg-conn-linkable? CON-A CON-B
-     Return #t if connector CON-A can link to CON-B, else return #f.
-     Both CON-A and CON-B must be of type LgConnector.
-     This checks the connector strings for linkability, using the
-     standard Link Grammar connector matching rules.
+lg-conn-linkable? CON-A CON-B
+Return #t if connector CON-A can link to CON-B, else return #f.
+Both CON-A and CON-B must be of type LgConnector.
+This checks the connector strings for linkability, using the
+standard Link Grammar connector matching rules.
 ")
 (define-public (lg-dict-entry WORD)
 "
-  lg-dict-entry  WORD
-     Fetch the dictionary entry for WORD and place it in the atomspace.
-     WORD must be a WordNode. The language is assumed to be English.
-     The dictionary entry can subsequently be obtained by calling
-     (cog-incoming-by-type WORD 'LgDisjunct)
+lg-dict-entry  WORD
+Fetch the dictionary entry for WORD and place it in the atomspace.
+WORD must be a WordNode. The language is assumed to be English.
+The dictionary entry can subsequently be obtained by calling
+(cog-incoming-by-type WORD 'LgDisjunct)
 "
-	(define djset (cog-incoming-by-type WORD 'LgDisjunct))
-	(if (nil? djset)
-		(let ((dentry (LgDictEntry WORD (LgDictNode "en"))))
-			(catch 'wrong-type-arg
-				(lambda ()
-					(cog-execute! dentry)
-					(cog-extract! dentry))
-				(lambda (key . args) #f))
-			(cog-incoming-by-type WORD 'LgDisjunct)
-		)
-		djset)
+(define djset (cog-incoming-by-type WORD 'LgDisjunct))
+(if (nil? djset)
+(let ((dentry (LgDictEntry WORD (LgDictNode "en"))))
+(catch 'wrong-type-arg
+(lambda ()
+(cog-execute! dentry)
+(cog-extract! dentry))
+(lambda (key . args) #f))
+(cog-incoming-by-type WORD 'LgDisjunct)
+)
+djset)
 )
 (define-public (lg-get-dict-entry WORD)
 "
-  lg-get-dict-entry  WORD
-     Fetch the dictionary entry for WORD and place it in the atomspace.
-     WORD must be a WordNode.  The language is assumed to be English.
-     The dictionary entry can subsequently be obtained by calling
-     (cog-incoming-by-type WORD 'LgDisjunct)
-     DEPRECATED! Use lg-dict-entry instead!
+lg-get-dict-entry  WORD
+Fetch the dictionary entry for WORD and place it in the atomspace.
+WORD must be a WordNode.  The language is assumed to be English.
+The dictionary entry can subsequently be obtained by calling
+(cog-incoming-by-type WORD 'LgDisjunct)
+DEPRECATED! Use lg-dict-entry instead!
 "
-	(SetLink (lg-dict-entry WORD))
+(SetLink (lg-dict-entry WORD))
 )
 (define-public (lg-similar? word1 word2)
 "
-  lg-similar? WORD1 WORD2 - Check two words have a common disjunct.
-  Caution: This utility isn't really useful, as designed. Most LG
-  dictioary entries have hundreds, if not tens of thousands of
-  disjuncts, and will frequently have at least one disjunct in common,
-  while otherwise being dissimilar.  A much better measure of similarity
-  is provided by the Jaccard distance, which counts how many disjuncts
-  are shared in common.  (The Jaccard distance is currently not
-  implemented here.)
-  A second problem with this function is that the implementation is very
-  inefficient and slow.
+lg-similar? WORD1 WORD2 - Check two words have a common disjunct.
+Caution: This utility isn't really useful, as designed. Most LG
+dictioary entries have hundreds, if not tens of thousands of
+disjuncts, and will frequently have at least one disjunct in common,
+while otherwise being dissimilar.  A much better measure of similarity
+is provided by the Jaccard distance, which counts how many disjuncts
+are shared in common.  (The Jaccard distance is currently not
+implemented here.)
+A second problem with this function is that the implementation is very
+inefficient and slow.
 "
-	(define (get-set w)
-		(define roots (filter
-			(lambda (l) (equal? (cog-type l) 'LgDisjunct))
-			(cog-incoming-set w)))
-		(map cog-get-partner roots (circular-list w))
-	)
-	(lg-get-dict-entry word1)
-	(lg-get-dict-entry word2)
-	(not (nil? (lset-intersection equal? (get-set word1) (get-set word2))))
+(define (get-set w)
+(define roots (filter
+(lambda (l) (equal? (cog-type l) 'LgDisjunct))
+(cog-incoming-set w)))
+(map cog-get-partner roots (circular-list w))
+)
+(lg-get-dict-entry word1)
+(lg-get-dict-entry word2)
+(not (nil? (lset-intersection equal? (get-set word1) (get-set word2))))
 )
 (define-public (lg-conn-get-type conn)
 "
-  lg-conn-get-type CON - Get the LgConnNode out of LgConnector link
+lg-conn-get-type CON - Get the LgConnNode out of LgConnector link
 "
-	(cog-outgoing-atom conn 0)
+(cog-outgoing-atom conn 0)
 )
 (define-public (lg-conn-get-dir conn)
 "
-  lg-conn-get-dir CON - Get the LgConnDirNode out of LgConnector link
+lg-conn-get-dir CON - Get the LgConnDirNode out of LgConnector link
 "
-	(cog-outgoing-atom conn 1)
+(cog-outgoing-atom conn 1)
 )

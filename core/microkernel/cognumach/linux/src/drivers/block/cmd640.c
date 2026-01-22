@@ -13,52 +13,52 @@
 #include "ide.h"
 #include "ide_modes.h"
 int cmd640_vlb = 0;
-#define VID		0x00
-#define DID		0x02
-#define PCMD		0x04
-#define   PCMD_ENA	0x01
-#define PSTTS		0x06
-#define REVID		0x08
-#define PROGIF		0x09
-#define SUBCL		0x0a
-#define BASCL		0x0b
-#define BaseA0		0x10
-#define BaseA1		0x14
-#define BaseA2		0x18
-#define BaseA3		0x1c
-#define INTLINE		0x3c
-#define INPINE		0x3d
-#define	CFR		0x50
-#define   CFR_DEVREV		0x03
-#define   CFR_IDE01INTR		0x04
-#define	  CFR_DEVID		0x18
-#define	  CFR_AT_VESA_078h	0x20
-#define	  CFR_DSA1		0x40
-#define	  CFR_DSA0		0x80
-#define CNTRL		0x51
-#define	  CNTRL_DIS_RA0		0x40
-#define   CNTRL_DIS_RA1		0x80
-#define	  CNTRL_ENA_2ND		0x08
-#define	CMDTIM		0x52
-#define	ARTTIM0		0x53
-#define	DRWTIM0		0x54
-#define ARTTIM1 	0x55
-#define DRWTIM1		0x56
-#define ARTTIM23	0x57
-#define   ARTTIM23_DIS_RA2	0x04
-#define   ARTTIM23_DIS_RA3	0x08
-#define DRWTIM23	0x58
-#define BRST		0x59
-static byte prefetch_regs[4]  = {CNTRL, CNTRL, ARTTIM23, ARTTIM23};
+#define VID 0x00
+#define DID 0x02
+#define PCMD 0x04
+#define PCMD_ENA 0x01
+#define PSTTS 0x06
+#define REVID 0x08
+#define PROGIF 0x09
+#define SUBCL 0x0a
+#define BASCL 0x0b
+#define BaseA0 0x10
+#define BaseA1 0x14
+#define BaseA2 0x18
+#define BaseA3 0x1c
+#define INTLINE 0x3c
+#define INPINE 0x3d
+#define CFR 0x50
+#define CFR_DEVREV 0x03
+#define CFR_IDE01INTR 0x04
+#define CFR_DEVID 0x18
+#define CFR_AT_VESA_078h 0x20
+#define CFR_DSA1 0x40
+#define CFR_DSA0 0x80
+#define CNTRL 0x51
+#define CNTRL_DIS_RA0 0x40
+#define CNTRL_DIS_RA1 0x80
+#define CNTRL_ENA_2ND 0x08
+#define CMDTIM 0x52
+#define ARTTIM0 0x53
+#define DRWTIM0 0x54
+#define ARTTIM1 0x55
+#define DRWTIM1 0x56
+#define ARTTIM23 0x57
+#define ARTTIM23_DIS_RA2 0x04
+#define ARTTIM23_DIS_RA3 0x08
+#define DRWTIM23 0x58
+#define BRST 0x59
+static byte prefetch_regs[4] = {CNTRL, CNTRL, ARTTIM23, ARTTIM23};
 static byte prefetch_masks[4] = {CNTRL_DIS_RA0, CNTRL_DIS_RA1, ARTTIM23_DIS_RA2, ARTTIM23_DIS_RA3};
 #ifdef CONFIG_BLK_DEV_CMD640_ENHANCED
 static byte arttim_regs[4] = {ARTTIM0, ARTTIM1, ARTTIM23, ARTTIM23};
 static byte drwtim_regs[4] = {DRWTIM0, DRWTIM1, DRWTIM23, DRWTIM23};
-static byte setup_counts[4]    = {4, 4, 4, 4};
-static byte active_counts[4]   = {16, 16, 16, 16};
+static byte setup_counts[4] = {4, 4, 4, 4};
+static byte active_counts[4] = {16, 16, 16, 16};
 static byte recovery_counts[4] = {16, 16, 16, 16};
 #endif
-static ide_hwif_t  *cmd_hwif0, *cmd_hwif1;
+static ide_hwif_t *cmd_hwif0, *cmd_hwif1;
 static ide_drive_t *cmd_drives[4];
 static unsigned int cmd640_key;
 static void (*put_cmd640_reg)(unsigned short reg, byte val);
@@ -294,18 +294,18 @@ switch (b) {
 case 0x00: b = 4; break;
 case 0x80: b = 3; break;
 case 0x40: b = 2; break;
-default:   b = 5; break;
+default: b = 5; break;
 }
 setup_counts[index] = b;
 b = get_cmd640_reg(drwtim_regs[index]);
-active_counts[index]   = (b >> 4)   ? (b >> 4)   : 0x10;
+active_counts[index] = (b >> 4) ? (b >> 4) : 0x10;
 recovery_counts[index] = (b & 0x0f) ? (b & 0x0f) : 0x10;
 }
 static void program_drive_counts (unsigned int index)
 {
 unsigned long flags;
-byte setup_count    = setup_counts[index];
-byte active_count   = active_counts[index];
+byte setup_count = setup_counts[index];
+byte active_count = active_counts[index];
 byte recovery_count = recovery_counts[index];
 if (index > 1) {
 unsigned int mate;
@@ -319,10 +319,10 @@ recovery_count = recovery_counts[mate];
 }
 }
 switch (setup_count) {
-case 4:	 setup_count = 0x00; break;
-case 3:	 setup_count = 0x80; break;
+case 4: setup_count = 0x00; break;
+case 3: setup_count = 0x80; break;
 case 1:
-case 2:	 setup_count = 0x40; break;
+case 2: setup_count = 0x40; break;
 default: setup_count = 0xc0;
 }
 save_flags (flags);
@@ -339,7 +339,7 @@ byte setup_count, active_count, recovery_count, recovery_count2, cycle_count;
 int bus_speed = ide_system_bus_speed();
 if (pio_mode > 5)
 pio_mode = 5;
-setup_time  = ide_pio_timings[pio_mode].setup_time;
+setup_time = ide_pio_timings[pio_mode].setup_time;
 active_time = ide_pio_timings[pio_mode].active_time;
 recovery_time = cycle_time - (setup_time + active_time);
 clock_time = 1000 / bus_speed;
@@ -364,15 +364,15 @@ if (cmd640_chip_version > 1)
 recovery_count -= 1;
 if (recovery_count > 16)
 recovery_count = 16;
-setup_counts[index]    = setup_count;
-active_counts[index]   = active_count;
+setup_counts[index] = setup_count;
+active_counts[index] = active_count;
 recovery_counts[index] = recovery_count;
 program_drive_counts (index);
 }
 static void cmd640_tune_drive (ide_drive_t *drive, byte mode_wanted)
 {
 byte b;
-ide_pio_data_t  d;
+ide_pio_data_t d;
 unsigned int index = 0;
 while (drive != cmd_drives[index]) {
 if (++index > 3) {
@@ -493,8 +493,8 @@ for (index = 0; index < (2 + (second_port_cmd640 << 1)); index++) {
 ide_drive_t *drive = cmd_drives[index];
 #ifdef CONFIG_BLK_DEV_CMD640_ENHANCED
 if (drive->autotune || ((index > 1) && second_port_toggled)) {
-setup_counts    [index] = 4;
-active_counts   [index] = 16;
+setup_counts [index] = 4;
+active_counts [index] = 16;
 recovery_counts [index] = 16;
 program_drive_counts (index);
 set_prefetch_mode (index, 0);

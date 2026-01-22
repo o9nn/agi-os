@@ -35,7 +35,7 @@ while (true)
 {
 const RealType u = dist(rng);
 const RealType x = H_inv(u);
-const IntType  k = std::round(x);
+const IntType k = std::round(x);
 if (k - x <= cut) return k;
 if (u >= H(k + 0.5) - h(k))
 return k;
@@ -46,15 +46,15 @@ RealType q() const { return _q; }
 result_type min() const { return 1; }
 result_type max() const { return n; }
 private:
-IntType    n;
-RealType   _s;
-RealType   _q;
-RealType   oms;
-bool       spole;
-RealType   rvs;
-RealType   H_x1;
-RealType   H_n;
-RealType   cut;
+IntType n;
+RealType _s;
+RealType _q;
+RealType oms;
+bool spole;
+RealType rvs;
+RealType H_x1;
+RealType H_n;
+RealType cut;
 std::uniform_real_distribution<RealType> dist;
 static constexpr RealType epsilon = 2e-5;
 static double
@@ -114,10 +114,10 @@ RealType q() const { return _q; }
 result_type min() const { return 1; }
 result_type max() const { return _n; }
 private:
-std::vector<RealType>               _pdf;
-IntType                             _n;
-RealType                            _s;
-RealType                            _q;
+std::vector<RealType> _pdf;
+IntType _n;
+RealType _s;
+RealType _q;
 std::discrete_distribution<IntType> _dist;
 IntType init(const IntType n, const RealType s, const RealType q)
 {

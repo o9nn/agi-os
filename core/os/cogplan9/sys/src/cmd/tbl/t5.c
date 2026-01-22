@@ -2,7 +2,7 @@
 void
 gettbl(void)
 {
-int	icol, ch;
+int icol, ch;
 cstore = cspace = chspace();
 textflg = 0;
 for (nlin = nslin = 0; gets1(cstore, MAXCHS - (cstore - cspace)); nlin++) {
@@ -66,7 +66,7 @@ csize[icol][stynum[nlin]]);
 for (; (ch = *cstore) != '\0' && ch != tab; cstore++)
 ;
 *cstore++ = '\0';
-switch (ctype(nlin, icol))  {
+switch (ctype(nlin, icol)) {
 case 'n':
 table[nlin][icol].rcol = maknew(table[nlin][icol].col);
 break;
@@ -98,7 +98,7 @@ untext();
 int
 nodata(int il)
 {
-int	c;
+int c;
 for (c = 0; c < ncol; c++) {
 switch (ctype(il, c)) {
 case 'c':
@@ -115,7 +115,7 @@ return(1);
 int
 oneh(int lin)
 {
-int	k, icol;
+int k, icol;
 k = ctype(lin, 0);
 for (icol = 1; icol < ncol; icol++) {
 if (k != ctype(lin, icol))
@@ -127,8 +127,8 @@ return(k);
 void
 permute(void)
 {
-int	irow, jcol, is;
-char	*start, *strig;
+int irow, jcol, is;
+char *start, *strig;
 for (jcol = 0; jcol < ncol; jcol++) {
 for (irow = 1; irow < nlin; irow++) {
 if (vspand(irow, jcol, 0)) {

@@ -4,19 +4,19 @@
 #include "llama-context.h"
 llama_memory_hybrid::llama_memory_hybrid(
 const llama_model & model,
-ggml_type    type_k,
-ggml_type    type_v,
-bool    v_trans,
-uint32_t    kv_size,
-uint32_t    n_pad,
-uint32_t    n_swa,
-llama_swa_type    swa_type,
-ggml_type    type_r,
-ggml_type    type_s,
-uint32_t    rs_size,
-uint32_t    n_seq_max,
-bool    offload,
-bool    unified,
+ggml_type type_k,
+ggml_type type_v,
+bool v_trans,
+uint32_t kv_size,
+uint32_t n_pad,
+uint32_t n_swa,
+llama_swa_type swa_type,
+ggml_type type_r,
+ggml_type type_s,
+uint32_t rs_size,
+uint32_t n_seq_max,
+bool offload,
+bool unified,
 layer_filter_cb && filter_attn,
 layer_filter_cb && filter_recr) :
 hparams(model.hparams),
@@ -144,18 +144,18 @@ status(llama_memory_status_combine(ctx_attn->get_status(), ctx_recr->get_status(
 llama_memory_hybrid_context::llama_memory_hybrid_context(
 llama_memory_hybrid * mem,
 llama_context * lctx,
-bool   optimize) :
+bool optimize) :
 ctx_attn(mem->get_mem_attn()->init_update(lctx, optimize)),
 ctx_recr(mem->get_mem_recr()->init_update(lctx, optimize)),
 status(llama_memory_status_combine(ctx_attn->get_status(), ctx_recr->get_status())) {
 }
 llama_memory_hybrid_context::llama_memory_hybrid_context(
 llama_memory_hybrid * mem,
-slot_info_vec_t   sinfos_attn,
-std::vector<llama_ubatch>   ubatches) :
+slot_info_vec_t sinfos_attn,
+std::vector<llama_ubatch> ubatches) :
 ubatches(std::move(ubatches)),
 ctx_attn(new llama_kv_cache_unified_context(mem->get_mem_attn(), std::move(sinfos_attn), this->ubatches)),
-ctx_recr(new llama_memory_recurrent_context(mem->get_mem_recr(),                        this->ubatches)),
+ctx_recr(new llama_memory_recurrent_context(mem->get_mem_recr(), this->ubatches)),
 status(llama_memory_status_combine(ctx_attn->get_status(), ctx_recr->get_status())) {
 }
 bool llama_memory_hybrid_context::next() {

@@ -43,11 +43,11 @@ const char *dir, const char *name,
 char **composite);
 error_t (*basename) (struct ftp_conn *conn, char **name);
 };
-#define FTP_CONN_CNTL_DEBUG_CMD		1
-#define FTP_CONN_CNTL_DEBUG_REPLY	2
-#define FTP_CONN_GET_LOGIN_PARAM_USER	1
-#define FTP_CONN_GET_LOGIN_PARAM_PASS	2
-#define FTP_CONN_GET_LOGIN_PARAM_ACCT	3
+#define FTP_CONN_CNTL_DEBUG_CMD 1
+#define FTP_CONN_CNTL_DEBUG_REPLY 2
+#define FTP_CONN_GET_LOGIN_PARAM_USER 1
+#define FTP_CONN_GET_LOGIN_PARAM_PASS 2
+#define FTP_CONN_GET_LOGIN_PARAM_ACCT 3
 struct ftp_conn_hooks
 {
 void (*choose_syshooks) (struct ftp_conn *conn, const char *syst);

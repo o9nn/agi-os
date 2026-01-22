@@ -19,8 +19,8 @@ static int put_int32(unsigned char *p, const unsigned int q)
 {
 *p++ = (q >> 24) & 0xFF;
 *p++ = (q >> 16) & 0xFF;
-*p++ = (q >>  8) & 0xFF;
-*p++ = (q >>  0) & 0xFF;
+*p++ = (q >> 8) & 0xFF;
+*p++ = (q >> 0) & 0xFF;
 return 4;
 }
 void inode_clear(romfs_inode* node)

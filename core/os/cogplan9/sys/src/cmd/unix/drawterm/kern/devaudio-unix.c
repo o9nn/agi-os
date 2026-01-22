@@ -4,12 +4,12 @@
 #else
 #include <sys/soundcard.h>
 #endif
-#include	"u.h"
-#include	"lib.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
-#include	"devaudio.h"
+#include "u.h"
+#include "lib.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
+#include "devaudio.h"
 enum
 {
 Channels = 2,
@@ -60,15 +60,15 @@ static struct {
 int id9;
 int id;
 } names[] = {
-Vaudio,	SOUND_MIXER_VOLUME,
-Vbass, 		SOUND_MIXER_BASS,
-Vtreb, 		SOUND_MIXER_TREBLE,
-Vline, 		SOUND_MIXER_LINE,
-Vpcm, 		SOUND_MIXER_PCM,
-Vsynth, 		SOUND_MIXER_SYNTH,
-Vcd, 		SOUND_MIXER_CD,
-Vmic, 		SOUND_MIXER_MIC,
-Vspeaker,	SOUND_MIXER_SPEAKER
+Vaudio, SOUND_MIXER_VOLUME,
+Vbass, SOUND_MIXER_BASS,
+Vtreb, SOUND_MIXER_TREBLE,
+Vline, SOUND_MIXER_LINE,
+Vpcm, SOUND_MIXER_PCM,
+Vsynth, SOUND_MIXER_SYNTH,
+Vcd, SOUND_MIXER_CD,
+Vmic, SOUND_MIXER_MIC,
+Vspeaker, SOUND_MIXER_SPEAKER
 };
 static int
 lookname(int id9)

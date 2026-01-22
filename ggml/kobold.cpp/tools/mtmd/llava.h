@@ -2,17 +2,17 @@
 #define LLAVA_H
 #include "ggml.h"
 #ifdef LLAMA_SHARED
-#    if defined(_WIN32) && !defined(__MINGW32__)
-#        ifdef LLAMA_BUILD
-#            define LLAVA_API __declspec(dllexport)
-#        else
-#            define LLAVA_API __declspec(dllimport)
-#        endif
-#    else
-#        define LLAVA_API __attribute__ ((visibility ("default")))
-#    endif
+# if defined(_WIN32) && !defined(__MINGW32__)
+# ifdef LLAMA_BUILD
+# define LLAVA_API __declspec(dllexport)
+# else
+# define LLAVA_API __declspec(dllimport)
+# endif
+# else
+# define LLAVA_API __attribute__ ((visibility ("default")))
+# endif
 #else
-#    define LLAVA_API
+# define LLAVA_API
 #endif
 #ifdef __cplusplus
 extern "C" {

@@ -23,7 +23,7 @@ Unibrowse: module
 init: fn(ctxt: ref Draw->Context, nil: list of string);
 };
 Widgetstack: adt {
-stk: list of string;	# list of widget names; bottom of list is left-most widget
+stk: list of string; # list of widget names; bottom of list is left-most widget
 name: string;
 # init returns the widget name for the widgetstack;
 # wn is the name of the frame holding the widget stack
@@ -48,11 +48,11 @@ ud_VAL, ud_CHARNAME, ud_CATEG, ud_COMBINE, ud_BIDIRECT,
 ud_DECOMP, ud_DECDIGIT, ud_DIGIT, ud_NUMERICVAL, ud_MIRRORED,
 ud_OLDNAME, ud_COMMENT, ud_UPCASE, ud_LOWCASE, ud_TITLECASE: con iota;
 # default font configurations within the application
-DEFAULTFONT:	con "";
-UNICODEFONT:	con "lucm/unicode.9";
-TITLEFONT:	con "misc/latin1.8x13";
-DATAFONT:	con "misc/latin1.8x13";
-BUTTONFONT:	con "misc/latin1.8x13";
+DEFAULTFONT: con "";
+UNICODEFONT: con "lucm/unicode.9";
+TITLEFONT: con "misc/latin1.8x13";
+DATAFONT: con "misc/latin1.8x13";
+BUTTONFONT: con "misc/latin1.8x13";
 currfont := "/fonts/" + UNICODEFONT + ".font";
 MAINMENU, BYSEARCH, BYNUMBER, BYCATEGORY, BYFONT, TABLE: con iota;
 elements := array[] of {
@@ -61,7 +61,7 @@ MAINMENU => Element(".main", nil, "maincmd", array[] of {
 "$listbox data .main.menu -height 6h",
 "$button button .main.insp -text {Inspector} -command {send maincmd inspect}",
 "$button button .main.font -text {Font} -command {send maincmd font}",
-"$label unicode .fontlabel",	# .fontlabel's font is currently chosen font
+"$label unicode .fontlabel", # .fontlabel's font is currently chosen font
 "pack .main.menu -side top",
 "pack .main.insp .main.font -side left",
 "bind .main.menu <ButtonRelease-1> +{send maincmd newselect}"
@@ -115,15 +115,15 @@ toplevelconfig := array[] of {
 "pack .Wm_t .display -side top -fill x",
 "image create bitmap waiting -file cursor.wait"
 };
-wmchan:		chan of string;	# from main window
-inspchan:	chan of string;	# to inspector
-ctxt:		ref Draw->Context;
-displ:	ref Widgetstack;
-top:		ref Tk->Toplevel;
-unidata:	ref bio->Iobuf;
-UNIDATA:	con "/lib/unidata/unidata2.txt";
-UNIINDEX:	con "/lib/unidata/index2.txt";
-UNIBLOCKS:	con "/lib/unidata/blocks.txt";
+wmchan: chan of string; # from main window
+inspchan: chan of string; # to inspector
+ctxt: ref Draw->Context;
+displ: ref Widgetstack;
+top: ref Tk->Toplevel;
+unidata: ref bio->Iobuf;
+UNIDATA: con "/lib/unidata/unidata2.txt";
+UNIINDEX: con "/lib/unidata/index2.txt";
+UNIBLOCKS: con "/lib/unidata/blocks.txt";
 notice(msg: string)
 {
 dialog->prompt(ctxt, top.image, "bomb.bit", "Notice", msg, 0, "OK"::nil);
@@ -197,11 +197,11 @@ currpos = filltable(currpos);
 update(top);
 c := <-elements[TABLE].cmd =>
 case c {
-"forw" =>	currpos = filltable(currpos + Tablerows * Tablecols);
+"forw" => currpos = filltable(currpos + Tablerows * Tablecols);
 update(top);
-"backw" =>	currpos = filltable(currpos - Tablerows * Tablecols);
+"backw" => currpos = filltable(currpos - Tablerows * Tablecols);
 update(top);
-* =>		# must be set <col> <row> <raise>
+* => # must be set <col> <row> <raise>
 (nil, args) := sys->tokenize(c, " ");
 setchar(int hd tl tl tl args, currpos + int hd tl args
 + int hd tl tl args * Tablecols);
@@ -457,7 +457,7 @@ cmd(top, ".cat.menu insert 0 '" + hd cats);
 cats = tl cats;
 }
 BYFONT =>
-elements[el].doneinit = 0;	# do it each time
+elements[el].doneinit = 0; # do it each time
 fonts := getfonts(currfont);
 if (fonts == nil) {
 notice("Can't find font information file");
@@ -546,13 +546,13 @@ ret: list of string;
 while ((s := bio->f.gets('\n')) != nil) {
 (count, wds) := sys->tokenize(s, " \t");
 if (count < 3 || count > 4)
-continue;	# ignore malformed lines
+continue; # ignore malformed lines
 first := cnumtoint(hd wds);
 wds = tl wds;
 last := cnumtoint(hd wds);
 wds = tl wds;
-if (tl wds != nil) 		# if optional third field exists
-wds = tl wds;	# ignore it
+if (tl wds != nil) # if optional third field exists
+wds = tl wds; # ignore it
 name := hd wds;
 if (name != "" && name[len name - 1] == '\n')
 name = name[0:len name - 1];
@@ -595,11 +595,11 @@ s = str->drop(s, " \t");
 s = str->drop(s, " \t");
 font := "";
 case tp {
-"deflt" =>	font = DEFAULTFONT;
-"title" =>	font = TITLEFONT;
-"data" =>	font = DATAFONT;
-"button" =>	font = BUTTONFONT;
-"unicode" =>	font = currfont;
+"deflt" => font = DEFAULTFONT;
+"title" => font = TITLEFONT;
+"data" => font = DATAFONT;
+"button" => font = BUTTONFONT;
+"unicode" => font = currfont;
 }
 if (font != nil) {
 if (font[0] != '/')
@@ -706,7 +706,7 @@ return font;
 }
 updatefont()
 {
-if (elements[TABLE].doneinit)	# only if table is being displayed
+if (elements[TABLE].doneinit) # only if table is being displayed
 for (i := 0; i < Tablerows; i++)
 for (j := 0; j < Tablecols; j++)
 cmd(top, tablecharpath(j, i) + " configure -font "+currfont);

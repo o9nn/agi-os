@@ -24,24 +24,24 @@ struct rtable *rt = (struct rtable*)skb->dst;
 struct iphdr *iph = skb->nh.iph;
 u32 odaddr = iph->daddr;
 u32 osaddr = iph->saddr;
-u16	check;
+u16 check;
 IPCB(skb)->flags |= IPSKB_TRANSLATED;
 iph->daddr = rt->rt_dst_map;
 iph->saddr = rt->rt_src_map;
 iph->check = 0;
 iph->check = ip_fast_csum((unsigned char *)iph, iph->ihl);
 if (!(iph->frag_off & htons(IP_OFFSET))) {
-u16	*cksum;
+u16 *cksum;
 switch(iph->protocol) {
 case IPPROTO_TCP:
-cksum  = (u16*)&((struct tcphdr*)(((char*)iph) + (iph->ihl<<2)))->check;
+cksum = (u16*)&((struct tcphdr*)(((char*)iph) + (iph->ihl<<2)))->check;
 if ((u8*)(cksum+1) > skb->tail)
 goto truncated;
-check  = csum_tcpudp_magic(iph->saddr, iph->daddr, 0, 0, ~(*cksum));
+check = csum_tcpudp_magic(iph->saddr, iph->daddr, 0, 0, ~(*cksum));
 *cksum = csum_tcpudp_magic(~osaddr, ~odaddr, 0, 0, ~check);
 break;
 case IPPROTO_UDP:
-cksum  = (u16*)&((struct udphdr*)(((char*)iph) + (iph->ihl<<2)))->check;
+cksum = (u16*)&((struct udphdr*)(((char*)iph) + (iph->ihl<<2)))->check;
 if ((u8*)(cksum+1) > skb->tail)
 goto truncated;
 if ((check = *cksum) != 0) {
@@ -53,7 +53,7 @@ break;
 case IPPROTO_ICMP:
 {
 struct icmphdr *icmph = (struct icmphdr*)((char*)iph + (iph->ihl<<2));
-struct   iphdr *ciph;
+struct iphdr *ciph;
 u32 idaddr, isaddr;
 int updated;
 if ((icmph->type != ICMP_DEST_UNREACH) &&
@@ -72,8 +72,8 @@ updated = 1;
 }
 if (rt->rt_flags&RTCF_SNAT) {
 if (ciph->daddr != osaddr) {
-struct   fib_result res;
-struct   rt_key key;
+struct fib_result res;
+struct rt_key key;
 unsigned flags = 0;
 key.src = ciph->daddr;
 key.dst = ciph->saddr;
@@ -96,8 +96,8 @@ updated = 1;
 }
 }
 if (updated) {
-cksum  = &icmph->checksum;
-check  = csum_tcpudp_magic(ciph->saddr, ciph->daddr, 0, 0, ~(*cksum));
+cksum = &icmph->checksum;
+check = csum_tcpudp_magic(ciph->saddr, ciph->daddr, 0, 0, ~(*cksum));
 *cksum = csum_tcpudp_magic(~isaddr, ~idaddr, 0, 0, ~check);
 }
 break;

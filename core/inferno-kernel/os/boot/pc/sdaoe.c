@@ -7,44 +7,44 @@
 #include "sd.h"
 #include "aoe.h"
 enum {
-Nctlr	= 4,
+Nctlr = 4,
 };
 enum {
-Dllba 	= 1<<0,
-Dsmart	= 1<<1,
-Dpower	= 1<<2,
-Dnop	= 1<<3,
-Datapi	= 1<<4,
+Dllba = 1<<0,
+Dsmart = 1<<1,
+Dpower = 1<<2,
+Dnop = 1<<3,
+Datapi = 1<<4,
 Datapi16= 1<<5,
 };
 enum {
-Tfree	= -1,
+Tfree = -1,
 Tmgmt,
 };
 typedef struct Ctlr Ctlr;
 struct Ctlr{
-Ctlr	*next;
-SDunit	*unit;
-int	ctlrno;
-int	major;
-int	minor;
-uchar	ea[Eaddrlen];
-ushort	lasttag;
-ulong	vers;
-uchar	mediachange;
-uchar	flag;
-uchar	smart;
-uchar	smartrs;
-uchar	feat;
-uvlong	sectors;
-char	serial[20+1];
-char	firmware[8+1];
-char	model[40+1];
-char	ident[0x100];
+Ctlr *next;
+SDunit *unit;
+int ctlrno;
+int major;
+int minor;
+uchar ea[Eaddrlen];
+ushort lasttag;
+ulong vers;
+uchar mediachange;
+uchar flag;
+uchar smart;
+uchar smartrs;
+uchar feat;
+uvlong sectors;
+char serial[20+1];
+char firmware[8+1];
+char model[40+1];
+char ident[0x100];
 };
-static	Ctlr	*head;
-static	Ctlr	*tail;
-static	int	aoeether[10];
+static Ctlr *head;
+static Ctlr *tail;
+static int aoeether[10];
 SDifc sdaoeifc;
 static void
 hnputs(uchar *p, ushort i)
@@ -131,7 +131,7 @@ gbit32(void *a)
 uchar *i;
 ulong j;
 i = a;
-j  = i[3] << 24;
+j = i[3] << 24;
 j |= i[2] << 16;
 j |= i[1] << 8;
 j |= i[0];
@@ -328,8 +328,8 @@ s->ifc = &sdaoeifc;
 s->nunit = 1;
 return 0;
 }
-static char 	*probef[32];
-static int 	nprobe;
+static char *probef[32];
+static int nprobe;
 int
 pnpprobeid(char *s)
 {

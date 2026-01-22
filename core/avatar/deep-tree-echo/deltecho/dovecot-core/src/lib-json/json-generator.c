@@ -567,7 +567,7 @@ poffset = p;
 while (avail > 0 && p < pend && esc == NULL) {
 octets = uni_utf8_get_char_n(p, (pend - p), &ch);
 if (octets < 0 || (octets == 0 && last) ||
-(octets > 0  && !uni_is_valid_ucs4(ch))) {
+(octets > 0 && !uni_is_valid_ucs4(ch))) {
 esc = UNICODE_REPLACEMENT_CHAR_UTF8;
 esc_len = UTF8_REPLACEMENT_CHAR_LEN;
 octets = (octets <= 0 ? 1 : octets);

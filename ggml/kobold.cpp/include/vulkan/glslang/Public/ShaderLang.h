@@ -41,28 +41,28 @@ EShLangMeshNV = EShLangMesh,
 LAST_ELEMENT_MARKER(EShLangCount),
 } EShLanguage;
 typedef enum : unsigned {
-EShLangVertexMask         = (1 << EShLangVertex),
-EShLangTessControlMask    = (1 << EShLangTessControl),
+EShLangVertexMask = (1 << EShLangVertex),
+EShLangTessControlMask = (1 << EShLangTessControl),
 EShLangTessEvaluationMask = (1 << EShLangTessEvaluation),
-EShLangGeometryMask       = (1 << EShLangGeometry),
-EShLangFragmentMask       = (1 << EShLangFragment),
-EShLangComputeMask        = (1 << EShLangCompute),
-EShLangRayGenMask         = (1 << EShLangRayGen),
-EShLangRayGenNVMask       = EShLangRayGenMask,
-EShLangIntersectMask      = (1 << EShLangIntersect),
-EShLangIntersectNVMask    = EShLangIntersectMask,
-EShLangAnyHitMask         = (1 << EShLangAnyHit),
-EShLangAnyHitNVMask       = EShLangAnyHitMask,
-EShLangClosestHitMask     = (1 << EShLangClosestHit),
-EShLangClosestHitNVMask   = EShLangClosestHitMask,
-EShLangMissMask           = (1 << EShLangMiss),
-EShLangMissNVMask         = EShLangMissMask,
-EShLangCallableMask       = (1 << EShLangCallable),
-EShLangCallableNVMask     = EShLangCallableMask,
-EShLangTaskMask           = (1 << EShLangTask),
-EShLangTaskNVMask         = EShLangTaskMask,
-EShLangMeshMask           = (1 << EShLangMesh),
-EShLangMeshNVMask         = EShLangMeshMask,
+EShLangGeometryMask = (1 << EShLangGeometry),
+EShLangFragmentMask = (1 << EShLangFragment),
+EShLangComputeMask = (1 << EShLangCompute),
+EShLangRayGenMask = (1 << EShLangRayGen),
+EShLangRayGenNVMask = EShLangRayGenMask,
+EShLangIntersectMask = (1 << EShLangIntersect),
+EShLangIntersectNVMask = EShLangIntersectMask,
+EShLangAnyHitMask = (1 << EShLangAnyHit),
+EShLangAnyHitNVMask = EShLangAnyHitMask,
+EShLangClosestHitMask = (1 << EShLangClosestHit),
+EShLangClosestHitNVMask = EShLangClosestHitMask,
+EShLangMissMask = (1 << EShLangMiss),
+EShLangMissNVMask = EShLangMissMask,
+EShLangCallableMask = (1 << EShLangCallable),
+EShLangCallableNVMask = EShLangCallableMask,
+EShLangTaskMask = (1 << EShLangTask),
+EShLangTaskNVMask = EShLangTaskMask,
+EShLangMeshMask = (1 << EShLangMesh),
+EShLangMeshNVMask = EShLangMeshMask,
 LAST_ELEMENT_MARKER(EShLanguageMaskCount),
 } EShLanguageMask;
 namespace glslang {
@@ -154,39 +154,39 @@ EShTexSampTransUpgradeTextureRemoveSampler,
 LAST_ELEMENT_MARKER(EShTexSampTransCount),
 } EShTextureSamplerTransformMode;
 enum EShMessages : unsigned {
-EShMsgDefault              = 0,
-EShMsgRelaxedErrors        = (1 << 0),
-EShMsgSuppressWarnings     = (1 << 1),
-EShMsgAST                  = (1 << 2),
-EShMsgSpvRules             = (1 << 3),
-EShMsgVulkanRules          = (1 << 4),
-EShMsgOnlyPreprocessor     = (1 << 5),
-EShMsgReadHlsl             = (1 << 6),
-EShMsgCascadingErrors      = (1 << 7),
-EShMsgKeepUncalled         = (1 << 8),
-EShMsgHlslOffsets          = (1 << 9),
-EShMsgDebugInfo            = (1 << 10),
+EShMsgDefault = 0,
+EShMsgRelaxedErrors = (1 << 0),
+EShMsgSuppressWarnings = (1 << 1),
+EShMsgAST = (1 << 2),
+EShMsgSpvRules = (1 << 3),
+EShMsgVulkanRules = (1 << 4),
+EShMsgOnlyPreprocessor = (1 << 5),
+EShMsgReadHlsl = (1 << 6),
+EShMsgCascadingErrors = (1 << 7),
+EShMsgKeepUncalled = (1 << 8),
+EShMsgHlslOffsets = (1 << 9),
+EShMsgDebugInfo = (1 << 10),
 EShMsgHlslEnable16BitTypes = (1 << 11),
-EShMsgHlslLegalization     = (1 << 12),
-EShMsgHlslDX9Compatible    = (1 << 13),
-EShMsgBuiltinSymbolTable   = (1 << 14),
-EShMsgEnhanced             = (1 << 15),
-EShMsgAbsolutePath         = (1 << 16),
-EShMsgDisplayErrorColumn   = (1 << 17),
+EShMsgHlslLegalization = (1 << 12),
+EShMsgHlslDX9Compatible = (1 << 13),
+EShMsgBuiltinSymbolTable = (1 << 14),
+EShMsgEnhanced = (1 << 15),
+EShMsgAbsolutePath = (1 << 16),
+EShMsgDisplayErrorColumn = (1 << 17),
 EShMsgLinkTimeOptimization = (1 << 18),
 LAST_ELEMENT_MARKER(EShMsgCount),
 };
 typedef enum {
-EShReflectionDefault            = 0,
-EShReflectionStrictArraySuffix  = (1 << 0),
-EShReflectionBasicArraySuffix   = (1 << 1),
-EShReflectionIntermediateIO     = (1 << 2),
-EShReflectionSeparateBuffers    = (1 << 3),
-EShReflectionAllBlockVariables  = (1 << 4),
-EShReflectionUnwrapIOBlocks     = (1 << 5),
-EShReflectionAllIOVariables     = (1 << 6),
-EShReflectionSharedStd140SSBO   = (1 << 7),
-EShReflectionSharedStd140UBO    = (1 << 8),
+EShReflectionDefault = 0,
+EShReflectionStrictArraySuffix = (1 << 0),
+EShReflectionBasicArraySuffix = (1 << 1),
+EShReflectionIntermediateIO = (1 << 2),
+EShReflectionSeparateBuffers = (1 << 3),
+EShReflectionAllBlockVariables = (1 << 4),
+EShReflectionUnwrapIOBlocks = (1 << 5),
+EShReflectionAllIOVariables = (1 << 6),
+EShReflectionSharedStd140SSBO = (1 << 7),
+EShReflectionSharedStd140UBO = (1 << 8),
 LAST_ELEMENT_MARKER(EShReflectionCount),
 } EShReflectionOptions;
 typedef struct {
@@ -440,8 +440,8 @@ topLevelArrayStride(0), stages(EShLanguageMask(0)), type(nullptr)
 }
 const TType* type;
 };
-class  TReflection;
-class  TIoMapper;
+class TReflection;
+class TIoMapper;
 struct TVarEntryInfo;
 class TIoMapResolver
 {
@@ -504,28 +504,28 @@ GLSLANG_EXPORT int getNumBufferBlocks() const;
 GLSLANG_EXPORT const TObjectReflection& getBufferBlock(int index) const;
 GLSLANG_EXPORT int getNumAtomicCounters() const;
 GLSLANG_EXPORT const TObjectReflection& getAtomicCounter(int index) const;
-int getNumLiveUniformVariables() const             { return getNumUniformVariables(); }
-int getNumLiveUniformBlocks() const                { return getNumUniformBlocks(); }
-int getNumLiveAttributes() const                   { return getNumPipeInputs(); }
-int getUniformIndex(const char *name) const        { return getReflectionIndex(name); }
+int getNumLiveUniformVariables() const { return getNumUniformVariables(); }
+int getNumLiveUniformBlocks() const { return getNumUniformBlocks(); }
+int getNumLiveAttributes() const { return getNumPipeInputs(); }
+int getUniformIndex(const char *name) const { return getReflectionIndex(name); }
 int getPipeIOIndex(const char *name, const bool inOrOut) const
 { return getReflectionPipeIOIndex(name, inOrOut); }
-const char *getUniformName(int index) const        { return getUniform(index).name.c_str(); }
-int getUniformBinding(int index) const             { return getUniform(index).getBinding(); }
-EShLanguageMask getUniformStages(int index) const  { return getUniform(index).stages; }
-int getUniformBlockIndex(int index) const          { return getUniform(index).index; }
-int getUniformType(int index) const                { return getUniform(index).glDefineType; }
-int getUniformBufferOffset(int index) const        { return getUniform(index).offset; }
-int getUniformArraySize(int index) const           { return getUniform(index).size; }
-const TType *getUniformTType(int index) const      { return getUniform(index).getType(); }
-const char *getUniformBlockName(int index) const   { return getUniformBlock(index).name.c_str(); }
-int getUniformBlockSize(int index) const           { return getUniformBlock(index).size; }
-int getUniformBlockBinding(int index) const        { return getUniformBlock(index).getBinding(); }
-int getUniformBlockCounterIndex(int index) const   { return getUniformBlock(index).counterIndex; }
+const char *getUniformName(int index) const { return getUniform(index).name.c_str(); }
+int getUniformBinding(int index) const { return getUniform(index).getBinding(); }
+EShLanguageMask getUniformStages(int index) const { return getUniform(index).stages; }
+int getUniformBlockIndex(int index) const { return getUniform(index).index; }
+int getUniformType(int index) const { return getUniform(index).glDefineType; }
+int getUniformBufferOffset(int index) const { return getUniform(index).offset; }
+int getUniformArraySize(int index) const { return getUniform(index).size; }
+const TType *getUniformTType(int index) const { return getUniform(index).getType(); }
+const char *getUniformBlockName(int index) const { return getUniformBlock(index).name.c_str(); }
+int getUniformBlockSize(int index) const { return getUniformBlock(index).size; }
+int getUniformBlockBinding(int index) const { return getUniformBlock(index).getBinding(); }
+int getUniformBlockCounterIndex(int index) const { return getUniformBlock(index).counterIndex; }
 const TType *getUniformBlockTType(int index) const { return getUniformBlock(index).getType(); }
-const char *getAttributeName(int index) const      { return getPipeInput(index).name.c_str(); }
-int getAttributeType(int index) const              { return getPipeInput(index).glDefineType; }
-const TType *getAttributeTType(int index) const    { return getPipeInput(index).getType(); }
+const char *getAttributeName(int index) const { return getPipeInput(index).name.c_str(); }
+int getAttributeType(int index) const { return getPipeInput(index).glDefineType; }
+const TType *getAttributeTType(int index) const { return getPipeInput(index).getType(); }
 GLSLANG_EXPORT void dumpReflection();
 GLSLANG_EXPORT TIoMapResolver* getGlslIoResolver(EShLanguage stage);
 GLSLANG_EXPORT bool mapIO(TIoMapResolver* pResolver = nullptr, TIoMapper* pIoMapper = nullptr);

@@ -28,30 +28,30 @@
 #include <ipc/ipc_print.h>
 #include <ipc/mach_port.h>
 #include <kern/lock.h>
-boolean_t	db_cmd_loop_done;
-jmp_buf_t	*db_recover = 0;
-db_addr_t	db_dot;
-db_addr_t	db_last_addr;
-db_addr_t	db_prev;
-db_addr_t	db_next;
-boolean_t	db_ed_style = TRUE;
-#define	CMD_UNIQUE	0
-#define	CMD_FOUND	1
-#define	CMD_NONE	2
-#define	CMD_AMBIGUOUS	3
-#define	CMD_HELP	4
+boolean_t db_cmd_loop_done;
+jmp_buf_t *db_recover = 0;
+db_addr_t db_dot;
+db_addr_t db_last_addr;
+db_addr_t db_prev;
+db_addr_t db_next;
+boolean_t db_ed_style = TRUE;
+#define CMD_UNIQUE 0
+#define CMD_FOUND 1
+#define CMD_NONE 2
+#define CMD_AMBIGUOUS 3
+#define CMD_HELP 4
 static int
 db_cmd_search(
-const char *		name,
-const struct db_command	*table,
-const struct db_command	**cmdp	)
+const char * name,
+const struct db_command *table,
+const struct db_command **cmdp )
 {
-const struct db_command	*cmd;
-int		result = CMD_NONE;
+const struct db_command *cmd;
+int result = CMD_NONE;
 for (cmd = table; cmd->name != 0; cmd++) {
 const char *lp;
 char *rp;
-int  c;
+int c;
 lp = name;
 rp = cmd->name;
 while ((c = *lp) == *rp) {
@@ -89,22 +89,22 @@ db_end_line();
 }
 static void
 db_command(
-const struct db_command	**last_cmdp,
-struct db_command	*cmd_table)
+const struct db_command **last_cmdp,
+struct db_command *cmd_table)
 {
-const struct db_command	*cmd = NULL;
-int		t;
-char		modif[TOK_STRING_SIZE];
-db_expr_t	addr, count;
-boolean_t	have_addr = FALSE;
-int		result;
+const struct db_command *cmd = NULL;
+int t;
+char modif[TOK_STRING_SIZE];
+db_expr_t addr, count;
+boolean_t have_addr = FALSE;
+int result;
 t = db_read_token();
 if (t == tEOL || t == tSEMI_COLON) {
 cmd = *last_cmdp;
 addr = (db_expr_t)db_next;
 have_addr = FALSE;
 count = 1;
-modif[0]  = '\0';
+modif[0] = '\0';
 if (t == tSEMI_COLON)
 db_unread_token(t);
 }
@@ -205,8 +205,8 @@ db_next = db_dot;
 }
 static void
 db_command_list(
-const struct db_command	**last_cmdp,
-struct db_command	*cmd_table)
+const struct db_command **last_cmdp,
+struct db_command *cmd_table)
 {
 do {
 db_command(last_cmdp, cmd_table);
@@ -214,31 +214,31 @@ db_skip_to_eol();
 } while (db_read_token() == tSEMI_COLON && db_cmd_loop_done == FALSE);
 }
 struct db_command db_show_all_cmds[] = {
-{ "tasks",	db_show_all_tasks,	0,	0 },
-{ "threads",	db_show_all_threads,	0,	0 },
-{ "slocks",	(db_command_fun_t)db_show_all_slocks,	0,	0 },
-{ "runqs",	(db_command_fun_t)db_show_all_runqs,	0,	0 },
+{ "tasks", db_show_all_tasks, 0, 0 },
+{ "threads", db_show_all_threads, 0, 0 },
+{ "slocks", (db_command_fun_t)db_show_all_slocks, 0, 0 },
+{ "runqs", (db_command_fun_t)db_show_all_runqs, 0, 0 },
 { (char *)0 }
 };
 struct db_command db_show_cmds[] = {
-{ "all",	0,			0,	db_show_all_cmds },
-{ "registers",	(db_command_fun_t)db_show_regs,		0,	0 },
-{ "breaks",	db_listbreak_cmd, 	0,	0 },
-{ "watches",	db_listwatch_cmd, 	0,	0 },
-{ "thread",	db_show_one_thread,	0,	0 },
-{ "task",	db_show_one_task,	0,	0 },
-{ "macro",	db_show_macro,		CS_OWN, 0 },
-{ "map",	vm_map_print,		0,	0 },
-{ "object",	(db_command_fun_t)vm_object_print,	0,	0 },
-{ "page",	(db_command_fun_t)vm_page_print,		0,	0 },
-{ "copy",	(db_command_fun_t)vm_map_copy_print,	0,	0 },
-{ "port",	(db_command_fun_t)ipc_port_print,		0,	0 },
-{ "pset",	(db_command_fun_t)ipc_pset_print,		0,	0 },
-{ "kmsg",	(db_command_fun_t)ipc_kmsg_print,		0,	0 },
-{ "msg",	(db_command_fun_t)ipc_msg_print,		0,	0 },
-{ "ipc_port",	db_show_port_id,	0,	0 },
-{ "slabinfo",	(db_command_fun_t)db_show_slab_info,	0,	0 },
-{ "vmstat",	(db_command_fun_t)db_show_vmstat,		0,	0 },
+{ "all", 0, 0, db_show_all_cmds },
+{ "registers", (db_command_fun_t)db_show_regs, 0, 0 },
+{ "breaks", db_listbreak_cmd, 0, 0 },
+{ "watches", db_listwatch_cmd, 0, 0 },
+{ "thread", db_show_one_thread, 0, 0 },
+{ "task", db_show_one_task, 0, 0 },
+{ "macro", db_show_macro, CS_OWN, 0 },
+{ "map", vm_map_print, 0, 0 },
+{ "object", (db_command_fun_t)vm_object_print, 0, 0 },
+{ "page", (db_command_fun_t)vm_page_print, 0, 0 },
+{ "copy", (db_command_fun_t)vm_map_copy_print, 0, 0 },
+{ "port", (db_command_fun_t)ipc_port_print, 0, 0 },
+{ "pset", (db_command_fun_t)ipc_pset_print, 0, 0 },
+{ "kmsg", (db_command_fun_t)ipc_kmsg_print, 0, 0 },
+{ "msg", (db_command_fun_t)ipc_msg_print, 0, 0 },
+{ "ipc_port", db_show_port_id, 0, 0 },
+{ "slabinfo", (db_command_fun_t)db_show_slab_info, 0, 0 },
+{ "vmstat", (db_command_fun_t)db_show_vmstat, 0, 0 },
 { (char *)0, }
 };
 void
@@ -252,46 +252,46 @@ int have_addr,
 db_expr_t count,
 const char *modif);
 struct db_command db_debug_cmds[] = {
-{ "traps",		db_debug_all_traps_cmd,		0,	0 },
-{ "references",		db_debug_port_references_cmd,	0,	0 },
+{ "traps", db_debug_all_traps_cmd, 0, 0 },
+{ "references", db_debug_port_references_cmd, 0, 0 },
 { (char *)0, }
 };
 struct db_command db_command_table[] = {
 #ifdef DB_MACHINE_COMMANDS
-{ "machine",    0,                      0,     		0},
+{ "machine", 0, 0, 0},
 #endif
-{ "print",	(db_command_fun_t)db_print_cmd,		CS_OWN,		0 },
-{ "examine",	db_examine_cmd,		CS_MORE|CS_SET_DOT, 0 },
-{ "x",		db_examine_cmd,		CS_MORE|CS_SET_DOT, 0 },
-{ "xf",		db_examine_forward,	CS_SET_DOT,	0 },
-{ "xb",		db_examine_backward,	CS_SET_DOT,	0 },
-{ "whatis",	db_whatis_cmd,		CS_MORE,	0 },
-{ "search",	db_search_cmd,		CS_OWN|CS_SET_DOT, 0 },
-{ "set",	(db_command_fun_t)db_set_cmd,		CS_OWN,		0 },
-{ "write",	db_write_cmd,		CS_MORE|CS_SET_DOT, 0 },
-{ "w",		db_write_cmd,		CS_MORE|CS_SET_DOT, 0 },
-{ "delete",	db_delete_cmd,		CS_OWN,		0 },
-{ "d",		db_delete_cmd,		CS_OWN,		0 },
-{ "break",	db_breakpoint_cmd,	CS_MORE,	0 },
-{ "dwatch",	db_deletewatch_cmd,	CS_MORE,	0 },
-{ "watch",	db_watchpoint_cmd,	CS_MORE,	0 },
-{ "step",	db_single_step_cmd,	0,		0 },
-{ "s",		db_single_step_cmd,	0,		0 },
-{ "continue",	db_continue_cmd,	0,		0 },
-{ "c",		db_continue_cmd,	0,		0 },
-{ "until",	db_trace_until_call_cmd,0,		0 },
-{ "next",	db_trace_until_matching_cmd,0,		0 },
-{ "match",	db_trace_until_matching_cmd,0,		0 },
-{ "trace",	db_stack_trace_cmd,	0,		0 },
-{ "cond",	db_cond_cmd,		CS_OWN,	 	0 },
-{ "call",	(db_command_fun_t)db_fncall,		CS_OWN,		0 },
-{ "macro",	db_def_macro_cmd,	CS_OWN,	 	0 },
-{ "dmacro",	db_del_macro_cmd,	CS_OWN,		0 },
-{ "show",	0,			0,	db_show_cmds },
-{ "debug",	0,			0,	db_debug_cmds },
-{ "reset",	(db_command_fun_t)db_reset_cpu,		0,		0 },
-{ "reboot",	(db_command_fun_t)db_reset_cpu,		0,		0 },
-{ "halt",	(db_command_fun_t)db_halt_cpu,		0,		0 },
+{ "print", (db_command_fun_t)db_print_cmd, CS_OWN, 0 },
+{ "examine", db_examine_cmd, CS_MORE|CS_SET_DOT, 0 },
+{ "x", db_examine_cmd, CS_MORE|CS_SET_DOT, 0 },
+{ "xf", db_examine_forward, CS_SET_DOT, 0 },
+{ "xb", db_examine_backward, CS_SET_DOT, 0 },
+{ "whatis", db_whatis_cmd, CS_MORE, 0 },
+{ "search", db_search_cmd, CS_OWN|CS_SET_DOT, 0 },
+{ "set", (db_command_fun_t)db_set_cmd, CS_OWN, 0 },
+{ "write", db_write_cmd, CS_MORE|CS_SET_DOT, 0 },
+{ "w", db_write_cmd, CS_MORE|CS_SET_DOT, 0 },
+{ "delete", db_delete_cmd, CS_OWN, 0 },
+{ "d", db_delete_cmd, CS_OWN, 0 },
+{ "break", db_breakpoint_cmd, CS_MORE, 0 },
+{ "dwatch", db_deletewatch_cmd, CS_MORE, 0 },
+{ "watch", db_watchpoint_cmd, CS_MORE, 0 },
+{ "step", db_single_step_cmd, 0, 0 },
+{ "s", db_single_step_cmd, 0, 0 },
+{ "continue", db_continue_cmd, 0, 0 },
+{ "c", db_continue_cmd, 0, 0 },
+{ "until", db_trace_until_call_cmd,0, 0 },
+{ "next", db_trace_until_matching_cmd,0, 0 },
+{ "match", db_trace_until_matching_cmd,0, 0 },
+{ "trace", db_stack_trace_cmd, 0, 0 },
+{ "cond", db_cond_cmd, CS_OWN, 0 },
+{ "call", (db_command_fun_t)db_fncall, CS_OWN, 0 },
+{ "macro", db_def_macro_cmd, CS_OWN, 0 },
+{ "dmacro", db_del_macro_cmd, CS_OWN, 0 },
+{ "show", 0, 0, db_show_cmds },
+{ "debug", 0, 0, db_debug_cmds },
+{ "reset", (db_command_fun_t)db_reset_cpu, 0, 0 },
+{ "reboot", (db_command_fun_t)db_reset_cpu, 0, 0 },
+{ "halt", (db_command_fun_t)db_halt_cpu, 0, 0 },
 { (char *)0, }
 };
 #ifdef DB_MACHINE_COMMANDS
@@ -301,7 +301,7 @@ db_command_table[0].more = ptr;
 return;
 }
 #endif
-const struct db_command	*db_last_command = 0;
+const struct db_command *db_last_command = 0;
 void
 db_help_cmd(void)
 {
@@ -329,7 +329,7 @@ if (db_print_position() != 0)
 db_printf("\n");
 db_output_line = 0;
 db_printf("db%s", (db_default_thread)? "t": "");
-#if	NCPUS > 1
+#if NCPUS > 1
 db_printf("{%d}", cpu_number());
 #endif
 db_printf("> ");
@@ -341,7 +341,7 @@ db_recover = prev;
 boolean_t
 db_exec_cmd_nest(
 char *cmd,
-int  size)
+int size)
 {
 struct db_lex_context lex_context;
 db_cmd_loop_done = FALSE;
@@ -374,17 +374,17 @@ panic("db_error");
 void
 db_fncall(void)
 {
-db_expr_t	fn_addr;
-#define	MAXARGS		11
-db_expr_t	args[MAXARGS];
-int		nargs = 0;
-db_expr_t	retval;
+db_expr_t fn_addr;
+#define MAXARGS 11
+db_expr_t args[MAXARGS];
+int nargs = 0;
+db_expr_t retval;
 typedef db_expr_t(*function_t)(db_expr_t, db_expr_t, db_expr_t,
 db_expr_t, db_expr_t, db_expr_t,
 db_expr_t, db_expr_t, db_expr_t,
 db_expr_t);
 function_t func;
-int		t;
+int t;
 if (!db_expression(&fn_addr)) {
 db_printf("Bad function \"%s\"\n", db_tok_string);
 db_flush_lex();
@@ -425,8 +425,8 @@ db_printf(" %#N\n", retval);
 }
 boolean_t __attribute__ ((pure))
 db_option(
-const char	*modif,
-int		option)
+const char *modif,
+int option)
 {
 const char *p;
 for (p = modif; *p; p++)

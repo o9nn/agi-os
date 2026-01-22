@@ -9,12 +9,12 @@
 #include "etherif.h"
 #include "ether8390.h"
 enum {
-Data		= 0x10,
-Reset		= 0x1F,
+Data = 0x10,
+Reset = 0x1F,
 };
 typedef struct Ec2t {
-char*	name;
-int	iochecksum;
+char* name;
+int iochecksum;
 } Ec2t;
 static Ec2t ec2tpcmcia[] = {
 { "EC2T", 0, },

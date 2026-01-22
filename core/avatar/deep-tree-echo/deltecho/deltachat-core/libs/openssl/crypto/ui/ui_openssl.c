@@ -4,7 +4,7 @@
 #endif
 #if !defined(_POSIX_C_SOURCE) && defined(OPENSSL_SYS_VMS)
 # ifndef _POSIX_C_SOURCE
-#  define _POSIX_C_SOURCE 2
+# define _POSIX_C_SOURCE 2
 # endif
 #endif
 #include <signal.h>
@@ -13,15 +13,15 @@
 #include <errno.h>
 #if !defined(OPENSSL_SYS_MSDOS) && !defined(OPENSSL_SYS_VMS)
 # ifdef OPENSSL_UNISTD
-#  include OPENSSL_UNISTD
+# include OPENSSL_UNISTD
 # else
-#  include <unistd.h>
+# include <unistd.h>
 # endif
 # if defined(_POSIX_VERSION)
-#  define SIGACTION
-#  if !defined(TERMIOS) && !defined(TERMIO) && !defined(SGTTY)
-#   define TERMIOS
-#  endif
+# define SIGACTION
+# if !defined(TERMIOS) && !defined(TERMIO) && !defined(SGTTY)
+# define TERMIOS
+# endif
 # endif
 #endif
 #ifdef WIN16TTY
@@ -35,51 +35,51 @@
 #ifdef OPENSSL_SYS_VMS
 # include <starlet.h>
 # ifdef __DECC
-#  pragma message disable DOLLARID
+# pragma message disable DOLLARID
 # endif
 #endif
 #ifdef WIN_CONSOLE_BUG
 # include <windows.h>
 # ifndef OPENSSL_SYS_WINCE
-#  include <wincon.h>
+# include <wincon.h>
 # endif
 #endif
 #if !defined(TERMIOS) && !defined(TERMIO) && !defined(SGTTY)
 # if defined(_LIBC)
-#  undef  TERMIOS
-#  define TERMIO
-#  undef  SGTTY
+# undef TERMIOS
+# define TERMIO
+# undef SGTTY
 # elif !defined(OPENSSL_SYS_VMS) \
 && !defined(OPENSSL_SYS_MSDOS) \
 && !defined(OPENSSL_SYS_MACINTOSH_CLASSIC) \
 && !defined(MAC_OS_GUSI_SOURCE) \
 && !defined(OPENSSL_SYS_VXWORKS) \
 && !defined(OPENSSL_SYS_NETWARE)
-#  define TERMIOS
-#  undef  TERMIO
-#  undef  SGTTY
+# define TERMIOS
+# undef TERMIO
+# undef SGTTY
 # endif
 #endif
 #ifdef TERMIOS
 # include <termios.h>
-# define TTY_STRUCT             struct termios
-# define TTY_FLAGS              c_lflag
-# define TTY_get(tty,data)      tcgetattr(tty,data)
-# define TTY_set(tty,data)      tcsetattr(tty,TCSANOW,data)
+# define TTY_STRUCT struct termios
+# define TTY_FLAGS c_lflag
+# define TTY_get(tty,data) tcgetattr(tty,data)
+# define TTY_set(tty,data) tcsetattr(tty,TCSANOW,data)
 #endif
 #ifdef TERMIO
 # include <termio.h>
-# define TTY_STRUCT             struct termio
-# define TTY_FLAGS              c_lflag
-# define TTY_get(tty,data)      ioctl(tty,TCGETA,data)
-# define TTY_set(tty,data)      ioctl(tty,TCSETA,data)
+# define TTY_STRUCT struct termio
+# define TTY_FLAGS c_lflag
+# define TTY_get(tty,data) ioctl(tty,TCGETA,data)
+# define TTY_set(tty,data) ioctl(tty,TCSETA,data)
 #endif
 #ifdef SGTTY
 # include <sgtty.h>
-# define TTY_STRUCT             struct sgttyb
-# define TTY_FLAGS              sg_flags
-# define TTY_get(tty,data)      ioctl(tty,TIOCGETP,data)
-# define TTY_set(tty,data)      ioctl(tty,TIOCSETP,data)
+# define TTY_STRUCT struct sgttyb
+# define TTY_FLAGS sg_flags
+# define TTY_get(tty,data) ioctl(tty,TIOCGETP,data)
+# define TTY_set(tty,data) ioctl(tty,TIOCSETP,data)
 #endif
 #if !defined(_LIBC) && !defined(OPENSSL_SYS_MSDOS) && !defined(OPENSSL_SYS_VMS) && !defined(OPENSSL_SYS_MACINTOSH_CLASSIC) && !defined(OPENSSL_SYS_SUNOS)
 # include <sys/ioctl.h>
@@ -278,9 +278,9 @@ tty_in = stdin;
 tty_out = stderr;
 #else
 # ifdef OPENSSL_SYS_MSDOS
-#  define DEV_TTY "con"
+# define DEV_TTY "con"
 # else
-#  define DEV_TTY "/dev/tty"
+# define DEV_TTY "/dev/tty"
 # endif
 if ((tty_in = fopen(DEV_TTY, "r")) == NULL)
 tty_in = stdin;
@@ -390,23 +390,23 @@ savsig[SIGSEGV] = signal(SIGSEGV, recsig);
 savsig[SIGTERM] = signal(SIGTERM, recsig);
 # else
 for (i = 1; i < NX509_SIG; i++) {
-#  ifdef SIGUSR1
+# ifdef SIGUSR1
 if (i == SIGUSR1)
 continue;
-#  endif
-#  ifdef SIGUSR2
+# endif
+# ifdef SIGUSR2
 if (i == SIGUSR2)
 continue;
-#  endif
-#  ifdef SIGKILL
+# endif
+# ifdef SIGKILL
 if (i == SIGKILL)
 continue;
-#  endif
-#  ifdef SIGACTION
+# endif
+# ifdef SIGACTION
 sigaction(i, &sa, &savsig[i]);
-#  else
+# else
 savsig[i] = signal(i, recsig);
-#  endif
+# endif
 }
 # endif
 # ifdef SIGWINCH
@@ -425,19 +425,19 @@ signal(SIGTERM, savsig[SIGTERM]);
 # else
 int i;
 for (i = 1; i < NX509_SIG; i++) {
-#  ifdef SIGUSR1
+# ifdef SIGUSR1
 if (i == SIGUSR1)
 continue;
-#  endif
-#  ifdef SIGUSR2
+# endif
+# ifdef SIGUSR2
 if (i == SIGUSR2)
 continue;
-#  endif
-#  ifdef SIGACTION
+# endif
+# ifdef SIGACTION
 sigaction(i, &savsig[i], NULL);
-#  else
+# else
 signal(i, savsig[i]);
-#  endif
+# endif
 }
 # endif
 }

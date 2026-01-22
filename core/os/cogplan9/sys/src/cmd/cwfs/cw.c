@@ -1,13 +1,13 @@
 #include "all.h"
-#define	CDEV(d)		((d)->cw.c)
-#define	WDEV(d)		((d)->cw.w)
-#define	RDEV(d)		((d)->cw.ro)
+#define CDEV(d) ((d)->cw.c)
+#define WDEV(d) ((d)->cw.w)
+#define RDEV(d) ((d)->cw.ro)
 enum {
-DEBUG		= 0,
-FIRST		= SUPER_ADDR,
-ADDFREE		= 100,
-CACHE_ADDR	= SUPER_ADDR,
-MAXAGE		= 10000,
+DEBUG = 0,
+FIRST = SUPER_ADDR,
+ADDFREE = 100,
+CACHE_ADDR = SUPER_ADDR,
+MAXAGE = 10000,
 };
 enum
 {
@@ -26,49 +26,49 @@ Odump,
 Orele,
 Ofree,
 };
-typedef	struct	Cw	Cw;
-struct	Cw
+typedef struct Cw Cw;
+struct Cw
 {
-Device*	dev;
-Device*	cdev;
-Device*	wdev;
-Device*	rodev;
-Cw*	link;
-int	dbucket;
-Off	daddr;
-Off	ncopy;
-int	nodump;
-Off	fsize;
-Off	ndump;
-int	depth;
-int	all;
-int	allflag;
-Off	falsehits;
+Device* dev;
+Device* cdev;
+Device* wdev;
+Device* rodev;
+Cw* link;
+int dbucket;
+Off daddr;
+Off ncopy;
+int nodump;
+Off fsize;
+Off ndump;
+int depth;
+int all;
+int allflag;
+Off falsehits;
 struct {
-char	name[500];
-char	namepad[NAMELEN+10];
+char name[500];
+char namepad[NAMELEN+10];
 };
 };
 static char* cwnames[] =
 {
-[Cnone]		"none",
-[Cdirty]	"dirty",
-[Cdump]		"dump",
-[Cread]		"read",
-[Cwrite]	"write",
-[Cdump1]	"dump1",
-[Cerror]	"error",
-[Onone]		"none",
-[Oread]		"read",
-[Owrite]	"write",
-[Ogrow]		"grow",
-[Odump]		"dump",
-[Orele]		"rele",
+[Cnone] "none",
+[Cdirty] "dirty",
+[Cdump] "dump",
+[Cread] "read",
+[Cwrite] "write",
+[Cdump1] "dump1",
+[Cerror] "error",
+[Onone] "none",
+[Oread] "read",
+[Owrite] "write",
+[Ogrow] "grow",
+[Odump] "dump",
+[Orele] "rele",
 };
 int oldcachefmt = 1;
-Centry*	getcentry(Bucket*, Off);
-int	cwio(Device*, Off, void*, int);
-void	cmd_cwcmd(int, char*[]);
+Centry* getcentry(Bucket*, Off);
+int cwio(Device*, Off, void*, int);
+void cmd_cwcmd(int, char*[]);
 void
 cmd_dump(int argc, char *argv[])
 {
@@ -1219,7 +1219,7 @@ cw->falsehits++;
 }
 return na;
 }
-Timet	nextdump(Timet t);
+Timet nextdump(Timet t);
 void
 cfsdump(Filsys *fs)
 {
@@ -1709,7 +1709,7 @@ void
 cwtest(Device*)
 {
 }
-#ifdef	XXX
+#ifdef XXX
 fsz = number(0, 0, 10);
 count = 0;
 if(fsz == number(0, -1, 10))

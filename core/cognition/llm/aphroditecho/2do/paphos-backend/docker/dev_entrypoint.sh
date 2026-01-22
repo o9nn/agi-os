@@ -1,34 +1,34 @@
 #!/bin/bash
 set -euo pipefail
 warnfail () {
-  echo "$@" >&2
-  exit 1
+echo "$@" >&2
+exit 1
 }
 case ${1:-} in
-  "")
-    ;;
-  *)
-    exec "$@"
+"")
+;;
+*)
+exec "$@"
 esac
 if ! [ -d bin ] ; then
-  echo "Creating bin directory"
-  mkdir bin
+echo "Creating bin directory"
+mkdir bin
 fi
 echo "Installing npm packages..."
 yarn install
 if ! shards check ; then
-  echo "Installing shards..."
-  shards install
+echo "Installing shards..."
+shards install
 fi
 echo "Waiting for postgres to be available..."
 ./docker/wait-for-it.sh -q postgres:5432
 if ! psql -d "$DATABASE_URL" -c '\d migrations' > /dev/null ; then
-  echo "Finishing database setup..."
-  lucky db.migrate
+echo "Finishing database setup..."
+lucky db.migrate
 fi
 if [ -S .overmind.sock ] ; then
-  echo "Removing old overmind socket file..."
-  rm .overmind.sock
+echo "Removing old overmind socket file..."
+rm .overmind.sock
 fi
 echo "Starting lucky dev server..."
 exec lucky dev

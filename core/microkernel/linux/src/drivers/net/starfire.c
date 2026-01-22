@@ -10,17 +10,17 @@ static int rx_copybreak = 0;
 #define MAX_UNITS 8
 static int options[MAX_UNITS] = {-1, -1, -1, -1, -1, -1, -1, -1};
 static int full_duplex[MAX_UNITS] = {-1, -1, -1, -1, -1, -1, -1, -1};
-#define RX_RING_SIZE	256
-#define TX_RING_SIZE	32
-#define DONE_Q_SIZE	1024
-#define TX_TIMEOUT  (6*HZ)
-#define PKT_BUF_SZ		1536
+#define RX_RING_SIZE 256
+#define TX_RING_SIZE 32
+#define DONE_Q_SIZE 1024
+#define TX_TIMEOUT (6*HZ)
+#define PKT_BUF_SZ 1536
 #ifndef __KERNEL__
 #define __KERNEL__
 #endif
 #if !defined(__OPTIMIZE__)
-#warning  You must compile this file with the correct options!
-#warning  See the last lines of the source file.
+#warning You must compile this file with the correct options!
+#warning See the last lines of the source file.
 #error You must compile this driver with "-O".
 #endif
 #include <linux/config.h>
@@ -59,9 +59,9 @@ static int full_duplex[MAX_UNITS] = {-1, -1, -1, -1, -1, -1, -1, -1};
 #include "pci-scan.h"
 #include "kern_compat.h"
 #endif
-#define virt_to_le32desc(addr)  cpu_to_le32(virt_to_bus(addr))
-#define le32desc_to_virt(addr)  bus_to_virt(le32_to_cpu(addr))
-#if (LINUX_VERSION_CODE >= 0x20100)  &&  defined(MODULE)
+#define virt_to_le32desc(addr) cpu_to_le32(virt_to_bus(addr))
+#define le32desc_to_virt(addr) bus_to_virt(le32_to_cpu(addr))
+#if (LINUX_VERSION_CODE >= 0x20100) && defined(MODULE)
 char kernel_version[] = UTS_RELEASE;
 #endif
 MODULE_AUTHOR("Donald Becker <becker@scyld.com>");
@@ -117,7 +117,7 @@ RxDescQIdx=0x500E8, RxDMAStatus=0x500F0, RxFilterMode=0x500F4,
 TxMode=0x55000,
 };
 enum intr_status_bits {
-IntrNormalSummary=0x8000,	IntrAbnormalSummary=0x02000000,
+IntrNormalSummary=0x8000, IntrAbnormalSummary=0x02000000,
 IntrRxDone=0x0300, IntrRxEmpty=0x10040, IntrRxPCIErr=0x80000,
 IntrTxDone=0x4000, IntrTxEmpty=0x1000, IntrTxPCIErr=0x80000,
 StatsMax=0x08000000, LinkChange=0xf0000000,
@@ -168,7 +168,7 @@ u32 status;
 u32 intrstatus;
 #endif
 };
-#define PRIV_ALIGN	15
+#define PRIV_ALIGN 15
 struct netdev_private {
 struct starfire_rx_desc *rx_ring;
 struct starfire_tx_desc *tx_ring;
@@ -178,7 +178,7 @@ const char *product_name;
 struct sk_buff* rx_skbuff[RX_RING_SIZE];
 struct sk_buff* tx_skbuff[TX_RING_SIZE];
 u8 pad0[100];
-struct rx_done_desc *rx_done_q  __attribute__((aligned (L1_CACHE_BYTES)));
+struct rx_done_desc *rx_done_q __attribute__((aligned (L1_CACHE_BYTES)));
 unsigned int rx_done;
 struct tx_done_report *tx_done_q __attribute__((aligned (L1_CACHE_BYTES)));
 unsigned int tx_done;
@@ -210,24 +210,24 @@ int mii_cnt;
 u16 advertising;
 unsigned char phys[2];
 };
-static int  mdio_read(struct net_device *dev, int phy_id, int location);
+static int mdio_read(struct net_device *dev, int phy_id, int location);
 static void mdio_write(struct net_device *dev, int phy_id, int location,
 int value);
-static int  netdev_open(struct net_device *dev);
-static int  change_mtu(struct net_device *dev, int new_mtu);
+static int netdev_open(struct net_device *dev);
+static int change_mtu(struct net_device *dev, int new_mtu);
 static void check_duplex(struct net_device *dev);
 static void netdev_timer(unsigned long data);
 static void tx_timeout(struct net_device *dev);
 static void init_ring(struct net_device *dev);
-static int  start_tx(struct sk_buff *skb, struct net_device *dev);
+static int start_tx(struct sk_buff *skb, struct net_device *dev);
 static void intr_handler(int irq, void *dev_instance, struct pt_regs *regs);
 static void netdev_error(struct net_device *dev, int intr_status);
-static int  netdev_rx(struct net_device *dev);
+static int netdev_rx(struct net_device *dev);
 static void netdev_error(struct net_device *dev, int intr_status);
 static void set_rx_mode(struct net_device *dev);
 static struct net_device_stats *get_stats(struct net_device *dev);
 static int mii_ioctl(struct net_device *dev, struct ifreq *rq, int cmd);
-static int  netdev_close(struct net_device *dev);
+static int netdev_close(struct net_device *dev);
 static struct net_device *root_net_dev = NULL;
 #ifndef MODULE
 int starfire_probe(struct net_device *dev)
@@ -275,7 +275,7 @@ np->max_interrupt_work = max_interrupt_work;
 np->multicast_filter_limit = multicast_filter_limit;
 if (dev->mem_start)
 option = dev->mem_start;
-if (card_idx < MAX_UNITS  &&  full_duplex[card_idx] > 0)
+if (card_idx < MAX_UNITS && full_duplex[card_idx] > 0)
 np->full_duplex = 1;
 if (np->full_duplex) {
 if (np->msg_level & NETIF_MSG_PROBE)
@@ -294,7 +294,7 @@ if (np->drv_flags & CanHaveMII) {
 int phy, phy_idx = 0;
 for (phy = 0; phy < 32 && phy_idx < 4; phy++) {
 int mii_status = mdio_read(dev, phy, 1);
-if (mii_status != 0xffff  &&  mii_status != 0x0000) {
+if (mii_status != 0xffff && mii_status != 0x0000) {
 np->phys[phy_idx++] = phy;
 np->advertising = mdio_read(dev, phy, 4);
 if (np->msg_level & NETIF_MSG_PROBE)
@@ -360,8 +360,8 @@ if (np->tx_ring == 0)
 np->tx_ring = (struct starfire_tx_desc *)get_free_page(GFP_KERNEL);
 if (np->rx_ring == 0)
 np->rx_ring = (struct starfire_rx_desc *)get_free_page(GFP_KERNEL);
-if (np->tx_done_q == 0  ||  np->rx_done_q == 0
-|| np->rx_ring == 0 ||  np->tx_ring == 0) {
+if (np->tx_done_q == 0 || np->rx_done_q == 0
+|| np->rx_ring == 0 || np->tx_ring == 0) {
 MOD_DEC_USE_COUNT;
 return -ENOMEM;
 }
@@ -499,8 +499,8 @@ intr_handler(dev->irq, dev, 0);
 np->timer.expires = jiffies + 2;
 np->polling = 1;
 }
-} else if (netif_queue_paused(dev)  &&
-np->cur_tx - np->dirty_tx > 1  &&
+} else if (netif_queue_paused(dev) &&
+np->cur_tx - np->dirty_tx > 1 &&
 (jiffies - dev->trans_start) > TX_TIMEOUT) {
 tx_timeout(dev);
 }
@@ -552,7 +552,7 @@ virt_to_le32desc(skb->tail) | cpu_to_le32(RxDescValid);
 }
 writew(i - 1, dev->base_addr + RxDescQIdx);
 np->dirty_rx = (unsigned int)(i - RX_RING_SIZE);
-for (  ; i < RX_RING_SIZE; i++) {
+for ( ; i < RX_RING_SIZE; i++) {
 np->rx_ring[i].rxaddr = 0;
 np->rx_skbuff[i] = 0;
 }
@@ -638,7 +638,7 @@ if (np->msg_level & NETIF_MSG_INTR)
 printk(KERN_DEBUG "%s: Tx Consumer index is %d.\n",
 dev->name, consumer);
 #if 0
-if (np->tx_done >= 250  || np->tx_done == 0)
+if (np->tx_done >= 250 || np->tx_done == 0)
 printk(KERN_DEBUG "%s: Tx completion entry %d is %8.8x, "
 "%d is %8.8x.\n", dev->name,
 np->tx_done, np->tx_done_q[np->tx_done].status,
@@ -825,9 +825,9 @@ np->stats.tx_aborted_errors =
 readl(ioaddr + 0x57024) + readl(ioaddr + 0x57028);
 np->stats.tx_window_errors = readl(ioaddr + 0x57018);
 np->stats.collisions = readl(ioaddr + 0x57004) + readl(ioaddr + 0x57008);
-np->stats.rx_dropped	   += readw(ioaddr + RxDMAStatus);
+np->stats.rx_dropped += readw(ioaddr + RxDMAStatus);
 writew(0, ioaddr + RxDMAStatus);
-np->stats.rx_crc_errors	   = readl(ioaddr + 0x5703C);
+np->stats.rx_crc_errors = readl(ioaddr + 0x5703C);
 np->stats.rx_frame_errors = readl(ioaddr + 0x57040);
 np->stats.rx_length_errors = readl(ioaddr + 0x57058);
 np->stats.rx_missed_errors = readl(ioaddr + 0x5707C);
@@ -861,11 +861,11 @@ if (dev->flags & IFF_PROMISC) {
 printk(KERN_NOTICE "%s: Promiscuous mode enabled.\n", dev->name);
 rx_mode = AcceptBroadcast|AcceptAllMulticast|AcceptAll|AcceptMyPhys;
 } else if ((dev->mc_count > np->multicast_filter_limit)
-||  (dev->flags & IFF_ALLMULTI)) {
+|| (dev->flags & IFF_ALLMULTI)) {
 rx_mode = AcceptBroadcast|AcceptAllMulticast|AcceptMyPhys;
 } else if (dev->mc_count <= 15) {
 long filter_addr = ioaddr + 0x56000 + 1*16;
-for (i = 1, mclist = dev->mc_list; mclist  &&  i <= dev->mc_count;
+for (i = 1, mclist = dev->mc_list; mclist && i <= dev->mc_count;
 i++, mclist = mclist->next) {
 u16 *eaddrs = (u16 *)mclist->dmi_addr;
 writew(cpu_to_be16(eaddrs[2]), filter_addr); filter_addr += 4;

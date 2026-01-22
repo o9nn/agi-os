@@ -1,16 +1,16 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"io.h"
-#include	"devlml.h"
-#define DBGREAD	0x01
-#define DBGWRIT	0x02
-#define DBGINTR	0x04
-#define DBGINTS	0x08
-#define DBGFS	0x10
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "io.h"
+#include "devlml.h"
+#define DBGREAD 0x01
+#define DBGWRIT 0x02
+#define DBGINTR 0x04
+#define DBGINTS 0x08
+#define DBGFS 0x10
 int debug = DBGREAD|DBGWRIT|DBGFS;
 enum{
 Qdir,
@@ -22,29 +22,29 @@ Qjpg1,
 Qraw1,
 };
 static Dirtab lmldir[] = {
-".",		{Qdir, 0, QTDIR},	0,	0555,
-"lml0ctl",	{Qctl0},		0,	0666,
-"lml0jpg",	{Qjpg0},		0,	0444,
-"lml0raw",	{Qraw0},		0,	0444,
-"lml1ctl",	{Qctl1},		0,	0666,
-"lml1jpg",	{Qjpg1},		0,	0444,
-"lml1raw",	{Qraw1},		0,	0444,
+".", {Qdir, 0, QTDIR}, 0, 0555,
+"lml0ctl", {Qctl0}, 0, 0666,
+"lml0jpg", {Qjpg0}, 0, 0444,
+"lml0raw", {Qraw0}, 0, 0444,
+"lml1ctl", {Qctl1}, 0, 0666,
+"lml1jpg", {Qjpg1}, 0, 0444,
+"lml1raw", {Qraw1}, 0, 0444,
 };
 typedef struct LML LML;
 struct LML {
-Pcidev	*pcidev;
-ulong	pciBaseAddr;
+Pcidev *pcidev;
+ulong pciBaseAddr;
 CodeData *codedata;
-ulong	jpgframeno;
-int	frameNo;
-Rendez	sleepjpg;
-int	jpgopens;
+ulong jpgframeno;
+int frameNo;
+Rendez sleepjpg;
+int jpgopens;
 } lmls[NLML];
 int nlml;
 static FrameHeader jpgheader = {
 MRK_SOI, MRK_APP3, (sizeof(FrameHeader)-4) << 8,
 { 'L', 'M', 'L', '\0'},
--1, 0, 0,  0
+-1, 0, 0, 0
 };
 #define writel(v, a) *(ulong *)(a) = (v)
 #define readl(a) *(ulong*)(a)
@@ -326,7 +326,7 @@ return;
 statcom = lml->codedata->statCom[fno];
 jpgheader = (FrameHeader *)(lml->codedata->frag[fno].hdr + 2);
 jpgheader->frameNo = lml->jpgframeno;
-jpgheader->ftime  = todget(nil);
+jpgheader->ftime = todget(nil);
 jpgheader->frameSize = (statcom & 0x00ffffff) >> 1;
 jpgheader->frameSeqNo = statcom >> 24;
 wakeup(&lml->sleepjpg);

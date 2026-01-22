@@ -1,16 +1,16 @@
 #include "ratfs.h"
 #include <ip.h>
 enum {
-Maxdoms	=	10,
-Timeout =	2*60*60,
+Maxdoms = 10,
+Timeout = 2*60*60,
 };
-static	int	accountmatch(char*, char**, int, char*);
-static	Node*	acctwalk(char*,  Node*);
-static	int	dommatch(char*, char*);
-static	Address* ipsearch(ulong, Address*, int);
-static	Node*	ipwalk(char*,  Node*);
-static	Node*	trwalk(char*, Node*);
-static	int	usermatch(char*, char*);
+static int accountmatch(char*, char**, int, char*);
+static Node* acctwalk(char*, Node*);
+static int dommatch(char*, char*);
+static Address* ipsearch(ulong, Address*, int);
+static Node* ipwalk(char*, Node*);
+static Node* trwalk(char*, Node*);
+static int usermatch(char*, char*);
 char*
 walk(char *name, Fid *fidp)
 {
@@ -71,7 +71,7 @@ break;
 return p;
 }
 static Node*
-ipwalk(char *name,  Node *np)
+ipwalk(char *name, Node *np)
 {
 Address *ap;
 ulong peerip;
@@ -242,7 +242,7 @@ ret = 1;
 if(usermatch(user, userp) == 0){
 if(*spec == 0 || strcmp(spec, "*") == 0)
 ret = 1;
-else if(ndoms > 0  && dommatch(doms[ndoms-1], spec) == 0)
+else if(ndoms > 0 && dommatch(doms[ndoms-1], spec) == 0)
 ret = 1;
 }
 }
@@ -277,7 +277,7 @@ return n;
 }
 return strcmp(pathdom, specdom);
 }
-typedef struct Stringtab	Stringtab;
+typedef struct Stringtab Stringtab;
 struct Stringtab {
 Stringtab *link;
 char *str;

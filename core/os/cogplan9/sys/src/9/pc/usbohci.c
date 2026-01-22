@@ -1,11 +1,11 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"../port/error.h"
-#include	"../port/usb.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "../port/error.h"
+#include "../port/usb.h"
 typedef struct Ctlio Ctlio;
 typedef struct Ctlr Ctlr;
 typedef struct Ed Ed;
@@ -20,278 +20,278 @@ typedef struct Td Td;
 typedef struct Tdpool Tdpool;
 enum
 {
-Incr		= 64,
-Align		= 0x20,
-Abortdelay	= 1,
-Tdatomic		= 8,
-Enabledelay	= 100,
-Qidle		= 0,
+Incr = 64,
+Align = 0x20,
+Abortdelay = 1,
+Tdatomic = 8,
+Enabledelay = 100,
+Qidle = 0,
 Qinstall,
 Qrun,
 Qdone,
 Qclose,
 Qfree,
-Edmpsmask	= 0x7ff,
-Edmpsshift	= 16,
-Edlow		= 1 << 13,
-Edskip		= 1 << 14,
-Ediso		= 1 << 15,
-Edtddir		= 0,
-Edin		= 2 << 11,
-Edout		= 1 << 11,
-Eddirmask	= 3 << 11,
-Edhalt		= 1,
-Edtoggle	= 2,
-Tdround		= 1<<18,
-Tdtoksetup	= 0<<19,
-Tdtokin		= 2<<19,
-Tdtokout	= 1<<19,
-Tdtokmask	= 3<<19,
-Tdnoioc		= 7<<21,
-Tdusetog	= 1<<25,
-Tddata1		= 1<<24,
-Tddata0		= 0<<24,
-Tdfcmask	= 7,
-Tdfcshift	= 24,
-Tdsfmask	= 0xFFFF,
-Tderrmask	= 3,
-Tderrshift	= 26,
-Tdccmask	= 0xf,
-Tdccshift	= 28,
-Tdiccmask	= 0xf,
-Tdiccshift	= 12,
-Ntdframes	= 0x10000,
-Tdok		= 0,
-Tdcrc		= 1,
-Tdbitstuff	= 2,
-Tdbadtog	= 3,
-Tdstalled	= 4,
-Tdtmout		= 5,
-Tdpidchk	= 6,
-Tdbadpid	= 7,
-Tddataovr	= 8,
-Tddataund	= 9,
-Tdbufovr	= 0xC,
-Tdbufund	= 0xD,
-Tdnotacc	= 0xE,
-Cple		= 0x04,
-Cie		= 0x08,
-Ccle		= 0x10,
-Cble		= 0x20,
-Cfsmask		= 3 << 6,
-Cfsreset	= 0 << 6,
-Cfsresume	= 1 << 6,
-Cfsoper		= 2 << 6,
-Cfssuspend	= 3 << 6,
-Sblf =	1 << 2,
-Sclf =	1 << 1,
-Shcr =	1 << 0,
-Mie =	1 << 31,
-Oc =	1 << 30,
-Rhsc =	1 << 6,
-Fno =	1 << 5,
-Ue =	1 << 4,
-Rd =	1 << 3,
-Sf =	1 << 2,
-Wdh =	1 << 1,
-So =	1 << 0,
+Edmpsmask = 0x7ff,
+Edmpsshift = 16,
+Edlow = 1 << 13,
+Edskip = 1 << 14,
+Ediso = 1 << 15,
+Edtddir = 0,
+Edin = 2 << 11,
+Edout = 1 << 11,
+Eddirmask = 3 << 11,
+Edhalt = 1,
+Edtoggle = 2,
+Tdround = 1<<18,
+Tdtoksetup = 0<<19,
+Tdtokin = 2<<19,
+Tdtokout = 1<<19,
+Tdtokmask = 3<<19,
+Tdnoioc = 7<<21,
+Tdusetog = 1<<25,
+Tddata1 = 1<<24,
+Tddata0 = 0<<24,
+Tdfcmask = 7,
+Tdfcshift = 24,
+Tdsfmask = 0xFFFF,
+Tderrmask = 3,
+Tderrshift = 26,
+Tdccmask = 0xf,
+Tdccshift = 28,
+Tdiccmask = 0xf,
+Tdiccshift = 12,
+Ntdframes = 0x10000,
+Tdok = 0,
+Tdcrc = 1,
+Tdbitstuff = 2,
+Tdbadtog = 3,
+Tdstalled = 4,
+Tdtmout = 5,
+Tdpidchk = 6,
+Tdbadpid = 7,
+Tddataovr = 8,
+Tddataund = 9,
+Tdbufovr = 0xC,
+Tdbufund = 0xD,
+Tdnotacc = 0xE,
+Cple = 0x04,
+Cie = 0x08,
+Ccle = 0x10,
+Cble = 0x20,
+Cfsmask = 3 << 6,
+Cfsreset = 0 << 6,
+Cfsresume = 1 << 6,
+Cfsoper = 2 << 6,
+Cfssuspend = 3 << 6,
+Sblf = 1 << 2,
+Sclf = 1 << 1,
+Shcr = 1 << 0,
+Mie = 1 << 31,
+Oc = 1 << 30,
+Rhsc = 1 << 6,
+Fno = 1 << 5,
+Ue = 1 << 4,
+Rd = 1 << 3,
+Sf = 1 << 2,
+Wdh = 1 << 1,
+So = 1 << 0,
 Fmaxpktmask = 0x7fff,
 Fmaxpktshift = 16,
-HcRhDescA_POTPGT_MASK =	0xff << 24,
-HcRhDescA_POTPGT_SHIFT =	24,
-Lps =	1 << 0,
-Cgp =	1 << 0,
-Oci =	1 << 1,
-Psm =	1 << 8,
-Nps =	1 << 9,
-Drwe =	1 << 15,
-Srwe =	1 << 15,
-Lpsc =	1 << 16,
-Ccic =	1 << 17,
-Crwe =	1 << 31,
-Ccs =	0x00001,
-Pes =	0x00002,
-Pss =	0x00004,
-Poci =	0x00008,
-Prs =	0x00010,
-Pps =	0x00100,
-Lsda =	0x00200,
-Csc =	0x10000,
-Pesc =	0x20000,
-Pssc =	0x40000,
-Ocic =	0x80000,
-Prsc =	0x100000,
-Cpe =	0x001,
-Spe =	0x002,
-Spr =	0x010,
-Spp =	0x100,
-Cpp =	0x200,
+HcRhDescA_POTPGT_MASK = 0xff << 24,
+HcRhDescA_POTPGT_SHIFT = 24,
+Lps = 1 << 0,
+Cgp = 1 << 0,
+Oci = 1 << 1,
+Psm = 1 << 8,
+Nps = 1 << 9,
+Drwe = 1 << 15,
+Srwe = 1 << 15,
+Lpsc = 1 << 16,
+Ccic = 1 << 17,
+Crwe = 1 << 31,
+Ccs = 0x00001,
+Pes = 0x00002,
+Pss = 0x00004,
+Poci = 0x00008,
+Prs = 0x00010,
+Pps = 0x00100,
+Lsda = 0x00200,
+Csc = 0x10000,
+Pesc = 0x20000,
+Pssc = 0x40000,
+Ocic = 0x80000,
+Prsc = 0x100000,
+Cpe = 0x001,
+Spe = 0x002,
+Spr = 0x010,
+Spp = 0x100,
+Cpp = 0x200,
 };
 struct Ed {
-ulong	ctrl;
-ulong	tail;
-ulong	head;
-ulong	nexted;
-Ed*	next;
-Td*	tds;
-Ep*	ep;
-Ed*	inext;
+ulong ctrl;
+ulong tail;
+ulong head;
+ulong nexted;
+Ed* next;
+Td* tds;
+Ep* ep;
+Ed* inext;
 };
 struct Qio
 {
 QLock;
 Rendez;
-Ed*	ed;
-int	sched;
-int	toggle;
-ulong	usbid;
-int	tok;
-long	iotime;
-int	debug;
-char*	err;
-int	state;
-long	bw;
+Ed* ed;
+int sched;
+int toggle;
+ulong usbid;
+int tok;
+long iotime;
+int debug;
+char* err;
+int state;
+long bw;
 };
 struct Ctlio
 {
 Qio;
-uchar*	data;
-int	ndata;
+uchar* data;
+int ndata;
 };
 struct Isoio
 {
 Qio;
-int	nframes;
-Td*	atds;
-int	navail;
-ulong	frno;
-ulong	left;
-int	nerrs;
+int nframes;
+Td* atds;
+int navail;
+ulong frno;
+ulong left;
+int nerrs;
 };
 struct Td
 {
-ulong	ctrl;
-ulong	cbp;
-ulong	nexttd;
-ulong	be;
-ushort	offsets[8];
-Td*	next;
-Td*	anext;
-Ep*	ep;
-Qio*	io;
-Block*	bp;
-ulong	nbytes;
-ulong	cbp0;
-ulong	last;
+ulong ctrl;
+ulong cbp;
+ulong nexttd;
+ulong be;
+ushort offsets[8];
+Td* next;
+Td* anext;
+Ep* ep;
+Qio* io;
+Block* bp;
+ulong nbytes;
+ulong cbp0;
+ulong last;
 };
 struct Hcca
 {
-ulong	intrtable[32];
-ushort	framenumber;
-ushort	pad1;
-ulong	donehead;
-uchar	reserved[116];
+ulong intrtable[32];
+ushort framenumber;
+ushort pad1;
+ulong donehead;
+uchar reserved[116];
 };
 struct Ohci
 {
-ulong	revision;
-ulong	control;
-ulong	cmdsts;
-ulong	intrsts;
-ulong	intrenable;
-ulong	intrdisable;
-ulong	hcca;
-ulong	periodcurred;
-ulong	ctlheaded;
-ulong	ctlcurred;
-ulong	bulkheaded;
-ulong	bulkcurred;
-ulong	donehead;
-ulong	fminterval;
-ulong	fmremaining;
-ulong	fmnumber;
-ulong	periodicstart;
-ulong	lsthreshold;
-ulong	rhdesca;
-ulong	rhdescb;
-ulong	rhsts;
-ulong	rhportsts[15];
-ulong	pad25[20];
-ulong	hostueaddr;
-ulong	hostuests;
-ulong	hosttimeoutctrl;
-ulong	pad59;
-ulong	pad60;
-ulong	hostrevision;
-ulong	pad62[2];
+ulong revision;
+ulong control;
+ulong cmdsts;
+ulong intrsts;
+ulong intrenable;
+ulong intrdisable;
+ulong hcca;
+ulong periodcurred;
+ulong ctlheaded;
+ulong ctlcurred;
+ulong bulkheaded;
+ulong bulkcurred;
+ulong donehead;
+ulong fminterval;
+ulong fmremaining;
+ulong fmnumber;
+ulong periodicstart;
+ulong lsthreshold;
+ulong rhdesca;
+ulong rhdescb;
+ulong rhsts;
+ulong rhportsts[15];
+ulong pad25[20];
+ulong hostueaddr;
+ulong hostuests;
+ulong hosttimeoutctrl;
+ulong pad59;
+ulong pad60;
+ulong hostrevision;
+ulong pad62[2];
 };
 struct Qtree
 {
-int	nel;
-int	depth;
-ulong*	bw;
-Ed**	root;
+int nel;
+int depth;
+ulong* bw;
+Ed** root;
 };
 struct Tdpool
 {
 Lock;
-Td*	free;
-int	nalloc;
-int	ninuse;
-int	nfree;
+Td* free;
+int nalloc;
+int ninuse;
+int nfree;
 };
 struct Edpool
 {
 Lock;
-Ed*	free;
-int	nalloc;
-int	ninuse;
-int	nfree;
+Ed* free;
+int nalloc;
+int ninuse;
+int nfree;
 };
 struct Ctlr
 {
 Lock;
-QLock	resetl;
-int	active;
-Ctlr*	next;
-int	nports;
-Ohci*	ohci;
-Hcca*	hcca;
-int	overrun;
-Ed*	intrhd;
-Qtree*	tree;
-int	ntree;
-Pcidev*	pcidev;
+QLock resetl;
+int active;
+Ctlr* next;
+int nports;
+Ohci* ohci;
+Hcca* hcca;
+int overrun;
+Ed* intrhd;
+Qtree* tree;
+int ntree;
+Pcidev* pcidev;
 };
-#define dqprint		if(debug || io && io->debug)print
-#define ddqprint		if(debug>1 || (io && io->debug>1))print
-#define diprint		if(debug || iso && iso->debug)print
-#define ddiprint		if(debug>1 || (iso && iso->debug>1))print
-#define TRUNC(x, sz)	((x) & ((sz)-1))
+#define dqprint if(debug || io && io->debug)print
+#define ddqprint if(debug>1 || (io && io->debug>1))print
+#define diprint if(debug || iso && iso->debug)print
+#define ddiprint if(debug>1 || (iso && iso->debug>1))print
+#define TRUNC(x, sz) ((x) & ((sz)-1))
 static int ohciinterrupts[Nttypes];
 static char* iosname[] = { "idle", "install", "run", "done", "close", "FREE" };
 static int debug;
 static Edpool edpool;
 static Tdpool tdpool;
 static Ctlr* ctlrs[Nhcis];
-static	QLock	usbhstate;
-static int	schedendpt(Ctlr *ub, Ep *ep);
-static void	unschedendpt(Ctlr *ub, Ep *ep);
-static long	qtd(Ctlr*, Ep*, int, Block*, uchar*, uchar*, int, ulong);
+static QLock usbhstate;
+static int schedendpt(Ctlr *ub, Ep *ep);
+static void unschedendpt(Ctlr *ub, Ep *ep);
+static long qtd(Ctlr*, Ep*, int, Block*, uchar*, uchar*, int, ulong);
 static char* errmsgs[] =
 {
-[Tdcrc]		"crc error",
-[Tdbitstuff]	"bit stuffing error",
-[Tdbadtog]	"bad toggle",
-[Tdstalled]	Estalled,
-[Tdtmout]	"timeout error",
-[Tdpidchk]	"pid check error",
-[Tdbadpid]	"bad pid",
-[Tddataovr]	"data overrun",
-[Tddataund]	"data underrun",
-[Tdbufovr]	"buffer overrun",
-[Tdbufund]	"buffer underrun",
-[Tdnotacc]	"not accessed"
+[Tdcrc] "crc error",
+[Tdbitstuff] "bit stuffing error",
+[Tdbadtog] "bad toggle",
+[Tdstalled] Estalled,
+[Tdtmout] "timeout error",
+[Tdpidchk] "pid check error",
+[Tdbadpid] "bad pid",
+[Tddataovr] "data overrun",
+[Tddataund] "data underrun",
+[Tdbufovr] "buffer overrun",
+[Tdbufund] "buffer underrun",
+[Tdnotacc] "not accessed"
 };
 static void*
 pa2ptr(ulong pa)
@@ -1574,7 +1574,7 @@ ed = io->ed = edalloc();
 td = tdalloc();
 td->ep = ep;
 td->io = io;
-ed->tail =  ptr2pa(td);
+ed->tail = ptr2pa(td);
 ed->head = ptr2pa(td);
 ed->tds = td;
 ed->ep = ep;
@@ -1924,7 +1924,7 @@ ulong ival, ctrl, fmi;
 ctlr = hp->aux;
 dprint("ohci %#p init\n", ctlr->ohci);
 ohci = ctlr->ohci;
-fmi =  ctlr->ohci->fminterval;
+fmi = ctlr->ohci->fminterval;
 ctlr->ohci->cmdsts = Shcr;
 while(ctlr->ohci->cmdsts & Shcr)
 delay(1);
@@ -1948,7 +1948,7 @@ for(i = 0; i < ctlr->nports; i++)
 ohci->rhportsts[i] = 0;
 delay(50);
 for(i = 0; i < ctlr->nports; i++){
-ohci->rhportsts[i] =  Spp;
+ohci->rhportsts[i] = Spp;
 if((ohci->rhportsts[i] & Ccs) != 0)
 ohci->rhportsts[i] |= Spr;
 }

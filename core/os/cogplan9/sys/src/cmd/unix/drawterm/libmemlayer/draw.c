@@ -5,12 +5,12 @@
 #include <memlayer.h>
 struct Draw
 {
-Point	deltas;
-Point	deltam;
-Memlayer		*dstlayer;
-Memimage	*src;
-Memimage	*mask;
-int	op;
+Point deltas;
+Point deltam;
+Memlayer *dstlayer;
+Memimage *src;
+Memimage *mask;
+int op;
 };
 static
 void
@@ -51,7 +51,7 @@ iprint("memdraw %p %R %p %P %p %P\n", dst, r, src, p0, mask, p1);
 if(mask == nil)
 mask = memopaque;
 if(mask->layer){
-if(drawdebug)	iprint("mask->layer != nil\n");
+if(drawdebug) iprint("mask->layer != nil\n");
 return;
 }
 Top:
@@ -60,7 +60,7 @@ memimagedraw(dst, r, src, p0, mask, p1, op);
 return;
 }
 if(drawclip(dst, &r, src, &p0, mask, &p1, &srcr, &mr) == 0){
-if(drawdebug)	iprint("drawclip dstcr %R srccr %R maskcr %R\n", dst->clipr, src->clipr, mask->clipr);
+if(drawdebug) iprint("drawclip dstcr %R srccr %R maskcr %R\n", dst->clipr, src->clipr, mask->clipr);
 return;
 }
 dl = dst->layer;

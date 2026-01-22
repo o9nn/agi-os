@@ -1,16 +1,16 @@
 #ifndef __LINUX_NET_SCM_H
 #define __LINUX_NET_SCM_H
-#define SCM_MAX_FD	(OPEN_MAX-1)
+#define SCM_MAX_FD (OPEN_MAX-1)
 struct scm_fp_list
 {
-int		count;
-struct file	*fp[SCM_MAX_FD];
+int count;
+struct file *fp[SCM_MAX_FD];
 };
 struct scm_cookie
 {
-struct ucred		creds;
-struct scm_fp_list	*fp;
-unsigned long		seq;
+struct ucred creds;
+struct scm_fp_list *fp;
+unsigned long seq;
 };
 extern void scm_detach_fds(struct msghdr *msg, struct scm_cookie *scm);
 extern int __scm_send(struct socket *sock, struct msghdr *msg, struct scm_cookie *scm);

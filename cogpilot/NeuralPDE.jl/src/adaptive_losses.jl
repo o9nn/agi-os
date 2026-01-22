@@ -111,7 +111,7 @@ that the loss weights are maximized by an internal optimizer, which leads to a b
 where loss functions that have not been satisfied get a greater weight.
 ## Positional Arguments
 * `reweight_every`: how often to reweight the PDE and BC loss functions, measured in
-iterations.  Reweighting is cheap since it re-uses the value of loss functions generated
+iterations. Reweighting is cheap since it re-uses the value of loss functions generated
 during the main optimization loop.
 ## Keyword Arguments
 * `pde_max_optimiser`: a OptimizationOptimisers optimiser that is used internally to

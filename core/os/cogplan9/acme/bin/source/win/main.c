@@ -6,13 +6,13 @@
 #include <9p.h>
 #include <ctype.h>
 #include "dat.h"
-void	mainctl(void*);
-void	startcmd(char *[], int*);
-void	stdout2body(void*);
-int	debug;
-int	notepg;
-int	eraseinput;
-int	dirty = 0;
+void mainctl(void*);
+void startcmd(char *[], int*);
+void stdout2body(void*);
+int debug;
+int notepg;
+int eraseinput;
+int dirty = 0;
 Window *win;
 void
 usage(void)
@@ -487,14 +487,14 @@ goto Unknown;
 }
 enum
 {
-NARGS		= 100,
-NARGCHAR	= 8*1024,
-EXECSTACK 	= STACK+(NARGS+1)*sizeof(char*)+NARGCHAR
+NARGS = 100,
+NARGCHAR = 8*1024,
+EXECSTACK = STACK+(NARGS+1)*sizeof(char*)+NARGCHAR
 };
 struct Exec
 {
-char		**argv;
-Channel	*cpid;
+char **argv;
+Channel *cpid;
 };
 int
 lookinbin(char *s)

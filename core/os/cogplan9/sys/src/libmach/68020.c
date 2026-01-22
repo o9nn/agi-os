@@ -3,52 +3,52 @@
 #include <libc.h>
 #include <bio.h>
 #include <mach.h>
-#define	MAXREG	0
-#define	MINREG	0
-#define	REGOFF(x)	(ulong)(&((struct Ureg *) 0)->x)
-#define	VO	REGOFF(vo)
-#define	SR	REGOFF(sr)
-#define	R0	REGOFF(r0)
-#define	PC	REGOFF(pc)
-#define	DBMAGIC	REGOFF(magic)
-#define	SP	REGOFF(usp)
-#define	REGSIZE		(R0+4)
-#define	FCTL(x)		(REGSIZE+(x)*4)
-#define	FREG(x)		(FCTL(3)+(x)*12)
-#define	FPREGSIZE	(11*12)
+#define MAXREG 0
+#define MINREG 0
+#define REGOFF(x) (ulong)(&((struct Ureg *) 0)->x)
+#define VO REGOFF(vo)
+#define SR REGOFF(sr)
+#define R0 REGOFF(r0)
+#define PC REGOFF(pc)
+#define DBMAGIC REGOFF(magic)
+#define SP REGOFF(usp)
+#define REGSIZE (R0+4)
+#define FCTL(x) (REGSIZE+(x)*4)
+#define FREG(x) (FCTL(3)+(x)*12)
+#define FPREGSIZE (11*12)
 Reglist m68020reglist[] = {
-{"VO",		VO,		RINT,	'x'},
-{"SR",		SR,		RINT,	'x'},
-{"MAGIC",	DBMAGIC,	RINT,	'X'},
-{"PC",		PC,		RINT,	'X'},
-{"A7",		SP,		RINT,	'X'},
-{"KSP",		REGOFF(sp),	RINT,	'X'},
-{"A6",		REGOFF(a6),	RINT,	'X'},
-{"A5",		REGOFF(a5),	RINT,	'X'},
-{"A4",		REGOFF(a4),	RINT,	'X'},
-{"A3",		REGOFF(a3),	RINT,	'X'},
-{"A2",		REGOFF(a2),	RINT,	'X'},
-{"A1",		REGOFF(a1),	RINT,	'X'},
-{"A0",		REGOFF(a0),	RINT,	'X'},
-{"R7",		REGOFF(r7),	RINT,	'X'},
-{"R6",		REGOFF(r6),	RINT,	'X'},
-{"R5",		REGOFF(r5),	RINT,	'X'},
-{"R4",		REGOFF(r4),	RINT,	'X'},
-{"R3",		REGOFF(r3),	RINT,	'X'},
-{"R2",		REGOFF(r2),	RINT,	'X'},
-{"R1",		REGOFF(r1),	RINT,	'X'},
-{"R0",		REGOFF(r0),	RINT,	'X'},
-{"FPCR",	FCTL(0),	RFLT,	'X'},
-{"FPSR",	FCTL(1),	RFLT,	'X'},
-{"FPIAR",	FCTL(2),	RFLT,	'X'},
-{"F0",		FREG(0),	RFLT,	'8'},
-{"F1",		FREG(1),	RFLT,	'8'},
-{"F2",		FREG(2),	RFLT,	'8'},
-{"F3",		FREG(3),	RFLT,	'8'},
-{"F4",		FREG(4),	RFLT,	'8'},
-{"F5",		FREG(5),	RFLT,	'8'},
-{"F6",		FREG(6),	RFLT,	'8'},
-{"F7",		FREG(7),	RFLT,	'8'},
+{"VO", VO, RINT, 'x'},
+{"SR", SR, RINT, 'x'},
+{"MAGIC", DBMAGIC, RINT, 'X'},
+{"PC", PC, RINT, 'X'},
+{"A7", SP, RINT, 'X'},
+{"KSP", REGOFF(sp), RINT, 'X'},
+{"A6", REGOFF(a6), RINT, 'X'},
+{"A5", REGOFF(a5), RINT, 'X'},
+{"A4", REGOFF(a4), RINT, 'X'},
+{"A3", REGOFF(a3), RINT, 'X'},
+{"A2", REGOFF(a2), RINT, 'X'},
+{"A1", REGOFF(a1), RINT, 'X'},
+{"A0", REGOFF(a0), RINT, 'X'},
+{"R7", REGOFF(r7), RINT, 'X'},
+{"R6", REGOFF(r6), RINT, 'X'},
+{"R5", REGOFF(r5), RINT, 'X'},
+{"R4", REGOFF(r4), RINT, 'X'},
+{"R3", REGOFF(r3), RINT, 'X'},
+{"R2", REGOFF(r2), RINT, 'X'},
+{"R1", REGOFF(r1), RINT, 'X'},
+{"R0", REGOFF(r0), RINT, 'X'},
+{"FPCR", FCTL(0), RFLT, 'X'},
+{"FPSR", FCTL(1), RFLT, 'X'},
+{"FPIAR", FCTL(2), RFLT, 'X'},
+{"F0", FREG(0), RFLT, '8'},
+{"F1", FREG(1), RFLT, '8'},
+{"F2", FREG(2), RFLT, '8'},
+{"F3", FREG(3), RFLT, '8'},
+{"F4", FREG(4), RFLT, '8'},
+{"F5", FREG(5), RFLT, '8'},
+{"F6", FREG(6), RFLT, '8'},
+{"F7", FREG(7), RFLT, '8'},
 {0}
 };
 Mach m68020 =

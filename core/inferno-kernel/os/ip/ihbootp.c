@@ -6,46 +6,46 @@
 #include "../port/error.h"
 #include "kernel.h"
 #include "ip.h"
-static	ulong	fsip;
-static	ulong	auip;
-static	ulong	gwip;
-static	ulong	ipmask;
-static	ulong	ipaddr;
-static	ulong	dnsip;
+static ulong fsip;
+static ulong auip;
+static ulong gwip;
+static ulong ipmask;
+static ulong ipaddr;
+static ulong dnsip;
 enum
 {
 Bootrequest = 1,
-Bootreply   = 2,
+Bootreply = 2,
 };
 typedef struct Bootp
 {
-uchar	raddr[IPaddrlen];
-uchar	laddr[IPaddrlen];
-uchar	rport[2];
-uchar	lport[2];
-uchar	op;
-uchar	htype;
-uchar	hlen;
-uchar	hops;
-uchar	xid[4];
-uchar	secs[2];
-uchar	pad[2];
-uchar	ciaddr[4];
-uchar	yiaddr[4];
-uchar	siaddr[4];
-uchar	giaddr[4];
-uchar	chaddr[16];
-uchar	sname[64];
-uchar	file[128];
-uchar	vend[128];
+uchar raddr[IPaddrlen];
+uchar laddr[IPaddrlen];
+uchar rport[2];
+uchar lport[2];
+uchar op;
+uchar htype;
+uchar hlen;
+uchar hops;
+uchar xid[4];
+uchar secs[2];
+uchar pad[2];
+uchar ciaddr[4];
+uchar yiaddr[4];
+uchar siaddr[4];
+uchar giaddr[4];
+uchar chaddr[16];
+uchar sname[64];
+uchar file[128];
+uchar vend[128];
 } Bootp;
-static	Bootp	req;
-static	Proc*	rcvprocp;
-static	int	recv;
-static	int	done;
-static	Rendez	bootpr;
-static	char	rcvbuf[512];
-static	int	bootpdebug;
+static Bootp req;
+static Proc* rcvprocp;
+static int recv;
+static int done;
+static Rendez bootpr;
+static char rcvbuf[512];
+static int bootpdebug;
 static void
 parsevend(uchar* vend)
 {
@@ -76,7 +76,7 @@ break;
 case 3:
 if (vend[1] < 4)
 break;
-gwip =	(vend[2]<<24)|
+gwip = (vend[2]<<24)|
 (vend[3]<<16)|
 (vend[4]<<8)|
 vend[5];
@@ -84,7 +84,7 @@ break;
 case 6:
 if (vend[1] < 4)
 break;
-dnsip =	(vend[2]<<24)|
+dnsip = (vend[2]<<24)|
 (vend[3]<<16)|
 (vend[4]<<8)|
 vend[5];
@@ -92,7 +92,7 @@ break;
 case 8:
 if (vend[1] < 4)
 break;
-auip =	(vend[2]<<24)|
+auip = (vend[2]<<24)|
 (vend[3]<<16)|
 (vend[4]<<8)|
 vend[5];
@@ -100,7 +100,7 @@ break;
 case 11:
 if (vend[1] < 4)
 break;
-fsip =	(vend[2]<<24)|
+fsip = (vend[2]<<24)|
 (vend[3]<<16)|
 (vend[4]<<8)|
 vend[5];
@@ -241,5 +241,5 @@ poperror();
 free(buf);
 return len;
 }
-char*	(*bootp)(Ipifc*) = rbootp;
-int	(*bootpread)(char*, ulong, int) = rbootpread;
+char* (*bootp)(Ipifc*) = rbootp;
+int (*bootpread)(char*, ulong, int) = rbootpread;

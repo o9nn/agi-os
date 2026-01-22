@@ -3,12 +3,12 @@
 #include <sys/types.h>
 #include "packet.h"
 typedef struct pgp_memory_t {
-uint8_t		*buf;
-size_t          length;
-size_t          allocated;
-unsigned	mmapped;
+uint8_t *buf;
+size_t length;
+size_t allocated;
+unsigned mmapped;
 } pgp_memory_t;
-pgp_memory_t   *pgp_memory_new(void);
+pgp_memory_t *pgp_memory_new(void);
 void pgp_memory_free(pgp_memory_t *);
 void pgp_memory_init(pgp_memory_t *, size_t);
 void pgp_memory_pad(pgp_memory_t *, size_t);

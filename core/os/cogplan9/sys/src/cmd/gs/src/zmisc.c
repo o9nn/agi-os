@@ -120,7 +120,7 @@ push(1);
 make_int(op, gs_serialnumber);
 return 0;
 }
-private long    real_time_0[2];
+private long real_time_0[2];
 private int
 zmisc_init_realtime(i_ctx_t * i_ctx_p)
 {

@@ -26,15 +26,15 @@ S_IFDIR | S_IRUGO | S_IXUGO, 2
 static int pas_maxi = 0;
 static int pas_wmaxi = 0;
 int scsi_irq_translate[] =
-{ 0,  0,  1,  2,  3,  4,  5,  6, 0,  0,  7,  8,  9,  0, 10, 11 };
-int default_irqs[] = {  PAS16_DEFAULT_BOARD_1_IRQ,
+{ 0, 0, 1, 2, 3, 4, 5, 6, 0, 0, 7, 8, 9, 0, 10, 11 };
+int default_irqs[] = { PAS16_DEFAULT_BOARD_1_IRQ,
 PAS16_DEFAULT_BOARD_2_IRQ,
 PAS16_DEFAULT_BOARD_3_IRQ,
 PAS16_DEFAULT_BOARD_4_IRQ
 };
 static struct override {
 unsigned short io_port;
-int  irq;
+int irq;
 } overrides
 #ifdef PAS16_OVERRIDE
 [] = PAS16_OVERRIDE;
@@ -52,7 +52,7 @@ int noauto;
 {PAS16_DEFAULT_BASE_4, 0}
 };
 #define NO_BASES (sizeof (bases) / sizeof (struct base))
-unsigned short  pas16_offset[ 8 ] =
+unsigned short pas16_offset[ 8 ] =
 {
 0x1c00,
 0x1c01,
@@ -68,15 +68,15 @@ unsigned short  pas16_offset[ 8 ] =
 #else
 #define rtrc(i) {}
 #endif
-void	enable_board( int  board_num,  unsigned short port )
+void enable_board( int board_num, unsigned short port )
 {
 outb( 0xbc + board_num, MASTER_ADDRESS_PTR );
 outb( port >> 2, MASTER_ADDRESS_PTR );
 }
-void	init_board( unsigned short io_port, int irq, int force_irq )
+void init_board( unsigned short io_port, int irq, int force_irq )
 {
-unsigned int	tmp;
-unsigned int	pas_irq_code;
+unsigned int tmp;
+unsigned int pas_irq_code;
 outb( 0x30, io_port + P_TIMEOUT_COUNTER_REG );
 outb( 0x01, io_port + P_TIMEOUT_STATUS_REG_OFFSET );
 outb( 0x01, io_port + WAIT_STATE );
@@ -92,15 +92,15 @@ outb( 0x4d, io_port + SYS_CONFIG_4 );
 }
 else
 {
-tmp = (  tmp & 0x0f ) | ( pas_irq_code << 4 );
+tmp = ( tmp & 0x0f ) | ( pas_irq_code << 4 );
 outb( tmp, io_port + IO_CONFIG_3 );
 outb( 0x6d, io_port + SYS_CONFIG_4 );
 }
 }
-int     pas16_hw_detect( unsigned short  board_num )
+int pas16_hw_detect( unsigned short board_num )
 {
-unsigned char	board_rev, tmp;
-unsigned short	io_port = bases[ board_num ].io_port;
+unsigned char board_rev, tmp;
+unsigned short io_port = bases[ board_num ].io_port;
 enable_board( board_num, io_port );
 board_rev = inb( io_port + PCB_CONFIG );
 if( board_rev == 0xff )
@@ -144,7 +144,7 @@ static int current_override = 0;
 static unsigned short current_base = 0;
 struct Scsi_Host *instance;
 unsigned short io_port;
-int  count;
+int count;
 tpnt->proc_dir = &proc_scsi_pas16;
 tpnt->proc_info = &pas16_proc_info;
 for (count = 0; current_override < NO_OVERRIDES; ++current_override) {
@@ -228,7 +228,7 @@ return 0;
 }
 static inline int NCR5380_pread (struct Scsi_Host *instance, unsigned char *dst,
 int len) {
-register unsigned char  *d = dst;
+register unsigned char *d = dst;
 register unsigned short reg = (unsigned short) (instance->io_port +
 P_DATA_REG_OFFSET);
 register int i = len;

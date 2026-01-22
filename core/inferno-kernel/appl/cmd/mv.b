@@ -39,11 +39,11 @@ if(len arr == 2 && i >= 0 && (dirfrom.mode&Sys->DMDIR))
 (todir,toelem)=split(arr[len arr-1]);
 else{
 todir = arr[len arr -1];
-toelem = "";	# toelem will be fromelem
+toelem = ""; # toelem will be fromelem
 }
 }else
 (todir,toelem)=split(arr[len arr-1]);
-if(len arr > 2  && toelem != nil) {
+if(len arr > 2 && toelem != nil) {
 sys->fprint(stderr, "mv: %s not a directory\n", arr[len arr-1]);
 raise "fail:error";
 }
@@ -111,7 +111,7 @@ sys->fprint(stderr, "mv: can't create %s: %r\n", toname);
 return -1;
 }
 if ((stat := copy1(fdf, fdt, fromname, toname)) != -1)
-fdf = nil;	# temp bug: sometimes can't remove open file
+fdf = nil; # temp bug: sometimes can't remove open file
 if (sys->remove(fromname) < 0) {
 sys->fprint(stderr, "mv: can't remove %s: %r\n", fromname);
 return -1;

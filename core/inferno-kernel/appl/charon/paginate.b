@@ -163,30 +163,30 @@ copyframe(f: ref Frame): ref Frame
 {
 zr := Draw->Rect(p0, p0);
 newf := ref Frame(
--1,			# id
-nil,			# doc
-nil,			# src
-" PRINT FRAME ",	# name
-f.marginw,	# marginw
-f.marginh,	# marginh
-0,			# framebd
-Build->FRnoscroll,	# flags
-nil,			# layout - filled in below, needs this frame ref
-nil,			# sublays - filled in by geometry code
-0,			# sublayid
-nil,			# controls - filled in below, needs this frame ref
-0,			# controlid - filled in below
-nil,			# cim
-zr,			# r
-zr,			# cr
-zr,			# totalr
-zr,			# viewr
-nil,			# vscr
-nil,			# hscr
-nil,			# parent
-nil,			# kids
-0,			# animpid
-nil			# prctxt
+-1, # id
+nil, # doc
+nil, # src
+" PRINT FRAME ", # name
+f.marginw, # marginw
+f.marginh, # marginh
+0, # framebd
+Build->FRnoscroll, # flags
+nil, # layout - filled in below, needs this frame ref
+nil, # sublays - filled in by geometry code
+0, # sublayid
+nil, # controls - filled in below, needs this frame ref
+0, # controlid - filled in below
+nil, # cim
+zr, # r
+zr, # cr
+zr, # totalr
+zr, # viewr
+nil, # vscr
+nil, # hscr
+nil, # parent
+nil, # kids
+0, # animpid
+nil # prctxt
 );
 newf.doc = copydoc(f, newf, f.doc);
 controls := array [len f.controls] of ref Control;
@@ -212,29 +212,29 @@ copydoc(oldf, f : ref Frame, doc: ref Build->Docinfo): ref Docinfo
 {
 background := copybackground(oldf, f, doc.background);
 newdoc := ref Build->Docinfo(
-nil,		#src
-nil,		#base
-nil,		#referrer
-nil,		#doctitle
+nil, #src
+nil, #base
+nil, #referrer
+nil, #doctitle
 background,
-nil,		#backgrounditem
+nil, #backgrounditem
 doc.text, doc.link, doc.vlink, doc.alink,
-nil,		#target
-nil,		#refresh
-nil,		#chset
-nil,		#lastModified
-0,		#scripttype
-0,		#hasscripts
-nil,		#events
-0,		#evmask
-nil,		#kidinfo
-0,		#frameid
-nil,		#anchors
-nil,		#dests
-nil,		#forms
-nil,		#tables
-nil,		#maps
-nil		#images
+nil, #target
+nil, #refresh
+nil, #chset
+nil, #lastModified
+0, #scripttype
+0, #hasscripts
+nil, #events
+0, #evmask
+nil, #kidinfo
+0, #frameid
+nil, #anchors
+nil, #dests
+nil, #forms
+nil, #tables
+nil, #maps
+nil #images
 );
 return newdoc;
 }
@@ -247,11 +247,11 @@ end = copyline(oldf, f, end, line);
 newl := ref Lay(
 start,
 end,
-l.targetwidth,		# targetwidth
-l.width,		# width
-l.height,		# height
-l.margin,	# margin
-nil,		# floats - filled in by geometry code
+l.targetwidth, # targetwidth
+l.width, # width
+l.height, # height
+l.margin, # margin
+nil, # floats - filled in by geometry code
 copybackground(oldf, f, l.background),
 l.just,
 Layout->Lchanged
@@ -413,30 +413,30 @@ for (; cells != nil; cells = tl cells)
 sllec = hd cells :: sllec;
 cells = sllec;
 return ref Build->Table(
-tbl.tableid,	# tableid
-nrow,		# nrow
-ncol,			# ncol
-len cells,		# ncell
-tbl.align,		# align
-tbl.width,		# width
-tbl.border,	# border
-tbl.cellspacing,	# cellspacing
-tbl.cellpadding,	# cellpadding
-tbl.background,	# background
-nil,			# caption
-tbl.caption_place,	# caption_place
-caption_lay,	# caption_lay
-nil,			# currows
-cols,			# cols
-rows,		# rows
-cells,		# cells
-tbl.totw,		# totw
-tbl.toth,		# toth
-tbl.caph,		# caph
-tbl.availw,	# availw
-grid,			# grid
-nil,			# tabletok
-Layout->Lchanged		# flags
+tbl.tableid, # tableid
+nrow, # nrow
+ncol, # ncol
+len cells, # ncell
+tbl.align, # align
+tbl.width, # width
+tbl.border, # border
+tbl.cellspacing, # cellspacing
+tbl.cellpadding, # cellpadding
+tbl.background, # background
+nil, # caption
+tbl.caption_place, # caption_place
+caption_lay, # caption_lay
+nil, # currows
+cols, # cols
+rows, # rows
+cells, # cells
+tbl.totw, # totw
+tbl.toth, # toth
+tbl.caph, # caph
+tbl.availw, # availw
+grid, # grid
+nil, # tabletok
+Layout->Lchanged # flags
 );
 }
 copytablecell(oldf, f: ref Frame, cell: ref Build->Tablecell): ref Build->Tablecell
@@ -447,7 +447,7 @@ layid := copysublay(oldf, f, cell.layid);
 background := copybackground(oldf, f, cell.background);
 newcell := ref Build->Tablecell(
 cell.cellid,
-nil,	# content
+nil, # content
 layid,
 cell.rowspan, cell.colspan, cell.align,
 cell.flags, cell.wspec, cell.hspec,

@@ -10,12 +10,12 @@
 #define MAX_NARGS 2
 int main(int argc, char *argv[]) {
 int n_threads = 4;
-int n_rounds  = 100;
+int n_rounds = 100;
 if (argc > 1) {
 n_threads = std::atoi(argv[1]);
 }
 if (argc > 2) {
-n_rounds  = std::atoi(argv[2]);
+n_rounds = std::atoi(argv[2]);
 }
 struct ggml_init_params params = {
 1024*1024*1024,
@@ -24,7 +24,7 @@ false,
 };
 struct ggml_context * ctx = ggml_init(params);
 struct ggml_cgraph * gf = ggml_new_graph(ctx);
-struct ggml_tensor * out = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,  64);
+struct ggml_tensor * out = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, 64);
 for (int i = 0; i < 1000; i++) {
 struct ggml_tensor * a = ggml_new_tensor_2d(ctx, GGML_TYPE_Q4_0, 64, 128);
 out = ggml_mul_mat(ctx, a, out);
@@ -33,7 +33,7 @@ out = ggml_mul_mat(ctx, d, out);
 }
 ggml_build_forward_expand(gf, out);
 int n_nodes = ggml_graph_n_nodes(gf);
-struct ggml_threadpool_params tpp  = ggml_threadpool_params_default(n_threads);
+struct ggml_threadpool_params tpp = ggml_threadpool_params_default(n_threads);
 struct ggml_threadpool* threadpool = ggml_threadpool_new(&tpp);
 if (!threadpool) {
 fprintf(stderr, "threadpool create failed : n_threads %d\n", n_threads);

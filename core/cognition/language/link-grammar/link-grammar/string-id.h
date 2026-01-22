@@ -31,7 +31,7 @@ str_mem_pool *string_pool;
 };
 #define MAX_STRING_SET_TABLE_SIZE(s) ((s) * 3 / 4)
 String_id *string_id_create(void);
-unsigned int  string_id_add(const char *source_string, String_id *ss);
-unsigned int  string_id_lookup(const char *source_string, String_id *ss);
+unsigned int string_id_add(const char *source_string, String_id *ss);
+unsigned int string_id_lookup(const char *source_string, String_id *ss);
 void string_id_delete(String_id *ss);
 #endif

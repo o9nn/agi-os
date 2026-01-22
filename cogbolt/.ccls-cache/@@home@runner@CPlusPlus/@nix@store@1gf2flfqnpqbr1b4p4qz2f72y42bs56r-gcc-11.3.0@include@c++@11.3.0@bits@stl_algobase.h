@@ -1097,10 +1097,10 @@ __gnu_cxx::__ops::__iter_less_val());
 }
 inline _GLIBCXX_CONSTEXPR int
 __lg(int __n)
-{ return (int)sizeof(int) * __CHAR_BIT__  - 1 - __builtin_clz(__n); }
+{ return (int)sizeof(int) * __CHAR_BIT__ - 1 - __builtin_clz(__n); }
 inline _GLIBCXX_CONSTEXPR unsigned
 __lg(unsigned __n)
-{ return (int)sizeof(int) * __CHAR_BIT__  - 1 - __builtin_clz(__n); }
+{ return (int)sizeof(int) * __CHAR_BIT__ - 1 - __builtin_clz(__n); }
 inline _GLIBCXX_CONSTEXPR long
 __lg(long __n)
 { return (int)sizeof(long) * __CHAR_BIT__ - 1 - __builtin_clzl(__n); }

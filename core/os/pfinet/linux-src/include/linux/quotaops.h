@@ -5,15 +5,15 @@
 extern void dquot_initialize(struct inode *inode, short type);
 extern void dquot_drop(struct inode *inode);
 extern void invalidate_dquots(kdev_t dev, short type);
-extern int  quota_off(kdev_t dev, short type);
-extern int  sync_dquots(kdev_t dev, short type);
-extern int  dquot_alloc_block(const struct inode *inode, unsigned long number,
+extern int quota_off(kdev_t dev, short type);
+extern int sync_dquots(kdev_t dev, short type);
+extern int dquot_alloc_block(const struct inode *inode, unsigned long number,
 uid_t initiator, char warn);
-extern int  dquot_alloc_inode(const struct inode *inode, unsigned long number,
+extern int dquot_alloc_inode(const struct inode *inode, unsigned long number,
 uid_t initiator);
 extern void dquot_free_block(const struct inode *inode, unsigned long number);
 extern void dquot_free_inode(const struct inode *inode, unsigned long number);
-extern int  dquot_transfer(struct dentry *dentry, struct iattr *iattr,
+extern int dquot_transfer(struct dentry *dentry, struct iattr *iattr,
 uid_t initiator);
 static __inline__ void DQUOT_INIT(struct inode *inode)
 {
@@ -76,18 +76,18 @@ error = notify_change(dentry, iattr);
 }
 return error;
 }
-#define DQUOT_SYNC(dev)	sync_dquots(dev, -1)
-#define DQUOT_OFF(dev)	quota_off(dev, -1)
+#define DQUOT_SYNC(dev) sync_dquots(dev, -1)
+#define DQUOT_OFF(dev) quota_off(dev, -1)
 #else
-#define DQUOT_INIT(inode)			do { } while(0)
-#define DQUOT_DROP(inode)			do { } while(0)
-#define DQUOT_PREALLOC_BLOCK(sb, inode, nr)	(0)
-#define DQUOT_ALLOC_BLOCK(sb, inode, nr)	(0)
-#define DQUOT_ALLOC_INODE(sb, inode)		(0)
-#define DQUOT_FREE_BLOCK(sb, inode, nr)		do { } while(0)
-#define DQUOT_FREE_INODE(sb, inode)		do { } while(0)
-#define DQUOT_SYNC(dev)				do { } while(0)
-#define DQUOT_OFF(dev)				do { } while(0)
+#define DQUOT_INIT(inode) do { } while(0)
+#define DQUOT_DROP(inode) do { } while(0)
+#define DQUOT_PREALLOC_BLOCK(sb, inode, nr) (0)
+#define DQUOT_ALLOC_BLOCK(sb, inode, nr) (0)
+#define DQUOT_ALLOC_INODE(sb, inode) (0)
+#define DQUOT_FREE_BLOCK(sb, inode, nr) do { } while(0)
+#define DQUOT_FREE_INODE(sb, inode) do { } while(0)
+#define DQUOT_SYNC(dev) do { } while(0)
+#define DQUOT_OFF(dev) do { } while(0)
 #define DQUOT_TRANSFER(dentry, iattr) notify_change(dentry, iattr)
 #endif
 #endif

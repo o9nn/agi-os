@@ -32,14 +32,14 @@ int sign_active;
 char sign_root[8];
 char sign_last[16];
 struct {
-int    auth_type;
+int auth_type;
 size_t object_name_len;
-void*  object_name;
-int    object_type;
+void* object_name;
+int object_type;
 } auth;
 struct {
 size_t len;
-void*  data;
+void* data;
 } priv;
 struct ncp_nls_ioctl nls_charsets;
 struct nls_table *nls_vol;

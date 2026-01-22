@@ -2,23 +2,23 @@
 # define HEADER_DH_H
 # include <openssl/e_os2.h>
 # ifdef OPENSSL_NO_DH
-#  error DH is disabled.
+# error DH is disabled.
 # endif
 # ifndef OPENSSL_NO_BIO
-#  include <openssl/bio.h>
+# include <openssl/bio.h>
 # endif
 # include <openssl/ossl_typ.h>
 # ifndef OPENSSL_NO_DEPRECATED
-#  include <openssl/bn.h>
+# include <openssl/bn.h>
 # endif
 # ifndef OPENSSL_DH_MAX_MODULUS_BITS
-#  define OPENSSL_DH_MAX_MODULUS_BITS    10000
+# define OPENSSL_DH_MAX_MODULUS_BITS 10000
 # endif
-# define DH_FLAG_CACHE_MONT_P     0x01
+# define DH_FLAG_CACHE_MONT_P 0x01
 # define DH_FLAG_NO_EXP_CONSTTIME 0x02
-# define DH_FLAG_FIPS_METHOD                     0x0400
-# define DH_FLAG_NON_FIPS_ALLOW                  0x0400
-#ifdef  __cplusplus
+# define DH_FLAG_FIPS_METHOD 0x0400
+# define DH_FLAG_NON_FIPS_ALLOW 0x0400
+#ifdef __cplusplus
 extern "C" {
 #endif
 struct dh_method {
@@ -55,15 +55,15 @@ CRYPTO_EX_DATA ex_data;
 const DH_METHOD *meth;
 ENGINE *engine;
 };
-# define DH_GENERATOR_2          2
-# define DH_GENERATOR_5          5
-# define DH_CHECK_P_NOT_PRIME            0x01
-# define DH_CHECK_P_NOT_SAFE_PRIME       0x02
-# define DH_UNABLE_TO_CHECK_GENERATOR    0x04
-# define DH_NOT_SUITABLE_GENERATOR       0x08
-# define DH_CHECK_PUBKEY_TOO_SMALL       0x01
-# define DH_CHECK_PUBKEY_TOO_LARGE       0x02
-# define DH_CHECK_P_NOT_STRONG_PRIME     DH_CHECK_P_NOT_SAFE_PRIME
+# define DH_GENERATOR_2 2
+# define DH_GENERATOR_5 5
+# define DH_CHECK_P_NOT_PRIME 0x01
+# define DH_CHECK_P_NOT_SAFE_PRIME 0x02
+# define DH_UNABLE_TO_CHECK_GENERATOR 0x04
+# define DH_NOT_SUITABLE_GENERATOR 0x08
+# define DH_CHECK_PUBKEY_TOO_SMALL 0x01
+# define DH_CHECK_PUBKEY_TOO_LARGE 0x02
+# define DH_CHECK_P_NOT_STRONG_PRIME DH_CHECK_P_NOT_SAFE_PRIME
 # define d2i_DHparams_fp(fp,x) (DH *)ASN1_d2i_fp((char *(*)())DH_new, \
 (char *(*)())d2i_DHparams,(fp),(unsigned char **)(x))
 # define i2d_DHparams_fp(fp,x) ASN1_i2d_fp(i2d_DHparams,(fp), \
@@ -110,39 +110,39 @@ EVP_PKEY_CTRL_DH_PARAMGEN_PRIME_LEN, len, NULL)
 # define EVP_PKEY_CTX_set_dh_paramgen_generator(ctx, gen) \
 EVP_PKEY_CTX_ctrl(ctx, EVP_PKEY_DH, EVP_PKEY_OP_PARAMGEN, \
 EVP_PKEY_CTRL_DH_PARAMGEN_GENERATOR, gen, NULL)
-# define EVP_PKEY_CTRL_DH_PARAMGEN_PRIME_LEN     (EVP_PKEY_ALG_CTRL + 1)
-# define EVP_PKEY_CTRL_DH_PARAMGEN_GENERATOR     (EVP_PKEY_ALG_CTRL + 2)
+# define EVP_PKEY_CTRL_DH_PARAMGEN_PRIME_LEN (EVP_PKEY_ALG_CTRL + 1)
+# define EVP_PKEY_CTRL_DH_PARAMGEN_GENERATOR (EVP_PKEY_ALG_CTRL + 2)
 void ERR_load_DH_strings(void);
-# define DH_F_COMPUTE_KEY                                 102
-# define DH_F_DHPARAMS_PRINT_FP                           101
-# define DH_F_DH_BUILTIN_GENPARAMS                        106
-# define DH_F_DH_COMPUTE_KEY                              114
-# define DH_F_DH_GENERATE_KEY                             115
-# define DH_F_DH_GENERATE_PARAMETERS_EX                   116
-# define DH_F_DH_NEW_METHOD                               105
-# define DH_F_DH_PARAM_DECODE                             107
-# define DH_F_DH_PRIV_DECODE                              110
-# define DH_F_DH_PRIV_ENCODE                              111
-# define DH_F_DH_PUB_DECODE                               108
-# define DH_F_DH_PUB_ENCODE                               109
-# define DH_F_DO_DH_PRINT                                 100
-# define DH_F_GENERATE_KEY                                103
-# define DH_F_GENERATE_PARAMETERS                         104
-# define DH_F_PKEY_DH_DERIVE                              112
-# define DH_F_PKEY_DH_KEYGEN                              113
-# define DH_R_BAD_GENERATOR                               101
-# define DH_R_BN_DECODE_ERROR                             109
-# define DH_R_BN_ERROR                                    106
-# define DH_R_DECODE_ERROR                                104
-# define DH_R_INVALID_PUBKEY                              102
-# define DH_R_KEYS_NOT_SET                                108
-# define DH_R_KEY_SIZE_TOO_SMALL                          110
-# define DH_R_MODULUS_TOO_LARGE                           103
-# define DH_R_NON_FIPS_METHOD                             111
-# define DH_R_NO_PARAMETERS_SET                           107
-# define DH_R_NO_PRIVATE_VALUE                            100
-# define DH_R_PARAMETER_ENCODING_ERROR                    105
-#ifdef  __cplusplus
+# define DH_F_COMPUTE_KEY 102
+# define DH_F_DHPARAMS_PRINT_FP 101
+# define DH_F_DH_BUILTIN_GENPARAMS 106
+# define DH_F_DH_COMPUTE_KEY 114
+# define DH_F_DH_GENERATE_KEY 115
+# define DH_F_DH_GENERATE_PARAMETERS_EX 116
+# define DH_F_DH_NEW_METHOD 105
+# define DH_F_DH_PARAM_DECODE 107
+# define DH_F_DH_PRIV_DECODE 110
+# define DH_F_DH_PRIV_ENCODE 111
+# define DH_F_DH_PUB_DECODE 108
+# define DH_F_DH_PUB_ENCODE 109
+# define DH_F_DO_DH_PRINT 100
+# define DH_F_GENERATE_KEY 103
+# define DH_F_GENERATE_PARAMETERS 104
+# define DH_F_PKEY_DH_DERIVE 112
+# define DH_F_PKEY_DH_KEYGEN 113
+# define DH_R_BAD_GENERATOR 101
+# define DH_R_BN_DECODE_ERROR 109
+# define DH_R_BN_ERROR 106
+# define DH_R_DECODE_ERROR 104
+# define DH_R_INVALID_PUBKEY 102
+# define DH_R_KEYS_NOT_SET 108
+# define DH_R_KEY_SIZE_TOO_SMALL 110
+# define DH_R_MODULUS_TOO_LARGE 103
+# define DH_R_NON_FIPS_METHOD 111
+# define DH_R_NO_PARAMETERS_SET 107
+# define DH_R_NO_PRIVATE_VALUE 100
+# define DH_R_PARAMETER_ENCODING_ERROR 105
+#ifdef __cplusplus
 }
 #endif
 #endif

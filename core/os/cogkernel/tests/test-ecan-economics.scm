@@ -1,166 +1,166 @@
 (add-to-load-path ".")
 (use-modules (cogkernel attention)
-             (cogkernel atomspace)
-             (cogkernel agents)
-             (ice-9 format))
+(cogkernel atomspace)
+(cogkernel agents)
+(ice-9 format))
 (define (test-header msg)
-  (format #t "~%~%==== ~a ====~%" msg))
+(format #t "~%~%==== ~a ====~%" msg))
 (define (test-result name passed)
-  (format #t "  [~a] ~a~%" 
-          (if passed "✓" "✗")
-          name))
+(format #t "  [~a] ~a~%"
+(if passed "✓" "✗")
+name))
 (test-header "Test 1: Basic ECAN Economics Setup")
 (let ((bank (make-attention-bank #:total-funds 10000
-                                 #:focus-threshold 100
-                                 #:wage-rate 0.1
-                                 #:rent-rate 0.05
-                                 #:spread-rate 0.2)))
-  (let ((economics (attention-bank-get-economics bank)))
-    (test-result "Attention bank created with economics parameters"
-                 (and (= (assoc-ref economics 'total-funds) 10000)
-                      (= (assoc-ref economics 'focus-threshold) 100)
-                      (= (assoc-ref economics 'wage-rate) 0.1)
-                      (= (assoc-ref economics 'rent-rate) 0.05)
-                      (= (assoc-ref economics 'spread-rate) 0.2)))))
+#:focus-threshold 100
+#:wage-rate 0.1
+#:rent-rate 0.05
+#:spread-rate 0.2)))
+(let ((economics (attention-bank-get-economics bank)))
+(test-result "Attention bank created with economics parameters"
+(and (= (assoc-ref economics 'total-funds) 10000)
+(= (assoc-ref economics 'focus-threshold) 100)
+(= (assoc-ref economics 'wage-rate) 0.1)
+(= (assoc-ref economics 'rent-rate) 0.05)
+(= (assoc-ref economics 'spread-rate) 0.2)))))
 (test-header "Test 2: Cognitive Wages Application")
 (let ((bank (make-attention-bank #:wage-rate 0.1))
-      (agent1 (make-agent "test-agent-1" 'MONITOR))
-      (agent2 (make-agent "test-agent-2" 'REPAIR)))
-  (attention-bank-add! bank agent1 (make-attention-value 50 25 10))
-  (attention-bank-add! bank agent2 (make-attention-value 30 15 5))
-  (let ((activities `((,agent1 100)
-                      (,agent2 200))))
-    (let ((total-wages (attention-bank-apply-wages! bank activities)))
-      (test-result "Wages applied successfully"
-                   (and (> total-wages 0)
-                        (= total-wages 30)))
-      (let ((economics (attention-bank-get-economics bank)))
-        (test-result "Agent STI increased after wages"
-                     (> (assoc-ref economics 'total-sti) 80)))))
-  (let ((economics (attention-bank-get-economics bank)))
-    (test-result "Wages recorded in economics history"
-                 (> (assoc-ref economics 'history-length) 0))))
+(agent1 (make-agent "test-agent-1" 'MONITOR))
+(agent2 (make-agent "test-agent-2" 'REPAIR)))
+(attention-bank-add! bank agent1 (make-attention-value 50 25 10))
+(attention-bank-add! bank agent2 (make-attention-value 30 15 5))
+(let ((activities `((,agent1 100)
+(,agent2 200))))
+(let ((total-wages (attention-bank-apply-wages! bank activities)))
+(test-result "Wages applied successfully"
+(and (> total-wages 0)
+(= total-wages 30)))
+(let ((economics (attention-bank-get-economics bank)))
+(test-result "Agent STI increased after wages"
+(> (assoc-ref economics 'total-sti) 80)))))
+(let ((economics (attention-bank-get-economics bank)))
+(test-result "Wages recorded in economics history"
+(> (assoc-ref economics 'history-length) 0))))
 (test-header "Test 3: Attention Rent Collection")
 (let ((bank (make-attention-bank #:rent-rate 0.05 #:total-funds 1000))
-      (atom1 (make-atom 'CONCEPT "test-atom-1"))
-      (atom2 (make-atom 'CONCEPT "test-atom-2")))
-  (attention-bank-add! bank atom1 (make-attention-value 200 100 50))
-  (attention-bank-add! bank atom2 (make-attention-value 100 50 25))
-  (let ((initial-funds (attention-bank-total-funds bank)))
-    (let ((rent-collected (attention-bank-collect-rent! bank)))
-      (test-result "Rent collected from attention holders"
-                   (and (> rent-collected 0)
-                        (= rent-collected 15)))
-      (test-result "Rent returned to total funds"
-                   (= (attention-bank-total-funds bank)
-                      (+ initial-funds rent-collected)))))
-  (let ((economics (attention-bank-get-economics bank)))
-    (test-result "Rent recorded in economics history"
-                 (> (assoc-ref economics 'history-length) 0))))
+(atom1 (make-atom 'CONCEPT "test-atom-1"))
+(atom2 (make-atom 'CONCEPT "test-atom-2")))
+(attention-bank-add! bank atom1 (make-attention-value 200 100 50))
+(attention-bank-add! bank atom2 (make-attention-value 100 50 25))
+(let ((initial-funds (attention-bank-total-funds bank)))
+(let ((rent-collected (attention-bank-collect-rent! bank)))
+(test-result "Rent collected from attention holders"
+(and (> rent-collected 0)
+(= rent-collected 15)))
+(test-result "Rent returned to total funds"
+(= (attention-bank-total-funds bank)
+(+ initial-funds rent-collected)))))
+(let ((economics (attention-bank-get-economics bank)))
+(test-result "Rent recorded in economics history"
+(> (assoc-ref economics 'history-length) 0))))
 (test-header "Test 4: STI/LTI/VLTI Dynamics")
 (let ((bank (make-attention-bank))
-      (atom (make-atom 'CONCEPT "dynamic-atom")))
-  (attention-bank-add! bank atom (make-attention-value 100 50 25))
-  (attention-bank-update! bank atom 20 10 5)
-  (let ((av (hash-ref (attention-bank-atom-av bank) atom)))
-    (test-result "STI updated correctly"
-                 (= (attention-value-sti av) 120))
-    (test-result "LTI updated correctly"
-                 (= (attention-value-lti av) 60))
-    (test-result "VLTI updated correctly"
-                 (= (attention-value-vlti av) 30))))
+(atom (make-atom 'CONCEPT "dynamic-atom")))
+(attention-bank-add! bank atom (make-attention-value 100 50 25))
+(attention-bank-update! bank atom 20 10 5)
+(let ((av (hash-ref (attention-bank-atom-av bank) atom)))
+(test-result "STI updated correctly"
+(= (attention-value-sti av) 120))
+(test-result "LTI updated correctly"
+(= (attention-value-lti av) 60))
+(test-result "VLTI updated correctly"
+(= (attention-value-vlti av) 30))))
 (test-header "Test 5: Focus Threshold and Attention Allocation")
 (let ((bank (make-attention-bank #:focus-threshold 100))
-      (atom1 (make-atom 'CONCEPT "focused-atom"))
-      (atom2 (make-atom 'CONCEPT "unfocused-atom")))
-  (attention-bank-add! bank atom1 (make-attention-value 150 75 35))
-  (attention-bank-add! bank atom2 (make-attention-value 50 25 10))
-  (let ((focus-list (attention-bank-get-focus bank)))
-    (test-result "Focus includes high-STI atoms"
-                 (member atom1 focus-list))
-    (test-result "Focus excludes low-STI atoms"
-                 (not (member atom2 focus-list)))))
+(atom1 (make-atom 'CONCEPT "focused-atom"))
+(atom2 (make-atom 'CONCEPT "unfocused-atom")))
+(attention-bank-add! bank atom1 (make-attention-value 150 75 35))
+(attention-bank-add! bank atom2 (make-attention-value 50 25 10))
+(let ((focus-list (attention-bank-get-focus bank)))
+(test-result "Focus includes high-STI atoms"
+(member atom1 focus-list))
+(test-result "Focus excludes low-STI atoms"
+(not (member atom2 focus-list)))))
 (test-header "Test 6: Priority-Based Task Scheduling")
 (let ((bank (make-attention-bank))
-      (agent1 (make-agent "scheduler-agent-1" 'BUILD))
-      (agent2 (make-agent "scheduler-agent-2" 'MONITOR))
-      (agent3 (make-agent "scheduler-agent-3" 'REPAIR)))
-  (attention-bank-add! bank agent1 (make-attention-value 100 50 25))
-  (attention-bank-add! bank agent2 (make-attention-value 200 100 50))
-  (attention-bank-add! bank agent3 (make-attention-value 50 25 10))
-  (let ((task-queue `(("task-1" 10 ,agent1)
-                      ("task-2" 5 ,agent2)
-                      ("task-3" 20 ,agent3))))
-    (let ((scheduled (attention-bank-schedule-tasks! bank task-queue)))
-      (test-result "Tasks scheduled by effective priority"
-                   (= (length scheduled) 3))
-      (test-result "High priority tasks scheduled first"
-                   (>= (length scheduled) 3)))))
+(agent1 (make-agent "scheduler-agent-1" 'BUILD))
+(agent2 (make-agent "scheduler-agent-2" 'MONITOR))
+(agent3 (make-agent "scheduler-agent-3" 'REPAIR)))
+(attention-bank-add! bank agent1 (make-attention-value 100 50 25))
+(attention-bank-add! bank agent2 (make-attention-value 200 100 50))
+(attention-bank-add! bank agent3 (make-attention-value 50 25 10))
+(let ((task-queue `(("task-1" 10 ,agent1)
+("task-2" 5 ,agent2)
+("task-3" 20 ,agent3))))
+(let ((scheduled (attention-bank-schedule-tasks! bank task-queue)))
+(test-result "Tasks scheduled by effective priority"
+(= (length scheduled) 3))
+(test-result "High priority tasks scheduled first"
+(>= (length scheduled) 3)))))
 (test-header "Test 7: Stimulation Types")
 (let ((bank (make-attention-bank))
-      (atom (make-atom 'CONCEPT "stimulated-atom")))
-  (attention-bank-add! bank atom (make-attention-value 0 0 0))
-  (attention-bank-stimulate! bank atom 'URGENT 10)
-  (let ((av (hash-ref (attention-bank-atom-av bank) atom)))
-    (test-result "URGENT stimulation applied correctly"
-                 (= (attention-value-sti av) 100)))
-  (attention-bank-add! bank atom (make-attention-value 0 0 0))
-  (attention-bank-stimulate! bank atom 'IMPORTANT 10)
-  (let ((av (hash-ref (attention-bank-atom-av bank) atom)))
-    (test-result "IMPORTANT stimulation applied correctly"
-                 (= (attention-value-sti av) 50)))
-  (attention-bank-add! bank atom (make-attention-value 0 0 0))
-  (attention-bank-stimulate! bank atom 'ROUTINE 10)
-  (let ((av (hash-ref (attention-bank-atom-av bank) atom)))
-    (test-result "ROUTINE stimulation applied correctly"
-                 (= (attention-value-sti av) 10))))
+(atom (make-atom 'CONCEPT "stimulated-atom")))
+(attention-bank-add! bank atom (make-attention-value 0 0 0))
+(attention-bank-stimulate! bank atom 'URGENT 10)
+(let ((av (hash-ref (attention-bank-atom-av bank) atom)))
+(test-result "URGENT stimulation applied correctly"
+(= (attention-value-sti av) 100)))
+(attention-bank-add! bank atom (make-attention-value 0 0 0))
+(attention-bank-stimulate! bank atom 'IMPORTANT 10)
+(let ((av (hash-ref (attention-bank-atom-av bank) atom)))
+(test-result "IMPORTANT stimulation applied correctly"
+(= (attention-value-sti av) 50)))
+(attention-bank-add! bank atom (make-attention-value 0 0 0))
+(attention-bank-stimulate! bank atom 'ROUTINE 10)
+(let ((av (hash-ref (attention-bank-atom-av bank) atom)))
+(test-result "ROUTINE stimulation applied correctly"
+(= (attention-value-sti av) 10))))
 (test-header "Test 8: Distributed Attention Network")
 (let* ((local-bank (make-attention-bank))
-       (network (make-distributed-attention-network local-bank #:sync-interval 60)))
-  (test-result "Distributed attention network created"
-               (distributed-attention-network? network))
-  (let ((sync-result (distributed-attention-sync! network "node-1")))
-    (test-result "Node synchronization executed"
-                 sync-result))
-  (let ((broadcast-result (distributed-attention-broadcast! network '(type . alert))))
-    (test-result "Attention event broadcast executed"
-                 broadcast-result))
-  (let ((economics (attention-bank-get-economics local-bank)))
-    (test-result "Distributed events recorded in history"
-                 (>= (assoc-ref economics 'history-length) 2))))
+(network (make-distributed-attention-network local-bank #:sync-interval 60)))
+(test-result "Distributed attention network created"
+(distributed-attention-network? network))
+(let ((sync-result (distributed-attention-sync! network "node-1")))
+(test-result "Node synchronization executed"
+sync-result))
+(let ((broadcast-result (distributed-attention-broadcast! network '(type . alert))))
+(test-result "Attention event broadcast executed"
+broadcast-result))
+(let ((economics (attention-bank-get-economics local-bank)))
+(test-result "Distributed events recorded in history"
+(>= (assoc-ref economics 'history-length) 2))))
 (test-header "Test 9: Economics History Tracking")
 (let ((bank (make-attention-bank))
-      (agent (make-agent "history-agent" 'ANALYZE)))
-  (attention-bank-add! bank agent (make-attention-value 100 50 25))
-  (attention-bank-apply-wages! bank `((,agent 100)))
-  (attention-bank-collect-rent! bank)
-  (let ((economics (attention-bank-get-economics bank)))
-    (let ((history-length (assoc-ref economics 'history-length)))
-      (test-result "Economics history tracked"
-                   (>= history-length 2))
-      (test-result "History contains wages and rent events"
-                   (>= history-length 2)))))
+(agent (make-agent "history-agent" 'ANALYZE)))
+(attention-bank-add! bank agent (make-attention-value 100 50 25))
+(attention-bank-apply-wages! bank `((,agent 100)))
+(attention-bank-collect-rent! bank)
+(let ((economics (attention-bank-get-economics bank)))
+(let ((history-length (assoc-ref economics 'history-length)))
+(test-result "Economics history tracked"
+(>= history-length 2))
+(test-result "History contains wages and rent events"
+(>= history-length 2)))))
 (test-header "Test 10: Complete ECAN Cycle")
 (let ((bank (make-attention-bank #:total-funds 10000
-                                 #:wage-rate 0.1
-                                 #:rent-rate 0.05))
-      (agent1 (make-agent "cycle-agent-1" 'MONITOR))
-      (agent2 (make-agent "cycle-agent-2" 'REPAIR)))
-  (attention-bank-add! bank agent1 (make-attention-value 100 50 25))
-  (attention-bank-add! bank agent2 (make-attention-value 80 40 20))
-  (let ((initial-economics (attention-bank-get-economics bank)))
-    (attention-bank-apply-wages! bank `((,agent1 200) (,agent2 150)))
-    (attention-bank-collect-rent! bank)
-    (let ((tasks `(("task-1" 10 ,agent1) ("task-2" 15 ,agent2))))
-      (attention-bank-schedule-tasks! bank tasks))
-    (let ((final-economics (attention-bank-get-economics bank)))
-      (test-result "Complete ECAN cycle executed"
-                   (and (>= (assoc-ref final-economics 'history-length) 3)
-                        (>= (assoc-ref final-economics 'total-sti) 0)))
-      (test-result "Economics maintains conservation"
-                   (<= (+ (assoc-ref final-economics 'total-sti)
-                          (assoc-ref final-economics 'total-funds))
-                       15000)))))
+#:wage-rate 0.1
+#:rent-rate 0.05))
+(agent1 (make-agent "cycle-agent-1" 'MONITOR))
+(agent2 (make-agent "cycle-agent-2" 'REPAIR)))
+(attention-bank-add! bank agent1 (make-attention-value 100 50 25))
+(attention-bank-add! bank agent2 (make-attention-value 80 40 20))
+(let ((initial-economics (attention-bank-get-economics bank)))
+(attention-bank-apply-wages! bank `((,agent1 200) (,agent2 150)))
+(attention-bank-collect-rent! bank)
+(let ((tasks `(("task-1" 10 ,agent1) ("task-2" 15 ,agent2))))
+(attention-bank-schedule-tasks! bank tasks))
+(let ((final-economics (attention-bank-get-economics bank)))
+(test-result "Complete ECAN cycle executed"
+(and (>= (assoc-ref final-economics 'history-length) 3)
+(>= (assoc-ref final-economics 'total-sti) 0)))
+(test-result "Economics maintains conservation"
+(<= (+ (assoc-ref final-economics 'total-sti)
+(assoc-ref final-economics 'total-funds))
+15000)))))
 (test-header "ECAN Economics Test Suite - Summary")
 (format #t "~%All Phase 2 ECAN economics tests completed!~%")
 (format #t "✅ Cognitive wages implemented~%")

@@ -141,8 +141,8 @@ MACHINE, HUMAN: con iota;
 SKILLB : con 8;
 SKILLW : con 0;
 MAXPLIES: con 10;
-board: array of array of int;	# for display
-brd: array of array of int;		# for calculations
+board: array of array of int; # for display
+brd: array of array of int; # for calculations
 col: array of int;
 pieces: array of int;
 val: array of int;
@@ -345,11 +345,11 @@ mvs = tl mvs;
 else{
 plies := skill[me];
 left := PIECES-(pieces[BLACK]+pieces[WHITE]);
-if(left < plies)		# limit search
+if(left < plies) # limit search
 plies = left;
-else if(left < 2*plies)	# expand search to end
+else if(left < 2*plies) # expand search to end
 plies = left;
-else{				# expand search nearer end of game
+else{ # expand search nearer end of game
 k := left/plies;
 if(k < 3)
 plies = ((k+2)*plies)/(k+1);
@@ -537,9 +537,9 @@ mvs := findmoves();
 if(mvs == nil){
 fatal("mvs==nil");
 # if(mv)
-# 	(v, nil) := minimax(you, me, plies, ∞);
+# (v, nil) := minimax(you, me, plies, ∞);
 # else
-#	(v, nil) = minimax(you, me, plies-1, ∞);
+# (v, nil) = minimax(you, me, plies-1, ∞);
 # return (-v, (0, 0));
 }
 bestv := -∞;
@@ -602,14 +602,14 @@ return e;
 # sfont: ref Font;
 # gettxtattrs()
 # {
-#	swidth = int cmd(mainwin, ".f1.txt cget -width");	# always initial value ?
-#	f := cmd(mainwin, ".f1.txt cget -font");
-#	sfont = Font.open(brdimg.display, f);
+# swidth = int cmd(mainwin, ".f1.txt cget -width"); # always initial value ?
+# f := cmd(mainwin, ".f1.txt cget -font");
+# sfont = Font.open(brdimg.display, f);
 # }
 puts(s: string)
 {
 # while(sfont.width(s) > swidth)
-#	s = s[0: len s -1];
+# s = s[0: len s -1];
 cmd(mainwin, ".f1.txt configure -text {" + s + "}");
 cmd(mainwin, "update");
 }

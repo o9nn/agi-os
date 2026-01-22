@@ -147,7 +147,7 @@ void create_database(void);
 void kill_data(void);
 void clear_cache(void);
 void create(void) { create_database(); }
-void destroy(void) { kill_data();  }
+void destroy(void) { kill_data(); }
 void erase(void) { kill_data(); }
 void extract_callback(const AtomPtr&);
 int _extract_sig;

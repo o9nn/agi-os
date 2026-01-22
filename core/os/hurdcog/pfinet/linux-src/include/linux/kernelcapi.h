@@ -1,18 +1,18 @@
 #ifndef __KERNELCAPI_H__
 #define __KERNELCAPI_H__
-#define CAPI_MAXAPPL	20
-#define CAPI_MAXCONTR	10
-#define CAPI_MAXDATAWINDOW	8
+#define CAPI_MAXAPPL 20
+#define CAPI_MAXCONTR 10
+#define CAPI_MAXDATAWINDOW 8
 typedef struct kcapi_flagdef {
 int contr;
 int flag;
 } kcapi_flagdef;
-#define KCAPI_CMD_TRACE		10
-#define KCAPI_TRACE_OFF			0
-#define KCAPI_TRACE_SHORT_NO_DATA	1
-#define KCAPI_TRACE_FULL_NO_DATA	2
-#define KCAPI_TRACE_SHORT		3
-#define KCAPI_TRACE_FULL		4
+#define KCAPI_CMD_TRACE 10
+#define KCAPI_TRACE_OFF 0
+#define KCAPI_TRACE_SHORT_NO_DATA 1
+#define KCAPI_TRACE_FULL_NO_DATA 2
+#define KCAPI_TRACE_SHORT 3
+#define KCAPI_TRACE_FULL 4
 #ifdef __KERNEL__
 struct capi_interface {
 __u16 (*capi_isinstalled) (void);
@@ -29,8 +29,8 @@ __u16(*capi_get_serial) (__u32 contr, __u8 serial[CAPI_SERIAL_LEN]);
 __u16(*capi_get_profile) (__u32 contr, struct capi_profile * profp);
 int (*capi_manufacturer) (unsigned int cmd, void *data);
 };
-#define	KCI_CONTRUP	0
-#define	KCI_CONTRDOWN	1
+#define KCI_CONTRUP 0
+#define KCI_CONTRDOWN 1
 struct capi_interface_user {
 char name[20];
 void (*callback) (unsigned int cmd, __u32 contr, void *data);
@@ -38,28 +38,28 @@ struct capi_interface_user *next;
 };
 struct capi_interface *attach_capi_interface(struct capi_interface_user *);
 int detach_capi_interface(struct capi_interface_user *);
-#define CAPI_NOERROR                      0x0000
-#define CAPI_TOOMANYAPPLS		  0x1001
-#define CAPI_LOGBLKSIZETOSMALL	          0x1002
-#define CAPI_BUFFEXECEEDS64K 	          0x1003
-#define CAPI_MSGBUFSIZETOOSMALL	          0x1004
-#define CAPI_ANZLOGCONNNOTSUPPORTED	  0x1005
-#define CAPI_REGRESERVED		  0x1006
-#define CAPI_REGBUSY 		          0x1007
-#define CAPI_REGOSRESOURCEERR	          0x1008
-#define CAPI_REGNOTINSTALLED 	          0x1009
-#define CAPI_REGCTRLERNOTSUPPORTEXTEQUIP  0x100a
+#define CAPI_NOERROR 0x0000
+#define CAPI_TOOMANYAPPLS 0x1001
+#define CAPI_LOGBLKSIZETOSMALL 0x1002
+#define CAPI_BUFFEXECEEDS64K 0x1003
+#define CAPI_MSGBUFSIZETOOSMALL 0x1004
+#define CAPI_ANZLOGCONNNOTSUPPORTED 0x1005
+#define CAPI_REGRESERVED 0x1006
+#define CAPI_REGBUSY 0x1007
+#define CAPI_REGOSRESOURCEERR 0x1008
+#define CAPI_REGNOTINSTALLED 0x1009
+#define CAPI_REGCTRLERNOTSUPPORTEXTEQUIP 0x100a
 #define CAPI_REGCTRLERONLYSUPPORTEXTEQUIP 0x100b
-#define CAPI_ILLAPPNR		          0x1101
-#define CAPI_ILLCMDORSUBCMDORMSGTOSMALL   0x1102
-#define CAPI_SENDQUEUEFULL		  0x1103
-#define CAPI_RECEIVEQUEUEEMPTY	          0x1104
-#define CAPI_RECEIVEOVERFLOW 	          0x1105
-#define CAPI_UNKNOWNNOTPAR		  0x1106
-#define CAPI_MSGBUSY 		          0x1107
-#define CAPI_MSGOSRESOURCEERR	          0x1108
-#define CAPI_MSGNOTINSTALLED 	          0x1109
-#define CAPI_MSGCTRLERNOTSUPPORTEXTEQUIP  0x110a
+#define CAPI_ILLAPPNR 0x1101
+#define CAPI_ILLCMDORSUBCMDORMSGTOSMALL 0x1102
+#define CAPI_SENDQUEUEFULL 0x1103
+#define CAPI_RECEIVEQUEUEEMPTY 0x1104
+#define CAPI_RECEIVEOVERFLOW 0x1105
+#define CAPI_UNKNOWNNOTPAR 0x1106
+#define CAPI_MSGBUSY 0x1107
+#define CAPI_MSGOSRESOURCEERR 0x1108
+#define CAPI_MSGNOTINSTALLED 0x1109
+#define CAPI_MSGCTRLERNOTSUPPORTEXTEQUIP 0x110a
 #define CAPI_MSGCTRLERONLYSUPPORTEXTEQUIP 0x110b
 #endif
 #endif

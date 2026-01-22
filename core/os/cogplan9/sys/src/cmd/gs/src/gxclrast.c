@@ -51,7 +51,7 @@ dputc('\n');
 }
 }
 #else
-#  define cmd_print_bits(data, width, height, raster) DO_NOTHING
+# define cmd_print_bits(data, width, height, raster) DO_NOTHING
 #endif
 #define cmd_getw(var, p)\
 BEGIN\
@@ -125,9 +125,9 @@ return cbp + var_size;
 #define cmd_get_value(var, cbp)\
 cbp = cmd_copy_value(&var, sizeof(var), cbp)
 typedef struct ht_buff_s {
-uint    ht_size, read_size;
-byte *  pcurr;
-byte *  pbuff;
+uint ht_size, read_size;
+byte * pcurr;
+byte * pbuff;
 } ht_buff_t;
 private int read_set_tile_size(command_buf_t *pcb, tile_slot *bits);
 private int read_set_bits(command_buf_t *pcb, tile_slot *bits,
@@ -229,7 +229,7 @@ fixed vs[6];
 segment_notes notes;
 int data_x;
 int code = 0;
-ht_buff_t  ht_buff;
+ht_buff_t ht_buff;
 gx_device *const orig_target = target;
 cbuf.data = (byte *)cbuf_storage;
 cbuf.size = cbuf_size;
@@ -656,7 +656,7 @@ case cmd_compress_cfe:
 {
 stream_CFD_state sstate;
 clist_cfd_init(&sstate,
-width_bytes << 3  ,
+width_bytes << 3 ,
 state.rect.height, mem);
 (*s_CFD_template.process)
 ((stream_state *)&sstate, &r, &w, true);
@@ -894,7 +894,7 @@ image_rect.q.x = image.d.Width;
 image_rect.q.y = image.d.Height;
 if_debug2('L', " size=(%d,%d)",
 image.d.Width, image.d.Height);
-ibegin:			if_debug0('L', "\n");
+ibegin: if_debug0('L', "\n");
 {
 code = (*dev_proc(tdev, begin_typed_image))
 (tdev, &imager_state, NULL,
@@ -960,7 +960,7 @@ planes[plane].data_x = data_x;
 planes[plane].raster = bytes_per_plane;
 }
 }
-idata:			data_size = 0;
+idata: data_size = 0;
 {
 int plane;
 for (plane = 0; plane < image_info->num_planes;
@@ -1059,7 +1059,7 @@ goto out;
 break;
 case cmd_opv_ext_put_halftone:
 {
-uint    ht_size;
+uint ht_size;
 enc_u_getw(ht_size, cbp);
 code = read_alloc_ht_buff(&ht_buff, ht_size, mem);
 if (code < 0)
@@ -1077,8 +1077,8 @@ goto out;
 break;
 case cmd_opv_ext_put_drawing_color:
 {
-uint    color_size;
-const gx_device_color_type_t *  pdct;
+uint color_size;
+const gx_device_color_type_t * pdct;
 pdct = gx_get_dc_type_from_index(*cbp++);
 if (pdct == 0) {
 code = gs_note_error(gs_error_rangecheck);
@@ -1149,7 +1149,7 @@ vs[i] =
 if_debug1('L', " %g", fixed2float(vs[i]));
 cbp += 2;
 continue;
-default  :
+default :
 v = (int)(*++cbp ^ 0x80) - 0x80;
 for (b = 0; b < sizeof(fixed) - 3; ++b)
 v = (v << 8) + *++cbp;
@@ -1455,7 +1455,7 @@ case cmd_compress_cfe:
 {
 stream_CFD_state sstate;
 clist_cfd_init(&sstate,
-width_bytes << 3  ,
+width_bytes << 3 ,
 rep_height, mem);
 (*s_CFD_template.process)
 ((stream_state *)&sstate, &r, &w, true);
@@ -1510,16 +1510,16 @@ return 0;
 }
 private int
 read_ht_segment(
-ht_buff_t *                 pht_buff,
-command_buf_t *             pcb,
-gs_imager_state *           pis,
-gx_device *                 dev,
-gs_memory_t *               mem )
+ht_buff_t * pht_buff,
+command_buf_t * pcb,
+gs_imager_state * pis,
+gx_device * dev,
+gs_memory_t * mem )
 {
-const byte *                cbp = pcb->ptr;
-const byte *                pbuff = 0;
-uint                        ht_size = pht_buff->ht_size, seg_size;
-int                         code = 0;
+const byte * cbp = pcb->ptr;
+const byte * pbuff = 0;
+uint ht_size = pht_buff->ht_size, seg_size;
+int code = 0;
 enc_u_getw(seg_size, cbp);
 if (cbp + seg_size > pcb->limit)
 cbp = top_up_cbuf(pcb, cbp);
@@ -1777,17 +1777,17 @@ return code;
 extern_gs_find_compositor();
 private int
 read_create_compositor(
-command_buf_t *             pcb,
-gs_imager_state *           pis,
-gx_device_clist_reader *    cdev,
-gs_memory_t *               mem,
-gx_device **                ptarget )
+command_buf_t * pcb,
+gs_imager_state * pis,
+gx_device_clist_reader * cdev,
+gs_memory_t * mem,
+gx_device ** ptarget )
 {
-const byte *                cbp = pcb->ptr;
-int                         comp_id = 0, code = 0;
+const byte * cbp = pcb->ptr;
+int comp_id = 0, code = 0;
 const gs_composite_type_t * pcomp_type = 0;
-gs_composite_t *            pcomp;
-gx_device *                 tdev = *ptarget;
+gs_composite_t * pcomp;
+gx_device * tdev = *ptarget;
 cbp = top_up_cbuf(pcb, cbp);
 comp_id = *cbp++;
 if ((pcomp_type = gs_find_compositor(comp_id)) == 0)
@@ -1816,8 +1816,8 @@ cmd_read_short_bits(command_buf_t *pcb, byte *data, int width_bytes,
 int height, uint raster, const byte *cbp)
 {
 uint bytes = width_bytes * height;
-const byte *pdata = data  + bytes;
-byte *udata = data  + height * raster;
+const byte *pdata = data + bytes;
+byte *udata = data + height * raster;
 cbp = cmd_read_data(pcb, data, width_bytes * height, cbp);
 while (--height >= 0) {
 udata -= raster, pdata -= width_bytes;
@@ -1909,14 +1909,14 @@ goto transfer1;
 case cmd_map_transfer_3:
 pmap = &pis->set_transfer.gray;
 *pcomp_num = &pis->set_transfer.gray_component_num;
-transfer1:  {
+transfer1: {
 int i = map_index - cmd_map_transfer_0;
 if_debug1('L', " transfer[%d]", i);
 }
 rc_unshare_struct(*pmap, gx_transfer_map, &st_transfer_map, mem,
 return_error(gs_error_VMerror), "cmd_select_map(transfer)");
 map = *pmap;
-transfer2:  if (cont != cmd_map_other) {
+transfer2: if (cont != cmd_map_other) {
 gx_set_identity_transfer(map);
 *pmdata = 0;
 *pcount = 0;
@@ -1932,7 +1932,7 @@ case cmd_map_undercolor_removal:
 if_debug0('L', " undercolor removal");
 pmap = &pis->undercolor_removal;
 cname = "cmd_select_map(undercolor removal)";
-alloc:	    if (cont == cmd_map_none) {
+alloc: if (cont == cmd_map_none) {
 rc_decrement(*pmap, cname);
 *pmap = 0;
 *pmdata = 0;
@@ -2069,18 +2069,18 @@ break;
 code = gx_path_add_line_notes(ppath, px -= C, py -= D, notes);
 break;
 case cmd_opv_rrcurveto:
-rrc:	    E += (C += A);
+rrc: E += (C += A);
 F += (D += B);
-curve:	    code = gx_path_add_curve_notes(ppath, px + A, py + B,
+curve: code = gx_path_add_curve_notes(ppath, px + A, py + B,
 px + C, py + D,
 px + E, py + F, notes);
 px += E, py += F;
 break;
 case cmd_opv_hvcurveto:
-hvc:	    F = C + D, D = C, E = C = A + B, B = 0;
+hvc: F = C + D, D = C, E = C = A + B, B = 0;
 goto curve;
 case cmd_opv_vhcurveto:
-vhc:	    E = B + D, F = D = A + C, C = B, B = A, A = 0;
+vhc: E = B + D, F = D = A + C, C = B, B = A, A = 0;
 goto curve;
 case cmd_opv_nrcurveto:
 F = B + D, E = A + C, D = B, C = A, B = A = 0;

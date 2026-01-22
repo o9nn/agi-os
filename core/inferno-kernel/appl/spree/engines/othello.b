@@ -11,13 +11,13 @@ include "objstore.m";
 objstore: Objstore;
 include "../gather.m";
 clique: ref Clique;
-Black, White, Nocolour: con iota;		# first two must be 0 and 1.
+Black, White, Nocolour: con iota; # first two must be 0 and 1.
 N: con 8;
 boardobj: ref Object;
-board:	array of array of int;
-pieces:	array of int;
-turn		:= Nocolour;
-members	:= array[2] of ref Member;			# member ids of those playing
+board: array of array of int;
+pieces: array of int;
+turn := Nocolour;
+members := array[2] of ref Member; # member ids of those playing
 Point: adt {
 x, y: int;
 add: fn(p: self Point, p1: Point): Point;
@@ -143,7 +143,7 @@ pt2attr(pt: Point): string
 s := "  ";
 s[0] = pt.x + 'a';
 s[1] = pt.y + 'a';
-return  s;
+return s;
 }
 # member colour has tried to place a piece at mp.
 # return -1 if it's an illegal move, 0 otherwise.

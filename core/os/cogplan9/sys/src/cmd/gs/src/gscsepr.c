@@ -101,20 +101,20 @@ return code;
 private int
 gx_set_overprint_Separation(const gs_color_space * pcs, gs_state * pgs)
 {
-gs_devicen_color_map *  pcmap = &pgs->color_component_map;
+gs_devicen_color_map * pcmap = &pgs->color_component_map;
 if (pcmap->use_alt_cspace)
 return gx_spot_colors_set_overprint(
 (const gs_color_space *)&pcs->params.separation.alt_space,
 pgs );
 else {
-gs_overprint_params_t   params;
+gs_overprint_params_t params;
 params.retain_any_comps = pgs->overprint &&
 pcs->params.separation.sep_type != SEP_ALL;
 if (params.retain_any_comps) {
 params.retain_spot_comps = false;
 params.drawn_comps = 0;
 if (pcs->params.separation.sep_type != SEP_NONE) {
-int     mcomp = pcmap->color_map[0];
+int mcomp = pcmap->color_map[0];
 if (mcomp >= 0)
 gs_overprint_set_drawn_comp( params.drawn_comps, mcomp);
 }
@@ -273,7 +273,7 @@ pconc[0] = unit_frac(pc->paint.values[0], ftemp);
 return 0;
 }
 private int
-gx_remap_concrete_Separation(const frac * pconc,  const gs_color_space * pcs,
+gx_remap_concrete_Separation(const frac * pconc, const gs_color_space * pcs,
 gx_device_color * pdc, const gs_imager_state * pis, gx_device * dev,
 gs_color_select_t select)
 {

@@ -1,18 +1,18 @@
-#include	<u.h>
-#include	<libc.h>
+#include <u.h>
+#include <libc.h>
 #define Bit(i) (7-(i))
 #define T(i) (((1 << (Bit(i)+1))-1) ^ 0xFF)
-#define	RuneX(i) ((1 << (Bit(i) + ((i)-1)*Bitx))-1)
+#define RuneX(i) ((1 << (Bit(i) + ((i)-1)*Bitx))-1)
 enum
 {
-Bitx	= Bit(1),
-Tx	= T(1),
+Bitx = Bit(1),
+Tx = T(1),
 Rune1 = (1<<(Bit(0)+0*Bitx))-1,
-Maskx	= (1<<Bitx)-1,
-Testx	= Maskx ^ 0xFF,
-SurrogateMin	= 0xD800,
-SurrogateMax	= 0xDFFF,
-Bad	= Runeerror,
+Maskx = (1<<Bitx)-1,
+Testx = Maskx ^ 0xFF,
+SurrogateMin = 0xD800,
+SurrogateMax = 0xDFFF,
+Bad = Runeerror,
 };
 int
 chartorune(Rune *rune, char *str)
@@ -66,7 +66,7 @@ if(SurrogateMin <= c && c <= SurrogateMax)
 c = Runeerror;
 }
 if (c <= RuneX(i) || i == UTFmax ) {
-str[0] = T(i) |  (c >> (i - 1)*Bitx);
+str[0] = T(i) | (c >> (i - 1)*Bitx);
 for(j = 1; j < i; j++)
 str[j] = Tx | ((c >> (i - j - 1)*Bitx) & Maskx);
 return i;
@@ -105,7 +105,7 @@ return nb;
 int
 fullrune(char *str, int n)
 {
-int  i;
+int i;
 Rune c;
 if(n <= 0)
 return 0;

@@ -1,52 +1,52 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #include "mailstream_ssl.h"
 #include "mailstream_ssl_private.h"
 #ifdef HAVE_UNISTD_H
-#	include <unistd.h>
+# include <unistd.h>
 #endif
 #ifdef HAVE_STDLIB_H
-#	include <stdlib.h>
+# include <stdlib.h>
 #endif
 #ifdef HAVE_STRING_H
-#	include <string.h>
+# include <string.h>
 #endif
 #include <fcntl.h>
 #ifdef WIN32
-#	include <win_etpan.h>
+# include <win_etpan.h>
 #else
-#	include <sys/time.h>
-#	include <sys/types.h>
-#   if USE_POLL
-#       ifdef HAVE_SYS_POLL_H
-#	        include <sys/poll.h>
-#       endif
-#   else
-#       ifdef HAVE_SELECT_H
-#	        include <sys/select.h>
-#       endif
-#   endif
+# include <sys/time.h>
+# include <sys/types.h>
+# if USE_POLL
+# ifdef HAVE_SYS_POLL_H
+# include <sys/poll.h>
+# endif
+# else
+# ifdef HAVE_SELECT_H
+# include <sys/select.h>
+# endif
+# endif
 #endif
 #if LIBETPAN_IOS_DISABLE_SSL
 #undef USE_SSL
 #endif
 #ifdef USE_SSL
 # ifndef USE_GNUTLS
-#  include <openssl/ssl.h>
+# include <openssl/ssl.h>
 # else
-#  include <errno.h>
-#  include <gnutls/gnutls.h>
-#  include <gnutls/x509.h>
+# include <errno.h>
+# include <gnutls/gnutls.h>
+# include <gnutls/x509.h>
 # endif
 # ifdef LIBETPAN_REENTRANT
-#	 if HAVE_PTHREAD_H
-#	  include <pthread.h>
-#  elif defined(WIN32)
+# if HAVE_PTHREAD_H
+# include <pthread.h>
+# elif defined(WIN32)
 void mailprivacy_gnupg_init_lock();
 void mailprivacy_smime_init_lock();
-#  endif
-#	endif
+# endif
+# endif
 #endif
 #include "mmapstring.h"
 #include "mailstream_cancel.h"
@@ -85,20 +85,20 @@ struct mailstream_cancel * cancel;
 #endif
 #ifdef USE_SSL
 #ifdef LIBETPAN_REENTRANT
-#	if HAVE_PTHREAD_H
-#		define MUTEX_LOCK(x) pthread_mutex_lock(x)
-#		define MUTEX_UNLOCK(x) pthread_mutex_unlock(x)
+# if HAVE_PTHREAD_H
+# define MUTEX_LOCK(x) pthread_mutex_lock(x)
+# define MUTEX_UNLOCK(x) pthread_mutex_unlock(x)
 static pthread_mutex_t ssl_lock = PTHREAD_MUTEX_INITIALIZER;
-#	elif (defined WIN32)
-#		define MUTEX_LOCK(x) EnterCriticalSection(x);
-#		define MUTEX_UNLOCK(x) LeaveCriticalSection(x);
+# elif (defined WIN32)
+# define MUTEX_LOCK(x) EnterCriticalSection(x);
+# define MUTEX_UNLOCK(x) LeaveCriticalSection(x);
 static CRITICAL_SECTION ssl_lock;
-#	else
-#		error "What are your threads?"
-#	endif
+# else
+# error "What are your threads?"
+# endif
 #else
-#	define MUTEX_LOCK(x)
-#	define MUTEX_UNLOCK(x)
+# define MUTEX_LOCK(x)
+# define MUTEX_UNLOCK(x)
 #endif
 static int openssl_init_done = 0;
 #endif
@@ -520,18 +520,18 @@ err:
 return NULL;
 }
 #endif
-static void  ssl_data_free(struct mailstream_ssl_data * ssl_data)
+static void ssl_data_free(struct mailstream_ssl_data * ssl_data)
 {
 mailstream_cancel_free(ssl_data->cancel);
 free(ssl_data);
 }
 #ifndef USE_GNUTLS
-static void  ssl_data_close(struct mailstream_ssl_data * ssl_data)
+static void ssl_data_close(struct mailstream_ssl_data * ssl_data)
 {
 SSL_free(ssl_data->ssl_conn);
 ssl_data->ssl_conn = NULL;
 SSL_CTX_free(ssl_data->ssl_ctx);
-ssl_data->ssl_ctx  = NULL;
+ssl_data->ssl_ctx = NULL;
 #ifdef WIN32
 closesocket(ssl_data->fd);
 #else
@@ -540,7 +540,7 @@ close(ssl_data->fd);
 ssl_data->fd = -1;
 }
 #else
-static void  ssl_data_close(struct mailstream_ssl_data * ssl_data)
+static void ssl_data_close(struct mailstream_ssl_data * ssl_data)
 {
 gnutls_certificate_free_credentials(ssl_data->xcred);
 gnutls_deinit(ssl_data->session);
@@ -954,8 +954,8 @@ session = data->session;
 raw_cert_list = gnutls_certificate_get_peers(session, &raw_cert_list_length);
 if (raw_cert_list
 && gnutls_certificate_type_get(session) == GNUTLS_CRT_X509
-&&  gnutls_x509_crt_init(&cert) >= 0
-&&  gnutls_x509_crt_import(cert, &raw_cert_list[0], GNUTLS_X509_FMT_DER) >= 0) {
+&& gnutls_x509_crt_init(&cert) >= 0
+&& gnutls_x509_crt_import(cert, &raw_cert_list[0], GNUTLS_X509_FMT_DER) >= 0) {
 cert_size = 0;
 if (gnutls_x509_crt_export(cert, GNUTLS_X509_FMT_DER, NULL, &cert_size)
 != GNUTLS_E_SHORT_MEMORY_BUFFER)

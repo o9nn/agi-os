@@ -349,7 +349,7 @@ std::vector<common_chat_msg> chat2;
 auto sys_msg = simple_msg("system", "You are a helpful assistant");
 auto fmt_sys = [&](std::string tmpl_str) {
 auto tmpls = common_chat_templates_init( nullptr, tmpl_str);
-auto output = common_chat_format_single(tmpls.get(), chat2, sys_msg, false,  false);
+auto output = common_chat_format_single(tmpls.get(), chat2, sys_msg, false, false);
 printf("fmt_sys(%s) : %s\n", tmpl_str.c_str(), output.c_str());
 printf("-------------------------\n");
 return output;
@@ -362,7 +362,7 @@ assert(fmt_sys("mistral-v7") == "[SYSTEM_PROMPT] You are a helpful assistant[/SY
 assert(fmt_sys("llama2") == "[INST] You are a helpful assistant\n");
 assert(fmt_sys("llama2-sys") == "[INST] <<SYS>>\nYou are a helpful assistant\n<</SYS>>\n\n");
 assert(fmt_sys("mistral") == "[INST] You are a helpful assistant\n");
-assert(fmt_sys("gemma")  == "");
+assert(fmt_sys("gemma") == "");
 assert(fmt_sys("llama3") == "<|start_header_id|>system<|end_header_id|>\n\nYou are a helpful assistant<|eot_id|>");
 assert(fmt_sys("gigachat") == "<s>You are a helpful assistant<|message_sep|>");
 printf("\n\n=== llama_chat_format_single (user message) ===\n\n");
@@ -372,7 +372,7 @@ chat2.push_back(simple_msg("assistant", "I am assistant"));
 auto new_msg = simple_msg("user", "How are you");
 auto fmt_single = [&](const std::string & tmpl_str) {
 auto tmpls = common_chat_templates_init( nullptr, tmpl_str.c_str());
-auto output = common_chat_format_single(tmpls.get(), chat2, new_msg, true,  false);
+auto output = common_chat_format_single(tmpls.get(), chat2, new_msg, true, false);
 printf("fmt_single(%s) : %s\n", tmpl_str.c_str(), output.c_str());
 printf("-------------------------\n");
 return output;
@@ -384,7 +384,7 @@ assert(fmt_single("mistral-v3-tekken") == "[INST]How are you[/INST]");
 assert(fmt_single("mistral-v7") == "[INST] How are you[/INST]");
 assert(fmt_single("llama2") == "[INST] How are you [/INST]");
 assert(fmt_single("mistral") == "[INST] How are you [/INST]");
-assert(fmt_single("gemma")  == "\n<start_of_turn>user\nHow are you<end_of_turn>\n<start_of_turn>model\n");
+assert(fmt_single("gemma") == "\n<start_of_turn>user\nHow are you<end_of_turn>\n<start_of_turn>model\n");
 assert(fmt_single("llama3") == "<|start_header_id|>user<|end_header_id|>\n\nHow are you<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n");
 assert(fmt_single("gigachat") == "user<|role_sep|>How are you<|message_sep|>available functions<|role_sep|>[]<|message_sep|>assistant<|role_sep|>");
 return 0;

@@ -9,7 +9,7 @@ using Logging
 mutable struct Skill
 name::String
 package_name::String
-skill_type::String  # "procedural", "analytical", "computational", etc.
+skill_type::String # "procedural", "analytical", "computational", etc.
 complexity::Float64
 mastery_level::Float64
 functions::Vector{String}
@@ -22,8 +22,8 @@ return Skill(
 name,
 package_name,
 skill_type,
-0.5,  # Initial complexity
-0.0,  # Initial mastery
+0.5, # Initial complexity
+0.0, # Initial mastery
 String[],
 String[],
 now(),
@@ -58,7 +58,7 @@ framework = SkillsFramework(
 SkillsInventory(),
 auto_discovery,
 learning_rate,
-0.8,  # Mastery threshold
+0.8, # Mastery threshold
 String[]
 )
 # Discover available packages
@@ -293,7 +293,7 @@ function is_package_available(package_name::String)::Bool
 try
 # Try to find it in the package registry
 return haskey(Pkg.project().dependencies, package_name) ||
-package_name in ["LinearAlgebra", "Statistics", "Random", "Dates"]  # stdlib
+package_name in ["LinearAlgebra", "Statistics", "Random", "Dates"] # stdlib
 catch
 return false
 end
@@ -353,10 +353,10 @@ end
 function auto_learn_common_skills!(framework::SkillsFramework)
 """Automatically learn skills from common packages"""
 common_packages = [
-"LinearAlgebra",   # Mathematical operations
-"Statistics",      # Statistical analysis
-"Random",          # Random number generation
-"Dates",           # Date/time handling
+"LinearAlgebra", # Mathematical operations
+"Statistics", # Statistical analysis
+"Random", # Random number generation
+"Dates", # Date/time handling
 ]
 @info "🚀 Auto-learning common skills..."
 learned_count = 0
@@ -375,11 +375,11 @@ skilled_packages = Set(get_skilled_packages(framework))
 unlearned_packages = [pkg for pkg in framework.available_packages if !(pkg in skilled_packages)]
 # Prioritize based on usefulness and dependencies
 priority_packages = [
-"DifferentialEquations",  # For J-Surfaces
-"Plots",                  # Visualization
-"DataFrames",            # Data manipulation
-"JSON",                  # Data interchange
-"HTTP"                   # Network communication
+"DifferentialEquations", # For J-Surfaces
+"Plots", # Visualization
+"DataFrames", # Data manipulation
+"JSON", # Data interchange
+"HTTP" # Network communication
 ]
 # Return prioritized list
 suggested = String[]

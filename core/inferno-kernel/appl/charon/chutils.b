@@ -16,13 +16,13 @@ convcs : Convcs;
 trans : Translate;
 Dict : import trans;
 dict : ref Dict;
-NCTimeout : con 100000;		# free NC slot after 100 seconds
-UBufsize : con 40*1024;		# initial buffer size for unknown lengths
-UEBufsize : con 1024;		# initial buffer size for unknown lengths, error responses
+NCTimeout : con 100000; # free NC slot after 100 seconds
+UBufsize : con 40*1024; # initial buffer size for unknown lengths
+UEBufsize : con 1024; # initial buffer size for unknown lengths, error responses
 botchexception := "EXInternal: ByteSource protocol botch";
 bytesourceid := 0;
 crlf : con "\r\n";
-ctype : array of byte;	# local ref to C->ctype[]
+ctype : array of byte; # local ref to C->ctype[]
 dbgproto : int;
 dbg: int;
 netconnid := 0;
@@ -31,15 +31,15 @@ sptab : con " \t";
 THTTP, TFTP, TFILE, TMAX: con iota;
 transports := array[TMAX] of Transport;
 tpaths := array [TMAX] of {
-THTTP =>	Transport->HTTPPATH,
-TFTP =>	Transport->FTPPATH,
-TFILE =>	Transport->FILEPATH,
+THTTP => Transport->HTTPPATH,
+TFTP => Transport->FTPPATH,
+TFILE => Transport->FILEPATH,
 };
 schemes := array [] of {
-("http", 	THTTP),
-("https",	THTTP),
-("ftp",	TFTP),
-("file",	TFILE),
+("http", THTTP),
+("https", THTTP),
+("ftp", TFTP),
+("file", TFILE),
 };
 ngchan : chan of (int, list of ref ByteSource, ref Netconn, chan of ref ByteSource);
 # must track HTTP methods in chutils.m
@@ -97,47 +97,47 @@ hcphrase(code: int) : string
 {
 ans : string;
 case code {
-HCContinue =>				ans = X("Continue", "http");
-HCSwitchProto =>			ans = X("Switching Protocols", "http");
-HCOk =>					ans = X("Ok", "http");
-HCCreated =>				ans = X("Created", "http");
-HCAccepted =>				ans = X("Accepted", "http");
-HCOkNonAuthoritative =>		ans = X("Non-Authoratative Information", "http");
-HCNoContent =>			ans = X("No content", "http");
-HCResetContent =>			ans = X("Reset content", "http");
-HCPartialContent =>			ans = X("Partial content", "http");
-HCMultipleChoices =>		ans = X("Multiple choices", "http");
-HCMovedPerm =>			ans = X("Moved permanently", "http");
-HCMovedTemp =>			ans = X("Moved temporarily", "http");
-HCSeeOther =>				ans = X("See other", "http");
-HCNotModified =>			ans = X("Not modified", "http");
-HCUseProxy =>				ans = X("Use proxy", "http");
-HCBadRequest =>			ans = X("Bad request", "http");
-HCUnauthorized =>			ans = X("Unauthorized", "http");
-HCPaymentRequired =>		ans = X("Payment required", "http");
-HCForbidden =>			ans = X("Forbidden", "http");
-HCNotFound =>			ans = X("Not found", "http");
-HCMethodNotAllowed =>		ans = X("Method not allowed", "http");
-HCNotAcceptable =>			ans = X("Not Acceptable", "http");
-HCProxyAuthRequired =>		ans = X("Proxy authentication required", "http");
-HCRequestTimeout =>		ans = X("Request timed-out", "http");
-HCConflict =>				ans = X("Conflict", "http");
-HCGone =>				ans = X("Gone", "http");
-HCLengthRequired =>		ans = X("Length required", "http");
-HCPreconditionFailed =>		ans = X("Precondition failed", "http");
-HCRequestTooLarge =>		ans = X("Request entity too large", "http");
-HCRequestURITooLarge =>	ans = X("Request-URI too large", "http");
-HCUnsupportedMedia =>		ans = X("Unsupported media type", "http");
-HCRangeInvalid =>			ans = X("Requested range not valid", "http");
-HCExpectFailed =>			ans = X("Expectation failed", "http");
-HCServerError =>			ans = X("Internal server error", "http");
-HCNotImplemented =>		ans = X("Not implemented", "http");
-HCBadGateway =>			ans = X("Bad gateway", "http");
-HCServiceUnavailable =>		ans = X("Service unavailable", "http");
-HCGatewayTimeout =>		ans = X("Gateway time-out", "http");
-HCVersionUnsupported =>	ans = X("HTTP version not supported", "http");
-HCRedirectionFailed =>		ans = X("Redirection failed", "http");
-* =>						ans = X("Unknown code", "http");
+HCContinue => ans = X("Continue", "http");
+HCSwitchProto => ans = X("Switching Protocols", "http");
+HCOk => ans = X("Ok", "http");
+HCCreated => ans = X("Created", "http");
+HCAccepted => ans = X("Accepted", "http");
+HCOkNonAuthoritative => ans = X("Non-Authoratative Information", "http");
+HCNoContent => ans = X("No content", "http");
+HCResetContent => ans = X("Reset content", "http");
+HCPartialContent => ans = X("Partial content", "http");
+HCMultipleChoices => ans = X("Multiple choices", "http");
+HCMovedPerm => ans = X("Moved permanently", "http");
+HCMovedTemp => ans = X("Moved temporarily", "http");
+HCSeeOther => ans = X("See other", "http");
+HCNotModified => ans = X("Not modified", "http");
+HCUseProxy => ans = X("Use proxy", "http");
+HCBadRequest => ans = X("Bad request", "http");
+HCUnauthorized => ans = X("Unauthorized", "http");
+HCPaymentRequired => ans = X("Payment required", "http");
+HCForbidden => ans = X("Forbidden", "http");
+HCNotFound => ans = X("Not found", "http");
+HCMethodNotAllowed => ans = X("Method not allowed", "http");
+HCNotAcceptable => ans = X("Not Acceptable", "http");
+HCProxyAuthRequired => ans = X("Proxy authentication required", "http");
+HCRequestTimeout => ans = X("Request timed-out", "http");
+HCConflict => ans = X("Conflict", "http");
+HCGone => ans = X("Gone", "http");
+HCLengthRequired => ans = X("Length required", "http");
+HCPreconditionFailed => ans = X("Precondition failed", "http");
+HCRequestTooLarge => ans = X("Request entity too large", "http");
+HCRequestURITooLarge => ans = X("Request-URI too large", "http");
+HCUnsupportedMedia => ans = X("Unsupported media type", "http");
+HCRangeInvalid => ans = X("Requested range not valid", "http");
+HCExpectFailed => ans = X("Expectation failed", "http");
+HCServerError => ans = X("Internal server error", "http");
+HCNotImplemented => ans = X("Not implemented", "http");
+HCBadGateway => ans = X("Bad gateway", "http");
+HCServiceUnavailable => ans = X("Service unavailable", "http");
+HCGatewayTimeout => ans = X("Gateway time-out", "http");
+HCVersionUnsupported => ans = X("HTTP version not supported", "http");
+HCRedirectionFailed => ans = X("Redirection failed", "http");
+* => ans = X("Unknown code", "http");
 }
 return ans;
 }
@@ -151,7 +151,7 @@ fileexttable := array[] of { T->StringInt
 ("bitm", ImageXBitmulti),
 ("eps", ApplPostscript),
 ("gif", ImageGif),
-("gz",	ApplOctets),
+("gz", ApplOctets),
 ("htm", TextHtml),
 ("html", TextHtml),
 ("jpe", ImageJpeg),
@@ -291,17 +291,17 @@ startreq(req: ref ReqInfo) : ref ByteSource
 {
 bs := ref ByteSource(
 bytesourceid++,
-req,		# req
-nil,		# hdr
-nil,		# data
-0,		# edata
-"",		# err
-nil,		# net
-1,		# refgo
-1,		# refnc
-0,		# eof
-0,		# lim
-0		# seenhdr
+req, # req
+nil, # hdr
+nil, # data
+0, # edata
+"", # err
+nil, # net
+1, # refgo
+1, # refnc
+0, # eof
+0, # lim
+0 # seenhdr
 );
 G->progress <-= (bs.id, G->Pstart, 0, req.url.tostring());
 anschan := chan of ref ByteSource;
@@ -511,11 +511,11 @@ nc.makefree();
 }
 # don't need to check waitpending fro NGwait requests involving bs
 # the only thread doing a freebs() should be the only thread that
-# can do a waitreq() on the same bs.  Same thread cannot be in both states.
+# can do a waitreq() on the same bs. Same thread cannot be in both states.
 c <-= nil;
 NGstatechg =>
 # Some runnetconn is telling us tht it changed the
-# state of nc.  Send a nil along c to let it continue.
+# state of nc. Send a nil along c to let it continue.
 bs : ref ByteSource;
 if(dbgproto)
 sys->print("Statechg NC=%d, state=%s\n",
@@ -607,7 +607,7 @@ runnetconn(nc: ref Netconn, t: Transport)
 {
 ach := chan of ref ByteSource;
 retry := 4;
-#	retry := 0;
+# retry := 0;
 err := "";
 assert(nc.ngcur < nc.qlen);
 bs := nc.queue[nc.ngcur];
@@ -735,22 +735,22 @@ return 1;
 Netconn.new(id: int) : ref Netconn
 {
 return ref Netconn(
-id,		# id
-"",		# host
-0,		# port
-"",		# scheme
-ref Dial->Connection(nil, nil, ""),	# conn
-nil,		# ssl context
-0,		# undetermined ssl version
-NCfree,	# state
-array[10] of ref ByteSource,	# queue
-0,		# qlen
-0,0,0,	# gocur, ngcur, reqsent
-0,		# pipeline
-0,		# connected
-0,		# tstate
-nil,		# tbuf
-0		# idlestart
+id, # id
+"", # host
+0, # port
+"", # scheme
+ref Dial->Connection(nil, nil, ""), # conn
+nil, # ssl context
+0, # undetermined ssl version
+NCfree, # state
+array[10] of ref ByteSource, # queue
+0, # qlen
+0,0,0, # gocur, ngcur, reqsent
+0, # pipeline
+0, # connected
+0, # tstate
+nil, # tbuf
+0 # idlestart
 );
 }
 Netconn.makefree(nc: self ref Netconn)
@@ -791,32 +791,32 @@ ByteSource.stringsource(s: string) : ref ByteSource
 a := array of byte s;
 n := len a;
 hdr := ref Header(
-HCOk,		# code
-nil,			# actual
-nil,			# base
-nil,			# location
-n,			# length
-TextHtml, 	# mtype
-"utf8",		# chset
-"",			# msg
-"",			# refresh
-"",			# chal
-"",			# warn
-""			# last-modified
+HCOk, # code
+nil, # actual
+nil, # base
+nil, # location
+n, # length
+TextHtml, # mtype
+"utf8", # chset
+"", # msg
+"", # refresh
+"", # chal
+"", # warn
+"" # last-modified
 );
 bs := ref ByteSource(
 bytesourceid++,
-nil,		# req
-hdr,		# hdr
-a,		# data
-n,		# edata
-"",		# err
-nil,		# net
-1,		# refgo
-0,		# refnc
-1,		# eof	- edata is final
-0,		# lim
-1		# seenhdr
+nil, # req
+hdr, # hdr
+a, # data
+n, # edata
+"", # err
+nil, # net
+1, # refgo
+0, # refnc
+1, # eof - edata is final
+0, # lim
+1 # seenhdr
 );
 return bs;
 }
@@ -833,9 +833,9 @@ return ref CImage(src, lowsrc, nil, strhash(src.host + "/" + src.path), width, h
 # As well as matching the src urls, the specified widths and heights must match too.
 # (Widths and heights are specified if at least one of those is not zero.)
 #
-# BUG: the width/height matching code isn't right.  If one has width and height
+# BUG: the width/height matching code isn't right. If one has width and height
 # specified, and the other doesn't, should say "don't match", because the unspecified
-# one should come in at its natural size.  But we overwrite the width and height fields
+# one should come in at its natural size. But we overwrite the width and height fields
 # when the actual size comes in, so we can't tell whether width and height are nonzero
 # because they were specified or because they're their natural size.
 CImage.match(a: self ref CImage, b: ref CImage) : int
@@ -887,13 +887,13 @@ ImageCache.resetlimits(ic: self ref ImageCache)
 res := ResourceState.cur();
 avail := res.imagelim - (res.image-ic.memused);
 # (res.image-ic.memused) is used memory not in image cache
-avail = 8*avail/10;	# allow 20% slop for other applications, etc.
+avail = 8*avail/10; # allow 20% slop for other applications, etc.
 ic.memlimit = config.imagecachemem;
 if(ic.memlimit > avail)
 ic.memlimit = avail;
-#	ic.nlimit = config.imagecachenum;
-ic.nlimit = 10000;	# let's try this
-ic.need(0);	# if resized, perhaps need to shed some images
+# ic.nlimit = config.imagecachenum;
+ic.nlimit = 10000; # let's try this
+ic.need(0); # if resized, perhaps need to shed some images
 }
 # Look for a CImage matching ci, and if found, move it
 # to the tail position (i.e., MRU)
@@ -1020,28 +1020,28 @@ return (transport, err);
 Header.new() : ref Header
 {
 return ref Header(
-HCOk,		# code
-nil,		# actual
-nil,		# base
-nil,		# location
--1,		# length
-UnknownType,	# mtype
-nil,		# chset
-"",		# msg
-"",		# refresh
-"",		# chal
-"",		# warn
-""		# last-modified
+HCOk, # code
+nil, # actual
+nil, # base
+nil, # location
+-1, # length
+UnknownType, # mtype
+nil, # chset
+"", # msg
+"", # refresh
+"", # chal
+"", # warn
+"" # last-modified
 );
 }
 jpmagic := array[] of {byte 16rFF, byte 16rD8, byte 16rFF, byte 16rE0,
 byte 0, byte 0, byte 'J', byte 'F', byte 'I', byte 'F', byte 0};
 pngsig := array[] of { byte 137, byte 80, byte 78, byte 71, byte 13, byte 10, byte 26, byte 10 };
 # Set the mtype (and possibly chset) fields of h based on (in order):
-#	first bytes of file, if unambigous
-#	file name extension
-#	first bytes of file, even if unambigous (guess)
-#	if all else fails, then leave as UnknownType.
+# first bytes of file, if unambigous
+# file name extension
+# first bytes of file, even if unambigous (guess)
+# if all else fails, then leave as UnknownType.
 # If it's a text type, also set the chset.
 # (HTTP Transport will try to use Content-Type first, and call this if that
 # doesn't work; other Transports will have to rely on this "guessing" function.)
@@ -1096,10 +1096,10 @@ mt = val;
 }
 }
 }
-#	if(mt == UnknownType) {
-#		mt = TextPlain;
-#		h.chset = "utf8";
-#	}
+# if(mt == UnknownType) {
+# mt = TextPlain;
+# h.chset = "utf8";
+# }
 h.mtype = mt;
 }
 Header.print(h: self ref Header)
@@ -1111,7 +1111,7 @@ chset := "?";
 if(h.chset != nil)
 chset = h.chset;
 # sys->print("code=%d (%s) length=%d mtype=%s chset=%s\n",
-#	h.code, hcphrase(h.code), h.length, mtype, chset);
+# h.code, hcphrase(h.code), h.length, mtype, chset);
 if(h.base != nil)
 sys->print("  base=%s\n", h.base.tostring());
 if(h.location != nil)
@@ -1182,12 +1182,12 @@ r.heap / 1024, r.heaplim / 1024, r.image / 1024, r.imagelim / 1024);
 # Decide what to do based on Header and whether this is
 # for the main entity or not, and the number of redirections-so-far.
 # Return tuple contains:
-#	(use, error, challenge, redir)
+# (use, error, challenge, redir)
 # and action to do is:
-#	If use==1, use the entity else drain its byte source.
-#	If error != nil, mesg was put in progress bar
-#	If challenge != nil, get auth info and make new request with auth
-#	Else if redir != nil, make a new request with redir for url
+# If use==1, use the entity else drain its byte source.
+# If error != nil, mesg was put in progress bar
+# If challenge != nil, get auth info and make new request with auth
+# Else if redir != nil, make a new request with redir for url
 #
 # (if challenge or redir is non-nil, use will be 0)
 hdraction(bs: ref ByteSource, ismain: int, nredirs: int) : (int, string, string, ref U->Parsedurl)
@@ -1261,9 +1261,9 @@ sys->print("charon: kill write failed (pid %d, grp %d): %r\n", pid, dogroup);
 # Look first in buf[bstart:bend], and if that isn't sufficient to get whole line,
 # refill buf from fd as needed.
 # Return values:
-#	array of byte: the line, not including cr/lf
-#	eof, true if there was no line to get or a read error
-#	bstart', bend': new valid portion of buf (after cr/lf).
+# array of byte: the line, not including cr/lf
+# eof, true if there was no line to get or a read error
+# bstart', bend': new valid portion of buf (after cr/lf).
 getline(fd: ref sys->FD, buf: array of byte, bstart, bend: int) :
 (array of byte, int, int, int)
 {
@@ -1337,7 +1337,7 @@ config.starturl = "file:/services/webget/start.html";
 config.homeurl = config.starturl;
 config.change_homeurl = 1;
 config.helpurl = "file:/services/webget/help.html";
-config.usessl = SSLV3;	# was NOSSL
+config.usessl = SSLV3; # was NOSSL
 config.devssl = 0;
 config.custbkurl = "/services/config/bookmarks.html";
 config.dualbkurl = "/services/config/dualdisplay.html";
@@ -1353,7 +1353,7 @@ config.nocache = 0;
 config.maxstale = 0;
 config.imagelvl = ImgFull;
 config.imagecachenum = 120;
-config.imagecachemem = 100000000;	# 100Meg, will get lowered later
+config.imagecachemem = 100000000; # 100Meg, will get lowered later
 config.docookies = 1;
 config.doscripts = 1;
 config.httpminor = 0;
@@ -1362,7 +1362,7 @@ config.nthreads = 4;
 config.offersave = 1;
 config.charset = "windows-1252";
 config.plumbport = "web";
-config.wintitle = "Charon";	# tkclient->titlebar() title, used by GUI
+config.wintitle = "Charon"; # tkclient->titlebar() title, used by GUI
 config.dbgfile = "";
 config.dbg = array[128] of { * => byte 0 };
 # Reading default config file
@@ -1482,8 +1482,8 @@ if(v == 0)
 config.devssl = 0;
 else
 config.devssl = 1;
-#	"custbkurl" =>
-#	"dualbkurl" =>
+# "custbkurl" =>
+# "dualbkurl" =>
 "httpproxy" =>
 if(val != "")
 config.httpproxy = makeabsurl(val);
@@ -1636,7 +1636,7 @@ buf[n:] = array of byte s;
 return n + len s;
 }
 # Make a StringInt table out of a, mapping each string
-# to its index.  Check that entries are in alphabetical order.
+# to its index. Check that entries are in alphabetical order.
 makestrinttab(a: array of string) : array of T->StringInt
 {
 n := len a;
@@ -1689,22 +1689,22 @@ return s;
 return config.srcdir + "/" + f;
 }
 color_tab := array[] of { T->StringInt
-("aqua",	16r00FFFF),
-("black",	Black),
-("blue",	Blue),
-("fuchsia",	16rFF00FF),
-("gray",	16r808080),
-("green",	16r008000),
-("lime",	16r00FF00),
-("maroon",	16r800000),
-("navy",	Navy),
-("olive",	16r808000),
-("purple",	16r800080),
-("red",	Red),
-("silver",	16rC0C0C0),
-("teal",	16r008080),
-("white",	White),
-("yellow",	16rFFFF00)
+("aqua", 16r00FFFF),
+("black", Black),
+("blue", Blue),
+("fuchsia", 16rFF00FF),
+("gray", 16r808080),
+("green", 16r008000),
+("lime", 16r00FF00),
+("maroon", 16r800000),
+("navy", Navy),
+("olive", 16r808000),
+("purple", 16r800080),
+("red", Red),
+("silver", 16rC0C0C0),
+("teal", 16r008080),
+("white", White),
+("yellow", 16rFFFF00)
 };
 # Convert HTML color spec to RGB value, returning dflt if can't.
 # Argument is supposed to be a valid HTML color, or "".
@@ -1745,8 +1745,8 @@ assert(i: int)
 {
 if(!i) {
 raise "EXInternal: assertion failed";
-#		sys->print("assertion failed\n");
-#		s := hmeth[-1];
+# sys->print("assertion failed\n");
+# s := hmeth[-1];
 }
 }
 getcookies(host, path: string, secure: int): string
@@ -1815,9 +1815,9 @@ return nil;
 return s[si:se+1];
 }
 # Split a value (guaranteed trimmed) into sep-separated list of one of
-# 	token
-#	token = token
-#	token = "quoted string"
+# token
+# token = token
+# token = "quoted string"
 # and put into list of Namevals (lowercase the first token)
 Nameval.namevals(s: string, sep: int) : list of Nameval
 {

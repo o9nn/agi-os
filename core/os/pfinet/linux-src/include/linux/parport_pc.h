@@ -2,14 +2,14 @@
 #define __LINUX_PARPORT_PC_H
 #include <asm/io.h>
 #define ECONTROL(p) ((p)->base_hi + 0x2)
-#define CONFIGB(p)  ((p)->base_hi + 0x1)
-#define CONFIGA(p)  ((p)->base_hi + 0x0)
-#define FIFO(p)     ((p)->base_hi + 0x0)
-#define EPPDATA(p)  ((p)->base    + 0x4)
-#define EPPADDR(p)  ((p)->base    + 0x3)
-#define CONTROL(p)  ((p)->base    + 0x2)
-#define STATUS(p)   ((p)->base    + 0x1)
-#define DATA(p)     ((p)->base    + 0x0)
+#define CONFIGB(p) ((p)->base_hi + 0x1)
+#define CONFIGA(p) ((p)->base_hi + 0x0)
+#define FIFO(p) ((p)->base_hi + 0x0)
+#define EPPDATA(p) ((p)->base + 0x4)
+#define EPPADDR(p) ((p)->base + 0x3)
+#define CONTROL(p) ((p)->base + 0x2)
+#define STATUS(p) ((p)->base + 0x1)
+#define DATA(p) ((p)->base + 0x0)
 struct parport_pc_private {
 unsigned char ctr;
 };
@@ -61,7 +61,7 @@ static __inline__ unsigned char parport_pc_read_control(struct parport *p)
 struct parport_pc_private *priv = p->private_data;
 return priv->ctr;
 }
-static __inline__ unsigned char parport_pc_frob_control(struct parport *p, unsigned char mask,  unsigned char val)
+static __inline__ unsigned char parport_pc_frob_control(struct parport *p, unsigned char mask, unsigned char val)
 {
 struct parport_pc_private *priv = p->private_data;
 unsigned char ctr = priv->ctr;
@@ -85,7 +85,7 @@ static __inline__ unsigned char parport_pc_read_econtrol(struct parport *p)
 {
 return inb(ECONTROL(p));
 }
-static __inline__ unsigned char parport_pc_frob_econtrol(struct parport *p, unsigned char mask,  unsigned char val)
+static __inline__ unsigned char parport_pc_frob_econtrol(struct parport *p, unsigned char mask, unsigned char val)
 {
 unsigned char old = inb(ECONTROL(p));
 outb(((old & ~mask) ^ val), ECONTROL(p));

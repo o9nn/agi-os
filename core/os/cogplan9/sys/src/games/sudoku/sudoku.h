@@ -1,26 +1,26 @@
 enum{
-Brdsize 	= 9,
-Psize 		= Brdsize * Brdsize,
-Alldigits 	= 0x1FF,
-Digit 		= 0x0000000F,
-Solve 		= 0x000000F0,
-Allow 		= 0x0001FF00,
-MLock 		= 0x00020000,
-Line 		= 0,
-Thickline 	= 1,
-Border 		= Thickline*4,
-Square 		= 48,
-Maxx 		= Square*9 + 2*Border,
-Maxy 		= Maxx + Square,
+Brdsize = 9,
+Psize = Brdsize * Brdsize,
+Alldigits = 0x1FF,
+Digit = 0x0000000F,
+Solve = 0x000000F0,
+Allow = 0x0001FF00,
+MLock = 0x00020000,
+Line = 0,
+Thickline = 1,
+Border = Thickline*4,
+Square = 48,
+Maxx = Square*9 + 2*Border,
+Maxy = Maxx + Square,
 };
 typedef struct Cell {
 int digit;
 int solve;
 int locked;
 } Cell;
-Cell	brd[Psize];
-Cell	obrd[Psize];
-int		board[Psize];
+Cell brd[Psize];
+Cell obrd[Psize];
+int board[Psize];
 int getrow(int cell);
 int getcol(int cell);
 int getbox(int cell);

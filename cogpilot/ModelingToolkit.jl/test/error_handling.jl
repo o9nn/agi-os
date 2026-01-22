@@ -9,7 +9,7 @@ val = V
 @named n = Pin()
 @parameters V
 eqs = [
-V ~ p.v - n.v        # Remove equation
+V ~ p.v - n.v # Remove equation
 # 0 ~ p.i + n.i
 ]
 System(eqs, t, [], [V], systems = [p, n], defaults = Dict(V => val), name = name)

@@ -2,9 +2,9 @@
 #include <libc.h>
 #include <bio.h>
 #include "diff.h"
-#define	DIRECTORY(s)		((s)->qid.type&QTDIR)
-#define	REGULAR_FILE(s)		((s)->type == 'M' && !DIRECTORY(s))
-Biobuf	stdout;
+#define DIRECTORY(s) ((s)->qid.type&QTDIR)
+#define REGULAR_FILE(s) ((s)->type == 'M' && !DIRECTORY(s))
+Biobuf stdout;
 static char *tmp[] = {"/tmp/diff1XXXXXXXXXXX", "/tmp/diff2XXXXXXXXXXX"};
 static int whichtmp;
 static char *progname;

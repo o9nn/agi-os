@@ -21,27 +21,27 @@ int sysctl_ip6frag_low_thresh = 192*1024;
 int sysctl_ip6frag_time = IPV6_FRAG_TIMEOUT;
 atomic_t ip6_frag_mem = ATOMIC_INIT(0);
 struct ipv6_frag {
-__u16			offset;
-__u16			len;
-struct sk_buff		*skb;
-struct frag_hdr		*fhdr;
-struct ipv6_frag	*next;
+__u16 offset;
+__u16 len;
+struct sk_buff *skb;
+struct frag_hdr *fhdr;
+struct ipv6_frag *next;
 };
 struct frag_queue {
-struct frag_queue	*next;
-struct frag_queue	*prev;
-__u32			id;
-struct in6_addr		saddr;
-struct in6_addr		daddr;
-struct timer_list	timer;
-struct ipv6_frag	*fragments;
-struct device		*dev;
-int			iif;
-__u8			last_in;
-#define FIRST_IN		2
-#define LAST_IN			1
-__u8			nexthdr;
-__u16			nhoffset;
+struct frag_queue *next;
+struct frag_queue *prev;
+__u32 id;
+struct in6_addr saddr;
+struct in6_addr daddr;
+struct timer_list timer;
+struct ipv6_frag *fragments;
+struct device *dev;
+int iif;
+__u8 last_in;
+#define FIRST_IN 2
+#define LAST_IN 1
+__u8 nexthdr;
+__u16 nhoffset;
 };
 static struct frag_queue ipv6_frag_queue = {
 &ipv6_frag_queue, &ipv6_frag_queue,
@@ -67,16 +67,16 @@ return NULL;
 atomic_add(size, &ip6_frag_mem);
 return vp;
 }
-static void			create_frag_entry(struct sk_buff *skb,
+static void create_frag_entry(struct sk_buff *skb,
 __u8 *nhptr,
 struct frag_hdr *fhdr);
-static u8 *			reasm_frag(struct frag_queue *fq,
+static u8 * reasm_frag(struct frag_queue *fq,
 struct sk_buff **skb_in);
-static void			reasm_queue(struct frag_queue *fq,
+static void reasm_queue(struct frag_queue *fq,
 struct sk_buff *skb,
 struct frag_hdr *fhdr,
 u8 *nhptr);
-static void			fq_free(struct frag_queue *fq);
+static void fq_free(struct frag_queue *fq);
 static void frag_prune(void)
 {
 struct frag_queue *fq;
@@ -215,7 +215,7 @@ icmpv6_param_prob(skb, ICMPV6_HDR_FIELD,
 goto err;
 }
 }
-nfp->skb  = skb;
+nfp->skb = skb;
 nfp->fhdr = fhdr;
 nfp->next = NULL;
 bptr = &fq->fragments;
@@ -253,11 +253,11 @@ struct ipv6_frag *fp;
 struct ipv6_frag *head = fq->fragments;
 struct ipv6_frag *tail = NULL;
 struct sk_buff *skb;
-__u32  offset = 0;
-__u32  payload_len;
-__u16  unfrag_len;
-__u16  copy;
-u8     *nhptr;
+__u32 offset = 0;
+__u32 payload_len;
+__u16 unfrag_len;
+__u16 copy;
+u8 *nhptr;
 for(fp = head; fp; fp=fp->next) {
 if (offset != fp->offset)
 return NULL;

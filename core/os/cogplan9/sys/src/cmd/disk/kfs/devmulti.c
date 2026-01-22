@@ -2,21 +2,21 @@
 enum{
 MAXWREN = 7,
 };
-static char WMAGIC[] =	"kfs wren device\n";
-static char MMAGIC[] =	"kfs multi-wren device %4d/%4d\n";
-typedef struct Wren	Wren;
+static char WMAGIC[] = "kfs wren device\n";
+static char MMAGIC[] = "kfs multi-wren device %4d/%4d\n";
+typedef struct Wren Wren;
 struct Wren{
 QLock;
-Device	dev;
-ulong	nblocks;
-int	fd;
+Device dev;
+ulong nblocks;
+int fd;
 };
-static char	*wmagic = WMAGIC;
-static Wren	*wrens;
-static int	maxwren;
-char		*wrenfile;
-int		nwren;
-int		badmagic;
+static char *wmagic = WMAGIC;
+static Wren *wrens;
+static int maxwren;
+char *wrenfile;
+int nwren;
+int badmagic;
 static Wren *
 wren(Device dev)
 {

@@ -50,19 +50,19 @@ if (opt)
 iph=(struct iphdr *)skb_push(skb,sizeof(struct iphdr) + opt->optlen);
 else
 iph=(struct iphdr *)skb_push(skb,sizeof(struct iphdr));
-iph->version  = 4;
-iph->ihl      = 5;
-iph->tos      = sk->ip_tos;
+iph->version = 4;
+iph->ihl = 5;
+iph->tos = sk->ip_tos;
 iph->frag_off = 0;
 if (ip_dont_fragment(sk, &rt->u.dst))
 iph->frag_off |= htons(IP_DF);
-iph->ttl      = sk->ip_ttl;
-iph->daddr    = rt->rt_dst;
-iph->saddr    = rt->rt_src;
+iph->ttl = sk->ip_ttl;
+iph->daddr = rt->rt_dst;
+iph->saddr = rt->rt_src;
 iph->protocol = sk->protocol;
-iph->tot_len  = htons(skb->len);
-iph->id       = htons(ip_id_count++);
-skb->nh.iph   = iph;
+iph->tot_len = htons(skb->len);
+iph->id = htons(ip_id_count++);
+skb->nh.iph = iph;
 if (opt && opt->optlen) {
 iph->ihl += opt->optlen>>2;
 ip_options_build(skb, opt, daddr, rt, 0);
@@ -150,15 +150,15 @@ if(opt && opt->is_strictroute && rt->rt_dst != rt->rt_gateway)
 goto no_route;
 skb->dst = dst_clone(sk->dst_cache);
 iph = (struct iphdr *) skb_push(skb, sizeof(struct iphdr) + (opt ? opt->optlen : 0));
-iph->version  = 4;
-iph->ihl      = 5;
-iph->tos      = sk->ip_tos;
+iph->version = 4;
+iph->ihl = 5;
+iph->tos = sk->ip_tos;
 iph->frag_off = 0;
-iph->ttl      = sk->ip_ttl;
-iph->daddr    = rt->rt_dst;
-iph->saddr    = rt->rt_src;
+iph->ttl = sk->ip_ttl;
+iph->daddr = rt->rt_dst;
+iph->saddr = rt->rt_src;
 iph->protocol = sk->protocol;
-skb->nh.iph   = iph;
+skb->nh.iph = iph;
 if(opt && opt->optlen) {
 iph->ihl += opt->optlen >> 2;
 ip_options_build(skb, opt, sk->daddr, rt, 0);
@@ -443,11 +443,11 @@ goto fail;
 #endif
 offset = (ntohs(iph->frag_off) & IP_OFFSET) << 3;
 not_last_frag = iph->frag_off & htons(IP_MF);
-while(left > 0)	{
+while(left > 0) {
 len = left;
 if (len > mtu)
 len = mtu;
-if (len < left)	{
+if (len < left) {
 len &= ~7;
 }
 if ((skb2 = alloc_skb(len+hlen+dev->hard_header_len+15,GFP_ATOMIC)) == NULL) {
@@ -519,8 +519,8 @@ void ip_send_reply(struct sock *sk, struct sk_buff *skb, struct ip_reply_arg *ar
 unsigned int len)
 {
 struct {
-struct ip_options	opt;
-char			data[40];
+struct ip_options opt;
+char data[40];
 } replyopts;
 struct ipcm_cookie ipc;
 u32 daddr;

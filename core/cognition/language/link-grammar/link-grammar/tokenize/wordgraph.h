@@ -3,14 +3,14 @@
 #include "api-structures.h"
 #ifdef USE_WORDGRAPH_DISPLAY
 #define lo(l) (l-'a')
-#define WGR_SUB      (1<<lo('s'))
-#define WGR_COMPACT  (1<<lo('c'))
-#define WGR_PREV     (1<<lo('p'))
-#define WGR_UNSPLIT  (1<<lo('u'))
+#define WGR_SUB (1<<lo('s'))
+#define WGR_COMPACT (1<<lo('c'))
+#define WGR_PREV (1<<lo('p'))
+#define WGR_UNSPLIT (1<<lo('u'))
 #define WGR_DBGLABEL (1<<lo('d'))
 #define WGR_DOTDEBUG (1<<lo('h'))
-#define WGR_LEGEND   (1<<lo('l'))
-#define WGR_X11      (1<<lo('x'))
+#define WGR_LEGEND (1<<lo('l'))
+#define WGR_X11 (1<<lo('x'))
 #endif
 #define IS_SENTENCE_WORD(sent, gword) (gword->unsplit_word == sent->wordgraph)
 Gword *gword_new(Sentence, const char *);

@@ -27,14 +27,14 @@
 #if defined(_MSC_VER)
 #pragma warning(disable: 4244 4267)
 #endif
-static llama_context           ** g_ctx;
-static llama_model             ** g_model;
-static common_sampler          ** g_smpl;
-static common_params            * g_params;
+static llama_context ** g_ctx;
+static llama_model ** g_model;
+static common_sampler ** g_smpl;
+static common_params * g_params;
 static std::vector<llama_token> * g_input_tokens;
-static std::ostringstream       * g_output_ss;
+static std::ostringstream * g_output_ss;
 static std::vector<llama_token> * g_output_tokens;
-static bool is_interacting  = false;
+static bool is_interacting = false;
 static bool need_insert_eot = false;
 static void print_usage(int argc, char ** argv) {
 (void) argc;
@@ -57,7 +57,7 @@ return f.tellg() == 0;
 static void sigint_handler(int signo) {
 if (signo == SIGINT) {
 if (!is_interacting && g_params->interactive) {
-is_interacting  = true;
+is_interacting = true;
 need_insert_eot = true;
 } else {
 console::cleanup();
@@ -369,16 +369,16 @@ if (!smpl) {
 LOG_ERR("%s: failed to initialize sampling subsystem\n", __func__);
 return 1;
 }
-LOG_INF("sampler seed: %u\n",     common_sampler_get_seed(smpl));
+LOG_INF("sampler seed: %u\n", common_sampler_get_seed(smpl));
 LOG_INF("sampler params: \n%s\n", sparams.print().c_str());
-LOG_INF("sampler chain: %s\n",    common_sampler_print(smpl).c_str());
+LOG_INF("sampler chain: %s\n", common_sampler_print(smpl).c_str());
 LOG_INF("generate: n_ctx = %d, n_batch = %d, n_predict = %d, n_keep = %d\n", n_ctx, params.n_batch, params.n_predict, params.n_keep);
 int ga_i = 0;
 const int ga_n = params.grp_attn_n;
 const int ga_w = params.grp_attn_w;
 if (ga_n != 1) {
-GGML_ASSERT(ga_n > 0                    && "grp_attn_n must be positive");
-GGML_ASSERT(ga_w % ga_n == 0            && "grp_attn_w must be a multiple of grp_attn_n");
+GGML_ASSERT(ga_n > 0 && "grp_attn_n must be positive");
+GGML_ASSERT(ga_w % ga_n == 0 && "grp_attn_w must be a multiple of grp_attn_n");
 LOG_INF("self-extend: n_ctx_train = %d, grp_attn_n = %d, grp_attn_w = %d\n", n_ctx_train, ga_n, ga_w);
 }
 LOG_INF("\n");
@@ -394,26 +394,26 @@ control_message = " - Press Return to return control to the AI.\n"
 }
 LOG_INF("== Running in interactive mode. ==\n");
 #if defined (__unix__) || (defined (__APPLE__) && defined (__MACH__)) || defined (_WIN32)
-LOG_INF(       " - Press Ctrl+C to interject at any time.\n");
+LOG_INF( " - Press Ctrl+C to interject at any time.\n");
 #endif
-LOG_INF(       "%s", control_message);
+LOG_INF( "%s", control_message);
 if (params.conversation_mode && params.enable_chat_template && params.system_prompt.empty()) {
-LOG_INF(   " - Not using system message. To change it, set a different value via -sys PROMPT\n");
+LOG_INF( " - Not using system message. To change it, set a different value via -sys PROMPT\n");
 }
 LOG_INF("\n");
 is_interacting = params.interactive_first;
 }
-bool is_antiprompt        = false;
-bool input_echo           = true;
-bool display              = true;
+bool is_antiprompt = false;
+bool input_echo = true;
+bool display = true;
 bool need_to_save_session = !path_session.empty() && n_matching_session_tokens < embd_inp.size();
-int n_past             = 0;
-int n_remain           = params.n_predict;
-int n_consumed         = 0;
+int n_past = 0;
+int n_remain = params.n_predict;
+int n_consumed = 0;
 int n_session_consumed = 0;
-std::vector<int>   input_tokens;  g_input_tokens  = &input_tokens;
-std::vector<int>   output_tokens; g_output_tokens = &output_tokens;
-std::ostringstream output_ss;     g_output_ss     = &output_ss;
+std::vector<int> input_tokens; g_input_tokens = &input_tokens;
+std::vector<int> output_tokens; g_output_tokens = &output_tokens;
+std::ostringstream output_ss; g_output_ss = &output_ss;
 std::ostringstream assistant_ss;
 console::set_display(console::prompt);
 display = params.display_prompt;
@@ -459,11 +459,11 @@ if (params.n_predict == -2) {
 LOG_DBG("\n\n%s: context full and n_predict == -%d => stopping\n", __func__, params.n_predict);
 break;
 }
-const int n_left    = n_past - params.n_keep;
+const int n_left = n_past - params.n_keep;
 const int n_discard = n_left/2;
 LOG_DBG("context full, swapping: n_past = %d, n_left = %d, n_ctx = %d, n_keep = %d, n_discard = %d\n",
 n_past, n_left, n_ctx, params.n_keep, n_discard);
-llama_memory_seq_rm (mem, 0, params.n_keep            , params.n_keep + n_discard);
+llama_memory_seq_rm (mem, 0, params.n_keep , params.n_keep + n_discard);
 llama_memory_seq_add(mem, 0, params.n_keep + n_discard, n_past, -n_discard);
 n_past -= n_discard;
 LOG_DBG("after swap: n_past = %d\n", n_past);
@@ -480,9 +480,9 @@ LOG_DBG("\n");
 LOG_DBG("shift: [%6d, %6d] + %6d -> [%6d, %6d]\n", ga_i, n_past, ib*bd, ga_i + ib*bd, n_past + ib*bd);
 LOG_DBG("div:   [%6d, %6d] / %6d -> [%6d, %6d]\n", ga_i + ib*bd, ga_i + ib*bd + ga_w, ga_n, (ga_i + ib*bd)/ga_n, (ga_i + ib*bd + ga_w)/ga_n);
 LOG_DBG("shift: [%6d, %6d] + %6d -> [%6d, %6d]\n", ga_i + ib*bd + ga_w, n_past + ib*bd, dd, ga_i + ib*bd + ga_w + dd, n_past + ib*bd + dd);
-llama_memory_seq_add(mem, 0, ga_i,                n_past,              ib*bd);
-llama_memory_seq_div(mem, 0, ga_i + ib*bd,        ga_i + ib*bd + ga_w, ga_n);
-llama_memory_seq_add(mem, 0, ga_i + ib*bd + ga_w, n_past + ib*bd,      dd);
+llama_memory_seq_add(mem, 0, ga_i, n_past, ib*bd);
+llama_memory_seq_div(mem, 0, ga_i + ib*bd, ga_i + ib*bd + ga_w, ga_n);
+llama_memory_seq_add(mem, 0, ga_i + ib*bd + ga_w, n_past + ib*bd, dd);
 n_past -= bd;
 ga_i += ga_w/ga_n;
 LOG_DBG("\nn_past_old = %d, n_past = %d, ga_i = %d\n\n", n_past + bd, n_past, ga_i);
@@ -535,7 +535,7 @@ llama_state_save_file(ctx, path_session.c_str(), session_tokens.data(), session_
 LOG_DBG("saved session to %s\n", path_session.c_str());
 }
 const llama_token id = common_sampler_sample(smpl, ctx, -1);
-common_sampler_accept(smpl, id,  true);
+common_sampler_accept(smpl, id, true);
 embd.push_back(id);
 input_echo = true;
 --n_remain;
@@ -544,7 +544,7 @@ LOG_DBG("n_remain: %d\n", n_remain);
 LOG_DBG("embd_inp.size(): %d, n_consumed: %d\n", (int) embd_inp.size(), n_consumed);
 while ((int) embd_inp.size() > n_consumed) {
 embd.push_back(embd_inp[n_consumed]);
-common_sampler_accept(smpl, embd_inp[n_consumed],  false);
+common_sampler_accept(smpl, embd_inp[n_consumed], false);
 ++n_consumed;
 if ((int) embd.size() >= params.n_batch) {
 break;
@@ -672,7 +672,7 @@ std::string user_inp = format_chat
 ? chat_add_and_format("user", std::move(buffer))
 : std::move(buffer);
 const auto line_pfx = common_tokenize(ctx, params.input_prefix, false, true);
-const auto line_inp = common_tokenize(ctx, user_inp,            false, format_chat);
+const auto line_inp = common_tokenize(ctx, user_inp, false, format_chat);
 const auto line_sfx = common_tokenize(ctx, params.input_suffix, false, true);
 LOG_DBG("input tokens: %s\n", string_from(ctx, line_inp).c_str());
 if (need_insert_eot && format_chat) {

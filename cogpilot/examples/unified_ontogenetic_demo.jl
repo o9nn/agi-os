@@ -64,7 +64,7 @@ println()
 # Step 2: Create J-Surface Elementary Differential Reactor
 println("⚡ Step 2: Creating J-Surface Elementary Differential Reactor")
 println("-"^70)
-state_dim = 20  # Derived from A000081: sum(1,1,2,4,9) ≈ 17 → 20
+state_dim = 20 # Derived from A000081: sum(1,1,2,4,9) ≈ 17 → 20
 reactor = create_advanced_reactor(state_dim, trees[1:min(10, length(trees))]; symplectic=true)
 println("✓ Reactor created with:")
 println("  State dimension: $(reactor.state_dim)")
@@ -77,7 +77,7 @@ println()
 # Step 3: Create P-System Membrane Reservoir
 println("🧬 Step 3: Creating P-System Membrane Reservoir")
 println("-"^70)
-num_membranes = 4  # A000081[4] = 4
+num_membranes = 4 # A000081[4] = 4
 reservoir_size = 20
 alphabet = ["a", "b", "c", "d", "e"]
 psystem = create_psystem_reservoir(num_membranes, reservoir_size, alphabet)
@@ -102,7 +102,7 @@ println()
 println("🔧 Step 5: Initializing Unified System")
 println("-"^70)
 # Create a mock enhanced integration system for demo
-mock_enhanced = nothing  # Would be EnhancedSystem in full implementation
+mock_enhanced = nothing # Would be EnhancedSystem in full implementation
 initialize_unified!(unified_system, reactor, psystem, mock_enhanced)
 println("✓ System initialized with $(length(unified_system.planted_trees)) planted trees")
 println()

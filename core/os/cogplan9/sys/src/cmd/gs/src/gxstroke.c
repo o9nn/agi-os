@@ -18,10 +18,10 @@
 #include "vdtrace.h"
 #define USE_FILL_ADJUSTMENT
 #ifdef USE_FILL_ADJUSTMENT
-#  define STROKE_ADJUSTMENT(thin, pis, xy)\
+# define STROKE_ADJUSTMENT(thin, pis, xy)\
 (thin ? fixed_0 : (pis)->fill_adjust.xy)
 #else
-#  define STROKE_ADJUSTMENT(thin, pis, xy) fixed_0
+# define STROKE_ADJUSTMENT(thin, pis, xy) fixed_0
 #endif
 #define OPTIMIZE_ORIENTATION
 private float join_expansion_factor(const gs_imager_state *, gs_line_join);
@@ -126,7 +126,7 @@ private int add_points(gx_path *, const gs_fixed_point *,
 int, bool);
 private int add_round_cap(gx_path *, const_ep_ptr);
 private int cap_points(gs_line_cap, const_ep_ptr,
-gs_fixed_point *  );
+gs_fixed_point * );
 int
 gx_default_stroke_path(gx_device * dev, const gs_imager_state * pis,
 gx_path * ppath, const gx_stroke_params * params,
@@ -822,8 +822,8 @@ gs_line_join join, bool reflected)
 #define jp2 join_points[3]
 #define jpx join_points[4]
 bool ccw =
-(double)(plp->width.x)  * (nplp->width.y)  >
-(double)(nplp->width.x)  * (plp->width.y) ;
+(double)(plp->width.x) * (nplp->width.y) >
+(double)(nplp->width.x) * (plp->width.y) ;
 bool ccw0 = ccw;
 p_ptr outp, np;
 ccw ^= reflected;

@@ -4,7 +4,7 @@ const float * timesteps, float * dst, const int nb1,
 const int dim, const int max_period, const sycl::nd_item<3> &item_ct1) {
 int i = item_ct1.get_group(1);
 int j = item_ct1.get_local_id(2) + item_ct1.get_group(2) * item_ct1.get_local_range(2);
-float * embed_data = (float *)((char *)dst +  i*nb1);
+float * embed_data = (float *)((char *)dst + i*nb1);
 if (dim % 2 != 0 && j == ((dim + 1) / 2)) {
 embed_data[dim] = 0.f;
 }
@@ -31,7 +31,7 @@ timestep_embedding_f32(x, dst, nb1, dim, max_period, item_ct1);
 }
 void ggml_sycl_op_timestep_embedding(ggml_backend_sycl_context & ctx, ggml_tensor * dst) {
 scope_op_debug_print scope_dbg_print(__func__, dst, 1);
-const ggml_tensor *  src0   = dst->src[0];
+const ggml_tensor * src0 = dst->src[0];
 const float * src0_d = (const float *)src0->data;
 float * dst_d = (float *)dst->data;
 dpct::queue_ptr stream = ctx.stream();

@@ -7,31 +7,31 @@
 #include "y.tab.h"
 struct keywd
 {
-char	*name;
-int	terminal;
+char *name;
+int terminal;
 }
 keywds[] =
 {
-"do",		Tdo,
-"if",		Tif,
-"then",		Tthen,
-"else",		Telse,
-"while",	Twhile,
-"loop",		Tloop,
-"head",		Thead,
-"tail",		Ttail,
-"append",	Tappend,
-"defn",		Tfn,
-"return",	Tret,
-"local",	Tlocal,
-"aggr",		Tcomplex,
-"union",	Tcomplex,
-"adt",		Tcomplex,
-"complex",	Tcomplex,
-"delete",	Tdelete,
-"whatis",	Twhat,
-"eval",		Teval,
-0,		0
+"do", Tdo,
+"if", Tif,
+"then", Tthen,
+"else", Telse,
+"while", Twhile,
+"loop", Tloop,
+"head", Thead,
+"tail", Ttail,
+"append", Tappend,
+"defn", Tfn,
+"return", Tret,
+"local", Tlocal,
+"aggr", Tcomplex,
+"union", Tcomplex,
+"adt", Tcomplex,
+"complex", Tcomplex,
+"delete", Tdelete,
+"whatis", Twhat,
+"eval", Teval,
+0, 0
 };
 char cmap[256] =
 {
@@ -75,12 +75,12 @@ enter(keywds[i].name, keywds[i].terminal);
 typedef struct IOstack IOstack;
 struct IOstack
 {
-char	*name;
-int	line;
-char	*text;
-char	*ip;
-Biobuf	*fin;
-IOstack	*prev;
+char *name;
+int line;
+char *text;
+char *ip;
+Biobuf *fin;
+IOstack *prev;
 };
 IOstack *lexio;
 void

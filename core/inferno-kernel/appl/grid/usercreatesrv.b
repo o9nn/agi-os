@@ -1,6 +1,6 @@
 implement Usercreatesrv;
 #
-# Copyright © 2003 Vita Nuova Holdings Limited.  All rights reserved.
+# Copyright © 2003 Vita Nuova Holdings Limited. All rights reserved.
 #
 include "sys.m";
 sys: Sys;
@@ -38,12 +38,12 @@ uname := hd toks; toks = tl toks;
 password := array of byte hd toks; toks = tl toks;
 secret := array[Keyring->SHA1dlen] of byte;
 keyring->sha1(password, len password, secret, nil);
-#		email := hd toks; toks = tl toks;
-#		e := checkemail(email);
-#		if(e != nil){
-#			wc <-= (0, e);
-#			break;
-#		}
+# email := hd toks; toks = tl toks;
+# e := checkemail(email);
+# if(e != nil){
+# wc <-= (0, e);
+# break;
+# }
 dir := "/mnt/keys/" + uname;
 if(sys->create(dir, Sys->OREAD, Sys->DMDIR|8r777) == nil){
 wc <-= (0, sys->sprint("cannot create account: %r"));
@@ -51,7 +51,7 @@ break;
 }
 sys->write(sys->create(dir + "/secret", Sys->OWRITE, 8r600), secret, len secret);
 wc <-= (len data, nil);
-#		sys->print("create %q %q\n", uname, email);
+# sys->print("create %q %q\n", uname, email);
 }
 }
 checkemail(addr: string): string

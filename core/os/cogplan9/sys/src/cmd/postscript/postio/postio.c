@@ -7,48 +7,48 @@
 #include "ifdef.h"
 #include "gen.h"
 #include "postio.h"
-char	**argv;
-int	argc;
-char	*prog_name = "";
-int	x_stat = 0;
-int	debug = OFF;
-int	ignore = OFF;
-char	*line = NULL;
-short	baudrate = BAUDRATE;
-Baud	baudtable[] = BAUDTABLE;
-int	stopbits = 1;
-int	tostdout = FALSE;
-int	quiet = FALSE;
-int	interactive = FALSE;
-char	*postbegin = POSTBEGIN;
-int	useslowsend = FALSE;
-int	sendctrlC = TRUE;
-int	window_size = -1;
-char	*block = NULL;
-int	blocksize = BLOCKSIZE;
-int	head = 0;
-int	tail = 0;
-int	splitme = FALSE;
-int	whatami = READWRITE;
-int	canread = TRUE;
-int	canwrite = TRUE;
-int	otherpid = -1;
-int	joinsig = SIGTRAP;
-int	writedone = FALSE;
-char	mesg[MESGSIZE];
-char	sbuf[MESGSIZE];
-int	next = 0;
-char	*mesgptr = NULL;
-char	*endmesg = NULL;
-Status	status[] = STATUS;
-int	nostatus = NOSTATUS;
-int	currentstate = NOTCONNECTED;
-int	ttyi = 0;
-int	ttyo = 2;
-FILE	*fp_log = stderr;
+char **argv;
+int argc;
+char *prog_name = "";
+int x_stat = 0;
+int debug = OFF;
+int ignore = OFF;
+char *line = NULL;
+short baudrate = BAUDRATE;
+Baud baudtable[] = BAUDTABLE;
+int stopbits = 1;
+int tostdout = FALSE;
+int quiet = FALSE;
+int interactive = FALSE;
+char *postbegin = POSTBEGIN;
+int useslowsend = FALSE;
+int sendctrlC = TRUE;
+int window_size = -1;
+char *block = NULL;
+int blocksize = BLOCKSIZE;
+int head = 0;
+int tail = 0;
+int splitme = FALSE;
+int whatami = READWRITE;
+int canread = TRUE;
+int canwrite = TRUE;
+int otherpid = -1;
+int joinsig = SIGTRAP;
+int writedone = FALSE;
+char mesg[MESGSIZE];
+char sbuf[MESGSIZE];
+int next = 0;
+char *mesgptr = NULL;
+char *endmesg = NULL;
+Status status[] = STATUS;
+int nostatus = NOSTATUS;
+int currentstate = NOTCONNECTED;
+int ttyi = 0;
+int ttyo = 2;
+FILE *fp_log = stderr;
 main(agc, agv)
-int		agc;
-char	*agv[];
+int agc;
+char *agv[];
 {
 argc = agc;
 argv = agv;
@@ -65,8 +65,8 @@ exit(x_stat);
 }
 init_signals()
 {
-void	interrupt();
-if ( signal(SIGINT, interrupt) == SIG_IGN )  {
+void interrupt();
+if ( signal(SIGINT, interrupt) == SIG_IGN ) {
 signal(SIGINT, SIG_IGN);
 signal(SIGQUIT, SIG_IGN);
 signal(SIGHUP, SIG_IGN);
@@ -78,12 +78,12 @@ signal(SIGTERM, interrupt);
 }
 options()
 {
-int		ch;
-char	*optnames = "b:cil:qs:tw:B:L:P:R:SDI";
-extern char	*optarg;
-extern int	optind;
-while ( (ch = getopt(argc, argv, optnames)) != EOF )  {
-switch ( ch )  {
+int ch;
+char *optnames = "b:cil:qs:tw:B:L:P:R:SDI";
+extern char *optarg;
+extern int optind;
+while ( (ch = getopt(argc, argv, optnames)) != EOF ) {
+switch ( ch ) {
 case 'b':
 baudrate = getbaud(optarg);
 break;
@@ -114,7 +114,7 @@ if ( (blocksize = atoi(optarg)) <= 0 )
 blocksize = BLOCKSIZE;
 break;
 case 'L':
-if ( (fp_log = fopen(optarg, "w")) == NULL )  {
+if ( (fp_log = fopen(optarg, "w")) == NULL ) {
 fp_log = stderr;
 error(NON_FATAL, "can't open log file %s", optarg);
 }
@@ -148,9 +148,9 @@ argc -= optind;
 argv += optind;
 }
 getbaud(rate)
-char	*rate;
+char *rate;
 {
-int		i;
+int i;
 for ( i = 0; baudtable[i].rate != NULL; i++ )
 if ( strcmp(rate, baudtable[i].rate) == 0 )
 return(baudtable[i].val);
@@ -162,7 +162,7 @@ whatami = READWRITE;
 canread = canwrite = TRUE;
 if ( tostdout == TRUE )
 splitme = TRUE;
-if ( interactive == TRUE )  {
+if ( interactive == TRUE ) {
 quiet = FALSE;
 tostdout = FALSE;
 splitme = TRUE;
@@ -172,7 +172,7 @@ useslowsend = FALSE;
 nostatus = INTERACTIVE;
 setbuf(stdout, NULL);
 }
-if ( useslowsend == TRUE )  {
+if ( useslowsend == TRUE ) {
 quiet = FALSE;
 splitme = FALSE;
 if ( blocksize > 1024 )
@@ -194,7 +194,7 @@ logit("printer startup\n");
 currentstate = START;
 clearline();
 while ( 1 )
-switch ( getstatus(1) )  {
+switch ( getstatus(1) ) {
 case IDLE:
 case INTERACTIVE:
 if ( postbegin != NULL && *postbegin != '\0' )
@@ -230,15 +230,15 @@ break;
 }
 split()
 {
-int		pid;
-void	interrupt();
+int pid;
+void interrupt();
 if ( splitme == TRUE )
-if ( resetline() == TRUE )  {
+if ( resetline() == TRUE ) {
 pid = getpid();
 signal(joinsig, interrupt);
 if ( (otherpid = fork()) == -1 )
 error(FATAL, "can't fork");
-else if ( otherpid == 0 )  {
+else if ( otherpid == 0 ) {
 whatami = WRITE;
 nostatus = WRITEPROCESS;
 otherpid = pid;
@@ -252,13 +252,13 @@ canwrite = (whatami & WRITE) ? TRUE : FALSE;
 }
 arguments()
 {
-int		fd_in;
+int fd_in;
 if ( canwrite == TRUE )
 do
 if ( argc < 1 )
 send(fileno(stdin), "pipe.end");
-else  {
-while ( argc > 0 )  {
+else {
+while ( argc > 0 ) {
 if ( (fd_in = open(*argv, O_RDONLY)) == -1 )
 error(FATAL, "can't open %s", *argv);
 send(fd_in, *argv);
@@ -270,18 +270,18 @@ argv++;
 while ( interactive == TRUE );
 }
 send(fd_in, name)
-int		fd_in;
-char	*name;
+int fd_in;
+char *name;
 {
 if ( interactive == FALSE )
 logit("sending file %s\n", name);
 currentstate = SEND;
-if ( useslowsend == TRUE )  {
+if ( useslowsend == TRUE ) {
 slowsend(fd_in);
 return;
 }
 while ( readblock(fd_in) )
-switch ( getstatus(0) )  {
+switch ( getstatus(0) ) {
 case IDLE:
 case BUSY:
 case WAITING:
@@ -308,15 +308,15 @@ break;
 }
 done()
 {
-int		sleeptime = 15;
+int sleeptime = 15;
 if ( canwrite == TRUE )
 logit("waiting for end of job\n");
 currentstate = DONE;
 writedone = (whatami == READWRITE) ? TRUE : FALSE;
-while ( 1 )  {
-switch ( getstatus(1) )  {
+while ( 1 ) {
+switch ( getstatus(1) ) {
 case WRITEPROCESS:
-if ( writedone == FALSE )  {
+if ( writedone == FALSE ) {
 sendsignal(joinsig);
 Write(ttyo, "\004", 1);
 writedone = TRUE;
@@ -331,7 +331,7 @@ sleeptime = 15;
 break;
 case IDLE:
 case ENDOFJOB:
-if ( writedone == TRUE )  {
+if ( writedone == TRUE ) {
 logit("job complete\n");
 return;
 }
@@ -364,14 +364,14 @@ sleeptime = 60;
 }
 cleanup()
 {
-int		w;
+int w;
 while ( sendsignal(SIGKILL) != -1 && (w = wait((int *)0)) != otherpid && w != -1 ) ;
 }
 readblock(fd_in)
-int		fd_in;
+int fd_in;
 {
-static long	blocknum = 1;
-if ( head >= tail )  {
+static long blocknum = 1;
+if ( head >= tail ) {
 if ( (tail = read(fd_in, block, blocksize)) == -1 )
 error(FATAL, "error reading input file");
 if ( quiet == TRUE && tail > 0 )
@@ -382,7 +382,7 @@ return(tail - head);
 }
 writeblock()
 {
-int		count;
+int count;
 if ( (count = write(ttyo, &block[head], tail - head)) == -1 )
 error(FATAL, "error writing to %s", line);
 else if ( count == 0 )
@@ -391,17 +391,17 @@ head += count;
 return(count);
 }
 getstatus(t)
-int		t;
+int t;
 {
-int		gotline = FALSE;
-int		state = nostatus;
-int		mesgch;
-static int	laststate = NOSTATUS;
-if ( canread == TRUE && (gotline = readline()) == TRUE )  {
+int gotline = FALSE;
+int state = nostatus;
+int mesgch;
+static int laststate = NOSTATUS;
+if ( canread == TRUE && (gotline = readline()) == TRUE ) {
 state = parsemesg();
 if ( state != laststate || state == UNKNOWN || mesgptr != mesg || debug == ON )
 logit("%s", mesg);
-if ( tostdout == TRUE && currentstate != START )  {
+if ( tostdout == TRUE && currentstate != START ) {
 mesgch = *mesgptr;
 *mesgptr = '\0';
 fprintf(stdout, "%s", mesg);
@@ -411,7 +411,7 @@ fflush(stdout);
 return(laststate = state);
 }
 if ( (quiet == FALSE || currentstate != SEND) &&
-(tostdout == FALSE || currentstate == START) && interactive == FALSE )  {
+(tostdout == FALSE || currentstate == START) && interactive == FALSE ) {
 if ( Write(ttyo, "\024", 1) != 1 )
 error(FATAL, "printer appears to be offline");
 if ( t > 0 ) Rest(t);
@@ -420,19 +420,19 @@ return(nostatus);
 }
 parsemesg()
 {
-char	*e;
-char	*key, *val;
-char	*p;
-int		i;
-if ( *(mesgptr = find("%%[ ", mesg)) != '\0' && *(e = find(" ]%%", mesgptr+4)) != '\0' )  {
+char *e;
+char *key, *val;
+char *p;
+int i;
+if ( *(mesgptr = find("%%[ ", mesg)) != '\0' && *(e = find(" ]%%", mesgptr+4)) != '\0' ) {
 strcpy(sbuf, mesgptr+4);
 sbuf[e-mesgptr-4] = '\0';
-for ( key = strtok(sbuf, " :"); key != NULL; key = strtok(NULL, " :") )  {
+for ( key = strtok(sbuf, " :"); key != NULL; key = strtok(NULL, " :") ) {
 if ( (val = strtok(NULL, ";")) != NULL && strcmp(key, "status") == 0 )
 key = val;
 for ( ; *key == ' '; key++ ) ;
 for ( p = key; *p; p++ )
-if ( *p == ':' )  {
+if ( *p == ':' ) {
 *p = '\0';
 break;
 } else if ( isupper(*p) ) *p = tolower(*p);
@@ -445,11 +445,11 @@ return(DISCONNECT);
 return(mesgptr == '\0' ? nostatus : UNKNOWN);
 }
 char *find(str1, str2)
-char	*str1;
-char	*str2;
+char *str1;
+char *str2;
 {
-char	*s1, *s2;
-for ( ; *str2 != '\0'; str2++ )  {
+char *s1, *s2;
+for ( ; *str2 != '\0'; str2++ ) {
 for ( s1 = str1, s2 = str2; *s1 != '\0' && *s1 == *s2; s1++, s2++ ) ;
 if ( *s1 == '\0' )
 break;
@@ -462,17 +462,17 @@ if ( whatami == READWRITE )
 while ( readline() != FALSE ) ;
 }
 sendsignal(sig)
-int		sig;
+int sig;
 {
 if ( whatami != READWRITE && otherpid > 1 )
 return(kill(otherpid, sig));
 return(-1);
 }
 void interrupt(sig)
-int		sig;
+int sig;
 {
 signal(sig, SIG_IGN);
-if ( sig != joinsig )  {
+if ( sig != joinsig ) {
 x_stat |= FATAL;
 if ( canread == TRUE )
 if ( interactive == FALSE )
@@ -484,22 +484,22 @@ writedone = TRUE;
 signal(joinsig, interrupt);
 }
 logit(mesg, a1, a2, a3)
-char	*mesg;
-unsigned	a1, a2, a3;
+char *mesg;
+unsigned a1, a2, a3;
 {
-if ( mesg != NULL && fp_log != NULL )  {
+if ( mesg != NULL && fp_log != NULL ) {
 fprintf(fp_log, mesg, a1, a2, a3);
 fflush(fp_log);
 }
 }
 error(kind, mesg, a1, a2, a3)
-int		kind;
-char	*mesg;
-unsigned	a1, a2, a3;
+int kind;
+char *mesg;
+unsigned a1, a2, a3;
 {
-FILE	*fp_err;
+FILE *fp_err;
 fp_err = (fp_log != NULL) ? fp_log : stderr;
-if ( mesg != NULL && *mesg != '\0' )  {
+if ( mesg != NULL && *mesg != '\0' ) {
 fprintf(fp_err, "%s: ", prog_name);
 fprintf(fp_err, mesg, a1, a2, a3);
 putc('\n', fp_err);
@@ -509,9 +509,9 @@ if ( kind != NON_FATAL && ignore == OFF )
 quit(SIGTERM);
 }
 quit(sig)
-int		sig;
+int sig;
 {
-int		w;
+int w;
 signal(sig, SIG_IGN);
 ignore = ON;
 while ( sendsignal(sig) != -1 && (w = wait((int *)0)) != otherpid && w != -1 ) ;
@@ -528,30 +528,30 @@ Rest(2);
 exit(x_stat);
 }
 Rest(t)
-int		t;
+int t;
 {
 if ( t > 0 && canwrite == TRUE )
 sleep(t);
 }
 Read(fd, buf, n)
-int		fd;
-char	*buf;
-int		n;
+int fd;
+char *buf;
+int n;
 {
-int		count;
-if ( canread == TRUE )  {
+int count;
+if ( canread == TRUE ) {
 if ( (count = read(fd, buf, n)) == -1 && errno == EINTR )
 count = 0;
 } else count = 0;
 return(count);
 }
 Write(fd, buf, n)
-int		fd;
-char	*buf;
-int		n;
+int fd;
+char *buf;
+int n;
 {
-int		count;
-if ( canwrite == TRUE )  {
+int count;
+if ( canwrite == TRUE ) {
 if ( (count = write(fd, buf, n)) == -1 && errno == EINTR )
 count = n;
 } else count = n;

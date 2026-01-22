@@ -1,5 +1,5 @@
 #ifndef stream_INCLUDED
-#  define stream_INCLUDED
+# define stream_INCLUDED
 #include "scommon.h"
 #include "srdline.h"
 typedef struct {
@@ -60,7 +60,7 @@ long file_offset;
 long file_limit;
 };
 extern_st(st_stream);
-#define public_st_stream()	\
+#define public_st_stream() \
 gs_public_st_composite_final(st_stream, stream, "stream",\
 stream_enum_ptrs, stream_reloc_ptrs, stream_finalize)
 #define STREAM_NUM_PTRS 6
@@ -138,7 +138,7 @@ int sread_subfile(stream *s, long start, long length);
 int ssetfilename(stream *, const byte *, uint);
 int sfilename(stream *, gs_const_string *);
 void swrite_position_only(stream *);
-void s_std_init(stream *, byte *, uint, const stream_procs *, int  );
+void s_std_init(stream *, byte *, uint, const stream_procs *, int );
 void s_disable(stream *);
 int s_std_null(stream *);
 void s_std_read_reset(stream *), s_std_write_reset(stream *);

@@ -34,13 +34,13 @@ extern int vsnprintf (char *buf, size_t size, const char *fmt, va_list args)
 __attribute__ ((format (printf, 3, 0)));
 extern int printf (const char *fmt, ...)
 __attribute__ ((format (printf, 1, 2)));
-#define printf_once(fmt, ...)			\
-MACRO_BEGIN				\
-static int __once = 0;			\
-if (!__once) {				\
-printf(fmt, ##__VA_ARGS__);	\
-__once = 1;			\
-}					\
+#define printf_once(fmt, ...) \
+MACRO_BEGIN \
+static int __once = 0; \
+if (!__once) { \
+printf(fmt, ##__VA_ARGS__); \
+__once = 1; \
+} \
 MACRO_END
 extern int indent;
 extern void iprintf (const char *fmt, ...);

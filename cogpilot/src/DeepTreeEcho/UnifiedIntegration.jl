@@ -191,7 +191,7 @@ trees = []
 # A000081 sequence: 1, 1, 2, 4, 9, 20, 48, ...
 for order in 1:max_order
 # Generate simplified trees
-for i in 1:min(order^2, 100)  # Limit to prevent explosion
+for i in 1:min(order^2, 100) # Limit to prevent explosion
 push!(trees, collect(1:order))
 end
 end
@@ -253,9 +253,9 @@ Create fallback reservoir when ReservoirComputing.jl is not available.
 """
 function create_fallback_reservoir(size::Int)
 return Dict{String, Any}(
-"W" => randn(size, size) * 0.9 / sqrt(size),  # Reservoir weights
-"W_in" => randn(size, 10),  # Input weights
-"W_out" => randn(10, size),  # Output weights
+"W" => randn(size, size) * 0.9 / sqrt(size), # Reservoir weights
+"W_in" => randn(size, 10), # Input weights
+"W_out" => randn(10, size), # Output weights
 "state" => zeros(size),
 "size" => size
 )
@@ -314,7 +314,7 @@ J = [zeros(n, n) I(n); -I(n) zeros(n, n)]
 else
 # General Poisson structure (skew-symmetric)
 J = randn(dim, dim)
-J = (J - J') / 2  # Ensure skew-symmetry
+J = (J - J') / 2 # Ensure skew-symmetry
 end
 return J
 end
@@ -408,7 +408,7 @@ output = ReservoirComputing.predict(reservoir, input)
 # Pad or truncate to match state size
 dynamics = zeros(length(ψ))
 dynamics[1:min(length(output), length(ψ))] = output[1:min(length(output), length(ψ))]
-return dynamics * 0.1  # Scale factor
+return dynamics * 0.1 # Scale factor
 catch e
 @warn "Reservoir prediction failed: $e"
 return zeros(length(ψ))
@@ -443,7 +443,7 @@ try
 # Evolve P-system and extract dynamics
 PSystems.evolve!(psystem, 1)
 # Convert membrane state to dynamics contribution
-dynamics = randn(length(ψ)) * 0.05  # Placeholder
+dynamics = randn(length(ψ)) * 0.05 # Placeholder
 return dynamics
 catch e
 @warn "P-system evolution failed: $e"

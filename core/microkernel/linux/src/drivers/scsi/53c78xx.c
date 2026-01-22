@@ -30,7 +30,7 @@ OPTION_SYNCHRONOUS)
 #undef u32
 #undef s32
 typedef __signed__ int s32;
-typedef unsigned int  u32;
+typedef unsigned int u32;
 #endif
 #ifdef MODULE
 #include <linux/module.h>
@@ -120,7 +120,7 @@ int min_revision;
 {PCI_DEVICE_ID_NCR_53C825, 825, -1, -1}
 };
 #define NPCI_CHIP_IDS (sizeof (pci_chip_ids) / sizeof(pci_chip_ids[0]))
-#define ROUNDUP(adr,type)	\
+#define ROUNDUP(adr,type) \
 ((void *) (((long) (adr) + sizeof(type) - 1) & ~(sizeof(type) - 1)))
 static struct override {
 int chip;
@@ -187,9 +187,9 @@ overrides[commandline_current].chip = chip;
 printk ("53c7,7x0.c:internal_setup() : too many overrides\n");
 }
 }
-#define setup_wrapper(x) 				\
-void ncr53c##x##_setup (char *str, int *ints) {		\
-internal_setup (BOARD_GENERIC, x, str, ints);	\
+#define setup_wrapper(x) \
+void ncr53c##x##_setup (char *str, int *ints) { \
+internal_setup (BOARD_GENERIC, x, str, ints); \
 }
 setup_wrapper(700)
 setup_wrapper(70066)
@@ -282,7 +282,7 @@ for (i = 0; i < 16; ++i) {
 hostdata->request_sense[i] = 0;
 for (j = 0; j < 8; ++j)
 hostdata->busy[i][j] = 0;
-set_synchronous (host, i,  0, hostdata->saved_scntl3, 0);
+set_synchronous (host, i, 0, hostdata->saved_scntl3, 0);
 }
 hostdata->issue_queue = NULL;
 hostdata->running_list = hostdata->finished_queue =
@@ -427,7 +427,7 @@ default: i = 0;
 printk ("scsi%d : burst length %d\n", host->host_no, i);
 }
 }
-if (hostdata->chip / 100 == 8)  {
+if (hostdata->chip / 100 == 8) {
 expected_ccf = clock_to_ccf (expected_clock);
 hostdata->saved_scntl3 = NCR53c7x0_read8(SCNTL3_REG_800);
 ccf = hostdata->saved_scntl3 & SCNTL3_800_CCF_MASK;
@@ -496,7 +496,7 @@ if ((hostdata->run_tests && hostdata->run_tests(host) == -1) ||
 scsi_unregister (host);
 return -1;
 } else {
-if (host->io_port)  {
+if (host->io_port) {
 host->n_io_port = 128;
 request_region (host->io_port, host->n_io_port, "ncr53c7,8xx");
 }
@@ -763,7 +763,7 @@ pci_chip_ids[i].pci_device_id, pci_index, &pci_bus,
 &pci_device_fn);
 ++pci_index)
 if (!ncr_pci_init (tpnt, BOARD_GENERIC, pci_chip_ids[i].chip,
-pci_bus, pci_device_fn,  0))
+pci_bus, pci_device_fn, 0))
 ++count;
 }
 return count;
@@ -1014,7 +1014,7 @@ printk ("scsi%d : chip not idle, aborting tests\n", host->host_no);
 restore_flags(flags);
 return -1;
 }
-dsa[0] = (0x33 << 24) | (i << 16)  ;
+dsa[0] = (0x33 << 24) | (i << 16) ;
 hostdata->idle = 0;
 hostdata->test_running = 2;
 hostdata->test_completed = -1;
@@ -1257,7 +1257,7 @@ NCR53c7x0_local_declare();
 struct NCR53c7x0_hostdata *hostdata = (struct NCR53c7x0_hostdata *)
 host->hostdata;
 NCR53c7x0_local_setup(host);
-set_synchronous (host, target,  0, hostdata->saved_scntl3,
+set_synchronous (host, target, 0, hostdata->saved_scntl3,
 1);
 printk ("scsi%d : setting target %d to asynchronous SCSI\n",
 host->host_no, target);
@@ -1267,14 +1267,14 @@ int div;
 unsigned char scf;
 unsigned char tp;
 } syncs[] = {
-{	40,	1,	0}, {	50,	1,	1}, {	60,	1,	2},
-{	70,	1,	3}, {	75,	2,	1}, {	80,	1,	4},
-{	90,	1,	5}, {	100,	1,	6}, {	105,	2,	3},
-{	110,	1,	7}, {	120,	2,	4}, {	135,	2,	5},
-{	140,	3,	3}, {	150,	2,	6}, {	160,	3,	4},
-{	165,	2,	7}, {	180,	3,	5}, {	200,	3,	6},
-{	210,	4,	3}, {	220,	3,	7}, {	240,	4,	4},
-{	270,	4,	5}, {	300,	4,	6}, {	330,	4,	7}
+{ 40, 1, 0}, { 50, 1, 1}, { 60, 1, 2},
+{ 70, 1, 3}, { 75, 2, 1}, { 80, 1, 4},
+{ 90, 1, 5}, { 100, 1, 6}, { 105, 2, 3},
+{ 110, 1, 7}, { 120, 2, 4}, { 135, 2, 5},
+{ 140, 3, 3}, { 150, 2, 6}, { 160, 3, 4},
+{ 165, 2, 7}, { 180, 3, 5}, { 200, 3, 6},
+{ 210, 4, 3}, { 220, 3, 7}, { 240, 4, 4},
+{ 270, 4, 5}, { 300, 4, 6}, { 330, 4, 7}
 };
 static void
 synchronous (struct Scsi_Host *host, int target, char *msg) {
@@ -1379,7 +1379,7 @@ sizeof(u32);
 hostdata->dsp_changed = 1;
 return SPECIFIC_INT_NOTHING;
 } else {
-if (hostdata->options & OPTION_SYNCHRONOUS)  {
+if (hostdata->options & OPTION_SYNCHRONOUS) {
 cmd->flags |= CMD_FLAG_DID_SDTR;
 synchronous (host, c->target, (unsigned char *)
 hostdata->msg_buf);
@@ -2328,7 +2328,7 @@ restore_flags (flags);
 return;
 }
 for (i = host->can_queue, current = hostdata->schedule;
-i > 0  && current[0] != hostdata->NOP_insn;
+i > 0 && current[0] != hostdata->NOP_insn;
 --i, current += 2 );
 if (i > 0) {
 ++hostdata->busy[tmp->target][tmp->lun];
@@ -2341,7 +2341,7 @@ virt_to_bus ((void *) cmd->dsa) + hostdata->E_dsa_code_begin -
 hostdata->E_dsa_code_template;
 current[0] = ((DCMD_TYPE_TCI|DCMD_TCI_OP_JUMP) << 24) |
 DBC_TCI_TRUE;
-}  else {
+} else {
 printk ("scsi%d: no free slot\n", host->host_no);
 disable(host);
 tmp->result = (DID_ERROR << 16);
@@ -2354,7 +2354,7 @@ return;
 if (hostdata->idle) {
 hostdata->idle = 0;
 hostdata->state = STATE_RUNNING;
-NCR53c7x0_write32 (DSP_REG,  virt_to_bus ((void *)hostdata->schedule));
+NCR53c7x0_write32 (DSP_REG, virt_to_bus ((void *)hostdata->schedule));
 } else {
 NCR53c7x0_write8(hostdata->istat, ISTAT_10_SIGP);
 }
@@ -2632,10 +2632,10 @@ tmp->scsi_done(tmp);
 goto restart;
 }
 restore_flags(flags);
-if (!search_found && !have_intfly)  {
+if (!search_found && !have_intfly) {
 printk ("scsi%d : WARNING : INTFLY with no completed commands.\n",
 host->host_no);
-} else if (!have_intfly)  {
+} else if (!have_intfly) {
 have_intfly = 1;
 run_process_issue_queue();
 }
@@ -2714,7 +2714,7 @@ bus_to_virt(NCR53c7x0_read32(DSP_REG));
 }
 #if 0
 printk("scsi%d : new dsp is 0x%lx (virt 0x%p)\n",
-host->host_no,  virt_to_bus(hostdata->dsp), hostdata->dsp);
+host->host_no, virt_to_bus(hostdata->dsp), hostdata->dsp);
 #endif
 hostdata->state = STATE_RUNNING;
 NCR53c7x0_write32 (DSP_REG, virt_to_bus(hostdata->dsp));
@@ -2746,9 +2746,9 @@ sstat = (NCR53c8x0_read8 ((chip / 100) == 8 ? SSTAT1_REG : SSTAT2_REG);
 offset = OFFSET (sstat & SSTAT2_FF_MASK) >> SSTAT2_FF_SHIFT;
 phase = sstat & SSTAT2_PHASE_MASK;
 script = hostdata->abort_script = kmalloc (
-8   * (
-1  +
-(!offset ? 1 : offset)  +
+8 * (
+1 +
+(!offset ? 1 : offset) +
 1 ),
 GFP_ATOMIC);
 #else
@@ -2777,7 +2777,7 @@ if (NCR53c7x0_read8 ((hostdata->chip / 100) == 8 ?
 SSTAT0_REG : SSTAT1_REG) & SSTAT1_ILF)
 ++count;
 } else {
-sstat = ((hostdata->chip / 100) == 8) ?  NCR53c7x0_read8 (SSTAT0_REG) :
+sstat = ((hostdata->chip / 100) == 8) ? NCR53c7x0_read8 (SSTAT0_REG) :
 NCR53c7x0_read8 (SSTAT1_REG);
 if (sstat & SSTAT1_OLF)
 ++count;
@@ -3147,7 +3147,7 @@ sprintf(buf, "%s0x%lx (virt 0x%p) : 0x%08x 0x%08x (virt 0x%p)",
 (prefix ? prefix : ""), virt_to_bus((void *) insn), insn,
 insn[0], insn[1], bus_to_virt (insn[1]));
 tmp = buf + strlen(buf);
-if ((dcmd & DCMD_TYPE_MASK) == DCMD_TYPE_MMI)  {
+if ((dcmd & DCMD_TYPE_MASK) == DCMD_TYPE_MMI) {
 sprintf (tmp, " 0x%08x (virt 0x%p)\n", insn[2],
 bus_to_virt(insn[2]));
 size = 3;
@@ -3216,7 +3216,7 @@ cache_pid = cmd->pid;
 #endif
 for (me = (Scsi_Cmnd *) hostdata->issue_queue,
 last = (Scsi_Cmnd **) &(hostdata->issue_queue);
-me && me != cmd;  last = (Scsi_Cmnd **)&(me->SCp.ptr),
+me && me != cmd; last = (Scsi_Cmnd **)&(me->SCp.ptr),
 me = (Scsi_Cmnd *)me->SCp.ptr);
 if (me) {
 *last = (Scsi_Cmnd *) me->SCp.ptr;
@@ -3294,7 +3294,7 @@ print_lots (host);
 dump_events (host, 30);
 ncr_scsi_reset (host);
 for (tmp = nuke_list = return_outstanding_commands (host, 1 ,
-0  ); tmp; tmp = (Scsi_Cmnd *) tmp->SCp.buffer)
+0 ); tmp; tmp = (Scsi_Cmnd *) tmp->SCp.buffer)
 if (tmp == cmd) {
 found = 1;
 break;
@@ -3423,7 +3423,7 @@ return;
 printk("%sscsi%d : dsa at phys 0x%lx (virt 0x%p)\n"
 "        + %d : dsa_msgout length = %u, data = 0x%x (virt 0x%p)\n" ,
 prefix ? prefix : "",
-host->host_no,  virt_to_bus (dsa), dsa, hostdata->dsa_msgout,
+host->host_no, virt_to_bus (dsa), dsa, hostdata->dsa_msgout,
 dsa[hostdata->dsa_msgout / sizeof(u32)],
 dsa[hostdata->dsa_msgout / sizeof(u32) + 1],
 bus_to_virt (dsa[hostdata->dsa_msgout / sizeof(u32) + 1]));
@@ -3570,7 +3570,7 @@ printk ("scsi%d : DSP 0x%lx (virt 0x%p) ->\n", host->host_no,
 virt_to_bus(dsp), dsp);
 for (i = 6; i > 0; --i, dsp += size)
 size = print_insn (host, dsp, "", 1);
-if (NCR53c7x0_read8 (SCNTL1_REG) & SCNTL1_CON)  {
+if (NCR53c7x0_read8 (SCNTL1_REG) & SCNTL1_CON) {
 printk ("scsi%d : connected (SDID=0x%x, SSID=0x%x)\n",
 host->host_no, NCR53c7x0_read8 (SDID_REG_800),
 NCR53c7x0_read8 (SSID_REG_800));
@@ -3641,7 +3641,7 @@ int i;
 u32 *current;
 Scsi_Cmnd *list = NULL, *tmp;
 for (c = (struct NCR53c7x0_cmd *) hostdata->running_list; c;
-c = (struct NCR53c7x0_cmd *) c->next)  {
+c = (struct NCR53c7x0_cmd *) c->next) {
 if (c->cmd->SCp.buffer) {
 printk ("scsi%d : loop detected in running list!\n", host->host_no);
 break;
@@ -3758,18 +3758,18 @@ return 0;
 static const char *
 event_name (int event) {
 switch (event) {
-case EVENT_NONE:		return "none";
-case EVENT_ISSUE_QUEUE:	return "to issue queue";
-case EVENT_START_QUEUE:	return "to start queue";
-case EVENT_SELECT:		return "selected";
-case EVENT_DISCONNECT:	return "disconnected";
-case EVENT_RESELECT:	return "reselected";
-case EVENT_COMPLETE:	return "completed";
-case EVENT_IDLE:		return "idle";
-case EVENT_SELECT_FAILED:	return "select failed";
-case EVENT_BEFORE_SELECT:	return "before select";
-case EVENT_RESELECT_FAILED:	return "reselect failed";
-default:			return "unknown";
+case EVENT_NONE: return "none";
+case EVENT_ISSUE_QUEUE: return "to issue queue";
+case EVENT_START_QUEUE: return "to start queue";
+case EVENT_SELECT: return "selected";
+case EVENT_DISCONNECT: return "disconnected";
+case EVENT_RESELECT: return "reselected";
+case EVENT_COMPLETE: return "completed";
+case EVENT_IDLE: return "idle";
+case EVENT_SELECT_FAILED: return "select failed";
+case EVENT_BEFORE_SELECT: return "before select";
+case EVENT_RESELECT_FAILED: return "reselect failed";
+default: return "unknown";
 }
 }
 static void

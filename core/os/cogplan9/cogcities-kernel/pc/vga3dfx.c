@@ -5,23 +5,23 @@
 #include "fns.h"
 #include "io.h"
 #include "../port/error.h"
-#define	Image	IMAGE
+#define Image IMAGE
 #include <draw.h>
 #include <memdraw.h>
 #include <cursor.h>
 #include "screen.h"
 typedef struct Cursor3dfx Cursor3dfx;
 struct Cursor3dfx {
-int	vidProcCfg;
-int	hwCurPatAddr;
-int	hwCurLoc;
-int	hwCurC0;
-int	hwCurC1;
+int vidProcCfg;
+int hwCurPatAddr;
+int hwCurLoc;
+int hwCurC0;
+int hwCurC1;
 };
 enum {
-dramInit0	= 0x18,
-dramInit1	= 0x1C,
-hwCur		= 0x5C,
+dramInit0 = 0x18,
+dramInit1 = 0x1C,
+hwCur = 0x5C,
 };
 static void
 tdfxenable(VGAscr* scr)

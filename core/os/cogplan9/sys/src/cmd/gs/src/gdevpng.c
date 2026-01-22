@@ -204,12 +204,12 @@ case 32:
 info_ptr->bit_depth = 8;
 info_ptr->color_type = PNG_COLOR_TYPE_RGB_ALPHA;
 png_set_invert_alpha(png_ptr);
-{   gx_device_pngalpha *ppdev = (gx_device_pngalpha *)pdev;
+{ gx_device_pngalpha *ppdev = (gx_device_pngalpha *)pdev;
 png_color_16 background;
 background.index = 0;
-background.red =   (ppdev->background >> 16) & 0xff;
-background.green = (ppdev->background >> 8)  & 0xff;
-background.blue =  (ppdev->background)       & 0xff;
+background.red = (ppdev->background >> 16) & 0xff;
+background.green = (ppdev->background >> 8) & 0xff;
+background.blue = (ppdev->background) & 0xff;
 background.gray = 0;
 png_set_bKGD(png_ptr, info_ptr, &background);
 }
@@ -287,11 +287,11 @@ gs_free_object(mem, row, "png raster buffer");
 return code;
 }
 #ifdef PNG_PROGRESSIVE_READ_SUPPORTED
-#  if PNG_LIBPNG_VER >= 95
-#    define PPFB_LENGTH_T png_size_t
-#  else
-#    define PPFB_LENGTH_T png_uint_32
-#  endif
+# if PNG_LIBPNG_VER >= 95
+# define PPFB_LENGTH_T png_size_t
+# else
+# define PPFB_LENGTH_T png_uint_32
+# endif
 void
 png_push_fill_buffer(png_structp png_ptr, png_bytep buffer,
 PPFB_LENGTH_T length)
@@ -375,7 +375,7 @@ gx_color_value prgb[3])
 {
 prgb[0] = gx_color_value_from_byte((color >> 24) & 0xff);
 prgb[1] = gx_color_value_from_byte((color >> 16) & 0xff);
-prgb[2] = gx_color_value_from_byte((color >> 8)  & 0xff);
+prgb[2] = gx_color_value_from_byte((color >> 8) & 0xff);
 return 0;
 }
 private int

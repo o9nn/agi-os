@@ -14,43 +14,43 @@ extern int getopt(int, char **, const char *);
 #endif
 #include "antiword.h"
 #if defined(__riscos)
-#define PARAGRAPH_BREAK		"set paragraph_break=%d"
-#define AUTOFILETYPE		"set autofiletype_allowed=%d"
-#define USE_OUTLINEFONTS	"set use_outlinefonts=%d"
-#define SHOW_IMAGES		"set show_images=%d"
-#define HIDE_HIDDEN_TEXT	"set hide_hidden_text=%d"
-#define SCALE_FACTOR_START	"set scale_factor_start=%d"
+#define PARAGRAPH_BREAK "set paragraph_break=%d"
+#define AUTOFILETYPE "set autofiletype_allowed=%d"
+#define USE_OUTLINEFONTS "set use_outlinefonts=%d"
+#define SHOW_IMAGES "set show_images=%d"
+#define HIDE_HIDDEN_TEXT "set hide_hidden_text=%d"
+#define SCALE_FACTOR_START "set scale_factor_start=%d"
 #else
-#define LEAFNAME_SIZE		(32+1)
+#define LEAFNAME_SIZE (32+1)
 #endif
-static options_type	tOptionsCurr;
+static options_type tOptionsCurr;
 #if defined(__riscos)
-static options_type	tOptionsTemp;
+static options_type tOptionsTemp;
 #else
 typedef struct papersize_tag {
-char	szName[16];
-USHORT	usWidth;
-USHORT	usHeight;
+char szName[16];
+USHORT usWidth;
+USHORT usHeight;
 } papersize_type;
 static const papersize_type atPaperSizes[] = {
-{	"10x14",	 720,	1008	},
-{	"a3",		 842,	1191	},
-{	"a4",		 595,	 842	},
-{	"a5",		 420,	 595	},
-{	"b4",		 729,	1032	},
-{	"b5",		 516,	 729	},
-{	"executive",	 540,	 720	},
-{	"folio",	 612,	 936	},
-{	"legal",	 612,	1008	},
-{	"letter",	 612,	 792	},
-{	"note",		 540,	 720	},
-{	"quarto",	 610,	 780	},
-{	"statement",	 396,	 612	},
-{	"tabloid",	 792,	1224	},
-{	"",		   0,	   0	},
+{ "10x14", 720, 1008 },
+{ "a3", 842, 1191 },
+{ "a4", 595, 842 },
+{ "a5", 420, 595 },
+{ "b4", 729, 1032 },
+{ "b5", 516, 729 },
+{ "executive", 540, 720 },
+{ "folio", 612, 936 },
+{ "legal", 612, 1008 },
+{ "letter", 612, 792 },
+{ "note", 540, 720 },
+{ "quarto", 610, 780 },
+{ "statement", 396, 612 },
+{ "tabloid", 792, 1224 },
+{ "", 0, 0 },
 };
 #endif
-static const options_type	tOptionsDefault = {
+static const options_type tOptionsDefault = {
 DEFAULT_SCREEN_WIDTH,
 #if defined(__riscos)
 conversion_draw,
@@ -73,11 +73,11 @@ DEFAULT_SCALE_FACTOR,
 static BOOL
 bCorrectPapersize(const char *szName, conversion_type eConversionType)
 {
-const papersize_type	*pPaperSize;
+const papersize_type *pPaperSize;
 for (pPaperSize = atPaperSizes;
 pPaperSize->szName[0] != '\0';
 pPaperSize++) {
-if (!STRCEQ(pPaperSize->szName,  szName)) {
+if (!STRCEQ(pPaperSize->szName, szName)) {
 continue;
 }
 DBG_DEC(pPaperSize->usWidth);
@@ -92,7 +92,7 @@ return FALSE;
 static const char *
 szCreateSuffix(const char *szLeafname)
 {
-const char	*pcDot;
+const char *pcDot;
 pcDot = strrchr(szLeafname, '.');
 if (pcDot != NULL && STRCEQ(pcDot, ".txt")) {
 return "";
@@ -102,7 +102,7 @@ return ".txt";
 static encoding_type
 eMappingFile2Encoding(const char *szLeafname)
 {
-char	szMappingFile[LEAFNAME_SIZE+4];
+char szMappingFile[LEAFNAME_SIZE+4];
 fail(szLeafname == NULL);
 if (strlen(szLeafname) + 4 >= sizeof(szMappingFile)) {
 DBG_MSG(szLeafname);
@@ -132,10 +132,10 @@ static FILE *
 pOpenCharacterMappingFile(const char *szLeafname)
 {
 #if !defined(__riscos)
-FILE	*pFile;
-const char	*szHome, *szAntiword, *szSuffix;
-size_t	tFilenameLen;
-char	szMappingFile[PATH_MAX+1];
+FILE *pFile;
+const char *szHome, *szAntiword, *szSuffix;
+size_t tFilenameLen;
+char szMappingFile[PATH_MAX+1];
 #endif
 if (szLeafname == NULL || szLeafname[0] == '\0') {
 return NULL;
@@ -209,20 +209,20 @@ int
 iReadOptions(int argc, char **argv)
 {
 #if defined(__riscos)
-FILE	*pFile;
-const char	*szAlphabet;
-int	iAlphabet;
-char	szLine[81];
+FILE *pFile;
+const char *szAlphabet;
+int iAlphabet;
+char szLine[81];
 #else
-extern	char	*optarg;
-extern int	optind;
-char	*pcChar, *szTmp;
-int	iChar;
-char	szLeafname[LEAFNAME_SIZE];
+extern char *optarg;
+extern int optind;
+char *pcChar, *szTmp;
+int iChar;
+char szLeafname[LEAFNAME_SIZE];
 #endif
-FILE	*pCharacterMappingFile;
-int	iTmp;
-BOOL	bSuccess;
+FILE *pCharacterMappingFile;
+int iTmp;
+BOOL bSuccess;
 DBG_MSG("iReadOptions");
 tOptionsCurr = tOptionsDefault;
 #if defined(__riscos)
@@ -454,8 +454,8 @@ fail(pOptions == NULL);
 static void
 vWriteOptions(void)
 {
-FILE	*pFile;
-char	*szOptionsFile;
+FILE *pFile;
+char *szOptionsFile;
 TRACE_MSG("vWriteOptions");
 szOptionsFile = getenv("AntiWord$ChoicesSave");
 if (szOptionsFile == NULL) {
@@ -579,7 +579,7 @@ tOptionsTemp.iParagraphBreak);
 static void
 vChangeParagraphBreak(window_handle tWindow, int iNumber)
 {
-int	iTmp;
+int iTmp;
 iTmp = tOptionsTemp.iParagraphBreak + iNumber;
 if (iTmp < MIN_SCREEN_WIDTH || iTmp > MAX_SCREEN_WIDTH) {
 return;
@@ -626,7 +626,7 @@ tOptionsTemp.iScaleFactor);
 static void
 vChangeScaleFactor(window_handle tWindow, int iNumber)
 {
-int	iTmp;
+int iTmp;
 iTmp = tOptionsTemp.iScaleFactor + iNumber;
 if (iTmp < MIN_SCALE_FACTOR || iTmp > MAX_SCALE_FACTOR) {
 return;
@@ -639,9 +639,9 @@ tOptionsTemp.iScaleFactor);
 BOOL
 bChoicesMouseClick(event_pollblock *pEvent, void *pvReference)
 {
-icon_handle	tAction;
-mouse_block	*pMouse;
-BOOL		bCloseWindow;
+icon_handle tAction;
+mouse_block *pMouse;
+BOOL bCloseWindow;
 TRACE_MSG("bChoicesMouseClick");
 fail(pEvent == NULL);
 fail(pEvent->type != event_CLICK);
@@ -729,10 +729,10 @@ return TRUE;
 BOOL
 bChoicesKeyPressed(event_pollblock *pEvent, void *pvReference)
 {
-icon_block	tIcon;
-caret_block	*pCaret;
-char		*pcChar;
-int		iNumber;
+icon_block tIcon;
+caret_block *pCaret;
+char *pcChar;
+int iNumber;
 DBG_MSG("bChoicesKeyPressed");
 fail(pEvent == NULL);
 fail(pEvent->type != event_KEY);

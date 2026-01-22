@@ -2,12 +2,12 @@
 # define HEADER_ECDH_H
 # include <openssl/opensslconf.h>
 # ifdef OPENSSL_NO_ECDH
-#  error ECDH is disabled.
+# error ECDH is disabled.
 # endif
 # include <openssl/ec.h>
 # include <openssl/ossl_typ.h>
 # ifndef OPENSSL_NO_DEPRECATED
-#  include <openssl/bn.h>
+# include <openssl/bn.h>
 # endif
 #ifdef __cplusplus
 extern "C" {
@@ -25,14 +25,14 @@ CRYPTO_EX_free *free_func);
 int ECDH_set_ex_data(EC_KEY *d, int idx, void *arg);
 void *ECDH_get_ex_data(EC_KEY *d, int idx);
 void ERR_load_ECDH_strings(void);
-# define ECDH_F_ECDH_CHECK                                102
-# define ECDH_F_ECDH_COMPUTE_KEY                          100
-# define ECDH_F_ECDH_DATA_NEW_METHOD                      101
-# define ECDH_R_KDF_FAILED                                102
-# define ECDH_R_NON_FIPS_METHOD                           103
-# define ECDH_R_NO_PRIVATE_VALUE                          100
-# define ECDH_R_POINT_ARITHMETIC_FAILURE                  101
-#ifdef  __cplusplus
+# define ECDH_F_ECDH_CHECK 102
+# define ECDH_F_ECDH_COMPUTE_KEY 100
+# define ECDH_F_ECDH_DATA_NEW_METHOD 101
+# define ECDH_R_KDF_FAILED 102
+# define ECDH_R_NON_FIPS_METHOD 103
+# define ECDH_R_NO_PRIVATE_VALUE 100
+# define ECDH_R_POINT_ARITHMETIC_FAILURE 101
+#ifdef __cplusplus
 }
 #endif
 #endif

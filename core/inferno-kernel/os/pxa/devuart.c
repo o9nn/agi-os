@@ -1,110 +1,110 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"../port/error.h"
-#include	"../port/netif.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "../port/error.h"
+#include "../port/netif.h"
 enum
 {
-Data=	0,
-Iena=	1,
-Ircv=	(1<<0),
-Ixmt=	(1<<1),
+Data= 0,
+Iena= 1,
+Ircv= (1<<0),
+Ixmt= (1<<1),
 Irstat=(1<<2),
 Imstat=(1<<3),
-Rtoie=	1<<4,
-Nrze=	1<<5,
-Uue=	1<<6,
-Dmae=	1<<7,
-Istat=	2,
-Ipend=	1,
+Rtoie= 1<<4,
+Nrze= 1<<5,
+Uue= 1<<6,
+Dmae= 1<<7,
+Istat= 2,
+Ipend= 1,
 Fenabd=(3<<6),
 Fifoctl=2,
-Fena=	(1<<0),
-Fdma=	(1<<3),
-Ftrig=	(1<<6),
+Fena= (1<<0),
+Fdma= (1<<3),
+Ftrig= (1<<6),
 Fclear=(3<<1),
-Format=	3,
-Bits8=	(3<<0),
-Stop2=	(1<<2),
-Pena=	(1<<3),
-Peven=	(1<<4),
+Format= 3,
+Bits8= (3<<0),
+Stop2= (1<<2),
+Pena= (1<<3),
+Peven= (1<<4),
 Pforce=(1<<5),
-Break=	(1<<6),
-Dra=	(1<<7),
-Mctl=	4,
-Dtr=	(1<<0),
-Rts=	(1<<1),
-Ri=	(1<<2),
-Inton=	(1<<3),
-Loop=	(1<<4),
-Lstat=	5,
+Break= (1<<6),
+Dra= (1<<7),
+Mctl= 4,
+Dtr= (1<<0),
+Rts= (1<<1),
+Ri= (1<<2),
+Inton= (1<<3),
+Loop= (1<<4),
+Lstat= 5,
 Inready=(1<<0),
 Oerror=(1<<1),
 Perror=(1<<2),
 Ferror=(1<<3),
 Berror=(1<<4),
 Outready=(1<<5),
-Mstat=	6,
-Ctsc=	(1<<0),
-Dsrc=	(1<<1),
-Rire=	(1<<2),
-Dcdc=	(1<<3),
-Cts=	(1<<4),
-Dsr=	(1<<5),
-Ringl=	(1<<6),
-Dcd=	(1<<7),
+Mstat= 6,
+Ctsc= (1<<0),
+Dsrc= (1<<1),
+Rire= (1<<2),
+Dcdc= (1<<3),
+Cts= (1<<4),
+Dsr= (1<<5),
+Ringl= (1<<6),
+Dcd= (1<<7),
 Scratch=7,
-Dlsb=	0,
-Dmsb=	1,
+Dlsb= 0,
+Dmsb= 1,
 CTLS= 023,
 CTLQ= 021,
 Stagesize= 1024,
-Nuart=	4,
+Nuart= 4,
 };
 typedef struct Uart Uart;
 struct Uart
 {
 QLock;
-int	opens;
-int	enabled;
-Uart	*elist;
-char	name[KNAMELEN];
-ulong	sticky[8];
-void*	regs;
-ulong	port;
-ulong	freq;
-uchar	mask;
-int	dev;
-int	baud;
-uchar	istat;
-int	frame;
-int	overrun;
-int	(*putc)(Queue*, int);
-Queue	*iq;
-Queue	*oq;
-Lock	flock;
-uchar	fifoon;
-uchar	nofifo;
-Lock	rlock;
-uchar	istage[Stagesize];
-uchar	*ip;
-uchar	*ie;
-int	haveinput;
-Lock	tlock;
-uchar	ostage[Stagesize];
-uchar	*op;
-uchar	*oe;
-int	modem;
-int	xonoff;
-int	blocked;
-int	cts, dsr, dcd;
-int	ctsbackoff;
-int	hup_dsr, hup_dcd;
-int	dohup;
-Rendez	r;
+int opens;
+int enabled;
+Uart *elist;
+char name[KNAMELEN];
+ulong sticky[8];
+void* regs;
+ulong port;
+ulong freq;
+uchar mask;
+int dev;
+int baud;
+uchar istat;
+int frame;
+int overrun;
+int (*putc)(Queue*, int);
+Queue *iq;
+Queue *oq;
+Lock flock;
+uchar fifoon;
+uchar nofifo;
+Lock rlock;
+uchar istage[Stagesize];
+uchar *ip;
+uchar *ie;
+int haveinput;
+Lock tlock;
+uchar ostage[Stagesize];
+uchar *op;
+uchar *oe;
+int modem;
+int xonoff;
+int blocked;
+int cts, dsr, dcd;
+int ctsbackoff;
+int hup_dsr, hup_dcd;
+int dohup;
+Rendez r;
 };
 static Uart *uart[Nuart];
 static int nuart;
@@ -636,11 +636,11 @@ p->hup_dsr,
 p->dev,
 p->frame,
 p->overrun,
-uartrdreg(p, Istat) & Fenabd       ? " fifo" : "",
-(mstat & Cts)    ? " cts"  : "",
-(mstat & Dsr)    ? " dsr"  : "",
-(mstat & Dcd)    ? " dcd"  : "",
-(mstat & Ringl)   ? " ring" : ""
+uartrdreg(p, Istat) & Fenabd ? " fifo" : "",
+(mstat & Cts) ? " cts" : "",
+(mstat & Dsr) ? " dsr" : "",
+(mstat & Dcd) ? " dcd" : "",
+(mstat & Ringl) ? " ring" : ""
 );
 return readstr(offset, buf, n, str);
 }

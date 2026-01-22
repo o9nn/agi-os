@@ -11,9 +11,9 @@
 (cog-value c (second (cog-keys c)))
 (cog-value c (third (cog-keys c)))
 (for-each
-	(lambda (key)
-		(format #t "Key ~A   has value ~A\n" key (cog-value c key)))
-	(cog-keys c))
+(lambda (key)
+(format #t "Key ~A   has value ~A\n" key (cog-value c key)))
+(cog-keys c))
 (fetch-incoming-set c)
 (cog-incoming-set c)
 (define ll (first (cog-incoming-set c)))

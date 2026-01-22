@@ -1,7 +1,7 @@
 #!/dis/sh
 if{! ~ $
-	echo usage rexecsrv net!addr decls >[1=2]
-	raise usage
+echo usage rexecsrv net!addr decls >[1=2]
+raise usage
 }
 (addr decls) := $*
 /appl/alphabet/mkendpoint.sh $addr!2222

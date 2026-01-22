@@ -36,11 +36,11 @@ cd ../..
 cnt=0;
 for fpath in $FILES
 do
-	f=${fpath
-	mv "${fpath}" "enwiki-20101011/${fpath}"
-	let cnt=cnt+1
-	if [ $cnt -gt 40000 ];
-	then
-		break
-	fi
+f=${fpath
+mv "${fpath}" "enwiki-20101011/${fpath}"
+let cnt=cnt+1
+if [ $cnt -gt 40000 ];
+then
+break
+fi
 done

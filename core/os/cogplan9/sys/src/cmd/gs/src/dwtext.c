@@ -6,10 +6,10 @@
 #include <shellapi.h>
 #include "dwtext.h"
 #ifndef min
-#  define min(a, b) (((a) < (b)) ? (a) : (b))
+# define min(a, b) (((a) < (b)) ? (a) : (b))
 #endif
 #ifndef max
-#  define max(a, b) (((a) > (b)) ? (a) : (b))
+# define max(a, b) (((a) > (b)) ? (a) : (b))
 #endif
 #ifndef EOF
 #define EOF (-1)
@@ -66,7 +66,7 @@ text_new_line(TW *tw)
 tw->CursorPos.x = 0;
 tw->CursorPos.y++;
 if (tw->CursorPos.y >= tw->ScreenSize.y) {
-int i =  tw->ScreenSize.x * (tw->ScreenSize.y - 1);
+int i = tw->ScreenSize.x * (tw->ScreenSize.y - 1);
 memmove(tw->ScreenBuffer, tw->ScreenBuffer+tw->ScreenSize.x, i);
 memset(tw->ScreenBuffer + i, ' ', tw->ScreenSize.x);
 tw->CursorPos.y--;
@@ -96,8 +96,8 @@ text_new_line(tw);
 void
 text_size(TW *tw, int width, int height)
 {
-tw->ScreenSize.x =  max(width, TextWinMinSize.x);
-tw->ScreenSize.y =  max(height, TextWinMinSize.y);
+tw->ScreenSize.x = max(width, TextWinMinSize.x);
+tw->ScreenSize.y = max(height, TextWinMinSize.y);
 }
 void
 text_font(TW *tw, const char *name, int size)
@@ -792,7 +792,7 @@ source.x = (rect.left + tw->ScrollPos.x) / tw->CharSize.x;
 source.y = (rect.top + tw->ScrollPos.y) / tw->CharSize.y;
 dest.x = source.x * tw->CharSize.x - tw->ScrollPos.x;
 dest.y = source.y * tw->CharSize.y - tw->ScrollPos.y;
-width.x = ((rect.right  + tw->ScrollPos.x + tw->CharSize.x - 1) / tw->CharSize.x) - source.x;
+width.x = ((rect.right + tw->ScrollPos.x + tw->CharSize.x - 1) / tw->CharSize.x) - source.x;
 width.y = ((rect.bottom + tw->ScrollPos.y + tw->CharSize.y - 1) / tw->CharSize.y) - source.y;
 if (source.x < 0)
 source.x = 0;

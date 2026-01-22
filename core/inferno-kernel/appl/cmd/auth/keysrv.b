@@ -2,7 +2,7 @@ implement Keysrv;
 #
 # remote access to keys (currently only to change secret)
 #
-# Copyright © 2003 Vita Nuova Holdings Limited.  All rights reserved.
+# Copyright © 2003 Vita Nuova Holdings Limited. All rights reserved.
 #
 include "sys.m";
 sys: Sys;
@@ -15,7 +15,7 @@ include "arg.m";
 keydb := "/mnt/keys";
 Keysrv: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 usage()
 {
@@ -88,7 +88,7 @@ worker(file: ref Sys->FileIO, user: string, exitc: chan of int)
 (keydir, secret, err) := getuser(user);
 if(keydir == nil || secret == nil){
 if(err == nil)
-err = "no existing secret";		# can't change it remotely until set
+err = "no existing secret"; # can't change it remotely until set
 }
 (nil, hash) := hashkey(secret);
 for(;;)alt{

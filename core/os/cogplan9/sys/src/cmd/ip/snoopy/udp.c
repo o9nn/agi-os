@@ -3,17 +3,17 @@
 #include <ip.h>
 #include "dat.h"
 #include "protos.h"
-typedef struct Hdr	Hdr;
+typedef struct Hdr Hdr;
 struct Hdr
 {
-uchar	sport[2];
-uchar	dport[2];
-uchar	len[2];
-uchar	cksum[2];
+uchar sport[2];
+uchar dport[2];
+uchar len[2];
+uchar cksum[2];
 };
 enum
 {
-UDPLEN=	8,
+UDPLEN= 8,
 };
 enum
 {
@@ -24,23 +24,23 @@ Osetport,
 };
 static Field p_fields[] =
 {
-{"s",		Fnum,	Os,	"source port",	} ,
-{"d",		Fnum,	Od,	"dest port",	} ,
-{"a",		Fnum,	Osd,	"source/dest port",	} ,
-{"sd",		Fnum,	Osd,	"source/dest port",	} ,
+{"s", Fnum, Os, "source port", } ,
+{"d", Fnum, Od, "dest port", } ,
+{"a", Fnum, Osd, "source/dest port", } ,
+{"sd", Fnum, Osd, "source/dest port", } ,
 {0}
 };
 #define ANYPORT ~0UL
 static Mux p_mux[] =
 {
-{"dns",	53, },
-{"bootp",	67, },
-{"ninep",	6346, },
-{"rtp",		ANYPORT, },
-{"rtcp",	ANYPORT, },
+{"dns", 53, },
+{"bootp", 67, },
+{"ninep", 6346, },
+{"rtp", ANYPORT, },
+{"rtcp", ANYPORT, },
 {0},
 };
-static Proto	*defproto = &dump;
+static Proto *defproto = &dump;
 static void
 p_compile(Filter *f)
 {

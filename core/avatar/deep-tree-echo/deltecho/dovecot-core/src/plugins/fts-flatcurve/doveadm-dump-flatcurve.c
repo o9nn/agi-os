@@ -40,8 +40,8 @@ struct hash_iterate_context *iter = hash_table_iterate_init(*hterms);
 while (hash_table_iterate(iter, *hterms, &key, &val)) {
 term = t_new(struct fts_flatcurve_dump_term, 1);
 term->header = header;
-term->term   = key;
-term->count  = POINTER_CAST_TO(val, unsigned int);
+term->term = key;
+term->count = POINTER_CAST_TO(val, unsigned int);
 array_push_back(aterms, &term);
 }
 hash_table_iterate_deinit(&iter);

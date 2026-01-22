@@ -1,8 +1,8 @@
 #
-#	Command execution.
+# Command execution.
 #
 #
-#	Entry from parser.
+# Entry from parser.
 #
 Cmd.xeq(c: self ref Cmd, e: ref Env)
 {
@@ -20,11 +20,11 @@ if ((e.flags & ENoxeq) == 0)
 c.xeqit(e, 1);
 }
 #
-#	Execute a command.  Tail recursion.
+# Execute a command. Tail recursion.
 #
 Cmd.xeqit(c: self ref Cmd, e: ref Env, wait: int)
 {
-tail:	for (;;) {
+tail: for (;;) {
 if (c == nil)
 return;
 case c.op {
@@ -137,7 +137,7 @@ sys->print("number %d\n", c.op);
 } return; } # tail recursion
 }
 #
-#	Execute quote or backquote generator.  Return generated item.
+# Execute quote or backquote generator. Return generated item.
 #
 Cmd.quote(c: self ref Cmd, e: ref Env, back: int): ref Item
 {
@@ -167,7 +167,7 @@ return Item.itemw(s);
 }
 }
 #
-#	Execute serve generator.
+# Execute serve generator.
 #
 Cmd.serve(c: self ref Cmd, e: ref Env, write: int): ref Item
 {
@@ -186,9 +186,9 @@ c.xeqit(e, 0);
 return Item.itemw(s);
 }
 #
-#	Expression evaluation, first pass.
-#	Parse tree is copied and word items are evaluated.
-#	nil return for error is propagated.
+# Expression evaluation, first pass.
+# Parse tree is copied and word items are evaluated.
+# nil return for error is propagated.
 #
 Cmd.eeval1(c: self ref Cmd, e: ref Env): ref Cmd
 {
@@ -214,8 +214,8 @@ panic("expr1: bad op");
 return nil;
 }
 #
-#	Expression evaluation, second pass.
-#	Returns a tuple (singleton, list, expand flag).
+# Expression evaluation, second pass.
+# Returns a tuple (singleton, list, expand flag).
 #
 Cmd.eeval2(c: self ref Cmd, e: ref Env): (string, list of string, int)
 {
@@ -281,7 +281,7 @@ panic("expr2: bad op");
 return (nil, nil, 0);
 }
 #
-#	Evaluate expression.  1st pass, 2nd pass, maybe glob.
+# Evaluate expression. 1st pass, 2nd pass, maybe glob.
 #
 Cmd.eeval(c: self ref Cmd, e: ref Env): (string, list of string)
 {
@@ -294,7 +294,7 @@ if (x && s != nil)
 return (s, l);
 }
 #
-#	Assignment - let or set.
+# Assignment - let or set.
 #
 Cmd.assign(c: self ref Cmd, e: ref Env, def: int)
 {
@@ -311,7 +311,7 @@ else
 e.set(s, v);
 }
 #
-#	Evaluate command and test for non-empty.
+# Evaluate command and test for non-empty.
 #
 Cmd.truth(c: self ref Cmd, e: ref Env): int
 {
@@ -319,7 +319,7 @@ Cmd.truth(c: self ref Cmd, e: ref Env): int
 return s != nil || l != nil;
 }
 #
-#	Evaluate word.
+# Evaluate word.
 #
 evalw(l: list of ref Item, e: ref Env): (int, list of string)
 {
@@ -331,7 +331,7 @@ return (0, nil);
 return (1, pass2(e, w));
 }
 #
-#	Evaluate list of items, pass 1 - reverses.
+# Evaluate list of items, pass 1 - reverses.
 #
 pass1(e: ref Env, l: list of ref Item): list of ref Item
 {
@@ -346,7 +346,7 @@ l = tl l;
 return r;
 }
 #
-#	Evaluate list of items, pass 2 with globbing - reverses (restores order).
+# Evaluate list of items, pass 2 with globbing - reverses (restores order).
 #
 pass2(e: ref Env, l: list of ref Item): list of string
 {
@@ -364,7 +364,7 @@ l = tl l;
 return r;
 }
 #
-#	Simple command.  Maybe a function.
+# Simple command. Maybe a function.
 #
 Cmd.simple(c: self ref Cmd, e: ref Env, wait: int)
 {
@@ -381,7 +381,7 @@ if (ok)
 e.runit(s, in, out, wait);
 }
 #
-#	Cmd name and arglist.  Maybe a function.
+# Cmd name and arglist. Maybe a function.
 #
 Env.runit(e: self ref Env, s: list of string, in, out: ref Sys->FD, wait: int)
 {
@@ -402,8 +402,8 @@ d.xeqit(e, wait);
 exec(s, e, in, out, wait);
 }
 #
-#	Item evaluation, first pass.  Copy parse tree.  Expand variables.
-#	Call first pass of expression evaluation.  Execute generators.
+# Item evaluation, first pass. Copy parse tree. Expand variables.
+# Call first pass of expression evaluation. Execute generators.
 #
 Item.ieval1(i: self ref Item, e: ref Env): ref Item
 {
@@ -448,8 +448,8 @@ panic("ieval1: bad op");
 return nil;
 }
 #
-#	Item evaluation, second pass.  Outer level carets.  Expand matches.
-#	Call second pass of expression evaluation.
+# Item evaluation, second pass. Outer level carets. Expand matches.
+# Call second pass of expression evaluation.
 #
 Item.ieval2(i: self ref Item, e: ref Env): (string, list of string, int)
 {
@@ -471,7 +471,7 @@ panic("ieval2: bad op");
 return (nil, nil, 0);
 }
 #
-#	Item evaluation.
+# Item evaluation.
 #
 Item.ieval(i: self ref Item, e: ref Env): (string, list of string, int)
 {
@@ -481,7 +481,7 @@ return (nil, nil, 0);
 return i.ieval2(e);
 }
 #
-#	Redirection item evaluation.
+# Redirection item evaluation.
 #
 Item.reval(i: self ref Item, e: ref Env): (int, string)
 {
@@ -496,7 +496,7 @@ return (0, nil);
 return (1, s);
 }
 #
-#	Make redirection names.
+# Make redirection names.
 #
 mkrdnames(e: ref Env, l: list of ref Redir): (int, array of string)
 {
@@ -512,7 +512,7 @@ l = tl l;
 return (1, f);
 }
 #
-#	Perform redirections.
+# Perform redirections.
 #
 mkredirs(e: ref Env, l: list of ref Redir): (int, ref Sys->FD, ref Sys->FD)
 {

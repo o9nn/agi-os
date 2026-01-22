@@ -21,7 +21,7 @@ private const gx_device_procs win_pr2_procs =
 prn_color_params_procs(win_pr2_open, gdev_prn_output_page, win_pr2_close,
 win_pr2_map_rgb_color, win_pr2_map_color_rgb,
 win_pr2_get_params, win_pr2_put_params);
-#define PARENT_WINDOW  HWND_DESKTOP
+#define PARENT_WINDOW HWND_DESKTOP
 BOOL CALLBACK CancelDlgProc(HWND, UINT, WPARAM, LPARAM);
 BOOL CALLBACK AbortProc2(HDC, int);
 typedef struct gx_device_win_pr2_s gx_device_win_pr2;
@@ -187,10 +187,10 @@ size.y = GetDeviceCaps(wdev->hdcprn, PHYSICALHEIGHT);
 gx_device_set_width_height(dev, (int)(size.x / ratio), (int)(size.y / ratio));
 offset.x = GetDeviceCaps(wdev->hdcprn, PHYSICALOFFSETX);
 offset.y = GetDeviceCaps(wdev->hdcprn, PHYSICALOFFSETY);
-m[0]  = offset.x / dev->x_pixels_per_inch / ratio;
-m[3]  = offset.y / dev->y_pixels_per_inch / ratio;
-m[2]  = (size.x - offset.x - GetDeviceCaps(wdev->hdcprn, HORZRES)) / dev->x_pixels_per_inch / ratio;
-m[1]  = (size.y - offset.y - GetDeviceCaps(wdev->hdcprn, VERTRES)) / dev->y_pixels_per_inch / ratio;
+m[0] = offset.x / dev->x_pixels_per_inch / ratio;
+m[3] = offset.y / dev->y_pixels_per_inch / ratio;
+m[2] = (size.x - offset.x - GetDeviceCaps(wdev->hdcprn, HORZRES)) / dev->x_pixels_per_inch / ratio;
+m[1] = (size.y - offset.y - GetDeviceCaps(wdev->hdcprn, VERTRES)) / dev->y_pixels_per_inch / ratio;
 gx_device_set_margins(dev, m, true);
 depth = dev->color_info.depth;
 if (depth == 0) {
@@ -458,15 +458,15 @@ win_pr2_put_params(gx_device * pdev, gs_param_list * plist)
 int ecode = 0, code;
 int old_bpp = pdev->color_info.depth;
 int bpp = old_bpp;
-bool tumble   = wdev->tumble;
+bool tumble = wdev->tumble;
 bool nocancel = wdev->nocancel;
 int queryuser = 0;
 bool old_duplex = wdev->Duplex;
 bool old_tumble = wdev->tumble;
-int  old_orient = wdev->user_orient;
-int  old_color  = wdev->user_color;
-int  old_paper  = wdev->user_paper;
-int  old_mx_dpi = wdev->max_dpi;
+int old_orient = wdev->user_orient;
+int old_color = wdev->user_color;
+int old_paper = wdev->user_paper;
+int old_mx_dpi = wdev->max_dpi;
 if (wdev->Duplex_set < 0) {
 wdev->Duplex_set = 0;
 wdev->Duplex = false;
@@ -539,8 +539,8 @@ if (wdev->win32_hdevmode && wdev->hdcprn) {
 if ( (old_duplex != wdev->Duplex)
 || (old_tumble != wdev->tumble)
 || (old_orient != wdev->user_orient)
-|| (old_color  != wdev->user_color)
-|| (old_paper  != wdev->user_paper)
+|| (old_color != wdev->user_color)
+|| (old_paper != wdev->user_paper)
 || (old_mx_dpi != wdev->max_dpi) ) {
 LPDEVMODE pdevmode = GlobalLock(wdev->win32_hdevmode);
 if (pdevmode) {
@@ -832,9 +832,9 @@ else {
 goto e;\
 default:\
 ecode = code;\
-e:	param_signal_error(dict.list, param_name, ecode);\
+e: param_signal_error(dict.list, param_name, ecode);\
 case 1:\
-(pa).data = 0;		\
+(pa).data = 0; \
 }
 private int
 win_pr2_read_user_settings(gx_device_win_pr2 * wdev, gs_param_list * plist)
@@ -972,7 +972,7 @@ private int
 win_pr2_print_setup_interaction(gx_device_win_pr2 * wdev, int mode)
 {
 PRINTDLG pd;
-LPDEVMODE  devmode;
+LPDEVMODE devmode;
 LPDEVNAMES devnames;
 wdev->user_changed_settings = FALSE;
 wdev->query_user = mode;
@@ -980,8 +980,8 @@ memset(&pd, 0, sizeof(pd));
 pd.lStructSize = sizeof(pd);
 pd.hwndOwner = PARENT_WINDOW;
 switch (mode) {
-case 2:	pd.Flags = PD_PRINTSETUP; break;
-case 3:	pd.Flags = PD_RETURNDEFAULT; break;
+case 2: pd.Flags = PD_PRINTSETUP; break;
+case 3: pd.Flags = PD_RETURNDEFAULT; break;
 default: pd.Flags = 0; break;
 }
 pd.Flags |= PD_USEDEVMODECOPIES;

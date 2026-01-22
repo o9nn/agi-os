@@ -401,7 +401,7 @@ if (child_part != NULL) {
 "doesn't match BODYSTRUCTURE";
 return -1;
 }
-} else 	if ((part->flags & MESSAGE_PART_FLAG_MULTIPART) != 0) {
+} else if ((part->flags & MESSAGE_PART_FLAG_MULTIPART) != 0) {
 *error_r = "message_part multipart flag "
 "doesn't match BODYSTRUCTURE";
 return -1;

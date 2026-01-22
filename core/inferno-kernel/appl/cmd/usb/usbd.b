@@ -67,13 +67,13 @@ UHCIstatus_ConnectStatusChange: con 1 << 1;
 UHCIstatus_DevicePresent: con 1 << 0;
 obt()
 {
-#	sys->fprint(stderr, "%d waiting\n", sys->pctl(0, nil));
+# sys->fprint(stderr, "%d waiting\n", sys->pctl(0, nil));
 setupsema.obtain();
-#	sys->fprint(stderr, "%d got\n", sys->pctl(0, nil));
+# sys->fprint(stderr, "%d got\n", sys->pctl(0, nil));
 }
 rel()
 {
-#	sys->fprint(stderr, "%d releasing\n", sys->pctl(0, nil));
+# sys->fprint(stderr, "%d releasing\n", sys->pctl(0, nil));
 setupsema.release();
 }
 hubid(hub: ref DDevice): int
@@ -122,7 +122,7 @@ return nv;
 portstatus(hub: ref DDevice, port: int): int
 {
 rv: int;
-#	setupsema.obtain();
+# setupsema.obtain();
 obt();
 if (hub == nil) {
 sys->seek(usbportfd, big 0, Sys->SEEKSTART);
@@ -156,7 +156,7 @@ return 0;
 }
 else
 rv = usb->get_status(hub.setupfd, port);
-#	setupsema.release();
+# setupsema.release();
 rel();
 if (rv < 0)
 return 0;
@@ -183,9 +183,9 @@ sys->fprint(stderr, "portreset %d/%d\n", hubid(hub), port);
 if (hub == nil) {
 if(0)sys->fprint(usbctlfd, "reset %d", port);
 for (i := 0; i < 4; ++i) {
-sys->sleep(20);			# min 10 milli second reset recovery.
+sys->sleep(20); # min 10 milli second reset recovery.
 s := portstatus(hub, port);
-if ((s & UHCIstatus_PortReset) == 0)		# only leave when reset is finished.
+if ((s & UHCIstatus_PortReset) == 0) # only leave when reset is finished.
 break;
 }
 return;
@@ -292,13 +292,13 @@ detach(d: ref DDevice)
 configsema.obtain();
 treesema.obtain();
 obt();
-#	setupsema.obtain();
+# setupsema.obtain();
 if (verbose)
 sys->fprint(stderr, "detach %d\n", d.id);
 rdetach(d);
 if (verbose)
 sys->fprint(stderr, "detach %d done\n", d.id);
-#	setupsema.release();
+# setupsema.release();
 rel();
 treesema.release();
 configsema.release();
@@ -326,14 +326,14 @@ sys->fprint(stderr, "usbd: usb/new ID: %r\n");
 d.cfd = nil;
 return -1;
 }
-#	setupsema.obtain();
+# setupsema.obtain();
 obt();
 if (usb->set_address(d.setupfd, id) < 0) {
-#		setupsema.release();
+# setupsema.release();
 rel();
 return -1;
 }
-#	setupsema.release();
+# setupsema.release();
 rel();
 d.id = id;
 d.state = Assigned;
@@ -341,17 +341,17 @@ return id;
 }
 #optstring(d: ref DDevice, langids: list of int, desc: string, index: int)
 #{
-#	if (index) {
-#		buf := array [256] of byte;
-#		while (langids != nil) {
-#			nr := usb->get_descriptor(d.setupfd, Usb->Rstandard, Usb->STRING, index, hd langids, buf);
-#			if (nr > 2) {
-#				sys->fprint(stderr, "%s: ", desc);
-#				usbdump->desc(d, -1, buf[0: nr]);
-#			}
-#			langids = tl langids;
-#		}
-#	}
+# if (index) {
+# buf := array [256] of byte;
+# while (langids != nil) {
+# nr := usb->get_descriptor(d.setupfd, Usb->Rstandard, Usb->STRING, index, hd langids, buf);
+# if (nr > 2) {
+# sys->fprint(stderr, "%s: ", desc);
+# usbdump->desc(d, -1, buf[0: nr]);
+# }
+# langids = tl langids;
+# }
+# }
 #}
 langid(d: ref DDevice): (list of int)
 {
@@ -370,12 +370,12 @@ return l;
 describedevice(d: ref DDevice): int
 {
 obt();
-devmaxpkt0(d, 64);				# guess 64 byte max packet to avoid overrun on read
-for (x := 0; x < 3; x++) {			# retry 3 times
+devmaxpkt0(d, 64); # guess 64 byte max packet to avoid overrun on read
+for (x := 0; x < 3; x++) { # retry 3 times
 d.d = usb->get_parsed_device_descriptor(d.setupfd);
 if (d.d != nil)
 break;
-sys->sleep(200);			# tolerate out of spec. devices
+sys->sleep(200); # tolerate out of spec. devices
 }
 if (d.d == nil) {
 rel();
@@ -410,9 +410,9 @@ l2 = tl l2;
 }
 sys->fprint(stderr, "]\n");
 }
-#		optstring(d, l, "manufacturer", int buf[14]);
-#		optstring(d, l, "product", int buf[15]);
-#		optstring(d, l, "serial number", int buf[16]);
+# optstring(d, l, "manufacturer", int buf[14]);
+# optstring(d, l, "product", int buf[15]);
+# optstring(d, l, "serial number", int buf[16]);
 rel();
 }
 return 0;
@@ -420,16 +420,16 @@ return 0;
 describehub(d: ref DDevice): int
 {
 b := array [256] of byte;
-#	setupsema.obtain();
+# setupsema.obtain();
 obt();
 nr := usb->get_class_descriptor(d.setupfd, 0, 0, b);
 if (nr < Usb->DHUBLEN) {
-#		setupsema.release();
+# setupsema.release();
 rel();
 sys->fprint(stderr, "usbd: error reading hub descriptor: got %d of %d\n", nr, Usb->DHUBLEN);
 return -1;
 }
-#	setupsema.release();
+# setupsema.release();
 rel();
 if (verbose)
 sys->fprint(stderr, "nport %d charac 0x%.4ux pwr %dms current %dmA remov 0x%.2ux pwrctl 0x%.2ux",
@@ -460,9 +460,9 @@ return 0;
 }
 #setdevclass(d: ref DDevice, n: int)
 #{
-#	dd := d.config[n];
-#	if (dd != nil)
-#		sys->fprint(d.cfd, "class %d %d %d %d %d", d.d.nconf, n, dd.class, dd.subclass, dd.proto);
+# dd := d.config[n];
+# if (dd != nil)
+# sys->fprint(d.cfd, "class %d %d %d %d %d", d.d.nconf, n, dd.class, dd.subclass, dd.proto);
 #}
 setconfig(d: ref DDevice, n: int): int
 {
@@ -478,8 +478,8 @@ configure(hub: ref DDevice, port: int): ref DDevice
 {
 configsema.obtain();
 portreset(hub, port);
-sys->sleep(300);				# long sleep necessary for strange hardware....
-#	sys->sleep(20);
+sys->sleep(300); # long sleep necessary for strange hardware....
+# sys->sleep(20);
 s := portstatus(hub, port);
 s = portstatus(hub, port);
 if (debug)
@@ -524,7 +524,7 @@ devmaxpkt0(d, d.d.maxpkt0);
 d.config = array [d.d.nconf] of ref Configuration;
 for (i := 0; i < d.d.nconf; i++) {
 loadconfig(d, i);
-#		setdevclass(d, i);
+# setdevclass(d, i);
 }
 if (hub != nil) {
 treesema.obtain();
@@ -668,10 +668,10 @@ else if (lines[i].value != (hd conf.iface[0].altiface).proto)
 backtracking = 1;
 "vendor" =>
 if (lines[i].value != d.vid)
-backtracking  =1;
+backtracking =1;
 "product" =>
 if (lines[i].value != d.did)
-backtracking  =1;
+backtracking =1;
 "load" =>
 return lines[i].svalue;
 * =>

@@ -163,7 +163,7 @@ php = phdr+curphdr;
 if(debug)
 print("readedata %d\n", curphdr);
 if(php->filesz < php->memsz){
-print("%lud",  php->memsz-php->filesz);
+print("%lud", php->memsz-php->filesz);
 elftotal += php->memsz-php->filesz;
 memset((char*)(PADDR(php->paddr)+php->filesz), 0, php->memsz-php->filesz);
 }

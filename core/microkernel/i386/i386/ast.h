@@ -1,5 +1,5 @@
-#ifndef	_I386_AST_H_
-#define	_I386_AST_H_
-#define	AST_I386_FP	0x80000000
-#define MACHINE_AST_PER_THREAD		AST_I386_FP
+#ifndef _I386_AST_H_
+#define _I386_AST_H_
+#define AST_I386_FP 0x80000000
+#define MACHINE_AST_PER_THREAD AST_I386_FP
 #endif

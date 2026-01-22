@@ -6,63 +6,63 @@
 #include "../port/error.h"
 #include "ip.h"
 typedef struct Icmp {
-uchar	vihl;
-uchar	tos;
-uchar	length[2];
-uchar	id[2];
-uchar	frag[2];
-uchar	ttl;
-uchar	proto;
-uchar	ipcksum[2];
-uchar	src[4];
-uchar	dst[4];
-uchar	type;
-uchar	code;
-uchar	cksum[2];
-uchar	icmpid[2];
-uchar	seq[2];
-uchar	data[1];
+uchar vihl;
+uchar tos;
+uchar length[2];
+uchar id[2];
+uchar frag[2];
+uchar ttl;
+uchar proto;
+uchar ipcksum[2];
+uchar src[4];
+uchar dst[4];
+uchar type;
+uchar code;
+uchar cksum[2];
+uchar icmpid[2];
+uchar seq[2];
+uchar data[1];
 } Icmp;
 enum {
-EchoReply	= 0,
-Unreachable	= 3,
-SrcQuench	= 4,
-Redirect	= 5,
-EchoRequest	= 8,
-TimeExceed	= 11,
-InParmProblem	= 12,
-Timestamp	= 13,
-TimestampReply	= 14,
-InfoRequest	= 15,
-InfoReply	= 16,
+EchoReply = 0,
+Unreachable = 3,
+SrcQuench = 4,
+Redirect = 5,
+EchoRequest = 8,
+TimeExceed = 11,
+InParmProblem = 12,
+Timestamp = 13,
+TimestampReply = 14,
+InfoRequest = 15,
+InfoReply = 16,
 AddrMaskRequest = 17,
-AddrMaskReply   = 18,
-Maxtype		= 18,
+AddrMaskReply = 18,
+Maxtype = 18,
 };
 enum
 {
-MinAdvise	= 24,
+MinAdvise = 24,
 };
 char *icmpnames[Maxtype+1] =
 {
-[EchoReply]		"EchoReply",
-[Unreachable]		"Unreachable",
-[SrcQuench]		"SrcQuench",
-[Redirect]		"Redirect",
-[EchoRequest]		"EchoRequest",
-[TimeExceed]		"TimeExceed",
-[InParmProblem]		"InParmProblem",
-[Timestamp]		"Timestamp",
-[TimestampReply]	"TimestampReply",
-[InfoRequest]		"InfoRequest",
-[InfoReply]		"InfoReply",
-[AddrMaskRequest]	"AddrMaskRequest",
-[AddrMaskReply  ]	"AddrMaskReply  ",
+[EchoReply] "EchoReply",
+[Unreachable] "Unreachable",
+[SrcQuench] "SrcQuench",
+[Redirect] "Redirect",
+[EchoRequest] "EchoRequest",
+[TimeExceed] "TimeExceed",
+[InParmProblem] "InParmProblem",
+[Timestamp] "Timestamp",
+[TimestampReply] "TimestampReply",
+[InfoRequest] "InfoRequest",
+[InfoReply] "InfoReply",
+[AddrMaskRequest] "AddrMaskRequest",
+[AddrMaskReply ] "AddrMaskReply  ",
 };
 enum {
-IP_ICMPPROTO	= 1,
-ICMP_IPSIZE	= 20,
-ICMP_HDRSIZE	= 8,
+IP_ICMPPROTO = 1,
+ICMP_IPSIZE = 20,
+ICMP_HDRSIZE = 8,
 };
 enum
 {
@@ -76,19 +76,19 @@ Nstats,
 };
 static char *statnames[Nstats] =
 {
-[InMsgs]	"InMsgs",
-[InErrors]	"InErrors",
-[OutMsgs]	"OutMsgs",
-[CsumErrs]	"CsumErrs",
-[LenErrs]	"LenErrs",
-[HlenErrs]	"HlenErrs",
+[InMsgs] "InMsgs",
+[InErrors] "InErrors",
+[OutMsgs] "OutMsgs",
+[CsumErrs] "CsumErrs",
+[LenErrs] "LenErrs",
+[HlenErrs] "HlenErrs",
 };
 typedef struct Icmppriv Icmppriv;
 struct Icmppriv
 {
-ulong	stats[Nstats];
-ulong	in[Maxtype+1];
-ulong	out[Maxtype+1];
+ulong stats[Nstats];
+ulong in[Maxtype+1];
+ulong out[Maxtype+1];
 };
 static void icmpkick(void *x, Block*);
 static void
@@ -165,8 +165,8 @@ ipoput4(c->p->f, bp, 0, c->ttl, c->tos, nil);
 extern void
 icmpttlexceeded(Fs *f, uchar *ia, Block *bp)
 {
-Block	*nbp;
-Icmp	*p, *np;
+Block *nbp;
+Icmp *p, *np;
 p = (Icmp *)bp->rp;
 netlog(f, Logicmp, "sending icmpttlexceeded -> %V\n", p->src);
 nbp = allocb(ICMP_IPSIZE + ICMP_HDRSIZE + ICMP_IPSIZE + 8);
@@ -188,10 +188,10 @@ ipoput4(f, nbp, 0, MAXTTL, DFLTTOS, nil);
 static void
 icmpunreachable(Fs *f, Block *bp, int code, int seq)
 {
-Block	*nbp;
-Icmp	*p, *np;
-int	i;
-uchar	addr[IPaddrlen];
+Block *nbp;
+Icmp *p, *np;
+int i;
+uchar addr[IPaddrlen];
 p = (Icmp *)bp->rp;
 v4tov6(addr, p->dst);
 i = ipforme(f, addr);
@@ -231,10 +231,10 @@ icmpunreachable(f, bp, 4, mtu);
 static void
 goticmpkt(Proto *icmp, Block *bp)
 {
-Conv	**c, *s;
-Icmp	*p;
-uchar	dst[IPaddrlen];
-ushort	recid;
+Conv **c, *s;
+Icmp *p;
+uchar dst[IPaddrlen];
+ushort recid;
 p = (Icmp *) bp->rp;
 v4tov6(dst, p->src);
 recid = nhgets(p->icmpid);
@@ -253,13 +253,13 @@ freeblist(bp);
 static Block *
 mkechoreply(Block *bp)
 {
-Icmp	*q;
-uchar	ip[4];
+Icmp *q;
+uchar ip[4];
 q = (Icmp *)bp->rp;
 q->vihl = IP_VER4;
 memmove(ip, q->src, sizeof(q->dst));
 memmove(q->src, q->dst, sizeof(q->src));
-memmove(q->dst, ip,  sizeof(q->dst));
+memmove(q->dst, ip, sizeof(q->dst));
 q->type = EchoReply;
 memset(q->cksum, 0, sizeof(q->cksum));
 hnputs(q->cksum, ptclcsum(bp, ICMP_IPSIZE, blocklen(bp) - ICMP_IPSIZE));
@@ -267,22 +267,22 @@ return bp;
 }
 static char *unreachcode[] =
 {
-[0]	"net unreachable",
-[1]	"host unreachable",
-[2]	"protocol unreachable",
-[3]	"port unreachable",
-[4]	"fragmentation needed and DF set",
-[5]	"source route failed",
+[0] "net unreachable",
+[1] "host unreachable",
+[2] "protocol unreachable",
+[3] "port unreachable",
+[4] "fragmentation needed and DF set",
+[5] "source route failed",
 };
 static void
 icmpiput(Proto *icmp, Ipifc*, Block *bp)
 {
-int	n, iplen;
-Icmp	*p;
-Block	*r;
-Proto	*pr;
-char	*msg;
-char	m2[128];
+int n, iplen;
+Icmp *p;
+Block *r;
+Proto *pr;
+char *msg;
+char m2[128];
 Icmppriv *ipriv;
 ipriv = icmp->priv;
 ipriv->stats[InMsgs]++;
@@ -366,10 +366,10 @@ freeblist(bp);
 void
 icmpadvise(Proto *icmp, Block *bp, char *msg)
 {
-Conv	**c, *s;
-Icmp	*p;
-uchar	dst[IPaddrlen];
-ushort	recid;
+Conv **c, *s;
+Icmp *p;
+uchar dst[IPaddrlen];
+ushort recid;
 p = (Icmp *) bp->rp;
 v4tov6(dst, p->dst);
 recid = nhgets(p->icmpid);

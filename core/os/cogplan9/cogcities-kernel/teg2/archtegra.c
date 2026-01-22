@@ -13,9 +13,9 @@
 #include "../port/portusbehci.h"
 #include "usbehci.h"
 enum {
-Maxcpus		= 4,
-Maxflowcpus	= 2,
-Debug	= 0,
+Maxcpus = 4,
+Maxflowcpus = 2,
+Debug = 0,
 };
 typedef struct Clkrst Clkrst;
 typedef struct Diag Diag;
@@ -23,168 +23,168 @@ typedef struct Flow Flow;
 typedef struct Scu Scu;
 typedef struct Power Power;
 struct Clkrst {
-ulong	rstsrc;
-ulong	rstdevl;
-ulong	rstdevh;
-ulong	rstdevu;
-ulong	clkoutl;
-ulong	clkouth;
-ulong	clkoutu;
-uchar	_pad0[0x24-0x1c];
-ulong	supcclkdiv;
-ulong	_pad1;
-ulong	supsclkdiv;
-uchar	_pad4[0x4c-0x30];
-ulong	clkcpu;
-uchar	_pad1[0xe0-0x50];
-ulong	pllxbase;
-ulong	pllxmisc;
-ulong	pllebase;
-ulong	pllemisc;
-uchar	_pad2[0x340-0xf0];
-ulong	cpuset;
-ulong	cpuclr;
+ulong rstsrc;
+ulong rstdevl;
+ulong rstdevh;
+ulong rstdevu;
+ulong clkoutl;
+ulong clkouth;
+ulong clkoutu;
+uchar _pad0[0x24-0x1c];
+ulong supcclkdiv;
+ulong _pad1;
+ulong supsclkdiv;
+uchar _pad4[0x4c-0x30];
+ulong clkcpu;
+uchar _pad1[0xe0-0x50];
+ulong pllxbase;
+ulong pllxmisc;
+ulong pllebase;
+ulong pllemisc;
+uchar _pad2[0x340-0xf0];
+ulong cpuset;
+ulong cpuclr;
 };
 enum {
-Wdcpurst =	1<<0,
-Wdcoprst =	1<<1,
-Wdsysrst =	1<<2,
-Wdsel =		1<<4,
-Wdena =		1<<5,
-Sysreset =	1<<2,
-Cpu1stop =	1<<9,
-Cpu0stop =	1<<8,
-Cpu1dbgreset =	1<<13,
-Cpu0dbgreset =	1<<12,
-Cpu1wdreset =	1<<9,
-Cpu0wdreset =	1<<8,
-Cpu1dereset =	1<<5,
-Cpu0dereset =	1<<4,
-Cpu1reset =	1<<1,
-Cpu0reset =	1<<0,
+Wdcpurst = 1<<0,
+Wdcoprst = 1<<1,
+Wdsysrst = 1<<2,
+Wdsel = 1<<4,
+Wdena = 1<<5,
+Sysreset = 1<<2,
+Cpu1stop = 1<<9,
+Cpu0stop = 1<<8,
+Cpu1dbgreset = 1<<13,
+Cpu0dbgreset = 1<<12,
+Cpu1wdreset = 1<<9,
+Cpu0wdreset = 1<<8,
+Cpu1dereset = 1<<5,
+Cpu0dereset = 1<<4,
+Cpu1reset = 1<<1,
+Cpu0reset = 1<<0,
 };
 struct Power {
-ulong	ctl;
-ulong	secregdis;
-ulong	swrst;
-ulong	wakevmask;
-ulong	waklvl;
-ulong	waksts;
-ulong	swwaksts;
-ulong	dpdpadsovr;
-ulong	dpdsample;
-ulong	dpden;
-ulong	gatetimroff;
-ulong	gatetimron;
-ulong	toggle;
-ulong	unclamp;
-ulong	gatests;
-ulong	goodtmr;
-ulong	blinktmr;
-ulong	noiopwr;
-ulong	detect;
-ulong	detlatch;
-ulong	scratch[24];
-ulong	secscratch[6];
-ulong	cpupwrgoodtmr;
-ulong	cpupwrofftmr;
-ulong	pgmask[2];
-ulong	autowaklvl;
-ulong	autowaklvlmask;
-ulong	wakdelay;
-ulong	detval;
-ulong	ddr;
-ulong	usbdebdel;
-ulong	usbao;
-ulong	cryptoop;
-ulong	pllpwb0ovr;
-ulong	scratch24[42-24+1];
-ulong	boundoutmirr[3];
-ulong	sys33ven;
-ulong	boundoutmirracc;
-ulong	gate;
+ulong ctl;
+ulong secregdis;
+ulong swrst;
+ulong wakevmask;
+ulong waklvl;
+ulong waksts;
+ulong swwaksts;
+ulong dpdpadsovr;
+ulong dpdsample;
+ulong dpden;
+ulong gatetimroff;
+ulong gatetimron;
+ulong toggle;
+ulong unclamp;
+ulong gatests;
+ulong goodtmr;
+ulong blinktmr;
+ulong noiopwr;
+ulong detect;
+ulong detlatch;
+ulong scratch[24];
+ulong secscratch[6];
+ulong cpupwrgoodtmr;
+ulong cpupwrofftmr;
+ulong pgmask[2];
+ulong autowaklvl;
+ulong autowaklvlmask;
+ulong wakdelay;
+ulong detval;
+ulong ddr;
+ulong usbdebdel;
+ulong usbao;
+ulong cryptoop;
+ulong pllpwb0ovr;
+ulong scratch24[42-24+1];
+ulong boundoutmirr[3];
+ulong sys33ven;
+ulong boundoutmirracc;
+ulong gate;
 };
 enum {
-Start	= 1<<8,
+Start = 1<<8,
 Partpcie= 3,
-Partl2	= 4,
+Partl2 = 4,
 };
 struct Scu {
-ulong	ctl;
-ulong	cfg;
-ulong	cpupwrsts;
-ulong	inval;
-uchar	_pad0[0x40-0x10];
-ulong	filtstart;
-ulong	filtend;
-uchar	_pad1[0x50-0x48];
-ulong	accctl;
-ulong	nsaccctl;
+ulong ctl;
+ulong cfg;
+ulong cpupwrsts;
+ulong inval;
+uchar _pad0[0x40-0x10];
+ulong filtstart;
+ulong filtend;
+uchar _pad1[0x50-0x48];
+ulong accctl;
+ulong nsaccctl;
 };
 enum {
-Scuenable =	1<<0,
-Filter =	1<<1,
-Scuparity =	1<<2,
-Specfill =	1<<3,
-Allport0 =	1<<4,
-Standby =	1<<5,
-Icstandby =	1<<6,
+Scuenable = 1<<0,
+Filter = 1<<1,
+Scuparity = 1<<2,
+Specfill = 1<<3,
+Allport0 = 1<<4,
+Standby = 1<<5,
+Icstandby = 1<<6,
 };
 struct Flow {
-ulong	haltcpu0;
-ulong	haltcop;
-ulong	cpu0;
-ulong	cop;
-ulong	xrq;
-ulong	haltcpu1;
-ulong	cpu1;
+ulong haltcpu0;
+ulong haltcop;
+ulong cpu0;
+ulong cop;
+ulong xrq;
+ulong haltcpu1;
+ulong cpu1;
 };
 enum {
-Stop =	2<<29,
-Event =			1<<14,
-Waitwfebitsshift =	4,
-Waitwfebitsmask =	MASK(2),
-Eventenable =		1<<1,
-Cpuenable =		1<<0,
+Stop = 2<<29,
+Event = 1<<14,
+Waitwfebitsshift = 4,
+Waitwfebitsmask = MASK(2),
+Eventenable = 1<<1,
+Cpuenable = 1<<0,
 };
 struct Diag {
 Cacheline c0;
 Lock;
-long	cnt;
-long	sync;
+long cnt;
+long sync;
 Cacheline c1;
 };
 extern ulong testmem;
 int navailcpus;
 Isolated l1ptstable;
 Soc soc = {
-.clkrst	= 0x60006000,
-.power	= 0x7000e400,
+.clkrst = 0x60006000,
+.power = 0x7000e400,
 .exceptvec = PHYSEVP,
-.sema	= 0x60001000,
+.sema = 0x60001000,
 .l2cache= PHYSL2BAG,
-.flow	= 0x60007000,
-.scu	= 0x50040000,
-.intr	= 0x50040100,
-.glbtmr	= 0x50040200,
-.loctmr	= 0x50040600,
+.flow = 0x60007000,
+.scu = 0x50040000,
+.intr = 0x50040100,
+.glbtmr = 0x50040200,
+.loctmr = 0x50040600,
 .intrdist=0x50041000,
-.uart	= { 0x70006000, 0x70006040,
+.uart = { 0x70006000, 0x70006040,
 0x70006200, 0x70006300, 0x70006400, },
-.rtc	= 0x7000e000,
-.tmr	= { 0x60005000, 0x60005008, 0x60005050, 0x60005058, },
-.µs	= 0x60005010,
-.pci	= 0x80000000,
-.ether	= 0xa0024000,
-.nand	= 0x70008000,
-.nor	= 0x70009000,
-.ehci	= P2VAHB(0xc5000000),
-.ide	= P2VAHB(0xc3000000),
-.gpio	= { 0x6000d000, 0x6000d080, 0x6000d100, 0x6000d180,
+.rtc = 0x7000e000,
+.tmr = { 0x60005000, 0x60005008, 0x60005050, 0x60005058, },
+.µs = 0x60005010,
+.pci = 0x80000000,
+.ether = 0xa0024000,
+.nand = 0x70008000,
+.nor = 0x70009000,
+.ehci = P2VAHB(0xc5000000),
+.ide = P2VAHB(0xc3000000),
+.gpio = { 0x6000d000, 0x6000d080, 0x6000d100, 0x6000d180,
 0x6000d200, 0x6000d280, 0x6000d300, },
-.spi	= { 0x7000d400, 0x7000d600, 0x7000d800, 0x7000da00, },
-.twsi	= 0x7000c000,
-.mmc	= { P2VAHB(0xc8000000), P2VAHB(0xc8000200),
+.spi = { 0x7000d400, 0x7000d600, 0x7000d800, 0x7000da00, },
+.twsi = 0x7000c000,
+.mmc = { P2VAHB(0xc8000000), P2VAHB(0xc8000200),
 P2VAHB(0xc8000400), P2VAHB(0xc8000600), },
 };
 static volatile Diag diag;

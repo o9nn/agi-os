@@ -9,13 +9,13 @@ typedef struct Label Label;
 struct Label
 {
 Control;
-int		border;
-CFont	*font;
-CImage	*image;
-CImage	*textcolor;
-CImage	*bordercolor;
-char		*text;
-int		align;
+int border;
+CFont *font;
+CImage *image;
+CImage *textcolor;
+CImage *bordercolor;
+char *text;
+int align;
 };
 enum{
 EAlign,
@@ -33,22 +33,22 @@ ETextcolor,
 EValue,
 };
 static char *cmds[] = {
-[EAlign] =			"align",
-[EBorder] =		"border",
-[EBordercolor] =	"bordercolor",
-[EFocus] = 		"focus",
-[EFont] =			"font",
-[EHide] =			"hide",
-[EImage] =		"image",
-[ERect] =			"rect",
-[EReveal] =		"reveal",
-[EShow] =			"show",
-[ESize] =			"size",
-[ETextcolor] =		"textcolor",
-[EValue] =			"value",
+[EAlign] = "align",
+[EBorder] = "border",
+[EBordercolor] = "bordercolor",
+[EFocus] = "focus",
+[EFont] = "font",
+[EHide] = "hide",
+[EImage] = "image",
+[ERect] = "rect",
+[EReveal] = "reveal",
+[EShow] = "show",
+[ESize] = "size",
+[ETextcolor] = "textcolor",
+[EValue] = "value",
 nil
 };
-static void	labelshow(Label*);
+static void labelshow(Label*);
 static void
 labelfree(Control *c)
 {

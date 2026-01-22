@@ -1,5 +1,5 @@
 implement Units;
-#line	2	"units.y"
+#line 2 "units.y"
 #
 # subject to the Lucent Public License 1.02
 #
@@ -12,31 +12,31 @@ Iobuf: import bufio;
 include "math.m";
 math: Math;
 include "arg.m";
-Ndim: con 15;	# number of dimensions
-Nvar: con 203;	# hash table size
-Maxe: con 695.0;	# log of largest number
+Ndim: con 15; # number of dimensions
+Nvar: con 203; # hash table size
+Maxe: con 695.0; # log of largest number
 Node: adt
 {
-val:	real;
-dim:	array of int;	# [Ndim] schar
-mk:	fn(v: real): Node;
-text:	fn(n: self Node): string;
-add:	fn(a: self Node, b: Node): Node;
-sub:	fn(a: self Node, b: Node): Node;
-mul:	fn(a: self Node, b: Node): Node;
-div:	fn(a: self Node, b: Node): Node;
-xpn:	fn(a: self Node, b: int): Node;
+val: real;
+dim: array of int; # [Ndim] schar
+mk: fn(v: real): Node;
+text: fn(n: self Node): string;
+add: fn(a: self Node, b: Node): Node;
+sub: fn(a: self Node, b: Node): Node;
+mul: fn(a: self Node, b: Node): Node;
+div: fn(a: self Node, b: Node): Node;
+xpn: fn(a: self Node, b: int): Node;
 copy: fn(a: self Node): Node;
 };
 Var: adt
 {
-name:	string;
-node:	Node;
+name: string;
+node: Node;
 };
 Prefix: adt
 {
-val:	real;
-pname:	string;
+val: real;
+pname: string;
 };
 digval := 0;
 fi: ref Iobuf;
@@ -53,10 +53,10 @@ sym: string;
 vars := array[Nvar] of list of ref Var;
 vflag := 0;
 YYSTYPE: adt {
-node:	Node;
-var:	ref Var;
-numb:	int;
-val:	real;
+node: Node;
+var: ref Var;
+numb: int;
+val: real;
 };
 YYLEX: adt {
 lval: YYSTYPE;
@@ -64,15 +64,15 @@ lex: fn(l: self ref YYLEX): int;
 error: fn(l: self ref YYLEX, msg: string);
 };
 Units: module {
-init:	fn(nil: ref Draw->Context, args: list of string);
-VAL: con	57346;
-VAR: con	57347;
-SUP: con	57348;
+init: fn(nil: ref Draw->Context, args: list of string);
+VAL: con 57346;
+VAR: con 57347;
+SUP: con 57348;
 };
 YYEOFCODE: con 1;
 YYERRCODE: con 2;
 YYMAXDEPTH: con 200;
-#line	203	"units.y"
+#line 203 "units.y"
 init(nil: ref Draw->Context, args: list of string)
 {
 sys = load Sys Sys->PATH;
@@ -152,7 +152,7 @@ c := peekrune;
 peekrune = ' ';
 while(c == ' ' || c == '\t'){
 if(linep >= len line)
-return 0;	# -1?
+return 0; # -1?
 c = line[linep++];
 }
 case c {
@@ -204,30 +204,30 @@ ralpha(c: int): int
 {
 case c {
 0 or
-'+'  or
-'-'  or
-'*'  or
-'/'  or
-'['  or
-']'  or
-'('  or
-')'  or
-'^'  or
-':'  or
-'?'  or
-' '  or
-'\t'  or
-'.'  or
-'|'  or
-'#'  or
-'¹'  or
-'ⁱ'  or
-'²'  or
-'⁲'  or
-'³'  or
-'⁳'  or
-'×'  or
-'÷'  =>
+'+' or
+'-' or
+'*' or
+'/' or
+'[' or
+']' or
+'(' or
+')' or
+'^' or
+':' or
+'?' or
+' ' or
+'\t' or
+'.' or
+'|' or
+'#' or
+'¹' or
+'ⁱ' or
+'²' or
+'⁲' or
+'³' or
+'⁳' or
+'×' or
+'÷' =>
 return 0;
 }
 return 1;
@@ -447,29 +447,29 @@ break;
 return v;
 }
 prefix: array of Prefix = array[] of {
-(1e-24,	"yocto"),
-(1e-21,	"zepto"),
-(1e-18,	"atto"),
-(1e-15,	"femto"),
-(1e-12,	"pico"),
-(1e-9,	"nano"),
-(1e-6,	"micro"),
-(1e-6,	"μ"),
-(1e-3,	"milli"),
-(1e-2,	"centi"),
-(1e-1,	"deci"),
-(1e1,	"deka"),
-(1e2,	"hecta"),
-(1e2,	"hecto"),
-(1e3,	"kilo"),
-(1e6,	"mega"),
-(1e6,	"meg"),
-(1e9,	"giga"),
-(1e12,	"tera"),
-(1e15,	"peta"),
-(1e18,	"exa"),
-(1e21,	"zetta"),
-(1e24,	"yotta")
+(1e-24, "yocto"),
+(1e-21, "zepto"),
+(1e-18, "atto"),
+(1e-15, "femto"),
+(1e-12, "pico"),
+(1e-9, "nano"),
+(1e-6, "micro"),
+(1e-6, "μ"),
+(1e-3, "milli"),
+(1e-2, "centi"),
+(1e-1, "deci"),
+(1e1, "deka"),
+(1e2, "hecta"),
+(1e2, "hecto"),
+(1e3, "kilo"),
+(1e6, "mega"),
+(1e6, "meg"),
+(1e9, "giga"),
+(1e12, "tera"),
+(1e15, "peta"),
+(1e18, "exa"),
+(1e21, "zetta"),
+(1e24, "yotta")
 };
 pname(): real
 {
@@ -606,62 +606,62 @@ YYPRIVATE: con 57344;
 yytoknames: array of string;
 yystates: array of string;
 yydebug: con 0;
-YYLAST:	con 41;
+YYLAST: con 41;
 yyact := array[] of {
-8,  10,   7,   9,  16,  17,  12,  11,  20,  21,
-15,  31,  23,   6,   4,  12,  11,  22,  13,   5,
-1,  27,  28,   0,  14,  30,  29,  13,  20,  20,
-25,  26,   0,  24,  18,  19,  16,  17,   2,   0,
+8, 10, 7, 9, 16, 17, 12, 11, 20, 21,
+15, 31, 23, 6, 4, 12, 11, 22, 13, 5,
+1, 27, 28, 0, 14, 30, 29, 13, 20, 20,
+25, 26, 0, 24, 18, 19, 16, 17, 2, 0,
 3,
 };
 yypact := array[] of {
-31,-1000,   9,  11,   2,  26,  22,  11,   3,  -3,
--1000,-1000,-1000,  11,  26,-1000,  11,  11,  11,  11,
-3,-1000,  11,  11,  -6,  22,  22,  11,  11,  -3,
+31,-1000, 9, 11, 2, 26, 22, 11, 3, -3,
+-1000,-1000,-1000, 11, 26,-1000, 11, 11, 11, 11,
+3,-1000, 11, 11, -6, 22, 22, 11, 11, -3,
 -1000,-1000,
 };
 yypgo := array[] of {
-0,  20,  19,   1,   3,   0,   2,  13,
+0, 20, 19, 1, 3, 0, 2, 13,
 };
 yyr1 := array[] of {
-0,   1,   1,   1,   1,   2,   2,   2,   7,   7,
-7,   6,   6,   5,   5,   5,   4,   4,   3,   3,
+0, 1, 1, 1, 1, 2, 2, 2, 7, 7,
+7, 6, 6, 5, 5, 5, 4, 4, 3, 3,
 3,
 };
 yyr2 := array[] of {
-0,   3,   3,   2,   1,   1,   3,   3,   1,   3,
-3,   1,   2,   1,   2,   3,   1,   3,   1,   1,
+0, 3, 3, 2, 1, 1, 3, 3, 1, 3,
+3, 1, 2, 1, 2, 3, 1, 3, 1, 1,
 3,
 };
 yychk := array[] of {
--1000,  -1,   7,   9,   5,  -2,  -7,  -6,  -5,  -4,
--3,   5,   4,  16,  -2,   8,  10,  11,  12,  13,
--5,   6,  14,  15,  -2,  -7,  -7,  -6,  -6,  -4,
--3,  17,
+-1000, -1, 7, 9, 5, -2, -7, -6, -5, -4,
+-3, 5, 4, 16, -2, 8, 10, 11, 12, 13,
+-5, 6, 14, 15, -2, -7, -7, -6, -6, -4,
+-3, 17,
 };
 yydef := array[] of {
-0,  -2,   0,   4,   0,   3,   5,   8,  11,  13,
-16,  18,  19,   0,   1,   2,   0,   0,   0,   0,
-12,  14,   0,   0,   0,   6,   7,   9,  10,  15,
-17,  20,
+0, -2, 0, 4, 0, 3, 5, 8, 11, 13,
+16, 18, 19, 0, 1, 2, 0, 0, 0, 0,
+12, 14, 0, 0, 0, 6, 7, 9, 10, 15,
+17, 20,
 };
 yytok1 := array[] of {
-1,   3,   3,   3,   3,   3,   3,   3,   3,   3,
-3,   3,   3,   3,   3,   3,   3,   3,   3,   3,
-3,   3,   3,   3,   3,   3,   3,   3,   3,   3,
-3,   3,   3,   3,   3,   8,   3,   3,   3,   3,
-16,  17,  12,  10,   3,  11,   3,  13,   3,   3,
-3,   3,   3,   3,   3,   3,   3,   3,   7,   3,
-3,   3,   3,   9,   3,   3,   3,   3,   3,   3,
-3,   3,   3,   3,   3,   3,   3,   3,   3,   3,
-3,   3,   3,   3,   3,   3,   3,   3,   3,   3,
-3,   3,   3,   3,  14,   3,   3,   3,   3,   3,
-3,   3,   3,   3,   3,   3,   3,   3,   3,   3,
-3,   3,   3,   3,   3,   3,   3,   3,   3,   3,
-3,   3,   3,   3,  15,
+1, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+3, 3, 3, 3, 3, 8, 3, 3, 3, 3,
+16, 17, 12, 10, 3, 11, 3, 13, 3, 3,
+3, 3, 3, 3, 3, 3, 3, 3, 7, 3,
+3, 3, 3, 9, 3, 3, 3, 3, 3, 3,
+3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+3, 3, 3, 3, 14, 3, 3, 3, 3, 3,
+3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+3, 3, 3, 3, 15,
 };
 yytok2 := array[] of {
-2,   3,   4,   5,   6,
+2, 3, 4, 5, 6,
 };
 yytok3 := array[] of {
 0
@@ -670,10 +670,10 @@ YYSys: module
 {
 FD: adt
 {
-fd:	int;
+fd: int;
 };
-fildes:		fn(fd: int): ref FD;
-fprint:		fn(fd: ref FD, s: string, *): int;
+fildes: fn(fd: int): ref FD;
+fprint: fn(fd: ref FD, s: string, *): int;
 };
 yysys: YYSys;
 yystderr: ref YYSys->FD;
@@ -711,7 +711,7 @@ break;
 }
 }
 if(c == 0)
-c = yytok2[1];	# unknown char
+c = yytok2[1]; # unknown char
 }
 if(yydebug >= 3)
 yysys->fprint(yystderr, "lex %.4ux %s\n", yychar, yytokname(c));
@@ -732,8 +732,8 @@ yys := array[YYMAXDEPTH] of YYS;
 yyval: YYSTYPE;
 yystate := 0;
 yychar := -1;
-yynerrs := 0;		# number of errors
-yyerrflag := 0;		# error recovery flag
+yynerrs := 0; # number of errors
+yyerrflag := 0; # error recovery flag
 yyp := -1;
 yyn := 0;
 yystack:
@@ -748,7 +748,7 @@ yys[yyp].yys = yystate;
 yys[yyp].yyv = yyval;
 for(;;){
 yyn = yypact[yystate];
-if(yyn > YYFLAG) {	# simple state
+if(yyn > YYFLAG) { # simple state
 if(yychar < 0)
 yychar = yylex1(yylex);
 yyn += yychar;
@@ -807,7 +807,7 @@ yyerrflag = 3;
 while(yyp >= 0) {
 yyn = yypact[yys[yyp].yys] + YYERRCODE;
 if(yyn >= 0 && yyn < YYLAST) {
-yystate = yyact[yyn];  # simulate a shift of "error"
+yystate = yyact[yyn]; # simulate a shift of "error"
 if(yychk[yystate] == YYERRCODE)
 continue yystack;
 }
@@ -836,7 +836,7 @@ if(yydebug >= 2)
 yysys->fprint(yystderr, "reduce %d in:\n\t%s", yyn, yystatname(yystate));
 yypt := yyp;
 yyp -= yyr2[yyn];
-#		yyval = yys[yyp+1].yyv;
+# yyval = yys[yyp+1].yyv;
 yym := yyn;
 # consult goto table to find next state
 yyn = yyr1[yyn];
@@ -846,7 +846,7 @@ if(yyj >= YYLAST || yychk[yystate=yyact[yyj]] != -yyn)
 yystate = yyact[yyg];
 case yym {
 1=>
-#line	90	"units.y"
+#line 90 "units.y"
 {
 f := yys[yypt-1].yyv.var.node.dim[0];
 yys[yypt-1].yyv.var.node = yys[yypt-0].yyv.node.copy();
@@ -857,7 +857,7 @@ else if(vflag)
 sys->print("%s\t%s\n", yys[yypt-1].yyv.var.name, yys[yypt-1].yyv.var.node.text());
 }
 2=>
-#line	100	"units.y"
+#line 100 "units.y"
 {
 for(i:=1; i<Ndim; i++)
 if(fund[i] == nil)
@@ -877,55 +877,55 @@ else if(vflag)
 sys->print("%s\t#\n", yys[yypt-1].yyv.var.name);
 }
 3=>
-#line	120	"units.y"
+#line 120 "units.y"
 {
 retnode1 = yys[yypt-0].yyv.node.copy();
 }
 4=>
-#line	124	"units.y"
+#line 124 "units.y"
 {
 retnode1 = Node.mk(1.0);
 }
 5=>
 yyval.node = yys[yyp+1].yyv.node;
 6=>
-#line	131	"units.y"
+#line 131 "units.y"
 {
 yyval.node = yys[yypt-2].yyv.node.add(yys[yypt-0].yyv.node);
 }
 7=>
-#line	135	"units.y"
+#line 135 "units.y"
 {
 yyval.node = yys[yypt-2].yyv.node.sub(yys[yypt-0].yyv.node);
 }
 8=>
 yyval.node = yys[yyp+1].yyv.node;
 9=>
-#line	142	"units.y"
+#line 142 "units.y"
 {
 yyval.node = yys[yypt-2].yyv.node.mul(yys[yypt-0].yyv.node);
 }
 10=>
-#line	146	"units.y"
+#line 146 "units.y"
 {
 yyval.node = yys[yypt-2].yyv.node.div(yys[yypt-0].yyv.node);
 }
 11=>
 yyval.node = yys[yyp+1].yyv.node;
 12=>
-#line	153	"units.y"
+#line 153 "units.y"
 {
 yyval.node = yys[yypt-1].yyv.node.mul(yys[yypt-0].yyv.node);
 }
 13=>
 yyval.node = yys[yyp+1].yyv.node;
 14=>
-#line	160	"units.y"
+#line 160 "units.y"
 {
 yyval.node = yys[yypt-1].yyv.node.xpn(yys[yypt-0].yyv.numb);
 }
 15=>
-#line	164	"units.y"
+#line 164 "units.y"
 {
 for(i:=1; i<Ndim; i++)
 if(yys[yypt-0].yyv.node.dim[i]) {
@@ -943,12 +943,12 @@ yyval.node = yys[yypt-2].yyv.node.xpn(i);
 16=>
 yyval.node = yys[yyp+1].yyv.node;
 17=>
-#line	182	"units.y"
+#line 182 "units.y"
 {
 yyval.node = yys[yypt-2].yyv.node.div(yys[yypt-0].yyv.node);
 }
 18=>
-#line	188	"units.y"
+#line 188 "units.y"
 {
 if(yys[yypt-0].yyv.var.node.dim[0] == 0) {
 yyerror(sys->sprint("undefined %s", yys[yypt-0].yyv.var.name));
@@ -957,12 +957,12 @@ yyval.node = Node.mk(1.0);
 yyval.node = yys[yypt-0].yyv.var.node.copy();
 }
 19=>
-#line	196	"units.y"
+#line 196 "units.y"
 {
 yyval.node = Node.mk(yys[yypt-0].yyv.val);
 }
 20=>
-#line	200	"units.y"
+#line 200 "units.y"
 {
 yyval.node = yys[yypt-1].yyv.node;
 }

@@ -69,10 +69,10 @@ const int8_t vi1 = vui >> 4;
 void dequantize_q5_0(__global const struct block_q5_0* x, const int ib, const int iqs, float* v0, float* v1) {
 const float d = vload_half(0, (__global half*) &x[ib].d);
 uint32_t qh = x[ib].qh;
-const uint8_t xh_0 = ((qh >> (iqs +  0)) << 4) & 0x10;
-const uint8_t xh_1 = ((qh >> (iqs + 12))     ) & 0x10;
+const uint8_t xh_0 = ((qh >> (iqs + 0)) << 4) & 0x10;
+const uint8_t xh_1 = ((qh >> (iqs + 12)) ) & 0x10;
 const int32_t x0 = ((x[ib].qs[iqs] & 0xf) | xh_0) - 16;
-const int32_t x1 = ((x[ib].qs[iqs] >>  4) | xh_1) - 16;
+const int32_t x1 = ((x[ib].qs[iqs] >> 4) | xh_1) - 16;
 *v0 = x0*d;
 *v1 = x1*d;
 }
@@ -80,10 +80,10 @@ void dequantize_q5_1(__global const struct block_q5_1* x, const int ib, const in
 const float d = vload_half(0, (__global half*) &x[ib].d);
 const float m = vload_half(0, (__global half*) &x[ib].m);
 uint32_t qh = x[ib].qh;
-const uint8_t xh_0 = ((qh >> (iqs +  0)) << 4) & 0x10;
-const uint8_t xh_1 = ((qh >> (iqs + 12))     ) & 0x10;
+const uint8_t xh_0 = ((qh >> (iqs + 0)) << 4) & 0x10;
+const uint8_t xh_1 = ((qh >> (iqs + 12)) ) & 0x10;
 const int32_t x0 = ((x[ib].qs[iqs] & 0xf) | xh_0);
-const int32_t x1 = ((x[ib].qs[iqs] >>  4) | xh_1);
+const int32_t x1 = ((x[ib].qs[iqs] >> 4) | xh_1);
 *v0 = x0*d + m;
 *v1 = x1*d + m;
 }
@@ -190,14 +190,14 @@ src << dmmv_kernel << '\n';
 }
 return src.str();
 }
-#define CL_CHECK(err, name)                                                                     \
-do {                                                                                        \
-cl_int err_ = (err);                                                                    \
-if (err_ != CL_SUCCESS) {                                                               \
-fprintf(stderr, "OpenCL %s error %d at %s:%d\n", name, err_, __FILE__, __LINE__);   \
-fprintf(stderr, "You may be out of VRAM. Please check if you have enough.\n");      \
-exit(1);                                                                            \
-}                                                                                       \
+#define CL_CHECK(err, name) \
+do { \
+cl_int err_ = (err); \
+if (err_ != CL_SUCCESS) { \
+fprintf(stderr, "OpenCL %s error %d at %s:%d\n", name, err_, __FILE__, __LINE__); \
+fprintf(stderr, "You may be out of VRAM. Please check if you have enough.\n"); \
+exit(1); \
+} \
 } while (0)
 static cl_platform_id platform;
 static cl_device_id device;
@@ -441,8 +441,8 @@ const int64_t ne02 = src0->ne[2];
 const int64_t ne03 = src0->ne[3];
 const int64_t ne10 = src1->ne[0];
 const int64_t ne11 = src1->ne[1];
-const int nb2  = dst->nb[2];
-const int nb3  = dst->nb[3];
+const int nb2 = dst->nb[2];
+const int nb3 = dst->nb[3];
 const float alpha = 1.0f;
 const float beta = 0.0f;
 const int x_ne = ne01 * ne00;
@@ -494,8 +494,8 @@ const int nb10 = src1->nb[0];
 const int nb11 = src1->nb[1];
 const int nb12 = src1->nb[2];
 const int nb13 = src1->nb[3];
-const int nb2  = dst->nb[2];
-const int nb3  = dst->nb[3];
+const int nb2 = dst->nb[2];
+const int nb3 = dst->nb[3];
 const ggml_v2_fp16_t alpha = ggml_v2_fp32_to_fp16(1.0f);
 const ggml_v2_fp16_t beta = ggml_v2_fp32_to_fp16(0.0f);
 const int x_ne = ne01 * ne00;
@@ -564,8 +564,8 @@ const int64_t ne02 = src0->ne[2];
 const int64_t ne03 = src0->ne[3];
 const int64_t ne10 = src1->ne[0];
 const int64_t ne11 = src1->ne[1];
-const int nb2  = dst->nb[2];
-const int nb3  = dst->nb[3];
+const int nb2 = dst->nb[2];
+const int nb3 = dst->nb[3];
 const ggml_v2_type type = src0->type;
 const bool mul_mat_vec = ne11 == 1;
 const float alpha = 1.0f;
@@ -757,9 +757,9 @@ default:
 fprintf(stderr, "Error: Unsupported OpenCL btype %d\n", btype);
 abort();
 }
-const size_t size_a =  m * k * sizeof(float);
-const size_t size_b =  n * k * sizeof(float);
-const size_t size_c =  m * n * sizeof(float);
+const size_t size_a = m * k * sizeof(float);
+const size_t size_b = n * k * sizeof(float);
+const size_t size_c = m * n * sizeof(float);
 ggml_v2_cl_malloc(size_a, &cl_size_a, CL_MEM_READ_ONLY, &cl_buffer_a);
 if (dequant) {
 ggml_v2_cl_malloc(size_qb, &cl_size_qb, CL_MEM_READ_ONLY, &cl_buffer_qb);

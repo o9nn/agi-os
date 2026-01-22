@@ -13,7 +13,7 @@
 #include <net/ip_masq.h>
 #include <net/ip_masq_mod.h>
 #include <linux/ip_masq.h>
-#define IP_AUTOFW_EXPIRE	     15*HZ
+#define IP_AUTOFW_EXPIRE 15*HZ
 struct ip_autofw {
 struct ip_autofw * next;
 __u16 type;
@@ -145,15 +145,15 @@ static __inline__ int ip_autofw_del(struct ip_autofw_user * af)
 {
 struct ip_autofw ** af_p, *curr;
 for (af_p=&ip_autofw_hosts, curr=*af_p; (curr=*af_p); af_p = &(*af_p)->next) {
-if (af->type     == curr->type &&
-af->low      == curr->low &&
-af->high     == curr->high &&
-af->hidden   == curr->hidden &&
-af->visible  == curr->visible &&
+if (af->type == curr->type &&
+af->low == curr->low &&
+af->high == curr->high &&
+af->hidden == curr->hidden &&
+af->visible == curr->visible &&
 af->protocol == curr->protocol &&
-af->where    == curr->where &&
+af->where == curr->where &&
 af->ctlproto == curr->ctlproto &&
-af->ctlport  == curr->ctlport)
+af->ctlport == curr->ctlport)
 {
 ip_masq_mod_dec_nent(mmod_self);
 *af_p = curr->next;
@@ -303,7 +303,7 @@ autofw_procinfo
 #else
 #define proc_ent NULL
 #endif
-#define	autofw_in_update NULL
+#define autofw_in_update NULL
 #define autofw_out_rule NULL
 #define autofw_mod_init NULL
 #define autofw_mod_done NULL

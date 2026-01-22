@@ -2,7 +2,7 @@
 #define ERRORS_H_
 #include <errno.h>
 #ifndef __printflike
-#define __printflike(n, m)	__attribute__((format(printf,n,m)))
+#define __printflike(n, m) __attribute__((format(printf,n,m)))
 #endif
 typedef enum {
 PGP_E_OK = 0x0000,
@@ -50,14 +50,14 @@ PGP_E_PROTO_DECRYPTED_MSG_WRONG_LEN = PGP_E_PROTO + 9,
 PGP_E_PROTO_BAD_SK_CHECKSUM = PGP_E_PROTO + 10
 } pgp_errcode_t;
 typedef struct pgp_error {
-pgp_errcode_t		errcode;
-int			sys_errno;
-char			*comment;
-const char		*file;
-int			 line;
-struct pgp_error	*next;
+pgp_errcode_t errcode;
+int sys_errno;
+char *comment;
+const char *file;
+int line;
+struct pgp_error *next;
 } pgp_error_t;
-const char     *pgp_errcode(const pgp_errcode_t);
+const char *pgp_errcode(const pgp_errcode_t);
 void
 pgp_push_error(pgp_error_t **, pgp_errcode_t,
 int,
@@ -65,24 +65,24 @@ const char *, int, const char *,...) __printflike(6, 7);
 void pgp_print_error(pgp_error_t *);
 void pgp_print_errors(pgp_error_t *);
 void pgp_free_errors(pgp_error_t *);
-int  pgp_has_error(pgp_error_t *, pgp_errcode_t);
-#define PGP_SYSTEM_ERROR_1(err,code,sys,fmt,arg)	do {		\
+int pgp_has_error(pgp_error_t *, pgp_errcode_t);
+#define PGP_SYSTEM_ERROR_1(err,code,sys,fmt,arg) do { \
 pgp_push_error(err,PGP_E_SYSTEM_ERROR,errno,__FILE__,__LINE__,sys);\
-pgp_push_error(err,code,0,__FILE__,__LINE__,fmt,arg);		\
+pgp_push_error(err,code,0,__FILE__,__LINE__,fmt,arg); \
 } while(0)
-#define PGP_MEMORY_ERROR(err) {						\
-fprintf(stderr, "Memory error\n");				\
+#define PGP_MEMORY_ERROR(err) { \
+fprintf(stderr, "Memory error\n"); \
 }
-#define PGP_ERROR_1(err,code,fmt,arg)	do {				\
-pgp_push_error(err,code,0,__FILE__,__LINE__,fmt,arg);		\
+#define PGP_ERROR_1(err,code,fmt,arg) do { \
+pgp_push_error(err,code,0,__FILE__,__LINE__,fmt,arg); \
 } while(0)
-#define PGP_ERROR_2(err,code,fmt,arg,arg2)	do {			\
-pgp_push_error(err,code,0,__FILE__,__LINE__,fmt,arg,arg2);	\
+#define PGP_ERROR_2(err,code,fmt,arg,arg2) do { \
+pgp_push_error(err,code,0,__FILE__,__LINE__,fmt,arg,arg2); \
 } while(0)
-#define PGP_ERROR_3(err,code,fmt,arg,arg2,arg3)	do {			\
-pgp_push_error(err,code,0,__FILE__,__LINE__,fmt,arg,arg2,arg3);	\
+#define PGP_ERROR_3(err,code,fmt,arg,arg2,arg3) do { \
+pgp_push_error(err,code,0,__FILE__,__LINE__,fmt,arg,arg2,arg3); \
 } while(0)
-#define PGP_ERROR_4(err,code,fmt,arg,arg2,arg3,arg4)	do {		\
+#define PGP_ERROR_4(err,code,fmt,arg,arg2,arg3,arg4) do { \
 pgp_push_error(err,code,0,__FILE__,__LINE__,fmt,arg,arg2,arg3,arg4); \
 } while(0)
 #endif

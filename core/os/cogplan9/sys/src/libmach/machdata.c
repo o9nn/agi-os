@@ -2,11 +2,11 @@
 #include <libc.h>
 #include <bio.h>
 #include <mach.h>
-#define STARTSYM	"_main"
-#define PROFSYM		"_mainp"
-#define	FRAMENAME	".frame"
-extern	Machdata	mipsmach;
-int	asstype = AMIPS;
+#define STARTSYM "_main"
+#define PROFSYM "_mainp"
+#define FRAMENAME ".frame"
+extern Machdata mipsmach;
+int asstype = AMIPS;
 Machdata *machdata;
 int
 localaddr(Map *map, char *fn, char *var, uvlong *r, Rgetter rget)
@@ -337,7 +337,7 @@ uvlong moved;
 USED(link);
 for(;;) {
 moved = pc2sp(pc);
-if (moved  == ~0)
+if (moved == ~0)
 break;
 sp += moved;
 findsym(pc, CTEXT, &s);

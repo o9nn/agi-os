@@ -6,8 +6,8 @@
 extern "C" {
 #endif
 # define WHIRLPOOL_DIGEST_LENGTH (512/8)
-# define WHIRLPOOL_BBLOCK        512
-# define WHIRLPOOL_COUNTER       (256/8)
+# define WHIRLPOOL_BBLOCK 512
+# define WHIRLPOOL_COUNTER (256/8)
 typedef struct {
 union {
 unsigned char c[WHIRLPOOL_DIGEST_LENGTH];
@@ -18,9 +18,9 @@ unsigned int bitoff;
 size_t bitlen[WHIRLPOOL_COUNTER / sizeof(size_t)];
 } WHIRLPOOL_CTX;
 # ifndef OPENSSL_NO_WHIRLPOOL
-#  ifdef OPENSSL_FIPS
+# ifdef OPENSSL_FIPS
 int private_WHIRLPOOL_Init(WHIRLPOOL_CTX *c);
-#  endif
+# endif
 int WHIRLPOOL_Init(WHIRLPOOL_CTX *c);
 int WHIRLPOOL_Update(WHIRLPOOL_CTX *c, const void *inp, size_t bytes);
 void WHIRLPOOL_BitUpdate(WHIRLPOOL_CTX *c, const void *inp, size_t bits);

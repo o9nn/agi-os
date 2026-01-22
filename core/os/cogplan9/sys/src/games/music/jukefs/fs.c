@@ -11,21 +11,21 @@ DbgFs = 0x1000
 };
 typedef struct Fid Fid;
 enum {
-Busy =	0x01,
-Open =	0x02,
-Endf =	0x04,
+Busy = 0x01,
+Open = 0x02,
+Endf = 0x04,
 };
 struct Fid
 {
 QLock;
-Qid	qid;
-int	fid;
-ushort	flags;
-vlong	offset;
-Fid	*next;
+Qid qid;
+int fid;
+ushort flags;
+vlong offset;
+Fid *next;
 };
-Fcall	thdr;
-Fcall	rhdr;
+Fcall thdr;
+Fcall rhdr;
 enum {
 Qchildren,
 Qdigest,
@@ -43,61 +43,61 @@ Qdir,
 Qroot,
 Qctl,
 };
-#define PATH(id, f)	(((id)<<8) | (f))
-#define FILE(p)		((p) & 0xff)
-#define NUM(p)		((p) >> 8)
+#define PATH(id, f) (((id)<<8) | (f))
+#define FILE(p) ((p) & 0xff)
+#define NUM(p) ((p) >> 8)
 char *dirtab[] =
 {
-[Qchildren]	"children",
-[Qdigest]	"digest",
-[Qdir]		".",
-[Qfiles]	"files",
-[Qfulltext]	"fulltext",
-[Qkey]		"key",
+[Qchildren] "children",
+[Qdigest] "digest",
+[Qdir] ".",
+[Qfiles] "files",
+[Qfulltext] "fulltext",
+[Qkey] "key",
 [Qminiparentage]"miniparentage",
-[Qparent]	"parent",
-[Qparentage]	"parentage",
-[Qtext]		"text",
-[Qtype]		"type",
-[Qtop]		nil,
+[Qparent] "parent",
+[Qparentage] "parentage",
+[Qtext] "text",
+[Qtype] "type",
+[Qtop] nil,
 };
-char	*rflush(Fid*), *rauth(Fid*),
+char *rflush(Fid*), *rauth(Fid*),
 *rattach(Fid*), *rwalk(Fid*),
 *ropen(Fid*), *rcreate(Fid*),
 *rread(Fid*), *rwrite(Fid*), *rclunk(Fid*),
 *rremove(Fid*), *rstat(Fid*), *rwstat(Fid*),
 *rversion(Fid*);
-char 	*(*fcalls[])(Fid*) = {
-[Tflush]	rflush,
-[Tversion]	rversion,
-[Tauth]		rauth,
-[Tattach]	rattach,
-[Twalk]		rwalk,
-[Topen]		ropen,
-[Tcreate]	rcreate,
-[Tread]		rread,
-[Twrite]	rwrite,
-[Tclunk]	rclunk,
-[Tremove]	rremove,
-[Tstat]		rstat,
-[Twstat]	rwstat,
+char *(*fcalls[])(Fid*) = {
+[Tflush] rflush,
+[Tversion] rversion,
+[Tauth] rauth,
+[Tattach] rattach,
+[Twalk] rwalk,
+[Topen] ropen,
+[Tcreate] rcreate,
+[Tread] rread,
+[Twrite] rwrite,
+[Tclunk] rclunk,
+[Tremove] rremove,
+[Tstat] rstat,
+[Twstat] rwstat,
 };
-int	messagesize = 8*1024+IOHDRSZ;
-uchar	mdata[8*1024+IOHDRSZ];
-uchar	mbuf[8*1024+IOHDRSZ];
-char	bigbuf[1<<23];
-Fid	*fids;
-char	Eperm[] =	"permission denied";
-char	Enotdir[] =	"not a directory";
-char	Enoauth[] =	"no authentication required";
-char	Enotexist[] =	"file does not exist";
-char	Einuse[] =	"file in use";
-char	Eexist[] =	"file exists";
-char	Enotowner[] =	"not owner";
-char	Eisopen[] = 	"file already open for I/O";
-char	Excl[] = 	"exclusive use file already open";
-char	Ename[] = 	"illegal name";
-char	Ebadctl[] =	"unknown control message";
+int messagesize = 8*1024+IOHDRSZ;
+uchar mdata[8*1024+IOHDRSZ];
+uchar mbuf[8*1024+IOHDRSZ];
+char bigbuf[1<<23];
+Fid *fids;
+char Eperm[] = "permission denied";
+char Enotdir[] = "not a directory";
+char Enoauth[] = "no authentication required";
+char Enotexist[] = "file does not exist";
+char Einuse[] = "file in use";
+char Eexist[] = "file exists";
+char Enotowner[] = "not owner";
+char Eisopen[] = "file already open for I/O";
+char Excl[] = "exclusive use file already open";
+char Ename[] = "illegal name";
+char Ebadctl[] = "unknown control message";
 Fid *newfid(int fid);
 static int
 lookup(char *cmd, char *list[])

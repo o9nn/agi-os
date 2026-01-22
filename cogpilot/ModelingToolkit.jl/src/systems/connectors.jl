@@ -985,12 +985,12 @@ end
 return num / den
 #=
 si = sum(max(-mj.c.m_flow,0) for j in cat(1,1:i-1, i+1:N)) +
-sum(max(ck.m_flow ,0) for k  in 1:M)
+sum(max(ck.m_flow ,0) for k in 1:M)
 inStream(mi.c.h_outflow) =
 (sum(positiveMax(-mj.c.m_flow,si)*mj.c.h_outflow)
-+  sum(positiveMax(ck.m_flow,s_i)*inStream(ck.h_outflow)))/
++ sum(positiveMax(ck.m_flow,s_i)*inStream(ck.h_outflow)))/
 (sum(positiveMax(-mj.c.m_flow,s_i))
-+  sum(positiveMax(ck.m_flow,s_i)))
++ sum(positiveMax(ck.m_flow,s_i)))
 for j in 1:N and i <> j and mj.c.m_flow.min < 0,
 for k in 1:M and ck.m_flow.max > 0
 =#

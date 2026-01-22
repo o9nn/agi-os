@@ -1,10 +1,10 @@
 #ifndef gscdefs_INCLUDED
-#  define gscdefs_INCLUDED
+# define gscdefs_INCLUDED
 #include "gconfigv.h"
 #if SYSTEM_CONSTANTS_ARE_WRITABLE
-#  define CONFIG_CONST
+# define CONFIG_CONST
 #else
-#  define CONFIG_CONST const
+# define CONFIG_CONST const
 #endif
 extern CONFIG_CONST long gs_buildtime;
 extern const char *CONFIG_CONST gs_copyright;

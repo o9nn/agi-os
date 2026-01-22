@@ -1,8 +1,8 @@
 #include <hurd/ihash.h>
 #include "priv.h"
-#define mix_fasthash(h) ({              \
-(h) ^= (h) >> 23;               \
-(h) *= 0x2127599bf4325c37ULL;   \
+#define mix_fasthash(h) ({ \
+(h) ^= (h) >> 23; \
+(h) *= 0x2127599bf4325c37ULL; \
 (h) ^= (h) >> 47; })
 static hurd_ihash_key_t
 hash (const void *key)

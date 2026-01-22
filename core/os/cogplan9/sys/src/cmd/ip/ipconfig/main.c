@@ -33,170 +33,170 @@ Tvec,
 typedef struct Option Option;
 struct Option
 {
-char	*name;
-int	type;
+char *name;
+int type;
 };
 Option option[256] =
 {
-[OBmask]		{ "ipmask",		Taddr },
-[OBtimeoff]		{ "timeoff",		Tulong },
-[OBrouter]		{ "ipgw",		Taddrs },
-[OBtimeserver]		{ "time",		Taddrs },
-[OBnameserver]		{ "name",		Taddrs },
-[OBdnserver]		{ "dns",		Taddrs },
-[OBlogserver]		{ "log",		Taddrs },
-[OBcookieserver]	{ "cookie",		Taddrs },
-[OBlprserver]		{ "lpr",		Taddrs },
-[OBimpressserver]	{ "impress",		Taddrs },
-[OBrlserver]		{ "rl",			Taddrs },
-[OBhostname]		{ "sys",		Tstr },
-[OBbflen]		{ "bflen",		Tulong },
-[OBdumpfile]		{ "dumpfile",		Tstr },
-[OBdomainname]		{ "dom",		Tstr },
-[OBswapserver]		{ "swap",		Taddrs },
-[OBrootpath]		{ "rootpath",		Tstr },
-[OBextpath]		{ "extpath",		Tstr },
-[OBipforward]		{ "ipforward",		Taddrs },
-[OBnonlocal]		{ "nonlocal",		Taddrs },
-[OBpolicyfilter]	{ "policyfilter",	Taddrs },
-[OBmaxdatagram]		{ "maxdatagram",	Tulong },
-[OBttl]			{ "ttl",		Tulong },
-[OBpathtimeout]		{ "pathtimeout",	Taddrs },
-[OBpathplateau]		{ "pathplateau",	Taddrs },
-[OBmtu]			{ "mtu",		Tulong },
-[OBsubnetslocal]	{ "subnetslocal",	Taddrs },
-[OBbaddr]		{ "baddr",		Taddrs },
-[OBdiscovermask]	{ "discovermask",	Taddrs },
-[OBsupplymask]		{ "supplymask",		Taddrs },
-[OBdiscoverrouter]	{ "discoverrouter",	Taddrs },
-[OBrsserver]		{ "rs",			Taddrs },
-[OBstaticroutes]	{ "staticroutes",	Taddrs },
-[OBtrailerencap]	{ "trailerencap",	Taddrs },
-[OBarptimeout]		{ "arptimeout",		Tulong },
-[OBetherencap]		{ "etherencap",		Taddrs },
-[OBtcpttl]		{ "tcpttl",		Tulong },
-[OBtcpka]		{ "tcpka",		Tulong },
-[OBtcpkag]		{ "tcpkag",		Tulong },
-[OBnisdomain]		{ "nisdomain",		Tstr },
-[OBniserver]		{ "ni",			Taddrs },
-[OBntpserver]		{ "ntp",		Taddrs },
-[OBnetbiosns]		{ "netbiosns",		Taddrs },
-[OBnetbiosdds]		{ "netbiosdds",		Taddrs },
-[OBnetbiostype]		{ "netbiostype",	Taddrs },
-[OBnetbiosscope]	{ "netbiosscope",	Taddrs },
-[OBxfontserver]		{ "xfont",		Taddrs },
-[OBxdispmanager]	{ "xdispmanager",	Taddrs },
-[OBnisplusdomain]	{ "nisplusdomain",	Tstr },
-[OBnisplusserver]	{ "nisplus",		Taddrs },
-[OBhomeagent]		{ "homeagent",		Taddrs },
-[OBsmtpserver]		{ "smtp",		Taddrs },
-[OBpop3server]		{ "pop3",		Taddrs },
-[OBnntpserver]		{ "nntp",		Taddrs },
-[OBwwwserver]		{ "www",		Taddrs },
-[OBfingerserver]	{ "finger",		Taddrs },
-[OBircserver]		{ "irc",		Taddrs },
-[OBstserver]		{ "st",			Taddrs },
-[OBstdaserver]		{ "stdar",		Taddrs },
-[ODipaddr]		{ "ipaddr",		Taddr },
-[ODlease]		{ "lease",		Tulong },
-[ODoverload]		{ "overload",		Taddr },
-[ODtype]		{ "type",		Tbyte },
-[ODserverid]		{ "serverid",		Taddr },
-[ODparams]		{ "params",		Tvec },
-[ODmessage]		{ "message",		Tstr },
-[ODmaxmsg]		{ "maxmsg",		Tulong },
-[ODrenewaltime]		{ "renewaltime",	Tulong },
-[ODrebindingtime]	{ "rebindingtime",	Tulong },
-[ODvendorclass]		{ "vendorclass",	Tvec },
-[ODclientid]		{ "clientid",		Tvec },
-[ODtftpserver]		{ "tftp",		Taddr },
-[ODbootfile]		{ "bootfile",		Tstr },
+[OBmask] { "ipmask", Taddr },
+[OBtimeoff] { "timeoff", Tulong },
+[OBrouter] { "ipgw", Taddrs },
+[OBtimeserver] { "time", Taddrs },
+[OBnameserver] { "name", Taddrs },
+[OBdnserver] { "dns", Taddrs },
+[OBlogserver] { "log", Taddrs },
+[OBcookieserver] { "cookie", Taddrs },
+[OBlprserver] { "lpr", Taddrs },
+[OBimpressserver] { "impress", Taddrs },
+[OBrlserver] { "rl", Taddrs },
+[OBhostname] { "sys", Tstr },
+[OBbflen] { "bflen", Tulong },
+[OBdumpfile] { "dumpfile", Tstr },
+[OBdomainname] { "dom", Tstr },
+[OBswapserver] { "swap", Taddrs },
+[OBrootpath] { "rootpath", Tstr },
+[OBextpath] { "extpath", Tstr },
+[OBipforward] { "ipforward", Taddrs },
+[OBnonlocal] { "nonlocal", Taddrs },
+[OBpolicyfilter] { "policyfilter", Taddrs },
+[OBmaxdatagram] { "maxdatagram", Tulong },
+[OBttl] { "ttl", Tulong },
+[OBpathtimeout] { "pathtimeout", Taddrs },
+[OBpathplateau] { "pathplateau", Taddrs },
+[OBmtu] { "mtu", Tulong },
+[OBsubnetslocal] { "subnetslocal", Taddrs },
+[OBbaddr] { "baddr", Taddrs },
+[OBdiscovermask] { "discovermask", Taddrs },
+[OBsupplymask] { "supplymask", Taddrs },
+[OBdiscoverrouter] { "discoverrouter", Taddrs },
+[OBrsserver] { "rs", Taddrs },
+[OBstaticroutes] { "staticroutes", Taddrs },
+[OBtrailerencap] { "trailerencap", Taddrs },
+[OBarptimeout] { "arptimeout", Tulong },
+[OBetherencap] { "etherencap", Taddrs },
+[OBtcpttl] { "tcpttl", Tulong },
+[OBtcpka] { "tcpka", Tulong },
+[OBtcpkag] { "tcpkag", Tulong },
+[OBnisdomain] { "nisdomain", Tstr },
+[OBniserver] { "ni", Taddrs },
+[OBntpserver] { "ntp", Taddrs },
+[OBnetbiosns] { "netbiosns", Taddrs },
+[OBnetbiosdds] { "netbiosdds", Taddrs },
+[OBnetbiostype] { "netbiostype", Taddrs },
+[OBnetbiosscope] { "netbiosscope", Taddrs },
+[OBxfontserver] { "xfont", Taddrs },
+[OBxdispmanager] { "xdispmanager", Taddrs },
+[OBnisplusdomain] { "nisplusdomain", Tstr },
+[OBnisplusserver] { "nisplus", Taddrs },
+[OBhomeagent] { "homeagent", Taddrs },
+[OBsmtpserver] { "smtp", Taddrs },
+[OBpop3server] { "pop3", Taddrs },
+[OBnntpserver] { "nntp", Taddrs },
+[OBwwwserver] { "www", Taddrs },
+[OBfingerserver] { "finger", Taddrs },
+[OBircserver] { "irc", Taddrs },
+[OBstserver] { "st", Taddrs },
+[OBstdaserver] { "stdar", Taddrs },
+[ODipaddr] { "ipaddr", Taddr },
+[ODlease] { "lease", Tulong },
+[ODoverload] { "overload", Taddr },
+[ODtype] { "type", Tbyte },
+[ODserverid] { "serverid", Taddr },
+[ODparams] { "params", Tvec },
+[ODmessage] { "message", Tstr },
+[ODmaxmsg] { "maxmsg", Tulong },
+[ODrenewaltime] { "renewaltime", Tulong },
+[ODrebindingtime] { "rebindingtime", Tulong },
+[ODvendorclass] { "vendorclass", Tvec },
+[ODclientid] { "clientid", Tvec },
+[ODtftpserver] { "tftp", Taddr },
+[ODbootfile] { "bootfile", Tstr },
 };
 uchar defrequested[] = {
 OBmask, OBrouter, OBdnserver, OBhostname, OBdomainname, OBntpserver,
 };
-uchar	requested[256];
-int	nrequested;
-int	Oflag;
-int	beprimary = -1;
-Conf	conf;
-int	debug;
-int	dodhcp;
-int	dolog;
-int	dondbconfig = 0;
-int	dupl_disc = 1;
-Ctl	*firstctl, **ctll;
-Ipifc	*ifc;
-int	ipv6auto = 0;
-int	myifc = -1;
-char	*ndboptions;
-int	nip;
-int	noconfig;
-int	nodhcpwatch;
-char 	optmagic[4] = { 0x63, 0x82, 0x53, 0x63 };
-int	plan9 = 1;
-int	sendhostname;
+uchar requested[256];
+int nrequested;
+int Oflag;
+int beprimary = -1;
+Conf conf;
+int debug;
+int dodhcp;
+int dolog;
+int dondbconfig = 0;
+int dupl_disc = 1;
+Ctl *firstctl, **ctll;
+Ipifc *ifc;
+int ipv6auto = 0;
+int myifc = -1;
+char *ndboptions;
+int nip;
+int noconfig;
+int nodhcpwatch;
+char optmagic[4] = { 0x63, 0x82, 0x53, 0x63 };
+int plan9 = 1;
+int sendhostname;
 static char logfile[] = "ipconfig";
 char *verbs[] = {
-[Vadd]		"add",
-[Vremove]	"remove",
-[Vunbind]	"unbind",
-[Vether]	"ether",
-[Vgbe]		"gbe",
-[Vppp]		"ppp",
-[Vloopback]	"loopback",
-[Vaddpref6]	"add6",
-[Vra6]		"ra6",
-[Vtorus]	"torus",
-[Vtree]		"tree",
-[Vpkt]		"pkt",
+[Vadd] "add",
+[Vremove] "remove",
+[Vunbind] "unbind",
+[Vether] "ether",
+[Vgbe] "gbe",
+[Vppp] "ppp",
+[Vloopback] "loopback",
+[Vaddpref6] "add6",
+[Vra6] "ra6",
+[Vtorus] "torus",
+[Vtree] "tree",
+[Vpkt] "pkt",
 };
-void	adddefroute(char*, uchar*);
-int	addoption(char*);
-void	binddevice(void);
-void	bootprequest(void);
-void	controldevice(void);
-void	dhcpquery(int, int);
-void	dhcprecv(void);
-void	dhcpsend(int);
-int	dhcptimer(void);
-void	dhcpwatch(int);
-void	doadd(int);
-void	doremove(void);
-void	dounbind(void);
-int	getndb(void);
-void	getoptions(uchar*);
-int	ip4cfg(void);
-int	ip6cfg(int a);
-void	lookforip(char*);
-void	mkclientid(void);
-void	ndbconfig(void);
-int	nipifcs(char*);
-int	openlisten(void);
-uchar*	optaddaddr(uchar*, int, uchar*);
-uchar*	optaddbyte(uchar*, int, int);
-uchar*	optaddstr(uchar*, int, char*);
-uchar*	optadd(uchar*, int, void*, int);
-uchar*	optaddulong(uchar*, int, ulong);
-uchar*	optaddvec(uchar*, int, uchar*, int);
-int	optgetaddrs(uchar*, int, uchar*, int);
-int	optgetp9addrs(uchar*, int, uchar*, int);
-int	optgetaddr(uchar*, int, uchar*);
-int	optgetbyte(uchar*, int);
-int	optgetstr(uchar*, int, char*, int);
-uchar*	optget(uchar*, int, int*);
-ulong	optgetulong(uchar*, int);
-int	optgetvec(uchar*, int, uchar*, int);
-char*	optgetx(uchar*, uchar);
-Bootp*	parsebootp(uchar*, int);
-int	parseoptions(uchar *p, int n);
-int	parseverb(char*);
-void	pppbinddev(void);
-void	putndb(void);
-void	tweakservers(void);
-void	usage(void);
-int	validip(uchar*);
-void	writendb(char*, int, int);
+void adddefroute(char*, uchar*);
+int addoption(char*);
+void binddevice(void);
+void bootprequest(void);
+void controldevice(void);
+void dhcpquery(int, int);
+void dhcprecv(void);
+void dhcpsend(int);
+int dhcptimer(void);
+void dhcpwatch(int);
+void doadd(int);
+void doremove(void);
+void dounbind(void);
+int getndb(void);
+void getoptions(uchar*);
+int ip4cfg(void);
+int ip6cfg(int a);
+void lookforip(char*);
+void mkclientid(void);
+void ndbconfig(void);
+int nipifcs(char*);
+int openlisten(void);
+uchar* optaddaddr(uchar*, int, uchar*);
+uchar* optaddbyte(uchar*, int, int);
+uchar* optaddstr(uchar*, int, char*);
+uchar* optadd(uchar*, int, void*, int);
+uchar* optaddulong(uchar*, int, ulong);
+uchar* optaddvec(uchar*, int, uchar*, int);
+int optgetaddrs(uchar*, int, uchar*, int);
+int optgetp9addrs(uchar*, int, uchar*, int);
+int optgetaddr(uchar*, int, uchar*);
+int optgetbyte(uchar*, int);
+int optgetstr(uchar*, int, char*, int);
+uchar* optget(uchar*, int, int*);
+ulong optgetulong(uchar*, int);
+int optgetvec(uchar*, int, uchar*, int);
+char* optgetx(uchar*, uchar);
+Bootp* parsebootp(uchar*, int);
+int parseoptions(uchar *p, int n);
+int parseverb(char*);
+void pppbinddev(void);
+void putndb(void);
+void tweakservers(void);
+void usage(void);
+int validip(uchar*);
+void writendb(char*, int, int);
 void
 usage(void)
 {
@@ -274,7 +274,7 @@ if (argc % 2 != 0)
 usage();
 i = 0;
 for (argsleft = argc; argsleft > 1; argsleft -= 2) {
-kw =  argv[i];
+kw = argv[i];
 val = argv[i+1];
 if (strcmp(kw, "recvra") == 0)
 conf.recvra = (atoi(val) != 0);
@@ -1268,7 +1268,7 @@ p = (char *)optget(ap, op, &len);
 if(p == nil)
 return 0;
 addrs = *p++;
-for (i = 0; i < n  && i < addrs && len > 0; i++) {
+for (i = 0; i < n && i < addrs && len > 0; i++) {
 slen = strlen(p) + 1;
 if (parseip(&ip[i*IPaddrlen], p) == -1)
 fprint(2, "%s: bad address %s\n", argv0, p);

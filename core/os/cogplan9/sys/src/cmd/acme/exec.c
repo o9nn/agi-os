@@ -10,67 +10,67 @@
 #include <plumb.h>
 #include "dat.h"
 #include "fns.h"
-Buffer	snarfbuf;
-void	del(Text*, Text*, Text*, int, int, Rune*, int);
-void	delcol(Text*, Text*, Text*, int, int, Rune*, int);
-void	dump(Text*, Text*, Text*, int, int, Rune*, int);
-void	edit(Text*, Text*, Text*, int, int, Rune*, int);
-void	exit(Text*, Text*, Text*, int, int, Rune*, int);
-void	fontx(Text*, Text*, Text*, int, int, Rune*, int);
-void	get(Text*, Text*, Text*, int, int, Rune*, int);
-void	id(Text*, Text*, Text*, int, int, Rune*, int);
-void	incl(Text*, Text*, Text*, int, int, Rune*, int);
-void	indent(Text*, Text*, Text*, int, int, Rune*, int);
-void	kill(Text*, Text*, Text*, int, int, Rune*, int);
-void	local(Text*, Text*, Text*, int, int, Rune*, int);
-void	look(Text*, Text*, Text*, int, int, Rune*, int);
-void	newcol(Text*, Text*, Text*, int, int, Rune*, int);
-void	paste(Text*, Text*, Text*, int, int, Rune*, int);
-void	put(Text*, Text*, Text*, int, int, Rune*, int);
-void	putall(Text*, Text*, Text*, int, int, Rune*, int);
-void	sendx(Text*, Text*, Text*, int, int, Rune*, int);
-void	sort(Text*, Text*, Text*, int, int, Rune*, int);
-void	tab(Text*, Text*, Text*, int, int, Rune*, int);
-void	zeroxx(Text*, Text*, Text*, int, int, Rune*, int);
+Buffer snarfbuf;
+void del(Text*, Text*, Text*, int, int, Rune*, int);
+void delcol(Text*, Text*, Text*, int, int, Rune*, int);
+void dump(Text*, Text*, Text*, int, int, Rune*, int);
+void edit(Text*, Text*, Text*, int, int, Rune*, int);
+void exit(Text*, Text*, Text*, int, int, Rune*, int);
+void fontx(Text*, Text*, Text*, int, int, Rune*, int);
+void get(Text*, Text*, Text*, int, int, Rune*, int);
+void id(Text*, Text*, Text*, int, int, Rune*, int);
+void incl(Text*, Text*, Text*, int, int, Rune*, int);
+void indent(Text*, Text*, Text*, int, int, Rune*, int);
+void kill(Text*, Text*, Text*, int, int, Rune*, int);
+void local(Text*, Text*, Text*, int, int, Rune*, int);
+void look(Text*, Text*, Text*, int, int, Rune*, int);
+void newcol(Text*, Text*, Text*, int, int, Rune*, int);
+void paste(Text*, Text*, Text*, int, int, Rune*, int);
+void put(Text*, Text*, Text*, int, int, Rune*, int);
+void putall(Text*, Text*, Text*, int, int, Rune*, int);
+void sendx(Text*, Text*, Text*, int, int, Rune*, int);
+void sort(Text*, Text*, Text*, int, int, Rune*, int);
+void tab(Text*, Text*, Text*, int, int, Rune*, int);
+void zeroxx(Text*, Text*, Text*, int, int, Rune*, int);
 typedef struct Exectab Exectab;
 struct Exectab
 {
-Rune	*name;
-void	(*fn)(Text*, Text*, Text*, int, int, Rune*, int);
-int		mark;
-int		flag1;
-int		flag2;
+Rune *name;
+void (*fn)(Text*, Text*, Text*, int, int, Rune*, int);
+int mark;
+int flag1;
+int flag2;
 };
 Exectab exectab[] = {
-{ L"Cut",		cut,		TRUE,	TRUE,	TRUE	},
-{ L"Del",		del,		FALSE,	FALSE,	XXX		},
-{ L"Delcol",	delcol,	FALSE,	XXX,		XXX		},
-{ L"Delete",	del,		FALSE,	TRUE,	XXX		},
-{ L"Dump",	dump,	FALSE,	TRUE,	XXX		},
-{ L"Edit",		edit,		FALSE,	XXX,		XXX		},
-{ L"Exit",		exit,		FALSE,	XXX,		XXX		},
-{ L"Font",		fontx,	FALSE,	XXX,		XXX		},
-{ L"Get",		get,		FALSE,	TRUE,	XXX		},
-{ L"ID",		id,		FALSE,	XXX,		XXX		},
-{ L"Incl",		incl,		FALSE,	XXX,		XXX		},
-{ L"Indent",	indent,	FALSE,	XXX,		XXX		},
-{ L"Kill",		kill,		FALSE,	XXX,		XXX		},
-{ L"Load",		dump,	FALSE,	FALSE,	XXX		},
-{ L"Local",		local,	FALSE,	XXX,		XXX		},
-{ L"Look",		look,		FALSE,	XXX,		XXX		},
-{ L"New",		new,		FALSE,	XXX,		XXX		},
-{ L"Newcol",	newcol,	FALSE,	XXX,		XXX		},
-{ L"Paste",		paste,	TRUE,	TRUE,	XXX		},
-{ L"Put",		put,		FALSE,	XXX,		XXX		},
-{ L"Putall",		putall,	FALSE,	XXX,		XXX		},
-{ L"Redo",		undo,	FALSE,	FALSE,	XXX		},
-{ L"Send",		sendx,	TRUE,	XXX,		XXX		},
-{ L"Snarf",		cut,		FALSE,	TRUE,	FALSE	},
-{ L"Sort",		sort,		FALSE,	XXX,		XXX		},
-{ L"Tab",		tab,		FALSE,	XXX,		XXX		},
-{ L"Undo",		undo,	FALSE,	TRUE,	XXX		},
-{ L"Zerox",	zeroxx,	FALSE,	XXX,		XXX		},
-{ nil, 			nil,		0,		0,		0		},
+{ L"Cut", cut, TRUE, TRUE, TRUE },
+{ L"Del", del, FALSE, FALSE, XXX },
+{ L"Delcol", delcol, FALSE, XXX, XXX },
+{ L"Delete", del, FALSE, TRUE, XXX },
+{ L"Dump", dump, FALSE, TRUE, XXX },
+{ L"Edit", edit, FALSE, XXX, XXX },
+{ L"Exit", exit, FALSE, XXX, XXX },
+{ L"Font", fontx, FALSE, XXX, XXX },
+{ L"Get", get, FALSE, TRUE, XXX },
+{ L"ID", id, FALSE, XXX, XXX },
+{ L"Incl", incl, FALSE, XXX, XXX },
+{ L"Indent", indent, FALSE, XXX, XXX },
+{ L"Kill", kill, FALSE, XXX, XXX },
+{ L"Load", dump, FALSE, FALSE, XXX },
+{ L"Local", local, FALSE, XXX, XXX },
+{ L"Look", look, FALSE, XXX, XXX },
+{ L"New", new, FALSE, XXX, XXX },
+{ L"Newcol", newcol, FALSE, XXX, XXX },
+{ L"Paste", paste, TRUE, TRUE, XXX },
+{ L"Put", put, FALSE, XXX, XXX },
+{ L"Putall", putall, FALSE, XXX, XXX },
+{ L"Redo", undo, FALSE, FALSE, XXX },
+{ L"Send", sendx, TRUE, XXX, XXX },
+{ L"Snarf", cut, FALSE, TRUE, FALSE },
+{ L"Sort", sort, FALSE, XXX, XXX },
+{ L"Tab", tab, FALSE, XXX, XXX },
+{ L"Undo", undo, FALSE, TRUE, XXX },
+{ L"Zerox", zeroxx, FALSE, XXX, XXX },
+{ nil, nil, 0, 0, 0 },
 };
 Exectab*
 lookup(Rune *r, int n)
@@ -605,7 +605,7 @@ void
 put(Text *et, Text*, Text *argt, int, int, Rune *arg, int narg)
 {
 int nname;
-Rune  *namer;
+Rune *namer;
 Window *w;
 File *f;
 char *name;

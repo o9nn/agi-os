@@ -1,21 +1,21 @@
 package cmd
 import (
-	"context"
-	"errors"
-	"time"
-	"github.com/EchoCog/echollama/api"
+"context"
+"errors"
+"time"
+"github.com/EchoCog/echollama/api"
 )
 func waitForServer(ctx context.Context, client *api.Client) error {
-	timeout := time.After(5 * time.Second)
-	tick := time.Tick(500 * time.Millisecond)
-	for {
-		select {
-		case <-timeout:
-			return errors.New("timed out waiting for server to start")
-		case <-tick:
-			if err := client.Heartbeat(ctx); err == nil {
-				return nil 
-			}
-		}
-	}
+timeout := time.After(5 * time.Second)
+tick := time.Tick(500 * time.Millisecond)
+for {
+select {
+case <-timeout:
+return errors.New("timed out waiting for server to start")
+case <-tick:
+if err := client.Heartbeat(ctx); err == nil {
+return nil
+}
+}
+}
 }

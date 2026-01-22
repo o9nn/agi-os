@@ -3,47 +3,47 @@
 #define MAXLINE 200
 #define WORD 256
 #define EOF -1
-#define ispunct(c)		(c=='|' || c=='&' || c==';' || c=='<' || \
+#define ispunct(c) (c=='|' || c=='&' || c==';' || c=='<' || \
 c=='>' || c=='(' || c==')' || c=='\n')
-#define isspace(c)		(c==' ' || c=='\t')
-#define execute(np)		(ignored = (np? (*(np)->op)(np) : 0))
-typedef struct Node	Node;
+#define isspace(c) (c==' ' || c=='\t')
+#define execute(np) (ignored = (np? (*(np)->op)(np) : 0))
+typedef struct Node Node;
 struct Node{
 int (*op)(Node *);
 Node *args[2];
 char *argv[100];
 char *io[3];
 };
-Node	nodes[25];
-Node	*nfree;
-char	strspace[10*MAXLINE];
-char	*sfree;
-int	t;
-char 	*token;
-int	putback = 0;
-char	status[256];
-int	cflag = 0;
-int	tflag = 0;
-int	interactive = 0;
-char	*cflagp;
-char	*path[] ={"/bin", 0};
-int	ignored;
-Node	*alloc(int (*op)(Node *));
-int	builtin(Node *np);
-Node	*command(void);
-int	getch(void);
-int	gettoken(void);
-Node	*list(void);
-void	error(char *s, char *t);
-Node	*pipeline(void);
-void	redirect(Node *np);
-int	setio(Node *np);
-Node	*simple(void);
-int	xpipeline(Node *np);
-int	xsimple(Node *np);
-int	xsubshell(Node *np);
-int	xnowait(Node *np);
-int	xwait(Node *np);
+Node nodes[25];
+Node *nfree;
+char strspace[10*MAXLINE];
+char *sfree;
+int t;
+char *token;
+int putback = 0;
+char status[256];
+int cflag = 0;
+int tflag = 0;
+int interactive = 0;
+char *cflagp;
+char *path[] ={"/bin", 0};
+int ignored;
+Node *alloc(int (*op)(Node *));
+int builtin(Node *np);
+Node *command(void);
+int getch(void);
+int gettoken(void);
+Node *list(void);
+void error(char *s, char *t);
+Node *pipeline(void);
+void redirect(Node *np);
+int setio(Node *np);
+Node *simple(void);
+int xpipeline(Node *np);
+int xsimple(Node *np);
+int xsubshell(Node *np);
+int xnowait(Node *np);
+int xwait(Node *np);
 void
 main(int argc, char *argv[])
 {

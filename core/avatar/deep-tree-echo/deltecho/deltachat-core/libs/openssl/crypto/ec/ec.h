@@ -2,22 +2,22 @@
 # define HEADER_EC_H
 # include <openssl/opensslconf.h>
 # ifdef OPENSSL_NO_EC
-#  error EC is disabled.
+# error EC is disabled.
 # endif
 # include <openssl/asn1.h>
 # include <openssl/symhacks.h>
 # ifndef OPENSSL_NO_DEPRECATED
-#  include <openssl/bn.h>
+# include <openssl/bn.h>
 # endif
-# ifdef  __cplusplus
+# ifdef __cplusplus
 extern "C" {
 # elif defined(__SUNPRO_C)
-#  if __SUNPRO_C >= 0x520
-#   pragma error_messages (off,E_ARRAY_OF_INCOMPLETE_NONAME,E_ARRAY_OF_INCOMPLETE)
-#  endif
+# if __SUNPRO_C >= 0x520
+# pragma error_messages (off,E_ARRAY_OF_INCOMPLETE_NONAME,E_ARRAY_OF_INCOMPLETE)
+# endif
 # endif
 # ifndef OPENSSL_ECC_MAX_FIELD_BITS
-#  define OPENSSL_ECC_MAX_FIELD_BITS 661
+# define OPENSSL_ECC_MAX_FIELD_BITS 661
 # endif
 typedef enum {
 POINT_CONVERSION_COMPRESSED = 2,
@@ -162,7 +162,7 @@ int EC_GROUP_get_trinomial_basis(const EC_GROUP *, unsigned int *k);
 int EC_GROUP_get_pentanomial_basis(const EC_GROUP *, unsigned int *k1,
 unsigned int *k2, unsigned int *k3);
 # endif
-# define OPENSSL_EC_NAMED_CURVE  0x001
+# define OPENSSL_EC_NAMED_CURVE 0x001
 typedef struct ecpk_parameters_st ECPKPARAMETERS;
 EC_GROUP *d2i_ECPKParameters(EC_GROUP **, const unsigned char **in, long len);
 int i2d_ECPKParameters(const EC_GROUP *, unsigned char **out);
@@ -179,10 +179,10 @@ int ECPKParameters_print(BIO *bp, const EC_GROUP *x, int off);
 int ECPKParameters_print_fp(FILE *fp, const EC_GROUP *x, int off);
 # endif
 typedef struct ec_key_st EC_KEY;
-# define EC_PKEY_NO_PARAMETERS   0x001
-# define EC_PKEY_NO_PUBKEY       0x002
-# define EC_FLAG_NON_FIPS_ALLOW  0x1
-# define EC_FLAG_FIPS_CHECKED    0x2
+# define EC_PKEY_NO_PARAMETERS 0x001
+# define EC_PKEY_NO_PUBKEY 0x002
+# define EC_FLAG_NON_FIPS_ALLOW 0x1
+# define EC_FLAG_FIPS_CHECKED 0x2
 EC_KEY *EC_KEY_new(void);
 int EC_KEY_get_flags(const EC_KEY *key);
 void EC_KEY_set_flags(EC_KEY *key, int flags);
@@ -232,201 +232,201 @@ int EC_KEY_print_fp(FILE *fp, const EC_KEY *key, int off);
 # endif
 # define ECParameters_dup(x) ASN1_dup_of(EC_KEY,i2d_ECParameters,d2i_ECParameters,x)
 # ifndef __cplusplus
-#  if defined(__SUNPRO_C)
-#   if __SUNPRO_C >= 0x520
-#    pragma error_messages (default,E_ARRAY_OF_INCOMPLETE_NONAME,E_ARRAY_OF_INCOMPLETE)
-#   endif
-#  endif
+# if defined(__SUNPRO_C)
+# if __SUNPRO_C >= 0x520
+# pragma error_messages (default,E_ARRAY_OF_INCOMPLETE_NONAME,E_ARRAY_OF_INCOMPLETE)
+# endif
+# endif
 # endif
 # define EVP_PKEY_CTX_set_ec_paramgen_curve_nid(ctx, nid) \
 EVP_PKEY_CTX_ctrl(ctx, EVP_PKEY_EC, EVP_PKEY_OP_PARAMGEN, \
 EVP_PKEY_CTRL_EC_PARAMGEN_CURVE_NID, nid, NULL)
-# define EVP_PKEY_CTRL_EC_PARAMGEN_CURVE_NID             (EVP_PKEY_ALG_CTRL + 1)
+# define EVP_PKEY_CTRL_EC_PARAMGEN_CURVE_NID (EVP_PKEY_ALG_CTRL + 1)
 void ERR_load_EC_strings(void);
-# define EC_F_BN_TO_FELEM                                 224
-# define EC_F_COMPUTE_WNAF                                143
-# define EC_F_D2I_ECPARAMETERS                            144
-# define EC_F_D2I_ECPKPARAMETERS                          145
-# define EC_F_D2I_ECPRIVATEKEY                            146
-# define EC_F_DO_EC_KEY_PRINT                             221
-# define EC_F_ECKEY_PARAM2TYPE                            223
-# define EC_F_ECKEY_PARAM_DECODE                          212
-# define EC_F_ECKEY_PRIV_DECODE                           213
-# define EC_F_ECKEY_PRIV_ENCODE                           214
-# define EC_F_ECKEY_PUB_DECODE                            215
-# define EC_F_ECKEY_PUB_ENCODE                            216
-# define EC_F_ECKEY_TYPE2PARAM                            220
-# define EC_F_ECPARAMETERS_PRINT                          147
-# define EC_F_ECPARAMETERS_PRINT_FP                       148
-# define EC_F_ECPKPARAMETERS_PRINT                        149
-# define EC_F_ECPKPARAMETERS_PRINT_FP                     150
-# define EC_F_ECP_NIST_MOD_192                            203
-# define EC_F_ECP_NIST_MOD_224                            204
-# define EC_F_ECP_NIST_MOD_256                            205
-# define EC_F_ECP_NIST_MOD_521                            206
-# define EC_F_EC_ASN1_GROUP2CURVE                         153
-# define EC_F_EC_ASN1_GROUP2FIELDID                       154
-# define EC_F_EC_ASN1_GROUP2PARAMETERS                    155
-# define EC_F_EC_ASN1_GROUP2PKPARAMETERS                  156
-# define EC_F_EC_ASN1_PARAMETERS2GROUP                    157
-# define EC_F_EC_ASN1_PKPARAMETERS2GROUP                  158
-# define EC_F_EC_EX_DATA_SET_DATA                         211
-# define EC_F_EC_GF2M_MONTGOMERY_POINT_MULTIPLY           208
-# define EC_F_EC_GF2M_SIMPLE_GROUP_CHECK_DISCRIMINANT     159
-# define EC_F_EC_GF2M_SIMPLE_GROUP_SET_CURVE              195
-# define EC_F_EC_GF2M_SIMPLE_OCT2POINT                    160
-# define EC_F_EC_GF2M_SIMPLE_POINT2OCT                    161
+# define EC_F_BN_TO_FELEM 224
+# define EC_F_COMPUTE_WNAF 143
+# define EC_F_D2I_ECPARAMETERS 144
+# define EC_F_D2I_ECPKPARAMETERS 145
+# define EC_F_D2I_ECPRIVATEKEY 146
+# define EC_F_DO_EC_KEY_PRINT 221
+# define EC_F_ECKEY_PARAM2TYPE 223
+# define EC_F_ECKEY_PARAM_DECODE 212
+# define EC_F_ECKEY_PRIV_DECODE 213
+# define EC_F_ECKEY_PRIV_ENCODE 214
+# define EC_F_ECKEY_PUB_DECODE 215
+# define EC_F_ECKEY_PUB_ENCODE 216
+# define EC_F_ECKEY_TYPE2PARAM 220
+# define EC_F_ECPARAMETERS_PRINT 147
+# define EC_F_ECPARAMETERS_PRINT_FP 148
+# define EC_F_ECPKPARAMETERS_PRINT 149
+# define EC_F_ECPKPARAMETERS_PRINT_FP 150
+# define EC_F_ECP_NIST_MOD_192 203
+# define EC_F_ECP_NIST_MOD_224 204
+# define EC_F_ECP_NIST_MOD_256 205
+# define EC_F_ECP_NIST_MOD_521 206
+# define EC_F_EC_ASN1_GROUP2CURVE 153
+# define EC_F_EC_ASN1_GROUP2FIELDID 154
+# define EC_F_EC_ASN1_GROUP2PARAMETERS 155
+# define EC_F_EC_ASN1_GROUP2PKPARAMETERS 156
+# define EC_F_EC_ASN1_PARAMETERS2GROUP 157
+# define EC_F_EC_ASN1_PKPARAMETERS2GROUP 158
+# define EC_F_EC_EX_DATA_SET_DATA 211
+# define EC_F_EC_GF2M_MONTGOMERY_POINT_MULTIPLY 208
+# define EC_F_EC_GF2M_SIMPLE_GROUP_CHECK_DISCRIMINANT 159
+# define EC_F_EC_GF2M_SIMPLE_GROUP_SET_CURVE 195
+# define EC_F_EC_GF2M_SIMPLE_OCT2POINT 160
+# define EC_F_EC_GF2M_SIMPLE_POINT2OCT 161
 # define EC_F_EC_GF2M_SIMPLE_POINT_GET_AFFINE_COORDINATES 162
 # define EC_F_EC_GF2M_SIMPLE_POINT_SET_AFFINE_COORDINATES 163
-# define EC_F_EC_GF2M_SIMPLE_SET_COMPRESSED_COORDINATES   164
-# define EC_F_EC_GFP_MONT_FIELD_DECODE                    133
-# define EC_F_EC_GFP_MONT_FIELD_ENCODE                    134
-# define EC_F_EC_GFP_MONT_FIELD_MUL                       131
-# define EC_F_EC_GFP_MONT_FIELD_SET_TO_ONE                209
-# define EC_F_EC_GFP_MONT_FIELD_SQR                       132
-# define EC_F_EC_GFP_MONT_GROUP_SET_CURVE                 189
-# define EC_F_EC_GFP_MONT_GROUP_SET_CURVE_GFP             135
-# define EC_F_EC_GFP_NISTP224_GROUP_SET_CURVE             225
-# define EC_F_EC_GFP_NISTP224_POINTS_MUL                  228
+# define EC_F_EC_GF2M_SIMPLE_SET_COMPRESSED_COORDINATES 164
+# define EC_F_EC_GFP_MONT_FIELD_DECODE 133
+# define EC_F_EC_GFP_MONT_FIELD_ENCODE 134
+# define EC_F_EC_GFP_MONT_FIELD_MUL 131
+# define EC_F_EC_GFP_MONT_FIELD_SET_TO_ONE 209
+# define EC_F_EC_GFP_MONT_FIELD_SQR 132
+# define EC_F_EC_GFP_MONT_GROUP_SET_CURVE 189
+# define EC_F_EC_GFP_MONT_GROUP_SET_CURVE_GFP 135
+# define EC_F_EC_GFP_NISTP224_GROUP_SET_CURVE 225
+# define EC_F_EC_GFP_NISTP224_POINTS_MUL 228
 # define EC_F_EC_GFP_NISTP224_POINT_GET_AFFINE_COORDINATES 226
-# define EC_F_EC_GFP_NISTP256_GROUP_SET_CURVE             230
-# define EC_F_EC_GFP_NISTP256_POINTS_MUL                  231
+# define EC_F_EC_GFP_NISTP256_GROUP_SET_CURVE 230
+# define EC_F_EC_GFP_NISTP256_POINTS_MUL 231
 # define EC_F_EC_GFP_NISTP256_POINT_GET_AFFINE_COORDINATES 232
-# define EC_F_EC_GFP_NISTP521_GROUP_SET_CURVE             233
-# define EC_F_EC_GFP_NISTP521_POINTS_MUL                  234
+# define EC_F_EC_GFP_NISTP521_GROUP_SET_CURVE 233
+# define EC_F_EC_GFP_NISTP521_POINTS_MUL 234
 # define EC_F_EC_GFP_NISTP521_POINT_GET_AFFINE_COORDINATES 235
-# define EC_F_EC_GFP_NIST_FIELD_MUL                       200
-# define EC_F_EC_GFP_NIST_FIELD_SQR                       201
-# define EC_F_EC_GFP_NIST_GROUP_SET_CURVE                 202
-# define EC_F_EC_GFP_SIMPLE_GROUP_CHECK_DISCRIMINANT      165
-# define EC_F_EC_GFP_SIMPLE_GROUP_SET_CURVE               166
-# define EC_F_EC_GFP_SIMPLE_GROUP_SET_CURVE_GFP           100
-# define EC_F_EC_GFP_SIMPLE_GROUP_SET_GENERATOR           101
-# define EC_F_EC_GFP_SIMPLE_MAKE_AFFINE                   102
-# define EC_F_EC_GFP_SIMPLE_OCT2POINT                     103
-# define EC_F_EC_GFP_SIMPLE_POINT2OCT                     104
-# define EC_F_EC_GFP_SIMPLE_POINTS_MAKE_AFFINE            137
-# define EC_F_EC_GFP_SIMPLE_POINT_GET_AFFINE_COORDINATES  167
+# define EC_F_EC_GFP_NIST_FIELD_MUL 200
+# define EC_F_EC_GFP_NIST_FIELD_SQR 201
+# define EC_F_EC_GFP_NIST_GROUP_SET_CURVE 202
+# define EC_F_EC_GFP_SIMPLE_GROUP_CHECK_DISCRIMINANT 165
+# define EC_F_EC_GFP_SIMPLE_GROUP_SET_CURVE 166
+# define EC_F_EC_GFP_SIMPLE_GROUP_SET_CURVE_GFP 100
+# define EC_F_EC_GFP_SIMPLE_GROUP_SET_GENERATOR 101
+# define EC_F_EC_GFP_SIMPLE_MAKE_AFFINE 102
+# define EC_F_EC_GFP_SIMPLE_OCT2POINT 103
+# define EC_F_EC_GFP_SIMPLE_POINT2OCT 104
+# define EC_F_EC_GFP_SIMPLE_POINTS_MAKE_AFFINE 137
+# define EC_F_EC_GFP_SIMPLE_POINT_GET_AFFINE_COORDINATES 167
 # define EC_F_EC_GFP_SIMPLE_POINT_GET_AFFINE_COORDINATES_GFP 105
-# define EC_F_EC_GFP_SIMPLE_POINT_SET_AFFINE_COORDINATES  168
+# define EC_F_EC_GFP_SIMPLE_POINT_SET_AFFINE_COORDINATES 168
 # define EC_F_EC_GFP_SIMPLE_POINT_SET_AFFINE_COORDINATES_GFP 128
-# define EC_F_EC_GFP_SIMPLE_SET_COMPRESSED_COORDINATES    169
+# define EC_F_EC_GFP_SIMPLE_SET_COMPRESSED_COORDINATES 169
 # define EC_F_EC_GFP_SIMPLE_SET_COMPRESSED_COORDINATES_GFP 129
-# define EC_F_EC_GROUP_CHECK                              170
-# define EC_F_EC_GROUP_CHECK_DISCRIMINANT                 171
-# define EC_F_EC_GROUP_COPY                               106
-# define EC_F_EC_GROUP_GET0_GENERATOR                     139
-# define EC_F_EC_GROUP_GET_COFACTOR                       140
-# define EC_F_EC_GROUP_GET_CURVE_GF2M                     172
-# define EC_F_EC_GROUP_GET_CURVE_GFP                      130
-# define EC_F_EC_GROUP_GET_DEGREE                         173
-# define EC_F_EC_GROUP_GET_ORDER                          141
-# define EC_F_EC_GROUP_GET_PENTANOMIAL_BASIS              193
-# define EC_F_EC_GROUP_GET_TRINOMIAL_BASIS                194
-# define EC_F_EC_GROUP_NEW                                108
-# define EC_F_EC_GROUP_NEW_BY_CURVE_NAME                  174
-# define EC_F_EC_GROUP_NEW_FROM_DATA                      175
-# define EC_F_EC_GROUP_PRECOMPUTE_MULT                    142
-# define EC_F_EC_GROUP_SET_CURVE_GF2M                     176
-# define EC_F_EC_GROUP_SET_CURVE_GFP                      109
-# define EC_F_EC_GROUP_SET_EXTRA_DATA                     110
-# define EC_F_EC_GROUP_SET_GENERATOR                      111
-# define EC_F_EC_KEY_CHECK_KEY                            177
-# define EC_F_EC_KEY_COPY                                 178
-# define EC_F_EC_KEY_GENERATE_KEY                         179
-# define EC_F_EC_KEY_NEW                                  182
-# define EC_F_EC_KEY_PRINT                                180
-# define EC_F_EC_KEY_PRINT_FP                             181
-# define EC_F_EC_KEY_SET_PUBLIC_KEY_AFFINE_COORDINATES    229
-# define EC_F_EC_POINTS_MAKE_AFFINE                       136
-# define EC_F_EC_POINT_ADD                                112
-# define EC_F_EC_POINT_CMP                                113
-# define EC_F_EC_POINT_COPY                               114
-# define EC_F_EC_POINT_DBL                                115
-# define EC_F_EC_POINT_GET_AFFINE_COORDINATES_GF2M        183
-# define EC_F_EC_POINT_GET_AFFINE_COORDINATES_GFP         116
-# define EC_F_EC_POINT_GET_JPROJECTIVE_COORDINATES_GFP    117
-# define EC_F_EC_POINT_INVERT                             210
-# define EC_F_EC_POINT_IS_AT_INFINITY                     118
-# define EC_F_EC_POINT_IS_ON_CURVE                        119
-# define EC_F_EC_POINT_MAKE_AFFINE                        120
-# define EC_F_EC_POINT_MUL                                184
-# define EC_F_EC_POINT_NEW                                121
-# define EC_F_EC_POINT_OCT2POINT                          122
-# define EC_F_EC_POINT_POINT2OCT                          123
-# define EC_F_EC_POINT_SET_AFFINE_COORDINATES_GF2M        185
-# define EC_F_EC_POINT_SET_AFFINE_COORDINATES_GFP         124
-# define EC_F_EC_POINT_SET_COMPRESSED_COORDINATES_GF2M    186
-# define EC_F_EC_POINT_SET_COMPRESSED_COORDINATES_GFP     125
-# define EC_F_EC_POINT_SET_JPROJECTIVE_COORDINATES_GFP    126
-# define EC_F_EC_POINT_SET_TO_INFINITY                    127
-# define EC_F_EC_PRE_COMP_DUP                             207
-# define EC_F_EC_PRE_COMP_NEW                             196
-# define EC_F_EC_WNAF_MUL                                 187
-# define EC_F_EC_WNAF_PRECOMPUTE_MULT                     188
-# define EC_F_I2D_ECPARAMETERS                            190
-# define EC_F_I2D_ECPKPARAMETERS                          191
-# define EC_F_I2D_ECPRIVATEKEY                            192
-# define EC_F_I2O_ECPUBLICKEY                             151
-# define EC_F_NISTP224_PRE_COMP_NEW                       227
-# define EC_F_NISTP256_PRE_COMP_NEW                       236
-# define EC_F_NISTP521_PRE_COMP_NEW                       237
-# define EC_F_O2I_ECPUBLICKEY                             152
-# define EC_F_OLD_EC_PRIV_DECODE                          222
-# define EC_F_PKEY_EC_CTRL                                197
-# define EC_F_PKEY_EC_CTRL_STR                            198
-# define EC_F_PKEY_EC_DERIVE                              217
-# define EC_F_PKEY_EC_KEYGEN                              199
-# define EC_F_PKEY_EC_PARAMGEN                            219
-# define EC_F_PKEY_EC_SIGN                                218
-# define EC_R_ASN1_ERROR                                  115
-# define EC_R_ASN1_UNKNOWN_FIELD                          116
-# define EC_R_BIGNUM_OUT_OF_RANGE                         144
-# define EC_R_BUFFER_TOO_SMALL                            100
-# define EC_R_COORDINATES_OUT_OF_RANGE                    146
-# define EC_R_D2I_ECPKPARAMETERS_FAILURE                  117
-# define EC_R_DECODE_ERROR                                142
-# define EC_R_DISCRIMINANT_IS_ZERO                        118
-# define EC_R_EC_GROUP_NEW_BY_NAME_FAILURE                119
-# define EC_R_FIELD_TOO_LARGE                             143
-# define EC_R_GF2M_NOT_SUPPORTED                          147
-# define EC_R_GROUP2PKPARAMETERS_FAILURE                  120
-# define EC_R_I2D_ECPKPARAMETERS_FAILURE                  121
-# define EC_R_INCOMPATIBLE_OBJECTS                        101
-# define EC_R_INVALID_ARGUMENT                            112
-# define EC_R_INVALID_COMPRESSED_POINT                    110
-# define EC_R_INVALID_COMPRESSION_BIT                     109
-# define EC_R_INVALID_CURVE                               141
-# define EC_R_INVALID_DIGEST_TYPE                         138
-# define EC_R_INVALID_ENCODING                            102
-# define EC_R_INVALID_FIELD                               103
-# define EC_R_INVALID_FORM                                104
-# define EC_R_INVALID_GROUP_ORDER                         122
-# define EC_R_INVALID_PENTANOMIAL_BASIS                   132
-# define EC_R_INVALID_PRIVATE_KEY                         123
-# define EC_R_INVALID_TRINOMIAL_BASIS                     137
-# define EC_R_KEYS_NOT_SET                                140
-# define EC_R_MISSING_PARAMETERS                          124
-# define EC_R_MISSING_PRIVATE_KEY                         125
-# define EC_R_NOT_A_NIST_PRIME                            135
-# define EC_R_NOT_A_SUPPORTED_NIST_PRIME                  136
-# define EC_R_NOT_IMPLEMENTED                             126
-# define EC_R_NOT_INITIALIZED                             111
-# define EC_R_NO_FIELD_MOD                                133
-# define EC_R_NO_PARAMETERS_SET                           139
-# define EC_R_PASSED_NULL_PARAMETER                       134
-# define EC_R_PKPARAMETERS2GROUP_FAILURE                  127
-# define EC_R_POINT_AT_INFINITY                           106
-# define EC_R_POINT_IS_NOT_ON_CURVE                       107
-# define EC_R_SLOT_FULL                                   108
-# define EC_R_UNDEFINED_GENERATOR                         113
-# define EC_R_UNDEFINED_ORDER                             128
-# define EC_R_UNKNOWN_GROUP                               129
-# define EC_R_UNKNOWN_ORDER                               114
-# define EC_R_UNSUPPORTED_FIELD                           131
-# define EC_R_WRONG_CURVE_PARAMETERS                      145
-# define EC_R_WRONG_ORDER                                 130
-#ifdef  __cplusplus
+# define EC_F_EC_GROUP_CHECK 170
+# define EC_F_EC_GROUP_CHECK_DISCRIMINANT 171
+# define EC_F_EC_GROUP_COPY 106
+# define EC_F_EC_GROUP_GET0_GENERATOR 139
+# define EC_F_EC_GROUP_GET_COFACTOR 140
+# define EC_F_EC_GROUP_GET_CURVE_GF2M 172
+# define EC_F_EC_GROUP_GET_CURVE_GFP 130
+# define EC_F_EC_GROUP_GET_DEGREE 173
+# define EC_F_EC_GROUP_GET_ORDER 141
+# define EC_F_EC_GROUP_GET_PENTANOMIAL_BASIS 193
+# define EC_F_EC_GROUP_GET_TRINOMIAL_BASIS 194
+# define EC_F_EC_GROUP_NEW 108
+# define EC_F_EC_GROUP_NEW_BY_CURVE_NAME 174
+# define EC_F_EC_GROUP_NEW_FROM_DATA 175
+# define EC_F_EC_GROUP_PRECOMPUTE_MULT 142
+# define EC_F_EC_GROUP_SET_CURVE_GF2M 176
+# define EC_F_EC_GROUP_SET_CURVE_GFP 109
+# define EC_F_EC_GROUP_SET_EXTRA_DATA 110
+# define EC_F_EC_GROUP_SET_GENERATOR 111
+# define EC_F_EC_KEY_CHECK_KEY 177
+# define EC_F_EC_KEY_COPY 178
+# define EC_F_EC_KEY_GENERATE_KEY 179
+# define EC_F_EC_KEY_NEW 182
+# define EC_F_EC_KEY_PRINT 180
+# define EC_F_EC_KEY_PRINT_FP 181
+# define EC_F_EC_KEY_SET_PUBLIC_KEY_AFFINE_COORDINATES 229
+# define EC_F_EC_POINTS_MAKE_AFFINE 136
+# define EC_F_EC_POINT_ADD 112
+# define EC_F_EC_POINT_CMP 113
+# define EC_F_EC_POINT_COPY 114
+# define EC_F_EC_POINT_DBL 115
+# define EC_F_EC_POINT_GET_AFFINE_COORDINATES_GF2M 183
+# define EC_F_EC_POINT_GET_AFFINE_COORDINATES_GFP 116
+# define EC_F_EC_POINT_GET_JPROJECTIVE_COORDINATES_GFP 117
+# define EC_F_EC_POINT_INVERT 210
+# define EC_F_EC_POINT_IS_AT_INFINITY 118
+# define EC_F_EC_POINT_IS_ON_CURVE 119
+# define EC_F_EC_POINT_MAKE_AFFINE 120
+# define EC_F_EC_POINT_MUL 184
+# define EC_F_EC_POINT_NEW 121
+# define EC_F_EC_POINT_OCT2POINT 122
+# define EC_F_EC_POINT_POINT2OCT 123
+# define EC_F_EC_POINT_SET_AFFINE_COORDINATES_GF2M 185
+# define EC_F_EC_POINT_SET_AFFINE_COORDINATES_GFP 124
+# define EC_F_EC_POINT_SET_COMPRESSED_COORDINATES_GF2M 186
+# define EC_F_EC_POINT_SET_COMPRESSED_COORDINATES_GFP 125
+# define EC_F_EC_POINT_SET_JPROJECTIVE_COORDINATES_GFP 126
+# define EC_F_EC_POINT_SET_TO_INFINITY 127
+# define EC_F_EC_PRE_COMP_DUP 207
+# define EC_F_EC_PRE_COMP_NEW 196
+# define EC_F_EC_WNAF_MUL 187
+# define EC_F_EC_WNAF_PRECOMPUTE_MULT 188
+# define EC_F_I2D_ECPARAMETERS 190
+# define EC_F_I2D_ECPKPARAMETERS 191
+# define EC_F_I2D_ECPRIVATEKEY 192
+# define EC_F_I2O_ECPUBLICKEY 151
+# define EC_F_NISTP224_PRE_COMP_NEW 227
+# define EC_F_NISTP256_PRE_COMP_NEW 236
+# define EC_F_NISTP521_PRE_COMP_NEW 237
+# define EC_F_O2I_ECPUBLICKEY 152
+# define EC_F_OLD_EC_PRIV_DECODE 222
+# define EC_F_PKEY_EC_CTRL 197
+# define EC_F_PKEY_EC_CTRL_STR 198
+# define EC_F_PKEY_EC_DERIVE 217
+# define EC_F_PKEY_EC_KEYGEN 199
+# define EC_F_PKEY_EC_PARAMGEN 219
+# define EC_F_PKEY_EC_SIGN 218
+# define EC_R_ASN1_ERROR 115
+# define EC_R_ASN1_UNKNOWN_FIELD 116
+# define EC_R_BIGNUM_OUT_OF_RANGE 144
+# define EC_R_BUFFER_TOO_SMALL 100
+# define EC_R_COORDINATES_OUT_OF_RANGE 146
+# define EC_R_D2I_ECPKPARAMETERS_FAILURE 117
+# define EC_R_DECODE_ERROR 142
+# define EC_R_DISCRIMINANT_IS_ZERO 118
+# define EC_R_EC_GROUP_NEW_BY_NAME_FAILURE 119
+# define EC_R_FIELD_TOO_LARGE 143
+# define EC_R_GF2M_NOT_SUPPORTED 147
+# define EC_R_GROUP2PKPARAMETERS_FAILURE 120
+# define EC_R_I2D_ECPKPARAMETERS_FAILURE 121
+# define EC_R_INCOMPATIBLE_OBJECTS 101
+# define EC_R_INVALID_ARGUMENT 112
+# define EC_R_INVALID_COMPRESSED_POINT 110
+# define EC_R_INVALID_COMPRESSION_BIT 109
+# define EC_R_INVALID_CURVE 141
+# define EC_R_INVALID_DIGEST_TYPE 138
+# define EC_R_INVALID_ENCODING 102
+# define EC_R_INVALID_FIELD 103
+# define EC_R_INVALID_FORM 104
+# define EC_R_INVALID_GROUP_ORDER 122
+# define EC_R_INVALID_PENTANOMIAL_BASIS 132
+# define EC_R_INVALID_PRIVATE_KEY 123
+# define EC_R_INVALID_TRINOMIAL_BASIS 137
+# define EC_R_KEYS_NOT_SET 140
+# define EC_R_MISSING_PARAMETERS 124
+# define EC_R_MISSING_PRIVATE_KEY 125
+# define EC_R_NOT_A_NIST_PRIME 135
+# define EC_R_NOT_A_SUPPORTED_NIST_PRIME 136
+# define EC_R_NOT_IMPLEMENTED 126
+# define EC_R_NOT_INITIALIZED 111
+# define EC_R_NO_FIELD_MOD 133
+# define EC_R_NO_PARAMETERS_SET 139
+# define EC_R_PASSED_NULL_PARAMETER 134
+# define EC_R_PKPARAMETERS2GROUP_FAILURE 127
+# define EC_R_POINT_AT_INFINITY 106
+# define EC_R_POINT_IS_NOT_ON_CURVE 107
+# define EC_R_SLOT_FULL 108
+# define EC_R_UNDEFINED_GENERATOR 113
+# define EC_R_UNDEFINED_ORDER 128
+# define EC_R_UNKNOWN_GROUP 129
+# define EC_R_UNKNOWN_ORDER 114
+# define EC_R_UNSUPPORTED_FIELD 131
+# define EC_R_WRONG_CURVE_PARAMETERS 145
+# define EC_R_WRONG_ORDER 130
+#ifdef __cplusplus
 }
 #endif
 #endif

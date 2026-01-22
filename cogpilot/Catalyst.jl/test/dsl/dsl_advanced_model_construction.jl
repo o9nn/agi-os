@@ -110,7 +110,7 @@ rx = @reaction k*h, A + 2*B --> 3*C + D
 @species A(t) B(t) C(t) D(t)
 @test rx == Reaction(k*h,[A,B],[C,D],[1,2],[3,1])
 ex = k*A^2 + B
-V  = A
+V = A
 rx = @reaction b+$ex, 2*$V + C--> ∅
 @parameters b
 @test rx == Reaction(b+ex, [A,C], nothing, [2,1], nothing)
@@ -269,7 +269,7 @@ let
 rn = @reaction_network begin
 @parameters k k2 n
 @species A(t) B(t) C(t) D(t) H(t)
-π*k*D*hill(B,k2,B*D*H,n), 3*A  --> 2*C
+π*k*D*hill(B,k2,B*D*H,n), 3*A --> 2*C
 end
 @parameters k k2 n
 @species A(t) B(t) C(t) D(t) H(t)

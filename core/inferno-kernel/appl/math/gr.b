@@ -43,7 +43,7 @@ tk = load Tk Tk->PATH;
 tkclient = load Tkclient Tkclient->PATH;
 tkclient->init();
 }
-textsize := 8.;	# textsize is in points, if no user transform
+textsize := 8.; # textsize is in points, if no user transform
 (t, tb) := tkclient->toplevel(ctxt, "", title, Tkclient->Appl);
 cc := chan of string;
 tk->namechan(t, cc, "grcmd");
@@ -133,16 +133,16 @@ p.op = OP(GR->PEN, nib, nil, nil, nil) :: p.op;
 }
 #---------------------------------------------------------
 # The rest of this file is concerned with sending the "display list"
-# to Tk.  The only interesting parts of the problem are picking axes
+# to Tk. The only interesting parts of the problem are picking axes
 # and drawing dashed lines properly.
-ax, bx, ay, by: real;			# transform user to pixels
-tky: con 630.;				# Tk_y = tky - y
-nseg: int;				# how many segments in current stroke path
-pendown: int;				# is pen currently drawing?
-xoff := array[] of{"w","","e"};	# LJUST, CENTER, RJUST
-yoff := array[] of{"n","","s","s"};	# HIGH, MED, BASE, LOW
+ax, bx, ay, by: real; # transform user to pixels
+tky: con 630.; # Tk_y = tky - y
+nseg: int; # how many segments in current stroke path
+pendown: int; # is pen currently drawing?
+xoff := array[] of{"w","","e"}; # LJUST, CENTER, RJUST
+yoff := array[] of{"n","","s","s"}; # HIGH, MED, BASE, LOW
 linewidth: real;
-toplevel: ref Toplevel;			# p.t
+toplevel: ref Toplevel; # p.t
 tkcmd: string;
 mv(x, y: real)
 {
@@ -151,7 +151,7 @@ tkcmd = sprint(".fc.c create line %.1f %.1f", ax*x+bx, tky-(ay*y+by));
 stroke()
 {
 if(pendown){
-tkcmd += " -width 3";   # -capstyle round -joinstyle round
+tkcmd += " -width 3"; # -capstyle round -joinstyle round
 TkCmd(toplevel,tkcmd);
 tkcmd = nil;
 pendown = 0;
@@ -180,7 +180,7 @@ tkcmd = nil;
 }
 text(s: string, x, y: real, xoff, yoff: string)
 {
-# rot = rotation in degrees.  90 is used for y-axis
+# rot = rotation in degrees. 90 is used for y-axis
 # x,y are in PostScript coordinate system, not user
 anchor := yoff + xoff;
 if(anchor!="")
@@ -206,9 +206,9 @@ return ( x0, x0 + r);
 }
 dashed(ndash: int, x, y: array of real)
 {
-cx, cy: real;	# current position
-d: real;	# length undone in p[i],p[i+1]
-t: real;	# length undone in current dash
+cx, cy: real; # current position
+d: real; # length undone in p[i],p[i+1]
+t: real; # length undone in current dash
 n := len x;
 if(n!=len y || n<=0)
 return;
@@ -275,13 +275,13 @@ Plot.paint(p: self ref Plot, xlabel, xunit, ylabel, yunit: string)
 {
 oplist: list of OP;
 # tunable parameters for dimensions of graph (fraction of box side)
-margin: con 0.075;		# separation of data from box boundary
+margin: con 0.075; # separation of data from box boundary
 ticksize := 0.02;
-sep := ticksize;		# separation of text from box boundary
+sep := ticksize; # separation of text from box boundary
 # derived coordinates of various feature points...
-x0, x1, y0, y1: real;		# box corners, in original coord
-# radius := 0.2*p.textsize;	# radius for circle marker
-radius := 0.8*p.textsize;	# radius for circle marker
+x0, x1, y0, y1: real; # box corners, in original coord
+# radius := 0.2*p.textsize; # radius for circle marker
+radius := 0.8*p.textsize; # radius for circle marker
 Pen := SOLID;
 width := SOLID;
 linewidth = 2.;
@@ -420,11 +420,11 @@ labelstr += " " + yunit;
 text(labelstr,xx,(y0+y1)/2.,"e","");
 TkCmd(p.t, "update");
 }
-# automatic tic choice                      Eric Grosse  9 Dec 84
+# automatic tic choice Eric Grosse 9 Dec 84
 # Input: low and high endpoints of expanded data range
-# Output: lab1, labn, labinc, k, u, s   where the tics are
-#   (lab1*s, (lab1+labinc)*s, ..., labn*s) * 10^k
-# and u = 10^k.  k is metric, i.e. k=0 mod 3.
+# Output: lab1, labn, labinc, k, u, s where the tics are
+# (lab1*s, (lab1+labinc)*s, ..., labn*s) * 10^k
+# and u = 10^k. k is metric, i.e. k=0 mod 3.
 max3(a, b, c: real): real
 {
 if(a<b) a=b;
@@ -476,9 +476,9 @@ nlab = (labn-lab1)/labinc + 1;
 }
 }
 ndig = int(1.+floor(log10(max3(fabs(real lab1),fabs(real labn),1.e-30))));
-if( ((k<=0)&&(k>=-ndig))   # no zeros have to be added
+if( ((k<=0)&&(k>=-ndig)) # no zeros have to be added
 || ((k<0)&&(k>=-3))
-|| ((k>0)&&(ndig+k<=4)) ){   # even with zeros, label is small
+|| ((k>0)&&(ndig+k<=4)) ){ # even with zeros, label is small
 s = u;
 k = 0;
 u = 1.;

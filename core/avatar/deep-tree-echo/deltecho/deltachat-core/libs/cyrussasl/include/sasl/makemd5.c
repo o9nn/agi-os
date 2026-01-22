@@ -12,22 +12,22 @@ if(islower((int) *p))
 p++;
 }
 }
-#define BITSIZE(TYPE)						\
-{								\
-int b = 0; TYPE x = 1, zero = 0; char *pre = "U";		\
-char tmp[128], tmp2[128];					\
-while(x){ x <<= 1; b++; if(x < zero) pre=""; }		\
-if(b >= len){						\
-int tabs;						\
-sprintf(tmp, "%sINT%d" , pre, len/8);			\
-sprintf(tmp2, "typedef %s %s;", #TYPE, tmp);		\
-my_strupr(tmp);						\
-tabs = 5 - strlen(tmp2) / 8;				\
-fprintf(f, "%s", tmp2);					\
-while(tabs-- > 0) fprintf(f, "\t");			\
-fprintf(f, "\n", b);			\
-return;                                                 \
-}								\
+#define BITSIZE(TYPE) \
+{ \
+int b = 0; TYPE x = 1, zero = 0; char *pre = "U"; \
+char tmp[128], tmp2[128]; \
+while(x){ x <<= 1; b++; if(x < zero) pre=""; } \
+if(b >= len){ \
+int tabs; \
+sprintf(tmp, "%sINT%d" , pre, len/8); \
+sprintf(tmp2, "typedef %s %s;", #TYPE, tmp); \
+my_strupr(tmp); \
+tabs = 5 - strlen(tmp2) / 8; \
+fprintf(f, "%s", tmp2); \
+while(tabs-- > 0) fprintf(f, "\t"); \
+fprintf(f, "\n", b); \
+return; \
+} \
 }
 static void
 try_signed(FILE *f, int len)

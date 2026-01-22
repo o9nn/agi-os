@@ -16,35 +16,35 @@ tkclient: Tkclient;
 WINDOW, CTLS, PROG, STATUS, BORDER, EXIT: con 1 << iota;
 REQD: con ~0;
 cfg := array[] of {
-(REQD,	"entry .ctlf.url -bg white -font /fonts/lucidasans/unicode.7.font -height 16"),
-(REQD,	"button .ctlf.back -bd 1 -command {send gctl back} -state disabled -text {back} -font /fonts/lucidasans/unicode.7.font"),
-(REQD,	"button .ctlf.stop -bd 1 -command {send gctl stop} -state disabled -text {stop} -font /fonts/lucidasans/unicode.7.font"),
-(REQD,	"button .ctlf.fwd -bd 1 -command {send gctl fwd} -state disabled -text {next} -font /fonts/lucidasans/unicode.7.font"),
-(REQD,	"label .status.status -bd 1 -font /fonts/lucidasans/unicode.6.font -height 14 -anchor w"),
-(REQD,	"button .ctlf.exit -bd 1 -bitmap exit.bit -command {send wm_title exit}"),
-(REQD,	"frame .f -bd 0"),
-(BORDER,	".f configure -bd 2 -relief sunken"),
-(CTLS|EXIT,	"frame .ctlf"),
-(STATUS,	"frame .status -bd 0"),
-(STATUS,	"frame .statussep -bg black -height 1"),
-(STATUS,	"button .status.snarf -text snarf -command {send gctl snarfstatus} -font /fonts/charon/plain.small.font"),
-(CTLS,	"bind .ctlf.url <Key-\n> {send gctl go}"),
-(CTLS,	"bind .ctlf.url <Key-\u0003> {send gctl copyurl}"),
-(CTLS,	"bind .ctlf.url <Key-\u0016> {send gctl pasteurl}"),
-#	(PROG,	"canvas .prog -bd 0 -height 20"),
-#	(PROG,	"bind .prog <ButtonPress-1> {send gctl b1p %X %Y}"),
-(CTLS,	"pack .ctlf.back .ctlf.stop .ctlf.fwd -side left -anchor w -fill y"),
-(CTLS,	"pack .ctlf.url -side left -padx 2 -fill x -expand 1"),
-(EXIT,	"pack .ctlf.exit -side right -anchor e"),
-(CTLS|EXIT,	"pack .ctlf -side top -fill x"),
-(REQD,	"pack .f -side top -fill both -expand 1"),
-#	(PROG,	"pack .prog -side bottom -fill x"),
-(STATUS,	"pack .status.snarf -side right"),
-(STATUS,	"pack .status.status -side right -fill x -expand 1"),
-(STATUS,	"pack .statussep -side top -fill x"),
-(STATUS,	"pack .status -side bottom -fill x"),
-(CTLS|EXIT,	"pack propagate .ctlf 0"),
-(STATUS,		"pack propagate .status 0"),
+(REQD, "entry .ctlf.url -bg white -font /fonts/lucidasans/unicode.7.font -height 16"),
+(REQD, "button .ctlf.back -bd 1 -command {send gctl back} -state disabled -text {back} -font /fonts/lucidasans/unicode.7.font"),
+(REQD, "button .ctlf.stop -bd 1 -command {send gctl stop} -state disabled -text {stop} -font /fonts/lucidasans/unicode.7.font"),
+(REQD, "button .ctlf.fwd -bd 1 -command {send gctl fwd} -state disabled -text {next} -font /fonts/lucidasans/unicode.7.font"),
+(REQD, "label .status.status -bd 1 -font /fonts/lucidasans/unicode.6.font -height 14 -anchor w"),
+(REQD, "button .ctlf.exit -bd 1 -bitmap exit.bit -command {send wm_title exit}"),
+(REQD, "frame .f -bd 0"),
+(BORDER, ".f configure -bd 2 -relief sunken"),
+(CTLS|EXIT, "frame .ctlf"),
+(STATUS, "frame .status -bd 0"),
+(STATUS, "frame .statussep -bg black -height 1"),
+(STATUS, "button .status.snarf -text snarf -command {send gctl snarfstatus} -font /fonts/charon/plain.small.font"),
+(CTLS, "bind .ctlf.url <Key-\n> {send gctl go}"),
+(CTLS, "bind .ctlf.url <Key-\u0003> {send gctl copyurl}"),
+(CTLS, "bind .ctlf.url <Key-\u0016> {send gctl pasteurl}"),
+# (PROG, "canvas .prog -bd 0 -height 20"),
+# (PROG, "bind .prog <ButtonPress-1> {send gctl b1p %X %Y}"),
+(CTLS, "pack .ctlf.back .ctlf.stop .ctlf.fwd -side left -anchor w -fill y"),
+(CTLS, "pack .ctlf.url -side left -padx 2 -fill x -expand 1"),
+(EXIT, "pack .ctlf.exit -side right -anchor e"),
+(CTLS|EXIT, "pack .ctlf -side top -fill x"),
+(REQD, "pack .f -side top -fill both -expand 1"),
+# (PROG, "pack .prog -side bottom -fill x"),
+(STATUS, "pack .status.snarf -side right"),
+(STATUS, "pack .status.status -side right -fill x -expand 1"),
+(STATUS, "pack .statussep -side top -fill x"),
+(STATUS, "pack .status -side bottom -fill x"),
+(CTLS|EXIT, "pack propagate .ctlf 0"),
+(STATUS, "pack propagate .status 0"),
 };
 framebinds := array[] of {
 "bind .f <Key> {send gctl k %s}",
@@ -186,8 +186,8 @@ msg := <- progress;
 # just handle stop button for now
 if (msg.bsid == -1) {
 case (msg.state) {
-Pstart =>	stopbutton(1);
-* =>		stopbutton(0);
+Pstart => stopbutton(1);
+* => stopbutton(0);
 }
 }
 }
@@ -461,31 +461,31 @@ E->evchan <-= ref Event.Equit(0);
 getpopup(r: Rect): ref Popup
 {
 return nil;
-#	cancelpopup();
-##	img := screen.newwindow(r, D->White);
-#	img := display.newimage(r, screen.image.chans, 0, D->White);
-#	if (img == nil)
-#		return nil;
-#	winr := r.addpt(offset);	# race for offset
+# cancelpopup();
+## img := screen.newwindow(r, D->White);
+# img := display.newimage(r, screen.image.chans, 0, D->White);
+# if (img == nil)
+# return nil;
+# winr := r.addpt(offset); # race for offset
 #
-#	pos := "-x " + string winr.min.x + " -y " + string winr.min.y;
-#	(top, nil) := tkclient->toplevel(drawctxt, pos, nil, Tkclient->Plain);
-#	tk->namechan(top, gctl, "gctl");
-#	tk->cmd(top, "frame .f -bd 0 -bg white -width " + string r.dx() + " -height " + string r.dy());
-#	tkcmds(top, framebinds);
-#	tk->cmd(top, "pack .f; update");
-#	tkclient->onscreen(tktop, "onscreen");
-#	tkclient->startinput(tktop, "kbd"::"ptr"::nil);
-#	win := screen.newwindow(winr, D->Refbackup, D->White);
-#	if (win == nil)
-#		return nil;
-#	win.origin(r.min, winr.min);
+# pos := "-x " + string winr.min.x + " -y " + string winr.min.y;
+# (top, nil) := tkclient->toplevel(drawctxt, pos, nil, Tkclient->Plain);
+# tk->namechan(top, gctl, "gctl");
+# tk->cmd(top, "frame .f -bd 0 -bg white -width " + string r.dx() + " -height " + string r.dy());
+# tkcmds(top, framebinds);
+# tk->cmd(top, "pack .f; update");
+# tkclient->onscreen(tktop, "onscreen");
+# tkclient->startinput(tktop, "kbd"::"ptr"::nil);
+# win := screen.newwindow(winr, D->Refbackup, D->White);
+# if (win == nil)
+# return nil;
+# win.origin(r.min, winr.min);
 #
-#	popuptk = top;
-#	popup = ref Popup(r, img, win);
+# popuptk = top;
+# popup = ref Popup(r, img, win);
 ## XXXX need to start a thread to feed mouse/kbd events from popup,
 ## but we need to know when to tear it down.
-#	return popup;
+# return popup;
 }
 cancelpopup(): int
 {

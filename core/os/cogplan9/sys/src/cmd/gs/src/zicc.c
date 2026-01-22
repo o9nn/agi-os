@@ -17,26 +17,26 @@
 private int
 zseticcspace(i_ctx_t * i_ctx_p)
 {
-os_ptr                  op = osp;
+os_ptr op = osp;
 int edepth = ref_stack_count(&e_stack);
-int                     code;
-gs_color_space *        pcs;
-const gs_color_space *  palt_cs;
-ref *                   pnval;
-ref *                   pstrmval;
-stream *                s;
-int                     i, ncomps;
-gs_cie_icc *            picc_info;
-float                   range_buff[8];
-static const float      dflt_range[8] = { 0, 1,   0, 1,   0, 1,   0, 1 };
+int code;
+gs_color_space * pcs;
+const gs_color_space * palt_cs;
+ref * pnval;
+ref * pstrmval;
+stream * s;
+int i, ncomps;
+gs_cie_icc * picc_info;
+float range_buff[8];
+static const float dflt_range[8] = { 0, 1, 0, 1, 0, 1, 0, 1 };
 dict_find_string(op, "N", &pnval);
 ncomps = pnval->value.intval;
 if (dict_find_string(op, "DataSource", &pstrmval) <= 0)
 return_error(e_undefined);
 check_read_file(s, pstrmval);
 palt_cs = gs_currentcolorspace(igs);
-if ( !palt_cs->type->can_be_alt_space                                ||
-gs_color_space_get_index(palt_cs) == gs_color_space_index_CIEICC  )
+if ( !palt_cs->type->can_be_alt_space ||
+gs_color_space_get_index(palt_cs) == gs_color_space_index_CIEICC )
 return_error(e_rangecheck);
 code = dict_floats_param( imemory,
 op,
@@ -76,7 +76,7 @@ pcs,
 edepth,
 code );
 }
-const op_def    zicc_ll3_op_defs[] = {
+const op_def zicc_ll3_op_defs[] = {
 op_def_begin_ll3(),
 { "1.seticcspace", zseticcspace },
 op_def_end(0)

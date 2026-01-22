@@ -8,7 +8,7 @@ JOCTET * buffer;
 boolean start_of_file;
 } my_source_mgr;
 typedef my_source_mgr * my_src_ptr;
-#define INPUT_BUF_SIZE  4096
+#define INPUT_BUF_SIZE 4096
 METHODDEF(void)
 init_source (j_decompress_ptr cinfo)
 {

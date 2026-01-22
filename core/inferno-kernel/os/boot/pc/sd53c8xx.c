@@ -1,4 +1,4 @@
-#define MAXTARGET	16
+#define MAXTARGET 16
 #include "u.h"
 #include "lib.h"
 #include "mem.h"
@@ -9,11 +9,11 @@
 #include "error.h"
 #include "sd.h"
 extern SDifc sd53c8xxifc;
-#define waserror()	(0)
+#define waserror() (0)
 #define poperror()
 typedef struct QLock{ int r; } QLock;
 typedef struct Rendez{ int r; } Rendez;
-#define	intrenable(irq, f, c, tbdf, name)	setvec(VectorPIC+(irq), f, c);
+#define intrenable(irq, f, c, tbdf, name) setvec(VectorPIC+(irq), f, c);
 #define WMR_DEBUG
 #ifdef BOOTDEBUG
 #define KPRINT oprint
@@ -21,9 +21,9 @@ typedef struct Rendez{ int r; } Rendez;
 #define DEBUG(n) 0
 #define IFLUSH() iflush()
 #else
-#define KPRINT	if(0)print
-#define IPRINT	if(0)print
-#define DEBUG(n)	(0)
+#define KPRINT if(0)print
+#define IPRINT if(0)print
+#define DEBUG(n) (0)
 #define IFLUSH()
 #endif
 #ifndef DMASEG
@@ -37,7 +37,7 @@ typedef struct Rendez{ int r; } Rendez;
 #define KPTR(x) ((x) == 0 ? 0 : DMASEG_TO_KADDR(x))
 #define MEGA 1000000L
 #ifdef INTERNAL_SCLK
-#define	SCLK (33 * MEGA)
+#define SCLK (33 * MEGA)
 #else
 #define SCLK (40 * MEGA)
 #endif
@@ -51,7 +51,7 @@ typedef struct Rendez{ int r; } Rendez;
 #define MAXFASTSYNCCORERATE (50 * MEGA)
 #define MAXULTRASYNCCORERATE (80 * MEGA)
 #define MAXULTRA2SYNCCORERATE (160 * MEGA)
-#define X_MSG	1
+#define X_MSG 1
 #define X_MSG_SDTR 1
 #define X_MSG_WDTR 3
 struct na_patch {
@@ -226,12 +226,12 @@ Variant *v;
 ulong *script;
 ulong scriptpa;
 Pcidev* pcidev;
-SDev*	sdev;
+SDev* sdev;
 struct {
 Lock;
 uchar head[4];
-Dsa	*tail;
-Dsa	*freechain;
+Dsa *tail;
+Dsa *freechain;
 } dsalist;
 QLock q[MAXTARGET];
 } Controller;
@@ -1489,38 +1489,38 @@ bios_set_differential(Controller *c)
 {
 return (c->bios.scntl3 & 7) != 0 && (c->bios.stest2 & 0x20) != 0;
 }
-#define NCR_VID 	0x1000
-#define NCR_810_DID 	0x0001
-#define NCR_820_DID	0x0002
-#define NCR_825_DID	0x0003
-#define NCR_815_DID	0x0004
-#define SYM_810AP_DID	0x0005
-#define SYM_860_DID	0x0006
-#define SYM_896_DID	0x000b
-#define SYM_895_DID	0x000c
-#define SYM_885_DID	0x000d
-#define SYM_875_DID	0x000f
-#define SYM_1010_DID	0x0020
-#define SYM_1011_DID	0x0021
-#define SYM_875J_DID	0x008f
+#define NCR_VID 0x1000
+#define NCR_810_DID 0x0001
+#define NCR_820_DID 0x0002
+#define NCR_825_DID 0x0003
+#define NCR_815_DID 0x0004
+#define SYM_810AP_DID 0x0005
+#define SYM_860_DID 0x0006
+#define SYM_896_DID 0x000b
+#define SYM_895_DID 0x000c
+#define SYM_885_DID 0x000d
+#define SYM_875_DID 0x000f
+#define SYM_1010_DID 0x0020
+#define SYM_1011_DID 0x0021
+#define SYM_875J_DID 0x008f
 static Variant variant[] = {
-{ NCR_810_DID,   0x0f, "NCR53C810",	Burst16,   8, 24, 0 },
-{ NCR_810_DID,   0x1f, "SYM53C810ALV",	Burst16,   8, 24, Prefetch },
-{ NCR_810_DID,   0xff, "SYM53C810A",	Burst16,   8, 24, Prefetch },
-{ SYM_810AP_DID, 0xff, "SYM53C810AP",	Burst16,   8, 24, Prefetch },
-{ NCR_815_DID,   0xff, "NCR53C815",	Burst16,   8, 24, BurstOpCodeFetch },
-{ NCR_825_DID,   0x0f, "NCR53C825",	Burst16,   8, 24, Wide|BurstOpCodeFetch|Differential },
-{ NCR_825_DID,   0xff, "SYM53C825A",	Burst128, 16, 24, Prefetch|LocalRAM|BigFifo|Differential|Wide },
-{ SYM_860_DID,   0x0f, "SYM53C860",	Burst16,   8, 24, Prefetch|Ultra },
-{ SYM_860_DID,   0xff, "SYM53C860LV",	Burst16,   8, 24, Prefetch|Ultra },
-{ SYM_875_DID,   0x01, "SYM53C875r1",	Burst128, 16, 24, Prefetch|LocalRAM|BigFifo|Differential|Wide|Ultra },
-{ SYM_875_DID,   0xff, "SYM53C875",	Burst128, 16, 24, Prefetch|LocalRAM|BigFifo|Differential|Wide|Ultra|ClockDouble },
-{ SYM_875J_DID,   0xff, "SYM53C875j",	Burst128, 16, 24, Prefetch|LocalRAM|BigFifo|Differential|Wide|Ultra|ClockDouble },
-{ SYM_885_DID,   0xff, "SYM53C885",	Burst128, 16, 24, Prefetch|LocalRAM|BigFifo|Wide|Ultra|ClockDouble },
-{ SYM_895_DID,   0xff, "SYM53C895",	Burst128, 16, 24, Prefetch|LocalRAM|BigFifo|Wide|Ultra|Ultra2 },
-{ SYM_896_DID,   0xff, "SYM53C896",	Burst128, 16, 64, Prefetch|LocalRAM|BigFifo|Wide|Ultra|Ultra2 },
-{ SYM_1010_DID,   0xff, "SYM53C1010",	Burst128, 16, 64, Prefetch|LocalRAM|BigFifo|Wide|Ultra|Ultra2 },
-{ SYM_1011_DID,   0xff, "SYM53C1010",	Burst128, 16, 64, Prefetch|LocalRAM|BigFifo|Wide|Ultra|Ultra2 },
+{ NCR_810_DID, 0x0f, "NCR53C810", Burst16, 8, 24, 0 },
+{ NCR_810_DID, 0x1f, "SYM53C810ALV", Burst16, 8, 24, Prefetch },
+{ NCR_810_DID, 0xff, "SYM53C810A", Burst16, 8, 24, Prefetch },
+{ SYM_810AP_DID, 0xff, "SYM53C810AP", Burst16, 8, 24, Prefetch },
+{ NCR_815_DID, 0xff, "NCR53C815", Burst16, 8, 24, BurstOpCodeFetch },
+{ NCR_825_DID, 0x0f, "NCR53C825", Burst16, 8, 24, Wide|BurstOpCodeFetch|Differential },
+{ NCR_825_DID, 0xff, "SYM53C825A", Burst128, 16, 24, Prefetch|LocalRAM|BigFifo|Differential|Wide },
+{ SYM_860_DID, 0x0f, "SYM53C860", Burst16, 8, 24, Prefetch|Ultra },
+{ SYM_860_DID, 0xff, "SYM53C860LV", Burst16, 8, 24, Prefetch|Ultra },
+{ SYM_875_DID, 0x01, "SYM53C875r1", Burst128, 16, 24, Prefetch|LocalRAM|BigFifo|Differential|Wide|Ultra },
+{ SYM_875_DID, 0xff, "SYM53C875", Burst128, 16, 24, Prefetch|LocalRAM|BigFifo|Differential|Wide|Ultra|ClockDouble },
+{ SYM_875J_DID, 0xff, "SYM53C875j", Burst128, 16, 24, Prefetch|LocalRAM|BigFifo|Differential|Wide|Ultra|ClockDouble },
+{ SYM_885_DID, 0xff, "SYM53C885", Burst128, 16, 24, Prefetch|LocalRAM|BigFifo|Wide|Ultra|ClockDouble },
+{ SYM_895_DID, 0xff, "SYM53C895", Burst128, 16, 24, Prefetch|LocalRAM|BigFifo|Wide|Ultra|Ultra2 },
+{ SYM_896_DID, 0xff, "SYM53C896", Burst128, 16, 64, Prefetch|LocalRAM|BigFifo|Wide|Ultra|Ultra2 },
+{ SYM_1010_DID, 0xff, "SYM53C1010", Burst128, 16, 64, Prefetch|LocalRAM|BigFifo|Wide|Ultra|Ultra2 },
+{ SYM_1011_DID, 0xff, "SYM53C1010", Burst128, 16, 64, Prefetch|LocalRAM|BigFifo|Wide|Ultra|Ultra2 },
 };
 static int
 xfunc(Controller *c, enum na_external x, unsigned long *v)

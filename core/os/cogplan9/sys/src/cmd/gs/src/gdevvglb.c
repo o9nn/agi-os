@@ -10,8 +10,8 @@ gx_device_common;
 int display_mode;
 } gx_device_vgalib;
 #define vga_dev ((gx_device_vgalib *)dev)
-#define XDPI   60
-#define YDPI   60
+#define XDPI 60
+#define YDPI 60
 #ifndef A4
 #define YSIZE (20.0 * YDPI / 2.5)
 #define XSIZE (8.5 / 11)*YSIZE

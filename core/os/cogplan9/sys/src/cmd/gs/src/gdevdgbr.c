@@ -115,7 +115,7 @@ params->x_offset = (bit_offset - bytes) / depth;
 }
 params->options =
 GB_ALIGN_STANDARD | GB_RETURN_POINTER | GB_RASTER_STANDARD |
-(stored->options & ~GB_PACKING_ALL)  |
+(stored->options & ~GB_PACKING_ALL) |
 (params->x_offset == 0 ? GB_OFFSET_0 : GB_OFFSET_SPECIFIED);
 if (both & GB_PACKING_CHUNKY) {
 params->options |= GB_PACKING_CHUNKY;

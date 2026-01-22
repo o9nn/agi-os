@@ -319,13 +319,13 @@ case '.': gp->leave_subscripts = true; break;
 case 'r': gp->unrepeatable_random = true; break;
 case 'w'+128:
 gp->walls = false; break;
-case 1:   parse_options_set_debug(gp->opts, optarg); break;
-case 2:   verbosity_level =
+case 1: parse_options_set_debug(gp->opts, optarg); break;
+case 2: verbosity_level =
 strtoi_errexit(av[optind-2], optarg, 0, 999);
 parse_options_set_verbosity(gp->opts, verbosity_level); break;
-case 3:   parse_options_set_test(gp->opts, optarg); break;
-case 4:   parse_options_set_disjunct_cost(gp->opts, atof(optarg)); break;
-case 5:   parse_options_set_dialect(gp->opts, optarg); break;
+case 3: parse_options_set_test(gp->opts, optarg); break;
+case 4: parse_options_set_disjunct_cost(gp->opts, atof(optarg)); break;
+case 5: parse_options_set_dialect(gp->opts, optarg); break;
 case 'u'+128:
 usage(av[0], a_opt, g_short_options);
 exit(0);
@@ -348,7 +348,7 @@ case ':': prt_error("Fatal error: %s: "
 program_basename(av[0]), av[optind-1]);
 try_help(av[0]);
 exit(-1);
-case -1:  if (optind < ac)
+case -1: if (optind < ac)
 {
 prt_error("Fatal error: "
 "%s doesn't accept non-option arguments:",
@@ -360,7 +360,7 @@ try_help(av[0]);
 exit(-1);
 }
 break;
-default:  prt_error("Fatal error: %s encountered an internal error:"
+default: prt_error("Fatal error: %s encountered an internal error:"
 "getopt() returned an unexpected value %d\n",
 program_basename(av[0]), key);
 exit(-1);
@@ -370,9 +370,9 @@ if (key == -1) break;
 }
 int main (int argc, char* argv[])
 {
-Dictionary      dict;
-Parse_Options   opts = parse_options_create();
-Sentence        sent = NULL;
+Dictionary dict;
+Parse_Options opts = parse_options_create();
+Sentence sent = NULL;
 argv = ms_windows_setup(argc);
 gen_parameters parms;
 parms.language = "lt";

@@ -4,69 +4,69 @@
 #include <regexp.h>
 #include "spam.h"
 enum {
-Quanta	= 8192,
+Quanta = 8192,
 Minbody = 6000,
-HdrMax	= 15,
+HdrMax = 15,
 };
 typedef struct keyword Keyword;
 typedef struct word Word;
 struct word{
-char	*string;
-int	n;
+char *string;
+int n;
 };
-struct	keyword{
-char	*string;
-int	value;
+struct keyword{
+char *string;
+int value;
 };
-Word	htmlcmds[] =
+Word htmlcmds[] =
 {
-"html",		4,
+"html", 4,
 "!doctype html", 13,
 0,
 };
-Word	hrefs[] =
+Word hrefs[] =
 {
-"a href=",	7,
-"a title=",	8,
-"a target=",	9,
-"base href=",	10,
-"img src=",	8,
-"img border=",	11,
+"a href=", 7,
+"a title=", 8,
+"a target=", 9,
+"base href=", 10,
+"img src=", 8,
+"img border=", 11,
 "form action=", 12,
-"!--",		3,
+"!--", 3,
 0,
 };
-Word	hdrwords[] =
+Word hdrwords[] =
 {
-"cc:",			3,
-"bcc:", 		4,
-"to:",			3,
-0,			0,
+"cc:", 3,
+"bcc:", 4,
+"to:", 3,
+0, 0,
 };
-Keyword	keywords[] =
+Keyword keywords[] =
 {
-"header",	HoldHeader,
-"line",		SaveLine,
-"hold",		Hold,
-"dump",		Dump,
-"loff",		Lineoff,
-0,		Nactions,
+"header", HoldHeader,
+"line", SaveLine,
+"hold", Hold,
+"dump", Dump,
+"loff", Lineoff,
+0, Nactions,
 };
 Patterns patterns[] = {
-[Dump]		{ "DUMP:", 0, 0 },
-[HoldHeader]	{ "HEADER:", 0, 0 },
-[Hold]		{ "HOLD:", 0, 0 },
-[SaveLine]	{ "LINE:", 0, 0 },
-[Lineoff]	{ "LINEOFF:", 0, 0 },
-[Nactions]	{ 0, 0, 0 },
+[Dump] { "DUMP:", 0, 0 },
+[HoldHeader] { "HEADER:", 0, 0 },
+[Hold] { "HOLD:", 0, 0 },
+[SaveLine] { "LINE:", 0, 0 },
+[Lineoff] { "LINEOFF:", 0, 0 },
+[Nactions] { 0, 0, 0 },
 };
-static char*	endofhdr(char*, char*);
-static	int	escape(char**);
-static	int	extract(char*);
-static	int	findkey(char*);
-static	int	hash(int);
-static	int	isword(Word*, char*, int);
-static	void	parsealt(Biobuf*, char*, Spat**);
+static char* endofhdr(char*, char*);
+static int escape(char**);
+static int extract(char*);
+static int findkey(char*);
+static int hash(int);
+static int isword(Word*, char*, int);
+static void parsealt(Biobuf*, char*, Spat**);
 char*
 readmsg(Biobuf *bp, int *hsize, int *bufsize)
 {
@@ -126,7 +126,7 @@ if(bufsize)
 *bufsize = offset;
 return buf;
 }
-static	int
+static int
 isword(Word *wp, char *text, int len)
 {
 for(;wp->string; wp++)
@@ -154,7 +154,7 @@ return p+1;
 }
 return 0;
 }
-static	int
+static int
 htmlmatch(Word *wp, char *text, char *end, int *n)
 {
 char *cp;
@@ -307,7 +307,7 @@ hash(int c)
 {
 return c & 127;
 }
-static	int
+static int
 findkey(char *val)
 {
 Keyword *kp;
@@ -316,7 +316,7 @@ if(strcmp(val, kp->string) == 0)
 break;
 return kp->value;
 }
-#define	whitespace(c)	((c) == ' ' || (c) == '\t')
+#define whitespace(c) ((c) == ' ' || (c) == '\t')
 void
 parsepats(Biobuf *bp)
 {
@@ -522,7 +522,7 @@ q++;
 fprint(fd, "%s %.*s~%.*s~%.*s\n", type, (int)(m->sp-p), p, (int)(m->ep-m->sp), m->sp, (int)(q-m->ep), m->ep);
 }
 enum {
-INVAL=	255
+INVAL= 255
 };
 static uchar t64d[256] = {
 INVAL, INVAL, INVAL, INVAL, INVAL, INVAL, INVAL, INVAL,
@@ -530,17 +530,17 @@ INVAL, INVAL, INVAL, INVAL, INVAL, INVAL, INVAL, INVAL,
 INVAL, INVAL, INVAL, INVAL, INVAL, INVAL, INVAL, INVAL,
 INVAL, INVAL, INVAL, INVAL, INVAL, INVAL, INVAL, INVAL,
 INVAL, INVAL, INVAL, INVAL, INVAL, INVAL, INVAL, INVAL,
-INVAL, INVAL, INVAL,    62, INVAL, INVAL, INVAL,    63,
-52,	  53,	 54,	55,    56,    57,    58,    59,
-60,	  61, INVAL, INVAL, INVAL, INVAL, INVAL, INVAL,
-INVAL,    0,      1,     2,     3,     4,     5,     6,
-7,    8,      9,    10,    11,    12,    13,    14,
-15,   16,     17,    18,    19,    20,    21,    22,
-23,   24,     25, INVAL, INVAL, INVAL, INVAL, INVAL,
-INVAL,   26,     27,    28,    29,    30,    31,    32,
-33,   34,     35,    36,    37,    38,    39,    40,
-41,   42,     43,    44,    45,    46,    47,    48,
-49,   50,     51, INVAL, INVAL, INVAL, INVAL, INVAL,
+INVAL, INVAL, INVAL, 62, INVAL, INVAL, INVAL, 63,
+52, 53, 54, 55, 56, 57, 58, 59,
+60, 61, INVAL, INVAL, INVAL, INVAL, INVAL, INVAL,
+INVAL, 0, 1, 2, 3, 4, 5, 6,
+7, 8, 9, 10, 11, 12, 13, 14,
+15, 16, 17, 18, 19, 20, 21, 22,
+23, 24, 25, INVAL, INVAL, INVAL, INVAL, INVAL,
+INVAL, 26, 27, 28, 29, 30, 31, 32,
+33, 34, 35, 36, 37, 38, 39, 40,
+41, 42, 43, 44, 45, 46, 47, 48,
+49, 50, 51, INVAL, INVAL, INVAL, INVAL, INVAL,
 INVAL, INVAL, INVAL, INVAL, INVAL, INVAL, INVAL, INVAL,
 INVAL, INVAL, INVAL, INVAL, INVAL, INVAL, INVAL, INVAL,
 INVAL, INVAL, INVAL, INVAL, INVAL, INVAL, INVAL, INVAL,

@@ -70,7 +70,7 @@ if (nmatched)
 return 1;
 if (skip != nil)
 panic("x86break: non-nil skip in breakhit\n");
-for(b = breakpoints; b != (Bkpt*) nil;  b = b->next) {
+for(b = breakpoints; b != (Bkpt*) nil; b = b->next) {
 if(b->addr == ur->pc) {
 if(breakclear(b->id) == 0)
 panic("breakhit: breakclear() failed");

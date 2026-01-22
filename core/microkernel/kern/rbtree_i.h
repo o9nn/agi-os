@@ -8,11 +8,11 @@ struct rbtree_node *children[2];
 struct rbtree {
 struct rbtree_node *root;
 };
-#define RBTREE_COLOR_MASK   0x1UL
-#define RBTREE_PARENT_MASK  (~0x3UL)
-#define RBTREE_COLOR_RED    0
-#define RBTREE_COLOR_BLACK  1
-#define RBTREE_SLOT_INDEX_MASK  0x1UL
+#define RBTREE_COLOR_MASK 0x1UL
+#define RBTREE_PARENT_MASK (~0x3UL)
+#define RBTREE_COLOR_RED 0
+#define RBTREE_COLOR_BLACK 1
+#define RBTREE_SLOT_INDEX_MASK 0x1UL
 #define RBTREE_SLOT_PARENT_MASK (~RBTREE_SLOT_INDEX_MASK)
 static inline int rbtree_check_alignment(const struct rbtree_node *node)
 {

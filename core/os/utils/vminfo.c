@@ -12,11 +12,11 @@
 #include "default_pager_U.h"
 const char *argp_program_version = STANDARD_HURD_VERSION (vminfo);
 static const struct argp_option options[] = {
-{"verbose",	'v', 0, 0, "Give more detailed information"},
+{"verbose", 'v', 0, 0, "Give more detailed information"},
 {"addresses", 'a', 0, 0, "Print region start addresses"},
-{"sizes",     's', 0, 0, "Print region sizes"},
-{"decimal",	'd', 0, 0, "Show number is decimal"},
-{"holes",	'h', 0, 0, "Show holes between regions explicitly"},
+{"sizes", 's', 0, 0, "Print region sizes"},
+{"decimal", 'd', 0, 0, "Show number is decimal"},
+{"holes", 'h', 0, 0, "Show holes between regions explicitly"},
 {0}
 };
 static const char *args_doc = "PID [ADDR [SIZE]]]";
@@ -24,9 +24,9 @@ static const char *doc = "Show virtual memory regions for process PID"
 "\vIf ADDR, and possibly SIZE, are given only regions enclosing the range"
 " ADDR to ADDR+SIZE are shown (SIZE defaults to 0)."
 "\nIf neither --addresses nor --sizes is specified, both are assumed.";
-#define W_ADDRS		0x1
-#define W_SIZES		0x2
-#define W_DETAILS	0x4
+#define W_ADDRS 0x1
+#define W_SIZES 0x2
+#define W_DETAILS 0x4
 static char *
 prot_rep (vm_prot_t prot)
 {

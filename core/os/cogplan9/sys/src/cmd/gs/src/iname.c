@@ -38,10 +38,10 @@ dprintf2(" (0x%lx#%u)", (ulong)pname, nidx);
 debug_print_string(str, pnstr->string_size);
 dprintf2("(0x%lx,%u)\n", (ulong)str, pnstr->string_size);
 }
-#  define if_debug_name(msg, nt, nidx, pflag)\
+# define if_debug_name(msg, nt, nidx, pflag)\
 if ( gs_debug_c('n') ) name_print(msg, nt, nidx, pflag)
 #else
-#  define if_debug_name(msg, nt, nidx, pflag) DO_NOTHING
+# define if_debug_name(msg, nt, nidx, pflag) DO_NOTHING
 #endif
 name_table *
 names_init(ulong count, gs_ref_memory_t *imem)
@@ -167,8 +167,8 @@ make_name(pref, nidx, pname);
 return 0;
 }
 void
-names_string_ref(const name_table * nt, const ref * pnref  ,
-ref * psref  )
+names_string_ref(const name_table * nt, const ref * pnref ,
+ref * psref )
 {
 const name_string_t *pnstr = names_string_inline(nt, pnref);
 make_const_string(psref,
@@ -258,17 +258,17 @@ return false;
 pnstr->mark = 1;
 return true;
 }
-void  *
+void *
 names_ref_sub_table(name_table * nt, const ref * pnref)
 {
 return pnref->value.pname - (r_size(pnref) & nt_sub_index_mask);
 }
-void  *
+void *
 names_index_sub_table(name_table * nt, name_index_t index)
 {
 return nt->sub[index >> nt_log2_sub_size].names;
 }
-void  *
+void *
 names_index_string_sub_table(name_table * nt, name_index_t index)
 {
 return nt->sub[index >> nt_log2_sub_size].strings;

@@ -1,6 +1,6 @@
 #
-#	This should be called by spawned (persistent) threads.
-#	It arranges for them to be killed at the end of the day.
+# This should be called by spawned (persistent) threads.
+# It arranges for them to be killed at the end of the day.
 #
 reap()
 {
@@ -11,7 +11,7 @@ spawn zombie();
 pidchan <-= sys->pctl(0, nil);
 }
 #
-#	This thread records spawned threads and kills them.
+# This thread records spawned threads and kills them.
 #
 zombie()
 {
@@ -34,7 +34,7 @@ pids[pidx++] = pid;
 }
 }
 #
-#	Kill a thread.
+# Kill a thread.
 #
 kill(pid: int)
 {
@@ -43,7 +43,7 @@ if (fd != nil)
 sys->fprint(fd, "kill");
 }
 #
-#	Exit top level, killing spawned threads.
+# Exit top level, killing spawned threads.
 #
 exitmash()
 {
@@ -52,7 +52,7 @@ pidchan <-= PIDEXIT;
 exit;
 }
 #
-#	Slice a buffer if needed.
+# Slice a buffer if needed.
 #
 restrict(buff: array of byte, count: int): array of byte
 {
@@ -62,8 +62,8 @@ else
 return buff;
 }
 #
-#	Serve mash console reads.  Favours other programs
-#	ahead of the input loop.
+# Serve mash console reads. Favours other programs
+# ahead of the input loop.
 #
 serve_read(c: ref Sys->FileIO, sync: chan of int)
 {
@@ -73,7 +73,7 @@ sys->pctl(Sys->NEWFD, in.fd :: nil);
 sync <-= 0;
 reap();
 buff := array[Sys->ATOMICIO] of byte;
-outer:	for (;;) {
+outer: for (;;) {
 n := sys->read(in, buff, len buff);
 if (n < 0) {
 n = 0;
@@ -90,7 +90,7 @@ continue outer;
 * =>
 ;
 }
-inner:	for (;;) {
+inner: for (;;) {
 alt {
 (off, count, fid, rc) := <-c.read =>
 if (rc == nil)
@@ -104,7 +104,7 @@ break;
 }
 }
 #
-#	Serve mash console writes.
+# Serve mash console writes.
 #
 serve_write(c: ref Sys->FileIO, sync: chan of int)
 {
@@ -123,7 +123,7 @@ wc <-= (len data, nil);
 }
 }
 #
-#	Begin serving the mash console.
+# Begin serving the mash console.
 #
 Env.serve(e: self ref Env)
 {

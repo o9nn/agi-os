@@ -2,46 +2,46 @@
 #include <libc.h>
 #include <bio.h>
 #include <mach.h>
-typedef struct Data	Data;
-typedef struct Pc	Pc;
-typedef struct Acc	Acc;
+typedef struct Data Data;
+typedef struct Pc Pc;
+typedef struct Acc Acc;
 struct Data
 {
-ushort	down;
-ushort	right;
-ulong	pc;
-ulong	count;
-ulong	time;
+ushort down;
+ushort right;
+ulong pc;
+ulong count;
+ulong time;
 };
 struct Pc
 {
-Pc	*next;
-ulong	pc;
+Pc *next;
+ulong pc;
 };
 struct Acc
 {
-char	*name;
-ulong	pc;
-ulong	ms;
-ulong	calls;
+char *name;
+ulong pc;
+ulong ms;
+ulong calls;
 };
-Data*	data;
-Acc*	acc;
-ulong	ms;
-long	nsym;
-long	ndata;
-int	dflag;
-int	rflag;
-Biobuf	bout;
-int	tabstop = 4;
-int	verbose;
-void	syms(char*);
-void	datas(char*);
-void	graph(int, ulong, Pc*);
-void	plot(void);
-char*	name(ulong);
-void	indent(int);
-char*	defaout(void);
+Data* data;
+Acc* acc;
+ulong ms;
+long nsym;
+long ndata;
+int dflag;
+int rflag;
+Biobuf bout;
+int tabstop = 4;
+int verbose;
+void syms(char*);
+void datas(char*);
+void graph(int, ulong, Pc*);
+void plot(void);
+char* name(ulong);
+void indent(int);
+char* defaout(void);
 void
 main(int argc, char *argv[])
 {
@@ -300,17 +300,17 @@ j -= tabstop;
 if(j)
 Bwrite(&bout, ".                            ", j);
 }
-char*	trans[] =
+char* trans[] =
 {
-"386",		"8.out",
-"68020",		"2.out",
-"alpha",		"7.out",
-"amd64",	"6.out",
-"arm",		"5.out",
-"mips",		"v.out",
-"power",		"q.out",
-"sparc",		"k.out",
-"spim",		"0.out",
+"386", "8.out",
+"68020", "2.out",
+"alpha", "7.out",
+"amd64", "6.out",
+"arm", "5.out",
+"mips", "v.out",
+"power", "q.out",
+"sparc", "k.out",
+"spim", "0.out",
 0,0
 };
 char*

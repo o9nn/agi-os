@@ -390,7 +390,7 @@ dst += ROUTE_STRLEN;
 for (i = 0; i < buflen / sizeof(ifrtreq_t); i++)
 {
 snprintf(dest, INET_ADDRSTRLEN, "%-*s", INET_ADDRSTRLEN - 1, inet_to_str(r->rt_dest));
-snprintf(gw,   INET_ADDRSTRLEN, "%-*s", INET_ADDRSTRLEN - 1, inet_to_str(r->rt_gateway));
+snprintf(gw, INET_ADDRSTRLEN, "%-*s", INET_ADDRSTRLEN - 1, inet_to_str(r->rt_gateway));
 snprintf(mask, INET_ADDRSTRLEN, "%-*s", INET_ADDRSTRLEN - 1, inet_to_str(r->rt_mask));
 len = snprintf(dst, ROUTE_STRLEN, "%s\t%s\t%s\t%04X\t%d\t%u\t%d\t%s\t%d\t%u\t%u\n",
 r->ifname, dest, gw, r->rt_flags, 0, 0,
@@ -594,7 +594,7 @@ static char *cpu_features_ecx[] =
 NULL, "pcid", "dca", "sse4_1", "sse4_2", "x2apic", "movbe", "popcnt",
 "tsc_deadline_timer", "aes", "xsave", "osxsave", "avx", "f16c", "rdrand", "hypervisor"
 };
-#define VENDOR_ID_LEN  12
+#define VENDOR_ID_LEN 12
 #define MODEL_NAME_LEN 48
 static error_t
 cpuinfo_x86 (void* hook, char **contents, ssize_t *contents_len)
@@ -715,11 +715,11 @@ return errno;
 err = aarch64_get_hwcaps (mach_host_self (), &caps, &midr, &revidr);
 if (err)
 goto out;
-implementer  = (midr & 0xff000000) >> 24;
-variant      = (midr & 0x00f00000) >> 20;
+implementer = (midr & 0xff000000) >> 24;
+variant = (midr & 0x00f00000) >> 20;
 architecture = (midr & 0x000f0000) >> 16;
-part_num     = (midr & 0x0000fff0) >>  4;
-revision     = (midr & 0x0000000f) >>  0;
+part_num = (midr & 0x0000fff0) >> 4;
+revision = (midr & 0x0000000f) >> 0;
 fprintf (m, "processor\t\t: 0\n");
 fprintf (m, "Features\t\t:");
 for (index = 0; index < (sizeof (cpu_features_1) / sizeof (char *)); index++)
@@ -815,14 +815,14 @@ memcpy (*argz, ops->argz, ops->argz_len);
 *argz_len = ops->argz_len;
 return 0;
 }
-#define ROOTDIR_DEFINE_TRANSLATED_NODE(NPP, ARGZ)		  \
-&(struct procfs_translated_node_ops) {			  \
-.node_ops = {						  \
-.get_translator = rootdir_translated_node_get_translator,	  \
-},								  \
-.npp = NPP,							  \
-.argz = (ARGZ),						  \
-.argz_len = sizeof (ARGZ),					  \
+#define ROOTDIR_DEFINE_TRANSLATED_NODE(NPP, ARGZ) \
+&(struct procfs_translated_node_ops) { \
+.node_ops = { \
+.get_translator = rootdir_translated_node_get_translator, \
+}, \
+.npp = NPP, \
+.argz = (ARGZ), \
+.argz_len = sizeof (ARGZ), \
 }
 static const struct procfs_dir_entry rootdir_entries[] = {
 {

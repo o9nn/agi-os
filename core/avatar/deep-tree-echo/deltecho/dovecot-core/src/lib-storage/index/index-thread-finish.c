@@ -216,7 +216,7 @@ cur->ignore = TRUE;
 !root->reply_or_forward)) {
 thread_add_shadow_child(ctx, root->node.idx, cur->node.idx);
 cur->ignore = TRUE;
-} else  {
+} else {
 i_zero(&new_root);
 new_root.root_idx1 = array_count(&ctx->roots) + 1;
 new_root.node.idx = ctx->next_new_root_idx++;

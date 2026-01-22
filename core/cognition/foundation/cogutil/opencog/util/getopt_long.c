@@ -36,7 +36,7 @@ int opterr = 1;
 int optind = 1;
 int optopt = '?';
 int optreset;
-char    *optarg;
+char *optarg;
 #elif HAVE_CONFIG_H && !HAVE_DECL_OPTRESET
 static int optreset;
 #endif
@@ -44,17 +44,17 @@ static int optreset;
 __weak_alias(getopt_long,_getopt_long)
 #endif
 #if !HAVE_GETOPT_LONG
-#define IGNORE_FIRST    (*options == '-' || *options == '+')
+#define IGNORE_FIRST (*options == '-' || *options == '+')
 #define PRINT_ERROR ((opterr) && ((*options != ':') \
 || (IGNORE_FIRST && options[1] != ':')))
 #define IS_POSIXLY_CORRECT (getenv("POSIXLY_CORRECT") != NULL)
-#define PERMUTE         (!IS_POSIXLY_CORRECT && !IGNORE_FIRST)
-#define IN_ORDER        (!IS_POSIXLY_CORRECT && *options == '-')
-#define BADCH   (int)'?'
-#define BADARG      ((IGNORE_FIRST && options[1] == ':') \
+#define PERMUTE (!IS_POSIXLY_CORRECT && !IGNORE_FIRST)
+#define IN_ORDER (!IS_POSIXLY_CORRECT && *options == '-')
+#define BADCH (int)'?'
+#define BADARG ((IGNORE_FIRST && options[1] == ':') \
 || (*options == ':') ? (int)':' : (int)'?')
 #define INORDER (int)1
-#define EMSG    ""
+#define EMSG ""
 static int getopt_internal(int, char * const *, const char *);
 static int gcd(int, int);
 static void permute_args(int, int, int, char * const *);

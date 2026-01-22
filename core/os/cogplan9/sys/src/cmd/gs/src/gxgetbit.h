@@ -1,8 +1,8 @@
 #ifndef gxgetbit_INCLUDED
-#  define gxgetbit_INCLUDED
+# define gxgetbit_INCLUDED
 #include "gxbitfmt.h"
 #ifndef gs_get_bits_params_DEFINED
-#  define gs_get_bits_params_DEFINED
+# define gs_get_bits_params_DEFINED
 typedef struct gs_get_bits_params_s gs_get_bits_params_t;
 #endif
 typedef gx_bitmap_format_t gs_get_bits_options_t;

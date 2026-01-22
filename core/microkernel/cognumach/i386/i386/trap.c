@@ -32,8 +32,8 @@
 #endif
 #include "debug.h"
 void handle_double_fault(struct i386_saved_state *regs);
-#if	MACH_KDB
-boolean_t	debug_all_traps_with_kdb = FALSE;
+#if MACH_KDB
+boolean_t debug_all_traps_with_kdb = FALSE;
 extern struct db_watchpoint *db_watchpoint_list;
 extern boolean_t db_watchpoints_inserted;
 void
@@ -46,7 +46,7 @@ thread_exception_return();
 }
 }
 #endif
-#if	MACH_TTD
+#if MACH_TTD
 extern boolean_t kttd_enabled;
 boolean_t debug_all_traps_with_kttd = TRUE;
 #endif
@@ -56,7 +56,7 @@ user_page_fault_continue(kern_return_t kr)
 thread_t thread = current_thread();
 struct i386_saved_state *regs = USER_REGS(thread);
 if (kr == KERN_SUCCESS) {
-#if	MACH_KDB
+#if MACH_KDB
 if (db_watchpoint_list &&
 db_watchpoints_inserted &&
 (regs->err & T_PF_WRITE) &&
@@ -67,7 +67,7 @@ kdb_trap(T_WATCHPOINT, 0, regs);
 #endif
 thread_exception_return();
 }
-#if	MACH_KDB
+#if MACH_KDB
 if (debug_all_traps_with_kdb &&
 kdb_trap(regs->trapno, regs->err, regs)) {
 thread_exception_return();
@@ -101,12 +101,12 @@ return trapnum < TRAP_TYPES ? trap_type[trapnum] : "(unknown)";
 }
 void kernel_trap(struct i386_saved_state *regs)
 {
-unsigned long	code;
-unsigned long	subcode;
-unsigned long	type;
-vm_map_t	map;
-kern_return_t	result;
-thread_t	thread;
+unsigned long code;
+unsigned long subcode;
+unsigned long type;
+vm_map_t map;
+kern_return_t result;
+thread_t thread;
 extern char _start[], etext[];
 type = regs->trapno;
 code = regs->err;
@@ -174,7 +174,7 @@ VM_PROT_READ|VM_PROT_WRITE,
 FALSE,
 FALSE,
 vm_fault_no_continuation);
-#if	MACH_KDB
+#if MACH_KDB
 if (result == KERN_SUCCESS) {
 if (db_watchpoint_list &&
 db_watchpoints_inserted &&
@@ -250,11 +250,11 @@ printf("%s trap", trap_type[type]);
 else
 printf("trap %ld", type);
 printf(", eip 0x%lx, code %lx, cr2 %lx\n", regs->eip, code, regs->cr2);
-#if	MACH_TTD
+#if MACH_TTD
 if (kttd_enabled && kttd_trap(type, code, regs))
 return;
 #endif
-#if	MACH_KDB
+#if MACH_KDB
 if (kdb_trap(type, code, regs))
 return;
 #endif
@@ -268,10 +268,10 @@ return;
 }
 int user_trap(struct i386_saved_state *regs)
 {
-int	exc = 0;
-unsigned long	code;
-unsigned long	subcode;
-unsigned long	type;
+int exc = 0;
+unsigned long code;
+unsigned long subcode;
+unsigned long type;
 thread_t thread = current_thread();
 #ifdef __x86_64__
 assert(regs == &thread->pcb->iss);
@@ -294,13 +294,13 @@ exc = EXC_ARITHMETIC;
 code = EXC_I386_DIV;
 break;
 case T_DEBUG:
-#if	MACH_TTD
+#if MACH_TTD
 if (kttd_enabled && kttd_in_single_step()) {
 if (kttd_trap(type, regs->err, regs))
 return 0;
 }
 #endif
-#if	MACH_KDB
+#if MACH_KDB
 if (db_in_single_step()) {
 if (kdb_trap(type, regs->err, regs))
 return 0;
@@ -313,12 +313,12 @@ exc = EXC_BREAKPOINT;
 code = EXC_I386_SGL;
 break;
 case T_INT3:
-#if	MACH_TTD
+#if MACH_TTD
 if (kttd_enabled && kttd_trap(type, regs->err, regs))
 return 0;
 break;
 #endif
-#if	MACH_KDB
+#if MACH_KDB
 {
 if (db_find_breakpoint_here(
 (current_thread())? current_thread()->task: TASK_NULL,
@@ -369,7 +369,7 @@ case T_GENERAL_PROTECTION:
 if (thread->task->eml_dispatch) {
 unsigned char opcode, intno;
 opcode = inst_fetch(regs->eip, regs->cs);
-intno  = inst_fetch(regs->eip+1, regs->cs);
+intno = inst_fetch(regs->eip+1, regs->cs);
 if (opcode == 0xcd && intno == 0x80) {
 regs->eip += 2;
 return 1;
@@ -431,11 +431,11 @@ case T_FLOATING_POINT_ERROR:
 fpexterrflt();
 return 0;
 default:
-#if	MACH_TTD
+#if MACH_TTD
 if (kttd_enabled && kttd_trap(type, regs->err, regs))
 return 0;
 #endif
-#if	MACH_KDB
+#if MACH_KDB
 if (kdb_trap(type, regs->err, regs))
 return 0;
 #endif
@@ -446,25 +446,25 @@ dump_ss(regs);
 panic("trap");
 return 0;
 }
-#if	MACH_TTD
+#if MACH_TTD
 if ((debug_all_traps_with_kttd || thread->task->essential) &&
 kttd_trap(type, regs->err, regs))
 return 0;
 #endif
-#if	MACH_KDB
+#if MACH_KDB
 if ((debug_all_traps_with_kdb || thread->task->essential) &&
 kdb_trap(type, regs->err, regs))
 return 0;
 #endif
 i386_exception(exc, code, subcode);
 }
-#define	V86_IRET_PENDING 0x4000
+#define V86_IRET_PENDING 0x4000
 void
 i386_astintr(void)
 {
 (void) splsched();
-#ifndef	MACH_RING1
-int	mycpu = cpu_number();
+#ifndef MACH_RING1
+int mycpu = cpu_number();
 if (need_ast[mycpu] & AST_I386_FP) {
 ast_off(mycpu, AST_I386_FP);
 (void) spl0();
@@ -478,17 +478,17 @@ ast_taken();
 }
 void
 i386_exception(
-int	exc,
-int	code,
-long	subcode)
+int exc,
+int code,
+long subcode)
 {
-spl_t	s;
+spl_t s;
 s = splsched();
 ast_off(cpu_number(), AST_I386_FP);
 splx(s);
 exception(exc, code, subcode);
 }
-#if	MACH_PCSAMPLE > 0
+#if MACH_PCSAMPLE > 0
 unsigned
 interrupted_pc(const thread_t t)
 {
@@ -497,7 +497,7 @@ iss = USER_REGS(t);
 return iss->eip;
 }
 #endif
-#if	MACH_KDB
+#if MACH_KDB
 void
 db_debug_all_traps (boolean_t enable)
 {

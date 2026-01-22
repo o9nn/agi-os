@@ -1,8 +1,8 @@
 #include "lib9.h"
 #include "isa.h"
 #include "interp.h"
-void	decgen(int);
-#define	SOFTMMU		0
+void decgen(int);
+#define SOFTMMU 0
 void
 main(void)
 {

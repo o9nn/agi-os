@@ -14,21 +14,21 @@ short link_cost;
 };
 struct Linkage_s
 {
-WordIdx         num_words;
-const char *  * word;
-Link *          link_array;
-uint32_t        num_links;
-uint32_t        lasz;
-Disjunct **     chosen_disjuncts;
-size_t          cdsz;
-const char **   disjunct_list_str;
+WordIdx num_words;
+const char * * word;
+Link * link_array;
+uint32_t num_links;
+uint32_t lasz;
+Disjunct ** chosen_disjuncts;
+size_t cdsz;
+const char ** disjunct_list_str;
 Gword **wg_path;
 Gword **wg_path_display;
-Linkage_info    lifo;
-bool            is_sent_long;
-bool            dupe;
-PP_domains *    pp_domains;
-Sentence        sent;
+Linkage_info lifo;
+bool is_sent_long;
+bool dupe;
+PP_domains * pp_domains;
+Sentence sent;
 };
 struct Link_s
 {

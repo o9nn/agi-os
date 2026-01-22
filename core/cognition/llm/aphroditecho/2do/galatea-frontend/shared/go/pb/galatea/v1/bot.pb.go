@@ -1,618 +1,618 @@
 package galateav1
 import (
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
+protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+reflect "reflect"
+sync "sync"
 )
 const (
-	_ = protoimpl.EnforceVersion(20 - protoimpl.MinVersion)
-	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
+_ = protoimpl.EnforceVersion(20 - protoimpl.MinVersion)
+_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 type Bot struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-	Id          string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name        string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Description string `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	AvatarUrl   string `protobuf:"bytes,4,opt,name=avatar_url,json=avatarUrl,proto3" json:"avatar_url,omitempty"`
+state         protoimpl.MessageState
+sizeCache     protoimpl.SizeCache
+unknownFields protoimpl.UnknownFields
+Id          string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+Name        string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+Description string `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+AvatarUrl   string `protobuf:"bytes,4,opt,name=avatar_url,json=avatarUrl,proto3" json:"avatar_url,omitempty"`
 }
 func (x *Bot) Reset() {
-	*x = Bot{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_galatea_v1_bot_proto_msgTypes[0]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
+*x = Bot{}
+if protoimpl.UnsafeEnabled {
+mi := &file_galatea_v1_bot_proto_msgTypes[0]
+ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+ms.StoreMessageInfo(mi)
+}
 }
 func (x *Bot) String() string {
-	return protoimpl.X.MessageStringOf(x)
+return protoimpl.X.MessageStringOf(x)
 }
 func (*Bot) ProtoMessage() {}
 func (x *Bot) ProtoReflect() protoreflect.Message {
-	mi := &file_galatea_v1_bot_proto_msgTypes[0]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+mi := &file_galatea_v1_bot_proto_msgTypes[0]
+if protoimpl.UnsafeEnabled && x != nil {
+ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+if ms.LoadMessageInfo() == nil {
+ms.StoreMessageInfo(mi)
+}
+return ms
+}
+return mi.MessageOf(x)
 }
 func (*Bot) Descriptor() ([]byte, []int) {
-	return file_galatea_v1_bot_proto_rawDescGZIP(), []int{0}
+return file_galatea_v1_bot_proto_rawDescGZIP(), []int{0}
 }
 func (x *Bot) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
+if x != nil {
+return x.Id
+}
+return ""
 }
 func (x *Bot) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
+if x != nil {
+return x.Name
+}
+return ""
 }
 func (x *Bot) GetDescription() string {
-	if x != nil {
-		return x.Description
-	}
-	return ""
+if x != nil {
+return x.Description
+}
+return ""
 }
 func (x *Bot) GetAvatarUrl() string {
-	if x != nil {
-		return x.AvatarUrl
-	}
-	return ""
+if x != nil {
+return x.AvatarUrl
+}
+return ""
 }
 type BotAllRequest struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
+state         protoimpl.MessageState
+sizeCache     protoimpl.SizeCache
+unknownFields protoimpl.UnknownFields
 }
 func (x *BotAllRequest) Reset() {
-	*x = BotAllRequest{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_galatea_v1_bot_proto_msgTypes[1]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
+*x = BotAllRequest{}
+if protoimpl.UnsafeEnabled {
+mi := &file_galatea_v1_bot_proto_msgTypes[1]
+ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+ms.StoreMessageInfo(mi)
+}
 }
 func (x *BotAllRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
+return protoimpl.X.MessageStringOf(x)
 }
 func (*BotAllRequest) ProtoMessage() {}
 func (x *BotAllRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_galatea_v1_bot_proto_msgTypes[1]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+mi := &file_galatea_v1_bot_proto_msgTypes[1]
+if protoimpl.UnsafeEnabled && x != nil {
+ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+if ms.LoadMessageInfo() == nil {
+ms.StoreMessageInfo(mi)
+}
+return ms
+}
+return mi.MessageOf(x)
 }
 func (*BotAllRequest) Descriptor() ([]byte, []int) {
-	return file_galatea_v1_bot_proto_rawDescGZIP(), []int{1}
+return file_galatea_v1_bot_proto_rawDescGZIP(), []int{1}
 }
 type BotAllResponse struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-	Bots []*Bot `protobuf:"bytes,1,rep,name=bots,proto3" json:"bots,omitempty"`
+state         protoimpl.MessageState
+sizeCache     protoimpl.SizeCache
+unknownFields protoimpl.UnknownFields
+Bots []*Bot `protobuf:"bytes,1,rep,name=bots,proto3" json:"bots,omitempty"`
 }
 func (x *BotAllResponse) Reset() {
-	*x = BotAllResponse{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_galatea_v1_bot_proto_msgTypes[2]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
+*x = BotAllResponse{}
+if protoimpl.UnsafeEnabled {
+mi := &file_galatea_v1_bot_proto_msgTypes[2]
+ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+ms.StoreMessageInfo(mi)
+}
 }
 func (x *BotAllResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
+return protoimpl.X.MessageStringOf(x)
 }
 func (*BotAllResponse) ProtoMessage() {}
 func (x *BotAllResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_galatea_v1_bot_proto_msgTypes[2]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+mi := &file_galatea_v1_bot_proto_msgTypes[2]
+if protoimpl.UnsafeEnabled && x != nil {
+ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+if ms.LoadMessageInfo() == nil {
+ms.StoreMessageInfo(mi)
+}
+return ms
+}
+return mi.MessageOf(x)
 }
 func (*BotAllResponse) Descriptor() ([]byte, []int) {
-	return file_galatea_v1_bot_proto_rawDescGZIP(), []int{2}
+return file_galatea_v1_bot_proto_rawDescGZIP(), []int{2}
 }
 func (x *BotAllResponse) GetBots() []*Bot {
-	if x != nil {
-		return x.Bots
-	}
-	return nil
+if x != nil {
+return x.Bots
+}
+return nil
 }
 type BotCreateRequest struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-	Id  string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Bot *Bot   `protobuf:"bytes,2,opt,name=bot,proto3" json:"bot,omitempty"`
+state         protoimpl.MessageState
+sizeCache     protoimpl.SizeCache
+unknownFields protoimpl.UnknownFields
+Id  string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+Bot *Bot   `protobuf:"bytes,2,opt,name=bot,proto3" json:"bot,omitempty"`
 }
 func (x *BotCreateRequest) Reset() {
-	*x = BotCreateRequest{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_galatea_v1_bot_proto_msgTypes[3]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
+*x = BotCreateRequest{}
+if protoimpl.UnsafeEnabled {
+mi := &file_galatea_v1_bot_proto_msgTypes[3]
+ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+ms.StoreMessageInfo(mi)
+}
 }
 func (x *BotCreateRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
+return protoimpl.X.MessageStringOf(x)
 }
 func (*BotCreateRequest) ProtoMessage() {}
 func (x *BotCreateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_galatea_v1_bot_proto_msgTypes[3]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+mi := &file_galatea_v1_bot_proto_msgTypes[3]
+if protoimpl.UnsafeEnabled && x != nil {
+ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+if ms.LoadMessageInfo() == nil {
+ms.StoreMessageInfo(mi)
+}
+return ms
+}
+return mi.MessageOf(x)
 }
 func (*BotCreateRequest) Descriptor() ([]byte, []int) {
-	return file_galatea_v1_bot_proto_rawDescGZIP(), []int{3}
+return file_galatea_v1_bot_proto_rawDescGZIP(), []int{3}
 }
 func (x *BotCreateRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
+if x != nil {
+return x.Id
+}
+return ""
 }
 func (x *BotCreateRequest) GetBot() *Bot {
-	if x != nil {
-		return x.Bot
-	}
-	return nil
+if x != nil {
+return x.Bot
+}
+return nil
 }
 type BotCreateResponse struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-	Bot *Bot `protobuf:"bytes,1,opt,name=bot,proto3" json:"bot,omitempty"`
+state         protoimpl.MessageState
+sizeCache     protoimpl.SizeCache
+unknownFields protoimpl.UnknownFields
+Bot *Bot `protobuf:"bytes,1,opt,name=bot,proto3" json:"bot,omitempty"`
 }
 func (x *BotCreateResponse) Reset() {
-	*x = BotCreateResponse{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_galatea_v1_bot_proto_msgTypes[4]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
+*x = BotCreateResponse{}
+if protoimpl.UnsafeEnabled {
+mi := &file_galatea_v1_bot_proto_msgTypes[4]
+ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+ms.StoreMessageInfo(mi)
+}
 }
 func (x *BotCreateResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
+return protoimpl.X.MessageStringOf(x)
 }
 func (*BotCreateResponse) ProtoMessage() {}
 func (x *BotCreateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_galatea_v1_bot_proto_msgTypes[4]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+mi := &file_galatea_v1_bot_proto_msgTypes[4]
+if protoimpl.UnsafeEnabled && x != nil {
+ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+if ms.LoadMessageInfo() == nil {
+ms.StoreMessageInfo(mi)
+}
+return ms
+}
+return mi.MessageOf(x)
 }
 func (*BotCreateResponse) Descriptor() ([]byte, []int) {
-	return file_galatea_v1_bot_proto_rawDescGZIP(), []int{4}
+return file_galatea_v1_bot_proto_rawDescGZIP(), []int{4}
 }
 func (x *BotCreateResponse) GetBot() *Bot {
-	if x != nil {
-		return x.Bot
-	}
-	return nil
+if x != nil {
+return x.Bot
+}
+return nil
 }
 type BotUpdateRequest struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-	Id  string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Bot *Bot   `protobuf:"bytes,2,opt,name=bot,proto3" json:"bot,omitempty"`
+state         protoimpl.MessageState
+sizeCache     protoimpl.SizeCache
+unknownFields protoimpl.UnknownFields
+Id  string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+Bot *Bot   `protobuf:"bytes,2,opt,name=bot,proto3" json:"bot,omitempty"`
 }
 func (x *BotUpdateRequest) Reset() {
-	*x = BotUpdateRequest{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_galatea_v1_bot_proto_msgTypes[5]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
+*x = BotUpdateRequest{}
+if protoimpl.UnsafeEnabled {
+mi := &file_galatea_v1_bot_proto_msgTypes[5]
+ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+ms.StoreMessageInfo(mi)
+}
 }
 func (x *BotUpdateRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
+return protoimpl.X.MessageStringOf(x)
 }
 func (*BotUpdateRequest) ProtoMessage() {}
 func (x *BotUpdateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_galatea_v1_bot_proto_msgTypes[5]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+mi := &file_galatea_v1_bot_proto_msgTypes[5]
+if protoimpl.UnsafeEnabled && x != nil {
+ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+if ms.LoadMessageInfo() == nil {
+ms.StoreMessageInfo(mi)
+}
+return ms
+}
+return mi.MessageOf(x)
 }
 func (*BotUpdateRequest) Descriptor() ([]byte, []int) {
-	return file_galatea_v1_bot_proto_rawDescGZIP(), []int{5}
+return file_galatea_v1_bot_proto_rawDescGZIP(), []int{5}
 }
 func (x *BotUpdateRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
+if x != nil {
+return x.Id
+}
+return ""
 }
 func (x *BotUpdateRequest) GetBot() *Bot {
-	if x != nil {
-		return x.Bot
-	}
-	return nil
+if x != nil {
+return x.Bot
+}
+return nil
 }
 type BotUpdateResponse struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-	Bot *Bot `protobuf:"bytes,1,opt,name=bot,proto3" json:"bot,omitempty"`
+state         protoimpl.MessageState
+sizeCache     protoimpl.SizeCache
+unknownFields protoimpl.UnknownFields
+Bot *Bot `protobuf:"bytes,1,opt,name=bot,proto3" json:"bot,omitempty"`
 }
 func (x *BotUpdateResponse) Reset() {
-	*x = BotUpdateResponse{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_galatea_v1_bot_proto_msgTypes[6]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
+*x = BotUpdateResponse{}
+if protoimpl.UnsafeEnabled {
+mi := &file_galatea_v1_bot_proto_msgTypes[6]
+ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+ms.StoreMessageInfo(mi)
+}
 }
 func (x *BotUpdateResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
+return protoimpl.X.MessageStringOf(x)
 }
 func (*BotUpdateResponse) ProtoMessage() {}
 func (x *BotUpdateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_galatea_v1_bot_proto_msgTypes[6]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+mi := &file_galatea_v1_bot_proto_msgTypes[6]
+if protoimpl.UnsafeEnabled && x != nil {
+ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+if ms.LoadMessageInfo() == nil {
+ms.StoreMessageInfo(mi)
+}
+return ms
+}
+return mi.MessageOf(x)
 }
 func (*BotUpdateResponse) Descriptor() ([]byte, []int) {
-	return file_galatea_v1_bot_proto_rawDescGZIP(), []int{6}
+return file_galatea_v1_bot_proto_rawDescGZIP(), []int{6}
 }
 func (x *BotUpdateResponse) GetBot() *Bot {
-	if x != nil {
-		return x.Bot
-	}
-	return nil
+if x != nil {
+return x.Bot
+}
+return nil
 }
 type BotDeleteRequest struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+state         protoimpl.MessageState
+sizeCache     protoimpl.SizeCache
+unknownFields protoimpl.UnknownFields
+Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 }
 func (x *BotDeleteRequest) Reset() {
-	*x = BotDeleteRequest{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_galatea_v1_bot_proto_msgTypes[7]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
+*x = BotDeleteRequest{}
+if protoimpl.UnsafeEnabled {
+mi := &file_galatea_v1_bot_proto_msgTypes[7]
+ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+ms.StoreMessageInfo(mi)
+}
 }
 func (x *BotDeleteRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
+return protoimpl.X.MessageStringOf(x)
 }
 func (*BotDeleteRequest) ProtoMessage() {}
 func (x *BotDeleteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_galatea_v1_bot_proto_msgTypes[7]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+mi := &file_galatea_v1_bot_proto_msgTypes[7]
+if protoimpl.UnsafeEnabled && x != nil {
+ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+if ms.LoadMessageInfo() == nil {
+ms.StoreMessageInfo(mi)
+}
+return ms
+}
+return mi.MessageOf(x)
 }
 func (*BotDeleteRequest) Descriptor() ([]byte, []int) {
-	return file_galatea_v1_bot_proto_rawDescGZIP(), []int{7}
+return file_galatea_v1_bot_proto_rawDescGZIP(), []int{7}
 }
 func (x *BotDeleteRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
+if x != nil {
+return x.Id
+}
+return ""
 }
 type BotDeleteResponse struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-	Bot *Bot `protobuf:"bytes,2,opt,name=bot,proto3" json:"bot,omitempty"`
+state         protoimpl.MessageState
+sizeCache     protoimpl.SizeCache
+unknownFields protoimpl.UnknownFields
+Bot *Bot `protobuf:"bytes,2,opt,name=bot,proto3" json:"bot,omitempty"`
 }
 func (x *BotDeleteResponse) Reset() {
-	*x = BotDeleteResponse{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_galatea_v1_bot_proto_msgTypes[8]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
+*x = BotDeleteResponse{}
+if protoimpl.UnsafeEnabled {
+mi := &file_galatea_v1_bot_proto_msgTypes[8]
+ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+ms.StoreMessageInfo(mi)
+}
 }
 func (x *BotDeleteResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
+return protoimpl.X.MessageStringOf(x)
 }
 func (*BotDeleteResponse) ProtoMessage() {}
 func (x *BotDeleteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_galatea_v1_bot_proto_msgTypes[8]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+mi := &file_galatea_v1_bot_proto_msgTypes[8]
+if protoimpl.UnsafeEnabled && x != nil {
+ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+if ms.LoadMessageInfo() == nil {
+ms.StoreMessageInfo(mi)
+}
+return ms
+}
+return mi.MessageOf(x)
 }
 func (*BotDeleteResponse) Descriptor() ([]byte, []int) {
-	return file_galatea_v1_bot_proto_rawDescGZIP(), []int{8}
+return file_galatea_v1_bot_proto_rawDescGZIP(), []int{8}
 }
 func (x *BotDeleteResponse) GetBot() *Bot {
-	if x != nil {
-		return x.Bot
-	}
-	return nil
+if x != nil {
+return x.Bot
+}
+return nil
 }
 var File_galatea_v1_bot_proto protoreflect.FileDescriptor
 var file_galatea_v1_bot_proto_rawDesc = []byte{
-	0x0a, 0x14, 0x67, 0x61, 0x6c, 0x61, 0x74, 0x65, 0x61, 0x2f, 0x76, 0x31, 0x2f, 0x62, 0x6f, 0x74,
-	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x0a, 0x67, 0x61, 0x6c, 0x61, 0x74, 0x65, 0x61, 0x2e,
-	0x76, 0x31, 0x22, 0x6a, 0x0a, 0x03, 0x42, 0x6f, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18,
-	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d,
-	0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x20, 0x0a,
-	0x0b, 0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x03, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x0b, 0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12,
-	0x1d, 0x0a, 0x0a, 0x61, 0x76, 0x61, 0x74, 0x61, 0x72, 0x5f, 0x75, 0x72, 0x6c, 0x18, 0x04, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x09, 0x61, 0x76, 0x61, 0x74, 0x61, 0x72, 0x55, 0x72, 0x6c, 0x22, 0x0f,
-	0x0a, 0x0d, 0x42, 0x6f, 0x74, 0x41, 0x6c, 0x6c, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22,
-	0x35, 0x0a, 0x0e, 0x42, 0x6f, 0x74, 0x41, 0x6c, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
-	0x65, 0x12, 0x23, 0x0a, 0x04, 0x62, 0x6f, 0x74, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32,
-	0x0f, 0x2e, 0x67, 0x61, 0x6c, 0x61, 0x74, 0x65, 0x61, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x6f, 0x74,
-	0x52, 0x04, 0x62, 0x6f, 0x74, 0x73, 0x22, 0x45, 0x0a, 0x10, 0x42, 0x6f, 0x74, 0x43, 0x72, 0x65,
-	0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x21, 0x0a, 0x03, 0x62, 0x6f,
-	0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0f, 0x2e, 0x67, 0x61, 0x6c, 0x61, 0x74, 0x65,
-	0x61, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x6f, 0x74, 0x52, 0x03, 0x62, 0x6f, 0x74, 0x22, 0x36, 0x0a,
-	0x11, 0x42, 0x6f, 0x74, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
-	0x73, 0x65, 0x12, 0x21, 0x0a, 0x03, 0x62, 0x6f, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32,
-	0x0f, 0x2e, 0x67, 0x61, 0x6c, 0x61, 0x74, 0x65, 0x61, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x6f, 0x74,
-	0x52, 0x03, 0x62, 0x6f, 0x74, 0x22, 0x45, 0x0a, 0x10, 0x42, 0x6f, 0x74, 0x55, 0x70, 0x64, 0x61,
-	0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18,
-	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x21, 0x0a, 0x03, 0x62, 0x6f, 0x74,
-	0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0f, 0x2e, 0x67, 0x61, 0x6c, 0x61, 0x74, 0x65, 0x61,
-	0x2e, 0x76, 0x31, 0x2e, 0x42, 0x6f, 0x74, 0x52, 0x03, 0x62, 0x6f, 0x74, 0x22, 0x36, 0x0a, 0x11,
-	0x42, 0x6f, 0x74, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
-	0x65, 0x12, 0x21, 0x0a, 0x03, 0x62, 0x6f, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0f,
-	0x2e, 0x67, 0x61, 0x6c, 0x61, 0x74, 0x65, 0x61, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x6f, 0x74, 0x52,
-	0x03, 0x62, 0x6f, 0x74, 0x22, 0x22, 0x0a, 0x10, 0x42, 0x6f, 0x74, 0x44, 0x65, 0x6c, 0x65, 0x74,
-	0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x22, 0x36, 0x0a, 0x11, 0x42, 0x6f, 0x74, 0x44,
-	0x65, 0x6c, 0x65, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x21, 0x0a,
-	0x03, 0x62, 0x6f, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0f, 0x2e, 0x67, 0x61, 0x6c,
-	0x61, 0x74, 0x65, 0x61, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x6f, 0x74, 0x52, 0x03, 0x62, 0x6f, 0x74,
-	0x32, 0xab, 0x02, 0x0a, 0x0a, 0x42, 0x6f, 0x74, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12,
-	0x3f, 0x0a, 0x06, 0x42, 0x6f, 0x74, 0x41, 0x6c, 0x6c, 0x12, 0x19, 0x2e, 0x67, 0x61, 0x6c, 0x61,
-	0x74, 0x65, 0x61, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x6f, 0x74, 0x41, 0x6c, 0x6c, 0x52, 0x65, 0x71,
-	0x75, 0x65, 0x73, 0x74, 0x1a, 0x1a, 0x2e, 0x67, 0x61, 0x6c, 0x61, 0x74, 0x65, 0x61, 0x2e, 0x76,
-	0x31, 0x2e, 0x42, 0x6f, 0x74, 0x41, 0x6c, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
-	0x12, 0x48, 0x0a, 0x09, 0x42, 0x6f, 0x74, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x12, 0x1c, 0x2e,
-	0x67, 0x61, 0x6c, 0x61, 0x74, 0x65, 0x61, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x6f, 0x74, 0x43, 0x72,
-	0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1d, 0x2e, 0x67, 0x61,
-	0x6c, 0x61, 0x74, 0x65, 0x61, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x6f, 0x74, 0x43, 0x72, 0x65, 0x61,
-	0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x48, 0x0a, 0x09, 0x42, 0x6f,
-	0x74, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x12, 0x1c, 0x2e, 0x67, 0x61, 0x6c, 0x61, 0x74, 0x65,
-	0x61, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x6f, 0x74, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x52, 0x65,
-	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1d, 0x2e, 0x67, 0x61, 0x6c, 0x61, 0x74, 0x65, 0x61, 0x2e,
-	0x76, 0x31, 0x2e, 0x42, 0x6f, 0x74, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x48, 0x0a, 0x09, 0x42, 0x6f, 0x74, 0x44, 0x65, 0x6c, 0x65, 0x74,
-	0x65, 0x12, 0x1c, 0x2e, 0x67, 0x61, 0x6c, 0x61, 0x74, 0x65, 0x61, 0x2e, 0x76, 0x31, 0x2e, 0x42,
-	0x6f, 0x74, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
-	0x1d, 0x2e, 0x67, 0x61, 0x6c, 0x61, 0x74, 0x65, 0x61, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x6f, 0x74,
-	0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x42, 0x23,
-	0x5a, 0x21, 0x73, 0x68, 0x61, 0x72, 0x65, 0x64, 0x2f, 0x67, 0x6f, 0x2f, 0x70, 0x62, 0x2f, 0x67,
-	0x61, 0x6c, 0x61, 0x74, 0x65, 0x61, 0x2f, 0x76, 0x31, 0x3b, 0x67, 0x61, 0x6c, 0x61, 0x74, 0x65,
-	0x61, 0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+0x0a, 0x14, 0x67, 0x61, 0x6c, 0x61, 0x74, 0x65, 0x61, 0x2f, 0x76, 0x31, 0x2f, 0x62, 0x6f, 0x74,
+0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x0a, 0x67, 0x61, 0x6c, 0x61, 0x74, 0x65, 0x61, 0x2e,
+0x76, 0x31, 0x22, 0x6a, 0x0a, 0x03, 0x42, 0x6f, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18,
+0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d,
+0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x20, 0x0a,
+0x0b, 0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x03, 0x20, 0x01,
+0x28, 0x09, 0x52, 0x0b, 0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12,
+0x1d, 0x0a, 0x0a, 0x61, 0x76, 0x61, 0x74, 0x61, 0x72, 0x5f, 0x75, 0x72, 0x6c, 0x18, 0x04, 0x20,
+0x01, 0x28, 0x09, 0x52, 0x09, 0x61, 0x76, 0x61, 0x74, 0x61, 0x72, 0x55, 0x72, 0x6c, 0x22, 0x0f,
+0x0a, 0x0d, 0x42, 0x6f, 0x74, 0x41, 0x6c, 0x6c, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22,
+0x35, 0x0a, 0x0e, 0x42, 0x6f, 0x74, 0x41, 0x6c, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+0x65, 0x12, 0x23, 0x0a, 0x04, 0x62, 0x6f, 0x74, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32,
+0x0f, 0x2e, 0x67, 0x61, 0x6c, 0x61, 0x74, 0x65, 0x61, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x6f, 0x74,
+0x52, 0x04, 0x62, 0x6f, 0x74, 0x73, 0x22, 0x45, 0x0a, 0x10, 0x42, 0x6f, 0x74, 0x43, 0x72, 0x65,
+0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64,
+0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x21, 0x0a, 0x03, 0x62, 0x6f,
+0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0f, 0x2e, 0x67, 0x61, 0x6c, 0x61, 0x74, 0x65,
+0x61, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x6f, 0x74, 0x52, 0x03, 0x62, 0x6f, 0x74, 0x22, 0x36, 0x0a,
+0x11, 0x42, 0x6f, 0x74, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+0x73, 0x65, 0x12, 0x21, 0x0a, 0x03, 0x62, 0x6f, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32,
+0x0f, 0x2e, 0x67, 0x61, 0x6c, 0x61, 0x74, 0x65, 0x61, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x6f, 0x74,
+0x52, 0x03, 0x62, 0x6f, 0x74, 0x22, 0x45, 0x0a, 0x10, 0x42, 0x6f, 0x74, 0x55, 0x70, 0x64, 0x61,
+0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18,
+0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x21, 0x0a, 0x03, 0x62, 0x6f, 0x74,
+0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0f, 0x2e, 0x67, 0x61, 0x6c, 0x61, 0x74, 0x65, 0x61,
+0x2e, 0x76, 0x31, 0x2e, 0x42, 0x6f, 0x74, 0x52, 0x03, 0x62, 0x6f, 0x74, 0x22, 0x36, 0x0a, 0x11,
+0x42, 0x6f, 0x74, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+0x65, 0x12, 0x21, 0x0a, 0x03, 0x62, 0x6f, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0f,
+0x2e, 0x67, 0x61, 0x6c, 0x61, 0x74, 0x65, 0x61, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x6f, 0x74, 0x52,
+0x03, 0x62, 0x6f, 0x74, 0x22, 0x22, 0x0a, 0x10, 0x42, 0x6f, 0x74, 0x44, 0x65, 0x6c, 0x65, 0x74,
+0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01,
+0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x22, 0x36, 0x0a, 0x11, 0x42, 0x6f, 0x74, 0x44,
+0x65, 0x6c, 0x65, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x21, 0x0a,
+0x03, 0x62, 0x6f, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0f, 0x2e, 0x67, 0x61, 0x6c,
+0x61, 0x74, 0x65, 0x61, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x6f, 0x74, 0x52, 0x03, 0x62, 0x6f, 0x74,
+0x32, 0xab, 0x02, 0x0a, 0x0a, 0x42, 0x6f, 0x74, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12,
+0x3f, 0x0a, 0x06, 0x42, 0x6f, 0x74, 0x41, 0x6c, 0x6c, 0x12, 0x19, 0x2e, 0x67, 0x61, 0x6c, 0x61,
+0x74, 0x65, 0x61, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x6f, 0x74, 0x41, 0x6c, 0x6c, 0x52, 0x65, 0x71,
+0x75, 0x65, 0x73, 0x74, 0x1a, 0x1a, 0x2e, 0x67, 0x61, 0x6c, 0x61, 0x74, 0x65, 0x61, 0x2e, 0x76,
+0x31, 0x2e, 0x42, 0x6f, 0x74, 0x41, 0x6c, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+0x12, 0x48, 0x0a, 0x09, 0x42, 0x6f, 0x74, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x12, 0x1c, 0x2e,
+0x67, 0x61, 0x6c, 0x61, 0x74, 0x65, 0x61, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x6f, 0x74, 0x43, 0x72,
+0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1d, 0x2e, 0x67, 0x61,
+0x6c, 0x61, 0x74, 0x65, 0x61, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x6f, 0x74, 0x43, 0x72, 0x65, 0x61,
+0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x48, 0x0a, 0x09, 0x42, 0x6f,
+0x74, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x12, 0x1c, 0x2e, 0x67, 0x61, 0x6c, 0x61, 0x74, 0x65,
+0x61, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x6f, 0x74, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x52, 0x65,
+0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1d, 0x2e, 0x67, 0x61, 0x6c, 0x61, 0x74, 0x65, 0x61, 0x2e,
+0x76, 0x31, 0x2e, 0x42, 0x6f, 0x74, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70,
+0x6f, 0x6e, 0x73, 0x65, 0x12, 0x48, 0x0a, 0x09, 0x42, 0x6f, 0x74, 0x44, 0x65, 0x6c, 0x65, 0x74,
+0x65, 0x12, 0x1c, 0x2e, 0x67, 0x61, 0x6c, 0x61, 0x74, 0x65, 0x61, 0x2e, 0x76, 0x31, 0x2e, 0x42,
+0x6f, 0x74, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
+0x1d, 0x2e, 0x67, 0x61, 0x6c, 0x61, 0x74, 0x65, 0x61, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x6f, 0x74,
+0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x42, 0x23,
+0x5a, 0x21, 0x73, 0x68, 0x61, 0x72, 0x65, 0x64, 0x2f, 0x67, 0x6f, 0x2f, 0x70, 0x62, 0x2f, 0x67,
+0x61, 0x6c, 0x61, 0x74, 0x65, 0x61, 0x2f, 0x76, 0x31, 0x3b, 0x67, 0x61, 0x6c, 0x61, 0x74, 0x65,
+0x61, 0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 var (
-	file_galatea_v1_bot_proto_rawDescOnce sync.Once
-	file_galatea_v1_bot_proto_rawDescData = file_galatea_v1_bot_proto_rawDesc
+file_galatea_v1_bot_proto_rawDescOnce sync.Once
+file_galatea_v1_bot_proto_rawDescData = file_galatea_v1_bot_proto_rawDesc
 )
 func file_galatea_v1_bot_proto_rawDescGZIP() []byte {
-	file_galatea_v1_bot_proto_rawDescOnce.Do(func() {
-		file_galatea_v1_bot_proto_rawDescData = protoimpl.X.CompressGZIP(file_galatea_v1_bot_proto_rawDescData)
-	})
-	return file_galatea_v1_bot_proto_rawDescData
+file_galatea_v1_bot_proto_rawDescOnce.Do(func() {
+file_galatea_v1_bot_proto_rawDescData = protoimpl.X.CompressGZIP(file_galatea_v1_bot_proto_rawDescData)
+})
+return file_galatea_v1_bot_proto_rawDescData
 }
 var file_galatea_v1_bot_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_galatea_v1_bot_proto_goTypes = []interface{}{
-	(*Bot)(nil),               
-	(*BotAllRequest)(nil),     
-	(*BotAllResponse)(nil),    
-	(*BotCreateRequest)(nil),  
-	(*BotCreateResponse)(nil), 
-	(*BotUpdateRequest)(nil),  
-	(*BotUpdateResponse)(nil), 
-	(*BotDeleteRequest)(nil),  
-	(*BotDeleteResponse)(nil), 
+(*Bot)(nil),
+(*BotAllRequest)(nil),
+(*BotAllResponse)(nil),
+(*BotCreateRequest)(nil),
+(*BotCreateResponse)(nil),
+(*BotUpdateRequest)(nil),
+(*BotUpdateResponse)(nil),
+(*BotDeleteRequest)(nil),
+(*BotDeleteResponse)(nil),
 }
 var file_galatea_v1_bot_proto_depIdxs = []int32{
-	0,  
-	0,  
-	0,  
-	0,  
-	0,  
-	0,  
-	1,  
-	3,  
-	5,  
-	7,  
-	2,  
-	4,  
-	6,  
-	8,  
-	10, 
-	6,  
-	6,  
-	6,  
-	0,  
+0,
+0,
+0,
+0,
+0,
+0,
+1,
+3,
+5,
+7,
+2,
+4,
+6,
+8,
+10,
+6,
+6,
+6,
+0,
 }
 func init() { file_galatea_v1_bot_proto_init() }
 func file_galatea_v1_bot_proto_init() {
-	if File_galatea_v1_bot_proto != nil {
-		return
-	}
-	if !protoimpl.UnsafeEnabled {
-		file_galatea_v1_bot_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Bot); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_galatea_v1_bot_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BotAllRequest); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_galatea_v1_bot_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BotAllResponse); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_galatea_v1_bot_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BotCreateRequest); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_galatea_v1_bot_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BotCreateResponse); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_galatea_v1_bot_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BotUpdateRequest); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_galatea_v1_bot_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BotUpdateResponse); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_galatea_v1_bot_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BotDeleteRequest); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_galatea_v1_bot_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BotDeleteResponse); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-	}
-	type x struct{}
-	out := protoimpl.TypeBuilder{
-		File: protoimpl.DescBuilder{
-			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_galatea_v1_bot_proto_rawDesc,
-			NumEnums:      0,
-			NumMessages:   9,
-			NumExtensions: 0,
-			NumServices:   1,
-		},
-		GoTypes:           file_galatea_v1_bot_proto_goTypes,
-		DependencyIndexes: file_galatea_v1_bot_proto_depIdxs,
-		MessageInfos:      file_galatea_v1_bot_proto_msgTypes,
-	}.Build()
-	File_galatea_v1_bot_proto = out.File
-	file_galatea_v1_bot_proto_rawDesc = nil
-	file_galatea_v1_bot_proto_goTypes = nil
-	file_galatea_v1_bot_proto_depIdxs = nil
+if File_galatea_v1_bot_proto != nil {
+return
+}
+if !protoimpl.UnsafeEnabled {
+file_galatea_v1_bot_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+switch v := v.(*Bot); i {
+case 0:
+return &v.state
+case 1:
+return &v.sizeCache
+case 2:
+return &v.unknownFields
+default:
+return nil
+}
+}
+file_galatea_v1_bot_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+switch v := v.(*BotAllRequest); i {
+case 0:
+return &v.state
+case 1:
+return &v.sizeCache
+case 2:
+return &v.unknownFields
+default:
+return nil
+}
+}
+file_galatea_v1_bot_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+switch v := v.(*BotAllResponse); i {
+case 0:
+return &v.state
+case 1:
+return &v.sizeCache
+case 2:
+return &v.unknownFields
+default:
+return nil
+}
+}
+file_galatea_v1_bot_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+switch v := v.(*BotCreateRequest); i {
+case 0:
+return &v.state
+case 1:
+return &v.sizeCache
+case 2:
+return &v.unknownFields
+default:
+return nil
+}
+}
+file_galatea_v1_bot_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+switch v := v.(*BotCreateResponse); i {
+case 0:
+return &v.state
+case 1:
+return &v.sizeCache
+case 2:
+return &v.unknownFields
+default:
+return nil
+}
+}
+file_galatea_v1_bot_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+switch v := v.(*BotUpdateRequest); i {
+case 0:
+return &v.state
+case 1:
+return &v.sizeCache
+case 2:
+return &v.unknownFields
+default:
+return nil
+}
+}
+file_galatea_v1_bot_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+switch v := v.(*BotUpdateResponse); i {
+case 0:
+return &v.state
+case 1:
+return &v.sizeCache
+case 2:
+return &v.unknownFields
+default:
+return nil
+}
+}
+file_galatea_v1_bot_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+switch v := v.(*BotDeleteRequest); i {
+case 0:
+return &v.state
+case 1:
+return &v.sizeCache
+case 2:
+return &v.unknownFields
+default:
+return nil
+}
+}
+file_galatea_v1_bot_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+switch v := v.(*BotDeleteResponse); i {
+case 0:
+return &v.state
+case 1:
+return &v.sizeCache
+case 2:
+return &v.unknownFields
+default:
+return nil
+}
+}
+}
+type x struct{}
+out := protoimpl.TypeBuilder{
+File: protoimpl.DescBuilder{
+GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
+RawDescriptor: file_galatea_v1_bot_proto_rawDesc,
+NumEnums:      0,
+NumMessages:   9,
+NumExtensions: 0,
+NumServices:   1,
+},
+GoTypes:           file_galatea_v1_bot_proto_goTypes,
+DependencyIndexes: file_galatea_v1_bot_proto_depIdxs,
+MessageInfos:      file_galatea_v1_bot_proto_msgTypes,
+}.Build()
+File_galatea_v1_bot_proto = out.File
+file_galatea_v1_bot_proto_rawDesc = nil
+file_galatea_v1_bot_proto_goTypes = nil
+file_galatea_v1_bot_proto_depIdxs = nil
 }

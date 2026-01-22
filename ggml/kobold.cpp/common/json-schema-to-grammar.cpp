@@ -117,13 +117,13 @@ out << "[" << from[i] << "-" << to[i] << "]";
 if (has_min && has_max) {
 if (min_value < 0 && max_value < 0) {
 out << "\"-\" (";
-_build_min_max_int(-max_value, -min_value, out, decimals_left,  true);
+_build_min_max_int(-max_value, -min_value, out, decimals_left, true);
 out << ")";
 return;
 }
 if (min_value < 0) {
 out << "\"-\" (";
-_build_min_max_int(0, -min_value, out, decimals_left,  true);
+_build_min_max_int(0, -min_value, out, decimals_left, true);
 out << ") | ";
 min_value = 0;
 }
@@ -143,7 +143,7 @@ auto less_decimals = std::max(decimals_left - 1, 1);
 if (has_min) {
 if (min_value < 0) {
 out << "\"-\" (";
-_build_min_max_int(std::numeric_limits<int>::min(), -min_value, out, decimals_left,  false);
+_build_min_max_int(std::numeric_limits<int>::min(), -min_value, out, decimals_left, false);
 out << ") | [0] | [1-9] ";
 more_digits(0, decimals_left - 1);
 } else if (min_value == 0) {
@@ -177,7 +177,7 @@ out << " | ";
 }
 digit_range(c, c);
 out << " (";
-_build_min_max_int(std::stoi(min_s.substr(1)), std::numeric_limits<int>::max(), out, less_decimals,  false);
+_build_min_max_int(std::stoi(min_s.substr(1)), std::numeric_limits<int>::max(), out, less_decimals, false);
 out << ")";
 if (c < '9') {
 out << " | ";
@@ -195,10 +195,10 @@ out << "\"-\" [1-9] ";
 more_digits(0, less_decimals);
 out << " | ";
 }
-_build_min_max_int(0, max_value, out, decimals_left,  true);
+_build_min_max_int(0, max_value, out, decimals_left, true);
 } else {
 out << "\"-\" (";
-_build_min_max_int(-max_value, std::numeric_limits<int>::max(), out, decimals_left,  false);
+_build_min_max_int(-max_value, std::numeric_limits<int>::max(), out, decimals_left, false);
 out << ")";
 }
 return;
@@ -220,7 +220,7 @@ std::unordered_map<std::string, BuiltinRule> PRIMITIVE_RULES = {
 {"object", {"\"{\" space ( string \":\" space value (\",\" space string \":\" space value)* )? \"}\" space", {"string", "value"}}},
 {"array", {"\"[\" space ( value (\",\" space value)* )? \"]\" space", {"value"}}},
 {"uuid", {"\"\\\"\" [0-9a-fA-F]{8} \"-\" [0-9a-fA-F]{4} \"-\" [0-9a-fA-F]{4} \"-\" [0-9a-fA-F]{4} \"-\" [0-9a-fA-F]{12} \"\\\"\" space", {}}},
-{"char",   {"[^\"\\\\\\x7F\\x00-\\x1F] | [\\\\] ([\"\\\\bfnrt] | \"u\" [0-9a-fA-F]{4})", {}}},
+{"char", {"[^\"\\\\\\x7F\\x00-\\x1F] | [\\\\] ([\"\\\\bfnrt] | \"u\" [0-9a-fA-F]{4})", {}}},
 {"string", {"\"\\\"\" char* \"\\\"\" space", {"char"}}},
 {"null", {"\"null\" space", {}}},
 };
@@ -249,7 +249,7 @@ std::unordered_map<char, std::string> GRAMMAR_LITERAL_ESCAPES = {
 };
 std::unordered_set<char> NON_LITERAL_SET = {'|', '.', '(', ')', '[', ']', '{', '}', '*', '+', '?'};
 std::unordered_set<char> ESCAPED_IN_REGEXPS_BUT_NOT_IN_LITERALS = {'^', '$', '.', '[', ']', '(', ')', '|', '{', '}', '*', '+', '?'};
-static std::string replacePattern(const std::string & input, const std::regex & regex, const std::function<std::string(const std::smatch  &)> & replacement) {
+static std::string replacePattern(const std::string & input, const std::regex & regex, const std::function<std::string(const std::smatch &)> & replacement) {
 std::smatch match;
 std::string result;
 std::string::const_iterator searchStart(input.cbegin());

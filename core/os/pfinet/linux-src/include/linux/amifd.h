@@ -1,8 +1,8 @@
 #ifndef _AMIFD_H
 #define _AMIFD_H
 #include <linux/fd.h>
-#define FD_MAX_UNITS    4
-#define FLOPPY_MAX_SECTORS	22
+#define FD_MAX_UNITS 4
+#define FLOPPY_MAX_SECTORS 22
 #ifndef ASSEMBLER
 struct fd_data_type {
 char *name;

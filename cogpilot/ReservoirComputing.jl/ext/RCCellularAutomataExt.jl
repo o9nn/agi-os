@@ -78,7 +78,7 @@ end
 return new_tot_enc_vec
 end
 #function obtain_res_size(rm::RandomMapping, generations)
-#    generations*rm.expansion_size*rm.permutations
+# generations*rm.expansion_size*rm.permutations
 #end
 function single_encoding(input_vector, encoded_vector, map)
 new_enc_vec = copy(encoded_vector)

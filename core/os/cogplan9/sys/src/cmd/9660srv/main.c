@@ -6,27 +6,27 @@
 #include "fns.h"
 enum
 {
-Maxfdata	= 8192,
-Maxiosize	= IOHDRSZ+Maxfdata,
+Maxfdata = 8192,
+Maxiosize = IOHDRSZ+Maxfdata,
 };
 void io(int);
 void rversion(void);
-void	rattach(void);
-void	rauth(void);
-void	rclunk(void);
-void	rcreate(void);
-void	rflush(void);
-void	ropen(void);
-void	rread(void);
-void	rremove(void);
-void	rsession(void);
-void	rstat(void);
-void	rwalk(void);
-void	rwrite(void);
-void	rwstat(void);
-static int	openflags(int);
-static void	rmservice(void);
-static void	usage(void);
+void rattach(void);
+void rauth(void);
+void rclunk(void);
+void rcreate(void);
+void rflush(void);
+void ropen(void);
+void rread(void);
+void rremove(void);
+void rsession(void);
+void rstat(void);
+void rwalk(void);
+void rwrite(void);
+void rwstat(void);
+static int openflags(int);
+static void rmservice(void);
+static void usage(void);
 #define Reqsize (sizeof(Fcall)+Maxfdata)
 Fcall *req;
 Fcall *rep;
@@ -34,30 +34,30 @@ uchar mdata[Maxiosize];
 char fdata[Maxfdata];
 uchar statbuf[STATMAX];
 int errno;
-static char	srvfile[64];
-extern Xfsub	*xsublist[];
-extern int	nclust;
-jmp_buf	err_lab[16];
-int	nerr_lab;
-char	err_msg[ERRMAX];
-int	chatty;
-int	nojoliet;
-int	noplan9;
+static char srvfile[64];
+extern Xfsub *xsublist[];
+extern int nclust;
+jmp_buf err_lab[16];
+int nerr_lab;
+char err_msg[ERRMAX];
+int chatty;
+int nojoliet;
+int noplan9;
 int norock;
-void	(*fcalls[])(void) = {
-[Tversion]	rversion,
-[Tflush]	rflush,
-[Tauth]	rauth,
-[Tattach]	rattach,
-[Twalk]		rwalk,
-[Topen]		ropen,
-[Tcreate]	rcreate,
-[Tread]		rread,
-[Twrite]	rwrite,
-[Tclunk]	rclunk,
-[Tremove]	rremove,
-[Tstat]		rstat,
-[Twstat]	rwstat,
+void (*fcalls[])(void) = {
+[Tversion] rversion,
+[Tflush] rflush,
+[Tauth] rauth,
+[Tattach] rattach,
+[Twalk] rwalk,
+[Topen] ropen,
+[Tcreate] rcreate,
+[Tread] rread,
+[Twrite] rwrite,
+[Tclunk] rclunk,
+[Tremove] rremove,
+[Tstat] rstat,
+[Twstat] rwstat,
 };
 void
 main(int argc, char **argv)
@@ -456,7 +456,7 @@ s->name, s->qid.path, s->qid.vers, s->type, s->dev,
 s->mode, s->mode,
 a_time, m_time, s->length, s->uid, s->gid);
 }
-#define	SIZE	1024
+#define SIZE 1024
 void
 chat(char *fmt, ...)
 {

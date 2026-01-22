@@ -227,7 +227,7 @@ gs_pdf14trans_params_t params = { 0 };
 const int l = sizeof(params.Background[0]) * ptmp->Background_components;
 int i;
 if_debug8('v', "[v](0x%lx)begin_transparency_mask [%g %g %g %g]\n\
-subtype = %d  Background_components = %d  %s\n",
+subtype = %d Background_components = %d %s\n",
 (ulong)pgs, pbbox->p.x, pbbox->p.y, pbbox->q.x, pbbox->q.y,
 (int)ptmp->subtype, ptmp->Background_components,
 (ptmp->TransferFunction == mask_transfer_identity ? "no TR" :
@@ -263,7 +263,7 @@ tmp.GrayBackground = pparams->GrayBackground;
 tmp.function_is_identity = pparams->function_is_identity;
 memcpy(tmp.transfer_fn, pparams->transfer_fn, size_of(tmp.transfer_fn));
 if_debug8('v', "[v](0x%lx)begin_transparency_mask [%g %g %g %g]\n\
-subtype = %d  Background_components = %d  %s\n",
+subtype = %d Background_components = %d %s\n",
 (ulong)pis, pparams->bbox.p.x, pparams->bbox.p.y,
 pparams->bbox.q.x, pparams->bbox.q.y,
 (int)tmp.subtype, tmp.Background_components,

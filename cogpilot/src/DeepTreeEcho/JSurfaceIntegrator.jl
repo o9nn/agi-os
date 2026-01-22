@@ -107,7 +107,7 @@ grad = compute_gradient(surface, loss)
 function compute_gradient(surface::JSurface, loss_function::Function)
 n = length(surface.coefficients)
 gradient = zeros(Float64, n)
-h = 1e-6  # Finite difference step
+h = 1e-6 # Finite difference step
 # Current loss
 f0 = loss_function(surface.coefficients)
 # Compute partial derivatives

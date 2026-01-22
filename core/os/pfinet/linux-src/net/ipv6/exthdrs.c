@@ -19,13 +19,13 @@
 #include <asm/uaccess.h>
 struct hdrtype_proc
 {
-int	type;
-u8*	(*func) (struct sk_buff **, u8 *ptr);
+int type;
+u8* (*func) (struct sk_buff **, u8 *ptr);
 };
 struct tlvtype_proc
 {
-int	type;
-int	(*func) (struct sk_buff *, __u8 *ptr);
+int type;
+int (*func) (struct sk_buff *, __u8 *ptr);
 };
 int ip6_tlvopt_unknown(struct sk_buff *skb, u8 *opt)
 {
@@ -86,7 +86,7 @@ kfree_skb(skb);
 return 0;
 }
 struct tlvtype_proc tlvprocdestopt_lst[] = {
-{-1,			NULL}
+{-1, NULL}
 };
 static u8 *ipv6_dest_opt(struct sk_buff **skb_ptr, u8 *nhptr)
 {
@@ -225,12 +225,12 @@ skb->h.raw += len;
 return &hdr->nexthdr;
 }
 struct hdrtype_proc hdrproc_lst[] = {
-{NEXTHDR_FRAGMENT,	ipv6_reassembly},
-{NEXTHDR_ROUTING,	ipv6_routing_header},
-{NEXTHDR_DEST,		ipv6_dest_opt},
-{NEXTHDR_NONE,		ipv6_nodata},
-{NEXTHDR_AUTH,		ipv6_auth_hdr},
-{-1,			NULL}
+{NEXTHDR_FRAGMENT, ipv6_reassembly},
+{NEXTHDR_ROUTING, ipv6_routing_header},
+{NEXTHDR_DEST, ipv6_dest_opt},
+{NEXTHDR_NONE, ipv6_nodata},
+{NEXTHDR_AUTH, ipv6_auth_hdr},
+{-1, NULL}
 };
 u8 *ipv6_parse_exthdrs(struct sk_buff **skb_in, u8 *nhptr)
 {
@@ -287,9 +287,9 @@ kfree_skb(skb);
 return 0;
 }
 struct tlvtype_proc tlvprochopopt_lst[] = {
-{IPV6_TLV_ROUTERALERT,	ipv6_hop_ra},
-{IPV6_TLV_JUMBO,	ipv6_hop_jumbo},
-{-1,			NULL}
+{IPV6_TLV_ROUTERALERT, ipv6_hop_ra},
+{IPV6_TLV_JUMBO, ipv6_hop_jumbo},
+{-1, NULL}
 };
 u8 * ipv6_parse_hopopts(struct sk_buff *skb, u8 *nhptr)
 {
@@ -444,11 +444,11 @@ return opt2;
 }
 static __inline__ int ipv6_ext_hdr(u8 nexthdr)
 {
-return ( (nexthdr == NEXTHDR_HOP)	||
-(nexthdr == NEXTHDR_ROUTING)	||
-(nexthdr == NEXTHDR_FRAGMENT)	||
-(nexthdr == NEXTHDR_AUTH)	||
-(nexthdr == NEXTHDR_NONE)	||
+return ( (nexthdr == NEXTHDR_HOP) ||
+(nexthdr == NEXTHDR_ROUTING) ||
+(nexthdr == NEXTHDR_FRAGMENT) ||
+(nexthdr == NEXTHDR_AUTH) ||
+(nexthdr == NEXTHDR_NONE) ||
 (nexthdr == NEXTHDR_DEST) );
 }
 u8 *ipv6_skip_exthdr(struct ipv6_opt_hdr *hdr, u8 *nexthdrp, int len)

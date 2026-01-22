@@ -153,7 +153,7 @@ dst <-= ((wd0, nil), myreply);
 r := <-myreply;
 wreply0 <-= r;
 if(r == Down)
-r = fs->copy(wc0, dst);		# XXX hmm, maybe this should be a mergedir()
+r = fs->copy(wc0, dst); # XXX hmm, maybe this should be a mergedir()
 case r {
 Quit or
 Skip =>

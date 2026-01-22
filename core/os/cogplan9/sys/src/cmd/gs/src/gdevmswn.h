@@ -1,5 +1,5 @@
 #ifndef gdevmswn_INCLUDED
-#  define gdevmswn_INCLUDED
+# define gdevmswn_INCLUDED
 #include "string_.h"
 #include <stdlib.h>
 #include "gx.h"

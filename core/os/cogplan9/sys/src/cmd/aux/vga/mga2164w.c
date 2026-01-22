@@ -4,29 +4,29 @@
 #include "pci.h"
 #include "vga.h"
 enum {
-Meg		= 1024*1024,
-MATROX		= 0x102B,
-MGA2064		= 0x0519,
-MGA2164		= 0x051B,
-MGA2164AGP	= 0x051F,
-Crtcext		= 0x03DE,
-Devctrl		= 0x04,
-Option		= 0x40,
-RAMDAC		= 0x3C00,
-CACHEFLUSH	= 0x1FFF,
+Meg = 1024*1024,
+MATROX = 0x102B,
+MGA2064 = 0x0519,
+MGA2164 = 0x051B,
+MGA2164AGP = 0x051F,
+Crtcext = 0x03DE,
+Devctrl = 0x04,
+Option = 0x40,
+RAMDAC = 0x3C00,
+CACHEFLUSH = 0x1FFF,
 };
 typedef struct {
-Pcidev*	pci;
-int	devid;
-uchar*	membase1;
-uchar*	membase2;
-ulong	devctrl;
-ulong	option;
-uchar	crtcext[6];
-uchar	tvp[64];
-uchar	pclk[3];
-uchar	mclk[3];
-uchar	lclk[3];
+Pcidev* pci;
+int devid;
+uchar* membase1;
+uchar* membase2;
+ulong devctrl;
+ulong option;
+uchar crtcext[6];
+uchar tvp[64];
+uchar pclk[3];
+uchar mclk[3];
+uchar lclk[3];
 } Mga;
 static uchar
 _tvp3026i(Vga* vga, Ctlr* ctlr, uchar reg)
@@ -317,9 +317,9 @@ evb /= 2;
 vga->crt[0x15] = svb;
 vga->crt[0x07] = (vga->crt[0x07] & ~0x08) | ((svb & 0x100)>>5);
 vga->crt[0x09] = (vga->crt[0x09] & ~0x20) | ((svb & 0x200)>>4);
-mga->crtcext[0x02] &=  ~0x18;
+mga->crtcext[0x02] &= ~0x18;
 mga->crtcext[0x02] |= ((svb & 0xC00)>>7);
-vga->crt[0x16]     = evb;
+vga->crt[0x16] = evb;
 }
 clockcalc(vga, ctlr, mode->z);
 mga->option = mga->option & ~0x3000;

@@ -19,7 +19,7 @@ etype *next
 struct cos_element_s {
 cos_element_common(cos_element_t);
 };
-#define private_st_cos_element()	\
+#define private_st_cos_element() \
 gs_private_st_ptrs1(st_cos_element, cos_element_t, "cos_element_t",\
 cos_element_enum_ptrs, cos_element_reloc_ptrs, next)
 #define cos_element_num_ptrs 1
@@ -28,7 +28,7 @@ cos_element_common(cos_stream_piece_t);
 long position;
 uint size;
 };
-#define private_st_cos_stream_piece()	\
+#define private_st_cos_stream_piece() \
 gs_private_st_suffix_add0_local(st_cos_stream_piece, cos_stream_piece_t,\
 "cos_stream_piece_t", cos_element_enum_ptrs, cos_element_reloc_ptrs,\
 st_cos_element)
@@ -37,7 +37,7 @@ cos_element_common(cos_array_element_t);
 long index;
 cos_value_t value;
 };
-#define private_st_cos_array_element()	\
+#define private_st_cos_array_element() \
 gs_private_st_composite(st_cos_array_element, cos_array_element_t,\
 "cos_array_element_t", cos_array_element_enum_ptrs, cos_array_element_reloc_ptrs)
 struct cos_dict_element_s {
@@ -46,7 +46,7 @@ gs_string key;
 bool owns_key;
 cos_value_t value;
 };
-#define private_st_cos_dict_element()	\
+#define private_st_cos_dict_element() \
 gs_private_st_composite(st_cos_dict_element, cos_dict_element_t,\
 "cos_dict_element_t", cos_dict_element_enum_ptrs, cos_dict_element_reloc_ptrs)
 private_st_cos_element();
@@ -646,7 +646,7 @@ cos_dict_objects_write(const cos_dict_t *pcd, gx_device_pdf *pdev)
 const cos_dict_element_t *pcde = pcd->elements;
 for (; pcde; pcde = pcde->next)
 if (COS_VALUE_IS_OBJECT(&pcde->value) &&
-pcde->value.contents.object->id  &&
+pcde->value.contents.object->id &&
 !pcde->value.contents.object->written )
 cos_write_object(pcde->value.contents.object, pdev);
 return 0;
@@ -870,9 +870,9 @@ return true;
 private param_proc_xmit_typed(cos_param_put_typed);
 private const gs_param_list_procs cos_param_list_writer_procs = {
 cos_param_put_typed,
-NULL  ,
-NULL  ,
-NULL  ,
+NULL ,
+NULL ,
+NULL ,
 gs_param_request_default,
 gs_param_requested_default
 };

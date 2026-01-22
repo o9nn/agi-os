@@ -2,18 +2,18 @@ implement DNS;
 #
 # domain name service
 #
-# Copyright © 2003 Vita Nuova Holdings Limited.  All rights reserved.
+# Copyright © 2003 Vita Nuova Holdings Limited. All rights reserved.
 #
 # RFCs: 1034, 1035, 2181, 2308
 #
 # TO DO:
-#	server side:
-#		database; inmyzone; ptr generation; separate zone transfer
-#	currently doesn't implement loony rules on case
-#	limit work
-#	check data
-#	Call
-#	ipv6
+# server side:
+# database; inmyzone; ptr generation; separate zone transfer
+# currently doesn't implement loony rules on case
+# limit work
+# check data
+# Call
+# ipv6
 #
 include "sys.m";
 sys: Sys;
@@ -39,16 +39,16 @@ include "dial.m";
 dial: Dial;
 DNS: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 Reply: adt
 {
-fid:	int;
-pid:	int;
-query:	string;
-attr:	string;
-addrs:	list of string;
-err:	string;
+fid: int;
+pid: int;
+query: string;
+attr: string;
+addrs: list of string;
+err: string;
 };
 rlist: list of ref Reply;
 dnsfile := "/lib/ndb/local";
@@ -97,7 +97,7 @@ if(args != nil)
 arg->usage();
 arg = nil;
 if(usehost){
-srv = load Srv Srv->PATH;	# hosted Inferno only
+srv = load Srv Srv->PATH; # hosted Inferno only
 if(srv != nil)
 srv->init();
 }
@@ -117,7 +117,7 @@ sys->pctl(Sys->NEWPGRP | Sys->FORKFD, nil);
 random = load Random Random->PATH;
 if(random == nil)
 cantload(Random->PATH);
-dnsid = random->randomint(Random->ReallyRandom);	# avoid clashes
+dnsid = random->randomint(Random->ReallyRandom); # avoid clashes
 random = nil;
 myname = sysname();
 stderr = sys->fildes(2);
@@ -167,7 +167,7 @@ for(;;){
 alt {
 (nil, buf, fid, wc) := <-file.write =>
 now = time();
-cleanfid(fid);	# each write cancels previous requests
+cleanfid(fid); # each write cancels previous requests
 if(wc != nil){
 r := ref Reply;
 r.fid = fid;
@@ -258,8 +258,8 @@ if(r.addrs != nil){
 addr = hd r.addrs;
 r.addrs = tl r.addrs;
 }
-off = 0;	# this version ignores offsets
-#	rc <-= reads(r.query+" "+r.attr+" "+addr, off, nbytes);
+off = 0; # this version ignores offsets
+# rc <-= reads(r.query+" "+r.attr+" "+addr, off, nbytes);
 rc <-= reads(addr, off, nbytes);
 }
 #
@@ -312,26 +312,26 @@ return string buf[0:n];
 }
 samefile(d1, d2: Sys->Dir): int
 {
-# ``it was black ... it was white!  it was dark ...  it was light! ah yes, i remember it well...''
+# ``it was black ... it was white! it was dark ... it was light! ah yes, i remember it well...''
 return d1.dev==d2.dev && d1.dtype==d2.dtype &&
 d1.qid.path==d2.qid.path && d1.qid.vers==d2.qid.vers &&
 d1.mtime==d2.mtime;
 }
 #
 # database
-#	dnsdomain=	suffix to add to unqualified unrooted names
-#	dns=			dns server to try
-#	dom=		domain name
-#	ip=			IP address
-#	ns=			name server
-#	soa=
-#	soa=delegated
-#	infernosite=	set of site-wide parameters
+# dnsdomain= suffix to add to unqualified unrooted names
+# dns= dns server to try
+# dom= domain name
+# ip= IP address
+# ns= name server
+# soa=
+# soa=delegated
+# infernosite= set of site-wide parameters
 #
 #
 # basic Domain Name Service resolver
 #
-laststat := 0;	# time last stat'd (to reduce churn)
+laststat := 0; # time last stat'd (to reduce churn)
 dnsdb: ref Db;
 readservers(): list of string
 {
@@ -360,7 +360,7 @@ dnsdomains = "" :: l;
 if((l = dblooknet("sys", myname, "dns")) == nil)
 l = dblook("infernosite", "", "dns");
 servers = l;
-#	zones := dblook("soa", "", "dom");
+# zones := dblook("soa", "", "dom");
 #printlist("zones", zones);
 if(debug)
 printlist("dnsdomains", dnsdomains);
@@ -514,99 +514,99 @@ Call: con 255;
 #
 # opcodes
 #
-Oquery: con 0<<11;	# normal query
-Oinverse: con 1<<11;	# inverse query
-Ostatus:	con 2<<11;	# status request
-Omask:	con 16rF<<11;	# mask for opcode
+Oquery: con 0<<11; # normal query
+Oinverse: con 1<<11; # inverse query
+Ostatus: con 2<<11; # status request
+Omask: con 16rF<<11; # mask for opcode
 #
 # response codes
 #
-Rok:	con 0;
-Rformat:	con 1;	# format error
-Rserver:	con 2;	# server failure
-Rname:	con 3;	# bad name
-Runimplemented: con 4;	# unimplemented operation
-Rrefused:	con 5;	# permission denied, not supported
-Rmask:	con 16rF;	# mask for response
+Rok: con 0;
+Rformat: con 1; # format error
+Rserver: con 2; # server failure
+Rname: con 3; # bad name
+Runimplemented: con 4; # unimplemented operation
+Rrefused: con 5; # permission denied, not supported
+Rmask: con 16rF; # mask for response
 #
 # other flags in opcode
 #
-Fresp:	con 1<<15;	# message is a response
-Fauth:	con 1<<10;	# true if an authoritative response
-Ftrunc:	con 1<<9;		# truncated message
-Frecurse:	con 1<<8;		# request recursion
-Fcanrecurse:	con 1<<7;	# server can recurse
+Fresp: con 1<<15; # message is a response
+Fauth: con 1<<10; # true if an authoritative response
+Ftrunc: con 1<<9; # truncated message
+Frecurse: con 1<<8; # request recursion
+Fcanrecurse: con 1<<7; # server can recurse
 QR: adt {
 name: string;
 rtype: int;
 class: int;
-text:	fn(q: self ref QR): string;
+text: fn(q: self ref QR): string;
 };
 RR: adt {
 name: string;
 rtype: int;
 class: int;
 ttl: int;
-flags:	int;
+flags: int;
 pick {
 Error =>
-reason:	string;	# cached negative
+reason: string; # cached negative
 Host =>
-host:	string;
+host: string;
 Hinfo =>
-cpu:	string;
-os:	string;
+cpu: string;
+os: string;
 Mx =>
-pref:	int;
-host:	string;
+pref: int;
+host: string;
 Soa =>
-soa:	ref SOA;
+soa: ref SOA;
 A or
 Other =>
-rdata:	array of byte;
+rdata: array of byte;
 }
-islive:	fn(r: self ref RR): int;
-outlives:	fn(a: self ref RR, b: ref RR): int;
-match:	fn(a: self ref RR, b: ref RR): int;
-text:	fn(a: self ref RR): string;
+islive: fn(r: self ref RR): int;
+outlives: fn(a: self ref RR, b: ref RR): int;
+match: fn(a: self ref RR, b: ref RR): int;
+text: fn(a: self ref RR): string;
 };
 SOA: adt {
-mname:	string;
-rname:	string;
-serial:	int;
-refresh:	int;
-retry:	int;
-expire:	int;
-minttl:	int;
-text:	fn(nil: self ref SOA): string;
+mname: string;
+rname: string;
+serial: int;
+refresh: int;
+retry: int;
+expire: int;
+minttl: int;
+text: fn(nil: self ref SOA): string;
 };
 DNSmsg: adt {
-id: 	int;
-flags:	int;
+id: int;
+flags: int;
 qd: list of ref QR;
 an: list of ref RR;
 ns: list of ref RR;
 ar: list of ref RR;
 err: string;
-pack:	fn(m: self ref DNSmsg, hdrlen: int): array of byte;
-unpack:	fn(a: array of byte): ref DNSmsg;
-text:	fn(m: self ref DNSmsg): string;
+pack: fn(m: self ref DNSmsg, hdrlen: int): array of byte;
+unpack: fn(a: array of byte): ref DNSmsg;
+text: fn(m: self ref DNSmsg): string;
 };
 NM: adt {
-name:	string;
-rr:	list of ref RR;
-stats:	ref Stats;
+name: string;
+rr: list of ref RR;
+stats: ref Stats;
 };
 Stats: adt {
-rtt:	int;
+rtt: int;
 };
-cachec: chan  of (list of ref RR, int);
+cachec: chan of (list of ref RR, int);
 cache: array of list of ref NM;
-Sync: con (nil, 0);	# empty list sent to ensure that last cache update done
+Sync: con (nil, 0); # empty list sent to ensure that last cache update done
 hash(s: string): array of list of ref NM
 {
 h := 0;
-for(i:=0; i<len s; i++){	# hashpjw
+for(i:=0; i<len s; i++){ # hashpjw
 c := s[i];
 if(c >= 'A' && c <= 'Z')
 c += 'a'-'A';
@@ -655,8 +655,8 @@ copyrrl(rrl: list of ref RR): list of ref RR
 nl: list of ref RR;
 for(; rrl != nil; rrl = tl rrl)
 nl = ref *hd rrl :: nl;
-#	return revrrl(rrl);
-return rrl;	# probably don't care about order
+# return revrrl(rrl);
+return rrl; # probably don't care about order
 }
 dnscache(sync: chan of int)
 {
@@ -677,7 +677,7 @@ hb := hash(name);
 for(ces := hb[0]; ces != nil; ces = tl ces){
 ce := hd ces;
 if(ce.name == name){
-rr.name = ce.name;	# share string
+rr.name = ce.name; # share string
 x := ce.rr;
 ce.rr = insertrrset(ce.rr, rr, rrset);
 if(x != ce.rr && debug)
@@ -729,18 +729,18 @@ insertrrset(rrl: list of ref RR, rr: ref RR, new: list of ref RR): list of ref R
 match := 0;
 for(l := rrl; l != nil; l = tl l){
 orr := hd l;
-if(orr.rtype == rr.rtype && orr.class == rr.class){	# name already known to match
+if(orr.rtype == rr.rtype && orr.class == rr.class){ # name already known to match
 match = 1;
 if(!orr.islive())
-break;	# prefer new, unexpired data
+break; # prefer new, unexpired data
 if(tagof rr == tagof RR.Error && tagof orr != tagof RR.Error)
-return rrl;	# prefer unexpired positive
+return rrl; # prefer unexpired positive
 if(rr.flags & Fauth)
-break;	# prefer newly-arrived authoritative data
+break; # prefer newly-arrived authoritative data
 if(orr.flags & Fauth)
-return rrl;		# prefer authoritative data
+return rrl; # prefer authoritative data
 if(orr.outlives(rr))
-return rrl;		# prefer longer-lived data
+return rrl; # prefer longer-lived data
 }
 }
 if(match){
@@ -816,10 +816,10 @@ return sys->sprint("%s %s %ud %ud %ud %ud %ud", soa.mname, soa.rname,
 soa.serial, soa.refresh, soa.retry, soa.expire, soa.minttl);
 }
 NS: adt {
-name:	string;
-addr:	list of ref RR;
-canrecur:	int;
-ttl:	int;
+name: string;
+addr: list of ref RR;
+canrecur: int;
+ttl: int;
 };
 dnslookup(name: string, attr: int): (list of string, string)
 {
@@ -834,13 +834,13 @@ case dbattr(name) {
 * =>
 return (nil, "invalid host name");
 }
-if(srv != nil){	# try the host's map first
+if(srv != nil){ # try the host's map first
 l := srv->iph2a(name);
 if(l != nil)
 return (fullresult(name, "ip", l), nil);
 }
 Tptr =>
-if(srv != nil){	# try host's map first
+if(srv != nil){ # try host's map first
 l := srv->ipa2h(arpa2addr(name));
 if(l != nil)
 return (fullresult(name, "ptr", l), nil);
@@ -907,7 +907,7 @@ return slist;
 # `label' is 1034's SNAME, `attr' is `STYPE'
 #
 # TO DO:
-#	keep statistics for name servers
+# keep statistics for name servers
 fulldnsquery(label: string, attr: int, depth: int): (list of ref RR, string)
 {
 slist: list of ref NS;
@@ -930,7 +930,7 @@ return (nil, "cname alias loop");
 if(x != nil){
 pick rx := hd x {
 Host =>
-label  = rx.host;
+label = rx.host;
 continue;
 }
 }
@@ -997,18 +997,18 @@ sys->fprint(stderr, "dns: %s: %s\n", ns.name, err2);
 continue;
 }
 # 4. analyse the response
-#	a. answers the question or has Rname, cache it and return to client
-#	b. delegation to other NS? cache and goto step 2.
-#	c. if response is CNAME and QTYPE!=CNAME change SNAME to the
-#		canonical name (data) of the CNAME RR and goto step 1.
-#	d. if response is server failure or otherwise odd, delete server from SLIST
-#		and goto step 3.
+# a. answers the question or has Rname, cache it and return to client
+# b. delegation to other NS? cache and goto step 2.
+# c. if response is CNAME and QTYPE!=CNAME change SNAME to the
+# canonical name (data) of the CNAME RR and goto step 1.
+# d. if response is server failure or otherwise odd, delete server from SLIST
+# and goto step 3.
 auth := (dm.flags & Fauth) != 0;
 soa: ref RR.Soa;
 (soa, dm.ns) = soaof(dm.ns);
 if((dm.flags & Rmask) != Rok){
 # don't repeat the request on an error
-#  TO DO: should return `best error'
+# TO DO: should return `best error'
 if(tl qset != nil && ((dm.flags & Rmask) != Rname || !auth))
 continue;
 cause := reason(dm.flags & Rmask);
@@ -1086,7 +1086,7 @@ pick rr := hd l {
 Soa =>
 rest := tl l;
 for(; rrl != l; rrl = tl rrl)
-if(tagof hd rrl != tagof RR.Soa)	# (just in case)
+if(tagof hd rrl != tagof RR.Soa) # (just in case)
 rest = hd rrl :: rest;
 return (rr, rest);
 }
@@ -1115,10 +1115,10 @@ sys->print("%s\n", s);
 #
 Udpdnslim: con 512;
 Labels: adt {
-names:	list of (string, int);
-new:	fn(): ref Labels;
-look:	fn(labs: self ref Labels, s: string): int;
-install:	fn(labs: self ref Labels, s: string, o: int);
+names: list of (string, int);
+new: fn(): ref Labels;
+look: fn(labs: self ref Labels, s: string): int;
+install: fn(labs: self ref Labels, s: string, o: int);
 };
 Labels.new(): ref Labels
 {
@@ -1241,7 +1241,7 @@ if(o < 0)
 return (nil, o);
 name := "";
 while(o < len a && (l := int a[o++]) != 0) {
-if((l & 16rC0) == 16rC0) {		# pointer
+if((l & 16rC0) == 16rC0) { # pointer
 if(o >= len a)
 return (nil, -o);
 po := ((l & 16r3F)<<8) | int a[o];
@@ -1256,7 +1256,7 @@ name += pname;
 break;
 }
 if((l & 16rC0) != 0)
-return (nil, -o);	# format error
+return (nil, -o); # format error
 if(o + l > len a)
 return (nil, -o);
 name += string a[o:o+l];
@@ -1524,15 +1524,15 @@ case s {
 rrtypename(t: int): string
 {
 case t {
-Ta =>	return "ip";
-Tns =>	return "ns";
-Tcname =>	return "cname";
-Tsoa =>	return "soa";
-Tptr =>	return "ptr";
-Tmx =>	return "mx";
-Tall =>	return "all";
-Thinfo =>	return "hinfo";
-* =>		return string t;
+Ta => return "ip";
+Tns => return "ns";
+Tcname => return "cname";
+Tsoa => return "soa";
+Tptr => return "ptr";
+Tmx => return "mx";
+Tall => return "all";
+Thinfo => return "hinfo";
+* => return string t;
 }
 }
 #
@@ -1544,7 +1544,7 @@ mkquery(qtype: int, qclass: int, name: string): (int, array of byte, string)
 {
 qd := ref QR(name, qtype, qclass);
 dm := ref DNSmsg;
-dm.id = dnsid++;	# doesn't matter if two different procs use it (different fds)
+dm.id = dnsid++; # doesn't matter if two different procs use it (different fds)
 dm.flags = Oquery;
 if(referdns || !debug)
 dm.flags |= Frecurse;
@@ -1552,7 +1552,7 @@ dm.qd = qd :: nil;
 a: array of byte;
 a = dm.pack(Udphdrsize);
 if(a == nil)
-return (0, nil, "dns: bad query message");	# should only happen if a name is ridiculous
+return (0, nil, "dns: bad query message"); # should only happen if a name is ridiculous
 for(i:=0; i<Udphdrsize; i++)
 a[i] = byte 0;
 a[Udprport] = byte (DNSport>>8);
@@ -1675,11 +1675,11 @@ conn := dial->dial(addr, nil);
 if(conn == nil)
 return (nil, sys->sprint("can't dial %s: %r", addr));
 query = query[Udphdrsize-2:];
-put2(query, 0, len query-2);	# replace UDP header by message length
+put2(query, 0, len query-2); # replace UDP header by message length
 n := sys->write(conn.dfd, query[Udphdrsize:], len query);
 if(n != len query)
 return (nil, sys->sprint("dns: %s: write err: %r", addr));
-buf := readn(conn.dfd, 2);	# TCP/DNS record header
+buf := readn(conn.dfd, 2); # TCP/DNS record header
 (mlen, nil) := get2(buf, 0);
 if(mlen < 2 || mlen > 16384)
 return (nil, sys->sprint("dns: %s: bad reply msg length=%d", addr, mlen));

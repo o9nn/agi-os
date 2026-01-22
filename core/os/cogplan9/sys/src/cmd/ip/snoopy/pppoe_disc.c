@@ -16,7 +16,7 @@ HDRSIZE = 1+1+2+2
 };
 static Mux p_mux[] =
 {
-{"ppp",		0,	} ,
+{"ppp", 0, } ,
 {0}
 };
 enum
@@ -28,10 +28,10 @@ Osess,
 };
 static Field p_fields[] =
 {
-{"v",	Fnum,	Overs,	"version",	} ,
-{"t",	Fnum,	Otype,	"type",	} ,
-{"c",	Fnum,	Ocode,	"code" } ,
-{"s",	Fnum,	Osess,	"sessid" } ,
+{"v", Fnum, Overs, "version", } ,
+{"t", Fnum, Otype, "type", } ,
+{"c", Fnum, Ocode, "code" } ,
+{"s", Fnum, Osess, "sessid" } ,
 {0}
 };
 static void

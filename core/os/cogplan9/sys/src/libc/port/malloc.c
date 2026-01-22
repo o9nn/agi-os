@@ -2,32 +2,32 @@
 #include <libc.h>
 #include <pool.h>
 #include <tos.h>
-static void*	sbrkalloc(ulong);
-static int		sbrkmerge(void*, void*);
-static void		plock(Pool*);
-static void		punlock(Pool*);
-static void		pprint(Pool*, char*, ...);
-static void		ppanic(Pool*, char*, ...);
+static void* sbrkalloc(ulong);
+static int sbrkmerge(void*, void*);
+static void plock(Pool*);
+static void punlock(Pool*);
+static void pprint(Pool*, char*, ...);
+static void ppanic(Pool*, char*, ...);
 typedef struct Private Private;
 struct Private {
-Lock		lk;
-int		pid;
-int		printfd;
+Lock lk;
+int pid;
+int printfd;
 };
 Private sbrkmempriv;
 static Pool sbrkmem = {
-.name=		"sbrkmem",
-.maxsize=	(3840UL-1)*1024*1024,
-.minarena=	4*1024,
-.quantum=	32,
-.alloc=		sbrkalloc,
-.merge=		sbrkmerge,
-.flags=		0,
-.lock=		plock,
-.unlock=		punlock,
-.print=		pprint,
-.panic=		ppanic,
-.private=		&sbrkmempriv,
+.name= "sbrkmem",
+.maxsize= (3840UL-1)*1024*1024,
+.minarena= 4*1024,
+.quantum= 32,
+.alloc= sbrkalloc,
+.merge= sbrkmerge,
+.flags= 0,
+.lock= plock,
+.unlock= punlock,
+.print= pprint,
+.panic= ppanic,
+.private= &sbrkmempriv,
 };
 Pool *mainmem = &sbrkmem;
 Pool *imagmem = &sbrkmem;
@@ -140,7 +140,7 @@ va_end(v);
 abort();
 }
 enum {
-Npadlong	= 2,
+Npadlong = 2,
 MallocOffset = 0,
 ReallocOffset = 1
 };

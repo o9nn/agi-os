@@ -1,19 +1,19 @@
 #ifndef gxpaint_INCLUDED
-#  define gxpaint_INCLUDED
+# define gxpaint_INCLUDED
 #ifndef gs_imager_state_DEFINED
-#  define gs_imager_state_DEFINED
+# define gs_imager_state_DEFINED
 typedef struct gs_imager_state_s gs_imager_state;
 #endif
 #ifndef gs_state_DEFINED
-#  define gs_state_DEFINED
+# define gs_state_DEFINED
 typedef struct gs_state_s gs_state;
 #endif
 #ifndef gx_device_DEFINED
-#  define gx_device_DEFINED
+# define gx_device_DEFINED
 typedef struct gx_device_s gx_device;
 #endif
 #ifndef gx_device_color_DEFINED
-#  define gx_device_color_DEFINED
+# define gx_device_color_DEFINED
 typedef struct gx_device_color_s gx_device_color;
 #endif
 int gx_fill_path(gx_path * ppath, gx_device_color * pdevc, gs_state * pgs,
@@ -28,7 +28,7 @@ const gx_path *ppath, gs_fixed_point *ppt);
 #define gx_stroke_expansion(pis, ppt)\
 gx_stroke_path_expansion(pis, (const gx_path *)0, ppt)
 #ifndef gx_fill_params_DEFINED
-#  define gx_fill_params_DEFINED
+# define gx_fill_params_DEFINED
 typedef struct gx_fill_params_s gx_fill_params;
 #endif
 struct gx_fill_params_s {
@@ -40,7 +40,7 @@ bool fill_zero_width;
 #define gx_fill_path_only(ppath, dev, pis, params, pdevc, pcpath)\
 (*dev_proc(dev, fill_path))(dev, pis, ppath, params, pdevc, pcpath)
 #ifndef gx_stroke_params_DEFINED
-#  define gx_stroke_params_DEFINED
+# define gx_stroke_params_DEFINED
 typedef struct gx_stroke_params_s gx_stroke_params;
 #endif
 struct gx_stroke_params_s {

@@ -1,5 +1,5 @@
 #ifndef gxmatrix_INCLUDED
-#  define gxmatrix_INCLUDED
+# define gxmatrix_INCLUDED
 #include "gsmatrix.h"
 #define PRECISE_CURRENTPOINT 1
 struct gs_matrix_fixed_s {
@@ -30,7 +30,7 @@ fixed round;
 fixed fixed_coeff_mult(fixed, long, const fixed_coeff *, int);
 #define m_fixed(v, c, fc, maxb)\
 (((v) + (fixed_1 << (maxb - 1))) &\
-((-fixed_1 << maxb) | _fixed_fraction_v) ?	\
+((-fixed_1 << maxb) | _fixed_fraction_v) ? \
 fixed_coeff_mult((v), (fc).c, &(fc), maxb) : \
 arith_rshift(fixed2int_var(v) * (fc).c + (fc).round, (fc).shift))
 #endif

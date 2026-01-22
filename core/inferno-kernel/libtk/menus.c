@@ -4,9 +4,9 @@
 #include "tk.h"
 #include "frame.h"
 #include "label.h"
-#define	O(t, e)		((long)(&((t*)0)->e))
+#define O(t, e) ((long)(&((t*)0)->e))
 enum {
-Sepheight	= 6,
+Sepheight = 6,
 };
 #define NOCHOICE "-----"
 enum {
@@ -15,31 +15,31 @@ Startspeed = TKI2F(1),
 static
 TkOption mbopts[] =
 {
-"text",		OPTtext,	O(TkLabel, text),		nil,
-"anchor",	OPTflag,	O(TkLabel, anchor),	tkanchor,
-"underline",	OPTdist,	O(TkLabel, ul),		nil,
-"justify",	OPTstab,	O(TkLabel, justify),	tkjustify,
-"menu",		OPTtext,	O(TkLabel, menu),		nil,
-"bitmap",	OPTbmap,	O(TkLabel, bitmap),		nil,
-"image",	OPTimag,	O(TkLabel, img),		nil,
+"text", OPTtext, O(TkLabel, text), nil,
+"anchor", OPTflag, O(TkLabel, anchor), tkanchor,
+"underline", OPTdist, O(TkLabel, ul), nil,
+"justify", OPTstab, O(TkLabel, justify), tkjustify,
+"menu", OPTtext, O(TkLabel, menu), nil,
+"bitmap", OPTbmap, O(TkLabel, bitmap), nil,
+"image", OPTimag, O(TkLabel, img), nil,
 nil
 };
 static
 TkOption choiceopts[] =
 {
-"variable",	OPTtext,	O(TkLabel, variable),	nil,
-"values",	OPTlist,	O(TkLabel, values), nil,
+"variable", OPTtext, O(TkLabel, variable), nil,
+"values", OPTlist, O(TkLabel, values), nil,
 "command", OPTtext, O(TkLabel, command), nil,
 nil
 };
 static
 TkEbind mbbindings[] =
 {
-{TkEnter,		"%W tkMBenter %s"},
-{TkLeave,		"%W tkMBleave"},
-{TkButton1P,		"%W tkMBpress 1"},
-{TkKey,		"%W tkMBkey 0x%K"},
-{TkButton1P|TkMotion,	"%W tkMBpress 0"},
+{TkEnter, "%W tkMBenter %s"},
+{TkLeave, "%W tkMBleave"},
+{TkButton1P, "%W tkMBpress 1"},
+{TkKey, "%W tkMBkey 0x%K"},
+{TkButton1P|TkMotion, "%W tkMBpress 0"},
 };
 extern Rectangle bbnil;
 static char* tkmpost(Tk*, int, int, int, int, int);
@@ -516,7 +516,7 @@ return nil;
 static
 TkOption menuopt[] =
 {
-"postcommand",	OPTtext,	O(TkWin, postcmd),		nil,
+"postcommand", OPTtext, O(TkWin, postcmd), nil,
 nil,
 };
 char*
@@ -580,7 +580,7 @@ tkfreeframe(top);
 static
 TkOption mopt[] =
 {
-"menu",		OPTtext,	O(TkLabel, menu),		nil,
+"menu", OPTtext, O(TkLabel, menu), nil,
 nil,
 };
 static void
@@ -1468,51 +1468,51 @@ return nil;
 static
 TkCmdtab menucmd[] =
 {
-"activate",		tkmenuactivate,
-"add",			tkmenuadd,
-"cget",			tkmenucget,
-"configure",		tkmenuconf,
-"delete",		tkmenudelete,
-"entryconfigure",	tkmenuentryconfig,
-"entrycget",		tkmenuentrycget,
-"index",		tkmenuindex,
-"insert",		tkmenuinsert,
-"invoke",		tkmenuinvoke,
-"post",			tkmenupost,
-"postcascade",		tkmenupostcascade,
-"type",			tkmenutype,
-"unpost",		tkmenuunpost,
-"yposition",		tkmenuyposn,
-"suspend",		tkmenususpend,
+"activate", tkmenuactivate,
+"add", tkmenuadd,
+"cget", tkmenucget,
+"configure", tkmenuconf,
+"delete", tkmenudelete,
+"entryconfigure", tkmenuentryconfig,
+"entrycget", tkmenuentrycget,
+"index", tkmenuindex,
+"insert", tkmenuinsert,
+"invoke", tkmenuinvoke,
+"post", tkmenupost,
+"postcascade", tkmenupostcascade,
+"type", tkmenutype,
+"unpost", tkmenuunpost,
+"yposition", tkmenuyposn,
+"suspend", tkmenususpend,
 nil
 };
 static
 TkCmdtab menubutcmd[] =
 {
-"cget",			tkmenubutcget,
-"configure",		tkmenubutconf,
-"tkMBenter",		tkMBenter,
-"tkMBleave",		tkMBleave,
-"tkMBpress",		tkMBpress,
-"tkMBkey",		tkMBkey,
+"cget", tkmenubutcget,
+"configure", tkmenubutconf,
+"tkMBenter", tkMBenter,
+"tkMBleave", tkMBleave,
+"tkMBpress", tkMBpress,
+"tkMBkey", tkMBkey,
 nil
 };
 static
 TkCmdtab choicebutcmd[] =
 {
-"cget",			tkmenubutcget,
-"configure",		tkmenubutconf,
-"set",			tkchoicebutset,
-"get",			tkchoicebutget,
-"setvalue",		tkchoicebutsetvalue,
-"getvalue",		tkchoicebutgetvalue,
-"invoke",			tkchoicebutinvoke,
-"valuecount",		tkchoicebutvaluecount,
-"tkMBenter",		tkMBenter,
-"tkMBleave",		tkMBleave,
-"tkMBpress",		tkMBpress,
-"tkMBkey",		tkMBkey,
-"suspend",		tkmenususpend,
+"cget", tkmenubutcget,
+"configure", tkmenubutconf,
+"set", tkchoicebutset,
+"get", tkchoicebutget,
+"setvalue", tkchoicebutsetvalue,
+"getvalue", tkchoicebutgetvalue,
+"invoke", tkchoicebutinvoke,
+"valuecount", tkchoicebutvaluecount,
+"tkMBenter", tkMBenter,
+"tkMBleave", tkMBleave,
+"tkMBpress", tkMBpress,
+"tkMBkey", tkMBkey,
+"suspend", tkmenususpend,
 nil
 };
 TkMethod menumethod = {

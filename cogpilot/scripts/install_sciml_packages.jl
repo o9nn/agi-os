@@ -9,8 +9,8 @@ This script:
 using Pkg
 println("""
 ╔════════════════════════════════════════════════════════════════╗
-║  SciML Package Integration Script                              ║
-║  Installing RootedTrees.jl, BSeries.jl, ReservoirComputing.jl ║
+║ SciML Package Integration Script ║
+║ Installing RootedTrees.jl, BSeries.jl, ReservoirComputing.jl ║
 ╚════════════════════════════════════════════════════════════════╝
 """)
 # Get the project root
@@ -60,7 +60,7 @@ end
 end
 println("""
 ╔════════════════════════════════════════════════════════════════╗
-║  ✓ SciML Package Integration Complete                         ║
+║ ✓ SciML Package Integration Complete ║
 ╚════════════════════════════════════════════════════════════════╝
 The following packages are now available:
 • RootedTrees.jl - Rooted tree operations

@@ -1,15 +1,15 @@
 #define PNG_INTERNAL
 #include "png.h"
 #ifdef PNG_PROGRESSIVE_READ_SUPPORTED
-#define PNG_READ_SIG_MODE   0
+#define PNG_READ_SIG_MODE 0
 #define PNG_READ_CHUNK_MODE 1
-#define PNG_READ_IDAT_MODE  2
-#define PNG_SKIP_MODE       3
-#define PNG_READ_tEXt_MODE  4
-#define PNG_READ_zTXt_MODE  5
-#define PNG_READ_DONE_MODE  6
-#define PNG_READ_iTXt_MODE  7
-#define PNG_ERROR_MODE      8
+#define PNG_READ_IDAT_MODE 2
+#define PNG_SKIP_MODE 3
+#define PNG_READ_tEXt_MODE 4
+#define PNG_READ_zTXt_MODE 5
+#define PNG_READ_DONE_MODE 6
+#define PNG_READ_iTXt_MODE 7
+#define PNG_ERROR_MODE 8
 void PNGAPI
 png_process_data(png_structp png_ptr, png_infop info_ptr,
 png_bytep buffer, png_size_t buffer_size)

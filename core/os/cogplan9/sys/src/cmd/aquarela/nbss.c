@@ -91,7 +91,7 @@ goto die;
 }
 }
 break;
-case 0x81:  {
+case 0x81: {
 uchar *p, *ep;
 Listen *l;
 int k;
@@ -124,7 +124,7 @@ break;
 }
 if (l == nil) {
 qunlock(&listens);
-error_code  = called_found ? 0x81 : 0x80;
+error_code = called_found ? 0x81 : 0x80;
 replydie:
 buf[0] = 0x83;
 buf[1] = 0;

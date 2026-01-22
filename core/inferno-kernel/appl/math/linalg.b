@@ -41,32 +41,32 @@ n := len dx;
 gemm('N','N',n,1,n,0.,nil,0,nil,0,da,dx,n);
 }
 # gaussian elimination with partial pivoting
-#   dgefa factors a double precision matrix by gaussian elimination.
-#   dgefa is usually called by dgeco, but it can be called
-#   directly with a saving in time if  rcond  is not needed.
-#   (time for dgeco) = (1 + 9/n)*(time for dgefa) .
-#   on entry
-#      a       REAL precision[n][lda]
-#	      the matrix to be factored.
-#      lda     integer
-#	      the leading dimension of the array  a .
-#      n       integer
-#	      the order of the matrix  a .
-#   on return
-#      a       an upper triangular matrix and the multipliers
-#	      which were used to obtain it.
-#	      the factorization can be written  a = l*u  where
-#	      l  is a product of permutation and unit lower
-#	      triangular matrices and  u  is upper triangular.
-#      ipvt    integer[n]
-#	      an integer vector of pivot indices.
-#      info    integer
-#	      = 0  normal value.
-#	      = k  if  u[k][k] .eq. 0.0 .  this is not an error
-#		   condition for this subroutine, but it does
-#		   indicate that dgesl or dgedi will divide by zero
-#		   if called.  use  rcond  in dgeco for a reliable
-#		   indication of singularity.
+# dgefa factors a double precision matrix by gaussian elimination.
+# dgefa is usually called by dgeco, but it can be called
+# directly with a saving in time if rcond is not needed.
+# (time for dgeco) = (1 + 9/n)*(time for dgefa) .
+# on entry
+# a REAL precision[n][lda]
+# the matrix to be factored.
+# lda integer
+# the leading dimension of the array a .
+# n integer
+# the order of the matrix a .
+# on return
+# a an upper triangular matrix and the multipliers
+# which were used to obtain it.
+# the factorization can be written a = l*u where
+# l is a product of permutation and unit lower
+# triangular matrices and u is upper triangular.
+# ipvt integer[n]
+# an integer vector of pivot indices.
+# info integer
+# = 0 normal value.
+# = k if u[k][k] .eq. 0.0 . this is not an error
+# condition for this subroutine, but it does
+# indicate that dgesl or dgedi will divide by zero
+# if called. use rcond in dgeco for a reliable
+# indication of singularity.
 dgefa(a:array of real, lda, n:int, ipvt:array of int): int
 {
 if(sys==nil){
@@ -111,36 +111,36 @@ if(a[lda*(n-1)+(n-1)] == 0.)
 info = n-1;
 return info;
 }
-#   dgesl solves the double precision system
-#   a * x = b  or  trans(a) * x = b
-#   using the factors computed by dgeco or dgefa.
-#   on entry
-#      a       double precision[n][lda]
-#	      the output from dgeco or dgefa.
-#      lda     integer
-#	      the leading dimension of the array  a .
-#      n       integer
-#	      the order of the matrix  a .
-#      ipvt    integer[n]
-#	      the pivot vector from dgeco or dgefa.
-#      b       double precision[n]
-#	      the right hand side vector.
-#      job     integer
-#	      = 0	 to solve  a*x = b ,
-#	      = nonzero   to solve  trans(a)*x = b  where
-#			  trans(a)  is the transpose.
-#  on return
-#      b       the solution vector  x .
-#   error condition
-#      a division by zero will occur if the input factor contains a
-#      zero on the diagonal.  technically this indicates singularity
-#      but it is often caused by improper arguments or improper
-#      setting of lda.
+# dgesl solves the double precision system
+# a * x = b or trans(a) * x = b
+# using the factors computed by dgeco or dgefa.
+# on entry
+# a double precision[n][lda]
+# the output from dgeco or dgefa.
+# lda integer
+# the leading dimension of the array a .
+# n integer
+# the order of the matrix a .
+# ipvt integer[n]
+# the pivot vector from dgeco or dgefa.
+# b double precision[n]
+# the right hand side vector.
+# job integer
+# = 0 to solve a*x = b ,
+# = nonzero to solve trans(a)*x = b where
+# trans(a) is the transpose.
+# on return
+# b the solution vector x .
+# error condition
+# a division by zero will occur if the input factor contains a
+# zero on the diagonal. technically this indicates singularity
+# but it is often caused by improper arguments or improper
+# setting of lda.
 dgesl(a:array of real, lda, n:int, ipvt:array of int, b:array of real, job:int)
 {
 nm1 := n - 1;
-if(job == 0){	# job = 0 , solve  a * x = b
-# first solve  l*y = b
+if(job == 0){ # job = 0 , solve a * x = b
+# first solve l*y = b
 if(nm1 >= 1)
 for(k := 0; k < nm1; k++){
 l := ipvt[k];
@@ -151,15 +151,15 @@ b[k] = t;
 }
 daxpy(t,a[lda*k+k+1:lda*k+n],b[k+1:n]);
 }
-# now solve  u*x = y
+# now solve u*x = y
 for(kb := 0; kb < n; kb++){
 k = n - (kb + 1);
 b[k] = b[k]/a[lda*k+k];
 t := -b[k];
 daxpy(t,a[lda*k:lda*k+k],b[0:k]);
 }
-}else{	# job = nonzero, solve  trans(a) * x = b
-# first solve  trans(u)*y = b
+}else{ # job = nonzero, solve trans(a) * x = b
+# first solve trans(u)*y = b
 for(k := 0; k < n; k++){
 t := dot(a[lda*k:lda*k+k],b[0:k]);
 b[k] = (b[k] - t)/a[lda*k+k];

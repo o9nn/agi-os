@@ -138,9 +138,9 @@ gs_font_dir_alloc2(gs_memory_t * struct_mem, gs_memory_t * bits_mem)
 {
 gs_font_dir *pdir = 0;
 #if !arch_small_memory
-#  ifdef DEBUG
+# ifdef DEBUG
 if (!gs_debug_c('.'))
-#  endif
+# endif
 {
 pdir = gs_font_dir_alloc2_limits(struct_mem, bits_mem,
 smax_LARGE, bmax_LARGE, mmax_LARGE,

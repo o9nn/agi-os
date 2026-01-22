@@ -94,13 +94,13 @@ ptime1 = prestime();
 didwork = YES;
 }
 }
-else	{
+else {
 if(lp->shp != 0)
 {
 if(explcom)
 fprintf(stderr, "Too many command lines for `%s'\n",
 p->namep);
-else	explcom = lp->shp;
+else explcom = lp->shp;
 }
 if(td > tdep) tdep = td;
 }
@@ -205,7 +205,7 @@ ptime = prestime();
 }
 else if(errstat!=0 && reclevel==0)
 printf("`%s' not remade because of errors\n", p->namep);
-else if(!questflag && reclevel==0  &&  didwork==NO)
+else if(!questflag && reclevel==0 && didwork==NO)
 printf("`%s' is up to date.\n", p->namep);
 if(questflag && reclevel==0)
 exit(ndocoms>0 ? -1 : 0);

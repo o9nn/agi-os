@@ -12,19 +12,19 @@ static const char *version =
 #include <asm/system.h>
 #include "8390.h"
 static int e21_probe_list[] = {0x300, 0x280, 0x380, 0x220, 0};
-#define E21_NIC_OFFSET  0
-#define E21_ASIC		0x10
-#define E21_MEM_ENABLE	0x10
-#define  E21_MEM_ON		0x05
-#define  E21_MEM_ON_8	0x07
-#define E21_MEM_BASE	0x11
-#define E21_IRQ_LOW		0x12
-#define E21_IRQ_HIGH	0x14
-#define E21_MEDIA		0x14
-#define  E21_ALT_IFPORT 0x02
-#define  E21_BIG_MEM	0x04
-#define E21_SAPROM		0x10
-#define E21_IO_EXTENT	 0x20
+#define E21_NIC_OFFSET 0
+#define E21_ASIC 0x10
+#define E21_MEM_ENABLE 0x10
+#define E21_MEM_ON 0x05
+#define E21_MEM_ON_8 0x07
+#define E21_MEM_BASE 0x11
+#define E21_IRQ_LOW 0x12
+#define E21_IRQ_HIGH 0x14
+#define E21_MEDIA 0x14
+#define E21_ALT_IFPORT 0x02
+#define E21_BIG_MEM 0x04
+#define E21_SAPROM 0x10
+#define E21_IO_EXTENT 0x20
 static inline void mem_on(short port, volatile char *mem_base,
 unsigned char start_page )
 {
@@ -37,10 +37,10 @@ static inline void mem_off(short port)
 inb(port + E21_MEM_ENABLE);
 outb(0x00, port + E21_MEM_ENABLE);
 }
-#define E21_RX_START_PG		0x00
-#define E21_RX_STOP_PG		0x30
-#define E21_BIG_RX_STOP_PG	0xF0
-#define E21_TX_START_PG		E21_RX_STOP_PG
+#define E21_RX_START_PG 0x00
+#define E21_RX_STOP_PG 0x30
+#define E21_BIG_RX_STOP_PG 0xF0
+#define E21_TX_START_PG E21_RX_STOP_PG
 int e2100_probe(struct device *dev);
 int e21_probe1(struct device *dev, int ioaddr);
 static int e21_open(struct device *dev);
@@ -86,7 +86,7 @@ for (i = 0; i < 6; i++)
 station_addr[i] = inb(ioaddr + E21_SAPROM + i);
 inb(ioaddr + E21_MEDIA);
 outb(0, ioaddr + E21_ASIC);
-if (ei_debug  &&  version_printed++ == 0)
+if (ei_debug && version_printed++ == 0)
 printk("%s", version);
 if (dev == NULL) {
 printk("e2100.c: Passed a NULL device.\n");
@@ -233,8 +233,8 @@ struct netdev_entry e21_drv =
 {"e21", e21_probe1, E21_IO_EXTENT, e21_probe_list};
 #endif
 #ifdef MODULE
-#define MAX_E21_CARDS	4
-#define NAMELEN		8
+#define MAX_E21_CARDS 4
+#define NAMELEN 8
 static char namelist[NAMELEN * MAX_E21_CARDS] = { 0, };
 static struct device dev_e21[MAX_E21_CARDS] = {
 {
@@ -245,7 +245,7 @@ NULL,
 },
 };
 static int io[MAX_E21_CARDS] = { 0, };
-static int irq[MAX_E21_CARDS]  = { 0, };
+static int irq[MAX_E21_CARDS] = { 0, };
 static int mem[MAX_E21_CARDS] = { 0, };
 static int xcvr[MAX_E21_CARDS] = { 0, };
 int
@@ -260,7 +260,7 @@ dev->base_addr = io[this_dev];
 dev->mem_start = mem[this_dev];
 dev->mem_end = xcvr[this_dev];
 dev->init = e2100_probe;
-if (io[this_dev] == 0)  {
+if (io[this_dev] == 0) {
 if (this_dev != 0) break;
 printk(KERN_NOTICE "e2100.c: Presently autoprobing (not recommended) for a single card.\n");
 }

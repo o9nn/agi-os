@@ -4,17 +4,17 @@ echo "=== GNU Mach Development Roadmap Implementation Validation ==="
 echo "Checking Phase 1: Foundation & Quick Wins implementation status..."
 echo
 check_feature() {
-    local feature_name="$1"
-    local check_command="$2"
-    local expected="$3"
-    echo -n "Checking $feature_name... "
-    if eval "$check_command" >/dev/null 2>&1; then
-        echo "✅ IMPLEMENTED"
-        return 0
-    else
-        echo "❌ MISSING"
-        return 1
-    fi
+local feature_name="$1"
+local check_command="$2"
+local expected="$3"
+echo -n "Checking $feature_name... "
+if eval "$check_command" >/dev/null 2>&1; then
+echo "✅ IMPLEMENTED"
+return 0
+else
+echo "❌ MISSING"
+return 1
+fi
 }
 echo "=== 1.1 Code Quality & Standards ==="
 check_feature "Static Analysis Script" "test -f scripts/run-static-analysis.sh"

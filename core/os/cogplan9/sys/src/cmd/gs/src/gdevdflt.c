@@ -21,15 +21,15 @@ private gx_color_index
 {
 dev_proc_encode_color(*encode_proc);
 if ((encode_proc = dev_proc(dev, encode_color)) == 0) {
-if (dev->color_info.num_components == 1                          &&
+if (dev->color_info.num_components == 1 &&
 dev_proc(dev, map_rgb_color) != 0) {
 set_cinfo_polarity(dev, GX_CINFO_POLARITY_ADDITIVE);
 encode_proc = gx_backwards_compatible_gray_encode;
-} else  if ( (dev->color_info.num_components == 3    )           &&
-(encode_proc = dev_proc(dev, map_rgb_color)) != 0  )
+} else if ( (dev->color_info.num_components == 3 ) &&
+(encode_proc = dev_proc(dev, map_rgb_color)) != 0 )
 set_cinfo_polarity(dev, GX_CINFO_POLARITY_ADDITIVE);
-else if ( dev->color_info.num_components == 4                    &&
-(encode_proc = dev_proc(dev, map_cmyk_color)) != 0   )
+else if ( dev->color_info.num_components == 4 &&
+(encode_proc = dev_proc(dev, map_cmyk_color)) != 0 )
 set_cinfo_polarity(dev, GX_CINFO_POLARITY_SUBTRACTIVE);
 }
 if (encode_proc == 0) {
@@ -41,10 +41,10 @@ else
 encode_proc = gx_default_gray_encode;
 dev->color_info.separable_and_linear = GX_CINFO_SEP_LIN;
 } else if (dev->color_info.separable_and_linear == GX_CINFO_SEP_LIN) {
-gx_color_value  max_gray = dev->color_info.max_gray;
-gx_color_value  max_color = dev->color_info.max_color;
-if ( (max_gray & (max_gray + 1)) == 0  &&
-(max_color & (max_color + 1)) == 0  )
+gx_color_value max_gray = dev->color_info.max_gray;
+gx_color_value max_color = dev->color_info.max_color;
+if ( (max_gray & (max_gray + 1)) == 0 &&
+(max_color & (max_color + 1)) == 0 )
 encode_proc = gx_default_encode_color;
 else
 encode_proc = gx_default_encode_color;
@@ -56,11 +56,11 @@ return encode_proc;
 private bool
 is_like_DeviceRGB(gx_device * dev)
 {
-const gx_cm_color_map_procs *   cm_procs;
-frac                            cm_comp_fracs[3];
-int                             i;
-if ( dev->color_info.num_components != 3                   ||
-dev->color_info.polarity != GX_CINFO_POLARITY_ADDITIVE  )
+const gx_cm_color_map_procs * cm_procs;
+frac cm_comp_fracs[3];
+int i;
+if ( dev->color_info.num_components != 3 ||
+dev->color_info.polarity != GX_CINFO_POLARITY_ADDITIVE )
 return false;
 cm_procs = dev_proc(dev, get_color_mapping_procs)(dev);
 if (cm_procs == 0 || cm_procs->map_rgb == 0)
@@ -75,7 +75,7 @@ cm_comp_fracs[0] -= frac_1 / 4;
 cm_comp_fracs[1] -= frac_1 / 3;
 cm_comp_fracs[2] -= 3 * frac_1 / 4;
 for ( i = 0;
-i < 3                            &&
+i < 3 &&
 -frac_1 / 100 < cm_comp_fracs[i] &&
 cm_comp_fracs[i] < frac_1 / 100;
 i++ )
@@ -85,11 +85,11 @@ return i == 3;
 private bool
 is_like_DeviceCMYK(gx_device * dev)
 {
-const gx_cm_color_map_procs *   cm_procs;
-frac                            cm_comp_fracs[4];
-int                             i;
-if ( dev->color_info.num_components != 4                      ||
-dev->color_info.polarity != GX_CINFO_POLARITY_SUBTRACTIVE  )
+const gx_cm_color_map_procs * cm_procs;
+frac cm_comp_fracs[4];
+int i;
+if ( dev->color_info.num_components != 4 ||
+dev->color_info.polarity != GX_CINFO_POLARITY_SUBTRACTIVE )
 return false;
 cm_procs = dev_proc(dev, get_color_mapping_procs)(dev);
 if (cm_procs == 0 || cm_procs->map_cmyk == 0)
@@ -105,7 +105,7 @@ cm_comp_fracs[1] -= frac_1 / 3;
 cm_comp_fracs[2] -= 3 * frac_1 / 4;
 cm_comp_fracs[3] -= frac_1 / 8;
 for ( i = 0;
-i < 4                            &&
+i < 4 &&
 -frac_1 / 100 < cm_comp_fracs[i] &&
 cm_comp_fracs[i] < frac_1 / 100;
 i++ )
@@ -114,31 +114,31 @@ return i == 4;
 }
 private int
 gx_default_1_add_decode_color(
-gx_device *     dev,
-gx_color_index  color,
-gx_color_value  cv[1] )
+gx_device * dev,
+gx_color_index color,
+gx_color_value cv[1] )
 {
-gx_color_value  rgb[3];
-int             code = dev_proc(dev, map_color_rgb)(dev, color, rgb);
+gx_color_value rgb[3];
+int code = dev_proc(dev, map_color_rgb)(dev, color, rgb);
 cv[0] = rgb[0];
 return code;
 }
 private int
 gx_default_1_sub_decode_color(
-gx_device *     dev,
-gx_color_index  color,
-gx_color_value  cv[1] )
+gx_device * dev,
+gx_color_index color,
+gx_color_value cv[1] )
 {
-gx_color_value  rgb[3];
-int             code = dev_proc(dev, map_color_rgb)(dev, color, rgb);
+gx_color_value rgb[3];
+int code = dev_proc(dev, map_color_rgb)(dev, color, rgb);
 cv[0] = gx_max_color_value - rgb[0];
 return code;
 }
 private int
 gx_default_cmyk_decode_color(
-gx_device *     dev,
-gx_color_index  color,
-gx_color_value  cv[4] )
+gx_device * dev,
+gx_color_index color,
+gx_color_value cv[4] )
 {
 if (dev->color_info.separable_and_linear == GX_CINFO_SEP_LIN)
 return gx_default_decode_color(dev, color, cv);
@@ -157,9 +157,9 @@ return code;
 }
 private int
 gx_1bit_cmyk_decode_color(
-gx_device *     dev,
-gx_color_index  color,
-gx_color_value  cv[4] )
+gx_device * dev,
+gx_color_index color,
+gx_color_value cv[4] )
 {
 cv[0] = ((color & 0x8) != 0 ? gx_max_color_value : 0);
 cv[1] = ((color & 0x4) != 0 ? gx_max_color_value : 0);
@@ -178,7 +178,7 @@ return dev_proc(dev, map_color_rgb);
 if ( dev->color_info.separable_and_linear == GX_CINFO_SEP_LIN )
 return &gx_default_decode_color;
 if ( dev->color_info.num_components == 1 &&
-dev->color_info.gray_index == 0       )
+dev->color_info.gray_index == 0 )
 return dev->color_info.polarity == GX_CINFO_POLARITY_ADDITIVE
 ? &gx_default_1_add_decode_color
 : &gx_default_1_sub_decode_color;
@@ -326,14 +326,14 @@ fill_dev_proc(dev, fill_triangle, gx_default_fill_triangle);
 fill_dev_proc(dev, draw_thin_line, gx_default_draw_thin_line);
 fill_dev_proc(dev, begin_image, gx_default_begin_image);
 #ifdef DEBUG
-#  define CHECK_NON_DEFAULT(proc, default, procname)\
+# define CHECK_NON_DEFAULT(proc, default, procname)\
 BEGIN\
 if ( dev_proc(dev, proc) != NULL && dev_proc(dev, proc) != default )\
 dprintf2("**** Warning: device %s implements obsolete procedure %s\n",\
 dev->dname, procname);\
 END
 #else
-#  define CHECK_NON_DEFAULT(proc, default, procname)\
+# define CHECK_NON_DEFAULT(proc, default, procname)\
 DO_NOTHING
 #endif
 CHECK_NON_DEFAULT(get_alpha_bits, gx_default_get_alpha_bits,
@@ -412,10 +412,10 @@ fill_dev_proc(dev, get_color_comp_index, gx_error_get_color_comp_index);
 }
 set_dev_proc(dev, decode_color, get_decode_color(dev));
 fill_dev_proc(dev, map_color_rgb, gx_default_map_color_rgb);
-if ( dev->color_info.opmode == GX_CINFO_OPMODE_UNKNOWN          &&
-(dev->color_info.num_components < 4                     ||
+if ( dev->color_info.opmode == GX_CINFO_OPMODE_UNKNOWN &&
+(dev->color_info.num_components < 4 ||
 dev->color_info.polarity == GX_CINFO_POLARITY_ADDITIVE ||
-dev->color_info.gray_index == GX_CINFO_COMP_NO_INDEX     )  )
+dev->color_info.gray_index == GX_CINFO_COMP_NO_INDEX ) )
 dev->color_info.opmode = GX_CINFO_OPMODE_NOT;
 fill_dev_proc(dev, pattern_manage, gx_default_pattern_manage);
 fill_dev_proc(dev, fill_rectangle_hl_color, gx_default_fill_rectangle_hl_color);

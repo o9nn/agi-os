@@ -1,7 +1,7 @@
-#include	<u.h>
-#include	<libc.h>
-#include	<bio.h>
-#include	"sky.h"
+#include <u.h>
+#include <libc.h>
+#include <bio.h>
+#include "sky.h"
 void
 amdinv(Header *h, Angle ra, Angle dec, float mag, float col)
 {
@@ -132,7 +132,7 @@ void
 ppoinv(Header *h, Angle ra, Angle dec)
 {
 traneqstd(h, ra, dec);
-h->xi  /= ARCSECONDS_PER_RADIAN;
+h->xi /= ARCSECONDS_PER_RADIAN;
 h->eta /= ARCSECONDS_PER_RADIAN;
 h->x =
 h->param[Pppo1]*h->xi +

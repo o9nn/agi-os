@@ -1,7 +1,7 @@
 #ifndef gsfname_INCLUDED
-#  define gsfname_INCLUDED
+# define gsfname_INCLUDED
 #ifndef gx_io_device_DEFINED
-#  define gx_io_device_DEFINED
+# define gx_io_device_DEFINED
 typedef struct gx_io_device_s gx_io_device;
 #endif
 typedef struct gs_parsed_file_name_s {

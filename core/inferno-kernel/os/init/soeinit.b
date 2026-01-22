@@ -3,7 +3,7 @@
 #
 implement Init;
 include "sys.m";
-sys:	Sys;
+sys: Sys;
 include "draw.m";
 include "keyring.m";
 kr: Keyring;
@@ -12,15 +12,15 @@ auth: Auth;
 include "sh.m";
 Init: module
 {
-init:	fn();
+init: fn();
 };
 Bootpreadlen: con 128;
 # standard flash partitions
 #flashparts := array[] of {
-#	# bootstrap at 0x0 to 0x20000
-#	"add script 0x20000 0x40000",
-#	"add kernel 0x100000 0x200000",
-#	"add fs 0x200000 end",
+# # bootstrap at 0x0 to 0x20000
+# "add script 0x20000 0x40000",
+# "add kernel 0x100000 0x200000",
+# "add fs 0x200000 end",
 #};
 flashparts: array of string;
 ethername := "ether0";
@@ -56,15 +56,15 @@ ethername = "ether1";
 }
 if(netok)
 configether();
-dobind("#I", "/net", sys->MAFTER);	# IP
-dobind("#p", "/prog", sys->MREPL);	# prog
+dobind("#I", "/net", sys->MAFTER); # IP
+dobind("#p", "/prog", sys->MREPL); # prog
 sys->bind("#d", "/fd", Sys->MREPL);
-dobind("#c", "/dev", sys->MREPL); 	# console
-dobind("#t", "/dev", sys->MAFTER);	# serial line
-drawok := sys->bind("#i", "/dev", sys->MAFTER) >= 0; 	# draw
-sys->bind("#m", "/dev", sys->MAFTER);	# pointer
-sys->bind("#e", "/env", sys->MREPL|sys->MCREATE);	# environment
-sys->bind("#A", "/dev", Sys->MAFTER);	# optional audio
+dobind("#c", "/dev", sys->MREPL); # console
+dobind("#t", "/dev", sys->MAFTER); # serial line
+drawok := sys->bind("#i", "/dev", sys->MAFTER) >= 0; # draw
+sys->bind("#m", "/dev", sys->MAFTER); # pointer
+sys->bind("#e", "/env", sys->MREPL|sys->MCREATE); # environment
+sys->bind("#A", "/dev", Sys->MAFTER); # optional audio
 timefile: string;
 rootsource: string;
 scale := 1;
@@ -74,7 +74,7 @@ sys->fprint(cfd, "rawon");
 for(;;){
 (rootsource, timefile, scale) = askrootsource(localok, netok);
 if(rootsource == nil)
-break;	# internal
+break; # internal
 (rc, nil) := sys->stat(rootsource+"/dis/sh.dis");
 if(rc < 0)
 err("%s has no shell");
@@ -86,7 +86,7 @@ break;
 }
 }
 cfd = nil;
-setsysname("soe");			# set system name
+setsysname("soe"); # set system name
 now := getclock(timefile, rootsource);
 if(scale == 1)
 now *= big 1000000;
@@ -181,7 +181,7 @@ n := sys->read(fd, b, len b-1);
 if(n > 0){
 now = big string b[0:n];
 if(now <= big 16r20000000)
-now = big 0;	# remote itself is not initialised
+now = big 0; # remote itself is not initialised
 }
 }
 }
@@ -262,7 +262,7 @@ sys->print("%s%s", cm, hd l);
 cm = ",";
 }
 sys->print(")[%s] ", hd sources);
-s = getline(stdin, hd sources);	# default
+s = getline(stdin, hd sources); # default
 }
 (nil, choice) := sys->tokenize(s, "\t ");
 if(choice == nil)
@@ -472,7 +472,7 @@ sys->print("/nvfs/fsip: server=%s\n", server);
 server = bootp();
 if(server == nil || server == "0.0.0.0")
 return -1;
-net := "tcp";	# how to specify il?
+net := "tcp"; # how to specify il?
 svcname := net + "!" + server + "!6666";
 sys->print("dial %s...", svcname);
 (ok, c) := sys->dial(svcname, nil);

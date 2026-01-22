@@ -5,7 +5,7 @@
 #include "fns.h"
 #include "io.h"
 #include "../port/error.h"
-#define	Image	IMAGE
+#define Image IMAGE
 #include <draw.h>
 #include <memdraw.h>
 #include <cursor.h>
@@ -99,10 +99,10 @@ vgaxo(Crtx, 0x31, vgaxi(Crtx, 0x31) & ~0x01);
 static void
 nvidiacurload(VGAscr* scr, Cursor* curs)
 {
-ulong*	p;
-int	i,j;
-ushort	c,s;
-ulong	tmp;
+ulong* p;
+int i,j;
+ushort c,s;
+ulong tmp;
 if(scr->io == 0)
 return;
 vgaxo(Crtx, 0x31, vgaxi(Crtx, 0x31) & ~0x01);
@@ -146,7 +146,7 @@ return;
 static int
 nvidiacurmove(VGAscr* scr, Point p)
 {
-ulong*	cursorpos;
+ulong* cursorpos;
 if(scr->io == 0)
 return 1;
 cursorpos = KADDR(scr->io + hwCurPos);
@@ -165,11 +165,11 @@ nvidiacurmove(scr, ZP);
 vgaxo(Crtx, 0x31, vgaxi(Crtx, 0x31) | 0x01);
 }
 enum {
-RopFifo 		= 0x00000000,
-ClipFifo 		= 0x00002000,
-PattFifo 		= 0x00004000,
-BltFifo 		= 0x00008000,
-BitmapFifo 	= 0x0000A000,
+RopFifo = 0x00000000,
+ClipFifo = 0x00002000,
+PattFifo = 0x00004000,
+BltFifo = 0x00008000,
+BitmapFifo = 0x0000A000,
 };
 enum {
 RopRop3 = RopFifo + 0x300,
@@ -190,7 +190,7 @@ BitmapURect0WidthHeight = BitmapFifo + 0x0404,
 static void
 waitforidle(VGAscr *scr)
 {
-ulong*	pgraph;
+ulong* pgraph;
 int x;
 pgraph = KADDR(scr->io + Pgraph);
 x = 0;
@@ -214,7 +214,7 @@ iprint("fifo stat %d scrio %.8lux scr %p pc %luX\n", *fifofree, scr->io, scr, ge
 static int
 nvidiahwfill(VGAscr *scr, Rectangle r, ulong sval)
 {
-ulong*	fifo;
+ulong* fifo;
 fifo = KADDR(scr->io + Fifo);
 waitforfifo(scr, BitmapFifo, 1);
 fifo[BitmapColor1A/4] = sval;
@@ -227,7 +227,7 @@ return 1;
 static int
 nvidiahwscroll(VGAscr *scr, Rectangle r, Rectangle sr)
 {
-ulong*	fifo;
+ulong* fifo;
 fifo = KADDR(scr->io + Fifo);
 waitforfifo(scr, BltFifo, 3);
 fifo[BltTopLeftSrc/4] = (sr.min.y << 16) | sr.min.x;
@@ -252,7 +252,7 @@ vgaxo(Crtx, 0x1A, crtc1A);
 static void
 nvidiadrawinit(VGAscr *scr)
 {
-ulong*	fifo;
+ulong* fifo;
 fifo = KADDR(scr->io + Fifo);
 waitforfifo(scr, ClipFifo, 2);
 fifo[ClipTopLeft/4] = 0x0;

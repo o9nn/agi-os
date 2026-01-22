@@ -1,7 +1,7 @@
 #ifndef LG_PRINT_UTIL_H_
 #define LG_PRINT_UTIL_H_
-#if     __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ > 4)
-#define GNUC_PRINTF( format_idx, arg_idx )    \
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ > 4)
+#define GNUC_PRINTF( format_idx, arg_idx ) \
 __attribute__((__format__ (__printf__, format_idx, arg_idx)))
 #else
 #define GNUC_PRINTF( format_idx, arg_idx )

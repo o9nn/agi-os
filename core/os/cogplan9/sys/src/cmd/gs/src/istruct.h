@@ -1,5 +1,5 @@
 #ifndef istruct_INCLUDED
-#  define istruct_INCLUDED
+# define istruct_INCLUDED
 #include "gsstruct.h"
 extern const gs_ptr_procs_t ptr_ref_procs;
 #define ptr_ref_type (&ptr_ref_procs)

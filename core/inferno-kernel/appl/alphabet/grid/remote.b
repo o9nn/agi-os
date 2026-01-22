@@ -56,21 +56,21 @@ ec <-= ep;
 f <-= fd1;
 quit(errorc);
 }
-#	sys->pipe(p := array[2] of ref Sys->FD);
-#	f <-= p[1];
-#	p[1] = nil;
-#	buf := array[Sys->ATOMICIO] of byte;
-#	while((n := sys->read(p[0], buf, len buf)) > 0){
-#		if(sys->write(fd, buf, n) == -1){
-#			report(errorc, sys->sprint("write error: %r"));
-#			break;
-#		}
-#	}exception{
-#	"write on closed pipe" =>
-#		report(errorc, "got write on closed pipe");
-#	}
-#	sys->write(fd, array[0] of byte, 0);
-#	quit(errorc);
+# sys->pipe(p := array[2] of ref Sys->FD);
+# f <-= p[1];
+# p[1] = nil;
+# buf := array[Sys->ATOMICIO] of byte;
+# while((n := sys->read(p[0], buf, len buf)) > 0){
+# if(sys->write(fd, buf, n) == -1){
+# report(errorc, sys->sprint("write error: %r"));
+# break;
+# }
+# }exception{
+# "write on closed pipe" =>
+# report(errorc, "got write on closed pipe");
+# }
+# sys->write(fd, array[0] of byte, 0);
+# quit(errorc);
 #}
 checkload[T](m: T, path: string): T
 {

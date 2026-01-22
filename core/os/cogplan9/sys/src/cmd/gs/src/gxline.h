@@ -1,5 +1,5 @@
 #ifndef gxline_INCLUDED
-#  define gxline_INCLUDED
+# define gxline_INCLUDED
 #include "gslparam.h"
 #include "gsmatrix.h"
 typedef struct gx_dash_params_s {

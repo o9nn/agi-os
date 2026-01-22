@@ -1,15 +1,15 @@
 #ifndef _MACH_AARCH64_ASM_H_
 #define _MACH_AARCH64_ASM_H_
-#define EXT(x)		x
-#define LEXT(x)		x ## :
-#define SEXT(x)		#x
-#define TEXT_ALIGN	4
-#define DATA_ALIGN	4
-#define SVC		svc # (0)
-#define ENTRY(x)	.globl EXT(x); .type EXT(x), @function; .p2align TEXT_ALIGN; LEXT(x)
-#define END(x)		.size x,.-x
+#define EXT(x) x
+#define LEXT(x) x ## :
+#define SEXT(x) #x
+#define TEXT_ALIGN 4
+#define DATA_ALIGN 4
+#define SVC svc # (0)
+#define ENTRY(x) .globl EXT(x); .type EXT(x), @function; .p2align TEXT_ALIGN; LEXT(x)
+#define END(x) .size x,.-x
 #ifdef __ARM_FEATURE_BTI_DEFAULT
-#define MACH_BTI_C	bti c
+#define MACH_BTI_C bti c
 #else
 #define MACH_BTI_C
 #endif

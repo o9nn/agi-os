@@ -9,9 +9,9 @@
 #include "ipacked.h"
 #include "store.h"
 #if 0
-#  define rputc(c) dputc(c)
+# define rputc(c) dputc(c)
 #else
-#  define rputc(c) DO_NOTHING
+# define rputc(c) DO_NOTHING
 #endif
 ptr_proc_reloc(igc_reloc_ref_ptr, ref_packed);
 refs_proc_reloc(igc_reloc_refs);
@@ -59,7 +59,7 @@ r_clear_attrs((ref *)rpp, l_mark);
 }
 private void
 refs_clear_marks(const gs_memory_t *cmem,
-void  *vptr, uint size,
+void *vptr, uint size,
 const gs_memory_struct_type_t * pstype)
 {
 ref_packed *rp = (ref_packed *) vptr;
@@ -144,22 +144,22 @@ rp++;
 int i;
 #define all_marked (align_packed_per_ref * lp_mark)
 # if align_packed_per_ref == 2
-#  if arch_sizeof_int == arch_sizeof_short * 2
-#    undef all_marked
-#    define all_marked ( (lp_mark << (sizeof(short) * 8)) + lp_mark )
-#    define marked (*(int *)rp & all_marked)
-#  else
-#    define marked ((*rp & lp_mark) + (rp[1] & lp_mark))
-#  endif
+# if arch_sizeof_int == arch_sizeof_short * 2
+# undef all_marked
+# define all_marked ( (lp_mark << (sizeof(short) * 8)) + lp_mark )
+# define marked (*(int *)rp & all_marked)
 # else
-#  if align_packed_per_ref == 4
-#    define marked ((*rp & lp_mark) + (rp[1] & lp_mark) +\
+# define marked ((*rp & lp_mark) + (rp[1] & lp_mark))
+# endif
+# else
+# if align_packed_per_ref == 4
+# define marked ((*rp & lp_mark) + (rp[1] & lp_mark) +\
 (rp[2] & lp_mark) + (rp[3] & lp_mark))
-#  else
+# else
 int marked = *rp & lp_mark;
 for (i = 1; i < align_packed_per_ref; i++)
 marked += rp[i] & lp_mark;
-#  endif
+# endif
 # endif
 switch (marked) {
 case all_marked:
@@ -240,7 +240,7 @@ r_clear_attrs((ref *) rp - 1, l_mark);
 return true;
 }
 private void
-refs_do_reloc(void  *vptr, uint size,
+refs_do_reloc(void *vptr, uint size,
 const gs_memory_struct_type_t * pstype, gc_state_t * gcst)
 {
 igc_reloc_refs((ref_packed *) vptr,

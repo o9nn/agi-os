@@ -44,7 +44,7 @@ LASTPAGE: con 16r7fffffff;
 Book: adt {
 win: ref Tk->Toplevel;
 evch: string;
-size:	Point;
+size: Point;
 w: string;
 showannot: int;
 d: ref Document;
@@ -53,49 +53,49 @@ fallbacks: list of (string, string);
 item: ref OEBpackage->Item;
 page: int;
 indexprogress: chan of int;
-sequence: list of ref OEBpackage->Item;		# currently selected sequence
-new:		fn(f: string, win: ref Tk->Toplevel, w: string, evch: string, size: Point,
+sequence: list of ref OEBpackage->Item; # currently selected sequence
+new: fn(f: string, win: ref Tk->Toplevel, w: string, evch: string, size: Point,
 indexprogress: chan of int): (ref Book, string);
-gotolink:	fn(book: self ref Book, where: string): string;
-gotopage:	fn(book: self ref Book, page: int);
-goto:	fn(book: self ref Book, m: ref Bookmark);
-mark:	fn(book: self ref Book): ref Bookmark;
-forward:	fn(book: self ref Book);
-back:	fn(book: self ref Book);
+gotolink: fn(book: self ref Book, where: string): string;
+gotopage: fn(book: self ref Book, page: int);
+goto: fn(book: self ref Book, m: ref Bookmark);
+mark: fn(book: self ref Book): ref Bookmark;
+forward: fn(book: self ref Book);
+back: fn(book: self ref Book);
 showannotations: fn(book: self ref Book, showannot: int);
-show:	fn(book: self ref Book, item: ref OEBpackage->Item);
-title:		fn(book: self ref Book): string;
+show: fn(book: self ref Book, item: ref OEBpackage->Item);
+title: fn(book: self ref Book): string;
 };
 Bookmark: adt {
-item:		ref OEBpackage->Item;
-page:	int;		# XXX should be fileoffset
+item: ref OEBpackage->Item;
+page: int; # XXX should be fileoffset
 };
 Document: adt {
-w:		string;
-p:		ref Page;		# current page
-firstmark:	ref Mark;		# start  of first element on current page
-endfirstmark:	ref Mark;	# end of first element on current page
-lastmark:	ref Mark;		# start of last element on current page
-endlastmark:	ref Mark;	# end of last element on current page (nil if we're there)
-nextoffset:	int;		# y offset of first element on next page
-datasrc:	ref Datasource;
-indexed:	int;
-pagenum:	int;
-size:		Point;
-index:	ref Index;
+w: string;
+p: ref Page; # current page
+firstmark: ref Mark; # start of first element on current page
+endfirstmark: ref Mark; # end of first element on current page
+lastmark: ref Mark; # start of last element on current page
+endlastmark: ref Mark; # end of last element on current page (nil if we're there)
+nextoffset: int; # y offset of first element on next page
+datasrc: ref Datasource;
+indexed: int;
+pagenum: int;
+size: Point;
+index: ref Index;
 annotations: array of ref Annotation;
 showannot: int;
-item:		ref OEBpackage->Item;
-fallbacks:	list of (string, string);
+item: ref OEBpackage->Item;
+fallbacks: list of (string, string);
 indexprogress: chan of int;
-new:		fn(i: ref OEBpackage->Item, fallbacks: list of (string, string),
+new: fn(i: ref OEBpackage->Item, fallbacks: list of (string, string),
 win: ref Tk->Toplevel, w: string, size: Point, evch: string,
 indexprogress: chan of int): (ref Document, string);
-fileoffset:	fn(d: self ref Document): int;
-title:		fn(d: self ref Document): string;
-goto:	fn(d: self ref Document, n: int): int;
-gotooffset:	fn(d: self ref Document, o: int);
-gotolink:	fn(d: self ref Document, name: string): int;
+fileoffset: fn(d: self ref Document): int;
+title: fn(d: self ref Document): string;
+goto: fn(d: self ref Document, n: int): int;
+gotooffset: fn(d: self ref Document, o: int);
+gotolink: fn(d: self ref Document, name: string): int;
 addannotation: fn(d: self ref Document, a: ref Annotation);
 delannotation: fn(d: self ref Document, a: ref Annotation);
 getannotation: fn(d: self ref Document, fileoffset: int): ref Annotation;
@@ -104,41 +104,41 @@ showannotations: fn(d: self ref Document, show: int);
 writeannotations: fn(d: self ref Document): string;
 };
 Index: adt {
-rq:		chan of (int, chan of (int, (ref Mark, int)));
-linkrq:	chan of (string, chan of int);
-indexed:	chan of (array of (ref Mark, int), ref Links);
-d:		ref Datasource;
-size:		Point;
-length:	int;			# length of index file
-f:		string;		# name of index file
-new:		fn(i: ref OEBpackage->Item, d:  ref Datasource, size: Point, force: int,
+rq: chan of (int, chan of (int, (ref Mark, int)));
+linkrq: chan of (string, chan of int);
+indexed: chan of (array of (ref Mark, int), ref Links);
+d: ref Datasource;
+size: Point;
+length: int; # length of index file
+f: string; # name of index file
+new: fn(i: ref OEBpackage->Item, d: ref Datasource, size: Point, force: int,
 indexprogress: chan of int): ref Index;
-get:		fn(i: self ref Index, n: int): (int, (ref Mark, int));
-getlink:	fn(i: self ref Index, name: string): int;
-abort:	fn(i: self ref Index);
-stop:	fn(i: self ref Index);
+get: fn(i: self ref Index, n: int): (int, (ref Mark, int));
+getlink: fn(i: self ref Index, name: string): int;
+abort: fn(i: self ref Index);
+stop: fn(i: self ref Index);
 };
 Page: adt {
-win:		ref Tk->Toplevel;
-w:		string;
-min, max:	int;
-height:	int;
-yorigin:	int;
-bmargin:	int;
-new:		fn(win: ref Tk->Toplevel, w: string): ref Page;
-del:		fn(p: self ref Page);
-append:	fn(p: self ref Page, b: Block);
-remove:	fn(p: self ref Page, atend: int):  Block;
-scrollto:	fn(p: self ref Page, y: int);
-count:	fn(p: self ref Page): int;
-bbox:	fn(p: self ref Page, n: int): Rect;
-bboxw:	fn(p: self ref Page, w: string): Rect;
-canvasr:	fn(p: self ref Page, r: Rect): Rect;
-window:	fn(p: self ref Page, n: int): string;
-maxy:	fn(p: self ref Page): int;
-conceal:	fn(p: self ref Page, y: int);
-visible:	fn(p: self ref Page): int;
-getblock:	fn(p: self ref Page, n: int): Block;
+win: ref Tk->Toplevel;
+w: string;
+min, max: int;
+height: int;
+yorigin: int;
+bmargin: int;
+new: fn(win: ref Tk->Toplevel, w: string): ref Page;
+del: fn(p: self ref Page);
+append: fn(p: self ref Page, b: Block);
+remove: fn(p: self ref Page, atend: int): Block;
+scrollto: fn(p: self ref Page, y: int);
+count: fn(p: self ref Page): int;
+bbox: fn(p: self ref Page, n: int): Rect;
+bboxw: fn(p: self ref Page, w: string): Rect;
+canvasr: fn(p: self ref Page, r: Rect): Rect;
+window: fn(p: self ref Page, n: int): string;
+maxy: fn(p: self ref Page): int;
+conceal: fn(p: self ref Page, y: int);
+visible: fn(p: self ref Page): int;
+getblock: fn(p: self ref Page, n: int): Block;
 };
 Annotationwidth: con "20w";
 Spikeradius: con 3;
@@ -211,7 +211,7 @@ cmd(win, "frame .tmp");
 cmd(win, "pack .tmp -side top -fill both -expand 1");
 cmd(win, "pack propagate . 0");
 cmd(win, ". configure -width " + string size.x + " -height " + string size.y);
-#	fittoscreen(win);
+# fittoscreen(win);
 size.x = int cmd(win, ".tmp cget -actwidth");
 size.y = int cmd(win, ".tmp cget -actheight");
 cmd(win, "destroy .tmp");
@@ -325,7 +325,7 @@ profile->start();
 (olditem, oldpage) := (book.item, book.page);
 case w {
 "exit" =>
-book.show(nil);		# force annotations to be written out.
+book.show(nil); # force annotations to be written out.
 exitedch <-= 1;
 exit;
 "forward" =>
@@ -349,7 +349,7 @@ book.goto(hd fhist);
 e := book.gotolink(c);
 if (e != nil)
 notice("error getting link: " + e);
-"ds" =>			# an event from a datasource-created widget
+"ds" => # an event from a datasource-created widget
 if (book.d == nil) {
 oops("stray event 'ds " + c + "'");
 break;
@@ -582,7 +582,7 @@ if (path == nil)
 u.path = fromfile;
 else {
 if(u.pstart != "/")
-path = dir+path;	# TO DO: security
+path = dir+path; # TO DO: security
 (ok, d) := sys->stat(path);
 if(ok < 0)
 return (nil, sys->sprint("'%s': %r", path));
@@ -596,11 +596,11 @@ if (book.d != nil)
 book.page = book.d.goto(page);
 }
 #if (goto(next page)) doesn't move on) {
-#	if (currentdocument is in sequence and it's not the last) {
-#		close(document);
-#		open(next in sequence)
-#		goto(page 0)
-#	}
+# if (currentdocument is in sequence and it's not the last) {
+# close(document);
+# open(next in sequence)
+# goto(page 0)
+# }
 #}
 Book.forward(book: self ref Book)
 {
@@ -659,7 +659,7 @@ book.d = nil;
 }
 if (item == nil)
 return;
-(d, e) := Document.new(item,  book.fallbacks, book.win, book.w + ".d", book.size, book.evch, book.indexprogress);
+(d, e) := Document.new(item, book.fallbacks, book.win, book.w + ".d", book.size, book.evch, book.indexprogress);
 if (d == nil) {
 notice(sys->sprint("cannot load item %s: %s", item.href, e));
 return;
@@ -677,33 +677,33 @@ if (book.d != nil)
 book.d.showannotations(showannot);
 }
 #actions:
-#	goto link
-#		if (link is to current document) {
-#			goto(link)
-#		} else {
-#			close(document)
-#			open(linked-to document)
-#			goto(link);
-#		}
+# goto link
+# if (link is to current document) {
+# goto(link)
+# } else {
+# close(document)
+# open(linked-to document)
+# goto(link);
+# }
 #
-#	next page
-#		if (goto(next page)) doesn't move on) {
-#			if (currentdocument is in sequence and it's not the last) {
-#				close(document);
-#				open(next in sequence)
-#				goto(page 0)
-#			}
-#		}
+# next page
+# if (goto(next page)) doesn't move on) {
+# if (currentdocument is in sequence and it's not the last) {
+# close(document);
+# open(next in sequence)
+# goto(page 0)
+# }
+# }
 #
-#	previous page
-#		if (page > 0) {
-#			goto(page - 1);
-#		} else {
-#			if (currentdocument is in sequence and it's not the first) {
-#				close(document)
-#				open(previous in sequence)
-#				goto(last page)
-#			}
+# previous page
+# if (page > 0) {
+# goto(page - 1);
+# } else {
+# if (currentdocument is in sequence and it's not the first) {
+# close(document)
+# open(previous in sequence)
+# goto(last page)
+# }
 displayannotation(d: ref Document, r: Rect, annot: ref Annotation)
 {
 tag := "o" + string annot.fileoffset;
@@ -773,7 +773,7 @@ return 0;
 }
 Document.gotooffset(nil: self ref Document, nil: int)
 {
-#	d.goto(d.index.pageforfileoffset(offset));
+# d.goto(d.index.pageforfileoffset(offset));
 # XXX
 }
 Document.title(d: self ref Document): string
@@ -964,7 +964,7 @@ return 0;
 return offset + b.tmargin;
 } else {
 p.conceal(size.y);
-return 0;		# ensure that we get whole of top margin on next page.
+return 0; # ensure that we get whole of top margin on next page.
 }
 }
 p.conceal(size.y);
@@ -1099,7 +1099,7 @@ a = tl tl a;
 }
 return annotations;
 }
-Index.new(item: ref OEBpackage->Item, d:  ref Datasource, size: Point,
+Index.new(item: ref OEBpackage->Item, d: ref Datasource, size: Point,
 force: int, indexprogress: chan of int): ref Index
 {
 i := ref Index;
@@ -1132,7 +1132,7 @@ spawn indexproc(i.d, size,
 c := chan of (ref Mark, int),
 linkch := chan of string);
 spawn indexdealerproc(i.f, c, i.rq, i.linkrq, chan of (int, chan of int), linkch, i.indexed, indexprogress);
-#	i.get(LASTPAGE);
+# i.get(LASTPAGE);
 return i;
 }
 Index.abort(i: self ref Index)
@@ -1297,9 +1297,9 @@ reply <-= -1;
 else
 linkrqs = (name, reply) :: linkrqs;
 (offset, reply) := <-offsetrq =>
-reply <-= -1;		# XXX fix it.
-#		if (finished && (npages == 0 || offset >= pages[npages - 1].fileoffset
-#		if (i := 0; i < npages; i++)
+reply <-= -1; # XXX fix it.
+# if (finished && (npages == 0 || offset >= pages[npages - 1].fileoffset
+# if (i := 0; i < npages; i++)
 (n, reply) := <-rq =>
 if (reply == nil)
 exit;
@@ -1357,7 +1357,7 @@ win := d.win;
 p := Page.new(win, ".ip");
 mark := d.mark();
 c <-= (mark, 0);
-links: list of (string, string, string);	# (linkname, widgetname, tag)
+links: list of (string, string, string); # (linkname, widgetname, tag)
 for (;;) {
 startoffset := mark.fileoffset();
 (mark, nil) = fillpage(p, size, d, mark, nil, linkch);
@@ -1402,8 +1402,8 @@ Links: adt {
 a: array of list of (string, int);
 new: fn(): ref Links;
 read: fn(iob: ref Iobuf): (ref Links, string);
-get:	fn(l: self ref Links, name: string): int;
-put:	fn(l: self ref Links, name: string, pagenum: int);
+get: fn(l: self ref Links, name: string): int;
+put: fn(l: self ref Links, name: string, pagenum: int);
 write: fn(l: self ref Links, iob: ref Iobuf);
 };
 Links.new(): ref Links
@@ -1467,7 +1467,7 @@ Page.canvasr(p: self ref Page, r: Rect): Rect
 {
 return r.addpt((0, p.yorigin));
 }
-Pagewidth: con 5000;		# max page width
+Pagewidth: con 5000; # max page width
 # create an area on the page, from y downwards.
 Page.conceal(p: self ref Page, y: int)
 {
@@ -1498,7 +1498,7 @@ cmd(p.win, p.w + " create window 0 " + string (y + gap) + " -window " + b.w +
 " -tags {elem" +
 " n" + string n +
 " t" + string b.tmargin +
-" b" + string  b.bmargin +
+" b" + string b.bmargin +
 "} -anchor nw");
 p.height += h + gap;
 p.bmargin = b.bmargin;
@@ -1622,9 +1622,9 @@ sys->print("oops: %s\n", s);
 }
 cmd(win: ref Tk->Toplevel, s: string): string
 {
-#	sys->print("%ux	%s\n", win, s);
+# sys->print("%ux	%s\n", win, s);
 r := tk->cmd(win, s);
-#	sys->print("	-> %s\n", r);
+# sys->print("	-> %s\n", r);
 if (len r > 0 && r[0] == '!') {
 sys->fprint(stderr, "ebook: error executing '%s': %s\n", s, r);
 raise "tk error";
@@ -1679,7 +1679,7 @@ name = name[0:i]+name[i+1:];
 --i;
 n--;
 }
-#  eliminate ./
+# eliminate ./
 for(i=0; i<n-1; i++)
 if(name[i]=='.' && name[i+1]=='/' && (i==0 || name[i-1]=='/')){
 name = name[0:i]+name[i+2:];
@@ -1700,7 +1700,7 @@ break;
 if(found)
 for(j:=i-1; j>=0; --j)
 if(j==0 || name[j-1]=='/'){
-i += 3;		# character beyond ..
+i += 3; # character beyond ..
 if(i<n && name[i]=='/')
 ++i;
 name = name[0:j]+name[i:];

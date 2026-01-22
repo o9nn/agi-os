@@ -32,22 +32,22 @@ int comtimer_state[NCOM];
 static int rcline = -1;
 static struct bus_device *comcndev;
 extern char *kernel_cmdline;
-#define ISPEED	B115200
-#define IFLAGS	(EVENP|ODDP|ECHO|CRMOD|XTABS|LITOUT)
+#define ISPEED B115200
+#define IFLAGS (EVENP|ODDP|ECHO|CRMOD|XTABS|LITOUT)
 u_short divisorreg[] = {
-0,	2304,	1536,	1047,
-857,	 768,	 576,	 384,	 192,
-96,	  64,		  48,
-24,	  	  12,
-6,	   3,	   2,	   1};
+0, 2304, 1536, 1047,
+857, 768, 576, 384, 192,
+96, 64, 48,
+24, 12,
+6, 3, 2, 1};
 static int
 comprobe_general(struct bus_device *dev, int noisy)
 {
-u_short	addr = dev->address;
-int	unit = dev->unit;
-int     oldctl, oldmsb;
-char    *type = "8250";
-int     i;
+u_short addr = dev->address;
+int unit = dev->unit;
+int oldctl, oldmsb;
+char *type = "8250";
+int i;
 if ((unit < 0) || (unit >= NCOM)) {
 printf("com %d out of range\n", unit);
 return(0);
@@ -109,13 +109,13 @@ return 1;
 int
 comprobe(vm_offset_t port, struct bus_ctlr *dev)
 {
-return comprobe_general((struct bus_device *)dev,  0);
+return comprobe_general((struct bus_device *)dev, 0);
 }
 int
 comcnprobe(struct consdev *cp)
 {
-struct	bus_device *b;
-int	maj, unit, pri;
+struct bus_device *b;
+int maj, unit, pri;
 #define CONSOLE_PARAMETER " console=com"
 u_char *console = (u_char *) strstr(kernel_cmdline, CONSOLE_PARAMETER);
 if (console)
@@ -130,7 +130,7 @@ pri = CN_DEAD;
 for (b = bus_device_init; b->driver; b++)
 if (strcmp(b->name, "com") == 0
 && b->unit == rcline
-&& comprobe_general(b,  0))
+&& comprobe_general(b, 0))
 {
 comcndev = b;
 unit = b->unit;
@@ -144,8 +144,8 @@ return 0;
 void
 comattach(struct bus_device *dev)
 {
-u_char	unit = dev->unit;
-u_short	addr = dev->address;
+u_char unit = dev->unit;
+u_short addr = dev->address;
 if (unit >= NCOM) {
 printf(", disabled by NCOM configuration\n");
 return;
@@ -158,15 +158,15 @@ outb(INTR_ENAB(addr), 0);
 outb(MODEM_CTL(addr), 0);
 while (!(inb(INTR_ID(addr))&1)) {
 (void) inb(LINE_STAT (addr));
-(void) inb(TXRX      (addr));
+(void) inb(TXRX (addr));
 (void) inb(MODEM_STAT(addr));
 }
 }
 int
 comcninit(struct consdev *cp)
 {
-u_char	unit = comcndev->unit;
-u_short	addr = comcndev->address;
+u_char unit = comcndev->unit;
+u_short addr = comcndev->address;
 take_dev_irq(comcndev);
 comcndev->alive = 1;
 comcndev->adaptor = 0;
@@ -178,9 +178,9 @@ outb(LINE_CTL(addr), i8BITS);
 outb(INTR_ENAB(addr), 0);
 outb(MODEM_CTL(addr), iDTR|iRTS|iOUT2);
 {
-char	msg[128];
+char msg[128];
 volatile unsigned char *p = (volatile unsigned char *)phystokv(0xb8000);
-int	i;
+int i;
 sprintf(msg, "    **** using COM port %d for console ****",
 unit+1);
 for (i = 0; msg[i]; i++) {
@@ -194,9 +194,9 @@ p[2*i+1] = (0<<7)
 return 0;
 }
 static boolean_t com_reprobe(
-int	unit)
+int unit)
 {
-struct bus_device	*device;
+struct bus_device *device;
 for (device = bus_device_init; device->driver; device++) {
 if (device->driver == &comdriver && device->unit == unit &&
 !device->alive && device->ctlr == (char)-1)
@@ -216,12 +216,12 @@ dev_t dev,
 int flag,
 io_req_t ior)
 {
-int		unit = minor(dev);
-u_short		addr;
-struct bus_device	*isai;
-struct tty	*tp;
-spl_t		s;
-io_return_t	result;
+int unit = minor(dev);
+u_short addr;
+struct bus_device *isai;
+struct tty *tp;
+spl_t s;
+io_return_t result;
 if (unit >= NCOM)
 return D_NO_SUCH_DEVICE;
 if ((isai = cominfo[unit]) == 0 || isai->alive == 0) {
@@ -270,7 +270,7 @@ comtimer(NULL);
 s = spltty();
 while(!(inb(INTR_ID(addr))&1)) {
 (void) inb(LINE_STAT (addr));
-(void) inb(TXRX      (addr));
+(void) inb(TXRX (addr));
 (void) inb(MODEM_STAT(addr));
 }
 splx(s);
@@ -278,8 +278,8 @@ return result;
 }
 void comclose(dev_t dev, int flag)
 {
-struct tty	*tp = &com_tty[minor(dev)];
-u_short		addr = (uintptr_t)tp->t_addr;
+struct tty *tp = &com_tty[minor(dev)];
+u_short addr = (uintptr_t)tp->t_addr;
 ttyclose(tp);
 if (tp->t_state&TS_HUPCLS || (tp->t_state&TS_ISOPEN)==0) {
 outb(INTR_ENAB(addr), 0);
@@ -311,8 +311,8 @@ dev_status_t data,
 mach_msg_type_number_t *count
 )
 {
-io_return_t	result = D_SUCCESS;
-int		unit = minor(dev);
+io_return_t result = D_SUCCESS;
+int unit = minor(dev);
 switch (flavor) {
 case TTY_MODEM:
 fix_modem_state(unit, inb(MODEM_STAT(cominfo[unit]->address)));
@@ -327,14 +327,14 @@ return (result);
 }
 io_return_t
 comsetstat(
-dev_t		dev,
-dev_flavor_t	flavor,
-dev_status_t	data,
-mach_msg_type_number_t	count)
+dev_t dev,
+dev_flavor_t flavor,
+dev_status_t data,
+mach_msg_type_number_t count)
 {
-io_return_t	result = D_SUCCESS;
-int 		unit = minor(dev);
-struct tty	*tp = &com_tty[unit];
+io_return_t result = D_SUCCESS;
+int unit = minor(dev);
+struct tty *tp = &com_tty[unit];
 switch (flavor) {
 case TTY_SET_BREAK:
 commctl(tp, TM_BRK, DMBIS);
@@ -356,11 +356,11 @@ return (D_SUCCESS);
 void
 comintr(int unit)
 {
-struct tty		*tp = &com_tty[unit];
-u_short			addr = cominfo[unit]->address;
-static char 		comoverrun = 0;
-char			c, line, intr_id;
-int			line_stat;
+struct tty *tp = &com_tty[unit];
+u_short addr = cominfo[unit]->address;
+static char comoverrun = 0;
+char c, line, intr_id;
+int line_stat;
 while (! ((intr_id=(inb(INTR_ID(addr))&MASKi)) & 1))
 switch (intr_id) {
 case MODi:
@@ -406,7 +406,7 @@ if ((line_stat & iPE) &&
 ((tp->t_flags&(EVENP|ODDP)) == EVENP ||
 (tp->t_flags&(EVENP|ODDP)) == ODDP)) {
 ;
-} else 	if (line_stat&iOR && !comoverrun) {
+} else if (line_stat&iOR && !comoverrun) {
 printf("com%d: overrun\n", unit);
 comoverrun = 1;
 } else if (line_stat & (iFE | iBRKINTR)) {
@@ -418,10 +418,10 @@ break;
 static void
 comparam(int unit)
 {
-struct tty	*tp = &com_tty[unit];
-u_short		addr = (uintptr_t)tp->t_addr;
-spl_t		s = spltty();
-int		mode;
+struct tty *tp = &com_tty[unit];
+u_short addr = (uintptr_t)tp->t_addr;
+spl_t s = spltty();
+int mode;
 if (tp->t_ispeed == B0) {
 tp->t_state |= TS_HUPCLS;
 outb(MODEM_CTL(addr), iOUT2);
@@ -503,7 +503,7 @@ int comtimer_interval = 5;
 void
 comtimer(void * param)
 {
-spl_t	s = spltty();
+spl_t s = spltty();
 struct tty *tp = com_tty;
 int i, nch;
 for (i = 0; i < NCOM; i++, tp++) {
@@ -522,10 +522,10 @@ timeout(comtimer, 0, comtimer_interval*hz);
 }
 void
 fix_modem_state(
-int	unit,
-int	modem_stat)
+int unit,
+int modem_stat)
 {
-int	stat = 0;
+int stat = 0;
 if (modem_stat & iCTS)
 stat |= TM_CTS;
 if (modem_stat & iDSR)
@@ -539,10 +539,10 @@ commodem[unit] = (commodem[unit] & ~(TM_CTS|TM_DSR|TM_RNG|TM_CAR))
 }
 void
 commodem_intr(
-int	unit,
-int	stat)
+int unit,
+int stat)
 {
-int	changed;
+int changed;
 changed = commodem[unit];
 fix_modem_state(unit, stat);
 stat = commodem[unit];
@@ -556,14 +556,14 @@ ttymodem( &com_tty[unit], stat & TM_CAR );
 }
 int
 commctl(
-struct tty	*tp,
-int		bits,
-int		how)
+struct tty *tp,
+int bits,
+int how)
 {
-spl_t		s;
-int		unit;
-vm_offset_t	dev_addr;
-int		b = 0;
+spl_t s;
+int unit;
+vm_offset_t dev_addr;
+int b = 0;
 unit = minor(tp->t_dev);
 if (bits == TM_HUP) {
 bits = TM_DTR | TM_RTS;
@@ -609,8 +609,8 @@ return commodem[unit];
 }
 void
 comstop(
-struct tty 	*tp,
-int		flags)
+struct tty *tp,
+int flags)
 {
 if ((tp->t_state & TS_BUSY) && (tp->t_state & TS_TTSTOP) == 0)
 tp->t_state |= TS_FLUSH;
@@ -621,10 +621,10 @@ printf("LINE_STAT(%zu) %x\n",
 LINE_STAT(addr), inb(LINE_STAT(addr)));
 printf("TXRX(%zu) %x, INTR_ENAB(%zu) %x, INTR_ID(%zu) %x, LINE_CTL(%zu) %x,\n\
 MODEM_CTL(%zu) %x, LINE_STAT(%zu) %x, MODEM_STAT(%zu) %x\n",
-TXRX(addr), 	 inb(TXRX(addr)),
+TXRX(addr), inb(TXRX(addr)),
 INTR_ENAB(addr), inb(INTR_ENAB(addr)),
-INTR_ID(addr), 	 inb(INTR_ID(addr)),
-LINE_CTL(addr),  inb(LINE_CTL(addr)),
+INTR_ID(addr), inb(INTR_ID(addr)),
+LINE_CTL(addr), inb(LINE_CTL(addr)),
 MODEM_CTL(addr), inb(MODEM_CTL(addr)),
 LINE_STAT(addr), inb(LINE_STAT(addr)),
 MODEM_STAT(addr),inb(MODEM_STAT(addr)));
@@ -637,9 +637,9 @@ return(0);
 int
 comgetc(int unit)
 {
-u_short	addr = (u_short)(cominfo[unit]->address);
-spl_t	s = spltty();
-int	c;
+u_short addr = (u_short)(cominfo[unit]->address);
+spl_t s = spltty();
+int c;
 while((inb(LINE_STAT(addr)) & iDR) == 0) ;
 c = inb(TXRX(addr));
 splx(s);
@@ -659,8 +659,8 @@ return 0;
 int
 comcngetc(dev_t dev, int wait)
 {
-u_short	addr = (u_short)(cominfo[minor(dev)]->address);
-int	c;
+u_short addr = (u_short)(cominfo[minor(dev)]->address);
+int c;
 while((inb(LINE_STAT(addr)) & iDR) == 0)
 if (! wait)
 return 0;

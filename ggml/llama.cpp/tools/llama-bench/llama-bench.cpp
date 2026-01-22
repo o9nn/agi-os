@@ -21,11 +21,11 @@
 #include "ggml.h"
 #include "llama.h"
 #ifdef _WIN32
-#    define WIN32_LEAN_AND_MEAN
-#    ifndef NOMINMAX
-#        define NOMINMAX
-#    endif
-#    include <windows.h>
+# define WIN32_LEAN_AND_MEAN
+# ifndef NOMINMAX
+# define NOMINMAX
+# endif
+# include <windows.h>
 #endif
 static uint64_t get_time_ns() {
 using clock = std::chrono::high_resolution_clock;
@@ -93,16 +93,16 @@ template <typename T> static T stdev(const std::vector<T> & v) {
 if (v.size() <= 1) {
 return 0;
 }
-T mean   = avg(v);
+T mean = avg(v);
 T sq_sum = std::inner_product(v.begin(), v.end(), v.begin(), T(0));
-T stdev  = std::sqrt(sq_sum / (T) (v.size() - 1) - mean * mean * (T) v.size() / (T) (v.size() - 1));
+T stdev = std::sqrt(sq_sum / (T) (v.size() - 1) - mean * mean * (T) v.size() / (T) (v.size() - 1));
 return stdev;
 }
 static std::string get_cpu_info() {
 std::vector<std::string> cpu_list;
 for (size_t i = 0; i < ggml_backend_dev_count(); i++) {
-auto * dev      = ggml_backend_dev_get(i);
-auto   dev_type = ggml_backend_dev_type(dev);
+auto * dev = ggml_backend_dev_get(i);
+auto dev_type = ggml_backend_dev_type(dev);
 if (dev_type == GGML_BACKEND_DEVICE_TYPE_CPU || dev_type == GGML_BACKEND_DEVICE_TYPE_ACCEL) {
 cpu_list.push_back(ggml_backend_dev_description(dev));
 }
@@ -112,8 +112,8 @@ return join(cpu_list, ", ");
 static std::string get_gpu_info() {
 std::vector<std::string> gpu_list;
 for (size_t i = 0; i < ggml_backend_dev_count(); i++) {
-auto * dev      = ggml_backend_dev_get(i);
-auto   dev_type = ggml_backend_dev_type(dev);
+auto * dev = ggml_backend_dev_get(i);
+auto dev_type = ggml_backend_dev_type(dev);
 if (dev_type == GGML_BACKEND_DEVICE_TYPE_GPU) {
 gpu_list.push_back(ggml_backend_dev_description(dev));
 }
@@ -180,10 +180,10 @@ std::smatch match;
 std::string::const_iterator search_start(s.cbegin());
 std::vector<int> result;
 while (std::regex_search(search_start, s.cend(), match, range_regex)) {
-int  first = std::stoi(match[1]);
-int  last  = match[2].matched ? std::stoi(match[2]) : first;
-char op    = match[3].matched ? match[3].str()[0] : '+';
-int  step  = match[4].matched ? std::stoi(match[4]) : 1;
+int first = std::stoi(match[1]);
+int last = match[2].matched ? std::stoi(match[2]) : first;
+char op = match[3].matched ? match[3].str()[0] : '+';
+int step = match[4].matched ? std::stoi(match[4]) : 1;
 for (int i = first; i <= last;) {
 result.push_back(i);
 int prev_i = i;
@@ -206,40 +206,40 @@ throw std::invalid_argument("invalid range format");
 return result;
 }
 struct cmd_params {
-std::vector<std::string>         model;
-std::vector<int>                 n_prompt;
-std::vector<int>                 n_gen;
+std::vector<std::string> model;
+std::vector<int> n_prompt;
+std::vector<int> n_gen;
 std::vector<std::pair<int, int>> n_pg;
-std::vector<int>                 n_depth;
-std::vector<int>                 n_batch;
-std::vector<int>                 n_ubatch;
-std::vector<ggml_type>           type_k;
-std::vector<ggml_type>           type_v;
-std::vector<float>               defrag_thold;
-std::vector<int>                 n_threads;
-std::vector<std::string>         cpu_mask;
-std::vector<bool>                cpu_strict;
-std::vector<int>                 poll;
-std::vector<int>                 n_gpu_layers;
-std::vector<std::string>         rpc_servers;
-std::vector<llama_split_mode>    split_mode;
-std::vector<int>                 main_gpu;
-std::vector<bool>                no_kv_offload;
-std::vector<bool>                flash_attn;
-std::vector<std::vector<float>>  tensor_split;
+std::vector<int> n_depth;
+std::vector<int> n_batch;
+std::vector<int> n_ubatch;
+std::vector<ggml_type> type_k;
+std::vector<ggml_type> type_v;
+std::vector<float> defrag_thold;
+std::vector<int> n_threads;
+std::vector<std::string> cpu_mask;
+std::vector<bool> cpu_strict;
+std::vector<int> poll;
+std::vector<int> n_gpu_layers;
+std::vector<std::string> rpc_servers;
+std::vector<llama_split_mode> split_mode;
+std::vector<int> main_gpu;
+std::vector<bool> no_kv_offload;
+std::vector<bool> flash_attn;
+std::vector<std::vector<float>> tensor_split;
 std::vector<std::vector<llama_model_tensor_buft_override>> tensor_buft_overrides;
-std::vector<bool>                use_mmap;
-std::vector<bool>                embeddings;
-std::vector<bool>                no_op_offload;
-ggml_numa_strategy               numa;
-int                              reps;
-ggml_sched_priority              prio;
-int                              delay;
-bool                             verbose;
-bool                             progress;
-bool                             no_warmup;
-output_formats                   output_format;
-output_formats                   output_format_stderr;
+std::vector<bool> use_mmap;
+std::vector<bool> embeddings;
+std::vector<bool> no_op_offload;
+ggml_numa_strategy numa;
+int reps;
+ggml_sched_priority prio;
+int delay;
+bool verbose;
+bool progress;
+bool no_warmup;
+output_formats output_format;
+output_formats output_format_stderr;
 };
 static const cmd_params cmd_params_defaults = {
 { "models/7B/ggml-model-q4_0.gguf" },
@@ -379,20 +379,20 @@ return GGML_TYPE_IQ4_NL;
 return GGML_TYPE_COUNT;
 }
 static cmd_params parse_cmd_params(int argc, char ** argv) {
-cmd_params        params;
-std::string       arg;
-bool              invalid_param = false;
-const std::string arg_prefix    = "--";
-const char        split_delim   = ',';
-params.verbose              = cmd_params_defaults.verbose;
-params.output_format        = cmd_params_defaults.output_format;
+cmd_params params;
+std::string arg;
+bool invalid_param = false;
+const std::string arg_prefix = "--";
+const char split_delim = ',';
+params.verbose = cmd_params_defaults.verbose;
+params.output_format = cmd_params_defaults.output_format;
 params.output_format_stderr = cmd_params_defaults.output_format_stderr;
-params.reps                 = cmd_params_defaults.reps;
-params.numa                 = cmd_params_defaults.numa;
-params.prio                 = cmd_params_defaults.prio;
-params.delay                = cmd_params_defaults.delay;
-params.progress             = cmd_params_defaults.progress;
-params.no_warmup            = cmd_params_defaults.no_warmup;
+params.reps = cmd_params_defaults.reps;
+params.numa = cmd_params_defaults.numa;
+params.prio = cmd_params_defaults.prio;
+params.delay = cmd_params_defaults.delay;
+params.progress = cmd_params_defaults.progress;
+params.no_warmup = cmd_params_defaults.no_warmup;
 for (int i = 1; i < argc; i++) {
 arg = argv[i];
 if (arg.compare(0, arg_prefix.size(), arg_prefix) == 0) {
@@ -629,9 +629,9 @@ invalid_param = true;
 break;
 }
 for (auto ts : string_split<std::string>(argv[i], split_delim)) {
-const std::regex           regex{ R"([;/]+)" };
+const std::regex regex{ R"([;/]+)" };
 std::sregex_token_iterator it{ ts.begin(), ts.end(), regex, -1 };
-std::vector<std::string>   split_arg{ it, {} };
+std::vector<std::string> split_arg{ it, {} };
 GGML_ASSERT(split_arg.size() <= llama_max_devices());
 std::vector<float> tensor_split(llama_max_devices());
 for (size_t i = 0; i < llama_max_devices(); ++i) {
@@ -847,30 +847,30 @@ params.poll = cmd_params_defaults.poll;
 return params;
 }
 struct cmd_params_instance {
-std::string        model;
-int                n_prompt;
-int                n_gen;
-int                n_depth;
-int                n_batch;
-int                n_ubatch;
-ggml_type          type_k;
-ggml_type          type_v;
-float              defrag_thold;
-int                n_threads;
-std::string        cpu_mask;
-bool               cpu_strict;
-int                poll;
-int                n_gpu_layers;
-std::string        rpc_servers_str;
-llama_split_mode   split_mode;
-int                main_gpu;
-bool               no_kv_offload;
-bool               flash_attn;
+std::string model;
+int n_prompt;
+int n_gen;
+int n_depth;
+int n_batch;
+int n_ubatch;
+ggml_type type_k;
+ggml_type type_v;
+float defrag_thold;
+int n_threads;
+std::string cpu_mask;
+bool cpu_strict;
+int poll;
+int n_gpu_layers;
+std::string rpc_servers_str;
+llama_split_mode split_mode;
+int main_gpu;
+bool no_kv_offload;
+bool flash_attn;
 std::vector<float> tensor_split;
 std::vector<llama_model_tensor_buft_override> tensor_buft_overrides;
-bool               use_mmap;
-bool               embeddings;
-bool               no_op_offload;
+bool use_mmap;
+bool embeddings;
+bool no_op_offload;
 llama_model_params to_llama_mparams() const {
 llama_model_params mparams = llama_model_default_params();
 mparams.n_gpu_layers = n_gpu_layers;
@@ -914,10 +914,10 @@ devices.push_back(nullptr);
 mparams.devices = devices.data();
 }
 }
-mparams.split_mode   = split_mode;
-mparams.main_gpu     = main_gpu;
+mparams.split_mode = split_mode;
+mparams.main_gpu = main_gpu;
 mparams.tensor_split = tensor_split.data();
-mparams.use_mmap     = use_mmap;
+mparams.use_mmap = use_mmap;
 if (tensor_buft_overrides.empty()) {
 mparams.tensor_buft_overrides = nullptr;
 } else {
@@ -933,17 +933,17 @@ tensor_split == other.tensor_split && vec_tensor_buft_override_equal(tensor_buft
 }
 llama_context_params to_llama_cparams() const {
 llama_context_params cparams = llama_context_default_params();
-cparams.n_ctx        = n_prompt + n_gen + n_depth;
-cparams.n_batch      = n_batch;
-cparams.n_ubatch     = n_ubatch;
-cparams.type_k       = type_k;
-cparams.type_v       = type_v;
+cparams.n_ctx = n_prompt + n_gen + n_depth;
+cparams.n_batch = n_batch;
+cparams.n_ubatch = n_ubatch;
+cparams.type_k = type_k;
+cparams.type_v = type_v;
 cparams.defrag_thold = defrag_thold;
-cparams.offload_kqv  = !no_kv_offload;
-cparams.flash_attn   = flash_attn;
-cparams.embeddings   = embeddings;
-cparams.op_offload   = !no_op_offload;
-cparams.swa_full     = false;
+cparams.offload_kqv = !no_kv_offload;
+cparams.flash_attn = flash_attn;
+cparams.embeddings = embeddings;
+cparams.op_offload = !no_op_offload;
+cparams.swa_full = false;
 return cparams;
 }
 };
@@ -1072,69 +1072,69 @@ return instances;
 }
 struct test {
 static const std::string build_commit;
-static const int         build_number;
-const std::string        cpu_info;
-const std::string        gpu_info;
-std::string              model_filename;
-std::string              model_type;
-uint64_t                 model_size;
-uint64_t                 model_n_params;
-int                      n_batch;
-int                      n_ubatch;
-int                      n_threads;
-std::string              cpu_mask;
-bool                     cpu_strict;
-int                      poll;
-ggml_type                type_k;
-ggml_type                type_v;
-float                    defrag_thold;
-int                      n_gpu_layers;
-llama_split_mode         split_mode;
-int                      main_gpu;
-bool                     no_kv_offload;
-bool                     flash_attn;
-std::vector<float>       tensor_split;
+static const int build_number;
+const std::string cpu_info;
+const std::string gpu_info;
+std::string model_filename;
+std::string model_type;
+uint64_t model_size;
+uint64_t model_n_params;
+int n_batch;
+int n_ubatch;
+int n_threads;
+std::string cpu_mask;
+bool cpu_strict;
+int poll;
+ggml_type type_k;
+ggml_type type_v;
+float defrag_thold;
+int n_gpu_layers;
+llama_split_mode split_mode;
+int main_gpu;
+bool no_kv_offload;
+bool flash_attn;
+std::vector<float> tensor_split;
 std::vector<llama_model_tensor_buft_override> tensor_buft_overrides;
-bool                     use_mmap;
-bool                     embeddings;
-bool                     no_op_offload;
-int                      n_prompt;
-int                      n_gen;
-int                      n_depth;
-std::string              test_time;
-std::vector<uint64_t>    samples_ns;
+bool use_mmap;
+bool embeddings;
+bool no_op_offload;
+int n_prompt;
+int n_gen;
+int n_depth;
+std::string test_time;
+std::vector<uint64_t> samples_ns;
 test(const cmd_params_instance & inst, const llama_model * lmodel, const llama_context * ctx) :
 cpu_info(get_cpu_info()),
 gpu_info(get_gpu_info()) {
 model_filename = inst.model;
 char buf[128];
 llama_model_desc(lmodel, buf, sizeof(buf));
-model_type     = buf;
-model_size     = llama_model_size(lmodel);
+model_type = buf;
+model_size = llama_model_size(lmodel);
 model_n_params = llama_model_n_params(lmodel);
-n_batch        = inst.n_batch;
-n_ubatch       = inst.n_ubatch;
-n_threads      = inst.n_threads;
-cpu_mask       = inst.cpu_mask;
-cpu_strict     = inst.cpu_strict;
-poll           = inst.poll;
-type_k         = inst.type_k;
-type_v         = inst.type_v;
-defrag_thold   = inst.defrag_thold;
-n_gpu_layers   = inst.n_gpu_layers;
-split_mode     = inst.split_mode;
-main_gpu       = inst.main_gpu;
-no_kv_offload  = inst.no_kv_offload;
-flash_attn     = inst.flash_attn;
-tensor_split   = inst.tensor_split;
+n_batch = inst.n_batch;
+n_ubatch = inst.n_ubatch;
+n_threads = inst.n_threads;
+cpu_mask = inst.cpu_mask;
+cpu_strict = inst.cpu_strict;
+poll = inst.poll;
+type_k = inst.type_k;
+type_v = inst.type_v;
+defrag_thold = inst.defrag_thold;
+n_gpu_layers = inst.n_gpu_layers;
+split_mode = inst.split_mode;
+main_gpu = inst.main_gpu;
+no_kv_offload = inst.no_kv_offload;
+flash_attn = inst.flash_attn;
+tensor_split = inst.tensor_split;
 tensor_buft_overrides = inst.tensor_buft_overrides;
-use_mmap       = inst.use_mmap;
-embeddings     = inst.embeddings;
-no_op_offload  = inst.no_op_offload;
-n_prompt       = inst.n_prompt;
-n_gen          = inst.n_gen;
-n_depth        = inst.n_depth;
-time_t t       = time(NULL);
+use_mmap = inst.use_mmap;
+embeddings = inst.embeddings;
+no_op_offload = inst.no_op_offload;
+n_prompt = inst.n_prompt;
+n_gen = inst.n_gen;
+n_depth = inst.n_depth;
+time_t t = time(NULL);
 std::strftime(buf, sizeof(buf), "%FT%TZ", gmtime(&t));
 test_time = buf;
 (void) ctx;
@@ -1142,7 +1142,7 @@ test_time = buf;
 uint64_t avg_ns() const { return ::avg(samples_ns); }
 uint64_t stdev_ns() const { return ::stdev(samples_ns); }
 std::vector<double> get_ts() const {
-int                 n_tokens = n_prompt + n_gen;
+int n_tokens = n_prompt + n_gen;
 std::vector<double> ts;
 std::transform(samples_ns.begin(), samples_ns.end(), std::back_inserter(ts),
 [n_tokens](uint64_t t) { return 1e9 * n_tokens / t; });
@@ -1153,7 +1153,7 @@ double stdev_ts() const { return ::stdev(get_ts()); }
 static std::string get_backend() {
 std::vector<std::string> backends;
 for (size_t i = 0; i < ggml_backend_reg_count(); i++) {
-auto *      reg  = ggml_backend_reg_get(i);
+auto * reg = ggml_backend_reg_get(i);
 std::string name = ggml_backend_reg_name(reg);
 if (name != "CPU") {
 backends.push_back(ggml_backend_reg_name(reg));
@@ -1163,13 +1163,13 @@ return backends.empty() ? "CPU" : join(backends, ",");
 }
 static const std::vector<std::string> & get_fields() {
 static const std::vector<std::string> fields = {
-"build_commit", "build_number", "cpu_info",       "gpu_info",   "backends",     "model_filename",
-"model_type",   "model_size",   "model_n_params", "n_batch",    "n_ubatch",     "n_threads",
-"cpu_mask",     "cpu_strict",   "poll",           "type_k",     "type_v",       "n_gpu_layers",
-"split_mode",   "main_gpu",     "no_kv_offload",  "flash_attn", "tensor_split", "tensor_buft_overrides",
+"build_commit", "build_number", "cpu_info", "gpu_info", "backends", "model_filename",
+"model_type", "model_size", "model_n_params", "n_batch", "n_ubatch", "n_threads",
+"cpu_mask", "cpu_strict", "poll", "type_k", "type_v", "n_gpu_layers",
+"split_mode", "main_gpu", "no_kv_offload", "flash_attn", "tensor_split", "tensor_buft_overrides",
 "defrag_thold",
-"use_mmap",     "embeddings",   "no_op_offload",   "n_prompt",       "n_gen",      "n_depth",      "test_time",
-"avg_ns",       "stddev_ns",    "avg_ts",         "stddev_ts",
+"use_mmap", "embeddings", "no_op_offload", "n_prompt", "n_gen", "n_depth", "test_time",
+"avg_ns", "stddev_ns", "avg_ts", "stddev_ts",
 };
 return fields;
 }
@@ -1193,7 +1193,7 @@ return STRING;
 std::vector<std::string> get_values() const {
 std::string tensor_split_str;
 std::string tensor_buft_overrides_str;
-int         max_nonzero = 0;
+int max_nonzero = 0;
 for (size_t i = 0; i < llama_max_devices(); i++) {
 if (tensor_split[i] > 0) {
 max_nonzero = i;
@@ -1264,15 +1264,15 @@ return values;
 }
 std::map<std::string, std::string> get_map() const {
 std::map<std::string, std::string> map;
-auto                               fields = get_fields();
-auto                               values = get_values();
+auto fields = get_fields();
+auto values = get_values();
 std::transform(fields.begin(), fields.end(), values.begin(), std::inserter(map, map.end()),
 std::make_pair<const std::string &, const std::string &>);
 return map;
 }
 };
 const std::string test::build_commit = LLAMA_COMMIT;
-const int         test::build_number = LLAMA_BUILD_NUMBER;
+const int test::build_number = LLAMA_BUILD_NUMBER;
 struct printer {
 virtual ~printer() {}
 FILE * fout;
@@ -1538,7 +1538,7 @@ std::map<std::string, std::string> vmap = t.get_map();
 fprintf(fout, "|");
 for (const auto & field : fields) {
 std::string value;
-char        buf[128];
+char buf[128];
 if (field == "model") {
 value = t.model_type;
 } else if (field == "size") {
@@ -1629,14 +1629,14 @@ fprintf(fout, ");\n");
 };
 static bool test_prompt(llama_context * ctx, int n_prompt, int n_batch, int n_threads) {
 llama_set_n_threads(ctx, n_threads, n_threads);
-const llama_model * model   = llama_get_model(ctx);
-const llama_vocab * vocab   = llama_model_get_vocab(model);
-const int32_t       n_vocab = llama_vocab_n_tokens(vocab);
+const llama_model * model = llama_get_model(ctx);
+const llama_vocab * vocab = llama_model_get_vocab(model);
+const int32_t n_vocab = llama_vocab_n_tokens(vocab);
 std::vector<llama_token> tokens(n_batch);
 int n_processed = 0;
 while (n_processed < n_prompt) {
 int n_tokens = std::min(n_prompt - n_processed, n_batch);
-tokens[0]    = n_processed == 0 && llama_vocab_get_add_bos(vocab) ? llama_vocab_bos(vocab) : std::rand() % n_vocab;
+tokens[0] = n_processed == 0 && llama_vocab_get_add_bos(vocab) ? llama_vocab_bos(vocab) : std::rand() % n_vocab;
 for (int i = 1; i < n_tokens; i++) {
 tokens[i] = std::rand() % n_vocab;
 }
@@ -1652,9 +1652,9 @@ return true;
 }
 static bool test_gen(llama_context * ctx, int n_gen, int n_threads) {
 llama_set_n_threads(ctx, n_threads, n_threads);
-const llama_model * model   = llama_get_model(ctx);
-const llama_vocab * vocab   = llama_model_get_vocab(model);
-const int32_t       n_vocab = llama_vocab_n_tokens(vocab);
+const llama_model * model = llama_get_model(ctx);
+const llama_vocab * vocab = llama_model_get_vocab(model);
+const int32_t n_vocab = llama_vocab_n_tokens(vocab);
 llama_token token = llama_vocab_get_add_bos(vocab) ? llama_vocab_bos(vocab) : std::rand() % n_vocab;
 for (int i = 0; i < n_gen; i++) {
 int res = llama_decode(ctx, llama_batch_get_one(&token, 1));
@@ -1716,7 +1716,7 @@ llama_log_set(llama_null_log_callback, NULL);
 llama_backend_init();
 llama_numa_init(params.numa);
 set_process_priority(params.prio);
-std::unique_ptr<printer> p     = create_printer(params.output_format);
+std::unique_ptr<printer> p = create_printer(params.output_format);
 std::unique_ptr<printer> p_err = create_printer(params.output_format_stderr);
 if (p) {
 p->fout = stdout;
@@ -1727,9 +1727,9 @@ p_err->fout = stderr;
 p_err->print_header(params);
 }
 std::vector<cmd_params_instance> params_instances = get_cmd_params_instances(params);
-llama_model *               lmodel    = nullptr;
+llama_model * lmodel = nullptr;
 const cmd_params_instance * prev_inst = nullptr;
-int  params_idx   = 0;
+int params_idx = 0;
 auto params_count = params_instances.size();
 for (const auto & inst : params_instances) {
 params_idx++;
@@ -1764,8 +1764,8 @@ fprintf(stderr, "%s: failed to parse cpu-mask: %s\n", __func__, t.cpu_mask.c_str
 exit(1);
 }
 tpp.strict_cpu = t.cpu_strict;
-tpp.poll       = t.poll;
-tpp.prio       = params.prio;
+tpp.poll = t.poll;
+tpp.prio = params.prio;
 struct ggml_threadpool * threadpool = ggml_threadpool_new_fn(&tpp);
 if (!threadpool) {
 fprintf(stderr, "%s: threadpool create failed : n_threads %d\n", __func__, tpp.n_threads);

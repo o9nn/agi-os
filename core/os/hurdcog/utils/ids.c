@@ -11,13 +11,13 @@
 const char *argp_program_version = STANDARD_HURD_VERSION (ids);
 static struct argp_option options[] =
 {
-{"terse",	't', 0, 0, "Use a shorter one-line output format"},
+{"terse", 't', 0, 0, "Use a shorter one-line output format"},
 {"effective", 'e', 0, 0, "Show effective ids"},
 {"available", 'a', 0, 0, "Show available ids"},
-{"uids",      'u', 0, 0, "Show user ids"},
-{"gids",      'g', 0, 0, "Show group ids"},
-{"names",     'n', 0, 0, "Show names of uids/gids"},
-{"values",    'v', 0, 0, "Show numeric uids/gids"},
+{"uids", 'u', 0, 0, "Show user ids"},
+{"gids", 'g', 0, 0, "Show group ids"},
+{"names", 'n', 0, 0, "Show names of uids/gids"},
+{"values", 'v', 0, 0, "Show numeric uids/gids"},
 {0}
 };
 static char *args_doc = "[PID]";

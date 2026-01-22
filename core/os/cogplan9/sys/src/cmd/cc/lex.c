@@ -1,7 +1,7 @@
-#include	"cc.h"
-#include	"y.tab.h"
-#ifndef	CPP
-#define	CPP	"/bin/cpp"
+#include "cc.h"
+#include "y.tab.h"
+#ifndef CPP
+#define CPP "/bin/cpp"
 #endif
 void
 main(int argc, char *argv[])
@@ -346,17 +346,17 @@ s->class = CXXX;
 s->aused = 0;
 s->sig = SIGNONE;
 }
-#define	EOF	(-1)
-#define	IGN	(-2)
-#define	ESC	(Runemask+1)
-#define	GETC()	((--fi.c < 0)? filbuf(): (*fi.p++ & 0xff))
+#define EOF (-1)
+#define IGN (-2)
+#define ESC (Runemask+1)
+#define GETC() ((--fi.c < 0)? filbuf(): (*fi.p++ & 0xff))
 enum
 {
-Numdec		= 1<<0,
-Numlong		= 1<<1,
-Numuns		= 1<<2,
-Numvlong	= 1<<3,
-Numflt		= 1<<4,
+Numdec = 1<<0,
+Numlong = 1<<1,
+Numuns = 1<<2,
+Numvlong = 1<<3,
+Numflt = 1<<4,
 };
 long
 yylex(void)
@@ -981,62 +981,62 @@ return l;
 }
 switch(c)
 {
-case '\n':	goto loop;
-case 'n':	return '\n';
-case 't':	return '\t';
-case 'b':	return '\b';
-case 'r':	return '\r';
-case 'f':	return '\f';
-case 'a':	return '\a';
-case 'v':	return '\v';
+case '\n': goto loop;
+case 'n': return '\n';
+case 't': return '\t';
+case 'b': return '\b';
+case 'r': return '\r';
+case 'f': return '\f';
+case 'a': return '\a';
+case 'v': return '\v';
 }
 return c;
 }
 struct
 {
-char	*name;
-ushort	lexical;
-ushort	type;
+char *name;
+ushort lexical;
+ushort type;
 } itab[] =
 {
-"auto",		LAUTO,		0,
-"break",	LBREAK,		0,
-"case",		LCASE,		0,
-"char",		LCHAR,		TCHAR,
-"const",	LCONSTNT,	0,
-"continue",	LCONTINUE,	0,
-"default",	LDEFAULT,	0,
-"do",		LDO,		0,
-"double",	LDOUBLE,	TDOUBLE,
-"else",		LELSE,		0,
-"enum",		LENUM,		0,
-"extern",	LEXTERN,	0,
-"float",	LFLOAT,		TFLOAT,
-"for",		LFOR,		0,
-"goto",		LGOTO,		0,
-"if",		LIF,		0,
-"inline",	LINLINE,	0,
-"int",		LINT,		TINT,
-"long",		LLONG,		TLONG,
-"register",	LREGISTER,	0,
-"restrict",	LRESTRICT,	0,
-"return",	LRETURN,	0,
-"SET",		LSET,		0,
-"short",	LSHORT,		TSHORT,
-"signed",	LSIGNED,	0,
-"signof",	LSIGNOF,	0,
-"sizeof",	LSIZEOF,	0,
-"static",	LSTATIC,	0,
-"struct",	LSTRUCT,	0,
-"switch",	LSWITCH,	0,
-"typedef",	LTYPEDEF,	0,
-"typestr",	LTYPESTR,	0,
-"union",	LUNION,		0,
-"unsigned",	LUNSIGNED,	0,
-"USED",		LUSED,		0,
-"void",		LVOID,		TVOID,
-"volatile",	LVOLATILE,	0,
-"while",	LWHILE,		0,
+"auto", LAUTO, 0,
+"break", LBREAK, 0,
+"case", LCASE, 0,
+"char", LCHAR, TCHAR,
+"const", LCONSTNT, 0,
+"continue", LCONTINUE, 0,
+"default", LDEFAULT, 0,
+"do", LDO, 0,
+"double", LDOUBLE, TDOUBLE,
+"else", LELSE, 0,
+"enum", LENUM, 0,
+"extern", LEXTERN, 0,
+"float", LFLOAT, TFLOAT,
+"for", LFOR, 0,
+"goto", LGOTO, 0,
+"if", LIF, 0,
+"inline", LINLINE, 0,
+"int", LINT, TINT,
+"long", LLONG, TLONG,
+"register", LREGISTER, 0,
+"restrict", LRESTRICT, 0,
+"return", LRETURN, 0,
+"SET", LSET, 0,
+"short", LSHORT, TSHORT,
+"signed", LSIGNED, 0,
+"signof", LSIGNOF, 0,
+"sizeof", LSIZEOF, 0,
+"static", LSTATIC, 0,
+"struct", LSTRUCT, 0,
+"switch", LSWITCH, 0,
+"typedef", LTYPEDEF, 0,
+"typestr", LTYPESTR, 0,
+"union", LUNION, 0,
+"unsigned", LUNSIGNED, 0,
+"USED", LUSED, 0,
+"void", LVOID, TVOID,
+"volatile", LVOLATILE, 0,
+"while", LWHILE, 0,
 0
 };
 void
@@ -1148,10 +1148,10 @@ char str[STRINGSZ], s[STRINGSZ];
 Hist *h;
 struct
 {
-Hist*	incl;
-long	idel;
-Hist*	line;
-long	ldel;
+Hist* incl;
+long idel;
+Hist* line;
+long ldel;
 } a[HISTSZ];
 long l, d;
 int i, n;

@@ -81,7 +81,7 @@ lg_exp_resolve(Dictionary, const Exp *, Parse_Options);
 struct Dict_node_struct
 {
 const char * string;
-Exp       * exp;
+Exp * exp;
 Dict_node *left, *right;
 const char * file;
 unsigned long use_count;

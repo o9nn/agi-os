@@ -11,8 +11,8 @@ char *playlistfile = "/mnt/playlist";
 char *playctlfile = "/mnt/playctl";
 char *playvolfile = "/mnt/playvol";
 char *volumefile = "/dev/audioctl";
-Playlist	playlist;
-int		playctlfd;
+Playlist playlist;
+int playctlfd;
 void
 playlistproc(void*)
 {

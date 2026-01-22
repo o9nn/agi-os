@@ -2,16 +2,16 @@
 #include <string.h>
 #include "antiword.h"
 typedef struct row_desc_tag {
-row_block_type		tInfo;
-struct row_desc_tag	*pNext;
+row_block_type tInfo;
+struct row_desc_tag *pNext;
 } row_desc_type;
-static row_desc_type	*pAnchor = NULL;
-static row_desc_type	*pRowLast = NULL;
-static row_desc_type	*pRowCurrent = NULL;
+static row_desc_type *pAnchor = NULL;
+static row_desc_type *pRowLast = NULL;
+static row_desc_type *pRowCurrent = NULL;
 void
 vDestroyRowInfoList(void)
 {
-row_desc_type	*pCurr, *pNext;
+row_desc_type *pCurr, *pNext;
 DBG_MSG("vDestroyRowInfoList");
 pCurr = pAnchor;
 while (pCurr != NULL) {
@@ -26,9 +26,9 @@ pRowCurrent = NULL;
 void
 vAdd2RowInfoList(const row_block_type *pRowBlock)
 {
-row_desc_type	*pListMember;
-short		*psTmp;
-int		iIndex;
+row_desc_type *pListMember;
+short *psTmp;
+int iIndex;
 fail(pRowBlock == NULL);
 if (pRowBlock->ulFileOffsetStart == FC_INVALID ||
 pRowBlock->ulFileOffsetEnd == FC_INVALID ||
@@ -65,7 +65,7 @@ pRowLast = pListMember;
 const row_block_type *
 pGetNextRowInfoListItem(void)
 {
-const row_block_type	*pItem;
+const row_block_type *pItem;
 if (pRowCurrent == NULL) {
 return NULL;
 }

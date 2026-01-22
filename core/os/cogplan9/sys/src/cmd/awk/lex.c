@@ -4,68 +4,68 @@
 #include <ctype.h>
 #include "awk.h"
 #include "y.tab.h"
-extern YYSTYPE	yylval;
-extern int	infunc;
-int	lineno	= 1;
-int	bracecnt = 0;
-int	brackcnt  = 0;
-int	parencnt = 0;
+extern YYSTYPE yylval;
+extern int infunc;
+int lineno = 1;
+int bracecnt = 0;
+int brackcnt = 0;
+int parencnt = 0;
 typedef struct Keyword {
-char	*word;
-int	sub;
-int	type;
+char *word;
+int sub;
+int type;
 } Keyword;
 Keyword keywords[] ={
-{ "BEGIN",	XBEGIN,		XBEGIN },
-{ "END",	XEND,		XEND },
-{ "NF",		VARNF,		VARNF },
-{ "atan2",	FATAN,		BLTIN },
-{ "break",	BREAK,		BREAK },
-{ "close",	CLOSE,		CLOSE },
-{ "continue",	CONTINUE,	CONTINUE },
-{ "cos",	FCOS,		BLTIN },
-{ "delete",	DELETE,		DELETE },
-{ "do",		DO,		DO },
-{ "else",	ELSE,		ELSE },
-{ "exit",	EXIT,		EXIT },
-{ "exp",	FEXP,		BLTIN },
-{ "fflush",	FFLUSH,		BLTIN },
-{ "for",	FOR,		FOR },
-{ "func",	FUNC,		FUNC },
-{ "function",	FUNC,		FUNC },
-{ "getline",	GETLINE,	GETLINE },
-{ "gsub",	GSUB,		GSUB },
-{ "if",		IF,		IF },
-{ "in",		IN,		IN },
-{ "index",	INDEX,		INDEX },
-{ "int",	FINT,		BLTIN },
-{ "length",	FLENGTH,	BLTIN },
-{ "log",	FLOG,		BLTIN },
-{ "match",	MATCHFCN,	MATCHFCN },
-{ "next",	NEXT,		NEXT },
-{ "nextfile",	NEXTFILE,	NEXTFILE },
-{ "print",	PRINT,		PRINT },
-{ "printf",	PRINTF,		PRINTF },
-{ "rand",	FRAND,		BLTIN },
-{ "return",	RETURN,		RETURN },
-{ "sin",	FSIN,		BLTIN },
-{ "split",	SPLIT,		SPLIT },
-{ "sprintf",	SPRINTF,	SPRINTF },
-{ "sqrt",	FSQRT,		BLTIN },
-{ "srand",	FSRAND,		BLTIN },
-{ "sub",	SUB,		SUB },
-{ "substr",	SUBSTR,		SUBSTR },
-{ "system",	FSYSTEM,	BLTIN },
-{ "tolower",	FTOLOWER,	BLTIN },
-{ "toupper",	FTOUPPER,	BLTIN },
-{ "utf",	FUTF,		BLTIN },
-{ "while",	WHILE,		WHILE },
+{ "BEGIN", XBEGIN, XBEGIN },
+{ "END", XEND, XEND },
+{ "NF", VARNF, VARNF },
+{ "atan2", FATAN, BLTIN },
+{ "break", BREAK, BREAK },
+{ "close", CLOSE, CLOSE },
+{ "continue", CONTINUE, CONTINUE },
+{ "cos", FCOS, BLTIN },
+{ "delete", DELETE, DELETE },
+{ "do", DO, DO },
+{ "else", ELSE, ELSE },
+{ "exit", EXIT, EXIT },
+{ "exp", FEXP, BLTIN },
+{ "fflush", FFLUSH, BLTIN },
+{ "for", FOR, FOR },
+{ "func", FUNC, FUNC },
+{ "function", FUNC, FUNC },
+{ "getline", GETLINE, GETLINE },
+{ "gsub", GSUB, GSUB },
+{ "if", IF, IF },
+{ "in", IN, IN },
+{ "index", INDEX, INDEX },
+{ "int", FINT, BLTIN },
+{ "length", FLENGTH, BLTIN },
+{ "log", FLOG, BLTIN },
+{ "match", MATCHFCN, MATCHFCN },
+{ "next", NEXT, NEXT },
+{ "nextfile", NEXTFILE, NEXTFILE },
+{ "print", PRINT, PRINT },
+{ "printf", PRINTF, PRINTF },
+{ "rand", FRAND, BLTIN },
+{ "return", RETURN, RETURN },
+{ "sin", FSIN, BLTIN },
+{ "split", SPLIT, SPLIT },
+{ "sprintf", SPRINTF, SPRINTF },
+{ "sqrt", FSQRT, BLTIN },
+{ "srand", FSRAND, BLTIN },
+{ "sub", SUB, SUB },
+{ "substr", SUBSTR, SUBSTR },
+{ "system", FSYSTEM, BLTIN },
+{ "tolower", FTOLOWER, BLTIN },
+{ "toupper", FTOUPPER, BLTIN },
+{ "utf", FUTF, BLTIN },
+{ "while", WHILE, WHILE },
 };
 #define DEBUG
-#ifdef	DEBUG
-#define	RET(x)	{ if(dbg)printf("lex %s\n", tokname(x)); return(x); }
+#ifdef DEBUG
+#define RET(x) { if(dbg)printf("lex %s\n", tokname(x)); return(x); }
 #else
-#define	RET(x)	return(x)
+#define RET(x) return(x)
 #endif
 int peek(void)
 {
@@ -123,11 +123,11 @@ rem[0] = 0;
 *psz = sz;
 return buf[0];
 }
-int	word(char *);
-int	string(void);
-int	regexpr(void);
-int	sc	= 0;
-int	reg	= 0;
+int word(char *);
+int string(void);
+int regexpr(void);
+int sc = 0;
+int reg = 0;
 int yylex(void)
 {
 int c;
@@ -342,7 +342,7 @@ n = 8 * n + input() - '0';
 *bp++ = n;
 break;
 case 'x':
-{	char xbuf[100], *px;
+{ char xbuf[100], *px;
 for (px = xbuf; (c = input()) != 0 && px-xbuf < 100-2; ) {
 if (isdigit(c)
 || (c >= 'a' && c <= 'f')
@@ -462,11 +462,11 @@ yylval.s = tostring(buf);
 unput('/');
 RET(REGEXPR);
 }
-char	ebuf[300];
-char	*ep = ebuf;
-char	yysbuf[100];
-char	*yysptr = yysbuf;
-FILE	*yyin = 0;
+char ebuf[300];
+char *ep = ebuf;
+char yysbuf[100];
+char *yysptr = yysbuf;
+FILE *yyin = 0;
 int input(void)
 {
 int c;

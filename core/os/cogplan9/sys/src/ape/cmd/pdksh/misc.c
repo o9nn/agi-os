@@ -4,10 +4,10 @@
 # include <limits.h>
 #endif
 #ifndef UCHAR_MAX
-# define UCHAR_MAX	0xFF
+# define UCHAR_MAX 0xFF
 #endif
 short ctypes [UCHAR_MAX+1];
-static int	do_gmatch ARGS((const unsigned char *s, const unsigned char *p,
+static int do_gmatch ARGS((const unsigned char *s, const unsigned char *p,
 const unsigned char *se, const unsigned char *pe,
 int isfile));
 static const unsigned char *cclass ARGS((const unsigned char *p, int sub));
@@ -90,42 +90,42 @@ xsp->end = xsp->beg + xsp->len;
 return xsp->beg + (xp - old_beg);
 }
 const struct option options[] = {
-{ "allexport",	'a',		OF_ANY },
+{ "allexport", 'a', OF_ANY },
 #ifdef BRACE_EXPAND
-{ "braceexpand",  0,		OF_ANY },
+{ "braceexpand", 0, OF_ANY },
 #endif
-{ "bgnice",	  0,		OF_ANY },
-{ (char *) 0, 	'c',	    OF_CMDLINE },
-{ "errexit",	'e',		OF_ANY },
-{ "ignoreeof",	  0,		OF_ANY },
-{ "interactive",'i',	    OF_CMDLINE },
-{ "keyword",	'k',		OF_ANY },
-{ "login",	'l',	    OF_CMDLINE },
-{ "markdirs",	'X',		OF_ANY },
+{ "bgnice", 0, OF_ANY },
+{ (char *) 0, 'c', OF_CMDLINE },
+{ "errexit", 'e', OF_ANY },
+{ "ignoreeof", 0, OF_ANY },
+{ "interactive",'i', OF_CMDLINE },
+{ "keyword", 'k', OF_ANY },
+{ "login", 'l', OF_CMDLINE },
+{ "markdirs", 'X', OF_ANY },
 #ifdef JOBS
-{ "monitor",	'm',		OF_ANY },
+{ "monitor", 'm', OF_ANY },
 #else
-{ (char *) 0,	'm',		     0 },
+{ (char *) 0, 'm', 0 },
 #endif
-{ "noclobber",	'C',		OF_ANY },
-{ "noexec",	'n',		OF_ANY },
-{ "noglob",	'f',		OF_ANY },
-{ "nohup",	  0,		OF_ANY },
-{ "nointeractive", 'I',		OF_CMDLINE },
-{ "nolog",	  0,		OF_ANY },
-#ifdef	JOBS
-{ "notify",	'b',		OF_ANY },
+{ "noclobber", 'C', OF_ANY },
+{ "noexec", 'n', OF_ANY },
+{ "noglob", 'f', OF_ANY },
+{ "nohup", 0, OF_ANY },
+{ "nointeractive", 'I', OF_CMDLINE },
+{ "nolog", 0, OF_ANY },
+#ifdef JOBS
+{ "notify", 'b', OF_ANY },
 #endif
-{ "nounset",	'u',		OF_ANY },
-{ "physical",	  0,		OF_ANY },
-{ "posix",	  0,		OF_ANY },
-{ "privileged",	'p',		OF_ANY },
-{ "restricted",	'r',	    OF_CMDLINE },
-{ "stdin",	's',	    OF_CMDLINE },
-{ "trackall",	'h',		OF_ANY },
-{ "verbose",	'v',		OF_ANY },
-{ "xtrace",	'x',		OF_ANY },
-{ (char *) 0,	0,		OF_INTERNAL },
+{ "nounset", 'u', OF_ANY },
+{ "physical", 0, OF_ANY },
+{ "posix", 0, OF_ANY },
+{ "privileged", 'p', OF_ANY },
+{ "restricted", 'r', OF_CMDLINE },
+{ "stdin", 's', OF_CMDLINE },
+{ "trackall", 'h', OF_ANY },
+{ "verbose", 'v', OF_ANY },
+{ "xtrace", 'x', OF_ANY },
+{ (char *) 0, 0, OF_INTERNAL },
 };
 int
 option(n)
@@ -141,7 +141,7 @@ struct options_info {
 int opt_width;
 struct {
 const char *name;
-int	flag;
+int flag;
 } opts[NELEM(options)];
 };
 static char *options_fmt_entry ARGS((void *arg, int i, char *buf, int buflen));
@@ -227,8 +227,8 @@ Flag(FTALKING_I) = !newval;
 int
 parse_args(argv, what, setargsp)
 char **argv;
-int	what;
-int	*setargsp;
+int what;
+int *setargsp;
 {
 static char cmd_opts[NELEM(options) + 3];
 static char set_opts[NELEM(options) + 5];
@@ -422,7 +422,7 @@ nest++;
 } else if (c == '|') {
 if (in_bracket && !bnest)
 return 0;
-} else if (c ==  ')') {
+} else if (c == ')') {
 if (in_bracket) {
 if (!bnest--)
 return 0;
@@ -601,7 +601,7 @@ int nest = 0;
 for (; p < pe; p++) {
 if (!ISMAGIC(*p))
 continue;
-if ((*++p ==  ')' && nest-- == 0)
+if ((*++p == ')' && nest-- == 0)
 || (*p == '|' && match_sep && nest == 0))
 return ++p;
 if ((*p & 0x80) && strchr("*+?@! ", *p & 0x7f))
@@ -618,10 +618,10 @@ int (*f) ARGS((void *, void *));
 {
 qsort1(base, base + n, f);
 }
-#define	swap2(a, b)	{\
+#define swap2(a, b) {\
 register void *t; t = *(a); *(a) = *(b); *(b) = t;\
 }
-#define	swap3(a, b, c)	{\
+#define swap3(a, b, c) {\
 register void *t; t = *(a); *(a) = *(c); *(c) = *(b); *(b) = t;\
 }
 static void

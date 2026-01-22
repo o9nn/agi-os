@@ -150,7 +150,7 @@ next.v[1] = psrc[1];
 next.v[2] = psrc[2];
 next.v[3] = psrc[3];
 psrc += 4;
-map4:	    if (next.all[0] == run.all[0])
+map4: if (next.all[0] == run.all[0])
 goto inc;
 if (use_cache) {
 pic_next = CLUE_HASH4(penum, next);
@@ -189,7 +189,7 @@ goto mapped;
 }
 decode_sample(next.v[3], cc, 3);
 if_debug1('B', "[B]cc[3]=%g\n", cc.paint.values[3]);
-do3:	    decode_sample(next.v[0], cc, 0);
+do3: decode_sample(next.v[0], cc, 0);
 decode_sample(next.v[1], cc, 1);
 decode_sample(next.v[2], cc, 2);
 if_debug3('B', "[B]cc[0..2]=%g,%g,%g\n",
@@ -279,9 +279,9 @@ mcode = remap_color(&cc, pcs, pdevc_next, pis, dev,
 gs_color_select_source);
 if (mcode < 0)
 goto fill;
-mapped:	if (pic == pic_next)
+mapped: if (pic == pic_next)
 goto fill;
-f:	if_debug7('B', "[B]0x%x,0x%x,0x%x,0x%x -> %ld,%ld,0x%lx\n",
+f: if_debug7('B', "[B]0x%x,0x%x,0x%x,0x%x -> %ld,%ld,0x%lx\n",
 next.v[0], next.v[1], next.v[2], next.v[3],
 pdevc_next->colors.binary.color[0],
 pdevc_next->colors.binary.color[1],
@@ -336,8 +336,8 @@ gx_image_clue *ptemp = pic;
 pic = pic_next;
 pic_next = ptemp;
 }
-set:	run = next;
-inc:	xprev = dda_current(pnext.x);
+set: run = next;
+inc: xprev = dda_current(pnext.x);
 yprev = dda_current(pnext.y);
 }
 switch (posture) {

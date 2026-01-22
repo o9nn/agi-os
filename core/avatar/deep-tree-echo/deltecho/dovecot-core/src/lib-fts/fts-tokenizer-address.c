@@ -147,7 +147,7 @@ return EMAIL_ADDRESS_PARSER_STATE_DOMAIN;
 if (pos > 0 && (IS_ATEXT(data[pos-1]) || data[pos-1] == '.')) {
 str_append_data(tok->last_word, data, pos);
 *skip_r = pos;
-return  EMAIL_ADDRESS_PARSER_STATE_LOCALPART;
+return EMAIL_ADDRESS_PARSER_STATE_LOCALPART;
 }
 pos += skip_nonlocal_part(data+pos, size - pos);
 *skip_r = pos;

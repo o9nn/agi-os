@@ -1,34 +1,34 @@
 #ifndef WAVELAN_P_H
 #define WAVELAN_P_H
-#include	<linux/module.h>
-#include	<linux/kernel.h>
-#include	<linux/sched.h>
-#include	<linux/types.h>
-#include	<linux/fcntl.h>
-#include	<linux/interrupt.h>
-#include	<linux/stat.h>
-#include	<linux/ptrace.h>
-#include	<linux/ioport.h>
-#include	<linux/in.h>
-#include	<linux/string.h>
-#include	<linux/delay.h>
-#include	<asm/system.h>
-#include	<asm/bitops.h>
-#include	<asm/io.h>
-#include	<asm/dma.h>
-#include	<linux/errno.h>
-#include	<linux/netdevice.h>
-#include	<linux/etherdevice.h>
-#include	<linux/skbuff.h>
-#include	<linux/malloc.h>
-#include	<linux/timer.h>
+#include <linux/module.h>
+#include <linux/kernel.h>
+#include <linux/sched.h>
+#include <linux/types.h>
+#include <linux/fcntl.h>
+#include <linux/interrupt.h>
+#include <linux/stat.h>
+#include <linux/ptrace.h>
+#include <linux/ioport.h>
+#include <linux/in.h>
+#include <linux/string.h>
+#include <linux/delay.h>
+#include <asm/system.h>
+#include <asm/bitops.h>
+#include <asm/io.h>
+#include <asm/dma.h>
+#include <linux/errno.h>
+#include <linux/netdevice.h>
+#include <linux/etherdevice.h>
+#include <linux/skbuff.h>
+#include <linux/malloc.h>
+#include <linux/timer.h>
 #include <linux/wireless.h>
 #ifdef MACH
-#include	<linuxdev/drivers/net/i82586.h>
+#include <linuxdev/drivers/net/i82586.h>
 #else
-#include	"i82586.h"
+#include "i82586.h"
 #endif
-#include	"wavelan.h"
+#include "wavelan.h"
 #undef DEBUG_MODULE_TRACE
 #undef DEBUG_CALLBACK_TRACE
 #undef DEBUG_INTERRUPT_TRACE
@@ -43,7 +43,7 @@
 #undef DEBUG_RX_TRACE
 #undef DEBUG_RX_INFO
 #define DEBUG_RX_ERROR
-#undef DEBUG_PACKET_DUMP	16
+#undef DEBUG_PACKET_DUMP 16
 #undef DEBUG_IOCTL_TRACE
 #undef DEBUG_IOCTL_INFO
 #define DEBUG_IOCTL_ERROR
@@ -67,56 +67,56 @@
 #undef HISTOGRAM
 #endif
 #ifdef DEBUG_VERSION_SHOW
-static const char	*version	= "wavelan.c : v16 (wireless extensions) 17/4/97\n";
+static const char *version = "wavelan.c : v16 (wireless extensions) 17/4/97\n";
 #endif
-#define	WATCHDOG_JIFFIES	32
-#define	NELS(a)				(sizeof(a) / sizeof(a[0]))
-#define SIOCSIPQTHR	SIOCDEVPRIVATE
-#define SIOCGIPQTHR	SIOCDEVPRIVATE + 1
-#define SIOCSIPLTHR	SIOCDEVPRIVATE + 2
-#define SIOCGIPLTHR	SIOCDEVPRIVATE + 3
-#define SIOCSIPHISTO	SIOCDEVPRIVATE + 6
-#define SIOCGIPHISTO	SIOCDEVPRIVATE + 7
+#define WATCHDOG_JIFFIES 32
+#define NELS(a) (sizeof(a) / sizeof(a[0]))
+#define SIOCSIPQTHR SIOCDEVPRIVATE
+#define SIOCGIPQTHR SIOCDEVPRIVATE + 1
+#define SIOCSIPLTHR SIOCDEVPRIVATE + 2
+#define SIOCGIPLTHR SIOCDEVPRIVATE + 3
+#define SIOCSIPHISTO SIOCDEVPRIVATE + 6
+#define SIOCGIPHISTO SIOCDEVPRIVATE + 7
 #ifndef copy_from_user
-#define copy_from_user	memcpy_fromfs
-#define copy_to_user	memcpy_tofs
+#define copy_from_user memcpy_fromfs
+#define copy_to_user memcpy_tofs
 #endif
-typedef struct device		device;
-typedef struct enet_statistics	en_stats;
-typedef struct iw_statistics	iw_stats;
-typedef struct iw_quality	iw_qual;
-typedef struct iw_freq		iw_freq;
-typedef struct net_local	net_local;
-typedef struct timer_list	timer_list;
-typedef u_char		mac_addr[WAVELAN_ADDR_SIZE];
+typedef struct device device;
+typedef struct enet_statistics en_stats;
+typedef struct iw_statistics iw_stats;
+typedef struct iw_quality iw_qual;
+typedef struct iw_freq iw_freq;
+typedef struct net_local net_local;
+typedef struct timer_list timer_list;
+typedef u_char mac_addr[WAVELAN_ADDR_SIZE];
 struct net_local
 {
-net_local *	next;
-device *	dev;
-en_stats	stats;
-int		nresets;
-u_char	reconfig_82586;
-u_char	promiscuous;
-int		mc_count;
-timer_list	watchdog;
-u_short	hacr;
-int		tx_n_in_use;
-u_short	rx_head;
-u_short	rx_last;
-u_short	tx_first_free;
-u_short	tx_first_in_use;
+net_local * next;
+device * dev;
+en_stats stats;
+int nresets;
+u_char reconfig_82586;
+u_char promiscuous;
+int mc_count;
+timer_list watchdog;
+u_short hacr;
+int tx_n_in_use;
+u_short rx_head;
+u_short rx_last;
+u_short tx_first_free;
+u_short tx_first_in_use;
 #ifdef WIRELESS_EXT
-iw_stats	wstats;
+iw_stats wstats;
 #endif
 #ifdef WIRELESS_SPY
-int		spy_number;
-mac_addr	spy_address[IW_MAX_SPY];
-iw_qual	spy_stat[IW_MAX_SPY];
+int spy_number;
+mac_addr spy_address[IW_MAX_SPY];
+iw_qual spy_stat[IW_MAX_SPY];
 #endif
 #ifdef HISTOGRAM
-int		his_number;
-u_char	his_range[16];
-u_long	his_sum[16];
+int his_number;
+u_char his_range[16];
+u_long his_sum[16];
 #endif
 };
 static inline unsigned long
@@ -178,7 +178,7 @@ fee_read(u_long,
 u_short,
 u_short *,
 int);
-static  void
+static void
 obram_read(u_long,
 u_short,
 u_char *,
@@ -208,7 +208,7 @@ wv_scb_show(unsigned short);
 #endif
 static inline void
 wv_init_info(device *);
-static en_stats	*
+static en_stats *
 wavelan_get_stats(device *);
 static void
 wavelan_set_multicast_list(device *);
@@ -249,25 +249,25 @@ wavelan_close(device *),
 wavelan_config(device *);
 extern int
 wavelan_probe(device *);
-static net_local *	wavelan_list	= (net_local *) NULL;
-static u_char	irqvals[]	=
+static net_local * wavelan_list = (net_local *) NULL;
+static u_char irqvals[] =
 {
-0,    0,    0, 0x01,
-0x02, 0x04,    0, 0x08,
-0,    0, 0x10, 0x20,
-0x40,    0,    0, 0x80,
+0, 0, 0, 0x01,
+0x02, 0x04, 0, 0x08,
+0, 0, 0x10, 0x20,
+0x40, 0, 0, 0x80,
 };
-static unsigned short	iobase[]	=
+static unsigned short iobase[] =
 {
-#if	0
+#if 0
 0x300, 0x390, 0x3E0, 0x3C0
 #endif
 0x390, 0x3E0
 };
-#ifdef	MODULE
-static char	devname[4][IFNAMSIZ] = { "", "", "", "" };
-static int	io[4]	= { 0, 0, 0, 0 };
-static int	irq[4]	= { 0, 0, 0, 0 };
-static char *	name[4] = { devname[0], devname[1], devname[2], devname[3] };
+#ifdef MODULE
+static char devname[4][IFNAMSIZ] = { "", "", "", "" };
+static int io[4] = { 0, 0, 0, 0 };
+static int irq[4] = { 0, 0, 0, 0 };
+static char * name[4] = { devname[0], devname[1], devname[2], devname[3] };
 #endif
 #endif

@@ -3,13 +3,13 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
-#define LOIHI_MAX_NEURONS_PER_CORE      1024
-#define LOIHI_MAX_CORES                 128
-#define LOIHI_MAX_SYNAPSES              1048576
-#define LOIHI_SPIKE_THRESHOLD_DEFAULT   50
+#define LOIHI_MAX_NEURONS_PER_CORE 1024
+#define LOIHI_MAX_CORES 128
+#define LOIHI_MAX_SYNAPSES 1048576
+#define LOIHI_SPIKE_THRESHOLD_DEFAULT 50
 #define LOIHI_REFRACTORY_PERIOD_DEFAULT 2
-#define LOIHI_POWER_CONSUMPTION_MW      150.0f
-#define LOIHI_GOPS_RATING              100.0f
+#define LOIHI_POWER_CONSUMPTION_MW 150.0f
+#define LOIHI_GOPS_RATING 100.0f
 typedef struct loihi_device_context {
 uint32_t chip_id;
 uint32_t num_active_cores;

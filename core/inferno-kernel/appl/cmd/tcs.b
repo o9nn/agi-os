@@ -86,7 +86,7 @@ unc := 0;
 nc: int;
 s: string;
 while ((n := sys->read(fd, inbuf[unc:], len inbuf - unc)) > 0) {
-n += unc;		# include unconsumed prefix
+n += unc; # include unconsumed prefix
 (btoss, s, nc) = btos->btos(btoss, inbuf[0:n], -1);
 if (s != nil)
 stobs = output(out, stob, stobs, s);

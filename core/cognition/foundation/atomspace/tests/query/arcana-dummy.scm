@@ -3,6 +3,6 @@
 (Number 42)
 (Number 3003)
 (define dummy
-	(GetLink
-		(TypedVariable (Variable "$x") (Type "NumberNode"))
-		(GreaterThan (Number 88) (Variable "$x"))))
+(GetLink
+(TypedVariable (Variable "$x") (Type "NumberNode"))
+(GreaterThan (Number 88) (Variable "$x"))))

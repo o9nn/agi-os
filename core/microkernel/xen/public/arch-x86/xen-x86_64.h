@@ -11,43 +11,43 @@
 #define FLAT_RING3_SS64 0xe02b
 #define FLAT_KERNEL_DS64 FLAT_RING3_DS64
 #define FLAT_KERNEL_DS32 FLAT_RING3_DS32
-#define FLAT_KERNEL_DS   FLAT_KERNEL_DS64
+#define FLAT_KERNEL_DS FLAT_KERNEL_DS64
 #define FLAT_KERNEL_CS64 FLAT_RING3_CS64
 #define FLAT_KERNEL_CS32 FLAT_RING3_CS32
-#define FLAT_KERNEL_CS   FLAT_KERNEL_CS64
+#define FLAT_KERNEL_CS FLAT_KERNEL_CS64
 #define FLAT_KERNEL_SS64 FLAT_RING3_SS64
 #define FLAT_KERNEL_SS32 FLAT_RING3_SS32
-#define FLAT_KERNEL_SS   FLAT_KERNEL_SS64
+#define FLAT_KERNEL_SS FLAT_KERNEL_SS64
 #define FLAT_USER_DS64 FLAT_RING3_DS64
 #define FLAT_USER_DS32 FLAT_RING3_DS32
-#define FLAT_USER_DS   FLAT_USER_DS64
+#define FLAT_USER_DS FLAT_USER_DS64
 #define FLAT_USER_CS64 FLAT_RING3_CS64
 #define FLAT_USER_CS32 FLAT_RING3_CS32
-#define FLAT_USER_CS   FLAT_USER_CS64
+#define FLAT_USER_CS FLAT_USER_CS64
 #define FLAT_USER_SS64 FLAT_RING3_SS64
 #define FLAT_USER_SS32 FLAT_RING3_SS32
-#define FLAT_USER_SS   FLAT_USER_SS64
+#define FLAT_USER_SS FLAT_USER_SS64
 #define __HYPERVISOR_VIRT_START 0xFFFF800000000000
-#define __HYPERVISOR_VIRT_END   0xFFFF880000000000
-#define __MACH2PHYS_VIRT_START  0xFFFF800000000000
-#define __MACH2PHYS_VIRT_END    0xFFFF804000000000
+#define __HYPERVISOR_VIRT_END 0xFFFF880000000000
+#define __MACH2PHYS_VIRT_START 0xFFFF800000000000
+#define __MACH2PHYS_VIRT_END 0xFFFF804000000000
 #ifndef HYPERVISOR_VIRT_START
 #define HYPERVISOR_VIRT_START mk_unsigned_long(__HYPERVISOR_VIRT_START)
-#define HYPERVISOR_VIRT_END   mk_unsigned_long(__HYPERVISOR_VIRT_END)
+#define HYPERVISOR_VIRT_END mk_unsigned_long(__HYPERVISOR_VIRT_END)
 #endif
-#define MACH2PHYS_VIRT_START  mk_unsigned_long(__MACH2PHYS_VIRT_START)
-#define MACH2PHYS_VIRT_END    mk_unsigned_long(__MACH2PHYS_VIRT_END)
-#define MACH2PHYS_NR_ENTRIES  ((MACH2PHYS_VIRT_END-MACH2PHYS_VIRT_START)>>3)
+#define MACH2PHYS_VIRT_START mk_unsigned_long(__MACH2PHYS_VIRT_START)
+#define MACH2PHYS_VIRT_END mk_unsigned_long(__MACH2PHYS_VIRT_END)
+#define MACH2PHYS_NR_ENTRIES ((MACH2PHYS_VIRT_END-MACH2PHYS_VIRT_START)>>3)
 #ifndef machine_to_phys_mapping
 #define machine_to_phys_mapping ((unsigned long *)HYPERVISOR_VIRT_START)
 #endif
-#define SEGBASE_FS          0
-#define SEGBASE_GS_USER     1
-#define SEGBASE_GS_KERNEL   2
+#define SEGBASE_FS 0
+#define SEGBASE_GS_USER 1
+#define SEGBASE_GS_KERNEL 2
 #define SEGBASE_GS_USER_SEL 3
 #define _VGCF_in_syscall 8
-#define VGCF_in_syscall  (1<<_VGCF_in_syscall)
-#define VGCF_IN_SYSCALL  VGCF_in_syscall
+#define VGCF_in_syscall (1<<_VGCF_in_syscall)
+#define VGCF_IN_SYSCALL VGCF_in_syscall
 #ifndef __ASSEMBLY__
 struct iret_context {
 uint64_t rax, r11, rcx, flags, rip, cs, rflags, rsp, ss;
@@ -80,8 +80,8 @@ uint32_t error_code;
 uint32_t entry_vector;
 __DECL_REG(ip);
 uint16_t cs, _pad0[1];
-uint8_t  saved_upcall_mask;
-uint8_t  _pad1[3];
+uint8_t saved_upcall_mask;
+uint8_t _pad1[3];
 __DECL_REG(flags);
 __DECL_REG(sp);
 uint16_t ss, _pad2[3];

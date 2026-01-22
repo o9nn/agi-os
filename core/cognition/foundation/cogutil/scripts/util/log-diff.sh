@@ -1,9 +1,9 @@
 #!/bin/bash
 if [ $
-    echo "Description: like diff but ignore logs timestamps"
-    echo "Wrong number of arguments"
-    echo "Usage: $0 FILE_A FILE_B"
-    exit 1
+echo "Description: like diff but ignore logs timestamps"
+echo "Wrong number of arguments"
+echo "Usage: $0 FILE_A FILE_B"
+exit 1
 fi
 PROG_PATH=$(readlink -f "$0")
 PROG_DIR=$(dirname "$PROG_PATH")

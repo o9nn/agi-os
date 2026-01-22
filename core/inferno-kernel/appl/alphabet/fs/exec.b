@@ -105,7 +105,7 @@ ctxt.set("file", nil);
 {ctxt.run(ref Sh->Listnode(tcmd, nil) :: nil, 0);} exception {"fail:*" =>;}
 }
 errorc <-= nil;
-sync <-= nil;		# XXX should return result here...
+sync <-= nil; # XXX should return result here...
 }
 setenv(ctxt: ref Context, var: string, val: list of string)
 {
@@ -128,8 +128,8 @@ setenv(ctxt, "dev", string dir.dev :: nil);
 }
 }
 mtab := array[] of {
-"---",	"--x",	"-w-",	"-wx",
-"r--",	"r-x",	"rw-",	"rwx"
+"---", "--x", "-w-", "-wx",
+"r--", "r-x", "rw-", "rwx"
 };
 modes(mode: int): string
 {

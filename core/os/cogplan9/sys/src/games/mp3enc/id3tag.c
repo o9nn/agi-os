@@ -7,13 +7,13 @@
 # include <string.h>
 #else
 # ifndef HAVE_STRCHR
-#  define strchr index
-#  define strrchr rindex
+# define strchr index
+# define strrchr rindex
 # endif
 char *strchr (), *strrchr ();
 # ifndef HAVE_MEMCPY
-#  define memcpy(d, s, n) bcopy ((s), (d), (n))
-#  define memmove(d, s, n) bcopy ((s), (d), (n))
+# define memcpy(d, s, n) bcopy ((s), (d), (n))
+# define memmove(d, s, n) bcopy ((s), (d), (n))
 # endif
 #endif
 #include "lame.h"
@@ -87,12 +87,12 @@ lame_internal_flags *gfc = gfp->internal_flags;
 memset(&gfc->tag_spec, 0, sizeof gfc->tag_spec);
 gfc->tag_spec.genre = GENRE_NUM_UNKNOWN;
 }
-#define CHANGED_FLAG    (1U << 0)
-#define ADD_V2_FLAG     (1U << 1)
-#define V1_ONLY_FLAG    (1U << 2)
-#define V2_ONLY_FLAG    (1U << 3)
-#define SPACE_V1_FLAG   (1U << 4)
-#define PAD_V2_FLAG     (1U << 5)
+#define CHANGED_FLAG (1U << 0)
+#define ADD_V2_FLAG (1U << 1)
+#define V1_ONLY_FLAG (1U << 2)
+#define V2_ONLY_FLAG (1U << 3)
+#define SPACE_V1_FLAG (1U << 4)
+#define PAD_V2_FLAG (1U << 5)
 void
 id3tag_add_v2(lame_global_flags *gfp)
 {
@@ -255,8 +255,8 @@ return bytes + 4;
 #define FRAME_ID(a, b, c, d) \
 ( ((unsigned long)(a) << 24) \
 | ((unsigned long)(b) << 16) \
-| ((unsigned long)(c) <<  8) \
-| ((unsigned long)(d) <<  0) )
+| ((unsigned long)(c) << 8) \
+| ((unsigned long)(d) << 0) )
 #define TITLE_FRAME_ID FRAME_ID('T', 'I', 'T', '2')
 #define ARTIST_FRAME_ID FRAME_ID('T', 'P', 'E', '1')
 #define ALBUM_FRAME_ID FRAME_ID('T', 'A', 'L', 'B')

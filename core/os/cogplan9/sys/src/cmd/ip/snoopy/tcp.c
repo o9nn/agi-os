@@ -3,26 +3,26 @@
 #include <ip.h>
 #include "dat.h"
 #include "protos.h"
-typedef struct Hdr	Hdr;
+typedef struct Hdr Hdr;
 struct Hdr
 {
-uchar	sport[2];
-uchar	dport[2];
-uchar	seq[4];
-uchar	ack[4];
-uchar	flag[2];
-uchar	win[2];
-uchar	cksum[2];
-uchar	urg[2];
-uchar	opt[1];
+uchar sport[2];
+uchar dport[2];
+uchar seq[4];
+uchar ack[4];
+uchar flag[2];
+uchar win[2];
+uchar cksum[2];
+uchar urg[2];
+uchar opt[1];
 };
 typedef struct PseudoHdr{
-uchar	src[4];
-uchar	dst[4];
-uchar	zero;
-uchar	proto;
-uchar	length[2];
-uchar	hdrdata[1580];
+uchar src[4];
+uchar dst[4];
+uchar zero;
+uchar proto;
+uchar length[2];
+uchar hdrdata[1580];
 } PseudoHdr;
 enum
 {
@@ -36,30 +36,30 @@ Osd,
 };
 static Field p_fields[] =
 {
-{"s",		Fnum,	Os,	"source port",	} ,
-{"d",		Fnum,	Od,	"dest port",	} ,
-{"a",		Fnum,	Osd,	"source/dest port",	} ,
-{"sd",		Fnum,	Osd,	"source/dest port",	} ,
+{"s", Fnum, Os, "source port", } ,
+{"d", Fnum, Od, "dest port", } ,
+{"a", Fnum, Osd, "source/dest port", } ,
+{"sd", Fnum, Osd, "source/dest port", } ,
 {0}
 };
 static Mux p_mux[] =
 {
-{"dns",		53, },
-{"ninep",	17007, },
-{"ninep",	564, },
-{"ninep",	17005, },
-{"ninep",	17010, },
-{"ninep",	17013, },
+{"dns", 53, },
+{"ninep", 17007, },
+{"ninep", 564, },
+{"ninep", 17005, },
+{"ninep", 17010, },
+{"ninep", 17013, },
 {0},
 };
 enum
 {
-EOLOPT		= 0,
-NOOPOPT		= 1,
-MSSOPT		= 2,
-MSS_LENGTH	= 4,
-WSOPT		= 3,
-WS_LENGTH	= 3,
+EOLOPT = 0,
+NOOPOPT = 1,
+MSSOPT = 2,
+MSS_LENGTH = 4,
+WSOPT = 3,
+WS_LENGTH = 3,
 };
 static void
 p_compile(Filter *f)
@@ -98,12 +98,12 @@ return 0;
 }
 enum
 {
-URG		= 0x20,
-ACK		= 0x10,
-PSH		= 0x08,
-RST		= 0x04,
-SYN		= 0x02,
-FIN		= 0x01,
+URG = 0x20,
+ACK = 0x10,
+PSH = 0x08,
+RST = 0x04,
+SYN = 0x02,
+FIN = 0x01,
 };
 static char*
 flags(int f)

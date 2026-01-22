@@ -24,38 +24,38 @@ the behavior described above.
 ```jldoctest
 julia> res_input = scaled_rand(8, 3)
 8×3 Matrix{Float32}:
--0.0669356  -0.0292692  -0.0188943
-0.0159724   0.004071   -0.0737949
-0.026355   -0.0191563   0.0714962
--0.0177412   0.0279123   0.0892906
--0.0184405   0.0567368   0.0190222
-0.0944272   0.0679244   0.0148647
--0.0799005  -0.0891089  -0.0444782
--0.0970182   0.0934286   0.03553
+-0.0669356 -0.0292692 -0.0188943
+0.0159724 0.004071 -0.0737949
+0.026355 -0.0191563 0.0714962
+-0.0177412 0.0279123 0.0892906
+-0.0184405 0.0567368 0.0190222
+0.0944272 0.0679244 0.0148647
+-0.0799005 -0.0891089 -0.0444782
+-0.0970182 0.0934286 0.03553
 julia> tt = scaled_rand(5, 3, scaling = (0.1, 0.15))
 5×3 Matrix{Float32}:
-0.13631   0.110929  0.116177
-0.116299  0.136038  0.119713
-0.11535   0.144712  0.110029
-0.127453  0.12657   0.147656
-0.139446  0.117656  0.104712
+0.13631 0.110929 0.116177
+0.116299 0.136038 0.119713
+0.11535 0.144712 0.110029
+0.127453 0.12657 0.147656
+0.139446 0.117656 0.104712
 ```
 Example with vector:
 ```jldoctest
 julia> tt = scaled_rand(5, 3, scaling = [0.1, 0.2, 0.3])
 5×3 Matrix{Float32}:
-0.0452399   -0.112565   -0.105874
--0.0348047    0.0883044  -0.0634468
--0.0386004    0.157698   -0.179648
-0.00981022   0.012559    0.271875
-0.0577838   -0.0587553  -0.243451
+0.0452399 -0.112565 -0.105874
+-0.0348047 0.0883044 -0.0634468
+-0.0386004 0.157698 -0.179648
+0.00981022 0.012559 0.271875
+0.0577838 -0.0587553 -0.243451
 julia> tt = scaled_rand(5, 3, scaling = [(0.1, 0.2), (-0.2, -0.1), (0.3, 0.5)])
 5×3 Matrix{Float32}:
-0.17262   -0.178141  0.364709
-0.132598  -0.127924  0.378851
-0.1307    -0.110575  0.340117
-0.154905  -0.14686   0.490625
-0.178892  -0.164689  0.31885
+0.17262 -0.178141 0.364709
+0.132598 -0.127924 0.378851
+0.1307 -0.110575 0.340117
+0.154905 -0.14686 0.490625
+0.178892 -0.164689 0.31885
 ```
 """
 function scaled_rand(rng::AbstractRNG, ::Type{T}, dims::Integer...;
@@ -108,12 +108,12 @@ Default is `false`.
 ```jldoctest
 julia> res_input = weighted_init(8, 3)
 6×3 Matrix{Float32}:
-0.0452399   0.0          0.0
--0.0348047   0.0          0.0
-0.0        -0.0386004    0.0
-0.0         0.00981022   0.0
-0.0         0.0          0.0577838
-0.0         0.0         -0.0562827
+0.0452399 0.0 0.0
+-0.0348047 0.0 0.0
+0.0 -0.0386004 0.0
+0.0 0.00981022 0.0
+0.0 0.0 0.0577838
+0.0 0.0 -0.0562827
 ```
 """
 function weighted_init(rng::AbstractRNG, ::Type{T}, dims::Integer...;
@@ -172,40 +172,40 @@ integer or an array. Default is 2.
 julia> res_input = weighted_minimal(8, 3)
 ┌ Warning: Reservoir size has changed!
 │
-│     Computed reservoir size (6) does not equal the provided reservoir size (8).
+│ Computed reservoir size (6) does not equal the provided reservoir size (8).
 │
-│     Using computed value (6). Make sure to modify the reservoir initializer accordingly.
+│ Using computed value (6). Make sure to modify the reservoir initializer accordingly.
 │
 └ @ ReservoirComputing ~/.julia/dev/ReservoirComputing/src/esn/esn_inits.jl:159
 6×3 Matrix{Float32}:
-0.1  0.0  0.0
-0.1  0.0  0.0
-0.0  0.1  0.0
-0.0  0.1  0.0
-0.0  0.0  0.1
-0.0  0.0  0.1
+0.1 0.0 0.0
+0.1 0.0 0.0
+0.0 0.1 0.0
+0.0 0.1 0.0
+0.0 0.0 0.1
+0.0 0.0 0.1
 julia> res_input = weighted_minimal(9, 3; weight = 0.99)
 9×3 Matrix{Float32}:
-0.99  0.0   0.0
-0.99  0.0   0.0
-0.99  0.0   0.0
-0.0   0.99  0.0
-0.0   0.99  0.0
-0.0   0.99  0.0
-0.0   0.0   0.99
-0.0   0.0   0.99
-0.0   0.0   0.99
+0.99 0.0 0.0
+0.99 0.0 0.0
+0.99 0.0 0.0
+0.0 0.99 0.0
+0.0 0.99 0.0
+0.0 0.99 0.0
+0.0 0.0 0.99
+0.0 0.0 0.99
+0.0 0.0 0.99
 julia> res_input = weighted_minimal(9, 3; sampling_type = :bernoulli_sample!)
 9×3 Matrix{Float32}:
-0.1  -0.0  -0.0
--0.1  -0.0  -0.0
-0.1  -0.0   0.0
--0.0   0.1   0.0
-0.0   0.1  -0.0
-0.0   0.1   0.0
--0.0  -0.0  -0.1
--0.0  -0.0   0.1
-0.0  -0.0   0.1
+0.1 -0.0 -0.0
+-0.1 -0.0 -0.0
+0.1 -0.0 0.0
+-0.0 0.1 0.0
+0.0 0.1 -0.0
+0.0 0.1 0.0
+-0.0 -0.0 -0.1
+-0.0 -0.0 0.1
+0.0 -0.0 0.1
 ```
 """
 function weighted_minimal(rng::AbstractRNG, ::Type{T}, dims::Integer...;
@@ -308,44 +308,44 @@ integer or an array. Default is 2.
 ```jldoctest
 julia> res_input = minimal_init(8, 3)
 8×3 Matrix{Float32}:
-0.1  -0.1   0.1
--0.1   0.1   0.1
--0.1  -0.1   0.1
--0.1  -0.1  -0.1
-0.1   0.1   0.1
--0.1  -0.1  -0.1
--0.1  -0.1   0.1
-0.1  -0.1   0.1
+0.1 -0.1 0.1
+-0.1 0.1 0.1
+-0.1 -0.1 0.1
+-0.1 -0.1 -0.1
+0.1 0.1 0.1
+-0.1 -0.1 -0.1
+-0.1 -0.1 0.1
+0.1 -0.1 0.1
 julia> res_input = minimal_init(8, 3; sampling_type = :irrational)
 8×3 Matrix{Float32}:
--0.1   0.1  -0.1
-0.1  -0.1  -0.1
-0.1   0.1  -0.1
-0.1   0.1   0.1
--0.1  -0.1  -0.1
-0.1   0.1   0.1
-0.1   0.1  -0.1
--0.1   0.1  -0.1
+-0.1 0.1 -0.1
+0.1 -0.1 -0.1
+0.1 0.1 -0.1
+0.1 0.1 0.1
+-0.1 -0.1 -0.1
+0.1 0.1 0.1
+0.1 0.1 -0.1
+-0.1 0.1 -0.1
 julia> res_input = minimal_init(8, 3; p = 0.1) # lower p -> more negative signs
 8×3 Matrix{Float32}:
--0.1  -0.1  -0.1
--0.1  -0.1  -0.1
--0.1  -0.1  -0.1
--0.1  -0.1  -0.1
-0.1  -0.1  -0.1
--0.1  -0.1  -0.1
--0.1  -0.1  -0.1
--0.1  -0.1  -0.1
+-0.1 -0.1 -0.1
+-0.1 -0.1 -0.1
+-0.1 -0.1 -0.1
+-0.1 -0.1 -0.1
+0.1 -0.1 -0.1
+-0.1 -0.1 -0.1
+-0.1 -0.1 -0.1
+-0.1 -0.1 -0.1
 julia> res_input = minimal_init(8, 3; p = 0.8)# higher p -> more positive signs
 8×3 Matrix{Float32}:
-0.1   0.1  0.1
--0.1   0.1  0.1
--0.1   0.1  0.1
-0.1   0.1  0.1
-0.1   0.1  0.1
-0.1  -0.1  0.1
--0.1   0.1  0.1
-0.1   0.1  0.1
+0.1 0.1 0.1
+-0.1 0.1 0.1
+-0.1 0.1 0.1
+0.1 0.1 0.1
+0.1 0.1 0.1
+0.1 -0.1 0.1
+-0.1 0.1 0.1
+0.1 0.1 0.1
 ```
 """
 function minimal_init(rng::AbstractRNG, ::Type{T}, dims::Integer...;
@@ -395,16 +395,16 @@ Default is `false`.
 ```jldoctest
 julia> input_matrix = chebyshev_mapping(10, 3)
 10×3 Matrix{Float32}:
-0.866025  0.866025   1.22465f-16
-0.866025  0.866025  -4.37114f-8
-0.866025  0.866025  -4.37114f-8
-0.866025  0.866025  -4.37114f-8
-0.866025  0.866025  -4.37114f-8
-0.866025  0.866025  -4.37114f-8
-0.866025  0.866025  -4.37114f-8
-0.866025  0.866025  -4.37114f-8
-0.866025  0.866025  -4.37114f-8
-0.866025  0.866025  -4.37114f-8
+0.866025 0.866025 1.22465f-16
+0.866025 0.866025 -4.37114f-8
+0.866025 0.866025 -4.37114f-8
+0.866025 0.866025 -4.37114f-8
+0.866025 0.866025 -4.37114f-8
+0.866025 0.866025 -4.37114f-8
+0.866025 0.866025 -4.37114f-8
+0.866025 0.866025 -4.37114f-8
+0.866025 0.866025 -4.37114f-8
+0.866025 0.866025 -4.37114f-8
 ```
 """
 function chebyshev_mapping(rng::AbstractRNG, ::Type{T}, dims::Integer...;
@@ -459,14 +459,14 @@ Default is `false`.
 ```jldoctest
 julia> logistic_mapping(8, 3)
 8×3 Matrix{Float32}:
-0.0529682  0.104272  0.1523
-0.185602   0.345578  0.477687
-0.559268   0.836769  0.923158
-0.912003   0.50537   0.262468
-0.296938   0.924893  0.716241
-0.772434   0.257023  0.751987
-0.650385   0.70656   0.69006
-0.841322   0.767132  0.791346
+0.0529682 0.104272 0.1523
+0.185602 0.345578 0.477687
+0.559268 0.836769 0.923158
+0.912003 0.50537 0.262468
+0.296938 0.924893 0.716241
+0.772434 0.257023 0.751987
+0.650385 0.70656 0.69006
+0.841322 0.767132 0.791346
 ```
 """
 function logistic_mapping(rng::AbstractRNG, ::Type{T}, dims::Integer...;
@@ -539,18 +539,18 @@ julia> modified_lm(20, 10; factor=2)
 ⎣⠀⠀⠀⠀⢣⎦
 julia> modified_lm(12, 4; factor=3)
 12×4 SparseArrays.SparseMatrixCSC{Float32, Int64} with 9 stored entries:
-⋅    ⋅          ⋅          ⋅
-⋅    ⋅          ⋅          ⋅
-⋅    ⋅          ⋅          ⋅
-⋅   0.0133075   ⋅          ⋅
-⋅   0.0308564   ⋅          ⋅
-⋅   0.070275    ⋅          ⋅
-⋅    ⋅         0.0265887   ⋅
-⋅    ⋅         0.0608222   ⋅
-⋅    ⋅         0.134239    ⋅
-⋅    ⋅          ⋅         0.0398177
-⋅    ⋅          ⋅         0.0898457
-⋅    ⋅          ⋅         0.192168
+⋅ ⋅ ⋅ ⋅
+⋅ ⋅ ⋅ ⋅
+⋅ ⋅ ⋅ ⋅
+⋅ 0.0133075 ⋅ ⋅
+⋅ 0.0308564 ⋅ ⋅
+⋅ 0.070275 ⋅ ⋅
+⋅ ⋅ 0.0265887 ⋅
+⋅ ⋅ 0.0608222 ⋅
+⋅ ⋅ 0.134239 ⋅
+⋅ ⋅ ⋅ 0.0398177
+⋅ ⋅ ⋅ 0.0898457
+⋅ ⋅ ⋅ 0.192168
 ```
 """
 function modified_lm(rng::AbstractRNG, ::Type{T}, dims::Integer...;
@@ -604,11 +604,11 @@ Default is `false`.
 ```jldoctest
 julia> res_matrix = rand_sparse(5, 5; sparsity = 0.5)
 5×5 Matrix{Float32}:
-0.0        0.0        0.0        0.0      0.0
-0.0        0.794565   0.0        0.26164  0.0
-0.0        0.0       -0.931294   0.0      0.553706
-0.723235  -0.524727   0.0        0.0      0.0
-1.23723    0.0        0.181824  -1.5478   0.465328
+0.0 0.0 0.0 0.0 0.0
+0.0 0.794565 0.0 0.26164 0.0
+0.0 0.0 -0.931294 0.0 0.553706
+0.723235 -0.524727 0.0 0.0 0.0
+1.23723 0.0 0.181824 -1.5478 0.465328
 ```
 """
 function rand_sparse(rng::AbstractRNG, ::Type{T}, dims::Integer...;
@@ -651,11 +651,11 @@ Default is `false`.
 ```jldoctest
 julia> res_matrix = pseudo_svd(5, 5)
 5×5 Matrix{Float32}:
-0.306998  0.0       0.0       0.0       0.0
-0.0       0.325977  0.0       0.0       0.0
-0.0       0.0       0.549051  0.0       0.0
-0.0       0.0       0.0       0.726199  0.0
-0.0       0.0       0.0       0.0       1.0
+0.306998 0.0 0.0 0.0 0.0
+0.0 0.325977 0.0 0.0 0.0
+0.0 0.0 0.549051 0.0 0.0
+0.0 0.0 0.0 0.726199 0.0
+0.0 0.0 0.0 0.0 1.0
 ```
 """
 function pseudo_svd(rng::AbstractRNG, ::Type{T}, dims::Integer...;
@@ -748,16 +748,16 @@ reservoir matrix as a sparse matrix. Default is `false`.
 julia> res_matrix = chaotic_init(8, 8)
 ┌ Warning:
 │
-│     Adjusting reservoir matrix order:
-│         from 8 (requested) to 4
-│     based on computed bit precision = 1.
+│ Adjusting reservoir matrix order:
+│ from 8 (requested) to 4
+│ based on computed bit precision = 1.
 │
 └ @ ReservoirComputing ~/.julia/dev/ReservoirComputing/src/esn/esn_inits.jl:805
 4×4 SparseArrays.SparseMatrixCSC{Float32, Int64} with 6 stored entries:
-⋅        -0.600945   ⋅          ⋅
-⋅          ⋅        0.132667   2.21354
-⋅        -2.60383    ⋅        -2.90391
--0.578156    ⋅         ⋅          ⋅
+⋅ -0.600945 ⋅ ⋅
+⋅ ⋅ 0.132667 2.21354
+⋅ -2.60383 ⋅ -2.90391
+-0.578156 ⋅ ⋅ ⋅
 ```
 """
 function chaotic_init(rng::AbstractRNG, ::Type{T}, dims::Integer...;
@@ -937,18 +937,18 @@ integer or an array. Default is 2.
 ```jldoctest
 julia> res_matrix = delay_line(5, 5)
 5×5 Matrix{Float32}:
-0.0  0.0  0.0  0.0  0.0
-0.1  0.0  0.0  0.0  0.0
-0.0  0.1  0.0  0.0  0.0
-0.0  0.0  0.1  0.0  0.0
-0.0  0.0  0.0  0.1  0.0
+0.0 0.0 0.0 0.0 0.0
+0.1 0.0 0.0 0.0 0.0
+0.0 0.1 0.0 0.0 0.0
+0.0 0.0 0.1 0.0 0.0
+0.0 0.0 0.0 0.1 0.0
 julia> res_matrix = delay_line(5, 5; weight = 1)
 5×5 Matrix{Float32}:
-0.0  0.0  0.0  0.0  0.0
-1.0  0.0  0.0  0.0  0.0
-0.0  1.0  0.0  0.0  0.0
-0.0  0.0  1.0  0.0  0.0
-0.0  0.0  0.0  1.0  0.0
+0.0 0.0 0.0 0.0 0.0
+1.0 0.0 0.0 0.0 0.0
+0.0 1.0 0.0 0.0 0.0
+0.0 0.0 1.0 0.0 0.0
+0.0 0.0 0.0 1.0 0.0
 ```
 """
 function delay_line(rng::AbstractRNG, ::Type{T}, dims::Integer...;
@@ -1010,18 +1010,18 @@ integer or an array. Default is 2.
 ```jldoctest
 julia> res_matrix = delay_line_backward(5, 5)
 5×5 Matrix{Float32}:
-0.0  0.1  0.0  0.0  0.0
-0.1  0.0  0.1  0.0  0.0
-0.0  0.1  0.0  0.1  0.0
-0.0  0.0  0.1  0.0  0.1
-0.0  0.0  0.0  0.1  0.0
+0.0 0.1 0.0 0.0 0.0
+0.1 0.0 0.1 0.0 0.0
+0.0 0.1 0.0 0.1 0.0
+0.0 0.0 0.1 0.0 0.1
+0.0 0.0 0.0 0.1 0.0
 julia> res_matrix = delay_line_backward(Float16, 5, 5)
 5×5 Matrix{Float16}:
-0.0  0.1  0.0  0.0  0.0
-0.1  0.0  0.1  0.0  0.0
-0.0  0.1  0.0  0.1  0.0
-0.0  0.0  0.1  0.0  0.1
-0.0  0.0  0.0  0.1  0.0
+0.0 0.1 0.0 0.0 0.0
+0.1 0.0 0.1 0.0 0.0
+0.0 0.1 0.0 0.1 0.0
+0.0 0.0 0.1 0.0 0.1
+0.0 0.0 0.0 0.1 0.0
 ```
 """
 function delay_line_backward(rng::AbstractRNG, ::Type{T}, dims::Integer...;
@@ -1049,7 +1049,7 @@ from WeightInitializers.
 Default is `Float32`.
 - `dims`: Dimensions of the reservoir matrix.
 # Keyword arguments
-- `cycle_weight`:  The weight of cycle connections.
+- `cycle_weight`: The weight of cycle connections.
 This can be provided as a single value or an array. In case it is provided as an
 array please make sure that the length of the array matches the length of the cycle
 you want to populate.
@@ -1059,7 +1059,7 @@ This can be provided as a single value or an array. In case it is provided as an
 array please make sure that the length of the array matches the length of the jumps
 you want to populate.
 Default is 0.1.
-- `jump_size`:  The number of steps between jump connections.
+- `jump_size`: The number of steps between jump connections.
 Default is 3.
 - `return_sparse`: flag for returning a `sparse` matrix.
 Default is `false`.
@@ -1084,18 +1084,18 @@ integer or an array. Default is 2.
 ```jldoctest
 julia> res_matrix = cycle_jumps(5, 5)
 5×5 Matrix{Float32}:
-0.0  0.0  0.0  0.1  0.1
-0.1  0.0  0.0  0.0  0.0
-0.0  0.1  0.0  0.0  0.0
-0.1  0.0  0.1  0.0  0.0
-0.0  0.0  0.0  0.1  0.0
+0.0 0.0 0.0 0.1 0.1
+0.1 0.0 0.0 0.0 0.0
+0.0 0.1 0.0 0.0 0.0
+0.1 0.0 0.1 0.0 0.0
+0.0 0.0 0.0 0.1 0.0
 julia> res_matrix = cycle_jumps(5, 5; jump_size = 2)
 5×5 Matrix{Float32}:
-0.0  0.0  0.1  0.0  0.1
-0.1  0.0  0.0  0.0  0.0
-0.1  0.1  0.0  0.0  0.1
-0.0  0.0  0.1  0.0  0.0
-0.0  0.0  0.1  0.1  0.0
+0.0 0.0 0.1 0.0 0.1
+0.1 0.0 0.0 0.0 0.0
+0.1 0.1 0.0 0.0 0.1
+0.0 0.0 0.1 0.0 0.0
+0.0 0.0 0.1 0.1 0.0
 ```
 """
 function cycle_jumps(rng::AbstractRNG, ::Type{T}, dims::Integer...;
@@ -1149,18 +1149,18 @@ integer or an array. Default is 2.
 ```jldoctest
 julia> res_matrix = simple_cycle(5, 5)
 5×5 Matrix{Float32}:
-0.0  0.0  0.0  0.0  0.1
-0.1  0.0  0.0  0.0  0.0
-0.0  0.1  0.0  0.0  0.0
-0.0  0.0  0.1  0.0  0.0
-0.0  0.0  0.0  0.1  0.0
+0.0 0.0 0.0 0.0 0.1
+0.1 0.0 0.0 0.0 0.0
+0.0 0.1 0.0 0.0 0.0
+0.0 0.0 0.1 0.0 0.0
+0.0 0.0 0.0 0.1 0.0
 julia> res_matrix = simple_cycle(5, 5; weight = 11)
 5×5 Matrix{Float32}:
-0.0   0.0   0.0   0.0  11.0
-11.0   0.0   0.0   0.0   0.0
-0.0  11.0   0.0   0.0   0.0
-0.0   0.0  11.0   0.0   0.0
-0.0   0.0   0.0  11.0   0.0
+0.0 0.0 0.0 0.0 11.0
+11.0 0.0 0.0 0.0 0.0
+0.0 11.0 0.0 0.0 0.0
+0.0 0.0 11.0 0.0 0.0
+0.0 0.0 0.0 11.0 0.0
 ```
 """
 function simple_cycle(rng::AbstractRNG, ::Type{T}, dims::Integer...;
@@ -1193,11 +1193,11 @@ Default is `false`.
 ```jldoctest
 julia> reservoir_matrix = double_cycle(5, 5; cycle_weight = 0.1, second_cycle_weight = 0.3)
 5×5 Matrix{Float32}:
-0.0  0.3  0.0  0.0  0.3
-0.1  0.0  0.3  0.0  0.0
-0.0  0.1  0.0  0.3  0.0
-0.0  0.0  0.1  0.0  0.3
-0.1  0.0  0.0  0.1  0.0
+0.0 0.3 0.0 0.0 0.3
+0.1 0.0 0.3 0.0 0.0
+0.0 0.1 0.0 0.3 0.0
+0.0 0.0 0.1 0.0 0.3
+0.1 0.0 0.0 0.1 0.0
 ```
 """
 function double_cycle(rng::AbstractRNG, ::Type{T}, dims::Integer...;
@@ -1256,11 +1256,11 @@ integer or an array. Default is 2.
 ```jldoctest
 julia> true_double_cycle(5, 5; cycle_weight = 0.1, second_cycle_weight = 0.3)
 5×5 Matrix{Float32}:
-0.0  0.3  0.0  0.0  0.1
-0.1  0.0  0.3  0.0  0.0
-0.0  0.1  0.0  0.3  0.0
-0.0  0.0  0.1  0.0  0.3
-0.3  0.0  0.0  0.1  0.0
+0.0 0.3 0.0 0.0 0.1
+0.1 0.0 0.3 0.0 0.0
+0.0 0.1 0.0 0.3 0.0
+0.0 0.0 0.1 0.0 0.3
+0.3 0.0 0.0 0.1 0.0
 ```
 """
 function true_double_cycle(rng::AbstractRNG, ::Type{T}, dims::Integer...;
@@ -1330,18 +1330,18 @@ integer or an array. Default is 2.
 ```jldoctest
 julia> reservoir_matrix = selfloop_cycle(5, 5)
 5×5 Matrix{Float32}:
-0.1  0.0  0.0  0.0  0.1
-0.1  0.1  0.0  0.0  0.0
-0.0  0.1  0.1  0.0  0.0
-0.0  0.0  0.1  0.1  0.0
-0.0  0.0  0.0  0.1  0.1
+0.1 0.0 0.0 0.0 0.1
+0.1 0.1 0.0 0.0 0.0
+0.0 0.1 0.1 0.0 0.0
+0.0 0.0 0.1 0.1 0.0
+0.0 0.0 0.0 0.1 0.1
 julia> reservoir_matrix = selfloop_cycle(5, 5; weight=0.2, selfloop_weight=0.5)
 5×5 Matrix{Float32}:
-0.5  0.0  0.0  0.0  0.2
-0.2  0.5  0.0  0.0  0.0
-0.0  0.2  0.5  0.0  0.0
-0.0  0.0  0.2  0.5  0.0
-0.0  0.0  0.0  0.2  0.5
+0.5 0.0 0.0 0.0 0.2
+0.2 0.5 0.0 0.0 0.0
+0.0 0.2 0.5 0.0 0.0
+0.0 0.0 0.2 0.5 0.0
+0.0 0.0 0.0 0.2 0.5
 ```
 """
 function selfloop_cycle(rng::AbstractRNG, ::Type{T}, dims::Integer...;
@@ -1392,18 +1392,18 @@ Default is `false`.
 ```jldoctest
 julia> reservoir_matrix = selfloop_feedback_cycle(5, 5)
 5×5 Matrix{Float32}:
-0.1  0.1  0.0  0.0  0.1
-0.1  0.0  0.0  0.0  0.0
-0.0  0.1  0.1  0.1  0.0
-0.0  0.0  0.1  0.0  0.0
-0.0  0.0  0.0  0.1  0.1
+0.1 0.1 0.0 0.0 0.1
+0.1 0.0 0.0 0.0 0.0
+0.0 0.1 0.1 0.1 0.0
+0.0 0.0 0.1 0.0 0.0
+0.0 0.0 0.0 0.1 0.1
 julia> reservoir_matrix = selfloop_feedback_cycle(5, 5; self_loop_weight=0.5)
 5×5 Matrix{Float32}:
-0.5  0.1  0.0  0.0  0.1
-0.1  0.0  0.0  0.0  0.0
-0.0  0.1  0.5  0.1  0.0
-0.0  0.0  0.1  0.0  0.0
-0.0  0.0  0.0  0.1  0.5
+0.5 0.1 0.0 0.0 0.1
+0.1 0.0 0.0 0.0 0.0
+0.0 0.1 0.5 0.1 0.0
+0.0 0.0 0.1 0.0 0.0
+0.0 0.0 0.0 0.1 0.5
 ```
 """
 function selfloop_feedback_cycle(rng::AbstractRNG, ::Type{T}, dims::Integer...;
@@ -1490,18 +1490,18 @@ integer or an array. Default is 2.
 ```jldoctest
 julia> reservoir_matrix = selfloop_delayline_backward(5, 5)
 5×5 Matrix{Float32}:
-0.1  0.0  0.1  0.0  0.0
-0.1  0.1  0.0  0.1  0.0
-0.0  0.1  0.1  0.0  0.1
-0.0  0.0  0.1  0.1  0.0
-0.0  0.0  0.0  0.1  0.1
+0.1 0.0 0.1 0.0 0.0
+0.1 0.1 0.0 0.1 0.0
+0.0 0.1 0.1 0.0 0.1
+0.0 0.0 0.1 0.1 0.0
+0.0 0.0 0.0 0.1 0.1
 julia> reservoir_matrix = selfloop_delayline_backward(5, 5; weight=0.3)
 5×5 Matrix{Float32}:
-0.1  0.0  0.3  0.0  0.0
-0.3  0.1  0.0  0.3  0.0
-0.0  0.3  0.1  0.0  0.3
-0.0  0.0  0.3  0.1  0.0
-0.0  0.0  0.0  0.3  0.1
+0.1 0.0 0.3 0.0 0.0
+0.3 0.1 0.0 0.3 0.0
+0.0 0.3 0.1 0.0 0.3
+0.0 0.0 0.3 0.1 0.0
+0.0 0.0 0.0 0.3 0.1
 ```
 """
 function selfloop_delayline_backward(rng::AbstractRNG, ::Type{T}, dims::Integer...;
@@ -1576,18 +1576,18 @@ integer or an array. Default is 2.
 ```jldoctest
 julia> reservoir_matrix = selfloop_forward_connection(5, 5)
 5×5 Matrix{Float32}:
-0.1  0.0  0.0  0.0  0.0
-0.0  0.1  0.0  0.0  0.0
-0.1  0.0  0.1  0.0  0.0
-0.0  0.1  0.0  0.1  0.0
-0.0  0.0  0.1  0.0  0.1
+0.1 0.0 0.0 0.0 0.0
+0.0 0.1 0.0 0.0 0.0
+0.1 0.0 0.1 0.0 0.0
+0.0 0.1 0.0 0.1 0.0
+0.0 0.0 0.1 0.0 0.1
 julia> reservoir_matrix = selfloop_forward_connection(5, 5; weight=0.5)
 5×5 Matrix{Float32}:
-0.1  0.0  0.0  0.0  0.0
-0.0  0.1  0.0  0.0  0.0
-0.5  0.0  0.1  0.0  0.0
-0.0  0.5  0.0  0.1  0.0
-0.0  0.0  0.5  0.0  0.1
+0.1 0.0 0.0 0.0 0.0
+0.0 0.1 0.0 0.0 0.0
+0.5 0.0 0.1 0.0 0.0
+0.0 0.5 0.0 0.1 0.0
+0.0 0.0 0.5 0.0 0.1
 ```
 """
 function selfloop_forward_connection(rng::AbstractRNG, ::Type{T}, dims::Integer...;
@@ -1648,18 +1648,18 @@ integer or an array. Default is 2.
 ```jldoctest
 julia> reservoir_matrix = forward_connection(5, 5)
 5×5 Matrix{Float32}:
-0.0  0.0  0.0  0.0  0.0
-0.0  0.0  0.0  0.0  0.0
-0.1  0.0  0.0  0.0  0.0
-0.0  0.1  0.0  0.0  0.0
-0.0  0.0  0.1  0.0  0.0
+0.0 0.0 0.0 0.0 0.0
+0.0 0.0 0.0 0.0 0.0
+0.1 0.0 0.0 0.0 0.0
+0.0 0.1 0.0 0.0 0.0
+0.0 0.0 0.1 0.0 0.0
 julia> reservoir_matrix = forward_connection(5, 5; weight=0.5)
 5×5 Matrix{Float32}:
-0.0  0.0  0.0  0.0  0.0
-0.0  0.0  0.0  0.0  0.0
-0.5  0.0  0.0  0.0  0.0
-0.0  0.5  0.0  0.0  0.0
-0.0  0.0  0.5  0.0  0.0
+0.0 0.0 0.0 0.0 0.0
+0.0 0.0 0.0 0.0 0.0
+0.5 0.0 0.0 0.0 0.0
+0.0 0.5 0.0 0.0 0.0
+0.0 0.0 0.5 0.0 0.0
 ```
 """
 function forward_connection(rng::AbstractRNG, ::Type{T}, dims::Integer...;
@@ -1686,7 +1686,7 @@ W_{i,j} =
 \begin{cases}
 w_b, & \text{if }\left\lfloor\frac{i-1}{s}\right\rfloor = \left\lfloor\frac{j-1}{s}\right\rfloor = b,\;
 s = \text{block\_size},\; b=0,\dots,nb-1, \\
-0,   & \text{otherwise,}
+0, & \text{otherwise,}
 \end{cases}
 ```
 # Arguments
@@ -1707,17 +1707,17 @@ Default is `false`.
 # 4×4 with two 2×2 blocks of 1.0
 julia> W1 = block_diagonal(4, 4; block_size=2)
 4×4 Matrix{Float32}:
-1.0  1.0  0.0  0.0
-1.0  1.0  0.0  0.0
-0.0  0.0  1.0  1.0
-0.0  0.0  1.0  1.0
+1.0 1.0 0.0 0.0
+1.0 1.0 0.0 0.0
+0.0 0.0 1.0 1.0
+0.0 0.0 1.0 1.0
 # per-block weights [0.5, 2.0]
 julia> W2 = block_diagonal(4, 4; block_size=2, weight=[0.5, 2.0])
 4×4 Matrix{Float32}:
-0.5  0.5  0.0  0.0
-0.5  0.5  0.0  0.0
-0.0  0.0  2.0  2.0
-0.0  0.0  2.0  2.0
+0.5 0.5 0.0 0.0
+0.5 0.5 0.0 0.0
+0.0 0.0 2.0 2.0
+0.0 0.0 2.0 2.0
 ```
 """
 function block_diagonal(rng::AbstractRNG, ::Type{T}, dims::Integer...;

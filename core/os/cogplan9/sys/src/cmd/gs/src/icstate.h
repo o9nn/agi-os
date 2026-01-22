@@ -1,16 +1,16 @@
 #ifndef icstate_INCLUDED
-#  define icstate_INCLUDED
+# define icstate_INCLUDED
 #include "imemory.h"
 #include "iref.h"
 #include "idsdata.h"
 #include "iesdata.h"
 #include "iosdata.h"
 #ifndef gs_context_state_t_DEFINED
-#  define gs_context_state_t_DEFINED
+# define gs_context_state_t_DEFINED
 typedef struct gs_context_state_s gs_context_state_t;
 #endif
 #ifndef gs_file_path_ptr_DEFINED
-#  define gs_file_path_ptr_DEFINED
+# define gs_file_path_ptr_DEFINED
 typedef struct gs_file_path_s *gs_file_path_ptr;
 #endif
 struct gs_context_state_s {
@@ -35,7 +35,7 @@ op_stack_t op_stack;
 struct i_plugin_holder_s *plugin_list;
 };
 extern const long rand_state_initial;
-#define public_st_context_state()	\
+#define public_st_context_state() \
 gs_public_st_complex_only(st_context_state, gs_context_state_t,\
 "gs_context_state_t", context_state_clear_marks,\
 context_state_enum_ptrs, context_state_reloc_ptrs, 0)

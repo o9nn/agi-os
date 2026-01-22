@@ -1,5 +1,5 @@
 #ifndef gzline_INCLUDED
-#  define gzline_INCLUDED
+# define gzline_INCLUDED
 #include "gxline.h"
 #define private_st_line_params() \
 gs_private_st_complex_only(st_line_params, gx_line_params, "line_params",\

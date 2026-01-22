@@ -99,7 +99,6 @@ class KVCacheGroupSpec:
     kv_cache_spec: KVCacheSpec
 @dataclass
 class KVCacheConfig:
-    """The number of KV cache blocks"""
     num_blocks: int
     'How should model runner initialize the KV cache tensors for each layer'
     kv_cache_tensors: list[KVCacheTensor]

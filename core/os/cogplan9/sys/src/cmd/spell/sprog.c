@@ -3,69 +3,69 @@
 #include <bio.h>
 #include <ctype.h>
 #include "code.h"
-#define ISUPPER(c)	isupper((c)&0xff)
-#define ISLOWER(c)	islower((c)&0xff)
-#define	ISALPHA(c)	isalpha((c)&0xff)
-#define	ISDIGIT(c)	isdigit((c)&0xff)
-#define ISVOWEL(c)	voweltab[(c)&0xff]
-#define Tolower(c)	(ISUPPER(c)? (c)-'A'+'a': (c))
-#define pair(a,b)	(((a)<<8) | (b))
-#define DLEV		2
-#define DSIZ		40
-typedef	long	Bits;
-#define	Set(h, f)	((long)(h) & (f))
-Bits 	nop(char*, char*, char*, int, int);
-Bits 	strip(char*, char*, char*, int, int);
-Bits 	ize(char*, char*, char*, int, int);
-Bits 	i_to_y(char*, char*, char*, int, int);
-Bits 	ily(char*, char*, char*, int, int);
-Bits 	subst(char*, char*, char*, int, int);
-Bits 	CCe(char*, char*, char*, int, int);
-Bits 	tion(char*, char*, char*, int, int);
-Bits 	an(char*, char*, char*, int, int);
-Bits 	s(char*, char*, char*, int, int);
-Bits 	es(char*, char*, char*, int, int);
-Bits 	bility(char*, char*, char*, int, int);
-Bits 	y_to_e(char*, char*, char*, int, int);
-Bits 	VCe(char*, char*, char*, int, int);
-Bits 	trypref(char*, char*, int, int);
-Bits	tryword(char*, char*, int, int);
-Bits 	trysuff(char*, int, int);
-Bits	dict(char*, char*);
-void	typeprint(Bits);
-void	pcomma(char*);
-void	ise(void);
-int	ordinal(void);
-char*	skipv(char*);
-int	inun(char*, Bits);
-char*	ztos(char*);
-void	readdict(char*);
-typedef	struct	Ptab	Ptab;
-struct	Ptab
+#define ISUPPER(c) isupper((c)&0xff)
+#define ISLOWER(c) islower((c)&0xff)
+#define ISALPHA(c) isalpha((c)&0xff)
+#define ISDIGIT(c) isdigit((c)&0xff)
+#define ISVOWEL(c) voweltab[(c)&0xff]
+#define Tolower(c) (ISUPPER(c)? (c)-'A'+'a': (c))
+#define pair(a,b) (((a)<<8) | (b))
+#define DLEV 2
+#define DSIZ 40
+typedef long Bits;
+#define Set(h, f) ((long)(h) & (f))
+Bits nop(char*, char*, char*, int, int);
+Bits strip(char*, char*, char*, int, int);
+Bits ize(char*, char*, char*, int, int);
+Bits i_to_y(char*, char*, char*, int, int);
+Bits ily(char*, char*, char*, int, int);
+Bits subst(char*, char*, char*, int, int);
+Bits CCe(char*, char*, char*, int, int);
+Bits tion(char*, char*, char*, int, int);
+Bits an(char*, char*, char*, int, int);
+Bits s(char*, char*, char*, int, int);
+Bits es(char*, char*, char*, int, int);
+Bits bility(char*, char*, char*, int, int);
+Bits y_to_e(char*, char*, char*, int, int);
+Bits VCe(char*, char*, char*, int, int);
+Bits trypref(char*, char*, int, int);
+Bits tryword(char*, char*, int, int);
+Bits trysuff(char*, int, int);
+Bits dict(char*, char*);
+void typeprint(Bits);
+void pcomma(char*);
+void ise(void);
+int ordinal(void);
+char* skipv(char*);
+int inun(char*, Bits);
+char* ztos(char*);
+void readdict(char*);
+typedef struct Ptab Ptab;
+struct Ptab
 {
-char*	s;
-int	flag;
+char* s;
+int flag;
 };
-typedef	struct	Suftab	Suftab;
-struct	Suftab
+typedef struct Suftab Suftab;
+struct Suftab
 {
-char	*suf;
-Bits	(*p1)(char*, char*, char*, int, int);
-int	n1;
-char	*d1;
-char	*a1;
-int	flag;
-int	affixable;
-Bits	(*p2)(char*, char*, char*, int, int);
-int	n2;
-char	*d2;
-char	*a2;
+char *suf;
+Bits (*p1)(char*, char*, char*, int, int);
+int n1;
+char *d1;
+char *a1;
+int flag;
+int affixable;
+Bits (*p2)(char*, char*, char*, int, int);
+int n2;
+char *d2;
+char *a2;
 };
-Suftab	staba[] = {
+Suftab staba[] = {
 {"aibohp",subst,1,"-e+ia","",NOUN, NOUN},
 0
 };
-Suftab	stabc[] =
+Suftab stabc[] =
 {
 {"cai",strip,1,"","+c",N_AFFIX, ADJ|NOUN},
 {"citsi",strip,2,"","+ic",N_AFFIX, ADJ | N_AFFIX | NOUN},
@@ -78,13 +78,13 @@ Suftab	stabc[] =
 {"cibohp",subst,1,"-e+ic","",NOUN, ADJ },
 0
 };
-Suftab	stabd[] =
+Suftab stabd[] =
 {
 {"de",strip,1,"","+d",ED,ADJ |COMP,i_to_y,2,"-y+ied","+ed"},
 {"dooh",ily,4,"-y+ihood","+hood",NOUN | ADV, NOUN},
 0
 };
-Suftab	stabe[] =
+Suftab stabe[] =
 {
 {"ecna",subst,1,"-t+ce","",ADJ,N_AFFIX|_Y|NOUN|VERB|ACTOR|V_AFFIX},
 {"ecne",subst,1,"-t+ce","",ADJ,N_AFFIX|_Y|NOUN|VERB|ACTOR|V_AFFIX},
@@ -95,7 +95,7 @@ Suftab	stabe[] =
 {"ekil",strip,4,"","+like",N_AFFIX ,ADJ},
 0
 };
-Suftab	stabg[] =
+Suftab stabg[] =
 {
 {"gniee",strip,3,"","+ing",V_IRREG ,ADJ|NOUN},
 {"gnikam",strip,6,"","+making",NOUN,NOUN},
@@ -103,7 +103,7 @@ Suftab	stabg[] =
 {"gni",CCe,3,"-e+ing","+ing",V_IRREG ,ADJ|ED|NOUN},
 0
 };
-Suftab	stabl[] =
+Suftab stabl[] =
 {
 {"ladio",strip,2,"","+al",NOUN |ADJ,ADJ},
 {"laci",strip,2,"","+al",NOUN |ADJ,ADJ |NOUN|N_AFFIX},
@@ -112,13 +112,13 @@ Suftab	stabl[] =
 {"luf",ily,3,"-y+iful","+ful",N_AFFIX,ADJ | NOUN},
 0
 };
-Suftab	stabm[] =
+Suftab stabm[] =
 {
 {"msi",CCe,3,"-e+ism","ism",N_AFFIX|ADJ,NOUN},
 {"margo",subst,-1,"-ph+m","",NOUN,NOUN},
 0
 };
-Suftab	stabn[] =
+Suftab stabn[] =
 {
 {"noitacifi",i_to_y,6,"-y+ication","",ION,NOUN | N_AFFIX},
 {"noitazi",ize,4,"-e+ation","",ION,NOUN| N_AFFIX},
@@ -132,42 +132,42 @@ Suftab	stabn[] =
 {"nosrep",strip,6,"","+person",MAN,PROP_COLLECT},
 0
 };
-Suftab	stabp[] =
+Suftab stabp[] =
 {
 {"pihs",strip,4,"","+ship",NOUN|PROP_COLLECT,NOUN| N_AFFIX},
 0
 };
-Suftab	stabr[] =
+Suftab stabr[] =
 {
 {"rehparg",subst,1,"-y+er","",ACTOR,NOUN,strip,2,"","+er"},
 {"reyhparg",nop,0,"","",0,NOUN},
 {"reyl",nop,0,"","",0,NOUN},
 {"rekam",strip,5,"","+maker",NOUN,NOUN},
 {"repeek",strip,6,"","+keeper",NOUN,NOUN},
-{"re",strip,1,"","+r",ACTOR,NOUN | N_AFFIX|VERB|ADJ,	i_to_y,2,"-y+ier","+er"},
+{"re",strip,1,"","+r",ACTOR,NOUN | N_AFFIX|VERB|ADJ, i_to_y,2,"-y+ier","+er"},
 {"rota",tion,2,"-e+or","",ION,NOUN| N_AFFIX|_Y},
 {"rotc",tion,2,"","+or",ION,NOUN| N_AFFIX},
 {"rotp",tion,2,"","+or",ION,NOUN| N_AFFIX},
 0
 };
-Suftab	stabs[] =
+Suftab stabs[] =
 {
 {"ssen",ily,4,"-y+iness","+ness",ADJ|ADV,NOUN| N_AFFIX},
 {"ssel",ily,4,"-y+iless","+less",NOUN | PROP_COLLECT,ADJ },
-{"se",s,1,"","+s",NOUN | V_IRREG,DONT_TOUCH ,	es,2,"-y+ies","+es"},
+{"se",s,1,"","+s",NOUN | V_IRREG,DONT_TOUCH , es,2,"-y+ies","+es"},
 {"s'",s,2,"","+'s",PROP_COLLECT | NOUN,DONT_TOUCH },
-{"s",s,1,"","+s",NOUN | V_IRREG,DONT_TOUCH  },
+{"s",s,1,"","+s",NOUN | V_IRREG,DONT_TOUCH },
 0
 };
-Suftab	stabt[] =
+Suftab stabt[] =
 {
 {"tnem",strip,4,"","+ment",V_AFFIX,NOUN | N_AFFIX | ADJ|VERB},
-{"tse",strip,2,"","+st",EST,DONT_TOUCH,	i_to_y,3,"-y+iest","+est" },
+{"tse",strip,2,"","+st",EST,DONT_TOUCH, i_to_y,3,"-y+iest","+est" },
 {"tsigol",i_to_y,2,"-y+ist","",N_AFFIX,NOUN | N_AFFIX},
 {"tsi",CCe,3,"-e+ist","+ist",N_AFFIX|ADJ,NOUN | N_AFFIX|COMP},
 0
 };
-Suftab	staby[] =
+Suftab staby[] =
 {
 {"ycna",subst,1,"-t+cy","",ADJ | N_AFFIX,NOUN | N_AFFIX},
 {"ycne",subst,1,"-t+cy","",ADJ | N_AFFIX,NOUN | N_AFFIX},
@@ -184,11 +184,11 @@ Suftab	staby[] =
 {"y",CCe,1,"-e+y","+y",_Y,ADJ|COMP},
 0
 };
-Suftab	stabz[] =
+Suftab stabz[] =
 {
 0
 };
-Suftab*	suftab[] =
+Suftab* suftab[] =
 {
 staba,
 stabz,
@@ -217,49 +217,49 @@ stabz,
 staby,
 stabz,
 };
-Ptab	ptaba[] =
+Ptab ptaba[] =
 {
 "anti", 0,
 "auto", 0,
 0
 };
-Ptab	ptabb[] =
+Ptab ptabb[] =
 {
 "bio", 0,
 0
 };
-Ptab	ptabc[] =
+Ptab ptabc[] =
 {
 "counter", 0,
 0
 };
-Ptab	ptabd[] =
+Ptab ptabd[] =
 {
 "dis", 0,
 0
 };
-Ptab	ptabe[] =
+Ptab ptabe[] =
 {
 "electro", 0,
 0
 };
-Ptab	ptabf[] =
+Ptab ptabf[] =
 {
 "femto", 0,
 0
 };
-Ptab	ptabg[] =
+Ptab ptabg[] =
 {
 "geo", 0,
 "giga", 0,
 0
 };
-Ptab	ptabh[] =
+Ptab ptabh[] =
 {
 "hyper", 0,
 0
 };
-Ptab	ptabi[] =
+Ptab ptabi[] =
 {
 "immuno", 0,
 "im", IN,
@@ -270,20 +270,20 @@ Ptab	ptabi[] =
 "iso", 0,
 0
 };
-Ptab	ptabj[] =
+Ptab ptabj[] =
 {
 0
 };
-Ptab	ptabk[] =
+Ptab ptabk[] =
 {
 "kilo", 0,
 0
 };
-Ptab	ptabl[] =
+Ptab ptabl[] =
 {
 0
 };
-Ptab	ptabm[] =
+Ptab ptabm[] =
 {
 "magneto", 0,
 "mega", 0,
@@ -297,20 +297,20 @@ Ptab	ptabm[] =
 "multi", 0,
 0
 };
-Ptab	ptabn[] =
+Ptab ptabn[] =
 {
 "nano", 0,
 "neuro", 0,
 "non", 0,
 0
 };
-Ptab	ptabo[] =
+Ptab ptabo[] =
 {
 "out", 0,
 "over", 0,
 0
 };
-Ptab	ptabp[] =
+Ptab ptabp[] =
 {
 "para", 0,
 "photo", 0,
@@ -321,18 +321,18 @@ Ptab	ptabp[] =
 "psycho", 0,
 0
 };
-Ptab	ptabq[] =
+Ptab ptabq[] =
 {
 "quasi", 0,
 0
 };
-Ptab	ptabr[] =
+Ptab ptabr[] =
 {
 "radio", 0,
 "re", 0,
 0
 };
-Ptab	ptabs[] =
+Ptab ptabs[] =
 {
 "semi", 0,
 "stereo", 0,
@@ -340,41 +340,41 @@ Ptab	ptabs[] =
 "super", 0,
 0
 };
-Ptab	ptabt[] =
+Ptab ptabt[] =
 {
 "tele", 0,
 "tera", 0,
 "thermo", 0,
 0
 };
-Ptab	ptabu[] =
+Ptab ptabu[] =
 {
 "ultra", 0,
 "under", 0,
 "un", IN,
 0
 };
-Ptab	ptabv[] =
+Ptab ptabv[] =
 {
 0
 };
-Ptab	ptabw[] =
+Ptab ptabw[] =
 {
 0
 };
-Ptab	ptabx[] =
+Ptab ptabx[] =
 {
 0
 };
-Ptab	ptaby[] =
+Ptab ptaby[] =
 {
 0
 };
-Ptab	ptabz[] =
+Ptab ptabz[] =
 {
 0
 };
-Ptab*	preftab[] =
+Ptab* preftab[] =
 {
 ptaba,
 ptabb,
@@ -407,30 +407,30 @@ typedef struct {
 char *mesg;
 enum { NONE, SUFF, PREF} type;
 } Deriv;
-int	aflag;
-int	cflag;
-int	fflag;
-int	vflag;
-int	xflag;
-int 	nflag;
-char	word[500];
-char*	original;
-Deriv	emptyderiv;
-Deriv	deriv[DSIZ+3];
-char	affix[DSIZ*10];
-int	prefcount;
-int 	suffcount;
-char*	acmeid;
-char	space[300000];
-Bits	encode[2048];
-int	nencode;
-char	voweltab[256];
-char*	spacep[128*128+1];
-Biobuf	bin;
-Biobuf	bout;
-char*	codefile = "/sys/lib/amspell";
-char*	brfile = "/sys/lib/brspell";
-char*	Usage = "usage";
+int aflag;
+int cflag;
+int fflag;
+int vflag;
+int xflag;
+int nflag;
+char word[500];
+char* original;
+Deriv emptyderiv;
+Deriv deriv[DSIZ+3];
+char affix[DSIZ*10];
+int prefcount;
+int suffcount;
+char* acmeid;
+char space[300000];
+Bits encode[2048];
+int nencode;
+char voweltab[256];
+char* spacep[128*128+1];
+Biobuf bin;
+Biobuf bout;
+char* codefile = "/sys/lib/amspell";
+char* brfile = "/sys/lib/brspell";
+char* Usage = "usage";
 void
 main(int argc, char *argv[])
 {
@@ -567,7 +567,7 @@ int initchar = ep[-1];
 flag &= ~MONO;
 lev += DLEV;
 if(lev < DSIZ) {
-deriv[lev]  = emptyderiv;
+deriv[lev] = emptyderiv;
 deriv[lev-1] = emptyderiv;
 }
 if(!ISLOWER(initchar))
@@ -686,7 +686,7 @@ Bits
 y_to_e(char* ep, char* d, char* a, int lev, int flag)
 {
 Bits h;
-int  temp;
+int temp;
 USED(a);
 switch(ep[-1]) {
 case 'a':
@@ -920,7 +920,7 @@ return h;
 Bits
 tryword(char* bp, char* ep, int lev, int flag)
 {
-int  j;
+int j;
 Bits h = 0;
 char duple[3];
 if(ep-bp <= 1)

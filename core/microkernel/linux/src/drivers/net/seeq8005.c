@@ -42,7 +42,7 @@ static void seeq8005_rx(struct device *dev);
 static int seeq8005_close(struct device *dev);
 static struct enet_statistics *seeq8005_get_stats(struct device *dev);
 static void set_multicast_list(struct device *dev);
-#define tx_done(dev)	(inw(SEEQ_STATUS) & SEEQSTAT_TX_ON)
+#define tx_done(dev) (inw(SEEQ_STATUS) & SEEQSTAT_TX_ON)
 extern void hardware_send_packet(struct device *dev, char *buf, int length);
 extern void seeq8005_init(struct device *dev, int startp);
 inline void wait_for_buffer(struct device *dev);
@@ -188,7 +188,7 @@ printk("ok.\n");
 #endif
 if (dev == NULL)
 dev = init_etherdev(0, sizeof(struct net_local));
-if (net_debug  &&  version_printed++ == 0)
+if (net_debug && version_printed++ == 0)
 printk("%s", version);
 printk("%s: %s found at %#3x, ", dev->name, "seeq8005", ioaddr);
 dev->base_addr = ioaddr;
@@ -219,10 +219,10 @@ dev->priv = kmalloc(sizeof(struct net_local), GFP_KERNEL);
 if (dev->priv == NULL)
 return -ENOMEM;
 memset(dev->priv, 0, sizeof(struct net_local));
-dev->open		= seeq8005_open;
-dev->stop		= seeq8005_close;
+dev->open = seeq8005_open;
+dev->stop = seeq8005_close;
 dev->hard_start_xmit = seeq8005_send_packet;
-dev->get_stats	= seeq8005_get_stats;
+dev->get_stats = seeq8005_get_stats;
 dev->set_multicast_list = &set_multicast_list;
 ether_setup(dev);
 dev->flags &= ~IFF_MULTICAST;
@@ -421,7 +421,7 @@ set_multicast_list(struct device *dev)
 #if 0
 int ioaddr = dev->base_addr;
 if (num_addrs) {
-outw( (inw(SEEQ_CFG1) & ~SEEQCFG1_MATCH_MASK)| SEEQCFG1_MATCH_ALL,  SEEQ_CFG1);
+outw( (inw(SEEQ_CFG1) & ~SEEQCFG1_MATCH_MASK)| SEEQCFG1_MATCH_ALL, SEEQ_CFG1);
 dev->flags|=IFF_PROMISC;
 } else {
 outw( (inw(SEEQ_CFG1) & ~SEEQCFG1_MATCH_MASK)| SEEQCFG1_MATCH_BROAD, SEEQ_CFG1);

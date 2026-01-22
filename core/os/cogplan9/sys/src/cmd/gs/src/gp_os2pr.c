@@ -22,7 +22,7 @@ private iodev_proc_fclose(os2_printer_fclose);
 const gx_io_device gs_iodev_printer = {
 "%printer%", "FileSystem",
 {os2_printer_init, iodev_no_open_device,
-NULL  , os2_printer_fopen, os2_printer_fclose,
+NULL , os2_printer_fopen, os2_printer_fclose,
 iodev_no_delete_file, iodev_no_rename_file, iodev_no_file_status,
 iodev_no_enumerate_files, NULL, NULL,
 iodev_no_get_params, iodev_no_put_params

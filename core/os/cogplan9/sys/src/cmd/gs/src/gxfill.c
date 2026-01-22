@@ -171,7 +171,7 @@ fill_options fo;
 line_list lst;
 *(const fill_options **)&lst.fo = &fo;
 gx_path_bbox(ppath, &ibox);
-#   define SMALL_CHARACTER 500
+# define SMALL_CHARACTER 500
 pseudo_rasterization = (is_character &&
 !is_spotan_device(dev) &&
 ibox.q.y - ibox.p.y < SMALL_CHARACTER * fixed_scale &&
@@ -224,12 +224,12 @@ cdev.max_fill_band = save_dev->max_fill_band;
 }
 if (adjust.x == fixed_half)
 fo.adjust_left = fixed_half - fixed_epsilon,
-fo.adjust_right = fixed_half  ;
+fo.adjust_right = fixed_half ;
 else
 fo.adjust_left = fo.adjust_right = adjust.x;
 if (adjust.y == fixed_half)
 fo.adjust_below = fixed_half - fixed_epsilon,
-fo.adjust_above = fixed_half  ;
+fo.adjust_above = fixed_half ;
 else
 fo.adjust_below = fo.adjust_above = adjust.y;
 init_line_list(&lst, ppath->memory);
@@ -354,7 +354,7 @@ gx_cpath_init_local_shared(&cpath_intersection, pcpath, pdev->memory);
 if ((code = gx_cpath_intersect(&cpath_intersection, ppath, params->rule, (gs_imager_state *)pis)) >= 0)
 code = gx_cpath_to_path(&cpath_intersection, &path_intersection);
 if (code >= 0)
-code = gx_dc_pattern2_fill_path(pdevc, &path_intersection, NULL,  pdev);
+code = gx_dc_pattern2_fill_path(pdevc, &path_intersection, NULL, pdev);
 gx_path_free(&path_intersection, "shading_fill_path_intersection");
 gx_cpath_free(&cpath_intersection, "shading_fill_cpath_intersection");
 } else {
@@ -362,7 +362,7 @@ bool got_dc = false;
 vd_save;
 if (vd_allowed('F') || vd_allowed('f')) {
 if (!vd_enabled) {
-vd_get_dc( (params->adjust.x | params->adjust.y)  ? 'F' : 'f');
+vd_get_dc( (params->adjust.x | params->adjust.y) ? 'F' : 'f');
 got_dc = vd_enabled;
 }
 if (vd_enabled) {
@@ -904,7 +904,7 @@ return false;
 }
 private inline int
 add_margin(line_list * ll, active_line * flp, active_line * alp, fixed y0, fixed y1)
-{   vd_bar(alp->start.x, alp->start.y, alp->end.x, alp->end.y, 1, RGB(255, 255, 255));
+{ vd_bar(alp->start.x, alp->start.y, alp->end.x, alp->end.y, 1, RGB(255, 255, 255));
 vd_bar(flp->start.x, flp->start.y, flp->end.x, flp->end.y, 1, RGB(255, 255, 255));
 return continue_margin_common(ll, &ll->margin_set0, flp, alp, y0, y1);
 }

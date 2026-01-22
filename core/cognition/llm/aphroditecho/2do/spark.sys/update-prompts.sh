@@ -7,15 +7,15 @@ SYSTEM_PROMPT_FILE="$SOURCE_DIR/system_prompt.md"
 TOOLS_FILE="$SOURCE_DIR/tools.md"
 echo "🔄 Updating prompts-content.ts..."
 if [ ! -f "$SYSTEM_PROMPT_FILE" ]; then
-    echo "❌ Error: $SYSTEM_PROMPT_FILE not found"
-    exit 1
+echo "❌ Error: $SYSTEM_PROMPT_FILE not found"
+exit 1
 fi
 if [ ! -f "$TOOLS_FILE" ]; then
-    echo "❌ Error: $TOOLS_FILE not found"
-    exit 1
+echo "❌ Error: $TOOLS_FILE not found"
+exit 1
 fi
 escape_for_js() {
-    cat "$1" | jq -Rs . | sed 's/^"//' | sed 's/"$//'
+cat "$1" | jq -Rs . | sed 's/^"//' | sed 's/"$//'
 }
 echo "📖 Reading and escaping system_prompt.md..."
 SYSTEM_PROMPT_CONTENT=$(escape_for_js "$SYSTEM_PROMPT_FILE")

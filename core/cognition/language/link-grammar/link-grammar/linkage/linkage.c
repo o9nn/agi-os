@@ -16,14 +16,14 @@
 #include "tokenize/tok-structures.h"
 #include "tokenize/word-structures.h"
 #define INFIX_MARK_L 1
-#define STEM_MARK_L  1
+#define STEM_MARK_L 1
 #define NULLWORD_START '['
-#define NULLWORD_END   ']'
+#define NULLWORD_END ']'
 static void add_morpheme_unmarked(Sentence sent, char *join_buff,
 const char *wm, Morpheme_type mt)
 {
 const char infix_mark = INFIX_MARK(sent->dict->affix_table);
-const char *sm =  get_word_subscript(wm);
+const char *sm = get_word_subscript(wm);
 if (NULL == sm) sm = (char *)wm + strlen(wm);
 if ((MT_PREFIX == mt) && (infix_mark == sm[-INFIX_MARK_L]))
 strncat(join_buff, wm, sm-wm-INFIX_MARK_L);
@@ -86,7 +86,7 @@ return new_word;
 #define PREFIX_SUPPRESS_L 2
 #define SUFFIX_SUPPRESS ("LL")
 #define SUFFIX_SUPPRESS_L 2
-#define HIDE_MORPHO   (('\0' != infix_mark) && !display_morphology)
+#define HIDE_MORPHO (('\0' != infix_mark) && !display_morphology)
 #define DISPLAY_GUESS_MARKS true
 static inline bool is_morphology_link(const char *link_name)
 {

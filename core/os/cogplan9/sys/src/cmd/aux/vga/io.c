@@ -10,15 +10,15 @@ static int iolfd = -1;
 static int biosfd = -1;
 static ulong biosoffset = 0;
 enum {
-Nctlchar	= 256,
-Nattr		= 16,
+Nctlchar = 256,
+Nattr = 16,
 };
 static int ctlfd = -1;
 static char ctlbuf[Nctlchar];
 static int ctlclean;
 static struct {
-char*	attr;
-char*	val;
+char* attr;
+char* val;
 } attr[Nattr];
 static int
 devopen(char* device, int mode)
@@ -145,7 +145,7 @@ seek(ctlfd, 0, 0);
 len = sprint(buf, "%s %s", attr, val);
 trace("+vgactlw %s\n", buf);
 if(write(ctlfd, buf, len) != len)
-error("vgactlw: <%s>: %r\n",  buf);
+error("vgactlw: <%s>: %r\n", buf);
 trace("-vgactlw %s\n", buf);
 ctlclean = 0;
 }
@@ -265,26 +265,26 @@ Bprint(&stdout, "%*.2luX", width, data);
 curprintindex++;
 }
 static char *flagname[32] = {
-[0x00]	"Fsnarf",
-[0x01]	"Foptions",
-[0x02]	"Finit",
-[0x03]	"Fload",
-[0x04]	"Fdump",
-[0x08]	"Hpclk2x8",
-[0x09]	"Upclk2x8",
-[0x0A]	"Henhanced",
-[0x0B]	"Uenhanced",
-[0x0C]	"Hpvram",
-[0x0D]	"Upvram",
-[0x0E]	"Hextsid",
-[0x0F]	"Uextsid",
-[0x10]	"Hclk2",
-[0x11]	"Uclk2",
-[0x12]	"Hlinear",
-[0x13]	"Ulinear",
-[0x14]	"Hclkdiv",
-[0x15]	"Uclkdiv",
-[0x16]	"Hsid32",
+[0x00] "Fsnarf",
+[0x01] "Foptions",
+[0x02] "Finit",
+[0x03] "Fload",
+[0x04] "Fdump",
+[0x08] "Hpclk2x8",
+[0x09] "Upclk2x8",
+[0x0A] "Henhanced",
+[0x0B] "Uenhanced",
+[0x0C] "Hpvram",
+[0x0D] "Upvram",
+[0x0E] "Hextsid",
+[0x0F] "Uextsid",
+[0x10] "Hclk2",
+[0x11] "Uclk2",
+[0x12] "Hlinear",
+[0x13] "Ulinear",
+[0x14] "Hclkdiv",
+[0x15] "Uclkdiv",
+[0x16] "Hsid32",
 };
 void
 printflag(ulong flag)

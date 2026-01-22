@@ -42,7 +42,7 @@ fprintf(fprn, "\033*o%dQ", SHINGLING);
 fputs("\033*p0x0Y", fprn);
 fputs("\033*b2M", fprn);
 fputs("\033*r0A", fprn);
-{    int lnum;
+{ int lnum;
 int num_blank_lines = 0;
 int lineSize = gdev_mem_bytes_per_scan_line((gx_device *)pdev);
 if (lineSize>bitSize)
@@ -61,7 +61,7 @@ endData--;
 if (endData == bitData)
 num_blank_lines++;
 else
-{    int count, k, i, lineLen;
+{ int count, k, i, lineLen;
 memset(endData, 0, 7);
 lineLen=((endData-bitData)+7)/8;
 if (planeSize<lineLen)

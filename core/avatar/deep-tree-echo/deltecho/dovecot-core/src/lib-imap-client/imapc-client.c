@@ -458,5 +458,5 @@ imapc_client_set_login_callback(struct imapc_client *client,
 imapc_command_callback_t *callback, void *context)
 {
 client->login_callback = callback;
-client->login_context  = context;
+client->login_context = context;
 }

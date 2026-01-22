@@ -15,22 +15,22 @@ Success,
 Failure,
 Noise,
 };
-typedef struct Msg	Msg;
+typedef struct Msg Msg;
 struct Msg
 {
-char	*text;
-int	type;
+char *text;
+int type;
 };
 Msg msgs[] =
 {
-{ "OK",			Ok, },
-{ "NO CARRIER", 	Failure, },
-{ "ERROR",		Failure, },
-{ "NO DIALTONE",	Failure, },
-{ "BUSY",		Failure, },
-{ "NO ANSWER",		Failure, },
-{ "CONNECT",		Success, },
-{ 0,			0 },
+{ "OK", Ok, },
+{ "NO CARRIER", Failure, },
+{ "ERROR", Failure, },
+{ "NO DIALTONE", Failure, },
+{ "BUSY", Failure, },
+{ "NO ANSWER", Failure, },
+{ "CONNECT", Success, },
+{ 0, 0 },
 };
 void
 usage(void)

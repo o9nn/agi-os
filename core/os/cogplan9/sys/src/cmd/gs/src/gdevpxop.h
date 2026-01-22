@@ -1,5 +1,5 @@
 #ifndef gdevpxop_INCLUDED
-#  define gdevpxop_INCLUDED
+# define gdevpxop_INCLUDED
 typedef enum {
 pxtNull = 0x00, pxt01, pxt02, pxt03,
 pxt04, pxt05, pxt06, pxt07,
@@ -22,9 +22,9 @@ pxtEndPage, pxt45, pxt46, pxtComment,
 pxtOpenDataSource, pxtCloseDataSource, pxt4a, pxt4b,
 pxt4c, pxt4d, pxt4e, pxtBeginFontHeader,
 pxtReadFontHeader, pxtEndFontHeader, pxtBeginChar, pxtReadChar,
-pxtEndChar, pxtRemoveFont, pxtSetCharAttributes  , pxt57,
+pxtEndChar, pxtRemoveFont, pxtSetCharAttributes , pxt57,
 pxt58, pxt59, pxt5a, pxtBeginStream,
-pxtReadStream, pxtEndStream, pxtExecStream, pxtRemoveStream  ,
+pxtReadStream, pxtEndStream, pxtExecStream, pxtRemoveStream ,
 pxtPopGS, pxtPushGS, pxtSetClipReplace, pxtSetBrushSource,
 pxtSetCharAngle, pxtSetCharScale, pxtSetCharShear, pxtSetClipIntersect,
 pxtSetClipRectangle, pxtSetClipToPage, pxtSetColorSpace, pxtSetCursor,

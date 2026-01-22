@@ -32,9 +32,9 @@ long (*current)(i_ctx_t *);
 int (*set)(i_ctx_t *, long);
 } long_param_def_t;
 #if arch_sizeof_long > arch_sizeof_int
-#  define MAX_UINT_PARAM max_uint
+# define MAX_UINT_PARAM max_uint
 #else
-#  define MAX_UINT_PARAM max_long
+# define MAX_UINT_PARAM max_long
 #endif
 typedef struct bool_param_def_s {
 param_def_common;
@@ -535,7 +535,7 @@ psref->value.const_bytes, r_size(psref)));
 }
 private int
 current_param_list(i_ctx_t *i_ctx_p, const param_set * pset,
-const ref * psref  )
+const ref * psref )
 {
 stack_param_list list;
 gs_param_list *const plist = (gs_param_list *)&list;

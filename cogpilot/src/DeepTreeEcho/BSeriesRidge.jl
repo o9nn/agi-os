@@ -90,15 +90,15 @@ push!(trees, RootedTreeSimple([1, 2]))
 end
 # Order 3: three nodes (2 trees)
 if order >= 3
-push!(trees, RootedTreeSimple([1, 2, 3]))  # Linear
-push!(trees, RootedTreeSimple([1, 2, 2]))  # Branched
+push!(trees, RootedTreeSimple([1, 2, 3])) # Linear
+push!(trees, RootedTreeSimple([1, 2, 2])) # Branched
 end
 # Order 4: four nodes (4 trees)
 if order >= 4
-push!(trees, RootedTreeSimple([1, 2, 3, 4]))  # Linear
-push!(trees, RootedTreeSimple([1, 2, 3, 3]))  # One branch
-push!(trees, RootedTreeSimple([1, 2, 3, 2]))  # Different branch
-push!(trees, RootedTreeSimple([1, 2, 2, 2]))  # Three branches
+push!(trees, RootedTreeSimple([1, 2, 3, 4])) # Linear
+push!(trees, RootedTreeSimple([1, 2, 3, 3])) # One branch
+push!(trees, RootedTreeSimple([1, 2, 3, 2])) # Different branch
+push!(trees, RootedTreeSimple([1, 2, 2, 2])) # Three branches
 end
 # For higher orders, would use proper tree generation algorithm
 # This is a simplified version for demonstration
@@ -268,7 +268,7 @@ function compute_coefficient_gradient(ridge::Ridge, residuals::Vector{Float64})
 gradient = zeros(ridge.dimension)
 for (i, tree) in enumerate(ridge.trees)
 if i <= length(residuals)
-gradient[i] = 2 * residuals[i]  # Quadratic error
+gradient[i] = 2 * residuals[i] # Quadratic error
 end
 end
 return gradient

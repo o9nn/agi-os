@@ -207,13 +207,13 @@ link->conf.Status = CCSR_AUDIO_ENA;
 }
 if (cfg->vcc.present & (1 << CISTPL_POWER_VNOM)) {
 if (conf.Vcc != cfg->vcc.param[CISTPL_POWER_VNOM] / 10000) {
-DEBUG(2, "orinoco_cs_config: Vcc mismatch (conf.Vcc = %d, CIS = %d)\n",  conf.Vcc, cfg->vcc.param[CISTPL_POWER_VNOM] / 10000);
+DEBUG(2, "orinoco_cs_config: Vcc mismatch (conf.Vcc = %d, CIS = %d)\n", conf.Vcc, cfg->vcc.param[CISTPL_POWER_VNOM] / 10000);
 if (!ignore_cis_vcc)
 goto next_entry;
 }
 } else if (dflt.vcc.present & (1 << CISTPL_POWER_VNOM)) {
 if (conf.Vcc != dflt.vcc.param[CISTPL_POWER_VNOM] / 10000) {
-DEBUG(2, "orinoco_cs_config: Vcc mismatch (conf.Vcc = %d, CIS = %d)\n",  conf.Vcc, dflt.vcc.param[CISTPL_POWER_VNOM] / 10000);
+DEBUG(2, "orinoco_cs_config: Vcc mismatch (conf.Vcc = %d, CIS = %d)\n", conf.Vcc, dflt.vcc.param[CISTPL_POWER_VNOM] / 10000);
 if(!ignore_cis_vcc)
 goto next_entry;
 }
@@ -254,7 +254,7 @@ next_entry:
 if (link->io.NumPorts1)
 CardServices(ReleaseIO, link->handle, &link->io);
 last_ret = CardServices(GetNextTuple, handle, &tuple);
-if (last_ret  == CS_NO_MORE_ITEMS) {
+if (last_ret == CS_NO_MORE_ITEMS) {
 printk(KERN_ERR "GetNextTuple().  No matching CIS configuration, "
 "maybe you need the ignore_cis_vcc=1 parameter.\n");
 goto cs_failed;

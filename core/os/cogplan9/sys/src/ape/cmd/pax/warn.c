@@ -12,8 +12,8 @@ static void prsize();
 void warnarch(char *msg, OFFSET adjust)
 #else
 void warnarch(msg, adjust)
-char           *msg;
-OFFSET          adjust;
+char *msg;
+OFFSET adjust;
 #endif
 {
 fprintf(stderr, "%s: [offset ", myname);
@@ -30,7 +30,7 @@ char *strerror()
 #undef strerror
 return (strerror(errno));
 #else
-static char     msg[40];
+static char msg[40];
 if (errno > 0 && errno < sys_nerr) {
 return (sys_errlist[errno]);
 }
@@ -42,11 +42,11 @@ return (msg);
 static void prsize(FILE *stream, OFFSET size)
 #else
 static void prsize(stream, size)
-FILE           *stream;
-OFFSET          size;
+FILE *stream;
+OFFSET size;
 #endif
 {
-OFFSET          n;
+OFFSET n;
 if (n = (size / (1024L * 1024L))) {
 fprintf(stream, "%ldm+", n);
 size -= n * 1024L * 1024L;
@@ -61,7 +61,7 @@ fprintf(stream, "%ld", size);
 void fatal(char *why)
 #else
 void fatal(why)
-char           *why;
+char *why;
 #endif
 {
 fprintf(stderr, "%s: %s\n", myname, why);
@@ -71,8 +71,8 @@ exit(1);
 void warn(char *what, char *why)
 #else
 void warn(what, why)
-char           *what;
-char           *why;
+char *what;
+char *why;
 #endif
 {
 fprintf(stderr, "%s: %s : %s\n", myname, what, why);

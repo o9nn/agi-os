@@ -2,41 +2,41 @@
 #include <linux/types.h>
 #include <linux/kdev_t.h>
 #define STATUS(base) base
-#define STST	0x80
-#define DIAGF	0x40
-#define INIT	0x20
-#define IDLE	0x10
-#define CDF	0x08
-#define DF	0x04
-#define INVDCMD	0x01
+#define STST 0x80
+#define DIAGF 0x40
+#define INIT 0x20
+#define IDLE 0x10
+#define CDF 0x08
+#define DF 0x04
+#define INVDCMD 0x01
 #define STATMASK 0xfd
 #define INTRFLAGS(base) (STATUS(base)+2)
-#define ANYINTR	0x80
-#define SCRD	0x08
-#define HACC	0x04
-#define MBOA	0x02
-#define MBIF	0x01
+#define ANYINTR 0x80
+#define SCRD 0x08
+#define HACC 0x04
+#define MBOA 0x02
+#define MBIF 0x01
 #define INTRMASK 0x8f
 #define CONTROL(base) STATUS(base)
-#define HRST	0x80
-#define SRST	0x40
-#define IRST	0x20
-#define SCRST	0x10
+#define HRST 0x80
+#define SRST 0x40
+#define IRST 0x20
+#define SCRST 0x10
 #define DATA(base) (STATUS(base)+1)
-#define CMD_NOP		0x00
-#define CMD_MBINIT	0x01
-#define CMD_START_SCSI	0x02
-#define CMD_INQUIRY	0x04
-#define CMD_EMBOI	0x05
-#define CMD_BUSON_TIME	0x07
-#define CMD_BUSOFF_TIME	0x08
-#define CMD_DMASPEED	0x09
-#define CMD_RETDEVS	0x0a
-#define CMD_RETCONF	0x0b
-#define CMD_RETSETUP	0x0d
-#define CMD_ECHO	0x1f
-#define CMD_EXTBIOS     0x28
-#define CMD_MBENABLE    0x29
+#define CMD_NOP 0x00
+#define CMD_MBINIT 0x01
+#define CMD_START_SCSI 0x02
+#define CMD_INQUIRY 0x04
+#define CMD_EMBOI 0x05
+#define CMD_BUSON_TIME 0x07
+#define CMD_BUSOFF_TIME 0x08
+#define CMD_DMASPEED 0x09
+#define CMD_RETDEVS 0x0a
+#define CMD_RETCONF 0x0b
+#define CMD_RETSETUP 0x0d
+#define CMD_ECHO 0x1f
+#define CMD_EXTBIOS 0x28
+#define CMD_MBENABLE 0x29
 struct mailbox {
 unchar status;
 unchar ccbptr[3];
@@ -45,18 +45,18 @@ struct chain {
 unchar datalen[3];
 unchar dataptr[3];
 };
-#define any2scsi(up, p)				\
-(up)[0] = (((unsigned long)(p)) >> 16)  ;	\
-(up)[1] = (((unsigned long)(p)) >> 8);		\
+#define any2scsi(up, p) \
+(up)[0] = (((unsigned long)(p)) >> 16) ; \
+(up)[1] = (((unsigned long)(p)) >> 8); \
 (up)[2] = ((unsigned long)(p));
 #define scsi2int(up) ( (((long)*(up)) << 16) + (((long)(up)[1]) << 8) + ((long)(up)[2]) )
-#define xany2scsi(up, p)	\
-(up)[0] = ((long)(p)) >> 24;	\
-(up)[1] = ((long)(p)) >> 16;	\
-(up)[2] = ((long)(p)) >> 8;	\
+#define xany2scsi(up, p) \
+(up)[0] = ((long)(p)) >> 24; \
+(up)[1] = ((long)(p)) >> 16; \
+(up)[2] = ((long)(p)) >> 8; \
 (up)[3] = ((long)(p));
 #define xscsi2int(up) ( (((long)(up)[0]) << 24) + (((long)(up)[1]) << 16) \
-+ (((long)(up)[2]) <<  8) +  ((long)(up)[3]) )
++ (((long)(up)[2]) << 8) + ((long)(up)[3]) )
 #define MAX_CDB 12
 #define MAX_SENSE 14
 struct ccb {
@@ -86,24 +86,24 @@ int aha1542_biosparam(Disk *, kdev_t, int*);
 #define NULL 0
 #endif
 extern struct proc_dir_entry proc_scsi_aha1542;
-#define AHA1542 {  NULL, NULL,				\
+#define AHA1542 { NULL, NULL, \
 &proc_scsi_aha1542, \
-NULL,		                \
-"Adaptec 1542", 			\
-aha1542_detect,			\
-NULL,				\
-NULL,	 			\
-aha1542_command,			\
-aha1542_queuecommand,		\
-aha1542_abort,			\
-aha1542_reset,			\
-NULL,				\
-aha1542_biosparam,                 \
-AHA1542_MAILBOXES, 		\
-7, 				\
-AHA1542_SCATTER, 			\
-AHA1542_CMDLUN, 			\
-0, 				\
-1, 				\
+NULL, \
+"Adaptec 1542", \
+aha1542_detect, \
+NULL, \
+NULL, \
+aha1542_command, \
+aha1542_queuecommand, \
+aha1542_abort, \
+aha1542_reset, \
+NULL, \
+aha1542_biosparam, \
+AHA1542_MAILBOXES, \
+7, \
+AHA1542_SCATTER, \
+AHA1542_CMDLUN, \
+0, \
+1, \
 ENABLE_CLUSTERING}
 #endif

@@ -8,97 +8,97 @@
 # ```julia
 # julia> using SnoopCompile, ProfileView; tinf = @snoopi_deep begin
 #
-#   using BSeries
+# using BSeries
 #
-#   A = [0 0 0 0; 1
-#   b = [1
-#   c = [0, 1
-#   series = bseries(A, b, c, 5)
-#   exact = ExactSolution(series)
-#   series - exact
-#   order_of_accuracy(series)
+# A = [0 0 0 0; 1
+# b = [1
+# c = [0, 1
+# series = bseries(A, b, c, 5)
+# exact = ExactSolution(series)
+# series - exact
+# order_of_accuracy(series)
 #
-#   As = [
-#       [0 0; 1
-#       [1
-#   ]
-#   bs = [
-#       [1
-#       [1
-#   ]
-#   ark = AdditiveRungeKuttaMethod(As, bs)
-#   series = bseries(ark, 3)
-#   series - ExactSolution(series)
-#   order_of_accuracy(series)
-#   modified_equation(series)
-#   modifying_integrator(series)
+# As = [
+# [0 0; 1
+# [1
+# ]
+# bs = [
+# [1
+# [1
+# ]
+# ark = AdditiveRungeKuttaMethod(As, bs)
+# series = bseries(ark, 3)
+# series - ExactSolution(series)
+# order_of_accuracy(series)
+# modified_equation(series)
+# modifying_integrator(series)
 #
-#   γ = [0.395 0 0 0;
-#        -0.767672395484 0.395 0 0;
-#        -0.851675323742 0.522967289188 0.395 0;
-#        0.288463109545 0.880214273381e-1 -0.337389840627 0.395]
-#   A = [0 0 0 0;
-#        0.438 0 0 0;
-#        0.796920457938 0.730795420615e-1 0 0;
-#        0.796920457938 0.730795420615e-1 0 0]
-#   b = [0.199293275701, 0.482645235674, 0.680614886256e-1, 0.25]
-#   ros = RosenbrockMethod(γ, A, b)
-#   series = bseries(ros, 5)
-#   series - ExactSolution(series)
-#   modified_equation(series)
-#   modifying_integrator(series)
+# γ = [0.395 0 0 0;
+# -0.767672395484 0.395 0 0;
+# -0.851675323742 0.522967289188 0.395 0;
+# 0.288463109545 0.880214273381e-1 -0.337389840627 0.395]
+# A = [0 0 0 0;
+# 0.438 0 0 0;
+# 0.796920457938 0.730795420615e-1 0 0;
+# 0.796920457938 0.730795420615e-1 0 0]
+# b = [0.199293275701, 0.482645235674, 0.680614886256e-1, 0.25]
+# ros = RosenbrockMethod(γ, A, b)
+# series = bseries(ros, 5)
+# series - ExactSolution(series)
+# modified_equation(series)
+# modifying_integrator(series)
 #
-#   series = bseries(5) do t, series
-#       if order(t) in (0, 1)
-#           return 1
-#       else
-#           v = 1
-#           n = 0
-#           for subtree in SubtreeIterator(t)
-#               v *= series[subtree]
-#               n += 1
-#           end
-#           return v / (n + 1)
-#       end
-#   end
-#   series - ExactSolution(series)
-#   order_of_accuracy(series)
-#   modified_equation(series)
-#   modifying_integrator(series)
+# series = bseries(5) do t, series
+# if order(t) in (0, 1)
+# return 1
+# else
+# v = 1
+# n = 0
+# for subtree in SubtreeIterator(t)
+# v *= series[subtree]
+# n += 1
+# end
+# return v / (n + 1)
+# end
+# end
+# series - ExactSolution(series)
+# order_of_accuracy(series)
+# modified_equation(series)
+# modifying_integrator(series)
 #
-#   A = [0 0 0 0 0;
-#        1
-#        0 2
-#        3
-#        1
-#   b = [1
-#   rk_a = RungeKuttaMethod(A, b)
-#   series_a = bseries(rk_a, 6)
-#   order_of_accuracy(series_a)
-#   A = [0 0 0 0 0;
-#        1
-#        0 2
-#        75
-#        -37
-#   b = [19
-#   rk_b = RungeKuttaMethod(A, b)
-#   series_b = bseries(rk_b, 6)
-#   order_of_accuracy(series_b)
-#   A = [0 0 0 0 0;
-#        1
-#        0 2
-#        161
-#        -27
-#   b = [7
-#   rk_c = RungeKuttaMethod(A, b)
-#   series_c = bseries(rk_c, 6)
-#   order_of_accuracy(series_c)
-#   series = compose(series_b, series_a, series_c, normalize_stepsize = true)
-#   order_of_accuracy(series)
-#   modified_equation(series)
-#   modifying_integrator(series)
+# A = [0 0 0 0 0;
+# 1
+# 0 2
+# 3
+# 1
+# b = [1
+# rk_a = RungeKuttaMethod(A, b)
+# series_a = bseries(rk_a, 6)
+# order_of_accuracy(series_a)
+# A = [0 0 0 0 0;
+# 1
+# 0 2
+# 75
+# -37
+# b = [19
+# rk_b = RungeKuttaMethod(A, b)
+# series_b = bseries(rk_b, 6)
+# order_of_accuracy(series_b)
+# A = [0 0 0 0 0;
+# 1
+# 0 2
+# 161
+# -27
+# b = [7
+# rk_c = RungeKuttaMethod(A, b)
+# series_c = bseries(rk_c, 6)
+# order_of_accuracy(series_c)
+# series = compose(series_b, series_a, series_c, normalize_stepsize = true)
+# order_of_accuracy(series)
+# modified_equation(series)
+# modifying_integrator(series)
 #
-#   end
+# end
 #
 # InferenceTimingNode: 3.093312/4.309741 on Core.Compiler.Timings.ROOT() with 63 direct children
 #
@@ -118,16 +118,16 @@
 function _precompile_()
 ccall(:jl_generating_output, Cint, ()) == 1 || return nothing
 Base.precompile(Tuple{typeof(bseries), Matrix{Rational{Int64}}, Vector{Rational{Int64}},
-Vector{Rational{Int64}}, Int64})   # time: 0.28764844
+Vector{Rational{Int64}}, Int64}) # time: 0.28764844
 Base.precompile(Tuple{typeof(bseries),
 AdditiveRungeKuttaMethod{Rational{Int64},
 Vector{RungeKuttaMethod{Rational{Int64},
 Matrix{Rational{Int64}},
 Vector{Rational{Int64}}}}},
-Int64})   # time: 0.24456108
+Int64}) # time: 0.24456108
 Base.precompile(Tuple{typeof(bseries),
 RosenbrockMethod{Float64, Matrix{Float64}, Vector{Float64}},
-Int64})   # time: 0.11124245
+Int64}) # time: 0.11124245
 Base.precompile(Tuple{Core.kwftype(typeof(compose)),
 NamedTuple{(:normalize_stepsize,), Tuple{Bool}}, typeof(compose),
 TruncatedBSeries{RootedTree{Int64, Vector{Int64}},
@@ -135,62 +135,62 @@ Rational{Int64}},
 TruncatedBSeries{RootedTree{Int64, Vector{Int64}},
 Rational{Int64}},
 TruncatedBSeries{RootedTree{Int64, Vector{Int64}},
-Rational{Int64}}})   # time: 0.052562617
+Rational{Int64}}}) # time: 0.052562617
 Base.precompile(Tuple{typeof(modified_equation),
-TruncatedBSeries{RootedTree{Int64, Vector{Int64}}, Float64}})   # time: 0.029089022
+TruncatedBSeries{RootedTree{Int64, Vector{Int64}}, Float64}}) # time: 0.029089022
 Base.precompile(Tuple{typeof(modified_equation),
 TruncatedBSeries{BicoloredRootedTree{Int64, Vector{Int64},
 Vector{Bool}},
-Rational{Int64}}})   # time: 0.026970008
+Rational{Int64}}}) # time: 0.026970008
 Base.precompile(Tuple{typeof(-),
 TruncatedBSeries{BicoloredRootedTree{Int64, Vector{Int64},
 Vector{Bool}},
 Rational{Int64}},
 TruncatedBSeries{BicoloredRootedTree{Int64, Vector{Int64},
 Vector{Bool}},
-Rational{Int64}}})   # time: 0.024954015
-Base.precompile(Tuple{typeof(bseries), Function, Int64})   # time: 0.021058364
+Rational{Int64}}}) # time: 0.024954015
+Base.precompile(Tuple{typeof(bseries), Function, Int64}) # time: 0.021058364
 Base.precompile(Tuple{typeof(order_of_accuracy),
 TruncatedBSeries{BicoloredRootedTree{Int64, Vector{Int64},
 Vector{Bool}},
-Rational{Int64}}})   # time: 0.018548366
+Rational{Int64}}}) # time: 0.018548366
 Base.precompile(Tuple{typeof(-),
 TruncatedBSeries{RootedTree{Int64, Vector{Int64}},
 Rational{Int64}},
 TruncatedBSeries{RootedTree{Int64, Vector{Int64}},
-Rational{Int64}}})   # time: 0.015549354
+Rational{Int64}}}) # time: 0.015549354
 Base.precompile(Tuple{Type{ExactSolution},
 TruncatedBSeries{RootedTree{Int64, Vector{Int64}},
-Rational{Int64}}})   # time: 0.014666914
+Rational{Int64}}}) # time: 0.014666914
 Base.precompile(Tuple{typeof(order_of_accuracy),
 TruncatedBSeries{RootedTree{Int64, Vector{Int64}},
-Rational{Int64}}})   # time: 0.012643992
+Rational{Int64}}}) # time: 0.012643992
 Base.precompile(Tuple{typeof(-),
 TruncatedBSeries{RootedTree{Int64, Vector{Int64}}, Float64},
-TruncatedBSeries{RootedTree{Int64, Vector{Int64}}, Float64}})   # time: 0.010377383
+TruncatedBSeries{RootedTree{Int64, Vector{Int64}}, Float64}}) # time: 0.010377383
 Base.precompile(Tuple{typeof(modified_equation),
 TruncatedBSeries{RootedTree{Int64, Vector{Int64}},
-Rational{Int64}}})   # time: 0.009575064
+Rational{Int64}}}) # time: 0.009575064
 Base.precompile(Tuple{Type{ExactSolution},
 TruncatedBSeries{BicoloredRootedTree{Int64, Vector{Int64},
 Vector{Bool}},
-Rational{Int64}}})   # time: 0.008866523
+Rational{Int64}}}) # time: 0.008866523
 Base.precompile(Tuple{typeof(getindex),
 TruncatedBSeries{RootedTree{Int64, Vector{Int64}},
 Rational{Int64}},
 RootedTree{Int64,
 SubArray{Int64, 1, Vector{Int64},
-Tuple{UnitRange{Int64}}, true}}})   # time: 0.008717881
+Tuple{UnitRange{Int64}}, true}}}) # time: 0.008717881
 Base.precompile(Tuple{Type{ExactSolution},
-TruncatedBSeries{RootedTree{Int64, Vector{Int64}}, Float64}})   # time: 0.007198428
+TruncatedBSeries{RootedTree{Int64, Vector{Int64}}, Float64}}) # time: 0.007198428
 Base.precompile(Tuple{typeof(modifying_integrator),
 TruncatedBSeries{BicoloredRootedTree{Int64, Vector{Int64},
 Vector{Bool}},
-Rational{Int64}}})   # time: 0.001966412
+Rational{Int64}}}) # time: 0.001966412
 Base.precompile(Tuple{typeof(modifying_integrator),
 TruncatedBSeries{RootedTree{Int64, Vector{Int64}},
-Rational{Int64}}})   # time: 0.001889854
+Rational{Int64}}}) # time: 0.001889854
 Base.precompile(Tuple{typeof(modifying_integrator),
-TruncatedBSeries{RootedTree{Int64, Vector{Int64}}, Float64}})   # time: 0.001581901
+TruncatedBSeries{RootedTree{Int64, Vector{Int64}}, Float64}}) # time: 0.001581901
 end
 _precompile_()

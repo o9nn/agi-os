@@ -18,9 +18,9 @@ mem_default_strip_copy_rop, mem_get_bits_rectangle);
 ((((color) >> 24) & 0xff) + (((color) >> 8) & 0xff00) +\
 (((color) & 0xff00) << 8) + ((color) << 24))
 #if arch_is_big_endian
-#  define arrange_bytes(color) (color)
+# define arrange_bytes(color) (color)
 #else
-#  define arrange_bytes(color) color_swap_bytes(color)
+# define arrange_bytes(color) color_swap_bytes(color)
 #endif
 private int
 mem_true32_fill_rectangle(gx_device * dev,

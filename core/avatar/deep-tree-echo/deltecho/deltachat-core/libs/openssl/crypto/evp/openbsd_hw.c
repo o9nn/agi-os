@@ -5,21 +5,21 @@
 static void *dummy = &dummy;
 #if 0
 # ifdef OPENSSL_OPENBSD_DEV_CRYPTO
-#  include <fcntl.h>
-#  include <stdio.h>
-#  include <errno.h>
-#  include <sys/ioctl.h>
-#  include <crypto/cryptodev.h>
-#  include <unistd.h>
-#  include <assert.h>
-#  define MAX_HW_KEY      24
-#  define MAX_HW_IV       8
-#  define MD5_DIGEST_LENGTH       16
-#  define MD5_CBLOCK              64
+# include <fcntl.h>
+# include <stdio.h>
+# include <errno.h>
+# include <sys/ioctl.h>
+# include <crypto/cryptodev.h>
+# include <unistd.h>
+# include <assert.h>
+# define MAX_HW_KEY 24
+# define MAX_HW_IV 8
+# define MD5_DIGEST_LENGTH 16
+# define MD5_CBLOCK 64
 static int fd;
 static int dev_failed;
 typedef struct session_op session_op;
-#  define CDATA(ctx) EVP_C_DATA(session_op,ctx)
+# define CDATA(ctx) EVP_C_DATA(session_op,ctx)
 static void err(const char *str)
 {
 fprintf(stderr, "%s: errno %d\n", str, errno);
@@ -139,7 +139,7 @@ const unsigned char *iv, int enc)
 {
 return dev_crypto_init_key(ctx, CRYPTO_3DES_CBC, key, 24);
 }
-#  define dev_crypto_des_ede3_cbc_cipher dev_crypto_cipher
+# define dev_crypto_des_ede3_cbc_cipher dev_crypto_cipher
 BLOCK_CIPHER_def_cbc(dev_crypto_des_ede3, session_op, NID_des_ede3, 8, 24, 8,
 0, dev_crypto_des_ede3_init_key,
 dev_crypto_cleanup,

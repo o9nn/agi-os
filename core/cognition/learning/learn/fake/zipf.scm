@@ -1,5 +1,5 @@
 (define (make-random-real-generator lo hi)
-	(lambda ()
-		(+ (* (- hi lo) (random:uniform)) lo))
+(lambda ()
+(+ (* (- hi lo) (random:uniform)) lo))
 )
 (define (exact FLOAT) (inexact->exact FLOAT))

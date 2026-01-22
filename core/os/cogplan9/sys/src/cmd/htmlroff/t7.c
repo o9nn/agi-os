@@ -10,10 +10,10 @@ struct Mac
 int argc;
 Rune *argv[MAXARG];
 };
-Mac		mstack[MAXMSTACK];
-int		nmstack;
-void		emitdi(void);
-void		flushdi(void);
+Mac mstack[MAXMSTACK];
+int nmstack;
+void emitdi(void);
+void flushdi(void);
 void popmacro(void);
 int
 runmacro(int dot, int argc, Rune **argv)

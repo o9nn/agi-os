@@ -1,5 +1,5 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #include "maildriver_types.h"
 #include <time.h>
@@ -48,7 +48,7 @@ free(resp);
 static int32_t mailimf_date_time_to_int(struct mailimf_date_time * date)
 {
 return date->dt_year * 12 * 30 * 24 * 60 * 60 +
-date->dt_month * 30 * 24 * 60 * 60  + date->dt_day * 24 * 60 * 60 +
+date->dt_month * 30 * 24 * 60 * 60 + date->dt_day * 24 * 60 * 60 +
 (date->dt_hour - date->dt_zone) * 60 * 60 +
 date->dt_min * 60 + date->dt_sec;
 }
@@ -175,7 +175,7 @@ static struct error_message message_tab[] = {
 { MAIL_ERROR_STREAM, "stream error - socket could not be read or written" },
 { MAIL_ERROR_LOGIN, "login error" },
 { MAIL_ERROR_CREATE, "create error" },
-{ MAIL_ERROR_DELETE,  "delete error" },
+{ MAIL_ERROR_DELETE, "delete error" },
 { MAIL_ERROR_LOGOUT, "logout error" },
 { MAIL_ERROR_NOOP, "noop error" },
 { MAIL_ERROR_RENAME, "rename error" },
@@ -185,7 +185,7 @@ static struct error_message message_tab[] = {
 { MAIL_ERROR_MEMORY, "not enough memory" },
 { MAIL_ERROR_STATUS, "status error" },
 { MAIL_ERROR_SUBSCRIBE, "subscribe error" },
-{ MAIL_ERROR_UNSUBSCRIBE,  "unsubscribe error" },
+{ MAIL_ERROR_UNSUBSCRIBE, "unsubscribe error" },
 { MAIL_ERROR_LIST, "list error" },
 { MAIL_ERROR_LSUB, "lsub error" },
 { MAIL_ERROR_APPEND, "append error - mail could not be appended" },
@@ -195,7 +195,7 @@ static struct error_message message_tab[] = {
 { MAIL_ERROR_SEARCH, "search error" },
 { MAIL_ERROR_DISKSPACE, " error: not enough diskspace" },
 { MAIL_ERROR_MSG_NOT_FOUND, "message not found" },
-{ MAIL_ERROR_PARSE,  "parse error" },
+{ MAIL_ERROR_PARSE, "parse error" },
 { MAIL_ERROR_INVAL, "invalid parameter for the function" },
 { MAIL_ERROR_PART_NOT_FOUND, "mime part of the message is not found" },
 { MAIL_ERROR_REMOVE, "remove error - the message did not exist" },

@@ -1,12 +1,12 @@
 #include "all.h"
 #include "9p1.h"
-extern Nvrsafe	nvr;
+extern Nvrsafe nvr;
 typedef struct {
-uchar	chal[CHALLEN];
-uchar	rchal[CHALLEN];
-Lock	idlock;
-ulong	idoffset;
-ulong	idvec;
+uchar chal[CHALLEN];
+uchar rchal[CHALLEN];
+Lock idlock;
+ulong idoffset;
+ulong idvec;
 } Authinfo;
 static void
 f_nop(Chan *cp, Fcall*, Fcall*)
@@ -1288,23 +1288,23 @@ ou->err = er;
 }
 void (*call9p1[MAXSYSCALL])(Chan*, Fcall*, Fcall*) =
 {
-[Tnop]		f_nop,
-[Tosession]	f_session,
-[Tsession]	f_session,
-[Tflush]	f_flush,
-[Toattach]	f_attach,
-[Tattach]	f_attach,
-[Tclone]	f_clone,
-[Twalk]		f_walk,
-[Topen]		f_open,
-[Tcreate]	f_create,
-[Tread]		f_read,
-[Twrite]	f_write,
-[Tclunk]	f_clunk,
-[Tremove]	f_remove,
-[Tstat]		f_stat,
-[Twstat]	f_wstat,
-[Tclwalk]	f_clwalk,
+[Tnop] f_nop,
+[Tosession] f_session,
+[Tsession] f_session,
+[Tflush] f_flush,
+[Toattach] f_attach,
+[Tattach] f_attach,
+[Tclone] f_clone,
+[Twalk] f_walk,
+[Topen] f_open,
+[Tcreate] f_create,
+[Tread] f_read,
+[Twrite] f_write,
+[Tclunk] f_clunk,
+[Tremove] f_remove,
+[Tstat] f_stat,
+[Twstat] f_wstat,
+[Tclwalk] f_clwalk,
 };
 int
 error9p1(Chan* cp, Msgbuf* mb)

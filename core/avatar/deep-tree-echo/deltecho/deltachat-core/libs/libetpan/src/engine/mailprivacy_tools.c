@@ -1,5 +1,5 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #if __APPLE__
 #include <TargetConditionals.h>
@@ -10,11 +10,11 @@
 #include <string.h>
 #include <unistd.h>
 #ifdef WIN32
-#	include "win_etpan.h"
+# include "win_etpan.h"
 #else
-#	include <libgen.h>
-#	include <sys/mman.h>
-#	include <sys/wait.h>
+# include <libgen.h>
+# include <sys/mman.h>
+# include <sys/wait.h>
 #endif
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -544,7 +544,7 @@ mime = NULL;
 r = mailprivacy_get_mime(privacy, check_security, reencode,
 mapping, stat_info.st_size, &mime);
 if (r != MAIL_NO_ERROR) {
-res =  r;
+res = r;
 goto unmap;
 }
 if (mime->mm_type == MAILMIME_MESSAGE) {
@@ -1075,9 +1075,9 @@ memset (&si, 0, sizeof si);
 si.cb = sizeof (si);
 si.dwFlags = STARTF_USESTDHANDLES | STARTF_USESHOWWINDOW;
 si.wShowWindow = DEBUG_W32_SPAWN ? SW_SHOW : SW_MINIMIZE;
-si.hStdInput  = wp_passphrase[0];
+si.hStdInput = wp_passphrase[0];
 si.hStdOutput = fd_out;
-si.hStdError  = fd_err;
+si.hStdError = fd_err;
 cr_flags = (CREATE_DEFAULT_ERROR_MODE
 | GetPriorityClass (GetCurrentProcess ())
 | CREATE_SUSPENDED);

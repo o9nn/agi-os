@@ -370,9 +370,9 @@ capacitor_voltage = sol[sys.capacitor.v]
 @test capacitor_voltage[end] .≈ 8.26 rtol=3e-1
 # For visual inspection
 # plt = plot(sol; idxs = [diode.i, resistor.i, capacitor.v],
-#     size = (800, 600), dpi = 300,
-#     labels = ["Diode Current" "Resistor Current" "Capacitor Voltage"],
-#     title = "Diode Test")
+# size = (800, 600), dpi = 300,
+# labels = ["Diode Current" "Resistor Current" "Capacitor Voltage"],
+# title = "Diode Test")
 # savefig(plt, "diode_test")
 end
 @testset "HeatingDiode component test" begin
@@ -414,16 +414,16 @@ diode_current = sol[sys.heating_diode.i]
 resistor_current = sol[sys.resistor.i]
 capacitor_voltage = sol[sys.capacitor.v]
 # Expected thermal voltage at given temperature
-k = 1.380649e-23  # Boltzmann constant (J/K)
-q = 1.602176634e-19  # Elementary charge (C)
+k = 1.380649e-23 # Boltzmann constant (J/K)
+q = 1.602176634e-19 # Elementary charge (C)
 # Tests
 @test all(diode_current .>= -1e-6) # Diode current should not exceed reverse saturation
 @test capacitor_voltage[end]≈7.75 rtol=3e-1 # Final capacitor voltage close to input voltage
 # For visual inspection
 # plt = plot(sol; vars = [heating_diode.i, resistor.i, capacitor.v],
-#     size = (800, 600), dpi = 300,
-#     labels = ["HeatingDiode Current" "Resistor Current" "Capacitor Voltage"],
-#     title = "HeatingDiode Test")
+# size = (800, 600), dpi = 300,
+# labels = ["HeatingDiode Current" "Resistor Current" "Capacitor Voltage"],
+# title = "HeatingDiode Test")
 # savefig(plt, "heating_diode_test")
 # Remake model with higher amb. temperature, final capacitor voltage should be lower
 T = 400.0
@@ -438,10 +438,10 @@ R_const = 1.0
 # Define the RC model as described
 @mtkmodel RC begin
 @parameters begin
-R = R_ref  # Variable resistance reference value
-C = 1.0   # Capacitance
-k = 10.0  # Voltage source scaling factor
-f = 0.2   # Frequency of sine input
+R = R_ref # Variable resistance reference value
+C = 1.0 # Capacitance
+k = 10.0 # Voltage source scaling factor
+f = 0.2 # Frequency of sine input
 T = 300.0 # Ambient temperature in Kelvin
 end
 @components begin
@@ -475,9 +475,9 @@ capacitor_voltage = sol[sys.capacitor.v]
 @test all(capacitor_voltage .>= 0.0) # Capacitor voltage should not be negative
 # For visual inspection
 # plt = plot(sol; vars = [sys.resistor.R, sys.capacitor.v],
-#     size = (800, 600), dpi = 300,
-#     labels = ["Variable Resistor Resistance" "Capacitor Voltage"],
-#     title = "RC Circuit Test with VariableResistor")
+# size = (800, 600), dpi = 300,
+# labels = ["Variable Resistor Resistance" "Capacitor Voltage"],
+# title = "RC Circuit Test with VariableResistor")
 # savefig(plt, "rc_circuit_test_variable_resistor")
 end
 @testset "NMOS Transistor" begin

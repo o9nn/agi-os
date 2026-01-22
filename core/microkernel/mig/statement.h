@@ -1,5 +1,5 @@
-#ifndef	_STATEMENT_H
-#define	_STATEMENT_H
+#ifndef _STATEMENT_H
+#define _STATEMENT_H
 #include "routine.h"
 typedef enum statement_kind
 {
@@ -19,9 +19,9 @@ routine_t *_stRoutine;
 const_string_t _stFileName;
 } data;
 } statement_t;
-#define	stRoutine	data._stRoutine
-#define	stFileName	data._stFileName
-#define stNULL		((statement_t *) 0)
+#define stRoutine data._stRoutine
+#define stFileName data._stFileName
+#define stNULL ((statement_t *) 0)
 extern statement_t *stAlloc(void);
 extern statement_t *StatementList;
 #endif

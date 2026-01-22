@@ -36,13 +36,13 @@ int32_t origmaxctx = model.hparams.n_ctx;
 {
 auto & hparams = model.hparams;
 fin.read((char *) &hparams.n_vocab, sizeof(hparams.n_vocab));
-fin.read((char *) &hparams.n_ctx,   sizeof(hparams.n_ctx));
-fin.read((char *) &hparams.n_embd,  sizeof(hparams.n_embd));
-fin.read((char *) &hparams.n_head,  sizeof(hparams.n_head));
+fin.read((char *) &hparams.n_ctx, sizeof(hparams.n_ctx));
+fin.read((char *) &hparams.n_embd, sizeof(hparams.n_embd));
+fin.read((char *) &hparams.n_head, sizeof(hparams.n_head));
 fin.read((char *) &hparams.n_layer, sizeof(hparams.n_layer));
-fin.read((char *) &hparams.n_rot,   sizeof(hparams.n_rot));
+fin.read((char *) &hparams.n_rot, sizeof(hparams.n_rot));
 fin.read((char *) &hparams.par_res, sizeof(hparams.par_res));
-fin.read((char *) &hparams.ftype,   sizeof(hparams.ftype));
+fin.read((char *) &hparams.ftype, sizeof(hparams.ftype));
 const int32_t qntvr = hparams.ftype / GGML_V3_QNT_VERSION_FACTOR;
 printf("%s: n_vocab = %d\n", __func__, hparams.n_vocab);
 printf("%s: n_ctx   = %d (%d)\n", __func__, hparams.n_ctx,origmaxctx);
@@ -80,9 +80,9 @@ auto & ctx = model.ctx;
 size_t ctx_size = 0;
 {
 const auto & hparams = model.hparams;
-const size_t n_embd  = hparams.n_embd;
+const size_t n_embd = hparams.n_embd;
 const size_t n_layer = hparams.n_layer;
-const size_t n_ctx   = hparams.n_ctx;
+const size_t n_ctx = hparams.n_ctx;
 const size_t n_vocab = hparams.n_vocab;
 ctx_size += n_embd*ggml_v3_type_sizef(GGML_V3_TYPE_F32);
 ctx_size += n_embd*ggml_v3_type_sizef(GGML_V3_TYPE_F32);
@@ -91,15 +91,15 @@ ctx_size += n_embd*n_vocab*ggml_v3_type_sizef(wtype);
 ctx_size += n_layer*(n_embd*ggml_v3_type_sizef(GGML_V3_TYPE_F32));
 ctx_size += n_layer*(n_embd*ggml_v3_type_sizef(GGML_V3_TYPE_F32));
 ctx_size += n_layer*(3*n_embd*n_embd*ggml_v3_type_sizef(wtype));
-ctx_size += n_layer*(       3*n_embd*ggml_v3_type_sizef(GGML_V3_TYPE_F32));
+ctx_size += n_layer*( 3*n_embd*ggml_v3_type_sizef(GGML_V3_TYPE_F32));
 ctx_size += n_layer*(n_embd*n_embd*ggml_v3_type_sizef(wtype));
 ctx_size += n_layer*(n_embd*n_embd*ggml_v3_type_sizef(GGML_V3_TYPE_F32));
 ctx_size += n_layer*(n_embd*ggml_v3_type_sizef(GGML_V3_TYPE_F32));
 ctx_size += n_layer*(n_embd*ggml_v3_type_sizef(GGML_V3_TYPE_F32));
 ctx_size += n_layer*(4*n_embd*n_embd*ggml_v3_type_sizef(wtype));
-ctx_size += n_layer*(       4*n_embd*ggml_v3_type_sizef(GGML_V3_TYPE_F32));
+ctx_size += n_layer*( 4*n_embd*ggml_v3_type_sizef(GGML_V3_TYPE_F32));
 ctx_size += n_layer*(4*n_embd*n_embd*ggml_v3_type_sizef(wtype));
-ctx_size += n_layer*(         n_embd*ggml_v3_type_sizef(GGML_V3_TYPE_F32));
+ctx_size += n_layer*( n_embd*ggml_v3_type_sizef(GGML_V3_TYPE_F32));
 ctx_size += std::max((size_t)origmaxctx,n_ctx)*n_layer*n_embd*ggml_v3_type_sizef(GGML_V3_TYPE_F16);
 ctx_size += std::max((size_t)origmaxctx,n_ctx)*n_layer*n_embd*ggml_v3_type_sizef(GGML_V3_TYPE_F16);
 ctx_size += (6 + 16*n_layer)*1024;
@@ -107,9 +107,9 @@ printf("%s: ggml ctx size = %6.2f MB\n", __func__, ctx_size/(1024.0*1024.0));
 }
 {
 struct ggml_v3_init_params params;
-params.mem_size   = ctx_size;
+params.mem_size = ctx_size;
 params.mem_buffer = NULL;
-params.no_alloc   = false;
+params.no_alloc = false;
 model.ctx = ggml_v3_init(params);
 if (!model.ctx) {
 fprintf(stderr, "%s: ggml_v3_init() failed\n", __func__);
@@ -118,52 +118,52 @@ return ModelLoadResult::FAIL;
 }
 {
 const auto & hparams = model.hparams;
-const int n_embd  = hparams.n_embd;
+const int n_embd = hparams.n_embd;
 const int n_layer = hparams.n_layer;
 const int n_vocab = hparams.n_vocab;
 model.layers.resize(n_layer);
-model.wte    = ggml_v3_new_tensor_2d(ctx, wtype,         n_embd, n_vocab);
+model.wte = ggml_v3_new_tensor_2d(ctx, wtype, n_embd, n_vocab);
 model.ln_f_g = ggml_v3_new_tensor_1d(ctx, GGML_V3_TYPE_F32, n_embd);
 model.ln_f_b = ggml_v3_new_tensor_1d(ctx, GGML_V3_TYPE_F32, n_embd);
-model.lmh_g  = ggml_v3_new_tensor_2d(ctx, wtype,         n_embd, n_vocab);
+model.lmh_g = ggml_v3_new_tensor_2d(ctx, wtype, n_embd, n_vocab);
 model.tensors["gpt_neox.embed_in.weight"] = model.wte;
 model.tensors["gpt_neox.final_layer_norm.weight"] = model.ln_f_g;
-model.tensors["gpt_neox.final_layer_norm.bias"]   = model.ln_f_b;
+model.tensors["gpt_neox.final_layer_norm.bias"] = model.ln_f_b;
 model.tensors["embed_out.weight"] = model.lmh_g;
 for (int i = 0; i < n_layer; ++i) {
 auto & layer = model.layers[i];
-layer.ln_1_g          = ggml_v3_new_tensor_1d(ctx, GGML_V3_TYPE_F32,   n_embd);
-layer.ln_1_b          = ggml_v3_new_tensor_1d(ctx, GGML_V3_TYPE_F32,   n_embd);
-layer.c_attn_attn_w   = ggml_v3_new_tensor_2d(ctx, wtype,           n_embd, 3*n_embd);
-layer.c_attn_attn_b   = ggml_v3_new_tensor_1d(ctx, GGML_V3_TYPE_F32, 3*n_embd);
-layer.c_attn_proj_w   = ggml_v3_new_tensor_2d(ctx, wtype,           n_embd,   n_embd);
-layer.c_attn_proj_b   = ggml_v3_new_tensor_1d(ctx, GGML_V3_TYPE_F32,   n_embd);
-layer.ln_2_g          = ggml_v3_new_tensor_1d(ctx, GGML_V3_TYPE_F32,   n_embd);
-layer.ln_2_b          = ggml_v3_new_tensor_1d(ctx, GGML_V3_TYPE_F32,   n_embd);
-layer.c_mlp_fc_w      = ggml_v3_new_tensor_2d(ctx, wtype,           n_embd, 4*n_embd);
-layer.c_mlp_fc_b      = ggml_v3_new_tensor_1d(ctx, GGML_V3_TYPE_F32, 4*n_embd);
-layer.c_mlp_proj_w    = ggml_v3_new_tensor_2d(ctx, wtype,         4*n_embd,   n_embd);
-layer.c_mlp_proj_b    = ggml_v3_new_tensor_1d(ctx, GGML_V3_TYPE_F32,   n_embd);
+layer.ln_1_g = ggml_v3_new_tensor_1d(ctx, GGML_V3_TYPE_F32, n_embd);
+layer.ln_1_b = ggml_v3_new_tensor_1d(ctx, GGML_V3_TYPE_F32, n_embd);
+layer.c_attn_attn_w = ggml_v3_new_tensor_2d(ctx, wtype, n_embd, 3*n_embd);
+layer.c_attn_attn_b = ggml_v3_new_tensor_1d(ctx, GGML_V3_TYPE_F32, 3*n_embd);
+layer.c_attn_proj_w = ggml_v3_new_tensor_2d(ctx, wtype, n_embd, n_embd);
+layer.c_attn_proj_b = ggml_v3_new_tensor_1d(ctx, GGML_V3_TYPE_F32, n_embd);
+layer.ln_2_g = ggml_v3_new_tensor_1d(ctx, GGML_V3_TYPE_F32, n_embd);
+layer.ln_2_b = ggml_v3_new_tensor_1d(ctx, GGML_V3_TYPE_F32, n_embd);
+layer.c_mlp_fc_w = ggml_v3_new_tensor_2d(ctx, wtype, n_embd, 4*n_embd);
+layer.c_mlp_fc_b = ggml_v3_new_tensor_1d(ctx, GGML_V3_TYPE_F32, 4*n_embd);
+layer.c_mlp_proj_w = ggml_v3_new_tensor_2d(ctx, wtype, 4*n_embd, n_embd);
+layer.c_mlp_proj_b = ggml_v3_new_tensor_1d(ctx, GGML_V3_TYPE_F32, n_embd);
 model.tensors["gpt_neox.layers." + std::to_string(i) + ".input_layernorm.weight"] = layer.ln_1_g;
-model.tensors["gpt_neox.layers." + std::to_string(i) + ".input_layernorm.bias"]   = layer.ln_1_b;
+model.tensors["gpt_neox.layers." + std::to_string(i) + ".input_layernorm.bias"] = layer.ln_1_b;
 model.tensors["gpt_neox.layers." + std::to_string(i) + ".attention.query_key_value.weight"] = layer.c_attn_attn_w;
-model.tensors["gpt_neox.layers." + std::to_string(i) + ".attention.query_key_value.bias"]   = layer.c_attn_attn_b;
+model.tensors["gpt_neox.layers." + std::to_string(i) + ".attention.query_key_value.bias"] = layer.c_attn_attn_b;
 model.tensors["gpt_neox.layers." + std::to_string(i) + ".attention.dense.weight"] = layer.c_attn_proj_w;
-model.tensors["gpt_neox.layers." + std::to_string(i) + ".attention.dense.bias"]   = layer.c_attn_proj_b;
+model.tensors["gpt_neox.layers." + std::to_string(i) + ".attention.dense.bias"] = layer.c_attn_proj_b;
 model.tensors["gpt_neox.layers." + std::to_string(i) + ".post_attention_layernorm.weight"] = layer.ln_2_g;
-model.tensors["gpt_neox.layers." + std::to_string(i) + ".post_attention_layernorm.bias"]   = layer.ln_2_b;
+model.tensors["gpt_neox.layers." + std::to_string(i) + ".post_attention_layernorm.bias"] = layer.ln_2_b;
 model.tensors["gpt_neox.layers." + std::to_string(i) + ".mlp.dense_h_to_4h.weight"] = layer.c_mlp_fc_w;
-model.tensors["gpt_neox.layers." + std::to_string(i) + ".mlp.dense_h_to_4h.bias"]   = layer.c_mlp_fc_b;
+model.tensors["gpt_neox.layers." + std::to_string(i) + ".mlp.dense_h_to_4h.bias"] = layer.c_mlp_fc_b;
 model.tensors["gpt_neox.layers." + std::to_string(i) + ".mlp.dense_4h_to_h.weight"] = layer.c_mlp_proj_w;
-model.tensors["gpt_neox.layers." + std::to_string(i) + ".mlp.dense_4h_to_h.bias"]   = layer.c_mlp_proj_b;
+model.tensors["gpt_neox.layers." + std::to_string(i) + ".mlp.dense_4h_to_h.bias"] = layer.c_mlp_proj_b;
 }
 }
 {
 const auto & hparams = model.hparams;
-const int n_embd  = hparams.n_embd;
+const int n_embd = hparams.n_embd;
 const int n_layer = hparams.n_layer;
-const int n_ctx   = hparams.n_ctx;
-const int64_t n_mem      = n_layer*std::max(origmaxctx,n_ctx);
+const int n_ctx = hparams.n_ctx;
+const int64_t n_mem = n_layer*std::max(origmaxctx,n_ctx);
 const int64_t n_elements = n_embd*n_mem;
 model.memory_k = ggml_v3_new_tensor_1d(ctx, GGML_V3_TYPE_F16, n_elements);
 model.memory_v = ggml_v3_new_tensor_1d(ctx, GGML_V3_TYPE_F16, n_elements);
@@ -180,7 +180,7 @@ int32_t length;
 int32_t ttype;
 fin.read(reinterpret_cast<char *>(&n_dims), sizeof(n_dims));
 fin.read(reinterpret_cast<char *>(&length), sizeof(length));
-fin.read(reinterpret_cast<char *>(&ttype),  sizeof(ttype));
+fin.read(reinterpret_cast<char *>(&ttype), sizeof(ttype));
 if (fin.eof()) {
 break;
 }
@@ -295,18 +295,18 @@ const gpt_neox_model & model,
 const int n_threads,
 const int n_past,
 const std::vector<gpt_vocab::id> & embd_inp,
-std::vector<float>         & embd_w,
-size_t                     & mem_per_token,
+std::vector<float> & embd_w,
+size_t & mem_per_token,
 bool use_scratch) {
 const int N = embd_inp.size();
 const auto & hparams = model.hparams;
-const int n_embd  = hparams.n_embd;
+const int n_embd = hparams.n_embd;
 const int n_layer = hparams.n_layer;
-const int n_ctx   = hparams.n_ctx;
-const int n_head  = hparams.n_head;
+const int n_ctx = hparams.n_ctx;
+const int n_head = hparams.n_head;
 const int n_vocab = hparams.n_vocab;
-const int n_rot   = hparams.n_rot;
-const float freq_base  = hparams.rope_freq_base;
+const int n_rot = hparams.n_rot;
+const float freq_base = hparams.rope_freq_base;
 const float freq_scale = hparams.rope_freq_scale;
 static size_t buf_size = 256u*1024*1024;
 static void * buf = malloc(buf_size);
@@ -328,9 +328,9 @@ return false;
 }
 }
 struct ggml_v3_init_params params;
-params.mem_size   = buf_size;
+params.mem_size = buf_size;
 params.mem_buffer = buf;
-params.no_alloc   = false;
+params.no_alloc = false;
 struct ggml_v3_context * ctx0 = ggml_v3_init(params);
 struct ggml_v3_cgraph * gf = ggml_v3_new_graph_custom(ctx0, GGML_V3_MAX_NODES, false);
 struct ggml_v3_tensor * embd = ggml_v3_new_tensor_1d(ctx0, GGML_V3_TYPE_I32, N);
@@ -374,7 +374,7 @@ Kcur = ggml_v3_rope_custom_inplace(ctx0, Kcur, KQ_pos, n_rot, 2, n_ctx, 0, freq_
 Vcur = ggml_v3_transpose(ctx0, ggml_v3_reshape_2d(ctx0, Vcur, n_embd, N));
 struct ggml_v3_tensor * k = ggml_v3_view_1d(ctx0, model.memory_k, N*n_embd, (ggml_v3_element_size(model.memory_k)*n_embd)*(il*n_ctx + n_past));
 struct ggml_v3_tensor * v = ggml_v3_view_2d(ctx0, model.memory_v, N, n_embd,
-(   n_ctx)*ggml_v3_element_size(model.memory_v),
+( n_ctx)*ggml_v3_element_size(model.memory_v),
 (il*n_ctx)*ggml_v3_element_size(model.memory_v)*n_embd + n_past*ggml_v3_element_size(model.memory_v));
 ggml_v3_build_forward_expand(gf, ggml_v3_cpy(ctx0, Kcur, k));
 ggml_v3_build_forward_expand(gf, ggml_v3_cpy(ctx0, Vcur, v));
@@ -425,7 +425,7 @@ inpL = ggml_v3_add(ctx0, cur, inpFF);
 } else {
 struct ggml_v3_tensor * inpFF = cur;
 cur = gpt_neox_ff(model.layers[il], ctx0, inpL);
-cur  = ggml_v3_add(ctx0, cur, inpFF);
+cur = ggml_v3_add(ctx0, cur, inpFF);
 inpL = ggml_v3_add(ctx0, cur, inpL);
 }
 }

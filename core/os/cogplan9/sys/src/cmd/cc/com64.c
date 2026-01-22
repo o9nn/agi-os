@@ -1,71 +1,71 @@
 #include "cc.h"
-#define	FNX	100
-Node*	nodaddv;
-Node*	nodsubv;
-Node*	nodmulv;
-Node*	noddivv;
-Node*	noddivvu;
-Node*	nodmodv;
-Node*	nodmodvu;
-Node*	nodlshv;
-Node*	nodrshav;
-Node*	nodrshlv;
-Node*	nodandv;
-Node*	nodorv;
-Node*	nodxorv;
-Node*	nodnegv;
-Node*	nodcomv;
-Node*	nodtestv;
-Node*	nodeqv;
-Node*	nodnev;
-Node*	nodlev;
-Node*	nodltv;
-Node*	nodgev;
-Node*	nodgtv;
-Node*	nodhiv;
-Node*	nodhsv;
-Node*	nodlov;
-Node*	nodlsv;
-Node*	nodf2v;
-Node*	nodd2v;
-Node*	nodp2v;
-Node*	nodsi2v;
-Node*	nodui2v;
-Node*	nodsl2v;
-Node*	nodul2v;
-Node*	nodsh2v;
-Node*	noduh2v;
-Node*	nodsc2v;
-Node*	noduc2v;
-Node*	nodv2f;
-Node*	nodv2d;
-Node*	nodv2ui;
-Node*	nodv2si;
-Node*	nodv2ul;
-Node*	nodv2sl;
-Node*	nodv2uh;
-Node*	nodv2sh;
-Node*	nodv2uc;
-Node*	nodv2sc;
-Node*	nodvpp;
-Node*	nodppv;
-Node*	nodvmm;
-Node*	nodmmv;
-Node*	nodvasop;
-char	etconv[NTYPE];
-Init	initetconv[] =
+#define FNX 100
+Node* nodaddv;
+Node* nodsubv;
+Node* nodmulv;
+Node* noddivv;
+Node* noddivvu;
+Node* nodmodv;
+Node* nodmodvu;
+Node* nodlshv;
+Node* nodrshav;
+Node* nodrshlv;
+Node* nodandv;
+Node* nodorv;
+Node* nodxorv;
+Node* nodnegv;
+Node* nodcomv;
+Node* nodtestv;
+Node* nodeqv;
+Node* nodnev;
+Node* nodlev;
+Node* nodltv;
+Node* nodgev;
+Node* nodgtv;
+Node* nodhiv;
+Node* nodhsv;
+Node* nodlov;
+Node* nodlsv;
+Node* nodf2v;
+Node* nodd2v;
+Node* nodp2v;
+Node* nodsi2v;
+Node* nodui2v;
+Node* nodsl2v;
+Node* nodul2v;
+Node* nodsh2v;
+Node* noduh2v;
+Node* nodsc2v;
+Node* noduc2v;
+Node* nodv2f;
+Node* nodv2d;
+Node* nodv2ui;
+Node* nodv2si;
+Node* nodv2ul;
+Node* nodv2sl;
+Node* nodv2uh;
+Node* nodv2sh;
+Node* nodv2uc;
+Node* nodv2sc;
+Node* nodvpp;
+Node* nodppv;
+Node* nodvmm;
+Node* nodmmv;
+Node* nodvasop;
+char etconv[NTYPE];
+Init initetconv[] =
 {
-TCHAR,		1,	0,
-TUCHAR,		2,	0,
-TSHORT,		3,	0,
-TUSHORT,	4,	0,
-TLONG,		5,	0,
-TULONG,		6,	0,
-TVLONG,		7,	0,
-TUVLONG,	8,	0,
-TINT,		9,	0,
-TUINT,		10,	0,
--1,		0,	0,
+TCHAR, 1, 0,
+TUCHAR, 2, 0,
+TSHORT, 3, 0,
+TUSHORT, 4, 0,
+TLONG, 5, 0,
+TULONG, 6, 0,
+TVLONG, 7, 0,
+TUVLONG, 8, 0,
+TINT, 9, 0,
+TUINT, 10, 0,
+-1, 0, 0,
 };
 Node*
 fvn(char *name, int type)

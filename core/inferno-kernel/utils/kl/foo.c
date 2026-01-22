@@ -1,15 +1,12 @@
 int foo(void)
 {
-	return 100;
+return 100;
 }
-
 main()
 {
-	int x;
-
-	x = foo();
+int x;
+x = foo();
 }
-
 _main()
 {
 }

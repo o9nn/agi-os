@@ -1809,7 +1809,7 @@ valid |= (color_format == VK_FORMAT_R32_SFLOAT || color_format == VK_FORMAT_R32_
 }
 if (ds_format == VK_FORMAT_D16_UNORM || ds_format == VK_FORMAT_D16_UNORM_S8_UINT) {
 valid |= (color_format == VK_FORMAT_R16_SFLOAT || color_format == VK_FORMAT_R16_UNORM ||
-color_format == VK_FORMAT_R16_SNORM  || color_format == VK_FORMAT_R16_UINT || color_format == VK_FORMAT_R16_SINT);
+color_format == VK_FORMAT_R16_SNORM || color_format == VK_FORMAT_R16_UINT || color_format == VK_FORMAT_R16_SINT);
 }
 }
 return valid;

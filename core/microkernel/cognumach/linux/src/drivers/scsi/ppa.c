@@ -1,11 +1,11 @@
 #include <linux/config.h>
 #define PPA_CODE 1
 #ifndef HAVE_PC87332
-#define HAVE_PC87332    0
+#define HAVE_PC87332 0
 #endif
-#define PPA_PROBE_SPP   0x0001
-#define PPA_PROBE_PS2   0x0002
-#define PPA_PROBE_ECR   0x0010
+#define PPA_PROBE_SPP 0x0001
+#define PPA_PROBE_PS2 0x0002
+#define PPA_PROBE_ECR 0x0010
 #define PPA_PROBE_EPP17 0x0100
 #define PPA_PROBE_EPP19 0x0200
 int port_probe(unsigned short);
@@ -22,24 +22,24 @@ unsigned long jstart;
 unsigned failed:1;
 } ppa_struct;
 #define PPA_EMPTY \
-{-1,                  \
-PPA_AUTODETECT,       \
--1,                   \
-NULL,              \
-{0, 0, ppa_interrupt, NULL},    \
-0,                  \
-0                   \
+{-1, \
+PPA_AUTODETECT, \
+-1, \
+NULL, \
+{0, 0, ppa_interrupt, NULL}, \
+0, \
+0 \
 }
 #include "ppa.h"
 #undef CONFIG_PARPORT
 #define NO_HOSTS 4
 static ppa_struct ppa_hosts[NO_HOSTS] =
 {PPA_EMPTY, PPA_EMPTY, PPA_EMPTY, PPA_EMPTY};
-#define PPA_BASE(x)	ppa_hosts[(x)].base
+#define PPA_BASE(x) ppa_hosts[(x)].base
 int base[NO_HOSTS] =
 {0x03bc, 0x0378, 0x0278, 0x0000};
-#define parbus_base	base
-#define parbus_no	NO_HOSTS
+#define parbus_base base
+#define parbus_no NO_HOSTS
 static inline int ppa_pb_claim(int host_no)
 {
 if (ppa_hosts[host_no].cur_cmd)
@@ -70,7 +70,7 @@ x++;
 }
 #else
 Scsi_Host_Template driver_template = PPA;
-#include  "scsi_module.c"
+#include "scsi_module.c"
 #endif
 #if HAVE_PC87332 > 0
 #warning PC87332 Kludge code included

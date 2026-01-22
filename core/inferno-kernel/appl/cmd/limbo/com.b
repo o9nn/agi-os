@@ -1,14 +1,14 @@
 # back end
-breaks:		array of ref Inst;
-conts:		array of ref Inst;
-labels:		array of ref Decl;
-bcscps:		array of ref Node;
-labdep:		int;
-nocont:		ref Inst;
-nlabel:		int;
-scp:			int;
-scps:=		array[MaxScope] of ref Node;
-curfn:	ref Decl;
+breaks: array of ref Inst;
+conts: array of ref Inst;
+labels: array of ref Decl;
+bcscps: array of ref Node;
+labdep: int;
+nocont: ref Inst;
+nlabel: int;
+scp: int;
+scps:= array[MaxScope] of ref Node;
+curfn: ref Decl;
 pushscp(n : ref Node)
 {
 if (scp >= MaxScope)
@@ -222,7 +222,7 @@ if(LDT)
 (globals, ldts) = resolveldts(globals);
 offset := idoffsets(globals, 0, IBY2WD);
 if(LDT)
-ldtoff := idindices(ldts);	# idoffsets(ldts, 0, IBY2WD);
+ldtoff := idindices(ldts); # idoffsets(ldts, 0, IBY2WD);
 for(d = nils; d != nil; d = d.next){
 if(debug['n'])
 print("nil '%s' ref %d\n", d.sym.name, d.refs);
@@ -263,8 +263,8 @@ if(LDT)
 hints |= HASLDT;
 if(excs != nil)
 hints |= HASEXCEPT;
-discon(hints);		# runtime hints
-discon(maxstack);	# minimum stack extent size
+discon(hints); # runtime hints
+discon(maxstack); # minimum stack extent size
 discon(ninst);
 discon(offset);
 discon(ndesc);
@@ -470,8 +470,8 @@ pushblock();
 scom(n.right.right);
 popblock();
 }
-repushblock(lastinst.block);	# was b
-patch(genrawop(lastinst.src, IJMP, nil, nil, nil), pp);	# for cprof: was left.src
+repushblock(lastinst.block); # was b
+patch(genrawop(lastinst.src, IJMP, nil, nil, nil), pp); # for cprof: was left.src
 popblock();
 patch(p, nextinst());
 patch(breaks[labdep], nextinst());
@@ -572,12 +572,12 @@ fatal("Ofunc");
 return;
 Oexstmt =>
 pushblock();
-pp = genrawop(n.right.src, IEXC0, nil, nil, nil);	# marker
+pp = genrawop(n.right.src, IEXC0, nil, nil, nil); # marker
 p1 := nextinst();
 scom(n.left);
 p2 := nextinst();
 p3 := genrawop(n.right.src, IJMP, nil, nil, nil);
-p = genrawop(n.right.src, IEXC, nil, nil, nil);	# marker
+p = genrawop(n.right.src, IEXC, nil, nil, nil); # marker
 p.d.decl = mkdecl(n.src, 0, n.right.ty);
 zn := array[1] of ref Node;
 zeroallscopes(n.left, zn);
@@ -779,7 +779,7 @@ Owild =>
 if(needwild)
 wild = j;
 # else
-#	nwarn(p.left, "default case redundant");
+# nwarn(p.left, "default case redundant");
 }
 }
 if(debug['c'])
@@ -859,7 +859,7 @@ adr := ref znode;
 add := ref znode;
 slot := ref znode;
 off.op = Oconst;
-off.c = ref Const(big 0, 0.0);	# jrf - added initialization
+off.c = ref Const(big 0, 0.0); # jrf - added initialization
 off.ty = tint;
 off.addable = Rconst;
 adr.op = Oadr;
@@ -927,7 +927,7 @@ altop := IALT;
 if(c.wild != nil)
 altop = INBALT;
 pp := genrawop(altsrc, altop, tab, nil, which);
-pp.m.offset = talt.size;	# for optimizer
+pp.m.offset = talt.size; # for optimizer
 d := mkids(nalt.src, enter(".g"+string nlabel++, 0), mktype(nalt.src.start, nalt.src.stop, Tgoto, nil, nil), nil);
 d.ty.cse = c;
 d.init = mkdeclname(nalt.src, d);
@@ -939,7 +939,7 @@ nto.op = Oname;
 nto.decl = d;
 nto.ty = d.ty;
 me := genrawop(altsrc, IGOTO, which, nil, nto);
-me.d.reg = IBY2WD;		# skip the number of cases field
+me.d.reg = IBY2WD; # skip the number of cases field
 tfree(tab);
 tfree(which);
 #
@@ -1062,9 +1062,9 @@ if(n.right == comm && n.op == Oas && comm.op == Orcv
 adr = n.left;
 if(adr != nil){
 p := genrawop(comm.left.src, ILEA, adr, nil, slot);
-p.m.offset = adr.ty.size;	# for optimizer
+p.m.offset = adr.ty.size; # for optimizer
 if(comm.op == Osnd)
-p.m.reg = 1;	# for optimizer
+p.m.reg = 1; # for optimizer
 return (adr, tmp);
 }
 (n.left, tmp) = rewritecomm(n.left, comm, slot);
@@ -1246,7 +1246,7 @@ trcom(e: ref Node, ne: ref Node, nilret: int): int
 d, id: ref Decl;
 as, a, f, n: ref Node;
 p: ref Inst;
-return 0;	# TBS
+return 0; # TBS
 if(e.op != Ocall || e.left.op != Oname)
 return 0;
 d = e.left.decl;

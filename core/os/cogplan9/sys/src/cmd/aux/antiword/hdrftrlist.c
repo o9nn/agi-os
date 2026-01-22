@@ -1,29 +1,29 @@
 #include <string.h>
 #include "antiword.h"
-#define HDR_EVEN_PAGES	0
-#define HDR_ODD_PAGES	1
-#define FTR_EVEN_PAGES	2
-#define FTR_ODD_PAGES	3
-#define HDR_FIRST_PAGE	4
-#define FTR_FIRST_PAGE	5
+#define HDR_EVEN_PAGES 0
+#define HDR_ODD_PAGES 1
+#define FTR_EVEN_PAGES 2
+#define FTR_ODD_PAGES 3
+#define HDR_FIRST_PAGE 4
+#define FTR_FIRST_PAGE 5
 typedef struct hdrftr_local_tag {
-hdrftr_block_type	tInfo;
-ULONG			ulCharPosStart;
-ULONG			ulCharPosNext;
-BOOL			bUseful;
-BOOL			bTextOriginal;
+hdrftr_block_type tInfo;
+ULONG ulCharPosStart;
+ULONG ulCharPosNext;
+BOOL bUseful;
+BOOL bTextOriginal;
 } hdrftr_local_type;
 typedef struct hdrftr_mem_tag {
-hdrftr_local_type	atElement[6];
+hdrftr_local_type atElement[6];
 } hdrftr_mem_type;
-static hdrftr_mem_type	*pHdrFtrList = NULL;
-static size_t		tHdrFtrLen = 0;
+static hdrftr_mem_type *pHdrFtrList = NULL;
+static size_t tHdrFtrLen = 0;
 void
 vDestroyHdrFtrInfoList(void)
 {
 hdrftr_mem_type *pRecord;
-output_type	*pCurr, *pNext;
-size_t		tHdrFtr, tIndex;
+output_type *pCurr, *pNext;
+size_t tHdrFtr, tIndex;
 DBG_MSG("vDestroyHdrFtrInfoList");
 for (tHdrFtr = 0; tHdrFtr < tHdrFtrLen; tHdrFtr++) {
 pRecord = pHdrFtrList + tHdrFtr;
@@ -48,8 +48,8 @@ tHdrFtrLen = 0;
 void
 vCreat8HdrFtrInfoList(const ULONG *aulCharPos, size_t tLength)
 {
-hdrftr_mem_type	*pListMember;
-size_t	tHdrFtr, tIndex, tMainIndex;
+hdrftr_mem_type *pListMember;
+size_t tHdrFtr, tIndex, tMainIndex;
 fail(aulCharPos == NULL);
 DBG_DEC(tLength);
 if (tLength <= 1) {
@@ -82,13 +82,13 @@ aulCharPos[tMainIndex];
 void
 vCreat6HdrFtrInfoList(const ULONG *aulCharPos, size_t tLength)
 {
-static const size_t	atIndex[] =
+static const size_t atIndex[] =
 { SIZE_T_MAX, SIZE_T_MAX, FTR_FIRST_PAGE, HDR_FIRST_PAGE,
 FTR_ODD_PAGES, FTR_EVEN_PAGES, HDR_ODD_PAGES, HDR_EVEN_PAGES,
 };
-hdrftr_mem_type	*pListMember;
-size_t	tHdrFtr, tTmp, tIndex, tMainIndex, tBit;
-UCHAR	ucDopSpecification, ucSepSpecification;
+hdrftr_mem_type *pListMember;
+size_t tHdrFtr, tTmp, tIndex, tMainIndex, tBit;
+UCHAR ucDopSpecification, ucSepSpecification;
 fail(aulCharPos == NULL);
 DBG_DEC(tLength);
 if (tLength <= 1) {
@@ -149,7 +149,7 @@ const hdrftr_block_type *
 pGetHdrFtrInfo(int iSectionIndex,
 BOOL bWantHeader, BOOL bOddPage, BOOL bFirstInSection)
 {
-hdrftr_mem_type	*pCurr;
+hdrftr_mem_type *pCurr;
 fail(iSectionIndex < 0);
 fail(pHdrFtrList == NULL && tHdrFtrLen != 0);
 if (pHdrFtrList == NULL || tHdrFtrLen == 0) {
@@ -187,8 +187,8 @@ static long
 lComputeHdrFtrHeight(const output_type *pAnchor)
 {
 const output_type *pCurr;
-long	lTotal;
-USHORT	usFontSizeMax;
+long lTotal;
+USHORT usFontSizeMax;
 lTotal = 0;
 usFontSizeMax = 0;
 for (pCurr = pAnchor; pCurr != NULL; pCurr = pCurr->pNext) {
@@ -218,10 +218,10 @@ return lTotal;
 void
 vPrepareHdrFtrText(FILE *pFile)
 {
-hdrftr_mem_type		*pCurr, *pPrev;
-hdrftr_local_type	*pTmp;
-output_type		*pText;
-size_t		tHdrFtr, tIndex;
+hdrftr_mem_type *pCurr, *pPrev;
+hdrftr_local_type *pTmp;
+output_type *pText;
+size_t tHdrFtr, tIndex;
 fail(pFile == NULL);
 fail(pHdrFtrList == NULL && tHdrFtrLen != 0);
 if (pHdrFtrList == NULL || tHdrFtrLen == 0) {

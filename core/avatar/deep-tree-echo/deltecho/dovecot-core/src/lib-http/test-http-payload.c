@@ -24,8 +24,8 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <dirent.h>
-#define CLIENT_PROGRESS_TIMEOUT     30
-#define SERVER_KILL_TIMEOUT_SECS    20
+#define CLIENT_PROGRESS_TIMEOUT 30
+#define SERVER_KILL_TIMEOUT_SECS 20
 enum payload_handling {
 PAYLOAD_HANDLING_LOW_LEVEL,
 PAYLOAD_HANDLING_FORWARD,
@@ -1492,7 +1492,7 @@ test_init_client_settings(struct http_client_settings *client_set_r)
 i_zero(client_set_r);
 client_set_r->max_redirects = 0;
 client_set_r->max_attempts = 1;
-client_set_r->max_idle_time_msecs =  5* 1000;
+client_set_r->max_idle_time_msecs = 5* 1000;
 client_set_r->debug = debug;
 if (small_socket_buffers) {
 client_set_r->socket_send_buffer_size = 40960;

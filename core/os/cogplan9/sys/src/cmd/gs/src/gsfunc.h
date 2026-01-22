@@ -1,22 +1,22 @@
 #ifndef gsfunc_INCLUDED
-#  define gsfunc_INCLUDED
+# define gsfunc_INCLUDED
 #include "gstypes.h"
 #ifndef stream_DEFINED
-#  define stream_DEFINED
+# define stream_DEFINED
 typedef struct stream_s stream;
 #endif
 typedef int gs_function_type_t;
 #define gs_function_params_common\
-int m;			\
-const float *Domain;	\
-int n;			\
+int m; \
+const float *Domain; \
+int n; \
 const float *Range
 #ifndef gs_data_source_DEFINED
-#  define gs_data_source_DEFINED
+# define gs_data_source_DEFINED
 typedef struct gs_data_source_s gs_data_source_t;
 #endif
 #ifndef gs_param_list_DEFINED
-#  define gs_param_list_DEFINED
+# define gs_param_list_DEFINED
 typedef struct gs_param_list_s gs_param_list;
 #endif
 typedef struct gs_function_params_s {
@@ -24,7 +24,7 @@ gs_function_params_common;
 } gs_function_params_t;
 #ifndef gs_function_DEFINED
 typedef struct gs_function_s gs_function_t;
-#  define gs_function_DEFINED
+# define gs_function_DEFINED
 #endif
 typedef struct gs_function_info_s {
 const gs_data_source_t *DataSource;

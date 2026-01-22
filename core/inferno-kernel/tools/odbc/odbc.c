@@ -4,12 +4,12 @@
 #include <lib9.h>
 #include <styx.h>
 #include "styxserver.h"
-#define DEFCOLSIZE			10000
+#define DEFCOLSIZE 10000
 static int ODebug;
-char Eodbcalloc[] =	"no free ODBC handles";
-char Enoconnect[] =	"no ODBC connection";
-static char	*netport = "6700";
-static char	*inferno = "inferno";
+char Eodbcalloc[] = "no free ODBC handles";
+char Enoconnect[] = "no ODBC connection";
+static char *netport = "6700";
+static char *inferno = "inferno";
 Styxserver *iserver;
 #include <sql.h>
 #include <sqlext.h>
@@ -22,37 +22,37 @@ SQLHENV h;
 typedef struct Conn Conn;
 struct Conn
 {
-SQLHDBC	h;
-int		connected;
+SQLHDBC h;
+int connected;
 };
 typedef struct Coltype Coltype;
 struct Coltype
 {
-char		name[255];
-ushort	type;
-SQLUINTEGER		size;
-ushort	digits;
-ushort	nulls;
+char name[255];
+ushort type;
+SQLUINTEGER size;
+ushort digits;
+ushort nulls;
 };
 typedef struct Column Column;
 struct Column
 {
-char 	*data;
-SQLINTEGER	len;
+char *data;
+SQLINTEGER len;
 };
 typedef struct Stmt Stmt;
 struct Stmt
 {
 SQLHSTMT h;
-ushort	ncols;
-ulong	nrows;
-Coltype	*cols;
-Column	*rec;
-char		*headstr;
+ushort ncols;
+ulong nrows;
+Coltype *cols;
+Column *rec;
+char *headstr;
 };
 enum
 {
-Qtopdir		= 0,
+Qtopdir = 0,
 Qnclients,
 Qprotodir,
 Qclonus,
@@ -64,60 +64,60 @@ Qstatus,
 Qformat,
 Qsources,
 Qerror,
-MAXPROTO	= 1
+MAXPROTO = 1
 };
-#define TYPE(x) 	((x).path & 0xf)
-#define CONV(x) 	(((x).path >> 4)&0xfff)
-#define PROTO(x) 	(((x).path >> 16)&0xff)
-#define QID(p, c, y) 	(((p)<<16) | ((c)<<4) | (y))
-typedef struct Proto	Proto;
-typedef struct Conv	Conv;
+#define TYPE(x) ((x).path & 0xf)
+#define CONV(x) (((x).path >> 4)&0xfff)
+#define PROTO(x) (((x).path >> 16)&0xff)
+#define QID(p, c, y) (((p)<<16) | ((c)<<4) | (y))
+typedef struct Proto Proto;
+typedef struct Conv Conv;
 typedef struct Output Output;
 struct Output {
 enum {Fixed, Float} style;
-uchar	fs;
-uchar	rs;
+uchar fs;
+uchar rs;
 };
 Output defoutput = {Float, '|', '\n'};
 struct Conv
 {
-int	x;
-int	ref;
-int	perm;
-char	*owner;
-char*	state;
-Proto*	p;
-Conn	c;
-Stmt		s;
-Output	out;
-int		headings;
-char		errmsg[400];
+int x;
+int ref;
+int perm;
+char *owner;
+char* state;
+Proto* p;
+Conn c;
+Stmt s;
+Output out;
+int headings;
+char errmsg[400];
 };
 struct Proto
 {
-int	x;
-char	*name;
-uint	nc;
-int	maxconv;
-Conv**	conv;
-Qid	qid;
+int x;
+char *name;
+uint nc;
+int maxconv;
+Conv** conv;
+Qid qid;
 };
-typedef struct Dirtab	Dirtab;
+typedef struct Dirtab Dirtab;
 struct Dirtab
 {
-char	name[255];
-Qid	qid;
-long	length;
-long	perm;
+char name[255];
+Qid qid;
+long length;
+long perm;
 };
-static	int		np;
-static	Proto	proto[MAXPROTO];
-static	Conv*	protoclone(Proto*, char*);
-typedef int    Devgen(Fid*, char *, Dirtab*, int, int, Dir*);
+static int np;
+static Proto proto[MAXPROTO];
+static Conv* protoclone(Proto*, char*);
+typedef int Devgen(Fid*, char *, Dirtab*, int, int, Dir*);
 struct xClient {
-Env		e;
+Env e;
 };
-#define H(c)	((Env*)(c->u))->h
+#define H(c) ((Env*)(c->u))->h
 void
 fatal(char *fmt, ...)
 {
@@ -456,8 +456,8 @@ if (c->headings) {
 r = strlen(s->headstr);
 if (r && offset < r) {
 memcpy(p, s->headstr+offset, r-offset);
-p +=  r-offset;
-left -=  r-offset;
+p += r-offset;
+left -= r-offset;
 return n-left;
 }
 }

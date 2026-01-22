@@ -1,15 +1,15 @@
 #include <openssl/e_os2.h>
 #if !defined(OPENSSL_SYS_MSDOS) && !defined(OPENSSL_SYS_VMS) && !defined(OPENSSL_SYS_WIN32)
 # ifdef OPENSSL_UNISTD
-#  include OPENSSL_UNISTD
+# include OPENSSL_UNISTD
 # else
-#  include <unistd.h>
+# include <unistd.h>
 # endif
 # if defined(_POSIX_VERSION)
-#  define SIGACTION
-#  if !defined(TERMIOS) && !defined(TERMIO) && !defined(SGTTY)
-#   define TERMIOS
-#  endif
+# define SIGACTION
+# if !defined(TERMIOS) && !defined(TERMIO) && !defined(SGTTY)
+# define TERMIOS
+# endif
 # endif
 #endif
 #ifdef WIN16TTY
@@ -27,33 +27,33 @@
 #ifdef OPENSSL_SYS_VMS
 # include <starlet.h>
 # ifdef __DECC
-#  pragma message disable DOLLARID
+# pragma message disable DOLLARID
 # endif
 #endif
 #ifdef WIN_CONSOLE_BUG
 # include <windows.h>
 # ifndef OPENSSL_SYS_WINCE
-#  include <wincon.h>
+# include <wincon.h>
 # endif
 #endif
 #if defined(__sgi) && !defined(TERMIOS)
 # define TERMIOS
-# undef  TERMIO
-# undef  SGTTY
+# undef TERMIO
+# undef SGTTY
 #endif
 #if defined(linux) && !defined(TERMIO)
-# undef  TERMIOS
+# undef TERMIOS
 # define TERMIO
-# undef  SGTTY
+# undef SGTTY
 #endif
 #ifdef _LIBC
-# undef  TERMIOS
+# undef TERMIOS
 # define TERMIO
-# undef  SGTTY
+# undef SGTTY
 #endif
 #if !defined(TERMIO) && !defined(TERMIOS) && !defined(OPENSSL_SYS_VMS) && !defined(OPENSSL_SYS_MSDOS) && !defined(MAC_OS_pre_X) && !defined(MAC_OS_GUSI_SOURCE)
-# undef  TERMIOS
-# undef  TERMIO
+# undef TERMIOS
+# undef TERMIO
 # define SGTTY
 #endif
 #if defined(OPENSSL_SYS_VXWORKS)
@@ -63,24 +63,24 @@
 #endif
 #ifdef TERMIOS
 # include <termios.h>
-# define TTY_STRUCT              struct termios
-# define TTY_FLAGS               c_lflag
-# define TTY_get(tty,data)       tcgetattr(tty,data)
-# define TTY_set(tty,data)       tcsetattr(tty,TCSANOW,data)
+# define TTY_STRUCT struct termios
+# define TTY_FLAGS c_lflag
+# define TTY_get(tty,data) tcgetattr(tty,data)
+# define TTY_set(tty,data) tcsetattr(tty,TCSANOW,data)
 #endif
 #ifdef TERMIO
 # include <termio.h>
-# define TTY_STRUCT              struct termio
-# define TTY_FLAGS               c_lflag
-# define TTY_get(tty,data)       ioctl(tty,TCGETA,data)
-# define TTY_set(tty,data)       ioctl(tty,TCSETA,data)
+# define TTY_STRUCT struct termio
+# define TTY_FLAGS c_lflag
+# define TTY_get(tty,data) ioctl(tty,TCGETA,data)
+# define TTY_set(tty,data) ioctl(tty,TCSETA,data)
 #endif
 #ifdef SGTTY
 # include <sgtty.h>
-# define TTY_STRUCT              struct sgttyb
-# define TTY_FLAGS               sg_flags
-# define TTY_get(tty,data)       ioctl(tty,TIOCGETP,data)
-# define TTY_set(tty,data)       ioctl(tty,TIOCSETP,data)
+# define TTY_STRUCT struct sgttyb
+# define TTY_FLAGS sg_flags
+# define TTY_get(tty,data) ioctl(tty,TIOCGETP,data)
+# define TTY_set(tty,data) ioctl(tty,TIOCSETP,data)
 #endif
 #if !defined(_LIBC) && !defined(OPENSSL_SYS_MSDOS) && !defined(OPENSSL_SYS_VMS) && !defined(MAC_OS_pre_X)
 # include <sys/ioctl.h>
@@ -163,9 +163,9 @@ long tty_orig[3], tty_new[3];
 long status;
 unsigned short channel = 0;
 # else
-#  if !defined(OPENSSL_SYS_MSDOS) || defined(__DJGPP__)
+# if !defined(OPENSSL_SYS_MSDOS) || defined(__DJGPP__)
 TTY_STRUCT tty_orig, tty_new;
-#  endif
+# endif
 # endif
 int number;
 int ok;
@@ -188,23 +188,23 @@ tty = stdin;
 # elif defined(MAC_OS_pre_X) || defined(OPENSSL_SYS_VXWORKS)
 tty = stdin;
 # else
-#  ifndef OPENSSL_SYS_MPE
+# ifndef OPENSSL_SYS_MPE
 if ((tty = fopen("/dev/tty", "r")) == NULL)
-#  endif
+# endif
 tty = stdin;
 # endif
 # if defined(TTY_get) && !defined(OPENSSL_SYS_VMS)
 if (TTY_get(fileno(tty), &tty_orig) == -1) {
-#  ifdef ENOTTY
+# ifdef ENOTTY
 if (errno == ENOTTY)
 is_a_tty = 0;
 else
-#  endif
-#  ifdef EINVAL
+# endif
+# ifdef EINVAL
 if (errno == EINVAL)
 is_a_tty = 0;
 else
-#  endif
+# endif
 return (-1);
 }
 memcpy(&(tty_new), &(tty_orig), sizeof(tty_orig));
@@ -226,11 +226,11 @@ tty_new.TTY_FLAGS &= ~ECHO;
 # endif
 # if defined(TTY_set) && !defined(OPENSSL_SYS_VMS)
 if (is_a_tty && (TTY_set(fileno(tty), &tty_new) == -1))
-#  ifdef OPENSSL_SYS_MPE
+# ifdef OPENSSL_SYS_MPE
 ;
-#  else
+# else
 return (-1);
-#  endif
+# endif
 # endif
 # ifdef OPENSSL_SYS_VMS
 tty_new[0] = tty_orig[0];
@@ -364,11 +364,11 @@ if (size == 0) {
 break;
 }
 size--;
-#  ifdef WIN16TTY
+# ifdef WIN16TTY
 i = _inchar();
-#  else
+# else
 i = getch();
-#  endif
+# endif
 if (i == '\r')
 i = '\n';
 *(p++) = i;
@@ -377,13 +377,13 @@ if (i == '\n') {
 break;
 }
 }
-#  ifdef WIN_CONSOLE_BUG
+# ifdef WIN_CONSOLE_BUG
 {
 HANDLE inh;
 inh = GetStdHandle(STD_INPUT_HANDLE);
 FlushConsoleInputBuffer(inh);
 }
-#  endif
+# endif
 return (strlen(buf));
 }
 # endif

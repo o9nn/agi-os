@@ -15,64 +15,64 @@ static const char *rcsid = "$Id: sk_g16.c,v 1.1 1999/04/26 05:52:37 tb Exp $";
 #include <linux/etherdevice.h>
 #include <linux/skbuff.h>
 #include "sk_g16.h"
-#define SK_NAME   "SK_G16"
-#define SK_BOOT_ROM     1
-#define SK_ADDR         0xcc000
-#define POS_ADDR       (rom_addr>>14)
-#define SK_IO_PORTS     { 0x100, 0x180, 0x208, 0x220, 0x288, 0x320, 0x328, 0x390, 0 }
-#define SK_IRQS         { 3, 5, 9, 11, 0 }
+#define SK_NAME "SK_G16"
+#define SK_BOOT_ROM 1
+#define SK_ADDR 0xcc000
+#define POS_ADDR (rom_addr>>14)
+#define SK_IO_PORTS { 0x100, 0x180, 0x208, 0x220, 0x288, 0x320, 0x328, 0x390, 0 }
+#define SK_IRQS { 3, 5, 9, 11, 0 }
 #define SK_BOOT_ROM_LOCATIONS { 0xc0000, 0xc4000, 0xc8000, 0xcc000, 0xd0000, 0xd4000, 0xd8000, 0xdc000, 0 }
-#define SK_BOOT_ROM_ID  { 0x55, 0xaa, 0x10, 0x50, 0x06, 0x33 }
+#define SK_BOOT_ROM_ID { 0x55, 0xaa, 0x10, 0x50, 0x06, 0x33 }
 #define SK_POS_SIZE 8
-#define SK_POS0     ioaddr
-#define SK_POS1     ioaddr+1
-#define SK_POS2     ioaddr+2
-#define SK_POS3     ioaddr+3
-#define SK_POS4     ioaddr+4
-#define SK_MAC0         0x00
-#define SK_MAC1         0x00
-#define SK_MAC2         0x5a
-#define SK_IDLOW  0xfd
+#define SK_POS0 ioaddr
+#define SK_POS1 ioaddr+1
+#define SK_POS2 ioaddr+2
+#define SK_POS3 ioaddr+3
+#define SK_POS4 ioaddr+4
+#define SK_MAC0 0x00
+#define SK_MAC1 0x00
+#define SK_MAC2 0x5a
+#define SK_IDLOW 0xfd
 #define SK_IDHIGH 0x6a
-#define SK_ROM_RAM_ON  (POS2_CARD)
+#define SK_ROM_RAM_ON (POS2_CARD)
 #define SK_ROM_RAM_OFF (POS2_EPROM)
-#define SK_ROM_ON      (inb(SK_POS2) & POS2_CARD)
-#define SK_ROM_OFF     (inb(SK_POS2) | POS2_EPROM)
-#define SK_RAM_ON      (inb(SK_POS2) | POS2_CARD)
-#define SK_RAM_OFF     (inb(SK_POS2) & POS2_EPROM)
-#define POS2_CARD  0x0001
+#define SK_ROM_ON (inb(SK_POS2) & POS2_CARD)
+#define SK_ROM_OFF (inb(SK_POS2) | POS2_EPROM)
+#define SK_RAM_ON (inb(SK_POS2) | POS2_CARD)
+#define SK_RAM_OFF (inb(SK_POS2) & POS2_EPROM)
+#define POS2_CARD 0x0001
 #define POS2_EPROM 0x0002
-#define SK_IOREG        (board->ioreg)
-#define SK_PORT         (board->port)
-#define SK_IOCOM        (board->iocom)
-#define SK_IORUN        0x20
-#define SK_IRQ          0x10
-#define SK_RESET        0x08
-#define SK_RW           0x02
-#define SK_ADR          0x01
-#define SK_RREG         SK_RW
-#define SK_WREG         0
-#define SK_RAP          SK_ADR
-#define SK_RDATA        0
-#define SK_DOIO         0x80
-#define CSR0            0x00
-#define CSR1            0x01
-#define CSR2            0x02
-#define CSR3            0x03
+#define SK_IOREG (board->ioreg)
+#define SK_PORT (board->port)
+#define SK_IOCOM (board->iocom)
+#define SK_IORUN 0x20
+#define SK_IRQ 0x10
+#define SK_RESET 0x08
+#define SK_RW 0x02
+#define SK_ADR 0x01
+#define SK_RREG SK_RW
+#define SK_WREG 0
+#define SK_RAP SK_ADR
+#define SK_RDATA 0
+#define SK_DOIO 0x80
+#define CSR0 0x00
+#define CSR1 0x01
+#define CSR2 0x02
+#define CSR3 0x03
 #define LC_LOG_TX_BUFFERS 1
 #define LC_LOG_RX_BUFFERS 3
 #define TMDNUM (1 << (LC_LOG_TX_BUFFERS))
 #define RMDNUM (1 << (LC_LOG_RX_BUFFERS))
 #define TMDNUMMASK (LC_LOG_TX_BUFFERS << 29)
 #define RMDNUMMASK (LC_LOG_RX_BUFFERS << 29)
-#define PKT_BUF_SZ              1518
-#define ETHERCARD_TOTAL_SIZE    SK_POS_SIZE
+#define PKT_BUF_SZ 1518
+#define ETHERCARD_TOTAL_SIZE SK_POS_SIZE
 #ifndef HAVE_PORTRESERVE
-#define check_region(ioaddr, size)              0
-#define request_region(ioaddr, size,name)       do ; while (0)
+#define check_region(ioaddr, size) 0
+#define request_region(ioaddr, size,name) do ; while (0)
 #endif
-#undef  SK_DEBUG
-#undef  SK_DEBUG2
+#undef SK_DEBUG
+#undef SK_DEBUG2
 #ifdef SK_DEBUG
 #define PRINTK(x) printk x
 #else
@@ -85,12 +85,12 @@ static const char *rcsid = "$Id: sk_g16.c,v 1.1 1999/04/26 05:52:37 tb Exp $";
 #endif
 typedef struct
 {
-unsigned char  ram[0x3fc0];
-unsigned char  rom[0x0020];
-unsigned char  res1[0x0010];
+unsigned char ram[0x3fc0];
+unsigned char rom[0x0020];
+unsigned char res1[0x0010];
 unsigned volatile short ioreg;
-unsigned volatile char  port;
-unsigned char  iocom;
+unsigned volatile char port;
+unsigned char iocom;
 } SK_RAM;
 struct SK_ram
 {
@@ -105,37 +105,37 @@ struct priv
 struct SK_ram *ram;
 struct rmd *rmdhead;
 struct tmd *tmdhead;
-int        rmdnum;
-int        tmdnum;
-int        tmdlast;
-void       *rmdbufs[RMDNUM];
-void       *tmdbufs[TMDNUM];
+int rmdnum;
+int tmdnum;
+int tmdlast;
+void *rmdbufs[RMDNUM];
+void *tmdbufs[TMDNUM];
 struct enet_statistics stats;
 };
 static SK_RAM *board;
-int          SK_init(struct device *dev);
-static int   SK_probe(struct device *dev, short ioaddr);
-static int   SK_open(struct device *dev);
-static int   SK_send_packet(struct sk_buff *skb, struct device *dev);
-static void  SK_interrupt(int irq, void *dev_id, struct pt_regs * regs);
-static void  SK_rxintr(struct device *dev);
-static void  SK_txintr(struct device *dev);
-static int   SK_close(struct device *dev);
+int SK_init(struct device *dev);
+static int SK_probe(struct device *dev, short ioaddr);
+static int SK_open(struct device *dev);
+static int SK_send_packet(struct sk_buff *skb, struct device *dev);
+static void SK_interrupt(int irq, void *dev_id, struct pt_regs * regs);
+static void SK_rxintr(struct device *dev);
+static void SK_txintr(struct device *dev);
+static int SK_close(struct device *dev);
 static struct enet_statistics *SK_get_stats(struct device *dev);
 unsigned int SK_rom_addr(void);
 static void set_multicast_list(struct device *dev);
 static int SK_lance_init(struct device *dev, unsigned short mode);
-void   SK_reset_board(void);
-void   SK_set_RAP(int reg_number);
-int    SK_read_reg(int reg_number);
-int    SK_rread_reg(void);
-void   SK_write_reg(int reg_number, int value);
+void SK_reset_board(void);
+void SK_set_RAP(int reg_number);
+int SK_read_reg(int reg_number);
+int SK_rread_reg(void);
+void SK_write_reg(int reg_number, int value);
 void SK_print_pos(struct device *dev, char *text);
 void SK_print_dev(struct device *dev, char *text);
 void SK_print_ram(struct device *dev);
 int SK_init(struct device *dev)
 {
-int ioaddr         = 0;
+int ioaddr = 0;
 int *port, ports[] = SK_IO_PORTS;
 int base_addr = dev->base_addr;
 PRINTK(("%s: %s", SK_NAME, rcsid));
@@ -290,11 +290,11 @@ return -ENOMEM;
 }
 memset((char *) dev->priv, 0, sizeof(struct priv));
 request_region(ioaddr, ETHERCARD_TOTAL_SIZE,"sk_g16");
-dev->open                   = &SK_open;
-dev->stop                   = &SK_close;
-dev->hard_start_xmit        = &SK_send_packet;
-dev->get_stats              = &SK_get_stats;
-dev->set_multicast_list     = &set_multicast_list;
+dev->open = &SK_open;
+dev->stop = &SK_close;
+dev->hard_start_xmit = &SK_send_packet;
+dev->get_stats = &SK_get_stats;
+dev->set_multicast_list = &set_multicast_list;
 ether_setup(dev);
 dev->flags &= ~IFF_MULTICAST;
 p->ram = (struct SK_ram *) rom_addr;
@@ -416,8 +416,8 @@ static int SK_lance_init(struct device *dev, unsigned short mode)
 {
 int i;
 struct priv *p = (struct priv *) dev->priv;
-struct tmd  *tmdp;
-struct rmd  *rmdp;
+struct tmd *tmdp;
+struct rmd *rmdp;
 PRINTK(("## %s: At beginning of LANCE init. CSR0: %#06x\n",
 SK_NAME, SK_read_reg(CSR0)));
 SK_reset_board();
@@ -447,8 +447,8 @@ for (i = 0; i < 8; i++)
 {
 (p->ram)->ib.laddr[i] = 0;
 }
-(p->ram)->ib.rdrp = (int)  p->rmdhead | RMDNUMMASK;
-(p->ram)->ib.tdrp = (int)  p->tmdhead | TMDNUMMASK;
+(p->ram)->ib.rdrp = (int) p->rmdhead | RMDNUMMASK;
+(p->ram)->ib.tdrp = (int) p->tmdhead | TMDNUMMASK;
 cli();
 SK_write_reg(CSR3, CSR3_ACON);
 SK_write_reg(CSR1, 0);
@@ -631,7 +631,7 @@ else if (rmdstat & RX_ERR)
 printk("%s: RX error: %04x\n", dev->name, (int) rmdstat);
 p->stats.rx_errors++;
 if (rmdstat & RX_FRAM) p->stats.rx_frame_errors++;
-if (rmdstat & RX_CRC)  p->stats.rx_crc_errors++;
+if (rmdstat & RX_CRC) p->stats.rx_crc_errors++;
 rmdp->u.s.status = RX_OWN;
 }
 else
@@ -742,7 +742,7 @@ SK_PORT = SK_RESET;
 void SK_set_RAP(int reg_number)
 {
 SK_IOREG = reg_number;
-SK_PORT  = SK_RESET | SK_RAP | SK_WREG;
+SK_PORT = SK_RESET | SK_RAP | SK_WREG;
 SK_IOCOM = SK_DOIO;
 while (SK_PORT & SK_IORUN)
 ;
@@ -750,7 +750,7 @@ while (SK_PORT & SK_IORUN)
 int SK_read_reg(int reg_number)
 {
 SK_set_RAP(reg_number);
-SK_PORT  = SK_RESET | SK_RDATA | SK_RREG;
+SK_PORT = SK_RESET | SK_RDATA | SK_RREG;
 SK_IOCOM = SK_DOIO;
 while (SK_PORT & SK_IORUN)
 ;
@@ -758,7 +758,7 @@ return (SK_IOREG);
 }
 int SK_rread_reg(void)
 {
-SK_PORT  = SK_RESET | SK_RDATA | SK_RREG;
+SK_PORT = SK_RESET | SK_RDATA | SK_RREG;
 SK_IOCOM = SK_DOIO;
 while (SK_PORT & SK_IORUN)
 ;
@@ -768,7 +768,7 @@ void SK_write_reg(int reg_number, int value)
 {
 SK_set_RAP(reg_number);
 SK_IOREG = value;
-SK_PORT  = SK_RESET | SK_RDATA | SK_WREG;
+SK_PORT = SK_RESET | SK_RDATA | SK_WREG;
 SK_IOCOM = SK_DOIO;
 while (SK_PORT & SK_IORUN)
 ;

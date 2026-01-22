@@ -18,11 +18,11 @@ int i, tmp;
 char *str, *endptr;
 if (argc < 2)
 error (1, 0, "Usage: %s file [flags] [operation] [sleep_time]\n\
-file          : file name/device name\n\
-flags         : r (O_RDONLY) | w (O_WRONLY) | rw (O_RDWR)      : [w]\n\
-operation     : s (LOCK_SH), x (LOCK_EX), u (LOCK_UN),\n\
+file : file name/device name\n\
+flags : r (O_RDONLY) | w (O_WRONLY) | rw (O_RDWR) : [w]\n\
+operation : s (LOCK_SH), x (LOCK_EX), u (LOCK_UN),\n\
 sn (LOCK_SH | LOCK_UN), xn (LOCK_EX | LOCK_UN) : [s]\n\
-sleep_time    : st <number>                                    : [st 10]\n",
+sleep_time : st <number> : [st 10]\n",
 argv[0]);
 *file_name = argv[1];
 for (i = 2; i < argc; i++)

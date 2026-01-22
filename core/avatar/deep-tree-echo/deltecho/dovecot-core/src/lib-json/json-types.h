@@ -62,17 +62,17 @@ i_assert(jvalue->content_type == JSON_CONTENT_TYPE_INTEGER);
 *num_r = jvalue->content.intnum;
 return 0;
 }
-#define JSON_VALUE_GET_U__TEMPLATE(name, type, uint_max)                \
-static inline int                                                       \
-name(const struct json_value *jvalue, type *num_r)                      \
-{                                                                       \
-intmax_t l;                                                     \
-i_assert(jvalue->content_type == JSON_CONTENT_TYPE_INTEGER);    \
-l = jvalue->content.intnum;                                     \
-if (l < 0 || (uintmax_t)l > uint_max)                           \
-return -1;                                              \
-*num_r = (type)l;                                               \
-return 0;                                                       \
+#define JSON_VALUE_GET_U__TEMPLATE(name, type, uint_max) \
+static inline int \
+name(const struct json_value *jvalue, type *num_r) \
+{ \
+intmax_t l; \
+i_assert(jvalue->content_type == JSON_CONTENT_TYPE_INTEGER); \
+l = jvalue->content.intnum; \
+if (l < 0 || (uintmax_t)l > uint_max) \
+return -1; \
+*num_r = (type)l; \
+return 0; \
 }
 JSON_VALUE_GET_U__TEMPLATE(json_value_get_uint,
 unsigned int, UINT_MAX)
@@ -84,17 +84,17 @@ JSON_VALUE_GET_U__TEMPLATE(json_value_get_uint32,
 uint32_t, UINT32_MAX)
 JSON_VALUE_GET_U__TEMPLATE(json_value_get_uint64,
 uint64_t, UINT64_MAX)
-#define JSON_VALUE_GET_S__TEMPLATE(name, type, int_min, int_max)        \
-static inline int                                                       \
-name(const struct json_value *jvalue, type *num_r)                      \
-{                                                                       \
-intmax_t l;                                                     \
-i_assert(jvalue->content_type == JSON_CONTENT_TYPE_INTEGER);    \
-l = jvalue->content.intnum;                                     \
-if (l < int_min || l > int_max)                                 \
-return -1;                                              \
-*num_r = (type)l;                                               \
-return 0;                                                       \
+#define JSON_VALUE_GET_S__TEMPLATE(name, type, int_min, int_max) \
+static inline int \
+name(const struct json_value *jvalue, type *num_r) \
+{ \
+intmax_t l; \
+i_assert(jvalue->content_type == JSON_CONTENT_TYPE_INTEGER); \
+l = jvalue->content.intnum; \
+if (l < int_min || l > int_max) \
+return -1; \
+*num_r = (type)l; \
+return 0; \
 }
 JSON_VALUE_GET_S__TEMPLATE(json_value_get_int,
 int, INT_MIN, INT_MAX)

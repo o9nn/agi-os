@@ -10,8 +10,8 @@ error_t create_host_node (struct hostmux *mux, struct hostmux_name *name,
 struct node **node);
 #define DIRENT_ALIGN 4
 #define DIRENT_NAME_OFFS offsetof (struct dirent, d_name)
-#define DIRENT_LEN(name_len)						      \
-((DIRENT_NAME_OFFS + (name_len) + 1 + (DIRENT_ALIGN - 1))		      \
+#define DIRENT_LEN(name_len) \
+((DIRENT_NAME_OFFS + (name_len) + 1 + (DIRENT_ALIGN - 1)) \
 & ~(DIRENT_ALIGN - 1))
 static error_t lookup_host (struct hostmux *mux, const char *host,
 struct node **node);
@@ -215,7 +215,7 @@ struct addrinfo hints;
 hints.ai_flags = AI_CANONNAME;
 hints.ai_family = PF_INET;
 hints.ai_socktype = SOCK_DGRAM;
-hints.ai_protocol  = IPPROTO_IP;
+hints.ai_protocol = IPPROTO_IP;
 pthread_rwlock_rdlock (&mux->names_lock);
 was_cached = lookup_cached (mux, host, 0, node);
 pthread_rwlock_unlock (&mux->names_lock);

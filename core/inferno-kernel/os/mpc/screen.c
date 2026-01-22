@@ -1,19 +1,19 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"../port/error.h"
-#include	<draw.h>
-#include	<memdraw.h>
-#include	<cursor.h>
-#include	"screen.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "../port/error.h"
+#include <draw.h>
+#include <memdraw.h>
+#include <cursor.h>
+#include "screen.h"
 enum {
 Backgnd = 0xFF,
-Foregnd =	0x00,
+Foregnd = 0x00,
 };
-Cursor	arrow = {
+Cursor arrow = {
 { -1, -1 },
 { 0xFF, 0xFF, 0x80, 0x01, 0x80, 0x02, 0x80, 0x0C,
 0x80, 0x10, 0x80, 0x10, 0x80, 0x08, 0x80, 0x04,
@@ -41,17 +41,17 @@ nil,
 nil,
 0,
 };
-int	novgascreen;
-static	int	lcdpdpar;
+int novgascreen;
+static int lcdpdpar;
 Memimage *gscreen;
 Memimage *conscol;
 Memimage *back;
-static	Memsubfont *memdefont;
-static	Lock	palettelock;
-static	Lock	screenlock;
-static	int	h;
-static	Point	curpos;
-static	Rectangle window;
+static Memsubfont *memdefont;
+static Lock palettelock;
+static Lock screenlock;
+static int h;
+static Point curpos;
+static Rectangle window;
 typedef struct SWcursor SWcursor;
 static SWcursor *swc = nil;
 SWcursor* swcurs_create(ulong *, int, int, Rectangle, int);
@@ -61,13 +61,13 @@ void swcurs_disable(SWcursor*);
 void swcurs_hide(SWcursor*);
 void swcurs_unhide(SWcursor*);
 void swcurs_load(SWcursor*, Cursor*);
-static	void	screenputc(char*);
-static	void	scroll(void);
-static	void	setscreen(Mode*);
-static	void	cursorlock(Rectangle);
-static	void	cursorunlock(void);
-static	void	lcdinit(Mode*);
-static	void	lcdsetrgb(int, ulong, ulong, ulong);
+static void screenputc(char*);
+static void scroll(void);
+static void setscreen(Mode*);
+static void cursorlock(Rectangle);
+static void cursorunlock(void);
+static void lcdinit(Mode*);
+static void lcdsetrgb(int, ulong, ulong, ulong);
 void
 screeninit(void)
 {
@@ -360,7 +360,7 @@ io->sdcr = (io->sdcr & ~0xF) | LAM;
 eieio();
 io->sccrk = KEEP_ALIVE_KEY;
 eieio();
-io->sccr  = (io->sccr & ~0x1F) | lcdclock[d];
+io->sccr = (io->sccr & ~0x1F) | lcdclock[d];
 eieio();
 io->sccrk= ~KEEP_ALIVE_KEY;
 io->lcsr = 7;
@@ -408,31 +408,31 @@ enum {
 CUR_ENA = 0x01,
 CUR_DRW = 0x02,
 CUR_SWP = 0x10,
-CURSWID	= 16,
-CURSHGT	= 16,
+CURSWID = 16,
+CURSHGT = 16,
 };
 typedef struct SWcursor {
-ulong	*fb;
+ulong *fb;
 Rectangle r;
-int	d;
-int 	width;
-int	x;
-int	y;
-int	hotx;
-int	hoty;
-uchar	cbwid;
-uchar	f;
-uchar	cwid;
-uchar	chgt;
-int	hidecount;
-uchar	data[CURSWID*CURSHGT];
-uchar	mask[CURSWID*CURSHGT];
-uchar	save[CURSWID*CURSHGT];
+int d;
+int width;
+int x;
+int y;
+int hotx;
+int hoty;
+uchar cbwid;
+uchar f;
+uchar cwid;
+uchar chgt;
+int hidecount;
+uchar data[CURSWID*CURSHGT];
+uchar mask[CURSWID*CURSHGT];
+uchar save[CURSWID*CURSHGT];
 } SWcursor;
 static Rectangle cursoroffrect;
-static int	cursorisoff;
+static int cursorisoff;
 static void swcursorflush(int, int);
-static void	swcurs_draw_or_undraw(SWcursor *);
+static void swcurs_draw_or_undraw(SWcursor *);
 static void
 cursorupdate0(void)
 {

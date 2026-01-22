@@ -7,25 +7,25 @@
 # include "e_os.h"
 # include <openssl/buffer.h>
 # ifndef OPENSSL_NO_COMP
-#  include <openssl/comp.h>
+# include <openssl/comp.h>
 # endif
 # include <openssl/bio.h>
 # include <openssl/stack.h>
 # ifndef OPENSSL_NO_RSA
-#  include <openssl/rsa.h>
+# include <openssl/rsa.h>
 # endif
 # ifndef OPENSSL_NO_DSA
-#  include <openssl/dsa.h>
+# include <openssl/dsa.h>
 # endif
 # include <openssl/err.h>
 # include <openssl/ssl.h>
 # include <openssl/symhacks.h>
 # ifdef OPENSSL_BUILD_SHLIBSSL
-#  undef OPENSSL_EXTERN
-#  define OPENSSL_EXTERN OPENSSL_EXPORT
+# undef OPENSSL_EXTERN
+# define OPENSSL_EXTERN OPENSSL_EXPORT
 # endif
 # undef PKCS1_CHECK
-# define c2l(c,l)        (l = ((unsigned long)(*((c)++)))     , \
+# define c2l(c,l) (l = ((unsigned long)(*((c)++))) , \
 l|=(((unsigned long)(*((c)++)))<< 8), \
 l|=(((unsigned long)(*((c)++)))<<16), \
 l|=(((unsigned long)(*((c)++)))<<24))
@@ -36,40 +36,40 @@ switch (n) { \
 case 8: l2 =((unsigned long)(*(--(c))))<<24; \
 case 7: l2|=((unsigned long)(*(--(c))))<<16; \
 case 6: l2|=((unsigned long)(*(--(c))))<< 8; \
-case 5: l2|=((unsigned long)(*(--(c))));     \
+case 5: l2|=((unsigned long)(*(--(c)))); \
 case 4: l1 =((unsigned long)(*(--(c))))<<24; \
 case 3: l1|=((unsigned long)(*(--(c))))<<16; \
 case 2: l1|=((unsigned long)(*(--(c))))<< 8; \
-case 1: l1|=((unsigned long)(*(--(c))));     \
+case 1: l1|=((unsigned long)(*(--(c)))); \
 } \
 }
-# define l2c(l,c)        (*((c)++)=(unsigned char)(((l)    )&0xff), \
+# define l2c(l,c) (*((c)++)=(unsigned char)(((l) )&0xff), \
 *((c)++)=(unsigned char)(((l)>> 8)&0xff), \
 *((c)++)=(unsigned char)(((l)>>16)&0xff), \
 *((c)++)=(unsigned char)(((l)>>24)&0xff))
-# define n2l(c,l)        (l =((unsigned long)(*((c)++)))<<24, \
+# define n2l(c,l) (l =((unsigned long)(*((c)++)))<<24, \
 l|=((unsigned long)(*((c)++)))<<16, \
 l|=((unsigned long)(*((c)++)))<< 8, \
 l|=((unsigned long)(*((c)++))))
-# define l2n(l,c)        (*((c)++)=(unsigned char)(((l)>>24)&0xff), \
+# define l2n(l,c) (*((c)++)=(unsigned char)(((l)>>24)&0xff), \
 *((c)++)=(unsigned char)(((l)>>16)&0xff), \
 *((c)++)=(unsigned char)(((l)>> 8)&0xff), \
-*((c)++)=(unsigned char)(((l)    )&0xff))
-# define l2n6(l,c)       (*((c)++)=(unsigned char)(((l)>>40)&0xff), \
+*((c)++)=(unsigned char)(((l) )&0xff))
+# define l2n6(l,c) (*((c)++)=(unsigned char)(((l)>>40)&0xff), \
 *((c)++)=(unsigned char)(((l)>>32)&0xff), \
 *((c)++)=(unsigned char)(((l)>>24)&0xff), \
 *((c)++)=(unsigned char)(((l)>>16)&0xff), \
 *((c)++)=(unsigned char)(((l)>> 8)&0xff), \
-*((c)++)=(unsigned char)(((l)    )&0xff))
-# define l2n8(l,c)       (*((c)++)=(unsigned char)(((l)>>56)&0xff), \
+*((c)++)=(unsigned char)(((l) )&0xff))
+# define l2n8(l,c) (*((c)++)=(unsigned char)(((l)>>56)&0xff), \
 *((c)++)=(unsigned char)(((l)>>48)&0xff), \
 *((c)++)=(unsigned char)(((l)>>40)&0xff), \
 *((c)++)=(unsigned char)(((l)>>32)&0xff), \
 *((c)++)=(unsigned char)(((l)>>24)&0xff), \
 *((c)++)=(unsigned char)(((l)>>16)&0xff), \
 *((c)++)=(unsigned char)(((l)>> 8)&0xff), \
-*((c)++)=(unsigned char)(((l)    )&0xff))
-# define n2l6(c,l)       (l =((BN_ULLONG)(*((c)++)))<<40, \
+*((c)++)=(unsigned char)(((l) )&0xff))
+# define n2l6(c,l) (l =((BN_ULLONG)(*((c)++)))<<40, \
 l|=((BN_ULLONG)(*((c)++)))<<32, \
 l|=((BN_ULLONG)(*((c)++)))<<24, \
 l|=((BN_ULLONG)(*((c)++)))<<16, \
@@ -81,81 +81,81 @@ switch (n) { \
 case 8: *(--(c))=(unsigned char)(((l2)>>24)&0xff); \
 case 7: *(--(c))=(unsigned char)(((l2)>>16)&0xff); \
 case 6: *(--(c))=(unsigned char)(((l2)>> 8)&0xff); \
-case 5: *(--(c))=(unsigned char)(((l2)    )&0xff); \
+case 5: *(--(c))=(unsigned char)(((l2) )&0xff); \
 case 4: *(--(c))=(unsigned char)(((l1)>>24)&0xff); \
 case 3: *(--(c))=(unsigned char)(((l1)>>16)&0xff); \
 case 2: *(--(c))=(unsigned char)(((l1)>> 8)&0xff); \
-case 1: *(--(c))=(unsigned char)(((l1)    )&0xff); \
+case 1: *(--(c))=(unsigned char)(((l1) )&0xff); \
 } \
 }
-# define n2s(c,s)        ((s=(((unsigned int)(c[0]))<< 8)| \
-(((unsigned int)(c[1]))    )),c+=2)
-# define s2n(s,c)        ((c[0]=(unsigned char)(((s)>> 8)&0xff), \
-c[1]=(unsigned char)(((s)    )&0xff)),c+=2)
-# define n2l3(c,l)       ((l =(((unsigned long)(c[0]))<<16)| \
+# define n2s(c,s) ((s=(((unsigned int)(c[0]))<< 8)| \
+(((unsigned int)(c[1])) )),c+=2)
+# define s2n(s,c) ((c[0]=(unsigned char)(((s)>> 8)&0xff), \
+c[1]=(unsigned char)(((s) )&0xff)),c+=2)
+# define n2l3(c,l) ((l =(((unsigned long)(c[0]))<<16)| \
 (((unsigned long)(c[1]))<< 8)| \
-(((unsigned long)(c[2]))    )),c+=3)
-# define l2n3(l,c)       ((c[0]=(unsigned char)(((l)>>16)&0xff), \
+(((unsigned long)(c[2])) )),c+=3)
+# define l2n3(l,c) ((c[0]=(unsigned char)(((l)>>16)&0xff), \
 c[1]=(unsigned char)(((l)>> 8)&0xff), \
-c[2]=(unsigned char)(((l)    )&0xff)),c+=3)
-# define SSL_DECRYPT     0
-# define SSL_ENCRYPT     1
-# define TWO_BYTE_BIT    0x80
-# define SEC_ESC_BIT     0x40
-# define TWO_BYTE_MASK   0x7fff
+c[2]=(unsigned char)(((l) )&0xff)),c+=3)
+# define SSL_DECRYPT 0
+# define SSL_ENCRYPT 1
+# define TWO_BYTE_BIT 0x80
+# define SEC_ESC_BIT 0x40
+# define TWO_BYTE_MASK 0x7fff
 # define THREE_BYTE_MASK 0x3fff
-# define INC32(a)        ((a)=((a)+1)&0xffffffffL)
-# define DEC32(a)        ((a)=((a)-1)&0xffffffffL)
-# define MAX_MAC_SIZE    20
-# define SSL_kRSA                0x00000001L
-# define SSL_kDHr                0x00000002L
-# define SSL_kDHd                0x00000004L
-# define SSL_kEDH                0x00000008L
-# define SSL_kKRB5               0x00000010L
-# define SSL_kECDHr              0x00000020L
-# define SSL_kECDHe              0x00000040L
-# define SSL_kEECDH              0x00000080L
-# define SSL_kPSK                0x00000100L
-# define SSL_kGOST       0x00000200L
-# define SSL_kSRP        0x00000400L
-# define SSL_aRSA                0x00000001L
-# define SSL_aDSS                0x00000002L
-# define SSL_aNULL               0x00000004L
-# define SSL_aDH                 0x00000008L
-# define SSL_aECDH               0x00000010L
-# define SSL_aKRB5               0x00000020L
-# define SSL_aECDSA              0x00000040L
-# define SSL_aPSK                0x00000080L
-# define SSL_aGOST94                             0x00000100L
-# define SSL_aGOST01                     0x00000200L
-# define SSL_aSRP                0x00000400L
-# define SSL_DES                 0x00000001L
-# define SSL_3DES                0x00000002L
-# define SSL_RC4                 0x00000004L
-# define SSL_RC2                 0x00000008L
-# define SSL_IDEA                0x00000010L
-# define SSL_eNULL               0x00000020L
-# define SSL_AES128              0x00000040L
-# define SSL_AES256              0x00000080L
-# define SSL_CAMELLIA128         0x00000100L
-# define SSL_CAMELLIA256         0x00000200L
-# define SSL_eGOST2814789CNT     0x00000400L
-# define SSL_SEED                0x00000800L
-# define SSL_AES128GCM           0x00001000L
-# define SSL_AES256GCM           0x00002000L
-# define SSL_AES                 (SSL_AES128|SSL_AES256|SSL_AES128GCM|SSL_AES256GCM)
-# define SSL_CAMELLIA            (SSL_CAMELLIA128|SSL_CAMELLIA256)
-# define SSL_MD5                 0x00000001L
-# define SSL_SHA1                0x00000002L
-# define SSL_GOST94      0x00000004L
-# define SSL_GOST89MAC   0x00000008L
-# define SSL_SHA256              0x00000010L
-# define SSL_SHA384              0x00000020L
-# define SSL_AEAD                0x00000040L
-# define SSL_SSLV2               0x00000001UL
-# define SSL_SSLV3               0x00000002UL
-# define SSL_TLSV1               SSL_SSLV3
-# define SSL_TLSV1_2             0x00000004UL
+# define INC32(a) ((a)=((a)+1)&0xffffffffL)
+# define DEC32(a) ((a)=((a)-1)&0xffffffffL)
+# define MAX_MAC_SIZE 20
+# define SSL_kRSA 0x00000001L
+# define SSL_kDHr 0x00000002L
+# define SSL_kDHd 0x00000004L
+# define SSL_kEDH 0x00000008L
+# define SSL_kKRB5 0x00000010L
+# define SSL_kECDHr 0x00000020L
+# define SSL_kECDHe 0x00000040L
+# define SSL_kEECDH 0x00000080L
+# define SSL_kPSK 0x00000100L
+# define SSL_kGOST 0x00000200L
+# define SSL_kSRP 0x00000400L
+# define SSL_aRSA 0x00000001L
+# define SSL_aDSS 0x00000002L
+# define SSL_aNULL 0x00000004L
+# define SSL_aDH 0x00000008L
+# define SSL_aECDH 0x00000010L
+# define SSL_aKRB5 0x00000020L
+# define SSL_aECDSA 0x00000040L
+# define SSL_aPSK 0x00000080L
+# define SSL_aGOST94 0x00000100L
+# define SSL_aGOST01 0x00000200L
+# define SSL_aSRP 0x00000400L
+# define SSL_DES 0x00000001L
+# define SSL_3DES 0x00000002L
+# define SSL_RC4 0x00000004L
+# define SSL_RC2 0x00000008L
+# define SSL_IDEA 0x00000010L
+# define SSL_eNULL 0x00000020L
+# define SSL_AES128 0x00000040L
+# define SSL_AES256 0x00000080L
+# define SSL_CAMELLIA128 0x00000100L
+# define SSL_CAMELLIA256 0x00000200L
+# define SSL_eGOST2814789CNT 0x00000400L
+# define SSL_SEED 0x00000800L
+# define SSL_AES128GCM 0x00001000L
+# define SSL_AES256GCM 0x00002000L
+# define SSL_AES (SSL_AES128|SSL_AES256|SSL_AES128GCM|SSL_AES256GCM)
+# define SSL_CAMELLIA (SSL_CAMELLIA128|SSL_CAMELLIA256)
+# define SSL_MD5 0x00000001L
+# define SSL_SHA1 0x00000002L
+# define SSL_GOST94 0x00000004L
+# define SSL_GOST89MAC 0x00000008L
+# define SSL_SHA256 0x00000010L
+# define SSL_SHA384 0x00000020L
+# define SSL_AEAD 0x00000040L
+# define SSL_SSLV2 0x00000001UL
+# define SSL_SSLV3 0x00000002UL
+# define SSL_TLSV1 SSL_SSLV3
+# define SSL_TLSV1_2 0x00000004UL
 # define SSL_HANDSHAKE_MAC_MD5 0x10
 # define SSL_HANDSHAKE_MAC_SHA 0x20
 # define SSL_HANDSHAKE_MAC_GOST94 0x40
@@ -163,7 +163,7 @@ c[2]=(unsigned char)(((l)    )&0xff)),c+=3)
 # define SSL_HANDSHAKE_MAC_SHA384 0x100
 # define SSL_HANDSHAKE_MAC_DEFAULT (SSL_HANDSHAKE_MAC_MD5 | SSL_HANDSHAKE_MAC_SHA)
 # define SSL_MAX_DIGEST 6
-# define TLS1_PRF_DGST_MASK      (0xff << TLS1_PRF_DGST_SHIFT)
+# define TLS1_PRF_DGST_MASK (0xff << TLS1_PRF_DGST_SHIFT)
 # define TLS1_PRF_DGST_SHIFT 10
 # define TLS1_PRF_MD5 (SSL_HANDSHAKE_MAC_MD5 << TLS1_PRF_DGST_SHIFT)
 # define TLS1_PRF_SHA1 (SSL_HANDSHAKE_MAC_SHA << TLS1_PRF_DGST_SHIFT)
@@ -172,45 +172,45 @@ c[2]=(unsigned char)(((l)    )&0xff)),c+=3)
 # define TLS1_PRF_GOST94 (SSL_HANDSHAKE_MAC_GOST94 << TLS1_PRF_DGST_SHIFT)
 # define TLS1_PRF (TLS1_PRF_MD5 | TLS1_PRF_SHA1)
 # define TLS1_STREAM_MAC 0x04
-# define SSL_EXP_MASK            0x00000003L
-# define SSL_STRONG_MASK         0x000001fcL
-# define SSL_NOT_EXP             0x00000001L
-# define SSL_EXPORT              0x00000002L
-# define SSL_STRONG_NONE         0x00000004L
-# define SSL_EXP40               0x00000008L
-# define SSL_MICRO               (SSL_EXP40)
-# define SSL_EXP56               0x00000010L
-# define SSL_MINI                (SSL_EXP56)
-# define SSL_LOW                 0x00000020L
-# define SSL_MEDIUM              0x00000040L
-# define SSL_HIGH                0x00000080L
-# define SSL_FIPS                0x00000100L
-# define SSL_NOT_DEFAULT         0x00000200L
-# define SSL_IS_EXPORT(a)        ((a)&SSL_EXPORT)
-# define SSL_IS_EXPORT56(a)      ((a)&SSL_EXP56)
-# define SSL_IS_EXPORT40(a)      ((a)&SSL_EXP40)
-# define SSL_C_IS_EXPORT(c)      SSL_IS_EXPORT((c)->algo_strength)
-# define SSL_C_IS_EXPORT56(c)    SSL_IS_EXPORT56((c)->algo_strength)
-# define SSL_C_IS_EXPORT40(c)    SSL_IS_EXPORT40((c)->algo_strength)
-# define SSL_EXPORT_KEYLENGTH(a,s)       (SSL_IS_EXPORT40(s) ? 5 : \
+# define SSL_EXP_MASK 0x00000003L
+# define SSL_STRONG_MASK 0x000001fcL
+# define SSL_NOT_EXP 0x00000001L
+# define SSL_EXPORT 0x00000002L
+# define SSL_STRONG_NONE 0x00000004L
+# define SSL_EXP40 0x00000008L
+# define SSL_MICRO (SSL_EXP40)
+# define SSL_EXP56 0x00000010L
+# define SSL_MINI (SSL_EXP56)
+# define SSL_LOW 0x00000020L
+# define SSL_MEDIUM 0x00000040L
+# define SSL_HIGH 0x00000080L
+# define SSL_FIPS 0x00000100L
+# define SSL_NOT_DEFAULT 0x00000200L
+# define SSL_IS_EXPORT(a) ((a)&SSL_EXPORT)
+# define SSL_IS_EXPORT56(a) ((a)&SSL_EXP56)
+# define SSL_IS_EXPORT40(a) ((a)&SSL_EXP40)
+# define SSL_C_IS_EXPORT(c) SSL_IS_EXPORT((c)->algo_strength)
+# define SSL_C_IS_EXPORT56(c) SSL_IS_EXPORT56((c)->algo_strength)
+# define SSL_C_IS_EXPORT40(c) SSL_IS_EXPORT40((c)->algo_strength)
+# define SSL_EXPORT_KEYLENGTH(a,s) (SSL_IS_EXPORT40(s) ? 5 : \
 (a) == SSL_DES ? 8 : 7)
 # define SSL_EXPORT_PKEYLENGTH(a) (SSL_IS_EXPORT40(a) ? 512 : 1024)
-# define SSL_C_EXPORT_KEYLENGTH(c)       SSL_EXPORT_KEYLENGTH((c)->algorithm_enc, \
+# define SSL_C_EXPORT_KEYLENGTH(c) SSL_EXPORT_KEYLENGTH((c)->algorithm_enc, \
 (c)->algo_strength)
-# define SSL_C_EXPORT_PKEYLENGTH(c)      SSL_EXPORT_PKEYLENGTH((c)->algo_strength)
-# define SSL_PKEY_RSA_ENC        0
-# define SSL_PKEY_RSA_SIGN       1
-# define SSL_PKEY_DSA_SIGN       2
-# define SSL_PKEY_DH_RSA         3
-# define SSL_PKEY_DH_DSA         4
-# define SSL_PKEY_ECC            5
-# define SSL_PKEY_GOST94         6
-# define SSL_PKEY_GOST01         7
-# define SSL_PKEY_NUM            8
+# define SSL_C_EXPORT_PKEYLENGTH(c) SSL_EXPORT_PKEYLENGTH((c)->algo_strength)
+# define SSL_PKEY_RSA_ENC 0
+# define SSL_PKEY_RSA_SIGN 1
+# define SSL_PKEY_DSA_SIGN 2
+# define SSL_PKEY_DH_RSA 3
+# define SSL_PKEY_DH_DSA 4
+# define SSL_PKEY_ECC 5
+# define SSL_PKEY_GOST94 6
+# define SSL_PKEY_GOST01 7
+# define SSL_PKEY_NUM 8
 # ifndef OPENSSL_NO_EC
-#  define EXPLICIT_PRIME_CURVE_TYPE  1
-#  define EXPLICIT_CHAR2_CURVE_TYPE  2
-#  define NAMED_CURVE_TYPE           3
+# define EXPLICIT_PRIME_CURVE_TYPE 1
+# define EXPLICIT_CHAR2_CURVE_TYPE 2
+# define NAMED_CURVE_TYPE 3
 # endif
 typedef struct cert_pkey_st {
 X509 *x509;
@@ -255,7 +255,7 @@ EC_KEY *peer_ecdh_tmp;
 # endif
 int references;
 } SESS_CERT;
-# define FP_ICC  (int (*)(const void *,const void *))
+# define FP_ICC (int (*)(const void *,const void *))
 # define ssl_put_cipher_by_char(ssl,ciph,ptr) \
 ((ssl)->method->put_cipher_by_char((ciph),(ptr)))
 # define ssl_get_cipher_by_char(ssl,ptr) \
@@ -307,7 +307,7 @@ extern SSL3_ENC_METHOD DTLSv1_enc_data;
 # define SSL_IS_DTLS(s) (s->method->version == DTLS1_VERSION)
 # define IMPLEMENT_tls_meth_func(version, func_name, s_accept, s_connect, \
 s_get_meth) \
-const SSL_METHOD *func_name(void)  \
+const SSL_METHOD *func_name(void) \
 { \
 static const SSL_METHOD func_name##_data= { \
 version, \
@@ -343,7 +343,7 @@ ssl3_ctx_callback_ctrl, \
 return &func_name##_data; \
 }
 # define IMPLEMENT_ssl3_meth_func(func_name, s_accept, s_connect, s_get_meth) \
-const SSL_METHOD *func_name(void)  \
+const SSL_METHOD *func_name(void) \
 { \
 static const SSL_METHOD func_name##_data= { \
 SSL3_VERSION, \
@@ -379,7 +379,7 @@ ssl3_ctx_callback_ctrl, \
 return &func_name##_data; \
 }
 # define IMPLEMENT_ssl23_meth_func(func_name, s_accept, s_connect, s_get_meth) \
-const SSL_METHOD *func_name(void)  \
+const SSL_METHOD *func_name(void) \
 { \
 static const SSL_METHOD func_name##_data= { \
 TLS1_2_VERSION, \
@@ -415,27 +415,27 @@ ssl3_ctx_callback_ctrl, \
 return &func_name##_data; \
 }
 # define IMPLEMENT_ssl2_meth_func(func_name, s_accept, s_connect, s_get_meth) \
-const SSL_METHOD *func_name(void)  \
+const SSL_METHOD *func_name(void) \
 { \
 static const SSL_METHOD func_name##_data= { \
 SSL2_VERSION, \
-ssl2_new,        \
-ssl2_clear,      \
-ssl2_free,       \
+ssl2_new, \
+ssl2_clear, \
+ssl2_free, \
 s_accept, \
 s_connect, \
 ssl2_read, \
 ssl2_peek, \
 ssl2_write, \
 ssl2_shutdown, \
-ssl_ok,  \
-ssl_ok,  \
-NULL,  \
-NULL,  \
-NULL,  \
-NULL,  \
-ssl2_ctrl,       \
-ssl2_ctx_ctrl,   \
+ssl_ok, \
+ssl_ok, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+ssl2_ctrl, \
+ssl2_ctx_ctrl, \
 ssl2_get_cipher_by_char, \
 ssl2_put_cipher_by_char, \
 ssl2_pending, \
@@ -445,13 +445,13 @@ s_get_meth, \
 ssl2_default_timeout, \
 &ssl3_undef_enc_method, \
 ssl_undefined_void_function, \
-ssl2_callback_ctrl,      \
-ssl2_ctx_callback_ctrl,  \
+ssl2_callback_ctrl, \
+ssl2_ctx_callback_ctrl, \
 }; \
 return &func_name##_data; \
 }
 # define IMPLEMENT_dtls1_meth_func(func_name, s_accept, s_connect, s_get_meth) \
-const SSL_METHOD *func_name(void)  \
+const SSL_METHOD *func_name(void) \
 { \
 static const SSL_METHOD func_name##_data= { \
 DTLS1_VERSION, \
@@ -689,11 +689,11 @@ int ssl3_send_client_key_exchange(SSL *s);
 int ssl3_get_key_exchange(SSL *s);
 int ssl3_get_server_certificate(SSL *s);
 int ssl3_check_cert_and_algorithm(SSL *s);
-#  ifndef OPENSSL_NO_TLSEXT
-#   ifndef OPENSSL_NO_NEXTPROTONEG
+# ifndef OPENSSL_NO_TLSEXT
+# ifndef OPENSSL_NO_NEXTPROTONEG
 int ssl3_send_next_proto(SSL *s);
-#   endif
-#  endif
+# endif
+# endif
 int dtls1_client_hello(SSL *s);
 int dtls1_send_client_certificate(SSL *s);
 int dtls1_send_client_key_exchange(SSL *s);
@@ -708,9 +708,9 @@ int ssl3_check_client_hello(SSL *s);
 int ssl3_get_client_certificate(SSL *s);
 int ssl3_get_client_key_exchange(SSL *s);
 int ssl3_get_cert_verify(SSL *s);
-#  ifndef OPENSSL_NO_NEXTPROTONEG
+# ifndef OPENSSL_NO_NEXTPROTONEG
 int ssl3_get_next_proto(SSL *s);
-#  endif
+# endif
 int dtls1_send_hello_request(SSL *s);
 int dtls1_send_server_hello(SSL *s);
 int dtls1_send_server_certificate(SSL *s);
@@ -757,15 +757,15 @@ int use_context);
 int tls1_alert_code(int code);
 int ssl3_alert_code(int code);
 int ssl_ok(SSL *s);
-#  ifndef OPENSSL_NO_ECDH
+# ifndef OPENSSL_NO_ECDH
 int ssl_check_srvr_ecc_cert_and_alg(X509 *x, SSL *s);
-#  endif
+# endif
 SSL_COMP *ssl3_comp_find(STACK_OF(SSL_COMP) *sk, int n);
-#  ifndef OPENSSL_NO_EC
+# ifndef OPENSSL_NO_EC
 int tls1_ec_curve_id2nid(int curve_id);
 int tls1_ec_nid2curve_id(int nid);
-#  endif
-#  ifndef OPENSSL_NO_TLSEXT
+# endif
+# ifndef OPENSSL_NO_TLSEXT
 unsigned char *ssl_add_clienthello_tlsext(SSL *s, unsigned char *buf,
 unsigned char *limit);
 unsigned char *ssl_add_serverhello_tlsext(SSL *s, unsigned char *buf,
@@ -779,24 +779,24 @@ int ssl_prepare_serverhello_tlsext(SSL *s);
 int ssl_check_clienthello_tlsext_early(SSL *s);
 int ssl_check_clienthello_tlsext_late(SSL *s);
 int ssl_check_serverhello_tlsext(SSL *s);
-#   ifndef OPENSSL_NO_HEARTBEATS
+# ifndef OPENSSL_NO_HEARTBEATS
 int tls1_heartbeat(SSL *s);
 int dtls1_heartbeat(SSL *s);
 int tls1_process_heartbeat(SSL *s);
 int dtls1_process_heartbeat(SSL *s);
-#   endif
-#   ifdef OPENSSL_NO_SHA256
-#    define tlsext_tick_md  EVP_sha1
-#   else
-#    define tlsext_tick_md  EVP_sha256
-#   endif
+# endif
+# ifdef OPENSSL_NO_SHA256
+# define tlsext_tick_md EVP_sha1
+# else
+# define tlsext_tick_md EVP_sha256
+# endif
 int tls1_process_ticket(SSL *s, unsigned char *session_id, int len,
 const unsigned char *limit, SSL_SESSION **ret);
 int tls12_get_sigandhash(unsigned char *p, const EVP_PKEY *pk,
 const EVP_MD *md);
 int tls12_get_sigid(const EVP_PKEY *pk);
 const EVP_MD *tls12_get_hash(unsigned char hash_alg);
-#  endif
+# endif
 EVP_MD_CTX *ssl_replace_hash(EVP_MD_CTX **hash, const EVP_MD *md);
 void ssl_clear_hash_ctx(EVP_MD_CTX **hash);
 int ssl_add_serverhello_renegotiate_ext(SSL *s, unsigned char *p, int *len,
@@ -842,9 +842,9 @@ EVP_MD_CTX *mac_ctx, const unsigned char *data,
 size_t data_len, size_t orig_len);
 int srp_verify_server_param(SSL *s, int *al);
 # else
-#  define ssl_init_wbio_buffer SSL_test_functions()->p_ssl_init_wbio_buffer
-#  define ssl3_setup_buffers SSL_test_functions()->p_ssl3_setup_buffers
-#  define tls1_process_heartbeat SSL_test_functions()->p_tls1_process_heartbeat
-#  define dtls1_process_heartbeat SSL_test_functions()->p_dtls1_process_heartbeat
+# define ssl_init_wbio_buffer SSL_test_functions()->p_ssl_init_wbio_buffer
+# define ssl3_setup_buffers SSL_test_functions()->p_ssl3_setup_buffers
+# define tls1_process_heartbeat SSL_test_functions()->p_tls1_process_heartbeat
+# define dtls1_process_heartbeat SSL_test_functions()->p_dtls1_process_heartbeat
 # endif
 #endif

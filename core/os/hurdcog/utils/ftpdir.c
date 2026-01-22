@@ -11,15 +11,15 @@
 const char *argp_program_version = STANDARD_HURD_VERSION (ftpdir);
 static struct argp_option options[] =
 {
-{"user",     'u', "USER",0, "User to login as on ftp server"},
+{"user", 'u', "USER",0, "User to login as on ftp server"},
 {"password", 'p', "PWD", 0, "USER's password"},
-{"account",  'a', "ACCT",0, "Account to login as"},
+{"account", 'a', "ACCT",0, "Account to login as"},
 {"separator",'S', "SEP", 0, "String to separate multiple listings"},
-{"prefix",   'P', "PFX", 0, "String to proceed listings; the first and second"
+{"prefix", 'P', "PFX", 0, "String to proceed listings; the first and second"
 " occurrences of %s are replace by HOST and DIR"},
-{"host",     'h', "HOST",0, "Use HOST as a default host"},
-{"debug",    'D', 0,     0, "Turn on debugging output for ftp connections"},
-{"interpret",'i', 0,     0, "Parse the directory output"},
+{"host", 'h', "HOST",0, "Use HOST as a default host"},
+{"debug", 'D', 0, 0, "Turn on debugging output for ftp connections"},
+{"interpret",'i', 0, 0, "Parse the directory output"},
 {0, 0}
 };
 static char *args_doc = "[([HOST:]DIR | HOST:)...]";
@@ -35,7 +35,7 @@ cntl_debug (struct ftp_conn *conn, int type, const char *txt)
 char *type_str;
 switch (type)
 {
-case FTP_CONN_CNTL_DEBUG_CMD:   type_str = "."; break;
+case FTP_CONN_CNTL_DEBUG_CMD: type_str = "."; break;
 case FTP_CONN_CNTL_DEBUG_REPLY: type_str = "="; break;
 default: type_str = "?"; break;
 }

@@ -9,11 +9,11 @@
 #include <memdraw.h>
 #include <memlayer.h>
 enum {
-Width		= 160,
-Height		= 25,
-Attr		= 7,
+Width = 160,
+Height = 25,
+Attr = 7,
 };
-#define CGASCREENBASE	((uchar*)KADDR(0xB8000))
+#define CGASCREENBASE ((uchar*)KADDR(0xB8000))
 static int cgapos;
 static int screeninitdone;
 static Lock cgascreenlock;

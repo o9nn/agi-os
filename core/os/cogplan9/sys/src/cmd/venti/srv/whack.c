@@ -1,16 +1,16 @@
 #include "stdinc.h"
 #include "whack.h"
-typedef struct Huff	Huff;
+typedef struct Huff Huff;
 int compressblocks = 1;
 enum
 {
-MaxFastLen	= 9,
-BigLenCode	= 0x1f4,
-BigLenBits	= 9,
-BigLenBase	= 4,
-MinOffBits	= 6,
-MaxOffBits	= MinOffBits + 8,
-MaxLen		= 2051
+MaxFastLen = 9,
+BigLenCode = 0x1f4,
+BigLenBits = 9,
+BigLenBase = 4,
+MinOffBits = 6,
+MaxOffBits = MinOffBits + 8,
+MaxLen = 2051
 };
 enum
 {
@@ -25,22 +25,22 @@ MaxStat
 };
 struct Huff
 {
-short	bits;
-ulong	encode;
+short bits;
+ulong encode;
 };
-static	Huff	lentab[MaxFastLen] =
+static Huff lentab[MaxFastLen] =
 {
-{2,	0x2},
-{3,	0x6},
-{5,	0x1c},
-{5,	0x1d},
-{6,	0x3c},
-{7,	0x7a},
-{7,	0x7b},
-{8,	0xf8},
-{8,	0xf9},
+{2, 0x2},
+{3, 0x6},
+{5, 0x1c},
+{5, 0x1d},
+{6, 0x3c},
+{7, 0x7a},
+{7, 0x7b},
+{8, 0xf8},
+{8, 0xf9},
 };
-static int	thwmaxcheck;
+static int thwmaxcheck;
 void
 whackinit(Whack *tw, int level)
 {
@@ -95,7 +95,7 @@ last = off;
 *ss += bestlen;
 return bestoff;
 }
-#define hashit(c)	(((((ulong)(c) & 0xffffff) * 0x6b43a9b5) >> (32 - HashLog)) & HashMask)
+#define hashit(c) (((((ulong)(c) & 0xffffff) * 0x6b43a9b5) >> (32 - HashLog)) & HashMask)
 int
 whack(Whack *w, uchar *dst, uchar *src, int n, ulong stats[WhackStats])
 {

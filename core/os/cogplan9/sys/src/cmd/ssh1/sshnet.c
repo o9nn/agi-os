@@ -6,7 +6,7 @@
 #include <9p.h>
 int rawhack = 1;
 Conn *conn;
-char *remoteip	= "<remote>";
+char *remoteip = "<remote>";
 char *mtpt;
 Cipher *allcipher[] = {
 &cipherrc4,
@@ -72,9 +72,9 @@ Qlocal,
 Qremote,
 Qstatus,
 };
-#define PATH(type, n)		((type)|((n)<<8))
-#define TYPE(path)			((int)(path) & 0xFF)
-#define NUM(path)			((uint)(path)>>8)
+#define PATH(type, n) ((type)|((n)<<8))
+#define TYPE(path) ((int)(path) & 0xFF)
+#define NUM(path) ((uint)(path)>>8)
 Channel *sshmsgchan;
 Channel *fsreqchan;
 Channel *fsreqwaitchan;
@@ -260,16 +260,16 @@ ulong mode;
 };
 Tab tab[] =
 {
-"/",		DMDIR|0555,
-"cs",		0666,
-"tcp",	DMDIR|0555,
-"clone",	0666,
-nil,		DMDIR|0555,
-"ctl",		0666,
-"data",	0666,
-"local",	0444,
-"remote",	0444,
-"status",	0444,
+"/", DMDIR|0555,
+"cs", 0666,
+"tcp", DMDIR|0555,
+"clone", 0666,
+nil, DMDIR|0555,
+"ctl", 0666,
+"data", 0666,
+"local", 0444,
+"remote", 0444,
+"status", 0444,
 };
 static void
 fillstat(Dir *d, uvlong path)
@@ -865,15 +865,15 @@ threadexitsall("done");
 }
 Srv fs =
 {
-.attach=		fssend,
-.destroyfid=	fsdestroyfid,
-.walk1=		fswalk1,
-.open=		fssend,
-.read=		fssend,
-.write=		fssend,
-.stat=		fssend,
-.flush=		fssend,
-.end=		takedown,
+.attach= fssend,
+.destroyfid= fsdestroyfid,
+.walk1= fswalk1,
+.open= fssend,
+.read= fssend,
+.write= fssend,
+.stat= fssend,
+.flush= fssend,
+.end= takedown,
 };
 void
 threadmain(int argc, char **argv)

@@ -22,7 +22,7 @@
 (define language (get-lang))
 (define database-uri (get-connection-uri))
 (repl-default-option-set! 'prompt (string-append "scheme@("
-    language "-" cog-mode ")> "))
+language "-" cog-mode ")> "))
 (start-cogserver (string-append "config/opencog-" cog-mode "-" language ".conf"))
 (sql-open database-uri)
 (display "Opened database: ")

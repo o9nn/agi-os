@@ -1,5 +1,5 @@
-#ifndef	_NETINET_IN_H
-#define	_NETINET_IN_H	1
+#ifndef _NETINET_IN_H
+#define _NETINET_IN_H 1
 #include <features.h>
 #include <bits/stdint-uintn.h>
 #include <sys/socket.h>
@@ -14,80 +14,80 @@ in_addr_t s_addr;
 enum
 {
 IPPROTO_IP = 0,
-#define IPPROTO_IP		IPPROTO_IP
+#define IPPROTO_IP IPPROTO_IP
 IPPROTO_ICMP = 1,
-#define IPPROTO_ICMP		IPPROTO_ICMP
+#define IPPROTO_ICMP IPPROTO_ICMP
 IPPROTO_IGMP = 2,
-#define IPPROTO_IGMP		IPPROTO_IGMP
+#define IPPROTO_IGMP IPPROTO_IGMP
 IPPROTO_IPIP = 4,
-#define IPPROTO_IPIP		IPPROTO_IPIP
+#define IPPROTO_IPIP IPPROTO_IPIP
 IPPROTO_TCP = 6,
-#define IPPROTO_TCP		IPPROTO_TCP
+#define IPPROTO_TCP IPPROTO_TCP
 IPPROTO_EGP = 8,
-#define IPPROTO_EGP		IPPROTO_EGP
+#define IPPROTO_EGP IPPROTO_EGP
 IPPROTO_PUP = 12,
-#define IPPROTO_PUP		IPPROTO_PUP
+#define IPPROTO_PUP IPPROTO_PUP
 IPPROTO_UDP = 17,
-#define IPPROTO_UDP		IPPROTO_UDP
+#define IPPROTO_UDP IPPROTO_UDP
 IPPROTO_IDP = 22,
-#define IPPROTO_IDP		IPPROTO_IDP
+#define IPPROTO_IDP IPPROTO_IDP
 IPPROTO_TP = 29,
-#define IPPROTO_TP		IPPROTO_TP
+#define IPPROTO_TP IPPROTO_TP
 IPPROTO_DCCP = 33,
-#define IPPROTO_DCCP		IPPROTO_DCCP
+#define IPPROTO_DCCP IPPROTO_DCCP
 IPPROTO_IPV6 = 41,
-#define IPPROTO_IPV6		IPPROTO_IPV6
+#define IPPROTO_IPV6 IPPROTO_IPV6
 IPPROTO_RSVP = 46,
-#define IPPROTO_RSVP		IPPROTO_RSVP
+#define IPPROTO_RSVP IPPROTO_RSVP
 IPPROTO_GRE = 47,
-#define IPPROTO_GRE		IPPROTO_GRE
+#define IPPROTO_GRE IPPROTO_GRE
 IPPROTO_ESP = 50,
-#define IPPROTO_ESP		IPPROTO_ESP
+#define IPPROTO_ESP IPPROTO_ESP
 IPPROTO_AH = 51,
-#define IPPROTO_AH		IPPROTO_AH
+#define IPPROTO_AH IPPROTO_AH
 IPPROTO_MTP = 92,
-#define IPPROTO_MTP		IPPROTO_MTP
+#define IPPROTO_MTP IPPROTO_MTP
 IPPROTO_BEETPH = 94,
-#define IPPROTO_BEETPH		IPPROTO_BEETPH
+#define IPPROTO_BEETPH IPPROTO_BEETPH
 IPPROTO_ENCAP = 98,
-#define IPPROTO_ENCAP		IPPROTO_ENCAP
+#define IPPROTO_ENCAP IPPROTO_ENCAP
 IPPROTO_PIM = 103,
-#define IPPROTO_PIM		IPPROTO_PIM
+#define IPPROTO_PIM IPPROTO_PIM
 IPPROTO_COMP = 108,
-#define IPPROTO_COMP		IPPROTO_COMP
+#define IPPROTO_COMP IPPROTO_COMP
 IPPROTO_L2TP = 115,
-#define IPPROTO_L2TP		IPPROTO_L2TP
+#define IPPROTO_L2TP IPPROTO_L2TP
 IPPROTO_SCTP = 132,
-#define IPPROTO_SCTP		IPPROTO_SCTP
+#define IPPROTO_SCTP IPPROTO_SCTP
 IPPROTO_UDPLITE = 136,
-#define IPPROTO_UDPLITE		IPPROTO_UDPLITE
+#define IPPROTO_UDPLITE IPPROTO_UDPLITE
 IPPROTO_MPLS = 137,
-#define IPPROTO_MPLS		IPPROTO_MPLS
+#define IPPROTO_MPLS IPPROTO_MPLS
 IPPROTO_ETHERNET = 143,
-#define IPPROTO_ETHERNET	IPPROTO_ETHERNET
+#define IPPROTO_ETHERNET IPPROTO_ETHERNET
 IPPROTO_RAW = 255,
-#define IPPROTO_RAW		IPPROTO_RAW
+#define IPPROTO_RAW IPPROTO_RAW
 IPPROTO_MPTCP = 262,
-#define IPPROTO_MPTCP		IPPROTO_MPTCP
+#define IPPROTO_MPTCP IPPROTO_MPTCP
 IPPROTO_MAX
 };
 #if !__USE_KERNEL_IPV6_DEFS
 enum
 {
 IPPROTO_HOPOPTS = 0,
-#define IPPROTO_HOPOPTS		IPPROTO_HOPOPTS
+#define IPPROTO_HOPOPTS IPPROTO_HOPOPTS
 IPPROTO_ROUTING = 43,
-#define IPPROTO_ROUTING		IPPROTO_ROUTING
+#define IPPROTO_ROUTING IPPROTO_ROUTING
 IPPROTO_FRAGMENT = 44,
-#define IPPROTO_FRAGMENT	IPPROTO_FRAGMENT
+#define IPPROTO_FRAGMENT IPPROTO_FRAGMENT
 IPPROTO_ICMPV6 = 58,
-#define IPPROTO_ICMPV6		IPPROTO_ICMPV6
+#define IPPROTO_ICMPV6 IPPROTO_ICMPV6
 IPPROTO_NONE = 59,
-#define IPPROTO_NONE		IPPROTO_NONE
+#define IPPROTO_NONE IPPROTO_NONE
 IPPROTO_DSTOPTS = 60,
-#define IPPROTO_DSTOPTS		IPPROTO_DSTOPTS
+#define IPPROTO_DSTOPTS IPPROTO_DSTOPTS
 IPPROTO_MH = 135
-#define IPPROTO_MH		IPPROTO_MH
+#define IPPROTO_MH IPPROTO_MH
 };
 #endif
 typedef uint16_t in_port_t;
@@ -120,50 +120,50 @@ IPPORT_ROUTESERVER = 520,
 IPPORT_RESERVED = 1024,
 IPPORT_USERRESERVED = 5000
 };
-#define	IN_CLASSA(a)		((((in_addr_t)(a)) & 0x80000000) == 0)
-#define	IN_CLASSA_NET		0xff000000
-#define	IN_CLASSA_NSHIFT	24
-#define	IN_CLASSA_HOST		(0xffffffff & ~IN_CLASSA_NET)
-#define	IN_CLASSA_MAX		128
-#define	IN_CLASSB(a)		((((in_addr_t)(a)) & 0xc0000000) == 0x80000000)
-#define	IN_CLASSB_NET		0xffff0000
-#define	IN_CLASSB_NSHIFT	16
-#define	IN_CLASSB_HOST		(0xffffffff & ~IN_CLASSB_NET)
-#define	IN_CLASSB_MAX		65536
-#define	IN_CLASSC(a)		((((in_addr_t)(a)) & 0xe0000000) == 0xc0000000)
-#define	IN_CLASSC_NET		0xffffff00
-#define	IN_CLASSC_NSHIFT	8
-#define	IN_CLASSC_HOST		(0xffffffff & ~IN_CLASSC_NET)
-#define	IN_CLASSD(a)		((((in_addr_t)(a)) & 0xf0000000) == 0xe0000000)
-#define	IN_MULTICAST(a)		IN_CLASSD(a)
-#define	IN_EXPERIMENTAL(a)	((((in_addr_t)(a)) & 0xe0000000) == 0xe0000000)
-#define	IN_BADCLASS(a)		((((in_addr_t)(a)) & 0xf0000000) == 0xf0000000)
-#define	INADDR_ANY		((in_addr_t) 0x00000000)
-#define	INADDR_BROADCAST	((in_addr_t) 0xffffffff)
-#define	INADDR_NONE		((in_addr_t) 0xffffffff)
-#define	INADDR_DUMMY		((in_addr_t) 0xc0000008)
-#define	IN_LOOPBACKNET		127
+#define IN_CLASSA(a) ((((in_addr_t)(a)) & 0x80000000) == 0)
+#define IN_CLASSA_NET 0xff000000
+#define IN_CLASSA_NSHIFT 24
+#define IN_CLASSA_HOST (0xffffffff & ~IN_CLASSA_NET)
+#define IN_CLASSA_MAX 128
+#define IN_CLASSB(a) ((((in_addr_t)(a)) & 0xc0000000) == 0x80000000)
+#define IN_CLASSB_NET 0xffff0000
+#define IN_CLASSB_NSHIFT 16
+#define IN_CLASSB_HOST (0xffffffff & ~IN_CLASSB_NET)
+#define IN_CLASSB_MAX 65536
+#define IN_CLASSC(a) ((((in_addr_t)(a)) & 0xe0000000) == 0xc0000000)
+#define IN_CLASSC_NET 0xffffff00
+#define IN_CLASSC_NSHIFT 8
+#define IN_CLASSC_HOST (0xffffffff & ~IN_CLASSC_NET)
+#define IN_CLASSD(a) ((((in_addr_t)(a)) & 0xf0000000) == 0xe0000000)
+#define IN_MULTICAST(a) IN_CLASSD(a)
+#define IN_EXPERIMENTAL(a) ((((in_addr_t)(a)) & 0xe0000000) == 0xe0000000)
+#define IN_BADCLASS(a) ((((in_addr_t)(a)) & 0xf0000000) == 0xf0000000)
+#define INADDR_ANY ((in_addr_t) 0x00000000)
+#define INADDR_BROADCAST ((in_addr_t) 0xffffffff)
+#define INADDR_NONE ((in_addr_t) 0xffffffff)
+#define INADDR_DUMMY ((in_addr_t) 0xc0000008)
+#define IN_LOOPBACKNET 127
 #ifndef INADDR_LOOPBACK
-# define INADDR_LOOPBACK	((in_addr_t) 0x7f000001)
+# define INADDR_LOOPBACK ((in_addr_t) 0x7f000001)
 #endif
-#define INADDR_UNSPEC_GROUP	((in_addr_t) 0xe0000000)
-#define INADDR_ALLHOSTS_GROUP	((in_addr_t) 0xe0000001)
-#define INADDR_ALLRTRS_GROUP    ((in_addr_t) 0xe0000002)
+#define INADDR_UNSPEC_GROUP ((in_addr_t) 0xe0000000)
+#define INADDR_ALLHOSTS_GROUP ((in_addr_t) 0xe0000001)
+#define INADDR_ALLRTRS_GROUP ((in_addr_t) 0xe0000002)
 #define INADDR_ALLSNOOPERS_GROUP ((in_addr_t) 0xe000006a)
-#define INADDR_MAX_LOCAL_GROUP  ((in_addr_t) 0xe00000ff)
+#define INADDR_MAX_LOCAL_GROUP ((in_addr_t) 0xe00000ff)
 #if !__USE_KERNEL_IPV6_DEFS
 struct in6_addr
 {
 union
 {
-uint8_t	__u6_addr8[16];
+uint8_t __u6_addr8[16];
 uint16_t __u6_addr16[8];
 uint32_t __u6_addr32[4];
 } __in6_u;
-#define s6_addr			__in6_u.__u6_addr8
+#define s6_addr __in6_u.__u6_addr8
 #ifdef __USE_MISC
-# define s6_addr16		__in6_u.__u6_addr16
-# define s6_addr32		__in6_u.__u6_addr32
+# define s6_addr16 __in6_u.__u6_addr16
+# define s6_addr32 __in6_u.__u6_addr32
 #endif
 };
 #endif
@@ -240,7 +240,7 @@ uint32_t imsf_numsrc;
 struct in_addr imsf_slist[1];
 };
 #define IP_MSFILTER_SIZE(numsrc) (sizeof (struct ip_msfilter) \
-- sizeof (struct in_addr)		      \
+- sizeof (struct in_addr) \
 + (numsrc) * sizeof (struct in_addr))
 struct group_filter
 {
@@ -251,8 +251,8 @@ uint32_t gf_numsrc;
 struct sockaddr_storage gf_slist[1];
 };
 #define GROUP_FILTER_SIZE(numsrc) (sizeof (struct group_filter) \
-- sizeof (struct sockaddr_storage)	      \
-+ ((numsrc)				      \
+- sizeof (struct sockaddr_storage) \
++ ((numsrc) \
 * sizeof (struct sockaddr_storage)))
 #endif
 extern uint32_t ntohl (uint32_t __netlong) __THROW __attribute__ ((__const__));
@@ -267,93 +267,93 @@ __THROW __attribute__ ((__const__));
 #include <bits/uintn-identity.h>
 #ifdef __OPTIMIZE__
 # if __BYTE_ORDER == __BIG_ENDIAN
-# define ntohl(x)	__uint32_identity (x)
-# define ntohs(x)	__uint16_identity (x)
-# define htonl(x)	__uint32_identity (x)
-# define htons(x)	__uint16_identity (x)
+# define ntohl(x) __uint32_identity (x)
+# define ntohs(x) __uint16_identity (x)
+# define htonl(x) __uint32_identity (x)
+# define htons(x) __uint16_identity (x)
 # else
-#  if __BYTE_ORDER == __LITTLE_ENDIAN
-#   define ntohl(x)	__bswap_32 (x)
-#   define ntohs(x)	__bswap_16 (x)
-#   define htonl(x)	__bswap_32 (x)
-#   define htons(x)	__bswap_16 (x)
-#  endif
+# if __BYTE_ORDER == __LITTLE_ENDIAN
+# define ntohl(x) __bswap_32 (x)
+# define ntohs(x) __bswap_16 (x)
+# define htonl(x) __bswap_32 (x)
+# define htons(x) __bswap_16 (x)
+# endif
 # endif
 #endif
 #ifdef __GNUC__
 # define IN6_IS_ADDR_UNSPECIFIED(a) \
-(__extension__							      \
-({ const struct in6_addr *__a = (const struct in6_addr *) (a);	      \
-__a->__in6_u.__u6_addr32[0] == 0					      \
-&& __a->__in6_u.__u6_addr32[1] == 0				      \
-&& __a->__in6_u.__u6_addr32[2] == 0				      \
+(__extension__ \
+({ const struct in6_addr *__a = (const struct in6_addr *) (a); \
+__a->__in6_u.__u6_addr32[0] == 0 \
+&& __a->__in6_u.__u6_addr32[1] == 0 \
+&& __a->__in6_u.__u6_addr32[2] == 0 \
 && __a->__in6_u.__u6_addr32[3] == 0; }))
 # define IN6_IS_ADDR_LOOPBACK(a) \
-(__extension__							      \
-({ const struct in6_addr *__a = (const struct in6_addr *) (a);	      \
-__a->__in6_u.__u6_addr32[0] == 0					      \
-&& __a->__in6_u.__u6_addr32[1] == 0				      \
-&& __a->__in6_u.__u6_addr32[2] == 0				      \
+(__extension__ \
+({ const struct in6_addr *__a = (const struct in6_addr *) (a); \
+__a->__in6_u.__u6_addr32[0] == 0 \
+&& __a->__in6_u.__u6_addr32[1] == 0 \
+&& __a->__in6_u.__u6_addr32[2] == 0 \
 && __a->__in6_u.__u6_addr32[3] == htonl (1); }))
 # define IN6_IS_ADDR_LINKLOCAL(a) \
-(__extension__							      \
-({ const struct in6_addr *__a = (const struct in6_addr *) (a);	      \
+(__extension__ \
+({ const struct in6_addr *__a = (const struct in6_addr *) (a); \
 (__a->__in6_u.__u6_addr32[0] & htonl (0xffc00000)) == htonl (0xfe800000); }))
 # define IN6_IS_ADDR_SITELOCAL(a) \
-(__extension__							      \
-({ const struct in6_addr *__a = (const struct in6_addr *) (a);	      \
+(__extension__ \
+({ const struct in6_addr *__a = (const struct in6_addr *) (a); \
 (__a->__in6_u.__u6_addr32[0] & htonl (0xffc00000)) == htonl (0xfec00000); }))
 # define IN6_IS_ADDR_V4MAPPED(a) \
-(__extension__							      \
-({ const struct in6_addr *__a = (const struct in6_addr *) (a);	      \
-__a->__in6_u.__u6_addr32[0] == 0					      \
-&& __a->__in6_u.__u6_addr32[1] == 0				      \
+(__extension__ \
+({ const struct in6_addr *__a = (const struct in6_addr *) (a); \
+__a->__in6_u.__u6_addr32[0] == 0 \
+&& __a->__in6_u.__u6_addr32[1] == 0 \
 && __a->__in6_u.__u6_addr32[2] == htonl (0xffff); }))
 # define IN6_IS_ADDR_V4COMPAT(a) \
-(__extension__							      \
-({ const struct in6_addr *__a = (const struct in6_addr *) (a);	      \
-__a->__in6_u.__u6_addr32[0] == 0					      \
-&& __a->__in6_u.__u6_addr32[1] == 0				      \
-&& __a->__in6_u.__u6_addr32[2] == 0				      \
+(__extension__ \
+({ const struct in6_addr *__a = (const struct in6_addr *) (a); \
+__a->__in6_u.__u6_addr32[0] == 0 \
+&& __a->__in6_u.__u6_addr32[1] == 0 \
+&& __a->__in6_u.__u6_addr32[2] == 0 \
 && ntohl (__a->__in6_u.__u6_addr32[3]) > 1; }))
 # define IN6_ARE_ADDR_EQUAL(a,b) \
-(__extension__							      \
-({ const struct in6_addr *__a = (const struct in6_addr *) (a);	      \
-const struct in6_addr *__b = (const struct in6_addr *) (b);	      \
-__a->__in6_u.__u6_addr32[0] == __b->__in6_u.__u6_addr32[0]	      \
-&& __a->__in6_u.__u6_addr32[1] == __b->__in6_u.__u6_addr32[1]	      \
-&& __a->__in6_u.__u6_addr32[2] == __b->__in6_u.__u6_addr32[2]	      \
+(__extension__ \
+({ const struct in6_addr *__a = (const struct in6_addr *) (a); \
+const struct in6_addr *__b = (const struct in6_addr *) (b); \
+__a->__in6_u.__u6_addr32[0] == __b->__in6_u.__u6_addr32[0] \
+&& __a->__in6_u.__u6_addr32[1] == __b->__in6_u.__u6_addr32[1] \
+&& __a->__in6_u.__u6_addr32[2] == __b->__in6_u.__u6_addr32[2] \
 && __a->__in6_u.__u6_addr32[3] == __b->__in6_u.__u6_addr32[3]; }))
 #else
 # define IN6_IS_ADDR_UNSPECIFIED(a) \
-(((const uint32_t *) (a))[0] == 0				      \
-&& ((const uint32_t *) (a))[1] == 0				      \
-&& ((const uint32_t *) (a))[2] == 0				      \
+(((const uint32_t *) (a))[0] == 0 \
+&& ((const uint32_t *) (a))[1] == 0 \
+&& ((const uint32_t *) (a))[2] == 0 \
 && ((const uint32_t *) (a))[3] == 0)
 # define IN6_IS_ADDR_LOOPBACK(a) \
-(((const uint32_t *) (a))[0] == 0				      \
-&& ((const uint32_t *) (a))[1] == 0				      \
-&& ((const uint32_t *) (a))[2] == 0				      \
+(((const uint32_t *) (a))[0] == 0 \
+&& ((const uint32_t *) (a))[1] == 0 \
+&& ((const uint32_t *) (a))[2] == 0 \
 && ((const uint32_t *) (a))[3] == htonl (1))
 # define IN6_IS_ADDR_LINKLOCAL(a) \
-((((const uint32_t *) (a))[0] & htonl (0xffc00000))		      \
+((((const uint32_t *) (a))[0] & htonl (0xffc00000)) \
 == htonl (0xfe800000))
 # define IN6_IS_ADDR_SITELOCAL(a) \
-((((const uint32_t *) (a))[0] & htonl (0xffc00000))		      \
+((((const uint32_t *) (a))[0] & htonl (0xffc00000)) \
 == htonl (0xfec00000))
 # define IN6_IS_ADDR_V4MAPPED(a) \
-((((const uint32_t *) (a))[0] == 0)				      \
-&& (((const uint32_t *) (a))[1] == 0)				      \
+((((const uint32_t *) (a))[0] == 0) \
+&& (((const uint32_t *) (a))[1] == 0) \
 && (((const uint32_t *) (a))[2] == htonl (0xffff)))
 # define IN6_IS_ADDR_V4COMPAT(a) \
-((((const uint32_t *) (a))[0] == 0)				      \
-&& (((const uint32_t *) (a))[1] == 0)				      \
-&& (((const uint32_t *) (a))[2] == 0)				      \
+((((const uint32_t *) (a))[0] == 0) \
+&& (((const uint32_t *) (a))[1] == 0) \
+&& (((const uint32_t *) (a))[2] == 0) \
 && (ntohl (((const uint32_t *) (a))[3]) > 1))
 # define IN6_ARE_ADDR_EQUAL(a,b) \
-((((const uint32_t *) (a))[0] == ((const uint32_t *) (b))[0])	      \
-&& (((const uint32_t *) (a))[1] == ((const uint32_t *) (b))[1])      \
-&& (((const uint32_t *) (a))[2] == ((const uint32_t *) (b))[2])      \
+((((const uint32_t *) (a))[0] == ((const uint32_t *) (b))[0]) \
+&& (((const uint32_t *) (a))[1] == ((const uint32_t *) (b))[1]) \
+&& (((const uint32_t *) (a))[2] == ((const uint32_t *) (b))[2]) \
 && (((const uint32_t *) (a))[3] == ((const uint32_t *) (b))[3]))
 #endif
 #define IN6_IS_ADDR_MULTICAST(a) (((const uint8_t *) (a))[0] == 0xff)
@@ -363,19 +363,19 @@ extern int bindresvport6 (int __sockfd, struct sockaddr_in6 *__sock_in)
 __THROW;
 #endif
 #define IN6_IS_ADDR_MC_NODELOCAL(a) \
-(IN6_IS_ADDR_MULTICAST(a)					      \
+(IN6_IS_ADDR_MULTICAST(a) \
 && ((((const uint8_t *) (a))[1] & 0xf) == 0x1))
 #define IN6_IS_ADDR_MC_LINKLOCAL(a) \
-(IN6_IS_ADDR_MULTICAST(a)					      \
+(IN6_IS_ADDR_MULTICAST(a) \
 && ((((const uint8_t *) (a))[1] & 0xf) == 0x2))
 #define IN6_IS_ADDR_MC_SITELOCAL(a) \
-(IN6_IS_ADDR_MULTICAST(a)					      \
+(IN6_IS_ADDR_MULTICAST(a) \
 && ((((const uint8_t *) (a))[1] & 0xf) == 0x5))
 #define IN6_IS_ADDR_MC_ORGLOCAL(a) \
-(IN6_IS_ADDR_MULTICAST(a)					      \
+(IN6_IS_ADDR_MULTICAST(a) \
 && ((((const uint8_t *) (a))[1] & 0xf) == 0x8))
 #define IN6_IS_ADDR_MC_GLOBAL(a) \
-(IN6_IS_ADDR_MULTICAST(a)					      \
+(IN6_IS_ADDR_MULTICAST(a) \
 && ((((const uint8_t *) (a))[1] & 0xf) == 0xe))
 #ifdef __USE_GNU
 struct cmsghdr;

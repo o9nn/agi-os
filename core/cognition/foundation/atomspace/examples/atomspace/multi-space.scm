@@ -11,8 +11,8 @@
 (cog-set-atomspace! c)
 (cog-prt-atomspace)
 (define get-concepts
-	(Get (TypedVariable (Variable "$x") (Type 'Concept))
-		(Variable "$x")))
+(Get (TypedVariable (Variable "$x") (Type 'Concept))
+(Variable "$x")))
 (cog-prt-atomspace)
 (cog-execute! get-concepts)
 (cog-prt-atomspace)

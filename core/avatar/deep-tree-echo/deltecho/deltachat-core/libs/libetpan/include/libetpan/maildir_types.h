@@ -5,7 +5,7 @@
 #include <libetpan/chash.h>
 #include <libetpan/carray.h>
 #ifdef HAVE_INTTYPES_H
-#	include <inttypes.h>
+# include <inttypes.h>
 #endif
 #include <libetpan/libetpan-config.h>
 #define LIBETPAN_MAILDIR
@@ -18,11 +18,11 @@ MAILDIR_ERROR_FILE,
 MAILDIR_ERROR_NOT_FOUND,
 MAILDIR_ERROR_FOLDER
 };
-#define MAILDIR_FLAG_NEW      (1 << 0)
-#define MAILDIR_FLAG_SEEN     (1 << 1)
-#define MAILDIR_FLAG_REPLIED  (1 << 2)
-#define MAILDIR_FLAG_FLAGGED  (1 << 3)
-#define MAILDIR_FLAG_TRASHED  (1 << 4)
+#define MAILDIR_FLAG_NEW (1 << 0)
+#define MAILDIR_FLAG_SEEN (1 << 1)
+#define MAILDIR_FLAG_REPLIED (1 << 2)
+#define MAILDIR_FLAG_FLAGGED (1 << 3)
+#define MAILDIR_FLAG_TRASHED (1 << 4)
 struct maildir_msg {
 char * msg_uid;
 char * msg_filename;

@@ -2,20 +2,20 @@ import type { InternalModel } from 'pixi-live2d-display/cubism4'
 import { lerp, randFloat } from 'three/src/math/MathUtils.js'
 import { randomSaccadeInterval } from '../../utils'
 export function useLive2DIdleEyeFocus() {
-  let nextSaccadeAfter = -1
-  let focusTarget: [number, number] | undefined
-  let lastSaccadeAt = -1
-  function update(model: InternalModel, now: number) {
-    if (now >= nextSaccadeAfter || now < lastSaccadeAt) {
-      focusTarget = [randFloat(-1, 1), randFloat(-1, 0.7)]
-      lastSaccadeAt = now
-      nextSaccadeAfter = now + (randomSaccadeInterval() / 1000)
-      model.focusController.focus(focusTarget![0] * 0.5, focusTarget![1] * 0.5, false)
-    }
-    model.focusController.update(now - lastSaccadeAt)
-    const coreModel = model.coreModel as any
-    coreModel.setParameterValueById('ParamEyeBallX', lerp(coreModel.getParameterValueById('ParamEyeBallX'), focusTarget![0], 0.3))
-    coreModel.setParameterValueById('ParamEyeBallY', lerp(coreModel.getParameterValueById('ParamEyeBallY'), focusTarget![1], 0.3))
-  }
-  return { update }
+let nextSaccadeAfter = -1
+let focusTarget: [number, number] | undefined
+let lastSaccadeAt = -1
+function update(model: InternalModel, now: number) {
+if (now >= nextSaccadeAfter || now < lastSaccadeAt) {
+focusTarget = [randFloat(-1, 1), randFloat(-1, 0.7)]
+lastSaccadeAt = now
+nextSaccadeAfter = now + (randomSaccadeInterval() / 1000)
+model.focusController.focus(focusTarget![0] * 0.5, focusTarget![1] * 0.5, false)
+}
+model.focusController.update(now - lastSaccadeAt)
+const coreModel = model.coreModel as any
+coreModel.setParameterValueById('ParamEyeBallX', lerp(coreModel.getParameterValueById('ParamEyeBallX'), focusTarget![0], 0.3))
+coreModel.setParameterValueById('ParamEyeBallY', lerp(coreModel.getParameterValueById('ParamEyeBallY'), focusTarget![1], 0.3))
+}
+return { update }
 }

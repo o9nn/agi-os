@@ -9,36 +9,36 @@ import { createAgentContainer } from './container'
 import { generateActionAgentPrompt } from './prompt'
 import { handleVoiceInput } from './voice'
 export function LLMAgent(options: LLMAgentOptions): MineflayerPlugin {
-  return {
-    async created(bot) {
-      const logger = useLogger()
-      const container = createAgentContainer({
-        neuri: options.agent,
-        model: config.openai.model,
-      })
-      const actionAgent = container.resolve('actionAgent')
-      const planningAgent = container.resolve('planningAgent')
-      const chatAgent = container.resolve('chatAgent')
-      await actionAgent.init()
-      await planningAgent.init()
-      await chatAgent.init()
-      const botWithAgents = bot as unknown as MineflayerWithAgents
-      botWithAgents.action = actionAgent
-      botWithAgents.planning = planningAgent
-      botWithAgents.chat = chatAgent
-      bot.memory.chatHistory.push(system(generateActionAgentPrompt(bot)))
-      const onChat = new ChatMessageHandler(bot.username).handleChat((username, message) =>
-        handleChatMessage(username, message, botWithAgents, options.agent, logger))
-      options.airiClient.onEvent('input:text:voice', event =>
-        handleVoiceInput(event, botWithAgents, options.agent, logger))
-      bot.bot.on('chat', onChat)
-    },
-    async beforeCleanup(bot) {
-      const botWithAgents = bot as unknown as MineflayerWithAgents
-      await botWithAgents.action?.destroy()
-      await botWithAgents.planning?.destroy()
-      await botWithAgents.chat?.destroy()
-      bot.bot.removeAllListeners('chat')
-    },
-  }
+return {
+async created(bot) {
+const logger = useLogger()
+const container = createAgentContainer({
+neuri: options.agent,
+model: config.openai.model,
+})
+const actionAgent = container.resolve('actionAgent')
+const planningAgent = container.resolve('planningAgent')
+const chatAgent = container.resolve('chatAgent')
+await actionAgent.init()
+await planningAgent.init()
+await chatAgent.init()
+const botWithAgents = bot as unknown as MineflayerWithAgents
+botWithAgents.action = actionAgent
+botWithAgents.planning = planningAgent
+botWithAgents.chat = chatAgent
+bot.memory.chatHistory.push(system(generateActionAgentPrompt(bot)))
+const onChat = new ChatMessageHandler(bot.username).handleChat((username, message) =>
+handleChatMessage(username, message, botWithAgents, options.agent, logger))
+options.airiClient.onEvent('input:text:voice', event =>
+handleVoiceInput(event, botWithAgents, options.agent, logger))
+bot.bot.on('chat', onChat)
+},
+async beforeCleanup(bot) {
+const botWithAgents = bot as unknown as MineflayerWithAgents
+await botWithAgents.action?.destroy()
+await botWithAgents.planning?.destroy()
+await botWithAgents.chat?.destroy()
+bot.bot.removeAllListeners('chat')
+},
+}
 }

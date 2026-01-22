@@ -120,7 +120,7 @@ end
 @test_logs (:warn, ) match_mode=:any @reaction_network begin
 @ivs t [unit=u"s"]
 @species begin
-A(t), [unit=u"mol/(s*m^3)"]  # Here, A's unit got an extra "/s".
+A(t), [unit=u"mol/(s*m^3)"] # Here, A's unit got an extra "/s".
 B(t), [unit=u"mol/m^3"]
 C(t), [unit=u"mol/m^3"]
 end

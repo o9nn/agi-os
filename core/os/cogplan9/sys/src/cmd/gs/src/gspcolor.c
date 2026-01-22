@@ -143,7 +143,7 @@ return
 (pcs->params.pattern.has_base_space ?
 -1 - cs_num_components((const gs_color_space *)
 &(pcs->params.pattern.base_space)) :
--1  );
+-1 );
 }
 private const gs_color_space *
 gx_base_space_Pattern(const gs_color_space * pcs)

@@ -94,7 +94,7 @@ box = mailbox_alloc(ns->list, name, MAILBOX_FLAG_SAVEONLY);
 if (mailbox_open(box) < 0) {
 error_string = mailbox_get_last_error(box, &error);
 if (error == MAIL_ERROR_NOTFOUND) {
-client_send_tagline(cmd,  t_strdup_printf(
+client_send_tagline(cmd, t_strdup_printf(
 "NO [TRYCREATE] %s", error_string));
 } else {
 client_send_box_error(cmd, box);

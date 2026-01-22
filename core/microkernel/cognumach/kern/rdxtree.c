@@ -6,14 +6,14 @@
 #include "macros.h"
 #include "rdxtree.h"
 #include "rdxtree_i.h"
-#define CHAR_BIT	8U
-#define ERR_SUCCESS	KERN_SUCCESS
-#define ERR_BUSY	KERN_INVALID_ARGUMENT
-#define ERR_NOMEM	KERN_RESOURCE_SHORTAGE
+#define CHAR_BIT 8U
+#define ERR_SUCCESS KERN_SUCCESS
+#define ERR_BUSY KERN_INVALID_ARGUMENT
+#define ERR_NOMEM KERN_RESOURCE_SHORTAGE
 #define RDXTREE_ENTRY_ADDR_MASK (~0x3UL)
-#define RDXTREE_RADIX       6
-#define RDXTREE_RADIX_SIZE  (1UL << RDXTREE_RADIX)
-#define RDXTREE_RADIX_MASK  (RDXTREE_RADIX_SIZE - 1)
+#define RDXTREE_RADIX 6
+#define RDXTREE_RADIX_SIZE (1UL << RDXTREE_RADIX)
+#define RDXTREE_RADIX_MASK (RDXTREE_RADIX_SIZE - 1)
 #if RDXTREE_RADIX < 6
 typedef unsigned long rdxtree_bm_t;
 #define rdxtree_ffs(x) __builtin_ffsl(x)
@@ -24,11 +24,11 @@ typedef unsigned long long rdxtree_bm_t;
 #error "radix too high"
 #endif
 #define RDXTREE_BM_SIZE (sizeof(rdxtree_bm_t) * CHAR_BIT)
-#define RDXTREE_BM_EMPTY    ((rdxtree_bm_t)0)
+#define RDXTREE_BM_EMPTY ((rdxtree_bm_t)0)
 #define RDXTREE_BM_FULL \
 ((~(rdxtree_bm_t)0) >> (RDXTREE_BM_SIZE - RDXTREE_RADIX_SIZE))
-#define llsync_assign_ptr(ptr, value)   ((ptr) = (value))
-#define llsync_read_ptr(ptr)            (ptr)
+#define llsync_assign_ptr(ptr, value) ((ptr) = (value))
+#define llsync_read_ptr(ptr) (ptr)
 struct rdxtree_node {
 struct rdxtree_node *parent;
 unsigned int index;

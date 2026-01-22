@@ -3,15 +3,15 @@
 #include <bio.h>
 #include <ctype.h>
 #include <mach.h>
-#define	LENDIAN(p)	((p)[0] | ((p)[1]<<8) | ((p)[2]<<16) | ((p)[3]<<24))
-uchar	buf[6001];
-short	cfreq[140];
-short	wfreq[50];
-int	nbuf;
-Dir*	mbuf;
-int	fd;
-char 	*fname;
-char	*slash;
+#define LENDIAN(p) ((p)[0] | ((p)[1]<<8) | ((p)[2]<<16) | ((p)[3]<<24))
+uchar buf[6001];
+short cfreq[140];
+short wfreq[50];
+int nbuf;
+Dir* mbuf;
+int fd;
+char *fname;
+char *slash;
 enum
 {
 Cword,
@@ -22,7 +22,7 @@ Lword,
 I1,
 I2,
 I3,
-Clatin	= 128,
+Clatin = 128,
 Cbinary,
 Cnull,
 Ceascii,
@@ -30,90 +30,90 @@ Cutf,
 };
 struct
 {
-char*	word;
-int	class;
+char* word;
+int class;
 } dict[] =
 {
-"PATH",		Lword,
-"TEXT",		Aword,
-"adt",		Alword,
-"aggr",		Alword,
-"alef",		Alword,
-"array",	Lword,
-"block",	Fword,
-"char",		Cword,
-"common",	Fword,
-"con",		Lword,
-"data",		Fword,
-"dimension",	Fword,
-"double",	Cword,
-"extern",	Cword,
-"bio",		I2,
-"float",	Cword,
-"fn",		Lword,
-"function",	Fword,
-"h",		I3,
-"implement",	Lword,
-"import",	Lword,
-"include",	I1,
-"int",		Cword,
-"integer",	Fword,
-"iota",		Lword,
-"libc",		I2,
-"long",		Cword,
-"module",	Lword,
-"real",		Fword,
-"ref",		Lword,
-"register",	Cword,
-"self",		Lword,
-"short",	Cword,
-"static",	Cword,
-"stdio",	I2,
-"struct",	Cword,
-"subroutine",	Fword,
-"u",		I2,
-"void",		Cword,
+"PATH", Lword,
+"TEXT", Aword,
+"adt", Alword,
+"aggr", Alword,
+"alef", Alword,
+"array", Lword,
+"block", Fword,
+"char", Cword,
+"common", Fword,
+"con", Lword,
+"data", Fword,
+"dimension", Fword,
+"double", Cword,
+"extern", Cword,
+"bio", I2,
+"float", Cword,
+"fn", Lword,
+"function", Fword,
+"h", I3,
+"implement", Lword,
+"import", Lword,
+"include", I1,
+"int", Cword,
+"integer", Fword,
+"iota", Lword,
+"libc", I2,
+"long", Cword,
+"module", Lword,
+"real", Fword,
+"ref", Lword,
+"register", Cword,
+"self", Lword,
+"short", Cword,
+"static", Cword,
+"stdio", I2,
+"struct", Cword,
+"subroutine", Fword,
+"u", I2,
+"void", Cword,
 };
-enum	{
-Normal	= 0,
+enum {
+Normal = 0,
 First,
 Multi,
 Shared,
 };
 struct
 {
-int	mode;
-int 	count;
-int	low;
-int	high;
-char	*name;
+int mode;
+int count;
+int low;
+int high;
+char *name;
 } language[] =
 {
-Normal,	0,	0x0100,	0x01FF,	"Extended Latin",
-Normal,	0,	0x0370,	0x03FF,	"Greek",
-Normal,	0,	0x0400,	0x04FF,	"Cyrillic",
-Normal,	0,	0x0530,	0x058F,	"Armenian",
-Normal,	0,	0x0590,	0x05FF,	"Hebrew",
-Normal,	0,	0x0600,	0x06FF,	"Arabic",
-Normal,	0,	0x0900,	0x097F,	"Devanagari",
-Normal,	0,	0x0980,	0x09FF,	"Bengali",
-Normal,	0,	0x0A00,	0x0A7F,	"Gurmukhi",
-Normal,	0,	0x0A80,	0x0AFF,	"Gujarati",
-Normal,	0,	0x0B00,	0x0B7F,	"Oriya",
-Normal,	0,	0x0B80,	0x0BFF,	"Tamil",
-Normal,	0,	0x0C00,	0x0C7F,	"Telugu",
-Normal,	0,	0x0C80,	0x0CFF,	"Kannada",
-Normal,	0,	0x0D00,	0x0D7F,	"Malayalam",
-Normal,	0,	0x0E00,	0x0E7F,	"Thai",
-Normal,	0,	0x0E80,	0x0EFF,	"Lao",
-Normal,	0,	0x1000,	0x105F,	"Tibetan",
-Normal,	0,	0x10A0,	0x10FF,	"Georgian",
-Normal,	0,	0x3040,	0x30FF,	"Japanese",
-Normal,	0,	0x3100,	0x312F,	"Chinese",
-First,	0,	0x3130,	0x318F,	"Korean",
-Multi,	0,	0x3400,	0x3D2F,	"Korean",
-Shared,	0,	0x4e00,	0x9fff,	"CJK",
-Normal,	0,	0,	0,	0,
+Normal, 0, 0x0100, 0x01FF, "Extended Latin",
+Normal, 0, 0x0370, 0x03FF, "Greek",
+Normal, 0, 0x0400, 0x04FF, "Cyrillic",
+Normal, 0, 0x0530, 0x058F, "Armenian",
+Normal, 0, 0x0590, 0x05FF, "Hebrew",
+Normal, 0, 0x0600, 0x06FF, "Arabic",
+Normal, 0, 0x0900, 0x097F, "Devanagari",
+Normal, 0, 0x0980, 0x09FF, "Bengali",
+Normal, 0, 0x0A00, 0x0A7F, "Gurmukhi",
+Normal, 0, 0x0A80, 0x0AFF, "Gujarati",
+Normal, 0, 0x0B00, 0x0B7F, "Oriya",
+Normal, 0, 0x0B80, 0x0BFF, "Tamil",
+Normal, 0, 0x0C00, 0x0C7F, "Telugu",
+Normal, 0, 0x0C80, 0x0CFF, "Kannada",
+Normal, 0, 0x0D00, 0x0D7F, "Malayalam",
+Normal, 0, 0x0E00, 0x0E7F, "Thai",
+Normal, 0, 0x0E80, 0x0EFF, "Lao",
+Normal, 0, 0x1000, 0x105F, "Tibetan",
+Normal, 0, 0x10A0, 0x10FF, "Georgian",
+Normal, 0, 0x3040, 0x30FF, "Japanese",
+Normal, 0, 0x3100, 0x312F, "Chinese",
+First, 0, 0x3130, 0x318F, "Korean",
+Multi, 0, 0x3400, 0x3D2F, "Korean",
+Shared, 0, 0x4e00, 0x9fff, "CJK",
+Normal, 0, 0, 0, 0,
 };
 enum
 {
@@ -124,40 +124,40 @@ Fbinary,
 Feascii,
 Fnull,
 } guess;
-void	bump_utf_count(Rune);
-int	cistrncmp(char*, char*, int);
-void	filetype(int);
-int	getfontnum(uchar*, uchar**);
-int	isas(void);
-int	isc(void);
-int	iscint(void);
-int	isenglish(void);
-int	ishp(void);
-int	ishtml(void);
-int	isrfc822(void);
-int	ismbox(void);
-int	islimbo(void);
-int	ismung(void);
-int	isp9bit(void);
-int	isp9font(void);
-int	isrtf(void);
-int	ismsdos(void);
-int	iself(void);
-int	istring(void);
-int	isoffstr(void);
-int	iff(void);
-int	long0(void);
-int	longoff(void);
-int	istar(void);
-int	isface(void);
-int	isexec(void);
-int	p9bitnum(uchar*);
-int	p9subfont(uchar*);
-void	print_utf(void);
-void	type(char*, int);
-int	utf_count(void);
-void	wordfreq(void);
-int	(*call[])(void) =
+void bump_utf_count(Rune);
+int cistrncmp(char*, char*, int);
+void filetype(int);
+int getfontnum(uchar*, uchar**);
+int isas(void);
+int isc(void);
+int iscint(void);
+int isenglish(void);
+int ishp(void);
+int ishtml(void);
+int isrfc822(void);
+int ismbox(void);
+int islimbo(void);
+int ismung(void);
+int isp9bit(void);
+int isp9font(void);
+int isrtf(void);
+int ismsdos(void);
+int iself(void);
+int istring(void);
+int isoffstr(void);
+int iff(void);
+int long0(void);
+int longoff(void);
+int istar(void);
+int isface(void);
+int isexec(void);
+int p9bitnum(uchar*);
+int p9subfont(uchar*);
+void print_utf(void);
+void type(char*, int);
+int utf_count(void);
+void wordfreq(void);
+int (*call[])(void) =
 {
 long0,
 istring,
@@ -184,8 +184,8 @@ isenglish,
 0
 };
 int mime;
-char OCTET[] =	"application/octet-stream\n";
-char PLAIN[] =	"text/plain\n";
+char OCTET[] = "application/octet-stream\n";
+char PLAIN[] = "text/plain\n";
 void
 main(int argc, char *argv[])
 {
@@ -463,28 +463,28 @@ char *desc;
 char *mime;
 };
 Filemagic long0tab[] = {
-0xF16DF16D,	0xFFFFFFFF,	"pac1 audio file\n",	OCTET,
-0x31636170,	0xFFFFFFFF,	"pac3 audio file\n",	OCTET,
-0x32630070,	0xFFFF00FF,	"pac4 audio file\n",	OCTET,
-0xBA010000,	0xFFFFFFFF,	"mpeg system stream\n",	OCTET,
-0x43614c66,	0xFFFFFFFF,	"FLAC audio file\n",	OCTET,
-0x30800CC0,	0xFFFFFFFF,	"inferno .dis executable\n", OCTET,
-0x04034B50,	0xFFFFFFFF,	"zip archive\n", "application/zip",
-070707,		0xFFFF,		"cpio archive\n", OCTET,
-0x2F7,		0xFFFF,		"tex dvi\n", "application/dvi",
-0xfaff,		0xfeff,		"mp3 audio\n",	"audio/mpeg",
-0xf0ff,		0xf6ff,		"aac audio\n",	"audio/mpeg",
-0xfeff0000,	0xffffffff,	"utf-32be\n",	"text/plain charset=utf-32be",
-0xfffe,		0xffffffff,	"utf-32le\n",	"text/plain charset=utf-32le",
-0xfeff,		0xffff,		"utf-16be\n",	"text/plain charset=utf-16be",
-0xfffe,		0xffff,		"utf-16le\n",	"text/plain charset=utf-16le",
-0xcefaedfe,	0xFFFFFFFF,	"32-bit power Mach-O executable\n", OCTET,
-0xcffaedfe,	0xFFFFFFFF,	"64-bit power Mach-O executable\n", OCTET,
-0xfeedface,	0xFFFFFFFF,	"386 Mach-O executable\n", OCTET,
-0xfeedfacf,	0xFFFFFFFF,	"amd64 Mach-O executable\n", OCTET,
-0xbebafeca,	0xFFFFFFFF,	"Mach-O universal executable\n", OCTET,
-0xad4e5cd1,	0xFFFFFFFF,	"venti arena\n", OCTET,
-0x2bb19a52,	0xFFFFFFFF,	"paq archive\n", OCTET,
+0xF16DF16D, 0xFFFFFFFF, "pac1 audio file\n", OCTET,
+0x31636170, 0xFFFFFFFF, "pac3 audio file\n", OCTET,
+0x32630070, 0xFFFF00FF, "pac4 audio file\n", OCTET,
+0xBA010000, 0xFFFFFFFF, "mpeg system stream\n", OCTET,
+0x43614c66, 0xFFFFFFFF, "FLAC audio file\n", OCTET,
+0x30800CC0, 0xFFFFFFFF, "inferno .dis executable\n", OCTET,
+0x04034B50, 0xFFFFFFFF, "zip archive\n", "application/zip",
+070707, 0xFFFF, "cpio archive\n", OCTET,
+0x2F7, 0xFFFF, "tex dvi\n", "application/dvi",
+0xfaff, 0xfeff, "mp3 audio\n", "audio/mpeg",
+0xf0ff, 0xf6ff, "aac audio\n", "audio/mpeg",
+0xfeff0000, 0xffffffff, "utf-32be\n", "text/plain charset=utf-32be",
+0xfffe, 0xffffffff, "utf-32le\n", "text/plain charset=utf-32le",
+0xfeff, 0xffff, "utf-16be\n", "text/plain charset=utf-16be",
+0xfffe, 0xffff, "utf-16le\n", "text/plain charset=utf-16le",
+0xcefaedfe, 0xFFFFFFFF, "32-bit power Mach-O executable\n", OCTET,
+0xcffaedfe, 0xFFFFFFFF, "64-bit power Mach-O executable\n", OCTET,
+0xfeedface, 0xFFFFFFFF, "386 Mach-O executable\n", OCTET,
+0xfeedfacf, 0xFFFFFFFF, "amd64 Mach-O executable\n", OCTET,
+0xbebafeca, 0xFFFFFFFF, "Mach-O universal executable\n", OCTET,
+0xad4e5cd1, 0xFFFFFFFF, "venti arena\n", OCTET,
+0x2bb19a52, 0xFFFFFFFF, "paq archive\n", OCTET,
 };
 int
 filemagic(Filemagic *tab, int ntab, ulong x)
@@ -504,14 +504,14 @@ return filemagic(long0tab, nelem(long0tab), LENDIAN(buf));
 }
 typedef struct Fileoffmag Fileoffmag;
 struct Fileoffmag {
-ulong	off;
+ulong off;
 Filemagic;
 };
 Fileoffmag longofftab[] = {
 256*1024, 0xe7a5e4a9, 0xFFFFFFFF, "venti arenas partition\n", OCTET,
 256*1024, 0xc75e5cd1, 0xFFFFFFFF, "venti index section\n", OCTET,
 128*1024, 0x89ae7637, 0xFFFFFFFF, "fossil write buffer\n", OCTET,
-4,	  0x31647542, 0xFFFFFFFF, "OS X finder properties\n", OCTET,
+4, 0x31647542, 0xFFFFFFFF, "OS X finder properties\n", OCTET,
 };
 int
 fileoffmagic(Fileoffmag *tab, int ntab)
@@ -550,27 +550,27 @@ return 1;
 return 0;
 }
 enum { NAMSIZ = 100, TBLOCK = 512 };
-union	hblock
+union hblock
 {
-char	dummy[TBLOCK];
-struct	header
+char dummy[TBLOCK];
+struct header
 {
-char	name[NAMSIZ];
-char	mode[8];
-char	uid[8];
-char	gid[8];
-char	size[12];
-char	mtime[12];
-char	chksum[8];
-char	linkflag;
-char	linkname[NAMSIZ];
-char	magic[6];
-char	version[2];
-char	uname[32];
-char	gname[32];
-char	devmajor[8];
-char	devminor[8];
-char	prefix[155];
+char name[NAMSIZ];
+char mode[8];
+char uid[8];
+char gid[8];
+char size[12];
+char mtime[12];
+char chksum[8];
+char linkflag;
+char linkname[NAMSIZ];
+char magic[6];
+char version[2];
+char uname[32];
+char gname[32];
+char devmajor[8];
+char devminor[8];
+char prefix[155];
 } dbuf;
 };
 int
@@ -607,72 +607,72 @@ return 1;
 }
 return 0;
 }
-struct	FILE_STRING
+struct FILE_STRING
 {
-char 	*key;
-char	*filetype;
-int	length;
-char	*mime;
+char *key;
+char *filetype;
+int length;
+char *mime;
 } file_string[] =
 {
-"!<arch>\n__.SYMDEF",	"archive random library",	16,	"application/octet-stream",
-"!<arch>\n",		"archive",			8,	"application/octet-stream",
-"070707",		"cpio archive - ascii header",	6,	"application/octet-stream",
-"#!/bin/rc",		"rc executable file",		9,	"text/plain",
-"#!/bin/sh",		"sh executable file",		9,	"text/plain",
-"%!",			"postscript",			2,	"application/postscript",
-"\004%!",		"postscript",			3,	"application/postscript",
-"x T post",		"troff output for post",	8,	"application/troff",
-"x T Latin1",		"troff output for Latin1",	10,	"application/troff",
-"x T utf",		"troff output for UTF",		7,	"application/troff",
-"x T 202",		"troff output for 202",		7,	"application/troff",
-"x T aps",		"troff output for aps",		7,	"application/troff",
-"x T ",			"troff output",			4,	"application/troff",
-"GIF",			"GIF image", 			3,	"image/gif",
-"\0PC Research, Inc\0",	"ghostscript fax file",		18,	"application/ghostscript",
-"%PDF",			"PDF",				4,	"application/pdf",
-"<html>\n",		"HTML file",			7,	"text/html",
-"<HTML>\n",		"HTML file",			7,	"text/html",
-"\111\111\052\000",	"tiff",				4,	"image/tiff",
-"\115\115\000\052",	"tiff",				4,	"image/tiff",
-"\377\330\377\340",	"jpeg",				4,	"image/jpeg",
-"\377\330\377\341",	"jpeg",				4,	"image/jpeg",
-"\377\330\377\333",	"jpeg",				4,	"image/jpeg",
-"BM",			"bmp",				2,	"image/bmp",
-"\xD0\xCF\x11\xE0\xA1\xB1\x1A\xE1",	"microsoft office document",	8,	"application/octet-stream",
-"<MakerFile ",		"FrameMaker file",		11,	"application/framemaker",
-"\033E\033",	"HP PCL printer data",		3,	OCTET,
-"\033&",	"HP PCL printer data",		2,	OCTET,
-"\033%-12345X",	"HPJCL file",		9,	"application/hpjcl",
-"\033Lua",		"Lua bytecode",		4,	OCTET,
-"ID3",			"mp3 audio with id3",	3,	"audio/mpeg",
-"\211PNG",		"PNG image",		4,	"image/png",
-"P3\n",			"ppm",				3,	"image/ppm",
-"P6\n",			"ppm",				3,	"image/ppm",
-"\n",	"xbm",				10,	"image/xbm",
-".HTML ",		"troff -ms input",	6,	"text/troff",
-".LP",			"troff -ms input",	3,	"text/troff",
-".ND",			"troff -ms input",	3,	"text/troff",
-".PP",			"troff -ms input",	3,	"text/troff",
-".TL",			"troff -ms input",	3,	"text/troff",
-".TR",			"troff -ms input",	3,	"text/troff",
-".TH",			"manual page",		3,	"text/troff",
-".\\\"",		"troff input",		3,	"text/troff",
-".de",			"troff input",		3,	"text/troff",
-".if",			"troff input",		3,	"text/troff",
-".nr",			"troff input",		3,	"text/troff",
-".tr",			"troff input",		3,	"text/troff",
-"vac:",			"venti score",		4,	"text/plain",
+"!<arch>\n__.SYMDEF", "archive random library", 16, "application/octet-stream",
+"!<arch>\n", "archive", 8, "application/octet-stream",
+"070707", "cpio archive - ascii header", 6, "application/octet-stream",
+"#!/bin/rc", "rc executable file", 9, "text/plain",
+"#!/bin/sh", "sh executable file", 9, "text/plain",
+"%!", "postscript", 2, "application/postscript",
+"\004%!", "postscript", 3, "application/postscript",
+"x T post", "troff output for post", 8, "application/troff",
+"x T Latin1", "troff output for Latin1", 10, "application/troff",
+"x T utf", "troff output for UTF", 7, "application/troff",
+"x T 202", "troff output for 202", 7, "application/troff",
+"x T aps", "troff output for aps", 7, "application/troff",
+"x T ", "troff output", 4, "application/troff",
+"GIF", "GIF image", 3, "image/gif",
+"\0PC Research, Inc\0", "ghostscript fax file", 18, "application/ghostscript",
+"%PDF", "PDF", 4, "application/pdf",
+"<html>\n", "HTML file", 7, "text/html",
+"<HTML>\n", "HTML file", 7, "text/html",
+"\111\111\052\000", "tiff", 4, "image/tiff",
+"\115\115\000\052", "tiff", 4, "image/tiff",
+"\377\330\377\340", "jpeg", 4, "image/jpeg",
+"\377\330\377\341", "jpeg", 4, "image/jpeg",
+"\377\330\377\333", "jpeg", 4, "image/jpeg",
+"BM", "bmp", 2, "image/bmp",
+"\xD0\xCF\x11\xE0\xA1\xB1\x1A\xE1", "microsoft office document", 8, "application/octet-stream",
+"<MakerFile ", "FrameMaker file", 11, "application/framemaker",
+"\033E\033", "HP PCL printer data", 3, OCTET,
+"\033&", "HP PCL printer data", 2, OCTET,
+"\033%-12345X", "HPJCL file", 9, "application/hpjcl",
+"\033Lua", "Lua bytecode", 4, OCTET,
+"ID3", "mp3 audio with id3", 3, "audio/mpeg",
+"\211PNG", "PNG image", 4, "image/png",
+"P3\n", "ppm", 3, "image/ppm",
+"P6\n", "ppm", 3, "image/ppm",
+"\n", "xbm", 10, "image/xbm",
+".HTML ", "troff -ms input", 6, "text/troff",
+".LP", "troff -ms input", 3, "text/troff",
+".ND", "troff -ms input", 3, "text/troff",
+".PP", "troff -ms input", 3, "text/troff",
+".TL", "troff -ms input", 3, "text/troff",
+".TR", "troff -ms input", 3, "text/troff",
+".TH", "manual page", 3, "text/troff",
+".\\\"", "troff input", 3, "text/troff",
+".de", "troff input", 3, "text/troff",
+".if", "troff input", 3, "text/troff",
+".nr", "troff input", 3, "text/troff",
+".tr", "troff input", 3, "text/troff",
+"vac:", "venti score", 4, "text/plain",
 "-----BEGIN CERTIFICATE-----\n",
-"pem certificate",	-1,	"text/plain",
+"pem certificate", -1, "text/plain",
 "-----BEGIN TRUSTED CERTIFICATE-----\n",
-"pem trusted certificate", -1,	"text/plain",
+"pem trusted certificate", -1, "text/plain",
 "-----BEGIN X509 CERTIFICATE-----\n",
-"pem x.509 certificate", -1,	"text/plain",
-"subject=/C=",		"pem certificate with header", -1, "text/plain",
-"process snapshot ",	"process snapshot",	-1,	"application/snapfs",
-"BEGIN:VCARD\r\n",	"vCard",		13,	"text/directory;profile=vcard",
-"BEGIN:VCARD\n",	"vCard",		12,	"text/directory;profile=vcard",
+"pem x.509 certificate", -1, "text/plain",
+"subject=/C=", "pem certificate with header", -1, "text/plain",
+"process snapshot ", "process snapshot", -1, "application/snapfs",
+"BEGIN:VCARD\r\n", "vCard", 13, "text/directory;profile=vcard",
+"BEGIN:VCARD\n", "vCard", 12, "text/directory;profile=vcard",
 0,0,0,0
 };
 int
@@ -706,10 +706,10 @@ return 0;
 }
 struct offstr
 {
-ulong	off;
+ulong off;
 struct FILE_STRING;
 } offstrs[] = {
-32*1024, "\001CD001\001",	"ISO9660 CD image",	7,	OCTET,
+32*1024, "\001CD001\001", "ISO9660 CD image", 7, OCTET,
 0, 0, 0, 0, 0
 };
 int
@@ -755,7 +755,7 @@ return 1;
 }
 return 0;
 }
-char*	html_string[] =
+char* html_string[] =
 {
 "title",
 "body",
@@ -807,7 +807,7 @@ p++;
 }
 return 0;
 }
-char*	rfc822_string[] =
+char* rfc822_string[] =
 {
 "from:",
 "date:",
@@ -1009,7 +1009,7 @@ return 1;
 }
 return 0;
 }
-#define	P9BITLEN	12
+#define P9BITLEN 12
 int
 p9bitnum(uchar *bp)
 {
@@ -1127,7 +1127,7 @@ if (a < 0)
 return 0;
 return 1;
 }
-#define	WHITESPACE(c)		((c) == ' ' || (c) == '\t' || (c) == '\n')
+#define WHITESPACE(c) ((c) == ' ' || (c) == '\t' || (c) == '\n')
 int
 isp9font(void)
 {
@@ -1209,33 +1209,33 @@ int
 iself(void)
 {
 static char *cpu[] = {
-[1]	"WE32100",
-[2]	"SPARC",
-[3]	"i386",
-[4]	"M68000",
-[5]	"M88000",
-[6]	"i486",
-[7]	"i860",
-[8]	"R3000",
-[9]	"S370",
-[10]	"R4000",
-[15]	"HP-PA",
-[18]	"sparc v8+",
-[19]	"i960",
-[20]	"PPC-32",
-[21]	"PPC-64",
-[40]	"ARM",
-[41]	"Alpha",
-[43]	"sparc v9",
-[50]	"IA-64",
-[62]	"AMD64",
-[75]	"VAX",
+[1] "WE32100",
+[2] "SPARC",
+[3] "i386",
+[4] "M68000",
+[5] "M88000",
+[6] "i486",
+[7] "i860",
+[8] "R3000",
+[9] "S370",
+[10] "R4000",
+[15] "HP-PA",
+[18] "sparc v8+",
+[19] "i960",
+[20] "PPC-32",
+[21] "PPC-64",
+[40] "ARM",
+[41] "Alpha",
+[43] "sparc v9",
+[50] "IA-64",
+[62] "AMD64",
+[75] "VAX",
 };
 static char *type[] = {
-[1]	"relocatable object",
-[2]	"executable",
-[3]	"shared library",
-[4]	"core dump",
+[1] "relocatable object",
+[2] "executable",
+[3] "shared library",
+[4] "core dump",
 };
 if (memcmp(buf, "\x7fELF", 4) == 0){
 if (!mime){

@@ -1,51 +1,51 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
-#include	<pool.h>
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
+#include <pool.h>
 static void poolprint(Pool*, char*, ...);
 static void ppanic(Pool*, char*, ...);
 static void plock(Pool*);
 static void punlock(Pool*);
-typedef struct Private	Private;
+typedef struct Private Private;
 struct Private {
-Lock		lk;
-char		msg[256];
+Lock lk;
+char msg[256];
 };
 static Private pmainpriv;
 static Pool pmainmem = {
-.name=	"Main",
-.maxsize=	4*1024*1024,
-.minarena=	128*1024,
-.quantum=	32,
-.alloc=	xalloc,
-.merge=	xmerge,
-.flags=	POOL_TOLERANCE,
-.lock=	plock,
-.unlock=	punlock,
-.print=	poolprint,
-.panic=	ppanic,
-.private=	&pmainpriv,
+.name= "Main",
+.maxsize= 4*1024*1024,
+.minarena= 128*1024,
+.quantum= 32,
+.alloc= xalloc,
+.merge= xmerge,
+.flags= POOL_TOLERANCE,
+.lock= plock,
+.unlock= punlock,
+.print= poolprint,
+.panic= ppanic,
+.private= &pmainpriv,
 };
 static Private pimagpriv;
 static Pool pimagmem = {
-.name=	"Image",
-.maxsize=	16*1024*1024,
-.minarena=	2*1024*1024,
-.quantum=	32,
-.alloc=	xalloc,
-.merge=	xmerge,
-.flags=	0,
-.lock=	plock,
-.unlock=	punlock,
-.print=	poolprint,
-.panic=	ppanic,
-.private=	&pimagpriv,
+.name= "Image",
+.maxsize= 16*1024*1024,
+.minarena= 2*1024*1024,
+.quantum= 32,
+.alloc= xalloc,
+.merge= xmerge,
+.flags= 0,
+.lock= plock,
+.unlock= punlock,
+.print= poolprint,
+.panic= ppanic,
+.private= &pimagpriv,
 };
-Pool*	mainmem = &pmainmem;
-Pool*	imagmem = &pimagmem;
+Pool* mainmem = &pmainmem;
+Pool* imagmem = &pimagmem;
 static void
 poolprint(Pool *p, char *fmt, ...)
 {
@@ -106,7 +106,7 @@ poolsummary(mainmem);
 poolsummary(imagmem);
 }
 enum {
-Npadlong	= 2,
+Npadlong = 2,
 MallocOffset = 0,
 ReallocOffset = 1
 };

@@ -57,7 +57,7 @@ s = seprint(s, e, " %7llud", nbadr);
 if(pchar)
 s = seprint(s, e, " %7llud", nchar);
 if(fname != nil)
-seprint(s, e, " %s",   fname);
+seprint(s, e, " %s", fname);
 print("%s\n", line+1);
 }
 void

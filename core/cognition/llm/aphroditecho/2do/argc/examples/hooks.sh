@@ -1,11 +1,11 @@
 set -e
 _argc_before() {
-  echo before
+echo before
 }
 _argc_after() {
-  echo after
+echo after
 }
 main() {
-  echo main
+echo main
 }
 eval "$(argc --argc-eval "$0" "$@")"

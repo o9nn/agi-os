@@ -6,7 +6,7 @@
 namespace Minisat {
 template<class B, class Solver>
 static void readClause(B& in, Solver& S, vec<Lit>& lits) {
-int     parsed_lit, var;
+int parsed_lit, var;
 lits.clear();
 for (;;){
 parsed_lit = parseInt(in);
@@ -19,15 +19,15 @@ lits.push( (parsed_lit > 0) ? mkLit(var) : ~mkLit(var) );
 template<class B, class Solver>
 static void parse_DIMACS_main(B& in, Solver& S, bool strictp = false) {
 vec<Lit> lits;
-int vars    = 0;
+int vars = 0;
 int clauses = 0;
-int cnt     = 0;
+int cnt = 0;
 for (;;){
 skipWhitespace(in);
 if (*in == EOF) break;
 else if (*in == 'p'){
 if (eagerMatch(in, "p cnf")){
-vars    = parseInt(in);
+vars = parseInt(in);
 clauses = parseInt(in);
 }else{
 printf("PARSE ERROR! Unexpected char: %c\n", *in), exit(3);

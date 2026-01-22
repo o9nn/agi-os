@@ -1,10 +1,10 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"m8260.h"
-#include	"../port/error.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "m8260.h"
+#include "../port/error.h"
 enum{
 IRQ0 = 18,
 Level = 0,
@@ -24,16 +24,16 @@ Qfpgareset,
 NIRQ,
 };
 static Dirtab irqdir[]={
-".",		{Qdir, 0, QTDIR},	0,	DMDIR|0555,
-"irq1",		{Qirq1},		0,	0666,
-"irq2",		{Qirq2},		0,	0666,
-"irq3",		{Qirq1},		0,	0666,
-"irq4",		{Qirq1},		0,	0666,
-"irq5",		{Qirq1},		0,	0666,
-"irq6",		{Qirq1},		0,	0666,
-"irq7",		{Qirq1},		0,	0666,
-"mstimer",	{Qmstimer},		0,	0666,
-"fpgareset",	{Qfpgareset},		0,	0222,
+".", {Qdir, 0, QTDIR}, 0, DMDIR|0555,
+"irq1", {Qirq1}, 0, 0666,
+"irq2", {Qirq2}, 0, 0666,
+"irq3", {Qirq1}, 0, 0666,
+"irq4", {Qirq1}, 0, 0666,
+"irq5", {Qirq1}, 0, 0666,
+"irq6", {Qirq1}, 0, 0666,
+"irq7", {Qirq1}, 0, 0666,
+"mstimer", {Qmstimer}, 0, 0666,
+"fpgareset", {Qfpgareset}, 0, 0222,
 };
 enum
 {
@@ -45,20 +45,20 @@ CMdebug,
 };
 Cmdtab irqmsg[] =
 {
-CMinterrupt,	"interrupt",	2,
-CMmode,		"mode",		2,
-CMreset,	"reset",	1,
-CMwait,		"wait",		1,
-CMdebug,	"debug",	1,
+CMinterrupt, "interrupt", 2,
+CMmode, "mode", 2,
+CMreset, "reset", 1,
+CMwait, "wait", 1,
+CMdebug, "debug", 1,
 };
 typedef struct Irqconfig Irqconfig;
 struct Irqconfig {
-int		intenable;
-int		mode;
-ulong		interrupts;
-ulong		sleepints;
-Rendez		r;
-Irqconfig	*next;
+int intenable;
+int mode;
+ulong interrupts;
+ulong sleepints;
+Rendez r;
+Irqconfig *next;
 Timer;
 };
 Irqconfig *irqconfig[NIRQ];
@@ -236,7 +236,7 @@ nexterror();
 }
 ct = lookupcmd(cb, irqmsg, nelem(irqmsg));
 switch(ct->index) {
-case 	CMinterrupt:
+case CMinterrupt:
 if (strcmp(cb->f[1], "on") == 0){
 ilock(&irqlock);
 irqenable(ic, irq);

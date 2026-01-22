@@ -110,7 +110,7 @@ indexof(sym, syms) = findfirst(isequal(sym), syms)
 m1 = 1.0
 m2 = 1.0
 k = 10.0 # Spring stiffness
-c = 3.0  # Damping coefficient
+c = 3.0 # Damping coefficient
 @named inertia1 = Inertia(; J = m1)
 @named inertia2 = Inertia(; J = m2)
 @named spring = Spring(; c = k)
@@ -145,11 +145,11 @@ model.inertia2.phi => 1.0]
 L = randn(1, 4) # Post-multiply by `C` to get the correct input to the controller
 # This old definition of MatrixGain will work because the parameter space does not include K (an Array term)
 # @component function MatrixGainAlt(K::AbstractArray; name)
-#     nout, nin = size(K, 1), size(K, 2)
-#     @named input = RealInput(; nin = nin)
-#     @named output = RealOutput(; nout = nout)
-#     eqs = [output.u[i] ~ sum(K[i, j] * input.u[j] for j in 1:nin) for i in 1:nout]
-#     compose(System(eqs, t, [], []; name = name), [input, output])
+# nout, nin = size(K, 1), size(K, 2)
+# @named input = RealInput(; nin = nin)
+# @named output = RealOutput(; nout = nout)
+# eqs = [output.u[i] ~ sum(K[i, j] * input.u[j] for j in 1:nin) for i in 1:nout]
+# compose(System(eqs, t, [], []; name = name), [input, output])
 # end
 @named state_feedback = MatrixGain(K = -L) # Build negative feedback into the feedback matrix
 @named add = Add(; k1 = 1.0, k2 = 1.0) # To add the control signal and the disturbance

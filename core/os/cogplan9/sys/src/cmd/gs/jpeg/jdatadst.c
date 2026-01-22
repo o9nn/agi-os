@@ -7,7 +7,7 @@ FILE * outfile;
 JOCTET * buffer;
 } my_destination_mgr;
 typedef my_destination_mgr * my_dest_ptr;
-#define OUTPUT_BUF_SIZE  4096
+#define OUTPUT_BUF_SIZE 4096
 METHODDEF(void)
 init_destination (j_compress_ptr cinfo)
 {

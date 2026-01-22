@@ -59,27 +59,27 @@ none.f = nil;
 cmdtabexec(i: int, t: ref Text, cp: ref Cmd): int
 {
 case (cmdtab[i].fnc){
-C_nl	=> i = nl_cmd(t, cp);
-C_a 	=> i = a_cmd(t, cp);
-C_b	=> i = b_cmd(t, cp);
-C_c	=> i = c_cmd(t, cp);
-C_d	=> i = d_cmd(t, cp);
-C_e	=> i = e_cmd(t, cp);
-C_f	=> i = f_cmd(t, cp);
-C_g	=> i = g_cmd(t, cp);
-C_i	=> i = i_cmd(t, cp);
-C_m	=> i = m_cmd(t, cp);
-C_p	=> i = p_cmd(t, cp);
-C_s	=> i = s_cmd(t, cp);
-C_u	=> i = u_cmd(t, cp);
-C_w	=> i = w_cmd(t, cp);
-C_x	=> i = x_cmd(t, cp);
+C_nl => i = nl_cmd(t, cp);
+C_a => i = a_cmd(t, cp);
+C_b => i = b_cmd(t, cp);
+C_c => i = c_cmd(t, cp);
+C_d => i = d_cmd(t, cp);
+C_e => i = e_cmd(t, cp);
+C_f => i = f_cmd(t, cp);
+C_g => i = g_cmd(t, cp);
+C_i => i = i_cmd(t, cp);
+C_m => i = m_cmd(t, cp);
+C_p => i = p_cmd(t, cp);
+C_s => i = s_cmd(t, cp);
+C_u => i = u_cmd(t, cp);
+C_w => i = w_cmd(t, cp);
+C_x => i = x_cmd(t, cp);
 C_eq => i = eq_cmd(t, cp);
-C_B	=> i = B_cmd(t, cp);
-C_D	=> i = D_cmd(t, cp);
-C_X	=> i = X_cmd(t, cp);
-C_pipe	=> i = pipe_cmd(t, cp);
-* =>	error("bad case in cmdtabexec");
+C_B => i = B_cmd(t, cp);
+C_D => i = D_cmd(t, cp);
+C_X => i = X_cmd(t, cp);
+C_pipe => i = pipe_cmd(t, cp);
+* => error("bad case in cmdtabexec");
 }
 return i;
 }
@@ -125,7 +125,7 @@ if(w==nil && (cp.addr==nil || cp.addr.typex!='"') &&
 utils->strchr("bBnqUXY!", cp.cmdc) < 0&&
 !(cp.cmdc=='D' && cp.text!=nil))
 editerror("no current window");
-i = cmdlookup(cp.cmdc);	# will be -1 for '{'
+i = cmdlookup(cp.cmdc); # will be -1 for '{'
 f = nil;
 if(t!=nil && t.w!=nil){
 t = t.w.body;
@@ -144,11 +144,11 @@ ap.next.typex = '.';
 if(cmdtab[i].defaddr == aAll)
 ap.next.typex = '*';
 }
-if(cp.addr!=nil){	# may be false for '\n' (only)
+if(cp.addr!=nil){ # may be false for '\n' (only)
 if(f!=nil){
 dot = mkaddr(f);
 addr = cmdaddress(ap, dot, 0);
-}else	# a "
+}else # a "
 addr = cmdaddress(ap, none, 0);
 f = addr.f;
 t = f.curtext;
@@ -313,7 +313,7 @@ q0 = addr.r.q0;
 q1 = addr.r.q1;
 if(cp.cmdc == 'e'){
 if(t.w.clean(TRUE, FALSE)==FALSE)
-editerror("");	# winclean generated message already
+editerror(""); # winclean generated message already
 q0 = 0;
 q1 = f.buf.nc;
 }
@@ -381,9 +381,9 @@ return append(t.file, cp, addr.r.q0);
 # int
 # k_cmd(File *f, Cmd *cp)
 # {
-# 	USED(cp);
-#	f->mark = addr.r;
-#	return TRUE;
+# USED(cp);
+# f->mark = addr.r;
+# return TRUE;
 # }
 copy(f: ref File, addr2: Address)
 {
@@ -409,7 +409,7 @@ copy(f, addr2);
 copy(f, addr2);
 elogdelete(f, addr.r.q0, addr.r.q1);
 }else if(addr.r.q0==addr2.r.q0 && addr.r.q1==addr2.r.q1){
-;	# move to self; no-op
+; # move to self; no-op
 }else
 editerror("move overlaps itself");
 }
@@ -427,17 +427,17 @@ return TRUE;
 # int
 # n_cmd(File *f, Cmd *cp)
 # {
-#	int i;
-#	USED(f);
-#	USED(cp);
-#	for(i = 0; i<file.nused; i++){
-#		if(file.filepptr[i] == cmd)
-#			continue;
-#		f = file.filepptr[i];
-#		Strduplstr(&genstr, &f->name);
-#		filename(f);
-#	}
-#	return TRUE;
+# int i;
+# USED(f);
+# USED(cp);
+# for(i = 0; i<file.nused; i++){
+# if(file.filepptr[i] == cmd)
+# continue;
+# f = file.filepptr[i];
+# Strduplstr(&genstr, &f->name);
+# filename(f);
+# }
+# return TRUE;
 #}
 p_cmd(t: ref Text, nil: ref Cmd): int
 {
@@ -463,7 +463,7 @@ for(p1 = addr.r.q0; p1<=addr.r.q1; ){
 (ok, sel) = rxexecute(t, nil, p1, addr.r.q1);
 if(!ok)
 break;
-if(sel[0].q0 == sel[0].q1){	# empty match?
+if(sel[0].q0 == sel[0].q1){ # empty match?
 if(sel[0].q0 == op){
 p1++;
 continue;
@@ -604,13 +604,13 @@ dir.r = nil;
 dir.nr = 0;
 if(t != nil)
 dir = dirname(t, nil, 0);
-if(dir.nr==1 && dir.r[0]=='.'){	# sigh
+if(dir.nr==1 && dir.r[0]=='.'){ # sigh
 dir.r = nil;
 dir.nr = 0;
 }
 editing = state;
 if(t!=nil && t.w!=nil)
-t.w.refx.inc();	# run will decref
+t.w.refx.inc(); # run will decref
 spawn run(w, s, dir.r, dir.nr, TRUE, nil, nil, TRUE);
 s = nil;
 if(t!=nil && t.w!=nil)
@@ -763,7 +763,7 @@ looper(f: ref File, cp: ref Cmd, xy: int)
 {
 p, op, nrp, ok: int;
 r, tr: Range;
-rp: array of  Range;
+rp: array of Range;
 r = addr.r;
 if(xy)
 op = -1;
@@ -781,9 +781,9 @@ if(xy || op>r.q1)
 break;
 tr.q0 = op;
 tr.q1 = r.q1;
-p = r.q1+1;	# exit next loop
+p = r.q1+1; # exit next loop
 }else{
-if(sel[0].q0==sel[0].q1){	# empty match?
+if(sel[0].q0==sel[0].q1){ # empty match?
 if(sel[0].q0==op){
 p++;
 continue;
@@ -857,14 +857,14 @@ alllooper(w: ref Window, lp: ref Looper)
 t: ref Text;
 cp: ref Cmd;
 cp = lp.cp;
-#	if(w.isscratch || w.isdir)
-#		return;
+# if(w.isscratch || w.isdir)
+# return;
 t = w.body;
 # only use this window if it's the current window for the file
 if(t.file.curtext != t)
 return;
-#	if(w.nopen[QWevent] > 0)
-#		return;
+# if(w.nopen[QWevent] > 0)
+# return;
 # no auto-execute on files without names
 if(cp.re==nil && t.file.name==nil)
 return;
@@ -886,7 +886,7 @@ if(loopstruct == nil)
 loopstruct = ref Looper;
 loopstruct.cp = cp;
 loopstruct.XY = XY;
-if(loopstruct.w != nil)	# error'ed out last time
+if(loopstruct.w != nil) # error'ed out last time
 loopstruct.w = nil;
 loopstruct.w = nil;
 loopstruct.nw = 0;
@@ -949,7 +949,7 @@ a.r.q0 = a.r.q1 = f.buf.nc;
 break;
 '\'' =>
 editerror("can't handle '");
-#			a.r = f.mark;
+# a.r = f.mark;
 break;
 '?' =>
 sign = -sign;
@@ -1018,7 +1018,7 @@ break;
 error("cmdaddress");
 return a;
 }
-}while((ap = ap.next)!=nil);	# assign =
+}while((ap = ap.next)!=nil); # assign =
 return a;
 }
 alltofile(w: ref Window, tp: ref Tofile)
@@ -1032,8 +1032,8 @@ t = w.body;
 # only use this window if it's the current window for the file
 if(t.file.curtext != t)
 return;
-#	if(w.nopen[QWevent] > 0)
-#		return;
+# if(w.nopen[QWevent] > 0)
+# return;
 if(tp.r.r == t.file.name)
 tp.f = t.file;
 }
@@ -1062,8 +1062,8 @@ t = w.body;
 # only use this window if it's the current window for the file
 if(t.file.curtext != t)
 return;
-#	if(w.nopen[QWevent] > 0)
-#		return;
+# if(w.nopen[QWevent] > 0)
+# return;
 if(filematch(w.body.file, tp.r)){
 if(tp.f != nil)
 editerror(sprint("too many files match \"%s\"", tp.r.r));
@@ -1153,7 +1153,7 @@ p = addr.r.q0;
 if(l == 0)
 a.r.q1 = addr.r.q0;
 else{
-for(n = 0; n<l; ){	# always runs once
+for(n = 0; n<l; ){ # always runs once
 if(p == 0){
 if(++n != l)
 editerror("address out of range");
@@ -1167,7 +1167,7 @@ a.r.q1 = p;
 if(p > 0)
 p--;
 }
-while(p > 0 && f.curtext.readc(p-1)!='\n')	# lines start after a newline
+while(p > 0 && f.curtext.readc(p-1)!='\n') # lines start after a newline
 p--;
 a.r.q0 = p;
 }

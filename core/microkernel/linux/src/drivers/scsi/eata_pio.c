@@ -227,16 +227,16 @@ DBG(DBG_QUEUE, printk(KERN_DEBUG "eata_pio_queue pid %ld, target: %x, lun:"
 DBG(DBG_QUEUE && DBG_DELAY, DELAY(1));
 cmd->scsi_done = (void *)done;
 switch (cmd->cmnd[0]) {
-case CHANGE_DEFINITION: case COMPARE:         case COPY:
-case COPY_VERIFY:       case LOG_SELECT:      case MODE_SELECT:
-case MODE_SELECT_10:    case SEND_DIAGNOSTIC: case WRITE_BUFFER:
-case FORMAT_UNIT:       case REASSIGN_BLOCKS: case RESERVE:
-case SEARCH_EQUAL:      case SEARCH_HIGH:     case SEARCH_LOW:
-case WRITE_6:           case WRITE_10:        case WRITE_VERIFY:
-case UPDATE_BLOCK:      case WRITE_LONG:      case WRITE_SAME:
-case SEARCH_HIGH_12:    case SEARCH_EQUAL_12: case SEARCH_LOW_12:
-case WRITE_12:          case WRITE_VERIFY_12: case SET_WINDOW:
-case MEDIUM_SCAN:       case SEND_VOLUME_TAG:
+case CHANGE_DEFINITION: case COMPARE: case COPY:
+case COPY_VERIFY: case LOG_SELECT: case MODE_SELECT:
+case MODE_SELECT_10: case SEND_DIAGNOSTIC: case WRITE_BUFFER:
+case FORMAT_UNIT: case REASSIGN_BLOCKS: case RESERVE:
+case SEARCH_EQUAL: case SEARCH_HIGH: case SEARCH_LOW:
+case WRITE_6: case WRITE_10: case WRITE_VERIFY:
+case UPDATE_BLOCK: case WRITE_LONG: case WRITE_SAME:
+case SEARCH_HIGH_12: case SEARCH_EQUAL_12: case SEARCH_LOW_12:
+case WRITE_12: case WRITE_VERIFY_12: case SET_WINDOW:
+case MEDIUM_SCAN: case SEND_VOLUME_TAG:
 case 0xea:
 cp->DataOut = TRUE;
 break;
@@ -529,7 +529,7 @@ if(ALLOW_DMA_BOARDS == FALSE)
 return (FALSE);
 }
 if ((buff = get_pio_board_data((uint)base, gc->IRQ, gc->scsi_id[3],
-cplen   =(htonl(gc->cplen   )+1)/2,
+cplen =(htonl(gc->cplen )+1)/2,
 cppadlen=(htons(gc->cppadlen)+1)/2)) == NULL)
 {
 printk("HBA at %#lx didn't react on INQUIRY. Sorry.\n", (ulong) base);

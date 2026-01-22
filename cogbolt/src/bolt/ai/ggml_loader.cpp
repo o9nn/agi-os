@@ -331,21 +331,21 @@ std::cerr << "GGML Loader Error: " << message << std::endl;
 }
 ggml_type GGMLLoader::fileTypeToGGMLType(GGMLFileType ftype) const {
 switch (ftype) {
-case GGMLFileType::F32:   return GGML_TYPE_F32;
-case GGMLFileType::F16:   return GGML_TYPE_F16;
-case GGMLFileType::Q4_0:  return GGML_TYPE_Q4_0;
-case GGMLFileType::Q4_1:  return GGML_TYPE_Q4_1;
-case GGMLFileType::Q5_0:  return GGML_TYPE_Q5_0;
-case GGMLFileType::Q5_1:  return GGML_TYPE_Q5_1;
-case GGMLFileType::Q8_0:  return GGML_TYPE_Q8_0;
-case GGMLFileType::Q8_1:  return GGML_TYPE_Q8_1;
-case GGMLFileType::Q2_K:  return GGML_TYPE_Q2_K;
-case GGMLFileType::Q3_K:  return GGML_TYPE_Q3_K;
-case GGMLFileType::Q4_K:  return GGML_TYPE_Q4_K;
-case GGMLFileType::Q5_K:  return GGML_TYPE_Q5_K;
-case GGMLFileType::Q6_K:  return GGML_TYPE_Q6_K;
-case GGMLFileType::Q8_K:  return GGML_TYPE_Q8_K;
-default:                  return GGML_TYPE_F32;
+case GGMLFileType::F32: return GGML_TYPE_F32;
+case GGMLFileType::F16: return GGML_TYPE_F16;
+case GGMLFileType::Q4_0: return GGML_TYPE_Q4_0;
+case GGMLFileType::Q4_1: return GGML_TYPE_Q4_1;
+case GGMLFileType::Q5_0: return GGML_TYPE_Q5_0;
+case GGMLFileType::Q5_1: return GGML_TYPE_Q5_1;
+case GGMLFileType::Q8_0: return GGML_TYPE_Q8_0;
+case GGMLFileType::Q8_1: return GGML_TYPE_Q8_1;
+case GGMLFileType::Q2_K: return GGML_TYPE_Q2_K;
+case GGMLFileType::Q3_K: return GGML_TYPE_Q3_K;
+case GGMLFileType::Q4_K: return GGML_TYPE_Q4_K;
+case GGMLFileType::Q5_K: return GGML_TYPE_Q5_K;
+case GGMLFileType::Q6_K: return GGML_TYPE_Q6_K;
+case GGMLFileType::Q8_K: return GGML_TYPE_Q8_K;
+default: return GGML_TYPE_F32;
 }
 }
 }

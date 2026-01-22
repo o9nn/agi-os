@@ -3,12 +3,12 @@ char bflag;
 char rflag;
 char mflag;
 int anychange;
-extern Biobuf	stdout;
-extern int	binary;
-#define MALLOC(t, n)		((t *)emalloc((n)*sizeof(t)))
-#define REALLOC(p, t, n)	((t *)erealloc((void *)(p), (n)*sizeof(t)))
-#define FREE(p)			free((void *)(p))
-#define MAXPATHLEN	1024
+extern Biobuf stdout;
+extern int binary;
+#define MALLOC(t, n) ((t *)emalloc((n)*sizeof(t)))
+#define REALLOC(p, t, n) ((t *)erealloc((void *)(p), (n)*sizeof(t)))
+#define FREE(p) free((void *)(p))
+#define MAXPATHLEN 1024
 int mkpathname(char *, char *, char *);
 void *emalloc(unsigned);
 void *erealloc(void *, unsigned);

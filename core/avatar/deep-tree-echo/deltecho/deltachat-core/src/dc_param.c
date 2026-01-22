@@ -88,7 +88,7 @@ char* dc_param_get(const dc_param_t* param, int key, const char* def)
 {
 char* p1 = NULL;
 char* p2 = NULL;
-char  bak = 0;
+char bak = 0;
 char* ret = NULL;
 if (param==NULL || key==0) {
 return def? dc_strdup(def) : NULL;
@@ -158,18 +158,18 @@ if (old1 && old1[0]==0) { old1 = NULL; }
 if (old2 && old2[0]==0) { old2 = NULL; }
 if (value) {
 new1 = dc_mprintf("%s%s%c=%s%s%s",
-old1?  old1 : "",
-old1?  "\n" : "",
+old1? old1 : "",
+old1? "\n" : "",
 key,
 value,
-old2?  "\n" : "",
-old2?  old2 : "");
+old2? "\n" : "",
+old2? old2 : "");
 }
 else {
 new1 = dc_mprintf("%s%s%s",
-old1?         old1 : "",
+old1? old1 : "",
 (old1&&old2)? "\n" : "",
-old2?         old2 : "");
+old2? old2 : "");
 }
 free(param->packed);
 param->packed = new1;

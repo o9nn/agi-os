@@ -1,5 +1,5 @@
 #ifndef sisparam_INCLUDED
-#  define sisparam_INCLUDED
+# define sisparam_INCLUDED
 #define LOG2_MAX_ISCALE_SUPPORT 3
 #define MAX_ISCALE_SUPPORT (1 << LOG2_MAX_ISCALE_SUPPORT)
 typedef struct stream_image_scale_params_s {

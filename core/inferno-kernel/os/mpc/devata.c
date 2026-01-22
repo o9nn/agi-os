@@ -1,121 +1,121 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"../port/error.h"
-#include	"pcmcia.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "../port/error.h"
+#include "pcmcia.h"
 #define DPRINT if(0)print
-typedef	struct Drive		Drive;
-typedef	struct Ident		Ident;
-typedef	struct Controller	Controller;
-typedef struct Partition	Partition;
-typedef struct Repl		Repl;
+typedef struct Drive Drive;
+typedef struct Ident Ident;
+typedef struct Controller Controller;
+typedef struct Partition Partition;
+typedef struct Repl Repl;
 enum
 {
-Pbase=		0x1F0,
-Pdata=		0,
-Perror=		1,
-Pprecomp=	1,
-Pcount=		2,
-Psector=	3,
-Pcyllsb=	4,
-Pcylmsb=	5,
-Pdh=		6,
-Pstatus=	7,
-Sbusy=		 (1<<7),
-Sready=	 (1<<6),
-Sdrq=		 (1<<3),
-Serr=		 (1<<0),
-Pcmd=		7,
-Crecal=		0x10,
-Cread=		0x20,
-Cwrite=		0x30,
-Cident=		0xEC,
-Cident2=	0xFF,
-Csetbuf=	0xEF,
-Cinitparam=	0x91,
-Cstandby=	0xE2,
-Cidle=		0xE1,
-Cpowerdown=	0xE3,
+Pbase= 0x1F0,
+Pdata= 0,
+Perror= 1,
+Pprecomp= 1,
+Pcount= 2,
+Psector= 3,
+Pcyllsb= 4,
+Pcylmsb= 5,
+Pdh= 6,
+Pstatus= 7,
+Sbusy= (1<<7),
+Sready= (1<<6),
+Sdrq= (1<<3),
+Serr= (1<<0),
+Pcmd= 7,
+Crecal= 0x10,
+Cread= 0x20,
+Cwrite= 0x30,
+Cident= 0xEC,
+Cident2= 0xFF,
+Csetbuf= 0xEF,
+Cinitparam= 0x91,
+Cstandby= 0xE2,
+Cidle= 0xE1,
+Cpowerdown= 0xE3,
 Sspinning,
 Sstandby,
 Sidle,
 Spowerdown,
-DHmagic=	0xA0,
-Qdir=		0,
-Maxxfer=	BY2PG,
-Npart=		8+2,
-Nrepl=		64,
+DHmagic= 0xA0,
+Qdir= 0,
+Maxxfer= BY2PG,
+Npart= 8+2,
+Nrepl= 64,
 };
-#define PART(x)		((x)&0xF)
-#define DRIVE(x)	(((x)>>4)&0x7)
-#define MKQID(d,p)	(((d)<<4) | (p))
+#define PART(x) ((x)&0xF)
+#define DRIVE(x) (((x)>>4)&0x7)
+#define MKQID(d,p) (((d)<<4) | (p))
 struct Partition
 {
-ulong	start;
-ulong	end;
-char	name[NAMELEN+1];
+ulong start;
+ulong end;
+char name[NAMELEN+1];
 };
 struct Repl
 {
 Partition *p;
-int	nrepl;
-ulong	blk[Nrepl];
+int nrepl;
+ulong blk[Nrepl];
 };
-#define PARTMAGIC	"plan9 partitions"
-#define REPLMAGIC	"block replacements"
+#define PARTMAGIC "plan9 partitions"
+#define REPLMAGIC "block replacements"
 struct Drive
 {
 QLock;
 Controller *cp;
-int	drive;
-int	confused;
-int	online;
-int	npart;
+int drive;
+int confused;
+int online;
+int npart;
 Partition p[Npart];
-Repl	repl;
-ulong	usetime;
-int	state;
-char	vol[NAMELEN];
-ulong	cap;
-int	bytes;
-int	sectors;
-int	heads;
-long	cyl;
-char	lba;
-char	multi;
+Repl repl;
+ulong usetime;
+int state;
+char vol[NAMELEN];
+ulong cap;
+int bytes;
+int sectors;
+int heads;
+long cyl;
+char lba;
+char multi;
 };
 struct Controller
 {
 QLock;
 ISAConf;
-Lock	reglock;
-int	confused;
-ulong	pbase;
-int	cmd;
-int	lastcmd;
-Rendez	r;
-char	*buf;
-int	nsecs;
-int	sofar;
-int	status;
-int	error;
-Drive	*dp;
+Lock reglock;
+int confused;
+ulong pbase;
+int cmd;
+int lastcmd;
+Rendez r;
+char *buf;
+int nsecs;
+int sofar;
+int status;
+int error;
+Drive *dp;
 };
-Controller	*atac;
-Drive		*ata;
-static char*	ataerr;
-static int	nhard;
-static int	spindowntime;
-static void	ataintr(Ureg*, void*);
-static long	ataxfer(Drive*, Partition*, int, long, long, char*);
-static void	ataident(Drive*);
-static void	atasetbuf(Drive*, int);
-static void	ataparams(Drive*);
-static void	atapart(Drive*);
-static int	ataprobe(Drive*, int, int, int);
+Controller *atac;
+Drive *ata;
+static char* ataerr;
+static int nhard;
+static int spindowntime;
+static void ataintr(Ureg*, void*);
+static long ataxfer(Drive*, Partition*, int, long, long, char*);
+static void ataident(Drive*);
+static void atasetbuf(Drive*, int);
+static void ataparams(Drive*);
+static void atapart(Drive*);
+static int ataprobe(Drive*, int, int, int);
 static int
 atagen(Chan *c, Dirtab*, int, int s, Dir *dirp)
 {
@@ -490,38 +490,38 @@ qunlock(cp);
 }
 struct Ident
 {
-ushort	config;
-ushort	cyls;
-ushort	reserved0;
-ushort	heads;
-ushort	b2t;
-ushort	b2s;
-ushort	s2t;
-ushort	reserved1[3];
-ushort	serial[10];
-ushort	type;
-ushort	bsize;
-ushort	ecc;
-ushort	firm[4];
-ushort	model[20];
-ushort	s2i;
-ushort	dwtf;
-ushort	capabilities;
-ushort	reserved2;
-ushort	piomode;
-ushort	dmamode;
-ushort	cvalid;
-ushort	ccyls;
-ushort	cheads;
-ushort	cs2t;
-ushort	ccap[2];
-ushort	cs2i;
-ushort	lbasecs[2];
-ushort	dmasingle;
-ushort	dmadouble;
-ushort	reserved3[64];
-ushort	vendor[32];
-ushort	reserved4[96];
+ushort config;
+ushort cyls;
+ushort reserved0;
+ushort heads;
+ushort b2t;
+ushort b2s;
+ushort s2t;
+ushort reserved1[3];
+ushort serial[10];
+ushort type;
+ushort bsize;
+ushort ecc;
+ushort firm[4];
+ushort model[20];
+ushort s2i;
+ushort dwtf;
+ushort capabilities;
+ushort reserved2;
+ushort piomode;
+ushort dmamode;
+ushort cvalid;
+ushort ccyls;
+ushort cheads;
+ushort cs2t;
+ushort ccap[2];
+ushort cs2i;
+ushort lbasecs[2];
+ushort dmasingle;
+ushort dmadouble;
+ushort reserved3[64];
+ushort vendor[32];
+ushort reserved4[96];
 };
 static void
 ataident(Drive *dp)
@@ -757,7 +757,7 @@ atareplinit(dp);
 }
 enum
 {
-Maxloop=	10000,
+Maxloop= 10000,
 };
 static void
 ataintr(Ureg*, void *arg)

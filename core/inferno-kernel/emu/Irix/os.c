@@ -1,30 +1,30 @@
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
-#include	<time.h>
-#include	<ulocks.h>
-#include	<termios.h>
-#include 	<sigfpe.h>
-#include	<sys/prctl.h>
-#include 	<sys/fpu.h>
-#include	<sys/cachectl.h>
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
+#include <time.h>
+#include <ulocks.h>
+#include <termios.h>
+#include <sigfpe.h>
+#include <sys/prctl.h>
+#include <sys/fpu.h>
+#include <sys/cachectl.h>
 #undef _POSIX_SOURCE
-#include	<signal.h>
+#include <signal.h>
 #define _BSD_TIME
-#include 	<sys/time.h>
+#include <sys/time.h>
 #define _POSIX_SOURCE
-#include 	<pwd.h>
-extern	int	rebootargc;
-extern	char**	rebootargv;
-int	gidnobody = -1;
-int	uidnobody = -1;
-Proc**	Xup;
+#include <pwd.h>
+extern int rebootargc;
+extern char** rebootargv;
+int gidnobody = -1;
+int uidnobody = -1;
+Proc** Xup;
 #define MAXSPROC 30000
-static int	sproctbl[MAXSPROC];
+static int sproctbl[MAXSPROC];
 enum
 {
-KSTACK	= 64*1024,
-DELETE	= 0x7F
+KSTACK = 64*1024,
+DELETE = 0x7F
 };
 char *hosttype = "Irix";
 char *cputype = "mips";

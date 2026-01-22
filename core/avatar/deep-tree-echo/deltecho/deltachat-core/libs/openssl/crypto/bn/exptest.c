@@ -6,7 +6,7 @@
 #include <openssl/bn.h>
 #include <openssl/rand.h>
 #include <openssl/err.h>
-#define NUM_BITS        (BN_BITS*2)
+#define NUM_BITS (BN_BITS*2)
 static const char rnd_seed[] =
 "string to make the random number generator think it has entropy";
 static int a_is_zero_mod_one(const char *method, const BIGNUM *r,

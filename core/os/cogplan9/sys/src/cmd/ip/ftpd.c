@@ -8,126 +8,126 @@
 #include "glob.h"
 enum
 {
-Iac=		255,
-Tascii=		0,
-Timage=		1,
-Mstream=	0,
-Mblock=		1,
-Mpage=		2,
-Sfile=		0,
-Sblock=		1,
-Scompressed=	2,
-Nbuf=		4096,
-Maxwait=	1000*60*30,
-Maxerr=		128,
-Maxpath=	512,
+Iac= 255,
+Tascii= 0,
+Timage= 1,
+Mstream= 0,
+Mblock= 1,
+Mpage= 2,
+Sfile= 0,
+Sblock= 1,
+Scompressed= 2,
+Nbuf= 4096,
+Maxwait= 1000*60*30,
+Maxerr= 128,
+Maxpath= 512,
 };
-int	abortcmd(char*);
-int	appendcmd(char*);
-int	cdupcmd(char*);
-int	cwdcmd(char*);
-int	delcmd(char*);
-int	helpcmd(char*);
-int	listcmd(char*);
-int	mdtmcmd(char*);
-int	mkdircmd(char*);
-int	modecmd(char*);
-int	namelistcmd(char*);
-int	nopcmd(char*);
-int	passcmd(char*);
-int	pasvcmd(char*);
-int	portcmd(char*);
-int	pwdcmd(char*);
-int	quitcmd(char*);
-int	rnfrcmd(char*);
-int	rntocmd(char*);
-int	reply(char*, ...);
-int	restartcmd(char*);
-int	retrievecmd(char*);
-int	sitecmd(char*);
-int	sizecmd(char*);
-int	storecmd(char*);
-int	storeucmd(char*);
-int	structcmd(char*);
-int	systemcmd(char*);
-int	typecmd(char*);
-int	usercmd(char*);
-int	dialdata(void);
-char*	abspath(char*);
-int	crlfwrite(int, char*, int);
-int	sodoff(void);
-int	accessok(char*);
-typedef struct Cmd	Cmd;
+int abortcmd(char*);
+int appendcmd(char*);
+int cdupcmd(char*);
+int cwdcmd(char*);
+int delcmd(char*);
+int helpcmd(char*);
+int listcmd(char*);
+int mdtmcmd(char*);
+int mkdircmd(char*);
+int modecmd(char*);
+int namelistcmd(char*);
+int nopcmd(char*);
+int passcmd(char*);
+int pasvcmd(char*);
+int portcmd(char*);
+int pwdcmd(char*);
+int quitcmd(char*);
+int rnfrcmd(char*);
+int rntocmd(char*);
+int reply(char*, ...);
+int restartcmd(char*);
+int retrievecmd(char*);
+int sitecmd(char*);
+int sizecmd(char*);
+int storecmd(char*);
+int storeucmd(char*);
+int structcmd(char*);
+int systemcmd(char*);
+int typecmd(char*);
+int usercmd(char*);
+int dialdata(void);
+char* abspath(char*);
+int crlfwrite(int, char*, int);
+int sodoff(void);
+int accessok(char*);
+typedef struct Cmd Cmd;
 struct Cmd
 {
-char	*name;
-int	(*f)(char*);
-int	needlogin;
+char *name;
+int (*f)(char*);
+int needlogin;
 };
 Cmd cmdtab[] =
 {
-{ "abor",	abortcmd,	0, },
-{ "appe",	appendcmd,	1, },
-{ "cdup",	cdupcmd,	1, },
-{ "cwd",	cwdcmd,		1, },
-{ "dele",	delcmd,		1, },
-{ "help",	helpcmd,	0, },
-{ "list",	listcmd,	1, },
-{ "mdtm",	mdtmcmd,	1, },
-{ "mkd",	mkdircmd,	1, },
-{ "mode",	modecmd,	0, },
-{ "nlst",	namelistcmd,	1, },
-{ "noop",	nopcmd,		0, },
-{ "pass",	passcmd,	0, },
-{ "pasv",	pasvcmd,	1, },
-{ "pwd",	pwdcmd,		0, },
-{ "port", 	portcmd,	1, },
-{ "quit",	quitcmd,	0, },
-{ "rest",	restartcmd,	1, },
-{ "retr",	retrievecmd,	1, },
-{ "rmd",	delcmd,		1, },
-{ "rnfr",	rnfrcmd,	1, },
-{ "rnto",	rntocmd,	1, },
+{ "abor", abortcmd, 0, },
+{ "appe", appendcmd, 1, },
+{ "cdup", cdupcmd, 1, },
+{ "cwd", cwdcmd, 1, },
+{ "dele", delcmd, 1, },
+{ "help", helpcmd, 0, },
+{ "list", listcmd, 1, },
+{ "mdtm", mdtmcmd, 1, },
+{ "mkd", mkdircmd, 1, },
+{ "mode", modecmd, 0, },
+{ "nlst", namelistcmd, 1, },
+{ "noop", nopcmd, 0, },
+{ "pass", passcmd, 0, },
+{ "pasv", pasvcmd, 1, },
+{ "pwd", pwdcmd, 0, },
+{ "port", portcmd, 1, },
+{ "quit", quitcmd, 0, },
+{ "rest", restartcmd, 1, },
+{ "retr", retrievecmd, 1, },
+{ "rmd", delcmd, 1, },
+{ "rnfr", rnfrcmd, 1, },
+{ "rnto", rntocmd, 1, },
 { "site", sitecmd, 1, },
-{ "size", 	sizecmd,	1, },
-{ "stor", 	storecmd,	1, },
-{ "stou", 	storeucmd,	1, },
-{ "stru",	structcmd,	1, },
-{ "syst",	systemcmd,	0, },
-{ "type", 	typecmd,	0, },
-{ "user",	usercmd,	0, },
+{ "size", sizecmd, 1, },
+{ "stor", storecmd, 1, },
+{ "stou", storeucmd, 1, },
+{ "stru", structcmd, 1, },
+{ "syst", systemcmd, 0, },
+{ "type", typecmd, 0, },
+{ "user", usercmd, 0, },
 { 0, 0, 0 },
 };
 #define NONENS "/lib/namespace.ftp"
-char	user[Maxpath];
-char	curdir[Maxpath];
-Chalstate	*ch;
-int	loggedin;
-int	type;
-int	mode;
-int	structure;
-char	data[64];
-int	pid;
-int	encryption;
-int	isnone, anon_ok, anon_only, anon_everybody;
-char	cputype[Maxpath];
-char	bindir[Maxpath];
-char	mailaddr[Maxpath];
-char	*namespace = NONENS;
-int	debug;
-NetConnInfo	*nci;
-int	createperm = 0660;
-int	isnoworld;
-vlong	offset;
+char user[Maxpath];
+char curdir[Maxpath];
+Chalstate *ch;
+int loggedin;
+int type;
+int mode;
+int structure;
+char data[64];
+int pid;
+int encryption;
+int isnone, anon_ok, anon_only, anon_everybody;
+char cputype[Maxpath];
+char bindir[Maxpath];
+char mailaddr[Maxpath];
+char *namespace = NONENS;
+int debug;
+NetConnInfo *nci;
+int createperm = 0660;
+int isnoworld;
+vlong offset;
 ulong id;
 typedef struct Passive Passive;
 struct Passive
 {
-int	inuse;
-char	adir[40];
-int	afd;
-int	port;
-uchar	ipaddr[IPaddrlen];
+int inuse;
+char adir[40];
+int afd;
+int port;
+uchar ipaddr[IPaddrlen];
 } passive;
 #define FTPLOG "ftp"
 void
@@ -1484,10 +1484,10 @@ return s_to_c(rpath);
 }
 typedef struct Path Path;
 struct Path {
-Path	*next;
-String	*path;
-int	inuse;
-int	ok;
+Path *next;
+String *path;
+int inuse;
+int ok;
 };
 enum
 {

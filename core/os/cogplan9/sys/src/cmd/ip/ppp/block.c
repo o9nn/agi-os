@@ -5,38 +5,38 @@
 #include "ppp.h"
 enum
 {
-PAD	= 128,
-NLIST	= (1<<5),
-BPOW	= 10,
+PAD = 128,
+NLIST = (1<<5),
+BPOW = 10,
 };
 typedef struct Barena Barena;
 struct Barena
 {
 QLock;
-Block*	list[NLIST];
+Block* list[NLIST];
 };
 static Barena area;
 #define ADEBUG if(0)
 enum
 {
-Npc=	64,
+Npc= 64,
 };
 typedef struct Arefent Arefent;
 struct Arefent
 {
-uint	pc;
-uint	n;
+uint pc;
+uint n;
 };
 typedef struct Aref Aref;
-struct  Aref
+struct Aref
 {
-Arefent	tab[Npc];
+Arefent tab[Npc];
 QLock;
 };
 Aref arefblock;
-static ulong	callerpc(void*);
-static void	aref(Aref*, ulong);
-static void	aunref(Aref*, ulong);
+static ulong callerpc(void*);
+static void aref(Aref*, ulong);
+static void aunref(Aref*, ulong);
 Block*
 allocb(int len)
 {
@@ -56,7 +56,7 @@ bp->flist = nil;
 bp->base = (uchar*)bp+sizeof(Block);
 bp->rptr = bp->base+PAD;
 bp->wptr = bp->rptr;
-bp->lim  = bp->base+bp->bsz;
+bp->lim = bp->base+bp->bsz;
 bp->flow = nil;
 bp->flags= 0;
 ADEBUG {
@@ -69,11 +69,11 @@ l = &bp->flist;
 }
 qunlock(&area);
 bp = mallocz(sizeof(Block)+len, 1);
-bp->bsz  = len;
+bp->bsz = len;
 bp->base = (uchar*)bp+sizeof(Block);
 bp->rptr = bp->base+PAD;
 bp->wptr = bp->rptr;
-bp->lim  = bp->base+len;
+bp->lim = bp->base+len;
 ADEBUG {
 bp->pc = callerpc(&len);
 aref(&arefblock, bp->pc);

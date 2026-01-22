@@ -6,12 +6,12 @@
 #include "io.h"
 #include "ureg.h"
 enum {
-Mclk=	25000000
+Mclk= 25000000
 };
 typedef struct Clock0link Clock0link;
 typedef struct Clock0link {
-void		(*clock)(void);
-Clock0link*	link;
+void (*clock)(void);
+Clock0link* link;
 } Clock0link;
 static Clock0link *clock0link;
 static Lock clock0lock;

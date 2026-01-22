@@ -10,7 +10,7 @@ Scsi_Device *scd;
 struct Scsi_Host *HBA_ptr;
 static u8 buff[512];
 int i;
-int   size, len = 0;
+int size, len = 0;
 off_t begin = 0;
 off_t pos = 0;
 HBA_ptr = first_HBA;

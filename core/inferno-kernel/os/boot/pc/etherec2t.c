@@ -7,8 +7,8 @@
 #include "etherif.h"
 #include "ether8390.h"
 enum {
-Data		= 0x10,
-Reset		= 0x1F,
+Data = 0x10,
+Reset = 0x1F,
 };
 static char* ec2tpcmcia[] = {
 "EC2T",

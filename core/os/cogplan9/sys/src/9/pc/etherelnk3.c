@@ -7,350 +7,350 @@
 #include "../port/error.h"
 #include "../port/netif.h"
 #include "etherif.h"
-#define XCVRDEBUG		if(0)print
+#define XCVRDEBUG if(0)print
 enum {
-IDport			= 0x0110,
+IDport = 0x0110,
 };
 enum {
-CommandR		= 0x000E,
-IntStatusR		= 0x000E,
+CommandR = 0x000E,
+IntStatusR = 0x000E,
 };
 enum {
-GlobalReset		= 0x0000,
-SelectRegisterWindow	= 0x0001,
-EnableDcConverter	= 0x0002,
-RxDisable		= 0x0003,
-RxEnable		= 0x0004,
-RxReset			= 0x0005,
-Stall			= 0x0006,
-TxDone			= 0x0007,
-RxDiscard		= 0x0008,
-TxEnable		= 0x0009,
-TxDisable		= 0x000A,
-TxReset			= 0x000B,
-RequestInterrupt	= 0x000C,
-AcknowledgeInterrupt	= 0x000D,
-SetInterruptEnable	= 0x000E,
-SetIndicationEnable	= 0x000F,
-SetRxFilter		= 0x0010,
-SetRxEarlyThresh	= 0x0011,
-SetTxAvailableThresh	= 0x0012,
-SetTxStartThresh	= 0x0013,
-StartDma		= 0x0014,
-StatisticsEnable	= 0x0015,
-StatisticsDisable	= 0x0016,
-DisableDcConverter	= 0x0017,
-SetTxReclaimThresh	= 0x0018,
-PowerUp			= 0x001B,
-PowerDownFull		= 0x001C,
-PowerAuto		= 0x001D,
+GlobalReset = 0x0000,
+SelectRegisterWindow = 0x0001,
+EnableDcConverter = 0x0002,
+RxDisable = 0x0003,
+RxEnable = 0x0004,
+RxReset = 0x0005,
+Stall = 0x0006,
+TxDone = 0x0007,
+RxDiscard = 0x0008,
+TxEnable = 0x0009,
+TxDisable = 0x000A,
+TxReset = 0x000B,
+RequestInterrupt = 0x000C,
+AcknowledgeInterrupt = 0x000D,
+SetInterruptEnable = 0x000E,
+SetIndicationEnable = 0x000F,
+SetRxFilter = 0x0010,
+SetRxEarlyThresh = 0x0011,
+SetTxAvailableThresh = 0x0012,
+SetTxStartThresh = 0x0013,
+StartDma = 0x0014,
+StatisticsEnable = 0x0015,
+StatisticsDisable = 0x0016,
+DisableDcConverter = 0x0017,
+SetTxReclaimThresh = 0x0018,
+PowerUp = 0x001B,
+PowerDownFull = 0x001C,
+PowerAuto = 0x001D,
 };
 enum {
-tpAuiReset		= 0x0001,
-endecReset		= 0x0002,
-networkReset		= 0x0004,
-fifoReset		= 0x0008,
-aismReset		= 0x0010,
-hostReset		= 0x0020,
-dmaReset		= 0x0040,
-vcoReset		= 0x0080,
-updnReset		= 0x0100,
-resetMask		= 0x01FF,
+tpAuiReset = 0x0001,
+endecReset = 0x0002,
+networkReset = 0x0004,
+fifoReset = 0x0008,
+aismReset = 0x0010,
+hostReset = 0x0020,
+dmaReset = 0x0040,
+vcoReset = 0x0080,
+updnReset = 0x0100,
+resetMask = 0x01FF,
 };
 enum {
-upStall			= 0x0000,
-upUnStall		= 0x0001,
-dnStall			= 0x0002,
-dnUnStall		= 0x0003,
+upStall = 0x0000,
+upUnStall = 0x0001,
+dnStall = 0x0002,
+dnUnStall = 0x0003,
 };
 enum {
-receiveIndividual	= 0x0001,
-receiveMulticast	= 0x0002,
-receiveBroadcast	= 0x0004,
-receiveAllFrames	= 0x0008,
+receiveIndividual = 0x0001,
+receiveMulticast = 0x0002,
+receiveBroadcast = 0x0004,
+receiveAllFrames = 0x0008,
 };
 enum {
-Upload			= 0x0000,
-Download		= 0x0001,
+Upload = 0x0000,
+Download = 0x0001,
 };
 enum {
-interruptLatch		= 0x0001,
-hostError		= 0x0002,
-txComplete		= 0x0004,
-txAvailable		= 0x0008,
-rxComplete		= 0x0010,
-rxEarly			= 0x0020,
-intRequested		= 0x0040,
-updateStats		= 0x0080,
-transferInt		= 0x0100,
-dnComplete		= 0x0200,
-upComplete		= 0x0400,
-busMasterInProgress	= 0x0800,
-commandInProgress	= 0x1000,
-interruptMask		= 0x07FE,
+interruptLatch = 0x0001,
+hostError = 0x0002,
+txComplete = 0x0004,
+txAvailable = 0x0008,
+rxComplete = 0x0010,
+rxEarly = 0x0020,
+intRequested = 0x0040,
+updateStats = 0x0080,
+transferInt = 0x0100,
+dnComplete = 0x0200,
+upComplete = 0x0400,
+busMasterInProgress = 0x0800,
+commandInProgress = 0x1000,
+interruptMask = 0x07FE,
 };
-#define COMMAND(port, cmd, a)	outs((port)+CommandR, ((cmd)<<11)|(a))
-#define STATUS(port)		ins((port)+IntStatusR)
+#define COMMAND(port, cmd, a) outs((port)+CommandR, ((cmd)<<11)|(a))
+#define STATUS(port) ins((port)+IntStatusR)
 enum {
-Wsetup			= 0x0000,
-ManufacturerID		= 0x0000,
-ProductID		= 0x0002,
-ConfigControl		= 0x0004,
-AddressConfig		= 0x0006,
-ResourceConfig		= 0x0008,
-EepromCommand		= 0x000A,
-EepromData		= 0x000C,
-autoSelect9		= 0x0080,
-xcvrMask9		= 0xC000,
-Ena			= 0x0001,
-base10TAvailable9	= 0x0200,
-coaxAvailable9		= 0x1000,
-auiAvailable9		= 0x2000,
-EepromReadRegister	= 0x0080,
-EepromReadOffRegister	= 0x00B0,
-EepromRead8bRegister	= 0x0230,
-EepromBusy		= 0x8000,
+Wsetup = 0x0000,
+ManufacturerID = 0x0000,
+ProductID = 0x0002,
+ConfigControl = 0x0004,
+AddressConfig = 0x0006,
+ResourceConfig = 0x0008,
+EepromCommand = 0x000A,
+EepromData = 0x000C,
+autoSelect9 = 0x0080,
+xcvrMask9 = 0xC000,
+Ena = 0x0001,
+base10TAvailable9 = 0x0200,
+coaxAvailable9 = 0x1000,
+auiAvailable9 = 0x2000,
+EepromReadRegister = 0x0080,
+EepromReadOffRegister = 0x00B0,
+EepromRead8bRegister = 0x0230,
+EepromBusy = 0x8000,
 };
-#define EEPROMCMD(port, cmd, a)	outs((port)+EepromCommand, (cmd)|(a))
-#define EEPROMBUSY(port)	(ins((port)+EepromCommand) & EepromBusy)
-#define EEPROMDATA(port)	ins((port)+EepromData)
+#define EEPROMCMD(port, cmd, a) outs((port)+EepromCommand, (cmd)|(a))
+#define EEPROMBUSY(port) (ins((port)+EepromCommand) & EepromBusy)
+#define EEPROMDATA(port) ins((port)+EepromData)
 enum {
-Wop			= 0x0001,
-Fifo			= 0x0000,
-RxError			= 0x0004,
-RxStatus		= 0x0008,
-TIMER			= 0x000A,
-TxStatus		= 0x000B,
-TxFree			= 0x000C,
-rxOverrun		= 0x0001,
-runtFrame		= 0x0002,
-alignmentError		= 0x0004,
-crcError		= 0x0008,
-oversizedFrame		= 0x0010,
-dribbleBits		= 0x0080,
-rxBytes			= 0x1FFF,
-rxBytes9		= 0x07FF,
-rxError9		= 0x3800,
-rxOverrun9		= 0x0000,
-oversizedFrame9		= 0x0800,
-dribbleBits9		= 0x1000,
-runtFrame9		= 0x1800,
-alignmentError9		= 0x2000,
-crcError9		= 0x2800,
-rxError			= 0x4000,
-rxIncomplete		= 0x8000,
-txStatusOverflow	= 0x0004,
-maxCollisions		= 0x0008,
-txUnderrun		= 0x0010,
-txJabber		= 0x0020,
-interruptRequested	= 0x0040,
-txStatusComplete	= 0x0080,
-};
-enum {
-Wstation		= 0x0002,
-ResetOp905B		= 0x000C,
+Wop = 0x0001,
+Fifo = 0x0000,
+RxError = 0x0004,
+RxStatus = 0x0008,
+TIMER = 0x000A,
+TxStatus = 0x000B,
+TxFree = 0x000C,
+rxOverrun = 0x0001,
+runtFrame = 0x0002,
+alignmentError = 0x0004,
+crcError = 0x0008,
+oversizedFrame = 0x0010,
+dribbleBits = 0x0080,
+rxBytes = 0x1FFF,
+rxBytes9 = 0x07FF,
+rxError9 = 0x3800,
+rxOverrun9 = 0x0000,
+oversizedFrame9 = 0x0800,
+dribbleBits9 = 0x1000,
+runtFrame9 = 0x1800,
+alignmentError9 = 0x2000,
+crcError9 = 0x2800,
+rxError = 0x4000,
+rxIncomplete = 0x8000,
+txStatusOverflow = 0x0004,
+maxCollisions = 0x0008,
+txUnderrun = 0x0010,
+txJabber = 0x0020,
+interruptRequested = 0x0040,
+txStatusComplete = 0x0080,
 };
 enum {
-Wfifo			= 0x0003,
-InternalConfig		= 0x0000,
-OtherInt		= 0x0004,
-RomControl		= 0x0006,
-MacControl		= 0x0006,
-ResetOptions		= 0x0008,
-MediaOptions		= 0x0008,
-RxFree			= 0x000A,
-disableBadSsdDetect	= 0x00000100,
-ramLocation		= 0x00000200,
-ramPartition5to3	= 0x00000000,
-ramPartition3to1	= 0x00010000,
-ramPartition1to1	= 0x00020000,
-ramPartition3to5	= 0x00030000,
-ramPartitionMask	= 0x00030000,
-xcvr10BaseT		= 0x00000000,
-xcvrAui			= 0x00100000,
-xcvr10Base2		= 0x00300000,
-xcvr100BaseTX		= 0x00400000,
-xcvr100BaseFX		= 0x00500000,
-xcvrMii			= 0x00600000,
-xcvrMask		= 0x00700000,
-autoSelect		= 0x01000000,
-deferExtendEnable	= 0x0001,
-deferTIMERSelect	= 0x001E,
-fullDuplexEnable	= 0x0020,
-allowLargePackets	= 0x0040,
-extendAfterCollision	= 0x0080,
-flowControlEnable	= 0x0100,
-vltEnable		= 0x0200,
-baseT4Available		= 0x0001,
-baseTXAvailable		= 0x0002,
-baseFXAvailable		= 0x0004,
-base10TAvailable	= 0x0008,
-coaxAvailable		= 0x0010,
-auiAvailable		= 0x0020,
-miiConnector		= 0x0040,
+Wstation = 0x0002,
+ResetOp905B = 0x000C,
 };
 enum {
-Wdiagnostic		= 0x0004,
-VcoDiagnostic		= 0x0002,
-FifoDiagnostic		= 0x0004,
-NetworkDiagnostic	= 0x0006,
-PhysicalMgmt		= 0x0008,
-MediaStatus		= 0x000A,
-BadSSD			= 0x000C,
-UpperBytesOk		= 0x000D,
-txOverrun		= 0x0400,
-rxUnderrun		= 0x2000,
-receiving		= 0x8000,
-mgmtClk			= 0x0001,
-mgmtData		= 0x0002,
-mgmtDir			= 0x0004,
-cat5LinkTestDefeat	= 0x8000,
-dataRate100		= 0x0002,
-crcStripDisable		= 0x0004,
-enableSqeStats		= 0x0008,
-collisionDetect		= 0x0010,
-carrierSense		= 0x0020,
-jabberGuardEnable	= 0x0040,
-linkBeatEnable		= 0x0080,
-jabberDetect		= 0x0200,
-polarityReversed	= 0x0400,
-linkBeatDetect		= 0x0800,
-txInProg		= 0x1000,
-dcConverterEnabled	= 0x4000,
-auiDisable		= 0x8000,
+Wfifo = 0x0003,
+InternalConfig = 0x0000,
+OtherInt = 0x0004,
+RomControl = 0x0006,
+MacControl = 0x0006,
+ResetOptions = 0x0008,
+MediaOptions = 0x0008,
+RxFree = 0x000A,
+disableBadSsdDetect = 0x00000100,
+ramLocation = 0x00000200,
+ramPartition5to3 = 0x00000000,
+ramPartition3to1 = 0x00010000,
+ramPartition1to1 = 0x00020000,
+ramPartition3to5 = 0x00030000,
+ramPartitionMask = 0x00030000,
+xcvr10BaseT = 0x00000000,
+xcvrAui = 0x00100000,
+xcvr10Base2 = 0x00300000,
+xcvr100BaseTX = 0x00400000,
+xcvr100BaseFX = 0x00500000,
+xcvrMii = 0x00600000,
+xcvrMask = 0x00700000,
+autoSelect = 0x01000000,
+deferExtendEnable = 0x0001,
+deferTIMERSelect = 0x001E,
+fullDuplexEnable = 0x0020,
+allowLargePackets = 0x0040,
+extendAfterCollision = 0x0080,
+flowControlEnable = 0x0100,
+vltEnable = 0x0200,
+baseT4Available = 0x0001,
+baseTXAvailable = 0x0002,
+baseFXAvailable = 0x0004,
+base10TAvailable = 0x0008,
+coaxAvailable = 0x0010,
+auiAvailable = 0x0020,
+miiConnector = 0x0040,
 };
 enum {
-Wstate			= 0x0005,
-TxStartThresh		= 0x0000,
-TxAvailableThresh	= 0x0002,
-RxEarlyThresh		= 0x0006,
-RxFilter		= 0x0008,
-InterruptEnable		= 0x000A,
-IndicationEnable	= 0x000C,
+Wdiagnostic = 0x0004,
+VcoDiagnostic = 0x0002,
+FifoDiagnostic = 0x0004,
+NetworkDiagnostic = 0x0006,
+PhysicalMgmt = 0x0008,
+MediaStatus = 0x000A,
+BadSSD = 0x000C,
+UpperBytesOk = 0x000D,
+txOverrun = 0x0400,
+rxUnderrun = 0x2000,
+receiving = 0x8000,
+mgmtClk = 0x0001,
+mgmtData = 0x0002,
+mgmtDir = 0x0004,
+cat5LinkTestDefeat = 0x8000,
+dataRate100 = 0x0002,
+crcStripDisable = 0x0004,
+enableSqeStats = 0x0008,
+collisionDetect = 0x0010,
+carrierSense = 0x0020,
+jabberGuardEnable = 0x0040,
+linkBeatEnable = 0x0080,
+jabberDetect = 0x0200,
+polarityReversed = 0x0400,
+linkBeatDetect = 0x0800,
+txInProg = 0x1000,
+dcConverterEnabled = 0x4000,
+auiDisable = 0x8000,
 };
 enum {
-Wstatistics		= 0x0006,
-CarrierLost		= 0x0000,
-SqeErrors		= 0x0001,
-MultipleColls		= 0x0002,
-SingleCollFrames	= 0x0003,
-LateCollisions		= 0x0004,
-RxOverruns		= 0x0005,
-FramesXmittedOk		= 0x0006,
-FramesRcvdOk		= 0x0007,
-FramesDeferred		= 0x0008,
-UpperFramesOk		= 0x0009,
-BytesRcvdOk		= 0x000A,
-BytesXmittedOk		= 0x000C,
+Wstate = 0x0005,
+TxStartThresh = 0x0000,
+TxAvailableThresh = 0x0002,
+RxEarlyThresh = 0x0006,
+RxFilter = 0x0008,
+InterruptEnable = 0x000A,
+IndicationEnable = 0x000C,
 };
 enum {
-Wmaster			= 0x0007,
-MasterAddress		= 0x0000,
-MasterLen		= 0x0006,
-MasterStatus		= 0x000C,
-masterAbort		= 0x0001,
-targetAbort		= 0x0002,
-targetRetry		= 0x0004,
-targetDisc		= 0x0008,
-masterDownload		= 0x1000,
-masterUpload		= 0x4000,
-masterInProgress	= 0x8000,
-masterMask		= 0xD00F,
+Wstatistics = 0x0006,
+CarrierLost = 0x0000,
+SqeErrors = 0x0001,
+MultipleColls = 0x0002,
+SingleCollFrames = 0x0003,
+LateCollisions = 0x0004,
+RxOverruns = 0x0005,
+FramesXmittedOk = 0x0006,
+FramesRcvdOk = 0x0007,
+FramesDeferred = 0x0008,
+UpperFramesOk = 0x0009,
+BytesRcvdOk = 0x000A,
+BytesXmittedOk = 0x000C,
 };
 enum {
-TIMER905		= 0x001A,
-TxStatus905		= 0x001B,
-PktStatus		= 0x0020,
-DnListPtr		= 0x0024,
-FragAddr		= 0x0028,
-FragLen			= 0x002C,
-ListOffset		= 0x002E,
-TxFreeThresh		= 0x002F,
-UpPktStatus		= 0x0030,
-FreeTIMER		= 0x0034,
-UpListPtr		= 0x0038,
-fragLast		= 0x00000001,
-dnCmplReq		= 0x00000002,
-dnStalled		= 0x00000004,
-upCompleteX		= 0x00000008,
-dnCompleteX		= 0x00000010,
-upRxEarlyEnable		= 0x00000020,
-armCountdown		= 0x00000040,
-dnInProg		= 0x00000080,
-counterSpeed		= 0x00000010,
-countdownMode		= 0x00000020,
-upPktLenMask		= 0x00001FFF,
-upStalled		= 0x00002000,
-upError			= 0x00004000,
-upPktComplete		= 0x00008000,
-upOverrun		= 0x00010000,
-upRuntFrame		= 0x00020000,
-upAlignmentError	= 0x00040000,
-upCRCError		= 0x00080000,
-upOversizedFrame	= 0x00100000,
-upDribbleBits		= 0x00800000,
-upOverflow		= 0x01000000,
-dnIndicate		= 0x80000000,
-updnLastFrag		= 0x80000000,
-Nup			= 32,
-Ndn			= 64,
+Wmaster = 0x0007,
+MasterAddress = 0x0000,
+MasterLen = 0x0006,
+MasterStatus = 0x000C,
+masterAbort = 0x0001,
+targetAbort = 0x0002,
+targetRetry = 0x0004,
+targetDisc = 0x0008,
+masterDownload = 0x1000,
+masterUpload = 0x4000,
+masterInProgress = 0x8000,
+masterMask = 0xD00F,
+};
+enum {
+TIMER905 = 0x001A,
+TxStatus905 = 0x001B,
+PktStatus = 0x0020,
+DnListPtr = 0x0024,
+FragAddr = 0x0028,
+FragLen = 0x002C,
+ListOffset = 0x002E,
+TxFreeThresh = 0x002F,
+UpPktStatus = 0x0030,
+FreeTIMER = 0x0034,
+UpListPtr = 0x0038,
+fragLast = 0x00000001,
+dnCmplReq = 0x00000002,
+dnStalled = 0x00000004,
+upCompleteX = 0x00000008,
+dnCompleteX = 0x00000010,
+upRxEarlyEnable = 0x00000020,
+armCountdown = 0x00000040,
+dnInProg = 0x00000080,
+counterSpeed = 0x00000010,
+countdownMode = 0x00000020,
+upPktLenMask = 0x00001FFF,
+upStalled = 0x00002000,
+upError = 0x00004000,
+upPktComplete = 0x00008000,
+upOverrun = 0x00010000,
+upRuntFrame = 0x00020000,
+upAlignmentError = 0x00040000,
+upCRCError = 0x00080000,
+upOversizedFrame = 0x00100000,
+upDribbleBits = 0x00800000,
+upOverflow = 0x01000000,
+dnIndicate = 0x80000000,
+updnLastFrag = 0x80000000,
+Nup = 32,
+Ndn = 64,
 };
 typedef struct Pd Pd;
 typedef struct Pd {
-ulong	np;
-ulong	control;
-ulong	addr;
-ulong	len;
-Pd*	next;
-Block*	bp;
+ulong np;
+ulong control;
+ulong addr;
+ulong len;
+Pd* next;
+Block* bp;
 } Pd;
 typedef struct Ctlr Ctlr;
 typedef struct Ctlr {
-int	port;
-Pcidev*	pcidev;
-int	irq;
-Ctlr*	next;
-int	active;
-int	did;
-Lock	wlock;
-int	attached;
-int	busmaster;
-Block*	rbp;
-Block*	txbp;
-int	txthreshold;
-int	txbusy;
-int	nup;
-void*	upbase;
-Pd*	upr;
-Pd*	uphead;
-int	ndn;
-void*	dnbase;
-Pd*	dnr;
-Pd*	dnhead;
-Pd*	dntail;
-int	dnq;
-long	interrupts;
-long	bogusinterrupts;
-long	timer[2];
-long	stats[BytesRcvdOk+3];
-int	upqmax;
-int	upqmaxhw;
-ulong	upinterrupts;
-ulong	upqueued;
-ulong	upstalls;
-int	dnqmax;
-int	dnqmaxhw;
-ulong	dninterrupts;
-ulong	dnqueued;
-int	xcvr;
-int	eepromcmd;
-int	rxstatus9;
-int	rxearly;
-int	ts;
-int	upenabled;
-int	dnenabled;
-ulong	cbfnpa;
-ulong*	cbfn;
+int port;
+Pcidev* pcidev;
+int irq;
+Ctlr* next;
+int active;
+int did;
+Lock wlock;
+int attached;
+int busmaster;
+Block* rbp;
+Block* txbp;
+int txthreshold;
+int txbusy;
+int nup;
+void* upbase;
+Pd* upr;
+Pd* uphead;
+int ndn;
+void* dnbase;
+Pd* dnr;
+Pd* dnhead;
+Pd* dntail;
+int dnq;
+long interrupts;
+long bogusinterrupts;
+long timer[2];
+long stats[BytesRcvdOk+3];
+int upqmax;
+int upqmaxhw;
+ulong upinterrupts;
+ulong upqueued;
+ulong upstalls;
+int dnqmax;
+int dnqmaxhw;
+ulong dninterrupts;
+ulong dnqueued;
+int xcvr;
+int eepromcmd;
+int rxstatus9;
+int rxearly;
+int ts;
+int upenabled;
+int dnenabled;
+ulong cbfnpa;
+ulong* cbfn;
 } Ctlr;
 static Ctlr* ctlrhead;
 static Ctlr* ctlrtail;
@@ -1096,7 +1096,7 @@ continue;
 if(!(p->mem[0].bar & 0x01))
 continue;
 port = p->mem[0].bar & ~0x01;
-if((port = ioalloc((port == 0)? -1: port,  p->mem[0].size,
+if((port = ioalloc((port == 0)? -1: port, p->mem[0].size,
 0, "tcm59Xpci")) < 0){
 print("tcm59Xpci: port 0x%uX in use\n", port);
 continue;
@@ -1241,12 +1241,12 @@ char *name;
 int avail;
 int xcvr;
 } media[] = {
-"10BaseT",	base10TAvailable,	xcvr10BaseT,
-"10Base2",	coaxAvailable,		xcvr10Base2,
-"100BaseTX",	baseTXAvailable,	xcvr100BaseTX,
-"100BaseFX",	baseFXAvailable,	xcvr100BaseFX,
-"aui",		auiAvailable,		xcvrAui,
-"mii",		miiConnector,		xcvrMii
+"10BaseT", base10TAvailable, xcvr10BaseT,
+"10Base2", coaxAvailable, xcvr10Base2,
+"100BaseTX", baseTXAvailable, xcvr100BaseTX,
+"100BaseFX", baseFXAvailable, xcvr100BaseFX,
+"aui", auiAvailable, xcvrAui,
+"mii", miiConnector, xcvrMii
 };
 static int
 autoselect(Ctlr* ctlr)

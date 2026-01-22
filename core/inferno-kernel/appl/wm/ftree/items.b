@@ -56,7 +56,7 @@ spotr := Rect(sc, sc).inset(-Spotdiam/2);
 p := (spotr.max.x + Titletaglen, 0);
 moveto(e.win, e.cvs, e.titleitem.name, e.titleitem.r, p);
 e.titleitem.r = rmoveto(e.titleitem.r, p);
-it := Item(name,  ((0, 0), (spotr.max.x + Titletaglen + titleitem.r.dx(), titleitem.r.dy())), (0, 0));
+it := Item(name, ((0, 0), (spotr.max.x + Titletaglen + titleitem.r.dx(), titleitem.r.dy())), (0, 0));
 # make line to the right of spot
 cmd(e.win, e.cvs + " create line " +
 p2s((spotr.max.x, sc.y)) + " " + p2s((spotr.max.x+Titletaglen, sc.y)) + tag + Lineopts);
@@ -206,7 +206,7 @@ fontheight(win: ref Tk->Toplevel, font: string): int
 Font: import draw;
 if (font == knownfont)
 return knownfontheight;
-if (win.image == nil)			# can happen if we run out of image memory
+if (win.image == nil) # can happen if we run out of image memory
 return -1;
 f := Font.open(win.image.display, font);
 if (f == nil)

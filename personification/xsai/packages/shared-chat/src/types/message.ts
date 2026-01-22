@@ -1,30 +1,30 @@
 import type { CommonContentPart, RefusalContentPart, TextContentPart } from './message-content'
 import type { ToolCall } from './tool-call'
 export interface AssistantMessage {
-  content?: (RefusalContentPart | TextContentPart)[] | string
-  name?: string
-  refusal?: string
-  role: 'assistant'
-  tool_calls?: ToolCall[]
+content?: (RefusalContentPart | TextContentPart)[] | string
+name?: string
+refusal?: string
+role: 'assistant'
+tool_calls?: ToolCall[]
 }
 export interface DeveloperMessage {
-  content: string | TextContentPart[]
-  name?: string
-  role: 'developer'
+content: string | TextContentPart[]
+name?: string
+role: 'developer'
 }
 export type Message = AssistantMessage | DeveloperMessage | SystemMessage | ToolMessage | UserMessage
 export interface SystemMessage {
-  content: string | TextContentPart[]
-  name?: string
-  role: 'system'
+content: string | TextContentPart[]
+name?: string
+role: 'system'
 }
 export interface ToolMessage {
-  content: CommonContentPart[] | string
-  role: 'tool'
-  tool_call_id: string
+content: CommonContentPart[] | string
+role: 'tool'
+tool_call_id: string
 }
 export interface UserMessage {
-  content: CommonContentPart[] | string
-  name?: string
-  role: 'user'
+content: CommonContentPart[] | string
+name?: string
+role: 'user'
 }

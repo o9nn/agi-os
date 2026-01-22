@@ -102,7 +102,7 @@ sizeof(value),
 }
 done:
 if (userid) sparams->utils->free(userid);
-if (realm)  sparams->utils->free(realm);
+if (realm) sparams->utils->free(realm);
 if (user_buf) sparams->utils->free(user_buf);
 return ret;
 }
@@ -162,7 +162,7 @@ break;
 }
 done:
 if (userid) sparams->utils->free(userid);
-if (realm)  sparams->utils->free(realm);
+if (realm) sparams->utils->free(realm);
 if (user_buf) sparams->utils->free(user_buf);
 return ret;
 }

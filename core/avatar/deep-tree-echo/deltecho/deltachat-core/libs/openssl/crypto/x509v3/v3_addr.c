@@ -13,14 +13,14 @@ ASN1_SIMPLE(IPAddressRange, max, ASN1_BIT_STRING)
 } ASN1_SEQUENCE_END(IPAddressRange)
 ASN1_CHOICE(IPAddressOrRange) = {
 ASN1_SIMPLE(IPAddressOrRange, u.addressPrefix, ASN1_BIT_STRING),
-ASN1_SIMPLE(IPAddressOrRange, u.addressRange,  IPAddressRange)
+ASN1_SIMPLE(IPAddressOrRange, u.addressRange, IPAddressRange)
 } ASN1_CHOICE_END(IPAddressOrRange)
 ASN1_CHOICE(IPAddressChoice) = {
-ASN1_SIMPLE(IPAddressChoice,      u.inherit,           ASN1_NULL),
+ASN1_SIMPLE(IPAddressChoice, u.inherit, ASN1_NULL),
 ASN1_SEQUENCE_OF(IPAddressChoice, u.addressesOrRanges, IPAddressOrRange)
 } ASN1_CHOICE_END(IPAddressChoice)
 ASN1_SEQUENCE(IPAddressFamily) = {
-ASN1_SIMPLE(IPAddressFamily, addressFamily,   ASN1_OCTET_STRING),
+ASN1_SIMPLE(IPAddressFamily, addressFamily, ASN1_OCTET_STRING),
 ASN1_SIMPLE(IPAddressFamily, ipAddressChoice, IPAddressChoice)
 } ASN1_SEQUENCE_END(IPAddressFamily)
 ASN1_ITEM_TEMPLATE(IPAddrBlocks) =
@@ -31,7 +31,7 @@ IMPLEMENT_ASN1_FUNCTIONS(IPAddressRange)
 IMPLEMENT_ASN1_FUNCTIONS(IPAddressOrRange)
 IMPLEMENT_ASN1_FUNCTIONS(IPAddressChoice)
 IMPLEMENT_ASN1_FUNCTIONS(IPAddressFamily)
-# define ADDR_RAW_BUF_LEN        16
+# define ADDR_RAW_BUF_LEN 16
 static int length_from_afi(const unsigned afi)
 {
 switch (afi) {
@@ -859,18 +859,18 @@ return 0;
 }
 return 1;
 }
-# define validation_err(_err_)           \
-do {                                  \
-if (ctx != NULL) {                  \
-ctx->error = _err_;               \
-ctx->error_depth = i;             \
-ctx->current_cert = x;            \
-ret = ctx->verify_cb(0, ctx);     \
-} else {                            \
-ret = 0;                          \
-}                                   \
-if (!ret)                           \
-goto done;                        \
+# define validation_err(_err_) \
+do { \
+if (ctx != NULL) { \
+ctx->error = _err_; \
+ctx->error_depth = i; \
+ctx->current_cert = x; \
+ret = ctx->verify_cb(0, ctx); \
+} else { \
+ret = 0; \
+} \
+if (!ret) \
+goto done; \
 } while (0)
 static int v3_addr_validate_path_internal(X509_STORE_CTX *ctx,
 STACK_OF(X509) *chain,

@@ -31,22 +31,22 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 template<typename _CharT>
 struct _Char_types
 {
-typedef unsigned long   int_type;
+typedef unsigned long int_type;
 #if _GLIBCXX_HOSTED
-typedef std::streampos  pos_type;
-typedef std::streamoff  off_type;
-typedef std::mbstate_t  state_type;
+typedef std::streampos pos_type;
+typedef std::streamoff off_type;
+typedef std::mbstate_t state_type;
 #endif
 };
 template<typename _CharT>
 struct char_traits
 {
-typedef _CharT                                    char_type;
-typedef typename _Char_types<_CharT>::int_type    int_type;
+typedef _CharT char_type;
+typedef typename _Char_types<_CharT>::int_type int_type;
 #if _GLIBCXX_HOSTED
-typedef typename _Char_types<_CharT>::pos_type    pos_type;
-typedef typename _Char_types<_CharT>::off_type    off_type;
-typedef typename _Char_types<_CharT>::state_type  state_type;
+typedef typename _Char_types<_CharT>::pos_type pos_type;
+typedef typename _Char_types<_CharT>::off_type off_type;
+typedef typename _Char_types<_CharT>::state_type state_type;
 #endif
 #if __cpp_lib_three_way_comparison
 using comparison_category = std::strong_ordering;
@@ -234,12 +234,12 @@ struct char_traits : public __gnu_cxx::char_traits<_CharT>
 template<>
 struct char_traits<char>
 {
-typedef char              char_type;
-typedef int               int_type;
+typedef char char_type;
+typedef int int_type;
 #if _GLIBCXX_HOSTED
-typedef streampos         pos_type;
-typedef streamoff         off_type;
-typedef mbstate_t         state_type;
+typedef streampos pos_type;
+typedef streamoff off_type;
+typedef mbstate_t state_type;
 #endif
 #if __cpp_lib_three_way_comparison
 using comparison_category = strong_ordering;
@@ -356,12 +356,12 @@ not_eof(const int_type& __c) _GLIBCXX_NOEXCEPT
 template<>
 struct char_traits<wchar_t>
 {
-typedef wchar_t           char_type;
-typedef wint_t            int_type;
+typedef wchar_t char_type;
+typedef wint_t int_type;
 #if _GLIBCXX_HOSTED
-typedef streamoff         off_type;
-typedef wstreampos        pos_type;
-typedef mbstate_t         state_type;
+typedef streamoff off_type;
+typedef wstreampos pos_type;
+typedef mbstate_t state_type;
 #endif
 #if __cpp_lib_three_way_comparison
 using comparison_category = strong_ordering;
@@ -473,12 +473,12 @@ struct char_traits<wchar_t> : public __gnu_cxx::char_traits<wchar_t>
 template<>
 struct char_traits<char8_t>
 {
-typedef char8_t           char_type;
-typedef unsigned int      int_type;
+typedef char8_t char_type;
+typedef unsigned int int_type;
 #if _GLIBCXX_HOSTED
-typedef u8streampos       pos_type;
-typedef streamoff         off_type;
-typedef mbstate_t         state_type;
+typedef u8streampos pos_type;
+typedef streamoff off_type;
+typedef mbstate_t state_type;
 #endif
 #if __cpp_lib_three_way_comparison
 using comparison_category = strong_ordering;
@@ -594,18 +594,18 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 template<>
 struct char_traits<char16_t>
 {
-typedef char16_t          char_type;
+typedef char16_t char_type;
 #ifdef __UINT_LEAST16_TYPE__
-typedef __UINT_LEAST16_TYPE__	    int_type;
+typedef __UINT_LEAST16_TYPE__ int_type;
 #elif defined _GLIBCXX_USE_C99_STDINT_TR1
-typedef uint_least16_t    int_type;
+typedef uint_least16_t int_type;
 #else
 typedef make_unsigned<char16_t>::type int_type;
 #endif
 #if _GLIBCXX_HOSTED
-typedef streamoff         off_type;
-typedef u16streampos      pos_type;
-typedef mbstate_t         state_type;
+typedef streamoff off_type;
+typedef u16streampos pos_type;
+typedef mbstate_t state_type;
 #endif
 #if __cpp_lib_three_way_comparison
 using comparison_category = strong_ordering;
@@ -708,18 +708,18 @@ to_int_type(const char_type& __c) noexcept
 template<>
 struct char_traits<char32_t>
 {
-typedef char32_t          char_type;
+typedef char32_t char_type;
 #ifdef __UINT_LEAST32_TYPE__
-typedef __UINT_LEAST32_TYPE__	    int_type;
+typedef __UINT_LEAST32_TYPE__ int_type;
 #elif defined _GLIBCXX_USE_C99_STDINT_TR1
-typedef uint_least32_t    int_type;
+typedef uint_least32_t int_type;
 #else
 typedef make_unsigned<char32_t>::type int_type;
 #endif
 #if _GLIBCXX_HOSTED
-typedef streamoff         off_type;
-typedef u32streampos      pos_type;
-typedef mbstate_t         state_type;
+typedef streamoff off_type;
+typedef u32streampos pos_type;
+typedef mbstate_t state_type;
 #endif
 #if __cpp_lib_three_way_comparison
 using comparison_category = strong_ordering;

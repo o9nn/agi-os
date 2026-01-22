@@ -13,7 +13,7 @@ Cmpchan, Option,
 Next, Down, Skip, Quit: import Fslib;
 types(): string
 {
-return "vmsx";			# XXX bad argument ordering...
+return "vmsx"; # XXX bad argument ordering...
 }
 init()
 {
@@ -34,7 +34,7 @@ run(nil: ref Draw->Context, report: ref Report,
 nil: list of Option, args: list of ref Value): ref Value
 {
 sync := chan of int;
-spawn  fswriteproc(sync, (hd args).m().i, (hd tl args).s().i, (hd tl tl args).x().i, report.start("mergewrite"));
+spawn fswriteproc(sync, (hd args).m().i, (hd tl args).s().i, (hd tl tl args).x().i, report.start("mergewrite"));
 <-sync;
 return ref Value.V(sync);
 }
@@ -66,7 +66,7 @@ report(errorc, sys->sprint("cannot create %q, mode %uo: %r", path, dir.mode|8r30
 return;
 }
 # XXX if we haven't just made it, we should chmod the old entry u+w to enable writing.
-if(sys->chdir(dir.name) == -1){		# XXX beware of names starting with '#'
+if(sys->chdir(dir.name) == -1){ # XXX beware of names starting with '#'
 dreply <-= Next;
 report(errorc, sys->sprint("cannot cd to %q: %r", path));
 fd = nil;

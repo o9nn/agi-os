@@ -6,36 +6,36 @@
 #include "ureg.h"
 #include "arm.h"
 enum {
-VFPv2	= 2,
-VFPv3	= 3,
+VFPv2 = 2,
+VFPv3 = 3,
 };
 enum {
-Fpsid =	0,
-Fpscr =	1,
-Mvfr1 =	6,
-Mvfr0 =	7,
-Fpexc =	8,
+Fpsid = 0,
+Fpscr = 1,
+Mvfr1 = 6,
+Mvfr0 = 7,
+Fpexc = 8,
 Fpinst= 9,
 Fpinst2=10,
 };
 enum {
-Fpex =		1u << 31,
-Fpenabled =	1 << 30,
-Fpdex =		1 << 29,
-Fpmbc =		Fpdex,
-Stride =	MASK(2) << 20,
-Len =		MASK(3) << 16,
-Dn=		1 << 25,
-Fz=		1 << 24,
-FPIDNRM =	1 << 15,
+Fpex = 1u << 31,
+Fpenabled = 1 << 30,
+Fpdex = 1 << 29,
+Fpmbc = Fpdex,
+Stride = MASK(2) << 20,
+Len = MASK(3) << 16,
+Dn= 1 << 25,
+Fz= 1 << 24,
+FPIDNRM = 1 << 15,
 Alltraps = FPIDNRM | FPINEX | FPUNFL | FPOVFL | FPZDIV | FPINVAL,
-FPAIDNRM =	1 << 7,
+FPAIDNRM = 1 << 7,
 Allexc = FPAIDNRM | FPAINEX | FPAUNFL | FPAOVFL | FPAZDIV | FPAINVAL,
-Allcc =		MASK(4) << 28,
+Allcc = MASK(4) << 28,
 };
 enum {
-Cpaccnosimd =	1u << 31,
-Cpaccd16 =	1 << 30,
+Cpaccnosimd = 1u << 31,
+Cpaccd16 = 1 << 30,
 };
 static char *
 subarch(int impl, uint sa)
@@ -357,8 +357,8 @@ pc = ureg->pc;
 validaddr(pc, 4, 0);
 if(!condok(ureg->psr, *(ulong*)pc >> 28))
 iprint("fpuemu: conditional instr shouldn't have got here\n");
-op  = (*(ulong *)pc >> 24) & MASK(4);
-cop = (*(ulong *)pc >>  8) & MASK(4);
+op = (*(ulong *)pc >> 24) & MASK(4);
+cop = (*(ulong *)pc >> 8) & MASK(4);
 if(m->fpon)
 fpstuck(pc);
 if (ISFPAOP(cop, op)) {

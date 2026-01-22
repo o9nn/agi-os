@@ -1,110 +1,110 @@
 include "opname.m";
-znode:	Node;
+znode: Node;
 isused = array[Oend] of
 {
-Oas =>		1,
-Odas =>		1,
-Oaddas =>	1,
-Osubas =>	1,
-Omulas =>	1,
-Odivas =>	1,
-Omodas =>	1,
-Oexpas =>	1,
-Oandas =>	1,
-Ooras =>	1,
-Oxoras =>	1,
-Olshas =>	1,
-Onothing =>	1,
-Orshas =>	1,
-Oinc =>		1,
-Odec =>		1,
-Opreinc =>	1,
-Opredec =>	1,
-Ocall =>	1,
-Oraise =>	1,
-Ospawn =>	1,
-Osnd =>		1,
-Orcv =>		1,
-* =>		0
+Oas => 1,
+Odas => 1,
+Oaddas => 1,
+Osubas => 1,
+Omulas => 1,
+Odivas => 1,
+Omodas => 1,
+Oexpas => 1,
+Oandas => 1,
+Ooras => 1,
+Oxoras => 1,
+Olshas => 1,
+Onothing => 1,
+Orshas => 1,
+Oinc => 1,
+Odec => 1,
+Opreinc => 1,
+Opredec => 1,
+Ocall => 1,
+Oraise => 1,
+Ospawn => 1,
+Osnd => 1,
+Orcv => 1,
+* => 0
 };
 sideeffect := array[Oend] of
 {
-Oas =>		1,
-Odas =>		1,
-Oaddas =>	1,
-Osubas =>	1,
-Omulas =>	1,
-Odivas =>	1,
-Omodas =>	1,
-Oexpas =>	1,
-Oandas =>	1,
-Ooras =>	1,
-Oxoras =>	1,
-Olshas =>	1,
-Orshas =>	1,
-Oinc =>		1,
-Odec =>		1,
-Opreinc =>	1,
-Opredec =>	1,
-Ocall =>	1,
-Oraise =>	1,
-Ospawn =>	1,
-Osnd =>		1,
-Orcv =>		1,
-Oadr =>		1,
-Oarray =>	1,
-Ocast =>	1,
-Ochan =>	1,
-Ocons =>	1,
-Odiv =>		1,
-Odot =>		1,
-Oind =>		1,
-Oindex =>	1,
-Oinds =>	1,
-Oindx =>	1,
-Olen =>		1,
-Oload =>	1,
-Omod =>		1,
-Oref =>		1,
-* =>		0
+Oas => 1,
+Odas => 1,
+Oaddas => 1,
+Osubas => 1,
+Omulas => 1,
+Odivas => 1,
+Omodas => 1,
+Oexpas => 1,
+Oandas => 1,
+Ooras => 1,
+Oxoras => 1,
+Olshas => 1,
+Orshas => 1,
+Oinc => 1,
+Odec => 1,
+Opreinc => 1,
+Opredec => 1,
+Ocall => 1,
+Oraise => 1,
+Ospawn => 1,
+Osnd => 1,
+Orcv => 1,
+Oadr => 1,
+Oarray => 1,
+Ocast => 1,
+Ochan => 1,
+Ocons => 1,
+Odiv => 1,
+Odot => 1,
+Oind => 1,
+Oindex => 1,
+Oinds => 1,
+Oindx => 1,
+Olen => 1,
+Oload => 1,
+Omod => 1,
+Oref => 1,
+* => 0
 };
 opcommute = array[Oend] of
 {
-Oeq =>		Oeq,
-Oneq =>		Oneq,
-Olt =>		Ogt,
-Ogt =>		Olt,
-Ogeq =>		Oleq,
-Oleq =>		Ogeq,
-Oadd =>		Oadd,
-Omul =>		Omul,
-Oxor =>		Oxor,
-Oor =>		Oor,
-Oand =>		Oand,
-* =>		0
+Oeq => Oeq,
+Oneq => Oneq,
+Olt => Ogt,
+Ogt => Olt,
+Ogeq => Oleq,
+Oleq => Ogeq,
+Oadd => Oadd,
+Omul => Omul,
+Oxor => Oxor,
+Oor => Oor,
+Oand => Oand,
+* => 0
 };
 oprelinvert = array[Oend] of
 {
-Oeq =>		Oneq,
-Oneq =>		Oeq,
-Olt =>		Ogeq,
-Ogt =>		Oleq,
-Ogeq =>		Olt,
-Oleq =>		Ogt,
-* =>		0
+Oeq => Oneq,
+Oneq => Oeq,
+Olt => Ogeq,
+Ogt => Oleq,
+Ogeq => Olt,
+Oleq => Ogt,
+* => 0
 };
 isrelop := array[Oend] of
 {
-Oeq =>		1,
-Oneq =>		1,
-Olt =>		1,
-Oleq =>		1,
-Ogt =>		1,
-Ogeq =>		1,
-Oandand =>	1,
-Ooror =>	1,
-Onot =>		1,
-* =>		0
+Oeq => 1,
+Oneq => 1,
+Olt => 1,
+Oleq => 1,
+Ogt => 1,
+Ogeq => 1,
+Oandand => 1,
+Ooror => 1,
+Onot => 1,
+* => 0
 };
 ipow(x: big, n: int): big
 {
@@ -172,7 +172,7 @@ if(d.importid != nil)
 d = d.importid;
 return d.store == Dconst && (n.ty.kind == Ttuple || n.ty.kind == Tadt);
 Odot =>
-return 0;	# istuple(n.left);
+return 0; # istuple(n.left);
 }
 return 0;
 }
@@ -444,7 +444,7 @@ Ttuple =>
 *n = *d.init;
 Tadt =>
 *n = *d.init;
-n = rewrite(n);	# was call
+n = rewrite(n); # was call
 Texception =>
 if(n.ty.cons == byte 0)
 fatal("non-const exception type in efold");

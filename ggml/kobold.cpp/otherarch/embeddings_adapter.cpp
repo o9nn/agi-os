@@ -173,9 +173,9 @@ printf("\n%s: Input too long, truncated from %d to last %d tokens.\n", __func__,
 } else {
 printf("\n%s: number of tokens in an input (%lld) exceeds embedding size limit for this model (%lld), lower token amount!\n",
 __func__, (long long int) inp.size(), (long long int) n_batch);
-output.data   = "";
+output.data = "";
 output.status = 0;
-output.count  = 0;
+output.count = 0;
 return output;
 }
 }

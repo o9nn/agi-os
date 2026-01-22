@@ -210,12 +210,12 @@ fs->fsys = MACH_PORT_NULL;
 fs->mntent = mntent;
 end = fs->storage;
 #define STORE(field) \
-if (mntent.field)				\
-{						\
-fs->mntent.field = end;			\
-end = stpcpy (end, mntent.field) + 1;	\
-}						\
-else						\
+if (mntent.field) \
+{ \
+fs->mntent.field = end; \
+end = stpcpy (end, mntent.field) + 1; \
+} \
+else \
 fs->mntent.field = 0;
 STORE (mnt_fsname);
 STORE (mnt_dir);
@@ -266,7 +266,7 @@ file_name_lookup_carefully (fs->mntent.mnt_dir, O_NOTRANS, 0);
 if (mount_point != MACH_PORT_NULL)
 {
 err = file_get_translator_cntl (mount_point, &fs->fsys);
-if (err ==  EINVAL || err == EOPNOTSUPP || err == ENXIO)
+if (err == EINVAL || err == EOPNOTSUPP || err == ENXIO)
 {
 fs->fsys = MACH_PORT_NULL;
 err = 0;
@@ -537,13 +537,13 @@ return next_pass;
 }
 static const struct argp_option options[] =
 {
-{"all",	 'a', 0,      0, "Do all filesystems in " _PATH_MNTTAB},
-{0,		 'A', 0,      OPTION_ALIAS },
-{"fstab",	 'F', "FILE", 0, "File to use instead of " _PATH_MNTTAB},
-{"fstype",	 't', "TYPE", 0, "Do only filesystems of given type(s)"},
-{"exclude-root",'R',0,      0,
+{"all", 'a', 0, 0, "Do all filesystems in " _PATH_MNTTAB},
+{0, 'A', 0, OPTION_ALIAS },
+{"fstab", 'F', "FILE", 0, "File to use instead of " _PATH_MNTTAB},
+{"fstype", 't', "TYPE", 0, "Do only filesystems of given type(s)"},
+{"exclude-root",'R',0, 0,
 "Exclude root (/) filesystem from " _PATH_MNTTAB " list"},
-{"exclude",	 'X', "PATTERN", 0, "Exclude directories matching PATTERN"},
+{"exclude", 'X', "PATTERN", 0, "Exclude directories matching PATTERN"},
 {"search-fmts",'S', "FMTS", 0,
 "`:' separated list of formats to use for finding"
 " filesystem-specific programs"},

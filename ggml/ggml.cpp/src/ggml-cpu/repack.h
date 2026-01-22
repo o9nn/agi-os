@@ -15,7 +15,7 @@ return -1;
 }
 template <int K, int N> struct block {
 ggml_half d[N];
-int8_t    qs[(QK_0<K>() * N * K) / 8];
+int8_t qs[(QK_0<K>() * N * K) / 8];
 };
 static_assert(sizeof(block<4, 4>) == 4 * sizeof(ggml_half) + QK8_0 * 2, "wrong block<4,4> size/padding");
 static_assert(sizeof(block<4, 8>) == 8 * sizeof(ggml_half) + QK8_0 * 4, "wrong block<4,8> size/padding");
@@ -47,7 +47,7 @@ int16_t bsums[QK_K / 4];
 static_assert(sizeof(block_q8_Kx4) == sizeof(float) * 4 + QK_K * 4 + (QK_K / 4) * sizeof(int16_t), "wrong q8_K block size/padding");
 struct block_iq4_nlx4 {
 ggml_half d[4];
-uint8_t   qs[QK4_NL * 2];
+uint8_t qs[QK4_NL * 2];
 };
 static_assert(sizeof(block_iq4_nlx4) == 4 * sizeof(ggml_half) + QK4_NL * 2, "wrong iq4_nlx4 block size/padding");
 #if defined(__cplusplus)

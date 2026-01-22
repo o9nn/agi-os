@@ -1,8 +1,8 @@
 #ifndef gstrap_INCLUDED
-#  define gstrap_INCLUDED
+# define gstrap_INCLUDED
 #include "gsparam.h"
 #ifndef gx_path_DEFINED
-#  define gx_path_DEFINED
+# define gx_path_DEFINED
 typedef struct gx_path_s gx_path;
 #endif
 typedef enum {

@@ -282,7 +282,7 @@ e_debug(conn->event,
 "No commands pending; stop timeout");
 }
 timeout_remove(&conn->to_commands);
-} else if (conn->to_commands != NULL)  {
+} else if (conn->to_commands != NULL) {
 e_debug(conn->event, "Reset timeout");
 timeout_reset(conn->to_commands);
 } else {
@@ -774,7 +774,7 @@ sasl_output_base64 = t_str_new(
 MAX_BASE64_ENCODED_SIZE(sasl_output_len));
 base64_encode(sasl_output, sasl_output_len, sasl_output_base64);
 const char *init_resp = "";
-const char *mech_name =  dsasl_client_mech_get_name(sasl_mech);
+const char *mech_name = dsasl_client_mech_get_name(sasl_mech);
 i_assert(conn->sasl_ir == NULL);
 if (str_len(sasl_output_base64) == 0)
 init_resp = "=";
@@ -1680,7 +1680,7 @@ smtp_client_connection_login_fail(
 conn, SMTP_CLIENT_COMMAND_ERROR_ABORTED,
 "Disconnected from server");
 smtp_client_connection_transactions_fail(
-conn,  SMTP_CLIENT_COMMAND_ERROR_ABORTED,
+conn, SMTP_CLIENT_COMMAND_ERROR_ABORTED,
 "Disconnected from server");
 smtp_client_connection_commands_fail(
 conn, SMTP_CLIENT_COMMAND_ERROR_ABORTED,
@@ -1917,7 +1917,7 @@ smtp_client_connection_login_fail(
 conn, SMTP_CLIENT_COMMAND_ERROR_ABORTED,
 "Connection destroy");
 smtp_client_connection_transactions_fail(
-conn,  SMTP_CLIENT_COMMAND_ERROR_ABORTED,
+conn, SMTP_CLIENT_COMMAND_ERROR_ABORTED,
 "Connection destroy");
 smtp_client_connection_commands_fail(
 conn, SMTP_CLIENT_COMMAND_ERROR_ABORTED,

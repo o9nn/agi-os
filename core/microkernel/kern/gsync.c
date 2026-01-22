@@ -40,7 +40,7 @@ struct vm_args
 vm_object_t obj;
 vm_offset_t off;
 };
-#define GSYNC_NBUCKETS   512
+#define GSYNC_NBUCKETS 512
 static struct gsync_hbucket gsync_buckets[GSYNC_NBUCKETS];
 void gsync_setup (void)
 {
@@ -64,7 +64,7 @@ const union gsync_key *rp)
 return (lp->any.u < rp->any.u ||
 (lp->any.u == rp->any.u && lp->any.v < rp->any.v));
 }
-#define MIX2_LL(x, y)   ((((x) << 5) | ((x) >> 27)) ^ (y))
+#define MIX2_LL(x, y) ((((x) << 5) | ((x) >> 27)) ^ (y))
 static inline unsigned int
 gsync_key_hash (const union gsync_key *keyp)
 {

@@ -53,18 +53,18 @@ pcf->params.is_identity =\
 }\
 END
 #ifdef CIE_CACHE_INTERPOLATE
-#  ifdef CIE_INTERPOLATE_THRESHOLD
-#    define CACHE_THRESHOLD CIE_INTERPOLATE_THRESHOLD
-#  else
-#    define CACHE_THRESHOLD 0
-#  endif
+# ifdef CIE_INTERPOLATE_THRESHOLD
+# define CACHE_THRESHOLD CIE_INTERPOLATE_THRESHOLD
+# else
+# define CACHE_THRESHOLD 0
+# endif
 #else
-#  define CACHE_THRESHOLD 1.0e6
+# define CACHE_THRESHOLD 1.0e6
 #endif
 #ifdef CIE_RENDER_TABLE_INTERPOLATE
-#  define RENDER_TABLE_THRESHOLD 0
+# define RENDER_TABLE_THRESHOLD 0
 #else
-#  define RENDER_TABLE_THRESHOLD 1.0e6
+# define RENDER_TABLE_THRESHOLD 1.0e6
 #endif
 private bool
 cache_is_linear(cie_linear_params_t *params, const cie_cache_floats *pcf)
@@ -128,8 +128,8 @@ mat->cv.u, mat->cv.v, mat->cv.w,
 mat->cw.u, mat->cw.v, mat->cw.w);
 }
 #else
-#  define if_debug_vector3(str, vec) DO_NOTHING
-#  define if_debug_matrix3(str, mat) DO_NOTHING
+# define if_debug_vector3(str, vec) DO_NOTHING
+# define if_debug_matrix3(str, mat) DO_NOTHING
 #endif
 private float
 a_identity(floatp in, const gs_cie_a * pcie)
@@ -748,7 +748,7 @@ pcache->fixeds.fracs.params.is_identity = false;
 int i;
 int n = pcrd->RenderTable.lookup.dims[c];
 #ifdef CIE_RENDER_TABLE_INTERPOLATE
-#  define SCALED_INDEX(f, n, itemp)\
+# define SCALED_INDEX(f, n, itemp)\
 RESTRICTED_INDEX(f * (1 << _cie_interpolate_bits),\
 (n) << _cie_interpolate_bits, itemp)
 #else
@@ -756,7 +756,7 @@ int m = pcrd->RenderTable.lookup.m;
 int k =
 (c == 0 ? 1 : c == 1 ?
 m * pcrd->RenderTable.lookup.dims[2] : m);
-#  define SCALED_INDEX(f, n, itemp)\
+# define SCALED_INDEX(f, n, itemp)\
 (RESTRICTED_INDEX(f, n, itemp) * k)
 #endif
 const gs_range *prange = pcrd->RangeABC.ranges + c;

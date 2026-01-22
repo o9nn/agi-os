@@ -8,13 +8,13 @@ static char *copyright = "Copyright (c) 1989 Mark H. Colburn.\nAll rights reserv
 int mkdir(char *dpath, int dmode)
 #else
 int mkdir(dpath, dmode)
-char           *dpath;
-int             dmode;
+char *dpath;
+int dmode;
 #endif
 {
-int             cpid, status;
-Stat            statbuf;
-extern int      errno;
+int cpid, status;
+Stat statbuf;
+extern int errno;
 if (STAT(dpath, &statbuf) == 0) {
 errno = EEXIST;
 return (-1);
@@ -43,12 +43,12 @@ return (0);
 int rmdir(char *dpath)
 #else
 int rmdir(dpath)
-char           *dpath;
+char *dpath;
 #endif
 {
-int             cpid, status;
-Stat            statbuf;
-extern int      errno;
+int cpid, status;
+Stat statbuf;
+extern int errno;
 if (STAT(dpath, &statbuf) == -1) {
 return (-1);
 }

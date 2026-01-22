@@ -1,5 +1,5 @@
 #ifndef dwtext_INCLUDED
-#  define dwtext_INCLUDED
+# define dwtext_INCLUDED
 #ifdef _WINDOWS
 #define _Windows
 #endif

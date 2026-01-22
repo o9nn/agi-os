@@ -1,9 +1,9 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
 #include "io.h"
 enum{
 Qdir,
@@ -11,8 +11,8 @@ Qled,
 };
 static
 Dirtab cerftab[]={
-".",			{Qdir, 0, QTDIR},	0,	0555,
-"cerfled",		{Qled, 0},	0,	0660,
+".", {Qdir, 0, QTDIR}, 0, 0555,
+"cerfled", {Qled, 0}, 0, 0660,
 };
 static void
 cerfinit(void)

@@ -1,5 +1,5 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #include "mailmime_types_helper.h"
 #include "clist.h"
@@ -8,11 +8,11 @@
 #include <time.h>
 #include <sys/types.h>
 #ifdef HAVE_UNISTD_H
-#	include <unistd.h>
+# include <unistd.h>
 #endif
 #include <stdlib.h>
 #ifdef WIN32
-#	include "win_etpan.h"
+# include "win_etpan.h"
 #endif
 #define MIME_VERSION (1 << 16)
 int mailmime_transfer_encoding_get(struct mailmime_fields * fields)
@@ -753,7 +753,7 @@ int r;
 size_t cur_token;
 struct mailmime_content * content;
 cur_token = 0;
-r =  mailmime_content_parse(str, strlen(str), &cur_token, &content);
+r = mailmime_content_parse(str, strlen(str), &cur_token, &content);
 if (r != MAILIMF_NO_ERROR)
 return NULL;
 return content;

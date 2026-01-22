@@ -11,7 +11,7 @@
 #include "scsi.h"
 #include "hosts.h"
 #ifndef TRUE
-#define TRUE  1
+#define TRUE 1
 #define FALSE 0
 #endif
 extern int scsi_proc_info(char *, char **, off_t, int, int, int);
@@ -96,7 +96,7 @@ return(-1);
 }
 parseHandle *parseInit(char *buf, char *cmdList, int cmdNum)
 {
-char        *ptr;
+char *ptr;
 parseHandle *handle;
 if (!buf || !cmdList)
 return(NULL);
@@ -106,9 +106,9 @@ if ((handle->cmdPos = (char**) kmalloc(sizeof(int) * cmdNum, GFP_KERNEL)) == 0) 
 kfree(handle);
 return(NULL);
 }
-handle->buf     = handle->bufPos = buf;
+handle->buf = handle->bufPos = buf;
 handle->cmdList = cmdList;
-handle->cmdNum  = cmdNum;
+handle->cmdNum = cmdNum;
 handle->cmdPos[cmdNum = 0] = cmdList;
 for (ptr = cmdList; *ptr; ptr++) {
 if(*ptr == ' ') {
@@ -120,7 +120,7 @@ return(handle);
 }
 int parseOpt(parseHandle *handle, char **param)
 {
-int  cmdIndex = 0,
+int cmdIndex = 0,
 cmdLen = 0;
 char *startPos;
 if (!handle)
@@ -164,7 +164,7 @@ y += sprintf(buffer + len + y," ");
 y += sprintf(buffer + len + y, " Model: ");
 for (x = 0; x < 16; x++) {
 if (scd->model[x] >= 0x20)
-y +=  sprintf(buffer + len + y, "%c", scd->model[x]);
+y += sprintf(buffer + len + y, "%c", scd->model[x]);
 else
 y += sprintf(buffer + len + y, " ");
 }

@@ -168,11 +168,11 @@ char **cmd_argv;
 int verbose;
 int numeric;
 int subsystem;
-#define OPT_TARGET_TASK		-1
-#define OPT_TARGET_THREAD	-2
-#define OPT_TARGET_PROC		-3
-#define OPT_TARGET_AUTH		-4
-#define OPT_TARGET_EXTRACT	-5
+#define OPT_TARGET_TASK -1
+#define OPT_TARGET_THREAD -2
+#define OPT_TARGET_PROC -3
+#define OPT_TARGET_AUTH -4
+#define OPT_TARGET_EXTRACT -5
 static const struct argp_option options[] =
 {
 {NULL, 0, NULL, OPTION_DOC, "Target selection", 1},
@@ -204,9 +204,9 @@ break;
 case 's':
 subsystem = 1;
 break;
-#define SELECT_TARGET(target)					\
-if (setup_target)						\
-argp_error (state, "Multiple targets specified.");	\
+#define SELECT_TARGET(target) \
+if (setup_target) \
+argp_error (state, "Multiple targets specified."); \
 setup_target = target;
 case OPT_TARGET_TASK:
 SELECT_TARGET (setup_task_target);

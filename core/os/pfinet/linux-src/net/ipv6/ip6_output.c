@@ -15,7 +15,7 @@
 #include <net/addrconf.h>
 #include <net/rawv6.h>
 #include <net/icmp.h>
-static u32	ipv6_fragmentation_id = 1;
+static u32 ipv6_fragmentation_id = 1;
 int ip6_output(struct sk_buff *skb)
 {
 struct dst_entry *dst = skb->dst;
@@ -61,7 +61,7 @@ struct ipv6_pinfo * np = sk ? &sk->net_pinfo.af_inet6 : NULL;
 struct in6_addr *first_hop = fl->nl_u.ip6_u.daddr;
 struct dst_entry *dst = skb->dst;
 struct ipv6hdr *hdr;
-u8  proto = fl->proto;
+u8 proto = fl->proto;
 int seg_len = skb->len;
 int hlimit;
 if (opt) {
@@ -145,7 +145,7 @@ static __inline__ u8 * ipv6_build_fraghdr(struct sk_buff *skb, u8* prev_hdr, uns
 {
 struct frag_hdr *fhdr;
 fhdr = (struct frag_hdr *) skb_put(skb, sizeof(struct frag_hdr));
-fhdr->nexthdr  = *prev_hdr;
+fhdr->nexthdr = *prev_hdr;
 *prev_hdr = NEXTHDR_FRAGMENT;
 prev_hdr = &fhdr->nexthdr;
 fhdr->reserved = 0;

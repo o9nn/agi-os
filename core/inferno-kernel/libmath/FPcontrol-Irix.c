@@ -3,7 +3,7 @@
 #include <sys/fpu.h>
 typedef unsigned int ulong;
 #include "mathi.h"
-extern	void trapFPE(unsigned exception[5], int value[2]);
+extern void trapFPE(unsigned exception[5], int value[2]);
 void
 FPinit(void)
 {
@@ -54,10 +54,10 @@ union fpc_csr csr;
 double junk = fabs(1.);
 csr.fc_word = get_fpc_csr();
 switch(csr.fc_struct.rounding_mode){
-case ROUND_TO_NEAREST:		fcr = RND_NR; break;
-case ROUND_TO_MINUS_INFINITY:	fcr = RND_NINF; break;
-case ROUND_TO_PLUS_INFINITY:	fcr = RND_PINF; break;
-case ROUND_TO_ZERO:		fcr = RND_Z; break;
+case ROUND_TO_NEAREST: fcr = RND_NR; break;
+case ROUND_TO_MINUS_INFINITY: fcr = RND_NINF; break;
+case ROUND_TO_PLUS_INFINITY: fcr = RND_PINF; break;
+case ROUND_TO_ZERO: fcr = RND_Z; break;
 }
 if(csr.fc_struct.en_inexact) fcr |= INEX;
 if(csr.fc_struct.en_overflow) fcr |= OVFL;
@@ -79,10 +79,10 @@ csr.fc_struct.en_underflow = (fcr&UNFL)?1:0;
 csr.fc_struct.en_divide0 = (fcr&ZDIV)?1:0;
 csr.fc_struct.en_invalid = (fcr&INVAL)?1:0;
 switch(fcr&RND_MASK){
-case RND_NR:	csr.fc_struct.rounding_mode = ROUND_TO_NEAREST; break;
-case RND_NINF:	csr.fc_struct.rounding_mode = ROUND_TO_MINUS_INFINITY; break;
-case RND_PINF:	csr.fc_struct.rounding_mode = ROUND_TO_PLUS_INFINITY; break;
-case RND_Z:	csr.fc_struct.rounding_mode = ROUND_TO_ZERO; break;
+case RND_NR: csr.fc_struct.rounding_mode = ROUND_TO_NEAREST; break;
+case RND_NINF: csr.fc_struct.rounding_mode = ROUND_TO_MINUS_INFINITY; break;
+case RND_PINF: csr.fc_struct.rounding_mode = ROUND_TO_PLUS_INFINITY; break;
+case RND_Z: csr.fc_struct.rounding_mode = ROUND_TO_ZERO; break;
 }
 set_fpc_csr(csr.fc_word);
 return(old&mask);

@@ -1,5 +1,5 @@
 #ifndef dwdll_INCLUDED
-#  define dwdll_INCLUDED
+# define dwdll_INCLUDED
 #ifndef __PROTOTYPES__
 #define __PROTOTYPES__
 #endif

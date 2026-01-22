@@ -96,7 +96,7 @@ Continue:
 b++;
 p += nr;
 }
-if(p1>p0 &&  b>f->box && b<f->box+f->nbox && b[-1].nrune>0 && !trim){
+if(p1>p0 && b>f->box && b<f->box+f->nbox && b[-1].nrune>0 && !trim){
 qt = pt;
 _frcklinewrap(f, &pt, b);
 if(pt.y > qt.y)

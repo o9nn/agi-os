@@ -117,7 +117,7 @@ const gx_device_color *pdevc2)
 {
 return pdevc1->type->equal(pdevc1, pdevc2);
 }
-private  const gx_device_color_type_t * dc_color_type_table[] = {
+private const gx_device_color_type_t * dc_color_type_table[] = {
 gx_dc_type_none,
 gx_dc_type_null,
 gx_dc_type_pure,
@@ -128,8 +128,8 @@ gx_dc_type_wts
 int
 gx_get_dc_type_index(const gx_device_color * pdevc)
 {
-const gx_device_color_type_t *  type = pdevc->type;
-int                             num_types, i;
+const gx_device_color_type_t * type = pdevc->type;
+int num_types, i;
 num_types = sizeof(dc_color_type_table) / sizeof(dc_color_type_table[0]);
 for (i = 0; i < num_types && type != dc_color_type_table[i]; i++)
 ;
@@ -138,8 +138,8 @@ return i < num_types ? i : gs_error_unknownerror;
 const gx_device_color_type_t *
 gx_get_dc_type_from_index(int i)
 {
-if ( i >= 0                                                          &&
-i < sizeof(dc_color_type_table) / sizeof(dc_color_type_table[0])  )
+if ( i >= 0 &&
+i < sizeof(dc_color_type_table) / sizeof(dc_color_type_table[0]) )
 return dc_color_type_table[i];
 else
 return 0;
@@ -202,24 +202,24 @@ return false;
 }
 private int
 gx_dc_no_write(
-const gx_device_color *         pdevc,
-const gx_device_color_saved *   psdc,
-const gx_device *               dev,
-byte *                          data,
-uint *                          psize )
+const gx_device_color * pdevc,
+const gx_device_color_saved * psdc,
+const gx_device * dev,
+byte * data,
+uint * psize )
 {
 *psize = 0;
 return psdc != 0 && psdc->type == pdevc->type ? 1 : 0;
 }
 private int
 gx_dc_no_read(
-gx_device_color *       pdevc,
+gx_device_color * pdevc,
 const gs_imager_state * pis,
 const gx_device_color * prior_devc,
-const gx_device *       dev,
-const byte *            pdata,
-uint                    size,
-gs_memory_t *           mem )
+const gx_device * dev,
+const byte * pdata,
+uint size,
+gs_memory_t * mem )
 {
 pdevc->type = gx_dc_type_none;
 return 0;
@@ -227,8 +227,8 @@ return 0;
 private int
 gx_dc_no_get_nonzero_comps(
 const gx_device_color * pdevc_ignored,
-const gx_device *       dev_ignored,
-gx_color_index *        pcomp_bits_ignored )
+const gx_device * dev_ignored,
+gx_color_index * pcomp_bits_ignored )
 {
 return 0;
 }
@@ -261,13 +261,13 @@ return pdevc2->type == pdevc1->type;
 }
 private int
 gx_dc_null_read(
-gx_device_color *       pdevc,
+gx_device_color * pdevc,
 const gs_imager_state * pis,
 const gx_device_color * prior_devc,
-const gx_device *       dev,
-const byte *            pdata,
-uint                    size,
-gs_memory_t *           mem )
+const gx_device * dev,
+const byte * pdata,
+uint size,
+gs_memory_t * mem )
 {
 pdevc->type = gx_dc_type_null;
 return 0;
@@ -301,7 +301,7 @@ set_rop_no_source(source, no_source, dev);
 return (*dev_proc(dev, strip_copy_rop))
 (dev, source->sdata, source->sourcex, source->sraster,
 source->id, (source->use_scolors ? source->scolors : NULL),
-NULL  , colors, x, y, w, h, 0, 0, lop);
+NULL , colors, x, y, w, h, 0, 0, lop);
 }
 }
 private int
@@ -337,15 +337,15 @@ gx_dc_pure_color(pdevc1) == gx_dc_pure_color(pdevc2);
 }
 private int
 gx_dc_pure_write(
-const gx_device_color *         pdevc,
-const gx_device_color_saved *   psdc,
-const gx_device *               dev,
-byte *                          pdata,
-uint *                          psize )
+const gx_device_color * pdevc,
+const gx_device_color_saved * psdc,
+const gx_device * dev,
+byte * pdata,
+uint * psize )
 {
-if ( psdc != 0                              &&
-psdc->type == pdevc->type              &&
-psdc->colors.pure == pdevc->colors.pure  ) {
+if ( psdc != 0 &&
+psdc->type == pdevc->type &&
+psdc->colors.pure == pdevc->colors.pure ) {
 *psize = 0;
 return 1;
 } else
@@ -353,13 +353,13 @@ return gx_dc_write_color(pdevc->colors.pure, dev, pdata, psize);
 }
 private int
 gx_dc_pure_read(
-gx_device_color *       pdevc,
+gx_device_color * pdevc,
 const gs_imager_state * pis,
 const gx_device_color * prior_devc,
-const gx_device *       dev,
-const byte *            pdata,
-uint                    size,
-gs_memory_t *           mem )
+const gx_device * dev,
+const byte * pdata,
+uint size,
+gs_memory_t * mem )
 {
 pdevc->type = gx_dc_type_pure;
 return gx_dc_read_color(&pdevc->colors.pure, dev, pdata, size);
@@ -367,17 +367,17 @@ return gx_dc_read_color(&pdevc->colors.pure, dev, pdata, size);
 int
 gx_dc_pure_get_nonzero_comps(
 const gx_device_color * pdevc,
-const gx_device *       dev,
-gx_color_index *        pcomp_bits )
+const gx_device * dev,
+gx_color_index * pcomp_bits )
 {
-int                     code;
-gx_color_value          cvals[GX_DEVICE_COLOR_MAX_COMPONENTS];
+int code;
+gx_color_value cvals[GX_DEVICE_COLOR_MAX_COMPONENTS];
 code = dev_proc(dev, decode_color)( (gx_device *)dev,
 pdevc->colors.pure,
 cvals );
 if (code >= 0) {
-int             i, ncomps = dev->color_info.num_components;
-gx_color_index  mask = 0x1, comp_bits = 0;
+int i, ncomps = dev->color_info.num_components;
+gx_color_index mask = 0x1, comp_bits = 0;
 for (i = 0; i < ncomps; i++, mask <<= 1) {
 if (cvals[i] != 0)
 comp_bits |= mask;
@@ -466,13 +466,13 @@ return 0;
 }
 int
 gx_dc_write_color(
-gx_color_index      color,
-const gx_device *   dev,
-byte *              pdata,
-uint *              psize )
+gx_color_index color,
+const gx_device * dev,
+byte * pdata,
+uint * psize )
 {
-int                 depth = dev->color_info.depth;
-int                 num_bytes = (depth + 8) >> 3;
+int depth = dev->color_info.depth;
+int num_bytes = (depth + 8) >> 3;
 if (color == gx_no_color_index)
 num_bytes = 1;
 if (*psize < num_bytes) {
@@ -495,14 +495,14 @@ return 0;
 }
 int
 gx_dc_read_color(
-gx_color_index *    pcolor,
-const gx_device *   dev,
-const byte *        pdata,
-int                 size )
+gx_color_index * pcolor,
+const gx_device * dev,
+const byte * pdata,
+int size )
 {
-gx_color_index      color = 0;
-int                 depth = dev->color_info.depth;
-int                 i, num_bytes = (depth + 8) >> 3;
+gx_color_index color = 0;
+int depth = dev->color_info.depth;
+int i, num_bytes = (depth + 8) >> 3;
 if (size < 1 || (pdata[0] != 0xff && size < num_bytes))
 return gs_error_rangecheck;
 if (pdata[0] == 0xff) {

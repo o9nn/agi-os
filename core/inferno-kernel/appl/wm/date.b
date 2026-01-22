@@ -5,24 +5,24 @@ include "draw.m";
 draw: Draw;
 include "tk.m";
 tk: Tk;
-include	"tkclient.m";
+include "tkclient.m";
 tkclient: Tkclient;
 include "daytime.m";
 daytime: Daytime;
 WmDate: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 tpid: int;
 init(ctxt: ref Draw->Context, nil: list of string)
 {
-sys  = load Sys  Sys->PATH;
+sys = load Sys Sys->PATH;
 if (ctxt == nil) {
 sys->fprint(sys->fildes(2), "date: no window context\n");
 raise "fail:bad context";
 }
 draw = load Draw Draw->PATH;
-tk   = load Tk   Tk->PATH;
+tk = load Tk Tk->PATH;
 tkclient= load Tkclient Tkclient->PATH;
 daytime = load Daytime Daytime->PATH;
 sys->pctl(Sys->NEWPGRP, nil);

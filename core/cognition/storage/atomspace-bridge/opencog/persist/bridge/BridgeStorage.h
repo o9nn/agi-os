@@ -41,7 +41,7 @@ void open(void);
 void close(void);
 bool connected(void);
 void create(void) {}
-void destroy(void) { kill_data();  }
+void destroy(void) { kill_data(); }
 void erase(void) { kill_data(); }
 void kill_data(void) {}
 void getAtom(const Handle&);

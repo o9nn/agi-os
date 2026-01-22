@@ -2,19 +2,19 @@
 enum{
 MAXWREN = 7,
 };
-#define WMAGIC	"kfs wren device\n"
-typedef struct Wren	Wren;
+#define WMAGIC "kfs wren device\n"
+typedef struct Wren Wren;
 struct Wren{
 QLock;
-Device	dev;
-uvlong	size;
-int	fd;
+Device dev;
+uvlong size;
+int fd;
 };
-static Wren	*wrens;
-static int	maxwren;
-char		*wrenfile;
-int		nwren;
-int		badmagic;
+static Wren *wrens;
+static int maxwren;
+char *wrenfile;
+int nwren;
+int badmagic;
 static Wren *
 wren(Device dev)
 {

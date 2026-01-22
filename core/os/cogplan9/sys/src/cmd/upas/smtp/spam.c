@@ -13,32 +13,32 @@ STRING,
 };
 typedef struct Keyword Keyword;
 struct Keyword {
-char	*name;
-int	code;
+char *name;
+int code;
 };
 static Keyword options[] = {
-"norelay",		NORELAY,
-"verifysenderdom",	DNSVERIFY,
-"saveblockedmsg",	SAVEBLOCK,
-"defaultdomain",	DOMNAME,
-"ournets",		OURNETS,
-"ourdomains",		OURDOMS,
-0,			NONE,
+"norelay", NORELAY,
+"verifysenderdom", DNSVERIFY,
+"saveblockedmsg", SAVEBLOCK,
+"defaultdomain", DOMNAME,
+"ournets", OURNETS,
+"ourdomains", OURDOMS,
+0, NONE,
 };
 static Keyword actions[] = {
-"allow",		ACCEPT,
-"block",		BLOCKED,
-"deny",			DENIED,
-"dial",			DIALUP,
-"delay",		DELAY,
-0,			NONE,
+"allow", ACCEPT,
+"block", BLOCKED,
+"deny", DENIED,
+"dial", DIALUP,
+"delay", DELAY,
+0, NONE,
 };
-static	int	hisaction;
-static	List	ourdoms;
-static	List 	badguys;
-static	ulong	v4peerip;
-static	char*	getline(Biobuf*);
-static	int	cidrcheck(char*);
+static int hisaction;
+static List ourdoms;
+static List badguys;
+static ulong v4peerip;
+static char* getline(Biobuf*);
+static int cidrcheck(char*);
 static int
 findkey(char *val, Keyword *p)
 {

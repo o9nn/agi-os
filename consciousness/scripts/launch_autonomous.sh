@@ -7,11 +7,11 @@ echo "🌳 Deep Tree Echo Launcher"
 echo "=========================="
 echo ""
 if tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
-    echo "⚠️  Session '$SESSION_NAME' already exists"
-    echo "Options:"
-    echo "  1. Attach to existing session: tmux attach -t $SESSION_NAME"
-    echo "  2. Kill existing session: tmux kill-session -t $SESSION_NAME"
-    exit 1
+echo "⚠️  Session '$SESSION_NAME' already exists"
+echo "Options:"
+echo "  1. Attach to existing session: tmux attach -t $SESSION_NAME"
+echo "  2. Kill existing session: tmux kill-session -t $SESSION_NAME"
+exit 1
 fi
 echo "Creating tmux session: $SESSION_NAME"
 tmux new-session -d -s "$SESSION_NAME" -c "$PROJECT_ROOT"
@@ -53,5 +53,5 @@ echo "  2: Monitor"
 echo "  3: Logs"
 echo ""
 if [ "$1" = "--attach" ]; then
-    tmux attach -t "$SESSION_NAME"
+tmux attach -t "$SESSION_NAME"
 fi

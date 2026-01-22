@@ -9,10 +9,10 @@
 #include "icc.h"
 #include "gxdcconv.h"
 #ifndef X_DPI
-#  define X_DPI 72
+# define X_DPI 72
 #endif
 #ifndef Y_DPI
-#  define Y_DPI 72
+# define Y_DPI 72
 #endif
 private dev_proc_get_params(xcf_get_params);
 private dev_proc_put_params(xcf_put_params);
@@ -57,59 +57,59 @@ char profile_out_fn[256];
 icmLuBase *lu_out;
 } xcf_device;
 #define device_procs(get_color_mapping_procs)\
-{	gdev_prn_open,\
+{ gdev_prn_open,\
 gx_default_get_initial_matrix,\
-NULL,				\
-gdev_prn_output_page,		\
-gdev_prn_close,			\
-NULL,				\
-xcf_map_color_rgb,		\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-xcf_get_params,		\
-xcf_put_params,		\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-gx_page_device_get_page_device,	\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-get_color_mapping_procs,	\
-xcf_get_color_comp_index,	\
-xcf_encode_color,		\
-xcf_decode_color		\
+NULL, \
+gdev_prn_output_page, \
+gdev_prn_close, \
+NULL, \
+xcf_map_color_rgb, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+xcf_get_params, \
+xcf_put_params, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+gx_page_device_get_page_device, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+get_color_mapping_procs, \
+xcf_get_color_comp_index, \
+xcf_encode_color, \
+xcf_decode_color \
 }
 private const fixed_colorant_names_list DeviceGrayComponents = {
 "Gray",
@@ -533,15 +533,15 @@ switch (code = pread(plist, (param_name = pname), &(pa))) {\
 case 0:\
 if ((pa).size != psize) {\
 ecode = gs_note_error(gs_error_rangecheck);\
-(pa).data = 0;	\
+(pa).data = 0; \
 } else
 #define END_ARRAY_PARAM(pa, e)\
 goto e;\
 default:\
 ecode = code;\
-e:	param_signal_error(plist, param_name, ecode);\
+e: param_signal_error(plist, param_name, ecode);\
 case 1:\
-(pa).data = 0;		\
+(pa).data = 0; \
 }\
 END
 private int
@@ -715,11 +715,11 @@ color_component_number++;
 return -1;
 }
 #if arch_is_big_endian
-#  define assign_u16(a,v) a = (v)
-#  define assign_u32(a,v) a = (v)
+# define assign_u16(a,v) a = (v)
+# define assign_u32(a,v) a = (v)
 #else
-#  define assign_u16(a,v) a = ((v) >> 8) + ((v) << 8)
-#  define assign_u32(a,v) a = (((v) >> 24) & 0xff) + (((v) >> 8) & 0xff00) + (((v) & 0xff00) << 8) + (((v) & 0xff) << 24)
+# define assign_u16(a,v) a = ((v) >> 8) + ((v) << 8)
+# define assign_u32(a,v) a = (((v) >> 24) & 0xff) + (((v) >> 8) & 0xff00) + (((v) & 0xff00) << 8) + (((v) & 0xff) << 24)
 #endif
 typedef struct {
 FILE *f;

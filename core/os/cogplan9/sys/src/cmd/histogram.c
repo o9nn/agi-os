@@ -6,11 +6,11 @@
 #include <mouse.h>
 #include <keyboard.h>
 enum {
-STACK 	= 8*1024,
-Dot	= 2,
-Lx	= 4,
-Ly	= 4,
-Bw	= 2,
+STACK = 8*1024,
+Dot = 2,
+Lx = 4,
+Ly = 4,
+Bw = 2,
 };
 Image *neutral;
 Image *light;
@@ -24,19 +24,19 @@ double vmax = 100, scale = 1.0;
 uint nval;
 int dontdie = 0, col = 1;
 int colors[][3] = {
-{ 0xFFAAAAFF,	0xFFAAAAFF,	0xBB5D5DFF },
+{ 0xFFAAAAFF, 0xFFAAAAFF, 0xBB5D5DFF },
 { DPalebluegreen, DPalegreygreen, DPurpleblue },
-{ DPaleyellow,	DDarkyellow,	DYellowgreen },
-{ DPalegreen,	DMedgreen,	DDarkgreen },
-{ 0x00AAFFFF,	0x00AAFFFF,	0x0088CCFF },
-{ 0xEEEEEEFF,	0xCCCCCCFF,	0x888888F },
+{ DPaleyellow, DDarkyellow, DYellowgreen },
+{ DPalegreen, DMedgreen, DDarkgreen },
+{ 0x00AAFFFF, 0x00AAFFFF, 0x0088CCFF },
+{ 0xEEEEEEFF, 0xCCCCCCFF, 0x888888F },
 };
 void
 initcolor(int i)
 {
 neutral = allocimagemix(display, colors[i][0], DWhite);
 light = allocimage(display, Rect(0,0,1,1), CMAP8, 1, colors[i][1]);
-dark  = allocimage(display, Rect(0,0,1,1), CMAP8, 1, colors[i][2]);
+dark = allocimage(display, Rect(0,0,1,1), CMAP8, 1, colors[i][2]);
 txtcolor = display->black;
 }
 void*
@@ -167,11 +167,11 @@ Mouse mm;
 Mousectl *mc;
 Rune km;
 Alt a[] = {
-{nil,	&dm,	CHANRCV},
-{nil,	&mm,	CHANRCV},
-{nil,	&km,	CHANRCV},
-{nil,	&rm,	CHANRCV},
-{nil,	nil,	CHANEND},
+{nil, &dm, CHANRCV},
+{nil, &mm, CHANRCV},
+{nil, &km, CHANRCV},
+{nil, &rm, CHANRCV},
+{nil, nil, CHANEND},
 };
 static char *mitems[] = {
 "exit",

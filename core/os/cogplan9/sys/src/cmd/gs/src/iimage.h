@@ -1,5 +1,5 @@
 #ifndef iimage_INCLUDED
-#  define iimage_INCLUDED
+# define iimage_INCLUDED
 typedef struct image_params_s {
 bool MultipleDataSources;
 ref DataSource[gs_image_max_components];

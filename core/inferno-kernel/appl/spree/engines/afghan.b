@@ -17,16 +17,16 @@ Stackspec: import Cardlib;
 include "../gather.m";
 CLICK, REDEAL: con iota;
 clique: ref Clique;
-rows: array of ref Object;		# [10]
-central: array of ref Object;	# [4]
+rows: array of ref Object; # [10]
+central: array of ref Object; # [4]
 chokey, deck: ref Object;
 direction := 0;
 nredeals := 0;
 Rowpilespec := Stackspec(
-"display",		# style
-10,			# maxcards
-0,			# conceal
-nil			# title
+"display", # style
+10, # maxcards
+0, # conceal
+nil # title
 );
 Centralpilespec := Stackspec(
 "pile",

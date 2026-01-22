@@ -1,12 +1,12 @@
 #ifndef gsmatrix_INCLUDED
-#  define gsmatrix_INCLUDED
+# define gsmatrix_INCLUDED
 #define _matrix_body\
 float xx, xy, yx, yy, tx, ty
 struct gs_matrix_s {
 _matrix_body;
 };
 #ifndef gs_matrix_DEFINED
-#  define gs_matrix_DEFINED
+# define gs_matrix_DEFINED
 typedef struct gs_matrix_s gs_matrix;
 #endif
 #define constant_matrix_body(xx, xy, yx, yy, tx, ty)\
@@ -34,7 +34,7 @@ gs_bbox_transform_only(const gs_rect *, const gs_matrix *, gs_point[4]),
 gs_bbox_transform(const gs_rect *, const gs_matrix *, gs_rect *),
 gs_bbox_transform_inverse(const gs_rect *, const gs_matrix *, gs_rect *);
 #ifndef stream_DEFINED
-#  define stream_DEFINED
+# define stream_DEFINED
 typedef struct stream_s stream;
 #endif
 int sget_matrix(stream *, gs_matrix *);

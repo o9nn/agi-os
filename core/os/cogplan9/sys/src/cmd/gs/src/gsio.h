@@ -1,5 +1,5 @@
 #ifndef gsio_INCLUDED
-#  define gsio_INCLUDED
+# define gsio_INCLUDED
 #undef stdin
 #define stdin stdin_not_available
 #undef stdout

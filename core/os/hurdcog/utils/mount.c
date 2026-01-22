@@ -12,8 +12,8 @@
 #include <blkid/blkid.h>
 #endif
 #include "match-options.h"
-#define SEARCH_FMTS	_HURD "%sfs\0" _HURD "%s"
-#define DEFAULT_FSTYPE	"auto"
+#define SEARCH_FMTS _HURD "%sfs\0" _HURD "%s"
+#define DEFAULT_FSTYPE "auto"
 static char *fstype = DEFAULT_FSTYPE;
 static char *device, *mountpoint;
 static int verbose;
@@ -26,8 +26,8 @@ static enum { qf_standard, qf_fstab, qf_translator } query_format;
 static struct fstab_argp_params fstab_params;
 static const struct argp_option argp_opts[] =
 {
-{"timeout",	'T',	"MILLISECONDS",	0, "Timeout for translator startup"},
-{"format",	'p',	"mount|fstab|translator", OPTION_ARG_OPTIONAL,
+{"timeout", 'T', "MILLISECONDS", 0, "Timeout for translator startup"},
+{"format", 'p', "mount|fstab|translator", OPTION_ARG_OPTIONAL,
 "Output format for query (no filesystem arguments)"},
 {"options", 'o', "OPTIONS", 0, "A `,' separated list of options"},
 {"readonly", 'r', 0, 0, "Never write to disk or allow opens for writing"},
@@ -53,10 +53,10 @@ switch (key)
 case ARGP_KEY_INIT:
 state->child_inputs[0] = params;
 break;
-#define ARGZ(call)							      \
-err = argz_##call; 						      \
-if (err)								      \
-argp_failure (state, 100, ENOMEM, "%s", arg);			      \
+#define ARGZ(call) \
+err = argz_##call; \
+if (err) \
+argp_failure (state, 100, ENOMEM, "%s", arg); \
 break
 case 'r': ARGZ (add (&options, &options_len, "ro"));
 case 'w': ARGZ (add (&options, &options_len, "rw"));
@@ -195,10 +195,10 @@ error (0, err, "cannot determine if %s is already mounted",
 fs->mntent.mnt_fsname);
 return err;
 }
-#define ARGZ(call)							      \
-err = argz_##call;							      \
-if (err)								      \
-error (3, ENOMEM, "collecting mount options");			      \
+#define ARGZ(call) \
+err = argz_##call; \
+if (err) \
+error (3, ENOMEM, "collecting mount options"); \
 if (fs->mntent.mnt_opts)
 {
 ARGZ (create_sep (fs->mntent.mnt_opts, ',', &mntopts, &mntopts_len));

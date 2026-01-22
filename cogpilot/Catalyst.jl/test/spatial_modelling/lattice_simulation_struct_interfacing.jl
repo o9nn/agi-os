@@ -16,7 +16,7 @@ lattice_graph = cycle_graph(5)
 val0_cartesian = fill(1.0, 2, 2, 2)
 val0_masked = sparse([1.0 2.0; 0.0 3.0])
 val0_graph = [1.0, 2.0, 3.0, 4.0, 5.0]
-# Unpacks the `X`  and `Y` symbolic variable (so that indexing using it can be tested).
+# Unpacks the `X` and `Y` symbolic variable (so that indexing using it can be tested).
 @unpack X, Y = brusselator_system
 # Loops through all alternative lattices and values. Checks that `lat_getu` works in all cases.
 for (lattice, val0) in zip([lattice_cartesian, lattice_masked, lattice_graph], [val0_cartesian, val0_masked, val0_graph])

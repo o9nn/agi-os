@@ -15,7 +15,7 @@ WriteThruProxy(Type, const std::string&&);
 virtual ~WriteThruProxy();
 virtual void open(void);
 virtual void close(void);
-virtual bool connected(void) { return  0 < _targets.size(); }
+virtual bool connected(void) { return 0 < _targets.size(); }
 protected:
 virtual void getAtom(const Handle&) {}
 virtual void fetchIncomingSet(AtomSpace*, const Handle&) {}

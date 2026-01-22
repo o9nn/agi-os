@@ -304,10 +304,10 @@ pgp_dsa_verify(const uint8_t *hash, size_t hash_length,
 const pgp_dsa_sig_t *sig,
 const pgp_dsa_pubkey_t *dsa)
 {
-unsigned	qlen;
-DSA_SIG        *osig;
-DSA            *odsa;
-int             ret;
+unsigned qlen;
+DSA_SIG *osig;
+DSA *odsa;
+int ret;
 osig = DSA_SIG_new();
 DSA_SIG_set0(osig,
 BN_dup(sig->r),
@@ -345,8 +345,8 @@ const uint8_t *in,
 size_t length,
 const pgp_rsa_pubkey_t *pubkey)
 {
-RSA            *orsa;
-int             n;
+RSA *orsa;
+int n;
 orsa = RSA_new();
 RSA_set0_key(orsa,
 BN_dup(pubkey->n),
@@ -363,8 +363,8 @@ size_t length,
 const pgp_rsa_seckey_t *seckey,
 const pgp_rsa_pubkey_t *pubkey)
 {
-RSA            *orsa;
-int             n;
+RSA *orsa;
+int n;
 orsa = RSA_new();
 RSA_set0_key(orsa,
 BN_dup(pubkey->n),
@@ -412,9 +412,9 @@ size_t length,
 const pgp_rsa_seckey_t *seckey,
 const pgp_rsa_pubkey_t *pubkey)
 {
-RSA            *keypair;
-int             n;
-char            errbuf[1024];
+RSA *keypair;
+int n;
+char errbuf[1024];
 keypair = RSA_new();
 RSA_set0_key(keypair,
 BN_dup(pubkey->n),
@@ -433,7 +433,7 @@ printf("pgp_rsa_private_decrypt: n=%d\n",n);
 }
 errbuf[0] = '\0';
 if (n == -1) {
-unsigned long   err = ERR_get_error();
+unsigned long err = ERR_get_error();
 ERR_error_string(err, &errbuf[0]);
 (void) fprintf(stderr, "openssl error : %s\n", errbuf);
 }
@@ -446,8 +446,8 @@ const uint8_t *in,
 size_t length,
 const pgp_rsa_pubkey_t *pubkey)
 {
-RSA            *orsa;
-int             n;
+RSA *orsa;
+int n;
 orsa = RSA_new();
 RSA_set0_key(orsa,
 BN_dup(pubkey->n),
@@ -455,7 +455,7 @@ BN_dup(pubkey->e),
 NULL);
 n = RSA_public_encrypt((int)length, in, out, orsa, RSA_NO_PADDING);
 if (n == -1) {
-BIO            *fd_out;
+BIO *fd_out;
 fd_out = BIO_new_fd(fileno(stderr), BIO_NOCLOSE);
 ERR_print_errors(fd_out);
 }
@@ -466,7 +466,7 @@ void
 pgp_crypto_finish(void)
 {
 }
-const char     *
+const char *
 pgp_text_from_hash(pgp_hash_t *hash)
 {
 return hash->name;
@@ -481,10 +481,10 @@ const uint8_t *passphrase,
 const size_t pplen)
 {
 pgp_seckey_t *seckey;
-RSA            *rsa;
-BN_CTX         *ctx;
+RSA *rsa;
+BN_CTX *ctx;
 pgp_output_t *output;
-pgp_memory_t   *mem;
+pgp_memory_t *mem;
 int res;
 const BIGNUM *_n = NULL;
 const BIGNUM *_e = NULL;
@@ -562,14 +562,14 @@ pgp_rsa_private_check(seckey);
 return 1;
 }
 #if 0
-pgp_key_t  *
+pgp_key_t *
 pgp_rsa_new_selfsign_key(const int numbits,
 const unsigned long e,
 const uint8_t *userid,
 const char *hashalg,
 const char *cipher)
 {
-pgp_key_t  *keydata;
+pgp_key_t *keydata;
 keydata = pgp_keydata_new();
 if (!pgp_rsa_generate_keypair(keydata, numbits, e, hashalg, cipher,
 (const uint8_t *) "", (const size_t) 0) ||
@@ -580,15 +580,15 @@ return NULL;
 return keydata;
 }
 #endif
-pgp_dsa_sig_t        *
+pgp_dsa_sig_t *
 pgp_dsa_sign(uint8_t *hashbuf,
 unsigned hashsize,
 const pgp_dsa_seckey_t *secdsa,
 const pgp_dsa_pubkey_t *pubdsa)
 {
-DSA_SIG        *dsasig;
-DSA            *odsa;
-pgp_dsa_sig_t  *pgpdsasig;
+DSA_SIG *dsasig;
+DSA *odsa;
+pgp_dsa_sig_t *pgpdsasig;
 const BIGNUM *pr = NULL;
 const BIGNUM *ps = NULL;
 odsa = DSA_new();
@@ -621,17 +621,17 @@ const uint8_t *in,
 size_t size,
 const pgp_elgamal_pubkey_t *pubkey)
 {
-int	ret = 0;
-int	k_bits;
-BIGNUM	   *m;
-BIGNUM	   *p;
-BIGNUM	   *g;
-BIGNUM	   *y;
-BIGNUM	   *k;
-BIGNUM	   *yk;
-BIGNUM	   *c1;
-BIGNUM	   *c2;
-BN_CTX	   *tmp;
+int ret = 0;
+int k_bits;
+BIGNUM *m;
+BIGNUM *p;
+BIGNUM *g;
+BIGNUM *y;
+BIGNUM *k;
+BIGNUM *yk;
+BIGNUM *c1;
+BIGNUM *c2;
+BN_CTX *tmp;
 m = BN_bin2bn(in, (int)size, NULL);
 p = pubkey->p;
 g = pubkey->g;
@@ -690,15 +690,15 @@ size_t length,
 const pgp_elgamal_seckey_t *seckey,
 const pgp_elgamal_pubkey_t *pubkey)
 {
-BIGNUM	*bndiv;
-BIGNUM	*c1x;
-BN_CTX	*tmp;
-BIGNUM	*c1;
-BIGNUM	*c2;
-BIGNUM	*p;
-BIGNUM	*x;
-BIGNUM	*m;
-int	 ret;
+BIGNUM *bndiv;
+BIGNUM *c1x;
+BN_CTX *tmp;
+BIGNUM *c1;
+BIGNUM *c2;
+BIGNUM *p;
+BIGNUM *x;
+BIGNUM *m;
+int ret;
 ret = 0;
 c1 = BN_bin2bn(g_to_k, (int)length, NULL);
 c2 = BN_bin2bn(in, (int)length, NULL);

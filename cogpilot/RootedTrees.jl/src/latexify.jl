@@ -8,9 +8,9 @@ the following LaTeX code in the preamble.
 % https:
 \\usepackage{forest}
 \\forestset{
-whitenode/.style={draw,             circle, minimum size=0.5ex, inner sep=0pt},
+whitenode/.style={draw, circle, minimum size=0.5ex, inner sep=0pt},
 blacknode/.style={draw, fill=black, circle, minimum size=0.5ex, inner sep=0pt},
-colornode/.style={draw, fill=#1,    circle, minimum size=0.5ex, inner sep=0pt},
+colornode/.style={draw, fill=#1, circle, minimum size=0.5ex, inner sep=0pt},
 colornode/.default={red}
 }
 \\newcommand{\\blankforrootedtree}{\\rule{0pt}{0pt}}

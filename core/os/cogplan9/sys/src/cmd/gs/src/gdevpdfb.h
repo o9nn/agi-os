@@ -62,7 +62,7 @@ gdev_pdf_pattern_manage,
 gdev_pdf_fill_rectangle_hl_color,
 gdev_pdf_include_color_space
 },
-psdf_initial_values(PSDF_VERSION_INITIAL, 0  ),
+psdf_initial_values(PSDF_VERSION_INITIAL, 0 ),
 PDF_COMPATIBILITY_LEVEL_INITIAL,
 -1,
 1,

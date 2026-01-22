@@ -14,7 +14,7 @@ private void swap_bwords(unsigned char *, int);
 #define Y_DPI 72
 #define mgr_prn_device(procs, dev_name, num_comp, depth, mgr_depth,\
 max_gray, max_rgb, dither_gray, dither_rgb, print_page)\
-{	prn_device_body(gx_device_mgr, procs, dev_name,\
+{ prn_device_body(gx_device_mgr, procs, dev_name,\
 DEFAULT_WIDTH_10THS, DEFAULT_HEIGHT_10THS, X_DPI, Y_DPI,\
 0, 0, 0, 0,\
 num_comp, depth, max_gray, max_rgb, dither_gray, dither_rgb,\
@@ -37,17 +37,17 @@ private gx_device_procs cmgr8_procs =
 prn_color_procs(gdev_mgr_open, gdev_prn_output_page, gdev_prn_close,
 mgr_8bit_map_rgb_color, mgr_8bit_map_color_rgb);
 gx_device_mgr far_data gs_mgrmono_device =
-mgr_prn_device( mgr_procs,  "mgrmono", 1,  1, 1,   1,   0, 2, 0, mgr_print_page);
+mgr_prn_device( mgr_procs, "mgrmono", 1, 1, 1, 1, 0, 2, 0, mgr_print_page);
 gx_device_mgr far_data gs_mgrgray2_device =
-mgr_prn_device(mgrN_procs,  "mgrgray2",1,  8, 2, 255,   0, 4, 0, mgrN_print_page);
+mgr_prn_device(mgrN_procs, "mgrgray2",1, 8, 2, 255, 0, 4, 0, mgrN_print_page);
 gx_device_mgr far_data gs_mgrgray4_device =
-mgr_prn_device(mgrN_procs,  "mgrgray4",1,  8, 4, 255,   0,16, 0, mgrN_print_page);
+mgr_prn_device(mgrN_procs, "mgrgray4",1, 8, 4, 255, 0,16, 0, mgrN_print_page);
 gx_device_mgr far_data gs_mgrgray8_device =
-mgr_prn_device(mgrN_procs,  "mgrgray8",1,  8, 8, 255,   0, 0, 0, mgrN_print_page);
+mgr_prn_device(mgrN_procs, "mgrgray8",1, 8, 8, 255, 0, 0, 0, mgrN_print_page);
 gx_device_mgr far_data gs_mgr4_device =
-mgr_prn_device(cmgr4_procs, "mgr4",    3,  8, 4,   1,   1, 2, 2, cmgrN_print_page);
+mgr_prn_device(cmgr4_procs, "mgr4", 3, 8, 4, 1, 1, 2, 2, cmgrN_print_page);
 gx_device_mgr far_data gs_mgr8_device =
-mgr_prn_device(cmgr8_procs, "mgr8",    3,  8, 8, 255, 255, 6, 5, cmgrN_print_page);
+mgr_prn_device(cmgr8_procs, "mgr8", 3, 8, 8, 255, 255, 6, 5, cmgrN_print_page);
 typedef struct mgr_cursor_s {
 gx_device_mgr *dev;
 int bpp;
@@ -57,7 +57,7 @@ int lnum;
 } mgr_cursor;
 private int
 mgr_begin_page(gx_device_mgr *bdev, FILE *pstream, mgr_cursor *pcur)
-{	struct b_header head;
+{ struct b_header head;
 uint line_size =
 gdev_prn_raster((gx_device_printer *)bdev) + 3;
 byte *data = (byte *)gs_malloc(bdev->memory, line_size, 1, "mgr_begin_page");
@@ -77,8 +77,8 @@ return 0;
 }
 private int
 mgr_next_row(mgr_cursor *pcur)
-{	if ( pcur->lnum >= pcur->dev->height )
-{	gs_free(((gx_device_printer *)pcur->dev)->memory,
+{ if ( pcur->lnum >= pcur->dev->height )
+{ gs_free(((gx_device_printer *)pcur->dev)->memory,
 (char *)pcur->data, pcur->line_size, 1,
 "mgr_next_row(done)");
 return 1;
@@ -90,7 +90,7 @@ return 0;
 #define bdev ((gx_device_mgr *)pdev)
 private int
 mgr_print_page(gx_device_printer *pdev, FILE *pstream)
-{	mgr_cursor cur;
+{ mgr_cursor cur;
 int mgr_wide;
 int code = mgr_begin_page(bdev, pstream, &cur);
 if ( code < 0 ) return code;
@@ -98,7 +98,7 @@ mgr_wide = bdev->width;
 if (mgr_wide & 7)
 mgr_wide += 8 - (mgr_wide & 7);
 while ( !(code = mgr_next_row(&cur)) )
-{	if ( fwrite(cur.data, sizeof(char), mgr_wide / 8, pstream) <
+{ if ( fwrite(cur.data, sizeof(char), mgr_wide / 8, pstream) <
 mgr_wide / 8)
 return_error(gs_error_ioerror);
 }
@@ -108,7 +108,7 @@ static unsigned char bgreytable[16], bgreybacktable[16];
 static unsigned char bgrey256table[256], bgrey256backtable[256];
 private int
 mgrN_print_page(gx_device_printer *pdev, FILE *pstream)
-{	mgr_cursor cur;
+{ mgr_cursor cur;
 int i = 0, j, k, mgr_wide;
 uint mgr_line_size;
 byte *bp, *data = NULL, *dp;
@@ -147,7 +147,7 @@ while ( !(code = mgr_next_row(&cur)) )
 switch (bdev->mgr_depth) {
 case 2:
 for (i = 0,dp = data,bp = cur.data; i < mgr_line_size; i++) {
-*dp =	*(bp++) & 0xc0;
+*dp = *(bp++) & 0xc0;
 *dp |= (*(bp++) & 0xc0) >> 2;
 *dp |= (*(bp++) & 0xc0) >> 4;
 *(dp++) |= (*(bp++) & 0xc0) >> 6;
@@ -157,7 +157,7 @@ return_error(gs_error_ioerror);
 break;
 case 4:
 for (i = 0,dp = data, bp = cur.data; i < mgr_line_size; i++) {
-*dp =  bgreybacktable[*(bp++) >> 4] << 4;
+*dp = bgreybacktable[*(bp++) >> 4] << 4;
 *(dp++) |= bgreybacktable[*(bp++) >> 4];
 }
 if ( fwrite(data, sizeof(byte), mgr_line_size, pstream) < mgr_line_size )
@@ -177,19 +177,19 @@ gs_free(bdev->memory, (char *)data, mgr_line_size, 1, "mgrN_print_page(done)");
 if (bdev->mgr_depth == 2) {
 for (i = 0; i < 4; i++) {
 clut[i].colnum = i;
-clut[i].red    = clut[i].green = clut[i].blue = clut2mgr(i, 2);
+clut[i].red = clut[i].green = clut[i].blue = clut2mgr(i, 2);
 }
 }
 if (bdev->mgr_depth == 4) {
 for (i = 0; i < 16; i++) {
 clut[i].colnum = i;
-clut[i].red    = clut[i].green = clut[i].blue = clut2mgr(bgreytable[i], 4);
+clut[i].red = clut[i].green = clut[i].blue = clut2mgr(bgreytable[i], 4);
 }
 }
 if (bdev->mgr_depth == 8) {
 for (i = 0; i < 256; i++) {
 clut[i].colnum = i;
-clut[i].red    = clut[i].green = clut[i].blue = clut2mgr(bgrey256table[i], 8);
+clut[i].red = clut[i].green = clut[i].blue = clut2mgr(bgrey256table[i], 8);
 }
 }
 #if !arch_is_big_endian
@@ -201,7 +201,7 @@ return (code < 0 ? code : 0);
 }
 private int
 cmgrN_print_page(gx_device_printer *pdev, FILE *pstream)
-{	mgr_cursor cur;
+{ mgr_cursor cur;
 int i = 0, j, mgr_wide, r, g, b, colors8 = 0;
 uint mgr_line_size;
 byte *bp, *data, *dp;
@@ -235,7 +235,7 @@ while ( !(code = mgr_next_row(&cur)) )
 switch (bdev->mgr_depth) {
 case 4:
 for (i = 0,dp = data, bp = cur.data; i < mgr_line_size; i++) {
-*dp =  *(bp++) << 4;
+*dp = *(bp++) << 4;
 *(dp++) |= *(bp++) & 0x0f;
 }
 if ( fwrite(data, sizeof(byte), mgr_line_size, pstream) < mgr_line_size )
@@ -254,9 +254,9 @@ if (bdev->mgr_depth == 4) {
 for (i = 0; i < 16; i++) {
 pc_4bit_map_color_rgb((gx_device *)0, (gx_color_index) i, prgb);
 clut[i].colnum = i;
-clut[i].red    = clut2mgr(prgb[0], 16);
-clut[i].green  = clut2mgr(prgb[1], 16);
-clut[i].blue   = clut2mgr(prgb[2], 16);
+clut[i].red = clut2mgr(prgb[0], 16);
+clut[i].green = clut2mgr(prgb[1], 16);
+clut[i].blue = clut2mgr(prgb[2], 16);
 }
 }
 if (bdev->mgr_depth == 8) {
@@ -264,9 +264,9 @@ for (i = 0; i < colors8; i++) {
 mgr_8bit_map_color_rgb((gx_device *)0, (gx_color_index)
 table[i], prgb);
 clut[i].colnum = MGR_RESERVEDCOLORS + i;
-clut[i].red    = clut2mgr(prgb[0], 16);
-clut[i].green  = clut2mgr(prgb[1], 16);
-clut[i].blue   = clut2mgr(prgb[2], 16);
+clut[i].red = clut2mgr(prgb[0], 16);
+clut[i].green = clut2mgr(prgb[1], 16);
+clut[i].blue = clut2mgr(prgb[2], 16);
 }
 }
 #if !arch_is_big_endian
@@ -289,18 +289,18 @@ return (gx_color_index)
 int
 mgr_8bit_map_color_rgb(gx_device *dev, gx_color_index color,
 gx_color_value prgb[3])
-{	static const gx_color_value ramp[8] =
-{	0, gx_max_color_value / 6, gx_max_color_value / 3,
+{ static const gx_color_value ramp[8] =
+{ 0, gx_max_color_value / 6, gx_max_color_value / 3,
 gx_max_color_value / 2, 2 * (gx_max_color_value / 3),
 5 * (gx_max_color_value / 6), gx_max_color_value,
 gx_max_color_value
 };
 #define icolor (uint)color
 if ( icolor >= 256-7 )
-{	prgb[0] = prgb[1] = prgb[2] = ramp[icolor - (256-7)];
+{ prgb[0] = prgb[1] = prgb[2] = ramp[icolor - (256-7)];
 }
 else
-{	prgb[0] = ramp[(icolor >> 5) & 7];
+{ prgb[0] = ramp[(icolor >> 5) & 7];
 prgb[1] = ramp[(icolor >> 2) & 7];
 prgb[2] = ramp[(icolor & 3) << 1];
 }
@@ -323,7 +323,7 @@ swap_bwords(register unsigned char *p, int n)
 register unsigned char c;
 n /= 2;
 for (; n > 0; n--, p += 2) {
-c    = p[0];
+c = p[0];
 p[0] = p[1];
 p[1] = c;
 }

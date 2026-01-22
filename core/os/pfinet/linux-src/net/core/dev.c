@@ -292,7 +292,7 @@ netif_rx(newskb);
 int dev_queue_xmit(struct sk_buff *skb)
 {
 struct device *dev = skb->dev;
-struct Qdisc  *q;
+struct Qdisc *q;
 #ifdef CONFIG_NET_PROFILE
 start_bh_atomic();
 NET_PROFILE_ENTER(dev_queue_xmit);
@@ -559,7 +559,7 @@ kfree_skb(skb);
 if (qdisc_head.forw != &qdisc_head)
 qdisc_run_queues();
 #ifndef _HURD_
-#ifdef  CONFIG_CPU_IS_SLOW
+#ifdef CONFIG_CPU_IS_SLOW
 if (1) {
 unsigned long start_idle = jiffies;
 ave_busy += ((start_idle - start_busy)<<3) - (ave_busy>>4);
@@ -759,11 +759,11 @@ return size;
 int dev_get_wireless_info(char * buffer, char **start, off_t offset,
 int length, int dummy)
 {
-int		len = 0;
-off_t		begin = 0;
-off_t		pos = 0;
-int		size;
-struct device *	dev;
+int len = 0;
+off_t begin = 0;
+off_t pos = 0;
+int size;
+struct device * dev;
 size = sprintf(buffer,
 "Inter-| sta-|   Quality        |   Discarded packets\n"
 " face | tus | link level noise |  nwid  crypt   misc\n"

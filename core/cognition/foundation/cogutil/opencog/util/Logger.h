@@ -49,7 +49,7 @@ void set_print_error_level_stdout();
 void log(Level level, const std::string &);
 void backtrace();
 void logva(Level level, const char *, va_list args);
-void log  (Level level, const char *, ...);
+void log (Level level, const char *, ...);
 class Base
 {
 public:

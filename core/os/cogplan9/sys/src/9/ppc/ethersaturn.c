@@ -48,14 +48,14 @@ Miicr_accbsy = RBIT(15, ushort),
 };
 typedef struct {
 Lock;
-int		txbusy;
-int		txempty;
-int		txfull;
-int		ntx;
-int		rxlast;
-int		active;
-ulong	interrupts;
-ulong	overflows;
+int txbusy;
+int txempty;
+int txfull;
+int ntx;
+int rxlast;
+int active;
+ulong interrupts;
+ulong overflows;
 } Ctlr;
 uchar etheraddr[6] = { 0x90, 0x85, 0x82, 0x32, 0x83, 0x00};
 static ushort*etcr=(ushort*)Etcr;

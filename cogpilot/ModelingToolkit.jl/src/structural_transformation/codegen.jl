@@ -7,7 +7,7 @@ graph = state.structure.graph
 # The sparsity pattern of `nlsolve(f, u, p)` w.r.t `p` is difficult to
 # determine in general. Consider the "simplest" case, a linear system. We
 # have
-#                   A u = p.
+# A u = p.
 # Clearly, the sparsity of `u` depends on the sparsity of both `p` and `A`
 # in a non-trivial way. However, in the generic case, `u` is dense even when
 # `A` and `p` are sparse. For instance

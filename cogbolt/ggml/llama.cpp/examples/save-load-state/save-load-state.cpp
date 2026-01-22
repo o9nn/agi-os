@@ -51,7 +51,7 @@ fprintf(stderr, "%s : serialized state into %zd out of a maximum of %zd bytes\n"
 const auto n_past_saved = n_past;
 printf("\nfirst run: %s", params.prompt.c_str());
 for (auto i = 0; i < params.n_predict; i++) {
-auto next_token     = llama_sampler_sample(smpl, ctx, -1);
+auto next_token = llama_sampler_sample(smpl, ctx, -1);
 auto next_token_str = common_token_to_piece(ctx, next_token);
 printf("%s", next_token_str.c_str());
 result0 += next_token_str;
@@ -85,7 +85,7 @@ fprintf(stderr, "%s : deserialized state from %zd out of a maximum of %zd bytes\
 }
 n_past = n_past_saved;
 for (auto i = 0; i < params.n_predict; i++) {
-auto next_token     = llama_sampler_sample(smpl2, ctx2, -1);
+auto next_token = llama_sampler_sample(smpl2, ctx2, -1);
 auto next_token_str = common_token_to_piece(ctx2, next_token);
 printf("%s", next_token_str.c_str());
 result1 += next_token_str;
@@ -140,7 +140,7 @@ return 1;
 fprintf(stderr, "%s : seq 1 restored, %zd bytes\n", __func__, nset);
 }
 for (auto i = 0; i < params.n_predict; i++) {
-auto next_token     = llama_sampler_sample(smpl3, ctx3, -1);
+auto next_token = llama_sampler_sample(smpl3, ctx3, -1);
 auto next_token_str = common_token_to_piece(ctx3, next_token);
 printf("%s", next_token_str.c_str());
 result2 += next_token_str;

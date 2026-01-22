@@ -11,20 +11,20 @@ static int multicast_filter_limit = 32;
 #define MAX_UNITS 8
 static int options[MAX_UNITS] = {-1, -1, -1, -1, -1, -1, -1, -1};
 static int full_duplex[MAX_UNITS] = {-1, -1, -1, -1, -1, -1, -1, -1};
-#define RX_BUF_LEN_IDX	2
-#define TX_BUF_SIZE	1536
+#define RX_BUF_LEN_IDX 2
+#define TX_BUF_SIZE 1536
 #define TX_FIFO_THRESH 256
-#define RX_FIFO_THRESH	4
-#define RX_DMA_BURST	4
-#define TX_DMA_BURST	4
-#define TX_TIMEOUT  (6*HZ)
-#define PKT_BUF_SZ		1536
+#define RX_FIFO_THRESH 4
+#define RX_DMA_BURST 4
+#define TX_DMA_BURST 4
+#define TX_TIMEOUT (6*HZ)
+#define PKT_BUF_SZ 1536
 #ifndef __KERNEL__
 #define __KERNEL__
 #endif
 #if !defined(__OPTIMIZE__)
-#warning  You must compile this file with the correct options!
-#warning  See the last lines of the source file.
+#warning You must compile this file with the correct options!
+#warning See the last lines of the source file.
 #error You must compile this driver with "-O".
 #endif
 #include <linux/config.h>
@@ -68,7 +68,7 @@ static int full_duplex[MAX_UNITS] = {-1, -1, -1, -1, -1, -1, -1, -1};
 #include "pci-scan.h"
 #include "kern_compat.h"
 #endif
-#if (LINUX_VERSION_CODE >= 0x20100)  &&  defined(MODULE)
+#if (LINUX_VERSION_CODE >= 0x20100) && defined(MODULE)
 char kernel_version[] = UTS_RELEASE;
 #endif
 static void *rtl8139_probe1(struct pci_dev *pdev, void *init_dev,
@@ -77,13 +77,13 @@ static int rtl_pwr_event(void *dev_instance, int event);
 enum chip_capability_flags {HAS_MII_XCVR=0x01, HAS_CHIP_XCVR=0x02,
 HAS_LNK_CHNG=0x04, HAS_DESC=0x08};
 #ifdef USE_IO_OPS
-#define RTL8139_IOTYPE  PCI_USES_MASTER|PCI_USES_IO |PCI_ADDR0
+#define RTL8139_IOTYPE PCI_USES_MASTER|PCI_USES_IO |PCI_ADDR0
 #else
-#define RTL8139_IOTYPE  PCI_USES_MASTER|PCI_USES_MEM|PCI_ADDR1
+#define RTL8139_IOTYPE PCI_USES_MASTER|PCI_USES_MEM|PCI_ADDR1
 #endif
-#define RTL8129_CAPS  HAS_MII_XCVR
-#define RTL8139_CAPS  HAS_CHIP_XCVR|HAS_LNK_CHNG
-#define RTL8139D_CAPS  HAS_CHIP_XCVR|HAS_LNK_CHNG|HAS_DESC
+#define RTL8129_CAPS HAS_MII_XCVR
+#define RTL8139_CAPS HAS_CHIP_XCVR|HAS_LNK_CHNG
+#define RTL8139D_CAPS HAS_CHIP_XCVR|HAS_LNK_CHNG|HAS_DESC
 static struct pci_id_info pci_tbl[] = {
 {"RealTek RTL8139C+, 64 bit high performance",
 { 0x813910ec, 0xffffffff, 0,0, 0x20, 0xff},
@@ -95,7 +95,7 @@ RTL8139_IOTYPE, 0x80, RTL8139_CAPS, },
 RTL8139_IOTYPE, 0x80, RTL8129_CAPS, },
 {"RealTek RTL8139 Fast Ethernet", { 0x813910ec, 0xffffffff,},
 RTL8139_IOTYPE, 0x80, RTL8139_CAPS, },
-{"RealTek RTL8139B PCI/CardBus",  { 0x813810ec, 0xffffffff,},
+{"RealTek RTL8139B PCI/CardBus", { 0x813810ec, 0xffffffff,},
 RTL8139_IOTYPE, 0x80, RTL8139_CAPS, },
 {"SMC1211TX EZCard 10/100 (RealTek RTL8139)", { 0x12111113, 0xffffffff,},
 RTL8139_IOTYPE, 0x80, RTL8139_CAPS, },
@@ -133,7 +133,7 @@ rtl8139_probe1, rtl_pwr_event };
 #define outw writew
 #define outl writel
 #endif
-#define NUM_TX_DESC	4
+#define NUM_TX_DESC 4
 enum RTL8129_registers {
 MAC0=0,
 MAR0=8,
@@ -175,16 +175,16 @@ CSCR_LinkOKBit=0x0400, CSCR_LinkChangeBit=0x0800,
 CSCR_LinkStatusBits=0x0f000, CSCR_LinkDownOffCmd=0x003c0,
 CSCR_LinkDownCmd=0x0f3c0,
 };
-#define PARA78_default	0x78fa8388
-#define PARA7c_default	0xcb38de43
-#define PARA7c_xxx		0xcb38de43
+#define PARA78_default 0x78fa8388
+#define PARA7c_default 0xcb38de43
+#define PARA7c_xxx 0xcb38de43
 unsigned long param[4][4]={
 {0xcb39de43, 0xcb39ce43, 0xfb38de03, 0xcb38de43},
 {0xcb39de43, 0xcb39ce43, 0xcb39ce83, 0xcb39ce83},
 {0xcb39de43, 0xcb39ce43, 0xcb39ce83, 0xcb39ce83},
 {0xbb39de43, 0xbb39ce43, 0xbb39ce83, 0xbb39ce83}
 };
-#define PRIV_ALIGN	15
+#define PRIV_ALIGN 15
 struct rtl8129_private {
 struct net_device *next_module;
 void *priv_addr;
@@ -209,7 +209,7 @@ int multicast_filter_limit;
 char phys[4];
 u16 advertising;
 char twistie, twist_row, twist_col;
-u8	config1;
+u8 config1;
 unsigned int full_duplex:1;
 unsigned int duplex_lock:1;
 unsigned int media2:4;
@@ -255,7 +255,7 @@ int rtl8139_probe(struct net_device *dev)
 {
 static int did_version = 0;
 if (debug >= NETIF_MSG_DRV
-&&  did_version++ == 0)
+&& did_version++ == 0)
 printk(KERN_INFO "%s" KERN_INFO "%s", versionA, versionB);
 return pci_drv_register(&rtl8139_drv_id, dev);
 }
@@ -307,7 +307,7 @@ if (np->drv_flags & HAS_MII_XCVR) {
 int phy, phy_idx = 0;
 for (phy = 0; phy < 32 && phy_idx < sizeof(np->phys); phy++) {
 int mii_status = mdio_read(dev, phy, 1);
-if (mii_status != 0xffff  &&  mii_status != 0x0000) {
+if (mii_status != 0xffff && mii_status != 0x0000) {
 np->phys[phy_idx++] = phy;
 np->advertising = mdio_read(dev, phy, 4);
 printk(KERN_INFO "%s: MII transceiver %d status 0x%4.4x "
@@ -333,7 +333,7 @@ np->default_port = option & 0x330;
 if (np->default_port)
 np->medialock = 1;
 }
-if (found_cnt < MAX_UNITS  &&  full_duplex[found_cnt] > 0)
+if (found_cnt < MAX_UNITS && full_duplex[found_cnt] > 0)
 np->full_duplex = full_duplex[found_cnt];
 if (np->full_duplex) {
 printk(KERN_INFO "%s: Media type forced to Full Duplex.\n", dev->name);
@@ -355,17 +355,17 @@ dev->set_multicast_list = &set_rx_mode;
 dev->do_ioctl = &mii_ioctl;
 return dev;
 }
-#define EE_SHIFT_CLK	0x04
-#define EE_CS			0x08
-#define EE_DATA_WRITE	0x02
-#define EE_WRITE_0		0x00
-#define EE_WRITE_1		0x02
-#define EE_DATA_READ	0x01
-#define EE_ENB			(0x80 | EE_CS)
-#define eeprom_delay()	inl(ee_addr)
-#define EE_WRITE_CMD	(5)
-#define EE_READ_CMD		(6)
-#define EE_ERASE_CMD	(7)
+#define EE_SHIFT_CLK 0x04
+#define EE_CS 0x08
+#define EE_DATA_WRITE 0x02
+#define EE_WRITE_0 0x00
+#define EE_WRITE_1 0x02
+#define EE_DATA_READ 0x01
+#define EE_ENB (0x80 | EE_CS)
+#define eeprom_delay() inl(ee_addr)
+#define EE_WRITE_CMD (5)
+#define EE_READ_CMD (6)
+#define EE_ERASE_CMD (7)
 static int read_eeprom(long ioaddr, int location, int addr_len)
 {
 int i;
@@ -393,13 +393,13 @@ eeprom_delay();
 outb(~EE_CS, ee_addr);
 return retval;
 }
-#define MDIO_DIR		0x80
-#define MDIO_DATA_OUT	0x04
-#define MDIO_DATA_IN	0x02
-#define MDIO_CLK		0x01
+#define MDIO_DIR 0x80
+#define MDIO_DATA_OUT 0x04
+#define MDIO_DATA_IN 0x02
+#define MDIO_CLK 0x01
 #define MDIO_WRITE0 (MDIO_DIR)
 #define MDIO_WRITE1 (MDIO_DIR | MDIO_DATA_OUT)
-#define mdio_delay(mdio_addr)	inb(mdio_addr)
+#define mdio_delay(mdio_addr) inb(mdio_addr)
 static char mii_2_8139_map[8] = {MII_BMCR, MII_BMSR, 0, 0, NWayAdvert,
 NWayLPAR, NWayExpansion, 0 };
 static void mdio_sync(long mdio_addr)
@@ -452,7 +452,7 @@ if (location == 0) {
 outb(0xC0, ioaddr + Cfg9346);
 outw(value, ioaddr + MII_BMCR);
 outb(0x00, ioaddr + Cfg9346);
-} else if (location < 8  &&  mii_2_8139_map[location])
+} else if (location < 8 && mii_2_8139_map[location])
 outw(value, ioaddr + mii_2_8139_map[location]);
 return;
 }
@@ -483,7 +483,7 @@ do {
 tp->rx_buf_len = 8192 << rx_buf_len_idx;
 tp->rx_ring = kmalloc(tp->rx_buf_len + 16 +
 (TX_BUF_SIZE * NUM_TX_DESC), GFP_KERNEL);
-} while (tp->rx_ring == NULL  &&  --rx_buf_len_idx >= 0);
+} while (tp->rx_ring == NULL && --rx_buf_len_idx >= 0);
 if (tp->rx_ring == NULL) {
 if (debug > 0)
 printk(KERN_ERR "%s: Couldn't allocate a %d byte receive ring.\n",
@@ -531,7 +531,7 @@ tp->cur_rx = 0;
 outb(CmdRxEnb | CmdTxEnb, ioaddr + ChipCmd);
 outl(tp->rx_config, ioaddr + RxConfig);
 outl((TX_DMA_BURST<<8), ioaddr + TxConfig);
-if (tp->phys[0] >= 0  ||  (tp->drv_flags & HAS_MII_XCVR)) {
+if (tp->phys[0] >= 0 || (tp->drv_flags & HAS_MII_XCVR)) {
 u16 mii_reg5 = mdio_read(dev, tp->phys[0], 5);
 if (mii_reg5 == 0xffff)
 ;
@@ -562,7 +562,7 @@ struct rtl8129_private *np = (struct rtl8129_private *)dev->priv;
 long ioaddr = dev->base_addr;
 int next_tick = 60*HZ;
 int mii_reg5 = mdio_read(dev, np->phys[0], 5);
-if (! np->duplex_lock  &&  mii_reg5 != 0xffff) {
+if (! np->duplex_lock && mii_reg5 != 0xffff) {
 int duplex = (mii_reg5&0x0100) || (mii_reg5 & 0x01C0) == 0x0040;
 if (np->full_duplex != duplex) {
 np->full_duplex = duplex;
@@ -579,17 +579,17 @@ outb(0x00, ioaddr + Cfg9346);
 #if LINUX_VERSION_CODE < 0x20300
 if (inw(ioaddr + IntrStatus) & (TxOK | RxOK)) {
 int status = inw(ioaddr + IntrStatus);
-if (status & (TxOK | RxOK)  &&  ! dev->interrupt) {
+if (status & (TxOK | RxOK) && ! dev->interrupt) {
 printk(KERN_ERR "%s: RTL8139 Interrupt line blocked, status %x.\n",
 dev->name, status);
 rtl8129_interrupt(dev->irq, dev, 0);
 }
 }
-if (dev->tbusy  &&  jiffies - dev->trans_start >= 2*TX_TIMEOUT)
+if (dev->tbusy && jiffies - dev->trans_start >= 2*TX_TIMEOUT)
 rtl8129_tx_timeout(dev);
 #else
-if (netif_queue_paused(dev)  &&
-np->cur_tx - np->dirty_tx > 1  &&
+if (netif_queue_paused(dev) &&
+np->cur_tx - np->dirty_tx > 1 &&
 (jiffies - dev->trans_start) > TX_TIMEOUT) {
 rtl8129_tx_timeout(dev);
 }
@@ -639,8 +639,8 @@ next_tick = HZ/10;
 } break;
 case 5: {
 outl(0x20,ioaddr + FIFOTMS);
-outl(PARA78_default,  ioaddr + PARA78);
-outl(PARA7c_default,  ioaddr + PARA7c);
+outl(PARA78_default, ioaddr + PARA78);
+outl(PARA7c_default, ioaddr + PARA7c);
 outl(0x00,ioaddr + FIFOTMS);
 np->twist_row = 2;
 np->twist_col = 0;
@@ -758,7 +758,7 @@ struct rtl8129_private *tp = np;
 int boguscnt = np->max_interrupt_work;
 long ioaddr = dev->base_addr;
 int link_changed = 0;
-#if defined(__i386__)  &&  LINUX_VERSION_CODE < 0x20123
+#if defined(__i386__) && LINUX_VERSION_CODE < 0x20123
 if (test_and_set_bit(0, (void*)&dev->interrupt)) {
 printk(KERN_ERR"%s: SMP simultaneous entry of an interrupt handler.\n",
 dev->name);
@@ -806,7 +806,7 @@ if (tp->msg_level & NETIF_MSG_TX_DONE)
 printk(KERN_DEBUG "%s: Transmit done, Tx status"
 " %8.8x.\n", dev->name, txstatus);
 if (txstatus & TxUnderrun) {
-if (tp->tx_flag <  0x00300000)
+if (tp->tx_flag < 0x00300000)
 tp->tx_flag += 0x00020000;
 tp->stats.tx_fifo_errors++;
 }
@@ -850,7 +850,7 @@ break;
 if (tp->msg_level & NETIF_MSG_INTR)
 printk(KERN_DEBUG"%s: exiting interrupt, intr_status=%#4.4x.\n",
 dev->name, inw(ioaddr + IntrStatus));
-#if defined(__i386__)  &&  LINUX_VERSION_CODE < 0x20123
+#if defined(__i386__) && LINUX_VERSION_CODE < 0x20123
 clear_bit(0, (void*)&dev->interrupt);
 #endif
 return;
@@ -965,7 +965,7 @@ dev->name, status);
 tp->stats.rx_missed_errors += inl(ioaddr + RxMissed);
 outl(0, ioaddr + RxMissed);
 if (status & RxUnderrun){
-if ((tp->drv_flags & HAS_LNK_CHNG)  &&  link_changed) {
+if ((tp->drv_flags & HAS_LNK_CHNG) && link_changed) {
 int lpar = inw(ioaddr + NWayLPAR);
 int duplex = (lpar&0x0100) || (lpar & 0x01C0) == 0x0040
 || tp->duplex_lock;

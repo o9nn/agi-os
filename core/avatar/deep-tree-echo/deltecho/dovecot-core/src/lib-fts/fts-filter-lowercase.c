@@ -3,8 +3,8 @@
 #include "fts-language.h"
 #include "fts-filter-private.h"
 #ifdef HAVE_LIBICU
-#  include "fts-icu.h"
-#  include "fts-filter-common.h"
+# include "fts-icu.h"
+# include "fts-filter-common.h"
 #endif
 static int
 fts_filter_lowercase_create(const struct fts_language *lang ATTR_UNUSED,

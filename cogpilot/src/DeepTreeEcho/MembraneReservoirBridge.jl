@@ -88,7 +88,7 @@ membranes = Dict{Int, MembraneReservoir}()
 # Create membrane-reservoir for each membrane in the P-system
 for membrane in psystem.membranes
 mem_id = membrane.label
-res_size = get(reservoir_sizes, mem_id, 100)  # Default size 100
+res_size = get(reservoir_sizes, mem_id, 100) # Default size 100
 mem_res = MembraneReservoir(membrane, res_size, input_dim, output_dim)
 membranes[mem_id] = mem_res
 end
@@ -164,7 +164,7 @@ end
 # Update reservoir state (simplified - actual ESN update is more complex)
 # This is a placeholder for the full ESN dynamics
 W = mem_res.reservoir.reservoir
-α = 0.3  # Leaking rate
+α = 0.3 # Leaking rate
 # x(t+1) = (1-α)x(t) + α·tanh(W·x(t) + W_in·u(t))
 if size(W, 1) == length(mem_res.state)
 new_state = (1 - α) * mem_res.state + α * tanh.(W * mem_res.state .+ input[1])
@@ -206,7 +206,7 @@ if performance < dissolution_threshold
 push!(membranes_to_remove, mem_id)
 end
 # Divide high-performing membranes
-if performance > division_threshold && rand() < 0.1  # 10% chance
+if performance > division_threshold && rand() < 0.1 # 10% chance
 # Create offspring membrane
 parent_mem_res = network.membranes[mem_id]
 new_id = maximum(keys(network.membranes)) + 1
@@ -214,15 +214,15 @@ new_id = maximum(keys(network.membranes)) + 1
 new_membrane = Membrane(
 new_id,
 parent_mem_res.membrane.label,
-mem_id  # Parent ID
+mem_id # Parent ID
 )
 # Create new reservoir with same size
 res_size = length(parent_mem_res.state)
 new_mem_res = MembraneReservoir(
 new_membrane,
 res_size,
-1,  # input_dim
-1   # output_dim
+1, # input_dim
+1 # output_dim
 )
 # Initialize with perturbed copy of parent state
 new_mem_res.state = parent_mem_res.state .+ 0.1 * randn(res_size)

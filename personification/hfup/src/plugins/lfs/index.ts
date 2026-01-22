@@ -2,11 +2,11 @@ import defu from 'defu'
 import { cwd } from 'node:process'
 import { createUnplugin, type UnpluginInstance } from 'unplugin'
 export interface LFSOptions {
-  enableFn: (ctx: LFSOptions) => boolean | Promise<boolean>
-  extraGlobs: string[]
-  extraAttributes: string[]
-  withDefault: boolean
-  root: string
+enableFn: (ctx: LFSOptions) => boolean | Promise<boolean>
+extraGlobs: string[]
+extraAttributes: string[]
+withDefault: boolean
+root: string
 }
 const defaultGitAttributes = `# Default
 *.7z filter=lfs diff=lfs merge=lfs -text
@@ -46,33 +46,33 @@ saved_model* filter=lfs diff=lfs merge=lfs -text
 *tfevents* filter=lfs diff=lfs merge=lfs -text
 `
 export const LFS: UnpluginInstance<Partial<LFSOptions> | undefined, false>
-  = createUnplugin((rawOptions) => {
-    const options = defu<LFSOptions, LFSOptions[]>(rawOptions, {
-      root: cwd(),
-      enableFn: async () => true,
-      extraGlobs: [],
-      extraAttributes: [],
-      withDefault: true,
-    }
-  )
-    return {
-      name: 'hfup:lfs-gitattributes',
-      async buildEnd() {
-        if (options?.enableFn && !(await options.enableFn(options))) {
-          return
-        }
-        const extraGlobs = options?.extraGlobs ?? []
-        const extraAttributes = options?.extraAttributes ?? []
-        const withDefault = options?.withDefault ?? true
-        const gitAttributes = withDefault ? defaultGitAttributes : ''
-        const extraGlobsIntoGitAttributes = extraGlobs.map((glob) => {
-          return `${glob} filter=lfs diff=lfs merge=lfs -text`
-        })
-        this.emitFile({
-          type: 'asset',
-          fileName: '.gitattributes',
-          source: `${extraAttributes.join('\n')}${extraGlobsIntoGitAttributes.join('\n')}\n${gitAttributes}`,
-        })
-      }
-    }
-  })
+= createUnplugin((rawOptions) => {
+const options = defu<LFSOptions, LFSOptions[]>(rawOptions, {
+root: cwd(),
+enableFn: async () => true,
+extraGlobs: [],
+extraAttributes: [],
+withDefault: true,
+}
+)
+return {
+name: 'hfup:lfs-gitattributes',
+async buildEnd() {
+if (options?.enableFn && !(await options.enableFn(options))) {
+return
+}
+const extraGlobs = options?.extraGlobs ?? []
+const extraAttributes = options?.extraAttributes ?? []
+const withDefault = options?.withDefault ?? true
+const gitAttributes = withDefault ? defaultGitAttributes : ''
+const extraGlobsIntoGitAttributes = extraGlobs.map((glob) => {
+return `${glob} filter=lfs diff=lfs merge=lfs -text`
+})
+this.emitFile({
+type: 'asset',
+fileName: '.gitattributes',
+source: `${extraAttributes.join('\n')}${extraGlobsIntoGitAttributes.join('\n')}\n${gitAttributes}`,
+})
+}
+}
+})

@@ -1,9 +1,9 @@
 #ifndef isave_INCLUDED
-#  define isave_INCLUDED
+# define isave_INCLUDED
 #include "idosave.h"
 #ifndef alloc_save_t_DEFINED
 typedef struct alloc_save_s alloc_save_t;
-#  define alloc_save_t_DEFINED
+# define alloc_save_t_DEFINED
 #endif
 extern void alloc_save_init(gs_dual_memory_t *);
 alloc_save_t *alloc_find_save(const gs_dual_memory_t *, ulong);

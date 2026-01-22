@@ -101,7 +101,7 @@ assert_perror_backtrace (err);
 return 0;
 }
 static error_t
-magic_open  (struct trivfs_control *cntl,
+magic_open (struct trivfs_control *cntl,
 struct iouser *user,
 mach_port_t dotdot,
 int flags,
@@ -261,8 +261,8 @@ return 0;
 static const char *delegate = _SERVERS_MAGIC;
 static const struct argp_option options[] =
 {
-{"directory",	'd', 0,		0, "Provide virtual (empty) directory node"},
-{"use-server", 'U', "NAME",	0,
+{"directory", 'd', 0, 0, "Provide virtual (empty) directory node"},
+{"use-server", 'U', "NAME", 0,
 "Delegate to server NAME instead of " _SERVERS_MAGIC},
 {0}
 };

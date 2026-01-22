@@ -11,60 +11,60 @@ command_hook_callback_t *pre;
 command_hook_callback_t *post;
 };
 static const struct command imap4rev1_commands[] = {
-{ "CAPABILITY",		cmd_capability,  0 },
-{ "LOGOUT",		cmd_logout,      COMMAND_FLAG_BREAKS_MAILBOX },
-{ "NOOP",		cmd_noop,        COMMAND_FLAG_BREAKS_SEQS },
-{ "APPEND",		cmd_append,      COMMAND_FLAG_BREAKS_SEQS |
+{ "CAPABILITY", cmd_capability, 0 },
+{ "LOGOUT", cmd_logout, COMMAND_FLAG_BREAKS_MAILBOX },
+{ "NOOP", cmd_noop, COMMAND_FLAG_BREAKS_SEQS },
+{ "APPEND", cmd_append, COMMAND_FLAG_BREAKS_SEQS |
 COMMAND_FLAG_BREAKS_MAILBOX },
-{ "EXAMINE",		cmd_examine,     COMMAND_FLAG_BREAKS_MAILBOX },
-{ "CREATE",		cmd_create,      0 },
-{ "DELETE",		cmd_delete,      COMMAND_FLAG_BREAKS_MAILBOX },
-{ "RENAME",		cmd_rename,      0 },
-{ "LIST",		cmd_list,        0 },
-{ "LSUB",		cmd_lsub,        0 },
-{ "SELECT",		cmd_select,      COMMAND_FLAG_BREAKS_MAILBOX },
-{ "STATUS",		cmd_status,      0 },
-{ "SUBSCRIBE",		cmd_subscribe,   0 },
-{ "UNSUBSCRIBE",	cmd_unsubscribe, 0 },
-{ "CHECK",		cmd_check,       COMMAND_FLAG_BREAKS_SEQS },
-{ "CLOSE",		cmd_close,       COMMAND_FLAG_BREAKS_MAILBOX },
-{ "COPY",		cmd_copy,        COMMAND_FLAG_USES_SEQS |
+{ "EXAMINE", cmd_examine, COMMAND_FLAG_BREAKS_MAILBOX },
+{ "CREATE", cmd_create, 0 },
+{ "DELETE", cmd_delete, COMMAND_FLAG_BREAKS_MAILBOX },
+{ "RENAME", cmd_rename, 0 },
+{ "LIST", cmd_list, 0 },
+{ "LSUB", cmd_lsub, 0 },
+{ "SELECT", cmd_select, COMMAND_FLAG_BREAKS_MAILBOX },
+{ "STATUS", cmd_status, 0 },
+{ "SUBSCRIBE", cmd_subscribe, 0 },
+{ "UNSUBSCRIBE", cmd_unsubscribe, 0 },
+{ "CHECK", cmd_check, COMMAND_FLAG_BREAKS_SEQS },
+{ "CLOSE", cmd_close, COMMAND_FLAG_BREAKS_MAILBOX },
+{ "COPY", cmd_copy, COMMAND_FLAG_USES_SEQS |
 COMMAND_FLAG_BREAKS_SEQS },
-{ "EXPUNGE",		cmd_expunge,     COMMAND_FLAG_BREAKS_SEQS },
-{ "FETCH",		cmd_fetch,       COMMAND_FLAG_USES_SEQS },
-{ "SEARCH",		cmd_search,      COMMAND_FLAG_USES_SEQS },
-{ "STORE",		cmd_store,       COMMAND_FLAG_USES_SEQS },
-{ "UID COPY",		cmd_copy,        COMMAND_FLAG_BREAKS_SEQS },
-{ "UID FETCH",		cmd_fetch,       COMMAND_FLAG_BREAKS_SEQS },
-{ "UID SEARCH",		cmd_search,      COMMAND_FLAG_BREAKS_SEQS },
-{ "UID STORE",		cmd_store,       COMMAND_FLAG_BREAKS_SEQS }
+{ "EXPUNGE", cmd_expunge, COMMAND_FLAG_BREAKS_SEQS },
+{ "FETCH", cmd_fetch, COMMAND_FLAG_USES_SEQS },
+{ "SEARCH", cmd_search, COMMAND_FLAG_USES_SEQS },
+{ "STORE", cmd_store, COMMAND_FLAG_USES_SEQS },
+{ "UID COPY", cmd_copy, COMMAND_FLAG_BREAKS_SEQS },
+{ "UID FETCH", cmd_fetch, COMMAND_FLAG_BREAKS_SEQS },
+{ "UID SEARCH", cmd_search, COMMAND_FLAG_BREAKS_SEQS },
+{ "UID STORE", cmd_store, COMMAND_FLAG_BREAKS_SEQS }
 };
 #define IMAP4REV1_COMMANDS_COUNT N_ELEMENTS(imap4rev1_commands)
 static const struct command imap_ext_commands[] = {
-{ "CANCELUPDATE",	cmd_cancelupdate,0 },
-{ "ENABLE",		cmd_enable,      0 },
-{ "ID",			cmd_id,          0 },
-{ "IDLE",		cmd_idle,        COMMAND_FLAG_BREAKS_SEQS |
+{ "CANCELUPDATE", cmd_cancelupdate,0 },
+{ "ENABLE", cmd_enable, 0 },
+{ "ID", cmd_id, 0 },
+{ "IDLE", cmd_idle, COMMAND_FLAG_BREAKS_SEQS |
 COMMAND_FLAG_REQUIRES_SYNC |
 COMMAND_FLAG_BREAKS_MAILBOX },
-{ "GETMETADATA",	cmd_getmetadata, 0 },
-{ "SETMETADATA",	cmd_setmetadata, 0 },
-{ "NAMESPACE",		cmd_namespace,   0 },
-{ "NOTIFY",		cmd_notify,      COMMAND_FLAG_BREAKS_SEQS },
-{ "SORT",		cmd_sort,        COMMAND_FLAG_USES_SEQS },
-{ "THREAD",		cmd_thread,      COMMAND_FLAG_USES_SEQS },
-{ "UID EXPUNGE",	cmd_uid_expunge, COMMAND_FLAG_BREAKS_SEQS },
-{ "MOVE",		cmd_move,        COMMAND_FLAG_USES_SEQS |
+{ "GETMETADATA", cmd_getmetadata, 0 },
+{ "SETMETADATA", cmd_setmetadata, 0 },
+{ "NAMESPACE", cmd_namespace, 0 },
+{ "NOTIFY", cmd_notify, COMMAND_FLAG_BREAKS_SEQS },
+{ "SORT", cmd_sort, COMMAND_FLAG_USES_SEQS },
+{ "THREAD", cmd_thread, COMMAND_FLAG_USES_SEQS },
+{ "UID EXPUNGE", cmd_uid_expunge, COMMAND_FLAG_BREAKS_SEQS },
+{ "MOVE", cmd_move, COMMAND_FLAG_USES_SEQS |
 COMMAND_FLAG_BREAKS_SEQS },
-{ "UID MOVE",		cmd_move,        COMMAND_FLAG_BREAKS_SEQS },
-{ "UID SORT",		cmd_sort,        COMMAND_FLAG_BREAKS_SEQS },
-{ "UID THREAD",		cmd_thread,      COMMAND_FLAG_BREAKS_SEQS },
-{ "UNSELECT",		cmd_unselect,    COMMAND_FLAG_BREAKS_MAILBOX },
-{ "XLIST",		cmd_list,        0 },
-{ "COMPRESS",           cmd_compress,    0 },
-{ "GENURLAUTH",		cmd_genurlauth,  0 },
-{ "RESETKEY",		cmd_resetkey,    0 },
-{ "URLFETCH",		cmd_urlfetch,    0 }
+{ "UID MOVE", cmd_move, COMMAND_FLAG_BREAKS_SEQS },
+{ "UID SORT", cmd_sort, COMMAND_FLAG_BREAKS_SEQS },
+{ "UID THREAD", cmd_thread, COMMAND_FLAG_BREAKS_SEQS },
+{ "UNSELECT", cmd_unselect, COMMAND_FLAG_BREAKS_MAILBOX },
+{ "XLIST", cmd_list, 0 },
+{ "COMPRESS", cmd_compress, 0 },
+{ "GENURLAUTH", cmd_genurlauth, 0 },
+{ "RESETKEY", cmd_resetkey, 0 },
+{ "URLFETCH", cmd_urlfetch, 0 }
 };
 #define IMAP_EXT_COMMANDS_COUNT N_ELEMENTS(imap_ext_commands)
 ARRAY_TYPE(command) imap_commands;

@@ -10,13 +10,13 @@ SHaveResp,
 Maxphase,
 };
 static char *phasenames[] = {
-[CHavePub]	"CHavePub",
-[CHaveResp]	"CHaveResp",
-[VNeedHash]	"VNeedHash",
-[VNeedSig]	"VNeedSig",
-[VHaveResp]	"VHaveResp",
-[SNeedHash]	"SNeedHash",
-[SHaveResp]	"SHaveResp",
+[CHavePub] "CHavePub",
+[CHaveResp] "CHaveResp",
+[VNeedHash] "VNeedHash",
+[VNeedSig] "VNeedSig",
+[VHaveResp] "VHaveResp",
+[SNeedHash] "SNeedHash",
+[SHaveResp] "SHaveResp",
 };
 struct State
 {
@@ -234,19 +234,19 @@ rsaclosekey(Key *k)
 rsaprivfree(k->priv);
 }
 Proto rsa = {
-.name=	"rsa",
-.init=		rsainit,
-.write=	rsawrite,
-.read=	rsaread,
-.close=	rsaclose,
-.addkey=	rsaaddkey,
-.closekey=	rsaclosekey,
+.name= "rsa",
+.init= rsainit,
+.write= rsawrite,
+.read= rsaread,
+.close= rsaclose,
+.addkey= rsaaddkey,
+.closekey= rsaclosekey,
 };
-#define O0(a,b)	((a)*40+(b))
-#define O2(x)	\
+#define O0(a,b) ((a)*40+(b))
+#define O2(x) \
 (((x)>> 7)&0x7F)|0x80, \
 ((x)&0x7F)
-#define O3(x)	\
+#define O3(x) \
 (((x)>>14)&0x7F)|0x80, \
 (((x)>> 7)&0x7F)|0x80, \
 ((x)&0x7F)

@@ -4,12 +4,12 @@
 enum{
 Qdir,
 Qsnarf,
-Maxsnarf=	100*1024
+Maxsnarf= 100*1024
 };
 static
 Dirtab snarftab[]={
-".",		{Qdir, 0, QTDIR},	0,	0555,
-"snarf",	{Qsnarf},			0,	0666,
+".", {Qdir, 0, QTDIR}, 0, 0555,
+"snarf", {Qsnarf}, 0, 0666,
 };
 static QLock snarflock;
 static Chan*

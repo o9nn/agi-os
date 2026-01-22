@@ -8,7 +8,7 @@ extern void ledexit(int);
 extern void delay(int);
 extern void _uartputs(char*, int);
 extern int _uartprint(char*, ...);
-#pragma	varargck argpos	_uartprint 1
+#pragma varargck argpos _uartprint 1
 extern long ainc(long *);
 extern long adec(long *);
 extern void allcacheinfo(Memcache *);
@@ -141,8 +141,8 @@ extern void watchdoginit(void);
 extern void wfi(void);
 extern int irqenable(uint, void (*)(Ureg*, void*), void*, char*);
 extern int irqdisable(uint, void (*)(Ureg*, void*), void*, char*);
-#define intrenable(i, f, a, b, n)	irqenable((i), (f), (a), (n))
-#define intrdisable(i, f, a, b, n)	irqdisable((i), (f), (a), (n))
+#define intrenable(i, f, a, b, n) irqenable((i), (f), (a), (n))
+#define intrdisable(i, f, a, b, n) irqdisable((i), (f), (a), (n))
 extern void vectors(void);
 extern void vtable(void);
 extern void archconfinit(void);
@@ -165,7 +165,7 @@ extern void fpusysrforkchild(Proc*, Ureg*, Proc*);
 extern int fpuemu(Ureg*);
 extern int cas(int *, int, int);
 extern char* getenv(char*, char*, int);
-char*	getconf(char*);
+char* getconf(char*);
 uintptr mmukmap(uintptr, uintptr, usize);
 uintptr mmukunmap(uintptr, uintptr, usize);
 extern void* mmuuncache(void*, usize);
@@ -187,14 +187,14 @@ extern void sysprocsetup(Proc*);
 long labs(long);
 extern void forkret(void);
 extern int userureg(Ureg*);
-void*	vmap(uintptr, usize);
+void* vmap(uintptr, usize);
 void vunmap(void*, usize);
 extern void kexit(Ureg*);
-#define	getpgcolor(a)	0
-#define	kmapinval()
-#define PTR2UINT(p)	((uintptr)(p))
-#define UINT2PTR(i)	((void*)(i))
-#define	waserror()	(up->nerrlab++, setlabel(&up->errlab[up->nerrlab-1]))
-#define KADDR(pa)	UINT2PTR(KZERO    | ((uintptr)(pa) & ~KSEGM))
-#define PADDR(va)	PTR2UINT(PHYSDRAM | ((uintptr)(va) & ~KSEGM))
-#define MASK(v)	((1UL << (v)) - 1)
+#define getpgcolor(a) 0
+#define kmapinval()
+#define PTR2UINT(p) ((uintptr)(p))
+#define UINT2PTR(i) ((void*)(i))
+#define waserror() (up->nerrlab++, setlabel(&up->errlab[up->nerrlab-1]))
+#define KADDR(pa) UINT2PTR(KZERO | ((uintptr)(pa) & ~KSEGM))
+#define PADDR(va) PTR2UINT(PHYSDRAM | ((uintptr)(va) & ~KSEGM))
+#define MASK(v) ((1UL << (v)) - 1)

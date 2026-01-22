@@ -18,35 +18,35 @@ extern void * malloc ();
 #endif
 #endif
 #ifdef DONT_USE_B_MODE
-#define READ_BINARY	"r"
-#define WRITE_BINARY	"w"
+#define READ_BINARY "r"
+#define WRITE_BINARY "w"
 #else
 #ifdef VMS
-#define READ_BINARY	"rb", "ctx=stm"
-#define WRITE_BINARY	"wb", "ctx=stm"
+#define READ_BINARY "rb", "ctx=stm"
+#define WRITE_BINARY "wb", "ctx=stm"
 #else
-#define READ_BINARY	"rb"
-#define WRITE_BINARY	"wb"
+#define READ_BINARY "rb"
+#define WRITE_BINARY "wb"
 #endif
 #endif
 #ifndef EXIT_FAILURE
-#define EXIT_FAILURE  1
+#define EXIT_FAILURE 1
 #endif
 #ifndef EXIT_SUCCESS
 #ifdef VMS
-#define EXIT_SUCCESS  1
+#define EXIT_SUCCESS 1
 #else
-#define EXIT_SUCCESS  0
+#define EXIT_SUCCESS 0
 #endif
 #endif
 #ifndef MAX_COM_LENGTH
 #define MAX_COM_LENGTH 65000L
 #endif
 static FILE * infile;
-#define NEXTBYTE()  getc(infile)
+#define NEXTBYTE() getc(infile)
 static FILE * outfile;
-#define PUTBYTE(x)  putc((x), outfile)
-#define ERREXIT(msg)  (fprintf(stderr, "%s\n", msg), exit(EXIT_FAILURE))
+#define PUTBYTE(x) putc((x), outfile)
+#define ERREXIT(msg) (fprintf(stderr, "%s\n", msg), exit(EXIT_FAILURE))
 static int
 read_1_byte (void)
 {
@@ -92,23 +92,23 @@ int c;
 while ((c = NEXTBYTE()) != EOF)
 PUTBYTE(c);
 }
-#define M_SOF0  0xC0
-#define M_SOF1  0xC1
-#define M_SOF2  0xC2
-#define M_SOF3  0xC3
-#define M_SOF5  0xC5
-#define M_SOF6  0xC6
-#define M_SOF7  0xC7
-#define M_SOF9  0xC9
+#define M_SOF0 0xC0
+#define M_SOF1 0xC1
+#define M_SOF2 0xC2
+#define M_SOF3 0xC3
+#define M_SOF5 0xC5
+#define M_SOF6 0xC6
+#define M_SOF7 0xC7
+#define M_SOF9 0xC9
 #define M_SOF10 0xCA
 #define M_SOF11 0xCB
 #define M_SOF13 0xCD
 #define M_SOF14 0xCE
 #define M_SOF15 0xCF
-#define M_SOI   0xD8
-#define M_EOI   0xD9
-#define M_SOS   0xDA
-#define M_COM   0xFE
+#define M_SOI 0xD8
+#define M_EOI 0xD9
+#define M_SOS 0xDA
+#define M_COM 0xFE
 static int
 next_marker (void)
 {

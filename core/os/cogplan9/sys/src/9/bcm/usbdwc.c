@@ -1,39 +1,39 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"../port/error.h"
-#include	"../port/usb.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "../port/error.h"
+#include "../port/usb.h"
 #include "dwcotg.h"
 enum
 {
-USBREGS		= VIRTIO + 0x980000,
-Enabledelay	= 50,
-Resetdelay	= 10,
-ResetdelayHS	= 50,
-Read		= 0,
-Write		= 1,
+USBREGS = VIRTIO + 0x980000,
+Enabledelay = 50,
+Resetdelay = 10,
+ResetdelayHS = 50,
+Read = 0,
+Write = 1,
 };
 typedef struct Ctlr Ctlr;
 typedef struct Epio Epio;
 struct Ctlr {
-Dwcregs	*regs;
-int	nchan;
-ulong	chanbusy;
-QLock	chanlock;
-QLock	split;
-int	splitretry;
-int	sofchan;
-int	wakechan;
-int	debugchan;
-Rendez	*chanintr;
+Dwcregs *regs;
+int nchan;
+ulong chanbusy;
+QLock chanlock;
+QLock split;
+int splitretry;
+int sofchan;
+int wakechan;
+int debugchan;
+Rendez *chanintr;
 };
 struct Epio {
 QLock;
-Block	*cb;
-ulong	lastpoll;
+Block *cb;
+ulong lastpoll;
 };
 static Ctlr dwc;
 static int debug;
@@ -295,7 +295,7 @@ n = ROUND(len, ep->maxpkt);
 else
 n = len;
 hc->hctsiz = n | npkt<<OPktcnt | pid;
-hc->hcdma  = PADDR(a);
+hc->hcdma = PADDR(a);
 nleft = len;
 logstart(ep);
 for(;;){
@@ -326,7 +326,7 @@ hc->hcchar |= Oddfrm;
 hc->hcchar = (hc->hcchar &~ Chdis) | Chen;
 clog(ep, hc);
 if(ep->ttype == Tbulk && dir == Epin)
-i = chanwait(ep, ctlr, hc,  Chhltd);
+i = chanwait(ep, ctlr, hc, Chhltd);
 else if(ep->ttype == Tintr && (hc->hcsplt & Spltena))
 i = chanwait(ep, ctlr, hc, Chhltd);
 else

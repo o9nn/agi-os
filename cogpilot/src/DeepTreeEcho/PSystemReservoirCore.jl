@@ -48,7 +48,7 @@ struct EvolutionRule
 membrane_id::Int
 lhs::Multiset
 rhs::Multiset
-target_membrane::Int  # 0 = same membrane, >0 = send to target
+target_membrane::Int # 0 = same membrane, >0 = send to target
 function EvolutionRule(membrane_id::Int, lhs::Multiset, rhs::Multiset,
 target::Int=0)
 new(membrane_id, lhs, rhs, target)
@@ -169,7 +169,7 @@ idx2 = mod(hash(tree[1:i+1]), n) + 1
 # Strengthen connection
 weight = 0.1 / sqrt(length(tree))
 membrane.reservoir_weights[idx1, idx2] += weight
-membrane.reservoir_weights[idx2, idx1] += weight  # Symmetric
+membrane.reservoir_weights[idx2, idx1] += weight # Symmetric
 end
 # Normalize spectral radius
 eigenvalues = eigvals(membrane.reservoir_weights)
@@ -406,4 +406,4 @@ return Dict(
 "feedback_history_length" => length(bridge.feedback_history)
 )
 end
-end  # module PSystemReservoirCore
+end # module PSystemReservoirCore

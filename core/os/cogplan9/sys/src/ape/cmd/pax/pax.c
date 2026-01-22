@@ -4,63 +4,63 @@ static char *copyright = "Copyright (c) 1989 Mark H. Colburn.\nAll rights reserv
 #endif
 #define NO_EXTERN
 #include "pax.h"
-char           *ar_file;
-char           *bufend;
-char           *bufstart;
-char           *bufidx;
-char           *myname;
-char          **n_argv;
-int             n_argc;
-int             archivefd;
-int             blocking;
-int             gid;
-int             head_standard;
-int             ar_interface;
-int             ar_format;
-int             mask;
-int             ttyf;
-int             uid;
-int		names_from_stdin;
-OFFSET          total;
-short           f_access_time;
-short           areof;
-short           f_dir_create;
-short           f_append;
-short           f_create;
-short           f_extract;
-short           f_follow_links;
-short           f_interactive;
-short           f_linksleft;
-short           f_list;
-short           f_modified;
-short           f_verbose;
-short		f_link;
-short		f_owner;
-short		f_pass;
-short           f_newer;
-short		f_disposition;
-short           f_reverse_match;
-short           f_mtime;
-short           f_unconditional;
-time_t          now = 0;
-uint            arvolume;
-uint            blocksize = BLOCKSIZE;
-FILE	       *msgfile;
-Replstr        *rplhead = (Replstr *)NULL;
-Replstr        *rpltail;
+char *ar_file;
+char *bufend;
+char *bufstart;
+char *bufidx;
+char *myname;
+char **n_argv;
+int n_argc;
+int archivefd;
+int blocking;
+int gid;
+int head_standard;
+int ar_interface;
+int ar_format;
+int mask;
+int ttyf;
+int uid;
+int names_from_stdin;
+OFFSET total;
+short f_access_time;
+short areof;
+short f_dir_create;
+short f_append;
+short f_create;
+short f_extract;
+short f_follow_links;
+short f_interactive;
+short f_linksleft;
+short f_list;
+short f_modified;
+short f_verbose;
+short f_link;
+short f_owner;
+short f_pass;
+short f_newer;
+short f_disposition;
+short f_reverse_match;
+short f_mtime;
+short f_unconditional;
+time_t now = 0;
+uint arvolume;
+uint blocksize = BLOCKSIZE;
+FILE *msgfile;
+Replstr *rplhead = (Replstr *)NULL;
+Replstr *rpltail;
 #ifdef __STDC__
-static void 	usage(void);
-static OFFSET   pax_optsize(char *);
+static void usage(void);
+static OFFSET pax_optsize(char *);
 #else
-static void 	usage();
-static OFFSET   pax_optsize();
+static void usage();
+static OFFSET pax_optsize();
 #endif
 #ifdef __STDC__
 int main(int argc, char **argv)
 #else
 int main(argc, argv)
-int             argc;
-char          **argv;
+int argc;
+char **argv;
 #endif
 {
 if ((myname = strrchr(argv[0], '/')) != (char *)NULL) {
@@ -87,13 +87,13 @@ exit(0);
 int do_pax(int ac, char **av)
 #else
 int do_pax(ac, av)
-int             ac;
-char          **av;
+int ac;
+char **av;
 #endif
 {
-int             c;
-char	   *dirname;
-Stat	    st;
+int c;
+char *dirname;
+Stat st;
 ar_file = "-";
 f_unconditional = 1;
 f_mtime = 1;
@@ -258,12 +258,12 @@ ar_format = TAR;
 static OFFSET pax_optsize(char *str)
 #else
 static OFFSET pax_optsize(str)
-char           *str;
+char *str;
 #endif
 {
-char           *idx;
-OFFSET          number;
-OFFSET          result;
+char *idx;
+OFFSET number;
+OFFSET result;
 result = 0;
 idx = str;
 for (;;) {

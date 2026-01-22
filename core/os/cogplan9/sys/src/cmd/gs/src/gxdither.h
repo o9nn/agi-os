@@ -1,8 +1,8 @@
 #ifndef gxdither_INCLUDED
-#  define gxdither_INCLUDED
+# define gxdither_INCLUDED
 #include "gxfrac.h"
 #ifndef gx_device_halftone_DEFINED
-#  define gx_device_halftone_DEFINED
+# define gx_device_halftone_DEFINED
 typedef struct gx_device_halftone_s gx_device_halftone;
 #endif
 int gx_render_device_DeviceN(frac * pcolor, gx_device_color * pdevc,

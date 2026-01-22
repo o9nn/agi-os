@@ -27,9 +27,9 @@ end
 Derivative(; name, k = 1, T, x = 0.0)
 Outputs an approximate derivative of the input. The transfer function of this block is
 ```
-k      k        ks
+k k ks
 ─ - ─────── = ──────
-T   sT² + T   sT + 1
+T sT² + T sT + 1
 ```
 and a state-space realization is given by `ss(-1/T, 1/T, -k/T, k/T)`
 where `T` is the time constant of the filter.
@@ -507,7 +507,7 @@ symbolic_eps(t) = eps(t)
 TransferFunction(; b, a, name)
 A single input, single output, linear time-invariant system provided as a transfer-function.
 ```
-Y(s) = b(s) / a(s)  U(s)
+Y(s) = b(s) / a(s) U(s)
 ```
 where `b` and `a` are vectors of coefficients of the numerator and denominator polynomials, respectively, ordered such that the coefficient of the highest power of `s` is first.
 The internal state realization is on controller canonical form, with state variable `x`, output variable `y` and input variable `u`. For numerical robustness, the realization used by the integrator is scaled by the last entry of the `a` parameter. The internally scaled state variable is available as `x_scaled`.

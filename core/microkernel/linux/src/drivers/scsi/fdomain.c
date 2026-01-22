@@ -26,109 +26,109 @@ struct proc_dir_entry proc_scsi_fdomain = {
 PROC_SCSI_FDOMAIN, 7, "fdomain",
 S_IFDIR | S_IRUGO | S_IXUGO, 2
 };
-#define VERSION          "$Revision: 1.1 $"
-#define DEBUG            1
-#define ENABLE_PARITY    1
-#define FIFO_COUNT       2
-#define DO_DETECT        0
+#define VERSION "$Revision: 1.1 $"
+#define DEBUG 1
+#define ENABLE_PARITY 1
+#define FIFO_COUNT 2
+#define DO_DETECT 0
 #if DEBUG
-#define EVERY_ACCESS     0
-#define ERRORS_ONLY      1
-#define DEBUG_DETECT     0
-#define DEBUG_MESSAGES   1
-#define DEBUG_ABORT      1
-#define DEBUG_RESET      1
-#define DEBUG_RACE       1
+#define EVERY_ACCESS 0
+#define ERRORS_ONLY 1
+#define DEBUG_DETECT 0
+#define DEBUG_MESSAGES 1
+#define DEBUG_ABORT 1
+#define DEBUG_RESET 1
+#define DEBUG_RACE 1
 #else
-#define EVERY_ACCESS     0
-#define ERRORS_ONLY      0
-#define DEBUG_DETECT     0
-#define DEBUG_MESSAGES   0
-#define DEBUG_ABORT      0
-#define DEBUG_RESET      0
-#define DEBUG_RACE       0
+#define EVERY_ACCESS 0
+#define ERRORS_ONLY 0
+#define DEBUG_DETECT 0
+#define DEBUG_MESSAGES 0
+#define DEBUG_ABORT 0
+#define DEBUG_RESET 0
+#define DEBUG_RACE 0
 #endif
 #if EVERY_ACCESS
 #undef ERRORS_ONLY
-#define ERRORS_ONLY      0
+#define ERRORS_ONLY 0
 #endif
 #if ENABLE_PARITY
-#define PARITY_MASK      0x08
+#define PARITY_MASK 0x08
 #else
-#define PARITY_MASK      0x00
+#define PARITY_MASK 0x00
 #endif
 enum chip_type {
-unknown          = 0x00,
-tmc1800          = 0x01,
-tmc18c50         = 0x02,
-tmc18c30         = 0x03,
+unknown = 0x00,
+tmc1800 = 0x01,
+tmc18c50 = 0x02,
+tmc18c30 = 0x03,
 };
 enum {
-in_arbitration   = 0x02,
-in_selection     = 0x04,
-in_other         = 0x08,
-disconnect       = 0x10,
-aborted          = 0x20,
-sent_ident       = 0x40,
+in_arbitration = 0x02,
+in_selection = 0x04,
+in_other = 0x08,
+disconnect = 0x10,
+aborted = 0x20,
+sent_ident = 0x40,
 };
 enum in_port_type {
-Read_SCSI_Data   =  0,
-SCSI_Status      =  1,
-TMC_Status       =  2,
-FIFO_Status      =  3,
-Interrupt_Cond   =  4,
-LSB_ID_Code      =  5,
-MSB_ID_Code      =  6,
-Read_Loopback    =  7,
-SCSI_Data_NoACK  =  8,
-Interrupt_Status =  9,
-Configuration1   = 10,
-Configuration2   = 11,
-Read_FIFO        = 12,
-FIFO_Data_Count  = 14
+Read_SCSI_Data = 0,
+SCSI_Status = 1,
+TMC_Status = 2,
+FIFO_Status = 3,
+Interrupt_Cond = 4,
+LSB_ID_Code = 5,
+MSB_ID_Code = 6,
+Read_Loopback = 7,
+SCSI_Data_NoACK = 8,
+Interrupt_Status = 9,
+Configuration1 = 10,
+Configuration2 = 11,
+Read_FIFO = 12,
+FIFO_Data_Count = 14
 };
 enum out_port_type {
-Write_SCSI_Data  =  0,
-SCSI_Cntl        =  1,
-Interrupt_Cntl   =  2,
-SCSI_Mode_Cntl   =  3,
-TMC_Cntl         =  4,
-Memory_Cntl      =  5,
-Write_Loopback   =  7,
-IO_Control       = 11,
-Write_FIFO       = 12
+Write_SCSI_Data = 0,
+SCSI_Cntl = 1,
+Interrupt_Cntl = 2,
+SCSI_Mode_Cntl = 3,
+TMC_Cntl = 4,
+Memory_Cntl = 5,
+Write_Loopback = 7,
+IO_Control = 11,
+Write_FIFO = 12
 };
-static int               port_base         = 0;
-static void              *bios_base        = NULL;
-static int               bios_major        = 0;
-static int               bios_minor        = 0;
-static int               PCI_bus           = 0;
-static int               Quantum           = 0;
-static int               interrupt_level   = 0;
-static volatile int      in_command        = 0;
-static Scsi_Cmnd         *current_SC       = NULL;
-static enum chip_type    chip              = unknown;
-static int               adapter_mask      = 0;
-static int               this_id           = 0;
-static int               setup_called      = 0;
+static int port_base = 0;
+static void *bios_base = NULL;
+static int bios_major = 0;
+static int bios_minor = 0;
+static int PCI_bus = 0;
+static int Quantum = 0;
+static int interrupt_level = 0;
+static volatile int in_command = 0;
+static Scsi_Cmnd *current_SC = NULL;
+static enum chip_type chip = unknown;
+static int adapter_mask = 0;
+static int this_id = 0;
+static int setup_called = 0;
 #if DEBUG_RACE
-static volatile int      in_interrupt_flag = 0;
+static volatile int in_interrupt_flag = 0;
 #endif
-static int               SCSI_Mode_Cntl_port;
-static int               FIFO_Data_Count_port;
-static int               Interrupt_Cntl_port;
-static int               Interrupt_Status_port;
-static int               Read_FIFO_port;
-static int               Read_SCSI_Data_port;
-static int               SCSI_Cntl_port;
-static int               SCSI_Data_NoACK_port;
-static int               SCSI_Status_port;
-static int               TMC_Cntl_port;
-static int               TMC_Status_port;
-static int               Write_FIFO_port;
-static int               Write_SCSI_Data_port;
-static int               FIFO_Size = 0x2000;
-extern void              fdomain_16x0_intr( int irq, void *dev_id, struct pt_regs * regs );
+static int SCSI_Mode_Cntl_port;
+static int FIFO_Data_Count_port;
+static int Interrupt_Cntl_port;
+static int Interrupt_Status_port;
+static int Read_FIFO_port;
+static int Read_SCSI_Data_port;
+static int SCSI_Cntl_port;
+static int SCSI_Data_NoACK_port;
+static int SCSI_Status_port;
+static int TMC_Cntl_port;
+static int TMC_Status_port;
+static int Write_FIFO_port;
+static int Write_SCSI_Data_port;
+static int FIFO_Size = 0x2000;
+extern void fdomain_16x0_intr( int irq, void *dev_id, struct pt_regs * regs );
 static void *addresses[] = {
 (void *)0xc8000,
 (void *)0xca000,
@@ -144,30 +144,30 @@ static unsigned short ports[] = { 0x140, 0x150, 0x160, 0x170 };
 static unsigned short ints[] = { 3, 5, 10, 11, 12, 14, 15, 0 };
 struct signature {
 const char *signature;
-int  sig_offset;
-int  sig_length;
-int  major_bios_version;
-int  minor_bios_version;
-int  flag;
+int sig_offset;
+int sig_length;
+int major_bios_version;
+int minor_bios_version;
+int flag;
 } signatures[] = {
-{ "FUTURE DOMAIN CORP. (C) 1986-1990 1800-V2.07/28/89",  5, 50,  2,  0, 0 },
-{ "FUTURE DOMAIN CORP. (C) 1986-1990 1800-V1.07/28/89",  5, 50,  2,  0, 0 },
-{ "FUTURE DOMAIN CORP. (C) 1986-1990 1800-V2.07/28/89", 72, 50,  2,  0, 2 },
-{ "FUTURE DOMAIN CORP. (C) 1986-1990 1800-V2.0",        73, 43,  2,  0, 3 },
-{ "FUTURE DOMAIN CORP. (C) 1991 1800-V2.0.",            72, 39,  2,  0, 4 },
-{ "FUTURE DOMAIN CORP. (C) 1992 V3.00.004/02/92",        5, 44,  3,  0, 0 },
-{ "FUTURE DOMAIN TMC-18XX (C) 1993 V3.203/12/93",        5, 44,  3,  2, 0 },
-{ "IBM F1 P2 BIOS v1.0104/29/93",                        5, 28,  3, -1, 0 },
-{ "Future Domain Corp. V1.0008/18/93",                   5, 33,  3,  4, 0 },
-{ "Future Domain Corp. V1.0008/18/93",                  26, 33,  3,  4, 1 },
-{ "Adaptec AHA-2920 PCI-SCSI Card",                     42, 31,  3, -1, 1 },
-{ "IBM F1 P264/32",                                      5, 14,  3, -1, 1 },
-{ "Future Domain Corp. V2.0108/18/93",                   5, 33,  3,  5, 0 },
-{ "FUTURE DOMAIN CORP.  V3.5008/18/93",                  5, 34,  3,  5, 0 },
-{ "FUTURE DOMAIN 18c30/18c50/1800 (C) 1994 V3.5",        5, 44,  3,  5, 0 },
-{ "FUTURE DOMAIN CORP.  V3.6008/18/93",                  5, 34,  3,  6, 0 },
-{ "FUTURE DOMAIN CORP.  V3.6108/18/93",                  5, 34,  3,  6, 0 },
-{ "FUTURE DOMAIN TMC-18XX",                              5, 22, -1, -1, 0 },
+{ "FUTURE DOMAIN CORP. (C) 1986-1990 1800-V2.07/28/89", 5, 50, 2, 0, 0 },
+{ "FUTURE DOMAIN CORP. (C) 1986-1990 1800-V1.07/28/89", 5, 50, 2, 0, 0 },
+{ "FUTURE DOMAIN CORP. (C) 1986-1990 1800-V2.07/28/89", 72, 50, 2, 0, 2 },
+{ "FUTURE DOMAIN CORP. (C) 1986-1990 1800-V2.0", 73, 43, 2, 0, 3 },
+{ "FUTURE DOMAIN CORP. (C) 1991 1800-V2.0.", 72, 39, 2, 0, 4 },
+{ "FUTURE DOMAIN CORP. (C) 1992 V3.00.004/02/92", 5, 44, 3, 0, 0 },
+{ "FUTURE DOMAIN TMC-18XX (C) 1993 V3.203/12/93", 5, 44, 3, 2, 0 },
+{ "IBM F1 P2 BIOS v1.0104/29/93", 5, 28, 3, -1, 0 },
+{ "Future Domain Corp. V1.0008/18/93", 5, 33, 3, 4, 0 },
+{ "Future Domain Corp. V1.0008/18/93", 26, 33, 3, 4, 1 },
+{ "Adaptec AHA-2920 PCI-SCSI Card", 42, 31, 3, -1, 1 },
+{ "IBM F1 P264/32", 5, 14, 3, -1, 1 },
+{ "Future Domain Corp. V2.0108/18/93", 5, 33, 3, 5, 0 },
+{ "FUTURE DOMAIN CORP.  V3.5008/18/93", 5, 34, 3, 5, 0 },
+{ "FUTURE DOMAIN 18c30/18c50/1800 (C) 1994 V3.5", 5, 44, 3, 5, 0 },
+{ "FUTURE DOMAIN CORP.  V3.6008/18/93", 5, 34, 3, 6, 0 },
+{ "FUTURE DOMAIN CORP.  V3.6108/18/93", 5, 34, 3, 6, 0 },
+{ "FUTURE DOMAIN TMC-18XX", 5, 22, -1, -1, 0 },
 };
 #define SIGNATURE_COUNT (sizeof( signatures ) / sizeof( struct signature ))
 static void print_banner( struct Scsi_Host *shpnt )
@@ -179,9 +179,9 @@ shpnt->host_no, shpnt->this_id );
 } else {
 printk( "scsi%d <fdomain>: BIOS version ", shpnt->host_no );
 if (bios_major >= 0) printk( "%d.", bios_major );
-else                 printk( "?." );
+else printk( "?." );
 if (bios_minor >= 0) printk( "%d", bios_minor );
-else                 printk( "?." );
+else printk( "?." );
 printk( " at 0x%x using scsi id %d\n",
 (unsigned)bios_base, shpnt->this_id );
 }
@@ -194,7 +194,7 @@ chip == tmc1800 ? "TMC-1800"
 : "Unknown")),
 port_base );
 if (interrupt_level) printk( "%d", interrupt_level );
-else                 printk( "<none>" );
+else printk( "<none>" );
 printk( "\n" );
 }
 void fdomain_setup( char *str, int *ints )
@@ -203,9 +203,9 @@ if (setup_called++ || ints[0] < 2 || ints[0] > 3) {
 printk( "fdomain: usage: fdomain=<PORT_BASE>,<IRQ>[,<ADAPTER_ID>]\n" );
 printk( "fdomain: bad LILO parameters?\n" );
 }
-port_base       = ints[0] >= 1 ? ints[1] : 0;
+port_base = ints[0] >= 1 ? ints[1] : 0;
 interrupt_level = ints[0] >= 2 ? ints[2] : 0;
-this_id         = ints[0] >= 3 ? ints[3] : 0;
+this_id = ints[0] >= 3 ? ints[3] : 0;
 bios_major = bios_minor = -1;
 }
 static void do_pause( unsigned amount )
@@ -246,7 +246,7 @@ FIFO_Size = 0x800;
 }
 #else
 if (inb( port + Configuration2 ) & 0x02) {
-chip      = tmc18c30;
+chip = tmc18c30;
 FIFO_Size = 0x800;
 }
 #endif
@@ -305,7 +305,7 @@ if (base == ports[i])
 ++flag;
 }
 if (flag && fdomain_is_valid_port( base )) {
-*irq    = fdomain_get_irq( base );
+*irq = fdomain_get_irq( base );
 *iobase = base;
 return 1;
 }
@@ -327,7 +327,7 @@ printk( " %x,", base );
 if ((flag = fdomain_is_valid_port( base ))) break;
 }
 if (!flag) return 0;
-*irq    = fdomain_get_irq( base );
+*irq = fdomain_get_irq( base );
 *iobase = base;
 return 1;
 }
@@ -345,18 +345,18 @@ continue;
 if ((flag = fdomain_is_valid_port( i ))) break;
 }
 if (!flag) return 0;
-*irq    = fdomain_get_irq( i );
+*irq = fdomain_get_irq( i );
 *iobase = i;
 return 1;
 }
 #ifdef CONFIG_PCI
 static int fdomain_pci_bios_detect( int *irq, int *iobase )
 {
-int              error;
-unsigned char    pci_bus, pci_dev_fn;
-unsigned char    pci_irq;
-unsigned int     pci_base;
-unsigned short   pci_vendor, pci_device;
+int error;
+unsigned char pci_bus, pci_dev_fn;
+unsigned char pci_irq;
+unsigned int pci_base;
+unsigned short pci_vendor, pci_device;
 if (!pcibios_present()) return fdomain_pci_nobios_detect( irq, iobase );
 #if DEBUG_DETECT
 printk( "\nINFO: cat /proc/pci to see list of PCI devices from bios32\n" );
@@ -405,7 +405,7 @@ return 0;
 printk( "TMC-3260 PCI: IRQ = %u, I/O base = 0x%lx\n",
 pci_irq, pci_base );
 #endif
-*irq    = pci_irq;
+*irq = pci_irq;
 *iobase = (pci_base & 0xfff8);
 #if DEBUG_DETECT
 printk( "TMC-3260 fix: Masking I/O base address with 0xff00.\n" );
@@ -419,17 +419,17 @@ return 0;
 #endif
 int fdomain_16x0_detect( Scsi_Host_Template *tpnt )
 {
-int              i, j;
-int              retcode;
+int i, j;
+int retcode;
 struct Scsi_Host *shpnt;
 #if DO_DETECT
-const int        buflen = 255;
-Scsi_Cmnd        SCinit;
-unsigned char    do_inquiry[] =       { INQUIRY, 0, 0, 0, buflen, 0 };
-unsigned char    do_request_sense[] = { REQUEST_SENSE, 0, 0, 0, buflen, 0 };
-unsigned char    do_read_capacity[] = { READ_CAPACITY,
+const int buflen = 255;
+Scsi_Cmnd SCinit;
+unsigned char do_inquiry[] = { INQUIRY, 0, 0, 0, buflen, 0 };
+unsigned char do_request_sense[] = { REQUEST_SENSE, 0, 0, 0, buflen, 0 };
+unsigned char do_read_capacity[] = { READ_CAPACITY,
 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-unsigned char    buf[buflen];
+unsigned char buf[buflen];
 #endif
 #if DEBUG_DETECT
 printk( "fdomain_16x0_detect()," );
@@ -457,9 +457,9 @@ if (!memcmp( ((char *)addresses[i] + signatures[j].sig_offset),
 signatures[j].signature, signatures[j].sig_length )) {
 bios_major = signatures[j].major_bios_version;
 bios_minor = signatures[j].minor_bios_version;
-PCI_bus    = (signatures[j].flag == 1);
-Quantum    = (signatures[j].flag > 1) ? signatures[j].flag : 0;
-bios_base  = addresses[i];
+PCI_bus = (signatures[j].flag == 1);
+Quantum = (signatures[j].flag > 1) ? signatures[j].flag : 0;
+bios_base = addresses[i];
 }
 }
 }
@@ -489,19 +489,19 @@ printk( "Send mail to mckinley@msupa.pa.msu.edu.\n" );
 return 0;
 }
 }
-SCSI_Mode_Cntl_port   = port_base + SCSI_Mode_Cntl;
-FIFO_Data_Count_port  = port_base + FIFO_Data_Count;
-Interrupt_Cntl_port   = port_base + Interrupt_Cntl;
+SCSI_Mode_Cntl_port = port_base + SCSI_Mode_Cntl;
+FIFO_Data_Count_port = port_base + FIFO_Data_Count;
+Interrupt_Cntl_port = port_base + Interrupt_Cntl;
 Interrupt_Status_port = port_base + Interrupt_Status;
-Read_FIFO_port        = port_base + Read_FIFO;
-Read_SCSI_Data_port   = port_base + Read_SCSI_Data;
-SCSI_Cntl_port        = port_base + SCSI_Cntl;
-SCSI_Data_NoACK_port  = port_base + SCSI_Data_NoACK;
-SCSI_Status_port      = port_base + SCSI_Status;
-TMC_Cntl_port         = port_base + TMC_Cntl;
-TMC_Status_port       = port_base + TMC_Status;
-Write_FIFO_port       = port_base + Write_FIFO;
-Write_SCSI_Data_port  = port_base + Write_SCSI_Data;
+Read_FIFO_port = port_base + Read_FIFO;
+Read_SCSI_Data_port = port_base + Read_SCSI_Data;
+SCSI_Cntl_port = port_base + SCSI_Cntl;
+SCSI_Data_NoACK_port = port_base + SCSI_Data_NoACK;
+SCSI_Status_port = port_base + SCSI_Status;
+TMC_Cntl_port = port_base + TMC_Cntl;
+TMC_Status_port = port_base + TMC_Status;
+Write_FIFO_port = port_base + Write_FIFO;
+Write_SCSI_Data_port = port_base + Write_SCSI_Data;
 fdomain_16x0_reset( NULL, 0 );
 if (fdomain_test_loopback()) {
 #if DEBUG_DETECT
@@ -516,14 +516,14 @@ return 0;
 }
 if (this_id) {
 tpnt->this_id = (this_id & 0x07);
-adapter_mask  = (1 << tpnt->this_id);
+adapter_mask = (1 << tpnt->this_id);
 } else {
 if (PCI_bus || (bios_major == 3 && bios_minor >= 2) || bios_major < 0) {
 tpnt->this_id = 7;
-adapter_mask  = 0x80;
+adapter_mask = 0x80;
 } else {
 tpnt->this_id = 6;
-adapter_mask  = 0x40;
+adapter_mask = 0x40;
 }
 }
 shpnt = scsi_register( tpnt, 0 );
@@ -554,10 +554,10 @@ panic( "fdomain: Driver requires interruptions\n" );
 }
 request_region( port_base, 0x10, "fdomain" );
 #if DO_DETECT
-SCinit.request_buffer  = SCinit.buffer = buf;
+SCinit.request_buffer = SCinit.buffer = buf;
 SCinit.request_bufflen = SCinit.bufflen = sizeof(buf)-1;
-SCinit.use_sg          = 0;
-SCinit.lun             = 0;
+SCinit.use_sg = 0;
+SCinit.lun = 0;
 printk( "fdomain: detection routine scanning for devices:\n" );
 for (i = 0; i < 8; i++) {
 SCinit.target = i;
@@ -599,7 +599,7 @@ return 1;
 const char *fdomain_16x0_info( struct Scsi_Host *ignore )
 {
 static char buffer[80];
-char        *pt;
+char *pt;
 strcpy( buffer, "Future Domain TMC-16x0 SCSI driver, version" );
 if (strchr( VERSION, ':')) {
 strcat( buffer, strchr( VERSION, ':' ) + 1 );
@@ -618,9 +618,9 @@ int fdomain_16x0_proc_info( char *buffer, char **start, off_t offset,
 int length, int hostno, int inout )
 {
 const char *info = fdomain_16x0_info( NULL );
-int        len;
-int        pos;
-int        begin;
+int len;
+int pos;
+int begin;
 if (inout) return(-ENOSYS);
 begin = 0;
 strcpy( buffer, info );
@@ -638,7 +638,7 @@ return(len);
 #if 0
 static int fdomain_arbitrate( void )
 {
-int           status = 0;
+int status = 0;
 unsigned long timeout;
 #if EVERY_ACCESS
 printk( "fdomain_arbitrate()\n" );
@@ -664,9 +664,9 @@ return 1;
 #endif
 static int fdomain_select( int target )
 {
-int           status;
+int status;
 unsigned long timeout;
-static int    flag = 0;
+static int flag = 0;
 outb( 0x82, SCSI_Cntl_port );
 outb( adapter_mask | (1 << target), SCSI_Data_NoACK_port );
 outb( PARITY_MASK, TMC_Cntl_port );
@@ -711,8 +711,8 @@ in_interrupt_flag = 0;
 }
 void fdomain_16x0_intr( int irq, void *dev_id, struct pt_regs * regs )
 {
-int      status;
-int      done = 0;
+int status;
+int done = 0;
 unsigned data_count;
 sti();
 outb( 0x00, Interrupt_Cntl_port );
@@ -834,17 +834,17 @@ if (chip == tmc1800
 && (current_SC->SCp.sent_command
 >= current_SC->cmd_len)) {
 switch (current_SC->cmnd[0]) {
-case CHANGE_DEFINITION: case COMPARE:         case COPY:
-case COPY_VERIFY:       case LOG_SELECT:      case MODE_SELECT:
-case MODE_SELECT_10:    case SEND_DIAGNOSTIC: case WRITE_BUFFER:
-case FORMAT_UNIT:       case REASSIGN_BLOCKS: case RESERVE:
-case SEARCH_EQUAL:      case SEARCH_HIGH:     case SEARCH_LOW:
-case WRITE_6:           case WRITE_10:        case WRITE_VERIFY:
-case 0x3f:              case 0x41:
-case 0xb1:              case 0xb0:            case 0xb2:
-case 0xaa:              case 0xae:
+case CHANGE_DEFINITION: case COMPARE: case COPY:
+case COPY_VERIFY: case LOG_SELECT: case MODE_SELECT:
+case MODE_SELECT_10: case SEND_DIAGNOSTIC: case WRITE_BUFFER:
+case FORMAT_UNIT: case REASSIGN_BLOCKS: case RESERVE:
+case SEARCH_EQUAL: case SEARCH_HIGH: case SEARCH_LOW:
+case WRITE_6: case WRITE_10: case WRITE_VERIFY:
+case 0x3f: case 0x41:
+case 0xb1: case 0xb0: case 0xb2:
+case 0xaa: case 0xae:
 case 0x24:
-case 0x38:              case 0x3d:
+case 0x38: case 0x3d:
 case 0xb6:
 case 0xea:
 current_SC->SCp.have_data_in = -1;
@@ -981,25 +981,25 @@ SCpnt->use_sg,
 SCpnt->request_bufflen );
 #endif
 fdomain_make_bus_idle();
-current_SC            = SCpnt;
+current_SC = SCpnt;
 current_SC->scsi_done = done;
 if (current_SC->use_sg) {
 current_SC->SCp.buffer =
 (struct scatterlist *)current_SC->request_buffer;
-current_SC->SCp.ptr              = current_SC->SCp.buffer->address;
-current_SC->SCp.this_residual    = current_SC->SCp.buffer->length;
+current_SC->SCp.ptr = current_SC->SCp.buffer->address;
+current_SC->SCp.this_residual = current_SC->SCp.buffer->length;
 current_SC->SCp.buffers_residual = current_SC->use_sg - 1;
 } else {
-current_SC->SCp.ptr              = (char *)current_SC->request_buffer;
-current_SC->SCp.this_residual    = current_SC->request_bufflen;
-current_SC->SCp.buffer           = NULL;
+current_SC->SCp.ptr = (char *)current_SC->request_buffer;
+current_SC->SCp.this_residual = current_SC->request_bufflen;
+current_SC->SCp.buffer = NULL;
 current_SC->SCp.buffers_residual = 0;
 }
-current_SC->SCp.Status              = 0;
-current_SC->SCp.Message             = 0;
-current_SC->SCp.have_data_in        = 0;
-current_SC->SCp.sent_command        = 0;
-current_SC->SCp.phase               = in_arbitration;
+current_SC->SCp.Status = 0;
+current_SC->SCp.Message = 0;
+current_SC->SCp.have_data_in = 0;
+current_SC->SCp.sent_command = 0;
+current_SC->SCp.phase = in_arbitration;
 outb( 0x00, Interrupt_Cntl_port );
 outb( 0x00, SCSI_Cntl_port );
 outb( adapter_mask, SCSI_Data_NoACK_port );
@@ -1008,7 +1008,7 @@ outb( 0x20, Interrupt_Cntl_port );
 outb( 0x14 | PARITY_MASK, TMC_Cntl_port );
 return 0;
 }
-static volatile int internal_done_flag    = 0;
+static volatile int internal_done_flag = 0;
 static volatile int internal_done_errcode = 0;
 static void internal_done( Scsi_Cmnd *SCpnt )
 {
@@ -1035,9 +1035,9 @@ printk( "%s\n", fdomain_16x0_info( SCpnt->host ) );
 print_banner( SCpnt->host );
 switch (SCpnt->SCp.phase) {
 case in_arbitration: printk( "arbitration " ); break;
-case in_selection:   printk( "selection " );   break;
-case in_other:       printk( "other " );       break;
-default:             printk( "unknown " );     break;
+case in_selection: printk( "selection " ); break;
+case in_other: printk( "other " ); break;
+default: printk( "unknown " ); break;
 }
 printk( "(%d), target = %d cmnd = 0x%02x pieces = %d size = %u\n",
 SCpnt->SCp.phase,
@@ -1133,17 +1133,17 @@ return SCSI_RESET_WAKEUP;
 #include <scsi/scsi_ioctl.h>
 int fdomain_16x0_biosparam( Scsi_Disk *disk, kdev_t dev, int *info_array )
 {
-int              drive;
-unsigned char    buf[512 + sizeof( int ) * 2];
-int		    size      = disk->capacity;
-int              *sizes    = (int *)buf;
-unsigned char    *data     = (unsigned char *)(sizes + 2);
-unsigned char    do_read[] = { READ_6, 0, 0, 0, 1, 0 };
-int              retcode;
+int drive;
+unsigned char buf[512 + sizeof( int ) * 2];
+int size = disk->capacity;
+int *sizes = (int *)buf;
+unsigned char *data = (unsigned char *)(sizes + 2);
+unsigned char do_read[] = { READ_6, 0, 0, 0, 1, 0 };
+int retcode;
 struct drive_info {
 unsigned short cylinders;
-unsigned char  heads;
-unsigned char  sectors;
+unsigned char heads;
+unsigned char sectors;
 } *i;
 drive = MINOR(dev) / 16;
 if (bios_major == 2) {

@@ -1,13 +1,13 @@
 module.exports = (componentName) => ({
-  content: `
+content: `
 import { createStyles } from '@mui/styles';
 export const styles = ()=> createStyles({
-  root: {
-  },
-  content: {
-    height: '100%',
-  },
+root: {
+},
+content: {
+height: '100%',
+},
 });
 `,
-  extension: `styles.ts`
+extension: `styles.ts`
 });

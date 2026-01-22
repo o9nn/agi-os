@@ -32,11 +32,11 @@ system = DeepTreeEchoSystem(base_order=5)
 # Option 2: Use explicit parameter set derivation
 params = get_parameter_set(5, membrane_order=4)
 system = DeepTreeEchoSystem(
-reservoir_size = params.reservoir_size,   # 17 (cumulative trees)
-max_tree_order = params.max_tree_order,   # 8
-num_membranes = params.num_membranes,     # 4 (A000081[4])
-growth_rate = params.growth_rate,         # ≈2.22 (20/9)
-mutation_rate = params.mutation_rate      # ≈0.11 (1/9)
+reservoir_size = params.reservoir_size, # 17 (cumulative trees)
+max_tree_order = params.max_tree_order, # 8
+num_membranes = params.num_membranes, # 4 (A000081[4])
+growth_rate = params.growth_rate, # ≈2.22 (20/9)
+mutation_rate = params.mutation_rate # ≈0.11 (1/9)
 )
 # Explain parameter derivation
 explain_parameters(params)
@@ -45,9 +45,9 @@ explain_parameters(params)
 ```julia
 # This will show warnings if parameters don't align with A000081
 system = DeepTreeEchoSystem(
-reservoir_size = 100,  # ⚠ Arbitrary value
+reservoir_size = 100, # ⚠ Arbitrary value
 max_tree_order = 8,
-num_membranes = 3      # ⚠ Not in A000081[1:6]
+num_membranes = 3 # ⚠ Not in A000081[1:6]
 )
 ```
 # Taskflow Integration
@@ -156,7 +156,7 @@ end
 # Create J-surface
 jsurface = create_jsurface(reservoir_size; symplectic=symplectic)
 # Use A000081-derived value for population size
-population_size = A000081Parameters.derive_num_membranes(4)  # 4 → 4 populations
+population_size = A000081Parameters.derive_num_membranes(4) # 4 → 4 populations
 jsurface_state = JSurfaceState(reservoir_size, population_size)
 # Create B-series ridge
 ridge = create_ridge(max_tree_order)
@@ -168,7 +168,7 @@ elseif num_membranes == 2
 elseif num_membranes == 4
 "[[]'2 []'3 []'4]'1"
 else
-"[[]'2 []'3]'1"  # Default for other values
+"[[]'2 []'3]'1" # Default for other values
 end
 reservoir = create_membrane_reservoir(
 membrane_structure,

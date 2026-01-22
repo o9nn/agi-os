@@ -13,14 +13,14 @@
 #ifdef __KERNEL__
 #include <linux/config.h>
 #endif
-extern unsigned long int	ntohl(unsigned long int);
-extern unsigned short int	ntohs(unsigned short int);
-extern unsigned long int	htonl(unsigned long int);
-extern unsigned short int	htons(unsigned short int);
-extern __inline__ unsigned long int	__ntohl(unsigned long int);
-extern __inline__ unsigned short int	__ntohs(unsigned short int);
-extern __inline__ unsigned long int	__constant_ntohl(unsigned long int);
-extern __inline__ unsigned short int	__constant_ntohs(unsigned short int);
+extern unsigned long int ntohl(unsigned long int);
+extern unsigned short int ntohs(unsigned short int);
+extern unsigned long int htonl(unsigned long int);
+extern unsigned short int htons(unsigned short int);
+extern __inline__ unsigned long int __ntohl(unsigned long int);
+extern __inline__ unsigned short int __ntohs(unsigned short int);
+extern __inline__ unsigned long int __constant_ntohl(unsigned long int);
+extern __inline__ unsigned short int __constant_ntohs(unsigned short int);
 extern __inline__ unsigned long int
 __ntohl(unsigned long int x)
 {
@@ -37,15 +37,15 @@ return x;
 }
 #define __constant_ntohl(x) \
 ((unsigned long int)((((unsigned long int)(x) & 0x000000ffU) << 24) | \
-(((unsigned long int)(x) & 0x0000ff00U) <<  8) | \
-(((unsigned long int)(x) & 0x00ff0000U) >>  8) | \
+(((unsigned long int)(x) & 0x0000ff00U) << 8) | \
+(((unsigned long int)(x) & 0x00ff0000U) >> 8) | \
 (((unsigned long int)(x) & 0xff000000U) >> 24)))
 extern __inline__ unsigned short int
 __ntohs(unsigned short int x)
 {
 __asm__("xchgb %b0,%h0"
 : "=q" (x)
-:  "0" (x));
+: "0" (x));
 return x;
 }
 #define __constant_ntohs(x) \
@@ -55,20 +55,20 @@ return x;
 #define __htons(x) __ntohs(x)
 #define __constant_htonl(x) __constant_ntohl(x)
 #define __constant_htons(x) __constant_ntohs(x)
-#ifdef  __OPTIMIZE__
-#  define ntohl(x) \
+#ifdef __OPTIMIZE__
+# define ntohl(x) \
 (__builtin_constant_p((long)(x)) ? \
 __constant_ntohl((x)) : \
 __ntohl((x)))
-#  define ntohs(x) \
+# define ntohs(x) \
 (__builtin_constant_p((short)(x)) ? \
 __constant_ntohs((x)) : \
 __ntohs((x)))
-#  define htonl(x) \
+# define htonl(x) \
 (__builtin_constant_p((long)(x)) ? \
 __constant_htonl((x)) : \
 __htonl((x)))
-#  define htons(x) \
+# define htons(x) \
 (__builtin_constant_p((short)(x)) ? \
 __constant_htons((x)) : \
 __htons((x)))

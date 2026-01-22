@@ -1,5 +1,5 @@
 #ifndef gdevprn_INCLUDED
-#  define gdevprn_INCLUDED
+# define gdevprn_INCLUDED
 #include "memory_.h"
 #include "string_.h"
 #include "gx.h"
@@ -20,34 +20,34 @@
 #define PRN_MIN_MEMORY_LEFT_LARGE 500000L
 #define PRN_MIN_BUFFER_SPACE 10000
 #if arch_small_memory
-#  define PRN_MAX_BITMAP PRN_MAX_BITMAP_SMALL
-#  define PRN_BUFFER_SPACE PRN_BUFFER_SPACE_SMALL
-#  define PRN_MIN_MEMORY_LEFT PRN_MIN_MEMORY_LEFT_SMALL
+# define PRN_MAX_BITMAP PRN_MAX_BITMAP_SMALL
+# define PRN_BUFFER_SPACE PRN_BUFFER_SPACE_SMALL
+# define PRN_MIN_MEMORY_LEFT PRN_MIN_MEMORY_LEFT_SMALL
 #else
-#  if 0
-#    define PRN_MAX_BITMAP\
+# if 0
+# define PRN_MAX_BITMAP\
 (gs_debug_c('.') ? PRN_MAX_BITMAP_SMALL : PRN_MAX_BITMAP_LARGE)
-#    define PRN_BUFFER_SPACE\
+# define PRN_BUFFER_SPACE\
 (gs_debug_c('.') ? PRN_BUFFER_SPACE_SMALL : PRN_BUFFER_SPACE_LARGE)
-#    define PRN_MIN_MEMORY_LEFT\
+# define PRN_MIN_MEMORY_LEFT\
 (gs_debug_c('.') ? PRN_MIN_MEMORY_LEFT_SMALL : PRN_MIN_MEMORY_LEFT_LARGE)
-#  else
-#    define PRN_MAX_BITMAP PRN_MAX_BITMAP_LARGE
-#    define PRN_BUFFER_SPACE PRN_BUFFER_SPACE_LARGE
-#    define PRN_MIN_MEMORY_LEFT PRN_MIN_MEMORY_LEFT_LARGE
-#  endif
+# else
+# define PRN_MAX_BITMAP PRN_MAX_BITMAP_LARGE
+# define PRN_BUFFER_SPACE PRN_BUFFER_SPACE_LARGE
+# define PRN_MIN_MEMORY_LEFT PRN_MIN_MEMORY_LEFT_LARGE
+# endif
 #endif
 #ifndef gx_device_printer_DEFINED
-#  define gx_device_printer_DEFINED
+# define gx_device_printer_DEFINED
 typedef struct gx_device_printer_s gx_device_printer;
 #endif
 typedef struct gdev_prn_start_render_params_s gdev_prn_start_render_params;
 #ifndef gx_page_queue_DEFINED
-#  define gx_page_queue_DEFINED
+# define gx_page_queue_DEFINED
 typedef struct gx_page_queue_s gx_page_queue_t;
 #endif
 #ifndef gdev_prn_space_params_DEFINED
-#  define gdev_prn_space_params_DEFINED
+# define gdev_prn_space_params_DEFINED
 typedef struct gdev_prn_space_params_s gdev_prn_space_params;
 #endif
 typedef struct gx_printer_device_procs_s {
@@ -96,27 +96,27 @@ gx_printer_device_procs printer_procs;\
 \
 \
 gdev_prn_space_params space_params;\
-char fname[prn_fname_sizeof];	\
+char fname[prn_fname_sizeof]; \
 \
 bool OpenOutputFile;\
 bool ReopenPerPage;\
 bool page_uses_transparency; \
 bool Duplex;\
-int Duplex_set;		\
+int Duplex_set; \
 \
-bool file_is_new;		\
-FILE *file;			\
-long buffer_space;	\
+bool file_is_new; \
+FILE *file; \
+long buffer_space; \
 \
-byte *buf;			\
+byte *buf; \
 \
-gs_memory_t *buffer_memory;	\
-gs_memory_t *bandlist_memory;	\
-proc_free_up_bandlist_memory((*free_up_bandlist_memory));  	\
-gx_page_queue_t *page_queue;	\
-bool is_async_renderer;		\
-gx_device_printer *async_renderer;	\
-uint clist_disable_mask;	\
+gs_memory_t *buffer_memory; \
+gs_memory_t *bandlist_memory; \
+proc_free_up_bandlist_memory((*free_up_bandlist_memory)); \
+gx_page_queue_t *page_queue; \
+bool is_async_renderer; \
+gx_device_printer *async_renderer; \
+uint clist_disable_mask; \
 \
 gx_device_procs orig_procs
 struct gx_device_printer_s {
@@ -124,7 +124,7 @@ gx_device_common;
 gx_prn_device_common;
 };
 extern_st(st_device_printer);
-#define public_st_device_printer()	\
+#define public_st_device_printer() \
 gs_public_st_complex_only(st_device_printer, gx_device_printer,\
 "gx_device_printer", 0, device_printer_enum_ptrs,\
 device_printer_reloc_ptrs, gx_device_finalize)
@@ -150,54 +150,54 @@ prn_color_params_procs(p_open, p_output_page, p_close, gdev_prn_map_rgb_color, g
 prn_color_params_procs(p_open, p_output_page, p_close, p_map_rgb_color, p_map_color_rgb, gdev_prn_get_params, gdev_prn_put_params)
 #define prn_color_params_procs(p_open, p_output_page, p_close, p_map_rgb_color, p_map_color_rgb, p_get_params, p_put_params) {\
 p_open,\
-NULL,	\
-NULL,	\
+NULL, \
+NULL, \
 p_output_page,\
 p_close,\
 p_map_rgb_color,\
 p_map_color_rgb,\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
 p_get_params,\
 p_put_params,\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
+NULL, \
+NULL, \
+NULL, \
+NULL, \
 gx_page_device_get_page_device,\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL,	\
-NULL	\
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL \
 }
 extern const gx_device_procs prn_std_procs;
 #define prn_device_body_rest2_(print_page, print_page_copies)\
-{ 0 },		\
-{ 0 },		\
+{ 0 }, \
+{ 0 }, \
 { print_page,\
 print_page_copies,\
 { gx_default_create_buf_device,\
@@ -213,14 +213,14 @@ gx_default_buffer_page\
 },\
 { PRN_MAX_BITMAP, PRN_BUFFER_SPACE,\
 { BAND_PARAMS_INITIAL_VALUES },\
-0,	\
-BandingAuto	\
+0, \
+BandingAuto \
 },\
-{ 0 },		\
-0,	\
-0,	\
-0,	\
-0, -1,	\
+{ 0 }, \
+0, \
+0, \
+0, \
+0, -1, \
 0, 0, 0, 0, \
 0, 0, 0, 0, 0, 0, 0, \
 { 0 }
@@ -357,14 +357,14 @@ device_type(dtname, st_prn_device, initproc)
 private dev_proc_print_page(pageproc);\
 private int \
 initproc(gx_device *dev)\
-{	return gdev_prn_initialize(dev, dname, pageproc);\
+{ return gdev_prn_initialize(dev, dname, pageproc);\
 }\
 device_type(dtname, st_prn_device, initproc)
 #define prn_device_type_color(dtname, dname, depth, initproc, pageproc, rcproc, crproc)\
 private dev_proc_print_page(pageproc);\
 private int \
 initproc(gx_device *dev)\
-{	int code = gdev_prn_initialize(dev, dname, pageproc);\
+{ int code = gdev_prn_initialize(dev, dname, pageproc);\
 gdev_prn_init_color(dev, depth, rcproc, crproc);\
 return code;\
 }\

@@ -17,50 +17,50 @@ Msg, Attr: import plumbmsg;
 include "arg.m";
 Plumber: module
 {
-init:	fn(ctxt: ref Draw->Context, argl: list of string);
+init: fn(ctxt: ref Draw->Context, argl: list of string);
 };
 Input: adt
 {
-inc:		chan of ref Inmesg;
-resc:		chan of int;
-io:		ref Sys->FileIO;
+inc: chan of ref Inmesg;
+resc: chan of int;
+io: ref Sys->FileIO;
 };
 Output: adt
 {
-name:	string;
-outc:		chan of string;
-io:		ref Sys->FileIO;
-queue:	list of array of byte;
-started:	int;
-startup:	string;
-waiting:	int;
+name: string;
+outc: chan of string;
+io: ref Sys->FileIO;
+queue: list of array of byte;
+started: int;
+startup: string;
+waiting: int;
 };
 Port: adt
 {
-name:		string;
-startup:	string;
-alwaysstart:	int;
+name: string;
+startup: string;
+alwaysstart: int;
 };
 Match: adt
 {
-p0, p1:	int;
+p0, p1: int;
 };
 Inmesg: adt
 {
-msg:		ref Msg;
-text:		string;	# if kind is text
-p0,p1:	int;
-match:	array of Match;
-port:		int;
-startup:	string;
-args:		list of string;
-attrs:		list of ref Attr;
-clearclick:	int;
-set:		int;
+msg: ref Msg;
+text: string; # if kind is text
+p0,p1: int;
+match: array of Match;
+port: int;
+startup: string;
+args: list of string;
+attrs: list of ref Attr;
+clearclick: int;
+set: int;
 # $ arguments
-_n:		array of string;
-_dir:		string;
-_file:		string;
+_n: array of string;
+_dir: string;
+_file: string;
 };
 # Message status after processing
 HANDLED: con -1;
@@ -186,7 +186,7 @@ receiver(input: ref Input)
 for(;;){
 (nil, msg, nil, wc) := <-input.io.write;
 if(wc == nil)
-;	# not interested in EOF; leave channel open
+; # not interested in EOF; leave channel open
 else{
 input.inc <-= parse(msg);
 res := <- input.resc;
@@ -223,7 +223,7 @@ outputc[j] = output[j].io.read;
 input.resc <-= j;
 (j, tmp) := <-outputc =>
 (nil, nbytes, nil, rc) := tmp;
-if(rc == nil)	# no interest in EOF
+if(rc == nil) # no interest in EOF
 break;
 msg := hd output[j].queue;
 if(nbytes < len msg){
@@ -461,12 +461,12 @@ matchpattern(in: ref Inmesg, p: ref Pattern): int
 msg := in.msg;
 text: string;
 case p.field {
-"src" =>	text = msg.src;
-"dst" =>	text = msg.dst;
-"dir" =>	text = msg.dir;
-"kind" =>	text = msg.kind;
-"attr" =>	text = msg.attr;
-"data" =>	text = in.text;
+"src" => text = msg.src;
+"dst" => text = msg.dst;
+"dir" => text = msg.dir;
+"kind" => text = msg.kind;
+"attr" => text = msg.attr;
+"data" => text = in.text;
 * =>
 sys->fprint(stderr, "plumb: don't recognize pattern field %s\n", p.field);
 return 0;
@@ -530,12 +530,12 @@ text = p.arg;
 if(p.expand)
 text = macro(in, text);
 case p.field {
-"src" =>	msg.src = text;
-"dst" =>	msg.dst = text;
-"dir" =>	msg.dir = text;
-"kind" =>	msg.kind = text;
-"attr" =>	msg.attr = text;
-"data" =>	in.text = text;
+"src" => msg.src = text;
+"dst" => msg.dst = text;
+"dir" => msg.dir = text;
+"kind" => msg.kind = text;
+"attr" => msg.attr = text;
+"data" => in.text = text;
 msg.data = array of byte text;
 msg.kind = "text";
 in.set = 0;
@@ -554,7 +554,7 @@ return 0;
 }
 case p.pred {
 "to" or "alwaysstart" =>
-if(in.port >= 0)	# already specified
+if(in.port >= 0) # already specified
 return 1;
 toport(in, p.arg);
 "start" =>
@@ -628,17 +628,17 @@ return (in._n[text[0]-'0'], 1);
 if(len text < 3)
 return ("$", 0);
 case text[0:3] {
-"src" =>	return (in.msg.src, 3);
-"dst" =>	return (in.msg.dst, 3);
-"dir" =>	return (in._dir, 3);
+"src" => return (in.msg.src, 3);
+"dst" => return (in.msg.dst, 3);
+"dir" => return (in._dir, 3);
 }
 if(len text< 4)
 return ("$", 0);
 case text[0:4] {
-"attr" =>	return (in.msg.attr, 4);
-"data" =>	return (in.text, 4);
-"file" =>	return (in._file, 4);
-"kind" =>	return (in.msg.kind, 4);
+"attr" => return (in.msg.attr, 4);
+"data" => return (in.text, 4);
+"file" => return (in._file, 4);
+"kind" => return (in.msg.kind, 4);
 }
 return ("$", 0);
 }
@@ -653,7 +653,7 @@ name = name[0:i]+name[i+1:];
 --i;
 n--;
 }
-#  eliminate ./
+# eliminate ./
 for(i=0; i<n-1; i++)
 if(name[i]=='.' && name[i+1]=='/' && (i==0 || name[i-1]=='/')){
 name = name[0:i]+name[i+2:];
@@ -674,7 +674,7 @@ break;
 if(found)
 for(j:=i-1; j>=0; --j)
 if(j==0 || name[j-1]=='/'){
-i += 3;		# character beyond ..
+i += 3; # character beyond ..
 if(i<n && name[i]=='/')
 ++i;
 name = name[0:j]+name[i:];

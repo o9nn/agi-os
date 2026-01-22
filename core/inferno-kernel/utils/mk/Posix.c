@@ -1,11 +1,11 @@
-#include	"mk.h"
-#include	<dirent.h>
-#include	<signal.h>
-#include	<sys/wait.h>
-#include	<utime.h>
-#include	<stdio.h>
-char 	*shell =	"/bin/sh";
-char 	*shellname =	"sh";
+#include "mk.h"
+#include <dirent.h>
+#include <signal.h>
+#include <sys/wait.h>
+#include <utime.h>
+#include <stdio.h>
+char *shell = "/bin/sh";
+char *shellname = "sh";
 extern char **environ;
 void
 readenv(void)
@@ -40,7 +40,7 @@ values = wtos(e->values, IWS);
 else
 values = "";
 p[i] = malloc(strlen(e->name) + strlen(values) + 2);
-sprint(p[i], "%s=%s", e->name,  values);
+sprint(p[i], "%s=%s", e->name, values);
 }
 p[i] = 0;
 environ = p;
@@ -189,18 +189,18 @@ while(wait(0) >= 0)
 ;
 exits("error");
 }
-static	struct
+static struct
 {
-int	sig;
-char	*msg;
-}	sigmsgs[] =
+int sig;
+char *msg;
+} sigmsgs[] =
 {
-SIGALRM,	"alarm",
-SIGFPE,		"sys: fp: fptrap",
-SIGPIPE,	"sys: write on closed pipe",
-SIGILL,		"sys: trap: illegal instruction",
-SIGSEGV,	"sys: segmentation violation",
-0,		0
+SIGALRM, "alarm",
+SIGFPE, "sys: fp: fptrap",
+SIGPIPE, "sys: write on closed pipe",
+SIGILL, "sys: trap: illegal instruction",
+SIGSEGV, "sys: segmentation violation",
+0, 0
 };
 static void
 notifyf(int sig)
@@ -282,7 +282,7 @@ if(read(fd, stab, t) != t)
 {}
 return nil;
 }
-else if(s[0] == '/' && stab != nil)	{
+else if(s[0] == '/' && stab != nil) {
 p = stab+atol(s+1);
 q = strchr(p, '/');
 if (q)

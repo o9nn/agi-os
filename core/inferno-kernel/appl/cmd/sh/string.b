@@ -108,7 +108,7 @@ if (tl argv != nil)
 s[len s] = ' ';
 }
 if (n != 0)
-s =  sys->sprint("%*s", n, s);
+s = sys->sprint("%*s", n, s);
 return ref Listnode(nil, s) :: nil;
 }
 sbuiltin_fields(ctxt: ref Context, argv: list of ref Listnode): list of ref Listnode

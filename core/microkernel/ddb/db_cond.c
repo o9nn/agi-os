@@ -8,11 +8,11 @@
 #include <ddb/db_expr.h>
 #include <ddb/db_output.h>
 #include <kern/debug.h>
-#define DB_MAX_COND	10
-int   db_ncond_free = DB_MAX_COND;
+#define DB_MAX_COND 10
+int db_ncond_free = DB_MAX_COND;
 struct db_cond {
-int	c_size;
-char	c_cond_cmd[DB_LEX_LINE_SIZE];
+int c_size;
+char c_cond_cmd[DB_LEX_LINE_SIZE];
 } db_cond[DB_MAX_COND];
 void
 db_cond_free(db_thread_breakpoint_t bkpt)
@@ -28,9 +28,9 @@ db_cond_check(db_thread_breakpoint_t bkpt)
 {
 struct db_cond *cp;
 db_expr_t value;
-int	  t;
+int t;
 jmp_buf_t db_jmpbuf;
-extern 	  jmp_buf_t *db_recover;
+extern jmp_buf_t *db_recover;
 if (bkpt->tb_cond <= 0)
 return(TRUE);
 db_dot = PC_REGS(DDB_REGS);
@@ -72,10 +72,10 @@ db_putchar(*p++);
 }
 void
 db_cond_cmd(
-db_expr_t	addr,
-int		have_addr,
-db_expr_t	count,
-const char *	modif)
+db_expr_t addr,
+int have_addr,
+db_expr_t count,
+const char * modif)
 {
 int c;
 struct db_cond *cp;

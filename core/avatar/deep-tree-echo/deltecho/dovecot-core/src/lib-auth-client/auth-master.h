@@ -2,8 +2,8 @@
 #define AUTH_MASTER_H
 #include "net.h"
 enum auth_master_flags {
-AUTH_MASTER_FLAG_DEBUG			= 0x01,
-AUTH_MASTER_FLAG_NO_IDLE_TIMEOUT	= 0x02
+AUTH_MASTER_FLAG_DEBUG = 0x01,
+AUTH_MASTER_FLAG_NO_IDLE_TIMEOUT = 0x02
 };
 struct auth_user_info {
 const char *service;

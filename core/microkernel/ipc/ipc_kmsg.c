@@ -32,14 +32,14 @@
 ipc_kmsg_t ipc_kmsg_cache[NCPUS];
 void
 ipc_kmsg_enqueue(
-ipc_kmsg_queue_t	queue,
-ipc_kmsg_t		kmsg)
+ipc_kmsg_queue_t queue,
+ipc_kmsg_t kmsg)
 {
 ipc_kmsg_enqueue_macro(queue, kmsg);
 }
 ipc_kmsg_t
 ipc_kmsg_dequeue(
-ipc_kmsg_queue_t	queue)
+ipc_kmsg_queue_t queue)
 {
 ipc_kmsg_t first;
 first = ipc_kmsg_queue_first(queue);
@@ -49,8 +49,8 @@ return first;
 }
 void
 ipc_kmsg_rmqueue(
-ipc_kmsg_queue_t	queue,
-ipc_kmsg_t		kmsg)
+ipc_kmsg_queue_t queue,
+ipc_kmsg_t kmsg)
 {
 ipc_kmsg_t next, prev;
 assert(queue->ikmq_base != IKM_NULL);
@@ -70,8 +70,8 @@ ikm_mark_bogus (kmsg);
 }
 ipc_kmsg_t
 ipc_kmsg_queue_next(
-ipc_kmsg_queue_t	queue,
-ipc_kmsg_t		kmsg)
+ipc_kmsg_queue_t queue,
+ipc_kmsg_t kmsg)
 {
 ipc_kmsg_t next;
 assert(queue->ikmq_base != IKM_NULL);
@@ -82,7 +82,7 @@ return next;
 }
 void
 ipc_kmsg_destroy(
-ipc_kmsg_t	kmsg)
+ipc_kmsg_t kmsg)
 {
 ipc_kmsg_queue_t queue;
 boolean_t empty;
@@ -189,10 +189,10 @@ ipc_kmsg_clean_body(saddr, eaddr);
 }
 static void
 ipc_kmsg_clean_partial(
-ipc_kmsg_t 		kmsg,
-vm_offset_t 		eaddr,
-boolean_t 		dolast,
-mach_msg_type_number_t 	number)
+ipc_kmsg_t kmsg,
+vm_offset_t eaddr,
+boolean_t dolast,
+mach_msg_type_number_t number)
 {
 ipc_object_t object;
 mach_msg_bits_t mbits = kmsg->ikm_header.msgh_bits;
@@ -282,12 +282,12 @@ return (length >= IPC_ZERO_COPY_THRESHOLD);
 }
 mach_msg_return_t
 ipc_kmsg_get(
-mach_msg_user_header_t 	*msg,
-mach_msg_size_t 	size,
-ipc_kmsg_t 		*kmsgp)
+mach_msg_user_header_t *msg,
+mach_msg_size_t size,
+ipc_kmsg_t *kmsgp)
 {
 ipc_kmsg_t kmsg;
-mach_msg_size_t 	ksize = size * IKM_EXPAND_FACTOR;
+mach_msg_size_t ksize = size * IKM_EXPAND_FACTOR;
 if ((size < sizeof(mach_msg_user_header_t)) || mach_msg_user_is_misaligned(size))
 return MACH_SEND_MSG_TOO_SMALL;
 if (ksize <= IKM_SAVED_MSG_SIZE) {
@@ -309,9 +309,9 @@ return MACH_MSG_SUCCESS;
 }
 extern mach_msg_return_t
 ipc_kmsg_get_from_kernel(
-mach_msg_header_t 	*msg,
-mach_msg_size_t 	size,
-ipc_kmsg_t 		*kmsgp)
+mach_msg_header_t *msg,
+mach_msg_size_t size,
+ipc_kmsg_t *kmsgp)
 {
 ipc_kmsg_t kmsg;
 assert(size >= sizeof(mach_msg_header_t));
@@ -327,9 +327,9 @@ return MACH_MSG_SUCCESS;
 }
 mach_msg_return_t
 ipc_kmsg_put(
-mach_msg_user_header_t 	*msg,
-ipc_kmsg_t 		kmsg,
-mach_msg_size_t 	size)
+mach_msg_user_header_t *msg,
+ipc_kmsg_t kmsg,
+mach_msg_size_t size)
 {
 mach_msg_return_t mr;
 ikm_check_initialized(kmsg, kmsg->ikm_size);
@@ -342,11 +342,11 @@ return mr;
 }
 void
 ipc_kmsg_put_to_kernel(
-mach_msg_header_t	*msg,
-ipc_kmsg_t		kmsg,
-mach_msg_size_t		size)
+mach_msg_header_t *msg,
+ipc_kmsg_t kmsg,
+mach_msg_size_t size)
 {
-#if	DIPC
+#if DIPC
 assert(!KMSG_IN_DIPC(kmsg));
 #endif
 memcpy(msg, &kmsg->ikm_header, size);
@@ -354,9 +354,9 @@ ikm_free(kmsg);
 }
 mach_msg_return_t
 ipc_kmsg_copyin_header(
-mach_msg_header_t 	*msg,
-ipc_space_t 		space,
-mach_port_name_t 	notify)
+mach_msg_header_t *msg,
+ipc_space_t space,
+mach_port_name_t notify)
 {
 mach_msg_bits_t mbits = msg->msgh_bits &~ MACH_MSGH_BITS_CIRCULAR;
 mach_port_name_t dest_name = (mach_port_name_t)msg->msgh_remote_port;
@@ -727,9 +727,9 @@ return MACH_SEND_INVALID_REPLY;
 }
 static mach_msg_return_t
 ipc_kmsg_copyin_body(
-ipc_kmsg_t 	kmsg,
-ipc_space_t 	space,
-vm_map_t 	map)
+ipc_kmsg_t kmsg,
+ipc_space_t space,
+vm_map_t map)
 {
 ipc_object_t dest;
 vm_offset_t saddr, eaddr;
@@ -911,9 +911,9 @@ return MACH_MSG_SUCCESS;
 }
 mach_msg_return_t
 ipc_kmsg_copyin(
-ipc_kmsg_t 	kmsg,
-ipc_space_t 	space,
-vm_map_t 	map,
+ipc_kmsg_t kmsg,
+ipc_space_t space,
+vm_map_t map,
 mach_port_name_t notify)
 {
 mach_msg_return_t mr;
@@ -1015,9 +1015,9 @@ saddr = mach_msg_kernel_align(saddr);
 }
 mach_msg_return_t
 ipc_kmsg_copyout_header(
-mach_msg_header_t 	*msg,
-ipc_space_t 		space,
-mach_port_name_t 		notify)
+mach_msg_header_t *msg,
+ipc_space_t space,
+mach_port_name_t notify)
 {
 mach_msg_bits_t mbits = msg->msgh_bits;
 ipc_port_t dest = (ipc_port_t) msg->msgh_remote_port;
@@ -1335,10 +1335,10 @@ return MACH_MSG_SUCCESS;
 }
 mach_msg_return_t
 ipc_kmsg_copyout_object(
-ipc_space_t 		space,
-ipc_object_t 		object,
-mach_msg_type_name_t 	msgt_name,
-mach_port_name_t 	*namep)
+ipc_space_t space,
+ipc_object_t object,
+mach_msg_type_name_t msgt_name,
+mach_port_name_t *namep)
 {
 if (!IO_VALID(object)) {
 *namep = invalid_port_to_name((mach_port_t)object);
@@ -1402,8 +1402,8 @@ return MACH_MSG_SUCCESS;
 mach_msg_return_t
 ipc_kmsg_copyout_body(
 ipc_kmsg_t kmsg,
-ipc_space_t 	space,
-vm_map_t 	map)
+ipc_space_t space,
+vm_map_t map)
 {
 mach_msg_return_t mr = MACH_MSG_SUCCESS;
 kern_return_t kr;
@@ -1520,10 +1520,10 @@ return mr;
 }
 mach_msg_return_t
 ipc_kmsg_copyout(
-ipc_kmsg_t 	kmsg,
-ipc_space_t 	space,
-vm_map_t 	map,
-mach_port_name_t 	notify)
+ipc_kmsg_t kmsg,
+ipc_space_t space,
+vm_map_t map,
+mach_port_name_t notify)
 {
 mach_msg_bits_t mbits = kmsg->ikm_header.msgh_bits;
 mach_msg_return_t mr;
@@ -1539,9 +1539,9 @@ return mr;
 }
 mach_msg_return_t
 ipc_kmsg_copyout_pseudo(
-ipc_kmsg_t		kmsg,
-ipc_space_t		space,
-vm_map_t		map)
+ipc_kmsg_t kmsg,
+ipc_space_t space,
+vm_map_t map)
 {
 mach_msg_bits_t mbits = kmsg->ikm_header.msgh_bits;
 ipc_object_t dest = (ipc_object_t) kmsg->ikm_header.msgh_remote_port;
@@ -1563,8 +1563,8 @@ return mr;
 }
 void
 ipc_kmsg_copyout_dest(
-ipc_kmsg_t 	kmsg,
-ipc_space_t 	space)
+ipc_kmsg_t kmsg,
+ipc_space_t space)
 {
 mach_msg_bits_t mbits = kmsg->ikm_header.msgh_bits;
 ipc_object_t dest = (ipc_object_t) kmsg->ikm_header.msgh_remote_port;
@@ -1598,11 +1598,11 @@ kmsg->ikm_header.msgh_size;
 ipc_kmsg_clean_body(saddr, eaddr);
 }
 }
-#if	MACH_KDB
+#if MACH_KDB
 static char *
 ipc_type_name(
-int 		type_name,
-boolean_t 	received)
+int type_name,
+boolean_t received)
 {
 switch (type_name) {
 case MACH_MSG_TYPE_BOOLEAN:
@@ -1653,7 +1653,7 @@ return (char *) 0;
 }
 static void
 ipc_print_type_name(
-int	type_name)
+int type_name)
 {
 char *name = ipc_type_name(type_name, TRUE);
 if (name) {

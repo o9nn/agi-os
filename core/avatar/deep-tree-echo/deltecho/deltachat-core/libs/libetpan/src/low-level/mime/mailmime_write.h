@@ -1,5 +1,5 @@
 #ifndef MAILMIME_WRITE_H
-#define  MAILMIME_WRITE_H
+#define MAILMIME_WRITE_H
 #ifdef __cplusplus
 extern "C" {
 #endif

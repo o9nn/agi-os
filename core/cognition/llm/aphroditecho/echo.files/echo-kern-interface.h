@@ -2,13 +2,13 @@
 #define _ECHO_INTERFACE_H
 #include <sys/ioctl.h>
 #include <stdint.h>
-#define ECHO_IOC_MAGIC  'E'
-#define ECHO_CREATE_MEMORY      _IOW(ECHO_IOC_MAGIC, 1, struct echo_memory_request)
-#define ECHO_FIND_RESONANCE     _IOWR(ECHO_IOC_MAGIC, 2, struct echo_resonance_query)
-#define ECHO_GET_PATTERNS       _IOR(ECHO_IOC_MAGIC, 3, struct echo_pattern_report)
-#define ECHO_CONSOLIDATE        _IO(ECHO_IOC_MAGIC, 4)
-#define ECHO_INTROSPECT        _IOR(ECHO_IOC_MAGIC, 5, struct echo_introspection)
-#define ECHO_DREAM             _IOWR(ECHO_IOC_MAGIC, 6, struct echo_dream_state)
+#define ECHO_IOC_MAGIC 'E'
+#define ECHO_CREATE_MEMORY _IOW(ECHO_IOC_MAGIC, 1, struct echo_memory_request)
+#define ECHO_FIND_RESONANCE _IOWR(ECHO_IOC_MAGIC, 2, struct echo_resonance_query)
+#define ECHO_GET_PATTERNS _IOR(ECHO_IOC_MAGIC, 3, struct echo_pattern_report)
+#define ECHO_CONSOLIDATE _IO(ECHO_IOC_MAGIC, 4)
+#define ECHO_INTROSPECT _IOR(ECHO_IOC_MAGIC, 5, struct echo_introspection)
+#define ECHO_DREAM _IOWR(ECHO_IOC_MAGIC, 6, struct echo_dream_state)
 struct echo_memory_request {
 char narrative[4096];
 float emotional_context;

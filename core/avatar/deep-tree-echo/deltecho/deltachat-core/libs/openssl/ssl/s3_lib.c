@@ -4,7 +4,7 @@
 #include "kssl_lcl.h"
 #ifndef OPENSSL_NO_TLSEXT
 # ifndef OPENSSL_NO_EC
-#  include "../crypto/ec/ec_lcl.h"
+# include "../crypto/ec/ec_lcl.h"
 # endif
 #endif
 #include <openssl/md5.h>
@@ -12,7 +12,7 @@
 # include <openssl/dh.h>
 #endif
 const char ssl3_version_str[] = "SSLv3" OPENSSL_VERSION_PTEXT;
-#define SSL3_NUM_CIPHERS        (sizeof(ssl3_ciphers)/sizeof(SSL_CIPHER))
+#define SSL3_NUM_CIPHERS (sizeof(ssl3_ciphers)/sizeof(SSL_CIPHER))
 OPENSSL_GLOBAL SSL_CIPHER ssl3_ciphers[] = {
 {
 1,
@@ -3387,7 +3387,7 @@ break;
 }
 ok = ok && ec_ok;
 }
-#  ifndef OPENSSL_NO_ECDH
+# ifndef OPENSSL_NO_ECDH
 if (
 (alg_k & SSL_kEECDH)
 && (s->cert->ecdh_tmp != NULL)
@@ -3433,7 +3433,7 @@ break;
 }
 ok = ok && ec_ok;
 }
-#  endif
+# endif
 # endif
 #endif
 if (!ok)

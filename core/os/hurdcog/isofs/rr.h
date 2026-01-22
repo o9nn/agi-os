@@ -21,18 +21,18 @@ mode_t allmode;
 long flags;
 int valid;
 };
-#define VALID_PX	0x0001
-#define VALID_PN	0x0002
-#define VALID_SL	0x0004
-#define VALID_NM	0x0008
-#define VALID_CL	0x0010
-#define VALID_PL	0x0020
-#define VALID_TF	0x0040
-#define VALID_RE	0x0080
-#define VALID_AU	0x0100
-#define VALID_TR	0x0200
-#define VALID_MD	0x0400
-#define VALID_FL	0x0800
+#define VALID_PX 0x0001
+#define VALID_PN 0x0002
+#define VALID_SL 0x0004
+#define VALID_NM 0x0008
+#define VALID_CL 0x0010
+#define VALID_PL 0x0020
+#define VALID_TF 0x0040
+#define VALID_RE 0x0080
+#define VALID_AU 0x0100
+#define VALID_TR 0x0200
+#define VALID_MD 0x0400
+#define VALID_FL 0x0800
 struct su_header
 {
 char sig[2];
@@ -60,11 +60,11 @@ u_char len_src;
 u_char ext_ver;
 char more[0];
 };
-#define ROCK_VERS	1
-#define ROCK_ID		"RRIP_1991A"
-#define ROCK_DES	\
+#define ROCK_VERS 1
+#define ROCK_ID "RRIP_1991A"
+#define ROCK_DES \
 "THE ROCK RIDGE INTERCHANGE PROTOCOL PROVIDES SUPPORT FOR POSIX FILE SYSTEM SEMANTICS"
-#define ROCK_SRC	\
+#define ROCK_SRC \
 "ROCK RIDGE SPECIFICATION VERSION 1 REVISION 1.10 JULY 13 1993"
 struct rr_px
 {
@@ -94,12 +94,12 @@ struct rr_nm
 u_char flags;
 char name[0];
 };
-#define NAME_CONTINUE	0x01
-#define NAME_DOT	0x02
-#define NAME_DOTDOT	0x04
-#define NAME_ROOT	0x08
-#define NAME_VOLROOT	0x10
-#define NAME_HOST	0x20
+#define NAME_CONTINUE 0x01
+#define NAME_DOT 0x02
+#define NAME_DOTDOT 0x04
+#define NAME_ROOT 0x08
+#define NAME_VOLROOT 0x10
+#define NAME_HOST 0x20
 struct rr_cl
 {
 unsigned char loc[8];
@@ -113,20 +113,20 @@ struct rr_tf
 u_char flags;
 char data[0];
 };
-#define TF_CREATION	0x01
-#define TF_MODIFY	0x02
-#define TF_ACCESS	0x04
-#define TF_ATTRIBUTES	0x08
-#define TF_BACKUP	0x10
-#define TF_EXPIRATION	0x20
-#define TF_EFFECTIVE	0x40
-#define TF_LONG_FORM	0x80
+#define TF_CREATION 0x01
+#define TF_MODIFY 0x02
+#define TF_ACCESS 0x04
+#define TF_ATTRIBUTES 0x08
+#define TF_BACKUP 0x10
+#define TF_EXPIRATION 0x20
+#define TF_EFFECTIVE 0x40
+#define TF_LONG_FORM 0x80
 struct rr_sf
 {
 char size[8];
 };
-#define GNUEXT_VERS	1
-#define GNUEXT_ID	"GNUEXT_1997"
+#define GNUEXT_VERS 1
+#define GNUEXT_ID "GNUEXT_1997"
 #define GNUEXT_DES \
 "The GNU Extensions provide support for special GNU filesystem features"
 #define GNUEXT_SRC \

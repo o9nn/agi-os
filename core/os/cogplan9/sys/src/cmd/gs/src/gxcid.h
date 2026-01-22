@@ -1,8 +1,8 @@
 #ifndef gxcid_INCLUDED
-#  define gxcid_INCLUDED
+# define gxcid_INCLUDED
 #include "gsstype.h"
 #ifndef gs_cid_system_info_DEFINED
-#  define gs_cid_system_info_DEFINED
+# define gs_cid_system_info_DEFINED
 typedef struct gs_cid_system_info_s gs_cid_system_info_t;
 #endif
 struct gs_cid_system_info_s {

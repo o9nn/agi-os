@@ -8,100 +8,100 @@
 typedef struct Ctlr Ctlr;
 typedef struct IICregs IICregs;
 struct IICregs {
-uchar	mdbuf;
-uchar	rsvd0;
-uchar	sdbuf;
-uchar	rsvd1;
-uchar	lmadr;
-uchar	hmadr;
-uchar	cntl;
-uchar	mdcntl;
-uchar	sts;
-uchar	extsts;
-uchar	lsadr;
-uchar	hsadr;
-uchar	clkdiv;
-uchar	intrmsk;
-uchar	xfrcnt;
-uchar	xtcntlss;
-uchar	directcntl;
+uchar mdbuf;
+uchar rsvd0;
+uchar sdbuf;
+uchar rsvd1;
+uchar lmadr;
+uchar hmadr;
+uchar cntl;
+uchar mdcntl;
+uchar sts;
+uchar extsts;
+uchar lsadr;
+uchar hsadr;
+uchar clkdiv;
+uchar intrmsk;
+uchar xfrcnt;
+uchar xtcntlss;
+uchar directcntl;
 };
 enum {
-Hmt=	1<<7,
-Amd10=	1<<6,
-Rpst=	1<<3,
-Cht=		1<<2,
-Write=	0<<1,
-Read=	1<<1,
-Pt=		1<<0,
-Fsdb=	1<<7,
-Fmdb=	1<<6,
-Fsm=	1<<4,
-Esm=	1<<3,
-Eint=		1<<2,
-Eubs=	1<<1,
-Hscl=	1<<0,
-Sss=		1<<7,
-Slpr=	1<<6,
-Mdbs=	1<<5,
-Mdbf=	1<<4,
-Scmp=	1<<3,
-Err=		1<<2,
-Irqa=	1<<1,
-Irqp=	1<<7,
-Bcs=		7<<4,
-Bcs_ssel=	1<<4,
-Bcs_sio=	2<<4,
-Bcs_mio=	3<<4,
-Bcs_free=	4<<4,
+Hmt= 1<<7,
+Amd10= 1<<6,
+Rpst= 1<<3,
+Cht= 1<<2,
+Write= 0<<1,
+Read= 1<<1,
+Pt= 1<<0,
+Fsdb= 1<<7,
+Fmdb= 1<<6,
+Fsm= 1<<4,
+Esm= 1<<3,
+Eint= 1<<2,
+Eubs= 1<<1,
+Hscl= 1<<0,
+Sss= 1<<7,
+Slpr= 1<<6,
+Mdbs= 1<<5,
+Mdbf= 1<<4,
+Scmp= 1<<3,
+Err= 1<<2,
+Irqa= 1<<1,
+Irqp= 1<<7,
+Bcs= 7<<4,
+Bcs_ssel= 1<<4,
+Bcs_sio= 2<<4,
+Bcs_mio= 3<<4,
+Bcs_free= 4<<4,
 Bcs_busy= 5<<4,
-Bcs_gok=	6<<4,
-Irqd=	1<<3,
-La=		1<<2,
-Ict=		1<<1,
-Xfra=	1<<0,
-Eirc=		1<<7,
-Eirs=		1<<6,
-Eiwc=	1<<5,
-Eiws=	1<<4,
-Eihe=	1<<3,
-Eiic=		1<<2,
-Eita=		1<<1,
-Eimtc=	1<<0,
-Src=		1<<7,
-Srs=		1<<6,
-Swc=	1<<5,
-Sws=	1<<4,
-Sdbd=	1<<3,
-Sdbf=	1<<2,
-Epi=		1<<1,
-Srst=		1<<0,
-Sdac=	1<<3,
-Scc=		1<<2,
-Msda=	1<<1,
-Msc=	1<<0,
-Rbit =	1<<0,
-FIFOsize=	4,
-MaxIO =	8192,
-MaxSA=	2,
-Bufsize =	MaxIO,
-Freq =	100000,
+Bcs_gok= 6<<4,
+Irqd= 1<<3,
+La= 1<<2,
+Ict= 1<<1,
+Xfra= 1<<0,
+Eirc= 1<<7,
+Eirs= 1<<6,
+Eiwc= 1<<5,
+Eiws= 1<<4,
+Eihe= 1<<3,
+Eiic= 1<<2,
+Eita= 1<<1,
+Eimtc= 1<<0,
+Src= 1<<7,
+Srs= 1<<6,
+Swc= 1<<5,
+Sws= 1<<4,
+Sdbd= 1<<3,
+Sdbf= 1<<2,
+Epi= 1<<1,
+Srst= 1<<0,
+Sdac= 1<<3,
+Scc= 1<<2,
+Msda= 1<<1,
+Msc= 1<<0,
+Rbit = 1<<0,
+FIFOsize= 4,
+MaxIO = 8192,
+MaxSA= 2,
+Bufsize = MaxIO,
+Freq = 100000,
 I2Ctimeout = 125,
 Chatty = 0,
 };
-#define	DPRINT	if(Chatty)print
+#define DPRINT if(Chatty)print
 struct Ctlr {
 Lock;
-QLock	io;
-int	init;
-int	polling;
-IICregs*	regs;
-int	status;
-int	phase;
-Rendez	r;
-int	cntl;
-int	rdcount;
-Block*	b;
+QLock io;
+int init;
+int polling;
+IICregs* regs;
+int status;
+int phase;
+Rendez r;
+int cntl;
+int rdcount;
+Block* b;
 };
 enum {
 Idle,
@@ -110,13 +110,13 @@ Failed,
 Busy,
 Halting,
 };
-static	Ctlr	iicctlr[1];
-static void	interrupt(Ureg*, void*);
+static Ctlr iicctlr[1];
+static void interrupt(Ureg*, void*);
 static int readyxfer(Ctlr*);
-static void	rxstart(Ctlr*);
-static void	txstart(Ctlr*);
-static void	stopxfer(Ctlr*);
-static void	txoffset(Ctlr*, ulong, int);
+static void rxstart(Ctlr*);
+static void txstart(Ctlr*);
+static void stopxfer(Ctlr*);
+static void txoffset(Ctlr*, ulong, int);
 static int idlectlr(Ctlr*);
 static void
 iicdump(char *t, IICregs *iic)

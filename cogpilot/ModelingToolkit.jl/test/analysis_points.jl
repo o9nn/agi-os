@@ -86,8 +86,8 @@ end
 # Equivalent code using ControlSystems. This can be used to verify the expected results tested for above.
 using ControlSystemsBase
 P = tf(1.0, [1, 1])
-C = 1                      # Negative feedback assumed in ControlSystems
-S = sensitivity(P, C)      # or feedback(1, P*C)
+C = 1 # Negative feedback assumed in ControlSystems
+S = sensitivity(P, C) # or feedback(1, P*C)
 T = comp_sensitivity(P, C) # or feedback(P*C)
 =#
 @testset "get_looptransfer - $name" for (name, sys, ap) in test_cases
@@ -166,7 +166,7 @@ end
 m1 = 1
 m2 = 1
 k = 1000 # Spring stiffness
-c = 10   # Damping coefficient
+c = 10 # Damping coefficient
 @named inertia1 = Inertia(; J = m1)
 @named inertia2 = Inertia(; J = m2)
 @named spring = Spring(; c = k)
@@ -517,7 +517,7 @@ end
 m1 = 1
 m2 = 1
 k = 1000 # Spring stiffness
-c = 10   # Damping coefficient
+c = 10 # Damping coefficient
 @named inertia1 = Inertia(; J = m1, phi = 0, w = 0)
 @named inertia2 = Inertia(; J = m2, phi = 0, w = 0)
 @named spring = Spring(; c = k)

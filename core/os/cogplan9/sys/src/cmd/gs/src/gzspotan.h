@@ -1,12 +1,12 @@
 #ifndef gzspotan_INCLUDED
-#  define gzspotan_INCLUDED
+# define gzspotan_INCLUDED
 #include "gxdevcli.h"
 #ifndef segment_DEFINED
-#  define segment_DEFINED
+# define segment_DEFINED
 typedef struct segment_s segment;
 #endif
 #ifndef gx_device_spot_analyzer_DEFINED
-#   define gx_device_spot_analyzer_DEFINED
+# define gx_device_spot_analyzer_DEFINED
 typedef struct gx_device_spot_analyzer_s gx_device_spot_analyzer;
 #endif
 typedef struct gx_san_trap_s gx_san_trap;

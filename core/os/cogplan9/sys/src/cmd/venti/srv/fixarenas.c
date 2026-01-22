@@ -2,7 +2,7 @@
 #include "dat.h"
 #include "fns.h"
 #include "whack.h"
-#define ROUNDUP(x,n)		(((x)+(n)-1)&~((n)-1))
+#define ROUNDUP(x,n) (((x)+(n)-1)&~((n)-1))
 #pragma varargck type "z" uvlong
 #pragma varargck type "z" vlong
 #pragma varargck type "t" uint
@@ -374,93 +374,93 @@ int len;
 char *name;
 };
 Info partinfo[] = {
-4,	"magic",
-D|4,	"version",
-Z|4,	"blocksize",
-4,	"arenabase",
+4, "magic",
+D|4, "version",
+Z|4, "blocksize",
+4, "arenabase",
 0
 };
 Info headinfo4[] = {
-4,	"magic",
-D|4,	"version",
-S|ANameSize,	"name",
-Z|4,	"blocksize",
-Z|8,	"size",
+4, "magic",
+D|4, "version",
+S|ANameSize, "name",
+Z|4, "blocksize",
+Z|8, "size",
 0
 };
 Info headinfo5[] = {
-4,	"magic",
-D|4,	"version",
-S|ANameSize,	"name",
-Z|4,	"blocksize",
-Z|8,	"size",
-4,	"clumpmagic",
+4, "magic",
+D|4, "version",
+S|ANameSize, "name",
+Z|4, "blocksize",
+Z|8, "size",
+4, "clumpmagic",
 0
 };
 Info tailinfo4[] = {
-4,	"magic",
-D|4,	"version",
-S|ANameSize,	"name",
-D|4,	"clumps",
-D|4,	"cclumps",
-T|4,	"ctime",
-T|4,	"wtime",
-D|8,	"used",
-D|8,	"uncsize",
-1,	"sealed",
+4, "magic",
+D|4, "version",
+S|ANameSize, "name",
+D|4, "clumps",
+D|4, "cclumps",
+T|4, "ctime",
+T|4, "wtime",
+D|8, "used",
+D|8, "uncsize",
+1, "sealed",
 0
 };
 Info tailinfo4a[] = {
-4,	"magic",
-D|4,	"version",
-S|ANameSize,	"name",
-D|4,	"clumps",
-D|4,	"cclumps",
-T|4,	"ctime",
-T|4,	"wtime",
-D|8,	"used",
-D|8,	"uncsize",
-1,	"sealed",
-1,	"extension",
-D|4,	"mem.clumps",
-D|4,	"mem.cclumps",
-D|8,	"mem.used",
-D|8,	"mem.uncsize",
-1,	"mem.sealed",
+4, "magic",
+D|4, "version",
+S|ANameSize, "name",
+D|4, "clumps",
+D|4, "cclumps",
+T|4, "ctime",
+T|4, "wtime",
+D|8, "used",
+D|8, "uncsize",
+1, "sealed",
+1, "extension",
+D|4, "mem.clumps",
+D|4, "mem.cclumps",
+D|8, "mem.used",
+D|8, "mem.uncsize",
+1, "mem.sealed",
 0
 };
 Info tailinfo5[] = {
-4,	"magic",
-D|4,	"version",
-S|ANameSize,	"name",
-D|4,	"clumps",
-D|4,	"cclumps",
-T|4,	"ctime",
-T|4,	"wtime",
-4,	"clumpmagic",
-D|8,	"used",
-D|8,	"uncsize",
-1,	"sealed",
+4, "magic",
+D|4, "version",
+S|ANameSize, "name",
+D|4, "clumps",
+D|4, "cclumps",
+T|4, "ctime",
+T|4, "wtime",
+4, "clumpmagic",
+D|8, "used",
+D|8, "uncsize",
+1, "sealed",
 0
 };
 Info tailinfo5a[] = {
-4,	"magic",
-D|4,	"version",
-S|ANameSize,	"name",
-D|4,	"clumps",
-D|4,	"cclumps",
-T|4,	"ctime",
-T|4,	"wtime",
-4,	"clumpmagic",
-D|8,	"used",
-D|8,	"uncsize",
-1,	"sealed",
-1,	"extension",
-D|4,	"mem.clumps",
-D|4,	"mem.cclumps",
-D|8,	"mem.used",
-D|8,	"mem.uncsize",
-1,	"mem.sealed",
+4, "magic",
+D|4, "version",
+S|ANameSize, "name",
+D|4, "clumps",
+D|4, "cclumps",
+T|4, "ctime",
+T|4, "wtime",
+4, "clumpmagic",
+D|8, "used",
+D|8, "uncsize",
+1, "sealed",
+1, "extension",
+D|4, "mem.clumps",
+D|4, "mem.cclumps",
+D|8, "mem.used",
+D|8, "mem.uncsize",
+1, "mem.sealed",
 0
 };
 void

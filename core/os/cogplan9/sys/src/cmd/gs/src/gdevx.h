@@ -1,5 +1,5 @@
 #ifndef gdevx_INCLUDED
-#  define gdevx_INCLUDED
+# define gdevx_INCLUDED
 typedef unsigned long x_pixel;
 #include "gdevbbox.h"
 #include "gdevxcmp.h"
@@ -17,7 +17,7 @@ char *x11_name;
 x11fontlist std, iso;
 x11fontmap *next;
 };
-#define private_st_x11fontmap()	\
+#define private_st_x11fontmap() \
 gs_private_st_ptrs3(st_x11fontmap, x11fontmap, "x11fontmap",\
 x11fontmap_enum_ptrs, x11fontmap_reloc_ptrs, ps_name, x11_name, next)
 typedef struct gx_device_X_s {
@@ -138,7 +138,7 @@ char chars[MAX_TEXT_CHARS];
 XDrawText(xdev->dpy, xdev->dest, xdev->gc, xdev->text.origin.x,\
 xdev->text.origin.y, xdev->text.items, xdev->text.item_count)
 } gx_device_X;
-#define private_st_device_X()	\
+#define private_st_device_X() \
 gs_public_st_suffix_add4_final(st_device_X, gx_device_X,\
 "gx_device_X", device_x_enum_ptrs, device_x_reloc_ptrs,\
 gx_device_finalize, st_device_bbox, buffer, regular_fonts,\

@@ -7,10 +7,10 @@
 (define csn (CogStorageNode "cog://localhost:17003"))
 (cog-open csn)
 (define qry
-	(LgParseDisjuncts
-		(PhraseNode "this is a test.")
-		(LgDictNode "en")
-		(NumberNode 1)))
+(LgParseDisjuncts
+(PhraseNode "this is a test.")
+(LgDictNode "en")
+(NumberNode 1)))
 (define anchor (Predicate "result anchor"))
 (fetch-query qry anchor)
 (cog-value qry anchor)

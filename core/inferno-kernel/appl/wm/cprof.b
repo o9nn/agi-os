@@ -171,7 +171,7 @@ a += tab;
 b += tab;
 }
 else{
-if(int e)	# partly executed
+if(int e) # partly executed
 tag = "halfexec";
 else
 tag = "notexec";
@@ -272,7 +272,7 @@ j = 0;
 SNT: con 16;
 NT: con SNT*SNT;
 NTF: con 256/SNT;
-tags := array[NT]  of { * => byte 0 };
+tags := array[NT] of { * => byte 0 };
 gettag(win: ref Tk->Toplevel, n: int, d: int): string
 {
 i := int ((real n/real d) * real (NT-1));

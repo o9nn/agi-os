@@ -9,30 +9,30 @@ deepecho hard nofile 16384
 EOF
 sudo apt-get update
 sudo apt-get install -y \
-    python3.10 \
-    python3-pip \
-    python3-venv \
-    firefox \
-    git \
-    vim \
-    nodejs \
-    npm \
-    xvfb \
-    x11vnc \
-    curl \
-    wget \
-    htop \
-    tmux \
-    screen \
-    gnome-keyring \
-    libsecret-1-0 \
-    libsecret-1-dev \
-    dbus-x11
+python3.10 \
+python3-pip \
+python3-venv \
+firefox \
+git \
+vim \
+nodejs \
+npm \
+xvfb \
+x11vnc \
+curl \
+wget \
+htop \
+tmux \
+screen \
+gnome-keyring \
+libsecret-1-0 \
+libsecret-1-dev \
+dbus-x11
 echo "alias python=python3" >> ~/.bashrc
 echo "alias pip=pip3" >> ~/.bashrc
 source ~/.bashrc
 if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
-    eval $(dbus-launch --sh-syntax)
+eval $(dbus-launch --sh-syntax)
 fi
 echo "D33ptr333ch0" | gnome-keyring-daemon --unlock
 export $(gnome-keyring-daemon --start)
@@ -42,9 +42,9 @@ sudo mkswap /swapfile
 sudo swapon /swapfile
 echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 if ! id -u deepecho &>/dev/null; then
-    sudo useradd -m -s /bin/bash deepecho
-    sudo usermod -aG sudo deepecho
-    echo "deepecho ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/deepecho
+sudo useradd -m -s /bin/bash deepecho
+sudo usermod -aG sudo deepecho
+echo "deepecho ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/deepecho
 fi
 sudo mkdir -p /opt/deepecho
 sudo chown -R deepecho:deepecho /opt/deepecho
@@ -54,8 +54,8 @@ pip install --upgrade pip
 pip install -r requirements.txt
 pip install keyring secretstorage dbus-python
 if [ ! -d "/opt/deepecho/windsurf-project" ]; then
-    cd /opt/deepecho
-    sudo -u deepecho git clone https://github.com/EchoCog/windsurf-project.git
+cd /opt/deepecho
+sudo -u deepecho git clone https://github.com/EchoCog/windsurf-project.git
 fi
 sudo chown -R deepecho:deepecho /opt/deepecho/windsurf-project
 cat > /opt/deepecho/.screenrc << EOF

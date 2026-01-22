@@ -16,43 +16,43 @@
 #include <sstream>
 #include <algorithm>
 #include <string>
-#define KV_GENERAL_ARCHITECTURE          "general.architecture"
-#define KV_GENERAL_NAME                  "general.name"
-#define KV_TOKENIZER_MODEL               "tokenizer.ggml.model"
-#define KV_TOKENIZER_LIST                "tokenizer.ggml.tokens"
-#define KV_TOKENIZER_TOKEN_TYPE          "tokenizer.ggml.token_type"
-#define KV_TOKENIZER_SCORES              "tokenizer.ggml.scores"
-#define KV_TOKENIZER_BOS_ID              "tokenizer.ggml.bos_token_id"
-#define KV_TOKENIZER_EOS_ID              "tokenizer.ggml.eos_token_id"
-#define KV_TOKENIZER_UNK_ID              "tokenizer.ggml.unknown_token_id"
-#define KV_TOKENIZER_SEP_ID              "tokenizer.ggml.seperator_token_id"
-#define KV_TOKENIZER_PAD_ID              "tokenizer.ggml.padding_token_id"
-#define KV_TOKENIZER_HF_JSON             "tokenizer.huggingface.json"
-#define KV_CONTEXT_LENGTH                "llama.context_length"
-#define KV_EMBEDDING_LENGTH              "llama.embedding_length"
-#define KV_BLOCK_COUNT                   "llama.block_count"
-#define KV_FEED_FORWARD_LENGTH           "llama.feed_forward_length"
-#define KV_ATTENTION_HEAD_COUNT          "llama.attention.head_count"
-#define KV_ATTENTION_HEAD_COUNT_KV       "llama.attention.head_count_kv"
-#define KV_ATTENTION_LAYERNORM_RMS_EPS   "llama.attention.layer_norm_rms_epsilon"
-#define KV_ROPE_DIMENSION_COUNT          "llama.rope.dimension_count"
-#define TN_TOKEN_EMBD  "token_embd.weight"
+#define KV_GENERAL_ARCHITECTURE "general.architecture"
+#define KV_GENERAL_NAME "general.name"
+#define KV_TOKENIZER_MODEL "tokenizer.ggml.model"
+#define KV_TOKENIZER_LIST "tokenizer.ggml.tokens"
+#define KV_TOKENIZER_TOKEN_TYPE "tokenizer.ggml.token_type"
+#define KV_TOKENIZER_SCORES "tokenizer.ggml.scores"
+#define KV_TOKENIZER_BOS_ID "tokenizer.ggml.bos_token_id"
+#define KV_TOKENIZER_EOS_ID "tokenizer.ggml.eos_token_id"
+#define KV_TOKENIZER_UNK_ID "tokenizer.ggml.unknown_token_id"
+#define KV_TOKENIZER_SEP_ID "tokenizer.ggml.seperator_token_id"
+#define KV_TOKENIZER_PAD_ID "tokenizer.ggml.padding_token_id"
+#define KV_TOKENIZER_HF_JSON "tokenizer.huggingface.json"
+#define KV_CONTEXT_LENGTH "llama.context_length"
+#define KV_EMBEDDING_LENGTH "llama.embedding_length"
+#define KV_BLOCK_COUNT "llama.block_count"
+#define KV_FEED_FORWARD_LENGTH "llama.feed_forward_length"
+#define KV_ATTENTION_HEAD_COUNT "llama.attention.head_count"
+#define KV_ATTENTION_HEAD_COUNT_KV "llama.attention.head_count_kv"
+#define KV_ATTENTION_LAYERNORM_RMS_EPS "llama.attention.layer_norm_rms_epsilon"
+#define KV_ROPE_DIMENSION_COUNT "llama.rope.dimension_count"
+#define TN_TOKEN_EMBD "token_embd.weight"
 #define TN_OUTPUT_NORM "output_norm.weight"
-#define TN_OUTPUT      "output.weight"
-#define TN_ATTN_NORM   "blk.%d.attn_norm.weight"
-#define TN_ATTN_Q      "blk.%d.attn_q.weight"
-#define TN_ATTN_K      "blk.%d.attn_k.weight"
-#define TN_ATTN_V      "blk.%d.attn_v.weight"
+#define TN_OUTPUT "output.weight"
+#define TN_ATTN_NORM "blk.%d.attn_norm.weight"
+#define TN_ATTN_Q "blk.%d.attn_q.weight"
+#define TN_ATTN_K "blk.%d.attn_k.weight"
+#define TN_ATTN_V "blk.%d.attn_v.weight"
 #define TN_ATTN_OUTPUT "blk.%d.attn_output.weight"
-#define TN_FFN_NORM    "blk.%d.ffn_norm.weight"
-#define TN_FFN_GATE    "blk.%d.ffn_gate.weight"
-#define TN_FFN_DOWN    "blk.%d.ffn_down.weight"
-#define TN_FFN_UP      "blk.%d.ffn_up.weight"
+#define TN_FFN_NORM "blk.%d.ffn_norm.weight"
+#define TN_FFN_GATE "blk.%d.ffn_gate.weight"
+#define TN_FFN_DOWN "blk.%d.ffn_down.weight"
+#define TN_FFN_UP "blk.%d.ffn_up.weight"
 #if defined(_MSC_VER)
 #pragma warning(disable: 4244 4267)
 #endif
-#define LLAMA_FILE_MAGIC_GGJT        0x67676a74u
-#define LLAMA_FILE_VERSION_GGJT_V3   3
+#define LLAMA_FILE_MAGIC_GGJT 0x67676a74u
+#define LLAMA_FILE_VERSION_GGJT_V3 3
 #define TOKENIZER_NAME "llama"
 #define UNKNOWN_TOKEN_ID 0
 #define BOS_TOKEN_ID 1
@@ -156,7 +156,7 @@ LOG_INF("%f\n", w->rms_att_weight[0]);
 if (!w->wcls.empty()) LOG_INF("%f\n", w->wcls[0]);
 }
 struct my_llama_vocab {
-using id    = int32_t;
+using id = int32_t;
 using token = std::string;
 using ttype = llama_token_type;
 struct token_data {
@@ -168,15 +168,15 @@ std::unordered_map<token, id> token_to_id;
 std::vector<token_data> id_to_token;
 };
 struct my_llama_hparams {
-uint32_t n_vocab   = 32000;
-uint32_t n_ctx     = 512;
-uint32_t n_embd    = 4096;
-uint32_t n_ff      = 11008;
-uint32_t n_mult    = 4;
-uint32_t n_head    = 32;
+uint32_t n_vocab = 32000;
+uint32_t n_ctx = 512;
+uint32_t n_embd = 4096;
+uint32_t n_ff = 11008;
+uint32_t n_mult = 4;
+uint32_t n_head = 32;
 uint32_t n_head_kv = 32;
-uint32_t n_layer   = 32;
-uint32_t n_rot     = 64;
+uint32_t n_layer = 32;
+uint32_t n_rot = 64;
 bool operator!=(const my_llama_hparams& other) const {
 return memcmp(this, &other, sizeof(my_llama_hparams));
 }
@@ -229,12 +229,12 @@ bool samples_start_after_nl;
 bool use_adam;
 bool use_flash;
 bool use_scratch;
-int   warmup;
-int   cos_decay_steps;
+int warmup;
+int cos_decay_steps;
 float cos_decay_restart;
 float cos_decay_alpha;
-int   lbfgs_n_iter;
-int   adam_n_iter;
+int lbfgs_n_iter;
+int adam_n_iter;
 float adam_alpha;
 float adam_decay;
 int mem_model_gb;
@@ -269,7 +269,7 @@ LOG("float space for %s\n", ggml_get_name(t));
 }
 static void init_model(struct my_llama_model * model) {
 const auto & hparams = model->hparams;
-const uint32_t n_embd  = hparams.n_embd;
+const uint32_t n_embd = hparams.n_embd;
 const uint32_t n_layer = hparams.n_layer;
 const uint32_t n_vocab = hparams.n_vocab;
 const uint32_t n_multiqueries = hparams.n_head_kv <= 0 || hparams.n_head_kv >= hparams.n_head ? 1 : hparams.n_head / hparams.n_head_kv;
@@ -279,11 +279,11 @@ model->train_its = 0;
 model->train_samples = 0;
 model->train_tokens = 0;
 model->tok_embeddings = ggml_new_tensor_2d(ctx, GGML_TYPE_F32, n_embd, n_vocab);
-model->norm           = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_embd);
-model->output         = ggml_new_tensor_2d(ctx, GGML_TYPE_F32, n_embd, n_vocab);
+model->norm = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_embd);
+model->output = ggml_new_tensor_2d(ctx, GGML_TYPE_F32, n_embd, n_vocab);
 ggml_set_name(model->tok_embeddings, "tok_embeddings.weight");
-ggml_set_name(model->norm,           "norm.weight");
-ggml_set_name(model->output,         "output.weight");
+ggml_set_name(model->norm, "norm.weight");
+ggml_set_name(model->output, "output.weight");
 model->layers.resize(n_layer);
 for (uint32_t i = 0; i < n_layer; ++i) {
 auto & layer = model->layers[i];
@@ -445,9 +445,9 @@ for (uint32_t i = 0; i < n_vocab; i++) {
 std::string word = gguf_get_arr_str(ctx, token_idx, i);
 vocab->token_to_id[word] = i;
 auto & token_data = vocab->id_to_token[i];
-token_data.text  = std::move(word);
+token_data.text = std::move(word);
 token_data.score = scores[i];
-token_data.type  = (llama_token_type) toktypes[i];
+token_data.type = (llama_token_type) toktypes[i];
 }
 ggml_free(ctx_data);
 gguf_free(ctx);
@@ -457,7 +457,7 @@ my_llama_file file(filename, "rb");
 if (!file.fp) {
 die_fmt("%s: %s", strerror(errno), filename);
 }
-const int  n_vocab = config->vocab_size;
+const int n_vocab = config->vocab_size;
 file.read_u32();
 vocab->id_to_token.resize(n_vocab);
 for (my_llama_vocab::id id=0; id<n_vocab; ++id) {
@@ -514,14 +514,14 @@ const uint32_t n_multiqueries = model->hparams.n_head_kv <= 0 || model->hparams.
 for (uint32_t i = 0; i < model->hparams.n_layer; ++i){
 auto & layer = model->layers[i];
 convert_weights_ak_to_gg(layer.attention_norm, &w->rms_att_weight[i*row_length]);
-convert_weights_ak_to_gg(layer.ffn_norm      , &w->rms_ffn_weight[i*row_length]);
-convert_weights_ak_to_gg(layer.wq            , &w->wq[i*row_length*row_length]);
-convert_weights_ak_to_gg(layer.wo            , &w->wo[i*row_length*row_length]);
-convert_weights_ak_to_gg(layer.wk            , &w->wk[i*row_length*row_length/n_multiqueries]);
-convert_weights_ak_to_gg(layer.wv            , &w->wv[i*row_length*row_length/n_multiqueries]);
-convert_weights_ak_to_gg(layer.w1            , &w->w1[i*row_length*n_ff]);
-convert_weights_ak_to_gg(layer.w2            , &w->w2[i*n_ff*row_length]);
-convert_weights_ak_to_gg(layer.w3            , &w->w3[i*row_length*n_ff]);
+convert_weights_ak_to_gg(layer.ffn_norm , &w->rms_ffn_weight[i*row_length]);
+convert_weights_ak_to_gg(layer.wq , &w->wq[i*row_length*row_length]);
+convert_weights_ak_to_gg(layer.wo , &w->wo[i*row_length*row_length]);
+convert_weights_ak_to_gg(layer.wk , &w->wk[i*row_length*row_length/n_multiqueries]);
+convert_weights_ak_to_gg(layer.wv , &w->wv[i*row_length*row_length/n_multiqueries]);
+convert_weights_ak_to_gg(layer.w1 , &w->w1[i*row_length*n_ff]);
+convert_weights_ak_to_gg(layer.w2 , &w->w2[i*n_ff*row_length]);
+convert_weights_ak_to_gg(layer.w3 , &w->w3[i*row_length*n_ff]);
 }
 struct gguf_context * ctx = gguf_init_empty();
 std::vector<const char*> tokens;
@@ -584,39 +584,39 @@ gguf_free(ctx);
 }
 static struct train_params get_default_train_params() {
 struct train_params params;
-params.fn_vocab_model          = "models/7B/ggml-model-f16.gguf";
+params.fn_vocab_model = "models/7B/ggml-model-f16.gguf";
 params.fn_llama2c_output_model = "ak_llama_model.bin";
-params.fn_train_data           = "shakespeare.txt";
-params.fn_checkpoint_in        = "checkpoint.bin";
-params.fn_checkpoint_out       = "checkpoint.bin";
-params.fn_model_out            = "ggml-checkpoint-f32.bin";
-params.seed       =   -1;
-params.n_ctx      =  128;
-params.n_embd     =  256;
-params.n_mult     =  256;
-params.n_head     =    8;
-params.n_layer    =   16;
-params.n_rotmax   =   64;
-params.n_threads  =    6;
-params.n_batch    =    8;
-params.n_examples =    8;
-params.n_predict  = 1024;
-params.print_info_interval    = 1;
+params.fn_train_data = "shakespeare.txt";
+params.fn_checkpoint_in = "checkpoint.bin";
+params.fn_checkpoint_out = "checkpoint.bin";
+params.fn_model_out = "ggml-checkpoint-f32.bin";
+params.seed = -1;
+params.n_ctx = 128;
+params.n_embd = 256;
+params.n_mult = 256;
+params.n_head = 8;
+params.n_layer = 16;
+params.n_rotmax = 64;
+params.n_threads = 6;
+params.n_batch = 8;
+params.n_examples = 8;
+params.n_predict = 1024;
+params.print_info_interval = 1;
 params.print_details_interval = 2;
 params.samples_start_after_nl = false;
-params.use_adam               = true;
-params.use_flash              = false;
-params.use_scratch            = true;
-params.warmup            =  100;
-params.cos_decay_steps   = 1000;
+params.use_adam = true;
+params.use_flash = false;
+params.use_scratch = true;
+params.warmup = 100;
+params.cos_decay_steps = 1000;
 params.cos_decay_restart = 1.1f;
-params.cos_decay_alpha   = 0.0f;
-params.lbfgs_n_iter      = 16;
-params.adam_n_iter       = 16;
-params.adam_alpha        = 1e-3f;
-params.adam_decay        = 1e-3f;
-params.mem_model_gb    = 2;
-params.mem_compute_gb  = 24;
+params.cos_decay_alpha = 0.0f;
+params.lbfgs_n_iter = 16;
+params.adam_n_iter = 16;
+params.adam_alpha = 1e-3f;
+params.adam_decay = 1e-3f;
+params.mem_model_gb = 2;
+params.mem_compute_gb = 24;
 params.mem_compute0_gb = 8;
 params.mem_compute1_gb = 2;
 return params;
@@ -720,20 +720,20 @@ fclose(file);
 struct my_llama_vocab vocab;
 load_vocab(params.fn_vocab_model, &config, &vocab);
 struct my_llama_model model;
-model.hparams.n_vocab   = config.vocab_size;
-model.hparams.n_ctx     = params.n_ctx;
-model.hparams.n_embd    = config.dim;
-model.hparams.n_ff      = config.hidden_dim;
-model.hparams.n_mult    = 32;
-model.hparams.n_head    = config.n_heads;
+model.hparams.n_vocab = config.vocab_size;
+model.hparams.n_ctx = params.n_ctx;
+model.hparams.n_embd = config.dim;
+model.hparams.n_ff = config.hidden_dim;
+model.hparams.n_mult = 32;
+model.hparams.n_head = config.n_heads;
 model.hparams.n_head_kv = config.n_kv_heads;
-model.hparams.n_layer   = config.n_layers;
-model.hparams.n_rot     = std::min((uint32_t)params.n_rotmax, model.hparams.n_embd / model.hparams.n_head);
+model.hparams.n_layer = config.n_layers;
+model.hparams.n_rot = std::min((uint32_t)params.n_rotmax, model.hparams.n_embd / model.hparams.n_head);
 print_params(&model.hparams);
 struct ggml_init_params lcparams;
-lcparams.mem_size   = 1024ll*1024ll*1024ll*((size_t) params.mem_model_gb);
+lcparams.mem_size = 1024ll*1024ll*1024ll*((size_t) params.mem_model_gb);
 lcparams.mem_buffer = NULL;
-lcparams.no_alloc   = false;
+lcparams.no_alloc = false;
 model.ctx = ggml_init(lcparams);
 init_model(&model);
 model.name = basename(params.fn_llama2c_model);

@@ -4,7 +4,7 @@
 #undef __GLIBC_INTERNAL_STARTING_HEADER_IMPLEMENTATION
 #include <features.h>
 #undef __GLIBC_USE_LIB_EXT2
-#if (defined __USE_GNU							\
+#if (defined __USE_GNU \
 || (defined __STDC_WANT_LIB_EXT2__ && __STDC_WANT_LIB_EXT2__ > 0))
 # define __GLIBC_USE_LIB_EXT2 1
 #else

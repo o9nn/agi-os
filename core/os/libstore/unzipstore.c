@@ -4,12 +4,12 @@
 #include <pthread.h>
 #include <sys/mman.h>
 #include "store.h"
-#define IN_BUFFERING  (256*1024)
+#define IN_BUFFERING (256*1024)
 #define OUT_BUFFERING (512*1024)
 static pthread_mutex_t unzip_lock = PTHREAD_MUTEX_INITIALIZER;
-#define STORE_UNZIP(name)		STORE_UNZIP_1 (UNZIP, name)
-#define STORE_UNZIP_1(unzip,name)	STORE_UNZIP_2 (unzip, name)
-#define STORE_UNZIP_2(unzip,name)	store_##unzip##_##name
+#define STORE_UNZIP(name) STORE_UNZIP_1 (UNZIP, name)
+#define STORE_UNZIP_1(unzip,name) STORE_UNZIP_2 (unzip, name)
+#define STORE_UNZIP_2(unzip,name) store_##unzip##_##name
 #define STORE_STD_CLASS_1(name) STORE_STD_CLASS(name)
 #define STRINGIFY(name) STRINGIFY_1(name)
 #define STRINGIFY_1(name) #name

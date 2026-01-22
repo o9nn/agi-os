@@ -1,11 +1,11 @@
-#include	<u.h>
-#include	<libc.h>
-#include	<draw.h>
-#include	<bio.h>
-#define	WIDTH			80
-#define	TAB	4
-#define	WORD_ALLOC_QUANTA	1024
-#define	ALLOC_QUANTA		4096
+#include <u.h>
+#include <libc.h>
+#include <draw.h>
+#include <bio.h>
+#define WIDTH 80
+#define TAB 4
+#define WORD_ALLOC_QUANTA 1024
+#define ALLOC_QUANTA 4096
 int linewidth=WIDTH;
 int mintab=1;
 int colonflag=0;
@@ -19,8 +19,8 @@ int nchars=0;
 int nwords=0;
 int tabwidth=0;
 Font *font;
-Biobuf	bin;
-Biobuf	bout;
+Biobuf bin;
+Biobuf bout;
 void getwidth(void), readbuf(int), error(char *);
 void scanwords(void), columnate(void), morechars(void);
 int wordwidth(Rune*, int);
@@ -214,7 +214,7 @@ if((cbuf = realloc(cbuf, nalloc*sizeof(*cbuf))) == 0)
 error("out of memory");
 cbufp = cbuf+nchars-1;
 }
-jmp_buf	drawjmp;
+jmp_buf drawjmp;
 void
 terror(Display*, char*)
 {

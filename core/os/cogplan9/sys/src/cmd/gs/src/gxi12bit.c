@@ -94,11 +94,11 @@ long all[LONGS_PER_COLOR_FRACS];
 } color_fracs;
 #define LONGS_PER_4_FRACS ((FRACS_PER_LONG + 3) / 4)
 #if LONGS_PER_4_FRACS == 1
-#  define COLOR_FRACS_4_EQ(f1, f2)\
+# define COLOR_FRACS_4_EQ(f1, f2)\
 ((f1).all[0] == (f2).all[0])
 #else
 #if LONGS_PER_4_FRACS == 2
-#  define COLOR_FRACS_4_EQ(f1, f2)\
+# define COLOR_FRACS_4_EQ(f1, f2)\
 ((f1).all[0] == (f2).all[0] && (f1).all[1] == (f2).all[1])
 #endif
 #endif

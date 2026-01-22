@@ -77,7 +77,7 @@ memset(q + 1, *++p, b);
 q += b;
 }
 }
-x:  pr->ptr = p;
+x: pr->ptr = p;
 pw->ptr = q;
 return status;
 }

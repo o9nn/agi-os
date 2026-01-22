@@ -1,6 +1,6 @@
 implement Mpegio;
 #
-#	MPEG ISO 11172 IO module.
+# MPEG ISO 11172 IO module.
 #
 include "sys.m";
 include "mpegio.m";
@@ -337,25 +337,25 @@ m.looked = 0;
 m.sseeksc();
 }
 }
-ESC, EOB, C0, C1, C2, C3, C4, C5, C6, C7:	con -(iota + 1);
-include	"mai.tab";
-include	"mbi.tab";
-include	"mbp.tab";
-include	"mbb.tab";
-include	"motion.tab";
-include	"cbp.tab";
-include	"cdc.tab";
-include	"ydc.tab";
-include	"rl0f.tab";
-include	"rl0n.tab";
-include	"c0.tab";
-include	"c1.tab";
-include	"c2.tab";
-include	"c3.tab";
-include	"c4.tab";
-include	"c5.tab";
-include	"c6.tab";
-include	"c7.tab";
+ESC, EOB, C0, C1, C2, C3, C4, C5, C6, C7: con -(iota + 1);
+include "mai.tab";
+include "mbi.tab";
+include "mbp.tab";
+include "mbb.tab";
+include "motion.tab";
+include "cbp.tab";
+include "cdc.tab";
+include "ydc.tab";
+include "rl0f.tab";
+include "rl0n.tab";
+include "c0.tab";
+include "c1.tab";
+include "c2.tab";
+include "c3.tab";
+include "c4.tab";
+include "c5.tab";
+include "c6.tab";
+include "c7.tab";
 mbif := array[] of {
 MB_I,
 MB_I | MB_Q,
@@ -586,7 +586,7 @@ v := m.getb();
 w := m.getb();
 if ((w & 1) == 0)
 m.fmterr(s + " mark 1");
-return ((u & 16r7F)  << 15) | (v << 7) | (w >> 1);
+return ((u & 16r7F) << 15) | (v << 7) | (w >> 1);
 }
 Mpegi.getsc(m: self ref Mpegi): int
 {

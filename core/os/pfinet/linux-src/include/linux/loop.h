@@ -1,64 +1,64 @@
 #ifndef _LINUX_LOOP_H
 #define _LINUX_LOOP_H
 #include <linux/kdev_t.h>
-#define LO_NAME_SIZE	64
-#define LO_KEY_SIZE	32
+#define LO_NAME_SIZE 64
+#define LO_KEY_SIZE 32
 #ifdef __KERNEL__
 struct loop_device {
-int		lo_number;
-struct dentry	*lo_dentry;
-int		lo_refcnt;
-kdev_t		lo_device;
-int		lo_offset;
-int		lo_encrypt_type;
-int		lo_encrypt_key_size;
-int		lo_flags;
-int		(*transfer)(struct loop_device *, int cmd,
+int lo_number;
+struct dentry *lo_dentry;
+int lo_refcnt;
+kdev_t lo_device;
+int lo_offset;
+int lo_encrypt_type;
+int lo_encrypt_key_size;
+int lo_flags;
+int (*transfer)(struct loop_device *, int cmd,
 char *raw_buf, char *loop_buf, int size,
 int real_block);
-char		lo_name[LO_NAME_SIZE];
-char		lo_encrypt_key[LO_KEY_SIZE];
-__u32           lo_init[2];
-uid_t		lo_key_owner;
-int		(*ioctl)(struct loop_device *, int cmd,
+char lo_name[LO_NAME_SIZE];
+char lo_encrypt_key[LO_KEY_SIZE];
+__u32 lo_init[2];
+uid_t lo_key_owner;
+int (*ioctl)(struct loop_device *, int cmd,
 unsigned long arg);
-struct file *	lo_backing_file;
-void		*key_data;
-char		key_reserved[48];
+struct file * lo_backing_file;
+void *key_data;
+char key_reserved[48];
 };
-typedef	int (* transfer_proc_t)(struct loop_device *, int cmd,
+typedef int (* transfer_proc_t)(struct loop_device *, int cmd,
 char *raw_buf, char *loop_buf, int size,
 int real_block);
 #endif
-#define LO_FLAGS_DO_BMAP	0x00000001
-#define LO_FLAGS_READ_ONLY	0x00000002
+#define LO_FLAGS_DO_BMAP 0x00000001
+#define LO_FLAGS_READ_ONLY 0x00000002
 #if __GLIBC__ >= 2 && !defined(dev_t)
 #error "Wrong dev_t in loop.h"
 #endif
 struct loop_info {
-int		lo_number;
-dev_t		lo_device;
-unsigned long	lo_inode;
-dev_t		lo_rdevice;
-int		lo_offset;
-int		lo_encrypt_type;
-int		lo_encrypt_key_size;
-int		lo_flags;
-char		lo_name[LO_NAME_SIZE];
-unsigned char	lo_encrypt_key[LO_KEY_SIZE];
-unsigned long	lo_init[2];
-char		reserved[4];
+int lo_number;
+dev_t lo_device;
+unsigned long lo_inode;
+dev_t lo_rdevice;
+int lo_offset;
+int lo_encrypt_type;
+int lo_encrypt_key_size;
+int lo_flags;
+char lo_name[LO_NAME_SIZE];
+unsigned char lo_encrypt_key[LO_KEY_SIZE];
+unsigned long lo_init[2];
+char reserved[4];
 };
-#define LO_CRYPT_NONE	  0
-#define LO_CRYPT_XOR	  1
-#define LO_CRYPT_DES	  2
-#define LO_CRYPT_FISH2    3
-#define LO_CRYPT_BLOW     4
-#define LO_CRYPT_CAST128  5
-#define LO_CRYPT_IDEA     6
-#define LO_CRYPT_DUMMY    9
+#define LO_CRYPT_NONE 0
+#define LO_CRYPT_XOR 1
+#define LO_CRYPT_DES 2
+#define LO_CRYPT_FISH2 3
+#define LO_CRYPT_BLOW 4
+#define LO_CRYPT_CAST128 5
+#define LO_CRYPT_IDEA 6
+#define LO_CRYPT_DUMMY 9
 #define LO_CRYPT_SKIPJACK 10
-#define MAX_LO_CRYPT	20
+#define MAX_LO_CRYPT 20
 #ifdef __KERNEL__
 struct loop_func_table {
 int number;
@@ -71,11 +71,11 @@ int (*ioctl)(struct loop_device *, int cmd, unsigned long arg);
 void (*lock)(struct loop_device *);
 void (*unlock)(struct loop_device *);
 };
-int  loop_register_transfer(struct loop_func_table *funcs);
+int loop_register_transfer(struct loop_func_table *funcs);
 int loop_unregister_transfer(int number);
 #endif
-#define LOOP_SET_FD	0x4C00
-#define LOOP_CLR_FD	0x4C01
-#define LOOP_SET_STATUS	0x4C02
-#define LOOP_GET_STATUS	0x4C03
+#define LOOP_SET_FD 0x4C00
+#define LOOP_CLR_FD 0x4C01
+#define LOOP_SET_STATUS 0x4C02
+#define LOOP_GET_STATUS 0x4C03
 #endif

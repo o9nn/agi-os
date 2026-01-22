@@ -1,48 +1,48 @@
 #include <u.h>
 #include <libc.h>
 #include <bio.h>
-#define	isupper(r)	(L'A' <= (r) && (r) <= L'Z')
-#define	islower(r)	(L'a' <= (r) && (r) <= L'z')
-#define	isalpha(r)	(isupper(r) || islower(r))
-#define	islatin1(r)	(0xC0 <= (r) && (r) <= 0xFF)
-#define	isdigit(r)	(L'0' <= (r) && (r) <= L'9')
-#define	isalnum(r)	(isalpha(r) || isdigit(r))
-#define	isspace(r)	((r) == L' ' || (r) == L'\t' \
+#define isupper(r) (L'A' <= (r) && (r) <= L'Z')
+#define islower(r) (L'a' <= (r) && (r) <= L'z')
+#define isalpha(r) (isupper(r) || islower(r))
+#define islatin1(r) (0xC0 <= (r) && (r) <= 0xFF)
+#define isdigit(r) (L'0' <= (r) && (r) <= L'9')
+#define isalnum(r) (isalpha(r) || isdigit(r))
+#define isspace(r) ((r) == L' ' || (r) == L'\t' \
 || (0x0A <= (r) && (r) <= 0x0D))
-#define	tolower(r)	((r)-'A'+'a')
-#define	sgn(v)		((v) < 0 ? -1 : ((v) > 0 ? 1 : 0))
-#define	WORDSIZ	4000
-char	*filename = "/lib/words";
-Biobuf	*dfile;
-Biobuf	bout;
-Biobuf	bin;
-int	fold;
-int	direc;
-int	exact;
-int	iflag;
-int	rev = 1;
-int	(*compare)(Rune*, Rune*);
-Rune	tab = '\t';
-Rune	entry[WORDSIZ];
-Rune	word[WORDSIZ];
-Rune	key[50], orig[50];
-Rune	latin_fold_tab[] =
+#define tolower(r) ((r)-'A'+'a')
+#define sgn(v) ((v) < 0 ? -1 : ((v) > 0 ? 1 : 0))
+#define WORDSIZ 4000
+char *filename = "/lib/words";
+Biobuf *dfile;
+Biobuf bout;
+Biobuf bin;
+int fold;
+int direc;
+int exact;
+int iflag;
+int rev = 1;
+int (*compare)(Rune*, Rune*);
+Rune tab = '\t';
+Rune entry[WORDSIZ];
+Rune word[WORDSIZ];
+Rune key[50], orig[50];
+Rune latin_fold_tab[] =
 {
 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'c',
 'e', 'e', 'e', 'e', 'i', 'i', 'i', 'i',
-'d', 'n', 'o', 'o', 'o', 'o', 'o',  0 ,
-'o', 'u', 'u', 'u', 'u', 'y',  0 ,  0 ,
+'d', 'n', 'o', 'o', 'o', 'o', 'o', 0 ,
+'o', 'u', 'u', 'u', 'u', 'y', 0 , 0 ,
 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'c',
 'e', 'e', 'e', 'e', 'i', 'i', 'i', 'i',
-'d', 'n', 'o', 'o', 'o', 'o', 'o',  0 ,
-'o', 'u', 'u', 'u', 'u', 'y',  0 , 'y',
+'d', 'n', 'o', 'o', 'o', 'o', 'o', 0 ,
+'o', 'u', 'u', 'u', 'u', 'y', 0 , 'y',
 };
-int	locate(void);
-int	acomp(Rune*, Rune*);
-int	getword(Biobuf*, Rune *rp, int n);
-void	torune(char*, Rune*);
-void	rcanon(Rune*, Rune*);
-int	ncomp(Rune*, Rune*);
+int locate(void);
+int acomp(Rune*, Rune*);
+int getword(Biobuf*, Rune *rp, int n);
+void torune(char*, Rune*);
+void rcanon(Rune*, Rune*);
+int ncomp(Rune*, Rune*);
 void
 usage(void)
 {

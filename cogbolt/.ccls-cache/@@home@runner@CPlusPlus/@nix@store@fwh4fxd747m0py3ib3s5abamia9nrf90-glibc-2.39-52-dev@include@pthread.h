@@ -1,5 +1,5 @@
 #ifndef _PTHREAD_H
-#define _PTHREAD_H	1
+#define _PTHREAD_H 1
 #include <features.h>
 #include <sched.h>
 #include <time.h>
@@ -16,9 +16,9 @@
 enum
 {
 PTHREAD_CREATE_JOINABLE,
-#define PTHREAD_CREATE_JOINABLE	PTHREAD_CREATE_JOINABLE
+#define PTHREAD_CREATE_JOINABLE PTHREAD_CREATE_JOINABLE
 PTHREAD_CREATE_DETACHED
-#define PTHREAD_CREATE_DETACHED	PTHREAD_CREATE_DETACHED
+#define PTHREAD_CREATE_DETACHED PTHREAD_CREATE_DETACHED
 };
 enum
 {
@@ -55,14 +55,14 @@ PTHREAD_PRIO_PROTECT
 };
 #endif
 #define PTHREAD_MUTEX_INITIALIZER \
-{ {  __PTHREAD_MUTEX_INITIALIZER (PTHREAD_MUTEX_TIMED_NP) } }
+{ { __PTHREAD_MUTEX_INITIALIZER (PTHREAD_MUTEX_TIMED_NP) } }
 #ifdef __USE_GNU
 # define PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP \
-{ {  __PTHREAD_MUTEX_INITIALIZER (PTHREAD_MUTEX_RECURSIVE_NP) } }
+{ { __PTHREAD_MUTEX_INITIALIZER (PTHREAD_MUTEX_RECURSIVE_NP) } }
 # define PTHREAD_ERRORCHECK_MUTEX_INITIALIZER_NP \
-{ {  __PTHREAD_MUTEX_INITIALIZER (PTHREAD_MUTEX_ERRORCHECK_NP) } }
+{ { __PTHREAD_MUTEX_INITIALIZER (PTHREAD_MUTEX_ERRORCHECK_NP) } }
 # define PTHREAD_ADAPTIVE_MUTEX_INITIALIZER_NP \
-{ {  __PTHREAD_MUTEX_INITIALIZER (PTHREAD_MUTEX_ADAPTIVE_NP) } }
+{ { __PTHREAD_MUTEX_INITIALIZER (PTHREAD_MUTEX_ADAPTIVE_NP) } }
 #endif
 #if defined __USE_UNIX98 || defined __USE_XOPEN2K
 enum
@@ -75,30 +75,30 @@ PTHREAD_RWLOCK_DEFAULT_NP = PTHREAD_RWLOCK_PREFER_READER_NP
 # define PTHREAD_RWLOCK_INITIALIZER \
 { { __PTHREAD_RWLOCK_INITIALIZER (PTHREAD_RWLOCK_DEFAULT_NP) } }
 # ifdef __USE_GNU
-#  define PTHREAD_RWLOCK_WRITER_NONRECURSIVE_INITIALIZER_NP \
+# define PTHREAD_RWLOCK_WRITER_NONRECURSIVE_INITIALIZER_NP \
 { { __PTHREAD_RWLOCK_INITIALIZER (PTHREAD_RWLOCK_PREFER_WRITER_NONRECURSIVE_NP) } }
 # endif
 #endif
 enum
 {
 PTHREAD_INHERIT_SCHED,
-#define PTHREAD_INHERIT_SCHED   PTHREAD_INHERIT_SCHED
+#define PTHREAD_INHERIT_SCHED PTHREAD_INHERIT_SCHED
 PTHREAD_EXPLICIT_SCHED
-#define PTHREAD_EXPLICIT_SCHED  PTHREAD_EXPLICIT_SCHED
+#define PTHREAD_EXPLICIT_SCHED PTHREAD_EXPLICIT_SCHED
 };
 enum
 {
 PTHREAD_SCOPE_SYSTEM,
-#define PTHREAD_SCOPE_SYSTEM    PTHREAD_SCOPE_SYSTEM
+#define PTHREAD_SCOPE_SYSTEM PTHREAD_SCOPE_SYSTEM
 PTHREAD_SCOPE_PROCESS
-#define PTHREAD_SCOPE_PROCESS   PTHREAD_SCOPE_PROCESS
+#define PTHREAD_SCOPE_PROCESS PTHREAD_SCOPE_PROCESS
 };
 enum
 {
 PTHREAD_PROCESS_PRIVATE,
 #define PTHREAD_PROCESS_PRIVATE PTHREAD_PROCESS_PRIVATE
 PTHREAD_PROCESS_SHARED
-#define PTHREAD_PROCESS_SHARED  PTHREAD_PROCESS_SHARED
+#define PTHREAD_PROCESS_SHARED PTHREAD_PROCESS_SHARED
 };
 #define PTHREAD_COND_INITIALIZER { { {0}, {0}, {0, 0}, {0, 0}, 0, 0, {0, 0} } }
 struct _pthread_cleanup_buffer
@@ -111,16 +111,16 @@ struct _pthread_cleanup_buffer *__prev;
 enum
 {
 PTHREAD_CANCEL_ENABLE,
-#define PTHREAD_CANCEL_ENABLE   PTHREAD_CANCEL_ENABLE
+#define PTHREAD_CANCEL_ENABLE PTHREAD_CANCEL_ENABLE
 PTHREAD_CANCEL_DISABLE
-#define PTHREAD_CANCEL_DISABLE  PTHREAD_CANCEL_DISABLE
+#define PTHREAD_CANCEL_DISABLE PTHREAD_CANCEL_DISABLE
 };
 enum
 {
 PTHREAD_CANCEL_DEFERRED,
-#define PTHREAD_CANCEL_DEFERRED	PTHREAD_CANCEL_DEFERRED
+#define PTHREAD_CANCEL_DEFERRED PTHREAD_CANCEL_DEFERRED
 PTHREAD_CANCEL_ASYNCHRONOUS
-#define PTHREAD_CANCEL_ASYNCHRONOUS	PTHREAD_CANCEL_ASYNCHRONOUS
+#define PTHREAD_CANCEL_ASYNCHRONOUS PTHREAD_CANCEL_ASYNCHRONOUS
 };
 #define PTHREAD_CANCELED ((void *) -1)
 #define PTHREAD_ONCE_INIT 0
@@ -143,7 +143,7 @@ extern int pthread_clockjoin_np (pthread_t __th, void **__thread_return,
 clockid_t __clockid,
 const struct timespec *__abstime);
 # else
-#  ifdef __REDIRECT
+# ifdef __REDIRECT
 extern int __REDIRECT (pthread_timedjoin_np,
 (pthread_t __th, void **__thread_return,
 const struct timespec *__abstime),
@@ -153,10 +153,10 @@ extern int __REDIRECT (pthread_clockjoin_np,
 clockid_t __clockid,
 const struct timespec *__abstime),
 __pthread_clockjoin_np64);
-#  else
-#   define pthread_timedjoin_np __pthread_timedjoin_np64
-#   define pthread_clockjoin_np __pthread_clockjoin_np64
-#  endif
+# else
+# define pthread_timedjoin_np __pthread_timedjoin_np64
+# define pthread_clockjoin_np __pthread_clockjoin_np64
+# endif
 # endif
 #endif
 extern int pthread_detach (pthread_t __th) __THROW;
@@ -268,7 +268,7 @@ extern int __REDIRECT_NTH (pthread_yield, (void), sched_yield)
 __attribute_deprecated_msg__ ("\
 pthread_yield is deprecated, use sched_yield instead");
 # else
-#  define pthread_yield sched_yield
+# define pthread_yield sched_yield
 # endif
 extern int pthread_setaffinity_np (pthread_t __th, size_t __cpusetsize,
 const cpu_set_t *__cpuset)
@@ -320,22 +320,22 @@ void __defer () { pthread_setcanceltype (PTHREAD_CANCEL_DEFERRED,
 &__cancel_type); }
 void __restore () const { pthread_setcanceltype (__cancel_type, 0); }
 };
-#  define pthread_cleanup_push(routine, arg) \
-do {									      \
+# define pthread_cleanup_push(routine, arg) \
+do { \
 __pthread_cleanup_class __clframe (routine, arg)
-#  define pthread_cleanup_pop(execute) \
-__clframe.__setdoit (execute);					      \
+# define pthread_cleanup_pop(execute) \
+__clframe.__setdoit (execute); \
 } while (0)
-#  ifdef __USE_GNU
-#   define pthread_cleanup_push_defer_np(routine, arg) \
-do {									      \
-__pthread_cleanup_class __clframe (routine, arg);			      \
+# ifdef __USE_GNU
+# define pthread_cleanup_push_defer_np(routine, arg) \
+do { \
+__pthread_cleanup_class __clframe (routine, arg); \
 __clframe.__defer ()
-#   define pthread_cleanup_pop_restore_np(execute) \
-__clframe.__restore ();						      \
-__clframe.__setdoit (execute);					      \
+# define pthread_cleanup_pop_restore_np(execute) \
+__clframe.__restore (); \
+__clframe.__setdoit (execute); \
 } while (0)
-#  endif
+# endif
 # else
 __extern_inline void
 __pthread_cleanup_routine (struct __pthread_cleanup_frame *__frame)
@@ -343,83 +343,83 @@ __pthread_cleanup_routine (struct __pthread_cleanup_frame *__frame)
 if (__frame->__do_it)
 __frame->__cancel_routine (__frame->__cancel_arg);
 }
-#  define pthread_cleanup_push(routine, arg) \
-do {									      \
-struct __pthread_cleanup_frame __clframe				      \
-__attribute__ ((__cleanup__ (__pthread_cleanup_routine)))		      \
-= { .__cancel_routine = (routine), .__cancel_arg = (arg),	 	      \
+# define pthread_cleanup_push(routine, arg) \
+do { \
+struct __pthread_cleanup_frame __clframe \
+__attribute__ ((__cleanup__ (__pthread_cleanup_routine))) \
+= { .__cancel_routine = (routine), .__cancel_arg = (arg), \
 .__do_it = 1 };
-#  define pthread_cleanup_pop(execute) \
-__clframe.__do_it = (execute);					      \
+# define pthread_cleanup_pop(execute) \
+__clframe.__do_it = (execute); \
 } while (0)
-#  ifdef __USE_GNU
-#   define pthread_cleanup_push_defer_np(routine, arg) \
-do {									      \
-struct __pthread_cleanup_frame __clframe				      \
-__attribute__ ((__cleanup__ (__pthread_cleanup_routine)))		      \
-= { .__cancel_routine = (routine), .__cancel_arg = (arg),		      \
-.__do_it = 1 };						      \
-(void) pthread_setcanceltype (PTHREAD_CANCEL_DEFERRED,		      \
+# ifdef __USE_GNU
+# define pthread_cleanup_push_defer_np(routine, arg) \
+do { \
+struct __pthread_cleanup_frame __clframe \
+__attribute__ ((__cleanup__ (__pthread_cleanup_routine))) \
+= { .__cancel_routine = (routine), .__cancel_arg = (arg), \
+.__do_it = 1 }; \
+(void) pthread_setcanceltype (PTHREAD_CANCEL_DEFERRED, \
 &__clframe.__cancel_type)
-#   define pthread_cleanup_pop_restore_np(execute) \
-(void) pthread_setcanceltype (__clframe.__cancel_type, NULL);	      \
-__clframe.__do_it = (execute);					      \
+# define pthread_cleanup_pop_restore_np(execute) \
+(void) pthread_setcanceltype (__clframe.__cancel_type, NULL); \
+__clframe.__do_it = (execute); \
 } while (0)
-#  endif
+# endif
 # endif
 #else
 # define pthread_cleanup_push(routine, arg) \
-do {									      \
-__pthread_unwind_buf_t __cancel_buf;				      \
-void (*__cancel_routine) (void *) = (routine);			      \
-void *__cancel_arg = (arg);						      \
+do { \
+__pthread_unwind_buf_t __cancel_buf; \
+void (*__cancel_routine) (void *) = (routine); \
+void *__cancel_arg = (arg); \
 int __not_first_call = __sigsetjmp_cancel (__cancel_buf.__cancel_jmp_buf, \
-0);			      \
-if (__glibc_unlikely (__not_first_call))				      \
-{									      \
-__cancel_routine (__cancel_arg);				      \
-__pthread_unwind_next (&__cancel_buf);				      \
+0); \
+if (__glibc_unlikely (__not_first_call)) \
+{ \
+__cancel_routine (__cancel_arg); \
+__pthread_unwind_next (&__cancel_buf); \
 \
-}									      \
+} \
 \
-__pthread_register_cancel (&__cancel_buf);				      \
+__pthread_register_cancel (&__cancel_buf); \
 do {
 extern void __pthread_register_cancel (__pthread_unwind_buf_t *__buf)
 __cleanup_fct_attribute;
 # define pthread_cleanup_pop(execute) \
 do { } while (0);\
-} while (0);							      \
-__pthread_unregister_cancel (&__cancel_buf);			      \
-if (execute)							      \
-__cancel_routine (__cancel_arg);					      \
+} while (0); \
+__pthread_unregister_cancel (&__cancel_buf); \
+if (execute) \
+__cancel_routine (__cancel_arg); \
 } while (0)
 extern void __pthread_unregister_cancel (__pthread_unwind_buf_t *__buf)
 __cleanup_fct_attribute;
 # ifdef __USE_GNU
-#  define pthread_cleanup_push_defer_np(routine, arg) \
-do {									      \
-__pthread_unwind_buf_t __cancel_buf;				      \
-void (*__cancel_routine) (void *) = (routine);			      \
-void *__cancel_arg = (arg);						      \
+# define pthread_cleanup_push_defer_np(routine, arg) \
+do { \
+__pthread_unwind_buf_t __cancel_buf; \
+void (*__cancel_routine) (void *) = (routine); \
+void *__cancel_arg = (arg); \
 int __not_first_call = __sigsetjmp_cancel (__cancel_buf.__cancel_jmp_buf, \
-0);			      \
-if (__glibc_unlikely (__not_first_call))				      \
-{									      \
-__cancel_routine (__cancel_arg);				      \
-__pthread_unwind_next (&__cancel_buf);				      \
+0); \
+if (__glibc_unlikely (__not_first_call)) \
+{ \
+__cancel_routine (__cancel_arg); \
+__pthread_unwind_next (&__cancel_buf); \
 \
-}									      \
+} \
 \
-__pthread_register_cancel_defer (&__cancel_buf);			      \
+__pthread_register_cancel_defer (&__cancel_buf); \
 do {
 extern void __pthread_register_cancel_defer (__pthread_unwind_buf_t *__buf)
 __cleanup_fct_attribute;
-#  define pthread_cleanup_pop_restore_np(execute) \
+# define pthread_cleanup_pop_restore_np(execute) \
 do { } while (0);\
-} while (0);							      \
-__pthread_unregister_cancel_restore (&__cancel_buf);		      \
-if (execute)							      \
-__cancel_routine (__cancel_arg);					      \
+} while (0); \
+__pthread_unregister_cancel_restore (&__cancel_buf); \
+if (execute) \
+__cancel_routine (__cancel_arg); \
 } while (0)
 extern void __pthread_unregister_cancel_restore (__pthread_unwind_buf_t *__buf)
 __cleanup_fct_attribute;
@@ -457,14 +457,14 @@ extern int pthread_mutex_timedlock (pthread_mutex_t *__restrict __mutex,
 const struct timespec *__restrict
 __abstime) __THROWNL __nonnull ((1, 2));
 # else
-#  ifdef __REDIRECT_NTHNL
+# ifdef __REDIRECT_NTHNL
 extern int __REDIRECT_NTHNL (pthread_mutex_timedlock,
 (pthread_mutex_t *__restrict __mutex,
 const struct timespec *__restrict __abstime),
 __pthread_mutex_timedlock64) __nonnull ((1, 2));
-#  else
-#   define pthread_mutex_timedlock __pthread_mutex_timedlock64
-#  endif
+# else
+# define pthread_mutex_timedlock __pthread_mutex_timedlock64
+# endif
 # endif
 #endif
 #ifdef __USE_GNU
@@ -474,15 +474,15 @@ clockid_t __clockid,
 const struct timespec *__restrict
 __abstime) __THROWNL __nonnull ((1, 3));
 # else
-#  ifdef __REDIRECT_NTHNL
+# ifdef __REDIRECT_NTHNL
 extern int __REDIRECT_NTHNL (pthread_mutex_clocklock,
 (pthread_mutex_t *__restrict __mutex,
 clockid_t __clockid,
 const struct timespec *__restrict __abstime),
 __pthread_mutex_clocklock64) __nonnull ((1, 3));
-#  else
-#   define pthread_mutex_clocklock __pthread_mutex_clocklock64
-#  endif
+# else
+# define pthread_mutex_clocklock __pthread_mutex_clocklock64
+# endif
 # endif
 #endif
 extern int pthread_mutex_unlock (pthread_mutex_t *__mutex)
@@ -499,14 +499,14 @@ __THROW __nonnull ((1, 3));
 extern int pthread_mutex_consistent (pthread_mutex_t *__mutex)
 __THROW __nonnull ((1));
 # ifdef __USE_GNU
-#  ifdef __REDIRECT_NTH
+# ifdef __REDIRECT_NTH
 extern int __REDIRECT_NTH (pthread_mutex_consistent_np, (pthread_mutex_t *),
 pthread_mutex_consistent) __nonnull ((1))
 __attribute_deprecated_msg__ ("\
 pthread_mutex_consistent_np is deprecated, use pthread_mutex_consistent");
-#  else
-#   define pthread_mutex_consistent_np pthread_mutex_consistent
-#  endif
+# else
+# define pthread_mutex_consistent_np pthread_mutex_consistent
+# endif
 # endif
 #endif
 extern int pthread_mutexattr_init (pthread_mutexattr_t *__attr)
@@ -546,29 +546,29 @@ extern int pthread_mutexattr_getrobust (const pthread_mutexattr_t *__attr,
 int *__robustness)
 __THROW __nonnull ((1, 2));
 # ifdef __USE_GNU
-#  ifdef __REDIRECT_NTH
+# ifdef __REDIRECT_NTH
 extern int __REDIRECT_NTH (pthread_mutexattr_getrobust_np,
 (pthread_mutexattr_t *, int *),
 pthread_mutexattr_getrobust) __nonnull ((1))
 __attribute_deprecated_msg__ ("\
 pthread_mutexattr_getrobust_np is deprecated, use pthread_mutexattr_getrobust");
-#  else
-#   define pthread_mutexattr_getrobust_np pthread_mutexattr_getrobust
-#  endif
+# else
+# define pthread_mutexattr_getrobust_np pthread_mutexattr_getrobust
+# endif
 # endif
 extern int pthread_mutexattr_setrobust (pthread_mutexattr_t *__attr,
 int __robustness)
 __THROW __nonnull ((1));
 # ifdef __USE_GNU
-#  ifdef __REDIRECT_NTH
+# ifdef __REDIRECT_NTH
 extern int __REDIRECT_NTH (pthread_mutexattr_setrobust_np,
 (pthread_mutexattr_t *, int),
 pthread_mutexattr_setrobust) __nonnull ((1))
 __attribute_deprecated_msg__ ("\
 pthread_mutexattr_setrobust_np is deprecated, use pthread_mutexattr_setrobust");
-#  else
-#   define pthread_mutexattr_setrobust_np pthread_mutexattr_setrobust
-#  endif
+# else
+# define pthread_mutexattr_setrobust_np pthread_mutexattr_setrobust
+# endif
 # endif
 #endif
 #if defined __USE_UNIX98 || defined __USE_XOPEN2K
@@ -582,80 +582,80 @@ __THROWNL __nonnull ((1));
 extern int pthread_rwlock_tryrdlock (pthread_rwlock_t *__rwlock)
 __THROWNL __nonnull ((1));
 # ifdef __USE_XOPEN2K
-#  ifndef __USE_TIME_BITS64
+# ifndef __USE_TIME_BITS64
 extern int pthread_rwlock_timedrdlock (pthread_rwlock_t *__restrict __rwlock,
 const struct timespec *__restrict
 __abstime) __THROWNL __nonnull ((1, 2));
-#  else
-#   ifdef __REDIRECT_NTHNL
+# else
+# ifdef __REDIRECT_NTHNL
 extern int __REDIRECT_NTHNL (pthread_rwlock_timedrdlock,
 (pthread_rwlock_t *__restrict __rwlock,
 const struct timespec *__restrict __abstime),
 __pthread_rwlock_timedrdlock64)
 __nonnull ((1, 2));
-#   else
-#    define pthread_rwlock_timedrdlock __pthread_rwlock_timedrdlock64
-#   endif
-#  endif
+# else
+# define pthread_rwlock_timedrdlock __pthread_rwlock_timedrdlock64
+# endif
+# endif
 # endif
 # ifdef __USE_GNU
-#  ifndef __USE_TIME_BITS64
+# ifndef __USE_TIME_BITS64
 extern int pthread_rwlock_clockrdlock (pthread_rwlock_t *__restrict __rwlock,
 clockid_t __clockid,
 const struct timespec *__restrict
 __abstime) __THROWNL __nonnull ((1, 3));
-#  else
-#   ifdef __REDIRECT_NTHNL
+# else
+# ifdef __REDIRECT_NTHNL
 extern int __REDIRECT_NTHNL (pthread_rwlock_clockrdlock,
 (pthread_rwlock_t *__restrict __rwlock,
 clockid_t __clockid,
 const struct timespec *__restrict __abstime),
 __pthread_rwlock_clockrdlock64)
 __nonnull ((1, 3));
-#   else
-#    define pthread_rwlock_clockrdlock __pthread_rwlock_clockrdlock64
-#   endif
-#  endif
+# else
+# define pthread_rwlock_clockrdlock __pthread_rwlock_clockrdlock64
+# endif
+# endif
 # endif
 extern int pthread_rwlock_wrlock (pthread_rwlock_t *__rwlock)
 __THROWNL __nonnull ((1));
 extern int pthread_rwlock_trywrlock (pthread_rwlock_t *__rwlock)
 __THROWNL __nonnull ((1));
 # ifdef __USE_XOPEN2K
-#  ifndef __USE_TIME_BITS64
+# ifndef __USE_TIME_BITS64
 extern int pthread_rwlock_timedwrlock (pthread_rwlock_t *__restrict __rwlock,
 const struct timespec *__restrict
 __abstime) __THROWNL __nonnull ((1, 2));
-#  else
-#   ifdef __REDIRECT_NTHNL
+# else
+# ifdef __REDIRECT_NTHNL
 extern int __REDIRECT_NTHNL (pthread_rwlock_timedwrlock,
 (pthread_rwlock_t *__restrict __rwlock,
 const struct timespec *__restrict __abstime),
 __pthread_rwlock_timedwrlock64)
 __nonnull ((1, 2));
-#   else
-#    define pthread_rwlock_timedwrlock __pthread_rwlock_timedwrlock64
-#   endif
-#  endif
+# else
+# define pthread_rwlock_timedwrlock __pthread_rwlock_timedwrlock64
+# endif
+# endif
 # endif
 # ifdef __USE_GNU
-#  ifndef __USE_TIME_BITS64
+# ifndef __USE_TIME_BITS64
 extern int pthread_rwlock_clockwrlock (pthread_rwlock_t *__restrict __rwlock,
 clockid_t __clockid,
 const struct timespec *__restrict
 __abstime) __THROWNL __nonnull ((1, 3));
-#  else
-#   ifdef __REDIRECT_NTHNL
+# else
+# ifdef __REDIRECT_NTHNL
 extern int __REDIRECT_NTHNL (pthread_rwlock_clockwrlock,
 (pthread_rwlock_t *__restrict __rwlock,
 clockid_t __clockid,
 const struct timespec *__restrict __abstime),
 __pthread_rwlock_clockwrlock64)
 __nonnull ((1, 3));
-#   else
-#    define pthread_rwlock_clockwrlock __pthread_rwlock_clockwrlock64
-#   endif
-#  endif
+# else
+# define pthread_rwlock_clockwrlock __pthread_rwlock_clockwrlock64
+# endif
+# endif
 # endif
 extern int pthread_rwlock_unlock (pthread_rwlock_t *__rwlock)
 __THROWNL __nonnull ((1));
@@ -695,26 +695,26 @@ pthread_mutex_t *__restrict __mutex,
 const struct timespec *__restrict __abstime)
 __nonnull ((1, 2, 3));
 # else
-#  ifdef __REDIRECT
+# ifdef __REDIRECT
 extern int __REDIRECT (pthread_cond_timedwait,
 (pthread_cond_t *__restrict __cond,
 pthread_mutex_t *__restrict __mutex,
 const struct timespec *__restrict __abstime),
 __pthread_cond_timedwait64)
 __nonnull ((1, 2, 3));
-#  else
-#   define pthread_cond_timedwait __pthread_cond_timedwait64
-#  endif
+# else
+# define pthread_cond_timedwait __pthread_cond_timedwait64
+# endif
 # endif
 # ifdef __USE_GNU
-#  ifndef __USE_TIME_BITS64
+# ifndef __USE_TIME_BITS64
 extern int pthread_cond_clockwait (pthread_cond_t *__restrict __cond,
 pthread_mutex_t *__restrict __mutex,
 __clockid_t __clock_id,
 const struct timespec *__restrict __abstime)
 __nonnull ((1, 2, 4));
-#  else
-#   ifdef __REDIRECT
+# else
+# ifdef __REDIRECT
 extern int __REDIRECT (pthread_cond_clockwait,
 (pthread_cond_t *__restrict __cond,
 pthread_mutex_t *__restrict __mutex,
@@ -722,10 +722,10 @@ __clockid_t __clock_id,
 const struct timespec *__restrict __abstime),
 __pthread_cond_clockwait64)
 __nonnull ((1, 2, 4));
-#   else
-#    define pthread_cond_clockwait __pthread_cond_clockwait64
-#   endif
-#  endif
+# else
+# define pthread_cond_clockwait __pthread_cond_clockwait64
+# endif
+# endif
 # endif
 extern int pthread_condattr_init (pthread_condattr_t *__attr)
 __THROW __nonnull ((1));

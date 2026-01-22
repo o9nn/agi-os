@@ -1,31 +1,31 @@
 #include <stdlib.h>
 #include "antiword.h"
 typedef struct list_mem_tag {
-text_block_type		tInfo;
-struct list_mem_tag	*pNext;
+text_block_type tInfo;
+struct list_mem_tag *pNext;
 } list_mem_type;
 typedef struct readinfo_tag {
-list_mem_type		*pBlockCurrent;
-ULONG			ulBlockOffset;
-size_t			tByteNext;
-UCHAR			aucBlock[BIG_BLOCK_SIZE];
+list_mem_type *pBlockCurrent;
+ULONG ulBlockOffset;
+size_t tByteNext;
+UCHAR aucBlock[BIG_BLOCK_SIZE];
 } readinfo_type;
-static list_mem_type	*pTextAnchor = NULL;
-static list_mem_type	*pFootnoteAnchor = NULL;
-static list_mem_type	*pHdrFtrAnchor = NULL;
-static list_mem_type	*pMacroAnchor = NULL;
-static list_mem_type	*pAnnotationAnchor = NULL;
-static list_mem_type	*pEndnoteAnchor = NULL;
-static list_mem_type	*pTextBoxAnchor = NULL;
-static list_mem_type	*pHdrTextBoxAnchor = NULL;
-static list_mem_type	*pBlockLast = NULL;
-static readinfo_type	tOthers = { NULL, 0, 0, };
-static readinfo_type	tHdrFtr = { NULL, 0, 0, };
-static readinfo_type	tFootnote = { NULL, 0, 0, };
+static list_mem_type *pTextAnchor = NULL;
+static list_mem_type *pFootnoteAnchor = NULL;
+static list_mem_type *pHdrFtrAnchor = NULL;
+static list_mem_type *pMacroAnchor = NULL;
+static list_mem_type *pAnnotationAnchor = NULL;
+static list_mem_type *pEndnoteAnchor = NULL;
+static list_mem_type *pTextBoxAnchor = NULL;
+static list_mem_type *pHdrTextBoxAnchor = NULL;
+static list_mem_type *pBlockLast = NULL;
+static readinfo_type tOthers = { NULL, 0, 0, };
+static readinfo_type tHdrFtr = { NULL, 0, 0, };
+static readinfo_type tFootnote = { NULL, 0, 0, };
 static list_mem_type *
 pFreeOneList(list_mem_type *pAnchor)
 {
-list_mem_type	*pCurr, *pNext;
+list_mem_type *pCurr, *pNext;
 pCurr = pAnchor;
 while (pCurr != NULL) {
 pNext = pCurr->pNext;
@@ -54,7 +54,7 @@ tFootnote.pBlockCurrent = NULL;
 BOOL
 bAdd2TextBlockList(const text_block_type *pTextBlock)
 {
-list_mem_type	*pListMember;
+list_mem_type *pListMember;
 fail(pTextBlock == NULL);
 fail(pTextBlock->ulFileOffset == FC_INVALID);
 fail(pTextBlock->ulCharPos == CP_INVALID);
@@ -99,8 +99,8 @@ static void
 vSpitList(list_mem_type **ppAnchorCurr, list_mem_type **ppAnchorNext,
 ULONG ulListLen)
 {
-list_mem_type	*pCurr;
-long		lCharsToGo, lBytesTooFar;
+list_mem_type *pCurr;
+long lCharsToGo, lBytesTooFar;
 fail(ppAnchorCurr == NULL);
 fail(ppAnchorNext == NULL);
 fail(ulListLen > (ULONG)LONG_MAX);
@@ -168,8 +168,8 @@ pCurr->pNext = NULL;
 static ULONG
 ulComputeListLength(const list_mem_type *pAnchor)
 {
-const list_mem_type	*pCurr;
-ULONG		ulTotal;
+const list_mem_type *pCurr;
+ULONG ulTotal;
 ulTotal = 0;
 for (pCurr = pAnchor; pCurr != NULL; pCurr = pCurr->pNext) {
 fail(pCurr->tInfo.ulLength == 0);
@@ -187,7 +187,7 @@ return ulTotal;
 static void
 vCheckList(const list_mem_type *pAnchor, ULONG ulListLen, char *szMsg)
 {
-ULONG		ulTotal;
+ULONG ulTotal;
 ulTotal = ulComputeListLength(pAnchor);
 DBG_DEC(ulTotal);
 if (ulTotal != ulListLen) {
@@ -199,10 +199,10 @@ werr(1, szMsg);
 static BOOL
 bIsEmptyBox(FILE *pFile, const list_mem_type *pAnchor)
 {
-const list_mem_type	*pCurr;
-size_t	tIndex, tSize;
-UCHAR	*aucBuffer;
-char	cChar;
+const list_mem_type *pCurr;
+size_t tIndex, tSize;
+UCHAR *aucBuffer;
+char cChar;
 fail(pFile == NULL);
 if (pAnchor == NULL) {
 return TRUE;
@@ -246,9 +246,9 @@ ULONG ulHdrFtrLen, ULONG ulMacroLen, ULONG ulAnnotationLen,
 ULONG ulEndnoteLen, ULONG ulTextBoxLen, ULONG ulHdrTextBoxLen,
 BOOL bMustExtend)
 {
-list_mem_type	*apAnchors[8];
-list_mem_type	*pGarbageAnchor, *pCurr;
-size_t		tIndex;
+list_mem_type *apAnchors[8];
+list_mem_type *pGarbageAnchor, *pCurr;
+size_t tIndex;
 DBG_MSG("vSplitBlockList");
 pGarbageAnchor = NULL;
 DBG_MSG_C(ulTextLen != 0, "Text block list");
@@ -320,7 +320,7 @@ DBG_DEC(pCurr->tInfo.ulLength);
 ULONG
 ulGetDocumentLength(void)
 {
-long		ulTotal;
+long ulTotal;
 DBG_MSG("ulGetDocumentLength");
 ulTotal = ulComputeListLength(pTextAnchor);
 ulTotal += ulComputeListLength(pFootnoteAnchor);
@@ -355,8 +355,8 @@ static USHORT
 usGetNextByte(FILE *pFile, readinfo_type *pInfoCurrent, list_mem_type *pAnchor,
 ULONG *pulFileOffset, ULONG *pulCharPos, USHORT *pusPropMod)
 {
-ULONG	ulReadOff;
-size_t	tReadLen;
+ULONG ulReadOff;
+size_t tReadLen;
 fail(pInfoCurrent == NULL);
 if (pInfoCurrent->pBlockCurrent == NULL ||
 pInfoCurrent->tByteNext >= sizeof(pInfoCurrent->aucBlock) ||
@@ -414,9 +414,9 @@ static USHORT
 usGetNextChar(FILE *pFile, list_id_enum eListID,
 ULONG *pulFileOffset, ULONG *pulCharPos, USHORT *pusPropMod)
 {
-readinfo_type	*pReadinfo;
-list_mem_type	*pAnchor;
-USHORT	usLSB, usMSB;
+readinfo_type *pReadinfo;
+list_mem_type *pAnchor;
+USHORT usLSB, usMSB;
 switch (eListID) {
 case text_list:
 pReadinfo = &tOthers;
@@ -470,7 +470,7 @@ USHORT
 usNextChar(FILE *pFile, list_id_enum eListID,
 ULONG *pulFileOffset, ULONG *pulCharPos, USHORT *pusPropMod)
 {
-USHORT	usRetVal;
+USHORT usRetVal;
 fail(pFile == NULL);
 usRetVal = usGetNextChar(pFile, eListID,
 pulFileOffset, pulCharPos, pusPropMod);
@@ -490,8 +490,8 @@ return usRetVal;
 USHORT
 usToHdrFtrPosition(FILE *pFile, ULONG ulCharPos)
 {
-ULONG	ulCharPosCurr;
-USHORT	usChar;
+ULONG ulCharPosCurr;
+USHORT usChar;
 tHdrFtr.pBlockCurrent = NULL;
 do {
 usChar = usNextChar(pFile,
@@ -502,8 +502,8 @@ return usChar;
 USHORT
 usToFootnotePosition(FILE *pFile, ULONG ulCharPos)
 {
-ULONG	ulCharPosCurr;
-USHORT	usChar;
+ULONG ulCharPosCurr;
+USHORT usChar;
 tFootnote.pBlockCurrent = NULL;
 do {
 usChar = usNextChar(pFile,
@@ -514,16 +514,16 @@ return usChar;
 ULONG
 ulCharPos2FileOffsetX(ULONG ulCharPos, list_id_enum *peListID)
 {
-static list_id_enum	eListIDs[8] = {
-text_list,	footnote_list,		hdrftr_list,
-macro_list,	annotation_list,	endnote_list,
-textbox_list,	hdrtextbox_list,
+static list_id_enum eListIDs[8] = {
+text_list, footnote_list, hdrftr_list,
+macro_list, annotation_list, endnote_list,
+textbox_list, hdrtextbox_list,
 };
-list_mem_type	*apAnchors[8];
-list_mem_type	*pCurr;
-list_id_enum	eListGuess;
-ULONG		ulBestGuess;
-size_t		tIndex;
+list_mem_type *apAnchors[8];
+list_mem_type *pCurr;
+list_id_enum eListGuess;
+ULONG ulBestGuess;
+size_t tIndex;
 fail(peListID == NULL);
 if (ulCharPos == CP_INVALID) {
 *peListID = no_list;
@@ -567,14 +567,14 @@ return ulBestGuess;
 ULONG
 ulCharPos2FileOffset(ULONG ulCharPos)
 {
-list_id_enum	eListID;
+list_id_enum eListID;
 return ulCharPos2FileOffsetX(ulCharPos, &eListID);
 }
 ULONG
 ulHdrFtrOffset2CharPos(ULONG ulHdrFtrOffset)
 {
-list_mem_type	*pCurr;
-ULONG		ulOffset;
+list_mem_type *pCurr;
+ULONG ulOffset;
 ulOffset = ulHdrFtrOffset;
 for (pCurr = pHdrFtrAnchor; pCurr != NULL; pCurr = pCurr->pNext) {
 if (ulOffset >= pCurr->tInfo.ulLength) {
@@ -588,8 +588,8 @@ return CP_INVALID;
 ULONG
 ulGetSeqNumber(ULONG ulFileOffset)
 {
-list_mem_type	*pCurr;
-ULONG		ulSeq;
+list_mem_type *pCurr;
+ULONG ulSeq;
 if (ulFileOffset == FC_INVALID) {
 return FC_INVALID;
 }

@@ -18,7 +18,7 @@ Get the current token without advancing.
 """
 function current_token(parser::Parser)
 if parser.position > length(parser.tokens)
-return parser.tokens[end]  # EOF
+return parser.tokens[end] # EOF
 end
 return parser.tokens[parser.position]
 end
@@ -253,7 +253,7 @@ Multiset(lhs_objects),
 Multiset(rhs_objects),
 target,
 dissolve,
-0  # Default priority
+0 # Default priority
 )
 push!(rules, rule)
 expect!(parser, TK_SEMICOLON)

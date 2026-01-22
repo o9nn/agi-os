@@ -1,7 +1,7 @@
 #ifndef HEADER_ECH_LOCL_H
 # define HEADER_ECH_LOCL_H
 # include <openssl/ecdh.h>
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 struct ecdh_method {
@@ -17,7 +17,7 @@ int (*finish) (EC_KEY *eckey);
 int flags;
 char *app_data;
 };
-# define ECDH_FLAG_FIPS_METHOD   0x1
+# define ECDH_FLAG_FIPS_METHOD 0x1
 typedef struct ecdh_data_st {
 int (*init) (EC_KEY *);
 ENGINE *engine;
@@ -26,7 +26,7 @@ const ECDH_METHOD *meth;
 CRYPTO_EX_DATA ex_data;
 } ECDH_DATA;
 ECDH_DATA *ecdh_check(EC_KEY *);
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif
 #endif

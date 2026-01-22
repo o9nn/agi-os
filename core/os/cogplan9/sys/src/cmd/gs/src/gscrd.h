@@ -1,11 +1,11 @@
 #ifndef gscrd_INCLUDED
-#  define gscrd_INCLUDED
+# define gscrd_INCLUDED
 #include "gscie.h"
 int
 gs_cie_render1_build(gs_cie_render ** ppcrd, gs_memory_t * mem,
 client_name_t cname);
 int
-gs_cie_render1_init_from(const gs_memory_t  *mem,
+gs_cie_render1_init_from(const gs_memory_t *mem,
 gs_cie_render *pcrd,
 void *client_data,
 const gs_cie_render * pfrom_crd,

@@ -158,13 +158,13 @@ simple_unlock(&console_timestamp_lock);
 #define Ctod(c) ((c) - '0')
 #define MAXBUF (sizeof(long long int) * 8)
 void printnum(
-unsigned long long	u,
-int			base,
-void			(*putc)( char, vm_offset_t ),
-vm_offset_t		putc_arg)
+unsigned long long u,
+int base,
+void (*putc)( char, vm_offset_t ),
+vm_offset_t putc_arg)
 {
-char	buf[MAXBUF];
-char *	p = &buf[MAXBUF-1];
+char buf[MAXBUF];
+char * p = &buf[MAXBUF-1];
 static char digs[] = "0123456789abcdef";
 do {
 *p-- = digs[u % base];
@@ -173,26 +173,26 @@ u /= base;
 while (++p != &buf[MAXBUF])
 (*putc)(*p, putc_arg);
 }
-boolean_t	_doprnt_truncates = FALSE;
+boolean_t _doprnt_truncates = FALSE;
 void _doprnt(
-const char 	*fmt,
-va_list		argp,
-void		(*putc)( char, vm_offset_t),
-int		radix,
-vm_offset_t	putc_arg)
+const char *fmt,
+va_list argp,
+void (*putc)( char, vm_offset_t),
+int radix,
+vm_offset_t putc_arg)
 {
-int		length;
-int		prec;
-boolean_t	ladjust;
-char		padc;
-long long	n;
-unsigned long long	u;
-int		have_long_long;
-int		plus_sign;
-int		sign_char;
-boolean_t	altfmt, truncate;
-int		base;
-char		c;
+int length;
+int prec;
+boolean_t ladjust;
+char padc;
+long long n;
+unsigned long long u;
+int have_long_long;
+int plus_sign;
+int sign_char;
+boolean_t altfmt, truncate;
+int base;
+char c;
 while ((c = *fmt) != '\0') {
 if (c != '%') {
 (*putc)(c, putc_arg);
@@ -270,9 +270,9 @@ switch(c) {
 case 'b':
 case 'B':
 {
-char 	*p;
-boolean_t	any;
-int  	i;
+char *p;
+boolean_t any;
+int i;
 if (! have_long_long)
 u = va_arg(argp, unsigned long);
 else
@@ -413,8 +413,8 @@ u = va_arg(argp, unsigned long long);
 goto print_num;
 print_num:
 {
-char	buf[MAXBUF];
-char *	p = &buf[MAXBUF-1];
+char buf[MAXBUF];
+char * p = &buf[MAXBUF-1];
 static char digits[] = "0123456789abcdef";
 char *prefix = 0;
 if (truncate) u = (long)((int)(u));
@@ -470,7 +470,7 @@ return 0;
 }
 int printf(const char *fmt, ...)
 {
-va_list	listp;
+va_list listp;
 boolean_t need_timestamp = FALSE;
 size_t len;
 if (console_timestamps_enabled && console_timestamp_initialized && fmt && *fmt != '\0') {
@@ -493,10 +493,10 @@ vprintf(fmt, listp);
 va_end(listp);
 return 0;
 }
-int	indent = 0;
+int indent = 0;
 void iprintf(const char *fmt, ...)
 {
-va_list	listp;
+va_list listp;
 int i;
 for (i = indent; i > 0; ){
 if (i >= 8) {
@@ -514,19 +514,19 @@ va_end(listp);
 }
 static void
 sputc(
-char		c,
-vm_offset_t	arg)
+char c,
+vm_offset_t arg)
 {
-char	**bufp = (char **) arg;
-char	*p = *bufp;
+char **bufp = (char **) arg;
+char *p = *bufp;
 *p++ = c;
 *bufp = p;
 }
 int
 sprintf(char *buf, const char *fmt, ...)
 {
-va_list	listp;
-char	*start = buf;
+va_list listp;
+char *start = buf;
 va_start(listp, fmt);
 _doprnt(fmt, listp, sputc, 16, (vm_offset_t)&buf);
 va_end(listp);
@@ -559,7 +559,7 @@ int
 snprintf(char *buf, size_t size, const char *fmt, ...)
 {
 int written;
-va_list	listp;
+va_list listp;
 va_start(listp, fmt);
 written = vsnprintf(buf, size, fmt, listp);
 va_end(listp);
@@ -567,7 +567,7 @@ return written;
 }
 void safe_gets(
 char *str,
-int  maxlen)
+int maxlen)
 {
 char *lp;
 int c;

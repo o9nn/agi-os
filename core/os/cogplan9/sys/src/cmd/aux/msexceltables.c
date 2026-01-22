@@ -33,7 +33,7 @@ char *label;
 double number;
 };
 };
-struct  Biff {
+struct Biff {
 Biobuf *bp;
 int op;
 int len;
@@ -61,13 +61,13 @@ static Row *Root = nil;
 static char *Months[] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun",
 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 static char *Errmsgs[] = {
-[0x0]	"#NULL!",
-[0x7]	"#DIV/0!",
-[0xf]	"#VALUE!",
-[0x17]	"#REF!",
-[0x1d]	"#NAME?",
-[0x24]	"#NUM!",
-[0x2a]	"#N/A!",
+[0x0] "#NULL!",
+[0x7] "#DIV/0!",
+[0xf] "#VALUE!",
+[0x17] "#REF!",
+[0x1d] "#NAME?",
+[0x24] "#NUM!",
+[0x2a] "#N/A!",
 };
 int
 wanted(char *range, int here)
@@ -121,12 +121,12 @@ ncol->f = f;
 ncol->type = type;
 ncol->next = nil;
 switch(type){
-case Tnumber:	ncol->number = *(double *)val;	break;
-case Tlabel:	ncol->label = (char *)val;	break;
-case Tindex:	ncol->index = *(int *)val;	break;
-case Tbool:	ncol->bool = *(int *)val;	break;
-case Terror:	ncol->error = *(int *)val;	break;
-default:	sysfatal("can't happen error");
+case Tnumber: ncol->number = *(double *)val; break;
+case Tlabel: ncol->label = (char *)val; break;
+case Tindex: ncol->index = *(int *)val; break;
+case Tbool: ncol->bool = *(int *)val; break;
+case Terror: ncol->error = *(int *)val; break;
+default: sysfatal("can't happen error");
 }
 if(Root == nil || Root->r > r){
 if((nrow = malloc(sizeof(Row))) == nil)
@@ -569,12 +569,12 @@ struct {
 int n;
 char *s;
 } names[] = {
-0x005,	"Workbook globals",
-0x006,	"Visual Basic module",
-0x010,	"Worksheet",
-0x020,	"Chart",
-0x040,	"Macro sheet",
-0x100,	"Workspace file",
+0x005, "Workbook globals",
+0x006, "Visual Basic module",
+0x010, "Worksheet",
+0x020, "Chart",
+0x040, "Macro sheet",
+0x100, "Workspace file",
 };
 static int sheet = 0;
 if(! wanted(Sheetrange, ++sheet)){
@@ -602,7 +602,7 @@ colinfo(Biff *b)
 int c;
 int c1 = gint(b, 2);
 int c2 = gint(b, 2);
-int w  = gint(b, 2);
+int w = gint(b, 2);
 if(c1 < 0)
 sysfatal("negative column number (%d)", c1);
 if(c2 >= Nwidths)
@@ -650,21 +650,21 @@ struct {
 int op;
 void (*func)(Biff *);
 } dispatch[] = {
-0x000a,	eof,
-0x0022,	datemode,
-0x0042,	codepage,
-0x0055,	defcolwidth,
-0x005c,	writeaccess,
-0x007d,	colinfo,
-0x00bd,	mulrk,
-0x00fc,	sst,
-0x00fd,	labelsst,
-0x0203,	number,
-0x0204,	label,
-0x0205,	boolerr,
-0x027e,	rk,
-0x0809,	bof,
-0x00e0,	xf,
+0x000a, eof,
+0x0022, datemode,
+0x0042, codepage,
+0x0055, defcolwidth,
+0x005c, writeaccess,
+0x007d, colinfo,
+0x00bd, mulrk,
+0x00fc, sst,
+0x00fd, labelsst,
+0x0203, number,
+0x0204, label,
+0x0205, boolerr,
+0x027e, rk,
+0x0809, bof,
+0x00e0, xf,
 };
 b = &biff;
 b->bp = bp;

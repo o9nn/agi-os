@@ -3,32 +3,32 @@
 #include <mach/boolean.h>
 #include <ipc/ipc_object.h>
 #include <vm/vm_kern.h>
-#define	NB_PROF_BUFFER		2
-#define	SIZE_PROF_BUFFER	100
-struct	prof_data {
-ipc_object_t	prof_port;
+#define NB_PROF_BUFFER 2
+#define SIZE_PROF_BUFFER 100
+struct prof_data {
+ipc_object_t prof_port;
 struct buffer {
-int	*p_zone;
-int			p_index;
-boolean_t		p_full;
+int *p_zone;
+int p_index;
+boolean_t p_full;
 } prof_area[NB_PROF_BUFFER];
-int		prof_index;
+int prof_index;
 };
-typedef struct prof_data	*prof_data_t;
+typedef struct prof_data *prof_data_t;
 #define NULLPBUF ((prof_data_t) 0)
-typedef struct buffer		*buffer_t;
-#define	set_pbuf_nb(pbuf, nb) \
+typedef struct buffer *buffer_t;
+#define set_pbuf_nb(pbuf, nb) \
 (((nb) >= 0 && (nb) < NB_PROF_BUFFER) \
 ? (pbuf)->prof_index = (nb), 1 \
 : 0)
-#define	get_pbuf_nb(pbuf) \
+#define get_pbuf_nb(pbuf) \
 (pbuf)->prof_index
 extern vm_map_t kernel_map;
 #define dealloc_pbuf_area(pbuf) \
 do { \
 register int i; \
 \
-for(i=0; i < NB_PROF_BUFFER ; i++)  \
+for(i=0; i < NB_PROF_BUFFER ; i++) \
 kmem_free(kernel_map, \
 (vm_offset_t) (pbuf)->prof_area[i].p_zone, \
 SIZE_PROF_BUFFER*sizeof(int)); \
@@ -78,22 +78,22 @@ else \
 *(val) = 1; \
 } \
 } while(0)
-#define	reset_pbuf_area(pbuf) \
+#define reset_pbuf_area(pbuf) \
 do { \
 register int *i = &((pbuf)->prof_index); \
 \
 *i = (*i == NB_PROF_BUFFER-1) ? 0 : ++(*i); \
 (pbuf)->prof_area[*i].p_index = 0; \
 } while(0)
-#define	thread_t int *
+#define thread_t int *
 struct buf_to_send {
 queue_chain_t list;
 thread_t thread;
 int number;
 char wakeme;
-}	;
-#undef	thread_t
+} ;
+#undef thread_t
 typedef struct buf_to_send *buf_to_send_t;
-#define	NULLBTS		((buf_to_send_t) 0)
+#define NULLBTS ((buf_to_send_t) 0)
 mpqueue_head_t prof_queue;
 #endif

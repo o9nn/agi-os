@@ -11,7 +11,7 @@
 #endif
 #ifdef _WIN32
 #ifndef CROSS_PLATFORM_UUIDOF
-#define CROSS_PLATFORM_UUIDOF(interface, spec)                                 \
+#define CROSS_PLATFORM_UUIDOF(interface, spec) \
 struct __declspec(uuid(spec)) interface;
 #endif
 #else
@@ -48,8 +48,8 @@ typedef struct DxcShaderHash {
 UINT32 Flags;
 BYTE HashDigest[16];
 } DxcShaderHash;
-#define DXC_FOURCC(ch0, ch1, ch2, ch3)                                         \
-((UINT32)(UINT8)(ch0) | (UINT32)(UINT8)(ch1) << 8 |                          \
+#define DXC_FOURCC(ch0, ch1, ch2, ch3) \
+((UINT32)(UINT8)(ch0) | (UINT32)(UINT8)(ch1) << 8 | \
 (UINT32)(UINT8)(ch2) << 16 | (UINT32)(UINT8)(ch3) << 24)
 #define DXC_PART_PDB DXC_FOURCC('I', 'L', 'D', 'B')
 #define DXC_PART_PDB_NAME DXC_FOURCC('I', 'L', 'D', 'N')

@@ -5,8 +5,8 @@
 #include "../src/dc_key.h"
 #include "../src/dc_pgp.h"
 #include "../src/dc_sqlite3.h"
-#define UTF8_LOCK          "\xF0\x9F\x94\x92"
-#define UTF8_BLACK_STAR    "\xE2\x98\x85"
+#define UTF8_LOCK "\xF0\x9F\x94\x92"
+#define UTF8_BLACK_STAR "\xE2\x98\x85"
 #define UTF8_ROUND_PUSHPIN "\xF0\x9F\x93\x8D"
 int dc_reset_tables(dc_context_t* context, int bits)
 {
@@ -49,9 +49,9 @@ return 1;
 }
 static int dc_poke_eml_file(dc_context_t* context, const char* filename)
 {
-int     success = 0;
-char*   data = NULL;
-size_t  data_bytes;
+int success = 0;
+char* data = NULL;
+size_t data_bytes;
 if (context == NULL || context->magic != DC_CONTEXT_MAGIC) {
 return 0;
 }
@@ -66,14 +66,14 @@ return success;
 }
 static int poke_public_key(dc_context_t* context, const char* addr, const char* public_key_file)
 {
-dc_aheader_t*    header = dc_aheader_new();
+dc_aheader_t* header = dc_aheader_new();
 dc_apeerstate_t* peerstate = dc_apeerstate_new(context);
-int              success = 0;
+int success = 0;
 if (addr==NULL || public_key_file==NULL || peerstate==NULL || header==NULL) {
 goto cleanup;
 }
-header->addr             = dc_strdup(addr);
-header->prefer_encrypt   = DC_PE_MUTUAL;
+header->addr = dc_strdup(addr);
+header->prefer_encrypt = DC_PE_MUTUAL;
 if (!dc_key_set_from_file(header->public_key, public_key_file, context)
 || !dc_pgp_is_valid_key(context, header->public_key)) {
 dc_log_warning(context, 0, "No valid key found in \"%s\".", public_key_file);
@@ -95,13 +95,13 @@ return success;
 }
 static int poke_spec(dc_context_t* context, const char* spec)
 {
-int            success = 0;
-char*          real_spec = NULL;
-char*          suffix = NULL;
-DIR*           dir = NULL;
+int success = 0;
+char* real_spec = NULL;
+char* suffix = NULL;
+DIR* dir = NULL;
 struct dirent* dir_entry;
-int            read_cnt = 0;
-char*          name;
+int read_cnt = 0;
+char* name;
 if (context == NULL) {
 return 0;
 }
@@ -174,10 +174,10 @@ char* contact_name = dc_contact_get_name(contact);
 int contact_id = dc_contact_get_id(contact);
 const char* statestr = "";
 switch (dc_msg_get_state(msg)) {
-case DC_STATE_OUT_PENDING:   statestr = " o";   break;
-case DC_STATE_OUT_DELIVERED: statestr = " √";   break;
-case DC_STATE_OUT_MDN_RCVD:  statestr = " √√";  break;
-case DC_STATE_OUT_FAILED:    statestr = " !!";  break;
+case DC_STATE_OUT_PENDING: statestr = " o"; break;
+case DC_STATE_OUT_DELIVERED: statestr = " √"; break;
+case DC_STATE_OUT_MDN_RCVD: statestr = " √√"; break;
+case DC_STATE_OUT_FAILED: statestr = " !!"; break;
 }
 char* temp2 = dc_timestamp_to_str(dc_msg_get_timestamp(msg));
 char* msgtext = dc_msg_get_text(msg);
@@ -219,7 +219,7 @@ if (lines_out > 0) { dc_log_info(context, 0, "----------------------------------
 }
 static void log_contactlist(dc_context_t* context, dc_array_t* contacts)
 {
-dc_contact_t*    contact = NULL;
+dc_contact_t* contact = NULL;
 dc_apeerstate_t* peerstate = dc_apeerstate_new(context);
 if (!dc_array_search_id(contacts, DC_CONTACT_ID_SELF, NULL)) {
 dc_array_add_id(contacts, DC_CONTACT_ID_SELF);
@@ -238,10 +238,10 @@ int peerstate_ok = dc_apeerstate_load_by_addr(peerstate, context->sql, addr);
 if (peerstate_ok && contact_id != DC_CONTACT_ID_SELF) {
 char* pe = NULL;
 switch (peerstate->prefer_encrypt) {
-case DC_PE_MUTUAL:       pe = dc_strdup("mutual");                                         break;
-case DC_PE_NOPREFERENCE: pe = dc_strdup("no-preference");                                  break;
-case DC_PE_RESET:        pe = dc_strdup("reset");                                          break;
-default:                 pe = dc_mprintf("unknown-value (%i)", peerstate->prefer_encrypt); break;
+case DC_PE_MUTUAL: pe = dc_strdup("mutual"); break;
+case DC_PE_NOPREFERENCE: pe = dc_strdup("no-preference"); break;
+case DC_PE_RESET: pe = dc_strdup("reset"); break;
+default: pe = dc_mprintf("unknown-value (%i)", peerstate->prefer_encrypt); break;
 }
 line2 = dc_mprintf(", prefer-encrypt=%s", pe);
 free(pe);
@@ -269,11 +269,11 @@ else { return "Single"; }
 }
 char* dc_cmdline(dc_context_t* context, const char* cmdline)
 {
-#define      COMMAND_FAILED    ((char*)1)
-#define      COMMAND_SUCCEEDED ((char*)2)
-#define      COMMAND_UNKNOWN   ((char*)3)
-char*        cmd = NULL, *arg1 = NULL, *ret = COMMAND_FAILED;
-dc_chat_t*   sel_chat = NULL;
+#define COMMAND_FAILED ((char*)1)
+#define COMMAND_SUCCEEDED ((char*)2)
+#define COMMAND_UNKNOWN ((char*)3)
+char* cmd = NULL, *arg1 = NULL, *ret = COMMAND_FAILED;
+dc_chat_t* sel_chat = NULL;
 if (context == NULL || cmdline == NULL || cmdline[0]==0) {
 goto cleanup;
 }
@@ -419,7 +419,7 @@ free(setup_code);
 else if (strcmp(cmd, "get-setupcodebegin")==0)
 {
 if (arg1) {
-uint32_t  msg_id = (uint32_t)atoi(arg1);
+uint32_t msg_id = (uint32_t)atoi(arg1);
 dc_msg_t* msg = dc_get_msg(context, msg_id);
 if (dc_msg_is_setupmessage(msg)) {
 char* setupcodebegin = dc_msg_get_setupcodebegin(msg);
@@ -585,10 +585,10 @@ if (dc_chat_get_archived(chat)) {
 statestr = " [Archived]";
 }
 else switch (dc_lot_get_state(lot)) {
-case DC_STATE_OUT_PENDING:   statestr = " o";   break;
-case DC_STATE_OUT_DELIVERED: statestr = " √";   break;
-case DC_STATE_OUT_MDN_RCVD:  statestr = " √√";  break;
-case DC_STATE_OUT_FAILED:    statestr = " !!";  break;
+case DC_STATE_OUT_PENDING: statestr = " o"; break;
+case DC_STATE_OUT_DELIVERED: statestr = " √"; break;
+case DC_STATE_OUT_MDN_RCVD: statestr = " √√"; break;
+case DC_STATE_OUT_FAILED: statestr = " !!"; break;
 }
 char* timestr = dc_timestamp_to_str(dc_lot_get_timestamp(lot));
 char* text1 = dc_lot_get_text1(lot);
@@ -1118,7 +1118,7 @@ int chatlist_cnt = dc_chatlist_get_cnt(chatlist);
 if (chatlist_cnt > 0) {
 dc_strbuilder_catf(&strbuilder, "\n\n%i chats shared with Contact#%i: ", chatlist_cnt, contact_id);
 for (int i = 0; i < chatlist_cnt; i++) {
-if (i) { dc_strbuilder_cat(&strbuilder, ", ");  }
+if (i) { dc_strbuilder_cat(&strbuilder, ", "); }
 dc_chat_t* chat = dc_get_chat(context, dc_chatlist_get_chat_id(chatlist, i));
 dc_strbuilder_catf(&strbuilder, "%s#%i", chat_prefix(chat), dc_chat_get_id(chat));
 dc_chat_unref(chat);

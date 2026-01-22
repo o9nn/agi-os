@@ -188,7 +188,7 @@ if ((s2 = OPENSSL_malloc(sizeof *s2)) == NULL)
 goto err;
 memset(s2, 0, sizeof *s2);
 # if SSL2_MAX_RECORD_LENGTH_3_BYTE_HEADER + 3 > SSL2_MAX_RECORD_LENGTH_2_BYTE_HEADER + 2
-#  error "assertion failed"
+# error "assertion failed"
 # endif
 if ((s2->rbuf =
 OPENSSL_malloc(SSL2_MAX_RECORD_LENGTH_2_BYTE_HEADER + 2)) == NULL)

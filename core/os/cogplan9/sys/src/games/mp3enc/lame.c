@@ -24,8 +24,8 @@ lame_init_params_ppflt_lowpass(FLOAT8 amp_lowpass[32], FLOAT lowpass1,
 FLOAT lowpass2, int *lowpass_band,
 int *minband, int *maxband)
 {
-int     band;
-FLOAT8  freq;
+int band;
+FLOAT8 freq;
 for (band = 0; band <= 31; band++) {
 freq = band / 31.0;
 amp_lowpass[band] = 1;
@@ -45,8 +45,8 @@ static void
 lame_init_params_ppflt(lame_global_flags * gfp)
 {
 lame_internal_flags *gfc = gfp->internal_flags;
-int     band, maxband, minband;
-FLOAT8  freq;
+int band, maxband, minband;
+FLOAT8 freq;
 if (gfc->lowpass1 > 0) {
 minband = 999;
 maxband = -1;
@@ -128,9 +128,9 @@ const unsigned bitrate,
 const int samplefreq,
 const double channels, lame_global_flags * gfp)
 {
-double  f_low;
-double  f_high;
-double  br;
+double f_low;
+double f_high;
+double br;
 assert(bitrate >= 8000 && bitrate <= 320000);
 assert(samplefreq >= 8000 && samplefreq <= 48000);
 assert(channels == 1 || (channels >= 2 && channels <= 3));
@@ -148,11 +148,11 @@ br *= 0.5;
 f_low = br / log10(br * 4.425e-3);
 #if 0
 {
-double  br_sw = (128000 - (32 + 4) * 8 * 44100 / 1152) / 1.75 * 0.5;
-double  f_low_sw = br_sw / log10(br_sw * 4.425e-3);
+double br_sw = (128000 - (32 + 4) * 8 * 44100 / 1152) / 1.75 * 0.5;
+double f_low_sw = br_sw / log10(br_sw * 4.425e-3);
 while (f_low > f_low_sw) {
-double  dATH = ATHformula(f_low, gfp) - ATHformula(f_low_sw, gfp);
-double  dNMR = br / f_low - br_sw / f_low_sw;
+double dATH = ATHformula(f_low, gfp) - ATHformula(f_low_sw, gfp);
+double dNMR = br / f_low - br_sw / f_low_sw;
 if (dATH / 4.0 < dNMR * 6.0206 / 1.25)
 break;
 f_low -= 25.;
@@ -166,7 +166,7 @@ f_high = 180. - 0.01 * f_low;
 else
 f_high = 0.;
 if (lowerlimit != NULL)
-*lowerlimit = f_low  ;
+*lowerlimit = f_low ;
 if (upperlimit != NULL)
 *upperlimit = f_high;
 }
@@ -276,12 +276,12 @@ gfc->noise_shaping = 2;
 int
 lame_init_params(lame_global_flags * const gfp)
 {
-int     i;
-int     j;
+int i;
+int j;
 lame_internal_flags *gfc = gfp->internal_flags;
 gfc->gfp = gfp;
 gfc->Class_ID = 0;
-gfc->report.msgf   = gfp->report.msgf;
+gfc->report.msgf = gfp->report.msgf;
 gfc->report.debugf = gfp->report.debugf;
 gfc->report.errorf = gfp->report.errorf;
 gfc->CPU_features.i387 = has_i387();
@@ -363,7 +363,7 @@ case vbr_mt:
 case vbr_rh:
 case vbr_mtrh:
 {
-FLOAT8  cmp[] = { 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
+FLOAT8 cmp[] = { 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
 gfp->compression_ratio = cmp[gfp->VBR_q];
 }
 break;
@@ -391,9 +391,9 @@ if (gfp->mode == STEREO)
 gfp->allow_diff_short = 1;
 }
 if (gfp->lowpassfreq == 0) {
-double  lowpass;
-double  highpass;
-double  channels;
+double lowpass;
+double highpass;
+double channels;
 switch (gfp->mode) {
 case MONO:
 channels = 1.;
@@ -521,7 +521,7 @@ gfp->totalframes =
 2 + gfp->num_samples / (gfc->resample_ratio * gfp->framesize);
 gfc->Class_ID = LAME_ID;
 if (gfp->exp_nspsytune & 1) {
-int     i;
+int i;
 gfc->nsPsy.use = 1;
 gfc->nsPsy.safejoint = (gfp->exp_nspsytune & 2) != 0;
 for (i = 0; i < 19; i++)
@@ -582,7 +582,7 @@ gfc->mfbuf[1] = (sample_t *) calloc(sizeof(sample_t), MFSIZE);
 gfc->sampfreq_in = unround_samplefrequency(gfp->in_samplerate);
 gfc->sampfreq_out = gfp->out_samplerate;
 gfc->resample_in = resample_open(gfc->sampfreq_in, gfc->sampfreq_out,
--1 .0  , 32);
+-1 .0 , 32);
 #endif
 return 0;
 }
@@ -590,8 +590,8 @@ void
 lame_print_config(const lame_global_flags * gfp)
 {
 lame_internal_flags *gfc = gfp->internal_flags;
-double  out_samplerate = gfp->out_samplerate;
-double  in_samplerate = gfp->out_samplerate * gfc->resample_ratio;
+double out_samplerate = gfp->out_samplerate;
+double in_samplerate = gfp->out_samplerate * gfc->resample_ratio;
 MSGF(gfc, "mp3enc (from lame version %s (%s))\n", get_lame_version(), get_lame_url());
 if (gfc->CPU_features.MMX
 || gfc->CPU_features.AMD_3DNow
@@ -613,7 +613,7 @@ if (gfc->CPU_features.SIMD2)
 MSGF(gfc, ", SIMD2");
 MSGF(gfc, "\n");
 }
-if (gfp->num_channels == 2 && gfc->channels_out == 1  ) {
+if (gfp->num_channels == 2 && gfc->channels_out == 1 ) {
 MSGF
 (gfc,
 "Autoconverting from stereo to mono. Setting encoding to mono mode.\n");
@@ -658,7 +658,7 @@ lame_encode_frame(lame_global_flags * gfp,
 sample_t inbuf_l[], sample_t inbuf_r[],
 unsigned char *mp3buf, int mp3buf_size)
 {
-int     ret;
+int ret;
 if (gfp->ogg) {
 #ifdef HAVE_VORBIS
 ret = lame_encode_ogg_frame(gfp, inbuf_l, inbuf_r, mp3buf, mp3buf_size);
@@ -681,7 +681,7 @@ sample_t buffer_r[],
 int nsamples, unsigned char *mp3buf, const int mp3buf_size)
 {
 lame_internal_flags *gfc = gfp->internal_flags;
-int     mp3size = 0, ret, i, ch, mf_needed;
+int mp3size = 0, ret, i, ch, mf_needed;
 sample_t *mfbuf[2];
 sample_t *in_buffer[2];
 if (gfc->Class_ID != LAME_ID)
@@ -709,8 +709,8 @@ in_buffer[1][i] = 0.0;
 }
 }
 while (nsamples > 0) {
-int     n_in = 0;
-int     n_out = 0;
+int n_in = 0;
+int n_out = 0;
 fill_buffer(gfp, mfbuf, in_buffer, nsamples, &n_in, &n_out);
 nsamples -= n_in;
 in_buffer[0] += n_in;
@@ -745,7 +745,7 @@ const short int buffer_r[],
 int nsamples, unsigned char *mp3buf, const int mp3buf_size)
 {
 lame_internal_flags *gfc = gfp->internal_flags;
-int     ret, i;
+int ret, i;
 sample_t *in_buffer[2];
 if (gfc->Class_ID != LAME_ID)
 return -3;
@@ -774,7 +774,7 @@ const float buffer_r[],
 int nsamples, unsigned char *mp3buf, const int mp3buf_size)
 {
 lame_internal_flags *gfc = gfp->internal_flags;
-int     ret, i;
+int ret, i;
 sample_t *in_buffer[2];
 if (gfc->Class_ID != LAME_ID)
 return -3;
@@ -803,7 +803,7 @@ const long buffer_r[],
 int nsamples, unsigned char *mp3buf, const int mp3buf_size)
 {
 lame_internal_flags *gfc = gfp->internal_flags;
-int     ret, i;
+int ret, i;
 sample_t *in_buffer[2];
 if (gfc->Class_ID != LAME_ID)
 return -3;
@@ -831,7 +831,7 @@ short int buffer[],
 int nsamples,
 unsigned char *mp3buf, int mp3buf_size)
 {
-int     ret, i;
+int ret, i;
 short int *buffer_l;
 short int *buffer_r;
 buffer_l = malloc(sizeof(short int) * nsamples);
@@ -866,7 +866,7 @@ lame_encode_flush(lame_global_flags * gfp,
 unsigned char *mp3buffer, int mp3buffer_size)
 {
 short int buffer[2][1152];
-int     imp3 = 0, mp3count, mp3buffer_size_remaining;
+int imp3 = 0, mp3count, mp3buffer_size_remaining;
 lame_internal_flags *gfc = gfp->internal_flags;
 memset(buffer, 0, sizeof(buffer));
 mp3count = 0;
@@ -919,7 +919,7 @@ int
 lame_encode_finish(lame_global_flags * gfp,
 unsigned char *mp3buffer, int mp3buffer_size)
 {
-int     ret = lame_encode_flush(gfp, mp3buffer, mp3buffer_size);
+int ret = lame_encode_flush(gfp, mp3buffer, mp3buffer_size);
 lame_close(gfp);
 return ret;
 }
@@ -927,7 +927,7 @@ void
 lame_mp3_tags_fid(lame_global_flags * gfp, FILE * fpStream)
 {
 if (gfp->bWriteVbrTag && (gfp->VBR != vbr_off)) {
-int     nQuality = ((9-gfp->VBR_q) * 100) / 9;
+int nQuality = ((9-gfp->VBR_q) * 100) / 9;
 if (fpStream && !fseek(fpStream, 0, SEEK_SET))
 PutVbrTag(gfp, fpStream, nQuality);
 }
@@ -936,7 +936,7 @@ lame_global_flags *
 lame_init(void)
 {
 lame_global_flags *gfp;
-int     ret;
+int ret;
 gfp = calloc(1, sizeof(lame_global_flags));
 if (gfp == NULL)
 return NULL;
@@ -998,7 +998,7 @@ void
 lame_bitrate_hist(const lame_global_flags * const gfp, int bitrate_count[14])
 {
 const lame_internal_flags *gfc;
-int     i;
+int i;
 if (NULL == bitrate_count)
 return;
 if (NULL == gfp)
@@ -1013,7 +1013,7 @@ void
 lame_bitrate_kbps(const lame_global_flags * const gfp, int bitrate_kbps[14])
 {
 const lame_internal_flags *gfc;
-int     i;
+int i;
 if (NULL == bitrate_kbps)
 return;
 if (NULL == gfp)
@@ -1028,7 +1028,7 @@ void
 lame_stereo_mode_hist(const lame_global_flags * const gfp, int stmode_count[4])
 {
 const lame_internal_flags *gfc;
-int     i;
+int i;
 if (NULL == stmode_count)
 return;
 if (NULL == gfp)
@@ -1037,7 +1037,7 @@ gfc = gfp->internal_flags;
 if (NULL == gfc)
 return;
 for (i = 0; i < 4; i++) {
-int     j, sum = 0;
+int j, sum = 0;
 for (j = 0; j < 14; j++)
 sum += gfc->bitrate_stereoMode_Hist[j + 1][i];
 stmode_count[i] = sum;
@@ -1048,8 +1048,8 @@ lame_bitrate_stereo_mode_hist(const lame_global_flags * const gfp,
 int bitrate_stmode_count[14][4])
 {
 const lame_internal_flags *gfc;
-int     i;
-int     j;
+int i;
+int j;
 if (NULL == bitrate_stmode_count)
 return;
 if (NULL == gfp)

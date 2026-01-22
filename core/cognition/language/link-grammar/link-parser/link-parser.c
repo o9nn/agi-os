@@ -258,7 +258,7 @@ if ((verbosity > 0) && (!copts->batch_mode) && isatty_io)
 fprintf(stdout, "Press RETURN for the next linkage.\n");
 fflush(stdout);
 }
-char *rc = fget_input_string(use_prompt(verbosity),  stdin, stdout,
+char *rc = fget_input_string(use_prompt(verbosity), stdin, stdout,
 isatty_io, true);
 if ((NULL == rc) || (*rc != '\n')) return rc;
 }
@@ -408,13 +408,13 @@ exit(exit_value);
 }
 int main(int argc, char * argv[])
 {
-FILE            *input_fh = stdin;
-Dictionary      dict;
-const char     *language = NULL;
-int             num_linkages;
-Label           label = NO_LABEL;
+FILE *input_fh = stdin;
+Dictionary dict;
+const char *language = NULL;
+int num_linkages;
+Label label = NO_LABEL;
 Command_Options *copts;
-Parse_Options   opts;
+Parse_Options opts;
 bool batch_in_progress = false;
 isatty_io = isatty(fileno(stdin)) && isatty(fileno(stdout));
 argv = ms_windows_setup(argc);
@@ -484,7 +484,7 @@ const char *panic_max_cost_str =
 linkgrammar_get_dict_define(dict, LG_PANIC_DISJUNCT_COST);
 if (panic_max_cost_str != NULL)
 {
-const char *locale =  setlocale(LC_NUMERIC, "C");
+const char *locale = setlocale(LC_NUMERIC, "C");
 char *err;
 float panic_max_cost = strtof(panic_max_cost_str, &err);
 setlocale(LC_NUMERIC, locale);

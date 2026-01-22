@@ -1,5 +1,5 @@
 #ifndef gdevpsu_INCLUDED
-#  define gdevpsu_INCLUDED
+# define gdevpsu_INCLUDED
 typedef struct gx_device_pswrite_common_s {
 float LanguageLevel;
 bool ProduceEPS;
@@ -19,6 +19,6 @@ const gx_device_pswrite_common_t *pdpc,
 const gs_rect *pbbox, int page_count);
 int psw_write_page_header(stream *s, const gx_device *dev,
 const gx_device_pswrite_common_t *pdpc,
-bool do_scale, long page_ord,  int dictsize);
+bool do_scale, long page_ord, int dictsize);
 int psw_write_page_trailer(FILE *f, int num_copies, int flush);
 #endif

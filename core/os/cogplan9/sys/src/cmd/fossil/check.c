@@ -1,19 +1,19 @@
 #include "stdinc.h"
 #include "dat.h"
 #include "fns.h"
-static void	checkDirs(Fsck*);
-static void	checkEpochs(Fsck*);
-static void	checkLeak(Fsck*);
-static void	closenop(Fsck*, Block*, u32int);
-static void	clrenop(Fsck*, Block*, int);
-static void	clrinop(Fsck*, char*, MetaBlock*, int, Block*);
-static void	error(Fsck*, char*, ...);
-static int	getBit(uchar*, u32int);
-static int	printnop(char*, ...);
-static void	setBit(uchar*, u32int);
-static int	walkEpoch(Fsck *chk, Block *b, uchar score[VtScoreSize],
+static void checkDirs(Fsck*);
+static void checkEpochs(Fsck*);
+static void checkLeak(Fsck*);
+static void closenop(Fsck*, Block*, u32int);
+static void clrenop(Fsck*, Block*, int);
+static void clrinop(Fsck*, char*, MetaBlock*, int, Block*);
+static void error(Fsck*, char*, ...);
+static int getBit(uchar*, u32int);
+static int printnop(char*, ...);
+static void setBit(uchar*, u32int);
+static int walkEpoch(Fsck *chk, Block *b, uchar score[VtScoreSize],
 int type, u32int tag, u32int epoch);
-static void	warn(Fsck*, char*, ...);
+static void warn(Fsck*, char*, ...);
 #pragma varargck argpos error 2
 #pragma varargck argpos printnop 1
 #pragma varargck argpos warn 2
@@ -218,7 +218,7 @@ continue;
 }
 if(!(e.flags & VtEntryActive))
 continue;
-if(0)			fprint(2, "%x[%d] tag=%x snap=%d score=%V\n",
+if(0) fprint(2, "%x[%d] tag=%x snap=%d score=%V\n",
 addr, i, e.tag, e.snap, e.score);
 ep = epoch;
 if(e.snap != 0){
@@ -337,9 +337,9 @@ return nil;
 }
 typedef struct MetaChunk MetaChunk;
 struct MetaChunk {
-ushort	offset;
-ushort	size;
-ushort	index;
+ushort offset;
+ushort size;
+ushort index;
 };
 static int
 offsetCmp(void *s0, void *s1)
@@ -363,7 +363,7 @@ mc = vtMemAlloc(mb->nindex*sizeof(MetaChunk));
 p = mb->buf + MetaHeaderSize;
 for(i = 0; i < mb->nindex; i++){
 mc[i].offset = p[0]<<8 | p[1];
-mc[i].size =   p[2]<<8 | p[3];
+mc[i].size = p[2]<<8 | p[3];
 mc[i].index = i;
 p += MetaIndexSize;
 }
@@ -472,7 +472,7 @@ error(chk, "could not read block in meta file: %s[%ud]: %R",
 name, o);
 continue;
 }
-if(0)		fprint(2, "source %V:%d block %d addr %d\n", source->score,
+if(0) fprint(2, "source %V:%d block %d addr %d\n", source->score,
 source->offset, o, b->addr);
 if(b->addr != NilBlock && getBit(chk->errmap, b->addr))
 warn(chk, "previously reported error in block %ux is in %s",

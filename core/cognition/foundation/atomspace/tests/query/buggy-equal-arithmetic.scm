@@ -6,6 +6,6 @@
 (Number 5)
 (Number 6)
 (define arithmetic-search
-	(GetLink
-		(TypedVariable (Variable "$X1") (Type 'NumberNode)) 
-		(Equal (Plus (Variable "$X1") (Number 5)) (Number 11))))
+(GetLink
+(TypedVariable (Variable "$X1") (Type 'NumberNode))
+(Equal (Plus (Variable "$X1") (Number 5)) (Number 11))))

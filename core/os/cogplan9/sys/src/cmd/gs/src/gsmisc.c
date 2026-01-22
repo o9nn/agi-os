@@ -1,8 +1,8 @@
 #include "std.h"
 #if defined(VMS) && defined(__GNUC__)
-#  include "vmsmath.h"
+# include "vmsmath.h"
 #else
-#  include <math.h>
+# include <math.h>
 #endif
 inline private double
 orig_sqrt(double x)
@@ -386,7 +386,7 @@ return
 }
 #if defined(NEED_SET_FMUL2FIXED) && !USE_ASM
 int
-set_fmul2fixed_(fixed * pr, long  a, long  b)
+set_fmul2fixed_(fixed * pr, long a, long b)
 {
 ulong ma = (ushort)(a >> 8) | 0x8000;
 ulong mb = (ushort)(b >> 8) | 0x8000;
@@ -412,7 +412,7 @@ p <<= -e;
 return 0;
 }
 int
-set_dfmul2fixed_(fixed * pr, ulong  xalo, long  b, long  xahi)
+set_dfmul2fixed_(fixed * pr, ulong xalo, long b, long xahi)
 {
 return set_fmul2fixed_(pr,
 (xahi & (3L << 30)) +
@@ -425,7 +425,7 @@ b);
 #define mbits_float 23
 #define mbits_double 20
 int
-set_float2fixed_(fixed * pr, long  vf, int frac_bits)
+set_float2fixed_(fixed * pr, long vf, int frac_bits)
 {
 fixed mantissa;
 int shift;
@@ -448,8 +448,8 @@ vf < 0 ? -(fixed) (mantissa >> -shift) :
 return 0;
 }
 int
-set_double2fixed_(fixed * pr, ulong  lo,
-long  hi, int frac_bits)
+set_double2fixed_(fixed * pr, ulong lo,
+long hi, int frac_bits)
 {
 fixed mantissa;
 int shift;
@@ -520,9 +520,9 @@ f2f(x, v, f, mbits_double, frac_bits);
 struct {
 long mnanb, mnab, manb, mab, mnc, mdq, mde, mds, mqh, mql;
 } fmq_stat;
-#  define mincr(x) ++fmq_stat.x
+# define mincr(x) ++fmq_stat.x
 #else
-#  define mincr(x) DO_NOTHING
+# define mincr(x) DO_NOTHING
 #endif
 fixed
 fixed_mult_quo(fixed signed_A, fixed B, fixed C)
@@ -640,7 +640,7 @@ p1 -= lo_D;
 mincr(mql);
 }
 Q = (hi_Q << half_bits) + lo_Q;
-return (signed_A >= 0 ? Q : p0 | p1 ? ~Q  : -Q);
+return (signed_A >= 0 ? Q : p0 | p1 ? ~Q : -Q);
 }
 }
 }

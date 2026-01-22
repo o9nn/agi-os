@@ -37,12 +37,12 @@ state_dim::Int
 num_trees::Int
 max_order::Int
 # J-surface structure
-J_matrix::Matrix{Float64}  # Structure matrix (symplectic/Poisson)
+J_matrix::Matrix{Float64} # Structure matrix (symplectic/Poisson)
 is_symplectic::Bool
 # B-series data
-trees::Vector{Vector{Int}}  # Rooted trees (level sequences)
-coefficients::Vector{Float64}  # b(τ) coefficients
-symmetry_factors::Vector{Float64}  # σ(τ) symmetry factors
+trees::Vector{Vector{Int}} # Rooted trees (level sequences)
+coefficients::Vector{Float64} # b(τ) coefficients
+symmetry_factors::Vector{Float64} # σ(τ) symmetry factors
 # State
 state::Vector{Float64}
 hamiltonian::Float64
@@ -51,8 +51,8 @@ gradient::Vector{Float64}
 elementary_diffs::Dict{Int,Vector{Float64}}
 # Evolution parameters
 dt::Float64
-gradient_weight::Float64  # Weight for gradient flow
-bseries_weight::Float64   # Weight for B-series integration
+gradient_weight::Float64 # Weight for gradient flow
+bseries_weight::Float64 # Weight for B-series integration
 # History
 energy_history::Vector{Float64}
 state_history::Vector{Vector{Float64}}
@@ -78,7 +78,7 @@ J[n+1:end, 1:n] = -I(n)
 else
 # Poisson structure: skew-symmetric matrix
 J = randn(state_dim, state_dim)
-J = (J - J') / 2  # Make skew-symmetric
+J = (J - J') / 2 # Make skew-symmetric
 end
 # Initialize coefficients (from RK4 as default)
 coefficients = initialize_bseries_coefficients(trees)
@@ -167,7 +167,7 @@ f::Function, h::Float64)
 empty!(reactor.elementary_diffs)
 # 1. Compute Hamiltonian and gradient
 reactor.hamiltonian = 0.5 * dot(reactor.state, reactor.state)
-reactor.gradient = reactor.state  # ∇H = ψ for quadratic Hamiltonian
+reactor.gradient = reactor.state # ∇H = ψ for quadratic Hamiltonian
 # 2. Gradient flow component: J(ψ)·∇H(ψ)
 gradient_flow = reactor.J_matrix * reactor.gradient
 # 3. B-series component: Σ b(τ)/σ(τ)·F(τ)(ψ)
@@ -214,7 +214,7 @@ P-system membrane reservoir integrated with J-surface dynamics.
 mutable struct PSystemMembraneReservoir
 # Membrane structure
 num_membranes::Int
-membrane_hierarchy::Vector{Int}  # Parent membrane for each membrane
+membrane_hierarchy::Vector{Int} # Parent membrane for each membrane
 # Reservoir states (one per membrane)
 reservoir_states::Vector{Vector{Float64}}
 reservoir_size::Int
@@ -222,9 +222,9 @@ reservoir_size::Int
 multisets::Vector{Dict{String,Int}}
 alphabet::Vector{String}
 # Evolution rules
-rules::Vector{Tuple{Int,String,String}}  # (membrane_id, input, output)
+rules::Vector{Tuple{Int,String,String}} # (membrane_id, input, output)
 # J-surface coupling
-jsurface_coupling::Vector{Float64}  # Coupling strength per membrane
+jsurface_coupling::Vector{Float64} # Coupling strength per membrane
 # Metrics
 membrane_activities::Vector{Float64}
 evolution_count::Int
@@ -238,7 +238,7 @@ alphabet::Vector{String})
 # Create hierarchical structure
 hierarchy = zeros(Int, num_membranes)
 for i in 2:num_membranes
-hierarchy[i] = (i - 1) ÷ 2  # Binary tree structure
+hierarchy[i] = (i - 1) ÷ 2 # Binary tree structure
 end
 # Initialize reservoir states
 reservoir_states = [randn(reservoir_size) * 0.1 for _ in 1:num_membranes]
@@ -353,15 +353,15 @@ coeffs = zeros(length(trees))
 for (i, tree) in enumerate(trees)
 order = length(tree)
 if order == 1
-coeffs[i] = 1.0  # First order
+coeffs[i] = 1.0 # First order
 elseif order == 2
-coeffs[i] = 0.5  # Second order
+coeffs[i] = 0.5 # Second order
 elseif order == 3
-coeffs[i] = 1.0/6.0  # Third order
+coeffs[i] = 1.0/6.0 # Third order
 elseif order == 4
-coeffs[i] = 1.0/24.0  # Fourth order
+coeffs[i] = 1.0/24.0 # Fourth order
 else
-coeffs[i] = 1.0 / factorial(order)  # General case
+coeffs[i] = 1.0 / factorial(order) # General case
 end
 end
 return coeffs
@@ -374,7 +374,7 @@ order = length(tree)
 unique_levels = length(unique(tree))
 # Symmetry factor increases with repeated structure
 if unique_levels == order
-return 1.0  # No symmetry
+return 1.0 # No symmetry
 else
 return Float64(factorial(order - unique_levels + 1))
 end

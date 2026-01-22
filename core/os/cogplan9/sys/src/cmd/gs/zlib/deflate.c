@@ -8,32 +8,32 @@ finish_started,
 finish_done
 } block_state;
 typedef block_state (*compress_func) OF((deflate_state *s, int flush));
-local void fill_window    OF((deflate_state *s));
+local void fill_window OF((deflate_state *s));
 local block_state deflate_stored OF((deflate_state *s, int flush));
-local block_state deflate_fast   OF((deflate_state *s, int flush));
+local block_state deflate_fast OF((deflate_state *s, int flush));
 #ifndef FASTEST
-local block_state deflate_slow   OF((deflate_state *s, int flush));
+local block_state deflate_slow OF((deflate_state *s, int flush));
 #endif
-local void lm_init        OF((deflate_state *s));
-local void putShortMSB    OF((deflate_state *s, uInt b));
-local void flush_pending  OF((z_streamp strm));
-local int read_buf        OF((z_streamp strm, Bytef *buf, unsigned size));
+local void lm_init OF((deflate_state *s));
+local void putShortMSB OF((deflate_state *s, uInt b));
+local void flush_pending OF((z_streamp strm));
+local int read_buf OF((z_streamp strm, Bytef *buf, unsigned size));
 #ifndef FASTEST
 #ifdef ASMV
 void match_init OF((void));
-uInt longest_match  OF((deflate_state *s, IPos cur_match));
+uInt longest_match OF((deflate_state *s, IPos cur_match));
 #else
-local uInt longest_match  OF((deflate_state *s, IPos cur_match));
+local uInt longest_match OF((deflate_state *s, IPos cur_match));
 #endif
 #endif
 local uInt longest_match_fast OF((deflate_state *s, IPos cur_match));
 #ifdef DEBUG
-local  void check_match OF((deflate_state *s, IPos start, IPos match,
+local void check_match OF((deflate_state *s, IPos start, IPos match,
 int length));
 #endif
 #define NIL 0
 #ifndef TOO_FAR
-#  define TOO_FAR 4096
+# define TOO_FAR 4096
 #endif
 #define MIN_LOOKAHEAD (MAX_MATCH+MIN_MATCH+1)
 typedef struct config_s {
@@ -45,18 +45,18 @@ compress_func func;
 } config;
 #ifdef FASTEST
 local const config configuration_table[2] = {
-{0,    0,  0,    0, deflate_stored},
-{4,    4,  8,    4, deflate_fast}};
+{0, 0, 0, 0, deflate_stored},
+{4, 4, 8, 4, deflate_fast}};
 #else
 local const config configuration_table[10] = {
-{0,    0,  0,    0, deflate_stored},
-{4,    4,  8,    4, deflate_fast},
-{4,    5, 16,    8, deflate_fast},
-{4,    6, 32,   32, deflate_fast},
-{4,    4, 16,   16, deflate_slow},
-{8,   16, 32,   32, deflate_slow},
-{8,   16, 128, 128, deflate_slow},
-{8,   32, 128, 256, deflate_slow},
+{0, 0, 0, 0, deflate_stored},
+{4, 4, 8, 4, deflate_fast},
+{4, 5, 16, 8, deflate_fast},
+{4, 6, 32, 32, deflate_fast},
+{4, 4, 16, 16, deflate_slow},
+{8, 16, 32, 32, deflate_slow},
+{8, 16, 128, 128, deflate_slow},
+{8, 32, 128, 256, deflate_slow},
 {32, 128, 258, 1024, deflate_slow},
 {32, 258, 258, 4096, deflate_slow}};
 #endif
@@ -91,11 +91,11 @@ Z_DEFAULT_STRATEGY, version, stream_size);
 int ZEXPORT deflateInit2_(strm, level, method, windowBits, memLevel, strategy,
 version, stream_size)
 z_streamp strm;
-int  level;
-int  method;
-int  windowBits;
-int  memLevel;
-int  strategy;
+int level;
+int method;
+int windowBits;
+int memLevel;
+int strategy;
 const char *version;
 int stream_size;
 {
@@ -146,10 +146,10 @@ s->w_mask = s->w_size - 1;
 s->hash_bits = memLevel + 7;
 s->hash_size = 1 << s->hash_bits;
 s->hash_mask = s->hash_size - 1;
-s->hash_shift =  ((s->hash_bits+MIN_MATCH-1)/MIN_MATCH);
+s->hash_shift = ((s->hash_bits+MIN_MATCH-1)/MIN_MATCH);
 s->window = (Bytef *) ZALLOC(strm, s->w_size, 2*sizeof(Byte));
-s->prev   = (Posf *)  ZALLOC(strm, s->w_size, sizeof(Pos));
-s->head   = (Posf *)  ZALLOC(strm, s->hash_size, sizeof(Pos));
+s->prev = (Posf *) ZALLOC(strm, s->w_size, sizeof(Pos));
+s->head = (Posf *) ZALLOC(strm, s->hash_size, sizeof(Pos));
 s->lit_bufsize = 1 << (memLevel + 6);
 overlay = (ushf *) ZALLOC(strm, s->lit_bufsize, sizeof(ush)+2);
 s->pending_buf = (uchf *) overlay;
@@ -171,7 +171,7 @@ return deflateReset(strm);
 int ZEXPORT deflateSetDictionary (strm, dictionary, dictLength)
 z_streamp strm;
 const Bytef *dictionary;
-uInt  dictLength;
+uInt dictLength;
 {
 deflate_state *s;
 uInt length = dictLength;
@@ -264,9 +264,9 @@ err = deflate(strm, Z_PARTIAL_FLUSH);
 }
 if (s->level != level) {
 s->level = level;
-s->max_lazy_match   = configuration_table[level].max_lazy;
-s->good_match       = configuration_table[level].good_length;
-s->nice_match       = configuration_table[level].nice_length;
+s->max_lazy_match = configuration_table[level].max_lazy;
+s->good_match = configuration_table[level].good_length;
+s->nice_match = configuration_table[level].nice_length;
 s->max_chain_length = configuration_table[level].max_chain;
 }
 s->strategy = strategy;
@@ -301,10 +301,10 @@ unsigned len = strm->state->pending;
 if (len > strm->avail_out) len = strm->avail_out;
 if (len == 0) return;
 zmemcpy(strm->next_out, strm->state->pending_out, len);
-strm->next_out  += len;
-strm->state->pending_out  += len;
+strm->next_out += len;
+strm->state->pending_out += len;
 strm->total_out += len;
-strm->avail_out  -= len;
+strm->avail_out -= len;
 strm->state->pending -= len;
 if (strm->state->pending == 0) {
 strm->state->pending_out = strm->state->pending_buf;
@@ -478,8 +478,8 @@ dest->state = (struct internal_state FAR *) ds;
 *ds = *ss;
 ds->strm = dest;
 ds->window = (Bytef *) ZALLOC(dest, ds->w_size, 2*sizeof(Byte));
-ds->prev   = (Posf *)  ZALLOC(dest, ds->w_size, sizeof(Pos));
-ds->head   = (Posf *)  ZALLOC(dest, ds->hash_size, sizeof(Pos));
+ds->prev = (Posf *) ZALLOC(dest, ds->w_size, sizeof(Pos));
+ds->head = (Posf *) ZALLOC(dest, ds->hash_size, sizeof(Pos));
 overlay = (ushf *) ZALLOC(dest, ds->lit_bufsize, sizeof(ush)+2);
 ds->pending_buf = (uchf *) overlay;
 if (ds->window == Z_NULL || ds->prev == Z_NULL || ds->head == Z_NULL ||
@@ -508,7 +508,7 @@ unsigned size;
 unsigned len = strm->avail_in;
 if (len > size) len = size;
 if (len == 0) return 0;
-strm->avail_in  -= len;
+strm->avail_in -= len;
 if (strm->state->wrap == 1) {
 strm->adler = adler32(strm->adler, strm->next_in, len);
 }
@@ -518,7 +518,7 @@ strm->adler = crc32(strm->adler, strm->next_in, len);
 }
 #endif
 zmemcpy(buf, strm->next_in, len);
-strm->next_in  += len;
+strm->next_in += len;
 strm->total_in += len;
 return (int)len;
 }
@@ -527,9 +527,9 @@ deflate_state *s;
 {
 s->window_size = (ulg)2L*s->w_size;
 CLEAR_HASH(s);
-s->max_lazy_match   = configuration_table[s->level].max_lazy;
-s->good_match       = configuration_table[s->level].good_length;
-s->nice_match       = configuration_table[s->level].nice_length;
+s->max_lazy_match = configuration_table[s->level].max_lazy;
+s->good_match = configuration_table[s->level].good_length;
+s->nice_match = configuration_table[s->level].nice_length;
 s->max_chain_length = configuration_table[s->level].max_chain;
 s->strstart = 0;
 s->block_start = 0L;
@@ -560,11 +560,11 @@ uInt wmask = s->w_mask;
 #ifdef UNALIGNED_OK
 register Bytef *strend = s->window + s->strstart + MAX_MATCH - 1;
 register ush scan_start = *(ushf*)scan;
-register ush scan_end   = *(ushf*)(scan+best_len-1);
+register ush scan_end = *(ushf*)(scan+best_len-1);
 #else
 register Bytef *strend = s->window + s->strstart + MAX_MATCH;
-register Byte scan_end1  = scan[best_len-1];
-register Byte scan_end   = scan[best_len];
+register Byte scan_end1 = scan[best_len-1];
+register Byte scan_end = scan[best_len];
 #endif
 Assert(s->hash_bits >= 8 && MAX_MATCH == 258, "Code too clever");
 if (s->prev_length >= s->good_match) {
@@ -591,10 +591,10 @@ if (*scan == *match) scan++;
 len = (MAX_MATCH - 1) - (int)(strend-scan);
 scan = strend - (MAX_MATCH-1);
 #else
-if (match[best_len]   != scan_end  ||
+if (match[best_len] != scan_end ||
 match[best_len-1] != scan_end1 ||
-*match            != *scan     ||
-*++match          != scan[1])      continue;
+*match != *scan ||
+*++match != scan[1]) continue;
 scan += 2, match++;
 Assert(*scan == *match, "match[2]?");
 do {
@@ -614,8 +614,8 @@ if (len >= nice_match) break;
 #ifdef UNALIGNED_OK
 scan_end = *(ushf*)(scan+best_len-1);
 #else
-scan_end1  = scan[best_len-1];
-scan_end   = scan[best_len];
+scan_end1 = scan[best_len-1];
+scan_end = scan[best_len];
 #endif
 }
 } while ((cur_match = prev[cur_match & wmask]) > limit
@@ -673,7 +673,7 @@ do { putc(s->window[start++], stderr); } while (--length != 0);
 }
 }
 #else
-#  define check_match(s, start, match, length)
+# define check_match(s, start, match, length)
 #endif
 local void fill_window(s)
 deflate_state *s;
@@ -694,7 +694,7 @@ more--;
 if (s->strstart >= wsize+MAX_DIST(s)) {
 zmemcpy(s->window, s->window+wsize, (unsigned)wsize);
 s->match_start -= wsize;
-s->strstart    -= wsize;
+s->strstart -= wsize;
 s->block_start -= (long) wsize;
 n = s->hash_size;
 p = &s->head[n];

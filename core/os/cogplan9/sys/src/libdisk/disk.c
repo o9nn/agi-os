@@ -11,29 +11,29 @@ snprint(buf, sizeof buf, "%lld", disk->size);
 disk->width = strlen(buf);
 return disk;
 }
-typedef struct Table  Table;
+typedef struct Table Table;
 typedef struct Tentry Tentry;
 struct Tentry {
-uchar	active;
-uchar	starth;
-uchar	starts;
-uchar	startc;
-uchar	type;
-uchar	endh;
-uchar	ends;
-uchar	endc;
-uchar	xlba[4];
-uchar	xsize[4];
+uchar active;
+uchar starth;
+uchar starts;
+uchar startc;
+uchar type;
+uchar endh;
+uchar ends;
+uchar endc;
+uchar xlba[4];
+uchar xsize[4];
 };
 enum {
-Toffset		= 446,
-Magic0		= 0x55,
-Magic1		= 0xAA,
-NTentry		= 4,
+Toffset = 446,
+Magic0 = 0x55,
+Magic1 = 0xAA,
+NTentry = 4,
 };
 struct Table {
-Tentry	entry[NTentry];
-uchar	magic[2];
+Tentry entry[NTentry];
+uchar magic[2];
 };
 static int
 partitiongeometry(Disk *disk)

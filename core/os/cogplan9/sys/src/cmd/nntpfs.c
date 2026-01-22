@@ -34,9 +34,9 @@ ulong mtime;
 ulong atime;
 };
 enum {
-Nxover   = (1<<0),
-Nxhdr    = (1<<1),
-Nxpat    = (1<<2),
+Nxover = (1<<0),
+Nxhdr = (1<<1),
+Nxpat = (1<<2),
 Nxlistgp = (1<<3),
 };
 Group *root;
@@ -529,12 +529,12 @@ char *nntpname[] = {
 "ARTICLE",
 "XOVER",
 };
-#define GROUP(p)	(((p)>>17)&0x3FFF)
-#define MESSAGE(p)	((p)&0x1FFFF)
-#define FILE(v)		((v)&0x3)
-#define PATH(g,m)	((((g)&0x3FFF)<<17)|((m)&0x1FFFF))
-#define POST(g)	PATH(0,g,0)
-#define VERS(f)		((f)&0x3)
+#define GROUP(p) (((p)>>17)&0x3FFF)
+#define MESSAGE(p) ((p)&0x1FFFF)
+#define FILE(v) ((v)&0x3)
+#define PATH(g,m) ((((g)&0x3FFF)<<17)|((m)&0x1FFFF))
+#define POST(g) PATH(0,g,0)
+#define VERS(f) ((f)&0x3)
 typedef struct Aux Aux;
 struct Aux {
 Group *g;
@@ -809,14 +809,14 @@ free(a->s);
 free(a);
 }
 Srv nntpsrv = {
-.destroyfid=	fsdestroyfid,
-.attach=	fsattach,
-.clone=	fsclone,
-.walk1=	fswalk1,
-.open=	fsopen,
-.read=	fsread,
-.write=	fswrite,
-.stat=	fsstat,
+.destroyfid= fsdestroyfid,
+.attach= fsattach,
+.clone= fsclone,
+.walk1= fswalk1,
+.open= fsopen,
+.read= fsread,
+.write= fswrite,
+.stat= fsstat,
 };
 void
 usage(void)

@@ -11,7 +11,7 @@ You forgot to define USE_MAC_MEMMGR in jconfig.h.
 #include <Script.h>
 #include <Gestalt.h>
 #ifndef TEMP_FILE_NAME
-#define TEMP_FILE_NAME  "JPG%03d.TMP"
+#define TEMP_FILE_NAME "JPG%03d.TMP"
 #endif
 static int next_file_num;
 GLOBAL(void *)
@@ -88,13 +88,13 @@ GLOBAL(void)
 jpeg_open_backing_store (j_common_ptr cinfo, backing_store_ptr info,
 long total_bytes_needed)
 {
-short         tmpRef, vRefNum;
-long          dirID;
-FInfo         finderInfo;
-FSSpec        theSpec;
-Str255        fName;
-OSErr         osErr;
-long          gestaltResponse = 0;
+short tmpRef, vRefNum;
+long dirID;
+FInfo finderInfo;
+FSSpec theSpec;
+Str255 fName;
+OSErr osErr;
+long gestaltResponse = 0;
 osErr = Gestalt( gestaltFSAttr, &gestaltResponse );
 if ( ( osErr != noErr )
 || !( gestaltResponse & (1<<gestaltHasFSSpecCalls) ) )

@@ -9,7 +9,7 @@ SSL3_RECORD *rec,
 unsigned block_size, unsigned mac_size)
 {
 unsigned padding_length, good;
-const unsigned overhead = 1   + mac_size;
+const unsigned overhead = 1 + mac_size;
 if (overhead > rec->length)
 return 0;
 padding_length = rec->data[rec->length - 1];
@@ -25,7 +25,7 @@ SSL3_RECORD *rec,
 unsigned block_size, unsigned mac_size)
 {
 unsigned padding_length, good, to_check, i;
-const unsigned overhead = 1   + mac_size;
+const unsigned overhead = 1 + mac_size;
 if (s->version >= TLS1_1_VERSION || s->version == DTLS1_BAD_VER) {
 if (overhead + block_size > rec->length)
 return 0;
@@ -149,7 +149,7 @@ for (i = 0; i < 8; i++) {
 l2n(sha256->h[i], md_out);
 }
 }
-# undef  LARGEST_DIGEST_CTX
+# undef LARGEST_DIGEST_CTX
 # define LARGEST_DIGEST_CTX SHA256_CTX
 #endif
 #ifndef OPENSSL_NO_SHA512
@@ -161,7 +161,7 @@ for (i = 0; i < 8; i++) {
 l2n8(sha512->h[i], md_out);
 }
 }
-# undef  LARGEST_DIGEST_CTX
+# undef LARGEST_DIGEST_CTX
 # define LARGEST_DIGEST_CTX SHA512_CTX
 #endif
 char ssl3_cbc_record_digest_supported(const EVP_MD_CTX *ctx)
@@ -286,9 +286,9 @@ OPENSSL_assert(md_block_size <= MAX_HASH_BLOCK_SIZE);
 OPENSSL_assert(md_size <= EVP_MAX_MD_SIZE);
 header_length = 13;
 if (is_sslv3) {
-header_length = mac_secret_length + sslv3_pad_length + 8   +
-1   +
-2  ;
+header_length = mac_secret_length + sslv3_pad_length + 8 +
+1 +
+2 ;
 }
 variance_blocks = is_sslv3 ? 2 : 6;
 len = data_plus_mac_plus_padding_size + header_length;
@@ -382,7 +382,7 @@ for (j = 0; j < md_size; j++)
 mac_out[j] |= block[j] & is_block_b;
 }
 EVP_MD_CTX_init(&md_ctx);
-if (EVP_DigestInit_ex(&md_ctx, ctx->digest, NULL  ) <= 0)
+if (EVP_DigestInit_ex(&md_ctx, ctx->digest, NULL ) <= 0)
 goto err;
 if (is_sslv3) {
 memset(hmac_pad, 0x5c, sslv3_pad_length);

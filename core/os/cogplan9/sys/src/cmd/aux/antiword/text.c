@@ -1,8 +1,8 @@
 #include <string.h>
 #include "antiword.h"
-static encoding_type	eEncoding = encoding_neutral;
-static long		lYtopCurr = 0;
-static UCHAR		ucNbsp = 0;
+static encoding_type eEncoding = encoding_neutral;
+static long lYtopCurr = 0;
+static UCHAR ucNbsp = 0;
 void
 vPrologueTXT(diagram_type *pDiag, const options_type *pOptions)
 {
@@ -22,8 +22,8 @@ fprintf(pOutFile, "\n");
 static void
 vPrintTXT(FILE *pFile, const char *szString, size_t tStringLength)
 {
-const UCHAR	*ucBytes;
-size_t		tCount;
+const UCHAR *ucBytes;
+size_t tCount;
 fail(szString == NULL);
 if (szString == NULL || szString[0] == '\0' || tStringLength == 0) {
 return;
@@ -48,7 +48,7 @@ if (ucBytes[tCount] == ucNbsp) {
 static void
 vMoveTo(diagram_type *pDiag)
 {
-int	iCount, iNbr;
+int iCount, iNbr;
 fail(pDiag == NULL);
 fail(pDiag->pOutFile == NULL);
 if (pDiag->lYtop != lYtopCurr) {

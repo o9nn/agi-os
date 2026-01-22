@@ -6,9 +6,9 @@
 #define LOGIN_REQUEST_ERRMSG_INTERNAL_FAILURE \
 "Internal error occurred. Refer to server log for more information."
 enum login_request_flags {
-LOGIN_REQUEST_FLAG_TLS_COMPRESSION	= BIT(0),
+LOGIN_REQUEST_FLAG_TLS_COMPRESSION = BIT(0),
 LOGIN_REQUEST_FLAG_END_CLIENT_SECURED_TLS = BIT(2),
-LOGIN_REQUEST_FLAG_IMPLICIT		= BIT(3),
+LOGIN_REQUEST_FLAG_IMPLICIT = BIT(3),
 };
 struct login_request {
 unsigned int tag;

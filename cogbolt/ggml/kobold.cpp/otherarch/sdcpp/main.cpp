@@ -54,7 +54,7 @@ MODE_COUNT
 };
 struct SDParams {
 int n_threads = -1;
-SDMode mode   = TXT2IMG;
+SDMode mode = TXT2IMG;
 std::string model_path;
 std::string clip_l_path;
 std::string clip_g_path;
@@ -76,43 +76,43 @@ std::string control_image_path;
 std::vector<std::string> kontext_image_paths;
 std::string prompt;
 std::string negative_prompt;
-float min_cfg     = 1.0f;
-float cfg_scale   = 7.0f;
-float guidance    = 3.5f;
-float eta         = 0.f;
+float min_cfg = 1.0f;
+float cfg_scale = 7.0f;
+float guidance = 3.5f;
+float eta = 0.f;
 float style_ratio = 20.f;
-int clip_skip     = -1;
-int width         = 512;
-int height        = 512;
-int batch_count   = 1;
-int video_frames         = 6;
-int motion_bucket_id     = 127;
-int fps                  = 6;
+int clip_skip = -1;
+int width = 512;
+int height = 512;
+int batch_count = 1;
+int video_frames = 6;
+int motion_bucket_id = 127;
+int fps = 6;
 float augmentation_level = 0.f;
 sample_method_t sample_method = EULER_A;
-schedule_t schedule           = DEFAULT;
-int sample_steps              = 20;
-float strength                = 0.75f;
-float control_strength        = 0.9f;
-rng_type_t rng_type           = CUDA_RNG;
-int64_t seed                  = 42;
-bool verbose                  = false;
-bool vae_tiling               = false;
-bool control_net_cpu          = false;
-bool normalize_input          = false;
-bool clip_on_cpu              = false;
-bool vae_on_cpu               = false;
-bool diffusion_flash_attn     = false;
-bool canny_preprocess         = false;
-bool color                    = false;
-int upscale_repeats           = 1;
+schedule_t schedule = DEFAULT;
+int sample_steps = 20;
+float strength = 0.75f;
+float control_strength = 0.9f;
+rng_type_t rng_type = CUDA_RNG;
+int64_t seed = 42;
+bool verbose = false;
+bool vae_tiling = false;
+bool control_net_cpu = false;
+bool normalize_input = false;
+bool clip_on_cpu = false;
+bool vae_on_cpu = false;
+bool diffusion_flash_attn = false;
+bool canny_preprocess = false;
+bool color = false;
+int upscale_repeats = 1;
 std::vector<int> skip_layers = {7, 8, 9};
-float slg_scale              = 0.f;
-float skip_layer_start       = 0.01f;
-float skip_layer_end         = 0.2f;
-bool chroma_use_dit_mask     = true;
-bool chroma_use_t5_mask      = false;
-int  chroma_t5_mask_pad      = 1;
+float slg_scale = 0.f;
+float skip_layer_start = 0.01f;
+float skip_layer_end = 0.2f;
+bool chroma_use_dit_mask = true;
+bool chroma_use_t5_mask = false;
+int chroma_t5_mask_pad = 1;
 };
 void print_params(SDParams params) {
 printf("Option: \n");
@@ -252,7 +252,7 @@ invalid_arg = true;
 break;
 }
 const char* mode_selected = argv[i];
-int mode_found            = -1;
+int mode_found = -1;
 for (int d = 0; d < MODE_COUNT; d++) {
 if (!strcmp(mode_selected, modes_str[d])) {
 mode_found = d;
@@ -342,8 +342,8 @@ if (++i >= argc) {
 invalid_arg = true;
 break;
 }
-std::string type        = argv[i];
-bool found              = false;
+std::string type = argv[i];
+bool found = false;
 std::string valid_types = "";
 for (size_t i = 0; i < SD_TYPE_COUNT; i++) {
 auto trait = ggml_get_type_traits((ggml_type)i);
@@ -357,7 +357,7 @@ if (ggml_quantize_requires_imatrix((ggml_type)i)) {
 printf("\033[35;1m[WARNING]\033[0m: type %s requires imatrix to work properly. A dummy imatrix will be used, expect poor quality.\n", trait->type_name);
 }
 params.wtype = (enum sd_type_t)i;
-found        = true;
+found = true;
 break;
 }
 }
@@ -520,7 +520,7 @@ invalid_arg = true;
 break;
 }
 const char* schedule_selected = argv[i];
-int schedule_found            = -1;
+int schedule_found = -1;
 for (int d = 0; d < N_SCHEDULES; d++) {
 if (!strcmp(schedule_selected, schedule_str[d])) {
 schedule_found = d;
@@ -543,7 +543,7 @@ invalid_arg = true;
 break;
 }
 const char* sample_method_selected = argv[i];
-int sample_method_found            = -1;
+int sample_method_found = -1;
 for (int m = 0; m < N_SAMPLE_METHODS; m++) {
 if (!strcmp(sample_method_selected, sample_method_str[m])) {
 sample_method_found = m;
@@ -792,10 +792,10 @@ return 1;
 bool vae_decode_only = true;
 std::vector<sd_image_t> kontext_imgs;
 for (auto& path : params.kontext_image_paths) {
-vae_decode_only       = false;
-int c                 = 0;
-int width             = 0;
-int height            = 0;
+vae_decode_only = false;
+int c = 0;
+int width = 0;
+int height = 0;
 uint8_t* image_buffer = stbi_load(path.c_str(), &width, &height, &c, 3);
 if (image_buffer == NULL) {
 fprintf(stderr, "load image from '%s' failed\n", path.c_str());
@@ -821,14 +821,14 @@ kontext_imgs.push_back({(uint32_t)width,
 3,
 image_buffer});
 }
-uint8_t* input_image_buffer   = NULL;
+uint8_t* input_image_buffer = NULL;
 uint8_t* control_image_buffer = NULL;
-uint8_t* mask_image_buffer    = NULL;
+uint8_t* mask_image_buffer = NULL;
 if (params.mode == IMG2IMG || params.mode == IMG2VID) {
 vae_decode_only = false;
-int c              = 0;
-int width          = 0;
-int height         = 0;
+int c = 0;
+int width = 0;
+int height = 0;
 input_image_buffer = stbi_load(params.input_path.c_str(), &width, &height, &c, 3);
 if (input_image_buffer == NULL) {
 fprintf(stderr, "load image from '%s' failed\n", params.input_path.c_str());
@@ -852,7 +852,7 @@ return 1;
 if (params.height != height || params.width != width) {
 printf("resize input image from %dx%d to %dx%d\n", width, height, params.width, params.height);
 int resized_height = params.height;
-int resized_width  = params.width;
+int resized_width = params.width;
 uint8_t* resized_image_buffer = (uint8_t*)malloc(resized_height * resized_width * 3);
 if (resized_image_buffer == NULL) {
 fprintf(stderr, "error: allocate memory for resize input image\n");
@@ -900,7 +900,7 @@ return 1;
 }
 sd_image_t* control_image = NULL;
 if (params.controlnet_path.size() > 0 && params.control_image_path.size() > 0) {
-int c                = 0;
+int c = 0;
 control_image_buffer = stbi_load(params.control_image_path.c_str(), &params.width, &params.height, &c, 3);
 if (control_image_buffer == NULL) {
 fprintf(stderr, "load image from '%s' failed\n", params.control_image_path.c_str());
@@ -923,7 +923,7 @@ false);
 }
 std::vector<uint8_t> default_mask_image_vec(params.width * params.height, 255);
 if (params.mask_path != "") {
-int c             = 0;
+int c = 0;
 mask_image_buffer = stbi_load(params.mask_path.c_str(), &params.width, &params.height, &c, 1);
 } else {
 mask_image_buffer = default_mask_image_vec.data();
@@ -984,7 +984,7 @@ printf("generate failed\n");
 free_sd_ctx(sd_ctx);
 return 1;
 }
-size_t last            = params.output_path.find_last_of(".");
+size_t last = params.output_path.find_last_of(".");
 std::string dummy_name = last != std::string::npos ? params.output_path.substr(0, last) : params.output_path;
 for (int i = 0; i < params.video_frames; i++) {
 if (results[i].data == NULL) {
@@ -1063,7 +1063,7 @@ results[i] = current_image;
 }
 std::string dummy_name, ext, lc_ext;
 bool is_jpg;
-size_t last      = params.output_path.find_last_of(".");
+size_t last = params.output_path.find_last_of(".");
 size_t last_path = std::min(params.output_path.find_last_of("/"),
 params.output_path.find_last_of("\\"));
 if (last != std::string::npos
@@ -1075,7 +1075,7 @@ is_jpg = lc_ext == ".jpg" || lc_ext == ".jpeg" || lc_ext == ".jpe";
 } else {
 dummy_name = params.output_path;
 ext = lc_ext = "";
-is_jpg       = false;
+is_jpg = false;
 }
 if (!is_jpg && lc_ext != ".png") {
 dummy_name += ext;

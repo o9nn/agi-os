@@ -16,7 +16,7 @@ int resvLimit;
 int maxmp3buf;
 resvLimit = (gfp->version==1) ? 8*511 : 8*255 ;
 maxmp3buf = (gfp->strict_ISO) ? 8*960 : 8*2047;
-if ( frameLength > maxmp3buf ||  gfp->disable_reservoir ) {
+if ( frameLength > maxmp3buf || gfp->disable_reservoir ) {
 gfc->ResvMax = 0;
 } else {
 gfc->ResvMax = maxmp3buf - frameLength;
@@ -24,14 +24,14 @@ if ( gfc->ResvMax > resvLimit )
 gfc->ResvMax = resvLimit;
 }
 fullFrameBits = mean_bits * gfc->mode_gr + Min ( gfc->ResvSize, gfc->ResvMax );
-if ( gfp->strict_ISO  &&  fullFrameBits > maxmp3buf )
+if ( gfp->strict_ISO && fullFrameBits > maxmp3buf )
 fullFrameBits = maxmp3buf;
 assert ( 0 == gfc->ResvMax % 8 );
 assert ( gfc->ResvMax >= 0 );
 l3_side->resvDrain_pre = 0;
 if ( gfc->pinfo != NULL ) {
 gfc->pinfo->mean_bits = mean_bits / 2;
-gfc->pinfo->resvsize  = gfc->ResvSize;
+gfc->pinfo->resvsize = gfc->ResvSize;
 }
 return fullFrameBits;
 }
@@ -51,7 +51,7 @@ if (!gfp->disable_reservoir)
 *targ_bits -= .1*mean_bits;
 }
 *extra_bits =
-(gfc->ResvSize  < (gfc->ResvMax*6)/10  ? gfc->ResvSize : (gfc->ResvMax*6)/10);
+(gfc->ResvSize < (gfc->ResvMax*6)/10 ? gfc->ResvSize : (gfc->ResvMax*6)/10);
 *extra_bits -= add_bits;
 if (*extra_bits < 0) *extra_bits=0;
 }
@@ -70,7 +70,7 @@ ResvFrameEnd(lame_internal_flags *gfc, III_side_info_t *l3_side, int mean_bits)
 {
 int stuffingBits;
 int over_bits;
-if ( gfc->channels_out == 2  &&  (mean_bits & 1) )
+if ( gfc->channels_out == 2 && (mean_bits & 1) )
 gfc->ResvSize += 1;
 stuffingBits=0;
 l3_side->resvDrain_post = 0;

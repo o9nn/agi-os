@@ -1,15 +1,15 @@
 #include "spin.h"
 #include "y.tab.h"
-#define MAXDSTEP	2048
-char	*NextLab[64];
-int	Level=0, GenCode=0, IsGuard=0, TestOnly=0;
-static int	Tj=0, Jt=0, LastGoto=0;
-static int	Tojump[MAXDSTEP], Jumpto[MAXDSTEP], Special[MAXDSTEP];
-static void	putCode(FILE *, Element *, Element *, Element *, int);
-extern int	Pid, separate, OkBreak;
+#define MAXDSTEP 2048
+char *NextLab[64];
+int Level=0, GenCode=0, IsGuard=0, TestOnly=0;
+static int Tj=0, Jt=0, LastGoto=0;
+static int Tojump[MAXDSTEP], Jumpto[MAXDSTEP], Special[MAXDSTEP];
+static void putCode(FILE *, Element *, Element *, Element *, int);
+extern int Pid, separate, OkBreak;
 static void
 Sourced(int n, int special)
-{	int i;
+{ int i;
 for (i = 0; i < Tj; i++)
 if (Tojump[i] == n)
 return;
@@ -20,7 +20,7 @@ Tojump[Tj++] = n;
 }
 static void
 Dested(int n)
-{	int i;
+{ int i;
 for (i = 0; i < Tj; i++)
 if (Tojump[i] == n)
 return;
@@ -34,23 +34,23 @@ LastGoto = 1;
 }
 static void
 Mopup(FILE *fd)
-{	int i, j;
+{ int i, j;
 for (i = 0; i < Jt; i++)
-{	for (j = 0; j < Tj; j++)
+{ for (j = 0; j < Tj; j++)
 if (Tojump[j] == Jumpto[i])
 break;
 if (j == Tj)
-{	char buf[16];
+{ char buf[16];
 if (Jumpto[i] == OkBreak)
-{	if (!LastGoto)
+{ if (!LastGoto)
 fprintf(fd, "S_%.3d_0:	\n",
 OkBreak);
 } else {
 sprintf(buf, "S_%.3d_0", Jumpto[i]);
 non_fatal("goto %s breaks from d_step seq", buf);
-}	}	}
+} } }
 for (j = 0; j < Tj; j++)
-{	for (i = 0; i < Jt; i++)
+{ for (i = 0; i < Jt; i++)
 if (Tojump[j] == Jumpto[i])
 break;
 #ifdef DEBUG
@@ -61,7 +61,7 @@ Tojump[j]);
 }
 for (j = i = 0; j < Tj; j++)
 if (Special[j])
-{	Tojump[i] = Tojump[j];
+{ Tojump[i] = Tojump[j];
 Special[i] = 2;
 if (i >= MAXDSTEP)
 fatal("cannot happen (dstep.c)", (char *)0);
@@ -72,7 +72,7 @@ Jt = 0;
 }
 static int
 FirstTime(int n)
-{	int i;
+{ int i;
 for (i = 0; i < Tj; i++)
 if (Tojump[i] == n)
 return (Special[i] <= 1);
@@ -113,15 +113,15 @@ break;
 }
 static int
 CollectGuards(FILE *fd, Element *e, int inh)
-{	SeqList *h; Element *ee;
+{ SeqList *h; Element *ee;
 for (h = e->sub; h; h = h->nxt)
-{	ee = huntstart(h->this->frst);
+{ ee = huntstart(h->this->frst);
 filterbad(ee);
 switch (ee->n->ntyp) {
 case NON_ATOMIC:
 inh += CollectGuards(fd, ee->n->sl->this->frst, inh);
 break;
-case  IF:
+case IF:
 inh += CollectGuards(fd, ee, inh);
 break;
 case '.':
@@ -164,12 +164,12 @@ if (!pid_is_claim(Pid))
 fprintf(fd, ")");
 fprintf(fd, ")"); TestOnly=0;
 break;
-}	}
+} }
 return inh;
 }
 int
 putcode(FILE *fd, Sequence *s, Element *nxt, int justguards, int ln, int seqno)
-{	int isg=0; char buf[64];
+{ int isg=0; char buf[64];
 NextLab[0] = "continue";
 filterbad(s->frst);
 switch (s->frst->n->ntyp) {
@@ -188,7 +188,7 @@ isg = 1;
 break;
 case '.':
 if (s->frst->nxt->n->ntyp == DO)
-{	fprintf(fd, "if (!(");
+{ fprintf(fd, "if (!(");
 if (!CollectGuards(fd, s->frst->nxt, 0))
 fprintf(fd, "1");
 fprintf(fd, "))\n\t\t\tcontinue;");
@@ -241,11 +241,11 @@ sprintf(buf, "Uerror(\"block in d_step seq, line %d\")", ln);
 NextLab[0] = buf;
 putCode(fd, s->frst, s->extent, nxt, isg);
 if (nxt)
-{	extern Symbol *Fname;
+{ extern Symbol *Fname;
 extern int lineno;
 if (FirstTime(nxt->Seqno)
 && (!(nxt->status & DONE2) || !(nxt->status & D_ATOM)))
-{	fprintf(fd, "S_%.3d_0: \n", nxt->Seqno);
+{ fprintf(fd, "S_%.3d_0: \n", nxt->Seqno);
 nxt->status |= DONE2;
 LastGoto = 0;
 }
@@ -259,17 +259,17 @@ return LastGoto;
 }
 static void
 putCode(FILE *fd, Element *f, Element *last, Element *next, int isguard)
-{	Element *e, *N;
+{ Element *e, *N;
 SeqList *h; int i;
 char NextOpt[64];
 static int bno = 0;
 for (e = f; e; e = e->nxt)
-{	if (e->status & DONE2)
+{ if (e->status & DONE2)
 continue;
 e->status |= DONE2;
 if (!(e->status & D_ATOM))
-{	if (!LastGoto)
-{	fprintf(fd, "\t\tgoto S_%.3d_0;\n",
+{ if (!LastGoto)
+{ fprintf(fd, "\t\tgoto S_%.3d_0;\n",
 e->Seqno);
 Dested(e->Seqno);
 }
@@ -279,7 +279,7 @@ fprintf(fd, "S_%.3d_0: \n", e->Seqno);
 LastGoto = 0;
 Sourced(e->Seqno, 0);
 if (!e->sub)
-{	filterbad(e);
+{ filterbad(e);
 switch (e->n->ntyp) {
 case NON_ATOMIC:
 h = e->n->sl;
@@ -289,14 +289,14 @@ break;
 case BREAK:
 if (LastGoto) break;
 if (e->nxt)
-{	i = target( huntele(e->nxt,
+{ i = target( huntele(e->nxt,
 e->status, -1))->Seqno;
 fprintf(fd, "\t\tgoto S_%.3d_0;	", i);
 fprintf(fd, "\n");
 Dested(i);
 } else
-{	if (next)
-{	fprintf(fd, "\t\tgoto S_%.3d_0;",
+{ if (next)
+{ fprintf(fd, "\t\tgoto S_%.3d_0;",
 next->Seqno);
 fprintf(fd, " \n");
 Dested(next->Seqno);
@@ -315,7 +315,7 @@ break;
 case '.':
 if (LastGoto) break;
 if (e->nxt && (e->nxt->status & DONE2))
-{	i = e->nxt?e->nxt->Seqno:0;
+{ i = e->nxt?e->nxt->Seqno:0;
 fprintf(fd, "\t\tgoto S_%.3d_0;", i);
 fprintf(fd, " \n");
 Dested(i);
@@ -332,14 +332,14 @@ break;
 }
 i = e->nxt?e->nxt->Seqno:0;
 if (e->nxt && e->nxt->status & DONE2 && !LastGoto)
-{	fprintf(fd, "\t\tgoto S_%.3d_0; ", i);
+{ fprintf(fd, "\t\tgoto S_%.3d_0; ", i);
 fprintf(fd, "\n");
 Dested(i);
 break;
 }
 } else
-{	for (h = e->sub, i=1; h; h = h->nxt, i++)
-{	sprintf(NextOpt, "goto S_%.3d_%d",
+{ for (h = e->sub, i=1; h; h = h->nxt, i++)
+{ sprintf(NextOpt, "goto S_%.3d_%d",
 e->Seqno, i);
 NextLab[++Level] = NextOpt;
 N = (e->n && e->n->ntyp == DO) ? e : e->nxt;
@@ -350,18 +350,18 @@ fprintf(fd, "%s: \n", &NextOpt[5]);
 LastGoto = 0;
 }
 if (!LastGoto)
-{	fprintf(fd, "\t\tUerror(\"blocking sel ");
+{ fprintf(fd, "\t\tUerror(\"blocking sel ");
 fprintf(fd, "in d_step (nr.%d, near line %d)\");\n",
 bno++, (e->n)?e->n->ln:0);
 LastGoto = 0;
 }
 }
 if (e == last)
-{	if (!LastGoto && next)
-{	fprintf(fd, "\t\tgoto S_%.3d_0;\n",
+{ if (!LastGoto && next)
+{ fprintf(fd, "\t\tgoto S_%.3d_0;\n",
 next->Seqno);
 Dested(next->Seqno);
 }
 break;
-}	}
+} }
 }

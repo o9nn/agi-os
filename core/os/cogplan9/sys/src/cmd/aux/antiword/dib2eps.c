@@ -3,8 +3,8 @@
 static void
 vDecode1bpp(FILE *pInFile, FILE *pOutFile, const imagedata_type *pImg)
 {
-size_t	tPadding;
-int	iX, iY, iN, iByte, iTmp, iEighthWidth, iUse;
+size_t tPadding;
+int iX, iY, iN, iByte, iTmp, iEighthWidth, iUse;
 DBG_MSG("vDecode1bpp");
 fail(pOutFile == NULL);
 fail(pImg == NULL);
@@ -47,8 +47,8 @@ vASCII85EncodeByte(pOutFile, EOF);
 static void
 vDecode4bpp(FILE *pInFile, FILE *pOutFile, const imagedata_type *pImg)
 {
-size_t	tPadding;
-int	iX, iY, iN, iByte, iTmp, iHalfWidth, iUse;
+size_t tPadding;
+int iX, iY, iN, iByte, iTmp, iHalfWidth, iUse;
 DBG_MSG("vDecode4bpp");
 fail(pInFile == NULL);
 fail(pOutFile == NULL);
@@ -86,8 +86,8 @@ vASCII85EncodeByte(pOutFile, EOF);
 static void
 vDecode8bpp(FILE *pInFile, FILE *pOutFile, const imagedata_type *pImg)
 {
-size_t	tPadding;
-int	iX, iY, iByte;
+size_t tPadding;
+int iX, iY, iByte;
 DBG_MSG("vDecode8bpp");
 fail(pInFile == NULL);
 fail(pOutFile == NULL);
@@ -112,8 +112,8 @@ vASCII85EncodeByte(pOutFile, EOF);
 static void
 vDecode24bpp(FILE *pInFile, FILE *pOutFile, const imagedata_type *pImg)
 {
-size_t	tPadding;
-int	iX, iY, iBlue, iGreen, iRed, iTripleWidth;
+size_t tPadding;
+int iX, iY, iBlue, iGreen, iRed, iTripleWidth;
 DBG_MSG("vDecode24bpp");
 fail(pInFile == NULL);
 fail(pOutFile == NULL);
@@ -151,8 +151,8 @@ vASCII85EncodeByte(pOutFile, EOF);
 static void
 vDecodeRle4(FILE *pInFile, FILE *pOutFile, const imagedata_type *pImg)
 {
-int	iX, iY, iByte, iTmp, iRunLength, iRun;
-BOOL	bEOF, bEOL;
+int iX, iY, iByte, iTmp, iRunLength, iRun;
+BOOL bEOF, bEOL;
 DBG_MSG("vDecodeRle4");
 fail(pInFile == NULL);
 fail(pOutFile == NULL);
@@ -161,7 +161,7 @@ fail(pImg->iColorsUsed < 1 || pImg->iColorsUsed > 16);
 DBG_DEC(pImg->iWidth);
 DBG_DEC(pImg->iHeight);
 bEOF = FALSE;
-for (iY =  0; iY < pImg->iHeight && !bEOF; iY++) {
+for (iY = 0; iY < pImg->iHeight && !bEOF; iY++) {
 bEOL = FALSE;
 iX = 0;
 while (!bEOL) {
@@ -233,8 +233,8 @@ vASCII85EncodeByte(pOutFile, EOF);
 static void
 vDecodeRle8(FILE *pInFile, FILE *pOutFile, const imagedata_type *pImg)
 {
-int	iX, iY, iByte, iRunLength, iRun;
-BOOL	bEOF, bEOL;
+int iX, iY, iByte, iRunLength, iRun;
+BOOL bEOF, bEOL;
 DBG_MSG("vDecodeRle8");
 fail(pInFile == NULL);
 fail(pOutFile == NULL);
@@ -304,7 +304,7 @@ vASCII85EncodeByte(pOutFile, EOF);
 static void
 vDecodeDIB(FILE *pInFile, FILE *pOutFile, const imagedata_type *pImg)
 {
-size_t	tHeaderSize;
+size_t tHeaderSize;
 fail(pInFile == NULL);
 fail(pOutFile == NULL);
 fail(pImg == NULL);
@@ -351,11 +351,11 @@ break;
 static void
 vCopy2File(FILE *pInFile, ULONG ulFileOffset, size_t tPictureLen)
 {
-static int	iPicCounter = 0;
-FILE	*pOutFile;
-size_t	tIndex;
-int	iTmp;
-char	szFilename[30];
+static int iPicCounter = 0;
+FILE *pOutFile;
+size_t tIndex;
+int iTmp;
+char szFilename[30];
 if (!bSetDataOffset(pInFile, ulFileOffset)) {
 return;
 }

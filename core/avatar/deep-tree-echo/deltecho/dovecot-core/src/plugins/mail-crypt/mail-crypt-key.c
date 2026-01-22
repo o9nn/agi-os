@@ -228,7 +228,7 @@ if (ret == 0 && (ret = mail_crypt_env_get_private_key(user, enc_hash,
 pubid, enc_hash);
 return -1;
 } else if (ret < 0) {
-*error_r =  t_strdup_printf("Cannot decrypt key %s: %s",
+*error_r = t_strdup_printf("Cannot decrypt key %s: %s",
 pubid, *error_r);
 return ret;
 }

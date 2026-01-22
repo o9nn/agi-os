@@ -1,11 +1,11 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"../port/error.h"
-#include	"../port/usb.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "../port/error.h"
+#include "../port/usb.h"
 typedef struct Hcitype Hcitype;
 enum
 {
@@ -38,75 +38,75 @@ CMdebugep,
 CMname,
 CMtmout,
 CMpreset,
-Rportenable	= 1,
-Rportreset	= 4,
+Rportenable = 1,
+Rportreset = 4,
 };
 struct Hcitype
 {
-char*	type;
-int	(*reset)(Hci*);
+char* type;
+int (*reset)(Hci*);
 };
-#define QID(q)	((int)(q).path)
+#define QID(q) ((int)(q).path)
 static char Edetach[] = "device is detached";
 static char Enotconf[] = "endpoint not configured";
 char Estalled[] = "endpoint stalled";
 static Cmdtab usbctls[] =
 {
-{CMdebug,	"debug",	2},
-{CMdump,	"dump",		1},
+{CMdebug, "debug", 2},
+{CMdump, "dump", 1},
 };
 static Cmdtab epctls[] =
 {
-{CMnew,		"new",		4},
-{CMnewdev,	"newdev",	3},
-{CMhub,		"hub",		1},
-{CMspeed,	"speed",	2},
-{CMmaxpkt,	"maxpkt",	2},
-{CMntds,	"ntds",		2},
-{CMpollival,	"pollival",	2},
-{CMsamplesz,	"samplesz",	2},
-{CMhz,		"hz",		2},
-{CMinfo,	"info",		0},
-{CMdetach,	"detach",	1},
-{CMaddress,	"address",	1},
-{CMdebugep,	"debug",	2},
-{CMclrhalt,	"clrhalt",	1},
-{CMname,	"name",		2},
-{CMtmout,	"timeout",	2},
-{CMpreset,	"reset",	1},
+{CMnew, "new", 4},
+{CMnewdev, "newdev", 3},
+{CMhub, "hub", 1},
+{CMspeed, "speed", 2},
+{CMmaxpkt, "maxpkt", 2},
+{CMntds, "ntds", 2},
+{CMpollival, "pollival", 2},
+{CMsamplesz, "samplesz", 2},
+{CMhz, "hz", 2},
+{CMinfo, "info", 0},
+{CMdetach, "detach", 1},
+{CMaddress, "address", 1},
+{CMdebugep, "debug", 2},
+{CMclrhalt, "clrhalt", 1},
+{CMname, "name", 2},
+{CMtmout, "timeout", 2},
+{CMpreset, "reset", 1},
 };
 static Dirtab usbdir[] =
 {
-"ctl",		{Qctl},		0,	0666,
+"ctl", {Qctl}, 0, 0666,
 };
 char *usbmodename[] =
 {
-[OREAD]	"r",
-[OWRITE]	"w",
-[ORDWR]	"rw",
+[OREAD] "r",
+[OWRITE] "w",
+[ORDWR] "rw",
 };
 static char *ttname[] =
 {
-[Tnone]	"none",
-[Tctl]	"control",
-[Tiso]	"iso",
-[Tintr]	"interrupt",
-[Tbulk]	"bulk",
+[Tnone] "none",
+[Tctl] "control",
+[Tiso] "iso",
+[Tintr] "interrupt",
+[Tbulk] "bulk",
 };
 static char *spname[] =
 {
-[Fullspeed]	"full",
-[Lowspeed]	"low",
-[Highspeed]	"high",
-[Nospeed]	"no",
+[Fullspeed] "full",
+[Lowspeed] "low",
+[Highspeed] "high",
+[Nospeed] "no",
 };
-static int	debug;
-static Hcitype	hcitypes[Nhcis];
-static Hci*	hcis[Nhcis];
-static QLock	epslck;
-static Ep*	eps[Neps];
-static int	epmax;
-static int	usbidgen;
+static int debug;
+static Hcitype hcitypes[Nhcis];
+static Hci* hcis[Nhcis];
+static QLock epslck;
+static Ep* eps[Neps];
+static int epmax;
+static int usbidgen;
 char*
 seprintdata(char *s, char *se, uchar *d, int n)
 {
@@ -966,7 +966,7 @@ if(l == Nospeed)
 error("speed must be full|low|high");
 nep = newdev(ep->hp, 0, 0);
 nep->dev->speed = l;
-if(nep->dev->speed  != Lowspeed)
+if(nep->dev->speed != Lowspeed)
 nep->maxpkt = 64;
 nep->dev->hub = d->nb;
 nep->dev->port = atoi(cb->f[2]);

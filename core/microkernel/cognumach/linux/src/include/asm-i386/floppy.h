@@ -1,26 +1,26 @@
 #ifndef __ASM_I386_FLOPPY_H
 #define __ASM_I386_FLOPPY_H
 #define SW fd_routine[use_virtual_dma&1]
-#define fd_inb(port)			inb_p(port)
-#define fd_outb(port,value)		outb_p(port,value)
-#define fd_enable_dma()         SW._enable_dma(FLOPPY_DMA)
-#define fd_disable_dma()        SW._disable_dma(FLOPPY_DMA)
-#define fd_request_dma()        SW._request_dma(FLOPPY_DMA,"floppy")
-#define fd_free_dma()           SW._free_dma(FLOPPY_DMA)
-#define fd_clear_dma_ff()       SW._clear_dma_ff(FLOPPY_DMA)
-#define fd_set_dma_mode(mode)   SW._set_dma_mode(FLOPPY_DMA,mode)
-#define fd_set_dma_addr(addr)   SW._set_dma_addr(FLOPPY_DMA,addr)
+#define fd_inb(port) inb_p(port)
+#define fd_outb(port,value) outb_p(port,value)
+#define fd_enable_dma() SW._enable_dma(FLOPPY_DMA)
+#define fd_disable_dma() SW._disable_dma(FLOPPY_DMA)
+#define fd_request_dma() SW._request_dma(FLOPPY_DMA,"floppy")
+#define fd_free_dma() SW._free_dma(FLOPPY_DMA)
+#define fd_clear_dma_ff() SW._clear_dma_ff(FLOPPY_DMA)
+#define fd_set_dma_mode(mode) SW._set_dma_mode(FLOPPY_DMA,mode)
+#define fd_set_dma_addr(addr) SW._set_dma_addr(FLOPPY_DMA,addr)
 #define fd_set_dma_count(count) SW._set_dma_count(FLOPPY_DMA,count)
-#define fd_enable_irq()         enable_irq(FLOPPY_IRQ)
-#define fd_disable_irq()        disable_irq(FLOPPY_IRQ)
+#define fd_enable_irq() enable_irq(FLOPPY_IRQ)
+#define fd_disable_irq() disable_irq(FLOPPY_IRQ)
 #define fd_cacheflush(addr,size)
-#define fd_request_irq()        SW._request_irq(FLOPPY_IRQ, floppy_interrupt, \
+#define fd_request_irq() SW._request_irq(FLOPPY_IRQ, floppy_interrupt, \
 SA_INTERRUPT|SA_SAMPLE_RANDOM, \
 "floppy", NULL)
-#define fd_free_irq()		free_irq(FLOPPY_IRQ, NULL)
-#define fd_get_dma_residue()    SW._get_dma_residue(FLOPPY_DMA)
-#define fd_dma_mem_alloc(size)	SW._dma_mem_alloc(size)
-#define fd_dma_mem_free(addr,size)	SW._dma_mem_free(addr,size)
+#define fd_free_irq() free_irq(FLOPPY_IRQ, NULL)
+#define fd_get_dma_residue() SW._get_dma_residue(FLOPPY_DMA)
+#define fd_dma_mem_alloc(size) SW._dma_mem_alloc(size)
+#define fd_dma_mem_free(addr,size) SW._dma_mem_free(addr,size)
 static int virtual_dma_count=0;
 static int virtual_dma_residue=0;
 static unsigned long virtual_dma_addr=0;
@@ -137,7 +137,7 @@ static void vdma_nop(unsigned int dummy)
 }
 static void vdma_set_dma_mode(unsigned int dummy,char mode)
 {
-virtual_dma_mode = (mode  == DMA_MODE_WRITE);
+virtual_dma_mode = (mode == DMA_MODE_WRITE);
 }
 static void vdma_set_dma_addr(unsigned int dummy,unsigned int addr)
 {
@@ -228,8 +228,8 @@ __inline__ void virtual_dma_init(void)
 }
 static int FDC1 = 0x3f0;
 static int FDC2 = -1;
-#define FLOPPY0_TYPE	((CMOS_READ(0x10) >> 4) & 15)
-#define FLOPPY1_TYPE	(CMOS_READ(0x10) & 15)
+#define FLOPPY0_TYPE ((CMOS_READ(0x10) >> 4) & 15)
+#define FLOPPY1_TYPE (CMOS_READ(0x10) & 15)
 #define N_FDC 2
 #define N_DRIVE 8
 #define CROSS_64KB(a,s) (((unsigned long)(a)/K_64 != ((unsigned long)(a) + (s) - 1) / K_64) && ! (use_virtual_dma & 1))

@@ -33,10 +33,10 @@ return port;
 }
 kern_return_t
 mach_vm_region_info(
-vm_map_t 		map,
-vm_offset_t 		address,
-vm_region_info_t 	*regionp,
-ipc_port_t 		*portp)
+vm_map_t map,
+vm_offset_t address,
+vm_region_info_t *regionp,
+ipc_port_t *portp)
 {
 vm_map_t cmap;
 vm_map_t nmap;
@@ -89,10 +89,10 @@ return KERN_SUCCESS;
 }
 kern_return_t
 mach_vm_object_info(
-vm_object_t 		object,
-vm_object_info_t 	*infop,
-ipc_port_t 		*shadowp,
-ipc_port_t 		*copyp)
+vm_object_t object,
+vm_object_info_t *infop,
+ipc_port_t *shadowp,
+ipc_port_t *copyp)
 {
 vm_object_info_t info;
 vm_object_info_state_t state;
@@ -152,14 +152,14 @@ vm_object_unlock(object);
 *copyp = copy;
 return KERN_SUCCESS;
 }
-#define VPI_STATE_NODATA	(VPI_STATE_BUSY|VPI_STATE_FICTITIOUS| \
+#define VPI_STATE_NODATA (VPI_STATE_BUSY|VPI_STATE_FICTITIOUS| \
 VPI_STATE_PRIVATE|VPI_STATE_ABSENT)
 static kern_return_t
 _mach_vm_object_pages(
-vm_object_t 		object,
-void*		 	*pagesp,
-natural_t 		*countp,
-int			phys)
+vm_object_t object,
+void* *pagesp,
+natural_t *countp,
+int phys)
 {
 vm_size_t size;
 vm_offset_t addr;
@@ -303,17 +303,17 @@ return KERN_SUCCESS;
 }
 kern_return_t
 mach_vm_object_pages(
-vm_object_t 		object,
-vm_page_info_array_t 	*pagesp,
-natural_t 		*countp)
+vm_object_t object,
+vm_page_info_array_t *pagesp,
+natural_t *countp)
 {
 return _mach_vm_object_pages(object, (void**) pagesp, countp, 0);
 }
 kern_return_t
 mach_vm_object_pages_phys(
-vm_object_t 			object,
-vm_page_phys_info_array_t 	*pagesp,
-natural_t 			*countp)
+vm_object_t object,
+vm_page_phys_info_array_t *pagesp,
+natural_t *countp)
 {
 return _mach_vm_object_pages(object, (void**) pagesp, countp, 1);
 }

@@ -2,17 +2,17 @@
 #include "draw.h"
 #include "tk.h"
 #include "canvs.h"
-#define	O(t, e)		((long)(&((t*)0)->e))
-typedef void	(*Drawfn)(Image*, Point, int, int, Image*, int);
+#define O(t, e) ((long)(&((t*)0)->e))
+typedef void (*Drawfn)(Image*, Point, int, int, Image*, int);
 typedef struct TkCarc TkCarc;
 struct TkCarc
 {
-int	width;
-int 	start;
-int 	extent;
-int 	style;
-Image*	stipple;
-Image*	pen;
+int width;
+int start;
+int extent;
+int style;
+Image* stipple;
+Image* pen;
 };
 enum Style
 {
@@ -23,27 +23,27 @@ Arc
 static
 TkStab tkstyle[] =
 {
-"pieslice",	Pieslice,
-"arc",		Arc,
-"chord",	Arc,
+"pieslice", Pieslice,
+"arc", Arc,
+"chord", Arc,
 nil
 };
 static
 TkOption arcopts[] =
 {
-"start",	OPTfrac,	O(TkCarc, start),	nil,
-"extent",	OPTfrac,	O(TkCarc, extent),	nil,
-"style",	OPTstab,	O(TkCarc, style),	tkstyle,
-"width",	OPTnnfrac,	O(TkCarc, width),	nil,
-"stipple",	OPTbmap,	O(TkCarc, stipple),	nil,
+"start", OPTfrac, O(TkCarc, start), nil,
+"extent", OPTfrac, O(TkCarc, extent), nil,
+"style", OPTstab, O(TkCarc, style), tkstyle,
+"width", OPTnnfrac, O(TkCarc, width), nil,
+"stipple", OPTbmap, O(TkCarc, stipple), nil,
 nil
 };
 static
 TkOption itemopts[] =
 {
-"tags",		OPTctag,	O(TkCitem, tags),	nil,
-"fill",		OPTcolr,	O(TkCitem, env),	IAUX(TkCfill),
-"outline",	OPTcolr,	O(TkCitem, env),	IAUX(TkCforegnd),
+"tags", OPTctag, O(TkCitem, tags), nil,
+"fill", OPTcolr, O(TkCitem, env), IAUX(TkCfill),
+"outline", OPTcolr, O(TkCitem, env), IAUX(TkCforegnd),
 nil
 };
 void

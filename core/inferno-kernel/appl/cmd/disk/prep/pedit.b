@@ -16,7 +16,7 @@ calc: Calc;
 include "pedit.m";
 Cmd: adt {
 c: int;
-f:	ref fn(e: ref Edit, a: array of string): string;
+f: ref fn(e: ref Edit, a: array of string): string;
 };
 cmds: array of Cmd;
 bin: ref Iobuf;
@@ -29,15 +29,15 @@ disks = load Disks Disks->PATH;
 disks->init();
 bin = bufio->fopen(sys->fildes(0), Bufio->OREAD);
 cmds = array[] of {
-('.',	editdot),
-('a',	editadd),
-('d',	editdel),
-('?',	edithelp),
-('h',	edithelp),
-('P',	editctlprint),
-('p',	editprint),
-('w',	editwrite),
-('q',	editquit),
+('.', editdot),
+('a', editadd),
+('d', editdel),
+('?', edithelp),
+('h', edithelp),
+('P', editctlprint),
+('p', editprint),
+('w', editwrite),
+('q', editquit),
 };
 }
 Edit.mk(unit: string): ref Edit
@@ -92,7 +92,7 @@ if(p.start < edit.part[i].end && edit.part[i].start < p.end) {
 msg := sys->sprint("\"%s\" %bd-%bd overlaps with \"%s\" %bd-%bd",
 p.name, p.start, p.end,
 edit.part[i].name, edit.part[i].start, edit.part[i].end);
-#	return msg;
+# return msg;
 }
 }
 if(len edit.part >= Maxpart)
@@ -324,7 +324,7 @@ for(i := 0; i < len buf; i++)
 if(buf[i] == byte 0)
 break;
 (nline, lines) := sys->tokenize(string buf[0:i], "\n\r");
-edit.ctlpart = array[nline] of ref Part;	# upper bound
+edit.ctlpart = array[nline] of ref Part; # upper bound
 npart := 0;
 for(i=0; i<nline; i++){
 line := hd lines;
@@ -339,7 +339,7 @@ b := big hd tl tl tl f;
 if(a >= b)
 break;
 # only gather partitions contained in the disk partition we are editing
-if(a < disk.offset ||  disk.offset+disk.secs < b)
+if(a < disk.offset || disk.offset+disk.secs < b)
 continue;
 a -= disk.offset;
 b -= disk.offset;

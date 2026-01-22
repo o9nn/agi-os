@@ -493,7 +493,7 @@ if (bbox.p.x != 0 || nraster != raster) {
 byte *to = bits;
 uint n = cc->height;
 for (; n--; from += raster, to += nraster)
-memmove(to, from,  nraster);
+memmove(to, from, nraster);
 } else if (bbox.p.y != 0) {
 memmove(bits, from, raster * cc->height);
 }

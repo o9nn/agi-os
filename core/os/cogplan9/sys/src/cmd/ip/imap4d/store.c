@@ -3,15 +3,15 @@
 #include <bio.h>
 #include <auth.h>
 #include "imap4d.h"
-static NamedInt	flagMap[] =
+static NamedInt flagMap[] =
 {
-{"\\Seen",	MSeen},
-{"\\Answered",	MAnswered},
-{"\\Flagged",	MFlagged},
-{"\\Deleted",	MDeleted},
-{"\\Draft",	MDraft},
-{"\\Recent",	MRecent},
-{nil,		0}
+{"\\Seen", MSeen},
+{"\\Answered", MAnswered},
+{"\\Flagged", MFlagged},
+{"\\Deleted", MDeleted},
+{"\\Draft", MDraft},
+{"\\Recent", MRecent},
+{nil, 0}
 };
 int
 storeMsg(Box *box, Msg *m, int uids, void *vst)

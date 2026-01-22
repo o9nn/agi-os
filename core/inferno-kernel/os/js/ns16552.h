@@ -3,9 +3,9 @@ enum
 UartFREQ= 1843200,
 TTYABase = 0x2F8
 };
-#define uartwrreg(u,r,v)	outb((u)->port + r, (u)->sticky[r] | (v))
-#define uartrdreg(u,r)		inb((u)->port + r)
-void	ns16552setup(ulong, ulong, char*);
+#define uartwrreg(u,r,v) outb((u)->port + r, (u)->sticky[r] | (v))
+#define uartrdreg(u,r) inb((u)->port + r)
+void ns16552setup(ulong, ulong, char*);
 static void
 uartpower(int, int)
 {

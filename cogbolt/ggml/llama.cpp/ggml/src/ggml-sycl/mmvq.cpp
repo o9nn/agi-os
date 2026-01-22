@@ -6,27 +6,27 @@
 template <typename reorder_vec_dot_q_sycl>
 static void mul_mat_vec_q_reorder(const void * __restrict__ vx, const void * __restrict__ vy, float * __restrict__ dst,
 const int ncols, const int nrows, const sycl::nd_item<3> & nd_item) {
-using block_type   = ggml_sycl_reordered::block_q_t<reorder_vec_dot_q_sycl::gtype>;
+using block_type = ggml_sycl_reordered::block_q_t<reorder_vec_dot_q_sycl::gtype>;
 using block_traits = typename block_type::traits;
-const auto sg           = nd_item.get_sub_group();
-const int  sg_range     = sg.get_group_linear_range();
-const int  workgroup_id = nd_item.get_group_linear_id();
-const int  sg_id        = sg.get_group_linear_id();
-const int  row          = workgroup_id * sg_range + sg_id;
+const auto sg = nd_item.get_sub_group();
+const int sg_range = sg.get_group_linear_range();
+const int workgroup_id = nd_item.get_group_linear_id();
+const int sg_id = sg.get_group_linear_id();
+const int row = workgroup_id * sg_range + sg_id;
 if (row >= nrows) {
 return;
 }
-const int     blocks_per_row              = ncols / block_traits::qk;
-constexpr int blocks_per_subgroup         = ceil_div(block_traits::vdr_mmvq * WARP_SIZE, block_traits::qi);
+const int blocks_per_row = ncols / block_traits::qk;
+constexpr int blocks_per_subgroup = ceil_div(block_traits::vdr_mmvq * WARP_SIZE, block_traits::qi);
 constexpr int block_elements_per_subgroup = block_traits::qi / block_traits::vdr_mmvq;
-const int     nblocks                     = nrows * (ncols / block_traits::qk);
+const int nblocks = nrows * (ncols / block_traits::qk);
 static_assert(blocks_per_subgroup > 0);
 static_assert(block_elements_per_subgroup > 0);
 float partial_sum = 0.0f;
 for (int i = sg.get_local_linear_id() / block_elements_per_subgroup; i < blocks_per_row; i += blocks_per_subgroup) {
 const int ibx = row * blocks_per_row + i;
-const auto         bx_offset      = block_type::get_block_offset(ibx, nblocks);
-const auto         d_offset       = block_type::get_d_offset(nrows, ncols, ibx);
+const auto bx_offset = block_type::get_block_offset(ibx, nblocks);
+const auto d_offset = block_type::get_d_offset(nrows, ncols, ibx);
 const int iby = i * block_type::block_to_q8_1_ratio();
 const int8_t* q8_1_quant_ptr = (const int8_t*)vy + iby * QK8_1;
 const sycl::half2* q8_1_ds_ptr = (const sycl::half2*)((const char*)vy + ncols + iby * sizeof(sycl::half2));
@@ -48,11 +48,11 @@ const int row = item_ct1.get_group(2) * item_ct1.get_local_range(1) + item_ct1.g
 if (row >= nrows) {
 return;
 }
-const int     blocks_per_row  = ncols / qk;
+const int blocks_per_row = ncols / qk;
 constexpr int blocks_per_warp = (vdr * WARP_SIZE + qi - 1) / qi;
 assert(blocks_per_warp > 0);
 float tmp = 0.0f;
-const block_q_t *  x = (const block_q_t *) vx;
+const block_q_t * x = (const block_q_t *) vx;
 const block_q8_1 * y = (const block_q8_1 *) vy;
 for (int i = item_ct1.get_local_id(2) / (qi / vdr); i < blocks_per_row; i += blocks_per_warp) {
 const int ibx = row * blocks_per_row + i;
@@ -86,7 +86,7 @@ const int blocks_per_row = ncols / qk;
 const int blocks_per_warp = vdr * WARP_SIZE / qi;
 assert(blocks_per_warp>0);
 float tmp = 0.0f;
-const block_q_t  * x = (const block_q_t  *) vx;
+const block_q_t * x = (const block_q_t *) vx;
 const block_q8_1 * y = (const block_q8_1 *) vy;
 for (int i = item_ct1.get_local_id(2) / (qi / vdr); i < blocks_per_row;
 i += blocks_per_warp) {
@@ -122,7 +122,7 @@ const int blocks_per_row = ncols / qk;
 const int blocks_per_warp = vdr * WARP_SIZE / qi;
 assert(blocks_per_warp>0);
 float tmp = 0.0f;
-const block_q_t  * x = (const block_q_t  *) vx;
+const block_q_t * x = (const block_q_t *) vx;
 const block_q8_1 * y = (const block_q8_1 *) vy;
 for (int i = item_ct1.get_local_id(2) / (qi / vdr); i < blocks_per_row;
 i += blocks_per_warp) {
@@ -158,7 +158,7 @@ const int blocks_per_row = ncols / qk;
 const int blocks_per_warp = vdr * WARP_SIZE / qi;
 assert(blocks_per_warp>0);
 float tmp = 0.0f;
-const block_q_t  * x = (const block_q_t  *) vx;
+const block_q_t * x = (const block_q_t *) vx;
 const block_q8_1 * y = (const block_q8_1 *) vy;
 for (int i = item_ct1.get_local_id(2) / (qi / vdr); i < blocks_per_row;
 i += blocks_per_warp) {
@@ -194,7 +194,7 @@ const int blocks_per_row = ncols / qk;
 const int blocks_per_warp = vdr * WARP_SIZE / qi;
 assert(blocks_per_warp>0);
 float tmp = 0.0f;
-const block_q_t  * x = (const block_q_t  *) vx;
+const block_q_t * x = (const block_q_t *) vx;
 const block_q8_1 * y = (const block_q8_1 *) vy;
 for (int i = item_ct1.get_local_id(2) / (qi / vdr); i < blocks_per_row;
 i += blocks_per_warp) {
@@ -230,7 +230,7 @@ const int blocks_per_row = ncols / qk;
 const int blocks_per_warp = vdr * WARP_SIZE / qi;
 assert(blocks_per_warp>0);
 float tmp = 0.0f;
-const block_q_t  * x = (const block_q_t  *) vx;
+const block_q_t * x = (const block_q_t *) vx;
 const block_q8_1 * y = (const block_q8_1 *) vy;
 for (int i = item_ct1.get_local_id(2) / (qi / vdr); i < blocks_per_row;
 i += blocks_per_warp) {
@@ -266,7 +266,7 @@ const int blocks_per_row = ncols / qk;
 const int blocks_per_warp = vdr * WARP_SIZE / qi;
 assert(blocks_per_warp>0);
 float tmp = 0.0f;
-const block_q_t  * x = (const block_q_t  *) vx;
+const block_q_t * x = (const block_q_t *) vx;
 const block_q8_1 * y = (const block_q8_1 *) vy;
 for (int i = item_ct1.get_local_id(2) / (qi / vdr); i < blocks_per_row;
 i += blocks_per_warp) {
@@ -302,7 +302,7 @@ const int blocks_per_row = ncols / qk;
 const int blocks_per_warp = vdr * WARP_SIZE / qi;
 assert(blocks_per_warp>0);
 float tmp = 0.0f;
-const block_q_t  * x = (const block_q_t  *) vx;
+const block_q_t * x = (const block_q_t *) vx;
 const block_q8_1 * y = (const block_q8_1 *) vy;
 for (int i = item_ct1.get_local_id(2) / (qi / vdr); i < blocks_per_row;
 i += blocks_per_warp) {
@@ -338,7 +338,7 @@ const int blocks_per_row = ncols / qk;
 const int blocks_per_warp = vdr * WARP_SIZE / qi;
 assert(blocks_per_warp>0);
 float tmp = 0.0f;
-const block_q_t  * x = (const block_q_t  *) vx;
+const block_q_t * x = (const block_q_t *) vx;
 const block_q8_1 * y = (const block_q8_1 *) vy;
 for (int i = item_ct1.get_local_id(2) / (qi / vdr); i < blocks_per_row;
 i += blocks_per_warp) {
@@ -374,7 +374,7 @@ const int blocks_per_row = ncols / qk;
 const int blocks_per_warp = vdr * WARP_SIZE / qi;
 assert(blocks_per_warp>0);
 float tmp = 0.0f;
-const block_q_t  * x = (const block_q_t  *) vx;
+const block_q_t * x = (const block_q_t *) vx;
 const block_q8_1 * y = (const block_q8_1 *) vy;
 for (int i = item_ct1.get_local_id(2) / (qi / vdr); i < blocks_per_row;
 i += blocks_per_warp) {
@@ -398,7 +398,7 @@ dst[row] = tmp;
 static void reorder_mul_mat_vec_q4_0_q8_1_sycl(const void * vx, const void * vy, float * dst, const int ncols,
 const int nrows, dpct::queue_ptr stream) {
 GGML_ASSERT(ncols % QK4_0 == 0);
-const int        block_num_y   = ceil_div(nrows, GGML_SYCL_MMV_Y);
+const int block_num_y = ceil_div(nrows, GGML_SYCL_MMV_Y);
 constexpr size_t num_subgroups = 16;
 GGML_ASSERT(block_num_y % num_subgroups == 0);
 const sycl::range<3> global_size(1, GGML_SYCL_MMV_Y, (block_num_y * WARP_SIZE));
@@ -590,7 +590,7 @@ vx, vy, dst, ncols, nrows, item_ct1);
 static void reorder_mul_mat_vec_q6_k_q8_1_sycl(const void * vx, const void * vy, float * dst, const int ncols,
 const int nrows, dpct::queue_ptr stream) {
 GGML_ASSERT(ncols % QK_K == 0);
-const int        block_num_y   = ceil_div(nrows, GGML_SYCL_MMV_Y);
+const int block_num_y = ceil_div(nrows, GGML_SYCL_MMV_Y);
 constexpr size_t num_subgroups = 16;
 GGML_ASSERT(block_num_y % num_subgroups == 0);
 const sycl::range<3> global_size(1, GGML_SYCL_MMV_Y, block_num_y * WARP_SIZE);
@@ -790,7 +790,7 @@ const int64_t row_high, const int64_t src1_ncols, const int64_t src1_padded_col_
 const dpct::queue_ptr & stream) {
 const int64_t ne10 = src1->ne[0];
 GGML_ASSERT(ne10 % QK8_1 == 0);
-const int64_t ne00     = src0->ne[0];
+const int64_t ne00 = src0->ne[0];
 const int64_t row_diff = row_high - row_low;
 int id;
 SYCL_CHECK(CHECK_TRY_ERROR(id = get_current_device_id()));
@@ -798,8 +798,8 @@ const size_t q8_1_ts = sizeof(block_q8_1);
 const size_t q8_1_bs = QK8_1;
 for (int i = 0; i < src1_ncols; i++) {
 const size_t src1_ddq_i_offset = i * src1_padded_col_size * q8_1_ts / q8_1_bs;
-const char * src1_ddq_i_bs     = src1_ddq_i + src1_ddq_i_offset;
-float *      dst_dd_i_bs       = dst_dd_i + i * dst->ne[0];
+const char * src1_ddq_i_bs = src1_ddq_i + src1_ddq_i_offset;
+float * dst_dd_i_bs = dst_dd_i + i * dst->ne[0];
 switch (src0->type) {
 case GGML_TYPE_Q4_0:
 if ((ggml_tensor_extra_gpu *) dst->src[0]->extra &&

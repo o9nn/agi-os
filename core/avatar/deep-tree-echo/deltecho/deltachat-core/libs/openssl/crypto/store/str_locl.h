@@ -2,7 +2,7 @@
 # define HEADER_STORE_LOCL_H
 # include <openssl/crypto.h>
 # include <openssl/store.h>
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 struct store_method_st {
@@ -30,7 +30,7 @@ ENGINE *engine;
 CRYPTO_EX_DATA ex_data;
 int references;
 };
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif
 #endif

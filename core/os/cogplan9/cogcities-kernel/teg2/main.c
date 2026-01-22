@@ -8,12 +8,12 @@
 #include <pool.h>
 #include "arm.h"
 #include "reboot.h"
-#define BOOTARGS	((char*)CONFADDR)
-#define	BOOTARGSLEN	(16*KiB)
-#define	MAXCONF		64
-#define MAXCONFLINE	160
+#define BOOTARGS ((char*)CONFADDR)
+#define BOOTARGSLEN (16*KiB)
+#define MAXCONF 64
+#define MAXCONFLINE 160
 enum {
-Minmem	= 256*MB,
+Minmem = 256*MB,
 };
 #define isascii(c) ((uchar)(c) > 0 && (uchar)(c) < 0177)
 extern char bdata[], edata[], end[], etext[];
@@ -301,7 +301,7 @@ for (cpu = 1; cpu < navailcpus; cpu++)
 stopcpu(cpu);
 xinit();
 irqtooearly = 0;
-mainmem->flags |= POOL_ANTAGONISM  ;
+mainmem->flags |= POOL_ANTAGONISM ;
 archreset();
 clockinit();
 timersinit();

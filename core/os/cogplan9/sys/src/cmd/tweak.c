@@ -4,36 +4,36 @@
 #include <cursor.h>
 #include <event.h>
 #include <bio.h>
-typedef struct	Thing	Thing;
+typedef struct Thing Thing;
 struct Thing
 {
-Image	*b;
-Subfont 	*s;
-char		*name;
-int		face;
+Image *b;
+Subfont *s;
+char *name;
+int face;
 Rectangle r;
 Rectangle tr;
 Rectangle er;
-long		c;
-int		mod;
-int		mag;
-Rune		off;
-Thing	*parent;
-Thing	*next;
+long c;
+int mod;
+int mag;
+Rune off;
+Thing *parent;
+Thing *next;
 };
 enum
 {
-Border	= 1,
-Up		= 1,
-Down	= 0,
-Mag		= 4,
-Maxmag	= 10,
+Border = 1,
+Up = 1,
+Down = 0,
+Mag = 4,
+Maxmag = 10,
 };
 enum
 {
-NORMAL	=0,
-FACE	=1,
-CURSOR	=2
+NORMAL =0,
+FACE =1,
+CURSOR =2
 };
 enum
 {
@@ -48,20 +48,20 @@ Mexit,
 };
 enum
 {
-Blue	= 54,
+Blue = 54,
 };
-char	*menu3str[] = {
-[Mopen]	"open",
-[Mread]	"read",
-[Mwrite]	"write",
-[Mcopy]	"copy",
-[Mchar]	"char",
-[Mpixels]	"pixels",
-[Mclose]	"close",
-[Mexit]	"exit",
+char *menu3str[] = {
+[Mopen] "open",
+[Mread] "read",
+[Mwrite] "write",
+[Mcopy] "copy",
+[Mchar] "char",
+[Mpixels] "pixels",
+[Mclose] "close",
+[Mexit] "exit",
 0,
 };
-Menu	menu3 = {
+Menu menu3 = {
 menu3str
 };
 Cursor sweep0 = {
@@ -99,8 +99,8 @@ Cursor sight = {
 };
 Cursor pixel = {
 {-7, -7},
-{0x1f, 0xf8, 0x3f, 0xfc,  0x7f, 0xfe,  0xf8, 0x1f,
-0xf0, 0x0f,  0xe0, 0x07, 0xe0, 0x07, 0xfe, 0x7f,
+{0x1f, 0xf8, 0x3f, 0xfc, 0x7f, 0xfe, 0xf8, 0x1f,
+0xf0, 0x0f, 0xe0, 0x07, 0xe0, 0x07, 0xfe, 0x7f,
 0xfe, 0x7f, 0xe0, 0x07, 0xe0, 0x07, 0xf0, 0x0f,
 0x78, 0x1f, 0x7f, 0xfe, 0x3f, 0xfc, 0x1f, 0xf8, },
 {0x00, 0x00, 0x0f, 0xf0, 0x31, 0x8c, 0x21, 0x84,
@@ -130,30 +130,30 @@ Cursor skull = {
 0x07, 0xE0, 0x06, 0x60, 0x37, 0xEC, 0xE4, 0x27,
 0xC3, 0xC3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,}
 };
-Rectangle	cntlr;
-Rectangle	editr;
-Rectangle	textr;
-Thing		*thing;
-Mouse		mouse;
-char		hex[] = "0123456789abcdefABCDEF";
-jmp_buf		err;
-char		*file;
-int		mag;
-int		but1val = 0;
-int		but2val = 255;
-int		invert = 0;
-Image		*values[256];
-Image		*greyvalues[256];
-uchar		data[8192];
-Thing*	tget(char*);
-void	mesg(char*, ...);
-void	drawthing(Thing*, int);
-void	select(void);
-void	menu(void);
-void	error(Display*, char*);
-void	buttons(int);
-void	drawall(void);
-void	tclose1(Thing*);
+Rectangle cntlr;
+Rectangle editr;
+Rectangle textr;
+Thing *thing;
+Mouse mouse;
+char hex[] = "0123456789abcdefABCDEF";
+jmp_buf err;
+char *file;
+int mag;
+int but1val = 0;
+int but2val = 255;
+int invert = 0;
+Image *values[256];
+Image *greyvalues[256];
+uchar data[8192];
+Thing* tget(char*);
+void mesg(char*, ...);
+void drawthing(Thing*, int);
+void select(void);
+void menu(void);
+void error(Display*, char*);
+void buttons(int);
+void drawall(void);
+void tclose1(Thing*);
 void
 main(int argc, char *argv[])
 {

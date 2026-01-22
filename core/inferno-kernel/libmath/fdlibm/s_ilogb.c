@@ -2,7 +2,7 @@
 int ilogb(double x)
 {
 int hx,lx,ix;
-hx  = (__HI(x))&0x7fffffff;
+hx = (__HI(x))&0x7fffffff;
 if(hx<0x00100000) {
 lx = __LO(x);
 if((hx|lx)==0)

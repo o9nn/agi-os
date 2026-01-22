@@ -74,10 +74,10 @@ gs_point_transform2fixed(&pfs->ptm, fp->region.q.x, fp->region.p.y, &curve[1].ve
 gs_point_transform2fixed(&pfs->ptm, fp->region.q.x, fp->region.q.y, &curve[2].vertex.p);
 gs_point_transform2fixed(&pfs->ptm, fp->region.p.x, fp->region.q.y, &curve[3].vertex.p);
 make_other_poles(curve);
-curve[0].vertex.cc[0] = fp->region.p.x;   curve[0].vertex.cc[1] = fp->region.p.y;
-curve[1].vertex.cc[0] = fp->region.q.x;   curve[1].vertex.cc[1] = fp->region.p.y;
-curve[2].vertex.cc[0] = fp->region.q.x;   curve[2].vertex.cc[1] = fp->region.q.y;
-curve[3].vertex.cc[0] = fp->region.p.x;   curve[3].vertex.cc[1] = fp->region.q.y;
+curve[0].vertex.cc[0] = fp->region.p.x; curve[0].vertex.cc[1] = fp->region.p.y;
+curve[1].vertex.cc[0] = fp->region.q.x; curve[1].vertex.cc[1] = fp->region.p.y;
+curve[2].vertex.cc[0] = fp->region.q.x; curve[2].vertex.cc[1] = fp->region.q.y;
+curve[3].vertex.cc[0] = fp->region.p.x; curve[3].vertex.cc[1] = fp->region.q.y;
 code = patch_fill(&pfs1, curve, NULL, NULL);
 term_patch_fill_state(&pfs1);
 if (VD_TRACE_FUNCTIONAL_PATCH && vd_allowed('s'))

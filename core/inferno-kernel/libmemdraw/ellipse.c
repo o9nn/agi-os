@@ -2,34 +2,34 @@
 #include "draw.h"
 #include "memdraw.h"
 #include "memlayer.h"
-typedef struct Param	Param;
-typedef struct State	State;
-static	void	bellipse(int, State*, Param*);
-static	void	erect(int, int, int, int, Param*);
-static	void	eline(int, int, int, int, Param*);
+typedef struct Param Param;
+typedef struct State State;
+static void bellipse(int, State*, Param*);
+static void erect(int, int, int, int, Param*);
+static void eline(int, int, int, int, Param*);
 struct Param {
-Memimage	*dst;
-Memimage	*src;
-Point			c;
-int			t;
-Point			sp;
-Memimage	*disc;
-int			op;
+Memimage *dst;
+Memimage *src;
+Point c;
+int t;
+Point sp;
+Memimage *disc;
+int op;
 };
 struct State {
-int	a;
-int	x;
-vlong	a2;
-vlong	b2;
-vlong	b2x;
-vlong	a2y;
-vlong	c1;
-vlong	c2;
-vlong	ee;
-vlong	dxe;
-vlong	dye;
-vlong	d2xe;
-vlong	d2ye;
+int a;
+int x;
+vlong a2;
+vlong b2;
+vlong b2x;
+vlong a2y;
+vlong c1;
+vlong c2;
+vlong ee;
+vlong dxe;
+vlong dye;
+vlong d2xe;
+vlong d2ye;
 };
 static
 State*
@@ -151,9 +151,9 @@ while(nx==x && y-->0)
 nx = step(s);
 y++;
 eline(-x,-oy,-ox, -y, p);
-eline(ox,-oy,  x, -y, p);
-eline(-x,  y,-ox, oy, p);
-eline(ox,  y,  x, oy, p);
+eline(ox,-oy, x, -y, p);
+eline(-x, y,-ox, oy, p);
+eline(ox, y, x, oy, p);
 ox = x+1;
 x = nx;
 y--;

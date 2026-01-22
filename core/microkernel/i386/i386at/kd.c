@@ -21,11 +21,11 @@
 #include <i386at/kdsoft.h>
 #include <device/cons.h>
 #include <util/atoi.h>
-#define DEBUG	1
+#define DEBUG 1
 #if 0
 #define BROKEN_KEYBOARD_RESET
 #endif
-struct tty       kd_tty;
+struct tty kd_tty;
 extern boolean_t rebootflag;
 static void charput(csrpos_t pos, char ch, char chattr);
 static void charmvup(csrpos_t from, csrpos_t to, int count);
@@ -33,143 +33,143 @@ static void charmvdown(csrpos_t from, csrpos_t to, int count);
 static void charclear(csrpos_t to, int count, char chattr);
 static void charsetcursor(csrpos_t newpos);
 static void kd_noopreset(void);
-void	(*kd_dput)(csrpos_t, char, char) = charput;
-void	(*kd_dmvup)(csrpos_t, csrpos_t, int)	= charmvup;
-void	(*kd_dmvdown)(csrpos_t, csrpos_t, int)	= charmvdown;
-void	(*kd_dclear)(csrpos_t, int, char)	= charclear;
-void	(*kd_dsetcursor)(csrpos_t) = charsetcursor;
-void	(*kd_dreset)(void) = kd_noopreset;
+void (*kd_dput)(csrpos_t, char, char) = charput;
+void (*kd_dmvup)(csrpos_t, csrpos_t, int) = charmvup;
+void (*kd_dmvdown)(csrpos_t, csrpos_t, int) = charmvdown;
+void (*kd_dclear)(csrpos_t, int, char) = charclear;
+void (*kd_dsetcursor)(csrpos_t) = charsetcursor;
+void (*kd_dreset)(void) = kd_noopreset;
 vm_offset_t kd_bitmap_start = (vm_offset_t)0xa0000;
-u_char 	*vid_start	= (u_char *)EGA_START;
-csrpos_t kd_curpos	= 0;
-short	kd_lines	= 25;
-short	kd_cols		= 80;
-char	kd_attr		= KA_NORMAL;
-char	kd_color	= KA_NORMAL;
-char	kd_attrflags	= 0;
-int  	kd_state	= KS_NORMAL;
-int	kb_mode		= KB_ASCII;
+u_char *vid_start = (u_char *)EGA_START;
+csrpos_t kd_curpos = 0;
+short kd_lines = 25;
+short kd_cols = 80;
+char kd_attr = KA_NORMAL;
+char kd_color = KA_NORMAL;
+char kd_attrflags = 0;
+int kd_state = KS_NORMAL;
+int kb_mode = KB_ASCII;
 int kd_kbd_mouse = 0;
 int kd_kbd_magic_scale = 6;
-int kd_kbd_magic_button  = 0;
+int kd_kbd_magic_button = 0;
 enum why_ack {NOT_WAITING, SET_LEDS, DATA_ACK};
-enum why_ack	kd_ack	= NOT_WAITING;
+enum why_ack kd_ack = NOT_WAITING;
 u_char last_sent = 0;
-u_char	kd_nextled	= 0;
-boolean_t kd_initialized 	= FALSE;
-boolean_t kd_extended	= FALSE;
-#define	K_MAXESC	32
-u_char	esc_seq[K_MAXESC];
-u_char	*esc_spt	= (u_char *)0;
-unsigned char	key_map[NUMKEYS][WIDTH_KMAP] = {
-{NC,NC,NC,      NC,NC,NC,       NC,NC,NC,      NC,NC,NC,      NC,NC,NC},
-{K_ESC,NC,NC,   K_ESC,NC,NC,    K_ESC,NC,NC,   0x1b,K_ESC,NC, K_ESC,NC,NC},
-{K_ONE,NC,NC,   K_BANG,NC,NC,   K_ONE,NC,NC,   0x1b,K_ONE,NC,  0x1b,0x4e,K_BANG},
-{K_TWO,NC,NC,   K_ATSN,NC,NC,   K_NUL,NC,NC,   0x1b,K_TWO,NC,  0x1b,0x4e,K_ATSN},
-{K_THREE,NC,NC, K_POUND,NC,NC,  K_THREE,NC,NC, 0x1b,K_THREE,NC,  0x1b,0x4e,K_POUND},
-{K_FOUR,NC,NC,  K_DOLLAR,NC,NC, K_FOUR,NC,NC,  0x1b,K_FOUR,NC,  0x1b,0x4e,K_DOLLAR},
-{K_FIVE,NC,NC,  K_PERC,NC,NC,   K_FIVE,NC,NC,  0x1b,K_FIVE,NC,  0x1b,0x4e,K_PERC},
-{K_SIX,NC,NC,   K_CARET,NC,NC,  K_RS,NC,NC,    0x1b,K_SIX,NC,  0x1b,0x4e,K_CARET},
-{K_SEVEN,NC,NC, K_AMPER,NC,NC,  K_SEVEN,NC,NC, 0x1b,K_SEVEN,NC,  0x1b,0x4e,K_AMPER},
-{K_EIGHT,NC,NC, K_ASTER,NC,NC,  K_EIGHT,NC,NC, 0x1b,K_EIGHT,NC,  0x1b,0x4e,K_ASTER},
-{K_NINE,NC,NC,  K_LPAREN,NC,NC, K_NINE,NC,NC,  0x1b,K_NINE,NC,  0x1b,0x4e,K_LPAREN},
-{K_ZERO,NC,NC,  K_RPAREN,NC,NC, K_ZERO,NC,NC,  0x1b,K_ZERO,NC,  0x1b,0x4e,K_RPAREN},
-{K_MINUS,NC,NC, K_UNDSC,NC,NC,  K_US,NC,NC,    0x1b,K_MINUS,NC,  0x1b,0x4e,K_UNDSC},
-{K_EQL,NC,NC,   K_PLUS,NC,NC,   K_EQL,NC,NC,   0x1b,K_EQL,NC,  0x1b,0x4e,K_PLUS},
-{K_DEL,NC,NC,   K_DEL,NC,NC,    K_DEL,NC,NC,   0x1b,K_DEL,NC, K_DEL,NC,NC},
-{K_HT,NC,NC,    K_GS,NC,NC,     K_HT,NC,NC,    0x1b,K_HT,NC,  K_GS,NC,NC},
-{K_q,NC,NC,     K_Q,NC,NC,      K_DC1,NC,NC,   0x1b,K_q,NC,  0x1b,0x4e,K_Q},
-{K_w,NC,NC,     K_W,NC,NC,      K_ETB,NC,NC,   0x1b,K_w,NC,  0x1b,0x4e,K_W},
-{K_e,NC,NC,     K_E,NC,NC,      K_ENQ,NC,NC,   0x1b,K_e,NC,  0x1b,0x4e,K_E},
-{K_r,NC,NC,     K_R,NC,NC,      K_DC2,NC,NC,   0x1b,K_r,NC,  0x1b,0x4e,K_R},
-{K_t,NC,NC,     K_T,NC,NC,      K_DC4,NC,NC,   0x1b,K_t,NC,  0x1b,0x4e,K_T},
-{K_y,NC,NC,     K_Y,NC,NC,      K_EM,NC,NC,    0x1b,K_y,NC,  0x1b,0x4e,K_Y},
-{K_u,NC,NC,     K_U,NC,NC,      K_NAK,NC,NC,   0x1b,K_u,NC,  0x1b,0x4e,K_U},
-{K_i,NC,NC,     K_I,NC,NC,      K_HT,NC,NC,    0x1b,K_i,NC,  0x1b,0x4e,K_I},
-{K_o,NC,NC,     K_O,NC,NC,      K_SI,NC,NC,    0x1b,K_o,NC,  0x1b,0x4e,K_O},
-{K_p,NC,NC,     K_P,NC,NC,      K_DLE,NC,NC,   0x1b,K_p,NC,  0x1b,0x4e,K_P},
-{K_LBRKT,NC,NC, K_LBRACE,NC,NC, K_ESC,NC,NC,   0x1b,K_LBRKT,NC,  0x1b,0x4e,K_LBRACE},
-{K_RBRKT,NC,NC, K_RBRACE,NC,NC, K_GS,NC,NC,    0x1b,K_RBRKT,NC,  0x1b,0x4e,K_RBRACE},
-{K_CR,NC,NC,    K_CR,NC,NC,     K_CR,NC,NC,    0x1b,K_CR,NC,  K_CR,NC,NC},
+u_char kd_nextled = 0;
+boolean_t kd_initialized = FALSE;
+boolean_t kd_extended = FALSE;
+#define K_MAXESC 32
+u_char esc_seq[K_MAXESC];
+u_char *esc_spt = (u_char *)0;
+unsigned char key_map[NUMKEYS][WIDTH_KMAP] = {
+{NC,NC,NC, NC,NC,NC, NC,NC,NC, NC,NC,NC, NC,NC,NC},
+{K_ESC,NC,NC, K_ESC,NC,NC, K_ESC,NC,NC, 0x1b,K_ESC,NC, K_ESC,NC,NC},
+{K_ONE,NC,NC, K_BANG,NC,NC, K_ONE,NC,NC, 0x1b,K_ONE,NC, 0x1b,0x4e,K_BANG},
+{K_TWO,NC,NC, K_ATSN,NC,NC, K_NUL,NC,NC, 0x1b,K_TWO,NC, 0x1b,0x4e,K_ATSN},
+{K_THREE,NC,NC, K_POUND,NC,NC, K_THREE,NC,NC, 0x1b,K_THREE,NC, 0x1b,0x4e,K_POUND},
+{K_FOUR,NC,NC, K_DOLLAR,NC,NC, K_FOUR,NC,NC, 0x1b,K_FOUR,NC, 0x1b,0x4e,K_DOLLAR},
+{K_FIVE,NC,NC, K_PERC,NC,NC, K_FIVE,NC,NC, 0x1b,K_FIVE,NC, 0x1b,0x4e,K_PERC},
+{K_SIX,NC,NC, K_CARET,NC,NC, K_RS,NC,NC, 0x1b,K_SIX,NC, 0x1b,0x4e,K_CARET},
+{K_SEVEN,NC,NC, K_AMPER,NC,NC, K_SEVEN,NC,NC, 0x1b,K_SEVEN,NC, 0x1b,0x4e,K_AMPER},
+{K_EIGHT,NC,NC, K_ASTER,NC,NC, K_EIGHT,NC,NC, 0x1b,K_EIGHT,NC, 0x1b,0x4e,K_ASTER},
+{K_NINE,NC,NC, K_LPAREN,NC,NC, K_NINE,NC,NC, 0x1b,K_NINE,NC, 0x1b,0x4e,K_LPAREN},
+{K_ZERO,NC,NC, K_RPAREN,NC,NC, K_ZERO,NC,NC, 0x1b,K_ZERO,NC, 0x1b,0x4e,K_RPAREN},
+{K_MINUS,NC,NC, K_UNDSC,NC,NC, K_US,NC,NC, 0x1b,K_MINUS,NC, 0x1b,0x4e,K_UNDSC},
+{K_EQL,NC,NC, K_PLUS,NC,NC, K_EQL,NC,NC, 0x1b,K_EQL,NC, 0x1b,0x4e,K_PLUS},
+{K_DEL,NC,NC, K_DEL,NC,NC, K_DEL,NC,NC, 0x1b,K_DEL,NC, K_DEL,NC,NC},
+{K_HT,NC,NC, K_GS,NC,NC, K_HT,NC,NC, 0x1b,K_HT,NC, K_GS,NC,NC},
+{K_q,NC,NC, K_Q,NC,NC, K_DC1,NC,NC, 0x1b,K_q,NC, 0x1b,0x4e,K_Q},
+{K_w,NC,NC, K_W,NC,NC, K_ETB,NC,NC, 0x1b,K_w,NC, 0x1b,0x4e,K_W},
+{K_e,NC,NC, K_E,NC,NC, K_ENQ,NC,NC, 0x1b,K_e,NC, 0x1b,0x4e,K_E},
+{K_r,NC,NC, K_R,NC,NC, K_DC2,NC,NC, 0x1b,K_r,NC, 0x1b,0x4e,K_R},
+{K_t,NC,NC, K_T,NC,NC, K_DC4,NC,NC, 0x1b,K_t,NC, 0x1b,0x4e,K_T},
+{K_y,NC,NC, K_Y,NC,NC, K_EM,NC,NC, 0x1b,K_y,NC, 0x1b,0x4e,K_Y},
+{K_u,NC,NC, K_U,NC,NC, K_NAK,NC,NC, 0x1b,K_u,NC, 0x1b,0x4e,K_U},
+{K_i,NC,NC, K_I,NC,NC, K_HT,NC,NC, 0x1b,K_i,NC, 0x1b,0x4e,K_I},
+{K_o,NC,NC, K_O,NC,NC, K_SI,NC,NC, 0x1b,K_o,NC, 0x1b,0x4e,K_O},
+{K_p,NC,NC, K_P,NC,NC, K_DLE,NC,NC, 0x1b,K_p,NC, 0x1b,0x4e,K_P},
+{K_LBRKT,NC,NC, K_LBRACE,NC,NC, K_ESC,NC,NC, 0x1b,K_LBRKT,NC, 0x1b,0x4e,K_LBRACE},
+{K_RBRKT,NC,NC, K_RBRACE,NC,NC, K_GS,NC,NC, 0x1b,K_RBRKT,NC, 0x1b,0x4e,K_RBRACE},
+{K_CR,NC,NC, K_CR,NC,NC, K_CR,NC,NC, 0x1b,K_CR,NC, K_CR,NC,NC},
 {K_SCAN,K_CTLSC,NC, K_SCAN,K_CTLSC,NC, K_SCAN,K_CTLSC,NC, K_SCAN,K_CTLSC,NC, K_SCAN,K_CTLSC,NC},
-{K_a,NC,NC,     K_A,NC,NC,      K_SOH,NC,NC,   0x1b,K_a,NC,  0x1b,0x4e,K_A},
-{K_s,NC,NC,     K_S,NC,NC,      K_DC3,NC,NC,   0x1b,K_s,NC,  0x1b,0x4e,K_S},
-{K_d,NC,NC,     K_D,NC,NC,      K_EOT,NC,NC,   0x1b,K_d,NC,  0x1b,0x4e,K_D},
-{K_f,NC,NC,     K_F,NC,NC,      K_ACK,NC,NC,   0x1b,K_f,NC,  0x1b,0x4e,K_F},
-{K_g,NC,NC,     K_G,NC,NC,      K_BEL,NC,NC,   0x1b,K_g,NC,  0x1b,0x4e,K_G},
-{K_h,NC,NC,     K_H,NC,NC,      K_BS,NC,NC,    0x1b,K_h,NC,  0x1b,0x4e,K_H},
-{K_j,NC,NC,     K_J,NC,NC,      K_LF,NC,NC,    0x1b,K_j,NC,  0x1b,0x4e,K_J},
-{K_k,NC,NC,     K_K,NC,NC,      K_VT,NC,NC,    0x1b,K_k,NC,  0x1b,0x4e,K_K},
-{K_l,NC,NC,     K_L,NC,NC,      K_FF,NC,NC,    0x1b,K_l,NC,  0x1b,0x4e,K_L},
-{K_SEMI,NC,NC,  K_COLON,NC,NC,  K_SEMI,NC,NC,  0x1b,K_SEMI,NC,  0x1b,0x4e,K_COLON},
-{K_SQUOTE,NC,NC,K_DQUOTE,NC,NC, K_SQUOTE,NC,NC,0x1b,K_SQUOTE,NC,  0x1b,0x4e,K_DQUOTE},
-{K_GRAV,NC,NC,  K_TILDE,NC,NC,  K_RS,NC,NC,    0x1b,K_GRAV,NC,  0x1b,0x4e,K_TILDE},
+{K_a,NC,NC, K_A,NC,NC, K_SOH,NC,NC, 0x1b,K_a,NC, 0x1b,0x4e,K_A},
+{K_s,NC,NC, K_S,NC,NC, K_DC3,NC,NC, 0x1b,K_s,NC, 0x1b,0x4e,K_S},
+{K_d,NC,NC, K_D,NC,NC, K_EOT,NC,NC, 0x1b,K_d,NC, 0x1b,0x4e,K_D},
+{K_f,NC,NC, K_F,NC,NC, K_ACK,NC,NC, 0x1b,K_f,NC, 0x1b,0x4e,K_F},
+{K_g,NC,NC, K_G,NC,NC, K_BEL,NC,NC, 0x1b,K_g,NC, 0x1b,0x4e,K_G},
+{K_h,NC,NC, K_H,NC,NC, K_BS,NC,NC, 0x1b,K_h,NC, 0x1b,0x4e,K_H},
+{K_j,NC,NC, K_J,NC,NC, K_LF,NC,NC, 0x1b,K_j,NC, 0x1b,0x4e,K_J},
+{K_k,NC,NC, K_K,NC,NC, K_VT,NC,NC, 0x1b,K_k,NC, 0x1b,0x4e,K_K},
+{K_l,NC,NC, K_L,NC,NC, K_FF,NC,NC, 0x1b,K_l,NC, 0x1b,0x4e,K_L},
+{K_SEMI,NC,NC, K_COLON,NC,NC, K_SEMI,NC,NC, 0x1b,K_SEMI,NC, 0x1b,0x4e,K_COLON},
+{K_SQUOTE,NC,NC,K_DQUOTE,NC,NC, K_SQUOTE,NC,NC,0x1b,K_SQUOTE,NC, 0x1b,0x4e,K_DQUOTE},
+{K_GRAV,NC,NC, K_TILDE,NC,NC, K_RS,NC,NC, 0x1b,K_GRAV,NC, 0x1b,0x4e,K_TILDE},
 {K_SCAN,K_LSHSC,NC, K_SCAN,K_LSHSC,NC, K_SCAN,K_LSHSC,NC, K_SCAN,K_LSHSC,NC, K_SCAN,K_LSHSC,NC},
-{K_BSLSH,NC,NC, K_PIPE,NC,NC,   K_FS,NC,NC,    0x1b,K_BSLSH,NC,  0x1b,0x4e,K_PIPE},
-{K_z,NC,NC,     K_Z,NC,NC,      K_SUB,NC,NC,   0x1b,K_z,NC,  0x1b,0x4e,K_Z},
-{K_x,NC,NC,     K_X,NC,NC,      K_CAN,NC,NC,   0x1b,K_x,NC,  0x1b,0x4e,K_X},
-{K_c,NC,NC,     K_C,NC,NC,      K_ETX,NC,NC,   0x1b,K_c,NC,  0x1b,0x4e,K_C},
-{K_v,NC,NC,     K_V,NC,NC,      K_SYN,NC,NC,   0x1b,K_v,NC,  0x1b,0x4e,K_V},
-{K_b,NC,NC,     K_B,NC,NC,      K_STX,NC,NC,   0x1b,K_b,NC,  0x1b,0x4e,K_B},
-{K_n,NC,NC,     K_N,NC,NC,      K_SO,NC,NC,    0x1b,K_n,NC,  0x1b,0x4e,K_N},
-{K_m,NC,NC,     K_M,NC,NC,      K_CR,NC,NC,    0x1b,K_m,NC,  0x1b,0x4e,K_M},
-{K_COMMA,NC,NC, K_LTHN,NC,NC,   K_COMMA,NC,NC, 0x1b,K_COMMA,NC,  0x1b,0x4e,K_LTHN},
-{K_PERIOD,NC,NC,K_GTHN,NC,NC,   K_PERIOD,NC,NC,0x1b,K_PERIOD,NC,  0x1b,0x4e,K_GTHN},
-{K_SLASH,NC,NC, K_QUES,NC,NC,   K_SLASH,NC,NC, 0x1b,K_SLASH,NC,  0x1b,0x4e,K_QUES},
+{K_BSLSH,NC,NC, K_PIPE,NC,NC, K_FS,NC,NC, 0x1b,K_BSLSH,NC, 0x1b,0x4e,K_PIPE},
+{K_z,NC,NC, K_Z,NC,NC, K_SUB,NC,NC, 0x1b,K_z,NC, 0x1b,0x4e,K_Z},
+{K_x,NC,NC, K_X,NC,NC, K_CAN,NC,NC, 0x1b,K_x,NC, 0x1b,0x4e,K_X},
+{K_c,NC,NC, K_C,NC,NC, K_ETX,NC,NC, 0x1b,K_c,NC, 0x1b,0x4e,K_C},
+{K_v,NC,NC, K_V,NC,NC, K_SYN,NC,NC, 0x1b,K_v,NC, 0x1b,0x4e,K_V},
+{K_b,NC,NC, K_B,NC,NC, K_STX,NC,NC, 0x1b,K_b,NC, 0x1b,0x4e,K_B},
+{K_n,NC,NC, K_N,NC,NC, K_SO,NC,NC, 0x1b,K_n,NC, 0x1b,0x4e,K_N},
+{K_m,NC,NC, K_M,NC,NC, K_CR,NC,NC, 0x1b,K_m,NC, 0x1b,0x4e,K_M},
+{K_COMMA,NC,NC, K_LTHN,NC,NC, K_COMMA,NC,NC, 0x1b,K_COMMA,NC, 0x1b,0x4e,K_LTHN},
+{K_PERIOD,NC,NC,K_GTHN,NC,NC, K_PERIOD,NC,NC,0x1b,K_PERIOD,NC, 0x1b,0x4e,K_GTHN},
+{K_SLASH,NC,NC, K_QUES,NC,NC, K_SLASH,NC,NC, 0x1b,K_SLASH,NC, 0x1b,0x4e,K_QUES},
 {K_SCAN,K_RSHSC,NC, K_SCAN,K_RSHSC,NC, K_SCAN,K_RSHSC,NC, K_SCAN,K_RSHSC,NC, K_SCAN,K_RSHSC,NC},
-{K_ASTER,NC,NC, K_ASTER,NC,NC,  K_ASTER,NC,NC, 0x1b,K_ASTER,NC, 0x1b,0x4e,K_ASTER},
+{K_ASTER,NC,NC, K_ASTER,NC,NC, K_ASTER,NC,NC, 0x1b,K_ASTER,NC, 0x1b,0x4e,K_ASTER},
 {K_SCAN,K_ALTSC,NC, K_SCAN,K_ALTSC,NC, K_SCAN,K_ALTSC,NC, K_SCAN,K_ALTSC,NC, K_SCAN,K_ALTSC,NC},
-{K_SPACE,NC,NC, K_SPACE,NC,NC,  K_NUL,NC,NC,   0x1b,K_SPACE,NC, K_SPACE,NC,NC},
+{K_SPACE,NC,NC, K_SPACE,NC,NC, K_NUL,NC,NC, 0x1b,K_SPACE,NC, K_SPACE,NC,NC},
 {K_SCAN,K_CLCKSC,NC, K_SCAN,K_CLCKSC,NC, K_SCAN,K_CLCKSC,NC, K_SCAN,K_CLCKSC,NC, K_SCAN,K_CLCKSC,NC},
-{K_F1,  K_F1S,  K_F1,  K_F1A,  K_F1S},
-{K_F2,  K_F2S,  K_F2,  K_F2A,  K_F2S},
-{K_F3,  K_F3S,  K_F3,  K_F3A,  K_F3S},
-{K_F4,  K_F4S,  K_F4,  K_F4A,  K_F4S},
-{K_F5,  K_F5S,  K_F5,  K_F5A,  K_F5S},
-{K_F6,  K_F6S,  K_F6,  K_F6A,  K_F6S},
-{K_F7,  K_F7S,  K_F7,  K_F7A,  K_F7S},
-{K_F8,  K_F8S,  K_F8,  K_F8A,  K_F8S},
-{K_F9,  K_F9S,  K_F9,  K_F9A,  K_F9S},
+{K_F1, K_F1S, K_F1, K_F1A, K_F1S},
+{K_F2, K_F2S, K_F2, K_F2A, K_F2S},
+{K_F3, K_F3S, K_F3, K_F3A, K_F3S},
+{K_F4, K_F4S, K_F4, K_F4A, K_F4S},
+{K_F5, K_F5S, K_F5, K_F5A, K_F5S},
+{K_F6, K_F6S, K_F6, K_F6A, K_F6S},
+{K_F7, K_F7S, K_F7, K_F7A, K_F7S},
+{K_F8, K_F8S, K_F8, K_F8A, K_F8S},
+{K_F9, K_F9S, K_F9, K_F9A, K_F9S},
 {K_F10, K_F10S, K_F10, K_F10A, K_F10S},
 {K_SCAN,K_NLCKSC,NC, K_SCAN,K_NLCKSC,NC, K_SCAN,K_NLCKSC,NC, K_SCAN,K_NLCKSC,NC, K_SCAN,K_NLCKSC,NC},
-{K_SCRL,         K_NUL,NC,NC,    K_SCRL,        K_SCRL,      K_NUL,NC,NC},
-{K_HOME,         K_SEVEN,NC,NC,  K_HOME,        K_HOME,      0x1b,0x4e,K_SEVEN},
-{K_UA,           K_EIGHT,NC,NC,  K_UA,          K_UA,        0x1b,0x4e,K_EIGHT},
-{K_PUP,          K_NINE,NC,NC,   K_PUP,         K_PUP,       0x1b,0x4e,K_NINE},
-{0x1b,0x5b,0x53, K_MINUS,NC,NC,  0x1b,0x5b,0x53, 0x1b,0x5b,0x53, 0x1b,0x4e,0x2d},
-{K_LA,           K_FOUR,NC,NC,   K_LA,          K_LA,        0x1b,0x4e,K_FOUR},
-{0x1b,0x5b,0x47, K_FIVE,NC,NC,   0x1b,0x5b,0x47, 0x1b,0x5b,0x47, 0x1b,0x4e,0x35},
-{K_RA,           K_SIX,NC,NC,    K_RA,          K_RA,        0x1b,0x4e,K_SIX},
-{0x1b,0x5b,0x54, K_PLUS,NC,NC,   0x1b,0x5b,0x54, 0x1b,0x5b,0x54, 0x1b,0x4e,0x2b},
-{K_END,          K_ONE,NC,NC,    K_END,         K_END,       0x1b,0x4e,K_ONE},
-{K_DA,           K_TWO,NC,NC,    K_DA,          K_DA,        0x1b,0x4e,K_TWO},
-{K_PDN,          K_THREE,NC,NC,  K_PDN,         K_PDN,       0x1b,0x4e,K_THREE},
-{K_INS,          K_ZERO,NC,NC,   K_INS,         K_INS,       0x1b,0x4e,K_ZERO},
-{0x1b,0x5b,0x39, K_PERIOD,NC,NC, K_DEL,NC,NC,   K_DEL,NC,NC, 0x1b,0x4e,K_PERIOD},
-{NC,NC,NC,       NC,NC,NC,       NC,NC,NC,      NC,NC,NC,    NC,NC,NC},
-{NC,NC,NC,       NC,NC,NC,       NC,NC,NC,      NC,NC,NC,    NC,NC,NC},
-{NC,NC,NC,       NC,NC,NC,       NC,NC,NC,      NC,NC,NC,    NC,NC,NC},
-{K_F11,          K_F11S,         K_F11,         K_F11A,      K_F11S},
-{K_F12,          K_F12S,         K_F12,         K_F12A,      K_F12S}
+{K_SCRL, K_NUL,NC,NC, K_SCRL, K_SCRL, K_NUL,NC,NC},
+{K_HOME, K_SEVEN,NC,NC, K_HOME, K_HOME, 0x1b,0x4e,K_SEVEN},
+{K_UA, K_EIGHT,NC,NC, K_UA, K_UA, 0x1b,0x4e,K_EIGHT},
+{K_PUP, K_NINE,NC,NC, K_PUP, K_PUP, 0x1b,0x4e,K_NINE},
+{0x1b,0x5b,0x53, K_MINUS,NC,NC, 0x1b,0x5b,0x53, 0x1b,0x5b,0x53, 0x1b,0x4e,0x2d},
+{K_LA, K_FOUR,NC,NC, K_LA, K_LA, 0x1b,0x4e,K_FOUR},
+{0x1b,0x5b,0x47, K_FIVE,NC,NC, 0x1b,0x5b,0x47, 0x1b,0x5b,0x47, 0x1b,0x4e,0x35},
+{K_RA, K_SIX,NC,NC, K_RA, K_RA, 0x1b,0x4e,K_SIX},
+{0x1b,0x5b,0x54, K_PLUS,NC,NC, 0x1b,0x5b,0x54, 0x1b,0x5b,0x54, 0x1b,0x4e,0x2b},
+{K_END, K_ONE,NC,NC, K_END, K_END, 0x1b,0x4e,K_ONE},
+{K_DA, K_TWO,NC,NC, K_DA, K_DA, 0x1b,0x4e,K_TWO},
+{K_PDN, K_THREE,NC,NC, K_PDN, K_PDN, 0x1b,0x4e,K_THREE},
+{K_INS, K_ZERO,NC,NC, K_INS, K_INS, 0x1b,0x4e,K_ZERO},
+{0x1b,0x5b,0x39, K_PERIOD,NC,NC, K_DEL,NC,NC, K_DEL,NC,NC, 0x1b,0x4e,K_PERIOD},
+{NC,NC,NC, NC,NC,NC, NC,NC,NC, NC,NC,NC, NC,NC,NC},
+{NC,NC,NC, NC,NC,NC, NC,NC,NC, NC,NC,NC, NC,NC,NC},
+{NC,NC,NC, NC,NC,NC, NC,NC,NC, NC,NC,NC, NC,NC,NC},
+{K_F11, K_F11S, K_F11, K_F11A, K_F11S},
+{K_F12, K_F12S, K_F12, K_F12A, K_F12S}
 };
-short	kd_index_reg	= EGA_IDX_REG;
-short	kd_io_reg	= EGA_IO_REG;
-u_char	*font_start	= 0;
-short	fb_width	= 0;
-short	fb_height	= 0;
-short	char_width	= 0;
-short	char_height	= 0;
-short	chars_in_font	= 0;
-short	cursor_height	= 0;
-u_char	char_black	= 0;
-u_char	char_white	= 0xff;
-short	xstart		= 0;
-short	ystart		= 0;
-short	char_byte_width	= 0;
-short	fb_byte_width	= 0;
-short	font_byte_width	= 0;
-int	kd_pollc = 0;
-#ifdef	DEBUG
+short kd_index_reg = EGA_IDX_REG;
+short kd_io_reg = EGA_IO_REG;
+u_char *font_start = 0;
+short fb_width = 0;
+short fb_height = 0;
+short char_width = 0;
+short char_height = 0;
+short chars_in_font = 0;
+short cursor_height = 0;
+u_char char_black = 0;
+u_char char_white = 0xff;
+short xstart = 0;
+short ystart = 0;
+short char_byte_width = 0;
+short fb_byte_width = 0;
+short font_byte_width = 0;
+int kd_pollc = 0;
+#ifdef DEBUG
 static void
 pause(void)
 {
@@ -186,15 +186,15 @@ kd_belloff(NULL);
 }
 void
 kd_debug_put(
-int	loc,
-char	c)
+int loc,
+char c)
 {
 csrpos_t pos = ONE_PAGE - (loc+1) * ONE_SPACE;
 (*kd_dput)(pos, c, KA_NORMAL);
 }
 #endif
-extern boolean_t	mouse_in_use;
-int			old_kb_mode;
+extern boolean_t mouse_in_use;
+int old_kb_mode;
 void
 cnpollc(boolean_t on)
 {
@@ -219,12 +219,12 @@ kd_pollc++;
 }
 int
 kdopen(
-dev_t	 dev,
-int	 flag,
+dev_t dev,
+int flag,
 io_req_t ior)
 {
-struct 	tty	*tp;
-spl_t	o_pri;
+struct tty *tp;
+spl_t o_pri;
 tp = &kd_tty;
 o_pri = simple_lock_irq(&tp->t_lock);
 if (!(tp->t_state & (TS_ISOPEN|TS_WOPEN))) {
@@ -244,7 +244,7 @@ return (char_open(dev, tp, flag, ior));
 void
 kdclose(dev_t dev, int flag)
 {
-struct	tty	*tp;
+struct tty *tp;
 tp = &kd_tty;
 {
 spl_t s;
@@ -257,7 +257,7 @@ return;
 int
 kdread(dev_t dev, io_req_t uio)
 {
-struct	tty	*tp;
+struct tty *tp;
 tp = &kd_tty;
 tp->t_state |= TS_CARR_ON;
 return((*linesw[kd_tty.t_line].l_read)(tp, uio));
@@ -276,18 +276,18 @@ return(i386_btop(kd_bitmap_start+off));
 }
 int
 kdportdeath(
-dev_t		dev,
-mach_port_t	port)
+dev_t dev,
+mach_port_t port)
 {
 return (tty_portdeath(&kd_tty, (ipc_port_t)port));
 }
 io_return_t kdgetstat(
-dev_t		dev,
-dev_flavor_t	flavor,
-dev_status_t	data,
-mach_msg_type_number_t	*count)
+dev_t dev,
+dev_flavor_t flavor,
+dev_status_t data,
+mach_msg_type_number_t *count)
 {
-io_return_t	result;
+io_return_t result;
 switch (flavor) {
 case KDGSTATE:
 if (*count < 1)
@@ -307,12 +307,12 @@ break;
 return (result);
 }
 io_return_t kdsetstat(
-dev_t		dev,
-dev_flavor_t	flavor,
-dev_status_t	data,
-mach_msg_type_number_t	count)
+dev_t dev,
+dev_flavor_t flavor,
+dev_status_t data,
+mach_msg_type_number_t count)
 {
-io_return_t	result;
+io_return_t result;
 switch (flavor) {
 case KDSKBENT:
 if (count < sizeof(struct kbentry)/sizeof(int)) {
@@ -332,8 +332,8 @@ return (result);
 }
 int
 kdsetbell(
-int	val,
-int	flags)
+int val,
+int flags)
 {
 int err = 0;
 if (val == KD_BELLON)
@@ -358,8 +358,8 @@ return(0);
 }
 int
 kdsetkbent(
-struct kbentry 	*kbent,
-int		flags)
+struct kbentry *kbent,
+int flags)
 {
 u_char *cp;
 spl_t o_pri;
@@ -374,17 +374,17 @@ return(0);
 void
 kdintr(int vec)
 {
-struct	tty	*tp;
-unsigned char	c;
-unsigned char	scancode;
-unsigned int	char_idx;
-boolean_t	up = FALSE;
+struct tty *tp;
+unsigned char c;
+unsigned char scancode;
+unsigned int char_idx;
+boolean_t up = FALSE;
 if (kd_pollc)
 return;
 if (!kd_initialized)
 return;
 tp = &kd_tty;
-#ifdef	old
+#ifdef old
 while ((inb(K_STATUS) & K_OBUF_FUL) == 0)
 ;
 #else
@@ -494,9 +494,9 @@ kd_senddata(last_sent);
 }
 int
 do_modifier(
-int		state,
-Scancode	c,
-boolean_t	up)
+int state,
+Scancode c,
+boolean_t up)
 {
 switch (c) {
 case (K_ALTSC):
@@ -506,7 +506,7 @@ else
 state |= KS_ALTED;
 kd_extended = FALSE;
 break;
-#ifndef	ORC
+#ifndef ORC
 case (K_CLCKSC):
 #endif
 case (K_CTLSC):
@@ -516,7 +516,7 @@ else
 state |= KS_CTLED;
 kd_extended = FALSE;
 break;
-#ifdef	ORC
+#ifdef ORC
 case (K_CLCKSC):
 if (!up)
 state ^= KS_CLKED;
@@ -555,7 +555,7 @@ scancode &= ~K_UP;
 magic_state = do_modifier(magic_state, scancode, up);
 if ((magic_state&(KS_CTLED|KS_ALTED)) == (KS_CTLED|KS_ALTED)) {
 switch (scancode) {
-#if	MACH_KDB
+#if MACH_KDB
 case K_dSC:
 kdb_kintr();
 (void)SPLKD();
@@ -579,8 +579,8 @@ break;
 return(FALSE);
 }
 unsigned int
-kdstate2idx(unsigned int	state,
-boolean_t	extended)
+kdstate2idx(unsigned int state,
+boolean_t extended)
 {
 int state_idx = NORM_STATE;
 if ((!extended) && state != KS_NORMAL) {
@@ -598,8 +598,8 @@ return (CHARIDX(state_idx));
 void
 kdstart(struct tty *tp)
 {
-spl_t	o_pri;
-int	ch;
+spl_t o_pri;
+int ch;
 if (tp->t_state & TS_TTSTOP)
 return;
 for ( ; ; ) {
@@ -618,14 +618,14 @@ tt_write_wakeup(tp);
 }
 void
 kdstop(
-struct tty 	*tp,
-int		flags)
+struct tty *tp,
+int flags)
 {
 }
 void
 kdinit(void)
 {
-unsigned char	k_comm;
+unsigned char k_comm;
 if (kd_initialized)
 return;
 esc_spt = esc_seq;
@@ -643,7 +643,7 @@ kd_sendcmd(KC_CMD_WRITE);
 kd_senddata(k_comm);
 unmask_irq(KBD_IRQ);
 kd_initialized = TRUE;
-#if	ENABLE_IMMEDIATE_CONSOLE
+#if ENABLE_IMMEDIATE_CONSOLE
 {
 extern boolean_t immediate_console_enable;
 immediate_console_enable = FALSE;
@@ -666,7 +666,7 @@ return;
 void
 kd_bellon(void)
 {
-unsigned char	status;
+unsigned char status;
 outb(K_TMRCTL, K_SELTMR2 | K_RDLDTWORD | K_TSQRWAVE | K_TBINARY);
 outb(K_TMR2, 1500 & 0xff);
 outb(K_TMR2, (int)1500 >> 8);
@@ -751,7 +751,7 @@ kd_scrollup(void)
 {
 csrpos_t to;
 csrpos_t from;
-int	count;
+int count;
 to = 0;
 from = ONE_LINE;
 count = (ONE_PAGE - ONE_LINE)/ONE_SPACE;
@@ -766,20 +766,20 @@ kd_scrolldn(void)
 {
 csrpos_t to;
 csrpos_t from;
-int	count;
-to 	= ONE_PAGE - ONE_SPACE;
-from 	= ONE_PAGE - ONE_LINE - ONE_SPACE;
-count 	= (ONE_PAGE - ONE_LINE) / ONE_SPACE;
+int count;
+to = ONE_PAGE - ONE_SPACE;
+from = ONE_PAGE - ONE_LINE - ONE_SPACE;
+count = (ONE_PAGE - ONE_LINE) / ONE_SPACE;
 (*kd_dmvdown)(from, to, count);
-to	= 0;
-count	= ONE_LINE/ONE_SPACE;
+to = 0;
+count = ONE_LINE/ONE_SPACE;
 (*kd_dclear)(to, count, kd_attr);
 return;
 }
 void
 kd_parseesc(void)
 {
-u_char	*escp;
+u_char *escp;
 escp = esc_seq + 1;
 switch(*(escp)) {
 case 'c':
@@ -800,7 +800,7 @@ break;
 }
 return;
 }
-#define reverse_video_char(a)       (((a) & 0x88) | ((((a) >> 4) | ((a) << 4)) & 0x77))
+#define reverse_video_char(a) (((a) & 0x88) | ((((a) >> 4) | ((a) << 4)) & 0x77))
 static void
 kd_update_kd_attr(void)
 {
@@ -821,7 +821,7 @@ unsigned char color_table[] = { 0, 4, 2, 6, 1, 5, 3, 7,
 void
 kd_parserest(u_char *cp)
 {
-int	number[16], npar = 0, i;
+int number[16], npar = 0, i;
 csrpos_t newpos;
 boolean_t question = FALSE;
 boolean_t angle = FALSE;
@@ -1180,7 +1180,7 @@ void
 kd_cltobcur(void)
 {
 csrpos_t start;
-int	count;
+int count;
 start = kd_curpos;
 count = (ONE_PAGE - kd_curpos)/ONE_SPACE;
 (*kd_dclear)(start, count, kd_attr);
@@ -1189,7 +1189,7 @@ return;
 void
 kd_cltopcur(void)
 {
-int	count;
+int count;
 count = (kd_curpos + ONE_SPACE) / ONE_SPACE;
 (*kd_dclear)(0, count, kd_attr);
 return;
@@ -1217,8 +1217,8 @@ kd_delln(int number)
 {
 csrpos_t to;
 csrpos_t from;
-int	delbytes;
-int	count;
+int delbytes;
+int count;
 if (number <= 0)
 return;
 delbytes = number * ONE_LINE;
@@ -1240,9 +1240,9 @@ kd_insln(int number)
 {
 csrpos_t to;
 csrpos_t from;
-int	count;
+int count;
 csrpos_t top;
-int	insbytes;
+int insbytes;
 if (number <= 0)
 return;
 top = BEG_OF_LINE(kd_curpos);
@@ -1262,8 +1262,8 @@ return;
 void
 kd_delch(int number)
 {
-int	 count;
-int	 delbytes;
+int count;
+int delbytes;
 csrpos_t to;
 csrpos_t from;
 csrpos_t nextline;
@@ -1313,9 +1313,9 @@ kd_insch(int number)
 {
 csrpos_t to;
 csrpos_t from;
-int	count;
+int count;
 csrpos_t nextline;
-int	insbytes;
+int insbytes;
 if (number <= 0)
 return;
 nextline = BEG_OF_LINE(kd_curpos) + ONE_LINE;
@@ -1513,12 +1513,12 @@ return 0;
 }
 return 1;
 }
-#define	SLAMBPW	2
+#define SLAMBPW 2
 static csrpos_t
 xga_getpos(void)
 {
-unsigned char	low;
-unsigned char	high;
+unsigned char low;
+unsigned char high;
 short pos;
 outb(kd_index_reg, C_HIGH);
 high = inb(kd_io_reg);
@@ -1530,9 +1530,9 @@ return(ONE_SPACE * (csrpos_t)pos);
 void
 kd_xga_init(void)
 {
-unsigned char	start, stop;
+unsigned char start, stop;
 #if 0
-unsigned char	screen;
+unsigned char screen;
 outb(CMOS_ADDR, CMOS_EB);
 screen = inb(CMOS_DATA) & CM_SCRMSK;
 switch(screen) {
@@ -1631,8 +1631,8 @@ kd_noopreset(void)
 void
 bmpput(
 csrpos_t pos,
-char	 ch,
-char	 chattr)
+char ch,
+char chattr)
 {
 short xbit, ybit;
 u_char *to, *from;
@@ -1672,9 +1672,9 @@ fp += fb_byte_width;
 }
 void
 bmpmvup(
-csrpos_t 	from,
-csrpos_t	to,
-int		count)
+csrpos_t from,
+csrpos_t to,
+int count)
 {
 short from_xbit, from_ybit;
 short to_xbit, to_ybit;
@@ -1700,9 +1700,9 @@ to += ONE_SPACE;
 }
 void
 bmpmvdown(
-csrpos_t 	from,
-csrpos_t	to,
-int		count)
+csrpos_t from,
+csrpos_t to,
+int count)
 {
 short from_xbit, from_ybit;
 short to_xbit, to_ybit;
@@ -1730,9 +1730,9 @@ to -= ONE_SPACE;
 }
 void
 bmpclear(
-csrpos_t 	to,
-int		count,
-char		chattr)
+csrpos_t to,
+int count,
+char chattr)
 {
 short i;
 u_short clearval;
@@ -1756,8 +1756,8 @@ kd_curpos = pos;
 }
 void
 bmppaintcsr(
-csrpos_t 	pos,
-u_char		val)
+csrpos_t pos,
+u_char val)
 {
 short xbit, ybit;
 u_char *cp;
@@ -1773,9 +1773,9 @@ cp += fb_byte_width;
 }
 void
 bmpch2bit(
-csrpos_t 	pos,
-short		*xb,
-short		*yb)
+csrpos_t pos,
+short *xb,
+short *yb)
 {
 short xch, ych;
 xch = (pos / ONE_SPACE) % kd_cols;
@@ -1785,8 +1785,8 @@ ych = pos / (ONE_SPACE * kd_cols);
 }
 u_char *
 bit2fbptr(
-short	xb,
-short	yb)
+short xb,
+short yb)
 {
 return(vid_start + yb * fb_byte_width + xb/8);
 }
@@ -1832,17 +1832,17 @@ return 0;
 int
 kdcnmaygetc(void)
 {
-unsigned char	c;
-unsigned char	scancode;
-unsigned int	char_idx;
-#ifdef	notdef
-spl_t	o_pri;
+unsigned char c;
+unsigned char scancode;
+unsigned int char_idx;
+#ifdef notdef
+spl_t o_pri;
 #endif
-boolean_t	up;
+boolean_t up;
 if (! kd_initialized)
 return -1;
 kd_extended = FALSE;
-#ifdef	notdef
+#ifdef notdef
 o_pri = splhi();
 #endif
 for ( ; ; ) {
@@ -1886,16 +1886,16 @@ cnsetleds(state2leds(kd_state));
 && key_map[scancode][char_idx+1] == 0x5b) {
 c = key_map[scancode][char_idx+2];
 switch (c) {
-#define _MAP(A,B,C)	(C)
-#define MAP(T)		_MAP(T)
-#define	CTRL(c)		((c) & 0x1f)
-case MAP(K_HOME):	c = CTRL('a'); break;
-case MAP(K_UA):		c = CTRL('p'); break;
-case MAP(K_LA):		c = CTRL('b'); break;
-case MAP(K_RA):		c = CTRL('f'); break;
-case MAP(K_DA):		c = CTRL('n'); break;
-case MAP(K_END):	c = CTRL('e'); break;
-case 0x39:		c = CTRL('d'); break;
+#define _MAP(A,B,C) (C)
+#define MAP(T) _MAP(T)
+#define CTRL(c) ((c) & 0x1f)
+case MAP(K_HOME): c = CTRL('a'); break;
+case MAP(K_UA): c = CTRL('p'); break;
+case MAP(K_LA): c = CTRL('b'); break;
+case MAP(K_RA): c = CTRL('f'); break;
+case MAP(K_DA): c = CTRL('n'); break;
+case MAP(K_END): c = CTRL('e'); break;
+case 0x39: c = CTRL('d'); break;
 #undef CTRL
 #undef MAP
 #undef _MAP
@@ -1906,7 +1906,7 @@ return(c);
 } else if (!up) {
 if (c == K_CR)
 c = K_LF;
-#ifdef	notdef
+#ifdef notdef
 splx(o_pri);
 #endif
 return(c & 0177);

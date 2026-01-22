@@ -8,17 +8,17 @@
 # include <openssl/rc4.h>
 # include <openssl/md5.h>
 # ifndef EVP_CIPH_FLAG_AEAD_CIPHER
-#  define EVP_CIPH_FLAG_AEAD_CIPHER       0x200000
-#  define EVP_CTRL_AEAD_TLS1_AAD          0x16
-#  define EVP_CTRL_AEAD_SET_MAC_KEY       0x17
+# define EVP_CIPH_FLAG_AEAD_CIPHER 0x200000
+# define EVP_CTRL_AEAD_TLS1_AAD 0x16
+# define EVP_CTRL_AEAD_SET_MAC_KEY 0x17
 # endif
-# define EVP_RC4_KEY_SIZE                16
+# define EVP_RC4_KEY_SIZE 16
 typedef struct {
 RC4_KEY ks;
 MD5_CTX head, tail, md;
 size_t payload_length;
 } EVP_RC4_HMAC_MD5;
-# define NO_PAYLOAD_LENGTH       ((size_t)-1)
+# define NO_PAYLOAD_LENGTH ((size_t)-1)
 void rc4_md5_enc(RC4_KEY *key, const void *in0, void *out,
 MD5_CTX *ctx, const void *inp, size_t blocks);
 # define data(ctx) ((EVP_RC4_HMAC_MD5 *)(ctx)->cipher_data)
@@ -34,16 +34,16 @@ key->md = key->head;
 key->payload_length = NO_PAYLOAD_LENGTH;
 return 1;
 }
-# if     !defined(OPENSSL_NO_ASM) &&     ( \
-defined(__x86_64)       || defined(__x86_64__)  || \
-defined(_M_AMD64)       || defined(_M_X64)      || \
-defined(__INTEL__)              ) && \
+# if !defined(OPENSSL_NO_ASM) && ( \
+defined(__x86_64) || defined(__x86_64__) || \
+defined(_M_AMD64) || defined(_M_X64) || \
+defined(__INTEL__) ) && \
 !(defined(__APPLE__) && defined(__MACH__))
-#  define STITCHED_CALL
+# define STITCHED_CALL
 # endif
 # if !defined(STITCHED_CALL)
-#  define rc4_off 0
-#  define md5_off 0
+# define rc4_off 0
+# define md5_off 0
 # endif
 static int rc4_hmac_md5_cipher(EVP_CIPHER_CTX *ctx, unsigned char *out,
 const unsigned char *in, size_t len)

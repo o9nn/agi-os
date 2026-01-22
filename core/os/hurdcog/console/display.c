@@ -35,14 +35,14 @@ uint32_t bell_audible;
 uint32_t bell_visible;
 off_t start;
 off_t end;
-#define DISPLAY_CHANGE_CURSOR_POS	0x0001
-#define DISPLAY_CHANGE_CURSOR_STATUS	0x0002
-#define DISPLAY_CHANGE_SCREEN_CUR_LINE	0x0004
-#define DISPLAY_CHANGE_SCREEN_SCR_LINES	0x0008
-#define DISPLAY_CHANGE_BELL_AUDIBLE	0x0010
-#define DISPLAY_CHANGE_BELL_VISIBLE	0x0020
-#define DISPLAY_CHANGE_FLAGS		0x0030
-#define DISPLAY_CHANGE_MATRIX		0x0040
+#define DISPLAY_CHANGE_CURSOR_POS 0x0001
+#define DISPLAY_CHANGE_CURSOR_STATUS 0x0002
+#define DISPLAY_CHANGE_SCREEN_CUR_LINE 0x0004
+#define DISPLAY_CHANGE_SCREEN_SCR_LINES 0x0008
+#define DISPLAY_CHANGE_BELL_AUDIBLE 0x0010
+#define DISPLAY_CHANGE_BELL_VISIBLE 0x0020
+#define DISPLAY_CHANGE_FLAGS 0x0030
+#define DISPLAY_CHANGE_MATRIX 0x0040
 unsigned int which;
 };
 struct cursor
@@ -120,8 +120,8 @@ struct notify *notify_port;
 };
 static struct port_bucket *notify_bucket;
 static struct port_class *notify_class;
-#define msgh_request_port	msgh_remote_port
-#define msgh_reply_port		msgh_local_port
+#define msgh_request_port msgh_remote_port
+#define msgh_reply_port msgh_local_port
 kern_return_t
 nowait_file_changed (mach_port_t notify_port, natural_t tickno,
 file_changed_type_t change,

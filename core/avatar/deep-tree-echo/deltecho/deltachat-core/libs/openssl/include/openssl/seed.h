@@ -4,19 +4,19 @@
 # include <openssl/e_os2.h>
 # include <openssl/crypto.h>
 # ifdef OPENSSL_NO_SEED
-#  error SEED is disabled.
+# error SEED is disabled.
 # endif
 # ifdef AES_LONG
-#  ifndef SEED_LONG
-#   define SEED_LONG 1
-#  endif
+# ifndef SEED_LONG
+# define SEED_LONG 1
+# endif
 # endif
 # if !defined(NO_SYS_TYPES_H)
-#  include <sys/types.h>
+# include <sys/types.h>
 # endif
 # define SEED_BLOCK_SIZE 16
 # define SEED_KEY_LENGTH 16
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 typedef struct seed_key_st {
@@ -50,7 +50,7 @@ int enc);
 void SEED_ofb128_encrypt(const unsigned char *in, unsigned char *out,
 size_t len, const SEED_KEY_SCHEDULE *ks,
 unsigned char ivec[SEED_BLOCK_SIZE], int *num);
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif
 #endif

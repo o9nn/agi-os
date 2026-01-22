@@ -8,14 +8,14 @@ char *LEasy = SOKOTREE "levels/easy.slc";
 char *LHard = SOKOTREE "levels/hard.slc";
 char *levelfile;
 #define SOKOIMG SOKOTREE "images/"
-char	*GRImage =	SOKOIMG "right.bit";
-char	*GLImage =	SOKOIMG "left.bit";
-char	*WallImage =	SOKOIMG "wall.bit";
-char	*EmptyImage =	SOKOIMG "empty.bit";
-char	*CargoImage =	SOKOIMG "cargo.bit";
-char	*GoalCargoImage= SOKOIMG "goalcargo.bit";
-char	*GoalImage =	SOKOIMG "goal.bit";
-char	*WinImage =	SOKOIMG "win.bit";
+char *GRImage = SOKOIMG "right.bit";
+char *GLImage = SOKOIMG "left.bit";
+char *WallImage = SOKOIMG "wall.bit";
+char *EmptyImage = SOKOIMG "empty.bit";
+char *CargoImage = SOKOIMG "cargo.bit";
+char *GoalCargoImage= SOKOIMG "goalcargo.bit";
+char *GoalImage = SOKOIMG "goal.bit";
+char *WinImage = SOKOIMG "win.bit";
 char *buttons[] =
 {
 "restart",
@@ -79,8 +79,8 @@ void
 allocimages(void)
 {
 Rectangle one = Rect(0, 0, 1, 1);
-bg		= eallocimage(one, 1, DDarkyellow);
-text 		= eallocimage(one, 1, DBluegreen);
+bg = eallocimage(one, 1, DDarkyellow);
+text = eallocimage(one, 1, DBluegreen);
 gright = eloadfile(GRImage);
 gleft = eloadfile(GLImage);
 wall = eloadfile(WallImage);
@@ -120,9 +120,9 @@ p = subpt(m.xy, screen->r.min);
 p.x /= BoardX;
 p.y /= BoardY;
 q = subpt(p, level.glenda);
-if (q.x == 0 && q.y ==  0)
+if (q.x == 0 && q.y == 0)
 return nil;
-if (q.x == 0 || q.y ==  0) {
+if (q.x == 0 || q.y == 0) {
 if (q.x < 0)
 r = extend(nil, Left, -q.x, Pt(level.glenda.x, p.y));
 else if (q.x > 0)

@@ -7,6 +7,6 @@
 (ure-add-rule rbs contraposition-implication-rule-name)
 (define target
 (ImplicationLink
-  (NotLink Q)
-  (NotLink P))
+(NotLink Q)
+(NotLink P))
 )

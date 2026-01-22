@@ -6,15 +6,15 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-#define DTESN_BASE_ADDRESS    0x40000000UL
-#define DTESN_TOTAL_SIZE      (1UL << 30)
-#define DTESN_PAGE_SIZE       4096
-#define DTESN_MAX_LEVELS      8
+#define DTESN_BASE_ADDRESS 0x40000000UL
+#define DTESN_TOTAL_SIZE (1UL << 30)
+#define DTESN_PAGE_SIZE 4096
+#define DTESN_MAX_LEVELS 8
 #define DTESN_A000081_SEQUENCE { 1, 1, 2, 4, 9, 20, 48, 115, 286, 719 }
-#define DTESN_ALLOC_LATENCY_THRESHOLD_US   10
-#define DTESN_FREE_LATENCY_THRESHOLD_US     5
-#define DTESN_FRAGMENTATION_THRESHOLD      15
-#define DTESN_OVERHEAD_THRESHOLD            8
+#define DTESN_ALLOC_LATENCY_THRESHOLD_US 10
+#define DTESN_FREE_LATENCY_THRESHOLD_US 5
+#define DTESN_FRAGMENTATION_THRESHOLD 15
+#define DTESN_OVERHEAD_THRESHOLD 8
 typedef struct dtesn_memory_zone {
 uint32_t level;
 uint32_t membrane_count;
@@ -44,11 +44,11 @@ int dtesn_mem_stats(dtesn_memory_stats_t *stats);
 bool dtesn_mem_validate_a000081(uint32_t level);
 int64_t dtesn_mem_defragment(void);
 void dtesn_mem_shutdown(void);
-#define DTESN_ENOMEM        -1
-#define DTESN_EINVAL        -2
-#define DTESN_ENOTINIT      -3
-#define DTESN_ELATENCY      -4
-#define DTESN_EFRAGMENT     -5
+#define DTESN_ENOMEM -1
+#define DTESN_EINVAL -2
+#define DTESN_ENOTINIT -3
+#define DTESN_ELATENCY -4
+#define DTESN_EFRAGMENT -5
 #ifdef __cplusplus
 }
 #endif

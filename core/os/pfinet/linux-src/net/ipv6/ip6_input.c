@@ -19,7 +19,7 @@
 int ipv6_rcv(struct sk_buff *skb, struct device *dev, struct packet_type *pt)
 {
 struct ipv6hdr *hdr;
-u32 		pkt_len;
+u32 pkt_len;
 if (skb->pkt_type == PACKET_OTHERHOST)
 goto drop;
 ipv6_statistics.Ip6InReceives++;

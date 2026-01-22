@@ -9,7 +9,7 @@
 #include "strimpl.h"
 #include "sstring.h"
 #ifndef gs_error_syntaxerror
-#  define gs_error_syntaxerror gs_error_rangecheck
+# define gs_error_syntaxerror gs_error_rangecheck
 #endif
 bool
 pdf_objname_is_valid(const byte *data, uint size)
@@ -216,7 +216,7 @@ r.ptr = p;
 r.limit = end - 1;
 w.limit = buf + sizeof(buf) - 1;
 do {
-w.ptr = buf;  w.ptr--;
+w.ptr = buf; w.ptr--;
 status = (*s_PSSD_template.process)
 ((stream_state *) & ss, &r, &w, true);
 }
@@ -236,7 +236,7 @@ goto m2;
 case '>':
 if (end - p < 2 || p[1] != '>')
 return_error(gs_error_syntaxerror);
-m2:	*pscan = p + 2;
+m2: *pscan = p + 2;
 return 1;
 case '[': case ']': case '{': case '}':
 *pscan = p + 1;

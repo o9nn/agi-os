@@ -88,11 +88,11 @@ FT_Done_FreeType(f.ft_lib);
 }
 typedef struct FTerr FTerr;
 struct FTerr {
-int		code;
-char*	text;
+int code;
+char* text;
 };
 #define FT_NOERRORDEF_(l,c,t)
-#define FT_ERRORDEF_(l,c,t)	c,t,
+#define FT_ERRORDEF_(l,c,t) c,t,
 static FTerr fterrs[] = {
 #include "freetype/fterrdef.h"
 -1, "",

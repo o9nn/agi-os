@@ -3,9 +3,9 @@
 #include <mach/mach_types.h>
 #include <mach/vm_param.h>
 #include <kern/kern_types.h>
-#define VDSO_PAGE_SIZE		PAGE_SIZE
-#define VDSO_MAX_SYMBOLS	16
-#define VDSO_VERSION		1
+#define VDSO_PAGE_SIZE PAGE_SIZE
+#define VDSO_MAX_SYMBOLS 16
+#define VDSO_VERSION 1
 typedef enum {
 VDSO_SYM_GETTIMEOFDAY = 0,
 VDSO_SYM_CLOCK_GETTIME,
@@ -48,5 +48,5 @@ extern vdso_state_t *vdso_get_state(void);
 extern boolean_t vdso_is_available(void);
 extern void vdso_arch_init(void);
 extern kern_return_t vdso_arch_setup_page(vm_offset_t page);
-#define VDSO_USER_BASE  0x7ffff000UL
+#define VDSO_USER_BASE 0x7ffff000UL
 #endif

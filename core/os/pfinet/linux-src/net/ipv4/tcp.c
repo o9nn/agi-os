@@ -6,7 +6,7 @@
 #include <net/tcp.h>
 #include <asm/uaccess.h>
 int sysctl_tcp_fin_timeout = TCP_FIN_TIMEOUT;
-struct tcp_mib	tcp_statistics;
+struct tcp_mib tcp_statistics;
 kmem_cache_t *tcp_openreq_cachep;
 kmem_cache_t *tcp_bucket_cachep;
 kmem_cache_t *tcp_timewait_cachep;
@@ -621,7 +621,7 @@ TCP_FIN_WAIT1,
 TCP_FIN_WAIT2,
 TCP_CLOSE,
 TCP_CLOSE,
-TCP_LAST_ACK  | TCP_ACTION_FIN,
+TCP_LAST_ACK | TCP_ACTION_FIN,
 TCP_LAST_ACK,
 TCP_CLOSE,
 TCP_CLOSING,

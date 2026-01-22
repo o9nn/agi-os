@@ -1,7 +1,7 @@
 #ifndef HEADER_ECS_LOCL_H
 # define HEADER_ECS_LOCL_H
 # include <openssl/ecdsa.h>
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 struct ecdsa_method {
@@ -20,7 +20,7 @@ int (*finish) (EC_KEY *eckey);
 int flags;
 char *app_data;
 };
-# define ECDSA_FLAG_FIPS_METHOD  0x1
+# define ECDSA_FLAG_FIPS_METHOD 0x1
 typedef struct ecdsa_data_st {
 int (*init) (EC_KEY *);
 ENGINE *engine;
@@ -29,7 +29,7 @@ const ECDSA_METHOD *meth;
 CRYPTO_EX_DATA ex_data;
 } ECDSA_DATA;
 ECDSA_DATA *ecdsa_check(EC_KEY *eckey);
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif
 #endif

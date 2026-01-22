@@ -15,7 +15,7 @@ static int client_finished(SSL *s);
 static int client_certificate(SSL *s);
 static int ssl_rsa_public_encrypt(SESS_CERT *sc, int len, unsigned char *from,
 unsigned char *to, int padding);
-# define BREAK   break
+# define BREAK break
 static const SSL_METHOD *ssl2_get_client_method(int ver)
 {
 if (ver == SSL2_VERSION)

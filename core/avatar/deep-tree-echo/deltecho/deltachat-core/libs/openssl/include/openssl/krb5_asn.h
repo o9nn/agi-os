@@ -1,7 +1,7 @@
 #ifndef HEADER_KRB5_ASN_H
 # define HEADER_KRB5_ASN_H
 # include <openssl/safestack.h>
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 typedef struct krb5_encdata_st {
@@ -71,7 +71,7 @@ DECLARE_ASN1_FUNCTIONS(KRB5_ENCKEY)
 DECLARE_ASN1_FUNCTIONS(KRB5_AUTHDATA)
 DECLARE_ASN1_FUNCTIONS(KRB5_AUTHENTBODY)
 DECLARE_ASN1_FUNCTIONS(KRB5_AUTHENT)
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif
 #endif

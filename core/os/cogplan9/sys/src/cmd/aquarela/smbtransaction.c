@@ -143,10 +143,10 @@ t->out.tpcount = smbnhgets(pdata); pdata += 2;
 t->out.tdcount = smbnhgets(pdata); pdata += 2;
 pdata += 2;
 a.pcount = smbnhgets(pdata); pdata += 2;
-a.poffset =  smbnhgets(pdata); pdata += 2;
+a.poffset = smbnhgets(pdata); pdata += 2;
 a.pdisplacement = smbnhgets(pdata); pdata += 2;
 a.dcount = smbnhgets(pdata); pdata += 2;
-a.doffset =  smbnhgets(pdata); pdata += 2;
+a.doffset = smbnhgets(pdata); pdata += 2;
 a.ddisplacement = smbnhgets(pdata); pdata += 2;
 a.scount = *pdata;
 if (a.scount != h->wordcount - 10) {
@@ -171,10 +171,10 @@ t->out.tpcount = smbnhgets(pdata); pdata += 2;
 t->out.tdcount = smbnhgets(pdata); pdata += 2;
 pdata += 2;
 a.pcount = smbnhgets(pdata); pdata += 2;
-a.poffset =  smbnhgets(pdata); pdata += 2;
+a.poffset = smbnhgets(pdata); pdata += 2;
 a.pdisplacement = smbnhgets(pdata); pdata += 2;
 a.dcount = smbnhgets(pdata); pdata += 2;
-a.doffset =  smbnhgets(pdata); pdata += 2;
+a.doffset = smbnhgets(pdata); pdata += 2;
 a.ddisplacement = smbnhgets(pdata); pdata += 2;
 a.scount = *pdata;
 if (a.scount != h->wordcount - 10) {

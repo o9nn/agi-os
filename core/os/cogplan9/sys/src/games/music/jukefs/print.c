@@ -6,7 +6,7 @@
 #include "object.h"
 #include "parse.h"
 #include "catset.h"
-int	fflag;
+int fflag;
 void
 listfiles(Object *o)
 {
@@ -395,7 +395,7 @@ if (p == 0) p = o->key;
 while ((c = *p++) && c != '\n' && ln > 0) {
 if(c == '~')
 continue;
-*lp++ =  c;
+*lp++ = c;
 ln--;
 }
 default:

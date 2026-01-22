@@ -327,7 +327,7 @@ cid = 0, code = 1;
 return code;
 if (cid >= char_cache_size || cid >= width_cache_size)
 return_error(gs_error_unregistered);
-if (code == 0  || pdsubf->Widths[cid] == 0) {
+if (code == 0 || pdsubf->Widths[cid] == 0) {
 pdf_glyph_widths_t widths;
 code = pdf_glyph_widths(pdsubf, wmode, glyph, (gs_font *)subfont, &widths,
 pte->cdevproc_callout ? pte->cdevproc_result : NULL);

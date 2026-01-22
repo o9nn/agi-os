@@ -4,83 +4,83 @@
 #include <mach.h>
 #define Extern extern
 #include "mips.h"
-void	unimp(ulong);
-void	Ifcmp(ulong);
-void	Ifdiv(ulong);
-void	Ifmul(ulong);
-void	Ifadd(ulong);
-void	Ifsub(ulong);
-void	Ifmov(ulong);
-void	Icvtd(ulong);
-void	Icvtw(ulong);
-void	Icvts(ulong);
-void	Ifabs(ulong);
-void	Ifneg(ulong);
+void unimp(ulong);
+void Ifcmp(ulong);
+void Ifdiv(ulong);
+void Ifmul(ulong);
+void Ifadd(ulong);
+void Ifsub(ulong);
+void Ifmov(ulong);
+void Icvtd(ulong);
+void Icvtw(ulong);
+void Icvts(ulong);
+void Ifabs(ulong);
+void Ifneg(ulong);
 Inst cop1[] = {
-{ Ifadd,	"add.f", Ifloat },
-{ Ifsub,	"sub.f", Ifloat },
-{ Ifmul,	"mul.f", Ifloat },
-{ Ifdiv,	"div.f", Ifloat },
-{ unimp,	"", },
-{ Ifabs,	"abs.f", Ifloat },
-{ Ifmov,	"mov.f", Ifloat },
-{ Ifneg,	"neg.f", Ifloat },
-{ unimp,	"", },
-{ unimp,	"", },
-{ unimp,	"", },
-{ unimp,	"", },
-{ unimp,	"", },
-{ unimp,	"", },
-{ unimp,	"", },
-{ unimp,	"", },
-{ unimp,	"", },
-{ unimp,	"", },
-{ unimp,	"", },
-{ unimp,	"", },
-{ unimp,	"", },
-{ unimp,	"", },
-{ unimp,	"", },
-{ unimp,	"", },
-{ unimp,	"", },
-{ unimp,	"", },
-{ unimp,	"", },
-{ unimp,	"", },
-{ unimp,	"", },
-{ unimp,	"", },
-{ unimp,	"", },
-{ unimp,	"", },
-{ Icvts,	"cvt.s", Ifloat },
-{ Icvtd,	"cvt.d", Ifloat },
-{ unimp,	"", },
-{ unimp,	"", },
-{ Icvtw,	"cvt.w", Ifloat },
-{ unimp,	"", },
-{ unimp,	"", },
-{ unimp,	"", },
-{ unimp,	"", },
-{ unimp,	"", },
-{ unimp,	"", },
-{ unimp,	"", },
-{ unimp,	"", },
-{ unimp,	"", },
-{ unimp,	"", },
-{ unimp,	"", },
-{ Ifcmp,	"c.f",	 Ifloat },
-{ Ifcmp,	"c.un",  Ifloat },
-{ Ifcmp,	"c.eq",  Ifloat },
-{ Ifcmp,	"c.ueq", Ifloat },
-{ Ifcmp,	"c.olt", Ifloat },
-{ Ifcmp,	"c.ult", Ifloat },
-{ Ifcmp,	"c.ole", Ifloat },
-{ Ifcmp,	"c.ule", Ifloat },
-{ Ifcmp,	"c,sf",  Ifloat },
-{ Ifcmp,	"c.ngle",Ifloat },
-{ Ifcmp,	"c.seq", Ifloat },
-{ Ifcmp,	"c.ngl", Ifloat },
-{ Ifcmp,	"c.lt",  Ifloat },
-{ Ifcmp,	"c.nge", Ifloat },
-{ Ifcmp,	"c.le",  Ifloat },
-{ Ifcmp,	"c.ngt", Ifloat },
+{ Ifadd, "add.f", Ifloat },
+{ Ifsub, "sub.f", Ifloat },
+{ Ifmul, "mul.f", Ifloat },
+{ Ifdiv, "div.f", Ifloat },
+{ unimp, "", },
+{ Ifabs, "abs.f", Ifloat },
+{ Ifmov, "mov.f", Ifloat },
+{ Ifneg, "neg.f", Ifloat },
+{ unimp, "", },
+{ unimp, "", },
+{ unimp, "", },
+{ unimp, "", },
+{ unimp, "", },
+{ unimp, "", },
+{ unimp, "", },
+{ unimp, "", },
+{ unimp, "", },
+{ unimp, "", },
+{ unimp, "", },
+{ unimp, "", },
+{ unimp, "", },
+{ unimp, "", },
+{ unimp, "", },
+{ unimp, "", },
+{ unimp, "", },
+{ unimp, "", },
+{ unimp, "", },
+{ unimp, "", },
+{ unimp, "", },
+{ unimp, "", },
+{ unimp, "", },
+{ unimp, "", },
+{ Icvts, "cvt.s", Ifloat },
+{ Icvtd, "cvt.d", Ifloat },
+{ unimp, "", },
+{ unimp, "", },
+{ Icvtw, "cvt.w", Ifloat },
+{ unimp, "", },
+{ unimp, "", },
+{ unimp, "", },
+{ unimp, "", },
+{ unimp, "", },
+{ unimp, "", },
+{ unimp, "", },
+{ unimp, "", },
+{ unimp, "", },
+{ unimp, "", },
+{ unimp, "", },
+{ Ifcmp, "c.f", Ifloat },
+{ Ifcmp, "c.un", Ifloat },
+{ Ifcmp, "c.eq", Ifloat },
+{ Ifcmp, "c.ueq", Ifloat },
+{ Ifcmp, "c.olt", Ifloat },
+{ Ifcmp, "c.ult", Ifloat },
+{ Ifcmp, "c.ole", Ifloat },
+{ Ifcmp, "c.ule", Ifloat },
+{ Ifcmp, "c,sf", Ifloat },
+{ Ifcmp, "c.ngle",Ifloat },
+{ Ifcmp, "c.seq", Ifloat },
+{ Ifcmp, "c.ngl", Ifloat },
+{ Ifcmp, "c.lt", Ifloat },
+{ Ifcmp, "c.nge", Ifloat },
+{ Ifcmp, "c.le", Ifloat },
+{ Ifcmp, "c.ngt", Ifloat },
 { 0 }
 };
 void

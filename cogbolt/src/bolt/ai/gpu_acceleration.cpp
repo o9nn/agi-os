@@ -386,12 +386,12 @@ return false;
 }
 std::string GPUAccelerationManager::backendTypeToString(GPUBackendType backendType) {
 switch (backendType) {
-case GPUBackendType::CPU:    return "CPU";
-case GPUBackendType::CUDA:   return "CUDA";
+case GPUBackendType::CPU: return "CPU";
+case GPUBackendType::CUDA: return "CUDA";
 case GPUBackendType::OpenCL: return "OpenCL";
 case GPUBackendType::Vulkan: return "Vulkan";
-case GPUBackendType::Metal:  return "Metal";
-default:                     return "Unknown";
+case GPUBackendType::Metal: return "Metal";
+default: return "Unknown";
 }
 }
 GPUAcceleratedModel::GPUAcceleratedModel(const std::string& modelPath, const GPUConfig& config)
@@ -416,9 +416,9 @@ GPUAcceleratedModel::~GPUAcceleratedModel() {
 bool GPUAcceleratedModel::loadModel(const std::string& path) {
 modelPath_ = path;
 struct ggml_init_params params = {
-.mem_size   = maxContextSize_ * sizeof(float) * 4,
+.mem_size = maxContextSize_ * sizeof(float) * 4,
 .mem_buffer = nullptr,
-.no_alloc   = false
+.no_alloc = false
 };
 context_ = std::unique_ptr<ggml_context, void(*)(ggml_context*)>(ggml_init(params), ggml_free);
 if (!context_) {

@@ -70,13 +70,13 @@ for (alp = ll->x_list; alp != 0; alp = alp->next) {
 if (alp->end.y < y1)
 y1 = alp->end.y;
 }
-#	ifdef DEBUG
+# ifdef DEBUG
 if (gs_debug_c('F')) {
 dlprintf2("[F]before loop: y=%f y1=%f:\n",
 fixed2float(y), fixed2float(y1));
 print_line_list(ll->x_list);
 }
-#	endif
+# endif
 if (y == y1) {
 code = process_h_segments(ll, y);
 if (code < 0)
@@ -144,14 +144,14 @@ flp->pseg, alp->pseg, flp->direction, alp->direction);
 } else {
 if (flp->end.x == flp->start.x && alp->end.x == alp->start.x) {
 if (FILL_ADJUST) {
-ybot = max(y  - fo.adjust_below, fo.pbox->p.y);
+ybot = max(y - fo.adjust_below, fo.pbox->p.y);
 ytop = min(y1 + fo.adjust_above, fo.pbox->q.y);
 }
 if (ytop > ybot) {
 int yi = fixed2int_pixround(ybot);
 int hi = fixed2int_pixround(ytop) - yi;
 int xli = fixed2int_var_pixround(flp->end.x - (!FILL_ADJUST ? 0 : fo.adjust_left));
-int xi  = fixed2int_var_pixround(alp->end.x + (!FILL_ADJUST ? 0 : fo.adjust_right));
+int xi = fixed2int_var_pixround(alp->end.x + (!FILL_ADJUST ? 0 : fo.adjust_right));
 if (PSEUDO_RASTERIZATION && xli == xi) {
 fixed xx = int2fixed(xli);
 if (xx - flp->end.x < alp->end.x - xx)

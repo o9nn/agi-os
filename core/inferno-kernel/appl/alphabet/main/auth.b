@@ -42,7 +42,7 @@ for(; opts != nil; opts = tl opts){
 case (hd opts).t0 {
 'k' =>
 keyfile = (hd (hd opts).t1).s().i;
-if (keyfile != nil && ! (keyfile[0] == '/' || (len keyfile > 2 &&  keyfile[0:2] == "./")))
+if (keyfile != nil && ! (keyfile[0] == '/' || (len keyfile > 2 && keyfile[0:2] == "./")))
 keyfile = "/usr/" + user() + "/keyring/" + keyfile;
 'C' =>
 alg = (hd (hd opts).t1).s().i;

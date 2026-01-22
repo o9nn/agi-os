@@ -1,14 +1,14 @@
 import { components, hooks, utils } from '@generouted/react-router/client'
 export type Path =
-  | `/`
-  | `/debug/expression`
-  | `/debug/illuminance`
-  | `/debug/menu`
-  | `/debug/planes`
-  | `/debug/positional-audio`
-  | `/debug/settings`
-  | `/debug/text`
-  | `/debug/vad-stt`
+| `/`
+| `/debug/expression`
+| `/debug/illuminance`
+| `/debug/menu`
+| `/debug/planes`
+| `/debug/positional-audio`
+| `/debug/settings`
+| `/debug/text`
+| `/debug/vad-stt`
 export type Params = {
 }
 export type ModalPath = never

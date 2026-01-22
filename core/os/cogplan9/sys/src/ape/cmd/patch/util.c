@@ -21,13 +21,13 @@
 #else
 # define vararg_start(ap,p) va_start (ap)
 # if HAVE_VARARGS_H
-#  include <varargs.h>
+# include <varargs.h>
 # else
 typedef char *va_list;
-#  define va_dcl int va_alist;
-#  define va_start(ap) ((ap) = (va_list) &va_alist)
-#  define va_arg(ap, t) (((t *) ((ap) += sizeof (t)))  [-1])
-#  define va_end(ap)
+# define va_dcl int va_alist;
+# define va_start(ap) ((ap) = (va_list) &va_alist)
+# define va_arg(ap, t) (((t *) ((ap) += sizeof (t))) [-1])
+# define va_end(ap)
 # endif
 #endif
 static void makedirs PARAMS ((char *));
@@ -63,7 +63,7 @@ memcpy (bakname, p, plen);
 memcpy (bakname + plen, to, tlen);
 memcpy (bakname + plen + tlen, b, blen);
 memcpy (bakname + plen + tlen + blen, o, osize);
-for (p += FILESYSTEM_PREFIX_LEN (p);  *p;  p++)
+for (p += FILESYSTEM_PREFIX_LEN (p); *p; p++)
 if (ISSLASH (*p))
 {
 try_makedirs_errno = ENOENT;
@@ -230,7 +230,7 @@ size_t maxdiffsize =
 char *trybuf = xmalloc (maxtrysize);
 char const *r = 0;
 strcpy (trybuf, filename);
-#define try1(f,a1)    (sprintf (trybuf + dir_len, f, a1),    stat (trybuf, &cstat) == 0)
+#define try1(f,a1) (sprintf (trybuf + dir_len, f, a1), stat (trybuf, &cstat) == 0)
 #define try2(f,a1,a2) (sprintf (trybuf + dir_len, f, a1,a2), stat (trybuf, &cstat) == 0)
 if ((try2 ("RCS/%s%s", filebase, RCSSUFFIX)
 || try1 ("RCS/%s", filebase)
@@ -630,7 +630,7 @@ if (!reset)
 signal (SIGCHLD, SIG_DFL);
 #endif
 sigemptyset (&signals_to_block);
-for (i = 0;  i < NUM_SIGS;  i++)
+for (i = 0; i < NUM_SIGS; i++)
 {
 int ignoring_signal;
 #if HAVE_SIGACTION
@@ -652,7 +652,7 @@ else
 #if HAVE_SIGPROCMASK || HAVE_SIGSETMASK
 sigprocmask (SIG_SETMASK, &initial_signal_mask, (sigset_t *) 0);
 #else
-for (i = 0;  i < NUM_SIGS;  i++)
+for (i = 0; i < NUM_SIGS; i++)
 if (sigismember (&signals_to_block, sigs[i]))
 setup_handler (sigs[i]);
 #endif
@@ -665,7 +665,7 @@ ignore_signals()
 sigprocmask (SIG_BLOCK, &signals_to_block, &initial_signal_mask);
 #else
 int i;
-for (i = 0;  i < NUM_SIGS;  i++)
+for (i = 0; i < NUM_SIGS; i++)
 if (sigismember (&signals_to_block, sigs[i]))
 signal (sigs[i], SIG_IGN);
 #endif
@@ -744,7 +744,7 @@ char *filename;
 char *f;
 char *last_location_replaced = 0;
 char const *component_start;
-for (f = filename + FILESYSTEM_PREFIX_LEN (filename);  ISSLASH (*f);  f++)
+for (f = filename + FILESYSTEM_PREFIX_LEN (filename); ISSLASH (*f); f++)
 continue;
 component_start = f;
 for (; *f; f++)
@@ -773,7 +773,7 @@ register char *f;
 register char *flim = replace_slashes (filename);
 if (flim)
 {
-for (f = filename;  f <= flim;  f++)
+for (f = filename; f <= flim; f++)
 if (!*f)
 {
 mkdir (filename,
@@ -789,7 +789,7 @@ removedirs (filename)
 char *filename;
 {
 size_t i;
-for (i = strlen (filename);  i != 0;  i--)
+for (i = strlen (filename); i != 0; i--)
 if (ISSLASH (filename[i])
 && ! (ISSLASH (filename[i - 1])
 || (filename[i - 1] == '.'
@@ -826,7 +826,7 @@ at++;
 if (debug & 128)
 say ("fetchname %s %d\n", at, strip_leading);
 name = at;
-for (t = at;  *t;  t++)
+for (t = at; *t; t++)
 {
 if (ISSLASH (*t))
 {

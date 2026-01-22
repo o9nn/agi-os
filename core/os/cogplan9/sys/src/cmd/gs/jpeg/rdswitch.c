@@ -106,7 +106,7 @@ FILE * fp;
 int scanno, ncomps, termchar;
 long val;
 jpeg_scan_info * scanptr;
-#define MAX_SCANS  100
+#define MAX_SCANS 100
 jpeg_scan_info scans[MAX_SCANS];
 if ((fp = fopen(filename, "r")) == NULL) {
 fprintf(stderr, "Can't open scan definition file %s\n", filename);

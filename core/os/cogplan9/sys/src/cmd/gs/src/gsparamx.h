@@ -1,5 +1,5 @@
 #ifndef gsparamx_INCLUDED
-#  define gsparamx_INCLUDED
+# define gsparamx_INCLUDED
 bool gs_param_string_eq(const gs_param_string *pcs, const char *str);
 int param_put_enum(gs_param_list * plist, gs_param_name param_name,
 int *pvalue, const char *const pnames[], int ecode);

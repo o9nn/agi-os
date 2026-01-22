@@ -3,26 +3,26 @@
 #include "draw.h"
 #include "tk.h"
 #include "canvs.h"
-#define	O(t, e)		((long)(&((t*)0)->e))
+#define O(t, e) ((long)(&((t*)0)->e))
 typedef struct TkCrect TkCrect;
 struct TkCrect
 {
-int	width;
-Image*	stipple;
+int width;
+Image* stipple;
 };
 static
 TkOption rectopts[] =
 {
-"width",	OPTnnfrac,	O(TkCrect, width),	nil,
-"stipple",	OPTbmap,	O(TkCrect, stipple),	nil,
+"width", OPTnnfrac, O(TkCrect, width), nil,
+"stipple", OPTbmap, O(TkCrect, stipple), nil,
 nil
 };
 static
 TkOption itemopts[] =
 {
-"tags",		OPTctag,	O(TkCitem, tags),	nil,
-"fill",		OPTcolr,	O(TkCitem, env),	IAUX(TkCfill),
-"outline",	OPTcolr,	O(TkCitem, env),	IAUX(TkCforegnd),
+"tags", OPTctag, O(TkCitem, tags), nil,
+"fill", OPTcolr, O(TkCitem, env), IAUX(TkCfill),
+"outline", OPTcolr, O(TkCitem, env), IAUX(TkCforegnd),
 nil
 };
 void

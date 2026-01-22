@@ -1,7 +1,7 @@
 #include "llama-io.h"
 void llama_io_write_i::write_string(const std::string & str) {
 uint32_t str_size = str.size();
-write(&str_size,  sizeof(str_size));
+write(&str_size, sizeof(str_size));
 write(str.data(), str_size);
 }
 void llama_io_read_i::read_string(std::string & str) {

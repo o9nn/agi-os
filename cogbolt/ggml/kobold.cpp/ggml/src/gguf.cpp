@@ -64,34 +64,34 @@ struct type_to_gguf_type<double> {
 static constexpr enum gguf_type value = GGUF_TYPE_FLOAT64;
 };
 static const std::map<gguf_type, size_t> GGUF_TYPE_SIZE = {
-{GGUF_TYPE_UINT8,   sizeof(uint8_t)},
-{GGUF_TYPE_INT8,    sizeof(int8_t)},
-{GGUF_TYPE_UINT16,  sizeof(uint16_t)},
-{GGUF_TYPE_INT16,   sizeof(int16_t)},
-{GGUF_TYPE_UINT32,  sizeof(uint32_t)},
-{GGUF_TYPE_INT32,   sizeof(int32_t)},
+{GGUF_TYPE_UINT8, sizeof(uint8_t)},
+{GGUF_TYPE_INT8, sizeof(int8_t)},
+{GGUF_TYPE_UINT16, sizeof(uint16_t)},
+{GGUF_TYPE_INT16, sizeof(int16_t)},
+{GGUF_TYPE_UINT32, sizeof(uint32_t)},
+{GGUF_TYPE_INT32, sizeof(int32_t)},
 {GGUF_TYPE_FLOAT32, sizeof(float)},
-{GGUF_TYPE_BOOL,    sizeof(int8_t)},
-{GGUF_TYPE_STRING,  0},
-{GGUF_TYPE_ARRAY,   0},
-{GGUF_TYPE_UINT64,  sizeof(uint64_t)},
-{GGUF_TYPE_INT64,   sizeof(int64_t)},
+{GGUF_TYPE_BOOL, sizeof(int8_t)},
+{GGUF_TYPE_STRING, 0},
+{GGUF_TYPE_ARRAY, 0},
+{GGUF_TYPE_UINT64, sizeof(uint64_t)},
+{GGUF_TYPE_INT64, sizeof(int64_t)},
 {GGUF_TYPE_FLOAT64, sizeof(double)},
 };
 static_assert(GGUF_TYPE_COUNT == 13, "GGUF_TYPE_COUNT != 13");
 static const std::map<gguf_type, const char *> GGUF_TYPE_NAME = {
-{GGUF_TYPE_UINT8,   "u8"},
-{GGUF_TYPE_INT8,    "i8"},
-{GGUF_TYPE_UINT16,  "u16"},
-{GGUF_TYPE_INT16,   "i16"},
-{GGUF_TYPE_UINT32,  "u32"},
-{GGUF_TYPE_INT32,   "i32"},
+{GGUF_TYPE_UINT8, "u8"},
+{GGUF_TYPE_INT8, "i8"},
+{GGUF_TYPE_UINT16, "u16"},
+{GGUF_TYPE_INT16, "i16"},
+{GGUF_TYPE_UINT32, "u32"},
+{GGUF_TYPE_INT32, "i32"},
 {GGUF_TYPE_FLOAT32, "f32"},
-{GGUF_TYPE_BOOL,    "bool"},
-{GGUF_TYPE_STRING,  "str"},
-{GGUF_TYPE_ARRAY,   "arr"},
-{GGUF_TYPE_UINT64,  "u64"},
-{GGUF_TYPE_INT64,   "i64"},
+{GGUF_TYPE_BOOL, "bool"},
+{GGUF_TYPE_STRING, "str"},
+{GGUF_TYPE_ARRAY, "arr"},
+{GGUF_TYPE_UINT64, "u64"},
+{GGUF_TYPE_INT64, "i64"},
 {GGUF_TYPE_FLOAT64, "f64"},
 };
 static_assert(GGUF_TYPE_COUNT == 13, "GGUF_TYPE_COUNT != 13");
@@ -103,7 +103,7 @@ struct gguf_kv {
 std::string key;
 bool is_array;
 enum gguf_type type;
-std::vector<int8_t>      data;
+std::vector<int8_t> data;
 std::vector<std::string> data_string;
 template <typename T>
 gguf_kv(const std::string & key, const T value)
@@ -177,8 +177,8 @@ uint32_t version = GGUF_VERSION;
 std::vector<struct gguf_kv> kv;
 std::vector<struct gguf_tensor_info> info;
 size_t alignment = GGUF_DEFAULT_ALIGNMENT;
-size_t offset    = 0;
-size_t size      = 0;
+size_t offset = 0;
+size_t size = 0;
 void * data = nullptr;
 };
 static bool isggufv1 = false;
@@ -304,7 +304,7 @@ return nullptr;
 }
 }
 }
-int64_t n_kv      = 0;
+int64_t n_kv = 0;
 int64_t n_tensors = 0;
 isggufv1 = false;
 if (ok && gr.read(ctx->version)) {
@@ -329,7 +329,7 @@ ok = false;
 }
 if (isggufv1) {
 uint32_t n_tensors_32 = 0;
-uint32_t n_kv_32      = 0;
+uint32_t n_kv_32 = 0;
 if (ok && gr.read(n_tensors_32)) {
 n_tensors = n_tensors_32;
 } else {
@@ -372,9 +372,9 @@ return nullptr;
 {
 for (int64_t i = 0; ok && i < n_kv; ++i) {
 std::string key;
-gguf_type   type     = gguf_type(-1);
-bool        is_array = false;
-uint64_t    n        = 1;
+gguf_type type = gguf_type(-1);
+bool is_array = false;
+uint64_t n = 1;
 try {
 ok = ok && gr.read(key);
 } catch (std::length_error &) {
@@ -410,18 +410,18 @@ if (!ok) {
 break;
 }
 switch (type) {
-case GGUF_TYPE_UINT8:   ok = ok && gguf_read_emplace_helper<uint8_t>    (gr, ctx->kv, key, is_array, n); break;
-case GGUF_TYPE_INT8:    ok = ok && gguf_read_emplace_helper<int8_t>     (gr, ctx->kv, key, is_array, n); break;
-case GGUF_TYPE_UINT16:  ok = ok && gguf_read_emplace_helper<uint16_t>   (gr, ctx->kv, key, is_array, n); break;
-case GGUF_TYPE_INT16:   ok = ok && gguf_read_emplace_helper<int16_t>    (gr, ctx->kv, key, is_array, n); break;
-case GGUF_TYPE_UINT32:  ok = ok && gguf_read_emplace_helper<uint32_t>   (gr, ctx->kv, key, is_array, n); break;
-case GGUF_TYPE_INT32:   ok = ok && gguf_read_emplace_helper<int32_t>    (gr, ctx->kv, key, is_array, n); break;
-case GGUF_TYPE_FLOAT32: ok = ok && gguf_read_emplace_helper<float>      (gr, ctx->kv, key, is_array, n); break;
-case GGUF_TYPE_BOOL:    ok = ok && gguf_read_emplace_helper<bool>       (gr, ctx->kv, key, is_array, n); break;
-case GGUF_TYPE_STRING:  ok = ok && gguf_read_emplace_helper<std::string>(gr, ctx->kv, key, is_array, n); break;
-case GGUF_TYPE_UINT64:  ok = ok && gguf_read_emplace_helper<uint64_t>   (gr, ctx->kv, key, is_array, n); break;
-case GGUF_TYPE_INT64:   ok = ok && gguf_read_emplace_helper<int64_t>    (gr, ctx->kv, key, is_array, n); break;
-case GGUF_TYPE_FLOAT64: ok = ok && gguf_read_emplace_helper<double>     (gr, ctx->kv, key, is_array, n); break;
+case GGUF_TYPE_UINT8: ok = ok && gguf_read_emplace_helper<uint8_t> (gr, ctx->kv, key, is_array, n); break;
+case GGUF_TYPE_INT8: ok = ok && gguf_read_emplace_helper<int8_t> (gr, ctx->kv, key, is_array, n); break;
+case GGUF_TYPE_UINT16: ok = ok && gguf_read_emplace_helper<uint16_t> (gr, ctx->kv, key, is_array, n); break;
+case GGUF_TYPE_INT16: ok = ok && gguf_read_emplace_helper<int16_t> (gr, ctx->kv, key, is_array, n); break;
+case GGUF_TYPE_UINT32: ok = ok && gguf_read_emplace_helper<uint32_t> (gr, ctx->kv, key, is_array, n); break;
+case GGUF_TYPE_INT32: ok = ok && gguf_read_emplace_helper<int32_t> (gr, ctx->kv, key, is_array, n); break;
+case GGUF_TYPE_FLOAT32: ok = ok && gguf_read_emplace_helper<float> (gr, ctx->kv, key, is_array, n); break;
+case GGUF_TYPE_BOOL: ok = ok && gguf_read_emplace_helper<bool> (gr, ctx->kv, key, is_array, n); break;
+case GGUF_TYPE_STRING: ok = ok && gguf_read_emplace_helper<std::string>(gr, ctx->kv, key, is_array, n); break;
+case GGUF_TYPE_UINT64: ok = ok && gguf_read_emplace_helper<uint64_t> (gr, ctx->kv, key, is_array, n); break;
+case GGUF_TYPE_INT64: ok = ok && gguf_read_emplace_helper<int64_t> (gr, ctx->kv, key, is_array, n); break;
+case GGUF_TYPE_FLOAT64: ok = ok && gguf_read_emplace_helper<double> (gr, ctx->kv, key, is_array, n); break;
 case GGUF_TYPE_ARRAY:
 default:
 {
@@ -523,7 +523,7 @@ __func__, info.t.name, info.t.type, ggml_type_name(info.t.type));
 ok = false;
 break;
 }
-const size_t  type_size = ggml_type_size(info.t.type);
+const size_t type_size = ggml_type_size(info.t.type);
 const int64_t blck_size = ggml_blck_size(info.t.type);
 if (blck_size == 0 || info.t.ne[0] % blck_size != 0) {
 GGML_LOG_ERROR("%s: tensor '%s' of type %d (%s) has %" PRId64 " elements per row, "
@@ -580,7 +580,7 @@ ctx->size += padded_size;
 if (params.ctx != nullptr) {
 const size_t mem_size =
 params.no_alloc ?
-(n_tensors    )*ggml_tensor_overhead() :
+(n_tensors )*ggml_tensor_overhead() :
 (n_tensors + 1)*ggml_tensor_overhead() + ctx->size;
 struct ggml_init_params pdata = {
 mem_size,
@@ -910,18 +910,18 @@ for (int64_t i = 0; i < n_kv; ++i) {
 const struct gguf_kv & kv = src->kv[i];
 if (!kv.is_array) {
 switch (kv.get_type()) {
-case GGUF_TYPE_UINT8:   gguf_set_val_u8  (ctx, kv.get_key().c_str(), kv.get_val<uint8_t>());             break;
-case GGUF_TYPE_INT8:    gguf_set_val_i8  (ctx, kv.get_key().c_str(), kv.get_val<int8_t>());              break;
-case GGUF_TYPE_UINT16:  gguf_set_val_u16 (ctx, kv.get_key().c_str(), kv.get_val<uint16_t>());            break;
-case GGUF_TYPE_INT16:   gguf_set_val_i16 (ctx, kv.get_key().c_str(), kv.get_val<int16_t>());             break;
-case GGUF_TYPE_UINT32:  gguf_set_val_u32 (ctx, kv.get_key().c_str(), kv.get_val<uint32_t>());            break;
-case GGUF_TYPE_INT32:   gguf_set_val_i32 (ctx, kv.get_key().c_str(), kv.get_val<int32_t>());             break;
-case GGUF_TYPE_FLOAT32: gguf_set_val_f32 (ctx, kv.get_key().c_str(), kv.get_val<float>());               break;
-case GGUF_TYPE_UINT64:  gguf_set_val_u64 (ctx, kv.get_key().c_str(), kv.get_val<uint64_t>());            break;
-case GGUF_TYPE_INT64:   gguf_set_val_i64 (ctx, kv.get_key().c_str(), kv.get_val<int64_t>());             break;
-case GGUF_TYPE_FLOAT64: gguf_set_val_f64 (ctx, kv.get_key().c_str(), kv.get_val<double>());              break;
-case GGUF_TYPE_BOOL:    gguf_set_val_bool(ctx, kv.get_key().c_str(), kv.get_val<bool>());                break;
-case GGUF_TYPE_STRING:  gguf_set_val_str (ctx, kv.get_key().c_str(), kv.get_val<std::string>().c_str()); break;
+case GGUF_TYPE_UINT8: gguf_set_val_u8 (ctx, kv.get_key().c_str(), kv.get_val<uint8_t>()); break;
+case GGUF_TYPE_INT8: gguf_set_val_i8 (ctx, kv.get_key().c_str(), kv.get_val<int8_t>()); break;
+case GGUF_TYPE_UINT16: gguf_set_val_u16 (ctx, kv.get_key().c_str(), kv.get_val<uint16_t>()); break;
+case GGUF_TYPE_INT16: gguf_set_val_i16 (ctx, kv.get_key().c_str(), kv.get_val<int16_t>()); break;
+case GGUF_TYPE_UINT32: gguf_set_val_u32 (ctx, kv.get_key().c_str(), kv.get_val<uint32_t>()); break;
+case GGUF_TYPE_INT32: gguf_set_val_i32 (ctx, kv.get_key().c_str(), kv.get_val<int32_t>()); break;
+case GGUF_TYPE_FLOAT32: gguf_set_val_f32 (ctx, kv.get_key().c_str(), kv.get_val<float>()); break;
+case GGUF_TYPE_UINT64: gguf_set_val_u64 (ctx, kv.get_key().c_str(), kv.get_val<uint64_t>()); break;
+case GGUF_TYPE_INT64: gguf_set_val_i64 (ctx, kv.get_key().c_str(), kv.get_val<int64_t>()); break;
+case GGUF_TYPE_FLOAT64: gguf_set_val_f64 (ctx, kv.get_key().c_str(), kv.get_val<double>()); break;
+case GGUF_TYPE_BOOL: gguf_set_val_bool(ctx, kv.get_key().c_str(), kv.get_val<bool>()); break;
+case GGUF_TYPE_STRING: gguf_set_val_str (ctx, kv.get_key().c_str(), kv.get_val<std::string>().c_str()); break;
 case GGUF_TYPE_ARRAY:
 default: GGML_ABORT("invalid type");
 }
@@ -973,7 +973,7 @@ if (tensor_id < 0) {
 GGML_ABORT("tensor not found: %s", name);
 }
 struct ggml_tensor * tensor = &ctx->info[tensor_id].t;
-const size_t  type_size = ggml_type_size(type);
+const size_t type_size = ggml_type_size(type);
 const int64_t blck_size = ggml_blck_size(type);
 tensor->type = type;
 GGML_ASSERT(tensor->ne[0] % blck_size == 0 && "tensor row size not divisible by block size of new type");
@@ -1098,7 +1098,7 @@ pad(alignment);
 };
 void gguf_write_to_buf(const struct gguf_context * ctx, std::vector<int8_t> & buf, bool only_meta) {
 const struct gguf_writer gw(buf);
-const int64_t n_kv      = gguf_get_n_kv(ctx);
+const int64_t n_kv = gguf_get_n_kv(ctx);
 const int64_t n_tensors = gguf_get_n_tensors(ctx);
 gw.write(GGUF_MAGIC[0]);
 gw.write(GGUF_MAGIC[1]);
@@ -1136,11 +1136,11 @@ return ok;
 }
 size_t gguf_get_meta_size(const struct gguf_context * ctx) {
 std::vector<int8_t> buf;
-gguf_write_to_buf(ctx, buf,  true);
+gguf_write_to_buf(ctx, buf, true);
 return buf.size();
 }
 void gguf_get_meta_data(const struct gguf_context * ctx, void * data) {
 std::vector<int8_t> buf;
-gguf_write_to_buf(ctx, buf,  true);
+gguf_write_to_buf(ctx, buf, true);
 memcpy(data, buf.data(), buf.size());
 }

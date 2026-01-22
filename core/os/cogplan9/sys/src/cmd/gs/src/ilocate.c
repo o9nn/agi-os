@@ -226,11 +226,11 @@ if (pre->o_type == &st_refs) {
 const ref_packed *rp = (const ref_packed *)(pre + 1);
 const char *end = (const char *)rp + size;
 while ((const char *)rp < end) {
-#	    if IGC_PTR_STABILITY_CHECK
+# if IGC_PTR_STABILITY_CHECK
 ialloc_validate_ref_packed(rp, gcst, pre);
-#	    else
+# else
 ialloc_validate_ref_packed(rp, gcst);
-#	    endif
+# endif
 rp = packed_next(rp);
 }
 } else {
@@ -246,16 +246,16 @@ if (eptr.ptr == 0)
 DO_NOTHING;
 else if (ptype == ptr_struct_type) {
 ialloc_validate_object(eptr.ptr, NULL, gcst);
-#		    if IGC_PTR_STABILITY_CHECK
+# if IGC_PTR_STABILITY_CHECK
 ialloc_validate_pointer_stability(pre,
 (const obj_header_t *)eptr.ptr - 1);
-#		    endif
+# endif
 } else if (ptype == ptr_ref_type)
-#		    if IGC_PTR_STABILITY_CHECK
+# if IGC_PTR_STABILITY_CHECK
 ialloc_validate_ref_packed(eptr.ptr, gcst, pre);
-#		    else
+# else
 ialloc_validate_ref_packed(eptr.ptr, gcst);
-#		    endif
+# endif
 }
 }
 END_OBJECTS_SCAN
@@ -289,9 +289,9 @@ ialloc_validate_ref((const ref *)rp, gcst);
 #endif
 private void
 ialloc_validate_ref(const ref * pref, gc_state_t * gcst
-#		    if IGC_PTR_STABILITY_CHECK
+# if IGC_PTR_STABILITY_CHECK
 , const obj_header_t *pre_fr
-#		    endif
+# endif
 )
 {
 const void *optr;
@@ -314,12 +314,12 @@ case t_fontID:
 case t_struct:
 case t_astruct:
 optr = pref->value.pstruct;
-cks:	    if (optr != 0) {
+cks: if (optr != 0) {
 ialloc_validate_object(optr, NULL, gcst);
-#		if IGC_PTR_STABILITY_CHECK
+# if IGC_PTR_STABILITY_CHECK
 ialloc_validate_pointer_stability(pre_fr,
 (const obj_header_t *)optr - 1);
-#		endif
+# endif
 }
 break;
 case t_name:
@@ -353,7 +353,7 @@ break;
 rptr = pref->value.refs;
 size = r_size(pref);
 tname = "array";
-cka:	    if (!gc_locate(rptr, gcst)) {
+cka: if (!gc_locate(rptr, gcst)) {
 lprintf3("At 0x%lx, %s 0x%lx not in any chunk\n",
 (ulong) pref, tname, (ulong) rptr);
 break;

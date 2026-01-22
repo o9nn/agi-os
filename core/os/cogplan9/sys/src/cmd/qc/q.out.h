@@ -1,31 +1,31 @@
-#define	NSNAME	8
-#define	NSYM	50
-#define	NREG	32
-#define NOPROF	(1<<0)
-#define DUPOK	(1<<1)
+#define NSNAME 8
+#define NSYM 50
+#define NREG 32
+#define NOPROF (1<<0)
+#define DUPOK (1<<1)
 enum
 {
-REGZERO		= 0,
-REGSP		= 1,
-REGSB		= 2,
-REGRET		= 3,
-REGARG		= 3,
-REGMIN		= 7,
-REGMAX		= 27,
-REGEXT		= 30,
-REGTMP		= 31,
-FREGRET		= 0,
-FREGMIN		= 17,
-FREGEXT		= 26,
-FREGCVI		= 27,
-FREGZERO	= 28,
-FREGHALF	= 29,
-FREGONE		= 30,
-FREGTWO		= 31
+REGZERO = 0,
+REGSP = 1,
+REGSB = 2,
+REGRET = 3,
+REGARG = 3,
+REGMIN = 7,
+REGMAX = 27,
+REGEXT = 30,
+REGTMP = 31,
+FREGRET = 0,
+FREGMIN = 17,
+FREGEXT = 26,
+FREGCVI = 27,
+FREGZERO = 28,
+FREGHALF = 29,
+FREGONE = 30,
+FREGTWO = 31
 };
-enum	as
+enum as
 {
-AXXX	= 0,
+AXXX = 0,
 AADD,
 AADDCC,
 AADDV,
@@ -408,7 +408,7 @@ ALAST
 };
 enum
 {
-D_GOK	= 0,
+D_GOK = 0,
 D_NONE,
 D_EXTERN,
 D_STATIC,
@@ -430,14 +430,14 @@ D_OPT,
 D_FILE,
 D_FILE1,
 D_DCR,
-D_XER	= 1,
-D_LR	= 8,
-D_CTR	= 9
+D_XER = 1,
+D_LR = 8,
+D_CTR = 9
 };
-#define	SYMDEF	"__.SYMDEF"
-typedef	struct	ieee	Ieee;
-struct	ieee
+#define SYMDEF "__.SYMDEF"
+typedef struct ieee Ieee;
+struct ieee
 {
-long	l;
-long	h;
+long l;
+long h;
 };

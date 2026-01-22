@@ -20,19 +20,19 @@
 #undef RCV_VIA_SKB
 #define RCV_PARANOIA_CHECK
 #define MID_PERFORMANCE
-#if   defined( LOW_PERFORMANCE )
+#if defined( LOW_PERFORMANCE )
 static int isa0=7,isa1=7,csr80=0x0c10;
 #elif defined( MID_PERFORMANCE )
 static int isa0=5,isa1=5,csr80=0x2810;
 #else
 static int isa0=4,isa1=4,csr80=0x0017;
 #endif
-#define NI65_ID0    0x00
-#define NI65_ID1    0x55
+#define NI65_ID0 0x00
+#define NI65_ID1 0x55
 #define NI65_EB_ID0 0x52
 #define NI65_EB_ID1 0x44
-#define NE2100_ID0  0x57
-#define NE2100_ID1  0x57
+#define NE2100_ID0 0x57
+#define NE2100_ID1 0x57
 #define PORT p->cmdr_addr
 #if 1
 #define RMDNUM 16
@@ -52,15 +52,15 @@ static int isa0=4,isa1=4,csr80=0x0017;
 #define T_BUF_SIZE 1544
 #define L_DATAREG 0x00
 #define L_ADDRREG 0x02
-#define L_RESET   0x04
-#define L_CONFIG  0x05
-#define L_BUSIF   0x06
-#define CSR0  0x00
-#define CSR1  0x01
-#define CSR2  0x02
-#define CSR3  0x03
-#define INIT_RING_BEFORE_START	0x1
-#define FULL_RESET_ON_ERROR	0x2
+#define L_RESET 0x04
+#define L_CONFIG 0x05
+#define L_BUSIF 0x06
+#define CSR0 0x00
+#define CSR1 0x01
+#define CSR2 0x02
+#define CSR3 0x03
+#define INIT_RING_BEFORE_START 0x1
+#define FULL_RESET_ON_ERROR 0x2
 #if 0
 #define writereg(val,reg) {outw(reg,PORT+L_ADDRREG);inw(PORT+L_ADDRREG); \
 outw(val,PORT+L_DATAREG);inw(PORT+L_DATAREG);}
@@ -69,7 +69,7 @@ inw(PORT+L_DATAREG))
 #if 0
 #define writedatareg(val) {outw(val,PORT+L_DATAREG);inw(PORT+L_DATAREG);}
 #else
-#define writedatareg(val) {  writereg(val,CSR0); }
+#define writedatareg(val) { writereg(val,CSR0); }
 #endif
 #else
 #define writereg(val,reg) {outw(reg,PORT+L_ADDRREG);outw(val,PORT+L_DATAREG);}
@@ -116,16 +116,16 @@ int cmdr_addr;
 int cardno;
 int features;
 };
-static int  ni65_probe1(struct device *dev,int);
+static int ni65_probe1(struct device *dev,int);
 static void ni65_interrupt(int irq, void * dev_id, struct pt_regs *regs);
 static void ni65_recv_intr(struct device *dev,int);
 static void ni65_xmit_intr(struct device *dev,int);
-static int  ni65_open(struct device *dev);
-static int  ni65_lance_reinit(struct device *dev);
+static int ni65_open(struct device *dev);
+static int ni65_lance_reinit(struct device *dev);
 static void ni65_init_lance(struct priv *p,unsigned char*,int,int);
-static int  ni65_send_packet(struct sk_buff *skb, struct device *dev);
-static int  ni65_close(struct device *dev);
-static int  ni65_alloc_buffer(struct device *dev);
+static int ni65_send_packet(struct sk_buff *skb, struct device *dev);
+static int ni65_close(struct device *dev);
+static int ni65_alloc_buffer(struct device *dev);
 static void ni65_free_buffer(struct priv *p);
 static struct enet_statistics *ni65_get_stats(struct device *);
 static void set_multicast_list(struct device *dev);
@@ -160,9 +160,9 @@ return -EAGAIN;
 irq2dev_map[dev->irq] = dev;
 if(ni65_lance_reinit(dev))
 {
-dev->tbusy     = 0;
+dev->tbusy = 0;
 dev->interrupt = 0;
-dev->start     = 1;
+dev->start = 1;
 MOD_INC_USE_COUNT;
 return 0;
 }
@@ -320,15 +320,15 @@ return -EAGAIN;
 }
 request_region(ioaddr,cards[p->cardno].total_size,cards[p->cardno].cardname);
 dev->base_addr = ioaddr;
-dev->open               = ni65_open;
-dev->stop               = ni65_close;
-dev->hard_start_xmit    = ni65_send_packet;
-dev->get_stats          = ni65_get_stats;
+dev->open = ni65_open;
+dev->stop = ni65_close;
+dev->hard_start_xmit = ni65_send_packet;
+dev->get_stats = ni65_get_stats;
 dev->set_multicast_list = set_multicast_list;
 ether_setup(dev);
-dev->interrupt      = 0;
-dev->tbusy          = 0;
-dev->start          = 0;
+dev->interrupt = 0;
+dev->tbusy = 0;
+dev->start = 0;
 return 0;
 }
 static void ni65_init_lance(struct priv *p,unsigned char *daddr,int filter,int mode)
@@ -561,7 +561,7 @@ else if(dev->mc_count || dev->flags & IFF_ALLMULTI)
 ni65_init_lance(p,dev->dev_addr,0xff,0x0);
 else
 ni65_init_lance(p,dev->dev_addr,0x00,0x00);
-if(inw(PORT+L_DATAREG) & CSR0_IDON)  {
+if(inw(PORT+L_DATAREG) & CSR0_IDON) {
 ni65_set_performance(p);
 writedatareg(CSR0_CLRALL | CSR0_INEA | CSR0_STRT);
 return 1;

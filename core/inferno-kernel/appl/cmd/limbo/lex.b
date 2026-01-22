@@ -1,5 +1,5 @@
-Leof:		con -1;
-Linestart:	con 0;
+Leof: con -1;
+Linestart: con 0;
 Mlower,
 Mupper,
 Munder,
@@ -7,151 +7,151 @@ Mdigit,
 Msign,
 Mexp,
 Mhex,
-Mradix:		con byte 1 << iota;
-Malpha:		con Mupper|Mlower|Munder;
-HashSize:	con 1024;
+Mradix: con byte 1 << iota;
+Malpha: con Mupper|Mlower|Munder;
+HashSize: con 1024;
 Keywd: adt
 {
-name:	string;
-token:	int;
+name: string;
+token: int;
 };
 #
 # internals
 #
-savec:		int;
-files:		array of ref File;			# files making up the module, sorted by absolute line
-nfiles:		int;
-lastfile := 0;						# index of last file looked up
-incpath :=	array[MaxIncPath] of string;
-symbols :=	array[HashSize] of ref Sym;
-strings :=	array[HashSize] of ref Sym;
-map :=		array[256] of byte;
-bins :=		array [MaxInclude] of ref Iobuf;
-bin:		ref Iobuf;
-linestack :=	array[MaxInclude] of (int, int);
-lineno:		int;
-linepos:	int;
-bstack:		int;
-lasttok:	int;
-lastyylval:	YYSTYPE;
-dowarn:		int;
-maxerr:		int;
-dosym:		int;
-toterrors:	int;
-fabort:		int;
-srcdir:		string;
-outfile:	string;
-stderr:		ref Sys->FD;
-dontinline:	int;
-escmap :=	array[256] of
+savec: int;
+files: array of ref File; # files making up the module, sorted by absolute line
+nfiles: int;
+lastfile := 0; # index of last file looked up
+incpath := array[MaxIncPath] of string;
+symbols := array[HashSize] of ref Sym;
+strings := array[HashSize] of ref Sym;
+map := array[256] of byte;
+bins := array [MaxInclude] of ref Iobuf;
+bin: ref Iobuf;
+linestack := array[MaxInclude] of (int, int);
+lineno: int;
+linepos: int;
+bstack: int;
+lasttok: int;
+lastyylval: YYSTYPE;
+dowarn: int;
+maxerr: int;
+dosym: int;
+toterrors: int;
+fabort: int;
+srcdir: string;
+outfile: string;
+stderr: ref Sys->FD;
+dontinline: int;
+escmap := array[256] of
 {
-'\'' =>		'\'',
+'\'' => '\'',
 '"' =>		'"',
-'\\' =>		'\\',
-'a' =>		'\a',
-'b' =>		'\b',
-'f' =>			'\f',
-'n' =>		'\n',
-'r' =>		'\r',
-'t' =>		'\t',
-'v' =>		'\v',
-'0' =>		'\u0000',
-* =>		-1
+'\\' => '\\',
+'a' => '\a',
+'b' => '\b',
+'f' => '\f',
+'n' => '\n',
+'r' => '\r',
+'t' => '\t',
+'v' => '\v',
+'0' => '\u0000',
+* => -1
 };
-unescmap :=	array[256] of
+unescmap := array[256] of
 {
-'\'' =>		'\'',
+'\'' => '\'',
 '"' =>		'"',
-'\\' =>		'\\',
-'\a' =>		'a',
-'\b' =>		'b',
-'\f' =>		'f',
-'\n' =>		'n',
-'\r' =>		'r',
-'\t' =>		't',
-'\v' =>		'v',
-'\u0000' =>	'0',
-* =>		0
+'\\' => '\\',
+'\a' => 'a',
+'\b' => 'b',
+'\f' => 'f',
+'\n' => 'n',
+'\r' => 'r',
+'\t' => 't',
+'\v' => 'v',
+'\u0000' => '0',
+* => 0
 };
 keywords := array [] of
 {
-Keywd("adt",		Ladt),
-Keywd("alt",		Lalt),
-Keywd("array",		Larray),
-Keywd("big",		Ltid),
-Keywd("break",		Lbreak),
-Keywd("byte",		Ltid),
-Keywd("case",		Lcase),
-Keywd("chan",		Lchan),
-Keywd("con",		Lcon),
-Keywd("continue",	Lcont),
-Keywd("cyclic",		Lcyclic),
-Keywd("do",		Ldo),
-Keywd("dynamic",	Ldynamic),
-Keywd("else",		Lelse),
-Keywd("exception",	Lexcept),
-Keywd("exit",		Lexit),
-Keywd("fixed",	Lfix),
-Keywd("fn",		Lfn),
-Keywd("for",		Lfor),
-Keywd("hd",		Lhd),
-Keywd("if",		Lif),
-Keywd("implement",	Limplement),
-Keywd("import",		Limport),
-Keywd("include",	Linclude),
-Keywd("int",		Ltid),
-Keywd("len",		Llen),
-Keywd("list",		Llist),
-Keywd("load",		Lload),
-Keywd("module",		Lmodule),
-Keywd("nil",		Lnil),
-Keywd("of",		Lof),
-Keywd("or",		Lor),
-Keywd("pick",		Lpick),
-Keywd("raise",	Lraise),
-Keywd("raises",	Lraises),
-Keywd("real",		Ltid),
-Keywd("ref",		Lref),
-Keywd("return",		Lreturn),
-Keywd("self",		Lself),
-Keywd("spawn",		Lspawn),
-Keywd("string",		Ltid),
-Keywd("tagof",		Ltagof),
-Keywd("tl",		Ltl),
-Keywd("to",		Lto),
-Keywd("type",		Ltype),
-Keywd("while",		Lwhile),
+Keywd("adt", Ladt),
+Keywd("alt", Lalt),
+Keywd("array", Larray),
+Keywd("big", Ltid),
+Keywd("break", Lbreak),
+Keywd("byte", Ltid),
+Keywd("case", Lcase),
+Keywd("chan", Lchan),
+Keywd("con", Lcon),
+Keywd("continue", Lcont),
+Keywd("cyclic", Lcyclic),
+Keywd("do", Ldo),
+Keywd("dynamic", Ldynamic),
+Keywd("else", Lelse),
+Keywd("exception", Lexcept),
+Keywd("exit", Lexit),
+Keywd("fixed", Lfix),
+Keywd("fn", Lfn),
+Keywd("for", Lfor),
+Keywd("hd", Lhd),
+Keywd("if", Lif),
+Keywd("implement", Limplement),
+Keywd("import", Limport),
+Keywd("include", Linclude),
+Keywd("int", Ltid),
+Keywd("len", Llen),
+Keywd("list", Llist),
+Keywd("load", Lload),
+Keywd("module", Lmodule),
+Keywd("nil", Lnil),
+Keywd("of", Lof),
+Keywd("or", Lor),
+Keywd("pick", Lpick),
+Keywd("raise", Lraise),
+Keywd("raises", Lraises),
+Keywd("real", Ltid),
+Keywd("ref", Lref),
+Keywd("return", Lreturn),
+Keywd("self", Lself),
+Keywd("spawn", Lspawn),
+Keywd("string", Ltid),
+Keywd("tagof", Ltagof),
+Keywd("tl", Ltl),
+Keywd("to", Lto),
+Keywd("type", Ltype),
+Keywd("while", Lwhile),
 };
 tokwords := array[] of
 {
-Keywd("&=",	Landeq),
-Keywd("|=",	Loreq),
-Keywd("^=",	Lxoreq),
-Keywd("<<=",	Llsheq),
-Keywd(">>=",	Lrsheq),
-Keywd("+=",	Laddeq),
-Keywd("-=",	Lsubeq),
-Keywd("*=",	Lmuleq),
-Keywd("/=",	Ldiveq),
-Keywd("%=",	Lmodeq),
-Keywd("**=",	Lexpeq),
-Keywd(":=",	Ldeclas),
-Keywd("||",	Loror),
-Keywd("&&",	Landand),
-Keywd("::",	Lcons),
-Keywd("==",	Leq),
-Keywd("!=",	Lneq),
-Keywd("<=",	Lleq),
-Keywd(">=",	Lgeq),
-Keywd("<<",	Llsh),
-Keywd(">>",	Lrsh),
-Keywd("<-",	Lcomm),
-Keywd("++", 	Linc),
-Keywd("--",	Ldec),
-Keywd("->", 	Lmdot),
-Keywd("=>", 	Llabs),
-Keywd("**",	Lexp),
-Keywd("EOF",	Leof),
+Keywd("&=", Landeq),
+Keywd("|=", Loreq),
+Keywd("^=", Lxoreq),
+Keywd("<<=", Llsheq),
+Keywd(">>=", Lrsheq),
+Keywd("+=", Laddeq),
+Keywd("-=", Lsubeq),
+Keywd("*=", Lmuleq),
+Keywd("/=", Ldiveq),
+Keywd("%=", Lmodeq),
+Keywd("**=", Lexpeq),
+Keywd(":=", Ldeclas),
+Keywd("||", Loror),
+Keywd("&&", Landand),
+Keywd("::", Lcons),
+Keywd("==", Leq),
+Keywd("!=", Lneq),
+Keywd("<=", Lleq),
+Keywd(">=", Lgeq),
+Keywd("<<", Llsh),
+Keywd(">>", Lrsh),
+Keywd("<-", Lcomm),
+Keywd("++", Linc),
+Keywd("--", Ldec),
+Keywd("->", Lmdot),
+Keywd("=>", Llabs),
+Keywd("**", Lexp),
+Keywd("EOF", Leof),
 };
 lexinit()
 {
@@ -407,13 +407,13 @@ return t;
 }
 maxfast := array[37] of
 {
-2 =>	31,
-4 =>	15,
-8 =>	10,
-10 =>	9,
-16 =>	7,
-32 =>	6,
-* =>	0,
+2 => 31,
+4 => 15,
+8 => 10,
+10 => 9,
+16 => 7,
+32 => 6,
+* => 0,
 };
 strtoi(t: string, bbase: big): big
 {
@@ -552,7 +552,7 @@ state := Int;
 if(c == '.')
 state = Frac;
 radix := "";
-done:	for(;;){
+done: for(;;){
 c = getc();
 if(c == Bufio->EOF){
 yyerror("end of file in numeric constant");
@@ -1095,7 +1095,7 @@ if(bout != nil)
 sys->remove(outfile);
 if(fabort){
 n: ref Node;
-if(n.ty == nil);	# abort
+if(n.ty == nil); # abort
 }
 raise "fail:error";
 }

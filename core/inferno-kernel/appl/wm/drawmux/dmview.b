@@ -124,7 +124,7 @@ return Point(x, y);
 }
 kill(pid: int)
 {
-if ((pctl  := sys->open("/prog/" + string pid + "/ctl", Sys->OWRITE)) != nil)
+if ((pctl := sys->open("/prog/" + string pid + "/ctl", Sys->OWRITE)) != nil)
 sys->fprint(pctl, "kill");
 }
 tkcmd(t : ref Tk->Toplevel, c : string)

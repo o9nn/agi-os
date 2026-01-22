@@ -31,15 +31,15 @@ int generic_NCR5380_proc_info(char* buffer, char** start, off_t offset, int leng
 #define CAN_QUEUE 16
 #endif
 #if defined(HOSTS_C) || defined(MODULE)
-#define GENERIC_NCR5380 {NULL, NULL, NULL, 	 			\
-generic_NCR5380_proc_info,					\
-"Generic NCR5380/NCR53C400 Scsi Driver", 			\
-generic_NCR5380_detect, generic_NCR5380_release_resources,	\
-(void *)generic_NCR5380_info, NULL,				\
-generic_NCR5380_queue_command, generic_NCR5380_abort, 		\
-generic_NCR5380_reset, NULL,					\
-NCR5380_BIOSPARAM,						\
-CAN_QUEUE,  7, SG_ALL,			\
+#define GENERIC_NCR5380 {NULL, NULL, NULL, \
+generic_NCR5380_proc_info, \
+"Generic NCR5380/NCR53C400 Scsi Driver", \
+generic_NCR5380_detect, generic_NCR5380_release_resources, \
+(void *)generic_NCR5380_info, NULL, \
+generic_NCR5380_queue_command, generic_NCR5380_abort, \
+generic_NCR5380_reset, NULL, \
+NCR5380_BIOSPARAM, \
+CAN_QUEUE, 7, SG_ALL, \
 CMD_PER_LUN , 0, 0, DISABLE_CLUSTERING}
 #endif
 #ifndef HOSTS_C
@@ -85,8 +85,8 @@ NCR5380_map_name = (NCR5380_map_type)((instance)->NCR5380_instance_name)
 #define NCR5380_pread generic_NCR5380_pread
 #define NCR5380_pwrite generic_NCR5380_pwrite
 #define NCR5380_proc_info notyet_generic_proc_info
-#define BOARD_NCR5380	0
-#define BOARD_NCR53C400	1
+#define BOARD_NCR5380 0
+#define BOARD_NCR53C400 1
 #endif
 #endif
 #endif

@@ -3,7 +3,7 @@ include "sys.m";
 sys : Sys;
 include "bufio.m";
 bufio: Bufio;
-Iobuf: 	import bufio;
+Iobuf: import bufio;
 include "draw.m";
 draw: Draw;
 include "contents.m";

@@ -37,7 +37,7 @@ FracBits = MAD_F_FRACBITS,
 OutBits = 16,
 Round = 1 << (FracBits+1-OutBits-1),
 ScaleBits = FracBits + 1 - OutBits,
-LowMask  = (1<<ScaleBits) - 1,
+LowMask = (1<<ScaleBits) - 1,
 Min = -MAD_F_ONE,
 Max = MAD_F_ONE - 1,
 };

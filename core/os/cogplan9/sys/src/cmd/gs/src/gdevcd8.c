@@ -244,11 +244,11 @@ rescale_byte_wise1x1, rescale_byte_wise1x2
 rescale_byte_wise2x1, rescale_byte_wise2x2
 }
 };
-#define DESKJET_PRINT_LIMIT  0.04
-#define DESKJET_MARGINS_LETTER   0.25, 0.50, 0.25, 0.167
-#define DESKJET_MARGINS_A4       0.13, 0.46, 0.13, 0.04
+#define DESKJET_PRINT_LIMIT 0.04
+#define DESKJET_MARGINS_LETTER 0.25, 0.50, 0.25, 0.167
+#define DESKJET_MARGINS_A4 0.13, 0.46, 0.13, 0.04
 #ifndef BITSPERPIXEL
-#  define BITSPERPIXEL 32
+# define BITSPERPIXEL 32
 #endif
 #define DOFFSET (dev_t_margin(pdev) - DESKJET_PRINT_LIMIT)
 #define W sizeof(word)
@@ -277,9 +277,9 @@ private dev_proc_print_page(cdj850_print_page);
 prn_device_body(dtype, procs, dname, w10, h10, xdpi, ydpi, lm, bm, rm, tm, ncomp, depth, mg, mc, dg, dc, print_page), cmyk, depth , correct
 #define gx_prn_colour_device_common \
 gx_prn_device_common; \
-int cmyk;	  	 \
+int cmyk; \
 \
-uint default_depth;	 \
+uint default_depth; \
 uint correction
 struct error_val_field {
 int c;
@@ -337,12 +337,12 @@ typedef void (*TerminatePage) (P2(gx_device_printer * pdev, FILE * prn_stream));
 typedef struct gx_device_cdj850_s {
 gx_device_common;
 gx_prn_colour_device_common;
-int  quality;
-int  papertype;
+int quality;
+int papertype;
 int intensities;
 int xscal;
 int yscal;
-int  ptype;
+int ptype;
 int compression;
 float mastergamma;
 float gammavalc;
@@ -358,8 +358,8 @@ typedef struct {
 gx_device_common;
 gx_prn_colour_device_common;
 } gx_device_colour_prn;
-#define cprn_device     ((gx_device_colour_prn*) pdev)
-#define cdj850    ((gx_device_cdj850 *)pdev)
+#define cprn_device ((gx_device_colour_prn*) pdev)
+#define cdj850 ((gx_device_cdj850 *)pdev)
 #define prn_cmyk_colour_device(dtype, procs, dev_name, x_dpi, y_dpi, bpp, print_page, correct)\
 prn_colour_device_body(dtype, procs, dev_name,\
 DEFAULT_WIDTH_10THS, DEFAULT_HEIGHT_10THS, x_dpi, y_dpi, 0, 0, 0, 0,\
@@ -629,8 +629,8 @@ cdj850->gammavalk = gammavalk;
 cdj850->blackcorrect = blackcorrect;
 return 0;
 }
-#define x_dpi        (pdev->x_pixels_per_inch)
-#define y_dpi        (pdev->y_pixels_per_inch)
+#define x_dpi (pdev->x_pixels_per_inch)
+#define y_dpi (pdev->y_pixels_per_inch)
 #define calc_buffsize(a, b) (((((a) + ((b) * W) - 1) / ((b) * W))) * W)
 private void
 FSDlinebw(P7(int scan, int plane_size,
@@ -953,11 +953,11 @@ grey_distance = 1.0 - (b/255.0);\
 } else {\
 grey_distance = 1.0 - (a/255.0);\
 }\
-ucr   = (byte) (*col3 * grey_distance); \
-*col4 = *col4 + ucr;  \
+ucr = (byte) (*col3 * grey_distance); \
+*col4 = *col4 + ucr; \
 \
 \
-ucr   = *(kvalues + ucr);\
+ucr = *(kvalues + ucr);\
 *col1 = *col1 - ucr ;\
 *col2 = *col2 - ucr ;\
 *col3 = *col3 - ucr ;\
@@ -968,8 +968,8 @@ ucr = (int) *col3;\
 *col1 -= ucr ;\
 *col2 -= ucr ;\
 *col3 -= ucr ;\
-*col4 += ucr;  \
-kadd  = ucr + *(kcorrect + ucr);\
+*col4 += ucr; \
+kadd = ucr + *(kcorrect + ucr);\
 uca_fac = 1.0 + (kadd/255.0);\
 *col1 *= uca_fac;\
 *col2 *= uca_fac;\
@@ -1080,17 +1080,17 @@ return bytecount;
 }
 #define RSHIFT ((I * 8) - 16)
 #define SHIFT ((I * 8) - 13)
-#define MAXVALUE  (255 << SHIFT)
-#define RANDOM (((rand() << RSHIFT) % (MAXVALUE / 2))  - MAXVALUE /4);
-#define MINVALUE  0
+#define MAXVALUE (255 << SHIFT)
+#define RANDOM (((rand() << RSHIFT) % (MAXVALUE / 2)) - MAXVALUE /4);
+#define MINVALUE 0
 #define C 8
 #define THRESHOLD (128 << SHIFT)
 #define SHIFTS ((I * 8) - 14)
 #define SHIFTM ((I * 8) - 13)
 #define SHIFTL ((I * 8) - 12)
-#define MAXVALUES  (160 << SHIFTM)
-#define MAXVALUEM  (226 << SHIFTM)
-#define MAXVALUEL  (255 << SHIFTM)
+#define MAXVALUES (160 << SHIFTM)
+#define MAXVALUEM (226 << SHIFTM)
+#define MAXVALUEL (255 << SHIFTM)
 #define THRESHOLDS (128 << SHIFTM)
 #define THRESHOLDM (192 << SHIFTM)
 #define THRESHOLDL (226 << SHIFTM)
@@ -1869,7 +1869,7 @@ prgb[2] = gx_color_value_from_byte(c & 0xff);
 }
 break;
 case 32:
-#define  gx_maxcol gx_color_value_from_byte(gx_color_value_to_byte(gx_max_color_value))
+#define gx_maxcol gx_color_value_from_byte(gx_color_value_to_byte(gx_max_color_value))
 {
 gx_color_value w = gx_maxcol - gx_color_value_from_byte(color >> 24);
 prgb[0] = w - gx_color_value_from_byte((color >> 16) & 0xff);

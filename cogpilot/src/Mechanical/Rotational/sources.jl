@@ -19,7 +19,7 @@ Input signal acting as external torque on a flange
 - `phi_support(t)`: [`rad`] Absolute angle of support flange
 # Connectors:
 - `flange` [Flange](@ref)
-- `tau` [RealInput](@ref)  Accelerating torque acting at flange `-flange.tau`
+- `tau` [RealInput](@ref) Accelerating torque acting at flange `-flange.tau`
 # Parameters:
 - `use_support`
 """

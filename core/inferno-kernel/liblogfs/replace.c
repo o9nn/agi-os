@@ -115,7 +115,7 @@ int pages;
 char *errmsg;
 LogfsLowLevelReadResult llrr;
 int markedbad;
-newb  = logfsfindfreeblock(ll, AllocReasonReplace);
+newb = logfsfindfreeblock(ll, AllocReasonReplace);
 if(newb < 0)
 return "full replacing log block";
 (*ll->setblocktag)(ll, newb, LogfsTlog);

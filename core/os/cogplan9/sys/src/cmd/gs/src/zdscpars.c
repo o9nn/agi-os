@@ -192,22 +192,22 @@ const char *comment_name;
 int (*dsc_proc) (gs_param_list *, const CDSC *);
 } cmdlist_t;
 private const cmdlist_t DSCcmdlist[] = {
-{ CDSC_PSADOBE,	    "Header",		dsc_adobe_header },
-{ CDSC_CREATOR,	    "Creator",		dsc_creator },
-{ CDSC_CREATIONDATE,    "CreationDate",	dsc_creation_date },
-{ CDSC_TITLE,	    "Title",		dsc_title },
-{ CDSC_FOR,		    "For",		dsc_for },
-{ CDSC_BOUNDINGBOX,     "BoundingBox",	dsc_bounding_box },
-{ CDSC_ORIENTATION,	    "Orientation",	dsc_orientation },
-{ CDSC_BEGINDEFAULTS,   "BeginDefaults",	NULL },
-{ CDSC_ENDDEFAULTS,     "EndDefaults",	NULL },
-{ CDSC_PAGE,	    "Page",		dsc_page },
-{ CDSC_PAGES,	    "Pages",		dsc_pages },
-{ CDSC_PAGEORIENTATION, "PageOrientation",  dsc_page_orientation },
-{ CDSC_PAGEBOUNDINGBOX, "PageBoundingBox",	dsc_page_bounding_box },
+{ CDSC_PSADOBE, "Header", dsc_adobe_header },
+{ CDSC_CREATOR, "Creator", dsc_creator },
+{ CDSC_CREATIONDATE, "CreationDate", dsc_creation_date },
+{ CDSC_TITLE, "Title", dsc_title },
+{ CDSC_FOR, "For", dsc_for },
+{ CDSC_BOUNDINGBOX, "BoundingBox", dsc_bounding_box },
+{ CDSC_ORIENTATION, "Orientation", dsc_orientation },
+{ CDSC_BEGINDEFAULTS, "BeginDefaults", NULL },
+{ CDSC_ENDDEFAULTS, "EndDefaults", NULL },
+{ CDSC_PAGE, "Page", dsc_page },
+{ CDSC_PAGES, "Pages", dsc_pages },
+{ CDSC_PAGEORIENTATION, "PageOrientation", dsc_page_orientation },
+{ CDSC_PAGEBOUNDINGBOX, "PageBoundingBox", dsc_page_bounding_box },
 { CDSC_VIEWINGORIENTATION, "ViewingOrientation", dsc_viewing_orientation },
-{ CDSC_EOF,		    "EOF",		NULL },
-{ 0,		    "NOP",		NULL }
+{ CDSC_EOF, "EOF", NULL },
+{ 0, "NOP", NULL }
 };
 private const char * const BadCmdlist[] = {
 "%%BeginData:",

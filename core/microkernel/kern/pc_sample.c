@@ -10,7 +10,7 @@
 #include <kern/pc_sample.h>
 #include <kern/mach4.server.h>
 #include <kern/mach_clock.h>
-#if	MACH_PCSAMPLE
+#if MACH_PCSAMPLE
 #define MAX_PC_SAMPLES 512
 typedef sampled_pc_t sampled_pcs[MAX_PC_SAMPLES];
 void take_pc_sample(
@@ -39,10 +39,10 @@ int *tickp,
 sampled_pc_flavor_t flavors)
 {
 vm_offset_t buf;
-if (thread == THREAD_NULL)  {
+if (thread == THREAD_NULL) {
 return KERN_INVALID_ARGUMENT;
 }
-if (thread->pc_sample.buffer == 0)  {
+if (thread->pc_sample.buffer == 0) {
 buf = (vm_offset_t) kalloc(sizeof (sampled_pcs));
 if (buf == 0) {
 printf("thread_enable_pc_sampling: kalloc failed\n");
@@ -62,10 +62,10 @@ int *tickp,
 sampled_pc_flavor_t flavors)
 {
 vm_offset_t buf;
-if (task == TASK_NULL)  {
+if (task == TASK_NULL) {
 return KERN_INVALID_ARGUMENT;
 }
-if (task->pc_sample.buffer == 0)  {
+if (task->pc_sample.buffer == 0) {
 buf = (vm_offset_t) kalloc(sizeof (sampled_pcs));
 if (buf == 0) {
 printf("task_enable_pc_sampling: kalloc failed\n");
@@ -84,7 +84,7 @@ thread_t thread,
 int *samplecntp)
 {
 vm_offset_t buf;
-if (thread == THREAD_NULL)  {
+if (thread == THREAD_NULL) {
 return KERN_INVALID_ARGUMENT;
 }
 if ((buf = thread->pc_sample.buffer) != 0)
@@ -100,7 +100,7 @@ task_t task,
 int *samplecntp)
 {
 vm_offset_t buf;
-if (task == TASK_NULL)  {
+if (task == TASK_NULL) {
 return KERN_INVALID_ARGUMENT;
 }
 if ((buf = task->pc_sample.buffer) != 0)
@@ -119,14 +119,14 @@ mach_msg_type_number_t *sampled_pcs_cntp)
 {
 int nsamples;
 sampled_pc_seqno_t seqidx1, seqidx2;
-nsamples	= cp->seqno - *seqnop;
-seqidx1	= *seqnop % MAX_PC_SAMPLES;
-seqidx2	= cp->seqno % MAX_PC_SAMPLES;
-if  (nsamples > MAX_PC_SAMPLES) {
+nsamples = cp->seqno - *seqnop;
+seqidx1 = *seqnop % MAX_PC_SAMPLES;
+seqidx2 = cp->seqno % MAX_PC_SAMPLES;
+if (nsamples > MAX_PC_SAMPLES) {
 nsamples = MAX_PC_SAMPLES;
-seqidx1  = (seqidx2 + 1) % MAX_PC_SAMPLES;
+seqidx1 = (seqidx2 + 1) % MAX_PC_SAMPLES;
 }
-if (nsamples > 0)  {
+if (nsamples > 0) {
 if (seqidx1 < seqidx2) {
 memcpy(sampled_pcs_out,
 (sampled_pc_array_t)cp->buffer + seqidx1 + 1,

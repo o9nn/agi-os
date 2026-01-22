@@ -50,7 +50,7 @@ modules: fn(ctxt: self ref Context, r: chan of string);
 loadtypes: fn(ctxt: self ref Context, name: string)
 : (chan of ref Proxy->Typescmd[ref Value], string);
 find: fn(ctxt: self ref Context, s: string): (ref Module, string);
-new:	fn(): ref Context;
+new: fn(): ref Context;
 };
 Module: adt {
 m: Gridmodule;
@@ -101,7 +101,7 @@ return (ref Module(m), nil);
 Module.run(m: self ref Module, nil: ref Draw->Context, r: ref Reports->Report, errorc: chan of string,
 opts: list of (int, list of ref Value), args: list of ref Value): ref Value
 {
-return  m.m->run(errorc, r, opts, args);
+return m.m->run(errorc, r, opts, args);
 }
 Module.typesig(m: self ref Module): string
 {
@@ -160,7 +160,7 @@ if(ev == nil)
 return nil;
 pick v := ev {
 Vd =>
-return nil;		# can't happen
+return nil; # can't happen
 Vw =>
 return ref Value.Vw(v.i);
 Vf =>

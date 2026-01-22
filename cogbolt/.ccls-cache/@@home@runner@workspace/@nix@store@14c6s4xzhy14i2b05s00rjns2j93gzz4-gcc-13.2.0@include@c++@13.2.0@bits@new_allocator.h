@@ -14,13 +14,13 @@ template<typename _Tp>
 class __new_allocator
 {
 public:
-typedef _Tp        value_type;
-typedef std::size_t     size_type;
-typedef std::ptrdiff_t  difference_type;
+typedef _Tp value_type;
+typedef std::size_t size_type;
+typedef std::ptrdiff_t difference_type;
 #if __cplusplus <= 201703L
-typedef _Tp*       pointer;
+typedef _Tp* pointer;
 typedef const _Tp* const_pointer;
-typedef _Tp&       reference;
+typedef _Tp& reference;
 typedef const _Tp& const_reference;
 template<typename _Tp1>
 struct rebind

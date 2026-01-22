@@ -4,14 +4,14 @@
 # include "frame.h"
 # include "synth.h"
 enum mad_decoder_mode {
-MAD_DECODER_MODE_SYNC  = 0,
+MAD_DECODER_MODE_SYNC = 0,
 MAD_DECODER_MODE_ASYNC
 };
 enum mad_flow {
 MAD_FLOW_CONTINUE = 0x0000,
-MAD_FLOW_STOP     = 0x0010,
-MAD_FLOW_BREAK    = 0x0011,
-MAD_FLOW_IGNORE   = 0x0020
+MAD_FLOW_STOP = 0x0010,
+MAD_FLOW_BREAK = 0x0011,
+MAD_FLOW_IGNORE = 0x0020
 };
 struct mad_decoder {
 enum mad_decoder_mode mode;
@@ -50,7 +50,7 @@ struct mad_stream *,
 struct mad_frame *),
 enum mad_flow (*)(void *, void *, unsigned int *));
 int mad_decoder_finish(struct mad_decoder *);
-# define mad_decoder_options(decoder, opts)  \
+# define mad_decoder_options(decoder, opts) \
 ((void) ((decoder)->options = (opts)))
 int mad_decoder_run(struct mad_decoder *, enum mad_decoder_mode);
 int mad_decoder_message(struct mad_decoder *, void *, unsigned int *);

@@ -2,14 +2,14 @@
 #define _LINUX_FD_H
 #include <linux/ioctl.h>
 struct floppy_struct {
-unsigned int	size,
+unsigned int size,
 sect,
 head,
 track,
 stretch;
 #define FD_STRETCH 1
 #define FD_SWAPSIDES 2
-unsigned char	gap,
+unsigned char gap,
 rate,
 #define FD_2M 0x4
 #define FD_SIZECODEMASK 0x38
@@ -19,7 +19,7 @@ rate,
 #define FD_PERP 0x40
 spec1,
 fmt_gap;
-const char	* name;
+const char * name;
 };
 #define FDCLRPRM _IO(2, 0x41)
 #define FDSETPRM _IOW(2, 0x42, struct floppy_struct)
@@ -28,14 +28,14 @@ const char	* name;
 #define FDGETPRM _IOR(2, 0x04, struct floppy_struct)
 #define FDDEFMEDIAPRM FDDEFPRM
 #define FDGETMEDIAPRM FDGETPRM
-#define	FDMSGON  _IO(2,0x45)
-#define	FDMSGOFF _IO(2,0x46)
+#define FDMSGON _IO(2,0x45)
+#define FDMSGOFF _IO(2,0x46)
 #define FD_FILL_BYTE 0xF6
 struct format_descr {
 unsigned int device,head,track;
 };
 #define FDFMTBEG _IO(2,0x47)
-#define	FDFMTTRK _IOW(2,0x48, struct format_descr)
+#define FDFMTTRK _IOW(2,0x48, struct format_descr)
 #define FDFMTEND _IO(2,0x49)
 struct floppy_max_errors {
 unsigned int
@@ -45,8 +45,8 @@ reset,
 recal,
 reporting;
 };
-#define FDSETEMSGTRESH	_IO(2,0x4a)
-#define FDFLUSH  _IO(2,0x4b)
+#define FDSETEMSGTRESH _IO(2,0x4a)
+#define FDFLUSH _IO(2,0x4b)
 #define FDSETMAXERRS _IOW(2, 0x4c, struct floppy_max_errors)
 #define FDGETMAXERRS _IOR(2, 0x0e, struct floppy_max_errors)
 typedef char floppy_drive_name[16];
@@ -137,13 +137,13 @@ unsigned char track[4];
 struct floppy_write_errors {
 unsigned int write_errors;
 unsigned long first_error_sector;
-int           first_error_generation;
+int first_error_generation;
 unsigned long last_error_sector;
-int           last_error_generation;
+int last_error_generation;
 unsigned int badness;
 };
-#define FDWERRORCLR  _IO(2, 0x56)
-#define FDWERRORGET  _IOR(2, 0x17, struct floppy_write_errors)
+#define FDWERRORCLR _IO(2, 0x56)
+#define FDWERRORGET _IOR(2, 0x17, struct floppy_write_errors)
 #define FDHAVEBATCHEDRAWCMD
 struct floppy_raw_cmd {
 unsigned int flags;

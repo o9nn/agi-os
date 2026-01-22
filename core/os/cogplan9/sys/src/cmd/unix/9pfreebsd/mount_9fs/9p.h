@@ -1,69 +1,69 @@
 #ifndef _9FS_9P_H_
 #define _9FS_9P_H_
 #define U9FS_AUTHLEN 13
-#define U9FS_NAMELEN    28
-#define U9FS_TICKETLEN  72
-#define U9FS_ERRLEN     64
-#define U9FS_DOMLEN     48
-#define U9FS_CHALLEN    8
-#define U9FS_DIRLEN     116
-#define U9FS_MAXFDATA  8192
-#define U9FS_MAXDDATA  (((int)U9FS_MAXFDATA/U9FS_DIRLEN)*U9FS_DIRLEN)
-#define U9P_MODE_RD    0x0
-#define U9P_MODE_WR    0x1
-#define U9P_MODE_RDWR  0x2
-#define U9P_MODE_EX    0x3
+#define U9FS_NAMELEN 28
+#define U9FS_TICKETLEN 72
+#define U9FS_ERRLEN 64
+#define U9FS_DOMLEN 48
+#define U9FS_CHALLEN 8
+#define U9FS_DIRLEN 116
+#define U9FS_MAXFDATA 8192
+#define U9FS_MAXDDATA (((int)U9FS_MAXFDATA/U9FS_DIRLEN)*U9FS_DIRLEN)
+#define U9P_MODE_RD 0x0
+#define U9P_MODE_WR 0x1
+#define U9P_MODE_RDWR 0x2
+#define U9P_MODE_EX 0x3
 #define U9P_MODE_TRUNC 0x10
 #define U9P_MODE_CLOSE 0x40
 #define U9P_PERM_CHDIR(m) (0x80000000&(m))
 #define U9P_PERM_OWNER(m) ((m)&0x7)
 #define U9P_PERM_GROUP(m) (((m)>>3)&0x7)
 #define U9P_PERM_OTHER(m) (((m)>>6)&0x7)
-#define U9P_PERM_ALL(m)   ((m)&0777)
+#define U9P_PERM_ALL(m) ((m)&0777)
 typedef u_int32_t u9fsfh_t;
 struct u9fd_qid {
-u9fsfh_t	path;
-u_int32_t	vers;
+u9fsfh_t path;
+u_int32_t vers;
 };
-struct	u9fsreq {
+struct u9fsreq {
 TAILQ_ENTRY(u9fsreq) r_chain;
 struct u9fsreq * r_rep;
 struct mbuf * r_mrep;
-struct proc	*r_procp;
+struct proc *r_procp;
 struct u9fsmount *r_nmp;
-char	r_type;
-short	r_fid;
-u_short	r_tag;
+char r_type;
+short r_fid;
+u_short r_tag;
 union {
 struct {
-u_short	oldtag;
+u_short oldtag;
 struct u9fd_qid qid;
-char	rauth[U9FS_AUTHLEN];
+char rauth[U9FS_AUTHLEN];
 } u1;
 struct {
-char	uname[U9FS_NAMELEN];
-char	aname[U9FS_NAMELEN];
-char	ticket[U9FS_TICKETLEN];
-char	auth[U9FS_AUTHLEN];
+char uname[U9FS_NAMELEN];
+char aname[U9FS_NAMELEN];
+char ticket[U9FS_TICKETLEN];
+char auth[U9FS_AUTHLEN];
 } u2;
 struct {
-char	ename[U9FS_ERRLEN];
-char	authid[U9FS_NAMELEN];
-char	authdom[U9FS_DOMLEN];
-char	chal[U9FS_CHALLEN];
+char ename[U9FS_ERRLEN];
+char authid[U9FS_NAMELEN];
+char authdom[U9FS_DOMLEN];
+char chal[U9FS_CHALLEN];
 } u3;
 struct {
-u_int32_t	perm;
-short	newfid;
-char	name[U9FS_NAMELEN];
-char	mode;
+u_int32_t perm;
+short newfid;
+char name[U9FS_NAMELEN];
+char mode;
 } u4;
 struct {
-u_int64_t	offset;
-u_short	        count;
-char	*data;
+u_int64_t offset;
+u_short count;
+char *data;
 } u5;
-char	stat[U9FS_DIRLEN];
+char stat[U9FS_DIRLEN];
 } u;
 };
 #define r_oldtag u.u1.oldtag
@@ -71,83 +71,83 @@ char	stat[U9FS_DIRLEN];
 #define r_rauth u.u1.rauth
 #define r_uname u.u2.uname
 #define r_aname u.u2.aname
-#define r_ticket  u.u2.ticket
-#define r_auth  u.u2.auth
-#define r_ename  u.u3.ename
-#define r_authid  u.u3.authid
-#define r_authdom  u.u3.authdom
-#define r_chal  u.u3.chal
-#define r_perm  u.u4.perm
-#define r_newfid  u.u4.newfid
-#define r_name  u.u4.name
-#define r_mode  u.u4.mode
-#define r_offset  u.u5.offset
-#define r_count  u.u5.count
-#define r_data  u.u5.data
-#define r_stat  u.stat
+#define r_ticket u.u2.ticket
+#define r_auth u.u2.auth
+#define r_ename u.u3.ename
+#define r_authid u.u3.authid
+#define r_authdom u.u3.authdom
+#define r_chal u.u3.chal
+#define r_perm u.u4.perm
+#define r_newfid u.u4.newfid
+#define r_name u.u4.name
+#define r_mode u.u4.mode
+#define r_offset u.u5.offset
+#define r_count u.u5.count
+#define r_data u.u5.data
+#define r_stat u.stat
 extern TAILQ_HEAD(u9fs_reqq, u9fsreq) u9fs_reqq;
 struct u9fsdir {
-char	dir_name[U9FS_NAMELEN];
-char	dir_uid[U9FS_NAMELEN];
-char	dir_gid[U9FS_NAMELEN];
-struct u9fd_qid	dir_qid;
-u_int32_t	dir_mode;
-u_int32_t	dir_atime;
-u_int32_t	dir_mtime;
+char dir_name[U9FS_NAMELEN];
+char dir_uid[U9FS_NAMELEN];
+char dir_gid[U9FS_NAMELEN];
+struct u9fd_qid dir_qid;
+u_int32_t dir_mode;
+u_int32_t dir_atime;
+u_int32_t dir_mtime;
 union {
-u_int64_t	length;
+u_int64_t length;
 struct {
-u_int32_t	llength;
-u_int32_t	hlength;
+u_int32_t llength;
+u_int32_t hlength;
 } l;
 } u;
-u_short	dir_type;
-u_short	dir_dev;
+u_short dir_type;
+u_short dir_dev;
 };
 #define dir_length u.length
 #define dir_llength u.l.llength
 #define dir_hlength u.l.hlength
 enum
 {
-Tnop =		50,
+Tnop = 50,
 Rnop,
-Tosession =	52,
+Tosession = 52,
 Rosession,
-Terror =	54,
+Terror = 54,
 Rerror,
-Tflush =	56,
+Tflush = 56,
 Rflush,
-Toattach =	58,
+Toattach = 58,
 Roattach,
-Tclone =	60,
+Tclone = 60,
 Rclone,
-Twalk =		62,
+Twalk = 62,
 Rwalk,
-Topen =		64,
+Topen = 64,
 Ropen,
-Tcreate =	66,
+Tcreate = 66,
 Rcreate,
-Tread =		68,
+Tread = 68,
 Rread,
-Twrite =	70,
+Twrite = 70,
 Rwrite,
-Tclunk =	72,
+Tclunk = 72,
 Rclunk,
-Tremove =	74,
+Tremove = 74,
 Rremove,
-Tstat =		76,
+Tstat = 76,
 Rstat,
-Twstat =	78,
+Twstat = 78,
 Rwstat,
-Tclwalk =	80,
+Tclwalk = 80,
 Rclwalk,
-Tauth =		82,
+Tauth = 82,
 Rauth,
-Tsession =	84,
+Tsession = 84,
 Rsession,
-Tattach =	86,
+Tattach = 86,
 Rattach,
-Ttunnel =	88,
+Ttunnel = 88,
 Rtunnel,
 Tmax
 };

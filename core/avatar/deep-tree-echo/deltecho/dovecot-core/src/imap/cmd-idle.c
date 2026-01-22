@@ -154,7 +154,7 @@ return TRUE;
 }
 if (ctx->to_hibernate != NULL)
 timeout_reset(ctx->to_hibernate);
-if (ctx->manual_cork)  {
+if (ctx->manual_cork) {
 o_stream_cork(client->output);
 }
 if (ctx->sync_ctx != NULL) {

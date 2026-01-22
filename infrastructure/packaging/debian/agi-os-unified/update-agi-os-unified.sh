@@ -38,54 +38,54 @@ cat > "${PACKAGE_NAME}-${VERSION}/scripts/agi-os-init" << 'EOF'
 set -e
 echo "Initializing AGI Operating System..."
 REQUIRED_PACKAGES=(
-    "cognumach"
-    "hurdcog"
-    "opencog"
-    "opencog-atomspace"
-    "opencog-cogserver"
+"cognumach"
+"hurdcog"
+"opencog"
+"opencog-atomspace"
+"opencog-cogserver"
 )
 MISSING_PACKAGES=()
 for pkg in "${REQUIRED_PACKAGES[@]}"; do
-    if ! dpkg -l | grep -q "^ii  $pkg"; then
-        MISSING_PACKAGES+=("$pkg")
-    fi
+if ! dpkg -l | grep -q "^ii  $pkg"; then
+MISSING_PACKAGES+=("$pkg")
+fi
 done
 if [ ${
-    echo "ERROR: Missing required packages:"
-    printf '  - %s\n' "${MISSING_PACKAGES[@]}"
-    echo "Please install agi-os-unified package."
-    exit 1
+echo "ERROR: Missing required packages:"
+printf '  - %s\n' "${MISSING_PACKAGES[@]}"
+echo "Please install agi-os-unified package."
+exit 1
 fi
 mkdir -p /etc/agi-os
 mkdir -p /var/lib/agi-os
 mkdir -p /var/log/agi-os
 if [ ! -d /var/lib/agi-os/atomspace ]; then
-    mkdir -p /var/lib/agi-os/atomspace
-    echo "AtomSpace storage initialized at /var/lib/agi-os/atomspace"
+mkdir -p /var/lib/agi-os/atomspace
+echo "AtomSpace storage initialized at /var/lib/agi-os/atomspace"
 fi
 if [ ! -f /etc/agi-os/config.scm ]; then
-    cat > /etc/agi-os/config.scm << 'EOFCONFIG'
+cat > /etc/agi-os/config.scm << 'EOFCONFIG'
 ;; AGI-OS Configuration
 ;; This file configures the unified AGI Operating System
 (use-modules (opencog))
 (use-modules (opencog cogserver))
 ;; AtomSpace configuration
 (define atomspace-config
-  '((storage-type . "rocksdb")
-    (storage-path . "/var/lib/agi-os/atomspace")
-    (cache-size . 1000000)))
+'((storage-type . "rocksdb")
+(storage-path . "/var/lib/agi-os/atomspace")
+(cache-size . 1000000)))
 ;; CogServer configuration
 (define cogserver-config
-  '((port . 17001)
-    (network-interface . "127.0.0.1")))
+'((port . 17001)
+(network-interface . "127.0.0.1")))
 ;; Cognitive synergy configuration
 (define synergy-config
-  '((enable-attention .
-    (enable-pln .
-    (enable-learning .
+'((enable-attention .
+(enable-pln .
+(enable-learning .
 (display "AGI-OS configuration loaded\n")
 EOFCONFIG
-    echo "Default configuration created at /etc/agi-os/config.scm"
+echo "Default configuration created at /etc/agi-os/config.scm"
 fi
 echo "AGI Operating System initialized successfully!"
 echo ""
@@ -103,54 +103,54 @@ echo "=========================================="
 echo ""
 echo "Layer 1: Cognumach Microkernel"
 if dpkg -l | grep -q "^ii  cognumach"; then
-    COGNUMACH_VERSION=$(dpkg -l | grep "^ii  cognumach" | awk '{print $3}')
-    echo "  ✓ Installed: $COGNUMACH_VERSION"
+COGNUMACH_VERSION=$(dpkg -l | grep "^ii  cognumach" | awk '{print $3}')
+echo "  ✓ Installed: $COGNUMACH_VERSION"
 else
-    echo "  ✗ Not installed"
+echo "  ✗ Not installed"
 fi
 echo ""
 echo "Layer 2: HurdCog Cognitive OS"
 if dpkg -l | grep -q "^ii  hurdcog"; then
-    HURDCOG_VERSION=$(dpkg -l | grep "^ii  hurdcog" | awk '{print $3}')
-    echo "  ✓ Installed: $HURDCOG_VERSION"
+HURDCOG_VERSION=$(dpkg -l | grep "^ii  hurdcog" | awk '{print $3}')
+echo "  ✓ Installed: $HURDCOG_VERSION"
 else
-    echo "  ✗ Not installed"
+echo "  ✗ Not installed"
 fi
 echo ""
 echo "Layer 3: OpenCog Collection"
 OPENCOG_COMPONENTS=(
-    "opencog-atomspace:AtomSpace"
-    "opencog-cogserver:CogServer"
-    "opencog-ure:URE"
-    "opencog-pln:PLN"
-    "opencog-attention:ECAN"
-    "opencog-miner:Pattern Miner"
-    "opencog-learn:Learning"
-    "opencog-generate:Generation"
+"opencog-atomspace:AtomSpace"
+"opencog-cogserver:CogServer"
+"opencog-ure:URE"
+"opencog-pln:PLN"
+"opencog-attention:ECAN"
+"opencog-miner:Pattern Miner"
+"opencog-learn:Learning"
+"opencog-generate:Generation"
 )
 for component in "${OPENCOG_COMPONENTS[@]}"; do
-    PKG="${component%%:*}"
-    NAME="${component
-    if dpkg -l | grep -q "^ii  $PKG"; then
-        echo "  ✓ $NAME"
-    else
-        echo "  ✗ $NAME (not installed)"
-    fi
+PKG="${component%%:*}"
+NAME="${component
+if dpkg -l | grep -q "^ii  $PKG"; then
+echo "  ✓ $NAME"
+else
+echo "  ✗ $NAME (not installed)"
+fi
 done
 echo ""
 echo "Services:"
 if systemctl is-active --quiet cogserver 2>/dev/null; then
-    echo "  ✓ CogServer: running"
+echo "  ✓ CogServer: running"
 else
-    echo "  ○ CogServer: not running"
+echo "  ○ CogServer: not running"
 fi
 echo ""
 echo "Storage:"
 if [ -d /var/lib/agi-os/atomspace ]; then
-    SIZE=$(du -sh /var/lib/agi-os/atomspace 2>/dev/null | cut -f1)
-    echo "  ✓ AtomSpace storage: $SIZE"
+SIZE=$(du -sh /var/lib/agi-os/atomspace 2>/dev/null | cut -f1)
+echo "  ✓ AtomSpace storage: $SIZE"
 else
-    echo "  ○ AtomSpace storage: not initialized"
+echo "  ○ AtomSpace storage: not initialized"
 fi
 echo ""
 echo "=========================================="

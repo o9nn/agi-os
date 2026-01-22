@@ -9,9 +9,9 @@
 #define OA OPTION_ARG_OPTIONAL
 static const struct argp_option options[] =
 {
-{"user",	'u', "USER",  0, "Add USER to the effective uids"},
-{"avail-user",'U', "USER",  0, "Add USER to the available uids"},
-{"group",     'g', "GROUP", 0, "Add GROUP to the effective groups"},
+{"user", 'u', "USER", 0, "Add USER to the effective uids"},
+{"avail-user",'U', "USER", 0, "Add USER to the available uids"},
+{"group", 'g', "GROUP", 0, "Add GROUP to the effective groups"},
 {"avail-group",'G',"GROUP", 0, "Add GROUP to the available groups"},
 { 0 }
 };

@@ -34,10 +34,10 @@ int conlen;
 typedef struct CNode_s CNode;
 struct CNode_s
 {
-char  * label;
+char * label;
 CNode * child;
 CNode * next;
-int   start, end;
+int start, end;
 };
 static bool uppercompare(const char * s, const char * t)
 {
@@ -506,7 +506,7 @@ size_t leftmost, rightmost, leftlimit;
 int rootleft;
 List_o_links * dlink;
 Domain domain = pp_data->domain_array[d];
-rootleft =  linkage_get_link_lword(linkage, domain.start_link);
+rootleft = linkage_get_link_lword(linkage, domain.start_link);
 if ((domain.type=='c') ||
 (domain.type=='d') ||
 (domain.type=='e') ||
@@ -806,7 +806,7 @@ int numcon_total= 0, numcon_subl;
 Sentence sent = linkage->sent;
 ctxt->phrase_ss = string_set_create();
 generate_misc_word_info(ctxt, linkage);
-if (NULL ==  sent->constituent_pp)
+if (NULL == sent->constituent_pp)
 sent->constituent_pp = post_process_new(sent->dict->hpsg_knowledge);
 do_post_process(sent->constituent_pp, linkage, linkage->is_sent_long);
 numcon_subl = read_constituents_from_domains(ctxt, linkage, numcon_total);

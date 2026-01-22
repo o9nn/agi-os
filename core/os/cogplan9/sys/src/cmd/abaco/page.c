@@ -60,13 +60,13 @@ static struct {
 char *mime;
 char *filter;
 }filtertab[] = {
-"image/gif",	"gif -t9",
-"image/jpeg",	"jpg -t9",
-"image/jpg",	"jpg -t9",
-"image/pjpeg",	"jpg -t9",
-"image/png",	"png -t9",
-"image/ppm",	"ppm -t9",
-nil,	nil,
+"image/gif", "gif -t9",
+"image/jpeg", "jpg -t9",
+"image/jpg", "jpg -t9",
+"image/pjpeg", "jpg -t9",
+"image/png", "png -t9",
+"image/ppm", "ppm -t9",
+nil, nil,
 };
 char *
 getfilter(Rune *r, int x, int y)
@@ -325,7 +325,7 @@ draw(p->b, p->all, display->white, nil, ZP);
 pageload1(p, u, dohist);
 }
 void
-pageget(Page *p, Runestr *src, Runestr *post,  int m, int dohist)
+pageget(Page *p, Runestr *src, Runestr *post, int m, int dohist)
 {
 pageload(p, urlalloc(src, post, m), dohist);
 }
@@ -482,7 +482,7 @@ else if(mp.y > p->r.max.y)
 y += (mp.y-p->r.max.y)*Panspeed;
 scrled = pagescrollxy(p, x, y);
 npos = getpt(p, mp);
-if(opos.y <  npos.y){
+if(opos.y < npos.y){
 p->top = opos;
 p->bot = npos;
 }else{
@@ -497,9 +497,9 @@ readmouse(mousectl);
 mp = mousectl->xy;
 }while(mousectl->buttons == b);
 }
-static Rune left1[] =  { L'{', L'[', L'(', L'<', L'«', 0 };
+static Rune left1[] = { L'{', L'[', L'(', L'<', L'«', 0 };
 static Rune right1[] = { L'}', L']', L')', L'>', L'»', 0 };
-static Rune left2[] =  { L'\'', L'"', L'`', 0 };
+static Rune left2[] = { L'\'', L'"', L'`', 0 };
 static
 Rune *left[] = {
 left1,
@@ -717,7 +717,7 @@ closerunestr(&rs);
 free(t);
 q = runestrchr(s, L';');
 if(q){
-v = smprint("%.*S", (int)(q-s),  s);
+v = smprint("%.*S", (int)(q-s), s);
 p->refresh.t = atoi(v);
 free(v);
 }else

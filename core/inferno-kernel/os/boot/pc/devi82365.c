@@ -7,73 +7,73 @@
 #include "io.h"
 enum
 {
-Rid=		0x0,
-Ris=		0x1,
-Rpc=	 	0x2,
-Foutena=	 (1<<7),
-Fautopower=	 (1<<5),
-Fcardena=	 (1<<4),
-Rigc= 		0x3,
-Fiocard=	 (1<<5),
-Fnotreset=	 (1<<6),
-FSMIena=	 (1<<4),
-Rcsc= 		0x4,
-Rcscic= 	0x5,
-Fchangeena=	 (1<<3),
-Fbwarnena=	 (1<<1),
-Fbdeadena=	 (1<<0),
-Rwe= 		0x6,
-Fmem16=	 (1<<5),
-Rio= 		0x7,
-Fwidth16=	 (1<<0),
-Fiocs16=	 (1<<1),
-Fzerows=	 (1<<2),
-Ftiming=	 (1<<3),
-Riobtm0lo=	0x8,
-Riobtm0hi=	0x9,
-Riotop0lo=	0xa,
-Riotop0hi=	0xb,
-Riobtm1lo=	0xc,
-Riobtm1hi=	0xd,
-Riotop1lo=	0xe,
-Riotop1hi=	0xf,
-Rmap=		0x10,
-Rmisc1=		0x16,
-F5Vdetect=	 (1<<0),
-Fvcc3V=	 (1<<1),
-Fpmint=	 (1<<2),
-Fpsirq=	 (1<<3),
-Fspeaker=	 (1<<4),
-Finpack=	 (1<<7),
-Rfifo=		0x17,
-Fflush=	 (1<<7),
-Rmisc2=		0x1E,
-Flowpow=	 (1<<1),
-Rchipinfo=	0x1F,
-Ratactl=	0x26,
-Mbtmlo=		0x0,
-Mbtmhi=		0x1,
-F16bit=	 (1<<7),
-Mtoplo=		0x2,
-Mtophi=		0x3,
-Ftimer1=	 (1<<6),
-Mofflo=		0x4,
-Moffhi=		0x5,
-Fregactive=	 (1<<6),
-Rconfig=	0,
-Creset=	 (1<<7),
-Clevel=	 (1<<6),
-Cirq=		 (1<<2),
-Cdecode=	 (1<<1),
-Cfunc=		 (1<<0),
-Riobase0=	5,
-Riobase1=	6,
-Riosize=	9,
+Rid= 0x0,
+Ris= 0x1,
+Rpc= 0x2,
+Foutena= (1<<7),
+Fautopower= (1<<5),
+Fcardena= (1<<4),
+Rigc= 0x3,
+Fiocard= (1<<5),
+Fnotreset= (1<<6),
+FSMIena= (1<<4),
+Rcsc= 0x4,
+Rcscic= 0x5,
+Fchangeena= (1<<3),
+Fbwarnena= (1<<1),
+Fbdeadena= (1<<0),
+Rwe= 0x6,
+Fmem16= (1<<5),
+Rio= 0x7,
+Fwidth16= (1<<0),
+Fiocs16= (1<<1),
+Fzerows= (1<<2),
+Ftiming= (1<<3),
+Riobtm0lo= 0x8,
+Riobtm0hi= 0x9,
+Riotop0lo= 0xa,
+Riotop0hi= 0xb,
+Riobtm1lo= 0xc,
+Riobtm1hi= 0xd,
+Riotop1lo= 0xe,
+Riotop1hi= 0xf,
+Rmap= 0x10,
+Rmisc1= 0x16,
+F5Vdetect= (1<<0),
+Fvcc3V= (1<<1),
+Fpmint= (1<<2),
+Fpsirq= (1<<3),
+Fspeaker= (1<<4),
+Finpack= (1<<7),
+Rfifo= 0x17,
+Fflush= (1<<7),
+Rmisc2= 0x1E,
+Flowpow= (1<<1),
+Rchipinfo= 0x1F,
+Ratactl= 0x26,
+Mbtmlo= 0x0,
+Mbtmhi= 0x1,
+F16bit= (1<<7),
+Mtoplo= 0x2,
+Mtophi= 0x3,
+Ftimer1= (1<<6),
+Mofflo= 0x4,
+Moffhi= 0x5,
+Fregactive= (1<<6),
+Rconfig= 0,
+Creset= (1<<7),
+Clevel= (1<<6),
+Cirq= (1<<2),
+Cdecode= (1<<1),
+Cfunc= (1<<0),
+Riobase0= 5,
+Riobase1= 6,
+Riosize= 9,
 };
 static int pcmcia_pcmspecial(char *, ISAConf *);
 static void pcmcia_pcmspecialclose(int);
-#define MAP(x,o)	(Rmap + (x)*0x8 + o)
-typedef struct I82365	I82365;
+#define MAP(x,o) (Rmap + (x)*0x8 + o)
+typedef struct I82365 I82365;
 enum
 {
 Ti82365,
@@ -83,21 +83,21 @@ Tvg46x,
 };
 struct I82365
 {
-int	type;
-int	dev;
-int	nslot;
-int	xreg;
-int	dreg;
-int	irq;
+int type;
+int dev;
+int nslot;
+int xreg;
+int dreg;
+int irq;
 };
 static I82365 *controller[4];
 static int ncontroller;
-static PCMslot	*slot;
-static PCMslot	*lastslot;
+static PCMslot *slot;
+static PCMslot *lastslot;
 static nslot;
-static void	i82365intr(Ureg*, void*);
-static void	i82365reset(void);
-static int	pcmio(int, ISAConf*);
+static void i82365intr(Ureg*, void*);
+static void i82365reset(void);
+static int pcmio(int, ISAConf*);
 static void i82365dump(PCMslot*);
 void
 devi82365link(void)
@@ -193,9 +193,9 @@ slotdis(pp);
 }
 enum
 {
-Mshift=	12,
-Mgran=	(1<<Mshift),
-Mmask=	~(Mgran-1),
+Mshift= 12,
+Mgran= (1<<Mshift),
+Mmask= ~(Mgran-1),
 };
 PCMmap*
 pcmmap(int slotno, ulong offset, int len, int attr)
@@ -336,10 +336,10 @@ decrefp(pp);
 }
 static char *chipname[] =
 {
-[Ti82365]	"Intel 82365SL",
-[Tpd6710]	"Cirrus Logic PD6710",
-[Tpd6720]	"Cirrus Logic PD6720",
-[Tvg46x]	"Vadem VG-46x",
+[Ti82365] "Intel 82365SL",
+[Tpd6710] "Cirrus Logic PD6710",
+[Tpd6720] "Cirrus Logic PD6720",
+[Tvg46x] "Vadem VG-46x",
 };
 static I82365*
 i82365probe(int x, int d, int dev)

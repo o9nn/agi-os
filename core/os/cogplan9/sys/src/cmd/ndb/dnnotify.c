@@ -15,7 +15,7 @@ reqp->qd = tp->next;
 tp->next = 0;
 repp->qd = tp;
 repp->id = reqp->id;
-repp->flags = Fresp  | Onotify | Fauth;
+repp->flags = Fresp | Onotify | Fauth;
 if(zonerefreshprogram == nil)
 return;
 if(repp->qd->type != Tsoa)

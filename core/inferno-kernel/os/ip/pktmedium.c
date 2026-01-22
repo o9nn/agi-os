@@ -5,22 +5,22 @@
 #include "fns.h"
 #include "../port/error.h"
 #include "ip.h"
-static void	pktbind(Ipifc*, int, char**);
-static void	pktunbind(Ipifc*);
-static void	pktbwrite(Ipifc*, Block*, int, uchar*);
-static void	pktin(Fs*, Ipifc*, Block*);
+static void pktbind(Ipifc*, int, char**);
+static void pktunbind(Ipifc*);
+static void pktbwrite(Ipifc*, Block*, int, uchar*);
+static void pktin(Fs*, Ipifc*, Block*);
 Medium pktmedium =
 {
-.name=		"pkt",
-.hsize=		14,
-.mintu=		40,
-.maxtu=		4*1024,
-.maclen=	6,
-.bind=		pktbind,
-.unbind=	pktunbind,
-.bwrite=	pktbwrite,
-.pktin=		pktin,
-.unbindonclose=	1,
+.name= "pkt",
+.hsize= 14,
+.mintu= 40,
+.maxtu= 4*1024,
+.maclen= 6,
+.bind= pktbind,
+.unbind= pktunbind,
+.bwrite= pktbwrite,
+.pktin= pktin,
+.unbindonclose= 1,
 };
 static void
 pktbind(Ipifc*, int, char**)

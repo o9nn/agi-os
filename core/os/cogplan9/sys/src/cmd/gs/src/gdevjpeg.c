@@ -17,10 +17,10 @@ private dev_proc_print_page(jpeg_print_page);
 private dev_proc_map_color_rgb(jpegcmyk_map_color_rgb);
 private dev_proc_map_cmyk_color(jpegcmyk_map_cmyk_color);
 #ifndef X_DPI
-#  define X_DPI 72
+# define X_DPI 72
 #endif
 #ifndef Y_DPI
-#  define Y_DPI 72
+# define Y_DPI 72
 #endif
 private const gx_device_procs jpeg_procs =
 prn_color_params_procs(gdev_prn_open, gdev_prn_output_page, gdev_prn_close,
@@ -49,7 +49,7 @@ jpeg_print_page),
 0.0
 };
 private const gx_device_procs jpegcmyk_procs =
-{	gdev_prn_open,
+{ gdev_prn_open,
 gx_default_get_initial_matrix,
 NULL,
 gdev_prn_output_page,
@@ -234,7 +234,7 @@ jcdp->template.min_in_size =
 max(s_DCTE_template.min_in_size, state.scan_line_size);
 jcdp->template.min_out_size =
 max(s_DCTE_template.min_out_size, state.Markers.size);
-fbuf_size = max(512  , jcdp->template.min_out_size);
+fbuf_size = max(512 , jcdp->template.min_out_size);
 jbuf_size = jcdp->template.min_in_size;
 if ((fbuf = gs_alloc_bytes(mem, fbuf_size, "jpeg_print_page(fbuf)")) == 0 ||
 (jbuf = gs_alloc_bytes(mem, jbuf_size, "jpeg_print_page(jbuf)")) == 0

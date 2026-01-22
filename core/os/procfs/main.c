@@ -16,11 +16,11 @@ int opt_clk_tck;
 mode_t opt_stat_mode;
 pid_t opt_kernel_pid;
 uid_t opt_anon_owner;
-#define OPT_CLK_TCK    sysconf(_SC_CLK_TCK)
-#define OPT_STAT_MODE  0400
+#define OPT_CLK_TCK sysconf(_SC_CLK_TCK)
+#define OPT_STAT_MODE 0400
 #define OPT_KERNEL_PID HURD_PID_KERNEL
 #define OPT_ANON_OWNER 0
-#define NODEV_KEY  -1
+#define NODEV_KEY -1
 #define NOEXEC_KEY -2
 #define NOSUID_KEY -3
 static void set_compatibility_options (void)
@@ -90,8 +90,8 @@ return ARGP_ERR_UNKNOWN;
 return 0;
 }
 struct argp_option common_options[] = {
-#define STR(X)	XSTR (X)
-#define XSTR(X)	#X
+#define STR(X) XSTR (X)
+#define XSTR(X) #X
 { "clk-tck", 'h', "HZ", 0,
 "Unit used for the values expressed in system clock ticks "
 "(default: " STR (OPT_CLK_TCK) ")" },
@@ -167,7 +167,7 @@ netfs_append_args (char **argz, size_t *argz_len)
 {
 char buf[80];
 error_t err = 0;
-#define FOPT(opt, default, fmt, args...)             \
+#define FOPT(opt, default, fmt, args...) \
 do { \
 if (! err && opt != default) \
 { \

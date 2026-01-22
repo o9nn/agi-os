@@ -65,7 +65,7 @@ bw_pixel = gx_device_black(dev);
 goto bw;
 case rop3_1:
 bw_pixel = gx_device_white(dev);
-bw:	    if (bw_pixel == 0x00)
+bw: if (bw_pixel == 0x00)
 rop = rop3_0;
 else if (bw_pixel == 0xff)
 rop = rop3_1;
@@ -83,7 +83,7 @@ if (lop & lop_T_transparent)
 goto df;
 break;
 default:
-df:	    return mem_default_strip_copy_rop(dev,
+df: return mem_default_strip_copy_rop(dev,
 sdata, sourcex, sraster, id,
 scolors, textures, tcolors,
 x, y, width, height,
@@ -102,8 +102,8 @@ drow = scan_line_base(mdev, y) + x * bpp;
 #define cbit8(base, i, colors)\
 (dbit(base, i) ? (byte)colors[1] : (byte)colors[0])
 #define rop_body_8(s_pixel, t_pixel)\
-if ( (s_pixel) == strans ||	\
-(t_pixel) == ttrans	\
+if ( (s_pixel) == strans || \
+(t_pixel) == ttrans \
 )\
 continue;\
 *dptr = (*rop_proc_table[rop])(*dptr, s_pixel, t_pixel)
@@ -116,8 +116,8 @@ continue;\
 #define cbit24(base, i, colors)\
 (dbit(base, i) ? colors[1] : colors[0])
 #define rop_body_24(s_pixel, t_pixel)\
-if ( (s_pixel) == strans ||	\
-(t_pixel) == ttrans	\
+if ( (s_pixel) == strans || \
+(t_pixel) == ttrans \
 )\
 continue;\
 { gx_color_index d_pixel = get24(dptr);\

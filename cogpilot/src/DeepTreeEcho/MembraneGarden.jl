@@ -265,7 +265,7 @@ idx = rand(2:length(tree.level_sequence))
 current_level = tree.level_sequence[idx]
 # Change by ±1
 new_level = current_level + rand([-1, 1])
-new_level = max(2, new_level)  # Keep at least level 2
+new_level = max(2, new_level) # Keep at least level 2
 tree.level_sequence[idx] = new_level
 return nothing
 end

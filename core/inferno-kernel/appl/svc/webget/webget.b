@@ -2,39 +2,39 @@ implement Webget;
 # Protocol
 #
 # Client opens /chan/webget and writes one of
-#		GET  0 reqid url types cachectl authcookie\n
-#	    or
-#		POST bodylength reqid url types cachectl authcookie\n
-#		body
+# GET 0 reqid url types cachectl authcookie\n
+# or
+# POST bodylength reqid url types cachectl authcookie\n
+# body
 #
 # The possibilities for cachectl are
-#		max-stale=seconds
-#			client is willing to accept a response whose age exceeds
-#			its freshness lifetime (by at most specified seconds)
-#			without revalidation
-#		max-age=seconds
-#			client is unwilling to accept a response whose age
-#			(now - generation time) exceeds specified seconds
-#			without revalidiation
-#		no-cache
-#			unconditional reload
+# max-stale=seconds
+# client is willing to accept a response whose age exceeds
+# its freshness lifetime (by at most specified seconds)
+# without revalidation
+# max-age=seconds
+# client is unwilling to accept a response whose age
+# (now - generation time) exceeds specified seconds
+# without revalidiation
+# no-cache
+# unconditional reload
 # Both max-stale and max-age may be specified (separated by comma),
 # but no-cache must appear by itself.
 #
-# Authcookie is optional.  If present, it goes in an Authorization: header.
+# Authcookie is optional. If present, it goes in an Authorization: header.
 #
 # The appropriate transport mechanism gets the entity and
 # responds with one of
-#		OK bodylength reqid type url\n
-#		body
-#	    or
-#		ERROR reqid message\n
+# OK bodylength reqid type url\n
+# body
+# or
+# ERROR reqid message\n
 #
 # (In the ERROR case, the message might be "Unauthorized: challenge\n",
 # where challenge is of the form "BASIC realm=xxx (param, param, ...)\n".
 # The user can be prompted for a name:password, and the request repeated
 # with authcookie containing the base64 encoding of name:password).
-include	"sys.m";
+include "sys.m";
 sys: Sys;
 FD: import sys;
 include "draw.m";
@@ -58,15 +58,15 @@ include "transport.m";
 fhash := array[128] of ref Fid;
 Transports: adt
 {
-scheme:		int;
-m:		Transport;
+scheme: int;
+m: Transport;
 };
 transports: array of ref Transports;
 transtab := array[] of {
-(Url->HTTP,	"/dis/svc/webget/http.dis"),
-(Url->HTTPS,	nil),	# nil means: same as previous
-(Url->FILE,	"/dis/svc/webget/file.dis"),
-(Url->FTP,	"/dis/svc/webget/ftp.dis")
+(Url->HTTP, "/dis/svc/webget/http.dis"),
+(Url->HTTPS, nil), # nil means: same as previous
+(Url->FILE, "/dis/svc/webget/file.dis"),
+(Url->FTP, "/dis/svc/webget/ftp.dis")
 };
 Transpreq: adt
 {
@@ -76,8 +76,8 @@ r: ref Req;
 next: cyclic ref Transpreq;
 };
 Rchunk: con 30;
-# Transpmax: con 5;	# max number of simultaneously spawned transports
-Transpmax: con 1;	# max number of simultaneously spawned transports
+# Transpmax: con 5; # max number of simultaneously spawned transports
+Transpmax: con 1; # max number of simultaneously spawned transports
 logfile: con "/services/webget/webget.log";
 DO_LOG: con 1;
 stderr: ref FD;

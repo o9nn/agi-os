@@ -16,20 +16,20 @@ ipc_space_t ipc_space_kernel;
 ipc_space_t ipc_space_reply;
 void
 ipc_space_reference(
-ipc_space_t	space)
+ipc_space_t space)
 {
 ipc_space_reference_macro(space);
 }
 void
 ipc_space_release(
-ipc_space_t	space)
+ipc_space_t space)
 {
 ipc_space_release_macro(space);
 }
 struct ipc_entry zero_entry;
 kern_return_t
 ipc_space_create(
-ipc_space_t		*spacep)
+ipc_space_t *spacep)
 {
 ipc_space_t space;
 space = is_alloc();
@@ -50,7 +50,7 @@ return KERN_SUCCESS;
 }
 kern_return_t
 ipc_space_create_special(
-ipc_space_t	*spacep)
+ipc_space_t *spacep)
 {
 ipc_space_t space;
 space = is_alloc();
@@ -65,7 +65,7 @@ return KERN_SUCCESS;
 }
 void
 ipc_space_destroy(
-ipc_space_t	space)
+ipc_space_t space)
 {
 boolean_t active;
 assert(space != IS_NULL);

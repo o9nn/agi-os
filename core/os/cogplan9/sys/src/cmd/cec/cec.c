@@ -4,7 +4,7 @@
 #include <ctype.h>
 #include "cec.h"
 enum {
-Tinita		= 0,
+Tinita = 0,
 Tinitb,
 Tinitc,
 Tdata,
@@ -12,34 +12,34 @@ Tack,
 Tdiscover,
 Toffer,
 Treset,
-Hdrsz		= 18,
-Eaddrlen	= 6,
+Hdrsz = 18,
+Eaddrlen = 6,
 };
 typedef struct{
-uchar	ea[Eaddrlen];
-int	major;
-char	name[28];
+uchar ea[Eaddrlen];
+int major;
+char name[28];
 } Shelf;
-int 	conn(int);
-void 	gettingkilled(int);
-int 	pickone(void);
-void 	probe(void);
-void	sethdr(Pkt *, int);
-int	shelfidx(void);
-Shelf	*con;
-Shelf	tab[1000];
-char	*host;
-char	*srv;
-char	*svc;
-char	pflag;
-int	ntab;
-int	shelf = -1;
-uchar	bcast[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
-uchar	contag;
-uchar 	esc = '';
-uchar	ea[Eaddrlen];
-uchar	unsetea[Eaddrlen];
-extern 	int fd;
+int conn(int);
+void gettingkilled(int);
+int pickone(void);
+void probe(void);
+void sethdr(Pkt *, int);
+int shelfidx(void);
+Shelf *con;
+Shelf tab[1000];
+char *host;
+char *srv;
+char *svc;
+char pflag;
+int ntab;
+int shelf = -1;
+uchar bcast[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+uchar contag;
+uchar esc = '';
+uchar ea[Eaddrlen];
+uchar unsetea[Eaddrlen];
+extern int fd;
 void
 post(char *srv, int fd)
 {

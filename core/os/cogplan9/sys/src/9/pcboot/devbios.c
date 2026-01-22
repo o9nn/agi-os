@@ -1,19 +1,19 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"ureg.h"
-#include	"pool.h"
-#include	"../port/error.h"
-#include	"../port/netif.h"
-#include	"../port/sd.h"
-#include	"dosfs.h"
-#define TYPE(q)		((ulong)(q).path & 0xf)
-#define UNIT(q)		(((ulong)(q).path>>4) & 0xff)
-#define L(q)		(((ulong)(q).path>>12) & 0xf)
-#define QID(u, t) 	((u)<<4 | (t))
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "ureg.h"
+#include "pool.h"
+#include "../port/error.h"
+#include "../port/netif.h"
+#include "../port/sd.h"
+#include "dosfs.h"
+#define TYPE(q) ((ulong)(q).path & 0xf)
+#define UNIT(q) (((ulong)(q).path>>4) & 0xff)
+#define L(q) (((ulong)(q).path>>12) & 0xf)
+#define QID(u, t) ((u)<<4 | (t))
 typedef struct Biosdev Biosdev;
 typedef struct Dap Dap;
 typedef uvlong Devbytes, Devsects;
@@ -22,87 +22,87 @@ typedef struct Edrvparam Edrvparam;
 enum {
 Debug = 0,
 Pause = 0,
-Minsectsz	= 512,
-Maxsectsz	= 2048,
-Highshort	= ((1ul<<16) - 1) << 16,
-Maxdevs		= 8,
-CF		= 1,
-Flopid		= 0,
-Baseid		= 0x80,
-Diskint		= 0x13,
-Fixeddisk	= 1<<0,
-Drlock		= 1<<1,
-Edd		= 1<<2,
-Bit64ext	= 1<<3,
-Biosinit	= 0,
+Minsectsz = 512,
+Maxsectsz = 2048,
+Highshort = ((1ul<<16) - 1) << 16,
+Maxdevs = 8,
+CF = 1,
+Flopid = 0,
+Baseid = 0x80,
+Diskint = 0x13,
+Fixeddisk = 1<<0,
+Drlock = 1<<1,
+Edd = 1<<2,
+Bit64ext = 1<<3,
+Biosinit = 0,
 Biosdrvsts,
-Biosdrvparam	= 8,
+Biosdrvparam = 8,
 Biosctlrinit,
-Biosreset	=  0xd,
-Biosdrvrdy	= 0x10,
-Biosckext	= 0x41,
+Biosreset = 0xd,
+Biosdrvrdy = 0x10,
+Biosckext = 0x41,
 Biosrdsect,
-Biosedrvparam	= 0x48,
-Imok		= 0x55aa,
-Youreok		= 0xaa55,
+Biosedrvparam = 0x48,
+Imok = 0x55aa,
+Youreok = 0xaa55,
 };
 enum {
 Qzero,
-Qtopdir		= 1,
+Qtopdir = 1,
 Qtopbase,
-Qtopctl		= Qtopbase,
+Qtopctl = Qtopbase,
 Qtopend,
 Qunitdir,
 Qunitbase,
-Qctl		= Qunitbase,
+Qctl = Qunitbase,
 Qdata,
-Qtopfiles	= Qtopend-Qtopbase,
+Qtopfiles = Qtopend-Qtopbase,
 };
 struct Biosdev {
 Devbytes size;
 Devbytes offset;
-Devid	id;
-ushort	sectsz;
-Chan	*rootchan;
+Devid id;
+ushort sectsz;
+Chan *rootchan;
 Bootfs;
 };
 struct Dap {
-uchar	size;
-uchar	_unused1;
-uchar	nsects;
-uchar	_unused2;
+uchar size;
+uchar _unused1;
+uchar nsects;
+uchar _unused2;
 union {
-ulong	addr;
+ulong addr;
 struct {
-ushort	addroff;
-ushort	addrseg;
+ushort addroff;
+ushort addrseg;
 };
 };
-uvlong	stsect;
-uvlong	addr64;
-ulong	lnsects;
-ulong	_unused3;
+uvlong stsect;
+uvlong addr64;
+ulong lnsects;
+ulong _unused3;
 };
 struct Edrvparam {
-ushort	size;
-ushort	flags;
-ulong	physcyls;
-ulong	physheads;
-ulong	phystracksects;
-uvlong	physsects;
-ushort	sectsz;
-ushort	dpteoff;
-ushort	dpteseg;
-ushort	key;
-uchar	dpilen;
-uchar	_unused1;
-ushort	_unused2;
-char	bustype[4];
-char	ifctype[8];
-uvlong	ifcpath;
-uvlong	devpath[2];
-uchar	_unused3;
-uchar	dpicksum;
+ushort size;
+ushort flags;
+ulong physcyls;
+ulong physheads;
+ulong phystracksects;
+uvlong physsects;
+ushort sectsz;
+ushort dpteoff;
+ushort dpteseg;
+ushort key;
+uchar dpilen;
+uchar _unused1;
+ushort _unused2;
+char bustype[4];
+char ifctype[8];
+uvlong ifcpath;
+uvlong devpath[2];
+uchar _unused3;
+uchar dpicksum;
 };
 int biosinited;
 int biosndevs;
@@ -110,9 +110,9 @@ void *biosgetfspart(int i, char *name, int chatty);
 static Biosdev bdev[Maxdevs];
 static Ureg regs;
 static RWlock devs;
-static int	dreset(Devid drive);
-static Devbytes	extgetsize(Biosdev *);
-static int	drivecap(Devid drive);
+static int dreset(Devid drive);
+static Devbytes extgetsize(Biosdev *);
+static int drivecap(Devid drive);
 static char *
 strerr(uchar err)
 {
@@ -550,7 +550,7 @@ dev, n, offset, want, bdp->id);
 part = offset % bdp->sectsz;
 if (part != 0) {
 offset -= part;
-totnr  -= part;
+totnr -= part;
 if (totnr < 0) {
 print("biosread0: negative count %ld\n", totnr);
 return -1;

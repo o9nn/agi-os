@@ -35,7 +35,7 @@ Each entry is a pair from (the index of) the transported species (in the `specie
 to its transportation rate (each species only has a single transportation rate, the sum of all
 its transportation reactions' rates). If the transportation rate is uniform across all edges,
 stores a single value (in a size (1,1) sparse matrix). Otherwise, stores these in a sparse
-matrix  where value (i,j) is the species transportation rate from vertex i to vertex j.
+matrix where value (i,j) is the species transportation rate from vertex i to vertex j.
 """
 transport_rates::Vector{Pair{Int64, SparseMatrixCSC{S, Int64}}}
 """
@@ -229,7 +229,7 @@ end
 function build_jac_prototype(ns_jac_prototype::SparseMatrixCSC{Float64, Int64},
 transport_rates::Vector{Pair{Int64, SparseMatrixCSC{T, Int64}}},
 lrs::LatticeReactionSystem; set_nonzero = false) where {T}
-# Finds the indices of  both the transport species,
+# Finds the indices of both the transport species,
 # and the species with transport only (that is, with no non-spatial dynamics but with spatial dynamics).
 trans_species = [tr[1] for tr in transport_rates]
 trans_only_species = filter(s_idx -> !Base.isstored(ns_jac_prototype, s_idx, s_idx),

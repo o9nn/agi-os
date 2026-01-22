@@ -3,158 +3,158 @@
 #include <auth.h>
 #include <bio.h>
 #include "imap4d.h"
-char	*csquery(char *attr, char *val, char *rattr);
-typedef struct	ParseCmd	ParseCmd;
+char *csquery(char *attr, char *val, char *rattr);
+typedef struct ParseCmd ParseCmd;
 enum
 {
-UlongMax	= 4294967295,
+UlongMax = 4294967295,
 };
 struct ParseCmd
 {
-char	*name;
-void	(*f)(char *tg, char *cmd);
+char *name;
+void (*f)(char *tg, char *cmd);
 };
-static	void	appendCmd(char *tg, char *cmd);
-static	void	authenticateCmd(char *tg, char *cmd);
-static	void	capabilityCmd(char *tg, char *cmd);
-static	void	closeCmd(char *tg, char *cmd);
-static	void	copyCmd(char *tg, char *cmd);
-static	void	createCmd(char *tg, char *cmd);
-static	void	deleteCmd(char *tg, char *cmd);
-static	void	expungeCmd(char *tg, char *cmd);
-static	void	fetchCmd(char *tg, char *cmd);
-static	void	idleCmd(char *tg, char *cmd);
-static	void	listCmd(char *tg, char *cmd);
-static	void	loginCmd(char *tg, char *cmd);
-static	void	logoutCmd(char *tg, char *cmd);
-static	void	namespaceCmd(char *tg, char *cmd);
-static	void	noopCmd(char *tg, char *cmd);
-static	void	renameCmd(char *tg, char *cmd);
-static	void	searchCmd(char *tg, char *cmd);
-static	void	selectCmd(char *tg, char *cmd);
-static	void	statusCmd(char *tg, char *cmd);
-static	void	storeCmd(char *tg, char *cmd);
-static	void	subscribeCmd(char *tg, char *cmd);
-static	void	uidCmd(char *tg, char *cmd);
-static	void	unsubscribeCmd(char *tg, char *cmd);
-static	void	copyUCmd(char *tg, char *cmd, int uids);
-static	void	fetchUCmd(char *tg, char *cmd, int uids);
-static	void	searchUCmd(char *tg, char *cmd, int uids);
-static	void	storeUCmd(char *tg, char *cmd, int uids);
-static	void	imap4(int);
-static	void	status(int expungeable, int uids);
-static	void	cleaner(void);
-static	void	check(void);
-static	int	catcher(void*, char*);
-static	Search	*searchKey(int first);
-static	Search	*searchKeys(int first, Search *tail);
-static	char	*astring(void);
-static	char	*atomString(char *disallowed, char *initial);
-static	char	*atom(void);
-static	void	badsyn(void);
-static	void	clearcmd(void);
-static	char	*command(void);
-static	void	crnl(void);
-static	Fetch	*fetchAtt(char *s, Fetch *f);
-static	Fetch	*fetchWhat(void);
-static	int	flagList(void);
-static	int	flags(void);
-static	int	getc(void);
-static	char	*listmbox(void);
-static	char	*literal(void);
-static	ulong	litlen(void);
-static	MsgSet	*msgSet(int);
-static	void	mustBe(int c);
-static	ulong	number(int nonzero);
-static	int	peekc(void);
-static	char	*quoted(void);
-static	void	sectText(Fetch *f, int mimeOk);
-static	ulong	seqNo(void);
-static	Store	*storeWhat(void);
-static	char	*tag(void);
-static	ulong	uidNo(void);
-static	void	ungetc(void);
-static	ParseCmd	SNonAuthed[] =
+static void appendCmd(char *tg, char *cmd);
+static void authenticateCmd(char *tg, char *cmd);
+static void capabilityCmd(char *tg, char *cmd);
+static void closeCmd(char *tg, char *cmd);
+static void copyCmd(char *tg, char *cmd);
+static void createCmd(char *tg, char *cmd);
+static void deleteCmd(char *tg, char *cmd);
+static void expungeCmd(char *tg, char *cmd);
+static void fetchCmd(char *tg, char *cmd);
+static void idleCmd(char *tg, char *cmd);
+static void listCmd(char *tg, char *cmd);
+static void loginCmd(char *tg, char *cmd);
+static void logoutCmd(char *tg, char *cmd);
+static void namespaceCmd(char *tg, char *cmd);
+static void noopCmd(char *tg, char *cmd);
+static void renameCmd(char *tg, char *cmd);
+static void searchCmd(char *tg, char *cmd);
+static void selectCmd(char *tg, char *cmd);
+static void statusCmd(char *tg, char *cmd);
+static void storeCmd(char *tg, char *cmd);
+static void subscribeCmd(char *tg, char *cmd);
+static void uidCmd(char *tg, char *cmd);
+static void unsubscribeCmd(char *tg, char *cmd);
+static void copyUCmd(char *tg, char *cmd, int uids);
+static void fetchUCmd(char *tg, char *cmd, int uids);
+static void searchUCmd(char *tg, char *cmd, int uids);
+static void storeUCmd(char *tg, char *cmd, int uids);
+static void imap4(int);
+static void status(int expungeable, int uids);
+static void cleaner(void);
+static void check(void);
+static int catcher(void*, char*);
+static Search *searchKey(int first);
+static Search *searchKeys(int first, Search *tail);
+static char *astring(void);
+static char *atomString(char *disallowed, char *initial);
+static char *atom(void);
+static void badsyn(void);
+static void clearcmd(void);
+static char *command(void);
+static void crnl(void);
+static Fetch *fetchAtt(char *s, Fetch *f);
+static Fetch *fetchWhat(void);
+static int flagList(void);
+static int flags(void);
+static int getc(void);
+static char *listmbox(void);
+static char *literal(void);
+static ulong litlen(void);
+static MsgSet *msgSet(int);
+static void mustBe(int c);
+static ulong number(int nonzero);
+static int peekc(void);
+static char *quoted(void);
+static void sectText(Fetch *f, int mimeOk);
+static ulong seqNo(void);
+static Store *storeWhat(void);
+static char *tag(void);
+static ulong uidNo(void);
+static void ungetc(void);
+static ParseCmd SNonAuthed[] =
 {
-{"capability",		capabilityCmd},
-{"logout",		logoutCmd},
-{"x-exit",		logoutCmd},
-{"noop",		noopCmd},
-{"login",		loginCmd},
-{"authenticate",	authenticateCmd},
+{"capability", capabilityCmd},
+{"logout", logoutCmd},
+{"x-exit", logoutCmd},
+{"noop", noopCmd},
+{"login", loginCmd},
+{"authenticate", authenticateCmd},
 nil
 };
-static	ParseCmd	SAuthed[] =
+static ParseCmd SAuthed[] =
 {
-{"capability",		capabilityCmd},
-{"logout",		logoutCmd},
-{"x-exit",		logoutCmd},
-{"noop",		noopCmd},
-{"append",		appendCmd},
-{"create",		createCmd},
-{"delete",		deleteCmd},
-{"examine",		selectCmd},
-{"select",		selectCmd},
-{"idle",		idleCmd},
-{"list",		listCmd},
-{"lsub",		listCmd},
-{"namespace",		namespaceCmd},
-{"rename",		renameCmd},
-{"status",		statusCmd},
-{"subscribe",		subscribeCmd},
-{"unsubscribe",		unsubscribeCmd},
+{"capability", capabilityCmd},
+{"logout", logoutCmd},
+{"x-exit", logoutCmd},
+{"noop", noopCmd},
+{"append", appendCmd},
+{"create", createCmd},
+{"delete", deleteCmd},
+{"examine", selectCmd},
+{"select", selectCmd},
+{"idle", idleCmd},
+{"list", listCmd},
+{"lsub", listCmd},
+{"namespace", namespaceCmd},
+{"rename", renameCmd},
+{"status", statusCmd},
+{"subscribe", subscribeCmd},
+{"unsubscribe", unsubscribeCmd},
 nil
 };
-static	ParseCmd	SSelected[] =
+static ParseCmd SSelected[] =
 {
-{"capability",		capabilityCmd},
-{"logout",		logoutCmd},
-{"x-exit",		logoutCmd},
-{"noop",		noopCmd},
-{"append",		appendCmd},
-{"create",		createCmd},
-{"delete",		deleteCmd},
-{"examine",		selectCmd},
-{"select",		selectCmd},
-{"idle",		idleCmd},
-{"list",		listCmd},
-{"lsub",		listCmd},
-{"namespace",		namespaceCmd},
-{"rename",		renameCmd},
-{"status",		statusCmd},
-{"subscribe",		subscribeCmd},
-{"unsubscribe",		unsubscribeCmd},
-{"check",		noopCmd},
-{"close",		closeCmd},
-{"copy",		copyCmd},
-{"expunge",		expungeCmd},
-{"fetch",		fetchCmd},
-{"search",		searchCmd},
-{"store",		storeCmd},
-{"uid",			uidCmd},
+{"capability", capabilityCmd},
+{"logout", logoutCmd},
+{"x-exit", logoutCmd},
+{"noop", noopCmd},
+{"append", appendCmd},
+{"create", createCmd},
+{"delete", deleteCmd},
+{"examine", selectCmd},
+{"select", selectCmd},
+{"idle", idleCmd},
+{"list", listCmd},
+{"lsub", listCmd},
+{"namespace", namespaceCmd},
+{"rename", renameCmd},
+{"status", statusCmd},
+{"subscribe", subscribeCmd},
+{"unsubscribe", unsubscribeCmd},
+{"check", noopCmd},
+{"close", closeCmd},
+{"copy", copyCmd},
+{"expunge", expungeCmd},
+{"fetch", fetchCmd},
+{"search", searchCmd},
+{"store", storeCmd},
+{"uid", uidCmd},
 nil
 };
-static	char		*atomStop = "(){%*\"\\";
-static	Chalstate	*chal;
-static	int		chaled;
-static	ParseCmd	*imapState;
-static	jmp_buf		parseJmp;
-static	char		*parseMsg;
-static	int		allowPass;
-static	int		allowCR;
-static	int		exiting;
-static	QLock		imaplock;
-static	int		idlepid = -1;
-Biobuf	bout;
-Biobuf	bin;
-char	username[UserNameLen];
-char	mboxDir[MboxNameLen];
-char	*servername;
-char	*site;
-char	*remote;
-Box	*selected;
-Bin	*parseBin;
-int	debug;
+static char *atomStop = "(){%*\"\\";
+static Chalstate *chal;
+static int chaled;
+static ParseCmd *imapState;
+static jmp_buf parseJmp;
+static char *parseMsg;
+static int allowPass;
+static int allowCR;
+static int exiting;
+static QLock imaplock;
+static int idlepid = -1;
+Biobuf bout;
+Biobuf bin;
+char username[UserNameLen];
+char mboxDir[MboxNameLen];
+char *servername;
+char *site;
+char *remote;
+Box *selected;
+Bin *parseBin;
+int debug;
 void
 main(int argc, char *argv[])
 {
@@ -915,14 +915,14 @@ if(selected->writable)
 s = "READ-WRITE";
 Bprint(&bout, "%s OK [%s] %s %s completed\r\n", tg, s, cmd, mbox);
 }
-static NamedInt	statusItems[] =
+static NamedInt statusItems[] =
 {
-{"MESSAGES",	SMessages},
-{"RECENT",	SRecent},
-{"UIDNEXT",	SUidNext},
-{"UIDVALIDITY",	SUidValidity},
-{"UNSEEN",	SUnseen},
-{nil,		0}
+{"MESSAGES", SMessages},
+{"RECENT", SRecent},
+{"UIDNEXT", SUidNext},
+{"UIDVALIDITY", SUidValidity},
+{"UNSEEN", SUnseen},
+{nil, 0}
 };
 static void
 statusCmd(char *tg, char *cmd)
@@ -1188,7 +1188,7 @@ else
 f = flags();
 return mkStore(c, w, f);
 }
-static char *fetchAtom	= "(){}%*\"\\[]";
+static char *fetchAtom = "(){}%*\"\\[]";
 static Fetch*
 fetchWhat(void)
 {
@@ -1315,55 +1315,55 @@ f->hdrs = revSList(h);
 }
 static NamedInt searchMap[] =
 {
-{"ALL",		SKAll},
-{"ANSWERED",	SKAnswered},
-{"DELETED",	SKDeleted},
-{"FLAGGED",	SKFlagged},
-{"NEW",		SKNew},
-{"OLD",		SKOld},
-{"RECENT",	SKRecent},
-{"SEEN",	SKSeen},
-{"UNANSWERED",	SKUnanswered},
-{"UNDELETED",	SKUndeleted},
-{"UNFLAGGED",	SKUnflagged},
-{"DRAFT",	SKDraft},
-{"UNDRAFT",	SKUndraft},
-{"UNSEEN",	SKUnseen},
-{nil,		0}
+{"ALL", SKAll},
+{"ANSWERED", SKAnswered},
+{"DELETED", SKDeleted},
+{"FLAGGED", SKFlagged},
+{"NEW", SKNew},
+{"OLD", SKOld},
+{"RECENT", SKRecent},
+{"SEEN", SKSeen},
+{"UNANSWERED", SKUnanswered},
+{"UNDELETED", SKUndeleted},
+{"UNFLAGGED", SKUnflagged},
+{"DRAFT", SKDraft},
+{"UNDRAFT", SKUndraft},
+{"UNSEEN", SKUnseen},
+{nil, 0}
 };
 static NamedInt searchMapStr[] =
 {
-{"CHARSET",	SKCharset},
-{"BCC",		SKBcc},
-{"BODY",	SKBody},
-{"CC",		SKCc},
-{"FROM",	SKFrom},
-{"SUBJECT",	SKSubject},
-{"TEXT",	SKText},
-{"TO",		SKTo},
-{nil,		0}
+{"CHARSET", SKCharset},
+{"BCC", SKBcc},
+{"BODY", SKBody},
+{"CC", SKCc},
+{"FROM", SKFrom},
+{"SUBJECT", SKSubject},
+{"TEXT", SKText},
+{"TO", SKTo},
+{nil, 0}
 };
 static NamedInt searchMapDate[] =
 {
-{"BEFORE",	SKBefore},
-{"ON",		SKOn},
-{"SINCE",	SKSince},
-{"SENTBEFORE",	SKSentBefore},
-{"SENTON",	SKSentOn},
-{"SENTSINCE",	SKSentSince},
-{nil,		0}
+{"BEFORE", SKBefore},
+{"ON", SKOn},
+{"SINCE", SKSince},
+{"SENTBEFORE", SKSentBefore},
+{"SENTON", SKSentOn},
+{"SENTSINCE", SKSentSince},
+{nil, 0}
 };
 static NamedInt searchMapFlag[] =
 {
-{"KEYWORD",	SKKeyword},
-{"UNKEYWORD",	SKUnkeyword},
-{nil,		0}
+{"KEYWORD", SKKeyword},
+{"UNKEYWORD", SKUnkeyword},
+{nil, 0}
 };
 static NamedInt searchMapNum[] =
 {
-{"SMALLER",	SKSmaller},
-{"LARGER",	SKLarger},
-{nil,		0}
+{"SMALLER", SKSmaller},
+{"LARGER", SKLarger},
+{nil, 0}
 };
 static Search*
 searchKeys(int first, Search *tail)

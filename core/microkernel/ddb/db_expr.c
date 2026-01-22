@@ -12,7 +12,7 @@
 static boolean_t
 db_term(db_expr_t *valuep)
 {
-int	t;
+int t;
 switch(t = db_read_token()) {
 case tIDENT:
 if (!db_value_of_name(db_tok_string, valuep)) {
@@ -57,8 +57,8 @@ return (FALSE);
 int
 db_size_option(const char *modif, boolean_t *u_option, boolean_t *t_option)
 {
-const char 	*p;
-int		size = sizeof(int);
+const char *p;
+int size = sizeof(int);
 *u_option = FALSE;
 *t_option = FALSE;
 for (p = modif; *p; p++) {
@@ -85,11 +85,11 @@ return(size);
 static boolean_t
 db_unary(db_expr_t *valuep)
 {
-int	  t;
-int	  size;
+int t;
+int size;
 boolean_t u_opt, t_opt;
-task_t	  task;
-extern	  task_t db_default_task;
+task_t task;
+extern task_t db_default_task;
 t = db_read_token();
 if (t == tMINUS) {
 if (!db_unary(valuep)) {
@@ -128,9 +128,9 @@ return (db_term(valuep));
 static boolean_t
 db_mult_expr(db_expr_t *valuep)
 {
-db_expr_t	lhs = 0, rhs;
-int		t;
-char		c;
+db_expr_t lhs = 0, rhs;
+int t;
+char c;
 if (!db_unary(&lhs))
 return (FALSE);
 t = db_read_token();
@@ -168,9 +168,9 @@ return (TRUE);
 static boolean_t
 db_add_expr(db_expr_t *valuep)
 {
-db_expr_t	lhs, rhs;
-int		t;
-char		c;
+db_expr_t lhs, rhs;
+int t;
+char c;
 if (!db_mult_expr(&lhs))
 return (FALSE);
 t = db_read_token();
@@ -195,8 +195,8 @@ return (TRUE);
 static boolean_t
 db_shift_expr(db_expr_t *valuep)
 {
-db_expr_t	lhs, rhs;
-int		t;
+db_expr_t lhs, rhs;
+int t;
 if (!db_add_expr(&lhs))
 return (FALSE);
 t = db_read_token();
@@ -223,9 +223,9 @@ return (TRUE);
 static boolean_t
 db_logical_relation_expr(db_expr_t *valuep)
 {
-db_expr_t	lhs, rhs;
-int		t;
-char		op[3];
+db_expr_t lhs, rhs;
+int t;
+char op[3];
 if (!db_shift_expr(&lhs))
 return(FALSE);
 t = db_read_token();
@@ -268,8 +268,8 @@ return (TRUE);
 static boolean_t
 db_logical_and_expr(db_expr_t *valuep)
 {
-db_expr_t	lhs, rhs;
-int		t;
+db_expr_t lhs, rhs;
+int t;
 if (!db_logical_relation_expr(&lhs))
 return(FALSE);
 t = db_read_token();
@@ -286,8 +286,8 @@ return (TRUE);
 static boolean_t
 db_logical_or_expr(db_expr_t *valuep)
 {
-db_expr_t	lhs, rhs;
-int		t;
+db_expr_t lhs, rhs;
+int t;
 if (!db_logical_and_expr(&lhs))
 return(FALSE);
 t = db_read_token();

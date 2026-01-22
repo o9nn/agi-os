@@ -22,15 +22,15 @@ int (*compare_fn)(Linkage, Linkage);
 };
 struct Resources_s
 {
-int    max_parse_time;
+int max_parse_time;
 size_t max_memory;
 double time_when_parse_started;
 size_t space_when_parse_started;
 double when_created;
 double when_last_called;
 double cumulative_time;
-bool   memory_exhausted;
-bool   timer_expired;
+bool memory_exhausted;
+bool timer_expired;
 };
 struct Parse_Options_s
 {
@@ -65,11 +65,11 @@ word_queue_t *next;
 };
 struct Sentence_s
 {
-Dictionary  dict;
+Dictionary dict;
 const char *orig_sentence;
 size_t length;
-Word  *word;
-String_set *   string_set;
+Word *word;
+String_set * string_set;
 Pool_desc * Match_node_pool;
 Pool_desc * Table_tracon_pool;
 Pool_desc * wordvec_pool;
@@ -88,13 +88,13 @@ word_queue_t *word_queue;
 word_queue_t *word_queue_last;
 size_t gword_node_num;
 size_t min_len_multi_pruning;
-int    num_linkages_found;
-bool   overflowed;
+int num_linkages_found;
+bool overflowed;
 size_t num_linkages_alloced;
 size_t num_linkages_post_processed;
 size_t num_valid_linkages;
 unsigned int null_count;
-Linkage        lnkages;
+Linkage lnkages;
 Postprocessor * postprocessor;
 Postprocessor * constituent_pp;
 unsigned int rand_state;

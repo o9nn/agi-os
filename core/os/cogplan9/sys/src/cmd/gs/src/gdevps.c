@@ -69,46 +69,46 @@ gs_private_st_suffix_add1_final(st_device_pswrite, gx_device_pswrite,
 device_pswrite_reloc_ptrs, gx_device_finalize,
 st_device_psdf, image_writer);
 #define psw_procs\
-{	psw_open,\
+{ psw_open,\
 gx_upright_get_initial_matrix,\
-NULL,			\
+NULL, \
 psw_output_page,\
 psw_close,\
 gx_default_rgb_map_rgb_color,\
 gx_default_rgb_map_color_rgb,\
 psw_fill_rectangle,\
-NULL,			\
+NULL, \
 psw_copy_mono,\
 psw_copy_color,\
-NULL,			\
+NULL, \
 psdf_get_bits,\
 psw_get_params,\
 psw_put_params,\
-NULL,			\
-NULL,			\
-NULL,			\
-NULL,			\
+NULL, \
+NULL, \
+NULL, \
+NULL, \
 gx_page_device_get_page_device,\
-NULL,			\
-NULL,			\
-NULL,			\
-NULL,			\
+NULL, \
+NULL, \
+NULL, \
+NULL, \
 psw_fill_path,\
 psw_stroke_path,\
 psw_fill_mask,\
 gdev_vector_fill_trapezoid,\
 gdev_vector_fill_parallelogram,\
 gdev_vector_fill_triangle,\
-NULL ,	\
+NULL , \
 psw_begin_image,\
-NULL,			\
-NULL,			\
-NULL,			\
+NULL, \
+NULL, \
+NULL, \
 NULL,\
-NULL,			\
-NULL,			\
+NULL, \
+NULL, \
 psdf_get_bits_rectangle,\
-NULL,			\
+NULL, \
 psdf_create_compositor\
 }
 const gx_device_pswrite gs_pswrite_device = {
@@ -118,7 +118,7 @@ DEFAULT_WIDTH_10THS * X_DPI / 10,
 DEFAULT_HEIGHT_10THS * Y_DPI / 10,
 X_DPI, Y_DPI, 3, 24, 255, 255, 256, 256),
 psw_procs,
-psdf_initial_values(psdf_version_default, 1  ),
+psdf_initial_values(psdf_version_default, 1 ),
 PSWRITE_COMMON_VALUES(LanguageLevel_default,
 0 ,
 PSWRITE_PROCSET_VERSION )
@@ -130,7 +130,7 @@ DEFAULT_WIDTH_10THS * X_DPI / 10,
 DEFAULT_HEIGHT_10THS * Y_DPI / 10,
 X_DPI, Y_DPI, 3, 24, 255, 255, 256, 256),
 psw_procs,
-psdf_initial_values(psdf_version_default, 1  ),
+psdf_initial_values(psdf_version_default, 1 ),
 PSWRITE_COMMON_VALUES(LanguageLevel_default,
 1 ,
 PSWRITE_PROCSET_VERSION )

@@ -1,46 +1,46 @@
 (define ontological-inheritance-rule
-    (BindLink
-        (VariableList
-            (VariableNode "$A")
-            (VariableNode "$B"))
-        (AndLink
-            (InheritanceLink
-                (VariableNode "$A")
-                (VariableNode "$B"))
-            (InheritanceLink
-                (VariableNode "$B")
-                (VariableNode "$A")))
-        (ExecutionOutputLink
-            (GroundedSchemaNode "scm: ontological-inheritance-formula")
-            (ListLink
-                (OntologicalInheritanceLink
-                    (VariableNode "$A")
-                    (VariableNode "$B"))
-                (InheritanceLink
-                    (VariableNode "$A")
-                    (VariableNode "$B"))
-                (InheritanceLink
-                    (VariableNode "$B")
-                    (VariableNode "$A"))))))
+(BindLink
+(VariableList
+(VariableNode "$A")
+(VariableNode "$B"))
+(AndLink
+(InheritanceLink
+(VariableNode "$A")
+(VariableNode "$B"))
+(InheritanceLink
+(VariableNode "$B")
+(VariableNode "$A")))
+(ExecutionOutputLink
+(GroundedSchemaNode "scm: ontological-inheritance-formula")
+(ListLink
+(OntologicalInheritanceLink
+(VariableNode "$A")
+(VariableNode "$B"))
+(InheritanceLink
+(VariableNode "$A")
+(VariableNode "$B"))
+(InheritanceLink
+(VariableNode "$B")
+(VariableNode "$A"))))))
 (define (ontological-inheritance-formula OAB AB BA)
-    (cog-set-tv!
-        OAB
-        (ontological-inheritance-side-effect-free-formula OAB AB BA)
-    )
+(cog-set-tv!
+OAB
+(ontological-inheritance-side-effect-free-formula OAB AB BA)
+)
 )
 (define (ontological-inheritance-side-effect-free-formula OAB AB BA)
-    (let
-        ((sAB (cog-mean AB))
-         (cAB (cog-confidence AB))
-         (sBA (cog-mean BA))
-         (cBA (cog-confidence BA))
-        )
-        (if 
-            (<= sAB sBA)
-            (stv 0 (min cAB cBA))
-            (stv (- sAB sBA) (min cAB cBA)))))
+(let
+((sAB (cog-mean AB))
+(cAB (cog-confidence AB))
+(sBA (cog-mean BA))
+(cBA (cog-confidence BA))
+)
+(if
+(<= sAB sBA)
+(stv 0 (min cAB cBA))
+(stv (- sAB sBA) (min cAB cBA)))))
 (define ontological-inheritance-rule-name
-  (DefinedSchemaNode "ontological-inheritance-rule"))
+(DefinedSchemaNode "ontological-inheritance-rule"))
 (DefineLink
-  ontological-inheritance-rule-name
-  ontological-inheritance-rule)
+ontological-inheritance-rule-name
+ontological-inheritance-rule)

@@ -142,7 +142,7 @@ return code;
 }
 #define NUM_CMYK_COMPONENTS 4
 #define MAX_FILE_NAME_SIZE gp_file_name_sizeof
-#define MAX_COLOR_VALUE	255
+#define MAX_COLOR_VALUE 255
 private dev_proc_open_device(tiffsep_prn_open);
 private dev_proc_close_device(tiffsep_prn_close);
 private dev_proc_get_params(tiffsep_get_params);
@@ -191,65 +191,65 @@ gs_private_st_composite_final(st_tiffsep_device, tiffsep_device,
 "tiffsep_device", tiffsep_device_enum_ptrs, tiffsep_device_reloc_ptrs,
 tiffsep_device_finalize);
 #define device_procs \
-{	tiffsep_prn_open,\
+{ tiffsep_prn_open,\
 gx_default_get_initial_matrix,\
-NULL,				\
-gdev_prn_output_page,		\
-tiffsep_prn_close,		\
-NULL,				\
-tiffsep_decode_color,		\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-tiffsep_get_params,		\
-tiffsep_put_params,		\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-gx_page_device_get_page_device,	\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
+NULL, \
+gdev_prn_output_page, \
+tiffsep_prn_close, \
+NULL, \
+tiffsep_decode_color, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+tiffsep_get_params, \
+tiffsep_put_params, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+gx_page_device_get_page_device, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
 tiffsep_get_color_mapping_procs,\
-tiffsep_get_color_comp_index,	\
-tiffsep_encode_color,		\
-tiffsep_decode_color,		\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
+tiffsep_get_color_comp_index, \
+tiffsep_encode_color, \
+tiffsep_decode_color, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
 tiffsep_update_spot_equivalent_colors \
 }
 #define tiffsep_device_body(procs, dname, ncomp, pol, depth, mg, mc, cn)\
@@ -258,20 +258,20 @@ std_device_full_body_type_extended(tiffsep_device, &procs, dname,\
 (int)((long)(DEFAULT_WIDTH_10THS) * (X_DPI) / 10),\
 (int)((long)(DEFAULT_HEIGHT_10THS) * (Y_DPI) / 10),\
 X_DPI, Y_DPI,\
-GX_DEVICE_COLOR_MAX_COMPONENTS,	\
-ncomp,		\
-pol,			\
-depth, 0,		\
-mg, mc,		\
-mg + 1, mc + 1,	\
-GX_CINFO_SEP_LIN,	\
-cn,			\
-0, 0,			\
-0, 0, 0, 0		\
+GX_DEVICE_COLOR_MAX_COMPONENTS, \
+ncomp, \
+pol, \
+depth, 0, \
+mg, mc, \
+mg + 1, mc + 1, \
+GX_CINFO_SEP_LIN, \
+cn, \
+0, 0, \
+0, 0, 0, 0 \
 ),\
 prn_device_body_rest_(tiffsep_print_page),\
-{ 0 },			\
-{{ 0 }},		\
+{ 0 }, \
+{{ 0 }}, \
 { 0 }
 #define NC ((arch_sizeof_color_index <= 8) ? arch_sizeof_color_index : 8)
 private const gx_device_procs spot_cmyk_procs = device_procs;
@@ -432,7 +432,7 @@ private int
 number_output_separations(int num_dev_comp, int num_std_colorants,
 int num_order, int num_spot)
 {
-int num_comp =  num_std_colorants + num_spot;
+int num_comp = num_std_colorants + num_spot;
 if (num_comp > num_dev_comp)
 num_comp = num_dev_comp;
 if (num_order)

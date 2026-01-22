@@ -5,7 +5,7 @@
 #include "fns.h"
 #include "io.h"
 #include "mp.h"
-#define	cpuserver	1
+#define cpuserver 1
 _MP_ *_mp_;
 static _MP_*
 mpscan(uchar *addr, int len)
@@ -44,13 +44,13 @@ return mpscan(KADDR(0xF0000), 0x10000);
 }
 static int identify(void);
 PCArch archmp = {
-.id=		"_MP_",
-.ident=		identify,
-.reset=		mpshutdown,
-.intrinit=	mpinit,
-.intrenable=	mpintrenable,
-.fastclock=	i8253read,
-.timerset=	lapictimerset,
+.id= "_MP_",
+.ident= identify,
+.reset= mpshutdown,
+.intrinit= mpinit,
+.intrenable= mpintrenable,
+.fastclock= i8253read,
+.timerset= lapictimerset,
 };
 static int
 identify(void)

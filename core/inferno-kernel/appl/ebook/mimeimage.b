@@ -17,7 +17,7 @@ imagemodules := array[] of {
 ("gif", RImagefile->READGIFPATH),
 ("jpeg", RImagefile->READJPGPATH),
 ("jpg", RImagefile->READJPGPATH),
-("xbm", RImagefile->READXBMPATH),		# not actually a mime type.
+("xbm", RImagefile->READXBMPATH), # not actually a mime type.
 ("pic", RImagefile->READPICPATH),
 ("png", RImagefile->READPNGPATH),
 };

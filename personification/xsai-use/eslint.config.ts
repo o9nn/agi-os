@@ -1,16 +1,16 @@
 import antfu from '@antfu/eslint-config'
 export default antfu(
-  {
-    jsx: true,
-    react: true,
-    svelte: true,
-    vue: true,
-    typescript: { tsconfigPath: './tsconfig.json' },
-  },
-  {
-    ignores: [
-      'cspell.config.yaml',
-      'cspell.config.yml',
-    ],
-  },
+{
+jsx: true,
+react: true,
+svelte: true,
+vue: true,
+typescript: { tsconfigPath: './tsconfig.json' },
+},
+{
+ignores: [
+'cspell.config.yaml',
+'cspell.config.yml',
+],
+},
 )

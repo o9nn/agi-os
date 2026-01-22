@@ -10,28 +10,28 @@
 #include <plumb.h>
 #include "dat.h"
 #include "fns.h"
-#define	MAXSNARF	100*1024
-char Einuse[] =		"file in use";
-char Edeleted[] =	"window deleted";
-char Ebadreq[] =	"bad graphics request";
-char Etooshort[] =	"buffer too small";
-char Ebadtile[] =	"unknown tile";
-char Eshort[] =		"short i/o request";
-char Elong[] = 		"snarf buffer too long";
-char Eunkid[] = 	"unknown id in attach";
-char Ebadrect[] = 	"bad rectangle in attach";
-char Ewindow[] = 	"cannot make window";
-char Enowindow[] = 	"window has no image";
-char Ebadmouse[] = 	"bad format on /dev/mouse";
-char Ebadwrect[] = 	"rectangle outside screen";
-char Ebadoffset[] = 	"window read not on scan line boundary";
+#define MAXSNARF 100*1024
+char Einuse[] = "file in use";
+char Edeleted[] = "window deleted";
+char Ebadreq[] = "bad graphics request";
+char Etooshort[] = "buffer too small";
+char Ebadtile[] = "unknown tile";
+char Eshort[] = "short i/o request";
+char Elong[] = "snarf buffer too long";
+char Eunkid[] = "unknown id in attach";
+char Ebadrect[] = "bad rectangle in attach";
+char Ewindow[] = "cannot make window";
+char Enowindow[] = "window has no image";
+char Ebadmouse[] = "bad format on /dev/mouse";
+char Ebadwrect[] = "rectangle outside screen";
+char Ebadoffset[] = "window read not on scan line boundary";
 extern char Eperm[];
-static	Xfid	*xfidfree;
-static	Xfid	*xfid;
-static	Channel	*cxfidalloc;
-static	Channel	*cxfidfree;
-static	char	*tsnarf;
-static	int	ntsnarf;
+static Xfid *xfidfree;
+static Xfid *xfid;
+static Channel *cxfidalloc;
+static Channel *cxfidfree;
+static char *tsnarf;
+static int ntsnarf;
 void
 xfidallocthread(void*)
 {
@@ -222,7 +222,7 @@ return;
 w->ctlopen = TRUE;
 break;
 case Qkbdin:
-if(w !=  wkeyboard){
+if(w != wkeyboard){
 filsysrespond(x->fs, x, &t, Eperm);
 return;
 }

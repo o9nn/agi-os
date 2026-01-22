@@ -122,10 +122,10 @@ static size_t ggml_backend_amx_buffer_type_get_alloc_size(ggml_backend_buffer_ty
 return ggml_backend_amx_get_alloc_size(tensor);
 GGML_UNUSED(buft);
 }
-#define ARCH_GET_XCOMP_PERM     0x1022
-#define ARCH_REQ_XCOMP_PERM     0x1023
-#define XFEATURE_XTILECFG       17
-#define XFEATURE_XTILEDATA      18
+#define ARCH_GET_XCOMP_PERM 0x1022
+#define ARCH_REQ_XCOMP_PERM 0x1023
+#define XFEATURE_XTILECFG 17
+#define XFEATURE_XTILEDATA 18
 static bool ggml_amx_init() {
 #if defined(__gnu_linux__)
 if (syscall(SYS_arch_prctl, ARCH_REQ_XCOMP_PERM, XFEATURE_XTILEDATA)) {

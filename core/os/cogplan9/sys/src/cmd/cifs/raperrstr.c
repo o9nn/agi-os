@@ -1,19 +1,19 @@
 #include <u.h>
 #include <libc.h>
 static struct {
-int	err;
-char	*msg;
+int err;
+char *msg;
 } RAPerrs[] = {
-{ 0,	"ok" },
-{ 5,	"permission denied" },
-{ 50,	"request not supported" },
-{ 65,	"access denied" },
-{ 86,	"password invalid" },
-{ 128,  "not listening on called name" },
-{ 129,  "not listening for calling name" },
-{ 130,  "called name not present" },
-{ 131,  "called name present, but insufficient resources" },
-{ 234,	"more data" },
+{ 0, "ok" },
+{ 5, "permission denied" },
+{ 50, "request not supported" },
+{ 65, "access denied" },
+{ 86, "password invalid" },
+{ 128, "not listening on called name" },
+{ 129, "not listening for calling name" },
+{ 130, "called name not present" },
+{ 131, "called name present, but insufficient resources" },
+{ 234, "more data" },
 { 2102, "workstation driver is not installed" },
 { 2103, "server could not be located" },
 { 2104, "network cannot access a shared memory segment" },

@@ -1,10 +1,10 @@
-#include	<u.h>
-#include 	<libc.h>
-#include	<bio.h>
-Biobuf	*fin;
-Biobuf	fout;
-#define	MINSPAN		6
-#define BUFSIZE		70
+#include <u.h>
+#include <libc.h>
+#include <bio.h>
+Biobuf *fin;
+Biobuf fout;
+#define MINSPAN 6
+#define BUFSIZE 70
 void stringit(char *);
 int isprint(Rune);
 static int minspan = MINSPAN;

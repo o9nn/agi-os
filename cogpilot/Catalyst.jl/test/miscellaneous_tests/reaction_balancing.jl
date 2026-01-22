@@ -153,7 +153,7 @@ brxs = balance_reaction(rx)
 @test length(brxs) == 1
 @test isequal(balanced_rx, first(brxs))
 end
-# @reaction k, 1CaCO3 + 2HCl --> CaCl2  + H2O + CO2
+# @reaction k, 1CaCO3 + 2HCl --> CaCl2 + H2O + CO2
 let
 @species C(t) H(t) O(t) Ca(t) Cl(t)
 @compound H2O ~ 2H + 1O
@@ -347,8 +347,8 @@ k, CO2 + H2O --> C6H12O6 + O2
 end
 brxs = balance_reaction(reactions(rn)[1])[1]
 @test isequal(rn.k, brxs.rate)
-@test isequal([rn.CO2,  rn.H2O], brxs.substrates)
-@test isequal([rn.C6H12O6,  rn.O2], brxs.products)
+@test isequal([rn.CO2, rn.H2O], brxs.substrates)
+@test isequal([rn.C6H12O6, rn.O2], brxs.products)
 @test isequal([6, 6], brxs.substoich)
 @test isequal([1, 6], brxs.prodstoich)
 end

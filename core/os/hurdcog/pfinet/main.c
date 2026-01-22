@@ -196,7 +196,7 @@ return 0;
 extern void sk_init (void), skb_init (void);
 extern int net_dev_init (void);
 extern void inet6_proto_init (struct net_proto *pro);
-#define ARRAY_SIZE(x)       (sizeof(x) / sizeof((x)[0]))
+#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 int
 main (int argc,
 char **argv)

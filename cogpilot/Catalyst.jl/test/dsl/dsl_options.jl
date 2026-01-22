@@ -543,7 +543,7 @@ end
 # Case 8 (reactions, equations, and a custom differential).
 rn8 = @reaction_network begin
 @differentials Δ = Differential(t)
-@equations Δ(V1) + Δ(V2) + log(V2 + S1) ~  S2
+@equations Δ(V1) + Δ(V2) + log(V2 + S1) ~ S2
 (p1/V1 + S1 + log(S2 + V2 + p2)), S1 --> S2
 end
 @test issetequal(species(rn8), [rn8.S1, rn8.S2])
@@ -754,7 +754,7 @@ end
 @test isequal(unknowns(rn1), unknowns(rn2))
 # Case with metadata.
 rn3 = @reaction_network rn_observed begin
-@observables (X,  [description="description"]) ~ X1 + X2
+@observables (X, [description="description"]) ~ X1 + X2
 k, 0 --> X1 + X2
 end
 rn4 = @reaction_network rn_observed begin
@@ -889,7 +889,7 @@ rn = @reaction_network rn begin
 @variables X(t) Y(t)
 @equations begin
 X + 5 ~ k*S
-3Y + X  ~ S + X*d
+3Y + X ~ S + X*d
 end
 (p,d), 0 <--> S
 end
@@ -902,7 +902,7 @@ end
 @test !has_diff_equations(rn)
 @test isequal(diff_equations(rn), [])
 @test has_alg_equations(rn)
-@test isequal(alg_equations(rn), [X + 5 ~ k*S, 3Y + X  ~ S + X*d])
+@test isequal(alg_equations(rn), [X + 5 ~ k*S, 3Y + X ~ S + X*d])
 # Checks that the internal structures contain the correct stuff, and are correctly sorted.
 @test isspecies(unknowns(rn)[1])
 @test !isspecies(unknowns(rn)[2])
@@ -912,7 +912,7 @@ end
 @test equations(rn)[3] isa Equation
 @test equations(rn)[3] isa Equation
 @test isequal(equations(rn)[3], X + 5 ~ k*S)
-@test isequal(equations(rn)[4], 3Y + X  ~ S + X*d)
+@test isequal(equations(rn)[4], 3Y + X ~ S + X*d)
 # Checks that simulations has the correct output
 u0 = Dict([S => 1 + rand(rng)])
 ps = Dict([p => 1 + rand(rng), d => 1 + rand(rng), k => 1 + rand(rng)])

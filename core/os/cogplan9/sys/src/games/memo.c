@@ -28,7 +28,7 @@ struct
 {
 Image *face;
 Rectangle r;
-int	flag;
+int flag;
 }block[36];
 char *buttons[] =
 {
@@ -100,7 +100,7 @@ case 1:
 while(m.buttons){
 for(i=0;i!=level;i++){
 if(i!=prev && ptinrect(m.xy,block[i].r)){
-if(block[i].flag==Ehide  && j<2){
+if(block[i].flag==Ehide && j<2){
 block[i].flag = Eshow;
 draw(screen, block[i].r, block[i].face, nil, ZP);
 c[j] = block[i].face;

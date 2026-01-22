@@ -39,7 +39,7 @@ volatile struct mapped_time_value *console_maptime;
 #define DEFAULT_HEIGHT 25
 #define DEFAULT_LINES 50
 #define STRX(s) #s
-#define STR(s)	STRX(s)
+#define STR(s) STRX(s)
 #define DEFAULT_ATTRIBUTE_NAME "normal"
 #define DEFAULT_FOREGROUND CONS_COLOR_WHITE
 #define DEFAULT_FOREGROUND_NAME "white"
@@ -182,7 +182,7 @@ vcons->prev = previous_vcons;
 if (previous_vcons->next)
 {
 previous_vcons->next->prev = vcons;
-vcons->next =  previous_vcons->next;
+vcons->next = previous_vcons->next;
 }
 previous_vcons->next = vcons;
 }
@@ -542,8 +542,8 @@ return err;
 }
 #define DIRENT_ALIGN 4
 #define DIRENT_NAME_OFFS offsetof (struct dirent, d_name)
-#define DIRENT_LEN(name_len)                                                  \
-((DIRENT_NAME_OFFS + (name_len) + 1 + (DIRENT_ALIGN - 1))                   \
+#define DIRENT_LEN(name_len) \
+((DIRENT_NAME_OFFS + (name_len) + 1 + (DIRENT_ALIGN - 1)) \
 & ~(DIRENT_ALIGN - 1))
 error_t
 netfs_get_dirents (struct iouser *cred, struct node *dir,
@@ -1033,7 +1033,7 @@ static const struct argp_option options[] =
 " COLOR (default `" DEFAULT_BACKGROUND_NAME "')" },
 { "attribute", 'a', "ATTR[,...]", 0, "Set further default attributes"
 " (default `" DEFAULT_ATTRIBUTE_NAME "')" },
-{ "encoding",	'e', "NAME", 0, "Set encoding of virtual consoles to"
+{ "encoding", 'e', "NAME", 0, "Set encoding of virtual consoles to"
 " NAME (default `" DEFAULT_ENCODING "')" },
 { "width", 'w', "WIDTH", 0, "Set width to WIDTH (default `"
 STR(DEFAULT_WIDTH) "')" },

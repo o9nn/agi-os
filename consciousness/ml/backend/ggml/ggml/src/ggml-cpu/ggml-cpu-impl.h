@@ -194,18 +194,18 @@ res[15] = a[b[15]];
 return res;
 }
 #else
-#define ggml_int16x8x2_t  int16x8x2_t
+#define ggml_int16x8x2_t int16x8x2_t
 #define ggml_uint8x16x2_t uint8x16x2_t
 #define ggml_uint8x16x4_t uint8x16x4_t
-#define ggml_int8x16x2_t  int8x16x2_t
-#define ggml_int8x16x4_t  int8x16x4_t
+#define ggml_int8x16x2_t int8x16x2_t
+#define ggml_int8x16x4_t int8x16x4_t
 #define ggml_vld1q_s16_x2 vld1q_s16_x2
-#define ggml_vld1q_u8_x2  vld1q_u8_x2
-#define ggml_vld1q_u8_x4  vld1q_u8_x4
-#define ggml_vld1q_s8_x2  vld1q_s8_x2
-#define ggml_vld1q_s8_x4  vld1q_s8_x4
-#define ggml_vqtbl1q_s8   vqtbl1q_s8
-#define ggml_vqtbl1q_u8   vqtbl1q_u8
+#define ggml_vld1q_u8_x2 vld1q_u8_x2
+#define ggml_vld1q_u8_x4 vld1q_u8_x4
+#define ggml_vld1q_s8_x2 vld1q_s8_x2
+#define ggml_vld1q_s8_x4 vld1q_s8_x4
+#define ggml_vqtbl1q_s8 vqtbl1q_s8
+#define ggml_vqtbl1q_u8 vqtbl1q_u8
 #endif
 #if !defined(__ARM_FEATURE_DOTPROD)
 inline static int32x4_t ggml_vdotq_s32(int32x4_t acc, int8x16_t a, int8x16_t b) {
@@ -247,31 +247,31 @@ return vaddq_s32(acc, vaddq_s32(vpaddlq_s16(p0), vpaddlq_s16(p1)));
 #endif
 #if defined(__VXE__) || defined(__VXE2__)
 #include <vecintrin.h>
-#define vec_neg(a)    (-(a))
+#define vec_neg(a) (-(a))
 #define vec_add(a, b) ((a) + (b))
 #define vec_sub(a, b) ((a) - (b))
 #define vec_mul(a, b) ((a) * (b))
 #define vec_div(a, b) ((a) / (b))
-#define vec_sl(a, b)  ((a) << (b))
+#define vec_sl(a, b) ((a) << (b))
 #define vec_sra(a, b) ((a) >> (b))
-#define vec_sr(a, b)  ((a) >> (b))
+#define vec_sr(a, b) ((a) >> (b))
 #define vec_slo(a, b) vec_slb(a, (b) << 64)
 #define vec_sro(a, b) vec_srb(a, (b) << 64)
 #ifndef vec_and
 #define vec_and(a, b) ((a) & (b))
 #endif
 #ifndef vec_or
-#define vec_or(a, b)  ((a) | (b))
+#define vec_or(a, b) ((a) | (b))
 #endif
 #ifndef vec_xor
 #define vec_xor(a, b) ((a) ^ (b))
 #endif
 typedef signed char char8x16_t __attribute__((vector_size(16)));
 typedef unsigned char uchar8x16_t __attribute__((vector_size(16)));
-typedef int8_t  int8x16_t __attribute__((vector_size(16)));
+typedef int8_t int8x16_t __attribute__((vector_size(16)));
 typedef int16_t int16x8_t __attribute__((vector_size(16)));
 typedef int32_t int32x4_t __attribute__((vector_size(16)));
-typedef uint8_t  uint8x16_t __attribute__((vector_size(16)));
+typedef uint8_t uint8x16_t __attribute__((vector_size(16)));
 typedef uint16_t uint16x8_t __attribute__((vector_size(16)));
 typedef uint32_t uint32x4_t __attribute__((vector_size(16)));
 typedef float float32x4_t __attribute__((vector_size(16)));
@@ -339,7 +339,7 @@ res[15] = a[b[15]];
 return res;
 }
 inline static int16x8_t vec_padd_s16(int16x8_t a, int16x8_t b) {
-const uchar8x16_t v_maske = {  0,  1,  4,  5,  8,  9, 12, 13,
+const uchar8x16_t v_maske = { 0, 1, 4, 5, 8, 9, 12, 13,
 16, 17, 20, 21, 24, 25, 28, 29 };
 const int16x8_t v_abo = vec_pack((int32x4_t)a, (int32x4_t)b);
 const int16x8_t v_abe = vec_perm(a, b, v_maske);

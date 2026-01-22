@@ -56,24 +56,24 @@ int clientVersion;
 char *digest;
 char *enc;
 int nsecret;
-MD5state	hsmd5;
-SHAstate	hssha1;
-Finished	finished;
+MD5state hsmd5;
+SHAstate hssha1;
+Finished finished;
 } TlsConnection;
 typedef struct Msg{
 int tag;
 union {
 struct {
 int version;
-uchar 	random[RandomSize];
-Bytes*	sid;
-Ints*	ciphers;
-Bytes*	compressors;
+uchar random[RandomSize];
+Bytes* sid;
+Ints* ciphers;
+Bytes* compressors;
 } clientHello;
 struct {
 int version;
-uchar 	random[RandomSize];
-Bytes*	sid;
+uchar random[RandomSize];
+Bytes* sid;
 int cipher;
 int compressor;
 } serverHello;
@@ -111,7 +111,7 @@ TLSVersion = 0x0301,
 SSL3Version = 0x0300,
 ProtocolVersion = 0x0301,
 MinProtoVersion = 0x0300,
-MaxProtoVersion	= 0x03ff,
+MaxProtoVersion = 0x03ff,
 };
 enum {
 HHelloRequest,
@@ -155,46 +155,46 @@ ENoRenegotiation = 100,
 EMax = 256
 };
 enum {
-TLS_NULL_WITH_NULL_NULL	 		= 0x0000,
-TLS_RSA_WITH_NULL_MD5 			= 0x0001,
-TLS_RSA_WITH_NULL_SHA 			= 0x0002,
-TLS_RSA_EXPORT_WITH_RC4_40_MD5 		= 0x0003,
-TLS_RSA_WITH_RC4_128_MD5 		= 0x0004,
-TLS_RSA_WITH_RC4_128_SHA 		= 0x0005,
-TLS_RSA_EXPORT_WITH_RC2_CBC_40_MD5	= 0X0006,
-TLS_RSA_WITH_IDEA_CBC_SHA 		= 0X0007,
-TLS_RSA_EXPORT_WITH_DES40_CBC_SHA	= 0X0008,
-TLS_RSA_WITH_DES_CBC_SHA		= 0X0009,
-TLS_RSA_WITH_3DES_EDE_CBC_SHA		= 0X000A,
-TLS_DH_DSS_EXPORT_WITH_DES40_CBC_SHA	= 0X000B,
-TLS_DH_DSS_WITH_DES_CBC_SHA		= 0X000C,
-TLS_DH_DSS_WITH_3DES_EDE_CBC_SHA	= 0X000D,
-TLS_DH_RSA_EXPORT_WITH_DES40_CBC_SHA	= 0X000E,
-TLS_DH_RSA_WITH_DES_CBC_SHA		= 0X000F,
-TLS_DH_RSA_WITH_3DES_EDE_CBC_SHA	= 0X0010,
-TLS_DHE_DSS_EXPORT_WITH_DES40_CBC_SHA	= 0X0011,
-TLS_DHE_DSS_WITH_DES_CBC_SHA		= 0X0012,
-TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA	= 0X0013,
-TLS_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA	= 0X0014,
-TLS_DHE_RSA_WITH_DES_CBC_SHA		= 0X0015,
-TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA	= 0X0016,
-TLS_DH_anon_EXPORT_WITH_RC4_40_MD5	= 0x0017,
-TLS_DH_anon_WITH_RC4_128_MD5 		= 0x0018,
-TLS_DH_anon_EXPORT_WITH_DES40_CBC_SHA	= 0X0019,
-TLS_DH_anon_WITH_DES_CBC_SHA		= 0X001A,
-TLS_DH_anon_WITH_3DES_EDE_CBC_SHA	= 0X001B,
-TLS_RSA_WITH_AES_128_CBC_SHA		= 0X002f,
-TLS_DH_DSS_WITH_AES_128_CBC_SHA		= 0X0030,
-TLS_DH_RSA_WITH_AES_128_CBC_SHA		= 0X0031,
-TLS_DHE_DSS_WITH_AES_128_CBC_SHA	= 0X0032,
-TLS_DHE_RSA_WITH_AES_128_CBC_SHA	= 0X0033,
-TLS_DH_anon_WITH_AES_128_CBC_SHA	= 0X0034,
-TLS_RSA_WITH_AES_256_CBC_SHA		= 0X0035,
-TLS_DH_DSS_WITH_AES_256_CBC_SHA		= 0X0036,
-TLS_DH_RSA_WITH_AES_256_CBC_SHA		= 0X0037,
-TLS_DHE_DSS_WITH_AES_256_CBC_SHA	= 0X0038,
-TLS_DHE_RSA_WITH_AES_256_CBC_SHA	= 0X0039,
-TLS_DH_anon_WITH_AES_256_CBC_SHA	= 0X003A,
+TLS_NULL_WITH_NULL_NULL = 0x0000,
+TLS_RSA_WITH_NULL_MD5 = 0x0001,
+TLS_RSA_WITH_NULL_SHA = 0x0002,
+TLS_RSA_EXPORT_WITH_RC4_40_MD5 = 0x0003,
+TLS_RSA_WITH_RC4_128_MD5 = 0x0004,
+TLS_RSA_WITH_RC4_128_SHA = 0x0005,
+TLS_RSA_EXPORT_WITH_RC2_CBC_40_MD5 = 0X0006,
+TLS_RSA_WITH_IDEA_CBC_SHA = 0X0007,
+TLS_RSA_EXPORT_WITH_DES40_CBC_SHA = 0X0008,
+TLS_RSA_WITH_DES_CBC_SHA = 0X0009,
+TLS_RSA_WITH_3DES_EDE_CBC_SHA = 0X000A,
+TLS_DH_DSS_EXPORT_WITH_DES40_CBC_SHA = 0X000B,
+TLS_DH_DSS_WITH_DES_CBC_SHA = 0X000C,
+TLS_DH_DSS_WITH_3DES_EDE_CBC_SHA = 0X000D,
+TLS_DH_RSA_EXPORT_WITH_DES40_CBC_SHA = 0X000E,
+TLS_DH_RSA_WITH_DES_CBC_SHA = 0X000F,
+TLS_DH_RSA_WITH_3DES_EDE_CBC_SHA = 0X0010,
+TLS_DHE_DSS_EXPORT_WITH_DES40_CBC_SHA = 0X0011,
+TLS_DHE_DSS_WITH_DES_CBC_SHA = 0X0012,
+TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA = 0X0013,
+TLS_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA = 0X0014,
+TLS_DHE_RSA_WITH_DES_CBC_SHA = 0X0015,
+TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA = 0X0016,
+TLS_DH_anon_EXPORT_WITH_RC4_40_MD5 = 0x0017,
+TLS_DH_anon_WITH_RC4_128_MD5 = 0x0018,
+TLS_DH_anon_EXPORT_WITH_DES40_CBC_SHA = 0X0019,
+TLS_DH_anon_WITH_DES_CBC_SHA = 0X001A,
+TLS_DH_anon_WITH_3DES_EDE_CBC_SHA = 0X001B,
+TLS_RSA_WITH_AES_128_CBC_SHA = 0X002f,
+TLS_DH_DSS_WITH_AES_128_CBC_SHA = 0X0030,
+TLS_DH_RSA_WITH_AES_128_CBC_SHA = 0X0031,
+TLS_DHE_DSS_WITH_AES_128_CBC_SHA = 0X0032,
+TLS_DHE_RSA_WITH_AES_128_CBC_SHA = 0X0033,
+TLS_DH_anon_WITH_AES_128_CBC_SHA = 0X0034,
+TLS_RSA_WITH_AES_256_CBC_SHA = 0X0035,
+TLS_DH_DSS_WITH_AES_256_CBC_SHA = 0X0036,
+TLS_DH_RSA_WITH_AES_256_CBC_SHA = 0X0037,
+TLS_DHE_DSS_WITH_AES_256_CBC_SHA = 0X0038,
+TLS_DHE_RSA_WITH_AES_256_CBC_SHA = 0X0039,
+TLS_DH_anon_WITH_AES_256_CBC_SHA = 0X003A,
 CipherMax
 };
 enum {
@@ -202,8 +202,8 @@ CompressionNull = 0,
 CompressionMax
 };
 static Algs cipherAlgs[] = {
-{"rc4_128", "md5",	2 * (16 + MD5dlen), TLS_RSA_WITH_RC4_128_MD5},
-{"rc4_128", "sha1",	2 * (16 + SHA1dlen), TLS_RSA_WITH_RC4_128_SHA},
+{"rc4_128", "md5", 2 * (16 + MD5dlen), TLS_RSA_WITH_RC4_128_MD5},
+{"rc4_128", "sha1", 2 * (16 + SHA1dlen), TLS_RSA_WITH_RC4_128_SHA},
 {"3des_ede_cbc","sha1",2*(4*8+SHA1dlen), TLS_RSA_WITH_3DES_EDE_CBC_SHA},
 };
 static uchar compressors[] = {
@@ -211,12 +211,12 @@ CompressionNull,
 };
 static TlsConnection *tlsServer2(int ctl, int hand, uchar *cert, int ncert, int (*trace)(char*fmt, ...));
 static TlsConnection *tlsClient2(int ctl, int hand, uchar *csid, int ncsid, int (*trace)(char*fmt, ...));
-static void	msgClear(Msg *m);
+static void msgClear(Msg *m);
 static char* msgPrint(char *buf, int n, Msg *m);
-static int	msgRecv(TlsConnection *c, Msg *m);
-static int	msgSend(TlsConnection *c, Msg *m, int act);
-static void	tlsError(TlsConnection *c, int err, char *msg, ...);
-#pragma	varargck argpos	tlsError 3
+static int msgRecv(TlsConnection *c, Msg *m);
+static int msgSend(TlsConnection *c, Msg *m, int act);
+static void tlsError(TlsConnection *c, int err, char *msg, ...);
+#pragma varargck argpos tlsError 3
 static int setVersion(TlsConnection *c, int version);
 static int finishedMatch(TlsConnection *c, Finished *f);
 static void tlsConnectionFree(TlsConnection *c);
@@ -226,22 +226,22 @@ static int okCompression(Bytes *cv);
 static int initCiphers(void);
 static Ints* makeciphers(void);
 static TlsSec* tlsSecInits(int cvers, uchar *csid, int ncsid, uchar *crandom, uchar *ssid, int *nssid, uchar *srandom);
-static int	tlsSecSecrets(TlsSec *sec, int vers, uchar *epm, int nepm, uchar *kd, int nkd);
-static TlsSec*	tlsSecInitc(int cvers, uchar *crandom);
-static int	tlsSecSecretc(TlsSec *sec, uchar *sid, int nsid, uchar *srandom, uchar *cert, int ncert, int vers, uchar **epm, int *nepm, uchar *kd, int nkd);
-static int	tlsSecFinished(TlsSec *sec, MD5state md5, SHAstate sha1, uchar *fin, int nfin, int isclient);
-static void	tlsSecOk(TlsSec *sec);
-static void	tlsSecKill(TlsSec *sec);
-static void	tlsSecClose(TlsSec *sec);
-static void	setMasterSecret(TlsSec *sec, Bytes *pm);
-static void	serverMasterSecret(TlsSec *sec, uchar *epm, int nepm);
-static void	setSecrets(TlsSec *sec, uchar *kd, int nkd);
-static int	clientMasterSecret(TlsSec *sec, RSApub *pub, uchar **epm, int *nepm);
+static int tlsSecSecrets(TlsSec *sec, int vers, uchar *epm, int nepm, uchar *kd, int nkd);
+static TlsSec* tlsSecInitc(int cvers, uchar *crandom);
+static int tlsSecSecretc(TlsSec *sec, uchar *sid, int nsid, uchar *srandom, uchar *cert, int ncert, int vers, uchar **epm, int *nepm, uchar *kd, int nkd);
+static int tlsSecFinished(TlsSec *sec, MD5state md5, SHAstate sha1, uchar *fin, int nfin, int isclient);
+static void tlsSecOk(TlsSec *sec);
+static void tlsSecKill(TlsSec *sec);
+static void tlsSecClose(TlsSec *sec);
+static void setMasterSecret(TlsSec *sec, Bytes *pm);
+static void serverMasterSecret(TlsSec *sec, uchar *epm, int nepm);
+static void setSecrets(TlsSec *sec, uchar *kd, int nkd);
+static int clientMasterSecret(TlsSec *sec, RSApub *pub, uchar **epm, int *nepm);
 static Bytes *pkcs1_encrypt(Bytes* data, RSApub* key, int blocktype);
 static Bytes *pkcs1_decrypt(TlsSec *sec, uchar *epm, int nepm);
-static void	tlsSetFinished(TlsSec *sec, MD5state hsmd5, SHAstate hssha1, uchar *finished, int isClient);
-static void	sslSetFinished(TlsSec *sec, MD5state hsmd5, SHAstate hssha1, uchar *finished, int isClient);
-static void	sslPRF(uchar *buf, int nbuf, uchar *key, int nkey, char *label,
+static void tlsSetFinished(TlsSec *sec, MD5state hsmd5, SHAstate hssha1, uchar *finished, int isClient);
+static void sslSetFinished(TlsSec *sec, MD5state hsmd5, SHAstate hssha1, uchar *finished, int isClient);
+static void sslPRF(uchar *buf, int nbuf, uchar *key, int nkey, char *label,
 uchar *seed0, int nseed0, uchar *seed1, int nseed1);
 static int setVers(TlsSec *sec, int version);
 static AuthRpc* factotum_rsa_open(uchar *cert, int certlen);
@@ -1294,8 +1294,8 @@ return c;
 }
 return -1;
 }
-static Lock	ciphLock;
-static int	nciphers;
+static Lock ciphLock;
+static int nciphers;
 static int
 initCiphers(void)
 {
@@ -1490,8 +1490,8 @@ buf[i] = 0;
 tlsPmd5(buf, nbuf, key, n, (uchar*)label, nlabel, seed0, nseed0, seed1, nseed1);
 tlsPsha1(buf, nbuf, key+nkey-n, n, (uchar*)label, nlabel, seed0, nseed0, seed1, nseed1);
 }
-static Lock	sidLock;
-static long	maxSid = 1;
+static Lock sidLock;
+static long maxSid = 1;
 static TlsSec*
 tlsSecInits(int cvers, uchar *csid, int ncsid, uchar *crandom, uchar *ssid, int *nssid, uchar *srandom)
 {

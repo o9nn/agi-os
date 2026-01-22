@@ -1,6 +1,6 @@
 static const char *version =
 "atp.c:v1.08 4/1/97 Donald Becker (becker@cesdis.gsfc.nasa.gov)\n";
-#define TX_TIMEOUT  ((400*HZ)/1000)
+#define TX_TIMEOUT ((400*HZ)/1000)
 #include <linux/config.h>
 #ifdef MODULE
 #include <linux/module.h>
@@ -32,7 +32,7 @@ static const char *version =
 #if defined (LINUX_VERSION_CODE) && LINUX_VERSION_CODE < 0x10300
 #define RUN_AT(x) (x)
 #define DEV_ALLOC_SKB(len) alloc_skb(len, GFP_ATOMIC)
-#define virt_to_bus(addr)  ((unsigned long)addr)
+#define virt_to_bus(addr) ((unsigned long)addr)
 #define bus_to_virt(addr) ((void*)addr)
 #else
 #define RUN_AT(x) (jiffies + (x))
@@ -67,7 +67,7 @@ char kernel_version[] = UTS_RELEASE;
 #define NET_DEBUG 1
 #endif
 static unsigned int net_debug = NET_DEBUG;
-#define ETHERCARD_TOTAL_SIZE	3
+#define ETHERCARD_TOTAL_SIZE 3
 static char mux_8012[] = { 0xff, 0xf7, 0xff, 0xfb, 0xf3, 0xfb, 0xff, 0xf7,};
 #define TIMED_CHECKER (HZ/4)
 #ifdef TIMED_CHECKER
@@ -82,7 +82,7 @@ static int net_open(struct device *dev);
 static void hardware_init(struct device *dev);
 static void write_packet(short ioaddr, int length, unsigned char *packet, int mode);
 static void trigger_send(short ioaddr, int length);
-static int	net_send_packet(struct sk_buff *skb, struct device *dev);
+static int net_send_packet(struct sk_buff *skb, struct device *dev);
 static void net_interrupt IRQ(int irq, void *dev_id, struct pt_regs *regs);
 static void net_rx(struct device *dev);
 static void read_block(short ioaddr, int length, unsigned char *buffer, int data_mode);
@@ -168,10 +168,10 @@ root_atp_dev = dev;
 dev->if_port = (dev->mem_start & 0xf) ? (dev->mem_start & 0x7) : 4;
 if (dev->mem_end & 0xf)
 net_debug = dev->mem_end & 7;
-dev->open		= net_open;
-dev->stop		= net_close;
+dev->open = net_open;
+dev->stop = net_close;
 dev->hard_start_xmit = net_send_packet;
-dev->get_stats	= net_get_stats;
+dev->get_stats = net_get_stats;
 dev->set_multicast_list =
 lp->chip_type == RTL8002 ? &set_rx_mode_8002 : &set_rx_mode_8012;
 return 0;
@@ -303,7 +303,7 @@ if (jiffies - dev->trans_start < TX_TIMEOUT)
 return 1;
 printk("%s: transmit timed out, %s?\n", dev->name,
 inb(ioaddr + PAR_CONTROL) & 0x10 ? "network cable problem"
-:  "IRQ conflict");
+: "IRQ conflict");
 lp->stats.tx_errors++;
 hardware_init(dev);
 dev->tbusy=0;
@@ -379,7 +379,7 @@ num_tx_since_rx = 0;
 break;
 } while (--boguscount > 0);
 } else if (status & ((ISR_TxErr + ISR_TxOK)<<3)) {
-if (net_debug > 6)  printk("handling Tx done..");
+if (net_debug > 6) printk("handling Tx done..");
 write_reg(ioaddr, ISR, ISR_TxErr + ISR_TxOK);
 if (status & (ISR_TxErr<<3)) {
 lp->stats.collisions++;
@@ -388,7 +388,7 @@ lp->stats.tx_aborted_errors++;
 hardware_init(dev);
 break;
 }
-if (net_debug > 6)  printk("attempting to ReTx");
+if (net_debug > 6) printk("attempting to ReTx");
 write_reg(ioaddr, CMR1, CMR1_ReXmit + CMR1_Xmit);
 } else {
 lp->stats.tx_packets++;
@@ -438,7 +438,7 @@ int ioaddr = dev->base_addr;
 struct net_local *lp = (struct net_local *)dev->priv;
 int tickssofar = jiffies - lp->last_rx_time;
 int i;
-if (tickssofar > 2*HZ  &&  dev->interrupt == 0) {
+if (tickssofar > 2*HZ && dev->interrupt == 0) {
 #if 1
 for (i = 0; i < 6; i++)
 write_reg_byte(ioaddr, PAR0 + i, dev->dev_addr[i]);
@@ -480,7 +480,7 @@ if (rx_head.rx_status & 0x0004) lp->stats.rx_frame_errors++;
 else if (rx_head.rx_status & 0x0002) lp->stats.rx_crc_errors++;
 if (net_debug > 3) printk("%s: Unknown ATP Rx error %04x.\n",
 dev->name, rx_head.rx_status);
-if  (rx_head.rx_status & 0x0020) {
+if (rx_head.rx_status & 0x0020) {
 lp->stats.rx_fifo_errors++;
 write_reg_high(ioaddr, CMR1, CMR1h_TxENABLE);
 write_reg_high(ioaddr, CMR1, CMR1h_RxENABLE | CMR1h_TxENABLE);
@@ -517,16 +517,16 @@ static void read_block(short ioaddr, int length, unsigned char *p, int data_mode
 {
 if (data_mode <= 3) {
 outb(Ctrl_LNibRead, ioaddr + PAR_CONTROL);
-outb(length == 8  ?  RdAddr | HNib | MAR  :  RdAddr | MAR,
+outb(length == 8 ? RdAddr | HNib | MAR : RdAddr | MAR,
 ioaddr + PAR_DATA);
 if (data_mode <= 1) {
-do  *p++ = read_byte_mode0(ioaddr);  while (--length > 0);
+do *p++ = read_byte_mode0(ioaddr); while (--length > 0);
 } else
-do  *p++ = read_byte_mode2(ioaddr);  while (--length > 0);
+do *p++ = read_byte_mode2(ioaddr); while (--length > 0);
 } else if (data_mode <= 5)
-do      *p++ = read_byte_mode4(ioaddr);  while (--length > 0);
+do *p++ = read_byte_mode4(ioaddr); while (--length > 0);
 else
-do      *p++ = read_byte_mode6(ioaddr);  while (--length > 0);
+do *p++ = read_byte_mode6(ioaddr); while (--length > 0);
 outb(EOC+HNib+MAR, ioaddr + PAR_DATA);
 outb(Ctrl_SelData, ioaddr + PAR_CONTROL);
 }
@@ -601,7 +601,7 @@ unsigned char new_mode, mc_filter[8];
 int i;
 if (dev->flags & IFF_PROMISC) {
 new_mode = CMR2h_PROMISC;
-} else if ((dev->mc_count > 1000)  ||  (dev->flags & IFF_ALLMULTI)) {
+} else if ((dev->mc_count > 1000) || (dev->flags & IFF_ALLMULTI)) {
 memset(mc_filter, 0xff, sizeof(mc_filter));
 new_mode = CMR2h_Normal;
 } else {

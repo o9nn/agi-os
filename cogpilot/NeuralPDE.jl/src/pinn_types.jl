@@ -6,11 +6,11 @@ Options for logging during optimization.
 struct LogOptions
 log_frequency::Int
 # TODO: add in an option for saving plots in the log. this is currently not done because the type of plot is dependent on the PDESystem
-#       possible solution: pass in a plot function?
-#       this is somewhat important because we want to support plotting adaptive weights that depend on pde independent variables
-#       and not just one weight for each loss function, i.e. pde_loss_weights(i, t, x) and since this would be function-internal,
-#       we'd want the plot & log to happen internally as well
-#       plots of the learned function can happen in the outer callback, but we might want to offer that here too
+# possible solution: pass in a plot function?
+# this is somewhat important because we want to support plotting adaptive weights that depend on pde independent variables
+# and not just one weight for each loss function, i.e. pde_loss_weights(i, t, x) and since this would be function-internal,
+# we'd want the plot & log to happen internally as well
+# plots of the learned function can happen in the outer callback, but we might want to offer that here too
 end
 LogOptions(; log_frequency = 50) = LogOptions(log_frequency)
 logvector(logger, v::AbstractVector{<:Real}, name::AbstractString, step::Integer) = nothing

@@ -3,16 +3,16 @@
 #include <ip.h>
 #include "dat.h"
 #include "protos.h"
-typedef struct Hdr	Hdr;
+typedef struct Hdr Hdr;
 struct Hdr
-{	uchar	type;
-uchar	code;
-uchar	cksum[2];
-uchar	data[1];
+{ uchar type;
+uchar code;
+uchar cksum[2];
+uchar data[1];
 };
 enum
 {
-ICMP6LEN=	4,
+ICMP6LEN= 4,
 };
 enum
 {
@@ -21,104 +21,104 @@ Op,
 };
 static Field p_fields[] =
 {
-{"t",		Fnum,	Ot,	"type",	} ,
+{"t", Fnum, Ot, "type", } ,
 {0}
 };
 enum
 {
-EchoReply	= 0,
-UnreachableV6	= 1,
-PacketTooBigV6	= 2,
-TimeExceedV6	= 3,
-ParamProblemV6	= 4,
-Redirect	= 5,
-EchoRequest	= 8,
-TimeExceed	= 11,
-InParmProblem	= 12,
-Timestamp	= 13,
-TimestampReply	= 14,
-InfoRequest	= 15,
-InfoReply	= 16,
+EchoReply = 0,
+UnreachableV6 = 1,
+PacketTooBigV6 = 2,
+TimeExceedV6 = 3,
+ParamProblemV6 = 4,
+Redirect = 5,
+EchoRequest = 8,
+TimeExceed = 11,
+InParmProblem = 12,
+Timestamp = 13,
+TimestampReply = 14,
+InfoRequest = 15,
+InfoReply = 16,
 AddrMaskRequest = 17,
-AddrMaskReply   = 18,
-EchoRequestV6	= 128,
-EchoReplyV6	= 129,
-RouterSolicit	= 133,
-RouterAdvert	= 134,
-NbrSolicit	= 135,
-NbrAdvert	= 136,
-RedirectV6	= 137,
-Maxtype6	= 137,
+AddrMaskReply = 18,
+EchoRequestV6 = 128,
+EchoReplyV6 = 129,
+RouterSolicit = 133,
+RouterAdvert = 134,
+NbrSolicit = 135,
+NbrAdvert = 136,
+RedirectV6 = 137,
+Maxtype6 = 137,
 };
 static Mux p_mux[] =
 {
-{"ip6",	UnreachableV6, },
-{"ip6",	RedirectV6, },
-{"ip6",	TimeExceedV6, },
+{"ip6", UnreachableV6, },
+{"ip6", RedirectV6, },
+{"ip6", TimeExceedV6, },
 {0},
 };
 char *icmpmsg6[256] =
 {
-[EchoReply]		"EchoReply",
-[UnreachableV6]		"UnreachableV6",
-[PacketTooBigV6]	"PacketTooBigV6",
-[TimeExceedV6]		"TimeExceedV6",
-[Redirect]		"Redirect",
-[EchoRequest]		"EchoRequest",
-[TimeExceed]		"TimeExceed",
-[InParmProblem]		"InParmProblem",
-[Timestamp]		"Timestamp",
-[TimestampReply]	"TimestampReply",
-[InfoRequest]		"InfoRequest",
-[InfoReply]		"InfoReply",
-[AddrMaskRequest]	"AddrMaskRequest",
-[AddrMaskReply]		"AddrMaskReply",
-[EchoRequestV6]		"EchoRequestV6",
-[EchoReplyV6]		"EchoReplyV6",
-[RouterSolicit]		"RouterSolicit",
-[RouterAdvert]		"RouterAdvert",
-[NbrSolicit]		"NbrSolicit",
-[NbrAdvert]		"NbrAdvert",
-[RedirectV6]		"RedirectV6",
+[EchoReply] "EchoReply",
+[UnreachableV6] "UnreachableV6",
+[PacketTooBigV6] "PacketTooBigV6",
+[TimeExceedV6] "TimeExceedV6",
+[Redirect] "Redirect",
+[EchoRequest] "EchoRequest",
+[TimeExceed] "TimeExceed",
+[InParmProblem] "InParmProblem",
+[Timestamp] "Timestamp",
+[TimestampReply] "TimestampReply",
+[InfoRequest] "InfoRequest",
+[InfoReply] "InfoReply",
+[AddrMaskRequest] "AddrMaskRequest",
+[AddrMaskReply] "AddrMaskReply",
+[EchoRequestV6] "EchoRequestV6",
+[EchoReplyV6] "EchoReplyV6",
+[RouterSolicit] "RouterSolicit",
+[RouterAdvert] "RouterAdvert",
+[NbrSolicit] "NbrSolicit",
+[NbrAdvert] "NbrAdvert",
+[RedirectV6] "RedirectV6",
 };
 static char *unreachcode[] =
 {
-[0]	"no route to destination",
-[1]	"comm with destination administratively prohibited",
-[2]	"icmp unreachable: unassigned error code (2)",
-[3]	"address unreachable",
-[4]	"port unreachable",
-[5]	"icmp unreachable: unknown code",
+[0] "no route to destination",
+[1] "comm with destination administratively prohibited",
+[2] "icmp unreachable: unassigned error code (2)",
+[3] "address unreachable",
+[4] "port unreachable",
+[5] "icmp unreachable: unknown code",
 };
 static char *timexcode[] =
 {
-[0]	"hop limit exc",
-[1]	"reassmbl time exc",
-[2]	"icmp time exc: unknown code",
+[0] "hop limit exc",
+[1] "reassmbl time exc",
+[2] "icmp time exc: unknown code",
 };
 static char *parpcode[] =
 {
-[0]	"erroneous header field encountered",
-[1]	"unrecognized Next Header type encountered",
-[2]	"unrecognized IPv6 option encountered",
-[3]	"icmp par prob: unknown code",
+[0] "erroneous header field encountered",
+[1] "unrecognized Next Header type encountered",
+[2] "unrecognized IPv6 option encountered",
+[3] "icmp par prob: unknown code",
 };
 enum
 {
-sll	= 1,
-tll	= 2,
-pref	= 3,
-redir	= 4,
-mtu	= 5,
+sll = 1,
+tll = 2,
+pref = 3,
+redir = 4,
+mtu = 5,
 };
 static char *icmp6opts[256] =
 {
-[0]	"unknown opt",
-[1]	"sll_addr",
-[2]	"tll_addr",
-[3]	"pref_opt",
-[4]	"redirect",
-[5]	"mtu_opt",
+[0] "unknown opt",
+[1] "sll_addr",
+[2] "tll_addr",
+[3] "pref_opt",
+[4] "redirect",
+[5] "mtu_opt",
 };
 static void
 p_compile(Filter *f)

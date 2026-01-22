@@ -6,22 +6,22 @@
 #include "../port/error.h"
 #include "ip.h"
 #include "ipv6.h"
-typedef struct Ipmuxrock  Ipmuxrock;
-typedef struct Ipmux      Ipmux;
+typedef struct Ipmuxrock Ipmuxrock;
+typedef struct Ipmux Ipmux;
 typedef struct Myip4hdr Myip4hdr;
 struct Myip4hdr
 {
-uchar	vihl;
-uchar	tos;
-uchar	length[2];
-uchar	id[2];
-uchar	frag[2];
-uchar	ttl;
-uchar	proto;
-uchar	cksum[2];
-uchar	src[4];
-uchar	dst[4];
-uchar	data[1];
+uchar vihl;
+uchar tos;
+uchar length[2];
+uchar id[2];
+uchar frag[2];
+uchar ttl;
+uchar proto;
+uchar cksum[2];
+uchar src[4];
+uchar dst[4];
+uchar data[1];
 };
 Myip4hdr *ipoff = 0;
 enum
@@ -44,36 +44,36 @@ Cmifc,
 };
 char *ftname[] =
 {
-[Tproto]	"proto",
-[Tdata]		"data",
-[Tiph]	 	"iph",
-[Tdst]		"dst",
-[Tsrc]		"src",
-[Tifc]		"ifc",
+[Tproto] "proto",
+[Tdata] "data",
+[Tiph] "iph",
+[Tdst] "dst",
+[Tsrc] "src",
+[Tifc] "ifc",
 };
 struct Ipmux
 {
-Ipmux	*yes;
-Ipmux	*no;
-uchar	type;
-uchar	ctype;
-uchar	len;
-uchar	n;
-short	off;
-short	eoff;
-uchar	skiphdr;
-uchar	*val;
-uchar	*mask;
-uchar	*e;
-int	ref;
-Conv	*conv;
+Ipmux *yes;
+Ipmux *no;
+uchar type;
+uchar ctype;
+uchar len;
+uchar n;
+short off;
+short eoff;
+uchar skiphdr;
+uchar *val;
+uchar *mask;
+uchar *e;
+int ref;
+Conv *conv;
 };
 struct Ipmuxrock
 {
-Ipmux	*chain;
+Ipmux *chain;
 };
-static int	ipmuxsprint(Ipmux*, int, char*, int);
-static void	ipmuxkick(void *x);
+static int ipmuxsprint(Ipmux*, int, char*, int);
+static void ipmuxkick(void *x);
 static char*
 skipwhite(char *p)
 {

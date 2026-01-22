@@ -3,20 +3,20 @@
 #include <bio.h>
 #include "httpd.h"
 #include "httpsrv.h"
-typedef struct Suffix	Suffix;
+typedef struct Suffix Suffix;
 struct Suffix
 {
-Suffix	*next;
-char	*suffix;
-char	*generic;
-char	*specific;
-char	*encoding;
+Suffix *next;
+char *suffix;
+char *generic;
+char *specific;
+char *encoding;
 };
-Suffix	*suffixes = nil;
-static	Suffix*			parsesuffix(char*, Suffix*);
-static	char*			skipwhite(char*);
-static	HContents		suffixclass(char*);
-static	char*			towhite(char*);
+Suffix *suffixes = nil;
+static Suffix* parsesuffix(char*, Suffix*);
+static char* skipwhite(char*);
+static HContents suffixclass(char*);
+static char* towhite(char*);
 int
 updateQid(int fd, Qid *q)
 {

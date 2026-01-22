@@ -4,53 +4,53 @@
 #include <mp.h>
 #include <libsec.h>
 #include <auth.h>
-static	char*	connect(char*);
-static	char*	dotls(char*);
-static	char*	doauth(char*);
-void	addhostdom(String*, char*);
-String*	bangtoat(char*);
-String*	convertheader(String*);
-int	dBprint(char*, ...);
-int	dBputc(int);
-char*	data(String*, Biobuf*);
-char*	domainify(char*, char*);
-String*	fixrouteaddr(String*, Node*, Node*);
-char*	getcrnl(String*);
-int	getreply(void);
-char*	hello(char*, int);
-char*	mailfrom(char*);
-int	printdate(Node*);
-int	printheader(void);
-void	putcrnl(char*, int);
-void	quit(char*);
-char*	rcptto(char*);
-char	*rewritezone(char *);
-#define Retry	"Retry, Temporary Failure"
-#define Giveup	"Permanent Failure"
-String	*reply;
-String	*toline;
-int	alarmscale;
-int	autistic;
-int	debug;
-int	filter;
-int	insecure;
-int	last = 'n';
-int	ping;
-int	quitting;
-int	tryauth;
-int	trysecure;
-int	okunksecure;
-char	*quitrv;
-char	ddomain[Maxdomain];
-char	*gdomain;
-char	*uneaten;
-char	*farend;
-char	*user;
-char	hostdomain[256];
-Biobuf	bin;
-Biobuf	bout;
-Biobuf	berr;
-Biobuf	bfile;
+static char* connect(char*);
+static char* dotls(char*);
+static char* doauth(char*);
+void addhostdom(String*, char*);
+String* bangtoat(char*);
+String* convertheader(String*);
+int dBprint(char*, ...);
+int dBputc(int);
+char* data(String*, Biobuf*);
+char* domainify(char*, char*);
+String* fixrouteaddr(String*, Node*, Node*);
+char* getcrnl(String*);
+int getreply(void);
+char* hello(char*, int);
+char* mailfrom(char*);
+int printdate(Node*);
+int printheader(void);
+void putcrnl(char*, int);
+void quit(char*);
+char* rcptto(char*);
+char *rewritezone(char *);
+#define Retry "Retry, Temporary Failure"
+#define Giveup "Permanent Failure"
+String *reply;
+String *toline;
+int alarmscale;
+int autistic;
+int debug;
+int filter;
+int insecure;
+int last = 'n';
+int ping;
+int quitting;
+int tryauth;
+int trysecure;
+int okunksecure;
+char *quitrv;
+char ddomain[Maxdomain];
+char *gdomain;
+char *uneaten;
+char *farend;
+char *user;
+char hostdomain[256];
+Biobuf bin;
+Biobuf bout;
+Biobuf berr;
+Biobuf bfile;
 static int bustedmx;
 void
 usage(void)
@@ -63,7 +63,7 @@ int
 timeout(void *x, char *msg)
 {
 USED(x);
-syslog(0, "smtp.fail", "interrupt: %s: %s", farend,  msg);
+syslog(0, "smtp.fail", "interrupt: %s: %s", farend, msg);
 if(strstr(msg, "alarm")){
 fprint(2, "smtp timeout: connection to %s timed out\n", farend);
 if(quitting)
@@ -257,8 +257,8 @@ fd = dup(fd, -1);
 Binit(&bout, fd, OWRITE);
 return 0;
 }
-static char smtpthumbs[] =	"/sys/lib/tls/smtp";
-static char smtpexclthumbs[] =	"/sys/lib/tls/smtp.exclude";
+static char smtpthumbs[] = "/sys/lib/tls/smtp";
+static char smtpexclthumbs[] = "/sys/lib/tls/smtp.exclude";
 static char *
 ckthumbs(TLSconn *c)
 {
@@ -891,7 +891,7 @@ s = '+';
 sprint(x, "%c%.2d%.2d", s, mindiff/60, mindiff%60);
 return x;
 }
-#define	SIZE	4096
+#define SIZE 4096
 int
 dBprint(char *fmt, ...)
 {

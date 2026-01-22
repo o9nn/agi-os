@@ -5,15 +5,15 @@ unsigned short significand[4];
 unsigned short exponent;
 };
 struct _fpstate {
-unsigned long 	cw,
+unsigned long cw,
 sw,
 tag,
 ipoff,
 cssel,
 dataoff,
 datasel;
-struct _fpreg	_st[8];
-unsigned long	status;
+struct _fpreg _st[8];
+unsigned long status;
 };
 struct sigcontext_struct {
 unsigned short gs, __gsh;

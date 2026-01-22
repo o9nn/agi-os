@@ -8,18 +8,18 @@ enum mail_sort_type type;
 const char *name;
 };
 static struct sort_name sort_names[] = {
-{ MAIL_SORT_ARRIVAL,		"arrival" },
-{ MAIL_SORT_CC,			"cc" },
-{ MAIL_SORT_DATE,		"date" },
-{ MAIL_SORT_FROM,		"from" },
-{ MAIL_SORT_SIZE,		"size" },
-{ MAIL_SORT_SUBJECT,		"subject" },
-{ MAIL_SORT_TO,			"to" },
-{ MAIL_SORT_RELEVANCY,		"x-score" },
-{ MAIL_SORT_RELEVANCY,		"relevancy" },
-{ MAIL_SORT_DISPLAYFROM,	"displayfrom" },
-{ MAIL_SORT_DISPLAYTO,		"displayto" },
-{ MAIL_SORT_END,		NULL }
+{ MAIL_SORT_ARRIVAL, "arrival" },
+{ MAIL_SORT_CC, "cc" },
+{ MAIL_SORT_DATE, "date" },
+{ MAIL_SORT_FROM, "from" },
+{ MAIL_SORT_SIZE, "size" },
+{ MAIL_SORT_SUBJECT, "subject" },
+{ MAIL_SORT_TO, "to" },
+{ MAIL_SORT_RELEVANCY, "x-score" },
+{ MAIL_SORT_RELEVANCY, "relevancy" },
+{ MAIL_SORT_DISPLAYFROM, "displayfrom" },
+{ MAIL_SORT_DISPLAYTO, "displayto" },
+{ MAIL_SORT_END, NULL }
 };
 static int
 get_sort_program(struct client_command_context *cmd,

@@ -2,7 +2,7 @@
 void
 makeline(int i, int c, int lintype)
 {
-int	cr, type, shortl;
+int cr, type, shortl;
 type = thish(i, c);
 if (type == 0)
 return;
@@ -20,7 +20,7 @@ drawline(i, c, cr - 1, lintype, 0, shortl);
 void
 fullwide(int i, int lintype)
 {
-int	cr, cl;
+int cr, cl;
 if (!pr1403)
 Bprint(&tabout, ".nr %d \\n(.v\n.vs \\n(.vu-\\n(.sp\n", SVS);
 cr = 0;
@@ -41,8 +41,8 @@ Bprint(&tabout, ".vs \\n(%du\n", SVS);
 void
 drawline(int i, int cl, int cr, int lintype, int noheight, int shortl)
 {
-char	*exhr, *exhl, *lnch;
-int	lcount, ln, linpos, oldpos, nodata;
+char *exhr, *exhl, *lnch;
+int lcount, ln, linpos, oldpos, nodata;
 lcount = 0;
 exhr = exhl = "";
 switch (lintype) {
@@ -148,7 +148,7 @@ Bprint(&tabout, "\\v'+.5m'");
 void
 getstop(void)
 {
-int	i, c, k, junk, stopp;
+int i, c, k, junk, stopp;
 stopp = 1;
 for (i = 0; i < MAXLIN; i++)
 linestop[i] = 0;
@@ -164,7 +164,7 @@ linestop[0] = 1;
 int
 left(int i, int c, int *lwidp)
 {
-int	kind, li, lj;
+int kind, li, lj;
 *lwidp = 0;
 if (i < 0)
 return(-1);
@@ -191,7 +191,7 @@ return(li);
 int
 lefdata(int i, int c)
 {
-int	ck;
+int ck;
 if (i >= nlin)
 i = nlin - 1;
 if (ctype(i, c) == 's') {
@@ -225,7 +225,7 @@ return(i);
 int
 prev(int i)
 {
-while (--i >= 0  && (fullbot[i] || instead[i]))
+while (--i >= 0 && (fullbot[i] || instead[i]))
 ;
 return(i);
 }

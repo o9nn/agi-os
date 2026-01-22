@@ -4,9 +4,9 @@
 #include <mach/message.h>
 #include <mach/port.h>
 #include <sys/time.h>
-#define IPC_BENCHMARK_MAX_ITERATIONS    10000
-#define IPC_BENCHMARK_MAX_MESSAGE_SIZE  65536
-#define IPC_BENCHMARK_MIN_MESSAGE_SIZE  64
+#define IPC_BENCHMARK_MAX_ITERATIONS 10000
+#define IPC_BENCHMARK_MAX_MESSAGE_SIZE 65536
+#define IPC_BENCHMARK_MIN_MESSAGE_SIZE 64
 typedef enum {
 IPC_BENCH_LATENCY,
 IPC_BENCH_THROUGHPUT,
@@ -15,11 +15,11 @@ IPC_BENCH_SCALABILITY,
 IPC_BENCH_MEMORY_USAGE
 } ipc_benchmark_type_t;
 typedef enum {
-IPC_MSG_TINY    = 64,
-IPC_MSG_SMALL   = 256,
-IPC_MSG_MEDIUM  = 4096,
-IPC_MSG_LARGE   = 16384,
-IPC_MSG_HUGE    = 65536
+IPC_MSG_TINY = 64,
+IPC_MSG_SMALL = 256,
+IPC_MSG_MEDIUM = 4096,
+IPC_MSG_LARGE = 16384,
+IPC_MSG_HUGE = 65536
 } ipc_message_size_t;
 typedef struct {
 ipc_benchmark_type_t type;

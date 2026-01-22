@@ -41,7 +41,7 @@ enum http_header_parse_flags hdr_flags = 0;
 if ((parser->flags & HTTP_MESSAGE_PARSE_FLAG_STRICT) != 0)
 hdr_flags |= HTTP_HEADER_PARSE_FLAG_STRICT;
 parser->header_parser = http_header_parser_init(
-parser->input, &parser->header_limits,	hdr_flags);
+parser->input, &parser->header_limits, hdr_flags);
 } else {
 http_header_parser_reset(parser->header_parser);
 }
@@ -329,7 +329,7 @@ int ret;
 parser->error_code = HTTP_MESSAGE_PARSE_ERROR_NONE;
 parser->error = NULL;
 while ((ret = http_header_parse_next_field(
-parser->header_parser,  &field_name, &field_data, &field_size,
+parser->header_parser, &field_name, &field_data, &field_size,
 &error)) > 0) {
 if (field_name == NULL)
 return http_message_parse_eoh(parser);
@@ -338,7 +338,7 @@ field_name, field_data, field_size) < 0)
 return -1;
 }
 if (ret < 0) {
-if (parser->input->eof || parser->input->stream_errno != 0)  {
+if (parser->input->eof || parser->input->stream_errno != 0) {
 parser->error_code =
 HTTP_MESSAGE_PARSE_ERROR_BROKEN_STREAM;
 parser->error = "Broken stream";

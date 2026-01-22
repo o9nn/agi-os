@@ -1,6 +1,6 @@
 #
-# Copyright © 1998 Lucent Technologies Inc.  All rights reserved.
-# Revisions copyright © 2000,2001 Vita Nuova Holdings Limited.  All rights reserved.
+# Copyright © 1998 Lucent Technologies Inc. All rights reserved.
+# Revisions copyright © 2000,2001 Vita Nuova Holdings Limited. All rights reserved.
 #
 # Originally Written by N. W. Knauft
 # Adapted by E. V. Hensbergen (ericvh@lucent.com)
@@ -26,15 +26,15 @@ include "pppclient.m";
 ppp: PPPClient;
 include "pppgui.m";
 #Screen constants
-BBG: con "#C0C0C0";             # Background color for button
-PBG: con "#808080";             # Background color for progress bar
-LTGRN: con "#00FF80";           # Color for progress bar
-BARW: con 216;			# Progress bar width
-BARH: con " 9";			# Progress bar height
-INCR: con 30;			# Progress bar increment size
-N_INCR: con 7;			# Number of increments in progress bar width
-BSIZE: con 25;			# Icon button size
-ISIZE: con BSIZE + 4;		# Icon window size
+BBG: con "#C0C0C0"; # Background color for button
+PBG: con "#808080"; # Background color for progress bar
+LTGRN: con "#00FF80"; # Color for progress bar
+BARW: con 216; # Progress bar width
+BARH: con " 9"; # Progress bar height
+INCR: con 30; # Progress bar increment size
+N_INCR: con 7; # Number of increments in progress bar width
+BSIZE: con 25; # Icon button size
+ISIZE: con BSIZE + 4; # Icon window size
 DIALQUANTA : con 1000;
 ICONQUANTA : con 5000;
 #Globals
@@ -82,7 +82,7 @@ if(dicterr != nil)
 sys->fprint(sys->fildes(2), "pppgui: can't open %s: %s\n", dictname, dicterr);
 }else
 sys->fprint(sys->fildes(2), "pppgui: can't load %s: %r\n", Translate->PATH);
-ppp = pppmod;		# set the global
+ppp = pppmod; # set the global
 tkargs := "";
 if (args != nil) {
 tkargs = hd args;
@@ -186,7 +186,7 @@ s := <-ticon.ctxt.ctl or
 s = <-ticon.wreq or
 s = <-iconctl =>
 tkclient->wmctl(ticon, s);
-(off, data, fid, wc) := <-iocmd.write =>	# remote io control
+(off, data, fid, wc) := <-iocmd.write => # remote io control
 if (wc == nil)
 break;
 spawn send(cmd, string data[0:len data]);
@@ -220,9 +220,9 @@ timecount = 0;
 * => ;
 }
 s := <-stat =>
-if (s == -1) {	# just an update event
+if (s == -1) { # just an update event
 if(winmapped){
-if(!connected) {	# increment status bar
+if(!connected) { # increment status bar
 if (x < xmin+INCR) {
 x++;
 tk->cmd(t, ".cprog create rectangle 0 0 "+string x + BARH+" -fill "+LTGRN);
@@ -254,7 +254,7 @@ tk->cmd(t, "update");
 sys->sleep(3000);
 ppp->reset();
 if (!connected)
-chn <-= 0;			# Failure
+chn <-= 0; # Failure
 break Work;
 }
 if (s == ppp->s_Initialized)
@@ -286,7 +286,7 @@ tk->cmd(ticon, ". map; raise .; update");
 }
 tk->cmd(t, "update");
 }
-sync_chan <-= 1;	# stop ppp_timer
+sync_chan <-= 1; # stop ppp_timer
 }
 findrate(file: string, opt: list of string): string
 {

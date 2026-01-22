@@ -1,6 +1,6 @@
 #ifndef LWIP_UTIL_H
 #define LWIP_UTIL_H
-#define LOOP_DEV_NAME   "lo"
+#define LOOP_DEV_NAME "lo"
 #include <errno.h>
 #include <lwip/netif.h>
 void init_ifs (void *arg);

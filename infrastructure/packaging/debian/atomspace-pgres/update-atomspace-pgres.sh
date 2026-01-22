@@ -9,22 +9,22 @@ echo "Updating ${DEBIAN_PACKAGE_NAME} package"
 echo "Version: ${VERSION}"
 echo "=========================================="
 if [ ! -d "${SOURCE_DIR}" ]; then
-    echo "Error: Source directory ${SOURCE_DIR} not found"
-    echo "Please ensure the atomspace-pgres repository is cloned in the parent directory"
-    exit 1
+echo "Error: Source directory ${SOURCE_DIR} not found"
+echo "Please ensure the atomspace-pgres repository is cloned in the parent directory"
+exit 1
 fi
 TARBALL="${DEBIAN_PACKAGE_NAME}_${VERSION}.orig.tar.gz"
 echo "Creating source tarball: ${TARBALL}"
 cd ..
 tar czf "${TARBALL}" \
-    --exclude=".git" \
-    --exclude="debian" \
-    --exclude="*.swp" \
-    --exclude="*~" \
-    --exclude="build" \
-    --exclude="*.o" \
-    --exclude="*.so" \
-    "${PACKAGE_NAME}"
+--exclude=".git" \
+--exclude="debian" \
+--exclude="*.swp" \
+--exclude="*~" \
+--exclude="build" \
+--exclude="*.o" \
+--exclude="*.so" \
+"${PACKAGE_NAME}"
 BUILD_DIR="${DEBIAN_PACKAGE_NAME}-${VERSION}"
 echo "Extracting to build directory: ${BUILD_DIR}"
 rm -rf "${BUILD_DIR}"

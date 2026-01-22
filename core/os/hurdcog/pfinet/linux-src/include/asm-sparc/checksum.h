@@ -5,7 +5,7 @@
 extern unsigned int csum_partial(unsigned char * buff, int len, unsigned int sum);
 #define csum_partial_copy(src, dst, len, sum) \
 csum_partial_copy_nocheck(src,dst,len,sum)
-#define csum_partial_copy_fromuser(s, d, l, w)  \
+#define csum_partial_copy_fromuser(s, d, l, w) \
 csum_partial_copy((char *) (s), (d), (l), (w))
 extern unsigned int __csum_partial_copy_sparc_generic (const char *, char *);
 extern __inline__ unsigned int
@@ -150,25 +150,25 @@ unsigned short proto,
 unsigned int sum)
 {
 __asm__ __volatile__ ("
-addcc	%3, %4, %%g4
-addxcc	%5, %%g4, %%g4
-ld	[%2 + 0x0c], %%g2
-ld	[%2 + 0x08], %%g3
-addxcc	%%g2, %%g4, %%g4
-ld	[%2 + 0x04], %%g2
-addxcc	%%g3, %%g4, %%g4
-ld	[%2 + 0x00], %%g3
-addxcc	%%g2, %%g4, %%g4
-ld	[%1 + 0x0c], %%g2
-addxcc	%%g3, %%g4, %%g4
-ld	[%1 + 0x08], %%g3
-addxcc	%%g2, %%g4, %%g4
-ld	[%1 + 0x04], %%g2
-addxcc	%%g3, %%g4, %%g4
-ld	[%1 + 0x00], %%g3
-addxcc	%%g2, %%g4, %%g4
-addxcc	%%g3, %%g4, %0
-addx	0, %0, %0
+addcc %3, %4, %%g4
+addxcc %5, %%g4, %%g4
+ld [%2 + 0x0c], %%g2
+ld [%2 + 0x08], %%g3
+addxcc %%g2, %%g4, %%g4
+ld [%2 + 0x04], %%g2
+addxcc %%g3, %%g4, %%g4
+ld [%2 + 0x00], %%g3
+addxcc %%g2, %%g4, %%g4
+ld [%1 + 0x0c], %%g2
+addxcc %%g3, %%g4, %%g4
+ld [%1 + 0x08], %%g3
+addxcc %%g2, %%g4, %%g4
+ld [%1 + 0x04], %%g2
+addxcc %%g3, %%g4, %%g4
+ld [%1 + 0x00], %%g3
+addxcc %%g2, %%g4, %%g4
+addxcc %%g3, %%g4, %0
+addx 0, %0, %0
 "
 : "=&r" (sum)
 : "r" (saddr), "r" (daddr),

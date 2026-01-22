@@ -7,19 +7,19 @@ fprint(2, "usage: %s [-q] [-t seconds] command\n", argv0);
 exits("usage");
 }
 struct {
-char	*resp;
-int	ok;
+char *resp;
+int ok;
 } tab[] =
 {
-{ "ok\n",		1 },
-{ "connect\n",		1 },
-{ "no carrier\n",	0 },
-{ "no dialtone\n",	0 },
-{ "error\n",		0 },
-{ "busy\n",		0 },
-{ "no answer\n",	0 },
-{ "delayed\n",		0 },
-{ "blacklisted\n",	0 },
+{ "ok\n", 1 },
+{ "connect\n", 1 },
+{ "no carrier\n", 0 },
+{ "no dialtone\n", 0 },
+{ "error\n", 0 },
+{ "busy\n", 0 },
+{ "no answer\n", 0 },
+{ "delayed\n", 0 },
+{ "blacklisted\n", 0 },
 };
 int
 writewithoutcr(int fd, char *p, int i)

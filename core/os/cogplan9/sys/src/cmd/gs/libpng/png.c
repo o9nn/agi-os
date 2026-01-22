@@ -371,7 +371,7 @@ info_ptr->unknown_chunks_num = 0;
 #endif
 #if defined(PNG_hIST_SUPPORTED)
 #ifdef PNG_FREE_ME_SUPPORTED
-if ((mask & PNG_FREE_HIST)  & info_ptr->free_me)
+if ((mask & PNG_FREE_HIST) & info_ptr->free_me)
 #else
 if ((mask & PNG_FREE_HIST) && (png_ptr->flags & PNG_FLAG_FREE_HIST))
 #endif
@@ -567,34 +567,34 @@ png_init_mmx_flags (png_structp png_ptr)
 {
 png_ptr->mmx_rowbytes_threshold = 0;
 png_ptr->mmx_bitdepth_threshold = 0;
-#  if (defined(PNG_USE_PNGVCRD) || defined(PNG_USE_PNGGCCRD))
+# if (defined(PNG_USE_PNGVCRD) || defined(PNG_USE_PNGGCCRD))
 png_ptr->asm_flags |= PNG_ASM_FLAG_MMX_SUPPORT_COMPILED;
 if (png_mmx_support() > 0) {
 png_ptr->asm_flags |= PNG_ASM_FLAG_MMX_SUPPORT_IN_CPU
-#    ifdef PNG_HAVE_ASSEMBLER_COMBINE_ROW
+# ifdef PNG_HAVE_ASSEMBLER_COMBINE_ROW
 | PNG_ASM_FLAG_MMX_READ_COMBINE_ROW
-#    endif
-#    ifdef PNG_HAVE_ASSEMBLER_READ_INTERLACE
+# endif
+# ifdef PNG_HAVE_ASSEMBLER_READ_INTERLACE
 | PNG_ASM_FLAG_MMX_READ_INTERLACE
-#    endif
-#    ifndef PNG_HAVE_ASSEMBLER_READ_FILTER_ROW
+# endif
+# ifndef PNG_HAVE_ASSEMBLER_READ_FILTER_ROW
 ;
-#    else
+# else
 | PNG_ASM_FLAG_MMX_READ_FILTER_SUB
 | PNG_ASM_FLAG_MMX_READ_FILTER_UP
 | PNG_ASM_FLAG_MMX_READ_FILTER_AVG
 | PNG_ASM_FLAG_MMX_READ_FILTER_PAETH ;
 png_ptr->mmx_rowbytes_threshold = PNG_MMX_ROWBYTES_THRESHOLD_DEFAULT;
 png_ptr->mmx_bitdepth_threshold = PNG_MMX_BITDEPTH_THRESHOLD_DEFAULT;
-#    endif
+# endif
 } else {
 png_ptr->asm_flags &= ~( PNG_ASM_FLAG_MMX_SUPPORT_IN_CPU
 | PNG_MMX_READ_FLAGS
 | PNG_MMX_WRITE_FLAGS );
 }
-#  else
+# else
 png_ptr->asm_flags &= ~( PNG_MMX_FLAGS );
-#  endif
+# endif
 }
 #endif
 #if !defined(PNG_USE_PNGGCCRD) && \

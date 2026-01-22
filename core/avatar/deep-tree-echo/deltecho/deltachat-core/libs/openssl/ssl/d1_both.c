@@ -1002,8 +1002,8 @@ return 0;
 pl = p;
 if (hbtype == TLS1_HB_REQUEST) {
 unsigned char *buffer, *bp;
-unsigned int write_length = 1   +
-2   +
+unsigned int write_length = 1 +
+2 +
 payload + padding;
 int r;
 if (write_length > SSL3_RT_MAX_PLAIN_LENGTH)

@@ -1445,7 +1445,7 @@ else
 v.x = widths1.Width.w / 2;
 }
 } else {
-if (info.members  & (GLYPH_INFO_VVECTOR0 << wmode)) {
+if (info.members & (GLYPH_INFO_VVECTOR0 << wmode)) {
 v.x = info.v.x * scale_c;
 } else
 v.x = 0;

@@ -15,7 +15,7 @@ include "../gather.m";
 clique: ref Clique;
 started := 0;
 halted := 0;
-suspended: Set;		# set of members currently suspended from the clique.
+suspended: Set; # set of members currently suspended from the clique.
 count := 0;
 nmembers := 0;
 title := "unknown";
@@ -92,7 +92,7 @@ clique.action("clienttype " + cliquemod->clienttype(), nil, nil, pset);
 clique.breakmsg(pset);
 return nil;
 }
-for (inv := invited;  inv != nil; inv = tl inv)
+for (inv := invited; inv != nil; inv = tl inv)
 if (hd inv == p.name || hd inv == "all")
 break;
 if (inv == nil)

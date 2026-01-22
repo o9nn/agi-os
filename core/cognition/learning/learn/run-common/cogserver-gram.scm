@@ -11,8 +11,8 @@
 (define star-obj covr-obj)
 (fetch-atom (AnchorNode "data logger"))
 (catch #t
-	(lambda () ((add-report-api star-obj) 'num-pairs))
-	(lambda (key . args)
-		(format #t "Disjunct marginals missing; go back and compute them!\n")
-		#f))
+(lambda () ((add-report-api star-obj) 'num-pairs))
+(lambda (key . args)
+(format #t "Disjunct marginals missing; go back and compute them!\n")
+#f))
 (print-matrix-summary-report star-obj)

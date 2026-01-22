@@ -1,6 +1,6 @@
 #ifndef _FAT_CVF
 #define _FAT_CVF
-#define CVF_USE_READPAGE  0x0001
+#define CVF_USE_READPAGE 0x0001
 struct cvf_format
 { int cvf_version;
 char* cvf_version_text;

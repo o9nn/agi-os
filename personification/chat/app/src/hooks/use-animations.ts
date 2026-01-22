@@ -5,8 +5,8 @@ import idleUrl from '~/assets/motions/idle.vrma?url'
 import walkUrl from '~/assets/motions/walk.vrma?url'
 import kissUrl from '~/assets/motions/kiss.vrma?url'
 export const useAnimations = (vrm: VRM) => {
-  const idle = useVRMAnimation(idleUrl, vrm, 'idle')
-  const walk = useVRMAnimation(walkUrl, vrm, 'walk')
-  const kiss = useVRMAnimation(kissUrl, vrm, 'kiss')
-  return useAnimationsImpl([idle, walk, kiss], vrm.scene)
+const idle = useVRMAnimation(idleUrl, vrm, 'idle')
+const walk = useVRMAnimation(walkUrl, vrm, 'walk')
+const kiss = useVRMAnimation(kissUrl, vrm, 'kiss')
+return useAnimationsImpl([idle, walk, kiss], vrm.scene)
 }

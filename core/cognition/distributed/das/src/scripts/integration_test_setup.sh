@@ -22,39 +22,39 @@ LINK_CREATION_START_END_PORT=\"1900:2000\"
 EVOLUTION_PORT=2100
 EVOLUTION_START_END_PORT=\"2200:2300\""
 while true; do
-    if [ -f "$END_FILE" -o -f "$KILL_FILE" ]; then
-        echo "Running end at $(date)"
-        if [ -f "$END_FILE" ]; then
-            rm -f "$END_FILE"
-        fi
-        if [ -f "$RUNNING_FILE" ]; then
-            rm -f "$RUNNING_FILE"
-        fi
-        if [ -f ".env.bak" ]; then
-             mv .env.bak .env
-        fi
-        ./src/scripts/run_agents.sh stop >> /dev/null
-        docker compose -f src/tests/integration/cpp/data/compose_db.yaml down > /dev/null 2>&1
-        rm -f ./logs/*.log
-        if [ -f "$KILL_FILE" ]; then
-            rm -f "$KILL_FILE"
-            echo "Exiting integration test setup."
-            exit 0
-        fi
-    fi
-    if [ -f "$START_FILE" ]; then
-        rm -f "$START_FILE"
-        echo "Running start at $(date)"
-        mv .env .env.bak
-        echo "$ENV_VALUES" > .env
-        docker compose -f src/tests/integration/cpp/data/compose_db.yaml up -d --build > /dev/null 2>&1
-        set -a 
-        chmod +x ./src/scripts/run_agents.sh 
-        source .env
-        set +a 
-        ./src/scripts/run_agents.sh start no-wait no-logs >> /dev/null
-        echo "Agents started."
-        touch "$RUNNING_FILE"
-    fi
-    sleep 1
+if [ -f "$END_FILE" -o -f "$KILL_FILE" ]; then
+echo "Running end at $(date)"
+if [ -f "$END_FILE" ]; then
+rm -f "$END_FILE"
+fi
+if [ -f "$RUNNING_FILE" ]; then
+rm -f "$RUNNING_FILE"
+fi
+if [ -f ".env.bak" ]; then
+mv .env.bak .env
+fi
+./src/scripts/run_agents.sh stop >> /dev/null
+docker compose -f src/tests/integration/cpp/data/compose_db.yaml down > /dev/null 2>&1
+rm -f ./logs/*.log
+if [ -f "$KILL_FILE" ]; then
+rm -f "$KILL_FILE"
+echo "Exiting integration test setup."
+exit 0
+fi
+fi
+if [ -f "$START_FILE" ]; then
+rm -f "$START_FILE"
+echo "Running start at $(date)"
+mv .env .env.bak
+echo "$ENV_VALUES" > .env
+docker compose -f src/tests/integration/cpp/data/compose_db.yaml up -d --build > /dev/null 2>&1
+set -a
+chmod +x ./src/scripts/run_agents.sh
+source .env
+set +a
+./src/scripts/run_agents.sh start no-wait no-logs >> /dev/null
+echo "Agents started."
+touch "$RUNNING_FILE"
+fi
+sleep 1
 done

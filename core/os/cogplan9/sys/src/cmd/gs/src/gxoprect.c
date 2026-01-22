@@ -9,14 +9,14 @@
 #include "gsbitops.h"
 private void
 unpack_scanline_lt8(
-gx_color_index *    destp,
-const byte *        srcp,
-int                 src_offset,
-int                 width,
-int                 depth )
+gx_color_index * destp,
+const byte * srcp,
+int src_offset,
+int width,
+int depth )
 {
-byte                buff = 0;
-int                 i = 0, shift = 8 - depth, p_per_byte = 8 / depth;
+byte buff = 0;
+int i = 0, shift = 8 - depth, p_per_byte = 8 / depth;
 if (width == 0)
 return;
 if (src_offset >= p_per_byte) {
@@ -36,14 +36,14 @@ buff = *srcp++;
 }
 private void
 pack_scanline_lt8(
-const gx_color_index *  srcp,
-byte *                  destp,
-int                     dest_offset,
-int                     width,
-int                     depth )
+const gx_color_index * srcp,
+byte * destp,
+int dest_offset,
+int width,
+int depth )
 {
-byte                    buff = 0;
-int                     i = 0, p_per_byte = 8 / depth;
+byte buff = 0;
+int i = 0, p_per_byte = 8 / depth;
 if (width == 0)
 return;
 if (dest_offset >= p_per_byte) {
@@ -61,21 +61,21 @@ if ((i & (p_per_byte - 1)) == p_per_byte - 1)
 *destp++ = buff;
 }
 if ((i &= (p_per_byte - 1)) != 0) {
-int     shift = depth * (p_per_byte - i);
-int     mask = (1 << shift) - 1;
+int shift = depth * (p_per_byte - i);
+int mask = (1 << shift) - 1;
 *destp = (*destp & mask) | (buff << shift);
 }
 }
 private void
 unpack_scanline_ge8(
-gx_color_index *    destp,
-const byte *        srcp,
-int                 src_offset,
-int                 width,
-int                 depth )
+gx_color_index * destp,
+const byte * srcp,
+int src_offset,
+int width,
+int depth )
 {
-gx_color_index      buff = 0;
-int                 i, j, bytes_per_p = depth >> 3;
+gx_color_index buff = 0;
+int i, j, bytes_per_p = depth >> 3;
 srcp += src_offset * bytes_per_p;
 width *= bytes_per_p;
 for (i = 0, j = 0; i < width; i++) {
@@ -89,15 +89,15 @@ j = 0;
 }
 private void
 pack_scanline_ge8(
-const gx_color_index *  srcp,
-byte *                  destp,
-int                     dest_offset,
-int                     width,
-int                     depth )
+const gx_color_index * srcp,
+byte * destp,
+int dest_offset,
+int width,
+int depth )
 {
-gx_color_index          buff = 0;
-int                     i, j, bytes_per_p = depth >> 3;
-int                     shift = depth - 8;
+gx_color_index buff = 0;
+int i, j, bytes_per_p = depth >> 3;
+int shift = depth - 8;
 destp += dest_offset;
 width *= bytes_per_p;
 for (i = 0, j = bytes_per_p - 1; i < width; i++, buff <<= 8) {
@@ -110,26 +110,26 @@ j = 0;
 }
 int
 gx_overprint_generic_fill_rectangle(
-gx_device *             tdev,
-gx_color_index          drawn_comps,
-int                     x,
-int                     y,
-int                     w,
-int                     h,
-gx_color_index          color,
-gs_memory_t *           mem )
+gx_device * tdev,
+gx_color_index drawn_comps,
+int x,
+int y,
+int w,
+int h,
+gx_color_index color,
+gs_memory_t * mem )
 {
-gx_color_value          src_cvals[GX_DEVICE_COLOR_MAX_COMPONENTS];
-gx_color_index *        pcolor_buff = 0;
-byte *                  gb_buff = 0;
-gs_get_bits_params_t    gb_params;
-gs_int_rect             gb_rect;
-int                     depth = tdev->color_info.depth;
-int                     bit_x, start_x, end_x, raster, code;
-void                    (*unpack_proc)( gx_color_index *,
+gx_color_value src_cvals[GX_DEVICE_COLOR_MAX_COMPONENTS];
+gx_color_index * pcolor_buff = 0;
+byte * gb_buff = 0;
+gs_get_bits_params_t gb_params;
+gs_int_rect gb_rect;
+int depth = tdev->color_info.depth;
+int bit_x, start_x, end_x, raster, code;
+void (*unpack_proc)( gx_color_index *,
 const byte *,
 int, int, int );
-void                    (*pack_proc)( const gx_color_index *,
+void (*pack_proc)( const gx_color_index *,
 byte *,
 int, int, int );
 fit_fill(tdev, x, y, w, h);
@@ -147,7 +147,7 @@ if ((code = dev_proc(tdev, decode_color)(tdev, color, src_cvals)) < 0)
 return code;
 pcolor_buff = (gx_color_index *)
 gs_alloc_bytes( mem,
-w *  arch_sizeof_color_index,
+w * arch_sizeof_color_index,
 "overprint generic fill rectangle" );
 if (pcolor_buff == 0)
 return gs_note_error(gs_error_VMerror);
@@ -159,7 +159,7 @@ pcolor_buff,
 "overprint generic fill rectangle" );
 return gs_note_error(gs_error_VMerror);
 }
-gb_params.options =  GB_COLORS_NATIVE
+gb_params.options = GB_COLORS_NATIVE
 | GB_ALPHA_NONE
 | GB_DEPTH_ALL
 | GB_PACKING_CHUNKY
@@ -173,8 +173,8 @@ gb_params.raster = raster;
 gb_rect.p.x = x;
 gb_rect.q.x = x + w;
 while (h-- > 0 && code >= 0) {
-gx_color_index *    cp = pcolor_buff;
-int                 i;
+gx_color_index * cp = pcolor_buff;
+int i;
 gb_rect.p.y = y++;
 gb_rect.q.y = y;
 code = dev_proc(tdev, get_bits_rectangle)( tdev,
@@ -185,9 +185,9 @@ if (code < 0)
 break;
 unpack_proc(pcolor_buff, gb_buff, 0, w, depth);
 for (i = 0; i < w; i++, cp++) {
-gx_color_index  comps;
-int             j;
-gx_color_value  dest_cvals[GX_DEVICE_COLOR_MAX_COMPONENTS];
+gx_color_index comps;
+int j;
+gx_color_value dest_cvals[GX_DEVICE_COLOR_MAX_COMPONENTS];
 if ((code = dev_proc(tdev, decode_color)(tdev, *cp, dest_cvals)) < 0)
 break;
 for (j = 0, comps = drawn_comps; comps != 0; ++j, comps >>= 1) {
@@ -252,21 +252,21 @@ return color;
 }
 int
 gx_overprint_sep_fill_rectangle_1(
-gx_device *             tdev,
-gx_color_index          retain_mask,
-int                     x,
-int                     y,
-int                     w,
-int                     h,
-gx_color_index          color,
-gs_memory_t *           mem )
+gx_device * tdev,
+gx_color_index retain_mask,
+int x,
+int y,
+int w,
+int h,
+gx_color_index color,
+gs_memory_t * mem )
 {
-byte *                  gb_buff = 0;
-gs_get_bits_params_t    gb_params;
-gs_int_rect             gb_rect;
-int                     code = 0, bit_w, depth = tdev->color_info.depth;
-int                     raster;
-mono_fill_chunk         rep_color, rep_mask;
+byte * gb_buff = 0;
+gs_get_bits_params_t gb_params;
+gs_int_rect gb_rect;
+int code = 0, bit_w, depth = tdev->color_info.depth;
+int raster;
+mono_fill_chunk rep_color, rep_mask;
 fit_fill(tdev, x, y, w, h);
 bit_w = w * depth;
 if (depth < 8 * sizeof(mono_fill_chunk)) {
@@ -280,7 +280,7 @@ raster = bitmap_raster(w * depth);
 gb_buff = gs_alloc_bytes(mem, raster, "overprint sep fill rectangle 1");
 if (gb_buff == 0)
 return gs_note_error(gs_error_VMerror);
-gb_params.options =  GB_COLORS_NATIVE
+gb_params.options = GB_COLORS_NATIVE
 | GB_ALPHA_NONE
 | GB_DEPTH_ALL
 | GB_PACKING_CHUNKY
@@ -323,22 +323,22 @@ return code;
 }
 int
 gx_overprint_sep_fill_rectangle_2(
-gx_device *             tdev,
-gx_color_index          retain_mask,
-int                     x,
-int                     y,
-int                     w,
-int                     h,
-gx_color_index          color,
-gs_memory_t *           mem )
+gx_device * tdev,
+gx_color_index retain_mask,
+int x,
+int y,
+int w,
+int h,
+gx_color_index color,
+gs_memory_t * mem )
 {
-byte *                  gb_buff = 0;
-gs_get_bits_params_t    gb_params;
-gs_int_rect             gb_rect;
-int                     code = 0, byte_w, raster;
-int                     byte_depth = tdev->color_info.depth >> 3;
-byte *                  pcolor;
-byte *                  pmask;
+byte * gb_buff = 0;
+gs_get_bits_params_t gb_params;
+gs_int_rect gb_rect;
+int code = 0, byte_w, raster;
+int byte_depth = tdev->color_info.depth >> 3;
+byte * pcolor;
+byte * pmask;
 fit_fill(tdev, x, y, w, h);
 byte_w = w * byte_depth;
 pcolor = (byte *)&color;
@@ -351,7 +351,7 @@ raster = bitmap_raster(w * (byte_depth << 3));
 gb_buff = gs_alloc_bytes(mem, raster, "overprint sep fill rectangle 2");
 if (gb_buff == 0)
 return gs_note_error(gs_error_VMerror);
-gb_params.options =  GB_COLORS_NATIVE
+gb_params.options = GB_COLORS_NATIVE
 | GB_ALPHA_NONE
 | GB_DEPTH_ALL
 | GB_PACKING_CHUNKY
@@ -365,8 +365,8 @@ gb_params.raster = raster;
 gb_rect.p.x = x;
 gb_rect.q.x = x + w;
 while (h-- > 0 && code >= 0) {
-int     i, j;
-byte *  cp = gb_buff;
+int i, j;
+byte * cp = gb_buff;
 gb_rect.p.y = y++;
 gb_rect.q.y = y;
 code = dev_proc(tdev, get_bits_rectangle)( tdev,

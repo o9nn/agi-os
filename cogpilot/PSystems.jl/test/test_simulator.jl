@@ -91,7 +91,7 @@ membranes=[Membrane(1, 1, nothing)],
 alphabet=["a"],
 initial_multisets=Dict(1 => Multiset("a" => 5)),
 rules=[
-Rule(1, Multiset("a" => 1), Multiset("a" => 2))  # Doubling
+Rule(1, Multiset("a" => 1), Multiset("a" => 2)) # Doubling
 ]
 )
 # Halt when we have >= 20 objects
@@ -99,7 +99,7 @@ halt_fn(config) = length(get_multiset(config, 1)) >= 20
 result = simulate(system, max_steps=100, halt_condition=halt_fn)
 @test result.halted == true
 @test length(get_multiset(result.final_config, 1)) >= 20
-@test result.steps < 100  # Should halt before max steps
+@test result.steps < 100 # Should halt before max steps
 end
 @testset "Applicable Rules Selection" begin
 system = PSystem(

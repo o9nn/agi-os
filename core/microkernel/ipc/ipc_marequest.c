@@ -11,7 +11,7 @@
 #include <ipc/ipc_right.h>
 #include <ipc/ipc_marequest.h>
 #include <ipc/ipc_notify.h>
-#if	MACH_IPC_DEBUG
+#if MACH_IPC_DEBUG
 #include <mach/kern_return.h>
 #include <mach_debug/hash_info.h>
 #include <vm/vm_map.h>
@@ -19,23 +19,23 @@
 #include <vm/vm_user.h>
 #endif
 struct kmem_cache ipc_marequest_cache;
-#define	imar_alloc()		((ipc_marequest_t) kmem_cache_alloc(&ipc_marequest_cache))
-#define	imar_free(imar)		kmem_cache_free(&ipc_marequest_cache, (vm_offset_t) (imar))
+#define imar_alloc() ((ipc_marequest_t) kmem_cache_alloc(&ipc_marequest_cache))
+#define imar_free(imar) kmem_cache_free(&ipc_marequest_cache, (vm_offset_t) (imar))
 typedef unsigned int ipc_marequest_index_t;
 ipc_marequest_index_t ipc_marequest_size;
 ipc_marequest_index_t ipc_marequest_mask;
-#define	IMAR_HASH(space, name)						\
-((((ipc_marequest_index_t)((vm_offset_t)space) >> 4) +	\
-MACH_PORT_INDEX(name) + MACH_PORT_NGEN(name)) &	\
+#define IMAR_HASH(space, name) \
+((((ipc_marequest_index_t)((vm_offset_t)space) >> 4) + \
+MACH_PORT_INDEX(name) + MACH_PORT_NGEN(name)) & \
 ipc_marequest_mask)
 typedef struct ipc_marequest_bucket {
 decl_simple_lock_data(, imarb_lock_data)
 ipc_marequest_t imarb_head;
 } *ipc_marequest_bucket_t;
-#define	IMARB_NULL	((ipc_marequest_bucket_t) 0)
-#define	imarb_lock_init(imarb)	simple_lock_init(&(imarb)->imarb_lock_data)
-#define	imarb_lock(imarb)	simple_lock(&(imarb)->imarb_lock_data)
-#define	imarb_unlock(imarb)	simple_unlock(&(imarb)->imarb_lock_data)
+#define IMARB_NULL ((ipc_marequest_bucket_t) 0)
+#define imarb_lock_init(imarb) simple_lock_init(&(imarb)->imarb_lock_data)
+#define imarb_lock(imarb) simple_lock(&(imarb)->imarb_lock_data)
+#define imarb_unlock(imarb) simple_unlock(&(imarb)->imarb_lock_data)
 ipc_marequest_bucket_t ipc_marequest_table;
 void
 ipc_marequest_init(void)
@@ -67,10 +67,10 @@ sizeof(struct ipc_marequest), 0, NULL, 0);
 }
 mach_msg_return_t
 ipc_marequest_create(
-ipc_space_t 		space,
-ipc_port_t 		port,
-mach_port_name_t 	notify,
-ipc_marequest_t 	*marequestp)
+ipc_space_t space,
+ipc_port_t port,
+mach_port_name_t notify,
+ipc_marequest_t *marequestp)
 {
 mach_port_name_t name;
 ipc_entry_t entry;
@@ -216,12 +216,12 @@ imar_free(marequest);
 assert(soright != IP_NULL);
 ipc_notify_msg_accepted(soright, name);
 }
-#if	MACH_IPC_DEBUG
+#if MACH_IPC_DEBUG
 unsigned int
 ipc_marequest_info(
-unsigned int 		*maxp,
-hash_info_bucket_t 	*info,
-unsigned int 		count)
+unsigned int *maxp,
+hash_info_bucket_t *info,
+unsigned int count)
 {
 ipc_marequest_index_t i;
 if (ipc_marequest_size < count)

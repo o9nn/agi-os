@@ -1,5 +1,5 @@
 #ifndef ccfont_INCLUDED
-#  define ccfont_INCLUDED
+# define ccfont_INCLUDED
 #include "stdpre.h"
 #include "gsmemory.h"
 #include "iref.h"
@@ -31,9 +31,9 @@ int (*num_dict_create) (i_ctx_t *, ref *, const cfont_dict_keys *,
 cfont_string_array, const ref *, const char *);
 int (*name_array_create) (i_ctx_t *, ref *, cfont_string_array, int);
 int (*string_array_create) (i_ctx_t *, ref *, cfont_string_array,
-int  , uint  );
+int , uint );
 int (*scalar_array_create) (i_ctx_t *, ref *, const ref *,
-int  , uint  );
+int , uint );
 int (*name_create) (i_ctx_t *, ref *, const char *);
 int (*ref_from_string) (i_ctx_t *, ref *, const char *, uint);
 } cfont_procs;

@@ -11,7 +11,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
 {
 _GLIBCXX_BEGIN_NAMESPACE_VERSION
 #if __cplusplus > 201703L
-#  define __cpp_lib_constexpr_algorithms 201806L
+# define __cpp_lib_constexpr_algorithms 201806L
 #endif
 #if __cplusplus >= 201103L
 template<typename _IIter, typename _Predicate>

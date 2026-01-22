@@ -41,5 +41,5 @@ d->tag = 0xff;
 d->path = NandfsPathMask;
 d->nerase = NandfsNeraseMask;
 }
-return  nil;
+return nil;
 }

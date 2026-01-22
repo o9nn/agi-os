@@ -187,9 +187,9 @@ The `ShiftIndex` operator allows you to index a signal and obtain a shifted disc
 julia> t = ModelingToolkit.t_nounits;
 julia> @variables x(t);
 julia> k = ShiftIndex(t, 0.1);
-julia> x(k)      # no shift
+julia> x(k) # no shift
 x(t)
-julia> x(k+1)    # shift
+julia> x(k+1) # shift
 Shift(1)(x(t))
 ```
 """
@@ -223,7 +223,7 @@ error("Cannot shift an expression with multiple independent variables $x.")
 end
 # d, _ = propagate_time_domain(xn)
 # if d != clock # this is only required if the variable has another clock
-#     xn = Sample(t, clock)(xn)
+# xn = Sample(t, clock)(xn)
 # end
 # QUESTION: should we return a variable with time domain set to k.clock?
 xn = setmetadata(xn, VariableTimeDomain, k.clock)
@@ -249,7 +249,7 @@ error("Cannot shift an expression with multiple independent variables $x.")
 end
 # d, _ = propagate_time_domain(xn)
 # if d != clock # this is only required if the variable has another clock
-#     xn = Sample(t, clock)(xn)
+# xn = Sample(t, clock)(xn)
 # end
 # QUESTION: should we return a variable with time domain set to k.clock?
 xn = wrap(setmetadata(unwrap(xn), VariableTimeDomain, k.clock))

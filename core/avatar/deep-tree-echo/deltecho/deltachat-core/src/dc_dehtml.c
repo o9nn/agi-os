@@ -8,11 +8,11 @@
 typedef struct dehtml_t
 {
 dc_strbuilder_t strbuilder;
-#define         DO_NOT_ADD               0
-#define         DO_ADD_REMOVE_LINEENDS   1
-#define         DO_ADD_PRESERVE_LINEENDS 2
-int             add_text;
-char*           last_href;
+#define DO_NOT_ADD 0
+#define DO_ADD_REMOVE_LINEENDS 1
+#define DO_ADD_PRESERVE_LINEENDS 2
+int add_text;
+char* last_href;
 } dehtml_t;
 static void dehtml_starttag_cb(void* userdata, const char* tag, char** attr)
 {
@@ -121,10 +121,10 @@ if (buf_terminated[0]==0) {
 return dc_strdup("");
 }
 else {
-dehtml_t       dehtml;
+dehtml_t dehtml;
 dc_saxparser_t saxparser;
 memset(&dehtml, 0, sizeof(dehtml_t));
-dehtml.add_text   = DO_ADD_REMOVE_LINEENDS;
+dehtml.add_text = DO_ADD_REMOVE_LINEENDS;
 dc_strbuilder_init(&dehtml.strbuilder, strlen(buf_terminated));
 dc_saxparser_init(&saxparser, &dehtml);
 dc_saxparser_set_tag_handler(&saxparser, dehtml_starttag_cb, dehtml_endtag_cb);

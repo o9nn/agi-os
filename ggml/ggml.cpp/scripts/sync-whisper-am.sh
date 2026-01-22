@@ -5,103 +5,103 @@ cd $sd/../
 SRC_GGML=$(pwd)
 SRC_WHISPER=$(cd ../whisper.cpp; pwd)
 if [ ! -d $SRC_WHISPER ]; then
-    echo "whisper.cpp not found at $SRC_WHISPER"
-    exit 1
+echo "whisper.cpp not found at $SRC_WHISPER"
+exit 1
 fi
 lc=$(cat $SRC_GGML/scripts/sync-whisper.last)
 echo "Syncing whisper.cpp changes since commit $lc"
 to_skip=""
 if [ "$1" == "-skip" ]; then
-    to_skip=$2
+to_skip=$2
 fi
 cd $SRC_WHISPER
 git log --oneline $lc..HEAD
 git log --oneline $lc..HEAD --reverse | grep -v "(ggml/[0-9]*)" | grep -v "(llama/[0-9]*)" | cut -d' ' -f1 > $SRC_GGML/whisper-commits
 if [ ! -s $SRC_GGML/whisper-commits ]; then
-    rm -v $SRC_GGML/whisper-commits
-    echo "No new commits"
-    exit 0
+rm -v $SRC_GGML/whisper-commits
+echo "No new commits"
+exit 0
 fi
 if [ -f $SRC_GGML/whisper-src.patch ]; then
-    rm -v $SRC_GGML/whisper-src.patch
+rm -v $SRC_GGML/whisper-src.patch
 fi
 while read c; do
-    if [ -n "$to_skip" ]; then
-        if [[ $to_skip == *"$c"* ]]; then
-            echo "Skipping $c"
-            continue
-        fi
-    fi
-    git format-patch -k $c~1..$c --stdout -- \
-        ggml/CMakeLists.txt \
-        ggml/src/CMakeLists.txt \
-        ggml/cmake/FindSIMD.cmake \
-        ggml/src/ggml*.h \
-        ggml/src/ggml*.c \
-        ggml/src/ggml*.cpp \
-        ggml/src/gguf*.cpp \
-        ggml/src/ggml-blas/* \
-        ggml/src/ggml-cann/* \
-        ggml/src/ggml-cpu/* \
-        ggml/src/ggml-cuda/* \
-        ggml/src/ggml-hip/* \
-        ggml/src/ggml-kompute/* \
-        ggml/src/ggml-metal/* \
-        ggml/src/ggml-musa/* \
-        ggml/src/ggml-opencl/* \
-        ggml/src/ggml-rpc/* \
-        ggml/src/ggml-sycl/* \
-        ggml/src/ggml-vulkan/* \
-        ggml/include/ggml*.h \
-        ggml/include/gguf*.h \
-        examples/common-ggml.h \
-        examples/common-ggml.cpp \
-        LICENSE \
-        scripts/gen-authors.sh \
-        >> $SRC_GGML/whisper-src.patch
+if [ -n "$to_skip" ]; then
+if [[ $to_skip == *"$c"* ]]; then
+echo "Skipping $c"
+continue
+fi
+fi
+git format-patch -k $c~1..$c --stdout -- \
+ggml/CMakeLists.txt \
+ggml/src/CMakeLists.txt \
+ggml/cmake/FindSIMD.cmake \
+ggml/src/ggml*.h \
+ggml/src/ggml*.c \
+ggml/src/ggml*.cpp \
+ggml/src/gguf*.cpp \
+ggml/src/ggml-blas/* \
+ggml/src/ggml-cann/* \
+ggml/src/ggml-cpu/* \
+ggml/src/ggml-cuda/* \
+ggml/src/ggml-hip/* \
+ggml/src/ggml-kompute/* \
+ggml/src/ggml-metal/* \
+ggml/src/ggml-musa/* \
+ggml/src/ggml-opencl/* \
+ggml/src/ggml-rpc/* \
+ggml/src/ggml-sycl/* \
+ggml/src/ggml-vulkan/* \
+ggml/include/ggml*.h \
+ggml/include/gguf*.h \
+examples/common-ggml.h \
+examples/common-ggml.cpp \
+LICENSE \
+scripts/gen-authors.sh \
+>> $SRC_GGML/whisper-src.patch
 done < $SRC_GGML/whisper-commits
 rm -v $SRC_GGML/whisper-commits
 if [ ! -s $SRC_GGML/whisper-src.patch ]; then
-    rm -v $SRC_GGML/whisper-src.patch
+rm -v $SRC_GGML/whisper-src.patch
 fi
 cd $SRC_GGML
 if [ -f $SRC_GGML/whisper-src.patch ]; then
-    cat whisper-src.patch | sed -e 's/^Subject: \(.*\) (
-    mv whisper-src.patch.tmp whisper-src.patch
-    cat whisper-src.patch | sed -e 's/^\(.*\) (
-    mv whisper-src.patch.tmp whisper-src.patch
-    cat whisper-src.patch | sed -E \
-        -e 's/\/ggml\/CMakeLists\.txt/\/CMakeLists.txt/g' \
-        -e 's/\/ggml\/src\/CMakeLists\.txt/\/src\/CMakeLists.txt/g' \
-        -e 's/\/ggml\/cmake\/FindSIMD\.cmake/\/cmake\/FindSIMD.cmake/g' \
-        -e 's/\/ggml\/src\/ggml(.*)\.c/\/src\/ggml\1.c/g' \
-        -e 's/\/ggml\/src\/ggml(.*)\.cpp/\/src\/ggml\1.cpp/g' \
-        -e 's/\/ggml\/src\/ggml(.*)\.h/\/src\/ggml\1.h/g' \
-        -e 's/\/ggml\/src\/gguf(.*)\.cpp/\/src\/gguf\1.cpp/g' \
-        -e 's/\/ggml\/src\/ggml-blas\//\/src\/ggml-blas\//g' \
-        -e 's/\/ggml\/src\/ggml-cann\//\/src\/ggml-cann\//g' \
-        -e 's/\/ggml\/src\/ggml-cpu\//\/src\/ggml-cpu\//g' \
-        -e 's/\/ggml\/src\/ggml-cuda\//\/src\/ggml-cuda\//g' \
-        -e 's/\/ggml\/src\/ggml-hip\//\/src\/ggml-hip\//g' \
-        -e 's/\/ggml\/src\/ggml-kompute\//\/src\/ggml-kompute\//g' \
-        -e 's/\/ggml\/src\/ggml-metal\//\/src\/ggml-metal\//g' \
-        -e 's/\/ggml\/src\/ggml-musa\//\/src\/ggml-musa\//g' \
-        -e 's/\/ggml\/src\/ggml-opencl\//\/src\/ggml-opencl\//g' \
-        -e 's/\/ggml\/src\/ggml-rpc\//\/src\/ggml-rpc\//g' \
-        -e 's/\/ggml\/src\/ggml-sycl\//\/src\/ggml-sycl\//g' \
-        -e 's/\/ggml\/src\/ggml-vulkan\//\/src\/ggml-vulkan\//g' \
-        -e 's/\/ggml\/include\/ggml(.*)\.h/\/include\/ggml\1.h/g' \
-        -e 's/\/ggml\/include\/gguf(.*)\.h/\/include\/gguf\1.h/g' \
-        -e 's/\/examples\/common\.h/\/examples\/common.h/g' \
-        -e 's/\/examples\/common\.cpp/\/examples\/common.cpp/g' \
-        -e 's/\/examples\/common-ggml\.h/\/examples\/common-ggml.h/g' \
-        -e 's/\/examples\/common-ggml\.cpp/\/examples\/common-ggml.cpp/g' \
-        -e 's/\/LICENSE/\/LICENSE/g' \
-        -e 's/\/scripts\/gen-authors\.sh/\/scripts\/gen-authors.sh/g' \
-        > whisper-src.patch.tmp
-    mv whisper-src.patch.tmp whisper-src.patch
-    git am whisper-src.patch
-    rm -v $SRC_GGML/whisper-src.patch
+cat whisper-src.patch | sed -e 's/^Subject: \(.*\) (
+mv whisper-src.patch.tmp whisper-src.patch
+cat whisper-src.patch | sed -e 's/^\(.*\) (
+mv whisper-src.patch.tmp whisper-src.patch
+cat whisper-src.patch | sed -E \
+-e 's/\/ggml\/CMakeLists\.txt/\/CMakeLists.txt/g' \
+-e 's/\/ggml\/src\/CMakeLists\.txt/\/src\/CMakeLists.txt/g' \
+-e 's/\/ggml\/cmake\/FindSIMD\.cmake/\/cmake\/FindSIMD.cmake/g' \
+-e 's/\/ggml\/src\/ggml(.*)\.c/\/src\/ggml\1.c/g' \
+-e 's/\/ggml\/src\/ggml(.*)\.cpp/\/src\/ggml\1.cpp/g' \
+-e 's/\/ggml\/src\/ggml(.*)\.h/\/src\/ggml\1.h/g' \
+-e 's/\/ggml\/src\/gguf(.*)\.cpp/\/src\/gguf\1.cpp/g' \
+-e 's/\/ggml\/src\/ggml-blas\//\/src\/ggml-blas\//g' \
+-e 's/\/ggml\/src\/ggml-cann\//\/src\/ggml-cann\//g' \
+-e 's/\/ggml\/src\/ggml-cpu\//\/src\/ggml-cpu\//g' \
+-e 's/\/ggml\/src\/ggml-cuda\//\/src\/ggml-cuda\//g' \
+-e 's/\/ggml\/src\/ggml-hip\//\/src\/ggml-hip\//g' \
+-e 's/\/ggml\/src\/ggml-kompute\//\/src\/ggml-kompute\//g' \
+-e 's/\/ggml\/src\/ggml-metal\//\/src\/ggml-metal\//g' \
+-e 's/\/ggml\/src\/ggml-musa\//\/src\/ggml-musa\//g' \
+-e 's/\/ggml\/src\/ggml-opencl\//\/src\/ggml-opencl\//g' \
+-e 's/\/ggml\/src\/ggml-rpc\//\/src\/ggml-rpc\//g' \
+-e 's/\/ggml\/src\/ggml-sycl\//\/src\/ggml-sycl\//g' \
+-e 's/\/ggml\/src\/ggml-vulkan\//\/src\/ggml-vulkan\//g' \
+-e 's/\/ggml\/include\/ggml(.*)\.h/\/include\/ggml\1.h/g' \
+-e 's/\/ggml\/include\/gguf(.*)\.h/\/include\/gguf\1.h/g' \
+-e 's/\/examples\/common\.h/\/examples\/common.h/g' \
+-e 's/\/examples\/common\.cpp/\/examples\/common.cpp/g' \
+-e 's/\/examples\/common-ggml\.h/\/examples\/common-ggml.h/g' \
+-e 's/\/examples\/common-ggml\.cpp/\/examples\/common-ggml.cpp/g' \
+-e 's/\/LICENSE/\/LICENSE/g' \
+-e 's/\/scripts\/gen-authors\.sh/\/scripts\/gen-authors.sh/g' \
+> whisper-src.patch.tmp
+mv whisper-src.patch.tmp whisper-src.patch
+git am whisper-src.patch
+rm -v $SRC_GGML/whisper-src.patch
 fi
 cd $SRC_WHISPER
 git log -1 --format=%H > $SRC_GGML/scripts/sync-whisper.last

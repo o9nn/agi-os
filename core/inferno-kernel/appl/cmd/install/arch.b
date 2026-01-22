@@ -167,12 +167,12 @@ if(nf != NFLDS) {
 ar.err = "too few fields in file header";
 return nil;
 }
-a.name = hd fs;						fs = tl fs;
-(a.d.mode, nil) = str->toint(hd fs, 8);		fs = tl fs;
-a.d.uid = hd fs;						fs = tl fs;
-a.d.gid = hd fs;						fs = tl fs;
-(a.d.mtime, nil) = str->toint(hd fs, 10);	fs = tl fs;
-(tmp, nil) := str->toint(hd fs, 10);		fs = tl fs;
+a.name = hd fs; fs = tl fs;
+(a.d.mode, nil) = str->toint(hd fs, 8); fs = tl fs;
+a.d.uid = hd fs; fs = tl fs;
+a.d.gid = hd fs; fs = tl fs;
+(a.d.mtime, nil) = str->toint(hd fs, 10); fs = tl fs;
+(tmp, nil) := str->toint(hd fs, 10); fs = tl fs;
 a.d.length = big tmp;
 ar.nexthdr = int (b.offset()+a.d.length);
 return a;

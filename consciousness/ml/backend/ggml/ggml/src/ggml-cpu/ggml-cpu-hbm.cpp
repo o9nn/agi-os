@@ -13,16 +13,16 @@ static void ggml_backend_cpu_hbm_buffer_free_buffer(ggml_backend_buffer_t buffer
 hbw_free(buffer->context);
 }
 static ggml_backend_buffer_t ggml_backend_cpu_hbm_buffer_type_alloc_buffer(ggml_backend_buffer_type_t buft,
-size_t                     size) {
+size_t size) {
 void * ptr;
-int    result = hbw_posix_memalign(&ptr, ggml_backend_cpu_buffer_type_get_alignment(buft), size);
+int result = hbw_posix_memalign(&ptr, ggml_backend_cpu_buffer_type_get_alignment(buft), size);
 if (result != 0) {
 GGML_LOG_ERROR("failed to allocate HBM buffer of size %zu\n", size);
 return NULL;
 }
 ggml_backend_buffer_t buffer = ggml_backend_cpu_buffer_from_ptr(ptr, size);
-buffer->buft                 = buft;
-buffer->iface.free_buffer    = ggml_backend_cpu_hbm_buffer_free_buffer;
+buffer->buft = buft;
+buffer->iface.free_buffer = ggml_backend_cpu_hbm_buffer_free_buffer;
 return buffer;
 }
 ggml_backend_buffer_type_t ggml_backend_cpu_hbm_buffer_type(void) {

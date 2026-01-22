@@ -1,177 +1,177 @@
-#define	NAMELEN		28
-#define	NDBLOCK		6
-#define	MAXDAT		8192
-#define NTLOCK		200
-typedef	struct	Fbuf	Fbuf;
-typedef	struct	Super1	Super1;
-typedef	struct	Superb	Superb;
-typedef	struct	Dentry	Dentry;
-typedef	struct	Tag	Tag;
-typedef struct	Device	Device;
-typedef struct	Qid9p1	Qid9p1;
-typedef	struct	File	File;
-typedef	struct	Filsys	Filsys;
-typedef	struct	Filta	Filta;
-typedef	struct	Filter	Filter;
-typedef		ulong	Float;
-typedef	struct	Hiob	Hiob;
-typedef	struct	Iobuf	Iobuf;
-typedef	struct	P9call	P9call;
-typedef	struct	Tlock	Tlock;
-typedef	struct	Uid	Uid;
-typedef	struct	Wpath	Wpath;
-typedef struct	AuthRpc	AuthRpc;
-struct	Qid9p1
+#define NAMELEN 28
+#define NDBLOCK 6
+#define MAXDAT 8192
+#define NTLOCK 200
+typedef struct Fbuf Fbuf;
+typedef struct Super1 Super1;
+typedef struct Superb Superb;
+typedef struct Dentry Dentry;
+typedef struct Tag Tag;
+typedef struct Device Device;
+typedef struct Qid9p1 Qid9p1;
+typedef struct File File;
+typedef struct Filsys Filsys;
+typedef struct Filta Filta;
+typedef struct Filter Filter;
+typedef ulong Float;
+typedef struct Hiob Hiob;
+typedef struct Iobuf Iobuf;
+typedef struct P9call P9call;
+typedef struct Tlock Tlock;
+typedef struct Uid Uid;
+typedef struct Wpath Wpath;
+typedef struct AuthRpc AuthRpc;
+struct Qid9p1
 {
-long	path;
-long	version;
+long path;
+long version;
 };
-struct	Dentry
+struct Dentry
 {
-char	name[NAMELEN];
-short	uid;
-short	gid;
-ushort	mode;
-#define	DALLOC	0x8000
-#define	DDIR	0x4000
-#define	DAPND	0x2000
-#define	DLOCK	0x1000
-#define	DREAD	0x4
-#define	DWRITE	0x2
-#define	DEXEC	0x1
-Qid9p1	qid;
-long	size;
-long	dblock[NDBLOCK];
-long	iblock;
-long	diblock;
-long	atime;
-long	mtime;
+char name[NAMELEN];
+short uid;
+short gid;
+ushort mode;
+#define DALLOC 0x8000
+#define DDIR 0x4000
+#define DAPND 0x2000
+#define DLOCK 0x1000
+#define DREAD 0x4
+#define DWRITE 0x2
+#define DEXEC 0x1
+Qid9p1 qid;
+long size;
+long dblock[NDBLOCK];
+long iblock;
+long diblock;
+long atime;
+long mtime;
 };
-struct	Tag
+struct Tag
 {
-short	pad;
-short	tag;
-long	path;
+short pad;
+short tag;
+long path;
 };
-struct	Super1
+struct Super1
 {
-long	fstart;
-long	fsize;
-long	tfree;
-long	qidgen;
-long	fsok;
-long	roraddr;
-long	last;
-long	next;
+long fstart;
+long fsize;
+long tfree;
+long qidgen;
+long fsok;
+long roraddr;
+long last;
+long next;
 };
-struct	Fbuf
+struct Fbuf
 {
-long	nfree;
-long	free[1];
+long nfree;
+long free[1];
 };
-struct	Superb
+struct Superb
 {
 Super1;
-Fbuf	fbuf;
+Fbuf fbuf;
 };
-struct	Device
+struct Device
 {
-char	type;
-char	ctrl;
-char	unit;
-char	part;
+char type;
+char ctrl;
+char unit;
+char part;
 };
-struct	Filter
+struct Filter
 {
-ulong	count;
-ulong	oldcount;
-Float	filter[3];
+ulong count;
+ulong oldcount;
+Float filter[3];
 };
-struct	Filta
+struct Filta
 {
-Filter*	f;
-int	scale;
+Filter* f;
+int scale;
 };
-struct	Tlock
+struct Tlock
 {
-Device	dev;
-long	time;
-long	qpath;
-File*	file;
+Device dev;
+long time;
+long qpath;
+File* file;
 };
-struct	File
+struct File
 {
 QLock;
-Qid	qid;
-Wpath*	wpath;
-Chan*	cp;
-Tlock*	tlock;
-File*	next;
-File*	list;
-Filsys*	fs;
-long	addr;
-long	slot;
-long	lastra;
-short	fid;
-short	uid;
-char	open;
-#define	FREAD	1
-#define	FWRITE	2
-#define	FREMOV	4
-#define	FWSTAT	8
-long	doffset;
-ulong	dvers;
-long	dslot;
-AuthRpc	*rpc;
-short	cuid;
+Qid qid;
+Wpath* wpath;
+Chan* cp;
+Tlock* tlock;
+File* next;
+File* list;
+Filsys* fs;
+long addr;
+long slot;
+long lastra;
+short fid;
+short uid;
+char open;
+#define FREAD 1
+#define FWRITE 2
+#define FREMOV 4
+#define FWSTAT 8
+long doffset;
+ulong dvers;
+long dslot;
+AuthRpc *rpc;
+short cuid;
 };
-struct	Filsys
+struct Filsys
 {
-char*	name;
-Device	dev;
-int	flags;
-#define	FREAM		(1<<1)
-#define	FRECOVER	(1<<2)
+char* name;
+Device dev;
+int flags;
+#define FREAM (1<<1)
+#define FRECOVER (1<<2)
 };
-struct	Hiob
+struct Hiob
 {
-Iobuf*	link;
+Iobuf* link;
 Lock;
 };
-struct	Iobuf
+struct Iobuf
 {
 QLock;
-Device	dev;
-Iobuf	*next;
-Iobuf	*fore;
-Iobuf	*back;
-char	*iobuf;
-char	*xiobuf;
-long	addr;
-int	flags;
+Device dev;
+Iobuf *next;
+Iobuf *fore;
+Iobuf *back;
+char *iobuf;
+char *xiobuf;
+long addr;
+int flags;
 };
-struct	P9call
+struct P9call
 {
-uchar	calln;
-uchar	rxflag;
-short	msize;
-void	(*func)(Chan*, int);
+uchar calln;
+uchar rxflag;
+short msize;
+void (*func)(Chan*, int);
 };
-struct	Uid
+struct Uid
 {
-short	uid;
-short	lead;
-short	offset;
+short uid;
+short lead;
+short offset;
 };
-struct	Wpath
+struct Wpath
 {
-Wpath	*up;
-Wpath	*list;
-long	addr;
-long	slot;
-short	refs;
+Wpath *up;
+Wpath *list;
+long addr;
+long slot;
+short refs;
 };
-#define	MAXFDATA	8192
+#define MAXFDATA 8192
 enum
 {
 Ebadspc = 1,
@@ -216,7 +216,7 @@ MAXERR
 };
 enum
 {
-Cwio1 	= 1,
+Cwio1 = 1,
 Cwio2,
 Cwxx1,
 Cwxx2,
@@ -228,7 +228,7 @@ Cuidbuf,
 };
 enum
 {
-Tnone		= 0,
+Tnone = 0,
 Tsuper,
 Tdir,
 Tind1,
@@ -242,37 +242,37 @@ MAXTAG
 };
 enum
 {
-Bread	= (1<<0),
-Bprobe	= (1<<1),
-Bmod	= (1<<2),
-Bimm	= (1<<3),
-Bres	= (1<<4),
+Bread = (1<<0),
+Bprobe = (1<<1),
+Bmod = (1<<2),
+Bimm = (1<<3),
+Bres = (1<<4),
 };
 enum
 {
-MREAD	= 0,
+MREAD = 0,
 MWRITE,
 MBOTH,
 MEXEC,
-MTRUNC	= (1<<4),
-MCEXEC	= (1<<5),
-MRCLOSE	= (1<<6),
+MTRUNC = (1<<4),
+MCEXEC = (1<<5),
+MRCLOSE = (1<<6),
 };
 enum
 {
-Crdall	= (1<<0),
-Ctag	= (1<<1),
-Cpfile	= (1<<2),
-Cpdir	= (1<<3),
-Cfree	= (1<<4),
-Cream	= (1<<6),
-Cbad	= (1<<7),
-Ctouch	= (1<<8),
-Cquiet	= (1<<9),
+Crdall = (1<<0),
+Ctag = (1<<1),
+Cpfile = (1<<2),
+Cpdir = (1<<3),
+Cfree = (1<<4),
+Cream = (1<<6),
+Cbad = (1<<7),
+Ctouch = (1<<8),
+Cquiet = (1<<9),
 };
-extern int	RBUFSIZE;
-extern int	BUFSIZE;
-extern int	DIRPERBUF;
-extern int	INDPERBUF;
-extern int	INDPERBUF2;
-extern int	FEPERBUF;
+extern int RBUFSIZE;
+extern int BUFSIZE;
+extern int DIRPERBUF;
+extern int INDPERBUF;
+extern int INDPERBUF2;
+extern int FEPERBUF;

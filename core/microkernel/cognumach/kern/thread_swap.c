@@ -10,10 +10,10 @@
 #include <kern/processor.h>
 #include <kern/thread_swap.h>
 #include <machine/spl.h>
-queue_head_t		swapin_queue;
-def_simple_lock_data(static,	swapper_lock_data)
-#define swapper_lock()		simple_lock(&swapper_lock_data)
-#define swapper_unlock()	simple_unlock(&swapper_lock_data)
+queue_head_t swapin_queue;
+def_simple_lock_data(static, swapper_lock_data)
+#define swapper_lock() simple_lock(&swapper_lock_data)
+#define swapper_unlock() simple_unlock(&swapper_lock_data)
 void swapper_init(void)
 {
 queue_init(&swapin_queue);
@@ -39,7 +39,7 @@ panic("thread_swapin");
 kern_return_t thread_doswapin(thread_t thread)
 {
 kern_return_t kr;
-spl_t	s;
+spl_t s;
 kr = stack_alloc(thread, thread_continue);
 if (kr != KERN_SUCCESS)
 return kr;

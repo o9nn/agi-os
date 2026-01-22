@@ -2,20 +2,20 @@
 #include <libc.h>
 #include <disk.h>
 enum {
-Testrdy		= 0x00,
-Reqsense	= 0x03,
-Write10		= 0x2a,
-Writever10	= 0x2e,
-Readtoc		= 0x43,
-Sensenone	= 0,
-Sensenotrdy	= 2,
-Sensebadreq	= 5,
-Lunnotrdy	= 0x04,
-Recovnoecc	= 0x17,
-Recovecc	= 0x18,
-Badcdb		= 0x24,
-Newmedium	= 0x28,
-Nomedium	= 0x3a,
+Testrdy = 0x00,
+Reqsense = 0x03,
+Write10 = 0x2a,
+Writever10 = 0x2e,
+Readtoc = 0x43,
+Sensenone = 0,
+Sensenotrdy = 2,
+Sensebadreq = 5,
+Lunnotrdy = 0x04,
+Recovnoecc = 0x17,
+Recovecc = 0x18,
+Badcdb = 0x24,
+Newmedium = 0x28,
+Nomedium = 0x3a,
 };
 int scsiverbose;
 #define codefile "/sys/lib/scsicodes"

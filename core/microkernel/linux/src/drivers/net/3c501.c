@@ -20,18 +20,18 @@ static const char *version =
 static unsigned int netcard_portlist[] =
 { 0x280, 0x300, 0};
 int el1_probe(struct device *dev);
-static int  el1_probe1(struct device *dev, int ioaddr);
-static int  el_open(struct device *dev);
-static int  el_start_xmit(struct sk_buff *skb, struct device *dev);
+static int el1_probe1(struct device *dev, int ioaddr);
+static int el_open(struct device *dev);
+static int el_start_xmit(struct sk_buff *skb, struct device *dev);
 static void el_interrupt(int irq, void *dev_id, struct pt_regs *regs);
 static void el_receive(struct device *dev);
 static void el_reset(struct device *dev);
-static int  el1_close(struct device *dev);
+static int el1_close(struct device *dev);
 static struct enet_statistics *el1_get_stats(struct device *dev);
 static void set_multicast_list(struct device *dev);
-#define EL1_IO_EXTENT	16
+#define EL1_IO_EXTENT 16
 #ifndef EL_DEBUG
-#define EL_DEBUG  0
+#define EL_DEBUG 0
 #endif
 static int el_debug = EL_DEBUG;
 struct net_local
@@ -42,28 +42,28 @@ int collisions;
 int loading;
 };
 #define RX_STATUS (ioaddr + 0x06)
-#define RX_CMD	  RX_STATUS
+#define RX_CMD RX_STATUS
 #define TX_STATUS (ioaddr + 0x07)
-#define TX_CMD	  TX_STATUS
-#define GP_LOW 	  (ioaddr + 0x08)
-#define GP_HIGH   (ioaddr + 0x09)
+#define TX_CMD TX_STATUS
+#define GP_LOW (ioaddr + 0x08)
+#define GP_HIGH (ioaddr + 0x09)
 #define RX_BUF_CLR (ioaddr + 0x0A)
-#define RX_LOW	  (ioaddr + 0x0A)
-#define RX_HIGH   (ioaddr + 0x0B)
-#define SAPROM	  (ioaddr + 0x0C)
+#define RX_LOW (ioaddr + 0x0A)
+#define RX_HIGH (ioaddr + 0x0B)
+#define SAPROM (ioaddr + 0x0C)
 #define AX_STATUS (ioaddr + 0x0E)
-#define AX_CMD	  AX_STATUS
-#define DATAPORT  (ioaddr + 0x0F)
+#define AX_CMD AX_STATUS
+#define DATAPORT (ioaddr + 0x0F)
 #define TX_RDY 0x08
-#define EL1_DATAPTR	0x08
-#define EL1_RXPTR	0x0A
-#define EL1_SAPROM	0x0C
-#define EL1_DATAPORT 	0x0f
-#define AX_OFF	0x00
-#define AX_SYS  0x40
+#define EL1_DATAPTR 0x08
+#define EL1_RXPTR 0x0A
+#define EL1_SAPROM 0x0C
+#define EL1_DATAPORT 0x0f
+#define AX_OFF 0x00
+#define AX_SYS 0x40
 #define AX_XMIT 0x44
-#define AX_RX	0x48
-#define AX_LOOP	0x0C
+#define AX_RX 0x48
+#define AX_LOOP 0x0C
 #define AX_RESET 0x80
 #define RX_NORM 0xA8
 #define RX_PROM 0x68
@@ -74,7 +74,7 @@ int loading;
 #define TX_READY 0x08
 #define RX_RUNT 0x08
 #define RX_MISSED 0x01
-#define RX_GOOD	0x30
+#define RX_GOOD 0x30
 #ifdef HAVE_DEVLIST
 struct netdev_entry el1_drv = {"3c501", el1_probe1, EL1_IO_EXTENT, netcard_portlist};
 #else
@@ -108,11 +108,11 @@ for (i = 0; i < 6; i++)
 outw(i, ioaddr + EL1_DATAPTR);
 station_addr[i] = inb(ioaddr + EL1_SAPROM);
 }
-if (station_addr[0] == 0x02  &&  station_addr[1] == 0x60
+if (station_addr[0] == 0x02 && station_addr[1] == 0x60
 && station_addr[2] == 0x8c)
 {
 mname = "3c501";
-} else if (station_addr[0] == 0x00  &&  station_addr[1] == 0x80
+} else if (station_addr[0] == 0x00 && station_addr[1] == 0x80
 && station_addr[2] == 0xC8)
 {
 mname = "NP943";
@@ -258,7 +258,7 @@ struct device *dev = (struct device *)(irq2dev_map[irq]);
 struct net_local *lp;
 int ioaddr;
 int axsr;
-if (dev == NULL  ||  dev->irq != irq)
+if (dev == NULL || dev->irq != irq)
 {
 printk ("3c501 driver: irq %d for unknown device.\n", irq);
 return;
@@ -377,7 +377,7 @@ struct sk_buff *skb;
 pkt_len = inw(RX_LOW);
 if (el_debug > 4)
 printk(" el_receive %d.\n", pkt_len);
-if ((pkt_len < 60)  ||  (pkt_len > 1536))
+if ((pkt_len < 60) || (pkt_len > 1536))
 {
 if (el_debug)
 printk("%s: bogus packet, length=%d\n", dev->name, pkt_len);
@@ -404,7 +404,7 @@ lp->stats.rx_packets++;
 }
 return;
 }
-static void  el_reset(struct device *dev)
+static void el_reset(struct device *dev)
 {
 int ioaddr = dev->base_addr;
 if (el_debug> 2)

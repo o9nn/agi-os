@@ -14,35 +14,35 @@ Rioimport: module{
 init: fn(nil: ref Draw->Context, argv: list of string);
 };
 Client: adt{
-ptrstarted:	int;
-kbdstarted:	int;
-state:		int;		# Hidden|Current
-req:		chan of (array of byte, Sys->Rwrite);
-resize:	chan of ref Riowin;
-ptr:		chan of ref Draw->Pointer;
-riowctl:	chan of (ref Riowin, int);
-wins:	list of ref Riowin;
-winfd:	ref Sys->FD;
-sc: 		ref Wmsrv->Client;
+ptrstarted: int;
+kbdstarted: int;
+state: int; # Hidden|Current
+req: chan of (array of byte, Sys->Rwrite);
+resize: chan of ref Riowin;
+ptr: chan of ref Draw->Pointer;
+riowctl: chan of (ref Riowin, int);
+wins: list of ref Riowin;
+winfd: ref Sys->FD;
+sc: ref Wmsrv->Client;
 };
 Riowin: adt {
-tag:		string;
-img:		ref Image;
-dir:		string;
-state:	int;
-ptrpid:	int;
-kbdpid:	int;
-ctlpid:	int;
-ptrfd:	ref Sys->FD;
-ctlfd:		ref Sys->FD;
+tag: string;
+img: ref Image;
+dir: string;
+state: int;
+ptrpid: int;
+kbdpid: int;
+ctlpid: int;
+ptrfd: ref Sys->FD;
+ctlfd: ref Sys->FD;
 };
 Hidden, Current: con 1<<iota;
-Ptrsize: con 1+4*12;		# 'm' plus 4 12-byte decimal integers
+Ptrsize: con 1+4*12; # 'm' plus 4 12-byte decimal integers
 P9PATH: con "/n/local";
-Borderwidth: con 4;		# defined in /sys/include/draw.h
+Borderwidth: con 4; # defined in /sys/include/draw.h
 display: ref Display;
 wsysseq := 0;
-screenr := Rect((0, 0), (640, 480));	# no way of getting this reliably from rio
+screenr := Rect((0, 0), (640, 480)); # no way of getting this reliably from rio
 Minwinsize: con Point(100, 42);
 init(nil: ref Draw->Context, argv: list of string)
 {
@@ -225,7 +225,7 @@ if(n < 7)
 return "bad arg count";
 args = tl args;
 tag := hd args; args = tl args;
-args = tl args;		# skip reqid
+args = tl args; # skip reqid
 r: Rect;
 r.min.x = int hd args; args = tl args;
 r.min.y = int hd args; args = tl args;
@@ -247,10 +247,10 @@ spec = "-dx " + string r.dx() + " -dy " + string r.dy();
 "exact" =>
 spec = "-r " + r2s(r.inset(-Borderwidth));
 "max" =>
-r = screenr;			# XXX don't obscure toolbar?
+r = screenr; # XXX don't obscure toolbar?
 spec = "-r " + r2s(r.inset(Borderwidth));
 "getwin" =>
-;						# just get the new image
+; # just get the new image
 * =>
 return "unkown placement method";
 }
@@ -329,8 +329,8 @@ return nil;
 }
 dragwin(ptr: chan of ref Draw->Pointer, c: ref Client, w: ref Wmsrv->Window, click: Point): string
 {
-#	if(buttons == 0)
-#		return "too late";
+# if(buttons == 0)
+# return "too late";
 p: ref Draw->Pointer;
 img := w.img.screen.image;
 r := img.r;
@@ -340,7 +340,7 @@ p = <-ptr;
 img.origin(r.min, p.xy.sub(off));
 } while (p.buttons != 0);
 c.sc.ptr <-= p;
-#	buttons = 0;
+# buttons = 0;
 nr: Rect;
 nr.min = p.xy.sub(off);
 nr.max = nr.min.add(r.size());

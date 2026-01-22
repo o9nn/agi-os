@@ -3,57 +3,57 @@
 #include <authsrv.h>
 #include <fcall.h>
 #include "tapefs.h"
-Fid	*fids;
-Ram	*ram;
-int	mfd[2];
-char	*user;
-uchar	mdata[Maxbuf+IOHDRSZ];
-int	messagesize = Maxbuf+IOHDRSZ;
-Fcall	rhdr;
-Fcall	thdr;
-ulong	path;
-Idmap	*uidmap;
-Idmap	*gidmap;
-int	replete;
-int	blocksize;
-int	verbose;
-int	newtap;
-int	blocksize;
-Fid *	newfid(int);
-int	ramstat(Ram*, uchar*, int);
-void	io(void);
-void	usage(void);
-int	perm(int);
-char	*rflush(Fid*), *rversion(Fid*), *rauth(Fid*),
+Fid *fids;
+Ram *ram;
+int mfd[2];
+char *user;
+uchar mdata[Maxbuf+IOHDRSZ];
+int messagesize = Maxbuf+IOHDRSZ;
+Fcall rhdr;
+Fcall thdr;
+ulong path;
+Idmap *uidmap;
+Idmap *gidmap;
+int replete;
+int blocksize;
+int verbose;
+int newtap;
+int blocksize;
+Fid * newfid(int);
+int ramstat(Ram*, uchar*, int);
+void io(void);
+void usage(void);
+int perm(int);
+char *rflush(Fid*), *rversion(Fid*), *rauth(Fid*),
 *rattach(Fid*), *rwalk(Fid*),
 *ropen(Fid*), *rcreate(Fid*),
 *rread(Fid*), *rwrite(Fid*), *rclunk(Fid*),
 *rremove(Fid*), *rstat(Fid*), *rwstat(Fid*);
-char 	*(*fcalls[])(Fid*) = {
-[Tflush]	rflush,
-[Tversion]		rversion,
-[Tauth]	rauth,
-[Tattach]	rattach,
-[Twalk]		rwalk,
-[Topen]		ropen,
-[Tcreate]	rcreate,
-[Tread]		rread,
-[Twrite]	rwrite,
-[Tclunk]	rclunk,
-[Tremove]	rremove,
-[Tstat]		rstat,
-[Twstat]	rwstat,
+char *(*fcalls[])(Fid*) = {
+[Tflush] rflush,
+[Tversion] rversion,
+[Tauth] rauth,
+[Tattach] rattach,
+[Twalk] rwalk,
+[Topen] ropen,
+[Tcreate] rcreate,
+[Tread] rread,
+[Twrite] rwrite,
+[Tclunk] rclunk,
+[Tremove] rremove,
+[Tstat] rstat,
+[Twstat] rwstat,
 };
-char	Eperm[] =	"permission denied";
-char	Enotdir[] =	"not a directory";
-char	Enoauth[] =	"tapefs: authentication not required";
-char	Enotexist[] =	"file does not exist";
-char	Einuse[] =	"file in use";
-char	Eexist[] =	"file exists";
-char	Enotowner[] =	"not owner";
-char	Eisopen[] = 	"file already open for I/O";
-char	Excl[] = 	"exclusive use file already open";
-char	Ename[] = 	"illegal name";
+char Eperm[] = "permission denied";
+char Enotdir[] = "not a directory";
+char Enoauth[] = "tapefs: authentication not required";
+char Enotexist[] = "file does not exist";
+char Einuse[] = "file in use";
+char Eexist[] = "file exists";
+char Enotowner[] = "not owner";
+char Eisopen[] = "file already open for I/O";
+char Excl[] = "exclusive use file already open";
+char Ename[] = "illegal name";
 void
 notifyf(void *a, char *s)
 {
@@ -252,7 +252,7 @@ nf->busy = 0;
 nf->open = 0;
 nf->ram = 0;
 }
-}else if(thdr.nwqid  == rhdr.nwname)
+}else if(thdr.nwqid == rhdr.nwname)
 f->ram = r;
 return err;
 }

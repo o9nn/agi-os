@@ -54,13 +54,13 @@ static constexpr bool __convertible = !is_same_v<_Iter, _Iterator>
 #endif
 protected:
 _Iterator current;
-typedef iterator_traits<_Iterator>		__traits_type;
+typedef iterator_traits<_Iterator> __traits_type;
 public:
-typedef _Iterator					iterator_type;
-typedef typename __traits_type::pointer		pointer;
+typedef _Iterator iterator_type;
+typedef typename __traits_type::pointer pointer;
 #if ! __cpp_lib_concepts
-typedef typename __traits_type::difference_type	difference_type;
-typedef typename __traits_type::reference		reference;
+typedef typename __traits_type::difference_type difference_type;
+typedef typename __traits_type::reference reference;
 #else
 using iterator_concept
 = __conditional_t<random_access_iterator<_Iterator>,
@@ -391,19 +391,19 @@ inline _GLIBCXX17_CONSTEXPR reverse_iterator<_Iterator>
 __make_reverse_iterator(_Iterator __i)
 { return reverse_iterator<_Iterator>(__i); }
 # if __cplusplus >= 201402L
-#  define __cpp_lib_make_reverse_iterator 201402L
+# define __cpp_lib_make_reverse_iterator 201402L
 template<typename _Iterator>
 [[__nodiscard__]]
 inline _GLIBCXX17_CONSTEXPR reverse_iterator<_Iterator>
 make_reverse_iterator(_Iterator __i)
 { return reverse_iterator<_Iterator>(__i); }
-#  if __cplusplus > 201703L && defined __cpp_lib_concepts
+# if __cplusplus > 201703L && defined __cpp_lib_concepts
 template<typename _Iterator1, typename _Iterator2>
 requires (!sized_sentinel_for<_Iterator1, _Iterator2>)
 inline constexpr bool
 disable_sized_sentinel_for<reverse_iterator<_Iterator1>,
 reverse_iterator<_Iterator2>> = true;
-#  endif
+# endif
 # endif
 template<typename _Iterator>
 _GLIBCXX20_CONSTEXPR
@@ -429,7 +429,7 @@ class back_insert_iterator
 protected:
 _Container* container;
 public:
-typedef _Container          container_type;
+typedef _Container container_type;
 #if __cplusplus > 201703L
 using difference_type = ptrdiff_t;
 #endif
@@ -484,7 +484,7 @@ class front_insert_iterator
 protected:
 _Container* container;
 public:
-typedef _Container          container_type;
+typedef _Container container_type;
 #if __cplusplus > 201703L
 using difference_type = ptrdiff_t;
 #endif
@@ -539,13 +539,13 @@ class insert_iterator
 #if __cplusplus > 201703L && defined __cpp_lib_concepts
 using _Iter = std::__detail::__range_iter_t<_Container>;
 #else
-typedef typename _Container::iterator		_Iter;
+typedef typename _Container::iterator _Iter;
 #endif
 protected:
 _Container* container;
 _Iter iter;
 public:
-typedef _Container          container_type;
+typedef _Container container_type;
 #if __cplusplus > 201703L && defined __cpp_lib_concepts
 using difference_type = ptrdiff_t;
 #endif
@@ -615,19 +615,19 @@ class __normal_iterator
 {
 protected:
 _Iterator _M_current;
-typedef std::iterator_traits<_Iterator>		__traits_type;
+typedef std::iterator_traits<_Iterator> __traits_type;
 #if __cplusplus >= 201103L
 template<typename _Iter>
 using __convertible_from
 = std::__enable_if_t<std::is_convertible<_Iter, _Iterator>::value>;
 #endif
 public:
-typedef _Iterator					iterator_type;
+typedef _Iterator iterator_type;
 typedef typename __traits_type::iterator_category iterator_category;
-typedef typename __traits_type::value_type  	value_type;
-typedef typename __traits_type::difference_type 	difference_type;
-typedef typename __traits_type::reference 	reference;
-typedef typename __traits_type::pointer   	pointer;
+typedef typename __traits_type::value_type value_type;
+typedef typename __traits_type::difference_type difference_type;
+typedef typename __traits_type::reference reference;
+typedef typename __traits_type::pointer pointer;
 #if __cplusplus > 201703L && __cpp_lib_concepts
 using iterator_concept = std::__detail::__iter_concept<_Iterator>;
 #endif
@@ -967,9 +967,9 @@ using pointer = _Iterator;
 using reference = iter_rvalue_reference_t<_Iterator>;
 #else
 typedef typename __traits_type::iterator_category iterator_category;
-typedef typename __traits_type::value_type  	value_type;
-typedef typename __traits_type::difference_type	difference_type;
-typedef _Iterator					pointer;
+typedef typename __traits_type::value_type value_type;
+typedef typename __traits_type::difference_type difference_type;
+typedef _Iterator pointer;
 using reference
 = __conditional_t<is_reference<__base_ref>::value,
 typename remove_reference<__base_ref>::type&&,

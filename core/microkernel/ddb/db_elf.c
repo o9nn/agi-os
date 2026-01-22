@@ -7,14 +7,14 @@
 #include <ddb/db_output.h>
 #include <ddb/db_sym.h>
 #include <ddb/db_elf.h>
-#ifndef	DB_NO_ELF
+#ifndef DB_NO_ELF
 struct db_symtab_elf {
-int		type;
-Elf_Sym	*start;
-Elf_Sym	*end;
-char		*strings;
-char		*map_pointer;
-char		name[SYMTAB_NAME_LEN];
+int type;
+Elf_Sym *start;
+Elf_Sym *end;
+char *strings;
+char *map_pointer;
+char name[SYMTAB_NAME_LEN];
 };
 boolean_t
 elf_db_sym_init (unsigned shdr_num,
@@ -85,7 +85,7 @@ db_strategy_t strategy,
 db_expr_t *diffp)
 {
 struct db_symtab_elf *self = (struct db_symtab_elf *) stab;
-unsigned long	diff = *diffp;
+unsigned long diff = *diffp;
 Elf_Sym *s, *symp = NULL;
 for (s = self->start; s < self->end; s++) {
 if (s->st_name == 0)

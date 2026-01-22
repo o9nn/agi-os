@@ -15,142 +15,142 @@ SMSC91C96,
 };
 struct Ctlr {
 Lock;
-uchar	*base;
-int	type;
-int	rev;
-int	hasmii;
-int	phyad;
-int	bank;
-Block*	waiting;
-ulong	collisions;
-ulong	toolongs;
-ulong	tooshorts;
-ulong	aligns;
-ulong	txerrors;
-int	oddworks;
-int	bus32bit;
+uchar *base;
+int type;
+int rev;
+int hasmii;
+int phyad;
+int bank;
+Block* waiting;
+ulong collisions;
+ulong toolongs;
+ulong tooshorts;
+ulong aligns;
+ulong txerrors;
+int oddworks;
+int bus32bit;
 };
-#define MKREG(bank, off)		((bank << 8) | (off))
+#define MKREG(bank, off) ((bank << 8) | (off))
 enum {
-Tcr=	MKREG(0, 0),
-TcrSwfdup=	1<<15,
-TcrEphLoop=	1<<13,
-TcrStpSqet=	1<<12,
-TcrFduplx=	1<<11,
-TcrMonCsn=	1<<10,
-TcrNoCRC=	1<<8,
-TcrPadEn=	1<<7,
-TcrForceCol=	1<<2,
-TcrLoop=	1<<1,
-TcrTxena=	1<<0,
-Eph=	MKREG(0, 2),
-EphLinkOk=	1<<14,
-EphCtrRol=	1<<12,
-Rcr=	MKREG(0, 4),
-RcrSoftRst=	1<<15,
-RcrFiltCar=	1<<14,
-RcrAbortEnb=	1<<13,
-RcrStripCRC=	1<<9,
-RcrRxEn=	1<<8,
-RcrAlmul=	1<<2,
-RcrPrms=	1<<1,
-RcrRxAbort=	1<<0,
-Ecr=	MKREG(0, 6),
-EcrExcDeferred=	0xF<<12,
-EcrDeferred=	0xF<<8,
-EcrMultCol=	0xF<<4,
-EcrCollision=	0xF<<0,
-Mir=	MKREG(0, 8),
-Mcr=	MKREG(0, 0xA),
-Rpcr=	Mcr,
-Config=	MKREG(1, 0),
-CfgMiiSelect=	1<<15,
-CfgEphPowerEn=	CfgMiiSelect,
-CfgNoWait=	1<<12,
-CfgSetSqlch=	1<<9,
-CfgGpcntrl=	1<<9,
-CfgAuiSelect=	1<<8,
-CfgExtPhy=	1<<8,
-Cfg16Bit=	1<<7,
-BaseAddress=	MKREG(1, 2),
-Iaddr0_1=	MKREG(1, 4),
-Iaddr2_3=	MKREG(1, 6),
-Iaddr4_5=	MKREG(1, 8),
-Gpr=		MKREG(1, 0xA),
-Control=	MKREG(1, 0xC),
-CtlRcvBad=	1<<14,
-CtlAutoRelease=	1<<11,
-CtlLeEnable=	1<<7,
-CtlCrEnable=	1<<6,
-CtlTeEnable=	1<<5,
-CtlEeSelect=	1<<2,
-CtlReload=	1<<1,
-CtlStore=	1<<0,
-Mmucr=	MKREG(2, 0),
-McrAllocTx=	1<<5,
-McrReset=	2<<5,
-McrReadFIFO=	3<<5,
-McrRemove=	4<<5,
-McrFreeTx=	5<<5,
-McrEnqueue=	6<<5,
-McrResetTx=	7<<5,
-McrBusy=	1<<0,
-ArrPnr=	MKREG(2, 2),
-ArrFailed=	1<<15,
-FifoPorts=	MKREG(2, 4),
-FifoRxEmpty=	1<<15,
-FifoTxEmpty=	1<<7,
-Pointer=	MKREG(2, 6),
-PtrRcv=	1<<15,
-PtrAutoIncr=	1<<14,
-PtrRead=	1<<13,
-PtrEtEn=	1<<12,
-PtrNotEmpty=	1<<11,
-Data=	MKREG(2, 8),
-Interrupt=	MKREG(2, 0xC),
-IntMii=	1<<7,
-IntErcv=	1<<6,
-IntEph=	1<<5,
-IntRxOvrn=	1<<4,
-IntAlloc=	1<<3,
-IntTxEmpty=	1<<2,
-IntTx=	1<<1,
-IntRcv=	1<<0,
-IntrMask=	MKREG(2, 0xD),
-IntrMaskShift=	8,
-IntrMaskField=	0xFF00,
-Mt0_1=	MKREG(3, 0),
-Mt2_3=	MKREG(3, 2),
-Mt4_5=	MKREG(3, 4),
-Mt6_7=	MKREG(3, 6),
-Mgmt=	MKREG(3, 8),
-MgmtMdo=	1<<0,
-MgmtMdi=	1<<1,
-MgmtMclk=	1<<2,
-MgmtMdoEn=	1<<3,
-Revision=		MKREG(3, 0xA),
-Ercv=	MKREG(3, 0xC),
-EcsrEcor=	MKREG(4, 0),
-BankSelect=	MKREG(0, 0xe),
+Tcr= MKREG(0, 0),
+TcrSwfdup= 1<<15,
+TcrEphLoop= 1<<13,
+TcrStpSqet= 1<<12,
+TcrFduplx= 1<<11,
+TcrMonCsn= 1<<10,
+TcrNoCRC= 1<<8,
+TcrPadEn= 1<<7,
+TcrForceCol= 1<<2,
+TcrLoop= 1<<1,
+TcrTxena= 1<<0,
+Eph= MKREG(0, 2),
+EphLinkOk= 1<<14,
+EphCtrRol= 1<<12,
+Rcr= MKREG(0, 4),
+RcrSoftRst= 1<<15,
+RcrFiltCar= 1<<14,
+RcrAbortEnb= 1<<13,
+RcrStripCRC= 1<<9,
+RcrRxEn= 1<<8,
+RcrAlmul= 1<<2,
+RcrPrms= 1<<1,
+RcrRxAbort= 1<<0,
+Ecr= MKREG(0, 6),
+EcrExcDeferred= 0xF<<12,
+EcrDeferred= 0xF<<8,
+EcrMultCol= 0xF<<4,
+EcrCollision= 0xF<<0,
+Mir= MKREG(0, 8),
+Mcr= MKREG(0, 0xA),
+Rpcr= Mcr,
+Config= MKREG(1, 0),
+CfgMiiSelect= 1<<15,
+CfgEphPowerEn= CfgMiiSelect,
+CfgNoWait= 1<<12,
+CfgSetSqlch= 1<<9,
+CfgGpcntrl= 1<<9,
+CfgAuiSelect= 1<<8,
+CfgExtPhy= 1<<8,
+Cfg16Bit= 1<<7,
+BaseAddress= MKREG(1, 2),
+Iaddr0_1= MKREG(1, 4),
+Iaddr2_3= MKREG(1, 6),
+Iaddr4_5= MKREG(1, 8),
+Gpr= MKREG(1, 0xA),
+Control= MKREG(1, 0xC),
+CtlRcvBad= 1<<14,
+CtlAutoRelease= 1<<11,
+CtlLeEnable= 1<<7,
+CtlCrEnable= 1<<6,
+CtlTeEnable= 1<<5,
+CtlEeSelect= 1<<2,
+CtlReload= 1<<1,
+CtlStore= 1<<0,
+Mmucr= MKREG(2, 0),
+McrAllocTx= 1<<5,
+McrReset= 2<<5,
+McrReadFIFO= 3<<5,
+McrRemove= 4<<5,
+McrFreeTx= 5<<5,
+McrEnqueue= 6<<5,
+McrResetTx= 7<<5,
+McrBusy= 1<<0,
+ArrPnr= MKREG(2, 2),
+ArrFailed= 1<<15,
+FifoPorts= MKREG(2, 4),
+FifoRxEmpty= 1<<15,
+FifoTxEmpty= 1<<7,
+Pointer= MKREG(2, 6),
+PtrRcv= 1<<15,
+PtrAutoIncr= 1<<14,
+PtrRead= 1<<13,
+PtrEtEn= 1<<12,
+PtrNotEmpty= 1<<11,
+Data= MKREG(2, 8),
+Interrupt= MKREG(2, 0xC),
+IntMii= 1<<7,
+IntErcv= 1<<6,
+IntEph= 1<<5,
+IntRxOvrn= 1<<4,
+IntAlloc= 1<<3,
+IntTxEmpty= 1<<2,
+IntTx= 1<<1,
+IntRcv= 1<<0,
+IntrMask= MKREG(2, 0xD),
+IntrMaskShift= 8,
+IntrMaskField= 0xFF00,
+Mt0_1= MKREG(3, 0),
+Mt2_3= MKREG(3, 2),
+Mt4_5= MKREG(3, 4),
+Mt6_7= MKREG(3, 6),
+Mgmt= MKREG(3, 8),
+MgmtMdo= 1<<0,
+MgmtMdi= 1<<1,
+MgmtMclk= 1<<2,
+MgmtMdoEn= 1<<3,
+Revision= MKREG(3, 0xA),
+Ercv= MKREG(3, 0xC),
+EcsrEcor= MKREG(4, 0),
+BankSelect= MKREG(0, 0xe),
 };
 enum {
-RsAlgnErr=	1<<15,
-RsBroadcast=	1<<14,
-RsBadCRC=	1<<13,
-RsOddFrame=	1<<12,
-RsTooLong=	1<<11,
-RsTooShort=	1<<10,
-RsMulticast=	1<<1,
-RsError=	RsBadCRC | RsAlgnErr | RsTooLong | RsTooShort,
-Framectlsize=	6,
+RsAlgnErr= 1<<15,
+RsBroadcast= 1<<14,
+RsBadCRC= 1<<13,
+RsOddFrame= 1<<12,
+RsTooLong= 1<<11,
+RsTooShort= 1<<10,
+RsMulticast= 1<<1,
+RsError= RsBadCRC | RsAlgnErr | RsTooLong | RsTooShort,
+Framectlsize= 6,
 };
 static void miiw(Ctlr *ctlr, int regad, int val);
 static int miir(Ctlr *ctlr, int regad);
-#define PHYMIIADDR_91C110		3
-#define PHYMIIADDR_91C111		0
-#define llregr(ctlr, reg)	(*(ushort*)(ctlr->base + (reg)))
-#define llregr32(ctlr, reg)	(*(ulong*)(ctlr->base + (reg)))
-#define llregw(ctlr, reg, val)	(*(ushort*)(ctlr->base + (reg)) = (val))
+#define PHYMIIADDR_91C110 3
+#define PHYMIIADDR_91C111 0
+#define llregr(ctlr, reg) (*(ushort*)(ctlr->base + (reg)))
+#define llregr32(ctlr, reg) (*(ulong*)(ctlr->base + (reg)))
+#define llregw(ctlr, reg, val) (*(ushort*)(ctlr->base + (reg)) = (val))
 static void
 adinit(Ether *ether)
 {
@@ -856,5 +856,5 @@ return 0;
 void
 ether91c111link(void)
 {
-addethercard("91c111",  ether91c111reset);
+addethercard("91c111", ether91c111reset);
 }

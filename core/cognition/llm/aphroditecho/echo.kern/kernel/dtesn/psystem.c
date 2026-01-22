@@ -9,9 +9,9 @@
 #include <unistd.h>
 #include <sys/time.h>
 #define DTESN_PSYSTEM_DEFAULT_THREAD_COUNT 4
-#define DTESN_PSYSTEM_MEMORY_POOL_SIZE     (64 * 1024 * 1024)
-#define DTESN_PSYSTEM_OBJECT_POOL_SIZE     1024
-#define DTESN_PSYSTEM_RULE_POOL_SIZE       512
+#define DTESN_PSYSTEM_MEMORY_POOL_SIZE (64 * 1024 * 1024)
+#define DTESN_PSYSTEM_OBJECT_POOL_SIZE 1024
+#define DTESN_PSYSTEM_RULE_POOL_SIZE 512
 static bool g_psystem_initialized = false;
 static pthread_mutex_t g_psystem_global_lock = PTHREAD_MUTEX_INITIALIZER;
 static const uint32_t g_oeis_a000081[] = DTESN_PSYSTEM_A000081_SEQUENCE;

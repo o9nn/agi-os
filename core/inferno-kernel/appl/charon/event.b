@@ -161,7 +161,7 @@ pick e := ev {
 Ekey =>
 t : string;
 case e.keychar {
-' ' =>	 t = "<SP>";
+' ' => t = "<SP>";
 '\t' => t = "<TAB>";
 '\n' => t = "<NL>";
 '\r' => t = "<CR>";

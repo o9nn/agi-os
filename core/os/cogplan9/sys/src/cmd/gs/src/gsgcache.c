@@ -93,19 +93,19 @@ return p_unlocked;
 }
 private inline void
 gs_glyph_cache_elem__move_to_head(gs_glyph_cache *this, gs_glyph_cache_elem **pe)
-{   gs_glyph_cache_elem *e = *pe;
+{ gs_glyph_cache_elem *e = *pe;
 *pe = e->next;
 e->next = this->list;
 this->list = e;
 }
 private void
 gs_glyph_cache_elem__free_data(gs_glyph_data_t *pgd, client_name_t cname)
-{   gs_glyph_cache_elem *e = (gs_glyph_cache_elem *)pgd->proc_data;
+{ gs_glyph_cache_elem *e = (gs_glyph_cache_elem *)pgd->proc_data;
 e->lock_count--;
 }
 private int
 gs_glyph_cache_elem__substring(gs_glyph_data_t *pgd, uint offset, uint size)
-{   gs_glyph_cache_elem *e = (gs_glyph_cache_elem *)pgd->proc_data;
+{ gs_glyph_cache_elem *e = (gs_glyph_cache_elem *)pgd->proc_data;
 e->lock_count++;
 return_error(gs_error_unregistered);
 }
@@ -114,12 +114,12 @@ gs_glyph_cache_elem__free_data, gs_glyph_cache_elem__substring
 };
 int
 gs_get_glyph_data_cached(gs_font_type42 *pfont, uint glyph_index, gs_glyph_data_t *pgd)
-{   gs_glyph_cache *gdcache = pfont->data.gdcache;
+{ gs_glyph_cache *gdcache = pfont->data.gdcache;
 gs_glyph_cache_elem **pe = gs_glyph_cache_elem__locate(gdcache, glyph_index);
 gs_glyph_cache_elem *e = NULL;
 if (pe == NULL || (*pe)->glyph_index != glyph_index) {
 int code;
-if (pe != NULL && gdcache->total_size > 32767  &&
+if (pe != NULL && gdcache->total_size > 32767 &&
 (*pe)->lock_count <= 0) {
 e = *pe;
 gdcache->total_size -= e->gd.bits.size + sizeof(*e);

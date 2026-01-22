@@ -217,7 +217,7 @@ struct _Hash_node_code_cache
 { };
 template<>
 struct _Hash_node_code_cache<true>
-{ std::size_t  _M_hash_code; };
+{ std::size_t _M_hash_code; };
 template<typename _Value, bool _Cache_hash_code>
 struct _Hash_node_value
 : _Hash_node_value_base<_Value>
@@ -301,11 +301,11 @@ private:
 using __base_type = _Node_iterator_base<_Value, __cache>;
 using __node_type = typename __base_type::__node_type;
 public:
-typedef _Value					value_type;
-typedef std::ptrdiff_t				difference_type;
-typedef std::forward_iterator_tag			iterator_category;
-typedef const value_type*				pointer;
-typedef const value_type&				reference;
+typedef _Value value_type;
+typedef std::ptrdiff_t difference_type;
+typedef std::forward_iterator_tag iterator_category;
+typedef const value_type* pointer;
+typedef const value_type& reference;
 _Node_const_iterator() = default;
 explicit
 _Node_const_iterator(__node_type* __p) noexcept
@@ -371,8 +371,8 @@ void
 _M_reset(_State __state)
 { _M_next_resize = __state; }
 static const std::size_t _S_growth_factor = 2;
-float		_M_max_load_factor;
-mutable std::size_t	_M_next_resize;
+float _M_max_load_factor;
+mutable std::size_t _M_next_resize;
 };
 struct _Mask_range_hashing
 {
@@ -456,8 +456,8 @@ void
 _M_reset(_State __state) noexcept
 { _M_next_resize = __state; }
 static const std::size_t _S_growth_factor = 2;
-float	_M_max_load_factor;
-std::size_t	_M_next_resize;
+float _M_max_load_factor;
+std::size_t _M_next_resize;
 };
 template<typename _Key, typename _Value, typename _Alloc,
 typename _ExtractKey, typename _Equal,
@@ -726,7 +726,7 @@ _Equal, _Hash, _RangeHash, _Unused,
 _RehashPolicy, _Traits>;
 using value_type = typename __base_type::value_type;
 using iterator = typename __base_type::iterator;
-using const_iterator =  typename __base_type::const_iterator;
+using const_iterator = typename __base_type::const_iterator;
 using __ireturn_type = typename __base_type::__ireturn_type;
 using __unique_keys = typename __base_type::__unique_keys;
 using __hashtable = typename __base_type::__hashtable;
@@ -762,7 +762,7 @@ _Equal, _Hash, _RangeHash, _Unused,
 _RehashPolicy, _Traits>;
 using value_type = typename __base_type::value_type;
 using iterator = typename __base_type::iterator;
-using const_iterator =  typename __base_type::const_iterator;
+using const_iterator = typename __base_type::const_iterator;
 using __unique_keys = typename __base_type::__unique_keys;
 using __hashtable = typename __base_type::__hashtable;
 using __ireturn_type = typename __base_type::__ireturn_type;
@@ -882,12 +882,12 @@ using __ebo_hash = _Hashtable_ebo_helper<1, _Hash>;
 friend struct _Local_iterator_base<_Key, _Value, _ExtractKey,
 _Hash, _RangeHash, _Unused, false>;
 public:
-typedef _Hash					hasher;
+typedef _Hash hasher;
 hasher
 hash_function() const
 { return _M_hash(); }
 protected:
-typedef std::size_t 				__hash_code;
+typedef std::size_t __hash_code;
 _Hash_code_base() = default;
 _Hash_code_base(const _Hash& __hash) : __ebo_hash(__hash) { }
 __hash_code
@@ -1138,11 +1138,11 @@ using __base_type = _Local_iterator_base<_Key, _Value, _ExtractKey,
 _Hash, _RangeHash, _Unused, __cache>;
 using __hash_code_base = typename __base_type::__hash_code_base;
 public:
-typedef _Value					value_type;
-typedef const value_type*				pointer;
-typedef const value_type&				reference;
-typedef std::ptrdiff_t				difference_type;
-typedef std::forward_iterator_tag			iterator_category;
+typedef _Value value_type;
+typedef const value_type* pointer;
+typedef const value_type& reference;
+typedef std::ptrdiff_t difference_type;
+typedef std::forward_iterator_tag iterator_category;
 _Local_const_iterator() = default;
 _Local_const_iterator(const __hash_code_base& __base,
 _Hash_node<_Value, __cache>* __n,
@@ -1184,11 +1184,11 @@ _Unused, _Traits::__hash_cached::value>,
 private _Hashtable_ebo_helper<0, _Equal>
 {
 public:
-typedef _Key					key_type;
-typedef _Value					value_type;
-typedef _Equal					key_equal;
-typedef std::size_t				size_type;
-typedef std::ptrdiff_t				difference_type;
+typedef _Key key_type;
+typedef _Value value_type;
+typedef _Equal key_equal;
+typedef std::size_t size_type;
+typedef std::ptrdiff_t difference_type;
 using __traits_type = _Traits;
 using __hash_cached = typename __traits_type::__hash_cached;
 using __hash_code_base = _Hash_code_base<_Key, _Value, _ExtractKey,

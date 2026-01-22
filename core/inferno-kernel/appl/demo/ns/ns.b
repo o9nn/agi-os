@@ -1,6 +1,6 @@
 implement Ns;
 #
-# Copyright © 2003 Vita Nuova Holdings Limited.  All rights reserved.
+# Copyright © 2003 Vita Nuova Holdings Limited. All rights reserved.
 #
 include "sys.m";
 sys: Sys;

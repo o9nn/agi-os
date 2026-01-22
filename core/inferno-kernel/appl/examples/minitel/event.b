@@ -1,5 +1,5 @@
 #
-# Copyright © 1998 Vita Nuova Limited.  All rights reserved.
+# Copyright © 1998 Vita Nuova Limited. All rights reserved.
 #
 Event.str(ev: self ref Event) : string
 {

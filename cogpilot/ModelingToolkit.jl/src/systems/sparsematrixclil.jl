@@ -136,7 +136,7 @@ vpivot = swapto[2]
 # by `-1`. To ensure this is legal, we need to show two things.
 # 1. The multiplication does not change the answer and
 # 2. The multiplication does not affect the fraction-freeness of the Bareiss
-#    algorithm.
+# algorithm.
 #
 # For point 1, remember that we're working on a system of linear equations,
 # so it is always legal for us to multiply any row by a scalar without changing

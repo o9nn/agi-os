@@ -1,5 +1,5 @@
 #ifndef gsmemraw_INCLUDED
-#  define gsmemraw_INCLUDED
+# define gsmemraw_INCLUDED
 #if 0
 typedef struct gs_memory_status_s {
 ulong allocated;

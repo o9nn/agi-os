@@ -352,16 +352,16 @@ _disc_start = _contin_start;
 for (const contin_spec& c : _contin)
 _disc_start += c.depth;
 field_iterator term_start = _fields.begin();
-_end_term_raw_idx     = distance(term_start, end_term_fields());
+_end_term_raw_idx = distance(term_start, end_term_fields());
 _begin_contin_raw_idx = distance(term_start, begin_contin_fields());
-_end_contin_raw_idx   = distance(term_start, end_contin_fields());
-_begin_disc_raw_idx   = distance(term_start, begin_disc_fields());
-_end_disc_raw_idx     = distance(term_start, end_disc_fields());
-_begin_bit_raw_idx    = distance(term_start, begin_bit_fields());
-_end_bit_raw_idx      = distance(term_start, end_bit_fields());
-_n_disc_fields   = distance(begin_disc_fields(), end_disc_fields());
+_end_contin_raw_idx = distance(term_start, end_contin_fields());
+_begin_disc_raw_idx = distance(term_start, begin_disc_fields());
+_end_disc_raw_idx = distance(term_start, end_disc_fields());
+_begin_bit_raw_idx = distance(term_start, begin_bit_fields());
+_end_bit_raw_idx = distance(term_start, end_bit_fields());
+_n_disc_fields = distance(begin_disc_fields(), end_disc_fields());
 _n_contin_fields = distance(begin_contin_fields(), end_contin_fields());
-_n_term_fields   = distance(begin_term_fields(), end_term_fields());
+_n_term_fields = distance(begin_term_fields(), end_term_fields());
 _contin_raw_offsets.reserve(_contin.size());
 size_t raw_idx = begin_contin_raw_idx();
 for (const contin_spec& c : _contin) {
@@ -461,13 +461,13 @@ do_set(rhs);
 return *this;
 }
 reference& operator+=(Value x) {
-do_set(do_get() + x);   return *this;
+do_set(do_get() + x); return *this;
 }
 reference& operator-=(Value x) {
 do_set(do_get() - x); return *this;
 }
 reference& operator*=(Value x) {
-do_set(do_get()*x);  return *this;
+do_set(do_get()*x); return *this;
 }
 reference& operator/=(Value x) {
 do_set(do_get() / x); return *this;
@@ -538,7 +538,7 @@ do_assign(rhs);
 return *this;
 }
 reference& operator|=(bool x) {
-if  (x) do_set();
+if (x) do_set();
 return *this;
 }
 reference& operator&=(bool x) {
@@ -546,11 +546,11 @@ if (!x) do_reset();
 return *this;
 }
 reference& operator^=(bool x) {
-if  (x) do_flip();
+if (x) do_flip();
 return *this;
 }
 reference& operator-=(bool x) {
-if  (x) do_reset();
+if (x) do_reset();
 return *this;
 }
 protected:

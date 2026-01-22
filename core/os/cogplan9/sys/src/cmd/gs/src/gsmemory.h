@@ -1,11 +1,11 @@
 #ifndef gsmemory_INCLUDED
-#  define gsmemory_INCLUDED
+# define gsmemory_INCLUDED
 #include "gstypes.h"
 #include "gslibctx.h"
 typedef struct gs_memory_struct_type_s gs_memory_struct_type_t;
 typedef const gs_memory_struct_type_t *gs_memory_type_ptr_t;
 #ifndef gs_memory_DEFINED
-#  define gs_memory_DEFINED
+# define gs_memory_DEFINED
 typedef struct gs_memory_s gs_memory_t;
 #endif
 typedef struct gs_ptr_procs_s gs_ptr_procs_t;

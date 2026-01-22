@@ -1,12 +1,12 @@
 import {
-  InfernoKernel,
-  AtomSpace,
-  PatternMatcher,
-  PLNEngine,
-  AttentionAllocation,
-  MOSES,
-  OpenPsi,
-  DistributedCoordinator,
+InfernoKernel,
+AtomSpace,
+PatternMatcher,
+PLNEngine,
+AttentionAllocation,
+MOSES,
+OpenPsi,
+DistributedCoordinator,
 } from '../dist/index.js'
 console.log('✓ All imports successful')
 const kernel = new InfernoKernel()
@@ -31,11 +31,11 @@ atomSpace.addLink('InheritanceLink', [cat.id, animal.id])
 console.log('✓ Atoms added to AtomSpace')
 console.log(`  AtomSpace size: ${atomSpace.getSize()} atoms`)
 const pattern = {
-  type: 'InheritanceLink',
-  outgoing: [
-    { type: 'ConceptNode', variable: true, name: '$X' },
-    { type: 'ConceptNode', name: 'animal' }
-  ]
+type: 'InheritanceLink',
+outgoing: [
+{ type: 'ConceptNode', variable: true, name: '$X' },
+{ type: 'ConceptNode', name: 'animal' }
+]
 }
 const matches = matcher.match(pattern)
 console.log('✓ Pattern matching works')

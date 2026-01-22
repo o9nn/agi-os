@@ -1,10 +1,10 @@
 #ifndef IMAP_MATCH_H
 #define IMAP_MATCH_H
 enum imap_match_result {
-IMAP_MATCH_NO 		= 0x00,
-IMAP_MATCH_YES		= 0x01,
-IMAP_MATCH_CHILDREN	= 0x02,
-IMAP_MATCH_PARENT	= 0x04
+IMAP_MATCH_NO = 0x00,
+IMAP_MATCH_YES = 0x01,
+IMAP_MATCH_CHILDREN = 0x02,
+IMAP_MATCH_PARENT = 0x04
 };
 struct imap_match_glob;
 struct imap_match_glob *

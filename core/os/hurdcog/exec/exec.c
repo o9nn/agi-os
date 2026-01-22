@@ -12,7 +12,7 @@ mach_port_t *std_ports;
 int *std_ints;
 size_t std_nports, std_nints;
 pthread_rwlock_t std_lock = PTHREAD_RWLOCK_INITIALIZER;
-#define	b2he()	a2he (errno)
+#define b2he() a2he (errno)
 #include <hurd/sigpreempt.h>
 static void
 load_section (void *section, struct execdata *u)
@@ -78,8 +78,8 @@ u->error = vm_protect (u->task, *mapstart, size, 0, vm_prot);
 }
 if (mapstart - addr < filesz)
 {
-#define SECTION_IN_MEMORY_P	(u->file_data != NULL)
-#define SECTION_CONTENTS	(u->file_data + filepos)
+#define SECTION_IN_MEMORY_P (u->file_data != NULL)
+#define SECTION_CONTENTS (u->file_data + filepos)
 if (SECTION_IN_MEMORY_P)
 write_to_task (&mapstart, filesz - (mapstart - addr), vm_prot,
 (vm_address_t) SECTION_CONTENTS
@@ -299,7 +299,7 @@ e->error = EBADF;
 return;
 }
 e->filemap = rd;
-e->error =  EOPNOTSUPP;
+e->error = EOPNOTSUPP;
 if (!e->error)
 e->error = vm_map (mach_task_self (), (vm_address_t *) &e->cntl,
 vm_page_size, 0, 1, e->cntlmap, 0, 0,
@@ -512,7 +512,7 @@ else
 size = asprintf (&name, "%s", exec_name);
 if (size == 0)
 return;
-#define TASK_NAME_SIZE	32
+#define TASK_NAME_SIZE 32
 if (size < TASK_NAME_SIZE)
 task_set_name (task, name);
 else

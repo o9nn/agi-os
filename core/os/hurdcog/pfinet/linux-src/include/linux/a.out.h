@@ -52,8 +52,8 @@ M_MIPS2 = 152
 #define QMAGIC 0314
 #define CMAGIC 0421
 #if !defined (N_BADMAG)
-#define N_BADMAG(x)	  (N_MAGIC(x) != OMAGIC		\
-&& N_MAGIC(x) != NMAGIC		\
+#define N_BADMAG(x) (N_MAGIC(x) != OMAGIC \
+&& N_MAGIC(x) != NMAGIC \
 && N_MAGIC(x) != ZMAGIC \
 && N_MAGIC(x) != QMAGIC)
 #endif
@@ -84,8 +84,8 @@ M_MIPS2 = 152
 #if defined(vax) || defined(hp300) || defined(pyr)
 #define SEGMENT_SIZE page_size
 #endif
-#ifdef	sony
-#define	SEGMENT_SIZE	0x2000
+#ifdef sony
+#define SEGMENT_SIZE 0x2000
 #endif
 #ifdef is68k
 #define SEGMENT_SIZE 0x20000
@@ -97,10 +97,10 @@ M_MIPS2 = 152
 #ifdef linux
 #include <asm/page.h>
 #if defined(__i386__) || defined(__mc68000__)
-#define SEGMENT_SIZE	1024
+#define SEGMENT_SIZE 1024
 #else
 #ifndef SEGMENT_SIZE
-#define SEGMENT_SIZE	PAGE_SIZE
+#define SEGMENT_SIZE PAGE_SIZE
 #endif
 #endif
 #endif
@@ -155,11 +155,11 @@ unsigned long n_value;
 #define N_STAB 0340
 #endif
 #define N_INDR 0xa
-#define	N_SETA	0x14
-#define	N_SETT	0x16
-#define	N_SETD	0x18
-#define	N_SETB	0x1A
-#define N_SETV	0x1C
+#define N_SETA 0x14
+#define N_SETT 0x16
+#define N_SETD 0x18
+#define N_SETB 0x1A
+#define N_SETV 0x1C
 #if !defined (N_RELOCATION_INFO_DECLARED)
 struct relocation_info
 {

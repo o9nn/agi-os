@@ -1,5 +1,5 @@
 #ifndef gdevp14_INCLUDED
-#  define gdevp14_INCLUDED
+# define gdevp14_INCLUDED
 typedef enum {
 DeviceGray = 0,
 DeviceRGB = 1,

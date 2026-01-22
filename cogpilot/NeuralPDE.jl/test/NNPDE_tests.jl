@@ -264,10 +264,10 @@ C=1
 eq=Dtt(u(x, t))~C^2*Dxx(u(x, t))
 # Initial and boundary conditions
 bcs=[
-u(0, t)~0.0,           # for all t > 0
-u(1, t)~0.0,           # for all t > 0
+u(0, t)~0.0, # for all t > 0
+u(1, t)~0.0, # for all t > 0
 u(x, 0)~x*(1.0-x), # for all 0 < x < 1
-Dt(u(x, 0))~0.0        # for all  0 < x < 1]
+Dt(u(x, 0))~0.0 # for all 0 < x < 1]
 ]
 # Space and time domains
 domains=[x ∈ Interval(0.0, 1.0),

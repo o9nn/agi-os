@@ -30,7 +30,7 @@
 #ifdef __cplusplus
 #define SLANG_PRELUDE_EXTERN_C extern "C"
 #define SLANG_PRELUDE_EXTERN_C_START \
-extern "C"                       \
+extern "C" \
 {
 #define SLANG_PRELUDE_EXTERN_C_END }
 #else

@@ -7,22 +7,22 @@
 #include <ndb.h>
 #include "ppp.h"
 #define PATH 128
-static	int	baud;
-static	int	nocompress;
-static 	int	pppframing = 1;
-static	int	noipcompress;
-static	int	server;
-static	int noauth;
-static	int	nip;
-static	int	dying;
-static	int	primary;
-static	char	*chatfile;
-int	debug;
-char*	LOG = "ppp";
-char*	keyspec = "";
+static int baud;
+static int nocompress;
+static int pppframing = 1;
+static int noipcompress;
+static int server;
+static int noauth;
+static int nip;
+static int dying;
+static int primary;
+static char *chatfile;
+int debug;
+char* LOG = "ppp";
+char* keyspec = "";
 enum
 {
-Rmagic=	0x12345
+Rmagic= 0x12345
 };
 ushort fcstab[256] =
 {
@@ -68,40 +68,40 @@ static char *snames[] =
 "Sacksent",
 "Sopened",
 };
-static	void		authtimer(PPP*);
-static	void		chapinit(PPP*);
-static	void		config(PPP*, Pstate*, int);
-static	uchar*		escapeuchar(PPP*, ulong, uchar*, ushort*);
-static	void		getchap(PPP*, Block*);
-static	Block*		getframe(PPP*, int*);
-static	void		getlqm(PPP*, Block*);
-static	int		getopts(PPP*, Pstate*, Block*);
-static	void		getpap(PPP*, Block*);
-static	void		init(PPP*);
-static	void		invalidate(Ipaddr);
-static	void		ipinproc(PPP*);
-static	char*		ipopen(PPP*);
-static	void		mediainproc(PPP*);
-static	void		newstate(PPP*, Pstate*, int);
-static	int		nipifcs(char*);
-static	void		papinit(PPP*);
-static	void		pinit(PPP*, Pstate*);
-static	void		ppptimer(PPP*);
-static	void		printopts(Pstate*, Block*, int);
-static	void		ptimer(PPP*, Pstate*);
-static	int		putframe(PPP*, int, Block*);
-static	void		putlqm(PPP*);
-static	void		putndb(PPP*, char*);
-static	void		putpaprequest(PPP*);
-static	void		rcv(PPP*, Pstate*, Block*);
-static	void		rejopts(PPP*, Pstate*, Block*, int);
-static	void		sendechoreq(PPP*, Pstate*);
-static	void		sendtermreq(PPP*, Pstate*);
-static	void		setphase(PPP*, int);
-static	void		terminate(PPP*, int);
-static	int		validv4(Ipaddr);
-static  void		dmppkt(char *s, uchar *a, int na);
-static	void		getauth(PPP*);
+static void authtimer(PPP*);
+static void chapinit(PPP*);
+static void config(PPP*, Pstate*, int);
+static uchar* escapeuchar(PPP*, ulong, uchar*, ushort*);
+static void getchap(PPP*, Block*);
+static Block* getframe(PPP*, int*);
+static void getlqm(PPP*, Block*);
+static int getopts(PPP*, Pstate*, Block*);
+static void getpap(PPP*, Block*);
+static void init(PPP*);
+static void invalidate(Ipaddr);
+static void ipinproc(PPP*);
+static char* ipopen(PPP*);
+static void mediainproc(PPP*);
+static void newstate(PPP*, Pstate*, int);
+static int nipifcs(char*);
+static void papinit(PPP*);
+static void pinit(PPP*, Pstate*);
+static void ppptimer(PPP*);
+static void printopts(Pstate*, Block*, int);
+static void ptimer(PPP*, Pstate*);
+static int putframe(PPP*, int, Block*);
+static void putlqm(PPP*);
+static void putndb(PPP*, char*);
+static void putpaprequest(PPP*);
+static void rcv(PPP*, Pstate*, Block*);
+static void rejopts(PPP*, Pstate*, Block*, int);
+static void sendechoreq(PPP*, Pstate*);
+static void sendtermreq(PPP*, Pstate*);
+static void setphase(PPP*, int);
+static void terminate(PPP*, int);
+static int validv4(Ipaddr);
+static void dmppkt(char *s, uchar *a, int na);
+static void getauth(PPP*);
 void
 pppopen(PPP *ppp, int mediain, int mediaout, char *net,
 Ipaddr ipaddr, Ipaddr remip,
@@ -240,7 +240,7 @@ ppp->xctlmap = 0xffffffff;
 ppp->period = 0;
 p->optmask = 0xffffffff;
 if(!server)
-p->optmask &=  ~(Fauth|Fmtu);
+p->optmask &= ~(Fauth|Fmtu);
 ppp->rctlmap = 0;
 ppp->ipcp->state = Sclosed;
 ppp->ipcp->optmask = 0xffffffff;
@@ -1263,14 +1263,14 @@ close(fd);
 }
 enum
 {
-Mofd=	32,
+Mofd= 32,
 };
 struct
 {
 Lock;
-int	fd[Mofd];
-int	cfd[Mofd];
-int	n;
+int fd[Mofd];
+int cfd[Mofd];
+int n;
 } old;
 static char*
 ipopen(PPP *ppp)
@@ -1490,16 +1490,16 @@ postnote(PNGROUP, getpid(), "die");
 typedef struct Iphdr Iphdr;
 struct Iphdr
 {
-uchar	vihl;
-uchar	tos;
-uchar	length[2];
-uchar	id[2];
-uchar	frag[2];
-uchar	ttl;
-uchar	proto;
-uchar	cksum[2];
-uchar	src[4];
-uchar	dst[4];
+uchar vihl;
+uchar tos;
+uchar length[2];
+uchar id[2];
+uchar frag[2];
+uchar ttl;
+uchar proto;
+uchar cksum[2];
+uchar src[4];
+uchar dst[4];
 };
 static void
 ipinproc(PPP *ppp)
@@ -1721,7 +1721,7 @@ memmove(resp+i*MSchallen, chal, MSchallen);
 desencrypt(resp+i*MSchallen, buf+i*7);
 }
 }
-extern	int	_asrdresp(int, uchar*, int);
+extern int _asrdresp(int, uchar*, int);
 static void
 getchap(PPP *ppp, Block *b)
 {
@@ -2125,11 +2125,11 @@ freeb(b);
 }
 enum
 {
-CtrlD	= 0x4,
-CtrlE	= 0x5,
-CtrlO	= 0xf,
-Cr	= 13,
-View	= 0x80,
+CtrlD = 0x4,
+CtrlE = 0x5,
+CtrlO = 0xf,
+Cr = 13,
+View = 0x80,
 };
 int conndone;
 static void

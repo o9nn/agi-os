@@ -1,5 +1,5 @@
 #define FLOPPY_SANITY_CHECK
-#undef  FLOPPY_SILENT_DCL_CLEAR
+#undef FLOPPY_SILENT_DCL_CLEAR
 #define REALLY_SLOW_IO
 #define DEBUGT 2
 #define DCL_DEBUG
@@ -80,7 +80,7 @@ return order;
 static unsigned int fake_change = 0;
 static int initialising=1;
 static inline int TYPE(kdev_t x) {
-return  (MINOR(x)>>2) & 0x1f;
+return (MINOR(x)>>2) & 0x1f;
 }
 static inline int DRIVE(kdev_t x) {
 return (MINOR(x)&0x03) | ((MINOR(x)&0x80) >> 5);
@@ -109,7 +109,7 @@ return (MINOR(x)&0x03) | ((MINOR(x)&0x80) >> 5);
 #define STRETCH(floppy) ((floppy)->stretch & FD_STRETCH)
 #define CLEARSTRUCT(x) memset((x), 0, sizeof(*(x)))
 #define INT_OFF save_flags(flags); cli()
-#define INT_ON  restore_flags(flags)
+#define INT_ON restore_flags(flags)
 #define COMMAND raw_cmd->cmd[0]
 #define DR_SELECT raw_cmd->cmd[1]
 #define TRACK raw_cmd->cmd[2]
@@ -126,7 +126,7 @@ return (MINOR(x)&0x03) | ((MINOR(x)&0x80) >> 5);
 #define F_FILL raw_cmd->cmd[5]
 #define NR_F 6
 #define MAX_DISK_SIZE 4
-#define K_64	0x10000
+#define K_64 0x10000
 #define MAX_REPLIES 16
 static unsigned char reply_buffer[MAX_REPLIES];
 static int inr;
@@ -144,19 +144,19 @@ static struct {
 struct floppy_drive_params params;
 const char *name;
 } default_drive_params[]= {
-{{0,  500, 16, 16, 8000,    1*HZ, 3*HZ,  0, SEL_DLY, 5,  80, 3*HZ, 20, {3,1,2,0,2}, 0,
+{{0, 500, 16, 16, 8000, 1*HZ, 3*HZ, 0, SEL_DLY, 5, 80, 3*HZ, 20, {3,1,2,0,2}, 0,
 0, { 7, 4, 8, 2, 1, 5, 3,10}, 3*HZ/2, 0 }, "unknown" },
-{{1,  300, 16, 16, 8000,    1*HZ, 3*HZ,  0, SEL_DLY, 5,  40, 3*HZ, 17, {3,1,2,0,2}, 0,
+{{1, 300, 16, 16, 8000, 1*HZ, 3*HZ, 0, SEL_DLY, 5, 40, 3*HZ, 17, {3,1,2,0,2}, 0,
 0, { 1, 0, 0, 0, 0, 0, 0, 0}, 3*HZ/2, 1 }, "360K PC" },
-{{2,  500, 16, 16, 6000, 4*HZ/10, 3*HZ, 14, SEL_DLY, 6,  83, 3*HZ, 17, {3,1,2,0,2}, 0,
+{{2, 500, 16, 16, 6000, 4*HZ/10, 3*HZ, 14, SEL_DLY, 6, 83, 3*HZ, 17, {3,1,2,0,2}, 0,
 0, { 2, 5, 6,23,10,20,12, 0}, 3*HZ/2, 2 }, "1.2M" },
-{{3,  250, 16, 16, 3000,    1*HZ, 3*HZ,  0, SEL_DLY, 5,  83, 3*HZ, 20, {3,1,2,0,2}, 0,
+{{3, 250, 16, 16, 3000, 1*HZ, 3*HZ, 0, SEL_DLY, 5, 83, 3*HZ, 20, {3,1,2,0,2}, 0,
 0, { 4,22,21,30, 3, 0, 0, 0}, 3*HZ/2, 4 }, "720k" },
-{{4,  500, 16, 16, 4000, 4*HZ/10, 3*HZ, 10, SEL_DLY, 5,  83, 3*HZ, 20, {3,1,2,0,2}, 0,
+{{4, 500, 16, 16, 4000, 4*HZ/10, 3*HZ, 10, SEL_DLY, 5, 83, 3*HZ, 20, {3,1,2,0,2}, 0,
 0, { 7, 4,25,22,31,21,29,11}, 3*HZ/2, 7 }, "1.44M" },
-{{5, 1000, 15,  8, 3000, 4*HZ/10, 3*HZ, 10, SEL_DLY, 5,  83, 3*HZ, 40, {3,1,2,0,2}, 0,
+{{5, 1000, 15, 8, 3000, 4*HZ/10, 3*HZ, 10, SEL_DLY, 5, 83, 3*HZ, 40, {3,1,2,0,2}, 0,
 0, { 7, 8, 4,25,28,22,31,21}, 3*HZ/2, 8 }, "2.88M AMI BIOS" },
-{{6, 1000, 15,  8, 3000, 4*HZ/10, 3*HZ, 10, SEL_DLY, 5,  83, 3*HZ, 40, {3,1,2,0,2}, 0,
+{{6, 1000, 15, 8, 3000, 4*HZ/10, 3*HZ, 10, SEL_DLY, 5, 83, 3*HZ, 40, {3,1,2,0,2}, 0,
 0, { 7, 8, 4,25,28,22,31,21}, 3*HZ/2, 8 }, "2.88M" }
 };
 static struct floppy_drive_params drive_params[N_DRIVE];
@@ -164,27 +164,27 @@ static struct floppy_drive_struct drive_state[N_DRIVE];
 static struct floppy_write_errors write_errors[N_DRIVE];
 static struct floppy_raw_cmd *raw_cmd, default_raw_cmd;
 static struct floppy_struct floppy_type[32] = {
-{    0, 0,0, 0,0,0x00,0x00,0x00,0x00,NULL    },
-{  720, 9,2,40,0,0x2A,0x02,0xDF,0x50,"d360"  },
+{ 0, 0,0, 0,0,0x00,0x00,0x00,0x00,NULL },
+{ 720, 9,2,40,0,0x2A,0x02,0xDF,0x50,"d360" },
 { 2400,15,2,80,0,0x1B,0x00,0xDF,0x54,"h1200" },
-{  720, 9,1,80,0,0x2A,0x02,0xDF,0x50,"D360"  },
-{ 1440, 9,2,80,0,0x2A,0x02,0xDF,0x50,"D720"  },
-{  720, 9,2,40,1,0x23,0x01,0xDF,0x50,"h360"  },
-{ 1440, 9,2,80,0,0x23,0x01,0xDF,0x50,"h720"  },
+{ 720, 9,1,80,0,0x2A,0x02,0xDF,0x50,"D360" },
+{ 1440, 9,2,80,0,0x2A,0x02,0xDF,0x50,"D720" },
+{ 720, 9,2,40,1,0x23,0x01,0xDF,0x50,"h360" },
+{ 1440, 9,2,80,0,0x23,0x01,0xDF,0x50,"h720" },
 { 2880,18,2,80,0,0x1B,0x00,0xCF,0x6C,"H1440" },
 { 5760,36,2,80,0,0x1B,0x43,0xAF,0x54,"E2880" },
 { 6240,39,2,80,0,0x1B,0x43,0xAF,0x28,"E3120"},
 { 2880,18,2,80,0,0x25,0x00,0xDF,0x02,"h1440" },
 { 3360,21,2,80,0,0x1C,0x00,0xCF,0x0C,"H1680" },
-{  820,10,2,41,1,0x25,0x01,0xDF,0x2E,"h410"  },
-{ 1640,10,2,82,0,0x25,0x02,0xDF,0x2E,"H820"  },
+{ 820,10,2,41,1,0x25,0x01,0xDF,0x2E,"h410" },
+{ 1640,10,2,82,0,0x25,0x02,0xDF,0x2E,"H820" },
 { 2952,18,2,82,0,0x25,0x00,0xDF,0x02,"h1476" },
 { 3444,21,2,82,0,0x25,0x00,0xDF,0x0C,"H1722" },
-{  840,10,2,42,1,0x25,0x01,0xDF,0x2E,"h420"  },
-{ 1660,10,2,83,0,0x25,0x02,0xDF,0x2E,"H830"  },
+{ 840,10,2,42,1,0x25,0x01,0xDF,0x2E,"h420" },
+{ 1660,10,2,83,0,0x25,0x02,0xDF,0x2E,"H830" },
 { 2988,18,2,83,0,0x25,0x00,0xDF,0x02,"h1494" },
 { 3486,21,2,83,0,0x25,0x00,0xDF,0x0C,"H1743" },
-{ 1760,11,2,80,0,0x1C,0x09,0xCF,0x00,"h880"  },
+{ 1760,11,2,80,0,0x1C,0x09,0xCF,0x00,"h880" },
 { 2080,13,2,80,0,0x1C,0x01,0xCF,0x00,"D1040" },
 { 2240,14,2,80,0,0x1C,0x19,0xCF,0x00,"D1120" },
 { 3200,20,2,80,0,0x1C,0x20,0xCF,0x2C,"h1600" },
@@ -194,10 +194,10 @@ static struct floppy_struct floppy_type[32] = {
 { 7040,44,2,80,0,0x25,0x5B,0xCF,0x00,"E3520" },
 { 7680,48,2,80,0,0x25,0x63,0xCF,0x00,"E3840" },
 { 3680,23,2,80,0,0x1C,0x10,0xCF,0x00,"H1840" },
-{ 1600,10,2,80,0,0x25,0x02,0xDF,0x2E,"D800"  },
+{ 1600,10,2,80,0,0x25,0x02,0xDF,0x2E,"D800" },
 { 3200,20,2,80,0,0x1C,0x00,0xCF,0x2C,"H1600" },
 };
-#define	NUMBER(x)	(sizeof(x) / sizeof(*(x)))
+#define NUMBER(x) (sizeof(x) / sizeof(*(x)))
 #define SECTSIZE (_FD_SECTSIZE(*floppy))
 static struct floppy_struct *current_type[N_DRIVE] = {
 NULL, NULL, NULL, NULL,
@@ -384,7 +384,7 @@ return 0;
 }
 static inline int is_selected(int dor, int unit)
 {
-return ((dor  & (0x10 << unit)) && (dor &3) == unit);
+return ((dor & (0x10 << unit)) && (dor &3) == unit);
 }
 static int set_dor(int fdc, char mask, char data)
 {
@@ -392,7 +392,7 @@ register unsigned char drive, unit, newdor,olddor;
 if (FDCS->address == -1)
 return -1;
 olddor = FDCS->dor;
-newdor =  (olddor & mask) | data;
+newdor = (olddor & mask) | data;
 if (newdor != olddor){
 unit = olddor & 0x3;
 if (is_selected(olddor, unit) && !is_selected(newdor,unit)){
@@ -1000,7 +1000,7 @@ DPRINT("checking whether disk is write protected\n");
 DPRINT("wp=%x\n",ST3 & 0x40);
 }
 #endif
-if (!(ST3  & 0x40))
+if (!(ST3 & 0x40))
 SETF(FD_DISK_WRITABLE);
 else
 CLEARF(FD_DISK_WRITABLE);
@@ -1440,7 +1440,7 @@ F_GAP = _floppy->fmt_gap;
 F_FILL = FD_FILL_BYTE;
 raw_cmd->kernel_data = floppy_track_buffer;
 raw_cmd->length = 4 * F_SECT_PER_TRACK;
-head_shift  = (F_SECT_PER_TRACK + 5) / 6;
+head_shift = (F_SECT_PER_TRACK + 5) / 6;
 track_shift = 2 * head_shift + 3;
 n = (track_shift * format_req.track + head_shift * format_req.head)
 % F_SECT_PER_TRACK;
@@ -1489,7 +1489,7 @@ if (!_floppy ||
 _floppy->track > DP->tracks ||
 tmp_format_req->track >= _floppy->track ||
 tmp_format_req->head >= _floppy->head ||
-(_floppy->sect << 2) % (1 <<  FD_SIZECODE(_floppy)) ||
+(_floppy->sect << 2) % (1 << FD_SIZECODE(_floppy)) ||
 !_floppy->fmt_gap) {
 process_fd_request();
 return -EINVAL;
@@ -1557,7 +1557,7 @@ eoc = 1;
 else
 eoc = 0;
 nr_sectors = ((R_TRACK-TRACK)*_floppy->head+R_HEAD-HEAD) *
-_floppy->sect + ((R_SECTOR-SECTOR+eoc) <<  SIZECODE >> 2) -
+_floppy->sect + ((R_SECTOR-SECTOR+eoc) << SIZECODE >> 2) -
 (sector_t % _floppy->sect) % ssize;
 #ifdef FLOPPY_SANITY_CHECK
 if (nr_sectors > current_count_sectors + ssize -
@@ -1651,7 +1651,7 @@ current_count_sectors = minimum(buffer_max - sector_t,
 CURRENT->nr_sectors);
 remaining = current_count_sectors << 9;
 #ifdef FLOPPY_SANITY_CHECK
-if ((remaining >> 9) > CURRENT->nr_sectors  &&
+if ((remaining >> 9) > CURRENT->nr_sectors &&
 CT(COMMAND) == FD_WRITE){
 DPRINT("in copy buffer\n");
 printk("current_count_sectors=%ld\n", current_count_sectors);
@@ -1896,7 +1896,7 @@ if (raw_cmd->kernel_data < floppy_track_buffer ||
 current_count_sectors < 0 ||
 raw_cmd->length < 0 ||
 raw_cmd->kernel_data + raw_cmd->length >
-floppy_track_buffer + (max_buffer_sectors  << 10)){
+floppy_track_buffer + (max_buffer_sectors << 10)){
 DPRINT("buffer overrun in schedule dma\n");
 printk("sector_t=%d buffer_min=%d current_count=%ld\n",
 sector_t, buffer_min,
@@ -2349,32 +2349,32 @@ int newcmd;
 int oldcmd;
 int oldsize;
 } translation_table[]= {
-{FDCLRPRM,		 0,  0},
-{FDSETPRM,		 1, 28},
-{FDDEFPRM,		 2, 28},
-{FDGETPRM,		 3, 28},
-{FDMSGON,		 4,  0},
-{FDMSGOFF,		 5,  0},
-{FDFMTBEG,		 6,  0},
-{FDFMTTRK,		 7, 12},
-{FDFMTEND,		 8,  0},
-{FDSETEMSGTRESH,	10,  0},
-{FDFLUSH,		11,  0},
-{FDSETMAXERRS,	12, 20},
-{OLDFDRAWCMD,      	30,  0},
-{FDGETMAXERRS,	14, 20},
-{FDGETDRVTYP,	16, 16},
-{FDSETDRVPRM,	20, 88},
-{FDGETDRVPRM,	21, 88},
-{FDGETDRVSTAT,	22, 52},
-{FDPOLLDRVSTAT,	23, 52},
-{FDRESET,		24,  0},
-{FDGETFDCSTAT,	25, 40},
-{FDWERRORCLR,	27,  0},
-{FDWERRORGET,	28, 24},
-{FDRAWCMD,		 0,  0},
-{FDEJECT,		 0,  0},
-{FDTWADDLE,		40,  0} };
+{FDCLRPRM, 0, 0},
+{FDSETPRM, 1, 28},
+{FDDEFPRM, 2, 28},
+{FDGETPRM, 3, 28},
+{FDMSGON, 4, 0},
+{FDMSGOFF, 5, 0},
+{FDFMTBEG, 6, 0},
+{FDFMTTRK, 7, 12},
+{FDFMTEND, 8, 0},
+{FDSETEMSGTRESH, 10, 0},
+{FDFLUSH, 11, 0},
+{FDSETMAXERRS, 12, 20},
+{OLDFDRAWCMD, 30, 0},
+{FDGETMAXERRS, 14, 20},
+{FDGETDRVTYP, 16, 16},
+{FDSETDRVPRM, 20, 88},
+{FDGETDRVPRM, 21, 88},
+{FDGETDRVSTAT, 22, 52},
+{FDPOLLDRVSTAT, 23, 52},
+{FDRESET, 24, 0},
+{FDGETFDCSTAT, 25, 40},
+{FDWERRORCLR, 27, 0},
+{FDWERRORGET, 28, 24},
+{FDRAWCMD, 0, 0},
+{FDEJECT, 0, 0},
+{FDTWADDLE, 40, 0} };
 static inline int normalize_0x02xx_ioctl(int *cmd, int *size)
 {
 int i;
@@ -2926,7 +2926,7 @@ int def_param;
 { "all_drives", 0, &allowed_drive_mask, 0xff },
 { "asus_pci", 0, &allowed_drive_mask, 0x33 },
 { "daring", daring, 0, 1},
-{ "two_fdc",  0, &FDC2, 0x370 },
+{ "two_fdc", 0, &FDC2, 0x370 },
 { "one_fdc", 0, &FDC2, 0 },
 { "thinkpad", floppy_invert_dcl, 0, 1 },
 { "nodma", 0, &use_virtual_dma, 1 },

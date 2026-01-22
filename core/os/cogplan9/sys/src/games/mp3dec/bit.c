@@ -1,11 +1,11 @@
 # ifdef HAVE_CONFIG_H
-#  include "config.h"
+# include "config.h"
 # endif
 # include "global.h"
 # ifdef HAVE_LIMITS_H
-#  include <limits.h>
+# include <limits.h>
 # else
-#  define CHAR_BIT  8
+# define CHAR_BIT 8
 # endif
 # include "bit.h"
 static
@@ -43,12 +43,12 @@ unsigned short const crc_table[256] = {
 0x0220, 0x8225, 0x822f, 0x022a, 0x823b, 0x023e, 0x0234, 0x8231,
 0x8213, 0x0216, 0x021c, 0x8219, 0x0208, 0x820d, 0x8207, 0x0202
 };
-# define CRC_POLY  0x8005
+# define CRC_POLY 0x8005
 void mad_bit_init(struct mad_bitptr *bitptr, unsigned char const *byte)
 {
-bitptr->byte  = byte;
+bitptr->byte = byte;
 bitptr->cache = 0;
-bitptr->left  = CHAR_BIT;
+bitptr->left = CHAR_BIT;
 }
 unsigned int mad_bit_length(struct mad_bitptr const *begin,
 struct mad_bitptr const *end)
@@ -83,12 +83,12 @@ bitptr->left -= len;
 return value;
 }
 value = bitptr->cache & ((1 << bitptr->left) - 1);
-len  -= bitptr->left;
+len -= bitptr->left;
 bitptr->byte++;
 bitptr->left = CHAR_BIT;
 while (len >= CHAR_BIT) {
 value = (value << CHAR_BIT) | *bitptr->byte++;
-len  -= CHAR_BIT;
+len -= CHAR_BIT;
 }
 if (len > 0) {
 bitptr->cache = *bitptr->byte;
@@ -114,8 +114,8 @@ register unsigned long data;
 data = mad_bit_read(&bitptr, 32);
 crc = (crc << 8) ^ crc_table[((crc >> 8) ^ (data >> 24)) & 0xff];
 crc = (crc << 8) ^ crc_table[((crc >> 8) ^ (data >> 16)) & 0xff];
-crc = (crc << 8) ^ crc_table[((crc >> 8) ^ (data >>  8)) & 0xff];
-crc = (crc << 8) ^ crc_table[((crc >> 8) ^ (data >>  0)) & 0xff];
+crc = (crc << 8) ^ crc_table[((crc >> 8) ^ (data >> 8)) & 0xff];
+crc = (crc << 8) ^ crc_table[((crc >> 8) ^ (data >> 0)) & 0xff];
 }
 switch (len / 8) {
 case 3: crc = (crc << 8) ^

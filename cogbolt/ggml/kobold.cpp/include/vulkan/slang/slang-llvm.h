@@ -5,10 +5,10 @@
 #ifdef SLANG_PRELUDE_ENABLE_ASSERT
 extern "C" void assertFailure(const char* msg);
 #define SLANG_PRELUDE_EXPECT(VALUE, MSG) \
-if (VALUE)                           \
-{                                    \
-}                                    \
-else                                 \
+if (VALUE) \
+{ \
+} \
+else \
 assertFailure("assertion failed: '" MSG "'")
 #define SLANG_PRELUDE_ASSERT(VALUE) SLANG_PRELUDE_EXPECT(VALUE, #VALUE)
 #else

@@ -12,14 +12,14 @@
 #include "fns.h"
 enum
 {
-Ctlsize	= 5*12
+Ctlsize = 5*12
 };
-char	Edel[]		= "deleted window";
-char	Ebadctl[]		= "ill-formed control message";
-char	Ebadaddr[]	= "bad address syntax";
-char	Eaddr[]		= "address out of range";
-char	Einuse[]		= "already in use";
-char	Ebadevent[]	= "bad event syntax";
+char Edel[] = "deleted window";
+char Ebadctl[] = "ill-formed control message";
+char Ebadaddr[] = "bad address syntax";
+char Eaddr[] = "address out of range";
+char Einuse[] = "already in use";
+char Ebadevent[] = "bad event syntax";
 extern char Eperm[];
 static
 void

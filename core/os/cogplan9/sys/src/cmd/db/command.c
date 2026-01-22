@@ -1,22 +1,22 @@
 #include "defs.h"
 #include "fns.h"
-char	BADEQ[] = "unexpected `='";
-BOOL	executing;
-extern	Rune	*lp;
-char	eqformat[ARB] = "z";
-char	stformat[ARB] = "zMi";
-ADDR	ditto;
-ADDR	dot;
-int	dotinc;
-WORD	adrval, cntval, loopcnt;
-int	adrflg, cntflg;
+char BADEQ[] = "unexpected `='";
+BOOL executing;
+extern Rune *lp;
+char eqformat[ARB] = "z";
+char stformat[ARB] = "zMi";
+ADDR ditto;
+ADDR dot;
+int dotinc;
+WORD adrval, cntval, loopcnt;
+int adrflg, cntflg;
 command(char *buf, int defcom)
 {
-char	*reg;
-char	savc;
-Rune	*savlp=lp;
-char	savlc = lastc;
-char	savpc = peekc;
+char *reg;
+char savc;
+Rune *savlp=lp;
+char savlc = lastc;
+char savpc = peekc;
 static char lastcom = '=', savecom = '=';
 if (defcom == 0)
 defcom = lastcom;
@@ -169,7 +169,7 @@ locmsk=expv;
 else
 locmsk = ~0;
 if (c == 'L')
-while ((ret = get4(map, dot, &w)) > 0 &&  (w&locmsk) != locval)
+while ((ret = get4(map, dot, &w)) > 0 && (w&locmsk) != locval)
 dot = inkdot(dotinc);
 else
 while ((ret = get2(map, dot, &sh)) > 0 && (sh&locmsk) != locval)
@@ -233,7 +233,7 @@ return (buf);
 void
 shell(void)
 {
-int	rc, unixpid;
+int rc, unixpid;
 char *argp = (char*)lp;
 while (lastc!=EOR)
 rdc();

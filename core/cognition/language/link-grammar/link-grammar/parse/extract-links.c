@@ -24,8 +24,8 @@ struct Parse_choice_struct
 {
 Parse_choice * next;
 Parse_set * set[2];
-Disjunct    *md;
-int32_t     l_id, r_id;
+Disjunct *md;
+int32_t l_id, r_id;
 #ifdef PC_DISPLAY
 bool done;
 bool dolr;
@@ -33,11 +33,11 @@ bool dolr;
 };
 struct Parse_set_struct
 {
-Connector      *le, *re;
-Parse_choice   *first;
-unsigned int   num_pc;
-uint8_t        lw, rw;
-uint8_t        null_count;
+Connector *le, *re;
+Parse_choice *first;
+unsigned int num_pc;
+uint8_t lw, rw;
+uint8_t null_count;
 count_t count;
 #ifdef RECOUNT
 count_t recount;
@@ -56,14 +56,14 @@ Pset_bucket *next;
 };
 struct extractor_s
 {
-unsigned int   x_table_size;
-unsigned int   log2_x_table_size;
+unsigned int x_table_size;
+unsigned int log2_x_table_size;
 Pset_bucket ** x_table;
-Parse_set *    parse_set;
-Word           *words;
-Pool_desc *    Pset_bucket_pool;
-Pool_desc *    Parse_choice_pool;
-bool           islands_ok;
+Parse_set * parse_set;
+Word *words;
+Pool_desc * Pset_bucket_pool;
+Pool_desc * Parse_choice_pool;
+bool islands_ok;
 unsigned int rand_state;
 };
 static Parse_choice *

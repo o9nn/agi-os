@@ -62,14 +62,14 @@ domain = 0;
 else {
 domain = params->Decode;
 switch (params->BitsPerCoordinate) {
-case  1: case  2: case  4: case  8:
+case 1: case 2: case 4: case 8:
 case 12: case 16: case 24: case 32:
 break;
 default:
 return_error(gs_error_rangecheck);
 }
 switch (params->BitsPerComponent) {
-case  1: case  2: case  4: case  8:
+case 1: case 2: case 4: case 8:
 case 12: case 16:
 break;
 default:
@@ -325,7 +325,7 @@ DO_NOTHING;
 return code;
 }
 private int
-gs_shading_fill_path(const gs_shading_t *psh,  gx_path *ppath,
+gs_shading_fill_path(const gs_shading_t *psh, gx_path *ppath,
 const gs_fixed_rect *prect, gx_device *orig_dev,
 gs_imager_state *pis, bool fill_background)
 {
@@ -397,7 +397,7 @@ dev = (gx_device *)&path_dev;
 dev_proc(dev, open_device)(dev);
 }
 #if 0
-{	gs_fixed_rect r;
+{ gs_fixed_rect r;
 dev_proc(dev, get_clipping_box)(dev, &r);
 rect_intersect(path_box, r);
 }
@@ -431,9 +431,9 @@ gx_cpath_free(path_clip, "shading_fill_path(path_clip)");
 return code;
 }
 int
-gs_shading_fill_path_adjusted(const gs_shading_t *psh,  gx_path *ppath,
+gs_shading_fill_path_adjusted(const gs_shading_t *psh, gx_path *ppath,
 const gs_fixed_rect *prect, gx_device *orig_dev,
 gs_imager_state *pis, bool fill_background)
 {
-return  gs_shading_fill_path(psh, ppath, prect, orig_dev, pis, fill_background);
+return gs_shading_fill_path(psh, ppath, prect, orig_dev, pis, fill_background);
 }

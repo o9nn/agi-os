@@ -103,7 +103,7 @@ int64_t i3 = item_ct1.get_group(0);
 int64_t i2 = item_ct1.get_group(1);
 int64_t i1 = item_ct1.get_group(2);
 int64_t o[4] = { 0, 0, 0, 0 };
-o[dim]       = dim == 0 ? ne00 : (dim == 1 ? ne01 : (dim == 2 ? ne02 : ne03));
+o[dim] = dim == 0 ? ne00 : (dim == 1 ? ne01 : (dim == 2 ? ne02 : ne03));
 const float * x;
 for (int i0 = item_ct1.get_local_id(2); i0 < ne0; i0 += item_ct1.get_local_range(2)) {
 if (i0 < ne00 && i1 < ne01 && i2 < ne02 && i3 < ne03) {
@@ -119,9 +119,9 @@ float *y = (float *)(dst + i3 * nb3 + i2 * nb2 + i1 * nb1 + i0 * nb0);
 }
 void ggml_sycl_op_concat(ggml_backend_sycl_context & ctx, ggml_tensor *dst) {
 scope_op_debug_print scope_dbg_print(__func__, dst, 2);
-const ggml_tensor *  src0   = dst->src[0];
-const ggml_tensor *  src1   = dst->src[1];
-queue_ptr            stream = ctx.stream();
+const ggml_tensor * src0 = dst->src[0];
+const ggml_tensor * src1 = dst->src[1];
+queue_ptr stream = ctx.stream();
 const int32_t dim = ((int32_t *) dst->op_params)[0];
 if (ggml_is_contiguous(src0) && ggml_is_contiguous(src1)) {
 const float * src0_d = (const float *) src0->data;

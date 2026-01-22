@@ -5,7 +5,7 @@
 #include <linux/route.h>
 #include <linux/netdevice.h>
 #include <linux/in6.h>
-#ifdef 	CONFIG_PROC_FS
+#ifdef CONFIG_PROC_FS
 #include <linux/proc_fs.h>
 #endif
 #include <net/ipv6.h>
@@ -25,7 +25,7 @@
 #else
 #define RT6_TRACE(x...) do { ; } while (0)
 #endif
-struct rt6_statistics	rt6_stats;
+struct rt6_statistics rt6_stats;
 enum fib_walk_state_t
 {
 #ifdef CONFIG_IPV6_SUBTREES
@@ -51,7 +51,7 @@ void *arg;
 #endif
 static void fib6_prune_clones(struct fib6_node *fn, struct rt6_info *rt);
 static void fib6_repair_tree(struct fib6_node *fn);
-static __u32	rt_sernum	= 0;
+static __u32 rt_sernum = 0;
 static struct timer_list ip6_fib_timer = {
 NULL, NULL,
 0,
@@ -76,7 +76,7 @@ __u32 *a2 = token2;
 int pdw;
 int pbi;
 pdw = prefixlen >> 5;
-pbi = prefixlen &  0x1f;
+pbi = prefixlen & 0x1f;
 if (pdw)
 if (memcmp(a1, a2, pdw << 2))
 return 0;
@@ -138,9 +138,9 @@ int offset)
 struct fib6_node *fn, *in, *ln;
 struct fib6_node *pn = NULL;
 struct rt6key *key;
-int	bit;
-int	dir = 0;
-__u32	sernum = fib6_new_sernum();
+int bit;
+int dir = 0;
+__u32 sernum = fib6_new_sernum();
 RT6_TRACE("fib6_add_1\n");
 fn = root;
 if (plen == 0)
@@ -172,7 +172,7 @@ ln->fn_sernum = sernum;
 if (dir)
 pn->right = ln;
 else
-pn->left  = ln;
+pn->left = ln;
 return ln;
 insert_above:
 pn = fn->parent;
@@ -195,16 +195,16 @@ in->fn_sernum = sernum;
 if (dir)
 pn->right = in;
 else
-pn->left  = in;
+pn->left = in;
 ln->fn_bit = plen;
 ln->parent = in;
 fn->parent = in;
 ln->fn_sernum = sernum;
 if (addr_bit_set(addr, bit)) {
 in->right = ln;
-in->left  = fn;
+in->left = fn;
 } else {
-in->left  = ln;
+in->left = ln;
 in->right = fn;
 }
 } else {
@@ -217,11 +217,11 @@ ln->fn_sernum = sernum;
 if (dir)
 pn->right = ln;
 else
-pn->left  = ln;
+pn->left = ln;
 if (addr_bit_set(&key->addr, plen))
 ln->right = fn;
 else
-ln->left  = fn;
+ln->left = fn;
 fn->parent = ln;
 }
 return ln;
@@ -335,8 +335,8 @@ return err;
 #endif
 }
 struct lookup_args {
-int		offset;
-struct in6_addr	*addr;
+int offset;
+struct in6_addr *addr;
 };
 static struct fib6_node * fib6_lookup_1(struct fib6_node *root,
 struct lookup_args *args)
@@ -721,8 +721,8 @@ fib6_clean_tree(fn, fib6_prune_clone, 1, rt);
 }
 static struct fib6_gc_args
 {
-int			timeout;
-int			more;
+int timeout;
+int more;
 } gc_args;
 static int fib6_age(struct rt6_info *rt, void *arg)
 {

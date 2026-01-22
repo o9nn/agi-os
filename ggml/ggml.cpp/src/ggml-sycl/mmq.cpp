@@ -41,10 +41,10 @@ int *__restrict__ x_sc, const int &i_offset, const int &i_max,
 const int &k, const int &blocks_per_row) {
 (void)x_qh; (void)x_sc;
 GGML_SYCL_ASSUME(i_offset >= 0);
-GGML_SYCL_ASSUME(i_offset <  nwarps);
+GGML_SYCL_ASSUME(i_offset < nwarps);
 GGML_SYCL_ASSUME(k >= 0);
-GGML_SYCL_ASSUME(k <  WARP_SIZE);
-const int kbx  = k / QI4_0;
+GGML_SYCL_ASSUME(k < WARP_SIZE);
+const int kbx = k / QI4_0;
 const int kqsx = k % QI4_0;
 const block_q4_0 * bx0 = (const block_q4_0 *) vx;
 float * x_dmf = (float *) x_dm;
@@ -80,7 +80,7 @@ const float * x_dmf = (const float *) x_dm;
 int u[2*VDR_Q4_0_Q8_1_MMQ];
 #pragma unroll
 for (int l = 0; l < VDR_Q4_0_Q8_1_MMQ; ++l) {
-u[2*l+0] = y_qs[j * WARP_SIZE + (kyqs + l)         % WARP_SIZE];
+u[2*l+0] = y_qs[j * WARP_SIZE + (kyqs + l) % WARP_SIZE];
 u[2*l+1] = y_qs[j * WARP_SIZE + (kyqs + l + QI4_0) % WARP_SIZE];
 }
 return vec_dot_q4_0_q8_1_impl<VDR_Q4_0_Q8_1_MMQ>
@@ -103,10 +103,10 @@ int *__restrict__ x_sc, const int &i_offset, const int &i_max,
 const int &k, const int &blocks_per_row) {
 (void)x_qh; (void)x_sc;
 GGML_SYCL_ASSUME(i_offset >= 0);
-GGML_SYCL_ASSUME(i_offset <  nwarps);
+GGML_SYCL_ASSUME(i_offset < nwarps);
 GGML_SYCL_ASSUME(k >= 0);
-GGML_SYCL_ASSUME(k <  WARP_SIZE);
-const int kbx  = k / QI4_1;
+GGML_SYCL_ASSUME(k < WARP_SIZE);
+const int kbx = k / QI4_1;
 const int kqsx = k % QI4_1;
 const block_q4_1 * bx0 = (const block_q4_1 *) vx;
 #pragma unroll
@@ -140,7 +140,7 @@ const int kyqs = k % (QI8_1/2) + QI8_1 * (k / (QI8_1/2));
 int u[2*VDR_Q4_1_Q8_1_MMQ];
 #pragma unroll
 for (int l = 0; l < VDR_Q4_1_Q8_1_MMQ; ++l) {
-u[2*l+0] = y_qs[j * WARP_SIZE + (kyqs + l)         % WARP_SIZE];
+u[2*l+0] = y_qs[j * WARP_SIZE + (kyqs + l) % WARP_SIZE];
 u[2*l+1] = y_qs[j * WARP_SIZE + (kyqs + l + QI4_1) % WARP_SIZE];
 }
 return vec_dot_q4_1_q8_1_impl<VDR_Q4_1_Q8_1_MMQ>
@@ -163,10 +163,10 @@ int *__restrict__ x_sc, const int &i_offset, const int &i_max,
 const int &k, const int &blocks_per_row) {
 (void)x_qh; (void)x_sc;
 GGML_SYCL_ASSUME(i_offset >= 0);
-GGML_SYCL_ASSUME(i_offset <  nwarps);
+GGML_SYCL_ASSUME(i_offset < nwarps);
 GGML_SYCL_ASSUME(k >= 0);
-GGML_SYCL_ASSUME(k <  WARP_SIZE);
-const int kbx  = k / QI5_0;
+GGML_SYCL_ASSUME(k < WARP_SIZE);
+const int kbx = k / QI5_0;
 const int kqsx = k % QI5_0;
 const block_q5_0 * bx0 = (const block_q5_0 *) vx;
 #pragma unroll
@@ -178,19 +178,19 @@ i = sycl::min(i, i_max);
 const block_q5_0 * bxi = bx0 + i*blocks_per_row + kbx;
 const int ql = get_int_from_uint8(bxi->qs, kqsx);
 const int qh = get_int_from_uint8(bxi->qh, 0) >> (4 * (k % QI5_0));
-int qs0 = (ql >>  0)   & 0x0F0F0F0F;
-qs0    |= (qh <<  4)   & 0x00000010;
-qs0    |= (qh << 11)   & 0x00001000;
-qs0    |= (qh << 18)   & 0x00100000;
-qs0    |= (qh << 25)   & 0x10000000;
+int qs0 = (ql >> 0) & 0x0F0F0F0F;
+qs0 |= (qh << 4) & 0x00000010;
+qs0 |= (qh << 11) & 0x00001000;
+qs0 |= (qh << 18) & 0x00100000;
+qs0 |= (qh << 25) & 0x10000000;
 qs0 = dpct::vectorized_binary<sycl::char4>(
 qs0, 0x10101010, dpct::sub_sat());
 x_ql[i * (2*WARP_SIZE + 1) + 2*k+0] = qs0;
-int qs1 = (ql >>  4)   & 0x0F0F0F0F;
-qs1    |= (qh >> 12)   & 0x00000010;
-qs1    |= (qh >>  5)   & 0x00001000;
-qs1    |= (qh <<  2)   & 0x00100000;
-qs1    |= (qh <<  9)   & 0x10000000;
+int qs1 = (ql >> 4) & 0x0F0F0F0F;
+qs1 |= (qh >> 12) & 0x00000010;
+qs1 |= (qh >> 5) & 0x00001000;
+qs1 |= (qh << 2) & 0x00100000;
+qs1 |= (qh << 9) & 0x10000000;
 qs1 = dpct::vectorized_binary<sycl::char4>(
 qs1, 0x10101010, dpct::sub_sat());
 x_ql[i * (2*WARP_SIZE + 1) + 2*k+1] = qs1;
@@ -217,11 +217,11 @@ const int &i, const int &j, const int &k) {
 const int kyqs = k % (QI8_1/2) + QI8_1 * (k / (QI8_1/2));
 const int index_bx = i * (WARP_SIZE/QI5_0) + i/QI5_0 + k/QI5_0;
 const float * x_dmf = (const float *) x_dm;
-const float * y_df  = (const float *) y_ds;
+const float * y_df = (const float *) y_ds;
 int u[2*VDR_Q5_0_Q8_1_MMQ];
 #pragma unroll
 for (int l = 0; l < VDR_Q5_0_Q8_1_MMQ; ++l) {
-u[2*l+0] = y_qs[j * WARP_SIZE + (kyqs + l)         % WARP_SIZE];
+u[2*l+0] = y_qs[j * WARP_SIZE + (kyqs + l) % WARP_SIZE];
 u[2*l+1] = y_qs[j * WARP_SIZE + (kyqs + l + QI5_0) % WARP_SIZE];
 }
 return vec_dot_q8_0_q8_1_impl<QR5_0*VDR_Q5_0_Q8_1_MMQ>
@@ -245,8 +245,8 @@ const int &k, const int &blocks_per_row) {
 GGML_SYCL_ASSUME(i_offset >= 0);
 GGML_SYCL_ASSUME(i_offset < nwarps);
 GGML_SYCL_ASSUME(k >= 0);
-GGML_SYCL_ASSUME(k <  WARP_SIZE);
-const int kbx  = k / QI5_1;
+GGML_SYCL_ASSUME(k < WARP_SIZE);
+const int kbx = k / QI5_1;
 const int kqsx = k % QI5_1;
 const block_q5_1 * bx0 = (const block_q5_1 *) vx;
 #pragma unroll
@@ -258,17 +258,17 @@ i = sycl::min(i, i_max);
 const block_q5_1 * bxi = bx0 + i*blocks_per_row + kbx;
 const int ql = get_int_from_uint8_aligned(bxi->qs, kqsx);
 const int qh = get_int_from_uint8_aligned(bxi->qh, 0) >> (4 * (k % QI5_1));
-int qs0 = (ql >>  0) & 0x0F0F0F0F;
-qs0    |= (qh <<  4) & 0x00000010;
-qs0    |= (qh << 11) & 0x00001000;
-qs0    |= (qh << 18) & 0x00100000;
-qs0    |= (qh << 25) & 0x10000000;
+int qs0 = (ql >> 0) & 0x0F0F0F0F;
+qs0 |= (qh << 4) & 0x00000010;
+qs0 |= (qh << 11) & 0x00001000;
+qs0 |= (qh << 18) & 0x00100000;
+qs0 |= (qh << 25) & 0x10000000;
 x_ql[i * (2*WARP_SIZE + 1) + 2*k+0] = qs0;
-int qs1 = (ql >>  4) & 0x0F0F0F0F;
-qs1    |= (qh >> 12) & 0x00000010;
-qs1    |= (qh >>  5) & 0x00001000;
-qs1    |= (qh <<  2) & 0x00100000;
-qs1    |= (qh <<  9) & 0x10000000;
+int qs1 = (ql >> 4) & 0x0F0F0F0F;
+qs1 |= (qh >> 12) & 0x00000010;
+qs1 |= (qh >> 5) & 0x00001000;
+qs1 |= (qh << 2) & 0x00100000;
+qs1 |= (qh << 9) & 0x10000000;
 x_ql[i * (2*WARP_SIZE + 1) + 2*k+1] = qs1;
 }
 const int blocks_per_tile_x_row = WARP_SIZE / QI5_1;
@@ -294,7 +294,7 @@ const int index_bx = i * (WARP_SIZE/QI5_1) + + i/QI5_1 + k/QI5_1;
 int u[2*VDR_Q5_1_Q8_1_MMQ];
 #pragma unroll
 for (int l = 0; l < VDR_Q5_1_Q8_1_MMQ; ++l) {
-u[2*l+0] = y_qs[j * WARP_SIZE + (kyqs + l)         % WARP_SIZE];
+u[2*l+0] = y_qs[j * WARP_SIZE + (kyqs + l) % WARP_SIZE];
 u[2*l+1] = y_qs[j * WARP_SIZE + (kyqs + l + QI5_1) % WARP_SIZE];
 }
 return vec_dot_q8_1_q8_1_impl<QR5_1*VDR_Q5_1_Q8_1_MMQ>
@@ -316,10 +316,10 @@ int *__restrict__ x_sc, const int &i_offset, const int &i_max,
 const int &k, const int &blocks_per_row) {
 (void)x_qh; (void)x_sc;
 GGML_SYCL_ASSUME(i_offset >= 0);
-GGML_SYCL_ASSUME(i_offset <  nwarps);
+GGML_SYCL_ASSUME(i_offset < nwarps);
 GGML_SYCL_ASSUME(k >= 0);
-GGML_SYCL_ASSUME(k <  WARP_SIZE);
-const int kbx  = k / QI8_0;
+GGML_SYCL_ASSUME(k < WARP_SIZE);
+const int kbx = k / QI8_0;
 const int kqsx = k % QI8_0;
 float * x_dmf = (float *) x_dm;
 const block_q8_0 * bx0 = (const block_q8_0 *) vx;
@@ -351,7 +351,7 @@ const int *__restrict__ y_qs, const sycl::half2 *__restrict__ y_ds,
 const int &i, const int &j, const int &k) {
 (void)x_qh; (void)x_sc;
 const float * x_dmf = (const float *) x_dm;
-const float * y_df  = (const float *) y_ds;
+const float * y_df = (const float *) y_ds;
 return vec_dot_q8_0_q8_1_impl<VDR_Q8_0_Q8_1_MMQ>
 (&x_ql[i * (WARP_SIZE + 1) + k], &y_qs[j * WARP_SIZE + k], x_dmf[i * (WARP_SIZE/QI8_0) + i/QI8_0 + k/QI8_0],
 y_df[j * (WARP_SIZE/QI8_1) + k/QI8_1]);
@@ -374,10 +374,10 @@ int *__restrict__ x_sc, const int &i_offset, const int &i_max,
 const int &k, const int &blocks_per_row) {
 (void)x_qh;
 GGML_SYCL_ASSUME(i_offset >= 0);
-GGML_SYCL_ASSUME(i_offset <  nwarps);
+GGML_SYCL_ASSUME(i_offset < nwarps);
 GGML_SYCL_ASSUME(k >= 0);
-GGML_SYCL_ASSUME(k <  WARP_SIZE);
-const int kbx  = k / QI2_K;
+GGML_SYCL_ASSUME(k < WARP_SIZE);
+const int kbx = k / QI2_K;
 const int kqsx = k % QI2_K;
 const block_q2_K * bx0 = (const block_q2_K *) vx;
 #pragma unroll
@@ -410,7 +410,7 @@ const block_q2_K * bxi = bx0 + i*blocks_per_row + (k % (WARP_SIZE/4)) / (QI2_K/4
 x_sc[i * (WARP_SIZE/4) + i / 4 + k % (WARP_SIZE/4)] = get_int_from_uint8_aligned(bxi->scales, k % (QI2_K/4));
 }
 }
-#define VDR_Q2_K_Q8_1_MMQ  2
+#define VDR_Q2_K_Q8_1_MMQ 2
 static __dpct_inline__ float
 vec_dot_q2_K_q8_1_impl_mmq(const int *__restrict__ v, const int *__restrict__ u,
 const uint8_t *__restrict__ scales,
@@ -422,7 +422,7 @@ for (int i0 = 0; i0 < QI8_1; i0 += QI8_1/2) {
 int sumi_d_sc = 0;
 const int sc = scales[i0 / (QI8_1/2)];
 int m = sc >> 4;
-m |= m <<  8;
+m |= m << 8;
 m |= m << 16;
 #pragma unroll
 for (int i = i0; i < i0 + QI8_1/2; ++i) {
@@ -443,7 +443,7 @@ const int *__restrict__ y_qs, const sycl::half2 *__restrict__ y_ds,
 const int &i, const int &j, const int &k) {
 (void)x_qh;
 const int kbx = k / QI2_K;
-const int ky  = (k % QI2_K) * QR2_K;
+const int ky = (k % QI2_K) * QR2_K;
 const float * y_df = (const float *) y_ds;
 int v[QR2_K*VDR_Q2_K_Q8_1_MMQ];
 const int kqsx = i * (WARP_SIZE + 1) + kbx*QI2_K + (QI2_K/2) * (ky/(2*QI2_K)) + ky % (QI2_K/2);
@@ -473,10 +473,10 @@ sycl::half2 *__restrict__ x_dm, int *__restrict__ x_qh,
 int *__restrict__ x_sc, const int &i_offset, const int &i_max,
 const int &k, const int &blocks_per_row) {
 GGML_SYCL_ASSUME(i_offset >= 0);
-GGML_SYCL_ASSUME(i_offset <  nwarps);
+GGML_SYCL_ASSUME(i_offset < nwarps);
 GGML_SYCL_ASSUME(k >= 0);
-GGML_SYCL_ASSUME(k <  WARP_SIZE);
-const int kbx  = k / QI3_K;
+GGML_SYCL_ASSUME(k < WARP_SIZE);
+const int kbx = k / QI3_K;
 const int kqsx = k % QI3_K;
 const block_q3_K * bx0 = (const block_q3_K *) vx;
 #pragma unroll
@@ -528,7 +528,7 @@ sc_low | sc_high, 0x20202020, dpct::sub_sat());
 x_sc[i * (WARP_SIZE/4) + i / 4 + k % (WARP_SIZE/4)] = sc;
 }
 }
-#define VDR_Q3_K_Q8_1_MMQ  2
+#define VDR_Q3_K_Q8_1_MMQ 2
 static __dpct_inline__ float
 vec_dot_q3_K_q8_1_impl_mmq(const int *__restrict__ v, const int *__restrict__ u,
 const int8_t *__restrict__ scales, const float &d3,
@@ -549,10 +549,10 @@ const int *__restrict__ x_ql, const sycl::half2 *__restrict__ x_dm,
 const int *__restrict__ x_qh, const int *__restrict__ x_sc,
 const int *__restrict__ y_qs, const sycl::half2 *__restrict__ y_ds,
 const int &i, const int &j, const int &k) {
-const int kbx  = k / QI3_K;
-const int ky  = (k % QI3_K) * QR3_K;
+const int kbx = k / QI3_K;
+const int ky = (k % QI3_K) * QR3_K;
 const float * x_dmf = (const float *) x_dm;
-const float * y_df  = (const float *) y_ds;
+const float * y_df = (const float *) y_ds;
 const int8_t * scales = ((const int8_t *) (x_sc + i * (WARP_SIZE/4) + i/4 + kbx*4)) + ky/4;
 int v[QR3_K*VDR_Q3_K_Q8_1_MMQ];
 #pragma unroll
@@ -585,10 +585,10 @@ int *__restrict__ x_sc, const int &i_offset, const int &i_max,
 const int &k, const int &blocks_per_row) {
 (void)x_qh;
 GGML_SYCL_ASSUME(i_offset >= 0);
-GGML_SYCL_ASSUME(i_offset <  nwarps);
+GGML_SYCL_ASSUME(i_offset < nwarps);
 GGML_SYCL_ASSUME(k >= 0);
-GGML_SYCL_ASSUME(k <  WARP_SIZE);
-const int kbx  = k / QI4_K;
+GGML_SYCL_ASSUME(k < WARP_SIZE);
+const int kbx = k / QI4_K;
 const int kqsx = k % QI4_K;
 const block_q4_K * bx0 = (const block_q4_K *) vx;
 #pragma unroll
@@ -625,11 +625,11 @@ const block_q4_K * bxi = bx0 + i*blocks_per_row + (k % (WARP_SIZE/8)) / (QI4_K/8
 const int * scales = (const int *) bxi->scales;
 const int ksc = k % (WARP_SIZE/8);
 int scales8 = (scales[(ksc%2) + (ksc!=0)] >> (4 * (ksc & (ksc/2)))) & 0x0F0F0F0F;
-scales8    |= (scales[ksc/2]              >> (2 * (ksc % 2)))       & 0x30303030;
+scales8 |= (scales[ksc/2] >> (2 * (ksc % 2))) & 0x30303030;
 x_sc[i * (WARP_SIZE/8) + i / 8 + ksc] = scales8;
 }
 }
-#define VDR_Q4_K_Q8_1_MMQ  8
+#define VDR_Q4_K_Q8_1_MMQ 8
 static __dpct_inline__ float vec_dot_q4_K_q8_1_impl_mmq(
 const int *__restrict__ v, const int *__restrict__ u,
 const uint8_t *__restrict__ sc, const uint8_t *__restrict__ m,
@@ -682,10 +682,10 @@ int *__restrict__ x_sc, const int &i_offset, const int &i_max,
 const int &k, const int &blocks_per_row) {
 (void)x_qh;
 GGML_SYCL_ASSUME(i_offset >= 0);
-GGML_SYCL_ASSUME(i_offset <  nwarps);
+GGML_SYCL_ASSUME(i_offset < nwarps);
 GGML_SYCL_ASSUME(k >= 0);
-GGML_SYCL_ASSUME(k <  WARP_SIZE);
-const int kbx  = k / QI5_K;
+GGML_SYCL_ASSUME(k < WARP_SIZE);
+const int kbx = k / QI5_K;
 const int kqsx = k % QI5_K;
 const block_q5_K * bx0 = (const block_q5_K *) vx;
 #pragma unroll
@@ -730,11 +730,11 @@ const block_q5_K * bxi = bx0 + i*blocks_per_row + (k % (WARP_SIZE/8)) / (QI5_K/8
 const int * scales = (const int *) bxi->scales;
 const int ksc = k % (WARP_SIZE/8);
 int scales8 = (scales[(ksc%2) + (ksc!=0)] >> (4 * (ksc & (ksc/2)))) & 0x0F0F0F0F;
-scales8    |= (scales[ksc/2]              >> (2 * (ksc % 2)))       & 0x30303030;
+scales8 |= (scales[ksc/2] >> (2 * (ksc % 2))) & 0x30303030;
 x_sc[i * (WARP_SIZE/8) + i / 8 + ksc] = scales8;
 }
 }
-#define VDR_Q5_K_Q8_1_MMQ  8
+#define VDR_Q5_K_Q8_1_MMQ 8
 static __dpct_inline__ float vec_dot_q5_K_q8_1_impl_mmq(
 const int *__restrict__ v, const int *__restrict__ u,
 const uint8_t *__restrict__ sc, const uint8_t *__restrict__ m,
@@ -765,8 +765,8 @@ const int *__restrict__ y_qs, const sycl::half2 *__restrict__ y_ds,
 const int &i, const int &j, const int &k) {
 (void)x_qh;
 const uint8_t * sc = ((const uint8_t *) &x_sc[i * (WARP_SIZE/8) + i/8 + k/16]) + 2 * ((k % 16) / 8);
-const int index_x = i * (QR5_K*WARP_SIZE + 1) +  QR5_K*k;
-const int index_y = j * WARP_SIZE             + (QR5_K*k) % WARP_SIZE;
+const int index_x = i * (QR5_K*WARP_SIZE + 1) + QR5_K*k;
+const int index_y = j * WARP_SIZE + (QR5_K*k) % WARP_SIZE;
 return vec_dot_q5_K_q8_1_impl_mmq(&x_ql[index_x], &y_qs[index_y], sc, sc+8,
 x_dm[i * (WARP_SIZE/QI5_K) + i/QI5_K], &y_ds[index_y/QI8_1]);
 }
@@ -787,10 +787,10 @@ int *__restrict__ x_sc, const int &i_offset, const int &i_max,
 const int &k, const int &blocks_per_row) {
 (void)x_qh;
 GGML_SYCL_ASSUME(i_offset >= 0);
-GGML_SYCL_ASSUME(i_offset <  nwarps);
+GGML_SYCL_ASSUME(i_offset < nwarps);
 GGML_SYCL_ASSUME(k >= 0);
-GGML_SYCL_ASSUME(k <  WARP_SIZE);
-const int kbx  = k / QI6_K;
+GGML_SYCL_ASSUME(k < WARP_SIZE);
+const int kbx = k / QI6_K;
 const int kqsx = k % QI6_K;
 const block_q6_K * bx0 = (const block_q6_K *) vx;
 #pragma unroll
@@ -806,7 +806,7 @@ const int ql0 = (ql >> 0) & 0x0F0F0F0F;
 const int ql1 = (ql >> 4) & 0x0F0F0F0F;
 const int qh = get_int_from_uint8(bxi->qh, (QI6_K/4) * (kqsx / (QI6_K/2)) + kqsx % (QI6_K/4));
 const int qh0 = ((qh >> (2 * ((kqsx % (QI6_K/2)) / (QI6_K/4)))) << 4) & 0x30303030;
-const int qh1 =  (qh >> (2 * ((kqsx % (QI6_K/2)) / (QI6_K/4))))       & 0x30303030;
+const int qh1 = (qh >> (2 * ((kqsx % (QI6_K/2)) / (QI6_K/4)))) & 0x30303030;
 const int kq0 = ky - ky % QI6_K + k % (QI6_K/2) + 0;
 const int kq1 = ky - ky % QI6_K + k % (QI6_K/2) + (QI6_K/2);
 x_ql[i * (2 * WARP_SIZE + 1) + kq0] =
@@ -838,7 +838,7 @@ const block_q6_K * bxi = bx0 + i*blocks_per_row + (k % (WARP_SIZE/8)) / 4;
 x_sc[i * (WARP_SIZE/8) + i / 8 + k % (WARP_SIZE/8)] = get_int_from_int8(bxi->scales, k % (QI6_K/8));
 }
 }
-#define VDR_Q6_K_Q8_1_MMQ  8
+#define VDR_Q6_K_Q8_1_MMQ 8
 static __dpct_inline__ float
 vec_dot_q6_K_q8_1_impl_mmq(const int *__restrict__ v, const int *__restrict__ u,
 const int8_t *__restrict__ sc, const float &d6,
@@ -870,10 +870,10 @@ const int *__restrict__ y_qs, const sycl::half2 *__restrict__ y_ds,
 const int &i, const int &j, const int &k) {
 (void)x_qh;
 const float * x_dmf = (const float *) x_dm;
-const float * y_df  = (const float *) y_ds;
+const float * y_df = (const float *) y_ds;
 const int8_t * sc = ((const int8_t *) &x_sc[i * (WARP_SIZE/8) + i/8 + k/8]);
-const int index_x = i * (QR6_K*WARP_SIZE + 1) +  QR6_K*k;
-const int index_y = j * WARP_SIZE             + (QR6_K*k) % WARP_SIZE;
+const int index_x = i * (QR6_K*WARP_SIZE + 1) + QR6_K*k;
+const int index_y = j * WARP_SIZE + (QR6_K*k) % WARP_SIZE;
 return vec_dot_q6_K_q8_1_impl_mmq(&x_ql[index_x], &y_qs[index_y], sc, x_dmf[i * (WARP_SIZE/QI6_K) + i/QI6_K], &y_df[index_y/QI8_1]);
 }
 template <int qk, int qr, int qi, bool need_sum, typename block_q_t, int mmq_x,
@@ -886,7 +886,7 @@ const int ncols_y, const int nrows_y, const int nrows_dst,
 int *tile_x_ql, sycl::half2 *tile_x_dm, int *tile_x_qh,
 int *tile_x_sc, const sycl::nd_item<3> &item_ct1, int *tile_y_qs,
 sycl::half2 *tile_y_ds) {
-const block_q_t  * x = (const block_q_t  *) vx;
+const block_q_t * x = (const block_q_t *) vx;
 const block_q8_1 * y = (const block_q8_1 *) vy;
 const int blocks_per_row_x = ncols_x / qk;
 const int blocks_per_col_y = nrows_y / QK8_1;
@@ -970,23 +970,23 @@ dst[col_dst*nrows_dst + row_dst] = sum[i/WARP_SIZE][j/nwarps];
 }
 }
 }
-#define  MMQ_X_Q4_0_RDNA2  64
-#define  MMQ_Y_Q4_0_RDNA2  128
-#define NWARPS_Q4_0_RDNA2  8
-#define  MMQ_X_Q4_0_RDNA1  64
-#define  MMQ_Y_Q4_0_RDNA1  64
-#define NWARPS_Q4_0_RDNA1  8
+#define MMQ_X_Q4_0_RDNA2 64
+#define MMQ_Y_Q4_0_RDNA2 128
+#define NWARPS_Q4_0_RDNA2 8
+#define MMQ_X_Q4_0_RDNA1 64
+#define MMQ_Y_Q4_0_RDNA1 64
+#define NWARPS_Q4_0_RDNA1 8
 #if defined(SYCL_USE_XMX)
-#define  MMQ_X_Q4_0_AMPERE 4
-#define  MMQ_Y_Q4_0_AMPERE 32
+#define MMQ_X_Q4_0_AMPERE 4
+#define MMQ_Y_Q4_0_AMPERE 32
 #define NWARPS_Q4_0_AMPERE 4
 #else
-#define  MMQ_X_Q4_0_AMPERE 64
-#define  MMQ_Y_Q4_0_AMPERE 128
+#define MMQ_X_Q4_0_AMPERE 64
+#define MMQ_Y_Q4_0_AMPERE 128
 #define NWARPS_Q4_0_AMPERE 4
 #endif
-#define  MMQ_X_Q4_0_PASCAL 64
-#define  MMQ_Y_Q4_0_PASCAL 64
+#define MMQ_X_Q4_0_PASCAL 64
+#define MMQ_Y_Q4_0_PASCAL 64
 #define NWARPS_Q4_0_PASCAL 8
 template <bool need_check> static void
 mul_mat_q4_0(
@@ -994,12 +994,12 @@ const void * __restrict__ vx, const void * __restrict__ vy, float * __restrict__
 const int ncols_x, const int nrows_x, const int ncols_y, const int nrows_y, const int nrows_dst,
 const sycl::nd_item<3> &item_ct1, int *tile_x_qs_q4_0, float *tile_x_d_q4_0,
 int *tile_y_qs, sycl::half2 *tile_y_ds) {
-int   * tile_x_ql = nullptr;
+int * tile_x_ql = nullptr;
 sycl::half2 *tile_x_dm = nullptr;
-int   * tile_x_qh = nullptr;
-int   * tile_x_sc = nullptr;
-const int mmq_x  =  MMQ_X_Q4_0_AMPERE;
-const int mmq_y  =  MMQ_Y_Q4_0_AMPERE;
+int * tile_x_qh = nullptr;
+int * tile_x_sc = nullptr;
+const int mmq_x = MMQ_X_Q4_0_AMPERE;
+const int mmq_y = MMQ_Y_Q4_0_AMPERE;
 const int nwarps = NWARPS_Q4_0_AMPERE;
 allocate_tiles_q4_0<mmq_y>(&tile_x_ql, &tile_x_dm, &tile_x_qh, &tile_x_sc,
 tile_x_qs_q4_0, tile_x_d_q4_0);
@@ -1009,23 +1009,23 @@ vec_dot_q4_0_q8_1_mul_mat>(
 vx, vy, dst, ncols_x, nrows_x, ncols_y, nrows_y, nrows_dst, tile_x_ql,
 tile_x_dm, tile_x_qh, tile_x_sc, item_ct1, tile_y_qs, tile_y_ds);
 }
-#define  MMQ_X_Q4_1_RDNA2  64
-#define  MMQ_Y_Q4_1_RDNA2  128
-#define NWARPS_Q4_1_RDNA2  8
-#define  MMQ_X_Q4_1_RDNA1  64
-#define  MMQ_Y_Q4_1_RDNA1  64
-#define NWARPS_Q4_1_RDNA1  8
+#define MMQ_X_Q4_1_RDNA2 64
+#define MMQ_Y_Q4_1_RDNA2 128
+#define NWARPS_Q4_1_RDNA2 8
+#define MMQ_X_Q4_1_RDNA1 64
+#define MMQ_Y_Q4_1_RDNA1 64
+#define NWARPS_Q4_1_RDNA1 8
 #if defined(SYCL_USE_XMX)
-#define  MMQ_X_Q4_1_AMPERE 4
-#define  MMQ_Y_Q4_1_AMPERE 32
+#define MMQ_X_Q4_1_AMPERE 4
+#define MMQ_Y_Q4_1_AMPERE 32
 #define NWARPS_Q4_1_AMPERE 4
 #else
-#define  MMQ_X_Q4_1_AMPERE 64
-#define  MMQ_Y_Q4_1_AMPERE 128
+#define MMQ_X_Q4_1_AMPERE 64
+#define MMQ_Y_Q4_1_AMPERE 128
 #define NWARPS_Q4_1_AMPERE 4
 #endif
-#define  MMQ_X_Q4_1_PASCAL 64
-#define  MMQ_Y_Q4_1_PASCAL 64
+#define MMQ_X_Q4_1_PASCAL 64
+#define MMQ_Y_Q4_1_PASCAL 64
 #define NWARPS_Q4_1_PASCAL 8
 template <bool need_check> static void
 mul_mat_q4_1(
@@ -1033,12 +1033,12 @@ const void * __restrict__ vx, const void * __restrict__ vy, float * __restrict__
 const int ncols_x, const int nrows_x, const int ncols_y, const int nrows_y, const int nrows_dst,
 const sycl::nd_item<3> &item_ct1, int *tile_x_qs_q4_1,
 sycl::half2 *tile_x_dm_q4_1, int *tile_y_qs, sycl::half2 *tile_y_ds) {
-int   * tile_x_ql = nullptr;
+int * tile_x_ql = nullptr;
 sycl::half2 *tile_x_dm = nullptr;
-int   * tile_x_qh = nullptr;
-int   * tile_x_sc = nullptr;
-const int mmq_x  =  MMQ_X_Q4_1_AMPERE;
-const int mmq_y  =  MMQ_Y_Q4_1_AMPERE;
+int * tile_x_qh = nullptr;
+int * tile_x_sc = nullptr;
+const int mmq_x = MMQ_X_Q4_1_AMPERE;
+const int mmq_y = MMQ_Y_Q4_1_AMPERE;
 const int nwarps = NWARPS_Q4_1_AMPERE;
 allocate_tiles_q4_1<mmq_y>(&tile_x_ql, &tile_x_dm, &tile_x_qh, &tile_x_sc,
 tile_x_qs_q4_1, tile_x_dm_q4_1);
@@ -1048,23 +1048,23 @@ vec_dot_q4_1_q8_1_mul_mat>(
 vx, vy, dst, ncols_x, nrows_x, ncols_y, nrows_y, nrows_dst, tile_x_ql,
 tile_x_dm, tile_x_qh, tile_x_sc, item_ct1, tile_y_qs, tile_y_ds);
 }
-#define  MMQ_X_Q5_0_RDNA2  64
-#define  MMQ_Y_Q5_0_RDNA2  128
-#define NWARPS_Q5_0_RDNA2  8
-#define  MMQ_X_Q5_0_RDNA1  64
-#define  MMQ_Y_Q5_0_RDNA1  64
-#define NWARPS_Q5_0_RDNA1  8
+#define MMQ_X_Q5_0_RDNA2 64
+#define MMQ_Y_Q5_0_RDNA2 128
+#define NWARPS_Q5_0_RDNA2 8
+#define MMQ_X_Q5_0_RDNA1 64
+#define MMQ_Y_Q5_0_RDNA1 64
+#define NWARPS_Q5_0_RDNA1 8
 #if defined(SYCL_USE_XMX)
-#define  MMQ_X_Q5_0_AMPERE 4
-#define  MMQ_Y_Q5_0_AMPERE 32
+#define MMQ_X_Q5_0_AMPERE 4
+#define MMQ_Y_Q5_0_AMPERE 32
 #define NWARPS_Q5_0_AMPERE 4
 #else
-#define  MMQ_X_Q5_0_AMPERE 128
-#define  MMQ_Y_Q5_0_AMPERE 64
+#define MMQ_X_Q5_0_AMPERE 128
+#define MMQ_Y_Q5_0_AMPERE 64
 #define NWARPS_Q5_0_AMPERE 4
 #endif
-#define  MMQ_X_Q5_0_PASCAL 64
-#define  MMQ_Y_Q5_0_PASCAL 64
+#define MMQ_X_Q5_0_PASCAL 64
+#define MMQ_Y_Q5_0_PASCAL 64
 #define NWARPS_Q5_0_PASCAL 8
 template <bool need_check> static void
 mul_mat_q5_0(
@@ -1072,12 +1072,12 @@ const void * __restrict__ vx, const void * __restrict__ vy, float * __restrict__
 const int ncols_x, const int nrows_x, const int ncols_y, const int nrows_y, const int nrows_dst,
 const sycl::nd_item<3> &item_ct1, int *tile_x_ql_q5_0, float *tile_x_d_q5_0,
 int *tile_y_qs, sycl::half2 *tile_y_ds) {
-int   * tile_x_ql = nullptr;
+int * tile_x_ql = nullptr;
 sycl::half2 *tile_x_dm = nullptr;
-int   * tile_x_qh = nullptr;
-int   * tile_x_sc = nullptr;
-const int mmq_x  =  MMQ_X_Q5_0_AMPERE;
-const int mmq_y  =  MMQ_Y_Q5_0_AMPERE;
+int * tile_x_qh = nullptr;
+int * tile_x_sc = nullptr;
+const int mmq_x = MMQ_X_Q5_0_AMPERE;
+const int mmq_y = MMQ_Y_Q5_0_AMPERE;
 const int nwarps = NWARPS_Q5_0_AMPERE;
 allocate_tiles_q5_0<mmq_y>(&tile_x_ql, &tile_x_dm, &tile_x_qh, &tile_x_sc,
 tile_x_ql_q5_0, tile_x_d_q5_0);
@@ -1087,23 +1087,23 @@ vec_dot_q5_0_q8_1_mul_mat>(
 vx, vy, dst, ncols_x, nrows_x, ncols_y, nrows_y, nrows_dst, tile_x_ql,
 tile_x_dm, tile_x_qh, tile_x_sc, item_ct1, tile_y_qs, tile_y_ds);
 }
-#define  MMQ_X_Q5_1_RDNA2  64
-#define  MMQ_Y_Q5_1_RDNA2  128
-#define NWARPS_Q5_1_RDNA2  8
-#define  MMQ_X_Q5_1_RDNA1  64
-#define  MMQ_Y_Q5_1_RDNA1  64
-#define NWARPS_Q5_1_RDNA1  8
+#define MMQ_X_Q5_1_RDNA2 64
+#define MMQ_Y_Q5_1_RDNA2 128
+#define NWARPS_Q5_1_RDNA2 8
+#define MMQ_X_Q5_1_RDNA1 64
+#define MMQ_Y_Q5_1_RDNA1 64
+#define NWARPS_Q5_1_RDNA1 8
 #if defined(SYCL_USE_XMX)
-#define  MMQ_X_Q5_1_AMPERE 4
-#define  MMQ_Y_Q5_1_AMPERE 32
+#define MMQ_X_Q5_1_AMPERE 4
+#define MMQ_Y_Q5_1_AMPERE 32
 #define NWARPS_Q5_1_AMPERE 4
 #else
-#define  MMQ_X_Q5_1_AMPERE 128
-#define  MMQ_Y_Q5_1_AMPERE 64
+#define MMQ_X_Q5_1_AMPERE 128
+#define MMQ_Y_Q5_1_AMPERE 64
 #define NWARPS_Q5_1_AMPERE 4
 #endif
-#define  MMQ_X_Q5_1_PASCAL 64
-#define  MMQ_Y_Q5_1_PASCAL 64
+#define MMQ_X_Q5_1_PASCAL 64
+#define MMQ_Y_Q5_1_PASCAL 64
 #define NWARPS_Q5_1_PASCAL 8
 template <bool need_check> static void
 mul_mat_q5_1(
@@ -1111,12 +1111,12 @@ const void * __restrict__ vx, const void * __restrict__ vy, float * __restrict__
 const int ncols_x, const int nrows_x, const int ncols_y, const int nrows_y, const int nrows_dst,
 const sycl::nd_item<3> &item_ct1, int *tile_x_ql_q5_1,
 sycl::half2 *tile_x_dm_q5_1, int *tile_y_qs, sycl::half2 *tile_y_ds) {
-int   * tile_x_ql = nullptr;
+int * tile_x_ql = nullptr;
 sycl::half2 *tile_x_dm = nullptr;
-int   * tile_x_qh = nullptr;
-int   * tile_x_sc = nullptr;
-const int mmq_x  =  MMQ_X_Q5_1_AMPERE;
-const int mmq_y  =  MMQ_Y_Q5_1_AMPERE;
+int * tile_x_qh = nullptr;
+int * tile_x_sc = nullptr;
+const int mmq_x = MMQ_X_Q5_1_AMPERE;
+const int mmq_y = MMQ_Y_Q5_1_AMPERE;
 const int nwarps = NWARPS_Q5_1_AMPERE;
 allocate_tiles_q5_1<mmq_y>(&tile_x_ql, &tile_x_dm, &tile_x_qh, &tile_x_sc,
 tile_x_ql_q5_1, tile_x_dm_q5_1);
@@ -1126,23 +1126,23 @@ vec_dot_q5_1_q8_1_mul_mat>(
 vx, vy, dst, ncols_x, nrows_x, ncols_y, nrows_y, nrows_dst, tile_x_ql,
 tile_x_dm, tile_x_qh, tile_x_sc, item_ct1, tile_y_qs, tile_y_ds);
 }
-#define  MMQ_X_Q8_0_RDNA2  64
-#define  MMQ_Y_Q8_0_RDNA2  128
-#define NWARPS_Q8_0_RDNA2  8
-#define  MMQ_X_Q8_0_RDNA1  64
-#define  MMQ_Y_Q8_0_RDNA1  64
-#define NWARPS_Q8_0_RDNA1  8
+#define MMQ_X_Q8_0_RDNA2 64
+#define MMQ_Y_Q8_0_RDNA2 128
+#define NWARPS_Q8_0_RDNA2 8
+#define MMQ_X_Q8_0_RDNA1 64
+#define MMQ_Y_Q8_0_RDNA1 64
+#define NWARPS_Q8_0_RDNA1 8
 #if defined(SYCL_USE_XMX)
-#define  MMQ_X_Q8_0_AMPERE 4
-#define  MMQ_Y_Q8_0_AMPERE 32
+#define MMQ_X_Q8_0_AMPERE 4
+#define MMQ_Y_Q8_0_AMPERE 32
 #define NWARPS_Q8_0_AMPERE 4
 #else
-#define  MMQ_X_Q8_0_AMPERE 128
-#define  MMQ_Y_Q8_0_AMPERE 64
+#define MMQ_X_Q8_0_AMPERE 128
+#define MMQ_Y_Q8_0_AMPERE 64
 #define NWARPS_Q8_0_AMPERE 4
 #endif
-#define  MMQ_X_Q8_0_PASCAL 64
-#define  MMQ_Y_Q8_0_PASCAL 64
+#define MMQ_X_Q8_0_PASCAL 64
+#define MMQ_Y_Q8_0_PASCAL 64
 #define NWARPS_Q8_0_PASCAL 8
 template <bool need_check> static void
 mul_mat_q8_0(
@@ -1150,12 +1150,12 @@ const void * __restrict__ vx, const void * __restrict__ vy, float * __restrict__
 const int ncols_x, const int nrows_x, const int ncols_y, const int nrows_y, const int nrows_dst,
 const sycl::nd_item<3> &item_ct1, int *tile_x_qs_q8_0, float *tile_x_d_q8_0,
 int *tile_y_qs, sycl::half2 *tile_y_ds) {
-int   * tile_x_ql = nullptr;
+int * tile_x_ql = nullptr;
 sycl::half2 *tile_x_dm = nullptr;
-int   * tile_x_qh = nullptr;
-int   * tile_x_sc = nullptr;
-const int mmq_x  =  MMQ_X_Q8_0_AMPERE;
-const int mmq_y  =  MMQ_Y_Q8_0_AMPERE;
+int * tile_x_qh = nullptr;
+int * tile_x_sc = nullptr;
+const int mmq_x = MMQ_X_Q8_0_AMPERE;
+const int mmq_y = MMQ_Y_Q8_0_AMPERE;
 const int nwarps = NWARPS_Q8_0_AMPERE;
 allocate_tiles_q8_0<mmq_y>(&tile_x_ql, &tile_x_dm, &tile_x_qh, &tile_x_sc,
 tile_x_qs_q8_0, tile_x_d_q8_0);
@@ -1165,23 +1165,23 @@ vec_dot_q8_0_q8_1_mul_mat>(
 vx, vy, dst, ncols_x, nrows_x, ncols_y, nrows_y, nrows_dst, tile_x_ql,
 tile_x_dm, tile_x_qh, tile_x_sc, item_ct1, tile_y_qs, tile_y_ds);
 }
-#define  MMQ_X_Q2_K_RDNA2  64
-#define  MMQ_Y_Q2_K_RDNA2  128
-#define NWARPS_Q2_K_RDNA2  8
-#define  MMQ_X_Q2_K_RDNA1  128
-#define  MMQ_Y_Q2_K_RDNA1  32
-#define NWARPS_Q2_K_RDNA1  8
+#define MMQ_X_Q2_K_RDNA2 64
+#define MMQ_Y_Q2_K_RDNA2 128
+#define NWARPS_Q2_K_RDNA2 8
+#define MMQ_X_Q2_K_RDNA1 128
+#define MMQ_Y_Q2_K_RDNA1 32
+#define NWARPS_Q2_K_RDNA1 8
 #if defined(SYCL_USE_XMX)
-#define  MMQ_X_Q2_K_AMPERE 4
-#define  MMQ_Y_Q2_K_AMPERE 32
+#define MMQ_X_Q2_K_AMPERE 4
+#define MMQ_Y_Q2_K_AMPERE 32
 #define NWARPS_Q2_K_AMPERE 4
 #else
-#define  MMQ_X_Q2_K_AMPERE 64
-#define  MMQ_Y_Q2_K_AMPERE 128
+#define MMQ_X_Q2_K_AMPERE 64
+#define MMQ_Y_Q2_K_AMPERE 128
 #define NWARPS_Q2_K_AMPERE 4
 #endif
-#define  MMQ_X_Q2_K_PASCAL 64
-#define  MMQ_Y_Q2_K_PASCAL 64
+#define MMQ_X_Q2_K_PASCAL 64
+#define MMQ_Y_Q2_K_PASCAL 64
 #define NWARPS_Q2_K_PASCAL 8
 template <bool need_check> static void
 mul_mat_q2_K(
@@ -1190,12 +1190,12 @@ const int ncols_x, const int nrows_x, const int ncols_y, const int nrows_y, cons
 const sycl::nd_item<3> &item_ct1, int *tile_x_ql_q2_K,
 sycl::half2 *tile_x_dm_q2_K, int *tile_x_sc_q2_K, int *tile_y_qs,
 sycl::half2 *tile_y_ds) {
-int   * tile_x_ql = nullptr;
+int * tile_x_ql = nullptr;
 sycl::half2 *tile_x_dm = nullptr;
-int   * tile_x_qh = nullptr;
-int   * tile_x_sc = nullptr;
-const int mmq_x  =  MMQ_X_Q2_K_AMPERE;
-const int mmq_y  =  MMQ_Y_Q2_K_AMPERE;
+int * tile_x_qh = nullptr;
+int * tile_x_sc = nullptr;
+const int mmq_x = MMQ_X_Q2_K_AMPERE;
+const int mmq_y = MMQ_Y_Q2_K_AMPERE;
 const int nwarps = NWARPS_Q2_K_AMPERE;
 allocate_tiles_q2_K<mmq_y>(&tile_x_ql, &tile_x_dm, &tile_x_qh, &tile_x_sc,
 tile_x_ql_q2_K, tile_x_dm_q2_K, tile_x_sc_q2_K);
@@ -1205,23 +1205,23 @@ vec_dot_q2_K_q8_1_mul_mat>(
 vx, vy, dst, ncols_x, nrows_x, ncols_y, nrows_y, nrows_dst, tile_x_ql,
 tile_x_dm, tile_x_qh, tile_x_sc, item_ct1, tile_y_qs, tile_y_ds);
 }
-#define  MMQ_X_Q3_K_RDNA2  128
-#define  MMQ_Y_Q3_K_RDNA2  64
-#define NWARPS_Q3_K_RDNA2  8
-#define  MMQ_X_Q3_K_RDNA1  32
-#define  MMQ_Y_Q3_K_RDNA1  128
-#define NWARPS_Q3_K_RDNA1  8
+#define MMQ_X_Q3_K_RDNA2 128
+#define MMQ_Y_Q3_K_RDNA2 64
+#define NWARPS_Q3_K_RDNA2 8
+#define MMQ_X_Q3_K_RDNA1 32
+#define MMQ_Y_Q3_K_RDNA1 128
+#define NWARPS_Q3_K_RDNA1 8
 #if defined(SYCL_USE_XMX)
-#define  MMQ_X_Q3_K_AMPERE 4
-#define  MMQ_Y_Q3_K_AMPERE 32
+#define MMQ_X_Q3_K_AMPERE 4
+#define MMQ_Y_Q3_K_AMPERE 32
 #define NWARPS_Q3_K_AMPERE 4
 #else
-#define  MMQ_X_Q3_K_AMPERE 128
-#define  MMQ_Y_Q3_K_AMPERE 128
+#define MMQ_X_Q3_K_AMPERE 128
+#define MMQ_Y_Q3_K_AMPERE 128
 #define NWARPS_Q3_K_AMPERE 4
 #endif
-#define  MMQ_X_Q3_K_PASCAL 64
-#define  MMQ_Y_Q3_K_PASCAL 64
+#define MMQ_X_Q3_K_PASCAL 64
+#define MMQ_Y_Q3_K_PASCAL 64
 #define NWARPS_Q3_K_PASCAL 8
 template <bool need_check> static void
 mul_mat_q3_K(
@@ -1230,12 +1230,12 @@ const int ncols_x, const int nrows_x, const int ncols_y, const int nrows_y, cons
 const sycl::nd_item<3> &item_ct1, int *tile_x_ql_q3_K,
 sycl::half2 *tile_x_dm_q3_K, int *tile_x_qh_q3_K, int *tile_x_sc_q3_K,
 int *tile_y_qs, sycl::half2 *tile_y_ds) {
-int   * tile_x_ql = nullptr;
+int * tile_x_ql = nullptr;
 sycl::half2 *tile_x_dm = nullptr;
-int   * tile_x_qh = nullptr;
-int   * tile_x_sc = nullptr;
-const int mmq_x  =  MMQ_X_Q3_K_AMPERE;
-const int mmq_y  =  MMQ_Y_Q3_K_AMPERE;
+int * tile_x_qh = nullptr;
+int * tile_x_sc = nullptr;
+const int mmq_x = MMQ_X_Q3_K_AMPERE;
+const int mmq_y = MMQ_Y_Q3_K_AMPERE;
 const int nwarps = NWARPS_Q3_K_AMPERE;
 allocate_tiles_q3_K<mmq_y>(&tile_x_ql, &tile_x_dm, &tile_x_qh, &tile_x_sc,
 tile_x_ql_q3_K, tile_x_dm_q3_K, tile_x_qh_q3_K,
@@ -1246,23 +1246,23 @@ vec_dot_q3_K_q8_1_mul_mat>(
 vx, vy, dst, ncols_x, nrows_x, ncols_y, nrows_y, nrows_dst, tile_x_ql,
 tile_x_dm, tile_x_qh, tile_x_sc, item_ct1, tile_y_qs, tile_y_ds);
 }
-#define  MMQ_X_Q4_K_RDNA2  64
-#define  MMQ_Y_Q4_K_RDNA2  128
-#define NWARPS_Q4_K_RDNA2  8
-#define  MMQ_X_Q4_K_RDNA1  32
-#define  MMQ_Y_Q4_K_RDNA1  64
-#define NWARPS_Q4_K_RDNA1  8
+#define MMQ_X_Q4_K_RDNA2 64
+#define MMQ_Y_Q4_K_RDNA2 128
+#define NWARPS_Q4_K_RDNA2 8
+#define MMQ_X_Q4_K_RDNA1 32
+#define MMQ_Y_Q4_K_RDNA1 64
+#define NWARPS_Q4_K_RDNA1 8
 #if defined(SYCL_USE_XMX)
-#define  MMQ_X_Q4_K_AMPERE 4
-#define  MMQ_Y_Q4_K_AMPERE 32
+#define MMQ_X_Q4_K_AMPERE 4
+#define MMQ_Y_Q4_K_AMPERE 32
 #define NWARPS_Q4_K_AMPERE 4
 #else
-#define  MMQ_X_Q4_K_AMPERE 64
-#define  MMQ_Y_Q4_K_AMPERE 128
+#define MMQ_X_Q4_K_AMPERE 64
+#define MMQ_Y_Q4_K_AMPERE 128
 #define NWARPS_Q4_K_AMPERE 4
 #endif
-#define  MMQ_X_Q4_K_PASCAL 64
-#define  MMQ_Y_Q4_K_PASCAL 64
+#define MMQ_X_Q4_K_PASCAL 64
+#define MMQ_Y_Q4_K_PASCAL 64
 #define NWARPS_Q4_K_PASCAL 8
 template <bool need_check> static void
 mul_mat_q4_K(
@@ -1271,12 +1271,12 @@ const int ncols_x, const int nrows_x, const int ncols_y, const int nrows_y, cons
 const sycl::nd_item<3> &item_ct1, int *tile_x_ql_q4_K,
 sycl::half2 *tile_x_dm_q4_K, int *tile_x_sc_q4_K, int *tile_y_qs,
 sycl::half2 *tile_y_ds) {
-int   * tile_x_ql = nullptr;
+int * tile_x_ql = nullptr;
 sycl::half2 *tile_x_dm = nullptr;
-int   * tile_x_qh = nullptr;
-int   * tile_x_sc = nullptr;
-const int mmq_x  =  MMQ_X_Q4_K_AMPERE;
-const int mmq_y  =  MMQ_Y_Q4_K_AMPERE;
+int * tile_x_qh = nullptr;
+int * tile_x_sc = nullptr;
+const int mmq_x = MMQ_X_Q4_K_AMPERE;
+const int mmq_y = MMQ_Y_Q4_K_AMPERE;
 const int nwarps = NWARPS_Q4_K_AMPERE;
 allocate_tiles_q4_K<mmq_y>(&tile_x_ql, &tile_x_dm, &tile_x_qh, &tile_x_sc,
 tile_x_ql_q4_K, tile_x_dm_q4_K, tile_x_sc_q4_K);
@@ -1286,23 +1286,23 @@ vec_dot_q4_K_q8_1_mul_mat>(
 vx, vy, dst, ncols_x, nrows_x, ncols_y, nrows_y, nrows_dst, tile_x_ql,
 tile_x_dm, tile_x_qh, tile_x_sc, item_ct1, tile_y_qs, tile_y_ds);
 }
-#define  MMQ_X_Q5_K_RDNA2  64
-#define  MMQ_Y_Q5_K_RDNA2  128
-#define NWARPS_Q5_K_RDNA2  8
-#define  MMQ_X_Q5_K_RDNA1  32
-#define  MMQ_Y_Q5_K_RDNA1  64
-#define NWARPS_Q5_K_RDNA1  8
+#define MMQ_X_Q5_K_RDNA2 64
+#define MMQ_Y_Q5_K_RDNA2 128
+#define NWARPS_Q5_K_RDNA2 8
+#define MMQ_X_Q5_K_RDNA1 32
+#define MMQ_Y_Q5_K_RDNA1 64
+#define NWARPS_Q5_K_RDNA1 8
 #if defined(SYCL_USE_XMX)
-#define  MMQ_X_Q5_K_AMPERE 4
-#define  MMQ_Y_Q5_K_AMPERE 32
+#define MMQ_X_Q5_K_AMPERE 4
+#define MMQ_Y_Q5_K_AMPERE 32
 #define NWARPS_Q5_K_AMPERE 4
 #else
-#define  MMQ_X_Q5_K_AMPERE 64
-#define  MMQ_Y_Q5_K_AMPERE 128
+#define MMQ_X_Q5_K_AMPERE 64
+#define MMQ_Y_Q5_K_AMPERE 128
 #define NWARPS_Q5_K_AMPERE 4
 #endif
-#define  MMQ_X_Q5_K_PASCAL 64
-#define  MMQ_Y_Q5_K_PASCAL 64
+#define MMQ_X_Q5_K_PASCAL 64
+#define MMQ_Y_Q5_K_PASCAL 64
 #define NWARPS_Q5_K_PASCAL 8
 template <bool need_check> static void
 mul_mat_q5_K(
@@ -1311,12 +1311,12 @@ const int ncols_x, const int nrows_x, const int ncols_y, const int nrows_y, cons
 const sycl::nd_item<3> &item_ct1, int *tile_x_ql_q5_K,
 sycl::half2 *tile_x_dm_q5_K, int *tile_x_sc_q5_K, int *tile_y_qs,
 sycl::half2 *tile_y_ds) {
-int   * tile_x_ql = nullptr;
+int * tile_x_ql = nullptr;
 sycl::half2 *tile_x_dm = nullptr;
-int   * tile_x_qh = nullptr;
-int   * tile_x_sc = nullptr;
-const int mmq_x  =  MMQ_X_Q5_K_AMPERE;
-const int mmq_y  =  MMQ_Y_Q5_K_AMPERE;
+int * tile_x_qh = nullptr;
+int * tile_x_sc = nullptr;
+const int mmq_x = MMQ_X_Q5_K_AMPERE;
+const int mmq_y = MMQ_Y_Q5_K_AMPERE;
 const int nwarps = NWARPS_Q5_K_AMPERE;
 allocate_tiles_q5_K<mmq_y>(&tile_x_ql, &tile_x_dm, &tile_x_qh, &tile_x_sc,
 tile_x_ql_q5_K, tile_x_dm_q5_K, tile_x_sc_q5_K);
@@ -1326,23 +1326,23 @@ vec_dot_q5_K_q8_1_mul_mat>(
 vx, vy, dst, ncols_x, nrows_x, ncols_y, nrows_y, nrows_dst, tile_x_ql,
 tile_x_dm, tile_x_qh, tile_x_sc, item_ct1, tile_y_qs, tile_y_ds);
 }
-#define  MMQ_X_Q6_K_RDNA2  64
-#define  MMQ_Y_Q6_K_RDNA2  128
-#define NWARPS_Q6_K_RDNA2  8
-#define  MMQ_X_Q6_K_RDNA1  32
-#define  MMQ_Y_Q6_K_RDNA1  64
-#define NWARPS_Q6_K_RDNA1  8
+#define MMQ_X_Q6_K_RDNA2 64
+#define MMQ_Y_Q6_K_RDNA2 128
+#define NWARPS_Q6_K_RDNA2 8
+#define MMQ_X_Q6_K_RDNA1 32
+#define MMQ_Y_Q6_K_RDNA1 64
+#define NWARPS_Q6_K_RDNA1 8
 #if defined(SYCL_USE_XMX)
-#define  MMQ_X_Q6_K_AMPERE 4
-#define  MMQ_Y_Q6_K_AMPERE 32
+#define MMQ_X_Q6_K_AMPERE 4
+#define MMQ_Y_Q6_K_AMPERE 32
 #define NWARPS_Q6_K_AMPERE 4
 #else
-#define  MMQ_X_Q6_K_AMPERE 64
-#define  MMQ_Y_Q6_K_AMPERE 64
+#define MMQ_X_Q6_K_AMPERE 64
+#define MMQ_Y_Q6_K_AMPERE 64
 #define NWARPS_Q6_K_AMPERE 4
 #endif
-#define  MMQ_X_Q6_K_PASCAL 64
-#define  MMQ_Y_Q6_K_PASCAL 64
+#define MMQ_X_Q6_K_PASCAL 64
+#define MMQ_Y_Q6_K_PASCAL 64
 #define NWARPS_Q6_K_PASCAL 8
 template <bool need_check> static void
 mul_mat_q6_K(
@@ -1350,9 +1350,9 @@ const void * __restrict__ vx, const void * __restrict__ vy, float * __restrict__
 const int ncols_x, const int nrows_x, const int ncols_y, const int nrows_y, const int nrows_dst,
 const sycl::nd_item<3> &item_ct1, int *tile_x_ql, sycl::half2 *tile_x_dm,
 int *tile_x_sc, int *tile_y_qs, sycl::half2 *tile_y_ds) {
-int   * tile_x_qh = nullptr;
-const int mmq_x  =  MMQ_X_Q6_K_AMPERE;
-const int mmq_y  =  MMQ_Y_Q6_K_AMPERE;
+int * tile_x_qh = nullptr;
+const int mmq_x = MMQ_X_Q6_K_AMPERE;
+const int mmq_y = MMQ_Y_Q6_K_AMPERE;
 const int nwarps = NWARPS_Q6_K_AMPERE;
 allocate_tiles_q6_K<mmq_y>(&tile_x_ql, &tile_x_dm, &tile_x_qh, &tile_x_sc,
 tile_x_ql, tile_x_dm, tile_x_sc);
@@ -1373,20 +1373,20 @@ CHECK_TRY_ERROR(id = get_current_device_id()));
 const int compute_capability = ggml_sycl_info().devices[id].cc;
 int mmq_x, mmq_y, nwarps;
 if (compute_capability >= VER_GEN13) {
-mmq_x  =  MMQ_X_Q4_0_RDNA2;
-mmq_y  =  MMQ_Y_Q4_0_RDNA2;
+mmq_x = MMQ_X_Q4_0_RDNA2;
+mmq_y = MMQ_Y_Q4_0_RDNA2;
 nwarps = NWARPS_Q4_0_RDNA2;
 } else if (compute_capability >= VER_GEN12) {
-mmq_x  =  MMQ_X_Q4_0_RDNA1;
-mmq_y  =  MMQ_Y_Q4_0_RDNA1;
+mmq_x = MMQ_X_Q4_0_RDNA1;
+mmq_y = MMQ_Y_Q4_0_RDNA1;
 nwarps = NWARPS_Q4_0_RDNA1;
 } else if (compute_capability >= VER_GEN9) {
-mmq_x  =  MMQ_X_Q4_0_AMPERE;
-mmq_y  =  MMQ_Y_Q4_0_AMPERE;
+mmq_x = MMQ_X_Q4_0_AMPERE;
+mmq_y = MMQ_Y_Q4_0_AMPERE;
 nwarps = NWARPS_Q4_0_AMPERE;
 } else if (compute_capability >= VER_4VEC) {
-mmq_x  =  MMQ_X_Q4_0_PASCAL;
-mmq_y  =  MMQ_Y_Q4_0_PASCAL;
+mmq_x = MMQ_X_Q4_0_PASCAL;
+mmq_y = MMQ_Y_Q4_0_PASCAL;
 nwarps = NWARPS_Q4_0_PASCAL;
 } else {
 GGML_ABORT("fatal error");
@@ -1467,20 +1467,20 @@ CHECK_TRY_ERROR(id = get_current_device_id()));
 const int compute_capability = ggml_sycl_info().devices[id].cc;
 int mmq_x, mmq_y, nwarps;
 if (compute_capability >= VER_GEN13) {
-mmq_x  =  MMQ_X_Q4_1_RDNA2;
-mmq_y  =  MMQ_Y_Q4_1_RDNA2;
+mmq_x = MMQ_X_Q4_1_RDNA2;
+mmq_y = MMQ_Y_Q4_1_RDNA2;
 nwarps = NWARPS_Q4_1_RDNA2;
 } else if (compute_capability >= VER_GEN12) {
-mmq_x  =  MMQ_X_Q4_1_RDNA1;
-mmq_y  =  MMQ_Y_Q4_1_RDNA1;
+mmq_x = MMQ_X_Q4_1_RDNA1;
+mmq_y = MMQ_Y_Q4_1_RDNA1;
 nwarps = NWARPS_Q4_1_RDNA1;
 } else if (compute_capability >= VER_GEN9) {
-mmq_x  =  MMQ_X_Q4_1_AMPERE;
-mmq_y  =  MMQ_Y_Q4_1_AMPERE;
+mmq_x = MMQ_X_Q4_1_AMPERE;
+mmq_y = MMQ_Y_Q4_1_AMPERE;
 nwarps = NWARPS_Q4_1_AMPERE;
 } else if (compute_capability >= VER_4VEC) {
-mmq_x  =  MMQ_X_Q4_1_PASCAL;
-mmq_y  =  MMQ_Y_Q4_1_PASCAL;
+mmq_x = MMQ_X_Q4_1_PASCAL;
+mmq_y = MMQ_Y_Q4_1_PASCAL;
 nwarps = NWARPS_Q4_1_PASCAL;
 } else {
 GGML_ABORT("fatal error");
@@ -1561,20 +1561,20 @@ CHECK_TRY_ERROR(id = get_current_device_id()));
 const int compute_capability = ggml_sycl_info().devices[id].cc;
 int mmq_x, mmq_y, nwarps;
 if (compute_capability >= VER_GEN13) {
-mmq_x  =  MMQ_X_Q5_0_RDNA2;
-mmq_y  =  MMQ_Y_Q5_0_RDNA2;
+mmq_x = MMQ_X_Q5_0_RDNA2;
+mmq_y = MMQ_Y_Q5_0_RDNA2;
 nwarps = NWARPS_Q5_0_RDNA2;
 } else if (compute_capability >= VER_GEN12) {
-mmq_x  =  MMQ_X_Q5_0_RDNA1;
-mmq_y  =  MMQ_Y_Q5_0_RDNA1;
+mmq_x = MMQ_X_Q5_0_RDNA1;
+mmq_y = MMQ_Y_Q5_0_RDNA1;
 nwarps = NWARPS_Q5_0_RDNA1;
 } else if (compute_capability >= VER_GEN9) {
-mmq_x  =  MMQ_X_Q5_0_AMPERE;
-mmq_y  =  MMQ_Y_Q5_0_AMPERE;
+mmq_x = MMQ_X_Q5_0_AMPERE;
+mmq_y = MMQ_Y_Q5_0_AMPERE;
 nwarps = NWARPS_Q5_0_AMPERE;
 } else if (compute_capability >= VER_4VEC) {
-mmq_x  =  MMQ_X_Q5_0_PASCAL;
-mmq_y  =  MMQ_Y_Q5_0_PASCAL;
+mmq_x = MMQ_X_Q5_0_PASCAL;
+mmq_y = MMQ_Y_Q5_0_PASCAL;
 nwarps = NWARPS_Q5_0_PASCAL;
 } else {
 GGML_ABORT("fatal error");
@@ -1655,20 +1655,20 @@ CHECK_TRY_ERROR(id = get_current_device_id()));
 const int compute_capability = ggml_sycl_info().devices[id].cc;
 int mmq_x, mmq_y, nwarps;
 if (compute_capability >= VER_GEN13) {
-mmq_x  =  MMQ_X_Q5_1_RDNA2;
-mmq_y  =  MMQ_Y_Q5_1_RDNA2;
+mmq_x = MMQ_X_Q5_1_RDNA2;
+mmq_y = MMQ_Y_Q5_1_RDNA2;
 nwarps = NWARPS_Q5_1_RDNA2;
 } else if (compute_capability >= VER_GEN12) {
-mmq_x  =  MMQ_X_Q5_1_RDNA1;
-mmq_y  =  MMQ_Y_Q5_1_RDNA1;
+mmq_x = MMQ_X_Q5_1_RDNA1;
+mmq_y = MMQ_Y_Q5_1_RDNA1;
 nwarps = NWARPS_Q5_1_RDNA1;
 } else if (compute_capability >= VER_GEN9) {
-mmq_x  =  MMQ_X_Q5_1_AMPERE;
-mmq_y  =  MMQ_Y_Q5_1_AMPERE;
+mmq_x = MMQ_X_Q5_1_AMPERE;
+mmq_y = MMQ_Y_Q5_1_AMPERE;
 nwarps = NWARPS_Q5_1_AMPERE;
 } else if (compute_capability >= VER_4VEC) {
-mmq_x  =  MMQ_X_Q5_1_PASCAL;
-mmq_y  =  MMQ_Y_Q5_1_PASCAL;
+mmq_x = MMQ_X_Q5_1_PASCAL;
+mmq_y = MMQ_Y_Q5_1_PASCAL;
 nwarps = NWARPS_Q5_1_PASCAL;
 } else {
 GGML_ABORT("fatal error");
@@ -1749,20 +1749,20 @@ CHECK_TRY_ERROR(id = get_current_device_id()));
 const int compute_capability = ggml_sycl_info().devices[id].cc;
 int mmq_x, mmq_y, nwarps;
 if (compute_capability >= VER_GEN13) {
-mmq_x  =  MMQ_X_Q8_0_RDNA2;
-mmq_y  =  MMQ_Y_Q8_0_RDNA2;
+mmq_x = MMQ_X_Q8_0_RDNA2;
+mmq_y = MMQ_Y_Q8_0_RDNA2;
 nwarps = NWARPS_Q8_0_RDNA2;
 } else if (compute_capability >= VER_GEN12) {
-mmq_x  =  MMQ_X_Q8_0_RDNA1;
-mmq_y  =  MMQ_Y_Q8_0_RDNA1;
+mmq_x = MMQ_X_Q8_0_RDNA1;
+mmq_y = MMQ_Y_Q8_0_RDNA1;
 nwarps = NWARPS_Q8_0_RDNA1;
 } else if (compute_capability >= VER_GEN9) {
-mmq_x  =  MMQ_X_Q8_0_AMPERE;
-mmq_y  =  MMQ_Y_Q8_0_AMPERE;
+mmq_x = MMQ_X_Q8_0_AMPERE;
+mmq_y = MMQ_Y_Q8_0_AMPERE;
 nwarps = NWARPS_Q8_0_AMPERE;
 } else if (compute_capability >= VER_4VEC) {
-mmq_x  =  MMQ_X_Q8_0_PASCAL;
-mmq_y  =  MMQ_Y_Q8_0_PASCAL;
+mmq_x = MMQ_X_Q8_0_PASCAL;
+mmq_y = MMQ_Y_Q8_0_PASCAL;
 nwarps = NWARPS_Q8_0_PASCAL;
 } else {
 GGML_ABORT("fatal error");
@@ -1843,20 +1843,20 @@ CHECK_TRY_ERROR(id = get_current_device_id()));
 const int compute_capability = ggml_sycl_info().devices[id].cc;
 int mmq_x, mmq_y, nwarps;
 if (compute_capability >= VER_GEN13) {
-mmq_x  =  MMQ_X_Q2_K_RDNA2;
-mmq_y  =  MMQ_Y_Q2_K_RDNA2;
+mmq_x = MMQ_X_Q2_K_RDNA2;
+mmq_y = MMQ_Y_Q2_K_RDNA2;
 nwarps = NWARPS_Q2_K_RDNA2;
 } else if (compute_capability >= VER_GEN12) {
-mmq_x  =  MMQ_X_Q2_K_RDNA1;
-mmq_y  =  MMQ_Y_Q2_K_RDNA1;
+mmq_x = MMQ_X_Q2_K_RDNA1;
+mmq_y = MMQ_Y_Q2_K_RDNA1;
 nwarps = NWARPS_Q2_K_RDNA1;
 } else if (compute_capability >= VER_GEN9) {
-mmq_x  =  MMQ_X_Q2_K_AMPERE;
-mmq_y  =  MMQ_Y_Q2_K_AMPERE;
+mmq_x = MMQ_X_Q2_K_AMPERE;
+mmq_y = MMQ_Y_Q2_K_AMPERE;
 nwarps = NWARPS_Q2_K_AMPERE;
 } else if (compute_capability >= VER_4VEC) {
-mmq_x  =  MMQ_X_Q2_K_PASCAL;
-mmq_y  =  MMQ_Y_Q2_K_PASCAL;
+mmq_x = MMQ_X_Q2_K_PASCAL;
+mmq_y = MMQ_Y_Q2_K_PASCAL;
 nwarps = NWARPS_Q2_K_PASCAL;
 } else {
 GGML_ABORT("fatal error");
@@ -1944,20 +1944,20 @@ CHECK_TRY_ERROR(id = get_current_device_id()));
 const int compute_capability = ggml_sycl_info().devices[id].cc;
 int mmq_x, mmq_y, nwarps;
 if (compute_capability >= VER_GEN13) {
-mmq_x  =  MMQ_X_Q3_K_RDNA2;
-mmq_y  =  MMQ_Y_Q3_K_RDNA2;
+mmq_x = MMQ_X_Q3_K_RDNA2;
+mmq_y = MMQ_Y_Q3_K_RDNA2;
 nwarps = NWARPS_Q3_K_RDNA2;
 } else if (compute_capability >= VER_GEN12) {
-mmq_x  =  MMQ_X_Q3_K_RDNA1;
-mmq_y  =  MMQ_Y_Q3_K_RDNA1;
+mmq_x = MMQ_X_Q3_K_RDNA1;
+mmq_y = MMQ_Y_Q3_K_RDNA1;
 nwarps = NWARPS_Q3_K_RDNA1;
 } else if (compute_capability >= VER_GEN9) {
-mmq_x  =  MMQ_X_Q3_K_AMPERE;
-mmq_y  =  MMQ_Y_Q3_K_AMPERE;
+mmq_x = MMQ_X_Q3_K_AMPERE;
+mmq_y = MMQ_Y_Q3_K_AMPERE;
 nwarps = NWARPS_Q3_K_AMPERE;
 } else if (compute_capability >= VER_4VEC) {
-mmq_x  =  MMQ_X_Q3_K_PASCAL;
-mmq_y  =  MMQ_Y_Q3_K_PASCAL;
+mmq_x = MMQ_X_Q3_K_PASCAL;
+mmq_y = MMQ_Y_Q3_K_PASCAL;
 nwarps = NWARPS_Q3_K_PASCAL;
 } else {
 GGML_ABORT("fatal error");
@@ -2051,20 +2051,20 @@ CHECK_TRY_ERROR(id = get_current_device_id()));
 const int compute_capability = ggml_sycl_info().devices[id].cc;
 int mmq_x, mmq_y, nwarps;
 if (compute_capability >= VER_GEN13) {
-mmq_x  =  MMQ_X_Q4_K_RDNA2;
-mmq_y  =  MMQ_Y_Q4_K_RDNA2;
+mmq_x = MMQ_X_Q4_K_RDNA2;
+mmq_y = MMQ_Y_Q4_K_RDNA2;
 nwarps = NWARPS_Q4_K_RDNA2;
 } else if (compute_capability >= VER_GEN12) {
-mmq_x  =  MMQ_X_Q4_K_RDNA1;
-mmq_y  =  MMQ_Y_Q4_K_RDNA1;
+mmq_x = MMQ_X_Q4_K_RDNA1;
+mmq_y = MMQ_Y_Q4_K_RDNA1;
 nwarps = NWARPS_Q4_K_RDNA1;
 } else if (compute_capability >= VER_GEN9) {
-mmq_x  =  MMQ_X_Q4_K_AMPERE;
-mmq_y  =  MMQ_Y_Q4_K_AMPERE;
+mmq_x = MMQ_X_Q4_K_AMPERE;
+mmq_y = MMQ_Y_Q4_K_AMPERE;
 nwarps = NWARPS_Q4_K_AMPERE;
 } else if (compute_capability >= VER_4VEC) {
-mmq_x  =  MMQ_X_Q4_K_PASCAL;
-mmq_y  =  MMQ_Y_Q4_K_PASCAL;
+mmq_x = MMQ_X_Q4_K_PASCAL;
+mmq_y = MMQ_Y_Q4_K_PASCAL;
 nwarps = NWARPS_Q4_K_PASCAL;
 } else {
 GGML_ABORT("fatal error");
@@ -2151,20 +2151,20 @@ CHECK_TRY_ERROR(id = get_current_device_id()));
 const int compute_capability = ggml_sycl_info().devices[id].cc;
 int mmq_x, mmq_y, nwarps;
 if (compute_capability >= VER_GEN13) {
-mmq_x  =  MMQ_X_Q5_K_RDNA2;
-mmq_y  =  MMQ_Y_Q5_K_RDNA2;
+mmq_x = MMQ_X_Q5_K_RDNA2;
+mmq_y = MMQ_Y_Q5_K_RDNA2;
 nwarps = NWARPS_Q5_K_RDNA2;
 } else if (compute_capability >= VER_GEN12) {
-mmq_x  =  MMQ_X_Q5_K_RDNA1;
-mmq_y  =  MMQ_Y_Q5_K_RDNA1;
+mmq_x = MMQ_X_Q5_K_RDNA1;
+mmq_y = MMQ_Y_Q5_K_RDNA1;
 nwarps = NWARPS_Q5_K_RDNA1;
 } else if (compute_capability >= VER_GEN9) {
-mmq_x  =  MMQ_X_Q5_K_AMPERE;
-mmq_y  =  MMQ_Y_Q5_K_AMPERE;
+mmq_x = MMQ_X_Q5_K_AMPERE;
+mmq_y = MMQ_Y_Q5_K_AMPERE;
 nwarps = NWARPS_Q5_K_AMPERE;
 } else if (compute_capability >= VER_4VEC) {
-mmq_x  =  MMQ_X_Q5_K_PASCAL;
-mmq_y  =  MMQ_Y_Q5_K_PASCAL;
+mmq_x = MMQ_X_Q5_K_PASCAL;
+mmq_y = MMQ_Y_Q5_K_PASCAL;
 nwarps = NWARPS_Q5_K_PASCAL;
 } else {
 GGML_ABORT("fatal error");
@@ -2251,20 +2251,20 @@ CHECK_TRY_ERROR(id = get_current_device_id()));
 const int compute_capability = ggml_sycl_info().devices[id].cc;
 int mmq_x, mmq_y, nwarps;
 if (compute_capability >= VER_GEN13) {
-mmq_x  =  MMQ_X_Q6_K_RDNA2;
-mmq_y  =  MMQ_Y_Q6_K_RDNA2;
+mmq_x = MMQ_X_Q6_K_RDNA2;
+mmq_y = MMQ_Y_Q6_K_RDNA2;
 nwarps = NWARPS_Q6_K_RDNA2;
 } else if (compute_capability >= VER_GEN12) {
-mmq_x  =  MMQ_X_Q6_K_RDNA1;
-mmq_y  =  MMQ_Y_Q6_K_RDNA1;
+mmq_x = MMQ_X_Q6_K_RDNA1;
+mmq_y = MMQ_Y_Q6_K_RDNA1;
 nwarps = NWARPS_Q6_K_RDNA1;
 } else if (compute_capability >= VER_GEN9) {
-mmq_x  =  MMQ_X_Q6_K_AMPERE;
-mmq_y  =  MMQ_Y_Q6_K_AMPERE;
+mmq_x = MMQ_X_Q6_K_AMPERE;
+mmq_y = MMQ_Y_Q6_K_AMPERE;
 nwarps = NWARPS_Q6_K_AMPERE;
 } else if (compute_capability >= VER_4VEC) {
-mmq_x  =  MMQ_X_Q6_K_PASCAL;
-mmq_y  =  MMQ_Y_Q6_K_PASCAL;
+mmq_x = MMQ_X_Q6_K_PASCAL;
+mmq_y = MMQ_Y_Q6_K_PASCAL;
 nwarps = NWARPS_Q6_K_PASCAL;
 } else {
 GGML_ABORT("fatal error");

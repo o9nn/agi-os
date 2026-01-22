@@ -5,7 +5,7 @@
 #include <libsec.h>
 #define Extern
 #include "exportfs.h"
-#define QIDPATH	((1LL<<48)-1)
+#define QIDPATH ((1LL<<48)-1)
 vlong newqid = 0;
 enum {
 Encnone,
@@ -14,38 +14,38 @@ Enctls,
 };
 void (*fcalls[])(Fsrpc*) =
 {
-[Tversion]	Xversion,
-[Tauth]	Xauth,
-[Tflush]	Xflush,
-[Tattach]	Xattach,
-[Twalk]		Xwalk,
-[Topen]		slave,
-[Tcreate]	Xcreate,
-[Tclunk]	Xclunk,
-[Tread]		slave,
-[Twrite]	slave,
-[Tremove]	Xremove,
-[Tstat]		Xstat,
-[Twstat]	Xwstat,
+[Tversion] Xversion,
+[Tauth] Xauth,
+[Tflush] Xflush,
+[Tattach] Xattach,
+[Twalk] Xwalk,
+[Topen] slave,
+[Tcreate] Xcreate,
+[Tclunk] Xclunk,
+[Tread] slave,
+[Twrite] slave,
+[Tremove] Xremove,
+[Tstat] Xstat,
+[Twstat] Xwstat,
 };
-int	filecnt;
-int	freecnt;
-int	qidcnt;
-int	qfreecnt;
-int	ncollision;
-int	netfd;
-int	srvfd = -1;
-int	nonone = 1;
-char	*filterp;
-char	*ealgs = "rc4_256 sha1";
-char	*aanfilter = "/bin/aan";
-int	encproto = Encnone;
-int	readonly;
-static void	mksecret(char *, uchar *);
+int filecnt;
+int freecnt;
+int qidcnt;
+int qfreecnt;
+int ncollision;
+int netfd;
+int srvfd = -1;
+int nonone = 1;
+char *filterp;
+char *ealgs = "rc4_256 sha1";
+char *aanfilter = "/bin/aan";
+int encproto = Encnone;
+int readonly;
+static void mksecret(char *, uchar *);
 static int localread9pmsg(int, void *, uint, ulong *);
-static char *anstring  = "tcp!*!0";
+static char *anstring = "tcp!*!0";
 char *netdir = "", *local = "", *remote = "";
-int	filter(int, char *);
+int filter(int, char *);
 void
 usage(void)
 {

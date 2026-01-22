@@ -1,8 +1,8 @@
 #ifndef gsimage_INCLUDED
-#  define gsimage_INCLUDED
+# define gsimage_INCLUDED
 #include "gsiparam.h"
 #ifndef gx_image_enum_common_t_DEFINED
-#  define gx_image_enum_common_t_DEFINED
+# define gx_image_enum_common_t_DEFINED
 typedef struct gx_image_enum_common_s gx_image_enum_common_t;
 #endif
 int gs_image_begin_typed(const gs_image_common_t * pic, gs_state * pgs,
@@ -10,7 +10,7 @@ bool uses_color, gx_image_enum_common_t ** ppie);
 typedef struct gs_image_enum_s gs_image_enum;
 gs_image_enum *gs_image_enum_alloc(gs_memory_t *, client_name_t);
 #ifndef gx_device_DEFINED
-#  define gx_device_DEFINED
+# define gx_device_DEFINED
 typedef struct gx_device_s gx_device;
 #endif
 int gs_image_init(gs_image_enum * penum, const gs_image_t * pim,

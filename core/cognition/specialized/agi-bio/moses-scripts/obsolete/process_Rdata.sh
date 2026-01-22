@@ -8,5 +8,5 @@ write.csv(oldvscontrol, file = "oldvscontrol.csv")
 write.csv(oldvsoff, file = "oldvsoff.csv")
 EOF
 for f in offvscontrol.csv oldvscontrol.csv oldvsoff.csv; do
-    cut -d',' -f 2- $f > ${f//.csv/_no_col1.csv}
+cut -d',' -f 2- $f > ${f//.csv/_no_col1.csv}
 done

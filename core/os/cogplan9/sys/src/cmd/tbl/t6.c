@@ -7,8 +7,8 @@
 void
 maktab(void)
 {
-int	icol, ilin, tsep, k, ik, vforml, il, s, text;
-char	*ss;
+int icol, ilin, tsep, k, ik, vforml, il, s, text;
+char *ss;
 for (icol = 0; icol < ncol; icol++) {
 doubled[icol] = acase[icol] = 0;
 Bprint(&tabout, ".nr %2s 0\n", reg(icol, CRIGHT));
@@ -154,7 +154,7 @@ if (boxflg || dboxflg || allflg)
 {}
 else
 tsep -= sep[ncol-1];
-Bprint(&tabout, ".nr %d \\n(%d/%d\n", TMP, TMP,  tsep);
+Bprint(&tabout, ".nr %d \\n(%d/%d\n", TMP, TMP, tsep);
 Bprint(&tabout, ".if \\n(%d<0 .nr %d 0\n", TMP, TMP);
 } else
 Bprint(&tabout, ".nr %d 1n\n", TMP);

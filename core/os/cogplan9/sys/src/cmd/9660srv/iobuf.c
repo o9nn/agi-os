@@ -4,14 +4,14 @@
 #include <fcall.h>
 #include "dat.h"
 #include "fns.h"
-#define	BUFPERCLUST	256
-#define	NCLUST		16
+#define BUFPERCLUST 256
+#define NCLUST 16
 int nclust = NCLUST;
-static Ioclust*	iohead;
-static Ioclust*	iotail;
-static Ioclust*	getclust(Xdata*, vlong);
-static void	putclust(Ioclust*);
-static void	xread(Ioclust*);
+static Ioclust* iohead;
+static Ioclust* iotail;
+static Ioclust* getclust(Xdata*, vlong);
+static void putclust(Ioclust*);
+static void xread(Ioclust*);
 void
 iobuf_init(void)
 {

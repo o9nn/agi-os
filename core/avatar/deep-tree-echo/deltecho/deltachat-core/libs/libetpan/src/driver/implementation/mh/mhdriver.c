@@ -1,15 +1,15 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #include "mhdriver.h"
 #include <stdio.h>
 #include <sys/types.h>
 #ifdef WIN32
-#	include "win_etpan.h"
+# include "win_etpan.h"
 #else
-#	include <dirent.h>
-#	include <unistd.h>
-#	include <sys/mman.h>
+# include <dirent.h>
+# include <unistd.h>
+# include <sys/mman.h>
 #endif
 #include <sys/stat.h>
 #include <ctype.h>
@@ -421,7 +421,7 @@ return MAIL_ERROR_BAD_STATE;
 list = clist_new();
 if (list == NULL)
 return MAIL_ERROR_MEMORY;
-r =  get_list_folders(mh->mh_main, &list);
+r = get_list_folders(mh->mh_main, &list);
 if (r != MAIL_NO_ERROR)
 return r;
 ml = mail_list_new(list);

@@ -9,43 +9,43 @@ export const DIST_DIR = join(__dirname)
 export const DATA_DIR = join(__dirname, '../data')
 export const LOGS_DIR = join(DATA_DIR, 'logs')
 export const PRIVATE_CERTIFICATE_KEY = join(
-  DATA_DIR,
-  'certificate/cert.key.pem'
+DATA_DIR,
+'certificate/cert.key.pem'
 )
 export const PRIVATE_CERTIFICATE_CERT = join(DATA_DIR, 'certificate/cert.pem')
 export let DC_ACCOUNTS_DIR = join(DATA_DIR, 'accounts')
 export const LOCALES_DIR = join(__dirname, '../../../_locales')
 export const ENV_WEB_PASSWORD = process.env['WEB_PASSWORD']
-export const ENV_WEB_PORT = process.env['WEB_PORT'] || 3000 
+export const ENV_WEB_PORT = process.env['WEB_PORT'] || 3000
 export const ENV_WEB_TRUST_FIRST_PROXY = Boolean(
-  process.env['WEB_TRUST_FIRST_PROXY']
+process.env['WEB_TRUST_FIRST_PROXY']
 )
 if (process.env['DC_ACCOUNTS_DIR']) {
-  DC_ACCOUNTS_DIR = join(__dirname, process.env['DC_ACCOUNTS_DIR'])
+DC_ACCOUNTS_DIR = join(__dirname, process.env['DC_ACCOUNTS_DIR'])
 }
 export const NODE_ENV = (process.env['NODE_ENV'] ?? 'production').toLowerCase()
 if (!existsSync(DATA_DIR)) {
-  console.log(
-    '\n[ERROR]: Data dir does not exist, make sure you follow the steps in the Readme file\n'
-  )
-  process.exit(1)
+console.log(
+'\n[ERROR]: Data dir does not exist, make sure you follow the steps in the Readme file\n'
+)
+process.exit(1)
 }
 mkdirSync(LOGS_DIR, { recursive: true })
 if (
-  !existsSync(PRIVATE_CERTIFICATE_KEY) &&
-  !process.env['PRIVATE_CERTIFICATE_KEY']
+!existsSync(PRIVATE_CERTIFICATE_KEY) &&
+!process.env['PRIVATE_CERTIFICATE_KEY']
 ) {
-  console.log(
-    `\n[ERROR]: Certificate at "${PRIVATE_CERTIFICATE_KEY}" not exist, make sure you follow the steps in the Readme file\n`
-  )
-  process.exit(1)
+console.log(
+`\n[ERROR]: Certificate at "${PRIVATE_CERTIFICATE_KEY}" not exist, make sure you follow the steps in the Readme file\n`
+)
+process.exit(1)
 }
 if (!ENV_WEB_PASSWORD && NODE_ENV !== 'test') {
-  console.log(
-    `\n[ERROR]: Environment Variable WEB_PASSWORD is not set. You need to set it.\n`
-  )
-  process.exit(1)
+console.log(
+`\n[ERROR]: Environment Variable WEB_PASSWORD is not set. You need to set it.\n`
+)
+process.exit(1)
 }
 export const localStorage = new LocalStorage(
-  join(DATA_DIR, 'browser-runtime-data')
+join(DATA_DIR, 'browser-runtime-data')
 )

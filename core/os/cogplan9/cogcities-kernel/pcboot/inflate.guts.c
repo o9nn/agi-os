@@ -1,27 +1,27 @@
-typedef struct Biobuf	Biobuf;
+typedef struct Biobuf Biobuf;
 struct Biobuf
 {
 uchar *bp;
 uchar *p;
 uchar *ep;
 };
-static ulong	Boffset(Biobuf *bp);
-static int	crcwrite(void *out, void *buf, int n);
-static ulong	get4(Biobuf *b);
-static int	getc(void*);
-static int	header(Biobuf*);
-static ulong	offset(Biobuf*);
-static int	trailer(Biobuf*, Biobuf*);
+static ulong Boffset(Biobuf *bp);
+static int crcwrite(void *out, void *buf, int n);
+static ulong get4(Biobuf *b);
+static int getc(void*);
+static int header(Biobuf*);
+static ulong offset(Biobuf*);
+static int trailer(Biobuf*, Biobuf*);
 enum {
-Ftext=		(1<<0),
-Fhcrc=		(1<<1),
-Fextra=		(1<<2),
-Fname=		(1<<3),
-Fcomment=	(1<<4),
-GZCRCPOLY	= 0xedb88320UL,
+Ftext= (1<<0),
+Fhcrc= (1<<1),
+Fextra= (1<<2),
+Fname= (1<<3),
+Fcomment= (1<<4),
+GZCRCPOLY = 0xedb88320UL,
 };
-static ulong	*crctab;
-static ulong	crc;
+static ulong *crctab;
+static ulong crc;
 int
 gunzip(uchar *out, int outn, uchar *in, int inn)
 {

@@ -5,8 +5,8 @@
 struct llama_file;
 struct llama_mmap;
 struct llama_mlock;
-using llama_files  = std::vector<std::unique_ptr<llama_file>>;
-using llama_mmaps  = std::vector<std::unique_ptr<llama_mmap>>;
+using llama_files = std::vector<std::unique_ptr<llama_file>>;
+using llama_mmaps = std::vector<std::unique_ptr<llama_mmap>>;
 using llama_mlocks = std::vector<std::unique_ptr<llama_mlock>>;
 struct llama_file {
 llama_file(const char * fname, const char * mode);

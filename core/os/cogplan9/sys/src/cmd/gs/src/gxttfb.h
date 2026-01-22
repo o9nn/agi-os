@@ -1,12 +1,12 @@
 #ifndef gxttfb_INCLUDED
-#  define gxttfb_INCLUDED
+# define gxttfb_INCLUDED
 #include "ttfoutl.h"
 #ifndef gx_ttfReader_DEFINED
-#  define gx_ttfReader_DEFINED
+# define gx_ttfReader_DEFINED
 typedef struct gx_ttfReader_s gx_ttfReader;
 #endif
 #ifndef gs_font_type42_DEFINED
-#  define gs_font_type42_DEFINED
+# define gs_font_type42_DEFINED
 typedef struct gs_font_type42_s gs_font_type42;
 #endif
 struct gx_ttfReader_s {

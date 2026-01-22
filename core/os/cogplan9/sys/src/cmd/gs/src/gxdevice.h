@@ -1,5 +1,5 @@
 #ifndef gxdevice_INCLUDED
-#  define gxdevice_INCLUDED
+# define gxdevice_INCLUDED
 #include "stdio_.h"
 #include "gxdevcli.h"
 #include "gsfname.h"
@@ -11,11 +11,11 @@
 #define DEFAULT_WIDTH_10THS_A4 82.6389
 #define DEFAULT_HEIGHT_10THS_A4 116.9444
 #ifdef A4
-#  define DEFAULT_WIDTH_10THS DEFAULT_WIDTH_10THS_A4
-#  define DEFAULT_HEIGHT_10THS DEFAULT_HEIGHT_10THS_A4
+# define DEFAULT_WIDTH_10THS DEFAULT_WIDTH_10THS_A4
+# define DEFAULT_HEIGHT_10THS DEFAULT_HEIGHT_10THS_A4
 #else
-#  define DEFAULT_WIDTH_10THS DEFAULT_WIDTH_10THS_US_LETTER
-#  define DEFAULT_HEIGHT_10THS DEFAULT_HEIGHT_10THS_US_LETTER
+# define DEFAULT_WIDTH_10THS DEFAULT_WIDTH_10THS_US_LETTER
+# define DEFAULT_HEIGHT_10THS DEFAULT_HEIGHT_10THS_US_LETTER
 #endif
 #define std_device_part1_(devtype, ptr_procs, dev_name, stype, open_init)\
 sizeof(devtype), ptr_procs, dev_name,\

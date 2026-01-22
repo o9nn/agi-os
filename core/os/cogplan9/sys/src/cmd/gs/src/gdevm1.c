@@ -55,17 +55,17 @@ return 0;
 (*(const chunk *)(cptr))
 #undef chunk
 #if arch_is_big_endian
-#  define chunk uint
-#  define CFETCH_RIGHT(cptr, shift, cshift)\
+# define chunk uint
+# define CFETCH_RIGHT(cptr, shift, cshift)\
 (CFETCH_ALIGNED(cptr) >> shift)
-#  define CFETCH_LEFT(cptr, shift, cshift)\
+# define CFETCH_LEFT(cptr, shift, cshift)\
 (CFETCH_ALIGNED(cptr) << shift)
-#  define CFETCH_USES_CSKEW 0
-#  define CFETCH2(cptr, cskew, skew)\
+# define CFETCH_USES_CSKEW 0
+# define CFETCH2(cptr, cskew, skew)\
 (CFETCH_LEFT(cptr, cskew, skew) +\
 CFETCH_RIGHT((const chunk *)(cptr) + 1, skew, cskew))
 #else
-#  define chunk bits16
+# define chunk bits16
 private const bits16 right_masks2[9] =
 {
 0xffff, 0x7f7f, 0x3f3f, 0x1f1f, 0x0f0f, 0x0707, 0x0303, 0x0101, 0x0000
@@ -74,19 +74,19 @@ private const bits16 left_masks2[9] =
 {
 0xffff, 0xfefe, 0xfcfc, 0xf8f8, 0xf0f0, 0xe0e0, 0xc0c0, 0x8080, 0x0000
 };
-#  define CCONT(cptr, off) (((const chunk *)(cptr))[off])
-#  define CFETCH_RIGHT(cptr, shift, cshift)\
+# define CCONT(cptr, off) (((const chunk *)(cptr))[off])
+# define CFETCH_RIGHT(cptr, shift, cshift)\
 ((shift) < 8 ?\
 ((CCONT(cptr, 0) >> (shift)) & right_masks2[shift]) +\
 (CCONT(cptr, 0) << (cshift)) :\
 ((chunk)*(const byte *)(cptr) << (cshift)) & 0xff00)
-#  define CFETCH_LEFT(cptr, shift, cshift)\
+# define CFETCH_LEFT(cptr, shift, cshift)\
 ((shift) < 8 ?\
 ((CCONT(cptr, 0) << (shift)) & left_masks2[shift]) +\
 (CCONT(cptr, 0) >> (cshift)) :\
 ((CCONT(cptr, 0) & 0xff00) >> (cshift)) & 0xff)
-#  define CFETCH_USES_CSKEW 1
-#  define CFETCH2(cptr, cskew, skew)\
+# define CFETCH_USES_CSKEW 1
+# define CFETCH2(cptr, cskew, skew)\
 ((cskew) < 8 ?\
 ((CCONT(cptr, 0) << (cskew)) & left_masks2[cskew]) +\
 (CCONT(cptr, 0) >> (skew)) +\
@@ -166,7 +166,7 @@ optr[off] |= (CINVERT(bits) & mask)
 optr[off] = ((optr[off] & ~mask) | (CINVERT(bits) & mask))
 #define WRITE_AND_MASKED(bits, mask, off)\
 optr[off] &= (CINVERT(bits) | ~mask)
-#define WRITE_OR(bits)  *optr |= CINVERT(bits)
+#define WRITE_OR(bits) *optr |= CINVERT(bits)
 #define WRITE_STORE(bits) *optr = CINVERT(bits)
 #define WRITE_AND(bits) *optr &= CINVERT(bits)
 #define NEXT_X_CHUNK()\
@@ -218,7 +218,7 @@ set_mono_right_mask(rmask, wleft);
 #undef CINVERT
 #define CINVERT(bits) (bits)
 #if arch_is_big_endian
-#  define WRITE_1TO2(wr_op)\
+# define WRITE_1TO2(wr_op)\
 for ( ; ; )\
 { register uint bits = CFETCH_ALIGNED(bptr) ^ invert;\
 wr_op(bits >> skew, mask, 0);\
@@ -227,7 +227,7 @@ if ( --h == 0 ) break;\
 END_Y_LOOP(source_raster, dest_raster);\
 }
 #else
-#  define WRITE_1TO2(wr_op)\
+# define WRITE_1TO2(wr_op)\
 for ( ; ; )\
 { wr_op(CFETCH_RIGHT(bptr, skew, cskew) ^ invert, mask, 0);\
 wr_op(CFETCH_LEFT(bptr, cskew, skew) ^ invert, rmask, 1);\
@@ -339,7 +339,7 @@ break;
 END_Y_LOOP(sskip, dskip);
 }
 break;
-default  :
+default :
 return FUNNY_CASE();
 }
 #undef WRITE_UNALIGNED
@@ -391,7 +391,7 @@ tile_bits_size = tiles->size.y * source_raster;
 end = tiles->data + tile_bits_size;
 #undef END_Y_LOOP
 #define END_Y_LOOP(sdelta, ddelta)\
-if ( end - bptr <= sdelta )	\
+if ( end - bptr <= sdelta ) \
 bptr -= tile_bits_size;\
 bptr += sdelta; dbptr += ddelta
 dest_raster = mdev->raster;

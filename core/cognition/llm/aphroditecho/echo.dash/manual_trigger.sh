@@ -4,13 +4,13 @@ echo "=========================="
 echo "This script will run the EchoPilot analysis and show what issues would be created."
 echo ""
 if [ ! -f ".github/workflows/echopilot.yml" ]; then
-    echo "❌ Error: echopilot.yml workflow not found!"
-    echo "Please run this script from the repository root."
-    exit 1
+echo "❌ Error: echopilot.yml workflow not found!"
+echo "Please run this script from the repository root."
+exit 1
 fi
 if ! command -v python3 &> /dev/null; then
-    echo "❌ Error: python3 not found!"
-    exit 1
+echo "❌ Error: python3 not found!"
+exit 1
 fi
 echo "✅ Environment check passed"
 echo ""

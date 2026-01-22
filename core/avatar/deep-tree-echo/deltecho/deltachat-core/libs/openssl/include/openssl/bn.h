@@ -3,123 +3,123 @@
 # include <limits.h>
 # include <openssl/e_os2.h>
 # ifndef OPENSSL_NO_FP_API
-#  include <stdio.h>
+# include <stdio.h>
 # endif
 # include <openssl/ossl_typ.h>
 # include <openssl/crypto.h>
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 # ifndef OPENSSL_SMALL_FOOTPRINT
-#  define BN_MUL_COMBA
-#  define BN_SQR_COMBA
-#  define BN_RECURSION
+# define BN_MUL_COMBA
+# define BN_SQR_COMBA
+# define BN_RECURSION
 # endif
 # if defined(OPENSSL_SYS_MSDOS) || defined(OPENSSL_SYS_WINDOWS) || \
 defined(OPENSSL_SYS_WIN32) || defined(linux)
-#  ifndef BN_DIV2W
-#   define BN_DIV2W
-#  endif
+# ifndef BN_DIV2W
+# define BN_DIV2W
+# endif
 # endif
 # ifdef SIXTY_FOUR_BIT_LONG
-#  define BN_ULLONG       unsigned long long
-#  define BN_ULONG        unsigned long
-#  define BN_LONG         long
-#  define BN_BITS         128
-#  define BN_BYTES        8
-#  define BN_BITS2        64
-#  define BN_BITS4        32
-#  define BN_MASK         (0xffffffffffffffffffffffffffffffffLL)
-#  define BN_MASK2        (0xffffffffffffffffL)
-#  define BN_MASK2l       (0xffffffffL)
-#  define BN_MASK2h       (0xffffffff00000000L)
-#  define BN_MASK2h1      (0xffffffff80000000L)
-#  define BN_TBIT         (0x8000000000000000L)
-#  define BN_DEC_CONV     (10000000000000000000UL)
-#  define BN_DEC_FMT1     "%lu"
-#  define BN_DEC_FMT2     "%019lu"
-#  define BN_DEC_NUM      19
-#  define BN_HEX_FMT1     "%lX"
-#  define BN_HEX_FMT2     "%016lX"
+# define BN_ULLONG unsigned long long
+# define BN_ULONG unsigned long
+# define BN_LONG long
+# define BN_BITS 128
+# define BN_BYTES 8
+# define BN_BITS2 64
+# define BN_BITS4 32
+# define BN_MASK (0xffffffffffffffffffffffffffffffffLL)
+# define BN_MASK2 (0xffffffffffffffffL)
+# define BN_MASK2l (0xffffffffL)
+# define BN_MASK2h (0xffffffff00000000L)
+# define BN_MASK2h1 (0xffffffff80000000L)
+# define BN_TBIT (0x8000000000000000L)
+# define BN_DEC_CONV (10000000000000000000UL)
+# define BN_DEC_FMT1 "%lu"
+# define BN_DEC_FMT2 "%019lu"
+# define BN_DEC_NUM 19
+# define BN_HEX_FMT1 "%lX"
+# define BN_HEX_FMT2 "%016lX"
 # endif
 # ifdef SIXTY_FOUR_BIT
-#  undef BN_LLONG
-#  undef BN_ULLONG
-#  define BN_ULONG        unsigned long long
-#  define BN_LONG         long long
-#  define BN_BITS         128
-#  define BN_BYTES        8
-#  define BN_BITS2        64
-#  define BN_BITS4        32
-#  define BN_MASK2        (0xffffffffffffffffLL)
-#  define BN_MASK2l       (0xffffffffL)
-#  define BN_MASK2h       (0xffffffff00000000LL)
-#  define BN_MASK2h1      (0xffffffff80000000LL)
-#  define BN_TBIT         (0x8000000000000000LL)
-#  define BN_DEC_CONV     (10000000000000000000ULL)
-#  define BN_DEC_FMT1     "%llu"
-#  define BN_DEC_FMT2     "%019llu"
-#  define BN_DEC_NUM      19
-#  define BN_HEX_FMT1     "%llX"
-#  define BN_HEX_FMT2     "%016llX"
+# undef BN_LLONG
+# undef BN_ULLONG
+# define BN_ULONG unsigned long long
+# define BN_LONG long long
+# define BN_BITS 128
+# define BN_BYTES 8
+# define BN_BITS2 64
+# define BN_BITS4 32
+# define BN_MASK2 (0xffffffffffffffffLL)
+# define BN_MASK2l (0xffffffffL)
+# define BN_MASK2h (0xffffffff00000000LL)
+# define BN_MASK2h1 (0xffffffff80000000LL)
+# define BN_TBIT (0x8000000000000000LL)
+# define BN_DEC_CONV (10000000000000000000ULL)
+# define BN_DEC_FMT1 "%llu"
+# define BN_DEC_FMT2 "%019llu"
+# define BN_DEC_NUM 19
+# define BN_HEX_FMT1 "%llX"
+# define BN_HEX_FMT2 "%016llX"
 # endif
 # ifdef THIRTY_TWO_BIT
-#  ifdef BN_LLONG
-#   if defined(_WIN32) && !defined(__GNUC__)
-#    define BN_ULLONG     unsigned __int64
-#    define BN_MASK       (0xffffffffffffffffI64)
-#   else
-#    define BN_ULLONG     unsigned long long
-#    define BN_MASK       (0xffffffffffffffffLL)
-#   endif
-#  endif
-#  define BN_ULONG        unsigned int
-#  define BN_LONG         int
-#  define BN_BITS         64
-#  define BN_BYTES        4
-#  define BN_BITS2        32
-#  define BN_BITS4        16
-#  define BN_MASK2        (0xffffffffL)
-#  define BN_MASK2l       (0xffff)
-#  define BN_MASK2h1      (0xffff8000L)
-#  define BN_MASK2h       (0xffff0000L)
-#  define BN_TBIT         (0x80000000L)
-#  define BN_DEC_CONV     (1000000000L)
-#  define BN_DEC_FMT1     "%u"
-#  define BN_DEC_FMT2     "%09u"
-#  define BN_DEC_NUM      9
-#  define BN_HEX_FMT1     "%X"
-#  define BN_HEX_FMT2     "%08X"
+# ifdef BN_LLONG
+# if defined(_WIN32) && !defined(__GNUC__)
+# define BN_ULLONG unsigned __int64
+# define BN_MASK (0xffffffffffffffffI64)
+# else
+# define BN_ULLONG unsigned long long
+# define BN_MASK (0xffffffffffffffffLL)
+# endif
+# endif
+# define BN_ULONG unsigned int
+# define BN_LONG int
+# define BN_BITS 64
+# define BN_BYTES 4
+# define BN_BITS2 32
+# define BN_BITS4 16
+# define BN_MASK2 (0xffffffffL)
+# define BN_MASK2l (0xffff)
+# define BN_MASK2h1 (0xffff8000L)
+# define BN_MASK2h (0xffff0000L)
+# define BN_TBIT (0x80000000L)
+# define BN_DEC_CONV (1000000000L)
+# define BN_DEC_FMT1 "%u"
+# define BN_DEC_FMT2 "%09u"
+# define BN_DEC_NUM 9
+# define BN_HEX_FMT1 "%X"
+# define BN_HEX_FMT2 "%08X"
 # endif
 # if defined(OPENSSL_SYS_VMS)
-#  if __INITIAL_POINTER_SIZE == 64
-#   define PTR_SIZE_INT long long
-#  else
-#   define PTR_SIZE_INT int
-#  endif
+# if __INITIAL_POINTER_SIZE == 64
+# define PTR_SIZE_INT long long
 # else
-#  define PTR_SIZE_INT size_t
+# define PTR_SIZE_INT int
+# endif
+# else
+# define PTR_SIZE_INT size_t
 # endif
 # define BN_DEFAULT_BITS 1280
-# define BN_FLG_MALLOCED         0x01
-# define BN_FLG_STATIC_DATA      0x02
-# define BN_FLG_CONSTTIME        0x04
+# define BN_FLG_MALLOCED 0x01
+# define BN_FLG_STATIC_DATA 0x02
+# define BN_FLG_CONSTTIME 0x04
 # ifdef OPENSSL_NO_DEPRECATED
-#  define BN_FLG_EXP_CONSTTIME BN_FLG_CONSTTIME
+# define BN_FLG_EXP_CONSTTIME BN_FLG_CONSTTIME
 # endif
 # ifndef OPENSSL_NO_DEPRECATED
-#  define BN_FLG_FREE             0x8000
+# define BN_FLG_FREE 0x8000
 # endif
-# define BN_set_flags(b,n)       ((b)->flags|=(n))
-# define BN_get_flags(b,n)       ((b)->flags&(n))
-# define BN_with_flags(dest,b,n)  ((dest)->d=(b)->d, \
+# define BN_set_flags(b,n) ((b)->flags|=(n))
+# define BN_get_flags(b,n) ((b)->flags&(n))
+# define BN_with_flags(dest,b,n) ((dest)->d=(b)->d, \
 (dest)->top=(b)->top, \
 (dest)->dmax=(b)->dmax, \
 (dest)->neg=(b)->neg, \
 (dest)->flags=(((dest)->flags & BN_FLG_MALLOCED) \
-|  ((b)->flags & ~BN_FLG_MALLOCED) \
-|  BN_FLG_STATIC_DATA \
-|  (n)))
+| ((b)->flags & ~BN_FLG_MALLOCED) \
+| BN_FLG_STATIC_DATA \
+| (n)))
 # if 0
 typedef struct bignum_st BIGNUM;
 typedef struct bignum_ctx BN_CTX;
@@ -170,26 +170,26 @@ tmp_gencb->ver = 2; \
 tmp_gencb->arg = (cb_arg); \
 tmp_gencb->cb.cb_2 = (callback); }
 # define BN_prime_checks 0
-# define BN_prime_checks_for_size(b) ((b) >= 1300 ?  2 : \
-(b) >=  850 ?  3 : \
-(b) >=  650 ?  4 : \
-(b) >=  550 ?  5 : \
-(b) >=  450 ?  6 : \
-(b) >=  400 ?  7 : \
-(b) >=  350 ?  8 : \
-(b) >=  300 ?  9 : \
-(b) >=  250 ? 12 : \
-(b) >=  200 ? 15 : \
-(b) >=  150 ? 18 : \
+# define BN_prime_checks_for_size(b) ((b) >= 1300 ? 2 : \
+(b) >= 850 ? 3 : \
+(b) >= 650 ? 4 : \
+(b) >= 550 ? 5 : \
+(b) >= 450 ? 6 : \
+(b) >= 400 ? 7 : \
+(b) >= 350 ? 8 : \
+(b) >= 300 ? 9 : \
+(b) >= 250 ? 12 : \
+(b) >= 200 ? 15 : \
+(b) >= 150 ? 18 : \
 27)
 # define BN_num_bytes(a) ((BN_num_bits(a)+7)/8)
 # define BN_abs_is_word(a,w) ((((a)->top == 1) && ((a)->d[0] == (BN_ULONG)(w))) || \
 (((w) == 0) && ((a)->top == 0)))
-# define BN_is_zero(a)       ((a)->top == 0)
-# define BN_is_one(a)        (BN_abs_is_word((a),1) && !(a)->neg)
-# define BN_is_word(a,w)     (BN_abs_is_word((a),(w)) && (!(w) || !(a)->neg))
-# define BN_is_odd(a)        (((a)->top > 0) && ((a)->d[0] & 1))
-# define BN_one(a)       (BN_set_word((a),1))
+# define BN_is_zero(a) ((a)->top == 0)
+# define BN_is_one(a) (BN_abs_is_word((a),1) && !(a)->neg)
+# define BN_is_word(a,w) (BN_abs_is_word((a),(w)) && (!(w) || !(a)->neg))
+# define BN_is_odd(a) (((a)->top > 0) && ((a)->d[0] & 1))
+# define BN_one(a) (BN_set_word((a),1))
 # define BN_zero_ex(a) \
 do { \
 BIGNUM *_tmp_bn = (a); \
@@ -197,9 +197,9 @@ _tmp_bn->top = 0; \
 _tmp_bn->neg = 0; \
 } while(0)
 # ifdef OPENSSL_NO_DEPRECATED
-#  define BN_zero(a)      BN_zero_ex(a)
+# define BN_zero(a) BN_zero_ex(a)
 # else
-#  define BN_zero(a)      (BN_set_word((a),0))
+# define BN_zero(a) (BN_set_word((a),0))
 # endif
 const BIGNUM *BN_value_one(void);
 char *BN_options(void);
@@ -338,7 +338,7 @@ BN_MONT_CTX *BN_MONT_CTX_new(void);
 void BN_MONT_CTX_init(BN_MONT_CTX *ctx);
 int BN_mod_mul_montgomery(BIGNUM *r, const BIGNUM *a, const BIGNUM *b,
 BN_MONT_CTX *mont, BN_CTX *ctx);
-# define BN_to_montgomery(r,a,mont,ctx)  BN_mod_mul_montgomery(\
+# define BN_to_montgomery(r,a,mont,ctx) BN_mod_mul_montgomery(\
 (r),(a),&((mont)->RR),(mont),(ctx))
 int BN_from_montgomery(BIGNUM *r, const BIGNUM *a,
 BN_MONT_CTX *mont, BN_CTX *ctx);
@@ -347,7 +347,7 @@ int BN_MONT_CTX_set(BN_MONT_CTX *mont, const BIGNUM *mod, BN_CTX *ctx);
 BN_MONT_CTX *BN_MONT_CTX_copy(BN_MONT_CTX *to, BN_MONT_CTX *from);
 BN_MONT_CTX *BN_MONT_CTX_set_locked(BN_MONT_CTX **pmont, int lock,
 const BIGNUM *mod, BN_CTX *ctx);
-# define BN_BLINDING_NO_UPDATE   0x00000001
+# define BN_BLINDING_NO_UPDATE 0x00000001
 # define BN_BLINDING_NO_RECREATE 0x00000002
 BN_BLINDING *BN_BLINDING_new(const BIGNUM *A, const BIGNUM *Ai, BIGNUM *mod);
 void BN_BLINDING_free(BN_BLINDING *b);
@@ -389,7 +389,7 @@ int BN_div_recp(BIGNUM *dv, BIGNUM *rem, const BIGNUM *m,
 BN_RECP_CTX *recp, BN_CTX *ctx);
 # ifndef OPENSSL_NO_EC2M
 int BN_GF2m_add(BIGNUM *r, const BIGNUM *a, const BIGNUM *b);
-#  define BN_GF2m_sub(r, a, b) BN_GF2m_add(r, a, b)
+# define BN_GF2m_sub(r, a, b) BN_GF2m_add(r, a, b)
 int BN_GF2m_mod(BIGNUM *r, const BIGNUM *a, const BIGNUM *p);
 int BN_GF2m_mod_mul(BIGNUM *r, const BIGNUM *a, const BIGNUM *b,
 const BIGNUM *p, BN_CTX *ctx);
@@ -403,7 +403,7 @@ int BN_GF2m_mod_sqrt(BIGNUM *r, const BIGNUM *a, const BIGNUM *p,
 BN_CTX *ctx);
 int BN_GF2m_mod_solve_quad(BIGNUM *r, const BIGNUM *a, const BIGNUM *p,
 BN_CTX *ctx);
-#  define BN_GF2m_cmp(a, b) BN_ucmp((a), (b))
+# define BN_GF2m_cmp(a, b) BN_ucmp((a), (b))
 int BN_GF2m_mod_arr(BIGNUM *r, const BIGNUM *a, const int p[]);
 int BN_GF2m_mod_mul_arr(BIGNUM *r, const BIGNUM *a, const BIGNUM *b,
 const int p[], BN_CTX *ctx);
@@ -448,13 +448,13 @@ BIGNUM *bn_expand2(BIGNUM *a, int words);
 BIGNUM *bn_dup_expand(const BIGNUM *a, int words);
 # endif
 # ifdef BN_DEBUG
-#  include <assert.h>
-#  ifdef BN_DEBUG_RAND
-#   ifndef RAND_pseudo_bytes
+# include <assert.h>
+# ifdef BN_DEBUG_RAND
+# ifndef RAND_pseudo_bytes
 int RAND_pseudo_bytes(unsigned char *buf, int num);
-#    define BN_DEBUG_TRIX
-#   endif
-#   define bn_pollute(a) \
+# define BN_DEBUG_TRIX
+# endif
+# define bn_pollute(a) \
 do { \
 const BIGNUM *_bnum1 = (a); \
 if(_bnum1->top < _bnum1->dmax) { \
@@ -468,13 +468,13 @@ memset((unsigned char *)(_not_const + _bnum1->top), _tmp_char, \
 (_bnum1->dmax - _bnum1->top) * sizeof(BN_ULONG)); \
 } \
 } while(0)
-#   ifdef BN_DEBUG_TRIX
-#    undef RAND_pseudo_bytes
-#   endif
-#  else
-#   define bn_pollute(a)
-#  endif
-#  define bn_check_top(a) \
+# ifdef BN_DEBUG_TRIX
+# undef RAND_pseudo_bytes
+# endif
+# else
+# define bn_pollute(a)
+# endif
+# define bn_check_top(a) \
 do { \
 const BIGNUM *_bnum2 = (a); \
 if (_bnum2 != NULL) { \
@@ -483,9 +483,9 @@ assert((_bnum2->top == 0) || \
 bn_pollute(_bnum2); \
 } \
 } while(0)
-#  define bn_fix_top(a)           bn_check_top(a)
-#  define bn_check_size(bn, bits) bn_wcheck_size(bn, ((bits+BN_BITS2-1))/BN_BITS2)
-#  define bn_wcheck_size(bn, words) \
+# define bn_fix_top(a) bn_check_top(a)
+# define bn_check_size(bn, bits) bn_wcheck_size(bn, ((bits+BN_BITS2-1))/BN_BITS2)
+# define bn_wcheck_size(bn, words) \
 do { \
 const BIGNUM *_bnum2 = (bn); \
 assert((words) <= (_bnum2)->dmax && (words) >= (_bnum2)->top); \
@@ -493,11 +493,11 @@ assert((words) <= (_bnum2)->dmax && (words) >= (_bnum2)->top); \
 (void)(_bnum2); \
 } while(0)
 # else
-#  define bn_pollute(a)
-#  define bn_check_top(a)
-#  define bn_fix_top(a)           bn_correct_top(a)
-#  define bn_check_size(bn, bits)
-#  define bn_wcheck_size(bn, words)
+# define bn_pollute(a)
+# define bn_check_top(a)
+# define bn_fix_top(a) bn_correct_top(a)
+# define bn_check_size(bn, bits)
+# define bn_wcheck_size(bn, words)
 # endif
 # define bn_correct_top(a) \
 { \
@@ -530,68 +530,68 @@ BIGNUM *get_rfc3526_prime_6144(BIGNUM *bn);
 BIGNUM *get_rfc3526_prime_8192(BIGNUM *bn);
 int BN_bntest_rand(BIGNUM *rnd, int bits, int top, int bottom);
 void ERR_load_BN_strings(void);
-# define BN_F_BNRAND                                      127
-# define BN_F_BN_BLINDING_CONVERT_EX                      100
-# define BN_F_BN_BLINDING_CREATE_PARAM                    128
-# define BN_F_BN_BLINDING_INVERT_EX                       101
-# define BN_F_BN_BLINDING_NEW                             102
-# define BN_F_BN_BLINDING_UPDATE                          103
-# define BN_F_BN_BN2DEC                                   104
-# define BN_F_BN_BN2HEX                                   105
-# define BN_F_BN_CTX_GET                                  116
-# define BN_F_BN_CTX_NEW                                  106
-# define BN_F_BN_CTX_START                                129
-# define BN_F_BN_DIV                                      107
-# define BN_F_BN_DIV_NO_BRANCH                            138
-# define BN_F_BN_DIV_RECP                                 130
-# define BN_F_BN_EXP                                      123
-# define BN_F_BN_EXPAND2                                  108
-# define BN_F_BN_EXPAND_INTERNAL                          120
-# define BN_F_BN_GF2M_MOD                                 131
-# define BN_F_BN_GF2M_MOD_EXP                             132
-# define BN_F_BN_GF2M_MOD_MUL                             133
-# define BN_F_BN_GF2M_MOD_SOLVE_QUAD                      134
-# define BN_F_BN_GF2M_MOD_SOLVE_QUAD_ARR                  135
-# define BN_F_BN_GF2M_MOD_SQR                             136
-# define BN_F_BN_GF2M_MOD_SQRT                            137
-# define BN_F_BN_LSHIFT                                   145
-# define BN_F_BN_MOD_EXP2_MONT                            118
-# define BN_F_BN_MOD_EXP_MONT                             109
-# define BN_F_BN_MOD_EXP_MONT_CONSTTIME                   124
-# define BN_F_BN_MOD_EXP_MONT_WORD                        117
-# define BN_F_BN_MOD_EXP_RECP                             125
-# define BN_F_BN_MOD_EXP_SIMPLE                           126
-# define BN_F_BN_MOD_INVERSE                              110
-# define BN_F_BN_MOD_INVERSE_NO_BRANCH                    139
-# define BN_F_BN_MOD_LSHIFT_QUICK                         119
-# define BN_F_BN_MOD_MUL_RECIPROCAL                       111
-# define BN_F_BN_MOD_SQRT                                 121
-# define BN_F_BN_MPI2BN                                   112
-# define BN_F_BN_NEW                                      113
-# define BN_F_BN_RAND                                     114
-# define BN_F_BN_RAND_RANGE                               122
-# define BN_F_BN_RSHIFT                                   146
-# define BN_F_BN_USUB                                     115
-# define BN_R_ARG2_LT_ARG3                                100
-# define BN_R_BAD_RECIPROCAL                              101
-# define BN_R_BIGNUM_TOO_LONG                             114
-# define BN_R_BITS_TOO_SMALL                              118
-# define BN_R_CALLED_WITH_EVEN_MODULUS                    102
-# define BN_R_DIV_BY_ZERO                                 103
-# define BN_R_ENCODING_ERROR                              104
-# define BN_R_EXPAND_ON_STATIC_BIGNUM_DATA                105
-# define BN_R_INPUT_NOT_REDUCED                           110
-# define BN_R_INVALID_LENGTH                              106
-# define BN_R_INVALID_RANGE                               115
-# define BN_R_INVALID_SHIFT                               119
-# define BN_R_NOT_A_SQUARE                                111
-# define BN_R_NOT_INITIALIZED                             107
-# define BN_R_NO_INVERSE                                  108
-# define BN_R_NO_SOLUTION                                 116
-# define BN_R_P_IS_NOT_PRIME                              112
-# define BN_R_TOO_MANY_ITERATIONS                         113
-# define BN_R_TOO_MANY_TEMPORARY_VARIABLES                109
-#ifdef  __cplusplus
+# define BN_F_BNRAND 127
+# define BN_F_BN_BLINDING_CONVERT_EX 100
+# define BN_F_BN_BLINDING_CREATE_PARAM 128
+# define BN_F_BN_BLINDING_INVERT_EX 101
+# define BN_F_BN_BLINDING_NEW 102
+# define BN_F_BN_BLINDING_UPDATE 103
+# define BN_F_BN_BN2DEC 104
+# define BN_F_BN_BN2HEX 105
+# define BN_F_BN_CTX_GET 116
+# define BN_F_BN_CTX_NEW 106
+# define BN_F_BN_CTX_START 129
+# define BN_F_BN_DIV 107
+# define BN_F_BN_DIV_NO_BRANCH 138
+# define BN_F_BN_DIV_RECP 130
+# define BN_F_BN_EXP 123
+# define BN_F_BN_EXPAND2 108
+# define BN_F_BN_EXPAND_INTERNAL 120
+# define BN_F_BN_GF2M_MOD 131
+# define BN_F_BN_GF2M_MOD_EXP 132
+# define BN_F_BN_GF2M_MOD_MUL 133
+# define BN_F_BN_GF2M_MOD_SOLVE_QUAD 134
+# define BN_F_BN_GF2M_MOD_SOLVE_QUAD_ARR 135
+# define BN_F_BN_GF2M_MOD_SQR 136
+# define BN_F_BN_GF2M_MOD_SQRT 137
+# define BN_F_BN_LSHIFT 145
+# define BN_F_BN_MOD_EXP2_MONT 118
+# define BN_F_BN_MOD_EXP_MONT 109
+# define BN_F_BN_MOD_EXP_MONT_CONSTTIME 124
+# define BN_F_BN_MOD_EXP_MONT_WORD 117
+# define BN_F_BN_MOD_EXP_RECP 125
+# define BN_F_BN_MOD_EXP_SIMPLE 126
+# define BN_F_BN_MOD_INVERSE 110
+# define BN_F_BN_MOD_INVERSE_NO_BRANCH 139
+# define BN_F_BN_MOD_LSHIFT_QUICK 119
+# define BN_F_BN_MOD_MUL_RECIPROCAL 111
+# define BN_F_BN_MOD_SQRT 121
+# define BN_F_BN_MPI2BN 112
+# define BN_F_BN_NEW 113
+# define BN_F_BN_RAND 114
+# define BN_F_BN_RAND_RANGE 122
+# define BN_F_BN_RSHIFT 146
+# define BN_F_BN_USUB 115
+# define BN_R_ARG2_LT_ARG3 100
+# define BN_R_BAD_RECIPROCAL 101
+# define BN_R_BIGNUM_TOO_LONG 114
+# define BN_R_BITS_TOO_SMALL 118
+# define BN_R_CALLED_WITH_EVEN_MODULUS 102
+# define BN_R_DIV_BY_ZERO 103
+# define BN_R_ENCODING_ERROR 104
+# define BN_R_EXPAND_ON_STATIC_BIGNUM_DATA 105
+# define BN_R_INPUT_NOT_REDUCED 110
+# define BN_R_INVALID_LENGTH 106
+# define BN_R_INVALID_RANGE 115
+# define BN_R_INVALID_SHIFT 119
+# define BN_R_NOT_A_SQUARE 111
+# define BN_R_NOT_INITIALIZED 107
+# define BN_R_NO_INVERSE 108
+# define BN_R_NO_SOLUTION 116
+# define BN_R_P_IS_NOT_PRIME 112
+# define BN_R_TOO_MANY_ITERATIONS 113
+# define BN_R_TOO_MANY_TEMPORARY_VARIABLES 109
+#ifdef __cplusplus
 }
 #endif
 #endif

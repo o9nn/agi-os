@@ -5,21 +5,21 @@
 #include "fns.h"
 #include "io.h"
 #include "../port/error.h"
-#define	Image	IMAGE
+#define Image IMAGE
 #include <draw.h>
 #include <memdraw.h>
 #include <cursor.h>
 #include "screen.h"
 typedef struct
 {
-ushort	ctl;
-ushort	pad;
-ulong	base;
-ulong	pos;
+ushort ctl;
+ushort pad;
+ulong base;
+ulong pos;
 } CursorI81x;
 enum {
-Fbsize		= 8*MB,
-hwCur		= 0x70080,
+Fbsize = 8*MB,
+hwCur = 0x70080,
 };
 static Pcidev *
 i81xpcimatch(void)

@@ -6,21 +6,21 @@ extern struct proto rawv6_prot;
 extern struct proto udpv6_prot;
 extern struct proto tcpv6_prot;
 struct flowi;
-extern void				rawv6_init(void);
-extern void				udpv6_init(void);
-extern void				tcpv6_init(void);
-extern int				udpv6_connect(struct sock *sk,
+extern void rawv6_init(void);
+extern void udpv6_init(void);
+extern void tcpv6_init(void);
+extern int udpv6_connect(struct sock *sk,
 struct sockaddr *uaddr,
 int addr_len);
-extern int			datagram_recv_ctl(struct sock *sk,
+extern int datagram_recv_ctl(struct sock *sk,
 struct msghdr *msg,
 struct sk_buff *skb);
-extern int			datagram_send_ctl(struct msghdr *msg,
+extern int datagram_send_ctl(struct msghdr *msg,
 struct flowi *fl,
 struct ipv6_txoptions *opt,
 int *hlimit);
-#define		LOOPBACK4_IPV6		__constant_htonl(0x7f000006)
-extern struct tcp_func	ipv4_specific;
+#define LOOPBACK4_IPV6 __constant_htonl(0x7f000006)
+extern struct tcp_func ipv4_specific;
 extern int inet6_destroy_sock(struct sock *sk);
 #endif
 #endif

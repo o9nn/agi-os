@@ -1,44 +1,44 @@
-#include 	<lib9.h>
+#include <lib9.h>
 typedef struct PCB
 {
-char	*base;
-char	*current;
-long	last;
-long	final;
+char *base;
+char *current;
+long last;
+long final;
 } Pcb;
-uchar	bits[] = { 1, 2, 4, 8, 16, 32, 64, 128 };
-#define	SETBIT(a, c)		((a)[(c)/8] |= bits[(c)&07])
-#define	CLEARBIT(a,c)		((a)[(c)/8] &= ~bits[(c)&07])
-#define	BITSET(a,c)		((a)[(c)/8] & bits[(c)&07])
-#define	MAXRUNE	0xFFFF
-uchar	f[(MAXRUNE+1)/8];
-uchar	t[(MAXRUNE+1)/8];
-char 	wbuf[4096];
-char	*wptr;
+uchar bits[] = { 1, 2, 4, 8, 16, 32, 64, 128 };
+#define SETBIT(a, c) ((a)[(c)/8] |= bits[(c)&07])
+#define CLEARBIT(a,c) ((a)[(c)/8] &= ~bits[(c)&07])
+#define BITSET(a,c) ((a)[(c)/8] & bits[(c)&07])
+#define MAXRUNE 0xFFFF
+uchar f[(MAXRUNE+1)/8];
+uchar t[(MAXRUNE+1)/8];
+char wbuf[4096];
+char *wptr;
 Pcb pfrom, pto;
 int cflag;
 int dflag;
 int sflag;
-void	complement(void);
-void	delete(void);
-void	squeeze(void);
-void	translit(void);
-void	error(char*);
-long	canon(Pcb*);
-char	*getrune(char*, Rune*);
-void	Pinit(Pcb*, char*);
-void	Prewind(Pcb *p);
-int	readrune(int, long*);
-void	wflush(int);
-void	writerune(int, Rune);
+void complement(void);
+void delete(void);
+void squeeze(void);
+void translit(void);
+void error(char*);
+long canon(Pcb*);
+char *getrune(char*, Rune*);
+void Pinit(Pcb*, char*);
+void Prewind(Pcb *p);
+int readrune(int, long*);
+void wflush(int);
+void writerune(int, Rune);
 void
 main(int argc, char **argv)
 {
 ARGBEGIN{
-case 's':	sflag++; break;
-case 'd':	dflag++; break;
-case 'c':	cflag++; break;
-default:	error("bad option");
+case 's': sflag++; break;
+case 'd': dflag++; break;
+case 'c': cflag++; break;
+default: error("bad option");
 }ARGEND
 if(argc>0)
 Pinit(&pfrom, argv[0]);

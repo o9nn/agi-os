@@ -11,11 +11,11 @@
 #include <sys/time.h>
 #include <math.h>
 #include <float.h>
-#define DTESN_ESN_MEMORY_POOL_SIZE      (64 * 1024 * 1024)
-#define DTESN_ESN_DEFAULT_TOLERANCE     1e-6
-#define DTESN_ESN_MAX_ADAPTATION_STEPS  1000
-#define DTESN_ESN_SPECTRAL_RADIUS_MIN   0.1
-#define DTESN_ESN_SPECTRAL_RADIUS_MAX   0.99
+#define DTESN_ESN_MEMORY_POOL_SIZE (64 * 1024 * 1024)
+#define DTESN_ESN_DEFAULT_TOLERANCE 1e-6
+#define DTESN_ESN_MAX_ADAPTATION_STEPS 1000
+#define DTESN_ESN_SPECTRAL_RADIUS_MIN 0.1
+#define DTESN_ESN_SPECTRAL_RADIUS_MAX 0.99
 static bool g_esn_initialized = false;
 static pthread_mutex_t g_esn_lock = PTHREAD_MUTEX_INITIALIZER;
 static uint32_t g_next_reservoir_id = 1;

@@ -57,7 +57,7 @@ x, v = y
 return Float64[v, -x]
 end
 # Initial condition
-y0 = [1.0, 0.0]  # Start at x=1, v=0
+y0 = [1.0, 0.0] # Start at x=1, v=0
 # Integrate using B-series
 kernel = BSeriesKernel(3, T=Float64)
 times, trajectory = integrate_bseries(kernel, harmonic_oscillator, y0, (0.0, 2π), 0.1)
@@ -101,7 +101,7 @@ println()
 println("Example 5: Creating Hybrid Inference Engine")
 println("-"^70)
 engine = create_hybrid_engine(
-nothing,  # No model loaded yet
+nothing, # No model loaded yet
 reservoir_size = 100,
 use_jax_autodiff = false,
 use_j_preprocessing = false,

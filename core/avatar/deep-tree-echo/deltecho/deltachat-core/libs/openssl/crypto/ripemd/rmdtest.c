@@ -12,7 +12,7 @@ return (0);
 # include <openssl/ripemd.h>
 # include <openssl/evp.h>
 # ifdef CHARSET_EBCDIC
-#  include <openssl/ebcdic.h>
+# include <openssl/ebcdic.h>
 # endif
 static char *test[] = {
 "",

@@ -10,35 +10,35 @@
 #include <kern/processor.h>
 #include <kern/timer.h>
 #include <machine/spl.h>
-#ifdef	PRI_SHIFT_2
-#if	PRI_SHIFT_2 > 0
-#define	USAGE_THRESHOLD (((1 << PRI_SHIFT) + (1 << PRI_SHIFT_2)) << (2 + SCHED_SHIFT))
+#ifdef PRI_SHIFT_2
+#if PRI_SHIFT_2 > 0
+#define USAGE_THRESHOLD (((1 << PRI_SHIFT) + (1 << PRI_SHIFT_2)) << (2 + SCHED_SHIFT))
 #else
-#define	USAGE_THRESHOLD (((1 << PRI_SHIFT) - (1 << -(PRI_SHIFT_2))) << (2 + SCHED_SHIFT))
+#define USAGE_THRESHOLD (((1 << PRI_SHIFT) - (1 << -(PRI_SHIFT_2))) << (2 + SCHED_SHIFT))
 #endif
 #else
-#define USAGE_THRESHOLD	(1 << (PRI_SHIFT + 2 + SCHED_SHIFT))
+#define USAGE_THRESHOLD (1 << (PRI_SHIFT + 2 + SCHED_SHIFT))
 #endif
 void thread_quantum_update(
-int			mycpu,
-thread_t		thread,
-int			nticks,
-int			state)
+int mycpu,
+thread_t thread,
+int nticks,
+int state)
 {
-int				quantum;
-processor_t			myprocessor;
-#if	NCPUS > 1
-processor_set_t			pset;
+int quantum;
+processor_t myprocessor;
+#if NCPUS > 1
+processor_set_t pset;
 #endif
-spl_t				s;
+spl_t s;
 myprocessor = cpu_to_processor(mycpu);
-#if	NCPUS > 1
+#if NCPUS > 1
 pset = myprocessor->processor_set;
 if (pset == 0) {
 return;
 }
 #endif
-#if	NCPUS > 1
+#if NCPUS > 1
 pset->set_quantum = pset->machine_quantum[
 ((pset->runq.count > pset->processor_count) ?
 pset->processor_count : pset->runq.count)];
@@ -52,7 +52,7 @@ default_pset.set_quantum = quantum;
 #endif
 if (state != CPU_STATE_IDLE) {
 myprocessor->quantum -= nticks;
-#if	NCPUS > 1
+#if NCPUS > 1
 if ((quantum != myprocessor->last_quantum) &&
 (pset->processor_count > 1)) {
 myprocessor->last_quantum = quantum;
@@ -74,7 +74,7 @@ update_priority(thread);
 }
 else {
 if (
-#if	MACH_FIXPRI
+#if MACH_FIXPRI
 (thread->policy == POLICY_TIMESHARE) &&
 #endif
 (thread->depress_priority < 0)) {
@@ -88,11 +88,11 @@ compute_my_priority(thread);
 thread_unlock(thread);
 (void) splx(s);
 myprocessor->first_quantum = FALSE;
-#if	MACH_FIXPRI
+#if MACH_FIXPRI
 if (thread->policy == POLICY_TIMESHARE) {
 #endif
 myprocessor->quantum += quantum;
-#if	MACH_FIXPRI
+#if MACH_FIXPRI
 }
 else {
 myprocessor->quantum += thread->sched_data;
@@ -107,7 +107,7 @@ update_priority(thread);
 }
 else {
 if (
-#if	MACH_FIXPRI
+#if MACH_FIXPRI
 (thread->policy == POLICY_TIMESHARE) &&
 #endif
 (thread->depress_priority < 0)) {

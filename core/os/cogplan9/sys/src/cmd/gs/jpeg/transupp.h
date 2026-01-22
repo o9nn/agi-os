@@ -2,11 +2,11 @@
 #define TRANSFORMS_SUPPORTED 1
 #endif
 #ifdef NEED_SHORT_EXTERNAL_NAMES
-#define jtransform_request_workspace		jTrRequest
-#define jtransform_adjust_parameters		jTrAdjust
-#define jtransform_execute_transformation	jTrExec
-#define jcopy_markers_setup			jCMrkSetup
-#define jcopy_markers_execute			jCMrkExec
+#define jtransform_request_workspace jTrRequest
+#define jtransform_adjust_parameters jTrAdjust
+#define jtransform_execute_transformation jTrExec
+#define jcopy_markers_setup jCMrkSetup
+#define jcopy_markers_execute jCMrkExec
 #endif
 typedef enum {
 JXFORM_NONE,
@@ -42,7 +42,7 @@ JCOPYOPT_NONE,
 JCOPYOPT_COMMENTS,
 JCOPYOPT_ALL
 } JCOPY_OPTION;
-#define JCOPYOPT_DEFAULT  JCOPYOPT_COMMENTS
+#define JCOPYOPT_DEFAULT JCOPYOPT_COMMENTS
 EXTERN(void) jcopy_markers_setup
 JPP((j_decompress_ptr srcinfo, JCOPY_OPTION option));
 EXTERN(void) jcopy_markers_execute

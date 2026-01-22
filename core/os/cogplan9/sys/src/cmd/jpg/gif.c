@@ -4,23 +4,23 @@
 #include <draw.h>
 #include <event.h>
 #include "imagefile.h"
-int		cflag = 0;
-int		dflag = 0;
-int		eflag = 0;
-int		nineflag = 0;
-int		threeflag = 0;
-int		output = 0;
-ulong	outchan = CMAP8;
-Image	**allims;
-Image	**allmasks;
-Rawimage	**allimages;
-int		which;
-int		defaultcolor = 1;
+int cflag = 0;
+int dflag = 0;
+int eflag = 0;
+int nineflag = 0;
+int threeflag = 0;
+int output = 0;
+ulong outchan = CMAP8;
+Image **allims;
+Image **allmasks;
+Rawimage **allimages;
+int which;
+int defaultcolor = 1;
 enum{
-Border	= 2,
-Edge		= 5
+Border = 2,
+Edge = 5
 };
-char	*show(int, char*);
+char *show(int, char*);
 Rectangle
 imager(void)
 {

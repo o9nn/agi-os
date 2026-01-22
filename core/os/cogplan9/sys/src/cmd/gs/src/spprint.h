@@ -1,7 +1,7 @@
 #ifndef spprint_INCLUDED
-#  define spprint_INCLUDED
+# define spprint_INCLUDED
 #ifndef stream_DEFINED
-#  define stream_DEFINED
+# define stream_DEFINED
 typedef struct stream_s stream;
 #endif
 #define stream_putc(s, c) spputc(s, c)

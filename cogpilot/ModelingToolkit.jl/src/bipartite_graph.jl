@@ -343,7 +343,7 @@ nsrcs(g::BipartiteGraph) = length(𝑠vertices(g))
 ndsts(g::BipartiteGraph) = length(𝑑vertices(g))
 function Graphs.has_edge(g::BipartiteGraph, edge::BipartiteEdge)
 @unpack src, dst = edge
-(src in 𝑠vertices(g) && dst in 𝑑vertices(g)) || return false  # edge out of bounds
+(src in 𝑠vertices(g) && dst in 𝑑vertices(g)) || return false # edge out of bounds
 insorted(dst, 𝑠neighbors(g, src))
 end
 Base.in(edge::BipartiteEdge, g::BipartiteGraph) = Graphs.has_edge(g, edge)
@@ -403,7 +403,7 @@ s, d = src(edge), dst(edge)
 (has_𝑠vertex(g, s) && has_𝑑vertex(g, d)) || error("edge ($edge) out of range.")
 @inbounds list = fadjlist[s]
 index = searchsortedfirst(list, d)
-@inbounds (index <= length(list) && list[index] == d) && return false  # edge already in graph
+@inbounds (index <= length(list) && list[index] == d) && return false # edge already in graph
 insert!(list, index, d)
 if md !== NO_METADATA
 insert!(g.metadata[s], index, md)
@@ -414,7 +414,7 @@ if badjlist isa AbstractVector
 index = searchsortedfirst(list, s)
 insert!(list, index, s)
 end
-return true  # edge successfully added
+return true # edge successfully added
 end
 function Graphs.rem_edge!(g::BipartiteGraph, i::Integer, j::Integer)
 Graphs.rem_edge!(g, BipartiteEdge(i, j))
@@ -434,7 +434,7 @@ if badjlist isa AbstractVector
 index = searchsortedfirst(list, s)
 deleteat!(list, index)
 end
-return true  # edge successfully deleted
+return true # edge successfully deleted
 end
 function Graphs.add_vertex!(g::BipartiteGraph{T}, type::VertType) where {T}
 if type === DST

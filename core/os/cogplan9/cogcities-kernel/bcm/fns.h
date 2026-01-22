@@ -1,5 +1,5 @@
 #include "../port/portfns.h"
-Dirtab*	addarchfile(char*, int, long(*)(Chan*, void*, long, vlong),
+Dirtab* addarchfile(char*, int, long(*)(Chan*, void*, long, vlong),
 long(*)(Chan*, void*, long, vlong));
 extern void archreboot(void);
 extern void archreset(void);
@@ -57,7 +57,7 @@ extern void procsave(Proc*);
 extern void procsetup(Proc*);
 extern void screeninit(void);
 #define sdfree(p) free(p)
-#define sdmalloc(n)	mallocalign(n, CACHELINESZ, 0, 0)
+#define sdmalloc(n) mallocalign(n, CACHELINESZ, 0, 0)
 extern void setpower(int, int);
 extern void setr13(int, u32int*);
 extern int splfhi(void);
@@ -93,14 +93,14 @@ extern void setkernur(Ureg*, Proc*);
 extern void* sysexecregs(uintptr, ulong, int);
 extern void sysprocsetup(Proc*);
 extern void kexit(Ureg*);
-#define	getpgcolor(a)	0
-#define	kmapinval()
+#define getpgcolor(a) 0
+#define kmapinval()
 #define countpagerefs(a, b)
-#define PTR2UINT(p)	((uintptr)(p))
-#define UINT2PTR(i)	((void*)(i))
-#define	waserror()	(up->nerrlab++, setlabel(&up->errlab[up->nerrlab-1]))
-#define KADDR(pa)	UINT2PTR(KZERO    | ((uintptr)(pa) & ~KSEGM))
-#define PADDR(va)	PTR2UINT(PHYSDRAM | ((uintptr)(va) & ~KSEGM))
-#define DMAADDR(va)	PTR2UINT(BUSDRAM  | ((uintptr)(va) & ~KSEGM))
-#define DMAIO(va)	PTR2UINT(BUSIO    | ((uintptr)(va) & ~VIRTIO))
-#define MASK(v)	((1UL << (v)) - 1)
+#define PTR2UINT(p) ((uintptr)(p))
+#define UINT2PTR(i) ((void*)(i))
+#define waserror() (up->nerrlab++, setlabel(&up->errlab[up->nerrlab-1]))
+#define KADDR(pa) UINT2PTR(KZERO | ((uintptr)(pa) & ~KSEGM))
+#define PADDR(va) PTR2UINT(PHYSDRAM | ((uintptr)(va) & ~KSEGM))
+#define DMAADDR(va) PTR2UINT(BUSDRAM | ((uintptr)(va) & ~KSEGM))
+#define DMAIO(va) PTR2UINT(BUSIO | ((uintptr)(va) & ~VIRTIO))
+#define MASK(v) ((1UL << (v)) - 1)

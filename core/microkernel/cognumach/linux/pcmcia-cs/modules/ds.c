@@ -14,7 +14,7 @@
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,1,23))
 #include <linux/poll.h>
 #endif
-#define io_req_t    cardservice_io_req_t
+#define io_req_t cardservice_io_req_t
 #include <pcmcia/version.h>
 #include <pcmcia/cs_types.h>
 #include <pcmcia/cs.h>
@@ -35,40 +35,40 @@ static const char *version =
 #define DEBUG(n, args...)
 #endif
 typedef struct driver_info_t {
-dev_info_t		dev_info;
-int			use_count, status;
-dev_link_t		*(*attach)(void);
-void		(*detach)(dev_link_t *);
+dev_info_t dev_info;
+int use_count, status;
+dev_link_t *(*attach)(void);
+void (*detach)(dev_link_t *);
 struct driver_info_t *next;
 } driver_info_t;
 typedef struct socket_bind_t {
-driver_info_t	*driver;
-u_char		function;
-dev_link_t		*instance;
+driver_info_t *driver;
+u_char function;
+dev_link_t *instance;
 struct socket_bind_t *next;
 } socket_bind_t;
-#define MAX_EVENTS	32
-#define USER_MAGIC	0x7ea4
+#define MAX_EVENTS 32
+#define USER_MAGIC 0x7ea4
 #define CHECK_USER(u) \
 (((u) == NULL) || ((u)->user_magic != USER_MAGIC))
 typedef struct user_info_t {
-u_int		user_magic;
-int			event_head, event_tail;
-event_t		event[MAX_EVENTS];
-struct user_info_t	*next;
+u_int user_magic;
+int event_head, event_tail;
+event_t event[MAX_EVENTS];
+struct user_info_t *next;
 } user_info_t;
 typedef struct socket_info_t {
-client_handle_t	handle;
-int			state;
-user_info_t		*user;
-int			req_pending, req_result;
-wait_queue_head_t	queue, request;
-struct timer_list	removal;
-socket_bind_t	*bind;
+client_handle_t handle;
+int state;
+user_info_t *user;
+int req_pending, req_result;
+wait_queue_head_t queue, request;
+struct timer_list removal;
+socket_bind_t *bind;
 } socket_info_t;
-#define SOCKET_PRESENT		0x01
-#define SOCKET_BUSY		0x02
-#define SOCKET_REMOVAL_PENDING	0x10
+#define SOCKET_PRESENT 0x01
+#define SOCKET_BUSY 0x02
+#define SOCKET_REMOVAL_PENDING 0x10
 static dev_info_t dev_info = "Driver Services";
 static driver_info_t *root_driver = NULL;
 static int sockets = 0, major_dev = -1;
@@ -672,15 +672,15 @@ return err;
 }
 #ifndef MACH
 static struct file_operations ds_fops = {
-open:	ds_open,
-release:	ds_release,
-ioctl:	ds_ioctl,
-read:	ds_read,
-write:	ds_write,
+open: ds_open,
+release: ds_release,
+ioctl: ds_ioctl,
+read: ds_read,
+write: ds_write,
 #if (LINUX_VERSION_CODE < VERSION(2,1,23))
-select:	ds_select
+select: ds_select
 #else
-poll:	ds_poll
+poll: ds_poll
 #endif
 };
 #if (LINUX_VERSION_CODE <= VERSION(2,1,17))

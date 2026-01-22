@@ -1,11 +1,11 @@
 #include "fdlibm.h"
 static const double
-tiny  = 1.0e-300,
-zero  = 0.0,
-pi_o_4  = 7.8539816339744827900E-01,
-pi_o_2  = 1.5707963267948965580E+00,
-pi      = 3.1415926535897931160E+00,
-pi_lo   = 1.2246467991473531772E-16;
+tiny = 1.0e-300,
+zero = 0.0,
+pi_o_4 = 7.8539816339744827900E-01,
+pi_o_2 = 1.5707963267948965580E+00,
+pi = 3.1415926535897931160E+00,
+pi_lo = 1.2246467991473531772E-16;
 double __ieee754_atan2(double y, double x)
 {
 double z;
@@ -24,25 +24,25 @@ if((iy|ly)==0) {
 switch(m) {
 case 0:
 case 1: return y;
-case 2: return  pi+tiny;
+case 2: return pi+tiny;
 case 3: return -pi-tiny;
 }
 }
-if((ix|lx)==0) return (hy<0)?  -pi_o_2-tiny: pi_o_2+tiny;
+if((ix|lx)==0) return (hy<0)? -pi_o_2-tiny: pi_o_2+tiny;
 if(ix==0x7ff00000) {
 if(iy==0x7ff00000) {
 switch(m) {
-case 0: return  pi_o_4+tiny;
+case 0: return pi_o_4+tiny;
 case 1: return -pi_o_4-tiny;
-case 2: return  3.0*pi_o_4+tiny;
+case 2: return 3.0*pi_o_4+tiny;
 case 3: return -3.0*pi_o_4-tiny;
 }
 } else {
 switch(m) {
-case 0: return  zero  ;
-case 1: return -zero  ;
-case 2: return  pi+tiny  ;
-case 3: return -pi-tiny  ;
+case 0: return zero ;
+case 1: return -zero ;
+case 2: return pi+tiny ;
+case 3: return -pi-tiny ;
 }
 }
 }
@@ -52,11 +52,11 @@ if(k > 60) z=pi_o_2+0.5*pi_lo;
 else if(hx<0&&k<-60) z=0.0;
 else z=atan(fabs(y/x));
 switch (m) {
-case 0: return       z  ;
+case 0: return z ;
 case 1: __HI(z) ^= 0x80000000;
-return       z  ;
-case 2: return  pi-(z-pi_lo);
+return z ;
+case 2: return pi-(z-pi_lo);
 default:
-return  (z-pi_lo)-pi;
+return (z-pi_lo)-pi;
 }
 }

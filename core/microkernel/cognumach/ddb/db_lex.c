@@ -6,16 +6,16 @@
 #include <ddb/db_input.h>
 #include <ddb/db_lex.h>
 #include <ddb/db_output.h>
-char	db_line[DB_LEX_LINE_SIZE];
-char	db_last_line[DB_LEX_LINE_SIZE];
-char	*db_lp, *db_endlp;
-char	*db_last_lp;
-int	db_look_char = 0;
+char db_line[DB_LEX_LINE_SIZE];
+char db_last_line[DB_LEX_LINE_SIZE];
+char *db_lp, *db_endlp;
+char *db_last_lp;
+int db_look_char = 0;
 db_expr_t db_look_token = 0;
 int
-db_read_line(const char	*repeat_last)
+db_read_line(const char *repeat_last)
 {
-int	i;
+int i;
 i = db_readline(db_line, sizeof(db_line));
 if (i == 0)
 return (0);
@@ -44,7 +44,7 @@ db_endlp = db_line;
 void
 db_switch_input(
 char *buffer,
-int  size)
+int size)
 {
 db_lp = buffer;
 db_last_lp = db_lp;
@@ -72,7 +72,7 @@ db_look_token = lp->l_token;
 int
 db_read_char(void)
 {
-int	c;
+int c;
 if (db_look_char != 0) {
 c = db_look_char;
 db_look_char = 0;
@@ -96,7 +96,7 @@ db_look_token = t;
 int
 db_read_token(void)
 {
-int	t;
+int t;
 if (db_look_token) {
 t = db_look_token;
 db_look_token = 0;
@@ -109,9 +109,9 @@ t = db_lex();
 }
 return (t);
 }
-db_expr_t	db_tok_number;
-char		db_tok_string[TOK_STRING_SIZE];
-db_expr_t	db_radix = 16;
+db_expr_t db_tok_number;
+char db_tok_string[TOK_STRING_SIZE];
+db_expr_t db_radix = 16;
 void
 db_flush_lex(void)
 {
@@ -119,7 +119,7 @@ db_flush_line();
 db_look_char = 0;
 db_look_token = 0;
 }
-#define	DB_DISP_SKIP	40
+#define DB_DISP_SKIP 40
 void
 db_skip_to_eol(void)
 {
@@ -158,7 +158,7 @@ c = db_read_char();
 cp = db_tok_string;
 *cp++ = c;
 if (c >= '0' && c <= '9') {
-int	r, digit;
+int r, digit;
 if (c > '0')
 r = db_radix;
 else {

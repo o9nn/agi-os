@@ -6,31 +6,31 @@
 #include <ndb.h>
 #include "dns.h"
 enum {
-Maxrequest=		128,
+Maxrequest= 128,
 };
 Cfg cfg;
 static char *servername;
 static RR *serverrr;
 static RR *serveraddrs;
-char	*dbfile;
-int	debug;
-uchar	ipaddr[IPaddrlen];
-char	*logfile = "dnsdebug";
-int	maxage  = 60*60;
-char	mntpt[Maxpath];
-int	needrefresh;
-ulong	now;
-vlong	nowns;
-int	testing;
-char	*trace;
-int	traceactivity;
-char	*zonerefreshprogram;
-void	docmd(int, char**);
-void	doquery(char*, char*);
-void	preloadserveraddrs(void);
-int	prettyrrfmt(Fmt*);
-int	setserver(char*);
-void	squirrelserveraddrs(void);
+char *dbfile;
+int debug;
+uchar ipaddr[IPaddrlen];
+char *logfile = "dnsdebug";
+int maxage = 60*60;
+char mntpt[Maxpath];
+int needrefresh;
+ulong now;
+vlong nowns;
+int testing;
+char *trace;
+int traceactivity;
+char *zonerefreshprogram;
+void docmd(int, char**);
+void doquery(char*, char*);
+void preloadserveraddrs(void);
+int prettyrrfmt(Fmt*);
+int setserver(char*);
+void squirrelserveraddrs(void);
 void
 usage(void)
 {

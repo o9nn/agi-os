@@ -36,7 +36,7 @@ dev->init = NULL;
 sizeof_priv = (sizeof_priv + 3) & ~3;
 dev->priv = sizeof_priv
 ? kmalloc(sizeof_priv, GFP_KERNEL)
-:	NULL;
+: NULL;
 if (dev->priv) memset(dev->priv, 0, sizeof_priv);
 goto found;
 }
@@ -108,24 +108,24 @@ printk("ether_setup: Ouch! Someone else took %s\n",
 dev->name);
 }
 }
-dev->change_mtu		= eth_change_mtu;
-dev->hard_header	= eth_header;
-dev->rebuild_header 	= eth_rebuild_header;
-dev->set_mac_address 	= eth_mac_addr;
-dev->header_cache_bind 	= eth_header_cache_bind;
+dev->change_mtu = eth_change_mtu;
+dev->hard_header = eth_header;
+dev->rebuild_header = eth_rebuild_header;
+dev->set_mac_address = eth_mac_addr;
+dev->header_cache_bind = eth_header_cache_bind;
 dev->header_cache_update= eth_header_cache_update;
-dev->type		= ARPHRD_ETHER;
-dev->hard_header_len 	= ETH_HLEN;
-dev->mtu		= 1500;
-dev->addr_len		= ETH_ALEN;
-dev->tx_queue_len	= 100;
+dev->type = ARPHRD_ETHER;
+dev->hard_header_len = ETH_HLEN;
+dev->mtu = 1500;
+dev->addr_len = ETH_ALEN;
+dev->tx_queue_len = 100;
 memset(dev->broadcast,0xFF, ETH_ALEN);
-dev->flags		= IFF_BROADCAST|IFF_MULTICAST;
-dev->family		= AF_INET;
-dev->pa_addr	= 0;
+dev->flags = IFF_BROADCAST|IFF_MULTICAST;
+dev->family = AF_INET;
+dev->pa_addr = 0;
 dev->pa_brdaddr = 0;
-dev->pa_mask	= 0;
-dev->pa_alen	= 4;
+dev->pa_mask = 0;
+dev->pa_alen = 4;
 }
 #ifdef CONFIG_TR
 void tr_setup(struct device *dev)
@@ -133,20 +133,20 @@ void tr_setup(struct device *dev)
 int i;
 for (i = 0; i < DEV_NUMBUFFS; i++)
 skb_queue_head_init(&dev->buffs[i]);
-dev->hard_header	= tr_header;
-dev->rebuild_header 	= tr_rebuild_header;
-dev->type		= ARPHRD_IEEE802;
-dev->hard_header_len 	= TR_HLEN;
-dev->mtu		= 2000;
-dev->addr_len		= TR_ALEN;
-dev->tx_queue_len	= 100;
+dev->hard_header = tr_header;
+dev->rebuild_header = tr_rebuild_header;
+dev->type = ARPHRD_IEEE802;
+dev->hard_header_len = TR_HLEN;
+dev->mtu = 2000;
+dev->addr_len = TR_ALEN;
+dev->tx_queue_len = 100;
 memset(dev->broadcast,0xFF, TR_ALEN);
-dev->flags		= IFF_BROADCAST;
-dev->family		= AF_INET;
-dev->pa_addr	= 0;
+dev->flags = IFF_BROADCAST;
+dev->family = AF_INET;
+dev->pa_addr = 0;
 dev->pa_brdaddr = 0;
-dev->pa_mask	= 0;
-dev->pa_alen	= 4;
+dev->pa_mask = 0;
+dev->pa_alen = 4;
 }
 #endif
 #ifdef CONFIG_FDDI
@@ -155,21 +155,21 @@ void fddi_setup(struct device *dev)
 int i;
 for (i=0; i < DEV_NUMBUFFS; i++)
 skb_queue_head_init(&dev->buffs[i]);
-dev->change_mtu			= fddi_change_mtu;
-dev->hard_header		= fddi_header;
-dev->rebuild_header		= fddi_rebuild_header;
-dev->type				= ARPHRD_FDDI;
-dev->hard_header_len	= FDDI_K_SNAP_HLEN+3;
-dev->mtu				= FDDI_K_SNAP_DLEN;
-dev->addr_len			= FDDI_K_ALEN;
-dev->tx_queue_len		= 100;
+dev->change_mtu = fddi_change_mtu;
+dev->hard_header = fddi_header;
+dev->rebuild_header = fddi_rebuild_header;
+dev->type = ARPHRD_FDDI;
+dev->hard_header_len = FDDI_K_SNAP_HLEN+3;
+dev->mtu = FDDI_K_SNAP_DLEN;
+dev->addr_len = FDDI_K_ALEN;
+dev->tx_queue_len = 100;
 memset(dev->broadcast, 0xFF, FDDI_K_ALEN);
-dev->flags		= IFF_BROADCAST | IFF_MULTICAST;
-dev->family		= AF_INET;
-dev->pa_addr	= 0;
+dev->flags = IFF_BROADCAST | IFF_MULTICAST;
+dev->family = AF_INET;
+dev->pa_addr = 0;
 dev->pa_brdaddr = 0;
-dev->pa_mask	= 0;
-dev->pa_alen	= 4;
+dev->pa_mask = 0;
+dev->pa_alen = 4;
 return;
 }
 #endif

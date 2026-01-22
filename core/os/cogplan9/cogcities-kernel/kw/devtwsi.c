@@ -12,49 +12,49 @@ Qtwsi,
 typedef struct Kwtwsi Kwtwsi;
 typedef struct Twsi Twsi;
 struct Kwtwsi {
-ulong	saddr;
-ulong	data;
-ulong	ctl;
+ulong saddr;
+ulong data;
+ulong ctl;
 union {
-ulong	status;
-ulong	rate;
+ulong status;
+ulong rate;
 };
-ulong	saddrext;
-uchar	_pad0[0x1c-0x14];
-ulong	reset;
-uchar	_pad1[0x98-0x20];
-ulong	initlastdata;
+ulong saddrext;
+uchar _pad0[0x1c-0x14];
+ulong reset;
+uchar _pad1[0x98-0x20];
+ulong initlastdata;
 };
 enum {
 Twsidowrite,
 Twsidoread,
-Twsiack		= 1<<2,
-Twsiint		= 1<<3,
-Twsistop	= 1<<4,
-Twsistart	= 1<<5,
-Twsislaveen	= 1<<6,
-Twsiinten	= 1<<7,
-SStart	= 0x08,
-SWa	= 0x18,
-SWda	= 0x28,
-SRa	= 0x40,
-SRda	= 0x50,
-SRna	= 0x58,
+Twsiack = 1<<2,
+Twsiint = 1<<3,
+Twsistop = 1<<4,
+Twsistart = 1<<5,
+Twsislaveen = 1<<6,
+Twsiinten = 1<<7,
+SStart = 0x08,
+SWa = 0x18,
+SWda = 0x28,
+SRa = 0x40,
+SRda = 0x50,
+SRna = 0x58,
 };
 struct Twsi {
 QLock;
-Rendez	nextbyte;
-int	intr;
-int	done;
-uchar	*bp;
-uchar	*end;
-ulong	addr;
-char	*error;
+Rendez nextbyte;
+int intr;
+int done;
+uchar *bp;
+uchar *end;
+ulong addr;
+char *error;
 };
 static Twsi twsi;
 static Dirtab twsidir[] = {
-".",	{Qdir, 0, QTDIR},	0,	DMDIR|0555,
-"twsi",	{Qtwsi},		0,	0660,
+".", {Qdir, 0, QTDIR}, 0, DMDIR|0555,
+"twsi", {Qtwsi}, 0, 0660,
 };
 static char Eabsts[] = "abnormal status";
 static void

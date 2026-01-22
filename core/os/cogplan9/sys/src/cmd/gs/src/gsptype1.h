@@ -1,5 +1,5 @@
 #ifndef gsptype1_INCLUDED
-#  define gsptype1_INCLUDED
+# define gsptype1_INCLUDED
 #include "gspcolor.h"
 #include "gxbitmap.h"
 typedef struct gs_pattern1_template_s {
@@ -48,6 +48,6 @@ long id,
 gs_state * pgs,
 gs_memory_t * mem
 );
-#define gs_makebitmappattern(pcc, tile, mask, pgs, mem)                 \
+#define gs_makebitmappattern(pcc, tile, mask, pgs, mem) \
 gs_makebitmappattern_xform(pcc, tile, mask, 0, no_UniqueID, pgs, mem)
 #endif

@@ -3,7 +3,7 @@
 #define Q_B1(a) (((DES_LONG)(a))<<8)
 #define Q_B2(a) (((DES_LONG)(a))<<16)
 #define Q_B3(a) (((DES_LONG)(a))<<24)
-#define NOISE   ((DES_LONG)83653421L)
+#define NOISE ((DES_LONG)83653421L)
 DES_LONG DES_quad_cksum(const unsigned char *input, DES_cblock output[],
 long length, int out_count, DES_cblock *seed)
 {

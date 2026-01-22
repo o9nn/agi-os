@@ -1,9 +1,9 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
 enum
 {
 Qtopdir,
@@ -16,35 +16,35 @@ Cwrite,
 Cstart,
 Cdie,
 };
-#define TYPE(x) 	(int)( (c)->qid.path & 0x7 )
-#define SEG(x)	 	( ((c)->qid.path >> 3) & 0x3f )
-#define PATH(s, t) 	( ((s)<<3) | (t) )
+#define TYPE(x) (int)( (c)->qid.path & 0x7 )
+#define SEG(x) ( ((c)->qid.path >> 3) & 0x3f )
+#define PATH(s, t) ( ((s)<<3) | (t) )
 typedef struct Globalseg Globalseg;
 struct Globalseg
 {
 Ref;
-Segment	*s;
-char	*name;
-char	*uid;
-vlong	length;
-long	perm;
-QLock	l;
-Rendez	cmdwait;
-Rendez	replywait;
-Proc	*kproc;
-char	*data;
-long	off;
-int	dlen;
-int	cmd;
-char	err[64];
+Segment *s;
+char *name;
+char *uid;
+vlong length;
+long perm;
+QLock l;
+Rendez cmdwait;
+Rendez replywait;
+Proc *kproc;
+char *data;
+long off;
+int dlen;
+int cmd;
+char err[64];
 };
 static Globalseg *globalseg[100];
 static Lock globalseglock;
 Segment* (*_globalsegattach)(Proc*, char*);
-static	Segment* globalsegattach(Proc *p, char *name);
-static	int	cmddone(void*);
-static	void	segmentkproc(void*);
-static	void	docmd(Globalseg *g, int cmd);
+static Segment* globalsegattach(Proc *p, char *name);
+static int cmddone(void*);
+static void segmentkproc(void*);
+static void docmd(Globalseg *g, int cmd);
 static Globalseg*
 getgseg(Chan *c)
 {

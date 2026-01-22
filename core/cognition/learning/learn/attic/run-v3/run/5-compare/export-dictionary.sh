@@ -1,19 +1,19 @@
 #! /bin/bash
 if [ -z $MASTER_CONFIG_FILE ]; then
-	echo "MASTER_CONFIG_FILE not defined!"
-	exit -1
+echo "MASTER_CONFIG_FILE not defined!"
+exit -1
 fi
 if [ -r $MASTER_CONFIG_FILE ]; then
-	. $MASTER_CONFIG_FILE
+. $MASTER_CONFIG_FILE
 else
-	echo "Cannot find master configuration file!"
-	exit -1
+echo "Cannot find master configuration file!"
+exit -1
 fi
 if ! [ -z ${EXPORT_CONF_FILE} ] && [ -r ${EXPORT_CONF_FILE} ]; then
-	. ${EXPORT_CONF_FILE}
+. ${EXPORT_CONF_FILE}
 else
-	echo "Cannot find grammatical class export configuration file!"
-	exit -1
+echo "Cannot find grammatical class export configuration file!"
+exit -1
 fi
 EXPORT_DIR=$(dirname $LG_DICT_EXPORT)
 mkdir -p $EXPORT_DIR

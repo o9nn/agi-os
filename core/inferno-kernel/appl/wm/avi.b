@@ -7,7 +7,7 @@ Rect, Display, Image: import draw;
 include "tk.m";
 tk: Tk;
 Toplevel: import tk;
-include	"tkclient.m";
+include "tkclient.m";
 tkclient: Tkclient;
 ctxt: ref Draw->Context;
 include "selectfile.m";
@@ -20,10 +20,10 @@ AVIhdr, AVIstream, RD: import avi;
 video: ref AVIstream;
 WmAVI: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 Stopped, Playing, Paused: con iota;
-state	:= Stopped;
+state := Stopped;
 cmap: array of byte;
 codedbuf: array of byte;
 pixelbuf: array of byte;
@@ -47,9 +47,9 @@ task_cfg := array[] of {
 };
 init(xctxt: ref Draw->Context, nil: list of string)
 {
-sys  = load Sys  Sys->PATH;
+sys = load Sys Sys->PATH;
 draw = load Draw Draw->PATH;
-tk   = load Tk   Tk->PATH;
+tk = load Tk Tk->PATH;
 tkclient= load Tkclient Tkclient->PATH;
 dialog = load Dialog Dialog->PATH;
 selectfile = load Selectfile Selectfile->PATH;
@@ -219,7 +219,7 @@ if(l < 0)
 break;
 case code {
 * =>
-#			sys->print("%s %d\n", code, l);
+# sys->print("%s %d\n", code, l);
 avi->r.skip(l);
 "LIST" =>
 err = avi->r.check4("movi");
@@ -254,9 +254,9 @@ l++;
 case code {
 * =>
 avi->r.skip(l);
-"00db" =>			# Stream 0 Video DIB
+"00db" => # Stream 0 Video DIB
 dib(r, img, l);
-"00dc" =>			# Stream 0 Video DIB compressed
+"00dc" => # Stream 0 Video DIB compressed
 dibc(r, img, l);
 t.image.draw(canvr, img, nil, img.r.min);
 "idx1" =>
@@ -297,12 +297,12 @@ n := int codedbuf[p++];
 if(n == 0) {
 esc := int codedbuf[p++];
 case esc {
-0 =>			# end of line
+0 => # end of line
 x = 0;
 y--;
-1 =>			# end of image
+1 => # end of image
 break decomp;
-2 =>			# Delta dx,dy
+2 => # Delta dx,dy
 x += int codedbuf[p++];
 y -= int codedbuf[p++];
 * =>

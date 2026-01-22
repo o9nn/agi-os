@@ -126,7 +126,7 @@ jpeg_free(j_common_ptr cinfo, void *data, const char *info)
 {
 jpeg_compress_data *jcd = cinfo2jcd(cinfo);
 gs_memory_t *mem = jcd->memory;
-jpeg_block_t  *p  =  jcd->blocks;
+jpeg_block_t *p = jcd->blocks;
 jpeg_block_t **pp = &jcd->blocks;
 gs_free_object(mem, data, info);
 while(p && p->data != data)

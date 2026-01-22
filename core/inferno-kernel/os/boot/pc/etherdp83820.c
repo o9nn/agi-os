@@ -7,347 +7,347 @@
 #include "etherif.h"
 #include "ethermii.h"
 #define iprint print
-#define waserror()	(0)
+#define waserror() (0)
 #define poperror()
 enum {
-Cr		= 0x00,
-Cfg		= 0x04,
-Mear		= 0x08,
-Ptscr		= 0x0C,
-Isr		= 0x10,
-Imr		= 0x14,
-Ier		= 0x18,
-Ihr		= 0x1C,
-Txdp		= 0x20,
-Txdphi		= 0x24,
-Txcfg		= 0x28,
-Gpior		= 0x2C,
-Rxdp		= 0x30,
-Rxdphi		= 0x34,
-Rxcfg		= 0x38,
-Pqcr		= 0x3C,
-Wcsr		= 0x40,
-Pcr		= 0x44,
-Rfcr		= 0x48,
-Rfdr		= 0x4C,
-Brar		= 0x50,
-Brdr		= 0x54,
-Srr		= 0x58,
-Mibc		= 0x5C,
-Mibd		= 0x60,
-Txdp1		= 0xA0,
-Txdp2		= 0xA4,
-Txdp3		= 0xA8,
-Rxdp1		= 0xB0,
-Rxdp2		= 0xB4,
-Rxdp3		= 0xB8,
-Vrcr		= 0xBC,
-Vtcr		= 0xC0,
-Vdr		= 0xC4,
-Ccsr		= 0xCC,
-Tbicr		= 0xE0,
-Tbisr		= 0xE4,
-Tanar		= 0xE8,
-Tanlpar		= 0xEC,
-Taner		= 0xF0,
-Tesr		= 0xF4,
+Cr = 0x00,
+Cfg = 0x04,
+Mear = 0x08,
+Ptscr = 0x0C,
+Isr = 0x10,
+Imr = 0x14,
+Ier = 0x18,
+Ihr = 0x1C,
+Txdp = 0x20,
+Txdphi = 0x24,
+Txcfg = 0x28,
+Gpior = 0x2C,
+Rxdp = 0x30,
+Rxdphi = 0x34,
+Rxcfg = 0x38,
+Pqcr = 0x3C,
+Wcsr = 0x40,
+Pcr = 0x44,
+Rfcr = 0x48,
+Rfdr = 0x4C,
+Brar = 0x50,
+Brdr = 0x54,
+Srr = 0x58,
+Mibc = 0x5C,
+Mibd = 0x60,
+Txdp1 = 0xA0,
+Txdp2 = 0xA4,
+Txdp3 = 0xA8,
+Rxdp1 = 0xB0,
+Rxdp2 = 0xB4,
+Rxdp3 = 0xB8,
+Vrcr = 0xBC,
+Vtcr = 0xC0,
+Vdr = 0xC4,
+Ccsr = 0xCC,
+Tbicr = 0xE0,
+Tbisr = 0xE4,
+Tanar = 0xE8,
+Tanlpar = 0xEC,
+Taner = 0xF0,
+Tesr = 0xF4,
 };
 enum {
-Txe		= 0x00000001,
-Txd		= 0x00000002,
-Rxe		= 0x00000004,
-Rxd		= 0x00000008,
-Txr		= 0x00000010,
-Rxr		= 0x00000020,
-Swien		= 0x00000080,
-Rst		= 0x00000100,
-TxpriSHFT	= 9,
-TxpriMASK	= 0x00001E00,
-RxpriSHFT	= 13,
-RxpriMASK	= 0x0001E000,
+Txe = 0x00000001,
+Txd = 0x00000002,
+Rxe = 0x00000004,
+Rxd = 0x00000008,
+Txr = 0x00000010,
+Rxr = 0x00000020,
+Swien = 0x00000080,
+Rst = 0x00000100,
+TxpriSHFT = 9,
+TxpriMASK = 0x00001E00,
+RxpriSHFT = 13,
+RxpriMASK = 0x0001E000,
 };
 enum {
-Bem		= 0x00000001,
-Ext125		= 0x00000002,
-Bromdis		= 0x00000004,
-Pesel		= 0x00000008,
-Exd		= 0x00000010,
-Pow		= 0x00000020,
-Sb		= 0x00000040,
-Reqalg		= 0x00000080,
-Extstsen	= 0x00000100,
-Phydis		= 0x00000200,
-Phyrst		= 0x00000400,
-M64addren	= 0x00000800,
-Data64en	= 0x00001000,
-Pci64det	= 0x00002000,
-T64addren	= 0x00004000,
-Mwidis		= 0x00008000,
-Mrmdis		= 0x00010000,
-Tmrtest		= 0x00020000,
-Spdstsien	= 0x00040000,
-Lnkstsien	= 0x00080000,
-Dupstsien	= 0x00100000,
-Mode1000	= 0x00400000,
-Tbien		= 0x01000000,
-Dupsts		= 0x10000000,
-Spdsts100	= 0x20000000,
-Spdsts1000	= 0x40000000,
-Lnksts		= 0x80000000,
+Bem = 0x00000001,
+Ext125 = 0x00000002,
+Bromdis = 0x00000004,
+Pesel = 0x00000008,
+Exd = 0x00000010,
+Pow = 0x00000020,
+Sb = 0x00000040,
+Reqalg = 0x00000080,
+Extstsen = 0x00000100,
+Phydis = 0x00000200,
+Phyrst = 0x00000400,
+M64addren = 0x00000800,
+Data64en = 0x00001000,
+Pci64det = 0x00002000,
+T64addren = 0x00004000,
+Mwidis = 0x00008000,
+Mrmdis = 0x00010000,
+Tmrtest = 0x00020000,
+Spdstsien = 0x00040000,
+Lnkstsien = 0x00080000,
+Dupstsien = 0x00100000,
+Mode1000 = 0x00400000,
+Tbien = 0x01000000,
+Dupsts = 0x10000000,
+Spdsts100 = 0x20000000,
+Spdsts1000 = 0x40000000,
+Lnksts = 0x80000000,
 };
 enum {
-Eedi		= 0x00000001,
-Eedo		= 0x00000002,
-Eeclk		= 0x00000004,
-Eesel		= 0x00000008,
-Mdio		= 0x00000010,
-Mddir		= 0x00000020,
-Mdc		= 0x00000040,
+Eedi = 0x00000001,
+Eedo = 0x00000002,
+Eeclk = 0x00000004,
+Eesel = 0x00000008,
+Mdio = 0x00000010,
+Mddir = 0x00000020,
+Mdc = 0x00000040,
 };
 enum {
-Rxok		= 0x00000001,
-Rxdesc		= 0x00000002,
-Rxerr		= 0x00000004,
-Rxearly		= 0x00000008,
-Rxidle		= 0x00000010,
-Rxorn		= 0x00000020,
-Txok		= 0x00000040,
-Txdesc		= 0x00000080,
-Txerr		= 0x00000100,
-Txidle		= 0x00000200,
-Txurn		= 0x00000400,
-Mib		= 0x00000800,
-Swi		= 0x00001000,
-Pme		= 0x00002000,
-Phy		= 0x00004000,
-Hibint		= 0x00008000,
-Rxsovr		= 0x00010000,
-Rtabt		= 0x00020000,
-Rmabt		= 0x00040000,
-Sserr		= 0x00080000,
-Dperr		= 0x00100000,
-Rxrcmp		= 0x00200000,
-Txrcmp		= 0x00400000,
-Rxdesc0		= 0x00800000,
-Rxdesc1		= 0x01000000,
-Rxdesc2		= 0x02000000,
-Rxdesc3		= 0x04000000,
-Txdesc0		= 0x08000000,
-Txdesc1		= 0x10000000,
-Txdesc2		= 0x20000000,
-Txdesc3		= 0x40000000,
+Rxok = 0x00000001,
+Rxdesc = 0x00000002,
+Rxerr = 0x00000004,
+Rxearly = 0x00000008,
+Rxidle = 0x00000010,
+Rxorn = 0x00000020,
+Txok = 0x00000040,
+Txdesc = 0x00000080,
+Txerr = 0x00000100,
+Txidle = 0x00000200,
+Txurn = 0x00000400,
+Mib = 0x00000800,
+Swi = 0x00001000,
+Pme = 0x00002000,
+Phy = 0x00004000,
+Hibint = 0x00008000,
+Rxsovr = 0x00010000,
+Rtabt = 0x00020000,
+Rmabt = 0x00040000,
+Sserr = 0x00080000,
+Dperr = 0x00100000,
+Rxrcmp = 0x00200000,
+Txrcmp = 0x00400000,
+Rxdesc0 = 0x00800000,
+Rxdesc1 = 0x01000000,
+Rxdesc2 = 0x02000000,
+Rxdesc3 = 0x04000000,
+Txdesc0 = 0x08000000,
+Txdesc1 = 0x10000000,
+Txdesc2 = 0x20000000,
+Txdesc3 = 0x40000000,
 };
 enum {
-Ien		= 0x00000001,
+Ien = 0x00000001,
 };
 enum {
-IhSHFT		= 0,
-IhMASK		= 0x000000FF,
-Ihctl		= 0x00000100,
+IhSHFT = 0,
+IhMASK = 0x000000FF,
+Ihctl = 0x00000100,
 };
 enum {
-TxdrthSHFT	= 0,
-TxdrthMASK	= 0x000000FF,
-FlthSHFT	= 16,
-FlthMASK	= 0x0000FF00,
-Brstdis		= 0x00080000,
-MxdmaSHFT	= 20,
-MxdmaMASK	= 0x00700000,
-Ecretryen	= 0x00800000,
-Atp		= 0x10000000,
-Mlb		= 0x20000000,
-Hbi		= 0x40000000,
-Csi		= 0x80000000,
+TxdrthSHFT = 0,
+TxdrthMASK = 0x000000FF,
+FlthSHFT = 16,
+FlthMASK = 0x0000FF00,
+Brstdis = 0x00080000,
+MxdmaSHFT = 20,
+MxdmaMASK = 0x00700000,
+Ecretryen = 0x00800000,
+Atp = 0x10000000,
+Mlb = 0x20000000,
+Hbi = 0x40000000,
+Csi = 0x80000000,
 };
 enum {
-RxdrthSHFT	= 1,
-RxdrthMASK	= 0x0000003E,
-Airl		= 0x04000000,
-Alp		= 0x08000000,
-Rxfd		= 0x10000000,
-Stripcrc	= 0x20000000,
-Arp		= 0x40000000,
-Aep		= 0x80000000,
+RxdrthSHFT = 1,
+RxdrthMASK = 0x0000003E,
+Airl = 0x04000000,
+Alp = 0x08000000,
+Rxfd = 0x10000000,
+Stripcrc = 0x20000000,
+Arp = 0x40000000,
+Aep = 0x80000000,
 };
 enum {
-Txpqen		= 0x00000001,
-Txfairen	= 0x00000002,
-RxpqenSHFT	= 2,
-RxpqenMASK	= 0x0000000C,
+Txpqen = 0x00000001,
+Txfairen = 0x00000002,
+RxpqenSHFT = 2,
+RxpqenMASK = 0x0000000C,
 };
 enum {
-PscntSHFT	= 0,
-PscntMASK	= 0x0000FFFF,
-Pstx		= 0x00020000,
-PsffloSHFT	= 18,
-PsffloMASK	= 0x000C0000,
-PsffhiSHFT	= 20,
-PsffhiMASK	= 0x00300000,
-PsstloSHFT	= 22,
-PsstloMASK	= 0x00C00000,
-PssthiSHFT	= 24,
-PssthiMASK	= 0x03000000,
-Psrcvd		= 0x08000000,
-Psact		= 0x10000000,
-Psda		= 0x20000000,
-Psmcast		= 0x40000000,
-Psen		= 0x80000000,
+PscntSHFT = 0,
+PscntMASK = 0x0000FFFF,
+Pstx = 0x00020000,
+PsffloSHFT = 18,
+PsffloMASK = 0x000C0000,
+PsffhiSHFT = 20,
+PsffhiMASK = 0x00300000,
+PsstloSHFT = 22,
+PsstloMASK = 0x00C00000,
+PssthiSHFT = 24,
+PssthiMASK = 0x03000000,
+Psrcvd = 0x08000000,
+Psact = 0x10000000,
+Psda = 0x20000000,
+Psmcast = 0x40000000,
+Psen = 0x80000000,
 };
 enum {
-RfaddrSHFT	= 0,
-RfaddrMASK	= 0x000003FF,
-Ulm		= 0x00080000,
-Uhen		= 0x00100000,
-Mhen		= 0x00200000,
-Aarp		= 0x00400000,
-ApatSHFT	= 23,
-ApatMASK	= 0x07800000,
-Apm		= 0x08000000,
-Aau		= 0x10000000,
-Aam		= 0x20000000,
-Aab		= 0x40000000,
-Rfen		= 0x80000000,
+RfaddrSHFT = 0,
+RfaddrMASK = 0x000003FF,
+Ulm = 0x00080000,
+Uhen = 0x00100000,
+Mhen = 0x00200000,
+Aarp = 0x00400000,
+ApatSHFT = 23,
+ApatMASK = 0x07800000,
+Apm = 0x08000000,
+Aau = 0x10000000,
+Aam = 0x20000000,
+Aab = 0x40000000,
+Rfen = 0x80000000,
 };
 enum {
-RfdataSHFT	= 0,
-RfdataMASK	= 0x0000FFFF,
-BmaskSHFT	= 16,
-BmaskMASK	= 0x00030000,
+RfdataSHFT = 0,
+RfdataMASK = 0x0000FFFF,
+BmaskSHFT = 16,
+BmaskMASK = 0x00030000,
 };
 enum {
-Wrn		= 0x00000001,
-Frz		= 0x00000002,
-Aclr		= 0x00000004,
-Mibs		= 0x00000008,
+Wrn = 0x00000001,
+Frz = 0x00000002,
+Aclr = 0x00000004,
+Mibs = 0x00000008,
 };
 enum {
-Nmibd		= 11,
+Nmibd = 11,
 };
 enum {
-Vtden		= 0x00000001,
-Vtren		= 0x00000002,
-Dvtf		= 0x00000004,
-Dutf		= 0x00000008,
-Ipen		= 0x00000010,
-Ripe		= 0x00000020,
-Rtcpe		= 0x00000040,
-Rudpe		= 0x00000080,
+Vtden = 0x00000001,
+Vtren = 0x00000002,
+Dvtf = 0x00000004,
+Dutf = 0x00000008,
+Ipen = 0x00000010,
+Ripe = 0x00000020,
+Rtcpe = 0x00000040,
+Rudpe = 0x00000080,
 };
 enum {
-Vgti		= 0x00000001,
-Vppti		= 0x00000002,
-Gchk		= 0x00000004,
-Ppchk		= 0x00000008,
+Vgti = 0x00000001,
+Vppti = 0x00000002,
+Gchk = 0x00000004,
+Ppchk = 0x00000008,
 };
 enum {
-VtypeSHFT	= 0,
-VtypeMASK	= 0x0000FFFF,
-VtciSHFT	= 16,
-VtciMASK	= 0xFFFF0000,
+VtypeSHFT = 0,
+VtypeMASK = 0x0000FFFF,
+VtciSHFT = 16,
+VtciMASK = 0xFFFF0000,
 };
 enum {
-Clkrunen	= 0x00000001,
-Pmeen		= 0x00000100,
-Pmests		= 0x00008000,
+Clkrunen = 0x00000001,
+Pmeen = 0x00000100,
+Pmests = 0x00008000,
 };
 typedef struct {
-u32int	link;
-u32int	bufptr;
-int	cmdsts;
-int	extsts;
-Block*	bp;
-u32int	unused;
+u32int link;
+u32int bufptr;
+int cmdsts;
+int extsts;
+Block* bp;
+u32int unused;
 } Desc;
 enum {
-SizeMASK	= 0x0000FFFF,
-SizeSHFT	= 0,
-Ok		= 0x08000000,
-Crc		= 0x10000000,
-Intr		= 0x20000000,
-More		= 0x40000000,
-Own		= 0x80000000,
+SizeMASK = 0x0000FFFF,
+SizeSHFT = 0,
+Ok = 0x08000000,
+Crc = 0x10000000,
+Intr = 0x20000000,
+More = 0x40000000,
+Own = 0x80000000,
 };
 enum {
-CcntMASK	= 0x000F0000,
-CcntSHFT	= 16,
-Ec		= 0x00100000,
-Owc		= 0x00200000,
-Ed		= 0x00400000,
-Td		= 0x00800000,
-Crs		= 0x01000000,
-Tfu		= 0x02000000,
-Txa		= 0x04000000,
+CcntMASK = 0x000F0000,
+CcntSHFT = 16,
+Ec = 0x00100000,
+Owc = 0x00200000,
+Ed = 0x00400000,
+Td = 0x00800000,
+Crs = 0x01000000,
+Tfu = 0x02000000,
+Txa = 0x04000000,
 };
 enum {
-Irl		= 0x00010000,
-Lbp		= 0x00020000,
-Fae		= 0x00040000,
-Crce		= 0x00080000,
-Ise		= 0x00100000,
-Runt		= 0x00200000,
-Long		= 0x00400000,
-DestMASK	= 0x01800000,
-DestSHFT	= 23,
-Rxo		= 0x02000000,
-Rxa		= 0x04000000,
+Irl = 0x00010000,
+Lbp = 0x00020000,
+Fae = 0x00040000,
+Crce = 0x00080000,
+Ise = 0x00100000,
+Runt = 0x00200000,
+Long = 0x00400000,
+DestMASK = 0x01800000,
+DestSHFT = 23,
+Rxo = 0x02000000,
+Rxa = 0x04000000,
 };
 enum {
-EvtciMASK	= 0x0000FFFF,
-EvtciSHFT	= 0,
-Vpkt		= 0x00010000,
-Ippkt		= 0x00020000,
-Iperr		= 0x00040000,
-Tcppkt		= 0x00080000,
-Tcperr		= 0x00100000,
-Udppkt		= 0x00200000,
-Udperr		= 0x00400000,
+EvtciMASK = 0x0000FFFF,
+EvtciSHFT = 0,
+Vpkt = 0x00010000,
+Ippkt = 0x00020000,
+Iperr = 0x00040000,
+Tcppkt = 0x00080000,
+Tcperr = 0x00100000,
+Udppkt = 0x00200000,
+Udperr = 0x00400000,
 };
 enum {
-Nrd		= 32,
-Nrbf		= 4*Nrd,
-Rbsz		= ROUNDUP(sizeof(Etherpkt)+8, 8),
-Ntd		= 8,
+Nrd = 32,
+Nrbf = 4*Nrd,
+Rbsz = ROUNDUP(sizeof(Etherpkt)+8, 8),
+Ntd = 8,
 };
 typedef struct Ctlr Ctlr;
 struct Ctlr {
-int	port;
-Pcidev*	pcidev;
-Ctlr*	next;
-int	active;
-int	id;
-int	eepromsz;
-ushort*	eeprom;
-int*	nic;
-int	cfg;
-int	imr;
-Lock	alock;
-Lock	ilock;
-void*	alloc;
-Mii*	mii;
-Lock	rdlock;
-Desc*	rd;
-int	nrd;
-int	nrb;
-int	rdx;
-int	rxcfg;
-Lock	tlock;
-Desc*	td;
-int	ntd;
-int	tdh;
-int	tdt;
-int	ntq;
-int	txcfg;
-int	rxidle;
-uint	mibd[Nmibd];
-int	ec;
-int	owc;
-int	ed;
-int	crs;
-int	tfu;
-int	txa;
+int port;
+Pcidev* pcidev;
+Ctlr* next;
+int active;
+int id;
+int eepromsz;
+ushort* eeprom;
+int* nic;
+int cfg;
+int imr;
+Lock alock;
+Lock ilock;
+void* alloc;
+Mii* mii;
+Lock rdlock;
+Desc* rd;
+int nrd;
+int nrb;
+int rdx;
+int rxcfg;
+Lock tlock;
+Desc* td;
+int ntd;
+int tdh;
+int tdt;
+int ntq;
+int txcfg;
+int rxidle;
+uint mibd[Nmibd];
+int ec;
+int owc;
+int ed;
+int crs;
+int tfu;
+int txa;
 };
-#define csr32r(c, r)	(*((c)->nic+((r)/4)))
-#define csr32w(c, r, v)	(*((c)->nic+((r)/4)) = (v))
+#define csr32r(c, r) (*((c)->nic+((r)/4)))
+#define csr32w(c, r, v) (*((c)->nic+((r)/4)) = (v))
 static Ctlr* dp83820ctlrhead;
 static Ctlr* dp83820ctlrtail;
 static Lock dp83820rblock;
@@ -696,7 +696,7 @@ ctlr->tdh = x;
 if(bp != nil)
 freeblist(bp);
 x = ctlr->tdt;
-while(ctlr->ntq < ctlr->ntd - 1  ){
+while(ctlr->ntq < ctlr->ntd - 1 ){
 bp = fromringbuf(edev);
 if (bp == nil)
 break;

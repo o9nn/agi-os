@@ -71,7 +71,7 @@ return 0;
 private int
 gx_set_overprint_DevicePixel(const gs_color_space * pcs, gs_state * pgs)
 {
-gs_overprint_params_t   params;
+gs_overprint_params_t params;
 params.retain_any_comps = false;
 pgs->effective_overprint_mode = 0;
 return gs_state_update_overprint(pgs, &params);

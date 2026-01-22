@@ -6,96 +6,96 @@
 #include "io.h"
 #include "etherif.h"
 enum {
-Nrdre		= 32,
-Ntdre		= 4,
-Rbsize		= ETHERMAXTU+4,
-Bufsize		= (Rbsize+7)&~7,
+Nrdre = 32,
+Ntdre = 4,
+Rbsize = ETHERMAXTU+4,
+Bufsize = (Rbsize+7)&~7,
 };
 enum {
-RxMiss=		1<<8,
-RxeLG=		1<<5,
-RxeNO=		1<<4,
-RxeSH=		1<<3,
-RxeCR=		1<<2,
-RxeOV=		1<<1,
-RxeCL=		1<<0,
-RxError=		(RxeLG|RxeNO|RxeSH|RxeCR|RxeOV|RxeCL),
-TxPad=		1<<14,
-TxTC=		1<<10,
-TxeDEF=		1<<9,
-TxeHB=		1<<8,
-TxeLC=		1<<7,
-TxeRL=		1<<6,
-TxeUN=		1<<1,
-TxeCSL=		1<<0,
-RXB=	1<<0,
-TXB=	1<<1,
-BSY=		1<<2,
-RXF=		1<<3,
-TXE=		1<<4,
-ENR=	1<<5,
-ENT=	1<<4,
-RXD1=	SIBIT(15),
-TXD1=	SIBIT(14),
-RTS1=	IBIT(19),
-CTS1=	SIBIT(11),
-CD1=	SIBIT(10),
+RxMiss= 1<<8,
+RxeLG= 1<<5,
+RxeNO= 1<<4,
+RxeSH= 1<<3,
+RxeCR= 1<<2,
+RxeOV= 1<<1,
+RxeCL= 1<<0,
+RxError= (RxeLG|RxeNO|RxeSH|RxeCR|RxeOV|RxeCL),
+TxPad= 1<<14,
+TxTC= 1<<10,
+TxeDEF= 1<<9,
+TxeHB= 1<<8,
+TxeLC= 1<<7,
+TxeRL= 1<<6,
+TxeUN= 1<<1,
+TxeCSL= 1<<0,
+RXB= 1<<0,
+TXB= 1<<1,
+BSY= 1<<2,
+RXF= 1<<3,
+TXE= 1<<4,
+ENR= 1<<5,
+ENT= 1<<4,
+RXD1= SIBIT(15),
+TXD1= SIBIT(14),
+RTS1= IBIT(19),
+CTS1= SIBIT(11),
+CD1= SIBIT(10),
 };
 typedef struct Etherparam Etherparam;
 struct Etherparam {
 SCCparam;
-ulong	c_pres;
-ulong	c_mask;
-ulong	crcec;
-ulong	alec;
-ulong	disfc;
-ushort	pads;
-ushort	ret_lim;
-ushort	ret_cnt;
-ushort	mflr;
-ushort	minflr;
-ushort	maxd1;
-ushort	maxd2;
-ushort	maxd;
-ushort	dma_cnt;
-ushort	max_b;
-ushort	gaddr[4];
-ulong	tbuf0_data0;
-ulong	tbuf0_data1;
-ulong	tbuf0_rba0;
-ulong	tbuf0_crc;
-ushort	tbuf0_bcnt;
-ushort	paddr[3];
-ushort	p_per;
-ushort	rfbd_ptr;
-ushort	tfbd_ptr;
-ushort	tlbd_ptr;
-ulong	tbuf1_data0;
-ulong	tbuf1_data1;
-ulong	tbuf1_rba0;
-ulong	tbuf1_crc;
-ushort	tbuf1_bcnt;
-ushort	tx_len;
-ushort	iaddr[4];
-ushort	boff_cnt;
-ushort	taddr[3];
+ulong c_pres;
+ulong c_mask;
+ulong crcec;
+ulong alec;
+ulong disfc;
+ushort pads;
+ushort ret_lim;
+ushort ret_cnt;
+ushort mflr;
+ushort minflr;
+ushort maxd1;
+ushort maxd2;
+ushort maxd;
+ushort dma_cnt;
+ushort max_b;
+ushort gaddr[4];
+ulong tbuf0_data0;
+ulong tbuf0_data1;
+ulong tbuf0_rba0;
+ulong tbuf0_crc;
+ushort tbuf0_bcnt;
+ushort paddr[3];
+ushort p_per;
+ushort rfbd_ptr;
+ushort tfbd_ptr;
+ushort tlbd_ptr;
+ulong tbuf1_data0;
+ulong tbuf1_data1;
+ulong tbuf1_rba0;
+ulong tbuf1_crc;
+ushort tbuf1_bcnt;
+ushort tx_len;
+ushort iaddr[4];
+ushort boff_cnt;
+ushort taddr[3];
 };
 typedef struct {
-SCC*	scc;
-int	port;
-int	cpm;
-BD*	rdr;
-void*	rrb;
-int	rdrx;
-BD*	tdr;
-void*	trb;
-int	tdrx;
+SCC* scc;
+int port;
+int cpm;
+BD* rdr;
+void* rrb;
+int rdrx;
+BD* tdr;
+void* trb;
+int tdrx;
 } Mot;
 static Mot mot[MaxEther];
-static	int	sccid[] = {-1, SCC1ID, SCC2ID, SCC3ID, SCC4ID};
-static	int	sccparam[] = {-1, SCC1P, SCC2P, SCC3P, SCC4P};
-static	int	sccreg[] = {-1, 0xA00, 0xA20, 0xA40, 0xA60};
-static	int	sccirq[] = {-1, 0x1E, 0x1D, 0x1C, 0x1B};
+static int sccid[] = {-1, SCC1ID, SCC2ID, SCC3ID, SCC4ID};
+static int sccparam[] = {-1, SCC1P, SCC2P, SCC3P, SCC4P};
+static int sccreg[] = {-1, 0xA00, 0xA20, 0xA40, 0xA60};
+static int sccirq[] = {-1, 0x1E, 0x1D, 0x1C, 0x1B};
 static void
 attach(Ctlr *ctlr)
 {

@@ -561,7 +561,7 @@ R"""({
 })""",
 R"""(
 boolean ::= ("true" | "false") space
-root ::= "[" space  "]" space
+root ::= "[" space "]" space
 space ::= | " " | "\n"{1,2} [ \t]{0,20}
 )"""
 });
@@ -755,7 +755,7 @@ R"""({
 R"""(
 a-kv ::= "\"a\"" space ":" space string
 char ::= [^"\\\x7F\x00-\x1F] | [\\] (["\\bfnrt] | "u" [0-9a-fA-F]{4})
-root ::= "{" space  (a-kv )? "}" space
+root ::= "{" space (a-kv )? "}" space
 space ::= | " " | "\n"{1,2} [ \t]{0,20}
 string ::= "\"" char* "\"" space
 )"""
@@ -778,7 +778,7 @@ b-kv ::= "\"b\"" space ":" space string
 b-rest ::= ( "," space c-kv )?
 c-kv ::= "\"c\"" space ":" space string
 char ::= [^"\\\x7F\x00-\x1F] | [\\] (["\\bfnrt] | "u" [0-9a-fA-F]{4})
-root ::= "{" space  (a-kv a-rest | b-kv b-rest | c-kv )? "}" space
+root ::= "{" space (a-kv a-rest | b-kv b-rest | c-kv )? "}" space
 space ::= | " " | "\n"{1,2} [ \t]{0,20}
 string ::= "\"" char* "\"" space
 )"""
@@ -822,7 +822,7 @@ char ::= [^"\\\x7F\x00-\x1F] | [\\] (["\\bfnrt] | "u" [0-9a-fA-F]{4})
 decimal-part ::= [0-9]{1,16}
 integral-part ::= [0] | [1-9] [0-9]{0,15}
 number ::= ("-"? integral-part) ("." decimal-part)? ([eE] [-+]? integral-part)? space
-root ::= "{" space  (additional-kv ( "," space additional-kv )* )? "}" space
+root ::= "{" space (additional-kv ( "," space additional-kv )* )? "}" space
 space ::= | " " | "\n"{1,2} [ \t]{0,20}
 string ::= "\"" char* "\"" space
 )"""
@@ -878,7 +878,7 @@ R"""({
 "additionalProperties": false
 })""",
 R"""(
-root ::= "{" space  "}" space
+root ::= "{" space "}" space
 space ::= | " " | "\n"{1,2} [ \t]{0,20}
 )"""
 });
@@ -925,7 +925,7 @@ char ::= [^"\\\x7F\x00-\x1F] | [\\] (["\\bfnrt] | "u" [0-9a-fA-F]{4})
 decimal-part ::= [0-9]{1,16}
 integral-part ::= [0] | [1-9] [0-9]{0,15}
 number ::= ("-"? integral-part) ("." decimal-part)? ([eE] [-+]? integral-part)? space
-root ::= "{" space  (a-kv a-rest | additional-kv ( "," space additional-kv )* )? "}" space
+root ::= "{" space (a-kv a-rest | additional-kv ( "," space additional-kv )* )? "}" space
 space ::= | " " | "\n"{1,2} [ \t]{0,20}
 )"""
 });
@@ -976,7 +976,7 @@ char ::= [^"\\\x7F\x00-\x1F] | [\\] (["\\bfnrt] | "u" [0-9a-fA-F]{4})
 integer ::= ("-"? integral-part) space
 integral-part ::= [0] | [1-9] [0-9]{0,15}
 root ::= ("-"? integral-part) space
-root0 ::= "{" space  (-kv -rest | a-kv a-rest | additional-kv ( "," space additional-kv )* )? "}" space
+root0 ::= "{" space (-kv -rest | a-kv a-rest | additional-kv ( "," space additional-kv )* )? "}" space
 space ::= | " " | "\n"{1,2} [ \t]{0,20}
 )"""
 });
@@ -1000,7 +1000,7 @@ additional-kv ::= additional-k ":" space integer
 char ::= [^"\\\x7F\x00-\x1F] | [\\] (["\\bfnrt] | "u" [0-9a-fA-F]{4})
 integer ::= ("-"? integral-part) space
 integral-part ::= [0] | [1-9] [0-9]{0,15}
-root ::= "{" space  (a-kv a-rest | aa-kv aa-rest | additional-kv ( "," space additional-kv )* )? "}" space
+root ::= "{" space (a-kv a-rest | aa-kv aa-rest | additional-kv ( "," space additional-kv )* )? "}" space
 space ::= | " " | "\n"{1,2} [ \t]{0,20}
 )"""
 });
@@ -1024,7 +1024,7 @@ additional-kv ::= additional-k ":" space integer
 char ::= [^"\\\x7F\x00-\x1F] | [\\] (["\\bfnrt] | "u" [0-9a-fA-F]{4})
 integer ::= ("-"? integral-part) space
 integral-part ::= [0] | [1-9] [0-9]{0,15}
-root ::= "{" space  (ab-kv ab-rest | ac-kv ac-rest | additional-kv ( "," space additional-kv )* )? "}" space
+root ::= "{" space (ab-kv ab-rest | ac-kv ac-rest | additional-kv ( "," space additional-kv )* )? "}" space
 space ::= | " " | "\n"{1,2} [ \t]{0,20}
 )"""
 });
@@ -1078,10 +1078,10 @@ R"""({
 R"""(
 alternative-0 ::= foo
 alternative-1 ::= bar
-bar ::= "{" space  (bar-b-kv )? "}" space
+bar ::= "{" space (bar-b-kv )? "}" space
 bar-b-kv ::= "\"b\"" space ":" space number
 decimal-part ::= [0-9]{1,16}
-foo ::= "{" space  (foo-a-kv )? "}" space
+foo ::= "{" space (foo-a-kv )? "}" space
 foo-a-kv ::= "\"a\"" space ":" space number
 integral-part ::= [0] | [1-9] [0-9]{0,15}
 number ::= ("-"? integral-part) ("." decimal-part)? ([eE] [-+]? integral-part)? space

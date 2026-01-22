@@ -11,8 +11,8 @@ intptr_t val;
 int ret_type;
 int run_on_exec;
 };
-#define VAL_SYM		10
-#define VAL_FUNC	11
+#define VAL_SYM 10
+#define VAL_FUNC 11
 struct arg
 {
 char *text;

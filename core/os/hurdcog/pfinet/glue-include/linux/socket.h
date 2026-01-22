@@ -25,40 +25,40 @@
 #define SOL_ICMPV6 IPPROTO_ICMPV6
 #endif
 #define SOL_RAW IPPROTO_RAW
-#define IP_PKTINFO	190
-#define IP_PKTOPTIONS	191
-#define IP_MTU_DISCOVER	192
-#define IP_RECVERR	193
-#define IP_RECVTTL	194
-#define	IP_RECVTOS	195
-#define IP_MTU		196
-#define IP_ROUTER_ALERT	197
+#define IP_PKTINFO 190
+#define IP_PKTOPTIONS 191
+#define IP_MTU_DISCOVER 192
+#define IP_RECVERR 193
+#define IP_RECVTTL 194
+#define IP_RECVTOS 195
+#define IP_MTU 196
+#define IP_ROUTER_ALERT 197
 #define TCP_NODELAY 1
 #define TCP_MAXSEG 2
 #define TCP_CORK 3
 #define SO_NO_CHECK 11
 #define SO_PRIORITY 12
-#define	SO_PASSCRED 190
-#define	SO_PEERCRED 191
-#define	SO_BSDCOMPAT 192
+#define SO_PASSCRED 190
+#define SO_PEERCRED 191
+#define SO_BSDCOMPAT 192
 #ifndef SOMAXCONN
-#define SOMAXCONN	128
+#define SOMAXCONN 128
 #endif
 #ifndef CMSG_DATA
-#define msg_control	msg_accrights
-#define msg_controllen	msg_accrightslen
+#define msg_control msg_accrights
+#define msg_controllen msg_accrightslen
 struct cmsghdr { int cmsg_garbage; };
-#define cmsg_len	cmsg_garbage
-#define cmsg_type	cmsg_garbage
-#define cmsg_level	cmsg_garbage
+#define cmsg_len cmsg_garbage
+#define cmsg_type cmsg_garbage
+#define cmsg_level cmsg_garbage
 static inline int
 put_cmsg(struct msghdr *msg, int level, int type, int len, void *data)
 { return 0; }
-#define CMSG_FIRSTHDR(msg)	(0)
-#define CMSG_NXTHDR(msg, cmsg)	(0)
-#define CMSG_DATA(cmsg)		(0)
-#define CMSG_ALIGN(size)	(0)
-#define CMSG_LEN(size) 		(0)
+#define CMSG_FIRSTHDR(msg) (0)
+#define CMSG_NXTHDR(msg, cmsg) (0)
+#define CMSG_DATA(cmsg) (0)
+#define CMSG_ALIGN(size) (0)
+#define CMSG_LEN(size) (0)
 #else
 static inline int
 put_cmsg(struct msghdr *msg, int level, int type, int len, void *data)
@@ -66,11 +66,11 @@ put_cmsg(struct msghdr *msg, int level, int type, int len, void *data)
 #endif
 #ifndef MSG_NOSIGNAL
 # warning "http:
-# define MSG_NOSIGNAL	0
+# define MSG_NOSIGNAL 0
 #endif
-#define MSG_ERRQUEUE	0
-#define SOCK_PACKET	((int)((uint32_t)USHRT_MAX) * 2)
-#define PF_PACKET	0
+#define MSG_ERRQUEUE 0
+#define SOCK_PACKET ((int)((uint32_t)USHRT_MAX) * 2)
+#define PF_PACKET 0
 #ifndef UIO_MAXIOV
 #define UIO_MAXIOV 4
 #endif

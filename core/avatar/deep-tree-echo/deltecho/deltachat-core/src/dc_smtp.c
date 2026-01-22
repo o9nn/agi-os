@@ -202,8 +202,8 @@ smtp->etpan = NULL;
 }
 int dc_smtp_send_msg(dc_smtp_t* smtp, const clist* recipients, const char* data_not_terminated, size_t data_bytes)
 {
-int        success = 0;
-int        r = 0;
+int success = 0;
+int r = 0;
 clistiter* iter = NULL;
 if (smtp==NULL) {
 goto cleanup;

@@ -14,7 +14,7 @@ static int setsize(unsigned long capacity,unsigned int *cyls,unsigned int *hds,
 unsigned int *secs);
 int scsicam_bios_param (Disk *disk,
 kdev_t dev,
-int *ip			) {
+int *ip ) {
 struct buffer_head *bh;
 int ret_code;
 int size = disk->capacity;
@@ -41,7 +41,7 @@ ip[2] = size / (ip[0] * ip[1]);
 return 0;
 }
 int scsi_partsize(struct buffer_head *bh, unsigned long capacity,
-unsigned int  *cyls, unsigned int *hds, unsigned int *secs) {
+unsigned int *cyls, unsigned int *hds, unsigned int *secs) {
 struct partition *p, *largest = NULL;
 int i, largest_cyl;
 int cyl, ext_cyl, end_head, end_cyl, end_sector;
@@ -71,7 +71,7 @@ if( end_head + 1 == 0 || end_sector == 0 ) return -1;
 printk ("scsicam_bios_param : end at h = %d, c = %d, s = %d\n",
 end_head, end_cyl, end_sector);
 #endif
-physical_end =  end_cyl * (end_head + 1) * end_sector +
+physical_end = end_cyl * (end_head + 1) * end_sector +
 end_head * end_sector + end_sector;
 logical_end = get_unaligned(&largest->start_sect)
 + get_unaligned(&largest->nr_sects);
@@ -118,6 +118,6 @@ cylinders = capacity / temp;
 if (cylinders == 0) rv=(unsigned)-1;
 *cyls = (unsigned int) cylinders;
 *secs = (unsigned int) sectors;
-*hds  = (unsigned int) heads;
+*hds = (unsigned int) heads;
 return(rv);
 }

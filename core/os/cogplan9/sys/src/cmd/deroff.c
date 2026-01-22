@@ -1,76 +1,76 @@
 #include <u.h>
 #include <libc.h>
 #include <bio.h>
-#define	C	fC()
-#define	C1	fC1()
-#define	SKIP	while(C != '\n')
-#define SKIP1	while(C1 != '\n')
-#define SKIP_TO_COM		SKIP;\
+#define C fC()
+#define C1 fC1()
+#define SKIP while(C != '\n')
+#define SKIP1 while(C1 != '\n')
+#define SKIP_TO_COM SKIP;\
 SKIP;\
 pc=c;\
 while(C != '.' || pc != '\n' || C > 'Z')\
 pc=c
-#define YES		1
-#define NO		0
-#define MS		0
-#define MM		1
-#define ONE		1
-#define TWO		2
-#define NOCHAR		-2
-#define	EXTENDED	-1
-#define SPECIAL		0
-#define APOS		1
-#define PUNCT		2
-#define DIGIT		3
-#define LETTER		4
-int	linect	= 0;
-int	wordflag= NO;
-int	underscoreflag = NO;
-int	msflag	= NO;
-int	iflag	= NO;
-int	mac	= MM;
-int	disp	= 0;
-int	inmacro	= NO;
-int	intable	= NO;
-int	eqnflag	= 0;
-#define	MAX_ASCII	0X80
-char	chars[MAX_ASCII];
-Rune	line[30000];
-Rune*	lp;
-long	c;
-long	pc;
-int	ldelim	= NOCHAR;
-int	rdelim	= NOCHAR;
-char**	argv;
-char	fname[50];
-Biobuf*	files[15];
+#define YES 1
+#define NO 0
+#define MS 0
+#define MM 1
+#define ONE 1
+#define TWO 2
+#define NOCHAR -2
+#define EXTENDED -1
+#define SPECIAL 0
+#define APOS 1
+#define PUNCT 2
+#define DIGIT 3
+#define LETTER 4
+int linect = 0;
+int wordflag= NO;
+int underscoreflag = NO;
+int msflag = NO;
+int iflag = NO;
+int mac = MM;
+int disp = 0;
+int inmacro = NO;
+int intable = NO;
+int eqnflag = 0;
+#define MAX_ASCII 0X80
+char chars[MAX_ASCII];
+Rune line[30000];
+Rune* lp;
+long c;
+long pc;
+int ldelim = NOCHAR;
+int rdelim = NOCHAR;
+char** argv;
+char fname[50];
+Biobuf* files[15];
 Biobuf**filesp;
-Biobuf*	infile;
-char*	devnull	= "/dev/null";
-Biobuf	*infile;
-Biobuf	bout;
-long	skeqn(void);
-Biobuf*	opn(char *p);
-int	eof(void);
-int	charclass(int);
-void	getfname(void);
-void	fatal(char *s, char *p);
-void	usage(void);
-void	work(void);
-void	putmac(Rune *rp, int vconst);
-void	regline(int macline, int vconst);
-void	putwords(void);
-void	comline(void);
-void	macro(void);
-void	eqn(void);
-void	tbl(void);
-void	stbl(void);
-void	sdis(char a1, char a2);
-void	sce(void);
-void	backsl(void);
-char*	copys(char *s);
-void	refer(int c1);
-void	inpic(void);
+Biobuf* infile;
+char* devnull = "/dev/null";
+Biobuf *infile;
+Biobuf bout;
+long skeqn(void);
+Biobuf* opn(char *p);
+int eof(void);
+int charclass(int);
+void getfname(void);
+void fatal(char *s, char *p);
+void usage(void);
+void work(void);
+void putmac(Rune *rp, int vconst);
+void regline(int macline, int vconst);
+void putwords(void);
+void comline(void);
+void macro(void);
+void eqn(void);
+void tbl(void);
+void stbl(void);
+void sdis(char a1, char a2);
+void sce(void);
+void backsl(void);
+char* copys(char *s);
+void refer(int c1);
+void inpic(void);
 int
 fC(void)
 {
@@ -113,10 +113,10 @@ msflag = YES;
 if(f = ARGF())
 switch(*f)
 {
-case 'm':	mac = MM; break;
-case 's':	mac = MS; break;
-case 'l':	disp = 1; break;
-default:	usage();
+case 'm': mac = MM; break;
+case 's': mac = MS; break;
+case 'l': disp = 1; break;
+default: usage();
 }
 else
 usage();
@@ -202,8 +202,8 @@ Rune r;
 Dir *dir;
 struct chain
 {
-struct	chain*	nextp;
-char*	datap;
+struct chain* nextp;
+char* datap;
 } *q;
 static struct chain *namechain= 0;
 while(C == ' ')
@@ -253,7 +253,7 @@ work(void)
 {
 for(;;) {
 eqnflag = 0;
-if(C == '.'  ||  c == '\'')
+if(C == '.' || c == '\'')
 comline();
 else
 regline(NO, TWO);
@@ -617,7 +617,7 @@ last = 0;
 dflg = 1;
 SKIP;
 for(;;) {
-if(C1 == '.'  || c == '\'') {
+if(C1 == '.' || c == '\'') {
 while(C1==' ' || c=='\t')
 ;
 if(c=='E' && C1=='N') {

@@ -86,8 +86,8 @@ void * smtp_logger_context;
 };
 #define MAILSMTP_DSN_NOTIFY_SUCCESS 1
 #define MAILSMTP_DSN_NOTIFY_FAILURE 2
-#define MAILSMTP_DSN_NOTIFY_DELAY   4
-#define MAILSMTP_DSN_NOTIFY_NEVER   8
+#define MAILSMTP_DSN_NOTIFY_DELAY 4
+#define MAILSMTP_DSN_NOTIFY_NEVER 8
 struct esmtp_address {
 char * address;
 int notify;

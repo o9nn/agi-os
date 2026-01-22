@@ -206,7 +206,7 @@ return TRUE;
 if (strcmp(key, "ssl_protocols") == 0) {
 obsolete(ctx, "%s has been replaced by ssl_min_protocol", key);
 const char *min_protocol, *error;
-if (ssl_protocols_to_min_protocol(value,  &min_protocol, &error) < 0) {
+if (ssl_protocols_to_min_protocol(value, &min_protocol, &error) < 0) {
 i_error("Could not find a minimum ssl_min_protocol "
 "setting from ssl_protocols = %s: %s",
 value, error);

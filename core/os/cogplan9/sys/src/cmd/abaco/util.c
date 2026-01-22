@@ -13,8 +13,8 @@
 #include <regexp.h>
 #include "dat.h"
 #include "fns.h"
-static	Point		prevmouse;
-static	Window	*mousew;
+static Point prevmouse;
+static Window *mousew;
 int
 min(int a, int b)
 {
@@ -359,7 +359,7 @@ void
 ellipse3d(Image *im, Point p, int rad, int i, Image **c, Point sp)
 {
 fillarc(im, p, rad, rad, c[0], sp, 45, 180);
-fillarc(im, p, rad, rad, c[1], sp,  45, -180);
+fillarc(im, p, rad, rad, c[1], sp, 45, -180);
 fillellipse(im, p, rad-i, rad-i, c[2], sp);
 }
 void
@@ -414,9 +414,9 @@ return fonts[i];
 }
 typedef struct Color Color;
 struct Color {
-int	rgb;
-Image	*i;
-Color	*next;
+int rgb;
+Image *i;
+Color *next;
 };
 enum {
 NHASH = 19,
@@ -554,7 +554,7 @@ r = c;
 }
 char urlexpr[] = "^(https?|ftp|file|gopher|mailto|news|nntp|telnet|wais|"
 "prospero):
-Reprog	*urlprog;
+Reprog *urlprog;
 int
 validurl(Rune *r)
 {
@@ -632,7 +632,7 @@ char *tcs;
 "euc_jp", "jis",
 "euc_kr", "euc-k",
 "windows-874", "tis",
-nil,	nil,
+nil, nil,
 };
 enum {
 Winstart = 127,

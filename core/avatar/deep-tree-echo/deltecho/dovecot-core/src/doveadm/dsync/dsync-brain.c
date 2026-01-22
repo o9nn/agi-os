@@ -36,7 +36,7 @@ static const char *dsync_state_names[] = {
 };
 static_assert_array_size(dsync_state_names, DSYNC_STATE_DONE+1);
 #define BRAIN_MASTER TRUE
-#define BRAIN_SLAVE  FALSE
+#define BRAIN_SLAVE FALSE
 struct dsync_mailbox_list_module dsync_mailbox_list_module =
 MODULE_CONTEXT_INIT(&mailbox_list_module_register);
 static void dsync_brain_mailbox_states_dump(struct dsync_brain *brain);

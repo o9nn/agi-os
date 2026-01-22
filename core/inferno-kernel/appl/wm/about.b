@@ -6,15 +6,15 @@ draw: Draw;
 Display, Image: import draw;
 include "tk.m";
 tk: Tk;
-include	"tkclient.m";
+include "tkclient.m";
 tkclient: Tkclient;
 WmAbout: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 tkcfg(version: string): array of string
 {
-return  array[] of {
+return array[] of {
 "frame .f -bg black -borderwidth 2 -relief ridge",
 "label .b -bg black -bitmap @/icons/inferno.bit",
 "label .l1 -bg black -fg #ff5500  -text {Inferno "+ version + "}",
@@ -26,13 +26,13 @@ return  array[] of {
 }
 init(ctxt: ref Draw->Context, nil: list of string)
 {
-sys  = load Sys  Sys->PATH;
+sys = load Sys Sys->PATH;
 if (ctxt == nil) {
 sys->fprint(sys->fildes(2), "about: no window context\n");
 raise "fail:bad context";
 }
 draw = load Draw Draw->PATH;
-tk   = load Tk   Tk->PATH;
+tk = load Tk Tk->PATH;
 tkclient= load Tkclient Tkclient->PATH;
 tkclient->init();
 (t, menubut) := tkclient->toplevel(ctxt, "", "About Inferno", 0);

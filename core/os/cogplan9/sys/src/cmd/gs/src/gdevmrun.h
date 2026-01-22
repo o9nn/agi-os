@@ -1,5 +1,5 @@
 #ifndef gdevmrun_INCLUDED
-#  define gdevmrun_INCLUDED
+# define gdevmrun_INCLUDED
 #include "gxdevmem.h"
 typedef struct gx_device_run_s {
 gx_device_memory md;

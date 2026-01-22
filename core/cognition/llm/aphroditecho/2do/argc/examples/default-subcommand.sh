@@ -1,7 +1,7 @@
 upload() {
-    echo upload "$@"
+echo upload "$@"
 }
 download() {
-    echo download "$@"
+echo download "$@"
 }
 eval "$(argc --argc-eval "$0" "$@")"

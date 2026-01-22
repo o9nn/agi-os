@@ -1,5 +1,5 @@
 #ifndef icontext_INCLUDED
-#  define icontext_INCLUDED
+# define icontext_INCLUDED
 #include "gsstype.h"
 #include "icstate.h"
 extern_st(st_context_state);

@@ -19,8 +19,8 @@
 #include "auth-client.h"
 #include <unistd.h>
 #define TEST_SOCKET "./auth-client-test"
-#define CLIENT_PROGRESS_TIMEOUT     30
-#define SERVER_KILL_TIMEOUT_SECS    20
+#define CLIENT_PROGRESS_TIMEOUT 30
+#define SERVER_KILL_TIMEOUT_SECS 20
 static void main_deinit(void);
 struct server_connection {
 struct connection conn;
@@ -417,11 +417,11 @@ return;
 }
 if (strcmp(args[0], "CPID") == 0) {
 continue;
-} else  if (strcmp(args[0], "AUTH") == 0) {
+} else if (strcmp(args[0], "AUTH") == 0) {
 if (test_auth_handshake_auth(conn, id,
 args + 2))
 continue;
-} else  if (strcmp(args[0], "CONT") == 0) {
+} else if (strcmp(args[0], "CONT") == 0) {
 if (test_auth_handshake_cont(conn, id,
 args + 2))
 continue;

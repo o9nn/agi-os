@@ -1,5 +1,5 @@
 #ifndef gslparam_INCLUDED
-#  define gslparam_INCLUDED
+# define gslparam_INCLUDED
 typedef enum {
 gs_cap_butt = 0,
 gs_cap_round = 1,

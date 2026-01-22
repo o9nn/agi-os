@@ -212,9 +212,9 @@ gx_color_value cv[GX_DEVICE_COLOR_MAX_COMPONENTS];
 int i;
 (*dev_proc(dev, decode_color)) (dev, previous, cv);
 #if arch_ints_are_short
-#  define b_int long
+# define b_int long
 #else
-#  define b_int int
+# define b_int int
 #endif
 #define make_shade(old, clr, alpha, amax) \
 (old) + (((b_int)(clr) - (b_int)(old)) * (alpha) / (amax))

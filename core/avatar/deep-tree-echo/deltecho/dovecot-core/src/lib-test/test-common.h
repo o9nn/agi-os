@@ -1,10 +1,10 @@
 #ifndef TEST_COMMON_H
 #define TEST_COMMON_H
 #ifdef HAVE_VALGRIND_VALGRIND_H
-#  include <valgrind/valgrind.h>
-#  define ON_VALGRIND ((bool) RUNNING_ON_VALGRIND)
+# include <valgrind/valgrind.h>
+# define ON_VALGRIND ((bool) RUNNING_ON_VALGRIND)
 #else
-#  define ON_VALGRIND FALSE
+# define ON_VALGRIND FALSE
 #endif
 struct istream *test_istream_create(const char *data);
 struct istream *test_istream_create_data(const void *data, size_t size);
@@ -30,7 +30,7 @@ test_assert_strcmp_idx(s1, s2, LLONG_MIN); \
 const char *_temp_s1 = (_s1); \
 const char *_temp_s2 = (_s2); \
 if ((null_strcmp(_temp_s1,_temp_s2) != 0)) \
-test_assert_failed_strcmp_idx("strcmp(" #_s1 ","  #_s2 ")", \
+test_assert_failed_strcmp_idx("strcmp(" #_s1 "," #_s2 ")", \
 __FILE__, __LINE__, _temp_s1, _temp_s2, i); \
 } STMT_END
 #define test_assert_cmp_bool(_bool_value1, _op, _value2) \
@@ -58,9 +58,9 @@ __FILE__, __LINE__, _temp_value1, _temp_value2, \
 #_op, _idx); \
 } STMT_END
 #ifdef STATIC_CHECKER
-#  define ATTR_STATIC_CHECKER_NORETURN ATTR_NORETURN
+# define ATTR_STATIC_CHECKER_NORETURN ATTR_NORETURN
 #else
-#  define ATTR_STATIC_CHECKER_NORETURN
+# define ATTR_STATIC_CHECKER_NORETURN
 #endif
 void test_assert_failed(const char *code, const char *file, unsigned int line)
 ATTR_STATIC_CHECKER_NORETURN;

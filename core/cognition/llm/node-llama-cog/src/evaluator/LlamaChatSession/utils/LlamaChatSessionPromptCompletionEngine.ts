@@ -5,215 +5,215 @@ import {safeEventCallback} from "../../../utils/safeEventCallback.js";
 import type {LlamaContextSequence} from "../../LlamaContext/LlamaContext.js";
 import type {LLamaChatCompletePromptOptions, LlamaChatSession} from "../LlamaChatSession.js";
 export type LLamaChatPromptCompletionEngineOptions = {
-    maxPreloadTokens?: number,
-    onGeneration?(prompt: string, completion: string): void,
-    maxCachedCompletions?: number,
-    temperature?: LLamaChatCompletePromptOptions["temperature"],
-    minP?: LLamaChatCompletePromptOptions["minP"],
-    topK?: LLamaChatCompletePromptOptions["topK"],
-    topP?: LLamaChatCompletePromptOptions["topP"],
-    seed?: LLamaChatCompletePromptOptions["seed"],
-    trimWhitespaceSuffix?: LLamaChatCompletePromptOptions["trimWhitespaceSuffix"],
-    evaluationPriority?: LLamaChatCompletePromptOptions["evaluationPriority"],
-    repeatPenalty?: LLamaChatCompletePromptOptions["repeatPenalty"],
-    tokenBias?: LLamaChatCompletePromptOptions["tokenBias"],
-    customStopTriggers?: LLamaChatCompletePromptOptions["customStopTriggers"],
-    grammar?: LLamaChatCompletePromptOptions["grammar"],
-    functions?: LLamaChatCompletePromptOptions["functions"],
-    documentFunctionParams?: LLamaChatCompletePromptOptions["documentFunctionParams"],
-    completeAsModel?: LLamaChatCompletePromptOptions["completeAsModel"]
+maxPreloadTokens?: number,
+onGeneration?(prompt: string, completion: string): void,
+maxCachedCompletions?: number,
+temperature?: LLamaChatCompletePromptOptions["temperature"],
+minP?: LLamaChatCompletePromptOptions["minP"],
+topK?: LLamaChatCompletePromptOptions["topK"],
+topP?: LLamaChatCompletePromptOptions["topP"],
+seed?: LLamaChatCompletePromptOptions["seed"],
+trimWhitespaceSuffix?: LLamaChatCompletePromptOptions["trimWhitespaceSuffix"],
+evaluationPriority?: LLamaChatCompletePromptOptions["evaluationPriority"],
+repeatPenalty?: LLamaChatCompletePromptOptions["repeatPenalty"],
+tokenBias?: LLamaChatCompletePromptOptions["tokenBias"],
+customStopTriggers?: LLamaChatCompletePromptOptions["customStopTriggers"],
+grammar?: LLamaChatCompletePromptOptions["grammar"],
+functions?: LLamaChatCompletePromptOptions["functions"],
+documentFunctionParams?: LLamaChatCompletePromptOptions["documentFunctionParams"],
+completeAsModel?: LLamaChatCompletePromptOptions["completeAsModel"]
 };
 export const defaultMaxPreloadTokens = (sequence: LlamaContextSequence) => {
-    const defaultValue: number = 256;
-    return sequence.model.fileInsights.swaSize != null
-        ? Math.min(
-            Math.ceil(sequence.model.fileInsights.swaSize / 2),
-            defaultValue,
-            Math.ceil(sequence.contextSize / 2)
-        )
-        : Math.min(
-            defaultValue,
-            Math.ceil(sequence.contextSize / 2)
-        );
+const defaultValue: number = 256;
+return sequence.model.fileInsights.swaSize != null
+? Math.min(
+Math.ceil(sequence.model.fileInsights.swaSize / 2),
+defaultValue,
+Math.ceil(sequence.contextSize / 2)
+)
+: Math.min(
+defaultValue,
+Math.ceil(sequence.contextSize / 2)
+);
 };
 const defaultMaxCachedCompletions = 100;
 export class LlamaChatSessionPromptCompletionEngine {
-     private readonly _chatSession: LlamaChatSession;
-     private readonly _maxPreloadTokens: number;
-     private readonly _maxCachedCompletions: number;
-     private readonly _onGeneration?: LLamaChatPromptCompletionEngineOptions["onGeneration"];
-     private readonly _completionOptions: LLamaChatCompletePromptOptions;
-     private readonly _completionCaches = new WeakMap<object, CompletionCache>();
-     private readonly _disposeAggregator = new DisposeAggregator();
-     private _currentCompletionAbortController = new AbortController();
-     private _lastPrompt?: string;
-     private _disposed = false;
-    private constructor(chatSession: LlamaChatSession, {
-        maxPreloadTokens = defaultMaxPreloadTokens(chatSession.sequence),
-        onGeneration,
-        maxCachedCompletions = defaultMaxCachedCompletions,
-        ...options
-    }: LLamaChatPromptCompletionEngineOptions) {
-        this._chatSession = chatSession;
-        this._maxPreloadTokens = Math.max(1, maxPreloadTokens);
-        this._maxCachedCompletions = Math.max(1, maxCachedCompletions);
-        this._onGeneration = safeEventCallback(onGeneration);
-        this._completionOptions = options;
-        this.dispose = this.dispose.bind(this);
-        this._disposeAggregator.add(
-            this._chatSession.onDispose.createListener(this.dispose)
-        );
-        this._disposeAggregator.add(() => {
-            this._disposed = true;
-            this._currentCompletionAbortController.abort();
-        });
-    }
-    public dispose() {
-        if (this._disposed)
-            return;
-        this._disposeAggregator.dispose();
-    }
-    public complete(prompt: string): string {
-        if (this._disposed)
-            throw new DisposedError();
-        const completionCache = this._getCurrentCompletionCache();
-        const completion = completionCache.getCompletion(prompt);
-        if (this._lastPrompt == null || !(this._lastPrompt + (completion ?? "")).startsWith(prompt)) {
-            this._lastPrompt = prompt;
-            this._restartCompletion(completionCache);
-        }
-        this._lastPrompt = prompt;
-        return completion ?? "";
-    }
-    private _getCurrentCompletionCache() {
-        const completionCache = this._completionCaches.get(this._chatSession._chatHistoryStateRef);
-        if (completionCache != null)
-            return completionCache;
-        const newCompletionCache = new CompletionCache(this._maxCachedCompletions);
-        this._completionCaches.set(this._chatSession._chatHistoryStateRef, newCompletionCache);
-        return newCompletionCache;
-    }
-    private _restartCompletion(completionCache: CompletionCache) {
-        if (this._disposed)
-            return;
-        this._currentCompletionAbortController.abort();
-        this._currentCompletionAbortController = new AbortController();
-        const prompt = this._lastPrompt;
-        if (prompt == null)
-            return;
-        const existingCompletion = completionCache.getCompletion(prompt);
-        const promptToComplete = prompt + (existingCompletion ?? "");
-        const currentPromptTokens = this._chatSession.model.tokenize(promptToComplete, false, "trimLeadingSpace").length;
-        const leftTokens = Math.max(0, this._maxPreloadTokens - currentPromptTokens);
-        if (leftTokens === 0)
-            return;
-        const currentAbortController = this._currentCompletionAbortController;
-        const currentAbortSignal = this._currentCompletionAbortController.signal;
-        let currentCompletion: string = "";
-        void this._chatSession.completePrompt(promptToComplete, {
-            ...this._completionOptions,
-            stopOnAbortSignal: false,
-            maxTokens: leftTokens,
-            signal: currentAbortSignal,
-            onTextChunk: (chunk) => {
-                currentCompletion += chunk;
-                const completion = (existingCompletion ?? "") + currentCompletion;
-                completionCache.putCompletion(prompt, completion);
-                if (this._getCurrentCompletionCache() !== completionCache) {
-                    currentAbortController.abort();
-                    return;
-                }
-                if (this._lastPrompt === prompt)
-                    this._onGeneration?.(prompt, completion);
-            }
-        })
-            .then(() => {
-                if (this._lastPrompt !== prompt && this._getCurrentCompletionCache() === completionCache)
-                    return this._restartCompletion(completionCache);
-            })
-            .catch((err) => {
-                if ((currentAbortSignal.aborted && err === currentAbortSignal.reason) || err instanceof DOMException)
-                    return;
-                console.error(getConsoleLogPrefix(false, false), err);
-            });
-    }
-    public static _create(chatSession: LlamaChatSession, options: LLamaChatPromptCompletionEngineOptions = {}) {
-        return new LlamaChatSessionPromptCompletionEngine(chatSession, options);
-    }
+private readonly _chatSession: LlamaChatSession;
+private readonly _maxPreloadTokens: number;
+private readonly _maxCachedCompletions: number;
+private readonly _onGeneration?: LLamaChatPromptCompletionEngineOptions["onGeneration"];
+private readonly _completionOptions: LLamaChatCompletePromptOptions;
+private readonly _completionCaches = new WeakMap<object, CompletionCache>();
+private readonly _disposeAggregator = new DisposeAggregator();
+private _currentCompletionAbortController = new AbortController();
+private _lastPrompt?: string;
+private _disposed = false;
+private constructor(chatSession: LlamaChatSession, {
+maxPreloadTokens = defaultMaxPreloadTokens(chatSession.sequence),
+onGeneration,
+maxCachedCompletions = defaultMaxCachedCompletions,
+...options
+}: LLamaChatPromptCompletionEngineOptions) {
+this._chatSession = chatSession;
+this._maxPreloadTokens = Math.max(1, maxPreloadTokens);
+this._maxCachedCompletions = Math.max(1, maxCachedCompletions);
+this._onGeneration = safeEventCallback(onGeneration);
+this._completionOptions = options;
+this.dispose = this.dispose.bind(this);
+this._disposeAggregator.add(
+this._chatSession.onDispose.createListener(this.dispose)
+);
+this._disposeAggregator.add(() => {
+this._disposed = true;
+this._currentCompletionAbortController.abort();
+});
+}
+public dispose() {
+if (this._disposed)
+return;
+this._disposeAggregator.dispose();
+}
+public complete(prompt: string): string {
+if (this._disposed)
+throw new DisposedError();
+const completionCache = this._getCurrentCompletionCache();
+const completion = completionCache.getCompletion(prompt);
+if (this._lastPrompt == null || !(this._lastPrompt + (completion ?? "")).startsWith(prompt)) {
+this._lastPrompt = prompt;
+this._restartCompletion(completionCache);
+}
+this._lastPrompt = prompt;
+return completion ?? "";
+}
+private _getCurrentCompletionCache() {
+const completionCache = this._completionCaches.get(this._chatSession._chatHistoryStateRef);
+if (completionCache != null)
+return completionCache;
+const newCompletionCache = new CompletionCache(this._maxCachedCompletions);
+this._completionCaches.set(this._chatSession._chatHistoryStateRef, newCompletionCache);
+return newCompletionCache;
+}
+private _restartCompletion(completionCache: CompletionCache) {
+if (this._disposed)
+return;
+this._currentCompletionAbortController.abort();
+this._currentCompletionAbortController = new AbortController();
+const prompt = this._lastPrompt;
+if (prompt == null)
+return;
+const existingCompletion = completionCache.getCompletion(prompt);
+const promptToComplete = prompt + (existingCompletion ?? "");
+const currentPromptTokens = this._chatSession.model.tokenize(promptToComplete, false, "trimLeadingSpace").length;
+const leftTokens = Math.max(0, this._maxPreloadTokens - currentPromptTokens);
+if (leftTokens === 0)
+return;
+const currentAbortController = this._currentCompletionAbortController;
+const currentAbortSignal = this._currentCompletionAbortController.signal;
+let currentCompletion: string = "";
+void this._chatSession.completePrompt(promptToComplete, {
+...this._completionOptions,
+stopOnAbortSignal: false,
+maxTokens: leftTokens,
+signal: currentAbortSignal,
+onTextChunk: (chunk) => {
+currentCompletion += chunk;
+const completion = (existingCompletion ?? "") + currentCompletion;
+completionCache.putCompletion(prompt, completion);
+if (this._getCurrentCompletionCache() !== completionCache) {
+currentAbortController.abort();
+return;
+}
+if (this._lastPrompt === prompt)
+this._onGeneration?.(prompt, completion);
+}
+})
+.then(() => {
+if (this._lastPrompt !== prompt && this._getCurrentCompletionCache() === completionCache)
+return this._restartCompletion(completionCache);
+})
+.catch((err) => {
+if ((currentAbortSignal.aborted && err === currentAbortSignal.reason) || err instanceof DOMException)
+return;
+console.error(getConsoleLogPrefix(false, false), err);
+});
+}
+public static _create(chatSession: LlamaChatSession, options: LLamaChatPromptCompletionEngineOptions = {}) {
+return new LlamaChatSessionPromptCompletionEngine(chatSession, options);
+}
 }
 class CompletionCache {
-     private readonly _cache: LruCache<string, null>;
-     private readonly _rootNode: InputNode = [new Map()];
-    public constructor(maxInputs: number) {
-        this._cache = new LruCache(maxInputs, {
-            onDelete: (key) => {
-                this._deleteInput(key);
-            }
-        });
-    }
-    public get maxInputs() {
-        return this._cache.maxSize;
-    }
-    public getCompletion(input: string): string | null {
-        let node: InputNode | undefined = this._rootNode;
-        for (let i = 0; i < input.length; i++) {
-            if (node == null)
-                return null;
-            const [next, completion]: InputNode = node;
-            const char = input[i]!;
-            if (!next.has(char)) {
-                if (completion != null && completion.startsWith(input.slice(i))) {
-                    this._cache.get(input.slice(0, i));
-                    return completion.slice(input.length - i);
-                }
-            }
-            node = next.get(char);
-        }
-        if (node == null)
-            return null;
-        const [, possibleCompletion] = node;
-        if (possibleCompletion != null) {
-            this._cache.get(input);
-            return possibleCompletion;
-        }
-        return null;
-    }
-    public putCompletion(input: string, completion: string): string {
-        this._cache.set(input, null);
-        let node = this._rootNode;
-        for (let i = 0; i < input.length; i++) {
-            const [next] = node;
-            const char = input[i]!;
-            if (!next.has(char))
-                next.set(char, [new Map()]);
-            node = next.get(char)!;
-        }
-        const currentCompletion = node[1];
-        if (currentCompletion != null && currentCompletion.startsWith(completion))
-            return currentCompletion;
-        node[1] = completion;
-        return completion;
-    }
-    private _deleteInput(input: string) {
-        let lastNodeWithMultipleChildren: InputNode = this._rootNode;
-        let lastNodeWithMultipleChildrenDeleteChar: string = input[0]!;
-        let node = this._rootNode;
-        for (let i = 0; i < input.length; i++) {
-            const [next] = node;
-            const char = input[i]!;
-            if (next.size > 1) {
-                lastNodeWithMultipleChildren = node;
-                lastNodeWithMultipleChildrenDeleteChar = char;
-            }
-            if (!next.has(char))
-                return;
-            node = next.get(char)!;
-        }
-        if (lastNodeWithMultipleChildrenDeleteChar !== "")
-            lastNodeWithMultipleChildren[0].delete(lastNodeWithMultipleChildrenDeleteChar);
-    }
+private readonly _cache: LruCache<string, null>;
+private readonly _rootNode: InputNode = [new Map()];
+public constructor(maxInputs: number) {
+this._cache = new LruCache(maxInputs, {
+onDelete: (key) => {
+this._deleteInput(key);
+}
+});
+}
+public get maxInputs() {
+return this._cache.maxSize;
+}
+public getCompletion(input: string): string | null {
+let node: InputNode | undefined = this._rootNode;
+for (let i = 0; i < input.length; i++) {
+if (node == null)
+return null;
+const [next, completion]: InputNode = node;
+const char = input[i]!;
+if (!next.has(char)) {
+if (completion != null && completion.startsWith(input.slice(i))) {
+this._cache.get(input.slice(0, i));
+return completion.slice(input.length - i);
+}
+}
+node = next.get(char);
+}
+if (node == null)
+return null;
+const [, possibleCompletion] = node;
+if (possibleCompletion != null) {
+this._cache.get(input);
+return possibleCompletion;
+}
+return null;
+}
+public putCompletion(input: string, completion: string): string {
+this._cache.set(input, null);
+let node = this._rootNode;
+for (let i = 0; i < input.length; i++) {
+const [next] = node;
+const char = input[i]!;
+if (!next.has(char))
+next.set(char, [new Map()]);
+node = next.get(char)!;
+}
+const currentCompletion = node[1];
+if (currentCompletion != null && currentCompletion.startsWith(completion))
+return currentCompletion;
+node[1] = completion;
+return completion;
+}
+private _deleteInput(input: string) {
+let lastNodeWithMultipleChildren: InputNode = this._rootNode;
+let lastNodeWithMultipleChildrenDeleteChar: string = input[0]!;
+let node = this._rootNode;
+for (let i = 0; i < input.length; i++) {
+const [next] = node;
+const char = input[i]!;
+if (next.size > 1) {
+lastNodeWithMultipleChildren = node;
+lastNodeWithMultipleChildrenDeleteChar = char;
+}
+if (!next.has(char))
+return;
+node = next.get(char)!;
+}
+if (lastNodeWithMultipleChildrenDeleteChar !== "")
+lastNodeWithMultipleChildren[0].delete(lastNodeWithMultipleChildrenDeleteChar);
+}
 }
 type InputNode = [
-    next: Map<string, InputNode>,
-    completion?: string
+next: Map<string, InputNode>,
+completion?: string
 ];

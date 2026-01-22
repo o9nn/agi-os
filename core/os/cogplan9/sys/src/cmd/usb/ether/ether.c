@@ -8,7 +8,7 @@
 typedef struct Dirtab Dirtab;
 enum
 {
-Qroot	= 0,
+Qroot = 0,
 Qclone,
 Qaddr,
 Qifstats,
@@ -23,9 +23,9 @@ Qmax,
 };
 struct Dirtab
 {
-char	*name;
-int	qid;
-int	mode;
+char *name;
+int qid;
+int mode;
 };
 typedef int (*Resetf)(Ether*);
 Cinfo cinfo[] =
@@ -61,21 +61,21 @@ Cinfo cinfo[] =
 };
 static Dirtab rootdirtab[] =
 {
-"/",		Qroot,		DMDIR|0555,
-"clone",	Qclone,		0666,
-"addr",		Qaddr,		0444,
-"ifstats",	Qifstats,	0444,
-"stats",	Qstats,		0444,
+"/", Qroot, DMDIR|0555,
+"clone", Qclone, 0666,
+"addr", Qaddr, 0444,
+"ifstats", Qifstats, 0444,
+"stats", Qstats, 0444,
 nil, 0, 0,
 };
 static Dirtab conndirtab[] =
 {
-"%d",		Qndir,		DMDIR|0555,
-"data",		Qndata,		0666,
-"ctl",		Qnctl,		0666,
-"ifstats",	Qnifstats,	0444,
-"stats",	Qnstats,	0444,
-"type",		Qntype,		0444,
+"%d", Qndir, DMDIR|0555,
+"data", Qndata, 0666,
+"ctl", Qnctl, 0666,
+"ifstats", Qnifstats, 0444,
+"stats", Qnstats, 0444,
+"type", Qntype, 0444,
 nil, 0,
 };
 int etherdebug;
@@ -778,10 +778,10 @@ return -1;
 }
 static Usbfs etherfs = {
 .walk = fswalk,
-.open =	 fsopen,
-.read =	 fsread,
+.open = fsopen,
+.read = fsread,
 .write = fswrite,
-.stat =	 fsstat,
+.stat = fsstat,
 .clunk = fsclunk,
 };
 static void
@@ -951,7 +951,7 @@ for(i = 0; (epin < 0 || epout < 0) && i < nelem(ifc->ep); i++)
 if((ep = ifc->ep[i]) != nil && ep->type == Ebulk){
 if(ep->dir == Eboth || ep->dir == Ein)
 if(epin == -1)
-epin =  ep->id;
+epin = ep->id;
 if(ep->dir == Eboth || ep->dir == Eout)
 if(epout == -1)
 epout = ep->id;

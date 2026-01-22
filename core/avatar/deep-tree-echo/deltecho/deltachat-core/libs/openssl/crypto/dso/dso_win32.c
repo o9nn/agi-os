@@ -9,7 +9,7 @@ return NULL;
 }
 #else
 # ifdef _WIN32_WCE
-#  if _WIN32_WCE < 300
+# if _WIN32_WCE < 300
 static FARPROC GetProcAddressA(HMODULE hModule, LPCSTR lpProcName)
 {
 WCHAR lpProcNameW[64];
@@ -21,25 +21,25 @@ return NULL;
 lpProcNameW[i] = 0;
 return GetProcAddressW(hModule, lpProcNameW);
 }
-#  endif
-#  undef GetProcAddress
-#  define GetProcAddress GetProcAddressA
+# endif
+# undef GetProcAddress
+# define GetProcAddress GetProcAddressA
 static HINSTANCE LoadLibraryA(LPCSTR lpLibFileName)
 {
 WCHAR *fnamw;
 size_t len_0 = strlen(lpLibFileName) + 1, i;
-#  ifdef _MSC_VER
+# ifdef _MSC_VER
 fnamw = (WCHAR *)_alloca(len_0 * sizeof(WCHAR));
-#  else
+# else
 fnamw = (WCHAR *)alloca(len_0 * sizeof(WCHAR));
-#  endif
+# endif
 if (fnamw == NULL) {
 SetLastError(ERROR_NOT_ENOUGH_MEMORY);
 return NULL;
 }
-#  if defined(_WIN32_WCE) && _WIN32_WCE>=101
+# if defined(_WIN32_WCE) && _WIN32_WCE>=101
 if (!MultiByteToWideChar(CP_ACP, 0, lpLibFileName, len_0, fnamw, len_0))
-#  endif
+# endif
 for (i = 0; i < len_0; i++)
 fnamw[i] = (WCHAR)lpLibFileName[i];
 return LoadLibraryW(fnamw);
@@ -484,12 +484,12 @@ return NULL;
 }
 # include <tlhelp32.h>
 # ifdef _WIN32_WCE
-#  define DLLNAME "TOOLHELP.DLL"
+# define DLLNAME "TOOLHELP.DLL"
 # else
-#  ifdef MODULEENTRY32
-#   undef MODULEENTRY32
-#  endif
-#  define DLLNAME "KERNEL32.DLL"
+# ifdef MODULEENTRY32
+# undef MODULEENTRY32
+# endif
+# define DLLNAME "KERNEL32.DLL"
 # endif
 typedef HANDLE(WINAPI *CREATETOOLHELP32SNAPSHOT) (DWORD, DWORD);
 typedef BOOL(WINAPI *CLOSETOOLHELP32SNAPSHOT) (HANDLE);
@@ -551,10 +551,10 @@ if ((BYTE *) addr >= me32.modBaseAddr &&
 (*close_snap) (hModuleSnap);
 FreeLibrary(dll);
 # ifdef _WIN32_WCE
-#  if _WIN32_WCE >= 101
+# if _WIN32_WCE >= 101
 return WideCharToMultiByte(CP_ACP, 0, me32.szExePath, -1,
 path, sz, NULL, NULL);
-#  else
+# else
 len = (int)wcslen(me32.szExePath);
 if (sz <= 0)
 return len + 1;
@@ -564,7 +564,7 @@ for (i = 0; i < len; i++)
 path[i] = (char)me32.szExePath[i];
 path[len++] = 0;
 return len;
-#  endif
+# endif
 # else
 len = (int)strlen(me32.szExePath);
 if (sz <= 0)

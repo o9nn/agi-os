@@ -29,19 +29,19 @@ llama_context * ctx_tgt = NULL;
 llama_context * ctx_dft = NULL;
 common_init_result llama_init_tgt = common_init_from_params(params);
 model_tgt = llama_init_tgt.model.get();
-ctx_tgt   = llama_init_tgt.context.get();
+ctx_tgt = llama_init_tgt.context.get();
 const llama_vocab * vocab = llama_model_get_vocab(model_tgt);
-params.devices      = params.speculative.devices;
-params.model        = params.speculative.model;
-params.n_ctx        = params.speculative.n_ctx;
-params.n_batch      = params.speculative.n_ctx > 0 ? params.speculative.n_ctx : params.n_batch;
+params.devices = params.speculative.devices;
+params.model = params.speculative.model;
+params.n_ctx = params.speculative.n_ctx;
+params.n_batch = params.speculative.n_ctx > 0 ? params.speculative.n_ctx : params.n_batch;
 params.n_gpu_layers = params.speculative.n_gpu_layers;
 if (params.speculative.cpuparams.n_threads > 0) {
 params.cpuparams.n_threads = params.speculative.cpuparams.n_threads;
 }
 params.cpuparams_batch.n_threads = params.speculative.cpuparams_batch.n_threads;
 common_init_result llama_init_dft = common_init_from_params(params);
-ctx_dft   = llama_init_dft.context.get();
+ctx_dft = llama_init_dft.context.get();
 if (!common_speculative_are_compatible(ctx_tgt, ctx_dft)) {
 LOG_INF("the draft model '%s' is not compatible with the target model '%s'. tokens will be translated between the draft and target models.\n", params.speculative.model.path.c_str(), params.model.path.c_str());
 }
@@ -59,12 +59,12 @@ LOG("\n\n");
 for (auto id : inp) {
 LOG("%s", common_token_to_piece(ctx_tgt, id).c_str());
 }
-int n_draft     = params.speculative.n_max;
+int n_draft = params.speculative.n_max;
 int n_draft_min = params.speculative.n_min;
 float p_min = params.speculative.p_min;
 int n_predict = 0;
 int n_drafted = 0;
-int n_accept  = 0;
+int n_accept = 0;
 bool has_eos = false;
 const auto t_enc_start = ggml_time_us();
 struct common_sampler * smpl = common_sampler_init(model_tgt, params.sampling);
@@ -76,7 +76,7 @@ int n_past = inp.size() - 1;
 struct common_speculative_params params_spec;
 params_spec.n_draft = n_draft;
 params_spec.n_reuse = llama_n_ctx(ctx_dft) - n_draft;
-params_spec.p_min   = p_min;
+params_spec.p_min = p_min;
 struct common_speculative * spec = common_speculative_init(ctx_tgt, ctx_dft);
 for (auto &pair : params.speculative.replacements) {
 common_speculative_add_replacement_tgt_dft(spec, pair.first.c_str(), pair.second.c_str());
@@ -87,7 +87,7 @@ const auto t_dec_start = ggml_time_us();
 while (true) {
 llama_tokens draft = common_speculative_gen_draft(spec, params_spec, prompt_tgt, id_last);
 common_batch_clear(batch_tgt);
-common_batch_add  (batch_tgt, id_last, n_past++, { 0 }, true);
+common_batch_add (batch_tgt, id_last, n_past++, { 0 }, true);
 {
 if (draft.size() < (size_t) n_draft_min) {
 draft.clear();
@@ -99,9 +99,9 @@ llama_decode(ctx_tgt, batch_tgt);
 }
 const auto ids = common_sampler_sample_and_accept_n(smpl, ctx_tgt, draft);
 GGML_ASSERT(ids.size() > 0);
-n_past    += ids.size() - 1;
+n_past += ids.size() - 1;
 n_drafted += draft.size();
-n_accept  += ids.size() - 1;
+n_accept += ids.size() - 1;
 n_predict += ids.size();
 for (size_t i = 0; i < ids.size(); ++i) {
 prompt_tgt.push_back(id_last);
@@ -129,8 +129,8 @@ break;
 auto t_dec_end = ggml_time_us();
 const int n_input = inp.size();
 LOG("\n\n");
-LOG_INF("encoded %4d tokens in %8.3f seconds, speed: %8.3f t/s\n", n_input,   (t_enc_end - t_enc_start) / 1e6f, inp.size() / ((t_enc_end - t_enc_start) / 1e6f));
-LOG_INF("decoded %4d tokens in %8.3f seconds, speed: %8.3f t/s\n", n_predict, (t_dec_end - t_dec_start) / 1e6f, n_predict  / ((t_dec_end - t_dec_start) / 1e6f));
+LOG_INF("encoded %4d tokens in %8.3f seconds, speed: %8.3f t/s\n", n_input, (t_enc_end - t_enc_start) / 1e6f, inp.size() / ((t_enc_end - t_enc_start) / 1e6f));
+LOG_INF("decoded %4d tokens in %8.3f seconds, speed: %8.3f t/s\n", n_predict, (t_dec_end - t_dec_start) / 1e6f, n_predict / ((t_dec_end - t_dec_start) / 1e6f));
 LOG_INF("\n");
 LOG_INF("n_draft   = %d\n", n_draft);
 LOG_INF("n_predict = %d\n", n_predict);

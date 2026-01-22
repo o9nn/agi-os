@@ -415,23 +415,23 @@ if (a[i] > max)
 max = a[i];
 av += a[i];
 }
-#	sys->print("%d/%d = %d\n",av,len a,av / len a);
+# sys->print("%d/%d = %d\n",av,len a,av / len a);
 av = av/len a;
 upper := av + ((max-av)/lim);
 lower := av - ((av-min)/ lim);
 low := 0;
-#	sys->print("len a: %d %d %d %d\n",len a,av,min,max);
+# sys->print("len a: %d %d %d %d\n",len a,av,min,max);
 i = 0;
 x := 0;
 y := 0;
 height := len a / width;
 newline := 1;
-#	sys->print("width: %d gox: %d\n",width,gox);
+# sys->print("width: %d gox: %d\n",width,gox);
 for (k := 0; k < len a; k++) {
 i = (y*width) + x;
 if (newline) {
-#			if (a[i] < av) low = 1;
-#			else low = 0;
+# if (a[i] < av) low = 1;
+# else low = 0;
 low = a[i] > av;
 newline = 0;
 }
@@ -444,7 +444,7 @@ else if (low == 1) {
 if (a[i] < lower)
 low = 0;
 }
-#		sys->print("a[i]: %d bound: %d %d low %d => %d\n",a[i],lower,upper,oldlow,low);
+# sys->print("a[i]: %d bound: %d %d low %d => %d\n",a[i],lower,upper,oldlow,low);
 if (oldlow == low)
 a[i] =127;
 else
@@ -462,7 +462,7 @@ else {
 i += width;
 y++;
 if (y == height) {
-#				sys->print("y: %d\n",y);
+# sys->print("y: %d\n",y);
 y = 0;
 i = x;
 x++;
@@ -496,7 +496,7 @@ n++;
 }
 }
 #sys->print("%f\n",real ((ex-sx)*(ey-sy))/ real csize);
-#				if (n < int (real d * (real ((ex-sx)*(ey-sy))/ real csize)))
+# if (n < int (real d * (real ((ex-sx)*(ey-sy))/ real csize)))
 if (n < d)
 a[i] = 127;
 }

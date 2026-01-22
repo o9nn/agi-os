@@ -225,18 +225,18 @@ for (i = 0; i < top; i++)
 dst[i] = src[i];
 }
 #if BN_BITS2 == 64
-# define bn_cp_64(to, n, from, m)        (to)[n] = (m>=0)?((from)[m]):0;
-# define bn_64_set_0(to, n)              (to)[n] = (BN_ULONG)0;
-# define bn_cp_32_naked(to, n, from, m)  (((n)&1)?(to[(n)/2]|=((m)&1)?(from[(m)/2]&BN_MASK2h):(from[(m)/2]<<32))\
+# define bn_cp_64(to, n, from, m) (to)[n] = (m>=0)?((from)[m]):0;
+# define bn_64_set_0(to, n) (to)[n] = (BN_ULONG)0;
+# define bn_cp_32_naked(to, n, from, m) (((n)&1)?(to[(n)/2]|=((m)&1)?(from[(m)/2]&BN_MASK2h):(from[(m)/2]<<32))\
 :(to[(n)/2] =((m)&1)?(from[(m)/2]>>32):(from[(m)/2]&BN_MASK2l)))
-# define bn_32_set_0(to, n)              (((n)&1)?(to[(n)/2]&=BN_MASK2l):(to[(n)/2]=0));
-# define bn_cp_32(to,n,from,m)           ((m)>=0)?bn_cp_32_naked(to,n,from,m):bn_32_set_0(to,n)
+# define bn_32_set_0(to, n) (((n)&1)?(to[(n)/2]&=BN_MASK2l):(to[(n)/2]=0));
+# define bn_cp_32(to,n,from,m) ((m)>=0)?bn_cp_32_naked(to,n,from,m):bn_32_set_0(to,n)
 # if defined(L_ENDIAN)
-#  if defined(__arch64__)
-#   define NIST_INT64 long
-#  else
-#   define NIST_INT64 long long
-#  endif
+# if defined(__arch64__)
+# define NIST_INT64 long
+# else
+# define NIST_INT64 long long
+# endif
 # endif
 #else
 # define bn_cp_64(to, n, from, m) \
@@ -249,12 +249,12 @@ bn_cp_32(to, (n)*2+1, from, (m)*2+1); \
 bn_32_set_0(to, (n)*2); \
 bn_32_set_0(to, (n)*2+1); \
 }
-# define bn_cp_32(to, n, from, m)        (to)[n] = (m>=0)?((from)[m]):0;
-# define bn_32_set_0(to, n)              (to)[n] = (BN_ULONG)0;
+# define bn_cp_32(to, n, from, m) (to)[n] = (m>=0)?((from)[m]):0;
+# define bn_32_set_0(to, n) (to)[n] = (BN_ULONG)0;
 # if defined(_WIN32) && !defined(__GNUC__)
-#  define NIST_INT64 __int64
+# define NIST_INT64 __int64
 # elif defined(BN_LLONG)
-#  define NIST_INT64 long long
+# define NIST_INT64 long long
 # endif
 #endif
 #define nist_set_192(to, from, a1, a2, a3) \
@@ -715,18 +715,18 @@ return 1;
 }
 #define nist_set_384(to,from,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12) \
 { \
-bn_cp_32(to, 0, from,  (a12) - 12) \
-bn_cp_32(to, 1, from,  (a11) - 12) \
-bn_cp_32(to, 2, from,  (a10) - 12) \
-bn_cp_32(to, 3, from,  (a9) - 12)  \
-bn_cp_32(to, 4, from,  (a8) - 12)  \
-bn_cp_32(to, 5, from,  (a7) - 12)  \
-bn_cp_32(to, 6, from,  (a6) - 12)  \
-bn_cp_32(to, 7, from,  (a5) - 12)  \
-bn_cp_32(to, 8, from,  (a4) - 12)  \
-bn_cp_32(to, 9, from,  (a3) - 12)  \
-bn_cp_32(to, 10, from, (a2) - 12)  \
-bn_cp_32(to, 11, from, (a1) - 12)  \
+bn_cp_32(to, 0, from, (a12) - 12) \
+bn_cp_32(to, 1, from, (a11) - 12) \
+bn_cp_32(to, 2, from, (a10) - 12) \
+bn_cp_32(to, 3, from, (a9) - 12) \
+bn_cp_32(to, 4, from, (a8) - 12) \
+bn_cp_32(to, 5, from, (a7) - 12) \
+bn_cp_32(to, 6, from, (a6) - 12) \
+bn_cp_32(to, 7, from, (a5) - 12) \
+bn_cp_32(to, 8, from, (a4) - 12) \
+bn_cp_32(to, 9, from, (a3) - 12) \
+bn_cp_32(to, 10, from, (a2) - 12) \
+bn_cp_32(to, 11, from, (a1) - 12) \
 }
 int BN_nist_mod_384(BIGNUM *r, const BIGNUM *a, const BIGNUM *field,
 BN_CTX *ctx)
@@ -940,9 +940,9 @@ r->top = BN_NIST_384_TOP;
 bn_correct_top(r);
 return 1;
 }
-#define BN_NIST_521_RSHIFT      (521%BN_BITS2)
-#define BN_NIST_521_LSHIFT      (BN_BITS2-BN_NIST_521_RSHIFT)
-#define BN_NIST_521_TOP_MASK    ((BN_ULONG)BN_MASK2>>BN_NIST_521_LSHIFT)
+#define BN_NIST_521_RSHIFT (521%BN_BITS2)
+#define BN_NIST_521_LSHIFT (BN_BITS2-BN_NIST_521_RSHIFT)
+#define BN_NIST_521_TOP_MASK ((BN_ULONG)BN_MASK2>>BN_NIST_521_LSHIFT)
 int BN_nist_mod_521(BIGNUM *r, const BIGNUM *a, const BIGNUM *field,
 BN_CTX *ctx)
 {

@@ -1,10 +1,10 @@
 #include "all.h"
-#ifndef	DATE
-#define	DATE 1170808167L
+#ifndef DATE
+#define DATE 1170808167L
 #endif
-Timet	fs_mktime = DATE;
-Startsb	startsb[] = {
-"main",		810988,
+Timet fs_mktime = DATE;
+Startsb startsb[] = {
+"main", 810988,
 0
 };
 void

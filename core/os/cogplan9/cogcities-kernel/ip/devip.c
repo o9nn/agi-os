@@ -1,15 +1,15 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"../ip/ip.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "../ip/ip.h"
 enum
 {
-Qtopdir=	1,
+Qtopdir= 1,
 Qtopbase,
-Qarp=		Qtopbase,
+Qarp= Qtopbase,
 Qbootp,
 Qndb,
 Qiproute,
@@ -17,11 +17,11 @@ Qipselftab,
 Qlog,
 Qprotodir,
 Qprotobase,
-Qclone=		Qprotobase,
+Qclone= Qprotobase,
 Qstats,
 Qconvdir,
 Qconvbase,
-Qctl=		Qconvbase,
+Qctl= Qconvbase,
 Qdata,
 Qerr,
 Qlisten,
@@ -29,26 +29,26 @@ Qlocal,
 Qremote,
 Qstatus,
 Qsnoop,
-Logtype=	5,
-Masktype=	(1<<Logtype)-1,
-Logconv=	12,
-Maskconv=	(1<<Logconv)-1,
-Shiftconv=	Logtype,
-Logproto=	8,
-Maskproto=	(1<<Logproto)-1,
-Shiftproto=	Logtype + Logconv,
-Nfs=		128,
+Logtype= 5,
+Masktype= (1<<Logtype)-1,
+Logconv= 12,
+Maskconv= (1<<Logconv)-1,
+Shiftconv= Logtype,
+Logproto= 8,
+Maskproto= (1<<Logproto)-1,
+Shiftproto= Logtype + Logconv,
+Nfs= 128,
 };
-#define TYPE(x) 	( ((ulong)(x).path) & Masktype )
-#define CONV(x) 	( (((ulong)(x).path) >> Shiftconv) & Maskconv )
-#define PROTO(x) 	( (((ulong)(x).path) >> Shiftproto) & Maskproto )
-#define QID(p, c, y) 	( ((p)<<(Shiftproto)) | ((c)<<Shiftconv) | (y) )
+#define TYPE(x) ( ((ulong)(x).path) & Masktype )
+#define CONV(x) ( (((ulong)(x).path) >> Shiftconv) & Maskconv )
+#define PROTO(x) ( (((ulong)(x).path) >> Shiftproto) & Maskproto )
+#define QID(p, c, y) ( ((p)<<(Shiftproto)) | ((c)<<Shiftconv) | (y) )
 static char network[] = "network";
-QLock	fslock;
-Fs	*ipfs[Nfs];
-Queue	*qlog;
-extern	void nullmediumlink(void);
-extern	void pktmediumlink(void);
+QLock fslock;
+Fs *ipfs[Nfs];
+Queue *qlog;
+extern void nullmediumlink(void);
+extern void pktmediumlink(void);
 long ndbwrite(Fs *f, char *a, ulong off, int n);
 static int
 ip3gen(Chan *c, int i, Dir *dp)
@@ -117,7 +117,7 @@ char *p;
 int prot;
 int len = 0;
 Fs *f;
-extern ulong	kerndate;
+extern ulong kerndate;
 f = ipfs[c->dev];
 prot = 0666;
 mkqid(&q, QID(0, 0, i), 0, QTFILE);
@@ -309,9 +309,9 @@ conv = arg;
 return conv->incall != nil;
 }
 static int m2p[] = {
-[OREAD]		4,
-[OWRITE]	2,
-[ORDWR]		6
+[OREAD] 4,
+[OWRITE] 2,
+[ORDWR] 6
 };
 static Chan*
 ipopen(Chan* c, int omode)
@@ -541,7 +541,7 @@ free(c->aux);
 }
 enum
 {
-Statelen=	32*1024,
+Statelen= 32*1024,
 };
 static long
 ipread(Chan *ch, void *a, long n, vlong off)

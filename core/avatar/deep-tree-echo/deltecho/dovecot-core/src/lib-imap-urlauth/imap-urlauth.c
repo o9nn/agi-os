@@ -17,9 +17,9 @@
 #include "imap-urlauth-connection.h"
 #include "imap-urlauth-private.h"
 #include <time.h>
-#define IMAP_URLAUTH_MECH_INTERNAL_VERSION    0x01
-#define IMAP_URLAUTH_NORMAL_TIMEOUT_MSECS     5*1000
-#define IMAP_URLAUTH_SPECIAL_TIMEOUT_MSECS    3*60*1000
+#define IMAP_URLAUTH_MECH_INTERNAL_VERSION 0x01
+#define IMAP_URLAUTH_NORMAL_TIMEOUT_MSECS 5*1000
+#define IMAP_URLAUTH_SPECIAL_TIMEOUT_MSECS 3*60*1000
 #define URL_HOST_ALLOW_ANY "*"
 struct imap_urlauth_context *
 imap_urlauth_init(struct mail_user *user,

@@ -248,9 +248,9 @@ friend class weak_ptr<_Tp>;
 };
 #if __cpp_deduction_guides >= 201606
 template<typename _Tp>
-shared_ptr(weak_ptr<_Tp>) ->  shared_ptr<_Tp>;
+shared_ptr(weak_ptr<_Tp>) -> shared_ptr<_Tp>;
 template<typename _Tp, typename _Del>
-shared_ptr(unique_ptr<_Tp, _Del>) ->  shared_ptr<_Tp>;
+shared_ptr(unique_ptr<_Tp, _Del>) -> shared_ptr<_Tp>;
 #endif
 template<typename _Tp, typename _Up>
 _GLIBCXX_NODISCARD inline bool
@@ -477,7 +477,7 @@ lock() const noexcept
 };
 #if __cpp_deduction_guides >= 201606
 template<typename _Tp>
-weak_ptr(shared_ptr<_Tp>) ->  weak_ptr<_Tp>;
+weak_ptr(shared_ptr<_Tp>) -> weak_ptr<_Tp>;
 #endif
 template<typename _Tp>
 inline void
@@ -533,7 +533,7 @@ const enable_shared_from_this* __p)
 { return __p; }
 template<typename, _Lock_policy>
 friend class __shared_ptr;
-mutable weak_ptr<_Tp>  _M_weak_this;
+mutable weak_ptr<_Tp> _M_weak_this;
 };
 template<typename _Tp, typename _Alloc, typename... _Args>
 inline shared_ptr<_NonArray<_Tp>>

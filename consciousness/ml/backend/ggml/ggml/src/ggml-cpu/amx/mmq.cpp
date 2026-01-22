@@ -61,81 +61,81 @@ std::is_same<T, block_q4_K>::value ||
 std::is_same<T, block_q5_K>::value ||
 std::is_same<T, block_q6_K>::value ||
 std::is_same<T, block_iq4_xs>::value> {};
-#define GGML_DISPATCH_FLOATING_TYPES(TYPE, ...)                                        \
-[&] {                                                                              \
-switch (TYPE) {                                                                \
-case GGML_TYPE_F16: {                                                      \
-using type = ggml_fp16_t;                                              \
-constexpr int blck_size = 16;                                          \
-return __VA_ARGS__();                                                  \
-}                                                                          \
-case GGML_TYPE_BF16: {                                                     \
-using type = ggml_bf16_t;                                              \
-constexpr int blck_size = 32;                                          \
-return __VA_ARGS__();                                                  \
-}                                                                          \
-default:                                                                   \
-fprintf(stderr, "Unsupported floating data type\n");                   \
-}                                                                              \
+#define GGML_DISPATCH_FLOATING_TYPES(TYPE, ...) \
+[&] { \
+switch (TYPE) { \
+case GGML_TYPE_F16: { \
+using type = ggml_fp16_t; \
+constexpr int blck_size = 16; \
+return __VA_ARGS__(); \
+} \
+case GGML_TYPE_BF16: { \
+using type = ggml_bf16_t; \
+constexpr int blck_size = 32; \
+return __VA_ARGS__(); \
+} \
+default: \
+fprintf(stderr, "Unsupported floating data type\n"); \
+} \
 }()
-#define GGML_DISPATCH_QTYPES(QT, ...)                                                  \
-[&] {                                                                              \
-switch (QT) {                                                                  \
-case GGML_TYPE_Q4_0: {                                                     \
-using type = block_q4_0;                                               \
-using vec_dot_type = block_q8_0;                                       \
-constexpr int blck_size = QK4_0;                                       \
-return __VA_ARGS__();                                                  \
-}                                                                          \
-case GGML_TYPE_Q4_1: {                                                     \
-using type = block_q4_1;                                               \
-using vec_dot_type = block_q8_1;                                       \
-constexpr int blck_size = QK4_1;                                       \
-return __VA_ARGS__();                                                  \
-}                                                                          \
-case GGML_TYPE_Q8_0: {                                                     \
-using type = block_q8_0;                                               \
-using vec_dot_type = block_q8_0;                                       \
-constexpr int blck_size = QK8_0;                                       \
-return __VA_ARGS__();                                                  \
-}                                                                          \
-case GGML_TYPE_Q4_K: {                                                     \
-using type = block_q4_K;                                               \
-using vec_dot_type = block_q8_K;                                       \
-constexpr int blck_size = QK_K;                                        \
-return __VA_ARGS__();                                                  \
-}                                                                          \
-case GGML_TYPE_Q5_K: {                                                     \
-using type = block_q5_K;                                               \
-using vec_dot_type = block_q8_K;                                       \
-constexpr int blck_size = QK_K;                                        \
-return __VA_ARGS__();                                                  \
-}                                                                          \
-case GGML_TYPE_Q6_K: {                                                     \
-using type = block_q6_K;                                               \
-using vec_dot_type = block_q8_K;                                       \
-constexpr int blck_size = QK_K;                                        \
-return __VA_ARGS__();                                                  \
-}                                                                          \
-case GGML_TYPE_IQ4_XS: {                                                   \
-using type = block_iq4_xs;                                             \
-using vec_dot_type = block_q8_K;                                       \
-constexpr int blck_size = QK_K;                                        \
-return __VA_ARGS__();                                                  \
-}                                                                          \
-default:                                                                   \
-fprintf(stderr, "Unsupported quantized data type: %d\n", int(TYPE));   \
-}                                                                              \
+#define GGML_DISPATCH_QTYPES(QT, ...) \
+[&] { \
+switch (QT) { \
+case GGML_TYPE_Q4_0: { \
+using type = block_q4_0; \
+using vec_dot_type = block_q8_0; \
+constexpr int blck_size = QK4_0; \
+return __VA_ARGS__(); \
+} \
+case GGML_TYPE_Q4_1: { \
+using type = block_q4_1; \
+using vec_dot_type = block_q8_1; \
+constexpr int blck_size = QK4_1; \
+return __VA_ARGS__(); \
+} \
+case GGML_TYPE_Q8_0: { \
+using type = block_q8_0; \
+using vec_dot_type = block_q8_0; \
+constexpr int blck_size = QK8_0; \
+return __VA_ARGS__(); \
+} \
+case GGML_TYPE_Q4_K: { \
+using type = block_q4_K; \
+using vec_dot_type = block_q8_K; \
+constexpr int blck_size = QK_K; \
+return __VA_ARGS__(); \
+} \
+case GGML_TYPE_Q5_K: { \
+using type = block_q5_K; \
+using vec_dot_type = block_q8_K; \
+constexpr int blck_size = QK_K; \
+return __VA_ARGS__(); \
+} \
+case GGML_TYPE_Q6_K: { \
+using type = block_q6_K; \
+using vec_dot_type = block_q8_K; \
+constexpr int blck_size = QK_K; \
+return __VA_ARGS__(); \
+} \
+case GGML_TYPE_IQ4_XS: { \
+using type = block_iq4_xs; \
+using vec_dot_type = block_q8_K; \
+constexpr int blck_size = QK_K; \
+return __VA_ARGS__(); \
+} \
+default: \
+fprintf(stderr, "Unsupported quantized data type: %d\n", int(TYPE)); \
+} \
 }()
-#define GGML_DISPATCH_BOOL(BOOL_V, BOOL_NAME, ...)                                     \
-[&] {                                                                              \
-if (BOOL_V) {                                                                  \
-constexpr bool BOOL_NAME = true;                                           \
-return __VA_ARGS__();                                                      \
-} else {                                                                       \
-constexpr bool BOOL_NAME = false;                                          \
-return __VA_ARGS__();                                                      \
-}                                                                              \
+#define GGML_DISPATCH_BOOL(BOOL_V, BOOL_NAME, ...) \
+[&] { \
+if (BOOL_V) { \
+constexpr bool BOOL_NAME = true; \
+return __VA_ARGS__(); \
+} else { \
+constexpr bool BOOL_NAME = false; \
+return __VA_ARGS__(); \
+} \
 }()
 struct tile_config_t{
 uint8_t palette_id = 0;
@@ -341,7 +341,7 @@ assert(k % QK_K == 0);
 const int KB = k / QK_K;
 constexpr int kVecs = QK_K / 16;
 block_q8_K * y = reinterpret_cast<block_q8_K *>(vy);
-__m512  v[kVecs];
+__m512 v[kVecs];
 __m512i vq[kVecs / 4];
 __m512i vq_packed[kVecs / 4];
 const __m512 signBit = _mm512_set1_ps(-0.f);
@@ -451,11 +451,11 @@ const __m256i q5bits = _mm256_loadu_si256((const __m256i *)qs);
 const __m256i hbits = _mm256_loadu_si256((const __m256i *)qh);
 const __m256i q5l_0 = _mm256_and_si256(q5bits, lowMask);
 const __m256i q5h_0 = _mm256_slli_epi16(_mm256_srli_epi16(_mm256_and_si256(hbits, hmask), k + 0), 4);
-const __m256i q5_0  = _mm256_add_epi8(q5l_0, q5h_0);
+const __m256i q5_0 = _mm256_add_epi8(q5l_0, q5h_0);
 hmask = _mm256_slli_epi16(hmask, 1);
 const __m256i q5l_1 = _mm256_and_si256(_mm256_srli_epi16(q5bits, 4), lowMask);
 const __m256i q5h_1 = _mm256_slli_epi16(_mm256_srli_epi16(_mm256_and_si256(hbits, hmask), k + 1), 4);
-const __m256i q5_1  = _mm256_add_epi8(q5l_1, q5h_1);
+const __m256i q5_1 = _mm256_add_epi8(q5l_1, q5h_1);
 return _mm512_inserti32x8(_mm512_castsi256_si512(q5_0), q5_1, 1);
 }
 inline void bytes_from_nibbles_128(__m512i& r0, __m512i& r1, const uint8_t * qs, const uint8_t * qh) {
@@ -464,7 +464,7 @@ const __m256i m2 = _mm256_set1_epi8(0x3);
 const __m256i q6bits1 = _mm256_loadu_si256((const __m256i *)qs);
 const __m256i q6bits2 = _mm256_loadu_si256((const __m256i *)(qs + 32));
 const __m256i q6bitsH = _mm256_loadu_si256((const __m256i *)qh);
-const __m256i q6h_0 = _mm256_slli_epi16(_mm256_and_si256(                  q6bitsH,     m2), 4);
+const __m256i q6h_0 = _mm256_slli_epi16(_mm256_and_si256( q6bitsH, m2), 4);
 const __m256i q6h_1 = _mm256_slli_epi16(_mm256_and_si256(_mm256_srli_epi16(q6bitsH, 2), m2), 4);
 const __m256i q6h_2 = _mm256_slli_epi16(_mm256_and_si256(_mm256_srli_epi16(q6bitsH, 4), m2), 4);
 const __m256i q6h_3 = _mm256_slli_epi16(_mm256_and_si256(_mm256_srli_epi16(q6bitsH, 6), m2), 4);
@@ -559,7 +559,7 @@ hbits = _mm512_add_epi8(hbits, _mm512_srli_epi16(_mm512_and_si512(v[g * 8 + 0], 
 hbits = _mm512_add_epi8(hbits, _mm512_srli_epi16(_mm512_and_si512(v[g * 8 + 1], hmask), 3));
 hbits = _mm512_add_epi8(hbits, _mm512_srli_epi16(_mm512_and_si512(v[g * 8 + 2], hmask), 2));
 hbits = _mm512_add_epi8(hbits, _mm512_srli_epi16(_mm512_and_si512(v[g * 8 + 3], hmask), 1));
-hbits = _mm512_add_epi8(hbits,                   _mm512_and_si512(v[g * 8 + 4], hmask)    );
+hbits = _mm512_add_epi8(hbits, _mm512_and_si512(v[g * 8 + 4], hmask) );
 hbits = _mm512_add_epi8(hbits, _mm512_slli_epi16(_mm512_and_si512(v[g * 8 + 5], hmask), 1));
 hbits = _mm512_add_epi8(hbits, _mm512_slli_epi16(_mm512_and_si512(v[g * 8 + 6], hmask), 2));
 hbits = _mm512_add_epi8(hbits, _mm512_slli_epi16(_mm512_and_si512(v[g * 8 + 7], hmask), 3));
@@ -589,7 +589,7 @@ for (int g = 0; g < 8; ++g) {
 __m512i hbits = _mm512_setzero_si512();
 hbits = _mm512_add_epi8(hbits, _mm512_srli_epi16(_mm512_and_si512(v[g * 4 + 0], hmask), 4));
 hbits = _mm512_add_epi8(hbits, _mm512_srli_epi16(_mm512_and_si512(v[g * 4 + 1], hmask), 2));
-hbits = _mm512_add_epi8(hbits,                   _mm512_and_si512(v[g * 4 + 2], hmask)    );
+hbits = _mm512_add_epi8(hbits, _mm512_and_si512(v[g * 4 + 2], hmask) );
 hbits = _mm512_add_epi8(hbits, _mm512_slli_epi16(_mm512_and_si512(v[g * 4 + 3], hmask), 2));
 _mm512_storeu_si512((__m512i *)ph, hbits); ph += 64;
 }
@@ -601,7 +601,7 @@ __m512i v[16];
 char * pb = (char *)packed_B;
 for (int k = 0; k < QK_K / 64; ++k) {
 for (int n = 0; n < TILE_N; ++n) {
-__m256i r0 = bytes_from_nibbles_32(B[n * KB].qs + k * 32 +  0);
+__m256i r0 = bytes_from_nibbles_32(B[n * KB].qs + k * 32 + 0);
 __m256i r1 = bytes_from_nibbles_32(B[n * KB].qs + k * 32 + 16);
 v[n] = _mm512_inserti32x8(_mm512_castsi256_si512(r0), r1, 1);
 }
@@ -665,7 +665,7 @@ ggml_half * d = reinterpret_cast<ggml_half *>(mins + 8 * TILE_N);
 ggml_half * dmin = d + TILE_N;
 union {
 uint32_t u32[4];
-uint8_t  u8[16];
+uint8_t u8[16];
 } s;
 for (int n = 0; n < TILE_N; ++n) {
 unpack_mins_and_scales(B[n * KB].scales, s.u32);
@@ -685,7 +685,7 @@ ggml_half * d = reinterpret_cast<ggml_half *>(mins + 8 * TILE_N);
 ggml_half * dmin = d + TILE_N;
 union {
 uint32_t u32[4];
-uint8_t  u8[16];
+uint8_t u8[16];
 } s;
 for (int n = 0; n < TILE_N; ++n) {
 unpack_mins_and_scales(B[n * KB].scales, s.u32);
@@ -717,7 +717,7 @@ for (int n = 0; n < TILE_N; ++n) {
 uint16_t sh = B[n * KB].scales_h;
 for (int k = 0; k < 8; k += 2) {
 const int16_t ls1 = ((B[n * KB].scales_l[k / 2] & 0xf) | ((sh << 4) & 0x30)) - 32;
-const int16_t ls2 = ((B[n * KB].scales_l[k / 2] >>  4) | ((sh << 2) & 0x30)) - 32;
+const int16_t ls2 = ((B[n * KB].scales_l[k / 2] >> 4) | ((sh << 2) & 0x30)) - 32;
 scales[(k + 0) * TILE_N + n] = ls1;
 scales[(k + 1) * TILE_N + n] = ls2;
 sh >>= 4;
@@ -738,7 +738,7 @@ for (int n = 0; n < 8; n += 2) {
 __m512i bytes = _mm512_loadu_si512((const __m512i *)((const char *)packed_B + n * 32));
 const __m512i r0 = _mm512_sub_epi8(_mm512_and_si512(bytes, lowMask), off);
 const __m512i r1 = _mm512_sub_epi8(_mm512_and_si512(_mm512_srli_epi16(bytes, 4), lowMask), off);
-_mm512_storeu_si512((__m512i *)(tile + n * 64 +  0), r0);
+_mm512_storeu_si512((__m512i *)(tile + n * 64 + 0), r0);
 _mm512_storeu_si512((__m512i *)(tile + n * 64 + 64), r1);
 }
 }
@@ -749,7 +749,7 @@ for (int n = 0; n < 8; n += 2) {
 __m512i bytes = _mm512_loadu_si512((const __m512i *)((const char *)packed_B + n * 32));
 const __m512i r0 = _mm512_and_si512(bytes, lowMask);
 const __m512i r1 = _mm512_and_si512(_mm512_srli_epi16(bytes, 4), lowMask);
-_mm512_storeu_si512((__m512i *)(tile + n * 64 +  0), r0);
+_mm512_storeu_si512((__m512i *)(tile + n * 64 + 0), r0);
 _mm512_storeu_si512((__m512i *)(tile + n * 64 + 64), r1);
 }
 }
@@ -762,7 +762,7 @@ for (int n = 0; n < 8; n += 2) {
 __m512i bytes = _mm512_loadu_si512(packed_B_group + n * 32);
 const __m512i r0 = _mm512_and_si512(bytes, lowMask);
 const __m512i r1 = _mm512_and_si512(_mm512_srli_epi16(bytes, 4), lowMask);
-_mm512_storeu_si512((__m512i *)(tile + n * 64 +  0), r0);
+_mm512_storeu_si512((__m512i *)(tile + n * 64 + 0), r0);
 _mm512_storeu_si512((__m512i *)(tile + n * 64 + 64), r1);
 }
 }
@@ -786,7 +786,7 @@ hmask0 = _mm512_slli_epi16(hmask0, 2);
 hmask1 = _mm512_slli_epi16(hmask1, 2);
 r0 = _mm512_add_epi8(r0, h0);
 r1 = _mm512_add_epi8(r1, h1);
-_mm512_storeu_si512((__m512i *)(tile + n * 64 +  0), r0);
+_mm512_storeu_si512((__m512i *)(tile + n * 64 + 0), r0);
 _mm512_storeu_si512((__m512i *)(tile + n * 64 + 64), r1);
 }
 }
@@ -806,14 +806,14 @@ __m512i r0 = _mm512_and_si512(bytes, lowMask);
 __m512i r1 = _mm512_and_si512(_mm512_srli_epi16(bytes, 4), lowMask);
 __m512i h0 = _mm512_slli_epi16(_mm512_and_si512(hbits, hmask0), 4);
 __m512i h1 = _mm512_slli_epi16(_mm512_and_si512(hbits, hmask1), 2);
-_mm512_storeu_si512((__m512i *)(tile +  0), _mm512_sub_epi8(_mm512_add_epi8(r0, h0), off));
+_mm512_storeu_si512((__m512i *)(tile + 0), _mm512_sub_epi8(_mm512_add_epi8(r0, h0), off));
 _mm512_storeu_si512((__m512i *)(tile + 64), _mm512_sub_epi8(_mm512_add_epi8(r1, h1), off));
 hmask0 = _mm512_slli_epi16(hmask0, 4);
 hmask1 = _mm512_slli_epi16(hmask1, 4);
 bytes = _mm512_loadu_si512(pb + 64);
 r0 = _mm512_and_si512(bytes, lowMask);
 r1 = _mm512_and_si512(_mm512_srli_epi16(bytes, 4), lowMask);
-h0 =                   _mm512_and_si512(hbits, hmask0);
+h0 = _mm512_and_si512(hbits, hmask0);
 h1 = _mm512_srli_epi16(_mm512_and_si512(hbits, hmask1), 2);
 _mm512_storeu_si512((__m512i *)(tile + 128), _mm512_sub_epi8(_mm512_add_epi8(r0, h0), off));
 _mm512_storeu_si512((__m512i *)(tile + 192), _mm512_sub_epi8(_mm512_add_epi8(r1, h1), off));
@@ -833,7 +833,7 @@ for (int n = 0; n < 8; n += 2) {
 __m512i bytes = _mm512_loadu_si512(pb + n * 32);
 const __m512i r0 = _mm512_shuffle_epi8(values128, _mm512_and_si512(bytes, lowMask));
 const __m512i r1 = _mm512_shuffle_epi8(values128, _mm512_and_si512(_mm512_srli_epi16(bytes, 4), lowMask));
-_mm512_storeu_si512((__m512i *)(tile + n * 64 +  0), r0);
+_mm512_storeu_si512((__m512i *)(tile + n * 64 + 0), r0);
 _mm512_storeu_si512((__m512i *)(tile + n * 64 + 64), r1);
 }
 }
@@ -1063,7 +1063,7 @@ if constexpr (col == 0) {
 va = _mm512_loadu_ps(A + row * K + k);
 }
 if constexpr (row == 0) {
-vb[col] =  _mm512_cvtph_ps(_mm256_loadu_si256((const __m256i *)(B + col * K + k)));
+vb[col] = _mm512_cvtph_ps(_mm256_loadu_si256((const __m256i *)(B + col * K + k)));
 }
 vc[idx] = _mm512_fmadd_ps(va, vb[col], vc[idx]);
 };
@@ -1078,10 +1078,10 @@ C[row * ldc + col] = _mm512_reduce_add_ps(vc[idx]);
 Unroll<ROWS * COLS>{}(storec);
 }
 };
-#define LAUNCH_TINYGEMM_KERNEL_AVX(MB_SIZE, NB_SIZE)                                \
-tinygemm_kernel_avx<float, type, float, MB_SIZE, NB_SIZE, blck_size>::apply(    \
-K, (const float *)src1->data + mb_start * K,                                \
-(const type *)src0->data + nb_start * K,                                    \
+#define LAUNCH_TINYGEMM_KERNEL_AVX(MB_SIZE, NB_SIZE) \
+tinygemm_kernel_avx<float, type, float, MB_SIZE, NB_SIZE, blck_size>::apply( \
+K, (const float *)src1->data + mb_start * K, \
+(const type *)src0->data + nb_start * K, \
 (float *)dst->data + mb_start * ldc + nb_start, ldc);
 #define PACKED_INDEX(n, k, KB, tile_size) (n * KB + k) * tile_size
 template<typename TB, int BLOCK_K>
@@ -1261,9 +1261,9 @@ __m512i va_bsum;
 __m512 vc[COLS];
 __m512 vd1;
 const int offset_scales = (QK_K / 2) * TILE_N;
-const int offset_mins   = (QK_K / 2) * TILE_N +  8 * TILE_N;
-const int offset_d0     = (QK_K / 2) * TILE_N + 16 * TILE_N;
-const int offset_dmin   = (QK_K / 2) * TILE_N + 16 * TILE_N + TILE_N * sizeof(ggml_half);
+const int offset_mins = (QK_K / 2) * TILE_N + 8 * TILE_N;
+const int offset_d0 = (QK_K / 2) * TILE_N + 16 * TILE_N;
+const int offset_dmin = (QK_K / 2) * TILE_N + 16 * TILE_N + TILE_N * sizeof(ggml_half);
 const __m512i lowMask = _mm512_set1_epi8(0xF);
 auto loadc = [&](auto col) {
 vc[col] = _mm512_setzero_ps();
@@ -1281,7 +1281,7 @@ vd1 = _mm512_set1_ps(A[0 * KB + i].d);
 }
 __m512i acc = _mm512_setzero_si512();
 const char * b_ptr = B + PACKED_INDEX(col, i, KB, TILE_SIZE);
-const char * b_qs  = b_ptr;
+const char * b_qs = b_ptr;
 for (int k_group = 0; k_group < QK_K / 32; ++k_group) {
 __m512i vsum = _mm512_setzero_si512();
 for (int k = 0; k < 8; k += 2) {
@@ -1329,11 +1329,11 @@ __m512i va[8];
 __m512i va_bsum;
 __m512 vc[COLS];
 __m512 vd1;
-const int offset_qh     = (QK_K / 2) * TILE_N;
+const int offset_qh = (QK_K / 2) * TILE_N;
 const int offset_scales = (QK_K / 2) * TILE_N + (QK_K / 8) * TILE_N;
-const int offset_mins   = (QK_K / 2) * TILE_N + (QK_K / 8) * TILE_N +  8 * TILE_N;
-const int offset_d0     = (QK_K / 2) * TILE_N + (QK_K / 8) * TILE_N + 16 * TILE_N;
-const int offset_dmin   = (QK_K / 2) * TILE_N + (QK_K / 8) * TILE_N + 16 * TILE_N + TILE_N * sizeof(ggml_half);
+const int offset_mins = (QK_K / 2) * TILE_N + (QK_K / 8) * TILE_N + 8 * TILE_N;
+const int offset_d0 = (QK_K / 2) * TILE_N + (QK_K / 8) * TILE_N + 16 * TILE_N;
+const int offset_dmin = (QK_K / 2) * TILE_N + (QK_K / 8) * TILE_N + 16 * TILE_N + TILE_N * sizeof(ggml_half);
 const __m512i lowMask = _mm512_set1_epi8(0xF);
 auto loadc = [&](auto col) {
 vc[col] = _mm512_setzero_ps();
@@ -1351,8 +1351,8 @@ vd1 = _mm512_set1_ps(A[0 * KB + i].d);
 }
 __m512i acc = _mm512_setzero_si512();
 const char * b_ptr = B + PACKED_INDEX(col, i, KB, TILE_SIZE);
-const char * b_qs  = b_ptr;
-const char * b_qh  = b_ptr + offset_qh;
+const char * b_qs = b_ptr;
+const char * b_qh = b_ptr + offset_qh;
 for (int k_group = 0; k_group < QK_K / 32; ++k_group) {
 __m512i vsum = _mm512_setzero_si512();
 __m512i hmask0 = _mm512_set1_epi8(0x1);
@@ -1408,9 +1408,9 @@ const char * RESTRICT B = static_cast<const char *>(_B);
 __m512i va[4];
 __m512 vc[COLS];
 __m512 vd1;
-const int offset_qh     = (QK_K / 2) * TILE_N;
+const int offset_qh = (QK_K / 2) * TILE_N;
 const int offset_scales = (QK_K / 2) * TILE_N + (QK_K / 4) * TILE_N;
-const int offset_d0     = (QK_K / 2) * TILE_N + (QK_K / 4) * TILE_N + 16 * TILE_N;
+const int offset_d0 = (QK_K / 2) * TILE_N + (QK_K / 4) * TILE_N + 16 * TILE_N;
 __m512i vcomp;
 const __m512i m32s = _mm512_set1_epi32(32);
 const __m512i lowMask = _mm512_set1_epi8(0xF);
@@ -1420,8 +1420,8 @@ vc[col] = _mm512_setzero_ps();
 Unroll<COLS>{}(loadc);
 auto compute = [&](auto col, auto i) {
 if constexpr (col == 0) {
-va[0] = _mm512_loadu_si512((const __m512i *)(A[0 * KB + i].qs +   0));
-va[1] = _mm512_loadu_si512((const __m512i *)(A[0 * KB + i].qs +  64));
+va[0] = _mm512_loadu_si512((const __m512i *)(A[0 * KB + i].qs + 0));
+va[1] = _mm512_loadu_si512((const __m512i *)(A[0 * KB + i].qs + 64));
 va[2] = _mm512_loadu_si512((const __m512i *)(A[0 * KB + i].qs + 128));
 va[3] = _mm512_loadu_si512((const __m512i *)(A[0 * KB + i].qs + 192));
 const __m256i q8sums = _mm256_loadu_si256((const __m256i *)A[0 * KB + i].bsums);
@@ -1455,7 +1455,7 @@ va1 = _mm512_permutexvar_epi32(_mm512_set1_epi32(mask++), va[r]);
 bytes = _mm512_loadu_si512(b_qs);
 vb0 = _mm512_and_si512(bytes, lowMask);
 vb1 = _mm512_and_si512(_mm512_srli_epi16(bytes, 4), lowMask);
-vh0 =                   _mm512_and_si512(hbits, _mm512_slli_epi16(hmask, 4));
+vh0 = _mm512_and_si512(hbits, _mm512_slli_epi16(hmask, 4));
 vh1 = _mm512_srli_epi16(_mm512_and_si512(hbits, _mm512_slli_epi16(hmask, 6)), 2);
 vb0 = _mm512_add_epi8(vb0, vh0);
 vb1 = _mm512_add_epi8(vb1, vh1);
@@ -1491,7 +1491,7 @@ __m512i va[4];
 __m512 vc[COLS];
 __m512 vd1;
 const int offset_scales = (QK_K / 2) * TILE_N ;
-const int offset_d0     = (QK_K / 2) * TILE_N + 8 * TILE_N;
+const int offset_d0 = (QK_K / 2) * TILE_N + 8 * TILE_N;
 __m512i vcomp;
 const __m256i m128s = _mm256_set1_epi16(128);
 const __m512i lowMask = _mm512_set1_epi8(0xF);
@@ -1509,8 +1509,8 @@ vc[col] = _mm512_setzero_ps();
 Unroll<COLS>{}(loadc);
 auto compute = [&](auto col, auto i) {
 if constexpr (col == 0) {
-va[0] = _mm512_loadu_si512((const __m512i *)(A[0 * KB + i].qs +   0));
-va[1] = _mm512_loadu_si512((const __m512i *)(A[0 * KB + i].qs +  64));
+va[0] = _mm512_loadu_si512((const __m512i *)(A[0 * KB + i].qs + 0));
+va[1] = _mm512_loadu_si512((const __m512i *)(A[0 * KB + i].qs + 64));
 va[2] = _mm512_loadu_si512((const __m512i *)(A[0 * KB + i].qs + 128));
 va[3] = _mm512_loadu_si512((const __m512i *)(A[0 * KB + i].qs + 192));
 const __m256i q8sums = _mm256_loadu_si256((const __m256i *)A[0 * KB + i].bsums);
@@ -1551,10 +1551,10 @@ _mm512_storeu_ps((__m512i*)(C + 0 * ldc + col * 16), vc[col]);
 Unroll<COLS>{}(storec);
 }
 };
-#define LAUNCH_TINYGEMM_KERNEL_VNNI(NB_SIZE)                                         \
-tinygemm_kernel_vnni<vec_dot_type, type, float, 1, NB_SIZE, blck_size>::apply(   \
-KB, (const char *)wdata + 0 * row_size_A,                                    \
-(const char *)src0->data + PACKED_INDEX(nb * kTilesN, 0, KB, TILE_SIZE),     \
+#define LAUNCH_TINYGEMM_KERNEL_VNNI(NB_SIZE) \
+tinygemm_kernel_vnni<vec_dot_type, type, float, 1, NB_SIZE, blck_size>::apply( \
+KB, (const char *)wdata + 0 * row_size_A, \
+(const char *)src0->data + PACKED_INDEX(nb * kTilesN, 0, KB, TILE_SIZE), \
 (float *) dst->data + 0 * N + nb_start, ldc)
 template <typename TA, typename TB, typename TC, int BLOCK_K,
 typename std::enable_if<!is_type_qkk<TB>::value, int>::type = 0>
@@ -1686,7 +1686,7 @@ _tile_dpbssd(TMM6, TMM2, TMM1);
 _tile_stored(TMM4, Tile4(C_cur), TILE_N * sizeof(int32_t));
 _tile_stored(TMM6, Tile6(C_cur), TILE_N * sizeof(int32_t));
 GGML_DISPATCH_BOOL(i > 0, is_acc, [&] {
-acc_C<TA, TB, is_acc>::apply(C,          ldc, Tile4(C_cur), &A[i], KB, B + PACKED_INDEX(0, i, KB, TILE_SIZE), m0);
+acc_C<TA, TB, is_acc>::apply(C, ldc, Tile4(C_cur), &A[i], KB, B + PACKED_INDEX(0, i, KB, TILE_SIZE), m0);
 acc_C<TA, TB, is_acc>::apply(C + TILE_N, ldc, Tile6(C_cur), &A[i], KB, B + PACKED_INDEX(1, i, KB, TILE_SIZE), m0);
 });
 if (m1 != 0) {
@@ -1697,7 +1697,7 @@ _tile_dpbssd(TMM7, TMM3, TMM1);
 _tile_stored(TMM5, Tile5(C_cur), TILE_N * sizeof(int32_t));
 _tile_stored(TMM7, Tile7(C_cur), TILE_N * sizeof(int32_t));
 GGML_DISPATCH_BOOL(i > 0, is_acc, [&] {
-acc_C<TA, TB, is_acc>::apply(C + TILE_M * ldc,          ldc, Tile5(C_cur), &A[TILE_M * KB + i], KB, B + PACKED_INDEX(0, i, KB, TILE_SIZE), m1);
+acc_C<TA, TB, is_acc>::apply(C + TILE_M * ldc, ldc, Tile5(C_cur), &A[TILE_M * KB + i], KB, B + PACKED_INDEX(0, i, KB, TILE_SIZE), m1);
 acc_C<TA, TB, is_acc>::apply(C + TILE_M * ldc + TILE_N, ldc, Tile7(C_cur), &A[TILE_M * KB + i], KB, B + PACKED_INDEX(1, i, KB, TILE_SIZE), m1);
 });
 }
@@ -1759,10 +1759,10 @@ scale_C<TB, is_acc>(Tile7, Sumi7, B + PACKED_INDEX(1, i, KB, TILE_SIZE), k, m1);
 });
 }
 GGML_DISPATCH_BOOL(i > 0, is_acc, [&] {
-acc_C<TA, TB, is_acc>::apply(C,          ldc, Sumi4, &A[i], KB, B + PACKED_INDEX(0, i, KB, TILE_SIZE), m0);
+acc_C<TA, TB, is_acc>::apply(C, ldc, Sumi4, &A[i], KB, B + PACKED_INDEX(0, i, KB, TILE_SIZE), m0);
 acc_C<TA, TB, is_acc>::apply(C + TILE_N, ldc, Sumi6, &A[i], KB, B + PACKED_INDEX(1, i, KB, TILE_SIZE), m0);
 if (m1 != 0) {
-acc_C<TA, TB, is_acc>::apply(C + TILE_M * ldc,          ldc, Sumi5, &A[TILE_M * KB + i], KB, B + PACKED_INDEX(0, i, KB, TILE_SIZE), m1);
+acc_C<TA, TB, is_acc>::apply(C + TILE_M * ldc, ldc, Sumi5, &A[TILE_M * KB + i], KB, B + PACKED_INDEX(0, i, KB, TILE_SIZE), m1);
 acc_C<TA, TB, is_acc>::apply(C + TILE_M * ldc + TILE_N, ldc, Sumi7, &A[TILE_M * KB + i], KB, B + PACKED_INDEX(1, i, KB, TILE_SIZE), m1);
 }
 });

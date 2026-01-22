@@ -4,7 +4,7 @@
 #include <fcall.h>
 #include "pool.h"
 #include "playlist.h"
-int	minvolume, maxvolume;
+int minvolume, maxvolume;
 void
 volumeproc(void *)
 {
@@ -70,7 +70,7 @@ if (fd < 0){
 fprint(2, "Can't set volume: %r");
 return;
 }
-fprint(fd, "audio out %d",  v[0]);
+fprint(fd, "audio out %d", v[0]);
 send(volumechan, v);
 } else {
 p = buf;

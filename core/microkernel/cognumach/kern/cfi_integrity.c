@@ -5,9 +5,9 @@
 #include <mach/machine.h>
 #include <string.h>
 extern void clock_get_uptime(time_value_t *);
-#define CFI_MAX_CALL_DEPTH      64
-#define CFI_VALID_CODE_START    0x100000
-#define CFI_VALID_CODE_END      0x800000
+#define CFI_MAX_CALL_DEPTH 64
+#define CFI_VALID_CODE_START 0x100000
+#define CFI_VALID_CODE_END 0x800000
 static struct cfi_call_stack {
 uintptr_t addresses[CFI_MAX_CALL_DEPTH];
 int depth;

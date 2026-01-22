@@ -124,7 +124,7 @@ static void default_error_handler(lg_errinfo *lge, void *data)
 FILE *outfile = stdout;
 if (((NULL == data) && (lge->severity < lg_Debug)) ||
 ((NULL != data) && (lge->severity < *(lg_error_severity *)(int *)data) &&
-(lg_None !=  lge->severity)))
+(lg_None != lge->severity)))
 {
 fflush(stdout);
 outfile = stderr;
@@ -285,8 +285,8 @@ if ((lg_error.handler == default_error_handler) ||
 {
 fprintf(stderr, sevfmt, cond_str, func, src_location);
 vfprintf(stderr, fmt, args);
-fprintf(stderr, "\n");                                                \
-fflush(stderr);                                                       \
+fprintf(stderr, "\n"); \
+fflush(stderr); \
 }
 else
 {
@@ -296,7 +296,7 @@ prt_error("\n");
 }
 va_end(args);
 if (lg_library_failure_hook == NULL)
-DEBUG_TRAP;                        \
+DEBUG_TRAP; \
 else
 lg_library_failure_hook();
 exit(1);

@@ -23,7 +23,7 @@ main (int argc, char **argv)
 struct store *store = 0;
 store_offset_t addr = -1;
 int dumped = 0, use_file_io = 0, block_size = 0;
-void dump (store_offset_t addr,  ssize_t len)
+void dump (store_offset_t addr, ssize_t len)
 {
 char buf[4096];
 void *data = buf;

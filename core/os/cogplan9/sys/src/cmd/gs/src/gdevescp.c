@@ -1,17 +1,17 @@
 #include "gdevprn.h"
 #ifndef X_DPI
-#  define X_DPI 360
+# define X_DPI 360
 #endif
 #ifndef Y_DPI
-#  define Y_DPI 360
+# define Y_DPI 360
 #endif
 #define STYLUS_L_MARGIN 0.13
 #define STYLUS_B_MARGIN 0.56
 #define STYLUS_T_MARGIN 0.34
 #ifdef A4
-#   define STYLUS_R_MARGIN 0.18
+# define STYLUS_R_MARGIN 0.18
 #else
-#   define STYLUS_R_MARGIN 0.38
+# define STYLUS_R_MARGIN 0.38
 #endif
 #define AP3250_L_MARGIN 0.18
 #define AP3250_B_MARGIN 0.51
@@ -52,7 +52,7 @@ pdev->y_pixels_per_inch == 180) ||
 pdev->y_pixels_per_inch == 180) )) )
 return_error(gs_error_rangecheck);
 if ( buf1 == 0 || buf2 == 0 )
-{	if ( buf1 )
+{ if ( buf1 )
 gs_free(pdev->memory, (char *)buf1, in_size, 1, "escp2_print_page(buf1)");
 if ( buf2 )
 gs_free(pdev->memory, (char *)buf2, in_size, 1, "escp2_print_page(buf2)");
@@ -75,7 +75,7 @@ dev_b_margin(pdev) * pdev->y_pixels_per_inch);
 top = 0;
 bottom = pdev->height;
 }
-left  = ( (int) (dev_l_margin(pdev) * pdev->x_pixels_per_inch) ) >> 3;
+left = ( (int) (dev_l_margin(pdev) * pdev->x_pixels_per_inch) ) >> 3;
 width = ((pdev->width - (int)(dev_r_margin(pdev) * pdev->x_pixels_per_inch)) >> 3) - left;
 for ( lnum = top, skip = 0 ; lnum < bottom ; )
 {
@@ -98,7 +98,7 @@ if(lnum == bottom ) break;
 if( skip ) {
 fwrite("\033(v\002\000", 1, 5, prn_stream);
 fputc(skip & 0xff, prn_stream);
-fputc(skip >> 8,   prn_stream);
+fputc(skip >> 8, prn_stream);
 skip = 0;
 }
 lcnt = gdev_prn_copy_scan_lines(pdev, lnum, in, in_size);
@@ -185,7 +185,7 @@ else
 fputc('\024', prn_stream);
 fputc(band_size, prn_stream);
 fputc((width << 3) & 0xff, prn_stream);
-fputc( width >> 5,         prn_stream);
+fputc( width >> 5, prn_stream);
 fwrite(out, 1, (outp - out), prn_stream);
 fwrite("\r\n", 1, 2, prn_stream);
 lnum += band_size;

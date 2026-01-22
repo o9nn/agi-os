@@ -112,7 +112,7 @@ op_def_end(0)
 };
 int
 zcs_begin_map(i_ctx_t *i_ctx_p, gs_indexed_map ** pmap, const ref * pproc,
-int num_entries,  const gs_direct_color_space * base_space,
+int num_entries, const gs_direct_color_space * base_space,
 op_proc_t map1)
 {
 gs_memory_t *mem = gs_state_memory(igs);

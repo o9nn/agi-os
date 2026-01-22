@@ -1,5 +1,5 @@
 #ifndef gxcindex_INCLUDED
-#  define gxcindex_INCLUDED
+# define gxcindex_INCLUDED
 #include "gsbitops.h"
 #define GX_DEVICE_COLOR_MAX_COMPONENTS 16
 #ifdef TEST_CINDEX_STRUCT

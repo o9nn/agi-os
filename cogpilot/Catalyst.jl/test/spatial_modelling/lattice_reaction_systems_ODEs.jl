@@ -424,7 +424,7 @@ CuH_Amination_system_alt_2 = @reaction_network begin
 10.0^kam, CuHLigand + Amine_E --> Amine + Cu_ELigand
 10.0^kdc, CuHLigand + CuHLigand --> Decomposition
 end
-@unpack Decomposition, dCu_ELigand, Cu_ELigand  = CuH_Amination_system_alt_2
+@unpack Decomposition, dCu_ELigand, Cu_ELigand = CuH_Amination_system_alt_2
 @parameters dNewspecies2 dDecomposition
 @species Newspecies2(t)
 tr_alt_2_1 = @transport_reaction dLigand Ligand
@@ -437,8 +437,8 @@ tr_alt_2_7 = TransportReaction(dNewspecies2, Newspecies2)
 CuH_Amination_srs_alt_2 = [tr_alt_2_1, tr_alt_2_2, tr_alt_2_3, tr_alt_2_4, tr_alt_2_5, tr_alt_2_6, tr_alt_2_7]
 lrs_2 = LatticeReactionSystem(CuH_Amination_system_alt_2, CuH_Amination_srs_alt_2, small_2d_graph_grid)
 u0 = [CuH_Amination_u0; :Newspecies1 => 0.1; :Newspecies2 => 0.1]
-pV = [CuH_Amination_p; :dLigand => 0.01; :dSilane => 0.01; :dCu_ELigand =>  0.009; :dStyrene => -10000.0]
-pE = [:dAmine_E => 0.011, :dNewspecies1 =>  0.013, :dDecomposition =>  0.015, :dNewspecies2 =>  0.016, :dCuoAc => -10000.0]
+pV = [CuH_Amination_p; :dLigand => 0.01; :dSilane => 0.01; :dCu_ELigand => 0.009; :dStyrene => -10000.0]
+pE = [:dAmine_E => 0.011, :dNewspecies1 => 0.013, :dDecomposition => 0.015, :dNewspecies2 => 0.016, :dCuoAc => -10000.0]
 ss_1 = solve(ODEProblem(lrs_1, u0, (0.0, 500.0), [pV; pE]), Tsit5()).u[end]
 ss_2 = solve(ODEProblem(lrs_2, u0, (0.0, 500.0), [pV; pE]), Tsit5()).u[end]
 @test all(isequal.(ss_1, ss_2))

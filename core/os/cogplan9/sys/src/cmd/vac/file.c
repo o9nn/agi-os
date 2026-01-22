@@ -7,21 +7,21 @@
 static int filemetaflush(VacFile*, char*);
 struct VacFile
 {
-VacFs	*fs;
-int		ref;
-int		partial;
-int		removed;
-int		dirty;
-u32int	boff;
-VacDir	dir;
-VacFile	*up;
-VacFile	*next;
-RWLock	lk;
-VtFile	*source;
-VtFile	*msource;
-VacFile	*down;
-int		mode;
-uvlong	qidoffset;
+VacFs *fs;
+int ref;
+int partial;
+int removed;
+int dirty;
+u32int boff;
+VacDir dir;
+VacFile *up;
+VacFile *next;
+RWLock lk;
+VtFile *source;
+VtFile *msource;
+VacFile *down;
+int mode;
+uvlong qidoffset;
 };
 static VacFile*
 filealloc(VacFs *fs)

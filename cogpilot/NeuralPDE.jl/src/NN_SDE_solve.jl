@@ -58,7 +58,7 @@ learnt along with parameters of the neural network.
 * `dataset`: A dataset used to train the SDEPINN using observed process samples, at respective timepoints.
 The `L2` loss, `moment_loss` is created using this. It is a Vector of `x`, `t` where `x` is a nested vector of multiple observations of the adapted process being learnt,
 here each inner vector corresponds to one strong solution set of timeseries observations. `t` is a vector of timepoints at which we have the multiple `x` observations.
-* `data_sub_batch`:  The number of sets of random coefficients z_i to be taken for each timepoint while matching moments in `moment_loss`.
+* `data_sub_batch`: The number of sets of random coefficients z_i to be taken for each timepoint while matching moments in `moment_loss`.
 The moment matching is done against strong process observations, therefore to match moments we must have corresponding SDEPINN outputs and inputs.
 Since realistically we cant get the eigenfunction, random coefficient decompositions for each observation we try to approximate the final moments by taking mean/sum
 over multiple sets of z_i concatenated with timepoints as SDEPINN inputs to get outputs that we can finally match with the dataset mean and variance.

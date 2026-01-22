@@ -64,10 +64,10 @@ g_col[COMMON_LOG_COL_BLUE],
 g_col[COMMON_LOG_COL_DEFAULT]);
 }
 switch (level) {
-case GGML_LOG_LEVEL_INFO:  fprintf(fcur, "%sI %s", g_col[COMMON_LOG_COL_GREEN],   g_col[COMMON_LOG_COL_DEFAULT]); break;
-case GGML_LOG_LEVEL_WARN:  fprintf(fcur, "%sW %s", g_col[COMMON_LOG_COL_MAGENTA], ""                        ); break;
-case GGML_LOG_LEVEL_ERROR: fprintf(fcur, "%sE %s", g_col[COMMON_LOG_COL_RED],     ""                        ); break;
-case GGML_LOG_LEVEL_DEBUG: fprintf(fcur, "%sD %s", g_col[COMMON_LOG_COL_YELLOW],  ""                        ); break;
+case GGML_LOG_LEVEL_INFO: fprintf(fcur, "%sI %s", g_col[COMMON_LOG_COL_GREEN], g_col[COMMON_LOG_COL_DEFAULT]); break;
+case GGML_LOG_LEVEL_WARN: fprintf(fcur, "%sW %s", g_col[COMMON_LOG_COL_MAGENTA], "" ); break;
+case GGML_LOG_LEVEL_ERROR: fprintf(fcur, "%sE %s", g_col[COMMON_LOG_COL_RED], "" ); break;
+case GGML_LOG_LEVEL_DEBUG: fprintf(fcur, "%sD %s", g_col[COMMON_LOG_COL_YELLOW], "" ); break;
 default:
 break;
 }
@@ -162,7 +162,7 @@ std::vector<common_log_entry> new_entries(2*entries.size());
 size_t new_tail = 0;
 do {
 new_entries[new_tail] = std::move(entries[head]);
-head     = (head     + 1) % entries.size();
+head = (head + 1) % entries.size();
 new_tail = (new_tail + 1);
 } while (head != tail);
 head = 0;
@@ -230,14 +230,14 @@ void set_colors(bool colors) {
 pause();
 if (colors) {
 g_col[COMMON_LOG_COL_DEFAULT] = LOG_COL_DEFAULT;
-g_col[COMMON_LOG_COL_BOLD]    = LOG_COL_BOLD;
-g_col[COMMON_LOG_COL_RED]     = LOG_COL_RED;
-g_col[COMMON_LOG_COL_GREEN]   = LOG_COL_GREEN;
-g_col[COMMON_LOG_COL_YELLOW]  = LOG_COL_YELLOW;
-g_col[COMMON_LOG_COL_BLUE]    = LOG_COL_BLUE;
+g_col[COMMON_LOG_COL_BOLD] = LOG_COL_BOLD;
+g_col[COMMON_LOG_COL_RED] = LOG_COL_RED;
+g_col[COMMON_LOG_COL_GREEN] = LOG_COL_GREEN;
+g_col[COMMON_LOG_COL_YELLOW] = LOG_COL_YELLOW;
+g_col[COMMON_LOG_COL_BLUE] = LOG_COL_BLUE;
 g_col[COMMON_LOG_COL_MAGENTA] = LOG_COL_MAGENTA;
-g_col[COMMON_LOG_COL_CYAN]    = LOG_COL_CYAN;
-g_col[COMMON_LOG_COL_WHITE]   = LOG_COL_WHITE;
+g_col[COMMON_LOG_COL_CYAN] = LOG_COL_CYAN;
+g_col[COMMON_LOG_COL_WHITE] = LOG_COL_WHITE;
 } else {
 for (size_t i = 0; i < g_col.size(); i++) {
 g_col[i] = "";

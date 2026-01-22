@@ -12,115 +12,115 @@ typedef struct Reqlist Reqlist;
 typedef struct Fs Fs;
 enum
 {
-Textern=	0,
+Textern= 0,
 Ttopdir,
 Qctl,
 Qstat,
 Qdata,
-Bufsize=	32*1024,
-Maxcons=	64,
-Nhash=		64,
+Bufsize= 32*1024,
+Maxcons= 64,
+Nhash= 64,
 };
-#define TYPE(x)		(((ulong)x.path) & 0xf)
-#define CONS(x)		((((ulong)x.path) >> 4)&0xfff)
-#define QID(c, x)	(((c)<<4) | (x))
+#define TYPE(x) (((ulong)x.path) & 0xf)
+#define CONS(x) ((((ulong)x.path) >> 4)&0xfff)
+#define QID(c, x) (((c)<<4) | (x))
 struct Request
 {
-Request	*next;
-Fid	*fid;
-Fs	*fs;
-Fcall	f;
-uchar	buf[1];
+Request *next;
+Fid *fid;
+Fs *fs;
+Fcall f;
+uchar buf[1];
 };
 struct Reqlist
 {
 Lock;
-Request	*first;
+Request *first;
 Request *last;
 };
 struct Fid
 {
 Lock;
-Fid	*next;
-Fid	*cnext;
-int	fid;
-int	ref;
-int	attached;
-int	open;
-char	*user;
-char	mbuf[Bufsize];
-int	bufn;
-int	used;
-Qid	qid;
-Console	*c;
-char	buf[Bufsize];
-char	*rp;
-char	*wp;
-Reqlist	r;
+Fid *next;
+Fid *cnext;
+int fid;
+int ref;
+int attached;
+int open;
+char *user;
+char mbuf[Bufsize];
+int bufn;
+int used;
+Qid qid;
+Console *c;
+char buf[Bufsize];
+char *rp;
+char *wp;
+Reqlist r;
 };
 struct Console
 {
 Lock;
-char	*name;
-char	*dev;
-int	speed;
-int	cronly;
-int	ondemand;
-int	chat;
-int	pid;
-int	fd;
-int	cfd;
-int	sfd;
-Fid	*flist;
+char *name;
+char *dev;
+int speed;
+int cronly;
+int ondemand;
+int chat;
+int pid;
+int fd;
+int cfd;
+int sfd;
+Fid *flist;
 };
 struct Fs
 {
 Lock;
-int	fd;
-int	messagesize;
-Fid	*hash[Nhash];
-Console	*cons[Maxcons];
-int	ncons;
+int fd;
+int messagesize;
+Fid *hash[Nhash];
+Console *cons[Maxcons];
+int ncons;
 };
-extern	void	console(Fs*, char*, char*, int, int, int);
-extern	Fs*	fsmount(char*);
-extern	void	fsreader(void*);
-extern	void	fsrun(void*);
-extern	Fid*	fsgetfid(Fs*, int);
-extern	void	fsputfid(Fs*, Fid*);
-extern	int	fsdirgen(Fs*, Qid, int, Dir*, uchar*, int);
-extern	void	fsreply(Fs*, Request*, char*);
-extern	void	fskick(Fs*, Fid*);
-extern	int	fsreopen(Fs*, Console*);
-extern	void	fsversion(Fs*, Request*, Fid*);
-extern	void	fsflush(Fs*, Request*, Fid*);
-extern	void	fsauth(Fs*, Request*, Fid*);
-extern	void	fsattach(Fs*, Request*, Fid*);
-extern	void	fswalk(Fs*, Request*, Fid*);
-extern	void	fsclwalk(Fs*, Request*, Fid*);
-extern	void	fsopen(Fs*, Request*, Fid*);
-extern	void	fscreate(Fs*, Request*, Fid*);
-extern	void	fsread(Fs*, Request*, Fid*);
-extern	void	fswrite(Fs*, Request*, Fid*);
-extern	void	fsclunk(Fs*, Request*, Fid*);
-extern	void	fsremove(Fs*, Request*, Fid*);
-extern	void	fsstat(Fs*, Request*, Fid*);
-extern	void	fswstat(Fs*, Request*, Fid*);
-void 	(*fcall[])(Fs*, Request*, Fid*) =
+extern void console(Fs*, char*, char*, int, int, int);
+extern Fs* fsmount(char*);
+extern void fsreader(void*);
+extern void fsrun(void*);
+extern Fid* fsgetfid(Fs*, int);
+extern void fsputfid(Fs*, Fid*);
+extern int fsdirgen(Fs*, Qid, int, Dir*, uchar*, int);
+extern void fsreply(Fs*, Request*, char*);
+extern void fskick(Fs*, Fid*);
+extern int fsreopen(Fs*, Console*);
+extern void fsversion(Fs*, Request*, Fid*);
+extern void fsflush(Fs*, Request*, Fid*);
+extern void fsauth(Fs*, Request*, Fid*);
+extern void fsattach(Fs*, Request*, Fid*);
+extern void fswalk(Fs*, Request*, Fid*);
+extern void fsclwalk(Fs*, Request*, Fid*);
+extern void fsopen(Fs*, Request*, Fid*);
+extern void fscreate(Fs*, Request*, Fid*);
+extern void fsread(Fs*, Request*, Fid*);
+extern void fswrite(Fs*, Request*, Fid*);
+extern void fsclunk(Fs*, Request*, Fid*);
+extern void fsremove(Fs*, Request*, Fid*);
+extern void fsstat(Fs*, Request*, Fid*);
+extern void fswstat(Fs*, Request*, Fid*);
+void (*fcall[])(Fs*, Request*, Fid*) =
 {
-[Tflush]	fsflush,
-[Tversion]	fsversion,
-[Tauth]	fsauth,
-[Tattach]	fsattach,
-[Twalk]		fswalk,
-[Topen]		fsopen,
-[Tcreate]	fscreate,
-[Tread]		fsread,
-[Twrite]	fswrite,
-[Tclunk]	fsclunk,
-[Tremove]	fsremove,
-[Tstat]		fsstat,
-[Twstat]	fswstat
+[Tflush] fsflush,
+[Tversion] fsversion,
+[Tauth] fsauth,
+[Tattach] fsattach,
+[Twalk] fswalk,
+[Topen] fsopen,
+[Tcreate] fscreate,
+[Tread] fsread,
+[Twrite] fswrite,
+[Tclunk] fsclunk,
+[Tremove] fsremove,
+[Tstat] fsstat,
+[Twstat] fswstat
 };
 char Eperm[] = "permission denied";
 char Eexist[] = "file does not exist";
@@ -746,9 +746,9 @@ ndbfree(t);
 return nt != nil;
 }
 int m2p[] ={
-[OREAD]		4,
-[OWRITE]	2,
-[ORDWR]		6
+[OREAD] 4,
+[OWRITE] 2,
+[ORDWR] 6
 };
 void
 bcastmsg(Fs *fs, Console *c, char *msg, int n)

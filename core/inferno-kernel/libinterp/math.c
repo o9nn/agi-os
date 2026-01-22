@@ -572,20 +572,20 @@ cmp(int *u, int *v, double *x)
 return ((x[*u]==x[*v])? 0 : ((x[*u]<x[*v])? -1 : 1));
 }
 #define swap(u, v) {int t = *(u); *(u) = *(v); *(v) = t;}
-#define vecswap(u, v, n) if(n>0){	\
-int i = n;				\
-register int *pi = u;		\
-register int *pj = v;		\
-do {				\
-register int t = *pi;		\
-*pi++ = *pj;			\
-*pj++ = t;			\
-} while (--i > 0);			\
+#define vecswap(u, v, n) if(n>0){ \
+int i = n; \
+register int *pi = u; \
+register int *pj = v; \
+do { \
+register int t = *pi; \
+*pi++ = *pj; \
+*pj++ = t; \
+} while (--i > 0); \
 }
 #define minimum(x, y) ((x)<=(y) ? (x) : (y))
 static int *
 med3(int *a, int *b, int *c, double *x)
-{	return cmp(a, b, x) < 0 ?
+{ return cmp(a, b, x) < 0 ?
 (cmp(b, c, x) < 0 ? b : (cmp(a, c, x) < 0 ? c : a ) )
 : (cmp(b, c, x) > 0 ? b : (cmp(a, c, x) < 0 ? a : c ) );
 }
@@ -593,7 +593,7 @@ void
 rqsort(int *a, int n, double *x)
 {
 int *pa, *pb, *pc, *pd, *pl, *pm, *pn;
-int  d, r;
+int d, r;
 if (n < 7) {
 for (pm = a + 1; pm < a + n; pm++)
 for (pl = pm; pl > a && cmp(pl-1, pl, x) > 0; pl--)
@@ -630,7 +630,7 @@ pb++;
 pc--;
 }
 pn = a + n;
-r = minimum(pa-a,  pb-pa);   vecswap(a,  pb-r, r);
+r = minimum(pa-a, pb-pa); vecswap(a, pb-r, r);
 r = minimum(pd-pc, pn-pd-1); vecswap(pb, pn-r, r);
 if ((r = pb-pa) > 1) rqsort(a, r, x);
 if ((r = pd-pc) > 1) rqsort(pn-r, r, x);
@@ -639,7 +639,7 @@ void
 Math_sort(void*fp)
 {
 F_Math_sort *f;
-int	i, pilen, xlen, *p;
+int i, pilen, xlen, *p;
 f = fp;
 p = (int*) (f->pi->data);
 pilen = f->pi->len;
@@ -703,7 +703,7 @@ ncolb = f->n;
 nrowb = f->n;
 ncolb = f->k;
 }
-if(     (!nota && f->transa!='C' && f->transa!='T') ||
+if( (!nota && f->transa!='C' && f->transa!='T') ||
 (!notb && f->transb!='C' && f->transb!='T') ||
 (f->m < 0 || f->n < 0 || f->k < 0) ){
 error(exMathia);

@@ -7,65 +7,65 @@
 #include "../port/error.h"
 enum
 {
-Maxctlr=	1,
-Maxslot=	2,
-Slotashift=	16,
-Cbvs1=	1<<15,
-Cbvs2=	1<<14,
-Cbwp=	1<<13,
-Cbcd2=	1<<12,
-Cbcd1=	1<<11,
-Cbbvd2=	1<<10,
-Cbbvd1=	1<<9,
-Cbrdy=	1<<8,
-Cbvs1_c=	1<<15,
-Cbvs2_c=	1<<14,
-Cbwp_c=	1<<13,
-Cbcd2_c=	1<<12,
-Cbcd1_c=	1<<11,
-Cbbvd2_c=	1<<10,
-Cbbvd1_c=	1<<9,
-Cbrdy_l=	1<<7,
-Cbrdy_h=	1<<6,
-Cbrdy_r=	1<<5,
-Cbrdy_f=	1<<4,
-Cbdreq_int=	0<<14,
-Cbdreq_iois16=	2<<14,
-Cbdreq_spkr=	3<<14,
-Cboe=	1<<7,
-Cbreset=	1<<6,
-Rport8=	0<<6,
-Rport16=	1<<6,
-Rmtype=	7<<3,
-Rmem=	0<<3,
-Rattrib=	2<<3,
-Rio=		3<<3,
-Rdma=	4<<3,
-Rdmalx=	5<<3,
+Maxctlr= 1,
+Maxslot= 2,
+Slotashift= 16,
+Cbvs1= 1<<15,
+Cbvs2= 1<<14,
+Cbwp= 1<<13,
+Cbcd2= 1<<12,
+Cbcd1= 1<<11,
+Cbbvd2= 1<<10,
+Cbbvd1= 1<<9,
+Cbrdy= 1<<8,
+Cbvs1_c= 1<<15,
+Cbvs2_c= 1<<14,
+Cbwp_c= 1<<13,
+Cbcd2_c= 1<<12,
+Cbcd1_c= 1<<11,
+Cbbvd2_c= 1<<10,
+Cbbvd1_c= 1<<9,
+Cbrdy_l= 1<<7,
+Cbrdy_h= 1<<6,
+Cbrdy_r= 1<<5,
+Cbrdy_f= 1<<4,
+Cbdreq_int= 0<<14,
+Cbdreq_iois16= 2<<14,
+Cbdreq_spkr= 3<<14,
+Cboe= 1<<7,
+Cbreset= 1<<6,
+Rport8= 0<<6,
+Rport16= 1<<6,
+Rmtype= 7<<3,
+Rmem= 0<<3,
+Rattrib= 2<<3,
+Rio= 3<<3,
+Rdma= 4<<3,
+Rdmalx= 5<<3,
 RA22_23= 6<<3,
-RslotB=	1<<2,
-Rwp=	1<<1,
-Rvalid=	1<<0,
-Nmap=		8,
-Rconfig=	0,
-Creset=	 (1<<7),
-Clevel=	 (1<<6),
-Rccsr=	2,
-Ciack	= (1<<0),
-Cipend	= (1<<1),
-Cpwrdown=	(1<<2),
-Caudioen=	(1<<3),
-Ciois8=	(1<<5),
-Cchgena=	(1<<6),
-Cchange=	(1<<7),
-Rpin=	4,
-Rscpr=	6,
-Riob0=	10,
-Riob1=	12,
-Riob2=	14,
-Riob3=	16,
-Riolim=	18,
-Maxctab=	8,
+RslotB= 1<<2,
+Rwp= 1<<1,
+Rvalid= 1<<0,
+Nmap= 8,
+Rconfig= 0,
+Creset= (1<<7),
+Clevel= (1<<6),
+Rccsr= 2,
+Ciack = (1<<0),
+Cipend = (1<<1),
+Cpwrdown= (1<<2),
+Caudioen= (1<<3),
+Ciois8= (1<<5),
+Cchgena= (1<<6),
+Cchange= (1<<7),
+Rpin= 4,
+Rscpr= 6,
+Riob0= 10,
+Riob1= 12,
+Riob2= 14,
+Riob3= 16,
+Riolim= 18,
+Maxctab= 8,
 MaxCIS = 8192,
 Mgran = 8192,
 Statusbounce=20,
@@ -73,26 +73,26 @@ Statusbounce=20,
 typedef struct Ctlr Ctlr;
 struct Ctlr
 {
-int	dev;
-int	nslot;
-Lock	mlock;
-PCMmap	mmap[Nmap];
-ulong	nextport;
+int dev;
+int nslot;
+Lock mlock;
+PCMmap mmap[Nmap];
+ulong nextport;
 };
 static Ctlr controller[Maxctlr];
-static PCMslot	*slot;
-static PCMslot	*lastslot;
-static int	nslot;
-static	Map	pcmmapv[Nmap+1];
-static	RMap	pcmmaps = {"PCMCIA mappings"};
-static void	pcmciaintr(Ureg*, void*);
-static void	pcmciareset(void);
-static int	pcmio(int, ISAConf*);
-static long	pcmread(int, int, void*, long, ulong);
-static long	pcmwrite(int, int, void*, long, ulong);
-static void	slotdis(PCMslot*);
+static PCMslot *slot;
+static PCMslot *lastslot;
+static int nslot;
+static Map pcmmapv[Nmap+1];
+static RMap pcmmaps = {"PCMCIA mappings"};
+static void pcmciaintr(Ureg*, void*);
+static void pcmciareset(void);
+static int pcmio(int, ISAConf*);
+static long pcmread(int, int, void*, long, ulong);
+static long pcmwrite(int, int, void*, long, ulong);
+static void slotdis(PCMslot*);
 static ulong pcmmalloc(ulong, long);
-static void	pcmfree(ulong, long);
+static void pcmfree(ulong, long);
 static void pcmciaproc(void*);
 static void pcmciadump(PCMslot*);
 static void
@@ -477,9 +477,9 @@ Qmem,
 Qattr,
 Qctl,
 };
-#define SLOTNO(c)	((c->qid.path>>8)&0xff)
-#define TYPE(c)		(c->qid.path&0xff)
-#define QID(s,t)	(((s)<<8)|(t))
+#define SLOTNO(c) ((c->qid.path>>8)&0xff)
+#define TYPE(c) (c->qid.path&0xff)
+#define QID(s,t) (((s)<<8)|(t))
 static int
 pcmgen(Chan *c, char*, Dirtab*, int, int i, Dir *dp)
 {

@@ -139,7 +139,7 @@ end
 if !all(Base.isstored(values, e[1], e[2]) for e in edge_iterator(lrs))
 throw(ArgumentError("Values was not provided for some edges for edge parameter $sym."))
 end
-# Unlike initial conditions/vertex parameters, (unless uniform) edge parameters' values  are
+# Unlike initial conditions/vertex parameters, (unless uniform) edge parameters' values are
 # always provided in the same (sparse matrix) form.
 return values
 end

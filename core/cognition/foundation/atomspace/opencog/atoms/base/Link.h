@@ -81,7 +81,7 @@ using Atom::to_short_string;
 virtual bool operator==(const Atom&) const;
 virtual bool operator<(const Atom&) const;
 };
-#define LINK_PTR_DECL(CNAME)  ATOM_PTR_DECL(CNAME)
+#define LINK_PTR_DECL(CNAME) ATOM_PTR_DECL(CNAME)
 LINK_PTR_DECL(Link);
 template< class... Args >
 Handle createLink( Args&&... args )

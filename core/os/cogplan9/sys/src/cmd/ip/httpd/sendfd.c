@@ -3,12 +3,12 @@
 #include <auth.h>
 #include "httpd.h"
 #include "httpsrv.h"
-static	void		printtype(Hio *hout, HContent *type, HContent *enc);
-#define UNAUTHED	"You are not authorized to see this area.\n"
-#define NOCONTENT	"No acceptable type of data is available.\n"
-#define NOENCODE	"No acceptable encoding of the contents is available.\n"
-#define UNMATCHED	"The entity requested does not match the existing entity.\n"
-#define BADRANGE	"No bytes are avaible for the range you requested.\n"
+static void printtype(Hio *hout, HContent *type, HContent *enc);
+#define UNAUTHED "You are not authorized to see this area.\n"
+#define NOCONTENT "No acceptable type of data is available.\n"
+#define NOENCODE "No acceptable encoding of the contents is available.\n"
+#define UNMATCHED "The entity requested does not match the existing entity.\n"
+#define BADRANGE "No bytes are avaible for the range you requested.\n"
 int
 sendfd(HConnect *c, int fd, Dir *dir, HContent *type, HContent *enc)
 {

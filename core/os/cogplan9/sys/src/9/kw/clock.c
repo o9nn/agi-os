@@ -6,28 +6,28 @@
 #include "io.h"
 #include "ureg.h"
 enum {
-Tcycles		= CLOCKFREQ / HZ,
-Dogperiod	= 15 * CLOCKFREQ,
-MaxPeriod	= Tcycles,
-MinPeriod	= MaxPeriod / 100,
-Tmr0enable	= 1<<0,
-Tmr0reload	= 1<<1,
-Tmr1enable	= 1<<2,
-Tmr1reload	= 1<<3,
-TmrWDenable	= 1<<4,
-TmrWDreload	= 1<<5,
+Tcycles = CLOCKFREQ / HZ,
+Dogperiod = 15 * CLOCKFREQ,
+MaxPeriod = Tcycles,
+MinPeriod = MaxPeriod / 100,
+Tmr0enable = 1<<0,
+Tmr0reload = 1<<1,
+Tmr1enable = 1<<2,
+Tmr1reload = 1<<3,
+TmrWDenable = 1<<4,
+TmrWDreload = 1<<5,
 };
 typedef struct TimerReg TimerReg;
 struct TimerReg
 {
-ulong	ctl;
-ulong	pad[3];
-ulong	reload0;
-ulong	timer0;
-ulong	reload1;
-ulong	timer1;
-ulong	reloadwd;
-ulong	timerwd;
+ulong ctl;
+ulong pad[3];
+ulong reload0;
+ulong timer0;
+ulong reload1;
+ulong timer1;
+ulong reloadwd;
+ulong timerwd;
 };
 static int ticks;
 static void

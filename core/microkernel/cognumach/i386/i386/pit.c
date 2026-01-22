@@ -4,7 +4,7 @@
 #include <i386/pit.h>
 #include <i386/pio.h>
 #include <kern/cpu_number.h>
-int pitctl_port  = PITCTL_PORT;
+int pitctl_port = PITCTL_PORT;
 int pitctr0_port = PITCTR0_PORT;
 int pit0_mode = PIT_C0|PIT_SQUAREMODE|PIT_READMODE ;
 unsigned int clknumb = CLKNUM;
@@ -53,7 +53,7 @@ clkstart(void)
 {
 if (cpu_number() != 0)
 return;
-unsigned char	byte;
+unsigned char byte;
 unsigned long s;
 s = sploff();
 outb(pitctl_port, pit0_mode);

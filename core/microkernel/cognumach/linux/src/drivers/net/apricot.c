@@ -15,8 +15,8 @@ static const char *version = "apricot.c:v0.2 05/12/94\n";
 #include <asm/io.h>
 #include <asm/dma.h>
 #ifndef HAVE_PORTRESERVE
-#define check_region(addr, size)	0
-#define request_region(addr, size,name)	do ; while(0)
+#define check_region(addr, size) 0
+#define request_region(addr, size,name) do ; while(0)
 #endif
 #ifndef HAVE_ALLOC_SKB
 #define alloc_skb(size, priority) (struct sk_buff *) kmalloc(size,priority)
@@ -30,32 +30,32 @@ int i596_debug = 1;
 #endif
 #define APRICOT_TOTAL_SIZE 17
 #define I596_NULL -1
-#define CMD_EOL		0x8000
-#define CMD_SUSP	0x4000
-#define CMD_INTR	0x2000
-#define CMD_FLEX	0x0008
+#define CMD_EOL 0x8000
+#define CMD_SUSP 0x4000
+#define CMD_INTR 0x2000
+#define CMD_FLEX 0x0008
 enum commands {
 CmdNOp = 0, CmdSASetup = 1, CmdConfigure = 2, CmdMulticastList = 3,
 CmdTx = 4, CmdTDR = 5, CmdDump = 6, CmdDiagnose = 7};
-#define STAT_C		0x8000
-#define STAT_B		0x4000
-#define STAT_OK		0x2000
-#define STAT_A		0x1000
-#define	 CUC_START	0x0100
-#define	 CUC_RESUME	0x0200
-#define	 CUC_SUSPEND    0x0300
-#define	 CUC_ABORT	0x0400
-#define	 RX_START	0x0010
-#define	 RX_RESUME	0x0020
-#define	 RX_SUSPEND	0x0030
-#define	 RX_ABORT	0x0040
+#define STAT_C 0x8000
+#define STAT_B 0x4000
+#define STAT_OK 0x2000
+#define STAT_A 0x1000
+#define CUC_START 0x0100
+#define CUC_RESUME 0x0200
+#define CUC_SUSPEND 0x0300
+#define CUC_ABORT 0x0400
+#define RX_START 0x0010
+#define RX_RESUME 0x0020
+#define RX_SUSPEND 0x0030
+#define RX_ABORT 0x0040
 struct i596_cmd {
 unsigned short status;
 unsigned short command;
 struct i596_cmd *next;
 };
-#define EOF		0x8000
-#define SIZE_MASK	0x3fff
+#define EOF 0x8000
+#define SIZE_MASK 0x3fff
 struct i596_tbd {
 unsigned short size;
 unsigned short pad;
@@ -133,7 +133,7 @@ char init_setup[] = {
 0x40,
 0xff,
 0x00,
-0x7f	 };
+0x7f };
 static int i596_open(struct device *dev);
 static int i596_start_xmit(struct sk_buff *skb, struct device *dev);
 static void i596_interrupt(int irq, void *dev_id, struct pt_regs *regs);
@@ -771,7 +771,7 @@ int
 init_module(void)
 {
 dev_apricot.base_addr = io;
-dev_apricot.irq       = irq;
+dev_apricot.irq = irq;
 if (register_netdev(&dev_apricot) != 0)
 return -EIO;
 return 0;

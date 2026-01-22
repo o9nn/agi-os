@@ -1,4 +1,4 @@
 export default [
-  'packages/*',
-  'packages-top/*',
+'packages/*',
+'packages-top/*',
 ]

@@ -1,5 +1,5 @@
 #ifndef gxdda_INCLUDED
-#  define gxdda_INCLUDED
+# define gxdda_INCLUDED
 #define dda_state_struct(sname, dtype, ntype)\
 struct sname { dtype Q; ntype R; }
 #define dda_step_struct(sname, dtype, ntype)\

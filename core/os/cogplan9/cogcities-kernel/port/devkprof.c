@@ -1,18 +1,18 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#define	LRES	3
-#define	SZ	4
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#define LRES 3
+#define SZ 4
 struct
 {
-int	minpc;
-int	maxpc;
-int	nbuf;
-int	time;
-ulong	*buf;
+int minpc;
+int maxpc;
+int nbuf;
+int time;
+ulong *buf;
 }kprof;
 enum{
 Kprofdirqid,
@@ -20,9 +20,9 @@ Kprofdataqid,
 Kprofctlqid,
 };
 Dirtab kproftab[]={
-".",	{Kprofdirqid, 0, QTDIR},		0,	DMDIR|0550,
-"kpdata",	{Kprofdataqid},		0,	0600,
-"kpctl",	{Kprofctlqid},		0,	0600,
+".", {Kprofdirqid, 0, QTDIR}, 0, DMDIR|0550,
+"kpdata", {Kprofdataqid}, 0, 0600,
+"kpctl", {Kprofctlqid}, 0, 0600,
 };
 static void
 _kproftimer(ulong pc)

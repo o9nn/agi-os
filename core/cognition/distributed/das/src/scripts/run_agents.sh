@@ -54,73 +54,73 @@ EOF
 )
 DAS_AGENT_CONFIG=$(echo $DAS_AGENT_CONFIG_JSON)
 AGENTS=(
-    "attention_broker_service $ATTENTION_BROKER_NODE_ID ;src/scripts/run.sh"
-    "busnode --service=query-engine --endpoint=$QUERY_AGENT_NODE_ID --ports-range=$QUERY_AGENT_START_END_PORT --attention-broker-endpoint=$ATTENTION_BROKER_NODE_ID;src/scripts/run.sh"
-    "busnode --service=context-broker --endpoint=$CONTEXT_BROKER_NODE_ID --ports-range=$CONTEXT_BROKER_START_END_PORT --bus-endpoint=$QUERY_AGENT_NODE_ID --attention-broker-endpoint=$ATTENTION_BROKER_NODE_ID;src/scripts/run.sh"
-    "busnode --service=link-creation-agent --endpoint=$LINK_CREATION_AGENT_NODE_ID --bus-endpoint=$QUERY_AGENT_NODE_ID --ports-range=$LINK_CREATION_START_END_PORT --request-interval=$LINK_CREATION_REQUESTS_INTERVAL_SECONDS --thread-count=$LINK_CREATION_AGENT_THREAD_COUNT --default-timeout=$LINK_CREATION_QUERY_TIMEOUT_SECONDS --buffer-file=$LINK_CREATION_REQUESTS_BUFFER_FILE --metta-file-path=$LINK_CREATION_METTA_FILE_PATH --save-links-to-metta=$SAVE_LINKS_TO_METTA --save-links-to-db=$SAVE_LINKS_TO_DB;src/scripts/run.sh"
-    "busnode --service=inference-agent --endpoint=$INFERENCE_AGENT_NODE_ID --bus-endpoint=$QUERY_AGENT_NODE_ID --ports-range=$INFERENCE_AGENT_START_END_PORT;src/scripts/run.sh"
-    "busnode --service=evolution-agent --endpoint=$EVOLUTION_NODE_ID --ports-range=$EVOLUTION_START_END_PORT --bus-endpoint=$QUERY_AGENT_NODE_ID --attention-broker-endpoint=$ATTENTION_BROKER_NODE_ID;src/scripts/run.sh"
+"attention_broker_service $ATTENTION_BROKER_NODE_ID ;src/scripts/run.sh"
+"busnode --service=query-engine --endpoint=$QUERY_AGENT_NODE_ID --ports-range=$QUERY_AGENT_START_END_PORT --attention-broker-endpoint=$ATTENTION_BROKER_NODE_ID;src/scripts/run.sh"
+"busnode --service=context-broker --endpoint=$CONTEXT_BROKER_NODE_ID --ports-range=$CONTEXT_BROKER_START_END_PORT --bus-endpoint=$QUERY_AGENT_NODE_ID --attention-broker-endpoint=$ATTENTION_BROKER_NODE_ID;src/scripts/run.sh"
+"busnode --service=link-creation-agent --endpoint=$LINK_CREATION_AGENT_NODE_ID --bus-endpoint=$QUERY_AGENT_NODE_ID --ports-range=$LINK_CREATION_START_END_PORT --request-interval=$LINK_CREATION_REQUESTS_INTERVAL_SECONDS --thread-count=$LINK_CREATION_AGENT_THREAD_COUNT --default-timeout=$LINK_CREATION_QUERY_TIMEOUT_SECONDS --buffer-file=$LINK_CREATION_REQUESTS_BUFFER_FILE --metta-file-path=$LINK_CREATION_METTA_FILE_PATH --save-links-to-metta=$SAVE_LINKS_TO_METTA --save-links-to-db=$SAVE_LINKS_TO_DB;src/scripts/run.sh"
+"busnode --service=inference-agent --endpoint=$INFERENCE_AGENT_NODE_ID --bus-endpoint=$QUERY_AGENT_NODE_ID --ports-range=$INFERENCE_AGENT_START_END_PORT;src/scripts/run.sh"
+"busnode --service=evolution-agent --endpoint=$EVOLUTION_NODE_ID --ports-range=$EVOLUTION_START_END_PORT --bus-endpoint=$QUERY_AGENT_NODE_ID --attention-broker-endpoint=$ATTENTION_BROKER_NODE_ID;src/scripts/run.sh"
 )
 WAIT_FOR_AGENTS=true
 if [ "$2" == "no-wait" ]; then
-    WAIT_FOR_AGENTS=false
+WAIT_FOR_AGENTS=false
 fi
 SHOW_LOGS=true
 if [ "$3" == "no-logs" ]; then
-    SHOW_LOGS=false
+SHOW_LOGS=false
 fi
 stop() {
-   echo "Stopping all agents..."
-    for AGENT in "${AGENTS[@]}"; do
-        IFS=';' read -r AGENT_NAME AGENT_PATH <<< "$AGENT"
-        echo "Stopping agent: $AGENT_NAME"
-        if [[ "$AGENT_PATH" == *"src/scripts/run.sh"* ]]; then
-            IFS=' ' read -r TEMP_NAME <<< "$AGENT_NAME"
-            echo "$TEMP_NAME"
-            CONTAINER_NAME=`docker ps --no-trunc | grep "$TEMP_NAME" | awk '{print $NF}'`
-        else
-            CONTAINER_NAME=`docker ps --no-trunc | grep das-bazel-cmd | awk '{print $NF}'`
-        fi
-        if [ -z "$CONTAINER_NAME" ]; then
-            continue
-        fi
-        docker rm -f "$CONTAINER_NAME"
-    done
+echo "Stopping all agents..."
+for AGENT in "${AGENTS[@]}"; do
+IFS=';' read -r AGENT_NAME AGENT_PATH <<< "$AGENT"
+echo "Stopping agent: $AGENT_NAME"
+if [[ "$AGENT_PATH" == *"src/scripts/run.sh"* ]]; then
+IFS=' ' read -r TEMP_NAME <<< "$AGENT_NAME"
+echo "$TEMP_NAME"
+CONTAINER_NAME=`docker ps --no-trunc | grep "$TEMP_NAME" | awk '{print $NF}'`
+else
+CONTAINER_NAME=`docker ps --no-trunc | grep das-bazel-cmd | awk '{print $NF}'`
+fi
+if [ -z "$CONTAINER_NAME" ]; then
+continue
+fi
+docker rm -f "$CONTAINER_NAME"
+done
 }
 trap stop SIGINT
 trap stop SIGTERM
 PARAM=$1
 set +x
 if [ "$PARAM" == "stop" ]; then
-    stop
-    exit 0
+stop
+exit 0
 fi
 if [ "$PARAM" == "start" ]; then
-    echo "Starting all agents..."
-    i=0
-    for AGENT in "${AGENTS[@]}"; do
-        IFS=';' read -r AGENT_NAME AGENT_PATH <<< "$AGENT"
-        IFS=' ' read -r TEMP_NAME _ _ <<< "$AGENT_NAME"
-        LOG_FILE="$PWD/logs/$TEMP_NAME.log"
-        mkdir -p logs
-        touch $LOG_FILE
-        {
-            echo -e "${colors[i % ${
-            bash -c "$PWD/$AGENT_PATH $AGENT_NAME" 2>&1 | while IFS= read -r line; do
-                if [ "$SHOW_LOGS" = true ]; then
-                    echo -e "${colors[i % ${
-                fi
-                echo "$line" >> $LOG_FILE
-            done
-        } &
-        sleep 5
-        i=$((i + 1))
-    done
-    if [ "$WAIT_FOR_AGENTS" = true ]; then
-        echo -e "${GREEN}All agents started successfully!${NC}"
-        echo "Waiting for agents to finish..."
-        wait
-    else
-        echo -e "${GREEN}All agents started in the background!${NC}"
-    fi
+echo "Starting all agents..."
+i=0
+for AGENT in "${AGENTS[@]}"; do
+IFS=';' read -r AGENT_NAME AGENT_PATH <<< "$AGENT"
+IFS=' ' read -r TEMP_NAME _ _ <<< "$AGENT_NAME"
+LOG_FILE="$PWD/logs/$TEMP_NAME.log"
+mkdir -p logs
+touch $LOG_FILE
+{
+echo -e "${colors[i % ${
+bash -c "$PWD/$AGENT_PATH $AGENT_NAME" 2>&1 | while IFS= read -r line; do
+if [ "$SHOW_LOGS" = true ]; then
+echo -e "${colors[i % ${
+fi
+echo "$line" >> $LOG_FILE
+done
+} &
+sleep 5
+i=$((i + 1))
+done
+if [ "$WAIT_FOR_AGENTS" = true ]; then
+echo -e "${GREEN}All agents started successfully!${NC}"
+echo "Waiting for agents to finish..."
+wait
+else
+echo -e "${GREEN}All agents started in the background!${NC}"
+fi
 fi

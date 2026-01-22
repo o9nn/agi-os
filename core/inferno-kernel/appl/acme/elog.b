@@ -25,19 +25,19 @@ edit = mods.edit;
 Wsequence := "warning: changes out of sequence\n";
 warned := FALSE;
 #
-# Log of changes made by editing commands.  Three reasons for this:
+# Log of changes made by editing commands. Three reasons for this:
 # 1) We want addresses in commands to apply to old file, not file-in-change.
 # 2) It's difficult to track changes correctly as things move, e.g. ,x m$
 # 3) This gives an opportunity to optimize by merging adjacent changes.
 # It's a little bit like the Undo/Redo log in Files, but Point 3) argues for a
-# separate implementation.  To do this well, we use Replace as well as
+# separate implementation. To do this well, we use Replace as well as
 # Insert and Delete
 #
 Buflog: adt{
-typex: int;		# Replace, Filename
-q0: int;		# location of change (unused in f)
-nd: int;		# runes to delete
-nr: int;		# runes in string or file name
+typex: int; # Replace, Filename
+q0: int; # location of change (unused in f)
+nd: int; # runes to delete
+nr: int; # runes in string or file name
 };
 Buflogsize: con 7;
 SHM : con 16rffff;
@@ -63,8 +63,8 @@ s1.s[m++] = s2[n++];
 # Minstring shouldn't be very big or we will do lots of I/O for small changes.
 # Maxstring is BUFSIZE so we can fbufalloc() once and not realloc elog.r.
 #
-Minstring: con 16;	# distance beneath which we merge changes
-Maxstring: con BUFSIZE;	# maximum length of change we will merge into one
+Minstring: con 16; # distance beneath which we merge changes
+Maxstring: con BUFSIZE; # maximum length of change we will merge into one
 eloginit(f: ref File)
 {
 if(f.elog.typex != Empty)
@@ -139,7 +139,7 @@ warning(nil, Wsequence);
 elogflush(f);
 }
 # try to merge with previous
-gap = q0 - (f.elog.q0+f.elog.nd);	# gap between previous and this
+gap = q0 - (f.elog.q0+f.elog.nd); # gap between previous and this
 if(f.elog.typex==Replace && f.elog.nr+gap+nr<Maxstring){
 if(gap < Minstring){
 if(gap > 0){
@@ -205,7 +205,7 @@ if(warned++ == 0)
 warning(nil, Wsequence);
 elogflush(f);
 }
-#  try to merge with previous
+# try to merge with previous
 if(f.elog.typex==Delete && f.elog.q0+f.elog.nd==q0){
 f.elog.nd += q1-q0;
 return;
@@ -251,10 +251,10 @@ mod = TRUE;
 f.mark();
 }
 # if(b.nd == b.nr && b.nr <= BUFSIZE){
-#	up -= b.nr;
-#	log.read(up, buf, 0, b.nr);
-#	t.replace(b.q0, b.q0+b.nd, buf.s, b.nr, TRUE, 0);
-#	break;
+# up -= b.nr;
+# log.read(up, buf, 0, b.nr);
+# t.replace(b.q0, b.q0+b.nd, buf.s, b.nr, TRUE, 0);
+# break;
 # }
 t.delete(b.q0, b.q0+b.nd, TRUE);
 up -= b.nr;
@@ -293,20 +293,20 @@ t.insert(b.q0+i, buf.s, n, TRUE, 0);
 # t.q0 = b.q0;
 # t.q1 = b.q0+b.nr;
 break;
-#		Filename =>
-#			f.seq = u.seq;
-#			f.unsetname(epsilon);
-#			f.mod = u.mod;
-#			up -= u.n;
-#			if(u.n == 0)
-#				f.name = nil;
-#			else{
-#				fn0 := stralloc(u.n);
-#				delta.read(up, fn0, 0, u.n);
-#				f.name = fn0.s;
-#				strfree(fn0);
-#			}
-#			break;
+# Filename =>
+# f.seq = u.seq;
+# f.unsetname(epsilon);
+# f.mod = u.mod;
+# up -= u.n;
+# if(u.n == 0)
+# f.name = nil;
+# else{
+# fn0 := stralloc(u.n);
+# delta.read(up, fn0, 0, u.n);
+# f.name = fn0.s;
+# strfree(fn0);
+# }
+# break;
 #
 }
 log.delete(up, log.nc);
@@ -316,6 +316,6 @@ strfree(a);
 elogterm(f);
 t.q0 = q0;
 t.q1 = q1;
-if(t.q1 > f.buf.nc)	# can't happen
+if(t.q1 > f.buf.nc) # can't happen
 t.q1 = f.buf.nc;
 }

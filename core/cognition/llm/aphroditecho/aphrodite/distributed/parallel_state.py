@@ -245,7 +245,6 @@ class GroupCoordinator:
         torch.distributed.broadcast_object_list(obj_list, src=self.ranks[src], group=self.device_group)
         return obj_list
     def send_object(self, obj: Any, dst: int) -> None:
-        """NOTE: `dst` is the local rank of the destination rank."""
         assert dst < self.world_size, f'Invalid dst rank ({dst})'
         assert dst != self.rank_in_group, 'Invalid destination rank. Destination rank is the same as the current rank.'
         object_tensor = torch.frombuffer(pickle.dumps(obj), dtype=torch.uint8)
@@ -254,7 +253,6 @@ class GroupCoordinator:
         torch.distributed.send(object_tensor, dst=self.ranks[dst], group=self.cpu_group)
         return None
     def recv_object(self, src: int) -> Any:
-        """NOTE: `src` is the local rank of the source rank."""
         assert src < self.world_size, f'Invalid src rank ({src})'
         assert src != self.rank_in_group, 'Invalid source rank. Source rank is the same as the current rank.'
         size_tensor = torch.empty(1, dtype=torch.long, device='cpu')
@@ -377,12 +375,10 @@ class GroupCoordinator:
     def barrier(self):
         torch.distributed.barrier(group=self.cpu_group)
     def send(self, tensor: torch.Tensor, dst: Optional[int]=None) -> None:
-        """NOTE: `dst` is the local rank of the destination rank."""
         if self.device_communicator is None:
             raise ValueError('No device communicator found')
         self.device_communicator.send(tensor, dst)
     def recv(self, size: torch.Size, dtype: torch.dtype, src: Optional[int]=None) -> torch.Tensor:
-        """NOTE: `src` is the local rank of the source rank."""
         if self.device_communicator is None:
             raise ValueError('No device communicator found')
         return self.device_communicator.recv(size, dtype, src)

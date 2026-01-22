@@ -1,6 +1,6 @@
 implement Dnsquery;
 #
-# Copyright © 2003 Vita Nuova Holdings LImited.  All rights reserved.
+# Copyright © 2003 Vita Nuova Holdings LImited. All rights reserved.
 #
 include "sys.m";
 sys: Sys;
@@ -11,7 +11,7 @@ Iobuf: import bufio;
 include "arg.m";
 Dnsquery: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 usage()
 {

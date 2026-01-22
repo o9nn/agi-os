@@ -40,11 +40,11 @@ NULL,
 "ICMPv6"
 };
 struct icmpv6_msg {
-struct icmp6hdr		icmph;
-__u8 			*data;
-struct in6_addr		*daddr;
-int			len;
-__u32			csum;
+struct icmp6hdr icmph;
+__u8 *data;
+struct in6_addr *daddr;
+int len;
+__u32 csum;
 };
 static int icmpv6_getfrag(const void *data, struct in6_addr *saddr,
 char *buff, unsigned int offset, unsigned int len)
@@ -85,7 +85,7 @@ ptr = ipv6_skip_exthdr((struct ipv6_opt_hdr *)(hdr+1), &nexthdr, len - sizeof(*h
 if (!ptr)
 return 0;
 if (nexthdr == IPPROTO_ICMPV6) {
-struct icmp6hdr *ihdr =	(struct icmp6hdr *)ptr;
+struct icmp6hdr *ihdr = (struct icmp6hdr *)ptr;
 return (ptr - (u8*)hdr) > len || !(ihdr->icmp6_type & 0x80);
 }
 return nexthdr == NEXTHDR_FRAGMENT;
@@ -392,11 +392,11 @@ static struct icmp6_err {
 int err;
 int fatal;
 } tab_unreach[] = {
-{ ENETUNREACH,	0},
-{ EACCES,	1},
-{ EHOSTUNREACH,	0},
-{ EHOSTUNREACH,	0},
-{ ECONNREFUSED,	1},
+{ ENETUNREACH, 0},
+{ EACCES, 1},
+{ EHOSTUNREACH, 0},
+{ EHOSTUNREACH, 0},
+{ ECONNREFUSED, 1},
 };
 int icmpv6_err_convert(int type, int code, int *err)
 {
@@ -406,7 +406,7 @@ switch (type) {
 case ICMPV6_DEST_UNREACH:
 fatal = 1;
 if (code <= ICMPV6_PORT_UNREACH) {
-*err  = tab_unreach[code].err;
+*err = tab_unreach[code].err;
 fatal = tab_unreach[code].fatal;
 }
 break;

@@ -17,15 +17,15 @@ using Random
 using LinearAlgebra
 println("""
 ╔════════════════════════════════════════════════════════════════╗
-║  DEEP TREE ECHO STATE RESERVOIR COMPUTER                       ║
-║  Unified Cognitive Architecture                                ║
-║                                                                ║
-║  Components:                                                   ║
-║  • A000081 Ontogenetic Engine                                 ║
-║  • B-Series Computational Ridges                              ║
-║  • J-Surface Reactor Core                                     ║
-║  • P-System Membrane Reservoirs                               ║
-║  • Membrane Computing Gardens                                 ║
+║ DEEP TREE ECHO STATE RESERVOIR COMPUTER ║
+║ Unified Cognitive Architecture ║
+║ ║
+║ Components: ║
+║ • A000081 Ontogenetic Engine ║
+║ • B-Series Computational Ridges ║
+║ • J-Surface Reactor Core ║
+║ • P-System Membrane Reservoirs ║
+║ • Membrane Computing Gardens ║
 ╚════════════════════════════════════════════════════════════════╝
 """)
 # Set random seed for reproducibility
@@ -37,7 +37,7 @@ println("─"^60)
 params = get_parameter_set(5, membrane_order=3, max_order_offset=3)
 println("\n🌳 Using A000081-derived parameters:")
 # Optionally show detailed parameter explanation (can be verbose)
-# explain_parameters(params)  # Uncomment for detailed derivation info
+# explain_parameters(params) # Uncomment for detailed derivation info
 println("  reservoir_size  = $(params.reservoir_size) (cumulative A000081[1:5])")
 println("  max_tree_order  = $(params.max_tree_order)")
 println("  num_membranes   = $(params.num_membranes) (A000081[3])")
@@ -45,12 +45,12 @@ println("  growth_rate     = $(round(params.growth_rate, digits=4)) (20/9)")
 println("  mutation_rate   = $(round(params.mutation_rate, digits=4)) (1/9)")
 println()
 system = DeepTreeEchoSystem(
-reservoir_size = params.reservoir_size,   # 17 (1+1+2+4+9)
-max_tree_order = params.max_tree_order,   # 8
-num_membranes = params.num_membranes,     # 2 (A000081[3])
+reservoir_size = params.reservoir_size, # 17 (1+1+2+4+9)
+max_tree_order = params.max_tree_order, # 8
+num_membranes = params.num_membranes, # 2 (A000081[3])
 symplectic = true,
-growth_rate = params.growth_rate,         # ≈2.22 (20/9)
-mutation_rate = params.mutation_rate      # ≈0.11 (1/9)
+growth_rate = params.growth_rate, # ≈2.22 (20/9)
+mutation_rate = params.mutation_rate # ≈0.11 (1/9)
 )
 println("\n✓ System created with A000081-aligned configuration:")
 for (key, value) in system.config
@@ -60,7 +60,7 @@ println("\n[2/5] Initializing with A000081 seed trees...")
 println("─"^60)
 # Initialize with seed trees - use A000081[4] = 4 trees
 # This aligns with the tree count at order 4
-seed_count = A000081Parameters.A000081_SEQUENCE[4]  # 4 trees
+seed_count = A000081Parameters.A000081_SEQUENCE[4] # 4 trees
 initialize!(system, seed_trees=seed_count)
 println("\n[3/5] Evolving system for 30 generations...")
 println("─"^60)

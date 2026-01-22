@@ -1,5 +1,5 @@
 #ifndef gscpm_INCLUDED
-#  define gscpm_INCLUDED
+# define gscpm_INCLUDED
 typedef enum {
 cpm_show,
 cpm_charwidth,

@@ -33,60 +33,60 @@ char sign_last[16];
 };
 struct ncp_lock_ioctl
 {
-#define NCP_LOCK_LOG	0
-#define NCP_LOCK_SH	1
-#define NCP_LOCK_EX	2
-#define NCP_LOCK_CLEAR	256
-int		cmd;
-int		origin;
-unsigned int	offset;
-unsigned int	length;
-#define NCP_LOCK_DEFAULT_TIMEOUT	18
-#define NCP_LOCK_MAX_TIMEOUT		180
-int		timeout;
+#define NCP_LOCK_LOG 0
+#define NCP_LOCK_SH 1
+#define NCP_LOCK_EX 2
+#define NCP_LOCK_CLEAR 256
+int cmd;
+int origin;
+unsigned int offset;
+unsigned int length;
+#define NCP_LOCK_DEFAULT_TIMEOUT 18
+#define NCP_LOCK_MAX_TIMEOUT 180
+int timeout;
 };
 struct ncp_setroot_ioctl
 {
-int		volNumber;
-int		namespace;
-__u32		dirEntNum;
+int volNumber;
+int namespace;
+__u32 dirEntNum;
 };
 struct ncp_objectname_ioctl
 {
-#define NCP_AUTH_NONE	0x00
-#define NCP_AUTH_BIND	0x31
-#define NCP_AUTH_NDS	0x32
-int		auth_type;
-size_t		object_name_len;
-void*		object_name;
+#define NCP_AUTH_NONE 0x00
+#define NCP_AUTH_BIND 0x31
+#define NCP_AUTH_NDS 0x32
+int auth_type;
+size_t object_name_len;
+void* object_name;
 };
 struct ncp_privatedata_ioctl
 {
-size_t		len;
-void*		data;
+size_t len;
+void* data;
 };
-#define	NCP_IOC_NCPREQUEST		_IOR('n', 1, struct ncp_ioctl_request)
-#define	NCP_IOC_GETMOUNTUID		_IOW('n', 2, __kernel_uid_t)
+#define NCP_IOC_NCPREQUEST _IOR('n', 1, struct ncp_ioctl_request)
+#define NCP_IOC_GETMOUNTUID _IOW('n', 2, __kernel_uid_t)
 #if 1
 #ifdef __KERNEL__
-#define	NCP_IOC_GETMOUNTUID_INT		_IOW('n', 2, unsigned int)
+#define NCP_IOC_GETMOUNTUID_INT _IOW('n', 2, unsigned int)
 #endif
 #endif
-#define NCP_IOC_CONN_LOGGED_IN          _IO('n', 3)
+#define NCP_IOC_CONN_LOGGED_IN _IO('n', 3)
 #define NCP_GET_FS_INFO_VERSION (1)
-#define NCP_IOC_GET_FS_INFO             _IOWR('n', 4, struct ncp_fs_info)
-#define NCP_IOC_SIGN_INIT		_IOR('n', 5, struct ncp_sign_init)
-#define NCP_IOC_SIGN_WANTED		_IOR('n', 6, int)
-#define NCP_IOC_SET_SIGN_WANTED		_IOW('n', 6, int)
-#define NCP_IOC_LOCKUNLOCK		_IOR('n', 7, struct ncp_lock_ioctl)
-#define NCP_IOC_GETROOT			_IOW('n', 8, struct ncp_setroot_ioctl)
-#define NCP_IOC_SETROOT			_IOR('n', 8, struct ncp_setroot_ioctl)
-#define NCP_IOC_GETOBJECTNAME		_IOWR('n', 9, struct ncp_objectname_ioctl)
-#define NCP_IOC_SETOBJECTNAME		_IOR('n', 9, struct ncp_objectname_ioctl)
-#define NCP_IOC_GETPRIVATEDATA		_IOWR('n', 10, struct ncp_privatedata_ioctl)
-#define NCP_IOC_SETPRIVATEDATA		_IOR('n', 10, struct ncp_privatedata_ioctl)
-#define NCP_IOC_GETCHARSETS		_IOWR('n', 11, struct ncp_nls_ioctl)
-#define NCP_IOC_SETCHARSETS		_IOR('n', 11, struct ncp_nls_ioctl)
+#define NCP_IOC_GET_FS_INFO _IOWR('n', 4, struct ncp_fs_info)
+#define NCP_IOC_SIGN_INIT _IOR('n', 5, struct ncp_sign_init)
+#define NCP_IOC_SIGN_WANTED _IOR('n', 6, int)
+#define NCP_IOC_SET_SIGN_WANTED _IOW('n', 6, int)
+#define NCP_IOC_LOCKUNLOCK _IOR('n', 7, struct ncp_lock_ioctl)
+#define NCP_IOC_GETROOT _IOW('n', 8, struct ncp_setroot_ioctl)
+#define NCP_IOC_SETROOT _IOR('n', 8, struct ncp_setroot_ioctl)
+#define NCP_IOC_GETOBJECTNAME _IOWR('n', 9, struct ncp_objectname_ioctl)
+#define NCP_IOC_SETOBJECTNAME _IOR('n', 9, struct ncp_objectname_ioctl)
+#define NCP_IOC_GETPRIVATEDATA _IOWR('n', 10, struct ncp_privatedata_ioctl)
+#define NCP_IOC_SETPRIVATEDATA _IOR('n', 10, struct ncp_privatedata_ioctl)
+#define NCP_IOC_GETCHARSETS _IOWR('n', 11, struct ncp_nls_ioctl)
+#define NCP_IOC_SETCHARSETS _IOR('n', 11, struct ncp_nls_ioctl)
 #define NCP_PACKET_SIZE 4070
 #define NCP_MAXPATHLEN 255
 #define NCP_MAXNAMELEN 14
@@ -106,32 +106,32 @@ void*		data;
 #else
 #define DDPRINTK(format, args...)
 #endif
-#define NCP_READDIR_CACHE_SIZE        64
+#define NCP_READDIR_CACHE_SIZE 64
 #define NCP_MAX_RPC_TIMEOUT (6*HZ)
 struct ncpfs_i {
-__u32	dirEntNum __attribute__((packed));
-__u32	DosDirNum __attribute__((packed));
-__u32	volNumber __attribute__((packed));
+__u32 dirEntNum __attribute__((packed));
+__u32 DosDirNum __attribute__((packed));
+__u32 volNumber __attribute__((packed));
 #ifdef CONFIG_NCPFS_SMALLDOS
-__u32	origNS;
+__u32 origNS;
 #endif
 #ifdef CONFIG_NCPFS_STRONG
-__u32	nwattr;
+__u32 nwattr;
 #endif
-int	opened;
-int	access;
-__u32	server_file_handle __attribute__((packed));
-__u8	open_create_action __attribute__((packed));
-__u8	file_handle[6] __attribute__((packed));
+int opened;
+int access;
+__u32 server_file_handle __attribute__((packed));
+__u8 open_create_action __attribute__((packed));
+__u8 file_handle[6] __attribute__((packed));
 };
 struct ncpfs_inode_info {
-ino_t	ino;
+ino_t ino;
 struct nw_file_info nw_info;
 };
-#define NCP_SUPER_MAGIC  0x564c
-#define NCP_SBP(sb)          ((struct ncp_server *)((sb)->u.generic_sbp))
-#define NCP_SERVER(inode)    NCP_SBP((inode)->i_sb)
-#define NCP_FINFO(inode)     ((struct ncpfs_i *)&((inode)->u.smbfs_i))
+#define NCP_SUPER_MAGIC 0x564c
+#define NCP_SBP(sb) ((struct ncp_server *)((sb)->u.generic_sbp))
+#define NCP_SERVER(inode) NCP_SBP((inode)->i_sb)
+#define NCP_FINFO(inode) ((struct ncpfs_i *)&((inode)->u.smbfs_i))
 #ifdef DEBUG_NCP_MALLOC
 #include <linux/malloc.h>
 extern int ncp_malloced;

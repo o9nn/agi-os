@@ -12,35 +12,35 @@ int ultrastor_biosparam(Disk *, kdev_t, int *);
 #define ULTRASTOR_MAX_CMDS_PER_LUN 5
 #define ULTRASTOR_MAX_CMDS 16
 #define ULTRASTOR_24F_PORT 0xC80
-#define ULTRASTOR_14F { NULL, NULL,  \
-NULL,                         \
-NULL,                         \
-"UltraStor 14F/24F/34F", 	\
-ultrastor_detect, 		\
-NULL,			\
-ultrastor_info, 		\
-0, 				\
-ultrastor_queuecommand,	\
-ultrastor_abort, 		\
-ultrastor_reset,		\
-0,				\
-ultrastor_biosparam, 		\
-ULTRASTOR_MAX_CMDS,		\
-0, 				\
-ULTRASTOR_14F_MAX_SG, 	\
-ULTRASTOR_MAX_CMDS_PER_LUN, 	\
-0, 				\
-1, 				\
+#define ULTRASTOR_14F { NULL, NULL, \
+NULL, \
+NULL, \
+"UltraStor 14F/24F/34F", \
+ultrastor_detect, \
+NULL, \
+ultrastor_info, \
+0, \
+ultrastor_queuecommand, \
+ultrastor_abort, \
+ultrastor_reset, \
+0, \
+ultrastor_biosparam, \
+ULTRASTOR_MAX_CMDS, \
+0, \
+ULTRASTOR_14F_MAX_SG, \
+ULTRASTOR_MAX_CMDS_PER_LUN, \
+0, \
+1, \
 ENABLE_CLUSTERING }
 #ifdef ULTRASTOR_PRIVATE
-#define UD_ABORT	0x0001
-#define UD_COMMAND	0x0002
-#define UD_DETECT	0x0004
-#define UD_INTERRUPT	0x0008
-#define UD_RESET	0x0010
-#define UD_MULTI_CMD	0x0020
-#define UD_CSIR		0x0040
-#define UD_ERROR	0x0080
+#define UD_ABORT 0x0001
+#define UD_COMMAND 0x0002
+#define UD_DETECT 0x0004
+#define UD_INTERRUPT 0x0008
+#define UD_RESET 0x0010
+#define UD_MULTI_CMD 0x0020
+#define UD_CSIR 0x0040
+#define UD_ERROR 0x0080
 #define US14F_PRODUCT_ID_0 0x56
 #define US14F_PRODUCT_ID_1 0x40
 #define US24F_PRODUCT_ID_0 0x56

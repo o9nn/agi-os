@@ -4,9 +4,9 @@
 #include <event.h>
 enum
 {
-NSTEP		= 10,
-RBALL		= 10,
-Nball		= 100,
+NSTEP = 10,
+RBALL = 10,
+Nball = 100,
 };
 Image *image, **disk;
 int ndisk=0;

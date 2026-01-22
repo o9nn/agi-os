@@ -1,7 +1,7 @@
 implement Freq;
 #
-#	Copyright © 2002 Lucent Technologies Inc.
-# 	transliteration of the Plan 9 command; subject to the Lucent Public License 1.02
+# Copyright © 2002 Lucent Technologies Inc.
+# transliteration of the Plan 9 command; subject to the Lucent Public License 1.02
 #
 include "sys.m";
 sys: Sys;

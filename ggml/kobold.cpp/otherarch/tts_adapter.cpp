@@ -17,7 +17,7 @@
 #pragma warning(disable: 4244 4267)
 #endif
 #ifndef M_PI
-#define M_PI		3.14159265358979323846
+#define M_PI 3.14159265358979323846
 #endif
 enum TTS_VER
 {
@@ -98,12 +98,12 @@ static void fold(const std::vector<float> & data, int64_t n_out, int64_t n_win, 
 int64_t output_height = n_out;
 int64_t kernel_w = n_win;
 int64_t stride_w = n_hop;
-int64_t width    = n_out;
+int64_t width = n_out;
 output.resize(width, 0.0f);
 int64_t col_idx = 0;
 for (int64_t w_col = 0; w_col < width; ++w_col) {
 int64_t start = w_col * stride_w - n_pad;
-int64_t end   = start + kernel_w;
+int64_t end = start + kernel_w;
 for (int64_t w_im = start; w_im < end; ++w_im) {
 if (w_im >= 0 && w_im < output_height && col_idx < (int64_t) data.size()) {
 output[w_im] += data[col_idx];
@@ -136,7 +136,7 @@ E[k*n_codes + l] = embd[l*n_embd + k];
 }
 for (int k = 0; k < n_embd/2; ++k) {
 for (int l = 0; l < n_codes; ++l) {
-float mag = E[(k           )*n_codes + l];
+float mag = E[(k )*n_codes + l];
 float phi = E[(k + n_embd/2)*n_codes + l];
 mag = exp(mag);
 if (mag > 1e2) {
@@ -152,7 +152,7 @@ ST[l*n_embd + 2*k + 0] = S[2*(k*n_codes + l) + 0];
 ST[l*n_embd + 2*k + 1] = S[2*(k*n_codes + l) + 1];
 }
 }
-std::vector<float> res  (n_codes*n_fft);
+std::vector<float> res (n_codes*n_fft);
 std::vector<float> hann2(n_codes*n_fft);
 std::vector<std::thread> workers(n_thread);
 for (int i = 0; i < n_thread; ++i) {
@@ -160,8 +160,8 @@ workers[i] = std::thread([&, i]() {
 for (int l = i; l < n_codes; l += n_thread) {
 irfft(n_fft, ST.data() + l*n_embd, res.data() + l*n_fft);
 for (int j = 0; j < n_fft; ++j) {
-res  [l*n_fft + j] *= hann[j];
-hann2[l*n_fft + j]  = hann[j] * hann[j];
+res [l*n_fft + j] *= hann[j];
+hann2[l*n_fft + j] = hann[j] * hann[j];
 }
 }
 });
@@ -171,7 +171,7 @@ workers[i].join();
 }
 std::vector<float> audio;
 std::vector<float> env;
-fold(res,   n_out, n_win, n_hop, n_pad, audio);
+fold(res, n_out, n_win, n_hop, n_pad, audio);
 fold(hann2, n_out, n_win, n_hop, n_pad, env);
 for (size_t i = 0; i < audio.size(); ++i) {
 audio[i] /= env[i];

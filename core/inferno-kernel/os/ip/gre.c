@@ -8,34 +8,34 @@
 #define DPRINT if(0)print
 enum
 {
-GRE_IPONLY	= 12,
-GRE_IPPLUSGRE	= 12,
-IP_GREPROTO	= 47,
-GRErxms		= 200,
-GREtickms	= 100,
-GREmaxxmit	= 10,
+GRE_IPONLY = 12,
+GRE_IPPLUSGRE = 12,
+IP_GREPROTO = 47,
+GRErxms = 200,
+GREtickms = 100,
+GREmaxxmit = 10,
 };
 typedef struct GREhdr
 {
-uchar	vihl;
-uchar	tos;
-uchar	len[2];
-uchar	id[2];
-uchar	frag[2];
-uchar	Unused;
-uchar	proto;
-uchar	cksum[2];
-uchar	src[4];
-uchar	dst[4];
-uchar	flags[2];
-uchar	eproto[2];
+uchar vihl;
+uchar tos;
+uchar len[2];
+uchar id[2];
+uchar frag[2];
+uchar Unused;
+uchar proto;
+uchar cksum[2];
+uchar src[4];
+uchar dst[4];
+uchar flags[2];
+uchar eproto[2];
 } GREhdr;
 typedef struct GREpriv GREpriv;
 struct GREpriv
 {
-int		raw;
-ulong		csumerr;
-ulong		lenerr;
+int raw;
+ulong csumerr;
+ulong lenerr;
 };
 static void grekick(void *x, Block *bp);
 static char*

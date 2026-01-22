@@ -19,7 +19,7 @@ htmp = tmp >> 16;
 putbig2(hdr.nerasemagicmsw, htmp);
 putbig2(hdr.nerasemagiclsw, tmp);
 }
-if  (tags->tag != 0xff)
+if (tags->tag != 0xff)
 hdr.tag = tags->tag;
 return (*nandfs->write)(nandfs->magic, &hdr, sizeof(hdr), nandfs->rawblocksize * absblock + page * NandfsFullSize + NandfsPageSize);
 }

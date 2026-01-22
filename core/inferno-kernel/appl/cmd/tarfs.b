@@ -1,6 +1,6 @@
 implement Tarfs;
 #
-# Copyright © 2003 Vita Nuova Holdings Limited.  All rights reserved.
+# Copyright © 2003 Vita Nuova Holdings Limited. All rights reserved.
 #
 include "sys.m";
 sys: Sys;
@@ -20,19 +20,19 @@ Tarfs: module
 init: fn(nil: ref Draw->Context, nil: list of string);
 };
 File: adt {
-x:	int;
-name:	string;
-mode:	int;
-uid:	string;
-gid:	string;
-mtime:	int;
-length:	big;
-offset:	big;
-parent:	cyclic ref File;
-children:	cyclic list of ref File;
-find:		fn(f: self ref File, name: string): ref File;
-enter:	fn(d: self ref File, f: ref File);
-stat:		fn(d: self ref File): ref Sys->Dir;
+x: int;
+name: string;
+mode: int;
+uid: string;
+gid: string;
+mtime: int;
+length: big;
+offset: big;
+parent: cyclic ref File;
+children: cyclic list of ref File;
+find: fn(f: self ref File, name: string): ref File;
+enter: fn(d: self ref File, f: ref File);
+stat: fn(d: self ref File): ref Sys->Dir;
 };
 tarfd: ref Sys->FD;
 pflag: int;
@@ -68,11 +68,11 @@ arg->init(args);
 flags := Sys->MREPL;
 while((o := arg->opt()) != 0)
 case o {
-'a' =>	flags = Sys->MAFTER;
-'b' =>	flags = Sys->MBEFORE;
-'D' =>	styxservers->traceset(1);
-'p' =>	pflag++;
-* =>		arg->usage();
+'a' => flags = Sys->MAFTER;
+'b' => flags = Sys->MBEFORE;
+'D' => styxservers->traceset(1);
+'p' => pflag++;
+* => arg->usage();
 }
 args = arg->argv();
 if(len args != 2)
@@ -128,7 +128,7 @@ srv.reply(ref Rmsg.Error(m.tag, err));
 break;
 }
 if(c.qtype & Sys->QTDIR){
-srv.default(m);	# does readdir
+srv.default(m); # does readdir
 break;
 }
 f := files[int c.path];
@@ -150,7 +150,7 @@ srv.reply(ref Rmsg.Read(m.tag, a[0:n]));
 srv.default(gm);
 }
 }
-navops <-= nil;		# shut down navigator
+navops <-= nil; # shut down navigator
 }
 File.enter(dir: self ref File, f: ref File)
 {
@@ -287,7 +287,7 @@ Ochksum: con Omtime+12;
 Olinkflag: con Ochksum+8;
 Olinkname: con Olinkflag+1;
 # POSIX extensions follow
-Omagic: con Olinkname+Namelen;	# ustar
+Omagic: con Olinkname+Namelen; # ustar
 Ouname: con Omagic+8;
 Ogname: con Ouname+Userlen;
 Omajor: con Ogname+Userlen;
@@ -318,9 +318,9 @@ if((mode & 8r170000) == 8r40000)
 linkflag = '5';
 mode &= 8r777;
 case linkflag {
-'1' or '2' or 's' =>		# ignore links and symbolic links
+'1' or '2' or 's' => # ignore links and symbolic links
 continue;
-'3' or '4' or '6' =>	# special file or fifo (leave them, but empty)
+'3' or '4' or '6' => # special file or fifo (leave them, but empty)
 ;
 '5' =>
 mode |= Sys->DMDIR;
@@ -365,7 +365,7 @@ for(i := 0; i < len b && b[i] != byte 0; i++)
 if(int b[i] >= 16r80)
 top = 1;
 if(top)
-;	# TO DO: do it by hand if not utf-8
+; # TO DO: do it by hand if not utf-8
 return string b[0:i];
 }
 octal(b: array of byte): big

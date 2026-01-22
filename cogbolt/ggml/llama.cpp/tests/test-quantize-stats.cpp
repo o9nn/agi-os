@@ -270,7 +270,7 @@ llama_model * model;
 llama_context * ctx;
 {
 auto mparams = llama_model_default_params();
-mparams.use_mlock  = false;
+mparams.use_mlock = false;
 model = llama_model_load_from_file(params.model.c_str(), mparams);
 if (model == NULL) {
 fprintf(stderr, "%s: error: failed to load model '%s'\n", __func__, params.model.c_str());
@@ -320,11 +320,11 @@ const ggml_type type = (ggml_type) i;
 if (!params.include_types.empty() && std::find(params.include_types.begin(), params.include_types.end(), i) == params.include_types.end()) {
 continue;
 }
-const auto * qfns     = ggml_get_type_traits(type);
+const auto * qfns = ggml_get_type_traits(type);
 const auto * qfns_cpu = ggml_get_type_traits_cpu(type);
 if (qfns_cpu->from_float && qfns->to_float) {
 if (params.verbose) {
-printf("testing %s ...\n",  ggml_type_name(type));
+printf("testing %s ...\n", ggml_type_name(type));
 }
 ggml_quantize_init(type);
 error_stats global_stats {};
@@ -333,7 +333,7 @@ if (!layer_included(params, kv_tensor.first)) {
 continue;
 }
 if (params.verbose) {
-printf("  %s ...\n",  kv_tensor.first.c_str());
+printf("  %s ...\n", kv_tensor.first.c_str());
 }
 std::string layer_name { ggml_type_name(type) };
 layer_name += "::" + kv_tensor.first;

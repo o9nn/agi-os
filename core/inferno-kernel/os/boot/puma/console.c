@@ -4,14 +4,14 @@
 #include "dat.h"
 #include "fns.h"
 #include "io.h"
-static Queue*	consiq;
-static Queue*	consoq;
+static Queue* consiq;
+static Queue* consoq;
 void
 bothputs(char *s, int n)
 {
 uartputs(s, n);
 }
-static void (*consputs)(char*, int) =  0;
+static void (*consputs)(char*, int) = 0;
 void
 consinit(void)
 {

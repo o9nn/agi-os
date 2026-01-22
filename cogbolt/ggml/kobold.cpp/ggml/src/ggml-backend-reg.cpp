@@ -10,17 +10,17 @@
 #include <vector>
 #include <cctype>
 #ifdef _WIN32
-#    define WIN32_LEAN_AND_MEAN
-#    ifndef NOMINMAX
-#        define NOMINMAX
-#    endif
-#    include <windows.h>
+# define WIN32_LEAN_AND_MEAN
+# ifndef NOMINMAX
+# define NOMINMAX
+# endif
+# include <windows.h>
 #elif defined(__APPLE__)
-#    include <mach-o/dyld.h>
-#    include <dlfcn.h>
+# include <mach-o/dyld.h>
+# include <dlfcn.h>
 #else
-#    include <dlfcn.h>
-#    include <unistd.h>
+# include <dlfcn.h>
+# include <unistd.h>
 #endif
 #ifdef GGML_USE_CPU
 #include "ggml-cpu.h"
@@ -53,11 +53,11 @@
 #include "ggml-cann.h"
 #endif
 #if defined(__clang__)
-#    pragma clang diagnostic push
-#    pragma clang diagnostic ignored "-Wdeprecated-declarations"
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #elif defined(__GNUC__)
-#    pragma GCC diagnostic push
-#    pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+# pragma GCC diagnostic push
+# pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #endif
 namespace fs = std::filesystem;
 static std::string path_str(const fs::path & path) {
@@ -74,9 +74,9 @@ u8path = path.u8string();
 return u8path;
 }
 #if defined(__clang__)
-#    pragma clang diagnostic pop
+# pragma clang diagnostic pop
 #elif defined(__GNUC__)
-#    pragma GCC diagnostic pop
+# pragma GCC diagnostic pop
 #endif
 #ifdef _WIN32
 using dl_handle = std::remove_pointer_t<HMODULE>;
@@ -348,11 +348,11 @@ return base_path + "/";
 std::string base_path = ".";
 std::vector<char> path(1024);
 while (true) {
-#    if defined(__linux__)
+# if defined(__linux__)
 ssize_t len = readlink("/proc/self/exe", path.data(), path.size());
-#    elif defined(__FreeBSD__)
+# elif defined(__FreeBSD__)
 ssize_t len = readlink("/proc/curproc/file", path.data(), path.size());
-#    endif
+# endif
 if (len == -1) {
 break;
 }

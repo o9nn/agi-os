@@ -16,7 +16,7 @@ include "sh.m";
 include "winplace.m";
 winplace: Winplace;
 Wm: module {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 Ptrstarted, Kbdstarted, Controlstarted, Controller, Fixedorigin: con 1<<iota;
 Bdwidth: con 3;
@@ -39,7 +39,7 @@ raise "fail:bad module";
 }
 init(ctxt: ref Draw->Context, argv: list of string)
 {
-sys  = load Sys Sys->PATH;
+sys = load Sys Sys->PATH;
 draw = load Draw Draw->PATH;
 if(draw == nil)
 badmodule(Draw->PATH);
@@ -207,7 +207,7 @@ if(ptrfocus != c)
 return "cannot move pointer";
 e := wmclient->win.wmctl(req);
 if(e == nil){
-c.ptr <-= nil;		# flush queue
+c.ptr <-= nil; # flush queue
 c.ptr <-= ref Pointer(buttons, (int hd tl args, int hd tl tl args), sys->millisec());
 }
 "cursor" =>
@@ -245,7 +245,7 @@ if(n < 7)
 return "bad arg count";
 args = tl args;
 tag := hd args; args = tl args;
-args = tl args;		# skip reqid
+args = tl args; # skip reqid
 r: Rect;
 r.min.x = int hd args; args = tl args;
 r.min.y = int hd args; args = tl args;
@@ -261,7 +261,7 @@ r = newrect(r, screen.image.r);
 "exact" =>
 ;
 "max" =>
-r = screen.image.r;			# XXX don't obscure toolbar?
+r = screen.image.r; # XXX don't obscure toolbar?
 * =>
 return "unkown placement method";
 }
@@ -287,7 +287,7 @@ if(n < 3)
 return "bad arg count";
 args = tl args;
 tag := hd args; args = tl args;
-args = tl args;			# skip reqid
+args = tl args; # skip reqid
 w := c.window(tag);
 if(w == nil)
 return "no such tag";
@@ -312,7 +312,7 @@ setfocus(win, c);
 else if(c == kbdfocus)
 setfocus(win, nil);
 # controller specific messages:
-"request" =>		# can be used to test for control.
+"request" => # can be used to test for control.
 if((c.flags & Controller) == 0)
 return "you are not in control";
 "ctl" =>

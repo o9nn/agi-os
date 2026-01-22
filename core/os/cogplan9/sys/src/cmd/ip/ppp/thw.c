@@ -7,41 +7,41 @@
 typedef struct Cstate Cstate;
 struct Cstate
 {
-ulong		seq;
-Thwack		th;
-ulong		stats[ThwStats];
+ulong seq;
+Thwack th;
+ulong stats[ThwStats];
 };
 typedef struct Uncstate Uncstate;
 struct Uncstate
 {
-QLock		ackl;
-int		doack;
-int		badpacks;
-ulong		ackseq;
-int		ackmask;
-int		active;
-int		resetid;
-Unthwack	ut;
+QLock ackl;
+int doack;
+int badpacks;
+ulong ackseq;
+int ackmask;
+int active;
+int resetid;
+Unthwack ut;
 };
 enum
 {
-ThwAcked	= 1UL << 23,
-ThwCompMask	= 3UL << 21,
-ThwCompressed	= 0UL << 21,
-ThwUncomp	= 1UL << 21,
-ThwUncompAdd	= 2UL << 21,
-ThwSeqMask	= 0x0fffff,
-ThwSmallPack	= 96,
+ThwAcked = 1UL << 23,
+ThwCompMask = 3UL << 21,
+ThwCompressed = 0UL << 21,
+ThwUncomp = 1UL << 21,
+ThwUncompAdd = 2UL << 21,
+ThwSeqMask = 0x0fffff,
+ThwSmallPack = 96,
 };
-static	void		*compinit(PPP*);
-static	Block*		comp(PPP*, ushort, Block*, int*);
-static	Block		*compresetreq(void*, Block*);
-static	void		compcompack(void*, Block*);
-static	void		compfini(void*);
-static	void		*uncinit(PPP*);
-static	Block*		uncomp(PPP*, Block*, int *protop, Block**);
-static	void		uncfini(void*);
-static	void		uncresetack(void*, Block*);
+static void *compinit(PPP*);
+static Block* comp(PPP*, ushort, Block*, int*);
+static Block *compresetreq(void*, Block*);
+static void compcompack(void*, Block*);
+static void compfini(void*);
+static void *uncinit(PPP*);
+static Block* uncomp(PPP*, Block*, int *protop, Block**);
+static void uncfini(void*);
+static void uncresetack(void*, Block*);
 Comptype cthwack = {
 compinit,
 comp,
@@ -164,7 +164,7 @@ bb->wptr += nn + 3;
 *protop = Pcdata;
 return bb;
 }
-static	void *
+static void *
 uncinit(PPP *)
 {
 Uncstate *s;
@@ -173,12 +173,12 @@ s->active = 1;
 unthwackinit(&s->ut);
 return s;
 }
-static	void
+static void
 uncfini(void *as)
 {
 free(as);
 }
-static	void
+static void
 uncresetack(void *as, Block *b)
 {
 Uncstate *s;
@@ -191,7 +191,7 @@ s->active = 1;
 unthwackinit(&s->ut);
 }
 }
-static	Block*
+static Block*
 uncomp(PPP *ppp, Block *bb, int *protop, Block **reply)
 {
 Lcpmsg *m;

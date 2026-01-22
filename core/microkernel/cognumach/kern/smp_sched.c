@@ -10,9 +10,9 @@
 #define INT_MAX 2147483647
 #endif
 #if NCPUS > 1
-#define SMP_LOAD_BALANCE_THRESHOLD  2
-#define SMP_IDLE_STEAL_THRESHOLD    1
-#define SMP_MIGRATION_COST         100
+#define SMP_LOAD_BALANCE_THRESHOLD 2
+#define SMP_IDLE_STEAL_THRESHOLD 1
+#define SMP_MIGRATION_COST 100
 struct smp_sched_stats {
 unsigned long migrations;
 unsigned long load_balances;

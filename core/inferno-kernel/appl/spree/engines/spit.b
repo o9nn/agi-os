@@ -23,28 +23,28 @@ deck: ref Object;
 buttons: ref Object;
 winner: ref Member;
 Dmember: adt {
-spare:	ref Object;
-row:		array of ref Object;
-centre:	ref Object;
+spare: ref Object;
+row: array of ref Object;
+centre: ref Object;
 };
 dmembers := array[2] of ref Dmember;
 Openspec := Stackspec(
-"display",		# style
-4,			# maxcards
-0,			# conceal
-""			# title
+"display", # style
+4, # maxcards
+0, # conceal
+"" # title
 );
 Pilespec := Stackspec(
-"pile",		# style
-13,			# maxcards
-0,			# conceal
-"pile"		# title
+"pile", # style
+13, # maxcards
+0, # conceal
+"pile" # title
 );
 Untitledpilespec := Stackspec(
-"pile",		# style
-13,			# maxcards
-0,			# conceal
-""			# title
+"pile", # style
+13, # maxcards
+0, # conceal
+"" # title
 );
 clienttype(): string
 {
@@ -390,7 +390,7 @@ deck.transfer((0, len deck.children), dmembers[1].spare, 0);
 }
 for (i := 0; i < 2; i++) {
 d := dmembers[i];
-loop:		for (j := 0; j < len d.row; j++) {
+loop: for (j := 0; j < len d.row; j++) {
 for (k := j; k < len d.row; k++) {
 if (len d.spare.children == 0)
 break loop;

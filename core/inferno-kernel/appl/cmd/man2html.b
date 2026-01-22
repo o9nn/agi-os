@@ -12,7 +12,7 @@ str: String;
 include "arg.m";
 Man2html: module
 {
-init:	fn(ctxt: ref Draw->Context, args: list of string);
+init: fn(ctxt: ref Draw->Context, args: list of string);
 };
 Runeself: con 16r80;
 false, true: con iota;
@@ -34,7 +34,7 @@ tspec := array [] of { Troffspec
 ("dg", "&#161;"),
 ("fm", "&#180;"),
 ("rg", "&#174;"),
-#	("bu", "*"),
+# ("bu", "*"),
 ("bu", "•"),
 ("sq", "&#164;"),
 ("hy", "-"),
@@ -103,124 +103,124 @@ value: int;
 };
 Entities: array of Entity;
 Entities = array[] of {
-Entity( "&#161;",	'¡' ),
-Entity( "&#162;",	'¢' ),
-Entity( "&#163;",	'£' ),
-Entity( "&#164;",	'¤' ),
-Entity( "&#165;",	'¥' ),
-Entity( "&#166;",	'¦' ),
-Entity( "&#167;",	'§' ),
-Entity( "&#168;",	'¨' ),
-Entity( "&#169;",	'©' ),
-Entity( "&#170;",	'ª' ),
-Entity( "&#171;",	'«' ),
-Entity( "&#172;",	'¬' ),
-Entity( "&#173;",	'­' ),
-Entity( "&#174;",	'®' ),
-Entity( "&#175;",	'¯' ),
-Entity( "&#176;",	'°' ),
-Entity( "&#177;",	'±' ),
-Entity( "&#178;",	'²' ),
-Entity( "&#179;",	'³' ),
-Entity( "&#180;",	'´' ),
-Entity( "&#181;",	'µ' ),
-Entity( "&#182;",	'¶' ),
-Entity( "&#183;",	'·' ),
-Entity( "&#184;",	'¸' ),
-Entity( "&#185;",	'¹' ),
-Entity( "&#186;",	'º' ),
-Entity( "&#187;",	'»' ),
-Entity( "&#188;",	'¼' ),
-Entity( "&#189;",	'½' ),
-Entity( "&#190;",	'¾' ),
-Entity( "&#191;",	'¿' ),
-Entity( "&Agrave;",	'À' ),
-Entity( "&Aacute;",	'Á' ),
-Entity( "&Acirc;",	'Â' ),
-Entity( "&Atilde;",	'Ã' ),
-Entity( "&Auml;",	'Ä' ),
-Entity( "&Aring;",	'Å' ),
-Entity( "&AElig;",	'Æ' ),
-Entity( "&Ccedil;",	'Ç' ),
-Entity( "&Egrave;",	'È' ),
-Entity( "&Eacute;",	'É' ),
-Entity( "&Ecirc;",	'Ê' ),
-Entity( "&Euml;",	'Ë' ),
-Entity( "&Igrave;",	'Ì' ),
-Entity( "&Iacute;",	'Í' ),
-Entity( "&Icirc;",	'Î' ),
-Entity( "&Iuml;",	'Ï' ),
-Entity( "&ETH;",	'Ð' ),
-Entity( "&Ntilde;",	'Ñ' ),
-Entity( "&Ograve;",	'Ò' ),
-Entity( "&Oacute;",	'Ó' ),
-Entity( "&Ocirc;",	'Ô' ),
-Entity( "&Otilde;",	'Õ' ),
-Entity( "&Ouml;",	'Ö' ),
-Entity( "&215;",	'×' ),
-Entity( "&Oslash;",	'Ø' ),
-Entity( "&Ugrave;",	'Ù' ),
-Entity( "&Uacute;",	'Ú' ),
-Entity( "&Ucirc;",	'Û' ),
-Entity( "&Uuml;",	'Ü' ),
-Entity( "&Yacute;",	'Ý' ),
-Entity( "&THORN;",	'Þ' ),
-Entity( "&szlig;",	'ß' ),
-Entity( "&agrave;",	'à' ),
-Entity( "&aacute;",	'á' ),
-Entity( "&acirc;",	'â' ),
-Entity( "&atilde;",	'ã' ),
-Entity( "&auml;",	'ä' ),
-Entity( "&aring;",	'å' ),
-Entity( "&aelig;",	'æ' ),
-Entity( "&ccedil;",	'ç' ),
-Entity( "&egrave;",	'è' ),
-Entity( "&eacute;",	'é' ),
-Entity( "&ecirc;",	'ê' ),
-Entity( "&euml;",	'ë' ),
-Entity( "&igrave;",	'ì' ),
-Entity( "&iacute;",	'í' ),
-Entity( "&icirc;",	'î' ),
-Entity( "&iuml;",	'ï' ),
-Entity( "&eth;",	'ð' ),
-Entity( "&ntilde;",	'ñ' ),
-Entity( "&ograve;",	'ò' ),
-Entity( "&oacute;",	'ó' ),
-Entity( "&ocirc;",	'ô' ),
-Entity( "&otilde;",	'õ' ),
-Entity( "&ouml;",	'ö' ),
-Entity( "&247;",	'÷' ),
-Entity( "&oslash;",	'ø' ),
-Entity( "&ugrave;",	'ù' ),
-Entity( "&uacute;",	'ú' ),
-Entity( "&ucirc;",	'û' ),
-Entity( "&uuml;",	'ü' ),
-Entity( "&yacute;",	'ý' ),
-Entity( "&thorn;",	'þ' ),
-Entity( "&yuml;",	'ÿ' ),		# &#255;
-Entity( "&#SPACE;",	' ' ),
-Entity( "&#RS;",	'\n' ),
-Entity( "&#RE;",	'\r' ),
-Entity( "&quot;",	'"' ),
-Entity( "&amp;",	'&' ),
-Entity( "&lt;",	'<' ),
-Entity( "&gt;",	'>' ),
-Entity( "CAP-DELTA",	'Δ' ),
-Entity( "ALPHA",	'α' ),
-Entity( "BETA",	'β' ),
-Entity( "DELTA",	'δ' ),
-Entity( "EPSILON",	'ε' ),
-Entity( "THETA",	'θ' ),
-Entity( "MU",		'μ' ),
-Entity( "PI",		'π' ),
-Entity( "TAU",	'τ' ),
-Entity( "CHI",	'χ' ),
-Entity( "<-",		'←' ),
-Entity( "^",		'↑' ),
-Entity( "->",		'→' ),
-Entity( "v",		'↓' ),
-Entity( "!=",		'≠' ),
-Entity( "<=",		'≤' ),
+Entity( "&#161;", '¡' ),
+Entity( "&#162;", '¢' ),
+Entity( "&#163;", '£' ),
+Entity( "&#164;", '¤' ),
+Entity( "&#165;", '¥' ),
+Entity( "&#166;", '¦' ),
+Entity( "&#167;", '§' ),
+Entity( "&#168;", '¨' ),
+Entity( "&#169;", '©' ),
+Entity( "&#170;", 'ª' ),
+Entity( "&#171;", '«' ),
+Entity( "&#172;", '¬' ),
+Entity( "&#173;", '­' ),
+Entity( "&#174;", '®' ),
+Entity( "&#175;", '¯' ),
+Entity( "&#176;", '°' ),
+Entity( "&#177;", '±' ),
+Entity( "&#178;", '²' ),
+Entity( "&#179;", '³' ),
+Entity( "&#180;", '´' ),
+Entity( "&#181;", 'µ' ),
+Entity( "&#182;", '¶' ),
+Entity( "&#183;", '·' ),
+Entity( "&#184;", '¸' ),
+Entity( "&#185;", '¹' ),
+Entity( "&#186;", 'º' ),
+Entity( "&#187;", '»' ),
+Entity( "&#188;", '¼' ),
+Entity( "&#189;", '½' ),
+Entity( "&#190;", '¾' ),
+Entity( "&#191;", '¿' ),
+Entity( "&Agrave;", 'À' ),
+Entity( "&Aacute;", 'Á' ),
+Entity( "&Acirc;", 'Â' ),
+Entity( "&Atilde;", 'Ã' ),
+Entity( "&Auml;", 'Ä' ),
+Entity( "&Aring;", 'Å' ),
+Entity( "&AElig;", 'Æ' ),
+Entity( "&Ccedil;", 'Ç' ),
+Entity( "&Egrave;", 'È' ),
+Entity( "&Eacute;", 'É' ),
+Entity( "&Ecirc;", 'Ê' ),
+Entity( "&Euml;", 'Ë' ),
+Entity( "&Igrave;", 'Ì' ),
+Entity( "&Iacute;", 'Í' ),
+Entity( "&Icirc;", 'Î' ),
+Entity( "&Iuml;", 'Ï' ),
+Entity( "&ETH;", 'Ð' ),
+Entity( "&Ntilde;", 'Ñ' ),
+Entity( "&Ograve;", 'Ò' ),
+Entity( "&Oacute;", 'Ó' ),
+Entity( "&Ocirc;", 'Ô' ),
+Entity( "&Otilde;", 'Õ' ),
+Entity( "&Ouml;", 'Ö' ),
+Entity( "&215;", '×' ),
+Entity( "&Oslash;", 'Ø' ),
+Entity( "&Ugrave;", 'Ù' ),
+Entity( "&Uacute;", 'Ú' ),
+Entity( "&Ucirc;", 'Û' ),
+Entity( "&Uuml;", 'Ü' ),
+Entity( "&Yacute;", 'Ý' ),
+Entity( "&THORN;", 'Þ' ),
+Entity( "&szlig;", 'ß' ),
+Entity( "&agrave;", 'à' ),
+Entity( "&aacute;", 'á' ),
+Entity( "&acirc;", 'â' ),
+Entity( "&atilde;", 'ã' ),
+Entity( "&auml;", 'ä' ),
+Entity( "&aring;", 'å' ),
+Entity( "&aelig;", 'æ' ),
+Entity( "&ccedil;", 'ç' ),
+Entity( "&egrave;", 'è' ),
+Entity( "&eacute;", 'é' ),
+Entity( "&ecirc;", 'ê' ),
+Entity( "&euml;", 'ë' ),
+Entity( "&igrave;", 'ì' ),
+Entity( "&iacute;", 'í' ),
+Entity( "&icirc;", 'î' ),
+Entity( "&iuml;", 'ï' ),
+Entity( "&eth;", 'ð' ),
+Entity( "&ntilde;", 'ñ' ),
+Entity( "&ograve;", 'ò' ),
+Entity( "&oacute;", 'ó' ),
+Entity( "&ocirc;", 'ô' ),
+Entity( "&otilde;", 'õ' ),
+Entity( "&ouml;", 'ö' ),
+Entity( "&247;", '÷' ),
+Entity( "&oslash;", 'ø' ),
+Entity( "&ugrave;", 'ù' ),
+Entity( "&uacute;", 'ú' ),
+Entity( "&ucirc;", 'û' ),
+Entity( "&uuml;", 'ü' ),
+Entity( "&yacute;", 'ý' ),
+Entity( "&thorn;", 'þ' ),
+Entity( "&yuml;", 'ÿ' ), # &#255;
+Entity( "&#SPACE;", ' ' ),
+Entity( "&#RS;", '\n' ),
+Entity( "&#RE;", '\r' ),
+Entity( "&quot;", '"' ),
+Entity( "&amp;", '&' ),
+Entity( "&lt;", '<' ),
+Entity( "&gt;", '>' ),
+Entity( "CAP-DELTA", 'Δ' ),
+Entity( "ALPHA", 'α' ),
+Entity( "BETA", 'β' ),
+Entity( "DELTA", 'δ' ),
+Entity( "EPSILON", 'ε' ),
+Entity( "THETA", 'θ' ),
+Entity( "MU", 'μ' ),
+Entity( "PI", 'π' ),
+Entity( "TAU", 'τ' ),
+Entity( "CHI", 'χ' ),
+Entity( "<-", '←' ),
+Entity( "^", '↑' ),
+Entity( "->", '→' ),
+Entity( "v", '↓' ),
+Entity( "!=", '≠' ),
+Entity( "<=", '≤' ),
 Entity( nil, 0 ),
 };
 Hit: adt {
@@ -229,7 +229,7 @@ chap: string;
 mtype: string;
 page: string;
 };
-Lnone, Lordered, Lunordered, Ldef, Lother: con iota;	# list types
+Lnone, Lordered, Lunordered, Ldef, Lother: con iota; # list types
 Chaps: adt {
 name: string;
 primary: int;
@@ -241,8 +241,8 @@ desc: string;
 # having two separate flags here allows for inclusion of old-style formatted pages
 # under a new-style three-level tree
 Oldstyle: adt {
-names: int;	# two-level directory tree?
-fmt: int;		# old internal formats: e.g., "B" font means "L"; name in .TH in all caps
+names: int; # two-level directory tree?
+fmt: int; # old internal formats: e.g., "B" font means "L"; name in .TH in all caps
 };
 Href: adt {
 title: string;
@@ -255,33 +255,33 @@ Global: adt {
 bufio: Bufio;
 bin: ref Bufio->Iobuf;
 bout: ref Bufio->Iobuf;
-topname: string;		# name of the top level categories in the manual
-chaps: array of Chaps;	# names of top-level partitions of this manual
-types: array of Types;	# names of second-level partitions
+topname: string; # name of the top level categories in the manual
+chaps: array of Chaps; # names of top-level partitions of this manual
+types: array of Types; # names of second-level partitions
 oldstyle: Oldstyle;
 mantitle: string;
 mandir: string;
-thisone: Hit;		# man page we're displaying
-mtime: int;			# last modification time of thisone
-href: Href;			# hrefs of components of this man page
+thisone: Hit; # man page we're displaying
+mtime: int; # last modification time of thisone
+href: Href; # hrefs of components of this man page
 hits: array of Hit;
 nhits: int;
 list_type: int;
-pm: string;			# proprietary marking
-def_goobie: string;	# deferred goobie
-sop: int;			# output at start of paragraph?
-sol: int;			# input at start of line?
-broken: int;		# output at a break?
-fill: int;			# in fill mode?
-pre: int;			# in PRE block?
-example: int;		# an example active?
-ipd: int;			# emit inter-paragraph distance?
+pm: string; # proprietary marking
+def_goobie: string; # deferred goobie
+sop: int; # output at start of paragraph?
+sol: int; # input at start of line?
+broken: int; # output at a break?
+fill: int; # in fill mode?
+pre: int; # in PRE block?
+example: int; # an example active?
+ipd: int; # emit inter-paragraph distance?
 indents: int;
 hangingdt: int;
-curfont: string;		# current font
-prevfont: string;		# previous font
-lastc: int;			# previous char from input scanner
-def_sm: int;		# amount of deferred "make smaller" request
+curfont: string; # current font
+prevfont: string; # previous font
+lastc: int; # previous char from input scanner
+def_sm: int; # amount of deferred "make smaller" request
 mk_href_chap: fn(g: self ref Global, chap: string);
 mk_href_man: fn(g: self ref Global, man: string, oldstyle: int);
 mk_href_mtype: fn(g: self ref Global, chap, mtype: string);
@@ -309,9 +309,9 @@ arg->init(args);
 arg->setusage("man2html [-h header] [-t trailer] file [section]");
 while((o := arg->opt()) != 0)
 case o {
-'h' =>	header = arg->earg();
-'t' =>	trailer = arg->earg();
-* =>	arg->usage();
+'h' => header = arg->earg();
+'t' => trailer = arg->earg();
+* => arg->usage();
 }
 args = arg->argv();
 if(args == nil)
@@ -348,7 +348,7 @@ t[len t] = s[i];
 return t;
 }
 #
-#  Convert an individual man page to HTML and output.
+# Convert an individual man page to HTML and output.
 #
 domanpage(g: ref Global, man: Hit)
 {
@@ -398,7 +398,7 @@ if (line == nil || line == "\n")
 return;
 # parse into arguments
 token: string;
-argl, rargl: list of string;	# create reversed version, then invert
+argl, rargl: list of string; # create reversed version, then invert
 while ((line = str->drop(line, " \t\n")) != nil)
 if (line[0] == '"') {
 (token, line) = split(line[1:], '"');
@@ -415,7 +415,7 @@ def_sm := g.def_sm;
 if (deferred && def_sm > 0) {
 g.print(sprint("<FONT SIZE=-%d>", def_sm));
 if (g.def_goobie == nil)
-argl = "dS" :: argl;	# dS is our own local creation
+argl = "dS" :: argl; # dS is our own local creation
 }
 subgoobie(g, argl);
 if (deferred && def_sm > 0) {
@@ -436,22 +436,22 @@ cmd := hd argl;
 argl = tl argl;
 if (len cmd > 2) {
 cmd = cmd[0:2];
-argl =  cmd[2:] :: argl;
+argl = cmd[2:] :: argl;
 }
 case cmd {
 "B" or "I" or "L" or "R" =>
-font(g, cmd, argl);		# "R" macro implicitly generated by deferred R* macros
+font(g, cmd, argl); # "R" macro implicitly generated by deferred R* macros
 "BI" or "BL" or "BR" or
 "IB" or "IL" or
 "LB" or "LI" or
 "RB" or "RI" or "RL" =>
 altfont(g, cmd[0:1], cmd[1:2], argl, true);
 "IR" or "LR" =>
-anchor(g, cmd[0:1], cmd[1:2], argl);		# includes man page refs ("IR" is old style, "LR" is new)
+anchor(g, cmd[0:1], cmd[1:2], argl); # includes man page refs ("IR" is old style, "LR" is new)
 "dS" =>
 printargs(g, argl);
 g.print("\n");
-"1C" or "2C" or "DT" or "TF" =>	 # ignore these
+"1C" or "2C" or "DT" or "TF" => # ignore these
 return;
 "ig" =>
 while ((line := getline(g)) != nil){
@@ -461,26 +461,26 @@ break;
 return;
 "P" or "PP" or "LP" =>
 g_PP(g);
-"EE" =>	g_EE(g);
-"EX" =>	g_EX(g);
-"HP" =>	g_HP_TP(g, 1);
-"IP" =>	g_IP(g, argl);
-"PD" =>	g_PD(g, argl);
-"PM" =>	g_PM(g, argl);
-"RE" =>	g_RE(g);
-"RS" =>	g_RS(g);
-"SH" =>	g_SH(g, argl);
-"SM" =>	g_SM(g, argl);
-"SS" =>	g_SS(g, argl);
-"TH" =>	g_TH(g, argl);
-"TP" =>	g_HP_TP(g, 3);
-"br" =>	g_br(g);
-"sp" =>	g_sp(g, argl);
-"ti" =>	g_br(g);
-"nf" =>	g_nf(g);
-"fi" =>	g_fi(g);
-"ft" =>	g_ft(g, argl);
-* =>		return;		# ignore unrecognized commands
+"EE" => g_EE(g);
+"EX" => g_EX(g);
+"HP" => g_HP_TP(g, 1);
+"IP" => g_IP(g, argl);
+"PD" => g_PD(g, argl);
+"PM" => g_PM(g, argl);
+"RE" => g_RE(g);
+"RS" => g_RS(g);
+"SH" => g_SH(g, argl);
+"SM" => g_SM(g, argl);
+"SS" => g_SS(g, argl);
+"TH" => g_TH(g, argl);
+"TP" => g_HP_TP(g, 3);
+"br" => g_br(g);
+"sp" => g_sp(g, argl);
+"ti" => g_br(g);
+"nf" => g_nf(g);
+"fi" => g_fi(g);
+"ft" => g_ft(g, argl);
+* => return; # ignore unrecognized commands
 }
 }
 g_br(g: ref Global)
@@ -568,7 +568,7 @@ g_IP(g: ref Global, argl: list of string)
 {
 case g.list_type {
 Lordered or Lunordered or Lother =>
-;	# continue with an existing list
+; # continue with an existing list
 * =>
 # figure out the type of a new list and start it
 closel(g);
@@ -596,7 +596,7 @@ g.print("<DL compact>\n");
 # actually do this list item
 case g.list_type {
 Lother =>
-g.print(g.softp());	# make sure there's space before each list item
+g.print(g.softp()); # make sure there's space before each list item
 if (argl != nil) {
 g.print("<DT>");
 printargs(g, argl);
@@ -630,7 +630,7 @@ code := "P";
 if (argl != nil)
 code = hd argl;
 case code {
-* =>		# includes "1" and "P"
+* => # includes "1" and "P"
 g.pm = "<B>Lucent Technologies - Proprietary</B>\n" +
 "<BR>Use pursuant to Company Instructions.\n";
 "2" or "RS" =>
@@ -644,7 +644,7 @@ g.pm = "<B>Lucent Technologies - Proprietary (Registered)</B>\n" +
 "4" or "CP" =>
 g.pm = "SEE PROPRIETARY NOTICE ON COVER PAGE\n";
 "5" or "CR" =>
-g.pm = "Copyright xxxx Lucent Technologies\n" +	# should fill in the year from the date register
+g.pm = "Copyright xxxx Lucent Technologies\n" + # should fill in the year from the date register
 "<BR>All Rights Reserved.\n";
 "6" or "UW" =>
 g.pm = "THIS DOCUMENT CONTAINS PROPRIETARY INFORMATION OF\n" +
@@ -677,7 +677,7 @@ g.broken = true;
 }
 g_SH(g: ref Global, argl: list of string)
 {
-closeall(g, 1);		# .SH is top-level list item
+closeall(g, 1); # .SH is top-level list item
 if (g.example)
 g_EE(g);
 g_fi(g);
@@ -692,7 +692,7 @@ g.broken = true;
 }
 g_SM(g: ref Global, argl: list of string)
 {
-g.def_sm++;		# can't use def_goobie, lest we collide with a deferred font macro
+g.def_sm++; # can't use def_goobie, lest we collide with a deferred font macro
 if (argl == nil)
 return;
 g.print(sprint("<FONT SIZE=-%d>", g.def_sm));
@@ -707,9 +707,9 @@ return;
 count := 1;
 if (argl != nil) {
 rcount := real hd argl;
-count = int rcount;	# may be 0 (e.g., ".sp .5")
+count = int rcount; # may be 0 (e.g., ".sp .5")
 if (count == 0 && rcount > 0.0)
-count = 1;		# force whitespace for fractional lines
+count = 1; # force whitespace for fractional lines
 }
 g.dobreak();
 for (i := 0; i < count; i++)
@@ -731,14 +731,14 @@ g.broken = true;
 g_TH(g: ref Global, argl: list of string)
 {
 if (g.oldstyle.names && len argl > 2)
-argl = hd argl :: hd tl argl :: nil;	# ignore extra .TH args on pages in oldstyle trees
+argl = hd argl :: hd tl argl :: nil; # ignore extra .TH args on pages in oldstyle trees
 case len argl {
 0 =>
 g.oldstyle.fmt = true;
 title(g, sprint("%s", g.href.title), false);
 1 =>
 g.oldstyle.fmt = true;
-title(g, sprint("%s", hd argl), false);	# any pages use this form?
+title(g, sprint("%s", hd argl), false); # any pages use this form?
 2 =>
 g.oldstyle.fmt = true;
 g.thisone.page = hd argl;
@@ -756,7 +756,7 @@ title(g, sprint("%s/%s/%s(%s)", g.href.title, g.href.chap, g.href.man, g.href.mt
 }
 g.print("[<a href=\"../index.html\">manual index</a>]");
 g.print("[<a href=\"INDEX.html\">section index</a>]<p>");
-g.print("<DL>\n");	# whole man page is just one big list
+g.print("<DL>\n"); # whole man page is just one big list
 g.indents = 1;
 g.sop = true;
 g.broken = true;
@@ -842,7 +842,7 @@ chap = g.thisone.chap;
 mtype := s[1:];
 if (mtype == nil)
 mtype = "-";
-(n, toks) := sys->tokenize(mtype, ".");	# Fix section 10
+(n, toks) := sys->tokenize(mtype, "."); # Fix section 10
 if (n > 1) mtype = hd toks;
 g.print(sprint("<A href=\"../%s/%s.html\">", mtype, fixlink(man)));
 #
@@ -882,10 +882,10 @@ g.def_goobie = f;
 return;
 }
 case f {
-"L" => 	f = "TT";
-"R" =>	f = nil;
+"L" => f = "TT";
+"R" => f = nil;
 }
-if (f != nil) 			# nil == default (typically Roman)
+if (f != nil) # nil == default (typically Roman)
 g.print(sprint("<%s>", f));
 printargs(g, argl);
 if (f != nil)
@@ -904,12 +904,12 @@ g.def_goobie = f1;
 return;
 }
 case f1 {
-"L" =>	f1 = "TT";
-"R" =>	f1 = nil;
+"L" => f1 = "TT";
+"R" => f1 = nil;
 }
 case f2 {
-"L" =>	f2 = "TT";
-"R" =>	f2 = nil;
+"L" => f2 = "TT";
+"R" => f2 = nil;
 }
 f := f1;
 for (; argl != nil; argl = tl argl) {
@@ -949,7 +949,7 @@ g.print(hd argl);
 # any parameter can be nil
 addhit(g: ref Global, chap, mtype, page: string)
 {
-# g.print(sprint("Adding %s / %s (%s) . . .", chap, page, mtype));		# debug
+# g.print(sprint("Adding %s / %s (%s) . . .", chap, page, mtype)); # debug
 # always keep a spare slot at the end
 if (g.nhits >= len g.hits - 1)
 g.hits = (array[len g.hits + 32] of Hit)[0:] = g.hits;
@@ -1020,7 +1020,7 @@ line += token;
 return line+"\n";
 }
 #
-# Get next logical character.  Expand it with escapes.
+# Get next logical character. Expand it with escapes.
 #
 getnext(g: ref Global): string
 {
@@ -1035,7 +1035,7 @@ if (c < 0)
 return nil;
 g.lastc = c;
 if (c >= Runeself) {
-for (i := 0;  i < len Entities; i++)
+for (i := 0; i < len Entities; i++)
 if (Entities[i].value == c)
 return Entities[i].name;
 return sprint("&#%d;", c);
@@ -1093,26 +1093,26 @@ g.lastc = c = bin.getc();
 if (c < 0)
 return nil;
 case c {
-'2' or 	'I' =>
+'2' or 'I' =>
 font = "I";
-'3' or 	'B' =>
+'3' or 'B' =>
 font = "B";
-'5' or 	'L' =>
+'5' or 'L' =>
 font = "TT";
 'P' =>
 font = g.prevfont;
-* =>					# includes '1' and 'R'
+* => # includes '1' and 'R'
 font = nil;
 }
 # There are serious problems with this. We don't know the fonts properly at this stage.
-#			g.prevfont = g.curfont;
-#			g.curfont = font;
-#			if (g.prevfont != nil)
-#				token = sprint("</%s>", g.prevfont);
-#			if (g.curfont != nil)
-#				token += sprint("<%s>", g.curfont);
+# g.prevfont = g.curfont;
+# g.curfont = font;
+# if (g.prevfont != nil)
+# token = sprint("</%s>", g.prevfont);
+# if (g.curfont != nil)
+# token += sprint("<%s>", g.curfont);
 if (token == nil)
-return "<i></i>";	# looks odd but it avoids inserting a space in <pre> text
+return "<i></i>"; # looks odd but it avoids inserting a space in <pre> text
 return token;
 's' =>
 sign := '+';
@@ -1157,7 +1157,7 @@ split(s: string, sep: int): (string, string)
 {
 for (i := 0; i < len s; i++)
 if (s[i] == sep)
-return (s[:i], s[i+1:]);	# s[len s:] is a valid slice, with value == nil
+return (s[:i], s[i+1:]); # s[len s:] is a valid slice, with value == nil
 return (s, nil);
 }
 Global_init(): ref Global
@@ -1167,7 +1167,7 @@ g.bufio = load Bufio Bufio->PATH;
 g.chaps = array[20] of Chaps;
 g.types = array[20] of Types;
 g.mantitle = "";
-g.href.title = g.mantitle;		# ??
+g.href.title = g.mantitle; # ??
 g.mtime = 0;
 g.nhits = 0;
 g.oldstyle.names = false;
@@ -1195,7 +1195,7 @@ Global.mk_href_man(g: self ref Global, man: string, oldstyle: int)
 {
 rman := man;
 if (oldstyle)
-rman = str->tolower(man);	# compensate for tradition of putting titles in all CAPS
+rman = str->tolower(man); # compensate for tradition of putting titles in all CAPS
 g.href.man = sprint("<A href=\"%s?man=%s\"><B>%s</B></A>", g.mandir, rman, man);
 }
 Global.mk_href_mtype(g: self ref Global, chap, mtype: string)
@@ -1212,7 +1212,7 @@ c := s[i];
 if (c == '&' && i + 1 < len s) {
 (char, rem) := str->splitl(s[i+1:], ";");
 if (rem == nil)
-break;	# require the terminating ';'
+break; # require the terminating ';'
 if (char == nil)
 continue;
 if (char[0] == '#' && len char > 1) {
@@ -1240,7 +1240,7 @@ return t;
 title(g: ref Global, t: string, search: int)
 {
 if(search)
-;	# not yet used
+; # not yet used
 g.print(header+"\n");
 g.print(sprint("<TITLE>Inferno's %s</TITLE>\n", demark(t)));
 g.print("</HEAD>\n");

@@ -23,34 +23,34 @@
 (Evaluation (Predicate "is yellow") (Concept "yellow ball"))
 (Evaluation (Predicate "is yellow") (Concept "ochre ball"))
 (define get-baskets-with-only-red-balls
-	(Bind
-		(VariableList
-			(TypedVariable (Variable "basket") (Type 'ConceptNode))
-			(TypedVariable (Variable "ball")   (Type 'ConceptNode))
-		)
-		(And
-			(Inheritance (Variable "basket") (Concept "basket"))
-			(Member (Variable "ball") (Variable "basket"))
-			(Always (Evaluation (Predicate "is red") (Variable "ball")))
-		)
-		(Variable "basket"))
+(Bind
+(VariableList
+(TypedVariable (Variable "basket") (Type 'ConceptNode))
+(TypedVariable (Variable "ball")   (Type 'ConceptNode))
+)
+(And
+(Inheritance (Variable "basket") (Concept "basket"))
+(Member (Variable "ball") (Variable "basket"))
+(Always (Evaluation (Predicate "is red") (Variable "ball")))
+)
+(Variable "basket"))
 )
 (define baskets-with-same-color
-	(Bind
-		(VariableList
-			(TypedVariable (Variable "basket")      (Type 'ConceptNode))
-			(TypedVariable (Variable "some ball")   (Type 'ConceptNode))
-			(TypedVariable (Variable "other ball")  (Type 'ConceptNode))
-			(TypedVariable (Variable "some color")  (Type 'PredicateNode))
-			(TypedVariable (Variable "other color") (Type 'PredicateNode))
-		)
-		(And
-			(Inheritance (Variable "basket")       (Concept "basket"))
-			(Member (Variable "some ball")         (Variable "basket"))
-			(Member (Variable "other ball")        (Variable "basket"))
-			(Evaluation (Variable "some color")    (Variable "some ball"))
-			(Evaluation (Variable "other color")   (Variable "other ball"))
-			(Always (Equal (Variable "some color") (Variable "other color")))
-		)
-		(Variable "basket"))
+(Bind
+(VariableList
+(TypedVariable (Variable "basket")      (Type 'ConceptNode))
+(TypedVariable (Variable "some ball")   (Type 'ConceptNode))
+(TypedVariable (Variable "other ball")  (Type 'ConceptNode))
+(TypedVariable (Variable "some color")  (Type 'PredicateNode))
+(TypedVariable (Variable "other color") (Type 'PredicateNode))
+)
+(And
+(Inheritance (Variable "basket")       (Concept "basket"))
+(Member (Variable "some ball")         (Variable "basket"))
+(Member (Variable "other ball")        (Variable "basket"))
+(Evaluation (Variable "some color")    (Variable "some ball"))
+(Evaluation (Variable "other color")   (Variable "other ball"))
+(Always (Equal (Variable "some color") (Variable "other color")))
+)
+(Variable "basket"))
 )

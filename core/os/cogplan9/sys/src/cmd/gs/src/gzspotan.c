@@ -451,7 +451,7 @@ private int
 hint_by_trap(gx_device_spot_analyzer *padev, int side_mask,
 void *client_data, gx_san_trap *t0, gx_san_trap *t1, double ave_width,
 int (*handler)(void *client_data, gx_san_sect *ss))
-{   gx_san_trap *t;
+{ gx_san_trap *t;
 double w, wd, best_width_diff = ave_width * 10;
 gx_san_trap *best_trap = NULL;
 bool at_top = false;
@@ -540,7 +540,7 @@ private int
 hint_by_tangent(gx_device_spot_analyzer *padev, int side_mask,
 void *client_data, gx_san_trap *t0, gx_san_trap *t1, double ave_width,
 int (*handler)(void *client_data, gx_san_sect *ss))
-{   gx_san_trap *t;
+{ gx_san_trap *t;
 gx_san_sect sect;
 double slope0 = 0.2, slope1 = slope0, len0 = 0, len1 = 0;
 const segment *s, *p;
@@ -569,8 +569,8 @@ choose_by_tangent(p, s, &slope1, &len1, &sect.r, &sect.xr, &sect.yr, t->ybot, t-
 if (t == t1)
 break;
 }
-if ((sect.l != NULL  || !(side_mask & 1)) &&
-(sect.r != NULL  || !(side_mask & 2))) {
+if ((sect.l != NULL || !(side_mask & 1)) &&
+(sect.r != NULL || !(side_mask & 2))) {
 const int w = 3;
 if (!(side_mask & 1)) {
 if (sect.xr < (padev->xmin * w + padev->xmax) / (w + 1))

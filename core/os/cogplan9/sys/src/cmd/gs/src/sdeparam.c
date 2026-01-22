@@ -21,7 +21,7 @@ int Blend;
 private const dcte_scalars_t dcte_scalars_default =
 {
 0, 0, -1,
-{0, 0}, 0  , 0, 0
+{0, 0}, 0 , 0, 0
 };
 private const gs_param_item_t s_DCTE_param_items[] =
 {

@@ -26,9 +26,9 @@ S_IFDIR | S_IRUGO | S_IXUGO, 2
 #endif
 #define MAXBOARDS 2
 static unsigned int bases[MAXBOARDS]={0x330, 0x334};
-static int setup_called[MAXBOARDS]   = {0,0};
-static int setup_buson[MAXBOARDS]    = {0,0};
-static int setup_busoff[MAXBOARDS]   = {0,0};
+static int setup_called[MAXBOARDS] = {0,0};
+static int setup_buson[MAXBOARDS] = {0,0};
+static int setup_busoff[MAXBOARDS] = {0,0};
 static int setup_dmaspeed[MAXBOARDS] = {-1,-1};
 static char *setup_str[MAXBOARDS] = {(char *)NULL,(char *)NULL};
 #define BIOS_TRANSLATION_1632 0
@@ -47,27 +47,27 @@ static struct Scsi_Host * aha_host[7] = {NULL,};
 #define WAITnexttimeout 3000000
 static void setup_mailboxes(int base_io, struct Scsi_Host * shpnt);
 static int aha1542_restart(struct Scsi_Host * shost);
-#define aha1542_intr_reset(base)  outb(IRST, CONTROL(base))
-#define WAIT(port, mask, allof, noneof)					\
-{ register int WAITbits;						\
-register int WAITtimeout = WAITnexttimeout;				\
-while (1) {								\
-WAITbits = inb(port) & (mask);					\
+#define aha1542_intr_reset(base) outb(IRST, CONTROL(base))
+#define WAIT(port, mask, allof, noneof) \
+{ register int WAITbits; \
+register int WAITtimeout = WAITnexttimeout; \
+while (1) { \
+WAITbits = inb(port) & (mask); \
 if ((WAITbits & (allof)) == (allof) && ((WAITbits & (noneof)) == 0)) \
-break;                                                         	\
-if (--WAITtimeout == 0) goto fail;					\
-}									\
+break; \
+if (--WAITtimeout == 0) goto fail; \
+} \
 }
-#define WAITd(port, mask, allof, noneof, timeout)			\
-{ register int WAITbits;						\
-register int WAITtimeout = timeout;					\
-while (1) {								\
-WAITbits = inb(port) & (mask);					\
+#define WAITd(port, mask, allof, noneof, timeout) \
+{ register int WAITbits; \
+register int WAITtimeout = timeout; \
+while (1) { \
+WAITbits = inb(port) & (mask); \
 if ((WAITbits & (allof)) == (allof) && ((WAITbits & (noneof)) == 0)) \
-break;                                                         	\
-udelay(1000);							\
-if (--WAITtimeout == 0) goto fail;					\
-}									\
+break; \
+udelay(1000); \
+if (--WAITtimeout == 0) goto fail; \
+} \
 }
 static void aha1542_stat(void)
 {
@@ -212,7 +212,7 @@ Scsi_Cmnd * SCtmp;
 int flag;
 int needs_restart;
 struct mailbox * mb;
-struct ccb  *ccb;
+struct ccb *ccb;
 shost = aha_host[irq - 9];
 if(!shost) panic("Splunge!");
 mb = HOSTDATA(shost)->mb;
@@ -324,7 +324,7 @@ void *buff = SCpnt->request_buffer;
 int bufflen = SCpnt->request_bufflen;
 int mbo;
 struct mailbox * mb;
-struct ccb  *ccb;
+struct ccb *ccb;
 DEB(int i);
 mb = HOSTDATA(SCpnt->host)->mb;
 ccb = HOSTDATA(SCpnt->host)->ccb;
@@ -413,7 +413,7 @@ for(i=0;i<18;i++) printk("%02x ", ptr[i]);
 panic("Foooooooood fight!");
 };
 any2scsi(cptr[i].dataptr, sgpnt[i].address);
-if(((unsigned  int) sgpnt[i].address) & 0xff000000) goto baddma;
+if(((unsigned int) sgpnt[i].address) & 0xff000000) goto baddma;
 any2scsi(cptr[i].datalen, sgpnt[i].length);
 };
 any2scsi(ccb[mbo].datalen, SCpnt->use_sg * sizeof(struct chain));
@@ -471,7 +471,7 @@ static void setup_mailboxes(int bse, struct Scsi_Host * shpnt)
 {
 int i;
 struct mailbox * mb;
-struct ccb  *ccb;
+struct ccb *ccb;
 unchar cmd[5] = {CMD_MBINIT, AHA1542_MAILBOXES, 0, 0, 0};
 mb = HOSTDATA(shpnt)->mb;
 ccb = HOSTDATA(shpnt)->ccb;
@@ -625,9 +625,9 @@ printk("aha1542: Wrong parameters may cause system malfunction.. We try anyway..
 }
 setup_called[setup_idx]=ints[0];
 setup_str[setup_idx]=str;
-setup_portbase             = ints[0] >= 1 ? ints[1] : 0;
-setup_buson   [setup_idx]  = ints[0] >= 2 ? ints[2] : 7;
-setup_busoff  [setup_idx]  = ints[0] >= 3 ? ints[3] : 5;
+setup_portbase = ints[0] >= 1 ? ints[1] : 0;
+setup_buson [setup_idx] = ints[0] >= 2 ? ints[2] : 7;
+setup_busoff [setup_idx] = ints[0] >= 3 ? ints[3] : 5;
 if (ints[0] >= 4) {
 int atbt = -1;
 switch (ints[4]) {
@@ -652,7 +652,7 @@ printk("%s", ahausage);
 printk("aha1542: Valid values for DMASPEED are 5-8, 10 MB/s.  Using jumper defaults.\n");
 break;
 }
-setup_dmaspeed[setup_idx]  = atbt;
+setup_dmaspeed[setup_idx] = atbt;
 }
 if (setup_portbase != 0)
 bases[setup_idx] = setup_portbase;
@@ -686,7 +686,7 @@ unchar oncmd[] = {CMD_BUSON_TIME, 7};
 unchar offcmd[] = {CMD_BUSOFF_TIME, 5};
 if(setup_called[indx])
 {
-oncmd[1]  = setup_buson[indx];
+oncmd[1] = setup_buson[indx];
 offcmd[1] = setup_busoff[indx];
 }
 aha1542_intr_reset(base_io);
@@ -709,8 +709,8 @@ printk("aha1542_detect: setting bus on/off-time failed\n");
 }
 aha1542_intr_reset(base_io);
 }
-if(aha1542_query(base_io, &trans))  goto unregister;
-if (aha1542_getconfig(base_io, &irq_level, &dma_chan, &scsi_id) == -1)  goto unregister;
+if(aha1542_query(base_io, &trans)) goto unregister;
+if (aha1542_getconfig(base_io, &irq_level, &dma_chan, &scsi_id) == -1) goto unregister;
 printk("Configuring Adaptec (SCSI-ID %d) at IO:%x, IRQ %d", scsi_id, base_io, irq_level);
 if (dma_chan != 0xFF)
 printk(", DMA priority %d", dma_chan);
@@ -745,18 +745,18 @@ shpnt->io_port = base_io;
 shpnt->n_io_port = 4;
 shpnt->dma_channel = dma_chan;
 shpnt->irq = irq_level;
-HOSTDATA(shpnt)->bios_translation  = trans;
+HOSTDATA(shpnt)->bios_translation = trans;
 if(trans == BIOS_TRANSLATION_25563)
 printk("aha1542.c: Using extended bios translation\n");
-HOSTDATA(shpnt)->aha1542_last_mbi_used  = (2*AHA1542_MAILBOXES - 1);
-HOSTDATA(shpnt)->aha1542_last_mbo_used  = (AHA1542_MAILBOXES - 1);
+HOSTDATA(shpnt)->aha1542_last_mbi_used = (2*AHA1542_MAILBOXES - 1);
+HOSTDATA(shpnt)->aha1542_last_mbo_used = (AHA1542_MAILBOXES - 1);
 memset(HOSTDATA(shpnt)->SCint, 0, sizeof(HOSTDATA(shpnt)->SCint));
 restore_flags(flags);
 #if 0
 DEB(printk(" *** READ CAPACITY ***\n"));
 {
 unchar buf[8];
-static unchar cmd[] = {	READ_CAPACITY, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+static unchar cmd[] = { READ_CAPACITY, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 int i;
 for (i = 0; i < sizeof(buf); ++i) buf[i] = 0x87;
 for (i = 0; i < 2; ++i)

@@ -5,7 +5,7 @@
 (define tname "fetch-value-of")
 (test-begin tname)
 (define sto (PostgresStorageNode
-	"postgres:///opencog_test?user=opencog_tester&password=cheese"))
+"postgres:///opencog_test?user=opencog_tester&password=cheese"))
 (cog-open sto)
 (cog-erase! sto)
 (define fvof (FetchValueOf (Concept "a") (Predicate "foo") sto))

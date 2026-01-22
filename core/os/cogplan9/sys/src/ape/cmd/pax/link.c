@@ -3,22 +3,22 @@ static char *ident = "$Id: link.c,v 1.2 89/02/12 10:04:38 mark Exp $";
 static char *copyright = "Copyright (c) 1989 Mark H. Colburn.\nAll rights reserved.\n";
 #endif
 #include "pax.h"
-#define	LINKHASH(ino)	(linkbase + (ino) % NEL(linkbase))
-#define	NEL(a)		(sizeof(a) / sizeof(*(a)))
-static Link    *linkbase[256];
+#define LINKHASH(ino) (linkbase + (ino) % NEL(linkbase))
+#define NEL(a) (sizeof(a) / sizeof(*(a)))
+static Link *linkbase[256];
 #ifdef __STDC__
 Link *linkfrom(char *name, Stat *asb)
 #else
 Link *linkfrom(name, asb)
-char           *name;
-Stat           *asb;
+char *name;
+Stat *asb;
 #endif
 {
-Link           *linkp;
-Link           *linknext;
-Path           *path;
-Path           *pathnext;
-Link          **abase;
+Link *linkp;
+Link *linknext;
+Path *path;
+Path *pathnext;
+Link **abase;
 for (linkp = *(abase = LINKHASH(asb->sb_ino)); linkp; linkp = linknext) {
 if (linkp->l_nlink == 0) {
 if (linkp->l_name) {
@@ -64,12 +64,12 @@ return ((Link *)NULL);
 Link *islink(char *name, Stat *asb)
 #else
 Link *islink(name, asb)
-char           *name;
-Stat           *asb;
+char *name;
+Stat *asb;
 #endif
 {
-Link           *linkp;
-Link           *linknext;
+Link *linkp;
+Link *linknext;
 for (linkp = *(LINKHASH(asb->sb_ino)); linkp; linkp = linknext) {
 if (linkp->l_ino == asb->sb_ino && linkp->l_dev == asb->sb_dev) {
 if (strcmp(name, linkp->l_name) == 0) {
@@ -86,14 +86,14 @@ return ((Link *)NULL);
 Link *linkto(char *name, Stat *asb)
 #else
 Link *linkto(name, asb)
-char           *name;
-Stat           *asb;
+char *name;
+Stat *asb;
 #endif
 {
-Link           *linkp;
-Link           *linknext;
-Path           *path;
-Link          **abase;
+Link *linkp;
+Link *linknext;
+Path *path;
+Link **abase;
 for (linkp = *(LINKHASH(asb->sb_ino)); linkp; linkp = linknext) {
 if (linkp->l_ino == asb->sb_ino && linkp->l_dev == asb->sb_dev) {
 if ((path = (Path *) mem_get(sizeof(Path))) == (Path *)NULL ||
@@ -137,8 +137,8 @@ void linkleft(void)
 void linkleft()
 #endif
 {
-Link           *lp;
-Link          **base;
+Link *lp;
+Link **base;
 for (base = linkbase; base < linkbase + NEL(linkbase); ++base) {
 for (lp = *base; lp; lp = lp->l_forw) {
 if (lp->l_nlink) {

@@ -3,7 +3,7 @@
 #include <mp.h>
 #include <libsec.h>
 typedef DigestState*(*DigestFun)(uchar*,ulong,uchar*,DigestState*);
-#define	OFFSETOF(a, b)	offsetof(b, a)
+#define OFFSETOF(a, b) offsetof(b, a)
 typedef struct Elem Elem;
 typedef struct Tag Tag;
 typedef struct Value Value;
@@ -40,79 +40,79 @@ typedef struct Elist Elist;
 #define UniversalString 28
 #define BMPString 30
 struct Bytes {
-int	len;
-uchar	data[1];
+int len;
+uchar data[1];
 };
 struct Ints {
-int	len;
-int	data[1];
+int len;
+int data[1];
 };
 struct Bits {
-int	len;
-int	unusedbits;
-uchar	data[1];
+int len;
+int unusedbits;
+uchar data[1];
 };
 struct Tag {
-int	class;
-int	num;
+int class;
+int num;
 };
 enum { VBool, VInt, VOctets, VBigInt, VReal, VOther,
 VBitString, VNull, VEOC, VObjId, VString, VSeq, VSet };
 struct Value {
-int	tag;
+int tag;
 union {
-int	boolval;
-int	intval;
-Bytes*	octetsval;
-Bytes*	bigintval;
-Bytes*	realval;
-Bytes*	otherval;
-Bits*	bitstringval;
-Ints*	objidval;
-char*	stringval;
-Elist*	seqval;
-Elist*	setval;
+int boolval;
+int intval;
+Bytes* octetsval;
+Bytes* bigintval;
+Bytes* realval;
+Bytes* otherval;
+Bits* bitstringval;
+Ints* objidval;
+char* stringval;
+Elist* seqval;
+Elist* setval;
 } u;
 };
 struct Elem {
-Tag	tag;
-Value	val;
+Tag tag;
+Value val;
 };
 struct Elist {
-Elist*	tl;
-Elem	hd;
+Elist* tl;
+Elem hd;
 };
 enum { ASN_OK, ASN_ESHORT, ASN_ETOOBIG, ASN_EVALLEN,
 ASN_ECONSTR, ASN_EPRIM, ASN_EINVAL, ASN_EUNIMPL };
-static Bytes*	newbytes(int len);
-static Bytes*	makebytes(uchar* buf, int len);
-static void	freebytes(Bytes* b);
-static Bytes*	catbytes(Bytes* b1, Bytes* b2);
-static Ints*	newints(int len);
-static Ints*	makeints(int* buf, int len);
-static void	freeints(Ints* b);
-static Bits*	newbits(int len);
-static Bits*	makebits(uchar* buf, int len, int unusedbits);
-static void	freebits(Bits* b);
-static Elist*	mkel(Elem e, Elist* tail);
-static void	freeelist(Elist* el);
-static int	elistlen(Elist* el);
-static int	is_seq(Elem* pe, Elist** pseq);
-static int	is_set(Elem* pe, Elist** pset);
-static int	is_int(Elem* pe, int* pint);
-static int	is_bigint(Elem* pe, Bytes** pbigint);
-static int	is_bitstring(Elem* pe, Bits** pbits);
-static int	is_octetstring(Elem* pe, Bytes** poctets);
-static int	is_oid(Elem* pe, Ints** poid);
-static int	is_string(Elem* pe, char** pstring);
-static int	is_time(Elem* pe, char** ptime);
-static int	decode(uchar* a, int alen, Elem* pelem);
-static int	decode_seq(uchar* a, int alen, Elist** pelist);
-static int	decode_value(uchar* a, int alen, int kind, int isconstr, Value* pval);
-static int	encode(Elem e, Bytes** pbytes);
-static int	oid_lookup(Ints* o, Ints** tab);
-static void	freevalfields(Value* v);
-static mpint	*asn1mpint(Elem *e);
+static Bytes* newbytes(int len);
+static Bytes* makebytes(uchar* buf, int len);
+static void freebytes(Bytes* b);
+static Bytes* catbytes(Bytes* b1, Bytes* b2);
+static Ints* newints(int len);
+static Ints* makeints(int* buf, int len);
+static void freeints(Ints* b);
+static Bits* newbits(int len);
+static Bits* makebits(uchar* buf, int len, int unusedbits);
+static void freebits(Bits* b);
+static Elist* mkel(Elem e, Elist* tail);
+static void freeelist(Elist* el);
+static int elistlen(Elist* el);
+static int is_seq(Elem* pe, Elist** pseq);
+static int is_set(Elem* pe, Elist** pset);
+static int is_int(Elem* pe, int* pint);
+static int is_bigint(Elem* pe, Bytes** pbigint);
+static int is_bitstring(Elem* pe, Bits** pbits);
+static int is_octetstring(Elem* pe, Bytes** poctets);
+static int is_oid(Elem* pe, Ints** poid);
+static int is_string(Elem* pe, char** pstring);
+static int is_time(Elem* pe, char** ptime);
+static int decode(uchar* a, int alen, Elem* pelem);
+static int decode_seq(uchar* a, int alen, Elist** pelist);
+static int decode_value(uchar* a, int alen, int kind, int isconstr, Value* pval);
+static int encode(Elem e, Bytes** pbytes);
+static int oid_lookup(Ints* o, Ints** tab);
+static void freevalfields(Value* v);
+static mpint *asn1mpint(Elem *e);
 #define TAG_MASK 0x1F
 #define CONSTR_MASK 0x20
 #define CLASS_MASK 0xC0
@@ -158,7 +158,7 @@ static int
 decode(uchar* a, int alen, Elem* pelem)
 {
 uchar* p = a;
-return  ber_decode(&p, &a[alen], pelem);
+return ber_decode(&p, &a[alen], pelem);
 }
 static int
 decode_seq(uchar* a, int alen, Elist** pelist)
@@ -255,7 +255,7 @@ int num;
 int bitsunused;
 int subids[MAXOBJIDLEN];
 int isubid;
-Elist*	vl;
+Elist* vl;
 uchar* p;
 uchar* pe;
 err = ASN_OK;
@@ -513,7 +513,7 @@ Bytes* ans;
 Bytes* newans;
 uchar* pstart;
 uchar* pold;
-Elem	elem;
+Elem elem;
 err = ASN_OK;
 p = *pp;
 ans = nil;
@@ -937,8 +937,8 @@ for(k = (n - 1)*8; k >= 0; k -= 8)
 static int
 ints_eq(Ints* a, Ints* b)
 {
-int	alen;
-int	i;
+int alen;
+int i;
 alen = a->len;
 if(alen != b->len)
 return 0;
@@ -953,7 +953,7 @@ oid_lookup(Ints* o, Ints** tab)
 int i;
 for(i = 0; tab[i] != nil; i++)
 if(ints_eq(o, tab[i]))
-return  i;
+return i;
 return -1;
 }
 static int
@@ -1241,15 +1241,15 @@ break;
 }
 }
 typedef struct CertX509 {
-int	serial;
-char*	issuer;
-char*	validity_start;
-char*	validity_end;
-char*	subject;
-int	publickey_alg;
-Bytes*	publickey;
-int	signature_alg;
-Bytes*	signature;
+int serial;
+char* issuer;
+char* validity_start;
+char* validity_end;
+char* subject;
+int publickey_alg;
+Bytes* publickey;
+int signature_alg;
+Bytes* signature;
 } CertX509;
 enum {
 ALG_rsaEncryption,
@@ -1262,8 +1262,8 @@ ALG_md5,
 NUMALGS
 };
 typedef struct Ints7 {
-int		len;
-int		data[7];
+int len;
+int data[7];
 } Ints7;
 static Ints7 oid_rsaEncryption = {7, 1, 2, 840, 113549, 1, 1, 1 };
 static Ints7 oid_md2WithRSAEncryption = {7, 1, 2, 840, 113549, 1, 1, 2 };
@@ -1361,7 +1361,7 @@ decode_cert(Bytes* a)
 int ok = 0;
 int n;
 CertX509* c = nil;
-Elem  ecert;
+Elem ecert;
 Elem* ecertinfo;
 Elem* esigalg;
 Elem* esig;
@@ -1958,17 +1958,17 @@ mkalg(int alg)
 return mkseq(mkel(mkoid(alg_oid_tab[alg]), mkel(Null(), nil)));
 }
 typedef struct Ints7pref {
-int		len;
-int		data[7];
-char	prefix[4];
+int len;
+int data[7];
+char prefix[4];
 } Ints7pref;
 Ints7pref DN_oid[] = {
-{4, 2, 5, 4, 6, 0, 0, 0,  "C="},
-{4, 2, 5, 4, 8, 0, 0, 0,  "ST="},
-{4, 2, 5, 4, 7, 0, 0, 0,  "L="},
+{4, 2, 5, 4, 6, 0, 0, 0, "C="},
+{4, 2, 5, 4, 8, 0, 0, 0, "ST="},
+{4, 2, 5, 4, 7, 0, 0, 0, "L="},
 {4, 2, 5, 4, 10, 0, 0, 0, "O="},
 {4, 2, 5, 4, 11, 0, 0, 0, "OU="},
-{4, 2, 5, 4, 3, 0, 0, 0,  "CN="},
+{4, 2, 5, 4, 3, 0, 0, 0, "CN="},
 {7, 1,2,840,113549,1,9,1, "E="},
 };
 static Elem

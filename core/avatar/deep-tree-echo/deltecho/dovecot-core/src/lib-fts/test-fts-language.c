@@ -31,7 +31,7 @@ static void test_fts_language_detect_english(void)
 {
 struct fts_language_list *lp = NULL;
 const struct fts_language *lang_r = NULL;
-const unsigned char english[]  = "Whereas recognition of the inherent dignity and"\
+const unsigned char english[] = "Whereas recognition of the inherent dignity and"\
 " of the equal and inalienable rights of all members of the human"\
 "family is the foundation of freedom, justice and peace in the "\
 "world,\n Whereas disregard and contempt for human rights have "\
@@ -86,7 +86,7 @@ static void test_fts_language_detect_german(void)
 {
 struct fts_language_list *lp = NULL;
 const struct fts_language *lang_r = NULL;
-const unsigned char german[]  =
+const unsigned char german[] =
 "Artikel 1"\
 "Alle Menschen sind frei und gleich an W\xC3\xBCrde und Rechten "\
 "geboren. Sie sind mit Vernunft und Gewissen begabt und sollen "\
@@ -119,7 +119,7 @@ static void test_fts_language_detect_swedish(void)
 {
 struct fts_language_list *lp = NULL;
 const struct fts_language *lang_r = NULL;
-const unsigned char swedish[]  =
+const unsigned char swedish[] =
 "Artikel 1."\
 "Alla m\xC3\xA4nniskor \xC3\xA4ro f\xC3\xB6""dda fria och lika"\
 " i v\xC3\xA4rde och r\xC3\xA4ttigheter. De \xC3\xA4ro "\
@@ -140,7 +140,7 @@ static void test_fts_language_detect_bokmal(void)
 {
 struct fts_language_list *lp = NULL;
 const struct fts_language *lang_r = NULL;
-const unsigned char bokmal[]  =
+const unsigned char bokmal[] =
 "Artikkel 1.\n"\
 "Alle mennesker er f\xC3\xB8""dt frie og med samme menneskeverd"\
 " og menneskerettigheter. De er utstyrt med fornuft og "\
@@ -161,7 +161,7 @@ static void test_fts_language_detect_nynorsk(void)
 {
 struct fts_language_list *lp = NULL;
 const struct fts_language *lang_r = NULL;
-const unsigned char nynorsk[]  =
+const unsigned char nynorsk[] =
 "Artikkel 1.\n"\
 "Alle menneske er f\xC3\xB8""dde til fridom og med same "\
 "menneskeverd og menneskerettar. Dei har f\xC3\xA5tt fornuft "\
@@ -204,7 +204,7 @@ static void test_fts_language_detect_na(void)
 {
 struct fts_language_list *lp = NULL;
 const struct fts_language *lang_r = NULL;
-const unsigned char english[]  = "Whereas recognition of the inherent dignity and"\
+const unsigned char english[] = "Whereas recognition of the inherent dignity and"\
 " of the equal and inalienable rights of all members of the human"\
 "family is the foundation of freedom, justice and peace in the "\
 "world,\n Whereas disregard and contempt for human rights have "\
@@ -227,7 +227,7 @@ static void test_fts_language_detect_unknown(void)
 {
 struct fts_language_list *lp = NULL;
 const struct fts_language *lang_r = NULL;
-const unsigned char klingon[]  = "nobwI''a'pu'qoqvam'e' "\
+const unsigned char klingon[] = "nobwI''a'pu'qoqvam'e' "\
 "nuHegh'eghrupqa'moHlaHbe'law'lI'neS "\
 "SeH'eghtaHghach'a'na'chajmo'.";
 const char names[] = "fi, de, fr";

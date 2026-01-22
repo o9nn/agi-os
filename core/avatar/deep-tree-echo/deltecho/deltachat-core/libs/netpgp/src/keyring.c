@@ -30,7 +30,7 @@ __RCSID("$NetBSD$");
 #include "netpgp/validate.h"
 #include "netpgp/netpgpdefs.h"
 #include "netpgp/netpgpdigest.h"
-pgp_key_t  *
+pgp_key_t *
 pgp_keydata_new(void)
 {
 return calloc(1, sizeof(pgp_key_t));
@@ -38,7 +38,7 @@ return calloc(1, sizeof(pgp_key_t));
 void
 pgp_key_free(pgp_key_t *key)
 {
-unsigned        n;
+unsigned n;
 if (key==NULL) {
 return;
 }
@@ -82,7 +82,7 @@ pgp_key_free(keydata);
 free(keydata);
 }
 static unsigned siginfo_in_time(pgp_sig_info_t *siginfo){
-time_t	now;
+time_t now;
 now = time(NULL);
 return now >= siginfo->birthtime && (
 siginfo->key_expiry == 0 ||
@@ -100,13 +100,13 @@ time_t *youngest,
 unsigned checkrevoke,
 unsigned checkexpiry)
 {
-unsigned    	 	 uididx = 0;
-unsigned    	 	 uidsigidx = 0;
-int32_t    	 	 res = -1;
-int32_t    	 	 lastgood;
-uint8_t			**uidp;
-pgp_uidsig_t    *uidsigp;
-time_t           yngst = 0;
+unsigned uididx = 0;
+unsigned uidsigidx = 0;
+int32_t res = -1;
+int32_t lastgood;
+uint8_t **uidp;
+pgp_uidsig_t *uidsigp;
+time_t yngst = 0;
 if(!youngest)
 youngest = &yngst;
 uidp = key->uids;
@@ -152,15 +152,15 @@ void *sigcondarg,
 unsigned checkrevoke,
 unsigned checkexpiry)
 {
-unsigned    	 	 subkeyidx = 0;
-unsigned    	 	 subkeysigidx = 0;
-unsigned    	 	 directsigidx = 0;
-int32_t    	 	 res = -2;
-int32_t    	 	 lastgood;
-pgp_subkey_t	*subkeyp;
-pgp_subkeysig_t    *subkeysigp;
-pgp_directsig_t    *directsigp;
-time_t	youngest;
+unsigned subkeyidx = 0;
+unsigned subkeysigidx = 0;
+unsigned directsigidx = 0;
+int32_t res = -2;
+int32_t lastgood;
+pgp_subkey_t *subkeyp;
+pgp_subkeysig_t *subkeysigp;
+pgp_directsig_t *directsigp;
+time_t youngest;
 youngest = 0;
 if(!keycond || keycond(pgp_key_get_pubkey(key),
 key->pubkeyid, keycondarg)){
@@ -425,15 +425,15 @@ pgp_forget(void *vp, unsigned size)
 (void) memset(vp, 0x0, size);
 }
 typedef struct {
-FILE			*passfp;
-const pgp_key_t	*key;
-char			*passphrase;
-pgp_seckey_t		*seckey;
+FILE *passfp;
+const pgp_key_t *key;
+char *passphrase;
+pgp_seckey_t *seckey;
 } decrypt_t;
 uint8_t *
 pgp_copy_userid(uint8_t **dst, const uint8_t *src)
 {
-size_t          len;
+size_t len;
 len = strlen((const char *) src);
 if (*dst) {
 free(*dst);
@@ -460,10 +460,10 @@ dst->length = src->length;
 return dst;
 }
 #if 0
-uint8_t  *
+uint8_t *
 pgp_add_userid(pgp_key_t *key, const uint8_t *userid)
 {
-uint8_t  **uidp;
+uint8_t **uidp;
 EXPAND_ARRAY(key, uid);
 uidp = &key->uids[key->uidc++];
 *uidp = NULL;
@@ -475,10 +475,10 @@ void print_packet_hex(const pgp_subpacket_t *pkt);
 unsigned
 pgp_add_selfsigned_userid(pgp_key_t *skey, pgp_key_t *pkey, const uint8_t *userid, time_t key_expiry)
 {
-pgp_create_sig_t	*sig;
-pgp_subpacket_t	 sigpacket;
-pgp_memory_t		*mem_sig = NULL;
-pgp_output_t		*sigoutput = NULL;
+pgp_create_sig_t *sig;
+pgp_subpacket_t sigpacket;
+pgp_memory_t *mem_sig = NULL;
+pgp_output_t *sigoutput = NULL;
 sig = pgp_create_sig_new();
 pgp_sig_start_key_sig(sig, &skey->key.seckey.pubkey, userid, PGP_CERT_POSITIVE);
 pgp_add_creation_time(sig, time(NULL));
@@ -506,10 +506,10 @@ return 1;
 unsigned
 pgp_key_revoke(pgp_key_t *skey, pgp_key_t *pkey, uint8_t code, const char *reason)
 {
-pgp_create_sig_t	*sig;
-pgp_subpacket_t	 sigpacket;
-pgp_memory_t		*mem_sig = NULL;
-pgp_output_t		*sigoutput = NULL;
+pgp_create_sig_t *sig;
+pgp_subpacket_t sigpacket;
+pgp_memory_t *mem_sig = NULL;
+pgp_output_t *sigoutput = NULL;
 sig = pgp_create_sig_new();
 pgp_sig_start_key_rev(
 sig, &skey->key.seckey.pubkey,
@@ -617,7 +617,7 @@ pgp_seckey_t **seckey,
 unsigned checkrevoke,
 unsigned checkexpiry)
 {
-uint8_t	nullid[PGP_KEY_ID_SIZE];
+uint8_t nullid[PGP_KEY_ID_SIZE];
 (void) memset(nullid, 0x0, sizeof(nullid));
 for ( ; keyring && *from < keyring->keyc; *from += 1) {
 pgp_key_t *key = &keyring->keys[*from];
@@ -700,14 +700,14 @@ return 1;
 static void
 str2keyid(const char *userid, uint8_t *keyid, size_t len)
 {
-static const char	*uppers = "0123456789ABCDEF";
-static const char	*lowers = "0123456789abcdef";
-const char		*hi;
-const char		*lo;
-uint8_t			 hichar;
-uint8_t			 lochar;
-size_t			 j;
-int			 i;
+static const char *uppers = "0123456789ABCDEF";
+static const char *lowers = "0123456789abcdef";
+const char *hi;
+const char *lo;
+uint8_t hichar;
+uint8_t lochar;
+size_t j;
+int i;
 for (i = 0, j = 0 ; j < len && userid[i] && userid[i + 1] ; i += 2, j++) {
 if ((hi = strchr(uppers, userid[i])) == NULL) {
 if ((hi = strchr(lowers, userid[i])) == NULL) {
@@ -737,11 +737,11 @@ const pgp_keyring_t *keyring,
 const char *name,
 unsigned *from)
 {
-uint8_t			**uidp;
-unsigned    	 	 i = 0;
-pgp_key_t		*keyp;
-regex_t			 r;
-size_t          	 len;
+uint8_t **uidp;
+unsigned i = 0;
+pgp_key_t *keyp;
+regex_t r;
+size_t len;
 if (!keyring || !name || !from) {
 return NULL;
 }
@@ -786,7 +786,7 @@ pgp_getkeybyname(pgp_io_t *io,
 const pgp_keyring_t *keyring,
 const char *name)
 {
-unsigned	from;
+unsigned from;
 from = 0;
 return getkeybyname(io, keyring, name, &from);
 }
@@ -805,9 +805,9 @@ return getkeybyname(io, keyring, name, n);
 char *
 pgp_export_key(pgp_io_t *io, const pgp_key_t *keydata, uint8_t *passphrase)
 {
-pgp_output_t	*output;
-pgp_memory_t	*mem;
-char		*cp;
+pgp_output_t *output;
+pgp_memory_t *mem;
+char *cp;
 __PGP_USED(io);
 pgp_setup_memory_write(&output, &mem, 128);
 pgp_write_xfer_key(output, keydata, 1);
@@ -819,7 +819,7 @@ return cp;
 int
 pgp_keyring_add(pgp_keyring_t *dst, const pgp_key_t *src)
 {
-pgp_key_t	*key;
+pgp_key_t *key;
 EXPAND_ARRAY(dst, key);
 key = &dst->keys[dst->keyc++];
 memcpy(key, src, sizeof(*key));
@@ -901,10 +901,10 @@ const uint8_t *userid,
 const pgp_subpacket_t *sigpkt,
 const pgp_sig_info_t *siginfo)
 {
-unsigned    	 	 uididx = 0;
-unsigned    	 	 uidsigidx = 0;
-uint8_t			**uidp;
-pgp_uidsig_t    *uidsigp;
+unsigned uididx = 0;
+unsigned uidsigidx = 0;
+uint8_t **uidp;
+pgp_uidsig_t *uidsigp;
 uidp = key->uids;
 for (uididx = 0 ; uididx < key->uidc; uididx++, uidp++)
 {
@@ -945,10 +945,10 @@ pgp_keydata_key_t *subkey,
 const pgp_subpacket_t *sigpkt,
 pgp_sig_info_t *siginfo)
 {
-unsigned    	 	 subkeyidx = 0;
-unsigned    	 	 subkeysigidx = 0;
-pgp_subkey_t	 *subkeyp;
-pgp_subkeysig_t    *subkeysigp;
+unsigned subkeyidx = 0;
+unsigned subkeysigidx = 0;
+pgp_subkey_t *subkeyp;
+pgp_subkeysig_t *subkeysigp;
 uint8_t subkeyid[PGP_KEY_ID_SIZE];
 pgp_keyid(subkeyid, PGP_KEY_ID_SIZE,
 (subkeytype == PGP_PTAG_CT_PUBLIC_KEY) ?
@@ -1002,7 +1002,7 @@ return 0;
 int
 pgp_append_keyring(pgp_keyring_t *keyring, pgp_keyring_t *newring)
 {
-unsigned	i;
+unsigned i;
 for (i = 0 ; i < newring->keyc ; i++) {
 EXPAND_ARRAY(keyring, key);
 (void) memcpy(&keyring->keys[keyring->keyc], &newring->keys[i],

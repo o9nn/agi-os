@@ -1,5 +1,5 @@
 #
-#	Init shell ``with the kitchen sink'', for development purposes.
+# Init shell ``with the kitchen sink'', for development purposes.
 #
 implement InitShell;
 include "sys.m";
@@ -7,14 +7,14 @@ include "draw.m";
 sys: Sys;
 FD, Connection, sprint, Dir: import sys;
 print, fprint, open, bind, mount, dial, sleep, read: import sys;
-stderr:	ref sys->FD;						# standard error FD
+stderr: ref sys->FD; # standard error FD
 InitShell: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 Sh: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 init(nil: ref Draw->Context, nil: list of string)
 {
@@ -49,20 +49,20 @@ spawn sh->init(nil, nil);
 }
 namespace()
 {
-# Bind anything useful we can get our hands on.  Ignore errors.
+# Bind anything useful we can get our hands on. Ignore errors.
 sys->print("namespace...\n");
-sys->bind("#I", "/net", sys->MAFTER);	# IP
-sys->bind("#I1", "/net.alt", sys->MREPL);	# second IP for PPP tests
-sys->bind("#p", "/prog", sys->MREPL);	# prog device
+sys->bind("#I", "/net", sys->MAFTER); # IP
+sys->bind("#I1", "/net.alt", sys->MREPL); # second IP for PPP tests
+sys->bind("#p", "/prog", sys->MREPL); # prog device
 sys->bind("#d", "/fd", Sys->MREPL);
-sys->bind("#i", "/dev", sys->MREPL); 	# draw device
-sys->bind("#t", "/dev", sys->MAFTER);	# serial line
-sys->bind("#c", "/dev", sys->MAFTER); 	# console device
-sys->bind("#W", "/dev", sys->MAFTER);	# Flash
-sys->bind("#O", "/dev", sys->MAFTER);	# Modem
-sys->bind("#T", "/dev", sys->MAFTER);	# Touchscreen
-sys->bind("#H", "/dev", sys->MAFTER);	# Ata disk device
-sys->bind("#b", "/dev", sys->MAFTER);	# debug device
+sys->bind("#i", "/dev", sys->MREPL); # draw device
+sys->bind("#t", "/dev", sys->MAFTER); # serial line
+sys->bind("#c", "/dev", sys->MAFTER); # console device
+sys->bind("#W", "/dev", sys->MAFTER); # Flash
+sys->bind("#O", "/dev", sys->MAFTER); # Modem
+sys->bind("#T", "/dev", sys->MAFTER); # Touchscreen
+sys->bind("#H", "/dev", sys->MAFTER); # Ata disk device
+sys->bind("#b", "/dev", sys->MAFTER); # debug device
 sys->bind("#c", "/chan", sys->MREPL);
 sys->bind("/data", "/usr/inferno", sys->MREPL|sys->MCREATE);
 sys->bind("/data", "/usr/charon", sys->MREPL|sys->MCREATE);
@@ -78,8 +78,8 @@ return 0;
 }
 kfsopt := "";
 kfsrw := sysenv("kfsrw");
-#	if (kfsrw != "1")
-#		kfsopt = " ronly";
+# if (kfsrw != "1")
+# kfsopt = " ronly";
 b := array of byte ("filsys " + fsname + " " + devname + kfsopt);
 if (sys->write(fd, b, len b) < 0) {
 sys->fprint(stderr, "could not write #Kcons/kfsctl: %r\n");

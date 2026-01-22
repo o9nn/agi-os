@@ -1,4 +1,4 @@
-#include	"grep.h"
+#include "grep.h"
 void*
 mal(int n)
 {
@@ -207,7 +207,7 @@ c.beg = ral(Tor);
 c.beg->alt = b.beg;
 c.beg->next = a.beg;
 c.end = b.end;
-appendnext(c.end,  a.end);
+appendnext(c.end, a.end);
 return c;
 }
 Re2

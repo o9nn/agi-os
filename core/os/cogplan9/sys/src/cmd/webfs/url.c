@@ -9,8 +9,8 @@
 #include "dat.h"
 #include "fns.h"
 int urldebug;
-#define RemoveExtraRelDotDots	0
-#define ExpandCurrentDocUrls	1
+#define RemoveExtraRelDotDots 0
+#define ExpandCurrentDocUrls 1
 static char*
 schemestrtab[] =
 {
@@ -29,24 +29,24 @@ if(schemestrtab[i] && strcmp(s, schemestrtab[i])==0)
 return i;
 return USunknown;
 }
-#define PUNCT			"\\-_.!~*'()"
-#define RES			";/?:@&=+$,"
-#define ALNUM		"a-zA-Z0-9"
-#define HEX			"0-9a-fA-F"
-#define UNRES			ALNUM PUNCT
-#define ESCAPED_1			"(%[" HEX "][" HEX "])"
-#define URIC_2			"([" RES UNRES "]|" ESCAPED_1 ")"
-#define URICNOSLASH_2		"([" UNRES ";?:@&=+$,]|" ESCAPED_1 ")"
-#define USERINFO_2		"([" UNRES ";:&=+$,]|" ESCAPED_1 ")"
-#define PCHAR_2			"([" UNRES ":@&=+$,]|" ESCAPED_1 ")"
-#define PSEGCHAR_3		"([/;]|" PCHAR_2 ")"
+#define PUNCT "\\-_.!~*'()"
+#define RES ";/?:@&=+$,"
+#define ALNUM "a-zA-Z0-9"
+#define HEX "0-9a-fA-F"
+#define UNRES ALNUM PUNCT
+#define ESCAPED_1 "(%[" HEX "][" HEX "])"
+#define URIC_2 "([" RES UNRES "]|" ESCAPED_1 ")"
+#define URICNOSLASH_2 "([" UNRES ";?:@&=+$,]|" ESCAPED_1 ")"
+#define USERINFO_2 "([" UNRES ";:&=+$,]|" ESCAPED_1 ")"
+#define PCHAR_2 "([" UNRES ":@&=+$,]|" ESCAPED_1 ")"
+#define PSEGCHAR_3 "([/;]|" PCHAR_2 ")"
 typedef struct Retab Retab;
 struct Retab
 {
-char	*str;
-Reprog	*prog;
-int		size;
-int		ind[5];
+char *str;
+Reprog *prog;
+int size;
+int ind[5];
 };
 enum
 {
@@ -62,13 +62,13 @@ REfragment,
 REhttppath,
 REftppath,
 REfilepath,
-MaxResub=	20,
+MaxResub= 20,
 };
 Retab retab[] =
 {
 [REsplit]
 "^(([^:/?#]+):)?(
-{  2,              4,         5,          7,          9},
+{ 2, 4, 5, 7, 9},
 [REscheme]
 "^[a-z][a-z0-9+-.]*$", nil, 0,
 { 0, },
@@ -77,13 +77,13 @@ Retab retab[] =
 { 0, },
 [REauthority]
 "^(((" USERINFO_2 "*)@)?(((\\[[^\\]@]+\\])|([^:\\[@]+))(:([0-9]*))?)?)?$", nil, 0,
-{  3,                    7,                              11, },
+{ 3, 7, 11, },
 [REhost]
 "^(([a-zA-Z0-9\\-.]+)|(\\[([a-fA-F0-9.:]+)\\]))$", nil, 0,
-{  2,                     4, },
+{ 2, 4, },
 [REuserinfo]
 "^(([^:]*)(:([^:]*))?)$", nil, 0,
-{  2,       4, },
+{ 2, 4, },
 [REabspath]
 "^/" PSEGCHAR_3 "*$", nil, 0,
 { 0, },
@@ -98,7 +98,7 @@ Retab retab[] =
 { 0, },
 [REftppath]
 "^(.+)(;[tT][yY][pP][eE]=([aAiIdD]))?$", nil, 0,
-{ 1,                     3, },
+{ 1, 3, },
 [REfilepath]
 "^.*$", nil, 0,
 { 0, },

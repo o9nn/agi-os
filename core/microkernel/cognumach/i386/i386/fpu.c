@@ -30,23 +30,23 @@ _Static_assert(sizeof(struct i386_xfp_xstate_header) == 8*8,
 "struct i386_xfp_xstate_header size");
 _Static_assert(sizeof(struct i386_xfp_save) == 512 + 8*8,
 "struct i386_xfp_save size");
-int			fp_kind = FP_387;
-enum fp_save_kind	fp_save_kind = FP_FNSAVE;
-uint64_t		fp_xsave_support;
-unsigned		fp_xsave_size = sizeof(struct i386_xfp_save);
+int fp_kind = FP_387;
+enum fp_save_kind fp_save_kind = FP_FNSAVE;
+uint64_t fp_xsave_support;
+unsigned fp_xsave_size = sizeof(struct i386_xfp_save);
 struct i386_fpsave_state *fp_default_state;
-struct kmem_cache	ifps_cache;
-static unsigned long	mxcsr_feature_mask = 0xffffffff;
-#if	NCPUS == 1
-volatile thread_t	fp_thread = THREAD_NULL;
-volatile thread_t	fp_intr_thread = THREAD_NULL;
-#define	clear_fpu() \
+struct kmem_cache ifps_cache;
+static unsigned long mxcsr_feature_mask = 0xffffffff;
+#if NCPUS == 1
+volatile thread_t fp_thread = THREAD_NULL;
+volatile thread_t fp_intr_thread = THREAD_NULL;
+#define clear_fpu() \
 MACRO_BEGIN \
 set_ts(); \
 fp_thread = THREAD_NULL; \
 MACRO_END
 #else
-#define	clear_fpu() \
+#define clear_fpu() \
 MACRO_BEGIN \
 set_ts(); \
 MACRO_END
@@ -54,8 +54,8 @@ MACRO_END
 void
 init_fpu(void)
 {
-unsigned short	status, control;
-#ifdef	MACH_RING1
+unsigned short status, control;
+#ifdef MACH_RING1
 clear_ts();
 #else
 unsigned int native = 0;
@@ -177,7 +177,7 @@ void
 fp_free(struct i386_fpsave_state *fps)
 {
 ASSERT_IPL(SPL0);
-#if	NCPUS == 1
+#if NCPUS == 1
 if ((fp_thread != THREAD_NULL) && (fp_thread->pcb->ims.ifps == fps)) {
 clear_ts();
 fwait();
@@ -210,7 +210,7 @@ unsigned long twd = (unsigned long) fxsave->fp_tag;
 unsigned long tag;
 unsigned long ret = 0xffff0000u;
 int i;
-#define FPREG_ADDR(f, n)	((void *)&(f)->fp_reg_word + (n) * 16);
+#define FPREG_ADDR(f, n) ((void *)&(f)->fp_reg_word + (n) * 16);
 for (i = 0 ; i < 8 ; i++) {
 if (twd & 0x1) {
 st = FPREG_ADDR (fxsave, (i - tos) & 7);
@@ -257,7 +257,7 @@ if (fp_kind == FP_NO)
 return KERN_FAILURE;
 if (flavor == i386_XFLOAT_STATE && xfstate->initialized && xfstate->fp_save_kind != fp_save_kind)
 return KERN_INVALID_ARGUMENT;
-#if	NCPUS == 1
+#if NCPUS == 1
 if (fp_thread == thread) {
 clear_ts();
 fwait();
@@ -295,44 +295,44 @@ if (flavor == i386_FLOAT_STATE) {
 struct i386_fp_save *user_fp_state;
 struct i386_fp_regs *user_fp_regs;
 user_fp_state = (struct i386_fp_save *) &fstate->hw_state[0];
-user_fp_regs  = (struct i386_fp_regs *)
+user_fp_regs = (struct i386_fp_regs *)
 &fstate->hw_state[sizeof(struct i386_fp_save)];
 if (fp_save_kind != FP_FNSAVE) {
 int i;
 ifps->xfp_save_state.fp_control = user_fp_state->fp_control;
-ifps->xfp_save_state.fp_status  = user_fp_state->fp_status;
-ifps->xfp_save_state.fp_tag	    = twd_i387_to_fxsr(user_fp_state->fp_tag);
-ifps->xfp_save_state.fp_eip	    = user_fp_state->fp_eip;
-ifps->xfp_save_state.fp_cs	    = user_fp_state->fp_cs;
-ifps->xfp_save_state.fp_opcode  = user_fp_state->fp_opcode;
-ifps->xfp_save_state.fp_dp	    = user_fp_state->fp_dp;
-ifps->xfp_save_state.fp_ds	    = user_fp_state->fp_ds;
+ifps->xfp_save_state.fp_status = user_fp_state->fp_status;
+ifps->xfp_save_state.fp_tag = twd_i387_to_fxsr(user_fp_state->fp_tag);
+ifps->xfp_save_state.fp_eip = user_fp_state->fp_eip;
+ifps->xfp_save_state.fp_cs = user_fp_state->fp_cs;
+ifps->xfp_save_state.fp_opcode = user_fp_state->fp_opcode;
+ifps->xfp_save_state.fp_dp = user_fp_state->fp_dp;
+ifps->xfp_save_state.fp_ds = user_fp_state->fp_ds;
 for (i=0; i<8; i++)
 memcpy(&ifps->xfp_save_state.fp_reg_word[i], &user_fp_regs->fp_reg_word[i], sizeof(user_fp_regs->fp_reg_word[i]));
 } else {
 ifps->fp_save_state.fp_control = user_fp_state->fp_control;
-ifps->fp_save_state.fp_status  = user_fp_state->fp_status;
-ifps->fp_save_state.fp_tag	   = user_fp_state->fp_tag;
-ifps->fp_save_state.fp_eip	   = user_fp_state->fp_eip;
-ifps->fp_save_state.fp_cs	   = user_fp_state->fp_cs;
-ifps->fp_save_state.fp_opcode  = user_fp_state->fp_opcode;
-ifps->fp_save_state.fp_dp	   = user_fp_state->fp_dp;
-ifps->fp_save_state.fp_ds	   = user_fp_state->fp_ds;
+ifps->fp_save_state.fp_status = user_fp_state->fp_status;
+ifps->fp_save_state.fp_tag = user_fp_state->fp_tag;
+ifps->fp_save_state.fp_eip = user_fp_state->fp_eip;
+ifps->fp_save_state.fp_cs = user_fp_state->fp_cs;
+ifps->fp_save_state.fp_opcode = user_fp_state->fp_opcode;
+ifps->fp_save_state.fp_dp = user_fp_state->fp_dp;
+ifps->fp_save_state.fp_ds = user_fp_state->fp_ds;
 ifps->fp_regs = *user_fp_regs;
 }
 } else if (flavor == i386_XFLOAT_STATE) {
 int i;
 struct i386_xfp_save *user_fp_state = (struct i386_xfp_save *) &xfstate->hw_state[0];
 ifps->xfp_save_state.fp_control = user_fp_state->fp_control;
-ifps->xfp_save_state.fp_status  = user_fp_state->fp_status;
-ifps->xfp_save_state.fp_tag     = user_fp_state->fp_tag;
-ifps->xfp_save_state.fp_eip     = user_fp_state->fp_eip;
-ifps->xfp_save_state.fp_cs      = user_fp_state->fp_cs;
-ifps->xfp_save_state.fp_opcode  = user_fp_state->fp_opcode;
-ifps->xfp_save_state.fp_dp      = user_fp_state->fp_dp;
-ifps->xfp_save_state.fp_ds      = user_fp_state->fp_ds;
-ifps->xfp_save_state.fp_dp3     = user_fp_state->fp_dp3;
-ifps->xfp_save_state.fp_mxcsr   = user_fp_state->fp_mxcsr & mxcsr_feature_mask;
+ifps->xfp_save_state.fp_status = user_fp_state->fp_status;
+ifps->xfp_save_state.fp_tag = user_fp_state->fp_tag;
+ifps->xfp_save_state.fp_eip = user_fp_state->fp_eip;
+ifps->xfp_save_state.fp_cs = user_fp_state->fp_cs;
+ifps->xfp_save_state.fp_opcode = user_fp_state->fp_opcode;
+ifps->xfp_save_state.fp_dp = user_fp_state->fp_dp;
+ifps->xfp_save_state.fp_ds = user_fp_state->fp_ds;
+ifps->xfp_save_state.fp_dp3 = user_fp_state->fp_dp3;
+ifps->xfp_save_state.fp_mxcsr = user_fp_state->fp_mxcsr & mxcsr_feature_mask;
 ifps->xfp_save_state.fp_mxcsr_mask = user_fp_state->fp_mxcsr_mask & mxcsr_feature_mask;;
 for (i=0; i<8; i++)
 memcpy(&ifps->xfp_save_state.fp_reg_word[i], &user_fp_state->fp_reg_word[i], sizeof(user_fp_state->fp_reg_word[i]));
@@ -373,7 +373,7 @@ else if (flavor == i386_XFLOAT_STATE)
 memset(xfstate, 0, sizeof(struct i386_xfloat_state) + fp_xsave_size);
 return KERN_SUCCESS;
 }
-#if	NCPUS == 1
+#if NCPUS == 1
 if (thread == fp_thread)
 #else
 if (thread == current_thread())
@@ -390,30 +390,30 @@ fstate->fpkind = fp_kind;
 fstate->exc_status = 0;
 fstate->initialized = ifps->fp_valid;
 user_fp_state = (struct i386_fp_save *) &fstate->hw_state[0];
-user_fp_regs  = (struct i386_fp_regs *)
+user_fp_regs = (struct i386_fp_regs *)
 &fstate->hw_state[sizeof(struct i386_fp_save)];
-memset(user_fp_state,  0, sizeof(struct i386_fp_save));
+memset(user_fp_state, 0, sizeof(struct i386_fp_save));
 if (fp_save_kind != FP_FNSAVE) {
 int i;
 user_fp_state->fp_control = ifps->xfp_save_state.fp_control;
-user_fp_state->fp_status  = ifps->xfp_save_state.fp_status;
-user_fp_state->fp_tag     = twd_fxsr_to_i387(&ifps->xfp_save_state);
-user_fp_state->fp_eip     = ifps->xfp_save_state.fp_eip;
-user_fp_state->fp_cs      = ifps->xfp_save_state.fp_cs;
-user_fp_state->fp_opcode  = ifps->xfp_save_state.fp_opcode;
-user_fp_state->fp_dp      = ifps->xfp_save_state.fp_dp;
-user_fp_state->fp_ds      = ifps->xfp_save_state.fp_ds;
+user_fp_state->fp_status = ifps->xfp_save_state.fp_status;
+user_fp_state->fp_tag = twd_fxsr_to_i387(&ifps->xfp_save_state);
+user_fp_state->fp_eip = ifps->xfp_save_state.fp_eip;
+user_fp_state->fp_cs = ifps->xfp_save_state.fp_cs;
+user_fp_state->fp_opcode = ifps->xfp_save_state.fp_opcode;
+user_fp_state->fp_dp = ifps->xfp_save_state.fp_dp;
+user_fp_state->fp_ds = ifps->xfp_save_state.fp_ds;
 for (i=0; i<8; i++)
 memcpy(&user_fp_regs->fp_reg_word[i], &ifps->xfp_save_state.fp_reg_word[i], sizeof(user_fp_regs->fp_reg_word[i]));
 } else {
 user_fp_state->fp_control = ifps->fp_save_state.fp_control;
-user_fp_state->fp_status  = ifps->fp_save_state.fp_status;
-user_fp_state->fp_tag     = ifps->fp_save_state.fp_tag;
-user_fp_state->fp_eip     = ifps->fp_save_state.fp_eip;
-user_fp_state->fp_cs      = ifps->fp_save_state.fp_cs;
-user_fp_state->fp_opcode  = ifps->fp_save_state.fp_opcode;
-user_fp_state->fp_dp      = ifps->fp_save_state.fp_dp;
-user_fp_state->fp_ds      = ifps->fp_save_state.fp_ds;
+user_fp_state->fp_status = ifps->fp_save_state.fp_status;
+user_fp_state->fp_tag = ifps->fp_save_state.fp_tag;
+user_fp_state->fp_eip = ifps->fp_save_state.fp_eip;
+user_fp_state->fp_cs = ifps->fp_save_state.fp_cs;
+user_fp_state->fp_opcode = ifps->fp_save_state.fp_opcode;
+user_fp_state->fp_dp = ifps->fp_save_state.fp_dp;
+user_fp_state->fp_ds = ifps->fp_save_state.fp_ds;
 *user_fp_regs = ifps->fp_regs;
 }
 } else if (flavor == i386_XFLOAT_STATE) {
@@ -426,15 +426,15 @@ xfstate->fp_save_kind = fp_save_kind;
 user_fp_state = (struct i386_xfp_save *) &xfstate->hw_state[0];
 memset(user_fp_state, 0, sizeof(struct i386_xfp_save));
 user_fp_state->fp_control = ifps->xfp_save_state.fp_control;
-user_fp_state->fp_status  = ifps->xfp_save_state.fp_status;
-user_fp_state->fp_tag     = ifps->xfp_save_state.fp_tag;
-user_fp_state->fp_eip     = ifps->xfp_save_state.fp_eip;
-user_fp_state->fp_cs      = ifps->xfp_save_state.fp_cs;
-user_fp_state->fp_opcode  = ifps->xfp_save_state.fp_opcode;
-user_fp_state->fp_dp      = ifps->xfp_save_state.fp_dp;
-user_fp_state->fp_ds      = ifps->xfp_save_state.fp_ds;
-user_fp_state->fp_dp3     = ifps->xfp_save_state.fp_dp3;
-user_fp_state->fp_mxcsr   = ifps->xfp_save_state.fp_mxcsr;
+user_fp_state->fp_status = ifps->xfp_save_state.fp_status;
+user_fp_state->fp_tag = ifps->xfp_save_state.fp_tag;
+user_fp_state->fp_eip = ifps->xfp_save_state.fp_eip;
+user_fp_state->fp_cs = ifps->xfp_save_state.fp_cs;
+user_fp_state->fp_opcode = ifps->xfp_save_state.fp_opcode;
+user_fp_state->fp_dp = ifps->xfp_save_state.fp_dp;
+user_fp_state->fp_ds = ifps->xfp_save_state.fp_ds;
+user_fp_state->fp_dp3 = ifps->xfp_save_state.fp_dp3;
+user_fp_state->fp_mxcsr = ifps->xfp_save_state.fp_mxcsr;
 user_fp_state->fp_mxcsr_mask = ifps->xfp_save_state.fp_mxcsr_mask;
 for (i=0; i<8; i++)
 memcpy(&user_fp_state->fp_reg_word[i], &ifps->xfp_save_state.fp_reg_word[i], sizeof(user_fp_state->fp_reg_word[i]));
@@ -452,7 +452,7 @@ return KERN_SUCCESS;
 }
 static void fpinit(thread_t thread)
 {
-unsigned short	control;
+unsigned short control;
 ASSERT_IPL(SPL0);
 clear_ts();
 fpu_rstor(fp_default_state);
@@ -477,7 +477,7 @@ fpnoextflt(void)
 {
 ASSERT_IPL(SPL0);
 clear_ts();
-#if	NCPUS == 1
+#if NCPUS == 1
 if (fp_thread == current_thread())
 return;
 fwait();
@@ -491,10 +491,10 @@ fp_load(current_thread());
 void
 fpextovrflt(void)
 {
-thread_t	thread = current_thread();
-pcb_t		pcb;
+thread_t thread = current_thread();
+pcb_t pcb;
 struct i386_fpsave_state *ifps;
-#if	NCPUS == 1
+#if NCPUS == 1
 if (fp_thread != thread) {
 panic("fpextovrflt");
 }
@@ -514,8 +514,8 @@ i386_exception(EXC_BAD_ACCESS, VM_PROT_READ|VM_PROT_EXECUTE, 0);
 static int
 fphandleerr(void)
 {
-thread_t	thread = current_thread();
-#if	NCPUS == 1
+thread_t thread = current_thread();
+#if NCPUS == 1
 if (fp_thread == THREAD_NULL) {
 printf("fphandleerr: FPU not belonging to anyone!\n");
 clear_ts();
@@ -541,7 +541,7 @@ return 0;
 void
 fpexterrflt(void)
 {
-thread_t	thread = current_thread();
+thread_t thread = current_thread();
 if (fphandleerr())
 return;
 i386_exception(EXC_ARITHMETIC,
@@ -554,9 +554,9 @@ thread->pcb->ims.ifps->fp_save_state.fp_status);
 void
 fpastintr(void)
 {
-thread_t	thread = current_thread();
+thread_t thread = current_thread();
 ASSERT_IPL(SPL0);
-#if	NCPUS == 1
+#if NCPUS == 1
 if (fp_thread != THREAD_NULL) {
 panic("fpexterrflt");
 return;
@@ -619,19 +619,19 @@ fpu_rstor(ifps);
 }
 ifps->fp_valid = FALSE;
 }
-#if	(defined(AT386) || defined(ATX86_64)) && !defined(MACH_XEN)
+#if (defined(AT386) || defined(ATX86_64)) && !defined(MACH_XEN)
 void
 fpintr(int unit)
 {
-spl_t	s;
-#if	NCPUS == 1
+spl_t s;
+#if NCPUS == 1
 thread_t thread = current_thread();
 #endif
 ASSERT_IPL(SPL1);
 outb(0xf0, 0);
 if (fphandleerr())
 return;
-#if	NCPUS == 1
+#if NCPUS == 1
 if (fp_intr_thread != THREAD_NULL && fp_intr_thread != thread)
 panic("fp_intr: already caught intr");
 fp_intr_thread = thread;

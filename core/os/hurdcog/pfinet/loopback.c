@@ -10,7 +10,7 @@
 #include <net/sock.h>
 #include <linux/if_ether.h>
 #include <linux/if_arp.h>
-#define LOOPBACK_MTU	(vm_page_size - 172)
+#define LOOPBACK_MTU (vm_page_size - 172)
 static int loopback_xmit(struct sk_buff *skb, struct device *dev)
 {
 struct net_device_stats *stats = (struct net_device_stats *)dev->priv;
@@ -51,19 +51,19 @@ return 0;
 }
 static int loopback_init(struct device *dev)
 {
-dev->mtu		= LOOPBACK_MTU;
-dev->tbusy		= 0;
-dev->hard_start_xmit	= loopback_xmit;
-dev->hard_header	= eth_header;
-dev->hard_header_cache	= eth_header_cache;
+dev->mtu = LOOPBACK_MTU;
+dev->tbusy = 0;
+dev->hard_start_xmit = loopback_xmit;
+dev->hard_header = eth_header;
+dev->hard_header_cache = eth_header_cache;
 dev->header_cache_update= eth_header_cache_update;
-dev->hard_header_len	= ETH_HLEN;
-dev->addr_len		= ETH_ALEN;
-dev->tx_queue_len	= 0;
-dev->type		= ARPHRD_LOOPBACK;
-dev->rebuild_header	= eth_rebuild_header;
-dev->open		= loopback_open;
-dev->flags		= IFF_LOOPBACK;
+dev->hard_header_len = ETH_HLEN;
+dev->addr_len = ETH_ALEN;
+dev->tx_queue_len = 0;
+dev->type = ARPHRD_LOOPBACK;
+dev->rebuild_header = eth_rebuild_header;
+dev->open = loopback_open;
+dev->flags = IFF_LOOPBACK;
 dev->priv = kmalloc(sizeof(struct net_device_stats), GFP_KERNEL);
 if (dev->priv == NULL)
 return -ENOMEM;

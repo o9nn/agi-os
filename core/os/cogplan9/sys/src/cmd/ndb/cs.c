@@ -9,134 +9,134 @@
 #include <String.h>
 enum
 {
-Nreply=			20,
-Maxreply=		256,
-Maxrequest=		128,
-Maxpath=		128,
-Maxfdata=		8192,
-Maxhost=		64,
-Maxservice=		64,
-Qdir=			0,
-Qcs=			1,
+Nreply= 20,
+Maxreply= 256,
+Maxrequest= 128,
+Maxpath= 128,
+Maxfdata= 8192,
+Maxhost= 64,
+Maxservice= 64,
+Qdir= 0,
+Qcs= 1,
 };
-typedef struct Mfile	Mfile;
-typedef struct Mlist	Mlist;
-typedef struct Network	Network;
-typedef struct Flushreq	Flushreq;
-typedef struct Job	Job;
+typedef struct Mfile Mfile;
+typedef struct Mlist Mlist;
+typedef struct Network Network;
+typedef struct Flushreq Flushreq;
+typedef struct Job Job;
 int vers;
 struct Mfile
 {
-int		busy;
-char		*user;
-Qid		qid;
-int		fid;
-char		*net;
-char		*host;
-char		*serv;
-char		*rem;
-Network		*nextnet;
-int		nreply;
-char		*reply[Nreply];
-int		replylen[Nreply];
+int busy;
+char *user;
+Qid qid;
+int fid;
+char *net;
+char *host;
+char *serv;
+char *rem;
+Network *nextnet;
+int nreply;
+char *reply[Nreply];
+int replylen[Nreply];
 };
 struct Mlist
 {
-Mlist	*next;
-Mfile	mf;
+Mlist *next;
+Mfile mf;
 };
 struct Job
 {
-Job	*next;
-int	flushed;
-Fcall	request;
-Fcall	reply;
+Job *next;
+int flushed;
+Fcall request;
+Fcall reply;
 };
-Lock	joblock;
-Job	*joblist;
-Mlist	*mlist;
-int	mfd[2];
-int	debug;
-int	paranoia;
-int	ipv6lookups = 1;
-jmp_buf	masterjmp;
-int	*isslave;
-char	*dbfile;
-Ndb	*db, *netdb;
-void	rversion(Job*);
-void	rflush(Job*);
-void	rattach(Job*, Mfile*);
-char*	rwalk(Job*, Mfile*);
-void	ropen(Job*, Mfile*);
-void	rcreate(Job*, Mfile*);
-void	rread(Job*, Mfile*);
-void	rwrite(Job*, Mfile*);
-void	rclunk(Job*, Mfile*);
-void	rremove(Job*, Mfile*);
-void	rstat(Job*, Mfile*);
-void	rwstat(Job*, Mfile*);
-void	rauth(Job*);
-void	sendmsg(Job*, char*);
-void	error(char*);
-void	mountinit(char*, char*);
-void	io(void);
-void	ndbinit(void);
-void	netinit(int);
-void	netadd(char*);
-char	*genquery(Mfile*, char*);
-char*	ipinfoquery(Mfile*, char**, int);
-int	needproto(Network*, Ndbtuple*);
-int	lookup(Mfile*);
-Ndbtuple*	reorder(Ndbtuple*, Ndbtuple*);
-void	ipid(void);
-void	readipinterfaces(void);
-void*	emalloc(int);
-char*	estrdup(char*);
-Job*	newjob(void);
-void	freejob(Job*);
-void	setext(char*, int, char*);
-void	cleanmf(Mfile*);
-extern void	paralloc(void);
-Lock	dblock;
-Lock	netlock;
-char	*logfile = "cs";
-char	*paranoiafile = "cs.paranoia";
-char	mntpt[Maxpath];
-char	netndb[Maxpath];
-Ndbtuple*	iplookup(Network*, char*, char*, int);
-char*		iptrans(Ndbtuple*, Network*, char*, char*, int);
-Ndbtuple*	telcolookup(Network*, char*, char*, int);
-char*		telcotrans(Ndbtuple*, Network*, char*, char*, int);
-Ndbtuple*	dnsiplookup(char*, Ndbs*);
+Lock joblock;
+Job *joblist;
+Mlist *mlist;
+int mfd[2];
+int debug;
+int paranoia;
+int ipv6lookups = 1;
+jmp_buf masterjmp;
+int *isslave;
+char *dbfile;
+Ndb *db, *netdb;
+void rversion(Job*);
+void rflush(Job*);
+void rattach(Job*, Mfile*);
+char* rwalk(Job*, Mfile*);
+void ropen(Job*, Mfile*);
+void rcreate(Job*, Mfile*);
+void rread(Job*, Mfile*);
+void rwrite(Job*, Mfile*);
+void rclunk(Job*, Mfile*);
+void rremove(Job*, Mfile*);
+void rstat(Job*, Mfile*);
+void rwstat(Job*, Mfile*);
+void rauth(Job*);
+void sendmsg(Job*, char*);
+void error(char*);
+void mountinit(char*, char*);
+void io(void);
+void ndbinit(void);
+void netinit(int);
+void netadd(char*);
+char *genquery(Mfile*, char*);
+char* ipinfoquery(Mfile*, char**, int);
+int needproto(Network*, Ndbtuple*);
+int lookup(Mfile*);
+Ndbtuple* reorder(Ndbtuple*, Ndbtuple*);
+void ipid(void);
+void readipinterfaces(void);
+void* emalloc(int);
+char* estrdup(char*);
+Job* newjob(void);
+void freejob(Job*);
+void setext(char*, int, char*);
+void cleanmf(Mfile*);
+extern void paralloc(void);
+Lock dblock;
+Lock netlock;
+char *logfile = "cs";
+char *paranoiafile = "cs.paranoia";
+char mntpt[Maxpath];
+char netndb[Maxpath];
+Ndbtuple* iplookup(Network*, char*, char*, int);
+char* iptrans(Ndbtuple*, Network*, char*, char*, int);
+Ndbtuple* telcolookup(Network*, char*, char*, int);
+char* telcotrans(Ndbtuple*, Network*, char*, char*, int);
+Ndbtuple* dnsiplookup(char*, Ndbs*);
 struct Network
 {
-char		*net;
-Ndbtuple	*(*lookup)(Network*, char*, char*, int);
-char		*(*trans)(Ndbtuple*, Network*, char*, char*, int);
-int		considered;
-int		fasttimeouthack;
-Network		*next;
+char *net;
+Ndbtuple *(*lookup)(Network*, char*, char*, int);
+char *(*trans)(Ndbtuple*, Network*, char*, char*, int);
+int considered;
+int fasttimeouthack;
+Network *next;
 };
 enum
 {
 Ntcp = 0,
 };
 Network network[] = {
-[Ntcp]	{ "tcp",	iplookup,	iptrans,	0 },
-{ "udp",	iplookup,	iptrans,	1 },
-{ "icmp",	iplookup,	iptrans,	1 },
-{ "icmpv6",	iplookup,	iptrans,	1 },
-{ "rudp",	iplookup,	iptrans,	1 },
-{ "ssh",	iplookup,	iptrans,	1 },
-{ "telco",	telcolookup,	telcotrans,	1 },
+[Ntcp] { "tcp", iplookup, iptrans, 0 },
+{ "udp", iplookup, iptrans, 1 },
+{ "icmp", iplookup, iptrans, 1 },
+{ "icmpv6", iplookup, iptrans, 1 },
+{ "rudp", iplookup, iptrans, 1 },
+{ "ssh", iplookup, iptrans, 1 },
+{ "telco", telcolookup, telcotrans, 1 },
 { 0 },
 };
 Lock ipifclock;
 Ipifc *ipifcs;
-char	eaddr[16];
-char	ipaddr[64];
-uchar	ipa[IPaddrlen];
-char	*mysysname;
+char eaddr[16];
+char ipaddr[64];
+uchar ipa[IPaddrlen];
+char *mysysname;
 Network *netlist;
 Network *last;
 static void
@@ -1311,7 +1311,7 @@ s_free(s);
 }
 enum
 {
-Maxattr=	32,
+Maxattr= 32,
 };
 char*
 genquery(Mfile *mf, char *query)

@@ -6,7 +6,7 @@
 void line(int type, Point p1, Point p2, Attr *desc)
 {
 fprintf(tfd, "%s %s from %s",
-type==LINE ? "line" : "arrow",  desc_str(desc), xyname(p1));
+type==LINE ? "line" : "arrow", desc_str(desc), xyname(p1));
 fprintf(tfd, " to %s", xyname(p2));
 fprintf(tfd, "\n");
 range(p1);
@@ -44,7 +44,7 @@ while (*s == ' ')
 s++;
 fprintf(tfd, "%s\n", s);
 }
-int	auto_x	= 0;
+int auto_x = 0;
 void numlist(void)
 {
 Obj *p;

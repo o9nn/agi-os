@@ -666,9 +666,9 @@ end
 @parameters σ ρ β
 @variables x(tt) y(tt) z(tt)
 @brownians a b
-eqs = [D(x) ~ σ * (y - x) + 0.1a * x,     # One brownian
+eqs = [D(x) ~ σ * (y - x) + 0.1a * x, # One brownian
 D(y) ~ x * (ρ - z) - y + 0.1b * y, # Another brownian
-D(z) ~ x * y - β * z]              # no brownians -- still diagonal
+D(z) ~ x * y - β * z] # no brownians -- still diagonal
 @mtkcompile de = System(eqs, tt)
 u0map = [
 x => 1.0,

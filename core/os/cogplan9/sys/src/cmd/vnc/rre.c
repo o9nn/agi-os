@@ -1,17 +1,17 @@
 #include "vnc.h"
 #include "vncs.h"
-static int	encrre(uchar *raw, int stride, int w, int h, int back, int pixb, uchar *buf, int maxr, uchar *done, int (*eqpix)(uchar*, int, int), uchar *(putr)(uchar*, uchar*, int, int, int, int, int, int));
-static int	eqpix16(uchar *raw, int p1, int p2);
-static int	eqpix32(uchar *raw, int p1, int p2);
-static int	eqpix8(uchar *raw, int p1, int p2);
-static int	findback(uchar *raw, int stride, int w, int h, int (*eqpix)(uchar*, int, int));
-static uchar*	putcorre(uchar *buf, uchar *raw, int p, int pixb, int x, int y, int w, int h);
-static uchar*	putrre(uchar *buf, uchar *raw, int p, int pixb, int x, int y, int w, int h);
-static void	putpix(Vnc *v, uchar *raw, int p, int pixb);
-static int	hexcolors(uchar *raw, int stride, int w, int h, int (*eqpix)(uchar*, int, int), int back, int *fore);
-static uchar	*puthexfore(uchar *buf, uchar*, int, int, int x, int y, int w, int h);
-static uchar	*puthexcol(uchar *buf, uchar*, int, int, int x, int y, int w, int h);
-static void	sendtraw(Vnc *v, uchar *raw, int pixb, int stride, int w, int h);
+static int encrre(uchar *raw, int stride, int w, int h, int back, int pixb, uchar *buf, int maxr, uchar *done, int (*eqpix)(uchar*, int, int), uchar *(putr)(uchar*, uchar*, int, int, int, int, int, int));
+static int eqpix16(uchar *raw, int p1, int p2);
+static int eqpix32(uchar *raw, int p1, int p2);
+static int eqpix8(uchar *raw, int p1, int p2);
+static int findback(uchar *raw, int stride, int w, int h, int (*eqpix)(uchar*, int, int));
+static uchar* putcorre(uchar *buf, uchar *raw, int p, int pixb, int x, int y, int w, int h);
+static uchar* putrre(uchar *buf, uchar *raw, int p, int pixb, int x, int y, int w, int h);
+static void putpix(Vnc *v, uchar *raw, int p, int pixb);
+static int hexcolors(uchar *raw, int stride, int w, int h, int (*eqpix)(uchar*, int, int), int back, int *fore);
+static uchar *puthexfore(uchar *buf, uchar*, int, int, int x, int y, int w, int h);
+static uchar *puthexcol(uchar *buf, uchar*, int, int, int x, int y, int w, int h);
+static void sendtraw(Vnc *v, uchar *raw, int pixb, int stride, int w, int h);
 int
 sendraw(Vncs *v, Rectangle r)
 {
@@ -50,9 +50,9 @@ w = Dx(r);
 if(h == 0 || w == 0 || !rectinrect(r, v->image->r))
 sysfatal("bad rectangle %R in sendhextile %R", r, v->image->r);
 switch(v->bpp){
-case  8:	pixlg = 0;	eq = eqpix8;	break;
-case 16:	pixlg = 1;	eq = eqpix16;	break;
-case 32:	pixlg = 2;	eq = eqpix32;	break;
+case 8: pixlg = 0; eq = eqpix8; break;
+case 16: pixlg = 1; eq = eqpix16; break;
+case 32: pixlg = 2; eq = eqpix32; break;
 default:
 sendraw(v, r);
 return 1;
@@ -202,8 +202,8 @@ return ((Dy(r) + split - 1) / split) * ((Dx(r) + split - 1) / split);
 }
 enum
 {
-MaxCorreDim	= 48,
-MaxRreDim	= 64,
+MaxCorreDim = 48,
+MaxRreDim = 64,
 };
 int
 countrre(Vncs*, Rectangle r)
@@ -243,9 +243,9 @@ w = Dx(r);
 if(h == 0 || w == 0 || !rectinrect(r, v->image->r))
 sysfatal("bad rectangle in sendrre");
 switch(v->bpp){
-case  8:	pixlg = 0;	eq = eqpix8;	break;
-case 16:	pixlg = 1;	eq = eqpix16;	break;
-case 32:	pixlg = 2;	eq = eqpix32;	break;
+case 8: pixlg = 0; eq = eqpix8; break;
+case 16: pixlg = 1; eq = eqpix16; break;
+case 32: pixlg = 2; eq = eqpix32; break;
 default:
 sendraw(v, r);
 return totr + 1;

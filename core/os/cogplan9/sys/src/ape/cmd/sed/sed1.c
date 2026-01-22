@@ -2,17 +2,17 @@
 #include <sys/types.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include	<stdio.h>
+#include <stdio.h>
 #include "sed.h"
-#define Read(f, buf, n)	(fflush(stdout), read(f, buf, n))
+#define Read(f, buf, n) (fflush(stdout), read(f, buf, n))
 void
 execute(uchar *file)
 {
 uchar *p1, *p2;
-union reptr	*ipc;
-int	c;
-long	l;
-uchar	*execp;
+union reptr *ipc;
+int c;
+long l;
+uchar *execp;
 if (file) {
 if ((f = open((char*)file, O_RDONLY)) < 0) {
 fprintf(stderr, "sed: Can't open %s\n", file);
@@ -118,10 +118,10 @@ delflag = 0;
 int
 match(uchar *expbuf, int gf)
 {
-uchar	*p1, *p2;
+uchar *p1, *p2;
 int c;
 if(gf) {
-if(*expbuf)	return(0);
+if(*expbuf) return(0);
 p1 = linebuf;
 p2 = genbuf;
 while(*p1++ = *p2++);
@@ -161,9 +161,9 @@ int
 advance(uchar *alp, uchar *aep)
 {
 uchar *lp, *ep, *curlp;
-uchar	c;
+uchar c;
 uchar *bbeg;
-int	ct;
+int ct;
 lp = alp;
 ep = aep;
 for (;;) switch (*ep++) {
@@ -211,7 +211,7 @@ curlp = lp;
 while(ecmp(bbeg, lp, ct))
 lp += ct;
 while(lp >= curlp) {
-if(advance(lp, ep))	return(1);
+if(advance(lp, ep)) return(1);
 lp -= ct;
 }
 return(0);
@@ -256,7 +256,7 @@ return(1);
 return(0);
 }
 do {
-if(lp == locs)	break;
+if(lp == locs) break;
 if (advance(lp, ep))
 return(1);
 } while (lp-- > curlp);
@@ -269,7 +269,7 @@ exit(1);
 int
 substitute(union reptr *ipc)
 {
-uchar	*oloc2;
+uchar *oloc2;
 if(match(ipc->r1.re1, 0)) {
 sflag = 1;
 if(!ipc->r1.gfl) {
@@ -345,9 +345,9 @@ return(sp);
 void
 command(union reptr *ipc)
 {
-int	i;
-uchar	*p1, *p2;
-uchar	*execp;
+int i;
+uchar *p1, *p2;
+uchar *execp;
 switch(ipc->r1.command) {
 case ACOM:
 *aptr++ = ipc;
@@ -481,7 +481,7 @@ for(p1 = linebuf; p1 < spend; p1++)
 putc(*p1, stdout);
 putc('\n', stdout);
 }
-if(aptr > abuf)	arout();
+if(aptr > abuf) arout();
 fclose(stdout);
 lseek(f,(long)(cbp-ebp),2);
 exit(0);
@@ -506,7 +506,7 @@ if(i && ipc->r1.fcode)
 goto wcom;
 break;
 case TCOM:
-if(sflag == 0)	break;
+if(sflag == 0) break;
 sflag = 0;
 jflag = 1;
 break;
@@ -531,15 +531,15 @@ break;
 case YCOM:
 p1 = linebuf;
 p2 = ipc->r1.re1;
-while(*p1 = p2[*p1])	p1++;
+while(*p1 = p2[*p1]) p1++;
 break;
 }
 }
 uchar *
 gline(uchar *addr)
 {
-uchar	*p1, *p2;
-int	c;
+uchar *p1, *p2;
+int c;
 sflag = 0;
 p1 = addr;
 p2 = cbp;
@@ -552,7 +552,7 @@ p2 = ibuf;
 ebp = ibuf+c;
 }
 if ((c = *p2++) == '\n') {
-if(p2 >=  ebp) {
+if(p2 >= ebp) {
 if((c = Read(f, ibuf, 512)) <= 0) {
 close(f);
 if(eargc == 0)
@@ -576,16 +576,16 @@ int
 ecmp(uchar *a, uchar *b, int count)
 {
 while(count--)
-if(*a++ != *b++)	return(0);
+if(*a++ != *b++) return(0);
 return(1);
 }
 void
 arout(void)
 {
-uchar	*p1;
-FILE	*fi;
-uchar	c;
-int	t;
+uchar *p1;
+FILE *fi;
+uchar c;
+int t;
 aptr = abuf - 1;
 while(*++aptr) {
 if((*aptr)->r1.command == ACOM) {

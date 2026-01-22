@@ -2,25 +2,25 @@
 #include "draw.h"
 #include "tk.h"
 #include "canvs.h"
-#define	O(t, e)		((long)(&((t*)0)->e))
+#define O(t, e) ((long)(&((t*)0)->e))
 typedef struct TkCimag TkCimag;
 struct TkCimag
 {
-int	anchor;
-Point	anchorp;
-TkImg*	tki;
+int anchor;
+Point anchorp;
+TkImg* tki;
 };
 static
 TkOption imgopts[] =
 {
-"anchor",	OPTstab,	O(TkCimag, anchor),	tkanchor,
-"image",	OPTimag,	O(TkCimag, tki),	nil,
+"anchor", OPTstab, O(TkCimag, anchor), tkanchor,
+"image", OPTimag, O(TkCimag, tki), nil,
 nil
 };
 static
 TkOption itemopts[] =
 {
-"tags",		OPTctag,	O(TkCitem, tags),	nil,
+"tags", OPTctag, O(TkCitem, tags), nil,
 nil
 };
 void

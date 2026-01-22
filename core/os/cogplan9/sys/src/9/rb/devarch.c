@@ -15,7 +15,7 @@ typedef long Rdwrfn(Chan*, void*, long, vlong);
 static Rdwrfn *readfn[Qmax];
 static Rdwrfn *writefn[Qmax];
 static Dirtab archdir[Qmax] = {
-".",		{ Qdir, 0, QTDIR },	0,	0555,
+".", { Qdir, 0, QTDIR }, 0, 0555,
 };
 Lock archwlock;
 int narchdir = Qbase;
@@ -140,8 +140,8 @@ snprint(str, sizeof(str), "%16.16llux", (tb/700)* 1000);
 return readstr(offset, a, n, str);
 }
 char *cputype = "mips";
-char	*faultsprint(char *, char *);
-char	*fpemuprint(char *, char *);
+char *faultsprint(char *, char *);
+char *fpemuprint(char *, char *);
 static long
 archctlread(Chan*, void *a, long nn, vlong offset)
 {
@@ -172,9 +172,9 @@ CMfpemudebug,
 static Cmdtab archctlmsg[] =
 {
 #ifdef FPEMUDEBUG
-CMfpemudebug,	"fpemudebug",	2,
+CMfpemudebug, "fpemudebug", 2,
 #else
-CMfpemudebug,	"dummy",	1,
+CMfpemudebug, "dummy", 1,
 #endif
 };
 static long

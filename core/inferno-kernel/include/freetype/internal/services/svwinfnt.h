@@ -3,13 +3,13 @@
 #include <freetype/internal/ftserv.h>
 #include <freetype/ftwinfnt.h>
 FT_BEGIN_HEADER
-#define FT_SERVICE_ID_WINFNT  "winfonts"
+#define FT_SERVICE_ID_WINFNT "winfonts"
 typedef FT_Error
-(*FT_WinFnt_GetHeaderFunc)( FT_Face               face,
-FT_WinFNT_HeaderRec  *aheader );
+(*FT_WinFnt_GetHeaderFunc)( FT_Face face,
+FT_WinFNT_HeaderRec *aheader );
 FT_DEFINE_SERVICE( WinFnt )
 {
-FT_WinFnt_GetHeaderFunc  get_header;
+FT_WinFnt_GetHeaderFunc get_header;
 };
 FT_END_HEADER
 #endif

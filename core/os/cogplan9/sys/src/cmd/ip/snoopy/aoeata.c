@@ -4,14 +4,14 @@
 #include "dat.h"
 #include "protos.h"
 typedef struct{
-uchar	aflag;
-uchar	feat;
-uchar	sectors;
-uchar	cmd;
-uchar	lba[6];
+uchar aflag;
+uchar feat;
+uchar sectors;
+uchar cmd;
+uchar lba[6];
 }Hdr;
 enum{
-Hsize	= 10,
+Hsize = 10,
 };
 enum{
 Oaflag,
@@ -24,13 +24,13 @@ Oerr,
 };
 static Field p_fields[] =
 {
-{"aflag",	Fnum,	Oaflag,		"aflag",		},
-{"cmd",		Fnum,	Ocmd,		"command register",	},
-{"feat",	Fnum,	Ofeat,		"features",		},
-{"sectors",	Fnum,	Osectors,	"number of sectors",	},
-{"lba",		Fnum,	Olba,		"lba",			},
-{"stat",	Fnum,	Ostat,		"status",		},
-{"err",		Fnum,	Oerr,		"error",		},
+{"aflag", Fnum, Oaflag, "aflag", },
+{"cmd", Fnum, Ocmd, "command register", },
+{"feat", Fnum, Ofeat, "features", },
+{"sectors", Fnum, Osectors, "number of sectors", },
+{"lba", Fnum, Olba, "lba", },
+{"stat", Fnum, Ostat, "status", },
+{"err", Fnum, Oerr, "error", },
 {0}
 };
 static void

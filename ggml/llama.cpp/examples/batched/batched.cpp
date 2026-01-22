@@ -34,7 +34,7 @@ std::vector<llama_token> tokens_list;
 tokens_list = common_tokenize(vocab, params.prompt, true);
 const int n_kv_req = tokens_list.size() + (n_predict - tokens_list.size())*n_parallel;
 llama_context_params ctx_params = common_context_params_to_llama(params);
-ctx_params.n_ctx   = n_kv_req;
+ctx_params.n_ctx = n_kv_req;
 ctx_params.n_batch = std::max(n_predict, n_parallel);
 llama_context * ctx = llama_init_from_model(model, ctx_params);
 auto sparams = llama_sampler_chain_default_params();
@@ -51,7 +51,7 @@ return 1;
 const int n_ctx = llama_n_ctx(ctx);
 LOG_INF("\n%s: n_predict = %d, n_ctx = %d, n_batch = %u, n_parallel = %d, n_kv_req = %d\n", __func__, n_predict, n_ctx, ctx_params.n_batch, n_parallel, n_kv_req);
 if (n_kv_req > n_ctx) {
-LOG_ERR("%s: error: n_kv_req (%d) > n_ctx, the required KV cache size is not big enough\n", __func__,  n_kv_req);
+LOG_ERR("%s: error: n_kv_req (%d) > n_ctx, the required KV cache size is not big enough\n", __func__, n_kv_req);
 LOG_ERR("%s:        either reduce n_parallel or increase n_ctx\n", __func__);
 return 1;
 }
@@ -90,7 +90,7 @@ LOG("\n\n%s: generating %d sequences ...\n", __func__, n_parallel);
 }
 std::vector<std::string> streams(n_parallel);
 std::vector<int32_t> i_batch(n_parallel, batch.n_tokens - 1);
-int n_cur    = batch.n_tokens;
+int n_cur = batch.n_tokens;
 int n_decode = 0;
 const auto t_main_start = ggml_time_us();
 while (n_cur <= n_predict) {

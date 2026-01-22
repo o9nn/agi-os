@@ -30,8 +30,8 @@ arg->init(argv);
 arg->setusage("mc [-c columns] [file ...]");
 while((c:=arg->opt()) != 0)
 case c {
-'c' =>	columns = int arg->earg() * mintab;
-* =>		arg->usage();
+'c' => columns = int arg->earg() * mintab;
+* => arg->usage();
 }
 argv = arg->argv();
 if(len argv == 0)

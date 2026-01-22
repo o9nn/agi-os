@@ -4,11 +4,11 @@
 #include "pci.h"
 #include "vga.h"
 typedef struct {
-Pcidev*	pci;
-uchar*	mmio;
-ulong	clk[6];
-ulong	lcd[9];
-ulong	pixconf;
+Pcidev* pci;
+uchar* mmio;
+ulong clk[6];
+ulong lcd[9];
+ulong pixconf;
 } I81x;
 static void
 snarf(Vga* vga, Ctlr* ctlr)
@@ -116,7 +116,7 @@ i81x->clk[4] |= 0x4040;
 vga->misc = vgai(MiscR);
 switch(vga->virtx) {
 case 640:
-vga->misc &=  ~0x0A;
+vga->misc &= ~0x0A;
 break;
 case 720:
 vga->misc = (vga->misc & ~0x08) | (1<<2);

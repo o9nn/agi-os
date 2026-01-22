@@ -77,7 +77,7 @@ addlen = strlen((*match)->string) - len;
 }
 else
 {
-for (; addlen  > 0; addlen--)
+for (; addlen > 0; addlen--)
 {
 if (0 == strncmp((*match)->string+len, prev+len, addlen))
 break;
@@ -255,7 +255,7 @@ char *completion = complete_command(word_start, word_len, is_help_command);
 if (NULL == completion)
 rc = CC_REDISPLAY;
 else if ('\0' == completion[0])
-rc =  CC_NORM;
+rc = CC_NORM;
 else if (el_insertstr(el, completion) == -1)
 rc = CC_ERROR;
 else

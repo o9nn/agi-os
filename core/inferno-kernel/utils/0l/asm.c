@@ -1,5 +1,5 @@
-#include	"l.h"
-long	OFFSET;
+#include "l.h"
+long OFFSET;
 void
 cput(int c)
 {
@@ -468,7 +468,7 @@ else
 Bprint(&bso, "%c %.8lux %s\n", t, v, s);
 }
 }
-#define	MINLC	4
+#define MINLC 4
 void
 asmlc(void)
 {
@@ -655,31 +655,31 @@ break;
 }
 write(cout, buf.dbuf, n);
 }
-#define	OP_RRR(op,r1,r2,r3)\
+#define OP_RRR(op,r1,r2,r3)\
 (op|(((r1)&31L)<<16)|(((r2)&31L)<<21)|(((r3)&31L)<<11))
-#define	OP_IRR(op,i,r2,r3)\
+#define OP_IRR(op,i,r2,r3)\
 (op|((i)&0xffffL)|(((r2)&31L)<<21)|(((r3)&31L)<<16))
-#define	OP_SRR(op,s,r2,r3)\
+#define OP_SRR(op,s,r2,r3)\
 (op|(((s)&31L)<<6)|(((r2)&31L)<<16)|(((r3)&31L)<<11))
-#define	OP_FRRR(op,r1,r2,r3)\
+#define OP_FRRR(op,r1,r2,r3)\
 (op|(((r1)&31L)<<16)|(((r2)&31L)<<11)|(((r3)&31L)<<6))
-#define	OP_JMP(op,i)\
+#define OP_JMP(op,i)\
 ((op)|((i)&0x3ffffffL))
-#define	OP(x,y)\
+#define OP(x,y)\
 (((x)<<3)|((y)<<0))
-#define	SP(x,y)\
+#define SP(x,y)\
 (((x)<<29)|((y)<<26))
-#define	BCOND(x,y)\
+#define BCOND(x,y)\
 (((x)<<19)|((y)<<16))
-#define	MMU(x,y)\
+#define MMU(x,y)\
 (SP(2,0)|(16<<21)|((x)<<3)|((y)<<0))
-#define	FPF(x,y)\
+#define FPF(x,y)\
 (SP(2,1)|(16<<21)|((x)<<3)|((y)<<0))
-#define	FPD(x,y)\
+#define FPD(x,y)\
 (SP(2,1)|(17<<21)|((x)<<3)|((y)<<0))
-#define	FPW(x,y)\
+#define FPW(x,y)\
 (SP(2,1)|(20<<21)|((x)<<3)|((y)<<0))
-#define	FPV(x,y)\
+#define FPV(x,y)\
 (SP(2,1)|(21<<21)|((x)<<3)|((y)<<0))
 int
 asmout(Prog *p, Optab *o, int aflag)
@@ -1135,81 +1135,81 @@ long
 oprrr(int a)
 {
 switch(a) {
-case AADD:	return OP(4,0);
-case AADDU:	return OP(4,1);
-case ASGT:	return OP(5,2);
-case ASGTU:	return OP(5,3);
-case AAND:	return OP(4,4);
-case AOR:	return OP(4,5);
-case AXOR:	return OP(4,6);
-case ASUB:	return OP(4,2);
-case ASUBU:	return OP(4,3);
-case ANOR:	return OP(4,7);
-case ASLL:	return OP(0,4);
-case ASRL:	return OP(0,6);
-case ASRA:	return OP(0,7);
-case ASLLV:	return OP(2,4);
-case ASRLV:	return OP(2,6);
-case ASRAV:	return OP(2,7);
-case AADDV:	return OP(5,4);
-case AADDVU:	return OP(5,5);
-case ASUBV:	return OP(5,6);
-case ASUBVU:	return OP(5,7);
+case AADD: return OP(4,0);
+case AADDU: return OP(4,1);
+case ASGT: return OP(5,2);
+case ASGTU: return OP(5,3);
+case AAND: return OP(4,4);
+case AOR: return OP(4,5);
+case AXOR: return OP(4,6);
+case ASUB: return OP(4,2);
+case ASUBU: return OP(4,3);
+case ANOR: return OP(4,7);
+case ASLL: return OP(0,4);
+case ASRL: return OP(0,6);
+case ASRA: return OP(0,7);
+case ASLLV: return OP(2,4);
+case ASRLV: return OP(2,6);
+case ASRAV: return OP(2,7);
+case AADDV: return OP(5,4);
+case AADDVU: return OP(5,5);
+case ASUBV: return OP(5,6);
+case ASUBVU: return OP(5,7);
 case AREM:
-case ADIV:	return OP(3,2);
+case ADIV: return OP(3,2);
 case AREMU:
-case ADIVU:	return OP(3,3);
-case AMUL:	return OP(3,0);
-case AMULU:	return OP(3,1);
+case ADIVU: return OP(3,3);
+case AMUL: return OP(3,0);
+case AMULU: return OP(3,1);
 case AREMV:
-case ADIVV:	return OP(3,6);
+case ADIVV: return OP(3,6);
 case AREMVU:
-case ADIVVU:	return OP(3,7);
-case AMULV:	return OP(3,4);
-case AMULVU:	return OP(3,5);
-case AJMP:	return OP(1,0);
-case AJAL:	return OP(1,1);
-case ABREAK:	return OP(1,5);
-case ASYSCALL:	return OP(1,4);
-case ATLBP:	return MMU(1,0);
-case ATLBR:	return MMU(0,1);
-case ATLBWI:	return MMU(0,2);
-case ATLBWR:	return MMU(0,6);
-case ARFE:	return MMU(2,0);
-case ADIVF:	return FPF(0,3);
-case ADIVD:	return FPD(0,3);
-case AMULF:	return FPF(0,2);
-case AMULD:	return FPD(0,2);
-case ASUBF:	return FPF(0,1);
-case ASUBD:	return FPD(0,1);
-case AADDF:	return FPF(0,0);
-case AADDD:	return FPD(0,0);
-case ATRUNCFV:	return FPF(1,1);
-case ATRUNCDV:	return FPD(1,1);
-case ATRUNCFW:	return FPF(1,5);
-case ATRUNCDW:	return FPD(1,5);
-case AMOVFV:	return FPF(4,5);
-case AMOVDV:	return FPD(4,5);
-case AMOVVF:	return FPV(4,0);
-case AMOVVD:	return FPV(4,1);
-case AMOVFW:	return FPF(4,4);
-case AMOVDW:	return FPD(4,4);
-case AMOVWF:	return FPW(4,0);
-case AMOVDF:	return FPD(4,0);
-case AMOVWD:	return FPW(4,1);
-case AMOVFD:	return FPF(4,1);
-case AABSF:	return FPF(0,5);
-case AABSD:	return FPD(0,5);
-case AMOVF:	return FPF(0,6);
-case AMOVD:	return FPD(0,6);
-case ANEGF:	return FPF(0,7);
-case ANEGD:	return FPD(0,7);
-case ACMPEQF:	return FPF(6,2);
-case ACMPEQD:	return FPD(6,2);
-case ACMPGTF:	return FPF(7,4);
-case ACMPGTD:	return FPD(7,4);
-case ACMPGEF:	return FPF(7,6);
-case ACMPGED:	return FPD(7,6);
+case ADIVVU: return OP(3,7);
+case AMULV: return OP(3,4);
+case AMULVU: return OP(3,5);
+case AJMP: return OP(1,0);
+case AJAL: return OP(1,1);
+case ABREAK: return OP(1,5);
+case ASYSCALL: return OP(1,4);
+case ATLBP: return MMU(1,0);
+case ATLBR: return MMU(0,1);
+case ATLBWI: return MMU(0,2);
+case ATLBWR: return MMU(0,6);
+case ARFE: return MMU(2,0);
+case ADIVF: return FPF(0,3);
+case ADIVD: return FPD(0,3);
+case AMULF: return FPF(0,2);
+case AMULD: return FPD(0,2);
+case ASUBF: return FPF(0,1);
+case ASUBD: return FPD(0,1);
+case AADDF: return FPF(0,0);
+case AADDD: return FPD(0,0);
+case ATRUNCFV: return FPF(1,1);
+case ATRUNCDV: return FPD(1,1);
+case ATRUNCFW: return FPF(1,5);
+case ATRUNCDW: return FPD(1,5);
+case AMOVFV: return FPF(4,5);
+case AMOVDV: return FPD(4,5);
+case AMOVVF: return FPV(4,0);
+case AMOVVD: return FPV(4,1);
+case AMOVFW: return FPF(4,4);
+case AMOVDW: return FPD(4,4);
+case AMOVWF: return FPW(4,0);
+case AMOVDF: return FPD(4,0);
+case AMOVWD: return FPW(4,1);
+case AMOVFD: return FPF(4,1);
+case AABSF: return FPF(0,5);
+case AABSD: return FPD(0,5);
+case AMOVF: return FPF(0,6);
+case AMOVD: return FPD(0,6);
+case ANEGF: return FPF(0,7);
+case ANEGD: return FPD(0,7);
+case ACMPEQF: return FPF(6,2);
+case ACMPEQD: return FPD(6,2);
+case ACMPGTF: return FPF(7,4);
+case ACMPGTD: return FPD(7,4);
+case ACMPGEF: return FPF(7,6);
+case ACMPGED: return FPD(7,6);
 }
 if(a >= ALAST)
 diag("bad rrr %A+ALAST", a-ALAST);
@@ -1221,72 +1221,72 @@ long
 opirr(int a)
 {
 switch(a) {
-case AADD:		return SP(1,0);
-case AADDU:		return SP(1,1);
-case ASGT:		return SP(1,2);
-case ASGTU:		return SP(1,3);
-case AAND:		return SP(1,4);
-case AOR:		return SP(1,5);
-case AXOR:		return SP(1,6);
-case ALAST:		return SP(1,7);
-case ASLL:		return OP(0,0);
-case ASRL:		return OP(0,2);
-case ASRA:		return OP(0,3);
-case AADDV:		return SP(3,0);
-case AADDVU:		return SP(3,1);
-case AJMP:		return SP(0,2);
-case AJAL:		return SP(0,3);
-case ABEQ:		return SP(0,4);
-case ABEQ+ALAST:	return SP(2,4);
-case ABNE:		return SP(0,5);
-case ABNE+ALAST:	return SP(2,5);
-case ABGEZ:		return SP(0,1)|BCOND(0,1);
-case ABGEZ+ALAST:	return SP(0,1)|BCOND(0,3);
-case ABGEZAL:		return SP(0,1)|BCOND(2,1);
-case ABGEZAL+ALAST:	return SP(0,1)|BCOND(2,3);
-case ABGTZ:		return SP(0,7);
-case ABGTZ+ALAST:	return SP(2,7);
-case ABLEZ:		return SP(0,6);
-case ABLEZ+ALAST:	return SP(2,6);
-case ABLTZ:		return SP(0,1)|BCOND(0,0);
-case ABLTZ+ALAST:	return SP(0,1)|BCOND(0,2);
-case ABLTZAL:		return SP(0,1)|BCOND(2,0);
-case ABLTZAL+ALAST:	return SP(0,1)|BCOND(2,2);
-case ABFPT:		return SP(2,1)|(257<<16);
-case ABFPT+ALAST:	return SP(2,1)|(259<<16);
-case ABFPF:		return SP(2,1)|(256<<16);
-case ABFPF+ALAST:	return SP(2,1)|(258<<16);
+case AADD: return SP(1,0);
+case AADDU: return SP(1,1);
+case ASGT: return SP(1,2);
+case ASGTU: return SP(1,3);
+case AAND: return SP(1,4);
+case AOR: return SP(1,5);
+case AXOR: return SP(1,6);
+case ALAST: return SP(1,7);
+case ASLL: return OP(0,0);
+case ASRL: return OP(0,2);
+case ASRA: return OP(0,3);
+case AADDV: return SP(3,0);
+case AADDVU: return SP(3,1);
+case AJMP: return SP(0,2);
+case AJAL: return SP(0,3);
+case ABEQ: return SP(0,4);
+case ABEQ+ALAST: return SP(2,4);
+case ABNE: return SP(0,5);
+case ABNE+ALAST: return SP(2,5);
+case ABGEZ: return SP(0,1)|BCOND(0,1);
+case ABGEZ+ALAST: return SP(0,1)|BCOND(0,3);
+case ABGEZAL: return SP(0,1)|BCOND(2,1);
+case ABGEZAL+ALAST: return SP(0,1)|BCOND(2,3);
+case ABGTZ: return SP(0,7);
+case ABGTZ+ALAST: return SP(2,7);
+case ABLEZ: return SP(0,6);
+case ABLEZ+ALAST: return SP(2,6);
+case ABLTZ: return SP(0,1)|BCOND(0,0);
+case ABLTZ+ALAST: return SP(0,1)|BCOND(0,2);
+case ABLTZAL: return SP(0,1)|BCOND(2,0);
+case ABLTZAL+ALAST: return SP(0,1)|BCOND(2,2);
+case ABFPT: return SP(2,1)|(257<<16);
+case ABFPT+ALAST: return SP(2,1)|(259<<16);
+case ABFPF: return SP(2,1)|(256<<16);
+case ABFPF+ALAST: return SP(2,1)|(258<<16);
 case AMOVB:
-case AMOVBU:		return SP(5,0);
+case AMOVBU: return SP(5,0);
 case AMOVH:
-case AMOVHU:		return SP(5,1);
-case AMOVW:		return SP(5,3);
-case AMOVV:		return SP(7,7);
-case AMOVF:		return SP(7,1);
-case AMOVD:		return SP(7,5);
-case AMOVWL:		return SP(5,2);
-case AMOVWR:		return SP(5,6);
-case AMOVVL:		return SP(5,4);
-case AMOVVR:		return SP(5,5);
-case ABREAK:		return SP(5,7);
-case AMOVWL+ALAST:	return SP(4,2);
-case AMOVWR+ALAST:	return SP(4,6);
-case AMOVVL+ALAST:	return SP(3,2);
-case AMOVVR+ALAST:	return SP(3,3);
-case AMOVB+ALAST:	return SP(4,0);
-case AMOVBU+ALAST:	return SP(4,4);
-case AMOVH+ALAST:	return SP(4,1);
-case AMOVHU+ALAST:	return SP(4,5);
-case AMOVW+ALAST:	return SP(4,3);
-case AMOVV+ALAST:	return SP(6,7);
-case AMOVF+ALAST:	return SP(6,1);
-case AMOVD+ALAST:	return SP(6,5);
-case ASLLV:		return OP(7,0);
-case ASRLV:		return OP(7,2);
-case ASRAV:		return OP(7,3);
-case ASLLV+ALAST:	return OP(7,4);
-case ASRLV+ALAST:	return OP(7,6);
-case ASRAV+ALAST:	return OP(7,7);
+case AMOVHU: return SP(5,1);
+case AMOVW: return SP(5,3);
+case AMOVV: return SP(7,7);
+case AMOVF: return SP(7,1);
+case AMOVD: return SP(7,5);
+case AMOVWL: return SP(5,2);
+case AMOVWR: return SP(5,6);
+case AMOVVL: return SP(5,4);
+case AMOVVR: return SP(5,5);
+case ABREAK: return SP(5,7);
+case AMOVWL+ALAST: return SP(4,2);
+case AMOVWR+ALAST: return SP(4,6);
+case AMOVVL+ALAST: return SP(3,2);
+case AMOVVR+ALAST: return SP(3,3);
+case AMOVB+ALAST: return SP(4,0);
+case AMOVBU+ALAST: return SP(4,4);
+case AMOVH+ALAST: return SP(4,1);
+case AMOVHU+ALAST: return SP(4,5);
+case AMOVW+ALAST: return SP(4,3);
+case AMOVV+ALAST: return SP(6,7);
+case AMOVF+ALAST: return SP(6,1);
+case AMOVD+ALAST: return SP(6,5);
+case ASLLV: return OP(7,0);
+case ASRLV: return OP(7,2);
+case ASRAV: return OP(7,3);
+case ASLLV+ALAST: return OP(7,4);
+case ASRLV+ALAST: return OP(7,6);
+case ASRAV+ALAST: return OP(7,7);
 }
 if(a >= ALAST)
 diag("bad irr %A+ALAST", a-ALAST);

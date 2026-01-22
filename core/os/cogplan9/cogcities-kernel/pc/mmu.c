@@ -1,30 +1,30 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#define	DATASEGM(p) 	{ 0xFFFF, SEGG|SEGB|(0xF<<16)|SEGP|SEGPL(p)|SEGDATA|SEGW }
-#define	EXECSEGM(p) 	{ 0xFFFF, SEGG|SEGD|(0xF<<16)|SEGP|SEGPL(p)|SEGEXEC|SEGR }
-#define	EXEC16SEGM(p) 	{ 0xFFFF, SEGG|(0xF<<16)|SEGP|SEGPL(p)|SEGEXEC|SEGR }
-#define	TSSSEGM(b,p)	{ ((b)<<16)|sizeof(Tss),\
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#define DATASEGM(p) { 0xFFFF, SEGG|SEGB|(0xF<<16)|SEGP|SEGPL(p)|SEGDATA|SEGW }
+#define EXECSEGM(p) { 0xFFFF, SEGG|SEGD|(0xF<<16)|SEGP|SEGPL(p)|SEGEXEC|SEGR }
+#define EXEC16SEGM(p) { 0xFFFF, SEGG|(0xF<<16)|SEGP|SEGPL(p)|SEGEXEC|SEGR }
+#define TSSSEGM(b,p) { ((b)<<16)|sizeof(Tss),\
 ((b)&0xFF000000)|(((b)>>16)&0xFF)|SEGTSS|SEGPL(p)|SEGP }
 Segdesc gdt[NGDT] =
 {
-[NULLSEG]	{ 0, 0},
-[KDSEG]		DATASEGM(0),
-[KESEG]		EXECSEGM(0),
-[UDSEG]		DATASEGM(3),
-[UESEG]		EXECSEGM(3),
-[TSSSEG]	TSSSEGM(0,0),
-[KESEG16]		EXEC16SEGM(0),
+[NULLSEG] { 0, 0},
+[KDSEG] DATASEGM(0),
+[KESEG] EXECSEGM(0),
+[UDSEG] DATASEGM(3),
+[UESEG] EXECSEGM(3),
+[TSSSEG] TSSSEGM(0,0),
+[KESEG16] EXEC16SEGM(0),
 };
 static int didmmuinit;
 static void taskswitch(ulong, ulong);
 static void memglobal(void);
-#define	vpt ((ulong*)VPT)
-#define	VPTX(va)		(((ulong)(va))>>12)
-#define	vpd (vpt+VPTX(VPT))
+#define vpt ((ulong*)VPT)
+#define VPTX(va) (((ulong)(va))>>12)
+#define vpd (vpt+VPTX(VPT))
 void
 mmuinit0(void)
 {
@@ -65,7 +65,7 @@ if(p == nil)
 panic("mmuinit");
 *p &= ~PTEWRITE;
 }
-taskswitch(PADDR(m->pdb),  (ulong)m + BY2PG);
+taskswitch(PADDR(m->pdb), (ulong)m + BY2PG);
 ltr(TSSSEL);
 }
 static void

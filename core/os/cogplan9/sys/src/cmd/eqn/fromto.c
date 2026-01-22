@@ -33,7 +33,7 @@ yyval, p2, REL(-t,ps));
 }
 printf("\\h'\\n(%du-\\n(%du/2u'\\*(%d\\h'\\n(%du-\\n(%du/2u'\\\n",
 yyval, p1, p1, yyval, p1);
-if (p3  >0) {
+if (p3 >0) {
 t = h1-b1+ebase[p3];
 printf("\\v'%gm'\\h'-\\n(%du-\\n(%du/2u'%s\\*(%d%s\\h'\\n(%du-\\n(%du/2u'\\v'%gm'\\\n",
 REL(-t,ps), yyval, p3, DPS(ps,subps), p3, DPS(subps,ps), yyval, p3, REL(t,ps));

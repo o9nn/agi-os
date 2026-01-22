@@ -2,43 +2,43 @@
 #include <libc.h>
 #include <bio.h>
 #include <ip.h>
-typedef struct Etherpkt	Etherpkt;
+typedef struct Etherpkt Etherpkt;
 struct Etherpkt {
 uchar d[6];
 uchar s[6];
 uchar type[2];
 char data[1500];
 };
-#define	ETHERMINTU	60
-#define	ETHERMAXTU	1514
-#define ETHERHDRSIZE	14
-typedef struct Ippkt	Ippkt;
+#define ETHERMINTU 60
+#define ETHERMAXTU 1514
+#define ETHERHDRSIZE 14
+typedef struct Ippkt Ippkt;
 struct Ippkt
 {
-uchar	vihl;
-uchar	tos;
-uchar	length[2];
-uchar	id[2];
-uchar	frag[2];
-uchar	ttl;
-uchar	proto;
-uchar	cksum[2];
-uchar	src[4];
-uchar	dst[4];
-char	data[1];
+uchar vihl;
+uchar tos;
+uchar length[2];
+uchar id[2];
+uchar frag[2];
+uchar ttl;
+uchar proto;
+uchar cksum[2];
+uchar src[4];
+uchar dst[4];
+char data[1];
 };
-#define IP_HDRSIZE	20
-#define IP_UDPPROTO	17
-#define IP_MBONEPROTO	4
-#define IP_TCPPROTO	6
-#define	IP_ILPROTO	40
-#define	IP_ICMPPROTO	1
-#define	IP_DF		0x4000
-#define	IP_MF		0x2000
+#define IP_HDRSIZE 20
+#define IP_UDPPROTO 17
+#define IP_MBONEPROTO 4
+#define IP_TCPPROTO 6
+#define IP_ILPROTO 40
+#define IP_ICMPPROTO 1
+#define IP_DF 0x4000
+#define IP_MF 0x2000
 #define NetS(x) (((x)[0]<<8) | (x)[1])
 #define NetL(x) (((x)[0]<<24) | ((x)[1]<<16) | ((x)[2]<<8) | (x)[3])
-int	debug;
-int	mbone;
+int debug;
+int mbone;
 ulong protoin[256];
 ulong protoout[256];
 ulong protopin[256];

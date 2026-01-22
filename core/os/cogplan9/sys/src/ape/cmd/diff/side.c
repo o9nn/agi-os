@@ -21,7 +21,7 @@ unsigned from, to;
 FILE *out = outfile;
 unsigned tab;
 if (! tab_expand_flag)
-for (tab = from + TAB_WIDTH - from % TAB_WIDTH;  tab <= to;  tab += TAB_WIDTH)
+for (tab = from + TAB_WIDTH - from % TAB_WIDTH; tab <= to; tab += TAB_WIDTH)
 {
 putc ('\t', out);
 from = tab;
@@ -55,7 +55,7 @@ if (tab_expand_flag)
 {
 if (out_bound < tabstop)
 tabstop = out_bound;
-for (;  out_position < tabstop;  out_position++)
+for (; out_position < tabstop; out_position++)
 putc (' ', out);
 }
 else
@@ -78,7 +78,7 @@ break;
 case '\b':
 if (in_position != 0 && --in_position < out_bound)
 if (out_position <= in_position)
-for (;  out_position < in_position;  out_position++)
+for (; out_position < in_position; out_position++)
 putc (' ', out);
 else
 {
@@ -149,7 +149,7 @@ print_sdiff_common_lines (limit0, limit1)
 int limit0, limit1;
 {
 int i0 = next0, i1 = next1;
-if (! sdiff_skip_common_lines  &&  (i0 != limit0 || i1 != limit1))
+if (! sdiff_skip_common_lines && (i0 != limit0 || i1 != limit1))
 {
 if (sdiff_help_sdiff)
 fprintf (outfile, "i%d,%d\n", limit0 - i0, limit1 - i1);
@@ -180,7 +180,7 @@ if (sdiff_help_sdiff)
 fprintf (outfile, "c%d,%d\n", last0 - first0 + 1, last1 - first1 + 1);
 if (inserts && deletes)
 {
-for (i = first0, j = first1;  i <= last0 && j <= last1; ++i, ++j)
+for (i = first0, j = first1; i <= last0 && j <= last1; ++i, ++j)
 print_1sdiff_line (&files[0].linbuf[i], '|', &files[1].linbuf[j]);
 deletes = i <= last0;
 inserts = j <= last1;

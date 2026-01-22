@@ -1,36 +1,36 @@
 implement Mashbuiltin;
 #
-#	"make" builtin, defines:
+# "make" builtin, defines:
 #
-#	depends	- print dependencies
-#	make		- make-like command
-#	match	- print details of rule matches
-#	rules		- print rules
+# depends - print dependencies
+# make - make-like command
+# match - print details of rule matches
+# rules - print rules
 #
-include	"mash.m";
-include	"mashparse.m";
-verbose:	con 0;	# debug output
-mashlib:	Mashlib;
-Cmd, Env, Item, Stab:	import mashlib;
-Depend, Rule, Target:	import mashlib;
-sys, bufio, hash:		import mashlib;
-Iobuf:	import bufio;
+include "mash.m";
+include "mashparse.m";
+verbose: con 0; # debug output
+mashlib: Mashlib;
+Cmd, Env, Item, Stab: import mashlib;
+Depend, Rule, Target: import mashlib;
+sys, bufio, hash: import mashlib;
+Iobuf: import bufio;
 #
-#	Interface to catch the use as a command.
+# Interface to catch the use as a command.
 #
 init(nil: ref Draw->Context, args: list of string)
 {
 raise "fail: " + hd args + " not loaded";
 }
 #
-#	Used by whatis.
+# Used by whatis.
 #
 name(): string
 {
 return "make";
 }
 #
-#	Install commands.
+# Install commands.
 #
 mashinit(nil: list of string, lib: Mashlib, this: Mashbuiltin, e: ref Env)
 {
@@ -41,7 +41,7 @@ e.defbuiltin("match", this);
 e.defbuiltin("rules", this);
 }
 #
-#	Execute a builtin.
+# Execute a builtin.
 #
 mashcmd(e: ref Env, l: list of string)
 {
@@ -73,45 +73,45 @@ out.close();
 }
 }
 #
-#	Node states.
+# Node states.
 #
 SUnknown, SNoexist, SExist, SStale, SMade, SDir, SDirload
 : con iota;
 #
-#	Node flags.
+# Node flags.
 #
-#	FMark	- marked as in progress
+# FMark - marked as in progress
 #
 FMark
 : con 1 << iota;
 Node: adt
 {
-name:	string;
-state:		int;
-flags:		int;
-mtime:	int;
+name: string;
+state: int;
+flags: int;
+mtime: int;
 };
 #
-#	Step in implicit chain.
+# Step in implicit chain.
 #
-Step:	type (ref Rule, array of string, ref Node);
+Step: type (ref Rule, array of string, ref Node);
 #
-#	Implicit match.
+# Implicit match.
 #
 Match: adt
 {
-node:	ref Node;
-path:		list of Step;
+node: ref Node;
+path: list of Step;
 };
-NSIZE:	con 127;	# node hash size
-DSIZE:	con 32;	# number of dir entries for read
-ntab:		array of list of ref Node;	# node hash table
+NSIZE: con 127; # node hash size
+DSIZE: con 32; # number of dir entries for read
+ntab: array of list of ref Node; # node hash table
 initnodes()
 {
 ntab = array[NSIZE] of list of ref Node;
 }
 #
-#	Find node for a pathname.
+# Find node for a pathname.
 #
 getnode(s: string): ref Node
 {
@@ -126,7 +126,7 @@ ntab[h] = r :: ntab[h];
 return r;
 }
 #
-#	Make a pathname from a dir and an entry.
+# Make a pathname from a dir and an entry.
 #
 mkpath(d, s: string): string
 {
@@ -138,7 +138,7 @@ else
 return d + "/" + s;
 }
 #
-#	Load a directory.
+# Load a directory.
 #
 loaddir(s: string)
 {
@@ -162,7 +162,7 @@ n.mtime = dbuf[i].mtime;
 }
 }
 #
-#	Load a file.  Get its node, maybe stat it or loaddir.
+# Load a file. Get its node, maybe stat it or loaddir.
 #
 loadfile(s: string): ref Node
 {
@@ -187,7 +187,7 @@ n.state = SDirload;
 return n;
 }
 #
-#	Get the node for a file and load the directories in its path.
+# Get the node for a file and load the directories in its path.
 #
 getfile(s: string): ref Node
 {
@@ -213,7 +213,7 @@ d = mkpath(d, s);
 }
 }
 #
-#	If a dependency rule makes more than one target propogate SMade.
+# If a dependency rule makes more than one target propogate SMade.
 #
 propagate(l: list of string)
 {
@@ -228,8 +228,8 @@ l = tl l;
 }
 }
 #
-#	Try to make a node, or mark it as stale.
-#	Return -1 on (reported) error, 0 on fail, 1 on success.
+# Try to make a node, or mark it as stale.
+# Return -1 on (reported) error, 0 on fail, 1 on success.
 #
 explicit(e: ref Env, t: ref Target, n: ref Node): int
 {
@@ -276,7 +276,7 @@ return 1;
 return 0;
 }
 #
-#	Report multiple implicit chains of equal length.
+# Report multiple implicit chains of equal length.
 #
 multimatch(e: ref Env, n: ref Node, l: list of Match)
 {
@@ -298,7 +298,7 @@ cycle(e: ref Env, n: ref Node)
 e.report(sys->sprint("make: cycle in dependencies for target %s", n.name));
 }
 #
-#	Mark the nodes in an implicit chain.
+# Mark the nodes in an implicit chain.
 #
 markchain(e: ref Env, l: list of Step): int
 {
@@ -314,7 +314,7 @@ l = tl l;
 return 1;
 }
 #
-#	Unmark the nodes in an implicit chain.
+# Unmark the nodes in an implicit chain.
 #
 unmarkchain(l: list of Step): int
 {
@@ -326,7 +326,7 @@ l = tl l;
 return 1;
 }
 #
-#	Execute an implicit rule chain.
+# Execute an implicit rule chain.
 #
 xeqmatch(e: ref Env, b, n: ref Node, l: list of Step): int
 {
@@ -361,7 +361,7 @@ unmarkchain(l);
 return 1;
 }
 #
-#	Find the shortest implicit rule chain.
+# Find the shortest implicit rule chain.
 #
 implicit(e: ref Env, base: ref Node): int
 {
@@ -371,7 +371,7 @@ cand := Match(base, nil) :: nil;
 do {
 # cand - list of candidate chains
 # lose - list of extended chains that lose
-# win	 - list of extended chains that win
+# win - list of extended chains that win
 lose = nil;
 match:
 # for each candidate
@@ -434,8 +434,8 @@ cand = lose;
 return 0;
 }
 #
-#	Make a node (recursive).
-#	Return -1 on (reported) error, 0 on fail, 1 on success.
+# Make a node (recursive).
+# Return -1 on (reported) error, 0 on fail, 1 on success.
 #
 make(e: ref Env, n: ref Node, s: string): int
 {
@@ -466,9 +466,9 @@ if (n.state == SExist)
 return 0;
 return -1;
 }
-makelevel:	int = 0;	# count recursion
+makelevel: int = 0; # count recursion
 #
-#	Make driver routine.  Maybe initialize and handle exceptions.
+# Make driver routine. Maybe initialize and handle exceptions.
 #
 domake(e: ref Env, l: list of string)
 {
@@ -512,7 +512,7 @@ raise x;
 makelevel--;
 }
 #
-#	Print dependency/rule command.
+# Print dependency/rule command.
 #
 prcmd(out: ref Iobuf, op: int, c: ref Cmd)
 {
@@ -526,7 +526,7 @@ out.puts(" }");
 out.puts("{}");
 }
 #
-#	Print details of rule matches.
+# Print details of rule matches.
 #
 domatch(e: ref Env, l: list of string)
 {
@@ -568,7 +568,7 @@ l = tl l;
 out.close();
 }
 #
-#	Print word list.
+# Print word list.
 #
 prwords(out: ref Iobuf, l: list of string, pre: int)
 {
@@ -582,7 +582,7 @@ l = tl l;
 }
 }
 #
-#	Print dependency.
+# Print dependency.
 #
 prdep(out: ref Iobuf, d: ref Depend)
 {
@@ -596,7 +596,7 @@ prcmd(out, d.op, d.cmd);
 out.puts(";\n");
 }
 #
-#	Print all dependencies, avoiding duplicates.
+# Print all dependencies, avoiding duplicates.
 #
 alldep(out: ref Iobuf, d: ref Depend, pass: int)
 {
@@ -611,7 +611,7 @@ d.mark = 1;
 }
 }
 #
-#	Print all dependencies.
+# Print all dependencies.
 #
 alldeps(out: ref Iobuf)
 {
@@ -624,7 +624,7 @@ for (d := (hd l).depends; d != nil; d = tl d)
 alldep(out, hd d, p);
 }
 #
-#	Print dependencies.
+# Print dependencies.
 #
 depends(out: ref Iobuf, l: list of string)
 {
@@ -641,7 +641,7 @@ l = tl l;
 }
 }
 #
-#	Print rule.
+# Print rule.
 #
 prrule(out: ref Iobuf, r: ref Rule)
 {
@@ -653,7 +653,7 @@ prcmd(out, r.op, r.cmd);
 out.puts(";\n");
 }
 #
-#	Print all rules.
+# Print all rules.
 #
 allrules(out: ref Iobuf)
 {
@@ -661,7 +661,7 @@ for (l := mashlib->rules; l != nil; l = tl l)
 prrule(out, hd l);
 }
 #
-#	Print matching rules.
+# Print matching rules.
 #
 rules(out: ref Iobuf, l: list of string)
 {

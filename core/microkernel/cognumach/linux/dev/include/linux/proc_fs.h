@@ -142,7 +142,7 @@ PROC_SCSI_FILE,
 PROC_SCSI_LAST = (PROC_SCSI_FILE + 16)
 };
 #define PROC_DYNAMIC_FIRST 4096
-#define PROC_NDYNAMIC      4096
+#define PROC_NDYNAMIC 4096
 #define PROC_SUPER_MAGIC 0x9fa0
 struct proc_dir_entry {
 unsigned short low_ino;

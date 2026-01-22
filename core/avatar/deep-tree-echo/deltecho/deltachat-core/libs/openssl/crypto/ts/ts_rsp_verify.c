@@ -32,8 +32,8 @@ static const char *TS_status_text[] = { "granted",
 "revocationWarning",
 "revocationNotification"
 };
-#define TS_STATUS_TEXT_SIZE     (sizeof(TS_status_text)/sizeof(*TS_status_text))
-#define TS_STATUS_BUF_SIZE      256
+#define TS_STATUS_TEXT_SIZE (sizeof(TS_status_text)/sizeof(*TS_status_text))
+#define TS_STATUS_BUF_SIZE 256
 static struct {
 int code;
 const char *text;
@@ -63,7 +63,7 @@ TS_INFO_ADD_INFO_NOT_AVAILABLE, "addInfoNotAvailable"
 TS_INFO_SYSTEM_FAILURE, "systemFailure"
 }
 };
-#define TS_FAILURE_INFO_SIZE    (sizeof(TS_failure_info) / \
+#define TS_FAILURE_INFO_SIZE (sizeof(TS_failure_info) / \
 sizeof(*TS_failure_info))
 int TS_RESP_verify_signature(PKCS7 *token, STACK_OF(X509) *certs,
 X509_STORE *store, X509 **signer_out)

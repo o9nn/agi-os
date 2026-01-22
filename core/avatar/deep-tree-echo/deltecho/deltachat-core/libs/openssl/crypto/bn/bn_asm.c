@@ -374,86 +374,86 @@ return (c);
 # undef bn_sqr_comba8
 # undef bn_sqr_comba4
 # ifdef BN_LLONG
-#  define mul_add_c(a,b,c0,c1,c2) \
+# define mul_add_c(a,b,c0,c1,c2) \
 t=(BN_ULLONG)a*b; \
 t1=(BN_ULONG)Lw(t); \
 t2=(BN_ULONG)Hw(t); \
 c0=(c0+t1)&BN_MASK2; if ((c0) < t1) t2++; \
 c1=(c1+t2)&BN_MASK2; if ((c1) < t2) c2++;
-#  define mul_add_c2(a,b,c0,c1,c2) \
+# define mul_add_c2(a,b,c0,c1,c2) \
 t=(BN_ULLONG)a*b; \
 tt=(t+t)&BN_MASK; \
 if (tt < t) c2++; \
 t1=(BN_ULONG)Lw(tt); \
 t2=(BN_ULONG)Hw(tt); \
-c0=(c0+t1)&BN_MASK2;  \
+c0=(c0+t1)&BN_MASK2; \
 if ((c0 < t1) && (((++t2)&BN_MASK2) == 0)) c2++; \
 c1=(c1+t2)&BN_MASK2; if ((c1) < t2) c2++;
-#  define sqr_add_c(a,i,c0,c1,c2) \
+# define sqr_add_c(a,i,c0,c1,c2) \
 t=(BN_ULLONG)a[i]*a[i]; \
 t1=(BN_ULONG)Lw(t); \
 t2=(BN_ULONG)Hw(t); \
 c0=(c0+t1)&BN_MASK2; if ((c0) < t1) t2++; \
 c1=(c1+t2)&BN_MASK2; if ((c1) < t2) c2++;
-#  define sqr_add_c2(a,i,j,c0,c1,c2) \
+# define sqr_add_c2(a,i,j,c0,c1,c2) \
 mul_add_c2((a)[i],(a)[j],c0,c1,c2)
 # elif defined(BN_UMULT_LOHI)
-#  define mul_add_c(a,b,c0,c1,c2) {       \
-BN_ULONG ta=(a),tb=(b);         \
-BN_UMULT_LOHI(t1,t2,ta,tb);     \
-c0 += t1; t2 += (c0<t1)?1:0;    \
-c1 += t2; c2 += (c1<t2)?1:0;    \
+# define mul_add_c(a,b,c0,c1,c2) { \
+BN_ULONG ta=(a),tb=(b); \
+BN_UMULT_LOHI(t1,t2,ta,tb); \
+c0 += t1; t2 += (c0<t1)?1:0; \
+c1 += t2; c2 += (c1<t2)?1:0; \
 }
-#  define mul_add_c2(a,b,c0,c1,c2) {      \
-BN_ULONG ta=(a),tb=(b),t0;      \
-BN_UMULT_LOHI(t0,t1,ta,tb);     \
+# define mul_add_c2(a,b,c0,c1,c2) { \
+BN_ULONG ta=(a),tb=(b),t0; \
+BN_UMULT_LOHI(t0,t1,ta,tb); \
 c0 += t0; t2 = t1+((c0<t0)?1:0);\
-c1 += t2; c2 += (c1<t2)?1:0;    \
-c0 += t0; t1 += (c0<t0)?1:0;    \
-c1 += t1; c2 += (c1<t1)?1:0;    \
+c1 += t2; c2 += (c1<t2)?1:0; \
+c0 += t0; t1 += (c0<t0)?1:0; \
+c1 += t1; c2 += (c1<t1)?1:0; \
 }
-#  define sqr_add_c(a,i,c0,c1,c2) {       \
-BN_ULONG ta=(a)[i];             \
-BN_UMULT_LOHI(t1,t2,ta,ta);     \
-c0 += t1; t2 += (c0<t1)?1:0;    \
-c1 += t2; c2 += (c1<t2)?1:0;    \
+# define sqr_add_c(a,i,c0,c1,c2) { \
+BN_ULONG ta=(a)[i]; \
+BN_UMULT_LOHI(t1,t2,ta,ta); \
+c0 += t1; t2 += (c0<t1)?1:0; \
+c1 += t2; c2 += (c1<t2)?1:0; \
 }
-#  define sqr_add_c2(a,i,j,c0,c1,c2)    \
+# define sqr_add_c2(a,i,j,c0,c1,c2) \
 mul_add_c2((a)[i],(a)[j],c0,c1,c2)
 # elif defined(BN_UMULT_HIGH)
-#  define mul_add_c(a,b,c0,c1,c2) {       \
-BN_ULONG ta=(a),tb=(b);         \
-t1 = ta * tb;                   \
-t2 = BN_UMULT_HIGH(ta,tb);      \
-c0 += t1; t2 += (c0<t1)?1:0;    \
-c1 += t2; c2 += (c1<t2)?1:0;    \
+# define mul_add_c(a,b,c0,c1,c2) { \
+BN_ULONG ta=(a),tb=(b); \
+t1 = ta * tb; \
+t2 = BN_UMULT_HIGH(ta,tb); \
+c0 += t1; t2 += (c0<t1)?1:0; \
+c1 += t2; c2 += (c1<t2)?1:0; \
 }
-#  define mul_add_c2(a,b,c0,c1,c2) {      \
-BN_ULONG ta=(a),tb=(b),t0;      \
-t1 = BN_UMULT_HIGH(ta,tb);      \
-t0 = ta * tb;                   \
+# define mul_add_c2(a,b,c0,c1,c2) { \
+BN_ULONG ta=(a),tb=(b),t0; \
+t1 = BN_UMULT_HIGH(ta,tb); \
+t0 = ta * tb; \
 c0 += t0; t2 = t1+((c0<t0)?1:0);\
-c1 += t2; c2 += (c1<t2)?1:0;    \
-c0 += t0; t1 += (c0<t0)?1:0;    \
-c1 += t1; c2 += (c1<t1)?1:0;    \
+c1 += t2; c2 += (c1<t2)?1:0; \
+c0 += t0; t1 += (c0<t0)?1:0; \
+c1 += t1; c2 += (c1<t1)?1:0; \
 }
-#  define sqr_add_c(a,i,c0,c1,c2) {       \
-BN_ULONG ta=(a)[i];             \
-t1 = ta * ta;                   \
-t2 = BN_UMULT_HIGH(ta,ta);      \
-c0 += t1; t2 += (c0<t1)?1:0;    \
-c1 += t2; c2 += (c1<t2)?1:0;    \
+# define sqr_add_c(a,i,c0,c1,c2) { \
+BN_ULONG ta=(a)[i]; \
+t1 = ta * ta; \
+t2 = BN_UMULT_HIGH(ta,ta); \
+c0 += t1; t2 += (c0<t1)?1:0; \
+c1 += t2; c2 += (c1<t2)?1:0; \
 }
-#  define sqr_add_c2(a,i,j,c0,c1,c2)      \
+# define sqr_add_c2(a,i,j,c0,c1,c2) \
 mul_add_c2((a)[i],(a)[j],c0,c1,c2)
 # else
-#  define mul_add_c(a,b,c0,c1,c2) \
+# define mul_add_c(a,b,c0,c1,c2) \
 t1=LBITS(a); t2=HBITS(a); \
 bl=LBITS(b); bh=HBITS(b); \
 mul64(t1,t2,bl,bh); \
 c0=(c0+t1)&BN_MASK2; if ((c0) < t1) t2++; \
 c1=(c1+t2)&BN_MASK2; if ((c1) < t2) c2++;
-#  define mul_add_c2(a,b,c0,c1,c2) \
+# define mul_add_c2(a,b,c0,c1,c2) \
 t1=LBITS(a); t2=HBITS(a); \
 bl=LBITS(b); bh=HBITS(b); \
 mul64(t1,t2,bl,bh); \
@@ -461,14 +461,14 @@ if (t2 & BN_TBIT) c2++; \
 t2=(t2+t2)&BN_MASK2; \
 if (t1 & BN_TBIT) t2++; \
 t1=(t1+t1)&BN_MASK2; \
-c0=(c0+t1)&BN_MASK2;  \
+c0=(c0+t1)&BN_MASK2; \
 if ((c0 < t1) && (((++t2)&BN_MASK2) == 0)) c2++; \
 c1=(c1+t2)&BN_MASK2; if ((c1) < t2) c2++;
-#  define sqr_add_c(a,i,c0,c1,c2) \
+# define sqr_add_c(a,i,c0,c1,c2) \
 sqr64(t1,t2,(a)[i]); \
 c0=(c0+t1)&BN_MASK2; if ((c0) < t1) t2++; \
 c1=(c1+t2)&BN_MASK2; if ((c1) < t2) c2++;
-#  define sqr_add_c2(a,i,j,c0,c1,c2) \
+# define sqr_add_c2(a,i,j,c0,c1,c2) \
 mul_add_c2((a)[i],(a)[j],c0,c1,c2)
 # endif
 void bn_mul_comba8(BN_ULONG *r, BN_ULONG *a, BN_ULONG *b)
@@ -738,49 +738,49 @@ r[6] = c1;
 r[7] = c2;
 }
 # ifdef OPENSSL_NO_ASM
-#  ifdef OPENSSL_BN_ASM_MONT
-#   include <alloca.h>
+# ifdef OPENSSL_BN_ASM_MONT
+# include <alloca.h>
 int bn_mul_mont(BN_ULONG *rp, const BN_ULONG *ap, const BN_ULONG *bp,
 const BN_ULONG *np, const BN_ULONG *n0p, int num)
 {
 BN_ULONG c0, c1, ml, *tp, n0;
-#   ifdef mul64
+# ifdef mul64
 BN_ULONG mh;
-#   endif
+# endif
 volatile BN_ULONG *vp;
 int i = 0, j;
-#   if 0
+# if 0
 if (ap == bp)
 return bn_sqr_mont(rp, ap, np, n0p, num);
-#   endif
+# endif
 vp = tp = alloca((num + 2) * sizeof(BN_ULONG));
 n0 = *n0p;
 c0 = 0;
 ml = bp[0];
-#   ifdef mul64
+# ifdef mul64
 mh = HBITS(ml);
 ml = LBITS(ml);
 for (j = 0; j < num; ++j)
 mul(tp[j], ap[j], ml, mh, c0);
-#   else
+# else
 for (j = 0; j < num; ++j)
 mul(tp[j], ap[j], ml, c0);
-#   endif
+# endif
 tp[num] = c0;
 tp[num + 1] = 0;
 goto enter;
 for (i = 0; i < num; i++) {
 c0 = 0;
 ml = bp[i];
-#   ifdef mul64
+# ifdef mul64
 mh = HBITS(ml);
 ml = LBITS(ml);
 for (j = 0; j < num; ++j)
 mul_add(tp[j], ap[j], ml, mh, c0);
-#   else
+# else
 for (j = 0; j < num; ++j)
 mul_add(tp[j], ap[j], ml, c0);
-#   endif
+# endif
 c1 = (tp[num] + c0) & BN_MASK2;
 tp[num] = c1;
 tp[num + 1] = (c1 < c0 ? 1 : 0);
@@ -788,20 +788,20 @@ enter:
 c1 = tp[0];
 ml = (c1 * n0) & BN_MASK2;
 c0 = 0;
-#   ifdef mul64
+# ifdef mul64
 mh = HBITS(ml);
 ml = LBITS(ml);
 mul_add(c1, np[0], ml, mh, c0);
-#   else
+# else
 mul_add(c1, ml, np[0], c0);
-#   endif
+# endif
 for (j = 1; j < num; j++) {
 c1 = tp[j];
-#   ifdef mul64
+# ifdef mul64
 mul_add(c1, np[j], ml, mh, c0);
-#   else
+# else
 mul_add(c1, ml, np[j], c0);
-#   endif
+# endif
 tp[j - 1] = c1 & BN_MASK2;
 }
 c1 = (tp[num] + c0) & BN_MASK2;
@@ -822,13 +822,13 @@ vp[num] = 0;
 vp[num + 1] = 0;
 return 1;
 }
-#  else
+# else
 int bn_mul_mont(BN_ULONG *rp, const BN_ULONG *ap, const BN_ULONG *bp,
 const BN_ULONG *np, const BN_ULONG *n0, int num)
 {
 return 0;
 }
-#  endif
+# endif
 # endif
 #else
 # undef bn_sqr_comba4
@@ -862,8 +862,8 @@ r[14] = bn_mul_add_words(&(r[6]), a, 8, b[6]);
 r[15] = bn_mul_add_words(&(r[7]), a, 8, b[7]);
 }
 # ifdef OPENSSL_NO_ASM
-#  ifdef OPENSSL_BN_ASM_MONT
-#   include <alloca.h>
+# ifdef OPENSSL_BN_ASM_MONT
+# include <alloca.h>
 int bn_mul_mont(BN_ULONG *rp, const BN_ULONG *ap, const BN_ULONG *bp,
 const BN_ULONG *np, const BN_ULONG *n0p, int num)
 {
@@ -899,12 +899,12 @@ vp[num] = 0;
 vp[num + 1] = 0;
 return 1;
 }
-#  else
+# else
 int bn_mul_mont(BN_ULONG *rp, const BN_ULONG *ap, const BN_ULONG *bp,
 const BN_ULONG *np, const BN_ULONG *n0, int num)
 {
 return 0;
 }
-#  endif
+# endif
 # endif
 #endif

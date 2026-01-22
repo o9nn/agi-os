@@ -1,5 +1,5 @@
 #ifndef gpmisc_INCLUDED
-#  define gpmisc_INCLUDED
+# define gpmisc_INCLUDED
 int gp_gettmpdir(char *ptr, int *plen);
 FILE *gp_fopentemp(const char *fname, const char *mode);
 gp_file_name_combine_result gp_file_name_combine_generic(const char *prefix, uint plen,

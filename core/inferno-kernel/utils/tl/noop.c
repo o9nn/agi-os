@@ -1,8 +1,8 @@
-#include	"l.h"
-static	Sym*	sym_div;
-static	Sym*	sym_divu;
-static	Sym*	sym_mod;
-static	Sym*	sym_modu;
+#include "l.h"
+static Sym* sym_div;
+static Sym* sym_divu;
+static Sym* sym_mod;
+static Sym* sym_modu;
 static void setdiv(int);
 static Prog *
 movrr(Prog *q, int rs, int rd, Prog *p)
@@ -329,7 +329,7 @@ q->from.offset = autosize;
 q->to.type = D_REG;
 q->to.reg = REGSP;
 q->link = p->link;
-p->link = 	q;
+p->link = q;
 }
 else
 q = p;
@@ -340,7 +340,7 @@ q->link = q1;
 break;
 }
 if(foreign) {
-#define	R	1
+#define R 1
 p->as = AMOVW;
 p->from.type = D_OREG;
 p->from.name = D_NONE;
@@ -367,7 +367,7 @@ q1->to.offset = 0;
 q1->to.reg = R;
 q1->link = q->link;
 q->link = q1;
-#undef	R
+#undef R
 }
 else {
 p->as = AMOVW;

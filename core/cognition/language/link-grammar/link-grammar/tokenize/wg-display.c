@@ -155,7 +155,7 @@ return s;
 static dyn_str *wordgraph2dot(Sentence sent, unsigned int mode, const char *modestr)
 {
 const Gword *w;
-Gword	**wp;
+Gword **wp;
 dyn_str *wgd = dyn_str_new();
 char nn[2*sizeof(char *) + 2 + 2 + 1];
 UNREACHABLE(NULL == sent->wordgraph->chain_next);
@@ -300,23 +300,23 @@ kill(pid, SIGTERM);
 #define DOT_FILENAME "lg-wg.vg"
 #define POPEN_DOT_CMD DOT_COMMAND" "DOT_DRIVER
 #ifndef POPEN_DOT_CMD_NATIVE
-#  ifdef _WIN32
-#    ifndef IMAGE_VIEWER
-#      define IMAGE_VIEWER "rundll32 PhotoViewer,ImageView_Fullscreen"
-#    endif
-#    define WGJPG "%TEMP%\\lg-wg.jpg"
-#    define POPEN_DOT_CMD_NATIVE \
+# ifdef _WIN32
+# ifndef IMAGE_VIEWER
+# define IMAGE_VIEWER "rundll32 PhotoViewer,ImageView_Fullscreen"
+# endif
+# define WGJPG "%TEMP%\\lg-wg.jpg"
+# define POPEN_DOT_CMD_NATIVE \
 DOT_COMMAND" -Tjpg>"WGJPG"&"IMAGE_VIEWER" "WGJPG"&del "WGJPG
-#  elif __APPLE__
-#    ifndef IMAGE_VIEWER
-#      define IMAGE_VIEWER "open -W"
-#    endif
-#    define WGJPG "$TMPDIR/lg-wg.jpg"
-#    define POPEN_DOT_CMD_NATIVE \
+# elif __APPLE__
+# ifndef IMAGE_VIEWER
+# define IMAGE_VIEWER "open -W"
+# endif
+# define WGJPG "$TMPDIR/lg-wg.jpg"
+# define POPEN_DOT_CMD_NATIVE \
 DOT_COMMAND" -Tjpg>"WGJPG";"IMAGE_VIEWER" "WGJPG";rm "WGJPG
-#  else
-#    define POPEN_DOT_CMD_NATIVE POPEN_DOT_CMD
-#  endif
+# else
+# define POPEN_DOT_CMD_NATIVE POPEN_DOT_CMD
+# endif
 #endif
 #if !defined HAVE_FORK || defined POPEN_DOT
 #ifdef _MSC_VER

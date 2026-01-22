@@ -3,20 +3,20 @@
 #include <bio.h>
 enum
 {
-Doff=		4,
-Memsize=	1<<16,
+Doff= 4,
+Memsize= 1<<16,
 };
 int dump, image, noload, nostart;
 typedef struct
 {
-int	type;
-int	dlen;
-ulong	addr;
-uchar	bytes[256+4];
-uchar	csum;
+int type;
+int dlen;
+ulong addr;
+uchar bytes[256+4];
+uchar csum;
 } Cpline;
-char*	rdcpline(Biobuf*, Cpline*);
-void	clearmem(int);
+char* rdcpline(Biobuf*, Cpline*);
+void clearmem(int);
 void
 usage(void)
 {

@@ -1,7 +1,7 @@
-#define SCSI_NCR_DRIVER_NAME	"sym53c8xx-1.7.1-20000726"
-#define SCSI_NCR_DEBUG_FLAGS	(0)
-#define NAME53C		"sym53c"
-#define NAME53C8XX	"sym53c8xx"
+#define SCSI_NCR_DRIVER_NAME "sym53c8xx-1.7.1-20000726"
+#define SCSI_NCR_DEBUG_FLAGS (0)
+#define NAME53C "sym53c"
+#define NAME53C8XX "sym53c8xx"
 #define LinuxVersionCode(v, p, s) (((v)<<16)+((p)<<8)+(s))
 #ifdef MODULE
 #include <linux/module.h>
@@ -34,11 +34,11 @@
 #if LINUX_VERSION_CODE >= LinuxVersionCode(2,1,35)
 #include <linux/init.h>
 #endif
-#ifndef	__init
-#define	__init
+#ifndef __init
+#define __init
 #endif
-#ifndef	__initdata
-#define	__initdata
+#ifndef __initdata
+#define __initdata
 #endif
 #if LINUX_VERSION_CODE <= LinuxVersionCode(2,1,92)
 #include <linux/bios32.h>
@@ -48,21 +48,21 @@
 #include "constants.h"
 #include "sd.h"
 #include <linux/types.h>
-#ifndef	BITS_PER_LONG
+#ifndef BITS_PER_LONG
 #if (~0UL) == 0xffffffffUL
-#define	BITS_PER_LONG	32
+#define BITS_PER_LONG 32
 #else
-#define	BITS_PER_LONG	64
+#define BITS_PER_LONG 64
 #endif
 #endif
 typedef u32 u_int32;
 typedef u64 u_int64;
 #include "sym53c8xx.h"
 #if 0
-#define	SCSI_NCR_INTEGRITY_CHECKING
+#define SCSI_NCR_INTEGRITY_CHECKING
 #endif
-#define MIN(a,b)        (((a) < (b)) ? (a) : (b))
-#define MAX(a,b)        (((a) > (b)) ? (a) : (b))
+#define MIN(a,b) (((a) < (b)) ? (a) : (b))
+#define MAX(a,b) (((a) > (b)) ? (a) : (b))
 #if LINUX_VERSION_CODE >= LinuxVersionCode(2,3,47)
 #define SCSI_NCR_DYNAMIC_DMA_MAPPING
 #endif
@@ -77,10 +77,10 @@ static inline void __xpt_que_add(struct xpt_quehead * new,
 struct xpt_quehead * blink,
 struct xpt_quehead * flink)
 {
-flink->blink	= new;
-new->flink	= flink;
-new->blink	= blink;
-blink->flink	= new;
+flink->blink = new;
+new->flink = flink;
+new->blink = blink;
+blink->flink = new;
 }
 static inline void __xpt_que_del(struct xpt_quehead * blink,
 struct xpt_quehead * flink)
@@ -98,18 +98,18 @@ struct xpt_quehead *head)
 struct xpt_quehead *first = list->flink;
 if (first != list) {
 struct xpt_quehead *last = list->blink;
-struct xpt_quehead *at   = head->flink;
+struct xpt_quehead *at = head->flink;
 first->blink = head;
-head->flink  = first;
+head->flink = first;
 last->flink = at;
-at->blink   = last;
+at->blink = last;
 }
 }
 #define xpt_que_entry(ptr, type, member) \
 ((type *)((char *)(ptr)-(unsigned long)(&((type *)0)->member)))
-#define xpt_insque(new, pos)		__xpt_que_add(new, pos, (pos)->flink)
-#define xpt_remque(el)			__xpt_que_del((el)->blink, (el)->flink)
-#define xpt_insque_head(new, head)	__xpt_que_add(new, head, (head)->flink)
+#define xpt_insque(new, pos) __xpt_que_add(new, pos, (pos)->flink)
+#define xpt_remque(el) __xpt_que_del((el)->blink, (el)->flink)
+#define xpt_insque_head(new, head) __xpt_que_add(new, head, (head)->flink)
 static inline struct xpt_quehead *xpt_remque_head(struct xpt_quehead *head)
 {
 struct xpt_quehead *elem = head->flink;
@@ -119,7 +119,7 @@ else
 elem = 0;
 return elem;
 }
-#define xpt_insque_tail(new, head)	__xpt_que_add(new, (head)->blink, head)
+#define xpt_insque_tail(new, head) __xpt_que_add(new, (head)->blink, head)
 static inline struct xpt_quehead *xpt_remque_tail(struct xpt_quehead *head)
 {
 struct xpt_quehead *elem = head->blink;
@@ -130,70 +130,70 @@ elem = 0;
 return elem;
 }
 #ifndef SCSI_NCR_MYADDR
-#define SCSI_NCR_MYADDR      (7)
+#define SCSI_NCR_MYADDR (7)
 #endif
 #ifndef SCSI_NCR_MAX_TAGS
-#define SCSI_NCR_MAX_TAGS    (8)
+#define SCSI_NCR_MAX_TAGS (8)
 #endif
-#if	SCSI_NCR_MAX_TAGS > 255
-#define	MAX_TAGS	255
+#if SCSI_NCR_MAX_TAGS > 255
+#define MAX_TAGS 255
 #else
-#define	MAX_TAGS SCSI_NCR_MAX_TAGS
+#define MAX_TAGS SCSI_NCR_MAX_TAGS
 #endif
-#if	MAX_TAGS > (512/4)
-#define MAX_TASKS  (1024/4)
-#elif	MAX_TAGS > (256/4)
-#define MAX_TASKS  (512/4)
+#if MAX_TAGS > (512/4)
+#define MAX_TASKS (1024/4)
+#elif MAX_TAGS > (256/4)
+#define MAX_TASKS (512/4)
 #else
-#define MAX_TASKS  (256/4)
+#define MAX_TASKS (256/4)
 #endif
-#define NO_TAG	(256)
+#define NO_TAG (256)
 #ifdef SCSI_NCR_MAX_TARGET
-#define MAX_TARGET  (SCSI_NCR_MAX_TARGET)
+#define MAX_TARGET (SCSI_NCR_MAX_TARGET)
 #else
-#define MAX_TARGET  (16)
+#define MAX_TARGET (16)
 #endif
 #ifdef SCSI_NCR_MAX_LUN
-#define MAX_LUN    64
+#define MAX_LUN 64
 #else
-#define MAX_LUN    (1)
+#define MAX_LUN (1)
 #endif
 #ifndef SCSI_NCR_MIN_ASYNC
 #define SCSI_NCR_MIN_ASYNC (40)
 #endif
 #ifdef SCSI_NCR_CAN_QUEUE
-#define MAX_START   (SCSI_NCR_CAN_QUEUE + 4)
+#define MAX_START (SCSI_NCR_CAN_QUEUE + 4)
 #else
-#define MAX_START   (MAX_TARGET + 7 * MAX_TAGS)
+#define MAX_START (MAX_TARGET + 7 * MAX_TAGS)
 #endif
-#if	MAX_START > PAGE_SIZE/8
-#undef	MAX_START
+#if MAX_START > PAGE_SIZE/8
+#undef MAX_START
 #define MAX_START (PAGE_SIZE/8)
 #endif
 #define MAX_SCATTER (SCSI_NCR_MAX_SCATTER)
-#define	SCR_SG_SIZE	(2)
+#define SCR_SG_SIZE (2)
 #define NCR_SNOOP_TIMEOUT (1000000)
-#define u_char		unsigned char
-#define u_short		unsigned short
-#define u_int		unsigned int
-#define u_long		unsigned long
+#define u_char unsigned char
+#define u_short unsigned short
+#define u_int unsigned int
+#define u_long unsigned long
 #ifndef bcopy
-#define bcopy(s, d, n)	memcpy((d), (s), (n))
+#define bcopy(s, d, n) memcpy((d), (s), (n))
 #endif
 #ifndef bzero
-#define bzero(d, n)	memset((d), 0, (n))
+#define bzero(d, n) memset((d), 0, (n))
 #endif
 #ifndef offsetof
-#define offsetof(t, m)	((size_t) (&((t *)0)->m))
+#define offsetof(t, m) ((size_t) (&((t *)0)->m))
 #endif
 #if LINUX_VERSION_CODE >= LinuxVersionCode(2,2,0)
 typedef struct pci_dev *pcidev_t;
-#define PCIDEV_NULL		(0)
-#define PciBusNumber(d)		(d)->bus->number
-#define PciDeviceFn(d)		(d)->devfn
-#define PciVendorId(d)		(d)->vendor
-#define PciDeviceId(d)		(d)->device
-#define PciIrqLine(d)		(d)->irq
+#define PCIDEV_NULL (0)
+#define PciBusNumber(d) (d)->bus->number
+#define PciDeviceFn(d) (d)->devfn
+#define PciVendorId(d) (d)->vendor
+#define PciDeviceId(d) (d)->device
+#define PciIrqLine(d) (d)->irq
 #if LINUX_VERSION_CODE > LinuxVersionCode(2,3,12)
 static int __init
 pci_get_base_address(struct pci_dev *pdev, int index, u_long *base)
@@ -219,10 +219,10 @@ return index;
 #endif
 #else
 typedef unsigned int pcidev_t;
-#define PCIDEV_NULL		(~0u)
-#define PciBusNumber(d)		((d)>>8)
-#define PciDeviceFn(d)		((d)&0xff)
-#define __PciDev(busn, devfn)	(((busn)<<8)+(devfn))
+#define PCIDEV_NULL (~0u)
+#define PciBusNumber(d) ((d)>>8)
+#define PciDeviceFn(d) ((d)&0xff)
+#define __PciDev(busn, devfn) (((busn)<<8)+(devfn))
 #define pci_present pcibios_present
 #define pci_read_config_byte(d, w, v) \
 pcibios_read_config_byte(PciBusNumber(d), PciDeviceFn(d), w, v)
@@ -285,68 +285,68 @@ offset += sizeof(u_int32);
 return offset;
 }
 #endif
-#define DEBUG_ALLOC    (0x0001)
-#define DEBUG_PHASE    (0x0002)
-#define DEBUG_QUEUE    (0x0008)
-#define DEBUG_RESULT   (0x0010)
-#define DEBUG_POINTER  (0x0020)
-#define DEBUG_SCRIPT   (0x0040)
-#define DEBUG_TINY     (0x0080)
-#define DEBUG_TIMING   (0x0100)
-#define DEBUG_NEGO     (0x0200)
-#define DEBUG_TAGS     (0x0400)
-#define DEBUG_IC       (0x0800)
+#define DEBUG_ALLOC (0x0001)
+#define DEBUG_PHASE (0x0002)
+#define DEBUG_QUEUE (0x0008)
+#define DEBUG_RESULT (0x0010)
+#define DEBUG_POINTER (0x0020)
+#define DEBUG_SCRIPT (0x0040)
+#define DEBUG_TINY (0x0080)
+#define DEBUG_TIMING (0x0100)
+#define DEBUG_NEGO (0x0200)
+#define DEBUG_TAGS (0x0400)
+#define DEBUG_IC (0x0800)
 #ifdef SCSI_NCR_DEBUG_INFO_SUPPORT
 static int ncr_debug = SCSI_NCR_DEBUG_FLAGS;
 #define DEBUG_FLAGS ncr_debug
 #else
-#define DEBUG_FLAGS	SCSI_NCR_DEBUG_FLAGS
+#define DEBUG_FLAGS SCSI_NCR_DEBUG_FLAGS
 #endif
 #if LINUX_VERSION_CODE >= LinuxVersionCode(2,1,93)
 spinlock_t sym53c8xx_lock = SPIN_LOCK_UNLOCKED;
-#define	NCR_LOCK_DRIVER(flags)     spin_lock_irqsave(&sym53c8xx_lock, flags)
-#define	NCR_UNLOCK_DRIVER(flags)   spin_unlock_irqrestore(&sym53c8xx_lock,flags)
-#define NCR_INIT_LOCK_NCB(np)      spin_lock_init(&np->smp_lock);
-#define	NCR_LOCK_NCB(np, flags)    spin_lock_irqsave(&np->smp_lock, flags)
-#define	NCR_UNLOCK_NCB(np, flags)  spin_unlock_irqrestore(&np->smp_lock, flags)
-#define	NCR_LOCK_SCSI_DONE(np, flags) \
+#define NCR_LOCK_DRIVER(flags) spin_lock_irqsave(&sym53c8xx_lock, flags)
+#define NCR_UNLOCK_DRIVER(flags) spin_unlock_irqrestore(&sym53c8xx_lock,flags)
+#define NCR_INIT_LOCK_NCB(np) spin_lock_init(&np->smp_lock);
+#define NCR_LOCK_NCB(np, flags) spin_lock_irqsave(&np->smp_lock, flags)
+#define NCR_UNLOCK_NCB(np, flags) spin_unlock_irqrestore(&np->smp_lock, flags)
+#define NCR_LOCK_SCSI_DONE(np, flags) \
 spin_lock_irqsave(&io_request_lock, flags)
-#define	NCR_UNLOCK_SCSI_DONE(np, flags) \
+#define NCR_UNLOCK_SCSI_DONE(np, flags) \
 spin_unlock_irqrestore(&io_request_lock, flags)
 #else
-#define	NCR_LOCK_DRIVER(flags)     do { save_flags(flags); cli(); } while (0)
-#define	NCR_UNLOCK_DRIVER(flags)   do { restore_flags(flags); } while (0)
-#define	NCR_INIT_LOCK_NCB(np)      do { } while (0)
-#define	NCR_LOCK_NCB(np, flags)    do { save_flags(flags); cli(); } while (0)
-#define	NCR_UNLOCK_NCB(np, flags)  do { restore_flags(flags); } while (0)
-#define	NCR_LOCK_SCSI_DONE(np, flags)    do {;} while (0)
-#define	NCR_UNLOCK_SCSI_DONE(np, flags)  do {;} while (0)
+#define NCR_LOCK_DRIVER(flags) do { save_flags(flags); cli(); } while (0)
+#define NCR_UNLOCK_DRIVER(flags) do { restore_flags(flags); } while (0)
+#define NCR_INIT_LOCK_NCB(np) do { } while (0)
+#define NCR_LOCK_NCB(np, flags) do { save_flags(flags); cli(); } while (0)
+#define NCR_UNLOCK_NCB(np, flags) do { restore_flags(flags); } while (0)
+#define NCR_LOCK_SCSI_DONE(np, flags) do {;} while (0)
+#define NCR_UNLOCK_SCSI_DONE(np, flags) do {;} while (0)
 #endif
 #if LINUX_VERSION_CODE < LinuxVersionCode(2,1,0)
 #define ioremap vremap
 #define iounmap vfree
 #endif
 #ifdef __sparc__
-#  include <asm/irq.h>
-#  if LINUX_VERSION_CODE < LinuxVersionCode(2,3,0)
-#    define ioremap(base, size)		((u_long) __va(base))
-#    define iounmap(vaddr)
-#  endif
-#  define pcivtobus(p)			bus_dvma_to_mem(p)
-#  define memcpy_to_pci(a, b, c)	memcpy_toio((void *)(a), (const void *)(b), (c))
+# include <asm/irq.h>
+# if LINUX_VERSION_CODE < LinuxVersionCode(2,3,0)
+# define ioremap(base, size) ((u_long) __va(base))
+# define iounmap(vaddr)
+# endif
+# define pcivtobus(p) bus_dvma_to_mem(p)
+# define memcpy_to_pci(a, b, c) memcpy_toio((void *)(a), (const void *)(b), (c))
 #elif defined(__alpha__)
-#  define pcivtobus(p)			((p) & 0xfffffffful)
-#  define memcpy_to_pci(a, b, c)	memcpy_toio((a), (b), (c))
+# define pcivtobus(p) ((p) & 0xfffffffful)
+# define memcpy_to_pci(a, b, c) memcpy_toio((a), (b), (c))
 #else
-#  define pcivtobus(p)			(p)
-#  define memcpy_to_pci(a, b, c)	memcpy_toio((a), (b), (c))
+# define pcivtobus(p) (p)
+# define memcpy_to_pci(a, b, c) memcpy_toio((a), (b), (c))
 #endif
 #ifndef SCSI_NCR_PCI_MEM_NOT_SUPPORTED
 static u_long __init remap_pci_mem(u_long base, u_long size)
 {
-u_long page_base	= ((u_long) base) & PAGE_MASK;
-u_long page_offs	= ((u_long) base) - page_base;
-u_long page_remapped	= (u_long) ioremap(page_base, page_offs+size);
+u_long page_base = ((u_long) base) & PAGE_MASK;
+u_long page_offs = ((u_long) base) - page_base;
+u_long page_remapped = (u_long) ioremap(page_base, page_offs+size);
 return page_remapped? (page_remapped + page_offs) : 0UL;
 }
 static void __init unmap_pci_mem(u_long vaddr, u_long size)
@@ -367,50 +367,50 @@ static void MDELAY(long ms) { while (ms--) UDELAY(1000); }
 #else
 #define __GetFreePages(flags, order) __get_free_pages(flags, order, 0)
 #endif
-#define MEMO_SHIFT	4
+#define MEMO_SHIFT 4
 #if PAGE_SIZE >= 8192
-#define MEMO_PAGE_ORDER	0
+#define MEMO_PAGE_ORDER 0
 #else
-#define MEMO_PAGE_ORDER	1
+#define MEMO_PAGE_ORDER 1
 #endif
 #define MEMO_FREE_UNUSED
-#define MEMO_WARN	1
-#define MEMO_GFP_FLAGS	GFP_ATOMIC
-#define MEMO_CLUSTER_SHIFT	(PAGE_SHIFT+MEMO_PAGE_ORDER)
-#define MEMO_CLUSTER_SIZE	(1UL << MEMO_CLUSTER_SHIFT)
-#define MEMO_CLUSTER_MASK	(MEMO_CLUSTER_SIZE-1)
+#define MEMO_WARN 1
+#define MEMO_GFP_FLAGS GFP_ATOMIC
+#define MEMO_CLUSTER_SHIFT (PAGE_SHIFT+MEMO_PAGE_ORDER)
+#define MEMO_CLUSTER_SIZE (1UL << MEMO_CLUSTER_SHIFT)
+#define MEMO_CLUSTER_MASK (MEMO_CLUSTER_SIZE-1)
 typedef u_long m_addr_t;
 typedef pcidev_t m_bush_t;
 typedef struct m_link {
 struct m_link *next;
 } m_link_s;
-#ifdef	SCSI_NCR_DYNAMIC_DMA_MAPPING
+#ifdef SCSI_NCR_DYNAMIC_DMA_MAPPING
 typedef struct m_vtob {
 struct m_vtob *next;
 m_addr_t vaddr;
 m_addr_t baddr;
 } m_vtob_s;
-#define VTOB_HASH_SHIFT		5
-#define VTOB_HASH_SIZE		(1UL << VTOB_HASH_SHIFT)
-#define VTOB_HASH_MASK		(VTOB_HASH_SIZE-1)
-#define VTOB_HASH_CODE(m)	\
+#define VTOB_HASH_SHIFT 5
+#define VTOB_HASH_SIZE (1UL << VTOB_HASH_SHIFT)
+#define VTOB_HASH_MASK (VTOB_HASH_SIZE-1)
+#define VTOB_HASH_CODE(m) \
 ((((m_addr_t) (m)) >> MEMO_CLUSTER_SHIFT) & VTOB_HASH_MASK)
 #endif
 typedef struct m_pool {
-#ifdef	SCSI_NCR_DYNAMIC_DMA_MAPPING
+#ifdef SCSI_NCR_DYNAMIC_DMA_MAPPING
 m_bush_t bush;
 m_addr_t (*getp)(struct m_pool *);
 void (*freep)(struct m_pool *, m_addr_t);
-#define M_GETP()		mp->getp(mp)
-#define M_FREEP(p)		mp->freep(mp, p)
-#define GetPages()		__GetFreePages(MEMO_GFP_FLAGS, MEMO_PAGE_ORDER)
-#define FreePages(p)		free_pages(p, MEMO_PAGE_ORDER)
+#define M_GETP() mp->getp(mp)
+#define M_FREEP(p) mp->freep(mp, p)
+#define GetPages() __GetFreePages(MEMO_GFP_FLAGS, MEMO_PAGE_ORDER)
+#define FreePages(p) free_pages(p, MEMO_PAGE_ORDER)
 int nump;
 m_vtob_s *(vtob[VTOB_HASH_SIZE]);
 struct m_pool *next;
 #else
-#define M_GETP()		__GetFreePages(MEMO_GFP_FLAGS, MEMO_PAGE_ORDER)
-#define M_FREEP(p)		free_pages(p, MEMO_PAGE_ORDER)
+#define M_GETP() __GetFreePages(MEMO_GFP_FLAGS, MEMO_PAGE_ORDER)
+#define M_FREEP(p) free_pages(p, MEMO_PAGE_ORDER)
 #endif
 struct m_link h[PAGE_SHIFT-MEMO_SHIFT+MEMO_PAGE_ORDER+1];
 } m_pool_s;
@@ -505,14 +505,14 @@ else if (uflags & MEMO_WARN)
 printk (NAME53C8XX ": failed to allocate %s[%d]\n", name, size);
 return p;
 }
-#define __m_calloc(mp, s, n)	__m_calloc2(mp, s, n, MEMO_WARN)
+#define __m_calloc(mp, s, n) __m_calloc2(mp, s, n, MEMO_WARN)
 static void __m_free(m_pool_s *mp, void *ptr, int size, char *name)
 {
 if (DEBUG_FLAGS & DEBUG_ALLOC)
 printk ("freeing %-10s[%4d] @%p.\n", name, size, ptr);
 ___m_free(mp, ptr, size);
 }
-#ifndef	SCSI_NCR_DYNAMIC_DMA_MAPPING
+#ifndef SCSI_NCR_DYNAMIC_DMA_MAPPING
 static m_pool_s mp0;
 #else
 static m_addr_t ___mp0_getp(m_pool_s *mp)
@@ -545,10 +545,10 @@ NCR_LOCK_DRIVER(flags);
 __m_free(&mp0, ptr, size, name);
 NCR_UNLOCK_DRIVER(flags);
 }
-#ifndef	SCSI_NCR_DYNAMIC_DMA_MAPPING
-#define __m_calloc_dma(b, s, n)		m_calloc(s, n)
-#define __m_free_dma(b, p, s, n)	m_free(p, s, n)
-#define __vtobus(b, p)			virt_to_bus(p)
+#ifndef SCSI_NCR_DYNAMIC_DMA_MAPPING
+#define __m_calloc_dma(b, s, n) m_calloc(s, n)
+#define __m_free_dma(b, p, s, n) m_free(p, s, n)
+#define __vtobus(b, p) virt_to_bus(p)
 #else
 static m_addr_t ___dma_getp(m_pool_s *mp)
 {
@@ -666,22 +666,22 @@ NCR_UNLOCK_DRIVER(flags);
 return vp ? vp->baddr + (((m_addr_t) m) - a) : 0;
 }
 #endif
-#define _m_calloc_dma(np, s, n)		__m_calloc_dma(np->pdev, s, n)
-#define _m_free_dma(np, p, s, n)	__m_free_dma(np->pdev, p, s, n)
-#define m_calloc_dma(s, n)		_m_calloc_dma(np, s, n)
-#define m_free_dma(p, s, n)		_m_free_dma(np, p, s, n)
-#define _vtobus(np, p)			__vtobus(np->pdev, p)
-#define vtobus(p)			_vtobus(np, p)
+#define _m_calloc_dma(np, s, n) __m_calloc_dma(np->pdev, s, n)
+#define _m_free_dma(np, p, s, n) __m_free_dma(np->pdev, p, s, n)
+#define m_calloc_dma(s, n) _m_calloc_dma(np, s, n)
+#define m_free_dma(p, s, n) _m_free_dma(np, p, s, n)
+#define _vtobus(np, p) __vtobus(np->pdev, p)
+#define vtobus(p) _vtobus(np, p)
 #ifndef SCSI_NCR_DYNAMIC_DMA_MAPPING
-#define __unmap_scsi_data(pdev, cmd)	do {; } while (0)
+#define __unmap_scsi_data(pdev, cmd) do {; } while (0)
 #define __map_scsi_single_data(pdev, cmd) (__vtobus(pdev,(cmd)->request_buffer))
-#define __map_scsi_sg_data(pdev, cmd)	((cmd)->use_sg)
-#define __sync_scsi_data(pdev, cmd)	do {; } while (0)
-#define scsi_sg_dma_address(sc)		vtobus((sc)->address)
-#define scsi_sg_dma_len(sc)		((sc)->length)
+#define __map_scsi_sg_data(pdev, cmd) ((cmd)->use_sg)
+#define __sync_scsi_data(pdev, cmd) do {; } while (0)
+#define scsi_sg_dma_address(sc) vtobus((sc)->address)
+#define scsi_sg_dma_len(sc) ((sc)->length)
 #else
-#define __data_mapped	SCp.phase
-#define __data_mapping	SCp.have_data_in
+#define __data_mapped SCp.phase
+#define __data_mapping SCp.have_data_in
 static void __unmap_scsi_data(pcidev_t pdev, Scsi_Cmnd *cmd)
 {
 int dma_dir = scsi_to_pci_dma_dir(cmd->sc_data_direction);
@@ -732,13 +732,13 @@ cmd->request_bufflen, dma_dir);
 break;
 }
 }
-#define scsi_sg_dma_address(sc)		sg_dma_address(sc)
-#define scsi_sg_dma_len(sc)		sg_dma_len(sc)
+#define scsi_sg_dma_address(sc) sg_dma_address(sc)
+#define scsi_sg_dma_len(sc) sg_dma_len(sc)
 #endif
-#define unmap_scsi_data(np, cmd)	__unmap_scsi_data(np->pdev, cmd)
-#define map_scsi_single_data(np, cmd)	__map_scsi_single_data(np->pdev, cmd)
-#define map_scsi_sg_data(np, cmd)	__map_scsi_sg_data(np->pdev, cmd)
-#define sync_scsi_data(np, cmd)		__sync_scsi_data(np->pdev, cmd)
+#define unmap_scsi_data(np, cmd) __unmap_scsi_data(np->pdev, cmd)
+#define map_scsi_single_data(np, cmd) __map_scsi_single_data(np->pdev, cmd)
+#define map_scsi_sg_data(np, cmd) __map_scsi_sg_data(np->pdev, cmd)
+#define sync_scsi_data(np, cmd) __sync_scsi_data(np->pdev, cmd)
 static void ncr_print_hex(u_char *p, int n)
 {
 while (n-- > 0)
@@ -750,13 +750,13 @@ printk("%s", label);
 ncr_print_hex(p, n);
 printk (".\n");
 }
-#ifdef	SCSI_DATA_UNKNOWN
-#define scsi_data_direction(cmd)	(cmd->sc_data_direction)
+#ifdef SCSI_DATA_UNKNOWN
+#define scsi_data_direction(cmd) (cmd->sc_data_direction)
 #else
-#define	SCSI_DATA_UNKNOWN	0
-#define	SCSI_DATA_WRITE		1
-#define	SCSI_DATA_READ		2
-#define	SCSI_DATA_NONE		3
+#define SCSI_DATA_UNKNOWN 0
+#define SCSI_DATA_WRITE 1
+#define SCSI_DATA_READ 2
+#define SCSI_DATA_NONE 3
 static __inline__ int scsi_data_direction(Scsi_Cmnd *cmd)
 {
 int direction;
@@ -778,7 +778,7 @@ break;
 return direction;
 }
 #endif
-static struct Scsi_Host	*first_host = NULL;
+static struct Scsi_Host *first_host = NULL;
 #ifdef SCSI_NCR_PROC_INFO_SUPPORT
 #if LINUX_VERSION_CODE < LinuxVersionCode(2,3,27)
 static struct proc_dir_entry proc_scsi_sym53c8xx = {
@@ -790,23 +790,23 @@ static int sym53c8xx_proc_info(char *buffer, char **start, off_t offset,
 int length, int hostno, int func);
 #endif
 static struct ncr_driver_setup
-driver_setup			= SCSI_NCR_DRIVER_SETUP;
-#ifdef	SCSI_NCR_BOOT_COMMAND_LINE_SUPPORT
+driver_setup = SCSI_NCR_DRIVER_SETUP;
+#ifdef SCSI_NCR_BOOT_COMMAND_LINE_SUPPORT
 static struct ncr_driver_setup
-driver_safe_setup __initdata	= SCSI_NCR_DRIVER_SAFE_SETUP;
-# ifdef	MODULE
+driver_safe_setup __initdata = SCSI_NCR_DRIVER_SAFE_SETUP;
+# ifdef MODULE
 char *sym53c8xx = 0;
-#  if LINUX_VERSION_CODE >= LinuxVersionCode(2,1,30)
+# if LINUX_VERSION_CODE >= LinuxVersionCode(2,1,30)
 MODULE_PARM(sym53c8xx, "s");
-#  endif
+# endif
 # endif
 #endif
 #define SetScsiResult(cmd, h_sts, s_sts) \
 cmd->result = (((h_sts) << 16) + ((s_sts) & 0x7f))
 #if 0
-#define SetScsiAbortResult(cmd)	\
-SetScsiResult(	\
-cmd, 		\
+#define SetScsiAbortResult(cmd) \
+SetScsiResult( \
+cmd, \
 (cmd)->abort_reason == DID_TIME_OUT ? DID_TIME_OUT : DID_ABORT, \
 0xff)
 #else
@@ -823,20 +823,20 @@ static u_char Tekram_sync[16] __initdata =
 {25,31,37,43, 50,62,75,125, 12,15,18,21, 6,7,9,10};
 #endif
 typedef struct {
-int	bus;
-u_char	device_fn;
-u_long	base;
-u_long	base_2;
-u_long	io_port;
-int	irq;
-u_long	base_io;
-volatile struct ncr_reg	*reg;
+int bus;
+u_char device_fn;
+u_long base;
+u_long base_2;
+u_long io_port;
+int irq;
+u_long base_io;
+volatile struct ncr_reg *reg;
 } ncr_slot;
 typedef struct {
 int type;
-#define	SCSI_NCR_SYMBIOS_NVRAM	(1)
-#define	SCSI_NCR_TEKRAM_NVRAM	(2)
-#ifdef	SCSI_NCR_NVRAM_SUPPORT
+#define SCSI_NCR_SYMBIOS_NVRAM (1)
+#define SCSI_NCR_TEKRAM_NVRAM (2)
+#ifdef SCSI_NCR_NVRAM_SUPPORT
 union {
 Symbios_nvram Symbios;
 Tekram_nvram Tekram;
@@ -844,17 +844,17 @@ Tekram_nvram Tekram;
 #endif
 } ncr_nvram;
 typedef struct {
-pcidev_t  pdev;
-ncr_slot  slot;
-ncr_chip  chip;
+pcidev_t pdev;
+ncr_slot slot;
+ncr_chip chip;
 ncr_nvram *nvram;
 u_char host_id;
-#ifdef	SCSI_NCR_PQS_PDS_SUPPORT
+#ifdef SCSI_NCR_PQS_PDS_SUPPORT
 u_char pqs_pds;
 #endif
 int attach_done;
 } ncr_device;
-#define	assert(expression) { \
+#define assert(expression) { \
 if (!(expression)) { \
 (void)panic( \
 "assertion \"%s\" failed: file \"%s\", line %d\n", \
@@ -862,60 +862,60 @@ if (!(expression)) { \
 __FILE__, __LINE__); \
 } \
 }
-#define HS_IDLE		(0)
-#define HS_BUSY		(1)
-#define HS_NEGOTIATE	(2)
-#define HS_DISCONNECT	(3)
-#define HS_DONEMASK	(0x80)
-#define HS_COMPLETE	(4|HS_DONEMASK)
-#define HS_SEL_TIMEOUT	(5|HS_DONEMASK)
-#define HS_RESET	(6|HS_DONEMASK)
-#define HS_ABORTED	(7|HS_DONEMASK)
-#define HS_TIMEOUT	(8|HS_DONEMASK)
-#define HS_FAIL		(9|HS_DONEMASK)
-#define HS_UNEXPECTED	(10|HS_DONEMASK)
+#define HS_IDLE (0)
+#define HS_BUSY (1)
+#define HS_NEGOTIATE (2)
+#define HS_DISCONNECT (3)
+#define HS_DONEMASK (0x80)
+#define HS_COMPLETE (4|HS_DONEMASK)
+#define HS_SEL_TIMEOUT (5|HS_DONEMASK)
+#define HS_RESET (6|HS_DONEMASK)
+#define HS_ABORTED (7|HS_DONEMASK)
+#define HS_TIMEOUT (8|HS_DONEMASK)
+#define HS_FAIL (9|HS_DONEMASK)
+#define HS_UNEXPECTED (10|HS_DONEMASK)
 #define DSA_INVALID 0xffffffff
-#define	SIR_BAD_STATUS		(1)
-#define	SIR_SEL_ATN_NO_MSG_OUT	(2)
-#define	SIR_MSG_RECEIVED	(3)
-#define	SIR_MSG_WEIRD		(4)
-#define	SIR_NEGO_FAILED		(5)
-#define	SIR_NEGO_PROTO		(6)
-#define	SIR_SCRIPT_STOPPED	(7)
-#define	SIR_REJECT_TO_SEND	(8)
-#define	SIR_SWIDE_OVERRUN	(9)
-#define	SIR_SODL_UNDERRUN	(10)
-#define	SIR_RESEL_NO_MSG_IN	(11)
-#define	SIR_RESEL_NO_IDENTIFY	(12)
-#define	SIR_RESEL_BAD_LUN	(13)
-#define	SIR_TARGET_SELECTED	(14)
-#define	SIR_RESEL_BAD_I_T_L	(15)
-#define	SIR_RESEL_BAD_I_T_L_Q	(16)
-#define	SIR_ABORT_SENT		(17)
-#define	SIR_RESEL_ABORTED	(18)
-#define	SIR_MSG_OUT_DONE	(19)
-#define	SIR_AUTO_SENSE_DONE	(20)
-#define	SIR_DUMMY_INTERRUPT	(21)
-#define	SIR_DATA_OVERRUN	(22)
-#define	SIR_BAD_PHASE		(23)
-#define	SIR_MAX			(23)
-#define	XE_EXTRA_DATA	(1)
-#define	XE_BAD_PHASE	(2)
-#define	XE_PARITY_ERR	(4)
-#define XE_SODL_UNRUN   (1<<3)
-#define XE_SWIDE_OVRUN  (1<<4)
-#define NS_NOCHANGE	(0)
-#define NS_SYNC		(1)
-#define NS_WIDE		(2)
-#define NS_PPR		(4)
-#define	QUIRK_AUTOSAVE	(0x01)
-#define	INQ7_QUEUE	(0x02)
-#define	INQ7_SYNC	(0x10)
-#define	INQ7_WIDE16	(0x20)
-#define CCB_HASH_SHIFT		8
-#define CCB_HASH_SIZE		(1UL << CCB_HASH_SHIFT)
-#define CCB_HASH_MASK		(CCB_HASH_SIZE-1)
-#define CCB_HASH_CODE(dsa)	(((dsa) >> 11) & CCB_HASH_MASK)
+#define SIR_BAD_STATUS (1)
+#define SIR_SEL_ATN_NO_MSG_OUT (2)
+#define SIR_MSG_RECEIVED (3)
+#define SIR_MSG_WEIRD (4)
+#define SIR_NEGO_FAILED (5)
+#define SIR_NEGO_PROTO (6)
+#define SIR_SCRIPT_STOPPED (7)
+#define SIR_REJECT_TO_SEND (8)
+#define SIR_SWIDE_OVERRUN (9)
+#define SIR_SODL_UNDERRUN (10)
+#define SIR_RESEL_NO_MSG_IN (11)
+#define SIR_RESEL_NO_IDENTIFY (12)
+#define SIR_RESEL_BAD_LUN (13)
+#define SIR_TARGET_SELECTED (14)
+#define SIR_RESEL_BAD_I_T_L (15)
+#define SIR_RESEL_BAD_I_T_L_Q (16)
+#define SIR_ABORT_SENT (17)
+#define SIR_RESEL_ABORTED (18)
+#define SIR_MSG_OUT_DONE (19)
+#define SIR_AUTO_SENSE_DONE (20)
+#define SIR_DUMMY_INTERRUPT (21)
+#define SIR_DATA_OVERRUN (22)
+#define SIR_BAD_PHASE (23)
+#define SIR_MAX (23)
+#define XE_EXTRA_DATA (1)
+#define XE_BAD_PHASE (2)
+#define XE_PARITY_ERR (4)
+#define XE_SODL_UNRUN (1<<3)
+#define XE_SWIDE_OVRUN (1<<4)
+#define NS_NOCHANGE (0)
+#define NS_SYNC (1)
+#define NS_WIDE (2)
+#define NS_PPR (4)
+#define QUIRK_AUTOSAVE (0x01)
+#define INQ7_QUEUE (0x02)
+#define INQ7_SYNC (0x10)
+#define INQ7_WIDE16 (0x20)
+#define CCB_HASH_SHIFT 8
+#define CCB_HASH_SIZE (1UL << CCB_HASH_SHIFT)
+#define CCB_HASH_MASK (CCB_HASH_SIZE-1)
+#define CCB_HASH_CODE(dsa) (((dsa) >> 11) & CCB_HASH_MASK)
 struct tcb;
 struct lcb;
 struct ccb;
@@ -926,100 +926,100 @@ typedef struct tcb * tcb_p;
 typedef struct lcb * lcb_p;
 typedef struct ccb * ccb_p;
 struct link {
-ncrcmd	l_cmd;
-ncrcmd	l_paddr;
+ncrcmd l_cmd;
+ncrcmd l_paddr;
 };
-struct	usrcmd {
-u_long	target;
-u_long	lun;
-u_long	data;
-u_long	cmd;
+struct usrcmd {
+u_long target;
+u_long lun;
+u_long data;
+u_long cmd;
 };
-#define UC_SETSYNC      10
-#define UC_SETTAGS	11
-#define UC_SETDEBUG	12
-#define UC_SETORDER	13
-#define UC_SETWIDE	14
-#define UC_SETFLAG	15
-#define UC_SETVERBOSE	17
-#define UC_RESETDEV	18
-#define UC_CLEARDEV	19
-#define	UF_TRACE	(0x01)
-#define	UF_NODISC	(0x02)
-#define	UF_NOSCAN	(0x04)
+#define UC_SETSYNC 10
+#define UC_SETTAGS 11
+#define UC_SETDEBUG 12
+#define UC_SETORDER 13
+#define UC_SETWIDE 14
+#define UC_SETFLAG 15
+#define UC_SETVERBOSE 17
+#define UC_RESETDEV 18
+#define UC_CLEARDEV 19
+#define UF_TRACE (0x01)
+#define UF_NODISC (0x02)
+#define UF_NOSCAN (0x04)
 struct tcb {
-u_int32		*luntbl;
-u_int32		b_luntbl;
-u_int32		b_lun0;
-lcb_p		l0p;
+u_int32 *luntbl;
+u_int32 b_luntbl;
+u_int32 b_lun0;
+lcb_p l0p;
 #if MAX_LUN > 1
-lcb_p		*lmp;
+lcb_p *lmp;
 #endif
-u_char		inq_done;
-u_char		inq_byte7;
-u_char		to_reset;
-ccb_p   nego_cp;
-u_char	minsync;
-u_char	sval;
-u_short	period;
-u_char	maxoffs;
-u_char	quirks;
-u_char	widedone;
-u_char	wval;
-u_char	uval;
-#ifdef	SCSI_NCR_INTEGRITY_CHECKING
+u_char inq_done;
+u_char inq_byte7;
+u_char to_reset;
+ccb_p nego_cp;
+u_char minsync;
+u_char sval;
+u_short period;
+u_char maxoffs;
+u_char quirks;
+u_char widedone;
+u_char wval;
+u_char uval;
+#ifdef SCSI_NCR_INTEGRITY_CHECKING
 u_char ic_min_sync;
 u_char ic_max_width;
 u_char ic_done;
 #endif
 u_char ic_maximums_set;
 u_char ppr_negotiation;
-u_char	usrsync;
-u_char	usrwide;
-u_short	usrtags;
-u_char	usrflag;
+u_char usrsync;
+u_char usrwide;
+u_short usrtags;
+u_char usrflag;
 };
 struct lcb {
-u_int32		resel_task;
-u_int32		tasktbl_0;
-u_int32		*tasktbl;
-u_int32		b_tasktbl;
-XPT_QUEHEAD	busy_ccbq;
-XPT_QUEHEAD	wait_ccbq;
-u_short		busyccbs;
-u_short		queuedccbs;
-u_short		queuedepth;
-u_short		scdev_depth;
-u_short		maxnxs;
-u_short		ia_tag;
-u_short		if_tag;
-u_char		*cb_tags;
-u_char		inq_byte7;
-u_char		usetags;
-u_char		to_clear;
-u_short		maxtags;
-u_short		numtags;
-u_short		num_good;
-u_short		tags_sum[2];
-u_char		tags_si;
-u_long		tags_stime;
+u_int32 resel_task;
+u_int32 tasktbl_0;
+u_int32 *tasktbl;
+u_int32 b_tasktbl;
+XPT_QUEHEAD busy_ccbq;
+XPT_QUEHEAD wait_ccbq;
+u_short busyccbs;
+u_short queuedccbs;
+u_short queuedepth;
+u_short scdev_depth;
+u_short maxnxs;
+u_short ia_tag;
+u_short if_tag;
+u_char *cb_tags;
+u_char inq_byte7;
+u_char usetags;
+u_char to_clear;
+u_short maxtags;
+u_short numtags;
+u_short num_good;
+u_short tags_sum[2];
+u_char tags_si;
+u_long tags_stime;
 };
 struct action {
-u_int32		start;
-u_int32		restart;
+u_int32 start;
+u_int32 restart;
 };
 struct pm_ctx {
 struct scr_tblmove sg;
-u_int32	ret;
+u_int32 ret;
 };
 struct head {
-struct action	go;
-u_int32		savep;
-u_int32		lastp;
-u_int32		goalp;
-u_int32		wlastp;
-u_int32		wgoalp;
-u_char		status[4];
+struct action go;
+u_int32 savep;
+u_int32 lastp;
+u_int32 goalp;
+u_int32 wlastp;
+u_int32 wgoalp;
+u_char status[4];
 };
 #if MAX_LUN <= 1
 #define ncr_lp(np, tp, lun) (!lun) ? (tp)->l0p : 0
@@ -1027,35 +1027,35 @@ u_char		status[4];
 #define ncr_lp(np, tp, lun) \
 (!lun) ? (tp)->l0p : (tp)->lmp ? (tp)->lmp[(lun)] : 0
 #endif
-#define  QU_REG	scr0
-#define  HS_REG	scr1
-#define  HS_PRT	nc_scr1
-#define  SS_REG	scr2
-#define  SS_PRT	nc_scr2
-#define  HF_REG	scr3
-#define  HF_PRT	nc_scr3
-#define  actualquirks  phys.header.status[0]
-#define  host_status   phys.header.status[1]
-#define  scsi_status   phys.header.status[2]
-#define  host_flags    phys.header.status[3]
-#define HF_IN_PM0	1u
-#define HF_IN_PM1	(1u<<1)
-#define HF_ACT_PM	(1u<<2)
-#define HF_DP_SAVED	(1u<<3)
-#define HF_AUTO_SENSE	(1u<<4)
-#define HF_DATA_IN	(1u<<5)
-#define HF_PM_TO_C	(1u<<6)
-#define HF_EXT_ERR	(1u<<7)
+#define QU_REG scr0
+#define HS_REG scr1
+#define HS_PRT nc_scr1
+#define SS_REG scr2
+#define SS_PRT nc_scr2
+#define HF_REG scr3
+#define HF_PRT nc_scr3
+#define actualquirks phys.header.status[0]
+#define host_status phys.header.status[1]
+#define scsi_status phys.header.status[2]
+#define host_flags phys.header.status[3]
+#define HF_IN_PM0 1u
+#define HF_IN_PM1 (1u<<1)
+#define HF_ACT_PM (1u<<2)
+#define HF_DP_SAVED (1u<<3)
+#define HF_AUTO_SENSE (1u<<4)
+#define HF_DATA_IN (1u<<5)
+#define HF_PM_TO_C (1u<<6)
+#define HF_EXT_ERR (1u<<7)
 #ifdef SCSI_NCR_IARB_SUPPORT
-#define HF_HINT_IARB	(1u<<7)
+#define HF_HINT_IARB (1u<<7)
 #endif
-#define HF_DATA_ST	(1u<<7)
+#define HF_DATA_ST (1u<<7)
 struct dsb {
-struct head	header;
-struct scr_tblsel  select;
-struct scr_tblmove smsg  ;
+struct head header;
+struct scr_tblsel select;
+struct scr_tblmove smsg ;
 struct scr_tblmove smsg_ext ;
-struct scr_tblmove cmd   ;
+struct scr_tblmove cmd ;
 struct scr_tblmove sense ;
 struct scr_tblmove wresid;
 struct scr_tblmove data [MAX_SCATTER];
@@ -1063,345 +1063,345 @@ struct pm_ctx pm0;
 struct pm_ctx pm1;
 };
 struct ccb {
-struct dsb	phys;
-Scsi_Cmnd	*cmd;
-u_char		cdb_buf[16];
-u_char		sense_buf[64];
-int		data_len;
-int		segments;
-u_char		scsi_smsg [12];
-u_char		scsi_smsg2[12];
-u_char		nego_status;
-u_char		xerr_status;
-u_int32		extra_bytes;
-u_char		sv_scsi_status;
-u_char		sv_xerr_status;
-u_long		p_ccb;
-u_char		sensecmd[6];
-u_char		to_abort;
-u_short		tag;
-u_char		tags_si;
-u_char		target;
-u_char		lun;
-u_short		queued;
-ccb_p		link_ccb;
-ccb_p		link_ccbh;
-XPT_QUEHEAD	link_ccbq;
-u_int32		startp;
-u_int32		lastp0;
-int		ext_sg;
-int		ext_ofs;
-int		resid;
+struct dsb phys;
+Scsi_Cmnd *cmd;
+u_char cdb_buf[16];
+u_char sense_buf[64];
+int data_len;
+int segments;
+u_char scsi_smsg [12];
+u_char scsi_smsg2[12];
+u_char nego_status;
+u_char xerr_status;
+u_int32 extra_bytes;
+u_char sv_scsi_status;
+u_char sv_xerr_status;
+u_long p_ccb;
+u_char sensecmd[6];
+u_char to_abort;
+u_short tag;
+u_char tags_si;
+u_char target;
+u_char lun;
+u_short queued;
+ccb_p link_ccb;
+ccb_p link_ccbh;
+XPT_QUEHEAD link_ccbq;
+u_int32 startp;
+u_int32 lastp0;
+int ext_sg;
+int ext_ofs;
+int resid;
 };
-#define CCB_PHYS(cp,lbl)	(cp->p_ccb + offsetof(struct ccb, lbl))
+#define CCB_PHYS(cp,lbl) (cp->p_ccb + offsetof(struct ccb, lbl))
 struct ncb {
-struct action	idletask;
-struct action	notask;
-struct action	bad_i_t_l;
-struct action	bad_i_t_l_q;
-u_long		p_idletask;
-u_long		p_notask;
-u_long		p_bad_i_t_l;
-u_long		p_bad_i_t_l_q;
-u_int32		*badluntbl;
-u_int32		resel_badlun;
-u_int32		scr_ram_seg;
-Scsi_Cmnd	*waiting_list;
-Scsi_Cmnd	*done_list;
+struct action idletask;
+struct action notask;
+struct action bad_i_t_l;
+struct action bad_i_t_l_q;
+u_long p_idletask;
+u_long p_notask;
+u_long p_bad_i_t_l;
+u_long p_bad_i_t_l_q;
+u_int32 *badluntbl;
+u_int32 resel_badlun;
+u_int32 scr_ram_seg;
+Scsi_Cmnd *waiting_list;
+Scsi_Cmnd *done_list;
 #if LINUX_VERSION_CODE >= LinuxVersionCode(2,1,93)
-spinlock_t	smp_lock;
+spinlock_t smp_lock;
 #endif
-int		unit;
-char		chip_name[8];
-char		inst_name[16];
-u_char	sv_scntl0, sv_scntl3, sv_dmode, sv_dcntl, sv_ctest3, sv_ctest4,
+int unit;
+char chip_name[8];
+char inst_name[16];
+u_char sv_scntl0, sv_scntl3, sv_dmode, sv_dcntl, sv_ctest3, sv_ctest4,
 sv_ctest5, sv_gpcntl, sv_stest2, sv_stest4, sv_stest1, sv_scntl4;
-u_char	rv_scntl0, rv_scntl3, rv_dmode, rv_dcntl, rv_ctest3, rv_ctest4,
+u_char rv_scntl0, rv_scntl3, rv_dmode, rv_dcntl, rv_ctest3, rv_ctest4,
 rv_ctest5, rv_stest2, rv_ccntl0, rv_ccntl1, rv_scntl4;
-struct tcb	target[MAX_TARGET];
-u_int32		*targtbl;
+struct tcb target[MAX_TARGET];
+u_int32 *targtbl;
 #ifndef SCSI_NCR_PCI_MEM_NOT_SUPPORTED
-u_long		base_va;
-u_long		base2_va;
+u_long base_va;
+u_long base2_va;
 #endif
-u_long		base_ba;
-u_long		base_io;
-u_long		base_ws;
-u_long		base2_ba;
-u_long		base2_ws;
-u_int		irq;
+u_long base_ba;
+u_long base_io;
+u_long base_ws;
+u_long base2_ba;
+u_long base2_ws;
+u_int irq;
 volatile
-struct ncr_reg	*reg;
-struct script	*script0;
-struct scripth	*scripth0;
-u_long		p_script;
-u_long		p_scripth;
-u_long		p_scripth0;
-pcidev_t	pdev;
-u_short		device_id;
-u_char		revision_id;
-u_char		bus;
-u_char		device_fn;
-u_char		myaddr;
-u_char		maxburst;
-u_char		maxwide;
-u_char		minsync;
-u_char		maxsync;
-u_char		maxoffs;
-u_char		multiplier;
-u_char		clock_divn;
-u_long		clock_khz;
-u_int		features;
-u_int		pciclock_min;
-u_int		pciclock_max;
-u_long		p_squeue;
-u_int32		*squeue;
-u_short		squeueput;
-u_short		actccbs;
-u_short		queuedepth;
-u_short		dqueueget;
-u_int32		*dqueue;
+struct ncr_reg *reg;
+struct script *script0;
+struct scripth *scripth0;
+u_long p_script;
+u_long p_scripth;
+u_long p_scripth0;
+pcidev_t pdev;
+u_short device_id;
+u_char revision_id;
+u_char bus;
+u_char device_fn;
+u_char myaddr;
+u_char maxburst;
+u_char maxwide;
+u_char minsync;
+u_char maxsync;
+u_char maxoffs;
+u_char multiplier;
+u_char clock_divn;
+u_long clock_khz;
+u_int features;
+u_int pciclock_min;
+u_int pciclock_max;
+u_long p_squeue;
+u_int32 *squeue;
+u_short squeueput;
+u_short actccbs;
+u_short queuedepth;
+u_short dqueueget;
+u_int32 *dqueue;
 struct timer_list timer;
-u_long		lasttime;
-u_long		settle_time;
-struct ncr_reg	regdump;
-u_long		regtime;
-u_char		msgout[12];
-u_char		msgin [12];
-u_int32		lastmsg;
-u_char		scratch;
-u_char		scsi_mode;
-u_char		order;
-u_char		verbose;
-u_int32		ncr_cache;
-u_long		p_ncb;
+u_long lasttime;
+u_long settle_time;
+struct ncr_reg regdump;
+u_long regtime;
+u_char msgout[12];
+u_char msgin [12];
+u_int32 lastmsg;
+u_char scratch;
+u_char scsi_mode;
+u_char order;
+u_char verbose;
+u_int32 ncr_cache;
+u_long p_ncb;
 ccb_p ccbh[CCB_HASH_SIZE];
-struct ccb	*ccbc;
-XPT_QUEHEAD	free_ccbq;
+struct ccb *ccbc;
+XPT_QUEHEAD free_ccbq;
 #ifdef SCSI_NCR_IARB_SUPPORT
-struct ccb	*last_cp;
-u_short		iarb_max;
-u_short		iarb_count;
+struct ccb *last_cp;
+u_short iarb_max;
+u_short iarb_count;
 #endif
-XPT_QUEHEAD	b0_ccbq;
+XPT_QUEHEAD b0_ccbq;
 int (*scatter) (ncb_p, ccb_p, Scsi_Cmnd *);
-u_char		abrt_msg[4];
+u_char abrt_msg[4];
 struct scr_tblmove abrt_tbl;
-struct scr_tblsel  abrt_sel;
-u_char		istat_sem;
-struct usrcmd	user;
-volatile u_char	release_stage;
-unsigned char  check_integrity;
-#ifdef	SCSI_NCR_INTEGRITY_CHECKING
+struct scr_tblsel abrt_sel;
+u_char istat_sem;
+struct usrcmd user;
+volatile u_char release_stage;
+unsigned char check_integrity;
+#ifdef SCSI_NCR_INTEGRITY_CHECKING
 unsigned char check_integ_par;
 #endif
 };
-#define NCB_PHYS(np, lbl)	 (np->p_ncb + offsetof(struct ncb, lbl))
-#define NCB_SCRIPT_PHYS(np,lbl)	 (np->p_script  + offsetof (struct script, lbl))
+#define NCB_PHYS(np, lbl) (np->p_ncb + offsetof(struct ncb, lbl))
+#define NCB_SCRIPT_PHYS(np,lbl) (np->p_script + offsetof (struct script, lbl))
 #define NCB_SCRIPTH_PHYS(np,lbl) (np->p_scripth + offsetof (struct scripth,lbl))
 #define NCB_SCRIPTH0_PHYS(np,lbl) (np->p_scripth0+offsetof (struct scripth,lbl))
 struct script {
-ncrcmd	start		[ 14];
-ncrcmd	getjob_begin	[  4];
-ncrcmd	getjob_end	[  4];
-ncrcmd	select		[  8];
-ncrcmd	wf_sel_done	[  2];
-ncrcmd	send_ident	[  2];
+ncrcmd start [ 14];
+ncrcmd getjob_begin [ 4];
+ncrcmd getjob_end [ 4];
+ncrcmd select [ 8];
+ncrcmd wf_sel_done [ 2];
+ncrcmd send_ident [ 2];
 #ifdef SCSI_NCR_IARB_SUPPORT
-ncrcmd	select2		[  8];
+ncrcmd select2 [ 8];
 #else
-ncrcmd	select2		[  2];
+ncrcmd select2 [ 2];
 #endif
-ncrcmd  command		[  2];
-ncrcmd  dispatch	[ 28];
-ncrcmd  sel_no_cmd	[ 10];
-ncrcmd  init		[  6];
-ncrcmd  clrack		[  4];
-ncrcmd  disp_status	[  4];
-ncrcmd  datai_done	[ 26];
-ncrcmd  datao_done	[ 12];
-ncrcmd  ign_i_w_r_msg	[  4];
-ncrcmd  datai_phase	[  2];
-ncrcmd  datao_phase	[  4];
-ncrcmd  msg_in		[  2];
-ncrcmd  msg_in2		[ 10];
+ncrcmd command [ 2];
+ncrcmd dispatch [ 28];
+ncrcmd sel_no_cmd [ 10];
+ncrcmd init [ 6];
+ncrcmd clrack [ 4];
+ncrcmd disp_status [ 4];
+ncrcmd datai_done [ 26];
+ncrcmd datao_done [ 12];
+ncrcmd ign_i_w_r_msg [ 4];
+ncrcmd datai_phase [ 2];
+ncrcmd datao_phase [ 4];
+ncrcmd msg_in [ 2];
+ncrcmd msg_in2 [ 10];
 #ifdef SCSI_NCR_IARB_SUPPORT
-ncrcmd  status		[ 14];
+ncrcmd status [ 14];
 #else
-ncrcmd  status		[ 10];
+ncrcmd status [ 10];
 #endif
-ncrcmd  complete	[  8];
+ncrcmd complete [ 8];
 #ifdef SCSI_NCR_PCIQ_MAY_REORDER_WRITES
-ncrcmd  complete2	[ 12];
+ncrcmd complete2 [ 12];
 #else
-ncrcmd  complete2	[ 10];
+ncrcmd complete2 [ 10];
 #endif
 #ifdef SCSI_NCR_PCIQ_SYNC_ON_INTR
-ncrcmd	done		[ 18];
+ncrcmd done [ 18];
 #else
-ncrcmd	done		[ 14];
+ncrcmd done [ 14];
 #endif
-ncrcmd	done_end	[  2];
-ncrcmd  save_dp		[  8];
-ncrcmd  restore_dp	[  4];
-ncrcmd  disconnect	[ 20];
+ncrcmd done_end [ 2];
+ncrcmd save_dp [ 8];
+ncrcmd restore_dp [ 4];
+ncrcmd disconnect [ 20];
 #ifdef SCSI_NCR_IARB_SUPPORT
-ncrcmd  idle		[  4];
+ncrcmd idle [ 4];
 #else
-ncrcmd  idle		[  2];
+ncrcmd idle [ 2];
 #endif
 #ifdef SCSI_NCR_IARB_SUPPORT
-ncrcmd  ungetjob	[  6];
+ncrcmd ungetjob [ 6];
 #else
-ncrcmd  ungetjob	[  4];
+ncrcmd ungetjob [ 4];
 #endif
-ncrcmd	reselect	[  4];
-ncrcmd	reselected	[ 20];
-ncrcmd	resel_scntl4	[ 30];
-#if   MAX_TASKS*4 > 512
-ncrcmd	resel_tag	[ 18];
+ncrcmd reselect [ 4];
+ncrcmd reselected [ 20];
+ncrcmd resel_scntl4 [ 30];
+#if MAX_TASKS*4 > 512
+ncrcmd resel_tag [ 18];
 #elif MAX_TASKS*4 > 256
-ncrcmd	resel_tag	[ 12];
+ncrcmd resel_tag [ 12];
 #else
-ncrcmd	resel_tag	[  8];
+ncrcmd resel_tag [ 8];
 #endif
-ncrcmd	resel_go	[  6];
-ncrcmd	resel_notag	[  2];
-ncrcmd	resel_dsa	[  8];
-ncrcmd  data_in		[MAX_SCATTER * SCR_SG_SIZE];
-ncrcmd  data_in2	[  4];
-ncrcmd  data_out	[MAX_SCATTER * SCR_SG_SIZE];
-ncrcmd  data_out2	[  4];
-ncrcmd  pm0_data	[ 12];
-ncrcmd  pm0_data_out	[  6];
-ncrcmd  pm0_data_end	[  6];
-ncrcmd  pm1_data	[ 12];
-ncrcmd  pm1_data_out	[  6];
-ncrcmd  pm1_data_end	[  6];
+ncrcmd resel_go [ 6];
+ncrcmd resel_notag [ 2];
+ncrcmd resel_dsa [ 8];
+ncrcmd data_in [MAX_SCATTER * SCR_SG_SIZE];
+ncrcmd data_in2 [ 4];
+ncrcmd data_out [MAX_SCATTER * SCR_SG_SIZE];
+ncrcmd data_out2 [ 4];
+ncrcmd pm0_data [ 12];
+ncrcmd pm0_data_out [ 6];
+ncrcmd pm0_data_end [ 6];
+ncrcmd pm1_data [ 12];
+ncrcmd pm1_data_out [ 6];
+ncrcmd pm1_data_end [ 6];
 };
 struct scripth {
-ncrcmd	start64		[  2];
-ncrcmd	no_data		[  2];
-ncrcmd	sel_for_abort	[ 18];
-ncrcmd	sel_for_abort_1	[  2];
-ncrcmd	select_no_atn	[  8];
-ncrcmd	wf_sel_done_no_atn [ 4];
-ncrcmd	msg_in_etc	[ 14];
-ncrcmd	msg_received	[  4];
-ncrcmd	msg_weird_seen	[  4];
-ncrcmd	msg_extended	[ 20];
-ncrcmd  msg_bad		[  6];
-ncrcmd	msg_weird	[  4];
-ncrcmd	msg_weird1	[  8];
-ncrcmd	wdtr_resp	[  6];
-ncrcmd	send_wdtr	[  4];
-ncrcmd	sdtr_resp	[  6];
-ncrcmd	send_sdtr	[  4];
-ncrcmd	ppr_resp	[  6];
-ncrcmd	send_ppr	[  4];
-ncrcmd	nego_bad_phase	[  4];
-ncrcmd	msg_out		[  4];
-ncrcmd	msg_out_done	[  4];
-ncrcmd	data_ovrun	[  2];
-ncrcmd	data_ovrun1	[ 22];
-ncrcmd	data_ovrun2	[  8];
-ncrcmd	abort_resel	[ 16];
-ncrcmd	resend_ident	[  4];
-ncrcmd	ident_break	[  4];
-ncrcmd	ident_break_atn	[  4];
-ncrcmd	sdata_in	[  6];
-ncrcmd  data_io		[  2];
-ncrcmd  data_io_com	[  8];
-ncrcmd  data_io_out	[ 12];
-ncrcmd	resel_bad_lun	[  4];
-ncrcmd	bad_i_t_l	[  4];
-ncrcmd	bad_i_t_l_q	[  4];
-ncrcmd	bad_status	[  6];
-ncrcmd	tweak_pmj	[ 12];
-ncrcmd	pm_handle	[ 20];
-ncrcmd	pm_handle1	[  4];
-ncrcmd	pm_save		[  4];
-ncrcmd	pm0_save	[ 14];
-ncrcmd	pm1_save	[ 14];
+ncrcmd start64 [ 2];
+ncrcmd no_data [ 2];
+ncrcmd sel_for_abort [ 18];
+ncrcmd sel_for_abort_1 [ 2];
+ncrcmd select_no_atn [ 8];
+ncrcmd wf_sel_done_no_atn [ 4];
+ncrcmd msg_in_etc [ 14];
+ncrcmd msg_received [ 4];
+ncrcmd msg_weird_seen [ 4];
+ncrcmd msg_extended [ 20];
+ncrcmd msg_bad [ 6];
+ncrcmd msg_weird [ 4];
+ncrcmd msg_weird1 [ 8];
+ncrcmd wdtr_resp [ 6];
+ncrcmd send_wdtr [ 4];
+ncrcmd sdtr_resp [ 6];
+ncrcmd send_sdtr [ 4];
+ncrcmd ppr_resp [ 6];
+ncrcmd send_ppr [ 4];
+ncrcmd nego_bad_phase [ 4];
+ncrcmd msg_out [ 4];
+ncrcmd msg_out_done [ 4];
+ncrcmd data_ovrun [ 2];
+ncrcmd data_ovrun1 [ 22];
+ncrcmd data_ovrun2 [ 8];
+ncrcmd abort_resel [ 16];
+ncrcmd resend_ident [ 4];
+ncrcmd ident_break [ 4];
+ncrcmd ident_break_atn [ 4];
+ncrcmd sdata_in [ 6];
+ncrcmd data_io [ 2];
+ncrcmd data_io_com [ 8];
+ncrcmd data_io_out [ 12];
+ncrcmd resel_bad_lun [ 4];
+ncrcmd bad_i_t_l [ 4];
+ncrcmd bad_i_t_l_q [ 4];
+ncrcmd bad_status [ 6];
+ncrcmd tweak_pmj [ 12];
+ncrcmd pm_handle [ 20];
+ncrcmd pm_handle1 [ 4];
+ncrcmd pm_save [ 4];
+ncrcmd pm0_save [ 14];
+ncrcmd pm1_save [ 14];
 #ifdef SYM_DEBUG_PM_WITH_WSR
-ncrcmd  pm_wsr_handle	[ 44];
+ncrcmd pm_wsr_handle [ 44];
 #else
-ncrcmd  pm_wsr_handle	[ 42];
+ncrcmd pm_wsr_handle [ 42];
 #endif
-ncrcmd  wsr_ma_helper	[  4];
-ncrcmd	zero		[  1];
-ncrcmd	scratch		[  1];
-ncrcmd	scratch1	[  1];
-ncrcmd	pm0_data_addr	[  1];
-ncrcmd	pm1_data_addr	[  1];
-ncrcmd	saved_dsa	[  1];
-ncrcmd	saved_drs	[  1];
-ncrcmd	done_pos	[  1];
-ncrcmd	startpos	[  1];
-ncrcmd	targtbl		[  1];
+ncrcmd wsr_ma_helper [ 4];
+ncrcmd zero [ 1];
+ncrcmd scratch [ 1];
+ncrcmd scratch1 [ 1];
+ncrcmd pm0_data_addr [ 1];
+ncrcmd pm1_data_addr [ 1];
+ncrcmd saved_dsa [ 1];
+ncrcmd saved_drs [ 1];
+ncrcmd done_pos [ 1];
+ncrcmd startpos [ 1];
+ncrcmd targtbl [ 1];
 #ifdef SCSI_NCR_PCI_MEM_NOT_SUPPORTED
-ncrcmd	start_ram	[  1];
-ncrcmd	script0_ba	[  4];
-ncrcmd	start_ram64	[  3];
-ncrcmd	script0_ba64	[  3];
-ncrcmd	scripth0_ba64	[  6];
-ncrcmd	ram_seg64	[  1];
+ncrcmd start_ram [ 1];
+ncrcmd script0_ba [ 4];
+ncrcmd start_ram64 [ 3];
+ncrcmd script0_ba64 [ 3];
+ncrcmd scripth0_ba64 [ 6];
+ncrcmd ram_seg64 [ 1];
 #endif
-ncrcmd	snooptest	[  6];
-ncrcmd	snoopend	[  2];
+ncrcmd snooptest [ 6];
+ncrcmd snoopend [ 2];
 };
-static	ccb_p	ncr_alloc_ccb	(ncb_p np);
-static	void	ncr_complete	(ncb_p np, ccb_p cp);
-static	void	ncr_exception	(ncb_p np);
-static	void	ncr_free_ccb	(ncb_p np, ccb_p cp);
-static	ccb_p	ncr_ccb_from_dsa(ncb_p np, u_long dsa);
-static	void	ncr_init_tcb	(ncb_p np, u_char tn);
-static	lcb_p	ncr_alloc_lcb	(ncb_p np, u_char tn, u_char ln);
-static	lcb_p	ncr_setup_lcb	(ncb_p np, u_char tn, u_char ln,
+static ccb_p ncr_alloc_ccb (ncb_p np);
+static void ncr_complete (ncb_p np, ccb_p cp);
+static void ncr_exception (ncb_p np);
+static void ncr_free_ccb (ncb_p np, ccb_p cp);
+static ccb_p ncr_ccb_from_dsa(ncb_p np, u_long dsa);
+static void ncr_init_tcb (ncb_p np, u_char tn);
+static lcb_p ncr_alloc_lcb (ncb_p np, u_char tn, u_char ln);
+static lcb_p ncr_setup_lcb (ncb_p np, u_char tn, u_char ln,
 u_char *inq_data);
-static	void	ncr_getclock	(ncb_p np, int mult);
-static	u_int	ncr_getpciclock (ncb_p np);
-static	void	ncr_selectclock	(ncb_p np, u_char scntl3);
-static	ccb_p	ncr_get_ccb	(ncb_p np, u_char tn, u_char ln);
-static	void	ncr_init	(ncb_p np, int reset, char * msg, u_long code);
-static	void	ncr_int_sbmc	(ncb_p np);
-static	void	ncr_int_par	(ncb_p np, u_short sist);
-static	void	ncr_int_ma	(ncb_p np);
-static	void	ncr_int_sir	(ncb_p np);
-static  void    ncr_int_sto     (ncb_p np);
-static  void    ncr_int_udc     (ncb_p np);
-static	void	ncr_negotiate	(ncb_p np, tcb_p tp);
-static	int	ncr_prepare_nego(ncb_p np, ccb_p cp, u_char *msgptr);
-#ifdef	SCSI_NCR_INTEGRITY_CHECKING
-static	int	ncr_ic_nego(ncb_p np, ccb_p cp, Scsi_Cmnd *cmd, u_char *msgptr);
+static void ncr_getclock (ncb_p np, int mult);
+static u_int ncr_getpciclock (ncb_p np);
+static void ncr_selectclock (ncb_p np, u_char scntl3);
+static ccb_p ncr_get_ccb (ncb_p np, u_char tn, u_char ln);
+static void ncr_init (ncb_p np, int reset, char * msg, u_long code);
+static void ncr_int_sbmc (ncb_p np);
+static void ncr_int_par (ncb_p np, u_short sist);
+static void ncr_int_ma (ncb_p np);
+static void ncr_int_sir (ncb_p np);
+static void ncr_int_sto (ncb_p np);
+static void ncr_int_udc (ncb_p np);
+static void ncr_negotiate (ncb_p np, tcb_p tp);
+static int ncr_prepare_nego(ncb_p np, ccb_p cp, u_char *msgptr);
+#ifdef SCSI_NCR_INTEGRITY_CHECKING
+static int ncr_ic_nego(ncb_p np, ccb_p cp, Scsi_Cmnd *cmd, u_char *msgptr);
 #endif
-static	void	ncr_script_copy_and_bind
+static void ncr_script_copy_and_bind
 (ncb_p np, ncrcmd *src, ncrcmd *dst, int len);
-static  void    ncr_script_fill (struct script * scr, struct scripth * scripth);
-static	int	ncr_scatter_896R1 (ncb_p np, ccb_p cp, Scsi_Cmnd *cmd);
-static	int	ncr_scatter	(ncb_p np, ccb_p cp, Scsi_Cmnd *cmd);
-static	void	ncr_getsync	(ncb_p np, u_char sfac, u_char *fakp, u_char *scntl3p);
-static  void    ncr_get_xfer_info(ncb_p np, tcb_p tp, u_char *factor, u_char *offset, u_char *width);
-static	void	ncr_setsync	(ncb_p np, ccb_p cp, u_char scntl3, u_char sxfer, u_char scntl4);
-static void 	ncr_set_sync_wide_status (ncb_p np, u_char target);
-static	void	ncr_setup_tags	(ncb_p np, u_char tn, u_char ln);
-static	void	ncr_setwide	(ncb_p np, ccb_p cp, u_char wide, u_char ack);
-static	void	ncr_setsyncwide	(ncb_p np, ccb_p cp, u_char scntl3, u_char sxfer, u_char scntl4, u_char wide);
-static	int	ncr_show_msg	(u_char * msg);
-static	void	ncr_print_msg	(ccb_p cp, char *label, u_char * msg);
-static	int	ncr_snooptest	(ncb_p np);
-static	void	ncr_timeout	(ncb_p np);
-static  void    ncr_wakeup      (ncb_p np, u_long code);
-static  int     ncr_wakeup_done (ncb_p np);
-static	void	ncr_start_next_ccb (ncb_p np, lcb_p lp, int maxn);
-static	void	ncr_put_start_queue(ncb_p np, ccb_p cp);
-static	void	ncr_chip_reset	(ncb_p np);
-static	void	ncr_soft_reset	(ncb_p np);
-static	void	ncr_start_reset	(ncb_p np);
-static	int	ncr_reset_scsi_bus (ncb_p np, int enab_int, int settle_delay);
-static	int	ncr_compute_residual (ncb_p np, ccb_p cp);
+static void ncr_script_fill (struct script * scr, struct scripth * scripth);
+static int ncr_scatter_896R1 (ncb_p np, ccb_p cp, Scsi_Cmnd *cmd);
+static int ncr_scatter (ncb_p np, ccb_p cp, Scsi_Cmnd *cmd);
+static void ncr_getsync (ncb_p np, u_char sfac, u_char *fakp, u_char *scntl3p);
+static void ncr_get_xfer_info(ncb_p np, tcb_p tp, u_char *factor, u_char *offset, u_char *width);
+static void ncr_setsync (ncb_p np, ccb_p cp, u_char scntl3, u_char sxfer, u_char scntl4);
+static void ncr_set_sync_wide_status (ncb_p np, u_char target);
+static void ncr_setup_tags (ncb_p np, u_char tn, u_char ln);
+static void ncr_setwide (ncb_p np, ccb_p cp, u_char wide, u_char ack);
+static void ncr_setsyncwide (ncb_p np, ccb_p cp, u_char scntl3, u_char sxfer, u_char scntl4, u_char wide);
+static int ncr_show_msg (u_char * msg);
+static void ncr_print_msg (ccb_p cp, char *label, u_char * msg);
+static int ncr_snooptest (ncb_p np);
+static void ncr_timeout (ncb_p np);
+static void ncr_wakeup (ncb_p np, u_long code);
+static int ncr_wakeup_done (ncb_p np);
+static void ncr_start_next_ccb (ncb_p np, lcb_p lp, int maxn);
+static void ncr_put_start_queue(ncb_p np, ccb_p cp);
+static void ncr_chip_reset (ncb_p np);
+static void ncr_soft_reset (ncb_p np);
+static void ncr_start_reset (ncb_p np);
+static int ncr_reset_scsi_bus (ncb_p np, int enab_int, int settle_delay);
+static int ncr_compute_residual (ncb_p np, ccb_p cp);
 #ifdef SCSI_NCR_USER_COMMAND_SUPPORT
-static	void	ncr_usercmd	(ncb_p np);
+static void ncr_usercmd (ncb_p np);
 #endif
 static int ncr_attach (Scsi_Host_Template *tpnt, int unit, ncr_device *device);
 static void ncr_free_resources(ncb_p np);
@@ -1413,38 +1413,38 @@ retrieve_from_waiting_list(1, (np), (cmd))
 #define requeue_waiting_list(np) process_waiting_list((np), DID_OK)
 #define reset_waiting_list(np) process_waiting_list((np), DID_RESET)
 #ifdef SCSI_NCR_NVRAM_SUPPORT
-static  void	ncr_get_nvram	       (ncr_device *devp, ncr_nvram *nvp);
-static  int	sym_read_Tekram_nvram  (ncr_slot *np, u_short device_id,
+static void ncr_get_nvram (ncr_device *devp, ncr_nvram *nvp);
+static int sym_read_Tekram_nvram (ncr_slot *np, u_short device_id,
 Tekram_nvram *nvram);
-static  int	sym_read_Symbios_nvram (ncr_slot *np, Symbios_nvram *nvram);
+static int sym_read_Symbios_nvram (ncr_slot *np, Symbios_nvram *nvram);
 #endif
 static inline char *ncr_name (ncb_p np)
 {
 return np->inst_name;
 }
-#define	RELOC_SOFTC	0x40000000
-#define	RELOC_LABEL	0x50000000
-#define	RELOC_REGISTER	0x60000000
+#define RELOC_SOFTC 0x40000000
+#define RELOC_LABEL 0x50000000
+#define RELOC_REGISTER 0x60000000
 #if 0
-#define	RELOC_KVAR	0x70000000
+#define RELOC_KVAR 0x70000000
 #endif
-#define	RELOC_LABELH	0x80000000
-#define	RELOC_MASK	0xf0000000
-#define	NADDR(label)	(RELOC_SOFTC | offsetof(struct ncb, label))
-#define PADDR(label)    (RELOC_LABEL | offsetof(struct script, label))
-#define PADDRH(label)   (RELOC_LABELH | offsetof(struct scripth, label))
-#define	RADDR(label)	(RELOC_REGISTER | REG(label))
-#define	FADDR(label,ofs)(RELOC_REGISTER | ((REG(label))+(ofs)))
-#define	KVAR(which)	(RELOC_KVAR | (which))
-#define SCR_DATA_ZERO	0xf00ff00f
-#ifdef	RELOC_KVAR
-#define	SCRIPT_KVAR_JIFFIES	(0)
-#define	SCRIPT_KVAR_FIRST	SCRIPT_KVAR_JIFFIES
-#define	SCRIPT_KVAR_LAST	SCRIPT_KVAR_JIFFIES
+#define RELOC_LABELH 0x80000000
+#define RELOC_MASK 0xf0000000
+#define NADDR(label) (RELOC_SOFTC | offsetof(struct ncb, label))
+#define PADDR(label) (RELOC_LABEL | offsetof(struct script, label))
+#define PADDRH(label) (RELOC_LABELH | offsetof(struct scripth, label))
+#define RADDR(label) (RELOC_REGISTER | REG(label))
+#define FADDR(label,ofs)(RELOC_REGISTER | ((REG(label))+(ofs)))
+#define KVAR(which) (RELOC_KVAR | (which))
+#define SCR_DATA_ZERO 0xf00ff00f
+#ifdef RELOC_KVAR
+#define SCRIPT_KVAR_JIFFIES (0)
+#define SCRIPT_KVAR_FIRST SCRIPT_KVAR_JIFFIES
+#define SCRIPT_KVAR_LAST SCRIPT_KVAR_JIFFIES
 static void *script_kvars[] __initdata =
 { (void *)&jiffies };
 #endif
-static	struct script script0 __initdata = {
+static struct script script0 __initdata = {
 {
 SCR_NO_OP,
 0,
@@ -1698,7 +1698,7 @@ offsetof (struct ccb, phys.header.savep),
 SCR_JUMP,
 PADDR (dispatch),
 },{
-SCR_LOAD_REL  (temp, 4),
+SCR_LOAD_REL (temp, 4),
 offsetof (struct ccb, phys.header.savep),
 SCR_JUMP,
 PADDR (clrack),
@@ -1911,7 +1911,7 @@ SCR_RETURN,
 0,
 }
 };
-static	struct scripth scripth0 __initdata = {
+static struct scripth scripth0 __initdata = {
 {
 SCR_JUMP,
 PADDR (init),
@@ -2099,7 +2099,7 @@ PADDR (dispatch),
 SCR_CHMOV_ABS (1) ^ SCR_DATA_IN,
 NADDR (scratch),
 },{
-SCR_REG_REG (scratcha,  SCR_ADD,  0x01),
+SCR_REG_REG (scratcha, SCR_ADD, 0x01),
 0,
 SCR_REG_REG (scratcha1, SCR_ADDC, 0),
 0,
@@ -2150,22 +2150,22 @@ PADDRH (data_ovrun),
 SCR_JUMP ^ IFTRUE (WHEN (SCR_DATA_OUT)),
 PADDRH(data_io_out),
 },{
-SCR_LOAD_REL  (scratcha, 4),
+SCR_LOAD_REL (scratcha, 4),
 offsetof (struct ccb, phys.header.lastp),
 SCR_STORE_REL (scratcha, 4),
 offsetof (struct ccb, phys.header.savep),
-SCR_LOAD_REL  (temp, 4),
+SCR_LOAD_REL (temp, 4),
 offsetof (struct ccb, phys.header.savep),
 SCR_RETURN,
 0,
 },{
 SCR_REG_REG (HF_REG, SCR_AND, (~HF_DATA_IN)),
 0,
-SCR_LOAD_REL  (scratcha, 4),
+SCR_LOAD_REL (scratcha, 4),
 offsetof (struct ccb, phys.header.wlastp),
 SCR_STORE_REL (scratcha, 4),
 offsetof (struct ccb, phys.header.lastp),
-SCR_LOAD_REL  (scratcha, 4),
+SCR_LOAD_REL (scratcha, 4),
 offsetof (struct ccb, phys.header.wgoalp),
 SCR_STORE_REL (scratcha, 4),
 offsetof (struct ccb, phys.header.goalp),
@@ -2268,7 +2268,7 @@ PADDRH (pm1_data_addr),
 SCR_JUMP,
 PADDR (dispatch),
 },{
-#ifdef	SYM_DEBUG_PM_WITH_WSR
+#ifdef SYM_DEBUG_PM_WITH_WSR
 SCR_INT,
 SIR_PM_WITH_WSR,
 #endif
@@ -2357,8 +2357,8 @@ PADDR (start),
 SCR_COPY (sizeof(struct scripth)),
 },{
 0,
-PADDRH  (start64),
-SCR_LOAD_REL  (mmrs, 4),
+PADDRH (start64),
+SCR_LOAD_REL (mmrs, 4),
 offsetof (struct ncb, scr_ram_seg),
 SCR_JUMP64,
 PADDRH (start64),
@@ -2379,8 +2379,8 @@ SCR_INT,
 };
 void __init ncr_script_fill (struct script * scr, struct scripth * scrh)
 {
-int	i;
-ncrcmd	*p;
+int i;
+ncrcmd *p;
 p = scr->data_in;
 for (i=0; i<MAX_SCATTER; i++) {
 *p++ =SCR_CHMOV_TBL ^ SCR_DATA_IN;
@@ -2397,8 +2397,8 @@ assert ((u_long)p == (u_long)&scr->data_out + sizeof (scr->data_out));
 static void __init
 ncr_script_copy_and_bind (ncb_p np,ncrcmd *src,ncrcmd *dst,int len)
 {
-ncrcmd  opcode, new, old, tmp1, tmp2;
-ncrcmd	*start, *end;
+ncrcmd opcode, new, old, tmp1, tmp2;
+ncrcmd *start, *end;
 int relocs;
 int opchanged = 0;
 start = src;
@@ -2430,7 +2430,7 @@ case 0xc:
 relocs = 2;
 tmp1 = src[0];
 tmp2 = src[1];
-#ifdef	RELOC_KVAR
+#ifdef RELOC_KVAR
 if ((tmp1 & RELOC_MASK) == RELOC_KVAR)
 tmp1 = 0;
 if ((tmp2 & RELOC_MASK) == RELOC_KVAR)
@@ -2494,7 +2494,7 @@ break;
 case RELOC_SOFTC:
 new = (old & ~RELOC_MASK) + np->p_ncb;
 break;
-#ifdef	RELOC_KVAR
+#ifdef RELOC_KVAR
 case RELOC_KVAR:
 new=0;
 if (((old & ~RELOC_MASK) < SCRIPT_KVAR_FIRST) ||
@@ -2542,16 +2542,16 @@ static u_long div_10M[] =
 (ctest4) & 0x80? 0 : (((dmode) & 0xc0) >> 6) + ((ctest5) & 0x04) + 1
 static inline void ncr_init_burst(ncb_p np, u_char bc)
 {
-np->rv_ctest4	&= ~0x80;
-np->rv_dmode	&= ~(0x3 << 6);
-np->rv_ctest5	&= ~0x4;
+np->rv_ctest4 &= ~0x80;
+np->rv_dmode &= ~(0x3 << 6);
+np->rv_ctest5 &= ~0x4;
 if (!bc) {
-np->rv_ctest4	|= 0x80;
+np->rv_ctest4 |= 0x80;
 }
 else {
 --bc;
-np->rv_dmode	|= ((bc & 0x3) << 6);
-np->rv_ctest5	|= (bc & 0x4);
+np->rv_dmode |= ((bc & 0x3) << 6);
+np->rv_ctest5 |= (bc & 0x4);
 }
 }
 #ifdef SCSI_NCR_NVRAM_SUPPORT
@@ -2586,21 +2586,21 @@ tp->usrtags = 2 << nvram->max_tags_index;
 if (!(tn->flags & TEKRAM_DISCONNECT_ENABLE))
 tp->usrflag = UF_NODISC;
 if (!(tn->flags & TEKRAM_PARITY_CHECK))
-np->rv_scntl0  &= ~0x0a;
+np->rv_scntl0 &= ~0x0a;
 }
 #endif
 static void __init ncr_save_initial_setting(ncb_p np)
 {
-np->sv_scntl0	= INB(nc_scntl0) & 0x0a;
-np->sv_dmode	= INB(nc_dmode)  & 0xce;
-np->sv_dcntl	= INB(nc_dcntl)  & 0xa8;
-np->sv_ctest3	= INB(nc_ctest3) & 0x01;
-np->sv_ctest4	= INB(nc_ctest4) & 0x80;
-np->sv_gpcntl	= INB(nc_gpcntl);
-np->sv_stest2	= INB(nc_stest2) & 0x20;
-np->sv_stest4	= INB(nc_stest4);
-np->sv_stest1	= INB(nc_stest1);
-np->sv_scntl3   = INB(nc_scntl3) & 0x07;
+np->sv_scntl0 = INB(nc_scntl0) & 0x0a;
+np->sv_dmode = INB(nc_dmode) & 0xce;
+np->sv_dcntl = INB(nc_dcntl) & 0xa8;
+np->sv_ctest3 = INB(nc_ctest3) & 0x01;
+np->sv_ctest4 = INB(nc_ctest4) & 0x80;
+np->sv_gpcntl = INB(nc_gpcntl);
+np->sv_stest2 = INB(nc_stest2) & 0x20;
+np->sv_stest4 = INB(nc_stest4);
+np->sv_stest1 = INB(nc_stest1);
+np->sv_scntl3 = INB(nc_scntl3) & 0x07;
 if ((np->device_id == PCI_DEVICE_ID_LSI_53C1010) ||
 (np->device_id == PCI_DEVICE_ID_LSI_53C1010_66) ){
 np->sv_ctest5 = INB(nc_ctest5) & 0x04 ;
@@ -2613,18 +2613,18 @@ np->sv_scntl4 = 0;
 }
 static int __init ncr_prepare_setting(ncb_p np, ncr_nvram *nvram)
 {
-u_char	burst_max;
-u_long	period;
+u_char burst_max;
+u_long period;
 int i;
-np->maxwide	= (np->features & FE_WIDE)? 1 : 0;
-if	(np->features & FE_QUAD)
-np->multiplier	= 4;
-else if	(np->features & FE_DBLR)
-np->multiplier	= 2;
+np->maxwide = (np->features & FE_WIDE)? 1 : 0;
+if (np->features & FE_QUAD)
+np->multiplier = 4;
+else if (np->features & FE_DBLR)
+np->multiplier = 2;
 else
-np->multiplier	= 1;
-np->clock_khz	= (np->features & FE_CLK80)? 80000 : 40000;
-np->clock_khz	*= np->multiplier;
+np->multiplier = 1;
+np->clock_khz = (np->features & FE_CLK80)? 80000 : 40000;
+np->clock_khz *= np->multiplier;
 if (np->clock_khz != 40000)
 ncr_getclock(np, np->multiplier);
 if ( (np->device_id == PCI_DEVICE_ID_LSI_53C1010) ||
@@ -2645,40 +2645,40 @@ np->rv_scntl3 = i+1;
 }
 np->rv_scntl4 = np->sv_scntl4;
 period = (4 * div_10M[0] + np->clock_khz - 1) / np->clock_khz;
-if	(period <= 250)		np->minsync = 10;
-else if	(period <= 303)		np->minsync = 11;
-else if	(period <= 500)		np->minsync = 12;
-else				np->minsync = (period + 40 - 1) / 40;
+if (period <= 250) np->minsync = 10;
+else if (period <= 303) np->minsync = 11;
+else if (period <= 500) np->minsync = 12;
+else np->minsync = (period + 40 - 1) / 40;
 if ((np->minsync == 10) && (np->features & FE_ULTRA3))
 np->minsync = 9;
-if	(np->minsync < 25 && !(np->features & (FE_ULTRA|FE_ULTRA2|FE_ULTRA3)))
+if (np->minsync < 25 && !(np->features & (FE_ULTRA|FE_ULTRA2|FE_ULTRA3)))
 np->minsync = 25;
-else if	(np->minsync < 12 && (np->features & FE_ULTRA))
+else if (np->minsync < 12 && (np->features & FE_ULTRA))
 np->minsync = 12;
-else if	(np->minsync < 10 && (np->features & FE_ULTRA2))
+else if (np->minsync < 10 && (np->features & FE_ULTRA2))
 np->minsync = 10;
-else if	(np->minsync < 9 && (np->features & FE_ULTRA3))
+else if (np->minsync < 9 && (np->features & FE_ULTRA3))
 np->minsync = 9;
 period = (11 * div_10M[np->clock_divn - 1]) / (4 * np->clock_khz);
 np->maxsync = period > 2540 ? 254 : period / 10;
 if (np->features & FE_64BIT)
 #ifdef SCSI_NCR_USE_64BIT_DAC
-np->rv_ccntl1	|= (XTIMOD | EXTIBMV);
+np->rv_ccntl1 |= (XTIMOD | EXTIBMV);
 #else
-np->rv_ccntl1	|= (DDAC);
+np->rv_ccntl1 |= (DDAC);
 #endif
 if (np->features & FE_NOPM)
-np->rv_ccntl0	|= (ENPMJ);
+np->rv_ccntl0 |= (ENPMJ);
 #if defined SCSI_NCR_TRUST_BIOS_SETTING
-np->rv_scntl0	= np->sv_scntl0;
-np->rv_dmode	= np->sv_dmode;
-np->rv_dcntl	= np->sv_dcntl;
-np->rv_ctest3	= np->sv_ctest3;
-np->rv_ctest4	= np->sv_ctest4;
-np->rv_ctest5	= np->sv_ctest5;
-burst_max	= burst_code(np->sv_dmode, np->sv_ctest4, np->sv_ctest5);
+np->rv_scntl0 = np->sv_scntl0;
+np->rv_dmode = np->sv_dmode;
+np->rv_dcntl = np->sv_dcntl;
+np->rv_ctest3 = np->sv_ctest3;
+np->rv_ctest4 = np->sv_ctest4;
+np->rv_ctest5 = np->sv_ctest5;
+burst_max = burst_code(np->sv_dmode, np->sv_ctest4, np->sv_ctest5);
 #else
-burst_max	= driver_setup.burst_max;
+burst_max = driver_setup.burst_max;
 if (burst_max == 255)
 burst_max = burst_code(np->sv_dmode, np->sv_ctest4, np->sv_ctest5);
 if (burst_max > 7)
@@ -2692,31 +2692,31 @@ np->revision_id <= 0x1))
 np->features &= ~(FE_WRIE|FE_ERL|FE_ERMP);
 if ( ((np->device_id == PCI_DEVICE_ID_LSI_53C1010) && (np->revision_id < 0x02) )
 || (np->device_id == PCI_DEVICE_ID_LSI_53C1010_66 ) )
-np->rv_ccntl1  |=  0x10;
+np->rv_ccntl1 |= 0x10;
 if (np->features & FE_ERL)
-np->rv_dmode	|= ERL;
+np->rv_dmode |= ERL;
 if (np->features & FE_BOF)
-np->rv_dmode	|= BOF;
+np->rv_dmode |= BOF;
 if (np->features & FE_ERMP)
-np->rv_dmode	|= ERMP;
+np->rv_dmode |= ERMP;
 #if 1
 if ((np->features & FE_PFEN) && !np->base2_ba)
 #else
 if (np->features & FE_PFEN)
 #endif
-np->rv_dcntl	|= PFEN;
+np->rv_dcntl |= PFEN;
 if (np->features & FE_CLSE)
-np->rv_dcntl	|= CLSE;
+np->rv_dcntl |= CLSE;
 if (np->features & FE_WRIE)
-np->rv_ctest3	|= WRIE;
+np->rv_ctest3 |= WRIE;
 if ( (np->device_id != PCI_DEVICE_ID_LSI_53C1010) &&
 (np->device_id != PCI_DEVICE_ID_LSI_53C1010_66) &&
 (np->features & FE_DFS))
-np->rv_ctest5	|= DFS;
+np->rv_ctest5 |= DFS;
 if (driver_setup.master_parity)
-np->rv_ctest4	|= MPEE;
+np->rv_ctest4 |= MPEE;
 if (driver_setup.scsi_parity)
-np->rv_scntl0	|= 0x0a;
+np->rv_scntl0 |= 0x0a;
 #ifdef SCSI_NCR_NVRAM_SUPPORT
 if (nvram) {
 switch(nvram->type) {
@@ -2725,7 +2725,7 @@ np->myaddr = nvram->data.Tekram.host_id & 0x0f;
 break;
 case SCSI_NCR_SYMBIOS_NVRAM:
 if (!(nvram->data.Symbios.flags & SYMBIOS_PARITY_ENABLE))
-np->rv_scntl0  &= ~0x0a;
+np->rv_scntl0 &= ~0x0a;
 np->myaddr = nvram->data.Symbios.host_id & 0x0f;
 if (nvram->data.Symbios.flags & SYMBIOS_VERBOSE_MSGS)
 np->verbose += 1;
@@ -2741,9 +2741,9 @@ np->myaddr = SCSI_NCR_MYADDR;
 #endif
 ncr_init_burst(np, burst_max);
 np->scsi_mode = SMODE_SE;
-if	(np->features & (FE_ULTRA2 | FE_ULTRA3))
+if (np->features & (FE_ULTRA2 | FE_ULTRA3))
 np->scsi_mode = (np->sv_stest4 & SMODE);
-else if	(np->features & FE_DIFF) {
+else if (np->features & FE_DIFF) {
 switch(driver_setup.diff_support) {
 case 4:
 if (np->sv_scntl3) {
@@ -2774,10 +2774,10 @@ if ((driver_setup.led_pin ||
 np->features |= FE_LED0;
 switch(driver_setup.irqm & 3) {
 case 2:
-np->rv_dcntl	|= IRQM;
+np->rv_dcntl |= IRQM;
 break;
 case 1:
-np->rv_dcntl	|= (np->sv_dcntl & IRQM);
+np->rv_dcntl |= (np->sv_dcntl & IRQM);
 break;
 default:
 break;
@@ -2815,13 +2815,13 @@ np->target[i].usrflag = UF_NODISC;
 }
 i = nvram ? nvram->type : 0;
 printk(KERN_INFO "%s: %sID %d, Fast-%d%s%s\n", ncr_name(np),
-i  == SCSI_NCR_SYMBIOS_NVRAM ? "Symbios format NVRAM, " :
-(i == SCSI_NCR_TEKRAM_NVRAM  ? "Tekram format NVRAM, " : ""),
+i == SCSI_NCR_SYMBIOS_NVRAM ? "Symbios format NVRAM, " :
+(i == SCSI_NCR_TEKRAM_NVRAM ? "Tekram format NVRAM, " : ""),
 np->myaddr,
 np->minsync < 10 ? 80 :
 (np->minsync < 12 ? 40 : (np->minsync < 25 ? 20 : 10) ),
-(np->rv_scntl0 & 0xa)	? ", Parity Checking"	: ", NO Parity",
-(np->rv_stest2 & 0x20)	? ", Differential"	: "");
+(np->rv_scntl0 & 0xa) ? ", Parity Checking" : ", NO Parity",
+(np->rv_stest2 & 0x20) ? ", Differential" : "");
 if (bootverbose > 1) {
 printk (KERN_INFO "%s: initial SCNTL3/DMODE/DCNTL/CTEST3/4/5 = "
 "(hex) %02x/%02x/%02x/%02x/%02x/%02x\n",
@@ -2843,19 +2843,19 @@ void __init ncr_display_Symbios_nvram(ncb_p np, Symbios_nvram *nvram)
 int i;
 printk(KERN_DEBUG "%s: HOST ID=%d%s%s%s%s%s\n",
 ncr_name(np), nvram->host_id & 0x0f,
-(nvram->flags  & SYMBIOS_SCAM_ENABLE)	? " SCAM"	:"",
-(nvram->flags  & SYMBIOS_PARITY_ENABLE)	? " PARITY"	:"",
-(nvram->flags  & SYMBIOS_VERBOSE_MSGS)	? " VERBOSE"	:"",
-(nvram->flags  & SYMBIOS_CHS_MAPPING)	? " CHS_ALT"	:"",
-(nvram->flags1 & SYMBIOS_SCAN_HI_LO)	? " HI_LO"	:"");
+(nvram->flags & SYMBIOS_SCAM_ENABLE) ? " SCAM" :"",
+(nvram->flags & SYMBIOS_PARITY_ENABLE) ? " PARITY" :"",
+(nvram->flags & SYMBIOS_VERBOSE_MSGS) ? " VERBOSE" :"",
+(nvram->flags & SYMBIOS_CHS_MAPPING) ? " CHS_ALT" :"",
+(nvram->flags1 & SYMBIOS_SCAN_HI_LO) ? " HI_LO" :"");
 for (i = 0 ; i < 15 ; i++) {
 struct Symbios_target *tn = &nvram->target[i];
 printk(KERN_DEBUG "%s-%d:%s%s%s%s WIDTH=%d SYNC=%d TMO=%d\n",
 ncr_name(np), i,
-(tn->flags & SYMBIOS_DISCONNECT_ENABLE)	? " DISC"	: "",
-(tn->flags & SYMBIOS_SCAN_AT_BOOT_TIME)	? " SCAN_BOOT"	: "",
-(tn->flags & SYMBIOS_SCAN_LUNS)		? " SCAN_LUNS"	: "",
-(tn->flags & SYMBIOS_QUEUE_TAGS_ENABLED)? " TCQ"	: "",
+(tn->flags & SYMBIOS_DISCONNECT_ENABLE) ? " DISC" : "",
+(tn->flags & SYMBIOS_SCAN_AT_BOOT_TIME) ? " SCAN_BOOT" : "",
+(tn->flags & SYMBIOS_SCAN_LUNS) ? " SCAN_LUNS" : "",
+(tn->flags & SYMBIOS_QUEUE_TAGS_ENABLED)? " TCQ" : "",
 tn->bus_width,
 tn->sync_period / 4,
 tn->timeout);
@@ -2872,21 +2872,21 @@ if (nvram->boot_delay_index < 6)
 boot_delay = Tekram_boot_delay[nvram->boot_delay_index];
 switch((nvram->flags & TEKRAM_REMOVABLE_FLAGS) >> 6) {
 default:
-case 0:	rem = "";			break;
-case 1: rem = " REMOVABLE=boot device";	break;
-case 2: rem = " REMOVABLE=all";		break;
+case 0: rem = ""; break;
+case 1: rem = " REMOVABLE=boot device"; break;
+case 2: rem = " REMOVABLE=all"; break;
 }
 printk(KERN_DEBUG
 "%s: HOST ID=%d%s%s%s%s%s%s%s%s%s BOOT DELAY=%d tags=%d\n",
 ncr_name(np), nvram->host_id & 0x0f,
-(nvram->flags1 & SYMBIOS_SCAM_ENABLE)	? " SCAM"	:"",
-(nvram->flags & TEKRAM_MORE_THAN_2_DRIVES) ? " >2DRIVES"	:"",
-(nvram->flags & TEKRAM_DRIVES_SUP_1GB)	? " >1GB"	:"",
-(nvram->flags & TEKRAM_RESET_ON_POWER_ON) ? " RESET"	:"",
-(nvram->flags & TEKRAM_ACTIVE_NEGATION)	? " ACT_NEG"	:"",
-(nvram->flags & TEKRAM_IMMEDIATE_SEEK)	? " IMM_SEEK"	:"",
-(nvram->flags & TEKRAM_SCAN_LUNS)	? " SCAN_LUNS"	:"",
-(nvram->flags1 & TEKRAM_F2_F6_ENABLED)	? " F2_F6"	:"",
+(nvram->flags1 & SYMBIOS_SCAM_ENABLE) ? " SCAM" :"",
+(nvram->flags & TEKRAM_MORE_THAN_2_DRIVES) ? " >2DRIVES" :"",
+(nvram->flags & TEKRAM_DRIVES_SUP_1GB) ? " >1GB" :"",
+(nvram->flags & TEKRAM_RESET_ON_POWER_ON) ? " RESET" :"",
+(nvram->flags & TEKRAM_ACTIVE_NEGATION) ? " ACT_NEG" :"",
+(nvram->flags & TEKRAM_IMMEDIATE_SEEK) ? " IMM_SEEK" :"",
+(nvram->flags & TEKRAM_SCAN_LUNS) ? " SCAN_LUNS" :"",
+(nvram->flags1 & TEKRAM_F2_F6_ENABLED) ? " F2_F6" :"",
 rem, boot_delay, tags);
 for (i = 0; i <= 15; i++) {
 int sync, j;
@@ -2895,12 +2895,12 @@ j = tn->sync_index & 0xf;
 sync = Tekram_sync[j];
 printk(KERN_DEBUG "%s-%d:%s%s%s%s%s%s PERIOD=%d\n",
 ncr_name(np), i,
-(tn->flags & TEKRAM_PARITY_CHECK)	? " PARITY"	: "",
-(tn->flags & TEKRAM_SYNC_NEGO)		? " SYNC"	: "",
-(tn->flags & TEKRAM_DISCONNECT_ENABLE)	? " DISC"	: "",
-(tn->flags & TEKRAM_START_CMD)		? " START"	: "",
-(tn->flags & TEKRAM_TAGGED_COMMANDS)	? " TCQ"	: "",
-(tn->flags & TEKRAM_WIDE_NEGO)		? " WIDE"	: "",
+(tn->flags & TEKRAM_PARITY_CHECK) ? " PARITY" : "",
+(tn->flags & TEKRAM_SYNC_NEGO) ? " SYNC" : "",
+(tn->flags & TEKRAM_DISCONNECT_ENABLE) ? " DISC" : "",
+(tn->flags & TEKRAM_START_CMD) ? " START" : "",
+(tn->flags & TEKRAM_TAGGED_COMMANDS) ? " TCQ" : "",
+(tn->flags & TEKRAM_WIDE_NEGO) ? " WIDE" : "",
 sync);
 }
 }
@@ -2935,22 +2935,22 @@ np = __m_calloc_dma(device->pdev, sizeof(struct ncb), "NCB");
 if (!np)
 goto attach_error;
 NCR_INIT_LOCK_NCB(np);
-np->pdev  = device->pdev;
+np->pdev = device->pdev;
 np->p_ncb = vtobus(np);
 host_data->ncb = np;
 strncpy(np->chip_name, device->chip.name, sizeof(np->chip_name) - 1);
-np->unit	= unit;
-np->verbose	= driver_setup.verbose;
+np->unit = unit;
+np->verbose = driver_setup.verbose;
 sprintf(np->inst_name, NAME53C "%s-%d", np->chip_name, np->unit);
-np->device_id	= device->chip.device_id;
-np->revision_id	= device->chip.revision_id;
-np->bus		= device->slot.bus;
-np->device_fn	= device->slot.device_fn;
-np->features	= device->chip.features;
-np->clock_divn	= device->chip.nr_divisor;
-np->maxoffs	= device->chip.offset_max;
-np->maxburst	= device->chip.burst_max;
-np->myaddr	= device->host_id;
+np->device_id = device->chip.device_id;
+np->revision_id = device->chip.revision_id;
+np->bus = device->slot.bus;
+np->device_fn = device->slot.device_fn;
+np->features = device->chip.features;
+np->clock_divn = device->chip.nr_divisor;
+np->maxoffs = device->chip.offset_max;
+np->maxburst = device->chip.burst_max;
+np->myaddr = device->host_id;
 np->squeue = (ncrcmd *)
 m_calloc_dma(sizeof(ncrcmd)*(MAX_START*2), "SQUEUE");
 if (!np->squeue)
@@ -2963,11 +2963,11 @@ goto attach_error;
 np->targtbl = (u_int32 *) m_calloc_dma(256, "TARGTBL");
 if (!np->targtbl)
 goto attach_error;
-np->script0	= (struct script *)
-m_calloc_dma(sizeof(struct script),  "SCRIPT");
+np->script0 = (struct script *)
+m_calloc_dma(sizeof(struct script), "SCRIPT");
 if (!np->script0)
 goto attach_error;
-np->scripth0	= (struct scripth *)
+np->scripth0 = (struct scripth *)
 m_calloc_dma(sizeof(struct scripth), "SCRIPTH");
 if (!np->scripth0)
 goto attach_error;
@@ -2976,11 +2976,11 @@ xpt_que_init(&np->b0_ccbq);
 if (!ncr_alloc_ccb(np))
 goto attach_error;
 init_timer(&np->timer);
-np->timer.data     = (unsigned long) np;
+np->timer.data = (unsigned long) np;
 np->timer.function = sym53c8xx_timeout;
-np->base_ba	= device->slot.base;
-np->base_ws	= (np->features & FE_IO256)? 256 : 128;
-np->base2_ba	= (np->features & FE_RAM)? device->slot.base_2 : 0;
+np->base_ba = device->slot.base;
+np->base_ws = (np->features & FE_IO256)? 256 : 128;
+np->base2_ba = (np->features & FE_RAM)? device->slot.base_2 : 0;
 #ifndef SCSI_NCR_IOMAPPED
 np->base_va = remap_pci_mem(np->base_ba, np->base_ws);
 if (!np->base_va) {
@@ -3024,18 +3024,18 @@ ncr_save_initial_setting (np);
 ncr_chip_reset (np);
 (void) ncr_prepare_setting(np, nvram);
 i = np->pciclock_max ? ncr_getpciclock(np) : 0;
-if (i && (i < np->pciclock_min  || i > np->pciclock_max)) {
+if (i && (i < np->pciclock_min || i > np->pciclock_max)) {
 printk(KERN_ERR "%s: PCI clock (%u KHz) is out of range "
 "[%u KHz - %u KHz].\n",
 ncr_name(np), i, np->pciclock_min, np->pciclock_max);
 goto attach_error;
 }
 ncr_script_fill (&script0, &scripth0);
-np->p_script	= vtobus(np->script0);
-np->p_scripth	= vtobus(np->scripth0);
-np->p_scripth0	= np->p_scripth;
+np->p_script = vtobus(np->script0);
+np->p_scripth = vtobus(np->scripth0);
+np->p_scripth0 = np->p_scripth;
 if (np->base2_ba) {
-np->p_script	= pcivtobus(np->base2_ba);
+np->p_script = pcivtobus(np->base2_ba);
 if (np->features & FE_RAM8K) {
 np->base2_ws = 8192;
 np->p_scripth = np->p_script + 4096;
@@ -3065,23 +3065,23 @@ np->script0->resel_scntl4[0] = cpu_to_scr(SCR_LOAD_REL (scntl4, 1));
 np->script0->resel_scntl4[1] = cpu_to_scr(offsetof(struct tcb, uval));
 }
 #ifdef SCSI_NCR_PCI_MEM_NOT_SUPPORTED
-np->scripth0->script0_ba[0]	= cpu_to_scr(vtobus(np->script0));
-np->scripth0->script0_ba64[0]	= cpu_to_scr(vtobus(np->script0));
-np->scripth0->scripth0_ba64[0]	= cpu_to_scr(vtobus(np->scripth0));
-np->scripth0->ram_seg64[0]	= np->scr_ram_seg;
+np->scripth0->script0_ba[0] = cpu_to_scr(vtobus(np->script0));
+np->scripth0->script0_ba64[0] = cpu_to_scr(vtobus(np->script0));
+np->scripth0->scripth0_ba64[0] = cpu_to_scr(vtobus(np->scripth0));
+np->scripth0->ram_seg64[0] = np->scr_ram_seg;
 #endif
-np->idletask.start	= cpu_to_scr(NCB_SCRIPT_PHYS (np, idle));
-np->idletask.restart	= cpu_to_scr(NCB_SCRIPTH_PHYS (np, bad_i_t_l));
-np->p_idletask		= NCB_PHYS(np, idletask);
-np->notask.start	= cpu_to_scr(NCB_SCRIPT_PHYS (np, idle));
-np->notask.restart	= cpu_to_scr(NCB_SCRIPTH_PHYS (np, bad_i_t_l));
-np->p_notask		= NCB_PHYS(np, notask);
-np->bad_i_t_l.start	= cpu_to_scr(NCB_SCRIPT_PHYS (np, idle));
-np->bad_i_t_l.restart	= cpu_to_scr(NCB_SCRIPTH_PHYS (np, bad_i_t_l));
-np->p_bad_i_t_l		= NCB_PHYS(np, bad_i_t_l);
-np->bad_i_t_l_q.start	= cpu_to_scr(NCB_SCRIPT_PHYS (np, idle));
-np->bad_i_t_l_q.restart	= cpu_to_scr(NCB_SCRIPTH_PHYS (np,bad_i_t_l_q));
-np->p_bad_i_t_l_q	= NCB_PHYS(np, bad_i_t_l_q);
+np->idletask.start = cpu_to_scr(NCB_SCRIPT_PHYS (np, idle));
+np->idletask.restart = cpu_to_scr(NCB_SCRIPTH_PHYS (np, bad_i_t_l));
+np->p_idletask = NCB_PHYS(np, idletask);
+np->notask.start = cpu_to_scr(NCB_SCRIPT_PHYS (np, idle));
+np->notask.restart = cpu_to_scr(NCB_SCRIPTH_PHYS (np, bad_i_t_l));
+np->p_notask = NCB_PHYS(np, notask);
+np->bad_i_t_l.start = cpu_to_scr(NCB_SCRIPT_PHYS (np, idle));
+np->bad_i_t_l.restart = cpu_to_scr(NCB_SCRIPTH_PHYS (np, bad_i_t_l));
+np->p_bad_i_t_l = NCB_PHYS(np, bad_i_t_l);
+np->bad_i_t_l_q.start = cpu_to_scr(NCB_SCRIPT_PHYS (np, idle));
+np->bad_i_t_l_q.restart = cpu_to_scr(NCB_SCRIPTH_PHYS (np,bad_i_t_l_q));
+np->p_bad_i_t_l_q = NCB_PHYS(np, bad_i_t_l_q);
 np->badluntbl = m_calloc_dma(256, "BADLUNTBL");
 if (!np->badluntbl)
 goto attach_error;
@@ -3093,11 +3093,11 @@ np->scripth0->targtbl[0] = cpu_to_scr(vtobus(np->targtbl));
 for (i = 0 ; i < MAX_TARGET ; i++) {
 np->targtbl[i] = cpu_to_scr(NCB_PHYS(np, target[i]));
 np->target[i].b_luntbl = cpu_to_scr(vtobus(np->badluntbl));
-np->target[i].b_lun0   = cpu_to_scr(NCB_PHYS(np, resel_badlun));
+np->target[i].b_lun0 = cpu_to_scr(NCB_PHYS(np, resel_badlun));
 }
 if (np->features & FE_LED0) {
-np->script0->idle[0]  =
-cpu_to_scr(SCR_REG_REG(gpreg, SCR_OR,  0x01));
+np->script0->idle[0] =
+cpu_to_scr(SCR_REG_REG(gpreg, SCR_OR, 0x01));
 np->script0->reselected[0] =
 cpu_to_scr(SCR_REG_REG(gpreg, SCR_AND, 0xfe));
 np->script0->start[0] =
@@ -3169,30 +3169,30 @@ np->order = M_SIMPLE_TAG;
 #endif
 if (!first_host)
 first_host = instance;
-instance->max_channel	= 0;
-instance->this_id	= np->myaddr;
-instance->max_id	= np->maxwide ? 16 : 8;
-instance->max_lun	= MAX_LUN;
+instance->max_channel = 0;
+instance->this_id = np->myaddr;
+instance->max_id = np->maxwide ? 16 : 8;
+instance->max_lun = MAX_LUN;
 #ifndef SCSI_NCR_IOMAPPED
 #if LINUX_VERSION_CODE >= LinuxVersionCode(2,3,29)
-instance->base		= (unsigned long) np->reg;
+instance->base = (unsigned long) np->reg;
 #else
-instance->base		= (char *) np->reg;
+instance->base = (char *) np->reg;
 #endif
 #endif
-instance->irq		= np->irq;
-instance->unique_id	= np->base_io;
-instance->io_port	= np->base_io;
-instance->n_io_port	= np->base_ws;
-instance->dma_channel	= 0;
-instance->cmd_per_lun	= MAX_TAGS;
-instance->can_queue	= (MAX_START-4);
-np->check_integrity       = 0;
-#ifdef	SCSI_NCR_INTEGRITY_CHECKING
+instance->irq = np->irq;
+instance->unique_id = np->base_io;
+instance->io_port = np->base_io;
+instance->n_io_port = np->base_ws;
+instance->dma_channel = 0;
+instance->cmd_per_lun = MAX_TAGS;
+instance->can_queue = (MAX_START-4);
+np->check_integrity = 0;
+#ifdef SCSI_NCR_INTEGRITY_CHECKING
 instance->check_integrity = 0;
 #ifdef SCSI_NCR_ENABLE_INTEGRITY_CHECK
 if ( !(driver_setup.bus_check & 0x04) ) {
-np->check_integrity       = 1;
+np->check_integrity = 1;
 instance->check_integrity = 1;
 }
 #endif
@@ -3276,7 +3276,7 @@ lcmd = (Scsi_Cmnd *) cmd->host_scribble;
 cmd->scsi_done(cmd);
 }
 }
-#ifdef	SCSI_NCR_INTEGRITY_CHECKING
+#ifdef SCSI_NCR_INTEGRITY_CHECKING
 static int ncr_ic_nego(ncb_p np, ccb_p cp, Scsi_Cmnd *cmd, u_char *msgptr)
 {
 tcb_p tp = &np->target[cp->target];
@@ -3290,7 +3290,7 @@ if (tp->inq_done) {
 if (!tp->ic_maximums_set) {
 tp->ic_maximums_set = 1;
 if ( (tp->inq_byte7 & INQ7_WIDE16) &&
-np->maxwide  && tp->usrwide)
+np->maxwide && tp->usrwide)
 tp->ic_max_width = 1;
 else
 tp->ic_max_width = 0;
@@ -3299,7 +3299,7 @@ tp->ic_min_sync = (tp->minsync < np->minsync) ?
 np->minsync : tp->minsync;
 else
 tp->ic_min_sync = 255;
-tp->period   = 1;
+tp->period = 1;
 tp->widedone = 1;
 #if 0
 if (tp->ic_max_width && (tp->ic_min_sync != 255 ))
@@ -3323,14 +3323,14 @@ ncr_name(np));
 tp->ic_max_width = 0;
 tp->widedone = tp->period = 0;
 }
-if (!tp->ppr_negotiation &&  (cmd->ic_nego == NS_PPR )) {
+if (!tp->ppr_negotiation && (cmd->ic_nego == NS_PPR )) {
 tp->ppr_negotiation = 0;
 cmd->ic_nego &= ~NS_PPR;
 tp->widedone = tp->period = 1;
 return msglen;
 }
 else if (( tp->ppr_negotiation && !(cmd->ic_nego & NS_PPR )) ||
-(!tp->ppr_negotiation &&  (cmd->ic_nego & NS_PPR )) ) {
+(!tp->ppr_negotiation && (cmd->ic_nego & NS_PPR )) ) {
 tp->ppr_negotiation = 0;
 cmd->ic_nego &= ~NS_PPR;
 }
@@ -3364,18 +3364,18 @@ else if (tp->ic_min_sync <= 0x0C)
 tp->ic_min_sync = 0x19;
 else if (tp->ic_min_sync <= 0x19)
 tp->ic_min_sync *= 2;
-else  {
+else {
 tp->ic_min_sync = 255;
 cmd->ic_nego_sync = 0;
 tp->maxoffs = 0;
 }
 }
-new_period  = tp->maxoffs?tp->ic_min_sync:0;
-new_offset  = tp->maxoffs;
+new_period = tp->maxoffs?tp->ic_min_sync:0;
+new_offset = tp->maxoffs;
 break;
 case 1:
-new_period  = tp->maxoffs?tp->ic_min_sync:0;
-new_offset  = tp->maxoffs;
+new_period = tp->maxoffs?tp->ic_min_sync:0;
+new_offset = tp->maxoffs;
 break;
 case 0:
 default:
@@ -3484,7 +3484,7 @@ nego = NS_PPR;
 else
 nego = NS_WIDE;
 width = tp->usrwide;
-#ifdef	SCSI_NCR_INTEGRITY_CHECKING
+#ifdef SCSI_NCR_INTEGRITY_CHECKING
 if (tp->ic_done)
 width &= tp->ic_max_width;
 #endif
@@ -3504,7 +3504,7 @@ factor = 0;
 else {
 offset = tp->maxoffs;
 factor = tp->minsync;
-#ifdef	SCSI_NCR_INTEGRITY_CHECKING
+#ifdef SCSI_NCR_INTEGRITY_CHECKING
 if ((tp->ic_done) &&
 (factor < tp->ic_min_sync))
 factor = tp->ic_min_sync;
@@ -3513,7 +3513,7 @@ factor = tp->ic_min_sync;
 } else {
 offset = 0;
 factor = 0;
-tp->period  =0xffff;
+tp->period =0xffff;
 PRINT_TARGET(np, cp->target);
 printk ("target did not report SYNC.\n");
 };
@@ -3573,16 +3573,16 @@ return msglen;
 }
 static int ncr_queue_command (ncb_p np, Scsi_Cmnd *cmd)
 {
-tcb_p tp                      = &np->target[cmd->target];
-lcb_p lp		      = ncr_lp(np, tp, cmd->lun);
+tcb_p tp = &np->target[cmd->target];
+lcb_p lp = ncr_lp(np, tp, cmd->lun);
 ccb_p cp;
-u_char	idmsg, *msgptr;
-u_int   msglen;
-int	direction;
-u_int32	lastp, goalp;
-if ((cmd->target == np->myaddr	  ) ||
+u_char idmsg, *msgptr;
+u_int msglen;
+int direction;
+u_int32 lastp, goalp;
+if ((cmd->target == np->myaddr ) ||
 (cmd->target >= MAX_TARGET) ||
-(cmd->lun    >= MAX_LUN   )) {
+(cmd->lun >= MAX_LUN )) {
 return(DID_BAD_TARGET);
 }
 if (cmd->cmnd[0] == 0 && (tp->usrflag & UF_NOSCAN)) {
@@ -3646,7 +3646,7 @@ msgptr[msglen++] = cp->tag;
 msgptr[msglen++] = (cp->tag << 1) + 1;
 #endif
 }
-cp->host_flags	= 0;
+cp->host_flags = 0;
 direction = scsi_data_direction(cmd);
 if (direction != SCSI_DATA_NONE) {
 cp->segments = np->scatter (np, cp, cp->cmd);
@@ -3660,7 +3660,7 @@ cp->data_len = 0;
 cp->segments = 0;
 }
 cp->nego_status = 0;
-#ifdef	SCSI_NCR_INTEGRITY_CHECKING
+#ifdef SCSI_NCR_INTEGRITY_CHECKING
 if ((np->check_integrity && tp->ic_done) || !np->check_integrity) {
 if ((!tp->widedone || !tp->period) && !tp->nego_cp && lp) {
 msglen += ncr_prepare_nego (np, cp, msgptr + msglen);
@@ -3675,12 +3675,12 @@ u_char current_offset, current_width, current_factor;
 ncr_get_xfer_info (np, tp, &current_factor,
 &current_offset, &current_width);
 tp->ic_max_width = current_width;
-tp->ic_min_sync  = current_factor;
-if      (current_factor == 9) 	current_period = 125;
-else if (current_factor == 10) 	current_period = 250;
-else if (current_factor == 11) 	current_period = 303;
-else if (current_factor == 12) 	current_period = 500;
-else  			current_period = current_factor * 40;
+tp->ic_min_sync = current_factor;
+if (current_factor == 9) current_period = 125;
+else if (current_factor == 10) current_period = 250;
+else if (current_factor == 11) current_period = 303;
+else if (current_factor == 12) current_period = 500;
+else current_period = current_factor * 40;
 tp->period = current_period;
 tp->widedone = 1;
 tp->ic_done = 1;
@@ -3712,8 +3712,8 @@ goalp = NCB_SCRIPT_PHYS (np, data_out2) + 8;
 lastp = goalp - 8 - (cp->segments * (SCR_SG_SIZE*4));
 if (direction != SCSI_DATA_UNKNOWN)
 break;
-cp->phys.header.wgoalp	= cpu_to_scr(goalp);
-cp->phys.header.wlastp	= cpu_to_scr(lastp);
+cp->phys.header.wgoalp = cpu_to_scr(goalp);
+cp->phys.header.wlastp = cpu_to_scr(lastp);
 case SCSI_DATA_READ:
 cp->host_flags |= HF_DATA_IN;
 goalp = NCB_SCRIPT_PHYS (np, data_in2) + 8;
@@ -3733,23 +3733,23 @@ else
 cp->phys.header.savep= cpu_to_scr(lastp);
 cp->startp = cp->phys.header.savep;
 cp->lastp0 = cp->phys.header.lastp;
-cp->phys.header.go.start   = cpu_to_scr(NCB_SCRIPT_PHYS (np,select));
+cp->phys.header.go.start = cpu_to_scr(NCB_SCRIPT_PHYS (np,select));
 cp->phys.header.go.restart = cpu_to_scr(NCB_SCRIPT_PHYS (np,resel_dsa));
-cp->phys.select.sel_id		= cp->target;
-cp->phys.select.sel_scntl3	= tp->wval;
-cp->phys.select.sel_sxfer	= tp->sval;
-cp->phys.select.sel_scntl4	= tp->uval;
-cp->phys.smsg.addr	= cpu_to_scr(CCB_PHYS (cp, scsi_smsg));
-cp->phys.smsg.size	= cpu_to_scr(msglen);
+cp->phys.select.sel_id = cp->target;
+cp->phys.select.sel_scntl3 = tp->wval;
+cp->phys.select.sel_sxfer = tp->sval;
+cp->phys.select.sel_scntl4 = tp->uval;
+cp->phys.smsg.addr = cpu_to_scr(CCB_PHYS (cp, scsi_smsg));
+cp->phys.smsg.size = cpu_to_scr(msglen);
 memcpy(cp->cdb_buf, cmd->cmnd, MIN(cmd->cmd_len, sizeof(cp->cdb_buf)));
-cp->phys.cmd.addr	= cpu_to_scr(CCB_PHYS (cp, cdb_buf[0]));
-cp->phys.cmd.size	= cpu_to_scr(cmd->cmd_len);
-cp->actualquirks	= tp->quirks;
-cp->host_status		= cp->nego_status ? HS_NEGOTIATE : HS_BUSY;
-cp->scsi_status		= S_ILLEGAL;
-cp->xerr_status		= 0;
-cp->extra_bytes		= 0;
-cp->ext_sg  = -1;
+cp->phys.cmd.addr = cpu_to_scr(CCB_PHYS (cp, cdb_buf[0]));
+cp->phys.cmd.size = cpu_to_scr(cmd->cmd_len);
+cp->actualquirks = tp->quirks;
+cp->host_status = cp->nego_status ? HS_NEGOTIATE : HS_BUSY;
+cp->scsi_status = S_ILLEGAL;
+cp->xerr_status = 0;
+cp->extra_bytes = 0;
+cp->ext_sg = -1;
 cp->ext_ofs = 0;
 if (lp)
 ncr_start_next_ccb(np, lp, 2);
@@ -3775,7 +3775,7 @@ ncr_put_start_queue(np, cp);
 }
 static void ncr_put_start_queue(ncb_p np, ccb_p cp)
 {
-u_short	qidx;
+u_short qidx;
 #ifdef SCSI_NCR_IARB_SUPPORT
 if (np->last_cp && np->iarb_count < np->iarb_max) {
 np->last_cp->host_flags |= HF_HINT_IARB;
@@ -3787,7 +3787,7 @@ np->last_cp = cp;
 #endif
 qidx = np->squeueput + 2;
 if (qidx >= MAX_START*2) qidx = 0;
-np->squeue [qidx]	   = cpu_to_scr(np->p_idletask);
+np->squeue [qidx] = cpu_to_scr(np->p_idletask);
 MEMORY_BARRIER();
 np->squeue [np->squeueput] = cpu_to_scr(cp->p_ccb);
 np->squeueput = qidx;
@@ -3833,7 +3833,7 @@ static int ncr_reset_scsi_bus(ncb_p np, int enab_int, int settle_delay)
 {
 u_int32 term;
 int retv = 0;
-np->settle_time	= ktime_get(settle_delay * HZ);
+np->settle_time = ktime_get(settle_delay * HZ);
 if (bootverbose > 1)
 printk("%s: resetting, "
 "command processing suspended for %d seconds\n",
@@ -3848,10 +3848,10 @@ OUTB (nc_scntl1, CRST);
 UDELAY (200);
 if (!driver_setup.bus_check)
 goto out;
-term =	INB(nc_sstat0);
-term =	((term & 2) << 7) + ((term & 1) << 17);
+term = INB(nc_sstat0);
+term = ((term & 2) << 7) + ((term & 1) << 17);
 term |= ((INB(nc_sstat2) & 0x01) << 26) |
-((INW(nc_sbdl) & 0xff)   << 9)  |
+((INW(nc_sbdl) & 0xff) << 9) |
 ((INW(nc_sbdl) & 0xff00) << 10) |
 INB(nc_sbcl);
 if (!(np->features & FE_WIDE))
@@ -3930,13 +3930,13 @@ ncr_name(np));
 else np->release_stage = 2;
 printk("%s: resetting chip\n", ncr_name(np));
 ncr_chip_reset(np);
-OUTB(nc_dmode,	np->sv_dmode);
-OUTB(nc_dcntl,	np->sv_dcntl);
-OUTB(nc_ctest3,	np->sv_ctest3);
-OUTB(nc_ctest4,	np->sv_ctest4);
-OUTB(nc_ctest5,	np->sv_ctest5);
-OUTB(nc_gpcntl,	np->sv_gpcntl);
-OUTB(nc_stest2,	np->sv_stest2);
+OUTB(nc_dmode, np->sv_dmode);
+OUTB(nc_dcntl, np->sv_dcntl);
+OUTB(nc_ctest3, np->sv_ctest3);
+OUTB(nc_ctest4, np->sv_ctest4);
+OUTB(nc_ctest5, np->sv_ctest5);
+OUTB(nc_gpcntl, np->sv_gpcntl);
+OUTB(nc_stest2, np->sv_stest2);
 ncr_selectclock(np, np->sv_scntl3);
 ncr_free_resources(np);
 return 1;
@@ -4009,7 +4009,7 @@ cp->data_len, cp->resid);
 #if LINUX_VERSION_CODE >= LinuxVersionCode(2,3,99)
 cmd->resid = cp->resid;
 #endif
-if (   (cp->host_status == HS_COMPLETE)
+if ( (cp->host_status == HS_COMPLETE)
 && (cp->scsi_status == S_GOOD ||
 cp->scsi_status == S_COND_MET)) {
 SetScsiResult(cmd, DID_OK, cp->scsi_status);
@@ -4128,8 +4128,8 @@ cp = cp->link_ccb;
 }
 void ncr_init (ncb_p np, int reset, char * msg, u_long code)
 {
-int	i;
-u_long	phys;
+int i;
+u_long phys;
 if (reset)
 ncr_soft_reset(np);
 else {
@@ -4140,7 +4140,7 @@ if (msg) printk (KERN_INFO "%s: restart (%s).\n", ncr_name (np), msg);
 phys = np->p_squeue;
 np->queuedepth = MAX_START - 1;
 for (i = 0; i < MAX_START*2; i += 2) {
-np->squeue[i]   = cpu_to_scr(np->p_idletask);
+np->squeue[i] = cpu_to_scr(np->p_idletask);
 np->squeue[i+1] = cpu_to_scr(phys + (i+2)*4);
 }
 np->squeue[MAX_START*2-1] = cpu_to_scr(phys);
@@ -4148,21 +4148,21 @@ np->squeueput = 0;
 np->scripth0->startpos[0] = cpu_to_scr(phys);
 phys = vtobus(np->dqueue);
 for (i = 0; i < MAX_START*2; i += 2) {
-np->dqueue[i]   = 0;
+np->dqueue[i] = 0;
 np->dqueue[i+1] = cpu_to_scr(phys + (i+2)*4);
 }
 np->dqueue[MAX_START*2-1] = cpu_to_scr(phys);
 np->scripth0->done_pos[0] = cpu_to_scr(phys);
 np->dqueueget = 0;
 ncr_wakeup (np, code);
-OUTB (nc_istat,  0x00   );
+OUTB (nc_istat, 0x00 );
 UDELAY (2000);
 OUTB (nc_scntl0, np->rv_scntl0 | 0xc0);
 OUTB (nc_scntl1, 0x00);
 ncr_selectclock(np, np->rv_scntl3);
-OUTB (nc_scid  , RRE|np->myaddr);
+OUTB (nc_scid , RRE|np->myaddr);
 OUTW (nc_respid, 1ul<<np->myaddr);
-OUTB (nc_istat , SIGP	);
+OUTB (nc_istat , SIGP );
 OUTB (nc_dmode , np->rv_dmode);
 OUTB (nc_ctest5, np->rv_ctest5);
 OUTB (nc_dcntl , NOCOM|np->rv_dcntl);
@@ -4176,7 +4176,7 @@ OUTB (nc_stest3, TE);
 OUTB (nc_stime0, 0x0c);
 if (np->device_id == PCI_DEVICE_ID_NCR_53C875)
 OUTB (nc_ctest0, (1<<5));
-else if (np->device_id == PCI_DEVICE_ID_NCR_53C896  ||
+else if (np->device_id == PCI_DEVICE_ID_NCR_53C896 ||
 np->device_id == PCI_DEVICE_ID_LSI_53C1010 ||
 np->device_id == PCI_DEVICE_ID_LSI_53C1010_66 )
 np->rv_ccntl0 |= DPR;
@@ -4205,9 +4205,9 @@ np->scsi_mode = INB (nc_stest4) & SMODE;
 for (i=0;i<MAX_TARGET;i++) {
 tcb_p tp = &np->target[i];
 tp->to_reset = 0;
-tp->sval    = 0;
-tp->wval    = np->rv_scntl3;
-tp->uval    = np->rv_scntl4;
+tp->sval = 0;
+tp->wval = np->rv_scntl3;
+tp->uval = np->rv_scntl4;
 if (tp->usrsync != 255) {
 if (tp->usrsync <= np->maxsync) {
 if (tp->usrsync < np->minsync) {
@@ -4236,7 +4236,7 @@ memcpy_to_pci(np->base2_va + 4096,
 np->scripth0, sizeof(struct scripth));
 OUTL (nc_mmws, np->scr_ram_seg);
 OUTL (nc_mmrs, np->scr_ram_seg);
-OUTL (nc_sfs,  np->scr_ram_seg);
+OUTL (nc_sfs, np->scr_ram_seg);
 phys = NCB_SCRIPTH_PHYS (np, start64);
 }
 else
@@ -4267,15 +4267,15 @@ tp->widedone=0;
 }
 static void ncr_getsync(ncb_p np, u_char sfac, u_char *fakp, u_char *scntl3p)
 {
-u_long	clk = np->clock_khz;
-int	div = np->clock_divn;
-u_long	fak;
-u_long	per;
-u_long	kpc;
-if	(sfac <= 10)	per = 250;
-else if	(sfac == 11)	per = 303;
-else if	(sfac == 12)	per = 500;
-else			per = 40 * sfac;
+u_long clk = np->clock_khz;
+int div = np->clock_divn;
+u_long fak;
+u_long per;
+u_long kpc;
+if (sfac <= 10) per = 250;
+else if (sfac == 11) per = 303;
+else if (sfac == 12) per = 500;
+else per = 40 * sfac;
 kpc = per * clk;
 while (--div >= 0)
 if (kpc >= (div_10M[div] << 2)) break;
@@ -4294,15 +4294,15 @@ per = per2;
 }
 #endif
 if (fak < 4) fak = 4;
-*fakp		= fak - 4;
-if ((np->device_id == PCI_DEVICE_ID_LSI_53C1010)  ||
+*fakp = fak - 4;
+if ((np->device_id == PCI_DEVICE_ID_LSI_53C1010) ||
 (np->device_id == PCI_DEVICE_ID_LSI_53C1010_66)) {
-*scntl3p	= (div+1) << 4;
-*fakp		= 0;
+*scntl3p = (div+1) << 4;
+*fakp = 0;
 }
 else {
-*scntl3p	= ((div+1) << 4) + (sfac < 25 ? 0x80 : 0);
-*fakp		= fak - 4;
+*scntl3p = ((div+1) << 4) + (sfac < 25 ? 0x80 : 0);
+*fakp = fak - 4;
 }
 }
 static void ncr_get_xfer_info(ncb_p np, tcb_p tp, u_char *factor,
@@ -4313,9 +4313,9 @@ u_long period;
 *width = (tp->wval & EWS) ? 1 : 0;
 if ((np->device_id == PCI_DEVICE_ID_LSI_53C1010) ||
 (np->device_id == PCI_DEVICE_ID_LSI_53C1010_66))
-*offset  = (tp->sval & 0x3f);
+*offset = (tp->sval & 0x3f);
 else
-*offset  = (tp->sval & 0x1f);
+*offset = (tp->sval & 0x1f);
 idiv = (tp->wval>>4) & 0x07;
 if ( *offset && idiv ) {
 if ((np->device_id == PCI_DEVICE_ID_LSI_53C1010) ||
@@ -4330,11 +4330,11 @@ period = (((tp->sval>>5)+4)*div_10M[idiv-1])/np->clock_khz;
 }
 else
 period = 0xffff;
-if	(period <= 125)		*factor =   9;
-else if	(period <= 250)		*factor =  10;
-else if	(period <= 303)		*factor  = 11;
-else if	(period <= 500)		*factor  = 12;
-else				*factor  = (period + 40 - 1) / 40;
+if (period <= 125) *factor = 9;
+else if (period <= 250) *factor = 10;
+else if (period <= 303) *factor = 11;
+else if (period <= 500) *factor = 12;
+else *factor = (period + 40 - 1) / 40;
 }
 static void ncr_set_sync_wide_status (ncb_p np, u_char target)
 {
@@ -4342,7 +4342,7 @@ ccb_p cp = np->ccbc;
 tcb_p tp = &np->target[target];
 OUTB (nc_sxfer, tp->sval);
 OUTB (nc_scntl3, tp->wval);
-if ((np->device_id == PCI_DEVICE_ID_LSI_53C1010)  ||
+if ((np->device_id == PCI_DEVICE_ID_LSI_53C1010) ||
 (np->device_id == PCI_DEVICE_ID_LSI_53C1010_66))
 OUTB (nc_scntl4, tp->uval);
 for (cp = np->ccbc; cp; cp = cp->link_ccb) {
@@ -4351,7 +4351,7 @@ continue;
 if (cp->target != target)
 continue;
 cp->phys.select.sel_scntl3 = tp->wval;
-cp->phys.select.sel_sxfer  = tp->sval;
+cp->phys.select.sel_sxfer = tp->sval;
 if ((np->device_id == PCI_DEVICE_ID_LSI_53C1010) ||
 (np->device_id == PCI_DEVICE_ID_LSI_53C1010_66))
 cp->phys.select.sel_scntl4 = tp->uval;
@@ -4410,11 +4410,11 @@ if ((tp->period <= 2000) &&
 (np->device_id != PCI_DEVICE_ID_LSI_53C1010) &&
 (np->device_id != PCI_DEVICE_ID_LSI_53C1010_66))
 OUTOFFB (nc_stest2, EXT);
-if	(tp->period < 250)	scsi = "FAST-80";
-else if	(tp->period < 500)	scsi = "FAST-40";
-else if	(tp->period < 1000)	scsi = "FAST-20";
-else if	(tp->period < 2000)	scsi = "FAST-10";
-else				scsi = "FAST-5";
+if (tp->period < 250) scsi = "FAST-80";
+else if (tp->period < 500) scsi = "FAST-40";
+else if (tp->period < 1000) scsi = "FAST-20";
+else if (tp->period < 2000) scsi = "FAST-10";
+else scsi = "FAST-5";
 printk ("%s %sSCSI %d.%d MB/s (%d ns, offset %d)\n", scsi,
 tp->widedone > 1 ? "WIDE " : "",
 mb10 / 10, mb10 % 10, tp->period / 10, offset);
@@ -4427,13 +4427,13 @@ static void ncr_setwide (ncb_p np, ccb_p cp, u_char wide, u_char ack)
 {
 u_short target = INB (nc_sdid) & 0x0f;
 tcb_p tp;
-u_char	scntl3;
-u_char	sxfer;
+u_char scntl3;
+u_char sxfer;
 assert (cp);
 if (!cp) return;
 assert (target == (cp->target & 0xf));
 tp = &np->target[target];
-tp->widedone  =  wide+1;
+tp->widedone = wide+1;
 scntl3 = (tp->wval & (~EWS)) | (wide ? EWS : 0);
 sxfer = ack ? 0 : tp->sval;
 if (tp->sval == sxfer && tp->wval == scntl3) return;
@@ -4459,7 +4459,7 @@ assert (cp);
 if (!cp) return;
 assert (target == (cp->target & 0xf));
 tp = &np->target[target];
-tp->widedone  =  wide+1;
+tp->widedone = wide+1;
 if ((np->device_id == PCI_DEVICE_ID_LSI_53C1010) ||
 (np->device_id == PCI_DEVICE_ID_LSI_53C1010_66)) {
 offset = sxfer & 0x3f;
@@ -4502,11 +4502,11 @@ if ((tp->period <= 2000) &&
 (np->device_id != PCI_DEVICE_ID_LSI_53C1010) &&
 (np->device_id != PCI_DEVICE_ID_LSI_53C1010_66))
 OUTOFFB (nc_stest2, EXT);
-if	(tp->period < 250)	scsi = "FAST-80";
-else if	(tp->period < 500)	scsi = "FAST-40";
-else if	(tp->period < 1000)	scsi = "FAST-20";
-else if	(tp->period < 2000)	scsi = "FAST-10";
-else				scsi = "FAST-5";
+if (tp->period < 250) scsi = "FAST-80";
+else if (tp->period < 500) scsi = "FAST-40";
+else if (tp->period < 1000) scsi = "FAST-20";
+else if (tp->period < 2000) scsi = "FAST-10";
+else scsi = "FAST-5";
 printk ("%s %sSCSI %d.%d MB/s (%d ns, offset %d)\n", scsi,
 tp->widedone > 1 ? "WIDE " : "",
 mb10 / 10, mb10 % 10, tp->period / 10, offset);
@@ -4525,9 +4525,9 @@ return;
 if (!lp->scdev_depth)
 return;
 maxdepth = lp->scdev_depth;
-if (maxdepth > lp->maxnxs)	maxdepth    = lp->maxnxs;
-if (lp->maxtags > maxdepth)	lp->maxtags = maxdepth;
-if (lp->numtags > maxdepth)	lp->numtags = maxdepth;
+if (maxdepth > lp->maxnxs) maxdepth = lp->maxnxs;
+if (lp->maxtags > maxdepth) lp->maxtags = maxdepth;
+if (lp->numtags > maxdepth) lp->numtags = maxdepth;
 if ((lp->inq_byte7 & INQ7_QUEUE) && lp->numtags > 1) {
 reqtags = lp->numtags;
 } else {
@@ -4536,20 +4536,20 @@ reqtags = 1;
 lp->numtags = reqtags;
 if (lp->numtags > lp->maxtags)
 lp->maxtags = lp->numtags;
-if	(reqtags > 1 && lp->usetags) {
+if (reqtags > 1 && lp->usetags) {
 if (lp->queuedepth == reqtags)
 return;
-lp->queuedepth	= reqtags;
+lp->queuedepth = reqtags;
 }
-else if	(reqtags <= 1 && !lp->usetags) {
-lp->queuedepth	= reqtags;
+else if (reqtags <= 1 && !lp->usetags) {
+lp->queuedepth = reqtags;
 return;
 }
 else {
 if (lp->busyccbs)
 return;
-lp->queuedepth	= reqtags;
-lp->usetags	= reqtags > 1 ? 1 : 0;
+lp->queuedepth = reqtags;
+lp->usetags = reqtags > 1 ? 1 : 0;
 }
 lp->resel_task = lp->usetags?
 cpu_to_scr(NCB_SCRIPT_PHYS(np, resel_tag)) :
@@ -4638,7 +4638,7 @@ np->user.cmd=0;
 #endif
 static void ncr_timeout (ncb_p np)
 {
-u_long	thistime = ktime_get(0);
+u_long thistime = ktime_get(0);
 if (np->release_stage) {
 if (np->release_stage == 1) np->release_stage = 2;
 return;
@@ -4653,7 +4653,7 @@ if (np->settle_time) {
 if (np->settle_time <= thistime) {
 if (bootverbose > 1)
 printk("%s: command processing resumed\n", ncr_name(np));
-np->settle_time	= 0;
+np->settle_time = 0;
 requeue_waiting_list(np);
 }
 return;
@@ -4674,30 +4674,30 @@ if (DEBUG_FLAGS & DEBUG_TINY) printk ("}");
 }
 static void ncr_log_hard_error(ncb_p np, u_short sist, u_char dstat)
 {
-u_int32	dsp;
-int	script_ofs;
-int	script_size;
-char	*script_name;
-u_char	*script_base;
-int	i;
-dsp	= INL (nc_dsp);
+u_int32 dsp;
+int script_ofs;
+int script_size;
+char *script_name;
+u_char *script_base;
+int i;
+dsp = INL (nc_dsp);
 if (dsp > np->p_script && dsp <= np->p_script + sizeof(struct script)) {
-script_ofs	= dsp - np->p_script;
-script_size	= sizeof(struct script);
-script_base	= (u_char *) np->script0;
-script_name	= "script";
+script_ofs = dsp - np->p_script;
+script_size = sizeof(struct script);
+script_base = (u_char *) np->script0;
+script_name = "script";
 }
 else if (np->p_scripth < dsp &&
 dsp <= np->p_scripth + sizeof(struct scripth)) {
-script_ofs	= dsp - np->p_scripth;
-script_size	= sizeof(struct scripth);
-script_base	= (u_char *) np->scripth0;
-script_name	= "scripth";
+script_ofs = dsp - np->p_scripth;
+script_size = sizeof(struct scripth);
+script_base = (u_char *) np->scripth0;
+script_name = "scripth";
 } else {
-script_ofs	= dsp;
-script_size	= 0;
-script_base	= 0;
-script_name	= "mem";
+script_ofs = dsp;
+script_size = 0;
+script_base = 0;
+script_name = "mem";
 }
 printk ("%s:%d: ERROR (%x:%x) (%x-%x-%x) (%x/%x) @ (%s %x:%08x).\n",
 ncr_name (np), (unsigned)INB (nc_sdid)&0x0f, dstat, sist,
@@ -4716,10 +4716,10 @@ printk (".\n");
 }
 void ncr_exception (ncb_p np)
 {
-u_char	istat, istatc;
-u_char	dstat;
-u_short	sist;
-int	i;
+u_char istat, istatc;
+u_char dstat;
+u_short sist;
+int i;
 istat = INB (nc_istat);
 if (istat & INTF) {
 OUTB (nc_istat, (istat & SIGP) | INTF | np->istat_sem);
@@ -4733,12 +4733,12 @@ return;
 if (istat & CABRT)
 OUTB (nc_istat, CABRT);
 #endif
-sist	= 0;
-dstat	= 0;
-istatc	= istat;
+sist = 0;
+dstat = 0;
+istatc = istat;
 do {
 if (istatc & SIP)
-sist  |= INW (nc_sist);
+sist |= INW (nc_sist);
 if (istatc & DIP)
 dstat |= INB (nc_dstat);
 istatc = INB (nc_istat);
@@ -4751,13 +4751,13 @@ dstat,sist,
 (unsigned)INL(nc_dsp),
 (unsigned)INL(nc_dbc));
 MEMORY_BARRIER();
-if (!(sist  & (STO|GEN|HTH|SGE|UDC|SBMC|RST)) &&
+if (!(sist & (STO|GEN|HTH|SGE|UDC|SBMC|RST)) &&
 !(dstat & (MDPE|BF|ABRT|IID))) {
-if	(sist & PAR)	ncr_int_par (np, sist);
-else if (sist & MA)	ncr_int_ma (np);
-else if (dstat & SIR)	ncr_int_sir (np);
-else if (dstat & SSI)	OUTONB_STD ();
-else			goto unknown_int;
+if (sist & PAR) ncr_int_par (np, sist);
+else if (sist & MA) ncr_int_ma (np);
+else if (dstat & SIR) ncr_int_sir (np);
+else if (dstat & SSI) OUTONB_STD ();
+else goto unknown_int;
 return;
 };
 if (sist & RST) {
@@ -4766,12 +4766,12 @@ return;
 };
 OUTB (nc_ctest3, np->rv_ctest3 | CLF);
 OUTB (nc_stest3, TE|CSF);
-if (!(sist  & (GEN|HTH|SGE)) &&
+if (!(sist & (GEN|HTH|SGE)) &&
 !(dstat & (MDPE|BF|ABRT|IID))) {
-if	(sist & SBMC)	ncr_int_sbmc (np);
-else if (sist & STO)	ncr_int_sto (np);
-else if (sist & UDC)	ncr_int_udc (np);
-else			goto unknown_int;
+if (sist & SBMC) ncr_int_sbmc (np);
+else if (sist & STO) ncr_int_sto (np);
+else if (sist & UDC) ncr_int_udc (np);
+else goto unknown_int;
 return;
 };
 if (ktime_exp(np->regtime)) {
@@ -4779,7 +4779,7 @@ np->regtime = ktime_get(10*HZ);
 for (i = 0; i<sizeof(np->regdump); i++)
 ((char*)&np->regdump)[i] = INB_OFF(i);
 np->regdump.nc_dstat = dstat;
-np->regdump.nc_sist  = sist;
+np->regdump.nc_sist = sist;
 };
 ncr_log_hard_error(np, sist, dstat);
 if ((np->device_id == PCI_DEVICE_ID_LSI_53C1010) ||
@@ -4800,15 +4800,15 @@ ncr_start_reset(np);
 return;
 };
 unknown_int:
-printk(	"%s: unknown interrupt(s) ignored, "
+printk( "%s: unknown interrupt(s) ignored, "
 "ISTAT=0x%x DSTAT=0x%x SIST=0x%x\n",
 ncr_name(np), istat, dstat, sist);
 }
 static void ncr_recover_scsi_int (ncb_p np, u_char hsts)
 {
-u_int32	dsp	= INL (nc_dsp);
-u_int32	dsa	= INL (nc_dsa);
-ccb_p cp	= ncr_ccb_from_dsa(np, dsa);
+u_int32 dsp = INL (nc_dsp);
+u_int32 dsa = INL (nc_dsa);
+ccb_p cp = ncr_ccb_from_dsa(np, dsa);
 if ((!(dsp > NCB_SCRIPT_PHYS (np, getjob_begin) &&
 dsp < NCB_SCRIPT_PHYS (np, getjob_end) + 1)) &&
 (!(dsp > NCB_SCRIPT_PHYS (np, ungetjob) &&
@@ -4834,7 +4834,7 @@ ncr_start_reset(np);
 }
 void ncr_int_sto (ncb_p np)
 {
-u_int32	dsp	= INL (nc_dsp);
+u_int32 dsp = INL (nc_dsp);
 if (DEBUG_FLAGS & DEBUG_TINY) printk ("T");
 if (dsp == NCB_SCRIPT_PHYS (np, wf_sel_done) + 8 ||
 !(driver_setup.recovery & 1))
@@ -4845,8 +4845,8 @@ ncr_start_reset(np);
 void ncr_int_udc (ncb_p np)
 {
 u_int32 dsa = INL (nc_dsa);
-ccb_p   cp  = ncr_ccb_from_dsa(np, dsa);
-tcb_p   tp  = &np->target[cp->target];
+ccb_p cp = ncr_ccb_from_dsa(np, dsa);
+tcb_p tp = &np->target[cp->target];
 if (tp->ppr_negotiation == 1)
 tp->ppr_negotiation = 0;
 printk ("%s: unexpected disconnect\n", ncr_name(np));
@@ -4858,19 +4858,19 @@ u_char scsi_mode = INB (nc_stest4) & SMODE;
 printk("%s: SCSI bus mode change from %x to %x.\n",
 ncr_name(np), np->scsi_mode, scsi_mode);
 np->scsi_mode = scsi_mode;
-np->settle_time	= ktime_get(1*HZ);
+np->settle_time = ktime_get(1*HZ);
 ncr_init (np, 0, bootverbose ? "scsi mode change" : NULL, HS_RESET);
 }
 static void ncr_int_par (ncb_p np, u_short sist)
 {
-u_char	hsts	= INB (HS_PRT);
-u_int32	dsp	= INL (nc_dsp);
-u_int32	dbc	= INL (nc_dbc);
-u_int32	dsa	= INL (nc_dsa);
-u_char	sbcl	= INB (nc_sbcl);
-u_char	cmd	= dbc >> 24;
-int phase	= cmd & 7;
-ccb_p	cp	= ncr_ccb_from_dsa(np, dsa);
+u_char hsts = INB (HS_PRT);
+u_int32 dsp = INL (nc_dsp);
+u_int32 dbc = INL (nc_dbc);
+u_int32 dsa = INL (nc_dsa);
+u_char sbcl = INB (nc_sbcl);
+u_char cmd = dbc >> 24;
+int phase = cmd & 7;
+ccb_p cp = ncr_ccb_from_dsa(np, dsa);
 printk("%s: SCSI parity error detected: SCR1=%d DBC=%x SBCL=%x\n",
 ncr_name(np), hsts, dbc, sbcl);
 if (!(INB (nc_scntl1) & ISCON)) {
@@ -4887,7 +4887,7 @@ goto reset_all;
 OUTONB (HF_PRT, HF_EXT_ERR);
 cp->xerr_status |= XE_PARITY_ERR;
 np->msgout[0] = (phase == 7) ? M_PARITY : M_ID_ERROR;
-#ifdef	SCSI_NCR_INTEGRITY_CHECKING
+#ifdef SCSI_NCR_INTEGRITY_CHECKING
 if (np->check_integrity)
 np->check_integ_par = np->msgout[0];
 #endif
@@ -4910,26 +4910,26 @@ return;
 }
 static void ncr_int_ma (ncb_p np)
 {
-u_int32	dbc;
-u_int32	rest;
-u_int32	dsp;
-u_int32	dsa;
-u_int32	nxtdsp;
-u_int32	*vdsp;
-u_int32	oadr, olen;
-u_int32	*tblp;
-u_int32	newcmd;
-u_int	delta;
-u_char	cmd;
-u_char	hflags, hflags0;
+u_int32 dbc;
+u_int32 rest;
+u_int32 dsp;
+u_int32 dsa;
+u_int32 nxtdsp;
+u_int32 *vdsp;
+u_int32 oadr, olen;
+u_int32 *tblp;
+u_int32 newcmd;
+u_int delta;
+u_char cmd;
+u_char hflags, hflags0;
 struct pm_ctx *pm;
-ccb_p	cp;
-dsp	= INL (nc_dsp);
-dbc	= INL (nc_dbc);
-dsa	= INL (nc_dsa);
-cmd	= dbc >> 24;
-rest	= dbc & 0xffffff;
-delta	= 0;
+ccb_p cp;
+dsp = INL (nc_dsp);
+dbc = INL (nc_dbc);
+dsa = INL (nc_dsa);
+cmd = dbc >> 24;
+rest = dbc & 0xffffff;
+delta = 0;
 cp = ncr_ccb_from_dsa(np, dsa);
 if (DEBUG_FLAGS & DEBUG_PHASE)
 printk("CCB = %2x %2x %2x %2x %2x %2x\n",
@@ -4950,7 +4950,7 @@ else
 delta = ((dfifo & 0xff) - rest) & 0x7f;
 }
 rest += delta;
-ss0  = INB (nc_sstat0);
+ss0 = INB (nc_sstat0);
 if (ss0 & OLF) rest++;
 if ((np->device_id != PCI_DEVICE_ID_LSI_53C1010) &&
 (np->device_id != PCI_DEVICE_ID_LSI_53C1010_66) && (ss0 & ORF))
@@ -4968,14 +4968,14 @@ OUTB (nc_stest3, TE|CSF);
 if (DEBUG_FLAGS & (DEBUG_TINY|DEBUG_PHASE))
 printk ("P%x%x RL=%d D=%d ", cmd&7, INB(nc_sbcl)&7,
 (unsigned) rest, (unsigned) delta);
-vdsp	= 0;
-nxtdsp	= 0;
-if	(dsp >  np->p_script &&
+vdsp = 0;
+nxtdsp = 0;
+if (dsp > np->p_script &&
 dsp <= np->p_script + sizeof(struct script)) {
 vdsp = (u_int32 *)((char*)np->script0 + (dsp-np->p_script-8));
 nxtdsp = dsp;
 }
-else if	(dsp >  np->p_scripth &&
+else if (dsp > np->p_scripth &&
 dsp <= np->p_scripth + sizeof(struct scripth)) {
 vdsp = (u_int32 *)((char*)np->scripth0 + (dsp-np->p_scripth-8));
 nxtdsp = dsp;
@@ -5028,7 +5028,7 @@ hflags = hflags0;
 if (hflags & (HF_IN_PM0 | HF_IN_PM1 | HF_DP_SAVED)) {
 if (hflags & HF_IN_PM0)
 nxtdsp = scr_to_cpu(cp->phys.pm0.ret);
-else if	(hflags & HF_IN_PM1)
+else if (hflags & HF_IN_PM1)
 nxtdsp = scr_to_cpu(cp->phys.pm1.ret);
 if (hflags & HF_DP_SAVED)
 hflags ^= HF_ACT_PM;
@@ -5046,13 +5046,13 @@ if (hflags != hflags0)
 OUTB (HF_PRT, hflags);
 pm->sg.addr = cpu_to_scr(oadr + olen - rest);
 pm->sg.size = cpu_to_scr(rest);
-pm->ret     = cpu_to_scr(nxtdsp);
+pm->ret = cpu_to_scr(nxtdsp);
 nxtdsp = NCB_SCRIPT_PHYS (np, dispatch);
-if ( ((cmd & 7) == 1  || (cmd & 7) == 5)
+if ( ((cmd & 7) == 1 || (cmd & 7) == 5)
 && cp && (cp->phys.select.sel_scntl3 & EWS) &&
 (INB (nc_scntl2) & WSR)) {
 u32 tmp;
-#ifdef  SYM_DEBUG_PM_WITH_WSR
+#ifdef SYM_DEBUG_PM_WITH_WSR
 PRINT_ADDR(cp);
 printf ("MA interrupt with WSR set - "
 "pm->sg.addr=%x - pm->sg.size=%d\n",
@@ -5092,7 +5092,7 @@ nxtdsp = NCB_SCRIPT_PHYS (np, dispatch);
 break;
 #endif
 case 6:
-if	(dsp == NCB_SCRIPT_PHYS (np, send_ident)) {
+if (dsp == NCB_SCRIPT_PHYS (np, send_ident)) {
 if (cp->tag != NO_TAG && olen - rest <= 3) {
 cp->host_status = HS_BUSY;
 np->msgout[0] = M_IDENTIFY | cp->lun;
@@ -5101,7 +5101,7 @@ nxtdsp = NCB_SCRIPTH_PHYS (np, ident_break_atn);
 else
 nxtdsp = NCB_SCRIPTH_PHYS (np, ident_break);
 }
-else if	(dsp == NCB_SCRIPTH_PHYS (np, send_wdtr) ||
+else if (dsp == NCB_SCRIPTH_PHYS (np, send_wdtr) ||
 dsp == NCB_SCRIPTH_PHYS (np, send_sdtr) ||
 dsp == NCB_SCRIPTH_PHYS (np, send_ppr)) {
 nxtdsp = NCB_SCRIPTH_PHYS (np, nego_bad_phase);
@@ -5122,15 +5122,15 @@ ncr_start_reset(np);
 }
 static void ncr_sir_to_redo(ncb_p np, int num, ccb_p cp)
 {
-Scsi_Cmnd *cmd	= cp->cmd;
-tcb_p tp	= &np->target[cp->target];
-lcb_p lp	= ncr_lp(np, tp, cp->lun);
-ccb_p		cp2;
-int		busyccbs = 1;
-u_int32		startp;
-u_char		s_status = INB (SS_PRT);
-int		msglen;
-int		i, j;
+Scsi_Cmnd *cmd = cp->cmd;
+tcb_p tp = &np->target[cp->target];
+lcb_p lp = ncr_lp(np, tp, cp->lun);
+ccb_p cp2;
+int busyccbs = 1;
+u_int32 startp;
+u_char s_status = INB (SS_PRT);
+int msglen;
+int i, j;
 if (!lp)
 goto next;
 busyccbs = lp->queuedccbs;
@@ -5185,17 +5185,17 @@ printk ("QUEUE FULL! %d busy, %d disconnected CCBs\n",
 busyccbs, lp->queuedccbs);
 }
 if (lp->queuedccbs < lp->numtags) {
-lp->numtags	= lp->queuedccbs;
-lp->num_good	= 0;
+lp->numtags = lp->queuedccbs;
+lp->num_good = 0;
 ncr_setup_tags (np, cp->target, cp->lun);
 }
-cp->phys.header.savep	= cp->startp;
-cp->phys.header.lastp	= cp->lastp0;
-cp->host_status 	= HS_BUSY;
-cp->scsi_status 	= S_ILLEGAL;
-cp->xerr_status		= 0;
-cp->extra_bytes		= 0;
-cp->host_flags		&= (HF_PM_TO_C|HF_DATA_IN);
+cp->phys.header.savep = cp->startp;
+cp->phys.header.lastp = cp->lastp0;
+cp->host_status = HS_BUSY;
+cp->scsi_status = S_ILLEGAL;
+cp->xerr_status = 0;
+cp->extra_bytes = 0;
+cp->host_flags &= (HF_PM_TO_C|HF_DATA_IN);
 break;
 case S_TERMINATED:
 case S_CHECK_COND:
@@ -5206,9 +5206,9 @@ break;
 cp->sv_scsi_status = cp->scsi_status;
 cp->sv_xerr_status = cp->xerr_status;
 cp->resid = ncr_compute_residual(np, cp);
-cp->scsi_smsg2[0]	= M_IDENTIFY | cp->lun;
+cp->scsi_smsg2[0] = M_IDENTIFY | cp->lun;
 msglen = 1;
-#ifdef	SCSI_NCR_INTEGRITY_CHECKING
+#ifdef SCSI_NCR_INTEGRITY_CHECKING
 if (DEBUG_FLAGS & DEBUG_IC) {
 printk("%s: ncr_sir_to_redo: ic_done %2X, in_progress %2X\n",
 ncr_name(np), tp->ic_done, cp->cmd->ic_in_progress);
@@ -5243,25 +5243,25 @@ if ((tp->wval & EWS) || (tp->sval & 0x1f))
 msglen +=
 ncr_prepare_nego (np, cp, &cp->scsi_smsg2[msglen]);
 #endif
-cp->phys.smsg.addr	= cpu_to_scr(CCB_PHYS (cp, scsi_smsg2));
-cp->phys.smsg.size	= cpu_to_scr(msglen);
-cp->phys.cmd.addr	= cpu_to_scr(CCB_PHYS (cp, sensecmd));
-cp->phys.cmd.size	= cpu_to_scr(6);
-cp->sensecmd[0]		= 0x03;
-cp->sensecmd[1]		= cp->lun << 5;
-cp->sensecmd[4]		= sizeof(cp->sense_buf);
+cp->phys.smsg.addr = cpu_to_scr(CCB_PHYS (cp, scsi_smsg2));
+cp->phys.smsg.size = cpu_to_scr(msglen);
+cp->phys.cmd.addr = cpu_to_scr(CCB_PHYS (cp, sensecmd));
+cp->phys.cmd.size = cpu_to_scr(6);
+cp->sensecmd[0] = 0x03;
+cp->sensecmd[1] = cp->lun << 5;
+cp->sensecmd[4] = sizeof(cp->sense_buf);
 bzero(cp->sense_buf, sizeof(cp->sense_buf));
-cp->phys.sense.addr	= cpu_to_scr(CCB_PHYS(cp,sense_buf[0]));
-cp->phys.sense.size	= cpu_to_scr(sizeof(cp->sense_buf));
+cp->phys.sense.addr = cpu_to_scr(CCB_PHYS(cp,sense_buf[0]));
+cp->phys.sense.size = cpu_to_scr(sizeof(cp->sense_buf));
 startp = NCB_SCRIPTH_PHYS (np, sdata_in);
-cp->phys.header.savep	= cpu_to_scr(startp);
-cp->phys.header.goalp	= cpu_to_scr(startp + 16);
-cp->phys.header.lastp	= cpu_to_scr(startp);
-cp->phys.header.wgoalp	= cpu_to_scr(startp + 16);
-cp->phys.header.wlastp	= cpu_to_scr(startp);
-cp->host_status	= cp->nego_status ? HS_NEGOTIATE : HS_BUSY;
+cp->phys.header.savep = cpu_to_scr(startp);
+cp->phys.header.goalp = cpu_to_scr(startp + 16);
+cp->phys.header.lastp = cpu_to_scr(startp);
+cp->phys.header.wgoalp = cpu_to_scr(startp + 16);
+cp->phys.header.wlastp = cpu_to_scr(startp);
+cp->host_status = cp->nego_status ? HS_NEGOTIATE : HS_BUSY;
 cp->scsi_status = S_ILLEGAL;
-cp->host_flags	= (HF_AUTO_SENSE|HF_DATA_IN);
+cp->host_flags = (HF_AUTO_SENSE|HF_DATA_IN);
 cp->phys.header.go.start =
 cpu_to_scr(NCB_SCRIPT_PHYS (np, select));
 if (!lp)
@@ -5312,7 +5312,7 @@ if (!tp->lmp)
 continue;
 for (k = 1 ; k < MAX_LUN ; k++) {
 if (tp->lmp[k] && tp->lmp[k]->to_clear) {
-target	= i;
+target = i;
 break;
 }
 }
@@ -5331,9 +5331,9 @@ break;
 }
 if (target != -1) {
 tp = &np->target[target];
-np->abrt_sel.sel_id	= target;
+np->abrt_sel.sel_id = target;
 np->abrt_sel.sel_scntl3 = tp->wval;
-np->abrt_sel.sel_sxfer  = tp->sval;
+np->abrt_sel.sel_sxfer = tp->sval;
 np->abrt_sel.sel_scntl4 = tp->uval;
 OUTL(nc_dsa, np->p_ncb);
 OUTL_DSP (NCB_SCRIPTH_PHYS (np, sel_for_abort));
@@ -5463,7 +5463,7 @@ if (!cp)
 break;
 memcpy(cp->cmd->sense_buffer, cp->sense_buf,
 sizeof(cp->cmd->sense_buffer));
-p  = &cp->cmd->sense_buffer[0];
+p = &cp->cmd->sense_buffer[0];
 if (p[0] != 0x70 || p[2] != 0x6 || p[12] != 0x29)
 break;
 #if 0
@@ -5481,20 +5481,20 @@ OUTONB_STD ();
 }
 static int ncr_evaluate_dp(ncb_p np, ccb_p cp, u_int32 scr, int *ofs)
 {
-u_int32	dp_scr;
-int	dp_ofs, dp_sg, dp_sgmin;
-int	tmp;
+u_int32 dp_scr;
+int dp_ofs, dp_sg, dp_sgmin;
+int tmp;
 struct pm_ctx *pm;
 dp_scr = scr;
 dp_ofs = *ofs;
-if	(dp_scr == NCB_SCRIPT_PHYS (np, pm0_data))
+if (dp_scr == NCB_SCRIPT_PHYS (np, pm0_data))
 pm = &cp->phys.pm0;
 else if (dp_scr == NCB_SCRIPT_PHYS (np, pm1_data))
 pm = &cp->phys.pm1;
 else
 pm = 0;
 if (pm) {
-dp_scr  = scr_to_cpu(pm->ret);
+dp_scr = scr_to_cpu(pm->ret);
 dp_ofs -= scr_to_cpu(pm->sg.size);
 }
 tmp = scr_to_cpu(cp->phys.header.goalp);
@@ -5524,13 +5524,13 @@ if (dp_ofs <= 0)
 break;
 }
 }
-if	(dp_sg < dp_sgmin || (dp_sg == dp_sgmin && dp_ofs < 0))
+if (dp_sg < dp_sgmin || (dp_sg == dp_sgmin && dp_ofs < 0))
 goto out_err;
-else if	(dp_sg > MAX_SCATTER || (dp_sg == MAX_SCATTER && dp_ofs > 0))
+else if (dp_sg > MAX_SCATTER || (dp_sg == MAX_SCATTER && dp_ofs > 0))
 goto out_err;
 if (dp_sg > cp->ext_sg ||
 (dp_sg == cp->ext_sg && dp_ofs > cp->ext_ofs)) {
-cp->ext_sg  = dp_sg;
+cp->ext_sg = dp_sg;
 cp->ext_ofs = dp_ofs;
 }
 *ofs = dp_ofs;
@@ -5540,12 +5540,12 @@ return -1;
 }
 static void ncr_modify_dp(ncb_p np, tcb_p tp, ccb_p cp, int ofs)
 {
-int dp_ofs	= ofs;
-u_int32 dp_scr	= INL (nc_temp);
-u_int32	dp_ret;
-u_int32	tmp;
-u_char	hflags;
-int	dp_sg;
+int dp_ofs = ofs;
+u_int32 dp_scr = INL (nc_temp);
+u_int32 dp_ret;
+u_int32 tmp;
+u_char hflags;
+int dp_sg;
 struct pm_ctx *pm;
 if (cp->host_flags & HF_AUTO_SENSE)
 goto out_reject;
@@ -5562,7 +5562,7 @@ hflags = INB (HF_PRT);
 if (hflags & HF_DP_SAVED)
 hflags ^= HF_ACT_PM;
 if (!(hflags & HF_ACT_PM)) {
-pm  = &cp->phys.pm0;
+pm = &cp->phys.pm0;
 dp_scr = NCB_SCRIPT_PHYS (np, pm0_data);
 }
 else {
@@ -5572,7 +5572,7 @@ dp_scr = NCB_SCRIPT_PHYS (np, pm1_data);
 hflags &= ~(HF_DP_SAVED);
 OUTB (HF_PRT, hflags);
 pm->ret = cpu_to_scr(dp_ret);
-tmp  = scr_to_cpu(cp->phys.data[dp_sg-1].addr);
+tmp = scr_to_cpu(cp->phys.data[dp_sg-1].addr);
 tmp += scr_to_cpu(cp->phys.data[dp_sg-1].size) + dp_ofs;
 pm->sg.addr = cpu_to_scr(tmp);
 pm->sg.size = cpu_to_scr(-dp_ofs);
@@ -5640,8 +5640,8 @@ printk (".\n");
 }
 static void ncr_sync_nego(ncb_p np, tcb_p tp, ccb_p cp)
 {
-u_char	scntl3, scntl4;
-u_char	chg, ofs, per, fak;
+u_char scntl3, scntl4;
+u_char chg, ofs, per, fak;
 if (DEBUG_FLAGS & DEBUG_NEGO) {
 ncr_print_msg(cp, "sync msg in", np->msgin);
 };
@@ -5657,9 +5657,9 @@ if (per < tp->minsync)
 {chg = 1; per = tp->minsync;}
 if (ofs > tp->maxoffs)
 {chg = 1; ofs = tp->maxoffs;}
-fak	= 7;
-scntl3	= 0;
-scntl4  = 0;
+fak = 7;
+scntl3 = 0;
+scntl4 = 0;
 if (ofs != 0) {
 ncr_getsync(np, per, &fak, &scntl3);
 if (fak > 7) {
@@ -5668,10 +5668,10 @@ ofs = 0;
 }
 }
 if (ofs == 0) {
-fak	= 7;
-per	= 0;
-scntl3	= 0;
-scntl4  = 0;
+fak = 7;
+per = 0;
+scntl3 = 0;
+scntl4 = 0;
 tp->minsync = 0;
 }
 if (DEBUG_FLAGS & DEBUG_NEGO) {
@@ -5722,11 +5722,11 @@ OUTL_DSP (NCB_SCRIPTH_PHYS (np, sdtr_resp));
 }
 static void ncr_wide_nego(ncb_p np, tcb_p tp, ccb_p cp)
 {
-u_char	chg, wide;
+u_char chg, wide;
 if (DEBUG_FLAGS & DEBUG_NEGO) {
 ncr_print_msg(cp, "wide msgin", np->msgin);
 };
-chg  = 0;
+chg = 0;
 wide = np->msgin[3];
 if (wide)
 tp->inq_byte7 |= INQ7_WIDE16;
@@ -5767,8 +5767,8 @@ OUTL_DSP (NCB_SCRIPTH_PHYS (np, wdtr_resp));
 }
 static void ncr_ppr_nego(ncb_p np, tcb_p tp, ccb_p cp)
 {
-u_char	scntl3, scntl4;
-u_char	chg, ofs, per, fak, wth, dt;
+u_char scntl3, scntl4;
+u_char chg, ofs, per, fak, wth, dt;
 if (DEBUG_FLAGS & DEBUG_NEGO) {
 ncr_print_msg(cp, "ppr msg in", np->msgin);
 };
@@ -5776,7 +5776,7 @@ chg = 0;
 per = np->msgin[3];
 ofs = np->msgin[5];
 wth = np->msgin[6];
-dt  = np->msgin[7];
+dt = np->msgin[7];
 if (ofs==0) per=255;
 if (ofs)
 tp->inq_byte7 |= INQ7_SYNC;
@@ -5790,9 +5790,9 @@ if (per < tp->minsync)
 {chg = 1; per = tp->minsync;}
 if (ofs > tp->maxoffs)
 {chg = 1; ofs = tp->maxoffs;}
-fak	= 7;
-scntl3	= 0;
-scntl4  = 0;
+fak = 7;
+scntl3 = 0;
+scntl4 = 0;
 if (ofs != 0) {
 scntl4 = dt ? 0x80 : 0;
 ncr_getsync(np, per, &fak, &scntl3);
@@ -5802,13 +5802,13 @@ ofs = 0;
 }
 }
 if (ofs == 0) {
-fak	= 7;
-per	= 0;
-scntl3	= 0;
-scntl4  = 0;
+fak = 7;
+per = 0;
+scntl3 = 0;
+scntl4 = 0;
 tp->minsync = 0;
 }
-if   ((per == 0x09) && ofs && (!wth || !dt))
+if ((per == 0x09) && ofs && (!wth || !dt))
 chg = 1;
 else if (( (per > 0x09) && dt) )
 chg = 2;
@@ -5846,7 +5846,7 @@ ncr_setwide (np, cp, 0, 0);
 break;
 };
 };
-if  ((per == 0x09) && ofs && (!wth || !dt)) {
+if ((per == 0x09) && ofs && (!wth || !dt)) {
 per = 0x0A;
 dt = 0;
 ofs &= 0x1f;
@@ -5918,12 +5918,12 @@ OUTB (HS_PRT, HS_BUSY);
 }
 void ncr_int_sir (ncb_p np)
 {
-u_char	num	= INB (nc_dsps);
-u_long	dsa	= INL (nc_dsa);
-ccb_p	cp	= ncr_ccb_from_dsa(np, dsa);
-u_char	target	= INB (nc_sdid) & 0x0f;
-tcb_p	tp	= &np->target[target];
-int	tmp;
+u_char num = INB (nc_dsps);
+u_long dsa = INL (nc_dsa);
+ccb_p cp = ncr_ccb_from_dsa(np, dsa);
+u_char target = INB (nc_sdid) & 0x0f;
+tcb_p tp = &np->target[target];
+int tmp;
 if (DEBUG_FLAGS & DEBUG_TINY) printk ("I#%d", num);
 switch (num) {
 #ifdef SCSI_NCR_PCIQ_SYNC_ON_INTR
@@ -6017,7 +6017,7 @@ case M_X_MODIFY_DP:
 if (DEBUG_FLAGS & DEBUG_POINTER)
 ncr_print_msg(cp,"modify DP",np->msgin);
 tmp = (np->msgin[3]<<24) + (np->msgin[4]<<16) +
-(np->msgin[5]<<8)  + (np->msgin[6]);
+(np->msgin[5]<<8) + (np->msgin[6]);
 ncr_modify_dp(np, tp, cp, tmp);
 return;
 case M_X_SYNC_REQ:
@@ -6074,7 +6074,7 @@ return;
 out_stuck:
 return;
 }
-static	ccb_p ncr_get_ccb (ncb_p np, u_char tn, u_char ln)
+static ccb_p ncr_get_ccb (ncb_p np, u_char tn, u_char ln)
 {
 tcb_p tp = &np->target[tn];
 lcb_p lp = ncr_lp(np, tp, ln);
@@ -6112,9 +6112,9 @@ xpt_insque_tail(&cp->link_ccbq, &lp->wait_ccbq);
 ++lp->busyccbs;
 }
 cp->to_abort = 0;
-cp->tag	   = tag;
+cp->tag = tag;
 cp->target = tn;
-cp->lun    = ln;
+cp->lun = ln;
 if (DEBUG_FLAGS & DEBUG_TAGS) {
 PRINT_LUN(np, tn, ln);
 printk ("ccb @%p using tag %d.\n", cp, tag);
@@ -6161,15 +6161,15 @@ cp = m_calloc_dma(sizeof(struct ccb), "CCB");
 if (!cp)
 return 0;
 np->actccbs++;
-cp->p_ccb 	   = vtobus(cp);
+cp->p_ccb = vtobus(cp);
 hcode = CCB_HASH_CODE(cp->p_ccb);
 cp->link_ccbh = np->ccbh[hcode];
 np->ccbh[hcode] = cp;
-cp->phys.header.go.start   = cpu_to_scr(NCB_SCRIPT_PHYS (np, idle));
+cp->phys.header.go.start = cpu_to_scr(NCB_SCRIPT_PHYS (np, idle));
 cp->phys.header.go.restart = cpu_to_scr(NCB_SCRIPTH_PHYS(np,bad_i_t_l));
 cp->phys.smsg_ext.addr = cpu_to_scr(NCB_PHYS(np, msgin[2]));
-cp->link_ccb	= np->ccbc;
-np->ccbc	= cp;
+cp->link_ccb = np->ccbc;
+np->ccbc = cp;
 xpt_insque_head(&cp->link_ccbq, &np->free_ccbq);
 return cp;
 }
@@ -6189,13 +6189,13 @@ return cp;
 static void ncr_init_tcb (ncb_p np, u_char tn)
 {
 assert (( (offsetof(struct ncr_reg, nc_sxfer) ^
-offsetof(struct tcb    , sval    )) &3) == 0);
+offsetof(struct tcb , sval )) &3) == 0);
 assert (( (offsetof(struct ncr_reg, nc_scntl3) ^
-offsetof(struct tcb    , wval    )) &3) == 0);
+offsetof(struct tcb , wval )) &3) == 0);
 if ((np->device_id == PCI_DEVICE_ID_LSI_53C1010) ||
 (np->device_id == PCI_DEVICE_ID_LSI_53C1010_66)){
 assert (( (offsetof(struct ncr_reg, nc_scntl4) ^
-offsetof(struct tcb    , uval    )) &3) == 0);
+offsetof(struct tcb , uval )) &3) == 0);
 }
 }
 static lcb_p ncr_alloc_lcb (ncb_p np, u_char tn, u_char ln)
@@ -6232,14 +6232,14 @@ tp->b_lun0 = cpu_to_scr(vtobus(lp));
 }
 xpt_que_init(&lp->busy_ccbq);
 xpt_que_init(&lp->wait_ccbq);
-lp->maxnxs	= 1;
-lp->tasktbl	= &lp->tasktbl_0;
-lp->b_tasktbl	= cpu_to_scr(vtobus(lp->tasktbl));
-lp->tasktbl[0]	= cpu_to_scr(np->p_notask);
-lp->resel_task	= cpu_to_scr(NCB_SCRIPT_PHYS(np, resel_notag));
-lp->busyccbs	= 1;
-lp->queuedccbs	= 1;
-lp->queuedepth	= 1;
+lp->maxnxs = 1;
+lp->tasktbl = &lp->tasktbl_0;
+lp->b_tasktbl = cpu_to_scr(vtobus(lp->tasktbl));
+lp->tasktbl[0] = cpu_to_scr(np->p_notask);
+lp->resel_task = cpu_to_scr(NCB_SCRIPT_PHYS(np, resel_notag));
+lp->busyccbs = 1;
+lp->queuedccbs = 1;
+lp->queuedepth = 1;
 fail:
 return lp;
 }
@@ -6259,7 +6259,7 @@ printk ("quirks=%x.\n", tp->quirks);
 }
 #endif
 inq_byte7 = 0;
-if	((inq_data[2] & 0x7) >= 2 && (inq_data[3] & 0xf) == 2)
+if ((inq_data[2] & 0x7) >= 2 && (inq_data[3] & 0xf) == 2)
 inq_byte7 = inq_data[7];
 else if ((inq_data[2] & 0x7) == 1 && (inq_data[3] & 0xf) == 1)
 inq_byte7 = INQ7_SYNC;
@@ -6291,23 +6291,23 @@ lp->tags_stime = ktime_get(3*HZ);
 }
 if ((inq_byte7 ^ lp->inq_byte7) & INQ7_QUEUE) {
 lp->inq_byte7 = inq_byte7;
-lp->numtags   = lp->maxtags;
+lp->numtags = lp->maxtags;
 ncr_setup_tags (np, tn, ln);
 }
 fail:
 return lp;
 }
 #ifdef SCSI_NCR_USE_64BIT_DAC
-#define SCATTER_ONE(data, badd, len)					\
-(data)->addr = cpu_to_scr(badd);				\
+#define SCATTER_ONE(data, badd, len) \
+(data)->addr = cpu_to_scr(badd); \
 (data)->size = cpu_to_scr((((badd) >> 8) & 0xff000000) + len);
 #else
-#define SCATTER_ONE(data, badd, len)		\
-(data)->addr = cpu_to_scr(badd);	\
+#define SCATTER_ONE(data, badd, len) \
+(data)->addr = cpu_to_scr(badd); \
 (data)->size = cpu_to_scr(len);
 #endif
 #define CROSS_16MB(p, n) (((((u_long) p) + n - 1) ^ ((u_long) p)) & ~0xffffff)
-static	int ncr_scatter_no_sglist(ncb_p np, ccb_p cp, Scsi_Cmnd *cmd)
+static int ncr_scatter_no_sglist(ncb_p np, ccb_p cp, Scsi_Cmnd *cmd)
 {
 struct scr_tblmove *data = &cp->phys.data[MAX_SCATTER-1];
 int segment;
@@ -6406,17 +6406,17 @@ return (0);
 #endif
 static int __init ncr_snooptest (struct ncb* np)
 {
-u_int32	ncr_rd, ncr_wr, ncr_bk, host_rd, host_wr, pc;
-int	i, err=0;
+u_int32 ncr_rd, ncr_wr, ncr_bk, host_rd, host_wr, pc;
+int i, err=0;
 #ifndef SCSI_NCR_IOMAPPED
 if (np->reg) {
 err |= ncr_regtest (np);
 if (err) return (err);
 }
 #endif
-pc  = NCB_SCRIPTH0_PHYS (np, snooptest);
+pc = NCB_SCRIPTH0_PHYS (np, snooptest);
 host_wr = 1;
-ncr_wr  = 2;
+ncr_wr = 2;
 np->ncr_cache = cpu_to_scr(host_wr);
 OUTL (nc_temp, ncr_wr);
 OUTL (nc_dsa, np->p_ncb);
@@ -6426,8 +6426,8 @@ if (INB(nc_istat) & (INTF|SIP|DIP))
 break;
 pc = INL (nc_dsp);
 host_rd = scr_to_cpu(np->ncr_cache);
-ncr_rd  = INL (nc_scratcha);
-ncr_bk  = INL (nc_temp);
+ncr_rd = INL (nc_scratcha);
+ncr_bk = INL (nc_temp);
 if (i>=NCR_SNOOP_TIMEOUT) {
 printk ("CACHE TEST FAILED: timeout.\n");
 return (0x20);
@@ -6459,7 +6459,7 @@ return (err);
 static void ncr_selectclock(ncb_p np, u_char scntl3)
 {
 if (np->multiplier < 2) {
-OUTB(nc_scntl3,	scntl3);
+OUTB(nc_scntl3, scntl3);
 return;
 }
 if (bootverbose >= 2)
@@ -6477,7 +6477,7 @@ ncr_name(np));
 } else
 UDELAY (120);
 OUTB(nc_stest3, HSC);
-OUTB(nc_scntl3,	scntl3);
+OUTB(nc_scntl3, scntl3);
 OUTB(nc_stest1, (DBLEN|DBLSEL));
 OUTB(nc_stest3, 0x00);
 }
@@ -6532,7 +6532,7 @@ if (bootverbose >= 2)
 printk ("%s: clock multiplier found\n", ncr_name(np));
 np->multiplier = mult;
 }
-if ((np->device_id == PCI_DEVICE_ID_LSI_53C1010)  ||
+if ((np->device_id == PCI_DEVICE_ID_LSI_53C1010) ||
 (np->device_id == PCI_DEVICE_ID_LSI_53C1010_66)) {
 f1=40000;
 np->multiplier = mult;
@@ -6544,8 +6544,8 @@ OUTB (nc_stest1, 0);
 f1 = ncr_getfreq (np);
 if (bootverbose)
 printk ("%s: NCR clock is %uKHz\n", ncr_name(np), f1);
-if	(f1 < 55000)		f1 =  40000;
-else				f1 =  80000;
+if (f1 < 55000) f1 = 40000;
+else f1 = 80000;
 if (np->features & FE_66MHZ) {
 np->pciclock_min = (66000*55+80-1)/80;
 np->pciclock_max = (66000*55)/40;
@@ -6557,16 +6557,16 @@ np->pciclock_max = (33000*55)/40;
 if (f1 == 40000 && mult > 1) {
 if (bootverbose >= 2)
 printk ("%s: clock multiplier assumed\n", ncr_name(np));
-np->multiplier	= mult;
+np->multiplier = mult;
 }
 } else {
-if	((scntl3 & 7) == 3)	f1 =  40000;
-else if	((scntl3 & 7) == 5)	f1 =  80000;
-else 				f1 = 160000;
+if ((scntl3 & 7) == 3) f1 = 40000;
+else if ((scntl3 & 7) == 5) f1 = 80000;
+else f1 = 160000;
 f1 /= np->multiplier;
 }
-f1		*= np->multiplier;
-np->clock_khz	= f1;
+f1 *= np->multiplier;
+np->clock_khz = f1;
 }
 static u_int __init ncr_getpciclock (ncb_p np)
 {
@@ -6586,60 +6586,60 @@ return f;
 #define ulong unsigned long
 #endif
 #ifdef MODULE
-#define	ARG_SEP	' '
+#define ARG_SEP ' '
 #else
-#define	ARG_SEP	','
+#define ARG_SEP ','
 #endif
-#define OPT_TAGS		1
-#define OPT_MASTER_PARITY	2
-#define OPT_SCSI_PARITY		3
-#define OPT_DISCONNECTION	4
-#define OPT_SPECIAL_FEATURES	5
-#define OPT_ULTRA_SCSI		6
-#define OPT_FORCE_SYNC_NEGO	7
-#define OPT_REVERSE_PROBE	8
-#define OPT_DEFAULT_SYNC	9
-#define OPT_VERBOSE		10
-#define OPT_DEBUG		11
-#define OPT_BURST_MAX		12
-#define OPT_LED_PIN		13
-#define OPT_MAX_WIDE		14
-#define OPT_SETTLE_DELAY	15
-#define OPT_DIFF_SUPPORT	16
-#define OPT_IRQM		17
-#define OPT_PCI_FIX_UP		18
-#define OPT_BUS_CHECK		19
-#define OPT_OPTIMIZE		20
-#define OPT_RECOVERY		21
-#define OPT_SAFE_SETUP		22
-#define OPT_USE_NVRAM		23
-#define OPT_EXCLUDE		24
-#define OPT_HOST_ID		25
+#define OPT_TAGS 1
+#define OPT_MASTER_PARITY 2
+#define OPT_SCSI_PARITY 3
+#define OPT_DISCONNECTION 4
+#define OPT_SPECIAL_FEATURES 5
+#define OPT_ULTRA_SCSI 6
+#define OPT_FORCE_SYNC_NEGO 7
+#define OPT_REVERSE_PROBE 8
+#define OPT_DEFAULT_SYNC 9
+#define OPT_VERBOSE 10
+#define OPT_DEBUG 11
+#define OPT_BURST_MAX 12
+#define OPT_LED_PIN 13
+#define OPT_MAX_WIDE 14
+#define OPT_SETTLE_DELAY 15
+#define OPT_DIFF_SUPPORT 16
+#define OPT_IRQM 17
+#define OPT_PCI_FIX_UP 18
+#define OPT_BUS_CHECK 19
+#define OPT_OPTIMIZE 20
+#define OPT_RECOVERY 21
+#define OPT_SAFE_SETUP 22
+#define OPT_USE_NVRAM 23
+#define OPT_EXCLUDE 24
+#define OPT_HOST_ID 25
 #ifdef SCSI_NCR_IARB_SUPPORT
-#define OPT_IARB		26
+#define OPT_IARB 26
 #endif
 static char setup_token[] __initdata =
-"tags:"   "mpar:"
-"spar:"   "disc:"
-"specf:"  "ultra:"
-"fsn:"    "revprob:"
-"sync:"   "verb:"
-"debug:"  "burst:"
-"led:"    "wide:"
+"tags:" "mpar:"
+"spar:" "disc:"
+"specf:" "ultra:"
+"fsn:" "revprob:"
+"sync:" "verb:"
+"debug:" "burst:"
+"led:" "wide:"
 "settle:" "diff:"
-"irqm:"   "pcifix:"
+"irqm:" "pcifix:"
 "buschk:" "optim:"
 "recovery:"
-"safe:"   "nvram:"
-"excl:"   "hostid:"
+"safe:" "nvram:"
+"excl:" "hostid:"
 #ifdef SCSI_NCR_IARB_SUPPORT
 "iarb:"
 #endif
 ;
 #ifdef MODULE
-#define	ARG_SEP	' '
+#define ARG_SEP ' '
 #else
-#define	ARG_SEP	','
+#define ARG_SEP ','
 #endif
 static int __init get_setup_token(char *p)
 {
@@ -6661,16 +6661,16 @@ int __init sym53c8xx_setup(char *str)
 char *cur = str;
 char *pc, *pv;
 unsigned long val;
-int i,  c;
+int i, c;
 int xi = 0;
 while (cur != NULL && (pc = strchr(cur, ':')) != NULL) {
 char *pe;
 val = 0;
 pv = pc;
 c = *++pv;
-if	(c == 'n')
+if (c == 'n')
 val = 0;
-else if	(c == 'y')
+else if (c == 'y')
 val = 1;
 else
 val = (int) simple_strtoul(pv, &pe, 0);
@@ -6699,7 +6699,7 @@ case OPT_SPECIAL_FEATURES:
 driver_setup.special_features = val;
 break;
 case OPT_ULTRA_SCSI:
-driver_setup.ultra_scsi	= val;
+driver_setup.ultra_scsi = val;
 break;
 case OPT_FORCE_SYNC_NEGO:
 driver_setup.force_sync_nego = val;
@@ -6735,7 +6735,7 @@ case OPT_IRQM:
 driver_setup.irqm = val;
 break;
 case OPT_PCI_FIX_UP:
-driver_setup.pci_fix_up	= val;
+driver_setup.pci_fix_up = val;
 break;
 case OPT_BUS_CHECK:
 driver_setup.bus_check = val;
@@ -6784,7 +6784,7 @@ static int
 sym53c8xx_pci_init(Scsi_Host_Template *tpnt, pcidev_t pdev, ncr_device *device);
 static void __init ncr_print_driver_setup(void)
 {
-#define YesNo(y)	y ? 'y' : 'n'
+#define YesNo(y) y ? 'y' : 'n'
 printk (NAME53C8XX ": setup=disc:%c,specf:%d,ultra:%d,tags:%d,sync:%d,"
 "burst:%d,wide:%c,diff:%d,revprob:%c,buschk:0x%x\n",
 YesNo(driver_setup.disconnection),
@@ -6811,10 +6811,10 @@ driver_setup.use_nvram,
 driver_setup.pci_fix_up);
 #undef YesNo
 }
-static ncr_chip	ncr_chip_table[] __initdata	= SCSI_NCR_CHIP_TABLE;
-static ushort	ncr_chip_ids[]   __initdata	= SCSI_NCR_CHIP_IDS;
-#ifdef	SCSI_NCR_PQS_PDS_SUPPORT
-#define	SCSI_NCR_MAX_PQS_BUS	16
+static ncr_chip ncr_chip_table[] __initdata = SCSI_NCR_CHIP_TABLE;
+static ushort ncr_chip_ids[] __initdata = SCSI_NCR_CHIP_IDS;
+#ifdef SCSI_NCR_PQS_PDS_SUPPORT
+#define SCSI_NCR_MAX_PQS_BUS 16
 static int pqs_bus[SCSI_NCR_MAX_PQS_BUS] __initdata = { 0 };
 static void __init ncr_detect_pqs_pds(void)
 {
@@ -6845,19 +6845,19 @@ int i, j, chips, hosts, count;
 int attach_count = 0;
 ncr_device *devtbl, *devp;
 #ifdef SCSI_NCR_NVRAM_SUPPORT
-ncr_nvram  nvram0, nvram, *nvp;
+ncr_nvram nvram0, nvram, *nvp;
 #endif
 if (!pci_present())
 return 0;
 #ifdef SCSI_NCR_PROC_INFO_SUPPORT
 #if LINUX_VERSION_CODE < LinuxVersionCode(2,3,27)
-tpnt->proc_dir  = &proc_scsi_sym53c8xx;
+tpnt->proc_dir = &proc_scsi_sym53c8xx;
 #else
 tpnt->proc_name = NAME53C8XX;
 #endif
 tpnt->proc_info = sym53c8xx_proc_info;
 #endif
-#if	defined(SCSI_NCR_BOOT_COMMAND_LINE_SUPPORT) && defined(MODULE)
+#if defined(SCSI_NCR_BOOT_COMMAND_LINE_SUPPORT) && defined(MODULE)
 if (sym53c8xx)
 sym53c8xx_setup(sym53c8xx);
 #endif
@@ -6869,11 +6869,11 @@ ncr_print_driver_setup();
 devtbl = m_calloc(PAGE_SIZE, "devtbl");
 if (!devtbl)
 return 0;
-#ifdef	SCSI_NCR_PQS_PDS_SUPPORT
+#ifdef SCSI_NCR_PQS_PDS_SUPPORT
 ncr_detect_pqs_pds();
 #endif
-chips	= sizeof(ncr_chip_ids)	/ sizeof(ncr_chip_ids[0]);
-hosts	= PAGE_SIZE		/ sizeof(*devtbl);
+chips = sizeof(ncr_chip_ids) / sizeof(ncr_chip_ids[0]);
+hosts = PAGE_SIZE / sizeof(*devtbl);
 #ifdef SCSI_NCR_NVRAM_SUPPORT
 nvp = (driver_setup.use_nvram & 0x1) ? &nvram0 : 0;
 #endif
@@ -6894,7 +6894,7 @@ if (pcidev == PCIDEV_NULL) {
 continue;
 }
 for (i = 0; i < count ; i++) {
-if (devtbl[i].slot.bus	     == PciBusNumber(pcidev) &&
+if (devtbl[i].slot.bus == PciBusNumber(pcidev) &&
 devtbl[i].slot.device_fn == PciDeviceFn(pcidev))
 break;
 }
@@ -6921,7 +6921,7 @@ break;
 }
 }
 #endif
-#ifdef	SCSI_NCR_PQS_PDS_SUPPORT
+#ifdef SCSI_NCR_PQS_PDS_SUPPORT
 if (devp->pqs_pds)
 msg = "(NCR PQS/PDS)";
 #endif
@@ -6936,7 +6936,7 @@ Symbios_host *h = &nvram0.data.Symbios.host[i];
 for (j = 0 ; j < count ; j++) {
 devp = &devtbl[j];
 if (h->device_fn != devp->slot.device_fn ||
-h->bus_nr	 != devp->slot.bus	 ||
+h->bus_nr != devp->slot.bus ||
 h->device_id != devp->chip.device_id)
 continue;
 if (devp->attach_done)
@@ -6996,16 +6996,16 @@ return -1;
 #endif
 vendor_id = PciVendorId(pdev);
 device_id = PciDeviceId(pdev);
-irq	  = PciIrqLine(pdev);
-i =	0;
-i =	pci_get_base_address(pdev, i, &io_port);
-i =	pci_get_base_address(pdev, i, &base);
-(void)	pci_get_base_address(pdev, i, &base_2);
-pci_read_config_word(pdev, PCI_COMMAND,		&command);
-pci_read_config_byte(pdev, PCI_CLASS_REVISION,	&revision);
-pci_read_config_byte(pdev, PCI_CACHE_LINE_SIZE,	&cache_line_size);
-pci_read_config_byte(pdev, PCI_LATENCY_TIMER,	&latency_timer);
-pci_read_config_word(pdev, PCI_STATUS,		&status_reg);
+irq = PciIrqLine(pdev);
+i = 0;
+i = pci_get_base_address(pdev, i, &io_port);
+i = pci_get_base_address(pdev, i, &base);
+(void) pci_get_base_address(pdev, i, &base_2);
+pci_read_config_word(pdev, PCI_COMMAND, &command);
+pci_read_config_byte(pdev, PCI_CLASS_REVISION, &revision);
+pci_read_config_byte(pdev, PCI_CACHE_LINE_SIZE, &cache_line_size);
+pci_read_config_byte(pdev, PCI_LATENCY_TIMER, &latency_timer);
+pci_read_config_word(pdev, PCI_STATUS, &status_reg);
 #ifdef SCSI_NCR_PQS_PDS_SUPPORT
 for(i = 0; i < SCSI_NCR_MAX_PQS_BUS && pqs_bus[i] != -1; i++) {
 u_char tmp;
@@ -7064,7 +7064,7 @@ return -1;
 if ((command & (PCI_COMMAND_IO | PCI_COMMAND_MEMORY))
 != (PCI_COMMAND_IO | PCI_COMMAND_MEMORY)) {
 printk(NAME53C8XX ": setting%s%s...\n",
-(command & PCI_COMMAND_IO)     ? "" : " PCI_COMMAND_IO",
+(command & PCI_COMMAND_IO) ? "" : " PCI_COMMAND_IO",
 (command & PCI_COMMAND_MEMORY) ? "" : " PCI_COMMAND_MEMORY");
 command |= (PCI_COMMAND_IO | PCI_COMMAND_MEMORY);
 pci_write_config_word(pdev, PCI_COMMAND, command);
@@ -7107,9 +7107,9 @@ switch(x86) {
 #else
 switch(boot_cpu_data.x86) {
 #endif
-case 4:	suggested_cache_line_size = 4; break;
+case 4: suggested_cache_line_size = 4; break;
 case 6:
-case 5:	suggested_cache_line_size = 8; break;
+case 5: suggested_cache_line_size = 8; break;
 }
 }
 #endif
@@ -7122,12 +7122,12 @@ io_port = 0;
 #endif
 if (!(command & PCI_COMMAND_MEMORY)) {
 printk(NAME53C8XX ": PCI_COMMAND_MEMORY not set.\n");
-base	= 0;
-base_2	= 0;
+base = 0;
+base_2 = 0;
 }
 io_port &= PCI_BASE_ADDRESS_IO_MASK;
-base	&= PCI_BASE_ADDRESS_MEM_MASK;
-base_2	&= PCI_BASE_ADDRESS_MEM_MASK;
+base &= PCI_BASE_ADDRESS_MEM_MASK;
+base_2 &= PCI_BASE_ADDRESS_MEM_MASK;
 #if 1
 if (io_port && check_region (io_port, 128)) {
 printk(NAME53C8XX ": IO region 0x%lx[0..127] is in use\n",
@@ -7171,11 +7171,11 @@ pci_read_config_word(pdev, PCI_STATUS, &status_reg);
 }
 }
 if (driver_setup.ultra_scsi < 3 && (chip->features & FE_ULTRA3)) {
-chip->features |=  FE_ULTRA2;
+chip->features |= FE_ULTRA2;
 chip->features &= ~FE_ULTRA3;
 }
 if (driver_setup.ultra_scsi < 2 && (chip->features & FE_ULTRA2)) {
-chip->features |=  FE_ULTRA;
+chip->features |= FE_ULTRA;
 chip->features &= ~FE_ULTRA2;
 }
 if (driver_setup.ultra_scsi < 1)
@@ -7187,10 +7187,10 @@ chip->features |= FE_ULTRA2;
 chip->features |= ~FE_ULTRA3;
 }
 if (device_id == PCI_DEVICE_ID_NCR_53C896 && revision <= 0x10) {
-chip->features	|= (FE_WRIE | FE_CLSE);
-pci_fix_up	|=  3;
+chip->features |= (FE_WRIE | FE_CLSE);
+pci_fix_up |= 3;
 }
-#ifdef	SCSI_NCR_PCI_FIX_UP_SUPPORT
+#ifdef SCSI_NCR_PCI_FIX_UP_SUPPORT
 if ((pci_fix_up & 1) && (chip->features & FE_CLSE) &&
 !cache_line_size && suggested_cache_line_size) {
 cache_line_size = suggested_cache_line_size;
@@ -7217,14 +7217,14 @@ PCI_LATENCY_TIMER, latency_timer);
 }
 }
 #endif
-device->pdev		= pdev;
-device->slot.bus	= PciBusNumber(pdev);
-device->slot.device_fn	= PciDeviceFn(pdev);
-device->slot.base	= base;
-device->slot.base_2	= base_2;
-device->slot.io_port	= io_port;
-device->slot.irq	= irq;
-device->attach_done	= 0;
+device->pdev = pdev;
+device->slot.bus = PciBusNumber(pdev);
+device->slot.device_fn = PciDeviceFn(pdev);
+device->slot.base = base;
+device->slot.base_2 = base_2;
+device->slot.io_port = io_port;
+device->slot.irq = irq;
+device->attach_done = 0;
 return 0;
 }
 #ifdef SCSI_NCR_NVRAM_SUPPORT
@@ -7241,9 +7241,9 @@ devp->slot.reg = (struct ncr_reg *) remap_pci_mem(devp->slot.base, 128);
 if (!devp->slot.reg)
 return;
 #endif
-if	(!sym_read_Symbios_nvram(&devp->slot, &nvp->data.Symbios))
+if (!sym_read_Symbios_nvram(&devp->slot, &nvp->data.Symbios))
 nvp->type = SCSI_NCR_SYMBIOS_NVRAM;
-else if	(!sym_read_Tekram_nvram(&devp->slot, devp->chip.device_id,
+else if (!sym_read_Tekram_nvram(&devp->slot, devp->chip.device_id,
 &nvp->data.Tekram))
 nvp->type = SCSI_NCR_TEKRAM_NVRAM;
 else {
@@ -7257,11 +7257,11 @@ unmap_pci_mem((u_long) devp->slot.reg, 128ul);
 #endif
 }
 #endif
-#define DEF_DEPTH	(driver_setup.default_tags)
-#define ALL_TARGETS	-2
-#define NO_TARGET	-1
-#define ALL_LUNS	-2
-#define NO_LUN		-1
+#define DEF_DEPTH (driver_setup.default_tags)
+#define ALL_TARGETS -2
+#define NO_TARGET -1
+#define ALL_LUNS -2
+#define NO_LUN -1
 static int device_queue_depth(ncb_p np, int target, int lun)
 {
 int c, h, t, u, v;
@@ -7290,7 +7290,7 @@ break;
 case 'q':
 if (h == np->unit &&
 (t == ALL_TARGETS || t == target) &&
-(u == ALL_LUNS    || u == lun))
+(u == ALL_LUNS || u == lun))
 return v;
 break;
 case '-':
@@ -7350,10 +7350,10 @@ int sts;
 #ifdef DEBUG_SYM53C8XX
 printk("sym53c8xx_queue_command\n");
 #endif
-cmd->scsi_done     = done;
+cmd->scsi_done = done;
 cmd->host_scribble = NULL;
-cmd->SCp.ptr       = NULL;
-cmd->SCp.buffer    = NULL;
+cmd->SCp.ptr = NULL;
+cmd->SCp.buffer = NULL;
 #ifdef SCSI_NCR_DYNAMIC_DMA_MAPPING
 cmd->__data_mapped = 0;
 cmd->__data_mapping = 0;
@@ -7387,7 +7387,7 @@ printk("sym53c8xx : interrupt received\n");
 if (DEBUG_FLAGS & DEBUG_TINY) printk ("[");
 NCR_LOCK_NCB(np, flags);
 ncr_exception(np);
-done_list     = np->done_list;
+done_list = np->done_list;
 np->done_list = 0;
 NCR_UNLOCK_NCB(np, flags);
 if (DEBUG_FLAGS & DEBUG_TINY) printk ("]\n");
@@ -7404,7 +7404,7 @@ unsigned long flags;
 Scsi_Cmnd *done_list;
 NCR_LOCK_NCB(np, flags);
 ncr_timeout((ncb_p) np);
-done_list     = np->done_list;
+done_list = np->done_list;
 np->done_list = 0;
 NCR_UNLOCK_NCB(np, flags);
 if (done_list) {
@@ -7447,7 +7447,7 @@ if (sts == SCSI_RESET_SUCCESS)
 sts |= SCSI_RESET_HOST_RESET;
 #endif
 out:
-done_list     = np->done_list;
+done_list = np->done_list;
 np->done_list = 0;
 NCR_UNLOCK_NCB(np, flags);
 ncr_flush_done_cmds(done_list);
@@ -7474,7 +7474,7 @@ goto out;
 #endif
 sts = ncr_abort_command(np, cmd);
 out:
-done_list     = np->done_list;
+done_list = np->done_list;
 np->done_list = 0;
 NCR_UNLOCK_NCB(np, flags);
 ncr_flush_done_cmds(done_list);
@@ -7552,9 +7552,9 @@ ncr_queue_done_cmd(np, wcmd);
 #undef next_wcmd
 #ifdef SCSI_NCR_PROC_INFO_SUPPORT
 #ifdef SCSI_NCR_USER_COMMAND_SUPPORT
-#define is_digit(c)	((c) >= '0' && (c) <= '9')
-#define digit_to_bin(c)	((c) - '0')
-#define is_space(c)	((c) == ' ' || (c) == '\t')
+#define is_digit(c) ((c) >= '0' && (c) <= '9')
+#define digit_to_bin(c) ((c) - '0')
+#define is_space(c) ((c) == ' ' || (c) == '\t')
 static int skip_spaces(char *ptr, int len)
 {
 int cnt, c;
@@ -7563,8 +7563,8 @@ return (len - cnt);
 }
 static int get_int_arg(char *ptr, int len, u_long *pv)
 {
-int	cnt, c;
-u_long	v;
+int cnt, c;
+u_long v;
 for (v = 0, cnt = len; cnt > 0 && (c = *ptr++) && is_digit(c); cnt--) {
 v = (v * 10) + digit_to_bin(c);
 }
@@ -7580,41 +7580,41 @@ return verb_len;
 else
 return 0;
 }
-#define SKIP_SPACES(min_spaces)						\
-if ((arg_len = skip_spaces(ptr, len)) < (min_spaces))		\
-return -EINVAL;						\
+#define SKIP_SPACES(min_spaces) \
+if ((arg_len = skip_spaces(ptr, len)) < (min_spaces)) \
+return -EINVAL; \
 ptr += arg_len; len -= arg_len;
-#define GET_INT_ARG(v)							\
-if (!(arg_len = get_int_arg(ptr, len, &(v))))			\
-return -EINVAL;						\
+#define GET_INT_ARG(v) \
+if (!(arg_len = get_int_arg(ptr, len, &(v)))) \
+return -EINVAL; \
 ptr += arg_len; len -= arg_len;
 static int ncr_user_command(ncb_p np, char *buffer, int length)
 {
-char *ptr	= buffer;
-int len		= length;
-struct usrcmd	 *uc = &np->user;
-int		arg_len;
-u_long 		target;
+char *ptr = buffer;
+int len = length;
+struct usrcmd *uc = &np->user;
+int arg_len;
+u_long target;
 bzero(uc, sizeof(*uc));
 if (len > 0 && ptr[len-1] == '\n')
 --len;
-if	((arg_len = is_keyword(ptr, len, "setsync")) != 0)
+if ((arg_len = is_keyword(ptr, len, "setsync")) != 0)
 uc->cmd = UC_SETSYNC;
-else if	((arg_len = is_keyword(ptr, len, "settags")) != 0)
+else if ((arg_len = is_keyword(ptr, len, "settags")) != 0)
 uc->cmd = UC_SETTAGS;
-else if	((arg_len = is_keyword(ptr, len, "setorder")) != 0)
+else if ((arg_len = is_keyword(ptr, len, "setorder")) != 0)
 uc->cmd = UC_SETORDER;
-else if	((arg_len = is_keyword(ptr, len, "setverbose")) != 0)
+else if ((arg_len = is_keyword(ptr, len, "setverbose")) != 0)
 uc->cmd = UC_SETVERBOSE;
-else if	((arg_len = is_keyword(ptr, len, "setwide")) != 0)
+else if ((arg_len = is_keyword(ptr, len, "setwide")) != 0)
 uc->cmd = UC_SETWIDE;
-else if	((arg_len = is_keyword(ptr, len, "setdebug")) != 0)
+else if ((arg_len = is_keyword(ptr, len, "setdebug")) != 0)
 uc->cmd = UC_SETDEBUG;
-else if	((arg_len = is_keyword(ptr, len, "setflag")) != 0)
+else if ((arg_len = is_keyword(ptr, len, "setflag")) != 0)
 uc->cmd = UC_SETFLAG;
-else if	((arg_len = is_keyword(ptr, len, "resetdev")) != 0)
+else if ((arg_len = is_keyword(ptr, len, "resetdev")) != 0)
 uc->cmd = UC_RESETDEV;
-else if	((arg_len = is_keyword(ptr, len, "cleardev")) != 0)
+else if ((arg_len = is_keyword(ptr, len, "cleardev")) != 0)
 uc->cmd = UC_CLEARDEV;
 else
 arg_len = 0;
@@ -7657,11 +7657,11 @@ printk("ncr_user_command: data=%ld\n", uc->data);
 break;
 case UC_SETORDER:
 SKIP_SPACES(1);
-if	((arg_len = is_keyword(ptr, len, "simple")))
+if ((arg_len = is_keyword(ptr, len, "simple")))
 uc->data = M_SIMPLE_TAG;
-else if	((arg_len = is_keyword(ptr, len, "ordered")))
+else if ((arg_len = is_keyword(ptr, len, "ordered")))
 uc->data = M_ORDERED_TAG;
-else if	((arg_len = is_keyword(ptr, len, "default")))
+else if ((arg_len = is_keyword(ptr, len, "default")))
 uc->data = 0;
 else
 return -EINVAL;
@@ -7669,25 +7669,25 @@ break;
 case UC_SETDEBUG:
 while (len > 0) {
 SKIP_SPACES(1);
-if	((arg_len = is_keyword(ptr, len, "alloc")))
+if ((arg_len = is_keyword(ptr, len, "alloc")))
 uc->data |= DEBUG_ALLOC;
-else if	((arg_len = is_keyword(ptr, len, "phase")))
+else if ((arg_len = is_keyword(ptr, len, "phase")))
 uc->data |= DEBUG_PHASE;
-else if	((arg_len = is_keyword(ptr, len, "queue")))
+else if ((arg_len = is_keyword(ptr, len, "queue")))
 uc->data |= DEBUG_QUEUE;
-else if	((arg_len = is_keyword(ptr, len, "result")))
+else if ((arg_len = is_keyword(ptr, len, "result")))
 uc->data |= DEBUG_RESULT;
-else if	((arg_len = is_keyword(ptr, len, "pointer")))
+else if ((arg_len = is_keyword(ptr, len, "pointer")))
 uc->data |= DEBUG_POINTER;
-else if	((arg_len = is_keyword(ptr, len, "script")))
+else if ((arg_len = is_keyword(ptr, len, "script")))
 uc->data |= DEBUG_SCRIPT;
-else if	((arg_len = is_keyword(ptr, len, "tiny")))
+else if ((arg_len = is_keyword(ptr, len, "tiny")))
 uc->data |= DEBUG_TINY;
-else if	((arg_len = is_keyword(ptr, len, "timing")))
+else if ((arg_len = is_keyword(ptr, len, "timing")))
 uc->data |= DEBUG_TIMING;
-else if	((arg_len = is_keyword(ptr, len, "nego")))
+else if ((arg_len = is_keyword(ptr, len, "nego")))
 uc->data |= DEBUG_NEGO;
-else if	((arg_len = is_keyword(ptr, len, "tags")))
+else if ((arg_len = is_keyword(ptr, len, "tags")))
 uc->data |= DEBUG_TAGS;
 else
 return -EINVAL;
@@ -7700,9 +7700,9 @@ break;
 case UC_SETFLAG:
 while (len > 0) {
 SKIP_SPACES(1);
-if	((arg_len = is_keyword(ptr, len, "trace")))
+if ((arg_len = is_keyword(ptr, len, "trace")))
 uc->data |= UF_TRACE;
-else if	((arg_len = is_keyword(ptr, len, "no_disc")))
+else if ((arg_len = is_keyword(ptr, len, "no_disc")))
 uc->data |= UF_NODISC;
 else
 return -EINVAL;
@@ -7741,7 +7741,7 @@ return;
 }
 if (info->pos < info->offset) {
 data += (info->offset - info->pos);
-len  -= (info->offset - info->pos);
+len -= (info->offset - info->pos);
 }
 if (len > 0) {
 memcpy(info->buffer + info->pos, data, len);
@@ -7765,14 +7765,14 @@ struct info_str info;
 #ifdef CONFIG_ALL_PPC
 struct device_node* of_node;
 #endif
-info.buffer	= ptr;
-info.length	= len;
-info.offset	= offset;
-info.pos	= 0;
+info.buffer = ptr;
+info.length = len;
+info.offset = offset;
+info.pos = 0;
 copy_info(&info, "General information:\n");
 copy_info(&info, "  Chip " NAME53C "%s, device id 0x%x, "
 "revision id 0x%x\n",
-np->chip_name, np->device_id,	np->revision_id);
+np->chip_name, np->device_id, np->revision_id);
 copy_info(&info, "  On PCI bus %d, device %d, function %d, "
 #ifdef __sparc__
 "IRQ %s\n",
@@ -7822,7 +7822,7 @@ break;
 if (!ncb)
 return -EINVAL;
 if (func) {
-#ifdef	SCSI_NCR_USER_COMMAND_SUPPORT
+#ifdef SCSI_NCR_USER_COMMAND_SUPPORT
 retv = ncr_user_command(ncb, buffer, length);
 #else
 retv = -EINVAL;
@@ -7927,15 +7927,15 @@ S24C16_write_ack(np, ack_data, gpreg, gpcntl);
 static int __init
 sym_read_S24C16_nvram (ncr_slot *np, int offset, u_char *data, int len)
 {
-u_char	gpcntl, gpreg;
-u_char	old_gpcntl, old_gpreg;
-u_char	ack_data;
-int	retv = 1;
-int	x;
-old_gpreg	= INB (nc_gpreg);
-old_gpcntl	= INB (nc_gpcntl);
-gpcntl		= old_gpcntl & 0xfc;
-OUTB (nc_gpreg,  old_gpreg);
+u_char gpcntl, gpreg;
+u_char old_gpcntl, old_gpreg;
+u_char ack_data;
+int retv = 1;
+int x;
+old_gpreg = INB (nc_gpreg);
+old_gpcntl = INB (nc_gpcntl);
+gpcntl = old_gpcntl & 0xfc;
+OUTB (nc_gpreg, old_gpreg);
 OUTB (nc_gpcntl, gpcntl);
 gpreg = old_gpreg;
 S24C16_set_bit(np, 0, &gpreg, CLR_CLK);
@@ -7965,7 +7965,7 @@ S24C16_stop(np, &gpreg);
 retv = 0;
 out:
 OUTB (nc_gpcntl, old_gpcntl);
-OUTB (nc_gpreg,  old_gpreg);
+OUTB (nc_gpreg, old_gpreg);
 return retv;
 }
 #undef SET_BIT
@@ -7976,8 +7976,8 @@ static int __init sym_read_Symbios_nvram (ncr_slot *np, Symbios_nvram *nvram)
 {
 static u_char Symbios_trailer[6] = {0xfe, 0xfe, 0, 0, 0, 0};
 u_char *data = (u_char *) nvram;
-int len  = sizeof(*nvram);
-u_short	csum;
+int len = sizeof(*nvram);
+u_short csum;
 int x;
 if (sym_read_S24C16_nvram (np, SYMBIOS_NVRAM_ADDRESS, data, len))
 return 1;
@@ -8039,7 +8039,7 @@ u_char read_bit;
 for (x = 0; x < 16; x++) {
 T93C46_Read_Bit(np, &read_bit, gpreg);
 if (read_bit & 0x01)
-*nvram_data |=  (0x01 << (15 - x));
+*nvram_data |= (0x01 << (15 - x));
 else
 *nvram_data &= ~(0x01 << (15 - x));
 }
@@ -8047,9 +8047,9 @@ else
 static int __init
 T93C46_Read_Data(ncr_slot *np, u_short *data,int len,u_char *gpreg)
 {
-u_char	read_bit;
-int	x;
-for (x = 0; x < len; x++)  {
+u_char read_bit;
+int x;
+for (x = 0; x < len; x++) {
 T93C46_Send_Command(np, 0x180 | x, &read_bit, gpreg);
 if (read_bit & 0x01)
 return 1;
@@ -8064,8 +8064,8 @@ sym_read_T93C46_nvram (ncr_slot *np, Tekram_nvram *nvram)
 u_char gpcntl, gpreg;
 u_char old_gpcntl, old_gpreg;
 int retv = 1;
-old_gpreg	= INB (nc_gpreg);
-old_gpcntl	= INB (nc_gpcntl);
+old_gpreg = INB (nc_gpreg);
+old_gpcntl = INB (nc_gpcntl);
 gpreg = old_gpreg & 0xe9;
 OUTB (nc_gpreg, gpreg);
 gpcntl = (old_gpcntl & 0xe9) | 0x09;
@@ -8073,7 +8073,7 @@ OUTB (nc_gpcntl, gpcntl);
 retv = T93C46_Read_Data(np, (u_short *) nvram,
 sizeof(*nvram) / sizeof(short), &gpreg);
 OUTB (nc_gpcntl, old_gpcntl);
-OUTB (nc_gpreg,  old_gpreg);
+OUTB (nc_gpreg, old_gpreg);
 return retv;
 }
 static int __init
@@ -8081,7 +8081,7 @@ sym_read_Tekram_nvram (ncr_slot *np, u_short device_id, Tekram_nvram *nvram)
 {
 u_char *data = (u_char *) nvram;
 int len = sizeof(*nvram);
-u_short	csum;
+u_short csum;
 int x;
 switch (device_id) {
 case PCI_DEVICE_ID_NCR_53C885:

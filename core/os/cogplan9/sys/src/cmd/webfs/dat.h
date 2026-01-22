@@ -11,15 +11,15 @@ char *rp, *wp;
 };
 struct Ctl
 {
-int	acceptcookies;
-int	sendcookies;
-int	redirectlimit;
-char	*useragent;
+int acceptcookies;
+int sendcookies;
+int redirectlimit;
+char *useragent;
 };
 struct Client
 {
-Url	*url;
-Url	*baseurl;
+Url *url;
+Url *baseurl;
 Ctl ctl;
 Channel *creq;
 int num;
@@ -48,21 +48,21 @@ UScurrent,
 };
 struct Url
 {
-int		ischeme;
-char*	url;
-char*	scheme;
-int		(*open)(Client*, Url*);
-int		(*read)(Client*, Req*);
-void		(*close)(Client*);
-char*	schemedata;
-char*	authority;
-char*	user;
-char*	passwd;
-char*	host;
-char*	port;
-char*	path;
-char*	query;
-char*	fragment;
+int ischeme;
+char* url;
+char* scheme;
+int (*open)(Client*, Url*);
+int (*read)(Client*, Req*);
+void (*close)(Client*);
+char* schemedata;
+char* authority;
+char* user;
+char* passwd;
+char* host;
+char* port;
+char* path;
+char* query;
+char* fragment;
 union {
 struct {
 char *page_spec;
@@ -77,12 +77,12 @@ enum
 {
 STACK = 32*1024,
 };
-extern	Client**	client;
-extern	int		cookiedebug;
-extern	Srv		fs;
-extern	int		fsdebug;
-extern	Ctl		globalctl;
-extern	int		nclient;
-extern	int		urldebug;
-extern	int		httpdebug;
-extern	char*	status[];
+extern Client** client;
+extern int cookiedebug;
+extern Srv fs;
+extern int fsdebug;
+extern Ctl globalctl;
+extern int nclient;
+extern int urldebug;
+extern int httpdebug;
+extern char* status[];

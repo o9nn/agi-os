@@ -5,26 +5,26 @@ JSON_FILE=$1
 METTA_FILE=""
 METTA_BIAS_FILE=""
 if [ $
-  if [ -f "$2" ]; then
-    METTA_FILE=$2
-  fi
+if [ -f "$2" ]; then
+METTA_FILE=$2
+fi
 fi
 if [ $
-  if [ -f "$3" ]; then
-    METTA_BIAS_FILE=$3
-  fi
+if [ -f "$3" ]; then
+METTA_BIAS_FILE=$3
+fi
 fi
 NO_DB=false
 NO_AGENTS=false
 for arg in "$@"; do
-  case $arg in
-    no-db)
-      NO_DB=true
-      ;;
-    no-agents)
-      NO_AGENTS=true
-      ;;
-  esac
+case $arg in
+no-db)
+NO_DB=true
+;;
+no-agents)
+NO_AGENTS=true
+;;
+esac
 done
 echo "Using JSON file: $JSON_FILE"
 SCENARIO=$(basename "$JSON_FILE" .json)
@@ -39,31 +39,31 @@ ITPPATHD="/opt/das/3rd_party_slots/python_inference_poc"
 rm -f /tmp/output.metta
 rm -f /tmp/biased_predicates.metta
 if [ -z "$METTA_FILE" ]; then
-  rm -f 3rd_party_slots/python_inference_poc/output.metta
-  $PWD/run_script.sh python3 $ITPPATH/metta_file_generator.py --sentence-node-count $SENTENCE_NODE_COUNT --word-count $WORD_COUNT --word-length $WORD_LENGTH --alphabet-range $ALPHABET --seed $SEED
+rm -f 3rd_party_slots/python_inference_poc/output.metta
+$PWD/run_script.sh python3 $ITPPATH/metta_file_generator.py --sentence-node-count $SENTENCE_NODE_COUNT --word-count $WORD_COUNT --word-length $WORD_LENGTH --alphabet-range $ALPHABET --seed $SEED
 fi
 if [ -z "$METTA_BIAS_FILE" ]; then
-  rm -f 3rd_party_slots/python_inference_poc/biased_predicates.metta
-  $PWD/run_script.sh python3 $ITPPATH/predicate_generator.py  $ITPPATHD/output.metta --config-file $ITPPATHD/config/$SCENARIO.json
-  if [ -f $ITPPATH/biased_predicates.metta ]; then
-    cp -f $ITPPATH/biased_predicates.metta /tmp/
-  fi
-  cp -f $ITPPATH/output.metta /tmp/
+rm -f 3rd_party_slots/python_inference_poc/biased_predicates.metta
+$PWD/run_script.sh python3 $ITPPATH/predicate_generator.py  $ITPPATHD/output.metta --config-file $ITPPATHD/config/$SCENARIO.json
+if [ -f $ITPPATH/biased_predicates.metta ]; then
+cp -f $ITPPATH/biased_predicates.metta /tmp/
+fi
+cp -f $ITPPATH/output.metta /tmp/
 else
-  if [ -f "$METTA_BIAS_FILE" ]; then
-    cp -f "$METTA_BIAS_FILE" /tmp/biased_predicates.metta
-  fi
-  cp -f "$METTA_FILE" /tmp/output.metta
+if [ -f "$METTA_BIAS_FILE" ]; then
+cp -f "$METTA_BIAS_FILE" /tmp/biased_predicates.metta
+fi
+cp -f "$METTA_FILE" /tmp/output.metta
 fi
 if [ "$NO_DB" = false ] ; then
-  das-cli db start
-  das-cli metta load /tmp/output.metta
-  if [ -f /tmp/biased_predicates.metta ]; then
-    das-cli metta load /tmp/biased_predicates.metta
-  fi
+das-cli db start
+das-cli metta load /tmp/output.metta
+if [ -f /tmp/biased_predicates.metta ]; then
+das-cli metta load /tmp/biased_predicates.metta
+fi
 fi
 if [ "$NO_AGENTS" = true ] ; then
-  exit 0
+exit 0
 fi
 export LINK_CREATION_REQUESTS_INTERVAL_SECONDS=5
 $PWD/run_agents.sh start

@@ -30,7 +30,7 @@ if (cell != nil) {
 cell.sizereq = getsize(win, cell.w);
 # sys->print("cell %d %d size %s span %s\n", x, y, p2s(cell.sizereq), p2s(cell.span));
 }
-#  else
+# else
 # sys->print("cell %d %d blank\n", x, y);
 }
 }
@@ -62,10 +62,10 @@ if (cell != nil && cell.span.y == 1 && cell.sizereq.y > rowheights[y])
 rowheights[y] = cell.sizereq.y;
 }
 }
-# 	for (i := 0; i < len colwidths; i++)
-# 		sys->print("colwidth %d -> %d\n", i, colwidths[i]);
-# 	for (i = 0; i < len rowheights; i++)
-# 		sys->print("rowheight %d -> %d\n", i, rowheights[i]);
+# for (i := 0; i < len colwidths; i++)
+# sys->print("colwidth %d -> %d\n", i, colwidths[i]);
+# for (i = 0; i < len rowheights; i++)
+# sys->print("rowheight %d -> %d\n", i, rowheights[i]);
 rowexpand := array[dim.y] of {* => 1};
 # now check that multi-row cells fit in their columns
 for (y = 0; y < dim.y; y++) {
@@ -75,10 +75,10 @@ if (cell != nil && cell.span.y > 1)
 expandwidths(y, cell.sizereq.y, cell.span.y, rowheights, rowexpand);
 }
 }
-#	if (rowequalise)
-#		equalise(rowheights, dim.y);
-#	if (colequalise)
-#		equalise(colwidths, dim.x);
+# if (rowequalise)
+# equalise(rowheights, dim.y);
+# if (colequalise)
+# equalise(colwidths, dim.x);
 # calculate total width and height (including cell padding)
 totsize := Point(0, 0);
 for (x = 0; x < dim.x; x++)
@@ -148,7 +148,7 @@ return string p.x + " " + string p.y;
 }
 cmd(win: ref Tk->Toplevel, s: string): string
 {
-#	sys->print("%ux	%s\n", win, s);
+# sys->print("%ux	%s\n", win, s);
 r := tk->cmd(win, s);
 if (len r > 0 && r[0] == '!') {
 sys->fprint(sys->fildes(2), "error executing '%s': %s\n", s, r);

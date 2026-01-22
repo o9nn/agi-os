@@ -8,11 +8,11 @@
 #include <errno.h>
 #include <math.h>
 #include <float.h>
-#define DTESN_FUSION_CONFIDENCE_THRESHOLD       0.5f
-#define DTESN_FUSION_TEMPORAL_WINDOW_MS         100
-#define DTESN_FUSION_CORRELATION_THRESHOLD      0.3f
-#define DTESN_FUSION_DEFAULT_OUTPUT_SIZE        512
-#define DTESN_FUSION_ATTENTION_WEIGHT           0.8f
+#define DTESN_FUSION_CONFIDENCE_THRESHOLD 0.5f
+#define DTESN_FUSION_TEMPORAL_WINDOW_MS 100
+#define DTESN_FUSION_CORRELATION_THRESHOLD 0.3f
+#define DTESN_FUSION_DEFAULT_OUTPUT_SIZE 512
+#define DTESN_FUSION_ATTENTION_WEIGHT 0.8f
 typedef struct cross_modal_correlation {
 uint32_t modality_a;
 uint32_t modality_b;

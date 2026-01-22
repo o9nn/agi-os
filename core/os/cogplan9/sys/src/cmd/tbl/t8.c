@@ -1,18 +1,18 @@
 # include "t.h"
 # define realsplit ((ct=='a'||ct=='n') && table[nl][c].rcol)
-int	watchout;
-int	once;
+int watchout;
+int once;
 void
 putline(int i, int nl)
 {
-int	c, s, lf, ct, form, lwid, vspf, ip, cmidx, exvspen, vforml;
-int	vct, chfont, uphalf;
-char	*ss, *size, *fn, *rct;
+int c, s, lf, ct, form, lwid, vspf, ip, cmidx, exvspen, vforml;
+int vct, chfont, uphalf;
+char *ss, *size, *fn, *rct;
 cmidx = watchout = vspf = exvspen = 0;
 if (i == 0)
 once = 0;
 if (i == 0 && ( allflg || boxflg || dboxflg))
-fullwide(0,   dboxflg ? '=' : '-');
+fullwide(0, dboxflg ? '=' : '-');
 if (instead[nl] == 0 && fullbot[nl] == 0)
 for (c = 0; c < ncol; c++) {
 ss = table[nl][c].col;
@@ -129,7 +129,7 @@ switch (ct = ctype(vforml, c)) {
 case 'n':
 case 'a':
 if (table[nl][c].rcol) {
-if (lused[c])  {
+if (lused[c]) {
 ip = prev(nl);
 if (ip >= 0)
 if (vspen(table[ip][c].col)) {
@@ -174,7 +174,7 @@ continue;
 default:
 continue;
 }
-if (realsplit ? rused[c] : used[c])  {
+if (realsplit ? rused[c] : used[c]) {
 if (ifline(ss)) {
 makeline(i, c, ifline(ss));
 continue;
@@ -268,8 +268,8 @@ putsize("0");
 void
 funnies(int stl, int lin)
 {
-int	c, s, pl, lwid, dv, lf, ct;
-char	*fn, *ss;
+int c, s, pl, lwid, dv, lf, ct;
+char *fn, *ss;
 Bprint(&tabout, ".mk ##\n");
 Bprint(&tabout, ".nr %d \\n(##\n", S1);
 for (c = 0; c < ncol; c++) {
@@ -340,7 +340,7 @@ void
 putfont(char *fn)
 {
 if (fn && *fn)
-Bprint(&tabout,  fn[1] ? "\\f(%.2s" : "\\f%.2s",  fn);
+Bprint(&tabout, fn[1] ? "\\f(%.2s" : "\\f%.2s", fn);
 }
 void
 putsize(char *s)

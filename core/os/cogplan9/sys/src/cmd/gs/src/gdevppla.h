@@ -1,5 +1,5 @@
 #ifndef gdevppla_INCLUDED
-#  define gdevppla_INCLUDED
+# define gdevppla_INCLUDED
 int gdev_prn_set_procs_planar(gx_device *pdev);
 int gdev_prn_open_planar(gx_device *pdev, bool upb);
 int gdev_prn_get_params_planar(gx_device * pdev, gs_param_list * plist,

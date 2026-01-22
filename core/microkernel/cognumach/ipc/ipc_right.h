@@ -1,10 +1,10 @@
-#ifndef	_IPC_IPC_RIGHT_H_
-#define	_IPC_IPC_RIGHT_H_
+#ifndef _IPC_IPC_RIGHT_H_
+#define _IPC_IPC_RIGHT_H_
 #include <mach/boolean.h>
 #include <mach/kern_return.h>
 #include <ipc/ipc_entry.h>
 #include <ipc/ipc_port.h>
-#define	ipc_right_lookup_read	ipc_right_lookup_write
+#define ipc_right_lookup_read ipc_right_lookup_write
 extern kern_return_t
 ipc_right_lookup_write(ipc_space_t, mach_port_name_t, ipc_entry_t *);
 extern boolean_t
@@ -15,8 +15,8 @@ ipc_right_dnrequest(ipc_space_t, mach_port_name_t, boolean_t,
 ipc_port_t, ipc_port_t *);
 extern ipc_port_t
 ipc_right_dncancel(ipc_space_t, ipc_port_t, mach_port_name_t, ipc_entry_t);
-#define	ipc_right_dncancel_macro(space, port, name, entry)		\
-(((entry)->ie_request == 0) ? IP_NULL :			\
+#define ipc_right_dncancel_macro(space, port, name, entry) \
+(((entry)->ie_request == 0) ? IP_NULL : \
 ipc_right_dncancel((space), (port), (name), (entry)))
 extern boolean_t
 ipc_right_inuse(ipc_space_t, mach_port_name_t, ipc_entry_t);

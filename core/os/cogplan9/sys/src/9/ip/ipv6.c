@@ -1,24 +1,24 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"ip.h"
-#include	"ipv6.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "ip.h"
+#include "ipv6.h"
 enum
 {
-IP6FHDR		= 8,
+IP6FHDR = 8,
 };
-#define IPV6CLASS(hdr)	(((hdr)->vcf[0]&0x0F)<<2 | ((hdr)->vcf[1]&0xF0)>>2)
-#define BLKIPVER(xp)	(((Ip6hdr*)((xp)->rp))->vcf[0] & 0xF0)
-#define BKFG(xp)	((Ipfrag*)((xp)->base))
-Block*		ip6reassemble(IP*, int, Block*, Ip6hdr*);
-Fragment6*	ipfragallo6(IP*);
-void		ipfragfree6(IP*, Fragment6*);
-Block*		procopts(Block *bp);
-static Block*	procxtns(IP *ip, Block *bp, int doreasm);
-int		unfraglen(Block *bp, uchar *nexthdr, int setfh);
+#define IPV6CLASS(hdr) (((hdr)->vcf[0]&0x0F)<<2 | ((hdr)->vcf[1]&0xF0)>>2)
+#define BLKIPVER(xp) (((Ip6hdr*)((xp)->rp))->vcf[0] & 0xF0)
+#define BKFG(xp) ((Ipfrag*)((xp)->base))
+Block* ip6reassemble(IP*, int, Block*, Ip6hdr*);
+Fragment6* ipfragallo6(IP*);
+void ipfragfree6(IP*, Fragment6*);
+Block* procopts(Block *bp);
+static Block* procxtns(IP *ip, Block *bp, int doreasm);
+int unfraglen(Block *bp, uchar *nexthdr, int setfh);
 int
 ipoput6(Fs *f, Block *bp, int gating, int ttl, int tos, Conv *c)
 {
@@ -79,7 +79,7 @@ eh->vcf[0] = IP_VER6;
 eh->ttl = ttl;
 if(!gating) {
 eh->vcf[0] |= tos >> 4;
-eh->vcf[1]  = tos << 4;
+eh->vcf[1] = tos << 4;
 }
 if(!canrlock(ifc))
 goto free;
@@ -223,7 +223,7 @@ freeblist(bp);
 return;
 }
 sr = v6lookup(f, h->src, nil);
-r  = v6lookup(f, h->dst, nil);
+r = v6lookup(f, h->dst, nil);
 if(r == nil || sr == r){
 ip->stats[OutDiscards]++;
 freeblist(bp);

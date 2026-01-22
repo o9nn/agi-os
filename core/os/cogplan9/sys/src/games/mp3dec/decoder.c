@@ -1,21 +1,21 @@
 # ifdef HAVE_CONFIG_H
-#  include "config.h"
+# include "config.h"
 # endif
 # include "global.h"
 # ifdef HAVE_SYS_TYPES_H
-#  include <sys/types.h>
+# include <sys/types.h>
 # endif
 # ifdef HAVE_SYS_WAIT_H
-#  include <sys/wait.h>
+# include <sys/wait.h>
 # endif
 # ifdef HAVE_UNISTD_H
-#  include <unistd.h>
+# include <unistd.h>
 # endif
 # ifdef HAVE_FCNTL_H
-#  include <fcntl.h>
+# include <fcntl.h>
 # endif
 # ifdef HAVE_ERRNO_H
-#  include <errno.h>
+# include <errno.h>
 # endif
 # include "stream.h"
 # include "frame.h"
@@ -38,18 +38,18 @@ struct mad_frame *),
 enum mad_flow (*message_func)(void *,
 void *, unsigned int *))
 {
-decoder->mode         = -1;
-decoder->options      = 0;
-decoder->async.pid    = 0;
-decoder->async.in     = -1;
-decoder->async.out    = -1;
-decoder->sync         = 0;
-decoder->cb_data      = data;
-decoder->input_func   = input_func;
-decoder->header_func  = header_func;
-decoder->filter_func  = filter_func;
-decoder->output_func  = output_func;
-decoder->error_func   = error_func;
+decoder->mode = -1;
+decoder->options = 0;
+decoder->async.pid = 0;
+decoder->async.in = -1;
+decoder->async.out = -1;
+decoder->sync = 0;
+decoder->cb_data = data;
+decoder->input_func = input_func;
+decoder->header_func = header_func;
+decoder->filter_func = filter_func;
+decoder->output_func = output_func;
+decoder->error_func = error_func;
 decoder->message_func = message_func;
 }
 int mad_decoder_finish(struct mad_decoder *decoder)
@@ -65,7 +65,7 @@ while (pid == -1 && errno == EINTR);
 decoder->mode = -1;
 close(decoder->async.out);
 decoder->async.pid = 0;
-decoder->async.in  = -1;
+decoder->async.in = -1;
 decoder->async.out = -1;
 if (pid == -1)
 return -1;
@@ -148,7 +148,7 @@ if (result == MAD_FLOW_CONTINUE) {
 if (actual > *size)
 actual -= *size;
 else {
-*size  = actual;
+*size = actual;
 actual = 0;
 }
 if (*size > 0) {
@@ -230,8 +230,8 @@ error_func = error_default;
 error_data = &bad_last_frame;
 }
 stream = &decoder->sync->stream;
-frame  = &decoder->sync->frame;
-synth  = &decoder->sync->synth;
+frame = &decoder->sync->frame;
+synth = &decoder->sync->synth;
 mad_stream_init(stream);
 mad_frame_init(frame);
 mad_synth_init(synth);
@@ -374,13 +374,13 @@ decoder->async.pid = pid;
 if (pid) {
 close(ptoc[0]);
 close(ctop[1]);
-decoder->async.in  = ctop[0];
+decoder->async.in = ctop[0];
 decoder->async.out = ptoc[1];
 return 0;
 }
 close(ptoc[1]);
 close(ctop[0]);
-decoder->async.in  = ptoc[0];
+decoder->async.in = ptoc[0];
 decoder->async.out = ctop[1];
 _exit(run_sync(decoder));
 return -1;

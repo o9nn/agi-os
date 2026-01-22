@@ -14,43 +14,43 @@ include "alphabet/abc.m";
 abc: Abc;
 Value, Vtype: import abc;
 # types abc -> types
-#	returns a set of types defined in terms of the types and modules in $1
+# returns a set of types defined in terms of the types and modules in $1
 # stdtypes types -> types
-#	adds the standard root types to $1
+# adds the standard root types to $1
 # newtype [-u] types string string cmd -> types
-#	adds a new type named $2 to $1; the underlying type will be $3, and the destructor $4.
-#	-u flag implies values of this type cannot be duplicated.
+# adds a new type named $2 to $1; the underlying type will be $3, and the destructor $4.
+# -u flag implies values of this type cannot be duplicated.
 # modules types -> modules
-#	returns a value suitable for defining modules in terms of types defined in $1,
-#	containing no module definitions.
+# returns a value suitable for defining modules in terms of types defined in $1,
+# containing no module definitions.
 # module modules string string cmd -> modules
 # newtypeset abc string modules -> abc
 # declares adds some autoconversions:
 #
-# 	autoconvert abc types "{| types}
-# 	autoconvert types modules "{| modules}
+# autoconvert abc types "{| types}
+# autoconvert types modules "{| modules}
 #
 # declares "{(abc)
-# 	autodeclare 1 |
-# 	newtypeset $1 /images {
-#		abc |
-#		autoconvert 1 |
-# 		newtype image /fd "{} |
-# 		newmodule read '/fd -> image' "{
-#			| /filter "{canonimage}
-#		} |
-# 		newmodule rotate 'image -> image' "{
-#			| /filter "{rotate}
-#		} |
-# 		newmodule display 'image -> /status' "{
-#			| /filter "{showimage} | /create /dev/null
-#		}
-# 	} |
-# 	type /images/image |
-# 	import /images/rotate |
-# 	autoconvert /string /fd "{|/read} |
-# 	autoconvert /fd image "{|/images/read} |
-# 	autoconvert image /status "{|/images/display}
+# autodeclare 1 |
+# newtypeset $1 /images {
+# abc |
+# autoconvert 1 |
+# newtype image /fd "{} |
+# newmodule read '/fd -> image' "{
+# | /filter "{canonimage}
+# } |
+# newmodule rotate 'image -> image' "{
+# | /filter "{rotate}
+# } |
+# newmodule display 'image -> /status' "{
+# | /filter "{showimage} | /create /dev/null
+# }
+# } |
+# type /images/image |
+# import /images/rotate |
+# autoconvert /string /fd "{|/read} |
+# autoconvert /fd image "{|/images/read} |
+# autoconvert image /status "{|/images/display}
 # }
 #
 # -{rotate x.bit}

@@ -49,7 +49,7 @@ static const struct signature {
 const char *string;
 int offset;
 } signatures[] = { {"DATA TECHNOLOGY CORPORATION BIOS", 0x25}, };
-#define NO_SIGNATURES (sizeof (signatures) /  sizeof (struct signature))
+#define NO_SIGNATURES (sizeof (signatures) / sizeof (struct signature))
 void dtc_setup(char *str, int *ints) {
 static int commandline_current = 0;
 int i;

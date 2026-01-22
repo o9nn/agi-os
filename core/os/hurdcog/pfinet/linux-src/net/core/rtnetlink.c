@@ -56,9 +56,9 @@ return 0;
 struct sock *rtnl;
 unsigned long rtnl_wlockct;
 struct rtnetlink_link * rtnetlink_links[NPROTO];
-#define _S	1
-#define _X	2
-#define _G	4
+#define _S 1
+#define _X 2
+#define _G 4
 static const int rtm_min[(RTM_MAX+1-RTM_BASE)/4] =
 {
 NLMSG_LENGTH(sizeof(struct ifinfomsg)),
@@ -105,8 +105,8 @@ static int rtnetlink_fill_ifinfo(struct sk_buff *skb, struct device *dev,
 int type, u32 pid, u32 seq, u32 change)
 {
 struct ifinfomsg *r;
-struct nlmsghdr  *nlh;
-unsigned char	 *b = skb->tail;
+struct nlmsghdr *nlh;
+unsigned char *b = skb->tail;
 nlh = NLMSG_PUT(skb, pid, seq, type, sizeof(*r));
 if (pid) nlh->nlmsg_flags |= NLM_F_MULTI;
 r = NLMSG_DATA(nlh);
@@ -204,7 +204,7 @@ rtnetlink_rcv_msg(struct sk_buff *skb, struct nlmsghdr *nlh, int *errp)
 {
 struct rtnetlink_link *link;
 struct rtnetlink_link *link_tab;
-struct rtattr	*rta[RTATTR_MAX];
+struct rtattr *rta[RTATTR_MAX];
 int exclusive = 0;
 int sz_idx, kind;
 int min_len;
@@ -338,26 +338,26 @@ rtnl_shunlock();
 }
 static struct rtnetlink_link link_rtnetlink_table[RTM_MAX-RTM_BASE+1] =
 {
-{ NULL,			NULL,			},
-{ NULL,			NULL,			},
-{ NULL,			rtnetlink_dump_ifinfo,	},
-{ NULL,			NULL,			},
-{ NULL,			NULL,			},
-{ NULL,			NULL,			},
-{ NULL,			rtnetlink_dump_all,	},
-{ NULL,			NULL,			},
-{ NULL,			NULL,			},
-{ NULL,			NULL,			},
-{ NULL,			rtnetlink_dump_all,	},
-{ NULL,			NULL,			},
-{ neigh_add,		NULL,			},
-{ neigh_delete,		NULL,			},
-{ NULL,			neigh_dump_info,	},
-{ NULL,			NULL,			},
-{ NULL,			NULL,			},
-{ NULL,			NULL,			},
-{ NULL,			NULL,			},
-{ NULL,			NULL,			},
+{ NULL, NULL, },
+{ NULL, NULL, },
+{ NULL, rtnetlink_dump_ifinfo, },
+{ NULL, NULL, },
+{ NULL, NULL, },
+{ NULL, NULL, },
+{ NULL, rtnetlink_dump_all, },
+{ NULL, NULL, },
+{ NULL, NULL, },
+{ NULL, NULL, },
+{ NULL, rtnetlink_dump_all, },
+{ NULL, NULL, },
+{ neigh_add, NULL, },
+{ neigh_delete, NULL, },
+{ NULL, neigh_dump_info, },
+{ NULL, NULL, },
+{ NULL, NULL, },
+{ NULL, NULL, },
+{ NULL, NULL, },
+{ NULL, NULL, },
 };
 static int rtnetlink_event(struct notifier_block *this, unsigned long event, void *ptr)
 {

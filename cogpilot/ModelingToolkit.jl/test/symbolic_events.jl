@@ -212,9 +212,9 @@ out = [0.0]
 cond.f(out, [0], p0, t0)
 @test out[] ≈ -1 # signature is u,p,t
 cond.f(out, [1], p0, t0)
-@test out[] ≈ 0  # signature is u,p,t
+@test out[] ≈ 0 # signature is u,p,t
 cond.f(out, [2], p0, t0)
-@test out[] ≈ 1  # signature is u,p,t
+@test out[] ≈ 1 # signature is u,p,t
 prob = ODEProblem(sys, Pair[], (0.0, 2.0))
 prob_nosplit = ODEProblem(sys_nosplit, Pair[], (0.0, 2.0))
 sol = solve(prob, Tsit5())
@@ -240,17 +240,17 @@ out = [0.0, 0.0]
 cond.f(out, [0, 0], p0, t0)
 @test out[1] ≈ -2 # signature is u,p,t
 cond.f(out, [1, 0], p0, t0)
-@test out[1] ≈ -1  # signature is u,p,t
+@test out[1] ≈ -1 # signature is u,p,t
 cond.f(out, [2, 0], p0, t0) # this should return 0
-@test out[1] ≈ 0  # signature is u,p,t
+@test out[1] ≈ 0 # signature is u,p,t
 # the root to find is 1
 out = [0.0, 0.0]
 cond.f(out, [0, 0], p0, t0)
 @test out[2] ≈ -1 # signature is u,p,t
 cond.f(out, [0, 1], p0, t0) # this should return 0
-@test out[2] ≈ 0  # signature is u,p,t
+@test out[2] ≈ 0 # signature is u,p,t
 cond.f(out, [0, 2], p0, t0)
-@test out[2] ≈ 1  # signature is u,p,t
+@test out[2] ≈ 1 # signature is u,p,t
 sol = solve(prob, Tsit5())
 @test minimum(t -> abs(t - 1), sol.t) < 1e-9 # test that the solver stepped at the first root
 @test minimum(t -> abs(t - 2), sol.t) < 1e-9 # test that the solver stepped at the second root
@@ -314,10 +314,10 @@ sol = solve(prob, Tsit5())
 sol_nosplit = solve(prob_nosplit, Tsit5())
 @test 0 <= minimum(sol[x]) <= 1e-10 # the ball never went through the floor but got very close
 @test minimum(sol[y]) ≈ -1.5 # check wall conditions
-@test maximum(sol[y]) ≈ 1.5  # check wall conditions
+@test maximum(sol[y]) ≈ 1.5 # check wall conditions
 @test 0 <= minimum(sol_nosplit[x]) <= 1e-10 # the ball never went through the floor but got very close
 @test minimum(sol_nosplit[y]) ≈ -1.5 # check wall conditions
-@test maximum(sol_nosplit[y]) ≈ 1.5  # check wall conditions
+@test maximum(sol_nosplit[y]) ≈ 1.5 # check wall conditions
 ## Test multi-variable affect
 # in this test, there are two variables affected by a single event.
 events = [[x ~ 0] => [vx ~ -Pre(vx), vy ~ -Pre(vy)]]
@@ -334,9 +334,9 @@ prob_nosplit = ODEProblem(ball_nosplit, Pair[], tspan)
 sol = solve(prob, Tsit5())
 sol_nosplit = solve(prob_nosplit, Tsit5())
 @test 0 <= minimum(sol[x]) <= 1e-10 # the ball never went through the floor but got very close
-@test -minimum(sol[y]) ≈ maximum(sol[y]) ≈ sqrt(2)  # the ball will never go further than √2 in either direction (gravity was changed to 1 to get this particular number)
+@test -minimum(sol[y]) ≈ maximum(sol[y]) ≈ sqrt(2) # the ball will never go further than √2 in either direction (gravity was changed to 1 to get this particular number)
 @test 0 <= minimum(sol_nosplit[x]) <= 1e-10 # the ball never went through the floor but got very close
-@test -minimum(sol_nosplit[y]) ≈ maximum(sol_nosplit[y]) ≈ sqrt(2)  # the ball will never go further than √2 in either direction (gravity was changed to 1 to get this particular number)
+@test -minimum(sol_nosplit[y]) ≈ maximum(sol_nosplit[y]) ≈ sqrt(2) # the ball will never go further than √2 in either direction (gravity was changed to 1 to get this particular number)
 end
 # issue https:
 # tests that it works for ODAESystem
@@ -353,10 +353,10 @@ sol = solve(prob, Tsit5())
 @test all(minimum((0:0.1:5) .- sol.t', dims = 2) .< 0.0001) # test that the solver stepped every 0.1s as dictated by event
 @test sol([0.25 - eps()])[vmeasured][] == sol([0.23])[vmeasured][] # test the hold property
 end
-##  https:
+## https:
 @testset "Handle Empty Events" begin
 Dₜ = D
-@parameters u(t) [input = true]  # Indicate that this is a controlled input
+@parameters u(t) [input = true] # Indicate that this is a controlled input
 @parameters y(t) [output = true] # Indicate that this is a measured output
 function Mass(; name, m = 1.0, p = 0, v = 0)
 ps = @parameters m = m

@@ -12,21 +12,21 @@ include "arg.m";
 arg: Arg;
 Mkfs: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 LEN: con Sys->ATOMICIO;
 HUNKS: con 128;
-Kfs, Fs, Archive: con iota;	# types of destination file sytems
+Kfs, Fs, Archive: con iota; # types of destination file sytems
 File: adt {
-new:	string;
-elem:	string;
-old:	string;
-uid:	string;
-gid:	string;
-mode:	int;
+new: string;
+elem: string;
+old: string;
+uid: string;
+gid: string;
+mode: int;
 };
 b: ref Iobuf;
-bout: ref Iobuf;			# stdout when writing archive
+bout: ref Iobuf; # stdout when writing archive
 newfile: string;
 oldfile: string;
 proto: string;
@@ -46,7 +46,7 @@ ream: int;
 debug: int;
 xflag: int;
 sfd: ref Sys->FD;
-fskind: int;	# Kfs, Fs, Archive
+fskind: int; # Kfs, Fs, Archive
 user: string;
 stderr: ref Sys->FD;
 usrid, grpid : string;
@@ -72,7 +72,7 @@ file.mode = 0;
 oldroot = "";
 newroot = "/n/kfs";
 users = nil;
-fskind = Kfs;	# i suspect Inferno default should be different
+fskind = Kfs; # i suspect Inferno default should be different
 arg->init(args);
 arg->setusage("mkfs [-aprvxS] [-d root] [-n kfscmdname] [-s src-fs] [-u userfile] [-z n] [-G group] [-U user] proto ...");
 while((c := arg->opt()) != 0)
@@ -106,7 +106,7 @@ verb = 1;
 xflag = 1;
 'z' =>
 (buflen, nil) = str->toint(arg->earg(), 10);
-buflen -= 8;	# qid.path and tag at end of each kfs block
+buflen -= 8; # qid.path and tag at end of each kfs block
 'U' =>
 usrid = arg->earg();
 'G' =>
@@ -125,7 +125,7 @@ if(name != nil)
 openkfscmd(name);
 kfscmd("allow");
 if(users != nil){
-proto = "users";	# for diagnostics
+proto = "users"; # for diagnostics
 setusers();
 }
 cputype = getenv("cputype");
@@ -256,7 +256,7 @@ bout.puts(sys->sprint("%q\t%d\t%bd\n", f.new, d.mtime, d.length));
 return (d.mode & Sys->DMDIR) != 0;
 }
 d.name = f.elem;
-if(d.dtype != 'M' && d.dtype != 'U'){		# hmm... Indeed!
+if(d.dtype != 'M' && d.dtype != 'U'){ # hmm... Indeed!
 d.uid = "inferno";
 d.gid = "inferno";
 mode = (d.mode >> 6) & 7;
@@ -266,7 +266,7 @@ if(f.uid != "-")
 d.uid = f.uid;
 if(f.gid != "-")
 d.gid = f.gid;
-if(fskind == Fs && !setuid){	# new system: set to nil
+if(fskind == Fs && !setuid){ # new system: set to nil
 d.uid = user;
 d.gid = user;
 }

@@ -98,10 +98,10 @@ llama_seq_id seq_id = -1;
 llama_token sampled;
 int64_t t_start_prompt;
 int64_t t_start_gen;
-int32_t n_past    = 0;
-int32_t n_prompt  = 0;
+int32_t n_past = 0;
+int32_t n_prompt = 0;
 int32_t n_decoded = 0;
-int32_t i_batch   = -1;
+int32_t i_batch = -1;
 std::string input;
 std::string prompt;
 std::string response;
@@ -183,8 +183,8 @@ const int32_t n_tokens_system = tokens_system.size();
 llama_seq_id g_seq_id = 0;
 llama_batch batch = llama_batch_init(n_ctx, 0, 1);
 int32_t n_total_prompt = 0;
-int32_t n_total_gen    = 0;
-int32_t n_cache_miss   = 0;
+int32_t n_total_gen = 0;
+int32_t n_cache_miss = 0;
 const auto t_main_start = ggml_time_us();
 LOG_INF("%s: Simulating parallel requests from clients:\n", __func__);
 LOG_INF("%s: n_parallel = %d, n_sequences = %d, cont_batching = %d, system tokens = %d\n", __func__, n_clients, n_seq, cont_batching, n_tokens_system);
@@ -226,8 +226,8 @@ for (auto & client : clients) {
 if (client.seq_id == -1 && g_seq_id < n_seq) {
 client.seq_id = g_seq_id;
 client.t_start_prompt = ggml_time_us();
-client.t_start_gen    = 0;
-client.input    = k_prompts[rand() % k_prompts.size()];
+client.t_start_gen = 0;
+client.input = k_prompts[rand() % k_prompts.size()];
 client.response = "";
 client.n_past = 0;
 client.prompt = "";
@@ -251,9 +251,9 @@ common_batch_add(batch, tokens_prompt[i], client.n_past++, { client.id + 1 }, fa
 if (batch.n_tokens > 0) {
 batch.logits[batch.n_tokens - 1] = true;
 }
-client.n_prompt  = tokens_prompt.size();
+client.n_prompt = tokens_prompt.size();
 client.n_decoded = 0;
-client.i_batch   = batch.n_tokens - 1;
+client.i_batch = batch.n_tokens - 1;
 LOG_INF("\033[31mClient %3d, seq %4d, junk = %4d, prompt = %d, started decoding ...\033[0m\n", client.id, client.seq_id, n_junk_cur, client.n_prompt);
 g_seq_id += 1;
 }
@@ -268,12 +268,12 @@ for (int32_t i = 0; i < batch.n_tokens; i = i_next) {
 const int32_t n_tokens = std::min(n_batch, batch.n_tokens - i);
 llama_batch batch_view = {
 n_tokens,
-batch.token    + i,
+batch.token + i,
 nullptr,
-batch.pos      + i,
+batch.pos + i,
 batch.n_seq_id + i,
-batch.seq_id   + i,
-batch.logits   + i,
+batch.seq_id + i,
+batch.logits + i,
 };
 const int ret = llama_decode(ctx, batch_view);
 if (ret != 0) {
@@ -309,7 +309,7 @@ const size_t pos = client.response.find("User:");
 if (pos != std::string::npos) {
 client.response = client.response.substr(0, pos);
 }
-llama_memory_seq_rm(mem,    client.id + 1, -1, -1);
+llama_memory_seq_rm(mem, client.id + 1, -1, -1);
 llama_memory_seq_cp(mem, 0, client.id + 1, -1, -1);
 const auto t_main_end = ggml_time_us();
 LOG_INF("\033[31mClient %3d, seq %3d/%3d, prompt %4d t, response %4d t, time %5.2f s, speed %5.2f t/s, cache miss %d \033[0m \n\nInput:    %s\n\033[35mResponse: %s\033[0m\n\n",
@@ -320,7 +320,7 @@ n_cache_miss,
 ::trim(client.input).c_str(),
 ::trim(client.response).c_str());
 n_total_prompt += client.n_prompt;
-n_total_gen    += client.n_decoded;
+n_total_gen += client.n_decoded;
 client.seq_id = -1;
 }
 client.i_batch = -1;
@@ -335,9 +335,9 @@ params.prompt_file = "used built-in defaults";
 }
 LOG_INF("External prompt file: \033[32m%s\033[0m\n", params.prompt_file.c_str());
 LOG_INF("Model and path used:  \033[32m%s\033[0m\n\n", params.model.path.c_str());
-LOG_INF("Total prompt tokens: %6d, speed: %5.2f t/s\n", n_total_prompt, (double) (n_total_prompt              ) / (t_main_end - t_main_start) * 1e6);
-LOG_INF("Total gen tokens:    %6d, speed: %5.2f t/s\n", n_total_gen,    (double) (n_total_gen                 ) / (t_main_end - t_main_start) * 1e6);
-LOG_INF("Total speed (AVG):   %6s  speed: %5.2f t/s\n", "",             (double) (n_total_prompt + n_total_gen) / (t_main_end - t_main_start) * 1e6);
+LOG_INF("Total prompt tokens: %6d, speed: %5.2f t/s\n", n_total_prompt, (double) (n_total_prompt ) / (t_main_end - t_main_start) * 1e6);
+LOG_INF("Total gen tokens:    %6d, speed: %5.2f t/s\n", n_total_gen, (double) (n_total_gen ) / (t_main_end - t_main_start) * 1e6);
+LOG_INF("Total speed (AVG):   %6s  speed: %5.2f t/s\n", "", (double) (n_total_prompt + n_total_gen) / (t_main_end - t_main_start) * 1e6);
 LOG_INF("Cache misses:        %6d\n", n_cache_miss);
 LOG_INF("\n");
 llama_perf_context_print(ctx);

@@ -9,13 +9,13 @@
 #include "gen.h"
 #include "ext.h"
 #include "path.h"
-int	nolist = 0;
-int	olist[50];
+int nolist = 0;
+int olist[50];
 int
 out_list(str)
-char	*str;
+char *str;
 {
-int		start, stop;
+int start, stop;
 while ( *str && nolist < sizeof(olist) - 2 ) {
 start = stop = str_convert(&str, 0);
 if ( *str == '-' && *str++ )
@@ -30,9 +30,9 @@ olist[nolist] = 0;
 return 0;
 }
 in_olist(num)
-int		num;
+int num;
 {
-int		i;
+int i;
 if ( nolist == 0 )
 return(ON);
 for ( i = 0; i < nolist; i += 2 )
@@ -42,9 +42,9 @@ return(OFF);
 }
 int
 setencoding(name)
-char	*name;
+char *name;
 {
-char	path[150];
+char path[150];
 if ( name == NULL )
 name = "Default";
 if ( *name == '/' )
@@ -55,12 +55,12 @@ writing = strncmp(name, "UTF", 3) == 0;
 return 0;
 }
 cat(file)
-char	*file;
+char *file;
 {
-int		fd_in;
-int		fd_out;
-char	buf[512];
-int		count;
+int fd_in;
+int fd_out;
+char buf[512];
+int count;
 fflush(stdout);
 if ( (fd_in = open(file, O_RDONLY)) == -1 )
 return(FALSE);
@@ -71,10 +71,10 @@ close(fd_in);
 return(TRUE);
 }
 str_convert(str, err)
-char	**str;
-int		err;
+char **str;
+int err;
 {
-int		i;
+int i;
 if ( ! isdigit(**str) )
 return(err);
 for ( i = 0; isdigit(**str); *str += 1 )

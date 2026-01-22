@@ -5,9 +5,9 @@
 struct message_size;
 struct message_header_parser_ctx;
 enum message_header_parser_flags {
-MESSAGE_HEADER_PARSER_FLAG_SKIP_INITIAL_LWSP	= 0x01,
-MESSAGE_HEADER_PARSER_FLAG_DROP_CR		= 0x02,
-MESSAGE_HEADER_PARSER_FLAG_CLEAN_ONELINE	= 0x04
+MESSAGE_HEADER_PARSER_FLAG_SKIP_INITIAL_LWSP = 0x01,
+MESSAGE_HEADER_PARSER_FLAG_DROP_CR = 0x02,
+MESSAGE_HEADER_PARSER_FLAG_CLEAN_ONELINE = 0x04
 };
 struct message_header_line {
 const char *name;

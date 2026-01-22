@@ -10,15 +10,15 @@ LD="p gcc"
 AR="p ar crvs"
 RANLIB=":"
 error() {
-	echo $* >&2
-	exit 1
+echo $* >&2
+exit 1
 }
 ofiles() {
-	echo $* | sed 's/\.c/.o/g'
+echo $* | sed 's/\.c/.o/g'
 }
 p() {
-	echo $*
-	"$@"
+echo $*
+"$@"
 }
 echo removing old libraries and binaries
 rm -f $PLAT/lib/*.a $PLAT/bin/*

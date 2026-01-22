@@ -35,7 +35,7 @@ PILE => Stackspec(Cardlib->sPILE,
 HORIZ,
 TOP),
 };
-oneplayed := 0;			# true if only one member's put down a card so far
+oneplayed := 0; # true if only one member's put down a card so far
 MINPLAYERS: con 2;
 MAXPLAYERS: con 2;
 clienttype(): string
@@ -135,7 +135,7 @@ SNAP =>
 # snap
 ord := cardlib->order(p);
 inf := cardlib->info(ord);
-if (oneplayed)		# XXX allow for case where one person has no cards.
+if (oneplayed) # XXX allow for case where one person has no cards.
 return "must wait for two cards to be put down";
 if (len piles[0].children == 0 || len piles[1].children == 0)
 return "no cards";

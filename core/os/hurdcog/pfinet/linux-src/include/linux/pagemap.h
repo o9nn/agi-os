@@ -7,13 +7,13 @@ static inline unsigned long page_address(struct page * page)
 {
 return PAGE_OFFSET + PAGE_SIZE * (page - mem_map);
 }
-#define PAGE_CACHE_SHIFT	PAGE_SHIFT
-#define PAGE_CACHE_SIZE		PAGE_SIZE
-#define PAGE_CACHE_MASK		PAGE_MASK
-#define page_cache_alloc()	__get_free_page(GFP_USER)
-#define page_cache_free(x)	free_page(x)
-#define page_cache_release(x)	__free_page(x)
-#define page_cache_entry(x)	(mem_map + MAP_NR(x))
+#define PAGE_CACHE_SHIFT PAGE_SHIFT
+#define PAGE_CACHE_SIZE PAGE_SIZE
+#define PAGE_CACHE_MASK PAGE_MASK
+#define page_cache_alloc() __get_free_page(GFP_USER)
+#define page_cache_free(x) free_page(x)
+#define page_cache_release(x) __free_page(x)
+#define page_cache_entry(x) (mem_map + MAP_NR(x))
 #define PAGE_HASH_BITS page_hash_bits
 #define PAGE_HASH_MASK page_hash_mask
 extern unsigned long page_cache_size;

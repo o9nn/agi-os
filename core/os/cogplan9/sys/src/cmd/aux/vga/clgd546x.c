@@ -4,23 +4,23 @@
 #include "pci.h"
 #include "vga.h"
 typedef struct {
-Pcidev*	pci;
-uchar*	mmio;
-int	mem;
-int	format;
-int	threshold;
-int	tilectrl;
-int	vsc;
-int	control;
-int	tilectrl2D3D;
+Pcidev* pci;
+uchar* mmio;
+int mem;
+int format;
+int threshold;
+int tilectrl;
+int vsc;
+int control;
+int tilectrl2D3D;
 } Laguna;
 enum {
-Format		= 0xC0,
-Threshold	= 0xEA,
-TileCtrl	= 0x2C4,
-Vsc		= 0x3FC,
-Control		= 0x402,
-TileCtrl2D3D	= 0x407,
+Format = 0xC0,
+Threshold = 0xEA,
+TileCtrl = 0x2C4,
+Vsc = 0x3FC,
+Control = 0x402,
+TileCtrl2D3D = 0x407,
 };
 static int
 mmio8r(Laguna* laguna, int offset)

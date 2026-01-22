@@ -91,8 +91,8 @@ offscreen=screen;
 }
 }
 struct{
-int		v;
-Image	*i;
+int v;
+Image *i;
 }icache[32];
 Image*
 getcolor(int v)

@@ -103,7 +103,7 @@ return J
 else
 # General Poisson structure (skew-symmetric)
 J = randn(dimension, dimension)
-J = J - J'  # Make skew-symmetric
+J = J - J' # Make skew-symmetric
 return J * 0.1
 end
 end
@@ -122,13 +122,13 @@ return 1
 elseif n == 2
 return 1
 elseif tree == [1, 2, 3]
-return 1  # Linear
+return 1 # Linear
 elseif tree == [1, 2, 2]
-return 2  # Two branches
+return 2 # Two branches
 elseif tree == [1, 2, 2, 2]
-return 6  # Three branches (3!)
+return 6 # Three branches (3!)
 elseif tree == [1, 2, 2, 2, 2]
-return 24  # Four branches (4!)
+return 24 # Four branches (4!)
 else
 # Count children at each level
 level_counts = Dict{Int, Int}()
@@ -140,7 +140,7 @@ symmetry = 1
 for (level, count) in level_counts
 if count > 1 && level > 1
 # Factorial for repeated children at same parent
-symmetry *= factorial(min(count, 10))  # Cap at 10! for safety
+symmetry *= factorial(min(count, 10)) # Cap at 10! for safety
 end
 end
 return symmetry
@@ -313,4 +313,4 @@ return Dict(
 "symplectic" => reactor.symplectic
 )
 end
-end  # module JSurfaceBSeriesCore
+end # module JSurfaceBSeriesCore

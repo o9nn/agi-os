@@ -1,9 +1,9 @@
-#ifndef	_SYS_SOCKET_H
-#define	_SYS_SOCKET_H	1
+#ifndef _SYS_SOCKET_H
+#define _SYS_SOCKET_H 1
 #include <features.h>
 __BEGIN_DECLS
 #include <bits/types/struct_iovec.h>
-#define	__need_size_t
+#define __need_size_t
 #include <stddef.h>
 #include <bits/socket.h>
 #ifdef __USE_MISC
@@ -12,15 +12,15 @@ __BEGIN_DECLS
 enum
 {
 SHUT_RD = 0,
-#define SHUT_RD		SHUT_RD
+#define SHUT_RD SHUT_RD
 SHUT_WR,
-#define SHUT_WR		SHUT_WR
+#define SHUT_WR SHUT_WR
 SHUT_RDWR
-#define SHUT_RDWR	SHUT_RDWR
+#define SHUT_RDWR SHUT_RDWR
 };
 #if defined __cplusplus || !__GNUC_PREREQ (2, 7) || !defined __USE_GNU
-# define __SOCKADDR_ARG		struct sockaddr *__restrict
-# define __CONST_SOCKADDR_ARG	const struct sockaddr *
+# define __SOCKADDR_ARG struct sockaddr *__restrict
+# define __CONST_SOCKADDR_ARG const struct sockaddr *
 #else
 # define __SOCKADDR_ALLTYPES \
 __SOCKADDR_ONETYPE (sockaddr) \
@@ -81,7 +81,7 @@ __sendmsg64);
 # else
 extern ssize_t __sendmsg64 (int __fd, const struct msghdr *__message,
 int __flags);
-#  define sendmsg __sendmsg64
+# define sendmsg __sendmsg64
 # endif
 #endif
 #ifdef __USE_GNU
@@ -89,15 +89,15 @@ int __flags);
 extern int sendmmsg (int __fd, struct mmsghdr *__vmessages,
 unsigned int __vlen, int __flags);
 # else
-#  ifdef __REDIRECT
+# ifdef __REDIRECT
 extern int __REDIRECT (sendmmsg, (int __fd, struct mmsghdr *__vmessages,
 unsigned int __vlen, int __flags),
 __sendmmsg64);
-#  else
+# else
 extern int __sendmmsg64 (int __fd, struct mmsghdr *__vmessages,
 unsigned int __vlen, int __flags);
-#   define sendmmsg __sendmmsg64
-#  endif
+# define sendmmsg __sendmmsg64
+# endif
 # endif
 #endif
 #ifndef __USE_TIME_BITS64
@@ -109,7 +109,7 @@ extern ssize_t __REDIRECT (recvmsg,
 __recvmsg64);
 # else
 extern ssize_t __recvmsg64 (int __fd, struct msghdr *__message, int __flags);
-#  define recvmsg __recvmsg64
+# define recvmsg __recvmsg64
 # endif
 #endif
 #ifdef __USE_GNU
@@ -118,14 +118,14 @@ extern int recvmmsg (int __fd, struct mmsghdr *__vmessages,
 unsigned int __vlen, int __flags,
 struct timespec *__tmo);
 # else
-#  ifdef __REDIRECT
+# ifdef __REDIRECT
 extern int __REDIRECT (recvmmsg, (int __fd, struct mmsghdr *__vmessages,
 unsigned int __vlen, int __flags,
 struct timespec *__tmo),
 __recvmmsg64);
-#  else
-#   define recvmmsg __recvmmsg64
-#  endif
+# else
+# define recvmmsg __recvmmsg64
+# endif
 # endif
 #endif
 #ifndef __USE_TIME_BITS64
@@ -143,7 +143,7 @@ __getsockopt64);
 extern int __getsockopt64 (int __fd, int __level, int __optname,
 void *__restrict __optval,
 socklen_t *__restrict __optlen) __THROW;
-#  define getsockopt __getsockopt64
+# define getsockopt __getsockopt64
 # endif
 #endif
 #ifndef __USE_TIME_BITS64
@@ -158,7 +158,7 @@ __setsockopt64);
 # else
 extern int __setsockopt64 (int __fd, int __level, int __optname,
 const void *__optval, socklen_t __optlen) __THROW;
-#  define setsockopt __setsockopt64
+# define setsockopt __setsockopt64
 # endif
 #endif
 extern int listen (int __fd, int __n) __THROW;

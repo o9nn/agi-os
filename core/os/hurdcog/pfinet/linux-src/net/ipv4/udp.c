@@ -21,7 +21,7 @@
 #include <net/icmp.h>
 #include <net/route.h>
 #include <net/checksum.h>
-struct udp_mib		udp_statistics;
+struct udp_mib udp_statistics;
 struct sock *udp_hash[UDP_HTABLE_SIZE];
 static int udp_v4_get_port(struct sock *sk, unsigned short snum)
 {
@@ -156,19 +156,19 @@ return result;
 struct sock *udp_v4_lookup(u32 saddr, u16 sport, u32 daddr, u16 dport, int dif)
 {
 struct sock *sk;
-if(!dif && uh_cache_sk		&&
-uh_cache_saddr == saddr	&&
-uh_cache_sport == sport	&&
-uh_cache_dport == dport	&&
+if(!dif && uh_cache_sk &&
+uh_cache_saddr == saddr &&
+uh_cache_sport == sport &&
+uh_cache_dport == dport &&
 uh_cache_daddr == daddr)
 return uh_cache_sk;
 sk = udp_v4_lookup_longway(saddr, sport, daddr, dport, dif);
 if(!dif) {
-uh_cache_sk	= sk;
-uh_cache_saddr	= saddr;
-uh_cache_daddr	= daddr;
-uh_cache_sport	= sport;
-uh_cache_dport	= dport;
+uh_cache_sk = sk;
+uh_cache_saddr = saddr;
+uh_cache_daddr = daddr;
+uh_cache_sport = sport;
+uh_cache_dport = dport;
 }
 return sk;
 }
@@ -255,12 +255,12 @@ int dif)
 struct sock *s = sk;
 unsigned short hnum = ntohs(num);
 for(; s; s = s->next) {
-if ((s->num != hnum)					||
-(s->dead && (s->state == TCP_CLOSE))		||
-(s->daddr && s->daddr!=raddr)			||
-(s->dport != rnum && s->dport != 0)			||
-(s->rcv_saddr  && s->rcv_saddr != laddr)		||
-ipv6_only_sock(s)					||
+if ((s->num != hnum) ||
+(s->dead && (s->state == TCP_CLOSE)) ||
+(s->daddr && s->daddr!=raddr) ||
+(s->dport != rnum && s->dport != 0) ||
+(s->rcv_saddr && s->rcv_saddr != laddr) ||
+ipv6_only_sock(s) ||
 (s->bound_dev_if && s->bound_dev_if != dif))
 continue;
 break;
@@ -381,7 +381,7 @@ struct rtable *rt = NULL;
 int free = 0;
 int connected = 0;
 u32 daddr;
-u8  tos;
+u8 tos;
 int err;
 if (len < 0 || len > 0xFFFF)
 return -EMSGSIZE;

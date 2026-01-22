@@ -8,18 +8,18 @@
 typedef struct IOMap IOMap;
 struct IOMap
 {
-IOMap	*next;
-char	tag[13];
-ulong	start;
-ulong	end;
+IOMap *next;
+char tag[13];
+ulong start;
+ulong end;
 };
 static struct
 {
 Lock;
-IOMap	*m;
-IOMap	*free;
-IOMap	maps[32];
-QLock	ql;
+IOMap *m;
+IOMap *free;
+IOMap maps[32];
+QLock ql;
 } iomap;
 enum {
 Qdir = 0,
@@ -34,11 +34,11 @@ typedef long Rdwrfn(Chan*, void*, long, vlong);
 static Rdwrfn *readfn[Qmax];
 static Rdwrfn *writefn[Qmax];
 static Dirtab archdir[] = {
-".",	{ Qdir, 0, QTDIR },	0,	0555,
-"ioalloc",	{ Qioalloc, 0 },	0,	0444,
-"iob",		{ Qiob, 0 },		0,	0660,
-"iow",		{ Qiow, 0 },		0,	0660,
-"iol",		{ Qiol, 0 },		0,	0660,
+".", { Qdir, 0, QTDIR }, 0, 0555,
+"ioalloc", { Qioalloc, 0 }, 0, 0444,
+"iob", { Qiob, 0 }, 0, 0660,
+"iow", { Qiow, 0 }, 0, 0660,
+"iol", { Qiol, 0 }, 0, 0660,
 };
 Lock archwlock;
 int narchdir = Qbase;
@@ -324,7 +324,7 @@ devwstat,
 int
 pcmspecial(char *idstr, ISAConf *isa)
 {
-return (_pcmspecial  != nil)? _pcmspecial(idstr, isa): -1;
+return (_pcmspecial != nil)? _pcmspecial(idstr, isa): -1;
 }
 void
 pcmspecialclose(int a)

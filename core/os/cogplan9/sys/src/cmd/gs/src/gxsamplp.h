@@ -1,11 +1,11 @@
 #if MULTIPLE_MAPS
-#   define NEXT_MAP map = smap[++smap_index % num_components_per_plane].table.lookup4x1to32
-#   define NEXT_MAP8 map = smap[++smap_index % num_components_per_plane].table.lookup8
-#   define DEFINE_SMAP_INDEX int smap_index = 0;
+# define NEXT_MAP map = smap[++smap_index % num_components_per_plane].table.lookup4x1to32
+# define NEXT_MAP8 map = smap[++smap_index % num_components_per_plane].table.lookup8
+# define DEFINE_SMAP_INDEX int smap_index = 0;
 #else
-#   define NEXT_MAP
-#   define NEXT_MAP8
-#   define DEFINE_SMAP_INDEX
+# define NEXT_MAP
+# define NEXT_MAP8
+# define DEFINE_SMAP_INDEX
 #endif
 const byte *
 TEMPLATE_sample_unpack_1(byte * bptr, int *pdata_x, const byte * data, int data_x,
@@ -78,9 +78,9 @@ return bptr;
 }
 #undef NEXT_MAP
 #if MULTIPLE_MAPS
-#   define NEXT_MAP  map = smap[++smap_index % num_components_per_plane].table.lookup2x2to16
+# define NEXT_MAP map = smap[++smap_index % num_components_per_plane].table.lookup2x2to16
 #else
-#   define NEXT_MAP
+# define NEXT_MAP
 #endif
 const byte *
 TEMPLATE_sample_unpack_2(byte * bptr, int *pdata_x, const byte * data, int data_x,

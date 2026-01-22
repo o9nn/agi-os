@@ -1,22 +1,22 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"ureg.h"
-#include	"pool.h"
-#include	"../port/error.h"
-#include	"../port/netif.h"
-#include	"dosfs.h"
-#include	"../port/sd.h"
-#define	DIRMAX	(sizeof(Dir)+STATMAX)
-#define	STATMAX	65535U
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "ureg.h"
+#include "pool.h"
+#include "../port/error.h"
+#include "../port/netif.h"
+#include "dosfs.h"
+#include "../port/sd.h"
+#define DIRMAX (sizeof(Dir)+STATMAX)
+#define STATMAX 65535U
 enum {
 Bufsize = 8192,
 };
-int	dosdirread(File *f, char ***nmarray);
-int	isconf(char *name);
+int dosdirread(File *f, char ***nmarray);
+int isconf(char *name);
 static int progress = 1;
 static Bootfs fs;
 static int
@@ -104,7 +104,7 @@ if (flds < 4 || strcmp(fld[0], "part") != 0)
 continue;
 kstrdup(&part, fld[1]);
 start = strtoull(fld[2], nil, 0);
-end   = strtoull(fld[3], nil, 0);
+end = strtoull(fld[3], nil, 0);
 if (end > (vlong)100*(vlong)MB*MB) {
 print("addsdev: implausible partition #S/%s/%s %lld %lld\n",
 dirp->name, part, start, end);

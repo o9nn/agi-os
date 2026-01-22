@@ -3,15 +3,15 @@
 #include "iotrack.h"
 #include "dat.h"
 #include "fns.h"
-#define	HIOB		31
-#define	NIOBUF		80
-static Iotrack	hiob[HIOB+1];
-static Iotrack	iobuf[NIOBUF];
-#define	UNLINK(p, nx, pr)	((p)->pr->nx = (p)->nx, (p)->nx->pr = (p)->pr)
-#define	LINK(h, p, nx, pr)	((p)->nx = (h)->nx, (p)->pr = (h), \
+#define HIOB 31
+#define NIOBUF 80
+static Iotrack hiob[HIOB+1];
+static Iotrack iobuf[NIOBUF];
+#define UNLINK(p, nx, pr) ((p)->pr->nx = (p)->nx, (p)->nx->pr = (p)->pr)
+#define LINK(h, p, nx, pr) ((p)->nx = (h)->nx, (p)->pr = (h), \
 (h)->nx->pr = (p), (h)->nx = (p))
-#define	HTOFRONT(h, p)	((h)->hnext != (p) && (UNLINK(p,hnext,hprev), LINK(h,p,hnext,hprev)))
-#define	TOFRONT(h, p)	((h)->next  != (p) && (UNLINK(p, next, prev), LINK(h,p, next, prev)))
+#define HTOFRONT(h, p) ((h)->hnext != (p) && (UNLINK(p,hnext,hprev), LINK(h,p,hnext,hprev)))
+#define TOFRONT(h, p) ((h)->next != (p) && (UNLINK(p, next, prev), LINK(h,p, next, prev)))
 Iosect *
 getsect(Xfs *xf, long addr)
 {
@@ -249,8 +249,8 @@ p->tp = sbrk(sizeof(Track));
 memset(p->tp->p, 0, sizeof p->tp->p);
 }
 }
-static MLock	freelock;
-static Iosect *	freelist;
+static MLock freelock;
+static Iosect * freelist;
 Iosect *
 newsect(void)
 {

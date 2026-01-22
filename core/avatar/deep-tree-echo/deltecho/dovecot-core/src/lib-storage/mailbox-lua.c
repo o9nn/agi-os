@@ -226,7 +226,7 @@ DLUA_REQUIRE_ARGS(L, 2);
 struct mailbox *mbox = lua_check_storage_mailbox(L, 1);
 const char *key = luaL_checkstring(L, 2);
 const char *error;
-if (lua_storage_mailbox_attribute_set(mbox, key, NULL, 0,  &error) < 0)
+if (lua_storage_mailbox_attribute_set(mbox, key, NULL, 0, &error) < 0)
 return luaL_error(L, "Cannot unset attribute: %s", error);
 return 0;
 }

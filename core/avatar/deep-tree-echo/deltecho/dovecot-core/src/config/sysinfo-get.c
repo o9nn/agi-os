@@ -6,7 +6,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #ifdef HAVE_SYS_UTSNAME_H
-#  include <sys/utsname.h>
+# include <sys/utsname.h>
 #endif
 static bool readfile(const char *path, const char **data_r)
 {

@@ -69,7 +69,7 @@ __RCSID("$NetBSD$");
 int
 pgp_getpassphrase(void *in, char *phrase, size_t size)
 {
-char	*p;
+char *p;
 if (in == NULL) {
 while ((p = getpass("netpgp passphrase: ")) == NULL) {
 }
@@ -120,7 +120,7 @@ free(stream->readinfo.accumulated);
 stream->readinfo = *next;
 free(next);
 }
-void           *
+void *
 pgp_reader_get_arg(pgp_reader_t *readinfo)
 {
 return readinfo->arg;
@@ -146,31 +146,31 @@ OUTSIDE_BLOCK = 0,
 BASE64,
 AT_TRAILER_NAME
 } state;
-int		lastseen;
+int lastseen;
 pgp_stream_t *parse_info;
-unsigned	seen_nl:1;
-unsigned	prev_nl:1;
-unsigned	allow_headers_without_gap:1;
-unsigned	allow_no_gap:1;
-unsigned	allow_trailing_whitespace:1;
-unsigned   	expect_sig:1;
-unsigned   	got_sig:1;
-unsigned        buffered;
-uint8_t		buffer[3];
-unsigned	eof64;
-uint32_t   checksum;
-uint32_t   read_checksum;
-uint8_t   unarmoured[NETPGP_BUFSIZ];
-size_t          unarmoredc;
-uint8_t  *pushback;
-unsigned        pushbackc;
-pgp_headers_t	headers;
+unsigned seen_nl:1;
+unsigned prev_nl:1;
+unsigned allow_headers_without_gap:1;
+unsigned allow_no_gap:1;
+unsigned allow_trailing_whitespace:1;
+unsigned expect_sig:1;
+unsigned got_sig:1;
+unsigned buffered;
+uint8_t buffer[3];
+unsigned eof64;
+uint32_t checksum;
+uint32_t read_checksum;
+uint8_t unarmoured[NETPGP_BUFSIZ];
+size_t unarmoredc;
+uint8_t *pushback;
+unsigned pushbackc;
+pgp_headers_t headers;
 } dearmour_t;
 static void
 push_back(dearmour_t *dearmour, const uint8_t *buf,
 unsigned length)
 {
-unsigned        n;
+unsigned n;
 if (dearmour->pushback) {
 (void) fprintf(stderr, "push_back: already pushed back\n");
 } else if ((dearmour->pushback = calloc(1, length)) == NULL) {
@@ -183,28 +183,28 @@ dearmour->pushbackc = length;
 }
 }
 typedef struct headerline_t {
-const char	*s;
-size_t		 len;
-int		 type;
+const char *s;
+size_t len;
+int type;
 } headerline_t;
-static headerline_t	headerlines[] = {
-{ "BEGIN PGP MESSAGE",		17, BEGIN_PGP_MESSAGE },
-{ "BEGIN PGP PUBLIC KEY BLOCK",	26, BEGIN_PGP_PUBLIC_KEY_BLOCK },
+static headerline_t headerlines[] = {
+{ "BEGIN PGP MESSAGE", 17, BEGIN_PGP_MESSAGE },
+{ "BEGIN PGP PUBLIC KEY BLOCK", 26, BEGIN_PGP_PUBLIC_KEY_BLOCK },
 { "BEGIN PGP PRIVATE KEY BLOCK",27, BEGIN_PGP_PRIVATE_KEY_BLOCK },
-{ "BEGIN PGP MESSAGE, PART ",	25, BEGIN_PGP_MULTI },
-{ "BEGIN PGP SIGNATURE",	19, BEGIN_PGP_SIGNATURE },
-{ "END PGP MESSAGE",		15, END_PGP_MESSAGE },
-{ "END PGP PUBLIC KEY BLOCK",	24, END_PGP_PUBLIC_KEY_BLOCK },
-{ "END PGP PRIVATE KEY BLOCK",	25, END_PGP_PRIVATE_KEY_BLOCK },
-{ "END PGP MESSAGE, PART ",	22, END_PGP_MULTI },
-{ "END PGP SIGNATURE",		17, END_PGP_SIGNATURE },
-{ "BEGIN PGP SIGNED MESSAGE",	24, BEGIN_PGP_SIGNED_MESSAGE },
-{ NULL,				0, -1	}
+{ "BEGIN PGP MESSAGE, PART ", 25, BEGIN_PGP_MULTI },
+{ "BEGIN PGP SIGNATURE", 19, BEGIN_PGP_SIGNATURE },
+{ "END PGP MESSAGE", 15, END_PGP_MESSAGE },
+{ "END PGP PUBLIC KEY BLOCK", 24, END_PGP_PUBLIC_KEY_BLOCK },
+{ "END PGP PRIVATE KEY BLOCK", 25, END_PGP_PRIVATE_KEY_BLOCK },
+{ "END PGP MESSAGE, PART ", 22, END_PGP_MULTI },
+{ "END PGP SIGNATURE", 17, END_PGP_SIGNATURE },
+{ "BEGIN PGP SIGNED MESSAGE", 24, BEGIN_PGP_SIGNED_MESSAGE },
+{ NULL, 0, -1 }
 };
 static int
 findheaderline(char *headerline)
 {
-headerline_t	*hp;
+headerline_t *hp;
 for (hp = headerlines ; hp->s ; hp++) {
 if (strncmp(headerline, hp->s, hp->len) == 0) {
 break;
@@ -215,8 +215,8 @@ return hp->type;
 static int
 set_lastseen_headerline(dearmour_t *dearmour, char *hdr, pgp_error_t **errors)
 {
-int	lastseen;
-int	prev;
+int lastseen;
+int prev;
 prev = dearmour->lastseen;
 if ((lastseen = findheaderline(hdr)) == -1) {
 PGP_ERROR_1(errors, PGP_E_R_BAD_FORMAT,
@@ -278,7 +278,7 @@ pgp_reader_t *readinfo,
 pgp_cbdata_t *cbinfo,
 unsigned skip)
 {
-uint8_t   c;
+uint8_t c;
 do {
 if (dearmour->pushbackc) {
 if (!dearmour->pushback) {
@@ -306,7 +306,7 @@ pgp_reader_t *readinfo,
 pgp_cbdata_t *cbinfo,
 unsigned skip)
 {
-int             c = first;
+int c = first;
 while (c == ' ' || c == '\t') {
 c = read_char(stream, dearmour, errors, readinfo, cbinfo, skip);
 }
@@ -319,7 +319,7 @@ pgp_reader_t *readinfo,
 pgp_cbdata_t *cbinfo,
 unsigned skip)
 {
-int             c;
+int c;
 do {
 c = read_char(stream, dearmour, errors, readinfo, cbinfo, skip);
 } while (c == ' ' || c == '\t');
@@ -328,7 +328,7 @@ return c;
 static void
 flush(dearmour_t *dearmour, pgp_cbdata_t *cbinfo)
 {
-pgp_packet_t	content;
+pgp_packet_t content;
 if (dearmour->unarmoredc > 0) {
 content.u.unarmoured_text.data = dearmour->unarmoured;
 content.u.unarmoured_text.length = (unsigned)dearmour->unarmoredc;
@@ -343,7 +343,7 @@ pgp_reader_t *readinfo,
 pgp_cbdata_t *cbinfo,
 unsigned skip)
 {
-int             c;
+int c;
 do {
 c = read_char(stream, dearmour, errors, readinfo, cbinfo, 0);
 if (c < 0) {
@@ -359,7 +359,7 @@ return c;
 static const char *
 find_header(pgp_headers_t *headers, const char *key)
 {
-unsigned        n;
+unsigned n;
 for (n = 0; n < headers->headerc; ++n) {
 if (strcmp(headers->headers[n].key, key) == 0) {
 return headers->headers[n].value;
@@ -370,7 +370,7 @@ return NULL;
 static void
 dup_headers(pgp_headers_t *dest, const pgp_headers_t *src)
 {
-unsigned        n;
+unsigned n;
 if ((dest->headers = calloc(src->headerc, sizeof(*dest->headers))) == NULL) {
 (void) fprintf(stderr, "dup_headers: bad alloc\n");
 } else {
@@ -387,12 +387,12 @@ pgp_error_t **errors,
 pgp_reader_t *readinfo,
 pgp_cbdata_t *cbinfo)
 {
-pgp_fixed_body_t	*body;
-pgp_packet_t		 content2;
-pgp_packet_t		 content;
-const char		*hashstr;
-pgp_hash_t		*hash;
-int			 total;
+pgp_fixed_body_t *body;
+pgp_packet_t content2;
+pgp_packet_t content;
+const char *hashstr;
+pgp_hash_t *hash;
+int total;
 body = &content.u.cleartext_body;
 if ((hash = calloc(1, sizeof(*hash))) == NULL) {
 PGP_ERROR_1(errors, PGP_E_R_BAD_FORMAT, "%s",
@@ -427,8 +427,8 @@ return -1;
 body->length = 0;
 total = 0;
 for (;;) {
-int             c;
-unsigned        count;
+int c;
+unsigned count;
 c = read_char(stream, dearmour, errors, readinfo, cbinfo, 1);
 if (c < 0) {
 return -1;
@@ -509,7 +509,7 @@ return total;
 static int
 add_header(dearmour_t *dearmour, const char *key, const char *value)
 {
-int	n;
+int n;
 if (strcmp(key, "Version") == 0 ||
 strcmp(key, "Comment") == 0 ||
 strcmp(key, "MessageID") == 0 ||
@@ -533,11 +533,11 @@ static int
 parse_headers(pgp_stream_t *stream, dearmour_t *dearmour, pgp_error_t **errors,
 pgp_reader_t * readinfo, pgp_cbdata_t * cbinfo)
 {
-unsigned        nbuf;
-unsigned        size;
-unsigned	first = 1;
-char           *buf;
-int             ret = 1;
+unsigned nbuf;
+unsigned size;
+unsigned first = 1;
+char *buf;
+int ret = 1;
 nbuf = 0;
 size = 80;
 if ((buf = calloc(1, size)) == NULL) {
@@ -545,7 +545,7 @@ if ((buf = calloc(1, size)) == NULL) {
 return -1;
 }
 for (;;) {
-int             c;
+int c;
 if ((c = read_char(stream, dearmour, errors, readinfo, cbinfo, 1)) < 0) {
 PGP_ERROR_1(errors, PGP_E_R_BAD_FORMAT,
 "%s", "Unexpected EOF");
@@ -553,7 +553,7 @@ ret = -1;
 break;
 }
 if (c == '\n') {
-char           *s;
+char *s;
 if (nbuf == 0) {
 break;
 }
@@ -623,8 +623,8 @@ read4(pgp_stream_t *stream, dearmour_t *dearmour, pgp_error_t **errors,
 pgp_reader_t *readinfo, pgp_cbdata_t *cbinfo,
 int *pc, unsigned *pn, uint32_t *pl)
 {
-int  n = 0, c = 0;
-uint32_t  l = 0;
+int n = 0, c = 0;
+uint32_t l = 0;
 for (n = 0; n < 4; ++n) {
 c = read_char(stream, dearmour, errors, readinfo, cbinfo, 1);
 if (c < 0) {
@@ -658,7 +658,7 @@ return 4;
 unsigned
 pgp_crc24(unsigned checksum, uint8_t c)
 {
-unsigned        i;
+unsigned i;
 checksum ^= c << 16;
 for (i = 0; i < 8; i++) {
 checksum <<= 1;
@@ -671,11 +671,11 @@ static int
 decode64(pgp_stream_t *stream, dearmour_t *dearmour, pgp_error_t **errors,
 pgp_reader_t *readinfo, pgp_cbdata_t *cbinfo)
 {
-unsigned        n;
-int             n2;
-uint32_t	l;
-int             c;
-int             ret;
+unsigned n;
+int n2;
+uint32_t l;
+int c;
+int ret;
 if (dearmour->buffered) {
 (void) fprintf(stderr, "decode64: bad dearmour->buffered\n");
 return 0;
@@ -814,13 +814,13 @@ armoured_data_reader(pgp_stream_t *stream, void *dest_, size_t length, pgp_error
 pgp_reader_t *readinfo,
 pgp_cbdata_t *cbinfo)
 {
-pgp_packet_t	 content;
-dearmour_t	*dearmour;
-unsigned	 first;
-uint8_t		*dest = dest_;
-char		 buf[1024];
-int		 saved;
-int              ret;
+pgp_packet_t content;
+dearmour_t *dearmour;
+unsigned first;
+uint8_t *dest = dest_;
+char buf[1024];
+int saved;
+int ret;
 dearmour = pgp_reader_get_arg(readinfo);
 saved = (int)length;
 if (dearmour->eof64 && !dearmour->buffered) {
@@ -832,9 +832,9 @@ return 0;
 }
 }
 while (length > 0) {
-unsigned        count;
-unsigned        n;
-int             c;
+unsigned count;
+unsigned n;
+int c;
 flush(dearmour, cbinfo);
 switch (dearmour->state) {
 case OUTSIDE_BLOCK:
@@ -1060,11 +1060,11 @@ free(dearmour);
 pgp_reader_pop(stream);
 }
 typedef struct {
-uint8_t		 decrypted[1024 * 15];
-size_t		 c;
-size_t		 off;
-pgp_crypt_t	*decrypt;
-pgp_region_t	*region;
+uint8_t decrypted[1024 * 15];
+size_t c;
+size_t off;
+pgp_crypt_t *decrypt;
+pgp_region_t *region;
 } encrypted_t;
 static int
 encrypted_data_reader(pgp_stream_t *stream, void *dest,
@@ -1073,9 +1073,9 @@ pgp_error_t **errors,
 pgp_reader_t *readinfo,
 pgp_cbdata_t *cbinfo)
 {
-encrypted_t	*encrypted;
-char		*cdest;
-int		 saved;
+encrypted_t *encrypted;
+char *cdest;
+int saved;
 encrypted = pgp_reader_get_arg(readinfo);
 saved = (int)length;
 #if 0
@@ -1094,7 +1094,7 @@ encrypted->prevplain = 1;
 #endif
 while (length > 0) {
 if (encrypted->c) {
-unsigned        n;
+unsigned n;
 n = (int)MIN(length, encrypted->c);
 (void) memcpy(dest,
 encrypted->decrypted + encrypted->off, n);
@@ -1105,8 +1105,8 @@ cdest = dest;
 cdest += n;
 dest = cdest;
 } else {
-unsigned	n = encrypted->region->length;
-uint8_t		buffer[1024];
+unsigned n = encrypted->region->length;
+uint8_t buffer[1024];
 if (!n) {
 return -1;
 }
@@ -1151,7 +1151,7 @@ void
 pgp_reader_push_decrypt(pgp_stream_t *stream, pgp_crypt_t *decrypt,
 pgp_region_t *region)
 {
-encrypted_t	*encrypted;
+encrypted_t *encrypted;
 if ((encrypted = calloc(1, sizeof(*encrypted))) == NULL) {
 (void) fprintf(stderr, "pgp_reader_push_decrypted: bad alloc\n");
 } else {
@@ -1165,19 +1165,19 @@ encrypted_data_destroyer, encrypted);
 void
 pgp_reader_pop_decrypt(pgp_stream_t *stream)
 {
-encrypted_t	*encrypted;
+encrypted_t *encrypted;
 encrypted = pgp_reader_get_arg(pgp_readinfo(stream));
 encrypted->decrypt->decrypt_finish(encrypted->decrypt);
 free(encrypted);
 pgp_reader_pop(stream);
 }
 typedef struct {
-int              passed_checks;
-uint8_t		*plaintext;
-size_t           plaintext_available;
-size_t           plaintext_offset;
-pgp_region_t	*region;
-pgp_crypt_t	*decrypt;
+int passed_checks;
+uint8_t *plaintext;
+size_t plaintext_available;
+size_t plaintext_offset;
+pgp_region_t *region;
+pgp_crypt_t *decrypt;
 } decrypt_se_ip_t;
 static int
 se_ip_data_reader(pgp_stream_t *stream, void *dest_,
@@ -1186,22 +1186,22 @@ pgp_error_t **errors,
 pgp_reader_t *readinfo,
 pgp_cbdata_t *cbinfo)
 {
-decrypt_se_ip_t	*se_ip;
-pgp_region_t	 decrypted_region;
-unsigned	 n = 0;
+decrypt_se_ip_t *se_ip;
+pgp_region_t decrypted_region;
+unsigned n = 0;
 se_ip = pgp_reader_get_arg(readinfo);
 if (!se_ip->passed_checks) {
-uint8_t		*buf = NULL;
-uint8_t		hashed[PGP_SHA1_HASH_SIZE];
-uint8_t		*preamble;
-uint8_t		*plaintext;
-uint8_t		*mdc;
-uint8_t		*mdc_hash;
-size_t		b;
-size_t          sz_preamble;
-size_t          sz_mdc_hash;
-size_t          sz_mdc;
-size_t          sz_plaintext;
+uint8_t *buf = NULL;
+uint8_t hashed[PGP_SHA1_HASH_SIZE];
+uint8_t *preamble;
+uint8_t *plaintext;
+uint8_t *mdc;
+uint8_t *mdc_hash;
+size_t b;
+size_t sz_preamble;
+size_t sz_mdc_hash;
+size_t sz_mdc;
+size_t sz_plaintext;
 pgp_init_subregion(&decrypted_region, NULL);
 decrypted_region.length =
 se_ip->region->length - se_ip->region->readc;
@@ -1278,7 +1278,7 @@ return n;
 static void
 se_ip_data_destroyer(pgp_reader_t *readinfo)
 {
-decrypt_se_ip_t	*se_ip;
+decrypt_se_ip_t *se_ip;
 se_ip = pgp_reader_get_arg(readinfo);
 free(se_ip->plaintext);
 free(se_ip);
@@ -1304,17 +1304,17 @@ se_ip_data_destroyer(pgp_readinfo(stream));
 pgp_reader_pop(stream);
 }
 typedef struct mmap_reader_t {
-void		*mem;
-uint64_t	 size;
-uint64_t	 offset;
-int		 fd;
+void *mem;
+uint64_t size;
+uint64_t offset;
+int fd;
 } mmap_reader_t;
 static int
 fd_reader(pgp_stream_t *stream, void *dest, size_t length, pgp_error_t **errors,
 pgp_reader_t *readinfo, pgp_cbdata_t *cbinfo)
 {
-mmap_reader_t	*reader;
-int		 n;
+mmap_reader_t *reader;
+int n;
 __PGP_USED(cbinfo);
 reader = pgp_reader_get_arg(readinfo);
 n = (int)read(reader->fd, dest, length);
@@ -1346,15 +1346,15 @@ pgp_reader_set(stream, fd_reader, reader_fd_destroyer, reader);
 }
 typedef struct {
 const uint8_t *buffer;
-size_t          length;
-size_t          offset;
+size_t length;
+size_t offset;
 } reader_mem_t;
 static int
 mem_reader(pgp_stream_t *stream, void *dest, size_t length, pgp_error_t **errors,
 pgp_reader_t *readinfo, pgp_cbdata_t *cbinfo)
 {
 reader_mem_t *reader = pgp_reader_get_arg(readinfo);
-unsigned        n;
+unsigned n;
 __PGP_USED(cbinfo);
 __PGP_USED(errors);
 if (reader->offset + length > reader->length) {
@@ -1433,8 +1433,8 @@ int
 pgp_setup_file_write(pgp_output_t **output, const char *filename,
 unsigned allow_overwrite)
 {
-int             fd = 0;
-int             flags = 0;
+int fd = 0;
+int flags = 0;
 if (filename == NULL) {
 fd = STDOUT_FILENO;
 } else {
@@ -1470,7 +1470,7 @@ pgp_output_delete(output);
 int
 pgp_setup_file_append(pgp_output_t **output, const char *filename)
 {
-int	fd;
+int fd;
 #ifdef O_BINARY
 fd = open(filename, O_WRONLY | O_APPEND | O_BINARY, 0600);
 #else
@@ -1500,7 +1500,7 @@ pgp_cb_ret_t callback(const pgp_packet_t *,
 pgp_cbdata_t *),
 unsigned accumulate)
 {
-int	fd;
+int fd;
 #ifdef O_BINARY
 fd = open(filename, O_RDONLY | O_BINARY);
 #else
@@ -1535,7 +1535,7 @@ pgp_stream_delete(stream);
 pgp_cb_ret_t
 pgp_litdata_cb(const pgp_packet_t *pkt, pgp_cbdata_t *cbinfo)
 {
-const pgp_contents_t	*content = &pkt->u;
+const pgp_contents_t *content = &pkt->u;
 if (pgp_get_debug_level(__FILE__)) {
 printf("pgp_litdata_cb: ");
 }
@@ -1561,9 +1561,9 @@ return PGP_RELEASE_MEMORY;
 pgp_cb_ret_t
 pgp_pk_sesskey_cb(const pgp_packet_t *pkt, pgp_cbdata_t *cbinfo)
 {
-const pgp_contents_t	*content = &pkt->u;
-unsigned		 from;
-pgp_io_t		*io;
+const pgp_contents_t *content = &pkt->u;
+unsigned from;
+pgp_io_t *io;
 io = cbinfo->io;
 if (pgp_get_debug_level(__FILE__)) {
 }
@@ -1594,10 +1594,10 @@ return PGP_RELEASE_MEMORY;
 pgp_cb_ret_t
 pgp_get_seckey_cb(const pgp_packet_t *pkt, pgp_cbdata_t *cbinfo)
 {
-const pgp_contents_t	*content = &pkt->u;
-pgp_seckey_t	*secret;
-unsigned		 from;
-pgp_io_t		*io;
+const pgp_contents_t *content = &pkt->u;
+pgp_seckey_t *secret;
+unsigned from;
+pgp_io_t *io;
 pgp_cryptinfo_t *cryptinfo = &cbinfo->cryptinfo;
 key_id_t *key_id;
 io = cbinfo->io;
@@ -1640,8 +1640,8 @@ pgp_error_t **errors,
 pgp_reader_t *readinfo,
 pgp_cbdata_t *cbinfo)
 {
-pgp_hash_t	*hash = pgp_reader_get_arg(readinfo);
-int		 r;
+pgp_hash_t *hash = pgp_reader_get_arg(readinfo);
+int r;
 r = pgp_stacked_read(stream, dest, length, errors, readinfo, cbinfo);
 if (r <= 0) {
 return r;
@@ -1666,9 +1666,9 @@ static int
 mmap_reader(pgp_stream_t *stream, void *dest, size_t length, pgp_error_t **errors,
 pgp_reader_t *readinfo, pgp_cbdata_t *cbinfo)
 {
-mmap_reader_t	*mem = pgp_reader_get_arg(readinfo);
-unsigned	 n;
-char		*cmem = mem->mem;
+mmap_reader_t *mem = pgp_reader_get_arg(readinfo);
+unsigned n;
+char *cmem = mem->mem;
 __PGP_USED(errors);
 __PGP_USED(cbinfo);
 n = (unsigned)MIN(length, (unsigned)(mem->size - mem->offset));
@@ -1689,8 +1689,8 @@ free(pgp_reader_get_arg(readinfo));
 void
 pgp_reader_set_mmap(pgp_stream_t *stream, int fd)
 {
-mmap_reader_t	*mem;
-struct stat	 st;
+mmap_reader_t *mem;
+struct stat st;
 if (fstat(fd, &st) != 0) {
 (void) fprintf(stderr, "pgp_reader_set_mmap: can't fstat\n");
 } else if ((mem = calloc(1, sizeof(*mem))) == NULL) {

@@ -3,191 +3,191 @@
 #include <bio.h>
 #include "pci.h"
 #include "vga.h"
-static int	 ultradebug = 0;
+static int ultradebug = 0;
 enum {
-Kilo			= 1024,
-Meg			= 1024*1024,
-MATROX			= 0x102B,
-MGA550			= 0x2527,
-MGA4XX			= 0x0525,
-MGA200			= 0x0521,
-PCfgMgaFBAA		= 0x10,
-PCfgMgaCAA		= 0x14,
-PCfgMgaIAA		= 0x18,
-PCfgMgaOption1		= 0x40,
-PCfgMgaOption2		= 0x50,
-PCfgMgaOption3		= 0x54,
-PCfgMgaDevCtrl		= 0x04,
-DMAWIN			= 0x0000,
-STATUS0			= 0x1FC2,
-STATUS1			= 0x1FDA,
-SEQIDX			= 0x1FC4,
-SEQDATA			= 0x1FC5,
-MISC_W			= 0x1FC2,
-MISC_R			= 0x1FCC,
-GCTLIDX			= 0x1FCE,
-GCTLDATA		= 0x1FCF,
-CRTCIDX			= 0x1FD4,
-CRTCDATA		= 0x1FD5,
-CRTCEXTIDX		= 0x1FDE,
-CRTCEXTDATA		= 0x1FDF,
-RAMDACIDX		= 0x3C00,
-RAMDACDATA		= 0x3C0A,
-RAMDACPALDATA		= 0x3C01,
-ATTRIDX			= 0x1FC0,
-ATTRDATA		= 0x1FC1,
-CACHEFLUSH		= 0x1FFF,
-C2_CTL			= 0X3C10,
-MGA_STATUS		= 0X1E14,
-Z_DEPTH_ORG		= 0X1C0C,
-Seq_ClockingMode =	0x01,
-Dotmode =		(1<<0),
-Shftldrt =		(1<<2),
-Dotclkrt =		(1<<3),
-Shiftfour =		(1<<4),
-Scroff =		(1<<5),
-CrtcExt_Horizontcount =	0x01,
-Htotal =		(1<<0),
-Hblkstr =		(1<<1),
-Hsyncstr =		(1<<2),
-Hrsten =		(1<<3),
-Hsyncoff =		(1<<4),
-Vsyncoff =		(1<<5),
-Hblkend =		(1<<6),
-Vrsten =		(1<<7),
-CrtcExt_Miscellaneous =	0x03,
-Mgamode =		(1<<7),
-Dac_Xpixclkctrl =	0x1a,
-Pixclksl = 		(3<<0),
-Pixclkdis =		(1<<2),
-Pixpllpdn =		(1<<3),
-Dac_Xpixpllstat =	0x4f,
-Pixlock = 		(1<<6),
-Dac_Xpixpllan =		0x45,
-Dac_Xpixpllbn =		0x49,
-Dac_Xpixpllcn  =	0x4d,
-Dac_Xpixpllam =		0x44,
-Dac_Xpixpllbm =		0x48,
-Dac_Xpixpllcm =		0x4c,
-Dac_Xpixpllap =		0x46,
-Dac_Xpixpllbp =		0x4a,
-Dac_Xpixpllcp =		0x4e,
-Dac_Xmulctrl =		0x19,
-ColorDepth =		(7<<0),
-_8bitsPerPixel = 		0,
-_15bitsPerPixel =		1,
-_16bitsPerPixel =		2,
-_24bitsPerPixel =		3,
-_32bitsPerPixelWithOv = 	4,
-_32bitsPerPixel	=		7,
-Dac_Xpanelmode =	0x1f,
-Dac_Xmiscctrl =		0x1e,
-Dacpdn =		(1<<0),
-Mfcsel =		(3<<1),
-Vga8dac =		(1<<3),
-Ramcs =			(1<<4),
-Vdoutsel =		(7<<5),
-Dac_Xcurctrl =		0x06,
-CursorDis = 		0,
-Cursor3Color = 		1,
-CursorXGA = 		2,
-CursorX11 = 		3,
-Cursor16Color = 	4,
-Dac_Xzoomctrl =		0x38,
-Misc_loaddsel =			(1<<0),
-Misc_rammapen =			(1<<1),
-Misc_clksel =			(3<<2),
-Misc_videodis =			(1<<4),
-Misc_hpgoddev = 		(1<<5),
-Misc_hsyncpol =			(1<<6),
-Misc_vsyncpol =			(1<<7),
-MNP_TABLE_SIZE =	64,
-TRUE = 	(1 == 1),
+Kilo = 1024,
+Meg = 1024*1024,
+MATROX = 0x102B,
+MGA550 = 0x2527,
+MGA4XX = 0x0525,
+MGA200 = 0x0521,
+PCfgMgaFBAA = 0x10,
+PCfgMgaCAA = 0x14,
+PCfgMgaIAA = 0x18,
+PCfgMgaOption1 = 0x40,
+PCfgMgaOption2 = 0x50,
+PCfgMgaOption3 = 0x54,
+PCfgMgaDevCtrl = 0x04,
+DMAWIN = 0x0000,
+STATUS0 = 0x1FC2,
+STATUS1 = 0x1FDA,
+SEQIDX = 0x1FC4,
+SEQDATA = 0x1FC5,
+MISC_W = 0x1FC2,
+MISC_R = 0x1FCC,
+GCTLIDX = 0x1FCE,
+GCTLDATA = 0x1FCF,
+CRTCIDX = 0x1FD4,
+CRTCDATA = 0x1FD5,
+CRTCEXTIDX = 0x1FDE,
+CRTCEXTDATA = 0x1FDF,
+RAMDACIDX = 0x3C00,
+RAMDACDATA = 0x3C0A,
+RAMDACPALDATA = 0x3C01,
+ATTRIDX = 0x1FC0,
+ATTRDATA = 0x1FC1,
+CACHEFLUSH = 0x1FFF,
+C2_CTL = 0X3C10,
+MGA_STATUS = 0X1E14,
+Z_DEPTH_ORG = 0X1C0C,
+Seq_ClockingMode = 0x01,
+Dotmode = (1<<0),
+Shftldrt = (1<<2),
+Dotclkrt = (1<<3),
+Shiftfour = (1<<4),
+Scroff = (1<<5),
+CrtcExt_Horizontcount = 0x01,
+Htotal = (1<<0),
+Hblkstr = (1<<1),
+Hsyncstr = (1<<2),
+Hrsten = (1<<3),
+Hsyncoff = (1<<4),
+Vsyncoff = (1<<5),
+Hblkend = (1<<6),
+Vrsten = (1<<7),
+CrtcExt_Miscellaneous = 0x03,
+Mgamode = (1<<7),
+Dac_Xpixclkctrl = 0x1a,
+Pixclksl = (3<<0),
+Pixclkdis = (1<<2),
+Pixpllpdn = (1<<3),
+Dac_Xpixpllstat = 0x4f,
+Pixlock = (1<<6),
+Dac_Xpixpllan = 0x45,
+Dac_Xpixpllbn = 0x49,
+Dac_Xpixpllcn = 0x4d,
+Dac_Xpixpllam = 0x44,
+Dac_Xpixpllbm = 0x48,
+Dac_Xpixpllcm = 0x4c,
+Dac_Xpixpllap = 0x46,
+Dac_Xpixpllbp = 0x4a,
+Dac_Xpixpllcp = 0x4e,
+Dac_Xmulctrl = 0x19,
+ColorDepth = (7<<0),
+_8bitsPerPixel = 0,
+_15bitsPerPixel = 1,
+_16bitsPerPixel = 2,
+_24bitsPerPixel = 3,
+_32bitsPerPixelWithOv = 4,
+_32bitsPerPixel = 7,
+Dac_Xpanelmode = 0x1f,
+Dac_Xmiscctrl = 0x1e,
+Dacpdn = (1<<0),
+Mfcsel = (3<<1),
+Vga8dac = (1<<3),
+Ramcs = (1<<4),
+Vdoutsel = (7<<5),
+Dac_Xcurctrl = 0x06,
+CursorDis = 0,
+Cursor3Color = 1,
+CursorXGA = 2,
+CursorX11 = 3,
+Cursor16Color = 4,
+Dac_Xzoomctrl = 0x38,
+Misc_loaddsel = (1<<0),
+Misc_rammapen = (1<<1),
+Misc_clksel = (3<<2),
+Misc_videodis = (1<<4),
+Misc_hpgoddev = (1<<5),
+Misc_hsyncpol = (1<<6),
+Misc_vsyncpol = (1<<7),
+MNP_TABLE_SIZE = 64,
+TRUE = (1 == 1),
 FALSE = (1 == 0),
 };
 typedef struct {
-Pcidev*	pci;
-int	devid;
-int	revid;
-uchar*	mmio;
-uchar*	mmfb;
-int	fbsize;
-ulong	iload;
-uchar	syspll_m;
-uchar	syspll_n;
-uchar	syspll_p;
-uchar	syspll_s;
-uchar	pixpll_m;
-uchar	pixpll_n;
-uchar	pixpll_p;
-uchar	pixpll_s;
-ulong	option1;
-ulong	option2;
-ulong	option3;
-ulong	Fneeded;
-uchar	sdram;
-uchar	colorkey;
-uchar	maskkey;
-ulong	maxpclk;
-uchar	graphics[9];
-uchar	attribute[0x14];
-uchar	sequencer[5];
-uchar	crtc[0x19];
-uchar	crtcext[9];
-ulong	htotal;
-ulong	hdispend;
-ulong	hblkstr;
-ulong	hblkend;
-ulong	hsyncstr;
-ulong	hsyncend;
-ulong	vtotal;
-ulong	vdispend;
-ulong	vblkstr;
-ulong	vblkend;
-ulong	vsyncstr;
-ulong	vsyncend;
-ulong	linecomp;
-ulong	hsyncsel;
-ulong	startadd;
-ulong	offset;
-ulong	maxscan;
-ulong 	curloc;
-ulong	prowscan;
-ulong	currowstr;
-ulong	currowend;
-ulong	curoff;
-ulong	undrow;
-ulong	curskew;
-ulong	conv2t4;
-ulong	interlace;
-ulong	hsyncdel;
-ulong	hdispskew;
-ulong	bytepan;
-ulong	dotclkrt;
-ulong	dword;
-ulong	wbmode;
-ulong	addwrap;
-ulong	selrowscan;
-ulong	cms;
-ulong	csynccen;
-ulong	hrsten;
-ulong	vrsten;
-ulong	vinten;
-ulong	vintclr;
-ulong	hsyncoff;
-ulong	vsyncoff;
-ulong	crtcrstN;
-ulong	mgamode;
-ulong	scale;
-ulong	hiprilvl;
-ulong	maxhipri;
-ulong	c2hiprilvl;
-ulong	c2maxhipri;
-ulong	misc;
-ulong	crtcprotect;
-ulong	winsize;
-ulong	winfreq;
-ulong	mgaapsize;
+Pcidev* pci;
+int devid;
+int revid;
+uchar* mmio;
+uchar* mmfb;
+int fbsize;
+ulong iload;
+uchar syspll_m;
+uchar syspll_n;
+uchar syspll_p;
+uchar syspll_s;
+uchar pixpll_m;
+uchar pixpll_n;
+uchar pixpll_p;
+uchar pixpll_s;
+ulong option1;
+ulong option2;
+ulong option3;
+ulong Fneeded;
+uchar sdram;
+uchar colorkey;
+uchar maskkey;
+ulong maxpclk;
+uchar graphics[9];
+uchar attribute[0x14];
+uchar sequencer[5];
+uchar crtc[0x19];
+uchar crtcext[9];
+ulong htotal;
+ulong hdispend;
+ulong hblkstr;
+ulong hblkend;
+ulong hsyncstr;
+ulong hsyncend;
+ulong vtotal;
+ulong vdispend;
+ulong vblkstr;
+ulong vblkend;
+ulong vsyncstr;
+ulong vsyncend;
+ulong linecomp;
+ulong hsyncsel;
+ulong startadd;
+ulong offset;
+ulong maxscan;
+ulong curloc;
+ulong prowscan;
+ulong currowstr;
+ulong currowend;
+ulong curoff;
+ulong undrow;
+ulong curskew;
+ulong conv2t4;
+ulong interlace;
+ulong hsyncdel;
+ulong hdispskew;
+ulong bytepan;
+ulong dotclkrt;
+ulong dword;
+ulong wbmode;
+ulong addwrap;
+ulong selrowscan;
+ulong cms;
+ulong csynccen;
+ulong hrsten;
+ulong vrsten;
+ulong vinten;
+ulong vintclr;
+ulong hsyncoff;
+ulong vsyncoff;
+ulong crtcrstN;
+ulong mgamode;
+ulong scale;
+ulong hiprilvl;
+ulong maxhipri;
+ulong c2hiprilvl;
+ulong c2maxhipri;
+ulong misc;
+ulong crtcprotect;
+ulong winsize;
+ulong winfreq;
+ulong mgaapsize;
 } Mga;
 static void
 mgawrite32(Mga* mga, int index, ulong val)
@@ -218,7 +218,7 @@ return mgaread8(mga, SEQDATA);
 static uchar
 seqset(Mga* mga, int index, uchar set, uchar clr)
 {
-uchar	tmp;
+uchar tmp;
 mgawrite8(mga, SEQIDX, index);
 tmp = mgaread8(mga, SEQDATA);
 mgawrite8(mga, SEQIDX, index);
@@ -234,7 +234,7 @@ return mgaread8(mga, CRTCDATA);
 static uchar
 crtcset(Mga* mga, int index, uchar set, uchar clr)
 {
-uchar	tmp;
+uchar tmp;
 mgawrite8(mga, CRTCIDX, index);
 tmp = mgaread8(mga, CRTCDATA);
 mgawrite8(mga, CRTCIDX, index);
@@ -250,7 +250,7 @@ return mgaread8(mga, CRTCEXTDATA);
 static uchar
 crtcextset(Mga* mga, int index, uchar set, uchar clr)
 {
-uchar	tmp;
+uchar tmp;
 mgawrite8(mga, CRTCEXTIDX, index);
 tmp = mgaread8(mga, CRTCEXTDATA);
 mgawrite8(mga, CRTCEXTIDX, index);
@@ -266,12 +266,12 @@ return mgaread8(mga, RAMDACDATA);
 static uchar
 dacset(Mga* mga, int index, uchar set, uchar clr)
 {
-uchar	tmp;
+uchar tmp;
 mgawrite8(mga, RAMDACIDX, index);
 tmp = mgaread8(mga, RAMDACDATA);
 mgawrite8(mga, RAMDACIDX, index);
 mgawrite8(mga, RAMDACDATA, (tmp & ~clr) | set);
-return	tmp;
+return tmp;
 }
 static uchar
 gctlget(Mga* mga, int index)
@@ -282,12 +282,12 @@ return mgaread8(mga, GCTLDATA);
 static uchar
 gctlset(Mga* mga, int index, uchar set, uchar clr)
 {
-uchar	tmp;
+uchar tmp;
 mgawrite8(mga, GCTLIDX, index);
 tmp = mgaread8(mga, GCTLDATA);
 mgawrite8(mga, GCTLIDX, index);
 mgawrite8(mga, GCTLDATA, (tmp & ~clr) | set);
-return	tmp;
+return tmp;
 }
 static uchar
 attrget(Mga* mga, int index)
@@ -298,12 +298,12 @@ return mgaread8(mga, ATTRDATA);
 static uchar
 attrset(Mga* mga, int index, uchar set, uchar clr)
 {
-uchar	tmp;
+uchar tmp;
 mgawrite8(mga, ATTRIDX, index);
 tmp = mgaread8(mga, ATTRDATA);
 mgawrite8(mga, ATTRIDX, index);
 mgawrite8(mga, ATTRDATA, (tmp & ~clr) | set);
-return	tmp;
+return tmp;
 }
 static uchar
 miscget(Mga* mga)
@@ -313,15 +313,15 @@ return mgaread8(mga, MISC_R);
 static uchar
 miscset(Mga* mga, uchar set, uchar clr)
 {
-uchar	tmp;
+uchar tmp;
 tmp = mgaread8(mga, MISC_R);
 mgawrite8(mga, MISC_W, (tmp & ~clr) | set);
-return	tmp;
+return tmp;
 }
 static void
 dump_all_regs(Mga* mga)
 {
-int	i;
+int i;
 for (i = 0; i < 25; i++)
 trace("crtc[%d] = 0x%x\n", i, crtcget(mga, i));
 for (i = 0; i < 9; i++)
@@ -343,7 +343,7 @@ ctlr->flag |= Fdump;
 static void
 setpalettedepth(int depth)
 {
-int	fd;
+int fd;
 char *cmd = strdup("palettedepth X");
 if ((depth != 8) && (depth != 6) && (depth != 16))
 error("mga: invalid palette depth %d\n", depth);
@@ -358,9 +358,9 @@ close(fd);
 static void
 mapmga4xx(Vga* vga, Ctlr* ctlr)
 {
-int 	f;
-uchar* 	m;
-Mga *	mga;
+int f;
+uchar* m;
+Mga * mga;
 if(vga->private == nil)
 error("%s: g4xxio: no *mga4xx\n", ctlr->name);
 mga = vga->private;
@@ -390,13 +390,13 @@ close(f);
 static void
 snarf(Vga* vga, Ctlr* ctlr)
 {
-int 	i, k, n;
-uchar *	p;
-uchar	x[16];
-Pcidev *	pci;
-Mga *	mga;
-uchar	crtcext3;
-uchar	rid;
+int i, k, n;
+uchar * p;
+uchar x[16];
+Pcidev * pci;
+Mga * mga;
+uchar crtcext3;
+uchar rid;
 trace("%s->snarf\n", ctlr->name);
 if(vga->private == nil) {
 pci = pcimatch(nil, MATROX, MGA4XX);
@@ -418,9 +418,9 @@ if ((i & 2) != 2)
 error("%s: Memory Space not enabled ... Aborting ...\n", ctlr->name);
 vga->private = alloc(sizeof(Mga));
 mga = (Mga*)vga->private;
-mga->devid = 	pci->did;
-mga->revid =	rid;
-mga->pci = 	pci;
+mga->devid = pci->did;
+mga->revid = rid;
+mga->pci = pci;
 mapmga4xx(vga, ctlr);
 }
 else {
@@ -473,7 +473,7 @@ G450CalculVCO(Mga*, ulong ulMNP, ulong *pulF)
 {
 uchar ucM, ucN;
 ucM = (uchar)((ulMNP >> 16) & 0xff);
-ucN = (uchar)((ulMNP >>  8) & 0xff);
+ucN = (uchar)((ulMNP >> 8) & 0xff);
 *pulF = (27000 * (2 * (ucN + 2)) + ((ucM + 1) >> 1)) / (ucM + 1);
 trace("G450CalculVCO: ulMNP %lx, pulF %ld\n", ulMNP, *pulF);
 }
@@ -496,7 +496,7 @@ G450FindNextPLLParam(Mga* mga, ulong ulFout, ulong *pulPLLMNP)
 uchar ucM, ucN, ucP, ucS;
 ulong ulVCO, ulVCOMin;
 ucM = (uchar)((*pulPLLMNP >> 16) & 0xff);
-ucP = (uchar)(*pulPLLMNP &  0x43);
+ucP = (uchar)(*pulPLLMNP & 0x43);
 ulVCOMin = 256000;
 if(ulVCOMin >= (255L * 8000))
 {
@@ -533,9 +533,9 @@ ucN = (uchar)(((ulVCO * (ucM+1) + 27000)/(27000 * 2)) - 2);
 ucS = 5;
 if(ulVCO < 1300000) ucS = 4;
 if(ulVCO < 1100000) ucS = 3;
-if(ulVCO <  900000) ucS = 2;
-if(ulVCO <  700000) ucS = 1;
-if(ulVCO <  550000) ucS = 0;
+if(ulVCO < 900000) ucS = 2;
+if(ulVCO < 700000) ucS = 1;
+if(ulVCO < 550000) ucS = 0;
 ucP |= (uchar)(ucS << 3);
 *pulPLLMNP &= 0xff000000;
 *pulPLLMNP |= (ulong)ucM << 16;
@@ -582,7 +582,7 @@ G450WriteMNP(Mga* mga, ulong ulMNP)
 {
 if (0) trace("G450WriteMNP : 0x%lx\n", ulMNP);
 dacset(mga, Dac_Xpixpllcm, (uchar)(ulMNP >> 16), 0xff);
-dacset(mga, Dac_Xpixpllcn, (uchar)(ulMNP >>  8), 0xff);
+dacset(mga, Dac_Xpixpllcn, (uchar)(ulMNP >> 8), 0xff);
 dacset(mga, Dac_Xpixpllcp, (uchar)ulMNP, 0xff);
 }
 static void
@@ -624,7 +624,7 @@ static void
 G450IsPllLocked(Mga* mga, int *lpbLocked)
 {
 ulong ulFallBackCounter, ulLockCount, ulCount;
-uchar  ucPLLStatus;
+uchar ucPLLStatus;
 mgawrite8(mga, 0x3c00, 0x4f);
 ulFallBackCounter = 0;
 do
@@ -780,33 +780,33 @@ G450WriteMNP(mga, ulMNPTable[0]);
 static double
 g400_calcclock(Mga* mga, long Fneeded)
 {
-double	Fpll;
-double	Fvco;
-double 	Fref;
-int		pixpll_m_min;
-int		pixpll_m_max;
-int		pixpll_n_min;
-int		pixpll_n_max;
-int		pixpll_p_max;
-double 	Ferr, Fcalc;
-int		m, n, p;
+double Fpll;
+double Fvco;
+double Fref;
+int pixpll_m_min;
+int pixpll_m_max;
+int pixpll_n_min;
+int pixpll_n_max;
+int pixpll_p_max;
+double Ferr, Fcalc;
+int m, n, p;
 if (mga->devid == MGA4XX || mga->devid == MGA550) {
-Fref     		= 27000000.0;
-pixpll_n_min 	= 7;
-pixpll_n_max 	= 127;
-pixpll_m_min	= 1;
-pixpll_m_max	= 31;
-pixpll_p_max 	= 7;
+Fref = 27000000.0;
+pixpll_n_min = 7;
+pixpll_n_max = 127;
+pixpll_m_min = 1;
+pixpll_m_max = 31;
+pixpll_p_max = 7;
 } else {
-Fref     		= 27050500.0;
-pixpll_n_min 	= 7;
-pixpll_n_max 	= 127;
-pixpll_m_min	= 1;
-pixpll_m_max	= 6;
-pixpll_p_max 	= 7;
+Fref = 27050500.0;
+pixpll_n_min = 7;
+pixpll_n_max = 127;
+pixpll_m_min = 1;
+pixpll_m_max = 6;
+pixpll_p_max = 7;
 }
 Fvco = ( double ) Fneeded;
-for (p = 0;  p <= pixpll_p_max && Fvco < mga->maxpclk; p = p * 2 + 1, Fvco *= 2.0)
+for (p = 0; p <= pixpll_p_max && Fvco < mga->maxpclk; p = p * 2 + 1, Fvco *= 2.0)
 ;
 mga->pixpll_p = p;
 Ferr = Fneeded;
@@ -846,13 +846,13 @@ return Fpll;
 static void
 init(Vga* vga, Ctlr* ctlr)
 {
-Mode*	mode;
-Mga*	mga;
-double	Fpll;
-Ctlr*	c;
-int	i;
-ulong	t;
-int     bppShift;
+Mode* mode;
+Mga* mga;
+double Fpll;
+Ctlr* c;
+int i;
+ulong t;
+int bppShift;
 mga = vga->private;
 mode = vga->mode;
 trace("mga mmio at %#p\n", mga->mmio);
@@ -877,22 +877,22 @@ error("depth %d not supported !\n", mode->z);
 if (mode->interlace)
 error("interlaced mode not supported !\n");
 trace("%s: Initializing mode %dx%dx%d on %s\n", ctlr->name, mode->x, mode->y, mode->z, mode->type);
-trace("%s: Suggested Dot Clock : %d\n", 	ctlr->name, mode->frequency);
-trace("%s: Horizontal Total = %d\n", 		ctlr->name, mode->ht);
+trace("%s: Suggested Dot Clock : %d\n", ctlr->name, mode->frequency);
+trace("%s: Horizontal Total = %d\n", ctlr->name, mode->ht);
 trace("%s: Start Horizontal Blank = %d\n", ctlr->name, mode->shb);
-trace("%s: End Horizontal Blank = %d\n", 	ctlr->name, mode->ehb);
-trace("%s: Vertical Total = %d\n", 		ctlr->name, mode->vt);
-trace("%s: Vertical Retrace Start = %d\n", 	ctlr->name, mode->vrs);
-trace("%s: Vertical Retrace End = %d\n", 	ctlr->name, mode->vre);
-trace("%s: Start Horizontal Sync = %d\n", 	ctlr->name, mode->shs);
-trace("%s: End Horizontal Sync = %d\n", 	ctlr->name, mode->ehs);
-trace("%s: HSync = %c\n", 			ctlr->name, mode->hsync);
-trace("%s: VSync = %c\n", 				ctlr->name, mode->vsync);
-trace("%s: Interlace = %d\n", 			ctlr->name, mode->interlace);
+trace("%s: End Horizontal Blank = %d\n", ctlr->name, mode->ehb);
+trace("%s: Vertical Total = %d\n", ctlr->name, mode->vt);
+trace("%s: Vertical Retrace Start = %d\n", ctlr->name, mode->vrs);
+trace("%s: Vertical Retrace End = %d\n", ctlr->name, mode->vre);
+trace("%s: Start Horizontal Sync = %d\n", ctlr->name, mode->shs);
+trace("%s: End Horizontal Sync = %d\n", ctlr->name, mode->ehs);
+trace("%s: HSync = %c\n", ctlr->name, mode->hsync);
+trace("%s: VSync = %c\n", ctlr->name, mode->vsync);
+trace("%s: Interlace = %d\n", ctlr->name, mode->interlace);
 if (mga->devid == MGA4XX || mga->devid == MGA550)
-mga->maxpclk	= 300000000;
+mga->maxpclk = 300000000;
 else
-mga->maxpclk	= 250000000;
+mga->maxpclk = 250000000;
 if (mode->frequency < 50000)
 error("mga: Too little Frequency %d : Minimum supported by PLL is %d\n",
 mode->frequency, 50000);
@@ -909,54 +909,54 @@ mga->Fneeded = mode->frequency;
 trace("PCI Option1 = 0x%x\n", pcicfgr32(mga->pci, PCfgMgaOption1));
 trace("PCI Option2 = 0x%x\n", pcicfgr32(mga->pci, PCfgMgaOption2));
 trace("PCI Option3 = 0x%x\n", pcicfgr32(mga->pci, PCfgMgaOption3));
-mga->htotal =			(mode->ht >> 3) - 5;
-mga->hdispend =		(mode->x >> 3) - 1;
-mga->hblkstr =		mga->hdispend;
-mga->hblkend =		mga->htotal + 4;
-mga->hsyncstr =		(mode->shs >> 3) - 1;
-mga->hsyncend =		(mode->ehs >> 3) - 1;
-mga->hsyncdel = 		0;
-mga->vtotal =			mode->vt - 2;
-mga->vdispend = 		mode->y - 1;
-mga->vblkstr = 		mode->y - 1;
-mga->vblkend = 		mode->vt - 1;
-mga->vsyncstr = 		mode->vrs;
-mga->vsyncend = 		mode->vre;
-mga->linecomp =		mode->y;
-mga->hsyncsel = 		0;
-mga->startadd =		0;
-mga->offset =		(mode->z==24) ? (vga->virtx * 3) >> (4 - bppShift) : vga->virtx >> (4-bppShift);
-mga->maxscan = 		0;
-mga->curloc =			0;
-mga->prowscan = 		0;
-mga->currowstr = 		0;
-mga->currowend = 		0;
-mga->curoff = 		1;
-mga->undrow = 		0;
-mga->curskew = 		0;
-mga->conv2t4 = 		0;
-mga->interlace =		0;
-mga->hdispskew =		0;
-mga->bytepan = 		0;
-mga->dotclkrt = 		0;
-mga->dword =			0;
-mga->wbmode =		1;
-mga->addwrap = 		0;
-mga->selrowscan =		1;
-mga->cms =			1;
-mga->csynccen =		0;
-mga->hrsten =			0;
-mga->vrsten =			0;
-mga->vinten = 		1;
-mga->vintclr = 		0;
-mga->hsyncoff =		0;
-mga->vsyncoff =		0;
-mga->crtcrstN =		1;
-mga->mgamode = 		1;
-mga->scale   =		(mode->z == 24) ? ((1 << bppShift)*3)-1 : (1 << bppShift)-1;
-mga->crtcprotect =      1;
-mga->winsize = 		0;
-mga->winfreq = 		0;
+mga->htotal = (mode->ht >> 3) - 5;
+mga->hdispend = (mode->x >> 3) - 1;
+mga->hblkstr = mga->hdispend;
+mga->hblkend = mga->htotal + 4;
+mga->hsyncstr = (mode->shs >> 3) - 1;
+mga->hsyncend = (mode->ehs >> 3) - 1;
+mga->hsyncdel = 0;
+mga->vtotal = mode->vt - 2;
+mga->vdispend = mode->y - 1;
+mga->vblkstr = mode->y - 1;
+mga->vblkend = mode->vt - 1;
+mga->vsyncstr = mode->vrs;
+mga->vsyncend = mode->vre;
+mga->linecomp = mode->y;
+mga->hsyncsel = 0;
+mga->startadd = 0;
+mga->offset = (mode->z==24) ? (vga->virtx * 3) >> (4 - bppShift) : vga->virtx >> (4-bppShift);
+mga->maxscan = 0;
+mga->curloc = 0;
+mga->prowscan = 0;
+mga->currowstr = 0;
+mga->currowend = 0;
+mga->curoff = 1;
+mga->undrow = 0;
+mga->curskew = 0;
+mga->conv2t4 = 0;
+mga->interlace = 0;
+mga->hdispskew = 0;
+mga->bytepan = 0;
+mga->dotclkrt = 0;
+mga->dword = 0;
+mga->wbmode = 1;
+mga->addwrap = 0;
+mga->selrowscan = 1;
+mga->cms = 1;
+mga->csynccen = 0;
+mga->hrsten = 0;
+mga->vrsten = 0;
+mga->vinten = 1;
+mga->vintclr = 0;
+mga->hsyncoff = 0;
+mga->vsyncoff = 0;
+mga->crtcrstN = 1;
+mga->mgamode = 1;
+mga->scale = (mode->z == 24) ? ((1 << bppShift)*3)-1 : (1 << bppShift)-1;
+mga->crtcprotect = 1;
+mga->winsize = 0;
+mga->winfreq = 0;
 if ((mga->htotal == 0)
 || (mga->hblkend <= (mga->hblkstr + 1))
 || ((mga->htotal - mga->hdispend) == 0)
@@ -1138,11 +1138,11 @@ c->load = nil;
 static void
 load(Vga* vga, Ctlr* ctlr)
 {
-Mga*	mga;
-int	i;
-uchar*	p;
-Mode*	mode;
-uchar	cursor;
+Mga* mga;
+int i;
+uchar* p;
+Mode* mode;
+uchar cursor;
 mga = vga->private;
 mode = vga->mode;
 trace("mga: Loading ...\n");

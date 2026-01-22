@@ -7,29 +7,29 @@
 #ifndef ULONG_MAX
 #define ULONG_MAX (~0UL)
 #endif
-#define IO_VALIDATE_BASIC   0x01
-#define IO_VALIDATE_BOUNDS  0x02
-#define IO_VALIDATE_DEVICE  0x04
+#define IO_VALIDATE_BASIC 0x01
+#define IO_VALIDATE_BOUNDS 0x02
+#define IO_VALIDATE_DEVICE 0x04
 #define IO_VALIDATE_TIMEOUT 0x08
-#define IO_VALIDATE_ALL     0xFF
+#define IO_VALIDATE_ALL 0xFF
 struct io_req_validated {
-struct io_req   basic;
-unsigned int    validation_flags;
-unsigned int    submission_time;
-unsigned int    timeout_ms;
-unsigned int    retry_count;
-unsigned int    max_retries;
-unsigned int    safety_cookie;
-void           *original_data;
-vm_size_t       original_size;
-unsigned int    start_time_us;
-unsigned int    completion_time_us;
+struct io_req basic;
+unsigned int validation_flags;
+unsigned int submission_time;
+unsigned int timeout_ms;
+unsigned int retry_count;
+unsigned int max_retries;
+unsigned int safety_cookie;
+void *original_data;
+vm_size_t original_size;
+unsigned int start_time_us;
+unsigned int completion_time_us;
 };
 typedef struct io_req_validated *io_req_validated_t;
-#define IO_REQ_VALIDATION_COOKIE    0x494F5245
-#define IO_MAX_DATA_SIZE    (32 * 1024 * 1024)
-#define IO_MAX_TIMEOUT_MS   (60 * 1000)
-#define IO_MAX_RETRIES      5
+#define IO_REQ_VALIDATION_COOKIE 0x494F5245
+#define IO_MAX_DATA_SIZE (32 * 1024 * 1024)
+#define IO_MAX_TIMEOUT_MS (60 * 1000)
+#define IO_MAX_RETRIES 5
 static boolean_t
 io_req_validate_basic(io_req_t ior)
 {

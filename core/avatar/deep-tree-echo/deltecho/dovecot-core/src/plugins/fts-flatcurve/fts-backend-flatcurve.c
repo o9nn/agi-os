@@ -344,7 +344,7 @@ fts_flatcurve_xapian_build_query_match_all(query);
 p_array_init(&expunged, pool, 256);
 iter = fts_flatcurve_xapian_query_iter_init(query);
 while (fts_flatcurve_xapian_query_iter_next(iter, &result)) {
-if ((low_uid > 0  && result->uid >= low_uid) ||
+if ((low_uid > 0 && result->uid >= low_uid) ||
 (low_uid == 0 && !seq_range_exists(&uids, result->uid))) {
 if (fts_flatcurve_xapian_expunge(
 backend, result->uid, error_r) < 0)

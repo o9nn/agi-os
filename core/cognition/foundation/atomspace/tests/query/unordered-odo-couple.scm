@@ -1,42 +1,42 @@
 (use-modules (opencog) (opencog exec))
 (List (Concept "B")
-	(Set (Predicate "P") (Predicate "Q") (Predicate "R"))
-	(Set (Predicate "R") (Predicate "S") (Predicate "T")))
+(Set (Predicate "P") (Predicate "Q") (Predicate "R"))
+(Set (Predicate "R") (Predicate "S") (Predicate "T")))
 (define couple-dim-two
-	(Bind
-		(Present (List (Variable "$CPT")
-			(Set (Variable "$U") (Variable "$V") (Variable "$W"))
-			(Set (Variable "$W") (Variable "$X") (Variable "$Y"))))
-		(Associative
-			(Variable "$U") (Variable "$V") (Variable "$W")
-			(Variable "$X") (Variable "$Y"))))
+(Bind
+(Present (List (Variable "$CPT")
+(Set (Variable "$U") (Variable "$V") (Variable "$W"))
+(Set (Variable "$W") (Variable "$X") (Variable "$Y"))))
+(Associative
+(Variable "$U") (Variable "$V") (Variable "$W")
+(Variable "$X") (Variable "$Y"))))
 (List (Concept "C")
-	(Set (Predicate "P") (Predicate "Q") (Predicate "R"))
-	(Set (Predicate "R") (Predicate "S") (Predicate "T"))
-	(Set (Predicate "T") (Predicate "U") (Predicate "V")))
+(Set (Predicate "P") (Predicate "Q") (Predicate "R"))
+(Set (Predicate "R") (Predicate "S") (Predicate "T"))
+(Set (Predicate "T") (Predicate "U") (Predicate "V")))
 (define couple-dim-three
-	(Bind
-		(Present (List (Variable "$CPT")
-			(Set (Variable "$A") (Variable "$B") (Variable "$C"))
-			(Set (Variable "$C") (Variable "$D") (Variable "$E"))
-			(Set (Variable "$E") (Variable "$F") (Variable "$G"))))
-		(Associative
-			(Variable "$A") (Variable "$B") (Variable "$C")
-			(Variable "$D") (Variable "$E") (Variable "$F")
-			(Variable "$G"))))
+(Bind
+(Present (List (Variable "$CPT")
+(Set (Variable "$A") (Variable "$B") (Variable "$C"))
+(Set (Variable "$C") (Variable "$D") (Variable "$E"))
+(Set (Variable "$E") (Variable "$F") (Variable "$G"))))
+(Associative
+(Variable "$A") (Variable "$B") (Variable "$C")
+(Variable "$D") (Variable "$E") (Variable "$F")
+(Variable "$G"))))
 (List (Concept "D")
-	(Set (Predicate "P") (Predicate "Q") (Predicate "R"))
-	(Set (Predicate "R") (Predicate "S") (Predicate "T"))
-	(Set (Predicate "T") (Predicate "U") (Predicate "V"))
-	(Set (Predicate "V") (Predicate "W") (Predicate "X")))
+(Set (Predicate "P") (Predicate "Q") (Predicate "R"))
+(Set (Predicate "R") (Predicate "S") (Predicate "T"))
+(Set (Predicate "T") (Predicate "U") (Predicate "V"))
+(Set (Predicate "V") (Predicate "W") (Predicate "X")))
 (define couple-dim-four
-	(Bind
-		(Present (List (Variable "$CPT")
-			(Set (Variable "$A") (Variable "$B") (Variable "$C"))
-			(Set (Variable "$C") (Variable "$D") (Variable "$E"))
-			(Set (Variable "$E") (Variable "$F") (Variable "$G"))
-			(Set (Variable "$G") (Variable "$H") (Variable "$J"))))
-		(Associative
-			(Variable "$A") (Variable "$B") (Variable "$C")
-			(Variable "$D") (Variable "$E") (Variable "$F")
-			(Variable "$G") (Variable "$H") (Variable "$J"))))
+(Bind
+(Present (List (Variable "$CPT")
+(Set (Variable "$A") (Variable "$B") (Variable "$C"))
+(Set (Variable "$C") (Variable "$D") (Variable "$E"))
+(Set (Variable "$E") (Variable "$F") (Variable "$G"))
+(Set (Variable "$G") (Variable "$H") (Variable "$J"))))
+(Associative
+(Variable "$A") (Variable "$B") (Variable "$C")
+(Variable "$D") (Variable "$E") (Variable "$F")
+(Variable "$G") (Variable "$H") (Variable "$J"))))

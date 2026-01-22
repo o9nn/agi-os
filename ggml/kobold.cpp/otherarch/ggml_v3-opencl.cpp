@@ -117,10 +117,10 @@ const int8_t vi1 = vui >> 4;
 void dequantize_q5_0(__global const struct block_q5_0* x, const int ib, const int iqs, float* v0, float* v1) {
 const float d = vload_half(0, &x[ib].d);
 uint32_t qh = x[ib].qh;
-const uint8_t xh_0 = ((qh >> (iqs +  0)) << 4) & 0x10;
-const uint8_t xh_1 = ((qh >> (iqs + 12))     ) & 0x10;
+const uint8_t xh_0 = ((qh >> (iqs + 0)) << 4) & 0x10;
+const uint8_t xh_1 = ((qh >> (iqs + 12)) ) & 0x10;
 const int32_t x0 = ((x[ib].qs[iqs] & 0xf) | xh_0) - 16;
-const int32_t x1 = ((x[ib].qs[iqs] >>  4) | xh_1) - 16;
+const int32_t x1 = ((x[ib].qs[iqs] >> 4) | xh_1) - 16;
 *v0 = x0*d;
 *v1 = x1*d;
 }
@@ -128,10 +128,10 @@ void dequantize_q5_1(__global const struct block_q5_1* x, const int ib, const in
 const float d = vload_half(0, &x[ib].d);
 const float m = vload_half(0, &x[ib].m);
 uint32_t qh = x[ib].qh;
-const uint8_t xh_0 = ((qh >> (iqs +  0)) << 4) & 0x10;
-const uint8_t xh_1 = ((qh >> (iqs + 12))     ) & 0x10;
+const uint8_t xh_0 = ((qh >> (iqs + 0)) << 4) & 0x10;
+const uint8_t xh_1 = ((qh >> (iqs + 12)) ) & 0x10;
 const int32_t x0 = ((x[ib].qs[iqs] & 0xf) | xh_0);
-const int32_t x1 = ((x[ib].qs[iqs] >>  4) | xh_1);
+const int32_t x1 = ((x[ib].qs[iqs] >> 4) | xh_1);
 *v0 = x0*d + m;
 *v1 = x1*d + m;
 }
@@ -191,7 +191,7 @@ int is = 8 * n + 2 * j + is0;
 int shift = 2 * j;
 int8_t us = is < 4 ? (x[i].scales[is - 0] & 0xF) | (((x[i].scales[is + 8] >> 0) & 3) << 4)
 : is < 8 ? (x[i].scales[is - 0] & 0xF) | (((x[i].scales[is + 4] >> 2) & 3) << 4)
-: is < 12  ? (x[i].scales[is - 8] >> 4) | (((x[i].scales[is + 0] >> 4) & 3) << 4)
+: is < 12 ? (x[i].scales[is - 8] >> 4) | (((x[i].scales[is + 0] >> 4) & 3) << 4)
 : (x[i].scales[is - 8] >> 4) | (((x[i].scales[is - 4] >> 6) & 3) << 4);
 float d_all = vload_half(0, &x[i].d);
 float dl = d_all * (us - 32);
@@ -275,7 +275,7 @@ const int num_blocks_per_row = ncols / QK_K;
 const int ib0 = row*num_blocks_per_row + get_global_offset(0);
 __global const struct block_q2_K * x = xx + ib0;
 const int tid = get_local_id(0)/K_QUANTS_PER_ITERATION;
-const int ix  = get_local_id(0)%K_QUANTS_PER_ITERATION;
+const int ix = get_local_id(0)%K_QUANTS_PER_ITERATION;
 const int step = 16/K_QUANTS_PER_ITERATION;
 const int im = tid/step;
 const int in = tid - step*im;
@@ -288,7 +288,7 @@ uint32_t aux[4];
 const uint8_t * d = (const uint8_t *)aux;
 const uint8_t * m = (const uint8_t *)(aux + 2);
 for (int i = ix; i < num_blocks_per_row; i += K_QUANTS_PER_ITERATION) {
-__global const float   * y = yy + i * QK_K + y_offset;
+__global const float * y = yy + i * QK_K + y_offset;
 __global const uint8_t * q = x[i].qs + q_offset;
 const float dall = vload_half(0, &x[i].d);
 const float dmin = vload_half(0, &x[i].dmin);
@@ -331,21 +331,21 @@ const int num_blocks_per_row = ncols / QK_K;
 const int ib0 = row*num_blocks_per_row + get_global_offset(0);
 __global const struct block_q3_K * x = xx + ib0;
 const int tid = get_local_id(0)/K_QUANTS_PER_ITERATION;
-const int ix  = get_local_id(0)%K_QUANTS_PER_ITERATION;
-const int n  = K_QUANTS_PER_ITERATION;
+const int ix = get_local_id(0)%K_QUANTS_PER_ITERATION;
+const int n = K_QUANTS_PER_ITERATION;
 const int step = 16/K_QUANTS_PER_ITERATION;
 const int im = tid/step;
 const int in = tid - step*im;
 const uint8_t m = 1 << (4*im);
 const int l0 = n*in;
-const int q_offset =  32*im + l0;
+const int q_offset = 32*im + l0;
 const int y_offset = 128*im + l0;
 uint16_t utmp[4];
 const int8_t * s = (const int8_t *)utmp;
 const uint16_t s_shift = 4*im;
 tmp[16 * ix + tid] = 0;
 for (int i = ix; i < num_blocks_per_row; i += K_QUANTS_PER_ITERATION) {
-__global const float   * y  = yy + i * QK_K + y_offset;
+__global const float * y = yy + i * QK_K + y_offset;
 __global const uint8_t * q = x[i].qs + q_offset;
 __global const uint8_t * h = x[i].hmask + l0;
 __global const uint16_t * a = (__global const uint16_t *)x[i].scales;
@@ -386,11 +386,11 @@ const int row = get_group_id(0);
 const int num_blocks_per_row = ncols / QK_K;
 const int ib0 = row*num_blocks_per_row + get_global_offset(0);
 const int tid = get_local_id(0)/K_QUANTS_PER_ITERATION;
-const int ix  = get_local_id(0)%K_QUANTS_PER_ITERATION;
+const int ix = get_local_id(0)%K_QUANTS_PER_ITERATION;
 const int step = 8/K_QUANTS_PER_ITERATION;
-const int il  = tid/step;
-const int ir  = tid - step*il;
-const int n   = 2*K_QUANTS_PER_ITERATION;
+const int il = tid/step;
+const int ir = tid - step*il;
+const int n = 2*K_QUANTS_PER_ITERATION;
 const int im = il/2;
 const int in = il%2;
 const int l0 = n*(2*ir + in);
@@ -403,8 +403,8 @@ tmp[16 * ix + tid] = 0;
 for (int i = ix; i < num_blocks_per_row; i += K_QUANTS_PER_ITERATION) {
 __global const uint8_t * q1 = x[i].qs + q_offset;
 __global const uint8_t * q2 = q1 + 64;
-__global const float   * y1 = yy + i*QK_K + y_offset;
-__global const float   * y2 = y1 + 128;
+__global const float * y1 = yy + i*QK_K + y_offset;
+__global const float * y2 = y1 + 128;
 const float dall = vload_half(0, &x[i].d);
 const float dmin = vload_half(0, &x[i].dmin);
 __global const uint16_t * a = (__global const uint16_t *)x[i].scales;
@@ -440,17 +440,17 @@ const int row = get_group_id(0);
 const int num_blocks_per_row = ncols / QK_K;
 const int ib0 = row*num_blocks_per_row + get_global_offset(0);
 const int tid = get_local_id(0)/2;
-const int ix  = get_local_id(0)%2;
-const int il  = tid/4;
-const int ir  = tid - 4*il;
-const int n   = 2;
+const int ix = get_local_id(0)%2;
+const int il = tid/4;
+const int ir = tid - 4*il;
+const int n = 2;
 const int im = il/2;
 const int in = il%2;
 const int l0 = n*(2*ir + in);
 const int q_offset = 32*im + l0;
 const int y_offset = 64*im + l0;
-const uint8_t hm1  = 1 << (2*im);
-const uint8_t hm2  = hm1 << 4;
+const uint8_t hm1 = 1 << (2*im);
+const uint8_t hm2 = hm1 << 4;
 uint16_t aux[4];
 const uint8_t * sc = (const uint8_t *)aux;
 __global const struct block_q5_K * x = xx + ib0;
@@ -458,9 +458,9 @@ tmp[16 * ix + tid] = 0;
 for (int i = ix; i < num_blocks_per_row; i += 2) {
 __global const uint8_t * ql1 = x[i].qs + q_offset;
 __global const uint8_t * ql2 = ql1 + 64;
-__global const uint8_t * qh  = x[i].qh + l0;
-__global const float   * y1  = yy + i*QK_K + y_offset;
-__global const float   * y2  = y1 + 128;
+__global const uint8_t * qh = x[i].qh + l0;
+__global const float * y1 = yy + i*QK_K + y_offset;
+__global const float * y2 = y1 + 128;
 const float dall = vload_half(0, &x[i].d);
 const float dmin = vload_half(0, &x[i].dmin);
 __global const uint16_t * a = (__global const uint16_t *)x[i].scales;
@@ -473,12 +473,12 @@ float smin = 0;
 for (int l = 0; l < n; ++l) {
 sum.x += y1[l+ 0] * ((ql1[l+ 0] & 0xF) + (qh[l+ 0] & (hm1 << 0) ? 16 : 0))
 + y1[l+16] * ((ql1[l+16] & 0xF) + (qh[l+16] & (hm1 << 0) ? 16 : 0));
-sum.y += y1[l+32] * ((ql1[l+ 0] >>  4) + (qh[l+ 0] & (hm1 << 1) ? 16 : 0))
-+ y1[l+48] * ((ql1[l+16] >>  4) + (qh[l+16] & (hm1 << 1) ? 16 : 0));
+sum.y += y1[l+32] * ((ql1[l+ 0] >> 4) + (qh[l+ 0] & (hm1 << 1) ? 16 : 0))
++ y1[l+48] * ((ql1[l+16] >> 4) + (qh[l+16] & (hm1 << 1) ? 16 : 0));
 sum.z += y2[l+ 0] * ((ql2[l+ 0] & 0xF) + (qh[l+ 0] & (hm2 << 0) ? 16 : 0))
 + y2[l+16] * ((ql2[l+16] & 0xF) + (qh[l+16] & (hm2 << 0) ? 16 : 0));
-sum.w += y2[l+32] * ((ql2[l+ 0] >>  4) + (qh[l+ 0] & (hm2 << 1) ? 16 : 0))
-+ y2[l+48] * ((ql2[l+16] >>  4) + (qh[l+16] & (hm2 << 1) ? 16 : 0));
+sum.w += y2[l+32] * ((ql2[l+ 0] >> 4) + (qh[l+ 0] & (hm2 << 1) ? 16 : 0))
++ y2[l+48] * ((ql2[l+16] >> 4) + (qh[l+16] & (hm2 << 1) ? 16 : 0));
 smin += (y1[l] + y1[l+16]) * sc[2] + (y1[l+32] + y1[l+48]) * sc[3]
 + (y2[l] + y2[l+16]) * sc[6] + (y2[l+32] + y2[l+48]) * sc[7];
 }
@@ -501,7 +501,7 @@ const int num_blocks_per_row = ncols / QK_K;
 const int ib0 = row*num_blocks_per_row + get_global_offset(0);
 __global const struct block_q6_K * x = xx + ib0;
 const int tid = get_local_id(0)/K_QUANTS_PER_ITERATION;
-const int ix  = get_local_id(0)%K_QUANTS_PER_ITERATION;
+const int ix = get_local_id(0)%K_QUANTS_PER_ITERATION;
 const int step = 16/K_QUANTS_PER_ITERATION;
 const int im = tid/step;
 const int in = tid - step*im;
@@ -514,32 +514,32 @@ const int is = in / 4;
 \n#endif\n
 const int ql_offset = 64*im + l0;
 const int qh_offset = 32*im + l0;
-const int s_offset  =  8*im + is;
+const int s_offset = 8*im + is;
 const int y_offset = 128*im + l0;
 tmp[16 * ix + tid] = 0;
 for (int i = ix; i < num_blocks_per_row; i += K_QUANTS_PER_ITERATION) {
-__global const float   * y  = yy + i * QK_K + y_offset;
+__global const float * y = yy + i * QK_K + y_offset;
 __global const uint8_t * ql = x[i].ql + ql_offset;
 __global const uint8_t * qh = x[i].qh + qh_offset;
-__global const int8_t  * s  = x[i].scales + s_offset;
+__global const int8_t * s = x[i].scales + s_offset;
 const float d = vload_half(0, &x[i].d);
 \n#if K_QUANTS_PER_ITERATION == 1\n
 float sum = y[ 0] * s[0] * d * ((int8_t)((ql[ 0] & 0xF) | ((qh[ 0] & 0x03) << 4)) - 32)
 + y[16] * s[1] * d * ((int8_t)((ql[16] & 0xF) | ((qh[16] & 0x03) << 4)) - 32)
 + y[32] * s[2] * d * ((int8_t)((ql[32] & 0xF) | ((qh[ 0] & 0x0c) << 2)) - 32)
 + y[48] * s[3] * d * ((int8_t)((ql[48] & 0xF) | ((qh[16] & 0x0c) << 2)) - 32)
-+ y[64] * s[4] * d * ((int8_t)((ql[ 0]  >> 4) | ((qh[ 0] & 0x30) >> 0)) - 32)
-+ y[80] * s[5] * d * ((int8_t)((ql[16]  >> 4) | ((qh[16] & 0x30) >> 0)) - 32)
-+ y[96] * s[6] * d * ((int8_t)((ql[32]  >> 4) | ((qh[ 0] & 0xc0) >> 2)) - 32)
-+y[112] * s[7] * d * ((int8_t)((ql[48]  >> 4) | ((qh[16] & 0xc0) >> 2)) - 32);
++ y[64] * s[4] * d * ((int8_t)((ql[ 0] >> 4) | ((qh[ 0] & 0x30) >> 0)) - 32)
++ y[80] * s[5] * d * ((int8_t)((ql[16] >> 4) | ((qh[16] & 0x30) >> 0)) - 32)
++ y[96] * s[6] * d * ((int8_t)((ql[32] >> 4) | ((qh[ 0] & 0xc0) >> 2)) - 32)
++y[112] * s[7] * d * ((int8_t)((ql[48] >> 4) | ((qh[16] & 0xc0) >> 2)) - 32);
 tmp[16 * ix + tid] += sum;
 \n#else\n
 float sum = 0;
 for (int l = 0; l < 4; ++l) {
 sum += y[l+ 0] * s[0] * d * ((int8_t)((ql[l+ 0] & 0xF) | (((qh[l] >> 0) & 3) << 4)) - 32)
 + y[l+32] * s[2] * d * ((int8_t)((ql[l+32] & 0xF) | (((qh[l] >> 2) & 3) << 4)) - 32)
-+ y[l+64] * s[4] * d * ((int8_t)((ql[l+ 0]  >> 4) | (((qh[l] >> 4) & 3) << 4)) - 32)
-+ y[l+96] * s[6] * d * ((int8_t)((ql[l+32]  >> 4) | (((qh[l] >> 6) & 3) << 4)) - 32);
++ y[l+64] * s[4] * d * ((int8_t)((ql[l+ 0] >> 4) | (((qh[l] >> 4) & 3) << 4)) - 32)
++ y[l+96] * s[6] * d * ((int8_t)((ql[l+32] >> 4) | (((qh[l] >> 6) & 3) << 4)) - 32);
 }
 tmp[16 * ix + tid] += sum;
 \n#endif\n
@@ -615,25 +615,25 @@ return;
 dst[dst_offset + i] = x[x_offset + i] * y[y_offset + i%ky];
 }
 );
-#define CL_CHECK(err)                                               \
-do {                                                            \
-cl_int err_ = (err);                                        \
-if (err_ != CL_SUCCESS) {                                   \
-fprintf(stderr, "ggml_v3_opencl: %s error %d at %s:%d\n",  \
-#err, err_, __FILE__, __LINE__);                    \
+#define CL_CHECK(err) \
+do { \
+cl_int err_ = (err); \
+if (err_ != CL_SUCCESS) { \
+fprintf(stderr, "ggml_v3_opencl: %s error %d at %s:%d\n", \
+#err, err_, __FILE__, __LINE__); \
 fprintf(stderr, "You may be out of VRAM. Please check if you have enough.\n");\
-exit(1);                                                \
-}                                                           \
+exit(1); \
+} \
 } while (0)
-#define CLBLAST_CHECK(err)                                          \
-do {                                                            \
-CLBlastStatusCode err_ = (err);                             \
-if (err_ != CLBlastSuccess) {                               \
-fprintf(stderr, "ggml_v3_opencl: %s error %d at %s:%d\n",  \
-#err, err_, __FILE__, __LINE__);                    \
+#define CLBLAST_CHECK(err) \
+do { \
+CLBlastStatusCode err_ = (err); \
+if (err_ != CLBlastSuccess) { \
+fprintf(stderr, "ggml_v3_opencl: %s error %d at %s:%d\n", \
+#err, err_, __FILE__, __LINE__); \
 fprintf(stderr, "You may be out of VRAM. Please check if you have enough.\n");\
-exit(1);                                                \
-}                                                           \
+exit(1); \
+} \
 } while (0)
 static std::array<std::string, 5> dequant_str_keys = {
 "KERNEL_NAME", "X_TYPE", "QUANT_K", "QUANT_R", "DEQUANT_FUNC"
@@ -1147,8 +1147,8 @@ const int64_t ne10 = src1->ne[0];
 const int64_t ne11 = src1->ne[1];
 const int64_t ne12 = src1->ne[2];
 const int64_t ne13 = src1->ne[3];
-const int nb2  = dst->nb[2];
-const int nb3  = dst->nb[3];
+const int nb2 = dst->nb[2];
+const int nb3 = dst->nb[3];
 size_t x_size;
 size_t d_size;
 cl_mem d_X = ggml_v3_cl_pool_malloc(ne00 * ne01 * sizeof(float), &x_size);
@@ -1196,8 +1196,8 @@ const int64_t ne10 = src1->ne[0];
 const int64_t ne11 = src1->ne[1];
 const int64_t ne12 = src1->ne[2];
 const int64_t ne13 = src1->ne[3];
-const int nb2  = dst->nb[2];
-const int nb3  = dst->nb[3];
+const int nb2 = dst->nb[2];
+const int nb3 = dst->nb[3];
 const int64_t r2 = ne12 / ne02;
 const int64_t r3 = ne13 / ne03;
 const float alpha = 1.0f;
@@ -1268,8 +1268,8 @@ const int nb10 = src1->nb[0];
 const int nb11 = src1->nb[1];
 const int nb12 = src1->nb[2];
 const int nb13 = src1->nb[3];
-const int nb2  = dst->nb[2];
-const int nb3  = dst->nb[3];
+const int nb2 = dst->nb[2];
+const int nb3 = dst->nb[3];
 const int64_t r2 = ne12 / ne02;
 const int64_t r3 = ne13 / ne03;
 const ggml_v3_fp16_t alpha = ggml_v3_fp32_to_fp16(1.0f);
@@ -1359,8 +1359,8 @@ const int64_t ne10 = src1->ne[0];
 const int64_t ne11 = src1->ne[1];
 const int64_t ne12 = src1->ne[2];
 const int64_t ne13 = src1->ne[3];
-const int nb2  = dst->nb[2];
-const int nb3  = dst->nb[3];
+const int nb2 = dst->nb[2];
+const int nb3 = dst->nb[3];
 const ggml_v3_type type = src0->type;
 const bool mul_mat_vec = ne11 == 1 && ne00%2 == 0;
 const int64_t r2 = ne12 / ne02;

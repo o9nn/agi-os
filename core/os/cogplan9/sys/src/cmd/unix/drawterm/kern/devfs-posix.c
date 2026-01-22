@@ -1,42 +1,42 @@
-#include	"u.h"
-#include	<sys/types.h>
-#include	<sys/stat.h>
-#include	<dirent.h>
-#include	<fcntl.h>
-#include	<errno.h>
-#include	<stdio.h>
-#include	<limits.h>
+#include "u.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <dirent.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <stdio.h>
+#include <limits.h>
 #ifndef NAME_MAX
-#	define NAME_MAX 256
+# define NAME_MAX 256
 #endif
-#include	"lib.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
-typedef	struct Ufsinfo	Ufsinfo;
+#include "lib.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
+typedef struct Ufsinfo Ufsinfo;
 enum
 {
-NUID	= 256,
-NGID	= 256,
-MAXPATH	= 1024,
-MAXCOMP	= 128
+NUID = 256,
+NGID = 256,
+MAXPATH = 1024,
+MAXCOMP = 128
 };
 struct Ufsinfo
 {
-int	mode;
-int	fd;
-int	uid;
-int	gid;
-DIR*	dir;
-vlong	offset;
-QLock	oq;
+int mode;
+int fd;
+int uid;
+int gid;
+DIR* dir;
+vlong offset;
+QLock oq;
 char nextname[NAME_MAX];
 };
-char	*base = "/";
-static	Qid	fsqid(char*, struct stat *);
-static	void	fspath(Chan*, char*, char*);
-static	ulong	fsdirread(Chan*, uchar*, int, ulong);
-static	int	fsomode(int);
+char *base = "/";
+static Qid fsqid(char*, struct stat *);
+static void fspath(Chan*, char*, char*);
+static ulong fsdirread(Chan*, uchar*, int, ulong);
+static int fsomode(int);
 static char*
 uc2name(Chan *c)
 {
@@ -371,7 +371,7 @@ static uchar *qdev;
 if(qdev == 0)
 qdev = mallocz(65536U, 1);
 q.type = 0;
-if((st->st_mode&S_IFMT) ==  S_IFDIR)
+if((st->st_mode&S_IFMT) == S_IFDIR)
 q.type = QTDIR;
 dev = st->st_dev & 0xFFFFUL;
 if(qdev[dev] == 0)

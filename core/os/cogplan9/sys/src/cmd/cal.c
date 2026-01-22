@@ -1,32 +1,32 @@
 #include <u.h>
 #include <libc.h>
 #include <bio.h>
-char	dayw[] =
+char dayw[] =
 {
 " S  M Tu  W Th  F  S"
 };
-char	*smon[] =
+char *smon[] =
 {
 "January", "February", "March", "April",
 "May", "June", "July", "August",
 "September", "October", "November", "December",
 };
-char	mon[] =
+char mon[] =
 {
 0,
 31, 29, 31, 30,
 31, 30, 31, 31,
 30, 31, 30, 31,
 };
-char	string[432];
-Biobuf	bout;
-void	main(int argc, char *argv[]);
-int	number(char *str);
-void	pstr(char *str, int n);
-void	cal(int m, int y, char *p, int w);
-int	jan1(int yr);
-int	curmo(void);
-int	curyr(void);
+char string[432];
+Biobuf bout;
+void main(int argc, char *argv[]);
+int number(char *str);
+void pstr(char *str, int n);
+void cal(int m, int y, char *p, int w);
+int jan1(int yr);
+int curmo(void);
+int curyr(void);
 void
 main(int argc, char *argv[])
 {
@@ -95,34 +95,34 @@ Bprint(&bout, "cal: bad argument\n");
 }
 struct
 {
-char*	word;
-int	val;
+char* word;
+int val;
 } dict[] =
 {
-"jan",		1,
-"january",	1,
-"feb",		2,
-"february",	2,
-"mar",		3,
-"march",	3,
-"apr",		4,
-"april",	4,
-"may",		5,
-"jun",		6,
-"june",		6,
-"jul",		7,
-"july",		7,
-"aug",		8,
-"august",	8,
-"sep",		9,
-"sept",		9,
-"september",	9,
-"oct",		10,
-"october",	10,
-"nov",		11,
-"november",	11,
-"dec",		12,
-"december",	12,
+"jan", 1,
+"january", 1,
+"feb", 2,
+"february", 2,
+"mar", 3,
+"march", 3,
+"apr", 4,
+"april", 4,
+"may", 5,
+"jun", 6,
+"june", 6,
+"jul", 7,
+"july", 7,
+"aug", 8,
+"august", 8,
+"sep", 9,
+"sept", 9,
+"september", 9,
+"oct", 10,
+"october", 10,
+"nov", 11,
+"november", 11,
+"dec", 12,
+"december", 12,
 0
 };
 int

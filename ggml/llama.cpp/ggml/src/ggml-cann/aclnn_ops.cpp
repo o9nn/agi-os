@@ -63,11 +63,11 @@ if (!ggml_are_same_shape(src0, src1) && ggml_cann_need_bcast(src0, src1)) {
 BCAST_SHAPE(src0, src1)
 *acl_src0 = ggml_cann_create_tensor(src0, BCAST_PARAM(src0));
 *acl_src1 = ggml_cann_create_tensor(src1, BCAST_PARAM(src1));
-*acl_dst  = ggml_cann_create_tensor(dst, BCAST_PARAM(src0));
+*acl_dst = ggml_cann_create_tensor(dst, BCAST_PARAM(src0));
 } else {
 *acl_src0 = ggml_cann_create_tensor(src0);
 *acl_src1 = ggml_cann_create_tensor(src1);
-*acl_dst  = ggml_cann_create_tensor(dst);
+*acl_dst = ggml_cann_create_tensor(dst);
 }
 }
 void ggml_cann_op_unary(
@@ -1888,7 +1888,7 @@ ggml_cann_release_resources(ctx, acl_src, acl_dst, alpha);
 static void ggml_cann_mul_mat_id_fp(ggml_backend_cann_context& ctx, ggml_tensor* dst) {
 ggml_tensor * src0 = dst->src[0];
 ggml_tensor * src1 = dst->src[1];
-ggml_tensor * ids  = dst->src[2];
+ggml_tensor * ids = dst->src[2];
 GGML_TENSOR_BINARY_OP_LOCALS
 int64_t n_as = ne02;
 int64_t n_ids = ids->ne[0];
@@ -1898,7 +1898,7 @@ ACL_MEMCPY_DEVICE_TO_HOST);
 ACL_CHECK(aclrtSynchronizeStream(ctx.stream()));
 char * src0_original = (char *) src0->data;
 char * src1_original = (char *) src1->data;
-char * dst_original  = (char *)  dst->data;
+char * dst_original = (char *) dst->data;
 size_t ori_src0_nb[4] = {nb00, nb01, nb02, nb03};
 ggml_cann_pool_alloc src0_cast_allocator;
 if (src0->type == GGML_TYPE_F16) {
@@ -1950,7 +1950,7 @@ int64_t i1 = id;
 int64_t i2 = i12;
 void* src0_tmp_ptr = src0_original + i02*ori_src0_nb[2];
 void* src1_tmp_ptr = src1_original + i11*nb11 + i12*nb12;
-void* dst_tmp_ptr  = dst_original  + i1*nb1   + i2*nb2;
+void* dst_tmp_ptr = dst_original + i1*nb1 + i2*nb2;
 src0_row.data = src0_tmp_ptr;
 src1_row.data = src1_tmp_ptr;
 dst_row.data = dst_tmp_ptr;
@@ -1980,7 +1980,7 @@ int64_t i1 = id;
 int64_t i2 = i12;
 void* src0_tmp_ptr = src0_original + i02*ori_src0_nb[2];
 void* src1_tmp_ptr = src1_original + i11*nb11 + i12*nb12;
-void* dst_tmp_ptr  = dst_original  + i1*nb1   + i2*nb2;
+void* dst_tmp_ptr = dst_original + i1*nb1 + i2*nb2;
 aclTensor* acl_src0 = ggml_cann_create_tensor(src0_tmp_ptr,
 ACL_FLOAT, sizeof(float),
 src0_ne, src0_nb, 2);
@@ -2013,7 +2013,7 @@ return;
 static void ggml_cann_mul_mat_id_quant(ggml_backend_cann_context& ctx, ggml_tensor* dst) {
 ggml_tensor * src0 = dst->src[0];
 ggml_tensor * src1 = dst->src[1];
-ggml_tensor * ids  = dst->src[2];
+ggml_tensor * ids = dst->src[2];
 GGML_TENSOR_BINARY_OP_LOCALS
 int64_t n_as = ne02;
 int64_t n_ids = ids->ne[0];
@@ -2023,7 +2023,7 @@ ACL_MEMCPY_DEVICE_TO_HOST);
 ACL_CHECK(aclrtSynchronizeStream(ctx.stream()));
 char * src0_original = (char *) src0->data;
 char * src1_original = (char *) src1->data;
-char * dst_original  = (char *)  dst->data;
+char * dst_original = (char *) dst->data;
 ggml_tensor src0_row = *src0;
 ggml_tensor src1_row = *src1;
 ggml_tensor dst_row = *dst;
@@ -2069,7 +2069,7 @@ int64_t i2 = i12;
 void* src0_tmp_ptr = src0_original + i02*weight_stride;
 void* scale_tmp_ptr = src0_original + weight_size + i02*scale_stride;
 void* src1_tmp_ptr = src1_original + i11*nb11 + i12*nb12;
-void* dst_tmp_ptr  = dst_original  + i1*nb1   + i2*nb2;
+void* dst_tmp_ptr = dst_original + i1*nb1 + i2*nb2;
 ggml_cann_async_memcpy(ctx, weight_buffer, src0_tmp_ptr, weight_stride,
 ACL_MEMCPY_DEVICE_TO_DEVICE);
 void* scale_buffer = (char*)weight_buffer + weight_stride;
@@ -2109,16 +2109,16 @@ ggml_tensor* src3 = dst->src[3];
 float maxBias = 0.0f;
 float scaleValue = 1.0f;
 float logitSoftcap = 0.0f;
-memcpy(&scaleValue,    (float*)dst->op_params + 0, sizeof(float));
-memcpy(&maxBias,       (float*)dst->op_params + 1, sizeof(float));
-memcpy(&logitSoftcap,  (float*)dst->op_params + 2, sizeof(float));
+memcpy(&scaleValue, (float*)dst->op_params + 0, sizeof(float));
+memcpy(&maxBias, (float*)dst->op_params + 1, sizeof(float));
+memcpy(&logitSoftcap, (float*)dst->op_params + 2, sizeof(float));
 if(logitSoftcap == 0.0f){
 size_t faElemSize = sizeof(uint16_t);
-auto   faDataType = ACL_FLOAT16;
+auto faDataType = ACL_FLOAT16;
 aclTensor* acl_src0_f16_tensor = nullptr;
 aclTensor* acl_src1_f16_tensor = nullptr;
 aclTensor* acl_src2_f16_tensor = nullptr;
-aclTensor* acl_dst_f16_tensor  = nullptr;
+aclTensor* acl_dst_f16_tensor = nullptr;
 ggml_cann_pool_alloc src0_f16_allocator(ctx.pool());
 void* src0_f16_buffer = nullptr;
 if(ggml_cann_type_mapping(src0->type) != faDataType){
@@ -2126,7 +2126,7 @@ aclTensor* acl_src0_f32_tensor = ggml_cann_create_tensor(src0);
 src0_f16_buffer = src0_f16_allocator.alloc(
 ggml_nelements(src0) * faElemSize);
 int64_t* src0_f16_ne = src0->ne;
-size_t   src0_f16_nb[GGML_MAX_DIMS];
+size_t src0_f16_nb[GGML_MAX_DIMS];
 src0_f16_nb[0] = sizeof(uint16_t);
 for(int i = 1; i < GGML_MAX_DIMS; ++i){
 src0_f16_nb[i] = src0_f16_nb[i - 1] * src0_f16_ne[i - 1];
@@ -2332,7 +2332,7 @@ ggml_cann_pool_alloc perm_out_f16_allocator(ctx.pool());
 perm_out_f16_allocator.alloc(ggml_nelements(dst) * faElemSize);
 void* perm_out_f16_buffer = perm_out_f16_allocator.get();
 int64_t* perm_out_f16_ne = dst->ne;
-size_t  perm_out_f16_nb[GGML_MAX_DIMS];
+size_t perm_out_f16_nb[GGML_MAX_DIMS];
 perm_out_f16_nb[0] = faElemSize;
 for(int i = 1; i < GGML_MAX_DIMS; ++i){
 perm_out_f16_nb[i] = perm_out_f16_nb[i - 1] * perm_out_f16_ne[i - 1];

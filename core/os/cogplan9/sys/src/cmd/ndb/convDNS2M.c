@@ -4,29 +4,29 @@
 #include "dns.h"
 enum
 {
-Ndict=	64,
+Ndict= 64,
 };
-typedef struct Dict	Dict;
+typedef struct Dict Dict;
 struct Dict
 {
 struct {
-ushort	offset;
-char	*name;
+ushort offset;
+char *name;
 } x[Ndict];
-int	n;
-uchar	*start;
-char	buf[16*1024];
-char	*ep;
+int n;
+uchar *start;
+char buf[16*1024];
+char *ep;
 };
-#define NAME(x)		p = pname(p, ep, x, dp)
-#define SYMBOL(x)	p = psym(p, ep, x)
-#define STRING(x)	p = pstr(p, ep, x)
-#define BYTES(x, n)	p = pbytes(p, ep, x, n)
-#define USHORT(x)	p = pushort(p, ep, x)
-#define UCHAR(x)	p = puchar(p, ep, x)
-#define ULONG(x)	p = pulong(p, ep, x)
-#define V4ADDR(x)	p = pv4addr(p, ep, x)
-#define V6ADDR(x)	p = pv6addr(p, ep, x)
+#define NAME(x) p = pname(p, ep, x, dp)
+#define SYMBOL(x) p = psym(p, ep, x)
+#define STRING(x) p = pstr(p, ep, x)
+#define BYTES(x, n) p = pbytes(p, ep, x, n)
+#define USHORT(x) p = pushort(p, ep, x)
+#define UCHAR(x) p = puchar(p, ep, x)
+#define ULONG(x) p = pulong(p, ep, x)
+#define V4ADDR(x) p = pv4addr(p, ep, x)
+#define V6ADDR(x) p = pv6addr(p, ep, x)
 static uchar*
 psym(uchar *p, uchar *ep, char *np)
 {

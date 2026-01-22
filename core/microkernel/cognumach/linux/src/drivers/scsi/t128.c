@@ -40,7 +40,7 @@ int offset;
 } signatures[] = {
 {"TSROM: SCSI BIOS, Version 1.12", 0x36},
 };
-#define NO_SIGNATURES (sizeof (signatures) /  sizeof (struct signature))
+#define NO_SIGNATURES (sizeof (signatures) / sizeof (struct signature))
 void t128_setup(char *str, int *ints) {
 static int commandline_current = 0;
 int i;

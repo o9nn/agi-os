@@ -1,26 +1,26 @@
 (define (cog-get-categories A)
 "
- Return the atoms that A is a member of through a MemberLink relationship.
+Return the atoms that A is a member of through a MemberLink relationship.
 "
-    (let ((result
-        (cog-outgoing-set
-            (cog-bind
-                (BindLink
-                    (VariableList
-                        (VariableNode "$B")
-                    )
-                    (MemberLink
-                        A
-                        (VariableNode "$B")
-                    )
-                    (VariableNode "$B")
-                )
-            )
-        )
-        )) result )
+(let ((result
+(cog-outgoing-set
+(cog-bind
+(BindLink
+(VariableList
+(VariableNode "$B")
+)
+(MemberLink
+A
+(VariableNode "$B")
+)
+(VariableNode "$B")
+)
+)
+)
+)) result )
 )
 (define (cog-remove-type atom-type atoms)
-    (filter (lambda (atom) (not (eq? atom-type (cog-type atom)))) atoms))
+(filter (lambda (atom) (not (eq? atom-type (cog-type atom)))) atoms))
 (define genes (list "TBC1D4" "ADCY9"))
 (define gene-nodes (map GeneNode genes))
 (define member-cats (fold union '() (map cog-incoming-set gene-nodes)))

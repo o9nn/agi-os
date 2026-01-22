@@ -1,7 +1,7 @@
 implement Test;
 #
-#	venerable
-#		test expression
+# venerable
+# test expression
 #
 include "sys.m";
 sys: Sys;
@@ -11,7 +11,7 @@ include "daytime.m";
 daytime: Daytime;
 Test: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 gargs: list of string;
 init(nil: ref Draw->Context, args: list of string)
@@ -212,13 +212,13 @@ n = m;
 break;
 }
 case t[i++] {
-'y' =>	n += m*12*30*24*3600;
-'M' =>	n += m*30*24*3600;
-'d' =>	n += m*24*3600;
-'h' =>	n += m*3600;
-'m' =>	n += m*60;
-'s' =>		n += m;
-* =>		synbad("bad time syntax, "+t);
+'y' => n += m*12*30*24*3600;
+'M' => n += m*30*24*3600;
+'d' => n += m*24*3600;
+'h' => n += m*3600;
+'m' => n += m*60;
+'s' => n += m;
+* => synbad("bad time syntax, "+t);
 }
 }
 return dir.mtime+n < now();

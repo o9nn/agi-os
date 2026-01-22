@@ -77,7 +77,7 @@ gx_cpath_accum_begin(gx_device_cpath_accum * padev, gs_memory_t * mem)
 {
 gx_device_init((gx_device *) padev,
 (const gx_device *) & gs_cpath_accum_device,
-NULL  , true);
+NULL , true);
 padev->list_memory = mem;
 (*dev_proc(padev, open_device)) ((gx_device *) padev);
 }

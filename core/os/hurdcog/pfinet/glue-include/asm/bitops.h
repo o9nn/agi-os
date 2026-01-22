@@ -1,8 +1,8 @@
 #ifndef _HACK_ASM_BITOPS_H
 #define _HACK_ASM_BITOPS_H
 #include <stdint.h>
-#define BITOPS_WORD(nr, addr)	(((uint32_t *) (addr))[(nr) / 32])
-#define BITOPS_MASK(nr)		(1U << ((nr) & 31))
+#define BITOPS_WORD(nr, addr) (((uint32_t *) (addr))[(nr) / 32])
+#define BITOPS_MASK(nr) (1U << ((nr) & 31))
 static __inline__ void set_bit (int nr, void *addr)
 { BITOPS_WORD (nr, addr) |= BITOPS_MASK (nr); }
 static __inline__ void clear_bit (int nr, void *addr)
@@ -19,5 +19,5 @@ return res;
 }
 #define find_first_zero_bit #error loser
 #define find_next_zero_bit #error loser
-#define ffz(word)	(ffs (~(unsigned int) (word)) - 1)
+#define ffz(word) (ffs (~(unsigned int) (word)) - 1)
 #endif

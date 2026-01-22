@@ -34,7 +34,7 @@ memcpy(model.a->data, a, ggml_nbytes(model.a));
 memcpy(model.b->data, b, ggml_nbytes(model.b));
 }
 struct ggml_cgraph * build_graph(const simple_model& model) {
-struct ggml_cgraph  * gf = ggml_new_graph(model.ctx);
+struct ggml_cgraph * gf = ggml_new_graph(model.ctx);
 struct ggml_tensor * result = ggml_mul_mat(model.ctx, model.a, model.b);
 ggml_build_forward_expand(gf, result);
 return gf;

@@ -1,5 +1,5 @@
 #ifndef gxblend_INCLUDED
-#  define gxblend_INCLUDED
+# define gxblend_INCLUDED
 typedef bits16 ArtPixMaxDepth;
 #define ART_MAX_CHAN 16
 void

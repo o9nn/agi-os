@@ -62,7 +62,7 @@ inflate_table(DISTS, state->lens, 32, &(next), &(bits), state->work);
 virgin = 0;
 }
 #else
-#   include "inffixed.h"
+# include "inffixed.h"
 #endif
 state->lencode = lenfix;
 state->lenbits = 9;

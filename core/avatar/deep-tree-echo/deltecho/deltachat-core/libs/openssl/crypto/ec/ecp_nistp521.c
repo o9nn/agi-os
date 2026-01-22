@@ -1,9 +1,9 @@
 #include <openssl/opensslconf.h>
 #ifndef OPENSSL_NO_EC_NISTP_64_GCC_128
 # ifndef OPENSSL_SYS_VMS
-#  include <stdint.h>
+# include <stdint.h>
 # else
-#  include <inttypes.h>
+# include <inttypes.h>
 # endif
 # include <string.h>
 # include <openssl/err.h>
@@ -11,7 +11,7 @@
 # if defined(__GNUC__) && (__GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1))
 typedef __uint128_t uint128_t;
 # else
-#  error "Need GCC 3.1 or later to define type uint128_t"
+# error "Need GCC 3.1 or later to define type uint128_t"
 # endif
 typedef uint8_t u8;
 typedef uint64_t u64;
@@ -1018,9 +1018,9 @@ ec_GFp_simple_set_Jprojective_coordinates_GFp,
 ec_GFp_simple_get_Jprojective_coordinates_GFp,
 ec_GFp_simple_point_set_affine_coordinates,
 ec_GFp_nistp521_point_get_affine_coordinates,
-0  ,
-0  ,
-0  ,
+0 ,
+0 ,
+0 ,
 ec_GFp_simple_add,
 ec_GFp_simple_dbl,
 ec_GFp_simple_invert,
@@ -1034,9 +1034,9 @@ ec_GFp_nistp521_precompute_mult,
 ec_GFp_nistp521_have_precompute_mult,
 ec_GFp_nist_field_mul,
 ec_GFp_nist_field_sqr,
-0  ,
-0  ,
-0  ,
+0 ,
+0 ,
+0 ,
 0
 };
 return &ret;

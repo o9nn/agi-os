@@ -1,27 +1,27 @@
 #ifndef gxfdrop_INCLUDED
-#  define gxfdrop_INCLUDED
+# define gxfdrop_INCLUDED
 #define ADJUST_SERIF 1
 #define CHECK_SPOT_CONTIGUITY 1
 #ifndef active_line_DEFINED
-#  define active_line_DEFINED
+# define active_line_DEFINED
 typedef struct active_line_s active_line;
 #endif
 #ifndef line_list_DEFINED
-#  define line_list_DEFINED
+# define line_list_DEFINED
 typedef struct line_list_s line_list;
 #endif
 typedef struct margin_s
-{   int ibeg, iend;
+{ int ibeg, iend;
 struct margin_s *prev, *next;
 } margin;
 typedef struct section_s
-{   short y0, y1;
+{ short y0, y1;
 #if ADJUST_SERIF && CHECK_SPOT_CONTIGUITY
 short x0, x1;
 #endif
 } section;
 typedef struct margin_set_s
-{   fixed y;
+{ fixed y;
 margin *margin_list, *margin_touched;
 section *sect;
 } margin_set;

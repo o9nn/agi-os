@@ -3,21 +3,21 @@
 #include <auth.h>
 #include <fcall.h>
 #include "tapefs.h"
-#define	VNADDR	13
-#define	VFMT	0160000
-#define	VIFREG	0100000
-#define	VIFDIR	0040000
-#define	VIFCHR	0120000
-#define	VIFBLK	0160000
-#define	VMODE	0777
-#define	VSUPERB	1
-#define	VROOT		2
-#define	VNAMELEN	14
-#define	MAXBLSIZE	1024
-int	BLSIZE;
-#define	LINOPB	(BLSIZE/sizeof(struct v32dinode))
-#define	LNINDIR	(BLSIZE/4)
-#define	MAXLNINDIR	(MAXBLSIZE/4)
+#define VNADDR 13
+#define VFMT 0160000
+#define VIFREG 0100000
+#define VIFDIR 0040000
+#define VIFCHR 0120000
+#define VIFBLK 0160000
+#define VMODE 0777
+#define VSUPERB 1
+#define VROOT 2
+#define VNAMELEN 14
+#define MAXBLSIZE 1024
+int BLSIZE;
+#define LINOPB (BLSIZE/sizeof(struct v32dinode))
+#define LNINDIR (BLSIZE/4)
+#define MAXLNINDIR (MAXBLSIZE/4)
 struct v32dinode {
 unsigned char flags[2];
 unsigned char nlinks[2];
@@ -29,14 +29,14 @@ unsigned char atime[4];
 unsigned char mtime[4];
 unsigned char ctime[4];
 };
-struct	v32dir {
-uchar	ino[2];
-char	name[VNAMELEN];
+struct v32dir {
+uchar ino[2];
+char name[VNAMELEN];
 };
-int	tapefile;
-Fileinf	iget(int ino);
-long	bmap(Ram *r, long bno);
-void	getblk(Ram *r, long bno, char *buf);
+int tapefile;
+Fileinf iget(int ino);
+long bmap(Ram *r, long bno);
+void getblk(Ram *r, long bno, char *buf);
 void
 populate(char *name)
 {

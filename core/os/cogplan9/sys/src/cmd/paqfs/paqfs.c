@@ -9,7 +9,7 @@
 #include "paqfs.h"
 enum
 {
-OPERM	= 0x3,
+OPERM = 0x3,
 OffsetSize = 4,
 };
 typedef struct Fid Fid;
@@ -17,13 +17,13 @@ typedef struct Paq Paq;
 typedef struct Block Block;
 struct Fid
 {
-short	busy;
-short	open;
-int	fid;
-char	*user;
-ulong	offset;
-Paq	*paq;
-Fid	*next;
+short busy;
+short open;
+int fid;
+char *user;
+ulong offset;
+Paq *paq;
+Fid *next;
 };
 struct Paq
 {
@@ -41,92 +41,92 @@ uchar *data;
 };
 enum
 {
-Pexec =		1,
-Pwrite = 	2,
-Pread = 	4,
-Pother = 	1,
-Pgroup = 	8,
-Powner =	64,
+Pexec = 1,
+Pwrite = 2,
+Pread = 4,
+Pother = 1,
+Pgroup = 8,
+Powner = 64,
 };
-int	noauth;
-Fid	*fids;
-Fcall	rhdr, thdr;
-int 	blocksize;
-int 	cachesize = 20;
-int	mesgsize = 8*1024 + IOHDRSZ;
-Paq 	*root, *rootfile;
-Block 	*cache;
-ulong 	cacheage;
-Biobuf	*bin;
-int	qflag;
-Fid *	newfid(int);
-void	paqstat(PaqDir*, char*);
-void	io(int fd);
-void	*erealloc(void*, ulong);
-void	*emalloc(ulong);
-void 	*emallocz(ulong n);
-char 	*estrdup(char*);
-void	usage(void);
-ulong	getl(uchar *p);
-int	gets(uchar *p);
-char 	*getstr(uchar *p);
-PaqDir	*getDir(uchar*);
-void	getHeader(uchar *p, PaqHeader *b);
-void	getBlock(uchar *p, PaqBlock *b);
-void	getTrailer(uchar *p, PaqTrailer *b);
-void	init(char*, int);
-void	paqDirFree(PaqDir*);
-Qid	paqDirQid(PaqDir *d);
-Paq	*paqCpy(Paq *s);
-Paq	*paqLookup(Paq *s, char *name);
-void	paqFree(Paq*);
-Paq	*paqWalk(Paq *s, char *name);
-int	perm(PaqDir *s, char *user, int p);
-int	dirRead(Fid*, uchar*, int);
-Block	*blockLoad(ulong addr, int type);
-void	blockFree(Block*);
-int	checkDirSize(uchar *p, uchar *ep);
-int	packDir(PaqDir*, uchar*, int);
-int	blockRead(uchar *data, ulong addr, int type);
-void	readHeader(PaqHeader *hdr, char *name, DigestState *ds);
-void	readBlocks(char *name, DigestState *ds);
-void	readTrailer(PaqTrailer *tlr, char *name, DigestState *ds);
-char	*rflush(Fid*), *rversion(Fid*),
+int noauth;
+Fid *fids;
+Fcall rhdr, thdr;
+int blocksize;
+int cachesize = 20;
+int mesgsize = 8*1024 + IOHDRSZ;
+Paq *root, *rootfile;
+Block *cache;
+ulong cacheage;
+Biobuf *bin;
+int qflag;
+Fid * newfid(int);
+void paqstat(PaqDir*, char*);
+void io(int fd);
+void *erealloc(void*, ulong);
+void *emalloc(ulong);
+void *emallocz(ulong n);
+char *estrdup(char*);
+void usage(void);
+ulong getl(uchar *p);
+int gets(uchar *p);
+char *getstr(uchar *p);
+PaqDir *getDir(uchar*);
+void getHeader(uchar *p, PaqHeader *b);
+void getBlock(uchar *p, PaqBlock *b);
+void getTrailer(uchar *p, PaqTrailer *b);
+void init(char*, int);
+void paqDirFree(PaqDir*);
+Qid paqDirQid(PaqDir *d);
+Paq *paqCpy(Paq *s);
+Paq *paqLookup(Paq *s, char *name);
+void paqFree(Paq*);
+Paq *paqWalk(Paq *s, char *name);
+int perm(PaqDir *s, char *user, int p);
+int dirRead(Fid*, uchar*, int);
+Block *blockLoad(ulong addr, int type);
+void blockFree(Block*);
+int checkDirSize(uchar *p, uchar *ep);
+int packDir(PaqDir*, uchar*, int);
+int blockRead(uchar *data, ulong addr, int type);
+void readHeader(PaqHeader *hdr, char *name, DigestState *ds);
+void readBlocks(char *name, DigestState *ds);
+void readTrailer(PaqTrailer *tlr, char *name, DigestState *ds);
+char *rflush(Fid*), *rversion(Fid*),
 *rauth(Fid*), *rattach(Fid*), *rwalk(Fid*),
 *ropen(Fid*), *rcreate(Fid*),
 *rread(Fid*), *rwrite(Fid*), *rclunk(Fid*),
 *rremove(Fid*), *rstat(Fid*), *rwstat(Fid*);
-char 	*(*fcalls[])(Fid*) = {
-[Tflush]	rflush,
-[Tversion]	rversion,
-[Tattach]	rattach,
-[Tauth]		rauth,
-[Twalk]		rwalk,
-[Topen]		ropen,
-[Tcreate]	rcreate,
-[Tread]		rread,
-[Twrite]	rwrite,
-[Tclunk]	rclunk,
-[Tremove]	rremove,
-[Tstat]		rstat,
-[Twstat]	rwstat,
+char *(*fcalls[])(Fid*) = {
+[Tflush] rflush,
+[Tversion] rversion,
+[Tattach] rattach,
+[Tauth] rauth,
+[Twalk] rwalk,
+[Topen] ropen,
+[Tcreate] rcreate,
+[Tread] rread,
+[Twrite] rwrite,
+[Tclunk] rclunk,
+[Tremove] rremove,
+[Tstat] rstat,
+[Twstat] rwstat,
 };
-char	Eperm[] =	"permission denied";
-char	Enotdir[] =	"not a directory";
-char	Enoauth[] =	"authentication not required";
-char	Enotexist[] =	"file does not exist";
-char	Einuse[] =	"file in use";
-char	Eexist[] =	"file exists";
-char	Enotowner[] =	"not owner";
-char	Eisopen[] = 	"file already open for I/O";
-char	Excl[] = 	"exclusive use file already open";
-char	Ename[] = 	"illegal name";
-char	Erdonly[] = 	"read only file system";
-char	Ebadblock[] = 	"bad block";
-char	Eversion[] = 	"bad version of P9";
-char	Edirtoobig[] = 	"directory entry too big";
+char Eperm[] = "permission denied";
+char Enotdir[] = "not a directory";
+char Enoauth[] = "authentication not required";
+char Enotexist[] = "file does not exist";
+char Einuse[] = "file in use";
+char Eexist[] = "file exists";
+char Enotowner[] = "not owner";
+char Eisopen[] = "file already open for I/O";
+char Excl[] = "exclusive use file already open";
+char Ename[] = "illegal name";
+char Erdonly[] = "read only file system";
+char Ebadblock[] = "bad block";
+char Eversion[] = "bad version of P9";
+char Edirtoobig[] = "directory entry too big";
 int debug;
-#pragma varargck	type	"V"	uchar*
+#pragma varargck type "V" uchar*
 static int
 sha1fmt(Fmt *f)
 {

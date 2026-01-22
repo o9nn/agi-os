@@ -1,30 +1,30 @@
-#include	"all.h"
-#include	<libg.h>
-#include	<gnot.h>
+#include "all.h"
+#include <libg.h>
+#include <gnot.h>
 enum {
-Colldepth		= 3,
-Colmaxx		= 640,
-Colmaxxvis	= 640,
-Colmaxy		= 480,
+Colldepth = 3,
+Colmaxx = 640,
+Colmaxxvis = 640,
+Colmaxy = 480,
 };
-#define	MINX	8
-extern	GSubfont	defont0;
+#define MINX 8
+extern GSubfont defont0;
 struct{
-Point	pos;
-int	bwid;
+Point pos;
+int bwid;
 }out;
 typedef struct Mode Mode;
 struct Mode {
-int	x;
-int	y;
-int	d;
-char*	aperture;
-int	apsize;
+int x;
+int y;
+int d;
+char* aperture;
+int apsize;
 };
-GBitmap	gscreen;
-Point	gchar(GBitmap*, Point, GFont*, int, Fcode);
-int	setcolor(ulong, ulong, ulong, ulong);
-static	void	lcdinit(Mode*);
+GBitmap gscreen;
+Point gchar(GBitmap*, Point, GFont*, int, Fcode);
+int setcolor(ulong, ulong, ulong, ulong);
+static void lcdinit(Mode*);
 void
 screeninit(void)
 {
@@ -172,7 +172,7 @@ io->pbodr &= ~(IBIT(31) | IBIT(19) | IBIT(17));
 eieio();
 io->sccrk = KEEP_ALIVE_KEY;
 eieio();
-io->sccr  = (io->sccr & ~0x1F) | lcdclock[d];
+io->sccr = (io->sccr & ~0x1F) | lcdclock[d];
 eieio();
 io->sccrk = ~KEEP_ALIVE_KEY;
 eieio();

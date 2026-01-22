@@ -431,11 +431,11 @@ penum->used.x = 0;
 penum->used.y = 0;
 {
 static sample_unpack_proc_t procs[2][6] = {
-{   sample_unpack_1, sample_unpack_2,
+{ sample_unpack_1, sample_unpack_2,
 sample_unpack_4, sample_unpack_8,
 0, 0
 },
-{   sample_unpack_1_interleaved, sample_unpack_2_interleaved,
+{ sample_unpack_1_interleaved, sample_unpack_2_interleaved,
 sample_unpack_4_interleaved, sample_unpack_8_interleaved,
 0, 0
 }};
@@ -559,7 +559,7 @@ ictype(5 * 17) = ictype(10 * 17) = gx_dc_type_none;
 }
 private void
 image_init_colors(gx_image_enum * penum, int bps, int spp,
-gs_image_format_t format, const float *decode  ,
+gs_image_format_t format, const float *decode ,
 const gs_imager_state * pis, gx_device * dev,
 const gs_color_space * pcs, bool * pdcb)
 {
@@ -619,11 +619,11 @@ for (i = 0; i < 16; i++, p++)
 break;
 }
 }
-pmap->decode_base   = real_decode[0];
+pmap->decode_base = real_decode[0];
 pmap->decode_factor =
 (real_decode[1] - real_decode[0]) /
 (bps <= 8 ? 255.0 : (float)frac_1);
-pmap->decode_max   = real_decode[1];
+pmap->decode_max = real_decode[1];
 if (no_decode) {
 pmap->decoding = sd_none;
 pmap->inverted = map_decode[0] != 0;

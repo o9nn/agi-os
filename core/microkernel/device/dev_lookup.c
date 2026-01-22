@@ -10,30 +10,30 @@
 #include <kern/ipc_kobject.h>
 #include <device/device_emul.h>
 #include <device/ds_routines.h>
-#define	NDEVHASH	8
-#define	DEV_NUMBER_HASH(dev)	((dev) & (NDEVHASH-1))
-queue_head_t	dev_number_hash_table[NDEVHASH];
+#define NDEVHASH 8
+#define DEV_NUMBER_HASH(dev) ((dev) & (NDEVHASH-1))
+queue_head_t dev_number_hash_table[NDEVHASH];
 def_simple_lock_data(static, dev_number_lock)
-struct kmem_cache	dev_hdr_cache;
+struct kmem_cache dev_hdr_cache;
 static void
 dev_number_enter(const mach_device_t device)
 {
-queue_t	q;
+queue_t q;
 q = &dev_number_hash_table[DEV_NUMBER_HASH(device->dev_number)];
 queue_enter(q, device, mach_device_t, number_chain);
 }
 static void
 dev_number_remove(const mach_device_t device)
 {
-queue_t	q;
+queue_t q;
 q = &dev_number_hash_table[DEV_NUMBER_HASH(device->dev_number)];
 queue_remove(q, device, mach_device_t, number_chain);
 }
 static mach_device_t
 dev_number_lookup(const dev_ops_t ops, int devnum)
 {
-queue_t	q;
-mach_device_t	device;
+queue_t q;
+mach_device_t device;
 q = &dev_number_hash_table[DEV_NUMBER_HASH(devnum)];
 queue_iterate(q, device, mach_device_t, number_chain) {
 if (device->dev_ops == ops && device->dev_number == devnum) {
@@ -45,10 +45,10 @@ return (MACH_DEVICE_NULL);
 mach_device_t
 device_lookup(const char *name)
 {
-dev_ops_t	dev_ops;
-int		dev_minor;
-mach_device_t	device;
-mach_device_t	new_device;
+dev_ops_t dev_ops;
+int dev_minor;
+mach_device_t device;
+mach_device_t new_device;
 if (!dev_name_lookup(name, &dev_ops, &dev_minor))
 return (MACH_DEVICE_NULL);
 new_device = MACH_DEVICE_NULL;
@@ -137,7 +137,7 @@ mach_device_deallocate(device);
 device_t
 dev_port_lookup(ipc_port_t port)
 {
-device_t	device;
+device_t device;
 if (!IP_VALID(port))
 return (DEVICE_NULL);
 ip_lock(port);
@@ -152,7 +152,7 @@ ip_unlock(port);
 return (device);
 }
 ipc_port_t
-convert_device_to_port(const device_t	device)
+convert_device_to_port(const device_t device)
 {
 if (device == DEVICE_NULL)
 return IP_NULL;
@@ -160,12 +160,12 @@ return (*device->emul_ops->dev_to_port) (device->emul_data);
 }
 boolean_t
 dev_map(
-dev_map_fn	routine,
-mach_port_t	port)
+dev_map_fn routine,
+mach_port_t port)
 {
-int		i;
-queue_t		q;
-mach_device_t	dev, prev_dev;
+int i;
+queue_t q;
+mach_device_t dev, prev_dev;
 for (i = 0, q = &dev_number_hash_table[0];
 i < NDEVHASH;
 i++, q++) {
@@ -192,7 +192,7 @@ return (FALSE);
 void
 dev_lookup_init(void)
 {
-int	i;
+int i;
 simple_lock_init(&dev_number_lock);
 for (i = 0; i < NDEVHASH; i++)
 queue_init(&dev_number_hash_table[i]);

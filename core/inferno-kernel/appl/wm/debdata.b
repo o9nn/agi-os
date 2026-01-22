@@ -15,14 +15,14 @@ debug: Debug;
 Sym, Src, Exp, Module: import debug;
 include "wmdeb.m";
 debsrc: DebSrc;
-DatumSize:	con 32;
-WalkWidth:	con "20";
-context:		ref Draw->Context;
-tktop:		ref Tk->Toplevel;
-var:		ref Vars;
-vid:		int;
-tkids :=	1;	# increasing id of tk pieces
-icondir :	con "debug/";
+DatumSize: con 32;
+WalkWidth: con "20";
+context: ref Draw->Context;
+tktop: ref Tk->Toplevel;
+var: ref Vars;
+vid: int;
+tkids := 1; # increasing id of tk pieces
+icondir : con "debug/";
 tkconfig := array[] of {
 "frame .body -width 400 -height 400",
 "pack .Wm_t -side top -fill x",
@@ -350,8 +350,8 @@ return !offmatch || e.offset == f.offset;
 tkcmd(cmd: string): string
 {
 s := tk->cmd(tktop, cmd);
-#	if(len s != 0 && s[0] == '!')
-#		sys->print("%s '%s'\n", s, cmd);
+# if(len s != 0 && s[0] == '!')
+# sys->print("%s '%s'\n", s, cmd);
 return s;
 }
 raisex()

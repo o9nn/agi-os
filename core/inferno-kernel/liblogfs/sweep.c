@@ -107,13 +107,13 @@ if(errmsg)
 return errmsg;
 swept = server->sweptlog;
 }
-if(active->unsweptblockindex	== active->curblockindex)
+if(active->unsweptblockindex == active->curblockindex)
 logfslogsegmentflush(server, 1);
 ppb = (1 << ll->l2pagesperblock);
 pagesize = (1 << ll->l2pagesize);
 for(page = 0; page < ppb; page++) {
 uchar *p, *bufend;
-errmsg = (*ll->readpagerange)(ll, buf, active->blockmap[active->unsweptblockindex], page, 0,  pagesize, &llrr);
+errmsg = (*ll->readpagerange)(ll, buf, active->blockmap[active->unsweptblockindex], page, 0, pagesize, &llrr);
 if(errmsg)
 goto fail;
 if(llrr != LogfsLowLevelReadResultOk)
@@ -196,7 +196,7 @@ oblock = active->blockmap[active->unsweptblockindex++];
 errmsg = logfsbootfettleblock(server->lb, oblock, LogfsTnone, ~0, &markedbad);
 if(errmsg)
 goto fail;
-if(active->unsweptblockindex  > active->curblockindex) {
+if(active->unsweptblockindex > active->curblockindex) {
 logfslogsegmentfree(&active);
 server->activelog = swept;
 server->sweptlog = nil;

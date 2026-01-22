@@ -1,159 +1,159 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	<libsec.h>
-typedef struct OneWay	OneWay;
-typedef struct Secret		Secret;
-typedef struct TlsRec	TlsRec;
-typedef struct TlsErrs	TlsErrs;
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include <libsec.h>
+typedef struct OneWay OneWay;
+typedef struct Secret Secret;
+typedef struct TlsRec TlsRec;
+typedef struct TlsErrs TlsErrs;
 enum {
-Statlen=	1024,
-MaxRecLen		= 1<<14,
-MaxCipherRecLen	= MaxRecLen + 2048,
-RecHdrLen		= 5,
-MaxMacLen		= SHA1dlen,
-TLSVersion		= 0x0301,
-SSL3Version		= 0x0300,
-ProtocolVersion	= 0x0301,
-MinProtoVersion	= 0x0300,
-MaxProtoVersion	= 0x03ff,
-SHandshake	= 1 << 0,
-SOpen		= 1 << 1,
-SRClose		= 1 << 2,
-SLClose		= 1 << 3,
-SAlert		= 1 << 5,
-SError		= 1 << 6,
-SClosed		= 1 << 7,
+Statlen= 1024,
+MaxRecLen = 1<<14,
+MaxCipherRecLen = MaxRecLen + 2048,
+RecHdrLen = 5,
+MaxMacLen = SHA1dlen,
+TLSVersion = 0x0301,
+SSL3Version = 0x0300,
+ProtocolVersion = 0x0301,
+MinProtoVersion = 0x0300,
+MaxProtoVersion = 0x03ff,
+SHandshake = 1 << 0,
+SOpen = 1 << 1,
+SRClose = 1 << 2,
+SLClose = 1 << 3,
+SAlert = 1 << 5,
+SError = 1 << 6,
+SClosed = 1 << 7,
 RChangeCipherSpec = 20,
 RAlert,
 RHandshake,
 RApplication,
 SSL2ClientHello = 1,
 HSSL2ClientHello = 9,
-ECloseNotify 			= 0,
-EUnexpectedMessage 	= 10,
-EBadRecordMac 		= 20,
-EDecryptionFailed 		= 21,
-ERecordOverflow 		= 22,
-EDecompressionFailure 	= 30,
-EHandshakeFailure 		= 40,
-ENoCertificate 			= 41,
-EBadCertificate 		= 42,
-EUnsupportedCertificate 	= 43,
-ECertificateRevoked 		= 44,
-ECertificateExpired 		= 45,
-ECertificateUnknown 	= 46,
-EIllegalParameter 		= 47,
-EUnknownCa 			= 48,
-EAccessDenied 		= 49,
-EDecodeError 			= 50,
-EDecryptError 			= 51,
-EExportRestriction 		= 60,
-EProtocolVersion 		= 70,
-EInsufficientSecurity 	= 71,
-EInternalError 			= 80,
-EUserCanceled 			= 90,
-ENoRenegotiation 		= 100,
+ECloseNotify = 0,
+EUnexpectedMessage = 10,
+EBadRecordMac = 20,
+EDecryptionFailed = 21,
+ERecordOverflow = 22,
+EDecompressionFailure = 30,
+EHandshakeFailure = 40,
+ENoCertificate = 41,
+EBadCertificate = 42,
+EUnsupportedCertificate = 43,
+ECertificateRevoked = 44,
+ECertificateExpired = 45,
+ECertificateUnknown = 46,
+EIllegalParameter = 47,
+EUnknownCa = 48,
+EAccessDenied = 49,
+EDecodeError = 50,
+EDecryptError = 51,
+EExportRestriction = 60,
+EProtocolVersion = 70,
+EInsufficientSecurity = 71,
+EInternalError = 80,
+EUserCanceled = 90,
+ENoRenegotiation = 100,
 EMAX = 256
 };
 struct Secret
 {
-char		*encalg;
-char		*hashalg;
-int		(*enc)(Secret*, uchar*, int);
-int		(*dec)(Secret*, uchar*, int);
-int		(*unpad)(uchar*, int, int);
-DigestState	*(*mac)(uchar*, ulong, uchar*, ulong, uchar*, DigestState*);
-int		block;
-int		maclen;
-void		*enckey;
-uchar	mackey[MaxMacLen];
+char *encalg;
+char *hashalg;
+int (*enc)(Secret*, uchar*, int);
+int (*dec)(Secret*, uchar*, int);
+int (*unpad)(uchar*, int, int);
+DigestState *(*mac)(uchar*, ulong, uchar*, ulong, uchar*, DigestState*);
+int block;
+int maclen;
+void *enckey;
+uchar mackey[MaxMacLen];
 };
 struct OneWay
 {
-QLock		io;
-QLock		seclock;
-ulong		seq;
-Secret		*sec;
-Secret		*new;
+QLock io;
+QLock seclock;
+ulong seq;
+Secret *sec;
+Secret *new;
 };
 struct TlsRec
 {
-Chan	*c;
-int		ref;
-int		version;
-char		verset;
-char		opened;
-char		err[ERRMAX];
-vlong	handin;
-vlong	handout;
-vlong	datain;
-vlong	dataout;
-Lock		statelk;
-int		state;
-int		debug;
-void		(*packMac)(Secret*, uchar*, uchar*, uchar*, uchar*, int, uchar*);
-OneWay		in;
-Block		*processed;
-Block		*unprocessed;
-Lock		hqlock;
-int		hqref;
-Queue		*handq;
-Block		*hprocessed;
-QLock		hqread;
-OneWay		out;
-char		*user;
-int		perm;
+Chan *c;
+int ref;
+int version;
+char verset;
+char opened;
+char err[ERRMAX];
+vlong handin;
+vlong handout;
+vlong datain;
+vlong dataout;
+Lock statelk;
+int state;
+int debug;
+void (*packMac)(Secret*, uchar*, uchar*, uchar*, uchar*, int, uchar*);
+OneWay in;
+Block *processed;
+Block *unprocessed;
+Lock hqlock;
+int hqref;
+Queue *handq;
+Block *hprocessed;
+QLock hqread;
+OneWay out;
+char *user;
+int perm;
 };
 struct TlsErrs{
-int	err;
-int	sslerr;
-int	tlserr;
-int	fatal;
-char	*msg;
+int err;
+int sslerr;
+int tlserr;
+int fatal;
+char *msg;
 };
 static TlsErrs tlserrs[] = {
-{ECloseNotify,			ECloseNotify,			ECloseNotify,			0, 	"close notify"},
-{EUnexpectedMessage,	EUnexpectedMessage,	EUnexpectedMessage, 	1, "unexpected message"},
-{EBadRecordMac,		EBadRecordMac,		EBadRecordMac, 		1, "bad record mac"},
-{EDecryptionFailed,		EIllegalParameter,		EDecryptionFailed,		1, "decryption failed"},
-{ERecordOverflow,		EIllegalParameter,		ERecordOverflow,		1, "record too long"},
-{EDecompressionFailure,	EDecompressionFailure,	EDecompressionFailure,	1, "decompression failed"},
-{EHandshakeFailure,		EHandshakeFailure,		EHandshakeFailure,		1, "could not negotiate acceptable security parameters"},
-{ENoCertificate,		ENoCertificate,			ECertificateUnknown,	1, "no appropriate certificate available"},
-{EBadCertificate,		EBadCertificate,		EBadCertificate,		1, "corrupted or invalid certificate"},
-{EUnsupportedCertificate,	EUnsupportedCertificate,	EUnsupportedCertificate,	1, "unsupported certificate type"},
-{ECertificateRevoked,	ECertificateRevoked,		ECertificateRevoked,		1, "revoked certificate"},
-{ECertificateExpired,		ECertificateExpired,		ECertificateExpired,		1, "expired certificate"},
-{ECertificateUnknown,	ECertificateUnknown,	ECertificateUnknown,	1, "unacceptable certificate"},
-{EIllegalParameter,		EIllegalParameter,		EIllegalParameter,		1, "illegal parameter"},
-{EUnknownCa,			EHandshakeFailure,		EUnknownCa,			1, "unknown certificate authority"},
-{EAccessDenied,		EHandshakeFailure,		EAccessDenied,		1, "access denied"},
-{EDecodeError,			EIllegalParameter,		EDecodeError,			1, "error decoding message"},
-{EDecryptError,			EIllegalParameter,		EDecryptError,			1, "error decrypting message"},
-{EExportRestriction,		EHandshakeFailure,		EExportRestriction,		1, "export restriction violated"},
-{EProtocolVersion,		EIllegalParameter,		EProtocolVersion,		1, "protocol version not supported"},
-{EInsufficientSecurity,	EHandshakeFailure,		EInsufficientSecurity,	1, "stronger security routines required"},
-{EInternalError,			EHandshakeFailure,		EInternalError,			1, "internal error"},
-{EUserCanceled,		ECloseNotify,			EUserCanceled,			0, "handshake canceled by user"},
-{ENoRenegotiation,		EUnexpectedMessage,	ENoRenegotiation,		0, "no renegotiation"},
+{ECloseNotify, ECloseNotify, ECloseNotify, 0, "close notify"},
+{EUnexpectedMessage, EUnexpectedMessage, EUnexpectedMessage, 1, "unexpected message"},
+{EBadRecordMac, EBadRecordMac, EBadRecordMac, 1, "bad record mac"},
+{EDecryptionFailed, EIllegalParameter, EDecryptionFailed, 1, "decryption failed"},
+{ERecordOverflow, EIllegalParameter, ERecordOverflow, 1, "record too long"},
+{EDecompressionFailure, EDecompressionFailure, EDecompressionFailure, 1, "decompression failed"},
+{EHandshakeFailure, EHandshakeFailure, EHandshakeFailure, 1, "could not negotiate acceptable security parameters"},
+{ENoCertificate, ENoCertificate, ECertificateUnknown, 1, "no appropriate certificate available"},
+{EBadCertificate, EBadCertificate, EBadCertificate, 1, "corrupted or invalid certificate"},
+{EUnsupportedCertificate, EUnsupportedCertificate, EUnsupportedCertificate, 1, "unsupported certificate type"},
+{ECertificateRevoked, ECertificateRevoked, ECertificateRevoked, 1, "revoked certificate"},
+{ECertificateExpired, ECertificateExpired, ECertificateExpired, 1, "expired certificate"},
+{ECertificateUnknown, ECertificateUnknown, ECertificateUnknown, 1, "unacceptable certificate"},
+{EIllegalParameter, EIllegalParameter, EIllegalParameter, 1, "illegal parameter"},
+{EUnknownCa, EHandshakeFailure, EUnknownCa, 1, "unknown certificate authority"},
+{EAccessDenied, EHandshakeFailure, EAccessDenied, 1, "access denied"},
+{EDecodeError, EIllegalParameter, EDecodeError, 1, "error decoding message"},
+{EDecryptError, EIllegalParameter, EDecryptError, 1, "error decrypting message"},
+{EExportRestriction, EHandshakeFailure, EExportRestriction, 1, "export restriction violated"},
+{EProtocolVersion, EIllegalParameter, EProtocolVersion, 1, "protocol version not supported"},
+{EInsufficientSecurity, EHandshakeFailure, EInsufficientSecurity, 1, "stronger security routines required"},
+{EInternalError, EHandshakeFailure, EInternalError, 1, "internal error"},
+{EUserCanceled, ECloseNotify, EUserCanceled, 0, "handshake canceled by user"},
+{ENoRenegotiation, EUnexpectedMessage, ENoRenegotiation, 0, "no renegotiation"},
 };
 enum
 {
-MaxTlsDevs	= 1024
+MaxTlsDevs = 1024
 };
-static	Lock	tdlock;
-static	int	tdhiwat;
-static	int	maxtlsdevs = 128;
-static	TlsRec	**tlsdevs;
-static	char	**trnames;
-static	char	*encalgs;
-static	char	*hashalgs;
+static Lock tdlock;
+static int tdhiwat;
+static int maxtlsdevs = 128;
+static TlsRec **tlsdevs;
+static char **trnames;
+static char *encalgs;
+static char *hashalgs;
 enum{
-Qtopdir		= 1,
+Qtopdir = 1,
 Qprotodir,
 Qclonus,
 Qencalgs,
@@ -165,54 +165,54 @@ Qhand,
 Qstatus,
 Qstats,
 };
-#define TYPE(x) 	((x).path & 0xf)
-#define CONV(x) 	(((x).path >> 5)&(MaxTlsDevs-1))
-#define QID(c, y) 	(((c)<<5) | (y))
-static void	checkstate(TlsRec *, int, int);
-static void	ensure(TlsRec*, Block**, int);
-static void	consume(Block**, uchar*, int);
-static Chan*	buftochan(char*);
-static void	tlshangup(TlsRec*);
-static void	tlsError(TlsRec*, char *);
-static void	alertHand(TlsRec*, char *);
-static TlsRec	*newtls(Chan *c);
-static TlsRec	*mktlsrec(void);
+#define TYPE(x) ((x).path & 0xf)
+#define CONV(x) (((x).path >> 5)&(MaxTlsDevs-1))
+#define QID(c, y) (((c)<<5) | (y))
+static void checkstate(TlsRec *, int, int);
+static void ensure(TlsRec*, Block**, int);
+static void consume(Block**, uchar*, int);
+static Chan* buftochan(char*);
+static void tlshangup(TlsRec*);
+static void tlsError(TlsRec*, char *);
+static void alertHand(TlsRec*, char *);
+static TlsRec *newtls(Chan *c);
+static TlsRec *mktlsrec(void);
 static DigestState*sslmac_md5(uchar *p, ulong len, uchar *key, ulong klen, uchar *digest, DigestState *s);
 static DigestState*sslmac_sha1(uchar *p, ulong len, uchar *key, ulong klen, uchar *digest, DigestState *s);
 static DigestState*nomac(uchar *p, ulong len, uchar *key, ulong klen, uchar *digest, DigestState *s);
-static void	sslPackMac(Secret *sec, uchar *mackey, uchar *seq, uchar *header, uchar *body, int len, uchar *mac);
-static void	tlsPackMac(Secret *sec, uchar *mackey, uchar *seq, uchar *header, uchar *body, int len, uchar *mac);
-static void	put64(uchar *p, vlong x);
-static void	put32(uchar *p, u32int);
-static void	put24(uchar *p, int);
-static void	put16(uchar *p, int);
-static u32int	get32(uchar *p);
-static int	get16(uchar *p);
-static void	tlsSetState(TlsRec *tr, int new, int old);
-static void	rcvAlert(TlsRec *tr, int err);
-static void	sendAlert(TlsRec *tr, int err);
-static void	rcvError(TlsRec *tr, int err, char *msg, ...);
-static int	rc4enc(Secret *sec, uchar *buf, int n);
-static int	des3enc(Secret *sec, uchar *buf, int n);
-static int	des3dec(Secret *sec, uchar *buf, int n);
-static int	aesenc(Secret *sec, uchar *buf, int n);
-static int	aesdec(Secret *sec, uchar *buf, int n);
-static int	noenc(Secret *sec, uchar *buf, int n);
-static int	sslunpad(uchar *buf, int n, int block);
-static int	tlsunpad(uchar *buf, int n, int block);
-static void	freeSec(Secret *sec);
-static char	*tlsstate(int s);
-static void	pdump(int, void*, char*);
-#pragma	varargck	argpos	rcvError	3
+static void sslPackMac(Secret *sec, uchar *mackey, uchar *seq, uchar *header, uchar *body, int len, uchar *mac);
+static void tlsPackMac(Secret *sec, uchar *mackey, uchar *seq, uchar *header, uchar *body, int len, uchar *mac);
+static void put64(uchar *p, vlong x);
+static void put32(uchar *p, u32int);
+static void put24(uchar *p, int);
+static void put16(uchar *p, int);
+static u32int get32(uchar *p);
+static int get16(uchar *p);
+static void tlsSetState(TlsRec *tr, int new, int old);
+static void rcvAlert(TlsRec *tr, int err);
+static void sendAlert(TlsRec *tr, int err);
+static void rcvError(TlsRec *tr, int err, char *msg, ...);
+static int rc4enc(Secret *sec, uchar *buf, int n);
+static int des3enc(Secret *sec, uchar *buf, int n);
+static int des3dec(Secret *sec, uchar *buf, int n);
+static int aesenc(Secret *sec, uchar *buf, int n);
+static int aesdec(Secret *sec, uchar *buf, int n);
+static int noenc(Secret *sec, uchar *buf, int n);
+static int sslunpad(uchar *buf, int n, int block);
+static int tlsunpad(uchar *buf, int n, int block);
+static void freeSec(Secret *sec);
+static char *tlsstate(int s);
+static void pdump(int, void*, char*);
+#pragma varargck argpos rcvError 3
 static char *tlsnames[] = {
-[Qclonus]		"clone",
-[Qencalgs]	"encalgs",
-[Qhashalgs]	"hashalgs",
-[Qdata]		"data",
-[Qctl]		"ctl",
-[Qhand]		"hand",
-[Qstatus]		"status",
-[Qstats]		"stats",
+[Qclonus] "clone",
+[Qencalgs] "encalgs",
+[Qhashalgs] "hashalgs",
+[Qdata] "data",
+[Qctl] "ctl",
+[Qhand] "hand",
+[Qstatus] "status",
+[Qstats] "stats",
 };
 static int convdir[] = { Qctl, Qdata, Qhand, Qstatus, Qstats };
 static int
@@ -1136,9 +1136,9 @@ return n;
 typedef struct Hashalg Hashalg;
 struct Hashalg
 {
-char	*name;
-int	maclen;
-void	(*initkey)(Hashalg *, int, Secret *, uchar*);
+char *name;
+int maclen;
+void (*initkey)(Hashalg *, int, Secret *, uchar*);
 };
 static void
 initmd5key(Hashalg *ha, int version, Secret *s, uchar *p)
@@ -1186,10 +1186,10 @@ return nil;
 typedef struct Encalg Encalg;
 struct Encalg
 {
-char	*name;
-int	keylen;
-int	ivlen;
-void	(*initkey)(Encalg *ea, Secret *, uchar*, uchar*);
+char *name;
+int keylen;
+int ivlen;
+void (*initkey)(Encalg *ea, Secret *, uchar*, uchar*);
 };
 static void
 initRC4key(Encalg *ea, Secret *s, uchar *p, uchar *)

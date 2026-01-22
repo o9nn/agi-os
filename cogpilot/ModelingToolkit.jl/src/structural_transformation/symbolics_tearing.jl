@@ -201,7 +201,7 @@ fullvars[dv] = v_t
 # If we have:
 # x -> D(x) -> D(D(x))
 # We need to to transform it to:
-# x   x_t -> D(x_t)
+# x x_t -> D(x_t)
 # update the structural information
 dx = dv
 x_t = v_t
@@ -670,9 +670,9 @@ list of equations and is matched to variable at index `iv`.
 function codegen_equation!(eg::EquationGenerator,
 eq::Equation, ieq::Int, iv::Union{Int, Unassigned}; simplify = false)
 # We generate equations ordered by the matched variables
-#   Solvable equations of differential variables D(x) become differential equations
-#   Solvable equations of non-differential variables become observable equations
-#   Non-solvable equations become algebraic equations.
+# Solvable equations of differential variables D(x) become differential equations
+# Solvable equations of non-differential variables become observable equations
+# Non-solvable equations become algebraic equations.
 @unpack state, total_sub, neweqs′, eq_ordering, var_ordering = eg
 @unpack solved_eqs, solved_vars, D, idep = eg
 @unpack fullvars, sys, structure = state
@@ -945,7 +945,7 @@ according to `full_var_eq_matching`.
 simplify::Bool = false
 array_hack::Bool = true
 end
-function (alg::DefaultReassembleAlgorithm)(state::TearingState, tearing_result::TearingResult, mm::Union{SparseMatrixCLIL,  Nothing}; fully_determined::Bool = true, kw...)
+function (alg::DefaultReassembleAlgorithm)(state::TearingState, tearing_result::TearingResult, mm::Union{SparseMatrixCLIL, Nothing}; fully_determined::Bool = true, kw...)
 @unpack simplify, array_hack = alg
 @unpack var_eq_matching, full_var_eq_matching, var_sccs = tearing_result
 extra_eqs_vars = get_extra_eqs_vars(

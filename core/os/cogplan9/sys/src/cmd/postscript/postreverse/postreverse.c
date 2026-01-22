@@ -12,23 +12,23 @@
 #include "path.h"
 #include "ext.h"
 #include "postreverse.h"
-int	page = 1;
-int	forms = 1;
-char	*temp_dir = TEMPDIR;
-Pages	pages[1000];
-int	next_page = 0;
-long	start;
-long	endoff = -1;
-int	noreverse = FALSE;
-char	*endprolog = ENDPROLOG;
-double	version = 3.3;
-int	ignoreversion = FALSE;
-char	buf[2048];
-FILE	*fp_in;
-FILE	*fp_out = stdout;
+int page = 1;
+int forms = 1;
+char *temp_dir = TEMPDIR;
+Pages pages[1000];
+int next_page = 0;
+long start;
+long endoff = -1;
+int noreverse = FALSE;
+char *endprolog = ENDPROLOG;
+double version = 3.3;
+int ignoreversion = FALSE;
+char buf[2048];
+FILE *fp_in;
+FILE *fp_out = stdout;
 main(agc, agv)
-int		agc;
-char	*agv[];
+int agc;
+char *agv[];
 {
 argc = agc;
 argv = agv;
@@ -42,7 +42,7 @@ return 0;
 }
 init_signals()
 {
-if ( signal(SIGINT, interrupt) == SIG_IGN )  {
+if ( signal(SIGINT, interrupt) == SIG_IGN ) {
 signal(SIGINT, SIG_IGN);
 signal(SIGQUIT, SIG_IGN);
 signal(SIGHUP, SIG_IGN);
@@ -54,12 +54,12 @@ signal(SIGTERM, interrupt);
 }
 options()
 {
-int		ch;
-char	*optnames = "n:o:rvT:DI";
-extern char	*optarg;
-extern int	optind;
-while ( (ch = getopt(argc, argv, optnames)) != EOF )  {
-switch ( ch )  {
+int ch;
+char *optnames = "n:o:rvT:DI";
+extern char *optarg;
+extern int optind;
+while ( (ch = getopt(argc, argv, optnames)) != EOF ) {
+switch ( ch ) {
 case 'n':
 if ( (forms = atoi(optarg)) <= 0 )
 error(FATAL, "illegal forms request %s", optarg);
@@ -95,7 +95,7 @@ argv += optind;
 }
 arguments()
 {
-char	*name;
+char *name;
 if ( argc > 1 )
 error(FATAL, "too many arguments");
 if ( argc == 0 )
@@ -112,9 +112,9 @@ unlink(temp_file);
 }
 char *copystdin()
 {
-int		fd_out;
-int		fd_in;
-int		count;
+int fd_out;
+int fd_in;
+int count;
 if ( (temp_file = tempnam(temp_dir, "post")) == NULL )
 error(FATAL, "can't generate temp file name");
 if ( (fd_out = creat(temp_file, 0660)) == -1 )
@@ -128,20 +128,20 @@ return(temp_file);
 }
 reverse()
 {
-if ( moreprolog(ENDPROLOG) == TRUE )  {
+if ( moreprolog(ENDPROLOG) == TRUE ) {
 readpages();
 writepages();
 trailer();
 }
 }
 moreprolog(str)
-char	*str;
+char *str;
 {
-int		len;
-int		vlen;
+int len;
+int vlen;
 len = strlen(FORMSPERPAGE);
 vlen = strlen(VERSION);
-while ( fgets(buf, sizeof(buf), fp_in) != NULL )  {
+while ( fgets(buf, sizeof(buf), fp_in) != NULL ) {
 if ( strcmp(buf, str) == 0 )
 return(TRUE);
 else if ( strncmp(buf, FORMSPERPAGE, len) == 0 )
@@ -154,10 +154,10 @@ return(FALSE);
 }
 readpages()
 {
-int		endpagelen;
-int		pagelen;
-int		sawendpage = TRUE;
-int		gotpage = FALSE;
+int endpagelen;
+int pagelen;
+int sawendpage = TRUE;
+int gotpage = FALSE;
 pages[0].start = ftell(fp_in);
 endprolog = ENDPROLOG;
 endpagelen = strlen(ENDPAGE);
@@ -165,30 +165,30 @@ pagelen = strlen(PAGE);
 while ( fgets(buf, sizeof(buf), fp_in) != NULL )
 if ( buf[0] != '%' )
 continue;
-else if ( strncmp(buf, ENDPAGE, endpagelen) == 0 )  {
-if ( in_olist(page++) == ON )  {
+else if ( strncmp(buf, ENDPAGE, endpagelen) == 0 ) {
+if ( in_olist(page++) == ON ) {
 pages[next_page].empty = FALSE;
 pages[next_page++].stop = ftell(fp_in);
 }
 pages[next_page].start = ftell(fp_in);
 sawendpage = TRUE;
 gotpage = TRUE;
-} else if ( strncmp(buf, PAGE, pagelen) == 0 )  {
-if ( sawendpage == FALSE && in_olist(page++) == ON )  {
+} else if ( strncmp(buf, PAGE, pagelen) == 0 ) {
+if ( sawendpage == FALSE && in_olist(page++) == ON ) {
 pages[next_page].empty = FALSE;
 pages[next_page++].stop = ftell(fp_in) - strlen(buf);
 }
 pages[next_page].start = ftell(fp_in) - strlen(buf);
 sawendpage = FALSE;
 gotpage = TRUE;
-} else if ( gotpage == FALSE && strcmp(buf, BEGINSETUP) == 0 )  {
+} else if ( gotpage == FALSE && strcmp(buf, BEGINSETUP) == 0 ) {
 fprintf(fp_out, "%s", endprolog);
 fprintf(fp_out, "%s", BEGINSETUP);
 moreprolog(ENDSETUP);
 endprolog = ENDSETUP;
-} else if ( strcmp(buf, BEGINGLOBAL) == 0 )  {
+} else if ( strcmp(buf, BEGINGLOBAL) == 0 ) {
 moreprolog(ENDGLOBAL);
-} else if ( strcmp(buf, TRAILER) == 0 )  {
+} else if ( strcmp(buf, TRAILER) == 0 ) {
 if ( sawendpage == FALSE )
 pages[next_page++].stop = ftell(fp_in) - strlen(buf);
 endoff = ftell(fp_in);
@@ -197,7 +197,7 @@ break;
 }
 writepages()
 {
-int		i, j, k;
+int i, j, k;
 fprintf(fp_out, "%s", endprolog);
 if ( noreverse == FALSE )
 for ( i = (forms - next_page % forms) % forms; i > 0; i--, next_page++ )
@@ -220,8 +220,8 @@ fprintf(fp_out, "%s 0 0\n", ENDPAGE);
 } else copypage(pages[j].start, pages[j].stop);
 }
 copypage(start, stop)
-long	start;
-long	stop;
+long start;
+long stop;
 {
 fseek(fp_in, start, 0);
 while ( ftell(fp_in) < stop && fgets(buf, sizeof(buf), fp_in) != NULL )
@@ -231,7 +231,7 @@ else fprintf(fp_out, "%s", buf);
 }
 trailer()
 {
-if ( endoff > 0 )  {
+if ( endoff > 0 ) {
 fprintf(fp_out, "%s", TRAILER);
 fseek(fp_in, endoff, 0);
 while ( fgets(buf, sizeof(buf), fp_in) != NULL )

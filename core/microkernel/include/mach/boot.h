@@ -29,8 +29,8 @@ struct boot_rendezvous *next;
 int code;
 };
 #endif
-#define BMOD_MAGIC		0x424d4f44
-#define BRZV_KERNEL	'K'
-#define BRZV_BOOTSTRAP	'B'
-#define BRZV_DATA	'D'
+#define BMOD_MAGIC 0x424d4f44
+#define BRZV_KERNEL 'K'
+#define BRZV_BOOTSTRAP 'B'
+#define BRZV_DATA 'D'
 #endif

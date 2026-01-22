@@ -1,20 +1,20 @@
 #include "fdlibm.h"
 static double pone(double), qone(double);
 static const double
-Huge    = 1e300,
-one	= 1.0,
-invsqrtpi=  5.64189583547756279280e-01,
-tpi      =  6.36619772367581382433e-01,
-r00  = -6.25000000000000000000e-02,
-r01  =  1.40705666955189706048e-03,
-r02  = -1.59955631084035597520e-05,
-r03  =  4.96727999609584448412e-08,
-s01  =  1.91537599538363460805e-02,
-s02  =  1.85946785588630915560e-04,
-s03  =  1.17718464042623683263e-06,
-s04  =  5.04636257076217042715e-09,
-s05  =  1.23542274426137913908e-11;
-static double zero    = 0.0;
+Huge = 1e300,
+one = 1.0,
+invsqrtpi= 5.64189583547756279280e-01,
+tpi = 6.36619772367581382433e-01,
+r00 = -6.25000000000000000000e-02,
+r01 = 1.40705666955189706048e-03,
+r02 = -1.59955631084035597520e-05,
+r03 = 4.96727999609584448412e-08,
+s01 = 1.91537599538363460805e-02,
+s02 = 1.85946785588630915560e-04,
+s03 = 1.17718464042623683263e-06,
+s04 = 5.04636257076217042715e-09,
+s05 = 1.23542274426137913908e-11;
+static double zero = 0.0;
 double __ieee754_j1(double x)
 {
 double z, s,c,ss,cc,r,u,v,y;
@@ -31,7 +31,7 @@ cc = s-c;
 if(ix<0x7fe00000) {
 z = cos(y+y);
 if ((s*c)>zero) cc = z/ss;
-else 	    ss = z/cc;
+else ss = z/cc;
 }
 if(ix>0x48000000) z = (invsqrtpi*cc)/sqrt(y);
 else {
@@ -39,14 +39,14 @@ u = pone(y); v = qone(y);
 z = invsqrtpi*(u*cc-v*ss)/sqrt(y);
 }
 if(hx<0) return -z;
-else  	 return  z;
+else return z;
 }
 if(ix<0x3e400000) {
 if(Huge+x>one) return 0.5*x;
 }
 z = x*x;
-r =  z*(r00+z*(r01+z*(r02+z*r03)));
-s =  one+z*(s01+z*(s02+z*(s03+z*(s04+z*s05))));
+r = z*(r00+z*(r01+z*(r02+z*r03)));
+s = one+z*(s01+z*(s02+z*(s03+z*(s04+z*s05))));
 r *= x;
 return(x*0.5+r/s);
 }
@@ -71,7 +71,7 @@ int hx,ix,lx;
 hx = __HI(x);
 ix = 0x7fffffff&hx;
 lx = __LO(x);
-if(ix>=0x7ff00000) return  one/(x+x*x);
+if(ix>=0x7ff00000) return one/(x+x*x);
 if((ix|lx)==0) return -one/zero;
 if(hx<0) return zero/zero;
 if(ix >= 0x40000000) {
@@ -82,7 +82,7 @@ cc = s-c;
 if(ix<0x7fe00000) {
 z = cos(x+x);
 if ((s*c)>zero) cc = z/ss;
-else            ss = z/cc;
+else ss = z/cc;
 }
 if(ix>0x48000000) z = (invsqrtpi*ss)/sqrt(x);
 else {
@@ -165,7 +165,7 @@ const double *p,*q;
 double z,r,s;
 int ix;
 ix = 0x7fffffff&__HI(x);
-if(ix>=0x40200000)     {p = pr8; q= ps8;}
+if(ix>=0x40200000) {p = pr8; q= ps8;}
 else if(ix>=0x40122E8B){p = pr5; q= ps5;}
 else if(ix>=0x4006DB6D){p = pr3; q= ps3;}
 else if(ix>=0x40000000){p = pr2; q= ps2;}
@@ -241,10 +241,10 @@ static const double qs2[6] = {
 static double qone(double x)
 {
 const double *p,*q;
-double  s,r,z;
+double s,r,z;
 int ix;
 ix = 0x7fffffff&__HI(x);
-if(ix>=0x40200000)     {p = qr8; q= qs8;}
+if(ix>=0x40200000) {p = qr8; q= qs8;}
 else if(ix>=0x40122E8B){p = qr5; q= qs5;}
 else if(ix>=0x4006DB6D){p = qr3; q= qs3;}
 else if(ix>=0x40000000){p = qr2; q= qs2;}

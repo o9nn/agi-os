@@ -3,7 +3,7 @@
 static uint dumpsome(char*, char*, char*, long);
 static void fdirconv(char*, char*, Dir*);
 static char *qidtype(char*, uchar);
-#define	QIDFMT	"(%.16llux %lud %s)"
+#define QIDFMT "(%.16llux %lud %s)"
 int
 fcallfmt(Fmt *fmt)
 {
@@ -136,7 +136,7 @@ case Rwstat:
 seprint(buf, e, "Rwstat tag %ud", tag);
 break;
 default:
-seprint(buf, e,  "unknown type %d", type);
+seprint(buf, e, "unknown type %d", type);
 }
 return fmtstrcpy(fmt, buf);
 }

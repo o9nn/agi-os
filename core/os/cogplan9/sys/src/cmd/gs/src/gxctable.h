@@ -1,5 +1,5 @@
 #ifndef gxctable_INCLUDED
-#  define gxctable_INCLUDED
+# define gxctable_INCLUDED
 #include "gxfixed.h"
 #include "gxfrac.h"
 typedef struct gx_color_lookup_table_s {

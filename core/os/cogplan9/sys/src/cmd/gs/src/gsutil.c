@@ -172,7 +172,7 @@ return 0;
 }
 int
 int_rect_difference(gs_int_rect * outer, const gs_int_rect * inner,
-gs_int_rect * diffs  )
+gs_int_rect * diffs )
 {
 int x0 = outer->p.x, y0 = outer->p.y;
 int x1 = outer->q.x, y1 = outer->q.y;

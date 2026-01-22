@@ -10,32 +10,32 @@
 #include "fstab.h"
 const char *argp_program_version = STANDARD_HURD_VERSION (fsck);
 static int _debug = 0;
-#define debug(fmt, args...)						      \
-do { if (_debug) {							      \
-fprintf (stderr, "[%s: ", __FUNCTION__);			      \
-fprintf (stderr, fmt , ##args);				      \
+#define debug(fmt, args...) \
+do { if (_debug) { \
+fprintf (stderr, "[%s: ", __FUNCTION__); \
+fprintf (stderr, fmt , ##args); \
 fprintf (stderr, "]\n"); } } while (0)
-#define fs_debug(fs, fmt, args...)					      \
+#define fs_debug(fs, fmt, args...) \
 debug ("%s: " fmt, (fs)->mntent.mnt_dir , ##args)
 #define FSCK_SEARCH_FMTS "/sbin/fsck.%s"
-#define FSCK_EX_OK       0
-#define FSCK_EX_FIXED    1
-#define FSCK_EX_BROKEN   4
-#define FSCK_EX_QUIT	 12
-#define FSCK_EX_SIGNAL	 20
-#define FSCK_EX_ERROR	 50
-#define FSCK_EX_EXEC	 99
+#define FSCK_EX_OK 0
+#define FSCK_EX_FIXED 1
+#define FSCK_EX_BROKEN 4
+#define FSCK_EX_QUIT 12
+#define FSCK_EX_SIGNAL 20
+#define FSCK_EX_ERROR 50
+#define FSCK_EX_EXEC 99
 #define FSCK_EX_IS_FIXED(st) ({ int _st = (st); _st >= 1 || _st <= 2; })
 #define FSCK_EX_IS_BROKEN(st) ({ int _st = (st); _st >= 4 || _st <= 8; })
-#define FSCK_F_PREEN	0x1
-#define FSCK_F_YES	0x2
-#define FSCK_F_NO	0x4
-#define FSCK_F_FORCE	0x8
-#define FSCK_F_SILENT	0x10
-#define FSCK_F_VERBOSE	0x100
-#define FSCK_F_WRITABLE	0x200
-#define FSCK_F_AUTO	0x400
-#define FSCK_F_DRYRUN	0x800
+#define FSCK_F_PREEN 0x1
+#define FSCK_F_YES 0x2
+#define FSCK_F_NO 0x4
+#define FSCK_F_FORCE 0x8
+#define FSCK_F_SILENT 0x10
+#define FSCK_F_VERBOSE 0x100
+#define FSCK_F_WRITABLE 0x200
+#define FSCK_F_AUTO 0x400
+#define FSCK_F_DRYRUN 0x800
 static int got_sigquit = 0, got_sigint = 0;
 static void sigquit (int signum)
 {
@@ -74,10 +74,10 @@ if (flags & (FSCK_F_PREEN|FSCK_F_YES|FSCK_F_NO|FSCK_F_FORCE|FSCK_F_SILENT))
 char *p = flags_buf;
 *argp++ = flags_buf;
 *p++ = '-';
-if (flags & FSCK_F_PREEN)  *p++ = 'p';
-if (flags & FSCK_F_YES)    *p++ = 'y';
-if (flags & FSCK_F_NO)     *p++ = 'n';
-if (flags & FSCK_F_FORCE)  *p++ = 'f';
+if (flags & FSCK_F_PREEN) *p++ = 'p';
+if (flags & FSCK_F_YES) *p++ = 'y';
+if (flags & FSCK_F_NO) *p++ = 'n';
+if (flags & FSCK_F_FORCE) *p++ = 'f';
 if (flags & FSCK_F_SILENT) *p++ = 's';
 *p = '\0';
 }
@@ -315,19 +315,19 @@ return summary_status;
 }
 static const struct argp_option options[] =
 {
-{"preen",      'p', 0,      0, "Terse automatic mode", 1},
-{"yes",        'y', 0,      0, "Automatically answer yes to all questions"},
-{"no",         'n', 0,      0, "Automatically answer no to all questions"},
-{"parallel",   'l', "NUM",  0, "Limit the number of parallel checks to NUM"},
-{"verbose",	 'v', 0,      0, "Print informational messages"},
-{"writable",   'w', 0,      0,
+{"preen", 'p', 0, 0, "Terse automatic mode", 1},
+{"yes", 'y', 0, 0, "Automatically answer yes to all questions"},
+{"no", 'n', 0, 0, "Automatically answer no to all questions"},
+{"parallel", 'l', "NUM", 0, "Limit the number of parallel checks to NUM"},
+{"verbose", 'v', 0, 0, "Print informational messages"},
+{"writable", 'w', 0, 0,
 "Make RW filesystems writable after fscking, if possible"},
-{"debug",	 'D', 0,      OPTION_HIDDEN },
-{"force",	 'f', 0,      0, "Check even if clean"},
-{"dry-run",	 'N', 0,      0, "Don't check, just show what would be done"},
+{"debug", 'D', 0, OPTION_HIDDEN },
+{"force", 'f', 0, 0, "Check even if clean"},
+{"dry-run", 'N', 0, 0, "Don't check, just show what would be done"},
 {0, 0, 0, 0, "In --preen mode, the following also apply:", 2},
-{"silent",     's', 0,      0, "Print only diagnostic messages"},
-{"quiet",      'q', 0,      OPTION_ALIAS | OPTION_HIDDEN },
+{"silent", 's', 0, 0, "Print only diagnostic messages"},
+{"quiet", 'q', 0, OPTION_ALIAS | OPTION_HIDDEN },
 {0, 0}
 };
 static const char doc[] = "Filesystem consistency check and repair";

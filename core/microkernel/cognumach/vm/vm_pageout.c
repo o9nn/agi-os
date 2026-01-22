@@ -24,15 +24,15 @@ static int vm_pageout_requested;
 static int vm_pageout_continue;
 vm_page_t
 vm_pageout_setup(
-vm_page_t		m,
-vm_offset_t		paging_offset,
-vm_object_t		new_object,
-vm_offset_t		new_offset,
-boolean_t		flush)
+vm_page_t m,
+vm_offset_t paging_offset,
+vm_object_t new_object,
+vm_offset_t new_offset,
+boolean_t flush)
 {
-vm_object_t	old_object = m->object;
-vm_page_t	holding_page = 0;
-vm_page_t	new_m;
+vm_object_t old_object = m->object;
+vm_page_t holding_page = 0;
+vm_page_t new_m;
 assert(m->busy && !m->absent && !m->fictitious);
 if (!flush) {
 for (;;) {
@@ -57,7 +57,7 @@ PAGE_WAKEUP_DONE(m);
 vm_page_lock_queues();
 vm_page_insert(holding_page, old_object, m->offset);
 vm_page_unlock_queues();
-#if	MACH_PAGEMAP
+#if MACH_PAGEMAP
 vm_external_state_set(old_object->existence_info,
 paging_offset,
 VM_EXTERNAL_STATE_EXISTS);
@@ -81,7 +81,7 @@ vm_page_lock_queues();
 vm_page_deactivate(m);
 vm_page_unlock_queues();
 PAGE_WAKEUP_DONE(m);
-#if	MACH_PAGEMAP
+#if MACH_PAGEMAP
 vm_external_state_set(old_object->existence_info,
 paging_offset,
 VM_EXTERNAL_STATE_EXISTS);
@@ -116,17 +116,17 @@ return (flush ? holding_page : VM_PAGE_NULL);
 }
 void
 vm_pageout_page(
-vm_page_t		m,
-boolean_t		initial,
-boolean_t		flush)
+vm_page_t m,
+boolean_t initial,
+boolean_t flush)
 {
-vm_map_copy_t		copy;
-vm_object_t		old_object;
-vm_object_t		new_object;
-vm_page_t		holding_page;
-vm_offset_t		paging_offset;
-kern_return_t		rc;
-boolean_t		precious_clean;
+vm_map_copy_t copy;
+vm_object_t old_object;
+vm_object_t new_object;
+vm_page_t holding_page;
+vm_offset_t paging_offset;
+kern_return_t rc;
+boolean_t precious_clean;
 assert(vm_object_lock_taken(m->object));
 assert(m->busy);
 precious_clean = (!m->dirty) && m->precious;

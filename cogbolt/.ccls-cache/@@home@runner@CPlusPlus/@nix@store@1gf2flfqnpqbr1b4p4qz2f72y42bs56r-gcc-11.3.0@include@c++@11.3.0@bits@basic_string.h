@@ -28,21 +28,21 @@ typedef typename __gnu_cxx::__alloc_traits<_Alloc>::template
 rebind<_CharT>::other _Char_alloc_type;
 typedef __gnu_cxx::__alloc_traits<_Char_alloc_type> _Alloc_traits;
 public:
-typedef _Traits					traits_type;
-typedef typename _Traits::char_type		value_type;
-typedef _Char_alloc_type				allocator_type;
-typedef typename _Alloc_traits::size_type		size_type;
-typedef typename _Alloc_traits::difference_type	difference_type;
-typedef typename _Alloc_traits::reference		reference;
-typedef typename _Alloc_traits::const_reference	const_reference;
-typedef typename _Alloc_traits::pointer		pointer;
-typedef typename _Alloc_traits::const_pointer	const_pointer;
-typedef __gnu_cxx::__normal_iterator<pointer, basic_string>  iterator;
+typedef _Traits traits_type;
+typedef typename _Traits::char_type value_type;
+typedef _Char_alloc_type allocator_type;
+typedef typename _Alloc_traits::size_type size_type;
+typedef typename _Alloc_traits::difference_type difference_type;
+typedef typename _Alloc_traits::reference reference;
+typedef typename _Alloc_traits::const_reference const_reference;
+typedef typename _Alloc_traits::pointer pointer;
+typedef typename _Alloc_traits::const_pointer const_pointer;
+typedef __gnu_cxx::__normal_iterator<pointer, basic_string> iterator;
 typedef __gnu_cxx::__normal_iterator<const_pointer, basic_string>
 const_iterator;
-typedef std::reverse_iterator<const_iterator>	const_reverse_iterator;
-typedef std::reverse_iterator<iterator>		reverse_iterator;
-static const size_type	npos = static_cast<size_type>(-1);
+typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+typedef std::reverse_iterator<iterator> reverse_iterator;
+static const size_type npos = static_cast<size_type>(-1);
 protected:
 #if __cplusplus < 201103L
 typedef iterator __const_iterator;
@@ -83,13 +83,13 @@ _Alloc_hider(pointer __dat, _Alloc&& __a = _Alloc())
 #endif
 pointer _M_p;
 };
-_Alloc_hider	_M_dataplus;
-size_type		_M_string_length;
+_Alloc_hider _M_dataplus;
+size_type _M_string_length;
 enum { _S_local_capacity = 15 / sizeof(_CharT) };
 union
 {
-_CharT           _M_local_buf[_S_local_capacity + 1];
-size_type        _M_allocated_capacity;
+_CharT _M_local_buf[_S_local_capacity + 1];
+size_type _M_allocated_capacity;
 };
 void
 _M_data(pointer __p)
@@ -209,7 +209,7 @@ __throw_length_error(__N(__s));
 size_type
 _M_limit(size_type __pos, size_type __off) const _GLIBCXX_NOEXCEPT
 {
-const bool __testoff =  __off < this->size() - __pos;
+const bool __testoff = __off < this->size() - __pos;
 return __testoff ? __off : this->size() - __pos;
 }
 bool
@@ -828,7 +828,7 @@ return iterator(this->_M_data() + __pos);
 #else
 void
 insert(iterator __p, size_type __n, _CharT __c)
-{	this->replace(__p, __p, __n, __c);  }
+{ this->replace(__p, __p, __n, __c); }
 #endif
 #if __cplusplus >= 201103L
 template<class _InputIterator,
@@ -1405,40 +1405,40 @@ typedef typename __gnu_cxx::__alloc_traits<_Alloc>::template
 rebind<_CharT>::other _CharT_alloc_type;
 typedef __gnu_cxx::__alloc_traits<_CharT_alloc_type> _CharT_alloc_traits;
 public:
-typedef _Traits					    traits_type;
-typedef typename _Traits::char_type		    value_type;
-typedef _Alloc					    allocator_type;
-typedef typename _CharT_alloc_traits::size_type	    size_type;
+typedef _Traits traits_type;
+typedef typename _Traits::char_type value_type;
+typedef _Alloc allocator_type;
+typedef typename _CharT_alloc_traits::size_type size_type;
 typedef typename _CharT_alloc_traits::difference_type difference_type;
 #if __cplusplus < 201103L
-typedef typename _CharT_alloc_type::reference	    reference;
-typedef typename _CharT_alloc_type::const_reference   const_reference;
+typedef typename _CharT_alloc_type::reference reference;
+typedef typename _CharT_alloc_type::const_reference const_reference;
 #else
-typedef value_type&				    reference;
-typedef const value_type&				    const_reference;
+typedef value_type& reference;
+typedef const value_type& const_reference;
 #endif
-typedef typename _CharT_alloc_traits::pointer	    pointer;
-typedef typename _CharT_alloc_traits::const_pointer   const_pointer;
-typedef __gnu_cxx::__normal_iterator<pointer, basic_string>  iterator;
+typedef typename _CharT_alloc_traits::pointer pointer;
+typedef typename _CharT_alloc_traits::const_pointer const_pointer;
+typedef __gnu_cxx::__normal_iterator<pointer, basic_string> iterator;
 typedef __gnu_cxx::__normal_iterator<const_pointer, basic_string>
 const_iterator;
-typedef std::reverse_iterator<const_iterator>	const_reverse_iterator;
-typedef std::reverse_iterator<iterator>		    reverse_iterator;
+typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+typedef std::reverse_iterator<iterator> reverse_iterator;
 protected:
 typedef iterator __const_iterator;
 private:
 struct _Rep_base
 {
-size_type		_M_length;
-size_type		_M_capacity;
-_Atomic_word		_M_refcount;
+size_type _M_length;
+size_type _M_capacity;
+_Atomic_word _M_refcount;
 };
 struct _Rep : _Rep_base
 {
 typedef typename __gnu_cxx::__alloc_traits<_Alloc>::template
 rebind<char>::other _Raw_bytes_alloc;
-static const size_type	_S_max_size;
-static const _CharT	_S_terminal;
+static const size_type _S_max_size;
+static const _CharT _S_terminal;
 static size_type _S_empty_rep_storage[];
 static _Rep&
 _S_empty_rep() _GLIBCXX_NOEXCEPT
@@ -1530,12 +1530,12 @@ _Alloc_hider(_CharT* __dat, const _Alloc& __a) _GLIBCXX_NOEXCEPT
 _CharT* _M_p;
 };
 public:
-static const size_type	npos = static_cast<size_type>(-1);
+static const size_type npos = static_cast<size_type>(-1);
 private:
-mutable _Alloc_hider	_M_dataplus;
+mutable _Alloc_hider _M_dataplus;
 _CharT*
 _M_data() const _GLIBCXX_NOEXCEPT
-{ return  _M_dataplus._M_p; }
+{ return _M_dataplus._M_p; }
 _CharT*
 _M_data(_CharT* __p) _GLIBCXX_NOEXCEPT
 { return (_M_dataplus._M_p = __p); }
@@ -1572,7 +1572,7 @@ __throw_length_error(__N(__s));
 size_type
 _M_limit(size_type __pos, size_type __off) const _GLIBCXX_NOEXCEPT
 {
-const bool __testoff =  __off < this->size() - __pos;
+const bool __testoff = __off < this->size() - __pos;
 return __testoff ? __off : this->size() - __pos;
 }
 bool
@@ -2076,7 +2076,7 @@ std::__sv_limit(__sv.size(), __pos, __n));
 #endif
 void
 insert(iterator __p, size_type __n, _CharT __c)
-{	this->replace(__p, __p, __n, __c);  }
+{ this->replace(__p, __p, __n, __c); }
 template<class _InputIterator>
 void
 insert(iterator __p, _InputIterator __beg, _InputIterator __end)
@@ -2680,8 +2680,8 @@ template<typename _CharT, typename _Traits, typename _Alloc>
 inline basic_string<_CharT, _Traits, _Alloc>
 operator+(const basic_string<_CharT, _Traits, _Alloc>& __lhs, _CharT __rhs)
 {
-typedef basic_string<_CharT, _Traits, _Alloc>	__string_type;
-typedef typename __string_type::size_type		__size_type;
+typedef basic_string<_CharT, _Traits, _Alloc> __string_type;
+typedef typename __string_type::size_type __size_type;
 __string_type __str(__lhs);
 __str.append(__size_type(1), __rhs);
 return __str;

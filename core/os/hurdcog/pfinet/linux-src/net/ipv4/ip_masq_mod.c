@@ -48,7 +48,7 @@ int ip_masq_mod_lkp_unlink(struct ip_masq_mod *mmod)
 struct ip_masq_mod **mmod_p;
 write_lock_bh(&masq_mod_lock);
 for (mmod_p = &ip_masq_mod_lkp_base; *mmod_p ; mmod_p = &(*mmod_p)->next)
-if (mmod == (*mmod_p))  {
+if (mmod == (*mmod_p)) {
 *mmod_p = mmod->next;
 mmod->next = NULL;
 write_unlock_bh(&masq_mod_lock);
@@ -87,7 +87,7 @@ if (!mmod) {
 IP_MASQ_ERR( "unregister_ip_masq_mod(): NULL arg\n");
 return -EINVAL;
 }
-if (atomic_read(&mmod->refcnt))  {
+if (atomic_read(&mmod->refcnt)) {
 IP_MASQ_ERR( "unregister_ip_masq_mod(): is in use by %d guys. failed\n",
 atomic_read(&mmod->refcnt));
 return -EINVAL;
@@ -98,7 +98,7 @@ mmod->mmod_name);
 ip_masq_mod_lkp_unlink(mmod);
 }
 for (mmod_p = &ip_masq_mod_reg_base; *mmod_p ; mmod_p = &(*mmod_p)->next_reg)
-if (mmod == (*mmod_p))  {
+if (mmod == (*mmod_p)) {
 ip_masq_mod_unregister_proc(mmod);
 *mmod_p = mmod->next_reg;
 return 0;
@@ -153,7 +153,7 @@ goto out;
 out:
 return ms;
 }
-struct ip_masq * ip_masq_mod_out_create(const struct sk_buff *skb, const struct iphdr *iph,  __u32 maddr)
+struct ip_masq * ip_masq_mod_out_create(const struct sk_buff *skb, const struct iphdr *iph, __u32 maddr)
 {
 struct ip_masq_mod *mmod;
 struct ip_masq *ms = NULL;

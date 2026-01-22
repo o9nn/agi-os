@@ -47,13 +47,13 @@ end
 R_T(t), [description = "Temperature-dependent resistance"]
 end
 @equations begin
-R_T ~ R * (1 + alpha * (heat_port.T - T_ref))  # Temperature-dependent resistance
-heat_port.Q_flow ~ -v * i  # -LossPower
-v ~ i * R_T  # Ohm's Law
+R_T ~ R * (1 + alpha * (heat_port.T - T_ref)) # Temperature-dependent resistance
+heat_port.Q_flow ~ -v * i # -LossPower
+v ~ i * R_T # Ohm's Law
 end
 else
 @equations begin
-v ~ i * R  # Ohm's Law for constant resistance
+v ~ i * R # Ohm's Law for constant resistance
 end
 end
 end
@@ -227,13 +227,13 @@ end
 Vt(t), [description = "Thermal voltage"]
 end
 @equations begin
-Vt ~ k * port.T / q  # Thermal voltage equation
-i ~ Is * (exp(v / (n * Vt)) - 1)  # Shockley diode equation with temperature dependence
-port.Q_flow ~ -v * i  # -LossPower
+Vt ~ k * port.T / q # Thermal voltage equation
+i ~ Is * (exp(v / (n * Vt)) - 1) # Shockley diode equation with temperature dependence
+port.Q_flow ~ -v * i # -LossPower
 end
 else
 @equations begin
-i ~ Is * (exp(v * q / (n * k * T)) - 1)  # Shockley diode equation
+i ~ Is * (exp(v * q / (n * k * T)) - 1) # Shockley diode equation
 end
 end
 end
@@ -291,7 +291,7 @@ end
 port = HeatPort()
 end
 @equations begin
-port.Q_flow ~ -v * i  # -LossPower
+port.Q_flow ~ -v * i # -LossPower
 R ~ R_const + pos * R_ref * (1 + alpha * (port.T - T_ref))
 end
 else

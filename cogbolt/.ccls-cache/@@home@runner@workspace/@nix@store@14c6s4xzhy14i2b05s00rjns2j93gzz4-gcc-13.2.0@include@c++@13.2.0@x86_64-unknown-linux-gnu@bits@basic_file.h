@@ -13,8 +13,8 @@ class __basic_file;
 template<>
 class __basic_file<char>
 {
-__c_file* 	_M_cfile;
-bool 		_M_cfile_created;
+__c_file* _M_cfile;
+bool _M_cfile_created;
 public:
 __basic_file(__c_lock* __lock = 0) throw ();
 #if __cplusplus >= 201103L

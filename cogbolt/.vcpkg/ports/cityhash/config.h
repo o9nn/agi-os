@@ -1,7 +1,7 @@
 #if WIN32 || WIN64
-#	define HAVE_BUILTIN_EXPECT 0
+# define HAVE_BUILTIN_EXPECT 0
 #else
-#	define HAVE_BUILTIN_EXPECT 1
+# define HAVE_BUILTIN_EXPECT 1
 #endif
 #define HAVE_DLFCN_H 1
 #define HAVE_INTTYPES_H 1
@@ -23,7 +23,7 @@
 #define STDC_HEADERS 1
 #if defined AC_APPLE_UNIVERSAL_BUILD
 # if defined __BIG_ENDIAN__
-#  define WORDS_BIGENDIAN 1
+# define WORDS_BIGENDIAN 1
 # endif
 #else
 # ifndef WORDS_BIGENDIAN

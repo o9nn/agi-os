@@ -1,4 +1,4 @@
-#ifndef	_MACH_DEBUG_VM_INFO_H_
+#ifndef _MACH_DEBUG_VM_INFO_H_
 #define _MACH_DEBUG_VM_INFO_H_
 #include <mach/boolean.h>
 #include <mach/machine/vm_types.h>
@@ -21,15 +21,15 @@ unsigned int vri_sharing;
 } vm_region_info_t;
 typedef vm_region_info_t *vm_region_info_array_t;
 typedef uint32_t vm_object_info_state_t;
-#define VOI_STATE_PAGER_CREATED		0x00000001
-#define VOI_STATE_PAGER_INITIALIZED	0x00000002
-#define VOI_STATE_PAGER_READY		0x00000004
-#define VOI_STATE_CAN_PERSIST		0x00000008
-#define VOI_STATE_INTERNAL		0x00000010
-#define VOI_STATE_TEMPORARY		0x00000020
-#define VOI_STATE_ALIVE			0x00000040
-#define VOI_STATE_LOCK_IN_PROGRESS	0x00000080
-#define VOI_STATE_LOCK_RESTART		0x00000100
+#define VOI_STATE_PAGER_CREATED 0x00000001
+#define VOI_STATE_PAGER_INITIALIZED 0x00000002
+#define VOI_STATE_PAGER_READY 0x00000004
+#define VOI_STATE_CAN_PERSIST 0x00000008
+#define VOI_STATE_INTERNAL 0x00000010
+#define VOI_STATE_TEMPORARY 0x00000020
+#define VOI_STATE_ALIVE 0x00000040
+#define VOI_STATE_LOCK_IN_PROGRESS 0x00000080
+#define VOI_STATE_LOCK_RESTART 0x00000100
 typedef struct vm_object_info {
 rpc_vm_offset_t voi_object;
 rpc_vm_size_t voi_pagesize;
@@ -48,22 +48,22 @@ vm_object_info_state_t voi_state;
 } vm_object_info_t;
 typedef vm_object_info_t *vm_object_info_array_t;
 typedef uint32_t vm_page_info_state_t;
-#define VPI_STATE_BUSY		0x00000001
-#define VPI_STATE_WANTED	0x00000002
-#define VPI_STATE_TABLED	0x00000004
-#define VPI_STATE_FICTITIOUS	0x00000008
-#define VPI_STATE_PRIVATE	0x00000010
-#define VPI_STATE_ABSENT	0x00000020
-#define VPI_STATE_ERROR		0x00000040
-#define VPI_STATE_DIRTY		0x00000080
-#define VPI_STATE_PRECIOUS	0x00000100
-#define VPI_STATE_OVERWRITING	0x00000200
-#define VPI_STATE_INACTIVE	0x00000400
-#define VPI_STATE_ACTIVE	0x00000800
-#define VPI_STATE_LAUNDRY	0x00001000
-#define VPI_STATE_FREE		0x00002000
-#define VPI_STATE_REFERENCE	0x00004000
-#define VPI_STATE_PAGER		0x80000000
+#define VPI_STATE_BUSY 0x00000001
+#define VPI_STATE_WANTED 0x00000002
+#define VPI_STATE_TABLED 0x00000004
+#define VPI_STATE_FICTITIOUS 0x00000008
+#define VPI_STATE_PRIVATE 0x00000010
+#define VPI_STATE_ABSENT 0x00000020
+#define VPI_STATE_ERROR 0x00000040
+#define VPI_STATE_DIRTY 0x00000080
+#define VPI_STATE_PRECIOUS 0x00000100
+#define VPI_STATE_OVERWRITING 0x00000200
+#define VPI_STATE_INACTIVE 0x00000400
+#define VPI_STATE_ACTIVE 0x00000800
+#define VPI_STATE_LAUNDRY 0x00001000
+#define VPI_STATE_FREE 0x00002000
+#define VPI_STATE_REFERENCE 0x00004000
+#define VPI_STATE_PAGER 0x80000000
 typedef struct vm_page_info {
 rpc_vm_offset_t vpi_offset;
 rpc_vm_offset_t vpi_phys_addr;

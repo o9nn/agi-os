@@ -3,37 +3,37 @@
 #include "mem.h"
 #include "dat.h"
 #include "fns.h"
-#define datoff		((ulong)((Xhdr*)0)->data)
+#define datoff ((ulong)((Xhdr*)0)->data)
 enum
 {
-Chunk		= 64*1024,
-Nhole		= 128,
-Magichole	= 0xDeadBabe,
+Chunk = 64*1024,
+Nhole = 128,
+Magichole = 0xDeadBabe,
 };
 typedef struct Hole Hole;
 typedef struct Xalloc Xalloc;
 typedef struct Xhdr Xhdr;
 struct Hole
 {
-ulong	addr;
-ulong	size;
-ulong	top;
-Hole*	link;
+ulong addr;
+ulong size;
+ulong top;
+Hole* link;
 };
 struct Xhdr
 {
-ulong	size;
-ulong	magix;
-char	data[1];
+ulong size;
+ulong magix;
+char data[1];
 };
 struct Xalloc
 {
 Lock;
-Hole	hole[Nhole];
-Hole*	flist;
-Hole*	table;
+Hole hole[Nhole];
+Hole* flist;
+Hole* table;
 };
-static Xalloc	xlists;
+static Xalloc xlists;
 static void
 ixprt()
 {

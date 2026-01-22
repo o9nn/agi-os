@@ -1,5 +1,5 @@
 #ifndef srlx_INCLUDED
-#  define srlx_INCLUDED
+# define srlx_INCLUDED
 #define stream_RL_state_common\
 stream_state_common;\
 bool EndOfData
@@ -9,7 +9,7 @@ ulong record_size;
 ulong record_left;
 int copy_left;
 } stream_RLE_state;
-#define private_st_RLE_state()	\
+#define private_st_RLE_state() \
 gs_private_st_simple(st_RLE_state, stream_RLE_state, "RunLengthEncode state")
 #define s_RLE_set_defaults_inline(ss)\
 ((ss)->EndOfData = true, (ss)->record_size = 0)
@@ -24,7 +24,7 @@ stream_RL_state_common;
 int copy_left;
 int copy_data;
 } stream_RLD_state;
-#define private_st_RLD_state()	\
+#define private_st_RLD_state() \
 gs_private_st_simple(st_RLD_state, stream_RLD_state, "RunLengthDecode state")
 #define s_RLD_set_defaults_inline(ss)\
 ((ss)->EndOfData = true)

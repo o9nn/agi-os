@@ -1,5 +1,5 @@
 #ifndef gscspace_INCLUDED
-#  define gscspace_INCLUDED
+# define gscspace_INCLUDED
 #include "gsmemory.h"
 #include "gsiparam.h"
 typedef enum {
@@ -22,13 +22,13 @@ gs_color_space_index_CIEICC
 "ICCBased", "CIEBasedDEFG", "CIEBasedDEF", "CIEBasedABC", "CIEBasedA",\
 "Separation", "Indexed", "Pattern"
 typedef struct gs_color_space_type_s gs_color_space_type;
-#define gs_cspace_common(param_union)   \
-const gs_color_space_type * type;   \
-gs_memory_t *               pmem;   \
-gs_id                       id;     \
-union {                             \
-param_union;                    \
-}                           params
+#define gs_cspace_common(param_union) \
+const gs_color_space_type * type; \
+gs_memory_t * pmem; \
+gs_id id; \
+union { \
+param_union; \
+} params
 typedef struct gs_device_pixel_params_s {
 int depth;
 } gs_device_pixel_params;
@@ -36,30 +36,30 @@ typedef struct gs_cie_a_s gs_cie_a;
 typedef struct gs_cie_abc_s gs_cie_abc;
 typedef struct gs_cie_def_s gs_cie_def;
 typedef struct gs_cie_defg_s gs_cie_defg;
-#define gs_small_base_cspace_params     \
-gs_device_pixel_params   pixel;     \
-gs_cie_defg *            defg;      \
-gs_cie_def *             def;       \
-gs_cie_abc *             abc;       \
-gs_cie_a *               a
+#define gs_small_base_cspace_params \
+gs_device_pixel_params pixel; \
+gs_cie_defg * defg; \
+gs_cie_def * def; \
+gs_cie_abc * abc; \
+gs_cie_a * a
 typedef struct gs_small_base_color_space_s {
 gs_cspace_common(gs_small_base_cspace_params);
 } gs_small_base_color_space;
 #define gs_small_base_color_space_size sizeof(gs_small_base_color_space)
 typedef struct gs_cie_icc_s gs_cie_icc;
 typedef struct gs_cieicc_params_s {
-gs_cie_icc *                picc_info;
-gs_small_base_color_space   alt_space;
+gs_cie_icc * picc_info;
+gs_small_base_color_space alt_space;
 } gs_icc_params;
-#define gs_base_cspace_params   \
+#define gs_base_cspace_params \
 gs_small_base_cspace_params;\
-gs_icc_params   icc
+gs_icc_params icc
 typedef struct gs_base_color_space_s {
 gs_cspace_common(gs_base_cspace_params);
 } gs_base_color_space;
 #define gs_base_color_space_size sizeof(gs_base_color_space)
 #ifndef gs_device_n_map_DEFINED
-#  define gs_device_n_map_DEFINED
+# define gs_device_n_map_DEFINED
 typedef struct gs_device_n_map_s gs_device_n_map;
 #endif
 typedef ulong gs_separation_name;
@@ -82,9 +82,9 @@ gs_device_n_map *map;
 bool use_alt_cspace;
 gs_callback_func_get_colorname_string *get_colorname_string;
 } gs_device_n_params;
-#define gs_direct_cspace_params         \
-gs_base_cspace_params;              \
-gs_separation_params separation;    \
+#define gs_direct_cspace_params \
+gs_base_cspace_params; \
+gs_separation_params separation; \
 gs_device_n_params device_n
 typedef struct gs_direct_color_space_s {
 gs_cspace_common(gs_direct_cspace_params);
@@ -100,8 +100,8 @@ gs_indexed_map *map;
 } lookup;
 bool use_proc;
 } gs_indexed_params;
-#define gs_paint_cspace_params          \
-gs_direct_cspace_params;            \
+#define gs_paint_cspace_params \
+gs_direct_cspace_params; \
 gs_indexed_params indexed
 typedef struct gs_paint_color_space_s {
 gs_cspace_common(gs_paint_cspace_params);
@@ -119,15 +119,15 @@ gs_pattern_params pattern
 };
 #define gs_pattern_color_space_size sizeof(gs_color_space)
 #ifndef gs_color_space_DEFINED
-#  define gs_color_space_DEFINED
+# define gs_color_space_DEFINED
 typedef struct gs_color_space_s gs_color_space;
 #endif
-#define public_st_color_space()	  \
-gs_public_st_composite( st_color_space,         \
-gs_color_space,         \
-"gs_color_space",       \
-color_space_enum_ptrs,  \
-color_space_reloc_ptrs  \
+#define public_st_color_space() \
+gs_public_st_composite( st_color_space, \
+gs_color_space, \
+"gs_color_space", \
+color_space_enum_ptrs, \
+color_space_reloc_ptrs \
 )
 #define st_color_space_max_ptrs 2
 extern int
@@ -149,7 +149,7 @@ int gs_color_space_num_components(const gs_color_space *);
 bool gs_color_space_equal(const gs_color_space *pcs1,
 const gs_color_space *pcs2);
 #ifndef gs_client_color_DEFINED
-#  define gs_client_color_DEFINED
+# define gs_client_color_DEFINED
 typedef struct gs_client_color_s gs_client_color;
 #endif
 void gs_color_space_restrict_color(gs_client_color *, const gs_color_space *);

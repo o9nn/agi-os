@@ -25,9 +25,9 @@ const gx_io_device varname = \
 { \
 diskname, "FileSystem", \
 {iodev_diskn_init, iodev_no_open_device, \
-NULL  , iodev_diskn_fopen, iodev_os_fclose, \
+NULL , iodev_diskn_fopen, iodev_os_fclose, \
 diskn_delete, diskn_rename, diskn_status, \
-iodev_no_enumerate_files,  \
+iodev_no_enumerate_files, \
 diskn_enumerate_next, diskn_enumerate_close, \
 diskn_get_params, diskn_put_params \
 } \
@@ -53,9 +53,9 @@ diskn_state_enum_ptrs, diskn_state_reloc_ptrs, root);
 #define InitialNumber 0
 #define BUFFER_LENGTH gp_file_name_sizeof
 typedef struct map_file_enum_s {
-FILE *  stream;
-char *  pattern;
-char *  root;
+FILE * stream;
+char * pattern;
+char * root;
 gs_memory_t * memory;
 } map_file_enum;
 gs_private_st_ptrs2(st_map_file_enum, struct map_file_enum_s, "map_file_enum",
@@ -418,9 +418,9 @@ map_file_name_del(const char * root_name, const char * Fname)
 int d = MapToFile(root_name, Fname);
 int file_version;
 if (d != -1) {
-char    name[BUFFER_LENGTH];
-FILE*   newMap;
-FILE*   oldMap;
+char name[BUFFER_LENGTH];
+FILE* newMap;
+FILE* oldMap;
 MapFileUnlink(root_name, TEMP_FILE_NAME );
 newMap = MapFileOpen(root_name, TEMP_FILE_NAME, "w");
 if (newMap == NULL)
@@ -449,12 +449,12 @@ MapFileRename(root_name, MAP_FILE_NAME, TEMP_FILE_NAME);
 private void
 map_file_name_add(const char * root_name, const char * Fname)
 {
-char    name[BUFFER_LENGTH];
+char name[BUFFER_LENGTH];
 int d;
 int dmax = -1;
 int file_version;
-FILE*   newMap;
-FILE*   oldMap;
+FILE* newMap;
+FILE* oldMap;
 oldMap = MapFileOpen(root_name, MAP_FILE_NAME, "r");
 if (oldMap != NULL && (!MapFileReadVersion(oldMap, &file_version)
 || file_version != MAP_FILE_VERSION)) {
@@ -494,9 +494,9 @@ map_file_name_ren(const char* root_name, const char * oldname, const char * newn
 int d = MapToFile(root_name, oldname);
 int file_version;
 if (d != -1) {
-char    name[BUFFER_LENGTH];
-FILE*   newMap;
-FILE*   oldMap;
+char name[BUFFER_LENGTH];
+FILE* newMap;
+FILE* oldMap;
 MapFileUnlink(root_name, TEMP_FILE_NAME );
 newMap = MapFileOpen(root_name, TEMP_FILE_NAME, "w");
 if (newMap == NULL)

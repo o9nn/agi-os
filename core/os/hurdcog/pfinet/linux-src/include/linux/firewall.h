@@ -1,13 +1,13 @@
 #ifndef __LINUX_FIREWALL_H
 #define __LINUX_FIREWALL_H
 #include <linux/config.h>
-#define FW_QUEUE	0
-#define FW_BLOCK	1
-#define FW_ACCEPT	2
-#define FW_REJECT	(-1)
-#define FW_REDIRECT	3
-#define FW_MASQUERADE	4
-#define FW_SKIP		5
+#define FW_QUEUE 0
+#define FW_BLOCK 1
+#define FW_ACCEPT 2
+#define FW_REJECT (-1)
+#define FW_REDIRECT 3
+#define FW_MASQUERADE 4
+#define FW_SKIP 5
 struct firewall_ops
 {
 struct firewall_ops *next;

@@ -1,5 +1,5 @@
 #ifndef iname_INCLUDED
-#  define iname_INCLUDED
+# define iname_INCLUDED
 #include "inames.h"
 #define name_memory(mem)\
 names_memory(mem->gs_lib_ctx->gs_name_table)
@@ -15,11 +15,11 @@ names_from_string(mem->gs_lib_ctx->gs_name_table, psref, pnref)
 names_eq(pnref1, pnref2)
 #define name_invalidate_value_cache(mem, pnref)\
 names_invalidate_value_cache(mem->gs_lib_ctx->gs_name_table, pnref)
-#define name_index(mem, pnref)		\
+#define name_index(mem, pnref) \
 names_index(mem->gs_lib_ctx->gs_name_table, pnref)
-#define name_index_ptr(mem, nidx)		\
+#define name_index_ptr(mem, nidx) \
 names_index_ptr(mem->gs_lib_ctx->gs_name_table, nidx)
-#define name_index_ref(mem, nidx, pnref)	\
+#define name_index_ref(mem, nidx, pnref) \
 names_index_ref(mem->gs_lib_ctx->gs_name_table, nidx, pnref)
 #define name_next_valid_index(mem, nidx)\
 names_next_valid_index(mem->gs_lib_ctx->gs_name_table, nidx)

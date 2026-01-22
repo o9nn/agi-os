@@ -7,20 +7,20 @@ char *Rcmain = "/usr/lib/rcmain";
 char *Fdprefix = "/dev/fd/";
 void execfinit(void);
 struct builtin Builtin[] = {
-"cd",		execcd,
-"whatis",	execwhatis,
-"eval",		execeval,
-"exec",		execexec,
-"exit",		execexit,
-"shift",	execshift,
-"wait",		execwait,
-"umask",	execumask,
-".",		execdot,
-"finit",	execfinit,
-"flag",		execflag,
+"cd", execcd,
+"whatis", execwhatis,
+"eval", execeval,
+"exec", execexec,
+"exit", execexit,
+"shift", execshift,
+"wait", execwait,
+"umask", execumask,
+".", execdot,
+"finit", execfinit,
+"flag", execflag,
 0
 };
-#define	SEP	'\1'
+#define SEP '\1'
 char **environp;
 struct word*
 enval(s)
@@ -285,7 +285,7 @@ pfmt(err, "%s: %s\n", argv[1], msg);
 efree((char *)env);
 efree((char *)argv);
 }
-#define	NDIR	14
+#define NDIR 14
 Globsize(p)
 register char *p;
 {
@@ -304,7 +304,7 @@ return isglob?globlen:0;
 }
 #include <sys/types.h>
 #include <dirent.h>
-#define	NDIRLIST	50
+#define NDIRLIST 50
 DIR *dirlist[NDIRLIST];
 Opendir(name)
 char *name;
@@ -333,14 +333,14 @@ closedir(dirlist[f]);
 dirlist[f] = 0;
 }
 char *Signame[] = {
-"sigexit",	"sighup",	"sigint",	"sigquit",
-"sigill",	"sigtrap",	"sigiot",	"sigemt",
-"sigfpe",	"sigkill",	"sigbus",	"sigsegv",
-"sigsys",	"sigpipe",	"sigalrm",	"sigterm",
-"sig16",	"sigstop",	"sigtstp",	"sigcont",
-"sigchld",	"sigttin",	"sigttou",	"sigtint",
-"sigxcpu",	"sigxfsz",	"sig26",	"sig27",
-"sig28",	"sig29",	"sig30",	"sig31",
+"sigexit", "sighup", "sigint", "sigquit",
+"sigill", "sigtrap", "sigiot", "sigemt",
+"sigfpe", "sigkill", "sigbus", "sigsegv",
+"sigsys", "sigpipe", "sigalrm", "sigterm",
+"sig16", "sigstop", "sigtstp", "sigcont",
+"sigchld", "sigttin", "sigttou", "sigtint",
+"sigxcpu", "sigxfsz", "sig26", "sig27",
+"sig28", "sig29", "sig30", "sig31",
 0,
 };
 void

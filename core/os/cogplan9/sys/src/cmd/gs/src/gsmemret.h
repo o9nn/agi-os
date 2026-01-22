@@ -1,5 +1,5 @@
 #if !defined(gsmemret_INCLUDED)
-#  define gsmemret_INCLUDED
+# define gsmemret_INCLUDED
 #include "gsmemory.h"
 typedef struct gs_memory_retrying_s gs_memory_retrying_t;
 typedef enum {

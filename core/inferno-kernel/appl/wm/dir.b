@@ -19,24 +19,24 @@ daytime: Daytime;
 include "plumbmsg.m";
 plumbmsg: Plumbmsg;
 Msg: import plumbmsg;
-Fontwidth: 	con 8;
-Xwidth:		con 50;
+Fontwidth: con 8;
+Xwidth: con 50;
 WmDir: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 Wm: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 Ft: adt
 {
-ext:	string;
-cmd:	string;
-tkname:	string;
-icon:	string;
-loaded:	int;
-givearg:	int;
+ext: string;
+cmd: string;
+tkname: string;
+icon: string;
+loaded: int;
+givearg: int;
 };
 dirwin_cfg := array[] of {
 # Lay out the screen
@@ -103,13 +103,13 @@ ref Ft("mask", "/dis/wm/view.dis", "WmDir_Pic", "pic", 0, 1),
 init(env: ref Draw->Context, argv: list of string)
 {
 ctxt = env;
-sys  = load Sys Sys->PATH;
+sys = load Sys Sys->PATH;
 if (ctxt == nil) {
 sys->fprint(sys->fildes(2), "dir: no window context\n");
 raise "fail:bad context";
 }
 draw = load Draw Draw->PATH;
-tk   = load Tk Tk->PATH;
+tk = load Tk Tk->PATH;
 tkclient = load Tkclient Tkclient->PATH;
 dialog = load Dialog Dialog->PATH;
 readdir = load Readdir Readdir->PATH;
@@ -142,7 +142,7 @@ tk->cmd(t, "bind . <Configure> {send cf conf}");
 tkclient->onscreen(t, nil);
 tkclient->startinput(t, "kbd"::"ptr"::nil);
 menu := "";
-f:	for(;;) alt {
+f: for(;;) alt {
 s := <-t.ctxt.kbd =>
 tk->keyboard(t, s);
 s := <-t.ctxt.ptr =>
@@ -268,7 +268,7 @@ return;
 }
 args := npath+name :: nil;
 args = cmdname :: args;
-spawn mod->init(ctxt,  args);
+spawn mod->init(ctxt, args);
 return;
 }
 cmd := ft.cmd;

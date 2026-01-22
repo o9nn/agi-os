@@ -2,16 +2,16 @@ import { describe, expect, it } from 'vitest'
 import { none, some } from '../core'
 import { unwrap, unwrapOr, unwrapOrElse } from './unwrap'
 describe('@moeru/results', () => {
-  it('option.unwrap', () => {
-    expect(unwrap(some('air'))).toBe('air')
-    expect(() => unwrap(none)).toThrowErrorMatchingSnapshot()
-  })
-  it('option.unwrapOr', () => {
-    expect(unwrapOr(some('car'), 'bike')).toBe('car')
-    expect(unwrapOr(none, 'bike')).toBe('bike')
-  })
-  it('option.unwrapOrElse', () => {
-    expect(unwrapOrElse(some(4), () => 20)).toBe(4)
-    expect(unwrapOrElse(none, () => 20)).toBe(20)
-  })
+it('option.unwrap', () => {
+expect(unwrap(some('air'))).toBe('air')
+expect(() => unwrap(none)).toThrowErrorMatchingSnapshot()
+})
+it('option.unwrapOr', () => {
+expect(unwrapOr(some('car'), 'bike')).toBe('car')
+expect(unwrapOr(none, 'bike')).toBe('bike')
+})
+it('option.unwrapOrElse', () => {
+expect(unwrapOrElse(some(4), () => 20)).toBe(4)
+expect(unwrapOrElse(none, () => 20)).toBe(20)
+})
 })

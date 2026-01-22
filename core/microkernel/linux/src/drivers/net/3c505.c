@@ -15,8 +15,8 @@
 #include <linux/etherdevice.h>
 #include <linux/skbuff.h>
 #include "3c505.h"
-#define ELP_DMA      6
-#define ELP_RX_PCBS  4
+#define ELP_DMA 6
+#define ELP_RX_PCBS 4
 static const char *filename = __FILE__;
 static const char *timeout_msg = "*** timeout at %s:%s (line %d) ***\n";
 #define TIMEOUT_MSG(lineno) \
@@ -35,11 +35,11 @@ static const int elp_debug = ELP_DEBUG;
 #else
 static const int elp_debug = 0;
 #endif
-#ifndef	TRUE
-#define	TRUE	1
+#ifndef TRUE
+#define TRUE 1
 #endif
-#ifndef	FALSE
-#define	FALSE	0
+#ifndef FALSE
+#define FALSE 0
 #endif
 const int addr_list[] = {0x300, 0x280, 0x310, 0};
 static inline int __get_order(unsigned long size)
@@ -86,8 +86,8 @@ static inline void outw_data(unsigned int val, unsigned int base_addr)
 {
 outw(val, base_addr + PORT_DATA);
 }
-#define DMA_BUFFER_SIZE  1600
-#define BACKLOG_SIZE      4
+#define DMA_BUFFER_SIZE 1600
+#define BACKLOG_SIZE 4
 typedef struct {
 volatile short got[NUM_TRANSMIT_CMDS];
 pcb_struct tx_pcb;
@@ -117,7 +117,7 @@ static inline unsigned int backlog_next(unsigned int n)
 {
 return (n + 1) % BACKLOG_SIZE;
 }
-#define	GET_ASF(addr) \
+#define GET_ASF(addr) \
 (get_status(addr)&ASF_PCB_MASK)
 static inline int get_status(unsigned int base_addr)
 {

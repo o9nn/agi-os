@@ -1,5 +1,5 @@
 #ifndef opcheck_INCLUDED
-#  define opcheck_INCLUDED
+# define opcheck_INCLUDED
 #define check_type_only(rf,typ)\
 BEGIN if ( !r_has_type(&rf,typ) ) return_error(e_typecheck); END
 #define check_stype_only(rf,styp)\

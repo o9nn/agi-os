@@ -15,15 +15,15 @@
 #include "libtrivfs/trivfs_fsys_S.h"
 static struct argp_option options[] =
 {
-{"readonly", 'r', 0,	  0,"Disallow writing"},
-{"writable", 'w', 0,	  0,"Allow writing"},
-{"no-cache", 'c', 0,	  0,"Never cache data--user io does direct device io"},
-{"no-file-io", 'F', 0,  0,"Never perform io via plain file io RPCs"},
-{"no-fileio",  0,   0, OPTION_ALIAS | OPTION_HIDDEN},
-{"enforced",  'e', 0,	  0,"Never reveal underlying devices, even to root"},
-{"debug",	'd', "PATH",	0,
+{"readonly", 'r', 0, 0,"Disallow writing"},
+{"writable", 'w', 0, 0,"Allow writing"},
+{"no-cache", 'c', 0, 0,"Never cache data--user io does direct device io"},
+{"no-file-io", 'F', 0, 0,"Never perform io via plain file io RPCs"},
+{"no-fileio", 0, 0, OPTION_ALIAS | OPTION_HIDDEN},
+{"enforced", 'e', 0, 0,"Never reveal underlying devices, even to root"},
+{"debug", 'd', "PATH", 0,
 "Launch a standalone translator, for debug purposes"},
-{"rdev",     'n', "ID", 0,
+{"rdev", 'n', "ID", 0,
 "The stat rdev number for this node; may be either a"
 " single integer, or of the form MAJOR,MINOR"},
 {0}

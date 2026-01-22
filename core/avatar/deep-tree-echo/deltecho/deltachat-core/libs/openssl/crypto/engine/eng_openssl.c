@@ -116,7 +116,7 @@ IMPLEMENT_DYNAMIC_BIND_FN(bind_fn)
 #endif
 #ifdef TEST_ENG_OPENSSL_RC4
 # include <openssl/rc4.h>
-# define TEST_RC4_KEY_SIZE               16
+# define TEST_RC4_KEY_SIZE 16
 static int test_cipher_nids[] = { NID_rc4, NID_rc4_40 };
 static int test_cipher_nids_number = 2;
 typedef struct {
@@ -159,7 +159,7 @@ NULL
 };
 static const EVP_CIPHER test_r4_40_cipher = {
 NID_rc4_40,
-1, 5  , 0,
+1, 5 , 0,
 EVP_CIPH_VARIABLE_LENGTH,
 test_rc4_init_key,
 test_rc4_cipher,

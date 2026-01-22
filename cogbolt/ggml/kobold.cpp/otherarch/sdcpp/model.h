@@ -75,15 +75,15 @@ PM_VERSION_2,
 };
 struct TensorStorage {
 std::string name;
-ggml_type type          = GGML_TYPE_F32;
-bool is_bf16            = false;
-bool is_f8_e4m3         = false;
-bool is_f8_e5m2         = false;
+ggml_type type = GGML_TYPE_F32;
+bool is_bf16 = false;
+bool is_f8_e4m3 = false;
+bool is_f8_e5m2 = false;
 int64_t ne[SD_MAX_DIMS] = {1, 1, 1, 1, 1};
-int n_dims              = 0;
+int n_dims = 0;
 size_t file_index = 0;
-int index_in_zip  = -1;
-size_t offset     = 0;
+int index_in_zip = -1;
+size_t offset = 0;
 TensorStorage() = default;
 TensorStorage(const std::string& name, ggml_type type, int64_t* ne, int n_dims, size_t file_index, size_t offset = 0)
 : name(name), type(type), n_dims(n_dims), file_index(file_index), offset(offset) {
@@ -111,10 +111,10 @@ return nbytes();
 void unsqueeze() {
 if (n_dims == 2) {
 n_dims = 4;
-ne[3]  = ne[1];
-ne[2]  = ne[0];
-ne[1]  = 1;
-ne[0]  = 1;
+ne[3] = ne[1];
+ne[2] = ne[0];
+ne[1] = 1;
+ne[0] = 1;
 }
 }
 std::vector<TensorStorage> chunk(size_t n) {
@@ -123,8 +123,8 @@ size_t chunk_size = nbytes_to_read() / n;
 reverse_ne();
 for (int i = 0; i < n; i++) {
 TensorStorage chunk_i = *this;
-chunk_i.ne[0]         = ne[0] / n;
-chunk_i.offset        = offset + i * chunk_size;
+chunk_i.ne[0] = ne[0] / n;
+chunk_i.offset = offset + i * chunk_size;
 chunk_i.reverse_ne();
 chunks.push_back(chunk_i);
 }

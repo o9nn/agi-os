@@ -238,7 +238,7 @@ listenloop(listfile, ctlfd, buf, sizeof buf);
 hangup(ctlfd);
 exits(nil);
 }
-#define REPLY(s)	if (want_reply) fprint(reqfd, s);
+#define REPLY(s) if (want_reply) fprint(reqfd, s);
 static void
 forkshell(char *cmd, int reqfd, int datafd, int want_reply)
 {
@@ -367,7 +367,7 @@ buf = malloc(n+1);
 if (buf == nil)
 return nil;
 memmove(buf, q, n);
-buf[n]  = 0;
+buf[n] = 0;
 m = tokenize(buf, toks, nelem(toks));
 e = s + n + 1;
 for (i = 0, r = s; i < m; ++i) {

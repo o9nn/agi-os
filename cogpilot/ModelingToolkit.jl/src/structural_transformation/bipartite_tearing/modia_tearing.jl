@@ -32,7 +32,7 @@ end
 # Heuristic: As a first pass, try to assign any equations that only have one
 # solvable variable.
 for only_single_solvable in (true, false)
-for eq in es  # iterate only over equations that are not in eSolvedFixed
+for eq in es # iterate only over equations that are not in eSolvedFixed
 vs = Gsolvable[eq]
 ((length(vs) == 1) ⊻ only_single_solvable) && continue
 if check_der

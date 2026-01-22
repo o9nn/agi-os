@@ -137,7 +137,7 @@ if(c == nil)
 return;
 if(i == nil){
 i = lookupimage(c->image);
-if(i  == nil)
+if(i == nil)
 return;
 }
 redrawcompound(i, r, c);

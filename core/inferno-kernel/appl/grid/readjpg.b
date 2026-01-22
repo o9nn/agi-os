@@ -110,32 +110,32 @@ sys->sleep(100);
 newImageSource(w, h: int) : ref ImageSource
 {
 is := ref ImageSource(
-w,h,		# width, height
-0,0,		# origw, origh
-0,		# i
-nil,		# jhdr
-nil		# data
+w,h, # width, height
+0,0, # origw, origh
+0, # i
+nil, # jhdr
+nil # data
 );
 return is;
 }
 getjpeghdr(is: ref ImageSource)
 {
 h := ref Jpegstate(
-0, 0,		# sr, cnt
-0,		# Nf
-nil,		# comp
-byte 0,	# mode,
-0, 0,		# X, Y
-nil,		# qt
-nil, nil,	# dcht, acht
-0,		# Ns
-nil,		# scomp
-0, 0,		# Ss, Se
-0, 0,		# Ah, Al
-0, 0,		# ri, nseg
-nil,		# nblock
-nil, nil,	# dccoeff, accoeff
-0, 0, 0, 0	# nacross, ndown, Hmax, Vmax
+0, 0, # sr, cnt
+0, # Nf
+nil, # comp
+byte 0, # mode,
+0, 0, # X, Y
+nil, # qt
+nil, nil, # dcht, acht
+0, # Ns
+nil, # scomp
+0, 0, # Ss, Se
+0, 0, # Ah, Al
+0, 0, # ri, nseg
+nil, # nblock
+nil, nil, # dccoeff, accoeff
+0, 0, 0, 0 # nacross, ndown, Hmax, Vmax
 );
 is.jstate = h;
 if(jpegmarker(is) != SOI)
@@ -143,7 +143,7 @@ sys->print("Error: Jpeg expected SOI marker\n");
 (m, n) := jpegtabmisc(is);
 if(!(m == SOF || m == SOF2))
 sys->print("Error: Jpeg expected Frame marker");
-nil = getc(is);		# sample precision
+nil = getc(is); # sample precision
 h.Y = getbew(is);
 h.X = getbew(is);
 h.Nf = getc(is);
@@ -208,8 +208,8 @@ a := is.data;
 i := is.i;
 if(i + n <= len a)
 is.i += n;
-#	else
-#		sys->print("Error: premature eof");
+# else
+# sys->print("Error: premature eof");
 return (a, i);
 }
 # Consume tables and miscellaneous marker segments,
@@ -405,7 +405,7 @@ return 1+(64*(1+pq));;
 }
 # Have just read Frame header.
 # Now expect:
-#	((tabl/misc segment(s))* (scan header) (entropy coded segment)+)+ EOI
+# ((tabl/misc segment(s))* (scan header) (entropy coded segment)+)+ EOI
 getjpegimg(is:ref ImageSource,chanout:chan of string,imgchan: chan of ref Image,sync: chan of int)
 {
 sync <-= sys->pctl(0, nil);
@@ -624,15 +624,15 @@ sys->print("Error: Jpeg restart problem");
 h.cnt = 0;
 h.sr = 0;
 }
-jc1: con 2871;		# 1.402 * 2048
-jc2: con 705;		# 0.34414 * 2048
-jc3: con 1463;		# 0.71414 * 2048
-jc4: con 3629;		# 1.772 * 2048
+jc1: con 2871; # 1.402 * 2048
+jc2: con 705; # 0.34414 * 2048
+jc3: con 1463; # 0.71414 * 2048
+jc4: con 3629; # 1.772 * 2048
 CLAMPBOFF: con 300;
 NCLAMPB: con CLAMPBOFF+256+CLAMPBOFF;
 CLAMPNOFF: con 64;
 NCLAMPN: con CLAMPNOFF+256+CLAMPNOFF;
-clampb: array of byte;		# clamps byte values
+clampb: array of byte; # clamps byte values
 init_tabs()
 {
 j: int;
@@ -646,7 +646,7 @@ clampb[CLAMPBOFF+256+j] = byte 16rFF;
 }
 # Fills in pixels (x,y) for x = minx=8*Hmax*(mcu%nacross), minx+1, ..., minx+8*Hmax-1 (or h.X-1, if less)
 # and for y = miny=8*Vmax*(mcu/nacross), miny+1, ..., miny+8*Vmax-1 (or h.Y-1, if less)
-colormap(h: ref Jpegstate, chans: array of array of byte, data0, data1, data2: array of array of int, mcu, nacross, Hmax, Vmax: int,  H, V: array of int)
+colormap(h: ref Jpegstate, chans: array of array of byte, data0, data1, data2: array of array of int, mcu, nacross, Hmax, Vmax: int, H, V: array of int)
 {
 rpic := chans[0];
 gpic := chans[1];
@@ -696,7 +696,7 @@ b2++;
 pici += h.X;
 }
 }
-# decode next 8-bit value from entropy-coded input.  chart F-26
+# decode next 8-bit value from entropy-coded input. chart F-26
 jdecode(is: ref ImageSource, t: ref Huffman): int
 {
 h := is.jstate;
@@ -811,19 +811,19 @@ return (c>>4, c&15);
 #
 # coefficients extended to 12 bit for IEEE1180-1990
 # compliance
-W1:	con 2841;	# 2048*sqrt(2)*cos(1*pi/16)
-W2:	con 2676;	# 2048*sqrt(2)*cos(2*pi/16)
-W3:	con 2408;	# 2048*sqrt(2)*cos(3*pi/16)
-W5:	con 1609;	# 2048*sqrt(2)*cos(5*pi/16)
-W6:	con 1108;	# 2048*sqrt(2)*cos(6*pi/16)
-W7:	con 565;	# 2048*sqrt(2)*cos(7*pi/16)
-W1pW7:	con 3406;	# W1+W7
-W1mW7:	con 2276;	# W1-W7
-W3pW5:	con 4017;	# W3+W5
-W3mW5:	con 799;	# W3-W5
-W2pW6:	con 3784;	# W2+W6
-W2mW6:	con 1567;	# W2-W6
-R2:	con 181;	# 256/sqrt(2)
+W1: con 2841; # 2048*sqrt(2)*cos(1*pi/16)
+W2: con 2676; # 2048*sqrt(2)*cos(2*pi/16)
+W3: con 2408; # 2048*sqrt(2)*cos(3*pi/16)
+W5: con 1609; # 2048*sqrt(2)*cos(5*pi/16)
+W6: con 1108; # 2048*sqrt(2)*cos(6*pi/16)
+W7: con 565; # 2048*sqrt(2)*cos(7*pi/16)
+W1pW7: con 3406; # W1+W7
+W1mW7: con 2276; # W1-W7
+W3pW5: con 4017; # W3+W5
+W3mW5: con 799; # W3-W5
+W2pW6: con 3784; # W2+W6
+W2mW6: con 1567; # W2-W6
+R2: con 181; # 256/sqrt(2)
 idct(b: array of int)
 {
 # transform horizontally

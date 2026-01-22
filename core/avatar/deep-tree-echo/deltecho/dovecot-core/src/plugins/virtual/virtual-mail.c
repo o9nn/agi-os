@@ -7,7 +7,7 @@
 container_of( \
 container_of( \
 container_of(mail, struct mail_private, mail), \
-struct index_mail,   mail), \
+struct index_mail, mail), \
 struct virtual_mail, imail)
 struct virtual_mail {
 struct index_mail imail;

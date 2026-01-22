@@ -12,17 +12,17 @@ static const char *version =
 #include "8390.h"
 static unsigned int hppclan_portlist[] =
 { 0x300, 0x320, 0x340, 0x280, 0x2C0, 0x200, 0x240, 0};
-#define HP_IO_EXTENT	32
-#define HP_DATAPORT		0x0c
-#define HP_ID			0x07
-#define HP_CONFIGURE	0x08
-#define	 HP_RUN			0x01
-#define	 HP_IRQ			0x0E
-#define	 HP_DATAON		0x10
-#define NIC_OFFSET		0x10
-#define HP_START_PG		0x00
-#define HP_8BSTOP_PG	0x80
-#define HP_16BSTOP_PG	0xFF
+#define HP_IO_EXTENT 32
+#define HP_DATAPORT 0x0c
+#define HP_ID 0x07
+#define HP_CONFIGURE 0x08
+#define HP_RUN 0x01
+#define HP_IRQ 0x0E
+#define HP_DATAON 0x10
+#define NIC_OFFSET 0x10
+#define HP_START_PG 0x00
+#define HP_8BSTOP_PG 0x80
+#define HP_16BSTOP_PG 0xFF
 int hp_probe(struct device *dev);
 int hp_probe1(struct device *dev, int ioaddr);
 static int hp_open(struct device *dev);
@@ -79,7 +79,7 @@ if (dev == NULL) {
 printk("hp.c: Passed a NULL device.\n");
 dev = init_etherdev(0, 0);
 }
-if (ei_debug  &&  version_printed++ == 0)
+if (ei_debug && version_printed++ == 0)
 printk("%s", version);
 printk("%s: %s (ID %02x) at %#3x,", dev->name, name, board_id, ioaddr);
 for(i = 0; i < ETHER_ADDR_LEN; i++)
@@ -227,16 +227,16 @@ count++;
 outb_p(E8390_PAGE0+E8390_START+E8390_NODMA, nic_base);
 #ifdef NE8390_RW_BUGFIX
 outb_p(0x42, nic_base + EN0_RCNTLO);
-outb_p(0,	nic_base + EN0_RCNTHI);
+outb_p(0, nic_base + EN0_RCNTHI);
 outb_p(0xff, nic_base + EN0_RSARLO);
 outb_p(0x00, nic_base + EN0_RSARHI);
-#define NE_CMD	 	0x00
+#define NE_CMD 0x00
 outb_p(E8390_RREAD+E8390_START, nic_base + NE_CMD);
 inb_p(0x61);
 inb_p(0x61);
 #endif
 outb_p(count & 0xff, nic_base + EN0_RCNTLO);
-outb_p(count >> 8,	 nic_base + EN0_RCNTHI);
+outb_p(count >> 8, nic_base + EN0_RCNTHI);
 outb_p(0x00, nic_base + EN0_RSARLO);
 outb_p(start_page, nic_base + EN0_RSARHI);
 outb_p(E8390_RWRITE+E8390_START, nic_base);
@@ -247,7 +247,7 @@ outsb(nic_base - NIC_OFFSET + HP_DATAPORT, buf, count);
 }
 if (ei_debug > 0) {
 int high = inb_p(nic_base + EN0_RSARHI);
-int low  = inb_p(nic_base + EN0_RSARLO);
+int low = inb_p(nic_base + EN0_RSARLO);
 int addr = (high << 8) + low;
 if ((start_page << 8) + count != addr)
 printk("%s: TX Transfer address mismatch, %#4.4x vs. %#4.4x.\n",
@@ -266,8 +266,8 @@ dev->base_addr - NIC_OFFSET + HP_CONFIGURE);
 return;
 }
 #ifdef MODULE
-#define MAX_HP_CARDS	4
-#define NAMELEN		8
+#define MAX_HP_CARDS 4
+#define NAMELEN 8
 static char namelist[NAMELEN * MAX_HP_CARDS] = { 0, };
 static struct device dev_hp[MAX_HP_CARDS] = {
 {
@@ -278,7 +278,7 @@ NULL,
 },
 };
 static int io[MAX_HP_CARDS] = { 0, };
-static int irq[MAX_HP_CARDS]  = { 0, };
+static int irq[MAX_HP_CARDS] = { 0, };
 int
 init_module(void)
 {
@@ -289,7 +289,7 @@ dev->name = namelist+(NAMELEN*this_dev);
 dev->irq = irq[this_dev];
 dev->base_addr = io[this_dev];
 dev->init = hp_probe;
-if (io[this_dev] == 0)  {
+if (io[this_dev] == 0) {
 if (this_dev != 0) break;
 printk(KERN_NOTICE "hp.c: Presently autoprobing (not recommended) for a single card.\n");
 }

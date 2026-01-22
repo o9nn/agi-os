@@ -223,56 +223,56 @@ return err;
 pthread_mutex_unlock (&driver_list_lock);
 return ESRCH;
 }
-#define ADD_REMOVE_COMPONENT(component)					\
-pthread_mutex_t component##_list_lock;					\
-component##_t component##_list;						\
-size_t component##_list_len;						\
-size_t component##_list_alloc;						\
+#define ADD_REMOVE_COMPONENT(component) \
+pthread_mutex_t component##_list_lock; \
+component##_t component##_list; \
+size_t component##_list_len; \
+size_t component##_list_alloc; \
 \
-error_t									\
-driver_add_##component (component##_ops_t ops, void *handle)		\
-{									\
-pthread_mutex_lock (&component##_list_lock);				\
-if (component##_list_len == component##_list_alloc)			\
-{									\
-size_t new_alloc = component##_list_alloc + LIST_GROW;		\
-component##_t new_list = realloc (component##_list,		\
-new_alloc			\
-* sizeof (*component##_list));	\
-if (!new_list)							\
-{								\
-pthread_mutex_unlock (&component##_list_lock);		\
-return errno;							\
-}								\
-component##_list = new_list;					\
-component##_list_alloc = new_alloc;				\
-}									\
-component##_list[component##_list_len].ops = ops;			\
-component##_list[component##_list_len].handle = handle;		\
-component##_list_len++;						\
-pthread_mutex_unlock (&component##_list_lock);			\
-return 0;								\
-}									\
+error_t \
+driver_add_##component (component##_ops_t ops, void *handle) \
+{ \
+pthread_mutex_lock (&component##_list_lock); \
+if (component##_list_len == component##_list_alloc) \
+{ \
+size_t new_alloc = component##_list_alloc + LIST_GROW; \
+component##_t new_list = realloc (component##_list, \
+new_alloc \
+* sizeof (*component##_list)); \
+if (!new_list) \
+{ \
+pthread_mutex_unlock (&component##_list_lock); \
+return errno; \
+} \
+component##_list = new_list; \
+component##_list_alloc = new_alloc; \
+} \
+component##_list[component##_list_len].ops = ops; \
+component##_list[component##_list_len].handle = handle; \
+component##_list_len++; \
+pthread_mutex_unlock (&component##_list_lock); \
+return 0; \
+} \
 \
-error_t									\
-driver_remove_##component (component##_ops_t ops, void *handle)		\
-{									\
-unsigned int i;								\
+error_t \
+driver_remove_##component (component##_ops_t ops, void *handle) \
+{ \
+unsigned int i; \
 \
-pthread_mutex_lock (&component##_list_lock);				\
-for (i = 0; i < component##_list_len; i++)				\
-if (component##_list[i].ops == ops					\
-&& component##_list[i].handle == handle)			\
-{									\
-while (i + 1 < component##_list_len)				\
-{								\
-component##_list[i] = component##_list[i + 1];		\
-i++;							\
-}								\
-component##_list_len--;						\
-}									\
-pthread_mutex_unlock (&component##_list_lock);			\
-return 0;								\
+pthread_mutex_lock (&component##_list_lock); \
+for (i = 0; i < component##_list_len; i++) \
+if (component##_list[i].ops == ops \
+&& component##_list[i].handle == handle) \
+{ \
+while (i + 1 < component##_list_len) \
+{ \
+component##_list[i] = component##_list[i + 1]; \
+i++; \
+} \
+component##_list_len--; \
+} \
+pthread_mutex_unlock (&component##_list_lock); \
+return 0; \
 }
 ADD_REMOVE_COMPONENT (display)
 ADD_REMOVE_COMPONENT (input)

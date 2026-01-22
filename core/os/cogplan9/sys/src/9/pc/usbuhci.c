@@ -1,11 +1,11 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"../port/error.h"
-#include	"../port/usb.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "../port/error.h"
+#include "../port/usb.h"
 typedef struct Ctlio Ctlio;
 typedef struct Ctlr Ctlr;
 typedef struct Isoio Isoio;
@@ -16,193 +16,193 @@ typedef struct Td Td;
 typedef struct Tdpool Tdpool;
 enum
 {
-Resetdelay	= 100,
-Enabledelay	= 100,
-Abortdelay	= 5,
-Incr		= 64,
-Tdatomic	= 8,
-Qidle		= 0,
+Resetdelay = 100,
+Enabledelay = 100,
+Abortdelay = 5,
+Incr = 64,
+Tdatomic = 8,
+Qidle = 0,
 Qinstall,
 Qrun,
 Qdone,
 Qclose,
 Qfree,
-Nframes		= 1024,
-Align		= 16,
-Tdndata		= 1*Align,
-Cmd		= 0,
-Crun		= 0x01,
-Chcreset	= 0x02,
-Cgreset		= 0x04,
-Cegsm		= 0x08,
-Cfgr		= 0x10,
-Cdbg		= 0x20,
-Cmaxp		= 0x80,
-Status		= 2,
-Susbintr		= 0x01,
-Seintr		= 0x02,
-Sresume		= 0x04,
-Shserr		= 0x08,
-Shcerr		= 0x10,
-Shalted		= 0x20,
-Sall		= 0x3F,
-Usbintr 		= 4,
-Itmout		= 0x01,
-Iresume		= 0x02,
-Ioc		= 0x04,
-Ishort		= 0x08,
-Iall		= 0x0F,
-Frnum		= 6,
-Flbaseadd 	= 8,
-SOFmod		= 0xC,
-Portsc0		= 0x10,
-PSpresent	= 0x0001,
-PSstatuschg	= 0x0002,
-PSenable	= 0x0004,
-PSchange	= 0x0008,
-PSresume	= 0x0040,
-PSreserved1	= 0x0080,
-PSslow		= 0x0100,
-PSreset		= 0x0200,
-PSsuspend	= 0x1000,
-Tdterm		= 0x1,
-Tdlinkqh	= 0x2,
-Tdvf		= 0x4,
-Tdbitstuff	= 0x00020000,
-Tdcrcto		= 0x00040000,
-Tdnak		= 0x00080000,
-Tdbabble	= 0x00100000,
-Tddberr		= 0x00200000,
-Tdstalled	= 0x00400000,
-Tdactive		= 0x00800000,
-Tdioc		= 0x01000000,
-Tdiso		= 0x02000000,
-Tdlow		= 0x04000000,
-Tderr1		= 0x08000000,
-Tderr2		= 0x10000000,
-Tdspd		= 0x20000000,
-Tdlen		= 0x000003FF,
-Tdfatalerr	= Tdnak|Tdbabble|Tdstalled,
-Tderrors	= Tdfatalerr|Tdbitstuff|Tdcrcto|Tddberr,
-Tddata0		= 0,
-Tddata1		= 0x80000,
-Tdtokin		= 0x69,
-Tdtokout	= 0xE1,
-Tdtoksetup	= 0x2D,
-Tdmaxpkt	= 0x800,
-QHterm		= 1<<0,
-QHlinkqh		= 1<<1,
-QHvf		= 1<<2,
+Nframes = 1024,
+Align = 16,
+Tdndata = 1*Align,
+Cmd = 0,
+Crun = 0x01,
+Chcreset = 0x02,
+Cgreset = 0x04,
+Cegsm = 0x08,
+Cfgr = 0x10,
+Cdbg = 0x20,
+Cmaxp = 0x80,
+Status = 2,
+Susbintr = 0x01,
+Seintr = 0x02,
+Sresume = 0x04,
+Shserr = 0x08,
+Shcerr = 0x10,
+Shalted = 0x20,
+Sall = 0x3F,
+Usbintr = 4,
+Itmout = 0x01,
+Iresume = 0x02,
+Ioc = 0x04,
+Ishort = 0x08,
+Iall = 0x0F,
+Frnum = 6,
+Flbaseadd = 8,
+SOFmod = 0xC,
+Portsc0 = 0x10,
+PSpresent = 0x0001,
+PSstatuschg = 0x0002,
+PSenable = 0x0004,
+PSchange = 0x0008,
+PSresume = 0x0040,
+PSreserved1 = 0x0080,
+PSslow = 0x0100,
+PSreset = 0x0200,
+PSsuspend = 0x1000,
+Tdterm = 0x1,
+Tdlinkqh = 0x2,
+Tdvf = 0x4,
+Tdbitstuff = 0x00020000,
+Tdcrcto = 0x00040000,
+Tdnak = 0x00080000,
+Tdbabble = 0x00100000,
+Tddberr = 0x00200000,
+Tdstalled = 0x00400000,
+Tdactive = 0x00800000,
+Tdioc = 0x01000000,
+Tdiso = 0x02000000,
+Tdlow = 0x04000000,
+Tderr1 = 0x08000000,
+Tderr2 = 0x10000000,
+Tdspd = 0x20000000,
+Tdlen = 0x000003FF,
+Tdfatalerr = Tdnak|Tdbabble|Tdstalled,
+Tderrors = Tdfatalerr|Tdbitstuff|Tdcrcto|Tddberr,
+Tddata0 = 0,
+Tddata1 = 0x80000,
+Tdtokin = 0x69,
+Tdtokout = 0xE1,
+Tdtoksetup = 0x2D,
+Tdmaxpkt = 0x800,
+QHterm = 1<<0,
+QHlinkqh = 1<<1,
+QHvf = 1<<2,
 };
 struct Ctlr
 {
 Lock;
-QLock	portlck;
-Pcidev*	pcidev;
-int	active;
-int	port;
-Qh*	qhs;
-Qh*	qh[Tmax];
-Isoio*	iso;
-ulong*	frames;
-ulong	load;
-ulong	isoload;
-int	nintr;
-int	ntdintr;
-int	nqhintr;
-int	nisointr;
+QLock portlck;
+Pcidev* pcidev;
+int active;
+int port;
+Qh* qhs;
+Qh* qh[Tmax];
+Isoio* iso;
+ulong* frames;
+ulong load;
+ulong isoload;
+int nintr;
+int ntdintr;
+int nqhintr;
+int nisointr;
 };
 struct Qio
 {
 QLock;
 Rendez;
-Qh*	qh;
-int	usbid;
-int	toggle;
-int	tok;
-ulong	iotime;
-int	debug;
-char*	err;
+Qh* qh;
+int usbid;
+int toggle;
+int tok;
+ulong iotime;
+int debug;
+char* err;
 };
 struct Ctlio
 {
 Qio;
-uchar*	data;
-int	ndata;
+uchar* data;
+int ndata;
 };
 struct Isoio
 {
 QLock;
 Rendez;
-int	usbid;
-int	tok;
-int	state;
-int	nframes;
-uchar*	data;
-int	td0frno;
-Td*	tdu;
-Td*	tdi;
-char*	err;
-int	nerrs;
-long	nleft;
-int	debug;
-Isoio*	next;
-Td*	tdps[Nframes];
+int usbid;
+int tok;
+int state;
+int nframes;
+uchar* data;
+int td0frno;
+Td* tdu;
+Td* tdi;
+char* err;
+int nerrs;
+long nleft;
+int debug;
+Isoio* next;
+Td* tdps[Nframes];
 };
 struct Tdpool
 {
 Lock;
-Td*	free;
-int	nalloc;
-int	ninuse;
-int	nfree;
+Td* free;
+int nalloc;
+int ninuse;
+int nfree;
 };
 struct Qhpool
 {
 Lock;
-Qh*	free;
-int	nalloc;
-int	ninuse;
-int	nfree;
+Qh* free;
+int nalloc;
+int ninuse;
+int nfree;
 };
 struct Qh
 {
-ulong	link;
-ulong	elink;
-ulong	state;
-Qio*	io;
-Qh*	next;
-Td*	tds;
-char*	tag;
-ulong	align;
+ulong link;
+ulong elink;
+ulong state;
+Qio* io;
+Qh* next;
+Td* tds;
+char* tag;
+ulong align;
 };
 struct Td
 {
-ulong	link;
-ulong	csw;
-ulong	token;
-ulong	buffer;
-Td*	next;
-ulong	ndata;
-uchar*	data;
-void*	buff;
-uchar	sbuff[Tdndata];
+ulong link;
+ulong csw;
+ulong token;
+ulong buffer;
+Td* next;
+ulong ndata;
+uchar* data;
+void* buff;
+uchar sbuff[Tdndata];
 };
-#define INB(x)		inb(ctlr->port+(x))
-#define	INS(x)		ins(ctlr->port+(x))
-#define INL(x)		inl(ctlr->port+(x))
-#define OUTB(x, v)	outb(ctlr->port+(x), (v))
-#define	OUTS(x, v)	outs(ctlr->port+(x), (v))
-#define OUTL(x, v)	outl(ctlr->port+(x), (v))
-#define TRUNC(x, sz)	((x) & ((sz)-1))
-#define PTR(q)		((void*)KADDR((ulong)(q) & ~ (0xF|PCIWINDOW)))
-#define QPTR(q)		((Qh*)PTR(q))
-#define TPTR(q)		((Td*)PTR(q))
-#define PORT(p)		(Portsc0 + 2*(p))
-#define diprint		if(debug || iso->debug)print
-#define ddiprint		if(debug>1 || iso->debug>1)print
-#define dqprint		if(debug || (qh->io && qh->io->debug))print
-#define ddqprint		if(debug>1 || (qh->io && qh->io->debug>1))print
+#define INB(x) inb(ctlr->port+(x))
+#define INS(x) ins(ctlr->port+(x))
+#define INL(x) inl(ctlr->port+(x))
+#define OUTB(x, v) outb(ctlr->port+(x), (v))
+#define OUTS(x, v) outs(ctlr->port+(x), (v))
+#define OUTL(x, v) outl(ctlr->port+(x), (v))
+#define TRUNC(x, sz) ((x) & ((sz)-1))
+#define PTR(q) ((void*)KADDR((ulong)(q) & ~ (0xF|PCIWINDOW)))
+#define QPTR(q) ((Qh*)PTR(q))
+#define TPTR(q) ((Td*)PTR(q))
+#define PORT(p) (Portsc0 + 2*(p))
+#define diprint if(debug || iso->debug)print
+#define ddiprint if(debug>1 || iso->debug>1)print
+#define dqprint if(debug || (qh->io && qh->io->debug))print
+#define ddqprint if(debug>1 || (qh->io && qh->io->debug>1))print
 static Ctlr* ctlrs[Nhcis];
 static Tdpool tdpool;
 static Qhpool qhpool;

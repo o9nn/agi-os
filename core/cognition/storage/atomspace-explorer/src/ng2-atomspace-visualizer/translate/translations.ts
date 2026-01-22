@@ -8,12 +8,12 @@ import { LANG_IT_TRANS } from './lang-it';
 import { LANG_JP_TRANS } from './lang-jp';
 export const DICTIONARY = new InjectionToken('translations');
 const dictionary = {
-  'en': LANG_EN_TRANS,
-  'cn': LANG_CN_TRANS,
-  'de': LANG_DE_TRANS,
-  'es': LANG_ES_TRANS,
-  'fr': LANG_FR_TRANS,
-  'it': LANG_IT_TRANS,
-  'jp': LANG_JP_TRANS
+'en': LANG_EN_TRANS,
+'cn': LANG_CN_TRANS,
+'de': LANG_DE_TRANS,
+'es': LANG_ES_TRANS,
+'fr': LANG_FR_TRANS,
+'it': LANG_IT_TRANS,
+'jp': LANG_JP_TRANS
 };
 export const TRANSLATION_PROVIDERS = { provide: DICTIONARY, useValue: dictionary };

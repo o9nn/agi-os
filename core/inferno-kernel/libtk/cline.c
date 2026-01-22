@@ -2,41 +2,41 @@
 #include "draw.h"
 #include "tk.h"
 #include "canvs.h"
-#define	O(t, e)		((long)(&((t*)0)->e))
+#define O(t, e) ((long)(&((t*)0)->e))
 static
 TkStab tklines[] =
 {
-"none",		0,
-"first",	TkCarrowf,
-"last",		TkCarrowl,
-"both",		TkCarrowf|TkCarrowl,
+"none", 0,
+"first", TkCarrowf,
+"last", TkCarrowl,
+"both", TkCarrowf|TkCarrowl,
 nil
 };
 static
 TkStab tkcapstyle[] =
 {
-"butt",	Endsquare,
-"projecting",	Endsquare,
-"round",	Enddisc,
+"butt", Endsquare,
+"projecting", Endsquare,
+"round", Enddisc,
 nil
 };
 static
 TkOption lineopts[] =
 {
-"arrow",	OPTstab,	O(TkCline, arrow),	tklines,
-"arrowshape",	OPTfrac,	O(TkCline, shape[0]),	IAUX(3),
-"width",	OPTnnfrac,	O(TkCline, width),	nil,
-"stipple",	OPTbmap,	O(TkCline, stipple),	nil,
-"smooth",	OPTstab,	O(TkCline, smooth),	tkbool,
-"splinesteps",	OPTdist,	O(TkCline, steps),	nil,
-"capstyle",	OPTstab,	O(TkCline, capstyle),	tkcapstyle,
+"arrow", OPTstab, O(TkCline, arrow), tklines,
+"arrowshape", OPTfrac, O(TkCline, shape[0]), IAUX(3),
+"width", OPTnnfrac, O(TkCline, width), nil,
+"stipple", OPTbmap, O(TkCline, stipple), nil,
+"smooth", OPTstab, O(TkCline, smooth), tkbool,
+"splinesteps", OPTdist, O(TkCline, steps), nil,
+"capstyle", OPTstab, O(TkCline, capstyle), tkcapstyle,
 nil
 };
 static
 TkOption itemopts[] =
 {
-"tags",		OPTctag,	O(TkCitem, tags),	nil,
-"fill",		OPTcolr,	O(TkCitem, env),	IAUX(TkCforegnd),
+"tags", OPTctag, O(TkCitem, tags), nil,
+"fill", OPTcolr, O(TkCitem, env), IAUX(TkCforegnd),
 nil
 };
 void

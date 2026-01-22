@@ -2,24 +2,24 @@
 #include <unistd.h>
 #include "dc_context.h"
 #include "dc_apeerstate.h"
-#define MAILTO_SCHEME      "mailto:"
-#define MATMSG_SCHEME      "MATMSG:"
-#define VCARD_BEGIN        "BEGIN:VCARD"
-#define SMTP_SCHEME        "SMTP:"
+#define MAILTO_SCHEME "mailto:"
+#define MATMSG_SCHEME "MATMSG:"
+#define VCARD_BEGIN "BEGIN:VCARD"
+#define SMTP_SCHEME "SMTP:"
 dc_lot_t* dc_check_qr(dc_context_t* context, const char* qr)
 {
-char*            payload = NULL;
-char*            addr = NULL;
-char*            fingerprint = NULL;
-char*            name = NULL;
-char*            invitenumber = NULL;
-char*            auth = NULL;
+char* payload = NULL;
+char* addr = NULL;
+char* fingerprint = NULL;
+char* name = NULL;
+char* invitenumber = NULL;
+char* auth = NULL;
 dc_apeerstate_t* peerstate = dc_apeerstate_new(context);
-dc_lot_t*        qr_parsed = dc_lot_new();
-uint32_t         chat_id = 0;
-char*            device_msg = NULL;
-char*            grpid = NULL;
-char*            grpname = NULL;
+dc_lot_t* qr_parsed = dc_lot_new();
+uint32_t chat_id = 0;
+char* device_msg = NULL;
+char* grpid = NULL;
+char* grpname = NULL;
 qr_parsed->state = 0;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC || qr==NULL) {
 goto cleanup;
@@ -27,7 +27,7 @@ goto cleanup;
 dc_log_info(context, 0, "Scanned QR code: %s", qr);
 if (strncasecmp(qr, DC_OPENPGP4FPR_SCHEME, strlen(DC_OPENPGP4FPR_SCHEME))==0)
 {
-payload  = dc_strdup(&qr[strlen(DC_OPENPGP4FPR_SCHEME)]);
+payload = dc_strdup(&qr[strlen(DC_OPENPGP4FPR_SCHEME)]);
 char* fragment = strchr(payload, '#');
 if (fragment)
 {
@@ -43,9 +43,9 @@ name = dc_urldecode(urlencoded);
 dc_normalize_name(name);
 free(urlencoded);
 }
-invitenumber  = dc_param_get(param, 'i', NULL);
-auth          = dc_param_get(param, 's', NULL);
-grpid  = dc_param_get(param, 'x', NULL);
+invitenumber = dc_param_get(param, 'i', NULL);
+auth = dc_param_get(param, 's', NULL);
+grpid = dc_param_get(param, 'x', NULL);
 if (grpid) {
 urlencoded = dc_param_get(param, 'g', NULL);
 if (urlencoded) {
@@ -94,7 +94,7 @@ else if (strncasecmp(qr, VCARD_BEGIN, strlen(VCARD_BEGIN))==0)
 {
 carray* lines = dc_split_into_lines(qr);
 for (int i = 0; i < carray_count(lines); i++) {
-char* key   = (char*)carray_get(lines, i); dc_trim(key);
+char* key = (char*)carray_get(lines, i); dc_trim(key);
 char* value = strchr(key, ':');
 if (value) {
 *value = 0;
@@ -115,7 +115,7 @@ dc_normalize_name(name);
 dc_free_splitted_lines(lines);
 }
 if (addr) {
-char* temp = dc_urldecode(addr);      free(addr); addr = temp;
+char* temp = dc_urldecode(addr); free(addr); addr = temp;
 temp = dc_addr_normalize(addr); free(addr); addr = temp;
 if (!dc_may_be_valid_addr(addr)) {
 qr_parsed->state = DC_QR_ERROR;
@@ -136,7 +136,7 @@ if (addr==NULL || invitenumber==NULL || auth==NULL)
 {
 if (dc_apeerstate_load_by_fingerprint(peerstate, context->sql, fingerprint)) {
 qr_parsed->state = DC_QR_FPR_OK;
-qr_parsed->id    = dc_add_or_lookup_contact(context, NULL, peerstate->addr, DC_ORIGIN_UNHANDLED_QR_SCAN, NULL);
+qr_parsed->id = dc_add_or_lookup_contact(context, NULL, peerstate->addr, DC_ORIGIN_UNHANDLED_QR_SCAN, NULL);
 dc_create_or_lookup_nchat_by_contact_id(context, qr_parsed->id, DC_CHAT_DEADDROP_BLOCKED, &chat_id, NULL);
 device_msg = dc_mprintf("%s verified.", peerstate->addr);
 }
@@ -155,16 +155,16 @@ qr_parsed->text2 = dc_strdup(grpid);
 else {
 qr_parsed->state = DC_QR_ASK_VERIFYCONTACT;
 }
-qr_parsed->id            = dc_add_or_lookup_contact(context, name, addr, DC_ORIGIN_UNHANDLED_QR_SCAN, NULL);
-qr_parsed->fingerprint   = dc_strdup(fingerprint);
-qr_parsed->invitenumber  = dc_strdup(invitenumber);
-qr_parsed->auth          = dc_strdup(auth);
+qr_parsed->id = dc_add_or_lookup_contact(context, name, addr, DC_ORIGIN_UNHANDLED_QR_SCAN, NULL);
+qr_parsed->fingerprint = dc_strdup(fingerprint);
+qr_parsed->invitenumber = dc_strdup(invitenumber);
+qr_parsed->auth = dc_strdup(auth);
 }
 }
 else if (addr)
 {
 qr_parsed->state = DC_QR_ADDR;
-qr_parsed->id    = dc_add_or_lookup_contact(context, name, addr, DC_ORIGIN_UNHANDLED_QR_SCAN, NULL);
+qr_parsed->id = dc_add_or_lookup_contact(context, name, addr, DC_ORIGIN_UNHANDLED_QR_SCAN, NULL);
 }
 else if (strstr(qr, "http:
 {

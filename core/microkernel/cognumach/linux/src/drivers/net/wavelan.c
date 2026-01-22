@@ -8,21 +8,21 @@ cli();
 return(flags);
 }
 static inline void
-wv_splx(unsigned long	flags)
+wv_splx(unsigned long flags)
 {
 restore_flags(flags);
 }
 static u_char
-wv_irq_to_psa(int	irq)
+wv_irq_to_psa(int irq)
 {
 if(irq < 0 || irq >= NELS(irqvals))
 return 0;
 return irqvals[irq];
 }
 static int
-wv_psa_to_irq(u_char	irqval)
+wv_psa_to_irq(u_char irqval)
 {
-int	irq;
+int irq;
 for(irq = 0; irq < NELS(irqvals); irq++)
 if(irqvals[irq] == irqval)
 return irq;
@@ -32,87 +32,87 @@ return -1;
 static char *
 wv_struct_check(void)
 {
-#define	SC(t,s,n)	if (sizeof(t) != s) return(n);
+#define SC(t,s,n) if (sizeof(t) != s) return(n);
 SC(psa_t, PSA_SIZE, "psa_t");
 SC(mmw_t, MMW_SIZE, "mmw_t");
 SC(mmr_t, MMR_SIZE, "mmr_t");
 SC(ha_t, HA_SIZE, "ha_t");
-#undef	SC
+#undef SC
 return((char *) NULL);
 }
 #endif
 static inline u_short
-hasr_read(u_long	ioaddr)
+hasr_read(u_long ioaddr)
 {
 return(inw(HASR(ioaddr)));
 }
 static inline void
-hacr_write(u_long	ioaddr,
-u_short	hacr)
+hacr_write(u_long ioaddr,
+u_short hacr)
 {
 outw(hacr, HACR(ioaddr));
 }
 static inline void
-hacr_write_slow(u_long	ioaddr,
-u_short	hacr)
+hacr_write_slow(u_long ioaddr,
+u_short hacr)
 {
 hacr_write(ioaddr, hacr);
 udelay(1000L);
 }
 static inline void
-set_chan_attn(u_long	ioaddr,
-u_short	hacr)
+set_chan_attn(u_long ioaddr,
+u_short hacr)
 {
 hacr_write(ioaddr, hacr | HACR_CA);
 }
 static inline void
-wv_hacr_reset(u_long	ioaddr)
+wv_hacr_reset(u_long ioaddr)
 {
 hacr_write_slow(ioaddr, HACR_RESET);
 hacr_write(ioaddr, HACR_DEFAULT);
 }
 static inline void
-wv_16_off(u_long	ioaddr,
-u_short	hacr)
+wv_16_off(u_long ioaddr,
+u_short hacr)
 {
 hacr &= ~HACR_16BITS;
 hacr_write(ioaddr, hacr);
 }
 static inline void
-wv_16_on(u_long		ioaddr,
-u_short	hacr)
+wv_16_on(u_long ioaddr,
+u_short hacr)
 {
 hacr |= HACR_16BITS;
 hacr_write(ioaddr, hacr);
 }
 static inline void
-wv_ints_off(device *	dev)
+wv_ints_off(device * dev)
 {
-net_local *	lp = (net_local *)dev->priv;
-u_long	ioaddr = dev->base_addr;
-u_long	x;
+net_local * lp = (net_local *)dev->priv;
+u_long ioaddr = dev->base_addr;
+u_long x;
 x = wv_splhi();
 lp->hacr &= ~HACR_INTRON;
 hacr_write(ioaddr, lp->hacr);
 wv_splx(x);
 }
 static inline void
-wv_ints_on(device *	dev)
+wv_ints_on(device * dev)
 {
-net_local *	lp = (net_local *)dev->priv;
-u_long	ioaddr = dev->base_addr;
-u_long	x;
+net_local * lp = (net_local *)dev->priv;
+u_long ioaddr = dev->base_addr;
+u_long x;
 x = wv_splhi();
 lp->hacr |= HACR_INTRON;
 hacr_write(ioaddr, lp->hacr);
 wv_splx(x);
 }
 static void
-psa_read(u_long		ioaddr,
-u_short	hacr,
-int		o,
-u_char *	b,
-int		n)
+psa_read(u_long ioaddr,
+u_short hacr,
+int o,
+u_char * b,
+int n)
 {
 wv_16_off(ioaddr, hacr);
 while(n-- > 0)
@@ -124,13 +124,13 @@ o++;
 wv_16_on(ioaddr, hacr);
 }
 static void
-psa_write(u_long	ioaddr,
-u_short	hacr,
-int		o,
-u_char *	b,
-int		n)
+psa_write(u_long ioaddr,
+u_short hacr,
+int o,
+u_char * b,
+int n)
 {
-int	count = 0;
+int count = 0;
 wv_16_off(ioaddr, hacr);
 while(n-- > 0)
 {
@@ -147,12 +147,12 @@ wv_16_on(ioaddr, hacr);
 }
 #ifdef PSA_CRC
 static u_short
-psa_crc(u_short *	psa,
-int		size)
+psa_crc(u_short * psa,
+int size)
 {
-int		byte_cnt;
-u_short	crc_bytes = 0;
-int		bit_cnt;
+int byte_cnt;
+u_short crc_bytes = 0;
+int bit_cnt;
 for(byte_cnt = 0; byte_cnt <= size; byte_cnt++ )
 {
 crc_bytes ^= psa[byte_cnt];
@@ -168,9 +168,9 @@ return crc_bytes;
 }
 #endif
 static inline void
-mmc_out(u_long		ioaddr,
-u_short		o,
-u_char		d)
+mmc_out(u_long ioaddr,
+u_short o,
+u_char d)
 {
 while(inw(HASR(ioaddr)) & HASR_MMC_BUSY)
 ;
@@ -178,10 +178,10 @@ outw((u_short) (((u_short) d << 8) | (o << 1) | 1),
 MMCR(ioaddr));
 }
 static inline void
-mmc_write(u_long	ioaddr,
-u_char	o,
-u_char *	b,
-int		n)
+mmc_write(u_long ioaddr,
+u_char o,
+u_char * b,
+int n)
 {
 o += n;
 b += n;
@@ -189,8 +189,8 @@ while(n-- > 0 )
 mmc_out(ioaddr, --o, *(--b));
 }
 static inline u_char
-mmc_in(u_long	ioaddr,
-u_short	o)
+mmc_in(u_long ioaddr,
+u_short o)
 {
 while(inw(HASR(ioaddr)) & HASR_MMC_BUSY)
 ;
@@ -200,10 +200,10 @@ while(inw(HASR(ioaddr)) & HASR_MMC_BUSY)
 return (u_char) (inw(MMCR(ioaddr)) >> 8);
 }
 static inline void
-mmc_read(u_long		ioaddr,
-u_char		o,
-u_char *	b,
-int		n)
+mmc_read(u_long ioaddr,
+u_char o,
+u_char * b,
+int n)
 {
 o += n;
 b += n;
@@ -211,9 +211,9 @@ while(n-- > 0)
 *(--b) = mmc_in(ioaddr, --o);
 }
 static inline int
-mmc_encr(u_long		ioaddr)
+mmc_encr(u_long ioaddr)
 {
-int	temp;
+int temp;
 temp = mmc_in(ioaddr, mmroff(0, mmr_des_avail));
 if((temp != MMR_DES_AVAIL_DES) && (temp != MMR_DES_AVAIL_AES))
 return 0;
@@ -221,20 +221,20 @@ else
 return temp;
 }
 static inline void
-fee_wait(u_long		ioaddr,
-int		delay,
-int		number)
+fee_wait(u_long ioaddr,
+int delay,
+int number)
 {
-int		count = 0;
+int count = 0;
 while((count++ < number) &&
 (mmc_in(ioaddr, mmroff(0, mmr_fee_status)) & MMR_FEE_STATUS_BUSY))
 udelay(delay);
 }
 static void
-fee_read(u_long		ioaddr,
-u_short	o,
-u_short *	b,
-int		n)
+fee_read(u_long ioaddr,
+u_short o,
+u_short * b,
+int n)
 {
 b += n;
 mmc_out(ioaddr, mmwoff(0, mmw_fee_addr), o + n - 1);
@@ -248,10 +248,10 @@ mmc_in(ioaddr, mmroff(0, mmr_fee_data_l)));
 }
 #ifdef WIRELESS_EXT
 static void
-fee_write(u_long	ioaddr,
-u_short	o,
-u_short *	b,
-int		n)
+fee_write(u_long ioaddr,
+u_short o,
+u_short * b,
+int n)
 {
 b += n;
 #ifdef EEPROM_IS_PROTECTED
@@ -294,31 +294,31 @@ fee_wait(ioaddr, 10, 100);
 #endif
 }
 #endif
-static  void
-obram_read(u_long	ioaddr,
-u_short	o,
-u_char *	b,
-int		n)
+static void
+obram_read(u_long ioaddr,
+u_short o,
+u_char * b,
+int n)
 {
 outw(o, PIOR1(ioaddr));
 insw(PIOP1(ioaddr), (unsigned short *) b, (n + 1) >> 1);
 }
 static inline void
-obram_write(u_long	ioaddr,
-u_short	o,
-u_char *	b,
-int		n)
+obram_write(u_long ioaddr,
+u_short o,
+u_char * b,
+int n)
 {
 outw(o, PIOR1(ioaddr));
 outsw(PIOP1(ioaddr), (unsigned short *) b, (n + 1) >> 1);
 }
 static void
-wv_ack(device *		dev)
+wv_ack(device * dev)
 {
-net_local *	lp = (net_local *)dev->priv;
-u_long	ioaddr = dev->base_addr;
-u_short	scb_cs;
-int		i;
+net_local * lp = (net_local *)dev->priv;
+u_long ioaddr = dev->base_addr;
+u_short scb_cs;
+int i;
 obram_read(ioaddr, scboff(OFFSET_SCB, scb_status),
 (unsigned char *) &scb_cs, sizeof(scb_cs));
 scb_cs &= SCB_ST_INT;
@@ -342,14 +342,14 @@ dev->name);
 #endif
 }
 static inline int
-wv_synchronous_cmd(device *	dev,
-const char *	str)
+wv_synchronous_cmd(device * dev,
+const char * str)
 {
-net_local *	lp = (net_local *)dev->priv;
-u_long	ioaddr = dev->base_addr;
-u_short	scb_cmd;
-ach_t		cb;
-int		i;
+net_local * lp = (net_local *)dev->priv;
+u_long ioaddr = dev->base_addr;
+u_short scb_cmd;
+ach_t cb;
+int i;
 scb_cmd = SCB_CMD_CUC & SCB_CMD_CUC_GO;
 obram_write(ioaddr, scboff(OFFSET_SCB, scb_command),
 (unsigned char *) &scb_cmd, sizeof(scb_cmd));
@@ -377,13 +377,13 @@ wv_ack(dev);
 return 0;
 }
 static inline int
-wv_config_complete(device *	dev,
-u_long	ioaddr,
-net_local *	lp)
+wv_config_complete(device * dev,
+u_long ioaddr,
+net_local * lp)
 {
-unsigned short	mcs_addr;
-unsigned short	status;
-int			ret;
+unsigned short mcs_addr;
+unsigned short status;
+int ret;
 #ifdef DEBUG_INTERRUPT_TRACE
 printk(KERN_DEBUG "%s: ->wv_config_complete()\n", dev->name);
 #endif
@@ -395,8 +395,8 @@ ret = 0;
 else
 {
 #ifdef DEBUG_CONFIG_ERROR
-unsigned short	cfg_addr;
-unsigned short	ias_addr;
+unsigned short cfg_addr;
+unsigned short ias_addr;
 if(status & AC_SFLD_OK != 0)
 printk(KERN_INFO "wv_config_complete(): set_multicast_address failed; status = 0x%x\n",
 dev->name, str, status);
@@ -419,17 +419,17 @@ printk(KERN_DEBUG "%s: <-wv_config_complete() - %d\n", dev->name, ret);
 return ret;
 }
 static int
-wv_complete(device *	dev,
-u_long	ioaddr,
-net_local *	lp)
+wv_complete(device * dev,
+u_long ioaddr,
+net_local * lp)
 {
-int	nreaped = 0;
+int nreaped = 0;
 #ifdef DEBUG_INTERRUPT_TRACE
 printk(KERN_DEBUG "%s: ->wv_complete()\n", dev->name);
 #endif
 while(lp->tx_first_in_use != I82586NULL)
 {
-unsigned short	tx_status;
+unsigned short tx_status;
 obram_read(ioaddr, acoff(lp->tx_first_in_use, ac_status), (unsigned char *)&tx_status, sizeof(tx_status));
 if(tx_status == 0xFFFF)
 if(!wv_config_complete(dev, ioaddr, lp))
@@ -450,7 +450,7 @@ if(tx_status == 0xFFFF)
 continue;
 if(tx_status & AC_SFLD_OK)
 {
-int	ncollisions;
+int ncollisions;
 lp->stats.tx_packets++;
 ncollisions = tx_status & AC_SFLD_MAXCOL;
 lp->stats.collisions += ncollisions;
@@ -528,9 +528,9 @@ printk(KERN_DEBUG "%s: <-wv_complete()\n", dev->name);
 return nreaped;
 }
 static inline void
-wv_82586_reconfig(device *	dev)
+wv_82586_reconfig(device * dev)
 {
-net_local *	lp = (net_local *)dev->priv;
+net_local * lp = (net_local *)dev->priv;
 if(!(dev->start) || (set_bit(0, (void *)&dev->tbusy) != 0))
 {
 lp->reconfig_82586 = 1;
@@ -544,7 +544,7 @@ wv_82586_config(dev);
 }
 #ifdef DEBUG_PSA_SHOW
 static void
-wv_psa_show(psa_t *	p)
+wv_psa_show(psa_t * p)
 {
 printk(KERN_DEBUG "##### WaveLAN psa contents: #####\n");
 printk(KERN_DEBUG "psa_io_base_addr_1: 0x%02X %02X %02X %02X\n",
@@ -628,11 +628,11 @@ printk("psa_crc_status: 0x%02x\n", p->psa_crc_status);
 #endif
 #ifdef DEBUG_MMC_SHOW
 static void
-wv_mmc_show(device *	dev)
+wv_mmc_show(device * dev)
 {
-u_long	ioaddr = dev->base_addr;
-net_local *	lp = (net_local *)dev->priv;
-mmr_t		m;
+u_long ioaddr = dev->base_addr;
+net_local * lp = (net_local *)dev->priv;
+mmr_t m;
 if(hasr_read(ioaddr) & HASR_NO_CLK)
 {
 printk(KERN_WARNING "%s: wv_mmc_show: modem not connected\n",
@@ -703,9 +703,9 @@ printk(KERN_DEBUG "netw_id_l: %x\n", m.mmr_netw_id_l);
 #endif
 #ifdef DEBUG_I82586_SHOW
 static void
-wv_scb_show(u_long	ioaddr)
+wv_scb_show(u_long ioaddr)
 {
-scb_t		scb;
+scb_t scb;
 obram_read(ioaddr, OFFSET_SCB, (unsigned char *)&scb, sizeof(scb));
 printk(KERN_DEBUG "##### WaveLAN system control block: #####\n");
 printk(KERN_DEBUG "status: ");
@@ -755,20 +755,20 @@ printk("rscerrs %d ", scb.scb_rscerrs);
 printk("ovrnerrs %d\n", scb.scb_ovrnerrs);
 }
 static void
-wv_ru_show(device *	dev)
+wv_ru_show(device * dev)
 {
 printk(KERN_DEBUG "##### WaveLAN i82586 receiver unit status: #####\n");
 printk(KERN_DEBUG "ru:");
 printk("\n");
 }
 static void
-wv_cu_show_one(device *		dev,
-net_local *	lp,
-int		i,
-u_short		p)
+wv_cu_show_one(device * dev,
+net_local * lp,
+int i,
+u_short p)
 {
-u_long		ioaddr;
-ac_tx_t		actx;
+u_long ioaddr;
+ac_tx_t actx;
 ioaddr = dev->base_addr;
 printk("%d: 0x%x:", i, p);
 obram_read(ioaddr, p, (unsigned char *)&actx, sizeof(actx));
@@ -777,11 +777,11 @@ printk(" command=0x%x,", actx.tx_h.ac_command);
 printk("|");
 }
 static void
-wv_cu_show(device *	dev)
+wv_cu_show(device * dev)
 {
-net_local *	lp = (net_local *)dev->priv;
-unsigned int	i;
-u_short	p;
+net_local * lp = (net_local *)dev->priv;
+unsigned int i;
+u_short p;
 printk(KERN_DEBUG "##### WaveLAN i82586 command unit status: #####\n");
 printk(KERN_DEBUG);
 for(i = 0, p = lp->tx_first_in_use; i < NTXBLOCKS; i++)
@@ -796,7 +796,7 @@ printk("\n");
 #endif
 #ifdef DEBUG_DEVICE_SHOW
 static void
-wv_dev_show(device *	dev)
+wv_dev_show(device * dev)
 {
 printk(KERN_DEBUG "dev:");
 printk(" start=%d,", dev->start);
@@ -807,7 +807,7 @@ printk(" flags=0x%x,", dev->flags);
 printk("\n");
 }
 static void
-wv_local_show(device *	dev)
+wv_local_show(device * dev)
 {
 net_local *lp;
 lp = (net_local *)dev->priv;
@@ -823,10 +823,10 @@ printk("\n");
 #endif
 #if defined(DEBUG_RX_INFO) || defined(DEBUG_TX_INFO)
 static inline void
-wv_packet_info(u_char *		p,
-int		length,
-char *		msg1,
-char *		msg2)
+wv_packet_info(u_char * p,
+int length,
+char * msg1,
+char * msg2)
 {
 #ifndef DEBUG_PACKET_DUMP
 printk(KERN_DEBUG "%s: %s(): dest %02X:%02X:%02X:%02X:%02X:%02X, length %d\n",
@@ -834,8 +834,8 @@ msg1, msg2, p[0], p[1], p[2], p[3], p[4], p[5], length);
 printk(KERN_DEBUG "%s: %s(): src %02X:%02X:%02X:%02X:%02X:%02X, type 0x%02X%02X\n",
 msg1, msg2, p[6], p[7], p[8], p[9], p[10], p[11], p[12], p[13]);
 #else
-int		i;
-int		maxi;
+int i;
+int maxi;
 printk(KERN_DEBUG "%s: %s(): len=%d, data=\"", msg1, msg2, length);
 if((maxi = length) > DEBUG_PACKET_DUMP)
 maxi = DEBUG_PACKET_DUMP;
@@ -852,12 +852,12 @@ printk(KERN_DEBUG "\n");
 }
 #endif
 static inline void
-wv_init_info(device *	dev)
+wv_init_info(device * dev)
 {
-short		ioaddr = dev->base_addr;
-net_local *	lp = (net_local *)dev->priv;
-psa_t		psa;
-int		i;
+short ioaddr = dev->base_addr;
+net_local * lp = (net_local *)dev->priv;
+psa_t psa;
+int i;
 psa_read(ioaddr, lp->hacr, 0, (unsigned char *) &psa, sizeof(psa));
 #ifdef DEBUG_PSA_SHOW
 wv_psa_show(&psa);
@@ -880,7 +880,7 @@ printk(", nwid off");
 if(!(mmc_in(ioaddr, mmroff(0, mmr_fee_status)) &
 (MMR_FEE_STATUS_DWLD | MMR_FEE_STATUS_BUSY)))
 {
-unsigned short	freq;
+unsigned short freq;
 fee_read(ioaddr, 0x00 ,
 &freq, 1);
 printk(", 2.00, %ld", (freq >> 6) + 2400L);
@@ -934,8 +934,8 @@ printk(" MHz\n");
 printk(KERN_NOTICE "%s", version);
 #endif
 }
-static en_stats	*
-wavelan_get_stats(device *	dev)
+static en_stats *
+wavelan_get_stats(device * dev)
 {
 #ifdef DEBUG_IOCTL_TRACE
 printk(KERN_DEBUG "%s: <>wavelan_get_stats()\n", dev->name);
@@ -943,9 +943,9 @@ printk(KERN_DEBUG "%s: <>wavelan_get_stats()\n", dev->name);
 return(&((net_local *) dev->priv)->stats);
 }
 static void
-wavelan_set_multicast_list(device *	dev)
+wavelan_set_multicast_list(device * dev)
 {
-net_local *	lp = (net_local *) dev->priv;
+net_local * lp = (net_local *) dev->priv;
 #ifdef DEBUG_IOCTL_TRACE
 printk(KERN_DEBUG "%s: ->wavelan_set_multicast_list()\n", dev->name);
 #endif
@@ -992,23 +992,23 @@ printk(KERN_DEBUG "%s: <-wavelan_set_multicast_list()\n", dev->name);
 #endif
 }
 static int
-wavelan_set_mac_address(device *	dev,
-void *		addr)
+wavelan_set_mac_address(device * dev,
+void * addr)
 {
-struct sockaddr *	mac = addr;
+struct sockaddr * mac = addr;
 memcpy(dev->dev_addr, mac->sa_data, WAVELAN_ADDR_SIZE);
 wv_82586_reconfig(dev);
 return 0;
 }
 #ifdef WIRELESS_EXT
 static inline int
-wv_set_frequency(u_long		ioaddr,
-iw_freq *	frequency)
+wv_set_frequency(u_long ioaddr,
+iw_freq * frequency)
 {
-const int	BAND_NUM = 10;
-long		freq = 0L;
+const int BAND_NUM = 10;
+long freq = 0L;
 #ifdef DEBUG_IOCTL_INFO
-int		i;
+int i;
 #endif
 if((frequency->e == 1) &&
 (frequency->m >= (int) 2.412e8) && (frequency->m <= (int) 2.487e8))
@@ -1018,12 +1018,12 @@ freq = ((frequency->m / 10000) - 24000L) / 5;
 if((frequency->e == 0) &&
 (frequency->m >= 0) && (frequency->m < BAND_NUM))
 {
-short	bands[] = { 0x30, 0x58, 0x64, 0x7A, 0x80, 0xA8, 0xD0, 0xF0, 0xF8, 0x150 };
+short bands[] = { 0x30, 0x58, 0x64, 0x7A, 0x80, 0xA8, 0xD0, 0xF0, 0xF8, 0x150 };
 freq = bands[frequency->m] >> 1;
 }
 if(freq != 0L)
 {
-u_short	table[10];
+u_short table[10];
 fee_read(ioaddr, 0x71 ,
 table, 10);
 #ifdef DEBUG_IOCTL_INFO
@@ -1043,13 +1043,13 @@ else
 return -EINVAL;
 if(freq != 0L)
 {
-unsigned short	area[16];
-unsigned short	dac[2];
-unsigned short	area_verify[16];
-unsigned short	dac_verify[2];
-unsigned short	power_limit[] = { 40, 80, 120, 160, 0 };
-int		power_band = 0;
-unsigned short	power_adjust;
+unsigned short area[16];
+unsigned short dac[2];
+unsigned short area_verify[16];
+unsigned short dac_verify[2];
+unsigned short power_limit[] = { 40, 80, 120, 160, 0 };
+int power_band = 0;
+unsigned short power_adjust;
 power_band = 0;
 while((freq > power_limit[power_band]) &&
 (power_limit[++power_band] != 0))
@@ -1123,13 +1123,13 @@ else
 return -EINVAL;
 }
 static inline int
-wv_frequency_list(u_long	ioaddr,
-iw_freq *	list,
-int		max)
+wv_frequency_list(u_long ioaddr,
+iw_freq * list,
+int max)
 {
-u_short	table[10];
-long		freq = 0L;
-int		i;
+u_short table[10];
+long freq = 0L;
+int i;
 fee_read(ioaddr, 0x71 ,
 table, 10);
 i = 0;
@@ -1145,12 +1145,12 @@ return(i);
 }
 #ifdef WIRELESS_SPY
 static inline void
-wl_spy_gather(device *	dev,
-u_char *	mac,
-u_char *	stats)
+wl_spy_gather(device * dev,
+u_char * mac,
+u_char * stats)
 {
-net_local *	lp = (net_local *) dev->priv;
-int		i;
+net_local * lp = (net_local *) dev->priv;
+int i;
 for(i = 0; i < lp->spy_number; i++)
 if(!memcmp(mac, lp->spy_address[i], WAVELAN_ADDR_SIZE))
 {
@@ -1163,12 +1163,12 @@ lp->spy_stat[i].updated = 0x7;
 #endif
 #ifdef HISTOGRAM
 static inline void
-wl_his_gather(device *	dev,
-u_char *	stats)
+wl_his_gather(device * dev,
+u_char * stats)
 {
-net_local *	lp = (net_local *) dev->priv;
-u_char	level = stats[0] & MMR_SIGNAL_LVL;
-int		i;
+net_local * lp = (net_local *) dev->priv;
+u_char level = stats[0] & MMR_SIGNAL_LVL;
+int i;
 i = 0;
 while((i < (lp->his_number - 1)) && (level >= lp->his_range[i++]))
 ;
@@ -1176,17 +1176,17 @@ while((i < (lp->his_number - 1)) && (level >= lp->his_range[i++]))
 }
 #endif
 static int
-wavelan_ioctl(struct device *	dev,
-struct ifreq *	rq,
-int		cmd)
+wavelan_ioctl(struct device * dev,
+struct ifreq * rq,
+int cmd)
 {
-u_long		ioaddr = dev->base_addr;
-net_local *		lp = (net_local *)dev->priv;
-struct iwreq *	wrq = (struct iwreq *) rq;
-psa_t			psa;
-mm_t			m;
-unsigned long		x;
-int			ret = 0;
+u_long ioaddr = dev->base_addr;
+net_local * lp = (net_local *)dev->priv;
+struct iwreq * wrq = (struct iwreq *) rq;
+psa_t psa;
+mm_t m;
+unsigned long x;
+int ret = 0;
 #ifdef DEBUG_IOCTL_TRACE
 printk(KERN_DEBUG "%s: ->wavelan_ioctl(cmd=0x%X)\n", dev->name, cmd);
 #endif
@@ -1236,7 +1236,7 @@ case SIOCGIWFREQ:
 if(!(mmc_in(ioaddr, mmroff(0, mmr_fee_status)) &
 (MMR_FEE_STATUS_DWLD | MMR_FEE_STATUS_BUSY)))
 {
-unsigned short	freq;
+unsigned short freq;
 fee_read(ioaddr, 0x00 ,
 &freq, 1);
 wrq->u.freq.m = ((freq >> 5) * 5 + 24000L) * 10000;
@@ -1244,7 +1244,7 @@ wrq->u.freq.e = 1;
 }
 else
 {
-int	bands[] = { 915e6, 2.425e8, 2.46e8, 2.484e8, 2.4305e8 };
+int bands[] = { 915e6, 2.425e8, 2.46e8, 2.484e8, 2.4305e8 };
 psa_read(ioaddr, lp->hacr, (char *)&psa.psa_subband - (char *)&psa,
 (unsigned char *)&psa.psa_subband, 1);
 if(psa.psa_subband <= 4)
@@ -1277,8 +1277,8 @@ break;
 }
 if(wrq->u.encoding.method)
 {
-int		i;
-long long	key = wrq->u.encoding.code;
+int i;
+long long key = wrq->u.encoding.code;
 for(i = 7; i >= 0; i--)
 {
 psa.psa_encryption_key[i] = key & 0xFF;
@@ -1315,8 +1315,8 @@ break;
 }
 else
 {
-int		i;
-long long	key = 0;
+int i;
+long long key = 0;
 psa_read(ioaddr, lp->hacr,
 (char *) &psa.psa_encryption_select - (char *) &psa,
 (unsigned char *) &psa.psa_encryption_select, 1+8);
@@ -1335,7 +1335,7 @@ break;
 case SIOCGIWRANGE:
 if(wrq->u.data.pointer != (caddr_t) 0)
 {
-struct iw_range	range;
+struct iw_range range;
 ret = verify_area(VERIFY_WRITE, wrq->u.data.pointer,
 sizeof(struct iw_range));
 if(ret)
@@ -1364,12 +1364,12 @@ break;
 case SIOCGIWPRIV:
 if(wrq->u.data.pointer != (caddr_t) 0)
 {
-struct iw_priv_args	priv[] =
+struct iw_priv_args priv[] =
 {
 { SIOCSIPQTHR, IW_PRIV_TYPE_BYTE | IW_PRIV_SIZE_FIXED | 1, 0, "setqualthr" },
 { SIOCGIPQTHR, 0, IW_PRIV_TYPE_BYTE | IW_PRIV_SIZE_FIXED | 1, "getqualthr" },
-{ SIOCSIPHISTO, IW_PRIV_TYPE_BYTE | 16,	0, "sethisto" },
-{ SIOCGIPHISTO, 0,	    IW_PRIV_TYPE_INT | 16, "gethisto" },
+{ SIOCSIPHISTO, IW_PRIV_TYPE_BYTE | 16, 0, "sethisto" },
+{ SIOCGIPHISTO, 0, IW_PRIV_TYPE_INT | 16, "gethisto" },
 };
 ret = verify_area(VERIFY_WRITE, wrq->u.data.pointer,
 sizeof(priv));
@@ -1390,8 +1390,8 @@ break;
 lp->spy_number = wrq->u.data.length;
 if(lp->spy_number > 0)
 {
-struct sockaddr	address[IW_MAX_SPY];
-int			i;
+struct sockaddr address[IW_MAX_SPY];
+int i;
 ret = verify_area(VERIFY_READ, wrq->u.data.pointer,
 sizeof(struct sockaddr) * lp->spy_number);
 if(ret)
@@ -1421,8 +1421,8 @@ case SIOCGIWSPY:
 wrq->u.data.length = lp->spy_number;
 if((lp->spy_number > 0) && (wrq->u.data.pointer != (caddr_t) 0))
 {
-struct sockaddr	address[IW_MAX_SPY];
-int			i;
+struct sockaddr address[IW_MAX_SPY];
+int i;
 ret = verify_area(VERIFY_WRITE, wrq->u.data.pointer,
 (sizeof(iw_qual) + sizeof(struct sockaddr))
 * IW_MAX_SPY);
@@ -1501,13 +1501,13 @@ printk(KERN_DEBUG "%s: <-wavelan_ioctl()\n", dev->name);
 return ret;
 }
 static iw_stats *
-wavelan_get_wireless_stats(device *	dev)
+wavelan_get_wireless_stats(device * dev)
 {
-u_long		ioaddr = dev->base_addr;
-net_local *		lp = (net_local *) dev->priv;
-mmr_t			m;
-iw_stats *		wstats;
-unsigned long		x;
+u_long ioaddr = dev->base_addr;
+net_local * lp = (net_local *) dev->priv;
+mmr_t m;
+iw_stats * wstats;
+unsigned long x;
 #ifdef DEBUG_IOCTL_TRACE
 printk(KERN_DEBUG "%s: ->wavelan_get_wireless_stats()\n", dev->name);
 #endif
@@ -1538,13 +1538,13 @@ return &lp->wstats;
 }
 #endif
 static inline void
-wv_packet_read(device *		dev,
-u_short		buf_off,
-int		sksize)
+wv_packet_read(device * dev,
+u_short buf_off,
+int sksize)
 {
-net_local *		lp = (net_local *) dev->priv;
-u_long		ioaddr = dev->base_addr;
-struct sk_buff *	skb;
+net_local * lp = (net_local *) dev->priv;
+u_long ioaddr = dev->base_addr;
+struct sk_buff * skb;
 #ifdef DEBUG_RX_TRACE
 printk(KERN_DEBUG "%s: ->wv_packet_read(0x%X, %d)\n",
 dev->name, fd_p, sksize);
@@ -1574,7 +1574,7 @@ if(
 #endif
 0)
 {
-u_char	stats[3];
+u_char stats[3];
 mmc_out(ioaddr, mmwoff(0, mmw_freeze), 1);
 mmc_read(ioaddr, mmroff(0, mmr_signal_lvl), stats, 3);
 mmc_out(ioaddr, mmwoff(0, mmw_freeze), 0);
@@ -1597,19 +1597,19 @@ printk(KERN_DEBUG "%s: <-wv_packet_read()\n", dev->name);
 #endif
 }
 static inline void
-wv_receive(device *	dev)
+wv_receive(device * dev)
 {
-u_long	ioaddr = dev->base_addr;
-net_local *	lp = (net_local *)dev->priv;
-int		nreaped = 0;
+u_long ioaddr = dev->base_addr;
+net_local * lp = (net_local *)dev->priv;
+int nreaped = 0;
 #ifdef DEBUG_RX_TRACE
 printk(KERN_DEBUG "%s: ->wv_receive()\n", dev->name);
 #endif
 for(;;)
 {
-fd_t		fd;
-rbd_t		rbd;
-ushort		pkt_len;
+fd_t fd;
+rbd_t rbd;
+ushort pkt_len;
 obram_read(ioaddr, lp->rx_head, (unsigned char *) &fd, sizeof(fd));
 if((fd.fd_status & FD_STATUS_C) != FD_STATUS_C)
 break;
@@ -1719,23 +1719,23 @@ printk(KERN_DEBUG "%s: <-wv_receive()\n", dev->name);
 #endif
 }
 static inline void
-wv_packet_write(device *	dev,
-void *	buf,
-short	length)
+wv_packet_write(device * dev,
+void * buf,
+short length)
 {
-net_local *		lp = (net_local *) dev->priv;
-u_long		ioaddr = dev->base_addr;
-unsigned short	txblock;
-unsigned short	txpred;
-unsigned short	tx_addr;
-unsigned short	nop_addr;
-unsigned short	tbd_addr;
-unsigned short	buf_addr;
-ac_tx_t		tx;
-ac_nop_t		nop;
-tbd_t			tbd;
-int			clen = length;
-unsigned long		x;
+net_local * lp = (net_local *) dev->priv;
+u_long ioaddr = dev->base_addr;
+unsigned short txblock;
+unsigned short txpred;
+unsigned short tx_addr;
+unsigned short nop_addr;
+unsigned short tbd_addr;
+unsigned short buf_addr;
+ac_tx_t tx;
+ac_nop_t nop;
+tbd_t tbd;
+int clen = length;
+unsigned long x;
 #ifdef DEBUG_TX_TRACE
 printk(KERN_DEBUG "%s: ->wv_packet_write(%d)\n", dev->name, length);
 #endif
@@ -1799,10 +1799,10 @@ printk(KERN_DEBUG "%s: <-wv_packet_write()\n", dev->name);
 #endif
 }
 static int
-wavelan_packet_xmit(struct sk_buff *	skb,
-device *		dev)
+wavelan_packet_xmit(struct sk_buff * skb,
+device * dev)
 {
-net_local *	lp = (net_local *)dev->priv;
+net_local * lp = (net_local *)dev->priv;
 #ifdef DEBUG_TX_TRACE
 printk(KERN_DEBUG "%s: ->wavelan_packet_xmit(0x%X)\n", dev->name,
 (unsigned) skb);
@@ -1842,13 +1842,13 @@ printk(KERN_DEBUG "%s: <-wavelan_packet_xmit()\n", dev->name);
 return 0;
 }
 static inline int
-wv_mmc_init(device *	dev)
+wv_mmc_init(device * dev)
 {
-u_long	ioaddr = dev->base_addr;
-net_local *	lp = (net_local *)dev->priv;
-psa_t		psa;
-mmw_t		m;
-int		configured;
+u_long ioaddr = dev->base_addr;
+net_local * lp = (net_local *)dev->priv;
+psa_t psa;
+mmw_t m;
+int configured;
 #ifdef DEBUG_CONFIG_TRACE
 printk(KERN_DEBUG "%s: ->wv_mmc_init()\n", dev->name);
 #endif
@@ -1934,16 +1934,16 @@ printk(KERN_DEBUG "%s: <-wv_mmc_init()\n", dev->name);
 return 0;
 }
 static inline int
-wv_ru_start(device *	dev)
+wv_ru_start(device * dev)
 {
-net_local *	lp = (net_local *) dev->priv;
-u_long	ioaddr = dev->base_addr;
-u_short	scb_cs;
-fd_t		fd;
-rbd_t		rbd;
-u_short	rx;
-u_short	rx_next;
-int		i;
+net_local * lp = (net_local *) dev->priv;
+u_long ioaddr = dev->base_addr;
+u_short scb_cs;
+fd_t fd;
+rbd_t rbd;
+u_short rx;
+u_short rx_next;
+int i;
 #ifdef DEBUG_CONFIG_TRACE
 printk(KERN_DEBUG "%s: ->wv_ru_start()\n", dev->name);
 #endif
@@ -1996,14 +1996,14 @@ printk(KERN_DEBUG "%s: <-wv_ru_start()\n", dev->name);
 return 0;
 }
 static inline int
-wv_cu_start(device *	dev)
+wv_cu_start(device * dev)
 {
-net_local *	lp = (net_local *) dev->priv;
-u_long	ioaddr = dev->base_addr;
-int		i;
-u_short	txblock;
-u_short	first_nop;
-u_short	scb_cs;
+net_local * lp = (net_local *) dev->priv;
+u_long ioaddr = dev->base_addr;
+int i;
+u_short txblock;
+u_short first_nop;
+u_short scb_cs;
 #ifdef DEBUG_CONFIG_TRACE
 printk(KERN_DEBUG "%s: ->wv_cu_start()\n", dev->name);
 #endif
@@ -2013,13 +2013,13 @@ for(i = 0, txblock = OFFSET_CU;
 i < NTXBLOCKS;
 i++, txblock += TXBLOCKZ)
 {
-ac_tx_t		tx;
-ac_nop_t		nop;
-tbd_t		tbd;
-unsigned short	tx_addr;
-unsigned short	nop_addr;
-unsigned short	tbd_addr;
-unsigned short	buf_addr;
+ac_tx_t tx;
+ac_nop_t nop;
+tbd_t tbd;
+unsigned short tx_addr;
+unsigned short nop_addr;
+unsigned short tbd_addr;
+unsigned short buf_addr;
 tx_addr = txblock;
 nop_addr = tx_addr + sizeof(tx);
 tbd_addr = nop_addr + sizeof(nop);
@@ -2070,16 +2070,16 @@ printk(KERN_DEBUG "%s: <-wv_cu_start()\n", dev->name);
 return 0;
 }
 static inline int
-wv_82586_start(device *	dev)
+wv_82586_start(device * dev)
 {
-net_local *	lp = (net_local *) dev->priv;
-u_long	ioaddr = dev->base_addr;
-scp_t		scp;
-iscp_t	iscp;
-scb_t		scb;
-ach_t		cb;
-u_char	zeroes[512];
-int		i;
+net_local * lp = (net_local *) dev->priv;
+u_long ioaddr = dev->base_addr;
+scp_t scp;
+iscp_t iscp;
+scb_t scb;
+ach_t cb;
+u_char zeroes[512];
+int i;
 #ifdef DEBUG_CONFIG_TRACE
 printk(KERN_DEBUG "%s: ->wv_82586_start()\n", dev->name);
 #endif
@@ -2155,25 +2155,25 @@ printk(KERN_DEBUG "%s: <-wv_82586_start()\n", dev->name);
 return 0;
 }
 static void
-wv_82586_config(device *	dev)
+wv_82586_config(device * dev)
 {
-net_local *		lp = (net_local *) dev->priv;
-u_long		ioaddr = dev->base_addr;
-unsigned short	txblock;
-unsigned short	txpred;
-unsigned short	tx_addr;
-unsigned short	nop_addr;
-unsigned short	tbd_addr;
-unsigned short	cfg_addr;
-unsigned short	ias_addr;
-unsigned short	mcs_addr;
-ac_tx_t		tx;
-ac_nop_t		nop;
-ac_cfg_t		cfg;
-ac_ias_t		ias;
-ac_mcs_t		mcs;
-struct dev_mc_list *	dmi;
-unsigned long		x;
+net_local * lp = (net_local *) dev->priv;
+u_long ioaddr = dev->base_addr;
+unsigned short txblock;
+unsigned short txpred;
+unsigned short tx_addr;
+unsigned short nop_addr;
+unsigned short tbd_addr;
+unsigned short cfg_addr;
+unsigned short ias_addr;
+unsigned short mcs_addr;
+ac_tx_t tx;
+ac_nop_t nop;
+ac_cfg_t cfg;
+ac_ias_t ias;
+ac_mcs_t mcs;
+struct dev_mc_list * dmi;
+unsigned long x;
 #ifdef DEBUG_CONFIG_TRACE
 printk(KERN_DEBUG "%s: ->wv_82586_config()\n", dev->name);
 #endif
@@ -2205,13 +2205,13 @@ obram_write(ioaddr, toff(ac_nop_t, nop_addr, nop_h.ac_link),
 (unsigned char *) &nop.nop_h.ac_link,
 sizeof(nop.nop_h.ac_link));
 memset(&cfg, 0x00, sizeof(cfg));
-#if	0
-cfg.fifolim_bytecnt 	= 0x080c;
-cfg.addrlen_mode  	= 0x2600;
-cfg.linprio_interframe	= 0x7820;
-cfg.slot_time      	= 0xf00c;
-cfg.hardware	     	= 0x0008;
-cfg.min_frame_len   	= 0x0040;
+#if 0
+cfg.fifolim_bytecnt = 0x080c;
+cfg.addrlen_mode = 0x2600;
+cfg.linprio_interframe = 0x7820;
+cfg.slot_time = 0xf00c;
+cfg.hardware = 0x0008;
+cfg.min_frame_len = 0x0040;
 #endif
 cfg.cfg_byte_cnt = AC_CFG_BYTE_CNT(sizeof(ac_cfg_t) - sizeof(ach_t));
 cfg.cfg_fifolim = AC_CFG_FIFOLIM(8);
@@ -2294,11 +2294,11 @@ printk(KERN_DEBUG "%s: <-wv_82586_config()\n", dev->name);
 #endif
 }
 static inline void
-wv_82586_stop(device *	dev)
+wv_82586_stop(device * dev)
 {
-net_local *	lp = (net_local *) dev->priv;
-u_long	ioaddr = dev->base_addr;
-u_short	scb_cmd;
+net_local * lp = (net_local *) dev->priv;
+u_long ioaddr = dev->base_addr;
+u_short scb_cmd;
 #ifdef DEBUG_CONFIG_TRACE
 printk(KERN_DEBUG "%s: ->wv_82586_stop()\n", dev->name);
 #endif
@@ -2312,10 +2312,10 @@ printk(KERN_DEBUG "%s: <-wv_82586_stop()\n", dev->name);
 #endif
 }
 static int
-wv_hw_reset(device *	dev)
+wv_hw_reset(device * dev)
 {
-net_local *	lp = (net_local *)dev->priv;
-u_long	ioaddr = dev->base_addr;
+net_local * lp = (net_local *)dev->priv;
+u_long ioaddr = dev->base_addr;
 #ifdef DEBUG_CONFIG_TRACE
 printk(KERN_DEBUG "%s: ->wv_hw_reset(dev=0x%x)\n", dev->name,
 (unsigned int)dev);
@@ -2339,12 +2339,12 @@ printk(KERN_DEBUG "%s: <-wv_hw_reset()\n", dev->name);
 return 0;
 }
 static int
-wv_check_ioaddr(u_long		ioaddr,
-u_char *	mac)
+wv_check_ioaddr(u_long ioaddr,
+u_char * mac)
 {
-int		i;
+int i;
 if(check_region(ioaddr, sizeof(ha_t)))
-return  EADDRINUSE;
+return EADDRINUSE;
 wv_hacr_reset(ioaddr);
 psa_read(ioaddr, HACR_DEFAULT, psaoff(0, psa_univ_mac_addr),
 mac, 6);
@@ -2360,16 +2360,16 @@ ioaddr, mac[0], mac[1], mac[2]);
 return ENODEV;
 }
 static void
-wavelan_interrupt(int			irq,
-void *		dev_id,
-struct pt_regs *	regs)
+wavelan_interrupt(int irq,
+void * dev_id,
+struct pt_regs * regs)
 {
-device *	dev;
-u_long	ioaddr;
-net_local *	lp;
-u_short	hasr;
-u_short	status;
-u_short	ack_cmd;
+device * dev;
+u_long ioaddr;
+net_local * lp;
+u_short hasr;
+u_short status;
+u_short ack_cmd;
 if((dev = (device *) (irq2dev_map[irq])) == (device *) NULL)
 {
 #ifdef DEBUG_INTERRUPT_ERROR
@@ -2391,7 +2391,7 @@ dev->name);
 dev->interrupt = 1;
 if((hasr = hasr_read(ioaddr)) & HASR_MMC_INTR)
 {
-u_char	dce_status;
+u_char dce_status;
 mmc_read(ioaddr, mmroff(0, mmr_dce_status), &dce_status, sizeof(dce_status));
 #ifdef DEBUG_INTERRUPT_ERROR
 printk(KERN_INFO "%s: wavelan_interrupt(): unexpected mmc interrupt: status 0x%04x.\n",
@@ -2464,13 +2464,13 @@ printk(KERN_DEBUG "%s: <-wavelan_interrupt()\n", dev->name);
 #endif
 }
 static void
-wavelan_watchdog(u_long		a)
+wavelan_watchdog(u_long a)
 {
-device *		dev;
-net_local *		lp;
-u_long		ioaddr;
-unsigned long		x;
-unsigned int		nreaped;
+device * dev;
+net_local * lp;
+u_long ioaddr;
+unsigned long x;
+unsigned int nreaped;
 dev = (device *) a;
 ioaddr = dev->base_addr;
 lp = (net_local *) dev->priv;
@@ -2497,7 +2497,7 @@ dev->name, nreaped, lp->tx_n_in_use);
 #endif
 #ifdef DEBUG_PSA_SHOW
 {
-psa_t		psa;
+psa_t psa;
 psa_read(dev, 0, (unsigned char *) &psa, sizeof(psa));
 wv_psa_show(&psa);
 }
@@ -2528,9 +2528,9 @@ printk(KERN_DEBUG "%s: <-wavelan_watchdog()\n", dev->name);
 #endif
 }
 static int
-wavelan_open(device *	dev)
+wavelan_open(device * dev)
 {
-u_long	x;
+u_long x;
 #ifdef DEBUG_CALLBACK_TRACE
 printk(KERN_DEBUG "%s: ->wavelan_open(dev=0x%x)\n", dev->name,
 (unsigned int) dev);
@@ -2576,9 +2576,9 @@ printk(KERN_DEBUG "%s: <-wavelan_open()\n", dev->name);
 return 0;
 }
 static int
-wavelan_close(device *	dev)
+wavelan_close(device * dev)
 {
-net_local *	lp = (net_local *)dev->priv;
+net_local * lp = (net_local *)dev->priv;
 #ifdef DEBUG_CALLBACK_TRACE
 printk(KERN_DEBUG "%s: ->wavelan_close(dev=0x%x)\n", dev->name,
 (unsigned int) dev);
@@ -2599,12 +2599,12 @@ printk(KERN_DEBUG "%s: <-wavelan_close()\n", dev->name);
 return 0;
 }
 static int
-wavelan_config(device *	dev)
+wavelan_config(device * dev)
 {
-u_long	ioaddr = dev->base_addr;
-u_char	irq_mask;
-int		irq;
-net_local *	lp;
+u_long ioaddr = dev->base_addr;
+u_char irq_mask;
+int irq;
+net_local * lp;
 #ifdef DEBUG_CALLBACK_TRACE
 printk(KERN_DEBUG "%s: ->wavelan_config(dev=0x%x, ioaddr=0x%x)\n", dev->name,
 (unsigned int)dev, ioaddr);
@@ -2677,17 +2677,17 @@ printk(KERN_DEBUG "%s: <-wavelan_config()\n", dev->name);
 return 0;
 }
 int
-wavelan_probe(device *	dev)
+wavelan_probe(device * dev)
 {
-short		base_addr;
-mac_addr	mac;
-int		i;
-int		r;
+short base_addr;
+mac_addr mac;
+int i;
+int r;
 #ifdef DEBUG_CALLBACK_TRACE
 printk(KERN_DEBUG "%s: ->wavelan_probe(dev=0x%x (base_addr=0x%x))\n",
 dev->name, (unsigned int)dev, (unsigned int)dev->base_addr);
 #endif
-#ifdef	STRUCT_CHECK
+#ifdef STRUCT_CHECK
 if (wv_struct_check() != (char *) NULL)
 {
 printk(KERN_WARNING "%s: wavelan_probe(): structure/compiler botch: \"%s\"\n",
@@ -2743,13 +2743,13 @@ dev->name);
 #endif
 return ENODEV;
 }
-#ifdef	MODULE
+#ifdef MODULE
 int
 init_module(void)
 {
-mac_addr	mac;
-int		ret = 0;
-int		i;
+mac_addr mac;
+int ret = 0;
+int i;
 #ifdef DEBUG_MODULE_TRACE
 printk(KERN_DEBUG "-> init_module()\n");
 #endif
@@ -2767,7 +2767,7 @@ while((io[++i] != 0) && (i < NELS(io)))
 {
 if(wv_check_ioaddr(io[i], mac) == 0)
 {
-device *	dev;
+device * dev;
 dev = kmalloc(sizeof(struct device), GFP_KERNEL);
 memset(dev, 0x00, sizeof(struct device));
 dev->name = name[i];
@@ -2799,7 +2799,7 @@ printk(KERN_DEBUG "-> cleanup_module()\n");
 #endif
 while(wavelan_list != (net_local *) NULL)
 {
-device *	dev = wavelan_list->dev;
+device * dev = wavelan_list->dev;
 #ifdef DEBUG_CONFIG_INFO
 printk(KERN_DEBUG "%s: cleanup_module(): removing device at 0x%x\n",
 dev->name, (unsigned int) dev);

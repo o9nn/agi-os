@@ -1,25 +1,25 @@
 #pragma src "/sys/src/libthread"
 #pragma lib "libthread.a"
-#pragma	varargck	argpos	chanprint	2
-typedef struct Alt	Alt;
-typedef struct Channel	Channel;
-typedef struct Ref	Ref;
+#pragma varargck argpos chanprint 2
+typedef struct Alt Alt;
+typedef struct Channel Channel;
+typedef struct Ref Ref;
 enum {
 Nqwds = 2,
 Nqshift = 5,
-Nqmask =  -1,
+Nqmask = -1,
 Nqbits = (1 << Nqshift) * 2,
 };
 struct Channel {
-int	s;
-uint	f;
-uint	n;
-int	e;
-int	freed;
+int s;
+uint f;
+uint n;
+int e;
+int freed;
 volatile Alt **qentry;
 volatile int nentry;
 volatile int closed;
-uchar	v[1];
+uchar v[1];
 };
 typedef enum {
 CHANEND,
@@ -29,77 +29,77 @@ CHANNOP,
 CHANNOBLK,
 } ChanOp;
 struct Alt {
-Channel	*c;
-void	*v;
-ChanOp	op;
-char	*err;
-Channel	**tag;
-int	entryno;
+Channel *c;
+void *v;
+ChanOp op;
+char *err;
+Channel **tag;
+int entryno;
 };
 struct Ref {
-long	ref;
+long ref;
 };
-int	alt(Alt alts[]);
-int	chanclose(Channel*);
-int	chanclosing(Channel *c);
+int alt(Alt alts[]);
+int chanclose(Channel*);
+int chanclosing(Channel *c);
 Channel*chancreate(int elemsize, int bufsize);
-int	chaninit(Channel *c, int elemsize, int elemcnt);
-void	chanfree(Channel *c);
-int	chanprint(Channel *, char *, ...);
-long	decref(Ref *r);
-void	incref(Ref *r);
-int	nbrecv(Channel *c, void *v);
-void*	nbrecvp(Channel *c);
-ulong	nbrecvul(Channel *c);
-int	nbsend(Channel *c, void *v);
-int	nbsendp(Channel *c, void *v);
-int	nbsendul(Channel *c, ulong v);
-void	needstack(int);
-int	proccreate(void (*f)(void *arg), void *arg, uint stacksize);
-int	procrfork(void (*f)(void *arg), void *arg, uint stacksize, int flag);
-void**	procdata(void);
-void	procexec(Channel *, char *, char *[]);
-void	procexecl(Channel *, char *, ...);
-int	recv(Channel *c, void *v);
-void*	recvp(Channel *c);
-ulong	recvul(Channel *c);
-int	send(Channel *c, void *v);
-int	sendp(Channel *c, void *v);
-int	sendul(Channel *c, ulong v);
-int	threadcreate(void (*f)(void *arg), void *arg, uint stacksize);
-void**	threaddata(void);
-void	threadexits(char *);
-void	threadexitsall(char *);
-int	threadgetgrp(void);
-char*	threadgetname(void);
-void	threadint(int);
-void	threadintgrp(int);
-void	threadkill(int);
-void	threadkillgrp(int);
-void	threadmain(int argc, char *argv[]);
-void	threadnonotes(void);
-int	threadnotify(int (*f)(void*, char*), int in);
-int	threadid(void);
-int	threadpid(int);
-int	threadsetgrp(int);
-void	threadsetname(char *fmt, ...);
+int chaninit(Channel *c, int elemsize, int elemcnt);
+void chanfree(Channel *c);
+int chanprint(Channel *, char *, ...);
+long decref(Ref *r);
+void incref(Ref *r);
+int nbrecv(Channel *c, void *v);
+void* nbrecvp(Channel *c);
+ulong nbrecvul(Channel *c);
+int nbsend(Channel *c, void *v);
+int nbsendp(Channel *c, void *v);
+int nbsendul(Channel *c, ulong v);
+void needstack(int);
+int proccreate(void (*f)(void *arg), void *arg, uint stacksize);
+int procrfork(void (*f)(void *arg), void *arg, uint stacksize, int flag);
+void** procdata(void);
+void procexec(Channel *, char *, char *[]);
+void procexecl(Channel *, char *, ...);
+int recv(Channel *c, void *v);
+void* recvp(Channel *c);
+ulong recvul(Channel *c);
+int send(Channel *c, void *v);
+int sendp(Channel *c, void *v);
+int sendul(Channel *c, ulong v);
+int threadcreate(void (*f)(void *arg), void *arg, uint stacksize);
+void** threaddata(void);
+void threadexits(char *);
+void threadexitsall(char *);
+int threadgetgrp(void);
+char* threadgetname(void);
+void threadint(int);
+void threadintgrp(int);
+void threadkill(int);
+void threadkillgrp(int);
+void threadmain(int argc, char *argv[]);
+void threadnonotes(void);
+int threadnotify(int (*f)(void*, char*), int in);
+int threadid(void);
+int threadpid(int);
+int threadsetgrp(int);
+void threadsetname(char *fmt, ...);
 Channel*threadwaitchan(void);
-int	tprivalloc(void);
-void	tprivfree(int);
-void	**tprivaddr(int);
-void	yield(void);
-extern	int	mainstacksize;
+int tprivalloc(void);
+void tprivfree(int);
+void **tprivaddr(int);
+void yield(void);
+extern int mainstacksize;
 typedef struct Ioproc Ioproc;
 #pragma incomplete Ioproc
-Ioproc*	ioproc(void);
-void	closeioproc(Ioproc*);
-void	iointerrupt(Ioproc*);
-int	ioclose(Ioproc*, int);
-int	iodial(Ioproc*, char*, char*, char*, int*);
-int	ioopen(Ioproc*, char*, int);
-long	ioread(Ioproc*, int, void*, long);
-long	ioreadn(Ioproc*, int, void*, long);
-long	iowrite(Ioproc*, int, void*, long);
-int	iosleep(Ioproc*, long);
-long	iocall(Ioproc*, long (*)(va_list*), ...);
-void	ioret(Ioproc*, int);
+Ioproc* ioproc(void);
+void closeioproc(Ioproc*);
+void iointerrupt(Ioproc*);
+int ioclose(Ioproc*, int);
+int iodial(Ioproc*, char*, char*, char*, int*);
+int ioopen(Ioproc*, char*, int);
+long ioread(Ioproc*, int, void*, long);
+long ioreadn(Ioproc*, int, void*, long);
+long iowrite(Ioproc*, int, void*, long);
+int iosleep(Ioproc*, long);
+long iocall(Ioproc*, long (*)(va_list*), ...);
+void ioret(Ioproc*, int);

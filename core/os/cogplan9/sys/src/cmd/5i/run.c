@@ -3,150 +3,150 @@
 #include <bio.h>
 #include <mach.h>
 #include "arm.h"
-static	int	dummy;
-static	char*	shtype[4] =
+static int dummy;
+static char* shtype[4] =
 {
 "<<",
 ">>",
 "->",
 "@>",
 };
-static	char*	cond[16] =
+static char* cond[16] =
 {
-".EQ",	".NE",	".HS",	".LO",
-".MI",	".PL",	".VS",	".VC",
-".HI",	".LS",	".GE",	".LT",
-".GT",	".LE",	"",	".NO",
+".EQ", ".NE", ".HS", ".LO",
+".MI", ".PL", ".VS", ".VC",
+".HI", ".LS", ".GE", ".LT",
+".GT", ".LE", "", ".NO",
 };
-void	Idp0(ulong);
-void	Idp1(ulong);
-void	Idp2(ulong);
-void	Idp3(ulong);
-void	Imul(ulong);
-void	Imula(ulong);
-void	Imull(ulong);
-void	Iswap(ulong);
-void	Imem1(ulong);
-void	Imem2(ulong);
-void	Ilsm(ulong inst);
-void	Ib(ulong);
-void	Ibl(ulong);
-void	Ssyscall(ulong);
+void Idp0(ulong);
+void Idp1(ulong);
+void Idp2(ulong);
+void Idp3(ulong);
+void Imul(ulong);
+void Imula(ulong);
+void Imull(ulong);
+void Iswap(ulong);
+void Imem1(ulong);
+void Imem2(ulong);
+void Ilsm(ulong inst);
+void Ib(ulong);
+void Ibl(ulong);
+void Ssyscall(ulong);
 Inst itab[] =
 {
-{ Idp0,		"AND",	Iarith },
-{ Idp0,		"EOR",	Iarith },
-{ Idp0,		"SUB",	Iarith },
-{ Idp0,		"RSB",	Iarith },
-{ Idp0,		"ADD",	Iarith },
-{ Idp0,		"ADC",	Iarith },
-{ Idp0,		"SBC",	Iarith },
-{ Idp0,		"RSC",	Iarith },
-{ Idp0,		"TST",	Iarith },
-{ Idp0,		"TEQ",	Iarith },
-{ Idp0,		"CMP",	Iarith },
-{ Idp0,		"CMN",	Iarith },
-{ Idp0,		"ORR",	Iarith },
-{ Idp0,		"MOV",	Iarith },
-{ Idp0,		"BIC",	Iarith },
-{ Idp0,		"MVN",	Iarith },
-{ Idp1,		"AND",	Iarith },
-{ Idp1,		"EOR",	Iarith },
-{ Idp1,		"SUB",	Iarith },
-{ Idp1,		"RSB",	Iarith },
-{ Idp1,		"ADD",	Iarith },
-{ Idp1,		"ADC",	Iarith },
-{ Idp1,		"SBC",	Iarith },
-{ Idp1,		"RSC",	Iarith },
-{ Idp1,		"TST",	Iarith },
-{ Idp1,		"TEQ",	Iarith },
-{ Idp1,		"CMP",	Iarith },
-{ Idp1,		"CMN",	Iarith },
-{ Idp1,		"ORR",	Iarith },
-{ Idp1,		"MOV",	Iarith },
-{ Idp1,		"BIC",	Iarith },
-{ Idp1,		"MVN",	Iarith },
-{ Idp2,		"AND",	Iarith },
-{ Idp2,		"EOR",	Iarith },
-{ Idp2,		"SUB",	Iarith },
-{ Idp2,		"RSB",	Iarith },
-{ Idp2,		"ADD",	Iarith },
-{ Idp2,		"ADC",	Iarith },
-{ Idp2,		"SBC",	Iarith },
-{ Idp2,		"RSC",	Iarith },
-{ Idp2,		"TST",	Iarith },
-{ Idp2,		"TEQ",	Iarith },
-{ Idp2,		"CMP",	Iarith },
-{ Idp2,		"CMN",	Iarith },
-{ Idp2,		"ORR",	Iarith },
-{ Idp2,		"MOV",	Iarith },
-{ Idp2,		"BIC",	Iarith },
-{ Idp2,		"MVN",	Iarith },
-{ Idp3,		"AND",	Iarith },
-{ Idp3,		"EOR",	Iarith },
-{ Idp3,		"SUB",	Iarith },
-{ Idp3,		"RSB",	Iarith },
-{ Idp3,		"ADD",	Iarith },
-{ Idp3,		"ADC",	Iarith },
-{ Idp3,		"SBC",	Iarith },
-{ Idp3,		"RSC",	Iarith },
-{ Idp3,		"TST",	Iarith },
-{ Idp3,		"TEQ",	Iarith },
-{ Idp3,		"CMP",	Iarith },
-{ Idp3,		"CMN",	Iarith },
-{ Idp3,		"ORR",	Iarith },
-{ Idp3,		"MOV",	Iarith },
-{ Idp3,		"BIC",	Iarith },
-{ Idp3,		"MVN",	Iarith },
-{ Imul,		"MUL",	Iarith },
-{ Imula,	"MULA",	Iarith },
-{ Iswap,	"SWPW",	Imem },
-{ Iswap,	"SWPBU",	Imem },
-{ Imem2,	"MOV",	Imem },
-{ Imem2,	"MOV",	Imem },
-{ Imem2,	"MOV",	Imem },
-{ Imem2,	"MOV",	Imem },
-{ Imem1,	"MOVW",	Imem },
-{ Imem1,	"MOVB",	Imem },
-{ Imem1,	"MOVW",	Imem },
-{ Imem1,	"MOVB",	Imem },
-{ Imem1,	"MOVW",	Imem },
-{ Imem1,	"MOVB",	Imem },
-{ Imem1,	"MOVW",	Imem },
-{ Imem1,	"MOVB",	Imem },
-{ Ilsm,		"LDM",	Imem },
-{ Ilsm,		"STM",	Imem },
-{ Ib,		"B",	Ibranch },
-{ Ibl,		"BL",	Ibranch },
-{ Ssyscall,	"SWI",	Isyscall },
-{ undef,	"undef" },
-{ undef,	"undef" },
-{ undef,	"undef"  },
-{ Imull,	"MULLU",	Iarith },
-{ Imull,	"MULALU",	Iarith },
-{ Imull,	"MULL",	Iarith  },
-{ Imull,	"MULAL",	Iarith  },
-{ undef,	"undef"  },
+{ Idp0, "AND", Iarith },
+{ Idp0, "EOR", Iarith },
+{ Idp0, "SUB", Iarith },
+{ Idp0, "RSB", Iarith },
+{ Idp0, "ADD", Iarith },
+{ Idp0, "ADC", Iarith },
+{ Idp0, "SBC", Iarith },
+{ Idp0, "RSC", Iarith },
+{ Idp0, "TST", Iarith },
+{ Idp0, "TEQ", Iarith },
+{ Idp0, "CMP", Iarith },
+{ Idp0, "CMN", Iarith },
+{ Idp0, "ORR", Iarith },
+{ Idp0, "MOV", Iarith },
+{ Idp0, "BIC", Iarith },
+{ Idp0, "MVN", Iarith },
+{ Idp1, "AND", Iarith },
+{ Idp1, "EOR", Iarith },
+{ Idp1, "SUB", Iarith },
+{ Idp1, "RSB", Iarith },
+{ Idp1, "ADD", Iarith },
+{ Idp1, "ADC", Iarith },
+{ Idp1, "SBC", Iarith },
+{ Idp1, "RSC", Iarith },
+{ Idp1, "TST", Iarith },
+{ Idp1, "TEQ", Iarith },
+{ Idp1, "CMP", Iarith },
+{ Idp1, "CMN", Iarith },
+{ Idp1, "ORR", Iarith },
+{ Idp1, "MOV", Iarith },
+{ Idp1, "BIC", Iarith },
+{ Idp1, "MVN", Iarith },
+{ Idp2, "AND", Iarith },
+{ Idp2, "EOR", Iarith },
+{ Idp2, "SUB", Iarith },
+{ Idp2, "RSB", Iarith },
+{ Idp2, "ADD", Iarith },
+{ Idp2, "ADC", Iarith },
+{ Idp2, "SBC", Iarith },
+{ Idp2, "RSC", Iarith },
+{ Idp2, "TST", Iarith },
+{ Idp2, "TEQ", Iarith },
+{ Idp2, "CMP", Iarith },
+{ Idp2, "CMN", Iarith },
+{ Idp2, "ORR", Iarith },
+{ Idp2, "MOV", Iarith },
+{ Idp2, "BIC", Iarith },
+{ Idp2, "MVN", Iarith },
+{ Idp3, "AND", Iarith },
+{ Idp3, "EOR", Iarith },
+{ Idp3, "SUB", Iarith },
+{ Idp3, "RSB", Iarith },
+{ Idp3, "ADD", Iarith },
+{ Idp3, "ADC", Iarith },
+{ Idp3, "SBC", Iarith },
+{ Idp3, "RSC", Iarith },
+{ Idp3, "TST", Iarith },
+{ Idp3, "TEQ", Iarith },
+{ Idp3, "CMP", Iarith },
+{ Idp3, "CMN", Iarith },
+{ Idp3, "ORR", Iarith },
+{ Idp3, "MOV", Iarith },
+{ Idp3, "BIC", Iarith },
+{ Idp3, "MVN", Iarith },
+{ Imul, "MUL", Iarith },
+{ Imula, "MULA", Iarith },
+{ Iswap, "SWPW", Imem },
+{ Iswap, "SWPBU", Imem },
+{ Imem2, "MOV", Imem },
+{ Imem2, "MOV", Imem },
+{ Imem2, "MOV", Imem },
+{ Imem2, "MOV", Imem },
+{ Imem1, "MOVW", Imem },
+{ Imem1, "MOVB", Imem },
+{ Imem1, "MOVW", Imem },
+{ Imem1, "MOVB", Imem },
+{ Imem1, "MOVW", Imem },
+{ Imem1, "MOVB", Imem },
+{ Imem1, "MOVW", Imem },
+{ Imem1, "MOVB", Imem },
+{ Ilsm, "LDM", Imem },
+{ Ilsm, "STM", Imem },
+{ Ib, "B", Ibranch },
+{ Ibl, "BL", Ibranch },
+{ Ssyscall, "SWI", Isyscall },
+{ undef, "undef" },
+{ undef, "undef" },
+{ undef, "undef" },
+{ Imull, "MULLU", Iarith },
+{ Imull, "MULALU", Iarith },
+{ Imull, "MULL", Iarith },
+{ Imull, "MULAL", Iarith },
+{ undef, "undef" },
 { 0 }
 };
 int
 runcmp(void)
 {
 switch(reg.cond) {
-case 0x0:		return (reg.cc1 == reg.cc2);
-case 0x1:		return (reg.cc1 != reg.cc2);
-case 0x2:		return ((ulong)reg.cc1 >= (ulong)reg.cc2);
-case 0x3:		return ((ulong)reg.cc1 < (ulong)reg.cc2);
-case 0x4:		return (reg.cc1 - reg.cc2 < 0);
-case 0x5:		return (reg.cc1 - reg.cc2 >= 0);
-case 0x8:		return ((ulong)reg.cc1 > (ulong)reg.cc2);
-case 0x9:		return ((ulong)reg.cc1 <= (ulong)reg.cc2);
-case 0xa:		return (reg.cc1 >= reg.cc2);
-case 0xb:		return (reg.cc1 < reg.cc2);
-case 0xc:		return (reg.cc1 > reg.cc2);
-case 0xd:		return (reg.cc1 <= reg.cc2);
-case 0xe:		return 1;
-case 0xf:		return 0;
+case 0x0: return (reg.cc1 == reg.cc2);
+case 0x1: return (reg.cc1 != reg.cc2);
+case 0x2: return ((ulong)reg.cc1 >= (ulong)reg.cc2);
+case 0x3: return ((ulong)reg.cc1 < (ulong)reg.cc2);
+case 0x4: return (reg.cc1 - reg.cc2 < 0);
+case 0x5: return (reg.cc1 - reg.cc2 >= 0);
+case 0x8: return ((ulong)reg.cc1 > (ulong)reg.cc2);
+case 0x9: return ((ulong)reg.cc1 <= (ulong)reg.cc2);
+case 0xa: return (reg.cc1 >= reg.cc2);
+case 0xb: return (reg.cc1 < reg.cc2);
+case 0xc: return (reg.cc1 > reg.cc2);
+case 0xd: return (reg.cc1 <= reg.cc2);
+case 0xe: return 1;
+case 0xf: return 0;
 default:
 Bprint(bioout, "unimplemented condition prefix %x (%ld %ld)\n",
 reg.cond, reg.cc1, reg.cc2);
@@ -159,12 +159,12 @@ runteq(void)
 {
 long res = reg.cc1 ^ reg.cc2;
 switch(reg.cond) {
-case 0x0:		return res == 0;
-case 0x1:		return res != 0;
-case 0x4:		return (res & SIGNBIT) != 0;
-case 0x5:		return (res & SIGNBIT) == 0;
-case 0xe:		return 1;
-case 0xf:		return 0;
+case 0x0: return res == 0;
+case 0x1: return res != 0;
+case 0x4: return (res & SIGNBIT) != 0;
+case 0x5: return (res & SIGNBIT) == 0;
+case 0xe: return 1;
+case 0xf: return 0;
 default:
 Bprint(bioout, "unimplemented condition prefix %x (%ld %ld)\n",
 reg.cond, reg.cc1, reg.cc2);
@@ -177,12 +177,12 @@ runtst(void)
 {
 long res = reg.cc1 & reg.cc2;
 switch(reg.cond) {
-case 0x0:		return res == 0;
-case 0x1:		return res != 0;
-case 0x4:		return (res & SIGNBIT) != 0;
-case 0x5:		return (res & SIGNBIT) == 0;
-case 0xe:		return 1;
-case 0xf:		return 0;
+case 0x0: return res == 0;
+case 0x1: return res != 0;
+case 0x4: return (res & SIGNBIT) != 0;
+case 0x5: return (res & SIGNBIT) == 0;
+case 0xe: return 1;
+case 0xf: return 0;
 default:
 Bprint(bioout, "unimplemented condition prefix %x (%ld %ld)\n",
 reg.cond, reg.cc1, reg.cc2);
@@ -298,15 +298,15 @@ dpex(long inst, long o1, long o2, int rd)
 int cbit;
 cbit = 0;
 switch((inst>>21) & 0xf) {
-case  0:
+case 0:
 reg.r[rd] = o1 & o2;
 cbit = 1;
 break;
-case  1:
+case 1:
 reg.r[rd] = o1 ^ o2;
 cbit = 1;
 break;
-case  2:
+case 2:
 reg.r[rd] = o1 - o2;
 case 10:
 if(inst & Sbit) {
@@ -315,7 +315,7 @@ reg.cc2 = o2;
 reg.compare_op = CCcmp;
 }
 return;
-case  3:
+case 3:
 reg.r[rd] = o2 - o1;
 if(inst & Sbit) {
 reg.cc1 = o2;
@@ -323,7 +323,7 @@ reg.cc2 = o1;
 reg.compare_op = CCcmp;
 }
 return;
-case  4:
+case 4:
 if(calltree && rd == REGPC && o2 == 0) {
 Symbol s;
 findsym(o1 + o2, CTEXT, &s);
@@ -341,18 +341,18 @@ reg.cc2 = -o1;
 reg.compare_op = CCcmp;
 }
 return;
-case  5:
-case  6:
-case  7:
+case 5:
+case 6:
+case 7:
 undef(inst);
-case  8:
+case 8:
 if(inst & Sbit) {
 reg.cc1 = o1;
 reg.cc2 = o2;
 reg.compare_op = CCtst;
 }
 return;
-case  9:
+case 9:
 if(inst & Sbit) {
 reg.cc1 = o1;
 reg.cc2 = o2;
@@ -764,7 +764,7 @@ ubit = (inst>>23) & 0x1;
 sbit = (inst>>22) & 0x1;
 wbit = (inst>>21) & 0x1;
 lbit = (inst>>20) & 0x1;
-rn =   (inst>>16) & 0xf;
+rn = (inst>>16) & 0xf;
 reglist = inst & 0xffff;
 if(reglist & 0x8000)
 undef(reg.ir);

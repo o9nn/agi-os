@@ -104,9 +104,9 @@ black = display.color(Draw->Black);
 opaque = display.opaque;
 shade = array[NSHADES] of ref Image;
 for(i = 0; i < NSHADES; i++){
-# v := (255*i)/(NSHADES-1);		# NSHADES=17
-v := (192*i)/(NSHADES-1)+32;		# NSHADES=13
-# v := (128*i)/(NSHADES-1)+64;	# NSHADES=9
+# v := (255*i)/(NSHADES-1); # NSHADES=17
+v := (192*i)/(NSHADES-1)+32; # NSHADES=13
+# v := (128*i)/(NSHADES-1)+64; # NSHADES=9
 shade[i] = display.rgb(v, v, v);
 # shade[i] = rgba(display, v, v, v, 16r7f);
 }
@@ -209,7 +209,7 @@ break;
 }
 }
 if(newproc){
-sync <-= 0;	# stop it first
+sync <-= 0; # stop it first
 kill(pid);
 spawn drawpolyhedron(geo, sync, chanθ, yieldc);
 pid = <- sync;
@@ -249,16 +249,16 @@ return 1;
 }
 # yieldcpu(c: chan of int)
 # {
-# 	c <-= 1;
-# 	<-c;
+# c <-= 1;
+# <-c;
 # }
 # yieldproc(c: chan of int)
 # {
-# 	c <-= sys->pctl(0, nil);
-# 	for (;;) {
-# 		<-c;
-# 		c <-= 1;
-# 	}
+# c <-= sys->pctl(0, nil);
+# for (;;) {
+# <-c;
+# c <-= 1;
+# }
 # }
 π: con Math->Pi;
 √2, √3: real;
@@ -271,23 +271,23 @@ Vector: adt{
 x, y, z: real;
 };
 Geom: adt{
-h: int;					# length, breadth of r below
-r: Rect;					# area on screen to update
-sx, sy: real;				# x, y scale
-tx, ty: int;					# x, y translation
-θ: real;					# angle of rotation
-TM: array of array of real;		# rotation matrix
-axis: Axis;					# direction cosines of rotation
+h: int; # length, breadth of r below
+r: Rect; # area on screen to update
+sx, sy: real; # x, y scale
+tx, ty: int; # x, y translation
+θ: real; # angle of rotation
+TM: array of array of real; # rotation matrix
+axis: Axis; # direction cosines of rotation
 view: Vector;
 light: Vector;
 npolyhedra: int;
 polyhedra: ref Polyhedron;
 curpolyhedron: ref Polyhedron;
-b: ref Iobuf;				# of polyhedra file
+b: ref Iobuf; # of polyhedra file
 dual: int;
 zstate: ref Polyfill->Zstate;
 };
-NSHADES: con 13;	# odd
+NSHADES: con 13; # odd
 shade: array of ref Image;
 clear, faces: int = 1;
 edges: int = 0;
@@ -354,7 +354,7 @@ drawpolyhedron0(V, F, concave, allf: int, v, f: array of Vector, fv: array of ar
 {
 norm : array of array of Vector;
 newn, oldn : array of Vector;
-yieldc = nil;	# not used now
+yieldc = nil; # not used now
 θ := geo.θ;
 totθ := 0.;
 if(θ != 0.)
@@ -452,7 +452,7 @@ n := fv[0];
 ap := array[n+1] of Point;
 for(j := 0; j < n; j++){
 vtx := v[fv[j+1]];
-# vtx = add(vtx, mul(f, 0.1));	# interesting effects with -/larger factors
+# vtx = add(vtx, mul(f, 0.1)); # interesting effects with -/larger factors
 ap[j] = map(vtx, geo);
 d += dot(f, vtx);
 }

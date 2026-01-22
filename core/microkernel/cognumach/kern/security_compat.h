@@ -4,7 +4,7 @@
 #include <stddef.h>
 typedef int boolean_t;
 typedef int kern_return_t;
-#define TRUE  1
+#define TRUE 1
 #define FALSE 0
 #define KERN_SUCCESS 0
 #define KERN_INVALID_ARGUMENT 1

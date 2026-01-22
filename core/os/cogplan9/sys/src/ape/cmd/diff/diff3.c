@@ -3,14 +3,14 @@
 #include <signal.h>
 #include "getopt.h"
 extern char const version_string[];
-#define	FILE0	0
-#define	FILE1	1
-#define	FILE2	2
-#define	FILEC	FILE2
+#define FILE0 0
+#define FILE1 1
+#define FILE2 2
+#define FILEC FILE2
 #define FO 0
 #define FC 1
-#define	START	0
-#define	END	1
+#define START 0
+#define END 1
 enum diff_type {
 ERROR,
 ADD,
@@ -34,31 +34,31 @@ char **lines[3];
 size_t *lengths[3];
 struct diff3_block *next;
 };
-#define	D_LOWLINE(diff, filenum)	\
+#define D_LOWLINE(diff, filenum) \
 ((diff)->ranges[filenum][START])
-#define	D_HIGHLINE(diff, filenum)	\
+#define D_HIGHLINE(diff, filenum) \
 ((diff)->ranges[filenum][END])
-#define	D_NUMLINES(diff, filenum)	\
+#define D_NUMLINES(diff, filenum) \
 (D_HIGHLINE (diff, filenum) - D_LOWLINE (diff, filenum) + 1)
-#define	D_RELNUM(diff, filenum, linenum)	\
+#define D_RELNUM(diff, filenum, linenum) \
 ((diff)->lines[filenum][linenum])
-#define	D_RELLEN(diff, filenum, linenum)	\
+#define D_RELLEN(diff, filenum, linenum) \
 ((diff)->lengths[filenum][linenum])
-#define	D_LINEARRAY(diff, filenum)	\
+#define D_LINEARRAY(diff, filenum) \
 ((diff)->lines[filenum])
-#define	D_LENARRAY(diff, filenum)	\
+#define D_LENARRAY(diff, filenum) \
 ((diff)->lengths[filenum])
-#define	D_NEXT(diff)	((diff)->next)
-#define	D3_TYPE(diff)	((diff)->correspond)
-#define	D_HIGH_MAPLINE(diff, fromfile, tofile, lineno)	\
-((lineno)						\
-- D_HIGHLINE ((diff), (fromfile))			\
+#define D_NEXT(diff) ((diff)->next)
+#define D3_TYPE(diff) ((diff)->correspond)
+#define D_HIGH_MAPLINE(diff, fromfile, tofile, lineno) \
+((lineno) \
+- D_HIGHLINE ((diff), (fromfile)) \
 + D_HIGHLINE ((diff), (tofile)))
-#define	D_LOW_MAPLINE(diff, fromfile, tofile, lineno)	\
-((lineno)						\
-- D_LOWLINE ((diff), (fromfile))			\
+#define D_LOW_MAPLINE(diff, fromfile, tofile, lineno) \
+((lineno) \
+- D_LOWLINE ((diff), (fromfile)) \
 + D_LOWLINE ((diff), (tofile)))
-#define	ALLOCATE(number, type)	\
+#define ALLOCATE(number, type) \
 (type *) xmalloc ((number) * sizeof (type))
 static int always_text;
 static int edscript;
@@ -283,21 +283,21 @@ usage ()
 {
 printf ("Usage: %s [OPTION]... MYFILE OLDFILE YOURFILE\n\n", program_name);
 printf ("%s", "\
--e  --ed  Output unmerged changes from OLDFILE to YOURFILE into MYFILE.\n\
--E  --show-overlap  Output unmerged changes, bracketing conflicts.\n\
--A  --show-all  Output all changes, bracketing conflicts.\n\
--x  --overlap-only  Output overlapping changes.\n\
--X  Output overlapping changes, bracketing them.\n\
--3  --easy-only  Output unmerged nonoverlapping changes.\n\n");
+-e --ed Output unmerged changes from OLDFILE to YOURFILE into MYFILE.\n\
+-E --show-overlap Output unmerged changes, bracketing conflicts.\n\
+-A --show-all Output all changes, bracketing conflicts.\n\
+-x --overlap-only Output overlapping changes.\n\
+-X Output overlapping changes, bracketing them.\n\
+-3 --easy-only Output unmerged nonoverlapping changes.\n\n");
 printf ("%s", "\
--m  --merge  Output merged file instead of ed script (default -A).\n\
--L LABEL  --label=LABEL  Use LABEL instead of file name.\n\
--i  Append `w' and `q' commands to ed scripts.\n\
--a  --text  Treat all files as text.\n\
--T  --initial-tab  Make tabs line up by prepending a tab.\n\n");
+-m --merge Output merged file instead of ed script (default -A).\n\
+-L LABEL --label=LABEL Use LABEL instead of file name.\n\
+-i Append `w' and `q' commands to ed scripts.\n\
+-a --text Treat all files as text.\n\
+-T --initial-tab Make tabs line up by prepending a tab.\n\n");
 printf ("%s", "\
--v  --version  Output version info.\n\
---help  Output this help.\n\n");
+-v --version Output version info.\n\
+--help Output this help.\n\n");
 printf ("If a FILE is `-', read standard input.\n");
 }
 static struct diff3_block *
@@ -656,10 +656,10 @@ struct diff_block *db;
 char *s = *string;
 int holdnum;
 enum diff_type type;
-#define	SKIPWHITE(s)	{ while (*s == ' ' || *s == '\t') s++; }
-#define	READNUM(s, num)	\
+#define SKIPWHITE(s) { while (*s == ' ' || *s == '\t') s++; }
+#define READNUM(s, num) \
 { unsigned char c = *s; if (!ISDIGIT (c)) return ERROR; holdnum = 0; \
-do { holdnum = (c - '0' + holdnum * 10); }	\
+do { holdnum = (c - '0' + holdnum * 10); } \
 while (ISDIGIT (c = *++s)); (num) = holdnum; }
 SKIPWHITE (s);
 READNUM (s, db->ranges[0][START]);
@@ -1134,7 +1134,7 @@ reverse_diff3_blocklist (diff)
 struct diff3_block *diff;
 {
 register struct diff3_block *tmp, *next, *prev;
-for (tmp = diff, prev = 0;  tmp;  tmp = next)
+for (tmp = diff, prev = 0; tmp; tmp = next)
 {
 next = tmp->next;
 tmp->next = prev;

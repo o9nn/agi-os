@@ -182,7 +182,7 @@ i1 /= 85;
 c[6] = '\0';
 }
 static uchar *arr = nil;
-ulong	onesbits = ~0;
+ulong onesbits = ~0;
 void
 imagebits(Biobuf *ioutb, Memimage *im)
 {
@@ -291,7 +291,7 @@ iwidth = paperlength - (ymargin * 2);
 iheight = iwidth / imageaspectratio;
 } else {
 iheight = paperwidth - (xmargin * 2);
-iwidth  = iheight * imageaspectratio;
+iwidth = iheight * imageaspectratio;
 }
 xstart = paperwidth - xmargin - (iheight * ymagnification);
 ystart = paperlength - ymargin;
@@ -306,7 +306,7 @@ iwidth = paperwidth - (xmargin * 2);
 iheight = iwidth / imageaspectratio;
 } else {
 iheight = paperlength - (ymargin * 2);
-iwidth  = iheight * imageaspectratio;
+iwidth = iheight * imageaspectratio;
 }
 xstart = xmargin;
 ystart = paperlength - ymargin - (iheight * ymagnification);

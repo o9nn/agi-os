@@ -1,12 +1,12 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"../port/error.h"
-#include	"../port/netif.h"
-#include	"../port/uart.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "../port/error.h"
+#include "../port/netif.h"
+#include "../port/uart.h"
 enum
 {
 CTLS= 023,
@@ -23,8 +23,8 @@ struct Uartalloc {
 Lock;
 Uart *elist;
 } uartalloc;
-static void	uartclock(void);
-static void	uartflow(void*);
+static void uartclock(void);
+static void uartflow(void*);
 static Uart*
 uartenable(Uart *p)
 {
@@ -531,7 +531,7 @@ wakeup(&p->r);
 }
 }
 void
-uartrecv(Uart *p,  char ch)
+uartrecv(Uart *p, char ch)
 {
 uchar *next;
 if(p->xonoff){

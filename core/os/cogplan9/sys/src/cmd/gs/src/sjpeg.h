@@ -1,5 +1,5 @@
 #ifndef sjpeg_INCLUDED
-#  define sjpeg_INCLUDED
+# define sjpeg_INCLUDED
 void gs_jpeg_error_setup(stream_DCT_state * st);
 int gs_jpeg_log_error(stream_DCT_state * st);
 JQUANT_TBL *gs_jpeg_alloc_quant_table(stream_DCT_state * st);

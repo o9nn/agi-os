@@ -7,10 +7,10 @@
 #endif
 extern struct vt_struct {
 int vc_num;
-unsigned char	vc_mode;
-struct vt_mode	vt_mode;
-int		vt_pid;
-int		vt_newvt;
+unsigned char vc_mode;
+struct vt_mode vt_mode;
+int vt_pid;
+int vt_newvt;
 struct wait_queue *paste_wait;
 } *vt_cons[MAX_NR_CONSOLES];
 void (*kd_mksound)(unsigned int hz, unsigned int ticks);

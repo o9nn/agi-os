@@ -1,53 +1,53 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"ureg.h"
-#include	"pool.h"
-#include	"../port/netif.h"
-#include	"etherif.h"
-#include	"../ip/ip.h"
-#include	"pxe.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "ureg.h"
+#include "pool.h"
+#include "../port/netif.h"
+#include "etherif.h"
+#include "../ip/ip.h"
+#include "pxe.h"
 #define TFTPDEF "135.104.9.6"
 enum {
-Tftpusehdrs =	0,
-Debug =		0,
-Tftphdrsz =	4,
-Prefsegsize =	1400,
-Maxsegsize =	2048,
-Bufsz =		Maxsegsize + 2,
-Ok =		0,
-Err =		-1,
-Nonexist =	-2,
+Tftpusehdrs = 0,
+Debug = 0,
+Tftphdrsz = 4,
+Prefsegsize = 1400,
+Maxsegsize = 2048,
+Bufsz = Maxsegsize + 2,
+Ok = 0,
+Err = -1,
+Nonexist = -2,
 };
 typedef struct Ethaddr Ethaddr;
 typedef struct Kernname Kernname;
 typedef struct Openeth Openeth;
 typedef struct Tftp Tftp;
 struct Tftp {
-uchar	header[Tftphdrsz];
-uchar	data[Maxsegsize];
+uchar header[Tftphdrsz];
+uchar data[Maxsegsize];
 };
 struct Kernname {
-char	*edev;
-char	*bootfile;
+char *edev;
+char *bootfile;
 };
 struct Openeth {
-int	ctlrno;
-char	ethname[16];
-char	netethname[32];
-char	filename[128];
-Chan	*ifcctl;
-Chan	*ethctl;
-Chan	*udpctl;
-Chan	*udpdata;
+int ctlrno;
+char ethname[16];
+char netethname[32];
+char filename[128];
+Chan *ifcctl;
+Chan *ethctl;
+Chan *udpctl;
+Chan *udpdata;
 Pxenetaddr *netaddr;
-int	rxactive;
+int rxactive;
 };
 struct Ethaddr {
-Openeth	*oe;
+Openeth *oe;
 Pxenetaddr *a;
 };
 static char ethernm[] = "ether";
@@ -61,7 +61,7 @@ static int segsize;
 static Tftp *tftpb;
 static Pxenetaddr tftpserv;
 static Pxenetaddr bootpserv;
-static int	tftpconnect(Openeth *, Bootp *);
+static int tftpconnect(Openeth *, Bootp *);
 uchar *
 etheraddr(Openeth *oe)
 {

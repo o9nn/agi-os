@@ -1,12 +1,12 @@
-#include	<u.h>
-#include	<libc.h>
-#include	<libg.h>
-#include	<bio.h>
-#include	"hdr.h"
+#include <u.h>
+#include <libc.h>
+#include <libg.h>
+#include <bio.h>
+#include "hdr.h"
 enum {
-Charsperfont	= 157,
-Void1b		= (0xC6-0xA2)*Charsperfont+0x3f,
-Void1e		= (0xC9-0xA2)*Charsperfont - 1 ,
+Charsperfont = 157,
+Void1b = (0xC6-0xA2)*Charsperfont+0x3f,
+Void1e = (0xC9-0xA2)*Charsperfont - 1 ,
 };
 Bitmap *
 breadbits(char *file, int n, long *chars, int size, uchar *bits, int **doneptr)

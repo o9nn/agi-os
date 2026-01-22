@@ -12,9 +12,9 @@ include "samtk.m";
 samtk: Samtk;
 panic, whichtext, whichmenu: import samtk;
 include "samstub.m";
-sendsam:	chan of ref Sammsg;
-recvsam:	chan of ref Sammsg;
-snarflen:	int;
+sendsam: chan of ref Sammsg;
+recvsam: chan of ref Sammsg;
+snarflen: int;
 ctxt: ref Context;
 requested: list of (int, int);
 tname := array [] of {
@@ -312,19 +312,19 @@ return 0;
 }
 Sammsg.inshort(h: self ref Sammsg, n: int): int
 {
-return	((int h.mdata[n+1])<<8) |
+return ((int h.mdata[n+1])<<8) |
 ((int h.mdata[n]));
 }
 Sammsg.inlong(h: self ref Sammsg, n: int): int
 {
-return	((int h.mdata[n+3])<<24) |
+return ((int h.mdata[n+3])<<24) |
 ((int h.mdata[n+2])<<16) |
 ((int h.mdata[n+1])<< 8) |
 ((int h.mdata[n]));
 }
 Sammsg.invlong(h: self ref Sammsg, n: int): big
 {
-return	((big h.mdata[n+7])<<56) |
+return ((big h.mdata[n+7])<<56) |
 ((big h.mdata[n+6])<<48) |
 ((big h.mdata[n+5])<<40) |
 ((big h.mdata[n+4])<<32) |
@@ -339,26 +339,26 @@ h.mdata[pos:] = data;
 }
 Sammsg.outshort(h: self ref Sammsg, pos: int, s: int)
 {
-h.mdata[pos++]	= byte s;
-h.mdata[pos]	= byte (s >> 8);
+h.mdata[pos++] = byte s;
+h.mdata[pos] = byte (s >> 8);
 }
 Sammsg.outlong(h: self ref Sammsg, pos: int, s: int)
 {
-h.mdata[pos++]	= byte s;
-h.mdata[pos++]	= byte (s >> 8);
-h.mdata[pos++]	= byte (s >> 16);
-h.mdata[pos]	= byte (s >> 24);
+h.mdata[pos++] = byte s;
+h.mdata[pos++] = byte (s >> 8);
+h.mdata[pos++] = byte (s >> 16);
+h.mdata[pos] = byte (s >> 24);
 }
 Sammsg.outvlong(h: self ref Sammsg, pos: int, s: big)
 {
-h.mdata[pos++]	= byte s;
-h.mdata[pos++]	= byte (s >> 8);
-h.mdata[pos++]	= byte (s >> 16);
-h.mdata[pos++]	= byte (s >> 24);
-h.mdata[pos++]	= byte (s >> 32);
-h.mdata[pos++]	= byte (s >> 40);
-h.mdata[pos++]	= byte (s >> 48);
-h.mdata[pos]	= byte (s >> 56);
+h.mdata[pos++] = byte s;
+h.mdata[pos++] = byte (s >> 8);
+h.mdata[pos++] = byte (s >> 16);
+h.mdata[pos++] = byte (s >> 24);
+h.mdata[pos++] = byte (s >> 32);
+h.mdata[pos++] = byte (s >> 40);
+h.mdata[pos++] = byte (s >> 48);
+h.mdata[pos] = byte (s >> 56);
 }
 outT0(t: int)
 {
@@ -383,7 +383,7 @@ h.outvlong(0, i);
 sendsam <- = h;
 }
 outTsll(t, m, l1, l2: int)
-{	fprint(ctxt.logfd, "\t\t\t\t\t%s %d %d %d\n", tname[t], m, l1, l2);
+{ fprint(ctxt.logfd, "\t\t\t\t\t%s %d %d %d\n", tname[t], m, l1, l2);
 a := array[10] of byte;
 h := ref Sammsg(t, 10, a);
 h.outshort(0, m);
@@ -392,7 +392,7 @@ h.outlong(6, l2);
 sendsam <- = h;
 }
 outTsl(t, m, l: int)
-{	fprint(ctxt.logfd, "\t\t\t\t\t%s %d %d\n", tname[t], m, l);
+{ fprint(ctxt.logfd, "\t\t\t\t\t%s %d %d\n", tname[t], m, l);
 a := array[6] of byte;
 h := ref Sammsg(t, 6, a);
 h.outshort(0, m);
@@ -400,7 +400,7 @@ h.outlong(2, l);
 sendsam <- = h;
 }
 outTsls(t, m, l1, l2: int)
-{	fprint(ctxt.logfd, "\t\t\t\t\t%s %d %d %d\n", tname[t], m, l1, l2);
+{ fprint(ctxt.logfd, "\t\t\t\t\t%s %d %d %d\n", tname[t], m, l1, l2);
 a := array[8] of byte;
 h := ref Sammsg(t, 8, a);
 h.outshort(0, m);
@@ -427,7 +427,7 @@ bindname(tag, l: int)
 if ((m := whichmenu(tag)) < 0) panic("bindname: whichmenu");
 if ((l = whichtext(l)) < 0) panic("bindname: whichtext");
 if (ctxt.menus[m].text != nil)
-return;		# Already bound
+return; # Already bound
 t := ctxt.texts[l];
 t.tag = tag;
 for (fls := t.flayers; fls != nil; fls = tl fls) (hd fls).tag = tag;
@@ -437,9 +437,9 @@ menuins(m: int, s: string, t: ref Text, tag: int)
 {
 newmenus := array [len ctxt.menus+1] of ref Menu;
 menu := ref Menu(
-tag,	# tag
-s,	# name
-t	# text
+tag, # tag
+s, # name
+t # text
 );
 if (m > 0)
 newmenus[0:] = ctxt.menus[0:m];
@@ -538,7 +538,7 @@ movename(tag: int, s: string)
 i := whichmenu(tag);
 if (i < 0) panic("movename: whichmenu");
 t := ctxt.menus[i].text;
-ctxt.menus[i].text = nil;	# suppress panic in menudel
+ctxt.menus[i].text = nil; # suppress panic in menudel
 menudel(i);
 if(t == ctxt.cmd)
 i = 0;
@@ -585,10 +585,10 @@ hcut(m, where, howmuch: int)
 if((m = whichmenu(m)) < 0) panic("hcut: whichmenu");
 t := ctxt.menus[m].text;
 if (t == nil) panic("hcut -- no text");
-#	sctdump(t.sects, "Hcut, before");
+# sctdump(t.sects, "Hcut, before");
 t.nrunes -= howmuch;
 t.sects = sctdelete(t.sects, where, howmuch);
-#	sctdump(t.sects, "Hcut, after");
+# sctdump(t.sects, "Hcut, after");
 for (fls := t.flayers; fls != nil; fls = tl fls) {
 fl := hd fls;
 if (where < fl.scope.first) {
@@ -665,7 +665,7 @@ if (fl.scope.first <= l &&
 (l < fl.scope.last || fl.scope.last == fl.scope.first))
 return;
 (n, p) := sctrevcnt(t.sects, l, fl.lines/2);
-#	fprint(ctxt.logfd, "hmoveto: (n, p) = (%d, %d)\n", n, p);
+# fprint(ctxt.logfd, "hmoveto: (n, p) = (%d, %d)\n", n, p);
 if (n < 0) {
 outTsll(Torigin, t.tag, l, fl.lines/2);
 setlock();
@@ -905,12 +905,12 @@ newtext(tag, tp: int): int
 {
 n := len ctxt.texts;
 t := ref Text(
-tag,					# tag
-0,					# lock
-samtk->newflayer(tag, tp) :: nil,	# flayers
-0,					# nrunes
-nil,					# sects
-0					# state
+tag, # tag
+0, # lock
+samtk->newflayer(tag, tp) :: nil, # flayers
+0, # nrunes
+nil, # sects
+0 # state
 );
 texts := array [n + 1] of ref Text;
 texts[0:] = ctxt.texts;
@@ -1064,7 +1064,7 @@ ln := len sct.text;
 if (p < sct.nrunes) {
 if (p > ln) return (n, s);
 if (p > 0) b := p; else b = 0;
-for (i := b; i < ln && n > 0;   ) {
+for (i := b; i < ln && n > 0; ) {
 if (sct.text[i++] == '\n') n--;
 }
 if ( i > b)
@@ -1078,7 +1078,7 @@ return (n, s);
 sctput(scts: list of ref Section, pos: int, s: string): list of ref Section
 {
 # There should be a hole to receive text
-if (scts == nil  && s != "") panic("sctput: scts is nil\n");
+if (scts == nil && s != "") panic("sctput: scts is nil\n");
 sct := hd scts;
 l := len sct.text;
 if (sct.nrunes <= pos) {
@@ -1099,7 +1099,7 @@ return sct :: tl scts;
 nrunes := sct.nrunes;
 sct.nrunes = pos;
 if (nrunes < pos + len s)
-return	sct ::
+return sct ::
 ref Section(nrunes-pos, s[:nrunes-pos]) ::
 sctput(tl scts, 0, s[nrunes-pos:]);
 return sct :: ref Section(nrunes-pos, s) :: tl scts;
@@ -1161,10 +1161,10 @@ return sct :: sctdelete(scts, start - nrunes, nbytes);
 }
 grow(t: ref Text, at, l: int)
 {
-#	sctdump(t.sects, "grow, before");
+# sctdump(t.sects, "grow, before");
 t.sects = sctmakeroom(t.sects, at, l);
 t.nrunes += l;
-#	sctdump(t.sects, "grow, after");
+# sctdump(t.sects, "grow, after");
 for (fls := t.flayers; fls != nil; fls = tl fls) {
 fl := hd fls;
 if (at < fl.scope.first) fl.scope.first += l;

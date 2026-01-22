@@ -8,7 +8,7 @@
 (define database-uri (get-connection-uri))
 (define language (get-lang))
 (repl-default-option-set! 'prompt (string-append "scheme@("
-    language "-pairs)> "))
+language "-pairs)> "))
 (start-cogserver (string-append "config/opencog-" language ".conf"))
 (sql-open database-uri)
 (display "Opened database: ")

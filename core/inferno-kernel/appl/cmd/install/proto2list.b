@@ -1,5 +1,5 @@
 #
-# Copyright © 2001 Vita Nuova (Holdings) Limited.  All rights reserved.
+# Copyright © 2001 Vita Nuova (Holdings) Limited. All rights reserved.
 #
 implement Proto2list;
 # make a version list suitable for SDS from a series of proto files

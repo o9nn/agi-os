@@ -288,7 +288,7 @@ pw->ptr = q;
 return (rlimit - p < 4 ? 0 : 1);
 }
 const stream_template s_C2R_template = {
-&st_C2R_state, 0  , s_C2R_process, 4, 3, 0, s_C2R_set_defaults
+&st_C2R_state, 0 , s_C2R_process, 4, 3, 0, s_C2R_set_defaults
 };
 private_st_IE_state();
 private

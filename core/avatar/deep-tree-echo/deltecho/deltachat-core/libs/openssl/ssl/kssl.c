@@ -1,6 +1,6 @@
 #include <openssl/opensslconf.h>
 #include <string.h>
-#define KRB5_PRIVATE    1
+#define KRB5_PRIVATE 1
 #include <openssl/ssl.h>
 #include <openssl/evp.h>
 #include <openssl/objects.h>
@@ -8,56 +8,56 @@
 #include "kssl_lcl.h"
 #ifndef OPENSSL_NO_KRB5
 # ifndef ENOMEM
-#  define ENOMEM KRB5KRB_ERR_GENERIC
+# define ENOMEM KRB5KRB_ERR_GENERIC
 # endif
 # if defined(OPENSSL_SYS_WINDOWS) || defined(OPENSSL_SYS_WIN32)
-#  ifdef  krb5_cc_get_principal
-#   define NO_DEF_KRB5_CCACHE
-#   undef  krb5_cc_get_principal
-#  endif
-#  define krb5_cc_get_principal    kssl_krb5_cc_get_principal
-#  define krb5_free_data_contents  kssl_krb5_free_data_contents
-#  define krb5_free_context        kssl_krb5_free_context
-#  define krb5_auth_con_free       kssl_krb5_auth_con_free
-#  define krb5_free_principal      kssl_krb5_free_principal
-#  define krb5_mk_req_extended     kssl_krb5_mk_req_extended
-#  define krb5_get_credentials     kssl_krb5_get_credentials
-#  define krb5_cc_default          kssl_krb5_cc_default
-#  define krb5_sname_to_principal  kssl_krb5_sname_to_principal
-#  define krb5_init_context        kssl_krb5_init_context
-#  define krb5_free_ticket         kssl_krb5_free_ticket
-#  define krb5_rd_req              kssl_krb5_rd_req
-#  define krb5_kt_default          kssl_krb5_kt_default
-#  define krb5_kt_resolve          kssl_krb5_kt_resolve
-#  ifndef krb5_kt_close
-#   define krb5_kt_close            kssl_krb5_kt_close
-#  endif
-#  ifndef krb5_kt_get_entry
-#   define krb5_kt_get_entry        kssl_krb5_kt_get_entry
-#  endif
-#  define krb5_auth_con_init       kssl_krb5_auth_con_init
-#  define krb5_principal_compare   kssl_krb5_principal_compare
-#  define krb5_decrypt_tkt_part    kssl_krb5_decrypt_tkt_part
-#  define krb5_timeofday           kssl_krb5_timeofday
-#  define krb5_rc_default          kssl_krb5_rc_default
-#  ifdef krb5_rc_initialize
-#   undef krb5_rc_initialize
-#  endif
-#  define krb5_rc_initialize   kssl_krb5_rc_initialize
-#  ifdef krb5_rc_get_lifespan
-#   undef krb5_rc_get_lifespan
-#  endif
-#  define krb5_rc_get_lifespan kssl_krb5_rc_get_lifespan
-#  ifdef krb5_rc_destroy
-#   undef krb5_rc_destroy
-#  endif
-#  define krb5_rc_destroy      kssl_krb5_rc_destroy
-#  define valid_cksumtype      kssl_valid_cksumtype
-#  define krb5_checksum_size   kssl_krb5_checksum_size
-#  define krb5_kt_free_entry   kssl_krb5_kt_free_entry
-#  define krb5_auth_con_setrcache  kssl_krb5_auth_con_setrcache
-#  define krb5_auth_con_getrcache  kssl_krb5_auth_con_getrcache
-#  define krb5_get_server_rcache   kssl_krb5_get_server_rcache
+# ifdef krb5_cc_get_principal
+# define NO_DEF_KRB5_CCACHE
+# undef krb5_cc_get_principal
+# endif
+# define krb5_cc_get_principal kssl_krb5_cc_get_principal
+# define krb5_free_data_contents kssl_krb5_free_data_contents
+# define krb5_free_context kssl_krb5_free_context
+# define krb5_auth_con_free kssl_krb5_auth_con_free
+# define krb5_free_principal kssl_krb5_free_principal
+# define krb5_mk_req_extended kssl_krb5_mk_req_extended
+# define krb5_get_credentials kssl_krb5_get_credentials
+# define krb5_cc_default kssl_krb5_cc_default
+# define krb5_sname_to_principal kssl_krb5_sname_to_principal
+# define krb5_init_context kssl_krb5_init_context
+# define krb5_free_ticket kssl_krb5_free_ticket
+# define krb5_rd_req kssl_krb5_rd_req
+# define krb5_kt_default kssl_krb5_kt_default
+# define krb5_kt_resolve kssl_krb5_kt_resolve
+# ifndef krb5_kt_close
+# define krb5_kt_close kssl_krb5_kt_close
+# endif
+# ifndef krb5_kt_get_entry
+# define krb5_kt_get_entry kssl_krb5_kt_get_entry
+# endif
+# define krb5_auth_con_init kssl_krb5_auth_con_init
+# define krb5_principal_compare kssl_krb5_principal_compare
+# define krb5_decrypt_tkt_part kssl_krb5_decrypt_tkt_part
+# define krb5_timeofday kssl_krb5_timeofday
+# define krb5_rc_default kssl_krb5_rc_default
+# ifdef krb5_rc_initialize
+# undef krb5_rc_initialize
+# endif
+# define krb5_rc_initialize kssl_krb5_rc_initialize
+# ifdef krb5_rc_get_lifespan
+# undef krb5_rc_get_lifespan
+# endif
+# define krb5_rc_get_lifespan kssl_krb5_rc_get_lifespan
+# ifdef krb5_rc_destroy
+# undef krb5_rc_destroy
+# endif
+# define krb5_rc_destroy kssl_krb5_rc_destroy
+# define valid_cksumtype kssl_valid_cksumtype
+# define krb5_checksum_size kssl_krb5_checksum_size
+# define krb5_kt_free_entry kssl_krb5_kt_free_entry
+# define krb5_auth_con_setrcache kssl_krb5_auth_con_setrcache
+# define krb5_auth_con_getrcache kssl_krb5_auth_con_getrcache
+# define krb5_get_server_rcache kssl_krb5_get_server_rcache
 void kssl_krb5_free_data_contents(krb5_context, krb5_data *);
 void kssl_krb5_free_principal(krb5_context, krb5_principal);
 krb5_error_code kssl_krb5_kt_resolve(krb5_context,
@@ -473,11 +473,11 @@ return (p_krb5_kt_free_entry(con, entry));
 else
 return KRB5KRB_ERR_GENERIC;
 }
-#  ifndef NO_DEF_KRB5_CCACHE
-#   ifndef krb5_x
-#    define krb5_x(ptr,args) ((ptr)?((*(ptr)) args):(abort(),1))
-#    define krb5_xc(ptr,args) ((ptr)?((*(ptr)) args):(abort(),(char*)0))
-#   endif
+# ifndef NO_DEF_KRB5_CCACHE
+# ifndef krb5_x
+# define krb5_x(ptr,args) ((ptr)?((*(ptr)) args):(abort(),1))
+# define krb5_xc(ptr,args) ((ptr)?((*(ptr)) args):(abort(),(char*)0))
+# endif
 typedef krb5_pointer krb5_cc_cursor;
 typedef struct _krb5_ccache {
 krb5_magic magic;
@@ -516,7 +516,7 @@ krb5_error_code(KRB5_CALLCONV *remove_cred)
 krb5_error_code(KRB5_CALLCONV *set_flags)
 (krb5_context, krb5_ccache, krb5_flags);
 } krb5_cc_ops;
-#  endif
+# endif
 krb5_error_code
 kssl_krb5_cc_get_principal
 (krb5_context context, krb5_ccache cache, krb5_principal *principal) {
@@ -783,7 +783,7 @@ fprintf(stderr, "\n");
 }
 return;
 }
-krb5_error_code kssl_cget_tkt(  KSSL_CTX *kssl_ctx,
+krb5_error_code kssl_cget_tkt( KSSL_CTX *kssl_ctx,
 krb5_data **enc_ticketp,
 krb5_data *authenp,
 KSSL_ERR *kssl_err)
@@ -907,7 +907,7 @@ if (krb5context)
 krb5_free_context(krb5context);
 return (krb5rc);
 }
-static krb5_error_code kssl_TKT2tkt(  krb5_context krb5context,
+static krb5_error_code kssl_TKT2tkt( krb5_context krb5context,
 KRB5_TKTBODY *asn1ticket,
 krb5_ticket **krb5ticket,
 KSSL_ERR *kssl_err)
@@ -967,7 +967,7 @@ asn1ticket->encdata->cipher->length);
 *krb5ticket = new5ticket;
 return 0;
 }
-krb5_error_code kssl_sget_tkt(  KSSL_CTX *kssl_ctx,
+krb5_error_code kssl_sget_tkt( KSSL_CTX *kssl_ctx,
 krb5_data *indata,
 krb5_ticket_times *ttimes,
 KSSL_ERR *kssl_err)
@@ -1419,18 +1419,18 @@ return (rc);
 # if !defined(OPENSSL_SYS_WINDOWS) && !defined(OPENSSL_SYS_WIN32)
 void kssl_krb5_free_data_contents(krb5_context context, krb5_data *data)
 {
-#  ifdef KRB5_HEIMDAL
+# ifdef KRB5_HEIMDAL
 data->length = 0;
 if (data->data)
 free(data->data);
-#  elif defined(KRB5_MIT_OLD11)
+# elif defined(KRB5_MIT_OLD11)
 if (data->data) {
 krb5_xfree(data->data);
 data->data = 0;
 }
-#  else
+# else
 krb5_free_data_contents(NULL, data);
-#  endif
+# endif
 }
 # endif
 static struct tm *k_gmtime(ASN1_GENERALIZEDTIME *gtime, struct tm *k_tm)
@@ -1541,9 +1541,9 @@ kssl_err_set(kssl_err, 0, "");
 # ifndef KRB5CHECKAUTH
 authentp = NULL;
 # else
-#  if     KRB5CHECKAUTH == 0
+# if KRB5CHECKAUTH == 0
 authentp = NULL;
-#  endif
+# endif
 # endif
 if (authentp == NULL || authentp->length == 0)
 return 0;

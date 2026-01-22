@@ -306,7 +306,7 @@ static struct client_vfuncs pop3_client_vfuncs = {
 .proxy_failed = pop3_proxy_failed,
 .proxy_get_state = pop3_proxy_get_state,
 .send_raw_data = client_common_send_raw_data,
-.input_next_cmd  = pop3_client_input_next_cmd,
+.input_next_cmd = pop3_client_input_next_cmd,
 .free = client_common_default_free,
 };
 static struct login_binary pop3_login_binary = {

@@ -1,15 +1,15 @@
 #ifndef gsfont_INCLUDED
-#  define gsfont_INCLUDED
+# define gsfont_INCLUDED
 #ifndef gs_matrix_DEFINED
-#  define gs_matrix_DEFINED
+# define gs_matrix_DEFINED
 typedef struct gs_matrix_s gs_matrix;
 #endif
 #ifndef gs_font_dir_DEFINED
-#  define gs_font_dir_DEFINED
+# define gs_font_dir_DEFINED
 typedef struct gs_font_dir_s gs_font_dir;
 #endif
 #ifndef gs_font_DEFINED
-#  define gs_font_DEFINED
+# define gs_font_DEFINED
 typedef struct gs_font_s gs_font;
 #endif
 gs_font_dir *gs_font_dir_alloc2(gs_memory_t * struct_mem,

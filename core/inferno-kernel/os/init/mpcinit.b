@@ -12,11 +12,11 @@ include "security.m";
 auth: Auth;
 Init: module
 {
-init:	fn();
+init: fn();
 };
 Shell: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 Bootpreadlen: con 128;
 # option switches
@@ -72,7 +72,7 @@ return -1;
 server := bootp();
 if(server == nil)
 return -1;
-net := "tcp";	# how to specify il?
+net := "tcp"; # how to specify il?
 svcname := net + "!" + server + "!6666";
 sys->print("dial %s...", svcname);
 (ok, c) := sys->dial(svcname, nil);
@@ -179,10 +179,10 @@ break loop;
 # default namespace
 #
 sys->unmount(nil, "/dev");
-sys->bind("#c", "/dev", sys->MBEFORE);			# console
-sys->bind("#l", "/net", sys->MBEFORE);		# ethernet
-sys->bind("#I", "/net", sys->MBEFORE);		# TCP/IP
-sys->bind("#p", "/prog", sys->MREPL);		# prog device
+sys->bind("#c", "/dev", sys->MBEFORE); # console
+sys->bind("#l", "/net", sys->MBEFORE); # ethernet
+sys->bind("#I", "/net", sys->MBEFORE); # TCP/IP
+sys->bind("#p", "/prog", sys->MREPL); # prog device
 sys->bind("#d", "/fd", Sys->MREPL);
 setsysname();
 sys->print("clock...\n");
@@ -208,7 +208,7 @@ if(n > 0){
 b[n] = byte 0;
 now = int string b;
 if(now <= 16r20000000)
-now = 0;	# rtc itself is not initialised
+now = 0; # rtc itself is not initialised
 }
 }
 }

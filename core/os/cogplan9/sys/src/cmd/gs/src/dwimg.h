@@ -1,5 +1,5 @@
 #ifndef dwimg_INCLUDED
-#  define dwimg_INCLUDED
+# define dwimg_INCLUDED
 typedef struct IMAGE_DEVICEN_S IMAGE_DEVICEN;
 struct IMAGE_DEVICEN_S {
 int used;

@@ -44,7 +44,7 @@ std::vector<llama_token> inp;
 std::vector<llama_token> all;
 inp = common_tokenize(ctx, params.prompt, true, true);
 all = inp;
-const int max_context_size     = llama_n_ctx(ctx);
+const int max_context_size = llama_n_ctx(ctx);
 const int max_tokens_list_size = max_context_size - 4;
 if ((int) inp.size() > max_tokens_list_size) {
 LOG_ERR("%s: prompt too long (%d tokens, max %d)\n", __func__, (int) inp.size(), max_tokens_list_size);
@@ -58,13 +58,13 @@ fflush(stderr);
 const int n_input = inp.size();
 const auto t_enc_start = ggml_time_us();
 llama_decode(ctx, llama_batch_get_one( inp.data(), n_input - 1));
-llama_decode(ctx, llama_batch_get_one(&inp.back(),           1));
+llama_decode(ctx, llama_batch_get_one(&inp.back(), 1));
 for (int s = 1; s < W + G + 1; ++s) {
 llama_memory_seq_cp(mem, 0, s, -1, -1);
 }
 const auto t_enc_end = ggml_time_us();
 int n_predict = 0;
-int n_accept  = 0;
+int n_accept = 0;
 int n_past = inp.size();
 llama_token id = 0;
 bool has_eos = false;
@@ -251,11 +251,11 @@ continue;
 }
 }
 const int head = ngrams_observed.head[ft];
-const int idx  = ft*(N - 1)*G + head*(N - 1);
+const int idx = ft*(N - 1)*G + head*(N - 1);
 for (int i = 0; i < N - 1; i++) {
 ngrams_observed.tokens[idx + i] = ngram[i];
 }
-ngrams_observed.cnt[ft]  = std::min(G, ngrams_observed.cnt[ft] + 1);
+ngrams_observed.cnt[ft] = std::min(G, ngrams_observed.cnt[ft] + 1);
 ngrams_observed.head[ft] = (head + 1) % G;
 ngrams_observed.n_total++;
 }
@@ -267,8 +267,8 @@ break;
 llama_memory_seq_rm(mem, -1, n_past, -1);
 if (seq_id_best != 0) {
 llama_memory_seq_keep(mem, seq_id_best);
-llama_memory_seq_cp  (mem, seq_id_best, 0, -1, -1);
-llama_memory_seq_rm  (mem, seq_id_best,    -1, -1);
+llama_memory_seq_cp (mem, seq_id_best, 0, -1, -1);
+llama_memory_seq_rm (mem, seq_id_best, -1, -1);
 for (int s = 1; s < W + G + 1; ++s) {
 llama_memory_seq_cp(mem, 0, s, -1, -1);
 }
@@ -276,8 +276,8 @@ llama_memory_seq_cp(mem, 0, s, -1, -1);
 }
 auto t_dec_end = ggml_time_us();
 LOG("\n\n");
-LOG_INF("encoded %4d tokens in %8.3f seconds, speed: %8.3f t/s\n", n_input,   (t_enc_end - t_enc_start) / 1e6f, inp.size() / ((t_enc_end - t_enc_start) / 1e6f));
-LOG_INF("decoded %4d tokens in %8.3f seconds, speed: %8.3f t/s\n", n_predict, (t_dec_end - t_dec_start) / 1e6f, n_predict  / ((t_dec_end - t_dec_start) / 1e6f));
+LOG_INF("encoded %4d tokens in %8.3f seconds, speed: %8.3f t/s\n", n_input, (t_enc_end - t_enc_start) / 1e6f, inp.size() / ((t_enc_end - t_enc_start) / 1e6f));
+LOG_INF("decoded %4d tokens in %8.3f seconds, speed: %8.3f t/s\n", n_predict, (t_dec_end - t_dec_start) / 1e6f, n_predict / ((t_dec_end - t_dec_start) / 1e6f));
 LOG_INF("\n");
 LOG_INF("W = %2d\n", W);
 LOG_INF("N = %2d\n", N);

@@ -31,7 +31,7 @@ l := str->unquoted(s);
 fields := array[11] of string;
 for(i := 0; l != nil; l = tl l)
 fields[i++] = S(hd l);
-#  time gen verb path serverpath mode uid gid mtime length
+# time gen verb path serverpath mode uid gid mtime length
 # 1064889121 4 a sys/src/cmd/ip/httpd/webls.denied - 664 sys sys 1064887847 3
 # time[0] gen[1] op[2] path[3] (serverpath|"-")[4] mode[5] uid[6] gid[7] mtime[8] length[9]
 if(i < 10 || len fields[2] != 1)
@@ -45,10 +45,10 @@ return (nil, sys->sprint("bad log entry: %q", s));
 }
 time := bigof(fields[0], 10);
 sgen := bigof(fields[1], 10);
-e.seq = (time << 32) | sgen;	# for easier comparison
+e.seq = (time << 32) | sgen; # for easier comparison
 # time/gen check
 # name check
-if(fields[4] == "-")	# undocumented
+if(fields[4] == "-") # undocumented
 fields[4] = fields[3];
 e.path = fields[3];
 e.serverpath = fields[4];
@@ -68,7 +68,7 @@ e.d.length = bigof(fields[9], 10);
 "log format:*" =>
 return (nil, sys->sprint("%s in log entry %q", ex, s));
 }
-e.contents = fields[10] :: nil;	# optional
+e.contents = fields[10] :: nil; # optional
 return (e, nil);
 }
 rev[T](l: list of T): list of T
@@ -102,7 +102,7 @@ return "";
 s := "";
 for(cl := e.contents; cl != nil; cl = tl cl)
 s += " " + hd cl;
-return s;	# includes initial space
+return s; # includes initial space
 }
 Entry.text(e: self ref Entry): string
 {
@@ -124,12 +124,12 @@ return sys->sprint("? %q", e.path);
 }
 Entry.dbtext(e: self ref Entry): string
 {
-#   path dpath|"-" mode uid gid mtime length
+# path dpath|"-" mode uid gid mtime length
 return sys->sprint("%bd %bd %q - %uo %q %q %ud %bd%s", e.seq>>32, e.seq & 16rFFFFFFFF, e.path, e.d.mode, e.d.uid, e.d.gid, e.d.mtime, e.d.length, contents(e));
 }
 Entry.logtext(e: self ref Entry): string
 {
-#   gen n act path spath|"-" dpath|"-" mode uid gid mtime length
+# gen n act path spath|"-" dpath|"-" mode uid gid mtime length
 a := e.action;
 if(a == 0)
 a = '?';
@@ -189,7 +189,7 @@ e.d = d;
 e.x = db.nstate++;
 if(e.x >= len db.state){
 a := array[len db.state + Incr] of ref Entry;
-a[0:]  = db.state;
+a[0:] = db.state;
 db.state = a;
 }
 db.state[e.x] = e;
@@ -226,7 +226,7 @@ else if(j < r)
 a[k:] = b[j:r];
 }
 }
-strings:	array of list of string;
+strings: array of list of string;
 S(s: string): string
 {
 if(strings == nil)

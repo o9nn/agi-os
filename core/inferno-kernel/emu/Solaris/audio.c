@@ -11,19 +11,19 @@
 #include <sys/filio.h>
 #include "audio.h"
 #include <sys/audioio.h>
-#define 	Audio_Mic_Val		AUDIO_MICROPHONE
-#define 	Audio_Linein_Val	AUDIO_LINE_IN
-#define	Audio_Speaker_Val	AUDIO_SPEAKER
-#define	Audio_Headphone_Val	AUDIO_HEADPHONE
-#define	Audio_Lineout_Val	AUDIO_LINE_OUT
-#define 	Audio_Pcm_Val		AUDIO_ENCODING_LINEAR
-#define 	Audio_Ulaw_Val		AUDIO_ENCODING_ULAW
-#define 	Audio_Alaw_Val		AUDIO_ENCODING_ALAW
+#define Audio_Mic_Val AUDIO_MICROPHONE
+#define Audio_Linein_Val AUDIO_LINE_IN
+#define Audio_Speaker_Val AUDIO_SPEAKER
+#define Audio_Headphone_Val AUDIO_HEADPHONE
+#define Audio_Lineout_Val AUDIO_LINE_OUT
+#define Audio_Pcm_Val AUDIO_ENCODING_LINEAR
+#define Audio_Ulaw_Val AUDIO_ENCODING_ULAW
+#define Audio_Alaw_Val AUDIO_ENCODING_ALAW
 #include "audio-tbls.c"
-#define	min(a,b)	((a) < (b) ? (a) : (b))
+#define min(a,b) ((a) < (b) ? (a) : (b))
 static int debug = 0;
 extern int nanosleep(const struct timespec *, struct timespec *);
-#define AUDIO_FILE_STRING	"/dev/audio"
+#define AUDIO_FILE_STRING "/dev/audio"
 enum {
 A_Pause,
 A_UnPause
@@ -34,10 +34,10 @@ A_Out
 };
 static QLock inlock;
 static QLock outlock;
-static	int	audio_file_in  = -1;
-static	int	audio_file_out = -1;
-static	int	audio_swap_flag = 0;
-static	int	audio_in_pause = A_UnPause;
+static int audio_file_in = -1;
+static int audio_file_out = -1;
+static int audio_swap_flag = 0;
+static int audio_in_pause = A_UnPause;
 static Audio_t av;
 static int audio_enforce(Audio_t*);
 static int audio_open_in(void);
@@ -142,7 +142,7 @@ break;
 long
 audio_file_read(Chan *c, void *va, long count, vlong offset)
 {
-struct  timespec time;
+struct timespec time;
 long ba, status, chunk, total;
 char *pva = (char *) va;
 qlock(&inlock);
@@ -181,7 +181,7 @@ return count;
 long
 audio_file_write(Chan *c, void *va, long count, vlong offset)
 {
-struct  timespec time;
+struct timespec time;
 long status = -1;
 long ba, total, chunk, bufsz;
 qlock(&outlock);
@@ -248,7 +248,7 @@ int
 audio_open_out(void)
 {
 int fd;
-struct audio_info	hdr;
+struct audio_info hdr;
 fd = open(AUDIO_FILE_STRING, O_WRONLY|O_NONBLOCK);
 if(fd < 0)
 oserror();
@@ -268,8 +268,8 @@ return fd;
 long
 audio_ctl_write(Chan *c, void *va, long count, vlong offset)
 {
-int	fd;
-int	ff;
+int fd;
+int ff;
 Audio_t tmpav = av;
 tmpav.in.flags = 0;
 tmpav.out.flags = 0;
@@ -326,8 +326,8 @@ audio_set_info(int fd, Audio_d *i, int d)
 {
 int status;
 int unequal_stereo = 0;
-audio_info_t	info;
-audio_prinfo_t  *dev;
+audio_info_t info;
+audio_prinfo_t *dev;
 if(fd < 0)
 return 0;
 AUDIO_INITINFO(&info);
@@ -391,8 +391,8 @@ n -= 2;
 static int
 audio_pause_out(int fd)
 {
-audio_info_t	info;
-int	foo = 0;
+audio_info_t info;
+int foo = 0;
 int status;
 osenter();
 status = ioctl(fd, AUDIO_DRAIN, &foo);
@@ -404,7 +404,7 @@ return 1;
 static int
 audio_pause_in(int fd, int f)
 {
-audio_info_t	info;
+audio_info_t info;
 int status;
 if(fd < 0)
 return 0;

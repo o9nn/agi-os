@@ -125,7 +125,7 @@ sprint(buf, "Rclwalk9p1 tag %ud fid %d qid 0x%lux|0x%lux",
 tag, fid, f->qid.path, f->qid.version);
 break;
 default:
-sprint(buf,  "unknown type %d", type);
+sprint(buf, "unknown type %d", type);
 }
 return fmtstrcpy(f1, buf);
 }

@@ -1,28 +1,28 @@
-#include	<sys/types.h>
-#include	<time.h>
-#include	<termios.h>
-#include	<signal.h>
-#include 	<pwd.h>
-#include	<sched.h>
-#include	<sys/resource.h>
-#include	<sys/wait.h>
-#include	<sys/time.h>
-#include	<errno.h>
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
-#include	"raise.h"
+#include <sys/types.h>
+#include <time.h>
+#include <termios.h>
+#include <signal.h>
+#include <pwd.h>
+#include <sched.h>
+#include <sys/resource.h>
+#include <sys/wait.h>
+#include <sys/time.h>
+#include <errno.h>
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
+#include "raise.h"
 void (*coherence)(void) = nofence;
 enum
 {
-DELETE	= 0x7f,
-CTRLC	= 'C'-'@',
+DELETE = 0x7f,
+CTRLC = 'C'-'@',
 };
 char *hosttype = "NetBSD";
 extern int dflag;
-int	gidnobody = -1;
-int	uidnobody = -1;
-static struct 	termios tinit;
+int gidnobody = -1;
+int uidnobody = -1;
+static struct termios tinit;
 static void
 sysfault(char *what, void *addr)
 {
@@ -219,7 +219,7 @@ return (vlong)t.tv_sec * 1000000 + t.tv_usec;
 int
 osmillisleep(ulong milsec)
 {
-struct  timespec time;
+struct timespec time;
 time.tv_sec = milsec/1000;
 time.tv_nsec= (milsec%1000)*1000000;
 nanosleep(&time, NULL);

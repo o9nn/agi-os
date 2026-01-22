@@ -59,7 +59,7 @@ default: return "unknown";
 }
 void mach_msg_destroy(mach_msg_header_t *msg)
 {
-mach_port_t	tmp;
+mach_port_t tmp;
 tmp = mach_reply_port();
 msg->msgh_local_port = msg->msgh_remote_port;
 msg->msgh_bits = MACH_MSGH_BITS(MACH_MSG_TYPE_MAKE_SEND,
@@ -70,17 +70,17 @@ MACH_MSG_TIMEOUT_NONE, MACH_PORT_NULL);
 mach_port_mod_refs(mach_task_self(), tmp, MACH_PORT_RIGHT_RECEIVE, -1);
 }
 mach_msg_return_t mach_msg_server(
-boolean_t		(*demux) (mach_msg_header_t *request,
+boolean_t (*demux) (mach_msg_header_t *request,
 mach_msg_header_t *reply),
-mach_msg_size_t		max_size,
-mach_port_t		rcv_name,
-mach_msg_option_t	options)
+mach_msg_size_t max_size,
+mach_port_t rcv_name,
+mach_msg_option_t options)
 {
-mach_msg_return_t	mr;
-mig_reply_header_t	*request;
-mig_reply_header_t	*reply;
-mig_reply_header_t	*tmp;
-boolean_t		handled;
+mach_msg_return_t mr;
+mig_reply_header_t *request;
+mig_reply_header_t *reply;
+mig_reply_header_t *tmp;
+boolean_t handled;
 request = __builtin_alloca(max_size);
 reply = __builtin_alloca(max_size);
 GetRequest:
@@ -118,16 +118,16 @@ goto GetRequest;
 return mr;
 }
 mach_msg_return_t mach_msg_server_once(
-boolean_t		(*demux) (mach_msg_header_t *request,
+boolean_t (*demux) (mach_msg_header_t *request,
 mach_msg_header_t *reply),
-mach_msg_size_t		max_size,
-mach_port_t		rcv_name,
-mach_msg_option_t	options)
+mach_msg_size_t max_size,
+mach_port_t rcv_name,
+mach_msg_option_t options)
 {
-mach_msg_return_t	mr;
-mig_reply_header_t	*request;
-mig_reply_header_t	*reply;
-boolean_t		handled;
+mach_msg_return_t mr;
+mig_reply_header_t *request;
+mig_reply_header_t *reply;
+boolean_t handled;
 request = __builtin_alloca(max_size);
 reply = __builtin_alloca(max_size);
 mr = mach_msg(&request->Head, MACH_RCV_MSG|options,

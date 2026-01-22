@@ -25,14 +25,14 @@ struct __is_location_invariant
 class _Undefined_class;
 union _Nocopy_types
 {
-void*       _M_object;
+void* _M_object;
 const void* _M_const_object;
 void (*_M_function_pointer)();
 void (_Undefined_class::*_M_member_pointer)();
 };
 union [[gnu::may_alias]] _Any_data
 {
-void*       _M_access()       noexcept { return &_M_pod_data[0]; }
+void* _M_access() noexcept { return &_M_pod_data[0]; }
 const void* _M_access() const noexcept { return &_M_pod_data[0]; }
 template<typename _Tp>
 _Tp&
@@ -165,7 +165,7 @@ _M_manager(_M_functor, _M_functor, __destroy_functor);
 bool _M_empty() const { return !_M_manager; }
 using _Manager_type
 = bool (*)(_Any_data&, const _Any_data&, _Manager_operation);
-_Any_data     _M_functor{};
+_Any_data _M_functor{};
 _Manager_type _M_manager{};
 };
 template<typename _Signature, typename _Functor>
@@ -354,7 +354,7 @@ if (_M_manager)
 {
 _Any_data __typeinfo_result;
 _M_manager(__typeinfo_result, _M_functor, __get_type_info);
-if (auto __ti =  __typeinfo_result._M_access<const type_info*>())
+if (auto __ti = __typeinfo_result._M_access<const type_info*>())
 return *__ti;
 }
 return typeid(void);

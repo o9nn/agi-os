@@ -6,18 +6,18 @@ import { VisualizerService } from './visualizer/visualizer.service';
 import { InitializeDropdown } from './directives/intialize-dropdown.directive';
 import { TranslateModule } from './translate/translate.module';
 @NgModule({
-  imports: [
-    CommonModule,
-    TranslateModule
-  ],
-  declarations: [ VisualizerComponent, InitializeDropdown ],
-  exports: [ VisualizerComponent ]
+imports: [
+CommonModule,
+TranslateModule
+],
+declarations: [ VisualizerComponent, InitializeDropdown ],
+exports: [ VisualizerComponent ]
 })
 export class AtomspaceVisualizerModule {
-  static forRoot() {
-    return {
-      ngModule: AtomspaceVisualizerModule,
-      providers: [ VisualizerService, AtomService ]
-    };
-  }
+static forRoot() {
+return {
+ngModule: AtomspaceVisualizerModule,
+providers: [ VisualizerService, AtomService ]
+};
+}
 }

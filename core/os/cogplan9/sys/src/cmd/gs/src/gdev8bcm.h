@@ -1,5 +1,5 @@
 #ifndef gdev8bcm_INCLUDED
-#  define gdev8bcm_INCLUDED
+# define gdev8bcm_INCLUDED
 #define gx_8bit_map_size 323
 #define gx_8bit_map_spreader 123
 typedef struct gx_8bit_map_entry_s {

@@ -1,12 +1,12 @@
 #ifndef gdevpdfo_INCLUDED
-#  define gdevpdfo_INCLUDED
+# define gdevpdfo_INCLUDED
 #include "gsparam.h"
 #ifndef gx_device_pdf_DEFINED
-#  define gx_device_pdf_DEFINED
+# define gx_device_pdf_DEFINED
 typedef struct gx_device_pdf_s gx_device_pdf;
 #endif
 #ifndef cos_types_DEFINED
-#  define cos_types_DEFINED
+# define cos_types_DEFINED
 typedef struct cos_object_s cos_object_t;
 typedef struct cos_stream_s cos_stream_t;
 typedef struct cos_dict_s cos_dict_t;
@@ -31,22 +31,22 @@ cos_proc_equal((*equal));
 #define cos_type(pco) ((pco)->cos_procs)
 #define cos_object_struct(otype_s, etype)\
 struct otype_s {\
-const cos_object_procs_t *cos_procs;	\
+const cos_object_procs_t *cos_procs; \
 long id;\
 etype *elements;\
 cos_stream_piece_t *pieces;\
 gx_device_pdf *pdev;\
-pdf_resource_t *pres;	\
-byte is_open;		\
-byte is_graphics;		\
-byte written;		\
-long length;                \
-stream *input_strm;		\
+pdf_resource_t *pres; \
+byte is_open; \
+byte is_graphics; \
+byte written; \
+long length; \
+stream *input_strm; \
 \
 \
 }
 cos_object_struct(cos_object_s, cos_element_t);
-#define private_st_cos_object()	\
+#define private_st_cos_object() \
 gs_private_st_ptrs5(st_cos_object, cos_object_t, "cos_object_t",\
 cos_object_enum_ptrs, cos_object_reloc_ptrs, elements, pieces,\
 pdev, pres, input_strm)
@@ -67,7 +67,7 @@ gs_string chars;
 cos_object_t *object;
 } contents;
 };
-#define private_st_cos_value()	\
+#define private_st_cos_value() \
 gs_private_st_composite(st_cos_value, cos_value_t,\
 "cos_value_t", cos_value_enum_ptrs, cos_value_reloc_ptrs)
 typedef struct cos_array_element_s cos_array_element_t;

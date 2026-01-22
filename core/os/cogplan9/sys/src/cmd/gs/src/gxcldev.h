@@ -1,5 +1,5 @@
 #ifndef gxcldev_INCLUDED
-#  define gxcldev_INCLUDED
+# define gxcldev_INCLUDED
 #include "gxclist.h"
 #include "gsropt.h"
 #include "gxht.h"
@@ -88,8 +88,8 @@ unsigned dy:4;
 } gx_cmd_rect_tiny;
 #define cmd_min_dxy_tiny (-8)
 #define cmd_max_dxy_tiny 7
-#define cmd_depth_to_code(d)    ((d) > 0xf ? 0x10 | ((d) >> 3) : (d))
-#define cmd_code_to_depth(v)    \
+#define cmd_depth_to_code(d) ((d) > 0xf ? 0x10 | ((d) >> 3) : (d))
+#define cmd_code_to_depth(v) \
 (((v) & 0x10) != 0 ? ((v) & 0xf) << 3 : (v) & 0xf)
 #define cmd_max_short_width_bytes 6
 #define cmd_max_short_width_bits (cmd_max_short_width_bytes * 8)
@@ -150,17 +150,17 @@ int cmd_put_params(gx_device_clist_writer *, gs_param_list *);
 int cmd_count_op(int op, uint size);
 void cmd_uncount_op(int op, uint size);
 void cmd_print_stats(void);
-#  define cmd_count_add1(v) (v++)
+# define cmd_count_add1(v) (v++)
 #else
-#  define cmd_count_op(op, size) (op)
-#  define cmd_uncount_op(op, size) DO_NOTHING
-#  define cmd_count_add1(v) DO_NOTHING
+# define cmd_count_op(op, size) (op)
+# define cmd_uncount_op(op, size) DO_NOTHING
+# define cmd_count_add1(v) DO_NOTHING
 #endif
 byte *cmd_put_list_op(gx_device_clist_writer * cldev, cmd_list * pcl, uint size);
 #ifdef DEBUG
 byte *cmd_put_op(gx_device_clist_writer * cldev, gx_clist_state * pcls, uint size);
 #else
-#  define cmd_put_op(cldev, pcls, size)\
+# define cmd_put_op(cldev, pcls, size)\
 cmd_put_list_op(cldev, &(pcls)->list, size)
 #endif
 #define set_cmd_put_op(dp, cldev, pcls, op, csize)\
@@ -274,8 +274,8 @@ int band_end = (band + 1) * band_height;\
 height = min(band_end, yend) - y;\
 retry_rect:\
 ;
-#define NEST_RECT    ++cdev->driver_call_nesting;
-#define UNNEST_RECT  --cdev->driver_call_nesting
+#define NEST_RECT ++cdev->driver_call_nesting;
+#define UNNEST_RECT --cdev->driver_call_nesting
 #define ERROR_RECT(code_value)\
 BEGIN\
 band_code = (code_value);\

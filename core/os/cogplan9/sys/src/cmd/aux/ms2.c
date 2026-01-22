@@ -2,22 +2,22 @@
 #include <libc.h>
 #include <bio.h>
 #include <mach.h>
-void	record(uchar*, long);
-void	usage(void);
-void	segment(vlong, vlong);
+void record(uchar*, long);
+void usage(void);
+void segment(vlong, vlong);
 enum
 {
 Recordsize = 32,
 };
-int	dsegonly;
-int	supressend;
-int	binary;
-int	halfswap;
-int	srec = 2;
-uvlong	addr;
-uvlong 	psize = 4096;
-Biobuf 	stdout;
-Fhdr	exech;
+int dsegonly;
+int supressend;
+int binary;
+int halfswap;
+int srec = 2;
+uvlong addr;
+uvlong psize = 4096;
+Biobuf stdout;
+Fhdr exech;
 Biobuf *bio;
 void
 main(int argc, char **argv)

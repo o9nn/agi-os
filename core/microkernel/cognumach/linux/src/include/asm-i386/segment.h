@@ -4,10 +4,10 @@
 #include <machine/gdt.h>
 #include <machine/ldt.h>
 #else
-#define KERNEL_CS	0x10
-#define KERNEL_DS	0x18
-#define USER_CS		0x23
-#define USER_DS		0x2B
+#define KERNEL_CS 0x10
+#define KERNEL_DS 0x18
+#define USER_CS 0x23
+#define USER_DS 0x2B
 #endif
 #ifndef __ASSEMBLY__
 #define put_user(x,ptr) __put_user((unsigned long)(x),(ptr),sizeof(*(ptr)))
@@ -137,7 +137,7 @@ __asm__("cld\n\t" \
 "rep ; movsl\n\t" \
 x \
 "pop %%es" \
-:  \
+: \
 :"c" (n/4),"D" ((long) to),"S" ((long) from) \
 :"cx","di","si")
 switch (n % 4) {
@@ -215,7 +215,7 @@ return;
 __asm__("cld\n\t" \
 "rep ; fs ; movsl\n\t" \
 x \
-:  \
+: \
 :"c" (n/4),"D" ((long) to),"S" ((long) from) \
 :"cx","di","si","memory")
 switch (n % 4) {
@@ -306,7 +306,7 @@ return _v;
 }
 static inline void set_fs(unsigned long val)
 {
-__asm__ __volatile__("mov %w0,%%fs":  :"r" (val));
+__asm__ __volatile__("mov %w0,%%fs": :"r" (val));
 }
 #endif
 #endif

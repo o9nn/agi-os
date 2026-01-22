@@ -2,36 +2,36 @@
 #include <bio.h>
 #include "mach.h"
 static int debug = 0;
-typedef struct	Instr	Instr;
-struct	Instr
+typedef struct Instr Instr;
+struct Instr
 {
-Map	*map;
-ulong	w;
-ulong	addr;
-uchar	op;
-uchar	rd;
-uchar	rn;
-uchar	rs;
-long	imm;
-char*	curr;
-char*	end;
-char*	err;
+Map *map;
+ulong w;
+ulong addr;
+uchar op;
+uchar rd;
+uchar rn;
+uchar rs;
+long imm;
+char* curr;
+char* end;
+char* err;
 };
 typedef struct Opcode Opcode;
 struct Opcode
 {
-char*	o;
-void	(*fmt)(Opcode*, Instr*);
-uvlong	(*foll)(Map*, Rgetter, Instr*, uvlong);
-char*	a;
+char* o;
+void (*fmt)(Opcode*, Instr*);
+uvlong (*foll)(Map*, Rgetter, Instr*, uvlong);
+char* a;
 };
-static	void	format(char*, Instr*, char*);
-static	char	FRAMENAME[] = ".frame";
-static	char	*thumbexcep(Map*, Rgetter);
-static	int	thumbfoll(Map*, uvlong, Rgetter, uvlong*);
-static	int	thumbinst(Map*, uvlong, char, char*, int);
-static	int	thumbdas(Map*, uvlong, char*, int);
-static	int	thumbinstlen(Map*, uvlong);
+static void format(char*, Instr*, char*);
+static char FRAMENAME[] = ".frame";
+static char *thumbexcep(Map*, Rgetter);
+static int thumbfoll(Map*, uvlong, Rgetter, uvlong*);
+static int thumbinst(Map*, uvlong, char, char*, int);
+static int thumbdas(Map*, uvlong, char*, int);
+static int thumbinstlen(Map*, uvlong);
 Machdata thumbmach =
 {
 {0x0, 0xE8},
@@ -79,14 +79,14 @@ return "Undefined trap";
 }
 }
 static
-char*	cond[16] =
+char* cond[16] =
 {
-"EQ",	"NE",	"CS",	"CC",
-"MI",	"PL",	"VS",	"VC",
-"HI",	"LS",	"GE",	"LT",
-"GT",	"LE",	"\0",	"NV"
+"EQ", "NE", "CS", "CC",
+"MI", "PL", "VS", "VC",
+"HI", "LS", "GE", "LT",
+"GT", "LE", "\0", "NV"
 };
-#define B(h, l)		bits(ins, h, l)
+#define B(h, l) bits(ins, h, l)
 static int
 bits(int i, int h, int l)
 {
@@ -259,22 +259,22 @@ z = (psr >> 30) & 1;
 c = (psr >> 29) & 1;
 v = (psr >> 28) & 1;
 switch(cond) {
-case 0:		return z;
-case 1:		return !z;
-case 2:		return c;
-case 3:		return !c;
-case 4:		return n;
-case 5:		return !n;
-case 6:		return v;
-case 7:		return !v;
-case 8:		return c && !z;
-case 9:		return !c || z;
-case 10:	return n == v;
-case 11:	return n != v;
-case 12:	return !z && (n == v);
-case 13:	return z && (n != v);
-case 14:	return 1;
-case 15:	return 0;
+case 0: return z;
+case 1: return !z;
+case 2: return c;
+case 3: return !c;
+case 4: return n;
+case 5: return !n;
+case 6: return v;
+case 7: return !v;
+case 8: return c && !z;
+case 9: return !c || z;
+case 10: return n == v;
+case 11: return n != v;
+case 12: return !z && (n == v);
+case 13: return z && (n != v);
+case 14: return 1;
+case 15: return 0;
 }
 return 0;
 }
@@ -506,68 +506,68 @@ format(o->o, i, o->a);
 }
 static Opcode opcodes[] =
 {
-"LSL",	thumbshift,	0,	"$#%i,R%n,R%d",
-"LSR",	thumbshift,	0,	"$#%i,R%n,R%d",
-"ASR",	thumbshift,	0,	"$#%i,R%n,R%d",
-"ADD",	thumbrrr,		0,	"R%s,R%n,R%d",
-"SUB",	thumbrrr,		0,	"R%s,R%n,R%d",
-"ADD",	thumbirr,		0,	"$#%i,R%n,R%d",
-"SUB",	thumbirr,		0,	"$#%i,R%n,R%d",
-"MOVW",	thumbir,		0,	"$#%i,R%d",
-"CMP",	thumbir,		0,	"$#%i,R%d",
-"ADD",	thumbir,		0,	"$#%i,R%d,R%d",
-"SUB",	thumbir,		0,	"$#%i,R%d,R%d",
-"AND",	thumbrr,		0,	"R%n,R%d,R%d",
-"EOR",	thumbrr,		0,	"R%n,R%d,R%d",
-"LSL",	thumbrr,		0,	"R%n,R%d,R%d",
-"LSR",	thumbrr,		0,	"R%n,R%d,R%d",
-"ASR",	thumbrr,		0,	"R%n,R%d,R%d",
-"ADC",	thumbrr,		0,	"R%n,R%d,R%d",
-"SBC",	thumbrr,		0,	"R%n,R%d,R%d",
-"ROR",	thumbrr,		0,	"R%n,R%d,R%d",
-"TST",	thumbrr,		0,	"R%n,R%d",
-"NEG",	thumbrr,		0,	"R%n,R%d",
-"CMP",	thumbrr,		0,	"R%n,R%d",
-"CMPN",	thumbrr,		0,	"R%n,R%d",
-"OR",	thumbrr,		0,	"R%n,R%d,R%d",
-"MUL",	thumbrr,		0,	"R%n,R%d,R%d",
-"BITC",	thumbrr,		0,	"R%n,R%d,R%d",
-"MOVN",	thumbrr,		0,	"R%n,R%d",
-"ADD",	thumbrrh,		thumbfadd,	"R%n,R%d,R%d",
-"CMP",	thumbrrh,		0,	"R%n,R%d",
-"MOVW",	thumbrrh,		thumbfmov,	"R%n,R%d",
-"BX",		thumbrrh,		thumbfbranch,	"R%n",
-"MOVW",	thumbpcrel,	0,	"$%I,R%d",
-"MOVW",	thumbrrr,		0,	"R%d, [R%s,R%n]",
-"MOVH",	thumbrrr,		0,	"R%d, [R%s,R%n]",
-"MOVB",	thumbrrr,		0,	"R%d, [R%s,R%n]",
-"MOVB",	thumbrrr,		0,	"[R%s,R%n],R%d",
-"MOVW",	thumbrrr,		0,	"[R%s,R%n],R%d",
-"MOVHU",	thumbrrr,		0,	"[R%s,R%n],R%d",
-"MOVBU",	thumbrrr,		0,	"[R%s,R%n],R%d",
-"MOVH",	thumbrrr,		0,	"[R%s,R%n],R%d",
-"MOVW",	thumbmovirr,	0,	"R%d,%I",
-"MOVW",	thumbmovirr,	0,	"%I,R%d",
-"MOVB",	thumbmovirr,	0,	"R%d,%I",
-"MOVBU",	thumbmovirr,	0,	"$%I,R%d",
-"MOVH",	thumbmovirr,	0,	"R%d,%I",
-"MOVHU",	thumbmovirr,	0,	"%I,R%d",
-"MOVW",	thumbmovsp,	0,	"R%d,%I",
-"MOVW",	thumbmovsp,	0,	"%I,R%d",
-"ADD",	thumbaddsppc,0,	"$#%i,PC,R%d",
-"ADD",	thumbaddsppc,0,	"$#%i,SP,R%d",
-"ADD",	thumbaddsp,	0,	"$#%i,SP,SP",
-"SUB",	thumbaddsp,	0,	"$#%i,SP,SP",
-"PUSH",	thumbregs,	0,	"R%d, %r",
-"POP",	thumbregs,	0,	"R%d, %r",
-"STMIA",	thumbregs,	0,	"R%d, %r",
-"LDMIA",	thumbregs,	0,	"R%d, %r",
-"SWI",	thumbswi,	0,	"$#%i",
-"B%c",	thumbbcc,	thumbfbranch,	"%b",
-"B",		thumbb,		thumbfbranch,	"%b",
-"BL",		thumbbl,		0,	"",
-"BL",		thumbbl,		thumbfbranch,	"%b",
-"UNK",	thumbunk,	0,	"",
+"LSL", thumbshift, 0, "$#%i,R%n,R%d",
+"LSR", thumbshift, 0, "$#%i,R%n,R%d",
+"ASR", thumbshift, 0, "$#%i,R%n,R%d",
+"ADD", thumbrrr, 0, "R%s,R%n,R%d",
+"SUB", thumbrrr, 0, "R%s,R%n,R%d",
+"ADD", thumbirr, 0, "$#%i,R%n,R%d",
+"SUB", thumbirr, 0, "$#%i,R%n,R%d",
+"MOVW", thumbir, 0, "$#%i,R%d",
+"CMP", thumbir, 0, "$#%i,R%d",
+"ADD", thumbir, 0, "$#%i,R%d,R%d",
+"SUB", thumbir, 0, "$#%i,R%d,R%d",
+"AND", thumbrr, 0, "R%n,R%d,R%d",
+"EOR", thumbrr, 0, "R%n,R%d,R%d",
+"LSL", thumbrr, 0, "R%n,R%d,R%d",
+"LSR", thumbrr, 0, "R%n,R%d,R%d",
+"ASR", thumbrr, 0, "R%n,R%d,R%d",
+"ADC", thumbrr, 0, "R%n,R%d,R%d",
+"SBC", thumbrr, 0, "R%n,R%d,R%d",
+"ROR", thumbrr, 0, "R%n,R%d,R%d",
+"TST", thumbrr, 0, "R%n,R%d",
+"NEG", thumbrr, 0, "R%n,R%d",
+"CMP", thumbrr, 0, "R%n,R%d",
+"CMPN", thumbrr, 0, "R%n,R%d",
+"OR", thumbrr, 0, "R%n,R%d,R%d",
+"MUL", thumbrr, 0, "R%n,R%d,R%d",
+"BITC", thumbrr, 0, "R%n,R%d,R%d",
+"MOVN", thumbrr, 0, "R%n,R%d",
+"ADD", thumbrrh, thumbfadd, "R%n,R%d,R%d",
+"CMP", thumbrrh, 0, "R%n,R%d",
+"MOVW", thumbrrh, thumbfmov, "R%n,R%d",
+"BX", thumbrrh, thumbfbranch, "R%n",
+"MOVW", thumbpcrel, 0, "$%I,R%d",
+"MOVW", thumbrrr, 0, "R%d, [R%s,R%n]",
+"MOVH", thumbrrr, 0, "R%d, [R%s,R%n]",
+"MOVB", thumbrrr, 0, "R%d, [R%s,R%n]",
+"MOVB", thumbrrr, 0, "[R%s,R%n],R%d",
+"MOVW", thumbrrr, 0, "[R%s,R%n],R%d",
+"MOVHU", thumbrrr, 0, "[R%s,R%n],R%d",
+"MOVBU", thumbrrr, 0, "[R%s,R%n],R%d",
+"MOVH", thumbrrr, 0, "[R%s,R%n],R%d",
+"MOVW", thumbmovirr, 0, "R%d,%I",
+"MOVW", thumbmovirr, 0, "%I,R%d",
+"MOVB", thumbmovirr, 0, "R%d,%I",
+"MOVBU", thumbmovirr, 0, "$%I,R%d",
+"MOVH", thumbmovirr, 0, "R%d,%I",
+"MOVHU", thumbmovirr, 0, "%I,R%d",
+"MOVW", thumbmovsp, 0, "R%d,%I",
+"MOVW", thumbmovsp, 0, "%I,R%d",
+"ADD", thumbaddsppc,0, "$#%i,PC,R%d",
+"ADD", thumbaddsppc,0, "$#%i,SP,R%d",
+"ADD", thumbaddsp, 0, "$#%i,SP,SP",
+"SUB", thumbaddsp, 0, "$#%i,SP,SP",
+"PUSH", thumbregs, 0, "R%d, %r",
+"POP", thumbregs, 0, "R%d, %r",
+"STMIA", thumbregs, 0, "R%d, %r",
+"LDMIA", thumbregs, 0, "R%d, %r",
+"SWI", thumbswi, 0, "$#%i",
+"B%c", thumbbcc, thumbfbranch, "%b",
+"B", thumbb, thumbfbranch, "%b",
+"BL", thumbbl, 0, "",
+"BL", thumbbl, thumbfbranch, "%b",
+"UNK", thumbunk, 0, "",
 };
 static void
 gaddr(Instr *i)

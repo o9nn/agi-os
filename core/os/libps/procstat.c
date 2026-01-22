@@ -45,8 +45,8 @@ return state;
 (PSTAT_PROCINFO_TASK_THREAD_DEP | PSTAT_PROC_INFO \
 | PSTAT_TASK_BASIC | PSTAT_TASK_EVENTS)
 #define PSTAT_PROCINFO PSTAT_PROCINFO_TASK
-#define PSTAT_PROCINFO_MERGE    (PSTAT_TASK_BASIC | PSTAT_TASK_EVENTS)
-#define PSTAT_PROCINFO_REFETCH  (PSTAT_PROCINFO - PSTAT_PROCINFO_MERGE)
+#define PSTAT_PROCINFO_MERGE (PSTAT_TASK_BASIC | PSTAT_TASK_EVENTS)
+#define PSTAT_PROCINFO_REFETCH (PSTAT_PROCINFO - PSTAT_PROCINFO_MERGE)
 static error_t
 fetch_procinfo (process_t server, pid_t pid,
 ps_flags_t need, ps_flags_t *have,
@@ -57,12 +57,12 @@ mach_msg_type_number_t *waits_len)
 {
 static const struct { ps_flags_t ps_flag; int pi_flags; } map[] =
 {
-{ PSTAT_TASK_BASIC,     PI_FETCH_TASKINFO				},
-{ PSTAT_TASK_EVENTS,    PI_FETCH_TASKEVENTS				},
-{ PSTAT_NUM_THREADS,    PI_FETCH_THREADS				},
-{ PSTAT_THREAD_BASIC,   PI_FETCH_THREAD_BASIC | PI_FETCH_THREADS	},
-{ PSTAT_THREAD_SCHED,   PI_FETCH_THREAD_SCHED | PI_FETCH_THREADS	},
-{ PSTAT_THREAD_WAITS,   PI_FETCH_THREAD_WAITS | PI_FETCH_THREADS	},
+{ PSTAT_TASK_BASIC, PI_FETCH_TASKINFO },
+{ PSTAT_TASK_EVENTS, PI_FETCH_TASKEVENTS },
+{ PSTAT_NUM_THREADS, PI_FETCH_THREADS },
+{ PSTAT_THREAD_BASIC, PI_FETCH_THREAD_BASIC | PI_FETCH_THREADS },
+{ PSTAT_THREAD_SCHED, PI_FETCH_THREAD_SCHED | PI_FETCH_THREADS },
+{ PSTAT_THREAD_WAITS, PI_FETCH_THREAD_WAITS | PI_FETCH_THREADS },
 { 0, }
 };
 int pi_flags = 0;
@@ -91,7 +91,7 @@ return 0;
 }
 #define PROCINFO_MALLOC_SIZE \
 (sizeof (struct procinfo) + 4 * sizeof (threadinfo_data_t))
-#define WAITS_MALLOC_SIZE	128
+#define WAITS_MALLOC_SIZE 128
 static ps_flags_t
 merge_procinfo (struct proc_stat *ps, ps_flags_t need, ps_flags_t have)
 {
@@ -527,35 +527,35 @@ flags |= test_msgport_flags;
 else
 test_msgport_flags = 0;
 need = flags & ~have & ~ps->failed;
-#define NEED(flag, precond)						      \
-({									      \
-ps_flags_t __flag = (flag), _precond = (precond);			      \
-int val;								      \
-if (! (__flag & need))						      \
-val = 0;								      \
-else if ((_precond & have) == _precond)				      \
-val = 1;								      \
-else								      \
-{									      \
-val = 0;							      \
-if (_precond & ps->inapp)					      \
-ps->inapp |= __flag;						      \
-}									      \
-val;								      \
+#define NEED(flag, precond) \
+({ \
+ps_flags_t __flag = (flag), _precond = (precond); \
+int val; \
+if (! (__flag & need)) \
+val = 0; \
+else if ((_precond & have) == _precond) \
+val = 1; \
+else \
+{ \
+val = 0; \
+if (_precond & ps->inapp) \
+ps->inapp |= __flag; \
+} \
+val; \
 })
-#define MGET(flag, precond, call)					      \
-({									      \
-error_t err;							      \
-ps_flags_t _flag = (flag);						      \
-if (NEED (_flag, precond))						      \
-{									      \
-err = (call);							      \
-if (!err)							      \
-have |= _flag;						      \
-}									      \
-else								      \
-err = 0;								      \
-err;								      \
+#define MGET(flag, precond, call) \
+({ \
+error_t err; \
+ps_flags_t _flag = (flag); \
+if (NEED (_flag, precond)) \
+{ \
+err = (call); \
+if (!err) \
+have |= _flag; \
+} \
+else \
+err = 0; \
+err; \
 })
 #define MP_MGET(flag, precond, call) \
 ({ error_t err = MGET (flag, (precond) | PSTAT_MSGPORT, call); \

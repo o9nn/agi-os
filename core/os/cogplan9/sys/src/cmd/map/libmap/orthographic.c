@@ -16,7 +16,7 @@ return(Xorthographic);
 int
 olimb(double *lat, double *lon, double res)
 {
-static first  = 1;
+static first = 1;
 if(first) {
 *lat = 0;
 *lon = -180;

@@ -2,20 +2,20 @@
 #include "draw.h"
 #include "tk.h"
 #include "canvs.h"
-#define	O(t, e)		((long)(&((t*)0)->e))
+#define O(t, e) ((long)(&((t*)0)->e))
 static
 TkOption windopts[] =
 {
-"width",	OPTdist,	O(TkCwind, width),	nil,
-"height",	OPTdist,	O(TkCwind, height),	nil,
-"anchor",	OPTstab,	O(TkCwind, flags),	tkanchor,
-"window",	OPTwinp,	O(TkCwind, sub),	nil,
+"width", OPTdist, O(TkCwind, width), nil,
+"height", OPTdist, O(TkCwind, height), nil,
+"anchor", OPTstab, O(TkCwind, flags), tkanchor,
+"window", OPTwinp, O(TkCwind, sub), nil,
 nil
 };
 static
 TkOption itemopts[] =
 {
-"tags",		OPTctag,	O(TkCitem, tags),	nil,
+"tags", OPTctag, O(TkCitem, tags), nil,
 nil
 };
 static void

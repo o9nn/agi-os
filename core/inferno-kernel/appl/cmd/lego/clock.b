@@ -13,7 +13,7 @@ top: ref Tk->Toplevel;
 include "tkclient.m";
 tkclient: Tkclient;
 Clock: module {
-init:	fn(ctxt: ref Draw->Context, argl: list of string);
+init: fn(ctxt: ref Draw->Context, argl: list of string);
 };
 cmds := array[] of {
 "bind . <Configure> {send win resize}",
@@ -64,8 +64,8 @@ s = <-titlech =>
 tkclient->wmctl(top, s);
 msg := <-win =>
 case msg {
-"resize" =>	drawface();
-"reset" =>		sys->fprint(clockface, "reset");
+"resize" => drawface();
+"reset" => sys->fprint(clockface, "reset");
 }
 nowis := <-tock =>
 (n, toks) := sys->tokenize(nowis, ":");
@@ -88,10 +88,10 @@ ch <-= "99:99";
 hour, minute: int;
 center, focus: Point;
 major: int;
-Frim:	con .98;
-Fminute:	con .90;
-Fhour:	con .45;
-Fnub:	con .05;
+Frim: con .98;
+Fminute: con .90;
+Fhour: con .45;
+Fnub: con .05;
 hands(ptr: chan of string, fd: ref Sys->FD)
 {
 for (;;) {
@@ -110,8 +110,8 @@ angle := int (atan2(real -p.y, real p.x) / Degree);
 if (hand != nil)
 tkc(".face itemconfigure "+hand+" -start "+string angle+"; update");
 case hand {
-"hour" =>		hour = ((360+90-angle) / 30) % 12;
-"minute" =>	minute = ((360+90-angle) / 6) % 60;
+"hour" => hour = ((360+90-angle) / 30) % 12;
+"minute" => minute = ((360+90-angle) / 6) % 60;
 }
 } while ((pos = <-ptr) != "release");
 if (hand != nil)

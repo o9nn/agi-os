@@ -5,17 +5,17 @@ print_tree(io, rc_model)
 ser = String(take!(io))
 str = """rc_model
 ├─ resistor
-│  ├─ p
-│  └─ n
+│ ├─ p
+│ └─ n
 ├─ capacitor
-│  ├─ p
-│  └─ n
+│ ├─ p
+│ └─ n
 ├─ shape
-│  └─ output
+│ └─ output
 ├─ source
-│  ├─ p
-│  ├─ n
-│  └─ V
+│ ├─ p
+│ ├─ n
+│ └─ V
 └─ ground
 └─ g
 """

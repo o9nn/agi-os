@@ -37,26 +37,26 @@ int percent_done;
 };
 typedef struct cdjpeg_progress_mgr * cd_progress_ptr;
 #ifdef NEED_SHORT_EXTERNAL_NAMES
-#define jinit_read_bmp		jIRdBMP
-#define jinit_write_bmp		jIWrBMP
-#define jinit_read_gif		jIRdGIF
-#define jinit_write_gif		jIWrGIF
-#define jinit_read_ppm		jIRdPPM
-#define jinit_write_ppm		jIWrPPM
-#define jinit_read_rle		jIRdRLE
-#define jinit_write_rle		jIWrRLE
-#define jinit_read_targa	jIRdTarga
-#define jinit_write_targa	jIWrTarga
-#define read_quant_tables	RdQTables
-#define read_scan_script	RdScnScript
-#define set_quant_slots		SetQSlots
-#define set_sample_factors	SetSFacts
-#define read_color_map		RdCMap
-#define enable_signal_catcher	EnSigCatcher
-#define start_progress_monitor	StProgMon
-#define end_progress_monitor	EnProgMon
-#define read_stdin		RdStdin
-#define write_stdout		WrStdout
+#define jinit_read_bmp jIRdBMP
+#define jinit_write_bmp jIWrBMP
+#define jinit_read_gif jIRdGIF
+#define jinit_write_gif jIWrGIF
+#define jinit_read_ppm jIRdPPM
+#define jinit_write_ppm jIWrPPM
+#define jinit_read_rle jIRdRLE
+#define jinit_write_rle jIWrRLE
+#define jinit_read_targa jIRdTarga
+#define jinit_write_targa jIWrTarga
+#define read_quant_tables RdQTables
+#define read_scan_script RdScnScript
+#define set_quant_slots SetQSlots
+#define set_sample_factors SetSFacts
+#define read_color_map RdCMap
+#define enable_signal_catcher EnSigCatcher
+#define start_progress_monitor StProgMon
+#define end_progress_monitor EnProgMon
+#define read_stdin RdStdin
+#define write_stdout WrStdout
 #endif
 EXTERN(cjpeg_source_ptr) jinit_read_bmp JPP((j_compress_ptr cinfo));
 EXTERN(djpeg_dest_ptr) jinit_write_bmp JPP((j_decompress_ptr cinfo,
@@ -83,31 +83,31 @@ EXTERN(boolean) keymatch JPP((char * arg, const char * keyword, int minchars));
 EXTERN(FILE *) read_stdin JPP((void));
 EXTERN(FILE *) write_stdout JPP((void));
 #ifdef DONT_USE_B_MODE
-#define READ_BINARY	"r"
-#define WRITE_BINARY	"w"
+#define READ_BINARY "r"
+#define WRITE_BINARY "w"
 #else
 #ifdef VMS
-#define READ_BINARY	"rb", "ctx=stm"
-#define WRITE_BINARY	"wb", "ctx=stm"
+#define READ_BINARY "rb", "ctx=stm"
+#define WRITE_BINARY "wb", "ctx=stm"
 #else
-#define READ_BINARY	"rb"
-#define WRITE_BINARY	"wb"
+#define READ_BINARY "rb"
+#define WRITE_BINARY "wb"
 #endif
 #endif
 #ifndef EXIT_FAILURE
-#define EXIT_FAILURE  1
+#define EXIT_FAILURE 1
 #endif
 #ifndef EXIT_SUCCESS
 #ifdef VMS
-#define EXIT_SUCCESS  1
+#define EXIT_SUCCESS 1
 #else
-#define EXIT_SUCCESS  0
+#define EXIT_SUCCESS 0
 #endif
 #endif
 #ifndef EXIT_WARNING
 #ifdef VMS
-#define EXIT_WARNING  1
+#define EXIT_WARNING 1
 #else
-#define EXIT_WARNING  2
+#define EXIT_WARNING 2
 #endif
 #endif

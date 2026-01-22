@@ -8,35 +8,35 @@
 #include "drawterm.h"
 #define Maxfdata 8192
 #define MaxStr 128
-static void	fatal(int, char*, ...);
-static void	usage(void);
-static void	writestr(int, char*, char*, int);
-static int	readstr(int, char*, int);
-static char	*rexcall(int*, char*, char*);
+static void fatal(int, char*, ...);
+static void usage(void);
+static void writestr(int, char*, char*, int);
+static int readstr(int, char*, int);
+static char *rexcall(int*, char*, char*);
 static char *keyspec = "";
 static AuthInfo *p9any(int);
 #define system csystem
-static char	*system;
-static int	cflag;
-extern int	dbg;
-extern char*   base;
-static char	*srvname = "ncpu";
-static char	*ealgs = "rc4_256 sha1";
-static int	msgsize = Maxfdata+IOHDRSZ;
-static int	netkeyauth(int);
-static int	netkeysrvauth(int, char*);
-static int	p9auth(int);
-static int	srvp9auth(int, char*);
+static char *system;
+static int cflag;
+extern int dbg;
+extern char* base;
+static char *srvname = "ncpu";
+static char *ealgs = "rc4_256 sha1";
+static int msgsize = Maxfdata+IOHDRSZ;
+static int netkeyauth(int);
+static int netkeysrvauth(int, char*);
+static int p9auth(int);
+static int srvp9auth(int, char*);
 char *authserver;
 typedef struct AuthMethod AuthMethod;
 struct AuthMethod {
-char	*name;
-int	(*cf)(int);
-int	(*sf)(int, char*);
+char *name;
+int (*cf)(int);
+int (*sf)(int, char*);
 } authmethod[] =
 {
-{ "p9",		p9auth,		srvp9auth,},
-{ "netkey",	netkeyauth,	netkeysrvauth,},
+{ "p9", p9auth, srvp9auth,},
+{ "netkey", netkeyauth, netkeysrvauth,},
 { 0 }
 };
 AuthMethod *am = authmethod;

@@ -80,7 +80,7 @@ return PEM_ASN1_write_bio((i2d_of_void *)i2d_RSAPrivateKey,
 PEM_STRING_RSA, bp, x, enc, kstr, klen, cb,
 u);
 }
-#  ifndef OPENSSL_NO_FP_API
+# ifndef OPENSSL_NO_FP_API
 int PEM_write_RSAPrivateKey(FILE *fp, RSA *x, const EVP_CIPHER *enc,
 unsigned char *kstr, int klen,
 pem_password_cb *cb, void *u)
@@ -99,7 +99,7 @@ return ret;
 return PEM_ASN1_write((i2d_of_void *)i2d_RSAPrivateKey,
 PEM_STRING_RSA, fp, x, enc, kstr, klen, cb, u);
 }
-#  endif
+# endif
 # else
 IMPLEMENT_PEM_write_cb_const(RSAPrivateKey, RSA, PEM_STRING_RSA,
 RSAPrivateKey)
@@ -152,7 +152,7 @@ return PEM_ASN1_write_bio((i2d_of_void *)i2d_DSAPrivateKey,
 PEM_STRING_DSA, bp, x, enc, kstr, klen, cb,
 u);
 }
-#  ifndef OPENSSL_NO_FP_API
+# ifndef OPENSSL_NO_FP_API
 int PEM_write_DSAPrivateKey(FILE *fp, DSA *x, const EVP_CIPHER *enc,
 unsigned char *kstr, int klen,
 pem_password_cb *cb, void *u)
@@ -171,7 +171,7 @@ return ret;
 return PEM_ASN1_write((i2d_of_void *)i2d_DSAPrivateKey,
 PEM_STRING_DSA, fp, x, enc, kstr, klen, cb, u);
 }
-#  endif
+# endif
 # else
 IMPLEMENT_PEM_write_cb_const(DSAPrivateKey, DSA, PEM_STRING_DSA,
 DSAPrivateKey)
@@ -232,7 +232,7 @@ return PEM_ASN1_write_bio((i2d_of_void *)i2d_ECPrivateKey,
 PEM_STRING_ECPRIVATEKEY,
 bp, x, enc, kstr, klen, cb, u);
 }
-#  ifndef OPENSSL_NO_FP_API
+# ifndef OPENSSL_NO_FP_API
 int PEM_write_ECPrivateKey(FILE *fp, EC_KEY *x, const EVP_CIPHER *enc,
 unsigned char *kstr, int klen,
 pem_password_cb *cb, void *u)
@@ -252,7 +252,7 @@ return PEM_ASN1_write((i2d_of_void *)i2d_ECPrivateKey,
 PEM_STRING_ECPRIVATEKEY,
 fp, x, enc, kstr, klen, cb, u);
 }
-#  endif
+# endif
 # else
 IMPLEMENT_PEM_write_cb(ECPrivateKey, EC_KEY, PEM_STRING_ECPRIVATEKEY,
 ECPrivateKey)

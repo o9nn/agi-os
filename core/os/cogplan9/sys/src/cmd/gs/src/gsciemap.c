@@ -28,14 +28,14 @@ LOOKUP_ENTRY(cie_cached_value vin, const gx_cie_vector_cache *pcache)
 return LOOKUP_ENTRY_(vin, pcache);
 }
 #else
-#  define LOOKUP_INDEX(vin, pcache, fbits)  LOOKUP_INDEX_(vin, pcache, fbits)
-#  define LOOKUP_ENTRY(vin, pcache)         LOOKUP_ENTRY_(vin, pcache)
+# define LOOKUP_INDEX(vin, pcache, fbits) LOOKUP_INDEX_(vin, pcache, fbits)
+# define LOOKUP_ENTRY(vin, pcache) LOOKUP_ENTRY_(vin, pcache)
 #endif
 #ifdef DEBUG
-#  define GX_CIE_REMAP_FINISH(vec3, pconc, pis, pcs)\
+# define GX_CIE_REMAP_FINISH(vec3, pconc, pis, pcs)\
 gx_cie_remap_finish(vec3, pconc, pis, pcs)
 #else
-#  define GX_CIE_REMAP_FINISH(vec3, pconc, pis, pcs)\
+# define GX_CIE_REMAP_FINISH(vec3, pconc, pis, pcs)\
 ((pis)->cie_joint_caches->remap_finish(vec3, pconc, pis, pcs))
 #endif
 private void cie_lookup_mult3(cie_cached_vector3 *,
@@ -55,7 +55,7 @@ cie_cached2float(pvec->u), cie_cached2float(pvec->v),
 cie_cached2float(pvec->w));
 }
 #else
-#  define cie_lookup_map3(pvec, pc, cname) cie_lookup_mult3(pvec, pc)
+# define cie_lookup_map3(pvec, pc, cname) cie_lookup_mult3(pvec, pc)
 #endif
 int
 gx_concretize_CIEDEFG(const gs_client_color * pc, const gs_color_space * pcs,
@@ -322,14 +322,14 @@ if (m > 3)
 pconc[3] = byte2frac(prtc[3]);
 } else {
 #if gx_cie_log2_cache_size == 8
-#  define byte2cache_index(b) (b)
+# define byte2cache_index(b) (b)
 #else
 # if gx_cie_log2_cache_size > 8
-#  define byte2cache_index(b)\
+# define byte2cache_index(b)\
 ( ((b) << (gx_cie_log2_cache_size - 8)) +\
 ((b) >> (16 - gx_cie_log2_cache_size)) )
 # else
-#  define byte2cache_index(b) ((b) >> (8 - gx_cie_log2_cache_size))
+# define byte2cache_index(b) ((b) >> (8 - gx_cie_log2_cache_size))
 # endif
 #endif
 pconc[0] = RT_LOOKUP(0, byte2cache_index(prtc[0]));
@@ -371,11 +371,11 @@ const gx_cie_vector_cache3_t * pc)
 #ifdef CIE_CACHE_INTERPOLATE
 cie_cached_value u, v, w;
 #ifdef CIE_CACHE_USE_FIXED
-#  define LOOKUP_INTERPOLATE_BETWEEN(v0, v1, i, ftemp)\
+# define LOOKUP_INTERPOLATE_BETWEEN(v0, v1, i, ftemp)\
 cie_interpolate_between(v0, v1, i)
 #else
 float ftemp;
-#  define LOOKUP_INTERPOLATE_BETWEEN(v0, v1, i)\
+# define LOOKUP_INTERPOLATE_BETWEEN(v0, v1, i)\
 ((v0) + ((v1) - (v0)) *\
 ((ftemp = float_rshift(i, _cie_interpolate_bits)), ftemp - (int)ftemp))
 #endif

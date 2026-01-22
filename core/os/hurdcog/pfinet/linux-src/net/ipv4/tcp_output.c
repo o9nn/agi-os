@@ -26,9 +26,9 @@ struct tcp_skb_cb *tcb = TCP_SKB_CB(skb);
 int tcp_header_size = tp->tcp_header_len;
 struct tcphdr *th;
 int sysctl_flags;
-#define SYSCTL_FLAG_TSTAMPS	0x1
-#define SYSCTL_FLAG_WSCALE	0x2
-#define SYSCTL_FLAG_SACK	0x4
+#define SYSCTL_FLAG_TSTAMPS 0x1
+#define SYSCTL_FLAG_WSCALE 0x2
+#define SYSCTL_FLAG_SACK 0x4
 sysctl_flags = 0;
 if(tcb->flags & TCPCB_FLAG_SYN) {
 tcp_header_size = sizeof(struct tcphdr) + TCPOLEN_MSS;
@@ -52,19 +52,19 @@ tcp_header_size += (TCPOLEN_SACK_BASE_ALIGNED +
 th = (struct tcphdr *) skb_push(skb, tcp_header_size);
 skb->h.th = th;
 skb_set_owner_w(skb, sk);
-th->source		= sk->sport;
-th->dest		= sk->dport;
-th->seq			= htonl(TCP_SKB_CB(skb)->seq);
-th->ack_seq		= htonl(tp->rcv_nxt);
-th->doff		= (tcp_header_size >> 2);
-th->res1		= 0;
-*(((__u8 *)th) + 13)	= tcb->flags;
+th->source = sk->sport;
+th->dest = sk->dport;
+th->seq = htonl(TCP_SKB_CB(skb)->seq);
+th->ack_seq = htonl(tp->rcv_nxt);
+th->doff = (tcp_header_size >> 2);
+th->res1 = 0;
+*(((__u8 *)th) + 13) = tcb->flags;
 if(!(tcb->flags & TCPCB_FLAG_SYN))
-th->window	= htons(tcp_select_window(sk));
-th->check		= 0;
-th->urg_ptr		= ntohs(tcb->urg_ptr);
+th->window = htons(tcp_select_window(sk));
+th->check = 0;
+th->urg_ptr = ntohs(tcb->urg_ptr);
 if(tcb->flags & TCPCB_FLAG_SYN) {
-th->window	= htons(tp->rcv_wnd);
+th->window = htons(tp->rcv_wnd);
 tcp_syn_build_options((__u32 *)(th + 1), tp->mss_clamp,
 (sysctl_flags & SYSCTL_FLAG_TSTAMPS),
 (sysctl_flags & SYSCTL_FLAG_SACK),

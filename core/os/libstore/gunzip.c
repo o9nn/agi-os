@@ -6,5 +6,5 @@ DO_UNZIP (void)
 do_gunzip ();
 return 0;
 }
-#define UNZIP		gunzip
+#define UNZIP gunzip
 #include "unzipstore.c"

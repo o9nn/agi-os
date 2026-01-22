@@ -9,7 +9,7 @@ include "tk.m";
 tk: Tk;
 include "tkclient.m";
 tkclient: Tkclient;
-include	"plumbmsg.m";
+include "plumbmsg.m";
 plumbmsg: Plumbmsg;
 Msg: import plumbmsg;
 include "workdir.m";
@@ -18,24 +18,24 @@ str: String;
 include "arg.m";
 WmSh: module
 {
-init:	fn(ctxt: ref Draw->Context, args: list of string);
+init: fn(ctxt: ref Draw->Context, args: list of string);
 };
 Command: type WmSh;
-BSW:		con 23;		# ^w bacspace word
-BSL:		con 21;		# ^u backspace line
-EOT:		con 4;		# ^d end of file
-ESC:		con 27;		# hold mode
+BSW: con 23; # ^w bacspace word
+BSL: con 21; # ^u backspace line
+EOT: con 4; # ^d end of file
+ESC: con 27; # hold mode
 # XXX line-based limits are inadequate - memory is still
 # blown if a client writes a very long line.
-HIWAT:	con 2000;	# maximum number of lines in transcript
-LOWAT:	con 1500;	# amount to reduce to after high water
-Name:	con "Shell";
+HIWAT: con 2000; # maximum number of lines in transcript
+LOWAT: con 1500; # amount to reduce to after high water
+Name: con "Shell";
 Rdreq: adt
 {
-off:	int;
-nbytes:	int;
-fid:	int;
-rc:	chan of (array of byte, string);
+off: int;
+nbytes: int;
+fid: int;
+rc: chan of (array of byte, string);
 };
 shwin_cfg := array[] of {
 "menu .m",
@@ -258,7 +258,7 @@ setholding(t, !holding);
 cmd(t, ".ft.t see insert;update");
 c := <-but1 =>
 button1 = (c == "pressed");
-button3 = 0;	# abort any pending button 3 action
+button3 = 0; # abort any pending button 3 action
 c := <-but2 =>
 if(button1){
 cut(t, 1);
@@ -270,7 +270,7 @@ x := int hd l - menuw/2;
 y := int hd tl l - int cmd(t, ".m yposition "+menuindex) - 10;
 cmd(t, ".m activate "+menuindex+"; .m post "+string x+" "+string y+
 "; update");
-button3 = 0;	# abort any pending button 3 action
+button3 = 0; # abort any pending button 3 action
 c := <-but3 =>
 if(c == "pressed"){
 button3 = 1;
@@ -456,14 +456,14 @@ setcols(t: ref Tk->Toplevel)
 fgcol := "black";
 if(holding){
 if(haskbdfocus)
-fgcol = "#000099FF";	# DMedblue
+fgcol = "#000099FF"; # DMedblue
 else
-fgcol = "#005DBBFF";	# DGreyblue
+fgcol = "#005DBBFF"; # DGreyblue
 }else{
 if(haskbdfocus)
 fgcol = "black";
 else
-fgcol = "#666666FF";	# dark grey
+fgcol = "#666666FF"; # dark grey
 }
 cmd(t, ".ft.t configure -foreground "+fgcol+" -selectforeground "+fgcol);
 cmd(t, ".ft.t tag configure sel -foreground "+fgcol);
@@ -564,12 +564,12 @@ pre := "";
 rem := "";
 if(i + 1 < l)
 rem = s[i+1:];
-if(i == 0) {	# erase existing character in line
+if(i == 0) { # erase existing character in line
 if(tk->cmd(t, ".ft.t get " +
 "{outpoint linestart} outpoint") != "")
 cmd(t, ".ft.t delete outpoint-1char");
 } else {
-if(s[i-1] != '\n')	# don't erase newlines
+if(s[i-1] != '\n') # don't erase newlines
 i--;
 if(i)
 pre = s[:i];
@@ -579,9 +579,9 @@ l = len s;
 i = len pre - 1;
 '\r' =>
 s[i] = '\n';
-if(i + 1 < l && s[i+1] == '\n')	# \r\n
+if(i + 1 < l && s[i+1] == '\n') # \r\n
 s = s[:i] + s[i+1:];
-else if(i > 0 && s[i-1] == '\n')	# \n\r
+else if(i > 0 && s[i-1] == '\n') # \n\r
 s = s[:i-1] + s[i:];
 l = len s;
 '\0' =>
@@ -675,7 +675,7 @@ return;
 r := hd rdreq;
 (chars, bytes, partial) := triminput(r.nbytes, input, partialread);
 if(bytes == nil)
-return;	# no terminator yet
+return; # no terminator yet
 rdreq = tl rdreq;
 alt {
 r.rc <-= (bytes, nil) =>
@@ -687,7 +687,7 @@ r.rc <-= (nil, nil) =>
 return;
 }
 * =>
-return;	# requester has disappeared; ignore his request and try another
+return; # requester has disappeared; ignore his request and try another
 }
 if(rawon)
 rawinput = rawinput[chars:];
@@ -779,7 +779,7 @@ exit;
 cmd(top: ref Tk->Toplevel, c: string): string
 {
 s:= tk->cmd(top, c);
-#	sys->print("* %s\n", c);
+# sys->print("* %s\n", c);
 if (s != nil && s[0] == '!')
 sys->fprint(sys->fildes(2), "wmsh: tk error on '%s': %s\n", c, s);
 return s;

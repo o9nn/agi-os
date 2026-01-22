@@ -2,8 +2,8 @@ implement Sweeper;
 #
 # michael@vitanuova.com
 #
-# Copyright © 2000 Vita Nuova Limited.  All rights reserved.
-# Copyright © 2001 Vita Nuova Holdings Limited.  All rights reserved.
+# Copyright © 2000 Vita Nuova Limited. All rights reserved.
+# Copyright © 2001 Vita Nuova Holdings Limited. All rights reserved.
 #
 include "sys.m";
 sys: Sys;
@@ -31,7 +31,7 @@ WIDTH: con 220;
 HEIGHT: con 220;
 EASY: con 20;
 SZB: con 10;
-SZI: con SZB+2;			# internal board is 2 larger than visible board
+SZI: con SZB+2; # internal board is 2 larger than visible board
 Cell: adt {
 mine, state: int;
 };
@@ -70,7 +70,7 @@ s := <-win.ctxt.ptr =>
 tk->pointer(win, *s);
 c := <-win.ctxt.ctl or
 c = <-win.wreq or
-c = <- wmcmd =>	# wm commands
+c = <- wmcmd => # wm commands
 case c {
 "exit" =>
 if(pid != -1)
@@ -79,7 +79,7 @@ exit;
 * =>
 tkclient->wmctl(win, c);
 }
-c := <- cmdch =>	# tk commands
+c := <- cmdch => # tk commands
 (nil, toks) := sys->tokenize(c, " ");
 case hd toks {
 "b" =>
@@ -97,7 +97,7 @@ break;
 score++;
 board[x][y].state = SELECTED;
 display_square(x, y, sys->sprint("%d", i), "olive");
-if (i == 0) {  # check all adjacent zeros
+if (i == 0) { # check all adjacent zeros
 display_zeros(x, y);
 }
 display_score();
@@ -132,7 +132,7 @@ pack: string;
 for(i = 0; i < len win_config; i++)
 cmd(mainwin, win_config[i]);
 for (i = 1; i <= SZB; i++) {
-cmd(mainwin,  sys->sprint("frame .f%d", i));
+cmd(mainwin, sys->sprint("frame .f%d", i));
 pack = "";
 for (j = 1; j <= SZB; j++) {
 pack += sys->sprint(" .f%d.b%dx%d", i, i, j);
@@ -172,7 +172,7 @@ board[i][j].state = UNSELECTED;
 # place mines
 for (i = 0; i < EASY; i++) {
 j = rand->rand(SZB*SZB);
-if (board[(j/SZB)+1][(j%SZB)+1].mine == 0) { 	# rand could yield same result twice
+if (board[(j/SZB)+1][(j%SZB)+1].mine == 0) { # rand could yield same result twice
 board[(j/SZB)+1][(j%SZB)+1].mine = 1;
 mines++;
 }

@@ -1,4 +1,4 @@
-#ifndef	_MACH_I386_BOOLEAN_H_
+#ifndef _MACH_I386_BOOLEAN_H_
 #define _MACH_I386_BOOLEAN_H_
-typedef int		boolean_t;
+typedef int boolean_t;
 #endif

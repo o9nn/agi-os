@@ -58,9 +58,9 @@ private gx_bitmap_id cache_ids[cache_capacity];
 #define s3_fore_mix 0xbae8
 #define s3_height 0xbee8
 #define s3_mf_control 0xbee8
-#  define mf_data_ones 0xa000
-#  define mf_data_cpu 0xa080
-#  define mf_data_display 0xa0c0
+# define mf_data_ones 0xa000
+# define mf_data_cpu 0xa080
+# define mf_data_display 0xa0c0
 #define s3_pixel_data 0xe2e8
 #define s3_wait_fifo()\
 while ( inport(s3_status) & 0xff )

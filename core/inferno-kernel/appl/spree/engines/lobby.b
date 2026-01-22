@@ -13,45 +13,45 @@ Attributes, Range, Object, Clique, Member, rand: import spree;
 include "readdir.m";
 readdir: Readdir;
 # what the lobby provides:
-#	a list of cliques it's started
-#		name of clique
-#		current members
-#	list of members inside the lobby.
-#		name
-#		invites
-#			how does a gather engine know who's been invited?
-#			as the lobby's the only place with the knowledge of who's around to invite.
-#			could allow lobby to communicate with the cliques it's started...
-#			but clique also needs to communicate with the lobby
-#			(e.g. to say clique has started, no more invites necessary or allowed)
+# a list of cliques it's started
+# name of clique
+# current members
+# list of members inside the lobby.
+# name
+# invites
+# how does a gather engine know who's been invited?
+# as the lobby's the only place with the knowledge of who's around to invite.
+# could allow lobby to communicate with the cliques it's started...
+# but clique also needs to communicate with the lobby
+# (e.g. to say clique has started, no more invites necessary or allowed)
 #
-#	list of available engines
-#		title
-#		clienttype(s?)
+# list of available engines
+# title
+# clienttype(s?)
 #
-#	understands commands:
-#		chat message
-#		invite
-#		new 	name params
+# understands commands:
+# chat message
+# invite
+# new name params
 #
-#	question: how do we know about archives?
-#	answer: maybe we don't... could have another module
-#		that does, or maybe an option to gather ("gather unarchive"?)
+# question: how do we know about archives?
+# answer: maybe we don't... could have another module
+# that does, or maybe an option to gather ("gather unarchive"?)
 #
-#	the one that's started the clique is always invited.
-#	start clique.
-#		clique says to parent "invite x, y and z" (perhaps they were in the archive)
-#		how should we deal with recursive invocation?
-#		could queue up requests to other clique engines,
-#			and deliver them after the current request has been processed.
-#			no return available (one way channel) but maybe that's good,
-#			as if sometime in the future engines do run in parallel, we will
-#			need to avoid deadlock.
-#		Clique.notify(clique: self ref Clique, cliqueid: int, note: string);
-#			when a request has been completed, we run notify requests
-#			for all the cliques that have been notified, and repeat
-#			until no more. (could keep a count to check for infinite loop).
-#			don't allow communication between unrelated cliques.
+# the one that's started the clique is always invited.
+# start clique.
+# clique says to parent "invite x, y and z" (perhaps they were in the archive)
+# how should we deal with recursive invocation?
+# could queue up requests to other clique engines,
+# and deliver them after the current request has been processed.
+# no return available (one way channel) but maybe that's good,
+# as if sometime in the future engines do run in parallel, we will
+# need to avoid deadlock.
+# Clique.notify(clique: self ref Clique, cliqueid: int, note: string);
+# when a request has been completed, we run notify requests
+# for all the cliques that have been notified, and repeat
+# until no more. (could keep a count to check for infinite loop).
+# don't allow communication between unrelated cliques.
 clique: ref Clique;
 members: ref Object;
 sessions: ref Object;
@@ -209,9 +209,9 @@ o := p.obj(int hd tl toks);
 if (o == nil || o.objtype != "archive")
 return "bad archive object";
 # archive object contains:
-# name		name of clique
-# members		members of the clique
-# file			filename of archive
+# name name of clique
+# members members of the clique
+# file filename of archive
 aname := o.getattr("file");
 (archive, err) := archives->read(aname);
 if (archive == nil)

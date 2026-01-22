@@ -13,7 +13,7 @@
 #warning "No crypt on this system!  Using plain-text passwords."
 #define crypt(password, encrypted) password
 #endif
-#define SHADOW_PASSWORD_STRING	"x"
+#define SHADOW_PASSWORD_STRING "x"
 static error_t
 verify_id (uid_t id, int is_group, int multiple,
 char *(*getpass_fn) (const char *prompt,
@@ -101,7 +101,7 @@ else
 {
 unsigned int i;
 int multiple = 0;
-error_t  err = 0;
+error_t err = 0;
 struct idvec implied_gids = IDVEC_INIT;
 int wheel_uid =
 ((have_uids && have_gids

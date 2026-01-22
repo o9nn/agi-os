@@ -1,6 +1,6 @@
 implement Listen;
 #
-# Copyright © 2003 Vita Nuova Holdings Limited.  All rights reserved.
+# Copyright © 2003 Vita Nuova Holdings Limited. All rights reserved.
 #
 include "sys.m";
 sys: Sys;
@@ -63,7 +63,7 @@ algs = arg->earg() :: algs;
 doauth = 0;
 'f' =>
 keyfile = arg->earg();
-if (! (keyfile[0] == '/' || (len keyfile > 2 &&  keyfile[0:2] == "./")))
+if (! (keyfile[0] == '/' || (len keyfile > 2 && keyfile[0:2] == "./")))
 keyfile = "/usr/" + user() + "/keyring/" + keyfile;
 'i' =>
 initscript = arg->earg();
@@ -99,7 +99,7 @@ raise "fail:bad keyfile";
 }
 }
 if(!trusted){
-sys->unmount(nil, "/mnt/keys");	# should do for now
+sys->unmount(nil, "/mnt/keys"); # should do for now
 # become none?
 }
 argv = arg->argv();

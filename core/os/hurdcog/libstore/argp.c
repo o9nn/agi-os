@@ -8,10 +8,10 @@
 #include "store.h"
 #define DEFAULT_STORE_CLASS store_query_class
 static const struct argp_option options[] = {
-{"store-type",'T', "TYPE",   0, "Each DEVICE names a store of type TYPE"},
-{"machdev",	'm', 0,        OPTION_HIDDEN},
+{"store-type",'T', "TYPE", 0, "Each DEVICE names a store of type TYPE"},
+{"machdev", 'm', 0, OPTION_HIDDEN},
 {"interleave",'I', "BLOCKS", 0, "Interleave in runs of length BLOCKS"},
-{"layer",   	'L', 0,        0, "Layer multiple devices for redundancy"},
+{"layer", 'L', 0, 0, "Layer multiple devices for redundancy"},
 {0}
 };
 static const char args_doc[] = "DEVICE...";

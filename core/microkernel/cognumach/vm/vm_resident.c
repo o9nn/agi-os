@@ -17,12 +17,12 @@
 #include <vm/vm_pageout.h>
 #include <vm/vm_kern.h>
 #include <vm/vm_resident.h>
-#if	MACH_VM_DEBUG
+#if MACH_VM_DEBUG
 #include <mach/kern_return.h>
 #include <mach_debug/hash_info.h>
 #include <vm/vm_user.h>
 #endif
-#if	MACH_KDB
+#if MACH_KDB
 #include <ddb/db_output.h>
 #include <vm/vm_print.h>
 #endif
@@ -33,21 +33,21 @@ decl_simple_lock_data(,lock)
 vm_page_t pages;
 } vm_page_bucket_t;
 vm_page_bucket_t *vm_page_buckets;
-unsigned long	vm_page_bucket_count = 0;
-unsigned long	vm_page_hash_mask;
-static struct list	vm_page_queue_fictitious;
+unsigned long vm_page_bucket_count = 0;
+unsigned long vm_page_hash_mask;
+static struct list vm_page_queue_fictitious;
 def_simple_lock_data(,vm_page_queue_free_lock)
-int		vm_page_fictitious_count;
-int		vm_object_external_count;
-int		vm_object_external_pages;
-struct kmem_cache	vm_page_cache;
+int vm_page_fictitious_count;
+int vm_object_external_count;
+int vm_object_external_pages;
+struct kmem_cache vm_page_cache;
 phys_addr_t vm_page_fictitious_addr = (phys_addr_t) -1;
 def_simple_lock_data(,vm_page_queue_lock)
-int	vm_page_active_count;
-int	vm_page_inactive_count;
-int	vm_page_wire_count;
-int	vm_page_laundry_count = 0;
-int	vm_page_external_laundry_count = 0;
+int vm_page_active_count;
+int vm_page_inactive_count;
+int vm_page_wire_count;
+int vm_page_laundry_count = 0;
+int vm_page_external_laundry_count = 0;
 boolean_t vm_page_deactivate_behind = TRUE;
 boolean_t vm_page_deactivate_hint = TRUE;
 boolean_t vm_page_readahead_enabled = TRUE;
@@ -85,7 +85,7 @@ virtual_space_end = trunc_page(virtual_space_end);
 *startp = virtual_space_start;
 *endp = virtual_space_end;
 }
-#ifndef	MACHINE_PAGES
+#ifndef MACHINE_PAGES
 vm_offset_t pmap_steal_memory(
 vm_size_t size)
 {
@@ -109,7 +109,7 @@ VM_PROT_READ|VM_PROT_WRITE, FALSE);
 return addr;
 }
 #endif
-void		vm_page_module_init(void)
+void vm_page_module_init(void)
 {
 kmem_cache_init(&vm_page_cache, "vm_page", sizeof(struct vm_page), 0,
 NULL, 0);
@@ -118,9 +118,9 @@ NULL, 0);
 (((unsigned int)(vm_offset_t)object + (unsigned int)atop(offset)) \
 & vm_page_hash_mask)
 void vm_page_insert(
-vm_page_t	mem,
-vm_object_t	object,
-vm_offset_t	offset)
+vm_page_t mem,
+vm_object_t object,
+vm_offset_t offset)
 {
 vm_page_bucket_t *bucket;
 assert(vm_page_locked_queues());
@@ -146,7 +146,7 @@ mem->tabled = TRUE;
 vm_object_increment_resident_count(object);
 if (vm_page_deactivate_behind &&
 (offset == object->last_alloc + PAGE_SIZE)) {
-vm_page_t	last_mem;
+vm_page_t last_mem;
 last_mem = vm_page_lookup(object, object->last_alloc);
 if ((last_mem != VM_PAGE_NULL) && !last_mem->busy)
 vm_page_deactivate(last_mem);
@@ -186,9 +186,9 @@ continue;
 }
 }
 void vm_page_replace(
-vm_page_t	mem,
-vm_object_t	object,
-vm_offset_t	offset)
+vm_page_t mem,
+vm_object_t object,
+vm_offset_t offset)
 {
 vm_page_bucket_t *bucket;
 assert(vm_page_locked_queues());
@@ -237,10 +237,10 @@ mem->tabled = TRUE;
 vm_object_increment_resident_count(object);
 }
 void vm_page_remove(
-vm_page_t		mem)
+vm_page_t mem)
 {
-vm_page_bucket_t	*bucket;
-vm_page_t		this;
+vm_page_bucket_t *bucket;
+vm_page_t this;
 assert(mem->tabled);
 assert(vm_page_locked_queues());
 assert(vm_object_lock_taken(mem->object));
@@ -250,7 +250,7 @@ simple_lock(&bucket->lock);
 if ((this = bucket->pages) == mem) {
 bucket->pages = mem->next;
 } else {
-vm_page_t	*prev;
+vm_page_t *prev;
 for (prev = &this->next;
 (this = *prev) != mem;
 prev = &this->next)
@@ -268,11 +268,11 @@ vm_object_external_pages--;
 }
 }
 vm_page_t vm_page_lookup(
-vm_object_t		object,
-vm_offset_t		offset)
+vm_object_t object,
+vm_offset_t offset)
 {
-vm_page_t		mem;
-vm_page_bucket_t 	*bucket;
+vm_page_t mem;
+vm_page_bucket_t *bucket;
 assert(vm_object_lock_taken(object));
 bucket = &vm_page_buckets[vm_page_hash(object, offset)];
 simple_lock(&bucket->lock);
@@ -285,9 +285,9 @@ simple_unlock(&bucket->lock);
 return mem;
 }
 void vm_page_rename(
-vm_page_t	mem,
-vm_object_t	new_object,
-vm_offset_t	new_offset)
+vm_page_t mem,
+vm_object_t new_object,
+vm_offset_t new_offset)
 {
 assert(vm_object_lock_taken(new_object));
 vm_page_lock_queues();
@@ -322,7 +322,7 @@ m->access_frequency = 0;
 m->aging_time = 0;
 }
 void vm_page_init(
-vm_page_t	mem)
+vm_page_t mem)
 {
 vm_page_init_template(mem);
 }
@@ -403,7 +403,7 @@ return TRUE;
 vm_page_t vm_page_grab(unsigned flags)
 {
 unsigned selector;
-vm_page_t	mem;
+vm_page_t mem;
 if (flags & VM_PAGE_HIGHMEM)
 selector = VM_PAGE_SEL_HIGHMEM;
 #if defined(VM_PAGE_DMA32_LIMIT) && VM_PAGE_DMA32_LIMIT > VM_PAGE_DIRECTMAP_LIMIT
@@ -437,9 +437,9 @@ else
 return p->phys_addr;
 }
 void vm_page_release(
-vm_page_t	mem,
-boolean_t 	laundry,
-boolean_t 	external_laundry)
+vm_page_t mem,
+boolean_t laundry,
+boolean_t external_laundry)
 {
 simple_lock(&vm_page_queue_free_lock);
 if (mem->free)
@@ -497,10 +497,10 @@ vm_page_free_pa(mem, order);
 simple_unlock(&vm_page_queue_free_lock);
 }
 vm_page_t vm_page_alloc(
-vm_object_t	object,
-vm_offset_t	offset)
+vm_object_t object,
+vm_offset_t offset)
 {
-vm_page_t	mem;
+vm_page_t mem;
 assert(vm_object_lock_taken(object));
 mem = vm_page_grab(VM_PAGE_HIGHMEM);
 if (mem == VM_PAGE_NULL)
@@ -511,7 +511,7 @@ vm_page_unlock_queues();
 return mem;
 }
 void vm_page_free(
-vm_page_t	mem)
+vm_page_t mem)
 {
 if (mem->free)
 panic("vm_page_free");
@@ -543,24 +543,24 @@ vm_page_release(mem, laundry, external_laundry);
 }
 }
 void vm_page_zero_fill(
-vm_page_t	m)
+vm_page_t m)
 {
 VM_PAGE_CHECK(m);
 pmap_zero_page(m->phys_addr);
 }
 void vm_page_copy(
-vm_page_t	src_m,
-vm_page_t	dest_m)
+vm_page_t src_m,
+vm_page_t dest_m)
 {
 VM_PAGE_CHECK(src_m);
 VM_PAGE_CHECK(dest_m);
 pmap_copy_page(src_m->phys_addr, dest_m->phys_addr);
 }
-#if	MACH_VM_DEBUG
+#if MACH_VM_DEBUG
 unsigned int
 vm_page_info(
 hash_info_bucket_t *info,
-unsigned int	count)
+unsigned int count)
 {
 int i;
 if (vm_page_bucket_count < count)
@@ -578,9 +578,9 @@ info[i].hib_count = bucket_count;
 return vm_page_bucket_count;
 }
 #endif
-#if	MACH_KDB
-#define	printf	kdbprintf
-void		vm_page_print(const vm_page_t	p)
+#if MACH_KDB
+#define printf kdbprintf
+void vm_page_print(const vm_page_t p)
 {
 iprintf("Page 0x%X: object 0x%X,", (vm_offset_t) p, (vm_offset_t) p->object);
 printf(" offset 0x%X", p->offset);

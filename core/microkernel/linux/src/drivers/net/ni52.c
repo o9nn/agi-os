@@ -18,17 +18,17 @@ static int fifo=0x8;
 #include "ni52.h"
 #define DEBUG
 #define SYSBUSVAL 1
-#define ni_attn586()  {outb(0,dev->base_addr+NI52_ATTENTION);}
+#define ni_attn586() {outb(0,dev->base_addr+NI52_ATTENTION);}
 #define ni_reset586() {outb(0,dev->base_addr+NI52_RESET);}
-#define ni_disint()   {outb(0,dev->base_addr+NI52_INTDIS);}
-#define ni_enaint()   {outb(0,dev->base_addr+NI52_INTENA);}
+#define ni_disint() {outb(0,dev->base_addr+NI52_INTDIS);}
+#define ni_enaint() {outb(0,dev->base_addr+NI52_INTENA);}
 #define make32(ptr16) (p->memtop + (short) (ptr16) )
 #define make24(ptr32) ((char *) (ptr32) - p->base)
 #define make16(ptr32) ((unsigned short) ((unsigned long) (ptr32) - (unsigned long) p->memtop ))
 #define RECV_BUFF_SIZE 1524
 #define XMIT_BUFF_SIZE 1524
 #define NUM_XMIT_BUFFS 1
-#define NUM_RECV_BUFFS_8  4
+#define NUM_RECV_BUFFS_8 4
 #define NUM_RECV_BUFFS_16 9
 #define NO_NOPCOMMANDS
 #define DELAY(x) __delay((loops_per_sec>>5)*(x));
@@ -56,44 +56,44 @@ DELAY_16(); DELAY_16(); } }
 #define NI52_ADDR0 0x02
 #define NI52_ADDR1 0x07
 #define NI52_ADDR2 0x01
-static int     ni52_probe1(struct device *dev,int ioaddr);
-static void    ni52_interrupt(int irq,void *dev_id,struct pt_regs *reg_ptr);
-static int     ni52_open(struct device *dev);
-static int     ni52_close(struct device *dev);
-static int     ni52_send_packet(struct sk_buff *,struct device *);
-static struct  enet_statistics *ni52_get_stats(struct device *dev);
-static void    set_multicast_list(struct device *dev);
+static int ni52_probe1(struct device *dev,int ioaddr);
+static void ni52_interrupt(int irq,void *dev_id,struct pt_regs *reg_ptr);
+static int ni52_open(struct device *dev);
+static int ni52_close(struct device *dev);
+static int ni52_send_packet(struct sk_buff *,struct device *);
+static struct enet_statistics *ni52_get_stats(struct device *dev);
+static void set_multicast_list(struct device *dev);
 #if 0
-static void    ni52_dump(struct device *,void *);
+static void ni52_dump(struct device *,void *);
 #endif
-static int     init586(struct device *dev);
-static int     check586(struct device *dev,char *where,unsigned size);
-static void    alloc586(struct device *dev);
-static void    startrecv586(struct device *dev);
-static void   *alloc_rfa(struct device *dev,void *ptr);
-static void    ni52_rcv_int(struct device *dev);
-static void    ni52_xmt_int(struct device *dev);
-static void    ni52_rnr_int(struct device *dev);
+static int init586(struct device *dev);
+static int check586(struct device *dev,char *where,unsigned size);
+static void alloc586(struct device *dev);
+static void startrecv586(struct device *dev);
+static void *alloc_rfa(struct device *dev,void *ptr);
+static void ni52_rcv_int(struct device *dev);
+static void ni52_xmt_int(struct device *dev);
+static void ni52_rnr_int(struct device *dev);
 struct priv
 {
 struct enet_statistics stats;
 unsigned long base;
 char *memtop;
 int lock,reseted;
-volatile struct rfd_struct  *rfd_last,*rfd_top,*rfd_first;
-volatile struct scp_struct  *scp;
+volatile struct rfd_struct *rfd_last,*rfd_top,*rfd_first;
+volatile struct scp_struct *scp;
 volatile struct iscp_struct *iscp;
-volatile struct scb_struct  *scb;
-volatile struct tbd_struct  *xmit_buffs[NUM_XMIT_BUFFS];
+volatile struct scb_struct *scb;
+volatile struct tbd_struct *xmit_buffs[NUM_XMIT_BUFFS];
 volatile struct transmit_cmd_struct *xmit_cmds[NUM_XMIT_BUFFS];
 #if (NUM_XMIT_BUFFS == 1)
 volatile struct nop_cmd_struct *nop_cmds[2];
 #else
 volatile struct nop_cmd_struct *nop_cmds[NUM_XMIT_BUFFS];
 #endif
-volatile int    nop_point,num_recv_buffs;
-volatile char  *xmit_cbuffs[NUM_XMIT_BUFFS];
-volatile int    xmit_count,xmit_last;
+volatile int nop_point,num_recv_buffs;
+volatile char *xmit_cbuffs[NUM_XMIT_BUFFS];
+volatile int xmit_count,xmit_last;
 };
 static int ni52_close(struct device *dev)
 {
@@ -127,7 +127,7 @@ return 0;
 static int check586(struct device *dev,char *where,unsigned size)
 {
 struct priv pb;
-struct priv *p =  &pb;
+struct priv *p = &pb;
 char *iscp_addrs[2];
 int i;
 p->base = (unsigned long) where + size - 0x01000000;
@@ -158,11 +158,11 @@ return 1;
 }
 void alloc586(struct device *dev)
 {
-struct priv *p =  (struct priv *) dev->priv;
+struct priv *p = (struct priv *) dev->priv;
 ni_reset586();
 DELAY(1);
-p->scp  = (struct scp_struct *)  (p->base + SCP_DEFAULT_ADDRESS);
-p->scb  = (struct scb_struct *)  (dev->mem_start);
+p->scp = (struct scp_struct *) (p->base + SCP_DEFAULT_ADDRESS);
+p->scb = (struct scb_struct *) (dev->mem_start);
 p->iscp = (struct iscp_struct *) ((char *)p->scp - sizeof(struct iscp_struct));
 memset((char *) p->iscp,0,sizeof(struct iscp_struct));
 memset((char *) p->scp ,0,sizeof(struct scp_struct));
@@ -285,7 +285,7 @@ return -ENOMEM;
 }
 memset((char *) dev->priv,0,sizeof(struct priv));
 ((struct priv *) (dev->priv))->memtop = (char *) dev->mem_start + size;
-((struct priv *) (dev->priv))->base =  dev->mem_start + size - 0x01000000;
+((struct priv *) (dev->priv))->base = dev->mem_start + size - 0x01000000;
 alloc586(dev);
 if(size == 0x2000)
 ((struct priv *) dev->priv)->num_recv_buffs = NUM_RECV_BUFFS_8;
@@ -304,17 +304,17 @@ return 1;
 }
 printk("IRQ %d (autodetected).\n",dev->irq);
 }
-else  {
+else {
 if(dev->irq == 2)
 dev->irq = 9;
 printk("IRQ %d (assigned and not checked!).\n",dev->irq);
 }
-dev->open            = &ni52_open;
-dev->stop            = &ni52_close;
-dev->get_stats       = &ni52_get_stats;
+dev->open = &ni52_open;
+dev->stop = &ni52_close;
+dev->get_stats = &ni52_get_stats;
 dev->hard_start_xmit = &ni52_send_packet;
 dev->set_multicast_list = &set_multicast_list;
-dev->if_port 	       = 0;
+dev->if_port = 0;
 ether_setup(dev);
 dev->tbusy = 0;
 dev->interrupt = 0;
@@ -326,7 +326,7 @@ static int init586(struct device *dev)
 void *ptr;
 int i,result=0;
 struct priv *p = (struct priv *) dev->priv;
-volatile struct configure_cmd_struct  *cfg_cmd;
+volatile struct configure_cmd_struct *cfg_cmd;
 volatile struct iasetup_cmd_struct *ias_cmd;
 volatile struct tdr_cmd_struct *tdr_cmd;
 volatile struct mcsetup_cmd_struct *mc_cmd;
@@ -335,20 +335,20 @@ int num_addrs=dev->mc_count;
 ptr = (void *) ((char *)p->scb + sizeof(struct scb_struct));
 cfg_cmd = (struct configure_cmd_struct *)ptr;
 cfg_cmd->cmd_status = 0;
-cfg_cmd->cmd_cmd    = CMD_CONFIGURE | CMD_LAST;
-cfg_cmd->cmd_link   = 0xffff;
-cfg_cmd->byte_cnt   = 0x0a;
-cfg_cmd->fifo       = fifo;
-cfg_cmd->sav_bf     = 0x40;
-cfg_cmd->adr_len    = 0x2e;
-cfg_cmd->priority   = 0x00;
-cfg_cmd->ifs        = 0x60;
-cfg_cmd->time_low   = 0x00;
-cfg_cmd->time_high  = 0xf2;
-cfg_cmd->promisc    = 0;
+cfg_cmd->cmd_cmd = CMD_CONFIGURE | CMD_LAST;
+cfg_cmd->cmd_link = 0xffff;
+cfg_cmd->byte_cnt = 0x0a;
+cfg_cmd->fifo = fifo;
+cfg_cmd->sav_bf = 0x40;
+cfg_cmd->adr_len = 0x2e;
+cfg_cmd->priority = 0x00;
+cfg_cmd->ifs = 0x60;
+cfg_cmd->time_low = 0x00;
+cfg_cmd->time_high = 0xf2;
+cfg_cmd->promisc = 0;
 if(dev->flags & IFF_ALLMULTI) {
 int len = ((char *) p->iscp - (char *) ptr - 8) / 6;
-if(num_addrs > len)  {
+if(num_addrs > len) {
 printk("%s: switching to promisc. mode\n",dev->name);
 dev->flags|=IFF_PROMISC;
 }
@@ -358,7 +358,7 @@ if(dev->flags&IFF_PROMISC)
 cfg_cmd->promisc=1;
 dev->flags|=IFF_PROMISC;
 }
-cfg_cmd->carr_coll  = 0x00;
+cfg_cmd->carr_coll = 0x00;
 p->scb->cbl_offset = make16(cfg_cmd);
 p->scb->cmd_ruc = 0;
 p->scb->cmd_cuc = CUC_START;
@@ -371,8 +371,8 @@ return 1;
 }
 ias_cmd = (struct iasetup_cmd_struct *)ptr;
 ias_cmd->cmd_status = 0;
-ias_cmd->cmd_cmd    = CMD_IASETUP | CMD_LAST;
-ias_cmd->cmd_link   = 0xffff;
+ias_cmd->cmd_cmd = CMD_IASETUP | CMD_LAST;
+ias_cmd->cmd_link = 0xffff;
 memcpy((char *)&ias_cmd->iaddr,(char *) dev->dev_addr,ETH_ALEN);
 p->scb->cbl_offset = make16(ias_cmd);
 p->scb->cmd_cuc = CUC_START;
@@ -383,10 +383,10 @@ printk("%s (ni52): individual address setup command failed: %04x\n",dev->name,ia
 return 1;
 }
 tdr_cmd = (struct tdr_cmd_struct *)ptr;
-tdr_cmd->cmd_status  = 0;
-tdr_cmd->cmd_cmd     = CMD_TDR | CMD_LAST;
-tdr_cmd->cmd_link    = 0xffff;
-tdr_cmd->status      = 0;
+tdr_cmd->cmd_status = 0;
+tdr_cmd->cmd_cmd = CMD_TDR | CMD_LAST;
+tdr_cmd->cmd_link = 0xffff;
+tdr_cmd->status = 0;
 p->scb->cbl_offset = make16(tdr_cmd);
 p->scb->cmd_cuc = CUC_START;
 ni_attn586();
@@ -435,18 +435,18 @@ printk("%s: Can't apply multicast-address-list.\n",dev->name);
 for(i=0;i<2;i++)
 {
 p->nop_cmds[i] = (struct nop_cmd_struct *)ptr;
-p->nop_cmds[i]->cmd_cmd    = CMD_NOP;
+p->nop_cmds[i]->cmd_cmd = CMD_NOP;
 p->nop_cmds[i]->cmd_status = 0;
-p->nop_cmds[i]->cmd_link   = make16((p->nop_cmds[i]));
+p->nop_cmds[i]->cmd_link = make16((p->nop_cmds[i]));
 ptr = (char *) ptr + sizeof(struct nop_cmd_struct);
 }
 #else
 for(i=0;i<NUM_XMIT_BUFFS;i++)
 {
 p->nop_cmds[i] = (struct nop_cmd_struct *)ptr;
-p->nop_cmds[i]->cmd_cmd    = CMD_NOP;
+p->nop_cmds[i]->cmd_cmd = CMD_NOP;
 p->nop_cmds[i]->cmd_status = 0;
-p->nop_cmds[i]->cmd_link   = make16((p->nop_cmds[i]));
+p->nop_cmds[i]->cmd_link = make16((p->nop_cmds[i]));
 ptr = (char *) ptr + sizeof(struct nop_cmd_struct);
 }
 #endif
@@ -474,9 +474,9 @@ p->xmit_buffs[i]->next = 0xffff;
 p->xmit_buffs[i]->buffer = make24((p->xmit_cbuffs[i]));
 }
 p->xmit_count = 0;
-p->xmit_last  = 0;
+p->xmit_last = 0;
 #ifndef NO_NOPCOMMANDS
-p->nop_point  = 0;
+p->nop_point = 0;
 #endif
 #ifndef NO_NOPCOMMANDS
 p->scb->cbl_offset = make16(p->nop_cmds[0]);
@@ -485,7 +485,7 @@ ni_attn586();
 WAIT_4_SCB_CMD();
 #else
 p->xmit_cmds[0]->cmd_link = make16(p->xmit_cmds[0]);
-p->xmit_cmds[0]->cmd_cmd  = CMD_XMIT | CMD_SUSPEND | CMD_INT;
+p->xmit_cmds[0]->cmd_cmd = CMD_XMIT | CMD_SUSPEND | CMD_INT;
 #endif
 p->scb->cmd_cuc = p->scb->cus & STAT_MASK;
 ni_attn586();
@@ -517,10 +517,10 @@ rbd[i].size = RECV_BUFF_SIZE;
 rbd[i].buffer = make24(ptr);
 ptr = (char *) ptr + RECV_BUFF_SIZE;
 }
-p->rfd_top  = p->rfd_first;
+p->rfd_top = p->rfd_first;
 p->rfd_last = p->rfd_first + (p->num_recv_buffs - 1 + rfdadd);
-p->scb->rfa_offset		= make16(p->rfd_first);
-p->rfd_first->rbd_offset	= make16(rbd);
+p->scb->rfa_offset = make16(p->rfd_first);
+p->rfd_first->rbd_offset = make16(rbd);
 return ptr;
 }
 static void ni52_interrupt(int irq,void *dev_id,struct pt_regs *reg_ptr)
@@ -829,7 +829,7 @@ else
 memcpy((char *)p->xmit_cbuffs[p->xmit_count],(char *)(skb->data),skb->len);
 len = (ETH_ZLEN < skb->len) ? skb->len : ETH_ZLEN;
 #if (NUM_XMIT_BUFFS == 1)
-#  ifdef NO_NOPCOMMANDS
+# ifdef NO_NOPCOMMANDS
 #ifdef DEBUG
 if(p->scb->cus & CU_ACTIVE)
 {
@@ -861,22 +861,22 @@ break;
 if(i==15)
 printk("%s: Can't start transmit-command.\n",dev->name);
 }
-#  else
+# else
 next_nop = (p->nop_point + 1) & 0x1;
 p->xmit_buffs[0]->size = TBD_LAST | len;
-p->xmit_cmds[0]->cmd_link   = p->nop_cmds[next_nop]->cmd_link
+p->xmit_cmds[0]->cmd_link = p->nop_cmds[next_nop]->cmd_link
 = make16((p->nop_cmds[next_nop]));
 p->xmit_cmds[0]->cmd_status = p->nop_cmds[next_nop]->cmd_status = 0;
 p->nop_cmds[p->nop_point]->cmd_link = make16((p->xmit_cmds[0]));
 dev->trans_start = jiffies;
 p->nop_point = next_nop;
 dev_kfree_skb(skb,FREE_WRITE);
-#  endif
+# endif
 #else
 p->xmit_buffs[p->xmit_count]->size = TBD_LAST | len;
 if( (next_nop = p->xmit_count + 1) == NUM_XMIT_BUFFS )
 next_nop = 0;
-p->xmit_cmds[p->xmit_count]->cmd_status  = 0;
+p->xmit_cmds[p->xmit_count]->cmd_status = 0;
 p->nop_cmds[next_nop]->cmd_link = make16((p->nop_cmds[next_nop]));
 p->nop_cmds[next_nop]->cmd_status = 0;
 p->nop_cmds[p->xmit_count]->cmd_link = make16((p->xmit_cmds[p->xmit_count]));

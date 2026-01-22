@@ -6,61 +6,61 @@ typedef struct Mtype Mtype;
 typedef struct Hdef Hdef;
 typedef struct Hline Hline;
 typedef struct Part Part;
-static int	badfile(char *name);
-static int	badtype(char *type);
-static void	ctype(Part*, Hdef*, char*);
-static void	cencoding(Part*, Hdef*, char*);
-static void	cdisposition(Part*, Hdef*, char*);
-static int	decquoted(char *out, char *in, char *e);
-static char*	getstring(char *p, String *s, int dolower);
-static void	init_hdefs(void);
-static int	isattribute(char **pp, char *attr);
-static int	latin1toutf(char *out, char *in, char *e);
-static String*	mkboundary(void);
-static Part*	part(Part *pp);
-static Part*	passbody(Part *p, int dobound);
-static void	passnotheader(void);
-static void	passunixheader(void);
-static Part*	problemchild(Part *p);
-static void	readheader(Part *p);
-static Hline*	readhl(void);
-static void	readmtypes(void);
-static int	save(Part *p, char *file);
-static void	setfilename(Part *p, char *name);
-static char*	skiptosemi(char *p);
-static char*	skipwhite(char *p);
-static String*	tokenconvert(String *t);
-static void	writeheader(Part *p, int);
+static int badfile(char *name);
+static int badtype(char *type);
+static void ctype(Part*, Hdef*, char*);
+static void cencoding(Part*, Hdef*, char*);
+static void cdisposition(Part*, Hdef*, char*);
+static int decquoted(char *out, char *in, char *e);
+static char* getstring(char *p, String *s, int dolower);
+static void init_hdefs(void);
+static int isattribute(char **pp, char *attr);
+static int latin1toutf(char *out, char *in, char *e);
+static String* mkboundary(void);
+static Part* part(Part *pp);
+static Part* passbody(Part *p, int dobound);
+static void passnotheader(void);
+static void passunixheader(void);
+static Part* problemchild(Part *p);
+static void readheader(Part *p);
+static Hline* readhl(void);
+static void readmtypes(void);
+static int save(Part *p, char *file);
+static void setfilename(Part *p, char *name);
+static char* skiptosemi(char *p);
+static char* skipwhite(char *p);
+static String* tokenconvert(String *t);
+static void writeheader(Part *p, int);
 enum
 {
-Enone=	0,
+Enone= 0,
 Ebase64,
 Equoted,
-Dnone=	0,
+Dnone= 0,
 Dinline,
 Dfile,
 Dignore,
-PAD64=	'=',
+PAD64= '=',
 };
 struct Part
 {
-Part	*pp;
-Hline	*hl;
-int	disposition;
-int	encoding;
-int	badfile;
-int	badtype;
-String	*boundary;
-int	blen;
-String	*charset;
-String	*type;
-String	*filename;
-Biobuf	*tmpbuf;
+Part *pp;
+Hline *hl;
+int disposition;
+int encoding;
+int badfile;
+int badtype;
+String *boundary;
+int blen;
+String *charset;
+String *type;
+String *filename;
+Biobuf *tmpbuf;
 };
 struct Hline
 {
-Hline	*next;
-String		*s;
+Hline *next;
+String *s;
 };
 struct Hdef
 {
@@ -76,11 +76,11 @@ Hdef hdefs[] =
 { 0, },
 };
 struct Mtype {
-Mtype	*next;
-char 	*ext;
-char	*gtype;
-char	*stype;
-char	class;
+Mtype *next;
+char *ext;
+char *gtype;
+char *stype;
+char class;
 };
 Mtype *mtypes;
 int justreject;
@@ -722,9 +722,9 @@ int len;
 int convert;
 } charsets[] =
 {
-{ "us-ascii",		8,	1, },
-{ "utf-8",		5,	0, },
-{ "iso-8859-1",		10,	1, },
+{ "us-ascii", 8, 1, },
+{ "utf-8", 5, 0, },
+{ "iso-8859-1", 10, 1, },
 };
 static String*
 tokenconvert(String *t)
@@ -781,10 +781,10 @@ return s_clone(t);
 }
 enum
 {
-Self=	1,
-Hex=	2,
+Self= 1,
+Hex= 2,
 };
-uchar	tableqp[256];
+uchar tableqp[256];
 static void
 initquoted(void)
 {

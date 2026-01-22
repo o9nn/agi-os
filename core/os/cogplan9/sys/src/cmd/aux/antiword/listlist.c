@@ -1,29 +1,29 @@
 #include "antiword.h"
 typedef struct list_desc_tag {
-list_block_type		tInfo;
-ULONG			ulListID;
-USHORT			usIstd;
-UCHAR			ucListLevel;
-struct list_desc_tag	*pNext;
+list_block_type tInfo;
+ULONG ulListID;
+USHORT usIstd;
+UCHAR ucListLevel;
+struct list_desc_tag *pNext;
 } list_desc_type;
 typedef struct list_value_tag {
-USHORT			usValue;
-USHORT			usListIndex;
-UCHAR			ucListLevel;
-struct list_value_tag	*pNext;
+USHORT usValue;
+USHORT usListIndex;
+UCHAR ucListLevel;
+struct list_value_tag *pNext;
 } list_value_type;
-static ULONG		*aulLfoList = NULL;
-static USHORT		usLfoLen = 0;
-static list_desc_type	*pAnchor = NULL;
-static list_desc_type	*pBlockLast = NULL;
-static list_value_type	*pValues = NULL;
-static int	iOldListSeqNumber = 0;
-static USHORT	usOldListValue = 0;
+static ULONG *aulLfoList = NULL;
+static USHORT usLfoLen = 0;
+static list_desc_type *pAnchor = NULL;
+static list_desc_type *pBlockLast = NULL;
+static list_value_type *pValues = NULL;
+static int iOldListSeqNumber = 0;
+static USHORT usOldListValue = 0;
 void
 vDestroyListInfoList(void)
 {
-list_desc_type	*pCurr, *pNext;
-list_value_type	*pValueCurr, *pValueNext;
+list_desc_type *pCurr, *pNext;
+list_value_type *pValueCurr, *pValueNext;
 DBG_MSG("vDestroyListInfoList");
 usLfoLen = 0;
 aulLfoList = xfree(aulLfoList);
@@ -48,8 +48,8 @@ usOldListValue = 0;
 void
 vBuildLfoList(const UCHAR *aucBuffer, size_t tBufLen)
 {
-size_t	tRecords;
-int	iIndex;
+size_t tRecords;
+int iIndex;
 fail(aucBuffer == NULL);
 if (tBufLen < 4) {
 return;
@@ -73,7 +73,7 @@ void
 vAdd2ListInfoList(ULONG ulListID, USHORT usIstd, UCHAR ucListLevel,
 const list_block_type *pListBlock)
 {
-list_desc_type	*pListMember;
+list_desc_type *pListMember;
 fail(pListBlock == NULL);
 NO_DBG_HEX(ulListID);
 NO_DBG_DEC(usIstd);
@@ -104,9 +104,9 @@ pBlockLast = pListMember;
 const list_block_type *
 pGetListInfo(USHORT usListIndex, UCHAR ucListLevel)
 {
-list_desc_type	*pCurr;
-list_block_type	*pNearMatch;
-ULONG	ulListID;
+list_desc_type *pCurr;
+list_block_type *pNearMatch;
+ULONG ulListID;
 if (usListIndex == 0) {
 return NULL;
 }
@@ -135,7 +135,7 @@ return pNearMatch;
 const list_block_type *
 pGetListInfoByIstd(USHORT usIstd)
 {
-list_desc_type	*pCurr;
+list_desc_type *pCurr;
 if (usIstd == ISTD_INVALID || usIstd == STI_NIL || usIstd == STI_USER) {
 return NULL;
 }
@@ -149,8 +149,8 @@ return NULL;
 static void
 vRestartListValues(USHORT usListIndex, UCHAR ucListLevel)
 {
-list_value_type	*pPrev, *pCurr, *pNext;
-int		iCounter;
+list_value_type *pPrev, *pCurr, *pNext;
+int iCounter;
 iCounter = 0;
 pPrev = NULL;
 pCurr = pValues;
@@ -179,8 +179,8 @@ USHORT
 usGetListValue(int iListSeqNumber, int iWordVersion,
 const style_block_type *pStyle)
 {
-list_value_type	*pCurr;
-USHORT		usValue;
+list_value_type *pCurr;
+USHORT usValue;
 fail(iListSeqNumber < 0);
 fail(iListSeqNumber < iOldListSeqNumber);
 fail(iWordVersion < 0);

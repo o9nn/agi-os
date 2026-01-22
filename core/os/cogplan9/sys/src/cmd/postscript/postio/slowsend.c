@@ -1,18 +1,18 @@
 #include <stdio.h>
 #include "gen.h"
 #include "postio.h"
-extern char	*block;
-extern int	blocksize;
-extern int	head;
-extern int	tail;
-extern char	*line;
-extern char	mesg[];
-extern int	ttyo;
+extern char *block;
+extern int blocksize;
+extern int head;
+extern int tail;
+extern char *line;
+extern char mesg[];
+extern int ttyo;
 slowsend(fd_in)
-int		fd_in;
+int fd_in;
 {
 while ( readblock(fd_in) )
-switch ( getstatus(0) )  {
+switch ( getstatus(0) ) {
 case WAITING:
 writeblock(blocksize);
 break;
@@ -43,9 +43,9 @@ break;
 }
 }
 static writeblock(num)
-int		num;
+int num;
 {
-int		count;
+int count;
 if ( num > tail - head )
 num = tail - head;
 if ( (count = write(ttyo, &block[head], num)) == -1 )

@@ -1,5 +1,5 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #include "imapdriver_tools.h"
 #include "imapdriver_tools_private.h"
@@ -198,7 +198,7 @@ res = MAIL_ERROR_MEMORY;
 goto free_list;
 }
 * id = value;
-r  = clist_append(list, id);
+r = clist_append(list, id);
 if (r != 0) {
 res = MAIL_ERROR_MEMORY;
 free(id);

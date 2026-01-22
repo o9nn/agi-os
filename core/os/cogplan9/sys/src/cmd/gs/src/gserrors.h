@@ -1,5 +1,5 @@
 #ifndef gserrors_INCLUDED
-#  define gserrors_INCLUDED
+# define gserrors_INCLUDED
 #define gs_error_unknownerror (-1)
 #define gs_error_interrupt (-6)
 #define gs_error_invalidaccess (-7)

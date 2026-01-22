@@ -1,7 +1,7 @@
 #if defined(EMACS) || defined(VI)
-# define	EDIT
+# define EDIT
 #else
-# undef		EDIT
+# undef EDIT
 #endif
 #if defined(EDIT) && !defined(HISTORY)
 # define HISTORY
@@ -21,8 +21,8 @@
 # error pdksh needs interruptable system calls.
 #endif
 #ifdef HAVE_GCC_FUNC_ATTR
-# define GCC_FUNC_ATTR(x)	__attribute__((x))
-# define GCC_FUNC_ATTR2(x,y)	__attribute__((x,y))
+# define GCC_FUNC_ATTR(x) __attribute__((x))
+# define GCC_FUNC_ATTR2(x,y) __attribute__((x,y))
 #else
 # define GCC_FUNC_ATTR(x)
 # define GCC_FUNC_ATTR2(x,y)

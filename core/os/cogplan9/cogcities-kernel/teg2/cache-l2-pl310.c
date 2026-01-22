@@ -6,54 +6,54 @@
 #include "io.h"
 #include "../port/error.h"
 #include "arm.h"
-#define NWAYS(l2p)	((l2p)->auxctl & Assoc16way? 16: 8)
-#define L2P		((L2pl310 *)soc.l2cache)
+#define NWAYS(l2p) ((l2p)->auxctl & Assoc16way? 16: 8)
+#define L2P ((L2pl310 *)soc.l2cache)
 enum {
-L2size		= 1024 * 1024,
-Wayszgran	= 16 * KiB,
+L2size = 1024 * 1024,
+Wayszgran = 16 * KiB,
 };
 typedef struct L2pl310 L2pl310;
 typedef struct Pl310op Pl310op;
 struct Pl310op {
-ulong	pa;
-ulong	_pad;
-ulong	indexway;
-ulong	way;
+ulong pa;
+ulong _pad;
+ulong indexway;
+ulong way;
 };
 struct L2pl310 {
-ulong	id;
-ulong	type;
-uchar	_pad0[0x100 - 0x8];
-ulong	ctl;
-ulong	auxctl;
-uchar	_pad1[0x730 - 0x108];
-ulong	sync;
-uchar	_pad2[0x740 - 0x734];
-ulong	r3p0sync;
-uchar	_pad3[0x770 - 0x744];
-Pl310op	inv;
-uchar	_pad4[0x7b0 - 0x780];
-Pl310op	clean;
-uchar	_pad5[0x7f0 - 0x7c0];
-Pl310op	cleaninv;
-uchar	_pad6[0xc00 - 0x7d0];
-ulong	filtstart;
-ulong	filtend;
-uchar	_pad6[0xf40 - 0xc08];
-ulong	debug;
+ulong id;
+ulong type;
+uchar _pad0[0x100 - 0x8];
+ulong ctl;
+ulong auxctl;
+uchar _pad1[0x730 - 0x108];
+ulong sync;
+uchar _pad2[0x740 - 0x734];
+ulong r3p0sync;
+uchar _pad3[0x770 - 0x744];
+Pl310op inv;
+uchar _pad4[0x7b0 - 0x780];
+Pl310op clean;
+uchar _pad5[0x7f0 - 0x7c0];
+Pl310op cleaninv;
+uchar _pad6[0xc00 - 0x7d0];
+ulong filtstart;
+ulong filtend;
+uchar _pad6[0xf40 - 0xc08];
+ulong debug;
 };
 enum {
 L2enable = 1,
-Ipref	= 1<<29,
-Dpref	= 1<<28,
-Mbo	= 1<<25,
-Sharovr	= 1<<22,
-Parity	= 1<<21,
+Ipref = 1<<29,
+Dpref = 1<<28,
+Mbo = 1<<25,
+Sharovr = 1<<22,
+Parity = 1<<21,
 Waycfgshift= 17,
 Waycfgmask = (1<<3) - 1,
 Assoc16way = 1<<16,
 Fullline0= 1<<0,
-Wt	= 1<<1,
+Wt = 1<<1,
 Nolinefill= 1<<0,
 Basecfg = Wt | Nolinefill,
 };
@@ -309,13 +309,13 @@ bg_op_running = 0;
 iunlock(&l2lock);
 }
 static Cacheimpl l2cacheimpl = {
-.info	= l2pl310info,
-.on	= l2pl310on,
-.off	= l2pl310off,
-.inv	= l2pl310inv,
-.wb	= l2pl310wb,
-.wbinv	= l2pl310wbinv,
-.invse	= l2pl310invse,
-.wbse	= l2pl310wbse,
+.info = l2pl310info,
+.on = l2pl310on,
+.off = l2pl310off,
+.inv = l2pl310inv,
+.wb = l2pl310wb,
+.wbinv = l2pl310wbinv,
+.invse = l2pl310invse,
+.wbse = l2pl310wbse,
 .wbinvse= l2pl310wbinvse,
 };

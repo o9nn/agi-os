@@ -100,13 +100,13 @@ sol_map2 = solve(prob_map, FunctionMap());
 # @test ModelingToolkit.is_delay_var(Symbolics.value(t), Symbolics.value(y(t - 1)))
 # @test !ModelingToolkit.is_delay_var(Symbolics.value(t), Symbolics.value(z))
 # @test_throws ErrorException ModelingToolkit.get_delay_val(Symbolics.value(t),
-#     Symbolics.arguments(Symbolics.value(x(t +
-#                                           2)))[1])
+# Symbolics.arguments(Symbolics.value(x(t +
+# 2)))[1])
 # @test_throws ErrorException z(t)
 # # Equations
 # eqs = [
-#     D1(x(t)) ~ 0.4x(t) + 0.3x(t - 1.5) + 0.1x(t - 3),
-#     D2(y(t)) ~ 0.3y(t) + 0.7y(t - 2) + 0.1z * h,
+# D1(x(t)) ~ 0.4x(t) + 0.3x(t - 1.5) + 0.1x(t - 3),
+# D2(y(t)) ~ 0.3y(t) + 0.7y(t - 2) + 0.1z * h,
 # ]
 # # System
 # @named sys = System(eqs, t, [x(t), x(t - 1.5), x(t - 3), y(t), y(t - 2), z], [])
@@ -114,9 +114,9 @@ sol_map2 = solve(prob_map, FunctionMap());
 # @test max_delay[Symbolics.operation(Symbolics.value(x(t)))] ≈ 3
 # @test max_delay[Symbolics.operation(Symbolics.value(y(t)))] ≈ 2
 # linearized_eqs = [eqs
-#     x(t - 3.0) ~ x(t - 1.5)
-#     x(t - 1.5) ~ x(t)
-#     y(t - 2.0) ~ y(t)]
+# x(t - 3.0) ~ x(t - 1.5)
+# x(t - 1.5) ~ x(t)
+# y(t - 2.0) ~ y(t)]
 # @test all(eqs2 .== linearized_eqs)
 # observed variable handling
 @variables x(t) RHS(t)
@@ -128,49 +128,49 @@ RHS2 = RHS
 @unpack RHS = fol
 @test isequal(RHS, RHS2)
 # @testset "Preface tests" begin
-#     using OrdinaryDiffEq
-#     using Symbolics
-#     using DiffEqBase: isinplace
-#     using ModelingToolkit
-#     using SymbolicUtils.Code
-#     using SymbolicUtils: Sym
-#     c = [0]
-#     f = function f(c, d::Vector{Float64}, u::Vector{Float64}, p, t::Float64, dt::Float64)
-#         c .= [c[1] + 1]
-#         d .= randn(length(u))
-#         nothing
-#     end
-#     dummy_identity(x, _) = x
-#     @register_symbolic dummy_identity(x, y)
-#     u0 = ones(5)
-#     p0 = Float64[]
-#     syms = [Symbol(:a, i) for i in 1:5]
-#     syms_p = Symbol[]
-#     dt = 0.1
-#     @assert isinplace(f, 6)
-#     wf = let c = c, buffer = similar(u0), u = similar(u0), p = similar(p0), dt = dt
-#         t -> (f(c, buffer, u, p, t, dt); buffer)
-#     end
-#     num = hash(f) ⊻ length(u0) ⊻ length(p0)
-#     buffername = Symbol(:fmi_buffer_, num)
-#     Δ = DiscreteUpdate(t; dt = dt)
-#     us = map(s -> (@variables $s(t))[1], syms)
-#     ps = map(s -> (@variables $s(t))[1], syms_p)
-#     buffer, = @variables $buffername[1:length(u0)]
-#     dummy_var = Sym{Any}(:_) # this is safe because _ cannot be a rvalue in Julia
-#     ss = Iterators.flatten((us, ps))
-#     vv = Iterators.flatten((u0, p0))
-#     defs = Dict{Any, Any}(s => v for (s, v) in zip(ss, vv))
-#     preface = [Assignment(dummy_var, SetArray(true, term(getfield, wf, Meta.quot(:u)), us))
-#         Assignment(dummy_var, SetArray(true, term(getfield, wf, Meta.quot(:p)), ps))
-#         Assignment(buffer, term(wf, t))]
-#     eqs = map(1:length(us)) do i
-#         Δ(us[i]) ~ dummy_identity(buffer[i], us[i])
-#     end
-#     @mtkcompile sys = System(eqs, t, us, ps; defaults = defs, preface = preface)
-#     prob = DiscreteProblem(sys, [], (0.0, 1.0))
-#     sol = solve(prob, FunctionMap(); dt = dt)
-#     @test c[1] + 1 == length(sol)
+# using OrdinaryDiffEq
+# using Symbolics
+# using DiffEqBase: isinplace
+# using ModelingToolkit
+# using SymbolicUtils.Code
+# using SymbolicUtils: Sym
+# c = [0]
+# f = function f(c, d::Vector{Float64}, u::Vector{Float64}, p, t::Float64, dt::Float64)
+# c .= [c[1] + 1]
+# d .= randn(length(u))
+# nothing
+# end
+# dummy_identity(x, _) = x
+# @register_symbolic dummy_identity(x, y)
+# u0 = ones(5)
+# p0 = Float64[]
+# syms = [Symbol(:a, i) for i in 1:5]
+# syms_p = Symbol[]
+# dt = 0.1
+# @assert isinplace(f, 6)
+# wf = let c = c, buffer = similar(u0), u = similar(u0), p = similar(p0), dt = dt
+# t -> (f(c, buffer, u, p, t, dt); buffer)
+# end
+# num = hash(f) ⊻ length(u0) ⊻ length(p0)
+# buffername = Symbol(:fmi_buffer_, num)
+# Δ = DiscreteUpdate(t; dt = dt)
+# us = map(s -> (@variables $s(t))[1], syms)
+# ps = map(s -> (@variables $s(t))[1], syms_p)
+# buffer, = @variables $buffername[1:length(u0)]
+# dummy_var = Sym{Any}(:_) # this is safe because _ cannot be a rvalue in Julia
+# ss = Iterators.flatten((us, ps))
+# vv = Iterators.flatten((u0, p0))
+# defs = Dict{Any, Any}(s => v for (s, v) in zip(ss, vv))
+# preface = [Assignment(dummy_var, SetArray(true, term(getfield, wf, Meta.quot(:u)), us))
+# Assignment(dummy_var, SetArray(true, term(getfield, wf, Meta.quot(:p)), ps))
+# Assignment(buffer, term(wf, t))]
+# eqs = map(1:length(us)) do i
+# Δ(us[i]) ~ dummy_identity(buffer[i], us[i])
+# end
+# @mtkcompile sys = System(eqs, t, us, ps; defaults = defs, preface = preface)
+# prob = DiscreteProblem(sys, [], (0.0, 1.0))
+# sol = solve(prob, FunctionMap(); dt = dt)
+# @test c[1] + 1 == length(sol)
 # end
 @variables x(t) y(t) u(t)
 eqs = [u ~ 1

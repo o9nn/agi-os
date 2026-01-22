@@ -1,6 +1,6 @@
-#define MACH_IMPORTS						\
+#define MACH_IMPORTS \
 import "mig-decls.h";
-#define MACH_HOST_IMPORTS					\
+#define MACH_HOST_IMPORTS \
 import "mig-decls.h";
-#define GNUMACH_IMPORTS						\
+#define GNUMACH_IMPORTS \
 import "mig-decls.h";

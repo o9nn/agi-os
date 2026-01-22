@@ -33,11 +33,11 @@ typedef unsigned char byte;
 #define DE620_IO 0x378
 #endif
 #ifndef DE620_IRQ
-#define DE620_IRQ	7
+#define DE620_IRQ 7
 #endif
-#define DATA_PORT	(dev->base_addr)
-#define STATUS_PORT	(dev->base_addr + 1)
-#define COMMAND_PORT	(dev->base_addr + 2)
+#define DATA_PORT (dev->base_addr)
+#define STATUS_PORT (dev->base_addr + 1)
+#define COMMAND_PORT (dev->base_addr + 2)
 #define RUNT 60
 #define GIANT 1514
 #ifdef DE620_DEBUG
@@ -48,35 +48,35 @@ typedef unsigned char byte;
 #endif
 static int bnc = 0;
 static int utp = 0;
-static int io  = DE620_IO;
+static int io = DE620_IO;
 static int irq = DE620_IRQ;
 static int clone = DE620_CLONE;
 static unsigned int de620_debug = DE620_DEBUG;
-static int	de620_open(struct device *);
-static int	de620_close(struct device *);
+static int de620_open(struct device *);
+static int de620_close(struct device *);
 static struct netstats *get_stats(struct device *);
-static void	de620_set_multicast_list(struct device *);
-static int	de620_start_xmit(struct sk_buff *, struct device *);
-static void	de620_interrupt(int, void *, struct pt_regs *);
-static int	de620_rx_intr(struct device *);
-static int	adapter_init(struct device *);
-int		de620_probe(struct device *);
-static int	read_eeprom(struct device *);
+static void de620_set_multicast_list(struct device *);
+static int de620_start_xmit(struct sk_buff *, struct device *);
+static void de620_interrupt(int, void *, struct pt_regs *);
+static int de620_rx_intr(struct device *);
+static int adapter_init(struct device *);
+int de620_probe(struct device *);
+static int read_eeprom(struct device *);
 #define SCR_DEF NIBBLEMODE |INTON | SLEEP | AUTOTX
-#define	TCR_DEF RXPB
+#define TCR_DEF RXPB
 #define DE620_RX_START_PAGE 12
 #define DEF_NIC_CMD IRQEN | ICEN | DS1
-static volatile byte	NIC_Cmd;
-static volatile byte	next_rx_page;
-static byte		first_rx_page;
-static byte		last_rx_page;
-static byte		EIPRegister;
+static volatile byte NIC_Cmd;
+static volatile byte next_rx_page;
+static byte first_rx_page;
+static byte last_rx_page;
+static byte EIPRegister;
 static struct nic {
-byte	NodeID[6];
-byte	RAM_Size;
-byte	Model;
-byte	Media;
-byte	SCR;
+byte NodeID[6];
+byte RAM_Size;
+byte Model;
+byte Media;
+byte SCR;
 } nic_data;
 #define de620_tx_buffs(dd) (inb(STATUS_PORT) & (TXBF0 | TXBF1))
 #define de620_flip_ds(dd) NIC_Cmd ^= DS0 | DS1; outb(NIC_Cmd, COMMAND_PORT);
@@ -353,9 +353,9 @@ static int
 de620_rx_intr(struct device *dev)
 {
 struct header_buf {
-byte		status;
-byte		Rx_NextPage;
-unsigned short	Rx_ByteCount;
+byte status;
+byte Rx_NextPage;
+unsigned short Rx_ByteCount;
 } header_buf;
 struct sk_buff *skb;
 int size;
@@ -453,8 +453,8 @@ de620_set_register(dev, W_CPR, first_rx_page);
 de620_send_command(dev, W_NPR | first_rx_page);
 de620_send_command(dev, W_DUMMY);
 de620_set_delay(dev);
-#define CHECK_MASK (  0 | TXSUC |  T16  |  0  | RXCRC | RXSHORT |  0  |  0  )
-#define CHECK_OK   (  0 |   0   |  0    |  0  |   0   |   0     |  0  |  0  )
+#define CHECK_MASK ( 0 | TXSUC | T16 | 0 | RXCRC | RXSHORT | 0 | 0 )
+#define CHECK_OK ( 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 )
 if (((i = de620_get_register(dev, R_STS)) & CHECK_MASK) != CHECK_OK) {
 printk("Something has happened to the DE-620!  Please check it"
 #ifdef SHUTDOWN_WHEN_LOST
@@ -482,7 +482,7 @@ static struct netstats de620_netstats;
 int i;
 byte checkbyte = 0xa5;
 dev->base_addr = io;
-dev->irq       = irq;
+dev->irq = irq;
 if (de620_debug)
 printk("%s", version);
 printk("D-Link DE-620 pocket adapter");

@@ -59,7 +59,7 @@ SLANG_BOUND_ASSERT(index, count) SLANG_BOUND_FIX(index, count)
 #endif
 #ifndef SLANG_BOUND_CHECK_BYTE_ADDRESS
 #define SLANG_BOUND_CHECK_BYTE_ADDRESS(index, elemSize, sizeInBytes) \
-SLANG_BOUND_ASSERT_BYTE_ADDRESS(index, elemSize, sizeInBytes)    \
+SLANG_BOUND_ASSERT_BYTE_ADDRESS(index, elemSize, sizeInBytes) \
 SLANG_BOUND_FIX_BYTE_ADDRESS(index, elemSize, sizeInBytes)
 #endif
 #ifndef SLANG_BOUND_CHECK_FIXED_ARRAY
@@ -172,22 +172,22 @@ struct __align__(4) __half4
 __half x, y, z, w;
 };
 #endif
-#define SLANG_VECTOR_GET_ELEMENT(T)                                                   \
+#define SLANG_VECTOR_GET_ELEMENT(T) \
 SLANG_FORCE_INLINE SLANG_CUDA_CALL T _slang_vector_get_element(T##1 x, int index) \
-{                                                                                 \
-return ((T*)(&x))[index];                                                     \
-}                                                                                 \
+{ \
+return ((T*)(&x))[index]; \
+} \
 SLANG_FORCE_INLINE SLANG_CUDA_CALL T _slang_vector_get_element(T##2 x, int index) \
-{                                                                                 \
-return ((T*)(&x))[index];                                                     \
-}                                                                                 \
+{ \
+return ((T*)(&x))[index]; \
+} \
 SLANG_FORCE_INLINE SLANG_CUDA_CALL T _slang_vector_get_element(T##3 x, int index) \
-{                                                                                 \
-return ((T*)(&x))[index];                                                     \
-}                                                                                 \
+{ \
+return ((T*)(&x))[index]; \
+} \
 SLANG_FORCE_INLINE SLANG_CUDA_CALL T _slang_vector_get_element(T##4 x, int index) \
-{                                                                                 \
-return ((T*)(&x))[index];                                                     \
+{ \
+return ((T*)(&x))[index]; \
 }
 SLANG_VECTOR_GET_ELEMENT(int)
 SLANG_VECTOR_GET_ELEMENT(uint)
@@ -199,22 +199,22 @@ SLANG_VECTOR_GET_ELEMENT(longlong)
 SLANG_VECTOR_GET_ELEMENT(ulonglong)
 SLANG_VECTOR_GET_ELEMENT(float)
 SLANG_VECTOR_GET_ELEMENT(double)
-#define SLANG_VECTOR_GET_ELEMENT_PTR(T)                                                      \
+#define SLANG_VECTOR_GET_ELEMENT_PTR(T) \
 SLANG_FORCE_INLINE SLANG_CUDA_CALL T* _slang_vector_get_element_ptr(T##1 * x, int index) \
-{                                                                                        \
-return ((T*)(x)) + index;                                                            \
-}                                                                                        \
+{ \
+return ((T*)(x)) + index; \
+} \
 SLANG_FORCE_INLINE SLANG_CUDA_CALL T* _slang_vector_get_element_ptr(T##2 * x, int index) \
-{                                                                                        \
-return ((T*)(x)) + index;                                                            \
-}                                                                                        \
+{ \
+return ((T*)(x)) + index; \
+} \
 SLANG_FORCE_INLINE SLANG_CUDA_CALL T* _slang_vector_get_element_ptr(T##3 * x, int index) \
-{                                                                                        \
-return ((T*)(x)) + index;                                                            \
-}                                                                                        \
+{ \
+return ((T*)(x)) + index; \
+} \
 SLANG_FORCE_INLINE SLANG_CUDA_CALL T* _slang_vector_get_element_ptr(T##4 * x, int index) \
-{                                                                                        \
-return ((T*)(x)) + index;                                                            \
+{ \
+return ((T*)(x)) + index; \
 }
 SLANG_VECTOR_GET_ELEMENT_PTR(int)
 SLANG_VECTOR_GET_ELEMENT_PTR(uint)
@@ -230,58 +230,58 @@ SLANG_VECTOR_GET_ELEMENT_PTR(double)
 SLANG_VECTOR_GET_ELEMENT(__half)
 SLANG_VECTOR_GET_ELEMENT_PTR(__half)
 #endif
-#define SLANG_CUDA_VECTOR_BINARY_OP(T, n, op)                                                 \
-SLANG_FORCE_INLINE SLANG_CUDA_CALL T##n operator op(T##n thisVal, T##n other)             \
-{                                                                                         \
-T##n result;                                                                          \
-for (int i = 0; i < n; i++)                                                           \
-*_slang_vector_get_element_ptr(&result, i) =                                      \
+#define SLANG_CUDA_VECTOR_BINARY_OP(T, n, op) \
+SLANG_FORCE_INLINE SLANG_CUDA_CALL T##n operator op(T##n thisVal, T##n other) \
+{ \
+T##n result; \
+for (int i = 0; i < n; i++) \
+*_slang_vector_get_element_ptr(&result, i) = \
 _slang_vector_get_element(thisVal, i) op _slang_vector_get_element(other, i); \
-return result;                                                                        \
+return result; \
 }
-#define SLANG_CUDA_VECTOR_BINARY_COMPARE_OP(T, n, op)                                \
+#define SLANG_CUDA_VECTOR_BINARY_COMPARE_OP(T, n, op) \
 SLANG_FORCE_INLINE SLANG_CUDA_CALL bool##n operator op(T##n thisVal, T##n other) \
-{                                                                                \
-bool##n result;                                                              \
-for (int i = 0; i < n; i++)                                                  \
-*_slang_vector_get_element_ptr(&result, i) =                             \
-(int)(_slang_vector_get_element(thisVal, i)                          \
-op _slang_vector_get_element(other, i));                   \
-return result;                                                               \
+{ \
+bool##n result; \
+for (int i = 0; i < n; i++) \
+*_slang_vector_get_element_ptr(&result, i) = \
+(int)(_slang_vector_get_element(thisVal, i) \
+op _slang_vector_get_element(other, i)); \
+return result; \
 }
-#define SLANG_CUDA_VECTOR_UNARY_OP(T, n, op)                                                       \
-SLANG_FORCE_INLINE SLANG_CUDA_CALL T##n operator op(T##n thisVal)                              \
-{                                                                                              \
-T##n result;                                                                               \
-for (int i = 0; i < n; i++)                                                                \
+#define SLANG_CUDA_VECTOR_UNARY_OP(T, n, op) \
+SLANG_FORCE_INLINE SLANG_CUDA_CALL T##n operator op(T##n thisVal) \
+{ \
+T##n result; \
+for (int i = 0; i < n; i++) \
 *_slang_vector_get_element_ptr(&result, i) = op _slang_vector_get_element(thisVal, i); \
-return result;                                                                             \
+return result; \
 }
-#define SLANG_CUDA_VECTOR_INT_OP(T, n)            \
-SLANG_CUDA_VECTOR_BINARY_OP(T, n, +)          \
-SLANG_CUDA_VECTOR_BINARY_OP(T, n, -)          \
-SLANG_CUDA_VECTOR_BINARY_OP(T, n, *)          \
-SLANG_CUDA_VECTOR_BINARY_OP(T, n, /)          \
-SLANG_CUDA_VECTOR_BINARY_OP(T, n, %)          \
-SLANG_CUDA_VECTOR_BINARY_OP(T, n, ^)          \
-SLANG_CUDA_VECTOR_BINARY_OP(T, n, &)          \
-SLANG_CUDA_VECTOR_BINARY_OP(T, n, |)          \
-SLANG_CUDA_VECTOR_BINARY_OP(T, n, &&)         \
-SLANG_CUDA_VECTOR_BINARY_OP(T, n, ||)         \
-SLANG_CUDA_VECTOR_BINARY_OP(T, n, >>)         \
-SLANG_CUDA_VECTOR_BINARY_OP(T, n, <<)         \
-SLANG_CUDA_VECTOR_BINARY_COMPARE_OP(T, n, >)  \
-SLANG_CUDA_VECTOR_BINARY_COMPARE_OP(T, n, <)  \
+#define SLANG_CUDA_VECTOR_INT_OP(T, n) \
+SLANG_CUDA_VECTOR_BINARY_OP(T, n, +) \
+SLANG_CUDA_VECTOR_BINARY_OP(T, n, -) \
+SLANG_CUDA_VECTOR_BINARY_OP(T, n, *) \
+SLANG_CUDA_VECTOR_BINARY_OP(T, n, /) \
+SLANG_CUDA_VECTOR_BINARY_OP(T, n, %) \
+SLANG_CUDA_VECTOR_BINARY_OP(T, n, ^) \
+SLANG_CUDA_VECTOR_BINARY_OP(T, n, &) \
+SLANG_CUDA_VECTOR_BINARY_OP(T, n, |) \
+SLANG_CUDA_VECTOR_BINARY_OP(T, n, &&) \
+SLANG_CUDA_VECTOR_BINARY_OP(T, n, ||) \
+SLANG_CUDA_VECTOR_BINARY_OP(T, n, >>) \
+SLANG_CUDA_VECTOR_BINARY_OP(T, n, <<) \
+SLANG_CUDA_VECTOR_BINARY_COMPARE_OP(T, n, >) \
+SLANG_CUDA_VECTOR_BINARY_COMPARE_OP(T, n, <) \
 SLANG_CUDA_VECTOR_BINARY_COMPARE_OP(T, n, >=) \
 SLANG_CUDA_VECTOR_BINARY_COMPARE_OP(T, n, <=) \
 SLANG_CUDA_VECTOR_BINARY_COMPARE_OP(T, n, ==) \
 SLANG_CUDA_VECTOR_BINARY_COMPARE_OP(T, n, !=) \
-SLANG_CUDA_VECTOR_UNARY_OP(T, n, !)           \
-SLANG_CUDA_VECTOR_UNARY_OP(T, n, -)           \
+SLANG_CUDA_VECTOR_UNARY_OP(T, n, !) \
+SLANG_CUDA_VECTOR_UNARY_OP(T, n, -) \
 SLANG_CUDA_VECTOR_UNARY_OP(T, n, ~)
 #define SLANG_CUDA_VECTOR_INT_OPS(T) \
-SLANG_CUDA_VECTOR_INT_OP(T, 2)   \
-SLANG_CUDA_VECTOR_INT_OP(T, 3)   \
+SLANG_CUDA_VECTOR_INT_OP(T, 2) \
+SLANG_CUDA_VECTOR_INT_OP(T, 3) \
 SLANG_CUDA_VECTOR_INT_OP(T, 4)
 SLANG_CUDA_VECTOR_INT_OPS(int)
 SLANG_CUDA_VECTOR_INT_OPS(uint)
@@ -291,58 +291,58 @@ SLANG_CUDA_VECTOR_INT_OPS(char)
 SLANG_CUDA_VECTOR_INT_OPS(uchar)
 SLANG_CUDA_VECTOR_INT_OPS(longlong)
 SLANG_CUDA_VECTOR_INT_OPS(ulonglong)
-#define SLANG_CUDA_VECTOR_FLOAT_OP(T, n)          \
-SLANG_CUDA_VECTOR_BINARY_OP(T, n, +)          \
-SLANG_CUDA_VECTOR_BINARY_OP(T, n, -)          \
-SLANG_CUDA_VECTOR_BINARY_OP(T, n, *)          \
-SLANG_CUDA_VECTOR_BINARY_OP(T, n, /)          \
-SLANG_CUDA_VECTOR_BINARY_OP(T, n, &&)         \
-SLANG_CUDA_VECTOR_BINARY_OP(T, n, ||)         \
-SLANG_CUDA_VECTOR_BINARY_COMPARE_OP(T, n, >)  \
-SLANG_CUDA_VECTOR_BINARY_COMPARE_OP(T, n, <)  \
+#define SLANG_CUDA_VECTOR_FLOAT_OP(T, n) \
+SLANG_CUDA_VECTOR_BINARY_OP(T, n, +) \
+SLANG_CUDA_VECTOR_BINARY_OP(T, n, -) \
+SLANG_CUDA_VECTOR_BINARY_OP(T, n, *) \
+SLANG_CUDA_VECTOR_BINARY_OP(T, n, /) \
+SLANG_CUDA_VECTOR_BINARY_OP(T, n, &&) \
+SLANG_CUDA_VECTOR_BINARY_OP(T, n, ||) \
+SLANG_CUDA_VECTOR_BINARY_COMPARE_OP(T, n, >) \
+SLANG_CUDA_VECTOR_BINARY_COMPARE_OP(T, n, <) \
 SLANG_CUDA_VECTOR_BINARY_COMPARE_OP(T, n, >=) \
 SLANG_CUDA_VECTOR_BINARY_COMPARE_OP(T, n, <=) \
 SLANG_CUDA_VECTOR_BINARY_COMPARE_OP(T, n, ==) \
 SLANG_CUDA_VECTOR_BINARY_COMPARE_OP(T, n, !=) \
 SLANG_CUDA_VECTOR_UNARY_OP(T, n, -)
 #define SLANG_CUDA_VECTOR_FLOAT_OPS(T) \
-SLANG_CUDA_VECTOR_FLOAT_OP(T, 2)   \
-SLANG_CUDA_VECTOR_FLOAT_OP(T, 3)   \
+SLANG_CUDA_VECTOR_FLOAT_OP(T, 2) \
+SLANG_CUDA_VECTOR_FLOAT_OP(T, 3) \
 SLANG_CUDA_VECTOR_FLOAT_OP(T, 4)
 SLANG_CUDA_VECTOR_FLOAT_OPS(float)
 SLANG_CUDA_VECTOR_FLOAT_OPS(double)
 #if SLANG_CUDA_ENABLE_HALF
 SLANG_CUDA_VECTOR_FLOAT_OPS(__half)
 #endif
-#define SLANG_CUDA_FLOAT_VECTOR_MOD_IMPL(T, n)                                             \
+#define SLANG_CUDA_FLOAT_VECTOR_MOD_IMPL(T, n) \
 SLANG_FORCE_INLINE SLANG_CUDA_CALL T##n operator%(const T##n& left, const T##n& right) \
-{                                                                                      \
-T##n result;                                                                       \
-for (int i = 0; i < n; i++)                                                        \
-*_slang_vector_get_element_ptr(&result, i) = _slang_fmod(                      \
-_slang_vector_get_element(left, i),                                        \
-_slang_vector_get_element(right, i));                                      \
-return result;                                                                     \
+{ \
+T##n result; \
+for (int i = 0; i < n; i++) \
+*_slang_vector_get_element_ptr(&result, i) = _slang_fmod( \
+_slang_vector_get_element(left, i), \
+_slang_vector_get_element(right, i)); \
+return result; \
 }
-#define SLANG_CUDA_FLOAT_VECTOR_MOD(T)     \
+#define SLANG_CUDA_FLOAT_VECTOR_MOD(T) \
 SLANG_CUDA_FLOAT_VECTOR_MOD_IMPL(T, 2) \
 SLANG_CUDA_FLOAT_VECTOR_MOD_IMPL(T, 3) \
 SLANG_CUDA_FLOAT_VECTOR_MOD_IMPL(T, 4)
 SLANG_CUDA_FLOAT_VECTOR_MOD(float)
 SLANG_CUDA_FLOAT_VECTOR_MOD(double)
 #if SLANG_CUDA_RTC || SLANG_CUDA_ENABLE_HALF
-#define SLANG_MAKE_VECTOR(T)                                                \
-SLANG_FORCE_INLINE SLANG_CUDA_CALL T##2 make_##T##2(T x, T y)           \
-{                                                                       \
-return T##2 {x, y};                                                 \
-}                                                                       \
-SLANG_FORCE_INLINE SLANG_CUDA_CALL T##3 make_##T##3(T x, T y, T z)      \
-{                                                                       \
-return T##3 {x, y, z};                                              \
-}                                                                       \
+#define SLANG_MAKE_VECTOR(T) \
+SLANG_FORCE_INLINE SLANG_CUDA_CALL T##2 make_##T##2(T x, T y) \
+{ \
+return T##2 {x, y}; \
+} \
+SLANG_FORCE_INLINE SLANG_CUDA_CALL T##3 make_##T##3(T x, T y, T z) \
+{ \
+return T##3 {x, y, z}; \
+} \
 SLANG_FORCE_INLINE SLANG_CUDA_CALL T##4 make_##T##4(T x, T y, T z, T w) \
-{                                                                       \
-return T##4 {x, y, z, w};                                           \
+{ \
+return T##4 {x, y, z, w}; \
 }
 #endif
 #if SLANG_CUDA_RTC
@@ -389,36 +389,36 @@ SLANG_FORCE_INLINE SLANG_CUDA_CALL bool4 make_bool4(bool x)
 return bool4{x, x, x, x};
 }
 #if SLANG_CUDA_RTC
-#define SLANG_MAKE_VECTOR_FROM_SCALAR(T)                     \
+#define SLANG_MAKE_VECTOR_FROM_SCALAR(T) \
 SLANG_FORCE_INLINE SLANG_CUDA_CALL T##1 make_##T##1(T x) \
-{                                                        \
-return T##1 {x};                                     \
-}                                                        \
+{ \
+return T##1 {x}; \
+} \
 SLANG_FORCE_INLINE SLANG_CUDA_CALL T##2 make_##T##2(T x) \
-{                                                        \
-return make_##T##2(x, x);                            \
-}                                                        \
+{ \
+return make_##T##2(x, x); \
+} \
 SLANG_FORCE_INLINE SLANG_CUDA_CALL T##3 make_##T##3(T x) \
-{                                                        \
-return make_##T##3(x, x, x);                         \
-}                                                        \
+{ \
+return make_##T##3(x, x, x); \
+} \
 SLANG_FORCE_INLINE SLANG_CUDA_CALL T##4 make_##T##4(T x) \
-{                                                        \
-return make_##T##4(x, x, x, x);                      \
+{ \
+return make_##T##4(x, x, x, x); \
 }
 #else
-#define SLANG_MAKE_VECTOR_FROM_SCALAR(T)                     \
+#define SLANG_MAKE_VECTOR_FROM_SCALAR(T) \
 SLANG_FORCE_INLINE SLANG_CUDA_CALL T##2 make_##T##2(T x) \
-{                                                        \
-return make_##T##2(x, x);                            \
-}                                                        \
+{ \
+return make_##T##2(x, x); \
+} \
 SLANG_FORCE_INLINE SLANG_CUDA_CALL T##3 make_##T##3(T x) \
-{                                                        \
-return make_##T##3(x, x, x);                         \
-}                                                        \
+{ \
+return make_##T##3(x, x, x); \
+} \
 SLANG_FORCE_INLINE SLANG_CUDA_CALL T##4 make_##T##4(T x) \
-{                                                        \
-return make_##T##4(x, x, x, x);                      \
+{ \
+return make_##T##4(x, x, x, x); \
 }
 #endif
 SLANG_MAKE_VECTOR_FROM_SCALAR(int)
@@ -440,14 +440,14 @@ return __half1{x};
 }
 #endif
 #endif
-#define SLANG_CUDA_VECTOR_ATOMIC_BINARY_IMPL(Fn, T, N)                                            \
-SLANG_FORCE_INLINE SLANG_CUDA_CALL T##N Fn(T##N* address, T##N val)                           \
-{                                                                                             \
-T##N result;                                                                              \
-for (int i = 0; i < N; i++)                                                               \
-*_slang_vector_get_element_ptr(&result, i) =                                          \
+#define SLANG_CUDA_VECTOR_ATOMIC_BINARY_IMPL(Fn, T, N) \
+SLANG_FORCE_INLINE SLANG_CUDA_CALL T##N Fn(T##N* address, T##N val) \
+{ \
+T##N result; \
+for (int i = 0; i < N; i++) \
+*_slang_vector_get_element_ptr(&result, i) = \
 Fn(_slang_vector_get_element_ptr(address, i), _slang_vector_get_element(val, i)); \
-return result;                                                                            \
+return result; \
 }
 #if defined(__CUDA_ARCH__) && __CUDA_ARCH__ < 900
 SLANG_CUDA_VECTOR_ATOMIC_BINARY_IMPL(atomicAdd, float, 2)
@@ -467,20 +467,20 @@ template<typename T, int n>
 struct GetVectorTypeImpl
 {
 };
-#define GET_VECTOR_TYPE_IMPL(T, n)                                     \
-template<>                                                         \
-struct GetVectorTypeImpl<T, n>                                     \
-{                                                                  \
-typedef T##n type;                                             \
+#define GET_VECTOR_TYPE_IMPL(T, n) \
+template<> \
+struct GetVectorTypeImpl<T, n> \
+{ \
+typedef T##n type; \
 static SLANG_FORCE_INLINE SLANG_CUDA_CALL T##n fromScalar(T v) \
-{                                                              \
-return make_##T##n(v);                                     \
-}                                                              \
+{ \
+return make_##T##n(v); \
+} \
 };
 #define GET_VECTOR_TYPE_IMPL_N(T) \
-GET_VECTOR_TYPE_IMPL(T, 1)    \
-GET_VECTOR_TYPE_IMPL(T, 2)    \
-GET_VECTOR_TYPE_IMPL(T, 3)    \
+GET_VECTOR_TYPE_IMPL(T, 1) \
+GET_VECTOR_TYPE_IMPL(T, 2) \
+GET_VECTOR_TYPE_IMPL(T, 3) \
 GET_VECTOR_TYPE_IMPL(T, 4)
 GET_VECTOR_TYPE_IMPL_N(int)
 GET_VECTOR_TYPE_IMPL_N(uint)
@@ -773,49 +773,49 @@ rs.rows[3].z = v14;
 rs.rows[3].w = v15;
 return rs;
 }
-#define SLANG_MATRIX_BINARY_OP(T, op)                                   \
-template<int R, int C>                                              \
-SLANG_FORCE_INLINE SLANG_CUDA_CALL Matrix<T, R, C> operator op(     \
-const Matrix<T, R, C>& thisVal,                                 \
-const Matrix<T, R, C>& other)                                   \
-{                                                                   \
-Matrix<T, R, C> result;                                         \
-for (int i = 0; i < R; i++)                                     \
-for (int j = 0; j < C; j++)                                 \
-*_slang_vector_get_element_ptr(result.rows + i, j) =    \
-_slang_vector_get_element(thisVal.rows[i], j)       \
+#define SLANG_MATRIX_BINARY_OP(T, op) \
+template<int R, int C> \
+SLANG_FORCE_INLINE SLANG_CUDA_CALL Matrix<T, R, C> operator op( \
+const Matrix<T, R, C>& thisVal, \
+const Matrix<T, R, C>& other) \
+{ \
+Matrix<T, R, C> result; \
+for (int i = 0; i < R; i++) \
+for (int j = 0; j < C; j++) \
+*_slang_vector_get_element_ptr(result.rows + i, j) = \
+_slang_vector_get_element(thisVal.rows[i], j) \
 op _slang_vector_get_element(other.rows[i], j); \
-return result;                                                  \
+return result; \
 }
-#define SLANG_MATRIX_UNARY_OP(T, op)                                                               \
-template<int R, int C>                                                                         \
+#define SLANG_MATRIX_UNARY_OP(T, op) \
+template<int R, int C> \
 SLANG_FORCE_INLINE SLANG_CUDA_CALL Matrix<T, R, C> operator op(const Matrix<T, R, C>& thisVal) \
-{                                                                                              \
-Matrix<T, R, C> result;                                                                    \
-for (int i = 0; i < R; i++)                                                                \
-for (int j = 0; j < C; j++)                                                            \
-*_slang_vector_get_element_ptr(result.rows + i, j) =                               \
-op _slang_vector_get_element(thisVal.rows[i], j);                              \
-return result;                                                                             \
+{ \
+Matrix<T, R, C> result; \
+for (int i = 0; i < R; i++) \
+for (int j = 0; j < C; j++) \
+*_slang_vector_get_element_ptr(result.rows + i, j) = \
+op _slang_vector_get_element(thisVal.rows[i], j); \
+return result; \
 }
-#define SLANG_INT_MATRIX_OPS(T)   \
-SLANG_MATRIX_BINARY_OP(T, +)  \
-SLANG_MATRIX_BINARY_OP(T, -)  \
-SLANG_MATRIX_BINARY_OP(T, *)  \
-SLANG_MATRIX_BINARY_OP(T, /)  \
-SLANG_MATRIX_BINARY_OP(T, &)  \
-SLANG_MATRIX_BINARY_OP(T, |)  \
+#define SLANG_INT_MATRIX_OPS(T) \
+SLANG_MATRIX_BINARY_OP(T, +) \
+SLANG_MATRIX_BINARY_OP(T, -) \
+SLANG_MATRIX_BINARY_OP(T, *) \
+SLANG_MATRIX_BINARY_OP(T, /) \
+SLANG_MATRIX_BINARY_OP(T, &) \
+SLANG_MATRIX_BINARY_OP(T, |) \
 SLANG_MATRIX_BINARY_OP(T, &&) \
 SLANG_MATRIX_BINARY_OP(T, ||) \
-SLANG_MATRIX_BINARY_OP(T, ^)  \
-SLANG_MATRIX_BINARY_OP(T, %)  \
-SLANG_MATRIX_UNARY_OP(T, !)   \
+SLANG_MATRIX_BINARY_OP(T, ^) \
+SLANG_MATRIX_BINARY_OP(T, %) \
+SLANG_MATRIX_UNARY_OP(T, !) \
 SLANG_MATRIX_UNARY_OP(T, ~)
 #define SLANG_FLOAT_MATRIX_OPS(T) \
-SLANG_MATRIX_BINARY_OP(T, +)  \
-SLANG_MATRIX_BINARY_OP(T, -)  \
-SLANG_MATRIX_BINARY_OP(T, *)  \
-SLANG_MATRIX_BINARY_OP(T, /)  \
+SLANG_MATRIX_BINARY_OP(T, +) \
+SLANG_MATRIX_BINARY_OP(T, -) \
+SLANG_MATRIX_BINARY_OP(T, *) \
+SLANG_MATRIX_BINARY_OP(T, /) \
 SLANG_MATRIX_UNARY_OP(T, -)
 SLANG_INT_MATRIX_OPS(int)
 SLANG_INT_MATRIX_OPS(uint)
@@ -830,16 +830,16 @@ SLANG_FLOAT_MATRIX_OPS(double)
 #if SLANG_CUDA_ENABLE_HALF
 SLANG_FLOAT_MATRIX_OPS(__half)
 #endif
-#define SLANG_MATRIX_INT_NEG_OP(T)                                                        \
-template<int R, int C>                                                                \
+#define SLANG_MATRIX_INT_NEG_OP(T) \
+template<int R, int C> \
 SLANG_FORCE_INLINE SLANG_CUDA_CALL Matrix<T, R, C> operator-(Matrix<T, R, C> thisVal) \
-{                                                                                     \
-Matrix<T, R, C> result;                                                           \
-for (int i = 0; i < R; i++)                                                       \
-for (int j = 0; j < C; j++)                                                   \
-*_slang_vector_get_element_ptr(result.rows + i, j) =                      \
-0 - _slang_vector_get_element(thisVal.rows[i], j);                    \
-return result;                                                                    \
+{ \
+Matrix<T, R, C> result; \
+for (int i = 0; i < R; i++) \
+for (int j = 0; j < C; j++) \
+*_slang_vector_get_element_ptr(result.rows + i, j) = \
+0 - _slang_vector_get_element(thisVal.rows[i], j); \
+return result; \
 }
 SLANG_MATRIX_INT_NEG_OP(int)
 SLANG_MATRIX_INT_NEG_OP(uint)
@@ -849,19 +849,19 @@ SLANG_MATRIX_INT_NEG_OP(char)
 SLANG_MATRIX_INT_NEG_OP(uchar)
 SLANG_MATRIX_INT_NEG_OP(longlong)
 SLANG_MATRIX_INT_NEG_OP(ulonglong)
-#define SLANG_FLOAT_MATRIX_MOD(T)                                                 \
-template<int R, int C>                                                        \
-SLANG_FORCE_INLINE SLANG_CUDA_CALL Matrix<T, R, C> operator%(                 \
-Matrix<T, R, C> left,                                                     \
-Matrix<T, R, C> right)                                                    \
-{                                                                             \
-Matrix<T, R, C> result;                                                   \
-for (int i = 0; i < R; i++)                                               \
-for (int j = 0; j < C; j++)                                           \
+#define SLANG_FLOAT_MATRIX_MOD(T) \
+template<int R, int C> \
+SLANG_FORCE_INLINE SLANG_CUDA_CALL Matrix<T, R, C> operator%( \
+Matrix<T, R, C> left, \
+Matrix<T, R, C> right) \
+{ \
+Matrix<T, R, C> result; \
+for (int i = 0; i < R; i++) \
+for (int j = 0; j < C; j++) \
 *_slang_vector_get_element_ptr(result.rows + i, j) = _slang_fmod( \
-_slang_vector_get_element(left.rows[i], j),                   \
-_slang_vector_get_element(right.rows[i], j));                 \
-return result;                                                            \
+_slang_vector_get_element(left.rows[i], j), \
+_slang_vector_get_element(right.rows[i], j)); \
+return result; \
 }
 SLANG_FLOAT_MATRIX_MOD(float)
 SLANG_FLOAT_MATRIX_MOD(double)
@@ -887,22 +887,22 @@ return result;
 #undef SLANG_FLOAT_MATRIX_OPS
 #undef SLANG_MATRIX_INT_NEG_OP
 #undef SLANG_FLOAT_MATRIX_MOD
-#define SLANG_SELECT_IMPL(T, N)                                                                  \
-SLANG_FORCE_INLINE SLANG_CUDA_CALL Vector<T, N> _slang_select(                               \
-bool##N condition,                                                                       \
-Vector<T, N> v0,                                                                         \
-Vector<T, N> v1)                                                                         \
-{                                                                                            \
-Vector<T, N> result;                                                                     \
-for (int i = 0; i < N; i++)                                                              \
-{                                                                                        \
+#define SLANG_SELECT_IMPL(T, N) \
+SLANG_FORCE_INLINE SLANG_CUDA_CALL Vector<T, N> _slang_select( \
+bool##N condition, \
+Vector<T, N> v0, \
+Vector<T, N> v1) \
+{ \
+Vector<T, N> result; \
+for (int i = 0; i < N; i++) \
+{ \
 *_slang_vector_get_element_ptr(&result, i) = _slang_vector_get_element(condition, i) \
-? _slang_vector_get_element(v0, i)  \
+? _slang_vector_get_element(v0, i) \
 : _slang_vector_get_element(v1, i); \
-}                                                                                        \
-return result;                                                                           \
+} \
+return result; \
 }
-#define SLANG_SELECT_T(T)   \
+#define SLANG_SELECT_T(T) \
 SLANG_SELECT_IMPL(T, 2) \
 SLANG_SELECT_IMPL(T, 3) \
 SLANG_SELECT_IMPL(T, 4)
@@ -969,34 +969,34 @@ struct __nv_isurf_trait<__half4>
 typedef void type;
 };
 #define SLANG_DROP_PARENS(...) __VA_ARGS__
-#define SLANG_SURFACE_READ(FUNC_NAME, TYPE_ARGS, ARGS)                                             \
-template<>                                                                                     \
-SLANG_FORCE_INLINE SLANG_CUDA_CALL __half FUNC_NAME<__half>(                                   \
-cudaSurfaceObject_t surfObj,                                                               \
-SLANG_DROP_PARENS TYPE_ARGS,                                                               \
-cudaSurfaceBoundaryMode boundaryMode)                                                      \
-{                                                                                              \
+#define SLANG_SURFACE_READ(FUNC_NAME, TYPE_ARGS, ARGS) \
+template<> \
+SLANG_FORCE_INLINE SLANG_CUDA_CALL __half FUNC_NAME<__half>( \
+cudaSurfaceObject_t surfObj, \
+SLANG_DROP_PARENS TYPE_ARGS, \
+cudaSurfaceBoundaryMode boundaryMode) \
+{ \
 return __ushort_as_half(FUNC_NAME<ushort>(surfObj, SLANG_DROP_PARENS ARGS, boundaryMode)); \
-}                                                                                              \
+} \
 \
-template<>                                                                                     \
-SLANG_FORCE_INLINE SLANG_CUDA_CALL __half2 FUNC_NAME<__half2>(                                 \
-cudaSurfaceObject_t surfObj,                                                               \
-SLANG_DROP_PARENS TYPE_ARGS,                                                               \
-cudaSurfaceBoundaryMode boundaryMode)                                                      \
-{                                                                                              \
-return __ushort_as_half(                                                                   \
-FUNC_NAME<ushort2>(surfObj, SLANG_DROP_PARENS ARGS, boundaryMode));                    \
-}                                                                                              \
+template<> \
+SLANG_FORCE_INLINE SLANG_CUDA_CALL __half2 FUNC_NAME<__half2>( \
+cudaSurfaceObject_t surfObj, \
+SLANG_DROP_PARENS TYPE_ARGS, \
+cudaSurfaceBoundaryMode boundaryMode) \
+{ \
+return __ushort_as_half( \
+FUNC_NAME<ushort2>(surfObj, SLANG_DROP_PARENS ARGS, boundaryMode)); \
+} \
 \
-template<>                                                                                     \
-SLANG_FORCE_INLINE SLANG_CUDA_CALL __half4 FUNC_NAME<__half4>(                                 \
-cudaSurfaceObject_t surfObj,                                                               \
-SLANG_DROP_PARENS TYPE_ARGS,                                                               \
-cudaSurfaceBoundaryMode boundaryMode)                                                      \
-{                                                                                              \
-return __ushort_as_half(                                                                   \
-FUNC_NAME<ushort4>(surfObj, SLANG_DROP_PARENS ARGS, boundaryMode));                    \
+template<> \
+SLANG_FORCE_INLINE SLANG_CUDA_CALL __half4 FUNC_NAME<__half4>( \
+cudaSurfaceObject_t surfObj, \
+SLANG_DROP_PARENS TYPE_ARGS, \
+cudaSurfaceBoundaryMode boundaryMode) \
+{ \
+return __ushort_as_half( \
+FUNC_NAME<ushort4>(surfObj, SLANG_DROP_PARENS ARGS, boundaryMode)); \
 }
 SLANG_SURFACE_READ(surf1Dread, (int x), (x))
 SLANG_SURFACE_READ(surf2Dread, (int x, int y), (x, y))
@@ -1005,34 +1005,34 @@ SLANG_SURFACE_READ(surf1DLayeredread, (int x, int layer), (x, layer))
 SLANG_SURFACE_READ(surf2DLayeredread, (int x, int y, int layer), (x, y, layer))
 SLANG_SURFACE_READ(surfCubemapread, (int x, int y, int face), (x, y, face))
 SLANG_SURFACE_READ(surfCubemapLayeredread, (int x, int y, int layerFace), (x, y, layerFace))
-#define SLANG_SURFACE_WRITE(FUNC_NAME, TYPE_ARGS, ARGS)                                            \
-template<>                                                                                     \
-SLANG_FORCE_INLINE SLANG_CUDA_CALL void FUNC_NAME<__half>(                                     \
-__half data,                                                                               \
-cudaSurfaceObject_t surfObj,                                                               \
-SLANG_DROP_PARENS TYPE_ARGS,                                                               \
-cudaSurfaceBoundaryMode boundaryMode)                                                      \
-{                                                                                              \
-FUNC_NAME<ushort>(__half_as_ushort(data), surfObj, SLANG_DROP_PARENS ARGS, boundaryMode);  \
-}                                                                                              \
+#define SLANG_SURFACE_WRITE(FUNC_NAME, TYPE_ARGS, ARGS) \
+template<> \
+SLANG_FORCE_INLINE SLANG_CUDA_CALL void FUNC_NAME<__half>( \
+__half data, \
+cudaSurfaceObject_t surfObj, \
+SLANG_DROP_PARENS TYPE_ARGS, \
+cudaSurfaceBoundaryMode boundaryMode) \
+{ \
+FUNC_NAME<ushort>(__half_as_ushort(data), surfObj, SLANG_DROP_PARENS ARGS, boundaryMode); \
+} \
 \
-template<>                                                                                     \
-SLANG_FORCE_INLINE SLANG_CUDA_CALL void FUNC_NAME<__half2>(                                    \
-__half2 data,                                                                              \
-cudaSurfaceObject_t surfObj,                                                               \
-SLANG_DROP_PARENS TYPE_ARGS,                                                               \
-cudaSurfaceBoundaryMode boundaryMode)                                                      \
-{                                                                                              \
+template<> \
+SLANG_FORCE_INLINE SLANG_CUDA_CALL void FUNC_NAME<__half2>( \
+__half2 data, \
+cudaSurfaceObject_t surfObj, \
+SLANG_DROP_PARENS TYPE_ARGS, \
+cudaSurfaceBoundaryMode boundaryMode) \
+{ \
 FUNC_NAME<ushort2>(__half_as_ushort(data), surfObj, SLANG_DROP_PARENS ARGS, boundaryMode); \
-}                                                                                              \
+} \
 \
-template<>                                                                                     \
-SLANG_FORCE_INLINE SLANG_CUDA_CALL void FUNC_NAME<__half4>(                                    \
-__half4 data,                                                                              \
-cudaSurfaceObject_t surfObj,                                                               \
-SLANG_DROP_PARENS TYPE_ARGS,                                                               \
-cudaSurfaceBoundaryMode boundaryMode)                                                      \
-{                                                                                              \
+template<> \
+SLANG_FORCE_INLINE SLANG_CUDA_CALL void FUNC_NAME<__half4>( \
+__half4 data, \
+cudaSurfaceObject_t surfObj, \
+SLANG_DROP_PARENS TYPE_ARGS, \
+cudaSurfaceBoundaryMode boundaryMode) \
+{ \
 FUNC_NAME<ushort4>(__half_as_ushort(data), surfObj, SLANG_DROP_PARENS ARGS, boundaryMode); \
 }
 SLANG_SURFACE_WRITE(surf1Dwrite, (int x), (x))
@@ -1042,44 +1042,44 @@ SLANG_SURFACE_WRITE(surf1DLayeredwrite, (int x, int layer), (x, layer))
 SLANG_SURFACE_WRITE(surf2DLayeredwrite, (int x, int y, int layer), (x, y, layer))
 SLANG_SURFACE_WRITE(surfCubemapwrite, (int x, int y, int face), (x, y, face))
 SLANG_SURFACE_WRITE(surfCubemapLayeredwrite, (int x, int y, int layerFace), (x, y, layerFace))
-#define SLANG_SURFACE_READ_HALF_CONVERT(FUNC_NAME, TYPE_ARGS, ARGS)                              \
+#define SLANG_SURFACE_READ_HALF_CONVERT(FUNC_NAME, TYPE_ARGS, ARGS) \
 \
-template<typename T>                                                                         \
-SLANG_FORCE_INLINE SLANG_CUDA_CALL T FUNC_NAME##_convert(                                    \
-cudaSurfaceObject_t surfObj,                                                             \
-SLANG_DROP_PARENS TYPE_ARGS,                                                             \
-cudaSurfaceBoundaryMode boundaryMode);                                                   \
+template<typename T> \
+SLANG_FORCE_INLINE SLANG_CUDA_CALL T FUNC_NAME##_convert( \
+cudaSurfaceObject_t surfObj, \
+SLANG_DROP_PARENS TYPE_ARGS, \
+cudaSurfaceBoundaryMode boundaryMode); \
 \
-template<>                                                                                   \
-SLANG_FORCE_INLINE SLANG_CUDA_CALL float FUNC_NAME##_convert<float>(                         \
-cudaSurfaceObject_t surfObj,                                                             \
-SLANG_DROP_PARENS TYPE_ARGS,                                                             \
-cudaSurfaceBoundaryMode boundaryMode)                                                    \
-{                                                                                            \
-return __ushort_as_half(                                                                 \
-FUNC_NAME<uint16_t>(surfObj, SLANG_DROP_PARENS ARGS, boundaryMode));                 \
-}                                                                                            \
+template<> \
+SLANG_FORCE_INLINE SLANG_CUDA_CALL float FUNC_NAME##_convert<float>( \
+cudaSurfaceObject_t surfObj, \
+SLANG_DROP_PARENS TYPE_ARGS, \
+cudaSurfaceBoundaryMode boundaryMode) \
+{ \
+return __ushort_as_half( \
+FUNC_NAME<uint16_t>(surfObj, SLANG_DROP_PARENS ARGS, boundaryMode)); \
+} \
 \
-template<>                                                                                   \
-SLANG_FORCE_INLINE SLANG_CUDA_CALL float2 FUNC_NAME##_convert<float2>(                       \
-cudaSurfaceObject_t surfObj,                                                             \
-SLANG_DROP_PARENS TYPE_ARGS,                                                             \
-cudaSurfaceBoundaryMode boundaryMode)                                                    \
-{                                                                                            \
-const __half2 v =                                                                        \
+template<> \
+SLANG_FORCE_INLINE SLANG_CUDA_CALL float2 FUNC_NAME##_convert<float2>( \
+cudaSurfaceObject_t surfObj, \
+SLANG_DROP_PARENS TYPE_ARGS, \
+cudaSurfaceBoundaryMode boundaryMode) \
+{ \
+const __half2 v = \
 __ushort_as_half(FUNC_NAME<ushort2>(surfObj, SLANG_DROP_PARENS ARGS, boundaryMode)); \
-return float2{v.x, v.y};                                                                 \
-}                                                                                            \
+return float2{v.x, v.y}; \
+} \
 \
-template<>                                                                                   \
-SLANG_FORCE_INLINE SLANG_CUDA_CALL float4 FUNC_NAME##_convert<float4>(                       \
-cudaSurfaceObject_t surfObj,                                                             \
-SLANG_DROP_PARENS TYPE_ARGS,                                                             \
-cudaSurfaceBoundaryMode boundaryMode)                                                    \
-{                                                                                            \
-const __half4 v =                                                                        \
+template<> \
+SLANG_FORCE_INLINE SLANG_CUDA_CALL float4 FUNC_NAME##_convert<float4>( \
+cudaSurfaceObject_t surfObj, \
+SLANG_DROP_PARENS TYPE_ARGS, \
+cudaSurfaceBoundaryMode boundaryMode) \
+{ \
+const __half4 v = \
 __ushort_as_half(FUNC_NAME<ushort4>(surfObj, SLANG_DROP_PARENS ARGS, boundaryMode)); \
-return float4{v.x, v.y, v.z, v.w};                                                       \
+return float4{v.x, v.y, v.z, v.w}; \
 }
 SLANG_SURFACE_READ_HALF_CONVERT(surf1Dread, (int x), (x))
 SLANG_SURFACE_READ_HALF_CONVERT(surf2Dread, (int x, int y), (x, y))

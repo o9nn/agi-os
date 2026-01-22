@@ -18,7 +18,7 @@ private iodev_proc_fclose(mswin_printer_fclose);
 const gx_io_device gs_iodev_printer = {
 "%printer%", "FileSystem",
 {mswin_printer_init, iodev_no_open_device,
-NULL  , mswin_printer_fopen, mswin_printer_fclose,
+NULL , mswin_printer_fopen, mswin_printer_fclose,
 iodev_no_delete_file, iodev_no_rename_file, iodev_no_file_status,
 iodev_no_enumerate_files, NULL, NULL,
 iodev_no_get_params, iodev_no_put_params

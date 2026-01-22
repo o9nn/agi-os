@@ -9,36 +9,36 @@ int _diskfs_boot_pause;
 extern char **diskfs_argv;
 mach_port_t diskfs_exec_server_task = MACH_PORT_NULL;
 mach_port_t diskfs_kernel_task = MACH_PORT_NULL;
-#define OPT_HOST_PRIV_PORT	(-1)
-#define OPT_DEVICE_MASTER_PORT	(-2)
-#define OPT_EXEC_SERVER_TASK	(-3)
-#define OPT_BOOT_CMDLINE	(-4)
-#define OPT_BOOT_COMMAND	(-5)
-#define OPT_BOOT_INIT_PROGRAM	(-6)
-#define OPT_BOOT_PAUSE		(-7)
-#define OPT_KERNEL_TASK		(-8)
+#define OPT_HOST_PRIV_PORT (-1)
+#define OPT_DEVICE_MASTER_PORT (-2)
+#define OPT_EXEC_SERVER_TASK (-3)
+#define OPT_BOOT_CMDLINE (-4)
+#define OPT_BOOT_COMMAND (-5)
+#define OPT_BOOT_INIT_PROGRAM (-6)
+#define OPT_BOOT_PAUSE (-7)
+#define OPT_KERNEL_TASK (-8)
 static const struct argp_option
 startup_options[] =
 {
-{"directory",		 'C',			 "DIRECTORY", 0,
+{"directory", 'C', "DIRECTORY", 0,
 "Use DIRECTORY as the root of the filesystem"},
-{"virtual-root",	 0, 0, OPTION_ALIAS},
-{"chroot",		 0, 0, OPTION_ALIAS},
+{"virtual-root", 0, 0, OPTION_ALIAS},
+{"chroot", 0, 0, OPTION_ALIAS},
 {0,0,0,0, "Boot options:", -2},
 {"multiboot-command-line", OPT_BOOT_CMDLINE, "ARGS", 0,
 "Required for bootstrap filesystem, the multiboot kernel command line"},
 {"bootflags", 0, 0, OPTION_ALIAS|OPTION_HIDDEN},
-{"boot-init-program",  OPT_BOOT_INIT_PROGRAM,  "FILE", 0,
+{"boot-init-program", OPT_BOOT_INIT_PROGRAM, "FILE", 0,
 "For bootstrap filesystem, init program to run (default " _HURD_STARTUP ")"},
-{"boot-debug-pause",  OPT_BOOT_PAUSE,	         0, 0,
+{"boot-debug-pause", OPT_BOOT_PAUSE, 0, 0,
 "Pause for keystroke before starting bootstrap programs"},
-{"boot-command",	 OPT_BOOT_COMMAND,	 0, 0,
+{"boot-command", OPT_BOOT_COMMAND, 0, 0,
 "Remaining arguments form command line to run"
 " at bootstrap instead of init"},
-{"host-priv-port",     OPT_HOST_PRIV_PORT,     "PORT"},
+{"host-priv-port", OPT_HOST_PRIV_PORT, "PORT"},
 {"device-master-port", OPT_DEVICE_MASTER_PORT, "PORT"},
-{"exec-server-task",   OPT_EXEC_SERVER_TASK,   "PORT"},
-{"kernel-task",        OPT_KERNEL_TASK,        "PORT"},
+{"exec-server-task", OPT_EXEC_SERVER_TASK, "PORT"},
+{"kernel-task", OPT_KERNEL_TASK, "PORT"},
 {0}
 };
 static error_t
@@ -54,7 +54,7 @@ TOGGLE (_diskfs_nosuid, 'S', OPT_SUID_OK);
 TOGGLE (_diskfs_noexec, 'E', OPT_EXEC_OK);
 TOGGLE (_diskfs_no_inherit_dir_group, OPT_NO_INHERIT_DIR_GROUP,
 OPT_INHERIT_DIR_GROUP);
-#undef	TOGGLE
+#undef TOGGLE
 case 'A':
 _diskfs_noatime = 1;
 break;

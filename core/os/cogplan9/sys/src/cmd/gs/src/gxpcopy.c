@@ -62,9 +62,9 @@ fixed ex, ey, flat_x, flat_y;
 #define SET_EXTENT(r, c0, c1, c2, c3)\
 BEGIN\
 if (c0 < c1) min01 = c0, max01 = c1;\
-else         min01 = c1, max01 = c0;\
+else min01 = c1, max01 = c0;\
 if (c2 < c3) min23 = c2, max23 = c3;\
-else         min23 = c3, max23 = c2;\
+else min23 = c3, max23 = c2;\
 r = max(max01, max23) - min(min01, min23);\
 END
 SET_EXTENT(ex, x0, pc->p1.x, pc->p2.x, pc->pt.x);
@@ -470,7 +470,7 @@ sp1->prev = 0;
 sp1last->next = 0;
 if (sp1last->type == s_line_close)
 sp1last->type = s_line;
-{   segment *old_first = sp1->next;
+{ segment *old_first = sp1->next;
 sp1last->next = old_first;
 old_first->prev = sp1last;
 sp1last = sc1->prev;

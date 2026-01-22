@@ -8,9 +8,9 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <sys/time.h>
-#define DTESN_NEURO_HAL_VERSION_MAJOR    1
-#define DTESN_NEURO_HAL_VERSION_MINOR    0
-#define DTESN_NEURO_HAL_VERSION_PATCH    0
+#define DTESN_NEURO_HAL_VERSION_MAJOR 1
+#define DTESN_NEURO_HAL_VERSION_MINOR 0
+#define DTESN_NEURO_HAL_VERSION_PATCH 0
 static struct {
 bool initialized;
 uint32_t num_devices;
@@ -587,13 +587,13 @@ return event;
 }
 const char *neuro_device_type_name(dtesn_neuro_device_type_t type) {
 switch (type) {
-case DTESN_NEURO_DEVICE_LOIHI:      return "Intel Loihi";
-case DTESN_NEURO_DEVICE_SPINNAKER:  return "SpiNNaker";
-case DTESN_NEURO_DEVICE_AKIDA:      return "BrainChip Akida";
-case DTESN_NEURO_DEVICE_DYNAP:      return "SynSense DYNAP";
-case DTESN_NEURO_DEVICE_TRUENORTH:  return "IBM TrueNorth";
-case DTESN_NEURO_DEVICE_GENERIC:    return "Generic Neuromorphic";
-default:                            return "Unknown";
+case DTESN_NEURO_DEVICE_LOIHI: return "Intel Loihi";
+case DTESN_NEURO_DEVICE_SPINNAKER: return "SpiNNaker";
+case DTESN_NEURO_DEVICE_AKIDA: return "BrainChip Akida";
+case DTESN_NEURO_DEVICE_DYNAP: return "SynSense DYNAP";
+case DTESN_NEURO_DEVICE_TRUENORTH: return "IBM TrueNorth";
+case DTESN_NEURO_DEVICE_GENERIC: return "Generic Neuromorphic";
+default: return "Unknown";
 }
 }
 void neuro_hal_get_version(uint32_t *major, uint32_t *minor, uint32_t *patch) {

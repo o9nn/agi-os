@@ -28,10 +28,10 @@ echo "Estimated time: 2-4 hours on A100 (vs 34+ hours on standard hardware)"
 echo "Build steps: 347 total"
 start_time=$(date +%s)
 timeout 14400 pip install -e . --timeout 7200 --verbose 2>&1 | tee build.log || {
-    echo "❌ Build failed or timed out after 4 hours"
-    echo "📊 Partial build statistics:"
-    grep -i "step\|progress\|%" build.log | tail -10 || true
-    exit 1
+echo "❌ Build failed or timed out after 4 hours"
+echo "📊 Partial build statistics:"
+grep -i "step\|progress\|%" build.log | tail -10 || true
+exit 1
 }
 end_time=$(date +%s)
 build_duration=$((end_time - start_time))
@@ -42,13 +42,13 @@ echo "⏱️ Total build time: ${build_hours}h ${build_minutes}m"
 echo "🚀 Ready for Deep Tree Echo integration testing"
 echo "🔍 Verifying installation..."
 python -c "import aphrodite; print(f'Aphrodite version: {aphrodite.__version__}')" || {
-    echo "⚠️ Installation verification failed"
-    exit 1
+echo "⚠️ Installation verification failed"
+exit 1
 }
 echo "🧪 Running smoke tests..."
 python -c "from aphrodite import LLM, SamplingParams; print('Core imports successful')" || {
-    echo "⚠️ Core imports failed"
-    exit 1
+echo "⚠️ Core imports failed"
+exit 1
 }
 echo "🎉 Lightning Studios A100 build complete and verified!"
 echo "💡 Build performance: ~${build_hours}h ${build_minutes}m (vs 34+ hours on standard hardware)"

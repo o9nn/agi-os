@@ -11,22 +11,22 @@ const OEIS_A000081 = [1, 1, 2, 4, 9, 20, 48, 115, 286, 719, 1842, 4766, 12486, 3
 const TENSOR_SIGNATURES = Dict(
 # Rooted trees computation (installed package knowledge)
 "rooted_trees" => Dict(
-"shape" => (20, 7, 11, 5, 3),  # 25,410 elements
+"shape" => (20, 7, 11, 5, 3), # 25,410 elements
 "semantic_dimensions" => [
-"n_vertices",      # 20 vertices maximum for direct computation
-"tree_structure",  # 7 structural categories
+"n_vertices", # 20 vertices maximum for direct computation
+"tree_structure", # 7 structural categories
 "enumeration_depth", # 11 levels of enumeration
 "mathematical_context", # 5 contexts (pure, applied, combinatorial, algebraic, computational)
-"oeis_alignment"   # 3 alignment levels with OEIS A000081
+"oeis_alignment" # 3 alignment levels with OEIS A000081
 ],
 "status" => "installed",
 "computational_method" => "direct_oeis_lookup"
 ),
 # Combinatorics package knowledge (installed)
 "combinatorics" => Dict(
-"shape" => (23, 13, 7, 5, 2),  # 21,385 elements
+"shape" => (23, 13, 7, 5, 2), # 21,385 elements
 "semantic_dimensions" => [
-"function_type",   # 23 combinatorial functions
+"function_type", # 23 combinatorial functions
 "parameter_space", # 13 parameter combinations
 "complexity_level", # 7 complexity levels
 "application_domain", # 5 domains (pure, applied, etc.)
@@ -37,13 +37,13 @@ const TENSOR_SIGNATURES = Dict(
 ),
 # B-Series package (needs learning)
 "bseries" => Dict(
-"shape" => (17, 11, 7, 5, 3),  # 19,635 elements
+"shape" => (17, 11, 7, 5, 3), # 19,635 elements
 "semantic_dimensions" => [
-"tree_order",      # 17 B-series tree orders
+"tree_order", # 17 B-series tree orders
 "coefficient_type", # 11 coefficient types
 "integration_method", # 7 integration methods
 "application_area", # 5 areas (ODE, PDE, etc.)
-"learning_status"  # 3 (unknown, learning, mastered)
+"learning_status" # 3 (unknown, learning, mastered)
 ],
 "status" => "needs_learning",
 "priority" => 4,
@@ -51,12 +51,12 @@ const TENSOR_SIGNATURES = Dict(
 ),
 # Reservoir Computing (needs learning)
 "reservoir_computing" => Dict(
-"shape" => (19, 17, 11, 7, 3),  # 76,153 elements
+"shape" => (19, 17, 11, 7, 3), # 76,153 elements
 "semantic_dimensions" => [
-"reservoir_size",   # 19 reservoir configurations
+"reservoir_size", # 19 reservoir configurations
 "connectivity_pattern", # 17 connection patterns
 "activation_function", # 11 activation types
-"time_dynamics",   # 7 temporal patterns
+"time_dynamics", # 7 temporal patterns
 "echo_state_property" # 3 ESP levels
 ],
 "status" => "needs_learning",
@@ -65,11 +65,11 @@ const TENSOR_SIGNATURES = Dict(
 ),
 # P-Systems (needs learning)
 "p_systems" => Dict(
-"shape" => (29, 13, 11, 7, 5),  # 145,145 elements
+"shape" => (29, 13, 11, 7, 5), # 145,145 elements
 "semantic_dimensions" => [
 "membrane_structure", # 29 membrane configurations
-"rule_type",        # 13 P-system rule types
-"evolution_steps",  # 11 evolution step patterns
+"rule_type", # 13 P-system rule types
+"evolution_steps", # 11 evolution step patterns
 "computational_mode", # 7 computation modes
 "biological_analogy" # 5 biological inspiration levels
 ],

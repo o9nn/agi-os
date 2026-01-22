@@ -68,11 +68,11 @@ void load_transfer_map(gs_state *, gx_transfer_map *, floatp);
 int
 gs_setgray(gs_state * pgs, floatp gray)
 {
-gs_color_space      cs;
-int                 code;
+gs_color_space cs;
+int code;
 gs_cspace_init_DeviceGray(pgs->memory, &cs);
 if ((code = gs_setcolorspace(pgs, &cs)) >= 0) {
-gs_client_color *   pcc = pgs->ccolor;
+gs_client_color * pcc = pgs->ccolor;
 cs_adjust_color_count(pgs, -1);
 pcc->paint.values[0] = FORCE_UNIT(gray);
 pcc->pattern = 0;
@@ -83,11 +83,11 @@ return code;
 int
 gs_setrgbcolor(gs_state * pgs, floatp r, floatp g, floatp b)
 {
-gs_color_space      cs;
-int                 code;
+gs_color_space cs;
+int code;
 gs_cspace_init_DeviceRGB(pgs->memory, &cs);
 if ((code = gs_setcolorspace(pgs, &cs)) >= 0) {
-gs_client_color *    pcc = pgs->ccolor;
+gs_client_color * pcc = pgs->ccolor;
 cs_adjust_color_count(pgs, -1);
 pcc->paint.values[0] = FORCE_UNIT(r);
 pcc->paint.values[1] = FORCE_UNIT(g);
@@ -147,7 +147,7 @@ return pgs->set_transfer.gray->proc;
 void
 gx_set_device_color_1(gs_state * pgs)
 {
-gs_color_space  cs;
+gs_color_space cs;
 gs_setoverprint(pgs, false);
 gs_setoverprintmode(pgs, 0);
 gs_cspace_init_DeviceGray(pgs->memory, &cs);

@@ -11,7 +11,7 @@ Represents a membrane in a P-System.
 # Skin membrane (no parent)
 skin = Membrane(1, 1, nothing)
 # Nested membrane
-inner = Membrane(2, 2, 1)  # Inside membrane 1
+inner = Membrane(2, 2, 1) # Inside membrane 1
 ```
 """
 mutable struct Membrane

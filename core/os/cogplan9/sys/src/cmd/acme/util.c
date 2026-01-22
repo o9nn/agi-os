@@ -10,8 +10,8 @@
 #include <plumb.h>
 #include "dat.h"
 #include "fns.h"
-static	Point		prevmouse;
-static	Window	*mousew;
+static Point prevmouse;
+static Window *mousew;
 void
 cvttorunes(char *p, int n, Rune *r, int *nb, int *nr, int *nulls)
 {

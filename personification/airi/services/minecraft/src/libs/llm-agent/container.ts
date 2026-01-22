@@ -6,51 +6,51 @@ import { ActionAgentImpl } from '../../agents/action'
 import { ChatAgentImpl } from '../../agents/chat'
 import { PlanningAgentImpl } from '../../agents/planning'
 export interface ContainerServices {
-  logger: Logg
-  actionAgent: ActionAgentImpl
-  planningAgent: PlanningAgentImpl
-  chatAgent: ChatAgentImpl
-  neuri: Neuri
+logger: Logg
+actionAgent: ActionAgentImpl
+planningAgent: PlanningAgentImpl
+chatAgent: ChatAgentImpl
+neuri: Neuri
 }
 export function createAgentContainer(options: {
-  neuri: Neuri
-  model?: string
+neuri: Neuri
+model?: string
 }) {
-  const container = createContainer<ContainerServices>({
-    injectionMode: InjectionMode.PROXY,
-    strict: true,
-  })
-  container.register({
-    logger: asFunction(() => useLogg('agent').useGlobalConfig()).singleton(),
-    neuri: asFunction(() => options.neuri).singleton(),
-    actionAgent: asClass(ActionAgentImpl)
-      .singleton()
-      .inject(() => ({
-        id: 'action',
-        type: 'action' as const,
-      })),
-    planningAgent: asClass(PlanningAgentImpl)
-      .singleton()
-      .inject(() => ({
-        id: 'planning',
-        type: 'planning' as const,
-        llm: {
-          agent: options.neuri,
-          model: options.model,
-        },
-      })),
-    chatAgent: asClass(ChatAgentImpl)
-      .singleton()
-      .inject(() => ({
-        id: 'chat',
-        type: 'chat' as const,
-        llm: {
-          agent: options.neuri,
-          model: options.model,
-        },
-        maxHistoryLength: 50,
-        idleTimeout: 5 * 60 * 1000, 
-      })),
-  })
-  return container
+const container = createContainer<ContainerServices>({
+injectionMode: InjectionMode.PROXY,
+strict: true,
+})
+container.register({
+logger: asFunction(() => useLogg('agent').useGlobalConfig()).singleton(),
+neuri: asFunction(() => options.neuri).singleton(),
+actionAgent: asClass(ActionAgentImpl)
+.singleton()
+.inject(() => ({
+id: 'action',
+type: 'action' as const,
+})),
+planningAgent: asClass(PlanningAgentImpl)
+.singleton()
+.inject(() => ({
+id: 'planning',
+type: 'planning' as const,
+llm: {
+agent: options.neuri,
+model: options.model,
+},
+})),
+chatAgent: asClass(ChatAgentImpl)
+.singleton()
+.inject(() => ({
+id: 'chat',
+type: 'chat' as const,
+llm: {
+agent: options.neuri,
+model: options.model,
+},
+maxHistoryLength: 50,
+idleTimeout: 5 * 60 * 1000,
+})),
+})
+return container
 }

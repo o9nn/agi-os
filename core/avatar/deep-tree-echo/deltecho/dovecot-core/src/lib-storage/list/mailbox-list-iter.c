@@ -9,9 +9,9 @@
 #include "mailbox-list-private.h"
 #include "mailbox-list-iter-private.h"
 enum autocreate_match_result {
-AUTOCREATE_MATCH_RESULT_YES		= 0x01,
-AUTOCREATE_MATCH_RESULT_CHILDREN	= 0x02,
-AUTOCREATE_MATCH_RESULT_PARENT		= 0x04
+AUTOCREATE_MATCH_RESULT_YES = 0x01,
+AUTOCREATE_MATCH_RESULT_CHILDREN = 0x02,
+AUTOCREATE_MATCH_RESULT_PARENT = 0x04
 };
 struct ns_list_iterate_context {
 struct mailbox_list_iterate_context ctx;

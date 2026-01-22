@@ -3,17 +3,17 @@
 #include "interp.h"
 #include "raise.h"
 #include "pool.h"
-#define OP(fn)	void fn(void)
-#define B(r)	*((BYTE*)(R.r))
-#define W(r)	*((WORD*)(R.r))
-#define F(r)	*((REAL*)(R.r))
-#define V(r)	*((LONG*)(R.r))
-#define	S(r)	*((String**)(R.r))
-#define	A(r)	*((Array**)(R.r))
-#define	L(r)	*((List**)(R.r))
-#define P(r)	*((WORD**)(R.r))
-#define C(r)	*((Channel**)(R.r))
-#define T(r)	*((void**)(R.r))
+#define OP(fn) void fn(void)
+#define B(r) *((BYTE*)(R.r))
+#define W(r) *((WORD*)(R.r))
+#define F(r) *((REAL*)(R.r))
+#define V(r) *((LONG*)(R.r))
+#define S(r) *((String**)(R.r))
+#define A(r) *((Array**)(R.r))
+#define L(r) *((List**)(R.r))
+#define P(r) *((WORD**)(R.r))
+#define C(r) *((Channel**)(R.r))
+#define T(r) *((void**)(R.r))
 OP(indc)
 {
 int l;
@@ -26,7 +26,7 @@ error(exNilref);
 l = ss->len;
 if(l < 0) {
 if(v >= -l)
-e:			error(exBounds);
+e: error(exBounds);
 l = ss->Srune[v];
 }
 else {
@@ -241,7 +241,7 @@ p += runetochar(p, r++);
 goto r;
 }
 a = mem2array(ss->Sascii, ss->len);
-r:	ap = R.d;
+r: ap = R.d;
 destroy(*ap);
 *ap = a;
 }
@@ -515,7 +515,7 @@ n--;
 break;
 }
 return n1 - n2;
-ne:	if(c1 < c2)
+ne: if(c1 < c2)
 return -1;
 return 1;
 }

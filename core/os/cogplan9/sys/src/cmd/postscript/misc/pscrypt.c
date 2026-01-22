@@ -1,31 +1,31 @@
 #include <stdio.h>
 #include <ctype.h>
-#define ENCRYPT		0
-#define DECRYPT		1
-#define NOTSET		-1
-#define BINARY		0
-#define HEX		1
-#define LINELENGTH	40
-#define CHARSTRING	4330
-#define EEXEC		55665
-#define MAGIC1		52845
-#define MAGIC2		22719
-int	argc;
-char	**argv;
-int	mode = DECRYPT;
-int	input = NOTSET;
-int	output = NOTSET;
-int	outoffset = NOTSET;
-int	inoffset = NOTSET;
-int	cryptkey = 0;
-int	linelength = LINELENGTH;
-int	lastchar = 0;
-unsigned long	seed = EEXEC;
-unsigned long	key;
-FILE	*fp_in = stdin;
+#define ENCRYPT 0
+#define DECRYPT 1
+#define NOTSET -1
+#define BINARY 0
+#define HEX 1
+#define LINELENGTH 40
+#define CHARSTRING 4330
+#define EEXEC 55665
+#define MAGIC1 52845
+#define MAGIC2 22719
+int argc;
+char **argv;
+int mode = DECRYPT;
+int input = NOTSET;
+int output = NOTSET;
+int outoffset = NOTSET;
+int inoffset = NOTSET;
+int cryptkey = 0;
+int linelength = LINELENGTH;
+int lastchar = 0;
+unsigned long seed = EEXEC;
+unsigned long key;
+FILE *fp_in = stdin;
 main(agc, agv)
-int		agc;
-char	*agv[];
+int agc;
+char *agv[];
 {
 argc = agc;
 argv = agv;
@@ -36,10 +36,10 @@ exit(0);
 }
 options()
 {
-int		ch;
-char	*names = "bde:l:os:xBSX";
-extern char	*optarg;
-extern int	optind;
+int ch;
+char *names = "bde:l:os:xBSX";
+extern char *optarg;
+extern int optind;
 while ( (ch = getopt(argc, argv, names)) != EOF )
 switch ( ch ) {
 case 'b':
@@ -130,8 +130,8 @@ argv++;
 }
 crypt()
 {
-unsigned int	cypher;
-unsigned int	clear;
+unsigned int cypher;
+unsigned int clear;
 while ( lastchar != EOF ) {
 cypher = nextbyte();
 clear = ((key >> 8) ^ cypher) & 0xFF;
@@ -147,7 +147,7 @@ putchar('\n');
 }
 nextbyte()
 {
-int		val = EOF;
+int val = EOF;
 if ( inoffset-- > 0 )
 val = (cryptkey >> (inoffset*8)) & 0xFF;
 else if ( input == HEX ) {
@@ -159,7 +159,7 @@ return(val);
 }
 nexthexchar()
 {
-int		ch;
+int ch;
 while ( (ch = Getc(fp_in)) != EOF && ! isxdigit(ch) ) ;
 if ( isdigit(ch) )
 ch -= '0';
@@ -170,7 +170,7 @@ ch -= 'a' - 10;
 return(ch);
 }
 Getc(fp)
-FILE	*fp;
+FILE *fp;
 {
 return(lastchar = getc(fp));
 }

@@ -419,7 +419,7 @@ return ("ERROR");
 else
 return (sk_OPENSSL_STRING_value(app_locks, type - CRYPTO_NUM_LOCKS));
 }
-#if     defined(__i386)   || defined(__i386__)   || defined(_M_IX86) || \
+#if defined(__i386) || defined(__i386__) || defined(_M_IX86) || \
 defined(__INTEL__) || \
 defined(__x86_64) || defined(__x86_64__) || \
 defined(_M_AMD64) || defined(_M_X64)
@@ -431,12 +431,12 @@ OPENSSL_ia32cap_P[1] = 0;
 return (unsigned long *)OPENSSL_ia32cap_P;
 }
 # if defined(OPENSSL_CPUID_OBJ) && !defined(OPENSSL_NO_ASM) && !defined(I386_ONLY)
-#  define OPENSSL_CPUID_SETUP
-#  if defined(_WIN32)
+# define OPENSSL_CPUID_SETUP
+# if defined(_WIN32)
 typedef unsigned __int64 IA32CAP;
-#  else
+# else
 typedef unsigned long long IA32CAP;
-#  endif
+# endif
 void OPENSSL_cpuid_setup(void)
 {
 static int trigger = 0;
@@ -448,13 +448,13 @@ return;
 trigger = 1;
 if ((env = getenv("OPENSSL_ia32cap"))) {
 int off = (env[0] == '~') ? 1 : 0;
-#  if defined(_WIN32)
+# if defined(_WIN32)
 if (!sscanf(env + off, "%I64i", &vec))
 vec = strtoul(env + off, NULL, 0);
-#  else
+# else
 if (!sscanf(env + off, "%lli", (long long *)&vec))
 vec = strtoul(env + off, NULL, 0);
-#  endif
+# endif
 if (off)
 vec = OPENSSL_ia32_cpuid() & ~vec;
 } else
@@ -477,7 +477,7 @@ void OPENSSL_cpuid_setup(void)
 #endif
 #if (defined(_WIN32) || defined(__CYGWIN__)) && defined(_WINDLL)
 # ifdef __CYGWIN__
-#  include <windows.h>
+# include <windows.h>
 # endif
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 {
@@ -513,14 +513,14 @@ return (TRUE);
 # include <tchar.h>
 # include <signal.h>
 # ifdef __WATCOMC__
-#  if defined(_UNICODE) || defined(__UNICODE__)
-#   define _vsntprintf _vsnwprintf
-#  else
-#   define _vsntprintf _vsnprintf
-#  endif
+# if defined(_UNICODE) || defined(__UNICODE__)
+# define _vsntprintf _vsnwprintf
+# else
+# define _vsntprintf _vsnprintf
+# endif
 # endif
 # ifdef _MSC_VER
-#  define alloca _alloca
+# define alloca _alloca
 # endif
 # if defined(_WIN32_WINNT) && _WIN32_WINNT>=0x0333
 int OPENSSL_isservice(void)
@@ -557,13 +557,13 @@ if (!GetUserObjectInformationW(h, UOI_NAME, name, len, &len))
 return -1;
 len++, len &= ~1;
 name[len / sizeof(WCHAR)] = L'\0';
-#  if 1
+# if 1
 if (wcsstr(name, L"Service-0x"))
 return 1;
-#  else
+# else
 if (!wcsstr(name, L"WinSta0"))
 return 1;
-#  endif
+# endif
 else
 return 0;
 }

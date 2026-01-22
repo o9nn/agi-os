@@ -10,28 +10,28 @@
 #include <X11/Xutil.h>
 #include <X11/keysym.h>
 #define ABS(x) ((x) < 0 ? -(x) : (x))
-typedef struct ICursor		ICursor;
-typedef struct IPoint		IPoint;
-typedef struct IRectangle	IRectangle;
-typedef struct CRemapTbl	CRemapTbl;
+typedef struct ICursor ICursor;
+typedef struct IPoint IPoint;
+typedef struct IRectangle IRectangle;
+typedef struct CRemapTbl CRemapTbl;
 struct ICursor
 {
-int	w;
-int	h;
-int	hotx;
-int	hoty;
-char	*src;
-char	*mask;
+int w;
+int h;
+int hotx;
+int hoty;
+char *src;
+char *mask;
 };
 struct IPoint
 {
-int	x;
-int	y;
+int x;
+int y;
 };
 struct IRectangle
 {
-IPoint	min;
-IPoint	max;
+IPoint min;
+IPoint max;
 };
 struct CRemapTbl
 {
@@ -43,37 +43,37 @@ int opencnt;
 };
 enum
 {
-DblTime	= 300
+DblTime = 300
 };
-XColor			map[256];
-XColor			map7[128];
-uchar			map7to8[128][2];
-Colormap		xcmap;
-int 			infernotox11[256];
-int 			x11toinferno[256];
-int				x24bitswap = 0;
-static	int		triedscreen;
-static	XModifierKeymap *modmap;
-static	int		keypermod;
-static	Drawable	xdrawable;
-static	Atom		wm_take_focus;
-static	void		xexpose(XEvent*);
-static	void		xmouse(XEvent*);
-static	void		xkeyboard(XEvent*);
-static	void		xmapping(XEvent*);
-static	void		xproc(void*);
-static	void		xinitscreen(int, int);
-static	void		initmap(Window);
-static	GC		creategc(Drawable);
-static 	CRemapTbl	crtbl;
-static	void		graphicscmap(XColor*);
-int		xscreendepth;
-Drawable	xscreenid;
-Display*	xdisplay;
-Display*	xkmcon;
-Visual		*xvis;
-GC		xgcfill, xgccopy, xgcsimplesrc, xgczero, xgcreplsrc;
-GC		xgcfill0, xgccopy0, xgcsimplesrc0, xgczero0, xgcreplsrc0;
+XColor map[256];
+XColor map7[128];
+uchar map7to8[128][2];
+Colormap xcmap;
+int infernotox11[256];
+int x11toinferno[256];
+int x24bitswap = 0;
+static int triedscreen;
+static XModifierKeymap *modmap;
+static int keypermod;
+static Drawable xdrawable;
+static Atom wm_take_focus;
+static void xexpose(XEvent*);
+static void xmouse(XEvent*);
+static void xkeyboard(XEvent*);
+static void xmapping(XEvent*);
+static void xproc(void*);
+static void xinitscreen(int, int);
+static void initmap(Window);
+static GC creategc(Drawable);
+static CRemapTbl crtbl;
+static void graphicscmap(XColor*);
+int xscreendepth;
+Drawable xscreenid;
+Display* xdisplay;
+Display* xkmcon;
+Visual *xvis;
+GC xgcfill, xgccopy, xgcsimplesrc, xgczero, xgcreplsrc;
+GC xgcfill0, xgccopy0, xgcsimplesrc0, xgczero0, xgcreplsrc0;
 char *gkscanid = "emu_x11";
 ulong*
 attachscreen(IRectangle *r, int *ld, int *width, int *softscreen)
@@ -213,7 +213,7 @@ closepgrp(up->env->pgrp);
 closefgrp(up->env->fgrp);
 closeegrp(up->env->egrp);
 closesigs(up->env->sigs);
-mask = 	KeyPressMask|
+mask = KeyPressMask|
 KeyReleaseMask|
 ButtonPressMask|
 ButtonReleaseMask|
@@ -447,7 +447,7 @@ if(!XAllocColor(xdisplay, xcmap, &c)) {
 fprint(2, "emu: win-x11 can't alloc color\n");
 cleanexit(0);
 }
-p  = c.pixel;
+p = c.pixel;
 pp = rgb2cmap((p>>16)&0xff,(p>>8)&0xff,p&0xff);
 if(!color_order_init && (pp!=map[i].pixel)) {
 pp = rgb2cmap(p&0xff,(p>>8)&0xff,(p>>16)&0xff);

@@ -18,10 +18,10 @@ static int dump_record(const uint8_t **p, const uint8_t *end, uint32_t *uid)
 {
 uint32_t uid_diff, n, i, count, crc32, idx;
 size_t size;
-if (mail_index_unpack_num(p, end, &uid_diff) <  0)
+if (mail_index_unpack_num(p, end, &uid_diff) < 0)
 return -1;
 *uid += uid_diff;
-if (mail_index_unpack_num(p, end, &n) <  0)
+if (mail_index_unpack_num(p, end, &n) < 0)
 return -1;
 printf(" - uid %u: n=%u\n", *uid, n);
 count = n < 2 ? n + 1 : n;

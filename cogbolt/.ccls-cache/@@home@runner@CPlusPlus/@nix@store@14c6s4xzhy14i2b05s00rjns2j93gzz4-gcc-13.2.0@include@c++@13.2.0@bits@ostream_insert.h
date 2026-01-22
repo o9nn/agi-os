@@ -12,8 +12,8 @@ inline void
 __ostream_write(basic_ostream<_CharT, _Traits>& __out,
 const _CharT* __s, streamsize __n)
 {
-typedef basic_ostream<_CharT, _Traits>       __ostream_type;
-typedef typename __ostream_type::ios_base    __ios_base;
+typedef basic_ostream<_CharT, _Traits> __ostream_type;
+typedef typename __ostream_type::ios_base __ios_base;
 const streamsize __put = __out.rdbuf()->sputn(__s, __n);
 if (__put != __n)
 __out.setstate(__ios_base::badbit);
@@ -22,8 +22,8 @@ template<typename _CharT, typename _Traits>
 inline void
 __ostream_fill(basic_ostream<_CharT, _Traits>& __out, streamsize __n)
 {
-typedef basic_ostream<_CharT, _Traits>       __ostream_type;
-typedef typename __ostream_type::ios_base    __ios_base;
+typedef basic_ostream<_CharT, _Traits> __ostream_type;
+typedef typename __ostream_type::ios_base __ios_base;
 const _CharT __c = __out.fill();
 for (; __n > 0; --__n)
 {
@@ -40,8 +40,8 @@ basic_ostream<_CharT, _Traits>&
 __ostream_insert(basic_ostream<_CharT, _Traits>& __out,
 const _CharT* __s, streamsize __n)
 {
-typedef basic_ostream<_CharT, _Traits>       __ostream_type;
-typedef typename __ostream_type::ios_base    __ios_base;
+typedef basic_ostream<_CharT, _Traits> __ostream_type;
+typedef typename __ostream_type::ios_base __ios_base;
 typename __ostream_type::sentry __cerb(__out);
 if (__cerb)
 {

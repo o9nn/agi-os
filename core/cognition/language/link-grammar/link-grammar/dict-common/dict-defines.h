@@ -1,10 +1,10 @@
 #ifndef _DICT_DEFINES_H_
 #define _DICT_DEFINES_H_
-#define LEFT_WALL_WORD   "LEFT-WALL"
-#define RIGHT_WALL_WORD  "RIGHT-WALL"
-#define UNKNOWN_WORD     "<UNKNOWN-WORD>"
-#define WILDCARD_WORD    "\\*"
+#define LEFT_WALL_WORD "LEFT-WALL"
+#define RIGHT_WALL_WORD "RIGHT-WALL"
+#define UNKNOWN_WORD "<UNKNOWN-WORD>"
+#define WILDCARD_WORD "\\*"
 #define MAX_WORD 1024
-#define SUBSCRIPT_MARK   '\3'
-#define SUBSCRIPT_DOT    '.'
+#define SUBSCRIPT_MARK '\3'
+#define SUBSCRIPT_DOT '.'
 #endif

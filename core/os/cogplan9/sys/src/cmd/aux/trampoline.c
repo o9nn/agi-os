@@ -5,23 +5,23 @@
 #include <fcall.h>
 enum
 {
-Maxpath=	128,
+Maxpath= 128,
 };
 typedef struct Endpoints Endpoints;
 struct Endpoints
 {
-char 	*net;
-char	*lsys;
-char	*lserv;
-char	*rsys;
-char	*rserv;
+char *net;
+char *lsys;
+char *lserv;
+char *rsys;
+char *rserv;
 };
-void		xfer(int, int);
-void		xfer9p(int, int);
-Endpoints*	getendpoints(char*);
-void		freeendpoints(Endpoints*);
-char*		iptomac(char*, char*);
-int		macok(char*);
+void xfer(int, int);
+void xfer9p(int, int);
+Endpoints* getendpoints(char*);
+void freeendpoints(Endpoints*);
+char* iptomac(char*, char*);
+int macok(char*);
 void
 usage(void)
 {

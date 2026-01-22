@@ -36,20 +36,20 @@ template<typename _Value>
 const bool __numeric_traits_integer<_Value>::__is_signed;
 template<typename _Value>
 const int __numeric_traits_integer<_Value>::__digits;
-#define _GLIBCXX_INT_N_TRAITS(T, WIDTH)			\
-__extension__						\
-template<> struct __is_integer_nonstrict<T>		\
-{							\
-enum { __value = 1 };				\
-typedef std::__true_type __type;			\
-enum { __width = WIDTH };				\
-};							\
-__extension__						\
-template<> struct __is_integer_nonstrict<unsigned T>	\
-{							\
-enum { __value = 1 };				\
-typedef std::__true_type __type;			\
-enum { __width = WIDTH };				\
+#define _GLIBCXX_INT_N_TRAITS(T, WIDTH) \
+__extension__ \
+template<> struct __is_integer_nonstrict<T> \
+{ \
+enum { __value = 1 }; \
+typedef std::__true_type __type; \
+enum { __width = WIDTH }; \
+}; \
+__extension__ \
+template<> struct __is_integer_nonstrict<unsigned T> \
+{ \
+enum { __value = 1 }; \
+typedef std::__true_type __type; \
+enum { __width = WIDTH }; \
 };
 #if defined __GLIBCXX_TYPE_INT_N_0 && __GLIBCXX_BITSIZE_INT_N_0 % __CHAR_BIT__
 _GLIBCXX_INT_N_TRAITS(__GLIBCXX_TYPE_INT_N_0, __GLIBCXX_BITSIZE_INT_N_0)

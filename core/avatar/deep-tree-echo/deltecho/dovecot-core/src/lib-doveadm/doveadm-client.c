@@ -565,7 +565,7 @@ struct doveadm_client *conn = ctx->conn;
 timeout_remove(&conn->to_create_failed);
 struct doveadm_server_reply reply = {
 .exit_code = EX_DATAERR,
-.error  = ctx->error,
+.error = ctx->error,
 };
 doveadm_client_callback(conn, &reply);
 pool_unref(&conn->pool);

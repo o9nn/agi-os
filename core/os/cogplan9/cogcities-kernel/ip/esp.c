@@ -1,14 +1,14 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"ip.h"
-#include	"ipv6.h"
-#include	"libsec.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "ip.h"
+#include "ipv6.h"
+#include "libsec.h"
 #define BITS2BYTES(bi) (((bi) + BI2BY - 1) / BI2BY)
-#define BYTES2BITS(by)  ((by) * BI2BY)
+#define BYTES2BITS(by) ((by) * BI2BY)
 typedef struct Algorithm Algorithm;
 typedef struct Esp4hdr Esp4hdr;
 typedef struct Esp6hdr Esp6hdr;
@@ -20,34 +20,34 @@ typedef struct Userhdr Userhdr;
 enum {
 Encrypt,
 Decrypt,
-IP_ESPPROTO	= 50,
-Esp4hdrlen	= IP4HDR + 8,
-Esp6hdrlen	= IP6HDR + 8,
-Esptaillen	= 2,
-Userhdrlen	= 4,
-Desblk	 = BITS2BYTES(64),
+IP_ESPPROTO = 50,
+Esp4hdrlen = IP4HDR + 8,
+Esp6hdrlen = IP6HDR + 8,
+Esptaillen = 2,
+Userhdrlen = 4,
+Desblk = BITS2BYTES(64),
 Des3keysz = BITS2BYTES(192),
-Aesblk	 = BITS2BYTES(128),
+Aesblk = BITS2BYTES(128),
 Aeskeysz = BITS2BYTES(128),
 };
 struct Esphdr
 {
-uchar	espspi[4];
-uchar	espseq[4];
-uchar	payload[];
+uchar espspi[4];
+uchar espseq[4];
+uchar payload[];
 };
 struct Esp4hdr
 {
-uchar	vihl;
-uchar	tos;
-uchar	length[2];
-uchar	id[2];
-uchar	frag[2];
-uchar	Unused;
-uchar	espproto;
-uchar	espplen[2];
-uchar	espsrc[4];
-uchar	espdst[4];
+uchar vihl;
+uchar tos;
+uchar length[2];
+uchar id[2];
+uchar frag[2];
+uchar Unused;
+uchar espproto;
+uchar espplen[2];
+uchar espsrc[4];
+uchar espdst[4];
 Esphdr;
 };
 struct Esp6hdr
@@ -57,82 +57,82 @@ Esphdr;
 };
 struct Esptail
 {
-uchar	pad;
-uchar	nexthdr;
+uchar pad;
+uchar nexthdr;
 };
 typedef struct Versdep Versdep;
 struct Versdep
 {
-ulong	version;
-ulong	iphdrlen;
-ulong	hdrlen;
-ulong	spi;
-uchar	laddr[IPaddrlen];
-uchar	raddr[IPaddrlen];
+ulong version;
+ulong iphdrlen;
+ulong hdrlen;
+ulong spi;
+uchar laddr[IPaddrlen];
+uchar raddr[IPaddrlen];
 };
 struct Userhdr
 {
-uchar	nexthdr;
-uchar	unused[3];
+uchar nexthdr;
+uchar unused[3];
 };
 struct Esppriv
 {
-uvlong	in;
-ulong	inerrors;
+uvlong in;
+ulong inerrors;
 };
 struct Espcb
 {
-int	incoming;
-int	header;
-ulong	spi;
-ulong	seq;
-ulong	window;
-char	*espalg;
-void	*espstate;
-int	espivlen;
-int	espblklen;
-int	(*cipher)(Espcb*, uchar *buf, int len);
-char	*ahalg;
-void	*ahstate;
-int	ahlen;
-int	ahblklen;
-int	(*auth)(Espcb*, uchar *buf, int len, uchar *hash);
+int incoming;
+int header;
+ulong spi;
+ulong seq;
+ulong window;
+char *espalg;
+void *espstate;
+int espivlen;
+int espblklen;
+int (*cipher)(Espcb*, uchar *buf, int len);
+char *ahalg;
+void *ahstate;
+int ahlen;
+int ahblklen;
+int (*auth)(Espcb*, uchar *buf, int len, uchar *hash);
 DigestState *ds;
 };
 struct Algorithm
 {
-char 	*name;
-int	keylen;
-void	(*init)(Espcb*, char* name, uchar *key, unsigned keylen);
+char *name;
+int keylen;
+void (*init)(Espcb*, char* name, uchar *key, unsigned keylen);
 };
-static	Conv* convlookup(Proto *esp, ulong spi);
-static	char *setalg(Espcb *ecb, char **f, int n, Algorithm *alg);
-static	void espkick(void *x);
-static	void nullespinit(Espcb*, char*, uchar *key, unsigned keylen);
-static	void des3espinit(Espcb*, char*, uchar *key, unsigned keylen);
-static	void aescbcespinit(Espcb*, char*, uchar *key, unsigned keylen);
-static	void aesctrespinit(Espcb*, char*, uchar *key, unsigned keylen);
-static	void desespinit(Espcb *ecb, char *name, uchar *k, unsigned n);
-static	void nullahinit(Espcb*, char*, uchar *key, unsigned keylen);
-static	void shaahinit(Espcb*, char*, uchar *key, unsigned keylen);
-static	void aesahinit(Espcb*, char*, uchar *key, unsigned keylen);
-static	void md5ahinit(Espcb*, char*, uchar *key, unsigned keylen);
+static Conv* convlookup(Proto *esp, ulong spi);
+static char *setalg(Espcb *ecb, char **f, int n, Algorithm *alg);
+static void espkick(void *x);
+static void nullespinit(Espcb*, char*, uchar *key, unsigned keylen);
+static void des3espinit(Espcb*, char*, uchar *key, unsigned keylen);
+static void aescbcespinit(Espcb*, char*, uchar *key, unsigned keylen);
+static void aesctrespinit(Espcb*, char*, uchar *key, unsigned keylen);
+static void desespinit(Espcb *ecb, char *name, uchar *k, unsigned n);
+static void nullahinit(Espcb*, char*, uchar *key, unsigned keylen);
+static void shaahinit(Espcb*, char*, uchar *key, unsigned keylen);
+static void aesahinit(Espcb*, char*, uchar *key, unsigned keylen);
+static void md5ahinit(Espcb*, char*, uchar *key, unsigned keylen);
 static Algorithm espalg[] =
 {
-"null",		0,	nullespinit,
-"des3_cbc",	192,	des3espinit,
-"aes_128_cbc",	128,	aescbcespinit,
-"aes_ctr",	128,	aesctrespinit,
-"des_56_cbc",	64,	desespinit,
-nil,		0,	nil,
+"null", 0, nullespinit,
+"des3_cbc", 192, des3espinit,
+"aes_128_cbc", 128, aescbcespinit,
+"aes_ctr", 128, aesctrespinit,
+"des_56_cbc", 64, desespinit,
+nil, 0, nil,
 };
 static Algorithm ahalg[] =
 {
-"null",		0,	nullahinit,
-"hmac_sha1_96",	128,	shaahinit,
-"aes_xcbc_mac_96", 128,	aesahinit,
-"hmac_md5_96",	128,	md5ahinit,
-nil,		0,	nil,
+"null", 0, nullahinit,
+"hmac_sha1_96", 128, shaahinit,
+"aes_xcbc_mac_96", 128, aesahinit,
+"hmac_md5_96", 128, md5ahinit,
+nil, 0, nil,
 };
 static char*
 espconnect(Conv *c, char **argv, int argc)
@@ -238,11 +238,11 @@ vp->version = version;
 switch(vp->version) {
 case V4:
 vp->iphdrlen = IP4HDR;
-vp->hdrlen   = Esp4hdrlen;
+vp->hdrlen = Esp4hdrlen;
 break;
 case V6:
 vp->iphdrlen = IP6HDR;
-vp->hdrlen   = Esp6hdrlen;
+vp->hdrlen = Esp6hdrlen;
 break;
 default:
 panic("esp: getverslens version %d wrong", version);
@@ -386,7 +386,7 @@ freeb(bp);
 return;
 }
 auth = bp->wp - ecb->ahlen;
-espspi = vers.version == V4?	((Esp4hdr*)bp->rp)->espspi:
+espspi = vers.version == V4? ((Esp4hdr*)bp->rp)->espspi:
 ((Esp6hdr*)bp->rp)->espspi;
 if(!ecb->auth(ecb, espspi, auth - espspi, auth)) {
 qunlock(c);
@@ -508,7 +508,7 @@ n = snprint(buf, len, "%I!%uld\n", c->raddr, ecb->spi);
 qunlock(c);
 return n;
 }
-static	Conv*
+static Conv*
 convlookup(Proto *esp, ulong spi)
 {
 Conv *c, **p;

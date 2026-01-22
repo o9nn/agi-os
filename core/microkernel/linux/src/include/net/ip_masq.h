@@ -5,45 +5,45 @@
 #include <linux/skbuff.h>
 #include <linux/config.h>
 #define MAX_MASQ_APP_PORTS 12
-#define PORT_MASQ_BEGIN	61000
-#define PORT_MASQ_END	(PORT_MASQ_BEGIN+4096)
-#define MASQUERADE_EXPIRE_TCP     15*60*HZ
-#define MASQUERADE_EXPIRE_TCP_FIN  2*60*HZ
-#define MASQUERADE_EXPIRE_UDP      5*60*HZ
-#define MASQUERADE_EXPIRE_ICMP      125*HZ
-#define IP_AUTOFW_EXPIRE	     15*HZ
-#define IP_MASQ_F_OUT_SEQ              	0x01
-#define IP_MASQ_F_IN_SEQ              	0x02
-#define IP_MASQ_F_NO_DPORT    		0x04
-#define IP_MASQ_F_NO_DADDR      	0x08
-#define IP_MASQ_F_HASHED		0x10
-#define IP_MASQ_F_SAW_RST		0x20
-#define IP_MASQ_F_SAW_FIN_IN		0x40
-#define IP_MASQ_F_SAW_FIN_OUT		0x80
-#define IP_MASQ_F_SAW_FIN		(IP_MASQ_F_SAW_FIN_IN | \
+#define PORT_MASQ_BEGIN 61000
+#define PORT_MASQ_END (PORT_MASQ_BEGIN+4096)
+#define MASQUERADE_EXPIRE_TCP 15*60*HZ
+#define MASQUERADE_EXPIRE_TCP_FIN 2*60*HZ
+#define MASQUERADE_EXPIRE_UDP 5*60*HZ
+#define MASQUERADE_EXPIRE_ICMP 125*HZ
+#define IP_AUTOFW_EXPIRE 15*HZ
+#define IP_MASQ_F_OUT_SEQ 0x01
+#define IP_MASQ_F_IN_SEQ 0x02
+#define IP_MASQ_F_NO_DPORT 0x04
+#define IP_MASQ_F_NO_DADDR 0x08
+#define IP_MASQ_F_HASHED 0x10
+#define IP_MASQ_F_SAW_RST 0x20
+#define IP_MASQ_F_SAW_FIN_IN 0x40
+#define IP_MASQ_F_SAW_FIN_OUT 0x80
+#define IP_MASQ_F_SAW_FIN (IP_MASQ_F_SAW_FIN_IN | \
 IP_MASQ_F_SAW_FIN_OUT)
-#define IP_MASQ_F_CONTROL		0x100
-#define IP_MASQ_F_NO_SPORT    		0x200
-#define IP_MASQ_F_FTP_PASV	    	0x400
-#define IP_MASQ_F_NO_REPLY		0x800
-#define IP_MASQ_F_AFW_PORT	       0x1000
+#define IP_MASQ_F_CONTROL 0x100
+#define IP_MASQ_F_NO_SPORT 0x200
+#define IP_MASQ_F_FTP_PASV 0x400
+#define IP_MASQ_F_NO_REPLY 0x800
+#define IP_MASQ_F_AFW_PORT 0x1000
 #ifdef __KERNEL__
 struct ip_masq_seq {
-__u32		init_seq;
-short		delta;
-short		previous_delta;
+__u32 init_seq;
+short delta;
+short previous_delta;
 };
 struct ip_masq {
-struct ip_masq  *m_link, *s_link;
+struct ip_masq *m_link, *s_link;
 struct timer_list timer;
-__u16 		protocol;
-__u16		sport, dport, mport;
-__u32 		saddr, daddr, maddr;
+__u16 protocol;
+__u16 sport, dport, mport;
+__u32 saddr, daddr, maddr;
 struct ip_masq_seq out_seq, in_seq;
 struct ip_masq_app *app;
-void		*app_data;
-unsigned  flags;
-struct ip_masq	*control;
+void *app_data;
+unsigned flags;
+struct ip_masq *control;
 };
 struct ip_fw_masq {
 int tcp_timeout;

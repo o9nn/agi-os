@@ -1,27 +1,27 @@
 #ifndef HEADER_OPENSSL_TYPES_H
 # define HEADER_OPENSSL_TYPES_H
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 # include <openssl/e_os2.h>
 # ifdef NO_ASN1_TYPEDEFS
-#  define ASN1_INTEGER            ASN1_STRING
-#  define ASN1_ENUMERATED         ASN1_STRING
-#  define ASN1_BIT_STRING         ASN1_STRING
-#  define ASN1_OCTET_STRING       ASN1_STRING
-#  define ASN1_PRINTABLESTRING    ASN1_STRING
-#  define ASN1_T61STRING          ASN1_STRING
-#  define ASN1_IA5STRING          ASN1_STRING
-#  define ASN1_UTCTIME            ASN1_STRING
-#  define ASN1_GENERALIZEDTIME    ASN1_STRING
-#  define ASN1_TIME               ASN1_STRING
-#  define ASN1_GENERALSTRING      ASN1_STRING
-#  define ASN1_UNIVERSALSTRING    ASN1_STRING
-#  define ASN1_BMPSTRING          ASN1_STRING
-#  define ASN1_VISIBLESTRING      ASN1_STRING
-#  define ASN1_UTF8STRING         ASN1_STRING
-#  define ASN1_BOOLEAN            int
-#  define ASN1_NULL               int
+# define ASN1_INTEGER ASN1_STRING
+# define ASN1_ENUMERATED ASN1_STRING
+# define ASN1_BIT_STRING ASN1_STRING
+# define ASN1_OCTET_STRING ASN1_STRING
+# define ASN1_PRINTABLESTRING ASN1_STRING
+# define ASN1_T61STRING ASN1_STRING
+# define ASN1_IA5STRING ASN1_STRING
+# define ASN1_UTCTIME ASN1_STRING
+# define ASN1_GENERALIZEDTIME ASN1_STRING
+# define ASN1_TIME ASN1_STRING
+# define ASN1_GENERALSTRING ASN1_STRING
+# define ASN1_UNIVERSALSTRING ASN1_STRING
+# define ASN1_BMPSTRING ASN1_STRING
+# define ASN1_VISIBLESTRING ASN1_STRING
+# define ASN1_UTF8STRING ASN1_STRING
+# define ASN1_BOOLEAN int
+# define ASN1_NULL int
 # else
 typedef struct asn1_string_st ASN1_INTEGER;
 typedef struct asn1_string_st ASN1_ENUMERATED;
@@ -45,15 +45,15 @@ typedef int ASN1_NULL;
 typedef struct ASN1_ITEM_st ASN1_ITEM;
 typedef struct asn1_pctx_st ASN1_PCTX;
 # ifdef OPENSSL_SYS_WIN32
-#  undef X509_NAME
-#  undef X509_EXTENSIONS
-#  undef X509_CERT_PAIR
-#  undef PKCS7_ISSUER_AND_SERIAL
-#  undef OCSP_REQUEST
-#  undef OCSP_RESPONSE
+# undef X509_NAME
+# undef X509_EXTENSIONS
+# undef X509_CERT_PAIR
+# undef PKCS7_ISSUER_AND_SERIAL
+# undef OCSP_REQUEST
+# undef OCSP_RESPONSE
 # endif
 # ifdef BIGNUM
-#  undef BIGNUM
+# undef BIGNUM
 # endif
 typedef struct bignum_st BIGNUM;
 typedef struct bignum_ctx BN_CTX;
@@ -119,7 +119,7 @@ void *from_d, int idx, long argl, void *argp);
 typedef struct ocsp_req_ctx_st OCSP_REQ_CTX;
 typedef struct ocsp_response_st OCSP_RESPONSE;
 typedef struct ocsp_responder_id_st OCSP_RESPID;
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif
 #endif

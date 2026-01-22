@@ -2,49 +2,49 @@
 (use-modules (opencog) (opencog exec))
 (define v1
 (Section
-	(Concept "peep 1")
-	(ConnectorSeq
-		(Connector (Concept "E") (ConnectorDir "*")))))
+(Concept "peep 1")
+(ConnectorSeq
+(Connector (Concept "E") (ConnectorDir "*")))))
 (define v2
 (Section
-	(Concept "peep 2")
-	(ConnectorSeq
-		(Connector (Concept "E") (ConnectorDir "*"))
-		(Connector (Concept "E") (ConnectorDir "*")))))
+(Concept "peep 2")
+(ConnectorSeq
+(Connector (Concept "E") (ConnectorDir "*"))
+(Connector (Concept "E") (ConnectorDir "*")))))
 (define v3
 (Section
-	(Concept "peep 3")
-	(ConnectorSeq
-		(Connector (Concept "E") (ConnectorDir "*"))
-		(Connector (Concept "E") (ConnectorDir "*"))
-		(Connector (Concept "E") (ConnectorDir "*")))))
+(Concept "peep 3")
+(ConnectorSeq
+(Connector (Concept "E") (ConnectorDir "*"))
+(Connector (Concept "E") (ConnectorDir "*"))
+(Connector (Concept "E") (ConnectorDir "*")))))
 (define v4
 (Section
-	(Concept "peep 4")
-	(ConnectorSeq
-		(Connector (Concept "E") (ConnectorDir "*"))
-		(Connector (Concept "E") (ConnectorDir "*"))
-		(Connector (Concept "E") (ConnectorDir "*"))
-		(Connector (Concept "E") (ConnectorDir "*")))))
+(Concept "peep 4")
+(ConnectorSeq
+(Connector (Concept "E") (ConnectorDir "*"))
+(Connector (Concept "E") (ConnectorDir "*"))
+(Connector (Concept "E") (ConnectorDir "*"))
+(Connector (Concept "E") (ConnectorDir "*")))))
 (define v5
 (Section
-	(Concept "peep 5")
-	(ConnectorSeq
-		(Connector (Concept "E") (ConnectorDir "*"))
-		(Connector (Concept "E") (ConnectorDir "*"))
-		(Connector (Concept "E") (ConnectorDir "*"))
-		(Connector (Concept "E") (ConnectorDir "*"))
-		(Connector (Concept "E") (ConnectorDir "*")))))
+(Concept "peep 5")
+(ConnectorSeq
+(Connector (Concept "E") (ConnectorDir "*"))
+(Connector (Concept "E") (ConnectorDir "*"))
+(Connector (Concept "E") (ConnectorDir "*"))
+(Connector (Concept "E") (ConnectorDir "*"))
+(Connector (Concept "E") (ConnectorDir "*")))))
 (define v6
 (Section
-	(Concept "peep 6")
-	(ConnectorSeq
-		(Connector (Concept "E") (ConnectorDir "*"))
-		(Connector (Concept "E") (ConnectorDir "*"))
-		(Connector (Concept "E") (ConnectorDir "*"))
-		(Connector (Concept "E") (ConnectorDir "*"))
-		(Connector (Concept "E") (ConnectorDir "*"))
-		(Connector (Concept "E") (ConnectorDir "*")))))
+(Concept "peep 6")
+(ConnectorSeq
+(Connector (Concept "E") (ConnectorDir "*"))
+(Connector (Concept "E") (ConnectorDir "*"))
+(Connector (Concept "E") (ConnectorDir "*"))
+(Connector (Concept "E") (ConnectorDir "*"))
+(Connector (Concept "E") (ConnectorDir "*"))
+(Connector (Concept "E") (ConnectorDir "*")))))
 (define weights (PredicateNode "weights"))
 (cog-set-value! v1 weights (FloatValue 1))
 (cog-set-value! v2 weights (FloatValue (/ 1.0 2)))

@@ -152,18 +152,18 @@ struct __is_integer<unsigned long long>
 enum { __value = 1 };
 typedef __true_type __type;
 };
-#define __INT_N(TYPE) 			\
-template<>				\
-struct __is_integer<TYPE>		\
-{					\
-enum { __value = 1 };		\
-typedef __true_type __type;	\
-};					\
-template<>				\
-struct __is_integer<unsigned TYPE>	\
-{					\
-enum { __value = 1 };		\
-typedef __true_type __type;	\
+#define __INT_N(TYPE) \
+template<> \
+struct __is_integer<TYPE> \
+{ \
+enum { __value = 1 }; \
+typedef __true_type __type; \
+}; \
+template<> \
+struct __is_integer<unsigned TYPE> \
+{ \
+enum { __value = 1 }; \
+typedef __true_type __type; \
 };
 #ifdef __GLIBCXX_TYPE_INT_N_0
 __INT_N(__GLIBCXX_TYPE_INT_N_0)

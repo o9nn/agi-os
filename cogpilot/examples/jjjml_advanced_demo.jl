@@ -71,7 +71,7 @@ end
 # Vectorize
 process_batch = jax_vmap(process_single)
 # Process batch
-batch = randn(Float32, 32, 10)  # 32 samples, each of size 10
+batch = randn(Float32, 32, 10) # 32 samples, each of size 10
 println("Processing batch of size $(size(batch))...")
 results = process_batch(batch)
 println("Got $(length(results)) results")
@@ -93,7 +93,7 @@ println("-" ^ 70)
 # Create a "model weight" matrix
 println("Creating test weight matrix (1000×1000 Float32)...")
 weights_original = randn(Float32, 1000, 1000)
-original_size = sizeof(weights_original) / 1024 / 1024  # MB
+original_size = sizeof(weights_original) / 1024 / 1024 # MB
 println("Original size: $(round(original_size, digits=2)) MB")
 println()
 # Quantize to different formats
@@ -158,7 +158,7 @@ println("Training complete!")
 println()
 # Quantize the reservoir weights
 println("Quantizing reservoir weights to 8-bit...")
-original_w_res = Matrix(esn.W_res)  # Convert sparse to dense for demo
+original_w_res = Matrix(esn.W_res) # Convert sparse to dense for demo
 quantized_w_res = quantize(original_w_res, Q8_0())
 println("Original reservoir weights: $(sizeof(original_w_res) / 1024) KB")
 println("Quantized reservoir weights: $(sizeof(quantized_w_res.quantized_data) / 1024) KB")

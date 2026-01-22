@@ -1,5 +1,5 @@
 #ifndef gscedata_INCLUDED
-#  define gscedata_INCLUDED
+# define gscedata_INCLUDED
 #define NUM_LEN_BITS 5
 #define N(len,offset) (((offset) << NUM_LEN_BITS) + (len))
 #define N_LEN(e) ((e) & ((1 << NUM_LEN_BITS) - 1))

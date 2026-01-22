@@ -1,10 +1,10 @@
 #include "sam.h"
-Rangeset	sel;
-String		lastregexp;
+Rangeset sel;
+String lastregexp;
 typedef struct Inst Inst;
 struct Inst
 {
-long	type;
+long type;
 union {
 int rsid;
 int rsubid;
@@ -17,32 +17,32 @@ struct Inst *lleft;
 struct Inst *lnext;
 } l;
 };
-#define	sid	r.rsid
-#define	subid	r.rsubid
-#define	rclass	r.class
-#define	other	r.rother
-#define	right	r.rright
-#define	left	l.lleft
-#define	next	l.lnext
-#define	NPROG	1024
-Inst	program[NPROG];
-Inst	*progp;
-Inst	*startinst;
-Inst	*bstartinst;
+#define sid r.rsid
+#define subid r.rsubid
+#define rclass r.class
+#define other r.rother
+#define right r.rright
+#define left l.lleft
+#define next l.lnext
+#define NPROG 1024
+Inst program[NPROG];
+Inst *progp;
+Inst *startinst;
+Inst *bstartinst;
 typedef struct Ilist Ilist;
 struct Ilist
 {
-Inst	*inst;
+Inst *inst;
 Rangeset se;
-Posn	startp;
+Posn startp;
 };
-#define	NLIST	127
-Ilist	*tl, *nl;
-Ilist	list[2][NLIST+1];
-static	Rangeset sempty;
+#define NLIST 127
+Ilist *tl, *nl;
+Ilist list[2][NLIST+1];
+static Rangeset sempty;
 enum {
 OPERATOR = Runemask+1,
-START	= OPERATOR,
+START = OPERATOR,
 RBRA,
 LBRA,
 OR,
@@ -50,53 +50,53 @@ CAT,
 STAR,
 PLUS,
 QUEST,
-ANY	= OPERATOR<<1,
+ANY = OPERATOR<<1,
 NOP,
 BOL,
 EOL,
 CCLASS,
 NCCLASS,
 END,
-ISATOR	= OPERATOR,
-ISAND	= OPERATOR<<1,
+ISATOR = OPERATOR,
+ISAND = OPERATOR<<1,
 };
 typedef struct Node Node;
 struct Node
 {
-Inst	*first;
-Inst	*last;
+Inst *first;
+Inst *last;
 };
-#define	NSTACK	20
-Node	andstack[NSTACK];
-Node	*andp;
-int	atorstack[NSTACK];
-int	*atorp;
-int	lastwasand;
-int	cursubid;
-int	subidstack[NSTACK];
-int	*subidp;
-int	backwards;
-int	nbra;
-Rune	*exprp;
-#define	DCLASS	10
-int	nclass;
-int	Nclass;
-Rune	**class;
-int	negateclass;
-int	addinst(Ilist *l, Inst *inst, Rangeset *sep);
-void	newmatch(Rangeset*);
-void	bnewmatch(Rangeset*);
-void	pushand(Inst*, Inst*);
-void	pushator(int);
-Node	*popand(int);
-int	popator(void);
-void	startlex(Rune*);
-int	lex(void);
-void	operator(int);
-void	operand(int);
-void	evaluntil(int);
-void	optimize(Inst*);
-void	bldcclass(void);
+#define NSTACK 20
+Node andstack[NSTACK];
+Node *andp;
+int atorstack[NSTACK];
+int *atorp;
+int lastwasand;
+int cursubid;
+int subidstack[NSTACK];
+int *subidp;
+int backwards;
+int nbra;
+Rune *exprp;
+#define DCLASS 10
+int nclass;
+int Nclass;
+Rune **class;
+int negateclass;
+int addinst(Ilist *l, Inst *inst, Rangeset *sep);
+void newmatch(Rangeset*);
+void bnewmatch(Rangeset*);
+void pushand(Inst*, Inst*);
+void pushator(int);
+Node *popand(int);
+int popator(void);
+void startlex(Rune*);
+int lex(void);
+void operator(int);
+void operand(int);
+void evaluntil(int);
+void optimize(Inst*);
+void bldcclass(void);
 void
 regerror(Err e)
 {
@@ -318,7 +318,7 @@ target = target->next;
 inst->next = target;
 }
 }
-#ifdef	DEBUG
+#ifdef DEBUG
 void
 dumpstack(void){
 Node *stk;
@@ -705,7 +705,7 @@ return sel.p[0].p1>=0;
 void
 bnewmatch(Rangeset *sp)
 {
-int  i;
+int i;
 if(sel.p[0].p1<0 || sp->p[0].p1>sel.p[0].p2 || (sp->p[0].p1==sel.p[0].p2 && sp->p[0].p2<sel.p[0].p1))
 for(i = 0; i<NSUBEXP; i++){
 sel.p[i].p1 = sp->p[i].p2;

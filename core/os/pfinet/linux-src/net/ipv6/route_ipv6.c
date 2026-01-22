@@ -10,7 +10,7 @@
 #include <linux/init.h>
 #include <linux/netlink.h>
 #include <linux/if_arp.h>
-#ifdef 	CONFIG_PROC_FS
+#ifdef CONFIG_PROC_FS
 #include <linux/proc_fs.h>
 #endif
 #include <net/snmp.h>
@@ -47,13 +47,13 @@ int ip6_rt_gc_interval = 30*HZ;
 int ip6_rt_gc_elasticity = 9;
 int ip6_rt_mtu_expires = 10*60*HZ;
 static struct rt6_info * ip6_rt_copy(struct rt6_info *ort);
-static struct dst_entry	*ip6_dst_check(struct dst_entry *dst, u32 cookie);
-static struct dst_entry	*ip6_dst_reroute(struct dst_entry *dst,
+static struct dst_entry *ip6_dst_check(struct dst_entry *dst, u32 cookie);
+static struct dst_entry *ip6_dst_reroute(struct dst_entry *dst,
 struct sk_buff *skb);
 static struct dst_entry *ip6_negative_advice(struct dst_entry *);
-static int		 ip6_dst_gc(void);
-static int		ip6_pkt_discard(struct sk_buff *skb);
-static void		ip6_link_failure(struct sk_buff *skb);
+static int ip6_dst_gc(void);
+static int ip6_pkt_discard(struct sk_buff *skb);
+static void ip6_link_failure(struct sk_buff *skb);
 struct dst_ops ip6_dst_ops = {
 AF_INET6,
 __constant_htons(ETH_P_IPV6),
@@ -83,11 +83,11 @@ NULL, NULL, NULL, NULL,
 0, RTN_ROOT|RTN_TL_ROOT|RTN_RTINFO, 0
 };
 #ifdef CONFIG_RT6_POLICY
-int	ip6_rt_policy = 0;
+int ip6_rt_policy = 0;
 struct pol_chain *rt6_pol_list = NULL;
 static int rt6_flow_match_in(struct rt6_info *rt, struct sk_buff *skb);
 static int rt6_flow_match_out(struct rt6_info *rt, struct sock *sk);
-static struct rt6_info	*rt6_flow_lookup(struct rt6_info *rt,
+static struct rt6_info *rt6_flow_lookup(struct rt6_info *rt,
 struct in6_addr *daddr,
 struct in6_addr *saddr,
 struct fl_acc_args *args);
@@ -634,7 +634,7 @@ kfree_skb(skb);
 }
 void rt6_sndmsg(int type, struct in6_addr *dst, struct in6_addr *src,
 struct in6_addr *gw, struct device *dev,
-int dstlen, int srclen,	int metric, __u32 flags)
+int dstlen, int srclen, int metric, __u32 flags)
 {
 struct sk_buff *skb;
 struct in6_rtmsg *msg;
@@ -1102,8 +1102,8 @@ int iif,
 int type, u32 pid, u32 seq)
 {
 struct rtmsg *rtm;
-struct nlmsghdr  *nlh;
-unsigned char	 *b = skb->tail;
+struct nlmsghdr *nlh;
+unsigned char *b = skb->tail;
 struct rtattr *mx;
 struct rta_cacheinfo ci;
 nlh = NLMSG_PUT(skb, pid, seq, type, sizeof(*rtm));
@@ -1477,7 +1477,7 @@ ctl_table ipv6_route_table[] = {
 #endif
 __initfunc(void ip6_route_init(void))
 {
-#ifdef 	CONFIG_PROC_FS
+#ifdef CONFIG_PROC_FS
 proc_net_register(&proc_rt6_info);
 proc_net_register(&proc_rt6_stats);
 #endif

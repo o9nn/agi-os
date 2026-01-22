@@ -4,30 +4,30 @@
 #include "dat.h"
 #include "fns.h"
 #include "../port/error.h"
-#define	Image	IMAGE
+#define Image IMAGE
 #include <draw.h>
 #include <memdraw.h>
 #include <cursor.h>
 #include "screen.h"
 enum {
-AddrW		= 0x00,
-Palette		= 0x01,
-Pmask		= 0x02,
-AddrR		= 0x03,
-ColorW		= 0x04,
-Color		= 0x05,
-Cmd0		= 0x06,
-ColorR		= 0x07,
-Cmd1		= 0x08,
-Cmd2		= 0x09,
-Status		= 0x0A,
-Cmd3		= 0x1A,
-Cram		= 0x0B,
-Cxlr		= 0x0C,
-Cxhr		= 0x0D,
-Cylr		= 0x0E,
-Cyhr		= 0x0F,
-Nreg		= 0x10,
+AddrW = 0x00,
+Palette = 0x01,
+Pmask = 0x02,
+AddrR = 0x03,
+ColorW = 0x04,
+Color = 0x05,
+Cmd0 = 0x06,
+ColorR = 0x07,
+Cmd1 = 0x08,
+Cmd2 = 0x09,
+Status = 0x0A,
+Cmd3 = 0x1A,
+Cram = 0x0B,
+Cxlr = 0x0C,
+Cxhr = 0x0D,
+Cylr = 0x0E,
+Cyhr = 0x0F,
+Nreg = 0x10,
 };
 static ushort dacxreg[4] = {
 PaddrW, Pdata, Pixmask, PaddrR

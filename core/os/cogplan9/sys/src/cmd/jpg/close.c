@@ -20,7 +20,7 @@ b = Y+c4*Cb;
 min = 1000000.;
 v = 1000;
 for(i=0; i<256; i++){
-rgb =  cmap2rgb(i);
+rgb = cmap2rgb(i);
 R = (rgb >> 16) & 0xFF;
 G = (rgb >> 8) & 0xFF;
 B = (rgb >> 0) & 0xFF;
@@ -34,15 +34,15 @@ if(v > 255)
 abort();
 return v;
 }
-#define 	SHIFT	5
-#define	INC		(1<<SHIFT)
+#define SHIFT 5
+#define INC (1<<SHIFT)
 typedef struct Color Color;
 struct Color
 {
-int		col;
-Color	*next;
+int col;
+Color *next;
 };
-Color	*col[INC*INC*INC];
+Color *col[INC*INC*INC];
 void
 add(int c, int y, int cb, int cr)
 {

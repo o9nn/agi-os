@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 struct mailimap_id_params_list {
-clist *  idpa_list;
+clist * idpa_list;
 };
 LIBETPAN_EXPORT
 struct mailimap_id_params_list * mailimap_id_params_list_new(clist * items);

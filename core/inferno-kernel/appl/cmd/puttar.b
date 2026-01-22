@@ -1,5 +1,5 @@
 # read list of pathnames on stdin, write POSIX.1 tar on stdout
-# Copyright(c)1996 Lucent Technologies.  All Rights Reserved.
+# Copyright(c)1996 Lucent Technologies. All Rights Reserved.
 # 22 Dec 1996 ehg@bell-labs.com
 implement puttar;
 include "sys.m";
@@ -11,7 +11,7 @@ include "bufio.m";
 bufio: Bufio;
 Iobuf: import bufio;
 puttar: module{
-init:   fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 Warning(mess: string)
 {
@@ -21,10 +21,10 @@ Error(mess: string){
 fprint(stderr,"puttar: %s: %r\n",mess);
 exit;
 }
-TBLOCK: con 512;	# tar logical blocksize
-NBLOCK: con 20;		# blocking factor for efficient write
-tarbuf := array[NBLOCK*TBLOCK] of byte;	# for output
-nblock := 0;		# how many blocks of data are in tarbuf
+TBLOCK: con 512; # tar logical blocksize
+NBLOCK: con 20; # blocking factor for efficient write
+tarbuf := array[NBLOCK*TBLOCK] of byte; # for output
+nblock := 0; # how many blocks of data are in tarbuf
 flushblocks(){
 if(nblock<=0) return;
 if(nblock<NBLOCK){
@@ -38,7 +38,7 @@ nblock = 0;
 }
 putblock(data:array of byte){
 # all writes are done through here, so we can guarantee
-#              10kbyte blocks if writing to tape device
+# 10kbyte blocks if writing to tape device
 if(len data!=TBLOCK)
 Error("putblock wants TBLOCK chunks");
 tarbuf[nblock*TBLOCK:] = data;
@@ -57,7 +57,7 @@ for(i:=n-101; i<n && int utf[i] != '/'; i++){}
 if(i==n) Error(sprint("%s > 100 bytes",name));
 if(i>155) Error(sprint("%s too long\n",name));
 hdr[0:] = utf[i+1:n];
-hdr[345:] = utf[0:i];  # tar supplies implicit slash
+hdr[345:] = utf[0:i]; # tar supplies implicit slash
 }
 octal(width:int, val:int):array of byte{
 octal := array of byte "01234567";
@@ -102,7 +102,7 @@ hdr[148:] = octal(7,chksum(hdr));
 hdr[155] = byte 0;
 putblock(hdr);
 for(bytes := int stat.length; bytes>0;){
-n := len ibuf;  if(n>bytes) n = bytes;  # min
+n := len ibuf; if(n>bytes) n = bytes; # min
 if(sys->read(ifile,ibuf,n)!=n)
 Error(sprint("read error on %s",file));
 nb := (n+TBLOCK-1)/TBLOCK;
@@ -161,6 +161,6 @@ for (args = tl args; args != nil; args = tl args)
 rtar(hd args);
 }
 putblock(zeros);
-putblock(zeros);	# format requires two empty blocks at end
+putblock(zeros); # format requires two empty blocks at end
 flushblocks();
 }

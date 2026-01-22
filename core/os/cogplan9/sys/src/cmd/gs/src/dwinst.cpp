@@ -342,10 +342,10 @@ WCHAR wsz[MAX_PATH];
 MultiByteToWideChar(CP_ACP, 0, szLink, -1, wsz, MAX_PATH);
 hres = CoCreateInstance(CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER,
 IID_IShellLink, (void **)&psl);
-if (SUCCEEDED(hres))    {
+if (SUCCEEDED(hres)) {
 IPersistFile* ppf;
 hres = psl->QueryInterface(IID_IPersistFile, (void **)&ppf);
-if (SUCCEEDED(hres))       {
+if (SUCCEEDED(hres)) {
 hres = ppf->Load(wsz, STGM_READ);
 if (SUCCEEDED(hres)) {
 hres = psl->Resolve(HWND_DESKTOP, SLR_ANY_MATCH);
@@ -381,7 +381,7 @@ psl->Release();
 }
 hres = CoCreateInstance(CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER,
 IID_IShellLink, (void **)&psl);
-if (SUCCEEDED(hres))    {
+if (SUCCEEDED(hres)) {
 IPersistFile* ppf;
 hres = psl->QueryInterface(IID_IPersistFile, (void **)&ppf);
 if (SUCCEEDED(hres)) {
@@ -513,7 +513,7 @@ char qbuf[MAXSTR];
 DWORD cbData;
 DWORD keytype;
 cbData = sizeof(buf);
-keytype =  REG_SZ;
+keytype = REG_SZ;
 if (RegQueryValueEx(hkey, value_name, 0, &keytype,
 (LPBYTE)buf, &cbData) == ERROR_SUCCESS) {
 reg_quote(qbuf, buf);
@@ -706,7 +706,7 @@ hrkey = HKEY_LOCAL_MACHINE;
 if (RegOpenKeyEx(hrkey,
 "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders",
 0,KEY_QUERY_VALUE,
-&hCU) == ERROR_SUCCESS)    {
+&hCU) == ERROR_SUCCESS) {
 rc = RegQueryValueEx( hCU,
 bUseCommon ? "Common Programs" : "Programs",
 NULL,

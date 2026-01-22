@@ -7,10 +7,10 @@
 #include <mp.h>
 #include <libsec.h>
 #include "authcmdlib.h"
-#pragma	varargck	type	"W"	char*
+#pragma varargck type "W" char*
 char authkey[8];
-typedef struct Fid	Fid;
-typedef struct User	User;
+typedef struct Fid Fid;
+typedef struct User User;
 enum {
 Qroot,
 Quser,
@@ -21,9 +21,9 @@ Qstatus,
 Qexpire,
 Qwarnings,
 Qmax,
-Nuser	= 512,
-MAXBAD	= 10,
-Namelen	= ANAMELEN,
+Nuser = 512,
+MAXBAD = 10,
+Namelen = ANAMELEN,
 };
 enum {
 Sok,
@@ -31,85 +31,85 @@ Sdisabled,
 Smax,
 };
 struct Fid {
-int	fid;
-ulong	qtype;
-User	*user;
-int	busy;
-Fid	*next;
+int fid;
+ulong qtype;
+User *user;
+int busy;
+Fid *next;
 };
 struct User {
-char	*name;
-char	key[DESKEYLEN];
-char	secret[SECRETLEN];
-ulong	expire;
-uchar	status;
-ulong	bad;
-int	ref;
-char	removed;
-uchar	warnings;
-long	purgatory;
-ulong	uniq;
-User	*link;
+char *name;
+char key[DESKEYLEN];
+char secret[SECRETLEN];
+ulong expire;
+uchar status;
+ulong bad;
+int ref;
+char removed;
+uchar warnings;
+long purgatory;
+ulong uniq;
+User *link;
 };
-char	*qinfo[Qmax] = {
-[Qroot]		"keys",
-[Quser]		".",
-[Qkey]		"key",
-[Qsecret]	"secret",
-[Qlog]		"log",
-[Qexpire]	"expire",
-[Qstatus]	"status",
-[Qwarnings]	"warnings",
+char *qinfo[Qmax] = {
+[Qroot] "keys",
+[Quser] ".",
+[Qkey] "key",
+[Qsecret] "secret",
+[Qlog] "log",
+[Qexpire] "expire",
+[Qstatus] "status",
+[Qwarnings] "warnings",
 };
-char	*status[Smax] = {
-[Sok]		"ok",
-[Sdisabled]	"disabled",
+char *status[Smax] = {
+[Sok] "ok",
+[Sdisabled] "disabled",
 };
-Fid	*fids;
-User	*users[Nuser];
-char	*userkeys;
-int	nuser;
-ulong	uniq = 1;
-Fcall	rhdr,
+Fid *fids;
+User *users[Nuser];
+char *userkeys;
+int nuser;
+ulong uniq = 1;
+Fcall rhdr,
 thdr;
-int	usepass;
-char	*warnarg;
-uchar	mdata[8192 + IOHDRSZ];
-int	messagesize = sizeof mdata;
-int	readusers(void);
-ulong	hash(char*);
-Fid	*findfid(int);
-User	*finduser(char*);
-User	*installuser(char*);
-int	removeuser(User*);
-void	insertuser(User*);
-void	writeusers(void);
-void	io(int, int);
-void	*emalloc(ulong);
-Qid	mkqid(User*, ulong);
-int	dostat(User*, ulong, void*, int);
-int	newkeys(void);
-void	warning(void);
-int	weirdfmt(Fmt *f);
-char	*Auth(Fid*), *Attach(Fid*), *Version(Fid*),
+int usepass;
+char *warnarg;
+uchar mdata[8192 + IOHDRSZ];
+int messagesize = sizeof mdata;
+int readusers(void);
+ulong hash(char*);
+Fid *findfid(int);
+User *finduser(char*);
+User *installuser(char*);
+int removeuser(User*);
+void insertuser(User*);
+void writeusers(void);
+void io(int, int);
+void *emalloc(ulong);
+Qid mkqid(User*, ulong);
+int dostat(User*, ulong, void*, int);
+int newkeys(void);
+void warning(void);
+int weirdfmt(Fmt *f);
+char *Auth(Fid*), *Attach(Fid*), *Version(Fid*),
 *Flush(Fid*), *Walk(Fid*),
 *Open(Fid*), *Create(Fid*),
 *Read(Fid *), *Write(Fid*), *Clunk(Fid*),
 *Remove(Fid *), *Stat(Fid*), *Wstat(Fid*);
-char 	*(*fcalls[])(Fid*) = {
-[Tattach]	Attach,
-[Tauth]	Auth,
-[Tclunk]	Clunk,
-[Tcreate]	Create,
-[Tflush]	Flush,
-[Topen]		Open,
-[Tread]		Read,
-[Tremove]	Remove,
-[Tstat]		Stat,
-[Tversion]	Version,
-[Twalk]		Walk,
-[Twrite]	Write,
-[Twstat]	Wstat,
+char *(*fcalls[])(Fid*) = {
+[Tattach] Attach,
+[Tauth] Auth,
+[Tclunk] Clunk,
+[Tcreate] Create,
+[Tflush] Flush,
+[Topen] Open,
+[Tread] Read,
+[Tremove] Remove,
+[Tstat] Stat,
+[Tversion] Version,
+[Twalk] Walk,
+[Twrite] Write,
+[Twstat] Wstat,
 };
 static void
 usage(void)

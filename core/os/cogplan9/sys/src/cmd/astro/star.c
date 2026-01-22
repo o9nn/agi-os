@@ -23,7 +23,7 @@ capt12 = capt1*capt1;
 capt13 = capt12*capt1;
 xx = - (.00029696+26.e-8*capt0)*capt12
 - 13.e-8*capt13;
-yx =  -(.02234941+1355.e-8*capt0)*capt1
+yx = -(.02234941+1355.e-8*capt0)*capt1
 - 676.e-8*capt12 + 221.e-8*capt13;
 zx = -(.00971690-414.e-8*capt0)*capt1
 + 207.e-8*capt12 + 96.e-8*capt13;
@@ -31,7 +31,7 @@ yy = - (.00024975+30.e-8*capt0)*capt12
 - 15.e-8*capt13;
 zy = -(.00010858+2.e-8*capt0)*capt12;
 zz = - (.00004721-4.e-8*capt0)*capt12;
-dxm =  xx*xm + yx*ym + zx*zm;
+dxm = xx*xm + yx*ym + zx*zm;
 dym = - yx*xm + yy*ym + zy*zm;
 dzm = - zx*xm + zy*ym + zz*zm;
 xm = xm + dxm;

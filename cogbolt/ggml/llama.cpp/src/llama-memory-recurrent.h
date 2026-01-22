@@ -8,13 +8,13 @@ class llama_memory_recurrent : public llama_memory_i {
 public:
 using layer_filter_cb = std::function<bool(int32_t il)>;
 llama_memory_recurrent(
-const llama_model &  model,
+const llama_model & model,
 layer_filter_cb && filter,
-ggml_type    type_r,
-ggml_type    type_s,
-bool    offload,
-uint32_t    mem_size,
-uint32_t    n_seq_max);
+ggml_type type_r,
+ggml_type type_s,
+bool offload,
+uint32_t mem_size,
+uint32_t n_seq_max);
 ~llama_memory_recurrent() = default;
 llama_memory_context_ptr init_batch(
 llama_batch_allocr & balloc,
@@ -23,28 +23,28 @@ bool embd_all) override;
 llama_memory_context_ptr init_full() override;
 llama_memory_context_ptr init_update(llama_context * lctx, bool optimize) override;
 void clear(bool data) override;
-bool seq_rm  (llama_seq_id seq_id,                              llama_pos p0, llama_pos p1) override;
-void seq_cp  (llama_seq_id seq_id_src, llama_seq_id seq_id_dst, llama_pos p0, llama_pos p1) override;
-void seq_keep(llama_seq_id seq_id)                                                          override;
-void seq_add (llama_seq_id seq_id,                              llama_pos p0, llama_pos p1, llama_pos shift) override;
-void seq_div (llama_seq_id seq_id,                              llama_pos p0, llama_pos p1, int d) override;
+bool seq_rm (llama_seq_id seq_id, llama_pos p0, llama_pos p1) override;
+void seq_cp (llama_seq_id seq_id_src, llama_seq_id seq_id_dst, llama_pos p0, llama_pos p1) override;
+void seq_keep(llama_seq_id seq_id) override;
+void seq_add (llama_seq_id seq_id, llama_pos p0, llama_pos p1, llama_pos shift) override;
+void seq_div (llama_seq_id seq_id, llama_pos p0, llama_pos p1, int d) override;
 llama_pos seq_pos_min(llama_seq_id seq_id) const override;
 llama_pos seq_pos_max(llama_seq_id seq_id) const override;
 bool prepare(const std::vector<llama_ubatch> & ubatches);
 bool find_slot(const llama_ubatch & ubatch);
 bool get_can_shift() const override;
 void state_write(llama_io_write_i & io, llama_seq_id seq_id = -1) const override;
-void state_read (llama_io_read_i  & io, llama_seq_id seq_id = -1) override;
+void state_read (llama_io_read_i & io, llama_seq_id seq_id = -1) override;
 uint32_t head = 0;
 uint32_t size = 0;
 uint32_t used = 0;
 uint32_t n = 0;
 int32_t rs_z = -1;
 struct mem_cell {
-llama_pos pos  = -1;
-int32_t   src  = -1;
-int32_t   src0 = -1;
-int32_t   tail = -1;
+llama_pos pos = -1;
+int32_t src = -1;
+int32_t src0 = -1;
+int32_t tail = -1;
 std::set<llama_seq_id> seq_id;
 bool has_seq_id(const llama_seq_id & id) const {
 return seq_id.find(id) != seq_id.end();
@@ -62,7 +62,7 @@ std::vector<ggml_tensor *> s_l;
 private:
 const llama_hparams & hparams;
 const uint32_t n_seq_max = 1;
-std::vector<ggml_context_ptr>        ctxs;
+std::vector<ggml_context_ptr> ctxs;
 std::vector<ggml_backend_buffer_ptr> bufs;
 size_t total_size() const;
 size_t size_r_bytes() const;
@@ -81,13 +81,13 @@ llama_memory_recurrent_context(
 llama_memory_recurrent * mem,
 std::vector<llama_ubatch> ubatches);
 virtual ~llama_memory_recurrent_context();
-bool next()  override;
+bool next() override;
 bool apply() override;
-llama_memory_status  get_status() const override;
+llama_memory_status get_status() const override;
 const llama_ubatch & get_ubatch() const override;
 uint32_t get_n_rs() const;
 uint32_t get_head() const;
-int32_t  get_rs_z() const;
+int32_t get_rs_z() const;
 uint32_t get_size() const;
 ggml_tensor * get_r_l(int32_t il) const;
 ggml_tensor * get_s_l(int32_t il) const;

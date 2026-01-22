@@ -1,21 +1,21 @@
 enum {
-Maxpayload =	32*1024,
-Maxrpcbuf =	8192,
-Copybufsz = 	4096,
-Blobsz =	512,
-Numbsz =	24,
-Defstk =	80*1024,
-Maxtoks =	32,
-Arbpathlen =	128,
-Arbbufsz =	256,
-Bigbufsz =	1024,
-Maxfactotum =	256*1024,
+Maxpayload = 32*1024,
+Maxrpcbuf = 8192,
+Copybufsz = 4096,
+Blobsz = 512,
+Numbsz = 24,
+Defstk = 80*1024,
+Maxtoks = 32,
+Arbpathlen = 128,
+Arbbufsz = 256,
+Bigbufsz = 1024,
+Maxfactotum = 256*1024,
 };
 typedef struct Conn Conn;
 #pragma incomplete Conn
-#pragma	varargck argpos	esmprint 1
-#pragma	varargck argpos	ssdebug	2
-#pragma	varargck argpos	sshlog	2
+#pragma varargck argpos esmprint 1
+#pragma varargck argpos ssdebug 2
+#pragma varargck argpos sshlog 2
 char *esmprint(char *format, ...);
 void sshdebug(Conn *, char *format, ...);
 void sshlog(Conn *, char *format, ...);

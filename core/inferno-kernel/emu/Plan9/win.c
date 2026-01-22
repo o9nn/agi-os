@@ -1,45 +1,45 @@
-#include	"dat.h"
-#include	"fns.h"
-#include	"kernel.h"
-#include	"error.h"
-#include	<draw.h>
-#include	<memdraw.h>
-#include	<cursor.h>
-#include	"keyboard.h"
+#include "dat.h"
+#include "fns.h"
+#include "kernel.h"
+#include "error.h"
+#include <draw.h>
+#include <memdraw.h>
+#include <cursor.h>
+#include "keyboard.h"
 enum
 {
-Margin	= 4,
-Lsize		= 100,
+Margin = 4,
+Lsize = 100,
 };
 extern Memimage *screenimage;
 extern int kproc1(char*, void (*)(void*), void*, int);
-static	ulong*	attachwindow(Rectangle*, ulong*, int*, int*);
-static void	plan9readmouse(void*);
-static void	plan9readkeybd(void*);
-static int	mapspecials(char *s1, char *s2, int *n);
-int	usenewwin = 1;
-int	kbdiscons;
-static int	truedepth;
-static int		datafd;
-static int		ctlfd;
-static int		mousefd = -1;
-static int		keybdfd;
-static int		mousepid = -1;
-static int		keybdpid = -1;
-static int		cursfd;
-static char	winname[64];
-static QLock		ql;
-static Rectangle	tiler;
-static ulong*		data;
-static uchar*		loadbuf;
-static int		cursfd;
-static int		imageid;
-static Rectangle	imager;
-static uchar	*chunk;
-static int	chunksize;
-static	int	dispbufsize;
-#define	NINFO	12*12
-#define	HDR		21
+static ulong* attachwindow(Rectangle*, ulong*, int*, int*);
+static void plan9readmouse(void*);
+static void plan9readkeybd(void*);
+static int mapspecials(char *s1, char *s2, int *n);
+int usenewwin = 1;
+int kbdiscons;
+static int truedepth;
+static int datafd;
+static int ctlfd;
+static int mousefd = -1;
+static int keybdfd;
+static int mousepid = -1;
+static int keybdpid = -1;
+static int cursfd;
+static char winname[64];
+static QLock ql;
+static Rectangle tiler;
+static ulong* data;
+static uchar* loadbuf;
+static int cursfd;
+static int imageid;
+static Rectangle imager;
+static uchar *chunk;
+static int chunksize;
+static int dispbufsize;
+#define NINFO 12*12
+#define HDR 21
 void
 killrefresh(void)
 {
@@ -397,22 +397,22 @@ n = snprint(buf, sizeof buf, "m%11d %11d ", x, y);
 write(mousefd, buf, n);
 }
 enum {
-P9KF=	0xF000,
-P9Spec=	0xF800,
-Khome=	P9KF|0x0D,
-Kup=	P9KF|0x0E,
-Kpgup=	P9KF|0x0F,
-Kprint=	P9KF|0x10,
-Kleft=	P9KF|0x11,
-Kright=	P9KF|0x12,
-Kdown=	P9Spec|0x00,
-Kview=	P9Spec|0x00,
-Kpgdown=	P9KF|0x13,
-Kins=	P9KF|0x14,
-Kend=	KF|0x18,
-Kalt=		P9KF|0x15,
-Kshift=	P9KF|0x16,
-Kctl=		P9KF|0x17,
+P9KF= 0xF000,
+P9Spec= 0xF800,
+Khome= P9KF|0x0D,
+Kup= P9KF|0x0E,
+Kpgup= P9KF|0x0F,
+Kprint= P9KF|0x10,
+Kleft= P9KF|0x11,
+Kright= P9KF|0x12,
+Kdown= P9Spec|0x00,
+Kview= P9Spec|0x00,
+Kpgdown= P9KF|0x13,
+Kins= P9KF|0x14,
+Kend= KF|0x18,
+Kalt= P9KF|0x15,
+Kshift= P9KF|0x16,
+Kctl= P9KF|0x17,
 };
 static int
 mapspecials(char *s1, char *s2, int *n)

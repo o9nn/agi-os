@@ -1,7 +1,7 @@
 #ifndef gsuid_INCLUDED
-#  define gsuid_INCLUDED
+# define gsuid_INCLUDED
 #ifndef gs_uid_DEFINED
-#  define gs_uid_DEFINED
+# define gs_uid_DEFINED
 typedef struct gs_uid_s gs_uid;
 #endif
 struct gs_uid_s {

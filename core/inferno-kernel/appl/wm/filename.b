@@ -11,7 +11,7 @@ selectfile: Selectfile;
 include "arg.m";
 Filename: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 usage()
 {
@@ -40,14 +40,14 @@ raise "fail:bad context";
 sys->pctl(Sys->NEWPGRP, nil);
 selectfile->init();
 startdir := ".";
-#	geom := "-x " + string (ctxt.screen.image.r.dx() / 5) +
-#			" -y " + string (ctxt.screen.image.r.dy() / 5);
+# geom := "-x " + string (ctxt.screen.image.r.dx() / 5) +
+# " -y " + string (ctxt.screen.image.r.dy() / 5);
 title := "Select a file";
 arg->init(argv);
 while (opt := arg->opt()) {
 case opt {
-#		'g' =>
-#			geom = arg->arg();
+# 'g' =>
+# geom = arg->arg();
 'd' =>
 startdir = arg->arg();
 't' =>
@@ -59,7 +59,7 @@ usage();
 }
 if (startdir == nil || title == nil)
 usage();
-#	top := tk->toplevel(ctxt.screen, geom);
+# top := tk->toplevel(ctxt.screen, geom);
 argv = arg->argv();
 arg = nil;
 sys->print("%s\n", selectfile->filename(ctxt, nil, title, argv, startdir));

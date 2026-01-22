@@ -42,13 +42,13 @@ int lance_debug = 1;
 #define LANCE_LOG_TX_BUFFERS 4
 #define LANCE_LOG_RX_BUFFERS 4
 #endif
-#define TX_RING_SIZE			(1 << (LANCE_LOG_TX_BUFFERS))
-#define TX_RING_MOD_MASK		(TX_RING_SIZE - 1)
-#define TX_RING_LEN_BITS		((LANCE_LOG_TX_BUFFERS) << 29)
-#define RX_RING_SIZE			(1 << (LANCE_LOG_RX_BUFFERS))
-#define RX_RING_MOD_MASK		(RX_RING_SIZE - 1)
-#define RX_RING_LEN_BITS		((LANCE_LOG_RX_BUFFERS) << 29)
-#define PKT_BUF_SZ		1544
+#define TX_RING_SIZE (1 << (LANCE_LOG_TX_BUFFERS))
+#define TX_RING_MOD_MASK (TX_RING_SIZE - 1)
+#define TX_RING_LEN_BITS ((LANCE_LOG_TX_BUFFERS) << 29)
+#define RX_RING_SIZE (1 << (LANCE_LOG_RX_BUFFERS))
+#define RX_RING_MOD_MASK (RX_RING_SIZE - 1)
+#define RX_RING_LEN_BITS ((LANCE_LOG_RX_BUFFERS) << 29)
+#define PKT_BUF_SZ 1544
 #define LANCE_DATA 0x10
 #define LANCE_ADDR 0x12
 #define LANCE_RESET 0x14
@@ -66,15 +66,15 @@ s16 misc;
 };
 struct lance_init_block {
 u16 mode;
-u8  phys_addr[6];
+u8 phys_addr[6];
 u32 filter[2];
-u32  rx_ring;
-u32  tx_ring;
+u32 rx_ring;
+u32 tx_ring;
 };
 struct lance_private {
 struct lance_rx_head rx_ring[RX_RING_SIZE];
 struct lance_tx_head tx_ring[TX_RING_SIZE];
-struct lance_init_block	init_block;
+struct lance_init_block init_block;
 const char *name;
 struct sk_buff* tx_skbuff[TX_RING_SIZE];
 struct sk_buff* rx_skbuff[RX_RING_SIZE];
@@ -88,11 +88,11 @@ unsigned char chip_version;
 char tx_full;
 unsigned long lock;
 };
-#define LANCE_MUST_PAD          0x00000001
+#define LANCE_MUST_PAD 0x00000001
 #define LANCE_ENABLE_AUTOSELECT 0x00000002
-#define LANCE_MUST_REINIT_RING  0x00000004
-#define LANCE_MUST_UNRESET      0x00000008
-#define LANCE_HAS_MISSED_FRAME  0x00000010
+#define LANCE_MUST_REINIT_RING 0x00000004
+#define LANCE_MUST_UNRESET 0x00000008
+#define LANCE_HAS_MISSED_FRAME 0x00000010
 static struct lance_chip_type {
 int id_number;
 const char *name;
@@ -115,7 +115,7 @@ LANCE_HAS_MISSED_FRAME},
 {0x2621, "PCnet/PCI-II 79C970A",
 LANCE_ENABLE_AUTOSELECT + LANCE_MUST_REINIT_RING +
 LANCE_HAS_MISSED_FRAME},
-{0x0, 	 "PCnet (unknown)",
+{0x0, "PCnet (unknown)",
 LANCE_ENABLE_AUTOSELECT + LANCE_MUST_REINIT_RING +
 LANCE_HAS_MISSED_FRAME},
 };
@@ -132,11 +132,11 @@ static int lance_close(struct device *dev);
 static struct enet_statistics *lance_get_stats(struct device *dev);
 static void set_multicast_list(struct device *dev);
 #ifdef MODULE
-#define MAX_CARDS		8
-#define IF_NAMELEN		8
+#define MAX_CARDS 8
+#define IF_NAMELEN 8
 static int io[MAX_CARDS] = { 0, };
 static int dma[MAX_CARDS] = { 0, };
-static int irq[MAX_CARDS]  = { 0, };
+static int irq[MAX_CARDS] = { 0, };
 static char ifnames[MAX_CARDS][IF_NAMELEN] = { {0, }, };
 static struct device dev_lance[MAX_CARDS] =
 {{
@@ -154,7 +154,7 @@ dev->irq = irq[this_dev];
 dev->base_addr = io[this_dev];
 dev->dma = dma[this_dev];
 dev->init = lance_probe;
-if (io[this_dev] == 0)  {
+if (io[this_dev] == 0) {
 if (this_dev != 0) break;
 printk(KERN_NOTICE "lance.c: Module autoprobing not allowed. Append \"io=0xNNN\" value(s).\n");
 return -EPERM;
@@ -245,9 +245,9 @@ const char *chipname;
 unsigned char hpJ2405A = 0;
 int hp_builtin = 0;
 static int did_version = 0;
-if (readw(0x000f0102) == 0x5048)  {
+if (readw(0x000f0102) == 0x5048) {
 static const short ioaddr_table[] = { 0x300, 0x320, 0x340, 0x360};
-int hp_port = (readl(0x000f00f1) & 1)  ? 0x499 : 0x99;
+int hp_port = (readl(0x000f00f1) & 1) ? 0x499 : 0x99;
 if ((inb(hp_port) & 0xc0) == 0x80
 && ioaddr_table[inb(hp_port) & 3] == ioaddr)
 hp_builtin = hp_port;
@@ -347,7 +347,7 @@ dma_channels = ((inb(DMA1_STAT_REG) >> 4) & 0x0f) |
 }
 if (dev->irq >= 2)
 printk(" assigned IRQ %d", dev->irq);
-else if (lance_version != 0)  {
+else if (lance_version != 0) {
 autoirq_setup(0);
 outw(0x0041, ioaddr+LANCE_DATA);
 dev->irq = autoirq_report(2);
@@ -412,7 +412,7 @@ if (chip_table[lp->chip_version].flags & LANCE_ENABLE_AUTOSELECT) {
 outw(0x0002, ioaddr+LANCE_ADDR);
 outw(inw(ioaddr+LANCE_BUS_IF) | 0x0002, ioaddr+LANCE_BUS_IF);
 }
-if (lance_debug > 0  &&  did_version++ == 0)
+if (lance_debug > 0 && did_version++ == 0)
 printk("%s", version);
 dev->open = lance_open;
 dev->hard_start_xmit = lance_start_xmit;
@@ -533,7 +533,7 @@ if (must_reinit ||
 lance_purge_tx_ring(dev);
 lance_init_ring(dev, GFP_ATOMIC);
 }
-outw(0x0000,    dev->base_addr + LANCE_ADDR);
+outw(0x0000, dev->base_addr + LANCE_ADDR);
 outw(csr0_bits, dev->base_addr + LANCE_DATA);
 }
 static int

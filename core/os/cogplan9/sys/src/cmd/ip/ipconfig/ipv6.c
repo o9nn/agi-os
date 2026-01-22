@@ -10,54 +10,54 @@
 #define NetL(x) (((uchar*)x)[0]<<24 | ((uchar*)x)[1]<<16 | \
 ((uchar*)x)[2]<< 8 | ((uchar*)x)[3])
 enum {
-ICMP6LEN=	4,
+ICMP6LEN= 4,
 };
 typedef struct Hdr Hdr;
 struct Hdr
 {
-uchar	type;
-uchar	code;
-uchar	cksum[2];
-uchar	data[];
+uchar type;
+uchar code;
+uchar cksum[2];
+uchar data[];
 };
 char *icmpmsg6[Maxtype6+1] =
 {
-[EchoReply]		"EchoReply",
-[UnreachableV6]		"UnreachableV6",
-[PacketTooBigV6]	"PacketTooBigV6",
-[TimeExceedV6]		"TimeExceedV6",
-[Redirect]		"Redirect",
-[EchoRequest]		"EchoRequest",
-[TimeExceed]		"TimeExceed",
-[InParmProblem]		"InParmProblem",
-[Timestamp]		"Timestamp",
-[TimestampReply]	"TimestampReply",
-[InfoRequest]		"InfoRequest",
-[InfoReply]		"InfoReply",
-[AddrMaskRequest]	"AddrMaskRequest",
-[AddrMaskReply]		"AddrMaskReply",
-[EchoRequestV6]		"EchoRequestV6",
-[EchoReplyV6]		"EchoReplyV6",
-[RouterSolicit]		"RouterSolicit",
-[RouterAdvert]		"RouterAdvert",
-[NbrSolicit]		"NbrSolicit",
-[NbrAdvert]		"NbrAdvert",
-[RedirectV6]		"RedirectV6",
+[EchoReply] "EchoReply",
+[UnreachableV6] "UnreachableV6",
+[PacketTooBigV6] "PacketTooBigV6",
+[TimeExceedV6] "TimeExceedV6",
+[Redirect] "Redirect",
+[EchoRequest] "EchoRequest",
+[TimeExceed] "TimeExceed",
+[InParmProblem] "InParmProblem",
+[Timestamp] "Timestamp",
+[TimestampReply] "TimestampReply",
+[InfoRequest] "InfoRequest",
+[InfoReply] "InfoReply",
+[AddrMaskRequest] "AddrMaskRequest",
+[AddrMaskReply] "AddrMaskReply",
+[EchoRequestV6] "EchoRequestV6",
+[EchoReplyV6] "EchoReplyV6",
+[RouterSolicit] "RouterSolicit",
+[RouterAdvert] "RouterAdvert",
+[NbrSolicit] "NbrSolicit",
+[NbrAdvert] "NbrAdvert",
+[RedirectV6] "RedirectV6",
 };
 static char *icmp6opts[] =
 {
-[0]			"unknown option",
-[V6nd_srclladdr]	"srcll_addr",
-[V6nd_targlladdr]	"targll_addr",
-[V6nd_pfxinfo]		"prefix",
-[V6nd_redirhdr]		"redirect",
-[V6nd_mtu]		"mtu",
-[V6nd_home]		"home",
-[V6nd_srcaddrs]		"src_addrs",
-[V6nd_ip]		"ip",
-[V6nd_rdns]		"rdns",
-[V6nd_9fs]		"9fs",
-[V6nd_9auth]		"9auth",
+[0] "unknown option",
+[V6nd_srclladdr] "srcll_addr",
+[V6nd_targlladdr] "targll_addr",
+[V6nd_pfxinfo] "prefix",
+[V6nd_redirhdr] "redirect",
+[V6nd_mtu] "mtu",
+[V6nd_home] "home",
+[V6nd_srcaddrs] "src_addrs",
+[V6nd_ip] "ip",
+[V6nd_rdns] "rdns",
+[V6nd_9fs] "9fs",
+[V6nd_9auth] "9auth",
 };
 uchar v6allroutersL[IPaddrlen] = {
 0xff, 0x02, 0, 0,
@@ -130,10 +130,10 @@ ea2lla(uchar *lla, uchar *ea)
 {
 assert(IPaddrlen == 16);
 memset(lla, 0, IPaddrlen);
-lla[0]  = 0xFE;
-lla[1]  = 0x80;
-lla[8]  = ea[0] | 0x2;
-lla[9]  = ea[1];
+lla[0] = 0xFE;
+lla[1] = 0x80;
+lla[8] = ea[0] | 0x2;
+lla[9] = ea[1];
 lla[10] = ea[2];
 lla[11] = 0xFF;
 lla[12] = 0xFE;
@@ -146,8 +146,8 @@ ipv62smcast(uchar *smcast, uchar *a)
 {
 assert(IPaddrlen == 16);
 memset(smcast, 0, IPaddrlen);
-smcast[0]  = 0xFF;
-smcast[1]  = 0x02;
+smcast[0] = 0xFF;
+smcast[1] = 0x02;
 smcast[11] = 0x1;
 smcast[12] = 0xFF;
 smcast[13] = a[13];
@@ -479,9 +479,9 @@ ra = (Routeradv*)buf;
 conf.ttl = ra->cttl;
 conf.mflag = (MFMASK & ra->mor);
 conf.oflag = (OCMASK & ra->mor);
-conf.routerlt =  nhgets(ra->routerlt);
+conf.routerlt = nhgets(ra->routerlt);
 conf.reachtime = nhgetl(ra->rchbltime);
-conf.rxmitra =   nhgetl(ra->rxmtimer);
+conf.rxmitra = nhgetl(ra->rxmtimer);
 if (fprint(conf.cfd, "ra6 recvra 1") < 0)
 ralog("write(ra6 recvra 1) failed: %r");
 issuebasera6(&conf);
@@ -537,10 +537,10 @@ return;
 }
 memmove(conf.v6pref, prfo->pref, IPaddrlen);
 conf.prefixlen = prfo->plen;
-conf.onlink =   ((prfo->lar & OLMASK) != 0);
+conf.onlink = ((prfo->lar & OLMASK) != 0);
 conf.autoflag = ((prfo->lar & AFMASK) != 0);
 conf.validlt = nhgetl(prfo->validlt);
-conf.preflt =  nhgetl(prfo->preflt);
+conf.preflt = nhgetl(prfo->preflt);
 issueadd6(&conf);
 if (first) {
 first = 0;

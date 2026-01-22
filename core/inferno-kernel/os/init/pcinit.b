@@ -9,22 +9,22 @@ include "security.m";
 auth: Auth;
 include "styx.m";
 dosfs : Dosfs;
-PROMPT:		con 1;		# boot from prompt?  (0 means boot from fs)
-SHELL:		con 0;		# Start a Shell, not Logon
-INIT: 		con "/init";	# file to read init commands from
+PROMPT: con 1; # boot from prompt? (0 means boot from fs)
+SHELL: con 0; # Start a Shell, not Logon
+INIT: con "/init"; # file to read init commands from
 startip := 0;
-Bootpreadlen:	con 128;
+Bootpreadlen: con 128;
 Init: module
 {
-init:	fn();
+init: fn();
 };
 Logon: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 Sh: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 lfs(dev: string): int
 {

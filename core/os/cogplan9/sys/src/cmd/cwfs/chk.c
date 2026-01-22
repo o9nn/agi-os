@@ -1,51 +1,51 @@
-#include	"all.h"
+#include "all.h"
 typedef struct {
-Dentry	*d;
-Off	qpath;
-int	ns;
+Dentry *d;
+Off qpath;
+int ns;
 } Extdentry;
-static	char*	abits;
-static	long	sizabits;
-static	char*	qbits;
-static	long	sizqbits;
-static	char*	name;
-static	long	sizname;
-static	Off	fstart;
-static	Off	fsize;
-static	Off	nfiles;
-static	Off	maxq;
-static	Device*	dev;
-static	Off	ndup;
-static	Off	nused;
-static	Off	nfdup;
-static	Off	nqbad;
-static	Off	nfree;
-static	Off	nbad;
-static	int	mod;
-static	int	flags;
-static	int	ronly;
-static	int	cwflag;
-static	Devsize	sbaddr;
-static	Devsize	oldblock;
-static	int	depth;
-static	int	maxdepth;
-static	uchar	*lowstack, *startstack;
-static	int	amark(Off);
-static	void*	chkalloc(ulong);
-static	void	ckfreelist(Superb*);
-static	int	fmark(Off);
-static	int	fsck(Dentry*);
-static	int	ftest(Off);
-static	Dentry*	maked(Off, int, Off);
-static	void	missing(void);
-static	void	mkfreelist(Superb*);
-static	void	modd(Off, int, Dentry*);
-static	void	qmark(Off);
-static	void	trfreelist(Superb*);
-static	void	xaddfree(Device*, Off, Superb*, Iobuf*);
-static	void	xflush(Device*, Superb*, Iobuf*);
-static	void	xread(Off, Off);
-static	Iobuf*	xtag(Off, int, Off);
+static char* abits;
+static long sizabits;
+static char* qbits;
+static long sizqbits;
+static char* name;
+static long sizname;
+static Off fstart;
+static Off fsize;
+static Off nfiles;
+static Off maxq;
+static Device* dev;
+static Off ndup;
+static Off nused;
+static Off nfdup;
+static Off nqbad;
+static Off nfree;
+static Off nbad;
+static int mod;
+static int flags;
+static int ronly;
+static int cwflag;
+static Devsize sbaddr;
+static Devsize oldblock;
+static int depth;
+static int maxdepth;
+static uchar *lowstack, *startstack;
+static int amark(Off);
+static void* chkalloc(ulong);
+static void ckfreelist(Superb*);
+static int fmark(Off);
+static int fsck(Dentry*);
+static int ftest(Off);
+static Dentry* maked(Off, int, Off);
+static void missing(void);
+static void mkfreelist(Superb*);
+static void modd(Off, int, Dentry*);
+static void qmark(Off);
+static void trfreelist(Superb*);
+static void xaddfree(Device*, Off, Superb*, Iobuf*);
+static void xflush(Device*, Superb*, Iobuf*);
+static void xread(Off, Off);
+static Iobuf* xtag(Off, int, Off);
 static void *
 chkalloc(ulong n)
 {
@@ -61,29 +61,29 @@ free(p);
 }
 enum
 {
-Crdall	= (1<<0),
-Ctag	= (1<<1),
-Cpfile	= (1<<2),
-Cpdir	= (1<<3),
-Cfree	= (1<<4),
-Cream	= (1<<6),
-Cbad	= (1<<7),
-Ctouch	= (1<<8),
-Ctrim	= (1<<9),
+Crdall = (1<<0),
+Ctag = (1<<1),
+Cpfile = (1<<2),
+Cpdir = (1<<3),
+Cfree = (1<<4),
+Cream = (1<<6),
+Cbad = (1<<7),
+Ctouch = (1<<8),
+Ctrim = (1<<9),
 };
 static struct {
-char*	option;
-long	flag;
+char* option;
+long flag;
 } ckoption[] = {
-"rdall",	Crdall,
-"tag",		Ctag,
-"pfile",	Cpfile,
-"pdir",		Cpdir,
-"free",		Cfree,
-"ream",		Cream,
-"bad",		Cbad,
-"touch",	Ctouch,
-"trim",		Ctrim,
+"rdall", Crdall,
+"tag", Ctag,
+"pfile", Cpfile,
+"pdir", Cpdir,
+"free", Cfree,
+"ream", Cream,
+"bad", Cbad,
+"touch", Ctouch,
+"trim", Ctrim,
 0,
 };
 void
@@ -281,7 +281,7 @@ for(i=0; i<INDPERBUF; i++) {
 a = blkck(&((Off *)p1->iobuf)[i], &p1->flags);
 if (a)
 if (tag == Tind1)
-dmod +=   dirck(ed, a);
+dmod += dirck(ed, a);
 else
 dmod += indirck(ed, a, tag-1);
 }
@@ -359,10 +359,10 @@ return dmod;
 }
 enum { XFEN = FEPERBUF + 6 };
 typedef struct {
-int	flag;
-int	count;
-int	next;
-Off	addr[XFEN];
+int flag;
+int count;
+int next;
+Off addr[XFEN];
 } Xfree;
 static void
 xaddfree(Device *dev, Off a, Superb *sb, Iobuf *p)

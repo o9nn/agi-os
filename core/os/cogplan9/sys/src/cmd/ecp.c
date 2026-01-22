@@ -20,17 +20,17 @@ typedef uvlong Daddr;
 typedef vlong Sdaddr;
 typedef long Rdwrfn(int, void *, long);
 typedef struct {
-char	*name;
-int	fd;
-Daddr	startsect;
-int	fast;
-int	seekable;
-ulong	maxconerrs;
-ulong	conerrs;
-Daddr	congoodblks;
-Daddr	harderrs;
-Daddr	lasterr;
-Daddr	lastgood;
+char *name;
+int fd;
+Daddr startsect;
+int fast;
+int seekable;
+ulong maxconerrs;
+ulong conerrs;
+Daddr congoodblks;
+Daddr harderrs;
+Daddr lasterr;
+Daddr lastgood;
 } File;
 char *argv0;
 static int reblock = No, progress = No, swizzle = No;
@@ -147,7 +147,7 @@ return tail;
 static int
 ismagicok(char *buff, char *tail)
 {
-return  memcmp(buff, uniq, sizeof uniq) == 0 ||
+return memcmp(buff, uniq, sizeof uniq) == 0 ||
 memcmp(tail, uniq, sizeof uniq) == 0;
 }
 static int
@@ -295,8 +295,8 @@ return errors;
 errors = 0;
 for (i = 0; i < sectors; i++) {
 int thissect = stsect + i;
-if (badsect(bio(src,  read, buff, thissect, 1, Mustseek)))
-io_expl(src,  "read",  thissect);
+if (badsect(bio(src, read, buff, thissect, 1, Mustseek)))
+io_expl(src, "read", thissect);
 if (badsect(bio(dest, read, buft, thissect, 1, Mustseek)))
 io_expl(dest, "write", thissect);
 if (memcmp(buff, buft, sectsz) != 0) {
@@ -311,7 +311,7 @@ fprint(2, "%s: verification failed on big read at %s (%s) "
 sectid(dest, stsect));
 free(srcsect);
 }
-repos(src,  stsect + sectors);
+repos(src, stsect + sectors);
 repos(dest, stsect + sectors);
 return errors;
 }
@@ -342,7 +342,7 @@ if (xfrsects > blksects) {
 fprint(2, "%s: block size of %d is too big.\n", argv0, xfrsects);
 exits("block size too big");
 }
-bigxfer(src,  read,  buf, stsect, xfrsects, mustseek);
+bigxfer(src, read, buf, stsect, xfrsects, mustseek);
 if (swizzle)
 swizzlebits(buf, xfrsects);
 bigxfer(dest, write, buf, stsect, xfrsects, mustseek);
@@ -360,7 +360,7 @@ if (xfrsects > blksects) {
 fprint(2, "%s: block size of %d is too big.\n", argv0, xfrsects);
 exits("block size too big");
 }
-bigxfer(src,  read, buf,    stsect, xfrsects, mustseek);
+bigxfer(src, read, buf, stsect, xfrsects, mustseek);
 bigxfer(dest, read, vfybuf, stsect, xfrsects, mustseek);
 return verify(src, dest, buf, vfybuf, stsect, xfrsects);
 }
@@ -501,7 +501,7 @@ if (!isascii(argv[0][0]) || !isdigit(argv[0][0])) {
 fprint(2, "%s: %s is not numeric\n", argv0, argv[0]);
 exits("non-numeric sector count");
 }
-src.name =  argv[1];
+src.name = argv[1];
 dest.name = argv[2];
 blksects = blocksize / sectsz;
 if (blksects < 1)

@@ -63,16 +63,16 @@ MODULE_DESCRIPTION("Linux PCMCIA Card Services " CS_RELEASE
 "\n  options:" OPTIONS);
 MODULE_LICENSE("Dual MPL/GPL");
 #define INT_MODULE_PARM(n, v) static int n = v; MODULE_PARM(n, "i")
-INT_MODULE_PARM(setup_delay,	HZ/20);
-INT_MODULE_PARM(resume_delay,	HZ/5);
-INT_MODULE_PARM(shutdown_delay,	HZ/40);
-INT_MODULE_PARM(vcc_settle,	HZ*4/10);
-INT_MODULE_PARM(reset_time,	10);
-INT_MODULE_PARM(unreset_delay,	HZ/10);
-INT_MODULE_PARM(unreset_check,	HZ/10);
-INT_MODULE_PARM(unreset_limit,	50);
-INT_MODULE_PARM(cis_speed,	300);
-INT_MODULE_PARM(io_speed,	0);
+INT_MODULE_PARM(setup_delay, HZ/20);
+INT_MODULE_PARM(resume_delay, HZ/5);
+INT_MODULE_PARM(shutdown_delay, HZ/40);
+INT_MODULE_PARM(vcc_settle, HZ*4/10);
+INT_MODULE_PARM(reset_time, 10);
+INT_MODULE_PARM(unreset_delay, HZ/10);
+INT_MODULE_PARM(unreset_check, HZ/10);
+INT_MODULE_PARM(unreset_limit, 50);
+INT_MODULE_PARM(cis_speed, 300);
+INT_MODULE_PARM(io_speed, 0);
 #ifdef CONFIG_PM
 INT_MODULE_PARM(do_apm, 1);
 #endif
@@ -98,89 +98,89 @@ int key;
 char *msg;
 } lookup_t;
 static const lookup_t error_table[] = {
-{ CS_SUCCESS,		"Operation succeeded" },
-{ CS_BAD_ADAPTER,		"Bad adapter" },
-{ CS_BAD_ATTRIBUTE, 	"Bad attribute", },
-{ CS_BAD_BASE,		"Bad base address" },
-{ CS_BAD_EDC,		"Bad EDC" },
-{ CS_BAD_IRQ,		"Bad IRQ" },
-{ CS_BAD_OFFSET,		"Bad offset" },
-{ CS_BAD_PAGE,		"Bad page number" },
-{ CS_READ_FAILURE,		"Read failure" },
-{ CS_BAD_SIZE,		"Bad size" },
-{ CS_BAD_SOCKET,		"Bad socket" },
-{ CS_BAD_TYPE,		"Bad type" },
-{ CS_BAD_VCC,		"Bad Vcc" },
-{ CS_BAD_VPP,		"Bad Vpp" },
-{ CS_BAD_WINDOW,		"Bad window" },
-{ CS_WRITE_FAILURE,		"Write failure" },
-{ CS_NO_CARD,		"No card present" },
-{ CS_UNSUPPORTED_FUNCTION,	"Usupported function" },
-{ CS_UNSUPPORTED_MODE,	"Unsupported mode" },
-{ CS_BAD_SPEED,		"Bad speed" },
-{ CS_BUSY,			"Resource busy" },
-{ CS_GENERAL_FAILURE,	"General failure" },
-{ CS_WRITE_PROTECTED,	"Write protected" },
-{ CS_BAD_ARG_LENGTH,	"Bad argument length" },
-{ CS_BAD_ARGS,		"Bad arguments" },
-{ CS_CONFIGURATION_LOCKED,	"Configuration locked" },
-{ CS_IN_USE,		"Resource in use" },
-{ CS_NO_MORE_ITEMS,		"No more items" },
-{ CS_OUT_OF_RESOURCE,	"Out of resource" },
-{ CS_BAD_HANDLE,		"Bad handle" },
-{ CS_BAD_TUPLE,		"Bad CIS tuple" }
+{ CS_SUCCESS, "Operation succeeded" },
+{ CS_BAD_ADAPTER, "Bad adapter" },
+{ CS_BAD_ATTRIBUTE, "Bad attribute", },
+{ CS_BAD_BASE, "Bad base address" },
+{ CS_BAD_EDC, "Bad EDC" },
+{ CS_BAD_IRQ, "Bad IRQ" },
+{ CS_BAD_OFFSET, "Bad offset" },
+{ CS_BAD_PAGE, "Bad page number" },
+{ CS_READ_FAILURE, "Read failure" },
+{ CS_BAD_SIZE, "Bad size" },
+{ CS_BAD_SOCKET, "Bad socket" },
+{ CS_BAD_TYPE, "Bad type" },
+{ CS_BAD_VCC, "Bad Vcc" },
+{ CS_BAD_VPP, "Bad Vpp" },
+{ CS_BAD_WINDOW, "Bad window" },
+{ CS_WRITE_FAILURE, "Write failure" },
+{ CS_NO_CARD, "No card present" },
+{ CS_UNSUPPORTED_FUNCTION, "Usupported function" },
+{ CS_UNSUPPORTED_MODE, "Unsupported mode" },
+{ CS_BAD_SPEED, "Bad speed" },
+{ CS_BUSY, "Resource busy" },
+{ CS_GENERAL_FAILURE, "General failure" },
+{ CS_WRITE_PROTECTED, "Write protected" },
+{ CS_BAD_ARG_LENGTH, "Bad argument length" },
+{ CS_BAD_ARGS, "Bad arguments" },
+{ CS_CONFIGURATION_LOCKED, "Configuration locked" },
+{ CS_IN_USE, "Resource in use" },
+{ CS_NO_MORE_ITEMS, "No more items" },
+{ CS_OUT_OF_RESOURCE, "Out of resource" },
+{ CS_BAD_HANDLE, "Bad handle" },
+{ CS_BAD_TUPLE, "Bad CIS tuple" }
 };
 #define ERROR_COUNT (sizeof(error_table)/sizeof(lookup_t))
 static const lookup_t service_table[] = {
-{ AccessConfigurationRegister,	"AccessConfigurationRegister" },
-{ AddSocketServices,		"AddSocketServices" },
-{ AdjustResourceInfo,		"AdjustResourceInfo" },
-{ CheckEraseQueue,			"CheckEraseQueue" },
-{ CloseMemory,			"CloseMemory" },
-{ DeregisterClient,			"DeregisterClient" },
-{ DeregisterEraseQueue,		"DeregisterEraseQueue" },
-{ GetCardServicesInfo,		"GetCardServicesInfo" },
-{ GetClientInfo,			"GetClientInfo" },
-{ GetConfigurationInfo,		"GetConfigurationInfo" },
-{ GetEventMask,			"GetEventMask" },
-{ GetFirstClient,			"GetFirstClient" },
-{ GetFirstRegion,			"GetFirstRegion" },
-{ GetFirstTuple,			"GetFirstTuple" },
-{ GetNextClient,			"GetNextClient" },
-{ GetNextRegion,			"GetNextRegion" },
-{ GetNextTuple,			"GetNextTuple" },
-{ GetStatus,			"GetStatus" },
-{ GetTupleData,			"GetTupleData" },
-{ MapMemPage,			"MapMemPage" },
-{ ModifyConfiguration,		"ModifyConfiguration" },
-{ ModifyWindow,			"ModifyWindow" },
-{ OpenMemory,			"OpenMemory" },
-{ ParseTuple,			"ParseTuple" },
-{ ReadMemory,			"ReadMemory" },
-{ RegisterClient,			"RegisterClient" },
-{ RegisterEraseQueue,		"RegisterEraseQueue" },
-{ RegisterMTD,			"RegisterMTD" },
-{ ReleaseConfiguration,		"ReleaseConfiguration" },
-{ ReleaseIO,			"ReleaseIO" },
-{ ReleaseIRQ,			"ReleaseIRQ" },
-{ ReleaseWindow,			"ReleaseWindow" },
-{ RequestConfiguration,		"RequestConfiguration" },
-{ RequestIO,			"RequestIO" },
-{ RequestIRQ,			"RequestIRQ" },
-{ RequestSocketMask,		"RequestSocketMask" },
-{ RequestWindow,			"RequestWindow" },
-{ ResetCard,			"ResetCard" },
-{ SetEventMask,			"SetEventMask" },
-{ ValidateCIS,			"ValidateCIS" },
-{ WriteMemory,			"WriteMemory" },
-{ BindDevice,			"BindDevice" },
-{ BindMTD,				"BindMTD" },
-{ ReportError,			"ReportError" },
-{ SuspendCard,			"SuspendCard" },
-{ ResumeCard,			"ResumeCard" },
-{ EjectCard,			"EjectCard" },
-{ InsertCard,			"InsertCard" },
-{ ReplaceCIS,			"ReplaceCIS" }
+{ AccessConfigurationRegister, "AccessConfigurationRegister" },
+{ AddSocketServices, "AddSocketServices" },
+{ AdjustResourceInfo, "AdjustResourceInfo" },
+{ CheckEraseQueue, "CheckEraseQueue" },
+{ CloseMemory, "CloseMemory" },
+{ DeregisterClient, "DeregisterClient" },
+{ DeregisterEraseQueue, "DeregisterEraseQueue" },
+{ GetCardServicesInfo, "GetCardServicesInfo" },
+{ GetClientInfo, "GetClientInfo" },
+{ GetConfigurationInfo, "GetConfigurationInfo" },
+{ GetEventMask, "GetEventMask" },
+{ GetFirstClient, "GetFirstClient" },
+{ GetFirstRegion, "GetFirstRegion" },
+{ GetFirstTuple, "GetFirstTuple" },
+{ GetNextClient, "GetNextClient" },
+{ GetNextRegion, "GetNextRegion" },
+{ GetNextTuple, "GetNextTuple" },
+{ GetStatus, "GetStatus" },
+{ GetTupleData, "GetTupleData" },
+{ MapMemPage, "MapMemPage" },
+{ ModifyConfiguration, "ModifyConfiguration" },
+{ ModifyWindow, "ModifyWindow" },
+{ OpenMemory, "OpenMemory" },
+{ ParseTuple, "ParseTuple" },
+{ ReadMemory, "ReadMemory" },
+{ RegisterClient, "RegisterClient" },
+{ RegisterEraseQueue, "RegisterEraseQueue" },
+{ RegisterMTD, "RegisterMTD" },
+{ ReleaseConfiguration, "ReleaseConfiguration" },
+{ ReleaseIO, "ReleaseIO" },
+{ ReleaseIRQ, "ReleaseIRQ" },
+{ ReleaseWindow, "ReleaseWindow" },
+{ RequestConfiguration, "RequestConfiguration" },
+{ RequestIO, "RequestIO" },
+{ RequestIRQ, "RequestIRQ" },
+{ RequestSocketMask, "RequestSocketMask" },
+{ RequestWindow, "RequestWindow" },
+{ ResetCard, "ResetCard" },
+{ SetEventMask, "SetEventMask" },
+{ ValidateCIS, "ValidateCIS" },
+{ WriteMemory, "WriteMemory" },
+{ BindDevice, "BindDevice" },
+{ BindMTD, "BindMTD" },
+{ ReportError, "ReportError" },
+{ SuspendCard, "SuspendCard" },
+{ ResumeCard, "ResumeCard" },
+{ EjectCard, "EjectCard" },
+{ InsertCard, "InsertCard" },
+{ ReplaceCIS, "ReplaceCIS" }
 };
 #define SERVICE_COUNT (sizeof(service_table)/sizeof(lookup_t))
 static void init_socket(socket_info_t *s)

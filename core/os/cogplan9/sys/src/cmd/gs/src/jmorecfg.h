@@ -1,9 +1,9 @@
 #ifndef gsjmorec_INCLUDED
-#  define gsjmorec_INCLUDED
+# define gsjmorec_INCLUDED
 #include "jmcorig.h"
 #undef DCT_IFAST_SUPPORTED
 #if FPU_TYPE <= 0
-#  undef DCT_FLOAT_SUPPORTED
+# undef DCT_FLOAT_SUPPORTED
 #endif
 #undef C_MULTISCAN_FILES_SUPPORTED
 #undef C_PROGRESSIVE_SUPPORTED
@@ -15,5 +15,5 @@
 #undef UPSAMPLE_MERGING_SUPPORTED
 #undef QUANT_1PASS_SUPPORTED
 #undef QUANT_2PASS_SUPPORTED
-#define D_MAX_BLOCKS_IN_MCU   64
+#define D_MAX_BLOCKS_IN_MCU 64
 #endif

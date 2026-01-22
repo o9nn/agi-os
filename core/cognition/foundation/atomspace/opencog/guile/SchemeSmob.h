@@ -149,7 +149,7 @@ static Handle verify_handle(SCM, const char *, int pos = 1);
 static ValuePtr verify_protom(SCM, const char *, int pos = 1);
 static TruthValuePtr verify_tv(SCM, const char *, int pos = 1);
 static HandleSeq verify_handle_list_msg (SCM, const char*,
-int, const char*,  const char*);
+int, const char*, const char*);
 static HandleSeq verify_handle_list (SCM, const char *,
 int pos = 1);
 static std::vector<bool> verify_bool_list (SCM, const char *,

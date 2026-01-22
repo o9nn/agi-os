@@ -161,8 +161,8 @@ mutex_type*
 mutex() const noexcept
 { return _M_device; }
 private:
-mutex_type*	_M_device;
-bool		_M_owns;
+mutex_type* _M_device;
+bool _M_owns;
 };
 template<typename _Mutex>
 inline void

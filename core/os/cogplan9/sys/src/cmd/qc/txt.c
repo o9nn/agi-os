@@ -1,8 +1,8 @@
 #include "gc.h"
-static	int	resvreg[nelem(reg)];
-static	void	gopcode64(int, Node*, Node*, Node*);
-static	void	gori64(int, Node*, Node*, Node*);
-static	void	gandi64(int, Node*, Node*, Node*);
+static int resvreg[nelem(reg)];
+static void gopcode64(int, Node*, Node*, Node*);
+static void gori64(int, Node*, Node*, Node*);
+static void gandi64(int, Node*, Node*, Node*);
 void
 ginit(void)
 {
@@ -1458,7 +1458,7 @@ break;
 }
 nextpc();
 if(a == AGOK) {
-diag(Z, "bad in gbranch %O",  o);
+diag(Z, "bad in gbranch %O", o);
 nextpc();
 }
 p->as = a;
@@ -1538,7 +1538,7 @@ return o;
 }
 return 0;
 }
-schar	ewidth[NTYPE] =
+schar ewidth[NTYPE] =
 {
 -1,
 SZ_CHAR,
@@ -1561,7 +1561,7 @@ SZ_IND,
 -1,
 SZ_INT,
 };
-long	ncast[NTYPE] =
+long ncast[NTYPE] =
 {
 0,
 BCHAR|BUCHAR,

@@ -41,7 +41,7 @@ cntl_debug (struct ftp_conn *conn, int type, const char *txt)
 char *type_str;
 switch (type)
 {
-case FTP_CONN_CNTL_DEBUG_CMD:   type_str = ">"; break;
+case FTP_CONN_CNTL_DEBUG_CMD: type_str = ">"; break;
 case FTP_CONN_CNTL_DEBUG_REPLY: type_str = "="; break;
 default: type_str = "?"; break;
 }
@@ -54,33 +54,33 @@ fflush (debug_stream);
 }
 pthread_mutex_unlock (&debug_lock);
 }
-#define DEFAULT_NAME_TIMEOUT	300
-#define DEFAULT_STAT_TIMEOUT	120
-#define DEFAULT_BULK_STAT_PERIOD     10
-#define DEFAULT_BULK_STAT_THRESHOLD  5
-#define DEFAULT_NODE_CACHE_MAX	50
+#define DEFAULT_NAME_TIMEOUT 300
+#define DEFAULT_STAT_TIMEOUT 120
+#define DEFAULT_BULK_STAT_PERIOD 10
+#define DEFAULT_BULK_STAT_THRESHOLD 5
+#define DEFAULT_NODE_CACHE_MAX 50
 #define ___D(what) #what
 #define __D(what) ___D(what)
 #define _D(what) __D(DEFAULT_ ## what)
-#define OPT_NO_DEBUG	        1
-#define OPT_NAME_TIMEOUT        5
-#define OPT_STAT_TIMEOUT        7
-#define OPT_NODE_CACHE_MAX      8
-#define OPT_BULK_STAT_PERIOD    9
+#define OPT_NO_DEBUG 1
+#define OPT_NAME_TIMEOUT 5
+#define OPT_STAT_TIMEOUT 7
+#define OPT_NODE_CACHE_MAX 8
+#define OPT_BULK_STAT_PERIOD 9
 #define OPT_BULK_STAT_THRESHOLD 10
 static const struct argp_option common_options[] =
 {
-{"debug",    'D', "FILE",     OPTION_ARG_OPTIONAL, "Print debug output to FILE"},
+{"debug", 'D', "FILE", OPTION_ARG_OPTIONAL, "Print debug output to FILE"},
 {"no-debug", OPT_NO_DEBUG, 0, OPTION_HIDDEN },
 {0,0,0,0, "Parameters:"},
-{"name-timeout",  OPT_NAME_TIMEOUT,     "SECS", 0,
+{"name-timeout", OPT_NAME_TIMEOUT, "SECS", 0,
 "Time directory names are cached (default " _D(NAME_TIMEOUT) ")"},
-{"stat-timeout",    OPT_STAT_TIMEOUT,   "SECS", 0,
+{"stat-timeout", OPT_STAT_TIMEOUT, "SECS", 0,
 "Time stat information is cached (default " _D(STAT_TIMEOUT) ")"},
 {"node-cache-size", OPT_NODE_CACHE_MAX, "ENTRIES", 0,
 "Number of recently used filesystem nodes that are cached (default "
 _D(NODE_CACHE_MAX) ")"},
-{"bulk-stat-period",    OPT_BULK_STAT_PERIOD,    "SECS", 0,
+{"bulk-stat-period", OPT_BULK_STAT_PERIOD, "SECS", 0,
 "Period for detecting bulk stats (default " _D(BULK_STAT_PERIOD) ")"},
 {"bulk-stat-threshold", OPT_BULK_STAT_THRESHOLD, "SECS", 0,
 "Number of stats within the bulk-stat-period that trigger a bulk stat"

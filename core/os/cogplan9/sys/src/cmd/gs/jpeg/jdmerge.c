@@ -17,9 +17,9 @@ JDIMENSION out_row_width;
 JDIMENSION rows_to_go;
 } my_upsampler;
 typedef my_upsampler * my_upsample_ptr;
-#define SCALEBITS	16
-#define ONE_HALF	((INT32) 1 << (SCALEBITS-1))
-#define FIX(x)		((INT32) ((x) * (1L<<SCALEBITS) + 0.5))
+#define SCALEBITS 16
+#define ONE_HALF ((INT32) 1 << (SCALEBITS-1))
+#define FIX(x) ((INT32) ((x) * (1L<<SCALEBITS) + 0.5))
 LOCAL(void)
 build_ycc_rgb_table (j_decompress_ptr cinfo)
 {
@@ -131,15 +131,15 @@ cr = GETJSAMPLE(*inptr2++);
 cred = Crrtab[cr];
 cgreen = (int) RIGHT_SHIFT(Cbgtab[cb] + Crgtab[cr], SCALEBITS);
 cblue = Cbbtab[cb];
-y  = GETJSAMPLE(*inptr0++);
-outptr[RGB_RED] =   range_limit[y + cred];
+y = GETJSAMPLE(*inptr0++);
+outptr[RGB_RED] = range_limit[y + cred];
 outptr[RGB_GREEN] = range_limit[y + cgreen];
-outptr[RGB_BLUE] =  range_limit[y + cblue];
+outptr[RGB_BLUE] = range_limit[y + cblue];
 outptr += RGB_PIXELSIZE;
-y  = GETJSAMPLE(*inptr0++);
-outptr[RGB_RED] =   range_limit[y + cred];
+y = GETJSAMPLE(*inptr0++);
+outptr[RGB_RED] = range_limit[y + cred];
 outptr[RGB_GREEN] = range_limit[y + cgreen];
-outptr[RGB_BLUE] =  range_limit[y + cblue];
+outptr[RGB_BLUE] = range_limit[y + cblue];
 outptr += RGB_PIXELSIZE;
 }
 if (cinfo->output_width & 1) {
@@ -148,10 +148,10 @@ cr = GETJSAMPLE(*inptr2);
 cred = Crrtab[cr];
 cgreen = (int) RIGHT_SHIFT(Cbgtab[cb] + Crgtab[cr], SCALEBITS);
 cblue = Cbbtab[cb];
-y  = GETJSAMPLE(*inptr0);
-outptr[RGB_RED] =   range_limit[y + cred];
+y = GETJSAMPLE(*inptr0);
+outptr[RGB_RED] = range_limit[y + cred];
 outptr[RGB_GREEN] = range_limit[y + cgreen];
-outptr[RGB_BLUE] =  range_limit[y + cblue];
+outptr[RGB_BLUE] = range_limit[y + cblue];
 }
 }
 METHODDEF(void)
@@ -183,25 +183,25 @@ cr = GETJSAMPLE(*inptr2++);
 cred = Crrtab[cr];
 cgreen = (int) RIGHT_SHIFT(Cbgtab[cb] + Crgtab[cr], SCALEBITS);
 cblue = Cbbtab[cb];
-y  = GETJSAMPLE(*inptr00++);
-outptr0[RGB_RED] =   range_limit[y + cred];
+y = GETJSAMPLE(*inptr00++);
+outptr0[RGB_RED] = range_limit[y + cred];
 outptr0[RGB_GREEN] = range_limit[y + cgreen];
-outptr0[RGB_BLUE] =  range_limit[y + cblue];
+outptr0[RGB_BLUE] = range_limit[y + cblue];
 outptr0 += RGB_PIXELSIZE;
-y  = GETJSAMPLE(*inptr00++);
-outptr0[RGB_RED] =   range_limit[y + cred];
+y = GETJSAMPLE(*inptr00++);
+outptr0[RGB_RED] = range_limit[y + cred];
 outptr0[RGB_GREEN] = range_limit[y + cgreen];
-outptr0[RGB_BLUE] =  range_limit[y + cblue];
+outptr0[RGB_BLUE] = range_limit[y + cblue];
 outptr0 += RGB_PIXELSIZE;
-y  = GETJSAMPLE(*inptr01++);
-outptr1[RGB_RED] =   range_limit[y + cred];
+y = GETJSAMPLE(*inptr01++);
+outptr1[RGB_RED] = range_limit[y + cred];
 outptr1[RGB_GREEN] = range_limit[y + cgreen];
-outptr1[RGB_BLUE] =  range_limit[y + cblue];
+outptr1[RGB_BLUE] = range_limit[y + cblue];
 outptr1 += RGB_PIXELSIZE;
-y  = GETJSAMPLE(*inptr01++);
-outptr1[RGB_RED] =   range_limit[y + cred];
+y = GETJSAMPLE(*inptr01++);
+outptr1[RGB_RED] = range_limit[y + cred];
 outptr1[RGB_GREEN] = range_limit[y + cgreen];
-outptr1[RGB_BLUE] =  range_limit[y + cblue];
+outptr1[RGB_BLUE] = range_limit[y + cblue];
 outptr1 += RGB_PIXELSIZE;
 }
 if (cinfo->output_width & 1) {
@@ -210,14 +210,14 @@ cr = GETJSAMPLE(*inptr2);
 cred = Crrtab[cr];
 cgreen = (int) RIGHT_SHIFT(Cbgtab[cb] + Crgtab[cr], SCALEBITS);
 cblue = Cbbtab[cb];
-y  = GETJSAMPLE(*inptr00);
-outptr0[RGB_RED] =   range_limit[y + cred];
+y = GETJSAMPLE(*inptr00);
+outptr0[RGB_RED] = range_limit[y + cred];
 outptr0[RGB_GREEN] = range_limit[y + cgreen];
-outptr0[RGB_BLUE] =  range_limit[y + cblue];
-y  = GETJSAMPLE(*inptr01);
-outptr1[RGB_RED] =   range_limit[y + cred];
+outptr0[RGB_BLUE] = range_limit[y + cblue];
+y = GETJSAMPLE(*inptr01);
+outptr1[RGB_RED] = range_limit[y + cred];
 outptr1[RGB_GREEN] = range_limit[y + cgreen];
-outptr1[RGB_BLUE] =  range_limit[y + cblue];
+outptr1[RGB_BLUE] = range_limit[y + cblue];
 }
 }
 GLOBAL(void)

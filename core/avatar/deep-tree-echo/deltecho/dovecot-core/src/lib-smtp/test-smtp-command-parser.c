@@ -63,7 +63,7 @@ N_ELEMENTS(valid_command_parse_tests);
 static void
 test_smtp_command_parse_valid_check(
 const struct smtp_command_parse_valid_test *test,
-const char *cmd_name,  const char *cmd_params)
+const char *cmd_name, const char *cmd_params)
 {
 test_out(t_strdup_printf("command name = `%s'", test->cmd_name),
 null_strcmp(cmd_name, test->cmd_name) == 0);

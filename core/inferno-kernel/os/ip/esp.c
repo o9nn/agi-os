@@ -1,11 +1,11 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"ip.h"
-#include	"libsec.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "ip.h"
+#include "libsec.h"
 typedef struct Esphdr Esphdr;
 typedef struct Esptail Esptail;
 typedef struct Userhdr Userhdr;
@@ -16,68 +16,68 @@ typedef struct Esprc4 Esprc4;
 #define DPRINT if(0)print
 enum
 {
-IP_ESPPROTO	= 50,
-EsphdrSize	= 28,
-IphdrSize	= 20,
-EsptailSize	= 2,
-UserhdrSize	= 4,
+IP_ESPPROTO = 50,
+EsphdrSize = 28,
+IphdrSize = 20,
+EsptailSize = 2,
+UserhdrSize = 4,
 };
 struct Esphdr
 {
-uchar	vihl;
-uchar	tos;
-uchar	length[2];
-uchar	id[2];
-uchar	frag[2];
-uchar	Unused;
-uchar	espproto;
-uchar	espplen[2];
-uchar	espsrc[4];
-uchar	espdst[4];
-uchar	espspi[4];
-uchar	espseq[4];
+uchar vihl;
+uchar tos;
+uchar length[2];
+uchar id[2];
+uchar frag[2];
+uchar Unused;
+uchar espproto;
+uchar espplen[2];
+uchar espsrc[4];
+uchar espdst[4];
+uchar espspi[4];
+uchar espseq[4];
 };
 struct Esptail
 {
-uchar	pad;
-uchar	nexthdr;
+uchar pad;
+uchar nexthdr;
 };
 struct Userhdr
 {
-uchar	nexthdr;
-uchar	unused[3];
+uchar nexthdr;
+uchar unused[3];
 };
 struct Esppriv
 {
-ulong	in;
-ulong	inerrors;
+ulong in;
+ulong inerrors;
 };
 struct Espcb
 {
-int	incoming;
-int	header;
-ulong	spi;
-ulong	seq;
-ulong	window;
-char	*espalg;
-void	*espstate;
-int	espivlen;
-int	espblklen;
-int	(*cipher)(Espcb*, uchar *buf, int len);
-char	*ahalg;
-void	*ahstate;
-int	ahlen;
-int	ahblklen;
-int	(*auth)(Espcb*, uchar *buf, int len, uchar *hash);
+int incoming;
+int header;
+ulong spi;
+ulong seq;
+ulong window;
+char *espalg;
+void *espstate;
+int espivlen;
+int espblklen;
+int (*cipher)(Espcb*, uchar *buf, int len);
+char *ahalg;
+void *ahstate;
+int ahlen;
+int ahblklen;
+int (*auth)(Espcb*, uchar *buf, int len, uchar *hash);
 };
 struct Algorithm
 {
-char 	*name;
-int	keylen;
-void	(*init)(Espcb*, char* name, uchar *key, int keylen);
+char *name;
+int keylen;
+void (*init)(Espcb*, char* name, uchar *key, int keylen);
 };
 enum {
-RC4forward	= 10*1024*1024,
+RC4forward = 10*1024*1024,
 RC4back = 100*1024,
 };
 struct Esprc4
@@ -89,28 +89,28 @@ ulong lgseq;
 ulong oseq;
 RC4state old;
 };
-static	Conv* convlookup(Proto *esp, ulong spi);
-static	char *setalg(Espcb *ecb, char **f, int n, Algorithm *alg);
-static	void nullespinit(Espcb*, char*, uchar *key, int keylen);
-static	void nullahinit(Espcb*, char*, uchar *key, int keylen);
-static	void shaahinit(Espcb*, char*, uchar *key, int keylen);
-static	void md5ahinit(Espcb*, char*, uchar *key, int keylen);
-static	void desespinit(Espcb *ecb, char *name, uchar *k, int n);
-static	void rc4espinit(Espcb *ecb, char *name, uchar *k, int n);
-static	void espkick(void *x);
+static Conv* convlookup(Proto *esp, ulong spi);
+static char *setalg(Espcb *ecb, char **f, int n, Algorithm *alg);
+static void nullespinit(Espcb*, char*, uchar *key, int keylen);
+static void nullahinit(Espcb*, char*, uchar *key, int keylen);
+static void shaahinit(Espcb*, char*, uchar *key, int keylen);
+static void md5ahinit(Espcb*, char*, uchar *key, int keylen);
+static void desespinit(Espcb *ecb, char *name, uchar *k, int n);
+static void rc4espinit(Espcb *ecb, char *name, uchar *k, int n);
+static void espkick(void *x);
 static Algorithm espalg[] =
 {
-"null",			0,	nullespinit,
-"des_56_cbc",		64,	desespinit,
-"rc4_128",		128,	rc4espinit,
-nil,			0,	nil,
+"null", 0, nullespinit,
+"des_56_cbc", 64, desespinit,
+"rc4_128", 128, rc4espinit,
+nil, 0, nil,
 };
 static Algorithm ahalg[] =
 {
-"null",			0,	nullahinit,
-"hmac_sha1_96",		128,	shaahinit,
-"hmac_md5_96",		128,	md5ahinit,
-nil,			0,	nil,
+"null", 0, nullahinit,
+"hmac_sha1_96", 128, shaahinit,
+"hmac_md5_96", 128, md5ahinit,
+nil, 0, nil,
 };
 static char*
 espconnect(Conv *c, char **argv, int argc)
@@ -412,7 +412,7 @@ n = snprint(buf, len, "%I!%uld\n", c->raddr, ecb->spi);
 qunlock(c);
 return n;
 }
-static	Conv*
+static Conv*
 convlookup(Proto *esp, ulong spi)
 {
 Conv *c, **p;

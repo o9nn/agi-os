@@ -1,48 +1,48 @@
 implement Mashbuiltin;
 #
-#	"history" builtin, defines:
+# "history" builtin, defines:
 #
-include	"mash.m";
-include	"mashparse.m";
-mashlib:	Mashlib;
-chanfill:	ChanFill;
-Env:		import mashlib;
-sys, bufio:	import mashlib;
-Iobuf:	import bufio;
+include "mash.m";
+include "mashparse.m";
+mashlib: Mashlib;
+chanfill: ChanFill;
+Env: import mashlib;
+sys, bufio: import mashlib;
+Iobuf: import bufio;
 Hcmd: adt
 {
-seek:	int;
-text:	array of byte;
+seek: int;
+text: array of byte;
 };
 Reader: adt
 {
-fid:	int;
-offset:	int;
-hint:	int;
-next:	cyclic ref Reader;
+fid: int;
+offset: int;
+hint: int;
+next: cyclic ref Reader;
 };
-history:	array of ref Hcmd;
-lhist:		int;
-nhist:		int;
-seek:		int;
-readers:	ref Reader;
-eof :=		array[0] of byte;
+history: array of ref Hcmd;
+lhist: int;
+nhist: int;
+seek: int;
+readers: ref Reader;
+eof := array[0] of byte;
 #
-#	Interface to catch the use as a command.
+# Interface to catch the use as a command.
 #
 init(nil: ref Draw->Context, args: list of string)
 {
 raise "fail: " + hd args + " not loaded";
 }
 #
-#	Used by whatis.
+# Used by whatis.
 #
 name(): string
 {
 return "history";
 }
 #
-#	Install commands.
+# Install commands.
 #
 mashinit(nil: list of string, lib: Mashlib, nil: Mashbuiltin, e: ref Env)
 {

@@ -110,7 +110,7 @@ tagnames = array[] of {
 "var",
 "xmp"
 };
-tagtable : array of T->StringInt;	# initialized from tagnames
+tagtable : array of T->StringInt; # initialized from tagnames
 attrnames = array[] of {
 "abbr",
 "accept",
@@ -241,260 +241,260 @@ attrnames = array[] of {
 "vspace",
 "width"
 };
-attrtable : array of T->StringInt;	# initialized from attrnames
+attrtable : array of T->StringInt; # initialized from attrnames
 chartab:= array[] of { T->StringInt
-("AElig",	'Æ'),
-("Aacute",	'Á'),
-("Acirc",	'Â'),
-("Agrave",	'À'),
-("Alpha",	'Α'),
-("Aring",	'Å'),
-("Atilde",	'Ã'),
-("Auml",	'Ä'),
-("Beta",	'Β'),
-("Ccedil",	'Ç'),
-("Chi",	'Χ'),
-("Dagger",	'‡'),
-("Delta",	'Δ'),
-("ETH",	'Ð'),
-("Eacute",	'É'),
-("Ecirc",	'Ê'),
-("Egrave",	'È'),
-("Epsilon",	'Ε'),
-("Eta",	'Η'),
-("Euml",	'Ë'),
-("Gamma",	'Γ'),
-("Iacute",	'Í'),
-("Icirc",	'Î'),
-("Igrave",	'Ì'),
-("Iota",	'Ι'),
-("Iuml",	'Ï'),
-("Kappa",	'Κ'),
-("Lambda",	'Λ'),
-("Mu",	'Μ'),
-("Ntilde",	'Ñ'),
-("Nu",	'Ν'),
-("OElig",	'Œ'),
-("Oacute",	'Ó'),
-("Ocirc",	'Ô'),
-("Ograve",	'Ò'),
-("Omega",	'Ω'),
-("Omicron",	'Ο'),
-("Oslash",	'Ø'),
-("Otilde",	'Õ'),
-("Ouml",	'Ö'),
-("Phi",	'Φ'),
-("Pi",	'Π'),
-("Prime",	'″'),
-("Psi",	'Ψ'),
-("Rho",	'Ρ'),
-("Scaron",	'Š'),
-("Sigma",	'Σ'),
-("THORN",	'Þ'),
-("Tau",	'Τ'),
-("Theta",	'Θ'),
-("Uacute",	'Ú'),
-("Ucirc",	'Û'),
-("Ugrave",	'Ù'),
-("Upsilon",	'Υ'),
-("Uuml",	'Ü'),
-("Xi",	'Ξ'),
-("Yacute",	'Ý'),
-("Yuml",	'Ÿ'),
-("Zeta",	'Ζ'),
-("aacute",	'á'),
-("acirc",	'â'),
-("acute",	'´'),
-("aelig",	'æ'),
-("agrave",	'à'),
-("alefsym",	'ℵ'),
-("alpha",	'α'),
-("amp",	'&'),
-("and",	'∧'),
-("ang",	'∠'),
-("aring",	'å'),
-("asymp",	'≈'),
-("atilde",	'ã'),
-("auml",	'ä'),
-("bdquo",	'„'),
-("beta",	'β'),
-("brvbar",	'¦'),
-("bull",	'•'),
-("cap",	'∩'),
-("ccedil",	'ç'),
+("AElig", 'Æ'),
+("Aacute", 'Á'),
+("Acirc", 'Â'),
+("Agrave", 'À'),
+("Alpha", 'Α'),
+("Aring", 'Å'),
+("Atilde", 'Ã'),
+("Auml", 'Ä'),
+("Beta", 'Β'),
+("Ccedil", 'Ç'),
+("Chi", 'Χ'),
+("Dagger", '‡'),
+("Delta", 'Δ'),
+("ETH", 'Ð'),
+("Eacute", 'É'),
+("Ecirc", 'Ê'),
+("Egrave", 'È'),
+("Epsilon", 'Ε'),
+("Eta", 'Η'),
+("Euml", 'Ë'),
+("Gamma", 'Γ'),
+("Iacute", 'Í'),
+("Icirc", 'Î'),
+("Igrave", 'Ì'),
+("Iota", 'Ι'),
+("Iuml", 'Ï'),
+("Kappa", 'Κ'),
+("Lambda", 'Λ'),
+("Mu", 'Μ'),
+("Ntilde", 'Ñ'),
+("Nu", 'Ν'),
+("OElig", 'Œ'),
+("Oacute", 'Ó'),
+("Ocirc", 'Ô'),
+("Ograve", 'Ò'),
+("Omega", 'Ω'),
+("Omicron", 'Ο'),
+("Oslash", 'Ø'),
+("Otilde", 'Õ'),
+("Ouml", 'Ö'),
+("Phi", 'Φ'),
+("Pi", 'Π'),
+("Prime", '″'),
+("Psi", 'Ψ'),
+("Rho", 'Ρ'),
+("Scaron", 'Š'),
+("Sigma", 'Σ'),
+("THORN", 'Þ'),
+("Tau", 'Τ'),
+("Theta", 'Θ'),
+("Uacute", 'Ú'),
+("Ucirc", 'Û'),
+("Ugrave", 'Ù'),
+("Upsilon", 'Υ'),
+("Uuml", 'Ü'),
+("Xi", 'Ξ'),
+("Yacute", 'Ý'),
+("Yuml", 'Ÿ'),
+("Zeta", 'Ζ'),
+("aacute", 'á'),
+("acirc", 'â'),
+("acute", '´'),
+("aelig", 'æ'),
+("agrave", 'à'),
+("alefsym", 'ℵ'),
+("alpha", 'α'),
+("amp", '&'),
+("and", '∧'),
+("ang", '∠'),
+("aring", 'å'),
+("asymp", '≈'),
+("atilde", 'ã'),
+("auml", 'ä'),
+("bdquo", '„'),
+("beta", 'β'),
+("brvbar", '¦'),
+("bull", '•'),
+("cap", '∩'),
+("ccedil", 'ç'),
 ("cdots", '⋯'),
-("cedil",	'¸'),
-("cent",	'¢'),
-("chi",	'χ'),
-("circ",	'ˆ'),
-("clubs",	'♣'),
-("cong",	'≅'),
-("copy",	'©'),
-("crarr",	'↵'),
-("cup",	'∪'),
-("curren",	'¤'),
-("dArr",	'⇓'),
-("dagger",	'†'),
-("darr",	'↓'),
+("cedil", '¸'),
+("cent", '¢'),
+("chi", 'χ'),
+("circ", 'ˆ'),
+("clubs", '♣'),
+("cong", '≅'),
+("copy", '©'),
+("crarr", '↵'),
+("cup", '∪'),
+("curren", '¤'),
+("dArr", '⇓'),
+("dagger", '†'),
+("darr", '↓'),
 ("ddots", '⋱'),
-("deg",	'°'),
-("delta",	'δ'),
-("diams",	'♦'),
-("divide",	'÷'),
-("eacute",	'é'),
-("ecirc",	'ê'),
-("egrave",	'è'),
+("deg", '°'),
+("delta", 'δ'),
+("diams", '♦'),
+("divide", '÷'),
+("eacute", 'é'),
+("ecirc", 'ê'),
+("egrave", 'è'),
 ("emdash", '—'),
-("empty",	'∅'),
-("emsp",	' '),
+("empty", '∅'),
+("emsp", ' '),
 ("endash", '–'),
-("ensp",	' '),
-("epsilon",	'ε'),
-("equiv",	'≡'),
-("eta",	'η'),
-("eth",	'ð'),
-("euml",	'ë'),
-("euro",	'€'),
-("exist",	'∃'),
-("fnof",	'ƒ'),
-("forall",	'∀'),
-("frac12",	'½'),
-("frac14",	'¼'),
-("frac34",	'¾'),
-("frasl",	'⁄'),
-("gamma",	'γ'),
-("ge",	'≥'),
-("gt",	'>'),
-("hArr",	'⇔'),
-("harr",	'↔'),
-("hearts",	'♥'),
-("hellip",	'…'),
-("iacute",	'í'),
-("icirc",	'î'),
-("iexcl",	'¡'),
-("igrave",	'ì'),
-("image",	'ℑ'),
-("infin",	'∞'),
-("int",	'∫'),
-("iota",	'ι'),
-("iquest",	'¿'),
-("isin",	'∈'),
-("iuml",	'ï'),
-("kappa",	'κ'),
-("lArr",	'⇐'),
-("lambda",	'λ'),
-("lang",	'〈'),
-("laquo",	'«'),
-("larr",	'←'),
-("lceil",	'⌈'),
+("ensp", ' '),
+("epsilon", 'ε'),
+("equiv", '≡'),
+("eta", 'η'),
+("eth", 'ð'),
+("euml", 'ë'),
+("euro", '€'),
+("exist", '∃'),
+("fnof", 'ƒ'),
+("forall", '∀'),
+("frac12", '½'),
+("frac14", '¼'),
+("frac34", '¾'),
+("frasl", '⁄'),
+("gamma", 'γ'),
+("ge", '≥'),
+("gt", '>'),
+("hArr", '⇔'),
+("harr", '↔'),
+("hearts", '♥'),
+("hellip", '…'),
+("iacute", 'í'),
+("icirc", 'î'),
+("iexcl", '¡'),
+("igrave", 'ì'),
+("image", 'ℑ'),
+("infin", '∞'),
+("int", '∫'),
+("iota", 'ι'),
+("iquest", '¿'),
+("isin", '∈'),
+("iuml", 'ï'),
+("kappa", 'κ'),
+("lArr", '⇐'),
+("lambda", 'λ'),
+("lang", '〈'),
+("laquo", '«'),
+("larr", '←'),
+("lceil", '⌈'),
 ("ldots", '…'),
-("ldquo",	'“'),
-("le",	'≤'),
-("lfloor",	'⌊'),
-("lowast",	'∗'),
-("loz",	'◊'),
-("lrm",	'‎'),
-("lsaquo",	'‹'),
-("lsquo",	'‘'),
-("lt",	'<'),
-("macr",	'¯'),
-("mdash",	'—'),
-("micro",	'µ'),
-("middot",	'·'),
-("minus",	'−'),
-("mu",	'μ'),
-("nabla",	'∇'),
-("nbsp",	' '),
-("ndash",	'–'),
-("ne",	'≠'),
-("ni",	'∋'),
-("not",	'¬'),
-("notin",	'∉'),
-("nsub",	'⊄'),
-("ntilde",	'ñ'),
-("nu",	'ν'),
-("oacute",	'ó'),
-("ocirc",	'ô'),
-("oelig",	'œ'),
-("ograve",	'ò'),
-("oline",	'‾'),
-("omega",	'ω'),
-("omicron",	'ο'),
-("oplus",	'⊕'),
-("or",	'∨'),
-("ordf",	'ª'),
-("ordm",	'º'),
-("oslash",	'ø'),
-("otilde",	'õ'),
-("otimes",	'⊗'),
-("ouml",	'ö'),
-("para",	'¶'),
-("part",	'∂'),
-("permil",	'‰'),
-("perp",	'⊥'),
-("phi",	'φ'),
-("pi",	'π'),
-("piv",	'ϖ'),
-("plusmn",	'±'),
-("pound",	'£'),
-("prime",	'′'),
-("prod",	'∏'),
-("prop",	'∝'),
-("psi",	'ψ'),
+("ldquo", '“'),
+("le", '≤'),
+("lfloor", '⌊'),
+("lowast", '∗'),
+("loz", '◊'),
+("lrm", '‎'),
+("lsaquo", '‹'),
+("lsquo", '‘'),
+("lt", '<'),
+("macr", '¯'),
+("mdash", '—'),
+("micro", 'µ'),
+("middot", '·'),
+("minus", '−'),
+("mu", 'μ'),
+("nabla", '∇'),
+("nbsp", ' '),
+("ndash", '–'),
+("ne", '≠'),
+("ni", '∋'),
+("not", '¬'),
+("notin", '∉'),
+("nsub", '⊄'),
+("ntilde", 'ñ'),
+("nu", 'ν'),
+("oacute", 'ó'),
+("ocirc", 'ô'),
+("oelig", 'œ'),
+("ograve", 'ò'),
+("oline", '‾'),
+("omega", 'ω'),
+("omicron", 'ο'),
+("oplus", '⊕'),
+("or", '∨'),
+("ordf", 'ª'),
+("ordm", 'º'),
+("oslash", 'ø'),
+("otilde", 'õ'),
+("otimes", '⊗'),
+("ouml", 'ö'),
+("para", '¶'),
+("part", '∂'),
+("permil", '‰'),
+("perp", '⊥'),
+("phi", 'φ'),
+("pi", 'π'),
+("piv", 'ϖ'),
+("plusmn", '±'),
+("pound", '£'),
+("prime", '′'),
+("prod", '∏'),
+("prop", '∝'),
+("psi", 'ψ'),
 ("quad", ' '),
-("quot",	'"'),
 ("quot", '"'),
-("rArr",	'⇒'),
-("radic",	'√'),
-("rang",	'〉'),
-("raquo",	'»'),
-("rarr",	'→'),
-("rceil",	'⌉'),
-("rdquo",	'”'),
-("real",	'ℜ'),
-("reg",	'®'),
-("rfloor",	'⌋'),
-("rho",	'ρ'),
-("rlm",	'‏'),
-("rsaquo",	'›'),
-("rsquo",	'’'),
-("sbquo",	'‚'),
-("scaron",	'š'),
-("sdot",	'⋅'),
-("sect",	'§'),
-("shy",	'­'),
-("sigma",	'σ'),
-("sigmaf",	'ς'),
-("sim",	'∼'),
+("quot", '"'),
+("rArr", '⇒'),
+("radic", '√'),
+("rang", '〉'),
+("raquo", '»'),
+("rarr", '→'),
+("rceil", '⌉'),
+("rdquo", '”'),
+("real", 'ℜ'),
+("reg", '®'),
+("rfloor", '⌋'),
+("rho", 'ρ'),
+("rlm", '‏'),
+("rsaquo", '›'),
+("rsquo", '’'),
+("sbquo", '‚'),
+("scaron", 'š'),
+("sdot", '⋅'),
+("sect", '§'),
+("shy", '­'),
+("sigma", 'σ'),
+("sigmaf", 'ς'),
+("sim", '∼'),
 ("sp", ' '),
-("spades",	'♠'),
-("sub",	'⊂'),
-("sube",	'⊆'),
-("sum",	'∑'),
-("sup",	'⊃'),
-("sup1",	'¹'),
-("sup2",	'²'),
-("sup3",	'³'),
-("supe",	'⊇'),
-("szlig",	'ß'),
-("tau",	'τ'),
-("there4",	'∴'),
-("theta",	'θ'),
-("thetasym",	'ϑ'),
-("thinsp",	' '),
-("thorn",	'þ'),
-("tilde",	'˜'),
-("times",	'×'),
-("trade",	'™'),
-("uArr",	'⇑'),
-("uacute",	'ú'),
-("uarr",	'↑'),
-("ucirc",	'û'),
-("ugrave",	'ù'),
-("uml",	'¨'),
-("upsih",	'ϒ'),
-("upsilon",	'υ'),
-("uuml",	'ü'),
+("spades", '♠'),
+("sub", '⊂'),
+("sube", '⊆'),
+("sum", '∑'),
+("sup", '⊃'),
+("sup1", '¹'),
+("sup2", '²'),
+("sup3", '³'),
+("supe", '⊇'),
+("szlig", 'ß'),
+("tau", 'τ'),
+("there4", '∴'),
+("theta", 'θ'),
+("thetasym", 'ϑ'),
+("thinsp", ' '),
+("thorn", 'þ'),
+("tilde", '˜'),
+("times", '×'),
+("trade", '™'),
+("uArr", '⇑'),
+("uacute", 'ú'),
+("uarr", '↑'),
+("ucirc", 'û'),
+("ugrave", 'ù'),
+("uml", '¨'),
+("upsih", 'ϒ'),
+("upsilon", 'υ'),
+("uuml", 'ü'),
 ("varepsilon", '∈'),
 ("varphi", 'ϕ'),
 ("varpi", 'ϖ'),
@@ -502,14 +502,14 @@ chartab:= array[] of { T->StringInt
 ("vdots", '⋮'),
 ("vsigma", 'ς'),
 ("vtheta", 'ϑ'),
-("weierp",	'℘'),
-("xi",	'ξ'),
-("yacute",	'ý'),
-("yen",	'¥'),
-("yuml",	'ÿ'),
-("zeta",	'ζ'),
-("zwj",	'‍'),
-("zwnj",	'‌'),
+("weierp", '℘'),
+("xi", 'ξ'),
+("yacute", 'ý'),
+("yen", '¥'),
+("yuml", 'ÿ'),
+("zeta", 'ζ'),
+("zwj", '‍'),
+("zwnj", '‌'),
 };
 # Characters Winstart..Winend are those that Windows
 # uses interpolated into the Latin1 set.
@@ -541,19 +541,19 @@ ctype = C->ctype;
 TokenSource.new(b: ref CU->ByteSource, chset : Btos, mtype: int) : ref TokenSource
 {
 ts := ref TSstate (
-0,				# bi
-0, 				# prevbi
-"",				# s
-0,				# si
-Convcs->Startstate,	# state
-Convcs->Startstate	# prevstate
+0, # bi
+0, # prevbi
+"", # s
+0, # si
+Convcs->Startstate, # state
+Convcs->Startstate # prevstate
 );
 ans := ref TokenSource(
-b,			# b
-chset,		# chset
-ts,			# state
-mtype,		# mtype
-0			# inxmp
+b, # b
+chset, # chset
+ts, # state
+mtype, # mtype
+0 # inxmp
 );
 dbg = int (CU->config).dbg['x'];
 warn = (int (CU->config).dbg['w']) || dbg;
@@ -561,7 +561,7 @@ return ans;
 }
 TokenSource.gettoks(ts: self ref TokenSource): array of ref Token
 {
-ToksMax : con 500;		# max chunk of tokens returned
+ToksMax : con 500; # max chunk of tokens returned
 a := array[ToksMax] of ref Token;
 ai := 0;
 pcdai := 0;
@@ -570,7 +570,7 @@ lim := 0;
 if(ts.mtype == CU->TextHtml) {
 pcdstate : ref TSstate;
 gather:
-while(ai < ToksMax-1) {	# always allow space for a Data token
+while(ai < ToksMax-1) { # always allow space for a Data token
 state := getstate(ts);
 c := getchar(ts);
 if (c < ' ') {
@@ -583,7 +583,7 @@ if(c == '<') {
 tok = gettag(ts);
 if (tok != nil && ts.inxmp && tok.tag != Txmp+RBRA) {
 rewind(ts, state);
-getchar(ts);	# consume the '<'
+getchar(ts); # consume the '<'
 tok = ref Token(Data, "<", nil);
 }
 if(tok != nil && tok.tag != Comment) {
@@ -720,7 +720,7 @@ c = '\n';
 }
 }
 else
-c = 0;	# ignore
+c = 0; # ignore
 }
 if(c != 0)
 s[j++] = c;
@@ -768,7 +768,7 @@ ok : int;
 (c, ok) = ampersand(ts);
 if(!ok) {
 ungetchar(ts);
-break;	# incomplete entity reference (ts backed up by ampersand)
+break; # incomplete entity reference (ts backed up by ampersand)
 }
 }
 else if(c == '<') {
@@ -820,7 +820,7 @@ if(eof(ts))
 return ref Token(Data, s, nil);
 return nil;
 }
-# We've just seen a '<'.  Gather up stuff to closing '>' (if buffer
+# We've just seen a '<'. Gather up stuff to closing '>' (if buffer
 # ends before then, return nil).
 # If it's a tag, look up the name, gather the attributes, and return
 # the appropriate token.
@@ -872,10 +872,10 @@ name[i++] = lowerc(c);
 if(fnd)
 ans.tag = tag+rbra;
 else
-ans.text = name;	# for warning print, in build
+ans.text = name; # for warning print, in build
 attrloop:
 for(;;) {
-# look for "ws name" or "ws name ws = ws val"  (ws=whitespace)
+# look for "ws name" or "ws name ws = ws val" (ws=whitespace)
 # skip whitespace
 while(c < C->NCTYPE && ctype[c] == C->W) {
 c = getchar(ts);
@@ -937,7 +937,7 @@ if(afnd)
 al = (attid, "") :: al;
 continue attrloop;
 }
-# c is '=' here;  skip whitespace
+# c is '=' here; skip whitespace
 for(;;) {
 c = getchar(ts);
 if(c < 0)
@@ -964,35 +964,35 @@ break eob;
 if (c == '>' && !quote)
 break valloop;
 # old code otherwise ok - keep for now for reference
-#				if(c == '>') {
-#					if(quote) {
-#						# c might be part of string (though not good style)
-#						# but if line ends before close quote, assume
-#						# there was an unmatched quote
-#						ti := ts.i;
-#						for(;;) {
-#							c = getchar(ts);
-#							if(c < 0)
-#								break eob;
-#							if(c == quote) {
-#								backup(ts, ti);
-#								val[nv++] = '>';
-#								c = getchar(ts);
-#								continue valloop;
-#							}
-#							if(c == '\n') {
-#								if(warn)
-#									sys->print("warning: apparent unmatched quote\n");
-#								backup(ts, ti);
-#								quote = 0;
-#								c = '>';
-#								break valloop;
-#							}
-#						}
-#					}
-#					else
-#						break valloop;
-#				}
+# if(c == '>') {
+# if(quote) {
+# # c might be part of string (though not good style)
+# # but if line ends before close quote, assume
+# # there was an unmatched quote
+# ti := ts.i;
+# for(;;) {
+# c = getchar(ts);
+# if(c < 0)
+# break eob;
+# if(c == quote) {
+# backup(ts, ti);
+# val[nv++] = '>';
+# c = getchar(ts);
+# continue valloop;
+# }
+# if(c == '\n') {
+# if(warn)
+# sys->print("warning: apparent unmatched quote\n");
+# backup(ts, ti);
+# quote = 0;
+# c = '>';
+# break valloop;
+# }
+# }
+# }
+# else
+# break valloop;
+# }
 if(quote) {
 if(c == quote) {
 c = getchar(ts);
@@ -1106,7 +1106,7 @@ return 0;
 buf = buf[1:];
 buf[eix] = c;
 }
-return 0;	# keep the compiler quiet
+return 0; # keep the compiler quiet
 }
 # We've just read an '&'; look for an entity reference
 # name, and if found, return (translated char, 1).
@@ -1150,7 +1150,7 @@ if(!(c == ';' || c == '\n' || c == '\r' || c == '<'))
 ungetchar(ts);
 c = v;
 if(c==160)
-c = ' ';   # non-breaking space
+c = ' '; # non-breaking space
 if(c >= Winstart && c <= Winend)
 c = winchars[c-Winstart];
 ans = c;
@@ -1190,8 +1190,8 @@ return ('&', 1);
 }
 # elide soft hyphens (&shy; / &xAD;)
 # not suficient - need to do it for all input in getdata() which is too heavy handed
-#	if (ans == '­')
-#		ans = 0;
+# if (ans == '­')
+# ans = 0;
 return (ans, 1);
 }
 # If c is an uppercase letter, return its lowercase version,
@@ -1244,7 +1244,7 @@ ans = ans + ">";
 }
 return ans;
 }
-CONVBLK : con 1024;		# number of characters to convert at a time
+CONVBLK : con 1024; # number of characters to convert at a time
 # Returns -1 if no complete character left before current end of data.
 getchar(ts: ref TokenSource): int
 {

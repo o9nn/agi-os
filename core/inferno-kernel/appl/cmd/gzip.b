@@ -1,6 +1,6 @@
 implement Gzip;
 include "sys.m";
-sys:	Sys;
+sys: Sys;
 print, fprint: import sys;
 include "draw.m";
 include "string.m";
@@ -8,29 +8,29 @@ str: String;
 include "daytime.m";
 daytime: Daytime;
 include "bufio.m";
-bufio:	Bufio;
+bufio: Bufio;
 Iobuf: import bufio;
 include "filter.m";
 deflate: Filter;
 DEFLATEPATH: con "/dis/lib/deflate.dis";
 Gzip: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 Arg: adt
 {
-argv:	list of string;
-c:	int;
-opts:	string;
-init:	fn(argv: list of string): ref Arg;
-opt:	fn(arg: self ref Arg): int;
-arg:	fn(arg: self ref Arg): string;
+argv: list of string;
+c: int;
+opts: string;
+init: fn(argv: list of string): ref Arg;
+opt: fn(arg: self ref Arg): int;
+arg: fn(arg: self ref Arg): string;
 };
-argv0:	con "gzip";
-stderr:	ref Sys->FD;
-debug	:= 0;
-verbose	:= 0;
-level	:= 0;
+argv0: con "gzip";
+stderr: ref Sys->FD;
+debug := 0;
+verbose := 0;
+level := 0;
 usage()
 {
 fprint(stderr, "usage: %s [-vD1-9] [file ...]\n", argv0);
@@ -65,7 +65,7 @@ case c{
 debug++;
 'v' =>
 verbose++;
-'1' to  '9' =>
+'1' to '9' =>
 level = c - '0';
 * =>
 usage();

@@ -1,47 +1,47 @@
 #include "lib9.h"
 #include <flate.h>
 enum {
-HistorySize=	32*1024,
-BufSize=	4*1024,
-MaxHuffBits=	17,
-Nlitlen=	288,
-Noff=		32,
-Nclen=		19,
-LenShift=	10,
-LitlenBits=	7,
-OffBits=	6,
-ClenBits=	6,
-MaxFlatBits=	LitlenBits,
-MaxLeaf=	Nlitlen
+HistorySize= 32*1024,
+BufSize= 4*1024,
+MaxHuffBits= 17,
+Nlitlen= 288,
+Noff= 32,
+Nclen= 19,
+LenShift= 10,
+LitlenBits= 7,
+OffBits= 6,
+ClenBits= 6,
+MaxFlatBits= LitlenBits,
+MaxLeaf= Nlitlen
 };
-typedef struct Input	Input;
-typedef struct History	History;
-typedef struct Huff	Huff;
+typedef struct Input Input;
+typedef struct History History;
+typedef struct Huff Huff;
 struct Input
 {
-int	error;
-void	*wr;
-int	(*w)(void*, void*, int);
-void	*getr;
-int	(*get)(void*);
-ulong	sreg;
-int	nbits;
+int error;
+void *wr;
+int (*w)(void*, void*, int);
+void *getr;
+int (*get)(void*);
+ulong sreg;
+int nbits;
 };
 struct History
 {
-uchar	his[HistorySize];
-uchar	*cp;
-int	full;
+uchar his[HistorySize];
+uchar *cp;
+int full;
 };
 struct Huff
 {
-int	maxbits;
-int	minbits;
-int	flatmask;
-ulong	flat[1<<MaxFlatBits];
-ulong	maxcode[MaxHuffBits];
-ulong	last[MaxHuffBits];
-ulong	decode[MaxLeaf];
+int maxbits;
+int minbits;
+int flatmask;
+ulong flat[1<<MaxFlatBits];
+ulong maxcode[MaxHuffBits];
+ulong last[MaxHuffBits];
+ulong decode[MaxLeaf];
 };
 static int litlenextra[Nlitlen-257] =
 {
@@ -53,27 +53,27 @@ static int litlenextra[Nlitlen-257] =
 static int litlenbase[Nlitlen-257];
 static int offextra[Noff] =
 {
-0,  0,  0,  0,  1,  1,  2,  2,  3,  3,
-4,  4,  5,  5,  6,  6,  7,  7,  8,  8,
-9,  9,  10, 10, 11, 11, 12, 12, 13, 13,
-0,  0,
+0, 0, 0, 0, 1, 1, 2, 2, 3, 3,
+4, 4, 5, 5, 6, 6, 7, 7, 8, 8,
+9, 9, 10, 10, 11, 11, 12, 12, 13, 13,
+0, 0,
 };
 static int offbase[Noff];
 static int clenorder[Nclen] =
 {
 16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15
 };
-static	Huff	litlentab;
-static	Huff	offtab;
-static	uchar	revtab[256];
-static int	uncblock(Input *in, History*);
-static int	fixedblock(Input *in, History*);
-static int	dynamicblock(Input *in, History*);
-static int	sregfill(Input *in, int n);
-static int	sregunget(Input *in);
-static int	decode(Input*, History*, Huff*, Huff*);
-static int	hufftab(Huff*, char*, int, int);
-static int	hdecsym(Input *in, Huff *h, int b);
+static Huff litlentab;
+static Huff offtab;
+static uchar revtab[256];
+static int uncblock(Input *in, History*);
+static int fixedblock(Input *in, History*);
+static int dynamicblock(Input *in, History*);
+static int sregfill(Input *in, int n);
+static int sregunget(Input *in);
+static int decode(Input*, History*, Huff*, Huff*);
+static int hufftab(Huff*, char*, int, int);
+static int hdecsym(Input *in, Huff *h, int b);
 int
 inflateinit(void)
 {

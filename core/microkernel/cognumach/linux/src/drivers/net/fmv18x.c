@@ -34,31 +34,31 @@ uint tx_started:1;
 uchar tx_queue;
 ushort tx_queue_len;
 };
-#define STATUS			0
-#define TX_STATUS		0
-#define RX_STATUS		1
-#define TX_INTR			2
-#define RX_INTR			3
-#define TX_MODE			4
-#define RX_MODE			5
-#define CONFIG_0		6
-#define CONFIG_1		7
-#define DATAPORT		8
-#define TX_START		10
-#define COL16CNTL		11
-#define MODE13			13
-#define	FJ_STATUS0		0x10
-#define	FJ_STATUS1		0x11
-#define	FJ_CONFIG0		0x12
-#define	FJ_CONFIG1		0x13
-#define	FJ_MACADDR		0x14
-#define	FJ_BUFCNTL		0x1A
-#define	FJ_BUFDATA		0x1C
-#define FMV18X_IO_EXTENT	32
+#define STATUS 0
+#define TX_STATUS 0
+#define RX_STATUS 1
+#define TX_INTR 2
+#define RX_INTR 3
+#define TX_MODE 4
+#define RX_MODE 5
+#define CONFIG_0 6
+#define CONFIG_1 7
+#define DATAPORT 8
+#define TX_START 10
+#define COL16CNTL 11
+#define MODE13 13
+#define FJ_STATUS0 0x10
+#define FJ_STATUS1 0x11
+#define FJ_CONFIG0 0x12
+#define FJ_CONFIG1 0x13
+#define FJ_MACADDR 0x14
+#define FJ_BUFCNTL 0x1A
+#define FJ_BUFDATA 0x1C
+#define FMV18X_IO_EXTENT 32
 extern int fmv18x_probe(struct device *dev);
 static int fmv18x_probe1(struct device *dev, short ioaddr);
 static int net_open(struct device *dev);
-static int	net_send_packet(struct sk_buff *skb, struct device *dev);
+static int net_send_packet(struct sk_buff *skb, struct device *dev);
 static void net_interrupt(int irq, void *dev_id, struct pt_regs *regs);
 static void net_rx(struct device *dev);
 static int net_close(struct device *dev);
@@ -92,9 +92,9 @@ int fmv18x_probe1(struct device *dev, short ioaddr)
 char irqmap[4] = {3, 7, 10, 15};
 unsigned int i, irq;
 if (fmv18x_probe_list[inb(ioaddr + FJ_CONFIG0) & 0x07] != ioaddr
-||  inb(ioaddr+FJ_MACADDR  ) != 0x00
-||  inb(ioaddr+FJ_MACADDR+1) != 0x00
-||  inb(ioaddr+FJ_MACADDR+2) != 0x0e)
+|| inb(ioaddr+FJ_MACADDR ) != 0x00
+|| inb(ioaddr+FJ_MACADDR+1) != 0x00
+|| inb(ioaddr+FJ_MACADDR+2) != 0x0e)
 return -ENODEV;
 irq = irqmap[(inb(ioaddr + FJ_CONFIG0)>>6) & 0x03];
 if (request_irq(irq, &net_interrupt, 0, "fmv18x", NULL)) {
@@ -145,10 +145,10 @@ dev->priv = kmalloc(sizeof(struct net_local), GFP_KERNEL);
 if (dev->priv == NULL)
 return -ENOMEM;
 memset(dev->priv, 0, sizeof(struct net_local));
-dev->open		= net_open;
-dev->stop		= net_close;
+dev->open = net_open;
+dev->stop = net_close;
 dev->hard_start_xmit = net_send_packet;
-dev->get_stats	= net_get_stats;
+dev->get_stats = net_get_stats;
 dev->set_multicast_list = &set_multicast_list;
 ether_setup(dev);
 return 0;
@@ -260,7 +260,7 @@ outw(status, ioaddr + TX_STATUS);
 if (net_debug > 4)
 printk("%s: Interrupt with status %04x.\n", dev->name, status);
 if (status & 0xff00
-||  (inb(ioaddr + RX_MODE) & 0x40) == 0) {
+|| (inb(ioaddr + RX_MODE) & 0x40) == 0) {
 net_rx(dev);
 }
 if (status & 0x00ff) {
@@ -407,7 +407,7 @@ int init_module(void)
 if (io == 0)
 printk("fmv18x: You should not use auto-probing with insmod!\n");
 dev_fmv18x.base_addr = io;
-dev_fmv18x.irq       = irq;
+dev_fmv18x.irq = irq;
 if (register_netdev(&dev_fmv18x) != 0) {
 printk("fmv18x: register_netdev() returned non-zero.\n");
 return -EIO;

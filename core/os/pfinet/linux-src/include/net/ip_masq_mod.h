@@ -3,9 +3,9 @@
 #include <linux/ip_fw.h>
 #include <linux/proc_fs.h>
 #include <net/ip_masq.h>
-#define IP_MASQ_MOD_NOP 	0
-#define IP_MASQ_MOD_ACCEPT	1
-#define IP_MASQ_MOD_REJECT	-1
+#define IP_MASQ_MOD_NOP 0
+#define IP_MASQ_MOD_ACCEPT 1
+#define IP_MASQ_MOD_REJECT -1
 struct ip_masq_mod {
 struct ip_masq_mod *next;
 struct ip_masq_mod *next_reg;
@@ -16,11 +16,11 @@ struct proc_dir_entry *mmod_proc_ent;
 int (*mmod_ctl) (int optname, struct ip_masq_ctl *, int optlen);
 int (*mmod_init) (void);
 int (*mmod_done) (void);
-int (*mmod_in_rule)   (const struct sk_buff *, const struct iphdr *);
+int (*mmod_in_rule) (const struct sk_buff *, const struct iphdr *);
 int (*mmod_in_update) (const struct sk_buff *, const struct iphdr *,
 struct ip_masq *);
 struct ip_masq * (*mmod_in_create) (const struct sk_buff *, const struct iphdr *, __u32);
-int (*mmod_out_rule)   (const struct sk_buff *, const struct iphdr *);
+int (*mmod_out_rule) (const struct sk_buff *, const struct iphdr *);
 int (*mmod_out_update) (const struct sk_buff *, const struct iphdr *,
 struct ip_masq *);
 struct ip_masq * (*mmod_out_create) (const struct sk_buff *, const struct iphdr *, __u32);

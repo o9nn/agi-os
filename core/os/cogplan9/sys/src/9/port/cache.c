@@ -1,33 +1,33 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
 enum
 {
-NHASH		= 128,
-MAXCACHE	= 1024*1024,
-NFILE		= 4096,
-NEXTENT		= 200,
+NHASH = 128,
+MAXCACHE = 1024*1024,
+NFILE = 4096,
+NEXTENT = 200,
 };
 typedef struct Extent Extent;
 struct Extent
 {
-int	bid;
-ulong	start;
-int	len;
-Page	*cache;
-Extent	*next;
+int bid;
+ulong start;
+int len;
+Page *cache;
+Extent *next;
 };
 typedef struct Mntcache Mntcache;
 struct Mntcache
 {
-Qid	qid;
-int	dev;
-int	type;
+Qid qid;
+int dev;
+int type;
 QLock;
-Extent	 *list;
+Extent *list;
 Mntcache *hash;
 Mntcache *prev;
 Mntcache *next;
@@ -36,18 +36,18 @@ typedef struct Cache Cache;
 struct Cache
 {
 QLock;
-int		pgno;
-Mntcache	*head;
-Mntcache	*tail;
-Mntcache	*hash[NHASH];
+int pgno;
+Mntcache *head;
+Mntcache *tail;
+Mntcache *hash[NHASH];
 };
 typedef struct Ecache Ecache;
 struct Ecache
 {
 Lock;
-int	total;
-int	free;
-Extent*	head;
+int total;
+int free;
+Extent* head;
 };
 static Image fscache;
 static Cache cache;

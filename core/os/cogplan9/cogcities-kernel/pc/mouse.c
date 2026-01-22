@@ -5,16 +5,16 @@
 #include "fns.h"
 #include "../port/error.h"
 #include "io.h"
-#define	Image	IMAGE
+#define Image IMAGE
 #include <draw.h>
 #include <memdraw.h>
 #include <cursor.h>
 #include "screen.h"
 enum
 {
-Mouseother=	0,
-Mouseserial=	1,
-MousePS2=	2,
+Mouseother= 0,
+Mouseserial= 1,
+MousePS2= 2,
 };
 extern int mouseshifted;
 static QLock mousectlqlock;
@@ -39,15 +39,15 @@ CMserial,
 };
 static Cmdtab mousectlmsg[] =
 {
-CMaccelerated,		"accelerated",		0,
-CMhwaccel,		"hwaccel",		2,
-CMintellimouse,		"intellimouse",		1,
-CMlinear,		"linear",		1,
-CMps2,			"ps2",			1,
-CMps2intellimouse,	"ps2intellimouse",	1,
-CMres,			"res",			0,
-CMreset,		"reset",		1,
-CMserial,		"serial",		0,
+CMaccelerated, "accelerated", 0,
+CMhwaccel, "hwaccel", 2,
+CMintellimouse, "intellimouse", 1,
+CMlinear, "linear", 1,
+CMps2, "ps2", 1,
+CMps2intellimouse, "ps2intellimouse", 1,
+CMres, "res", 0,
+CMreset, "reset", 1,
+CMserial, "serial", 0,
 };
 static void
 ps2mouseputc(int c, int shift)

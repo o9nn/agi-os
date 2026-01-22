@@ -1,6 +1,6 @@
 implement Styxchat;
 #
-# Copyright © 2002,2003 Vita Nuova Holdings Limited.  All rights reserved.
+# Copyright © 2002,2003 Vita Nuova Holdings Limited. All rights reserved.
 #
 include "sys.m";
 sys: Sys;
@@ -18,7 +18,7 @@ dial: Dial;
 include "arg.m";
 Styxchat: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 msgsize := 64*1024;
 nexttag := 1;

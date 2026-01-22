@@ -34,9 +34,9 @@ static bool old_mixtral_warning_showed = false;
 #include <type_traits>
 #include <iostream>
 #ifdef GGML_USE_CUDA
-#  include "ggml-cuda.h"
+# include "ggml-cuda.h"
 #elif defined(GGML_USE_CLBLAST)
-#  include "ggml_v3b-opencl.h"
+# include "ggml_v3b-opencl.h"
 #endif
 #if defined(_MSC_VER)
 #pragma warning(disable: 4244 4267)
@@ -246,10 +246,10 @@ ms.save(path_model);
 int32_t llama_chat_apply_template(
 const char * tmpl,
 const struct llama_chat_message * chat,
-size_t   n_msg,
-bool   add_ass,
+size_t n_msg,
+bool add_ass,
 char * buf,
-int32_t   length) {
+int32_t length) {
 const std::string curr_tmpl(tmpl == nullptr ? "chatml" : tmpl);
 std::vector<const llama_chat_message *> chat_vec;
 chat_vec.resize(n_msg);

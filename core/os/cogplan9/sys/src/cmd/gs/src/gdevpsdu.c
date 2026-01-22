@@ -229,7 +229,7 @@ gs_note_error(gs_error_VMerror) : 0);
 }
 int
 psdf_DCT_filter(gs_param_list *plist ,
-stream_state  *st,
+stream_state *st,
 int Columns, int Rows, int Colors,
 psdf_binary_writer *pbw )
 {
@@ -315,20 +315,20 @@ return_error(gs_error_unregistered);
 }
 int
 psdf_get_bits_rectangle(
-gx_device *             dev,
-const gs_int_rect *     prect,
-gs_get_bits_params_t *  params,
-gs_int_rect **          unread )
+gx_device * dev,
+const gs_int_rect * prect,
+gs_get_bits_params_t * params,
+gs_int_rect ** unread )
 {
 return_error(gs_error_unregistered);
 }
 int
 psdf_create_compositor(
-gx_device *             dev,
-gx_device **            pcdev,
-const gs_composite_t *  pct,
+gx_device * dev,
+gx_device ** pcdev,
+const gs_composite_t * pct,
 gs_imager_state * pis,
-gs_memory_t *           mem )
+gs_memory_t * mem )
 {
 if (gs_is_overprint_compositor(pct)) {
 *pcdev = dev;

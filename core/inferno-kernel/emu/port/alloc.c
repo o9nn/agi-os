@@ -4,72 +4,72 @@
 #include "error.h"
 enum
 {
-MAXPOOL		= 4
+MAXPOOL = 4
 };
-#define left	u.s.bhl
-#define right	u.s.bhr
-#define fwd	u.s.bhf
-#define prev	u.s.bhv
-#define parent	u.s.bhp
-#define RESERVED	512*1024
+#define left u.s.bhl
+#define right u.s.bhr
+#define fwd u.s.bhf
+#define prev u.s.bhv
+#define parent u.s.bhp
+#define RESERVED 512*1024
 struct Pool
 {
-char*	name;
-int	pnum;
-ulong	maxsize;
-int	quanta;
-int	chunk;
-int	monitor;
-ulong	ressize;
-ulong	cursize;
-ulong	arenasize;
-ulong	hw;
-Lock	l;
-Bhdr*	root;
-Bhdr*	chain;
-ulong	nalloc;
-ulong	nfree;
-int	nbrk;
-int	lastfree;
-void	(*move)(void*, void*);
+char* name;
+int pnum;
+ulong maxsize;
+int quanta;
+int chunk;
+int monitor;
+ulong ressize;
+ulong cursize;
+ulong arenasize;
+ulong hw;
+Lock l;
+Bhdr* root;
+Bhdr* chain;
+ulong nalloc;
+ulong nfree;
+int nbrk;
+int lastfree;
+void (*move)(void*, void*);
 };
-void*	initbrk(ulong);
+void* initbrk(ulong);
 struct
 {
-int	n;
-Pool	pool[MAXPOOL];
+int n;
+Pool pool[MAXPOOL];
 } table = {
 3,
 {
-{ "main",  0, 	32*1024*1024, 31,  512*1024, 0, 31*1024*1024 },
-{ "heap",  1, 	32*1024*1024, 31,  512*1024, 0, 31*1024*1024 },
-{ "image", 2,   64*1024*1024+256, 31, 4*1024*1024, 1, 63*1024*1024 },
+{ "main", 0, 32*1024*1024, 31, 512*1024, 0, 31*1024*1024 },
+{ "heap", 1, 32*1024*1024, 31, 512*1024, 0, 31*1024*1024 },
+{ "image", 2, 64*1024*1024+256, 31, 4*1024*1024, 1, 63*1024*1024 },
 }
 };
-Pool*	mainmem = &table.pool[0];
-Pool*	heapmem = &table.pool[1];
-Pool*	imagmem = &table.pool[2];
+Pool* mainmem = &table.pool[0];
+Pool* heapmem = &table.pool[1];
+Pool* imagmem = &table.pool[2];
 static void _auditmemloc(char *, void *);
 void (*auditmemloc)(char *, void *) = _auditmemloc;
 static void _poolfault(void *, char *, ulong);
 void (*poolfault)(void *, char *, ulong) = _poolfault;
 enum {
-Npadlong	= 2,
+Npadlong = 2,
 MallocOffset = 0,
 ReallocOffset = 1
 };
 enum {
 Monitor = 1
 };
-void	(*memmonitor)(int, ulong, ulong, ulong) = nil;
-#define	MM(v,pc,base,size)	if(!Monitor || memmonitor==nil){} else memmonitor((v),(pc),(base),(size))
-#define CKLEAK	0
-int	ckleak;
-#define	ML(v, sz, pc)	if(CKLEAK && ckleak && v){ if(sz) fprint(2, "%lux %lux %lux\n", (ulong)v, (ulong)sz, (ulong)pc); else fprint(2, "%lux\n", (ulong)v); }
+void (*memmonitor)(int, ulong, ulong, ulong) = nil;
+#define MM(v,pc,base,size) if(!Monitor || memmonitor==nil){} else memmonitor((v),(pc),(base),(size))
+#define CKLEAK 0
+int ckleak;
+#define ML(v, sz, pc) if(CKLEAK && ckleak && v){ if(sz) fprint(2, "%lux %lux %lux\n", (ulong)v, (ulong)sz, (ulong)pc); else fprint(2, "%lux\n", (ulong)v); }
 int
 memusehigh(void)
 {
-return 	mainmem->cursize > mainmem->ressize ||
+return mainmem->cursize > mainmem->ressize ||
 heapmem->cursize > heapmem->ressize ||
 0 && imagmem->cursize > imagmem->ressize;
 }
@@ -775,7 +775,7 @@ if (((Bhdr*)v >= bc) && ((Bhdr*)v < ec))
 goto found;
 }
 unlock(&p->l);
-nextpool:	;
+nextpool: ;
 }
 print("%s: %p not in pools\n", str, v);
 return;

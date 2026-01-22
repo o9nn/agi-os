@@ -1,23 +1,23 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"ureg.h"
-#include	"init.h"
-#include	"pool.h"
-#include	"reboot.h"
-#include	"mp.h"
-#include	<tos.h>
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "ureg.h"
+#include "init.h"
+#include "pool.h"
+#include "reboot.h"
+#include "mp.h"
+#include <tos.h>
 Mach *m;
-#define BOOTLINE	((char*)CONFADDR)
-#define BOOTLINELEN	64
-#define BOOTARGS	((char*)(CONFADDR+BOOTLINELEN))
-#define	BOOTARGSLEN	(4096-0x200-BOOTLINELEN)
-#define	MAXCONF		64
+#define BOOTLINE ((char*)CONFADDR)
+#define BOOTLINELEN 64
+#define BOOTARGS ((char*)(CONFADDR+BOOTLINELEN))
+#define BOOTARGSLEN (4096-0x200-BOOTLINELEN)
+#define MAXCONF 64
 enum {
-Ustkheadroom	= sizeof(Sargs) + sizeof(uintptr) + sizeof(Tos),
+Ustkheadroom = sizeof(Sargs) + sizeof(uintptr) + sizeof(Tos),
 };
 char bootdisk[KNAMELEN];
 Conf conf;

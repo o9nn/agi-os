@@ -2,11 +2,11 @@
 static BOOL
 bGetDocumentText(FILE *pFile, const UCHAR *aucHeader)
 {
-text_block_type	tTextBlock;
-ULONG	ulBeginOfText, ulEndOfText;
-ULONG	ulTextLen;
-UCHAR	ucDocStatus;
-BOOL    bFastSaved;
+text_block_type tTextBlock;
+ULONG ulBeginOfText, ulEndOfText;
+ULONG ulTextLen;
+UCHAR ucDocStatus;
+BOOL bFastSaved;
 fail(pFile == NULL);
 fail(aucHeader == NULL);
 DBG_MSG("bGetDocumentText");
@@ -43,10 +43,10 @@ return TRUE;
 int
 iInitDocumentMAC(FILE *pFile, long lFilesize)
 {
-int	iWordVersion;
-BOOL	bSuccess;
-USHORT	usIdent;
-UCHAR	aucHeader[256];
+int iWordVersion;
+BOOL bSuccess;
+USHORT usIdent;
+UCHAR aucHeader[256];
 fail(pFile == NULL);
 if (lFilesize < 256) {
 return -1;

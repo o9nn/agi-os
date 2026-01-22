@@ -2,33 +2,33 @@
 #include <libc.h>
 #include <sys.h>
 #include <fcall.h>
-char	buf[1048576];
-#define	NARG	5
-uintptr	arg[NARG];
-int	sysr1(void);
-int	_stat(char*, char*);
-int	_fstat(int, char*);
-int	_errstr(char*);
-int	_wstat(char*, char*);
-int	_fwstat(int, char*);
-int	_read(int, void*, int);
-int	_write(int, void*, int);
-int	_read9p(int, void*, int);
-int	_write9p(int, void*, int);
-int	brk_(void*);
-int	_nfstat(int, void*, int);
-int	_nstat(char*, void*, int);
-int	_nfwstat(int, void*, int);
-int	_nwstat(char*, void*, int);
-int	_fsession(char*, void*, int);
-int	_mount(int, char*, int, char*);
-int	_wait(void*);
+char buf[1048576];
+#define NARG 5
+uintptr arg[NARG];
+int sysr1(void);
+int _stat(char*, char*);
+int _fstat(int, char*);
+int _errstr(char*);
+int _wstat(char*, char*);
+int _fwstat(int, char*);
+int _read(int, void*, int);
+int _write(int, void*, int);
+int _read9p(int, void*, int);
+int _write9p(int, void*, int);
+int brk_(void*);
+int _nfstat(int, void*, int);
+int _nstat(char*, void*, int);
+int _nfwstat(int, void*, int);
+int _nwstat(char*, void*, int);
+int _fsession(char*, void*, int);
+int _mount(int, char*, int, char*);
+int _wait(void*);
 struct{
-char	*name;
-int	(*func)(...);
+char *name;
+int (*func)(...);
 }tab[]={
 #include "tab.h"
-0,		0
+0, 0
 };
 uintptr parse(char *);
 void catch(void*, char*);

@@ -1,6 +1,6 @@
 # fit a polynomial to a set of points
-#	fit -dn [-v]
-#		where n is the degree of the polynomial
+# fit -dn [-v]
+# where n is the degree of the polynomial
 implement Fit;
 include "sys.m";
 sys: Sys;

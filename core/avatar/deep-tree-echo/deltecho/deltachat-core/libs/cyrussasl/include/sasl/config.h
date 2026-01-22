@@ -123,7 +123,7 @@ long iov_len;
 #ifndef WIN32
 # include <netdb.h>
 # ifdef HAVE_SYS_PARAM_H
-#  include <sys/param.h>
+# include <sys/param.h>
 # endif
 #else
 # include <winsock2.h>
@@ -134,45 +134,45 @@ long iov_len;
 typedef unsigned int socklen_t;
 #endif
 #ifndef HAVE_STRUCT_SOCKADDR_STORAGE
-#define	_SS_MAXSIZE	128
-#define	_SS_PADSIZE	(_SS_MAXSIZE - sizeof (struct sockaddr))
+#define _SS_MAXSIZE 128
+#define _SS_PADSIZE (_SS_MAXSIZE - sizeof (struct sockaddr))
 struct sockaddr_storage {
-struct	sockaddr ss_sa;
-char		__ss_pad2[_SS_PADSIZE];
+struct sockaddr ss_sa;
+char __ss_pad2[_SS_PADSIZE];
 };
 # define ss_family ss_sa.sa_family
 #endif
 #ifndef AF_INET6
-#define	AF_INET6	AF_MAX
+#define AF_INET6 AF_MAX
 #endif
 #ifndef HAVE_GETADDRINFO
-#define	getaddrinfo	sasl_getaddrinfo
-#define	freeaddrinfo	sasl_freeaddrinfo
-#define	gai_strerror	sasl_gai_strerror
+#define getaddrinfo sasl_getaddrinfo
+#define freeaddrinfo sasl_freeaddrinfo
+#define gai_strerror sasl_gai_strerror
 #endif
 #ifndef HAVE_GETNAMEINFO
-#define	getnameinfo	sasl_getnameinfo
+#define getnameinfo sasl_getnameinfo
 #endif
 #if !defined(HAVE_GETNAMEINFO) || !defined(HAVE_GETADDRINFO)
 #include "gai.h"
 #endif
 #ifndef AI_NUMERICHOST
-#define AI_NUMERICHOST  4
-#define NI_NUMERICHOST  2
-#define NI_NAMEREQD     4
-#define NI_NUMERICSERV  8
+#define AI_NUMERICHOST 4
+#define NI_NUMERICHOST 2
+#define NI_NAMEREQD 4
+#define NI_NUMERICSERV 8
 #endif
 #ifndef MAXHOSTNAMELEN
-#define        MAXHOSTNAMELEN  255
+#define MAXHOSTNAMELEN 255
 #endif
 #if TIME_WITH_SYS_TIME
 # include <sys/time.h>
 # include <time.h>
 #else
 # if HAVE_SYS_TIME_H
-#  include <sys/time.h>
+# include <sys/time.h>
 # else
-#  include <time.h>
+# include <time.h>
 # endif
 #endif
 #ifndef HIER_DELIMITER

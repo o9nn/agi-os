@@ -5,11 +5,11 @@ Node *after;
 int same;
 struct Cache *nxt;
 } Cache;
-static Cache	*stored = (Cache *) 0;
-static unsigned long	Caches, CacheHits;
-static int	ismatch(Node *, Node *);
+static Cache *stored = (Cache *) 0;
+static unsigned long Caches, CacheHits;
+static int ismatch(Node *, Node *);
 extern void fatal(char *, char *);
-int	sameform(Node *, Node *);
+int sameform(Node *, Node *);
 void
 ini_cache(void)
 {
@@ -20,10 +20,10 @@ CacheHits = 0;
 #if 0
 void
 cache_dump(void)
-{	Cache *d; int nr=0;
+{ Cache *d; int nr=0;
 printf("\nCACHE DUMP:\n");
 for (d = stored; d; d = d->nxt, nr++)
-{	if (d->same) continue;
+{ if (d->same) continue;
 printf("B%3d: ", nr); dump(d->before); printf("\n");
 printf("A%3d: ", nr); dump(d->after); printf("\n");
 }
@@ -32,10 +32,10 @@ printf("============\n");
 #endif
 Node *
 in_cache(Node *n)
-{	Cache *d; int nr=0;
+{ Cache *d; int nr=0;
 for (d = stored; d; d = d->nxt, nr++)
 if (isequal(d->before, n))
-{	CacheHits++;
+{ CacheHits++;
 if (d->same && ismatch(n, d->before)) return n;
 return dupnode(d->after);
 }
@@ -43,7 +43,7 @@ return ZN;
 }
 Node *
 cached(Node *n)
-{	Cache *d;
+{ Cache *d;
 Node *m;
 if (!n) return n;
 if ((m = in_cache(n)) != ZN)
@@ -51,9 +51,9 @@ return m;
 Caches++;
 d = (Cache *) tl_emalloc(sizeof(Cache));
 d->before = dupnode(n);
-d->after  = Canonical(n);
+d->after = Canonical(n);
 if (ismatch(d->before, d->after))
-{	d->same = 1;
+{ d->same = 1;
 releasenode(1, d->after);
 d->after = d->before;
 }
@@ -72,7 +72,7 @@ releasenode(int all_levels, Node *n)
 {
 if (!n) return;
 if (all_levels)
-{	releasenode(1, n->lft);
+{ releasenode(1, n->lft);
 n->lft = ZN;
 releasenode(1, n->rgt);
 n->rgt = ZN;
@@ -81,26 +81,26 @@ tfree((void *) n);
 }
 Node *
 tl_nn(int t, Node *ll, Node *rl)
-{	Node *n = (Node *) tl_emalloc(sizeof(Node));
+{ Node *n = (Node *) tl_emalloc(sizeof(Node));
 n->ntyp = (short) t;
-n->lft  = ll;
-n->rgt  = rl;
+n->lft = ll;
+n->rgt = rl;
 return n;
 }
 Node *
 getnode(Node *p)
-{	Node *n;
+{ Node *n;
 if (!p) return p;
-n =  (Node *) tl_emalloc(sizeof(Node));
+n = (Node *) tl_emalloc(sizeof(Node));
 n->ntyp = p->ntyp;
-n->sym  = p->sym;
-n->lft  = p->lft;
-n->rgt  = p->rgt;
+n->sym = p->sym;
+n->lft = p->lft;
+n->rgt = p->rgt;
 return n;
 }
 Node *
 dupnode(Node *n)
-{	Node *d;
+{ Node *d;
 if (!n) return n;
 d = getnode(n);
 d->lft = dupnode(n->lft);
@@ -110,7 +110,7 @@ return d;
 int
 one_lft(int ntyp, Node *x, Node *in)
 {
-if (!x)  return 1;
+if (!x) return 1;
 if (!in) return 0;
 if (sameform(x, in))
 return 1;
@@ -144,8 +144,8 @@ if (!a && !b) return 1;
 if (!a || !b) return 0;
 if (a->ntyp != b->ntyp) return 0;
 if (a->sym
-&&  b->sym
-&&  strcmp(a->sym->name, b->sym->name) != 0)
+&& b->sym
+&& strcmp(a->sym->name, b->sym->name) != 0)
 return 0;
 switch (a->ntyp) {
 case TRUE:
@@ -181,11 +181,11 @@ isequal(Node *a, Node *b)
 if (!a && !b)
 return 1;
 if (!a || !b)
-{	if (!a)
-{	if (b->ntyp == TRUE)
+{ if (!a)
+{ if (b->ntyp == TRUE)
 return 1;
 } else
-{	if (a->ntyp == TRUE)
+{ if (a->ntyp == TRUE)
 return 1;
 }
 return 0;
@@ -193,11 +193,11 @@ return 0;
 if (a->ntyp != b->ntyp)
 return 0;
 if (a->sym
-&&  b->sym
-&&  strcmp(a->sym->name, b->sym->name) != 0)
+&& b->sym
+&& strcmp(a->sym->name, b->sym->name) != 0)
 return 0;
 if (isequal(a->lft, b->lft)
-&&  isequal(a->rgt, b->rgt))
+&& isequal(a->rgt, b->rgt))
 return 1;
 return sameform(a, b);
 }
@@ -208,11 +208,11 @@ if (!a && !b) return 1;
 if (!a || !b) return 0;
 if (a->ntyp != b->ntyp) return 0;
 if (a->sym
-&&  b->sym
-&&  strcmp(a->sym->name, b->sym->name) != 0)
+&& b->sym
+&& strcmp(a->sym->name, b->sym->name) != 0)
 return 0;
 if (ismatch(a->lft, b->lft)
-&&  ismatch(a->rgt, b->rgt))
+&& ismatch(a->rgt, b->rgt))
 return 1;
 return 0;
 }
@@ -221,7 +221,7 @@ any_term(Node *srch, Node *in)
 {
 if (!in) return 0;
 if (in->ntyp == AND)
-return	any_term(srch, in->lft) ||
+return any_term(srch, in->lft) ||
 any_term(srch, in->rgt);
 return isequal(in, srch);
 }
@@ -230,7 +230,7 @@ any_and(Node *srch, Node *in)
 {
 if (!in) return 0;
 if (srch->ntyp == AND)
-return	any_and(srch->lft, in) &&
+return any_and(srch->lft, in) &&
 any_and(srch->rgt, in);
 return any_term(srch, in);
 }
@@ -239,7 +239,7 @@ any_lor(Node *srch, Node *in)
 {
 if (!in) return 0;
 if (in->ntyp == OR)
-return	any_lor(srch, in->lft) ||
+return any_lor(srch, in->lft) ||
 any_lor(srch, in->rgt);
 return isequal(in, srch);
 }
@@ -248,9 +248,9 @@ anywhere(int tok, Node *srch, Node *in)
 {
 if (!in) return 0;
 switch (tok) {
-case AND:	return any_and(srch, in);
-case  OR:	return any_lor(srch, in);
-case   0:	return any_term(srch, in);
+case AND: return any_and(srch, in);
+case OR: return any_lor(srch, in);
+case 0: return any_term(srch, in);
 }
 fatal("cannot happen, anywhere", (char *) 0);
 return 0;

@@ -154,13 +154,13 @@ SetZero(i);
 else while(i->e > 1 && (i->h & HiddenBit) == 0)
 shift(i);
 }
-#define	CHUNK		(FractBits/2)
-#define	CMASK		((1<<CHUNK)-1)
-#define	HI(x)		((short)((x)>>CHUNK) & CMASK)
-#define	LO(x)		((short)(x) & CMASK)
-#define	SPILL(x)	((x)>>CHUNK)
-#define	M(x, y)		((long)a[x]*(long)b[y])
-#define	C(h, l)		(((long)((h) & CMASK)<<CHUNK)|((l) & CMASK))
+#define CHUNK (FractBits/2)
+#define CMASK ((1<<CHUNK)-1)
+#define HI(x) ((short)((x)>>CHUNK) & CMASK)
+#define LO(x) ((short)(x) & CMASK)
+#define SPILL(x) ((x)>>CHUNK)
+#define M(x, y) ((long)a[x]*(long)b[y])
+#define C(h, l) (((long)((h) & CMASK)<<CHUNK)|((l) & CMASK))
 void
 fpimul(Internal *x, Internal *y, Internal *i)
 {
@@ -184,13 +184,13 @@ a[0] = HI(x->h); b[0] = HI(y->h);
 a[1] = LO(x->h); b[1] = LO(y->h);
 a[2] = HI(x->l); b[2] = HI(y->l);
 a[3] = LO(x->l); b[3] = LO(y->l);
-c[6] =                               M(3, 3);
-c[5] =                     M(2, 3) + M(3, 2) + SPILL(c[6]);
-c[4] =           M(1, 3) + M(2, 2) + M(3, 1) + SPILL(c[5]);
+c[6] = M(3, 3);
+c[5] = M(2, 3) + M(3, 2) + SPILL(c[6]);
+c[4] = M(1, 3) + M(2, 2) + M(3, 1) + SPILL(c[5]);
 c[3] = M(0, 3) + M(1, 2) + M(2, 1) + M(3, 0) + SPILL(c[4]);
-c[2] = M(0, 2) + M(1, 1) + M(2, 0)           + SPILL(c[3]);
-c[1] = M(0, 1) + M(1, 0)                     + SPILL(c[2]);
-c[0] = M(0, 0)                               + SPILL(c[1]);
+c[2] = M(0, 2) + M(1, 1) + M(2, 0) + SPILL(c[3]);
+c[1] = M(0, 1) + M(1, 0) + SPILL(c[2]);
+c[0] = M(0, 0) + SPILL(c[1]);
 f[0] = c[0];
 f[1] = C(c[1], c[2]);
 f[2] = C(c[3], c[4]);

@@ -21,7 +21,7 @@ MAD_PCM_CHANNEL_DUAL_1 = 0,
 MAD_PCM_CHANNEL_DUAL_2 = 1
 };
 enum {
-MAD_PCM_CHANNEL_STEREO_LEFT  = 0,
+MAD_PCM_CHANNEL_STEREO_LEFT = 0,
 MAD_PCM_CHANNEL_STEREO_RIGHT = 1
 };
 void mad_synth_init(struct mad_synth *);

@@ -610,7 +610,7 @@ pr = SmbProcessResultError;
 goto done;
 }
 h->wordcount = 42;
-mtime =  smbplan9time2time(d->mtime);
+mtime = smbplan9time2time(d->mtime);
 if (!smbbufferputandxheader(s->response, h, &s->peerinfo, andxcommand, &andxoffsetfixup)
 || !smbbufferputb(s->response, 0)
 || !smbbufferputs(s->response, fid)

@@ -1,7 +1,7 @@
 enum {
-NAMELEN		= 56,
-NDBLOCK		= 6,
-NIBLOCK		= 4,
+NAMELEN = 56,
+NDBLOCK = 6,
+NIBLOCK = 4,
 };
 typedef vlong Off;
 #undef COMPAT32

@@ -1,63 +1,63 @@
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
 enum{
 Qdir,
 Qmedium,
-Maxfs=		10,
-Blen=		48,
-Nlen=		28,
-Dlen=		Blen - 4,
-Tagdir=		'd',
-Tagdata=	'D',
-Tagend=		'e',
-Tagfree=	'f',
-Notapin=		0xffff,
-Notabno=		0xffff,
-Fcreating=	1,
-Frmonclose=	2
+Maxfs= 10,
+Blen= 48,
+Nlen= 28,
+Dlen= Blen - 4,
+Tagdir= 'd',
+Tagdata= 'D',
+Tagend= 'e',
+Tagfree= 'f',
+Notapin= 0xffff,
+Notabno= 0xffff,
+Fcreating= 1,
+Frmonclose= 2
 };
 typedef struct Mdir Mdir;
 struct Mdir {
-uchar	type;
-uchar	bno[2];
-uchar	pin[2];
-char	name[Nlen];
-char	pad[Blen - Nlen - 6];
-uchar	sum;
+uchar type;
+uchar bno[2];
+uchar pin[2];
+char name[Nlen];
+char pad[Blen - Nlen - 6];
+uchar sum;
 };
 typedef struct Mdata Mdata;
 struct Mdata {
-uchar	type;
-uchar	bno[2];
-uchar	data[Dlen];
-uchar	sum;
+uchar type;
+uchar bno[2];
+uchar data[Dlen];
+uchar sum;
 };
 typedef struct Tfile Tfile;
 struct Tfile {
-int	r;
-char	name[Nlen];
-ushort	bno;
-ushort	dbno;
-ushort	pin;
-uchar	flag;
-ulong	length;
-ushort	fbno;
-ulong	finger;
+int r;
+char name[Nlen];
+ushort bno;
+ushort dbno;
+ushort pin;
+uchar flag;
+ulong length;
+ushort fbno;
+ulong finger;
 };
 typedef struct Tfs Tfs;
 struct Tfs {
-QLock	ql;
-int	r;
-Chan	*c;
-uchar	*map;
-int	nblocks;
-Tfile	*f;
-int	nf;
-int	fsize;
+QLock ql;
+int r;
+Chan *c;
+uchar *map;
+int nblocks;
+Tfile *f;
+int nf;
+int fsize;
 };
 static struct {
-Tfs	fs[Maxfs];
+Tfs fs[Maxfs];
 } tinyfs;
 #define GETS(x) ((x)[0]|((x)[1]<<8))
 #define PUTS(x, v) {(x)[0] = (v);(x)[1] = ((v)>>8);}
@@ -717,7 +717,7 @@ writedata(rock.fs, bno, rock.dbno, md->data, used, last == n+offset);
 f->length += n;
 if(fbno != Notabno){
 f->finger = finger;
-f->fbno =  fbno;
+f->fbno = fbno;
 }
 poperror();
 qunlock(&rock.fs->ql);

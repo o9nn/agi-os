@@ -11,40 +11,40 @@ include "string.m";
 str: String;
 Configflash: module
 {
-init:	fn(nil: ref Draw->Context, args: list of string);
+init: fn(nil: ref Draw->Context, args: list of string);
 };
 Region: adt {
-base:	int;
-limit:	int;
+base: int;
+limit: int;
 };
 #
 # structure of allocation descriptor
 #
-Fcheck:	con 0;
-Fbase:	con 4;
-Flen:		con 8;
-Ftag:		con 11;
-Fsig:		con 12;
-Fasize:	con 3*4+3+1;
-Tdead:	con byte 0;
-Tboot:	con byte 16r01;
-Tconf:	con byte 16r02;
-Tnone:	con byte 16rFF;
+Fcheck: con 0;
+Fbase: con 4;
+Flen: con 8;
+Ftag: con 11;
+Fsig: con 12;
+Fasize: con 3*4+3+1;
+Tdead: con byte 0;
+Tboot: con byte 16r01;
+Tconf: con byte 16r02;
+Tnone: con byte 16rFF;
 flashsig := array[] of {byte 16rF1, byte 16rA5, byte 16r5A, byte 16r1F};
-noval := array[] of {0 to 3 =>byte 16rFF};	#
+noval := array[] of {0 to 3 =>byte 16rFF}; #
 Ctag, Cscreen, Cconsole, Cbaud, Cether, Cea, Cend: con iota;
 config := array[] of {
-Ctag => "#plan9.ini\n",		# current flag for qboot, don't change
+Ctag => "#plan9.ini\n", # current flag for qboot, don't change
 Cscreen => "vgasize=640x480x8\n",
 Cconsole => "console=0 lcd\n",
 Cbaud => "baud=9600\n",
-Cether => "ether0=type=SCC port=2 ",	# note missing \n
+Cether => "ether0=type=SCC port=2 ", # note missing \n
 Cea => "ea=08003e400080\n",
-Cend => "\0"	# qboot currently requires it but shouldn't
+Cend => "\0" # qboot currently requires it but shouldn't
 };
 Param: adt {
-name:	string;
-index:	int;
+name: string;
+index: int;
 };
 params := array[] of {
 Param("vgasize", Cscreen),
@@ -100,7 +100,7 @@ if(p.index < 0)
 err(sys->sprint("unknown config parameter: %s", a));
 v: string;
 (v, args) = argf(tl args);
-config[p.index] = a[1:]+"="+v+"\n";	# would be nice to check it
+config[p.index] = a[1:]+"="+v+"\n"; # would be nice to check it
 }
 if(len args > 0)
 usage();
@@ -162,7 +162,7 @@ mkdesc(base: int, length: int, tag: byte): array of byte
 a := array[Fasize] of byte;
 a[Fcheck:] = noval;
 a[Fbase:] = cvt(base);
-a[Flen:] = cvt(length)[1:];	# it's three bytes
+a[Flen:] = cvt(length)[1:]; # it's three bytes
 a[Ftag] = tag;
 a[Fsig:] = flashsig;
 return a;

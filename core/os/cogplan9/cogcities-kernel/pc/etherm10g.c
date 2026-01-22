@@ -8,26 +8,26 @@
 #include "../port/netif.h"
 #include "../pc/etherif.h"
 #ifndef KiB
-#define KiB		1024u
-#define MiB		1048576u
+#define KiB 1024u
+#define MiB 1048576u
 #endif
-#define	dprint(...)	if(debug) print(__VA_ARGS__)
-#define	pcicapdbg(...)
-#define malign(n)	mallocalign((n), 4*KiB, 0, 0)
+#define dprint(...) if(debug) print(__VA_ARGS__)
+#define pcicapdbg(...)
+#define malign(n) mallocalign((n), 4*KiB, 0, 0)
 #include "etherm10g2k.i"
 #include "etherm10g4k.i"
-static int 	debug		= 0;
-static char	Etimeout[]	= "timeout";
+static int debug = 0;
+static char Etimeout[] = "timeout";
 enum {
-Epromsz	= 256,
+Epromsz = 256,
 Maxslots= 1024,
-Align	= 4096,
-Maxmtu	= 9000,
-Noconf	= 0xffffffff,
+Align = 4096,
+Maxmtu = 9000,
+Noconf = 0xffffffff,
 Fwoffset= 1*MiB,
-Cmdoff	= 0xf80000,
-Fwsubmt	= 0xfc0000,
-Rdmaoff	= 0xfc01c0,
+Cmdoff = 0xf80000,
+Fwsubmt = 0xfc0000,
+Rdmaoff = 0xfc01c0,
 };
 enum {
 CZero,
@@ -64,77 +64,77 @@ Cleaveallmc,
 CSstatsdma2,
 };
 typedef union {
-uint	i[2];
-uchar	c[8];
+uint i[2];
+uchar c[8];
 } Cmd;
 typedef ulong Slot;
 typedef struct {
-ushort	cksum;
-ushort	len;
+ushort cksum;
+ushort len;
 } Slotparts;
 enum {
-SFsmall	= 1,
-SFfirst	= 2,
-SFalign	= 4,
-SFnotso	= 16,
+SFsmall = 1,
+SFfirst = 2,
+SFalign = 4,
+SFnotso = 16,
 };
 typedef struct {
-ulong	high;
-ulong	low;
-ushort	hdroff;
-ushort	len;
-uchar	pad;
-uchar	nrdma;
-uchar	chkoff;
-uchar	flags;
+ulong high;
+ulong low;
+ushort hdroff;
+ushort len;
+uchar pad;
+uchar nrdma;
+uchar chkoff;
+uchar flags;
 } Send;
 typedef struct {
 QLock;
-Send	*lanai;
-Send	*host;
-Block	**bring;
-int	size;
-ulong	segsz;
-uint	n;
-uint	m;
-uint	i;
-uint	cnt;
-ulong	npkt;
-vlong	nbytes;
+Send *lanai;
+Send *host;
+Block **bring;
+int size;
+ulong segsz;
+uint n;
+uint m;
+uint i;
+uint cnt;
+ulong npkt;
+vlong nbytes;
 } Tx;
 typedef struct {
 Lock;
-Block	*head;
-uint	size;
-uint	n;
-uint	cnt;
+Block *head;
+uint size;
+uint n;
+uint cnt;
 } Bpool;
-static Bpool	smpool 	= { .size = 128, };
-static Bpool	bgpool	= { .size = Maxmtu, };
+static Bpool smpool = { .size = 128, };
+static Bpool bgpool = { .size = Maxmtu, };
 typedef struct {
-Bpool	*pool;
-ulong	*lanai;
-Block	**host;
-uint	m;
-uint	n;
-uint	i;
-uint	cnt;
-uint	allocfail;
+Bpool *pool;
+ulong *lanai;
+Block **host;
+uint m;
+uint n;
+uint i;
+uint cnt;
+uint allocfail;
 } Rx;
 typedef struct {
-uchar	txcnt[4];
-uchar	linkstat[4];
-uchar	dlink[4];
-uchar	derror[4];
-uchar	drunt[4];
-uchar	doverrun[4];
-uchar	dnosm[4];
-uchar	dnobg[4];
-uchar	nrdma[4];
-uchar	txstopped;
-uchar	down;
-uchar	updated;
-uchar	valid;
+uchar txcnt[4];
+uchar linkstat[4];
+uchar dlink[4];
+uchar derror[4];
+uchar drunt[4];
+uchar doverrun[4];
+uchar dnosm[4];
+uchar dnobg[4];
+uchar nrdma[4];
+uchar txstopped;
+uchar down;
+uchar updated;
+uchar valid;
 } Stats;
 enum {
 Detached,
@@ -142,60 +142,60 @@ Attached,
 Runed,
 };
 typedef struct {
-Slot 	*entry;
-uvlong	busaddr;
-uint	m;
-uint	n;
-uint	i;
+Slot *entry;
+uvlong busaddr;
+uint m;
+uint n;
+uint i;
 } Done;
 typedef struct Ctlr Ctlr;
 typedef struct Ctlr {
 QLock;
-int	state;
-int	kprocs;
-uvlong	port;
-Pcidev*	pcidev;
-Ctlr*	next;
-int	active;
-int	id;
-uchar	ra[Eaddrlen];
-int	ramsz;
-uchar	*ram;
-ulong	*irqack;
-ulong	*irqdeass;
-ulong	*coal;
-char	eprom[Epromsz];
-ulong	serial;
-QLock	cmdl;
-Cmd	*cmd;
-uvlong	cprt;
-uvlong	boot;
-Done	done;
-Tx	tx;
-Rx	sm;
-Rx	bg;
-Stats	*stats;
-uvlong	statsprt;
-Rendez	rxrendez;
-Rendez	txrendez;
-int	msi;
-ulong	linkstat;
-ulong	nrdma;
+int state;
+int kprocs;
+uvlong port;
+Pcidev* pcidev;
+Ctlr* next;
+int active;
+int id;
+uchar ra[Eaddrlen];
+int ramsz;
+uchar *ram;
+ulong *irqack;
+ulong *irqdeass;
+ulong *coal;
+char eprom[Epromsz];
+ulong serial;
+QLock cmdl;
+Cmd *cmd;
+uvlong cprt;
+uvlong boot;
+Done done;
+Tx tx;
+Rx sm;
+Rx bg;
+Stats *stats;
+uvlong statsprt;
+Rendez rxrendez;
+Rendez txrendez;
+int msi;
+ulong linkstat;
+ulong nrdma;
 } Ctlr;
-static Ctlr 	*ctlrs;
+static Ctlr *ctlrs;
 enum {
-PciCapPMG	 = 0x01,
-PciCapAGP	 = 0x02,
-PciCapVPD	 = 0x03,
-PciCapSID	 = 0x04,
-PciCapMSI	 = 0x05,
-PciCapCHS	 = 0x06,
-PciCapPCIX	 = 0x07,
-PciCapHTC	 = 0x08,
-PciCapVND	 = 0x09,
-PciCapHSW	 = 0x0C,
-PciCapPCIe	 = 0x10,
-PciCapMSIX	 = 0x11,
+PciCapPMG = 0x01,
+PciCapAGP = 0x02,
+PciCapVPD = 0x03,
+PciCapSID = 0x04,
+PciCapMSI = 0x05,
+PciCapCHS = 0x06,
+PciCapPCIX = 0x07,
+PciCapHTC = 0x08,
+PciCapVND = 0x09,
+PciCapHSW = 0x0C,
+PciCapPCIe = 0x10,
+PciCapMSIX = 0x11,
 };
 enum {
 PcieAERC = 1,
@@ -204,12 +204,12 @@ PcieSNC,
 PciePBC,
 };
 enum {
-AercCCR	= 0x18,
+AercCCR = 0x18,
 };
 enum {
-PcieCTL	= 8,
-PcieLCR	= 12,
-PcieMRD	= 0x7000,
+PcieCTL = 8,
+PcieLCR = 12,
+PcieMRD = 0x7000,
 };
 static int
 pcicap(Pcidev *p, int cap)
@@ -241,11 +241,11 @@ uint off, i;
 off = 0x100;
 while(((i = pcicfgr32(p, off)) & 0xffff) != cap){
 off = i >> 20;
-print("m10g: pciecap offset = %ud",  off);
+print("m10g: pciecap offset = %ud", off);
 if(off < 0x100 || off >= 4*KiB - 1)
 return 0;
 }
-print("m10g: pciecap found = %ud",  off);
+print("m10g: pciecap found = %ud", off);
 return off;
 }
 static int
@@ -336,7 +336,7 @@ static ushort
 gbit16(uchar i[2])
 {
 ushort j;
-j  = i[1];
+j = i[1];
 j |= i[0]<<8;
 return j;
 }
@@ -356,7 +356,7 @@ static ulong
 gbit32(uchar i[4])
 {
 ulong j;
-j  = i[3];
+j = i[3];
 j |= i[2]<<8;
 j |= i[1]<<16;
 j |= i[0]<<24;
@@ -441,7 +441,7 @@ error(Etimeout);
 return ~0;
 }
 enum {
-DMAread	= 0x10000,
+DMAread = 0x10000,
 DMAwrite= 0x1,
 };
 ulong
@@ -560,7 +560,7 @@ static int
 kickthebaby(Pcidev *p, Ctlr *c)
 {
 ulong code;
-pcicfgw8(p,  0x10 + c->boot, 0x3);
+pcicfgw8(p, 0x10 + c->boot, 0x3);
 pcicfgw32(p, 0x18 + c->boot, 0xfffffff0);
 code = pcicfgr32(p, 0x14 + c->boot);
 dprint("reboot status = %lux\n", code);
@@ -569,19 +569,19 @@ return -1;
 return 0;
 }
 typedef struct {
-uchar	len[4];
-uchar	type[4];
-char	version[128];
-uchar	globals[4];
-uchar	ramsz[4];
-uchar	specs[4];
-uchar	specssz[4];
+uchar len[4];
+uchar type[4];
+char version[128];
+uchar globals[4];
+uchar ramsz[4];
+uchar specs[4];
+uchar specssz[4];
 } Fwhdr;
 enum {
-Tmx	= 0x4d582020,
-Tpcie	= 0x70636965,
-Teth	= 0x45544820,
-Tmcp0	= 0x4d435030,
+Tmx = 0x4d582020,
+Tpcie = 0x70636965,
+Teth = 0x45544820,
+Tmcp0 = 0x4d435030,
 };
 static char *
 fwtype(ulong type)
@@ -633,7 +633,7 @@ chkfw(c);
 cmd(c, Creset, 0);
 cmd(c, CSintrqsz, c->done.n * sizeof *c->done.entry);
 cmd(c, CSintrqdma, c->done.busaddr);
-c->irqack =   (ulong*)(c->ram + cmd(c, CGirqackoff, 0));
+c->irqack = (ulong*)(c->ram + cmd(c, CGirqackoff, 0));
 c->irqdeass = (ulong*)(c->ram + cmd(c, CGirqdeassoff, 0));
 c->coal = (ulong*)(c->ram + cmd(c, CGcoaloff, 0));
 *c->coal = pbit32(25);
@@ -760,7 +760,7 @@ while(p->n >= 8 && e){
 idx = rx->cnt & rx->m;
 for(i = 0; i < 8; i++){
 b = balloc(rx);
-buf[i*2]   = pbit32((uvlong)PCIWADDR(b->wp) >> 32);
+buf[i*2] = pbit32((uvlong)PCIWADDR(b->wp) >> 32);
 buf[i*2+1] = pbit32(PCIWADDR(b->wp));
 rx->host[idx+i] = b;
 assert(b);
@@ -798,7 +798,7 @@ Block *b;
 int i, sz, entries;
 entries = cmd(c, CGsendrgsz, 0) / sizeof *c->tx.lanai;
 c->tx.lanai = (Send*)(c->ram + cmd(c, CGsendoff, 0));
-c->tx.host  = emalign(entries * sizeof *c->tx.host);
+c->tx.host = emalign(entries * sizeof *c->tx.host);
 c->tx.bring = emalign(entries * sizeof *c->tx.bring);
 c->tx.n = entries;
 c->tx.m = entries-1;
@@ -1004,7 +1004,7 @@ qlock(tx);
 count = 0;
 s = tx->host + (tx->i & tx->m);
 cnt = tx->cnt;
-s0 =   tx->host + (cnt & tx->m);
+s0 = tx->host + (cnt & tx->m);
 s0m8 = tx->host + ((cnt - 8) & tx->m);
 i = tx->i;
 for(; s >= s0 || s < s0m8; i += nseg){
@@ -1025,7 +1025,7 @@ s->len = pbit16(slen);
 s->nrdma = rdma;
 s->flags = flags;
 bus += slen;
-if(++s ==  tx->host + tx->n)
+if(++s == tx->host + tx->n)
 s = tx->host;
 count++;
 flags &= ~SFfirst;
@@ -1036,7 +1036,7 @@ if(1 || count > 0){
 submittx(tx, count);
 count = 0;
 cnt = tx->cnt;
-s0 =   tx->host + (cnt & tx->m);
+s0 = tx->host + (cnt & tx->m);
 s0m8 = tx->host + ((cnt - 8) & tx->m);
 }
 }
@@ -1155,22 +1155,22 @@ error(Enomem);
 l = 0;
 memmove(&s, c->stats, sizeof s);
 snprint(p+l, READSTR,
-"txcnt = %lud\n"  "linkstat = %lud\n" 	"dlink = %lud\n"
-"derror = %lud\n" "drunt = %lud\n" 	"doverrun = %lud\n"
-"dnosm = %lud\n"  "dnobg = %lud\n"	"nrdma = %lud\n"
-"txstopped = %ud\n" "down = %ud\n" 	"updated = %ud\n"
+"txcnt = %lud\n" "linkstat = %lud\n" "dlink = %lud\n"
+"derror = %lud\n" "drunt = %lud\n" "doverrun = %lud\n"
+"dnosm = %lud\n" "dnobg = %lud\n" "nrdma = %lud\n"
+"txstopped = %ud\n" "down = %ud\n" "updated = %ud\n"
 "valid = %ud\n\n"
-"tx pkt = %lud\n"  "tx bytes = %lld\n"
-"tx cnt = %ud\n"  "tx n = %ud\n"	"tx i = %ud\n"
-"sm cnt = %ud\n"  "sm i = %ud\n"	"sm n = %ud\n"
+"tx pkt = %lud\n" "tx bytes = %lld\n"
+"tx cnt = %ud\n" "tx n = %ud\n" "tx i = %ud\n"
+"sm cnt = %ud\n" "sm i = %ud\n" "sm n = %ud\n"
 "sm lst = %ud\n"
-"bg cnt = %ud\n"  "bg i = %ud\n"	"bg n = %ud\n"
+"bg cnt = %ud\n" "bg i = %ud\n" "bg n = %ud\n"
 "bg lst = %ud\n"
-"segsz = %lud\n"   "coal = %lud\n",
-gbit32(s.txcnt),  gbit32(s.linkstat),	gbit32(s.dlink),
-gbit32(s.derror), gbit32(s.drunt),	gbit32(s.doverrun),
-gbit32(s.dnosm),  gbit32(s.dnobg),	gbit32(s.nrdma),
-s.txstopped,  s.down, s.updated, s.valid,
+"segsz = %lud\n" "coal = %lud\n",
+gbit32(s.txcnt), gbit32(s.linkstat), gbit32(s.dlink),
+gbit32(s.derror), gbit32(s.drunt), gbit32(s.doverrun),
+gbit32(s.dnosm), gbit32(s.dnobg), gbit32(s.nrdma),
+s.txstopped, s.down, s.updated, s.valid,
 c->tx.npkt, c->tx.nbytes,
 c->tx.cnt, c->tx.n, c->tx.i,
 c->sm.cnt, c->sm.i, c->sm.pool->n, lstcount(c->sm.pool->head),
@@ -1204,11 +1204,11 @@ CMqsummary,
 CMrxring,
 };
 static Cmdtab ctab[] = {
-CMdebug,	"debug",	2,
-CMcoal,		"coal",		2,
-CMwakeup,	"wakeup",	1,
-CMtxwakeup,	"txwakeup",	1,
-CMrxring,	"rxring",	1,
+CMdebug, "debug", 2,
+CMcoal, "coal", 2,
+CMwakeup, "wakeup", 1,
+CMtxwakeup, "txwakeup", 1,
+CMrxring, "rxring", 1,
 };
 static long
 m10gctl(Ether *e, void *v, long n)
@@ -1270,8 +1270,8 @@ else
 i = Cnopromisc;
 cmd(e->ctlr, i, 0);
 }
-static int	mcctab[]  = { CSleavemc, CSjoinmc };
-static char	*mcntab[] = { "leave", "join" };
+static int mcctab[] = { CSleavemc, CSjoinmc };
+static char *mcntab[] = { "leave", "join" };
 static void
 m10gmulticast(void *v, uchar *ea, int on)
 {

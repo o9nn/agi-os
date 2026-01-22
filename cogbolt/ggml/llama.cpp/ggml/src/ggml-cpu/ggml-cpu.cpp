@@ -9,23 +9,23 @@
 #include <string>
 #include <vector>
 #ifdef GGML_USE_CPU_HBM
-#    include "hbm.h"
+# include "hbm.h"
 #endif
 #ifdef GGML_USE_CPU_KLEIDIAI
-#    include "kleidiai/kleidiai.h"
+# include "kleidiai/kleidiai.h"
 #endif
 #if defined(_WIN32)
-#    define WIN32_LEAN_AND_MEAN
-#    ifndef NOMINMAX
-#        define NOMINMAX
-#    endif
-#    include <windows.h>
+# define WIN32_LEAN_AND_MEAN
+# ifndef NOMINMAX
+# define NOMINMAX
+# endif
+# include <windows.h>
 #else
-#    include <unistd.h>
+# include <unistd.h>
 #endif
 #if defined(__APPLE__)
-#    include <sys/sysctl.h>
-#    include <sys/types.h>
+# include <sys/sysctl.h>
+# include <sys/types.h>
 #endif
 std::vector<ggml_backend_buffer_type_t> & ggml_backend_cpu_get_extra_buffer_types() {
 static std::vector<ggml_backend_buffer_type_t> bufts = []() {
@@ -67,12 +67,12 @@ return true;
 return false;
 }
 struct ggml_backend_cpu_context {
-int                 n_threads;
-ggml_threadpool_t   threadpool;
-uint8_t *           work_data;
-size_t              work_size;
+int n_threads;
+ggml_threadpool_t threadpool;
+uint8_t * work_data;
+size_t work_size;
 ggml_abort_callback abort_callback;
-void *              abort_callback_data;
+void * abort_callback_data;
 };
 static const char * ggml_backend_cpu_get_name(ggml_backend_t backend) {
 return "CPU";
@@ -100,7 +100,7 @@ delete cpu_plan;
 return NULL;
 }
 }
-cpu_plan->cplan.abort_callback      = cpu_ctx->abort_callback;
+cpu_plan->cplan.abort_callback = cpu_ctx->abort_callback;
 cpu_plan->cplan.abort_callback_data = cpu_ctx->abort_callback_data;
 return cpu_plan;
 }
@@ -128,7 +128,7 @@ return GGML_STATUS_ALLOC_FAILED;
 cpu_ctx->work_size = cplan.work_size;
 }
 cplan.work_data = (uint8_t *)cpu_ctx->work_data;
-cplan.abort_callback      = cpu_ctx->abort_callback;
+cplan.abort_callback = cpu_ctx->abort_callback;
 cplan.abort_callback_data = cpu_ctx->abort_callback_data;
 return ggml_graph_compute(cgraph, &cplan);
 }
@@ -157,11 +157,11 @@ struct ggml_backend_cpu_context * ctx = new ggml_backend_cpu_context;
 if (ctx == NULL) {
 return NULL;
 }
-ctx->n_threads           = GGML_DEFAULT_N_THREADS;
-ctx->threadpool          = NULL;
-ctx->work_data           = NULL;
-ctx->work_size           = 0;
-ctx->abort_callback      = NULL;
+ctx->n_threads = GGML_DEFAULT_N_THREADS;
+ctx->threadpool = NULL;
+ctx->work_data = NULL;
+ctx->work_size = 0;
+ctx->abort_callback = NULL;
 ctx->abort_callback_data = NULL;
 ggml_backend_t cpu_backend = new ggml_backend {
 ggml_backend_cpu_guid(),
@@ -287,9 +287,9 @@ return GGML_BACKEND_DEVICE_TYPE_CPU;
 GGML_UNUSED(dev);
 }
 static void ggml_backend_cpu_device_get_props(ggml_backend_dev_t dev, struct ggml_backend_dev_props * props) {
-props->name        = ggml_backend_cpu_device_get_name(dev);
+props->name = ggml_backend_cpu_device_get_name(dev);
 props->description = ggml_backend_cpu_device_get_description(dev);
-props->type        = ggml_backend_cpu_device_get_type(dev);
+props->type = ggml_backend_cpu_device_get_type(dev);
 ggml_backend_cpu_device_get_memory(dev, &props->memory_free, &props->memory_total);
 props->caps = {
 false,
@@ -330,11 +330,11 @@ case GGML_OP_CPY:
 case GGML_OP_SET_ROWS:
 return
 op->type != GGML_TYPE_IQ3_XXS &&
-op->type != GGML_TYPE_IQ3_S   &&
+op->type != GGML_TYPE_IQ3_S &&
 op->type != GGML_TYPE_IQ2_XXS &&
-op->type != GGML_TYPE_IQ2_XS  &&
-op->type != GGML_TYPE_IQ2_S   &&
-op->type != GGML_TYPE_IQ1_S   &&
+op->type != GGML_TYPE_IQ2_XS &&
+op->type != GGML_TYPE_IQ2_S &&
+op->type != GGML_TYPE_IQ1_S &&
 op->type != GGML_TYPE_IQ1_M;
 case GGML_OP_MUL_MAT:
 return src1->type == GGML_TYPE_F32 || src1->type == ggml_get_type_traits_cpu(src0->type)->vec_dot_type;

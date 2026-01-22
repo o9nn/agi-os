@@ -107,7 +107,7 @@ ht_mask_t *dp = (ht_mask_t *)&data[p[i].offset];\
 *dp ^= p[i].mask;\
 END
 #ifdef DEBUG
-#  define INVERT(i)\
+# define INVERT(i)\
 BEGIN\
 if_debug3('H', "[H]invert level=%d offset=%u mask=0x%x\n",\
 (int)(p + i - (const gx_ht_bit *)porder->bit_data),\
@@ -115,7 +115,7 @@ p[i].offset, p[i].mask);\
 INVERT_DATA(i);\
 END
 #else
-#  define INVERT(i) INVERT_DATA(i)
+# define INVERT(i) INVERT_DATA(i)
 #endif
 sw:switch (level - old_level) {
 default:
@@ -160,7 +160,7 @@ byte *dp = &data[bit_index >> 3];\
 *dp ^= 0x80 >> (bit_index & 7);\
 END
 #ifdef DEBUG
-#  define INVERT(i)\
+# define INVERT(i)\
 BEGIN\
 if_debug3('H', "[H]invert level=%d offset=%u mask=0x%x\n",\
 (int)(p + i - (const ushort *)porder->bit_data),\
@@ -168,7 +168,7 @@ p[i] >> 3, 0x80 >> (p[i] & 7));\
 INVERT_DATA(i);\
 END
 #else
-#  define INVERT(i) INVERT_DATA(i)
+# define INVERT(i) INVERT_DATA(i)
 #endif
 sw:switch (level - old_level) {
 default:

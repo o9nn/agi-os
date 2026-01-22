@@ -2,9 +2,9 @@
 #define MYACPI_H
 #include <stdlib.h>
 #include <inttypes.h>
-#define ESCD		0xe0000U
-#define  RSDP_MAGIC	(const unsigned char *)"RSD PTR "
-#define ESCD_SIZE	0x20000U
+#define ESCD 0xe0000U
+#define RSDP_MAGIC (const unsigned char *)"RSD PTR "
+#define ESCD_SIZE 0x20000U
 struct rsdp_descr
 {
 uint8_t magic[8];

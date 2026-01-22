@@ -12,10 +12,10 @@ return (0);
 # include <openssl/evp.h>
 # include <openssl/sha.h>
 # ifdef CHARSET_EBCDIC
-#  include <openssl/ebcdic.h>
+# include <openssl/ebcdic.h>
 # endif
 # define SHA_0
-# undef  SHA_1
+# undef SHA_1
 static char *test[] = {
 "abc",
 "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq",

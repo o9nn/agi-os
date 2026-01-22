@@ -2,19 +2,19 @@
 #define __XEN_PUBLIC_IO_FSIF_H__
 #include "ring.h"
 #include "../grant_table.h"
-#define REQ_FILE_OPEN        1
-#define REQ_FILE_CLOSE       2
-#define REQ_FILE_READ        3
-#define REQ_FILE_WRITE       4
-#define REQ_STAT             5
-#define REQ_FILE_TRUNCATE    6
-#define REQ_REMOVE           7
-#define REQ_RENAME           8
-#define REQ_CREATE           9
-#define REQ_DIR_LIST        10
-#define REQ_CHMOD           11
-#define REQ_FS_SPACE        12
-#define REQ_FILE_SYNC       13
+#define REQ_FILE_OPEN 1
+#define REQ_FILE_CLOSE 2
+#define REQ_FILE_READ 3
+#define REQ_FILE_WRITE 4
+#define REQ_STAT 5
+#define REQ_FILE_TRUNCATE 6
+#define REQ_REMOVE 7
+#define REQ_RENAME 8
+#define REQ_CREATE 9
+#define REQ_DIR_LIST 10
+#define REQ_CHMOD 11
+#define REQ_FS_SPACE 12
+#define REQ_FILE_SYNC 13
 struct fsif_open_request {
 grant_ref_t gref;
 };
@@ -39,14 +39,14 @@ struct fsif_stat_request {
 uint32_t fd;
 };
 struct fsif_stat_response {
-int32_t  stat_mode;
+int32_t stat_mode;
 uint32_t stat_uid;
 uint32_t stat_gid;
-int32_t  stat_ret;
-int64_t  stat_size;
-int64_t  stat_atime;
-int64_t  stat_mtime;
-int64_t  stat_ctime;
+int32_t stat_ret;
+int64_t stat_size;
+int64_t stat_atime;
+int64_t stat_mtime;
+int64_t stat_ctime;
 };
 struct fsif_truncate_request {
 uint32_t fd;
@@ -72,14 +72,14 @@ struct fsif_list_request {
 uint32_t offset;
 grant_ref_t gref;
 };
-#define NR_FILES_SHIFT  0
-#define NR_FILES_SIZE   16
-#define NR_FILES_MASK   (((1ULL << NR_FILES_SIZE) - 1) << NR_FILES_SHIFT)
-#define ERROR_SIZE      32
-#define ERROR_SHIFT     (NR_FILES_SIZE + NR_FILES_SHIFT)
-#define ERROR_MASK      (((1ULL << ERROR_SIZE) - 1) << ERROR_SHIFT)
-#define HAS_MORE_SHIFT  (ERROR_SHIFT + ERROR_SIZE)
-#define HAS_MORE_FLAG   (1ULL << HAS_MORE_SHIFT)
+#define NR_FILES_SHIFT 0
+#define NR_FILES_SIZE 16
+#define NR_FILES_MASK (((1ULL << NR_FILES_SIZE) - 1) << NR_FILES_SHIFT)
+#define ERROR_SIZE 32
+#define ERROR_SHIFT (NR_FILES_SIZE + NR_FILES_SHIFT)
+#define ERROR_MASK (((1ULL << ERROR_SIZE) - 1) << ERROR_SHIFT)
+#define HAS_MORE_SHIFT (ERROR_SHIFT + ERROR_SIZE)
+#define HAS_MORE_FLAG (1ULL << HAS_MORE_SHIFT)
 struct fsif_chmod_request {
 uint32_t fd;
 int32_t mode;
@@ -96,19 +96,19 @@ uint8_t pad;
 uint16_t id;
 uint32_t pad2;
 union {
-struct fsif_open_request     fopen;
-struct fsif_close_request    fclose;
-struct fsif_read_request     fread;
-struct fsif_write_request    fwrite;
-struct fsif_stat_request     fstat;
+struct fsif_open_request fopen;
+struct fsif_close_request fclose;
+struct fsif_read_request fread;
+struct fsif_write_request fwrite;
+struct fsif_stat_request fstat;
 struct fsif_truncate_request ftruncate;
-struct fsif_remove_request   fremove;
-struct fsif_rename_request   frename;
-struct fsif_create_request   fcreate;
-struct fsif_list_request     flist;
-struct fsif_chmod_request    fchmod;
-struct fsif_space_request    fspace;
-struct fsif_sync_request     fsync;
+struct fsif_remove_request fremove;
+struct fsif_rename_request frename;
+struct fsif_create_request fcreate;
+struct fsif_list_request flist;
+struct fsif_chmod_request fchmod;
+struct fsif_space_request fspace;
+struct fsif_sync_request fsync;
 } u;
 };
 typedef struct fsif_request fsif_request_t;
@@ -122,12 +122,12 @@ struct fsif_stat_response fstat;
 };
 };
 typedef struct fsif_response fsif_response_t;
-#define FSIF_RING_ENTRY_SIZE   64
-#define FSIF_NR_READ_GNTS  ((FSIF_RING_ENTRY_SIZE - sizeof(struct fsif_read_request)) /  \
+#define FSIF_RING_ENTRY_SIZE 64
+#define FSIF_NR_READ_GNTS ((FSIF_RING_ENTRY_SIZE - sizeof(struct fsif_read_request)) / \
 sizeof(grant_ref_t) + 1)
 #define FSIF_NR_WRITE_GNTS ((FSIF_RING_ENTRY_SIZE - sizeof(struct fsif_write_request)) / \
 sizeof(grant_ref_t) + 1)
 DEFINE_RING_TYPES(fsif, struct fsif_request, struct fsif_response);
-#define STATE_INITIALISED     "init"
-#define STATE_READY           "ready"
+#define STATE_INITIALISED "init"
+#define STATE_READY "ready"
 #endif

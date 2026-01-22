@@ -17,8 +17,8 @@ offset : int;
 length : int;
 data : array of byte;
 };
-DL_HDR : con 5;			# download packet hdr size
-DL_DATA : con 16rc8;		# download packet payload size
+DL_HDR : con 5; # download packet hdr size
+DL_DATA : con 16rc8; # download packet payload size
 init(nil : ref Draw->Context, argv : list of string)
 {
 sys = load Sys Sys->PATH;
@@ -60,7 +60,7 @@ byte 0,
 reply = rcx->send(dlstart, len dlstart, 2);
 chkreply(reply,array [] of {byte 16r82, byte 0}, "start download");
 # send the image
-data := array [DL_HDR+DL_DATA+1] of byte;	# hdr + data + 1 byte cksum
+data := array [DL_HDR+DL_DATA+1] of byte; # hdr + data + 1 byte cksum
 seqnum := 1;
 step := DL_DATA;
 for (i := 0; i < img.length; i += step) {

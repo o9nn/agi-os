@@ -40,7 +40,7 @@ ASSERT((*Meta)->TryGetNumberField(TEXT("CurveCount"), CurveCount), "Failed to ge
 ASSERT((*Meta)->TryGetNumberField(TEXT("TotalSegmentCount"), TotalSegmentCount), "Failed to get TotalSegmentCount field.");
 ASSERT((*Meta)->TryGetNumberField(TEXT("TotalPointCount"), TotalPointCount), "Failed to get TotalPointCount field.");
 }
-const TArray< TSharedPtr<FJsonValue> >*  CurvesArrayObject;
+const TArray< TSharedPtr<FJsonValue> >* CurvesArrayObject;
 ASSERT(JsonObject->TryGetArrayField(TEXT("Curves"), CurvesArrayObject), "Failed to get Curves field.");
 {
 int32 NumSegments = 0;

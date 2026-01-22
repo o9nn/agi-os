@@ -254,7 +254,7 @@ rs1 = @reaction_network begin
 (k1,k2), X[1] <--> X[2]
 end
 @test_throws ArgumentError LatticeReactionSystem(rs1, [tr], CartesianGrid((2,2)))
-rs2 =  @reaction_network begin
+rs2 = @reaction_network begin
 @species Y(t)
 @parameters k[1:2,1:2]
 (k[1,1],k[1,2]), X11 <--> X12

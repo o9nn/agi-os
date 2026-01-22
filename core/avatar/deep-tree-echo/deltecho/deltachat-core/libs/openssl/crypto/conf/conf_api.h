@@ -1,8 +1,8 @@
-#ifndef  HEADER_CONF_API_H
+#ifndef HEADER_CONF_API_H
 # define HEADER_CONF_API_H
 # include <openssl/lhash.h>
 # include <openssl/conf.h>
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 CONF_VALUE *_CONF_new_section(CONF *conf, const char *section);
@@ -16,7 +16,7 @@ long _CONF_get_number(const CONF *conf, const char *section,
 const char *name);
 int _CONF_new_data(CONF *conf);
 void _CONF_free_data(CONF *conf);
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif
 #endif

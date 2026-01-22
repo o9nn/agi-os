@@ -6,7 +6,7 @@ void
 packinfo(Fontchar *fc, uchar *p, int n)
 {
 int j;
-for(j=0;  j<=n;  j++){
+for(j=0; j<=n; j++){
 p[0] = fc->x;
 p[1] = fc->x>>8;
 p[2] = fc->top;

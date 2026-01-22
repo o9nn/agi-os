@@ -144,8 +144,8 @@ std::cout << "\n2. Getting recommended configuration..." << std::endl;
 GPUConfig config = gpu_utils::getRecommendedGPUConfig();
 std::cout << "Recommended backend: ";
 switch (config.preferredBackend) {
-case GPUBackendType::CPU:    std::cout << "CPU"; break;
-case GPUBackendType::CUDA:   std::cout << "CUDA"; break;
+case GPUBackendType::CPU: std::cout << "CPU"; break;
+case GPUBackendType::CUDA: std::cout << "CUDA"; break;
 case GPUBackendType::OpenCL: std::cout << "OpenCL"; break;
 case GPUBackendType::Vulkan: std::cout << "Vulkan"; break;
 }
@@ -171,8 +171,8 @@ auto currentDevice = gpuManager.getCurrentDevice();
 std::cout << "Current device: " << currentDevice.name << std::endl;
 std::cout << "Backend type: ";
 switch (gpuManager.getCurrentBackendType()) {
-case GPUBackendType::CPU:    std::cout << "CPU"; break;
-case GPUBackendType::CUDA:   std::cout << "CUDA"; break;
+case GPUBackendType::CPU: std::cout << "CPU"; break;
+case GPUBackendType::CUDA: std::cout << "CUDA"; break;
 case GPUBackendType::OpenCL: std::cout << "OpenCL"; break;
 case GPUBackendType::Vulkan: std::cout << "Vulkan"; break;
 }
@@ -206,8 +206,8 @@ std::cout << "\n9. Benchmarking backends..." << std::endl;
 GPUBackendType bestBackend = gpu_utils::benchmarkGPUBackends();
 std::cout << "Best backend: ";
 switch (bestBackend) {
-case GPUBackendType::CPU:    std::cout << "CPU"; break;
-case GPUBackendType::CUDA:   std::cout << "CUDA"; break;
+case GPUBackendType::CPU: std::cout << "CPU"; break;
+case GPUBackendType::CUDA: std::cout << "CUDA"; break;
 case GPUBackendType::OpenCL: std::cout << "OpenCL"; break;
 case GPUBackendType::Vulkan: std::cout << "Vulkan"; break;
 }

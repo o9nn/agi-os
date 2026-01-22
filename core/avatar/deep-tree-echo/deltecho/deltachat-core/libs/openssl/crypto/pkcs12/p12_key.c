@@ -44,7 +44,7 @@ int i, j, u, v;
 int ret = 0;
 BIGNUM *Ij, *Bpl1;
 EVP_MD_CTX ctx;
-#ifdef  DEBUG_KEYGEN
+#ifdef DEBUG_KEYGEN
 unsigned char *tmpout = out;
 int tmpn = n;
 #endif
@@ -55,7 +55,7 @@ return 0;
 }
 #endif
 EVP_MD_CTX_init(&ctx);
-#ifdef  DEBUG_KEYGEN
+#ifdef DEBUG_KEYGEN
 fprintf(stderr, "KEYGEN DEBUG\n");
 fprintf(stderr, "ID %d, ITER %d\n", id, iter);
 fprintf(stderr, "Password (length %d):\n", passlen);

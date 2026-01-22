@@ -1,11 +1,11 @@
 implement Fmt;
 #
-#	Copyright © 2002 Lucent Technologies Inc.
-#	based on the Plan 9 command; subject to the Lucent Public License 1.02
-#	this Vita Nuova variant uses Limbo channels and processes to avoid accumulating words
+# Copyright © 2002 Lucent Technologies Inc.
+# based on the Plan 9 command; subject to the Lucent Public License 1.02
+# this Vita Nuova variant uses Limbo channels and processes to avoid accumulating words
 #
 #
-#  block up paragraphs, possibly with indentation
+# block up paragraphs, possibly with indentation
 #
 include "sys.m";
 sys: Sys;
@@ -18,16 +18,16 @@ Fmt: module
 {
 init: fn(nil: ref Draw->Context, nil: list of string);
 };
-extraindent := 0;	# how many spaces to indent all lines
-indent := 0;	# current value of indent, before extra indent
-length := 70;	# how many columns per output line
-join := 1;	# can lines be joined?
+extraindent := 0; # how many spaces to indent all lines
+indent := 0; # current value of indent, before extra indent
+length := 70; # how many columns per output line
+join := 1; # can lines be joined?
 maxtab := 8;
 bout: ref Iobuf;
 Word: adt {
-text:	string;
-indent:	int;
-bol:	int;
+text: string;
+indent: int;
+bol: int;
 };
 init(nil: ref Draw->Context, args: list of string)
 {
@@ -147,16 +147,16 @@ for(n:=0;; n++){
 bout.puts(w.text);
 col += len w.text;
 if((nw = <-words) == nil)
-break;	# out of words
+break; # out of words
 if(nw.indent != w.indent)
-break;	# indent change
+break; # indent change
 nsp := nspaceafter(w.text);
 if(col+nsp+len nw.text > extraindent+length)
-break;	# fold line
+break; # fold line
 if(!join && nw.bol)
 break;
 for(j:=0; j<nsp; j++)
-bout.putc(' ');	# emit space; another word will follow
+bout.putc(' '); # emit space; another word will follow
 col += nsp;
 w = nw;
 }
@@ -178,7 +178,7 @@ nspaceafter(s: string): int
 if(len s < 2)
 return 1;
 if(len s < 4 && s[0] >= 'A' && s[0] <= 'Z')
-return 1;	# assume it's a title, not full stop
+return 1; # assume it's a title, not full stop
 if((c := s[len s-1]) == '.' || c == '!' || c == '?')
 return 2;
 return 1;

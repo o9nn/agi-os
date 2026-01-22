@@ -1,5 +1,5 @@
 #ifndef gxclist_INCLUDED
-#  define gxclist_INCLUDED
+# define gxclist_INCLUDED
 #include "gscspace.h"
 #include "gxband.h"
 #include "gxbcache.h"
@@ -42,30 +42,30 @@ cmd_prefix *head, *tail;
 extern const gs_imager_state clist_imager_state_initial;
 typedef struct gx_clist_state_s gx_clist_state;
 #define gx_device_clist_common_members\
-gx_device_forward_common;	\
+gx_device_forward_common; \
 \
 \
 \
 \
 gx_device_buf_procs_t buf_procs;\
-gs_memory_t *bandlist_memory;	\
-byte *data;			\
-uint data_size;			\
-gx_band_params_t band_params;	\
-bool do_not_open_or_close_bandfiles;	\
-bool page_uses_transparency;	\
+gs_memory_t *bandlist_memory; \
+byte *data; \
+uint data_size; \
+gx_band_params_t band_params; \
+bool do_not_open_or_close_bandfiles; \
+bool page_uses_transparency; \
 \
-gx_bits_cache_chunk chunk;	\
+gx_bits_cache_chunk chunk; \
 gx_bits_cache bits;\
-uint tile_hash_mask;		\
-uint tile_band_mask_size;	\
+uint tile_hash_mask; \
+uint tile_band_mask_size; \
 \
-tile_hash *tile_table;		\
+tile_hash *tile_table; \
 \
 \
-int ymin, ymax;			\
+int ymin, ymax; \
 \
-gx_band_page_info_t page_info;	\
+gx_band_page_info_t page_info; \
 int nbands
 typedef struct gx_device_clist_common_s {
 gx_device_clist_common_members;
@@ -113,7 +113,7 @@ int ignore_lo_mem_warnings;
 proc_free_up_bandlist_memory((*free_up_bandlist_memory));
 int disable_mask;
 } gx_device_clist_writer;
-#define clist_disable_fill_path	(1 << 0)
+#define clist_disable_fill_path (1 << 0)
 #define clist_disable_stroke_path (1 << 1)
 #define clist_disable_hl_image (1 << 2)
 #define clist_disable_complex_clip (1 << 3)
@@ -132,7 +132,7 @@ gx_device_clist_reader reader;
 gx_device_clist_writer writer;
 } gx_device_clist;
 extern_st(st_device_clist);
-#define public_st_device_clist()	\
+#define public_st_device_clist() \
 gs_public_st_complex_only(st_device_clist, gx_device_clist,\
 "gx_device_clist", 0, device_clist_enum_ptrs, device_clist_reloc_ptrs,\
 gx_device_finalize)
@@ -159,7 +159,7 @@ int clist_close_output_file(gx_device *dev);
 int clist_close_page_info(gx_band_page_info_t *ppi);
 void clist_compute_colors_used(gx_device_clist_writer *cldev);
 #ifndef gx_device_printer_DEFINED
-#  define gx_device_printer_DEFINED
+# define gx_device_printer_DEFINED
 typedef struct gx_device_printer_s gx_device_printer;
 #endif
 int clist_setup_params(gx_device *dev);

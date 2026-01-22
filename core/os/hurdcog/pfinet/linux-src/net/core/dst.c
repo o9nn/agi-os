@@ -11,7 +11,7 @@
 #include <linux/skbuff.h>
 #include <net/dst.h>
 struct dst_entry * dst_garbage_list;
-atomic_t	dst_total = ATOMIC_INIT(0);
+atomic_t dst_total = ATOMIC_INIT(0);
 static unsigned long dst_gc_timer_expires;
 static unsigned long dst_gc_timer_inc = DST_GC_MAX;
 static void dst_run_gc(unsigned long);
@@ -22,7 +22,7 @@ atomic_t hh_count;
 #endif
 static void dst_run_gc(unsigned long dummy)
 {
-int    delayed = 0;
+int delayed = 0;
 struct dst_entry * dst, **dstp;
 del_timer(&dst_gc_timer);
 dstp = &dst_garbage_list;
@@ -45,7 +45,7 @@ dst_gc_timer_inc += DST_GC_INC;
 dst_gc_timer.expires = jiffies + dst_gc_timer_expires;
 #if RT_CACHE_DEBUG >= 2
 printk("dst_total: %d/%d %ld\n",
-atomic_read(&dst_total), delayed,  dst_gc_timer_expires);
+atomic_read(&dst_total), delayed, dst_gc_timer_expires);
 #endif
 add_timer(&dst_gc_timer);
 }

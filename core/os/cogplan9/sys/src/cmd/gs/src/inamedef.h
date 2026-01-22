@@ -1,13 +1,13 @@
 #ifndef inamedef_INCLUDED
-#  define inamedef_INCLUDED
+# define inamedef_INCLUDED
 #include "inameidx.h"
 #include "inamestr.h"
 #include "inames.h"
 #include "gsstruct.h"
 #define max_name_extension_bits 6
 #if EXTEND_NAMES > max_name_extension_bits
-#  undef EXTEND_NAMES
-#  define EXTEND_NAMES max_name_extension_bits
+# undef EXTEND_NAMES
+# define EXTEND_NAMES max_name_extension_bits
 #endif
 #define max_name_index (uint)((0x10000 << EXTEND_NAMES) - 1)
 #define max_name_count max_name_index
@@ -46,11 +46,11 @@ name_string_sub_table_t *strings;
 #define names_string_inline(nt, pnref)\
 names_index_string_inline(nt, names_index_inline(nt, pnref))
 #if EXTEND_NAMES
-#  define names_index_inline(nt_ignored, pnref)\
+# define names_index_inline(nt_ignored, pnref)\
 ( ((const name_sub_table *)\
 ((pnref)->value.pname - (r_size(pnref) & nt_sub_index_mask)))->high_index + r_size(pnref) )
 #else
-#  define names_index_inline(nt_ignored, pnref) r_size(pnref)
+# define names_index_inline(nt_ignored, pnref) r_size(pnref)
 #endif
 #define names_index(nt_ignored, pnref) names_index_inline(nt_ignored, pnref)
 #define names_index_ptr_inline(nt, nidx)\
@@ -68,7 +68,7 @@ void names_unmark_all(name_table * nt);
 void names_trace_finish(name_table * nt, gc_state_t * gcst);
 #ifndef alloc_save_t_DEFINED
 typedef struct alloc_save_s alloc_save_t;
-#  define alloc_save_t_DEFINED
+# define alloc_save_t_DEFINED
 #endif
 void names_restore(name_table * nt, alloc_save_t * save);
 #endif

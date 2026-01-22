@@ -13,20 +13,20 @@
 #include <machine/db_interface.h>
 #include <kern/lock.h>
 extern jmp_buf_t *db_recover;
-extern int		db_inst_count;
-extern int		db_load_count;
-extern int		db_store_count;
+extern int db_inst_count;
+extern int db_load_count;
+extern int db_store_count;
 void
 db_task_trap(
-int	  type,
-int	  code,
+int type,
+int code,
 boolean_t user_space)
 {
 jmp_buf_t db_jmpbuf;
 jmp_buf_t *prev;
-boolean_t	bkpt;
-boolean_t	watchpt;
-task_t		task_space;
+boolean_t bkpt;
+boolean_t watchpt;
+task_t task_space;
 check_simple_locks_disable();
 task_space = db_target_space(current_thread(), user_space);
 bkpt = IS_BREAKPOINT_TRAP(type, code);
@@ -60,8 +60,8 @@ db_restart_at_pc(watchpt, task_space);
 }
 void
 db_trap(
-int	type,
-int	code)
+int type,
+int code)
 {
 db_task_trap(type, code, !DB_VALID_KERN_ADDR(PC_REGS(DDB_REGS)));
 }

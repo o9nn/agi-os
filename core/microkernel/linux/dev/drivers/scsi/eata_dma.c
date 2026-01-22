@@ -301,15 +301,15 @@ if(addr != (u32) NULL)
 addr = virt_to_bus((void *)addr);
 flush_cache_all();
 #ifdef __LITTLE_ENDIAN
-outb(addr,       base + HA_WDMAADDR);
-outb(addr >> 8,  base + HA_WDMAADDR + 1);
+outb(addr, base + HA_WDMAADDR);
+outb(addr >> 8, base + HA_WDMAADDR + 1);
 outb(addr >> 16, base + HA_WDMAADDR + 2);
 outb(addr >> 24, base + HA_WDMAADDR + 3);
 #else
 outb(addr >> 24, base + HA_WDMAADDR);
 outb(addr >> 16, base + HA_WDMAADDR + 1);
-outb(addr >> 8,  base + HA_WDMAADDR + 2);
-outb(addr,       base + HA_WDMAADDR + 3);
+outb(addr >> 8, base + HA_WDMAADDR + 2);
+outb(addr, base + HA_WDMAADDR + 3);
 #endif
 outb(command, base + HA_WCOMMAND);
 return(TRUE);
@@ -322,21 +322,21 @@ flush_cache_all();
 outb(0x0, base + HA_WDMAADDR - 1);
 if(addr){
 #ifdef __LITTLE_ENDIAN
-outb(addr,       base + HA_WDMAADDR);
-outb(addr >> 8,  base + HA_WDMAADDR + 1);
+outb(addr, base + HA_WDMAADDR);
+outb(addr >> 8, base + HA_WDMAADDR + 1);
 outb(addr >> 16, base + HA_WDMAADDR + 2);
 outb(addr >> 24, base + HA_WDMAADDR + 3);
 #else
 outb(addr >> 24, base + HA_WDMAADDR);
 outb(addr >> 16, base + HA_WDMAADDR + 1);
-outb(addr >> 8,  base + HA_WDMAADDR + 2);
-outb(addr,       base + HA_WDMAADDR + 3);
+outb(addr >> 8, base + HA_WDMAADDR + 2);
+outb(addr, base + HA_WDMAADDR + 3);
 #endif
 } else {
 outb(0x0, base + HA_WDMAADDR);
 outb(0x0, base + HA_WDMAADDR + 1);
 outb(code2, base + HA_WCODE2);
-outb(code,  base + HA_WCODE);
+outb(code, base + HA_WCODE);
 }
 outb(ifc, base + HA_WIFC);
 outb(EATA_CMD_IMMEDIATE, base + HA_WCOMMAND);
@@ -397,16 +397,16 @@ if(hd->do_latency == TRUE)
 eata_latency_out(ccb, cmd);
 cmd->scsi_done = (void *)done;
 switch (cmd->cmnd[0]) {
-case CHANGE_DEFINITION: case COMPARE:	  case COPY:
-case COPY_VERIFY:	    case LOG_SELECT:	  case MODE_SELECT:
-case MODE_SELECT_10:    case SEND_DIAGNOSTIC: case WRITE_BUFFER:
-case FORMAT_UNIT:	    case REASSIGN_BLOCKS: case RESERVE:
-case SEARCH_EQUAL:	    case SEARCH_HIGH:	  case SEARCH_LOW:
-case WRITE_6:	    case WRITE_10:	  case WRITE_VERIFY:
-case UPDATE_BLOCK:	    case WRITE_LONG:	  case WRITE_SAME:
-case SEARCH_HIGH_12:    case SEARCH_EQUAL_12: case SEARCH_LOW_12:
-case WRITE_12:	    case WRITE_VERIFY_12: case SET_WINDOW:
-case MEDIUM_SCAN:	    case SEND_VOLUME_TAG:
+case CHANGE_DEFINITION: case COMPARE: case COPY:
+case COPY_VERIFY: case LOG_SELECT: case MODE_SELECT:
+case MODE_SELECT_10: case SEND_DIAGNOSTIC: case WRITE_BUFFER:
+case FORMAT_UNIT: case REASSIGN_BLOCKS: case RESERVE:
+case SEARCH_EQUAL: case SEARCH_HIGH: case SEARCH_LOW:
+case WRITE_6: case WRITE_10: case WRITE_VERIFY:
+case UPDATE_BLOCK: case WRITE_LONG: case WRITE_SAME:
+case SEARCH_HIGH_12: case SEARCH_EQUAL_12: case SEARCH_LOW_12:
+case WRITE_12: case WRITE_VERIFY_12: case SET_WINDOW:
+case MEDIUM_SCAN: case SEND_VOLUME_TAG:
 case 0xea:
 ccb->DataOut = TRUE;
 break;
@@ -697,7 +697,7 @@ return (FALSE);
 char * get_board_data(u32 base, u32 irq, u32 id)
 {
 struct eata_ccb *cp;
-struct eata_sp  *sp;
+struct eata_sp *sp;
 static char *buff;
 ulong i;
 cp = (struct eata_ccb *) scsi_init_malloc(sizeof(struct eata_ccb),
@@ -844,7 +844,7 @@ if (gc->DMA_support && !gc->DMA_valid && gc->DMA_channel) {
 printk(KERN_WARNING "eata_dma: If you are using a pre 2.0 firmware "
 "please update it !\n"
 "          You can get new firmware releases from ftp.dpt.com\n");
-gc->DMA_channel = (base == 0x1f0 ? 3  : 2 );
+gc->DMA_channel = (base == 0x1f0 ? 3 : 2 );
 gc->DMA_valid = TRUE;
 }
 dma_channel = BUSMASTER;

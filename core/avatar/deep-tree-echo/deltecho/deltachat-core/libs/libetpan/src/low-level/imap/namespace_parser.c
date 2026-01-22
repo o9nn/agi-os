@@ -1,5 +1,5 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #include "namespace_parser.h"
 #include "namespace_types.h"
@@ -237,7 +237,7 @@ res = r;
 goto err;
 }
 r = mailimap_struct_spaced_list_parse(fd, buffer, parser_ctx, &cur_token, &value_list,
-(mailimap_struct_parser *)  namespace_extension_value_parse,
+(mailimap_struct_parser *) namespace_extension_value_parse,
 (mailimap_struct_destructor *) mailimap_string_free,
 progr_rate, progr_fun);
 if (r != MAILIMAP_NO_ERROR) {

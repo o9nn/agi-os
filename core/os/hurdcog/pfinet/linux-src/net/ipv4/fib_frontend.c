@@ -103,8 +103,8 @@ return FIB_RES_DEV(res);
 }
 unsigned inet_addr_type(u32 addr)
 {
-struct rt_key		key;
-struct fib_result	res;
+struct rt_key key;
+struct fib_result res;
 if (ZERONET(addr) || BADCLASS(addr))
 return RTN_BROADCAST;
 if (MULTICAST(addr))
@@ -167,10 +167,10 @@ int ip_rt_ioctl(unsigned int cmd, void *arg)
 {
 int err;
 struct kern_rta rta;
-struct rtentry  r;
+struct rtentry r;
 struct {
 struct nlmsghdr nlh;
-struct rtmsg	rtm;
+struct rtmsg rtm;
 } req;
 switch (cmd) {
 case SIOCADDRT:
@@ -274,8 +274,8 @@ static void fib_magic(int cmd, int type, u32 dst, int dst_len, struct in_ifaddr 
 {
 struct fib_table * tb;
 struct {
-struct nlmsghdr	nlh;
-struct rtmsg	rtm;
+struct nlmsghdr nlh;
+struct rtmsg rtm;
 } req;
 struct kern_rta rta;
 memset(&req.rtm, 0, sizeof(req.rtm));
@@ -342,10 +342,10 @@ struct in_ifaddr *ifa1;
 struct in_ifaddr *prim = ifa;
 u32 brd = ifa->ifa_address|~ifa->ifa_mask;
 u32 any = ifa->ifa_address&ifa->ifa_mask;
-#define LOCAL_OK	1
-#define BRD_OK		2
-#define BRD0_OK		4
-#define BRD1_OK		8
+#define LOCAL_OK 1
+#define BRD_OK 2
+#define BRD0_OK 4
+#define BRD1_OK 8
 unsigned ok = 0;
 if (!(ifa->ifa_flags&IFA_F_SECONDARY))
 fib_magic(RTM_DELROUTE, dev->flags&IFF_LOOPBACK ? RTN_LOCAL :

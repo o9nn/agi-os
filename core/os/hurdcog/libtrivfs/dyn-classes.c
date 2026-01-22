@@ -57,7 +57,7 @@ free (new_vec);
 free (new_aux_vec);
 return ENOMEM;
 }
-for (i = *sz; i < new_sz;  i++)
+for (i = *sz; i < new_sz; i++)
 new_vec[i] = 0;
 new_vec[*sz] = el;
 new_aux_vec[*sz].free_el = free_el;

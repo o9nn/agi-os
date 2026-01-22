@@ -1,57 +1,57 @@
-#include	"u.h"
-#include	"lib.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
-#include	"devaudio.h"
+#include "u.h"
+#include "lib.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
+#include "devaudio.h"
 enum
 {
-Qdir		= 0,
+Qdir = 0,
 Qaudio,
 Qvolume,
-Aclosed		= 0,
+Aclosed = 0,
 Aread,
 Awrite,
-Speed		= 44100,
-Ncmd		= 50,
+Speed = 44100,
+Ncmd = 50,
 };
 Dirtab
 audiodir[] =
 {
-".",	{Qdir, 0, QTDIR},		0,	DMDIR|0555,
-"audio",	{Qaudio},		0,	0666,
-"volume",	{Qvolume},		0,	0666,
+".", {Qdir, 0, QTDIR}, 0, DMDIR|0555,
+"audio", {Qaudio}, 0, 0666,
+"volume", {Qvolume}, 0, 0666,
 };
-static	struct
+static struct
 {
-QLock	lk;
-Rendez	vous;
-int	amode;
+QLock lk;
+Rendez vous;
+int amode;
 } audio;
 #define aqlock(a) qlock(&(a)->lk)
 #define aqunlock(a) qunlock(&(a)->lk)
-static	struct
+static struct
 {
-char*	name;
-int	flag;
-int	ilval;
-int	irval;
+char* name;
+int flag;
+int ilval;
+int irval;
 } volumes[] =
 {
-"audio",	Fout, 		50,	50,
-"synth",	Fin|Fout,	0,	0,
-"cd",		Fin|Fout,	0,	0,
-"line",	Fin|Fout,	0,	0,
-"mic",	Fin|Fout|Fmono,	0,	0,
-"speaker",	Fout|Fmono,	0,	0,
-"treb",		Fout, 		50,	50,
-"bass",		Fout, 		50,	50,
-"speed",	Fin|Fout|Fmono,	Speed,	Speed,
+"audio", Fout, 50, 50,
+"synth", Fin|Fout, 0, 0,
+"cd", Fin|Fout, 0, 0,
+"line", Fin|Fout, 0, 0,
+"mic", Fin|Fout|Fmono, 0, 0,
+"speaker", Fout|Fmono, 0, 0,
+"treb", Fout, 50, 50,
+"bass", Fout, 50, 50,
+"speed", Fin|Fout|Fmono, Speed, Speed,
 0
 };
-static	char	Emode[]		= "illegal open mode";
-static	char	Evolume[]	= "illegal volume specifier";
-static	void
+static char Emode[] = "illegal open mode";
+static char Evolume[] = "illegal volume specifier";
+static void
 resetlevel(void)
 {
 int i;

@@ -702,7 +702,7 @@ break;
 default:
 return_error(gs_error_rangecheck);
 }
-code1 =  cos_dict_put_c_key_int(pscd, "/BitsPerFlag", bits_per_flag);
+code1 = cos_dict_put_c_key_int(pscd, "/BitsPerFlag", bits_per_flag);
 if (code1 < 0)
 return code;
 return code;

@@ -1,8 +1,7 @@
 #include <u.h>
 #include <libc.h>
-
 uintptr
 getcallerpc(void*)
 {
-	return 0;
+return 0;
 }

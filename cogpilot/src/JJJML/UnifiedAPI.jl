@@ -165,7 +165,7 @@ println()
 println("Step 6: B-Series Integration")
 println("-" ^ 60)
 kernel = BSeriesKernel(3, T=Float64)
-f = y -> -y  # Simple ODE: dy/dt = -y
+f = y -> -y # Simple ODE: dy/dt = -y
 y0 = [1.0]
 y1 = evaluate_bseries(kernel, f, y0, 0.1)
 println("B-series step: y0=$(y0[1]) → y1=$(y1[1]) (dt=0.1)")

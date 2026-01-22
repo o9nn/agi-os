@@ -3,7 +3,7 @@ static char *ident = "$Id: list.c,v 1.2 89/02/12 10:04:43 mark Exp $";
 static char *copyright = "Copyright (c) 1989 Mark H. Colburn.\nAll rights reserved.\n";
 #endif
 #include "pax.h"
-#define	ISODIGIT(c)	(((c) >= '0') && ((c) <= '7'))
+#define ISODIGIT(c) (((c) >= '0') && ((c) <= '7'))
 #ifdef __STDC__
 static void cpio_entry(char *, Stat *);
 static void tar_entry(char *, Stat *);
@@ -17,7 +17,7 @@ static void pax_entry();
 static void print_mode();
 static long from_oct();
 #endif
-static char       *monnames[] = {
+static char *monnames[] = {
 "Jan", "Feb", "Mar", "Apr", "May", "Jun",
 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 };
@@ -25,16 +25,16 @@ static char       *monnames[] = {
 int read_header(char *name, Stat *asb)
 #else
 int read_header(name, asb)
-char           *name;
-Stat           *asb;
+char *name;
+Stat *asb;
 #endif
 {
-int             i;
-long            sum;
-long	    recsum;
-Link           *link;
-char           *p;
-char            hdrbuf[BLOCKSIZE];
+int i;
+long sum;
+long recsum;
+Link *link;
+char *p;
+char hdrbuf[BLOCKSIZE];
 memset((char *)asb, 0, sizeof(Stat));
 if (buf_read(hdrbuf, BLOCKSIZE) != 0) {
 return (EOF);
@@ -134,8 +134,8 @@ return (0);
 void print_entry(char *name, Stat *asb)
 #else
 void print_entry(name, asb)
-char		*name;
-Stat	        *asb;
+char *name;
+Stat *asb;
 #endif
 {
 switch (ar_interface) {
@@ -153,14 +153,14 @@ break;
 static void cpio_entry(char *name, Stat *asb)
 #else
 static void cpio_entry(name, asb)
-char	       *name;
-Stat	       *asb;
+char *name;
+Stat *asb;
 #endif
 {
-struct tm	       *atm;
-Link	       *from;
-struct passwd      *pwp;
-struct group       *grp;
+struct tm *atm;
+Link *from;
+struct passwd *pwp;
+struct group *grp;
 if (f_list && f_verbose) {
 fprintf(msgfile, "%-7o", asb->sb_mode);
 atm = localtime(&asb->sb_mtime);
@@ -178,7 +178,7 @@ fprintf(msgfile, "%s", name);
 if ((asb->sb_nlink > 1) && (from = islink(name, asb))) {
 fprintf(msgfile, " linked to %s", from->l_name);
 }
-#ifdef	S_IFLNK
+#ifdef S_IFLNK
 if ((asb->sb_mode & S_IFMT) == S_IFLNK) {
 fprintf(msgfile, " symbolic link to %s", asb->sb_link);
 }
@@ -189,15 +189,15 @@ putc('\n', msgfile);
 static void tar_entry(char *name, Stat *asb)
 #else
 static void tar_entry(name, asb)
-char		*name;
-Stat            *asb;
+char *name;
+Stat *asb;
 #endif
 {
-struct tm  	       *atm;
-int			i;
-int			mode;
-char               *symnam = "NULL";
-Link               *link;
+struct tm *atm;
+int i;
+int mode;
+char *symnam = "NULL";
+Link *link;
 if ((mode = asb->sb_mode & S_IFMT) == S_IFDIR) {
 return;
 }
@@ -285,14 +285,14 @@ ROUNDUP(asb->sb_size, BLOCKSIZE) / BLOCKSIZE);
 static void pax_entry(char *name, Stat *asb)
 #else
 static void pax_entry(name, asb)
-char	       *name;
-Stat	       *asb;
+char *name;
+Stat *asb;
 #endif
 {
-struct tm	       *atm;
-Link	       *from;
-struct passwd      *pwp;
-struct group       *grp;
+struct tm *atm;
+Link *from;
+struct passwd *pwp;
+struct group *grp;
 if (f_list && f_verbose) {
 print_mode(asb->sb_mode);
 fprintf(msgfile, " %2d", asb->sb_nlink);
@@ -327,7 +327,7 @@ fprintf(msgfile, "%s", name);
 if ((asb->sb_nlink > 1) && (from = islink(name, asb))) {
 fprintf(msgfile, " == %s", from->l_name);
 }
-#ifdef	S_IFLNK
+#ifdef S_IFLNK
 if ((asb->sb_mode & S_IFMT) == S_IFLNK) {
 fprintf(msgfile, " -> %s", asb->sb_link);
 }
@@ -338,7 +338,7 @@ putc('\n', msgfile);
 static void print_mode(ushort mode)
 #else
 static void print_mode(mode)
-ushort	mode;
+ushort mode;
 #endif
 {
 if (ar_interface != TAR) {
@@ -346,7 +346,7 @@ switch (mode & S_IFMT) {
 case S_IFDIR:
 putc('d', msgfile);
 break;
-#ifdef	S_IFLNK
+#ifdef S_IFLNK
 case S_IFLNK:
 putc('l', msgfile);
 break;
@@ -357,7 +357,7 @@ break;
 case S_IFCHR:
 putc('c', msgfile);
 break;
-#ifdef	S_IFIFO
+#ifdef S_IFIFO
 case S_IFIFO:
 putc('p', msgfile);
 break;
@@ -388,11 +388,11 @@ putc(mode & 0001
 static long from_oct(int digs, char *where)
 #else
 static long from_oct(digs, where)
-int             digs;
-char           *where;
+int digs;
+char *where;
 #endif
 {
-long            value;
+long value;
 while (isspace(*where)) {
 where++;
 if (--digs <= 0) {

@@ -1,9 +1,9 @@
 #include "gdevprn.h"
 #ifndef X_DPI
-#  define X_DPI 72
+# define X_DPI 72
 #endif
 #ifndef Y_DPI
-#  define Y_DPI 72
+# define Y_DPI 72
 #endif
 private dev_proc_print_page(cif_print_page);
 const gx_device_printer far_data gs_cif_device =
@@ -14,7 +14,7 @@ X_DPI, Y_DPI,
 1, cif_print_page);
 private int
 cif_print_page(gx_device_printer *pdev, FILE *prn_stream)
-{	int line_size = gdev_mem_bytes_per_scan_line((gx_device *)pdev);
+{ int line_size = gdev_mem_bytes_per_scan_line((gx_device *)pdev);
 int lnum;
 byte *in = (byte *)gs_malloc(pdev->memory, line_size, 1, "cif_print_page(in)");
 char *s;

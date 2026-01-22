@@ -55,9 +55,9 @@ rdxtree_lookup_slot(const struct rdxtree *tree, rdxtree_key_t key)
 return rdxtree_lookup_common(tree, key, 1);
 }
 void * rdxtree_replace_slot(void **slot, void *ptr);
-#define rdxtree_for_each(tree, iter, ptr)                       \
-for (rdxtree_iter_init(iter), ptr = rdxtree_walk(tree, iter);   \
-ptr != NULL;                                               \
+#define rdxtree_for_each(tree, iter, ptr) \
+for (rdxtree_iter_init(iter), ptr = rdxtree_walk(tree, iter); \
+ptr != NULL; \
 ptr = rdxtree_walk(tree, iter))
 static inline rdxtree_key_t
 rdxtree_iter_key(const struct rdxtree_iter *iter)

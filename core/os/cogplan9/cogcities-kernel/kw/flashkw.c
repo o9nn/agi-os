@@ -1,69 +1,69 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"../port/error.h"
-#include	"../port/flashif.h"
-#include	"../port/nandecc.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "../port/error.h"
+#include "../port/flashif.h"
+#include "../port/nandecc.h"
 enum {
-Debug		= 0,
-Nopage		= ~0ul,
-Hynix		= 0xad,
-Samsung		= 0xec,
-Hy27UF084G2M	= 0xdc,
-NandActCEBoot	= 1<<1,
+Debug = 0,
+Nopage = ~0ul,
+Hynix = 0xad,
+Samsung = 0xec,
+Hy27UF084G2M = 0xdc,
+NandActCEBoot = 1<<1,
 };
 typedef struct Nandreg Nandreg;
 typedef struct Nandtab Nandtab;
 typedef struct Cache Cache;
 struct Nandreg {
-ulong	rdparms;
-ulong	wrparms;
-uchar	_pad0[0x70 - 0x20];
-ulong	ctl;
+ulong rdparms;
+ulong wrparms;
+uchar _pad0[0x70 - 0x20];
+ulong ctl;
 };
 struct Nandtab {
-int	vid;
-int	did;
-vlong	size;
-char*	name;
+int vid;
+int did;
+vlong size;
+char* name;
 };
 struct Cache {
-Flash	*flif;
-ulong	pageno;
-ulong	pgsize;
-char	*page;
+Flash *flif;
+ulong pageno;
+ulong pgsize;
+char *page;
 };
 enum {
-Readstatus	= 0x70,
-Readid		= 0x90,
-Resetf		= 0xff,
-Read		= 0x00,
-Readstart	= 0x30,
-Readstartcache	= 0x31,
-Readstartcopy	= 0x35,
-Readstopcache	= 0x34,
-Program		= 0x80,
-Programstart	= 0x10,
-Programcache	= 0x15,
-Copyback	= 0x85,
-Erase		= 0x60,
-Erasestart	= 0xd0,
-Randomread	= 0x85,
-Randomwrite	= 0x05,
+Readstatus = 0x70,
+Readid = 0x90,
+Resetf = 0xff,
+Read = 0x00,
+Readstart = 0x30,
+Readstartcache = 0x31,
+Readstartcopy = 0x35,
+Readstopcache = 0x34,
+Program = 0x80,
+Programstart = 0x10,
+Programcache = 0x15,
+Copyback = 0x85,
+Erase = 0x60,
+Erasestart = 0xd0,
+Randomread = 0x85,
+Randomwrite = 0x05,
 Randomwritestart= 0xe0,
-SFail		= 1<<0,
-SCachefail	= 1<<1,
-SIdle		= 1<<5,
-SReady		= 1<<6,
-SNotprotected	= 1<<7,
-Srdymask	= SReady,
+SFail = 1<<0,
+SCachefail = 1<<1,
+SIdle = 1<<5,
+SReady = 1<<6,
+SNotprotected = 1<<7,
+Srdymask = SReady,
 };
 Nandtab nandtab[] = {
-{Hynix,		Hy27UF084G2M,	512*MB,	"Hy27UF084G2M"},
-{Samsung,	0xdc,		512*MB,	"Samsung 2Gb"},
+{Hynix, Hy27UF084G2M, 512*MB, "Hy27UF084G2M"},
+{Samsung, 0xdc, 512*MB, "Samsung 2Gb"},
 };
 static Cache cache;
 static void
@@ -451,14 +451,14 @@ frag = un;
 if (rewrite(f, offset - pagoff, pagoff, p, frag) < 0)
 return -1;
 offset += frag;
-p  += frag;
+p += frag;
 un -= frag;
 }
 while (un >= pgsize) {
 if (write1page(f, offset, p) < 0)
 return -1;
 offset += pgsize;
-p  += pgsize;
+p += pgsize;
 un -= pgsize;
 }
 if (un > 0)
@@ -487,14 +487,14 @@ if (read1page(f, offset - pagoff, cache.page) < 0)
 return -1;
 offset += frag;
 memmove(p, &cache.page[pagoff], frag);
-p  += frag;
+p += frag;
 un -= frag;
 }
 while (un >= pgsize) {
 if (read1page(f, offset, p) < 0)
 return -1;
 offset += pgsize;
-p  += pgsize;
+p += pgsize;
 un -= pgsize;
 }
 if (un > 0) {

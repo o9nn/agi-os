@@ -152,6 +152,6 @@ IndexBuffer.SafeRelease();
 RHICmdList.EndRenderPass();
 }
 IMPLEMENT_GLOBAL_SHADER(FCubismMeshVS, "/Plugin/Live2DCubismSDK/Private/CubismMesh.usf", "MainVS", SF_Vertex);
-IMPLEMENT_GLOBAL_SHADER(FCubismMeshPS<ECubismMeshPSType::Normal>        , "/Plugin/Live2DCubismSDK/Private/CubismMesh.usf", "MainPS", SF_Pixel);
-IMPLEMENT_GLOBAL_SHADER(FCubismMeshPS<ECubismMeshPSType::Masked>        , "/Plugin/Live2DCubismSDK/Private/CubismMesh.usf", "MainPS", SF_Pixel);
+IMPLEMENT_GLOBAL_SHADER(FCubismMeshPS<ECubismMeshPSType::Normal> , "/Plugin/Live2DCubismSDK/Private/CubismMesh.usf", "MainPS", SF_Pixel);
+IMPLEMENT_GLOBAL_SHADER(FCubismMeshPS<ECubismMeshPSType::Masked> , "/Plugin/Live2DCubismSDK/Private/CubismMesh.usf", "MainPS", SF_Pixel);
 IMPLEMENT_GLOBAL_SHADER(FCubismMeshPS<ECubismMeshPSType::InvertedMasked>, "/Plugin/Live2DCubismSDK/Private/CubismMesh.usf", "MainPS", SF_Pixel);

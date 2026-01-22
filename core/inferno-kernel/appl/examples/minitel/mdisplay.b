@@ -1,54 +1,54 @@
 implement MDisplay;
 #
-# Copyright © 1998 Vita Nuova Limited.  All rights reserved.
+# Copyright © 1998 Vita Nuova Limited. All rights reserved.
 #
 # - best viewed with acme!
 include "sys.m";
 include "draw.m";
 include "mdisplay.m";
-sys		: Sys;
-draw		: Draw;
+sys : Sys;
+draw : Draw;
 Context, Point, Rect, Font, Image, Display, Screen : import draw;
-# len cell		== number of lines
-# len cell[0]	== number of cellmap cells per char
-# (x,y)*cellsize	== font glyph clipr
-cellS		:= array [] of {array [] of {(0, 0)}};
-cellW	:= array [] of {array [] of {(0, 0), (1, 0)}};
-cellH		:= array [] of {array [] of {(0, 1)}, array [] of {(0, 0)}};
-cellWH	:= array [] of {array [] of {(0, 1), (1, 1)}, array [] of {(0, 0), (1, 0)}};
+# len cell == number of lines
+# len cell[0] == number of cellmap cells per char
+# (x,y)*cellsize == font glyph clipr
+cellS := array [] of {array [] of {(0, 0)}};
+cellW := array [] of {array [] of {(0, 0), (1, 0)}};
+cellH := array [] of {array [] of {(0, 1)}, array [] of {(0, 0)}};
+cellWH := array [] of {array [] of {(0, 1), (1, 1)}, array [] of {(0, 0), (1, 0)}};
 Cellinfo : adt {
-font		: ref Font;
-ch, attr	: int;
-clipmod	: (int, int);
+font : ref Font;
+ch, attr : int;
+clipmod : (int, int);
 };
 # current display attributes
-display	: ref Display;
-window	: ref Image;
-frames	:= array [2] of ref Image;
-update	: chan of int;
-colours	: array of ref Image;
-bright	: ref Image;
+display : ref Display;
+window : ref Image;
+frames := array [2] of ref Image;
+update : chan of int;
+colours : array of ref Image;
+bright : ref Image;
 # current mode attributes
-cellmap	: array of Cellinfo;
-nrows	: int;
-ncols	: int;
-ulheight	: int;
-curpos	: Point;
-winoff	: Point;
-cellsize	: Point;
-modeattr	: con fgWhite | bgBlack;
-showC	:= 0;
-delims	:= 0;
+cellmap : array of Cellinfo;
+nrows : int;
+ncols : int;
+ulheight : int;
+curpos : Point;
+winoff : Point;
+cellsize : Point;
+modeattr : con fgWhite | bgBlack;
+showC := 0;
+delims := 0;
 modbbox := Rect((0,0),(0,0));
-blankrow	: array of Cellinfo;
-ctxt		: ref Context;
-font		: ref Font;	# g0 videotex font - extended with unicode g2 syms
-fonth	: ref Font;	# double height version of font
-fontw	: ref Font;	# double width
-fonts		: ref Font;	# double size
-fontg1	: ref Font;	# semigraphic videotex font (ch+128=separated)
-fontfr	: ref Font;	# french character set
-fontusa	: ref Font;	# american character set
+blankrow : array of Cellinfo;
+ctxt : ref Context;
+font : ref Font; # g0 videotex font - extended with unicode g2 syms
+fonth : ref Font; # double height version of font
+fontw : ref Font; # double width
+fonts : ref Font; # double size
+fontg1 : ref Font; # semigraphic videotex font (ch+128=separated)
+fontfr : ref Font; # french character set
+fontusa : ref Font; # american character set
 Init(c : ref Context) : string
 {
 sys = load Sys Sys->PATH;
@@ -57,25 +57,25 @@ if (c == nil || c.display == nil)
 return "no display context";
 ctxt = c;
 disp := ctxt.display;
-black	:= disp.rgb2cmap(0, 0, 0);
-blue		:= disp.rgb2cmap(0, 0, 255);
-red		:= disp.rgb2cmap(255, 0, 0);
-magenta	:= disp.rgb2cmap(255, 0, 255);
-green	:= disp.rgb2cmap(0, 255, 0);
-cyan		:= disp.rgb2cmap(0, 255, 255);
-yellow	:= disp.rgb2cmap(255, 255, 0);
-white	:= disp.rgb2cmap(240, 240, 240);
-iblack	:= disp.color(black);
-iblue		:= disp.color(blue);
-ired		:= disp.color(red);
-imagenta	:= disp.color(magenta);
-igreen	:= disp.color(green);
-icyan	:= disp.color(cyan);
-iyellow	:= disp.color(yellow);
-iwhite	:= disp.color(white);
-colours	= array [] of {	iblack, iblue, ired, imagenta,
+black := disp.rgb2cmap(0, 0, 0);
+blue := disp.rgb2cmap(0, 0, 255);
+red := disp.rgb2cmap(255, 0, 0);
+magenta := disp.rgb2cmap(255, 0, 255);
+green := disp.rgb2cmap(0, 255, 0);
+cyan := disp.rgb2cmap(0, 255, 255);
+yellow := disp.rgb2cmap(255, 255, 0);
+white := disp.rgb2cmap(240, 240, 240);
+iblack := disp.color(black);
+iblue := disp.color(blue);
+ired := disp.color(red);
+imagenta := disp.color(magenta);
+igreen := disp.color(green);
+icyan := disp.color(cyan);
+iyellow := disp.color(yellow);
+iwhite := disp.color(white);
+colours = array [] of { iblack, iblue, ired, imagenta,
 igreen, icyan, iyellow, iwhite};
-bright	= disp.color(disp.rgb2cmap(255, 255, 255));
+bright = disp.color(disp.rgb2cmap(255, 255, 255));
 update = chan of int;
 spawn Update(update);
 display = disp;
@@ -85,12 +85,12 @@ Quit()
 {
 if (update != nil)
 update <- = QuitUpdate;
-update	= nil;
-window	= nil;
-frames[0]	= nil;
-frames[1]	= nil;
-cellmap	= nil;
-display	= nil;
+update = nil;
+window = nil;
+frames[0] = nil;
+frames[1] = nil;
+cellmap = nil;
+display = nil;
 }
 Mode(r : Draw->Rect, w, h, ulh, d : int, fontpath : string) : (string, ref Draw->Image)
 {
@@ -124,13 +124,13 @@ ulheight = ulh;
 delims = d;
 showC = 0;
 cellmap = array [ncols * nrows] of Cellinfo;
-font		= Font.open(display, fontpath);
-fontw	= Font.open(display, fontpath + "w");
-fonth	= Font.open(display, fontpath + "h");
-fonts		= Font.open(display, fontpath + "s");
-fontg1	= Font.open(display, fontpath + "g1");
-fontfr	= Font.open(display, fontpath + "fr");
-fontusa	= Font.open(display, fontpath + "usa");
+font = Font.open(display, fontpath);
+fontw = Font.open(display, fontpath + "w");
+fonth = Font.open(display, fontpath + "h");
+fonts = Font.open(display, fontpath + "s");
+fontg1 = Font.open(display, fontpath + "g1");
+fontfr = Font.open(display, fontpath + "fr");
+fontusa = Font.open(display, fontpath + "usa");
 if (font != nil)
 cellsize = Point(font.width(" "), font.height);
 else
@@ -146,11 +146,11 @@ for (y := 0; y < nrows; y++) {
 col0 := y * ncols;
 cellmap[col0:] = blankrow;
 }
-#	frames[0].clipr = frames[0].r;
-#	frames[1].clipr = frames[1].r;
-#	frames[0].draw(frames[0].r, colours[0], nil, Point(0,0));
-#	frames[1].draw(frames[1].r, colours[0], nil, Point(0,0));
-#	window.draw(window.r, colours[0], nil, Point(0,0));
+# frames[0].clipr = frames[0].r;
+# frames[1].clipr = frames[1].r;
+# frames[0].draw(frames[0].r, colours[0], nil, Point(0,0));
+# frames[1].draw(frames[1].r, colours[0], nil, Point(0,0));
+# window.draw(window.r, colours[0], nil, Point(0,0));
 update <- = Continue;
 return (nil, window);
 }
@@ -174,7 +174,7 @@ pt.x--;
 f : ref Font;
 cell := cellS;
 case charset {
-videotex		=>
+videotex =>
 if (!(attr & attrD))
 attr &= (fgMask | attrF | attrH | attrW | attrP);
 if (attr & attrW && attr & attrH) {
@@ -189,7 +189,7 @@ f = fontw;
 } else {
 f = font;
 }
-semigraphic	=>
+semigraphic =>
 f = fontg1;
 if (attr & attrL) {
 # convert to "separated"
@@ -201,9 +201,9 @@ str = newstr;
 # semigraphic charset does not support size / polarity attributes
 # attrD always set later once field attr established
 attr &= ~(attrD | attrH | attrW | attrP | attrL);
-french		=>	f = fontfr;
-american		=>	f = fontusa;
-*			=>	f = font;
+french => f = fontfr;
+american => f = fontusa;
+* => f = font;
 }
 update <- = Pause;
 txty := pt.y - (len cell - 1);
@@ -223,7 +223,7 @@ delimattr := modeattr;
 if (charset == semigraphic)
 mask = attrC;
 else
-mask  = bgMask | attrC | attrL;
+mask = bgMask | attrC | attrL;
 for (ix := pt.x-1; ix >= 0; ix--) {
 cix := ix + col0;
 if (cellmap[cix].attr & attrD) {
@@ -363,7 +363,7 @@ blankr = Rect(scr.min, (scr.max.x, scr.min.y + (nlines * cellsize.y)));
 }
 frames[0].draw(blankr, colours[0], nil, Point(0,0));
 frames[1].draw(blankr, colours[0], nil, Point(0,0));
-if (modbbox.dx()  == 0)
+if (modbbox.dx() == 0)
 modbbox = scr;
 else
 modbbox = boundingrect(modbbox, scr);
@@ -531,14 +531,14 @@ spawn timer(1000, pc, flashtick);
 flashpid := <- pc;
 spawn timer(500, pc, cursortick);
 cursorpid := <- pc;
-cursor	: Point;
+cursor : Point;
 showcursor := 0;
-cursoron	:= 0;
-quit		:= 0;
-nultick	:= chan of int;
-flashchan	:= nultick;
-pcount	:= 1;
-fgframe	:= 0;
+cursoron := 0;
+quit := 0;
+nultick := chan of int;
+flashchan := nultick;
+pcount := 1;
+fgframe := 0;
 for (;!quit ;) alt {
 c := <- cmd =>
 case c {
@@ -565,7 +565,7 @@ frames[1].clipr = frames[1].r;
 if (showcursor && cursoron)
 drawcursor(cursor, fgframe, 0);
 cursoron = 0;
-if (curpos.x < 0 || curpos.x >= ncols || curpos.y < 0  || curpos.y >= nrows)
+if (curpos.x < 0 || curpos.x >= ncols || curpos.y < 0 || curpos.y >= nrows)
 showcursor = 0;
 else {
 cursor = curpos;

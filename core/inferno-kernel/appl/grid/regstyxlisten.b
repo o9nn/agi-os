@@ -1,6 +1,6 @@
 implement Styxlisten;
 #
-# Copyright © 2003 Vita Nuova Holdings Limited.  All rights reserved.
+# Copyright © 2003 Vita Nuova Holdings Limited. All rights reserved.
 #
 include "sys.m";
 sys: Sys;
@@ -59,7 +59,7 @@ verbose = 1;
 algs = arg->earg() :: algs;
 'f' =>
 keyfile = arg->earg();
-if (! (keyfile[0] == '/' || (len keyfile > 2 &&  keyfile[0:2] == "./")))
+if (! (keyfile[0] == '/' || (len keyfile > 2 && keyfile[0:2] == "./")))
 keyfile = "/usr/" + user() + "/keyring/" + keyfile;
 't' =>
 trusted = 1;
@@ -110,7 +110,7 @@ if(registered == nil)
 error("cannot register "+addr+": "+err);
 }
 if(!trusted){
-sys->unmount(nil, "/mnt/keys");	# should do for now
+sys->unmount(nil, "/mnt/keys"); # should do for now
 # become none?
 }
 lsync := chan[1] of int;
@@ -191,7 +191,7 @@ stdin = nil;
 sync <-= 0;
 sh := load Sh Sh->PATH;
 e := sh->run(ctxt, argv);
-kill(<-lsync, "kill");		# kill listener, as command has exited
+kill(<-lsync, "kill"); # kill listener, as command has exited
 if(verbose){
 if(e != nil)
 sys->fprint(stderr(), "styxlisten: command exited with error: %s\n", e);

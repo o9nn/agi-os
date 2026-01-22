@@ -26,19 +26,19 @@ AFDICT_NUM_ENTRIES
 "LPUNC", \
 "MPUNC", \
 "UNITS", \
-"SUF",          \
-"PRE",          \
-"MPRE",         \
+"SUF", \
+"PRE", \
+"MPRE", \
 "QUOTES", \
 "BULLETS", \
-"INFIXMARK",    \
-"STEMSUBSCR",   \
+"INFIXMARK", \
+"STEMSUBSCR", \
 "SANEMORPHISM",
 #define AFDICT_CLASSNAMES2 \
-"REGPRE",       \
-"REGMID",       \
-"REGSUF",       \
-"REGALTS",     \
+"REGPRE", \
+"REGMID", \
+"REGSUF", \
+"REGALTS", \
 "REGPARTS",
 static const char * const afdict_classname[] =
 {AFDICT_CLASSNAMES1 AFDICT_CLASSNAMES2};

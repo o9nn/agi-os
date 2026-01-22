@@ -6,16 +6,16 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule, MatCardModule, MatMenuModule, MatToolbarModule, MatIconModule, MatAutocompleteModule, MatInputModule,
-  MatFormFieldModule } from '@angular/material';
+MatFormFieldModule } from '@angular/material';
 @NgModule({
-  imports: [ CommonModule, ],
-  declarations: [
-    ScrollDirective,
-    ScrollableTableComponent
-  ],
-  providers: [ ScrollableTableService ],
-  exports: [
-    ScrollableTableComponent
-  ]
+imports: [ CommonModule, ],
+declarations: [
+ScrollDirective,
+ScrollableTableComponent
+],
+providers: [ ScrollableTableService ],
+exports: [
+ScrollableTableComponent
+]
 })
 export class ScrollableTableModule { }

@@ -5,21 +5,21 @@
 #endif
 #ifdef _Windows
 # ifndef GSDLLEXPORT
-#  define GSDLLEXPORT __declspec(dllexport)
+# define GSDLLEXPORT __declspec(dllexport)
 # endif
 # ifndef GSDLLAPI
-#  define GSDLLAPI __stdcall
+# define GSDLLAPI __stdcall
 # endif
 # ifndef GSDLLCALL
-#  define GSDLLCALL __stdcall
+# define GSDLLCALL __stdcall
 # endif
 #endif
 #if defined(OS2) && defined(__IBMC__)
 # ifndef GSDLLAPI
-#  define GSDLLAPI _System
+# define GSDLLAPI _System
 # endif
 # ifndef GSDLLCALL
-#  define GSDLLCALL _System
+# define GSDLLCALL _System
 # endif
 #endif
 #ifdef __MACOS__

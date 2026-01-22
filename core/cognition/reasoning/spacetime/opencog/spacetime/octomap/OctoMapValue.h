@@ -1,5 +1,5 @@
-#ifndef  _OPENCOG_OCTOMAP_VALUE_H_
-#define  _OPENCOG_OCTOMAP_VALUE_H_
+#ifndef _OPENCOG_OCTOMAP_VALUE_H_
+#define _OPENCOG_OCTOMAP_VALUE_H_
 #include <opencog/atoms/value/Value.h>
 #include <opencog/atoms/value/FloatValue.h>
 #include <opencog/atoms/atom_types/atom_types.h>
@@ -13,7 +13,7 @@ namespace opencog
 class OctoValue : public FloatValue
 {
 private:
-std::shared_ptr<TimeOctomap<Handle>>   _om;
+std::shared_ptr<TimeOctomap<Handle>> _om;
 Handle _item;
 Handle _octo_node;
 protected:

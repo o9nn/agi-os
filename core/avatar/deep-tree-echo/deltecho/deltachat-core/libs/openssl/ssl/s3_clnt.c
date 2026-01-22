@@ -2455,7 +2455,7 @@ s->init_off = 0;
 }
 return (ssl3_do_write(s, SSL3_RT_HANDSHAKE));
 }
-#define has_bits(i,m)   (((i)&(m)) == (m))
+#define has_bits(i,m) (((i)&(m)) == (m))
 int ssl3_check_cert_and_algorithm(SSL *s)
 {
 int i, idx;

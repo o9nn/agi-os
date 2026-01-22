@@ -32,7 +32,7 @@
 #include <net/ipip.h>
 #include <net/checksum.h>
 #if defined(CONFIG_IP_PIMSM_V1) || defined(CONFIG_IP_PIMSM_V2)
-#define CONFIG_IP_PIMSM	1
+#define CONFIG_IP_PIMSM 1
 #endif
 static struct vif_device vif_table[MAXVIFS];
 static unsigned long vifc_map;
@@ -48,15 +48,15 @@ extern struct inet_protocol pim_protocol;
 static
 struct device *ipmr_new_tunnel(struct vifctl *v)
 {
-struct device  *dev = NULL;
+struct device *dev = NULL;
 rtnl_lock();
 dev = dev_get("tunl0");
 if (dev) {
 int err;
 struct ifreq ifr;
-mm_segment_t	oldfs;
+mm_segment_t oldfs;
 struct ip_tunnel_parm p;
-struct in_device  *in_dev;
+struct in_device *in_dev;
 memset(&p, 0, sizeof(p));
 p.iph.daddr = v->vifc_rmt_addr.s_addr;
 p.iph.saddr = v->vifc_lcl_addr.s_addr;
@@ -103,7 +103,7 @@ return (struct net_device_stats*)dev->priv;
 static
 struct device *ipmr_reg_vif(struct vifctl *v)
 {
-struct device  *dev;
+struct device *dev;
 struct in_device *in_dev;
 int size;
 size = sizeof(*dev) + IFNAMSIZ + sizeof(struct net_device_stats);
@@ -114,11 +114,11 @@ memset(dev, 0, size);
 dev->priv = dev + 1;
 dev->name = dev->priv + sizeof(struct net_device_stats);
 strcpy(dev->name, "pimreg");
-dev->type		= ARPHRD_PIMREG;
-dev->mtu		= 1500 - sizeof(struct iphdr) - 8;
-dev->flags		= IFF_NOARP;
-dev->hard_start_xmit	= reg_vif_xmit;
-dev->get_stats		= reg_vif_get_stats;
+dev->type = ARPHRD_PIMREG;
+dev->mtu = 1500 - sizeof(struct iphdr) - 8;
+dev->flags = IFF_NOARP;
+dev->hard_start_xmit = reg_vif_xmit;
+dev->get_stats = reg_vif_get_stats;
 rtnl_lock();
 if (register_netdevice(dev)) {
 rtnl_unlock();
@@ -335,9 +335,9 @@ msg = (struct igmpmsg*)skb->nh.iph;
 msg->im_vif = vifi;
 skb->dst = dst_clone(pkt->dst);
 igmp=(struct igmphdr *)skb_put(skb,sizeof(struct igmphdr));
-igmp->type	=
+igmp->type =
 msg->im_msgtype = assert;
-igmp->code 	=	0;
+igmp->code = 0;
 skb->nh.iph->tot_len=htons(skb->len);
 skb->h.raw = skb->nh.raw;
 }
@@ -695,16 +695,16 @@ NULL,
 static void ip_encap(struct sk_buff *skb, u32 saddr, u32 daddr)
 {
 struct iphdr *iph = (struct iphdr *)skb_push(skb,sizeof(struct iphdr));
-iph->version	= 	4;
-iph->tos	=	skb->nh.iph->tos;
-iph->ttl	=	skb->nh.iph->ttl;
-iph->frag_off	=	0;
-iph->daddr	=	daddr;
-iph->saddr	=	saddr;
-iph->protocol	=	IPPROTO_IPIP;
-iph->ihl	=	5;
-iph->tot_len	=	htons(skb->len);
-iph->id		=	htons(ip_id_count++);
+iph->version = 4;
+iph->tos = skb->nh.iph->tos;
+iph->ttl = skb->nh.iph->ttl;
+iph->frag_off = 0;
+iph->daddr = daddr;
+iph->saddr = saddr;
+iph->protocol = IPPROTO_IPIP;
+iph->ihl = 5;
+iph->tot_len = htons(skb->len);
+iph->id = htons(ip_id_count++);
 ip_send_check(iph);
 skb->h.ipiph = skb->nh.iph;
 skb->nh.iph = iph;
@@ -716,7 +716,7 @@ struct iphdr *iph = skb->nh.iph;
 struct vif_device *vif = &vif_table[vifi];
 struct device *dev;
 struct rtable *rt;
-int    encap = 0;
+int encap = 0;
 struct sk_buff *skb2;
 #ifdef CONFIG_IP_PIMSM
 if (vif->flags & VIFF_REGISTER) {
@@ -882,7 +882,7 @@ return 0;
 int pim_rcv_v1(struct sk_buff * skb, unsigned short len)
 {
 struct igmphdr *pim = (struct igmphdr*)skb->h.raw;
-struct iphdr   *encap;
+struct iphdr *encap;
 if (!mroute_do_pim ||
 len < sizeof(*pim) + sizeof(*encap) ||
 pim->group != PIM_V1_VERSION || pim->code != PIM_V1_REGISTER ||
@@ -917,7 +917,7 @@ return 0;
 int pim_rcv(struct sk_buff * skb, unsigned short len)
 {
 struct pimreghdr *pim = (struct pimreghdr*)skb->h.raw;
-struct iphdr   *encap;
+struct iphdr *encap;
 if (len < sizeof(*pim) + sizeof(*encap) ||
 pim->type != ((PIM_VERSION<<4)|(PIM_REGISTER)) ||
 (pim->flags&PIM_NULL_REGISTER) ||

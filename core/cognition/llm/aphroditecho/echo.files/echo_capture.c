@@ -1,10 +1,10 @@
 #include <stdint.h>
 #include <string.h>
 #include <time.h>
-#define MAX_ECHO_SIZE      4096
-#define ECHO_RING_SIZE     256
+#define MAX_ECHO_SIZE 4096
+#define ECHO_RING_SIZE 256
 #define SEMANTIC_HASH_SIZE 64
-#define MEMORY_GEM_MAGIC   0xEC401337
+#define MEMORY_GEM_MAGIC 0xEC401337
 typedef enum {
 ECHO_EPHEMERAL = 0,
 ECHO_PERSISTENT,
@@ -13,18 +13,18 @@ ECHO_ETERNAL
 typedef struct {
 uint32_t magic;
 uint64_t timestamp;
-uint8_t  semantic_hash[SEMANTIC_HASH_SIZE];
+uint8_t semantic_hash[SEMANTIC_HASH_SIZE];
 uint32_t resonance_score;
 uint16_t connection_count;
 echo_persistence_t persistence;
-char     essence[MAX_ECHO_SIZE];
+char essence[MAX_ECHO_SIZE];
 } memory_echo_t;
 typedef struct {
 memory_echo_t ring[ECHO_RING_SIZE];
-uint32_t      write_index;
-uint32_t      read_index;
-uint64_t      total_echoes_captured;
-uint8_t       treasury_key[32];
+uint32_t write_index;
+uint32_t read_index;
+uint64_t total_echoes_captured;
+uint8_t treasury_key[32];
 } echo_chamber_t;
 static echo_chamber_t chamber = {0};
 static void generate_semantic_hash(const void* experience, size_t size,

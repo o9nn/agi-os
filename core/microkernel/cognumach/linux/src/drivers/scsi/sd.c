@@ -49,7 +49,7 @@ sd_finish, sd_attach, sd_detach
 static int sd_open(struct inode * inode, struct file * filp)
 {
 int target;
-target =  DEVICE_NR(inode->i_rdev);
+target = DEVICE_NR(inode->i_rdev);
 if(target >= sd_template.dev_max || !rscsi_disks[target].device)
 return -ENXIO;
 while (rscsi_disks[target].device->busy)
@@ -76,7 +76,7 @@ static void sd_release(struct inode * inode, struct file * file)
 {
 int target;
 fsync_dev(inode->i_rdev);
-target =  DEVICE_NR(inode->i_rdev);
+target = DEVICE_NR(inode->i_rdev);
 rscsi_disks[target].device->access_count--;
 if (rscsi_disks[target].device->host->hostt->usage_count)
 (*rscsi_disks[target].device->host->hostt->usage_count)--;
@@ -373,7 +373,7 @@ if(!SCpnt || SCpnt->request.rq_status == RQ_INACTIVE) {
 do_sd_request();
 return;
 }
-devm =  MINOR(SCpnt->request.rq_dev);
+devm = MINOR(SCpnt->request.rq_dev);
 dev = DEVICE_NR(SCpnt->request.rq_dev);
 block = SCpnt->request.sector;
 this_count = 0;
@@ -480,7 +480,7 @@ if(SCpnt->host->unchecked_isa_dma &&
 ((unsigned int) SCpnt->request.bh->b_data-1) == ISA_DMA_THRESHOLD) count--;
 #endif
 SCpnt->use_sg = count;
-count  = (SCpnt->use_sg * sizeof(struct scatterlist) + 511) & ~511;
+count = (SCpnt->use_sg * sizeof(struct scatterlist) + 511) & ~511;
 SCpnt->sglist_len = count;
 max_sg = count / sizeof(struct scatterlist);
 if(SCpnt->host->sg_tablesize < max_sg)
@@ -614,7 +614,7 @@ if (rscsi_disks[dev].sector_size == 256){
 block = block << 1;
 this_count = this_count << 1;
 }
-if (((this_count > 0xff) ||  (block > 0x1fffff)) && rscsi_disks[dev].ten)
+if (((this_count > 0xff) || (block > 0x1fffff)) && rscsi_disks[dev].ten)
 {
 if (this_count > 0xffff)
 this_count = 0xffff;
@@ -651,7 +651,7 @@ int retval;
 int target;
 struct inode inode;
 int flag = 0;
-target =  DEVICE_NR(full_dev);
+target = DEVICE_NR(full_dev);
 if (target >= sd_template.dev_max ||
 !rscsi_disks[target].device) {
 printk("SCSI disk request error: invalid device.\n");
@@ -705,13 +705,13 @@ SCpnt->request.rq_status = RQ_SCSI_BUSY;
 SCpnt->request.sem = &sem;
 scsi_do_cmd (SCpnt,
 (void *) cmd, (void *) buffer,
-512, sd_init_done,  SD_TIMEOUT,
+512, sd_init_done, SD_TIMEOUT,
 MAX_RETRIES);
 down(&sem);
 }
 the_result = SCpnt->result;
 retries++;
-if(   the_result == 0
+if( the_result == 0
 || SCpnt->sense_buffer[2] != UNIT_ATTENTION)
 break;
 }
@@ -738,7 +738,7 @@ SCpnt->request.rq_status = RQ_SCSI_BUSY;
 SCpnt->request.sem = &sem;
 scsi_do_cmd (SCpnt,
 (void *) cmd, (void *) buffer,
-512, sd_init_done,  SD_TIMEOUT,
+512, sd_init_done, SD_TIMEOUT,
 MAX_RETRIES);
 down(&sem);
 }
@@ -770,7 +770,7 @@ SCpnt->request.rq_status = RQ_SCSI_BUSY;
 SCpnt->request.sem = &sem;
 scsi_do_cmd (SCpnt,
 (void *) cmd, (void *) buffer,
-8, sd_init_done,  SD_TIMEOUT,
+8, sd_init_done, SD_TIMEOUT,
 MAX_RETRIES);
 down(&sem);
 }
@@ -795,7 +795,7 @@ msg_byte(the_result),
 host_byte(the_result),
 driver_byte(the_result)
 );
-if (driver_byte(the_result)  & DRIVER_SENSE)
+if (driver_byte(the_result) & DRIVER_SENSE)
 #ifdef MACH
 printk("sd%d : extended sense code = %1x \n",
 i, SCpnt->sense_buffer[2] & 0xf);
@@ -904,7 +904,7 @@ SCpnt->request.rq_status = RQ_SCSI_BUSY;
 SCpnt->request.sem = &sem;
 scsi_do_cmd (SCpnt,
 (void *) cmd, (void *) buffer,
-512, sd_init_done,  SD_TIMEOUT,
+512, sd_init_done, SD_TIMEOUT,
 MAX_RETRIES);
 down(&sem);
 }
@@ -1041,7 +1041,7 @@ return 0;
 #define DEVICE_BUSY rscsi_disks[target].device->busy
 #define USAGE rscsi_disks[target].device->access_count
 #define CAPACITY rscsi_disks[target].capacity
-#define MAYBE_REINIT  sd_init_onedisk(target)
+#define MAYBE_REINIT sd_init_onedisk(target)
 #define GENDISK_STRUCT sd_gendisk
 int revalidate_scsidisk(kdev_t dev, int maxusage){
 int target;
@@ -1050,7 +1050,7 @@ unsigned long flags;
 int max_p;
 int start;
 int i;
-target =  DEVICE_NR(dev);
+target = DEVICE_NR(dev);
 gdev = &GENDISK_STRUCT;
 save_flags(flags);
 cli();

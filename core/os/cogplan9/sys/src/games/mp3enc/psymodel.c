@@ -22,12 +22,12 @@
 # define TMN 29
 # define NMT 6
 #endif
-#define NBPSY_l  (SBMAX_l)
-#define NBPSY_s  (SBMAX_s)
+#define NBPSY_l (SBMAX_l)
+#define NBPSY_s (SBMAX_s)
 #ifdef M_LN10
-#define		LN_TO_LOG10		(M_LN10/10)
+#define LN_TO_LOG10 (M_LN10/10)
 #else
-#define         LN_TO_LOG10             0.2302585093
+#define LN_TO_LOG10 0.2302585093
 #endif
 int L3psycho_anal( lame_global_flags * gfp,
 const sample_t *buffer[2], int gr_out,
@@ -48,8 +48,8 @@ FLOAT8 thr[CBANDS];
 FLOAT8 ms_ratio_l=0,ms_ratio_s=0;
 int blocktype[2],uselongblock[2];
 int numchn, chn;
-int   b, i, j, k;
-int	sb,sblock;
+int b, i, j, k;
+int sb,sblock;
 if(gfc->psymodel_init==0) {
 psymodel_init(gfp);
 init_fft(gfc);
@@ -64,12 +64,12 @@ energy[chn]=gfc->tot_ener[chn];
 }
 for (chn=0; chn<numchn; chn++) {
 if (chn < 2) {
-percep_entropy            [chn]       = gfc -> pe  [chn];
-masking_ratio    [gr_out] [chn]  .en  = gfc -> en  [chn];
-masking_ratio    [gr_out] [chn]  .thm = gfc -> thm [chn];
+percep_entropy [chn] = gfc -> pe [chn];
+masking_ratio [gr_out] [chn] .en = gfc -> en [chn];
+masking_ratio [gr_out] [chn] .thm = gfc -> thm [chn];
 } else {
-percep_MS_entropy         [chn-2]     = gfc -> pe  [chn];
-masking_MS_ratio [gr_out] [chn-2].en  = gfc -> en  [chn];
+percep_MS_entropy [chn-2] = gfc -> pe [chn];
+masking_MS_ratio [gr_out] [chn-2].en = gfc -> en [chn];
 masking_MS_ratio [gr_out] [chn-2].thm = gfc -> thm [chn];
 }
 wsamp_s = gfc->wsamp_S+(chn & 1);
@@ -98,7 +98,7 @@ gfc->wsamp_S[1][b][j] = (l-r)*(FLOAT)(SQRT2*0.5);
 }
 }
 }
-gfc->energy[0]  = (*wsamp_l)[0];
+gfc->energy[0] = (*wsamp_l)[0];
 gfc->energy[0] *= gfc->energy[0];
 gfc->tot_ener[chn] = gfc->energy[0];
 for (j=BLKSIZE/2-1; j >= 0; --j)
@@ -111,8 +111,8 @@ gfc->tot_ener[chn] += gfc->energy[BLKSIZE/2-j];
 }
 for (b = 2; b >= 0; --b)
 {
-gfc->energy_s[b][0]  = (*wsamp_s)[b][0];
-gfc->energy_s[b][0] *=  gfc->energy_s [b][0];
+gfc->energy_s[b][0] = (*wsamp_s)[b][0];
+gfc->energy_s[b][0] *= gfc->energy_s [b][0];
 for (j=BLKSIZE_s/2-1; j >= 0; --j)
 {
 FLOAT re = (*wsamp_s)[b][BLKSIZE_s/2-j];
@@ -156,7 +156,7 @@ den = 1;
 if( r2 != 0 ) {
 FLOAT tmp2 = (numim+numre)*(a2+b2)*(FLOAT)0.5;
 FLOAT tmp1 = -a2*numre+tmp2;
-numre =       -b2*numim+tmp2;
+numre = -b2*numim+tmp2;
 numim = tmp1;
 den *= r2;
 } else {
@@ -202,7 +202,7 @@ FLOAT a2 = (*wsamp_s)[2][k];
 FLOAT b2 = (*wsamp_s)[2][BLKSIZE_s-k];
 FLOAT tmp2 = (numim+numre)*(a2+b2)*(FLOAT)0.5;
 FLOAT tmp1 = -a2*numre+tmp2;
-numre =       -b2*numim+tmp2;
+numre = -b2*numim+tmp2;
 numim = tmp1;
 r2 = sqrt(r2);
 den *= r2;
@@ -234,7 +234,7 @@ for (tot=0, sblock=0; sblock < 3; sblock++)
 tot+=gfc->energy_s[sblock][k];
 ave = gfc->energy[j+1]+ gfc->energy[j+2]+ gfc->energy[j+3]+ gfc->energy[j];
 ave /= 4.;
-gfc->energy[j+1] = gfc->energy[j+2] = gfc->energy[j+3] =  gfc->energy[j]=tot;
+gfc->energy[j+1] = gfc->energy[j+2] = gfc->energy[j+3] = gfc->energy[j]=tot;
 }
 #endif
 b = 0;
@@ -371,7 +371,7 @@ FLOAT8 enn = gfc->w1_l[sb] * eb[gfc->bu_l[sb]] + gfc->w2_l[sb] * eb[gfc->bo_l[sb
 FLOAT8 thmm = gfc->w1_l[sb] *thr[gfc->bu_l[sb]] + gfc->w2_l[sb] * thr[gfc->bo_l[sb]];
 for ( b = gfc->bu_l[sb]+1; b < gfc->bo_l[sb]; b++ )
 {
-enn  += eb[b];
+enn += eb[b];
 thmm += thr[b];
 }
 gfc->en [chn].l[sb] = enn;
@@ -399,10 +399,10 @@ ecb *= gfc->SNR_s[b];
 thr[b] = Max (1e-6, ecb);
 }
 for ( sb = 0; sb < NBPSY_s; sb++ ){
-FLOAT8 enn  = gfc->w1_s[sb] * eb[gfc->bu_s[sb]] + gfc->w2_s[sb] * eb[gfc->bo_s[sb]];
+FLOAT8 enn = gfc->w1_s[sb] * eb[gfc->bu_s[sb]] + gfc->w2_s[sb] * eb[gfc->bo_s[sb]];
 FLOAT8 thmm = gfc->w1_s[sb] *thr[gfc->bu_s[sb]] + gfc->w2_s[sb] * thr[gfc->bo_s[sb]];
 for ( b = gfc->bu_s[sb]+1; b < gfc->bo_s[sb]; b++ ) {
-enn  += eb[b];
+enn += eb[b];
 thmm += thr[b];
 }
 gfc->en [chn].s[sb][sblock] = enn;
@@ -438,12 +438,12 @@ gfc->thm[chside].s[sb][sblock]=rside;
 }
 }
 }
-if (gfp->mode == JOINT_STEREO)  {
+if (gfp->mode == JOINT_STEREO) {
 FLOAT8 db,x1,x2,sidetot=0,tot=0;
 for (sb= NBPSY_l/4 ; sb< NBPSY_l; sb ++ ) {
 x1 = Min(gfc->thm[0].l[sb],gfc->thm[1].l[sb]);
 x2 = Max(gfc->thm[0].l[sb],gfc->thm[1].l[sb]);
-if (x2 >= 1000*x1)  db=3;
+if (x2 >= 1000*x1) db=3;
 else db = log10(x2/x1);
 sidetot += db;
 tot++;
@@ -455,7 +455,7 @@ for ( sblock = 0; sblock < 3; sblock++ )
 for ( sb = NBPSY_s/4; sb < NBPSY_s; sb++ ) {
 x1 = Min(gfc->thm[0].s[sb][sblock],gfc->thm[1].s[sb][sblock]);
 x2 = Max(gfc->thm[0].s[sb][sblock],gfc->thm[1].s[sb][sblock]);
-if (x2 >= 1000*x1)  db=3;
+if (x2 >= 1000*x1) db=3;
 else db = log10(x2/x1);
 sidetot += db;
 tot++;
@@ -489,7 +489,7 @@ case SHORT_TYPE:
 blocktype[chn] = STOP_TYPE;
 break;
 }
-} else   {
+} else {
 blocktype[chn] = SHORT_TYPE;
 if ( gfc->blocktype_old[chn] == NORM_TYPE ) {
 gfc->blocktype_old[chn] = START_TYPE;
@@ -513,7 +513,7 @@ return 0;
 inline static FLOAT8 mask_add(FLOAT8 m1,FLOAT8 m2,int k,int b, lame_internal_flags * const gfc)
 {
 static const FLOAT8 table1[] = {
-3.3246 *3.3246 ,3.23837*3.23837,3.15437*3.15437,3.00412*3.00412,2.86103*2.86103,2.65407*2.65407,2.46209*2.46209,2.284  *2.284  ,
+3.3246 *3.3246 ,3.23837*3.23837,3.15437*3.15437,3.00412*3.00412,2.86103*2.86103,2.65407*2.65407,2.46209*2.46209,2.284 *2.284 ,
 2.11879*2.11879,1.96552*1.96552,1.82335*1.82335,1.69146*1.69146,1.56911*1.56911,1.46658*1.46658,1.37074*1.37074,1.31036*1.31036,
 1.25264*1.25264,1.20648*1.20648,1.16203*1.16203,1.12765*1.12765,1.09428*1.09428,1.0659 *1.0659 ,1.03826*1.03826,1.01895*1.01895,
 1
@@ -570,8 +570,8 @@ FLOAT8 max[CBANDS],avg[CBANDS],tonality2[CBANDS];
 FLOAT8 ms_ratio_l=0,ms_ratio_s=0;
 int blocktype[2],uselongblock[2];
 int numchn, chn;
-int   b, i, j, k;
-int	sb,sblock;
+int b, i, j, k;
+int sb,sblock;
 int ns_attacks[4];
 FLOAT ns_hpfsmpl[4][576+576/3+NSFIRLEN];
 FLOAT pe_l[4],pe_s[4];
@@ -584,7 +584,7 @@ gfc->psymodel_init=1;
 numchn = gfc->channels_out;
 if (gfp->mode == JOINT_STEREO) numchn=4;
 if (gfp->VBR==vbr_off) pcfact = gfc->ResvMax == 0 ? 0 : ((FLOAT)gfc->ResvSize)/gfc->ResvMax*0.5;
-else if (gfp->VBR == vbr_rh  ||  gfp->VBR == vbr_mtrh  ||  gfp->VBR == vbr_mt) {
+else if (gfp->VBR == vbr_rh || gfp->VBR == vbr_mtrh || gfp->VBR == vbr_mt) {
 static const FLOAT8 pcQns[10]={1.0,1.0,1.0,0.8,0.6,0.5,0.4,0.3,0.2,0.1};
 pcfact = pcQns[gfp->VBR_q];
 } else pcfact = 1;
@@ -592,7 +592,7 @@ pcfact = pcQns[gfp->VBR_q];
 static const FLOAT fircoef[] = {
 -8.65163e-18,-0.00851586,-6.74764e-18, 0.0209036,
 -3.36639e-17,-0.0438162 ,-1.54175e-17, 0.0931738,
--5.52212e-17,-0.313819  , 0.5        ,-0.313819,
+-5.52212e-17,-0.313819 , 0.5 ,-0.313819,
 -5.52212e-17, 0.0931738 ,-1.54175e-17,-0.0438162,
 -3.36639e-17, 0.0209036 ,-6.74764e-18,-0.00851586,
 -8.65163e-18,
@@ -629,10 +629,10 @@ for (chn=0; chn<numchn; chn++) {
 pe_l[chn] = gfc->nsPsy.pe_l[chn];
 pe_s[chn] = gfc->nsPsy.pe_s[chn];
 if (chn < 2) {
-masking_ratio    [gr_out] [chn]  .en  = gfc -> en  [chn];
-masking_ratio    [gr_out] [chn]  .thm = gfc -> thm [chn];
+masking_ratio [gr_out] [chn] .en = gfc -> en [chn];
+masking_ratio [gr_out] [chn] .thm = gfc -> thm [chn];
 } else {
-masking_MS_ratio [gr_out] [chn-2].en  = gfc -> en  [chn];
+masking_MS_ratio [gr_out] [chn-2].en = gfc -> en [chn];
 masking_MS_ratio [gr_out] [chn-2].thm = gfc -> thm [chn];
 }
 }
@@ -663,7 +663,7 @@ gfc->wsamp_S[1][b][j] = (l-r)*(FLOAT)(SQRT2*0.5);
 }
 }
 }
-gfc->energy[0]  = (*wsamp_l)[0];
+gfc->energy[0] = (*wsamp_l)[0];
 gfc->energy[0] *= gfc->energy[0];
 gfc->tot_ener[chn] = gfc->energy[0];
 for (j=BLKSIZE/2-1; j >= 0; --j)
@@ -676,8 +676,8 @@ gfc->tot_ener[chn] += gfc->energy[BLKSIZE/2-j];
 }
 for (b = 2; b >= 0; --b)
 {
-gfc->energy_s[b][0]  = (*wsamp_s)[b][0];
-gfc->energy_s[b][0] *=  gfc->energy_s [b][0];
+gfc->energy_s[b][0] = (*wsamp_s)[b][0];
+gfc->energy_s[b][0] *= gfc->energy_s [b][0];
 for (j=BLKSIZE_s/2-1; j >= 0; --j)
 {
 FLOAT re = (*wsamp_s)[b][BLKSIZE_s/2-j];
@@ -733,7 +733,7 @@ for (b=0; b < gfc->npart_l_orig; b++ )
 {
 #if 0
 static FLOAT8 tab[20] =
-{  0,  1,  2,  2,  2,  2,  2,  6,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3};
+{ 0, 1, 2, 2, 2, 2, 2, 6,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3};
 static int init = 1;
 if (init) {
 int j;
@@ -850,7 +850,7 @@ FLOAT8 enn = gfc->w1_l[sb] * eb[gfc->bu_l[sb]] + gfc->w2_l[sb] * eb[gfc->bo_l[sb
 FLOAT8 thmm = gfc->w1_l[sb] *thr[gfc->bu_l[sb]] + gfc->w2_l[sb] * thr[gfc->bo_l[sb]];
 for ( b = gfc->bu_l[sb]+1; b < gfc->bo_l[sb]; b++ )
 {
-enn  += eb[b];
+enn += eb[b];
 thmm += thr[b];
 }
 gfc->en [chn].l[sb] = enn;
@@ -879,11 +879,11 @@ thr[b] = Max (1e-6, ecb);
 }
 for ( sb = 0; sb < NBPSY_s; sb++ )
 {
-FLOAT8 enn  = gfc->w1_s[sb] * eb[gfc->bu_s[sb]] + gfc->w2_s[sb] * eb[gfc->bo_s[sb]];
+FLOAT8 enn = gfc->w1_s[sb] * eb[gfc->bu_s[sb]] + gfc->w2_s[sb] * eb[gfc->bo_s[sb]];
 FLOAT8 thmm = gfc->w1_s[sb] *thr[gfc->bu_s[sb]] + gfc->w2_s[sb] * thr[gfc->bo_s[sb]];
 for ( b = gfc->bu_s[sb]+1; b < gfc->bo_s[sb]; b++ )
 {
-enn  += eb[b];
+enn += eb[b];
 thmm += thr[b];
 }
 #define NS_PREECHO_ATT0 0.8
@@ -966,7 +966,7 @@ if (gfc->nsPsy.safejoint) msfix = 1;
 for ( sb = 0; sb < NBPSY_l; sb++ )
 {
 FLOAT8 thmL,thmR,thmM,thmS,ath;
-ath  = (gfc->ATH->cb[(gfc->bu_l[sb] + gfc->bo_l[sb])/2])*pow(10,-gfp->ATHlower/10.0);
+ath = (gfc->ATH->cb[(gfc->bu_l[sb] + gfc->bo_l[sb])/2])*pow(10,-gfp->ATHlower/10.0);
 thmL = Max(gfc->thm[0].l[sb],ath);
 thmR = Max(gfc->thm[1].l[sb],ath);
 thmM = Max(gfc->thm[2].l[sb],ath);
@@ -987,7 +987,7 @@ gfc->thm[3].l[sb] = Min(thmS,gfc->thm[3].l[sb]);
 for ( sb = 0; sb < NBPSY_s; sb++ ) {
 for ( sblock = 0; sblock < 3; sblock++ ) {
 FLOAT8 thmL,thmR,thmM,thmS,ath;
-ath  = (gfc->ATH->cb[(gfc->bu_s[sb] + gfc->bo_s[sb])/2])*pow(10,-gfp->ATHlower/10.0);
+ath = (gfc->ATH->cb[(gfc->bu_s[sb] + gfc->bo_s[sb])/2])*pow(10,-gfp->ATHlower/10.0);
 thmL = Max(gfc->thm[0].s[sb][sblock],ath);
 thmR = Max(gfc->thm[1].s[sb][sblock],ath);
 thmM = Max(gfc->thm[2].s[sb][sblock],ath);
@@ -1078,7 +1078,7 @@ case SHORT_TYPE:
 blocktype[chn] = STOP_TYPE;
 break;
 }
-} else   {
+} else {
 blocktype[chn] = SHORT_TYPE;
 if ( gfc->blocktype_old[chn] == NORM_TYPE ) {
 gfc->blocktype_old[chn] = START_TYPE;
@@ -1123,7 +1123,7 @@ x = 8.0 * (temp*temp - 2.0 * temp);
 else x = 0.0;
 tempx += 0.474;
 tempy = 15.811389 + 7.5*tempx - 17.5*sqrt(1.0+tempx*tempx);
-if (tempy <= -60.0) return  0.0;
+if (tempy <= -60.0) return 0.0;
 tempx = exp( (x + tempy)*LN_TO_LOG10 );
 tempx /= .6609193;
 return tempx;
@@ -1140,9 +1140,9 @@ lame_internal_flags *gfc=gfp->internal_flags;
 FLOAT8 freq_tp;
 FLOAT8 bval_l[CBANDS], bval_s[CBANDS];
 FLOAT8 bval_l_width[CBANDS], bval_s_width[CBANDS];
-int   cbmax=0, cbmax_tp;
-int  sbmax ;
-int  i,j;
+int cbmax=0, cbmax_tp;
+int sbmax ;
+int i,j;
 int freq_scale=1;
 int partition[HBLKSIZE];
 int loop, k2;
@@ -1158,8 +1158,8 @@ ji = j;
 bark1 = freq2bark(sfreq*ji/BLKSIZE);
 ++j2;
 ji = j2;
-bark2  = freq2bark(sfreq*ji/BLKSIZE);
-} while ((bark2 - bark1) < DELBARK  && j2<=BLKSIZE/2);
+bark2 = freq2bark(sfreq*ji/BLKSIZE);
+} while ((bark2 - bark1) < DELBARK && j2<=BLKSIZE/2);
 for (k=j; k<j2; ++k)
 partition[k]=i;
 numlines_l[i]=(j2-j);
@@ -1172,7 +1172,7 @@ assert(*npart_l_orig <= CBANDS);
 FLOAT8 freq1,freq2;
 for ( sfb = 0; sfb < SBMAX_l; sfb++ ) {
 start = gfc->scalefac_band.l[ sfb ];
-end   = gfc->scalefac_band.l[ sfb+1 ];
+end = gfc->scalefac_band.l[ sfb+1 ];
 freq1 = sfreq*(start-.5)/(2*576);
 freq2 = sfreq*(end-1+.5)/(2*576);
 i1 = floor(.5 + BLKSIZE*freq1/sfreq);
@@ -1187,9 +1187,9 @@ bo_l[sfb]=partition[i2];
 }
 j = 0;
 for ( i = 0; i < *npart_l_orig; i++ ) {
-int     k;
-FLOAT8  bark1,bark2;
-k         = numlines_l[i] - 1;
+int k;
+FLOAT8 bark1,bark2;
+k = numlines_l[i] - 1;
 bark1 = freq2bark(sfreq*(j+0)/BLKSIZE);
 bark2 = freq2bark(sfreq*(j+k)/BLKSIZE);
 bval_l[i] = .5*(bark1+bark2);
@@ -1198,11 +1198,11 @@ bark2 = freq2bark(sfreq*(j+k+.5)/BLKSIZE);
 bval_l_width[i] = bark2-bark1;
 gfc->ATH->cb [i] = 1.e37;
 for (k=0; k < numlines_l[i]; k++, j++) {
-FLOAT8  freq = sfreq*j/(1000.0*BLKSIZE);
-FLOAT8  level;
+FLOAT8 freq = sfreq*j/(1000.0*BLKSIZE);
+FLOAT8 level;
 assert( freq <= 24 );
-level  = ATHformula (freq*1000, gfp) - 20;
-level  = pow ( 10., 0.1*level );
+level = ATHformula (freq*1000, gfp) - 20;
+level = pow ( 10., 0.1*level );
 level *= numlines_l [i];
 if ( level < gfc->ATH->cb [i] )
 gfc->ATH->cb [i] = level;
@@ -1222,11 +1222,11 @@ j2 = j;
 j2 = Min(j2,BLKSIZE_s/2);
 do {
 ji = j;
-bark1  = freq2bark(sfreq*ji/BLKSIZE_s);
+bark1 = freq2bark(sfreq*ji/BLKSIZE_s);
 ++j2;
 ji = j2;
-bark2  = freq2bark(sfreq*ji/BLKSIZE_s);
-} while ((bark2 - bark1) < DELBARK  && j2<=BLKSIZE_s/2);
+bark2 = freq2bark(sfreq*ji/BLKSIZE_s);
+} while ((bark2 - bark1) < DELBARK && j2<=BLKSIZE_s/2);
 for (k=j; k<j2; ++k)
 partition[k]=i;
 numlines_s[i]=(j2-j);
@@ -1239,7 +1239,7 @@ assert(*npart_s_orig <= CBANDS);
 FLOAT8 freq1,freq2;
 for ( sfb = 0; sfb < SBMAX_s; sfb++ ) {
 start = gfc->scalefac_band.s[ sfb ];
-end   = gfc->scalefac_band.s[ sfb+1 ];
+end = gfc->scalefac_band.s[ sfb+1 ];
 freq1 = sfreq*(start-.5)/(2*192);
 freq2 = sfreq*(end-1+.5)/(2*192);
 i1 = floor(.5 + BLKSIZE_s*freq1/sfreq);
@@ -1255,30 +1255,30 @@ bo_s[sfb]=partition[i2];
 j = 0;
 for(i=0;i<*npart_s_orig;i++)
 {
-int     k;
-FLOAT8  bark1,bark2,snr;
-k    = numlines_s[i] - 1;
+int k;
+FLOAT8 bark1,bark2,snr;
+k = numlines_s[i] - 1;
 bark1 = freq2bark (sfreq*(j+0)/BLKSIZE_s);
 bark2 = freq2bark (sfreq*(j+k)/BLKSIZE_s);
 bval_s[i] = .5*(bark1+bark2);
 bark1 = freq2bark (sfreq*(j+0-.5)/BLKSIZE_s);
 bark2 = freq2bark (sfreq*(j+k+.5)/BLKSIZE_s);
 bval_s_width[i] = bark2-bark1;
-j        += k+1;
+j += k+1;
 if (bval_s[i]<13)
 snr=-8.25;
 else
-snr  = -4.5 * (bval_s[i]-13)/(24.0-13.0)  +
+snr = -4.5 * (bval_s[i]-13)/(24.0-13.0) +
 -8.25*(bval_s[i]-24)/(13.0-24.0);
 SNR[i]=pow(10.0,snr/10.0);
 }
-for(i=0;i<*npart_l_orig;i++)    {
-for(j=0;j<*npart_l_orig;j++) 	{
+for(i=0;i<*npart_l_orig;i++) {
+for(j=0;j<*npart_l_orig;j++) {
 s3_l[i][j]=s3_func(bval_l[i]-bval_l[j])*bval_l_width[j];
 }
 }
-for(i=0;i<*npart_s_orig;i++)     {
-for(j=0;j<*npart_s_orig;j++) 	{
+for(i=0;i<*npart_s_orig;i++) {
+for(j=0;j<*npart_s_orig;j++) {
 s3_s[i][j]=s3_func(bval_s[i]-bval_s[j])*bval_s_width[j];
 }
 }

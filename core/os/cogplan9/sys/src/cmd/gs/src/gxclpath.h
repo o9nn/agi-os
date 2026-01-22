@@ -1,22 +1,22 @@
 #ifndef gxclpath_INCLUDED
-#  define gxclpath_INCLUDED
-#define cap_join_known		(1<<0)
-#define cj_ac_sa_known		(1<<1)
-#define flatness_known		(1<<2)
-#define line_width_known	(1<<3)
-#define miter_limit_known	(1<<4)
-#define op_bm_tk_known		(1<<5)
-#define segment_notes_known	(1<<6)
-#define opacity_alpha_known	(1<<7)
-#define shape_alpha_known	(1<<8)
-#define alpha_known		(1<<9)
-#define misc2_all_known		((1<<10)-1)
-#define fill_adjust_known	(1<<10)
-#define ctm_known		(1<<11)
-#define dash_known		(1<<12)
-#define clip_path_known		(1<<13)
-#define stroke_all_known	((1<<14)-1)
-#define color_space_known	(1<<14)
+# define gxclpath_INCLUDED
+#define cap_join_known (1<<0)
+#define cj_ac_sa_known (1<<1)
+#define flatness_known (1<<2)
+#define line_width_known (1<<3)
+#define miter_limit_known (1<<4)
+#define op_bm_tk_known (1<<5)
+#define segment_notes_known (1<<6)
+#define opacity_alpha_known (1<<7)
+#define shape_alpha_known (1<<8)
+#define alpha_known (1<<9)
+#define misc2_all_known ((1<<10)-1)
+#define fill_adjust_known (1<<10)
+#define ctm_known (1<<11)
+#define dash_known (1<<12)
+#define clip_path_known (1<<13)
+#define stroke_all_known ((1<<14)-1)
+#define color_space_known (1<<14)
 typedef enum {
 cmd_dc_type_pure = 0,
 cmd_dc_type_ht = 1,
@@ -88,7 +88,7 @@ cmd_opv_ext_put_drawing_color = 0x04
 "colorstroke", "polyfill", "htpolyfill", "colorpolyfill",\
 "?fc?", "?fd?", "?fe?", "?ff?"
 #define is_bits(d, n) !(((d) + ((fixed)1 << ((n) - 1))) & (-(fixed)1 << (n)))
-#define cbuf_ht_seg_max_size    (cbuf_size - 32)
+#define cbuf_ht_seg_max_size (cbuf_size - 32)
 dev_proc_fill_path(clist_fill_path);
 dev_proc_stroke_path(clist_stroke_path);
 dev_proc_fill_parallelogram(clist_fill_parallelogram);

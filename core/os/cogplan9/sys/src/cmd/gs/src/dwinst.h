@@ -1,5 +1,5 @@
 #ifndef dwinst_INCLUDED
-#  define dwinst_INCLUDED
+# define dwinst_INCLUDED
 #ifndef MAXSTR
 #ifdef MAX_PATH
 #define MAXSTR MAX_PATH

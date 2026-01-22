@@ -4,23 +4,23 @@
 #include <stdint.h>
 #include <stdbool.h>
 #ifdef LLAMA_V2_SHARED
-#    if defined(_WIN32) && !defined(__MINGW32__)
-#        ifdef LLAMA_V2_BUILD
-#            define LLAMA_V2_API __declspec(dllexport)
-#        else
-#            define LLAMA_V2_API __declspec(dllimport)
-#        endif
-#    else
-#        define LLAMA_V2_API __attribute__ ((visibility ("default")))
-#    endif
+# if defined(_WIN32) && !defined(__MINGW32__)
+# ifdef LLAMA_V2_BUILD
+# define LLAMA_V2_API __declspec(dllexport)
+# else
+# define LLAMA_V2_API __declspec(dllimport)
+# endif
+# else
+# define LLAMA_V2_API __attribute__ ((visibility ("default")))
+# endif
 #else
-#    define LLAMA_V2_API
+# define LLAMA_V2_API
 #endif
-#define LLAMA_V2_FILE_VERSION           3
-#define LLAMA_V2_FILE_MAGIC             'ggjt'
+#define LLAMA_V2_FILE_VERSION 3
+#define LLAMA_V2_FILE_MAGIC 'ggjt'
 #define LLAMA_V2_FILE_MAGIC_UNVERSIONED 'ggml'
-#define LLAMA_V2_SESSION_MAGIC          'ggsn'
-#define LLAMA_V2_SESSION_VERSION        1
+#define LLAMA_V2_SESSION_MAGIC 'ggsn'
+#define LLAMA_V2_SESSION_VERSION 1
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -51,8 +51,8 @@ llama_v2_progress_callback progress_callback;
 void * progress_callback_user_data;
 };
 enum llama_v2_ftype {
-LLAMA_V2_FTYPE_ALL_F32     = 0,
-LLAMA_V2_FTYPE_MOSTLY_F16  = 1,
+LLAMA_V2_FTYPE_ALL_F32 = 0,
+LLAMA_V2_FTYPE_MOSTLY_F16 = 1,
 LLAMA_V2_FTYPE_MOSTLY_Q4_0 = 2,
 LLAMA_V2_FTYPE_MOSTLY_Q4_1 = 3,
 LLAMA_V2_FTYPE_MOSTLY_Q4_1_SOME_F16 = 4,
@@ -67,18 +67,18 @@ LLAMA_V2_API bool llama_v2_mmap_supported();
 LLAMA_V2_API bool llama_v2_mlock_supported();
 LLAMA_V2_API struct llama_v2_context * llama_v2_init_from_file(
 const char * path_model,
-struct llama_v2_context_params   params);
+struct llama_v2_context_params params);
 LLAMA_V2_API void llama_v2_free(struct llama_v2_context * ctx);
 LLAMA_V2_API int llama_v2_model_quantize(
 const char * fname_inp,
 const char * fname_out,
-enum llama_v2_ftype   ftype,
-int          nthread);
+enum llama_v2_ftype ftype,
+int nthread);
 LLAMA_V2_API int llama_v2_apply_lora_from_file(
 struct llama_v2_context * ctx,
 const char * path_lora,
 const char * path_base_model,
-int   n_threads);
+int n_threads);
 LLAMA_V2_API int llama_v2_get_kv_cache_token_count(const struct llama_v2_context * ctx);
 LLAMA_V2_API void llama_v2_set_rng_seed(struct llama_v2_context * ctx, int seed);
 LLAMA_V2_API size_t llama_v2_get_state_size(const struct llama_v2_context * ctx);
@@ -87,18 +87,18 @@ LLAMA_V2_API size_t llama_v2_set_state_data(struct llama_v2_context * ctx, const
 LLAMA_V2_API int llama_v2_eval(
 struct llama_v2_context * ctx,
 const llama_v2_token * tokens,
-int   n_tokens,
-int   n_past,
-int   n_threads);
+int n_tokens,
+int n_past,
+int n_threads);
 LLAMA_V2_API int llama_v2_tokenize(
 struct llama_v2_context * ctx,
 const char * text,
 llama_v2_token * tokens,
-int   n_max_tokens,
-bool   add_bos);
+int n_max_tokens,
+bool add_bos);
 std::vector<llama_v2_token> legacy_llama_v2_tokenize(struct llama_v2_context * ctx, const std::string & text, bool add_bos);
 LLAMA_V2_API int llama_v2_n_vocab(const struct llama_v2_context * ctx);
-LLAMA_V2_API int llama_v2_n_ctx  (const struct llama_v2_context * ctx);
+LLAMA_V2_API int llama_v2_n_ctx (const struct llama_v2_context * ctx);
 LLAMA_V2_API int llama_v2_n_embd (const struct llama_v2_context * ctx);
 LLAMA_V2_API float * llama_v2_get_logits(struct llama_v2_context * ctx);
 LLAMA_V2_API float * llama_v2_get_embeddings(struct llama_v2_context * ctx);

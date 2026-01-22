@@ -259,9 +259,9 @@ msg->icmph.icmp6_type = NDISC_NEIGHBOUR_ADVERTISEMENT;
 msg->icmph.icmp6_code = 0;
 msg->icmph.icmp6_cksum = 0;
 msg->icmph.icmp6_unused = 0;
-msg->icmph.icmp6_router    = router;
+msg->icmph.icmp6_router = router;
 msg->icmph.icmp6_solicited = solicited;
-msg->icmph.icmp6_override  = !!override;
+msg->icmph.icmp6_override = !!override;
 ipv6_addr_copy(&msg->target, solicited_addr);
 if (inc_opt)
 ndisc_fill_option((void*)&msg->opt, ND_OPT_TARGET_LL_ADDR, dev->dev_addr, dev->addr_len);
@@ -603,7 +603,7 @@ return;
 dst_release(&rt->u.dst);
 if (dev->addr_len) {
 if (neigh->nud_state&NUD_VALID) {
-len  += NDISC_OPT_SPACE(dev->addr_len);
+len += NDISC_OPT_SPACE(dev->addr_len);
 } else {
 return;
 }

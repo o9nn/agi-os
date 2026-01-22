@@ -8,33 +8,33 @@
 #include "../port/error.h"
 enum
 {
-Serialaddr=	0x2d,
-Rpaddr=		0x5,
-Bbusy=		 (1<<7),
-Rpdata=		0x6,
-Rconfig=	0x40,
-Bstart=		 (1<<0),
-Bsmiena=	 (1<<1),
-Birqena=	 (1<<2),
-Bintclr=	 (1<<3),
-Breset=		 (1<<4),
-Bnmi=		 (1<<5),
-Bpowbypass=	 (1<<6),
-Binit=		 (1<<7),
-Ristat1=	0x41,
-Ristat2=	0x42,
-Rsmimask1=	0x43,
-Rsmimask2=	0x44,
-Rnmimask1=	0x45,
-Rnmimask2=	0x46,
-Rvidfan=	0x47,
-Mvid=		 0x0f,
-Mfan=		 0xf0,
-Raddr=		0x48,
-Rresetid=	0x49,
-Rpost=		0x00,
-Rvalue=		0x20,
-VRsize=		0x20,
+Serialaddr= 0x2d,
+Rpaddr= 0x5,
+Bbusy= (1<<7),
+Rpdata= 0x6,
+Rconfig= 0x40,
+Bstart= (1<<0),
+Bsmiena= (1<<1),
+Birqena= (1<<2),
+Bintclr= (1<<3),
+Breset= (1<<4),
+Bnmi= (1<<5),
+Bpowbypass= (1<<6),
+Binit= (1<<7),
+Ristat1= 0x41,
+Ristat2= 0x42,
+Rsmimask1= 0x43,
+Rsmimask2= 0x44,
+Rnmimask1= 0x45,
+Rnmimask2= 0x46,
+Rvidfan= 0x47,
+Mvid= 0x0f,
+Mfan= 0xf0,
+Raddr= 0x48,
+Rresetid= 0x49,
+Rpost= 0x00,
+Rvalue= 0x20,
+VRsize= 0x20,
 };
 enum
 {
@@ -42,23 +42,23 @@ Qdir,
 Qlm78vram,
 };
 static Dirtab lm78dir[] = {
-".",			{ Qdir, 0, QTDIR},	0,	0555,
-"lm78vram",	{ Qlm78vram, 0 },	0,	0444,
+".", { Qdir, 0, QTDIR}, 0, 0555,
+"lm78vram", { Qlm78vram, 0 }, 0, 0444,
 };
 enum
 {
-None=	0,
+None= 0,
 Smbus,
 Parallel,
 };
 static struct {
 QLock;
-int	probed;
-int 	ifc;
-SMBus	*smbus;
-int	port;
+int probed;
+int ifc;
+SMBus *smbus;
+int port;
 } lm78;
-extern SMBus*	piix4smbus(void);
+extern SMBus* piix4smbus(void);
 static void
 setreg(int reg)
 {
@@ -140,12 +140,12 @@ lm78.probed = 1;
 }
 enum
 {
-IntelVendID=	0x8086,
-PiixID=		0x122E,
-Piix3ID=	0x7000,
-Piix4PMID=	0x7113,
-PCSC=		0x78,
-PCSC8bytes=	0x01,
+IntelVendID= 0x8086,
+PiixID= 0x122E,
+Piix3ID= 0x7000,
+Piix4PMID= 0x7113,
+PCSC= 0x78,
+PCSC8bytes= 0x01,
 };
 void
 lm78reset(void)
@@ -212,7 +212,7 @@ switch((ulong)c->qid.path){
 case Qdir:
 return devdirread(c, a, n, lm78dir, nelem(lm78dir), devgen);
 case Qlm78vram:
-if(off >=  VRsize)
+if(off >= VRsize)
 return 0;
 e = off + n;
 if(e > VRsize)
@@ -233,7 +233,7 @@ switch((ulong)c->qid.path){
 default:
 error(Eperm);
 case Qlm78vram:
-if(off >=  VRsize)
+if(off >= VRsize)
 return 0;
 e = off + n;
 if(e > VRsize)

@@ -1,6 +1,6 @@
 #include "fpi.h"
 enum {
-Sign	= 1u << 31,
+Sign = 1u << 31,
 };
 void
 fpis2i(Internal *i, void *v)
@@ -109,7 +109,7 @@ if(e <= (ExpBias - SingleExpBias))
 return;
 e = SingleExpBias - (ExpBias - e);
 }
-else  if(e >= (ExpBias + (SingleExpMax-SingleExpBias))){
+else if(e >= (ExpBias + (SingleExpMax-SingleExpBias))){
 *s |= SingleExpMax<<23;
 return;
 }

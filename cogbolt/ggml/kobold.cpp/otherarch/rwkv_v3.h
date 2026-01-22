@@ -4,17 +4,17 @@
 #include <stdint.h>
 #include <stdbool.h>
 #ifdef RWKV_SHARED
-#    if defined(_WIN32) && !defined(__MINGW32__)
-#        ifdef RWKV_BUILD
-#            define RWKV_API __declspec(dllexport)
-#        else
-#            define RWKV_API __declspec(dllimport)
-#        endif
-#    else
-#        define RWKV_API __attribute__ ((visibility ("default")))
-#    endif
+# if defined(_WIN32) && !defined(__MINGW32__)
+# ifdef RWKV_BUILD
+# define RWKV_API __declspec(dllexport)
+# else
+# define RWKV_API __declspec(dllimport)
+# endif
+# else
+# define RWKV_API __attribute__ ((visibility ("default")))
+# endif
 #else
-#    define RWKV_API
+# define RWKV_API
 #endif
 #define RWKV_FILE_MAGIC 0x67676d66
 #define RWKV_FILE_VERSION_0 100

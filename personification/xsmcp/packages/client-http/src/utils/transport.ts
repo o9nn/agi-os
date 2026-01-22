@@ -3,81 +3,81 @@ import type { JSONRPCMessage, JSONRPCNotification, JSONRPCRequest, JSONRPCRespon
 import { auth, UnauthorizedError } from '@xsmcp/client-shared'
 import { EventSourceParserStream } from 'eventsource-parser/stream'
 export interface HttpTransportOptions {
-  authProvider?: OAuthClientProvider
-  url: string | URL
+authProvider?: OAuthClientProvider
+url: string | URL
 }
 export class HttpTransport implements Transport {
-  private abortController: AbortController = new AbortController()
-  private authProvider?: OAuthClientProvider
-  private mcpSessionId?: string
-  private url: URL
-  constructor(options: HttpTransportOptions) {
-    this.url = options.url instanceof URL ? options.url : new URL(options.url)
-    this.authProvider = options.authProvider
-  }
-  public async close(): Promise<void> {
-    this.abortController.abort()
-  }
-  public async notification(notification: JSONRPCNotification | JSONRPCNotification[]): Promise<void> {
-    await this.send(notification)
-  }
-  public async request<T extends Result = Result>(request: JSONRPCRequest): Promise<T> {
-    const res = await this.send(request)
-    const contentType = res.headers.get('Content-Type')
-    if (!res.body)
-      throw new Error('No response body')
-    if (contentType?.includes('application/json')) {
-      const json = await res.json() as JSONRPCResponse[]
-      return json[0].result as T
-    }
-    else if (contentType?.includes('text/event-stream')) {
-      const eventStream = res.body
-        .pipeThrough(new TextDecoderStream())
-        .pipeThrough(new EventSourceParserStream())
-      const messages: JSONRPCResponse[] = []
-      for await (const event of eventStream) {
-        if (event.event == null || event.event === 'message') {
-          const message = JSON.parse(event.data) as JSONRPCNotification | JSONRPCResponse
-          if ('id' in message)
-            messages.push(message)
-        }
-      }
-      return messages[0].result as T
-    }
-    throw new Error(`Invalid content type: ${contentType}`)
-  }
-  private async send(message: JSONRPCMessage | JSONRPCMessage[]): Promise<Response> {
-    const headers = new Headers({
-      'Accept': 'application/json, text/event-stream',
-      'Content-Type': 'application/json',
-    })
-    if (this.mcpSessionId != null)
-      headers.set('Mcp-Session-Id', this.mcpSessionId)
-    if (this.authProvider != null) {
-      const tokens = await this.authProvider.tokens()
-      if (tokens)
-        headers.set('Authorization', `Bearer ${tokens.access_token}`)
-    }
-    const res = await fetch(this.url, {
-      body: JSON.stringify(Array.isArray(message) ? message : [message]),
-      headers,
-      method: 'POST',
-      signal: this.abortController.signal,
-    })
-    const mcpSessionId = res.headers.get('mcp-session-id')
-    if (mcpSessionId != null)
-      this.mcpSessionId = mcpSessionId
-    if (!res.ok) {
-      if (res.status === 401 && this.authProvider) {
-        const result = await auth(this.authProvider, { serverUrl: this.url })
-        if (result !== 'AUTHORIZED')
-          throw new UnauthorizedError()
-        return this.send(message)
-      }
-      const text = await res.text().catch(() => '')
-      throw new Error(`Error POSTing to endpoint (HTTP ${res.status}): ${text}`)
-    }
-    return res
-  }
+private abortController: AbortController = new AbortController()
+private authProvider?: OAuthClientProvider
+private mcpSessionId?: string
+private url: URL
+constructor(options: HttpTransportOptions) {
+this.url = options.url instanceof URL ? options.url : new URL(options.url)
+this.authProvider = options.authProvider
+}
+public async close(): Promise<void> {
+this.abortController.abort()
+}
+public async notification(notification: JSONRPCNotification | JSONRPCNotification[]): Promise<void> {
+await this.send(notification)
+}
+public async request<T extends Result = Result>(request: JSONRPCRequest): Promise<T> {
+const res = await this.send(request)
+const contentType = res.headers.get('Content-Type')
+if (!res.body)
+throw new Error('No response body')
+if (contentType?.includes('application/json')) {
+const json = await res.json() as JSONRPCResponse[]
+return json[0].result as T
+}
+else if (contentType?.includes('text/event-stream')) {
+const eventStream = res.body
+.pipeThrough(new TextDecoderStream())
+.pipeThrough(new EventSourceParserStream())
+const messages: JSONRPCResponse[] = []
+for await (const event of eventStream) {
+if (event.event == null || event.event === 'message') {
+const message = JSON.parse(event.data) as JSONRPCNotification | JSONRPCResponse
+if ('id' in message)
+messages.push(message)
+}
+}
+return messages[0].result as T
+}
+throw new Error(`Invalid content type: ${contentType}`)
+}
+private async send(message: JSONRPCMessage | JSONRPCMessage[]): Promise<Response> {
+const headers = new Headers({
+'Accept': 'application/json, text/event-stream',
+'Content-Type': 'application/json',
+})
+if (this.mcpSessionId != null)
+headers.set('Mcp-Session-Id', this.mcpSessionId)
+if (this.authProvider != null) {
+const tokens = await this.authProvider.tokens()
+if (tokens)
+headers.set('Authorization', `Bearer ${tokens.access_token}`)
+}
+const res = await fetch(this.url, {
+body: JSON.stringify(Array.isArray(message) ? message : [message]),
+headers,
+method: 'POST',
+signal: this.abortController.signal,
+})
+const mcpSessionId = res.headers.get('mcp-session-id')
+if (mcpSessionId != null)
+this.mcpSessionId = mcpSessionId
+if (!res.ok) {
+if (res.status === 401 && this.authProvider) {
+const result = await auth(this.authProvider, { serverUrl: this.url })
+if (result !== 'AUTHORIZED')
+throw new UnauthorizedError()
+return this.send(message)
+}
+const text = await res.text().catch(() => '')
+throw new Error(`Error POSTing to endpoint (HTTP ${res.status}): ${text}`)
+}
+return res
+}
 }
 export const createHttpTransport = (options: HttpTransportOptions) => new HttpTransport(options)

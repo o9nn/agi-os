@@ -1,5 +1,5 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #include "charconv.h"
 #ifdef HAVE_ICONV
@@ -115,7 +115,7 @@ char * out;
 int res;
 fromcode = get_valid_charset(fromcode);
 if (extended_charconv != NULL) {
-size_t		result_length;
+size_t result_length;
 result_length = length * 6;
 *result = malloc( length * 6 + 1);
 if (*result == NULL) {
@@ -189,7 +189,7 @@ int res;
 MMAPString * mmapstr;
 fromcode = get_valid_charset(fromcode);
 if (extended_charconv != NULL) {
-size_t		result_length;
+size_t result_length;
 result_length = length * 6;
 mmapstr = mmap_string_sized_new( result_length + 1);
 *result_len = 0;

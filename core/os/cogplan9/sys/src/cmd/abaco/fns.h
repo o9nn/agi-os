@@ -1,8 +1,8 @@
-#define	runemalloc(a)		emalloc((a)*sizeof(Rune))
-#define	runerealloc(a, b)	erealloc(a, (b)*sizeof(Rune))
-#define	runemove(a, b, c)	memmove(a, b, (c)*sizeof(Rune))
-#define	hasbrk(x)	((x)&IFbrk || (x)&IFbrksp)
-#define	istrue(x)	((x) ? "true" : "false")
+#define runemalloc(a) emalloc((a)*sizeof(Rune))
+#define runerealloc(a, b) erealloc(a, (b)*sizeof(Rune))
+#define runemove(a, b, c) memmove(a, b, (c)*sizeof(Rune))
+#define hasbrk(x) ((x)&IFbrk || (x)&IFbrksp)
+#define istrue(x) ((x) ? "true" : "false")
 void plumblook(Plumbmsg*m);
 int plumbrunestr(Runestr *, char *);
 void putsnarf(Runestr *);
@@ -25,7 +25,7 @@ int search(Text *, Rune *, uint);
 void scrsleep(uint);
 void scrlresize(void);
 void tmpresize(void);
-void	initfontpaths(void);
+void initfontpaths(void);
 void cvttorunes(char*, int, Rune*, int*, int*, int*);
 void error(char *);
 void closerunestr(Runestr *);

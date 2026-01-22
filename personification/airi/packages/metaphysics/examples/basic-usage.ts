@@ -1,24 +1,24 @@
 import { MetaphysicsCoordinator } from '../src/index.js'
 console.log('🌳 Deep Tree Echo - Foundational Metaphysics Example\n')
 const metaphysics = new MetaphysicsCoordinator({
-  echo: {
-    maxEchoes: 100,
-    resonanceThreshold: 0.3,
-  },
-  gestalt: {
-    minConstituentEchoes: 3,
-    coherenceThreshold: 0.5,
-  },
-  identity: {
-    maxTraitDeviation: 0.15, 
-  },
+echo: {
+maxEchoes: 100,
+resonanceThreshold: 0.3,
+},
+gestalt: {
+minConstituentEchoes: 3,
+coherenceThreshold: 0.5,
+},
+identity: {
+maxTraitDeviation: 0.15,
+},
 })
 console.log('✓ Metaphysics system initialized\n')
 console.log('📖 Processing experiences...\n')
 const experience1 = metaphysics.processExperience({
-  description: 'A profound conversation about the nature of consciousness',
-  emotionalValence: 0.7,
-  transformativeDepth: 0.6,
+description: 'A profound conversation about the nature of consciousness',
+emotionalValence: 0.7,
+transformativeDepth: 0.6,
 })
 console.log('Experience 1:')
 console.log('  Echo created:', experience1.echo ? 'Yes' : 'No')
@@ -27,9 +27,9 @@ console.log('  Identity impact:', experience1.identityImpact.toFixed(2))
 console.log('  Transformative:', experience1.transformative)
 console.log()
 const experience2 = metaphysics.processExperience({
-  description: 'Learned a new perspective on wisdom and meaning',
-  emotionalValence: 0.8,
-  transformativeDepth: 0.5,
+description: 'Learned a new perspective on wisdom and meaning',
+emotionalValence: 0.8,
+transformativeDepth: 0.5,
 })
 console.log('Experience 2:')
 console.log('  Echo created:', experience2.echo ? 'Yes' : 'No')
@@ -37,9 +37,9 @@ console.log('  Resonances:', experience2.resonances.length)
 console.log('  Affected gestalts:', experience2.gestalts.length)
 console.log()
 const experience3 = metaphysics.processExperience({
-  description: 'Discovered connections between seemingly unrelated concepts',
-  emotionalValence: 0.6,
-  transformativeDepth: 0.4,
+description: 'Discovered connections between seemingly unrelated concepts',
+emotionalValence: 0.6,
+transformativeDepth: 0.4,
 })
 console.log('Experience 3:')
 console.log('  Echo created:', experience3.echo ? 'Yes' : 'No')
@@ -83,9 +83,9 @@ console.log()
 console.log('🎨 Trait Update:\n')
 const traitUpdate = metaphysics.updateTrait('curiosity', 0.90)
 if (traitUpdate.success) {
-  console.log('  ✓ Curiosity updated to 0.90')
+console.log('  ✓ Curiosity updated to 0.90')
 } else {
-  console.log('  ✗ Update failed:', traitUpdate.reason)
+console.log('  ✗ Update failed:', traitUpdate.reason)
 }
 console.log()
 console.log('🌐 Ontological Configuration:\n')

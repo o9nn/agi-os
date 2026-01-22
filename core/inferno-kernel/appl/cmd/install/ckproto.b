@@ -15,7 +15,7 @@ include "protocaller.m";
 protocaller : Protocaller;
 WARN, ERROR, FATAL : import Protocaller;
 Ckproto: module{
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 protofile: fn(new : string, old : string, d : ref Sys->Dir);
 protoerr: fn(lev : int, line : int, err : string);
 };
@@ -30,7 +30,7 @@ root := "/";
 droot : ref Dir;
 protof : string;
 stderr : ref Sys->FD;
-omitgen := 0;			# forget generated files
+omitgen := 0; # forget generated files
 verbose : int;
 ckmode: int;
 init(nil: ref Draw->Context, args: list of string)

@@ -32,8 +32,8 @@ static struct socket *igmp6_socket;
 static void igmp6_join_group(struct ifmcaddr6 *ma);
 static void igmp6_leave_group(struct ifmcaddr6 *ma);
 void igmp6_timer_handler(unsigned long data);
-#define IGMP6_UNSOLICITED_IVAL	(10*HZ)
-static struct ifmcaddr6		*inet6_mcast_lst[IN6_ADDR_HSIZE];
+#define IGMP6_UNSOLICITED_IVAL (10*HZ)
+static struct ifmcaddr6 *inet6_mcast_lst[IN6_ADDR_HSIZE];
 int ipv6_sock_mc_join(struct sock *sk, int ifindex, struct in6_addr *addr)
 {
 struct device *dev = NULL;
@@ -127,7 +127,7 @@ return 0;
 int ipv6_dev_mc_inc(struct device *dev, struct in6_addr *addr)
 {
 struct ifmcaddr6 *mc;
-struct inet6_dev    *idev;
+struct inet6_dev *idev;
 int hash;
 idev = ipv6_get_idev(dev);
 if (idev == NULL)
@@ -363,7 +363,7 @@ end_bh_atomic();
 void igmp6_timer_handler(unsigned long data)
 {
 struct ifmcaddr6 *ma = (struct ifmcaddr6 *) data;
-ma->mca_flags |=  MAF_LAST_REPORTER;
+ma->mca_flags |= MAF_LAST_REPORTER;
 igmp6_send(&ma->mca_addr, ma->dev, ICMPV6_MGM_REPORT);
 ma->mca_flags &= ~MAF_TIMER_RUNNING;
 }

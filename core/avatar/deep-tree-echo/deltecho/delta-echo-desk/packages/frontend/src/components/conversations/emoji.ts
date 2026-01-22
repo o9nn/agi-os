@@ -6,52 +6,52 @@ const instance = new EmojiConvertor()
 instance.init_colons()
 const colonEmojiCodeRegExp = /:[a-zA-Z0-9-_+]+:(:skin-tone-[2-6]:)?/g
 export function replaceColons(str: string) {
-  return str.replace(colonEmojiCodeRegExp, m => {
-    const name = m.split(':')[1]
-    const skintoneString = m.split(':')[3] 
-    const codePoints = instance.map.colons[name]
-      ?.split('-')
-      .map((c: string) => parseInt(c, 16))
-    if (codePoints) {
-      if (skintoneString) {
-        const skintoneResult = /^skin-tone-([2-6])$/.exec(skintoneString)
-        if (skintoneResult) {
-          const skintoneNumber = Number(skintoneResult[1])
-          codePoints.push(0x1f3fb + (skintoneNumber - 2))
-        }
-      }
-      return String.fromCodePoint(...codePoints)
-    }
-    return m
-  })
+return str.replace(colonEmojiCodeRegExp, m => {
+const name = m.split(':')[1]
+const skintoneString = m.split(':')[3]
+const codePoints = instance.map.colons[name]
+?.split('-')
+.map((c: string) => parseInt(c, 16))
+if (codePoints) {
+if (skintoneString) {
+const skintoneResult = /^skin-tone-([2-6])$/.exec(skintoneString)
+if (skintoneResult) {
+const skintoneNumber = Number(skintoneResult[1])
+codePoints.push(0x1f3fb + (skintoneNumber - 2))
+}
+}
+return String.fromCodePoint(...codePoints)
+}
+return m
+})
 }
 export function replaceColonsSafe(message: string) {
-  try {
-    return replaceColons(message)
-  } catch (error) {
-    log.warn('replaceColons failed', error)
-    return message
-  }
+try {
+return replaceColons(message)
+} catch (error) {
+log.warn('replaceColons failed', error)
+return message
+}
 }
 const MAX_BIG_EMOJI_COUNT = 6
-const MAX_BYTE_SIZE_OF_EMOJI = 10 
+const MAX_BYTE_SIZE_OF_EMOJI = 10
 const MAX_STRING_LENGTH_FOR_BIG_EMOJI =
-  MAX_BIG_EMOJI_COUNT * MAX_BYTE_SIZE_OF_EMOJI
+MAX_BIG_EMOJI_COUNT * MAX_BYTE_SIZE_OF_EMOJI
 export function getSizeClass(str: string) {
-  if (str.length > MAX_STRING_LENGTH_FOR_BIG_EMOJI) {
-    return undefined
-  } else {
-    const emojiCount = count_emojis_if_only_contains_emoji(str)
-    if (emojiCount == null || emojiCount > 8) {
-      return undefined
-    } else if (emojiCount > 6) {
-      return 'small'
-    } else if (emojiCount > 4) {
-      return 'medium'
-    } else if (emojiCount > 2) {
-      return 'large'
-    } else {
-      return 'jumbo'
-    }
-  }
+if (str.length > MAX_STRING_LENGTH_FOR_BIG_EMOJI) {
+return undefined
+} else {
+const emojiCount = count_emojis_if_only_contains_emoji(str)
+if (emojiCount == null || emojiCount > 8) {
+return undefined
+} else if (emojiCount > 6) {
+return 'small'
+} else if (emojiCount > 4) {
+return 'medium'
+} else if (emojiCount > 2) {
+return 'large'
+} else {
+return 'jumbo'
+}
+}
 }

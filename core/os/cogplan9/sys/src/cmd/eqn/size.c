@@ -47,7 +47,7 @@ szstack[0] = gsize;
 gsize -= atoi(temp+1);
 if (szstack[0] != 0)
 szstack[0] = gsize;
-} else  if (isdigit(temp[0])) {
+} else if (isdigit(temp[0])) {
 gsize = atoi(temp);
 szstack[0] = gsize;
 printf(".nr 99 \\n(.s\n");

@@ -42,10 +42,10 @@ static char *version =
 #else
 #define DEBUG(n, args...)
 #endif
-#define TX_TIMEOUT  ((800*HZ)/1000)
-#define EL3_DATA	0x00
-#define EL3_CMD		0x0e
-#define EL3_STATUS	0x0e
+#define TX_TIMEOUT ((800*HZ)/1000)
+#define EL3_DATA 0x00
+#define EL3_CMD 0x0e
+#define EL3_STATUS 0x0e
 #define EL3WINDOW(win_num) outw(SelectWindow + (win_num), ioaddr + EL3_CMD)
 enum el3_cmds {
 TotalReset = 0<<11, SelectWindow = 1<<11, StartCoax = 2<<11,
@@ -73,8 +73,8 @@ EEPROM_EWENB = 0x30,
 EEPROM_EWDIS = 0x00,
 };
 enum Window1 {
-TX_FIFO = 0x10,  RX_FIFO = 0x10,  RxErrors = 0x14,
-RxStatus = 0x18,  Timer=0x1A, TxStatus = 0x1B,
+TX_FIFO = 0x10, RX_FIFO = 0x10, RxErrors = 0x14,
+RxStatus = 0x18, Timer=0x1A, TxStatus = 0x1B,
 TxFree = 0x0C,
 RunnerRdCtrl = 0x16, RunnerWrCtrl = 0x1c,
 };
@@ -93,7 +93,7 @@ int pad24:7;
 enum Window4 {
 Wn4_FIFODiag = 4, Wn4_NetDiag = 6, Wn4_PhysicalMgmt=8, Wn4_Media = 10,
 };
-#define MEDIA_TP	0x00C0
+#define MEDIA_TP 0x00C0
 struct el3_private {
 dev_link_t link;
 struct net_device dev;
@@ -463,12 +463,12 @@ break;
 }
 return inw(ioaddr + Wn0EepromData);
 }
-#define MDIO_SHIFT_CLK	0x01
-#define MDIO_DIR_WRITE	0x04
+#define MDIO_SHIFT_CLK 0x01
+#define MDIO_DIR_WRITE 0x04
 #define MDIO_DATA_WRITE0 (0x00 | MDIO_DIR_WRITE)
 #define MDIO_DATA_WRITE1 (0x02 | MDIO_DIR_WRITE)
-#define MDIO_DATA_READ	0x02
-#define MDIO_ENB_IN		0x00
+#define MDIO_DATA_READ 0x02
+#define MDIO_ENB_IN 0x00
 static void mdio_sync(ioaddr_t ioaddr, int bits)
 {
 int mdio_addr = ioaddr + Wn4_PhysicalMgmt;
@@ -706,7 +706,7 @@ struct el3_private *lp = (struct el3_private *)arg;
 struct net_device *dev = &lp->dev;
 ioaddr_t ioaddr = dev->base_addr;
 u_long flags;
-u_short  media, partner;
+u_short media, partner;
 if (!netif_device_present(dev))
 goto reschedule;
 if ((inw(ioaddr + EL3_STATUS) & IntLatch) &&
@@ -792,22 +792,22 @@ DEBUG(2, "%s: updating the statistics.\n", dev->name);
 if (inw(ioaddr+EL3_STATUS) == 0xffff)
 return;
 EL3WINDOW(6);
-lp->stats.tx_carrier_errors 	+= inb(ioaddr + 0);
-lp->stats.tx_heartbeat_errors	+= inb(ioaddr + 1);
+lp->stats.tx_carrier_errors += inb(ioaddr + 0);
+lp->stats.tx_heartbeat_errors += inb(ioaddr + 1);
 inb(ioaddr + 2);
-lp->stats.collisions			+= inb(ioaddr + 3);
-lp->stats.tx_window_errors		+= inb(ioaddr + 4);
-lp->stats.rx_fifo_errors		+= inb(ioaddr + 5);
-lp->stats.tx_packets			+= inb(ioaddr + 6);
-up		 						 = inb(ioaddr + 9);
-lp->stats.tx_packets			+= (up&0x30) << 4;
+lp->stats.collisions += inb(ioaddr + 3);
+lp->stats.tx_window_errors += inb(ioaddr + 4);
+lp->stats.rx_fifo_errors += inb(ioaddr + 5);
+lp->stats.tx_packets += inb(ioaddr + 6);
+up = inb(ioaddr + 9);
+lp->stats.tx_packets += (up&0x30) << 4;
 inb(ioaddr + 7);
 inb(ioaddr + 8);
-rx		 						 = inw(ioaddr + 10);
-tx								 = inw(ioaddr + 12);
+rx = inw(ioaddr + 10);
+tx = inw(ioaddr + 12);
 EL3WINDOW(4);
 inb(ioaddr + 12);
-up								 = inb(ioaddr + 13);
+up = inb(ioaddr + 13);
 add_tx_bytes(&lp->stats, tx + ((up & 0xf0) << 12));
 EL3WINDOW(1);
 }
@@ -824,12 +824,12 @@ if (rx_status & 0x4000) {
 short error = rx_status & 0x3800;
 lp->stats.rx_errors++;
 switch (error) {
-case 0x0000:	lp->stats.rx_over_errors++; break;
-case 0x0800:	lp->stats.rx_length_errors++; break;
-case 0x1000:	lp->stats.rx_frame_errors++; break;
-case 0x1800:	lp->stats.rx_length_errors++; break;
-case 0x2000:	lp->stats.rx_frame_errors++; break;
-case 0x2800:	lp->stats.rx_crc_errors++; break;
+case 0x0000: lp->stats.rx_over_errors++; break;
+case 0x0800: lp->stats.rx_length_errors++; break;
+case 0x1000: lp->stats.rx_frame_errors++; break;
+case 0x1800: lp->stats.rx_length_errors++; break;
+case 0x2000: lp->stats.rx_frame_errors++; break;
+case 0x2800: lp->stats.rx_crc_errors++; break;
 }
 } else {
 short pkt_len = rx_status & 0x7ff;

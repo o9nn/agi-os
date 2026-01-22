@@ -1,11 +1,11 @@
-#undef	dprint
-#undef	ddprint
-#undef	deprint
-#undef	ddeprint
-#define dprint		if(ehcidebug)print
-#define ddprint		if(ehcidebug>1)print
-#define deprint		if(ehcidebug || ep->debug)print
-#define ddeprint	if(ehcidebug>1 || ep->debug>1)print
+#undef dprint
+#undef ddprint
+#undef deprint
+#undef ddeprint
+#define dprint if(ehcidebug)print
+#define ddprint if(ehcidebug>1)print
+#define deprint if(ehcidebug || ep->debug)print
+#define ddeprint if(ehcidebug>1 || ep->debug>1)print
 typedef struct Ctlr Ctlr;
 typedef struct Eopio Eopio;
 typedef struct Isoio Isoio;
@@ -22,50 +22,50 @@ struct Poll
 {
 Lock;
 Rendez;
-int	must;
-int	does;
+int must;
+int does;
 };
 struct Ctlr
 {
 Rendez;
 Lock;
-QLock	portlck;
-int	active;
-Pcidev*	pcidev;
-Ecapio*	capio;
-Eopio*	opio;
-int	nframes;
-ulong*	frames;
-Qh*	qhs;
-Qtree*	tree;
-int	ntree;
-Qh*	intrqhs;
-Isoio*	iso;
-ulong	load;
-ulong	isoload;
-int	nintr;
-int	ntdintr;
-int	nqhintr;
-int	nisointr;
-int	nreqs;
-Poll	poll;
+QLock portlck;
+int active;
+Pcidev* pcidev;
+Ecapio* capio;
+Eopio* opio;
+int nframes;
+ulong* frames;
+Qh* qhs;
+Qtree* tree;
+int ntree;
+Qh* intrqhs;
+Isoio* iso;
+ulong load;
+ulong isoload;
+int nintr;
+int ntdintr;
+int nqhintr;
+int nisointr;
+int nreqs;
+Poll poll;
 };
 struct Eopio
 {
-ulong	cmd;
-ulong	sts;
-ulong	intr;
-ulong	frno;
-ulong	seg;
-ulong	frbase;
-ulong	link;
-uchar	d2c[0x40-0x1c];
-ulong	config;
-ulong	portsc[1];
+ulong cmd;
+ulong sts;
+ulong intr;
+ulong frno;
+ulong seg;
+ulong frbase;
+ulong link;
+uchar d2c[0x40-0x1c];
+ulong config;
+ulong portsc[1];
 };
 extern int ehcidebug;
 extern Ecapio *ehcidebugcapio;
 extern int ehcidebugport;
-void	ehcilinkage(Hci *hp);
-void	ehcimeminit(Ctlr *ctlr);
-void	ehcirun(Ctlr *ctlr, int on);
+void ehcilinkage(Hci *hp);
+void ehcimeminit(Ctlr *ctlr);
+void ehcirun(Ctlr *ctlr, int on);

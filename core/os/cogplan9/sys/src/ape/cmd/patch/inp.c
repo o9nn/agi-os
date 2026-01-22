@@ -188,7 +188,7 @@ read_fatal ();
 }
 lim = buffer + size;
 iline = 3;
-for (s = buffer;  (s = (char *) memchr (s, '\n', lim - s));  s++)
+for (s = buffer; (s = (char *) memchr (s, '\n', lim - s)); s++)
 if (++iline < 0)
 too_many_lines (filename);
 if (! (iline == (size_t) iline
@@ -199,7 +199,7 @@ free (buffer);
 return FALSE;
 }
 iline = 0;
-for (s = buffer;  ;  s++)
+for (s = buffer; ; s++)
 {
 ptr[++iline] = s;
 if (! (s = (char *) memchr (s, '\n', lim - s)))
@@ -217,7 +217,7 @@ size_t revlen = strlen (rev);
 if (revlen <= size)
 {
 char const *limrev = lim - revlen;
-for (s = buffer;  (s = (char *) memchr (s, rev0, limrev - s));  s++)
+for (s = buffer; (s = (char *) memchr (s, rev0, limrev - s)); s++)
 if (memcmp (s, rev, revlen) == 0
 && (s == buffer || ISSPACE ((unsigned char) s[-1]))
 && (s + 1 == limrev || ISSPACE ((unsigned char) s[revlen])))
@@ -276,14 +276,14 @@ i = (size_t) -1;
 }
 else if (i != (size_t) -1)
 i = rev[i]==c ? i + 1 : (size_t) -1;
-if (i == (size_t) -1  &&  ISSPACE ((unsigned char) c))
+if (i == (size_t) -1 && ISSPACE ((unsigned char) c))
 i = 0;
 }
 }
 if (revision)
 report_revision (found_revision);
 Fseek (ifp, (off_t) 0, SEEK_SET);
-for (tibufsize = TIBUFSIZE_MINIMUM;  tibufsize < maxlen;  tibufsize <<= 1)
+for (tibufsize = TIBUFSIZE_MINIMUM; tibufsize < maxlen; tibufsize <<= 1)
 continue;
 lines_per_buf = tibufsize / maxlen;
 tireclen = maxlen;
@@ -315,9 +315,9 @@ goto EOF_reached;
 }
 }
 EOF_reached:
-if (ferror (ifp)  ||  fclose (ifp) != 0)
+if (ferror (ifp) || fclose (ifp) != 0)
 read_fatal ();
-if (line % lines_per_buf  !=  0)
+if (line % lines_per_buf != 0)
 if (write (tifd, tibuf[0], tibufsize) != tibufsize)
 write_fatal ();
 input_lines = line - 1;
@@ -356,7 +356,7 @@ p = tibuf[whichbuf] + (tireclen*offline);
 if (line == input_lines)
 *psize = last_line_size;
 else {
-for (q = p;  *q++ != '\n';  )
+for (q = p; *q++ != '\n'; )
 continue;
 *psize = q - p;
 }

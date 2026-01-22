@@ -1,23 +1,23 @@
-#ifndef	_TYPE_H
-#define	_TYPE_H
+#ifndef _TYPE_H
+#define _TYPE_H
 #include <stdbool.h>
 #include <sys/types.h>
 #include "mig_string.h"
 typedef u_int ipc_flags_t;
-#define	flNone		(0x00)
-#define	flLong		(0x01)
-#define	flNotLong	(0x02)
-#define	flDealloc	(0x04)
-#define	flNotDealloc	(0x08)
-#define	flMaybeDealloc	(0x10)
-#define	flServerCopy	(0x20)
-#define	flCountInOut	(0x40)
+#define flNone (0x00)
+#define flLong (0x01)
+#define flNotLong (0x02)
+#define flDealloc (0x04)
+#define flNotDealloc (0x08)
+#define flMaybeDealloc (0x10)
+#define flServerCopy (0x20)
+#define flCountInOut (0x40)
 typedef enum dealloc {
 d_NO,
 d_YES,
 d_MAYBE
 } dealloc_t;
-#define	strdealloc(d)	(strbool(d == d_YES))
+#define strdealloc(d) (strbool(d == d_YES))
 typedef struct ipc_type
 {
 identifier_t itName;
@@ -51,7 +51,7 @@ identifier_t itInTransPayload;
 identifier_t itOutTrans;
 identifier_t itDestructor;
 } ipc_type_t;
-#define	itNULL		((ipc_type_t *) 0)
+#define itNULL ((ipc_type_t *) 0)
 extern ipc_type_t *itLookUp(identifier_t name);
 extern void itInsert(identifier_t name, ipc_type_t *it);
 extern void itTypeDecl(identifier_t name, ipc_type_t *it);

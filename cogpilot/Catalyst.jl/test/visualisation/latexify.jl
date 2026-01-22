@@ -6,7 +6,7 @@ using Catalyst, Latexify, Test
 include("../test_networks.jl")
 ############################
 ### CURRENTLY NOT ACTIVE ###
-### REQUIRES REWRITING   ###
+### REQUIRES REWRITING ###
 ############################
 ### Tips for generating latex tests:
 ### Latexify has an unexported macro:
@@ -39,7 +39,7 @@ hillar(X1,X6,v6,K6,n6), ∅ → X6
 (k1,k2), X2 ⟷ X1 + 2X4
 (k3,k4), X4 ⟷ X3
 (k5,k6), 3X5 + X1 ⟷ X2
-(d1,d2,d3,d4,d5,d6), (X1,X2,X3,X4,X5,X6)  ⟶ ∅
+(d1,d2,d3,d4,d5,d6), (X1,X2,X3,X4,X5,X6) ⟶ ∅
 end
 # Latexify.@generate_test latexify(rn; expand_functions = false)
 @test latexify(rn; expand_functions = false) == replace(
@@ -167,7 +167,7 @@ end
 @test latexify(rn; form = :ode) == replace(
 raw"$\begin{align}
 \frac{\mathrm{d} X\left( t \right)}{\mathrm{d}t} =& p - d X\left( t \right) + 2 kD \mathrm{X2}\left( t \right) - \left( X\left( t \right) \right)^{2} kB \\
-\frac{\mathrm{d} \mathrm{X2}\left( t \right)}{\mathrm{d}t} =&  - kD \mathrm{X2}\left( t \right) + \frac{1}{2} \left( X\left( t \right) \right)^{2} kB
+\frac{\mathrm{d} \mathrm{X2}\left( t \right)}{\mathrm{d}t} =& - kD \mathrm{X2}\left( t \right) + \frac{1}{2} \left( X\left( t \right) \right)^{2} kB
 \end{align}
 $", "\r\n"=>"\n")
 # Currently latexify doesn't handle SDE systems properly, and they look identical to ode systems (https:

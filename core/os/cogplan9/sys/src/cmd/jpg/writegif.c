@@ -6,39 +6,39 @@
 #include "imagefile.h"
 enum
 {
-Nhash	= 4001,
-Nbuf		= 300,
+Nhash = 4001,
+Nbuf = 300,
 };
 typedef struct Entry Entry;
 typedef struct IO IO;
 struct Entry
 {
-int		index;
-int		prefix;
-int		exten;
-Entry	*next;
+int index;
+int prefix;
+int exten;
+Entry *next;
 };
 struct IO
 {
-Biobuf	*fd;
-uchar	buf[Nbuf];
-int		i;
-int		nbits;
-int		sreg;
+Biobuf *fd;
+uchar buf[Nbuf];
+int i;
+int nbits;
+int sreg;
 };
-static Rectangle	mainrect;
-static Entry	tbl[4096];
-static uchar	*colormap[5];
-#define	GREYMAP	4
-static int		colormapsize[] = { 2, 4, 16, 256, 256 };
-static void		writeheader(Biobuf*, Rectangle, int, ulong, int);
-static void		writedescriptor(Biobuf*, Rectangle);
-static char*	writedata(Biobuf*, Image*, Memimage*);
-static void		writetrailer(Biobuf *fd);
-static void		writecomment(Biobuf *fd, char*);
-static void		writegraphiccontrol(Biobuf *fd, int, int);
-static void*	gifmalloc(ulong);
-static void		encode(Biobuf*, Rectangle, int, uchar*, uint);
+static Rectangle mainrect;
+static Entry tbl[4096];
+static uchar *colormap[5];
+#define GREYMAP 4
+static int colormapsize[] = { 2, 4, 16, 256, 256 };
+static void writeheader(Biobuf*, Rectangle, int, ulong, int);
+static void writedescriptor(Biobuf*, Rectangle);
+static char* writedata(Biobuf*, Image*, Memimage*);
+static void writetrailer(Biobuf *fd);
+static void writecomment(Biobuf *fd, char*);
+static void writegraphiccontrol(Biobuf *fd, int, int);
+static void* gifmalloc(ulong);
+static void encode(Biobuf*, Rectangle, int, uchar*, uint);
 static
 char*
 startgif0(Biobuf *fd, ulong chan, Rectangle r, int depth, int loopcount)

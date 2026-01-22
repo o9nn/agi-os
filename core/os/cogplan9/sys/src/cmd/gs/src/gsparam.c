@@ -130,7 +130,7 @@ gs_memory_t * mem)
 {
 if (req_type == gs_param_type_any || pvalue->type == req_type)
 return 0;
-switch (pvalue->type  ) {
+switch (pvalue->type ) {
 case gs_param_type_int:
 switch (req_type) {
 case gs_param_type_long:

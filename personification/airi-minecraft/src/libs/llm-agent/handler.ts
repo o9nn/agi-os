@@ -6,34 +6,34 @@ import { config } from '../../composables/config'
 import { toRetriable } from '../../utils/helper'
 import { useLogger } from '../../utils/logger'
 export abstract class BaseLLMHandler {
-  protected logger: Logger
-  constructor(protected config: LLMConfig) {
-    this.logger = useLogger()
-  }
-  protected async handleCompletion(
-    context: NeuriContext,
-    route: string,
-    messages: Message[],
-  ): Promise<LLMResponse> {
-    const completion = await context.reroute(route, messages, {
-      model: this.config.model ?? config.openai.model,
-    }) as ChatCompletion | ChatCompletion & { error: { message: string } }
-    if (!completion || 'error' in completion) {
-      this.logger.withFields(context).error('Completion failed')
-      throw new Error(completion?.error?.message ?? 'Unknown error')
-    }
-    const content = await completion.firstContent()
-    this.logger.withFields({ usage: completion.usage, content }).log('Generated content')
-    return {
-      content,
-      usage: completion.usage,
-    }
-  }
-  protected createRetryHandler<T>(handler: (context: NeuriContext) => Promise<T>) {
-    return toRetriable<NeuriContext, T>(
-      this.config.retryLimit ?? 3,
-      this.config.delayInterval ?? 1000,
-      handler,
-    )
-  }
+protected logger: Logger
+constructor(protected config: LLMConfig) {
+this.logger = useLogger()
+}
+protected async handleCompletion(
+context: NeuriContext,
+route: string,
+messages: Message[],
+): Promise<LLMResponse> {
+const completion = await context.reroute(route, messages, {
+model: this.config.model ?? config.openai.model,
+}) as ChatCompletion | ChatCompletion & { error: { message: string } }
+if (!completion || 'error' in completion) {
+this.logger.withFields(context).error('Completion failed')
+throw new Error(completion?.error?.message ?? 'Unknown error')
+}
+const content = await completion.firstContent()
+this.logger.withFields({ usage: completion.usage, content }).log('Generated content')
+return {
+content,
+usage: completion.usage,
+}
+}
+protected createRetryHandler<T>(handler: (context: NeuriContext) => Promise<T>) {
+return toRetriable<NeuriContext, T>(
+this.config.retryLimit ?? 3,
+this.config.delayInterval ?? 1000,
+handler,
+)
+}
 }

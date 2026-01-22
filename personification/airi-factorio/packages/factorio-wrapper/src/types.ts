@@ -1,10 +1,10 @@
 export interface FactorioConfig {
-  path: string
-  savePath: string
-  rconPassword: string
-  rconPort: number
+path: string
+savePath: string
+rconPassword: string
+rconPort: number
 }
 export interface WsServerConfig {
-  host: string
-  port: number
+host: string
+port: number
 }

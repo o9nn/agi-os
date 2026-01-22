@@ -258,8 +258,8 @@ p = (int *) xmalloc ((filevec[0].buffered_lines + filevec[1].buffered_lines)
 * (2 * sizeof (int)));
 for (f = 0; f < 2; f++)
 {
-filevec[f].undiscarded = p;  p += filevec[f].buffered_lines;
-filevec[f].realindexes = p;  p += filevec[f].buffered_lines;
+filevec[f].undiscarded = p; p += filevec[f].buffered_lines;
+filevec[f].realindexes = p; p += filevec[f].buffered_lines;
 }
 p = (int *) xmalloc (filevec[0].equiv_max * (2 * sizeof (int)));
 equiv_count[0] = p;
@@ -547,7 +547,7 @@ size_t buffer_size = buffer_lcm (STAT_BLOCKSIZE (filevec[0].stat),
 STAT_BLOCKSIZE (filevec[1].stat));
 for (i = 0; i < 2; i++)
 filevec[i].buffer = xrealloc (filevec[i].buffer, buffer_size);
-for (;;  filevec[0].buffered_chars = filevec[1].buffered_chars = 0)
+for (;; filevec[0].buffered_chars = filevec[1].buffered_chars = 0)
 {
 for (i = 0; i < 2; i++)
 if (0 <= filevec[i].desc)

@@ -4,22 +4,22 @@
 # include <openssl/x509.h>
 # include <openssl/x509v3.h>
 # include <openssl/safestack.h>
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
-# define OCSP_DEFAULT_NONCE_LENGTH       16
-# define OCSP_NOCERTS                    0x1
-# define OCSP_NOINTERN                   0x2
-# define OCSP_NOSIGS                     0x4
-# define OCSP_NOCHAIN                    0x8
-# define OCSP_NOVERIFY                   0x10
-# define OCSP_NOEXPLICIT                 0x20
-# define OCSP_NOCASIGN                   0x40
-# define OCSP_NODELEGATED                0x80
-# define OCSP_NOCHECKS                   0x100
-# define OCSP_TRUSTOTHER                 0x200
-# define OCSP_RESPID_KEY                 0x400
-# define OCSP_NOTIME                     0x800
+# define OCSP_DEFAULT_NONCE_LENGTH 16
+# define OCSP_NOCERTS 0x1
+# define OCSP_NOINTERN 0x2
+# define OCSP_NOSIGS 0x4
+# define OCSP_NOCHAIN 0x8
+# define OCSP_NOVERIFY 0x10
+# define OCSP_NOEXPLICIT 0x20
+# define OCSP_NOCASIGN 0x40
+# define OCSP_NODELEGATED 0x80
+# define OCSP_NOCHECKS 0x100
+# define OCSP_TRUSTOTHER 0x200
+# define OCSP_RESPID_KEY 0x400
+# define OCSP_NOTIME 0x800
 typedef struct ocsp_cert_id_st {
 X509_ALGOR *hashAlgorithm;
 ASN1_OCTET_STRING *issuerNameHash;
@@ -48,12 +48,12 @@ typedef struct ocsp_request_st {
 OCSP_REQINFO *tbsRequest;
 OCSP_SIGNATURE *optionalSignature;
 } OCSP_REQUEST;
-# define OCSP_RESPONSE_STATUS_SUCCESSFUL          0
-# define OCSP_RESPONSE_STATUS_MALFORMEDREQUEST     1
-# define OCSP_RESPONSE_STATUS_INTERNALERROR        2
-# define OCSP_RESPONSE_STATUS_TRYLATER             3
-# define OCSP_RESPONSE_STATUS_SIGREQUIRED          5
-# define OCSP_RESPONSE_STATUS_UNAUTHORIZED         6
+# define OCSP_RESPONSE_STATUS_SUCCESSFUL 0
+# define OCSP_RESPONSE_STATUS_MALFORMEDREQUEST 1
+# define OCSP_RESPONSE_STATUS_INTERNALERROR 2
+# define OCSP_RESPONSE_STATUS_TRYLATER 3
+# define OCSP_RESPONSE_STATUS_SIGREQUIRED 5
+# define OCSP_RESPONSE_STATUS_UNAUTHORIZED 6
 typedef struct ocsp_resp_bytes_st {
 ASN1_OBJECT *responseType;
 ASN1_OCTET_STRING *response;
@@ -63,7 +63,7 @@ ASN1_ENUMERATED *responseStatus;
 OCSP_RESPBYTES *responseBytes;
 };
 # define V_OCSP_RESPID_NAME 0
-# define V_OCSP_RESPID_KEY  1
+# define V_OCSP_RESPID_KEY 1
 struct ocsp_responder_id_st {
 int type;
 union {
@@ -77,7 +77,7 @@ typedef struct ocsp_revoked_info_st {
 ASN1_GENERALIZEDTIME *revocationTime;
 ASN1_ENUMERATED *revocationReason;
 } OCSP_REVOKEDINFO;
-# define V_OCSP_CERTSTATUS_GOOD    0
+# define V_OCSP_CERTSTATUS_GOOD 0
 # define V_OCSP_CERTSTATUS_REVOKED 1
 # define V_OCSP_CERTSTATUS_UNKNOWN 2
 typedef struct ocsp_cert_status_st {
@@ -110,15 +110,15 @@ X509_ALGOR *signatureAlgorithm;
 ASN1_BIT_STRING *signature;
 STACK_OF(X509) *certs;
 } OCSP_BASICRESP;
-# define OCSP_REVOKED_STATUS_NOSTATUS               -1
-# define OCSP_REVOKED_STATUS_UNSPECIFIED             0
-# define OCSP_REVOKED_STATUS_KEYCOMPROMISE           1
-# define OCSP_REVOKED_STATUS_CACOMPROMISE            2
-# define OCSP_REVOKED_STATUS_AFFILIATIONCHANGED      3
-# define OCSP_REVOKED_STATUS_SUPERSEDED              4
-# define OCSP_REVOKED_STATUS_CESSATIONOFOPERATION    5
-# define OCSP_REVOKED_STATUS_CERTIFICATEHOLD         6
-# define OCSP_REVOKED_STATUS_REMOVEFROMCRL           8
+# define OCSP_REVOKED_STATUS_NOSTATUS -1
+# define OCSP_REVOKED_STATUS_UNSPECIFIED 0
+# define OCSP_REVOKED_STATUS_KEYCOMPROMISE 1
+# define OCSP_REVOKED_STATUS_CACOMPROMISE 2
+# define OCSP_REVOKED_STATUS_AFFILIATIONCHANGED 3
+# define OCSP_REVOKED_STATUS_SUPERSEDED 4
+# define OCSP_REVOKED_STATUS_CESSATIONOFOPERATION 5
+# define OCSP_REVOKED_STATUS_CERTIFICATEHOLD 6
+# define OCSP_REVOKED_STATUS_REMOVEFROMCRL 8
 typedef struct ocsp_crl_id_st {
 ASN1_IA5STRING *crlUrl;
 ASN1_INTEGER *crlNum;
@@ -302,56 +302,56 @@ int OCSP_RESPONSE_print(BIO *bp, OCSP_RESPONSE *o, unsigned long flags);
 int OCSP_basic_verify(OCSP_BASICRESP *bs, STACK_OF(X509) *certs,
 X509_STORE *st, unsigned long flags);
 void ERR_load_OCSP_strings(void);
-# define OCSP_F_ASN1_STRING_ENCODE                        100
-# define OCSP_F_D2I_OCSP_NONCE                            102
-# define OCSP_F_OCSP_BASIC_ADD1_STATUS                    103
-# define OCSP_F_OCSP_BASIC_SIGN                           104
-# define OCSP_F_OCSP_BASIC_VERIFY                         105
-# define OCSP_F_OCSP_CERT_ID_NEW                          101
-# define OCSP_F_OCSP_CHECK_DELEGATED                      106
-# define OCSP_F_OCSP_CHECK_IDS                            107
-# define OCSP_F_OCSP_CHECK_ISSUER                         108
-# define OCSP_F_OCSP_CHECK_VALIDITY                       115
-# define OCSP_F_OCSP_MATCH_ISSUERID                       109
-# define OCSP_F_OCSP_PARSE_URL                            114
-# define OCSP_F_OCSP_REQUEST_SIGN                         110
-# define OCSP_F_OCSP_REQUEST_VERIFY                       116
-# define OCSP_F_OCSP_RESPONSE_GET1_BASIC                  111
-# define OCSP_F_OCSP_SENDREQ_BIO                          112
-# define OCSP_F_OCSP_SENDREQ_NBIO                         117
-# define OCSP_F_PARSE_HTTP_LINE1                          118
-# define OCSP_F_REQUEST_VERIFY                            113
-# define OCSP_R_BAD_DATA                                  100
-# define OCSP_R_CERTIFICATE_VERIFY_ERROR                  101
-# define OCSP_R_DIGEST_ERR                                102
-# define OCSP_R_ERROR_IN_NEXTUPDATE_FIELD                 122
-# define OCSP_R_ERROR_IN_THISUPDATE_FIELD                 123
-# define OCSP_R_ERROR_PARSING_URL                         121
-# define OCSP_R_MISSING_OCSPSIGNING_USAGE                 103
-# define OCSP_R_NEXTUPDATE_BEFORE_THISUPDATE              124
-# define OCSP_R_NOT_BASIC_RESPONSE                        104
-# define OCSP_R_NO_CERTIFICATES_IN_CHAIN                  105
-# define OCSP_R_NO_CONTENT                                106
-# define OCSP_R_NO_PUBLIC_KEY                             107
-# define OCSP_R_NO_RESPONSE_DATA                          108
-# define OCSP_R_NO_REVOKED_TIME                           109
-# define OCSP_R_PRIVATE_KEY_DOES_NOT_MATCH_CERTIFICATE    110
-# define OCSP_R_REQUEST_NOT_SIGNED                        128
-# define OCSP_R_RESPONSE_CONTAINS_NO_REVOCATION_DATA      111
-# define OCSP_R_ROOT_CA_NOT_TRUSTED                       112
-# define OCSP_R_SERVER_READ_ERROR                         113
-# define OCSP_R_SERVER_RESPONSE_ERROR                     114
-# define OCSP_R_SERVER_RESPONSE_PARSE_ERROR               115
-# define OCSP_R_SERVER_WRITE_ERROR                        116
-# define OCSP_R_SIGNATURE_FAILURE                         117
-# define OCSP_R_SIGNER_CERTIFICATE_NOT_FOUND              118
-# define OCSP_R_STATUS_EXPIRED                            125
-# define OCSP_R_STATUS_NOT_YET_VALID                      126
-# define OCSP_R_STATUS_TOO_OLD                            127
-# define OCSP_R_UNKNOWN_MESSAGE_DIGEST                    119
-# define OCSP_R_UNKNOWN_NID                               120
-# define OCSP_R_UNSUPPORTED_REQUESTORNAME_TYPE            129
-#ifdef  __cplusplus
+# define OCSP_F_ASN1_STRING_ENCODE 100
+# define OCSP_F_D2I_OCSP_NONCE 102
+# define OCSP_F_OCSP_BASIC_ADD1_STATUS 103
+# define OCSP_F_OCSP_BASIC_SIGN 104
+# define OCSP_F_OCSP_BASIC_VERIFY 105
+# define OCSP_F_OCSP_CERT_ID_NEW 101
+# define OCSP_F_OCSP_CHECK_DELEGATED 106
+# define OCSP_F_OCSP_CHECK_IDS 107
+# define OCSP_F_OCSP_CHECK_ISSUER 108
+# define OCSP_F_OCSP_CHECK_VALIDITY 115
+# define OCSP_F_OCSP_MATCH_ISSUERID 109
+# define OCSP_F_OCSP_PARSE_URL 114
+# define OCSP_F_OCSP_REQUEST_SIGN 110
+# define OCSP_F_OCSP_REQUEST_VERIFY 116
+# define OCSP_F_OCSP_RESPONSE_GET1_BASIC 111
+# define OCSP_F_OCSP_SENDREQ_BIO 112
+# define OCSP_F_OCSP_SENDREQ_NBIO 117
+# define OCSP_F_PARSE_HTTP_LINE1 118
+# define OCSP_F_REQUEST_VERIFY 113
+# define OCSP_R_BAD_DATA 100
+# define OCSP_R_CERTIFICATE_VERIFY_ERROR 101
+# define OCSP_R_DIGEST_ERR 102
+# define OCSP_R_ERROR_IN_NEXTUPDATE_FIELD 122
+# define OCSP_R_ERROR_IN_THISUPDATE_FIELD 123
+# define OCSP_R_ERROR_PARSING_URL 121
+# define OCSP_R_MISSING_OCSPSIGNING_USAGE 103
+# define OCSP_R_NEXTUPDATE_BEFORE_THISUPDATE 124
+# define OCSP_R_NOT_BASIC_RESPONSE 104
+# define OCSP_R_NO_CERTIFICATES_IN_CHAIN 105
+# define OCSP_R_NO_CONTENT 106
+# define OCSP_R_NO_PUBLIC_KEY 107
+# define OCSP_R_NO_RESPONSE_DATA 108
+# define OCSP_R_NO_REVOKED_TIME 109
+# define OCSP_R_PRIVATE_KEY_DOES_NOT_MATCH_CERTIFICATE 110
+# define OCSP_R_REQUEST_NOT_SIGNED 128
+# define OCSP_R_RESPONSE_CONTAINS_NO_REVOCATION_DATA 111
+# define OCSP_R_ROOT_CA_NOT_TRUSTED 112
+# define OCSP_R_SERVER_READ_ERROR 113
+# define OCSP_R_SERVER_RESPONSE_ERROR 114
+# define OCSP_R_SERVER_RESPONSE_PARSE_ERROR 115
+# define OCSP_R_SERVER_WRITE_ERROR 116
+# define OCSP_R_SIGNATURE_FAILURE 117
+# define OCSP_R_SIGNER_CERTIFICATE_NOT_FOUND 118
+# define OCSP_R_STATUS_EXPIRED 125
+# define OCSP_R_STATUS_NOT_YET_VALID 126
+# define OCSP_R_STATUS_TOO_OLD 127
+# define OCSP_R_UNKNOWN_MESSAGE_DIGEST 119
+# define OCSP_R_UNKNOWN_NID 120
+# define OCSP_R_UNSUPPORTED_REQUESTORNAME_TYPE 129
+#ifdef __cplusplus
 }
 #endif
 #endif

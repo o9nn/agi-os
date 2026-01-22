@@ -4,9 +4,9 @@
 #include <thread.h>
 #include <mouse.h>
 #include <frame.h>
-#define	DELTA	25
-#define	TMPSIZE	256
-static Frame		frame;
+#define DELTA 25
+#define TMPSIZE 256
+static Frame frame;
 static
 Point
 bxscan(Frame *f, Rune *sp, Rune *ep, Point *ppt)

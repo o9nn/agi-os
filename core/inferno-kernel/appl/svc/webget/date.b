@@ -15,14 +15,14 @@ include "date.m";
 SEC2MIN: con 60;
 SEC2HOUR: con (60*SEC2MIN);
 SEC2DAY: con (24*SEC2HOUR);
-#  days per month plus days/year
+# days per month plus days/year
 dmsize := array[] of {
 365, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 };
 ldmsize := array[] of {
 366, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 };
-#  return the days/month for the given year
+# return the days/month for the given year
 weekdayname := array[] of {
 "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
 };
@@ -41,7 +41,7 @@ sys->print("daytime load: %r\n");
 }
 # internals....
 dateindex : fn(nil: string, nill:array of string): int;
-gmtm2sec  : fn(tm: Tm): int;
+gmtm2sec : fn(tm: Tm): int;
 yrsize(yr : int): array of int
 {
 if(yr % 4 == 0 && (yr % 100 != 0 || yr % 400 == 0))

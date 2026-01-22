@@ -1,5 +1,5 @@
 #ifndef gdevcgmx_INCLUDED
-#  define gdevcgmx_INCLUDED
+# define gdevcgmx_INCLUDED
 #include "gdevcgml.h"
 #define cgm_op_class_shift 7
 #define cgm_op_id_shift 5
@@ -136,7 +136,7 @@ cgm_edge_width edge_width;
 bool edge_visibility;
 cgm_point fill_reference_point;
 cgm_vdc pattern_size[4];
-byte  source_flags[18];
+byte source_flags[18];
 #define command_max_count 400
 byte command[command_max_count];
 int command_count;

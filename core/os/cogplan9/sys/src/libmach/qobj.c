@@ -4,12 +4,12 @@
 #include <mach.h>
 #include "qc/q.out.h"
 #include "obj.h"
-typedef struct Addr	Addr;
+typedef struct Addr Addr;
 struct Addr
 {
-char	type;
-char	sym;
-char	name;
+char type;
+char sym;
+char name;
 };
 static Addr addr(Biobuf*);
 static char type2char(int);
@@ -17,7 +17,7 @@ static void skip(Biobuf*, int);
 int
 _isq(char *s)
 {
-return  (s[0]&0377) == ANAME
+return (s[0]&0377) == ANAME
 && (s[1]&0377) == ANAME>>8
 && s[2] == D_FILE
 && s[3] == 1
@@ -118,11 +118,11 @@ static char
 type2char(int t)
 {
 switch(t){
-case D_EXTERN:		return 'U';
-case D_STATIC:		return 'b';
-case D_AUTO:		return 'a';
-case D_PARAM:		return 'p';
-default:		return UNKNOWN;
+case D_EXTERN: return 'U';
+case D_STATIC: return 'b';
+case D_AUTO: return 'a';
+case D_PARAM: return 'p';
+default: return UNKNOWN;
 }
 }
 static void

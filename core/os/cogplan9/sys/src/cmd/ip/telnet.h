@@ -1,25 +1,25 @@
-typedef struct Opt	Opt;
+typedef struct Opt Opt;
 int debug;
 #define DPRINT if(debug)fprint
 enum
 {
-Se=		240,
-NOP=		241,
-Mark=		242,
-Break=		243,
-Interrupt=	244,
-Abort=		245,
-AreYouThere=	246,
-Erasechar=	247,
-Eraseline=	248,
-GoAhead=	249,
-Sb=		250,
-Will=		251,
-Wont=		252,
-Do=		253,
-Dont=		254,
-Iac=		255,
-Binary=		0,
+Se= 240,
+NOP= 241,
+Mark= 242,
+Break= 243,
+Interrupt= 244,
+Abort= 245,
+AreYouThere= 246,
+Erasechar= 247,
+Eraseline= 248,
+GoAhead= 249,
+Sb= 250,
+Will= 251,
+Wont= 252,
+Do= 253,
+Dont= 254,
+Iac= 255,
+Binary= 0,
 Echo,
 SGA,
 Stat,
@@ -41,54 +41,54 @@ Extend,
 };
 struct Opt
 {
-char	*name;
-int	code;
-char	noway;
-int	(*change)(Biobuf*, int);
-int	(*sub)(Biobuf*, uchar*, int n);
-char	remote;
-char	local;
+char *name;
+int code;
+char noway;
+int (*change)(Biobuf*, int);
+int (*sub)(Biobuf*, uchar*, int n);
+char remote;
+char local;
 };
 Opt opt[] =
 {
-[Binary]	{ "binary",		0,  0, },
-[Echo]		{ "echo",		1,  0, },
-[SGA]		{ "suppress Go Ahead",	3,  0, },
-[Stat]		{ "status",		5,  1, },
-[Timing]	{ "timing",		6,  1, },
-[Det]		{ "det",		20, 1, },
-[Term]		{ "terminal",		24, 0, },
-[EOR]		{ "end of record",	25, 1, },
-[Uid]		{ "uid",		26, 1, },
-[Outmark]	{ "outmark",		27, 1, },
-[Ttyloc]	{ "ttyloc",		28, 1, },
-[M3270]		{ "3270 mode",		29, 1, },
-[Padx3]		{ "pad x.3",		30, 1, },
-[Window]	{ "window size",	31, 1, },
-[Speed]		{ "speed",		32, 1, },
-[Flow]		{ "flow control",	33, 1, },
-[Line]		{ "line mode",		34, 1, },
-[Xloc]		{ "X display loc",	35, 0, },
-[Extend]	{ "Extended",		255, 1, },
+[Binary] { "binary", 0, 0, },
+[Echo] { "echo", 1, 0, },
+[SGA] { "suppress Go Ahead", 3, 0, },
+[Stat] { "status", 5, 1, },
+[Timing] { "timing", 6, 1, },
+[Det] { "det", 20, 1, },
+[Term] { "terminal", 24, 0, },
+[EOR] { "end of record", 25, 1, },
+[Uid] { "uid", 26, 1, },
+[Outmark] { "outmark", 27, 1, },
+[Ttyloc] { "ttyloc", 28, 1, },
+[M3270] { "3270 mode", 29, 1, },
+[Padx3] { "pad x.3", 30, 1, },
+[Window] { "window size", 31, 1, },
+[Speed] { "speed", 32, 1, },
+[Flow] { "flow control", 33, 1, },
+[Line] { "line mode", 34, 1, },
+[Xloc] { "X display loc", 35, 0, },
+[Extend] { "Extended", 255, 1, },
 };
-int	control(Biobuf*, int);
-Opt*	findopt(int);
-int	will(Biobuf*);
-int	wont(Biobuf*);
-int	doit(Biobuf*);
-int	dont(Biobuf*);
-int	sub(Biobuf*);
-int	send2(int, int, int);
-int	send3(int, int, int, int);
-int	sendnote(int, char*);
-void	fatal(char*, void*, void*);
-char*	syserr(void);
-int	wasintr(void);
-long	iread(int, void*, int);
-long	iwrite(int, void*, int);
-void	binit(Biobuf*, int);
-void	berase(Biobuf*);
-void	bkill(Biobuf*);
+int control(Biobuf*, int);
+Opt* findopt(int);
+int will(Biobuf*);
+int wont(Biobuf*);
+int doit(Biobuf*);
+int dont(Biobuf*);
+int sub(Biobuf*);
+int send2(int, int, int);
+int send3(int, int, int, int);
+int sendnote(int, char*);
+void fatal(char*, void*, void*);
+char* syserr(void);
+int wasintr(void);
+long iread(int, void*, int);
+long iwrite(int, void*, int);
+void binit(Biobuf*, int);
+void berase(Biobuf*);
+void bkill(Biobuf*);
 int
 control(Biobuf *bp, int c)
 {

@@ -12,32 +12,32 @@
 #include "path.h"
 #include "ext.h"
 #include "download.h"
-char	*temp_dir = TEMPDIR;
-char	*hostfontdir = HOSTDIR;
-char	*mapname = "map";
-char	*suffix = "";
-Map	*map = NULL;
-char	*stringspace = NULL;
-int	next = 0;
-char	*residentfonts = NULL;
-char	*printer = NULL;
-char	buf[2048];
-char	*comment = DOCUMENTFONTS;
-int	atend = FALSE;
-FILE	*fp_in = stdin;
-FILE	*fp_temp = NULL;
-void	arguments(void);
-void	copyfonts(char *);
-void	copyinput(void);
-void	done(void);
-void	download(void);
-void	init_signals(void);
-void	options(void);
-void	readmap(void);
-void	readresident(void);
+char *temp_dir = TEMPDIR;
+char *hostfontdir = HOSTDIR;
+char *mapname = "map";
+char *suffix = "";
+Map *map = NULL;
+char *stringspace = NULL;
+int next = 0;
+char *residentfonts = NULL;
+char *printer = NULL;
+char buf[2048];
+char *comment = DOCUMENTFONTS;
+int atend = FALSE;
+FILE *fp_in = stdin;
+FILE *fp_temp = NULL;
+void arguments(void);
+void copyfonts(char *);
+void copyinput(void);
+void done(void);
+void download(void);
+void init_signals(void);
+void options(void);
+void readmap(void);
+void readresident(void);
 main(agc, agv)
-int		agc;
-char	*agv[];
+int agc;
+char *agv[];
 {
 argc = agc;
 argv = agv;
@@ -67,10 +67,10 @@ signal(SIGTERM, interrupt);
 void
 options(void)
 {
-int		ch;
-char	*optnames = "c:fm:p:r:H:T:DI";
-extern char	*optarg;
-extern int	optind;
+int ch;
+char *optnames = "c:fm:p:r:H:T:DI";
+extern char *optarg;
+extern int optind;
 while ( (ch = getopt(argc, argv, optnames)) != EOF ) {
 switch ( ch ) {
 case 'c':
@@ -114,10 +114,10 @@ argv += optind;
 void
 readmap(void)
 {
-char	*path;
-char	*ptr;
-int		fd;
-struct stat	sbuf;
+char *path;
+char *ptr;
+int fd;
+struct stat sbuf;
 if ( hostfontdir == NULL || mapname == NULL )
 return;
 if ( *mapname != '/' ) {
@@ -156,10 +156,10 @@ error(FATAL, "map table format error - check %s", path);
 void
 readresident(void)
 {
-FILE	*fp;
-char	*path;
-int		ch;
-int		n;
+FILE *fp;
+char *path;
+int ch;
+int n;
 if ( next == 0 || (printer == NULL && residentfonts == NULL) )
 return;
 if ( printer != NULL ) {
@@ -206,7 +206,7 @@ unlink(temp_file);
 void
 download(void)
 {
-int		infontlist = FALSE;
+int infontlist = FALSE;
 if ( next > 0 ) {
 if ( fp_in == stdin ) {
 if ( (temp_file = tempnam(temp_dir, "post")) == NULL )
@@ -234,11 +234,11 @@ copyinput();
 }
 void
 copyfonts(list)
-char	*list;
+char *list;
 {
-char	*font;
-char	*path;
-int		n;
+char *font;
+char *path;
+int n;
 strtok(list, " \n");
 while ( (font = strtok(NULL, " \t\n")) != NULL ) {
 if ( strcmp(font, ATEND) == 0 ) {
@@ -271,9 +271,9 @@ while ( fgets(buf, sizeof(buf), fp_in) != NULL )
 printf("%s", buf);
 }
 lookup(font)
-char	*font;
+char *font;
 {
-int		i;
+int i;
 for ( i = 0; i < next; i++ )
 if ( strcmp(font, map[i].font) == 0 ) {
 if ( map[i].downloaded == TRUE )

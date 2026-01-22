@@ -1,11 +1,11 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"../port/error.h"
-#include	"flashif.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "../port/error.h"
+#include "flashif.h"
 typedef struct Nandtab Nandtab;
 struct Nandtab {
 short manufacturer;
@@ -18,15 +18,15 @@ ushort tBERASEms;
 uchar tRus;
 };
 static Nandtab nandtab[] = {
-{ 0xec, 	0xe6,	9,		16,		1024,	1,		4,		7 },
-{ 0x98,	0xe6,	9,		16,		1024,	1,		4,		25 },
-{ 0x98,	0x73,	9,		32,		1024,	1,		10,		25},
-{ -1,		0xea,	8,		16,		512,		20,		400,		100	 },
-{ -1,		0xe3,	9,		16,		512,		20,		400,		100	 },
-{ -1,		0xe5,	9,		16,		512,		20,		400,		100	 },
-{ -1,		0x73,	9,		32,		1024,	20,		400,		100	 },
-{ -1,		0x75,	9,		32,		2048,	20,		400,		100	 },
-{ -1,		0x76,	9,		32,		4096,	20,		400,		100	 },
+{ 0xec, 0xe6, 9, 16, 1024, 1, 4, 7 },
+{ 0x98, 0xe6, 9, 16, 1024, 1, 4, 25 },
+{ 0x98, 0x73, 9, 32, 1024, 1, 10, 25},
+{ -1, 0xea, 8, 16, 512, 20, 400, 100 },
+{ -1, 0xe3, 9, 16, 512, 20, 400, 100 },
+{ -1, 0xe5, 9, 16, 512, 20, 400, 100 },
+{ -1, 0x73, 9, 32, 1024, 20, 400, 100 },
+{ -1, 0x75, 9, 32, 2048, 20, 400, 100 },
+{ -1, 0x76, 9, 32, 4096, 20, 400, 100 },
 };
 enum {
 ReadMode1 = 0x00,
@@ -41,8 +41,8 @@ Erase2 = 0xd0,
 StatusReady = 0x40,
 StatusFail = 0x01,
 };
-#define	DPRINT	if(0)print
-#define	EPRINT	if(1)print
+#define DPRINT if(0)print
+#define EPRINT if(1)print
 static int idchip(Flash *f);
 static void
 nand_writebyte(Flash *f, uchar b)

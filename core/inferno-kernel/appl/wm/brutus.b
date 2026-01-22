@@ -13,38 +13,38 @@ include "dialog.m";
 dialog: Dialog;
 include "selectfile.m";
 selectfile: Selectfile;
-include	"bufio.m";
+include "bufio.m";
 bufio: Bufio;
 Iobuf: import bufio;
-include	"workdir.m";
-include	"plumbmsg.m";
+include "workdir.m";
+include "plumbmsg.m";
 plumbmsg: Plumbmsg;
 Msg: import plumbmsg;
-include	"brutus.m";
-include	"brutusext.m";
-EXTDIR:	con "/dis/wm/brutus";
-NEXTRA:	con NTAG-NFONTTAG;
-DEFFONT:	con "/fonts/lucidasans/unicode.8.font";
-DEFFONTNAME:	con "Roman";
-DEFSIZE:	con 10;
-DEFTAG:	con "Roman.10";
-SETFONT:	con " -font "+DEFFONT+" ";
-FOCUS:	con "focus .ft.t";
-NOSEL:	con ".ft.t tag remove sel sel.first sel.last";
-UPDATE:	con "update";
+include "brutus.m";
+include "brutusext.m";
+EXTDIR: con "/dis/wm/brutus";
+NEXTRA: con NTAG-NFONTTAG;
+DEFFONT: con "/fonts/lucidasans/unicode.8.font";
+DEFFONTNAME: con "Roman";
+DEFSIZE: con 10;
+DEFTAG: con "Roman.10";
+SETFONT: con " -font "+DEFFONT+" ";
+FOCUS: con "focus .ft.t";
+NOSEL: con ".ft.t tag remove sel sel.first sel.last";
+UPDATE: con "update";
 #
 # Foreign keyboards and languages
 #
 Remaptab: adt
 {
-in, out:	int;
+in, out: int;
 };
-include	"hebrew.m";
-BS:		con 8;		# ^h backspace character
-BSW:		con 23;		# ^w bacspace word
-BSL:		con 21;		# ^u backspace line
-ESC:		con 27;		# ^[ cut selection
-Name:	con "Brutus";
+include "hebrew.m";
+BS: con 8; # ^h backspace character
+BSW: con 23; # ^w bacspace word
+BSL: con 21; # ^u backspace line
+ESC: con 27; # ^[ cut selection
+Name: con "Brutus";
 # build menu
 menu_cfg := array[] of {
 # menu
@@ -219,33 +219,33 @@ tagconfig = array[NTAG] of {
 enabled := array[] of {"disabled", "normal"};
 File: adt
 {
-tk:			ref Tk->Toplevel;
-isctl:			int;
-applyfont:		int;
-fontsused:	int;
-name:		string;
-dirty:		int;
-font:			string;	# set by the buttons, not nec. by the text
-size:			int;		# set by the buttons, not nec. by the text
-fonttag:		string;	# set by the buttons, not nec. by the text
-configed:		array of int;
-button1:		int;
-button3:		int;
-fontsok:		int;		# fonts and tags can be set
-extensions:	list of ref Ext;
+tk: ref Tk->Toplevel;
+isctl: int;
+applyfont: int;
+fontsused: int;
+name: string;
+dirty: int;
+font: string; # set by the buttons, not nec. by the text
+size: int; # set by the buttons, not nec. by the text
+fonttag: string; # set by the buttons, not nec. by the text
+configed: array of int;
+button1: int;
+button3: int;
+fontsok: int; # fonts and tags can be set
+extensions: list of ref Ext;
 };
 Ext: adt
 {
-tkname:		string;
-modname:	string;
-mod:		Brutusext;
-args:			string;
+tkname: string;
+modname: string;
+mod: Brutusext;
+args: string;
 };
 menuindex := "0";
 snarftext := "";
 snarfsgml := "";
 central: chan of (ref File, string);
-files:	array of ref File;	# global but modified only by control thread
+files: array of ref File; # global but modified only by control thread
 plumbed := 0;
 curdir := "";
 lang := "";
@@ -273,7 +273,7 @@ workdir = nil;
 tkclient->init();
 dialog->init();
 selectfile->init();
-sys->pctl(Sys->NEWPGRP, nil);	# so we can pass "exit" command to tkclient
+sys->pctl(Sys->NEWPGRP, nil); # so we can pass "exit" command to tkclient
 file := "";
 if(argv != nil)
 argv = tl argv;
@@ -329,8 +329,8 @@ files = array[1] of ref File;
 files[0] = f;
 (keys, edit, cmd, but1, but2, but3, drag) := tkchans(t);
 tkcmd(t, ".ft.t mark set typingstart 1.0; .ft.t mark gravity typingstart left");
-central <-= (nil, "");	# signal readiness
-#	spawn tkclient->wmctl(t, "task");
+central <-= (nil, ""); # signal readiness
+# spawn tkclient->wmctl(t, "task");
 curfile: ref File;
 plumbc := chan of (string, string);
 spawn plumbproc(plumbc);
@@ -388,7 +388,7 @@ curfile = file;
 nfiles := array[len files+1] of ref File;
 nfiles[0:] = files;
 files = nfiles;
-nfiles = nil;	# make sure references don't linger
+nfiles = nil; # make sure references don't linger
 files[len files-1] = file;
 "name" =>
 name := nameof(file);
@@ -476,7 +476,7 @@ break;
 }
 }
 }
-(t, titlectl)  := tkclient->toplevel(ctxt, SETFONT, Name, Tkclient->Appl);
+(t, titlectl) := tkclient->toplevel(ctxt, SETFONT, Name, Tkclient->Appl);
 f := ref File (t, 0, 0, 0, filename, 0, DEFFONTNAME, DEFSIZE, DEFTAG, nil, 0, 0, 0, nil);
 f.configed = array[NTAG] of {* => 0};
 tkcmds(t, menu_cfg);
@@ -709,7 +709,7 @@ cut(f, 1);
 case char {
 * =>
 dir := 1;
-if(c[1] != '\\')	# safe character; remap it
+if(c[1] != '\\') # safe character; remap it
 (c[1], dir) = kbdremap(char);
 s := ".ft.t insert insert "+c;
 if(dir < 0)
@@ -753,7 +753,7 @@ dirty(f, 1);
 mousebut1(f: ref File, c: string)
 {
 f.button1 = (c == "pressed");
-f.button3 = 0;	# abort any pending button 3 action
+f.button3 = 0; # abort any pending button 3 action
 tkcmd(f.tk, ".ft.t mark set typingstart insert");
 }
 mousebut2(f: ref File, c: string)
@@ -765,7 +765,7 @@ tk->cmd(f.tk, UPDATE);
 (nil, l) := sys->tokenize(c, " ");
 x := int hd l - 50;
 y := int hd tl l - int tk->cmd(f.tk, ".m yposition "+menuindex) - 10;
-#		tkcmd(f.tk, "focus .ft.t");
+# tkcmd(f.tk, "focus .ft.t");
 tkcmd(f.tk, ".m activate "+menuindex+"; .m post "+string x+" "+string y+
 "; update");
 }
@@ -1003,8 +1003,8 @@ dirty(f, 1);
 if(snarfit)
 snarf(f);
 # sometimes when clicking fast, selection and insert point can
-# separate.  the only time this really matters is when typing into
-# a double-clicked selection.  it's easy to fix here.
+# separate. the only time this really matters is when typing into
+# a double-clicked selection. it's easy to fix here.
 tkcmd(f.tk, ".ft.t mark set insert sel.first;.ft.t delete sel.first sel.last");
 }
 snarf(f: ref File)
@@ -1018,7 +1018,7 @@ tkclient->snarfput(snarftext);
 }
 paste(f: ref File)
 {
-#	good question
+# good question
 snarftext = tkclient->snarfget();
 if(snarftext == "" && (f.fontsused == 0 || snarfsgml == nil))
 return;
@@ -1062,7 +1062,7 @@ end := "sel.last";
 if(nullsel(t)){
 insert := tkcmd(t, ".ft.t index insert");
 start = tkcmd(t, ".ft.t index {insert wordstart}");
-if(insert == start){	# tk's definition of 'wordstart' is bogus
+if(insert == start){ # tk's definition of 'wordstart' is bogus
 # if at beginning, tk->cmd will return !error and a0 will be false.
 a0 := isalnum(tk->cmd(t, ".ft.t get insert-1chars"));
 a1 := isalnum(tk->cmd(t, ".ft.t get insert"));
@@ -1187,7 +1187,7 @@ l = tl l;
 s += "}";
 return s;
 }
-# splitl based on indices rather than slices.  this version returns char
+# splitl based on indices rather than slices. this version returns char
 # position of the matching character.
 splitl(str: string, i, j: int, pat: string): int
 {
@@ -1205,7 +1205,7 @@ return i;
 splitstrl(str: string, i, j: int, pat: string): int
 {
 l := len pat;
-if(l == 0)	# shouldn't happen, but be safe
+if(l == 0) # shouldn't happen, but be safe
 return j;
 first := pat[0];
 while(i <= j-l){
@@ -1236,7 +1236,7 @@ for(i:=0; i<end; i=j){
 j = splitl(sgml, i, end, "<&");
 tt := tag;
 if(tt=="" || tt=="{}")
-tt = DEFTAG;	# can happen e.g. when pasting plain text
+tt = DEFTAG; # can happen e.g. when pasting plain text
 if(j > i)
 tkcmd(t, ".ft.t insert insert "+tk->quote(sgml[i:j])+" "+tt);
 if(j < end)
@@ -1374,7 +1374,7 @@ else{
 e := hd el;
 new += "<Extension "+e.modname+" "+e.args+">";
 }
-j = k+1;	# skip '>'
+j = k+1; # skip '>'
 }
 }
 return new;
@@ -1557,7 +1557,7 @@ return res;
 confirm_cfg := array[] of {
 "frame .f -borderwidth 2 -relief groove -padx 3 -pady 3",
 "frame .f.f",
-#	"label .f.f.l -bitmap error -foreground red",
+# "label .f.f.l -bitmap error -foreground red",
 "label .f.f.l -text Warning:",
 "label .f.f.m",
 "button .f.exitclean -text {  Write and Proceed  } -width 17w -command {send cmd exitclean}",

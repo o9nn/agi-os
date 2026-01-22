@@ -25,10 +25,10 @@ MAXPLAYERS: con 4;
 leader, turn: int;
 trick: ref Trick;
 Trickpilespec := Stackspec(
-"display",		# style
-4,			# maxcards
-0,			# conceal
-"trick pile"	# title
+"display", # style
+4, # maxcards
+0, # conceal
+"trick pile" # title
 );
 Handspec := Stackspec(
 "display",
@@ -143,8 +143,8 @@ break;
 err := trick.play(cardlib->order(p), int hd tl toks);
 if (err != nil)
 return err;
-turn = next(turn);		# clockwise
-if (turn == leader) {			# come full circle
+turn = next(turn); # clockwise
+if (turn == leader) { # come full circle
 winner := trick.winner;
 inf := cardlib->info(winner);
 remark(sys->sprint("%s won the trick", inf.p.name()));
@@ -167,7 +167,7 @@ leader = turn = winner;
 trick = Trick.new(pile, -1, hands);
 } else {
 remark("one round down, some to go");
-leader = turn  = -1;		# XXX this round over
+leader = turn = -1; # XXX this round over
 }
 }
 canplay(turn);

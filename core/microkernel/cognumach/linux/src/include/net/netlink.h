@@ -9,14 +9,14 @@ extern int netlink_donothing(struct sk_buff *skb);
 extern void netlink_detach(int unit);
 extern int netlink_post(int unit, struct sk_buff *skb);
 extern int init_netlink(void);
-#define NETLINK_ROUTE		0
-#define NETLINK_SKIP		1
-#define NETLINK_USERSOCK	2
-#define NETLINK_FIREWALL	3
-#define NETLINK_PSI		4
-#define NETLINK_ARPD		8
-#define NETLINK_NET_PPP		9
-#define NETLINK_IPSEC		10
+#define NETLINK_ROUTE 0
+#define NETLINK_SKIP 1
+#define NETLINK_USERSOCK 2
+#define NETLINK_FIREWALL 3
+#define NETLINK_PSI 4
+#define NETLINK_ARPD 8
+#define NETLINK_NET_PPP 9
+#define NETLINK_IPSEC 10
 #ifdef CONFIG_RTNETLINK
 extern void ip_netlink_msg(unsigned long, __u32, __u32, __u32, short, short, char *);
 #else

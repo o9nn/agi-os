@@ -2,12 +2,12 @@
 #include <errno.h>
 #include <sys/stat.h>
 #include <time.h>
-#if defined(_WIN32) || defined(__WIN32__) || defined(_MSC_VER) ||              \
+#if defined(_WIN32) || defined(__WIN32__) || defined(_MSC_VER) || \
 defined(__MINGW32__)
 #include <direct.h>
 #define STRCLONE(STR) ((STR) ? _strdup(STR) : NULL)
-#define HAS_DEVICE(P)                                                          \
-((((P)[0] >= 'A' && (P)[0] <= 'Z') || ((P)[0] >= 'a' && (P)[0] <= 'z')) &&   \
+#define HAS_DEVICE(P) \
+((((P)[0] >= 'A' && (P)[0] <= 'Z') || ((P)[0] >= 'a' && (P)[0] <= 'z')) && \
 (P)[1] == ':')
 #define FILESYSTEM_PREFIX_LEN(P) (HAS_DEVICE(P) ? 2 : 0)
 #else
@@ -40,12 +40,12 @@ defined(__MINGW32__)
 #ifndef ISSLASH
 #define ISSLASH(C) ((C) == '/' || (C) == '\\')
 #endif
-#define CLEANUP(ptr)                                                           \
-do {                                                                         \
-if (ptr) {                                                                 \
-free((void *)ptr);                                                       \
-ptr = NULL;                                                              \
-}                                                                          \
+#define CLEANUP(ptr) \
+do { \
+if (ptr) { \
+free((void *)ptr); \
+ptr = NULL; \
+} \
 } while (0)
 #define UNX_IFDIR 0040000
 #define UNX_IFREG 0100000
@@ -154,7 +154,7 @@ len = 2;
 }
 for (p = path + len; *p && len < MZ_ZIP_MAX_ARCHIVE_FILENAME_SIZE; p++) {
 if (ISSLASH(*p) && ((!has_device && len > 0) || (has_device && len > 2))) {
-#if defined(_WIN32) || defined(__WIN32__) || defined(_MSC_VER) ||              \
+#if defined(_WIN32) || defined(__WIN32__) || defined(_MSC_VER) || \
 defined(__MINGW32__)
 #else
 if ('\\' == *p) {
@@ -301,7 +301,7 @@ if ((((info.m_version_made_by >> 8) == 3) ||
 19))
 && info.m_external_attr &
 (0x20 << 24)) {
-#if defined(_WIN32) || defined(__WIN32__) || defined(_MSC_VER) ||              \
+#if defined(_WIN32) || defined(__WIN32__) || defined(_MSC_VER) || \
 defined(__MINGW32__)
 #else
 if (info.m_uncomp_size > MZ_ZIP_MAX_ARCHIVE_FILENAME_SIZE ||

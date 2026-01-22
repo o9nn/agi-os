@@ -1,135 +1,135 @@
 (add-to-load-path ".")
 (use-modules (ice-9 format)
-             (srfi srfi-1)
-             (srfi srfi-64))
+(srfi srfi-1)
+(srfi srfi-64))
 (define (safe-load-module module-name)
-  "Safely load a module, falling back to simulation if not available"
-  (catch #t
-    (lambda ()
-      (eval `(use-modules ,module-name) (interaction-environment))
-      #t)
-    (lambda (key . args)
-      (format #t "[LOAD WARNING] Module ~a not available, using simulation: ~a~%" 
-              module-name key)
-      #f)))
+"Safely load a module, falling back to simulation if not available"
+(catch #t
+(lambda ()
+(eval `(use-modules ,module-name) (interaction-environment))
+#t)
+(lambda (key . args)
+(format #t "[LOAD WARNING] Module ~a not available, using simulation: ~a~%"
+module-name key)
+#f)))
 (define atomspace-loaded (safe-load-module '(cogkernel atomspace)))
 (define machspace-loaded (safe-load-module '(cogkernel machspace)))
 (define grip-loaded (safe-load-module '(cogkernel cognitive-grip)))
 (define integration-loaded (safe-load-module '(cogkernel microkernel-integration)))
 (test-begin "hurdcog-microkernel-integration")
 (define (test-log message . args)
-  "Log test information"
-  (format #t "[TEST] ~a~%" (apply format #f message args)))
+"Log test information"
+(format #t "[TEST] ~a~%" (apply format #f message args)))
 (define (reset-test-environment!)
-  "Reset the test environment to clean state"
-  (set! *global-atomspace* (make-atomspace))
-  (set! *global-machspace* (make-machspace))
-  (when *microkernel-bridge-active*
-    (microkernel-bridge-shutdown!)))
+"Reset the test environment to clean state"
+(set! *global-atomspace* (make-atomspace))
+(set! *global-machspace* (make-machspace))
+(when *microkernel-bridge-active*
+(microkernel-bridge-shutdown!)))
 (test-log "Testing microkernel bridge initialization")
 (reset-test-environment!)
 (test-assert "Bridge initialization succeeds"
-  (microkernel-bridge-init!))
+(microkernel-bridge-init!))
 (test-assert "Bridge is marked as active"
-  *microkernel-bridge-active*)
+*microkernel-bridge-active*)
 (test-log "Testing Hurd port registration")
 (test-assert "Can register task port"
-  (register-hurd-port "test-task-port" 42 1))
+(register-hurd-port "test-task-port" 42 1))
 (test-assert "Port appears in atomspace"
-  (atomspace-get *global-atomspace* "test-task-port"))
+(atomspace-get *global-atomspace* "test-task-port"))
 (test-log "Testing Hurd server registration")
 (test-assert "Can register auth server"
-  (register-hurd-server "test-auth-server" "/servers/test-auth" 0))
+(register-hurd-server "test-auth-server" "/servers/test-auth" 0))
 (test-assert "Server appears in atomspace"
-  (atomspace-get *global-atomspace* "test-auth-server"))
+(atomspace-get *global-atomspace* "test-auth-server"))
 (test-log "Testing cognitive IPC routing")
 (register-hurd-port "ipc-destination" 100 1)
 (test-assert "Can send IPC to registered destination"
-  (send-cognitive-ipc "ipc-destination" "test-message"))
+(send-cognitive-ipc "ipc-destination" "test-message"))
 (test-assert "IPC to non-existent destination fails gracefully"
-  (not (send-cognitive-ipc "non-existent-port" "test-message")))
+(not (send-cognitive-ipc "non-existent-port" "test-message")))
 (test-log "Testing microkernel object queries")
 (test-assert "Can query for concept atoms"
-  (let ((results (query-microkernel-objects "concepts" 
-                                           (lambda (atom) 
-                                             (eq? (atom-type atom) 'CONCEPT)))))
-    (> (length results) 0)))
+(let ((results (query-microkernel-objects "concepts"
+(lambda (atom)
+(eq? (atom-type atom) 'CONCEPT)))))
+(> (length results) 0)))
 (test-log "Testing performance monitoring")
 (test-assert "Performance monitoring runs without errors"
-  (begin
-    (monitor-microkernel-performance)
-    #t))
+(begin
+(monitor-microkernel-performance)
+#t))
 (test-log "Testing complete bootstrap integration")
 (reset-test-environment!)
 (test-assert "Bootstrap microkernel integration succeeds"
-  (bootstrap-microkernel-integration))
+(bootstrap-microkernel-integration))
 (test-assert "Core ports are registered after bootstrap"
-  (and (atomspace-get *global-atomspace* "task-port")
-       (atomspace-get *global-atomspace* "host-port")))
+(and (atomspace-get *global-atomspace* "task-port")
+(atomspace-get *global-atomspace* "host-port")))
 (test-assert "Core servers are registered after bootstrap"
-  (and (atomspace-get *global-atomspace* "auth-server")
-       (atomspace-get *global-atomspace* "proc-server")
-       (atomspace-get *global-atomspace* "exec-server")))
+(and (atomspace-get *global-atomspace* "auth-server")
+(atomspace-get *global-atomspace* "proc-server")
+(atomspace-get *global-atomspace* "exec-server")))
 (test-log "Testing health check system")
 (test-assert "Health check passes after bootstrap"
-  (microkernel-health-check))
+(microkernel-health-check))
 (test-log "Testing error handling and resilience")
 (test-assert "Bridge handles invalid port registration gracefully"
-  (begin
-    (catch 'system-error
-      (lambda ()
-        (register-hurd-port "" 0 0)
-        #t)
-      (lambda (key . args)
-        #t))))
+(begin
+(catch 'system-error
+(lambda ()
+(register-hurd-port "" 0 0)
+#t)
+(lambda (key . args)
+#t))))
 (test-log "Testing integration with existing MachSpace")
 (machspace-bootstrap! *global-machspace*)
 (test-assert "MachSpace and microkernel integration work together"
-  (let ((machspace-stats (distributed-hypergraph-stats *global-machspace*))
-        (bridge-active *microkernel-bridge-active*))
-    (and bridge-active
-         (> (cdr (assoc 'total-atoms machspace-stats)) 5))))
+(let ((machspace-stats (distributed-hypergraph-stats *global-machspace*))
+(bridge-active *microkernel-bridge-active*))
+(and bridge-active
+(> (cdr (assoc 'total-atoms machspace-stats)) 5))))
 (test-log "Testing cognitive grip integration with microkernel objects")
 (test-assert "Cognitive grip works on microkernel objects"
-  (let ((grip (cognitive-grip "task-port")))
-    (and (grip? grip)
-         (> (grip-strength grip) 0.0))))
+(let ((grip (cognitive-grip "task-port")))
+(and (grip? grip)
+(> (grip-strength grip) 0.0))))
 (test-log "Testing SKZ framework patterns compliance")
 (test-assert "Module follows SKZ error handling patterns"
-  (begin
-    (catch #t
-      (lambda ()
-        (send-cognitive-ipc "invalid-destination" "test")
-        #t)
-      (lambda (key . args)
-        #t))))
+(begin
+(catch #t
+(lambda ()
+(send-cognitive-ipc "invalid-destination" "test")
+#t)
+(lambda (key . args)
+#t))))
 (test-log "Testing performance under simulated load")
 (test-assert "System handles multiple operations efficiently"
-  (let ((start-time (current-time)))
-    (do ((i 0 (+ i 1)))
-        ((>= i 10))
-      (register-hurd-port (format #f "load-test-port-~a" i) (+ 1000 i) 1)
-      (send-cognitive-ipc (format #f "load-test-port-~a" i) "test-data"))
-    (< (- (current-time) start-time) 5)))
+(let ((start-time (current-time)))
+(do ((i 0 (+ i 1)))
+((>= i 10))
+(register-hurd-port (format #f "load-test-port-~a" i) (+ 1000 i) 1)
+(send-cognitive-ipc (format #f "load-test-port-~a" i) "test-data"))
+(< (- (current-time) start-time) 5)))
 (test-log "Testing memory management and cleanup")
 (test-assert "Bridge shutdown cleans up properly"
-  (begin
-    (microkernel-bridge-shutdown!)
-    (not *microkernel-bridge-active*)))
+(begin
+(microkernel-bridge-shutdown!)
+(not *microkernel-bridge-active*)))
 (test-log "Running final integration test")
 (reset-test-environment!)
 (test-assert "Complete integration workflow succeeds"
-  (and (microkernel-bridge-init!)
-       (bootstrap-microkernel-integration)
-       (microkernel-health-check)
-       (begin (monitor-microkernel-performance) #t)
-       (microkernel-bridge-shutdown!)
-       #t))
+(and (microkernel-bridge-init!)
+(bootstrap-microkernel-integration)
+(microkernel-health-check)
+(begin (monitor-microkernel-performance) #t)
+(microkernel-bridge-shutdown!)
+#t))
 (test-end "hurdcog-microkernel-integration")
 (test-log "=== Test Summary ===")
 (test-log "All microkernel integration tests completed")
 (test-log "Bridge functionality: ✅ VERIFIED")
-(test-log "AtomSpace integration: ✅ VERIFIED") 
+(test-log "AtomSpace integration: ✅ VERIFIED")
 (test-log "Performance monitoring: ✅ VERIFIED")
 (test-log "Error handling: ✅ VERIFIED")
 (test-log "SKZ framework compliance: ✅ VERIFIED")

@@ -350,8 +350,8 @@ bool use_pca = params.cvector_dimre_method == DIMRE_METHOD_PCA;
 ctx_train.build_v_diff(use_pca);
 if (use_pca) {
 PCA::pca_params pca_params;
-pca_params.n_threads    = params.cpuparams.n_threads;
-pca_params.n_batch      = params.n_pca_batch;
+pca_params.n_threads = params.cpuparams.n_threads;
+pca_params.n_batch = params.n_pca_batch;
 pca_params.n_iterations = params.n_pca_iterations;
 PCA::run_pca(pca_params, ctx_train.v_diff, ctx_train.v_final);
 } else {

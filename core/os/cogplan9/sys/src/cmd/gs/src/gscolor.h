@@ -1,5 +1,5 @@
 #ifndef gscolor_INCLUDED
-#  define gscolor_INCLUDED
+# define gscolor_INCLUDED
 #include "gxtmap.h"
 int gs_setgray(gs_state *, floatp);
 int gs_currentgray(const gs_state *, float *);

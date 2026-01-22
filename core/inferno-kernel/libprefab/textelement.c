@@ -9,23 +9,23 @@
 typedef struct State State;
 struct State
 {
-Prefab_Environ	*env;
-List			*list;
-char			word[Maxchars+UTFmax];
-char			*s;
-char			*pending;
-Draw_Font	*font;
-Draw_Image	*color;
-Draw_Image	*icon;
-Draw_Image	*mask;
-String		*tag;
-Point			p;
-int			mainkind;
-int			kind;
-int			wid;
-int			newelem;
-int			ascent;
-int			descent;
+Prefab_Environ *env;
+List *list;
+char word[Maxchars+UTFmax];
+char *s;
+char *pending;
+Draw_Font *font;
+Draw_Image *color;
+Draw_Image *icon;
+Draw_Image *mask;
+String *tag;
+Point p;
+int mainkind;
+int kind;
+int wid;
+int newelem;
+int ascent;
+int descent;
 };
 static
 char*

@@ -89,7 +89,7 @@ int sumi0 = 0;
 int sumi1 = 0;
 for (int j = 0; j < qk/2; ++j) {
 const int v0 = (x[ib].qs[j] & 0x0F) - 8;
-const int v1 = (x[ib].qs[j] >>   4) - 8;
+const int v1 = (x[ib].qs[j] >> 4) - 8;
 sumi0 += (v0 * y[ib].qs[j]);
 sumi1 += (v1 * y[ib].qs[j + qk/2]);
 }
@@ -116,7 +116,7 @@ int sumi0 = 0;
 int sumi1 = 0;
 for (int j = 0; j < qk/2; ++j) {
 const int v0 = (x[ib].qs[j] & 0x0F);
-const int v1 = (x[ib].qs[j] >>   4);
+const int v1 = (x[ib].qs[j] >> 4);
 sumi0 += (v0 * y[ib].qs[j]);
 sumi1 += (v1 * y[ib].qs[j + qk/2]);
 }
@@ -143,8 +143,8 @@ const float d = GGML_CPU_FP16_TO_FP32(y[ib].d)*GGML_E8M0_TO_FP32_HALF(x[ib].e);
 int sumi1 = 0;
 int sumi2 = 0;
 for (int j = 0; j < QK_MXFP4/2; ++j) {
-sumi1 += y[ib].qs[j +          0] * kvalues_mxfp4[x[ib].qs[j] & 0xf];
-sumi2 += y[ib].qs[j + QK_MXFP4/2] * kvalues_mxfp4[x[ib].qs[j] >>  4];
+sumi1 += y[ib].qs[j + 0] * kvalues_mxfp4[x[ib].qs[j] & 0xf];
+sumi2 += y[ib].qs[j + QK_MXFP4/2] * kvalues_mxfp4[x[ib].qs[j] >> 4];
 }
 sumf += d * (sumi1 + sumi2);
 }
@@ -173,7 +173,7 @@ for (int j = 0; j < qk/2; ++j) {
 const uint8_t xh_0 = ((qh & (1u << (j + 0 ))) >> (j + 0 )) << 4;
 const uint8_t xh_1 = ((qh & (1u << (j + 16))) >> (j + 12));
 const int32_t x0 = (int8_t)(((x[ib].qs[j] & 0x0F) | xh_0) - 16);
-const int32_t x1 = (int8_t)(((x[ib].qs[j] >>   4) | xh_1) - 16);
+const int32_t x1 = (int8_t)(((x[ib].qs[j] >> 4) | xh_1) - 16);
 sumi0 += (x0 * y[ib].qs[j]);
 sumi1 += (x1 * y[ib].qs[j + qk/2]);
 }
@@ -202,10 +202,10 @@ memcpy(&qh, x[ib].qh, sizeof(qh));
 int sumi0 = 0;
 int sumi1 = 0;
 for (int j = 0; j < qk/2; ++j) {
-const uint8_t xh_0 = ((qh >> (j +  0)) << 4) & 0x10;
-const uint8_t xh_1 = ((qh >> (j + 12))     ) & 0x10;
+const uint8_t xh_0 = ((qh >> (j + 0)) << 4) & 0x10;
+const uint8_t xh_1 = ((qh >> (j + 12)) ) & 0x10;
 const int32_t x0 = (x[ib].qs[j] & 0xF) | xh_0;
-const int32_t x1 = (x[ib].qs[j] >>  4) | xh_1;
+const int32_t x1 = (x[ib].qs[j] >> 4) | xh_1;
 sumi0 += (x0 * y[ib].qs[j]);
 sumi1 += (x1 * y[ib].qs[j + qk/2]);
 }
@@ -243,7 +243,7 @@ UNUSED(bx);
 UNUSED(by);
 UNUSED(bs);
 const block_tq1_0 * GGML_RESTRICT x = vx;
-const block_q8_K  * GGML_RESTRICT y = vy;
+const block_q8_K * GGML_RESTRICT y = vy;
 const int nb = n / QK_K;
 const uint8_t pow3[6] = {1, 3, 9, 27, 81, 243};
 float sumf = 0.0f;
@@ -285,7 +285,7 @@ UNUSED(bx);
 UNUSED(by);
 UNUSED(bs);
 const block_tq2_0 * GGML_RESTRICT x = vx;
-const block_q8_K  * GGML_RESTRICT y = vy;
+const block_q8_K * GGML_RESTRICT y = vy;
 const int nb = n / QK_K;
 float sumf = 0.0f;
 for (int i = 0; i < nb; ++i) {
@@ -314,7 +314,7 @@ const int nb = n / QK_K;
 float sumf = 0;
 for (int i = 0; i < nb; ++i) {
 const uint8_t * q2 = x[i].qs;
-const  int8_t * q8 = y[i].qs;
+const int8_t * q8 = y[i].qs;
 const uint8_t * sc = x[i].scales;
 int summs = 0;
 for (int j = 0; j < 16; ++j) {
@@ -330,7 +330,7 @@ int shift = 0;
 for (int j = 0; j < 4; ++j) {
 d = sc[is++] & 0xF;
 int isuml = 0;
-for (int l =  0; l < 16; ++l) isuml += q8[l] * ((q2[l] >> shift) & 3);
+for (int l = 0; l < 16; ++l) isuml += q8[l] * ((q2[l] >> shift) & 3);
 isum += d * isuml;
 d = sc[is++] & 0xF;
 isuml = 0;
@@ -357,9 +357,9 @@ const uint32_t kmask2 = 0x0f0f0f0f;
 const block_q3_K * GGML_RESTRICT x = vx;
 const block_q8_K * GGML_RESTRICT y = vy;
 const int nb = n / QK_K;
-int8_t  aux8[QK_K];
+int8_t aux8[QK_K];
 int16_t aux16[8];
-float   sums [8];
+float sums [8];
 int32_t aux32[8];
 memset(sums, 0, 8*sizeof(float));
 uint32_t auxs[4];
@@ -368,7 +368,7 @@ float sumf = 0;
 for (int i = 0; i < nb; ++i) {
 const uint8_t * GGML_RESTRICT q3 = x[i].qs;
 const uint8_t * GGML_RESTRICT hm = x[i].hmask;
-const  int8_t * GGML_RESTRICT q8 = y[i].qs;
+const int8_t * GGML_RESTRICT q8 = y[i].qs;
 memset(aux32, 0, 8*sizeof(int32_t));
 int8_t * GGML_RESTRICT a = aux8;
 uint8_t m = 1;
@@ -423,22 +423,22 @@ static const uint32_t kmask2 = 0x0f0f0f0f;
 static const uint32_t kmask3 = 0x03030303;
 uint32_t utmp[4];
 const uint8_t * scales = (const uint8_t*)&utmp[0];
-const uint8_t * mins   = (const uint8_t*)&utmp[2];
-int8_t  aux8[QK_K];
+const uint8_t * mins = (const uint8_t*)&utmp[2];
+int8_t aux8[QK_K];
 int16_t aux16[8];
-float   sums [8];
+float sums [8];
 int32_t aux32[8];
 memset(sums, 0, 8*sizeof(float));
 float sumf = 0;
 for (int i = 0; i < nb; ++i) {
 const uint8_t * GGML_RESTRICT q4 = x[i].qs;
-const  int8_t * GGML_RESTRICT q8 = y[i].qs;
+const int8_t * GGML_RESTRICT q8 = y[i].qs;
 memset(aux32, 0, 8*sizeof(int32_t));
 int8_t * GGML_RESTRICT a = aux8;
 for (int j = 0; j < QK_K/64; ++j) {
 for (int l = 0; l < 32; ++l) a[l] = (int8_t)(q4[l] & 0xF);
 a += 32;
-for (int l = 0; l < 32; ++l) a[l] = (int8_t)(q4[l]  >> 4);
+for (int l = 0; l < 32; ++l) a[l] = (int8_t)(q4[l] >> 4);
 a += 32; q4 += 32;
 }
 memcpy(utmp, x[i].scales, 12);
@@ -474,7 +474,7 @@ sumf -= dmin * sumi;
 for (int l = 0; l < 8; ++l) sumf += sums[l];
 *s = sumf;
 }
-void ggml_vec_dot_q5_K_q8_K_generic(int n, float * GGML_RESTRICT s, size_t bs, const void * GGML_RESTRICT vx, size_t bx, const void * GGML_RESTRICT vy,  size_t by, int nrc) {
+void ggml_vec_dot_q5_K_q8_K_generic(int n, float * GGML_RESTRICT s, size_t bs, const void * GGML_RESTRICT vx, size_t bx, const void * GGML_RESTRICT vy, size_t by, int nrc) {
 assert(n % QK_K == 0);
 assert(nrc == 1);
 UNUSED(nrc);
@@ -489,17 +489,17 @@ static const uint32_t kmask2 = 0x0f0f0f0f;
 static const uint32_t kmask3 = 0x03030303;
 uint32_t utmp[4];
 const uint8_t * scales = (const uint8_t*)&utmp[0];
-const uint8_t * mins   = (const uint8_t*)&utmp[2];
-int8_t  aux8[QK_K];
+const uint8_t * mins = (const uint8_t*)&utmp[2];
+int8_t aux8[QK_K];
 int16_t aux16[8];
-float   sums [8];
+float sums [8];
 int32_t aux32[8];
 memset(sums, 0, 8*sizeof(float));
 float sumf = 0;
 for (int i = 0; i < nb; ++i) {
 const uint8_t * GGML_RESTRICT q4 = x[i].qs;
 const uint8_t * GGML_RESTRICT hm = x[i].qh;
-const  int8_t * GGML_RESTRICT q8 = y[i].qs;
+const int8_t * GGML_RESTRICT q8 = y[i].qs;
 memset(aux32, 0, 8*sizeof(int32_t));
 int8_t * GGML_RESTRICT a = aux8;
 uint8_t m = 1;
@@ -507,7 +507,7 @@ for (int j = 0; j < QK_K/64; ++j) {
 for (int l = 0; l < 32; ++l) a[l] = (int8_t)(q4[l] & 0xF);
 for (int l = 0; l < 32; ++l) a[l] += (hm[l] & m ? 16 : 0);
 a += 32; m <<= 1;
-for (int l = 0; l < 32; ++l) a[l] = (int8_t)(q4[l]  >> 4);
+for (int l = 0; l < 32; ++l) a[l] = (int8_t)(q4[l] >> 4);
 for (int l = 0; l < 32; ++l) a[l] += (hm[l] & m ? 16 : 0);
 a += 32; m <<= 1;
 q4 += 32;
@@ -555,26 +555,26 @@ UNUSED(bs);
 const block_q6_K * GGML_RESTRICT x = vx;
 const block_q8_K * GGML_RESTRICT y = vy;
 const int nb = n / QK_K;
-int8_t  aux8[QK_K];
+int8_t aux8[QK_K];
 int16_t aux16[8];
-float   sums [8];
+float sums [8];
 int32_t aux32[8];
 memset(sums, 0, 8*sizeof(float));
 float sumf = 0;
 for (int i = 0; i < nb; ++i) {
 const uint8_t * GGML_RESTRICT q4 = x[i].ql;
 const uint8_t * GGML_RESTRICT qh = x[i].qh;
-const  int8_t * GGML_RESTRICT q8 = y[i].qs;
+const int8_t * GGML_RESTRICT q8 = y[i].qs;
 memset(aux32, 0, 8*sizeof(int32_t));
 int8_t * GGML_RESTRICT a = aux8;
 for (int j = 0; j < QK_K; j += 128) {
 for (int l = 0; l < 32; ++l) {
-a[l +  0] = (int8_t)((q4[l +  0] & 0xF) | (((qh[l] >> 0) & 3) << 4)) - 32;
+a[l + 0] = (int8_t)((q4[l + 0] & 0xF) | (((qh[l] >> 0) & 3) << 4)) - 32;
 a[l + 32] = (int8_t)((q4[l + 32] & 0xF) | (((qh[l] >> 2) & 3) << 4)) - 32;
-a[l + 64] = (int8_t)((q4[l +  0] >>  4) | (((qh[l] >> 4) & 3) << 4)) - 32;
-a[l + 96] = (int8_t)((q4[l + 32] >>  4) | (((qh[l] >> 6) & 3) << 4)) - 32;
+a[l + 64] = (int8_t)((q4[l + 0] >> 4) | (((qh[l] >> 4) & 3) << 4)) - 32;
+a[l + 96] = (int8_t)((q4[l + 32] >> 4) | (((qh[l] >> 6) & 3) << 4)) - 32;
 }
-a  += 128;
+a += 128;
 q4 += 64;
 qh += 32;
 }
@@ -603,7 +603,7 @@ UNUSED(bx);
 UNUSED(by);
 UNUSED(bs);
 const block_iq2_xxs * GGML_RESTRICT x = vx;
-const block_q8_K    * GGML_RESTRICT y = vy;
+const block_q8_K * GGML_RESTRICT y = vy;
 const int nb = n / QK_K;
 uint32_t aux32[2];
 const uint8_t * aux8 = (const uint8_t *)aux32;
@@ -611,7 +611,7 @@ float sumf = 0.f;
 for (int i = 0; i < nb; ++i) {
 const float d = GGML_CPU_FP16_TO_FP32(x[i].d) * y[i].d;
 const uint16_t * GGML_RESTRICT q2 = x[i].qs;
-const int8_t   * GGML_RESTRICT q8 = y[i].qs;
+const int8_t * GGML_RESTRICT q8 = y[i].qs;
 int32_t bsum = 0;
 for (int ib32 = 0; ib32 < QK_K/32; ++ib32) {
 memcpy(aux32, q2, 2*sizeof(uint32_t));
@@ -620,7 +620,7 @@ const uint32_t ls = 2*(aux32[1] >> 28) + 1;
 int32_t sumi = 0;
 for (int l = 0; l < 4; ++l) {
 const uint8_t * grid = (const uint8_t *)(iq2xxs_grid + aux8[l]);
-const uint8_t  signs = ksigns_iq2xs[(aux32[1] >> 7*l) & 127];
+const uint8_t signs = ksigns_iq2xs[(aux32[1] >> 7*l) & 127];
 for (int j = 0; j < 8; ++j) {
 sumi += grid[j] * q8[j] * (signs & kmask_iq2xs[j] ? -1 : 1);
 }
@@ -640,22 +640,22 @@ UNUSED(bx);
 UNUSED(by);
 UNUSED(bs);
 const block_iq2_xs * GGML_RESTRICT x = vx;
-const block_q8_K   * GGML_RESTRICT y = vy;
+const block_q8_K * GGML_RESTRICT y = vy;
 const int nb = n / QK_K;
 float sumf = 0.f;
 for (int i = 0; i < nb; ++i) {
 const float d = GGML_CPU_FP16_TO_FP32(x[i].d) * y[i].d;
 const uint16_t * GGML_RESTRICT q2 = x[i].qs;
-const uint8_t  * GGML_RESTRICT sc = x[i].scales;
-const int8_t   * GGML_RESTRICT q8 = y[i].qs;
+const uint8_t * GGML_RESTRICT sc = x[i].scales;
+const int8_t * GGML_RESTRICT q8 = y[i].qs;
 int32_t bsum = 0;
 for (int ib32 = 0; ib32 < QK_K/32; ++ib32) {
 const uint16_t ls1 = 2*(sc[ib32] & 0xf) + 1;
-const uint16_t ls2 = 2*(sc[ib32] >>  4) + 1;
+const uint16_t ls2 = 2*(sc[ib32] >> 4) + 1;
 int32_t sumi = 0;
 for (int l = 0; l < 2; ++l) {
 const uint8_t * grid = (const uint8_t *)(iq2xs_grid + (q2[l] & 511));
-const uint8_t  signs = ksigns_iq2xs[q2[l] >> 9];
+const uint8_t signs = ksigns_iq2xs[q2[l] >> 9];
 for (int j = 0; j < 8; ++j) {
 sumi += grid[j] * q8[j] * (signs & kmask_iq2xs[j] ? -1 : 1);
 }
@@ -665,7 +665,7 @@ bsum += sumi * ls1;
 sumi = 0;
 for (int l = 2; l < 4; ++l) {
 const uint8_t * grid = (const uint8_t *)(iq2xs_grid + (q2[l] & 511));
-const uint8_t  signs = ksigns_iq2xs[q2[l] >> 9];
+const uint8_t signs = ksigns_iq2xs[q2[l] >> 9];
 for (int j = 0; j < 8; ++j) {
 sumi += grid[j] * q8[j] * (signs & kmask_iq2xs[j] ? -1 : 1);
 }
@@ -686,19 +686,19 @@ UNUSED(bx);
 UNUSED(by);
 UNUSED(bs);
 const block_iq2_s * GGML_RESTRICT x = vx;
-const block_q8_K  * GGML_RESTRICT y = vy;
+const block_q8_K * GGML_RESTRICT y = vy;
 const int nb = n / QK_K;
 float sumf = 0;
 for (int i = 0; i < nb; i++) {
 const float d = GGML_CPU_FP16_TO_FP32(x[i].d) * y[i].d;
-const int8_t  * q8 = y[i].qs;
+const int8_t * q8 = y[i].qs;
 const uint8_t * qs = x[i].qs;
 const uint8_t * qh = x[i].qh;
 const uint8_t * signs = qs + QK_K/8;
 int bsum = 0;
 for (int ib32 = 0; ib32 < QK_K/32; ++ib32) {
 int ls1 = 1 + 2*(x[i].scales[ib32] & 0xf);
-int ls2 = 1 + 2*(x[i].scales[ib32] >>  4);
+int ls2 = 1 + 2*(x[i].scales[ib32] >> 4);
 int sumi1 = 0, sumi2 = 0;
 for (int l = 0; l < 2; ++l) {
 const uint8_t * grid = (const uint8_t *)(iq2s_grid + (qs[l] | (qh[ib32] << (8-2*l) & 0x300)));
@@ -730,7 +730,7 @@ UNUSED(bx);
 UNUSED(by);
 UNUSED(bs);
 const block_iq3_xxs * GGML_RESTRICT x = vx;
-const block_q8_K    * GGML_RESTRICT y = vy;
+const block_q8_K * GGML_RESTRICT y = vy;
 const int nb = n / QK_K;
 uint32_t aux32;
 float sumf = 0.f;
@@ -738,7 +738,7 @@ for (int i = 0; i < nb; ++i) {
 const float d = GGML_CPU_FP16_TO_FP32(x[i].d) * y[i].d;
 const uint8_t * GGML_RESTRICT q3 = x[i].qs;
 const uint8_t * GGML_RESTRICT gas = x[i].qs + QK_K/4;
-const int8_t  * GGML_RESTRICT q8 = y[i].qs;
+const int8_t * GGML_RESTRICT q8 = y[i].qs;
 int32_t bsum = 0;
 for (int ib32 = 0; ib32 < QK_K/32; ++ib32) {
 memcpy(&aux32, gas, sizeof(uint32_t)); gas += sizeof(uint32_t);
@@ -747,7 +747,7 @@ int32_t sumi = 0;
 for (int l = 0; l < 4; ++l) {
 const uint8_t * grid1 = (const uint8_t *)(iq3xxs_grid + q3[2*l+0]);
 const uint8_t * grid2 = (const uint8_t *)(iq3xxs_grid + q3[2*l+1]);
-const uint8_t  signs = ksigns_iq2xs[(aux32 >> 7*l) & 127];
+const uint8_t signs = ksigns_iq2xs[(aux32 >> 7*l) & 127];
 for (int j = 0; j < 4; ++j) {
 sumi += grid1[j] * q8[j+0] * (signs & kmask_iq2xs[j+0] ? -1 : 1);
 sumi += grid2[j] * q8[j+4] * (signs & kmask_iq2xs[j+4] ? -1 : 1);
@@ -769,7 +769,7 @@ UNUSED(bx);
 UNUSED(by);
 UNUSED(bs);
 const block_iq3_s * GGML_RESTRICT x = vx;
-const block_q8_K  * GGML_RESTRICT y = vy;
+const block_q8_K * GGML_RESTRICT y = vy;
 const int nb = n / QK_K;
 float sumf = 0.f;
 for (int i = 0; i < nb; ++i) {
@@ -777,11 +777,11 @@ const float d = GGML_CPU_FP16_TO_FP32(x[i].d) * y[i].d;
 const uint8_t * GGML_RESTRICT qs = x[i].qs;
 const uint8_t * GGML_RESTRICT qh = x[i].qh;
 const uint8_t * GGML_RESTRICT signs = x[i].signs;
-const int8_t  * GGML_RESTRICT q8 = y[i].qs;
+const int8_t * GGML_RESTRICT q8 = y[i].qs;
 int32_t bsum = 0;
 for (int ib32 = 0; ib32 < QK_K/32; ib32 += 2) {
 const uint32_t ls1 = 2*(x[i].scales[ib32/2] & 0xf) + 1;
-const uint32_t ls2 = 2*(x[i].scales[ib32/2] >>  4) + 1;
+const uint32_t ls2 = 2*(x[i].scales[ib32/2] >> 4) + 1;
 int32_t sumi = 0;
 for (int l = 0; l < 4; ++l) {
 const uint8_t * grid1 = (const uint8_t *)(iq3s_grid + (qs[2*l+0] | ((qh[ib32+0] << (8-2*l)) & 256)));
@@ -821,12 +821,12 @@ UNUSED(bx);
 UNUSED(by);
 UNUSED(bs);
 const block_iq1_s * GGML_RESTRICT x = vx;
-const block_q8_K  * GGML_RESTRICT y = vy;
+const block_q8_K * GGML_RESTRICT y = vy;
 const int nb = n / QK_K;
 float sumf = 0;
 for (int i = 0; i < nb; i++) {
-const int8_t   * q8 = y[i].qs;
-const uint8_t  * qs = x[i].qs;
+const int8_t * q8 = y[i].qs;
+const uint8_t * qs = x[i].qs;
 const uint16_t * qh = x[i].qh;
 int sumi = 0, sumi1 = 0;
 for (int ib = 0; ib < QK_K/32; ++ib) {
@@ -840,7 +840,7 @@ lsum += q8[j] * grid[j];
 }
 q8 += 8;
 }
-sumi  += ls * lsum;
+sumi += ls * lsum;
 sumi1 += ls * delta * (y[i].bsums[2*ib+0] + y[i].bsums[2*ib+1]);
 qs += 4;
 }
@@ -856,15 +856,15 @@ UNUSED(bx);
 UNUSED(by);
 UNUSED(bs);
 const block_iq1_m * GGML_RESTRICT x = vx;
-const block_q8_K  * GGML_RESTRICT y = vy;
+const block_q8_K * GGML_RESTRICT y = vy;
 const int nb = n / QK_K;
 iq1m_scale_t scale;
 int sum1[2], sum2[2], delta[4];
 float sumf = 0;
 for (int i = 0; i < nb; i++) {
-const int8_t   * q8 = y[i].qs;
-const uint8_t  * qs = x[i].qs;
-const uint8_t  * qh = x[i].qh;
+const int8_t * q8 = y[i].qs;
+const uint8_t * qs = x[i].qs;
+const uint8_t * qh = x[i].qh;
 const uint16_t * sc = (const uint16_t *)x[i].scales;
 scale.u16 = (sc[0] >> 12) | ((sc[1] >> 8) & 0x00f0) | ((sc[2] >> 4) & 0x0f00) | (sc[3] & 0xf000);
 int sumi1 = 0, sumi2 = 0;
@@ -905,7 +905,7 @@ UNUSED(bs);
 assert(n % QK4_NL == 0);
 static_assert(QK4_NL == QK8_0, "QK4_NL and QK8_0 must be the same");
 const block_iq4_nl * GGML_RESTRICT x = vx;
-const block_q8_0   * GGML_RESTRICT y = vy;
+const block_q8_0 * GGML_RESTRICT y = vy;
 const int nb = n / QK4_NL;
 int ib = 0;
 float sumf = 0;
@@ -913,8 +913,8 @@ for (; ib < nb; ++ib) {
 const float d = GGML_CPU_FP16_TO_FP32(y[ib].d)*GGML_CPU_FP16_TO_FP32(x[ib].d);
 int sumi1 = 0, sumi2 = 0;
 for (int j = 0; j < QK4_NL/2; ++j) {
-sumi1 += y[ib].qs[j+       0] * kvalues_iq4nl[x[ib].qs[j] & 0xf];
-sumi2 += y[ib].qs[j+QK4_NL/2] * kvalues_iq4nl[x[ib].qs[j] >>  4];
+sumi1 += y[ib].qs[j+ 0] * kvalues_iq4nl[x[ib].qs[j] & 0xf];
+sumi2 += y[ib].qs[j+QK4_NL/2] * kvalues_iq4nl[x[ib].qs[j] >> 4];
 }
 sumf += d * (sumi1 + sumi2);
 }
@@ -928,24 +928,24 @@ UNUSED(by);
 UNUSED(bs);
 assert(n % QK_K == 0);
 const block_iq4_xs * GGML_RESTRICT x = vx;
-const block_q8_K   * GGML_RESTRICT y = vy;
+const block_q8_K * GGML_RESTRICT y = vy;
 const int nb = n / QK_K;
 float sumf = 0;
 for (int ibl = 0; ibl < nb; ++ibl) {
 const float d4d8 = GGML_CPU_FP16_TO_FP32(x[ibl].d) * y[ibl].d;
 uint16_t h = x[ibl].scales_h;
 const uint8_t * qs = x[ibl].qs;
-const int8_t  * q8 = y[ibl].qs;
+const int8_t * q8 = y[ibl].qs;
 for (int ib = 0; ib < QK_K/32; ib += 2) {
 const uint8_t ls1 = (x[ibl].scales_l[ib/2] & 0xf) | ((h << 4) & 0x30);
-const uint8_t ls2 = (x[ibl].scales_l[ib/2] >>  4) | ((h << 2) & 0x30);
+const uint8_t ls2 = (x[ibl].scales_l[ib/2] >> 4) | ((h << 2) & 0x30);
 h >>= 4;
 const float d1 = d4d8*(ls1 - 32);
 const float d2 = d4d8*(ls2 - 32);
 int sumi1 = 0, sumi2 = 0;
 for (int j = 0; j < 16; ++j) {
 sumi1 += q8[j+ 0] * kvalues_iq4nl[qs[j] & 0xf];
-sumi2 += q8[j+16] * kvalues_iq4nl[qs[j] >>  4];
+sumi2 += q8[j+16] * kvalues_iq4nl[qs[j] >> 4];
 }
 sumf += d1 * (sumi1 + sumi2);
 qs += 16;
@@ -953,7 +953,7 @@ q8 += 32;
 sumi1 = sumi2 = 0;
 for (int j = 0; j < 16; ++j) {
 sumi1 += q8[j+ 0] * kvalues_iq4nl[qs[j] & 0xf];
-sumi2 += q8[j+16] * kvalues_iq4nl[qs[j] >>  4];
+sumi2 += q8[j+16] * kvalues_iq4nl[qs[j] >> 4];
 }
 sumf += d2 * (sumi1 + sumi2);
 qs += 16;

@@ -1,5 +1,5 @@
 #ifndef gsparams_INCLUDED
-#  define gsparams_INCLUDED
+# define gsparams_INCLUDED
 #include "stream.h"
 #include "gsparam.h"
 #if 0

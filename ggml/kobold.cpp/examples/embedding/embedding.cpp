@@ -78,7 +78,7 @@ return 1;
 }
 const llama_vocab * vocab = llama_model_get_vocab(model);
 const int n_ctx_train = llama_model_n_ctx_train(model);
-const int n_ctx       = llama_n_ctx(ctx);
+const int n_ctx = llama_n_ctx(ctx);
 const enum llama_pooling_type pooling_type = llama_pooling_type(ctx);
 if (llama_model_has_encoder(model) && llama_model_has_decoder(model)) {
 LOG_ERR("%s: computing embeddings in encoder-decoder models is not supported\n", __func__);

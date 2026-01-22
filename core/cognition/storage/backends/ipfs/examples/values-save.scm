@@ -10,9 +10,9 @@
 (cog-set-value! c (Predicate "velocity") (FloatValue 4.4 5.5 6.6))
 (store-atom c)
 (define e
-	(Evaluation
-		(Predicate "Some relationship")
-		(List (Concept "foo") (Concept "bar"))))
+(Evaluation
+(Predicate "Some relationship")
+(List (Concept "foo") (Concept "bar"))))
 (cog-set-value! e (Predicate "position") (FloatValue 3 2 1))
 (cog-set-value! e (Predicate "velocity") (FloatValue 42 41 40))
 (store-atom e)

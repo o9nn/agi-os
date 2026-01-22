@@ -5,73 +5,73 @@
 #include "dat.h"
 #include "protos.h"
 enum {
-PPP_addr=	0xff,
-PPP_ctl=	0x3,
-PPP_period=	3*1000,
+PPP_addr= 0xff,
+PPP_ctl= 0x3,
+PPP_period= 3*1000,
 };
 enum {
-PPP_ip=		0x21,
-PPP_vjctcp=	0x2d,
-PPP_vjutcp=	0x2f,
-PPP_ml=		0x3d,
-PPP_comp=	0xfd,
-PPP_ipcp=	0x8021,
-PPP_ccp=	0x80fd,
-PPP_passwd=	0xc023,
-PPP_lcp=	0xc021,
-PPP_lqm=	0xc025,
-PPP_chap=	0xc223,
+PPP_ip= 0x21,
+PPP_vjctcp= 0x2d,
+PPP_vjutcp= 0x2f,
+PPP_ml= 0x3d,
+PPP_comp= 0xfd,
+PPP_ipcp= 0x8021,
+PPP_ccp= 0x80fd,
+PPP_passwd= 0xc023,
+PPP_lcp= 0xc021,
+PPP_lqm= 0xc025,
+PPP_chap= 0xc223,
 };
-typedef struct Lcppkt	Lcppkt;
+typedef struct Lcppkt Lcppkt;
 struct Lcppkt
 {
-uchar	code;
-uchar	id;
-uchar	len[2];
-uchar	data[1];
+uchar code;
+uchar id;
+uchar len[2];
+uchar data[1];
 };
-typedef struct Lcpopt	Lcpopt;
+typedef struct Lcpopt Lcpopt;
 struct Lcpopt
 {
-uchar	type;
-uchar	len;
-uchar	data[1];
+uchar type;
+uchar len;
+uchar data[1];
 };
 enum
 {
-Lconfreq=	1,
-Lconfack=	2,
-Lconfnak=	3,
-Lconfrej=	4,
-Ltermreq=	5,
-Ltermack=	6,
-Lcoderej=	7,
-Lprotorej=	8,
-Lechoreq=	9,
-Lechoack=	10,
-Ldiscard=	11,
-Lresetreq=	14,
-Lresetack=	15,
-Omtu=		1,
-Octlmap=	2,
-Oauth=		3,
-Oquality=	4,
-Omagic=		5,
-Opc=		7,
-Oac=		8,
-APmd5=		5,
-APmschap=	128,
-Cchallenge=	1,
-Cresponse=	2,
-Csuccess=	3,
-Cfailure=	4,
-Oipaddrs=	1,
-Oipcompress=	2,
-Oipaddr=	3,
-Oipdns=		129,
-Oipwins=	130,
-Oipdns2=	131,
-Oipwins2=	132,
+Lconfreq= 1,
+Lconfack= 2,
+Lconfnak= 3,
+Lconfrej= 4,
+Ltermreq= 5,
+Ltermack= 6,
+Lcoderej= 7,
+Lprotorej= 8,
+Lechoreq= 9,
+Lechoack= 10,
+Ldiscard= 11,
+Lresetreq= 14,
+Lresetack= 15,
+Omtu= 1,
+Octlmap= 2,
+Oauth= 3,
+Oquality= 4,
+Omagic= 5,
+Opc= 7,
+Oac= 8,
+APmd5= 5,
+APmschap= 128,
+Cchallenge= 1,
+Cresponse= 2,
+Csuccess= 3,
+Cfailure= 4,
+Oipaddrs= 1,
+Oipcompress= 2,
+Oipaddr= 3,
+Oipdns= 129,
+Oipwins= 130,
+Oipdns2= 131,
+Oipwins2= 132,
 };
 char *
 lcpcode[] = {
@@ -94,17 +94,17 @@ lcpcode[] = {
 };
 static Mux p_mux[] =
 {
-{"ip",		PPP_ip, },
-{"ppp_vjctcp",	PPP_vjctcp, },
-{"ppp_vjutcp",	PPP_vjutcp, },
-{"ppp_ml",	PPP_ml, },
-{"ppp_comp",	PPP_comp, },
-{"ppp_ipcp",	PPP_ipcp, },
-{"ppp_ccp",	PPP_ccp, },
-{"ppp_passwd",	PPP_passwd, },
-{"ppp_lcp",	PPP_lcp, },
-{"ppp_lqm",	PPP_lqm, },
-{"ppp_chap",	PPP_chap, },
+{"ip", PPP_ip, },
+{"ppp_vjctcp", PPP_vjctcp, },
+{"ppp_vjutcp", PPP_vjutcp, },
+{"ppp_ml", PPP_ml, },
+{"ppp_comp", PPP_comp, },
+{"ppp_ipcp", PPP_ipcp, },
+{"ppp_ccp", PPP_ccp, },
+{"ppp_passwd", PPP_passwd, },
+{"ppp_lcp", PPP_lcp, },
+{"ppp_lqm", PPP_lqm, },
+{"ppp_chap", PPP_chap, },
 {0},
 };
 enum

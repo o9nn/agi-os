@@ -14,7 +14,7 @@ NOFID: import Styx;
 include "arg.m";
 Archfs: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 Ahdr: adt {
 name: string;
@@ -30,12 +30,12 @@ err: string;
 };
 Iobuf: import bufio;
 Tmsg, Rmsg: import styx;
-Einuse		: con "fid already in use";
-Ebadfid		: con "bad fid";
-Eopen		: con "fid already opened";
-Enotfound	: con "file does not exist";
-Enotdir		: con "not a directory";
-Eperm		: con "permission denied";
+Einuse : con "fid already in use";
+Ebadfid : con "bad fid";
+Eopen : con "fid already opened";
+Enotfound : con "file does not exist";
+Enotdir : con "not a directory";
+Eperm : con "permission denied";
 UID: con "inferno";
 GID: con "inferno";
 debug := 0;
@@ -47,9 +47,9 @@ child: cyclic ref Dir;
 sibling: cyclic ref Dir;
 };
 Fid: adt {
-fid:	int;
-open:	int;
-dir:	ref Dir;
+fid: int;
+open: int;
+dir: ref Dir;
 };
 HTSZ: con 32;
 fidtab := array[HTSZ] of list of ref Fid;
@@ -166,7 +166,7 @@ continue Work;
 }
 break;
 }
-dir  = lookup(dir, m.names[k]);
+dir = lookup(dir, m.names[k]);
 if(dir == nil){
 if(k == 0){
 error(fd, m, Enotfound);
@@ -554,12 +554,12 @@ if(nf != NFLDS){
 ar.err = "too few fields in file header";
 return nil;
 }
-a.name = hd fs;						fs = tl fs;
-(a.d.mode, nil) = str->toint(hd fs, 8);		fs = tl fs;
-a.d.uid = hd fs;						fs = tl fs;
-a.d.gid = hd fs;						fs = tl fs;
-(a.d.mtime, nil) = str->toint(hd fs, 10);	fs = tl fs;
-(tmp, nil) := str->toint(hd fs, 10);		fs = tl fs;
+a.name = hd fs; fs = tl fs;
+(a.d.mode, nil) = str->toint(hd fs, 8); fs = tl fs;
+a.d.uid = hd fs; fs = tl fs;
+a.d.gid = hd fs; fs = tl fs;
+(a.d.mtime, nil) = str->toint(hd fs, 10); fs = tl fs;
+(tmp, nil) := str->toint(hd fs, 10); fs = tl fs;
 a.d.length = big tmp;
 ar.nexthdr = b.offset()+a.d.length;
 return a;

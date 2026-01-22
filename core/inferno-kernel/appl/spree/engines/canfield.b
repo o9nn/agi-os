@@ -17,29 +17,29 @@ aCENTRELEFT, aUPPERRIGHT,
 EXPAND, FILLX, FILLY, Stackspec: import Cardlib;
 include "../gather.m";
 clique: ref Clique;
-sevens: array of ref Object;	# [7]
+sevens: array of ref Object; # [7]
 spare1, spare2: ref Object;
-acepiles: array of ref Object;	# [4]
+acepiles: array of ref Object; # [4]
 top2botcount := 3;
 top2bot: ref Object;
 CLICK, TOP2BOT, REDEAL, SHOW: con iota;
 Openspec := Stackspec(
-"display",		# style
-19,			# maxcards
-0,			# conceal
-""			# title
+"display", # style
+19, # maxcards
+0, # conceal
+"" # title
 );
 Pilespec := Stackspec(
-"pile",		# style
-19,			# maxcards
-0,			# conceal
-"pile"		# title
+"pile", # style
+19, # maxcards
+0, # conceal
+"pile" # title
 );
 Untitledpilespec := Stackspec(
-"pile",		# style
-13,			# maxcards
-0,			# conceal
-""			# title
+"pile", # style
+13, # maxcards
+0, # conceal
+"" # title
 );
 clienttype(): string
 {

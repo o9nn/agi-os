@@ -4,8 +4,8 @@ The ontogenetic engine that unifies all components under OEIS A000081.
 This is the heart of the Deep Tree Echo State Reservoir Computer.
 # OEIS A000081: The Sacred Sequence
 The sequence A000081 counts unlabeled rooted trees with n nodes:
-n:  1   2   3   4   5    6    7     8      9      10
-a:  1   1   2   4   9   20   48   115    286    719
+n: 1 2 3 4 5 6 7 8 9 10
+a: 1 1 2 4 9 20 48 115 286 719
 This sequence is the **ontogenetic generator** that unifies:
 1. **Rooted Trees**: Structural alphabet from A000081
 2. **B-Series Ridges**: Each tree τ → elementary differential F(τ)
@@ -30,10 +30,10 @@ A000081 Ontogenetic Engine
 Generate Trees (1,1,2,4,9,20,...)
 |
 ┌─────────────────────┼─────────────────────┐
-↓                     ↓                     ↓
-J-Surface Reactor    B-Series Ridge      P-System Membranes
-(Gradient Flow)      (Integration)       (Evolution Container)
-↓                     ↓                     ↓
+↓ ↓ ↓
+J-Surface Reactor B-Series Ridge P-System Membranes
+(Gradient Flow) (Integration) (Evolution Container)
+↓ ↓ ↓
 └─────────────────────┼─────────────────────┘
 ↓
 Echo State Reservoirs
@@ -292,7 +292,7 @@ membrane_ids = collect(keys(system.psystem.membranes))
 for order in 1:system.max_order
 if haskey(system.a000081_trees, order)
 trees = system.a000081_trees[order]
-n_plant = min(3, length(trees))  # Plant a few from each order
+n_plant = min(3, length(trees)) # Plant a few from each order
 for tree in trees[1:n_plant]
 if planted_count >= seed_trees
 break
@@ -335,7 +335,7 @@ println("\n🌊 Evolving A000081 Unified System for $num_generations generations
 end
 for gen in 1:num_generations
 # 1. J-Surface B-Series reactor step
-f(ψ) = -ψ  # Simple vector field
+f(ψ) = -ψ # Simple vector field
 reactor_step!(system.reactor, f, dt)
 # 2. Update all membrane reservoirs
 for membrane_id in keys(system.psystem.membranes)
@@ -467,4 +467,4 @@ end
 println("💾 System state saved to $filename")
 return nothing
 end
-end  # module A000081OntogeneticCore
+end # module A000081OntogeneticCore

@@ -9,8 +9,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 template<typename _Result, typename _Arg>
 struct __hash_base
 {
-typedef _Result     result_type _GLIBCXX17_DEPRECATED;
-typedef _Arg      argument_type _GLIBCXX17_DEPRECATED;
+typedef _Result result_type _GLIBCXX17_DEPRECATED;
+typedef _Arg argument_type _GLIBCXX17_DEPRECATED;
 };
 template<typename _Tp>
 struct hash;
@@ -54,13 +54,13 @@ size_t
 operator()(_Tp* __p) const noexcept
 { return reinterpret_cast<size_t>(__p); }
 };
-#define _Cxx_hashtable_define_trivial_hash(_Tp) 	\
-template<>						\
-struct hash<_Tp> : public __hash_base<size_t, _Tp>  \
-{                                                   \
-size_t                                            \
-operator()(_Tp __val) const noexcept              \
-{ return static_cast<size_t>(__val); }            \
+#define _Cxx_hashtable_define_trivial_hash(_Tp) \
+template<> \
+struct hash<_Tp> : public __hash_base<size_t, _Tp> \
+{ \
+size_t \
+operator()(_Tp __val) const noexcept \
+{ return static_cast<size_t>(__val); } \
 };
 _Cxx_hashtable_define_trivial_hash(bool)
 _Cxx_hashtable_define_trivial_hash(char)

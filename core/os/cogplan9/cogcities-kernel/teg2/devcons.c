@@ -1,46 +1,46 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"pool.h"
-#include	<authsrv.h>
-void	(*consdebug)(void) = nil;
-void	(*screenputs)(char*, int) = nil;
-Queue*	kbdq;
-Queue*	lineq;
-Queue*	serialoq;
-Queue*	kprintoq;
-ulong	kprintinuse;
-int	iprintscreenputs = 1;
-int	panicking;
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "pool.h"
+#include <authsrv.h>
+void (*consdebug)(void) = nil;
+void (*screenputs)(char*, int) = nil;
+Queue* kbdq;
+Queue* lineq;
+Queue* serialoq;
+Queue* kprintoq;
+ulong kprintinuse;
+int iprintscreenputs = 1;
+int panicking;
 static struct
 {
 QLock;
-int	raw;
-Ref	ctl;
-int	x;
-char	line[1024];
-int	count;
-int	ctlpoff;
-Lock	lockputc;
-char	istage[1024];
-char	*iw;
-char	*ir;
-char	*ie;
+int raw;
+Ref ctl;
+int x;
+char line[1024];
+int count;
+int ctlpoff;
+Lock lockputc;
+char istage[1024];
+char *iw;
+char *ir;
+char *ie;
 } kbd = {
-.iw	= kbd.istage,
-.ir	= kbd.istage,
-.ie	= kbd.istage + sizeof(kbd.istage),
+.iw = kbd.istage,
+.ir = kbd.istage,
+.ie = kbd.istage + sizeof(kbd.istage),
 };
-char	*sysname;
-vlong	fasthz;
-static void	seedrand(void);
-static int	readtime(ulong, char*, int);
-static int	readbintime(char*, int);
-static int	writetime(char*, int);
-static int	writebintime(char*, int);
+char *sysname;
+vlong fasthz;
+static void seedrand(void);
+static int readtime(ulong, char*, int);
+static int readbintime(char*, int);
+static int writetime(char*, int);
+static int writebintime(char*, int);
 enum
 {
 CMhalt,
@@ -49,9 +49,9 @@ CMpanic,
 };
 Cmdtab rebootmsg[] =
 {
-CMhalt,		"halt",		1,
-CMreboot,	"reboot",	0,
-CMpanic,	"panic",	0,
+CMhalt, "halt", 1,
+CMreboot, "reboot", 0,
+CMpanic, "panic", 0,
 };
 void
 printinit(void)
@@ -487,33 +487,33 @@ Qconfig,
 };
 enum
 {
-VLNUMSIZE=	22,
+VLNUMSIZE= 22,
 };
 static Dirtab consdir[]={
-".",	{Qdir, 0, QTDIR},	0,		DMDIR|0555,
-"bintime",	{Qbintime},	24,		0664,
-"cons",		{Qcons},	0,		0660,
-"consctl",	{Qconsctl},	0,		0220,
-"cputime",	{Qcputime},	6*NUMSIZE,	0444,
-"drivers",	{Qdrivers},	0,		0444,
-"hostdomain",	{Qhostdomain},	DOMLEN,		0664,
-"hostowner",	{Qhostowner},	0,		0664,
-"kmesg",	{Qkmesg},	0,		0440,
-"kprint",	{Qkprint, 0, QTEXCL},	0,	DMEXCL|0440,
-"null",		{Qnull},	0,		0666,
-"osversion",	{Qosversion},	0,		0444,
-"pgrpid",	{Qpgrpid},	NUMSIZE,	0444,
-"pid",		{Qpid},		NUMSIZE,	0444,
-"ppid",		{Qppid},	NUMSIZE,	0444,
-"random",	{Qrandom},	0,		0444,
-"reboot",	{Qreboot},	0,		0664,
-"swap",		{Qswap},	0,		0664,
-"sysname",	{Qsysname},	0,		0664,
-"sysstat",	{Qsysstat},	0,		0666,
-"time",		{Qtime},	NUMSIZE+3*VLNUMSIZE,	0664,
-"user",		{Quser},	0,		0666,
-"zero",		{Qzero},	0,		0444,
-"config",	{Qconfig},	0,		0444,
+".", {Qdir, 0, QTDIR}, 0, DMDIR|0555,
+"bintime", {Qbintime}, 24, 0664,
+"cons", {Qcons}, 0, 0660,
+"consctl", {Qconsctl}, 0, 0220,
+"cputime", {Qcputime}, 6*NUMSIZE, 0444,
+"drivers", {Qdrivers}, 0, 0444,
+"hostdomain", {Qhostdomain}, DOMLEN, 0664,
+"hostowner", {Qhostowner}, 0, 0664,
+"kmesg", {Qkmesg}, 0, 0440,
+"kprint", {Qkprint, 0, QTEXCL}, 0, DMEXCL|0440,
+"null", {Qnull}, 0, 0666,
+"osversion", {Qosversion}, 0, 0444,
+"pgrpid", {Qpgrpid}, NUMSIZE, 0444,
+"pid", {Qpid}, NUMSIZE, 0444,
+"ppid", {Qppid}, NUMSIZE, 0444,
+"random", {Qrandom}, 0, 0444,
+"reboot", {Qreboot}, 0, 0664,
+"swap", {Qswap}, 0, 0664,
+"sysname", {Qsysname}, 0, 0664,
+"sysstat", {Qsysstat}, 0, 0666,
+"time", {Qtime}, NUMSIZE+3*VLNUMSIZE, 0664,
+"user", {Quser}, 0, 0666,
+"zero", {Qzero}, 0, 0444,
+"config", {Qconfig}, 0, 0444,
 };
 int
 readnum(ulong off, char *buf, ulong n, ulong val, int size)
@@ -961,7 +961,7 @@ devbwrite,
 devremove,
 devwstat,
 };
-static	ulong	randn;
+static ulong randn;
 static void
 seedrand(void)
 {
@@ -1034,7 +1034,7 @@ char *Ebadtimectl = "bad time control";
 static int
 readtime(ulong off, char *buf, int n)
 {
-vlong	nsec, ticks;
+vlong nsec, ticks;
 long sec;
 char str[7*NUMSIZE];
 nsec = todget(&ticks);

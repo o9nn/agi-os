@@ -9,24 +9,24 @@ This header file is an extension to ANSI/POSIX
 typedef struct QLp QLp;
 struct QLp
 {
-int	inuse;
-QLp	*next;
-char	state;
+int inuse;
+QLp *next;
+char state;
 };
 typedef
 struct QLock
 {
-Lock	lock;
-int	locked;
-QLp	*head;
-QLp 	*tail;
+Lock lock;
+int locked;
+QLp *head;
+QLp *tail;
 } QLock;
 #ifdef __cplusplus
 extern "C" {
 #endif
-extern	void	qlock(QLock*);
-extern	void	qunlock(QLock*);
-extern	int	canqlock(QLock*);
+extern void qlock(QLock*);
+extern void qunlock(QLock*);
+extern int canqlock(QLock*);
 #ifdef __cplusplus
 }
 #endif

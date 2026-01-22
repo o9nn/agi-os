@@ -311,7 +311,7 @@ gs_private_st_suffix_add0(st_cmap_ToUnicode, gs_cmap_ToUnicode_t,
 st_cmap);
 private int
 gs_cmap_ToUnicode_next_range(gs_cmap_ranges_enum_t *penum)
-{   const gs_cmap_ToUnicode_t *cmap = (gs_cmap_ToUnicode_t *)penum->cmap;
+{ const gs_cmap_ToUnicode_t *cmap = (gs_cmap_ToUnicode_t *)penum->cmap;
 if (penum->index == 0) {
 memset(penum->range.first, 0, cmap->key_size);
 memset(penum->range.last, 0xff, cmap->key_size);
@@ -339,7 +339,7 @@ gs_cmap_ranges_enum_setup(pre, pcmap, &gs_cmap_ToUnicode_range_procs);
 }
 private int
 gs_cmap_ToUnicode_next_lookup(gs_cmap_lookups_enum_t *penum)
-{   const gs_cmap_ToUnicode_t *cmap = (gs_cmap_ToUnicode_t *)penum->cmap;
+{ const gs_cmap_ToUnicode_t *cmap = (gs_cmap_ToUnicode_t *)penum->cmap;
 if (penum->index[0]++ > 0)
 return 1;
 penum->entry.value.data = penum->temp_value;
@@ -354,7 +354,7 @@ return 0;
 }
 private int
 gs_cmap_ToUnicode_next_entry(gs_cmap_lookups_enum_t *penum)
-{   const gs_cmap_ToUnicode_t *cmap = (gs_cmap_ToUnicode_t *)penum->cmap;
+{ const gs_cmap_ToUnicode_t *cmap = (gs_cmap_ToUnicode_t *)penum->cmap;
 const uchar *map = cmap->glyph_name_data;
 const int num_codes = cmap->num_codes;
 uint index = penum->index[1], i, j;
@@ -396,7 +396,7 @@ gs_cmap_lookups_enum_setup(pre, pcmap,
 }
 private bool
 gs_cmap_ToUnicode_is_identity(const gs_cmap_t *pcmap, int font_index_only)
-{   const gs_cmap_ToUnicode_t *cmap = (gs_cmap_ToUnicode_t *)pcmap;
+{ const gs_cmap_ToUnicode_t *cmap = (gs_cmap_ToUnicode_t *)pcmap;
 return cmap->is_identity;
 }
 private const gs_cmap_procs_t gs_cmap_ToUnicode_procs = {
@@ -407,11 +407,11 @@ gs_cmap_ToUnicode_is_identity
 };
 int
 gs_cmap_ToUnicode_alloc(gs_memory_t *mem, int id, int num_codes, int key_size, gs_cmap_t **ppcmap)
-{   int code;
+{ int code;
 uchar *map, *cmap_name = NULL;
 gs_cmap_ToUnicode_t *cmap;
 int name_len = 0;
-#   if 0
+# if 0
 char sid[10], *pref = "aux-";
 int sid_len, pref_len = strlen(pref);
 sprintf(sid, "%d", id);
@@ -422,7 +422,7 @@ if (cmap_name == 0)
 return_error(gs_error_VMerror);
 memcpy(cmap_name, pref, pref_len);
 memcpy(cmap_name + pref_len, sid, sid_len);
-#   endif
+# endif
 code = gs_cmap_alloc(ppcmap, &st_cmap_ToUnicode,
 0, cmap_name, name_len, NULL, 0, &gs_cmap_ToUnicode_procs, mem);
 if (code < 0)
@@ -444,7 +444,7 @@ return 0;
 }
 void
 gs_cmap_ToUnicode_add_pair(gs_cmap_t *pcmap, int code0, int code1)
-{   gs_cmap_ToUnicode_t *cmap = (gs_cmap_ToUnicode_t *)pcmap;
+{ gs_cmap_ToUnicode_t *cmap = (gs_cmap_ToUnicode_t *)pcmap;
 uchar *map = pcmap->glyph_name_data;
 const int num_codes = ((gs_cmap_ToUnicode_t *)pcmap)->num_codes;
 if (code0 >= num_codes)

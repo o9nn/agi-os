@@ -6,7 +6,7 @@
 #endif
 #if !defined __STDC__ || !__STDC__
 # ifndef const
-#  define const
+# define const
 # endif
 #endif
 #include <stdio.h>
@@ -14,31 +14,31 @@
 #if !defined _LIBC && defined __GLIBC__ && __GLIBC__ >= 2
 # include <gnu-versions.h>
 # if _GNU_GETOPT_INTERFACE_VERSION == GETOPT_INTERFACE_VERSION
-#  define ELIDE_CODE
+# define ELIDE_CODE
 # endif
 #endif
 #ifndef ELIDE_CODE
-#ifdef  __GNU_LIBRARY__
+#ifdef __GNU_LIBRARY__
 # include <stdlib.h>
 # include <unistd.h>
 #endif
 #ifdef VMS
 # include <unixlib.h>
 # if HAVE_STRING_H - 0
-#  include <string.h>
+# include <string.h>
 # endif
 #endif
 #ifndef _
 # if (HAVE_LIBINTL_H && ENABLE_NLS) || defined _LIBC
-#  include <libintl.h>
-#  ifndef _
-#   define _(msgid)     gettext (msgid)
-#  endif
+# include <libintl.h>
+# ifndef _
+# define _(msgid) gettext (msgid)
+# endif
 # else
-#  define _(msgid)      (msgid)
+# define _(msgid) (msgid)
 # endif
 # if defined _LIBC && defined USE_IN_LIBIO
-#  include <wchar.h>
+# include <wchar.h>
 # endif
 #endif
 #include "getopt.h"
@@ -53,14 +53,14 @@ static enum
 REQUIRE_ORDER, PERMUTE, RETURN_IN_ORDER
 } ordering;
 static char *posixly_correct;
-#ifdef  __GNU_LIBRARY__
+#ifdef __GNU_LIBRARY__
 # include <string.h>
-# define my_index       strchr
+# define my_index strchr
 #else
 # if HAVE_STRING_H || WIN32
-#  include <string.h>
+# include <string.h>
 # else
-#  include <strings.h>
+# include <strings.h>
 # endif
 #ifndef getenv
 extern char *getenv ();
@@ -95,15 +95,15 @@ static int nonoption_flags_max_len;
 static int nonoption_flags_len;
 # endif
 # ifdef USE_NONOPTION_FLAGS
-#  define SWAP_FLAGS(ch1, ch2) \
-if (nonoption_flags_len > 0)                                                \
-{                                                                         \
-char __tmp = __getopt_nonoption_flags[ch1];                             \
-__getopt_nonoption_flags[ch1] = __getopt_nonoption_flags[ch2];          \
-__getopt_nonoption_flags[ch2] = __tmp;                                  \
+# define SWAP_FLAGS(ch1, ch2) \
+if (nonoption_flags_len > 0) \
+{ \
+char __tmp = __getopt_nonoption_flags[ch1]; \
+__getopt_nonoption_flags[ch1] = __getopt_nonoption_flags[ch2]; \
+__getopt_nonoption_flags[ch2] = __tmp; \
 }
 # else
-#  define SWAP_FLAGS(ch1, ch2)
+# define SWAP_FLAGS(ch1, ch2)
 # endif
 #else
 # define SWAP_FLAGS(ch1, ch2)
@@ -247,8 +247,8 @@ optstring = _getopt_initialize (argc, argv, optstring);
 __getopt_initialized = 1;
 }
 #if defined _LIBC && defined USE_NONOPTION_FLAGS
-# define NONOPTION_P (argv[optind][0] != '-' || argv[optind][1] == '\0'       \
-|| (optind < nonoption_flags_len                        \
+# define NONOPTION_P (argv[optind][0] != '-' || argv[optind][1] == '\0' \
+|| (optind < nonoption_flags_len \
 && __getopt_nonoption_flags[optind] == '1'))
 #else
 # define NONOPTION_P (argv[optind][0] != '-' || argv[optind][1] == '\0')

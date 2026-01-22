@@ -1,5 +1,5 @@
 #ifndef gxmclip_INCLUDED
-#  define gxmclip_INCLUDED
+# define gxmclip_INCLUDED
 #include "gxclip.h"
 #define tile_clip_buffer_request 300
 #define tile_clip_buffer_size\
@@ -15,7 +15,7 @@ ulong longs[tile_clip_buffer_size / arch_sizeof_long];
 } buffer;
 } gx_device_mask_clip;
 extern_st(st_device_mask_clip);
-#define public_st_device_mask_clip()	\
+#define public_st_device_mask_clip() \
 gs_public_st_composite_use_final(st_device_mask_clip, gx_device_mask_clip,\
 "gx_device_mask_clip", device_mask_clip_enum_ptrs,\
 device_mask_clip_reloc_ptrs, gx_device_finalize)

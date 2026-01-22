@@ -16,14 +16,14 @@ sh: Sh;
 Editor: module {
 init: fn(nil: ref Draw->Context, args: list of string);
 };
-FNSIZE: con 128;		# file name
-LBSIZE: con 4096;		# max line size
-BLKSIZE: con 4096;		# block size in temp file
-NBLK: con 8191;		# max size of temp file
-ESIZE: con 256;			# max size of reg exp
-GBSIZE: con 256;		# max size of global command
-MAXSUB: con 9;		# max number of sub reg exp
-ESCFLG: con 16rFFFF;	# escape Rune - user defined code
+FNSIZE: con 128; # file name
+LBSIZE: con 4096; # max line size
+BLKSIZE: con 4096; # block size in temp file
+NBLK: con 8191; # max size of temp file
+ESIZE: con 256; # max size of reg exp
+GBSIZE: con 256; # max size of global command
+MAXSUB: con 9; # max number of sub reg exp
+ESCFLG: con 16rFFFF; # escape Rune - user defined code
 EOF: con -1;
 BytesPerRune: con 2;
 RunesPerBlock: con BLKSIZE / BytesPerRune;
@@ -104,7 +104,7 @@ if (regex == nil) {
 sys->fprint(sys->fildes(2), "can't load %s\n", Regex->PATH);
 return;
 }
-#	notify(notifyf);
+# notify(notifyf);
 if (args != nil)
 args = tl args;
 if (args != nil && hd args == "-o") {
@@ -127,7 +127,7 @@ else
 globp = (nil, 1);
 zero = array [nlall + 5] of int;
 tfname = mktemp("/tmp/eXXXXX");
-#	debug(sys->sprint("tfname %s\n", tfname));
+# debug(sys->sprint("tfname %s\n", tfname));
 _init();
 for(;;){
 {
@@ -438,7 +438,7 @@ break;
 if(nextopand == opcnt) {
 a += sign;
 if(a < 0 || dol < a)
-continue;       # error(Q);
+continue; # error(Q);
 }
 if(c != '+' && c != '-' && c != '^') {
 peekc = c;
@@ -559,7 +559,7 @@ wrapp = 0;
 listf = 0;
 listn = 0;
 count = 0;
-sys->seek(sys->fildes(0), big 0, Sys->SEEKEND);	# what does this do?
+sys->seek(sys->fildes(0), big 0, Sys->SEEKEND); # what does this do?
 pflag = 0;
 if(!globp.isnil)
 lastc = '\n';
@@ -599,21 +599,21 @@ quit();
 # void
 # notifyf(void *a, char *s)
 # {
-# 	if(strcmp(s, "interrupt") == 0){
-# 		if(rescuing || waiting)
-# 			noted(NCONT);
-# 		putchr(L'\n');
-# 		lastc = '\n';
-# 		error1(Q);
-# 		notejmp(a, savej, 0);
-# 	}
-# 	if(strcmp(s, "hangup") == 0){
-# 		if(rescuing)
-# 			noted(NDFLT);
-# 		rescue();
-# 	}
-# 	fprint(2, "ed: note: %s\n", s);
-# 	abort();
+# if(strcmp(s, "interrupt") == 0){
+# if(rescuing || waiting)
+# noted(NCONT);
+# putchr(L'\n');
+# lastc = '\n';
+# error1(Q);
+# notejmp(a, savej, 0);
+# }
+# if(strcmp(s, "hangup") == 0){
+# if(rescuing)
+# noted(NDFLT);
+# rescue();
+# }
+# fprint(2, "ed: note: %s\n", s);
+# abort();
 # }
 getchr(): int
 {
@@ -909,7 +909,7 @@ lp = 0;
 _tl = tline;
 (block, bp) = getblock(_tl, Sys->OWRITE);
 nl = len block - bp;
-_tl &= ~(RunesPerBlock-1);		# _tl is now at the beginning of the block
+_tl &= ~(RunesPerBlock-1); # _tl is now at the beginning of the block
 while(block[bp] = linebuf[lp++]) {
 if(block[bp++] == '\n') {
 block[bp-1] = 0;
@@ -1081,7 +1081,7 @@ dot = addr1;
 substitute(inglob: int)
 {
 mp, a1, nl, gsubf, n: int;
-n = getnum();	# OK even if n==0
+n = getnum(); # OK even if n==0
 gsubf = compsub();
 for(a1 = addr1; a1 <= addr2; a1++) {
 if(match(a1)){
@@ -1092,7 +1092,7 @@ if(--m <= 0) {
 dosub();
 if(!gsubf)
 break;
-if(span == 0) {	# null RE match
+if(span == 0) { # null RE match
 if(zero[loc2] == 0)
 break;
 loc2++;
@@ -1172,9 +1172,9 @@ dosub()
 {
 lp, sp, rp: int;
 c, n: int;
-#	lp = linebuf;
-#	sp = genbuf;
-#	rp = rhsbuf;
+# lp = linebuf;
+# sp = genbuf;
+# rp = rhsbuf;
 lp = 0;
 sp = 0;
 rp = 0;
@@ -1217,7 +1217,7 @@ move(cflag: int)
 {
 _adt, ad1, ad2: int;
 nonzero();
-if((_adt = address()) < 0)	# address() guarantees addr is in range
+if((_adt = address()) < 0) # address() guarantees addr is in range
 error(Q);
 newline();
 if(cflag) {
@@ -1296,7 +1296,7 @@ diag: string;
 #debug("program " + program + "\n");
 (pattern, diag) = regex->compile(program, 1);
 #if (diag != nil)
-#	debug("diag " + diag + "\n");
+# debug("diag " + diag + "\n");
 if (diag != nil)
 pattern = nil;
 }
@@ -1390,7 +1390,7 @@ line[lp++] = byte 'x';
 line[lp++] = byte hex[c>>12];
 line[lp++] = byte hex[c>>8&16rF];
 line[lp++] = byte hex[c>>4&16rF];
-c     =  hex[c&16rF];
+c = hex[c&16rF];
 col += 5;
 }
 }

@@ -5,61 +5,61 @@
 #include "fns.h"
 #include "arm.h"
 enum {
-Debug		= 0,
-Basetickfreq	= Mhz,
-Clockfreqbase	= 250*Mhz / 2,
-Tcycles		= Clockfreqbase / HZ,
-MinPeriod	= Tcycles / 100,
-MaxPeriod	= Tcycles,
-Dogtimeout	= Dogsectimeout * Clockfreqbase,
+Debug = 0,
+Basetickfreq = Mhz,
+Clockfreqbase = 250*Mhz / 2,
+Tcycles = Clockfreqbase / HZ,
+MinPeriod = Tcycles / 100,
+MaxPeriod = Tcycles,
+Dogtimeout = Dogsectimeout * Clockfreqbase,
 };
 typedef struct Ltimer Ltimer;
 typedef struct Pglbtmr Pglbtmr;
 typedef struct Ploctmr Ploctmr;
 struct Ltimer {
-ulong	load;
-ulong	cnt;
-ulong	ctl;
-ulong	isr;
-ulong	wdrst;
-ulong	wddis;
-ulong	_pad0[2];
+ulong load;
+ulong cnt;
+ulong ctl;
+ulong isr;
+ulong wdrst;
+ulong wddis;
+ulong _pad0[2];
 };
 struct Ploctmr {
-Ltimer	loc;
-Ltimer	wd;
+Ltimer loc;
+Ltimer wd;
 };
 enum {
-Tmrena	= 1<<0,
+Tmrena = 1<<0,
 Wdogena = Tmrena,
-Xreload	= 1<<1,
-Tintena	= 1<<2,
-Wdog	= 1<<3,
+Xreload = 1<<1,
+Tintena = 1<<2,
+Wdog = 1<<3,
 Xsclrshift = 8,
 Xsclrmask = MASK(8),
-Xisrclk	= 1<<0,
-Wdrst	= 1<<0,
-Wdon	= 1,
-Wdoff1	= 0x12345678,
-Wdoff2	= 0x87654321,
+Xisrclk = 1<<0,
+Wdrst = 1<<0,
+Wdon = 1,
+Wdoff1 = 0x12345678,
+Wdoff2 = 0x87654321,
 };
 struct Pglbtmr {
-ulong	cnt[2];
-ulong	ctl;
-ulong	isr;
-ulong	cmp[2];
-ulong	inc;
+ulong cnt[2];
+ulong ctl;
+ulong isr;
+ulong cmp[2];
+ulong inc;
 };
 enum {
-Gcmp	= 1<<1,
-Gincr	= 1<<3,
+Gcmp = 1<<1,
+Gincr = 1<<3,
 };
 typedef union Vlong Vlong;
 union Vlong {
-uvlong	uvl;
+uvlong uvl;
 struct {
-ulong	low;
-ulong	high;
+ulong low;
+ulong high;
 };
 };
 static int fired;
@@ -178,7 +178,7 @@ watchdogoff(&lt->wd);
 tegclockshutdown();
 }
 enum {
-Instrs		= 10*Mhz,
+Instrs = 10*Mhz,
 };
 static long
 issue1loop(void)

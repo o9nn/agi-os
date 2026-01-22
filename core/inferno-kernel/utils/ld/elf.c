@@ -1,8 +1,8 @@
 #include "l.h"
 enum {
-Stitext		= 1,
-Stidata		= 7,
-Stistrtab	= 13,
+Stitext = 1,
+Stidata = 7,
+Stistrtab = 13,
 };
 void
 elfident(int bo, int class)

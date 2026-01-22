@@ -1,17 +1,17 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
 typedef struct CogMemBlock CogMemBlock;
 struct CogMemBlock {
-void	*addr;
-ulong	size;
-short	sti;
-short	lti;
-int	type;
-ulong	lastaccess;
+void *addr;
+ulong size;
+short sti;
+short lti;
+int type;
+ulong lastaccess;
 CogMemBlock *next;
 Lock;
 };
@@ -25,12 +25,12 @@ MemGeneral,
 };
 typedef struct CogMemPool CogMemPool;
 struct CogMemPool {
-CogMemBlock	*blocks;
-int		nblocks;
-ulong		totalmem;
-ulong		maxmem;
-short		totalsti;
-short		totallti;
+CogMemBlock *blocks;
+int nblocks;
+ulong totalmem;
+ulong maxmem;
+short totalsti;
+short totallti;
 Lock;
 };
 static CogMemPool cogmempool;

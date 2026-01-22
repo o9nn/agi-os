@@ -1,22 +1,22 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"ureg.h"
-#include	<isa.h>
-#include	<interp.h>
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "ureg.h"
+#include <isa.h>
+#include <interp.h>
 typedef struct Clock0link Clock0link;
 typedef struct Clock0link {
-void		(*clock)(void);
-Clock0link*	link;
+void (*clock)(void);
+Clock0link* link;
 } Clock0link;
 static Clock0link *clock0link;
 static Lock clock0lock;
-ulong	clkrelinq;
-void	(*kproftick)(ulong);
-void	(*archclocktick)(void);
+ulong clkrelinq;
+void (*kproftick)(ulong);
+void (*archclocktick)(void);
 Timer*
 addclock0link(void (*clock)(void), int)
 {
@@ -54,27 +54,27 @@ for(i = 0; i < l; i++)
 }
 enum {
 Timebase = 1,
-Wp17=	0<<30,
-Wp21=	1<<30,
-Wp25=	2<<30,
-Wp29=	3<<30,
-Wrnone=	0<<28,
-Wrcore=	1<<28,
-Wrchip=	2<<28,
-Wrsys=	3<<28,
-Wie=		1<<27,
-Pie=		1<<26,
-Fit9=		0<<24,
-Fit13=	1<<24,
-Fit17=	2<<24,
-Fit21=	3<<24,
-Fie=		1<<23,
-Are=		1<<22,
-Boot=	0x0F1,
-Epctl=	0x0F3,
-Pllmr0=	0x0F0,
-Pllmr1=	0x0F4,
-Ucr=		0x0F5,
+Wp17= 0<<30,
+Wp21= 1<<30,
+Wp25= 2<<30,
+Wp29= 3<<30,
+Wrnone= 0<<28,
+Wrcore= 1<<28,
+Wrchip= 2<<28,
+Wrsys= 3<<28,
+Wie= 1<<27,
+Pie= 1<<26,
+Fit9= 0<<24,
+Fit13= 1<<24,
+Fit17= 2<<24,
+Fit21= 3<<24,
+Fie= 1<<23,
+Are= 1<<22,
+Boot= 0x0F1,
+Epctl= 0x0F3,
+Pllmr0= 0x0F0,
+Pllmr1= 0x0F4,
+Ucr= 0x0F5,
 };
 void
 clockinit(void)

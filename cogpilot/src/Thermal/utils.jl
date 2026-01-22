@@ -24,7 +24,7 @@ This partial model contains the basic connectors and variables to allow heat tra
 store energy. This model defines and includes equations for the temperature drop across the element, `dT`, and the heat
 flow rate through the element from `port_a` to `port_b`, `Q_flow`.
 # States:
-- `dT`:  [`K`] Temperature difference across the component a.T - b.T. It accepts an initial value, which defaults to 0.0.
+- `dT`: [`K`] Temperature difference across the component a.T - b.T. It accepts an initial value, which defaults to 0.0.
 - `Q_flow`: [`W`] Heat flow rate from port a -> port b. It accepts an initial value, which defaults to 0.0.
 # Connectors:
 `port_a`
@@ -52,7 +52,7 @@ transfer models to be created that do not store energy. This model defines and
 includes equations for the temperature drop across the element, `dT`, and the heat
 flow rate through the element from `solid` to `fluid`, `Q_flow`.
 # States:
-- `dT`:  [`K`] Temperature difference across the component `solid.T` - `fluid.T`. It accepts an initial value, which defaults to 0.0.
+- `dT`: [`K`] Temperature difference across the component `solid.T` - `fluid.T`. It accepts an initial value, which defaults to 0.0.
 - `Q_flow`: [`W`] Heat flow rate from `solid` -> `fluid`. It accepts an initial value, which defaults to 0.0.
 # Connectors:
 `solid`

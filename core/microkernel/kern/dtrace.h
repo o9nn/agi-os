@@ -8,42 +8,42 @@
 #if MACH_DTRACE
 typedef enum {
 DTRACE_PROBE_FUNCTION_ENTRY = 1,
-DTRACE_PROBE_FUNCTION_EXIT  = 2,
-DTRACE_PROBE_SYSCALL_ENTRY  = 3,
-DTRACE_PROBE_SYSCALL_EXIT   = 4,
-DTRACE_PROBE_IPC_SEND       = 5,
-DTRACE_PROBE_IPC_RECEIVE    = 6,
-DTRACE_PROBE_VM_FAULT       = 7,
-DTRACE_PROBE_THREAD_SWITCH  = 8,
-DTRACE_PROBE_TIMER_TICK     = 9,
-DTRACE_PROBE_CUSTOM         = 10
+DTRACE_PROBE_FUNCTION_EXIT = 2,
+DTRACE_PROBE_SYSCALL_ENTRY = 3,
+DTRACE_PROBE_SYSCALL_EXIT = 4,
+DTRACE_PROBE_IPC_SEND = 5,
+DTRACE_PROBE_IPC_RECEIVE = 6,
+DTRACE_PROBE_VM_FAULT = 7,
+DTRACE_PROBE_THREAD_SWITCH = 8,
+DTRACE_PROBE_TIMER_TICK = 9,
+DTRACE_PROBE_CUSTOM = 10
 } dtrace_probe_type_t;
 typedef struct dtrace_probe {
-uint32_t             id;
-dtrace_probe_type_t  type;
-const char          *name;
-const char          *function;
-boolean_t            enabled;
-uint64_t             fire_count;
-uint64_t             total_time;
-uint32_t             arg_count;
-void                *handler;
+uint32_t id;
+dtrace_probe_type_t type;
+const char *name;
+const char *function;
+boolean_t enabled;
+uint64_t fire_count;
+uint64_t total_time;
+uint32_t arg_count;
+void *handler;
 } dtrace_probe_t;
 typedef struct dtrace_event {
-uint32_t    probe_id;
-uint64_t    timestamp;
-uint32_t    cpu_id;
-uint32_t    thread_id;
-uint32_t    task_id;
-uint64_t    args[6];
+uint32_t probe_id;
+uint64_t timestamp;
+uint32_t cpu_id;
+uint32_t thread_id;
+uint32_t task_id;
+uint64_t args[6];
 } dtrace_event_t;
 #define DTRACE_BUFFER_SIZE 1024
 typedef struct dtrace_buffer {
-dtrace_event_t   events[DTRACE_BUFFER_SIZE];
-uint32_t         head;
-uint32_t         tail;
-uint32_t         count;
-uint32_t         overruns;
+dtrace_event_t events[DTRACE_BUFFER_SIZE];
+uint32_t head;
+uint32_t tail;
+uint32_t count;
+uint32_t overruns;
 simple_lock_irq_data_t lock;
 } dtrace_buffer_t;
 typedef struct dtrace_metrics {
@@ -55,12 +55,12 @@ uint32_t active_probes;
 uint32_t max_probes;
 } dtrace_metrics_t;
 typedef struct dtrace_state {
-dtrace_probe_t     *probes;
-uint32_t            probe_count;
-uint32_t            max_probes;
-dtrace_buffer_t     buffer;
-dtrace_metrics_t    metrics;
-boolean_t           enabled;
+dtrace_probe_t *probes;
+uint32_t probe_count;
+uint32_t max_probes;
+dtrace_buffer_t buffer;
+dtrace_metrics_t metrics;
+boolean_t enabled;
 simple_lock_irq_data_t probe_lock;
 } dtrace_state_t;
 typedef void (*dtrace_handler_t)(dtrace_probe_t *probe, uint64_t arg0,
@@ -114,13 +114,13 @@ void dtrace_disable(void);
 boolean_t dtrace_is_enabled(void);
 uint64_t dtrace_gethrtime(void);
 #else
-#define DTRACE_FUNCTION_ENTRY(name)              do { } while (0)
-#define DTRACE_FUNCTION_EXIT(name)               do { } while (0)
-#define DTRACE_SYSCALL_ENTRY(name, arg0)         do { } while (0)
-#define DTRACE_SYSCALL_EXIT(name, retval)        do { } while (0)
-#define DTRACE_IPC_SEND(port, size)              do { } while (0)
-#define DTRACE_IPC_RECEIVE(port, size)           do { } while (0)
-#define DTRACE_VM_FAULT(addr, type)              do { } while (0)
+#define DTRACE_FUNCTION_ENTRY(name) do { } while (0)
+#define DTRACE_FUNCTION_EXIT(name) do { } while (0)
+#define DTRACE_SYSCALL_ENTRY(name, arg0) do { } while (0)
+#define DTRACE_SYSCALL_EXIT(name, retval) do { } while (0)
+#define DTRACE_IPC_SEND(port, size) do { } while (0)
+#define DTRACE_IPC_RECEIVE(port, size) do { } while (0)
+#define DTRACE_VM_FAULT(addr, type) do { } while (0)
 #define DTRACE_THREAD_SWITCH(old_thread, new_thread) do { } while (0)
 #define DTRACE_CUSTOM(name, arg0, arg1, arg2, arg3, arg4, arg5) do { } while (0)
 static inline void dtrace_init(void) { }

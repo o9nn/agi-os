@@ -23,8 +23,8 @@ fff
 (use-modules (opencog exec))
 (cog-execute! (ValueOf (Concept "asdf") (Predicate "some key")))
 (cog-execute! (SetValue
-	(Concept "asdf") (Predicate "some key")
-	(Node "this is the new thing")))
+(Concept "asdf") (Predicate "some key")
+(Node "this is the new thing")))
 (cog-execute! (ValueOf (Concept "asdf") (Predicate "some key")))
 ,apropos cog
 ,a cog

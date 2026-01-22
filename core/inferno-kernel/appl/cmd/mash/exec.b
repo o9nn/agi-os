@@ -1,17 +1,17 @@
 #
-#	Manage the execution of a command.
+# Manage the execution of a command.
 #
-srv:	string;		# srv file proto
-nsrv:	int = 0;	# srv file unique id
+srv: string; # srv file proto
+nsrv: int = 0; # srv file unique id
 #
-#	Return error string.
+# Return error string.
 #
 errstr(): string
 {
 return sys->sprint("%r");
 }
 #
-#	Server thread for servefd.
+# Server thread for servefd.
 #
 server(c: ref Sys->FileIO, fd: ref Sys->FD, write: int)
 {
@@ -52,7 +52,7 @@ rc <- = (a[0:r], nil);
 }
 }
 #
-#	Serve FD as a #s file.  Used to implement generators.
+# Serve FD as a #s file. Used to implement generators.
 #
 Env.servefd(e: self ref Env, fd: ref Sys->FD, write: int): string
 {
@@ -61,7 +61,7 @@ spawn server(c, fd, write);
 return s;
 }
 #
-#	Generate name and FileIO adt for a served filed.
+# Generate name and FileIO adt for a served filed.
 #
 Env.servefile(e: self ref Env, n: string): (string, ref Sys->FileIO)
 {
@@ -102,7 +102,7 @@ e.couldnot("bind", n);
 return (n, c);
 }
 #
-#	Shorthand for string output.
+# Shorthand for string output.
 #
 Env.output(e: self ref Env, s: string)
 {
@@ -115,7 +115,7 @@ out.puts(s);
 out.close();
 }
 #
-#	Return Iobuf for stdout.
+# Return Iobuf for stdout.
 #
 Env.outfile(e: self ref Env): ref Bufio->Iobuf
 {
@@ -128,7 +128,7 @@ e.report(sys->sprint("fopen failed: %r"));
 return out;
 }
 #
-#	Return FD for /dev/null.
+# Return FD for /dev/null.
 #
 Env.devnull(e: self ref Env): ref Sys->FD
 {
@@ -138,7 +138,7 @@ e.couldnot("open", DEVNULL);
 return fd;
 }
 #
-#	Make a pipe.
+# Make a pipe.
 #
 Env.pipe(e: self ref Env): array of ref Sys->FD
 {
@@ -150,7 +150,7 @@ return nil;
 return fds;
 }
 #
-#	Open wait file for an env.
+# Open wait file for an env.
 #
 waitfd(e: ref Env)
 {
@@ -161,7 +161,7 @@ e.couldnot("open", w);
 e.wait = fd;
 }
 #
-#	Wait for a thread.  Perhaps propagate exception or exit.
+# Wait for a thread. Perhaps propagate exception or exit.
 #
 waitfor(e: ref Env, pid: int, wc: chan of int, ec, xc: chan of string)
 {
@@ -188,7 +188,7 @@ raise s;
 waiter(e, pid, nil);
 }
 #
-#	Wait for a specific pid.
+# Wait for a specific pid.
 #
 waiter(e: ref Env, pid: int, wc: chan of int)
 {
@@ -210,8 +210,8 @@ if (wc != nil)
 wc <-= 0;
 }
 #
-#	Preparse IO for a new thread.
-#	Make a new FD group and redirect stdin/stdout.
+# Preparse IO for a new thread.
+# Make a new FD group and redirect stdin/stdout.
 #
 prepareio(in, out: ref sys->FD): (int, ref Sys->FD)
 {
@@ -233,7 +233,7 @@ out = nil;
 return (pid, console);
 }
 #
-#	Add ".dis" to a command if missing.
+# Add ".dis" to a command if missing.
 #
 dis(s: string): string
 {
@@ -242,7 +242,7 @@ return s + ".dis";
 return s;
 }
 #
-#	Load a builtin.
+# Load a builtin.
 #
 Env.doload(e: self ref Env, s: string)
 {
@@ -263,7 +263,7 @@ return;
 l->mashinit("load" :: s :: nil, lib, l, e);
 }
 #
-#	Execute a spawned thread (dis module or builtin).
+# Execute a spawned thread (dis module or builtin).
 #
 mkprog(args: list of string, e: ref Env, in, out: ref Sys->FD, wc: chan of int, ec, xc: chan of string)
 {
@@ -305,13 +305,13 @@ xc <-= x;
 # the command failure should be propagated silently to
 # a higher level, where $status can be set.. - wrtp.
 #else
-#	sys->fprint(console, "%s: %s\n", cmd, x.name);
+# sys->fprint(console, "%s: %s\n", cmd, x.name);
 exit;
 EPIPE =>
 if (xc != nil)
 xc <-= x;
 #else
-#	sys->fprint(console, "%s: %s\n", cmd, x.name);
+# sys->fprint(console, "%s: %s\n", cmd, x.name);
 exit;
 EXIT =>
 if (ec != nil)
@@ -320,7 +320,7 @@ exit;
 }
 }
 #
-#	Open/create files for redirection.
+# Open/create files for redirection.
 #
 redirect(e: ref Env, f: array of string, in, out: ref Sys->FD): (int, ref Sys->FD, ref Sys->FD)
 {
@@ -365,7 +365,7 @@ return (0, nil, nil);
 return (1, in, out);
 }
 #
-#	Spawn a command and maybe wait for it.
+# Spawn a command and maybe wait for it.
 #
 exec(a: list of string, e: ref Env, infd, outfd: ref Sys->FD, wait: int)
 {

@@ -18,7 +18,7 @@ MAILIMAP_ANNOTATEMORE_RESP_TEXT_CODE_TOOMANY
 void mailimap_annotatemore_attrib_free(char * attrib);
 void mailimap_annotatemore_value_free(char * value);
 void mailimap_annotatemore_entry_free(char * entry);
-struct mailimap_annotatemore_att_value  {
+struct mailimap_annotatemore_att_value {
 char * attrib;
 char * value;
 };

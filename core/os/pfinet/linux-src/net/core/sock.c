@@ -35,7 +35,7 @@
 #ifdef CONFIG_FILTER
 #include <linux/filter.h>
 #endif
-#define min(a,b)	((a)<(b)?(a):(b))
+#define min(a,b) ((a)<(b)?(a):(b))
 __u32 sysctl_wmem_max = SK_WMEM_MAX;
 __u32 sysctl_rmem_max = SK_RMEM_MAX;
 __u32 sysctl_wmem_default = SK_WMEM_MAX;
@@ -641,24 +641,24 @@ skb_queue_head_init(&sk->write_queue);
 skb_queue_head_init(&sk->back_log);
 skb_queue_head_init(&sk->error_queue);
 init_timer(&sk->timer);
-sk->allocation	=	GFP_KERNEL;
-sk->rcvbuf	=	sysctl_rmem_default;
-sk->sndbuf	=	sysctl_wmem_default;
-sk->state 	= 	TCP_CLOSE;
-sk->zapped	=	1;
-sk->socket	=	sock;
+sk->allocation = GFP_KERNEL;
+sk->rcvbuf = sysctl_rmem_default;
+sk->sndbuf = sysctl_wmem_default;
+sk->state = TCP_CLOSE;
+sk->zapped = 1;
+sk->socket = sock;
 if(sock)
 {
-sk->type	=	sock->type;
-sk->sleep	=	&sock->wait;
-sock->sk	=	sk;
+sk->type = sock->type;
+sk->sleep = &sock->wait;
+sock->sk = sk;
 }
-sk->state_change	=	sock_def_wakeup;
-sk->data_ready		=	sock_def_readable;
-sk->write_space		=	sock_def_write_space;
-sk->error_report	=	sock_def_error_report;
-sk->destruct            =       sock_def_destruct;
-sk->peercred.pid 	=	0;
-sk->peercred.uid	=	-1;
-sk->peercred.gid	=	-1;
+sk->state_change = sock_def_wakeup;
+sk->data_ready = sock_def_readable;
+sk->write_space = sock_def_write_space;
+sk->error_report = sock_def_error_report;
+sk->destruct = sock_def_destruct;
+sk->peercred.pid = 0;
+sk->peercred.uid = -1;
+sk->peercred.gid = -1;
 }

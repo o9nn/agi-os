@@ -9,24 +9,24 @@ char *type;
 void (*f)(Message*, Header*, char*);
 int len;
 };
-static	void	ctype(Message*, Header*, char*);
-static	void	cencoding(Message*, Header*, char*);
-static	void	cdisposition(Message*, Header*, char*);
-static	void	date822(Message*, Header*, char*);
-static	void	from822(Message*, Header*, char*);
-static	void	to822(Message*, Header*, char*);
-static	void	sender822(Message*, Header*, char*);
-static	void	replyto822(Message*, Header*, char*);
-static	void	subject822(Message*, Header*, char*);
-static	void	inreplyto822(Message*, Header*, char*);
-static	void	cc822(Message*, Header*, char*);
-static	void	bcc822(Message*, Header*, char*);
-static	void	messageid822(Message*, Header*, char*);
-static	void	mimeversion(Message*, Header*, char*);
-static	void	nullsqueeze(Message*);
+static void ctype(Message*, Header*, char*);
+static void cencoding(Message*, Header*, char*);
+static void cdisposition(Message*, Header*, char*);
+static void date822(Message*, Header*, char*);
+static void from822(Message*, Header*, char*);
+static void to822(Message*, Header*, char*);
+static void sender822(Message*, Header*, char*);
+static void replyto822(Message*, Header*, char*);
+static void subject822(Message*, Header*, char*);
+static void inreplyto822(Message*, Header*, char*);
+static void cc822(Message*, Header*, char*);
+static void bcc822(Message*, Header*, char*);
+static void messageid822(Message*, Header*, char*);
+static void mimeversion(Message*, Header*, char*);
+static void nullsqueeze(Message*);
 enum
 {
-Mhead=	11,
+Mhead= 11,
 };
 Header head[] =
 {
@@ -41,25 +41,25 @@ Header head[] =
 { "in-reply-to:", inreplyto822, },
 { "mime-version:", mimeversion, },
 { "message-id:", messageid822, },
-[Mhead]	{ "content-type:", ctype, },
+[Mhead] { "content-type:", ctype, },
 { "content-transfer-encoding:", cencoding, },
 { "content-disposition:", cdisposition, },
 { 0, },
 };
-static	void	fatal(char *fmt, ...);
-static	void	initquoted(void);
-static	void	startheader(Message*);
-static	void	startbody(Message*);
-static	char*	skipwhite(char*);
-static	char*	skiptosemi(char*);
-static	char*	getstring(char*, String*, int);
-static	void	setfilename(Message*, char*);
-static	char*	lowercase(char*);
-static	int	is8bit(Message*);
-static	int	headerline(char**, String*);
-static	void	initheaders(void);
-static void	parseattachments(Message*, Mailbox*);
-int		debug;
+static void fatal(char *fmt, ...);
+static void initquoted(void);
+static void startheader(Message*);
+static void startbody(Message*);
+static char* skipwhite(char*);
+static char* skiptosemi(char*);
+static char* getstring(char*, String*, int);
+static void setfilename(Message*, char*);
+static char* lowercase(char*);
+static int is8bit(Message*);
+static int headerline(char**, String*);
+static void initheaders(void);
+static void parseattachments(Message*, Mailbox*);
+int debug;
 char *Enotme = "path not served by this file server";
 enum
 {
@@ -944,7 +944,7 @@ default:
 *out++ = c;
 break;
 case '=':
-c  = hex2int(*in++);
+c = hex2int(*in++);
 c2 = hex2int(*in++);
 if (c != -1 && c2 != -1)
 *out++ = c<<4 | c2;

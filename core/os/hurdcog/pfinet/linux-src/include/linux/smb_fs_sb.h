@@ -16,10 +16,10 @@ pid_t conn_pid;
 struct smb_conn_opt opt;
 struct semaphore sem;
 struct wait_queue * wait;
-__u32              packet_size;
-unsigned char *    packet;
-unsigned short     rcls;
-unsigned short     err;
+__u32 packet_size;
+unsigned char * packet;
+unsigned short rcls;
+unsigned short err;
 void *data_ready;
 };
 #endif

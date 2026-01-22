@@ -5,7 +5,7 @@ static inline uint32_t rotl32 ( uint32_t x, int8_t r )
 {
 return (x << r) | (x >> (32 - r));
 }
-#define ROTL32(x,y)     rotl32(x,y)
+#define ROTL32(x,y) rotl32(x,y)
 FORCE_INLINE uint32_t getblock32 ( const uint8_t * p, int i )
 {
 return p[i] + (p[i+1]<<8) + (p[i+2]<<16) + (((uint32_t) p[i+3])<<24);

@@ -3,8 +3,8 @@
 int
 tas(long *x)
 {
-int     v;
-__asm__(	"movl   $1, %%eax\n\t"
+int v;
+__asm__( "movl   $1, %%eax\n\t"
 "xchgl  %%eax,(%%ecx)"
 : "=a" (v)
 : "c" (x)

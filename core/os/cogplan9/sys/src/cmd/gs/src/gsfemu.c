@@ -5,11 +5,11 @@
 #define dx(ld) ((ld[msw] >> 20) & 0x7ff)
 #define dx_bias 1023
 #if arch_is_big_endian
-#  define msw 0
-#  define lsw 1
+# define msw 0
+# define lsw 1
 #else
-#  define msw 1
-#  define lsw 0
+# define msw 1
+# define lsw 0
 #endif
 #define la ((const long *)&a)
 #define ula ((const ulong *)&a)
@@ -322,8 +322,8 @@ raise(SIGFPE);
 lc[lsw] = 0;
 lc[msw] =
 (la[msw] & 0x7fffffff ?
-sign + 0x7ff00000  :
-0x7ff80000  );
+sign + 0x7ff00000 :
+0x7ff80000 );
 return dc;
 }
 if (!(la[msw] & 0x7fffffff))

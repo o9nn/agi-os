@@ -5,8 +5,8 @@
 #include "mem.h"
 #include "expand.h"
 #include "inflate.guts.c"
-#define KB		1024
-#define MB		(1024*1024)
+#define KB 1024
+#define MB (1024*1024)
 extern char edata[];
 void mb586(void);
 void splhi(void);
@@ -25,14 +25,14 @@ swap(ulong p)
 return p<<24 | p>>24 | (p<<8)&0x00FF0000 | (p>>8)&0x0000FF00;
 }
 enum {
-Data=		0x60,
-Status=		0x64,
-Inready=	0x01,
-Outbusy=	0x02,
-Cmd=		0x64,
-Sysctla=	0x92,
-Sysctlreset=	1<<0,
-Sysctla20ena=	1<<1,
+Data= 0x60,
+Status= 0x64,
+Inready= 0x01,
+Outbusy= 0x02,
+Cmd= 0x64,
+Sysctla= 0x92,
+Sysctlreset= 1<<0,
+Sysctla20ena= 1<<1,
 };
 static int
 isa20on(void)

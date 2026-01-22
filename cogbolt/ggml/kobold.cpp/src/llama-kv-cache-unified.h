@@ -32,7 +32,7 @@ using idx_vec_t = std::vector<uint32_t>;
 llama_seq_id s0;
 llama_seq_id s1;
 std::vector<llama_seq_id> strm;
-std::vector<idx_vec_t>    idxs;
+std::vector<idx_vec_t> idxs;
 uint32_t head() const {
 GGML_ASSERT(idxs.size() == 1);
 GGML_ASSERT(!idxs[0].empty());
@@ -59,18 +59,18 @@ idxs.clear();
 };
 using slot_info_vec_t = std::vector<slot_info>;
 llama_kv_cache_unified(
-const llama_model &  model,
+const llama_model & model,
 layer_filter_cb && filter,
-ggml_type    type_k,
-ggml_type    type_v,
-bool    v_trans,
-bool    offload,
-bool    unified,
-uint32_t    kv_size,
-uint32_t    n_seq_max,
-uint32_t    n_pad,
-uint32_t    n_swa,
-llama_swa_type    swa_type);
+ggml_type type_k,
+ggml_type type_v,
+bool v_trans,
+bool offload,
+bool unified,
+uint32_t kv_size,
+uint32_t n_seq_max,
+uint32_t n_pad,
+uint32_t n_swa,
+llama_swa_type swa_type);
 ~llama_kv_cache_unified() = default;
 llama_memory_context_ptr init_batch(
 llama_batch_allocr & balloc,
@@ -80,16 +80,16 @@ llama_memory_context_ptr init_full() override;
 llama_memory_context_ptr init_update(llama_context * lctx, bool optimize) override;
 bool get_can_shift() const override;
 void clear(bool data) override;
-bool seq_rm  (llama_seq_id seq_id,                              llama_pos p0, llama_pos p1) override;
-void seq_cp  (llama_seq_id seq_id_src, llama_seq_id seq_id_dst, llama_pos p0, llama_pos p1) override;
-void seq_keep(llama_seq_id seq_id)                                                          override;
-void seq_add (llama_seq_id seq_id,                              llama_pos p0, llama_pos p1, llama_pos shift) override;
-void seq_div (llama_seq_id seq_id,                              llama_pos p0, llama_pos p1, int d) override;
+bool seq_rm (llama_seq_id seq_id, llama_pos p0, llama_pos p1) override;
+void seq_cp (llama_seq_id seq_id_src, llama_seq_id seq_id_dst, llama_pos p0, llama_pos p1) override;
+void seq_keep(llama_seq_id seq_id) override;
+void seq_add (llama_seq_id seq_id, llama_pos p0, llama_pos p1, llama_pos shift) override;
+void seq_div (llama_seq_id seq_id, llama_pos p0, llama_pos p1, int d) override;
 llama_pos seq_pos_min(llama_seq_id seq_id) const override;
 llama_pos seq_pos_max(llama_seq_id seq_id) const override;
 void state_write(llama_io_write_i & io, llama_seq_id seq_id = -1) const override;
-void state_read (llama_io_read_i  & io, llama_seq_id seq_id = -1)       override;
-uint32_t get_size()     const;
+void state_read (llama_io_read_i & io, llama_seq_id seq_id = -1) override;
+uint32_t get_size() const;
 uint32_t get_n_stream() const;
 bool get_has_shift() const;
 uint32_t get_n_kv() const;
@@ -107,7 +107,7 @@ ggml_tensor * build_input_v_idxs(ggml_context * ctx, const llama_ubatch & ubatch
 void set_input_k_idxs(ggml_tensor * dst, const llama_ubatch * ubatch, const slot_info & sinfo) const;
 void set_input_v_idxs(ggml_tensor * dst, const llama_ubatch * ubatch, const slot_info & sinfo) const;
 void set_input_k_shift(ggml_tensor * dst) const;
-void set_input_kq_mask   (ggml_tensor * dst, const llama_ubatch * ubatch, bool causal_attn) const;
+void set_input_kq_mask (ggml_tensor * dst, const llama_ubatch * ubatch, bool causal_attn) const;
 void set_input_pos_bucket(ggml_tensor * dst, const llama_ubatch * ubatch) const;
 private:
 const llama_model & model;
@@ -121,13 +121,13 @@ std::vector<ggml_tensor *> v_stream;
 };
 bool v_trans = true;
 const uint32_t n_seq_max = 1;
-const uint32_t n_stream  = 1;
+const uint32_t n_stream = 1;
 const uint32_t n_pad = 1;
 const uint32_t n_swa = 0;
 int debug = 0;
 bool supports_set_rows = true;
 const llama_swa_type swa_type = LLAMA_SWA_TYPE_NONE;
-std::vector<ggml_context_ptr>        ctxs;
+std::vector<ggml_context_ptr> ctxs;
 std::vector<ggml_backend_buffer_ptr> bufs;
 std::vector<uint32_t> v_heads;
 std::vector<llama_kv_cells_unified> v_cells;
@@ -146,8 +146,8 @@ ggml_context * ctx,
 ggml_tensor * cur,
 ggml_tensor * shift,
 ggml_tensor * factors,
-float   freq_base,
-float   freq_scale) const;
+float freq_base,
+float freq_scale) const;
 ggml_cgraph * build_graph_shift(
 llm_graph_result * res,
 llama_context * lctx) const;
@@ -166,8 +166,8 @@ bool state_read_data(llama_io_read_i & io, uint32_t strm, uint32_t cell_count);
 };
 class llama_kv_cache_unified_context : public llama_memory_context_i {
 public:
-using slot_info_vec_t  = llama_kv_cache_unified::slot_info_vec_t;
-using defrag_info      = llama_kv_cache_unified::defrag_info;
+using slot_info_vec_t = llama_kv_cache_unified::slot_info_vec_t;
+using defrag_info = llama_kv_cache_unified::defrag_info;
 using stream_copy_info = llama_kv_cache_unified::stream_copy_info;
 llama_kv_cache_unified_context(llama_memory_status status);
 llama_kv_cache_unified_context(
@@ -183,9 +183,9 @@ llama_kv_cache_unified * kv,
 slot_info_vec_t sinfos,
 std::vector<llama_ubatch> ubatches);
 virtual ~llama_kv_cache_unified_context();
-bool next()  override;
+bool next() override;
 bool apply() override;
-llama_memory_status  get_status() const override;
+llama_memory_status get_status() const override;
 const llama_ubatch & get_ubatch() const override;
 uint32_t get_n_kv() const;
 bool get_supports_set_rows() const;
@@ -197,8 +197,8 @@ ggml_tensor * build_input_k_idxs(ggml_context * ctx, const llama_ubatch & ubatch
 ggml_tensor * build_input_v_idxs(ggml_context * ctx, const llama_ubatch & ubatch) const;
 void set_input_k_idxs(ggml_tensor * dst, const llama_ubatch * ubatch) const;
 void set_input_v_idxs(ggml_tensor * dst, const llama_ubatch * ubatch) const;
-void set_input_k_shift   (ggml_tensor * dst) const;
-void set_input_kq_mask   (ggml_tensor * dst, const llama_ubatch * ubatch, bool causal_attn) const;
+void set_input_k_shift (ggml_tensor * dst) const;
+void set_input_kq_mask (ggml_tensor * dst, const llama_ubatch * ubatch, bool causal_attn) const;
 void set_input_pos_bucket(ggml_tensor * dst, const llama_ubatch * ubatch) const;
 private:
 llama_memory_status status;

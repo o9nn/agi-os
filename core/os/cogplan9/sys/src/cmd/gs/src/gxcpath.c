@@ -438,7 +438,7 @@ return gx_cpath_intersect(pcpath, ppath_orig, rule,
 (gs_imager_state *)pgs);
 }
 int
-gx_cpath_intersect(gx_clip_path *pcpath,  gx_path *ppath_orig,
+gx_cpath_intersect(gx_clip_path *pcpath, gx_path *ppath_orig,
 int rule, gs_imager_state *pis)
 {
 gx_path fpath;

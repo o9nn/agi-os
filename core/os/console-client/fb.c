@@ -61,8 +61,8 @@ static int current_height;
 static int current_fg = 7;
 static int current_bg = 0;
 #define fb_pos(_col, _row) (vga_videomem + fb_bpp/8 * ( (_row) * fb_hc * disp->width + (_col) * fb_wc ))
-#define CURSOR_GLYPH	0x2581
-#define CURSOR_COLOUR	7
+#define CURSOR_GLYPH 0x2581
+#define CURSOR_COLOUR 7
 struct display_ops fb_display_ops;
 error_t
 fb_get_multiboot_params (void)
@@ -186,23 +186,23 @@ FILE *font_file;
 err = fb_init ();
 if (err)
 return err;
-#define LOAD_FONT(x,y,z)						\
-do {									\
-font_file = fopen (fb_display_##x ?: DEFAULT_VGA_##y, "r");		\
-if (font_file)							\
-{									\
-bdf_error_t bdferr = bdf_read (font_file, &z, NULL);		\
-if (bdferr)							\
-{								\
-z = NULL;							\
-err = ENOSYS;							\
-}								\
-else								\
-bdf_sort_glyphs (z);						\
-fclose (font_file);						\
-}									\
-else									\
-err = ENOSYS;							\
+#define LOAD_FONT(x,y,z) \
+do { \
+font_file = fopen (fb_display_##x ?: DEFAULT_VGA_##y, "r"); \
+if (font_file) \
+{ \
+bdf_error_t bdferr = bdf_read (font_file, &z, NULL); \
+if (bdferr) \
+{ \
+z = NULL; \
+err = ENOSYS; \
+} \
+else \
+bdf_sort_glyphs (z); \
+fclose (font_file); \
+} \
+else \
+err = ENOSYS; \
 } while (0)
 LOAD_FONT (font, FONT, disp->font);
 if (err)

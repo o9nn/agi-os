@@ -1,20 +1,20 @@
 (Inheritance
-  (Concept "A")
-  (Concept "B"))
+(Concept "A")
+(Concept "B"))
 (Inheritance
-  (Concept "A")
-  (Variable "$freevar"))
+(Concept "A")
+(Variable "$freevar"))
 (define query
-  (Get
-    (TypedVariable
-      (Variable "$I")
-      (Type 'Inheritance))
-    (Present (Variable "$I"))))
+(Get
+(TypedVariable
+(Variable "$I")
+(Type 'Inheritance))
+(Present (Variable "$I"))))
 (define closed-query
-  (Get
-    (TypedVariable
-      (Variable "$I")
-      (Type 'Inheritance))
-    (And
-     (Present (Variable "$I"))
-     (IsClosed (Variable "$I")))))
+(Get
+(TypedVariable
+(Variable "$I")
+(Type 'Inheritance))
+(And
+(Present (Variable "$I"))
+(IsClosed (Variable "$I")))))

@@ -13,24 +13,24 @@ IH_NMLEN = 32
 typedef struct Imagehdr Imagehdr;
 struct Imagehdr
 {
-ulong	magic;
-ulong	hcrc;
-ulong	time;
-ulong	size;
-ulong	load;
-ulong	entry;
-ulong	dcrc;
-uchar	os;
-uchar	arch;
-uchar	type;
-uchar	comp;
-char		name[IH_NMLEN];
+ulong magic;
+ulong hcrc;
+ulong time;
+ulong size;
+ulong load;
+ulong entry;
+ulong dcrc;
+uchar os;
+uchar arch;
+uchar type;
+uchar comp;
+char name[IH_NMLEN];
 };
 static Imagehdr ih;
 static char *fname;
 static ulong crc32(ulong, uchar*, unsigned int);
 static long Read(int, void*, long);
-static void	Write(int, void*, long);
+static void Write(int, void*, long);
 static ulong
 swal(ulong l)
 {
@@ -195,9 +195,9 @@ static ulong crc_table[256] = {
 0x2d02ef8dL
 };
 #define DO1(buf) crc = crc_table[((int)crc ^ (*buf++)) & 0xff] ^ (crc >> 8);
-#define DO2(buf)  DO1(buf); DO1(buf);
-#define DO4(buf)  DO2(buf); DO2(buf);
-#define DO8(buf)  DO4(buf); DO4(buf);
+#define DO2(buf) DO1(buf); DO1(buf);
+#define DO4(buf) DO2(buf); DO2(buf);
+#define DO8(buf) DO4(buf); DO4(buf);
 static ulong
 crc32(ulong crc, uchar *buf, unsigned len)
 {

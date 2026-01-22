@@ -13,32 +13,32 @@ int seagate_st0x_proc_info(char *,char **,off_t,int,int,int);
 #endif
 #include <linux/kdev_t.h>
 int seagate_st0x_biosparam(Disk *, kdev_t, int*);
-#define SEAGATE_ST0X  {  NULL, NULL, NULL, seagate_st0x_proc_info, \
-NULL, seagate_st0x_detect, 	\
-NULL, 						\
-seagate_st0x_info, seagate_st0x_command,  	\
+#define SEAGATE_ST0X { NULL, NULL, NULL, seagate_st0x_proc_info, \
+NULL, seagate_st0x_detect, \
+NULL, \
+seagate_st0x_info, seagate_st0x_command, \
 seagate_st0x_queue_command, seagate_st0x_abort, \
 seagate_st0x_reset, NULL, seagate_st0x_biosparam, \
 1, 7, SG_ALL, 1, 0, 0, DISABLE_CLUSTERING}
 #endif
 #define PARITY
-#define CMD_RST 		0x01
-#define CMD_SEL 		0x02
-#define CMD_BSY 		0x04
-#define CMD_ATTN    		0x08
-#define CMD_START_ARB		0x10
-#define CMD_EN_PARITY		0x20
-#define CMD_INTR		0x40
-#define CMD_DRVR_ENABLE		0x80
-#define STAT_BSY		0x01
-#define STAT_MSG		0x02
-#define STAT_IO			0x04
-#define STAT_CD			0x08
-#define STAT_REQ		0x10
-#define STAT_SEL		0x20
-#define STAT_PARITY		0x40
-#define STAT_ARB_CMPL		0x80
-#define REQ_MASK (STAT_CD |  STAT_IO | STAT_MSG)
+#define CMD_RST 0x01
+#define CMD_SEL 0x02
+#define CMD_BSY 0x04
+#define CMD_ATTN 0x08
+#define CMD_START_ARB 0x10
+#define CMD_EN_PARITY 0x20
+#define CMD_INTR 0x40
+#define CMD_DRVR_ENABLE 0x80
+#define STAT_BSY 0x01
+#define STAT_MSG 0x02
+#define STAT_IO 0x04
+#define STAT_CD 0x08
+#define STAT_REQ 0x10
+#define STAT_SEL 0x20
+#define STAT_PARITY 0x40
+#define STAT_ARB_CMPL 0x80
+#define REQ_MASK (STAT_CD | STAT_IO | STAT_MSG)
 #define REQ_DATAOUT 0
 #define REQ_DATAIN STAT_IO
 #define REQ_CMDOUT STAT_CD
@@ -49,7 +49,7 @@ extern volatile int seagate_st0x_timeout;
 #ifdef PARITY
 #define BASE_CMD CMD_EN_PARITY
 #else
-#define BASE_CMD  0
+#define BASE_CMD 0
 #endif
 #define PHASE_BUS_FREE 1
 #define PHASE_ARBITRATION 2
@@ -65,14 +65,14 @@ extern volatile int seagate_st0x_timeout;
 #define PHASE_EXIT 0x400
 #define PHASE_RESELECT 0x800
 #define DEBUG_FAST 0x1000
-#define DEBUG_SG   0x2000
-#define DEBUG_LINKED	0x4000
-#define DEBUG_BORKEN	0x8000
+#define DEBUG_SG 0x2000
+#define DEBUG_LINKED 0x4000
+#define DEBUG_BORKEN 0x8000
 #define ST0X_BUS_FREE_DELAY 25
 #define ST0X_SELECTION_DELAY 25
 #define eoi() __asm__("push %%eax\nmovb $0x20, %%al\noutb %%al, $0x20\npop %%eax"::)
 #define SEAGATE 1
-#define FD	2
-#define ST0X_ID_STR	"Seagate ST-01/ST-02"
-#define FD_ID_STR	"TMC-8XX/TMC-950"
+#define FD 2
+#define ST0X_ID_STR "Seagate ST-01/ST-02"
+#define FD_ID_STR "TMC-8XX/TMC-950"
 #endif

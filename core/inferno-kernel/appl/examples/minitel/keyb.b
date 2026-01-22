@@ -1,27 +1,27 @@
 #
-# Copyright © 1998 Vita Nuova Limited.  All rights reserved.
+# Copyright © 1998 Vita Nuova Limited. All rights reserved.
 #
 # special keyboard operations
-Extend,				# enable cursor and editing keys and control chars
-C0keys,				# cursor keys send BS,HT,LF and VT
-Invert				# case inversion
+Extend, # enable cursor and editing keys and control chars
+C0keys, # cursor keys send BS,HT,LF and VT
+Invert # case inversion
 : con 1 << iota;
 Keyb: adt {
-m:		ref Module;			# common attributes
-in:		chan of ref Event;
-cmd:		chan of string;			# from Tk (keypresses and focus)
-spec:	int;					# special keyboard extensions
-init:		fn(k: self ref Keyb, toplevel: ref Tk->Toplevel);
-reset:	fn(k: self ref Keyb);
-run:		fn(k: self ref Keyb);
-quit:		fn(k: self ref Keyb);
-map:		fn(k: self ref Keyb, key:int): array of byte;
+m: ref Module; # common attributes
+in: chan of ref Event;
+cmd: chan of string; # from Tk (keypresses and focus)
+spec: int; # special keyboard extensions
+init: fn(k: self ref Keyb, toplevel: ref Tk->Toplevel);
+reset: fn(k: self ref Keyb);
+run: fn(k: self ref Keyb);
+quit: fn(k: self ref Keyb);
+map: fn(k: self ref Keyb, key:int): array of byte;
 };
 Keyb.init(k: self ref Keyb, toplevel: ref Tk->Toplevel)
 {
 k.in = chan of ref Event;
 k.cmd = chan of string;
-tk->namechan(toplevel, k.cmd, "keyb");		# Tk -> keyboard
+tk->namechan(toplevel, k.cmd, "keyb"); # Tk -> keyboard
 k.reset();
 }
 Keyb.reset(k: self ref Keyb)
@@ -33,7 +33,7 @@ ask(in: chan of string, out: chan of string)
 keys: string;
 T.mode = Videotex;
 S.setmode(Videotex);
-#	clear(S);
+# clear(S);
 prompt: con "Numéroter: ";
 number := M.lastdialstr;
 S.msg(prompt);
@@ -51,7 +51,7 @@ if (keys == nil)
 return;
 keys = canoncmd(keys);
 case keys {
-"connect"  or "send" =>
+"connect" or "send" =>
 break Input;
 "correct" =>
 if(len number > 0)
@@ -126,7 +126,7 @@ keys := k.map(key);
 if(keys != nil) {
 send(ref Event.Edata(k.m.path, Mkeyb, keys));
 }
-"skey" =>		# minitel key hit (soft key)
+"skey" => # minitel key hit (soft key)
 if(hd tl args == "Exit") {
 if(askchan != dontask) {
 askchan = dontask;
@@ -169,7 +169,7 @@ seq := keyseq(hd tl args);
 if(seq != nil)
 send(ref Event.Edata(k.m.path, Mkeyb, seq));
 }
-"click" =>		# fetch a word from the display
+"click" => # fetch a word from the display
 x := int hd tl args;
 y := int hd tl tl args;
 word := disp->GetWord(Point(x, y));
@@ -243,20 +243,20 @@ return array [] of {byte key};
 }
 # miscellaneous key mapping
 case key {
-16r20	=> ;										# space
-16ra3	=> return array [] of { byte 16r19, byte 16r23 };		# pound
+16r20 => ; # space
+16ra3 => return array [] of { byte 16r19, byte 16r23 }; # pound
 '!' or '"' or '#' or '$'
 or '%' or '&' or '\'' or '(' or ')'
 or '*' or '+' or ',' or '-'
 or '.' or ':' or ';' or '<'
-or '=' or '>' or '?' or '@'  => ;
-KF13 =>	# request for error correction - usually Fnct M + C
+or '=' or '>' or '?' or '@' => ;
+KF13 => # request for error correction - usually Fnct M + C
 if((M.spec&Ecp) == 0 && T.state == Online && T.connect == Direct) {
 fprint(stderr, "requesting Ecp\n");
 return array [] of { byte SEP, byte 16r4a };
 }
 return nil;
-*		=> return nil;
+* => return nil;
 }
 return array [] of {byte key};
 }
@@ -269,16 +269,16 @@ canoncmd(s : string) : string
 s = tolower(s);
 case s {
 "connect" or "cx/fin" or
-"connexion" or "fin"		=> return "connect";
-"send" or "envoi" 		=> return "send";
-"repeat" or "repetition"	=> return "repeat";
+"connexion" or "fin" => return "connect";
+"send" or "envoi" => return "send";
+"repeat" or "repetition" => return "repeat";
 "index" or "sommaire" or "somm"
 => return "index";
-"guide"				=> return "guide";
-"correct" or "correction"	=> return "correct";
+"guide" => return "guide";
+"correct" or "correction" => return "correct";
 "cancel" or "annulation" or "annul" or "annu"
 => return "cancel";
-"next" or "suite"		=> return "next";
+"next" or "suite" => return "next";
 "previous" or "retour" or "retou"
 => return "previous";
 }
@@ -297,15 +297,15 @@ skey = skey[1:];
 }
 skey = canoncmd(skey);
 case skey {
-"connect" 	=> b2 = 16r49;
-"send"  		=> b2 = 16r41;
-"repeat"		=> b2 = 16r43;
-"index"		=> b2 = 16r46;
-"guide"		=> b2 = 16r44;
-"correct"		=> b2 = 16r47;
-"cancel"		=> b2 = 16r45;
-"next"		=> b2 = 16r48;
-"previous" 	=> b2 = 16r42;
+"connect" => b2 = 16r49;
+"send" => b2 = 16r41;
+"repeat" => b2 = 16r43;
+"index" => b2 = 16r46;
+"guide" => b2 = 16r44;
+"correct" => b2 = 16r47;
+"cancel" => b2 = 16r45;
+"next" => b2 = 16r48;
+"previous" => b2 = 16r42;
 }
 if(b2) {
 if(asterisk)

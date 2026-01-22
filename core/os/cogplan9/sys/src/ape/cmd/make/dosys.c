@@ -3,10 +3,10 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <errno.h>
-static int	metas(char *);
-static int	waitproc(int *);
-static int	doshell(char *, int);
-static int	doexec(char *);
+static int metas(char *);
+static int waitproc(int *);
+static int doshell(char *, int);
+static int doexec(char *);
 int
 dosys(char *comstring, int nohalt, int nowait, char *prefix)
 {
@@ -128,7 +128,7 @@ if(procp->nowait)
 printf("%d: ", pid);
 if( WEXITSTATUS(status) )
 printf("*** Error code %d", WEXITSTATUS(status) );
-else	printf("*** Termination code %d", WTERMSIG(status));
+else printf("*** Termination code %d", WTERMSIG(status));
 printf(procp->nohalt ? "(ignored)\n" : "\n");
 fflush(stdout);
 if(!keepgoing && !procp->nohalt)
@@ -174,7 +174,7 @@ for(t = str ; *t ; )
 while(*t!=' ' && *t!='\t' && *t!='\0')
 ++t;
 if(*t)
-for( *t++ = '\0' ; *t==' ' || *t=='\t'  ; ++t)
+for( *t++ = '\0' ; *t==' ' || *t=='\t' ; ++t)
 ;
 }
 p = argv = (char **) ckalloc(nargs*sizeof(char *));
@@ -184,7 +184,7 @@ for(t = str ; t<tend ; )
 *p++ = t;
 while( *t )
 ++t;
-do	{
+do {
 ++t;
 } while(t<tend && (*t==' ' || *t=='\t') );
 }

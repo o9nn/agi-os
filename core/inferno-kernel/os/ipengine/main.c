@@ -1,15 +1,15 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"ureg.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "ureg.h"
 #include "version.h"
-#define	MAXCONF		32
+#define MAXCONF 32
 extern ulong kerndate;
 extern int cflag;
-int	remotedebug;
+int remotedebug;
 extern int main_pool_pcnt;
 extern int heap_pool_pcnt;
 extern int image_pool_pcnt;
@@ -155,7 +155,7 @@ p->sched.pc = (ulong)init0;
 p->sched.sp = (ulong)p->kstack+KSTACK;
 ready(p);
 }
-Conf	conf;
+Conf conf;
 void
 addconf(char *name, char *val)
 {

@@ -102,7 +102,7 @@ case 1:
 va = vb;
 case 2:
 vb = vc;
-v2:		if ((code = Gt_next_vertex(state.pshm, &cs, &vc)) < 0)
+v2: if ((code = Gt_next_vertex(state.pshm, &cs, &vc)) < 0)
 return code;
 if ((code = Gt_fill_triangle(&state, &va, &vb, &vc)) < 0)
 return code;

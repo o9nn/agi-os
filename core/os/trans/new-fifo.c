@@ -25,12 +25,12 @@ struct port_bucket *port_bucket;
 struct port_class *fifo_port_class, *server_port_class, *fsys_port_class;
 static const struct argp_option options[] =
 {
-{"multiple-readers", 'r', 0,     0, "Allow multiple simultaneous readers"},
-{"noblock",          'n', 0,     0, "Don't block on open"},
-{"dgram",            'd', 0,     0, "Reflect write record boundaries"},
-{"server",	       's', 0,     0, "Operate in server mode"},
-{"standalone",       'S', 0,     0, "Don't attempt to use a fifo server"},
-{"use-server",       'U', "NAME",0, "Attempt use server NAME"},
+{"multiple-readers", 'r', 0, 0, "Allow multiple simultaneous readers"},
+{"noblock", 'n', 0, 0, "Don't block on open"},
+{"dgram", 'd', 0, 0, "Reflect write record boundaries"},
+{"server", 's', 0, 0, "Operate in server mode"},
+{"standalone", 'S', 0, 0, "Don't attempt to use a fifo server"},
+{"use-server", 'U', "NAME",0, "Attempt use server NAME"},
 {0,0}
 };
 struct fifo_trans
@@ -168,17 +168,17 @@ error_t err = 0;
 if (flags & (O_READ | O_WRITE))
 {
 pthread_mutex_lock (&trans->active_fifo_lock);
-#define WAIT(condition, noblock_err)					      \
-while (!err && !(condition))						      \
-{									      \
-if (flags & O_NONBLOCK)						      \
-{								      \
-err = noblock_err;						      \
-break;							      \
-}								      \
-else if (pthread_hurd_cond_wait_np (&trans->active_fifo_changed,	      \
-&trans->active_fifo_lock))	      \
-err = EINTR;							      \
+#define WAIT(condition, noblock_err) \
+while (!err && !(condition)) \
+{ \
+if (flags & O_NONBLOCK) \
+{ \
+err = noblock_err; \
+break; \
+} \
+else if (pthread_hurd_cond_wait_np (&trans->active_fifo_changed, \
+&trans->active_fifo_lock)) \
+err = EINTR; \
 }
 if (flags & O_READ)
 {

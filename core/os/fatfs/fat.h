@@ -53,11 +53,11 @@ unsigned char unused[420];
 #define BOOT_SECTOR_ID 0xaa55
 unsigned char id[2];
 };
-#define FAT_FS_INFO_LEAD_SIGNATURE		0x41615252L
-#define FAT_FS_INFO_STRUCT_SIGNATURE		0x61417272L
-#define FAT_FS_INFO_TRAIL_SIGNAURE		0xaa550000L
-#define FAT_FS_NR_OF_FREE_CLUSTERS_UNKNOWN	0xffffffffL
-#define FAT_FS_NEXT_FREE_CLUSTER_UNKNOWN	0xffffffffL
+#define FAT_FS_INFO_LEAD_SIGNATURE 0x41615252L
+#define FAT_FS_INFO_STRUCT_SIGNATURE 0x61417272L
+#define FAT_FS_INFO_TRAIL_SIGNAURE 0xaa550000L
+#define FAT_FS_NR_OF_FREE_CLUSTERS_UNKNOWN 0xffffffffL
+#define FAT_FS_NEXT_FREE_CLUSTER_UNKNOWN 0xffffffffL
 struct fat_fs_info
 {
 unsigned char lead_signature[4];
@@ -68,30 +68,30 @@ unsigned char next_free_cluster[4];
 unsigned char reserved2[12];
 unsigned char trail_signature[4];
 };
-#define FAT_FREE_CLUSTER	0
-#define FAT12_BAD_CLUSTER	0x0ff7
-#define FAT16_BAD_CLUSTER	0xfff7
-#define FAT32_BAD_CLUSTER	0x0ffffff7L
-#define FAT_BAD_CLUSTER		FAT32_BAD_CLUSTER
-#define FAT12_EOC	0x0ff8
-#define FAT16_EOC	0xfff8
-#define FAT32_EOC	0x0ffffff8
-#define FAT_EOC		FAT32_EOC
-#define FAT_DIR_REC_LEN		32
-#define FAT_DIR_RECORDS(x)	FAT_DIR_REC_LEN
-#define FAT_DIR_ATTR_RDONLY	0x01
-#define FAT_DIR_ATTR_HIDDEN	0x02
-#define FAT_DIR_ATTR_SYSTEM	0x04
-#define FAT_DIR_ATTR_LABEL	0x08
-#define FAT_DIR_ATTR_DIR	0x10
-#define FAT_DIR_ATTR_ARCHIVE	0x20
-#define FAT_DIR_ATTR_LONGNAME	(DIR_ATTR_RDONLY | DIR_ATTR_HIDDEN \
+#define FAT_FREE_CLUSTER 0
+#define FAT12_BAD_CLUSTER 0x0ff7
+#define FAT16_BAD_CLUSTER 0xfff7
+#define FAT32_BAD_CLUSTER 0x0ffffff7L
+#define FAT_BAD_CLUSTER FAT32_BAD_CLUSTER
+#define FAT12_EOC 0x0ff8
+#define FAT16_EOC 0xfff8
+#define FAT32_EOC 0x0ffffff8
+#define FAT_EOC FAT32_EOC
+#define FAT_DIR_REC_LEN 32
+#define FAT_DIR_RECORDS(x) FAT_DIR_REC_LEN
+#define FAT_DIR_ATTR_RDONLY 0x01
+#define FAT_DIR_ATTR_HIDDEN 0x02
+#define FAT_DIR_ATTR_SYSTEM 0x04
+#define FAT_DIR_ATTR_LABEL 0x08
+#define FAT_DIR_ATTR_DIR 0x10
+#define FAT_DIR_ATTR_ARCHIVE 0x20
+#define FAT_DIR_ATTR_LONGNAME (DIR_ATTR_RDONLY | DIR_ATTR_HIDDEN \
 | DIR_ATTR_SYSTEM | DIR_ATTR_LABEL)
-#define FAT_DIR_NAME_LAST	'\x00'
-#define FAT_DIR_NAME_DELETED	'\xe5'
+#define FAT_DIR_NAME_LAST '\x00'
+#define FAT_DIR_NAME_DELETED '\xe5'
 #define FAT_DIR_NAME_REPLACE_DELETED '\x05'
-#define FAT_DIR_NAME_DOT	".          "
-#define FAT_DIR_NAME_DOTDOT	"..         "
+#define FAT_DIR_NAME_DOT ".          "
+#define FAT_DIR_NAME_DOTDOT "..         "
 struct dirrect
 {
 unsigned char name[11];

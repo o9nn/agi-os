@@ -24,7 +24,7 @@ NULL},
 NULL},
 {X509_TRUST_TSA, 0, trust_1oidany, "TSA server", NID_time_stamp, NULL}
 };
-#define X509_TRUST_COUNT        (sizeof(trstandard)/sizeof(X509_TRUST))
+#define X509_TRUST_COUNT (sizeof(trstandard)/sizeof(X509_TRUST))
 IMPLEMENT_STACK_OF(X509_TRUST)
 static STACK_OF(X509_TRUST) *trtable = NULL;
 static int tr_cmp(const X509_TRUST *const *a, const X509_TRUST *const *b)

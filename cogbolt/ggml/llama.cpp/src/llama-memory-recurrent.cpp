@@ -9,13 +9,13 @@
 #include <map>
 #include <stdexcept>
 llama_memory_recurrent::llama_memory_recurrent(
-const llama_model &  model,
+const llama_model & model,
 layer_filter_cb && filter,
-ggml_type    type_r,
-ggml_type    type_s,
-bool    offload,
-uint32_t    mem_size,
-uint32_t    n_seq_max) : hparams(model.hparams), n_seq_max(n_seq_max) {
+ggml_type type_r,
+ggml_type type_s,
+bool offload,
+uint32_t mem_size,
+uint32_t n_seq_max) : hparams(model.hparams), n_seq_max(n_seq_max) {
 const int32_t n_layer = hparams.n_layer;
 head = 0;
 size = mem_size;
@@ -69,7 +69,7 @@ s_l[i] = s;
 }
 for (auto it : ctx_map) {
 auto * buft = it.first;
-auto * ctx  = it.second;
+auto * ctx = it.second;
 ggml_backend_buffer_t buf = ggml_backend_alloc_ctx_tensors_from_buft(ctx, buft);
 if (!buf) {
 throw std::runtime_error("failed to allocate buffer for rs cache");
@@ -329,7 +329,7 @@ return success;
 }
 bool llama_memory_recurrent::find_slot(const llama_ubatch & ubatch) {
 const uint32_t n_seq_tokens = ubatch.n_seq_tokens;
-const uint32_t n_seqs       = ubatch.n_seqs;
+const uint32_t n_seqs = ubatch.n_seqs;
 if (head > used + 2*n_seqs) {
 head = 0;
 }
@@ -484,7 +484,7 @@ cells[i].src = i;
 }
 }
 head = min;
-n    = max - min + 1;
+n = max - min + 1;
 used = std::count_if(cells.begin(), cells.end(),
 [](const mem_cell & cell){ return !cell.is_empty(); });
 return n >= n_seqs;
@@ -566,9 +566,9 @@ void llama_memory_recurrent::state_write_meta(llama_io_write_i & io, const std::
 for (const auto & range : cell_ranges) {
 for (uint32_t i = range.first; i < range.second; ++i) {
 const auto & cell = cells[i];
-const llama_pos pos      = cell.pos;
-const uint32_t  n_seq_id = seq_id == -1 ? cell.seq_id.size() : 0;
-io.write(&pos,      sizeof(pos));
+const llama_pos pos = cell.pos;
+const uint32_t n_seq_id = seq_id == -1 ? cell.seq_id.size() : 0;
+io.write(&pos, sizeof(pos));
 io.write(&n_seq_id, sizeof(n_seq_id));
 if (n_seq_id) {
 for (auto seq_id : cell.seq_id) {
@@ -582,7 +582,7 @@ void llama_memory_recurrent::state_write_data(llama_io_write_i & io, const std::
 const uint32_t s_trans = 0;
 const uint32_t n_layer = hparams.n_layer;
 io.write(&s_trans, sizeof(s_trans));
-io.write(&n_layer,   sizeof(n_layer));
+io.write(&n_layer, sizeof(n_layer));
 std::vector<uint8_t> tmp_buf;
 for (uint32_t il = 0; il < n_layer; ++il) {
 if (r_l[il] == nullptr) continue;
@@ -638,7 +638,7 @@ llama_ubatch ubatch = balloc.ubatch_reserve(cell_count, 1);
 for (uint32_t i = 0; i < cell_count; ++i) {
 llama_pos pos;
 uint32_t n_seq_id;
-io.read_to(&pos,      sizeof(pos));
+io.read_to(&pos, sizeof(pos));
 io.read_to(&n_seq_id, sizeof(n_seq_id));
 if (n_seq_id != 0) {
 LLAMA_LOG_ERROR("%s: invalid seq_id-agnostic kv cell\n", __func__);
@@ -666,8 +666,8 @@ clear(true);
 for (uint32_t i = 0; i < cell_count; ++i) {
 auto & cell = cells[i];
 llama_pos pos;
-uint32_t  n_seq_id;
-io.read_to(&pos,      sizeof(pos));
+uint32_t n_seq_id;
+io.read_to(&pos, sizeof(pos));
 io.read_to(&n_seq_id, sizeof(n_seq_id));
 cell.pos = pos;
 for (uint32_t j = 0; j < n_seq_id; ++j) {
@@ -837,5 +837,5 @@ ggml_tensor * llama_memory_recurrent_context::get_s_l(int32_t il) const {
 return mem->s_l[il];
 }
 int32_t llama_memory_recurrent_context::s_copy(int i) const {
-return  mem->cells[i + mem->head].src0;
+return mem->cells[i + mem->head].src0;
 }

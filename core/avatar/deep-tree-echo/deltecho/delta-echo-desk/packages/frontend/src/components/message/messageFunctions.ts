@@ -12,127 +12,127 @@ import type { T } from '@deltachat/jsonrpc-client'
 import ConfirmDeleteMessageDialog from '../dialogs/ConfirmDeleteMessage'
 const log = getLogger('render/msgFunctions')
 export function onDownload(msg: Type.Message) {
-  if (!msg.file) {
-    log.error('message has no file to download:', msg)
-    throw new Error('message has no file to download')
-  } else if (!msg.fileName) {
-    log.error('message has no filename to download:', msg)
-    throw new Error('message has no file name to download')
-  } else {
-    runtime.downloadFile(msg.file, msg.fileName)
-  }
+if (!msg.file) {
+log.error('message has no file to download:', msg)
+throw new Error('message has no file to download')
+} else if (!msg.fileName) {
+log.error('message has no filename to download:', msg)
+throw new Error('message has no file name to download')
+} else {
+runtime.downloadFile(msg.file, msg.fileName)
+}
 }
 export async function openAttachmentInShell(msg: Type.Message) {
-  if (!msg.file || !msg.fileName) {
-    log.error('message has no file to open:', msg)
-    throw new Error('message has no file to open')
-  }
-  const tmpFile = await runtime.copyFileToInternalTmpDir(msg.fileName, msg.file)
-  if (!runtime.openPath(tmpFile)) {
-    log.info(
-      "file couldn't be opened, try saving it in a different place and try to open it from there"
-    )
-  }
+if (!msg.file || !msg.fileName) {
+log.error('message has no file to open:', msg)
+throw new Error('message has no file to open')
+}
+const tmpFile = await runtime.copyFileToInternalTmpDir(msg.fileName, msg.file)
+if (!runtime.openPath(tmpFile)) {
+log.info(
+"file couldn't be opened, try saving it in a different place and try to open it from there"
+)
+}
 }
 export function openForwardDialog(
-  openDialog: OpenDialog,
-  message: Type.Message
+openDialog: OpenDialog,
+message: Type.Message
 ) {
-  openDialog(ForwardMessage, { message })
+openDialog(ForwardMessage, { message })
 }
 export function confirmDialog(
-  openDialog: OpenDialog,
-  message: string,
-  confirmLabel: string,
-  isConfirmDanger = false
+openDialog: OpenDialog,
+message: string,
+confirmLabel: string,
+isConfirmDanger = false
 ): Promise<boolean> {
-  return new Promise((res, _rej) => {
-    openDialog(ConfirmationDialog, {
-      message,
-      confirmLabel,
-      isConfirmDanger,
-      cb: (yes: boolean) => {
-        res(yes)
-      },
-    })
-  })
+return new Promise((res, _rej) => {
+openDialog(ConfirmationDialog, {
+message,
+confirmLabel,
+isConfirmDanger,
+cb: (yes: boolean) => {
+res(yes)
+},
+})
+})
 }
 export async function confirmForwardMessage(
-  openDialog: OpenDialog,
-  accountId: number,
-  message: Type.Message,
-  chat: Pick<Type.BasicChat, 'name' | 'id'>
+openDialog: OpenDialog,
+accountId: number,
+message: Type.Message,
+chat: Pick<Type.BasicChat, 'name' | 'id'>
 ) {
-  const tx = window.static_translate
-  const yes = await confirmDialog(
-    openDialog,
-    tx('ask_forward', [chat.name]),
-    tx('forward')
-  )
-  if (yes) {
-    await BackendRemote.rpc.forwardMessages(accountId, [message.id], chat.id)
-  }
-  return yes
+const tx = window.static_translate
+const yes = await confirmDialog(
+openDialog,
+tx('ask_forward', [chat.name]),
+tx('forward')
+)
+if (yes) {
+await BackendRemote.rpc.forwardMessages(accountId, [message.id], chat.id)
+}
+return yes
 }
 export function confirmDeleteMessage(
-  openDialog: OpenDialog,
-  accountId: number,
-  msg: Type.Message,
-  chat: Type.FullChat
+openDialog: OpenDialog,
+accountId: number,
+msg: Type.Message,
+chat: Type.FullChat
 ) {
-  openDialog(ConfirmDeleteMessageDialog, {
-    accountId,
-    msg,
-    chat,
-  })
+openDialog(ConfirmDeleteMessageDialog, {
+accountId,
+msg,
+chat,
+})
 }
 export function openMessageInfo(openDialog: OpenDialog, message: Type.Message) {
-  openDialog(MessageDetail, { id: message.id })
+openDialog(MessageDetail, { id: message.id })
 }
 export function setQuoteInDraft(messageId: number) {
-  if (window.__setQuoteInDraft) {
-    window.__setQuoteInDraft(messageId)
-  } else {
-    throw new Error('window.__setQuoteInDraft undefined')
-  }
+if (window.__setQuoteInDraft) {
+window.__setQuoteInDraft(messageId)
+} else {
+throw new Error('window.__setQuoteInDraft undefined')
+}
 }
 export function enterEditMessageMode(messageToEdit: T.Message) {
-  if (window.__enterEditMessageMode) {
-    window.__enterEditMessageMode(messageToEdit)
-  } else {
-    throw new Error('window.__enterEditMessageMode undefined')
-  }
+if (window.__enterEditMessageMode) {
+window.__enterEditMessageMode(messageToEdit)
+} else {
+throw new Error('window.__enterEditMessageMode undefined')
+}
 }
 export async function openMessageHTML(messageId: number) {
-  const accountId = selectedAccountId()
-  const content = await BackendRemote.rpc.getMessageHtml(accountId, messageId)
-  if (!content) {
-    log.error('openMessageHTML, message has no html content', { messageId })
-    return
-  }
-  const {
-    sender: { displayName },
-    subject,
-    chatId,
-    receivedTimestamp,
-  } = await BackendRemote.rpc.getMessage(accountId, messageId)
-  const receiveTime = moment(receivedTimestamp * 1000).format('LLLL')
-  const { isContactRequest, isProtectionBroken } =
-    await BackendRemote.rpc.getBasicChatInfo(accountId, chatId)
-  runtime.openMessageHTML(
-    accountId,
-    messageId,
-    isContactRequest || isProtectionBroken,
-    subject,
-    displayName,
-    receiveTime,
-    content
-  )
+const accountId = selectedAccountId()
+const content = await BackendRemote.rpc.getMessageHtml(accountId, messageId)
+if (!content) {
+log.error('openMessageHTML, message has no html content', { messageId })
+return
+}
+const {
+sender: { displayName },
+subject,
+chatId,
+receivedTimestamp,
+} = await BackendRemote.rpc.getMessage(accountId, messageId)
+const receiveTime = moment(receivedTimestamp * 1000).format('LLLL')
+const { isContactRequest, isProtectionBroken } =
+await BackendRemote.rpc.getBasicChatInfo(accountId, chatId)
+runtime.openMessageHTML(
+accountId,
+messageId,
+isContactRequest || isProtectionBroken,
+subject,
+displayName,
+receiveTime,
+content
+)
 }
 export async function downloadFullMessage(messageId: number) {
-  await BackendRemote.rpc.downloadFullMessage(selectedAccountId(), messageId)
+await BackendRemote.rpc.downloadFullMessage(selectedAccountId(), messageId)
 }
 export async function openWebxdc(message: Type.Message) {
-  const accountId = selectedAccountId()
-  internalOpenWebxdc(accountId, message)
+const accountId = selectedAccountId()
+internalOpenWebxdc(accountId, message)
 }

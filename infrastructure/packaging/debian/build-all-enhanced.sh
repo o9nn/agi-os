@@ -13,215 +13,215 @@ SKIP_TESTS=${SKIP_TESTS:-0}
 BUILD_AGI_OS=${BUILD_AGI_OS:-0}
 mkdir -p "$BUILD_DIR" "$LOG_DIR"
 log() {
-    local level=$1
-    shift
-    local message="$@"
-    local timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-    case $level in
-        INFO)
-            echo -e "${CYAN}[INFO]${NC} $message"
-            ;;
-        SUCCESS)
-            echo -e "${GREEN}[SUCCESS]${NC} $message"
-            ;;
-        WARNING)
-            echo -e "${YELLOW}[WARNING]${NC} $message"
-            ;;
-        ERROR)
-            echo -e "${RED}[ERROR]${NC} $message"
-            ;;
-        HEADER)
-            echo -e "\n${BLUE}========================================${NC}"
-            echo -e "${BLUE}$message${NC}"
-            echo -e "${BLUE}========================================${NC}\n"
-            ;;
-    esac
-    echo "[$timestamp] [$level] $message" >> "$LOG_DIR/build.log"
+local level=$1
+shift
+local message="$@"
+local timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+case $level in
+INFO)
+echo -e "${CYAN}[INFO]${NC} $message"
+;;
+SUCCESS)
+echo -e "${GREEN}[SUCCESS]${NC} $message"
+;;
+WARNING)
+echo -e "${YELLOW}[WARNING]${NC} $message"
+;;
+ERROR)
+echo -e "${RED}[ERROR]${NC} $message"
+;;
+HEADER)
+echo -e "\n${BLUE}========================================${NC}"
+echo -e "${BLUE}$message${NC}"
+echo -e "${BLUE}========================================${NC}\n"
+;;
+esac
+echo "[$timestamp] [$level] $message" >> "$LOG_DIR/build.log"
 }
 build_package() {
-    local pkg=$1
-    local stage=$2
-    log HEADER "Building $pkg (Stage $stage)"
-    local pkg_log="$LOG_DIR/${pkg}.log"
-    if [ ! -d "$pkg" ]; then
-        log ERROR "Package directory $pkg not found"
-        return 1
-    fi
-    cd "$pkg"
-    if [ -f "update-${pkg}.sh" ]; then
-        log INFO "Running update script for $pkg..."
-        ./update-${pkg}.sh > "$pkg_log" 2>&1
-        if [ $? -ne 0 ]; then
-            log ERROR "Update script failed for $pkg (see $pkg_log)"
-            cd ..
-            return 1
-        fi
-    else
-        log WARNING "No update script found for $pkg"
-    fi
-    local src_dir=$(find . -maxdepth 1 -type d -name "${pkg}-*" | head -1)
-    if [ -z "$src_dir" ]; then
-        log ERROR "Source directory not found for $pkg"
-        cd ..
-        return 1
-    fi
-    cd "$src_dir"
-    log INFO "Installing build dependencies for $pkg..."
-    sudo apt-get build-dep -y . >> "$pkg_log" 2>&1
-    log INFO "Building $pkg with $PARALLEL_JOBS parallel jobs..."
-    dpkg-buildpackage -rfakeroot -us -uc -j${PARALLEL_JOBS} >> "$pkg_log" 2>&1
-    if [ $? -ne 0 ]; then
-        log ERROR "Build failed for $pkg (see $pkg_log)"
-        cd ../..
-        return 1
-    fi
-    log INFO "Installing $pkg..."
-    cd ..
-    sudo dpkg -i *.deb >> "$pkg_log" 2>&1 || sudo apt-get install -f -y >> "$pkg_log" 2>&1
-    if [ $? -eq 0 ]; then
-        log SUCCESS "$pkg built and installed successfully"
-    else
-        log ERROR "Installation failed for $pkg (see $pkg_log)"
-        cd ..
-        return 1
-    fi
-    cd ..
-    return 0
+local pkg=$1
+local stage=$2
+log HEADER "Building $pkg (Stage $stage)"
+local pkg_log="$LOG_DIR/${pkg}.log"
+if [ ! -d "$pkg" ]; then
+log ERROR "Package directory $pkg not found"
+return 1
+fi
+cd "$pkg"
+if [ -f "update-${pkg}.sh" ]; then
+log INFO "Running update script for $pkg..."
+./update-${pkg}.sh > "$pkg_log" 2>&1
+if [ $? -ne 0 ]; then
+log ERROR "Update script failed for $pkg (see $pkg_log)"
+cd ..
+return 1
+fi
+else
+log WARNING "No update script found for $pkg"
+fi
+local src_dir=$(find . -maxdepth 1 -type d -name "${pkg}-*" | head -1)
+if [ -z "$src_dir" ]; then
+log ERROR "Source directory not found for $pkg"
+cd ..
+return 1
+fi
+cd "$src_dir"
+log INFO "Installing build dependencies for $pkg..."
+sudo apt-get build-dep -y . >> "$pkg_log" 2>&1
+log INFO "Building $pkg with $PARALLEL_JOBS parallel jobs..."
+dpkg-buildpackage -rfakeroot -us -uc -j${PARALLEL_JOBS} >> "$pkg_log" 2>&1
+if [ $? -ne 0 ]; then
+log ERROR "Build failed for $pkg (see $pkg_log)"
+cd ../..
+return 1
+fi
+log INFO "Installing $pkg..."
+cd ..
+sudo dpkg -i *.deb >> "$pkg_log" 2>&1 || sudo apt-get install -f -y >> "$pkg_log" 2>&1
+if [ $? -eq 0 ]; then
+log SUCCESS "$pkg built and installed successfully"
+else
+log ERROR "Installation failed for $pkg (see $pkg_log)"
+cd ..
+return 1
+fi
+cd ..
+return 0
 }
 build_parallel() {
-    local stage=$1
-    shift
-    local packages=("$@")
-    log HEADER "Stage $stage: Building ${
-    local pids=()
-    local failed=()
-    for pkg in "${packages[@]}"; do
-        build_package "$pkg" "$stage" &
-        pids+=($!)
-    done
-    for i in "${!pids[@]}"; do
-        wait ${pids[$i]}
-        if [ $? -ne 0 ]; then
-            failed+=("${packages[$i]}")
-        fi
-    done
-    if [ ${
-        log ERROR "Failed packages in stage $stage: ${failed[*]}"
-        return 1
-    fi
-    log SUCCESS "Stage $stage completed successfully"
-    return 0
+local stage=$1
+shift
+local packages=("$@")
+log HEADER "Stage $stage: Building ${
+local pids=()
+local failed=()
+for pkg in "${packages[@]}"; do
+build_package "$pkg" "$stage" &
+pids+=($!)
+done
+for i in "${!pids[@]}"; do
+wait ${pids[$i]}
+if [ $? -ne 0 ]; then
+failed+=("${packages[$i]}")
+fi
+done
+if [ ${
+log ERROR "Failed packages in stage $stage: ${failed[*]}"
+return 1
+fi
+log SUCCESS "Stage $stage completed successfully"
+return 0
 }
 main() {
-    log HEADER "OpenCog Debian Package Build System"
-    log INFO "Parallel jobs: $PARALLEL_JOBS"
-    log INFO "Build directory: $BUILD_DIR"
-    log INFO "Log directory: $LOG_DIR"
-    log INFO "Build AGI-OS components: $BUILD_AGI_OS"
-    if [ $BUILD_AGI_OS -eq 1 ]; then
-        build_package "cognumach" "0" || exit 1
-    fi
-    build_package "cogutil" "1" || exit 1
-    build_package "atomspace" "2" || exit 1
-    build_package "atomspace-storage" "2.5" || exit 1
-    build_parallel "3" "atomspace-cog" "atomspace-rocks" "atomspace-pgres" || exit 1
-    build_parallel "4" "cogserver" "ure" || exit 1
-    if [ $BUILD_AGI_OS -eq 1 ]; then
-        build_parallel "4.5" "hurdcog" "hurdcog-cogkernel-core" "hurdcog-machspace" "hurdcog-occ-bridge" || exit 1
-    fi
-    build_parallel "5" "attention" "pln" "miner" "unify" "spacetime" || exit 1
-    build_parallel "6" "learn" "generate" || exit 1
-    build_parallel "7" "lg-atomese" "relex" || exit 1
-    build_parallel "8" "moses" "asmoses" "agi-bio" "vision" || exit 1
-    build_package "opencog" "9" || exit 1
-    if [ $BUILD_AGI_OS -eq 1 ]; then
-        build_package "agi-os-unified" "10" || exit 1
-    fi
-    log HEADER "Build Complete!"
-    log SUCCESS "All packages built and installed successfully"
-    log INFO "Build logs available in: $LOG_DIR"
-    generate_report
+log HEADER "OpenCog Debian Package Build System"
+log INFO "Parallel jobs: $PARALLEL_JOBS"
+log INFO "Build directory: $BUILD_DIR"
+log INFO "Log directory: $LOG_DIR"
+log INFO "Build AGI-OS components: $BUILD_AGI_OS"
+if [ $BUILD_AGI_OS -eq 1 ]; then
+build_package "cognumach" "0" || exit 1
+fi
+build_package "cogutil" "1" || exit 1
+build_package "atomspace" "2" || exit 1
+build_package "atomspace-storage" "2.5" || exit 1
+build_parallel "3" "atomspace-cog" "atomspace-rocks" "atomspace-pgres" || exit 1
+build_parallel "4" "cogserver" "ure" || exit 1
+if [ $BUILD_AGI_OS -eq 1 ]; then
+build_parallel "4.5" "hurdcog" "hurdcog-cogkernel-core" "hurdcog-machspace" "hurdcog-occ-bridge" || exit 1
+fi
+build_parallel "5" "attention" "pln" "miner" "unify" "spacetime" || exit 1
+build_parallel "6" "learn" "generate" || exit 1
+build_parallel "7" "lg-atomese" "relex" || exit 1
+build_parallel "8" "moses" "asmoses" "agi-bio" "vision" || exit 1
+build_package "opencog" "9" || exit 1
+if [ $BUILD_AGI_OS -eq 1 ]; then
+build_package "agi-os-unified" "10" || exit 1
+fi
+log HEADER "Build Complete!"
+log SUCCESS "All packages built and installed successfully"
+log INFO "Build logs available in: $LOG_DIR"
+generate_report
 }
 generate_report() {
-    local report="$LOG_DIR/build-report.txt"
-    {
-        echo "OpenCog Debian Package Build Report"
-        echo "===================================="
-        echo ""
-        echo "Build Date: $(date)"
-        echo "Parallel Jobs: $PARALLEL_JOBS"
-        echo "Build AGI-OS: $BUILD_AGI_OS"
-        echo ""
-        echo "Installed Packages:"
-        echo "-------------------"
-        dpkg -l | grep -E "(opencog|cogutil|cognumach|hurdcog|agi-os)" || echo "No packages found"
-        echo ""
-        echo "Build Logs:"
-        echo "-----------"
-        ls -lh "$LOG_DIR"/*.log
-    } > "$report"
-    log INFO "Build report generated: $report"
+local report="$LOG_DIR/build-report.txt"
+{
+echo "OpenCog Debian Package Build Report"
+echo "===================================="
+echo ""
+echo "Build Date: $(date)"
+echo "Parallel Jobs: $PARALLEL_JOBS"
+echo "Build AGI-OS: $BUILD_AGI_OS"
+echo ""
+echo "Installed Packages:"
+echo "-------------------"
+dpkg -l | grep -E "(opencog|cogutil|cognumach|hurdcog|agi-os)" || echo "No packages found"
+echo ""
+echo "Build Logs:"
+echo "-----------"
+ls -lh "$LOG_DIR"/*.log
+} > "$report"
+log INFO "Build report generated: $report"
 }
 cleanup() {
-    log INFO "Cleaning up build artifacts..."
-    find . -name "*.deb" -o -name "*.changes" -o -name "*.buildinfo" | xargs rm -f
-    log SUCCESS "Cleanup complete"
+log INFO "Cleaning up build artifacts..."
+find . -name "*.deb" -o -name "*.changes" -o -name "*.buildinfo" | xargs rm -f
+log SUCCESS "Cleanup complete"
 }
 show_help() {
-    cat << EOF
+cat << EOF
 OpenCog Debian Package Build System
 Usage: $0 [OPTIONS]
 Options:
-    -h, --help              Show this help message
-    -j, --jobs N            Number of parallel jobs (default: $(nproc))
-    -a, --agi-os            Build AGI-OS components (cognumach, hurdcog)
-    -t, --skip-tests        Skip running tests
-    -c, --clean             Clean build artifacts
-    -l, --log-dir DIR       Log directory (default: ./logs)
+-h, --help              Show this help message
+-j, --jobs N            Number of parallel jobs (default: $(nproc))
+-a, --agi-os            Build AGI-OS components (cognumach, hurdcog)
+-t, --skip-tests        Skip running tests
+-c, --clean             Clean build artifacts
+-l, --log-dir DIR       Log directory (default: ./logs)
 Environment Variables:
-    PARALLEL_JOBS           Number of parallel jobs
-    BUILD_DIR               Build directory
-    LOG_DIR                 Log directory
-    SKIP_TESTS              Skip tests (0 or 1)
-    BUILD_AGI_OS            Build AGI-OS components (0 or 1)
+PARALLEL_JOBS           Number of parallel jobs
+BUILD_DIR               Build directory
+LOG_DIR                 Log directory
+SKIP_TESTS              Skip tests (0 or 1)
+BUILD_AGI_OS            Build AGI-OS components (0 or 1)
 Examples:
-    $0 -j 8
-    $0 --agi-os
-    $0 --clean
+$0 -j 8
+$0 --agi-os
+$0 --clean
 EOF
 }
 while [[ $
-    case $1 in
-        -h|--help)
-            show_help
-            exit 0
-            ;;
-        -j|--jobs)
-            PARALLEL_JOBS="$2"
-            shift 2
-            ;;
-        -a|--agi-os)
-            BUILD_AGI_OS=1
-            shift
-            ;;
-        -t|--skip-tests)
-            SKIP_TESTS=1
-            shift
-            ;;
-        -c|--clean)
-            cleanup
-            exit 0
-            ;;
-        -l|--log-dir)
-            LOG_DIR="$2"
-            shift 2
-            ;;
-        *)
-            log ERROR "Unknown option: $1"
-            show_help
-            exit 1
-            ;;
-    esac
+case $1 in
+-h|--help)
+show_help
+exit 0
+;;
+-j|--jobs)
+PARALLEL_JOBS="$2"
+shift 2
+;;
+-a|--agi-os)
+BUILD_AGI_OS=1
+shift
+;;
+-t|--skip-tests)
+SKIP_TESTS=1
+shift
+;;
+-c|--clean)
+cleanup
+exit 0
+;;
+-l|--log-dir)
+LOG_DIR="$2"
+shift 2
+;;
+*)
+log ERROR "Unknown option: $1"
+show_help
+exit 1
+;;
+esac
 done
 main
 exit 0

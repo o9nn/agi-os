@@ -7,10 +7,10 @@
 #include "str.h"
 #include "fts-backend-flatcurve.h"
 #include "fts-backend-flatcurve-xapian.h"
-#define DOVEADM_FLATCURVE_CMD_NAME_CHECK  "fts flatcurve check"
+#define DOVEADM_FLATCURVE_CMD_NAME_CHECK "fts flatcurve check"
 #define DOVEADM_FLATCURVE_CMD_NAME_REMOVE "fts flatcurve remove"
 #define DOVEADM_FLATCURVE_CMD_NAME_ROTATE "fts flatcurve rotate"
-#define DOVEADM_FLATCURVE_CMD_NAME_STATS  "fts flatcurve stats"
+#define DOVEADM_FLATCURVE_CMD_NAME_STATS "fts flatcurve stats"
 const char *doveadm_fts_flatcurve_plugin_version = DOVECOT_ABI_VERSION;
 void doveadm_fts_flatcurve_plugin_init(struct module *module);
 void doveadm_fts_flatcurve_plugin_deinit(void);

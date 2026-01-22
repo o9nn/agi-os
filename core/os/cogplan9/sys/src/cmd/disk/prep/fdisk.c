@@ -4,7 +4,7 @@
 #include <ctype.h>
 #include <disk.h>
 #include "edit.h"
-typedef struct Dospart	Dospart;
+typedef struct Dospart Dospart;
 enum {
 NTentry = 4,
 Mpart = 64,
@@ -27,25 +27,25 @@ static int printflag;
 static int printchs;
 static int sec2cyl;
 static int written;
-static void 	cmdsum(Edit*, Part*, vlong, vlong);
-static char 	*cmdadd(Edit*, char*, vlong, vlong);
-static char 	*cmddel(Edit*, Part*);
-static char 	*cmdext(Edit*, int, char**);
-static char 	*cmdhelp(Edit*);
-static char 	*cmdokname(Edit*, char*);
-static char 	*cmdwrite(Edit*);
-static void	cmdprintctl(Edit*, int);
+static void cmdsum(Edit*, Part*, vlong, vlong);
+static char *cmdadd(Edit*, char*, vlong, vlong);
+static char *cmddel(Edit*, Part*);
+static char *cmdext(Edit*, int, char**);
+static char *cmdhelp(Edit*);
+static char *cmdokname(Edit*, char*);
+static char *cmdwrite(Edit*);
+static void cmdprintctl(Edit*, int);
 #pragma varargck type "D" uchar*
 Edit edit = {
-.add=	cmdadd,
-.del=		cmddel,
-.ext=		cmdext,
-.help=	cmdhelp,
-.okname=	cmdokname,
-.sum=	cmdsum,
-.write=	cmdwrite,
-.printctl=	cmdprintctl,
-.unit=	"cylinder",
+.add= cmdadd,
+.del= cmddel,
+.ext= cmdext,
+.help= cmdhelp,
+.okname= cmdokname,
+.sum= cmdsum,
+.write= cmdwrite,
+.printctl= cmdprintctl,
+.unit= "cylinder",
 };
 void
 sysfatal(char *fmt, ...)
@@ -140,82 +140,82 @@ fprint(2, ">>> ");
 runcmd(&edit, getline(&edit));
 }
 }
-typedef struct Tentry	Tentry;
-typedef struct Table	Table;
-typedef struct Type	Type;
-typedef struct Tab	Tab;
+typedef struct Tentry Tentry;
+typedef struct Table Table;
+typedef struct Type Type;
+typedef struct Tab Tab;
 typedef struct Recover Recover;
 struct Tentry {
-uchar	active;
-uchar	starth;
-uchar	starts;
-uchar	startc;
-uchar	type;
-uchar	endh;
-uchar	ends;
-uchar	endc;
-uchar	xlba[4];
-uchar	xsize[4];
+uchar active;
+uchar starth;
+uchar starts;
+uchar startc;
+uchar type;
+uchar endh;
+uchar ends;
+uchar endc;
+uchar xlba[4];
+uchar xsize[4];
 };
 struct Table {
-Tentry	entry[NTentry];
-uchar	magic[2];
-uchar	size[];
+Tentry entry[NTentry];
+uchar magic[2];
+uchar size[];
 };
 enum {
-Active		= 0x80,
-Primary		= 0x01,
-TypeBB		= 0xFF,
-TypeEMPTY	= 0x00,
-TypeFAT12	= 0x01,
-TypeXENIX	= 0x02,
-TypeXENIXUSR	= 0x03,
-TypeFAT16	= 0x04,
-TypeEXTENDED	= 0x05,
-TypeFATHUGE	= 0x06,
-TypeHPFS	= 0x07,
-TypeAIXBOOT	= 0x08,
-TypeAIXDATA	= 0x09,
-TypeOS2BOOT	= 0x0A,
-TypeFAT32	= 0x0B,
-TypeFAT32LBA	= 0x0C,
-TypeFAT16X	= 0x0E,
-TypeEXTHUGE	= 0x0F,
-TypeUNFORMATTED	= 0x16,
-TypeHPFS2	= 0x17,
+Active = 0x80,
+Primary = 0x01,
+TypeBB = 0xFF,
+TypeEMPTY = 0x00,
+TypeFAT12 = 0x01,
+TypeXENIX = 0x02,
+TypeXENIXUSR = 0x03,
+TypeFAT16 = 0x04,
+TypeEXTENDED = 0x05,
+TypeFATHUGE = 0x06,
+TypeHPFS = 0x07,
+TypeAIXBOOT = 0x08,
+TypeAIXDATA = 0x09,
+TypeOS2BOOT = 0x0A,
+TypeFAT32 = 0x0B,
+TypeFAT32LBA = 0x0C,
+TypeFAT16X = 0x0E,
+TypeEXTHUGE = 0x0F,
+TypeUNFORMATTED = 0x16,
+TypeHPFS2 = 0x17,
 TypeIBMRecovery = 0x1C,
-TypeCPM0	= 0x52,
-TypeDMDDO	= 0x54,
-TypeGB		= 0x56,
-TypeSPEEDSTOR	= 0x61,
-TypeSYSV386	= 0x63,
-TypeNETWARE	= 0x64,
-TypePCIX	= 0x75,
-TypeMINIX13	= 0x80,
-TypeMINIX	= 0x81,
-TypeLINUXSWAP	= 0x82,
-TypeLINUX	= 0x83,
-TypeLINUXEXT	= 0x85,
-TypeLINUXLVM	= 0x8E,
-TypeAMOEBA	= 0x93,
-TypeAMOEBABB	= 0x94,
-TypeBSD386	= 0xA5,
-TypeNETBSD	= 0xA9,
-TypeBSDI	= 0xB7,
-TypeBSDISWAP	= 0xB8,
-TypeOTHER	= 0xDA,
-TypeCPM		= 0xDB,
+TypeCPM0 = 0x52,
+TypeDMDDO = 0x54,
+TypeGB = 0x56,
+TypeSPEEDSTOR = 0x61,
+TypeSYSV386 = 0x63,
+TypeNETWARE = 0x64,
+TypePCIX = 0x75,
+TypeMINIX13 = 0x80,
+TypeMINIX = 0x81,
+TypeLINUXSWAP = 0x82,
+TypeLINUX = 0x83,
+TypeLINUXEXT = 0x85,
+TypeLINUXLVM = 0x8E,
+TypeAMOEBA = 0x93,
+TypeAMOEBABB = 0x94,
+TypeBSD386 = 0xA5,
+TypeNETBSD = 0xA9,
+TypeBSDI = 0xB7,
+TypeBSDISWAP = 0xB8,
+TypeOTHER = 0xDA,
+TypeCPM = 0xDB,
 TypeDellRecovery= 0xDE,
-TypeSPEEDSTOR12	= 0xE1,
-TypeSPEEDSTOR16	= 0xE4,
-TypeEFIProtect	= 0xEE,
-TypeEFI		= 0xEF,
-TypeLANSTEP	= 0xFE,
-Type9		= 0x39,
-Toffset		= 446,
-Magic0		= 0x55,
-Magic1		= 0xAA,
-Tablesz		= offsetof(Table, size[0]),
+TypeSPEEDSTOR12 = 0xE1,
+TypeSPEEDSTOR16 = 0xE4,
+TypeEFIProtect = 0xEE,
+TypeEFI = 0xEF,
+TypeLANSTEP = 0xFE,
+Type9 = 0x39,
+Toffset = 446,
+Magic0 = 0x55,
+Magic1 = 0xAA,
+Tablesz = offsetof(Table, size[0]),
 };
 struct Type {
 char *desc;
@@ -224,65 +224,65 @@ char *name;
 struct Dospart {
 Part;
 Tentry;
-u32int	lba;
-u32int	size;
-int		primary;
+u32int lba;
+u32int size;
+int primary;
 };
 struct Recover {
-Table	table;
-ulong	lba;
+Table table;
+ulong lba;
 };
 static Type types[256] = {
-[TypeEMPTY]		{ "EMPTY", "" },
-[TypeFAT12]		{ "FAT12", "dos" },
-[TypeFAT16]		{ "FAT16", "dos" },
-[TypeFAT32]		{ "FAT32", "dos" },
-[TypeFAT32LBA]		{ "FAT32LBA", "dos" },
-[TypeFAT16X]		{ "FAT16X", "dos" },
-[TypeEXTHUGE]		{ "EXTHUGE", "" },
-[TypeIBMRecovery]	{ "IBMRECOVERY", "ibm" },
-[TypeEXTENDED]		{ "EXTENDED", "" },
-[TypeFATHUGE]		{ "FATHUGE", "dos" },
-[TypeBB]		{ "BB", "bb" },
-[TypeXENIX]		{ "XENIX", "xenix" },
-[TypeXENIXUSR]		{ "XENIX USR", "xenixusr" },
-[TypeHPFS]		{ "HPFS", "ntfs" },
-[TypeAIXBOOT]		{ "AIXBOOT", "aixboot" },
-[TypeAIXDATA]		{ "AIXDATA", "aixdata" },
-[TypeOS2BOOT]		{ "OS/2BOOT", "os2boot" },
-[TypeUNFORMATTED]	{ "UNFORMATTED", "" },
-[TypeHPFS2]		{ "HPFS2", "hpfs2" },
-[TypeCPM0]		{ "CPM0", "cpm0" },
-[TypeDMDDO]		{ "DMDDO", "dmdd0" },
-[TypeGB]		{ "GB", "gb" },
-[TypeSPEEDSTOR]		{ "SPEEDSTOR", "speedstor" },
-[TypeSYSV386]		{ "SYSV386", "sysv386" },
-[TypeNETWARE]		{ "NETWARE", "netware" },
-[TypePCIX]		{ "PCIX", "pcix" },
-[TypeMINIX13]		{ "MINIXV1.3", "minix13" },
-[TypeMINIX]		{ "MINIXV1.5", "minix15" },
-[TypeLINUXSWAP]		{ "LINUXSWAP", "linuxswap" },
-[TypeLINUX]		{ "LINUX", "linux" },
-[TypeLINUXEXT]		{ "LINUXEXTENDED", "" },
-[TypeLINUXLVM]		{ "LINUXLVM", "linuxlvm" },
-[TypeAMOEBA]		{ "AMOEBA", "amoeba" },
-[TypeAMOEBABB]		{ "AMOEBABB", "amoebaboot" },
-[TypeBSD386]		{ "BSD386", "bsd386" },
-[TypeNETBSD]		{ "NETBSD", "netbsd" },
-[TypeBSDI]		{ "BSDI", "bsdi" },
-[TypeBSDISWAP]		{ "BSDISWAP", "bsdiswap" },
-[TypeOTHER]		{ "OTHER", "other" },
-[TypeCPM]		{ "CPM", "cpm" },
-[TypeDellRecovery]	{ "DELLRECOVERY", "dell" },
-[TypeSPEEDSTOR12]	{ "SPEEDSTOR12", "speedstor" },
-[TypeSPEEDSTOR16]	{ "SPEEDSTOR16", "speedstor" },
-[TypeEFIProtect]	{ "EFIPROTECT", "efiprotect" },
-[TypeEFI]		{ "EFI", "efi" },
-[TypeLANSTEP]		{ "LANSTEP", "lanstep" },
-[Type9]			{ "PLAN9", "plan9" },
+[TypeEMPTY] { "EMPTY", "" },
+[TypeFAT12] { "FAT12", "dos" },
+[TypeFAT16] { "FAT16", "dos" },
+[TypeFAT32] { "FAT32", "dos" },
+[TypeFAT32LBA] { "FAT32LBA", "dos" },
+[TypeFAT16X] { "FAT16X", "dos" },
+[TypeEXTHUGE] { "EXTHUGE", "" },
+[TypeIBMRecovery] { "IBMRECOVERY", "ibm" },
+[TypeEXTENDED] { "EXTENDED", "" },
+[TypeFATHUGE] { "FATHUGE", "dos" },
+[TypeBB] { "BB", "bb" },
+[TypeXENIX] { "XENIX", "xenix" },
+[TypeXENIXUSR] { "XENIX USR", "xenixusr" },
+[TypeHPFS] { "HPFS", "ntfs" },
+[TypeAIXBOOT] { "AIXBOOT", "aixboot" },
+[TypeAIXDATA] { "AIXDATA", "aixdata" },
+[TypeOS2BOOT] { "OS/2BOOT", "os2boot" },
+[TypeUNFORMATTED] { "UNFORMATTED", "" },
+[TypeHPFS2] { "HPFS2", "hpfs2" },
+[TypeCPM0] { "CPM0", "cpm0" },
+[TypeDMDDO] { "DMDDO", "dmdd0" },
+[TypeGB] { "GB", "gb" },
+[TypeSPEEDSTOR] { "SPEEDSTOR", "speedstor" },
+[TypeSYSV386] { "SYSV386", "sysv386" },
+[TypeNETWARE] { "NETWARE", "netware" },
+[TypePCIX] { "PCIX", "pcix" },
+[TypeMINIX13] { "MINIXV1.3", "minix13" },
+[TypeMINIX] { "MINIXV1.5", "minix15" },
+[TypeLINUXSWAP] { "LINUXSWAP", "linuxswap" },
+[TypeLINUX] { "LINUX", "linux" },
+[TypeLINUXEXT] { "LINUXEXTENDED", "" },
+[TypeLINUXLVM] { "LINUXLVM", "linuxlvm" },
+[TypeAMOEBA] { "AMOEBA", "amoeba" },
+[TypeAMOEBABB] { "AMOEBABB", "amoebaboot" },
+[TypeBSD386] { "BSD386", "bsd386" },
+[TypeNETBSD] { "NETBSD", "netbsd" },
+[TypeBSDI] { "BSDI", "bsdi" },
+[TypeBSDISWAP] { "BSDISWAP", "bsdiswap" },
+[TypeOTHER] { "OTHER", "other" },
+[TypeCPM] { "CPM", "cpm" },
+[TypeDellRecovery] { "DELLRECOVERY", "dell" },
+[TypeSPEEDSTOR12] { "SPEEDSTOR12", "speedstor" },
+[TypeSPEEDSTOR16] { "SPEEDSTOR16", "speedstor" },
+[TypeEFIProtect] { "EFIPROTECT", "efiprotect" },
+[TypeEFI] { "EFI", "efi" },
+[TypeLANSTEP] { "LANSTEP", "lanstep" },
+[Type9] { "PLAN9", "plan9" },
 };
-static Dospart	part[Mpart];
-static int		npart;
+static Dospart part[Mpart];
+static int npart;
 static char*
 typestr0(int type)
 {
@@ -362,8 +362,8 @@ fprint(2, "%s: size of partition (%lld) won't fit in MBR table\n", argv0, size);
 p->primary = primary;
 return p;
 }
-static Recover	*rtab;
-static int		nrtab;
+static Recover *rtab;
+static int nrtab;
 static void
 addrecover(Table t, ulong lba)
 {
@@ -662,7 +662,7 @@ print("%s %-12s %*lld %-*lld (%lld cylinders, %lld %s) %s\n", buf, name,
 edit->disk->width, a, edit->disk->width, b, b-a, sz, suf, ty);
 else
 print("%s %-12s %*lld %-*lld (%lld cylinders, %lld.%.2d %s) %s\n", buf, name,
-edit->disk->width, a, edit->disk->width, b,  b-a,
+edit->disk->width, a, edit->disk->width, b, b-a,
 sz/div, (int)(((sz%div)*100)/div), suf, ty);
 }
 static char*

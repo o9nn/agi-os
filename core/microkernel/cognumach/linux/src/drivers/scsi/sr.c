@@ -68,7 +68,7 @@ int check_cdrom_media_change(kdev_t full_dev){
 int retval, target;
 struct inode inode;
 int flag = 0;
-target =  MINOR(full_dev);
+target = MINOR(full_dev);
 if (target >= sr_template.nr_dev) {
 printk("CD-ROM request error: invalid device.\n");
 return 0;
@@ -260,12 +260,12 @@ requeue_sr_request(SCpnt);
 }
 void sr_photocd(struct inode *inode)
 {
-unsigned long   sector,min,sec,frame;
-unsigned char   buf[40];
-unsigned char   *cmd;
-unsigned char   *send;
-unsigned char   *rec;
-int             rc,is_xa,no_multi;
+unsigned long sector,min,sec,frame;
+unsigned char buf[40];
+unsigned char *cmd;
+unsigned char *send;
+unsigned char *rec;
+int rc,is_xa,no_multi;
 if (scsi_CDs[MINOR(inode->i_rdev)].xa_flags & 0x02) {
 #ifdef DEBUG
 printk(KERN_DEBUG "sr_photocd: CDROM and/or driver do not support multisession CD's");
@@ -279,8 +279,8 @@ scsi_CDs[MINOR(inode->i_rdev)].xa_flags &= ~0x01;
 }
 return;
 }
-sector   = 0;
-is_xa    = 0;
+sector = 0;
+is_xa = 0;
 no_multi = 0;
 cmd = rec = &buf[8];
 switch(scsi_CDs[MINOR(inode->i_rdev)].device->manufacturer) {
@@ -289,7 +289,7 @@ case SCSI_MAN_NEC:
 printk(KERN_DEBUG "sr_photocd: use NEC code\n");
 #endif
 memset(buf,0,40);
-*((unsigned int*)buf)   = 0x0;
+*((unsigned int*)buf) = 0x0;
 *((unsigned int*)buf+1) = 0x16;
 cmd[0] = 0xde;
 cmd[1] = 0x03;
@@ -306,11 +306,11 @@ printk(KERN_INFO"sr_photocd: (NEC) Hmm, seems the CDROM doesn't support multises
 no_multi = 1;
 break;
 }
-min   = (unsigned long) rec[15]/16*10 + (unsigned long) rec[15]%16;
-sec   = (unsigned long) rec[16]/16*10 + (unsigned long) rec[16]%16;
+min = (unsigned long) rec[15]/16*10 + (unsigned long) rec[15]%16;
+sec = (unsigned long) rec[16]/16*10 + (unsigned long) rec[16]%16;
 frame = (unsigned long) rec[17]/16*10 + (unsigned long) rec[17]%16;
 sector = min*CD_SECS*CD_FRAMES + sec*CD_FRAMES + frame;
-is_xa  = (rec[14] == 0xb0);
+is_xa = (rec[14] == 0xb0);
 #ifdef DEBUG
 if (sector) {
 printk(KERN_DEBUG "sr_photocd: multisession CD detected. start: %lu\n",sector);
@@ -322,10 +322,10 @@ case SCSI_MAN_TOSHIBA:
 printk(KERN_DEBUG "sr_photocd: use TOSHIBA code\n");
 #endif
 memset(buf,0,40);
-*((unsigned int*)buf)   = (unsigned int) 0;
+*((unsigned int*)buf) = (unsigned int) 0;
 *((unsigned int*)buf+1) = (unsigned int) 4;
-cmd[0]                  = (unsigned char) 0x00c7;
-cmd[1]                  = (unsigned char) 3;
+cmd[0] = (unsigned char) 0x00c7;
+cmd[1] = (unsigned char) 3;
 rc = kernel_scsi_ioctl(scsi_CDs[MINOR(inode->i_rdev)].device,
 SCSI_IOCTL_SEND_COMMAND, buf);
 if (rc != 0) {
@@ -339,10 +339,10 @@ no_multi = 1;
 printk(KERN_INFO"sr_photocd: ioctl error (TOSHIBA #1): 0x%x\n",rc);
 break;
 }
-is_xa  = (rec[0] == 0x20);
-min    = (unsigned long) rec[1]/16*10 + (unsigned long) rec[1]%16;
-sec    = (unsigned long) rec[2]/16*10 + (unsigned long) rec[2]%16;
-frame  = (unsigned long) rec[3]/16*10 + (unsigned long) rec[3]%16;
+is_xa = (rec[0] == 0x20);
+min = (unsigned long) rec[1]/16*10 + (unsigned long) rec[1]%16;
+sec = (unsigned long) rec[2]/16*10 + (unsigned long) rec[2]%16;
+frame = (unsigned long) rec[3]/16*10 + (unsigned long) rec[3]%16;
 sector = min*CD_SECS*CD_FRAMES + sec*CD_FRAMES + frame;
 if (sector) {
 sector -= CD_BLOCK_OFFSET;
@@ -351,11 +351,11 @@ printk(KERN_DEBUG "sr_photocd: multisession CD detected: start: %lu\n",sector);
 #endif
 }
 memset(buf,0,40);
-*((unsigned int*)buf)   = (unsigned int) 0;
+*((unsigned int*)buf) = (unsigned int) 0;
 *((unsigned int*)buf+1) = (unsigned int) 12;
-cmd[0]                  = (unsigned char) MODE_SENSE;
-cmd[2]                  = (unsigned char) 1;
-cmd[4]                  = (unsigned char) 12;
+cmd[0] = (unsigned char) MODE_SENSE;
+cmd[2] = (unsigned char) 1;
+cmd[4] = (unsigned char) 12;
 rc = kernel_scsi_ioctl(scsi_CDs[MINOR(inode->i_rdev)].device,
 SCSI_IOCTL_SEND_COMMAND, buf);
 if (rc != 0) {
@@ -370,16 +370,16 @@ if ((rec[4] != 0x81 && is_xa) || (rec[4] != 0 && !is_xa)) {
 printk(KERN_DEBUG "sr_photocd: doing set_density\n");
 #endif
 memset(buf,0,40);
-*((unsigned int*)buf)   = (unsigned int) 12;
+*((unsigned int*)buf) = (unsigned int) 12;
 *((unsigned int*)buf+1) = (unsigned int) 0;
-cmd[0]                  = (unsigned char) MODE_SELECT;
-cmd[1]                  = (unsigned char) (1 << 4);
-cmd[4]                  = (unsigned char) 12;
+cmd[0] = (unsigned char) MODE_SELECT;
+cmd[1] = (unsigned char) (1 << 4);
+cmd[4] = (unsigned char) 12;
 send = &cmd[6];
-send[ 3]                = (unsigned char) 0x08;
-send[ 4]                = (is_xa) ?
+send[ 3] = (unsigned char) 0x08;
+send[ 4] = (is_xa) ?
 (unsigned char) 0x81 : (unsigned char) 0;
-send[10]                = (unsigned char) 0x08;
+send[10] = (unsigned char) 0x08;
 rc = kernel_scsi_ioctl(scsi_CDs[MINOR(inode->i_rdev)].device,
 SCSI_IOCTL_SEND_COMMAND, buf);
 if (rc != 0) {
@@ -396,7 +396,7 @@ printk(KERN_DEBUG "sr_photocd: use SONY/PIONEER code\n");
 #endif
 get_sectorsize(MINOR(inode->i_rdev));
 memset(buf,0,40);
-*((unsigned int*)buf)   = 0x0;
+*((unsigned int*)buf) = 0x0;
 *((unsigned int*)buf+1) = 0x0c;
 cmd[0] = READ_TOC;
 cmd[8] = 0x0c;
@@ -519,7 +519,7 @@ if(!SCpnt || SCpnt->request.rq_status == RQ_INACTIVE) {
 do_sr_request();
 return;
 }
-dev =  MINOR(SCpnt->request.rq_dev);
+dev = MINOR(SCpnt->request.rq_dev);
 block = SCpnt->request.sector;
 buffer = NULL;
 this_count = 0;
@@ -582,7 +582,7 @@ this_count -= (this_count % 4);
 };
 };
 SCpnt->use_sg = count;
-count  = (SCpnt->use_sg * sizeof(struct scatterlist) + 511) & ~511;
+count = (SCpnt->use_sg * sizeof(struct scatterlist) + 511) & ~511;
 SCpnt->sglist_len = count;
 sgpnt = (struct scatterlist * ) scsi_malloc(count);
 if (!sgpnt) {
@@ -782,7 +782,7 @@ struct semaphore sem = MUTEX_LOCKED;
 SCpnt->request.sem = &sem;
 scsi_do_cmd (SCpnt,
 (void *) cmd, (void *) buffer,
-512, sr_init_done,  SR_TIMEOUT,
+512, sr_init_done, SR_TIMEOUT,
 MAX_RETRIES);
 down(&sem);
 }

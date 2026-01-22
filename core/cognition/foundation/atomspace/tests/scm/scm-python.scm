@@ -8,7 +8,7 @@
 (define expected-in-cxxtest "")
 (format #t "python-eval returned this: >>~A<<\n" rc)
 (test-assert "Oh no! python-eval is borken!"
-	(or (string=? rc expected)
-		(string=? rc expected-in-cxxtest)))
+(or (string=? rc expected)
+(string=? rc expected-in-cxxtest)))
 (test-end t)
 (opencog-test-end)

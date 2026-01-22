@@ -1,4 +1,4 @@
-#ifndef	_IPC_IPC_SPACE_H_
+#ifndef _IPC_IPC_SPACE_H_
 #define _IPC_IPC_SPACE_H_
 #include <mach/boolean.h>
 #include <mach/kern_return.h>
@@ -23,48 +23,48 @@ size_t is_size;
 struct rdxtree is_reverse_map;
 ipc_entry_t is_free_list;
 size_t is_free_list_size;
-#define IS_FREE_LIST_SIZE_LIMIT	64
+#define IS_FREE_LIST_SIZE_LIMIT 64
 };
-#define	IS_NULL			((ipc_space_t) 0)
+#define IS_NULL ((ipc_space_t) 0)
 extern struct kmem_cache ipc_space_cache;
-#define is_alloc()		((ipc_space_t) kmem_cache_alloc(&ipc_space_cache))
-#define	is_free(is)		kmem_cache_free(&ipc_space_cache, (vm_offset_t) (is))
+#define is_alloc() ((ipc_space_t) kmem_cache_alloc(&ipc_space_cache))
+#define is_free(is) kmem_cache_free(&ipc_space_cache, (vm_offset_t) (is))
 extern struct ipc_space *ipc_space_kernel;
 extern struct ipc_space *ipc_space_reply;
-#define	is_ref_lock_init(is)	simple_lock_init(&(is)->is_ref_lock_data)
-#define	ipc_space_reference_macro(is)					\
-MACRO_BEGIN								\
-simple_lock(&(is)->is_ref_lock_data);				\
-assert((is)->is_references > 0);				\
-(is)->is_references++;						\
-simple_unlock(&(is)->is_ref_lock_data);				\
+#define is_ref_lock_init(is) simple_lock_init(&(is)->is_ref_lock_data)
+#define ipc_space_reference_macro(is) \
+MACRO_BEGIN \
+simple_lock(&(is)->is_ref_lock_data); \
+assert((is)->is_references > 0); \
+(is)->is_references++; \
+simple_unlock(&(is)->is_ref_lock_data); \
 MACRO_END
-#define	ipc_space_release_macro(is)					\
-MACRO_BEGIN								\
-ipc_space_refs_t _refs;						\
+#define ipc_space_release_macro(is) \
+MACRO_BEGIN \
+ipc_space_refs_t _refs; \
 \
-simple_lock(&(is)->is_ref_lock_data);				\
-assert((is)->is_references > 0);				\
-_refs = --(is)->is_references;					\
-simple_unlock(&(is)->is_ref_lock_data);				\
+simple_lock(&(is)->is_ref_lock_data); \
+assert((is)->is_references > 0); \
+_refs = --(is)->is_references; \
+simple_unlock(&(is)->is_ref_lock_data); \
 \
-if (_refs == 0)							\
-is_free(is);						\
+if (_refs == 0) \
+is_free(is); \
 MACRO_END
-#define	is_lock_init(is)	lock_init(&(is)->is_lock_data, TRUE)
-#define	is_read_lock(is)	lock_read(&(is)->is_lock_data)
-#define is_read_unlock(is)	lock_done(&(is)->is_lock_data)
-#define	is_write_lock(is)	lock_write(&(is)->is_lock_data)
-#define	is_write_lock_try(is)	lock_try_write(&(is)->is_lock_data)
-#define is_write_unlock(is)	lock_done(&(is)->is_lock_data)
-#define	is_write_to_read_lock(is) lock_write_to_read(&(is)->is_lock_data)
+#define is_lock_init(is) lock_init(&(is)->is_lock_data, TRUE)
+#define is_read_lock(is) lock_read(&(is)->is_lock_data)
+#define is_read_unlock(is) lock_done(&(is)->is_lock_data)
+#define is_write_lock(is) lock_write(&(is)->is_lock_data)
+#define is_write_lock_try(is) lock_try_write(&(is)->is_lock_data)
+#define is_write_unlock(is) lock_done(&(is)->is_lock_data)
+#define is_write_to_read_lock(is) lock_write_to_read(&(is)->is_lock_data)
 extern void ipc_space_reference(struct ipc_space *space);
 extern void ipc_space_release(struct ipc_space *space);
-#define	is_reference(is)	ipc_space_reference_macro(is)
-#define	is_release(is)		ipc_space_release_macro(is)
-kern_return_t	ipc_space_create(ipc_space_t *);
-kern_return_t	ipc_space_create_special(struct ipc_space **);
-void		ipc_space_destroy(struct ipc_space *);
+#define is_reference(is) ipc_space_reference_macro(is)
+#define is_release(is) ipc_space_release_macro(is)
+kern_return_t ipc_space_create(ipc_space_t *);
+kern_return_t ipc_space_create_special(struct ipc_space **);
+void ipc_space_destroy(struct ipc_space *);
 static inline ipc_entry_t
 ipc_entry_lookup(
 ipc_space_t space,
@@ -80,18 +80,18 @@ assert((entry == IE_NULL) || IE_BITS_TYPE(entry->ie_bits));
 return entry;
 }
 extern volatile boolean_t mach_port_deallocate_debug;
-#define ipc_entry_lookup_failed(msg, port_name)				\
-MACRO_BEGIN								\
-if (MACH_PORT_NAME_VALID(port_name)) {				\
-printf("task %.*s looked up a bogus port %lu for %d, "	\
-"most probably a bug.\n",			\
-(int) sizeof current_task()->name, 		\
-current_task()->name,				\
-(unsigned long) (port_name),			\
-(msg)->msgh_id);				\
-if (mach_port_deallocate_debug)				\
-SoftDebugger("ipc_entry_lookup");		\
-}								\
+#define ipc_entry_lookup_failed(msg, port_name) \
+MACRO_BEGIN \
+if (MACH_PORT_NAME_VALID(port_name)) { \
+printf("task %.*s looked up a bogus port %lu for %d, " \
+"most probably a bug.\n", \
+(int) sizeof current_task()->name, \
+current_task()->name, \
+(unsigned long) (port_name), \
+(msg)->msgh_id); \
+if (mach_port_deallocate_debug) \
+SoftDebugger("ipc_entry_lookup"); \
+} \
 MACRO_END
 static inline kern_return_t
 ipc_entry_get(
@@ -124,9 +124,9 @@ return KERN_SUCCESS;
 }
 static inline void
 ipc_entry_dealloc(
-ipc_space_t	space,
-mach_port_name_t	name,
-ipc_entry_t	entry)
+ipc_space_t space,
+mach_port_name_t name,
+ipc_entry_t entry)
 {
 assert(space->is_active);
 assert(entry->ie_object == IO_NULL);
@@ -142,11 +142,11 @@ ie_free(entry);
 }
 space->is_size -= 1;
 }
-#define KEY(X)								\
-({								\
-assert((((unsigned long) (X)) & 0x07) == 0);		\
-((unsigned long long)					\
-(((unsigned long) (X) - VM_MIN_KERNEL_ADDRESS) >> 3));	\
+#define KEY(X) \
+({ \
+assert((((unsigned long) (X)) & 0x07) == 0); \
+((unsigned long long) \
+(((unsigned long) (X) - VM_MIN_KERNEL_ADDRESS) >> 3)); \
 })
 static inline kern_return_t
 ipc_reverse_insert(ipc_space_t space,

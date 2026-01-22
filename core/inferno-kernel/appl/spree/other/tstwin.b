@@ -7,13 +7,13 @@ Context, Display, Point, Rect, Image, Screen: import draw;
 include "tk.m";
 tk: Tk;
 Toplevel: import tk;
-include	"tkclient.m";
+include "tkclient.m";
 tkclient: Tkclient;
 include "math.m";
 math: Math;
 Tstwin: module
 {
-init:	fn(ctxt: ref Context, argv: list of string);
+init: fn(ctxt: ref Context, argv: list of string);
 };
 screen: ref Screen;
 display: ref Display;
@@ -30,19 +30,19 @@ task_cfg := array[] of {
 "bind .c <Button-2> {send cmd 1 2 %x %y}",
 };
 Obstacle: adt {
-line: 		ref Line;
-s1, s2: 	real;
-id:		int;
-config: 	fn(b: self ref Obstacle);
-new:		fn(id: int): ref Obstacle;
+line: ref Line;
+s1, s2: real;
+id: int;
+config: fn(b: self ref Obstacle);
+new: fn(id: int): ref Obstacle;
 };
 Line: adt {
-p, v:		Realpoint;
-s:		real;
-new:			fn(p1, p2: Point): ref Line;
-hittest:		fn(l: self ref Line, p: Point): (Realpoint, real, real);
-intersection:	fn(b: self ref Line, p, v: Realpoint): (int, Realpoint, real, real);
-point:		fn(b: self ref Line, s: real): Point;
+p, v: Realpoint;
+s: real;
+new: fn(p1, p2: Point): ref Line;
+hittest: fn(l: self ref Line, p: Point): (Realpoint, real, real);
+intersection: fn(b: self ref Line, p, v: Realpoint): (int, Realpoint, real, real);
+point: fn(b: self ref Line, s: real): Point;
 };
 bats: list of ref Obstacle;
 init(ctxt: ref Context, argv: list of string)
@@ -127,9 +127,9 @@ drag(mch: chan of (int, Point), hitbat: ref Obstacle, offset: real)
 line := hitbat.line;
 batlen := hitbat.s2 - hitbat.s1;
 cvsorigin := Point(int cmd(win, ".c cget -actx"), int cmd(win, ".c cget -acty"));
-#	cmd(win, "grab set .c");
-#	cmd(win, "focus .");
-loop:	for (;;) alt {
+# cmd(win, "grab set .c");
+# cmd(win, "focus .");
+loop: for (;;) alt {
 (buts, p) := <-mch =>
 if (buts & 2)
 (buts, p) = aim(mch, hitbat, p);
@@ -154,11 +154,11 @@ cmd(win, "update");
 if (!buts)
 break loop;
 }
-#	cmd(win, "grab release .c");
+# cmd(win, "grab release .c");
 }
 CHARGETIME: con 1000.0;
 MAXCHARGE: con 50.0;
-α: con 0.999;		# decay in one millisecond
+α: con 0.999; # decay in one millisecond
 Max: con 60.0;
 D: con 5;
 ZERO: con 1e-6;
@@ -211,32 +211,32 @@ return (v.x / mag, v.y / mag);
 }
 #drag(mch: chan of (int, Point), p: Point)
 #{
-#	down := 1;
-#	cvsorigin := Point(int cmd(win, ".c cget -actx"), int cmd(win, ".c cget -acty"));
-#	ms := sys->millisec();
-#	delta := Realpoint(0.0, 0.0);
-#	id := cmd(win, ".c create line " + p2s(p) + " " + p2s(p));
-#	coords := ".c coords " + id + " " + p2s(p) + " ";
-#	do {
-#		p2: Point;
-#		(down, p2) = <-mch;
-#		now := sys->millisec();
-#		fade := math->pow(α, real (now - ms));
-#		ms = now;
-#		delta.x = delta.x * fade + real (p2.x - p.x);
-#		delta.y = delta.y * fade + real (p2.y - p.y);
-#		mag := delta.x * delta.x + delta.y * delta.y;
-#		d: Realpoint;
-#		if (mag > Max * Max) {
-#			fade = Max / math->sqrt(mag);
-#			d  = (delta.x * fade, delta.y * fade);
-#		} else
-#			d = delta;
+# down := 1;
+# cvsorigin := Point(int cmd(win, ".c cget -actx"), int cmd(win, ".c cget -acty"));
+# ms := sys->millisec();
+# delta := Realpoint(0.0, 0.0);
+# id := cmd(win, ".c create line " + p2s(p) + " " + p2s(p));
+# coords := ".c coords " + id + " " + p2s(p) + " ";
+# do {
+# p2: Point;
+# (down, p2) = <-mch;
+# now := sys->millisec();
+# fade := math->pow(α, real (now - ms));
+# ms = now;
+# delta.x = delta.x * fade + real (p2.x - p.x);
+# delta.y = delta.y * fade + real (p2.y - p.y);
+# mag := delta.x * delta.x + delta.y * delta.y;
+# d: Realpoint;
+# if (mag > Max * Max) {
+# fade = Max / math->sqrt(mag);
+# d = (delta.x * fade, delta.y * fade);
+# } else
+# d = delta;
 #
-#		cmd(win, coords + p2s(p.add((int d.x, int d.y))));
-#		win.image.display.cursorset(p.add(cvsorigin));
-#		cmd(win, "update");
-#	} while (down);
+# cmd(win, coords + p2s(p.add((int d.x, int d.y))));
+# win.image.display.cursorset(p.add(cvsorigin));
+# cmd(win, "update");
+# } while (down);
 #}
 #
 Line.new(p1, p2: Point): ref Line
@@ -244,7 +244,7 @@ Line.new(p1, p2: Point): ref Line
 ln := ref Line;
 ln.p = (real p1.x, real p1.y);
 v := Realpoint(real (p2.x - p1.x), real (p2.y - p1.y));
-ln.s =  math->sqrt(v.x * v.x + v.y * v.y);
+ln.s = math->sqrt(v.x * v.x + v.y * v.y);
 if (ln.s > ZERO)
 ln.v = (v.x / ln.s, v.y / ln.s);
 else

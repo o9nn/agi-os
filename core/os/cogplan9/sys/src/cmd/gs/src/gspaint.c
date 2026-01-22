@@ -17,9 +17,9 @@
 #define abuf_nominal_SMALL 500
 #define abuf_nominal_LARGE 2000
 #if arch_small_memory
-#  define abuf_nominal abuf_nominal_SMALL
+# define abuf_nominal abuf_nominal_SMALL
 #else
-#  define abuf_nominal\
+# define abuf_nominal\
 (gs_debug_c('.') ? abuf_nominal_SMALL : abuf_nominal_LARGE)
 #endif
 int

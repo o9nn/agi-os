@@ -72,9 +72,9 @@ size_t redzone_pad;
 } __cacheline_aligned;
 typedef struct kmem_cache *kmem_cache_t;
 #define KMEM_CACHE_NULL ((kmem_cache_t) 0)
-#define KMEM_CACHE_NOOFFSLAB    0x1
-#define KMEM_CACHE_PHYSMEM      0x2
-#define KMEM_CACHE_VERIFY       0x4
+#define KMEM_CACHE_NOOFFSLAB 0x1
+#define KMEM_CACHE_PHYSMEM 0x2
+#define KMEM_CACHE_VERIFY 0x4
 void kmem_cache_init(struct kmem_cache *cache, const char *name,
 size_t obj_size, size_t align,
 kmem_cache_ctor_t ctor, int flags);

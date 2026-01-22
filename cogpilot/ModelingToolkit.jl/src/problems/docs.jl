@@ -136,9 +136,9 @@ for more information.
 """
 const BV_EXTRA_BODY = """
 Boundary value conditions are supplied to Systems in the form of a list of constraints.
-These equations  should specify values that state variables should take at specific points,
-as in `x(0.5) ~ 1`). More general constraints that  should hold over the entire solution,
-such as `x(t)^2 + y(t)^2`, should be  specified as one of the equations used to build the
+These equations should specify values that state variables should take at specific points,
+as in `x(0.5) ~ 1`). More general constraints that should hold over the entire solution,
+such as `x(t)^2 + y(t)^2`, should be specified as one of the equations used to build the
 `System`.
 If a `System` without `constraints` is specified, it will be treated as an initial value problem.
 ```julia

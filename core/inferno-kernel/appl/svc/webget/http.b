@@ -32,68 +32,68 @@ Context: import ssl3;
 ssl_suites := array [] of {byte 0, byte 16r03};
 ssl_comprs := array [] of {byte 0};
 include "transport.m";
-HTTPD:		con "80";		# Default IP port
-HTTPSD:		con "443";	# Default IP port for HTTPS
-Version:	con "1.0";	# Client ID
-MAXREDIR:	con 10;
+HTTPD: con "80"; # Default IP port
+HTTPSD: con "443"; # Default IP port for HTTPS
+Version: con "1.0"; # Client ID
+MAXREDIR: con 10;
 HTTPheader: adt
 {
-vers:		string;
-code:		int;
-length:		int;
-content:	string;
+vers: string;
+code: int;
+length: int;
+content: string;
 };
 Resp: adt
 {
-code:		int;
-action:		int;
-cacheable:	int;
-name:		string;
+code: int;
+action: int;
+cacheable: int;
+name: string;
 };
 DODATA, ERROR, REDIR, UNAUTH, HTMLERR: con iota;
 usecache := 1;
 cachedir: con "/services/webget/cache";
 httpproxy: ref ParsedUrl;
-noproxydoms: list of string;	# domains that don't require proxy
+noproxydoms: list of string; # domains that don't require proxy
 agent := "Inferno-webget/" + Version;
 responses := array[] of {
-(Resp)(100, DODATA, 0,	"Continue" ),
-(Resp)(101, ERROR, 0,	"Switching Protocols" ),
-(Resp)(200, DODATA, 1,	"Ok" ),
-(Resp)(201, DODATA, 0,	"Created" ),
-(Resp)(202, DODATA, 0,	"Accepted" ),
-(Resp)(203, DODATA, 1,	"Non-Authoratative Information" ),
-(Resp)(204, DODATA, 0,	"No content" ),
-(Resp)(205, DODATA, 0,	"Reset content" ),
-(Resp)(206, DODATA, 0,	"Partial content" ),
-(Resp)(300, ERROR, 1,	"Multiple choices" ),
-(Resp)(301, REDIR, 1,	"Moved permanently" ),
-(Resp)(302, REDIR, 0,	"Moved temporarily" ),
-(Resp)(303, ERROR, 0,	"See other" ),
-(Resp)(304, ERROR, 0,	"Not modified" ),
-(Resp)(305, ERROR, 0,	"Use proxy" ),
-(Resp)(400, HTMLERR, 0,	"Bad request" ),
-(Resp)(401, UNAUTH, 0,	"Unauthorized" ),
-(Resp)(402, HTMLERR, 0,	"Payment required" ),
-(Resp)(403, HTMLERR, 0,	"Forbidden" ),
-(Resp)(404, HTMLERR, 0,	"Not found" ),
-(Resp)(405, HTMLERR, 0,	"Method not allowed" ),
-(Resp)(406, HTMLERR, 0,	"Not Acceptable" ),
-(Resp)(407, HTMLERR, 0,	"Proxy authentication required" ),
-(Resp)(408, HTMLERR, 0,	"Request timed-out" ),
-(Resp)(409, HTMLERR, 0,	"Conflict" ),
-(Resp)(410, HTMLERR, 1,	"Gone" ),
-(Resp)(411, HTMLERR, 0,	"Length required" ),
-(Resp)(412, HTMLERR, 0,	"Precondition failed" ),
-(Resp)(413, HTMLERR, 0,	"Request entity too large" ),
-(Resp)(414, HTMLERR, 0,	"Request-URI too large" ),
-(Resp)(415, HTMLERR, 0,	"Unsupported media type" ),
-(Resp)(500, ERROR, 0,	"Internal server error"),
-(Resp)(501, ERROR, 0,	"Not implemented"),
-(Resp)(502, ERROR, 0,	"Bad gateway"),
-(Resp)(503, ERROR, 0,	"Service unavailable"),
-(Resp)(504, ERROR, 0,	"Gateway time-out"),
-(Resp)(505, ERROR, 0,	"HTTP version not supported"),
+(Resp)(100, DODATA, 0, "Continue" ),
+(Resp)(101, ERROR, 0, "Switching Protocols" ),
+(Resp)(200, DODATA, 1, "Ok" ),
+(Resp)(201, DODATA, 0, "Created" ),
+(Resp)(202, DODATA, 0, "Accepted" ),
+(Resp)(203, DODATA, 1, "Non-Authoratative Information" ),
+(Resp)(204, DODATA, 0, "No content" ),
+(Resp)(205, DODATA, 0, "Reset content" ),
+(Resp)(206, DODATA, 0, "Partial content" ),
+(Resp)(300, ERROR, 1, "Multiple choices" ),
+(Resp)(301, REDIR, 1, "Moved permanently" ),
+(Resp)(302, REDIR, 0, "Moved temporarily" ),
+(Resp)(303, ERROR, 0, "See other" ),
+(Resp)(304, ERROR, 0, "Not modified" ),
+(Resp)(305, ERROR, 0, "Use proxy" ),
+(Resp)(400, HTMLERR, 0, "Bad request" ),
+(Resp)(401, UNAUTH, 0, "Unauthorized" ),
+(Resp)(402, HTMLERR, 0, "Payment required" ),
+(Resp)(403, HTMLERR, 0, "Forbidden" ),
+(Resp)(404, HTMLERR, 0, "Not found" ),
+(Resp)(405, HTMLERR, 0, "Method not allowed" ),
+(Resp)(406, HTMLERR, 0, "Not Acceptable" ),
+(Resp)(407, HTMLERR, 0, "Proxy authentication required" ),
+(Resp)(408, HTMLERR, 0, "Request timed-out" ),
+(Resp)(409, HTMLERR, 0, "Conflict" ),
+(Resp)(410, HTMLERR, 1, "Gone" ),
+(Resp)(411, HTMLERR, 0, "Length required" ),
+(Resp)(412, HTMLERR, 0, "Precondition failed" ),
+(Resp)(413, HTMLERR, 0, "Request entity too large" ),
+(Resp)(414, HTMLERR, 0, "Request-URI too large" ),
+(Resp)(415, HTMLERR, 0, "Unsupported media type" ),
+(Resp)(500, ERROR, 0, "Internal server error"),
+(Resp)(501, ERROR, 0, "Not implemented"),
+(Resp)(502, ERROR, 0, "Bad gateway"),
+(Resp)(503, ERROR, 0, "Service unavailable"),
+(Resp)(504, ERROR, 0, "Gateway time-out"),
+(Resp)(505, ERROR, 0, "HTTP version not supported"),
 };
 init(w: WebgetUtils)
 {
@@ -106,7 +106,7 @@ S = W->S;
 B = W->B;
 U = W->U;
 DI = W->DI;
-ssl3 = nil;	# load on demand
+ssl3 = nil; # load on demand
 readconfig();
 }
 readconfig()
@@ -146,12 +146,12 @@ need_proxy(h: string) : int
 {
 doml := noproxydoms;
 if(doml == nil)
-return 1;		# all domains need proxy
+return 1; # all domains need proxy
 lh := len h;
 for(dom := hd doml; doml != nil; doml = tl doml) {
 ld := len dom;
 if(lh >= ld && h[lh-ld:] == dom)
-return 0;	# domain is on the noproxy list
+return 0; # domain is on the noproxy list
 }
 return 1;
 }
@@ -240,7 +240,7 @@ requ = u.pstart + u.path;
 if(u.query != "")
 requ += "?" + u.query;
 }
-m.prefixline = method + " " +  requ + " HTTP/1.0";
+m.prefixline = method + " " + requ + " HTTP/1.0";
 hdrs := Nameval("Host", u.host) ::
 Nameval("User-agent", agent) ::
 Nameval("Accept", accept) :: nil;
@@ -255,7 +255,7 @@ if(method == "POST") {
 m.body = r.body;
 m.bodylen = len m.body;
 m.addhdrs(Nameval("Content-Length", string (len r.body)) ::
-Nameval("Content-type", "text/xml") ::	# was application/x-www-form-urlencoded
+Nameval("Content-type", "text/xml") :: # was application/x-www-form-urlencoded
 nil);
 }
 io = B->fopen(net.dfd, sys->ORDWR);

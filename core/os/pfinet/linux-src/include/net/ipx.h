@@ -5,51 +5,51 @@
 #include <linux/ipx.h>
 typedef struct
 {
-__u32   net;
-__u8    node[IPX_NODE_LEN];
-__u16   sock;
+__u32 net;
+__u8 node[IPX_NODE_LEN];
+__u16 sock;
 } ipx_address;
-#define ipx_broadcast_node	"\377\377\377\377\377\377"
-#define ipx_this_node           "\0\0\0\0\0\0"
+#define ipx_broadcast_node "\377\377\377\377\377\377"
+#define ipx_this_node "\0\0\0\0\0\0"
 struct ipxhdr
 {
-__u16           ipx_checksum __attribute__ ((packed));
-#define IPX_NO_CHECKSUM	0xFFFF
-__u16           ipx_pktsize __attribute__ ((packed));
-__u8            ipx_tctrl;
-__u8            ipx_type;
-#define IPX_TYPE_UNKNOWN	0x00
-#define IPX_TYPE_RIP		0x01
-#define IPX_TYPE_SAP		0x04
-#define IPX_TYPE_SPX		0x05
-#define IPX_TYPE_NCP		0x11
-#define IPX_TYPE_PPROP		0x14
-ipx_address	ipx_dest __attribute__ ((packed));
-ipx_address	ipx_source __attribute__ ((packed));
+__u16 ipx_checksum __attribute__ ((packed));
+#define IPX_NO_CHECKSUM 0xFFFF
+__u16 ipx_pktsize __attribute__ ((packed));
+__u8 ipx_tctrl;
+__u8 ipx_type;
+#define IPX_TYPE_UNKNOWN 0x00
+#define IPX_TYPE_RIP 0x01
+#define IPX_TYPE_SAP 0x04
+#define IPX_TYPE_SPX 0x05
+#define IPX_TYPE_NCP 0x11
+#define IPX_TYPE_PPROP 0x14
+ipx_address ipx_dest __attribute__ ((packed));
+ipx_address ipx_source __attribute__ ((packed));
 };
 #include <net/ipxcall.h>
 typedef struct ipx_interface {
-__u32           if_netnum;
-unsigned char	if_node[IPX_NODE_LEN];
-struct device	*if_dev;
-struct datalink_proto	*if_dlink;
-unsigned short	if_dlink_type;
-unsigned short	if_sknum;
-struct sock	*if_sklist;
-int		if_ipx_offset;
-unsigned char	if_internal;
-unsigned char	if_primary;
-struct ipx_interface	*if_next;
-}	ipx_interface;
+__u32 if_netnum;
+unsigned char if_node[IPX_NODE_LEN];
+struct device *if_dev;
+struct datalink_proto *if_dlink;
+unsigned short if_dlink_type;
+unsigned short if_sknum;
+struct sock *if_sklist;
+int if_ipx_offset;
+unsigned char if_internal;
+unsigned char if_primary;
+struct ipx_interface *if_next;
+} ipx_interface;
 typedef struct ipx_route {
-__u32         ir_net;
+__u32 ir_net;
 ipx_interface *ir_intrfc;
 unsigned char ir_routed;
 unsigned char ir_router_node[IPX_NODE_LEN];
 struct ipx_route *ir_next;
-}	ipx_route;
-#define IPX_MIN_EPHEMERAL_SOCKET	0x4000
-#define IPX_MAX_EPHEMERAL_SOCKET	0x7fff
+} ipx_route;
+#define IPX_MIN_EPHEMERAL_SOCKET 0x4000
+#define IPX_MAX_EPHEMERAL_SOCKET 0x7fff
 extern int ipx_register_spx(struct proto_ops **, struct net_proto_family *);
 extern int ipx_unregister_spx(void);
 #endif

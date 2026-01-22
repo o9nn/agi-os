@@ -11,10 +11,10 @@ return (0);
 #else
 # include <openssl/hmac.h>
 # ifndef OPENSSL_NO_MD5
-#  include <openssl/md5.h>
+# include <openssl/md5.h>
 # endif
 # ifdef CHARSET_EBCDIC
-#  include <openssl/ebcdic.h>
+# include <openssl/ebcdic.h>
 # endif
 # ifndef OPENSSL_NO_MD5
 static struct test_st {
@@ -83,12 +83,12 @@ unsigned int len;
 # ifdef OPENSSL_NO_MD5
 printf("test skipped: MD5 disabled\n");
 # else
-#  ifdef CHARSET_EBCDIC
+# ifdef CHARSET_EBCDIC
 ebcdic2ascii(test[0].data, test[0].data, test[0].data_len);
 ebcdic2ascii(test[1].data, test[1].data, test[1].data_len);
 ebcdic2ascii(test[2].key, test[2].key, test[2].key_len);
 ebcdic2ascii(test[2].data, test[2].data, test[2].data_len);
-#  endif
+# endif
 for (i = 0; i < 4; i++) {
 p = pt(HMAC(EVP_md5(),
 test[i].key, test[i].key_len,

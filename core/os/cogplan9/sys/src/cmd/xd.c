@@ -1,18 +1,18 @@
 #include <u.h>
 #include <libc.h>
 #include <bio.h>
-uchar		odata[16];
-uchar		data[32];
-int		ndata;
-int		nread;
-ulong		addr;
-int		repeats;
-int		swizzle;
-int		flush;
-int		abase=2;
-int		xd(char *, int);
-void		xprint(char *, ...);
-void		initarg(void), swizz(void);
+uchar odata[16];
+uchar data[32];
+int ndata;
+int nread;
+ulong addr;
+int repeats;
+int swizzle;
+int flush;
+int abase=2;
+int xd(char *, int);
+void xprint(char *, ...);
+void initarg(void), swizz(void);
 enum{
 Narg=10,
 TNone=0,
@@ -23,15 +23,15 @@ typedef struct Arg Arg;
 typedef void fmtfn(char *);
 struct Arg
 {
-int	chartype;
-int	loglen;
-int	base;
-fmtfn	*fn;
-char	*afmt;
-char	*fmt;
+int chartype;
+int loglen;
+int base;
+fmtfn *fn;
+char *afmt;
+char *fmt;
 }arg[Narg];
-int	narg;
-fmtfn	fmt0, fmt1, fmt2, fmt3, fmtc, fmtr;
+int narg;
+fmtfn fmt0, fmt1, fmt2, fmt3, fmtc, fmtr;
 fmtfn *fmt[4] = {
 fmt0,
 fmt1,
@@ -39,25 +39,25 @@ fmt2,
 fmt3
 };
 char *dfmt[4][3] = {
-" %.3uo",	" %.3ud",	" %.2ux",
-" %.6uo",	" %.5ud",	" %.4ux",
-" %.11luo",	" %.10lud",	" %.8lux",
-" %.22lluo",	" %.20llud",	" %.16llux",
+" %.3uo", " %.3ud", " %.2ux",
+" %.6uo", " %.5ud", " %.4ux",
+" %.11luo", " %.10lud", " %.8lux",
+" %.22lluo", " %.20llud", " %.16llux",
 };
 char *cfmt[3][3] = {
-"   %c",	"   %c", 	"  %c",
-" %.3s",	" %.3s",	" %.2s",
-" %.3uo",	" %.3ud",	" %.2ux",
+"   %c", "   %c", "  %c",
+" %.3s", " %.3s", " %.2s",
+" %.3uo", " %.3ud", " %.2ux",
 };
 char *rfmt[1][1] = {
 " %2.2C",
 };
 char *afmt[2][3] = {
-"%.7luo ",	"%.7lud ",	"%.7lux ",
-"%7luo ",	"%7lud ",	"%7lux ",
+"%.7luo ", "%.7lud ", "%.7lux ",
+"%7luo ", "%7lud ", "%7lux ",
 };
-Biobuf	bin;
-Biobuf	bout;
+Biobuf bin;
+Biobuf bout;
 void
 main(int argc, char *argv[])
 {

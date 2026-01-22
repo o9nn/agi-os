@@ -2,7 +2,7 @@ implement Connex;
 #
 # temporary test program for palmsrv development
 #
-# Copyright © 2003 Vita Nuova Holdings Limited.  All rights reserved.
+# Copyright © 2003 Vita Nuova Holdings Limited. All rights reserved.
 #
 include "sys.m";
 sys: Sys;
@@ -17,7 +17,7 @@ desklink: Desklink;
 SysInfo: import desklink;
 Connex: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 init(nil: ref Draw->Context, nil: list of string)
 {
@@ -73,7 +73,7 @@ exit;
 dumpfd := sys->create("dump", Sys->OWRITE, 8r600);
 for(i:=0; (r := pdb.read(i)) != nil; i++)
 sys->write(dumpfd, r.data, len r.data);
-#	desklink->EndOfSync(Desklink->SyncNormal);
+# desklink->EndOfSync(Desklink->SyncNormal);
 desklink->hangup();
 }
 listdbs(sort: int)

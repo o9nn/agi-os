@@ -1,51 +1,51 @@
 #include <lib9.h>
 #include <bio.h>
 #include <ctype.h>
-#define	Bungetrune	Bungetc
-#define TBITSET		((32+NTERMS)/32)
-#define BIT(a,i)	((a)[(i)>>5] & (1<<((i)&037)))
-#define SETBIT(a,i)	((a)[(i)>>5] |= (1<<((i)&037)))
-#define NWORDS(n)	(((n)+32)/32)
+#define Bungetrune Bungetc
+#define TBITSET ((32+NTERMS)/32)
+#define BIT(a,i) ((a)[(i)>>5] & (1<<((i)&037)))
+#define SETBIT(a,i) ((a)[(i)>>5] |= (1<<((i)&037)))
+#define NWORDS(n) (((n)+32)/32)
 #ifndef PARSER
-#define PARSER		"yaccpar"
-#define PARSERS		"yaccpars"
+#define PARSER "yaccpar"
+#define PARSERS "yaccpars"
 #endif
-#define TEMPNAME	"y.tmp.XXXXXX"
-#define ACTNAME		"y.acts.XXXXXX"
-#define OFILE		"tab.c"
-#define FILEU		"output"
-#define FILED		"tab.h"
-#define FILEDEBUG	"debug"
+#define TEMPNAME "y.tmp.XXXXXX"
+#define ACTNAME "y.acts.XXXXXX"
+#define OFILE "tab.c"
+#define FILEU "output"
+#define FILED "tab.h"
+#define FILEDEBUG "debug"
 enum
 {
-ACTSIZE		= 30000,
-MEMSIZE		= 30000,
-NSTATES		= 2000,
-NTERMS		= 255,
-NPROD		= 800,
-NNONTERM	= 300,
-TEMPSIZE	= 2000,
-CNAMSZ		= 5000,
-LSETSIZE	= 2400,
-WSETSIZE	= 350,
-NAMESIZE	= 50,
-NTYPES		= 63,
-ISIZE		= 400,
-PRIVATE		= 0xE000,
-NTBASE		= 010000,
-ERRCODE		= 8190,
-ACCEPTCODE	= 8191,
-NOASC		= 0,
-LASC		= 1,
-RASC		= 2,
-BASC		= 3,
-DONE		= 0,
-MUSTDO		= 1,
-MUSTLOOKAHEAD	= 2,
-ACTFLAG		= 04,
-REDFLAG		= 010,
-YYFLAG1		= -1000,
-IDENTIFIER	= PRIVATE,
+ACTSIZE = 30000,
+MEMSIZE = 30000,
+NSTATES = 2000,
+NTERMS = 255,
+NPROD = 800,
+NNONTERM = 300,
+TEMPSIZE = 2000,
+CNAMSZ = 5000,
+LSETSIZE = 2400,
+WSETSIZE = 350,
+NAMESIZE = 50,
+NTYPES = 63,
+ISIZE = 400,
+PRIVATE = 0xE000,
+NTBASE = 010000,
+ERRCODE = 8190,
+ACCEPTCODE = 8191,
+NOASC = 0,
+LASC = 1,
+RASC = 2,
+BASC = 3,
+DONE = 0,
+MUSTDO = 1,
+MUSTLOOKAHEAD = 2,
+ACTFLAG = 04,
+REDFLAG = 010,
+YYFLAG1 = -1000,
+IDENTIFIER = PRIVATE,
 MARK,
 TERM,
 LEFT,
@@ -59,213 +59,213 @@ START,
 TYPEDEF,
 TYPENAME,
 UNION,
-ENDFILE		= 0,
-EMPTY		= 1,
-WHOKNOWS	= 0,
-OK		= 1,
-NOMORE		= -1000,
+ENDFILE = 0,
+EMPTY = 1,
+WHOKNOWS = 0,
+OK = 1,
+NOMORE = -1000,
 };
-#define ASSOC(i)	((i)&03)
-#define PLEVEL(i)	(((i)>>4)&077)
-#define TYPE(i)		(((i)>>10)&077)
-#define SETASC(i,j)	i |= j
-#define SETPLEV(i,j)	i |= (j<<4)
-#define SETTYPE(i,j)	i |= (j<<10)
-#define TLOOP(i)	for(i=1; i<=ntokens; i++)
-#define NTLOOP(i)	for(i=0; i<=nnonter; i++)
-#define PLOOP(s,i)	for(i=s; i<nprod; i++)
-#define SLOOP(i)	for(i=0; i<nstate; i++)
-#define WSBUMP(x)	x++
-#define WSLOOP(s,j)	for(j=s; j<cwp; j++)
-#define ITMLOOP(i,p,q)	for(q=pstate[i+1], p=pstate[i]; p<q; p++)
-#define SETLOOP(i)	for(i=0; i<tbitset; i++)
-#define	ZAPFILE(x)	if(x) remove(x)
-Biobuf*	faction;
-Biobuf*	fdefine;
-Biobuf*	fdebug;
-Biobuf*	ftable;
-Biobuf*	ftemp;
-Biobuf*	finput;
-Biobuf*	foutput;
-char*	infile;
-int	numbval;
-char	tokname[NAMESIZE+4];
+#define ASSOC(i) ((i)&03)
+#define PLEVEL(i) (((i)>>4)&077)
+#define TYPE(i) (((i)>>10)&077)
+#define SETASC(i,j) i |= j
+#define SETPLEV(i,j) i |= (j<<4)
+#define SETTYPE(i,j) i |= (j<<10)
+#define TLOOP(i) for(i=1; i<=ntokens; i++)
+#define NTLOOP(i) for(i=0; i<=nnonter; i++)
+#define PLOOP(s,i) for(i=s; i<nprod; i++)
+#define SLOOP(i) for(i=0; i<nstate; i++)
+#define WSBUMP(x) x++
+#define WSLOOP(s,j) for(j=s; j<cwp; j++)
+#define ITMLOOP(i,p,q) for(q=pstate[i+1], p=pstate[i]; p<q; p++)
+#define SETLOOP(i) for(i=0; i<tbitset; i++)
+#define ZAPFILE(x) if(x) remove(x)
+Biobuf* faction;
+Biobuf* fdefine;
+Biobuf* fdebug;
+Biobuf* ftable;
+Biobuf* ftemp;
+Biobuf* finput;
+Biobuf* foutput;
+char* infile;
+int numbval;
+char tokname[NAMESIZE+4];
 typedef
 struct
 {
-int	lset[TBITSET];
+int lset[TBITSET];
 } Lkset;
 typedef
 struct
 {
-int*	pitem;
-Lkset*	look;
+int* pitem;
+Lkset* look;
 } Item;
 typedef
 struct
 {
-char*	name;
-int	value;
+char* name;
+int value;
 } Symb;
 typedef
 struct
 {
-int*	pitem;
-int	flag;
-Lkset	ws;
+int* pitem;
+int flag;
+Lkset ws;
 } Wset;
-char	cnames[CNAMSZ];
-int	cnamsz = CNAMSZ;
-char*	cnamp = cnames;
-int	ndefout = 4;
-char*	tempname;
-char*	actname;
-char	ttempname[] = TEMPNAME;
-char	tactname[] = ACTNAME;
-char*	parser = PARSER;
-char*	yydebug;
-char	par[256];
-int	ntypes;
-char*	typeset[NTYPES];
-int	ntokens = 0 ;
-Symb	tokset[NTERMS];
-int	toklev[NTERMS];
-int	nnonter = -1;
-Symb	nontrst[NNONTERM];
-int	start;
-int	extval = 0;
-char*	ytabc = OFILE;
-int	mem0[MEMSIZE] ;
-int*	mem = mem0;
-int	nprod = 1;
-int*	prdptr[NPROD];
-int	levprd[NPROD];
-int	rlines[NPROD];
-int	nstate = 0;
-Item*	pstate[NSTATES+2];
-int	tystate[NSTATES];
-int	defact[NSTATES];
-int	tstates[NTERMS];
-int	ntstates[NNONTERM];
-int	mstates[NSTATES];
-int	lastred;
-Lkset	lkst[LSETSIZE];
-int	nolook;
-int	tbitset;
-int	nlset = 0;
-int	nolook = 0;
-Lkset	clset;
-Wset	wsets[WSETSIZE];
-Wset*	cwp;
-int	amem[ACTSIZE];
-int*	memp = amem;
-int	indgo[NSTATES];
-int	temp1[TEMPSIZE];
-int	lineno = 1;
-int	fatfl = 1;
-int	nerrors = 0;
-int	zzgoent;
-int	zzgobest;
-int	zzacent;
-int	zzexcp;
-int	zzclose;
-int	zzrrconf;
-int	zzsrconf;
-int*	ggreed = lkst[0].lset;
-int*	pgo = wsets[0].ws.lset;
-int*	yypgo = &nontrst[0].value;
-int	maxspr = 0;
-int	maxoff = 0;
-int*	pmem = mem0;
-int*	maxa;
-int	nxdb = 0;
-int	adb = 0;
-int**	pres[NNONTERM+2];
-Lkset*	pfirst[NNONTERM+2];
-int	pempty[NNONTERM+1];
-int	indebug = 0;
-Wset*	zzcwp = wsets;
-int	zzgoent = 0;
-int	zzgobest = 0;
-int	zzacent = 0;
-int	zzexcp = 0;
-int	zzclose = 0;
-int	zzsrconf = 0;
-int*	zzmemsz = mem0;
-int	zzrrconf = 0;
-int	pidebug = 0;
-int	gsdebug = 0;
-int	cldebug = 0;
-int	pkdebug = 0;
-int	g2debug = 0;
+char cnames[CNAMSZ];
+int cnamsz = CNAMSZ;
+char* cnamp = cnames;
+int ndefout = 4;
+char* tempname;
+char* actname;
+char ttempname[] = TEMPNAME;
+char tactname[] = ACTNAME;
+char* parser = PARSER;
+char* yydebug;
+char par[256];
+int ntypes;
+char* typeset[NTYPES];
+int ntokens = 0 ;
+Symb tokset[NTERMS];
+int toklev[NTERMS];
+int nnonter = -1;
+Symb nontrst[NNONTERM];
+int start;
+int extval = 0;
+char* ytabc = OFILE;
+int mem0[MEMSIZE] ;
+int* mem = mem0;
+int nprod = 1;
+int* prdptr[NPROD];
+int levprd[NPROD];
+int rlines[NPROD];
+int nstate = 0;
+Item* pstate[NSTATES+2];
+int tystate[NSTATES];
+int defact[NSTATES];
+int tstates[NTERMS];
+int ntstates[NNONTERM];
+int mstates[NSTATES];
+int lastred;
+Lkset lkst[LSETSIZE];
+int nolook;
+int tbitset;
+int nlset = 0;
+int nolook = 0;
+Lkset clset;
+Wset wsets[WSETSIZE];
+Wset* cwp;
+int amem[ACTSIZE];
+int* memp = amem;
+int indgo[NSTATES];
+int temp1[TEMPSIZE];
+int lineno = 1;
+int fatfl = 1;
+int nerrors = 0;
+int zzgoent;
+int zzgobest;
+int zzacent;
+int zzexcp;
+int zzclose;
+int zzrrconf;
+int zzsrconf;
+int* ggreed = lkst[0].lset;
+int* pgo = wsets[0].ws.lset;
+int* yypgo = &nontrst[0].value;
+int maxspr = 0;
+int maxoff = 0;
+int* pmem = mem0;
+int* maxa;
+int nxdb = 0;
+int adb = 0;
+int** pres[NNONTERM+2];
+Lkset* pfirst[NNONTERM+2];
+int pempty[NNONTERM+1];
+int indebug = 0;
+Wset* zzcwp = wsets;
+int zzgoent = 0;
+int zzgobest = 0;
+int zzacent = 0;
+int zzexcp = 0;
+int zzclose = 0;
+int zzsrconf = 0;
+int* zzmemsz = mem0;
+int zzrrconf = 0;
+int pidebug = 0;
+int gsdebug = 0;
+int cldebug = 0;
+int pkdebug = 0;
+int g2debug = 0;
 struct
 {
-char*	name;
-long	value;
+char* name;
+long value;
 } resrv[] =
 {
-"binary",	BINARY,
-"left",		LEFT,
-"nonassoc",	BINARY,
-"prec",		PREC,
-"right",	RIGHT,
-"start",	START,
-"term",		TERM,
-"token",	TERM,
-"type",		TYPEDEF,
-"union",	UNION,
+"binary", BINARY,
+"left", LEFT,
+"nonassoc", BINARY,
+"prec", PREC,
+"right", RIGHT,
+"start", START,
+"term", TERM,
+"token", TERM,
+"type", TYPEDEF,
+"union", UNION,
 0,
 };
-void	main(int, char**);
-void	others(void);
-char*	chcopy(char*, char*);
-char*	writem(int*);
-char*	symnam(int);
-void	summary(void);
-void	error(char*, ...);
-void	aryfil(int*, int, int);
-int	setunion(int*, int*);
-void	prlook(Lkset*);
-void	cpres(void);
-void	cpfir(void);
-int	state(int);
-void	putitem(int*, Lkset*);
-void	cempty(void);
-void	stagen(void);
-void	closure(int);
-Lkset*	flset(Lkset*);
-void	cleantmp(void);
-void	intr(void);
-void	setup(int, char**);
-void	finact(void);
-int	defin(int, char*);
-void	defout(int);
-char*	cstash(char*);
-long	gettok(void);
-int	fdtype(int);
-int	chfind(int, char*);
-void	cpyunion(void);
-void	cpycode(void);
-int	skipcom(void);
-void	cpyact(int);
-void	openup(char*, int, int, int, char*);
-void	output(void);
-int	apack(int*, int);
-void	go2out(void);
-void	go2gen(int);
-void	precftn(int, int, int);
-void	wract(int);
-void	wrstate(int);
-void	warray(char*, int*, int);
-void	hideprod(void);
-void	callopt(void);
-void	gin(int);
-void	stin(int);
-int	nxti(void);
-void	osummary(void);
-void	aoutput(void);
-void	arout(char*, int*, int);
-int	gtnm(void);
+void main(int, char**);
+void others(void);
+char* chcopy(char*, char*);
+char* writem(int*);
+char* symnam(int);
+void summary(void);
+void error(char*, ...);
+void aryfil(int*, int, int);
+int setunion(int*, int*);
+void prlook(Lkset*);
+void cpres(void);
+void cpfir(void);
+int state(int);
+void putitem(int*, Lkset*);
+void cempty(void);
+void stagen(void);
+void closure(int);
+Lkset* flset(Lkset*);
+void cleantmp(void);
+void intr(void);
+void setup(int, char**);
+void finact(void);
+int defin(int, char*);
+void defout(int);
+char* cstash(char*);
+long gettok(void);
+int fdtype(int);
+int chfind(int, char*);
+void cpyunion(void);
+void cpycode(void);
+int skipcom(void);
+void cpyact(int);
+void openup(char*, int, int, int, char*);
+void output(void);
+int apack(int*, int);
+void go2out(void);
+void go2gen(int);
+void precftn(int, int, int);
+void wract(int);
+void wrstate(int);
+void warray(char*, int*, int);
+void hideprod(void);
+void callopt(void);
+void gin(int);
+void stin(int);
+int nxti(void);
+void osummary(void);
+void aoutput(void);
+void arout(char*, int*, int);
+int gtnm(void);
 void
 main(int argc, char *argv[])
 {
@@ -524,7 +524,7 @@ pres[i] = pmem;
 fatfl = 0;
 PLOOP(0, j)
 if(*prdptr[j] == c)
-*pmem++ =  prdptr[j]+1;
+*pmem++ = prdptr[j]+1;
 if(pres[i] == pmem)
 error("nonterminal %s not defined!", nontrst[i].name);
 }
@@ -658,7 +658,7 @@ j->look = flset(lptr);
 pstate[nstate+1] = ++j;
 if((int*)j > zzmemsz) {
 zzmemsz = (int*)j;
-if(zzmemsz >=  &mem0[MEMSIZE])
+if(zzmemsz >= &mem0[MEMSIZE])
 error("out of state space");
 }
 }
@@ -1186,15 +1186,15 @@ goto out;
 if(s[0] == ' ' && s[1] == '\\') {
 if(s[3] == 0) {
 switch(s[2]) {
-case 'n':	val = '\n'; break;
-case 'r':	val = '\r'; break;
-case 'b':	val = '\b'; break;
-case 't':	val = '\t'; break;
-case 'f':	val = '\f'; break;
-case '\'':	val = '\''; break;
+case 'n': val = '\n'; break;
+case 'r': val = '\r'; break;
+case 'b': val = '\b'; break;
+case 't': val = '\t'; break;
+case 'f': val = '\f'; break;
+case '\'': val = '\''; break;
 case '"':	val = '"'; break;
-case '\\':	val = '\\'; break;
-default:	error("invalid escape");
+case '\\': val = '\\'; break;
+default: error("invalid escape");
 }
 goto out;
 }
@@ -1333,15 +1333,15 @@ break;
 case '%':
 case '\\':
 switch(c = Bgetrune(finput)) {
-case '0':	return TERM;
-case '<':	return LEFT;
-case '2':	return BINARY;
-case '>':	return RIGHT;
+case '0': return TERM;
+case '<': return LEFT;
+case '2': return BINARY;
+case '>': return RIGHT;
 case '%':
-case '\\':	return MARK;
-case '=':	return PREC;
-case '{':	return LCURLY;
-default:	reserve = 1;
+case '\\': return MARK;
+case '=': return PREC;
+case '{': return LCURLY;
+default: reserve = 1;
 }
 default:
 if(isdigit(c)) {
@@ -1352,7 +1352,7 @@ numbval = numbval*base + (c-'0');
 Bungetrune(finput);
 return NUMBER;
 }
-if(islower(c) || isupper(c) || c=='_' || c=='.' || c=='$')  {
+if(islower(c) || isupper(c) || c=='_' || c=='.' || c=='$') {
 i = 0;
 while(islower(c) || isupper(c) || isdigit(c) ||
 c == '-' || c=='_' || c=='.' || c=='$') {
@@ -1971,7 +1971,7 @@ if((j1=temp1[j0]) != 0) {
 Bprint(foutput, "\n\t%s  ", symnam(j0));
 if(j1 > 0) {
 if(j1 == ACCEPTCODE)
-Bprint(foutput,  "accept");
+Bprint(foutput, "accept");
 else
 if(j1 == ERRCODE)
 Bprint(foutput, "error");

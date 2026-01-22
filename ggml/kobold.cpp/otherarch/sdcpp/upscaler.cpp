@@ -3,7 +3,7 @@
 #include "model.h"
 #include "stable-diffusion.h"
 struct UpscalerGGML {
-ggml_backend_t backend    = NULL;
+ggml_backend_t backend = NULL;
 ggml_type model_data_type = GGML_TYPE_F16;
 std::shared_ptr<ESRGAN> esrgan_upscaler;
 std::string esrgan_path;
@@ -46,15 +46,15 @@ return true;
 }
 sd_image_t upscale(sd_image_t input_image, uint32_t upscale_factor) {
 sd_image_t upscaled_image = {0, 0, 0, NULL};
-int output_width          = (int)input_image.width * esrgan_upscaler->scale;
-int output_height         = (int)input_image.height * esrgan_upscaler->scale;
+int output_width = (int)input_image.width * esrgan_upscaler->scale;
+int output_height = (int)input_image.height * esrgan_upscaler->scale;
 LOG_INFO("upscaling from (%i x %i) to (%i x %i)",
 input_image.width, input_image.height, output_width, output_height);
 struct ggml_init_params params;
 params.mem_size = output_width * output_height * 3 * sizeof(float) * 2;
 params.mem_size += 2 * ggml_tensor_overhead();
 params.mem_buffer = NULL;
-params.no_alloc   = false;
+params.no_alloc = false;
 struct ggml_context* upscale_ctx = ggml_init(params);
 if (!upscale_ctx) {
 LOG_ERROR("ggml_init() failed");
@@ -64,7 +64,7 @@ LOG_DEBUG("upscale work buffer size: %.2f MB", params.mem_size / 1024.f / 1024.f
 ggml_tensor* input_image_tensor = ggml_new_tensor_4d(upscale_ctx, GGML_TYPE_F32, input_image.width, input_image.height, 3, 1);
 sd_image_to_tensor(input_image.data, input_image_tensor);
 ggml_tensor* upscaled = ggml_new_tensor_4d(upscale_ctx, GGML_TYPE_F32, output_width, output_height, 3, 1);
-auto on_tiling        = [&](ggml_tensor* in, ggml_tensor* out, bool init) {
+auto on_tiling = [&](ggml_tensor* in, ggml_tensor* out, bool init) {
 esrgan_upscaler->compute(n_threads, in, &out);
 };
 int64_t t0 = ggml_time_ms();

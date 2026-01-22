@@ -7,23 +7,23 @@
 (define svec (cog-execute! scol))
 (format #t "foobar is ~A\n" svec)
 (test-assert "foobar-list" (equal? svec
-	(StringValue "(Concept \"foo\")" "(Concept \"bar\")")))
+(StringValue "(Concept \"foo\")" "(Concept \"bar\")")))
 (define scolnode (SexprColumn (Concept "foo")))
 (define snode (cog-execute! scolnode))
 (format #t "Single node is ~A\n" snode)
 (test-assert "foo-node" (equal? snode
-	(StringValue "(Concept \"foo\")")))
+(StringValue "(Concept \"foo\")")))
 (define lv (LinkValue (Concept "foo") (Concept "bar") (Item "zork")))
 (cog-set-value! (Anchor "heavy") (Predicate "place") lv)
 (define slv
-	(SexprColumn (ValueOf (Anchor "heavy") (Predicate "place"))))
+(SexprColumn (ValueOf (Anchor "heavy") (Predicate "place"))))
 (define slvec (cog-execute! slv))
 (format #t "LinkValue vec ~A\n" slvec)
 (test-assert "foobar-lv" (equal? slvec
-	(StringValue
-		"(Concept \"foo\")"
-		"(Concept \"bar\")"
-		"(Item \"zork\")")))
+(StringValue
+"(Concept \"foo\")"
+"(Concept \"bar\")"
+"(Item \"zork\")")))
 (Edge (Predicate "word-pair") (List (Item "Paul") (Item "bit")))
 (Edge (Predicate "word-pair") (List (Item "bit") (Item "the")))
 (Edge (Predicate "word-pair") (List (Item "the") (Item "dog")))
@@ -37,12 +37,12 @@
 (Edge (Predicate "word-pair") (List (Item "a") (Item "lot")))
 (Edge (Predicate "word-pair") (List (Item "lot") (Item ".")))
 (define mtx
-	(Meet (VariableList
-		(TypedVariable (Variable "$left-word") (Type 'ItemNode))
-		(TypedVariable (Variable "$right-word") (Type 'ItemNode)))
-		(Present
-			(Edge (Predicate "word-pair")
-				(List (Variable "$left-word") (Variable "$right-word"))))))
+(Meet (VariableList
+(TypedVariable (Variable "$left-word") (Type 'ItemNode))
+(TypedVariable (Variable "$right-word") (Type 'ItemNode)))
+(Present
+(Edge (Predicate "word-pair")
+(List (Variable "$left-word") (Variable "$right-word"))))))
 (cog-execute! mtx)
 (define mtxgnd (cog-execute! (ValueOf mtx mtx)))
 (format #t "Matrix ground ~A\n" mtxgnd)
@@ -51,14 +51,14 @@
 (format #t "Matrix vec ~A\n" mtxvec)
 (test-assert "matrix size" (equal? 12 (length (cog-value->list mtxvec))))
 (define mtxpr
-	(Query (VariableList
-		(TypedVariable (Variable "$left-word") (Type 'ItemNode))
-		(TypedVariable (Variable "$right-word") (Type 'ItemNode)))
-		(Present
-			(Edge (Predicate "word-pair")
-				(List (Variable "$left-word") (Variable "$right-word"))))
-		(Edge (Predicate "word-pair")
-			(List (Variable "$left-word") (Variable "$right-word")))))
+(Query (VariableList
+(TypedVariable (Variable "$left-word") (Type 'ItemNode))
+(TypedVariable (Variable "$right-word") (Type 'ItemNode)))
+(Present
+(Edge (Predicate "word-pair")
+(List (Variable "$left-word") (Variable "$right-word"))))
+(Edge (Predicate "word-pair")
+(List (Variable "$left-word") (Variable "$right-word")))))
 (cog-execute! mtxpr)
 (define smtxpr (SexprColumn (ValueOf mtxpr mtxpr)))
 (define prvec (cog-execute! smtxpr))

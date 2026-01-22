@@ -1,16 +1,16 @@
 (Inheritance
-    (Concept "A")
-    (Concept "B")
+(Concept "A")
+(Concept "B")
 )
 (Inheritance
-    (Concept "B")
-    (Concept "C")
+(Concept "B")
+(Concept "C")
 )
 (Inheritance
-    (Concept "B")
-    (Concept "F")
+(Concept "B")
+(Concept "F")
 )
 (Inheritance
-    (Concept "C")
-    (Concept "D")
+(Concept "C")
+(Concept "D")
 )

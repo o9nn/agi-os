@@ -1,15 +1,15 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #include "mailimf_types_helper.h"
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 #ifdef HAVE_UNISTD_H
-#	include <unistd.h>
+# include <unistd.h>
 #endif
 #ifdef WIN32
-#	include "win_etpan.h"
+# include "win_etpan.h"
 #endif
 #include "mailimf.h"
 #include "timeutils.h"
@@ -279,7 +279,7 @@ NULL ,
 NULL );
 if (field == NULL)
 goto free;
-r =  mailimf_fields_add(fields, field);
+r = mailimf_fields_add(fields, field);
 if (r != MAILIMF_NO_ERROR)
 goto free_field;
 }
@@ -312,7 +312,7 @@ NULL ,
 NULL );
 if (field == NULL)
 goto free;
-r =  mailimf_fields_add(fields, field);
+r = mailimf_fields_add(fields, field);
 if (r != MAILIMF_NO_ERROR)
 goto free_field;
 }
@@ -345,7 +345,7 @@ NULL ,
 NULL );
 if (field == NULL)
 goto free;
-r =  mailimf_fields_add(fields, field);
+r = mailimf_fields_add(fields, field);
 if (r != MAILIMF_NO_ERROR)
 goto free_field;
 }
@@ -378,7 +378,7 @@ NULL ,
 NULL );
 if (field == NULL)
 goto free;
-r =  mailimf_fields_add(fields, field);
+r = mailimf_fields_add(fields, field);
 if (r != MAILIMF_NO_ERROR)
 goto free_field;
 }
@@ -411,7 +411,7 @@ NULL ,
 NULL );
 if (field == NULL)
 goto free;
-r =  mailimf_fields_add(fields, field);
+r = mailimf_fields_add(fields, field);
 if (r != MAILIMF_NO_ERROR)
 goto free_field;
 }
@@ -444,7 +444,7 @@ NULL ,
 NULL );
 if (field == NULL)
 goto free;
-r =  mailimf_fields_add(fields, field);
+r = mailimf_fields_add(fields, field);
 if (r != MAILIMF_NO_ERROR)
 goto free_field;
 }
@@ -477,7 +477,7 @@ NULL ,
 NULL );
 if (field == NULL)
 goto free;
-r =  mailimf_fields_add(fields, field);
+r = mailimf_fields_add(fields, field);
 if (r != MAILIMF_NO_ERROR)
 goto free_field;
 }
@@ -688,7 +688,7 @@ NULL ,
 NULL );
 if (field == NULL)
 goto free;
-r =  mailimf_fields_add(fields, field);
+r = mailimf_fields_add(fields, field);
 if (r != MAILIMF_NO_ERROR)
 goto free_field;
 }
@@ -721,7 +721,7 @@ NULL ,
 NULL );
 if (field == NULL)
 goto free;
-r =  mailimf_fields_add(fields, field);
+r = mailimf_fields_add(fields, field);
 if (r != MAILIMF_NO_ERROR)
 goto free_field;
 }
@@ -754,7 +754,7 @@ NULL ,
 NULL );
 if (field == NULL)
 goto free;
-r =  mailimf_fields_add(fields, field);
+r = mailimf_fields_add(fields, field);
 if (r != MAILIMF_NO_ERROR)
 goto free_field;
 }
@@ -787,7 +787,7 @@ NULL ,
 NULL );
 if (field == NULL)
 goto free;
-r =  mailimf_fields_add(fields, field);
+r = mailimf_fields_add(fields, field);
 if (r != MAILIMF_NO_ERROR)
 goto free_field;
 }
@@ -820,7 +820,7 @@ NULL ,
 NULL );
 if (field == NULL)
 goto free;
-r =  mailimf_fields_add(fields, field);
+r = mailimf_fields_add(fields, field);
 if (r != MAILIMF_NO_ERROR)
 goto free_field;
 }
@@ -853,7 +853,7 @@ NULL ,
 NULL );
 if (field == NULL)
 goto free;
-r =  mailimf_fields_add(fields, field);
+r = mailimf_fields_add(fields, field);
 if (r != MAILIMF_NO_ERROR)
 goto free_field;
 }
@@ -886,7 +886,7 @@ NULL ,
 NULL );
 if (field == NULL)
 goto free;
-r =  mailimf_fields_add(fields, field);
+r = mailimf_fields_add(fields, field);
 if (r != MAILIMF_NO_ERROR)
 goto free_field;
 }
@@ -919,7 +919,7 @@ NULL ,
 NULL );
 if (field == NULL)
 goto free;
-r =  mailimf_fields_add(fields, field);
+r = mailimf_fields_add(fields, field);
 if (r != MAILIMF_NO_ERROR)
 goto free_field;
 }
@@ -952,7 +952,7 @@ NULL ,
 NULL );
 if (field == NULL)
 goto free;
-r =  mailimf_fields_add(fields, field);
+r = mailimf_fields_add(fields, field);
 if (r != MAILIMF_NO_ERROR)
 goto free_field;
 }
@@ -985,7 +985,7 @@ NULL ,
 NULL );
 if (field == NULL)
 goto free;
-r =  mailimf_fields_add(fields, field);
+r = mailimf_fields_add(fields, field);
 if (r != MAILIMF_NO_ERROR)
 goto free_field;
 }
@@ -1018,7 +1018,7 @@ NULL ,
 NULL );
 if (field == NULL)
 goto free;
-r =  mailimf_fields_add(fields, field);
+r = mailimf_fields_add(fields, field);
 if (r != MAILIMF_NO_ERROR)
 goto free_field;
 }

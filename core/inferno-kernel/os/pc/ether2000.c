@@ -9,23 +9,23 @@
 #include "etherif.h"
 #include "ether8390.h"
 enum {
-Data		= 0x10,
-Reset		= 0x1F,
+Data = 0x10,
+Reset = 0x1F,
 };
 typedef struct Ctlr Ctlr;
 typedef struct Ctlr {
-Pcidev*	pcidev;
-Ctlr*	next;
-int	active;
+Pcidev* pcidev;
+Ctlr* next;
+int active;
 } Ctlr;
 static Ctlr* ctlrhead;
 static Ctlr* ctlrtail;
 static struct {
-char*	name;
-int	id;
+char* name;
+int id;
 } ne2000pci[] = {
-{ "Realtek 8029",	(0x8029<<16)|0x10EC, },
-{ "Winbond 89C940",	(0x0940<<16)|0x1050, },
+{ "Realtek 8029", (0x8029<<16)|0x10EC, },
+{ "Winbond 89C940", (0x0940<<16)|0x1050, },
 { nil },
 };
 static Ctlr*

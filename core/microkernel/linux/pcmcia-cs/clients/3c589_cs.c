@@ -24,12 +24,12 @@
 #include <pcmcia/cisreg.h>
 #include <pcmcia/ciscode.h>
 #include <pcmcia/ds.h>
-#define EL3_DATA	0x00
-#define EL3_TIMER	0x0a
-#define EL3_CMD		0x0e
-#define EL3_STATUS	0x0e
-#define EEPROM_READ	0x0080
-#define EEPROM_BUSY	0x8000
+#define EL3_DATA 0x00
+#define EL3_TIMER 0x0a
+#define EL3_CMD 0x0e
+#define EL3_STATUS 0x0e
+#define EEPROM_READ 0x0080
+#define EEPROM_BUSY 0x8000
 #define EL3WINDOW(win_num) outw(SelectWindow + (win_num), ioaddr + EL3_CMD)
 enum c509cmd {
 TotalReset = 0<<11, SelectWindow = 1<<11, StartCoax = 2<<11,
@@ -48,25 +48,25 @@ IntReq = 0x0040, StatsFull = 0x0080, CmdBusy = 0x1000
 enum RxFilter {
 RxStation = 1, RxMulticast = 2, RxBroadcast = 4, RxProm = 8
 };
-#define TX_FIFO		0x00
-#define RX_FIFO		0x00
-#define RX_STATUS 	0x08
-#define TX_STATUS 	0x0B
-#define TX_FREE		0x0C
-#define WN0_IRQ		0x08
-#define WN4_MEDIA	0x0A
-#define MEDIA_TP	0x00C0
-#define MEDIA_LED	0x0001
-#define TX_TIMEOUT	((400*HZ)/1000)
+#define TX_FIFO 0x00
+#define RX_FIFO 0x00
+#define RX_STATUS 0x08
+#define TX_STATUS 0x0B
+#define TX_FREE 0x0C
+#define WN0_IRQ 0x08
+#define WN4_MEDIA 0x0A
+#define MEDIA_TP 0x00C0
+#define MEDIA_LED 0x0001
+#define TX_TIMEOUT ((400*HZ)/1000)
 struct el3_private {
-dev_link_t		link;
-struct net_device	dev;
-dev_node_t 		node;
+dev_link_t link;
+struct net_device dev;
+dev_node_t node;
 struct net_device_stats stats;
-struct timer_list	media;
-u_short		media_status;
-u_short		fast_poll;
-u_long		last_irq;
+struct timer_list media;
+u_short media_status;
+u_short fast_poll;
+u_long last_irq;
 };
 static char *if_names[] = { "auto", "10baseT", "10base2", "AUI" };
 MODULE_AUTHOR("David Hinds <dahinds@users.sourceforge.net>");
@@ -677,13 +677,13 @@ ioaddr_t ioaddr = dev->base_addr;
 DEBUG(2, "%s: updating the statistics.\n", dev->name);
 outw(StatsDisable, ioaddr + EL3_CMD);
 EL3WINDOW(6);
-lp->stats.tx_carrier_errors 	+= inb(ioaddr + 0);
-lp->stats.tx_heartbeat_errors	+= inb(ioaddr + 1);
+lp->stats.tx_carrier_errors += inb(ioaddr + 0);
+lp->stats.tx_heartbeat_errors += inb(ioaddr + 1);
 inb(ioaddr + 2);
-lp->stats.collisions		+= inb(ioaddr + 3);
-lp->stats.tx_window_errors		+= inb(ioaddr + 4);
-lp->stats.rx_fifo_errors		+= inb(ioaddr + 5);
-lp->stats.tx_packets		+= inb(ioaddr + 6);
+lp->stats.collisions += inb(ioaddr + 3);
+lp->stats.tx_window_errors += inb(ioaddr + 4);
+lp->stats.rx_fifo_errors += inb(ioaddr + 5);
+lp->stats.tx_packets += inb(ioaddr + 6);
 inb(ioaddr + 7);
 inb(ioaddr + 8);
 inw(ioaddr + 10);
@@ -705,12 +705,12 @@ if (rx_status & 0x4000) {
 short error = rx_status & 0x3800;
 lp->stats.rx_errors++;
 switch (error) {
-case 0x0000:	lp->stats.rx_over_errors++; break;
-case 0x0800:	lp->stats.rx_length_errors++; break;
-case 0x1000:	lp->stats.rx_frame_errors++; break;
-case 0x1800:	lp->stats.rx_length_errors++; break;
-case 0x2000:	lp->stats.rx_frame_errors++; break;
-case 0x2800:	lp->stats.rx_crc_errors++; break;
+case 0x0000: lp->stats.rx_over_errors++; break;
+case 0x0800: lp->stats.rx_length_errors++; break;
+case 0x1000: lp->stats.rx_frame_errors++; break;
+case 0x1800: lp->stats.rx_length_errors++; break;
+case 0x2000: lp->stats.rx_frame_errors++; break;
+case 0x2800: lp->stats.rx_crc_errors++; break;
 }
 } else {
 short pkt_len = rx_status & 0x7ff;

@@ -10,11 +10,11 @@
 #include "keyboard.h"
 #include "raise.h"
 #include "kernel.h"
-extern	void	tkfreetop(Heap*, int);
-Type*	fakeTkTop;
-static	uchar	TktypeMap[] = Tk_Toplevel_map;
-int	tkstylus;
-void	(*tkwiretap)(void*, char*, char*, void*, Rectangle*);
+extern void tkfreetop(Heap*, int);
+Type* fakeTkTop;
+static uchar TktypeMap[] = Tk_Toplevel_map;
+int tkstylus;
+void (*tkwiretap)(void*, char*, char*, void*, Rectangle*);
 static void tktopimagedptr(TkTop*, Draw_Image*);
 static char*tkputwinimage(Tk*, Draw_Image*, int);
 static void
@@ -332,7 +332,7 @@ target = nil;
 if (target != c->entered || (c->entered != nil && !inside)) {
 if (c->entered != nil) {
 fw = c->entered;
-c->entered =  nil;
+c->entered = nil;
 tkdeliver(fw, TkLeave, nil);
 if (target == nil || fw->env->top != target->env->top)
 tkupdate(fw->env->top);
@@ -349,7 +349,7 @@ dtype = 0;
 if(f->p.buttons & (1<<8))
 dtype = TkDouble;
 d = lastb ^ m.b;
-if (d)	{
+if (d) {
 tkrepeat(nil, nil, nil, 0, 0);
 if (d & ~lastb & 1)
 tkdeliver(target, TkTakefocus|TkButton1P, &m);

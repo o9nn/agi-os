@@ -125,7 +125,7 @@ verify_failure(R"""(
 root ::= "a"{,10}"
 )""");
 verify_parsing(R"""(
-root  ::= "a"
+root ::= "a"
 )""", {
 {"root", 0},
 }, {
@@ -133,7 +133,7 @@ root  ::= "a"
 {LLAMA_GRETYPE_END, 0},
 });
 verify_parsing(R"""(
-root  ::= "a" | [bdx-z] | [^1-3]
+root ::= "a" | [bdx-z] | [^1-3]
 )""", {
 {"root", 0},
 }, {
@@ -149,97 +149,97 @@ root  ::= "a" | [bdx-z] | [^1-3]
 {LLAMA_GRETYPE_END, 0},
 });
 verify_parsing(R"""(
-root  ::= a+
-a     ::= "a"
+root ::= a+
+a ::= "a"
 )""", {
 {"a", 1},
 {"root", 0},
 {"root_2", 2},
 }, {
-{LLAMA_GRETYPE_RULE_REF,  1},
-{LLAMA_GRETYPE_RULE_REF,  2},
+{LLAMA_GRETYPE_RULE_REF, 1},
+{LLAMA_GRETYPE_RULE_REF, 2},
 {LLAMA_GRETYPE_END, 0},
 {LLAMA_GRETYPE_CHAR, 'a'},
 {LLAMA_GRETYPE_END, 0},
-{LLAMA_GRETYPE_RULE_REF,  1},
-{LLAMA_GRETYPE_RULE_REF,  2},
+{LLAMA_GRETYPE_RULE_REF, 1},
+{LLAMA_GRETYPE_RULE_REF, 2},
 {LLAMA_GRETYPE_ALT, 0},
 {LLAMA_GRETYPE_END, 0},
 });
 verify_parsing(R"""(
-root  ::= "a"+
+root ::= "a"+
 )""", {
 {"root", 0},
 {"root_1", 1},
 }, {
 {LLAMA_GRETYPE_CHAR, 'a'},
-{LLAMA_GRETYPE_RULE_REF,  1},
+{LLAMA_GRETYPE_RULE_REF, 1},
 {LLAMA_GRETYPE_END, 0},
 {LLAMA_GRETYPE_CHAR, 'a'},
-{LLAMA_GRETYPE_RULE_REF,  1},
+{LLAMA_GRETYPE_RULE_REF, 1},
 {LLAMA_GRETYPE_ALT, 0},
 {LLAMA_GRETYPE_END, 0},
 });
 verify_parsing(R"""(
-root  ::= a?
-a     ::= "a"
+root ::= a?
+a ::= "a"
 )""", {
 {"a", 1},
 {"root", 0},
 {"root_2", 2},
 }, {
-{LLAMA_GRETYPE_RULE_REF,  2},
+{LLAMA_GRETYPE_RULE_REF, 2},
 {LLAMA_GRETYPE_END, 0},
 {LLAMA_GRETYPE_CHAR, 'a'},
 {LLAMA_GRETYPE_END, 0},
-{LLAMA_GRETYPE_RULE_REF,  1},
+{LLAMA_GRETYPE_RULE_REF, 1},
 {LLAMA_GRETYPE_ALT, 0},
 {LLAMA_GRETYPE_END, 0},
 });
 verify_parsing(R"""(
-root  ::= "a"?
+root ::= "a"?
 )""", {
 {"root", 0},
 {"root_1", 1},
 }, {
-{LLAMA_GRETYPE_RULE_REF,  1},
+{LLAMA_GRETYPE_RULE_REF, 1},
 {LLAMA_GRETYPE_END, 0},
 {LLAMA_GRETYPE_CHAR, 'a'},
 {LLAMA_GRETYPE_ALT, 0},
 {LLAMA_GRETYPE_END, 0},
 });
 verify_parsing(R"""(
-root  ::= a*
-a     ::= "a"
+root ::= a*
+a ::= "a"
 )""", {
 {"a", 1},
 {"root", 0},
 {"root_2", 2},
 }, {
-{LLAMA_GRETYPE_RULE_REF,  2},
+{LLAMA_GRETYPE_RULE_REF, 2},
 {LLAMA_GRETYPE_END, 0},
 {LLAMA_GRETYPE_CHAR, 'a'},
 {LLAMA_GRETYPE_END, 0},
-{LLAMA_GRETYPE_RULE_REF,  1},
-{LLAMA_GRETYPE_RULE_REF,  2},
+{LLAMA_GRETYPE_RULE_REF, 1},
+{LLAMA_GRETYPE_RULE_REF, 2},
 {LLAMA_GRETYPE_ALT, 0},
 {LLAMA_GRETYPE_END, 0},
 });
 verify_parsing(R"""(
-root  ::= "a"*
+root ::= "a"*
 )""", {
 {"root", 0},
 {"root_1", 1},
 }, {
-{LLAMA_GRETYPE_RULE_REF,  1},
+{LLAMA_GRETYPE_RULE_REF, 1},
 {LLAMA_GRETYPE_END, 0},
 {LLAMA_GRETYPE_CHAR, 'a'},
-{LLAMA_GRETYPE_RULE_REF,  1},
+{LLAMA_GRETYPE_RULE_REF, 1},
 {LLAMA_GRETYPE_ALT, 0},
 {LLAMA_GRETYPE_END, 0},
 });
 verify_parsing(R"""(
-root  ::= "a"{2}
+root ::= "a"{2}
 )""", {
 {"root", 0},
 }, {
@@ -248,22 +248,22 @@ root  ::= "a"{2}
 {LLAMA_GRETYPE_END, 0},
 });
 verify_parsing(R"""(
-root  ::= "a"{2,}
+root ::= "a"{2,}
 )""", {
 {"root", 0},
 {"root_1", 1},
 }, {
 {LLAMA_GRETYPE_CHAR, 'a'},
 {LLAMA_GRETYPE_CHAR, 'a'},
-{LLAMA_GRETYPE_RULE_REF,  1},
+{LLAMA_GRETYPE_RULE_REF, 1},
 {LLAMA_GRETYPE_END, 0},
 {LLAMA_GRETYPE_CHAR, 'a'},
-{LLAMA_GRETYPE_RULE_REF,  1},
+{LLAMA_GRETYPE_RULE_REF, 1},
 {LLAMA_GRETYPE_ALT, 0},
 {LLAMA_GRETYPE_END, 0},
 });
 verify_parsing(R"""(
-root  ::= "a"{ 4}
+root ::= "a"{ 4}
 )""", {
 {"root", 0},
 }, {
@@ -274,7 +274,7 @@ root  ::= "a"{ 4}
 {LLAMA_GRETYPE_END, 0},
 });
 verify_parsing(R"""(
-root  ::= "a"{2,4}
+root ::= "a"{2,4}
 )""", {
 {"root", 0},
 {"root_1", 1},
@@ -282,20 +282,20 @@ root  ::= "a"{2,4}
 }, {
 {LLAMA_GRETYPE_CHAR, 'a'},
 {LLAMA_GRETYPE_CHAR, 'a'},
-{LLAMA_GRETYPE_RULE_REF,  2},
+{LLAMA_GRETYPE_RULE_REF, 2},
 {LLAMA_GRETYPE_END, 0},
 {LLAMA_GRETYPE_CHAR, 'a'},
 {LLAMA_GRETYPE_ALT, 0},
 {LLAMA_GRETYPE_END, 0},
 {LLAMA_GRETYPE_CHAR, 'a'},
-{LLAMA_GRETYPE_RULE_REF,  1},
+{LLAMA_GRETYPE_RULE_REF, 1},
 {LLAMA_GRETYPE_ALT, 0},
 {LLAMA_GRETYPE_END, 0},
 });
 verify_parsing(R"""(
-root  ::= (expr "=" term "\n")+
-expr  ::= term ([-+*/] term)*
-term  ::= [0-9]+
+root ::= (expr "=" term "\n")+
+expr ::= term ([-+*/] term)*
+term ::= [0-9]+
 )""", {
 {"expr", 2},
 {"expr_5", 5},
@@ -306,48 +306,48 @@ term  ::= [0-9]+
 {"term", 3},
 {"term_7", 7},
 }, {
-{LLAMA_GRETYPE_RULE_REF,  1},
-{LLAMA_GRETYPE_RULE_REF,  4},
+{LLAMA_GRETYPE_RULE_REF, 1},
+{LLAMA_GRETYPE_RULE_REF, 4},
 {LLAMA_GRETYPE_END, 0},
-{LLAMA_GRETYPE_RULE_REF,  2},
+{LLAMA_GRETYPE_RULE_REF, 2},
 {LLAMA_GRETYPE_CHAR, '='},
-{LLAMA_GRETYPE_RULE_REF,  3},
+{LLAMA_GRETYPE_RULE_REF, 3},
 {LLAMA_GRETYPE_CHAR, '\n'},
 {LLAMA_GRETYPE_END, 0},
-{LLAMA_GRETYPE_RULE_REF,  3},
-{LLAMA_GRETYPE_RULE_REF,  6},
+{LLAMA_GRETYPE_RULE_REF, 3},
+{LLAMA_GRETYPE_RULE_REF, 6},
 {LLAMA_GRETYPE_END, 0},
 {LLAMA_GRETYPE_CHAR, '0'},
 {LLAMA_GRETYPE_CHAR_RNG_UPPER, '9'},
-{LLAMA_GRETYPE_RULE_REF,  7},
+{LLAMA_GRETYPE_RULE_REF, 7},
 {LLAMA_GRETYPE_END, 0},
-{LLAMA_GRETYPE_RULE_REF,  1},
-{LLAMA_GRETYPE_RULE_REF,  4},
+{LLAMA_GRETYPE_RULE_REF, 1},
+{LLAMA_GRETYPE_RULE_REF, 4},
 {LLAMA_GRETYPE_ALT, 0},
 {LLAMA_GRETYPE_END, 0},
 {LLAMA_GRETYPE_CHAR, '-'},
 {LLAMA_GRETYPE_CHAR_ALT, '+'},
 {LLAMA_GRETYPE_CHAR_ALT, '*'},
 {LLAMA_GRETYPE_CHAR_ALT, '/'},
-{LLAMA_GRETYPE_RULE_REF,  3},
+{LLAMA_GRETYPE_RULE_REF, 3},
 {LLAMA_GRETYPE_END, 0},
-{LLAMA_GRETYPE_RULE_REF,  5},
-{LLAMA_GRETYPE_RULE_REF,  6},
+{LLAMA_GRETYPE_RULE_REF, 5},
+{LLAMA_GRETYPE_RULE_REF, 6},
 {LLAMA_GRETYPE_ALT, 0},
 {LLAMA_GRETYPE_END, 0},
 {LLAMA_GRETYPE_CHAR, '0'},
 {LLAMA_GRETYPE_CHAR_RNG_UPPER, '9'},
-{LLAMA_GRETYPE_RULE_REF,  7},
+{LLAMA_GRETYPE_RULE_REF, 7},
 {LLAMA_GRETYPE_ALT, 0},
 {LLAMA_GRETYPE_END, 0},
 });
 verify_parsing(R"""(
-root  ::= (expr "=" ws term "\n")+
-expr  ::= term ([-+*/] term)*
-term  ::= ident | num | "(" ws expr ")" ws
+root ::= (expr "=" ws term "\n")+
+expr ::= term ([-+*/] term)*
+term ::= ident | num | "(" ws expr ")" ws
 ident ::= [a-z] [a-z0-9_]* ws
-num   ::= [0-9]+ ws
-ws    ::= [ \t\n]*
+num ::= [0-9]+ ws
+ws ::= [ \t\n]*
 )""", {
 {"expr", 2},
 {"expr_6", 6},
@@ -363,71 +363,71 @@ ws    ::= [ \t\n]*
 {"ws", 3},
 {"ws_12", 12},
 }, {
-{LLAMA_GRETYPE_RULE_REF,  1},
-{LLAMA_GRETYPE_RULE_REF,  5},
+{LLAMA_GRETYPE_RULE_REF, 1},
+{LLAMA_GRETYPE_RULE_REF, 5},
 {LLAMA_GRETYPE_END, 0},
-{LLAMA_GRETYPE_RULE_REF,  2},
+{LLAMA_GRETYPE_RULE_REF, 2},
 {LLAMA_GRETYPE_CHAR, '='},
-{LLAMA_GRETYPE_RULE_REF,  3},
-{LLAMA_GRETYPE_RULE_REF,  4},
+{LLAMA_GRETYPE_RULE_REF, 3},
+{LLAMA_GRETYPE_RULE_REF, 4},
 {LLAMA_GRETYPE_CHAR, '\n'},
 {LLAMA_GRETYPE_END, 0},
-{LLAMA_GRETYPE_RULE_REF,  4},
-{LLAMA_GRETYPE_RULE_REF,  7},
+{LLAMA_GRETYPE_RULE_REF, 4},
+{LLAMA_GRETYPE_RULE_REF, 7},
 {LLAMA_GRETYPE_END, 0},
-{LLAMA_GRETYPE_RULE_REF,  12},
+{LLAMA_GRETYPE_RULE_REF, 12},
 {LLAMA_GRETYPE_END, 0},
-{LLAMA_GRETYPE_RULE_REF,  8},
+{LLAMA_GRETYPE_RULE_REF, 8},
 {LLAMA_GRETYPE_ALT, 0},
-{LLAMA_GRETYPE_RULE_REF,  9},
+{LLAMA_GRETYPE_RULE_REF, 9},
 {LLAMA_GRETYPE_ALT, 0},
 {LLAMA_GRETYPE_CHAR, '('},
-{LLAMA_GRETYPE_RULE_REF,  3},
-{LLAMA_GRETYPE_RULE_REF,  2},
+{LLAMA_GRETYPE_RULE_REF, 3},
+{LLAMA_GRETYPE_RULE_REF, 2},
 {LLAMA_GRETYPE_CHAR, ')'},
-{LLAMA_GRETYPE_RULE_REF,  3},
+{LLAMA_GRETYPE_RULE_REF, 3},
 {LLAMA_GRETYPE_END, 0},
-{LLAMA_GRETYPE_RULE_REF,  1},
-{LLAMA_GRETYPE_RULE_REF,  5},
+{LLAMA_GRETYPE_RULE_REF, 1},
+{LLAMA_GRETYPE_RULE_REF, 5},
 {LLAMA_GRETYPE_ALT, 0},
 {LLAMA_GRETYPE_END, 0},
 {LLAMA_GRETYPE_CHAR, '-'},
 {LLAMA_GRETYPE_CHAR_ALT, '+'},
 {LLAMA_GRETYPE_CHAR_ALT, '*'},
 {LLAMA_GRETYPE_CHAR_ALT, '/'},
-{LLAMA_GRETYPE_RULE_REF,  4},
+{LLAMA_GRETYPE_RULE_REF, 4},
 {LLAMA_GRETYPE_END, 0},
-{LLAMA_GRETYPE_RULE_REF,  6},
-{LLAMA_GRETYPE_RULE_REF,  7},
+{LLAMA_GRETYPE_RULE_REF, 6},
+{LLAMA_GRETYPE_RULE_REF, 7},
 {LLAMA_GRETYPE_ALT, 0},
 {LLAMA_GRETYPE_END, 0},
 {LLAMA_GRETYPE_CHAR, 'a'},
 {LLAMA_GRETYPE_CHAR_RNG_UPPER, 'z'},
-{LLAMA_GRETYPE_RULE_REF,  10},
-{LLAMA_GRETYPE_RULE_REF,  3},
+{LLAMA_GRETYPE_RULE_REF, 10},
+{LLAMA_GRETYPE_RULE_REF, 3},
 {LLAMA_GRETYPE_END, 0},
 {LLAMA_GRETYPE_CHAR, '0'},
 {LLAMA_GRETYPE_CHAR_RNG_UPPER, '9'},
-{LLAMA_GRETYPE_RULE_REF,  11},
-{LLAMA_GRETYPE_RULE_REF,  3},
+{LLAMA_GRETYPE_RULE_REF, 11},
+{LLAMA_GRETYPE_RULE_REF, 3},
 {LLAMA_GRETYPE_END, 0},
 {LLAMA_GRETYPE_CHAR, 'a'},
 {LLAMA_GRETYPE_CHAR_RNG_UPPER, 'z'},
 {LLAMA_GRETYPE_CHAR_ALT, '0'},
 {LLAMA_GRETYPE_CHAR_RNG_UPPER, '9'},
 {LLAMA_GRETYPE_CHAR_ALT, '_'},
-{LLAMA_GRETYPE_RULE_REF,  10},
+{LLAMA_GRETYPE_RULE_REF, 10},
 {LLAMA_GRETYPE_ALT, 0},
 {LLAMA_GRETYPE_END, 0},
 {LLAMA_GRETYPE_CHAR, '0'},
 {LLAMA_GRETYPE_CHAR_RNG_UPPER, '9'},
-{LLAMA_GRETYPE_RULE_REF,  11},
+{LLAMA_GRETYPE_RULE_REF, 11},
 {LLAMA_GRETYPE_ALT, 0},
 {LLAMA_GRETYPE_END, 0},
 {LLAMA_GRETYPE_CHAR, ' '},
 {LLAMA_GRETYPE_CHAR_ALT, '\t'},
 {LLAMA_GRETYPE_CHAR_ALT, '\n'},
-{LLAMA_GRETYPE_RULE_REF,  12},
+{LLAMA_GRETYPE_RULE_REF, 12},
 {LLAMA_GRETYPE_ALT, 0},
 {LLAMA_GRETYPE_END, 0},
 });

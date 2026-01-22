@@ -1,45 +1,45 @@
 (load "formulas.scm")
 (define (gen-precise-modus-ponens-rule link-type)
-    (BindLink
-        (VariableList
-            (VariableNode "$A")
-            (VariableNode "$B"))
-        (AndLink
-            (link-type
-                (VariableNode "$A")
-                (VariableNode "$B"))
-            (link-type
-                (NotLink
-                    (VariableNode "$A"))
-                (VariableNode "$B")))
-        (ExecutionOutputLink
-            (GroundedSchemaNode "scm: precise-modus-ponens-formula")
-            (ListLink
-                (VariableNode "$A")
-                (link-type
-                    (VariableNode "$A")
-                    (VariableNode "$B"))
-                (link-type
-                    (NotLink
-                        (VariableNode "$A"))
-                    (VariableNode "$B"))
-                (VariableNode "$B")))))
+(BindLink
+(VariableList
+(VariableNode "$A")
+(VariableNode "$B"))
+(AndLink
+(link-type
+(VariableNode "$A")
+(VariableNode "$B"))
+(link-type
+(NotLink
+(VariableNode "$A"))
+(VariableNode "$B")))
+(ExecutionOutputLink
+(GroundedSchemaNode "scm: precise-modus-ponens-formula")
+(ListLink
+(VariableNode "$A")
+(link-type
+(VariableNode "$A")
+(VariableNode "$B"))
+(link-type
+(NotLink
+(VariableNode "$A"))
+(VariableNode "$B"))
+(VariableNode "$B")))))
 (define precise-modus-ponens-inheritance-rule
-  (gen-precise-modus-ponens-rule InheritanceLink))
+(gen-precise-modus-ponens-rule InheritanceLink))
 (define precise-modus-ponens-implication-rule
-  (gen-precise-modus-ponens-rule ImplicationLink))
+(gen-precise-modus-ponens-rule ImplicationLink))
 (define precise-modus-ponens-subset-rule
-  (gen-precise-modus-ponens-rule SubsetLink))
+(gen-precise-modus-ponens-rule SubsetLink))
 (define (precise-modus-ponens-formula A AB notAB B)
-    (let
-        ((sA (cog-mean A))
-         (cA (cog-confidence A))
-         (sAB (cog-mean AB))
-         (cAB (cog-confidence AB))
-         (snotAB (cog-mean notAB))
-         (cnotAB (cog-confidence notAB)))
-        (cog-set-tv!
-            B
-            (stv 
-                (precise-modus-ponens-strength-formula sA sAB snotAB) 
-                (min (min cAB cnotAB) cA)))))
+(let
+((sA (cog-mean A))
+(cA (cog-confidence A))
+(sAB (cog-mean AB))
+(cAB (cog-confidence AB))
+(snotAB (cog-mean notAB))
+(cnotAB (cog-confidence notAB)))
+(cog-set-tv!
+B
+(stv
+(precise-modus-ponens-strength-formula sA sAB snotAB)
+(min (min cAB cnotAB) cA)))))

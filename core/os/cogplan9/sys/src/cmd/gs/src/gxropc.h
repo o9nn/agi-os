@@ -1,5 +1,5 @@
 #ifndef gxropc_INCLUDED
-#  define gxropc_INCLUDED
+# define gxropc_INCLUDED
 #include "gsropc.h"
 #include "gxcomp.h"
 typedef struct gs_composite_rop_s {

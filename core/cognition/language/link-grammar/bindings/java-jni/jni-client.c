@@ -24,9 +24,9 @@ static bool dict_is_init = false;
 typedef struct
 {
 Parse_Options opts, panic_parse_opts;
-Sentence      sent;
-Linkage       linkage;
-int           num_linkages, cur_linkage;
+Sentence sent;
+Linkage linkage;
+int num_linkages, cur_linkage;
 } per_thread_data;
 static void setup_panic_parse_options(Parse_Options opts)
 {

@@ -118,7 +118,7 @@ return(0);
 }
 if((sum == 2) && (last >= 0) && (last2 >= 0) &&
 (getcol(last) == getcol(last2))) {
-for (j = 0;j  <9;j++) {
+for (j = 0;j <9;j++) {
 int c = colind[getcol(last)][j];
 if ((c != last) && (c != last2)) {
 if (board[c] & allowbits[d]) {
@@ -297,7 +297,7 @@ void
 solve(void)
 {
 int pboard[Psize];
-int	i, c;
+int i, c;
 if (!solved) {
 for (i = 0; i < Psize; i++)
 pboard[i] = Allow | Solve | Digit;

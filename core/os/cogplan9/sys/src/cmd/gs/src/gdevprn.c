@@ -969,7 +969,7 @@ gs_parsed_file_name_t parsed;
 const char *fmt;
 int code = gx_parse_output_file_name(&parsed, &fmt, ppdev->fname,
 strlen(ppdev->fname));
-if ((code >= 0 && fmt)  ||
+if ((code >= 0 && fmt) ||
 ppdev->ReopenPerPage
 ) {
 gx_device_close_output_file(pdev, ppdev->fname, ppdev->file);

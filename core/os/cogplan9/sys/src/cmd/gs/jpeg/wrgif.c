@@ -14,7 +14,7 @@ int bytesinpkt;
 char packetbuf[256];
 } gif_dest_struct;
 typedef gif_dest_struct * gif_dest_ptr;
-#define MAXCODE(n_bits)	((1 << (n_bits)) - 1)
+#define MAXCODE(n_bits) ((1 << (n_bits)) - 1)
 LOCAL(void)
 flush_packet (gif_dest_ptr dinfo)
 {
@@ -26,10 +26,10 @@ ERREXIT(dinfo->cinfo, JERR_FILE_WRITE);
 dinfo->bytesinpkt = 0;
 }
 }
-#define CHAR_OUT(dinfo,c)  \
-{ (dinfo)->packetbuf[++(dinfo)->bytesinpkt] = (char) (c);  \
-if ((dinfo)->bytesinpkt >= 255)  \
-flush_packet(dinfo);  \
+#define CHAR_OUT(dinfo,c) \
+{ (dinfo)->packetbuf[++(dinfo)->bytesinpkt] = (char) (c); \
+if ((dinfo)->bytesinpkt >= 255) \
+flush_packet(dinfo); \
 }
 LOCAL(void)
 output (gif_dest_ptr dinfo, int code)

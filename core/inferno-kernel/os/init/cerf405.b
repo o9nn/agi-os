@@ -5,7 +5,7 @@
 #
 implement Init;
 include "sys.m";
-sys:	Sys;
+sys: Sys;
 include "draw.m";
 include "keyring.m";
 kr: Keyring;
@@ -17,11 +17,11 @@ Bootconf: import dhcpclient;
 include "sh.m";
 Init: module
 {
-init:	fn();
+init: fn();
 };
 Bootpreadlen: con 128;
 Microsec: con 1000000;
-Notime: con big 800000000 * big Microsec;	# fairly arbitrary time in 1995 to check validity
+Notime: con big 800000000 * big Microsec; # fairly arbitrary time in 1995 to check validity
 # conventional Inferno NAND flash partitions
 nandparts := array[] of {
 # bootstrap from 0 to 0x210000
@@ -68,16 +68,16 @@ ethername = "/net/ether1";
 }
 if(netok)
 configether();
-dobind("#I", "/net", sys->MAFTER);	# IP
-dobind("#p", "/prog", sys->MREPL);	# prog
+dobind("#I", "/net", sys->MAFTER); # IP
+dobind("#p", "/prog", sys->MREPL); # prog
 sys->bind("#d", "/fd", Sys->MREPL);
-dobind("#c", "/dev", sys->MREPL); 	# console
-dobind("#t", "/dev", sys->MAFTER);	# serial line
-drawok := sys->bind("#i", "/dev", sys->MAFTER) >= 0; 	# draw
-sys->bind("#m", "/dev", sys->MAFTER);	# pointer
-sys->bind("#e", "/env", sys->MREPL|sys->MCREATE);	# environment
-sys->bind("#A", "/dev", Sys->MAFTER);	# optional audio
-sys->bind("#ʟ", "/dev", Sys->MAFTER);	# logfs
+dobind("#c", "/dev", sys->MREPL); # console
+dobind("#t", "/dev", sys->MAFTER); # serial line
+drawok := sys->bind("#i", "/dev", sys->MAFTER) >= 0; # draw
+sys->bind("#m", "/dev", sys->MAFTER); # pointer
+sys->bind("#e", "/env", sys->MREPL|sys->MCREATE); # environment
+sys->bind("#A", "/dev", Sys->MAFTER); # optional audio
+sys->bind("#ʟ", "/dev", Sys->MAFTER); # logfs
 timefile: string;
 rootsource: string;
 cfd := sys->open("/dev/consctl", Sys->OWRITE);
@@ -86,7 +86,7 @@ sys->fprint(cfd, "rawon");
 for(;;){
 (rootsource, timefile) = askrootsource(localok, netok);
 if(rootsource == nil)
-break;	# internal
+break; # internal
 (rc, nil) := sys->stat(rootsource+"/dis/sh.dis");
 if(rc < 0)
 err("%s has no shell");
@@ -100,13 +100,13 @@ break;
 }
 }
 cfd = nil;
-setsysname("cerf");			# set system name
+setsysname("cerf"); # set system name
 rtc := big rf("#r/rtc", "0") * big Microsec;
 now := big 0;
-if(timefile != nil){	# synchronise with remote time if it's valid
+if(timefile != nil){ # synchronise with remote time if it's valid
 now = big rf(timefile, "0");
 if(now < Notime && rootsource != nil)
-now = big filetime(rootsource) * big Microsec;	# try the time of the root directory
+now = big filetime(rootsource) * big Microsec; # try the time of the root directory
 if(now >= Notime){
 setclock("#r/rtc", now/big Microsec);
 rtc = now;
@@ -240,7 +240,7 @@ sys->print("%s%s", cm, hd l);
 cm = ",";
 }
 sys->print(")[%s] ", hd sources);
-s = getline(stdin, hd sources);	# default
+s = getline(stdin, hd sources); # default
 }
 (nil, choice) := sys->tokenize(s, "\t ");
 if(choice == nil)
@@ -445,7 +445,7 @@ sys->print("**using %s\n", ip);
 sys->fprint(fd, "bind ether /net/ether0");
 s := rdenv("ipmask", nil);
 if(s == nil)
-s = rdenv("netmask", nil);	# alternative name used by some bootstraps
+s = rdenv("netmask", nil); # alternative name used by some bootstraps
 sys->fprint(fd, "add %s %s", ip, s);
 gate := rdenv("ipgw", nil);
 if(gate == nil)
@@ -479,7 +479,7 @@ sys->print("no file server address\n");
 return -1;
 }
 sys->print("fs=%s\n", server);
-net := "tcp";	# how to specify il?
+net := "tcp"; # how to specify il?
 svcname := net + "!" + server + "!6666";
 sys->print("dial %s...", svcname);
 (ok, c) := sys->dial(svcname, nil);

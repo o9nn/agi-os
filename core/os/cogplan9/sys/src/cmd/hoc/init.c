@@ -3,51 +3,51 @@
 #include "hoc.h"
 #include "y.tab.h"
 static struct {
-char	*name;
-int	kval;
+char *name;
+int kval;
 } keywords[] = {
-"proc",		PROC,
-"func",		FUNC,
-"return",	RETURN,
-"if",		IF,
-"else",		ELSE,
-"while",	WHILE,
-"for",		FOR,
-"print",	PRINT,
-"read",		READ,
-0,		0,
+"proc", PROC,
+"func", FUNC,
+"return", RETURN,
+"if", IF,
+"else", ELSE,
+"while", WHILE,
+"for", FOR,
+"print", PRINT,
+"read", READ,
+0, 0,
 };
 static struct {
 char *name;
 double cval;
 } consts[] = {
-"PI",	 3.14159265358979323846,
-"E",	 2.71828182845904523536,
+"PI", 3.14159265358979323846,
+"E", 2.71828182845904523536,
 "GAMMA", 0.57721566490153286060,
-"DEG",	57.29577951308232087680,
-"PHI",   1.61803398874989484820,
-0,	 0
+"DEG", 57.29577951308232087680,
+"PHI", 1.61803398874989484820,
+0, 0
 };
 static struct {
 char *name;
-double	(*func)(double);
+double (*func)(double);
 } builtins[] = {
-"sin",	sin,
-"cos",	cos,
-"tan",	tan,
-"atan",	atan,
-"asin",	Asin,
+"sin", sin,
+"cos", cos,
+"tan", tan,
+"atan", atan,
+"asin", Asin,
 "acos", Acos,
-"sinh",	Sinh,
-"cosh",	Cosh,
-"tanh",	tanh,
-"log",	Log,
+"sinh", Sinh,
+"cosh", Cosh,
+"tanh", tanh,
+"log", Log,
 "log10", Log10,
-"exp",	Exp,
-"sqrt",	Sqrt,
-"int",	integer,
-"abs",	fabs,
-0,	0
+"exp", Exp,
+"sqrt", Sqrt,
+"int", integer,
+"abs", fabs,
+0, 0
 };
 void
 init(void)

@@ -8,56 +8,56 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 check_node() {
-    echo -e "${YELLOW}Checking Node.js...${NC}"
-    if command -v node &> /dev/null; then
-        NODE_VERSION=$(node -v | cut -d'v' -f2 | cut -d'.' -f1)
-        if [ "$NODE_VERSION" -ge 18 ]; then
-            echo -e "${GREEN}Node.js $(node -v) is installed${NC}"
-        else
-            echo -e "${RED}Node.js 18+ is required. Current version: $(node -v)${NC}"
-            exit 1
-        fi
-    else
-        echo -e "${RED}Node.js is not installed. Please install Node.js 18+${NC}"
-        exit 1
-    fi
+echo -e "${YELLOW}Checking Node.js...${NC}"
+if command -v node &> /dev/null; then
+NODE_VERSION=$(node -v | cut -d'v' -f2 | cut -d'.' -f1)
+if [ "$NODE_VERSION" -ge 18 ]; then
+echo -e "${GREEN}Node.js $(node -v) is installed${NC}"
+else
+echo -e "${RED}Node.js 18+ is required. Current version: $(node -v)${NC}"
+exit 1
+fi
+else
+echo -e "${RED}Node.js is not installed. Please install Node.js 18+${NC}"
+exit 1
+fi
 }
 check_npm() {
-    echo -e "${YELLOW}Checking npm...${NC}"
-    if command -v npm &> /dev/null; then
-        echo -e "${GREEN}npm $(npm -v) is installed${NC}"
-    else
-        echo -e "${RED}npm is not installed${NC}"
-        exit 1
-    fi
+echo -e "${YELLOW}Checking npm...${NC}"
+if command -v npm &> /dev/null; then
+echo -e "${GREEN}npm $(npm -v) is installed${NC}"
+else
+echo -e "${RED}npm is not installed${NC}"
+exit 1
+fi
 }
 install_deps() {
-    echo -e "${YELLOW}Installing dependencies...${NC}"
-    npm install
-    echo -e "${GREEN}Dependencies installed${NC}"
+echo -e "${YELLOW}Installing dependencies...${NC}"
+npm install
+echo -e "${GREEN}Dependencies installed${NC}"
 }
 setup_hooks() {
-    echo -e "${YELLOW}Setting up Git hooks...${NC}"
-    if [ -d ".git" ]; then
-        npx husky install 2>/dev/null || echo "Husky setup skipped"
-        echo -e "${GREEN}Git hooks configured${NC}"
-    else
-        echo -e "${YELLOW}Not a git repository, skipping hooks${NC}"
-    fi
+echo -e "${YELLOW}Setting up Git hooks...${NC}"
+if [ -d ".git" ]; then
+npx husky install 2>/dev/null || echo "Husky setup skipped"
+echo -e "${GREEN}Git hooks configured${NC}"
+else
+echo -e "${YELLOW}Not a git repository, skipping hooks${NC}"
+fi
 }
 create_dirs() {
-    echo -e "${YELLOW}Creating directories...${NC}"
-    mkdir -p assets/models
-    mkdir -p assets/textures
-    mkdir -p assets/animations
-    mkdir -p dist
-    mkdir -p logs
-    echo -e "${GREEN}Directories created${NC}"
+echo -e "${YELLOW}Creating directories...${NC}"
+mkdir -p assets/models
+mkdir -p assets/textures
+mkdir -p assets/animations
+mkdir -p dist
+mkdir -p logs
+echo -e "${GREEN}Directories created${NC}"
 }
 create_env() {
-    echo -e "${YELLOW}Setting up environment variables...${NC}"
-    if [ ! -f ".env" ]; then
-        cat > .env << EOF
+echo -e "${YELLOW}Setting up environment variables...${NC}"
+if [ ! -f ".env" ]; then
+cat > .env << EOF
 NODE_ENV=development
 PORT=3000
 AVATAR_MODE=hybrid
@@ -71,46 +71,46 @@ API_TIMEOUT=30000
 WS_PING_INTERVAL=30000
 WS_MAX_PAYLOAD=1048576
 EOF
-        echo -e "${GREEN}.env file created${NC}"
-    else
-        echo -e "${YELLOW}.env file already exists${NC}"
-    fi
+echo -e "${GREEN}.env file created${NC}"
+else
+echo -e "${YELLOW}.env file already exists${NC}"
+fi
 }
 build_project() {
-    echo -e "${YELLOW}Building project...${NC}"
-    npm run build 2>/dev/null || echo "Build step skipped (will build on first run)"
-    echo -e "${GREEN}Build complete${NC}"
+echo -e "${YELLOW}Building project...${NC}"
+npm run build 2>/dev/null || echo "Build step skipped (will build on first run)"
+echo -e "${GREEN}Build complete${NC}"
 }
 type_check() {
-    echo -e "${YELLOW}Running type check...${NC}"
-    npx tsc --noEmit 2>/dev/null || echo "Type check skipped"
+echo -e "${YELLOW}Running type check...${NC}"
+npx tsc --noEmit 2>/dev/null || echo "Type check skipped"
 }
 print_complete() {
-    echo ""
-    echo -e "${GREEN}=========================================="
-    echo "Environment setup complete!"
-    echo "==========================================${NC}"
-    echo ""
-    echo "Available commands:"
-    echo "  npm run dev      - Start development server"
-    echo "  npm run build    - Build for production"
-    echo "  npm run test     - Run tests"
-    echo "  npm run lint     - Run linter"
-    echo "  npm start        - Start production server"
-    echo ""
-    echo "Docker commands:"
-    echo "  docker-compose up -d              - Start production"
-    echo "  docker-compose --profile dev up   - Start development"
-    echo ""
+echo ""
+echo -e "${GREEN}=========================================="
+echo "Environment setup complete!"
+echo "==========================================${NC}"
+echo ""
+echo "Available commands:"
+echo "  npm run dev      - Start development server"
+echo "  npm run build    - Build for production"
+echo "  npm run test     - Run tests"
+echo "  npm run lint     - Run linter"
+echo "  npm start        - Start production server"
+echo ""
+echo "Docker commands:"
+echo "  docker-compose up -d              - Start production"
+echo "  docker-compose --profile dev up   - Start development"
+echo ""
 }
 main() {
-    check_node
-    check_npm
-    create_dirs
-    install_deps
-    setup_hooks
-    create_env
-    type_check
-    print_complete
+check_node
+check_npm
+create_dirs
+install_deps
+setup_hooks
+create_env
+type_check
+print_complete
 }
 main "$@"

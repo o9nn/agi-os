@@ -3,15 +3,15 @@
 #endif
 #include "machine.h"
 #if defined(__riscos__) && defined(FPA10)
-#include	"ymath.h"
+#include "ymath.h"
 #else
-#include	<math.h>
+#include <math.h>
 #endif
 #include "VbrTag.h"
 #include "version.h"
 #include "bitstream.h"
 #include "VbrTag.h"
-#include	<assert.h>
+#include <assert.h>
 #ifdef WITH_DMALLOC
 #include <dmalloc.h>
 #endif
@@ -19,9 +19,9 @@
 #endif
 #define VBRHEADERSIZE (NUMTOCENTRIES+4+4+4+4+4)
 #define XING_BITRATE1 128
-#define XING_BITRATE2  64
+#define XING_BITRATE2 64
 #define XING_BITRATE25 32
-const static char	VBRTag[]={"Xing"};
+const static char VBRTag[]={"Xing"};
 const int SizeOfEmptyFrame[2][2]=
 {
 {17,9},
@@ -45,7 +45,7 @@ for (i = 1; i < v->size; i += 2) {
 v->bag[i/2] = v->bag[i];
 }
 v->want *= 2;
-v->pos  /= 2;
+v->pos /= 2;
 }
 }
 void Xing_seek_table(VBR_seek_info_t * v, unsigned char *t)
@@ -83,11 +83,11 @@ void AddVbrFrame(lame_global_flags *gfp)
 lame_internal_flags *gfc = gfp->internal_flags;
 int kbps = bitrate_table[gfp->version][gfc->bitrate_index];
 if (gfc->VBR_seek_table.bag == NULL) {
-gfc->VBR_seek_table.sum  = 0;
+gfc->VBR_seek_table.sum = 0;
 gfc->VBR_seek_table.seen = 0;
 gfc->VBR_seek_table.want = 1;
-gfc->VBR_seek_table.pos  = 0;
-gfc->VBR_seek_table.bag  = malloc (400*sizeof(int));
+gfc->VBR_seek_table.pos = 0;
+gfc->VBR_seek_table.bag = malloc (400*sizeof(int));
 if (gfc->VBR_seek_table.bag != NULL) {
 gfc->VBR_seek_table.size = 400;
 }
@@ -117,23 +117,23 @@ void CreateI4(unsigned char *buf, int nValue)
 buf[0]=(nValue>>24)&0xff;
 buf[1]=(nValue>>16)&0xff;
 buf[2]=(nValue>> 8)&0xff;
-buf[3]=(nValue    )&0xff;
+buf[3]=(nValue )&0xff;
 }
 int CheckVbrTag(unsigned char *buf)
 {
-int			h_id, h_mode, h_sr_index;
-h_id       = (buf[1] >> 3) & 1;
+int h_id, h_mode, h_sr_index;
+h_id = (buf[1] >> 3) & 1;
 h_sr_index = (buf[2] >> 2) & 3;
-h_mode     = (buf[3] >> 6) & 3;
+h_mode = (buf[3] >> 6) & 3;
 if( h_id )
 {
-if( h_mode != 3 )	buf+=(32+4);
-else				buf+=(17+4);
+if( h_mode != 3 ) buf+=(32+4);
+else buf+=(17+4);
 }
 else
 {
 if( h_mode != 3 ) buf+=(17+4);
-else              buf+=(9+4);
+else buf+=(9+4);
 }
 if( buf[0] != VBRTag[0] ) return 0;
 if( buf[1] != VBRTag[1] ) return 0;
@@ -141,25 +141,25 @@ if( buf[2] != VBRTag[2] ) return 0;
 if( buf[3] != VBRTag[3] ) return 0;
 return 1;
 }
-int GetVbrTag(VBRTAGDATA *pTagData,  unsigned char *buf)
+int GetVbrTag(VBRTAGDATA *pTagData, unsigned char *buf)
 {
-int			i, head_flags;
-int			h_bitrate,h_id, h_mode, h_sr_index;
+int i, head_flags;
+int h_bitrate,h_id, h_mode, h_sr_index;
 pTagData->flags = 0;
-h_id       = (buf[1] >> 3) & 1;
+h_id = (buf[1] >> 3) & 1;
 h_sr_index = (buf[2] >> 2) & 3;
-h_mode     = (buf[3] >> 6) & 3;
-h_bitrate  = ((buf[2]>>4)&0xf);
+h_mode = (buf[3] >> 6) & 3;
+h_bitrate = ((buf[2]>>4)&0xf);
 h_bitrate = bitrate_table[h_id][h_bitrate];
 if( h_id )
 {
-if( h_mode != 3 )	buf+=(32+4);
-else				buf+=(17+4);
+if( h_mode != 3 ) buf+=(32+4);
+else buf+=(17+4);
 }
 else
 {
 if( h_mode != 3 ) buf+=(17+4);
-else              buf+=(9+4);
+else buf+=(9+4);
 }
 if( buf[0] != VBRTag[0] ) return 0;
 if( buf[1] != VBRTag[1] ) return 0;
@@ -173,7 +173,7 @@ pTagData->samprate >>= 1;
 head_flags = pTagData->flags = ExtractI4(buf); buf+=4;
 if( head_flags & FRAMES_FLAG )
 {
-pTagData->frames   = ExtractI4(buf); buf+=4;
+pTagData->frames = ExtractI4(buf); buf+=4;
 }
 if( head_flags & BYTES_FLAG )
 {
@@ -260,7 +260,7 @@ lame_internal_flags * gfc = gfp->internal_flags;
 long lFileSize;
 int nStreamIndex;
 char abyte,bbyte;
-u_char		btToc[NUMTOCENTRIES];
+u_char btToc[NUMTOCENTRIES];
 u_char pbtStreamBuffer[MAXFRAMESIZE];
 char str1[80];
 unsigned char id3v2Header[10];

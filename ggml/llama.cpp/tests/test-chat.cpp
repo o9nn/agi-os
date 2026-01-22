@@ -32,7 +32,7 @@ assert_equals(expected.content, actual.content);
 assert_equals(expected.content_parts.size(), actual.content_parts.size());
 for (size_t i = 0; i < expected.content_parts.size(); i++) {
 const auto & expected_part = expected.content_parts[i];
-const auto & actual_part   = actual.content_parts[i];
+const auto & actual_part = actual.content_parts[i];
 assert_equals(expected_part.type, actual_part.type);
 assert_equals(expected_part.text, actual_part.text);
 }
@@ -40,7 +40,7 @@ assert_equals(expected.reasoning_content, actual.reasoning_content);
 assert_equals(expected.tool_calls.size(), actual.tool_calls.size());
 for (size_t i = 0; i < expected.tool_calls.size(); i++) {
 const auto & expected_tool_call = expected.tool_calls[i];
-const auto & actual_tool_call   = actual.tool_calls[i];
+const auto & actual_tool_call = actual.tool_calls[i];
 assert_equals(expected_tool_call.name, actual_tool_call.name);
 assert_equals(renormalize_json(expected_tool_call.arguments), renormalize_json(actual_tool_call.arguments));
 assert_equals(expected_tool_call.id, actual_tool_call.id);
@@ -88,10 +88,10 @@ R"({
 "required": ["code"]
 })",
 };
-std::vector<common_chat_tool> tools           { special_function_tool, python_tool };
+std::vector<common_chat_tool> tools { special_function_tool, python_tool };
 std::vector<common_chat_tool> llama_3_1_tools { special_function_tool, code_interpreter_tool };
 struct delta_data {
-std::string        delta;
+std::string delta;
 common_chat_params params;
 };
 static delta_data init_delta(const struct common_chat_templates * tmpls, const std::vector<std::string> & end_tokens,
@@ -102,14 +102,14 @@ const common_chat_tool_choice & tool_choice) {
 common_chat_templates_inputs inputs;
 inputs.parallel_tool_calls = true;
 inputs.messages.push_back(user_message);
-inputs.tools       = tools;
+inputs.tools = tools;
 inputs.tool_choice = tool_choice;
 auto params_prefix = common_chat_templates_apply(tmpls, inputs);
 inputs.messages.push_back(delta_message);
 inputs.add_generation_prompt = false;
-auto params_full             = common_chat_templates_apply(tmpls, inputs);
+auto params_full = common_chat_templates_apply(tmpls, inputs);
 std::string prefix = params_prefix.prompt;
-std::string full   = params_full.prompt;
+std::string full = params_full.prompt;
 if (full == prefix) {
 throw std::runtime_error("Full message is the same as the prefix");
 }
@@ -152,7 +152,7 @@ if (expect_grammar_triggered) {
 common_chat_syntax syntax;
 syntax.format = data.params.format;
 syntax.reasoning_format = reasoning_format;
-const auto msg = common_chat_parse(data.delta,  false, syntax);
+const auto msg = common_chat_parse(data.delta, false, syntax);
 assert_msg_equals(test_message, msg);
 }
 if (!test_message.tool_calls.empty()) {
@@ -258,28 +258,28 @@ msg.tool_calls.push_back({ tool_name, arguments, id });
 }
 return msg;
 }
-const common_chat_msg message_assist                              = simple_assist_msg("Hello, world!\nWhat's up?");
-const common_chat_msg message_assist_empty                        = simple_assist_msg("");
-const common_chat_msg message_assist_thoughts_unparsed_deepseek   = simple_assist_msg("<think>I'm\nthinking</think>Hello, world!\nWhat's up?");
-const common_chat_msg message_assist_thoughts_unparsed_md         = simple_assist_msg("<think>I'm\nthinking</think>Hello, world!\nWhat's up?\n```json\n{}```");
+const common_chat_msg message_assist = simple_assist_msg("Hello, world!\nWhat's up?");
+const common_chat_msg message_assist_empty = simple_assist_msg("");
+const common_chat_msg message_assist_thoughts_unparsed_deepseek = simple_assist_msg("<think>I'm\nthinking</think>Hello, world!\nWhat's up?");
+const common_chat_msg message_assist_thoughts_unparsed_md = simple_assist_msg("<think>I'm\nthinking</think>Hello, world!\nWhat's up?\n```json\n{}```");
 const common_chat_msg message_assist_thoughts_unparsed_md_partial = simple_assist_msg("<think>I'm\nthinking</think>Hello, world!\nWhat's up?\n```json\n{}");
-const common_chat_msg message_assist_thoughts_unparsed_r7b       = simple_assist_msg("<|START_THINKING|>I'm\nthinking<|END_THINKING|>Hello, world!\nWhat's up?");
-const common_chat_msg message_assist_thoughts                    = simple_assist_msg("Hello, world!\nWhat's up?", "I'm\nthinking");
-const common_chat_msg message_assist_thoughts_unopened_unparsed  = simple_assist_msg("I'm\nthinking</think>Hello, world!\nWhat's up?");
-const common_chat_msg message_assist_thoughts_no_content         = simple_assist_msg("", "I'm\nthinking");
-const common_chat_msg message_assist_call                        = simple_assist_msg("", "", "special_function", "{\"arg1\": 1}");
-const common_chat_msg message_assist_call_content                = simple_assist_msg("Hello, world!\nWhat's up?", "", "special_function", "{\"arg1\":1}");
-const common_chat_msg message_assist_call_empty_args             = simple_assist_msg("", "", "special_function");
-const common_chat_msg message_assist_call_cutoff_args            = simple_assist_msg("", "", "special_function", "{\"arg");
-const common_chat_msg message_assist_call_thoughts               = simple_assist_msg("", "I'm\nthinking", "special_function", "{\"arg1\":1}");
-const common_chat_msg message_assist_call_thoughts_unparsed      = simple_assist_msg("<think>I'm\nthinking</think>\n\n", "", "special_function", "{\"arg1\": 1}");
-const common_chat_msg message_assist_call_id                     = simple_assist_msg("", "", "special_function", "{\"arg1\":1}",  "123456789");
-const common_chat_msg message_assist_call_idx                    = simple_assist_msg("", "", "special_function", "{\"arg1\":1}",  "0");
-const common_chat_msg message_assist_thoughts_call_idx           = simple_assist_msg("", "I'm\nthinking", "special_function", "{\"arg1\": 1}",  "0");
-const common_chat_msg message_assist_call_python                 = simple_assist_msg("", "", "python", "{\"code\":\"print('hey')\"}");
-const common_chat_msg message_assist_call_python_lines           = simple_assist_msg("", "", "python", "{\"code\":\"# This is a program:\\nprint('hey')\"}");
-const common_chat_msg message_assist_call_python_lines_unclosed  = simple_assist_msg("", "", "python", "{\"code\":\"# This is a program:\\nprint('hey')");
-const common_chat_msg message_assist_call_code_interpreter       = simple_assist_msg("", "", "code_interpreter", "{\"code\":\"print('hey')\"}");
+const common_chat_msg message_assist_thoughts_unparsed_r7b = simple_assist_msg("<|START_THINKING|>I'm\nthinking<|END_THINKING|>Hello, world!\nWhat's up?");
+const common_chat_msg message_assist_thoughts = simple_assist_msg("Hello, world!\nWhat's up?", "I'm\nthinking");
+const common_chat_msg message_assist_thoughts_unopened_unparsed = simple_assist_msg("I'm\nthinking</think>Hello, world!\nWhat's up?");
+const common_chat_msg message_assist_thoughts_no_content = simple_assist_msg("", "I'm\nthinking");
+const common_chat_msg message_assist_call = simple_assist_msg("", "", "special_function", "{\"arg1\": 1}");
+const common_chat_msg message_assist_call_content = simple_assist_msg("Hello, world!\nWhat's up?", "", "special_function", "{\"arg1\":1}");
+const common_chat_msg message_assist_call_empty_args = simple_assist_msg("", "", "special_function");
+const common_chat_msg message_assist_call_cutoff_args = simple_assist_msg("", "", "special_function", "{\"arg");
+const common_chat_msg message_assist_call_thoughts = simple_assist_msg("", "I'm\nthinking", "special_function", "{\"arg1\":1}");
+const common_chat_msg message_assist_call_thoughts_unparsed = simple_assist_msg("<think>I'm\nthinking</think>\n\n", "", "special_function", "{\"arg1\": 1}");
+const common_chat_msg message_assist_call_id = simple_assist_msg("", "", "special_function", "{\"arg1\":1}", "123456789");
+const common_chat_msg message_assist_call_idx = simple_assist_msg("", "", "special_function", "{\"arg1\":1}", "0");
+const common_chat_msg message_assist_thoughts_call_idx = simple_assist_msg("", "I'm\nthinking", "special_function", "{\"arg1\": 1}", "0");
+const common_chat_msg message_assist_call_python = simple_assist_msg("", "", "python", "{\"code\":\"print('hey')\"}");
+const common_chat_msg message_assist_call_python_lines = simple_assist_msg("", "", "python", "{\"code\":\"# This is a program:\\nprint('hey')\"}");
+const common_chat_msg message_assist_call_python_lines_unclosed = simple_assist_msg("", "", "python", "{\"code\":\"# This is a program:\\nprint('hey')");
+const common_chat_msg message_assist_call_code_interpreter = simple_assist_msg("", "", "code_interpreter", "{\"code\":\"print('hey')\"}");
 static void test_msgs_oaicompat_json_conversion() {
 printf("[%s]\n", __func__);
 std::vector<common_chat_msg> msgs{
@@ -397,13 +397,13 @@ common_chat_tools_to_json_oaicompat<json>({special_function_tool}).dump(2));
 static void test_template_output_parsers() {
 printf("[%s]\n", __func__);
 common_chat_templates_inputs inputs_no_tools;
-inputs_no_tools.messages                = {message_user};
+inputs_no_tools.messages = {message_user};
 common_chat_templates_inputs inputs_tools;
-inputs_tools.messages                   = {message_user};
-inputs_tools.tools                      = {special_function_tool};
+inputs_tools.messages = {message_user};
+inputs_tools.tools = {special_function_tool};
 common_chat_templates_inputs inputs_tools_builtin;
-inputs_tools_builtin.messages           = {message_user};
-inputs_tools_builtin.tools              = {python_tool};
+inputs_tools_builtin.messages = {message_user};
+inputs_tools_builtin.tools = {python_tool};
 {
 auto tmpls = read_templates("models/templates/CohereForAI-c4ai-command-r-plus-tool_use.jinja");
 assert_equals(COMMON_CHAT_FORMAT_CONTENT_ONLY, common_chat_templates_apply(tmpls.get(), inputs_no_tools).format);
@@ -411,7 +411,7 @@ assert_equals(COMMON_CHAT_FORMAT_GENERIC, common_chat_templates_apply(tmpls.get(
 }
 {
 auto tmpls = read_templates("models/templates/CohereForAI-c4ai-command-r7b-12-2024-tool_use.jinja");
-std::vector<std::string>   end_tokens{ "<|END_OF_TURN_TOKEN|>" };
+std::vector<std::string> end_tokens{ "<|END_OF_TURN_TOKEN|>" };
 for (const auto & inputs : { inputs_no_tools, inputs_tools }) {
 auto params = common_chat_templates_apply(tmpls.get(), inputs);
 assert_equals(COMMON_CHAT_FORMAT_COMMAND_R7B, params.format);
@@ -498,7 +498,7 @@ false);
 }
 {
 auto tmpls = read_templates("models/templates/google-gemma-2-2b-it.jinja");
-std::vector<std::string>   end_tokens{ "<end_of_turn>" };
+std::vector<std::string> end_tokens{ "<end_of_turn>" };
 assert_equals(COMMON_CHAT_FORMAT_CONTENT_ONLY, common_chat_templates_apply(tmpls.get(), inputs_no_tools).format);
 assert_equals(COMMON_CHAT_FORMAT_GENERIC, common_chat_templates_apply(tmpls.get(), inputs_tools).format);
 assert_equals(COMMON_CHAT_FORMAT_GENERIC,
@@ -564,9 +564,9 @@ test_templates(tmpls.get(), end_tokens, message_assist_call_id, tools,
 }
 {
 auto tmpls = read_templates("models/templates/mistralai-Mistral-Nemo-Instruct-2407.jinja");
-std::vector<std::string>   end_tokens{ "</s>" };
+std::vector<std::string> end_tokens{ "</s>" };
 assert_equals(COMMON_CHAT_FORMAT_MISTRAL_NEMO, common_chat_templates_apply(tmpls.get(), inputs_tools).format);
-test_templates(tmpls.get(), end_tokens, message_assist, tools, "Hello, world!\nWhat's up?",  false);
+test_templates(tmpls.get(), end_tokens, message_assist, tools, "Hello, world!\nWhat's up?", false);
 test_templates(
 tmpls.get(), end_tokens, message_assist_call_id, tools,
 "[TOOL_CALLS][{\"name\": \"special_function\", \"arguments\": {\"arg1\": 1}, \"id\": \"123456789\"}]");
@@ -874,7 +874,7 @@ COMMON_REASONING_FORMAT_DEEPSEEK,
 false,
 true,
 }));
-test_templates(tmpls.get(), end_tokens, message_assist, tools, "Hello, world!\nWhat's up?",  false);
+test_templates(tmpls.get(), end_tokens, message_assist, tools, "Hello, world!\nWhat's up?", false);
 test_templates(tmpls.get(), end_tokens, message_assist_call, tools,
 "<tool_call>\n"
 "{\"name\": \"special_function\", \"arguments\": {\"arg1\": 1}}\n"
@@ -896,7 +896,7 @@ test_templates(tmpls.get(), end_tokens, message_assist_call_python_lines, tools,
 "{\"name\": \"python\", \"arguments\": {\"code\":\"# This is a program:\\nprint('hey')\"}}\n"
 "</tool_call>");
 assert_msg_equals(
-simple_assist_msg("",  "<tool_call>nah uhg</tool_call>"),
+simple_assist_msg("", "<tool_call>nah uhg</tool_call>"),
 common_chat_parse(
 "<think><tool_call>nah uhg</tool_call>",
 false,
@@ -907,7 +907,7 @@ COMMON_REASONING_FORMAT_DEEPSEEK,
 }
 {
 auto tmpls = read_templates("models/templates/meta-llama-Llama-3.1-8B-Instruct.jinja");
-std::vector<std::string>   end_tokens{ "<|eom_id|>", "<|eot_id|>" };
+std::vector<std::string> end_tokens{ "<|eom_id|>", "<|eot_id|>" };
 assert_equals(COMMON_CHAT_FORMAT_CONTENT_ONLY, common_chat_templates_apply(tmpls.get(), inputs_no_tools).format);
 assert_equals(COMMON_CHAT_FORMAT_LLAMA_3_X, common_chat_templates_apply(tmpls.get(), inputs_tools).format);
 assert_equals(COMMON_CHAT_FORMAT_LLAMA_3_X_WITH_BUILTIN_TOOLS,
@@ -932,16 +932,16 @@ test_templates(tmpls.get(), end_tokens, message_assist_call, tools,
 }
 {
 auto tmpls = read_templates("models/templates/meta-llama-Llama-3.2-3B-Instruct.jinja");
-std::vector<std::string>   end_tokens{ "<|eom_id|>", "<|eot_id|>" };
+std::vector<std::string> end_tokens{ "<|eom_id|>", "<|eot_id|>" };
 assert_equals(COMMON_CHAT_FORMAT_LLAMA_3_X, common_chat_templates_apply(tmpls.get(), inputs_tools).format);
 assert_equals(COMMON_CHAT_FORMAT_CONTENT_ONLY, common_chat_templates_apply(tmpls.get(), inputs_no_tools).format);
-test_templates(tmpls.get(), end_tokens, message_assist, tools, "Hello, world!\nWhat's up?",  false);
+test_templates(tmpls.get(), end_tokens, message_assist, tools, "Hello, world!\nWhat's up?", false);
 test_templates(tmpls.get(), end_tokens, message_assist_call, tools,
 "{\"name\": \"special_function\", \"parameters\": {\"arg1\": 1}}");
 }
 {
 auto tmpls = read_templates("models/templates/meetkai-functionary-medium-v3.1.jinja");
-std::vector<std::string>   end_tokens{ "<|eom_id|>", "<|eot_id|>" };
+std::vector<std::string> end_tokens{ "<|eom_id|>", "<|eot_id|>" };
 assert_equals(COMMON_CHAT_FORMAT_CONTENT_ONLY,
 common_chat_templates_apply(tmpls.get(), inputs_no_tools).format);
 assert_equals(COMMON_CHAT_FORMAT_FUNCTIONARY_V3_1_LLAMA_3_1,
@@ -962,13 +962,13 @@ common_chat_parse(
 "<function=special_function>{\"arg1\": 1}<",
 true,
 {COMMON_CHAT_FORMAT_FUNCTIONARY_V3_1_LLAMA_3_1}));
-test_templates(tmpls.get(), end_tokens, message_assist, tools, "Hello, world!\nWhat's up?",  false);
+test_templates(tmpls.get(), end_tokens, message_assist, tools, "Hello, world!\nWhat's up?", false);
 test_templates(tmpls.get(), end_tokens, message_assist_call, tools,
 "<function=special_function>{\"arg1\": 1}</function>");
 }
 {
 auto tmpls = read_templates("models/templates/meetkai-functionary-medium-v3.2.jinja");
-std::vector<std::string>   end_tokens{ "<|eom_id|>", "<|eot_id|>" };
+std::vector<std::string> end_tokens{ "<|eom_id|>", "<|eot_id|>" };
 assert_equals(COMMON_CHAT_FORMAT_FUNCTIONARY_V3_2, common_chat_templates_apply(tmpls.get(), inputs_no_tools).format);
 assert_equals(COMMON_CHAT_FORMAT_FUNCTIONARY_V3_2, common_chat_templates_apply(tmpls.get(), inputs_tools).format);
 assert_msg_equals(
@@ -1022,23 +1022,23 @@ test_templates(tmpls.get(), end_tokens, message_assist_call, tools,
 }
 {
 auto tmpls = read_templates("models/templates/fireworks-ai-llama-3-firefunction-v2.jinja");
-std::vector<std::string>   end_tokens{ "<|eot_id|>" };
+std::vector<std::string> end_tokens{ "<|eot_id|>" };
 assert_equals(COMMON_CHAT_FORMAT_CONTENT_ONLY, common_chat_templates_apply(tmpls.get(), inputs_no_tools).format);
 assert_equals(COMMON_CHAT_FORMAT_FIREFUNCTION_V2, common_chat_templates_apply(tmpls.get(), inputs_tools).format);
-test_templates(tmpls.get(), end_tokens, message_assist, tools, "Hello, world!\nWhat's up?",  false);
+test_templates(tmpls.get(), end_tokens, message_assist, tools, "Hello, world!\nWhat's up?", false);
 test_templates(tmpls.get(), end_tokens, message_assist_call, tools,
 " functools[{\"name\": \"special_function\", \"arguments\": {\"arg1\": 1}}]");
 }
 {
 auto tmpls = read_templates("models/templates/deepseek-ai-DeepSeek-R1-Distill-Llama-8B.jinja");
-std::vector<std::string>   end_tokens{ "<｜end▁of▁sentence｜>" };
+std::vector<std::string> end_tokens{ "<｜end▁of▁sentence｜>" };
 for (const auto & inputs : { inputs_no_tools, inputs_tools }) {
 auto params = common_chat_templates_apply(tmpls.get(), inputs);
 assert_equals(COMMON_CHAT_FORMAT_DEEPSEEK_R1, params.format);
 assert_equals(true, params.thinking_forced_open);
 }
-test_templates(tmpls.get(), end_tokens, message_assist, tools, "Hello, world!\nWhat's up?",  false);
-test_templates(tmpls.get(), end_tokens, message_assist_thoughts, tools, "Hello, world!\nWhat's up?",  false);
+test_templates(tmpls.get(), end_tokens, message_assist, tools, "Hello, world!\nWhat's up?", false);
+test_templates(tmpls.get(), end_tokens, message_assist_thoughts, tools, "Hello, world!\nWhat's up?", false);
 assert_msg_equals(
 simple_assist_msg("Hello, world!\nWhat's up?", "<think>I'm\nthinking"),
 common_chat_parse(
@@ -1100,11 +1100,11 @@ true,
 }
 {
 auto tmpls = read_templates("models/templates/llama-cpp-deepseek-r1.jinja");
-std::vector<std::string>   end_tokens{ "<｜end▁of▁sentence｜>" };
-assert_equals(COMMON_CHAT_FORMAT_DEEPSEEK_R1,                   common_chat_templates_apply(tmpls.get(), inputs_no_tools).format);
-assert_equals(COMMON_CHAT_FORMAT_DEEPSEEK_R1,                   common_chat_templates_apply(tmpls.get(), inputs_tools).format);
-test_templates(tmpls.get(), end_tokens, message_assist, tools, "Hello, world!\nWhat's up?",  false);
-test_templates(tmpls.get(), end_tokens, message_assist_thoughts, tools, "Hello, world!\nWhat's up?",  false);
+std::vector<std::string> end_tokens{ "<｜end▁of▁sentence｜>" };
+assert_equals(COMMON_CHAT_FORMAT_DEEPSEEK_R1, common_chat_templates_apply(tmpls.get(), inputs_no_tools).format);
+assert_equals(COMMON_CHAT_FORMAT_DEEPSEEK_R1, common_chat_templates_apply(tmpls.get(), inputs_tools).format);
+test_templates(tmpls.get(), end_tokens, message_assist, tools, "Hello, world!\nWhat's up?", false);
+test_templates(tmpls.get(), end_tokens, message_assist_thoughts, tools, "Hello, world!\nWhat's up?", false);
 assert_msg_equals(message_assist_thoughts_unparsed_deepseek,
 common_chat_parse(
 "<think>I'm\nthinking</think>Hello, world!\nWhat's up?",
@@ -1231,9 +1231,9 @@ common_chat_msg_diff::compute_diffs(msg1, msg2));
 {
 common_chat_msg msg0;
 common_chat_msg msg1;
-msg1.tool_calls = { { "special_function", "{\"ar",  "123" } };
+msg1.tool_calls = { { "special_function", "{\"ar", "123" } };
 common_chat_msg msg2;
-msg2.tool_calls = { { "special_function", "{\"arg1\": 1}",  "123" } };
+msg2.tool_calls = { { "special_function", "{\"arg1\": 1}", "123" } };
 common_chat_msg_diff diff01;
 diff01.tool_call_index = 0;
 diff01.tool_call_delta.name = "special_function";
@@ -1253,8 +1253,8 @@ common_chat_msg_diff::compute_diffs(msg1, msg2));
 common_chat_msg msg0;
 common_chat_msg msg2;
 msg2.tool_calls = {
-{ "f1", "{\"arg1\": 1}",  "123" },
-{ "f2", "{\"arg2\": 2}",  "222" },
+{ "f1", "{\"arg1\": 1}", "123" },
+{ "f2", "{\"arg2\": 2}", "222" },
 };
 common_chat_msg_diff diff1;
 diff1.tool_call_index = 0;
@@ -1291,8 +1291,8 @@ std::cerr << "Skipping non-jinja file: " << path << '\n';
 continue;
 }
 auto tmpls = read_templates(path);
-auto parts  = string_split(path, "/");
-auto name   = parts[parts.size() - 1];
+auto parts = string_split(path, "/");
+auto name = parts[parts.size() - 1];
 auto format = common_chat_format_name(common_chat_templates_apply(tmpls.get(), inputs).format);
 std::cout << "| " << name << " | " << format << " |\n";
 } catch (const std::exception & e) {

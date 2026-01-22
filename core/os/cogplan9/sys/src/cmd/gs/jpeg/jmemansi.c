@@ -7,7 +7,7 @@ extern void * malloc JPP((size_t size));
 extern void free JPP((void *ptr));
 #endif
 #ifndef SEEK_SET
-#define SEEK_SET  0
+#define SEEK_SET 0
 #endif
 GLOBAL(void *)
 jpeg_get_small (j_common_ptr cinfo, size_t sizeofobject)
@@ -30,7 +30,7 @@ jpeg_free_large (j_common_ptr cinfo, void FAR * object, size_t sizeofobject)
 free(object);
 }
 #ifndef DEFAULT_MAX_MEM
-#define DEFAULT_MAX_MEM		1000000L
+#define DEFAULT_MAX_MEM 1000000L
 #endif
 GLOBAL(long)
 jpeg_mem_available (j_common_ptr cinfo, long min_bytes_needed,

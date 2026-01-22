@@ -2,27 +2,27 @@
 # include <conf.h>
 #else
 # if HAVE_CONFIG_H
-#  include <config.h>
+# include <config.h>
 # else
-#  ifndef __STDC__
-#   define const
-#  endif
+# ifndef __STDC__
+# define const
+# endif
 # endif
 # include <sys/types.h>
 # if HAVE_LIMITS_H
-#  include <limits.h>
+# include <limits.h>
 # endif
 # ifndef LONG_MIN
 # define LONG_MIN (-1-2147483647L)
 # endif
 # if STDC_HEADERS
-#  include <stdlib.h>
+# include <stdlib.h>
 # endif
 # include <time.h>
 # ifdef __STDC__
-#  define P(x) x
+# define P(x) x
 # else
-#  define P(x) ()
+# define P(x) ()
 # endif
 #endif
 #include <partime.h>

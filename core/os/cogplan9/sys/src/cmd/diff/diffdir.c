@@ -52,7 +52,7 @@ return 0;
 void
 diffdir(char *f, char *t, int level)
 {
-char  **df, **dt, **dirf, **dirt;
+char **df, **dt, **dirf, **dirt;
 char *from, *to;
 int res;
 char fb[MAXPATHLEN+1], tb[MAXPATHLEN+1];

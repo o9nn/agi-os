@@ -264,7 +264,7 @@ char *e;
 i = tkimageof(tk);
 if (i == nil)
 return nil;
-e =  tkdrawslaves1(tk, orig, i, dirty);
+e = tkdrawslaves1(tk, orig, i, dirty);
 return e;
 }
 char*
@@ -490,8 +490,8 @@ free(tkt->focusorder);
 tkt->focusorder = nil;
 tkt->nfocus = 0;
 }
-#define	O(t, e)		((long)(&((t*)0)->e))
-#define OA(t, e)	((long)(((t*)0)->e))
+#define O(t, e) ((long)(&((t*)0)->e))
+#define OA(t, e) ((long)(((t*)0)->e))
 typedef struct TkSee TkSee;
 struct TkSee {
 int r[4];
@@ -500,9 +500,9 @@ int query;
 };
 static
 TkOption seeopts[] = {
-"rectangle",		OPTfrac,	OA(TkSee, r),	IAUX(4),
-"point",			OPTfrac,	OA(TkSee, p),	IAUX(2),
-"where",			OPTbool,	O(TkSee, query),	nil,
+"rectangle", OPTfrac, OA(TkSee, r), IAUX(4),
+"point", OPTfrac, OA(TkSee, p), IAUX(2),
+"where", OPTbool, O(TkSee, query), nil,
 nil
 };
 char*

@@ -94,7 +94,7 @@ size_t n_size = ggml_nbytes(src);
 ggml_backend_tensor_set(cur, ggml_get_data(src), 0, n_size);
 }
 gguf_free(gguf_ctx);
-model.width  = 416;
+model.width = 416;
 model.height = 416;
 model.conv2d_layers.resize(13);
 model.conv2d_layers[7].padding = 0;
@@ -189,7 +189,7 @@ const float * predictions = layer.predictions.data();
 box b;
 b.x = (i + predictions[index + 0*stride]) / lw;
 b.y = (j + predictions[index + 1*stride]) / lh;
-b.w = exp(predictions[index + 2*stride]) * layer.anchors[2*n]   / w;
+b.w = exp(predictions[index + 2*stride]) * layer.anchors[2*n] / w;
 b.h = exp(predictions[index + 3*stride]) * layer.anchors[2*n+1] / h;
 return b;
 }
@@ -336,10 +336,10 @@ rgb[0] = red;
 rgb[1] = green;
 rgb[2] = blue;
 box b = dets[i].bbox;
-int left  = (b.x-b.w/2.)*im.w;
+int left = (b.x-b.w/2.)*im.w;
 int right = (b.x+b.w/2.)*im.w;
-int top   = (b.y-b.h/2.)*im.h;
-int bot   = (b.y+b.h/2.)*im.h;
+int top = (b.y-b.h/2.)*im.h;
+int bot = (b.y+b.h/2.)*im.h;
 if (left < 0) left = 0;
 if (right > im.w-1) right = im.w-1;
 if (top < 0) top = 0;
@@ -434,11 +434,11 @@ do_nms_sort(detections, yolo23.classes, .45);
 draw_detections(img, detections, thresh, labels, alphabet);
 }
 struct yolo_params {
-float thresh          = 0.5;
-std::string model     = "yolov3-tiny.gguf";
+float thresh = 0.5;
+std::string model = "yolov3-tiny.gguf";
 std::string fname_inp = "input.jpg";
 std::string fname_out = "predictions.jpg";
-int         n_threads  = std::max(1U, std::thread::hardware_concurrency()/2);
+int n_threads = std::max(1U, std::thread::hardware_concurrency()/2);
 std::string device;
 };
 void yolo_print_usage(int argc, char ** argv, const yolo_params & params) {

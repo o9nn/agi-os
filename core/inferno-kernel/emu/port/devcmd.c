@@ -1,6 +1,6 @@
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
 enum
 {
 Qtopdir,
@@ -15,39 +15,39 @@ Qstatus,
 Qwait,
 Debug=0
 };
-#define TYPE(x) 	((ulong)(x).path & 0xf)
-#define CONV(x) 	(((ulong)(x).path >> 4)&0xfff)
-#define QID(c, y) 	(((c)<<4) | (y))
-typedef struct Conv	Conv;
+#define TYPE(x) ((ulong)(x).path & 0xf)
+#define CONV(x) (((ulong)(x).path >> 4)&0xfff)
+#define QID(c, y) (((c)<<4) | (y))
+typedef struct Conv Conv;
 struct Conv
 {
-int	x;
-int	inuse;
-int	fd[3];
-int	count[3];
-int	perm;
-char*	owner;
-char*	state;
-Cmdbuf*	cmd;
-char*	dir;
-QLock	l;
-Queue*	waitq;
-void*	child;
-char*	error;
-int	nice;
-short	killonclose;
-short	killed;
-Rendez	startr;
+int x;
+int inuse;
+int fd[3];
+int count[3];
+int perm;
+char* owner;
+char* state;
+Cmdbuf* cmd;
+char* dir;
+QLock l;
+Queue* waitq;
+void* child;
+char* error;
+int nice;
+short killonclose;
+short killed;
+Rendez startr;
 };
 static struct
 {
-QLock	l;
-int	nc;
-int	maxconv;
-Conv**	conv;
+QLock l;
+int nc;
+int maxconv;
+Conv** conv;
 } cmd;
-static	Conv*	cmdclone(char*);
-static	void	cmdproc(void*);
+static Conv* cmdclone(char*);
+static void cmdproc(void*);
 static int
 cmd3gen(Chan *c, int i, Dir *dp)
 {
@@ -390,10 +390,10 @@ CMkillonclose
 };
 static
 Cmdtab cmdtab[] = {
-CMdir,	"dir",	2,
-CMexec,	"exec",	0,
-CMkill,	"kill",	1,
-CMnice,	"nice",	0,
+CMdir, "dir", 2,
+CMexec, "exec", 0,
+CMkill, "kill", 1,
+CMnice, "nice", 0,
 CMkillonclose, "killonclose", 0,
 };
 static long

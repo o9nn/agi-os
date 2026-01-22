@@ -54,7 +54,7 @@ return v;
 }
 enum
 {
-MaxLog		= 100*1024,
+MaxLog = 100*1024,
 };
 static int
 dangerous(char *s)

@@ -27,7 +27,7 @@ alloc_size_is_ok(gs_memory_type_ptr_t stype)
 {
 return (stype->ssize > 0 && stype->ssize < 0x100000);
 }
-#  define ALLOC_CHECK_SIZE(stype)\
+# define ALLOC_CHECK_SIZE(stype)\
 BEGIN\
 if (!alloc_size_is_ok(stype)) {\
 lprintf2("size of struct type 0x%lx is 0x%lx!\n",\
@@ -36,8 +36,8 @@ return 0;\
 }\
 END
 #else
-#  define alloc_trace(chars, imem, cname, stype, size, ptr) DO_NOTHING
-#  define ALLOC_CHECK_SIZE(stype) DO_NOTHING
+# define alloc_trace(chars, imem, cname, stype, size, ptr) DO_NOTHING
+# define ALLOC_CHECK_SIZE(stype) DO_NOTHING
 #endif
 public_st_ref_memory();
 private
@@ -280,12 +280,12 @@ break;
 }
 }
 private uint
-i_object_size(gs_memory_t * mem, const void  *obj)
+i_object_size(gs_memory_t * mem, const void *obj)
 {
 return pre_obj_contents_size((const obj_header_t *)obj - 1);
 }
 private gs_memory_type_ptr_t
-i_object_type(gs_memory_t * mem, const void  *obj)
+i_object_type(gs_memory_t * mem, const void *obj)
 {
 return ((const obj_header_t *)obj - 1)->o_type;
 }
@@ -328,7 +328,7 @@ gs_memory_set_gc_status(stable, &stat);
 if ( size <= max_freelist_size &&\
 *(pfl = &imem->freelists[(size + obj_align_mask) >> log2_obj_align_mod]) != 0\
 )\
-{	ptr = *pfl;\
+{ ptr = *pfl;\
 *pfl = *(obj_header_t **)ptr;\
 ptr[-1].o_size = size;\
 ptr[-1].o_type = pstype;\
@@ -339,7 +339,7 @@ gs_alloc_fill(ptr, gs_alloc_fill_alloc, size);
 }\
 else if (size > max_freelist_size &&\
 (ptr = large_freelist_alloc(imem, size)) != 0)\
-{	ptr[-1].o_type = pstype;\
+{ ptr[-1].o_type = pstype;\
 \
 \
 gs_alloc_fill(ptr, gs_alloc_fill_alloc, size);
@@ -349,7 +349,7 @@ else if ( (imem->cc.ctop - (byte *)(ptr = (obj_header_t *)imem->cc.cbot))\
 >= size + (obj_align_mod + sizeof(obj_header_t) * 2) &&\
 size < imem->large_size\
 )\
-{	imem->cc.cbot = (byte *)ptr + obj_size_round(size);\
+{ imem->cc.cbot = (byte *)ptr + obj_size_round(size);\
 ptr->o_alone = 0;\
 ptr->o_size = size;\
 ptr->o_type = pstype;\
@@ -973,9 +973,9 @@ ptr->o_size = (uint) lsize;
 }
 done:
 ptr->o_type = pstype;
-#   if IGC_PTR_STABILITY_CHECK
+# if IGC_PTR_STABILITY_CHECK
 ptr->d.o.space_id = mem->space_id;
-#   endif
+# endif
 ptr++;
 gs_alloc_fill(ptr, gs_alloc_fill_alloc, lsize);
 return ptr;

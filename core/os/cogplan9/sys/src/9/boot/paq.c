@@ -29,7 +29,7 @@ close(fd);
 int
 connectpaq(void)
 {
-int  p[2];
+int p[2];
 char **arg, **argp;
 print("paq...");
 if(pipe(p)<0)

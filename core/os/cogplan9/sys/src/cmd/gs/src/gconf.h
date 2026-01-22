@@ -1,5 +1,5 @@
 #ifndef GCONFIG_H
-#  include "gconfig.h"
+# include "gconfig.h"
 #else
-#  include GCONFIG_H
+# include GCONFIG_H
 #endif

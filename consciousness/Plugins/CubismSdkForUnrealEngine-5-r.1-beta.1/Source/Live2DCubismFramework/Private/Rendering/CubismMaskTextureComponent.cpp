@@ -82,7 +82,7 @@ const int32 Column = LayoutIndex % Resolution;
 const int32 Row = LayoutIndex / Resolution;
 if (RenderTargets.IsValidIndex(RenderTargetIndex))
 {
-Junction->RenderTarget =  RenderTargets[RenderTargetIndex];
+Junction->RenderTarget = RenderTargets[RenderTargetIndex];
 }
 else
 {

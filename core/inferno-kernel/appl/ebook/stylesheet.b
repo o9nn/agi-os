@@ -9,20 +9,20 @@ include "cssparser.m";
 Decl: import CSSparser;
 stylemap: ref Map;
 numstyles: int;
-RULEHASH:	con 23;
+RULEHASH: con 23;
 # specificity:
-# bits 0-26	declaration order
-# bit 27		class count	(0 or 1)
-# bit 28		tagname count	(0 or 1)
-# bit 28		id count		(0 or 1)	(inline style only)
-# bit 29-30	origin		(0, 1 or 2 - default, reader, author)
-# bit 31		importance
+# bits 0-26 declaration order
+# bit 27 class count (0 or 1)
+# bit 28 tagname count (0 or 1)
+# bit 28 id count (0 or 1) (inline style only)
+# bit 29-30 origin (0, 1 or 2 - default, reader, author)
+# bit 31 importance
 # order of these as implied by CSS1 §3.2
 TAG,
 CLASS,
-ID:			con 1 << (iota + 26);
-ORIGINSHIFT:	con 29;
-IMPORTANCE:	con 1<<30;
+ID: con 1 << (iota + 26);
+ORIGINSHIFT: con 29;
+IMPORTANCE: con 1<<30;
 init(a: array of string)
 {
 sys = load Sys Sys->PATH;
@@ -80,7 +80,7 @@ return ref Style(sheet, array[numstyles] of string, array[numstyles] of {* => 0}
 adddecl(style: ref Style, d: Ldecl)
 {
 if (d.specificity > style.spec[d.attrid]) {
-style.attrs[d.attrid]  = d.val;
+style.attrs[d.attrid] = d.val;
 style.spec[d.attrid] = d.specificity;
 }
 }

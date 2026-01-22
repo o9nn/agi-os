@@ -28,11 +28,11 @@ System(Equation[], t, vars, pars; name)
 end
 """
 HydraulicFluid(; density = 997, bulk_modulus = 2.09e9, viscosity = 0.0010016, gas_density = 0.0073955, gas_pressure = -1000, n = 1, let_gas = 1, name)
-Fluid parameter setter for isothermal compressible fluid domain.  Defaults given for water at 20°C and 0Pa gage (1atm absolute) reference pressure. Density is modeled using the Tait equation of state.  For pressures below the reference pressure, density is linearly interpolated to the gas state (when `let_gas` is set to 1), this helps prevent pressures from going below the reference pressure.
+Fluid parameter setter for isothermal compressible fluid domain. Defaults given for water at 20°C and 0Pa gage (1atm absolute) reference pressure. Density is modeled using the Tait equation of state. For pressures below the reference pressure, density is linearly interpolated to the gas state (when `let_gas` is set to 1), this helps prevent pressures from going below the reference pressure.
 # Parameters:
 - `ρ`: [kg/m^3] fluid density at 0Pa reference gage pressure (set by `density` argument)
 - `Β`: [Pa] fluid bulk modulus describing the compressibility (set by `bulk_modulus` argument)
-- `μ`: [Pa*s] or [kg/m-s] fluid dynamic viscosity  (set by `viscosity` argument)
+- `μ`: [Pa*s] or [kg/m-s] fluid dynamic viscosity (set by `viscosity` argument)
 - `n`: density exponent
 - `let_gas`: set to 1 to allow fluid to transition from liquid to gas (for density calculation only)
 - `ρ_gas`: [kg/m^3] density of fluid in gas state at reference gage pressure `p_gas` (set by `gas_density` argument)
@@ -72,11 +72,11 @@ Calculates the friction factor ``f`` for fully developed flow in a tube such tha
 - ``\\rho``: [kg/m^3] is the average fluid density
 - ``u``: [m/s] is the average fluid velocity
 - ``l``: [m] is the tube length
-The friction factor is calculated for laminar and turbulent flow with a transition region between Reynolds number 2000 to 3000.  Turbulent flow equation is for smooth tubes, valid for the Reynolds number range up to 5e6.
+The friction factor is calculated for laminar and turbulent flow with a transition region between Reynolds number 2000 to 3000. Turbulent flow equation is for smooth tubes, valid for the Reynolds number range up to 5e6.
 # Arguments:
 - `dm`: [kg/s] mass flow
 - `area`: [m^2] tube cross sectional area
-- `d_h`: [m] tube hydraulic diameter.  For circular tubes d_h is the tube diameter, otherwise it can be found from `4*area/perimeter`
+- `d_h`: [m] tube hydraulic diameter. For circular tubes d_h is the tube diameter, otherwise it can be found from `4*area/perimeter`
 - `density`: [kg/m^3] fluid density
 - `viscosity`: [Pa*s] or [kg/m-s] fluid dynamic viscosity
 - `shape_factor`: the constant defining the laminar fully developed constant f*Re related to the shape of the tube cross section

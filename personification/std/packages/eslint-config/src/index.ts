@@ -11,45 +11,45 @@ import { preferArrow } from './configs/prefer-arrow'
 import { sonarjs } from './configs/sonarjs'
 import { sortPackageJsonWithScripts } from './configs/sort'
 export interface MoeruOptions extends AntfuOptions {
-  masknet: boolean
-  oxlint: boolean | { oxlintrcPath: string }
-  perfectionist: boolean
-  preferArrow: boolean
-  sonarjs: boolean
-  sortPackageJsonScripts: boolean
+masknet: boolean
+oxlint: boolean | { oxlintrcPath: string }
+perfectionist: boolean
+preferArrow: boolean
+sonarjs: boolean
+sortPackageJsonScripts: boolean
 }
 const defaults: MoeruOptions = {
-  masknet: true,
-  oxlint: isPackageInScope('oxlint'),
-  perfectionist: true,
-  preferArrow: true,
-  sonarjs: true,
-  sortPackageJsonScripts: true,
-  typescript: { tsconfigPath: './tsconfig.json' },
+masknet: true,
+oxlint: isPackageInScope('oxlint'),
+perfectionist: true,
+preferArrow: true,
+sonarjs: true,
+sortPackageJsonScripts: true,
+typescript: { tsconfigPath: './tsconfig.json' },
 }
 export const moeru = (userOptions: Partial<MoeruOptions> = {}): Awaitable<TypedFlatConfigItem[]>[] => {
-  const options: MoeruOptions = merge(defaults, userOptions)
-  const results: Awaitable<TypedFlatConfigItem[]>[] = [
-    deMorgan(),
-    depend(),
-    ignores(),
-  ]
-  if (options.jsonc !== false && options.sortPackageJsonScripts !== false)
-    results.push(sortPackageJsonWithScripts())
-  if (options.masknet)
-    results.push(masknet(options))
-  if (options.sonarjs)
-    results.push(sonarjs())
-  if (options.perfectionist)
-    results.push(perfectionist())
-  if (options.preferArrow)
-    results.push(preferArrow())
-  if (options.oxlint !== false)
-    results.push(oxlint(options.oxlint))
-  return results
+const options: MoeruOptions = merge(defaults, userOptions)
+const results: Awaitable<TypedFlatConfigItem[]>[] = [
+deMorgan(),
+depend(),
+ignores(),
+]
+if (options.jsonc !== false && options.sortPackageJsonScripts !== false)
+results.push(sortPackageJsonWithScripts())
+if (options.masknet)
+results.push(masknet(options))
+if (options.sonarjs)
+results.push(sonarjs())
+if (options.perfectionist)
+results.push(perfectionist())
+if (options.preferArrow)
+results.push(preferArrow())
+if (options.oxlint !== false)
+results.push(oxlint(options.oxlint))
+return results
 }
 export const defineConfig = (userOptions: Partial<MoeruOptions> = {}, ...userConfigs: Array<Parameters<typeof antfu>[1]>): ReturnType<typeof antfu> => {
-  const options: MoeruOptions = merge(defaults, userOptions)
-  return antfu(options, ...moeru(options), ...userConfigs ?? [])
+const options: MoeruOptions = merge(defaults, userOptions)
+return antfu(options, ...moeru(options), ...userConfigs ?? [])
 }
 export default defineConfig()

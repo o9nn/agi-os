@@ -17,66 +17,66 @@ typedef struct DScreen DScreen;
 typedef struct DFont DFont;
 struct Cache
 {
-int	ref;
-char*	name;
+int ref;
+char* name;
 Display*display;
 union{
-Subfont*	sf;
-Font*		f;
-void*		ptr;
+Subfont* sf;
+Font* f;
+void* ptr;
 }u;
-Cache*	next;
+Cache* next;
 };
 struct DRef
 {
-int		ref;
-Display*	display;
+int ref;
+Display* display;
 };
 struct DDisplay
 {
-Draw_Display	drawdisplay;
-Display*	display;
-DRef*		dref;
+Draw_Display drawdisplay;
+Display* display;
+DRef* dref;
 };
 struct DImage
 {
-Draw_Image	drawimage;
-Image*		image;
-void*		refreshptr;
-DRef*		dref;
-int		flush;
+Draw_Image drawimage;
+Image* image;
+void* refreshptr;
+DRef* dref;
+int flush;
 };
 struct DScreen
 {
-Draw_Screen	drawscreen;
-Screen*		screen;
-DRef*		dref;
+Draw_Screen drawscreen;
+Screen* screen;
+DRef* dref;
 };
 struct DFont
 {
-Draw_Font	drawfont;
-Font*		font;
-DRef*		dref;
+Draw_Font drawfont;
+Font* font;
+DRef* dref;
 };
-Cache*	sfcache[BIHASH];
-Cache*	fcache[BIHASH];
-void*	cacheqlock;
-static	Cache	*cachelookup(Cache**, Display*, char*);
+Cache* sfcache[BIHASH];
+Cache* fcache[BIHASH];
+void* cacheqlock;
+static Cache *cachelookup(Cache**, Display*, char*);
 uchar fontmap[] = Draw_Font_map;
 uchar imagemap[] = Draw_Image_map;
 uchar screenmap[] = Draw_Screen_map;
 uchar displaymap[] = Draw_Display_map;
-Type*	TFont;
-Type*	TImage;
-Type*	TScreen;
-Type*	TDisplay;
-Draw_Image*	allocdrawimage(DDisplay*, Draw_Rect, ulong, Image*, int, int);
-Draw_Image*	color(DDisplay*, ulong);
-Draw_Screen	*mkdrawscreen(Screen*, Draw_Display*);
-char		deffontname[] = "*default*";
-void		refreshslave(Display*);
-void		subfont_close(Subfont*);
-void		freeallsubfonts(Display*);
+Type* TFont;
+Type* TImage;
+Type* TScreen;
+Type* TDisplay;
+Draw_Image* allocdrawimage(DDisplay*, Draw_Rect, ulong, Image*, int, int);
+Draw_Image* color(DDisplay*, ulong);
+Draw_Screen *mkdrawscreen(Screen*, Draw_Display*);
+char deffontname[] = "*default*";
+void refreshslave(Display*);
+void subfont_close(Subfont*);
+void freeallsubfonts(Display*);
 void
 drawmodinit(void)
 {
@@ -456,7 +456,7 @@ error(exInval);
 void
 checkflush(Draw_Image *dst)
 {
-DImage  *di;
+DImage *di;
 di = (DImage*)dst;
 if(di->flush && (di->image->id==0 || di->image->screen!=nil))
 flushimage(di->image->display, 1);
@@ -1059,7 +1059,7 @@ if(locked)
 unlockdisplay(d);
 if(i == nil)
 return;
-di =  allocdrawimage((DDisplay*)f->d, DRECT(i->r), i->chan, i, i->repl, 0);
+di = allocdrawimage((DDisplay*)f->d, DRECT(i->r), i->chan, i, i->repl, 0);
 *f->ret = di;
 if(di == H){
 locked = lockdisplay(d);

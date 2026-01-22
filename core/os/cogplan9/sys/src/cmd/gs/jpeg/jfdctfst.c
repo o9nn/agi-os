@@ -6,23 +6,23 @@
 #if DCTSIZE != 8
 Sorry, this code only copes with 8x8 DCTs.
 #endif
-#define CONST_BITS  8
+#define CONST_BITS 8
 #if CONST_BITS == 8
-#define FIX_0_382683433  ((INT32)   98)
-#define FIX_0_541196100  ((INT32)  139)
-#define FIX_0_707106781  ((INT32)  181)
-#define FIX_1_306562965  ((INT32)  334)
+#define FIX_0_382683433 ((INT32) 98)
+#define FIX_0_541196100 ((INT32) 139)
+#define FIX_0_707106781 ((INT32) 181)
+#define FIX_1_306562965 ((INT32) 334)
 #else
-#define FIX_0_382683433  FIX(0.382683433)
-#define FIX_0_541196100  FIX(0.541196100)
-#define FIX_0_707106781  FIX(0.707106781)
-#define FIX_1_306562965  FIX(1.306562965)
+#define FIX_0_382683433 FIX(0.382683433)
+#define FIX_0_541196100 FIX(0.541196100)
+#define FIX_0_707106781 FIX(0.707106781)
+#define FIX_1_306562965 FIX(1.306562965)
 #endif
 #ifndef USE_ACCURATE_ROUNDING
 #undef DESCALE
-#define DESCALE(x,n)  RIGHT_SHIFT(x, n)
+#define DESCALE(x,n) RIGHT_SHIFT(x, n)
 #endif
-#define MULTIPLY(var,const)  ((DCTELEM) DESCALE((var) * (const), CONST_BITS))
+#define MULTIPLY(var,const) ((DCTELEM) DESCALE((var) * (const), CONST_BITS))
 GLOBAL(void)
 jpeg_fdct_ifast (DCTELEM * data)
 {

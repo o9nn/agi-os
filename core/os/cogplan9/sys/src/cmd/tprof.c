@@ -2,11 +2,11 @@
 #include <libc.h>
 #include <bio.h>
 #include <mach.h>
-#define	PCRES	8
+#define PCRES 8
 struct COUNTER
 {
-char 	*name;
-long	time;
+char *name;
+long time;
 };
 void
 error(int perr, char *s)

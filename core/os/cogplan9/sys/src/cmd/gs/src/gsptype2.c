@@ -160,7 +160,7 @@ rect.p.x = int2fixed(x);
 rect.p.y = int2fixed(y);
 rect.q.x = int2fixed(x + w);
 rect.q.y = int2fixed(y + h);
-return gx_dc_pattern2_fill_path(pdevc, NULL, &rect,  dev);
+return gx_dc_pattern2_fill_path(pdevc, NULL, &rect, dev);
 }
 private bool
 gx_dc_pattern2_equal(const gx_device_color * pdevc1,

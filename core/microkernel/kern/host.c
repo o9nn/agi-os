@@ -12,16 +12,16 @@
 #include <kern/mach_clock.h>
 #include <kern/mach_host.server.h>
 #include <mach/vm_param.h>
-host_data_t	realhost;
+host_data_t realhost;
 kern_return_t host_processors(
-const host_t		host,
-processor_array_t	*processor_list,
-natural_t		*countp)
+const host_t host,
+processor_array_t *processor_list,
+natural_t *countp)
 {
-unsigned		i;
-processor_t		*tp;
-vm_offset_t		addr;
-unsigned int		count;
+unsigned i;
+processor_t *tp;
+vm_offset_t addr;
+unsigned int count;
 if (host == HOST_NULL)
 return KERN_INVALID_ARGUMENT;
 count = 0;
@@ -45,19 +45,19 @@ for (i = 0; i < count; i++)
 (mach_port_t)convert_processor_to_port(tp[i]);
 return KERN_SUCCESS;
 }
-kern_return_t	host_info(
-const host_t	host,
-int		flavor,
-host_info_t	info,
-natural_t	*count)
+kern_return_t host_info(
+const host_t host,
+int flavor,
+host_info_t info,
+natural_t *count)
 {
-integer_t	i, *slot_ptr;
+integer_t i, *slot_ptr;
 if (host == HOST_NULL)
 return KERN_INVALID_ARGUMENT;
 switch(flavor) {
 case HOST_BASIC_INFO:
 {
-host_basic_info_t	basic_info;
+host_basic_info_t basic_info;
 if (*count < HOST_BASIC_INFO_COUNT)
 return KERN_FAILURE;
 basic_info = (host_basic_info_t) info;
@@ -86,8 +86,8 @@ machine_slot[i].running) {
 return KERN_SUCCESS;
 case HOST_SCHED_INFO:
 {
-host_sched_info_t	sched_info;
-extern int	min_quantum;
+host_sched_info_t sched_info;
+extern int min_quantum;
 if (*count < HOST_SCHED_INFO_COUNT)
 return(KERN_FAILURE);
 sched_info = (host_sched_info_t) info;
@@ -117,10 +117,10 @@ return KERN_INVALID_ARGUMENT;
 }
 }
 kern_return_t host_get_kernel_version(
-const host_t		host,
-kernel_version_t	out_version)
+const host_t host,
+kernel_version_t out_version)
 {
-extern char	version[];
+extern char version[];
 if (host == HOST_NULL)
 return KERN_INVALID_ARGUMENT;
 (void) strncpy(out_version, version, sizeof(kernel_version_t));
@@ -128,18 +128,18 @@ return KERN_SUCCESS;
 }
 #if defined(__i386__) || (defined(__x86_64__) && defined(USER32))
 kern_return_t host_kernel_version(
-const host_t		host,
-kernel_version_t	out_version)
+const host_t host,
+kernel_version_t out_version)
 {
 return host_get_kernel_version(host, out_version);
 }
 #endif
-#if	MACH_HOST
+#if MACH_HOST
 kern_return_t
 host_processor_sets(
-const host_t			host,
-processor_set_name_array_t	*pset_list,
-natural_t			*count)
+const host_t host,
+processor_set_name_array_t *pset_list,
+natural_t *count)
 {
 unsigned int actual;
 processor_set_t pset;
@@ -199,9 +199,9 @@ return KERN_SUCCESS;
 #else
 kern_return_t
 host_processor_sets(
-const host_t			host,
-processor_set_name_array_t	*pset_list,
-natural_t			*count)
+const host_t host,
+processor_set_name_array_t *pset_list,
+natural_t *count)
 {
 vm_offset_t addr;
 if (host == HOST_NULL)
@@ -219,9 +219,9 @@ return KERN_SUCCESS;
 #endif
 kern_return_t
 host_processor_set_priv(
-const host_t	host,
-processor_set_t	pset_name,
-processor_set_t	*pset)
+const host_t host,
+processor_set_t pset_name,
+processor_set_t *pset)
 {
 if ((host == HOST_NULL) || (pset_name == PROCESSOR_SET_NULL)) {
 *pset = PROCESSOR_SET_NULL;

@@ -11,7 +11,7 @@ m_empty = Multiset()
 @test isempty(m_empty)
 @test length(m_empty) == 0
 # Length
-@test length(m1) == 3  # 2 a's + 1 b
+@test length(m1) == 3 # 2 a's + 1 b
 # Addition
 m2 = Multiset("a" => 1, "c" => 2)
 m3 = m1 + m2
@@ -40,7 +40,7 @@ m6 = 2 * Multiset("a" => 1, "b" => 2)
 # Copy
 m7 = copy(m1)
 @test m7 == m1
-@test m7.objects !== m1.objects  # Different object
+@test m7.objects !== m1.objects # Different object
 end
 @testset "Multiset String Macro" begin
 m = multiset"a{2}, b, c{3}"

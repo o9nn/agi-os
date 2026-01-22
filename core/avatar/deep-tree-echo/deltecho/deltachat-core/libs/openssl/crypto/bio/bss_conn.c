@@ -5,12 +5,12 @@
 #include <openssl/bio.h>
 #ifndef OPENSSL_NO_SOCK
 # ifdef OPENSSL_SYS_WIN16
-#  define SOCKET_PROTOCOL 0
+# define SOCKET_PROTOCOL 0
 # else
-#  define SOCKET_PROTOCOL IPPROTO_TCP
+# define SOCKET_PROTOCOL IPPROTO_TCP
 # endif
 # if (defined(OPENSSL_SYS_VMS) && __VMS_VER < 70000000)
-#  undef FIONBIO
+# undef FIONBIO
 # endif
 typedef struct bio_connect_st {
 int state;

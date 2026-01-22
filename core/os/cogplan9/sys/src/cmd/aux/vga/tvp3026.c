@@ -4,10 +4,10 @@
 #include "pci.h"
 #include "vga.h"
 enum {
-Index		= 0x00,
-Data		= 0x0A,
-Id		= 0x3F,
-Tvp3026		= 0x26,
+Index = 0x00,
+Data = 0x0A,
+Id = 0x3F,
+Tvp3026 = 0x26,
 };
 static uchar
 tvp3026io(uchar reg, uchar data)

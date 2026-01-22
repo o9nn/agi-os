@@ -370,7 +370,7 @@ case 4:
 return s;
 }
 #define COMMON(x) \
-__asm__  __volatile__("cld\n\t" \
+__asm__ __volatile__("cld\n\t" \
 "rep ; stosl" \
 x \
 : "=&c" (d0), "=&D" (d1) \

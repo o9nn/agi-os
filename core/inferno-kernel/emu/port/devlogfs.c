@@ -3,13 +3,13 @@
 #include "../port/lib.h"
 #include "../port/error.h"
 #else
-#include	"error.h"
+#include "error.h"
 #endif
-#include	<dat.h>
-#include	<fns.h>
-#include	<kernel.h>
-#include	<logfs.h>
-#include	<nandfs.h>
+#include <dat.h>
+#include <fns.h>
+#include <kernel.h>
+#include <logfs.h>
+#include <nandfs.h>
 #ifndef EMU
 #define Sleep sleep
 #define Wakeup wakeup
@@ -73,7 +73,7 @@ static LogfsIdentityStore *is;
 #ifndef EMU
 char Eunknown[] = "unknown user or group id";
 #endif
-static	void	devlogfsfree(Devlogfs*);
+static void devlogfsfree(Devlogfs*);
 #define SPLITPATH(path, qtype, instance, qid, qt) { instance = path >> 4; qid = path & 0xf; qt = qtype & QTDIR; }
 #define DATAQID(q, qt) (!(qt) && (q) >= Qfs && (q) < Qend)
 #define MKPATH(instance, qid) ((instance << 4) | qid)
@@ -92,13 +92,13 @@ static struct {
 uchar manufacturer;
 uchar device;
 } nandtab[] = {
-{ 0,	0xe6 },
-{ 0,	0xea },
-{ 0,	0xe3 },
-{ 0,	0xe5 },
-{ 0,	0x73 },
-{ 0,	0x75 },
-{ 0,	0x76 },
+{ 0, 0xe6 },
+{ 0, 0xea },
+{ 0, 0xe3 },
+{ 0, 0xe5 },
+{ 0, 0x73 },
+{ 0, 0x75 },
+{ 0, 0x76 },
 };
 static void
 errorany(char *errmsg)
@@ -658,7 +658,7 @@ print("devlogfsattach(spec = %s) - start\n", spec);
 #endif
 if (is == nil)
 errorany(logfsisnew(&is));
-c =  devattach(0x29f, spec);
+c = devattach(0x29f, spec);
 #ifdef CALLTRACE
 print("devlogfsattach(spec = %s) - return %.8lux\n", spec, (ulong)c);
 #endif

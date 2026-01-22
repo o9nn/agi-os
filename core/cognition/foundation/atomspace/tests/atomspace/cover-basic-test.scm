@@ -2,7 +2,7 @@
 (use-modules (opencog) (opencog test-runner))
 (opencog-test-runner)
 (define (get-val ATOM NAME) (inexact->exact
-   (cog-value-ref (cog-value ATOM (Predicate NAME)) 2)))
+(cog-value-ref (cog-value ATOM (Predicate NAME)) 2)))
 (define basic-link "test basic links")
 (test-begin basic-link)
 (define base-space (cog-atomspace))

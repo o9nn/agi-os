@@ -4,23 +4,23 @@
 #endif
 #if __STDC_HOSTED__ && __has_include_next(<stdint.h>)
 # ifdef __cplusplus
-#  if !defined(__STDC_LIMIT_MACROS)
-#   define __STDC_LIMIT_MACROS
-#   define __STDC_LIMIT_MACROS_DEFINED_BY_CLANG
-#  endif
-#  if !defined(__STDC_CONSTANT_MACROS)
-#   define __STDC_CONSTANT_MACROS
-#   define __STDC_CONSTANT_MACROS_DEFINED_BY_CLANG
-#  endif
+# if !defined(__STDC_LIMIT_MACROS)
+# define __STDC_LIMIT_MACROS
+# define __STDC_LIMIT_MACROS_DEFINED_BY_CLANG
+# endif
+# if !defined(__STDC_CONSTANT_MACROS)
+# define __STDC_CONSTANT_MACROS
+# define __STDC_CONSTANT_MACROS_DEFINED_BY_CLANG
+# endif
 # endif
 # include_next <stdint.h>
 # ifdef __STDC_LIMIT_MACROS_DEFINED_BY_CLANG
-#  undef __STDC_LIMIT_MACROS
-#  undef __STDC_LIMIT_MACROS_DEFINED_BY_CLANG
+# undef __STDC_LIMIT_MACROS
+# undef __STDC_LIMIT_MACROS_DEFINED_BY_CLANG
 # endif
 # ifdef __STDC_CONSTANT_MACROS_DEFINED_BY_CLANG
-#  undef __STDC_CONSTANT_MACROS
-#  undef __STDC_CONSTANT_MACROS_DEFINED_BY_CLANG
+# undef __STDC_CONSTANT_MACROS
+# undef __STDC_CONSTANT_MACROS_DEFINED_BY_CLANG
 # endif
 #else
 #ifdef __INT64_TYPE__
@@ -163,418 +163,418 @@ typedef __INTPTR_TYPE__ intptr_t;
 typedef __UINTPTR_TYPE__ uintptr_t;
 #define _UINTPTR_T
 #endif
-typedef __INTMAX_TYPE__  intmax_t;
+typedef __INTMAX_TYPE__ intmax_t;
 typedef __UINTMAX_TYPE__ uintmax_t;
 #define __int_c_join(a, b) a ## b
 #define __int_c(v, suffix) __int_c_join(v, suffix)
 #define __uint_c(v, suffix) __int_c_join(v##U, suffix)
 #ifdef __INT64_TYPE__
 # ifdef __INT64_C_SUFFIX__
-#  define __int64_c_suffix __INT64_C_SUFFIX__
-#  define __int32_c_suffix __INT64_C_SUFFIX__
-#  define __int16_c_suffix __INT64_C_SUFFIX__
-#  define  __int8_c_suffix __INT64_C_SUFFIX__
+# define __int64_c_suffix __INT64_C_SUFFIX__
+# define __int32_c_suffix __INT64_C_SUFFIX__
+# define __int16_c_suffix __INT64_C_SUFFIX__
+# define __int8_c_suffix __INT64_C_SUFFIX__
 # else
-#  undef __int64_c_suffix
-#  undef __int32_c_suffix
-#  undef __int16_c_suffix
-#  undef  __int8_c_suffix
+# undef __int64_c_suffix
+# undef __int32_c_suffix
+# undef __int16_c_suffix
+# undef __int8_c_suffix
 # endif
 #endif
 #ifdef __int_least64_t
 # ifdef __int64_c_suffix
-#  define INT64_C(v) __int_c(v, __int64_c_suffix)
-#  define UINT64_C(v) __uint_c(v, __int64_c_suffix)
+# define INT64_C(v) __int_c(v, __int64_c_suffix)
+# define UINT64_C(v) __uint_c(v, __int64_c_suffix)
 # else
-#  define INT64_C(v) v
-#  define UINT64_C(v) v ## U
+# define INT64_C(v) v
+# define UINT64_C(v) v ## U
 # endif
 #endif
 #ifdef __INT56_TYPE__
 # ifdef __INT56_C_SUFFIX__
-#  define INT56_C(v) __int_c(v, __INT56_C_SUFFIX__)
-#  define UINT56_C(v) __uint_c(v, __INT56_C_SUFFIX__)
-#  define __int32_c_suffix __INT56_C_SUFFIX__
-#  define __int16_c_suffix __INT56_C_SUFFIX__
-#  define __int8_c_suffix  __INT56_C_SUFFIX__
+# define INT56_C(v) __int_c(v, __INT56_C_SUFFIX__)
+# define UINT56_C(v) __uint_c(v, __INT56_C_SUFFIX__)
+# define __int32_c_suffix __INT56_C_SUFFIX__
+# define __int16_c_suffix __INT56_C_SUFFIX__
+# define __int8_c_suffix __INT56_C_SUFFIX__
 # else
-#  define INT56_C(v) v
-#  define UINT56_C(v) v ## U
-#  undef __int32_c_suffix
-#  undef __int16_c_suffix
-#  undef  __int8_c_suffix
+# define INT56_C(v) v
+# define UINT56_C(v) v ## U
+# undef __int32_c_suffix
+# undef __int16_c_suffix
+# undef __int8_c_suffix
 # endif
 #endif
 #ifdef __INT48_TYPE__
 # ifdef __INT48_C_SUFFIX__
-#  define INT48_C(v) __int_c(v, __INT48_C_SUFFIX__)
-#  define UINT48_C(v) __uint_c(v, __INT48_C_SUFFIX__)
-#  define __int32_c_suffix __INT48_C_SUFFIX__
-#  define __int16_c_suffix __INT48_C_SUFFIX__
-#  define __int8_c_suffix  __INT48_C_SUFFIX__
+# define INT48_C(v) __int_c(v, __INT48_C_SUFFIX__)
+# define UINT48_C(v) __uint_c(v, __INT48_C_SUFFIX__)
+# define __int32_c_suffix __INT48_C_SUFFIX__
+# define __int16_c_suffix __INT48_C_SUFFIX__
+# define __int8_c_suffix __INT48_C_SUFFIX__
 # else
-#  define INT48_C(v) v
-#  define UINT48_C(v) v ## U
-#  undef __int32_c_suffix
-#  undef __int16_c_suffix
-#  undef  __int8_c_suffix
+# define INT48_C(v) v
+# define UINT48_C(v) v ## U
+# undef __int32_c_suffix
+# undef __int16_c_suffix
+# undef __int8_c_suffix
 # endif
 #endif
 #ifdef __INT40_TYPE__
 # ifdef __INT40_C_SUFFIX__
-#  define INT40_C(v) __int_c(v, __INT40_C_SUFFIX__)
-#  define UINT40_C(v) __uint_c(v, __INT40_C_SUFFIX__)
-#  define __int32_c_suffix __INT40_C_SUFFIX__
-#  define __int16_c_suffix __INT40_C_SUFFIX__
-#  define __int8_c_suffix  __INT40_C_SUFFIX__
+# define INT40_C(v) __int_c(v, __INT40_C_SUFFIX__)
+# define UINT40_C(v) __uint_c(v, __INT40_C_SUFFIX__)
+# define __int32_c_suffix __INT40_C_SUFFIX__
+# define __int16_c_suffix __INT40_C_SUFFIX__
+# define __int8_c_suffix __INT40_C_SUFFIX__
 # else
-#  define INT40_C(v) v
-#  define UINT40_C(v) v ## U
-#  undef __int32_c_suffix
-#  undef __int16_c_suffix
-#  undef  __int8_c_suffix
+# define INT40_C(v) v
+# define UINT40_C(v) v ## U
+# undef __int32_c_suffix
+# undef __int16_c_suffix
+# undef __int8_c_suffix
 # endif
 #endif
 #ifdef __INT32_TYPE__
 # ifdef __INT32_C_SUFFIX__
-#  define __int32_c_suffix __INT32_C_SUFFIX__
-#  define __int16_c_suffix __INT32_C_SUFFIX__
-#  define __int8_c_suffix  __INT32_C_SUFFIX__
+# define __int32_c_suffix __INT32_C_SUFFIX__
+# define __int16_c_suffix __INT32_C_SUFFIX__
+# define __int8_c_suffix __INT32_C_SUFFIX__
 #else
-#  undef __int32_c_suffix
-#  undef __int16_c_suffix
-#  undef  __int8_c_suffix
+# undef __int32_c_suffix
+# undef __int16_c_suffix
+# undef __int8_c_suffix
 # endif
 #endif
 #ifdef __int_least32_t
 # ifdef __int32_c_suffix
-#  define INT32_C(v) __int_c(v, __int32_c_suffix)
-#  define UINT32_C(v) __uint_c(v, __int32_c_suffix)
+# define INT32_C(v) __int_c(v, __int32_c_suffix)
+# define UINT32_C(v) __uint_c(v, __int32_c_suffix)
 # else
-#  define INT32_C(v) v
-#  define UINT32_C(v) v ## U
+# define INT32_C(v) v
+# define UINT32_C(v) v ## U
 # endif
 #endif
 #ifdef __INT24_TYPE__
 # ifdef __INT24_C_SUFFIX__
-#  define INT24_C(v) __int_c(v, __INT24_C_SUFFIX__)
-#  define UINT24_C(v) __uint_c(v, __INT24_C_SUFFIX__)
-#  define __int16_c_suffix __INT24_C_SUFFIX__
-#  define __int8_c_suffix  __INT24_C_SUFFIX__
+# define INT24_C(v) __int_c(v, __INT24_C_SUFFIX__)
+# define UINT24_C(v) __uint_c(v, __INT24_C_SUFFIX__)
+# define __int16_c_suffix __INT24_C_SUFFIX__
+# define __int8_c_suffix __INT24_C_SUFFIX__
 # else
-#  define INT24_C(v) v
-#  define UINT24_C(v) v ## U
-#  undef __int16_c_suffix
-#  undef  __int8_c_suffix
+# define INT24_C(v) v
+# define UINT24_C(v) v ## U
+# undef __int16_c_suffix
+# undef __int8_c_suffix
 # endif
 #endif
 #ifdef __INT16_TYPE__
 # ifdef __INT16_C_SUFFIX__
-#  define __int16_c_suffix __INT16_C_SUFFIX__
-#  define __int8_c_suffix  __INT16_C_SUFFIX__
+# define __int16_c_suffix __INT16_C_SUFFIX__
+# define __int8_c_suffix __INT16_C_SUFFIX__
 #else
-#  undef __int16_c_suffix
-#  undef  __int8_c_suffix
+# undef __int16_c_suffix
+# undef __int8_c_suffix
 # endif
 #endif
 #ifdef __int_least16_t
 # ifdef __int16_c_suffix
-#  define INT16_C(v) __int_c(v, __int16_c_suffix)
-#  define UINT16_C(v) __uint_c(v, __int16_c_suffix)
+# define INT16_C(v) __int_c(v, __int16_c_suffix)
+# define UINT16_C(v) __uint_c(v, __int16_c_suffix)
 # else
-#  define INT16_C(v) v
-#  define UINT16_C(v) v ## U
+# define INT16_C(v) v
+# define UINT16_C(v) v ## U
 # endif
 #endif
 #ifdef __INT8_TYPE__
 # ifdef __INT8_C_SUFFIX__
-#  define __int8_c_suffix __INT8_C_SUFFIX__
+# define __int8_c_suffix __INT8_C_SUFFIX__
 #else
-#  undef  __int8_c_suffix
+# undef __int8_c_suffix
 # endif
 #endif
 #ifdef __int_least8_t
 # ifdef __int8_c_suffix
-#  define INT8_C(v) __int_c(v, __int8_c_suffix)
-#  define UINT8_C(v) __uint_c(v, __int8_c_suffix)
+# define INT8_C(v) __int_c(v, __int8_c_suffix)
+# define UINT8_C(v) __uint_c(v, __int8_c_suffix)
 # else
-#  define INT8_C(v) v
-#  define UINT8_C(v) v ## U
+# define INT8_C(v) v
+# define UINT8_C(v) v ## U
 # endif
 #endif
 #ifdef __INT64_TYPE__
-# define INT64_MAX           INT64_C( 9223372036854775807)
-# define INT64_MIN         (-INT64_C( 9223372036854775807)-1)
-# define UINT64_MAX         UINT64_C(18446744073709551615)
+# define INT64_MAX INT64_C( 9223372036854775807)
+# define INT64_MIN (-INT64_C( 9223372036854775807)-1)
+# define UINT64_MAX UINT64_C(18446744073709551615)
 #if __STDC_VERSION__ >= 202000L
-# define UINT64_WIDTH         64
-# define INT64_WIDTH          UINT64_WIDTH
+# define UINT64_WIDTH 64
+# define INT64_WIDTH UINT64_WIDTH
 # define __UINT_LEAST64_WIDTH UINT64_WIDTH
 # define __UINT_LEAST32_WIDTH UINT64_WIDTH
 # define __UINT_LEAST16_WIDTH UINT64_WIDTH
 # define __UINT_LEAST8_MAX UINT64_MAX
 #endif
-# define __INT_LEAST64_MIN   INT64_MIN
-# define __INT_LEAST64_MAX   INT64_MAX
+# define __INT_LEAST64_MIN INT64_MIN
+# define __INT_LEAST64_MAX INT64_MAX
 # define __UINT_LEAST64_MAX UINT64_MAX
-# define __INT_LEAST32_MIN   INT64_MIN
-# define __INT_LEAST32_MAX   INT64_MAX
+# define __INT_LEAST32_MIN INT64_MIN
+# define __INT_LEAST32_MAX INT64_MAX
 # define __UINT_LEAST32_MAX UINT64_MAX
-# define __INT_LEAST16_MIN   INT64_MIN
-# define __INT_LEAST16_MAX   INT64_MAX
+# define __INT_LEAST16_MIN INT64_MIN
+# define __INT_LEAST16_MAX INT64_MAX
 # define __UINT_LEAST16_MAX UINT64_MAX
-# define __INT_LEAST8_MIN    INT64_MIN
-# define __INT_LEAST8_MAX    INT64_MAX
-# define __UINT_LEAST8_MAX  UINT64_MAX
+# define __INT_LEAST8_MIN INT64_MIN
+# define __INT_LEAST8_MAX INT64_MAX
+# define __UINT_LEAST8_MAX UINT64_MAX
 #endif
 #ifdef __INT_LEAST64_MIN
-# define INT_LEAST64_MIN   __INT_LEAST64_MIN
-# define INT_LEAST64_MAX   __INT_LEAST64_MAX
+# define INT_LEAST64_MIN __INT_LEAST64_MIN
+# define INT_LEAST64_MAX __INT_LEAST64_MAX
 # define UINT_LEAST64_MAX __UINT_LEAST64_MAX
-# define INT_FAST64_MIN    __INT_LEAST64_MIN
-# define INT_FAST64_MAX    __INT_LEAST64_MAX
-# define UINT_FAST64_MAX  __UINT_LEAST64_MAX
+# define INT_FAST64_MIN __INT_LEAST64_MIN
+# define INT_FAST64_MAX __INT_LEAST64_MAX
+# define UINT_FAST64_MAX __UINT_LEAST64_MAX
 #if __STDC_VERSION__ >= 202000L
 # define UINT_LEAST64_WIDTH __UINT_LEAST64_WIDTH
-# define INT_LEAST64_WIDTH  UINT_LEAST64_WIDTH
-# define UINT_FAST64_WIDTH  __UINT_LEAST64_WIDTH
-# define INT_FAST64_WIDTH   UINT_FAST64_WIDTH
+# define INT_LEAST64_WIDTH UINT_LEAST64_WIDTH
+# define UINT_FAST64_WIDTH __UINT_LEAST64_WIDTH
+# define INT_FAST64_WIDTH UINT_FAST64_WIDTH
 #endif
 #endif
 #ifdef __INT56_TYPE__
-# define INT56_MAX           INT56_C(36028797018963967)
-# define INT56_MIN         (-INT56_C(36028797018963967)-1)
-# define UINT56_MAX         UINT56_C(72057594037927935)
-# define INT_LEAST56_MIN     INT56_MIN
-# define INT_LEAST56_MAX     INT56_MAX
-# define UINT_LEAST56_MAX   UINT56_MAX
-# define INT_FAST56_MIN      INT56_MIN
-# define INT_FAST56_MAX      INT56_MAX
-# define UINT_FAST56_MAX    UINT56_MAX
-# define __INT_LEAST32_MIN   INT56_MIN
-# define __INT_LEAST32_MAX   INT56_MAX
+# define INT56_MAX INT56_C(36028797018963967)
+# define INT56_MIN (-INT56_C(36028797018963967)-1)
+# define UINT56_MAX UINT56_C(72057594037927935)
+# define INT_LEAST56_MIN INT56_MIN
+# define INT_LEAST56_MAX INT56_MAX
+# define UINT_LEAST56_MAX UINT56_MAX
+# define INT_FAST56_MIN INT56_MIN
+# define INT_FAST56_MAX INT56_MAX
+# define UINT_FAST56_MAX UINT56_MAX
+# define __INT_LEAST32_MIN INT56_MIN
+# define __INT_LEAST32_MAX INT56_MAX
 # define __UINT_LEAST32_MAX UINT56_MAX
-# define __INT_LEAST16_MIN   INT56_MIN
-# define __INT_LEAST16_MAX   INT56_MAX
+# define __INT_LEAST16_MIN INT56_MIN
+# define __INT_LEAST16_MAX INT56_MAX
 # define __UINT_LEAST16_MAX UINT56_MAX
-# define __INT_LEAST8_MIN    INT56_MIN
-# define __INT_LEAST8_MAX    INT56_MAX
-# define __UINT_LEAST8_MAX  UINT56_MAX
+# define __INT_LEAST8_MIN INT56_MIN
+# define __INT_LEAST8_MAX INT56_MAX
+# define __UINT_LEAST8_MAX UINT56_MAX
 #if __STDC_VERSION__ >= 202000L
-# define UINT56_WIDTH         56
-# define INT56_WIDTH          UINT56_WIDTH
-# define UINT_LEAST56_WIDTH   UINT56_WIDTH
-# define INT_LEAST56_WIDTH    UINT_LEAST56_WIDTH
-# define UINT_FAST56_WIDTH    UINT56_WIDTH
-# define INT_FAST56_WIDTH     UINT_FAST56_WIDTH
+# define UINT56_WIDTH 56
+# define INT56_WIDTH UINT56_WIDTH
+# define UINT_LEAST56_WIDTH UINT56_WIDTH
+# define INT_LEAST56_WIDTH UINT_LEAST56_WIDTH
+# define UINT_FAST56_WIDTH UINT56_WIDTH
+# define INT_FAST56_WIDTH UINT_FAST56_WIDTH
 # define __UINT_LEAST32_WIDTH UINT56_WIDTH
 # define __UINT_LEAST16_WIDTH UINT56_WIDTH
-# define __UINT_LEAST8_WIDTH  UINT56_WIDTH
+# define __UINT_LEAST8_WIDTH UINT56_WIDTH
 #endif
 #endif
 #ifdef __INT48_TYPE__
-# define INT48_MAX           INT48_C(140737488355327)
-# define INT48_MIN         (-INT48_C(140737488355327)-1)
-# define UINT48_MAX         UINT48_C(281474976710655)
-# define INT_LEAST48_MIN     INT48_MIN
-# define INT_LEAST48_MAX     INT48_MAX
-# define UINT_LEAST48_MAX   UINT48_MAX
-# define INT_FAST48_MIN      INT48_MIN
-# define INT_FAST48_MAX      INT48_MAX
-# define UINT_FAST48_MAX    UINT48_MAX
-# define __INT_LEAST32_MIN   INT48_MIN
-# define __INT_LEAST32_MAX   INT48_MAX
+# define INT48_MAX INT48_C(140737488355327)
+# define INT48_MIN (-INT48_C(140737488355327)-1)
+# define UINT48_MAX UINT48_C(281474976710655)
+# define INT_LEAST48_MIN INT48_MIN
+# define INT_LEAST48_MAX INT48_MAX
+# define UINT_LEAST48_MAX UINT48_MAX
+# define INT_FAST48_MIN INT48_MIN
+# define INT_FAST48_MAX INT48_MAX
+# define UINT_FAST48_MAX UINT48_MAX
+# define __INT_LEAST32_MIN INT48_MIN
+# define __INT_LEAST32_MAX INT48_MAX
 # define __UINT_LEAST32_MAX UINT48_MAX
-# define __INT_LEAST16_MIN   INT48_MIN
-# define __INT_LEAST16_MAX   INT48_MAX
+# define __INT_LEAST16_MIN INT48_MIN
+# define __INT_LEAST16_MAX INT48_MAX
 # define __UINT_LEAST16_MAX UINT48_MAX
-# define __INT_LEAST8_MIN    INT48_MIN
-# define __INT_LEAST8_MAX    INT48_MAX
-# define __UINT_LEAST8_MAX  UINT48_MAX
+# define __INT_LEAST8_MIN INT48_MIN
+# define __INT_LEAST8_MAX INT48_MAX
+# define __UINT_LEAST8_MAX UINT48_MAX
 #if __STDC_VERSION__ >= 202000L
-#define UINT48_WIDTH         48
-#define INT48_WIDTH          UINT48_WIDTH
-#define UINT_LEAST48_WIDTH   UINT48_WIDTH
-#define INT_LEAST48_WIDTH    UINT_LEAST48_WIDTH
-#define UINT_FAST48_WIDTH    UINT48_WIDTH
-#define INT_FAST48_WIDTH     UINT_FAST48_WIDTH
+#define UINT48_WIDTH 48
+#define INT48_WIDTH UINT48_WIDTH
+#define UINT_LEAST48_WIDTH UINT48_WIDTH
+#define INT_LEAST48_WIDTH UINT_LEAST48_WIDTH
+#define UINT_FAST48_WIDTH UINT48_WIDTH
+#define INT_FAST48_WIDTH UINT_FAST48_WIDTH
 #define __UINT_LEAST32_WIDTH UINT48_WIDTH
 #define __UINT_LEAST16_WIDTH UINT48_WIDTH
-#define __UINT_LEAST8_WIDTH  UINT48_WIDTH
+#define __UINT_LEAST8_WIDTH UINT48_WIDTH
 #endif
 #endif
 #ifdef __INT40_TYPE__
-# define INT40_MAX           INT40_C(549755813887)
-# define INT40_MIN         (-INT40_C(549755813887)-1)
-# define UINT40_MAX         UINT40_C(1099511627775)
-# define INT_LEAST40_MIN     INT40_MIN
-# define INT_LEAST40_MAX     INT40_MAX
-# define UINT_LEAST40_MAX   UINT40_MAX
-# define INT_FAST40_MIN      INT40_MIN
-# define INT_FAST40_MAX      INT40_MAX
-# define UINT_FAST40_MAX    UINT40_MAX
-# define __INT_LEAST32_MIN   INT40_MIN
-# define __INT_LEAST32_MAX   INT40_MAX
+# define INT40_MAX INT40_C(549755813887)
+# define INT40_MIN (-INT40_C(549755813887)-1)
+# define UINT40_MAX UINT40_C(1099511627775)
+# define INT_LEAST40_MIN INT40_MIN
+# define INT_LEAST40_MAX INT40_MAX
+# define UINT_LEAST40_MAX UINT40_MAX
+# define INT_FAST40_MIN INT40_MIN
+# define INT_FAST40_MAX INT40_MAX
+# define UINT_FAST40_MAX UINT40_MAX
+# define __INT_LEAST32_MIN INT40_MIN
+# define __INT_LEAST32_MAX INT40_MAX
 # define __UINT_LEAST32_MAX UINT40_MAX
-# define __INT_LEAST16_MIN   INT40_MIN
-# define __INT_LEAST16_MAX   INT40_MAX
+# define __INT_LEAST16_MIN INT40_MIN
+# define __INT_LEAST16_MAX INT40_MAX
 # define __UINT_LEAST16_MAX UINT40_MAX
-# define __INT_LEAST8_MIN    INT40_MIN
-# define __INT_LEAST8_MAX    INT40_MAX
-# define __UINT_LEAST8_MAX  UINT40_MAX
+# define __INT_LEAST8_MIN INT40_MIN
+# define __INT_LEAST8_MAX INT40_MAX
+# define __UINT_LEAST8_MAX UINT40_MAX
 #if __STDC_VERSION__ >= 202000L
-# define UINT40_WIDTH         40
-# define INT40_WIDTH          UINT40_WIDTH
-# define UINT_LEAST40_WIDTH   UINT40_WIDTH
-# define INT_LEAST40_WIDTH    UINT_LEAST40_WIDTH
-# define UINT_FAST40_WIDTH    UINT40_WIDTH
-# define INT_FAST40_WIDTH     UINT_FAST40_WIDTH
+# define UINT40_WIDTH 40
+# define INT40_WIDTH UINT40_WIDTH
+# define UINT_LEAST40_WIDTH UINT40_WIDTH
+# define INT_LEAST40_WIDTH UINT_LEAST40_WIDTH
+# define UINT_FAST40_WIDTH UINT40_WIDTH
+# define INT_FAST40_WIDTH UINT_FAST40_WIDTH
 # define __UINT_LEAST32_WIDTH UINT40_WIDTH
 # define __UINT_LEAST16_WIDTH UINT40_WIDTH
-# define __UINT_LEAST8_WIDTH  UINT40_WIDTH
+# define __UINT_LEAST8_WIDTH UINT40_WIDTH
 #endif
 #endif
 #ifdef __INT32_TYPE__
-# define INT32_MAX           INT32_C(2147483647)
-# define INT32_MIN         (-INT32_C(2147483647)-1)
-# define UINT32_MAX         UINT32_C(4294967295)
-# define __INT_LEAST32_MIN   INT32_MIN
-# define __INT_LEAST32_MAX   INT32_MAX
+# define INT32_MAX INT32_C(2147483647)
+# define INT32_MIN (-INT32_C(2147483647)-1)
+# define UINT32_MAX UINT32_C(4294967295)
+# define __INT_LEAST32_MIN INT32_MIN
+# define __INT_LEAST32_MAX INT32_MAX
 # define __UINT_LEAST32_MAX UINT32_MAX
-# define __INT_LEAST16_MIN   INT32_MIN
-# define __INT_LEAST16_MAX   INT32_MAX
+# define __INT_LEAST16_MIN INT32_MIN
+# define __INT_LEAST16_MAX INT32_MAX
 # define __UINT_LEAST16_MAX UINT32_MAX
-# define __INT_LEAST8_MIN    INT32_MIN
-# define __INT_LEAST8_MAX    INT32_MAX
-# define __UINT_LEAST8_MAX  UINT32_MAX
+# define __INT_LEAST8_MIN INT32_MIN
+# define __INT_LEAST8_MAX INT32_MAX
+# define __UINT_LEAST8_MAX UINT32_MAX
 #if __STDC_VERSION__ >= 202000L
-# define UINT32_WIDTH         32
-# define INT32_WIDTH          UINT32_WIDTH
+# define UINT32_WIDTH 32
+# define INT32_WIDTH UINT32_WIDTH
 # define __UINT_LEAST32_WIDTH UINT32_WIDTH
 # define __UINT_LEAST16_WIDTH UINT32_WIDTH
-# define __UINT_LEAST8_WIDTH  UINT32_WIDTH
+# define __UINT_LEAST8_WIDTH UINT32_WIDTH
 #endif
 #endif
 #ifdef __INT_LEAST32_MIN
-# define INT_LEAST32_MIN   __INT_LEAST32_MIN
-# define INT_LEAST32_MAX   __INT_LEAST32_MAX
+# define INT_LEAST32_MIN __INT_LEAST32_MIN
+# define INT_LEAST32_MAX __INT_LEAST32_MAX
 # define UINT_LEAST32_MAX __UINT_LEAST32_MAX
-# define INT_FAST32_MIN    __INT_LEAST32_MIN
-# define INT_FAST32_MAX    __INT_LEAST32_MAX
-# define UINT_FAST32_MAX  __UINT_LEAST32_MAX
+# define INT_FAST32_MIN __INT_LEAST32_MIN
+# define INT_FAST32_MAX __INT_LEAST32_MAX
+# define UINT_FAST32_MAX __UINT_LEAST32_MAX
 #if __STDC_VERSION__ >= 202000L
 # define UINT_LEAST32_WIDTH __UINT_LEAST32_WIDTH
-# define INT_LEAST32_WIDTH  UINT_LEAST32_WIDTH
-# define UINT_FAST32_WIDTH  __UINT_LEAST32_WIDTH
-# define INT_FAST32_WIDTH   UINT_FAST32_WIDTH
+# define INT_LEAST32_WIDTH UINT_LEAST32_WIDTH
+# define UINT_FAST32_WIDTH __UINT_LEAST32_WIDTH
+# define INT_FAST32_WIDTH UINT_FAST32_WIDTH
 #endif
 #endif
 #ifdef __INT24_TYPE__
-# define INT24_MAX           INT24_C(8388607)
-# define INT24_MIN         (-INT24_C(8388607)-1)
-# define UINT24_MAX         UINT24_C(16777215)
-# define INT_LEAST24_MIN     INT24_MIN
-# define INT_LEAST24_MAX     INT24_MAX
-# define UINT_LEAST24_MAX   UINT24_MAX
-# define INT_FAST24_MIN      INT24_MIN
-# define INT_FAST24_MAX      INT24_MAX
-# define UINT_FAST24_MAX    UINT24_MAX
-# define __INT_LEAST16_MIN   INT24_MIN
-# define __INT_LEAST16_MAX   INT24_MAX
+# define INT24_MAX INT24_C(8388607)
+# define INT24_MIN (-INT24_C(8388607)-1)
+# define UINT24_MAX UINT24_C(16777215)
+# define INT_LEAST24_MIN INT24_MIN
+# define INT_LEAST24_MAX INT24_MAX
+# define UINT_LEAST24_MAX UINT24_MAX
+# define INT_FAST24_MIN INT24_MIN
+# define INT_FAST24_MAX INT24_MAX
+# define UINT_FAST24_MAX UINT24_MAX
+# define __INT_LEAST16_MIN INT24_MIN
+# define __INT_LEAST16_MAX INT24_MAX
 # define __UINT_LEAST16_MAX UINT24_MAX
-# define __INT_LEAST8_MIN    INT24_MIN
-# define __INT_LEAST8_MAX    INT24_MAX
-# define __UINT_LEAST8_MAX  UINT24_MAX
+# define __INT_LEAST8_MIN INT24_MIN
+# define __INT_LEAST8_MAX INT24_MAX
+# define __UINT_LEAST8_MAX UINT24_MAX
 #if __STDC_VERSION__ >= 202000L
-# define UINT24_WIDTH         24
-# define INT24_WIDTH          UINT24_WIDTH
-# define UINT_LEAST24_WIDTH   UINT24_WIDTH
-# define INT_LEAST24_WIDTH    UINT_LEAST24_WIDTH
-# define UINT_FAST24_WIDTH    UINT24_WIDTH
-# define INT_FAST24_WIDTH     UINT_FAST24_WIDTH
+# define UINT24_WIDTH 24
+# define INT24_WIDTH UINT24_WIDTH
+# define UINT_LEAST24_WIDTH UINT24_WIDTH
+# define INT_LEAST24_WIDTH UINT_LEAST24_WIDTH
+# define UINT_FAST24_WIDTH UINT24_WIDTH
+# define INT_FAST24_WIDTH UINT_FAST24_WIDTH
 # define __UINT_LEAST16_WIDTH UINT24_WIDTH
-# define __UINT_LEAST8_WIDTH  UINT24_WIDTH
+# define __UINT_LEAST8_WIDTH UINT24_WIDTH
 #endif
 #endif
 #ifdef __INT16_TYPE__
-#define INT16_MAX            INT16_C(32767)
-#define INT16_MIN          (-INT16_C(32767)-1)
-#define UINT16_MAX          UINT16_C(65535)
-# define __INT_LEAST16_MIN   INT16_MIN
-# define __INT_LEAST16_MAX   INT16_MAX
+#define INT16_MAX INT16_C(32767)
+#define INT16_MIN (-INT16_C(32767)-1)
+#define UINT16_MAX UINT16_C(65535)
+# define __INT_LEAST16_MIN INT16_MIN
+# define __INT_LEAST16_MAX INT16_MAX
 # define __UINT_LEAST16_MAX UINT16_MAX
-# define __INT_LEAST8_MIN    INT16_MIN
-# define __INT_LEAST8_MAX    INT16_MAX
-# define __UINT_LEAST8_MAX  UINT16_MAX
+# define __INT_LEAST8_MIN INT16_MIN
+# define __INT_LEAST8_MAX INT16_MAX
+# define __UINT_LEAST8_MAX UINT16_MAX
 #if __STDC_VERSION__ >= 202000L
-# define UINT16_WIDTH         16
-# define INT16_WIDTH          UINT16_WIDTH
+# define UINT16_WIDTH 16
+# define INT16_WIDTH UINT16_WIDTH
 # define __UINT_LEAST16_WIDTH UINT16_WIDTH
-# define __UINT_LEAST8_WIDTH  UINT16_WIDTH
+# define __UINT_LEAST8_WIDTH UINT16_WIDTH
 #endif
 #endif
 #ifdef __INT_LEAST16_MIN
-# define INT_LEAST16_MIN   __INT_LEAST16_MIN
-# define INT_LEAST16_MAX   __INT_LEAST16_MAX
+# define INT_LEAST16_MIN __INT_LEAST16_MIN
+# define INT_LEAST16_MAX __INT_LEAST16_MAX
 # define UINT_LEAST16_MAX __UINT_LEAST16_MAX
-# define INT_FAST16_MIN    __INT_LEAST16_MIN
-# define INT_FAST16_MAX    __INT_LEAST16_MAX
-# define UINT_FAST16_MAX  __UINT_LEAST16_MAX
+# define INT_FAST16_MIN __INT_LEAST16_MIN
+# define INT_FAST16_MAX __INT_LEAST16_MAX
+# define UINT_FAST16_MAX __UINT_LEAST16_MAX
 #if __STDC_VERSION__ >= 202000L
 # define UINT_LEAST16_WIDTH __UINT_LEAST16_WIDTH
-# define INT_LEAST16_WIDTH  UINT_LEAST16_WIDTH
-# define UINT_FAST16_WIDTH  __UINT_LEAST16_WIDTH
-# define INT_FAST16_WIDTH   UINT_FAST16_WIDTH
+# define INT_LEAST16_WIDTH UINT_LEAST16_WIDTH
+# define UINT_FAST16_WIDTH __UINT_LEAST16_WIDTH
+# define INT_FAST16_WIDTH UINT_FAST16_WIDTH
 #endif
 #endif
 #ifdef __INT8_TYPE__
-# define INT8_MAX            INT8_C(127)
-# define INT8_MIN          (-INT8_C(127)-1)
-# define UINT8_MAX          UINT8_C(255)
-# define __INT_LEAST8_MIN    INT8_MIN
-# define __INT_LEAST8_MAX    INT8_MAX
-# define __UINT_LEAST8_MAX  UINT8_MAX
+# define INT8_MAX INT8_C(127)
+# define INT8_MIN (-INT8_C(127)-1)
+# define UINT8_MAX UINT8_C(255)
+# define __INT_LEAST8_MIN INT8_MIN
+# define __INT_LEAST8_MAX INT8_MAX
+# define __UINT_LEAST8_MAX UINT8_MAX
 #if __STDC_VERSION__ >= 202000L
-# define UINT8_WIDTH         8
-# define INT8_WIDTH          UINT8_WIDTH
+# define UINT8_WIDTH 8
+# define INT8_WIDTH UINT8_WIDTH
 # define __UINT_LEAST8_WIDTH UINT8_WIDTH
 #endif
 #endif
 #ifdef __INT_LEAST8_MIN
-# define INT_LEAST8_MIN   __INT_LEAST8_MIN
-# define INT_LEAST8_MAX   __INT_LEAST8_MAX
+# define INT_LEAST8_MIN __INT_LEAST8_MIN
+# define INT_LEAST8_MAX __INT_LEAST8_MAX
 # define UINT_LEAST8_MAX __UINT_LEAST8_MAX
-# define INT_FAST8_MIN    __INT_LEAST8_MIN
-# define INT_FAST8_MAX    __INT_LEAST8_MAX
-# define UINT_FAST8_MAX  __UINT_LEAST8_MAX
+# define INT_FAST8_MIN __INT_LEAST8_MIN
+# define INT_FAST8_MAX __INT_LEAST8_MAX
+# define UINT_FAST8_MAX __UINT_LEAST8_MAX
 #if __STDC_VERSION__ >= 202000L
 # define UINT_LEAST8_WIDTH __UINT_LEAST8_WIDTH
-# define INT_LEAST8_WIDTH  UINT_LEAST8_WIDTH
-# define UINT_FAST8_WIDTH  __UINT_LEAST8_WIDTH
-# define INT_FAST8_WIDTH   UINT_FAST8_WIDTH
+# define INT_LEAST8_WIDTH UINT_LEAST8_WIDTH
+# define UINT_FAST8_WIDTH __UINT_LEAST8_WIDTH
+# define INT_FAST8_WIDTH UINT_FAST8_WIDTH
 #endif
 #endif
-#define  __INTN_MIN(n)  __stdint_join3( INT, n, _MIN)
-#define  __INTN_MAX(n)  __stdint_join3( INT, n, _MAX)
-#define __UINTN_MAX(n)  __stdint_join3(UINT, n, _MAX)
-#define  __INTN_C(n, v) __stdint_join3( INT, n, _C(v))
+#define __INTN_MIN(n) __stdint_join3( INT, n, _MIN)
+#define __INTN_MAX(n) __stdint_join3( INT, n, _MAX)
+#define __UINTN_MAX(n) __stdint_join3(UINT, n, _MAX)
+#define __INTN_C(n, v) __stdint_join3( INT, n, _C(v))
 #define __UINTN_C(n, v) __stdint_join3(UINT, n, _C(v))
-#define  INTPTR_MIN  (-__INTPTR_MAX__-1)
-#define  INTPTR_MAX    __INTPTR_MAX__
-#define UINTPTR_MAX   __UINTPTR_MAX__
+#define INTPTR_MIN (-__INTPTR_MAX__-1)
+#define INTPTR_MAX __INTPTR_MAX__
+#define UINTPTR_MAX __UINTPTR_MAX__
 #define PTRDIFF_MIN (-__PTRDIFF_MAX__-1)
-#define PTRDIFF_MAX   __PTRDIFF_MAX__
-#define    SIZE_MAX      __SIZE_MAX__
+#define PTRDIFF_MAX __PTRDIFF_MAX__
+#define SIZE_MAX __SIZE_MAX__
 #if __STDC_VERSION__ >= 202000L
-#define INTPTR_WIDTH  __INTPTR_WIDTH__
+#define INTPTR_WIDTH __INTPTR_WIDTH__
 #define UINTPTR_WIDTH __UINTPTR_WIDTH__
 #endif
 #if defined(__STDC_WANT_LIB_EXT1__) && __STDC_WANT_LIB_EXT1__ >= 1
-#define   RSIZE_MAX            (SIZE_MAX >> 1)
+#define RSIZE_MAX (SIZE_MAX >> 1)
 #endif
-#define  INTMAX_MIN (-__INTMAX_MAX__-1)
-#define  INTMAX_MAX   __INTMAX_MAX__
-#define UINTMAX_MAX  __UINTMAX_MAX__
+#define INTMAX_MIN (-__INTMAX_MAX__-1)
+#define INTMAX_MAX __INTMAX_MAX__
+#define UINTMAX_MAX __UINTMAX_MAX__
 #if __STDC_VERSION__ >= 202000L
 #define INTMAX_WIDTH __INTMAX_WIDTH__
 #define UINTMAX_WIDTH __UINTMAX_WIDTH__
@@ -582,30 +582,30 @@ typedef __UINTMAX_TYPE__ uintmax_t;
 #define SIG_ATOMIC_MIN __INTN_MIN(__SIG_ATOMIC_WIDTH__)
 #define SIG_ATOMIC_MAX __INTN_MAX(__SIG_ATOMIC_WIDTH__)
 #ifdef __WINT_UNSIGNED__
-# define WINT_MIN       __UINTN_C(__WINT_WIDTH__, 0)
-# define WINT_MAX       __UINTN_MAX(__WINT_WIDTH__)
+# define WINT_MIN __UINTN_C(__WINT_WIDTH__, 0)
+# define WINT_MAX __UINTN_MAX(__WINT_WIDTH__)
 #else
-# define WINT_MIN       __INTN_MIN(__WINT_WIDTH__)
-# define WINT_MAX       __INTN_MAX(__WINT_WIDTH__)
+# define WINT_MIN __INTN_MIN(__WINT_WIDTH__)
+# define WINT_MAX __INTN_MAX(__WINT_WIDTH__)
 #endif
 #ifndef WCHAR_MAX
 # define WCHAR_MAX __WCHAR_MAX__
 #endif
 #ifndef WCHAR_MIN
 # if __WCHAR_MAX__ == __INTN_MAX(__WCHAR_WIDTH__)
-#  define WCHAR_MIN __INTN_MIN(__WCHAR_WIDTH__)
+# define WCHAR_MIN __INTN_MIN(__WCHAR_WIDTH__)
 # else
-#  define WCHAR_MIN __UINTN_C(__WCHAR_WIDTH__, 0)
+# define WCHAR_MIN __UINTN_C(__WCHAR_WIDTH__, 0)
 # endif
 #endif
-#define  INTMAX_C(v) __int_c(v,  __INTMAX_C_SUFFIX__)
+#define INTMAX_C(v) __int_c(v, __INTMAX_C_SUFFIX__)
 #define UINTMAX_C(v) __int_c(v, __UINTMAX_C_SUFFIX__)
 #if __STDC_VERSION__ >= 202000L
-#define PTRDIFF_WIDTH    __PTRDIFF_WIDTH__
+#define PTRDIFF_WIDTH __PTRDIFF_WIDTH__
 #define SIG_ATOMIC_WIDTH __SIG_ATOMIC_WIDTH__
-#define SIZE_WIDTH       __SIZE_WIDTH__
-#define WCHAR_WIDTH      __WCHAR_WIDTH__
-#define WINT_WIDTH       __WINT_WIDTH__
+#define SIZE_WIDTH __SIZE_WIDTH__
+#define WCHAR_WIDTH __WCHAR_WIDTH__
+#define WINT_WIDTH __WINT_WIDTH__
 #endif
 #endif
 #endif

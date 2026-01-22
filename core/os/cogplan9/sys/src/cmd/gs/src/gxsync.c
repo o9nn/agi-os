@@ -36,8 +36,8 @@ gp_semaphore_close(&sema->native);
 gs_free_object(sema->memory, sema, "gx_semaphore (free)");
 }
 }
-#define gx_semaphore_wait(sema)  gp_semaphore_wait(&(sema)->native)
-#define gx_semaphore_signal(sema)  gp_semaphore_signal(&(sema)->native)
+#define gx_semaphore_wait(sema) gp_semaphore_wait(&(sema)->native)
+#define gx_semaphore_signal(sema) gp_semaphore_signal(&(sema)->native)
 gx_monitor_t *
 gx_monitor_alloc(
 gs_memory_t * memory
@@ -71,5 +71,5 @@ gp_monitor_close(&mon->native);
 gs_free_object(mon->memory, mon, "gx_monitor (free)");
 }
 }
-#define gx_monitor_enter(sema)  gp_monitor_enter(&(sema)->native)
-#define gx_monitor_leave(sema)  gp_monitor_leave(&(sema)->native)
+#define gx_monitor_enter(sema) gp_monitor_enter(&(sema)->native)
+#define gx_monitor_leave(sema) gp_monitor_leave(&(sema)->native)

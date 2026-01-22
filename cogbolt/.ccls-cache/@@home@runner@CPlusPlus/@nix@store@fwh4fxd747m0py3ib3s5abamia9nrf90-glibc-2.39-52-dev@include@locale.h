@@ -1,22 +1,22 @@
-#ifndef	_LOCALE_H
-#define	_LOCALE_H	1
+#ifndef _LOCALE_H
+#define _LOCALE_H 1
 #include <features.h>
 #define __need_NULL
 #include <stddef.h>
 #include <bits/locale.h>
 __BEGIN_DECLS
-#define LC_CTYPE          __LC_CTYPE
-#define LC_NUMERIC        __LC_NUMERIC
-#define LC_TIME           __LC_TIME
-#define LC_COLLATE        __LC_COLLATE
-#define LC_MONETARY       __LC_MONETARY
-#define LC_MESSAGES       __LC_MESSAGES
-#define	LC_ALL		  __LC_ALL
-#define LC_PAPER	  __LC_PAPER
-#define LC_NAME		  __LC_NAME
-#define LC_ADDRESS	  __LC_ADDRESS
-#define LC_TELEPHONE	  __LC_TELEPHONE
-#define LC_MEASUREMENT	  __LC_MEASUREMENT
+#define LC_CTYPE __LC_CTYPE
+#define LC_NUMERIC __LC_NUMERIC
+#define LC_TIME __LC_TIME
+#define LC_COLLATE __LC_COLLATE
+#define LC_MONETARY __LC_MONETARY
+#define LC_MESSAGES __LC_MESSAGES
+#define LC_ALL __LC_ALL
+#define LC_PAPER __LC_PAPER
+#define LC_NAME __LC_NAME
+#define LC_ADDRESS __LC_ADDRESS
+#define LC_TELEPHONE __LC_TELEPHONE
+#define LC_MEASUREMENT __LC_MEASUREMENT
 #define LC_IDENTIFICATION __LC_IDENTIFICATION
 struct lconv
 {
@@ -56,23 +56,23 @@ char __int_n_sign_posn;
 };
 extern char *setlocale (int __category, const char *__locale) __THROW;
 extern struct lconv *localeconv (void) __THROW;
-#ifdef	__USE_XOPEN2K8
+#ifdef __USE_XOPEN2K8
 # include <bits/types/locale_t.h>
 extern locale_t newlocale (int __category_mask, const char *__locale,
 locale_t __base) __THROW;
-# define LC_CTYPE_MASK		(1 << __LC_CTYPE)
-# define LC_NUMERIC_MASK	(1 << __LC_NUMERIC)
-# define LC_TIME_MASK		(1 << __LC_TIME)
-# define LC_COLLATE_MASK	(1 << __LC_COLLATE)
-# define LC_MONETARY_MASK	(1 << __LC_MONETARY)
-# define LC_MESSAGES_MASK	(1 << __LC_MESSAGES)
-# define LC_PAPER_MASK		(1 << __LC_PAPER)
-# define LC_NAME_MASK		(1 << __LC_NAME)
-# define LC_ADDRESS_MASK	(1 << __LC_ADDRESS)
-# define LC_TELEPHONE_MASK	(1 << __LC_TELEPHONE)
-# define LC_MEASUREMENT_MASK	(1 << __LC_MEASUREMENT)
-# define LC_IDENTIFICATION_MASK	(1 << __LC_IDENTIFICATION)
-# define LC_ALL_MASK		(LC_CTYPE_MASK \
+# define LC_CTYPE_MASK (1 << __LC_CTYPE)
+# define LC_NUMERIC_MASK (1 << __LC_NUMERIC)
+# define LC_TIME_MASK (1 << __LC_TIME)
+# define LC_COLLATE_MASK (1 << __LC_COLLATE)
+# define LC_MONETARY_MASK (1 << __LC_MONETARY)
+# define LC_MESSAGES_MASK (1 << __LC_MESSAGES)
+# define LC_PAPER_MASK (1 << __LC_PAPER)
+# define LC_NAME_MASK (1 << __LC_NAME)
+# define LC_ADDRESS_MASK (1 << __LC_ADDRESS)
+# define LC_TELEPHONE_MASK (1 << __LC_TELEPHONE)
+# define LC_MEASUREMENT_MASK (1 << __LC_MEASUREMENT)
+# define LC_IDENTIFICATION_MASK (1 << __LC_IDENTIFICATION)
+# define LC_ALL_MASK (LC_CTYPE_MASK \
 | LC_NUMERIC_MASK \
 | LC_TIME_MASK \
 | LC_COLLATE_MASK \
@@ -88,7 +88,7 @@ locale_t __base) __THROW;
 extern locale_t duplocale (locale_t __dataset) __THROW;
 extern void freelocale (locale_t __dataset) __THROW;
 extern locale_t uselocale (locale_t __dataset) __THROW;
-# define LC_GLOBAL_LOCALE	((locale_t) -1L)
+# define LC_GLOBAL_LOCALE ((locale_t) -1L)
 #endif
 __END_DECLS
 #endif

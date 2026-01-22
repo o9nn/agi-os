@@ -20,7 +20,7 @@ int diskinfo[4];
 struct hd_geometry *loc = (struct hd_geometry *) arg;
 switch (cmd) {
 case HDIO_GETGEO:
-if (!loc)  return -EINVAL;
+if (!loc) return -EINVAL;
 #ifndef MACH
 error = verify_area(VERIFY_WRITE, loc, sizeof(*loc));
 if (error)
@@ -49,7 +49,7 @@ put_user(sd[MINOR(inode->i_rdev)].start_sect, &loc->start);
 #endif
 return 0;
 case BLKGETSIZE:
-if (!arg)  return -EINVAL;
+if (!arg) return -EINVAL;
 error = verify_area(VERIFY_WRITE, (long *) arg, sizeof(long));
 if (error)
 return error;
@@ -72,7 +72,7 @@ return error;
 put_user(read_ahead[MAJOR(inode->i_rdev)], (int *) arg);
 return 0;
 case BLKFLSBUF:
-if(!suser())  return -EACCES;
+if(!suser()) return -EACCES;
 if(!(inode->i_rdev)) return -EINVAL;
 fsync_dev(inode->i_rdev);
 invalidate_buffers(inode->i_rdev);

@@ -2,29 +2,29 @@
 #include "draw.h"
 #include "tk.h"
 #include "canvs.h"
-#define	O(t, e)		((long)(&((t*)0)->e))
-typedef void	(*Drawfn)(Image*, Point, int, int, Image*, int);
+#define O(t, e) ((long)(&((t*)0)->e))
+typedef void (*Drawfn)(Image*, Point, int, int, Image*, int);
 typedef struct TkCoval TkCoval;
 struct TkCoval
 {
-int	width;
-Image*	stipple;
-Image*	pen;
-TkCanvas*	canv;
+int width;
+Image* stipple;
+Image* pen;
+TkCanvas* canv;
 };
 static
 TkOption ovalopts[] =
 {
-"width",	OPTnnfrac,	O(TkCoval, width),	nil,
-"stipple",	OPTbmap,	O(TkCoval, stipple),	nil,
+"width", OPTnnfrac, O(TkCoval, width), nil,
+"stipple", OPTbmap, O(TkCoval, stipple), nil,
 nil
 };
 static
 TkOption itemopts[] =
 {
-"tags",		OPTctag,	O(TkCitem, tags),	nil,
-"fill",		OPTcolr,	O(TkCitem, env),	IAUX(TkCfill),
-"outline",	OPTcolr,	O(TkCitem, env),	IAUX(TkCforegnd),
+"tags", OPTctag, O(TkCitem, tags), nil,
+"fill", OPTcolr, O(TkCitem, env), IAUX(TkCfill),
+"outline", OPTcolr, O(TkCitem, env), IAUX(TkCforegnd),
 nil
 };
 void

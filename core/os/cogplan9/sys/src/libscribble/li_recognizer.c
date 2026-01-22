@@ -158,15 +158,15 @@ return(-1);
 }
 int
 li_recognizer_get_example (recognizer r,
-int		class,
-int		instance,
-char		**name,
-pen_point	**points,
-int		*npts)
+int class,
+int instance,
+char **name,
+pen_point **points,
+int *npts)
 {
-li_recognizer   *rec = (li_recognizer*)r->recognizer_specific;
+li_recognizer *rec = (li_recognizer*)r->recognizer_specific;
 int nclasses = rec->li_rc.nclasses;
-point_list	    *pl;
+point_list *pl;
 if( !CHECK_LI_MAGIC(rec) ) {
 li_err_msg = "Not a LI recognizer";
 return(-1);
@@ -368,10 +368,10 @@ li_err_msg = "Not a LI recognizer";
 return(nil);
 }
 ret = make_rec_fn_array(LI_NUM_EX_FNS);
-ret[LI_GET_CLASSES] =	(rec_fn)recognizer_getClasses;
-ret[LI_CLEAR] =			(rec_fn)recognizer_clearState;
-ret[LI_ISA_LI] =		(rec_fn)isa_li;
-ret[LI_TRAIN] =			(rec_fn)recognizer_train;
+ret[LI_GET_CLASSES] = (rec_fn)recognizer_getClasses;
+ret[LI_CLEAR] = (rec_fn)recognizer_clearState;
+ret[LI_ISA_LI] = (rec_fn)isa_li;
+ret[LI_TRAIN] = (rec_fn)recognizer_train;
 return(ret);
 }
 static char**
@@ -398,7 +398,7 @@ return(nil);
 if( ri->ri_subset != nil ) {
 for(i = 0; ri->ri_subset[i] != nil; i++ ) {
 if( strcmp(ri->ri_subset[i],UPPERCASE) != 0 &&
-strcmp(ri->ri_subset[i],LOWERCASE) != 0  &&
+strcmp(ri->ri_subset[i],LOWERCASE) != 0 &&
 strcmp(ri->ri_subset[i],DIGITS) != 0 &&
 strcmp(ri->ri_subset[i],GESTURE) != 0 ) {
 li_err_msg = "Not a supported character set";
@@ -468,32 +468,32 @@ free(rec);
 delete_recognizer(r);
 return(0);
 }
-#define	WORST_SCORE	0x7fffffff
-#define	DP_BAND		3
-#define	MIN_SIM		0
-#define	MAX_DIST	0x7fffffff
-#define	SIM_THLD	60
-#define	DIST_THLD	3200
-#define	LP_FILTER_WIDTH	6
-#define	LP_FILTER_ITERS	8
-#define	LP_FILTER_THLD	250
-#define	LP_FILTER_MIN	5
-#define	PE_AL_THLD	1500
-#define	PE_ATCR_THLD	135
-#define	T_ONE		1
-#define	T_TWO		20
-#define	CANONICAL_X	108
-#define	CANONICAL_Y	128
-#define	DIST_SQ_THRESHOLD   (3*3)
-#define	NCANONICAL	50
-#define	TAP_CHAR	"."
-#define	TAP_TIME_THLD	150
-#define	TAP_DIST_THLD	75
-#define	TAP_PATHLEN	1000
-#define	RGN_CONVEX  0
-#define	RGN_CONCAVE 1
-#define	RGN_PLAIN   2
-#define	RGN_PSEUDO  3
+#define WORST_SCORE 0x7fffffff
+#define DP_BAND 3
+#define MIN_SIM 0
+#define MAX_DIST 0x7fffffff
+#define SIM_THLD 60
+#define DIST_THLD 3200
+#define LP_FILTER_WIDTH 6
+#define LP_FILTER_ITERS 8
+#define LP_FILTER_THLD 250
+#define LP_FILTER_MIN 5
+#define PE_AL_THLD 1500
+#define PE_ATCR_THLD 135
+#define T_ONE 1
+#define T_TWO 20
+#define CANONICAL_X 108
+#define CANONICAL_Y 128
+#define DIST_SQ_THRESHOLD (3*3)
+#define NCANONICAL 50
+#define TAP_CHAR "."
+#define TAP_TIME_THLD 150
+#define TAP_DIST_THLD 75
+#define TAP_PATHLEN 1000
+#define RGN_CONVEX 0
+#define RGN_CONCAVE 1
+#define RGN_PLAIN 2
+#define RGN_PSEUDO 3
 typedef struct RegionList {
 int start;
 int end;
@@ -681,9 +681,9 @@ dY = abs(By-Ay);
 if (Ax > Bx) { Xincr=-1; } else { Xincr=1; }
 if (Ay > By) { Yincr=-1; } else { Yincr=1; }
 if (dX >= dY) {
-int dPr	= dY<<1;
+int dPr = dY<<1;
 int dPru = dPr - (dX<<1);
-int P =	dPr - dX;
+int P = dPr - dX;
 for (; dX>=0; dX--) {
 newpts->pts[*j].x = Ax;
 newpts->pts[*j].y = Ay;
@@ -698,9 +698,9 @@ P+=dPr;
 }
 }
 } else {
-int dPr	= dX<<1;
+int dPr = dX<<1;
 int dPru = dPr - (dY<<1);
-int P  = dPr - dY;
+int P = dPr - dY;
 for (; dY>=0; dY--) {
 newpts->pts[*j].x = Ax;
 newpts->pts[*j].y = Ay;
@@ -762,7 +762,7 @@ d_iminusone += 8;
 a_i = (d_iminusone - d_i) % 8;
 curr[i] = ((12 - a_i) % 8) * 45 * 100;
 }
-curr[pts->npts - 1]	= 18000;
+curr[pts->npts - 1] = 18000;
 next = R[1];
 for (j = 0; j < LP_FILTER_ITERS; j++, curr = R[j], next = R[j+1]) {
 for (i = 0; i < pts->npts; i++) {
@@ -770,7 +770,7 @@ int k;
 next[i] = 0;
 for (k = i - LP_FILTER_WIDTH; k <= i + LP_FILTER_WIDTH; k++) {
 int oldval = (k < 0 || k >= pts->npts) ? 18000 : curr[k];
-next[i]	+= oldval * lialg_lpfwts[k - (i	- LP_FILTER_WIDTH)];
+next[i] += oldval * lialg_lpfwts[k - (i - LP_FILTER_WIDTH)];
 }
 next[i] /= lialg_lpfconst;
 }
@@ -790,7 +790,7 @@ fprint(2, "\n");
 {
 int start, end;
 int currtype;
-#define	RGN_TYPE(val) (((val)==18000)?RGN_PLAIN:((val)<18000?RGN_CONCAVE:RGN_CONVEX))
+#define RGN_TYPE(val) (((val)==18000)?RGN_PLAIN:((val)<18000?RGN_CONCAVE:RGN_CONVEX))
 start = 0;
 currtype = RGN_TYPE(curr[0]);
 regions = malloc(sizeof(region_list));

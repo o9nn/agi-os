@@ -378,7 +378,7 @@ E(vertices[i].edge_out);
 DONE;
 }
 cgm_result
-cgm_CELL_ARRAY(cgm_state * st, const cgm_point * pqr  , cgm_int nx, cgm_int ny, cgm_int local_color_precision, cgm_cell_representation_mode mode, const byte * values, uint source_bit, uint raster)
+cgm_CELL_ARRAY(cgm_state * st, const cgm_point * pqr , cgm_int nx, cgm_int ny, cgm_int local_color_precision, cgm_cell_representation_mode mode, const byte * values, uint source_bit, uint raster)
 {
 int precision = local_color_precision;
 int bits_per_pixel;

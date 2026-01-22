@@ -1,5 +1,5 @@
 #ifndef ifont1_INCLUDED
-#  define ifont1_INCLUDED
+# define ifont1_INCLUDED
 typedef struct charstring_font_refs_s {
 ref *Private;
 ref no_subrs;

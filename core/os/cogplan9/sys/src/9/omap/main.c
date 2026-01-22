@@ -8,13 +8,13 @@
 #include <pool.h>
 #include <tos.h>
 #include "reboot.h"
-#define BOOTARGS	((char*)CONFADDR)
-#define	BOOTARGSLEN	(16*KiB)
-#define	MAXCONF		64
-#define MAXCONFLINE	160
+#define BOOTARGS ((char*)CONFADDR)
+#define BOOTARGSLEN (16*KiB)
+#define MAXCONF 64
+#define MAXCONFLINE 160
 enum {
-Minmem	= 256*MB,
-Ustkheadroom	= sizeof(Sargs) + sizeof(uintptr) + sizeof(Tos),
+Minmem = 256*MB,
+Ustkheadroom = sizeof(Sargs) + sizeof(uintptr) + sizeof(Tos),
 };
 #define isascii(c) ((uchar)(c) > 0 && (uchar)(c) < 0177)
 uintptr kseg0 = KZERO;
@@ -167,7 +167,7 @@ delay(500);
 iprint("l Labs\n\n");
 delay(500);
 xinit();
-mainmem->flags |= POOL_ANTAGONISM  ;
+mainmem->flags |= POOL_ANTAGONISM ;
 archreset();
 clockinit();
 timersinit();

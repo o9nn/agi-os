@@ -70,10 +70,10 @@ NULL,
 NULL,
 };
 # if defined(OPENSSL_SYS_WINDOWS) || defined(OPENSSL_SYS_WIN32)
-#  include <windows.h>
+# include <windows.h>
 # endif
 # ifdef ZLIB_SHARED
-#  include <openssl/dso.h>
+# include <openssl/dso.h>
 typedef int (*compress_ft) (Bytef *dest, uLongf * destLen,
 const Bytef *source, uLong sourceLen);
 typedef int (*inflateEnd_ft) (z_streamp strm);
@@ -95,14 +95,14 @@ static deflateInit__ft p_deflateInit_ = NULL;
 static zError__ft p_zError = NULL;
 static int zlib_loaded = 0;
 static DSO *zlib_dso = NULL;
-#  define compress                p_compress
-#  define inflateEnd              p_inflateEnd
-#  define inflate                 p_inflate
-#  define inflateInit_            p_inflateInit_
-#  define deflateEnd              p_deflateEnd
-#  define deflate                 p_deflate
-#  define deflateInit_            p_deflateInit_
-#  define zError                  p_zError
+# define compress p_compress
+# define inflateEnd p_inflateEnd
+# define inflate p_inflate
+# define inflateInit_ p_inflateInit_
+# define deflateEnd p_deflateEnd
+# define deflate p_deflate
+# define deflateInit_ p_deflateInit_
+# define zError p_zError
 # endif
 struct zlib_state {
 z_stream istream;
@@ -229,10 +229,10 @@ out[0] = 0;
 memcpy(&(out[1]), in, ilen);
 l = ilen + 1;
 }
-#  ifdef DEBUG_ZLIB
+# ifdef DEBUG_ZLIB
 fprintf(stderr, "compress(%4d)->%4d %s\n",
 ilen, (int)l, (clear) ? "clear" : "zlib");
-#  endif
+# endif
 return ((int)l);
 }
 static int zlib_expand_block(COMP_CTX *ctx, unsigned char *out,
@@ -250,10 +250,10 @@ return (-1);
 memcpy(out, &(in[1]), ilen - 1);
 l = ilen - 1;
 }
-#  ifdef DEBUG_ZLIB
+# ifdef DEBUG_ZLIB
 fprintf(stderr, "expand  (%4d)->%4d %s\n",
 ilen, (int)l, in[0] ? "zlib" : "clear");
-#  endif
+# endif
 return ((int)l);
 }
 static int zz_uncompress(Bytef *dest, uLongf * destLen, const Bytef *source,

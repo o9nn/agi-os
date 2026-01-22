@@ -8,13 +8,13 @@
 #include <ipc/ipc_notify.h>
 #include <ipc/ipc_port.h>
 #include <ipc/ipc_machdep.h>
-mach_port_deleted_notification_t	ipc_notify_port_deleted_template;
-mach_msg_accepted_notification_t	ipc_notify_msg_accepted_template;
-mach_port_destroyed_notification_t	ipc_notify_port_destroyed_template;
-mach_no_senders_notification_t		ipc_notify_no_senders_template;
-mach_send_once_notification_t		ipc_notify_send_once_template;
-mach_dead_name_notification_t		ipc_notify_dead_name_template;
-#define NOTIFY_MSGH_SEQNO	0
+mach_port_deleted_notification_t ipc_notify_port_deleted_template;
+mach_msg_accepted_notification_t ipc_notify_msg_accepted_template;
+mach_port_destroyed_notification_t ipc_notify_port_destroyed_template;
+mach_no_senders_notification_t ipc_notify_no_senders_template;
+mach_send_once_notification_t ipc_notify_send_once_template;
+mach_dead_name_notification_t ipc_notify_dead_name_template;
+#define NOTIFY_MSGH_SEQNO 0
 static void
 ipc_notify_init_port_deleted(mach_port_deleted_notification_t *n)
 {
@@ -78,7 +78,7 @@ n->not_port = MACH_PORT_NULL;
 }
 static void
 ipc_notify_init_no_senders(
-mach_no_senders_notification_t	*n)
+mach_no_senders_notification_t *n)
 {
 mach_msg_header_t *m = &n->not_header;
 mach_msg_type_t *t = &n->not_type;
@@ -99,7 +99,7 @@ n->not_count = 0;
 }
 static void
 ipc_notify_init_send_once(
-mach_send_once_notification_t	*n)
+mach_send_once_notification_t *n)
 {
 mach_msg_header_t *m = &n->not_header;
 m->msgh_bits = MACH_MSGH_BITS(MACH_MSG_TYPE_PORT_SEND_ONCE, 0);
@@ -111,7 +111,7 @@ m->msgh_id = MACH_NOTIFY_SEND_ONCE;
 }
 static void
 ipc_notify_init_dead_name(
-mach_dead_name_notification_t	*n)
+mach_dead_name_notification_t *n)
 {
 mach_msg_header_t *m = &n->not_header;
 mach_msg_type_t *t = &n->not_type;
@@ -142,8 +142,8 @@ ipc_notify_init_dead_name(&ipc_notify_dead_name_template);
 }
 void
 ipc_notify_port_deleted(
-ipc_port_t 		port,
-mach_port_name_t 	name)
+ipc_port_t port,
+mach_port_name_t name)
 {
 ipc_kmsg_t kmsg;
 mach_port_deleted_notification_t *n;
@@ -162,8 +162,8 @@ ipc_mqueue_send_always(kmsg);
 }
 void
 ipc_notify_msg_accepted(
-ipc_port_t 		port,
-mach_port_name_t 	name)
+ipc_port_t port,
+mach_port_name_t name)
 {
 ipc_kmsg_t kmsg;
 mach_msg_accepted_notification_t *n;
@@ -182,8 +182,8 @@ ipc_mqueue_send_always(kmsg);
 }
 void
 ipc_notify_port_destroyed(
-ipc_port_t 	port,
-ipc_port_t 	right)
+ipc_port_t port,
+ipc_port_t right)
 {
 ipc_kmsg_t kmsg;
 mach_port_destroyed_notification_t *n;
@@ -204,8 +204,8 @@ ipc_mqueue_send_always(kmsg);
 }
 void
 ipc_notify_no_senders(
-ipc_port_t 		port,
-mach_port_mscount_t 	mscount)
+ipc_port_t port,
+mach_port_mscount_t mscount)
 {
 ipc_kmsg_t kmsg;
 mach_no_senders_notification_t *n;
@@ -241,8 +241,8 @@ ipc_mqueue_send_always(kmsg);
 }
 void
 ipc_notify_dead_name(
-ipc_port_t 		port,
-mach_port_name_t 	name)
+ipc_port_t port,
+mach_port_name_t name)
 {
 ipc_kmsg_t kmsg;
 mach_dead_name_notification_t *n;

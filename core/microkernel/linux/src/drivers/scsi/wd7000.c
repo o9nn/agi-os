@@ -1,8 +1,8 @@
 #ifdef MODULE
-#  include <linux/module.h>
+# include <linux/module.h>
 #endif
 #if (LINUX_VERSION_CODE >= 0x020100)
-#  include <asm/spinlock.h>
+# include <asm/spinlock.h>
 #endif
 #include <stdarg.h>
 #include <linux/kernel.h>
@@ -38,25 +38,25 @@ static const long wd7000_biosaddr[] = {
 0xc0000, 0xc2000, 0xc4000, 0xc6000, 0xc8000, 0xca000, 0xcc000, 0xce000,
 0xd0000, 0xd2000, 0xd4000, 0xd6000, 0xd8000, 0xda000, 0xdc000, 0xde000
 };
-#define NUM_ADDRS	(sizeof (wd7000_biosaddr) / sizeof (long))
+#define NUM_ADDRS (sizeof (wd7000_biosaddr) / sizeof (long))
 static const ushort wd7000_iobase[] = {
 0x0300, 0x0308, 0x0310, 0x0318, 0x0320, 0x0328, 0x0330, 0x0338,
 0x0340, 0x0348, 0x0350, 0x0358, 0x0360, 0x0368, 0x0370, 0x0378,
 0x0380, 0x0388, 0x0390, 0x0398, 0x03a0, 0x03a8, 0x03b0, 0x03b8,
 0x03c0, 0x03c8, 0x03d0, 0x03d8, 0x03e0, 0x03e8, 0x03f0, 0x03f8
 };
-#define NUM_IOPORTS	(sizeof (wd7000_iobase) / sizeof (ushort))
+#define NUM_IOPORTS (sizeof (wd7000_iobase) / sizeof (ushort))
 static const short wd7000_irq[] = { 3, 4, 5, 7, 9, 10, 11, 12, 14, 15 };
-#define NUM_IRQS	(sizeof (wd7000_irq) / sizeof (short))
+#define NUM_IRQS (sizeof (wd7000_irq) / sizeof (short))
 static const short wd7000_dma[] = { 5, 6, 7 };
-#define NUM_DMAS	(sizeof (wd7000_dma) / sizeof (short))
+#define NUM_DMAS (sizeof (wd7000_dma) / sizeof (short))
 static struct Scsi_Host *wd7000_host[IRQS];
 static Config configs[] =
 {
-{ 15,  6, 0x350, BUS_ON, BUS_OFF },
-{ 11,  5, 0x320, BUS_ON, BUS_OFF },
-{  7,  6, 0x350, BUS_ON, BUS_OFF },
-{ -1, -1, 0x0,   BUS_ON, BUS_OFF }
+{ 15, 6, 0x350, BUS_ON, BUS_OFF },
+{ 11, 5, 0x320, BUS_ON, BUS_OFF },
+{ 7, 6, 0x350, BUS_ON, BUS_OFF },
+{ -1, -1, 0x0, BUS_ON, BUS_OFF }
 };
 #define NUM_CONFIGS (sizeof(configs)/sizeof(Config))
 static const Signature signatures[] =
@@ -172,7 +172,7 @@ static inline void any2scsi (unchar *scsi, int any)
 {
 *scsi++ = ((i_u) any).u[2];
 *scsi++ = ((i_u) any).u[1];
-*scsi   = ((i_u) any).u[0];
+*scsi = ((i_u) any).u[0];
 }
 static inline int scsi2int (unchar *scsi)
 {
@@ -552,17 +552,17 @@ return (0);
 if ((diag = inb (host->iobase + ASC_INTR_STAT)) != 1) {
 printk ("%s: ", __FUNCTION__);
 switch (diag) {
-case 2:  printk ("RAM failure.\n");
+case 2: printk ("RAM failure.\n");
 break;
-case 3:  printk ("FIFO R/W failed\n");
+case 3: printk ("FIFO R/W failed\n");
 break;
-case 4:  printk ("SBIC register R/W failed\n");
+case 4: printk ("SBIC register R/W failed\n");
 break;
-case 5:  printk ("Initialization D-FF failed.\n");
+case 5: printk ("Initialization D-FF failed.\n");
 break;
-case 6:  printk ("Host IRQ D-FF failed.\n");
+case 6: printk ("Host IRQ D-FF failed.\n");
 break;
-case 7:  printk ("ROM checksum error.\n");
+case 7: printk ("ROM checksum error.\n");
 break;
 default: printk ("diagnostic code 0x%02Xh received.\n", diag);
 }
@@ -607,7 +607,7 @@ host->rev1 = icb.primary;
 host->rev2 = icb.secondary;
 }
 #undef SPRINTF
-#define SPRINTF(args...)	{ if (pos < (buffer + length)) pos += sprintf (pos, ## args); }
+#define SPRINTF(args...) { if (pos < (buffer + length)) pos += sprintf (pos, ## args); }
 int wd7000_set_info (char *buffer, int length, struct Scsi_Host *host)
 {
 ulong flags;

@@ -2,15 +2,15 @@
 (use-modules (opencog) (opencog exec))
 (define left-wall (Concept "LEFT-WALL"))
 (Section
-	(Concept "LEFT-WALL")
-	(ConnectorSeq
-		(Connector (Concept "W") (ConnectorDir "+"))))
+(Concept "LEFT-WALL")
+(ConnectorSeq
+(Connector (Concept "W") (ConnectorDir "+"))))
 (Section
-	(Concept "hello")
-	(ConnectorSeq
-		(Connector (Concept "W") (ConnectorDir "-"))
-		(Connector (Concept "OH") (ConnectorDir "+"))))
+(Concept "hello")
+(ConnectorSeq
+(Connector (Concept "W") (ConnectorDir "-"))
+(Connector (Concept "OH") (ConnectorDir "+"))))
 (Section
-	(Concept "world")
-	(ConnectorSeq
-		(Connector (Concept "OH") (ConnectorDir "-"))))
+(Concept "world")
+(ConnectorSeq
+(Connector (Concept "OH") (ConnectorDir "-"))))

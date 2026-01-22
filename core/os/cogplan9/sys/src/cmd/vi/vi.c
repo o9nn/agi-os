@@ -5,11 +5,11 @@
 #include <tos.h>
 #define Extern
 #include "mips.h"
-char	*file = "v.out";
-int	datasize;
-ulong	textbase;
-Biobuf	bp, bi;
-Fhdr	fhdr;
+char *file = "v.out";
+int datasize;
+ulong textbase;
+Biobuf bp, bi;
+Fhdr fhdr;
 void
 main(int argc, char **argv)
 {
@@ -113,7 +113,7 @@ seek(f, off, 0);
 n = read(f, wd, BY2WD);
 if(n != BY2WD)
 fatal(1, "read register");
-l  = wd[0]<<24;
+l = wd[0]<<24;
 l |= wd[1]<<16;
 l |= wd[2]<<8;
 l |= wd[3];
@@ -121,15 +121,15 @@ return l;
 }
 ulong
 roff[] = {
-REGOFF(r1),	REGOFF(r2),	REGOFF(r3),
-REGOFF(r4),	REGOFF(r5),	REGOFF(r6),
-REGOFF(r7),	REGOFF(r8),	REGOFF(r9),
-REGOFF(r10),	REGOFF(r11),	REGOFF(r12),
-REGOFF(r13),	REGOFF(r14),	REGOFF(r15),
-REGOFF(r16),	REGOFF(r17),	REGOFF(r18),
-REGOFF(r19),	REGOFF(r20),	REGOFF(r21),
-REGOFF(r22),	REGOFF(r23),	REGOFF(r24),
-REGOFF(r25),	REGOFF(r26),	REGOFF(r27),
+REGOFF(r1), REGOFF(r2), REGOFF(r3),
+REGOFF(r4), REGOFF(r5), REGOFF(r6),
+REGOFF(r7), REGOFF(r8), REGOFF(r9),
+REGOFF(r10), REGOFF(r11), REGOFF(r12),
+REGOFF(r13), REGOFF(r14), REGOFF(r15),
+REGOFF(r16), REGOFF(r17), REGOFF(r18),
+REGOFF(r19), REGOFF(r20), REGOFF(r21),
+REGOFF(r22), REGOFF(r23), REGOFF(r24),
+REGOFF(r25), REGOFF(r26), REGOFF(r27),
 REGOFF(r28)
 };
 void

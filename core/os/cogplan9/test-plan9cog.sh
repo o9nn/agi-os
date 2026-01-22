@@ -1,160 +1,160 @@
 #!/bin/bash
 fail() {
-    echo "FAIL: $*"
-    exit 1
+echo "FAIL: $*"
+exit 1
 }
 pass() {
-    echo "PASS: $*"
+echo "PASS: $*"
 }
 echo '=== Plan9Cog Integration Tests ==='
 echo ''
 echo 'Test 1: Checking headers...'
 if [ -f sys/include/plan9cog.h ]; then
-    pass 'Main header exists'
+pass 'Main header exists'
 else
-    fail 'Main header missing'
+fail 'Main header missing'
 fi
 if [ -f sys/include/plan9cog/atomspace.h ]; then
-    pass 'AtomSpace header exists'
+pass 'AtomSpace header exists'
 else
-    fail 'AtomSpace header missing'
+fail 'AtomSpace header missing'
 fi
 if [ -f sys/include/plan9cog/pln.h ]; then
-    pass 'PLN header exists'
+pass 'PLN header exists'
 else
-    fail 'PLN header missing'
+fail 'PLN header missing'
 fi
 if [ -f sys/include/plan9cog/cogvm.h ]; then
-    pass 'CogVM header exists'
+pass 'CogVM header exists'
 else
-    fail 'CogVM header missing'
+fail 'CogVM header missing'
 fi
 echo ''
 echo 'Test 2: Checking library sources...'
 if [ -d sys/src/libatomspace ]; then
-    pass 'libatomspace directory exists'
+pass 'libatomspace directory exists'
 else
-    fail 'libatomspace directory missing'
+fail 'libatomspace directory missing'
 fi
 if [ -d sys/src/libpln ]; then
-    pass 'libpln directory exists'
+pass 'libpln directory exists'
 else
-    fail 'libpln directory missing'
+fail 'libpln directory missing'
 fi
 if [ -d sys/src/libplan9cog ]; then
-    pass 'libplan9cog directory exists'
+pass 'libplan9cog directory exists'
 else
-    fail 'libplan9cog directory missing'
+fail 'libplan9cog directory missing'
 fi
 echo ''
 echo 'Test 3: Checking command sources...'
 if [ -d sys/src/cmd/cogfs ]; then
-    pass 'cogfs command exists'
+pass 'cogfs command exists'
 else
-    fail 'cogfs command missing'
+fail 'cogfs command missing'
 fi
 if [ -d sys/src/cmd/cogctl ]; then
-    pass 'cogctl command exists'
+pass 'cogctl command exists'
 else
-    fail 'cogctl command missing'
+fail 'cogctl command missing'
 fi
 if [ -d sys/src/cmd/cogdemo ]; then
-    pass 'cogdemo command exists'
+pass 'cogdemo command exists'
 else
-    fail 'cogdemo command missing'
+fail 'cogdemo command missing'
 fi
 echo ''
 echo 'Test 4: Checking documentation...'
 if [ -f PLAN9COG_GUIDE.md ]; then
-    pass 'Integration guide exists'
+pass 'Integration guide exists'
 else
-    fail 'Integration guide missing'
+fail 'Integration guide missing'
 fi
 if [ -f PLAN9COG_README.md ]; then
-    pass 'README exists'
+pass 'README exists'
 else
-    fail 'README missing'
+fail 'README missing'
 fi
 if [ -f ARCHITECTURE.md ]; then
-    pass 'Architecture document exists'
+pass 'Architecture document exists'
 else
-    fail 'Architecture document missing'
+fail 'Architecture document missing'
 fi
 echo ''
 echo 'Test 5: Checking mkfiles...'
 if [ -f sys/src/libatomspace/mkfile ]; then
-    pass 'libatomspace mkfile exists'
+pass 'libatomspace mkfile exists'
 else
-    fail 'libatomspace mkfile missing'
+fail 'libatomspace mkfile missing'
 fi
 if [ -f sys/src/libpln/mkfile ]; then
-    pass 'libpln mkfile exists'
+pass 'libpln mkfile exists'
 else
-    fail 'libpln mkfile missing'
+fail 'libpln mkfile missing'
 fi
 if [ -f sys/src/libplan9cog/mkfile ]; then
-    pass 'libplan9cog mkfile exists'
+pass 'libplan9cog mkfile exists'
 else
-    fail 'libplan9cog mkfile missing'
+fail 'libplan9cog mkfile missing'
 fi
 echo ''
 echo 'Test 6: Checking implementation files...'
 if [ -f sys/src/libatomspace/atomspace.c ]; then
-    pass 'atomspace.c exists'
+pass 'atomspace.c exists'
 else
-    fail 'atomspace.c missing'
+fail 'atomspace.c missing'
 fi
 if [ -f sys/src/libatomspace/pattern.c ]; then
-    pass 'pattern.c exists'
+pass 'pattern.c exists'
 else
-    fail 'pattern.c missing'
+fail 'pattern.c missing'
 fi
 if [ -f sys/src/libpln/pln.c ]; then
-    pass 'pln.c exists'
+pass 'pln.c exists'
 else
-    fail 'pln.c missing'
+fail 'pln.c missing'
 fi
 if [ -f sys/src/libpln/ure.c ]; then
-    pass 'ure.c exists'
+pass 'ure.c exists'
 else
-    fail 'ure.c missing'
+fail 'ure.c missing'
 fi
 if [ -f sys/src/libplan9cog/plan9cog.c ]; then
-    pass 'plan9cog.c exists'
+pass 'plan9cog.c exists'
 else
-    fail 'plan9cog.c missing'
+fail 'plan9cog.c missing'
 fi
 if [ -f sys/src/libplan9cog/ecan.c ]; then
-    pass 'ecan.c exists'
+pass 'ecan.c exists'
 else
-    fail 'ecan.c missing'
+fail 'ecan.c missing'
 fi
 if [ -f sys/src/libplan9cog/machspace.c ]; then
-    pass 'machspace.c exists'
+pass 'machspace.c exists'
 else
-    fail 'machspace.c missing'
+fail 'machspace.c missing'
 fi
 echo ''
 echo 'Test 7: Checking man pages...'
 if [ -f sys/man/1/cogctl ]; then
-    pass 'cogctl man page exists'
+pass 'cogctl man page exists'
 else
-    fail 'cogctl man page missing'
+fail 'cogctl man page missing'
 fi
 if [ -f sys/man/1/cogfs ]; then
-    pass 'cogfs man page exists'
+pass 'cogfs man page exists'
 else
-    fail 'cogfs man page missing'
+fail 'cogfs man page missing'
 fi
 if [ -f sys/man/1/cogdemo ]; then
-    pass 'cogdemo man page exists'
+pass 'cogdemo man page exists'
 else
-    fail 'cogdemo man page missing'
+fail 'cogdemo man page missing'
 fi
 if [ -f sys/man/2/plan9cog ]; then
-    pass 'plan9cog man page exists'
+pass 'plan9cog man page exists'
 else
-    fail 'plan9cog man page missing'
+fail 'plan9cog man page missing'
 fi
 echo ''
 echo '=== All Tests Passed ==='

@@ -53,7 +53,7 @@ res = solve(prob, basis, opt,
 options = DataDrivenCommonOptions(data_processing = sampler, digits = 1))
 #src println(res) #hide
 # !!! info
-#     A more detailed description of the result can be printed via `print(res, Val{true})`, which also includes the discovered equations and parameter values.
+# A more detailed description of the result can be printed via `print(res, Val{true})`, which also includes the discovered equations and parameter values.
 #
 # Where the resulting [`DataDrivenSolution`](@ref) stores information about the inferred model and the parameters:
 system = get_basis(res)
@@ -63,7 +63,7 @@ println(params) # hide
 # We can see that even if there are other terms active, the most important terms are included inside the model.
 # And a visual check of the result can be performed by plotting the result
 #md plot(
-#md     plot(prob), plot(res), layout = (1,2)
+#md plot(prob), plot(res), layout = (1,2)
 #md )
 #md # ## [Copy-Pasteable Code](@id autoregulation_copy_paste)
 #md #

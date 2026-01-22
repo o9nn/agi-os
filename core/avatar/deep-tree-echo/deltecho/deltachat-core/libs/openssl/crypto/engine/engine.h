@@ -2,75 +2,75 @@
 # define HEADER_ENGINE_H
 # include <openssl/opensslconf.h>
 # ifdef OPENSSL_NO_ENGINE
-#  error ENGINE is disabled.
+# error ENGINE is disabled.
 # endif
 # ifndef OPENSSL_NO_DEPRECATED
-#  include <openssl/bn.h>
-#  ifndef OPENSSL_NO_RSA
-#   include <openssl/rsa.h>
-#  endif
-#  ifndef OPENSSL_NO_DSA
-#   include <openssl/dsa.h>
-#  endif
-#  ifndef OPENSSL_NO_DH
-#   include <openssl/dh.h>
-#  endif
-#  ifndef OPENSSL_NO_ECDH
-#   include <openssl/ecdh.h>
-#  endif
-#  ifndef OPENSSL_NO_ECDSA
-#   include <openssl/ecdsa.h>
-#  endif
-#  include <openssl/rand.h>
-#  include <openssl/ui.h>
-#  include <openssl/err.h>
+# include <openssl/bn.h>
+# ifndef OPENSSL_NO_RSA
+# include <openssl/rsa.h>
+# endif
+# ifndef OPENSSL_NO_DSA
+# include <openssl/dsa.h>
+# endif
+# ifndef OPENSSL_NO_DH
+# include <openssl/dh.h>
+# endif
+# ifndef OPENSSL_NO_ECDH
+# include <openssl/ecdh.h>
+# endif
+# ifndef OPENSSL_NO_ECDSA
+# include <openssl/ecdsa.h>
+# endif
+# include <openssl/rand.h>
+# include <openssl/ui.h>
+# include <openssl/err.h>
 # endif
 # include <openssl/ossl_typ.h>
 # include <openssl/symhacks.h>
 # include <openssl/x509.h>
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
-# define ENGINE_METHOD_RSA               (unsigned int)0x0001
-# define ENGINE_METHOD_DSA               (unsigned int)0x0002
-# define ENGINE_METHOD_DH                (unsigned int)0x0004
-# define ENGINE_METHOD_RAND              (unsigned int)0x0008
-# define ENGINE_METHOD_ECDH              (unsigned int)0x0010
-# define ENGINE_METHOD_ECDSA             (unsigned int)0x0020
-# define ENGINE_METHOD_CIPHERS           (unsigned int)0x0040
-# define ENGINE_METHOD_DIGESTS           (unsigned int)0x0080
-# define ENGINE_METHOD_STORE             (unsigned int)0x0100
-# define ENGINE_METHOD_PKEY_METHS        (unsigned int)0x0200
-# define ENGINE_METHOD_PKEY_ASN1_METHS   (unsigned int)0x0400
-# define ENGINE_METHOD_ALL               (unsigned int)0xFFFF
-# define ENGINE_METHOD_NONE              (unsigned int)0x0000
-# define ENGINE_TABLE_FLAG_NOINIT        (unsigned int)0x0001
-# define ENGINE_FLAGS_MANUAL_CMD_CTRL    (int)0x0002
-# define ENGINE_FLAGS_BY_ID_COPY         (int)0x0004
-# define ENGINE_FLAGS_NO_REGISTER_ALL    (int)0x0008
-# define ENGINE_CMD_FLAG_NUMERIC         (unsigned int)0x0001
-# define ENGINE_CMD_FLAG_STRING          (unsigned int)0x0002
-# define ENGINE_CMD_FLAG_NO_INPUT        (unsigned int)0x0004
-# define ENGINE_CMD_FLAG_INTERNAL        (unsigned int)0x0008
-# define ENGINE_CTRL_SET_LOGSTREAM               1
-# define ENGINE_CTRL_SET_PASSWORD_CALLBACK       2
-# define ENGINE_CTRL_HUP                         3
-# define ENGINE_CTRL_SET_USER_INTERFACE          4
-# define ENGINE_CTRL_SET_CALLBACK_DATA           5
-# define ENGINE_CTRL_LOAD_CONFIGURATION          6
-# define ENGINE_CTRL_LOAD_SECTION                7
-# define ENGINE_CTRL_HAS_CTRL_FUNCTION           10
-# define ENGINE_CTRL_GET_FIRST_CMD_TYPE          11
-# define ENGINE_CTRL_GET_NEXT_CMD_TYPE           12
-# define ENGINE_CTRL_GET_CMD_FROM_NAME           13
-# define ENGINE_CTRL_GET_NAME_LEN_FROM_CMD       14
-# define ENGINE_CTRL_GET_NAME_FROM_CMD           15
-# define ENGINE_CTRL_GET_DESC_LEN_FROM_CMD       16
-# define ENGINE_CTRL_GET_DESC_FROM_CMD           17
-# define ENGINE_CTRL_GET_CMD_FLAGS               18
-# define ENGINE_CMD_BASE                         200
-# define ENGINE_CTRL_CHIL_SET_FORKCHECK          100
-# define ENGINE_CTRL_CHIL_NO_LOCKING             101
+# define ENGINE_METHOD_RSA (unsigned int)0x0001
+# define ENGINE_METHOD_DSA (unsigned int)0x0002
+# define ENGINE_METHOD_DH (unsigned int)0x0004
+# define ENGINE_METHOD_RAND (unsigned int)0x0008
+# define ENGINE_METHOD_ECDH (unsigned int)0x0010
+# define ENGINE_METHOD_ECDSA (unsigned int)0x0020
+# define ENGINE_METHOD_CIPHERS (unsigned int)0x0040
+# define ENGINE_METHOD_DIGESTS (unsigned int)0x0080
+# define ENGINE_METHOD_STORE (unsigned int)0x0100
+# define ENGINE_METHOD_PKEY_METHS (unsigned int)0x0200
+# define ENGINE_METHOD_PKEY_ASN1_METHS (unsigned int)0x0400
+# define ENGINE_METHOD_ALL (unsigned int)0xFFFF
+# define ENGINE_METHOD_NONE (unsigned int)0x0000
+# define ENGINE_TABLE_FLAG_NOINIT (unsigned int)0x0001
+# define ENGINE_FLAGS_MANUAL_CMD_CTRL (int)0x0002
+# define ENGINE_FLAGS_BY_ID_COPY (int)0x0004
+# define ENGINE_FLAGS_NO_REGISTER_ALL (int)0x0008
+# define ENGINE_CMD_FLAG_NUMERIC (unsigned int)0x0001
+# define ENGINE_CMD_FLAG_STRING (unsigned int)0x0002
+# define ENGINE_CMD_FLAG_NO_INPUT (unsigned int)0x0004
+# define ENGINE_CMD_FLAG_INTERNAL (unsigned int)0x0008
+# define ENGINE_CTRL_SET_LOGSTREAM 1
+# define ENGINE_CTRL_SET_PASSWORD_CALLBACK 2
+# define ENGINE_CTRL_HUP 3
+# define ENGINE_CTRL_SET_USER_INTERFACE 4
+# define ENGINE_CTRL_SET_CALLBACK_DATA 5
+# define ENGINE_CTRL_LOAD_CONFIGURATION 6
+# define ENGINE_CTRL_LOAD_SECTION 7
+# define ENGINE_CTRL_HAS_CTRL_FUNCTION 10
+# define ENGINE_CTRL_GET_FIRST_CMD_TYPE 11
+# define ENGINE_CTRL_GET_NEXT_CMD_TYPE 12
+# define ENGINE_CTRL_GET_CMD_FROM_NAME 13
+# define ENGINE_CTRL_GET_NAME_LEN_FROM_CMD 14
+# define ENGINE_CTRL_GET_NAME_FROM_CMD 15
+# define ENGINE_CTRL_GET_DESC_LEN_FROM_CMD 16
+# define ENGINE_CTRL_GET_DESC_FROM_CMD 17
+# define ENGINE_CTRL_GET_CMD_FLAGS 18
+# define ENGINE_CMD_BASE 200
+# define ENGINE_CTRL_CHIL_SET_FORKCHECK 100
+# define ENGINE_CTRL_CHIL_NO_LOCKING 101
 typedef struct ENGINE_CMD_DEFN_st {
 unsigned int cmd_num;
 const char *cmd_name;
@@ -118,12 +118,12 @@ void ENGINE_load_sureware(void);
 void ENGINE_load_ubsec(void);
 void ENGINE_load_padlock(void);
 void ENGINE_load_capi(void);
-#  ifndef OPENSSL_NO_GMP
+# ifndef OPENSSL_NO_GMP
 void ENGINE_load_gmp(void);
-#  endif
-#  ifndef OPENSSL_NO_GOST
+# endif
+# ifndef OPENSSL_NO_GOST
 void ENGINE_load_gost(void);
-#  endif
+# endif
 # endif
 void ENGINE_load_cryptodev(void);
 void ENGINE_load_rsax(void);
@@ -272,8 +272,8 @@ int ENGINE_set_default_pkey_meths(ENGINE *e);
 int ENGINE_set_default_pkey_asn1_meths(ENGINE *e);
 int ENGINE_set_default(ENGINE *e, unsigned int flags);
 void ENGINE_add_conf_module(void);
-# define OSSL_DYNAMIC_VERSION            (unsigned long)0x00020000
-# define OSSL_DYNAMIC_OLDEST             (unsigned long)0x00020000
+# define OSSL_DYNAMIC_VERSION (unsigned long)0x00020000
+# define OSSL_DYNAMIC_OLDEST (unsigned long)0x00020000
 typedef void *(*dyn_MEM_malloc_cb) (size_t);
 typedef void *(*dyn_MEM_realloc_cb) (void *, size_t);
 typedef void (*dyn_MEM_free_cb) (void *);
@@ -337,87 +337,87 @@ void *ENGINE_get_static_state(void);
 void ENGINE_setup_bsd_cryptodev(void);
 # endif
 void ERR_load_ENGINE_strings(void);
-# define ENGINE_F_DYNAMIC_CTRL                            180
-# define ENGINE_F_DYNAMIC_GET_DATA_CTX                    181
-# define ENGINE_F_DYNAMIC_LOAD                            182
-# define ENGINE_F_DYNAMIC_SET_DATA_CTX                    183
-# define ENGINE_F_ENGINE_ADD                              105
-# define ENGINE_F_ENGINE_BY_ID                            106
-# define ENGINE_F_ENGINE_CMD_IS_EXECUTABLE                170
-# define ENGINE_F_ENGINE_CTRL                             142
-# define ENGINE_F_ENGINE_CTRL_CMD                         178
-# define ENGINE_F_ENGINE_CTRL_CMD_STRING                  171
-# define ENGINE_F_ENGINE_FINISH                           107
-# define ENGINE_F_ENGINE_FREE_UTIL                        108
-# define ENGINE_F_ENGINE_GET_CIPHER                       185
-# define ENGINE_F_ENGINE_GET_DEFAULT_TYPE                 177
-# define ENGINE_F_ENGINE_GET_DIGEST                       186
-# define ENGINE_F_ENGINE_GET_NEXT                         115
-# define ENGINE_F_ENGINE_GET_PKEY_ASN1_METH               193
-# define ENGINE_F_ENGINE_GET_PKEY_METH                    192
-# define ENGINE_F_ENGINE_GET_PREV                         116
-# define ENGINE_F_ENGINE_INIT                             119
-# define ENGINE_F_ENGINE_LIST_ADD                         120
-# define ENGINE_F_ENGINE_LIST_REMOVE                      121
-# define ENGINE_F_ENGINE_LOAD_PRIVATE_KEY                 150
-# define ENGINE_F_ENGINE_LOAD_PUBLIC_KEY                  151
-# define ENGINE_F_ENGINE_LOAD_SSL_CLIENT_CERT             194
-# define ENGINE_F_ENGINE_NEW                              122
-# define ENGINE_F_ENGINE_REMOVE                           123
-# define ENGINE_F_ENGINE_SET_DEFAULT_STRING               189
-# define ENGINE_F_ENGINE_SET_DEFAULT_TYPE                 126
-# define ENGINE_F_ENGINE_SET_ID                           129
-# define ENGINE_F_ENGINE_SET_NAME                         130
-# define ENGINE_F_ENGINE_TABLE_REGISTER                   184
-# define ENGINE_F_ENGINE_UNLOAD_KEY                       152
-# define ENGINE_F_ENGINE_UNLOCKED_FINISH                  191
-# define ENGINE_F_ENGINE_UP_REF                           190
-# define ENGINE_F_INT_CTRL_HELPER                         172
-# define ENGINE_F_INT_ENGINE_CONFIGURE                    188
-# define ENGINE_F_INT_ENGINE_MODULE_INIT                  187
-# define ENGINE_F_LOG_MESSAGE                             141
-# define ENGINE_R_ALREADY_LOADED                          100
-# define ENGINE_R_ARGUMENT_IS_NOT_A_NUMBER                133
-# define ENGINE_R_CMD_NOT_EXECUTABLE                      134
-# define ENGINE_R_COMMAND_TAKES_INPUT                     135
-# define ENGINE_R_COMMAND_TAKES_NO_INPUT                  136
-# define ENGINE_R_CONFLICTING_ENGINE_ID                   103
-# define ENGINE_R_CTRL_COMMAND_NOT_IMPLEMENTED            119
-# define ENGINE_R_DH_NOT_IMPLEMENTED                      139
-# define ENGINE_R_DSA_NOT_IMPLEMENTED                     140
-# define ENGINE_R_DSO_FAILURE                             104
-# define ENGINE_R_DSO_NOT_FOUND                           132
-# define ENGINE_R_ENGINES_SECTION_ERROR                   148
-# define ENGINE_R_ENGINE_CONFIGURATION_ERROR              102
-# define ENGINE_R_ENGINE_IS_NOT_IN_LIST                   105
-# define ENGINE_R_ENGINE_SECTION_ERROR                    149
-# define ENGINE_R_FAILED_LOADING_PRIVATE_KEY              128
-# define ENGINE_R_FAILED_LOADING_PUBLIC_KEY               129
-# define ENGINE_R_FINISH_FAILED                           106
-# define ENGINE_R_GET_HANDLE_FAILED                       107
-# define ENGINE_R_ID_OR_NAME_MISSING                      108
-# define ENGINE_R_INIT_FAILED                             109
-# define ENGINE_R_INTERNAL_LIST_ERROR                     110
-# define ENGINE_R_INVALID_ARGUMENT                        143
-# define ENGINE_R_INVALID_CMD_NAME                        137
-# define ENGINE_R_INVALID_CMD_NUMBER                      138
-# define ENGINE_R_INVALID_INIT_VALUE                      151
-# define ENGINE_R_INVALID_STRING                          150
-# define ENGINE_R_NOT_INITIALISED                         117
-# define ENGINE_R_NOT_LOADED                              112
-# define ENGINE_R_NO_CONTROL_FUNCTION                     120
-# define ENGINE_R_NO_INDEX                                144
-# define ENGINE_R_NO_LOAD_FUNCTION                        125
-# define ENGINE_R_NO_REFERENCE                            130
-# define ENGINE_R_NO_SUCH_ENGINE                          116
-# define ENGINE_R_NO_UNLOAD_FUNCTION                      126
-# define ENGINE_R_PROVIDE_PARAMETERS                      113
-# define ENGINE_R_RSA_NOT_IMPLEMENTED                     141
-# define ENGINE_R_UNIMPLEMENTED_CIPHER                    146
-# define ENGINE_R_UNIMPLEMENTED_DIGEST                    147
-# define ENGINE_R_UNIMPLEMENTED_PUBLIC_KEY_METHOD         101
-# define ENGINE_R_VERSION_INCOMPATIBILITY                 145
-#ifdef  __cplusplus
+# define ENGINE_F_DYNAMIC_CTRL 180
+# define ENGINE_F_DYNAMIC_GET_DATA_CTX 181
+# define ENGINE_F_DYNAMIC_LOAD 182
+# define ENGINE_F_DYNAMIC_SET_DATA_CTX 183
+# define ENGINE_F_ENGINE_ADD 105
+# define ENGINE_F_ENGINE_BY_ID 106
+# define ENGINE_F_ENGINE_CMD_IS_EXECUTABLE 170
+# define ENGINE_F_ENGINE_CTRL 142
+# define ENGINE_F_ENGINE_CTRL_CMD 178
+# define ENGINE_F_ENGINE_CTRL_CMD_STRING 171
+# define ENGINE_F_ENGINE_FINISH 107
+# define ENGINE_F_ENGINE_FREE_UTIL 108
+# define ENGINE_F_ENGINE_GET_CIPHER 185
+# define ENGINE_F_ENGINE_GET_DEFAULT_TYPE 177
+# define ENGINE_F_ENGINE_GET_DIGEST 186
+# define ENGINE_F_ENGINE_GET_NEXT 115
+# define ENGINE_F_ENGINE_GET_PKEY_ASN1_METH 193
+# define ENGINE_F_ENGINE_GET_PKEY_METH 192
+# define ENGINE_F_ENGINE_GET_PREV 116
+# define ENGINE_F_ENGINE_INIT 119
+# define ENGINE_F_ENGINE_LIST_ADD 120
+# define ENGINE_F_ENGINE_LIST_REMOVE 121
+# define ENGINE_F_ENGINE_LOAD_PRIVATE_KEY 150
+# define ENGINE_F_ENGINE_LOAD_PUBLIC_KEY 151
+# define ENGINE_F_ENGINE_LOAD_SSL_CLIENT_CERT 194
+# define ENGINE_F_ENGINE_NEW 122
+# define ENGINE_F_ENGINE_REMOVE 123
+# define ENGINE_F_ENGINE_SET_DEFAULT_STRING 189
+# define ENGINE_F_ENGINE_SET_DEFAULT_TYPE 126
+# define ENGINE_F_ENGINE_SET_ID 129
+# define ENGINE_F_ENGINE_SET_NAME 130
+# define ENGINE_F_ENGINE_TABLE_REGISTER 184
+# define ENGINE_F_ENGINE_UNLOAD_KEY 152
+# define ENGINE_F_ENGINE_UNLOCKED_FINISH 191
+# define ENGINE_F_ENGINE_UP_REF 190
+# define ENGINE_F_INT_CTRL_HELPER 172
+# define ENGINE_F_INT_ENGINE_CONFIGURE 188
+# define ENGINE_F_INT_ENGINE_MODULE_INIT 187
+# define ENGINE_F_LOG_MESSAGE 141
+# define ENGINE_R_ALREADY_LOADED 100
+# define ENGINE_R_ARGUMENT_IS_NOT_A_NUMBER 133
+# define ENGINE_R_CMD_NOT_EXECUTABLE 134
+# define ENGINE_R_COMMAND_TAKES_INPUT 135
+# define ENGINE_R_COMMAND_TAKES_NO_INPUT 136
+# define ENGINE_R_CONFLICTING_ENGINE_ID 103
+# define ENGINE_R_CTRL_COMMAND_NOT_IMPLEMENTED 119
+# define ENGINE_R_DH_NOT_IMPLEMENTED 139
+# define ENGINE_R_DSA_NOT_IMPLEMENTED 140
+# define ENGINE_R_DSO_FAILURE 104
+# define ENGINE_R_DSO_NOT_FOUND 132
+# define ENGINE_R_ENGINES_SECTION_ERROR 148
+# define ENGINE_R_ENGINE_CONFIGURATION_ERROR 102
+# define ENGINE_R_ENGINE_IS_NOT_IN_LIST 105
+# define ENGINE_R_ENGINE_SECTION_ERROR 149
+# define ENGINE_R_FAILED_LOADING_PRIVATE_KEY 128
+# define ENGINE_R_FAILED_LOADING_PUBLIC_KEY 129
+# define ENGINE_R_FINISH_FAILED 106
+# define ENGINE_R_GET_HANDLE_FAILED 107
+# define ENGINE_R_ID_OR_NAME_MISSING 108
+# define ENGINE_R_INIT_FAILED 109
+# define ENGINE_R_INTERNAL_LIST_ERROR 110
+# define ENGINE_R_INVALID_ARGUMENT 143
+# define ENGINE_R_INVALID_CMD_NAME 137
+# define ENGINE_R_INVALID_CMD_NUMBER 138
+# define ENGINE_R_INVALID_INIT_VALUE 151
+# define ENGINE_R_INVALID_STRING 150
+# define ENGINE_R_NOT_INITIALISED 117
+# define ENGINE_R_NOT_LOADED 112
+# define ENGINE_R_NO_CONTROL_FUNCTION 120
+# define ENGINE_R_NO_INDEX 144
+# define ENGINE_R_NO_LOAD_FUNCTION 125
+# define ENGINE_R_NO_REFERENCE 130
+# define ENGINE_R_NO_SUCH_ENGINE 116
+# define ENGINE_R_NO_UNLOAD_FUNCTION 126
+# define ENGINE_R_PROVIDE_PARAMETERS 113
+# define ENGINE_R_RSA_NOT_IMPLEMENTED 141
+# define ENGINE_R_UNIMPLEMENTED_CIPHER 146
+# define ENGINE_R_UNIMPLEMENTED_DIGEST 147
+# define ENGINE_R_UNIMPLEMENTED_PUBLIC_KEY_METHOD 101
+# define ENGINE_R_VERSION_INCOMPATIBILITY 145
+#ifdef __cplusplus
 }
 #endif
 #endif

@@ -19,15 +19,15 @@ Qmax,
 typedef struct Dirtab Dirtab;
 struct Dirtab
 {
-char	*name;
-int	mode;
+char *name;
+int mode;
 };
 static Dirtab dirtab[] =
 {
-[Qdir]	"/",	DMDIR|0555,
-[Qctl]	"ctl",	0664,
-[Qraw]	"raw",	0640,
-[Qdata]	"data",	0640,
+[Qdir] "/", DMDIR|0555,
+[Qctl] "ctl", 0664,
+[Qraw] "raw", 0640,
+[Qdata] "data", 0640,
 };
 int exabyte, force6bytecmds;
 int diskdebug;
@@ -104,7 +104,7 @@ lun->blocks = 0;
 lun->capacity = 0;
 lun->lbsize = 0;
 memset(data, 0, sizeof data);
-if(SRrcapacity(lun, data) < 0 && SRrcapacity(lun, data)  < 0)
+if(SRrcapacity(lun, data) < 0 && SRrcapacity(lun, data) < 0)
 return -1;
 lun->blocks = GETBELONG(data);
 lun->lbsize = GETBELONG(data+4);
@@ -561,7 +561,7 @@ fprint(2, "disk: subclass %#ulx not supported. trying anyway\n", sc);
 if(ep->type == Ebulk){
 if(ep->dir == Eboth || ep->dir == Ein)
 if(epin == -1)
-epin =  ep->id;
+epin = ep->id;
 if(ep->dir == Eboth || ep->dir == Eout)
 if(epout == -1)
 epout = ep->id;
@@ -627,10 +627,10 @@ free(ums);
 }
 static Usbfs diskfs = {
 .walk = dwalk,
-.open =	 dopen,
-.read =	 dread,
+.open = dopen,
+.read = dread,
 .write = dwrite,
-.stat =	 dstat,
+.stat = dstat,
 };
 int
 diskmain(Dev *dev, int argc, char **argv)

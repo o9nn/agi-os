@@ -1,6 +1,6 @@
 implement Cal;
 #
-# Copyright © 1995-2002 Lucent Technologies Inc.  All rights reserved.
+# Copyright © 1995-2002 Lucent Technologies Inc. All rights reserved.
 # Limbo transliteration 2003 by Vita Nuova
 # This software is subject to the Plan 9 Open Source Licence.
 #
@@ -15,9 +15,9 @@ daytime: Daytime;
 Tm: import daytime;
 Cal: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
-dayw :=	" S  M Tu  W Th  F  S";
+dayw := " S  M Tu  W Th  F  S";
 smon := array[] of {
 "January", "February", "March", "April",
 "May", "June", "July", "August",
@@ -53,8 +53,8 @@ return xshort(m, y);
 args = tl args;
 #
 # one arg
-#	if looks like a month, print month
-#	else print year
+# if looks like a month, print month
+# else print year
 #
 if(argc == 2) {
 y = number(hd args);
@@ -74,7 +74,7 @@ y = number(hd tl args);
 return xshort(m, y);
 }
 #
-#	print out just month
+# print out just month
 #
 xshort(m: int, y: int)
 {
@@ -92,7 +92,7 @@ bout.putc('\n');
 bout.flush();
 }
 #
-#	print out complete year
+# print out complete year
 #
 xlong(y: int)
 {
@@ -127,24 +127,24 @@ sys->fprint(sys->fildes(2), "cal: bad argument\n");
 raise "fail:bad argument";
 }
 dict := array[] of {
-("january",	1),
-("february",	2),
-("march",	3),
-("april",	4),
-("may",		5),
-("june",		6),
-("july",		7),
-("august",	8),
-("sept",		9),
-("september",	9),
-("october",	10),
-("november",	11),
-("december",	12),
+("january", 1),
+("february", 2),
+("march", 3),
+("april", 4),
+("may", 5),
+("june", 6),
+("july", 7),
+("august", 8),
+("sept", 9),
+("september", 9),
+("october", 10),
+("november", 11),
+("december", 12),
 };
 #
 # convert to a number.
 # if its a dictionary word,
-# return negative  number
+# return negative number
 #
 number(s: string): int
 {
@@ -174,17 +174,17 @@ d := jan1(y);
 mon[9] = 30;
 case (jan1(y+1)+7-d)%7 {
 #
-#	non-leap year
+# non-leap year
 #
 1 =>
 mon[2] = 28;
 #
-#	leap year
+# leap year
 #
 2 =>
 mon[2] = 29;
 #
-#	1752
+# 1752
 #
 * =>
 mon[2] = 29;
@@ -219,27 +219,27 @@ lines[l] = s;
 return lines;
 }
 #
-#	return day of the week
-#	of jan 1 of given year
+# return day of the week
+# of jan 1 of given year
 #
 jan1(y: int): int
 {
 #
-#	normal gregorian calendar
-#	one extra day per four years
+# normal gregorian calendar
+# one extra day per four years
 #
 d := 4+y+(y+3)/4;
 #
-#	julian calendar
-#	regular gregorian
-#	less three days per 400
+# julian calendar
+# regular gregorian
+# less three days per 400
 #
 if(y > 1800) {
 d -= (y-1701)/100;
 d += (y-1601)/400;
 }
 #
-#	great calendar changeover instant
+# great calendar changeover instant
 #
 if(y > 1752)
 d += 3;

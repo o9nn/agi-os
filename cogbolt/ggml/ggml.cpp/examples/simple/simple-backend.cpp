@@ -70,7 +70,7 @@ buf.data(),
 true,
 };
 struct ggml_context * ctx0 = ggml_init(params0);
-struct ggml_cgraph  * gf = ggml_new_graph(ctx0);
+struct ggml_cgraph * gf = ggml_new_graph(ctx0);
 struct ggml_tensor * result = ggml_mul_mat(ctx0, model.a, model.b);
 ggml_build_forward_expand(gf, result);
 ggml_free(ctx0);

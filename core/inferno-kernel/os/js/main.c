@@ -1,48 +1,48 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"version.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "version.h"
 Mach *m = &mach0;
 Proc *up;
 int cflag;
 ulong cachetable[1024];
-Sysint	*sysintr;
+Sysint *sysintr;
 struct {
-uchar	format;
-uchar	type;
-uchar	ea[6];
-uchar	pad[32-8];
+uchar format;
+uchar type;
+uchar ea[6];
+uchar pad[32-8];
 } idprom;
-int	cpuserver;
-ulong	bank[8];
-uchar	mempres[64];
-char	fbstr[32];
-ulong	fbslot;
-int	usecg6;
-Label	catch;
-uchar	*sp;
+int cpuserver;
+ulong bank[8];
+uchar mempres[64];
+char fbstr[32];
+ulong fbslot;
+int usecg6;
+Label catch;
+uchar *sp;
 int cold=1;
 typedef struct Sysparam Sysparam;
 struct Sysparam
 {
-int	id;
-char	*name;
-char	ss2;
-int	vacsize;
-int	vacline;
-int	ncontext;
-char	cachebug;
-int	nbank;
-int	banksize;
-int	pcnt;
+int id;
+char *name;
+char ss2;
+int vacsize;
+int vacline;
+int ncontext;
+char cachebug;
+int nbank;
+int banksize;
+int pcnt;
 }
 sysparam[] =
 {
-{ 0xFF, "unknown Sun4M",0, 0, 0,  64, 0, 4, 32 ,0},
-{ 0x80, "JavaStation uSparcII",0, 0, 0,  256, 0, 4, 32 ,2},
+{ 0xFF, "unknown Sun4M",0, 0, 0, 64, 0, 4, 32 ,0},
+{ 0x80, "JavaStation uSparcII",0, 0, 0, 256, 0, 4, 32 ,2},
 { 0 }
 };
 Sysparam *sparam;
@@ -281,7 +281,7 @@ j = sizeof(ulong);
 memmove((uchar*)d+i, &w, j);
 }
 }
-Conf	conf;
+Conf conf;
 void
 confinit(void)
 {
@@ -414,7 +414,7 @@ int
 islo(void)
 {
 int val;
-val =  (getpsr()&SPL(15)) == 0;
+val = (getpsr()&SPL(15)) == 0;
 return val;
 }
 void

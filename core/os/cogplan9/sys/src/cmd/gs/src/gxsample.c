@@ -8,21 +8,21 @@ z^c, z^(a+c), z^(b+c), z^(a+b+c),\
 z^d, z^(a+d), z^(b+d), z^(a+b+d),\
 z^(c+d), z^(a+c+d), z^(b+c+d), z^(a+b+c+d)
 #ifdef __STDC__
-#  define n0L 0xffffffffU
-#  define ffL8 0x0000ff00U
-#  define ffL16 0x00ff0000U
-#  define ffL24 0xff000000U
+# define n0L 0xffffffffU
+# define ffL8 0x0000ff00U
+# define ffL16 0x00ff0000U
+# define ffL24 0xff000000U
 #else
 #if arch_sizeof_long == 4
-#  define n0L (-1)
-#  define ffL8 0x0000ff00
-#  define ffL16 0x00ff0000
-#  define ffL24 (-0x01000000)
+# define n0L (-1)
+# define ffL8 0x0000ff00
+# define ffL16 0x00ff0000
+# define ffL24 (-0x01000000)
 #else
-#  define n0L 0xffffffffL
-#  define ffL8 0x0000ff00L
-#  define ffL16 0x00ff0000L
-#  define ffL24 0xff000000L
+# define n0L 0xffffffffL
+# define ffL8 0x0000ff00L
+# define ffL16 0x00ff0000L
+# define ffL24 0xff000000L
 #endif
 #endif
 #if arch_is_big_endian

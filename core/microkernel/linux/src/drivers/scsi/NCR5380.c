@@ -40,7 +40,7 @@ static struct {
 unsigned char mask;
 const char * name;}
 signals[] = {{ SR_DBP, "PARITY"}, { SR_RST, "RST" }, { SR_BSY, "BSY" },
-{ SR_REQ, "REQ" }, { SR_MSG, "MSG" }, { SR_CD,  "CD" }, { SR_IO, "IO" },
+{ SR_REQ, "REQ" }, { SR_MSG, "MSG" }, { SR_CD, "CD" }, { SR_IO, "IO" },
 { SR_SEL, "SEL" }, {0, NULL}},
 basrs[] = {{BASR_ATN, "ATN"}, {BASR_ACK, "ACK"}, {0, NULL}},
 icrs[] = {{ICR_ASSERT_RST, "ASSERT RST"},{ICR_ASSERT_ACK, "ASSERT ACK"},
@@ -212,7 +212,7 @@ unsigned long timeout;
 int trying_irqs, i, mask;
 NCR5380_setup(instance);
 for (trying_irqs = i = 0, mask = 1; i < 16; ++i, mask <<= 1)
-if ((mask & possible) &&  (request_irq(i, &probe_intr, SA_INTERRUPT, "NCR-probe", NULL)
+if ((mask & possible) && (request_irq(i, &probe_intr, SA_INTERRUPT, "NCR-probe", NULL)
 == 0))
 trying_irqs |= mask;
 timeout = jiffies + 250*HZ/1000;
@@ -1218,7 +1218,7 @@ instance->host_no);
 #endif
 }
 }
-} else  {
+} else {
 #if (NDEBUG & NDEBUG_C400_PWRITE)
 printk("Waiting for LASTBYTE\n");
 #endif
@@ -1303,7 +1303,7 @@ printk("scsi%d : NDEBUG_NO_DATAOUT set, attempted DATAOUT aborted\n",
 instance->host_no);
 sink = 1;
 do_abort(instance);
-cmd->result = DID_ERROR  << 16;
+cmd->result = DID_ERROR << 16;
 cmd->done(cmd);
 return;
 #endif
@@ -1346,7 +1346,7 @@ NCR5380_write(INITIATOR_COMMAND_REG, ICR_BASE |
 ICR_ASSERT_ATN);
 sink = 1;
 do_abort(instance);
-cmd->result = DID_ERROR  << 16;
+cmd->result = DID_ERROR << 16;
 cmd->done(cmd);
 } else
 cmd->SCp.this_residual -= transfersize - len;
@@ -1753,7 +1753,7 @@ instance->host_no);
 tmp->done(tmp);
 return SCSI_ABORT_SUCCESS;
 }
-#if (NDEBUG  & NDEBUG_ABORT)
+#if (NDEBUG & NDEBUG_ABORT)
 else if (prev == tmp) printk("scsi%d : LOOP\n", instance->host_no);
 #endif
 if (hostdata->connected) {

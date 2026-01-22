@@ -52,8 +52,8 @@ init(ctxt : ref Draw->Context, argv : list of string)
 display = ctxt.display;
 context = ctxt;
 sys = load Sys Sys->PATH;
-#	sys->pctl(Sys->NEWPGRP, nil);
-#	sys->pctl(Sys->FORKNS, nil);
+# sys->pctl(Sys->NEWPGRP, nil);
+# sys->pctl(Sys->FORKNS, nil);
 str = load String String->PATH;
 readdir = load Readdir Readdir->PATH;
 daytime = load Daytime Daytime->PATH;
@@ -82,7 +82,7 @@ camerapath = "./";
 if (camerapath != "" && camerapath[len camerapath - 1] != '/')
 camerapath[len camerapath] = '/';
 r := display.image.r;
-#	if (r.dx() < 800 || r.dy() < 600) ssize = 2;
+# if (r.dx() < 800 || r.dy() < 600) ssize = 2;
 if (r.dx() < 400 || r.dy() < 300) ssize = 1;
 maxsize = (r.dx(), r.dy());
 if (ssize == 1) {
@@ -161,15 +161,15 @@ thumbscr := array[] of {
 "canvas .f.f1.c1 -yscrollcommand {.f.f1.sb1 set} -height 255 -width 542 -bg white",
 ".f.f1.c1 create window 0 0 -window .fthumb -anchor nw",
 "scrollbar .f.f1.sb1 -command {.f.f1.c1 yview}",
-#	"frame .f.f2",
-#	"canvas .f.f2.c1 -width 556 -height 304",
-#	".f.f2.c1 create window 0 0 -window .f.fsnap -anchor nw",
+# "frame .f.f2",
+# "canvas .f.f2.c1 -width 556 -height 304",
+# ".f.f2.c1 create window 0 0 -window .f.fsnap -anchor nw",
 "grid .f.fsnap -column 0 -row 0",
 "grid .f.f1 -column 0 -row 1",
 "grid .f.f1.c1 -column 0 -row 0",
 "grid .f.f1.sb1 -column 1 -row 0 -sticky ns",
-#	"grid .f.f2 -column 0 -row 0",
-#	"grid .f.f2.c1 -column 0 -row 0 -sticky ew",
+# "grid .f.f2 -column 0 -row 0",
+# "grid .f.f2.c1 -column 0 -row 0 -sticky ew",
 "bind .Wm_t <ButtonPress-1> +{focus .}",
 "bind .Wm_t.title <ButtonPress-1> +{focus .}",
 };
@@ -393,7 +393,7 @@ frame = ".f.fsnap.f"+abilities[i].pname;
 tkcmd(top, "frame "+frame+" -borderwidth 1 -relief raised");
 * =>
 frame = ".f";
-if (count2 == 0)  {
+if (count2 == 0) {
 tkcmd(top, "frame "+frame);
 tkcmd(top, "label "+frame+".l -text {"+ablmenu[k]+"}"+tkfontb);
 tkcmd(top, "grid "+frame+".l -row 0 -column 0 -columnspan "+nm);
@@ -667,7 +667,7 @@ thumbimg := array[200] of ref draw->Image;
 selected := array[200] of { * => 0 };
 noselected := 0;
 fnew : list of int;
-imgloaded :  list of Imgloaded;
+imgloaded : list of Imgloaded;
 maxwidth, maxheight: int;
 nothumbs := 0;
 nocamera(): int
@@ -782,7 +782,7 @@ si := string i;
 tkcmd(win, ".mthumb entryconfigure 0 -text {"+title+"}");
 for (k := nothumbs; k < len menu; k++)
 tkcmd(win, ".mthumb entryconfigure "+string (2+k-nothumbs)+
-" -command {send butchan "+	menu[k].com+" "+si+"}");
+" -command {send butchan "+ menu[k].com+" "+si+"}");
 tkcmd(win, ".mthumb post "+hd tl tl lst+" "+hd tl tl tl lst);
 * =>
 if (!processing)
@@ -1268,7 +1268,7 @@ loadthumbnail(top: ref Tk->Toplevel, i: int): int
 {
 fd : ref sys->FD;
 if (usecache && isloaded(filelist[i],THUMB))
-fd  = sys->open(tmppath+filelist[i]+"."+string THUMB+"~",sys->OREAD);
+fd = sys->open(tmppath+filelist[i]+"."+string THUMB+"~",sys->OREAD);
 else fd = sys->open(camerapath+"thumb/"+filelist[i]+".bit",sys->OREAD);
 if (fd == nil) {
 if (usecache && isloaded(filelist[i],THUMB)) {
@@ -1295,7 +1295,7 @@ tkcmd(top,".fthumb.p"+si+" dirty");
 fd = nil;
 n := -1;
 if (usecache) {
-fd  = sys->create(tmppath+filelist[i]+"."+string THUMB+"~",sys->OWRITE,8r666);
+fd = sys->create(tmppath+filelist[i]+"."+string THUMB+"~",sys->OWRITE,8r666);
 n = display.writeimage(fd, image);
 }
 x := int tkcmd(top, ".fthumb.mb"+string i+" cget -actx");
@@ -1321,7 +1321,7 @@ return 0;
 }
 delloaded(name: string, ftype: int)
 {
-tmp :  list of Imgloaded;
+tmp : list of Imgloaded;
 tmp = nil;
 while (imgloaded != nil) {
 ic := hd imgloaded;
@@ -1364,7 +1364,7 @@ if (diagtype == 1) {
 tkcmd(win, "grid .f.bo -row 2 -column 0 -padx 5 -pady 5");
 tkcmd(win, "grid .f.bc -row 2 -column 1 -padx 5 -pady 5");
 }
-else 	tkcmd(win, "grid .f.bo -row 2 -column 0 -columnspan 2 -padx 5 -pady 5");
+else tkcmd(win, "grid .f.bo -row 2 -column 0 -columnspan 2 -padx 5 -pady 5");
 if (!r.eq(nilrect))
 centrewin(win, r, 1);
 else
@@ -1437,8 +1437,8 @@ if (opt == 1) {
 addtoplevel(win, "", lst, -1);
 height := tkcmd(win, ".f.fsnap cget -height");
 width := tkcmd(win, ".f.fsnap cget -width");
-#		tkcmd(win, ".f.f2.c1 configure -scrollregion { 0 0 "+width+" "+height+"}");
-#		tkcmd(win, ".f.f2.c1 configure -height "+height+"}");
+# tkcmd(win, ".f.f2.c1 configure -scrollregion { 0 0 "+width+" "+height+"}");
+# tkcmd(win, ".f.f2.c1 configure -height "+height+"}");
 }
 ctlchan <-= DONE;
 }
@@ -1850,7 +1850,7 @@ tk->namechan(top, chanin, "chanin");
 for (tk1 := 0; tk1 < len workingscr2; tk1++)
 tkcmd(top, workingscr2[tk1]);
 if (loading) {
-#		loadimg := display.open("camload.bit");
+# loadimg := display.open("camload.bit");
 if (loadimg != nil) {
 w := loadimg.r.dx();
 h := loadimg.r.dy();
@@ -1955,13 +1955,13 @@ shrinkheight(top, hmax);
 hs := int tkcmd(top, ".f.fsnap cget -height");
 hmb := int tkcmd(top, ".f.fsnap.fsettings.mb cget -height");
 if (h < ht+hs + 107 + hmb) h = ht+hs+107 + hmb;
-#	hc2 = int tkcmd(top, ".f.fsnap cget -height");
+# hc2 = int tkcmd(top, ".f.fsnap cget -height");
 wc2 := int tkcmd(top, ".f.fsnap cget -width");
 hc1 := h - ht - hs - 4;
 wc1 := w-wsb-4;
-#	wc1 = wc2 - wsb;
+# wc1 = wc2 - wsb;
 tkcmd(top, ".f.f1.c1 configure -height "+string hc1+" -width "+string wc1);
-#	tkcmd(top, ".f.f2.c1 configure -height "+string hc2+" -width "+string wc2);
+# tkcmd(top, ".f.f2.c1 configure -height "+string hc2+" -width "+string wc2);
 if (w < wc2 + 4)
 w = wc2 + 4;
 ws = int tkcmd(top, ".f.fsnap cget -width");
@@ -2236,7 +2236,7 @@ tkcmd(t, "focus .Wm_t; update");
 for (tk1 := 0; tk1 < len viewscr; tk1++)
 tkcmd(t, viewscr[tk1]);
 w := img.r.dx();
-h :=  img.r.dy();
+h := img.r.dy();
 tkcmd(t, "panel .p -width "+string w+" -height "+string h);
 tk->putimage(t, ".p",img,nil);
 tkcmd(t, "bind .p <ButtonPress-2> {send butchan move %X %Y}");

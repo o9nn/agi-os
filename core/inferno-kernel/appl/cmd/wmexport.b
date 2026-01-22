@@ -20,12 +20,12 @@ Wmexport: module {
 init: fn(nil: ref Draw->Context, argv: list of string);
 };
 # filesystem looks like:
-#	clone
-#	1
-#		wmctl
-#		keyboard
-#		pointer
-#		winname
+# clone
+# 1
+# wmctl
+# keyboard
+# pointer
+# winname
 badmodule(p: string)
 {
 sys->fprint(sys->fildes(2), "wmexport: cannot load %s: %r\n", p);
@@ -51,14 +51,14 @@ Mask: con 16rf;
 Maxreqidle: con 3;
 Maxreplyidle: con 3;
 Conn: adt {
-wm:		ref Wmcontext;
-iname:	string;				# name of image
-n:		int;
-nreads:	int;
+wm: ref Wmcontext;
+iname: string; # name of image
+n: int;
+nreads: int;
 };
 # initial connection provides base-name (fid?) for images.
 # full name could be:
-#	window.fid.tag
+# window.fid.tag
 init(drawctxt: ref Draw->Context, nil: list of string)
 {
 sys = load Sys Sys->PATH;
@@ -80,7 +80,7 @@ wmlib = load Wmlib Wmlib->PATH;
 if(wmlib == nil)
 badmodule(Wmlib->PATH);
 wmlib->init();
-sys->pctl(Sys->FORKNS|Sys->NEWPGRP, nil);		# fork pgrp?
+sys->pctl(Sys->FORKNS|Sys->NEWPGRP, nil); # fork pgrp?
 ctxt = drawctxt;
 navops := chan of ref Navop;
 spawn navigator(navops);
@@ -142,7 +142,7 @@ rc := <-makeconn =>
 if(nconns >= len conns)
 conns = (array[len conns + 5] of ref Conn)[0:] = conns;
 wm := wmlib->connect(ctxt);
-if(wm == nil)				# XXX this can't happen - give wmlib->connect an error return
+if(wm == nil) # XXX this can't happen - give wmlib->connect an error return
 rc <-= (nil, "cannot connect");
 else{
 c := ref Conn(wm, nil, qidseq++, 0);
@@ -176,7 +176,7 @@ s := "inferno." + string imgseq++;
 if(img.name(s, 1) > 0)
 return s;
 if(img.iname != nil)
-return img.iname;		# a competing process has done it for us.
+return img.iname; # a competing process has done it for us.
 }
 sys->print("wmexport: no image names: %r\n");
 raise "panic";
@@ -450,7 +450,7 @@ return d;
 }
 flushproc(flush: chan of (int, int, chan of int))
 {
-a: array of (int, int);		# (pid, tag)
+a: array of (int, int); # (pid, tag)
 n := 0;
 for(;;)alt{
 (pid, tag) := <-pidregister =>
@@ -492,14 +492,14 @@ done <-= 1;
 # max bytes when encoded as utf-8.
 fullutf(s: string, max: int): int
 {
-Bit1:	con 7;
-Bitx:	con 6;
-Bit2:	con 5;
-Bit3:	con 4;
-Bit4:	con 3;
-Rune1:	con (1<<(Bit1+0*Bitx))-1;		# 0000 0000 0111 1111
-Rune2:	con (1<<(Bit2+1*Bitx))-1;		# 0000 0111 1111 1111
-Rune3:	con (1<<(Bit3+2*Bitx))-1;		# 1111 1111 1111 1111
+Bit1: con 7;
+Bitx: con 6;
+Bit2: con 5;
+Bit3: con 4;
+Bit4: con 3;
+Rune1: con (1<<(Bit1+0*Bitx))-1; # 0000 0000 0111 1111
+Rune2: con (1<<(Bit2+1*Bitx))-1; # 0000 0111 1111 1111
+Rune3: con (1<<(Bit3+2*Bitx))-1; # 1111 1111 1111 1111
 nb := 0;
 for(i := 0; i < len s; i++){
 c := s[i];

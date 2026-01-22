@@ -62,10 +62,10 @@ KernelLifecycle
 Tracks kernel development stage and maturity.
 """
 mutable struct KernelLifecycle
-stage::Symbol              # :embryonic, :juvenile, :mature, :senescent
-maturity::Float64         # 0.0 to 1.0
-age::Int                  # Age in generations
-generation::Int           # Generation number
+stage::Symbol # :embryonic, :juvenile, :mature, :senescent
+maturity::Float64 # 0.0 to 1.0
+age::Int # Age in generations
+generation::Int # Generation number
 function KernelLifecycle()
 new(:embryonic, 0.0, 0, 0)
 end
@@ -162,15 +162,15 @@ push!(trees, [1, 2])
 end
 # Order 3: three trees
 if max_order >= 3
-push!(trees, [1, 2, 3])  # Linear
-push!(trees, [1, 2, 2])  # Branched
+push!(trees, [1, 2, 3]) # Linear
+push!(trees, [1, 2, 2]) # Branched
 end
 # Order 4: four trees
 if max_order >= 4
-push!(trees, [1, 2, 3, 4])  # Linear
-push!(trees, [1, 2, 3, 3])  # Branch at 2
-push!(trees, [1, 2, 2, 3])  # Branch at 1
-push!(trees, [1, 2, 2, 2])  # Star
+push!(trees, [1, 2, 3, 4]) # Linear
+push!(trees, [1, 2, 3, 3]) # Branch at 2
+push!(trees, [1, 2, 2, 3]) # Branch at 1
+push!(trees, [1, 2, 2, 2]) # Star
 end
 # For higher orders, use simplified generation
 # In production, would use full A000081 enumeration
@@ -261,7 +261,7 @@ if isnothing(domain_data)
 n_coeffs = length(kernel.genome.coefficients)
 max_order = kernel.genome.max_order
 # More coefficients and higher order → better grip
-coverage = n_coeffs / (2^max_order)  # Rough estimate
+coverage = n_coeffs / (2^max_order) # Rough estimate
 return min(1.0, coverage)
 end
 # With domain data, evaluate actual performance
@@ -276,7 +276,7 @@ function evaluate_stability(kernel::Kernel)
 # Stability based on coefficient magnitudes
 coeffs = collect(values(kernel.genome.coefficients))
 if isempty(coeffs)
-return 0.1  # Low stability for empty genome
+return 0.1 # Low stability for empty genome
 end
 # Smaller coefficients → more stable
 max_coeff = maximum(abs.(coeffs))
@@ -305,7 +305,7 @@ Evaluate genetic novelty compared to population.
 """
 function evaluate_novelty(kernel::Kernel, population)
 if isnothing(population) || length(population) <= 1
-return 0.5  # Default novelty
+return 0.5 # Default novelty
 end
 # Compute average genetic distance to population
 distances = Float64[]
@@ -377,7 +377,7 @@ offspring_genome = KernelGenome(new_coefficients, parent.genome.max_order)
 offspring = Kernel(
 offspring_genome,
 vcat(parent.lineage, [parent.id]),
-""  # New ID will be generated
+"" # New ID will be generated
 )
 # Increment generation
 offspring.lifecycle.generation = parent.lifecycle.generation + 1

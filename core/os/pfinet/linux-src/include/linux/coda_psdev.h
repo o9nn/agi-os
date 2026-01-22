@@ -1,35 +1,35 @@
 #ifndef __CODA_PSDEV_H
 #define __CODA_PSDEV_H
 #define CODA_PSDEV_MAJOR 67
-#define MAX_CODADEVS  5
+#define MAX_CODADEVS 5
 extern struct venus_comm coda_upc_comm;
 extern struct coda_sb_info coda_super_info;
-#define CODA_SUPER_MAGIC	0x73757245
+#define CODA_SUPER_MAGIC 0x73757245
 struct coda_sb_info
 {
-struct inode *      sbi_psdev;
-struct inode *      sbi_ctlcp;
-int                 sbi_refct;
-struct venus_comm *      sbi_vcomm;
-struct inode *      sbi_root;
+struct inode * sbi_psdev;
+struct inode * sbi_ctlcp;
+int sbi_refct;
+struct venus_comm * sbi_vcomm;
+struct inode * sbi_root;
 struct super_block *sbi_sb;
-struct list_head    sbi_cchead;
-struct list_head    sbi_volroothead;
+struct list_head sbi_cchead;
+struct list_head sbi_volroothead;
 };
 struct venus_comm {
-u_long		    vc_seq;
-struct wait_queue  *vc_waitq;
-struct list_head    vc_pending;
-struct list_head    vc_processing;
-int                 vc_inuse;
-pid_t               vc_pid;
+u_long vc_seq;
+struct wait_queue *vc_waitq;
+struct list_head vc_pending;
+struct list_head vc_processing;
+int vc_inuse;
+pid_t vc_pid;
 };
 static inline struct coda_sb_info *coda_sbp(struct super_block *sb)
 {
 return ((struct coda_sb_info *)((sb)->u.generic_sbp));
 }
 extern void coda_psdev_detach(int unit);
-extern int  init_coda_psdev(void);
+extern int init_coda_psdev(void);
 int venus_rootfid(struct super_block *sb, ViceFid *fidp);
 int venus_getattr(struct super_block *sb, struct ViceFid *fid,
 struct coda_vattr *attr);
@@ -71,23 +71,23 @@ int venus_statfs(struct super_block *sb, struct statfs *sfs);
 extern int coda_hard;
 extern unsigned long coda_timeout;
 struct upc_req {
-struct list_head    uc_chain;
-caddr_t	            uc_data;
-u_short	            uc_flags;
-u_short             uc_inSize;
-u_short	            uc_outSize;
-u_short	            uc_opcode;
-int		    uc_unique;
-struct wait_queue  *uc_sleep;
-unsigned long       uc_posttime;
+struct list_head uc_chain;
+caddr_t uc_data;
+u_short uc_flags;
+u_short uc_inSize;
+u_short uc_outSize;
+u_short uc_opcode;
+int uc_unique;
+struct wait_queue *uc_sleep;
+unsigned long uc_posttime;
 };
-#define REQ_ASYNC  0x1
-#define REQ_READ   0x2
-#define REQ_WRITE  0x4
+#define REQ_ASYNC 0x1
+#define REQ_READ 0x2
+#define REQ_WRITE 0x4
 struct coda_upcallstats {
-int	ncalls;
-int	nbadcalls;
-int	reqs[CODA_NCALLS];
+int ncalls;
+int nbadcalls;
+int reqs[CODA_NCALLS];
 } ;
 extern struct coda_upcallstats coda_callstats;
 static inline void clstats(int opcode)

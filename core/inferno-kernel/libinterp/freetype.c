@@ -8,19 +8,19 @@
 #include "freetype.h"
 typedef struct Face Face;
 struct Face {
-Freetype_Face	freetypeface;
-FTface		ftface;
+Freetype_Face freetypeface;
+FTface ftface;
 };
-Type*	TMatrix;
-Type*	TVector;
-Type*	TFace;
-Type*	TGlyph;
-static uchar	Matrixmap[] = Freetype_Matrix_map;
-static uchar	Vectormap[] = Freetype_Vector_map;
-static uchar	Facemap[] = Freetype_Face_map;
-static uchar	Glyphmap[] = Freetype_Glyph_map;
-static void		freeface(Heap*, int);
-static Face*	ckface(Freetype_Face*);
+Type* TMatrix;
+Type* TVector;
+Type* TFace;
+Type* TGlyph;
+static uchar Matrixmap[] = Freetype_Matrix_map;
+static uchar Vectormap[] = Freetype_Vector_map;
+static uchar Facemap[] = Freetype_Face_map;
+static uchar Glyphmap[] = Freetype_Glyph_map;
+static void freeface(Heap*, int);
+static Face* ckface(Freetype_Face*);
 void
 freetypemodinit(void)
 {

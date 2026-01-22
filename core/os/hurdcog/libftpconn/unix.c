@@ -272,12 +272,12 @@ default: return EGRATUITOUS;
 }
 #define SKIP_WS() \
 while (isspace (*p)) p++;
-#define PARSE_INT() ({							      \
-unsigned u = strtoul (p, &e, 10);					      \
-if (e == p || isalnum (*e))						      \
-return EGRATUITOUS;						      \
-p = e;								      \
-u;									      \
+#define PARSE_INT() ({ \
+unsigned u = strtoul (p, &e, 10); \
+if (e == p || isalnum (*e)) \
+return EGRATUITOUS; \
+p = e; \
+u; \
 })
 SKIP_WS ();
 stat->st_nlink = PARSE_INT ();
@@ -361,7 +361,7 @@ tm.tm_year = PARSE_INT () - 1900;
 stat->st_mtim.tv_sec = mktime (&tm);
 if (stat->st_mtim.tv_sec == (time_t)-1)
 return EGRATUITOUS;
-stat->st_atim.tv_sec  = stat->st_ctim.tv_sec  = stat->st_mtim.tv_sec;
+stat->st_atim.tv_sec = stat->st_ctim.tv_sec = stat->st_mtim.tv_sec;
 stat->st_atim.tv_nsec = stat->st_ctim.tv_nsec = stat->st_mtim.tv_nsec = 0;
 SKIP_WS ();
 *line = p;

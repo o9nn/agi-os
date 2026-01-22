@@ -2,7 +2,7 @@
 #include "cryptlib.h"
 #include "bio_lcl.h"
 #define TRUNCATE
-#define DUMP_WIDTH      16
+#define DUMP_WIDTH 16
 #define DUMP_WIDTH_LESS_INDENT(i) (DUMP_WIDTH-((i-(i>6?6:i)+3)/4))
 int BIO_dump_cb(int (*cb) (const void *data, size_t len, void *u),
 void *u, const char *s, int len)

@@ -213,7 +213,7 @@ return code;
 code = gs_point_transform_compat(x3, y3, &pgs->ctm, &pt3);
 if (code < 0)
 return code;
-return gs_curveto_aux(pgs,   pt1.x, pt1.y,   pt2.x, pt2.y,   pt3.x, pt3.y);
+return gs_curveto_aux(pgs, pt1.x, pt1.y, pt2.x, pt2.y, pt3.x, pt3.y);
 }
 int
 gs_rcurveto(gs_state * pgs,
@@ -313,7 +313,7 @@ gx_cpath_print(pgs->clip_path);
 }
 }
 #else
-#  define note_set_clip_path(pgs) DO_NOTHING
+# define note_set_clip_path(pgs) DO_NOTHING
 #endif
 int
 gs_clippath(gs_state * pgs)

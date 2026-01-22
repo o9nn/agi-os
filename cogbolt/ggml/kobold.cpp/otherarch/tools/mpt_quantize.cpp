@@ -10,14 +10,14 @@
 #include <vector>
 #include <regex>
 struct mpt_hparams {
-int32_t d_model      = 0;
-int32_t max_seq_len  = 0;
-int32_t n_heads      = 0;
-int32_t n_layers     = 0;
-int32_t n_vocab      = 0;
+int32_t d_model = 0;
+int32_t max_seq_len = 0;
+int32_t n_heads = 0;
+int32_t n_layers = 0;
+int32_t n_vocab = 0;
 float alibi_bias_max = 0;
-float clip_qkv       = 0;
-int32_t ftype        = 0;
+float clip_qkv = 0;
+int32_t ftype = 0;
 };
 bool mpt_model_quantize(const std::string & fname_inp,
 const std::string & fname_out, ggml_v3_ftype ftype) {
@@ -46,15 +46,15 @@ fout.write((char *)&magic, sizeof(magic));
 }
 mpt_hparams hparams;
 {
-finp.read((char *) &hparams.d_model,        sizeof(hparams.d_model));
-finp.read((char *) &hparams.max_seq_len,    sizeof(hparams.max_seq_len));
-finp.read((char *) &hparams.n_heads,        sizeof(hparams.n_heads));
-finp.read((char *) &hparams.n_layers,       sizeof(hparams.n_layers));
-finp.read((char *) &hparams.n_vocab,        sizeof(hparams.n_vocab));
+finp.read((char *) &hparams.d_model, sizeof(hparams.d_model));
+finp.read((char *) &hparams.max_seq_len, sizeof(hparams.max_seq_len));
+finp.read((char *) &hparams.n_heads, sizeof(hparams.n_heads));
+finp.read((char *) &hparams.n_layers, sizeof(hparams.n_layers));
+finp.read((char *) &hparams.n_vocab, sizeof(hparams.n_vocab));
 finp.read((char *) &hparams.alibi_bias_max, sizeof(hparams.alibi_bias_max));
-finp.read((char *) &hparams.clip_qkv,       sizeof(hparams.clip_qkv));
-finp.read((char *) &hparams.ftype,          sizeof(hparams.ftype));
-const int32_t qntvr_src =    hparams.ftype / GGML_V3_QNT_VERSION_FACTOR;
+finp.read((char *) &hparams.clip_qkv, sizeof(hparams.clip_qkv));
+finp.read((char *) &hparams.ftype, sizeof(hparams.ftype));
+const int32_t qntvr_src = hparams.ftype / GGML_V3_QNT_VERSION_FACTOR;
 const int32_t ftype_dst = GGML_V3_QNT_VERSION * GGML_V3_QNT_VERSION_FACTOR + ftype;
 printf("%s: d_model        = %d\n", __func__, hparams.d_model);
 printf("%s: max_seq_len    = %d\n", __func__, hparams.max_seq_len);
@@ -67,14 +67,14 @@ printf("%s: ftype (src) = %d\n", __func__, hparams.ftype);
 printf("%s: qntvr (src) = %d\n", __func__, qntvr_src);
 printf("%s: ftype (dst) = %d\n", __func__, ftype_dst);
 printf("%s: qntvr (dst) = %d\n", __func__, GGML_V3_QNT_VERSION);
-fout.write((char *) &hparams.d_model,        sizeof(hparams.d_model));
-fout.write((char *) &hparams.max_seq_len,    sizeof(hparams.max_seq_len));
-fout.write((char *) &hparams.n_heads,        sizeof(hparams.n_heads));
-fout.write((char *) &hparams.n_layers,       sizeof(hparams.n_layers));
-fout.write((char *) &hparams.n_vocab,        sizeof(hparams.n_vocab));
+fout.write((char *) &hparams.d_model, sizeof(hparams.d_model));
+fout.write((char *) &hparams.max_seq_len, sizeof(hparams.max_seq_len));
+fout.write((char *) &hparams.n_heads, sizeof(hparams.n_heads));
+fout.write((char *) &hparams.n_layers, sizeof(hparams.n_layers));
+fout.write((char *) &hparams.n_vocab, sizeof(hparams.n_vocab));
 fout.write((char *) &hparams.alibi_bias_max, sizeof(hparams.alibi_bias_max));
-fout.write((char *) &hparams.clip_qkv,       sizeof(hparams.clip_qkv));
-fout.write((char *) &ftype_dst,              sizeof(ftype_dst));
+fout.write((char *) &hparams.clip_qkv, sizeof(hparams.clip_qkv));
+fout.write((char *) &ftype_dst, sizeof(ftype_dst));
 }
 {
 const int32_t n_vocab = hparams.n_vocab;

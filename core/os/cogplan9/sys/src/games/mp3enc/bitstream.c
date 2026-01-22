@@ -13,7 +13,7 @@
 #include <dmalloc.h>
 #endif
 const int scfsi_band[5] = { 0, 6, 11, 16, 21 };
-#define MAX_LENGTH      32
+#define MAX_LENGTH 32
 #ifdef DEBUG
 static int hoge, hogege;
 #endif
@@ -149,21 +149,21 @@ gfc->header[gfc->h_ptr].ptr = 0;
 memset(gfc->header[gfc->h_ptr].buf, 0, gfc->sideinfo_len);
 crc = 0xffff;
 if (gfp->out_samplerate < 16000)
-writeheader(gfc,0xffe,                12);
+writeheader(gfc,0xffe, 12);
 else
-writeheader(gfc,0xfff,                12);
-writeheader(gfc,(gfp->version),            1);
-writeheader(gfc,4 - 3,                 2);
-writeheader(gfc,(!gfp->error_protection),  1);
-CRC_writeheader(gfc,(gfc->bitrate_index),      4,&crc);
-CRC_writeheader(gfc,(gfc->samplerate_index),   2,&crc);
-CRC_writeheader(gfc,(gfc->padding),            1,&crc);
-CRC_writeheader(gfc,(gfp->extension),          1,&crc);
-CRC_writeheader(gfc,(gfp->mode),               2,&crc);
-CRC_writeheader(gfc,(gfc->mode_ext),           2,&crc);
-CRC_writeheader(gfc,(gfp->copyright),          1,&crc);
-CRC_writeheader(gfc,(gfp->original),           1,&crc);
-CRC_writeheader(gfc,(gfp->emphasis),           2,&crc);
+writeheader(gfc,0xfff, 12);
+writeheader(gfc,(gfp->version), 1);
+writeheader(gfc,4 - 3, 2);
+writeheader(gfc,(!gfp->error_protection), 1);
+CRC_writeheader(gfc,(gfc->bitrate_index), 4,&crc);
+CRC_writeheader(gfc,(gfc->samplerate_index), 2,&crc);
+CRC_writeheader(gfc,(gfc->padding), 1,&crc);
+CRC_writeheader(gfc,(gfp->extension), 1,&crc);
+CRC_writeheader(gfc,(gfp->mode), 2,&crc);
+CRC_writeheader(gfc,(gfc->mode_ext), 2,&crc);
+CRC_writeheader(gfc,(gfp->copyright), 1,&crc);
+CRC_writeheader(gfc,(gfp->original), 1,&crc);
+CRC_writeheader(gfc,(gfp->emphasis), 2,&crc);
 if (gfp->error_protection) {
 writeheader(gfc,0, 16);
 }
@@ -183,20 +183,20 @@ CRC_writeheader(gfc,l3_side->scfsi[ch][band], 1,&crc);
 for (gr = 0; gr < 2; gr++) {
 for (ch = 0; ch < gfc->channels_out; ch++) {
 gr_info *gi = &l3_side->gr[gr].ch[ch].tt;
-CRC_writeheader(gfc,gi->part2_3_length,       12,&crc);
-CRC_writeheader(gfc,gi->big_values / 2,        9,&crc);
-CRC_writeheader(gfc,gi->global_gain,           8,&crc);
-CRC_writeheader(gfc,gi->scalefac_compress,     4,&crc);
+CRC_writeheader(gfc,gi->part2_3_length, 12,&crc);
+CRC_writeheader(gfc,gi->big_values / 2, 9,&crc);
+CRC_writeheader(gfc,gi->global_gain, 8,&crc);
+CRC_writeheader(gfc,gi->scalefac_compress, 4,&crc);
 CRC_writeheader(gfc,gi->window_switching_flag, 1,&crc);
 if (gi->window_switching_flag) {
-CRC_writeheader(gfc,gi->block_type,       2,&crc);
+CRC_writeheader(gfc,gi->block_type, 2,&crc);
 CRC_writeheader(gfc,gi->mixed_block_flag, 1,&crc);
 if (gi->table_select[0] == 14)
 gi->table_select[0] = 16;
-CRC_writeheader(gfc,gi->table_select[0],  5,&crc);
+CRC_writeheader(gfc,gi->table_select[0], 5,&crc);
 if (gi->table_select[1] == 14)
 gi->table_select[1] = 16;
-CRC_writeheader(gfc,gi->table_select[1],  5,&crc);
+CRC_writeheader(gfc,gi->table_select[1], 5,&crc);
 CRC_writeheader(gfc,gi->subblock_gain[0], 3,&crc);
 CRC_writeheader(gfc,gi->subblock_gain[1], 3,&crc);
 CRC_writeheader(gfc,gi->subblock_gain[2], 3,&crc);
@@ -216,8 +216,8 @@ assert(gi->region1_count < 8U);
 CRC_writeheader(gfc,gi->region0_count, 4,&crc);
 CRC_writeheader(gfc,gi->region1_count, 3,&crc);
 }
-CRC_writeheader(gfc,gi->preflag,            1,&crc);
-CRC_writeheader(gfc,gi->scalefac_scale,     1,&crc);
+CRC_writeheader(gfc,gi->preflag, 1,&crc);
+CRC_writeheader(gfc,gi->scalefac_scale, 1,&crc);
 CRC_writeheader(gfc,gi->count1table_select, 1,&crc);
 }
 }
@@ -228,20 +228,20 @@ CRC_writeheader(gfc,l3_side->private_bits, gfc->channels_out,&crc);
 gr = 0;
 for (ch = 0; ch < gfc->channels_out; ch++) {
 gr_info *gi = &l3_side->gr[gr].ch[ch].tt;
-CRC_writeheader(gfc,gi->part2_3_length,       12,&crc);
-CRC_writeheader(gfc,gi->big_values / 2,        9,&crc);
-CRC_writeheader(gfc,gi->global_gain,           8,&crc);
-CRC_writeheader(gfc,gi->scalefac_compress,     9,&crc);
+CRC_writeheader(gfc,gi->part2_3_length, 12,&crc);
+CRC_writeheader(gfc,gi->big_values / 2, 9,&crc);
+CRC_writeheader(gfc,gi->global_gain, 8,&crc);
+CRC_writeheader(gfc,gi->scalefac_compress, 9,&crc);
 CRC_writeheader(gfc,gi->window_switching_flag, 1,&crc);
 if (gi->window_switching_flag) {
-CRC_writeheader(gfc,gi->block_type,       2,&crc);
+CRC_writeheader(gfc,gi->block_type, 2,&crc);
 CRC_writeheader(gfc,gi->mixed_block_flag, 1,&crc);
 if (gi->table_select[0] == 14)
 gi->table_select[0] = 16;
-CRC_writeheader(gfc,gi->table_select[0],  5,&crc);
+CRC_writeheader(gfc,gi->table_select[0], 5,&crc);
 if (gi->table_select[1] == 14)
 gi->table_select[1] = 16;
-CRC_writeheader(gfc,gi->table_select[1],  5,&crc);
+CRC_writeheader(gfc,gi->table_select[1], 5,&crc);
 CRC_writeheader(gfc,gi->subblock_gain[0], 3,&crc);
 CRC_writeheader(gfc,gi->subblock_gain[1], 3,&crc);
 CRC_writeheader(gfc,gi->subblock_gain[2], 3,&crc);
@@ -260,7 +260,7 @@ assert(gi->region1_count < 8U);
 CRC_writeheader(gfc,gi->region0_count, 4,&crc);
 CRC_writeheader(gfc,gi->region1_count, 3,&crc);
 }
-CRC_writeheader(gfc,gi->scalefac_scale,     1,&crc);
+CRC_writeheader(gfc,gi->scalefac_scale, 1,&crc);
 CRC_writeheader(gfc,gi->count1table_select, 1,&crc);
 }
 }
@@ -339,14 +339,14 @@ static int
 HuffmanCode(lame_global_flags* const gfp, int table_select, int x1, int x2)
 {
 struct huffcodetab* h = ht + table_select;
-int  code    = 0;
-int  cbits   = 0;
-int  xbits   = 0;
-int  sgn_x1  = 0;
-int  sgn_x2  = 0;
-int  linbits = h->xlen;
-int  xlen    = h->xlen;
-int  ext;
+int code = 0;
+int cbits = 0;
+int xbits = 0;
+int sgn_x1 = 0;
+int sgn_x2 = 0;
+int linbits = h->xlen;
+int xlen = h->xlen;
+int ext;
 if (x1 < 0) {
 sgn_x1++;
 x1 = -x1;
@@ -355,20 +355,20 @@ if (x2 < 0) {
 sgn_x2++;
 x2 = -x2;
 }
-ext     = sgn_x1;
+ext = sgn_x1;
 if (table_select > 15) {
 if (x1 > 14) {
 int linbits_x1 = x1 - 15;
-ext   |= linbits_x1 << 1;
-xbits  = linbits;
-x1     = 15;
+ext |= linbits_x1 << 1;
+xbits = linbits;
+x1 = 15;
 }
 if (x2 > 14) {
 int linbits_x2 = x2 - 15;
-ext  <<= linbits;
-ext   |= linbits_x2;
+ext <<= linbits;
+ext |= linbits_x2;
 xbits += linbits;
-x2     = 15;
+x2 = 15;
 }
 xlen = 16;
 }
@@ -377,15 +377,15 @@ cbits--;
 }
 if (x2 != 0) {
 ext <<= 1;
-ext  |= sgn_x2;
+ext |= sgn_x2;
 cbits--;
 }
 xbits -= cbits;
 x1 = x1 * xlen + x2;
-code   = h->table [x1];
-cbits += h->hlen  [x1];
+code = h->table [x1];
+cbits += h->hlen [x1];
 putbits2 ( gfp, code, cbits );
-putbits2 ( gfp, ext,  xbits );
+putbits2 ( gfp, ext, xbits );
 return cbits + xbits;
 }
 static int
@@ -408,7 +408,7 @@ int region1Start;
 region1Start = 3*gfc->scalefac_band.s[3];
 if (region1Start > gi->big_values)
 region1Start = gi->big_values;
-bits  = Huffmancodebits(gfp,gi->table_select[0], 0, region1Start, ix);
+bits = Huffmancodebits(gfp,gi->table_select[0], 0, region1Start, ix);
 bits += Huffmancodebits(gfp,gi->table_select[1], region1Start, gi->big_values, ix);
 return bits;
 }
@@ -437,8 +437,8 @@ return bits;
 }
 inline static int
 writeMainData ( lame_global_flags * const gfp,
-int              l3_enc   [2] [2] [576],
-III_scalefac_t   scalefac [2] [2] )
+int l3_enc [2] [2] [576],
+III_scalefac_t scalefac [2] [2] )
 {
 int gr, ch, sfb,data_bits,scale_bits,tot_bits=0;
 lame_internal_flags *gfc=gfp->internal_flags;
@@ -566,9 +566,9 @@ ERRORF(gfc,"strange error flushing buffer ... \n");
 } else {
 drain_into_ancillary(gfp,flushbits);
 }
-assert (gfc->header[last_ptr].write_timing + bitsPerFrame  == gfc->bs.totbit);
+assert (gfc->header[last_ptr].write_timing + bitsPerFrame == gfc->bs.totbit);
 }
-void  add_dummy_byte ( lame_global_flags* const gfp, unsigned char val )
+void add_dummy_byte ( lame_global_flags* const gfp, unsigned char val )
 {
 lame_internal_flags *gfc = gfp->internal_flags;
 int i;
@@ -578,8 +578,8 @@ gfc->header[i].write_timing += 8;
 }
 int
 format_bitstream(lame_global_flags *gfp, int bitsPerFrame,
-int              l3_enc[2][2][576],
-III_scalefac_t   scalefac[2][2] )
+int l3_enc[2][2][576],
+III_scalefac_t scalefac[2][2] )
 {
 lame_internal_flags *gfc=gfp->internal_flags;
 int bits;
@@ -614,7 +614,7 @@ bitsPerFrame
 gfc->ResvSize = l3_side->main_data_begin*8;
 };
 assert(gfc->bs.totbit % 8 == 0);
-if (gfc->bs.totbit > 1000000000  ) {
+if (gfc->bs.totbit > 1000000000 ) {
 int i;
 for (i=0 ; i< MAX_HEADER_BUF ; ++i)
 gfc->header[i].write_timing -= gfc->bs.totbit;
@@ -634,7 +634,7 @@ return minimum;
 }
 void init_bit_stream_w(lame_internal_flags *gfc)
 {
-gfc->bs.buf = (unsigned char *)       malloc(BUFFER_SIZE);
+gfc->bs.buf = (unsigned char *) malloc(BUFFER_SIZE);
 gfc->bs.buf_size = BUFFER_SIZE;
 gfc->h_ptr = gfc->w_ptr = 0;
 gfc->header[gfc->h_ptr].write_timing = 0;

@@ -8,175 +8,175 @@
 #include "../port/netif.h"
 #include "etherif.h"
 enum {
-Nrfd		= 64,
-Ncb		= 64,
-NullPointer	= 0xFFFFFFFF,
+Nrfd = 64,
+Ncb = 64,
+NullPointer = 0xFFFFFFFF,
 };
 enum {
-Status		= 0x00,
-Ack		= 0x01,
-CommandR	= 0x02,
-Interrupt	= 0x03,
-General		= 0x04,
-Port		= 0x08,
-Fcr		= 0x0C,
-Ecr		= 0x0E,
-Mcr		= 0x10,
-Gstatus		= 0x1D,
+Status = 0x00,
+Ack = 0x01,
+CommandR = 0x02,
+Interrupt = 0x03,
+General = 0x04,
+Port = 0x08,
+Fcr = 0x0C,
+Ecr = 0x0E,
+Mcr = 0x10,
+Gstatus = 0x1D,
 };
 enum {
-RUidle		= 0x0000,
-RUsuspended	= 0x0004,
-RUnoresources	= 0x0008,
-RUready		= 0x0010,
-RUrbd		= 0x0020,
-RUstatus	= 0x003F,
-CUidle		= 0x0000,
-CUsuspended	= 0x0040,
-CUactive	= 0x0080,
-CUstatus	= 0x00C0,
-StatSWI		= 0x0400,
-StatMDI		= 0x0800,
-StatRNR		= 0x1000,
-StatCNA		= 0x2000,
-StatFR		= 0x4000,
-StatCX		= 0x8000,
-StatTNO		= 0x8000,
+RUidle = 0x0000,
+RUsuspended = 0x0004,
+RUnoresources = 0x0008,
+RUready = 0x0010,
+RUrbd = 0x0020,
+RUstatus = 0x003F,
+CUidle = 0x0000,
+CUsuspended = 0x0040,
+CUactive = 0x0080,
+CUstatus = 0x00C0,
+StatSWI = 0x0400,
+StatMDI = 0x0800,
+StatRNR = 0x1000,
+StatCNA = 0x2000,
+StatFR = 0x4000,
+StatCX = 0x8000,
+StatTNO = 0x8000,
 };
 enum {
-CUnop		= 0x00,
-CUstart		= 0x10,
-CUresume	= 0x20,
-LoadDCA		= 0x40,
-DumpSC		= 0x50,
-LoadCUB		= 0x60,
-ResetSA		= 0x70,
-RUstart		= 0x01,
-RUresume	= 0x02,
-RUabort		= 0x04,
-LoadHDS		= 0x05,
-LoadRUB		= 0x06,
-RBDresume	= 0x07,
+CUnop = 0x00,
+CUstart = 0x10,
+CUresume = 0x20,
+LoadDCA = 0x40,
+DumpSC = 0x50,
+LoadCUB = 0x60,
+ResetSA = 0x70,
+RUstart = 0x01,
+RUresume = 0x02,
+RUabort = 0x04,
+LoadHDS = 0x05,
+LoadRUB = 0x06,
+RBDresume = 0x07,
 };
 enum {
-InterruptM	= 0x01,
-InterruptSI	= 0x02,
+InterruptM = 0x01,
+InterruptSI = 0x02,
 };
 enum {
-EEsk		= 0x01,
-EEcs		= 0x02,
-EEdi		= 0x04,
-EEdo		= 0x08,
-EEstart		= 0x04,
-EEread		= 0x02,
+EEsk = 0x01,
+EEcs = 0x02,
+EEdi = 0x04,
+EEdo = 0x08,
+EEstart = 0x04,
+EEread = 0x02,
 };
 enum {
-MDIread		= 0x08000000,
-MDIwrite	= 0x04000000,
-MDIready	= 0x10000000,
-MDIie		= 0x20000000,
+MDIread = 0x08000000,
+MDIwrite = 0x04000000,
+MDIready = 0x10000000,
+MDIie = 0x20000000,
 };
 typedef struct Rfd {
-int	field;
-ulong	link;
-ulong	rbd;
-ushort	count;
-ushort	size;
-uchar	data[1700];
+int field;
+ulong link;
+ulong rbd;
+ushort count;
+ushort size;
+uchar data[1700];
 } Rfd;
 enum {
-RfdCollision	= 0x00000001,
-RfdIA		= 0x00000002,
-RfdRxerr	= 0x00000010,
-RfdType		= 0x00000020,
-RfdRunt		= 0x00000080,
-RfdOverrun	= 0x00000100,
-RfdBuffer	= 0x00000200,
-RfdAlignment	= 0x00000400,
-RfdCRC		= 0x00000800,
-RfdOK		= 0x00002000,
-RfdC		= 0x00008000,
-RfdSF		= 0x00080000,
-RfdH		= 0x00100000,
-RfdI		= 0x20000000,
-RfdS		= 0x40000000,
-RfdEL		= 0x80000000,
+RfdCollision = 0x00000001,
+RfdIA = 0x00000002,
+RfdRxerr = 0x00000010,
+RfdType = 0x00000020,
+RfdRunt = 0x00000080,
+RfdOverrun = 0x00000100,
+RfdBuffer = 0x00000200,
+RfdAlignment = 0x00000400,
+RfdCRC = 0x00000800,
+RfdOK = 0x00002000,
+RfdC = 0x00008000,
+RfdSF = 0x00080000,
+RfdH = 0x00100000,
+RfdI = 0x20000000,
+RfdS = 0x40000000,
+RfdEL = 0x80000000,
 };
 enum {
-RfdF		= 0x4000,
-RfdEOF		= 0x8000,
+RfdF = 0x4000,
+RfdEOF = 0x8000,
 };
 typedef struct Cb Cb;
 typedef struct Cb {
-ushort	status;
-ushort	command;
-ulong	link;
+ushort status;
+ushort command;
+ulong link;
 union {
-uchar	data[24];
+uchar data[24];
 struct {
-ulong	tbd;
-ushort	count;
-uchar	threshold;
-uchar	number;
-ulong	tba;
-ushort	tbasz;
-ushort	pad;
+ulong tbd;
+ushort count;
+uchar threshold;
+uchar number;
+ulong tba;
+ushort tbasz;
+ushort pad;
 };
 };
-Block*	bp;
-Cb*	next;
+Block* bp;
+Cb* next;
 } Cb;
 enum {
-CbU		= 0x1000,
-CbOK		= 0x2000,
-CbC		= 0x8000,
-CbNOP		= 0x0000,
-CbIAS		= 0x0001,
-CbConfigure	= 0x0002,
-CbMAS		= 0x0003,
-CbTransmit	= 0x0004,
-CbDump		= 0x0006,
-CbDiagnose	= 0x0007,
-CbCommand	= 0x0007,
-CbSF		= 0x0008,
-CbI		= 0x2000,
-CbS		= 0x4000,
-CbEL		= 0x8000,
+CbU = 0x1000,
+CbOK = 0x2000,
+CbC = 0x8000,
+CbNOP = 0x0000,
+CbIAS = 0x0001,
+CbConfigure = 0x0002,
+CbMAS = 0x0003,
+CbTransmit = 0x0004,
+CbDump = 0x0006,
+CbDiagnose = 0x0007,
+CbCommand = 0x0007,
+CbSF = 0x0008,
+CbI = 0x2000,
+CbS = 0x4000,
+CbEL = 0x8000,
 };
 enum {
-CbEOF		= 0x8000,
+CbEOF = 0x8000,
 };
 typedef struct Ctlr Ctlr;
 typedef struct Ctlr {
-Lock	slock;
-int	state;
-int	port;
-Pcidev*	pcidev;
-Ctlr*	next;
-int	active;
-int	eepromsz;
-ushort*	eeprom;
-Lock	miilock;
-int	tick;
-Lock	rlock;
-int	command;
-Block*	rfdhead;
-Block*	rfdtail;
-int	nrfd;
-Lock	cblock;
-int	action;
-int	nop;
-uchar	configdata[24];
-int	threshold;
-int	ncb;
-Cb*	cbr;
-Cb*	cbhead;
-Cb*	cbtail;
-int	cbq;
-int	cbqmax;
-int	cbqmaxhw;
-Lock	dlock;
-ulong	dump[17];
+Lock slock;
+int state;
+int port;
+Pcidev* pcidev;
+Ctlr* next;
+int active;
+int eepromsz;
+ushort* eeprom;
+Lock miilock;
+int tick;
+Lock rlock;
+int command;
+Block* rfdhead;
+Block* rfdtail;
+int nrfd;
+Lock cblock;
+int action;
+int nop;
+uchar configdata[24];
+int threshold;
+int ncb;
+Cb* cbr;
+Cb* cbhead;
+Cb* cbtail;
+int cbq;
+int cbqmax;
+int cbqmaxhw;
+Lock dlock;
+ulong dump[17];
 } Ctlr;
 static Ctlr* ctlrhead;
 static Ctlr* ctlrtail;
@@ -204,12 +204,12 @@ static uchar configdata[24] = {
 0x3F,
 0x05,
 };
-#define csr8r(c, r)	(inb((c)->port+(r)))
-#define csr16r(c, r)	(ins((c)->port+(r)))
-#define csr32r(c, r)	(inl((c)->port+(r)))
-#define csr8w(c, r, b)	(outb((c)->port+(r), (int)(b)))
-#define csr16w(c, r, w)	(outs((c)->port+(r), (ushort)(w)))
-#define csr32w(c, r, l)	(outl((c)->port+(r), (ulong)(l)))
+#define csr8r(c, r) (inb((c)->port+(r)))
+#define csr16r(c, r) (ins((c)->port+(r)))
+#define csr32r(c, r) (inl((c)->port+(r)))
+#define csr8w(c, r, b) (outb((c)->port+(r), (int)(b)))
+#define csr16w(c, r, w) (outs((c)->port+(r), (ushort)(w)))
+#define csr32w(c, r, l) (outl((c)->port+(r), (ulong)(l)))
 static void
 command(Ctlr* ctlr, int c, int v)
 {
@@ -981,5 +981,5 @@ return 0;
 void
 ether82557link(void)
 {
-addethercard("i82557",  reset);
+addethercard("i82557", reset);
 }

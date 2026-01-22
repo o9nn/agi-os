@@ -1,5 +1,5 @@
 #ifndef main_INCLUDED
-#  define main_INCLUDED
+# define main_INCLUDED
 #include "iapi.h"
 #include "imain.h"
 #include "iminst.h"

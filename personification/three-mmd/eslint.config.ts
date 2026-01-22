@@ -1,13 +1,13 @@
 import { defineConfig } from '@moeru/eslint-config'
 export default defineConfig({
-  pnpm: true,
-  react: true,
+pnpm: true,
+react: true,
 }, {
-  rules: {
-    'sonarjs/cognitive-complexity': 'off',
-  },
+rules: {
+'sonarjs/cognitive-complexity': 'off',
+},
 }, {
-  ignores: [
-    'examples/playground/src/router.ts',
-  ],
+ignores: [
+'examples/playground/src/router.ts',
+],
 })

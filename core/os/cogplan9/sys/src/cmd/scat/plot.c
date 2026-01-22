@@ -5,40 +5,40 @@
 #include <event.h>
 #include <ctype.h>
 #include "map.h"
-#undef	RAD
-#undef	TWOPI
+#undef RAD
+#undef TWOPI
 #include "sky.h"
-static long	c = MILLIARCSEC;
-static long	m5 = 1250*60*60;
-DAngle	ramin;
-DAngle	ramax;
-DAngle	decmin;
-DAngle	decmax;
-int		folded;
-Image	*grey;
-Image	*alphagrey;
-Image	*green;
-Image	*lightblue;
-Image	*lightgrey;
-Image	*ocstipple;
-Image	*suncolor;
-Image	*mooncolor;
-Image	*shadowcolor;
-Image	*mercurycolor;
-Image	*venuscolor;
-Image	*marscolor;
-Image	*jupitercolor;
-Image	*saturncolor;
-Image	*uranuscolor;
-Image	*neptunecolor;
-Image	*plutocolor;
-Image	*cometcolor;
-Planetrec	*planet;
-long	mapx0, mapy0;
-long	mapra, mapdec;
-double	mylat, mylon, mysid;
-double	mapscale;
-double	maps;
+static long c = MILLIARCSEC;
+static long m5 = 1250*60*60;
+DAngle ramin;
+DAngle ramax;
+DAngle decmin;
+DAngle decmax;
+int folded;
+Image *grey;
+Image *alphagrey;
+Image *green;
+Image *lightblue;
+Image *lightgrey;
+Image *ocstipple;
+Image *suncolor;
+Image *mooncolor;
+Image *shadowcolor;
+Image *mercurycolor;
+Image *venuscolor;
+Image *marscolor;
+Image *jupitercolor;
+Image *saturncolor;
+Image *uranuscolor;
+Image *neptunecolor;
+Image *plutocolor;
+Image *cometcolor;
+Planetrec *planet;
+long mapx0, mapy0;
+long mapra, mapdec;
+double mylat, mylon, mysid;
+double mapscale;
+double maps;
 int (*projection)(struct place*, double*, double*);
 char *fontname = "/lib/font/bit/lucida/unicode.6.font";
 typedef struct Xyz Xyz;
@@ -207,7 +207,7 @@ mapscale = Dx(r)/(minx-maxx);
 if(mapscale > Dy(r)/(maxy-miny))
 mapscale = Dy(r)/(maxy-miny);
 mapscale *= (cos(angle(mapdec))+1.)/2;
-if(maxy  < miny){
+if(maxy < miny){
 fprint(2, "reverse plot\n");
 mapscale = -mapscale;
 }
@@ -462,7 +462,7 @@ if(mapdec < 85)
 return 4*m5;
 return 8*m5;
 }
-#define	GREY	(nogrey? display->white : grey)
+#define GREY (nogrey? display->white : grey)
 void
 plot(char *flags)
 {

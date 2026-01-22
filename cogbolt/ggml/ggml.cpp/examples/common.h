@@ -8,23 +8,23 @@
 #include <fstream>
 #include <sstream>
 struct gpt_params {
-int32_t seed         = -1;
-int32_t n_threads    = std::min(4, (int32_t) std::thread::hardware_concurrency());
-int32_t n_predict    = 200;
-int32_t n_parallel   = 1;
-int32_t n_batch      = 32;
-int32_t n_ctx        = 2048;
+int32_t seed = -1;
+int32_t n_threads = std::min(4, (int32_t) std::thread::hardware_concurrency());
+int32_t n_predict = 200;
+int32_t n_parallel = 1;
+int32_t n_batch = 32;
+int32_t n_ctx = 2048;
 int32_t n_gpu_layers = 0;
 bool ignore_eos = false;
-int32_t top_k          = 40;
-float   top_p          = 0.9f;
-float   temp           = 0.9f;
-int32_t repeat_last_n  = 64;
-float   repeat_penalty = 1.00f;
-std::string model      = "models/gpt-2-117M/ggml-model.bin";
-std::string prompt     = "";
+int32_t top_k = 40;
+float top_p = 0.9f;
+float temp = 0.9f;
+int32_t repeat_last_n = 64;
+float repeat_penalty = 1.00f;
+std::string model = "models/gpt-2-117M/ggml-model.bin";
+std::string prompt = "";
 std::string token_test = "";
-bool    interactive      = false;
+bool interactive = false;
 int32_t interactive_port = -1;
 };
 bool gpt_params_parse(int argc, char ** argv, gpt_params & params);
@@ -36,7 +36,7 @@ const std::string & s,
 const std::string & from,
 const std::string & to);
 struct gpt_vocab {
-using id    = int32_t;
+using id = int32_t;
 using token = std::string;
 std::map<token, id> token_to_id;
 std::map<id, token> id_to_token;
@@ -53,7 +53,7 @@ bool gpt_vocab_init(const std::string & fname, gpt_vocab & vocab);
 gpt_vocab::id gpt_sample_top_k_top_p(
 const gpt_vocab & vocab,
 const float * logits,
-int    top_k,
+int top_k,
 double top_p,
 double temp,
 std::mt19937 & rng);
@@ -62,7 +62,7 @@ const gpt_vocab & vocab,
 const float * logits,
 const int32_t * last_n_tokens_data,
 size_t last_n_tokens_data_size,
-int    top_k,
+int top_k,
 double top_p,
 double temp,
 int repeat_last_n,
@@ -126,9 +126,9 @@ return file.is_open();
 }
 public:
 bool open(const std::string & filename,
-const    uint32_t   sample_rate,
-const    uint16_t   bits_per_sample,
-const    uint16_t   channels) {
+const uint32_t sample_rate,
+const uint16_t bits_per_sample,
+const uint16_t channels) {
 if (open_wav(filename)) {
 write_header(sample_rate, bits_per_sample, channels);
 } else {
@@ -155,13 +155,13 @@ float cutoff,
 float sample_rate);
 bool vad_simple(
 std::vector<float> & pcmf32,
-int   sample_rate,
-int   last_ms,
+int sample_rate,
+int last_ms,
 float vad_thold,
 float freq_thold,
-bool  verbose);
+bool verbose);
 float similarity(const std::string & s0, const std::string & s1);
-#define SQR(X)    ((X) * (X))
+#define SQR(X) ((X) * (X))
 #define UNCUBE(x) x < 48 ? 0 : x < 115 ? 1 : (x - 35) / 40
 static int rgb2xterm256(int r, int g, int b) {
 unsigned char cube[] = {0, 0137, 0207, 0257, 0327, 0377};
@@ -183,11 +183,11 @@ oss << "\033[38;5;" << x << "m";
 return oss.str();
 }
 const std::vector<std::string> k_colors = {
-set_xterm256_foreground(220,   5,  12),
-set_xterm256_foreground(232,  96,  28),
-set_xterm256_foreground(241, 147,  45),
-set_xterm256_foreground(246, 193,  65),
-set_xterm256_foreground(247, 240,  86),
+set_xterm256_foreground(220, 5, 12),
+set_xterm256_foreground(232, 96, 28),
+set_xterm256_foreground(241, 147, 45),
+set_xterm256_foreground(246, 193, 65),
+set_xterm256_foreground(247, 240, 86),
 set_xterm256_foreground(144, 201, 135),
 set_xterm256_foreground( 78, 178, 101),
 };

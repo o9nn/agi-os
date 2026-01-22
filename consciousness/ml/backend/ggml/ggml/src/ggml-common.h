@@ -15,7 +15,7 @@ typedef uint32_t ggml_half2;
 #define GGML_COMMON_DECL
 #elif defined(GGML_COMMON_DECL_METAL)
 #include <metal_stdlib>
-typedef half  ggml_half;
+typedef half ggml_half;
 typedef half2 ggml_half2;
 #define GGML_COMMON_AGGR_U
 #define GGML_COMMON_AGGR_S
@@ -27,7 +27,7 @@ typedef half2 ggml_half2;
 #include <cuda_fp16.h>
 #endif
 #include <cstdint>
-typedef half  ggml_half;
+typedef half ggml_half;
 typedef half2 ggml_half2;
 #define GGML_COMMON_AGGR_U
 #define GGML_COMMON_AGGR_S data
@@ -35,7 +35,7 @@ typedef half2 ggml_half2;
 #elif defined(GGML_COMMON_DECL_HIP)
 #include <hip/hip_fp16.h>
 #include <cstdint>
-typedef half  ggml_half;
+typedef half ggml_half;
 typedef half2 ggml_half2;
 #define GGML_COMMON_AGGR_U
 #define GGML_COMMON_AGGR_S data
@@ -43,7 +43,7 @@ typedef half2 ggml_half2;
 #elif defined(GGML_COMMON_DECL_SYCL)
 #include <sycl/half_type.hpp>
 #include <cstdint>
-typedef sycl::half  ggml_half;
+typedef sycl::half ggml_half;
 typedef sycl::half2 ggml_half2;
 #define GGML_COMMON_AGGR_U
 #define GGML_COMMON_AGGR_S data
@@ -151,7 +151,7 @@ static_assert(sizeof(block_q5_1) == 2 * sizeof(ggml_half) + sizeof(uint32_t) + Q
 #define QK8_0 32
 typedef struct {
 ggml_half d;
-int8_t  qs[QK8_0];
+int8_t qs[QK8_0];
 } block_q8_0;
 static_assert(sizeof(block_q8_0) == sizeof(ggml_half) + QK8_0, "wrong q8_0 block size/padding");
 #define QK8_1 32
@@ -224,13 +224,13 @@ static_assert(sizeof(block_q5_K) == 2*sizeof(ggml_half) + K_SCALE_SIZE + QK_K/2 
 typedef struct {
 uint8_t ql[QK_K/2];
 uint8_t qh[QK_K/4];
-int8_t  scales[QK_K/16];
+int8_t scales[QK_K/16];
 ggml_half d;
 } block_q6_K;
 static_assert(sizeof(block_q6_K) == sizeof(ggml_half) + QK_K / 16 + 3*QK_K/4, "wrong q6_K block size/padding");
 typedef struct {
-float   d;
-int8_t  qs[QK_K];
+float d;
+int8_t qs[QK_K];
 int16_t bsums[QK_K/16];
 } block_q8_K;
 static_assert(sizeof(block_q8_K) == sizeof(float) + QK_K + QK_K/16*sizeof(int16_t), "wrong q8_K block size/padding");
@@ -242,7 +242,7 @@ static_assert(sizeof(block_iq2_xxs) == sizeof(ggml_half) + QK_K/8*sizeof(uint16_
 typedef struct {
 ggml_half d;
 uint16_t qs[QK_K/8];
-uint8_t  scales[QK_K/32];
+uint8_t scales[QK_K/32];
 } block_iq2_xs;
 static_assert(sizeof(block_iq2_xs) == sizeof(ggml_half) + QK_K/8*sizeof(uint16_t) + QK_K/32, "wrong iq2_xs block size/padding");
 typedef struct {
@@ -268,19 +268,19 @@ uint8_t scales[IQ3S_N_SCALE];
 static_assert(sizeof(block_iq3_s) == sizeof(ggml_half) + 13*(QK_K/32) + IQ3S_N_SCALE, "wrong iq3_s block size/padding");
 typedef struct {
 ggml_half d;
-uint8_t  qs[QK_K/8];
+uint8_t qs[QK_K/8];
 uint16_t qh[QK_K/32];
 } block_iq1_s;
 static_assert(sizeof(block_iq1_s) == sizeof(ggml_half) + QK_K/8 + QK_K/16, "wrong iq1_s block size/padding");
 typedef struct {
-uint8_t  qs[QK_K/8];
-uint8_t  qh[QK_K/16];
-uint8_t  scales[QK_K/32];
+uint8_t qs[QK_K/8];
+uint8_t qh[QK_K/16];
+uint8_t scales[QK_K/32];
 } block_iq1_m;
 static_assert(sizeof(block_iq1_m) == QK_K/8 + QK_K/16 + QK_K/32, "wrong iq1_m block size/padding");
 typedef union {
 ggml_half f16;
-uint16_t  u16;
+uint16_t u16;
 } iq1m_scale_t;
 #define QK4_NL 32
 typedef struct {
@@ -291,8 +291,8 @@ static_assert(sizeof(block_iq4_nl) == sizeof(ggml_half) + QK4_NL/2, "wrong iq4_n
 typedef struct {
 ggml_half d;
 uint16_t scales_h;
-uint8_t  scales_l[QK_K/64];
-uint8_t  qs[QK_K/2];
+uint8_t scales_l[QK_K/64];
+uint8_t qs[QK_K/2];
 } block_iq4_xs;
 static_assert(sizeof(block_iq4_xs) == sizeof(ggml_half) + sizeof(uint16_t) + QK_K/64 + QK_K/2, "wrong iq4_xs block size/padding");
 #define MXFP4 32
@@ -335,13 +335,13 @@ GGML_TABLE_BEGIN(uint8_t, kmask_iq2xs, 8)
 1, 2, 4, 8, 16, 32, 64, 128
 GGML_TABLE_END()
 GGML_TABLE_BEGIN(uint8_t, ksigns_iq2xs, 128)
-0, 129, 130,   3, 132,   5,   6, 135, 136,   9,  10, 139,  12, 141, 142,  15,
-144,  17,  18, 147,  20, 149, 150,  23,  24, 153, 154,  27, 156,  29,  30, 159,
-160,  33,  34, 163,  36, 165, 166,  39,  40, 169, 170,  43, 172,  45,  46, 175,
-48, 177, 178,  51, 180,  53,  54, 183, 184,  57,  58, 187,  60, 189, 190,  63,
-192,  65,  66, 195,  68, 197, 198,  71,  72, 201, 202,  75, 204,  77,  78, 207,
-80, 209, 210,  83, 212,  85,  86, 215, 216,  89,  90, 219,  92, 221, 222,  95,
-96, 225, 226,  99, 228, 101, 102, 231, 232, 105, 106, 235, 108, 237, 238, 111,
+0, 129, 130, 3, 132, 5, 6, 135, 136, 9, 10, 139, 12, 141, 142, 15,
+144, 17, 18, 147, 20, 149, 150, 23, 24, 153, 154, 27, 156, 29, 30, 159,
+160, 33, 34, 163, 36, 165, 166, 39, 40, 169, 170, 43, 172, 45, 46, 175,
+48, 177, 178, 51, 180, 53, 54, 183, 184, 57, 58, 187, 60, 189, 190, 63,
+192, 65, 66, 195, 68, 197, 198, 71, 72, 201, 202, 75, 204, 77, 78, 207,
+80, 209, 210, 83, 212, 85, 86, 215, 216, 89, 90, 219, 92, 221, 222, 95,
+96, 225, 226, 99, 228, 101, 102, 231, 232, 105, 106, 235, 108, 237, 238, 111,
 240, 113, 114, 243, 116, 245, 246, 119, 120, 249, 250, 123, 252, 125, 126, 255,
 GGML_TABLE_END()
 GGML_TABLE_BEGIN(uint64_t, ksigns64, 128)

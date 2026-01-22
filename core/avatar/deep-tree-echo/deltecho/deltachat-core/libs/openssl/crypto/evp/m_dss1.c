@@ -5,7 +5,7 @@
 # include <openssl/objects.h>
 # include <openssl/sha.h>
 # ifndef OPENSSL_NO_DSA
-#  include <openssl/dsa.h>
+# include <openssl/dsa.h>
 # endif
 # ifndef OPENSSL_FIPS
 static int init(EVP_MD_CTX *ctx)

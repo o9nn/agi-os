@@ -27,13 +27,13 @@
 #include "service-log.h"
 #include "dovecot-version.h"
 #ifdef HAVE_LIBSYSTEMD
-#  include <systemd/sd-daemon.h>
-#  define i_sd_notify(unset, message) (void)sd_notify((unset), (message))
-#  define i_sd_notifyf(unset, message, ...) \
+# include <systemd/sd-daemon.h>
+# define i_sd_notify(unset, message) (void)sd_notify((unset), (message))
+# define i_sd_notifyf(unset, message, ...) \
 (void)sd_notifyf((unset), (message), __VA_ARGS__)
 #else
-#  define i_sd_notify(unset, message)
-#  define i_sd_notifyf(unset, message, ...)
+# define i_sd_notify(unset, message)
+# define i_sd_notifyf(unset, message, ...)
 #endif
 #include <stdio.h>
 #include <unistd.h>

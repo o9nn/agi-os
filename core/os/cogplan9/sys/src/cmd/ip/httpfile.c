@@ -35,9 +35,9 @@ enum
 Qroot,
 Qfile,
 };
-#define PATH(type, n)		((type)|((n)<<8))
-#define TYPE(path)			((int)(path) & 0xFF)
-#define NUM(path)			((uint)(path)>>8)
+#define PATH(type, n) ((type)|((n)<<8))
+#define TYPE(path) ((int)(path) & 0xFF)
+#define NUM(path) ((uint)(path)>>8)
 Channel *reqchan;
 Channel *httpchan;
 Channel *finishchan;
@@ -264,8 +264,8 @@ ulong mode;
 };
 Tab tab[] =
 {
-"/",		DMDIR|0555,
-nil,		0444,
+"/", DMDIR|0555,
+nil, 0444,
 };
 static void
 fillstat(Dir *d, uvlong path)
@@ -468,13 +468,13 @@ break;
 }
 Srv fs =
 {
-.attach=		fsattach,
-.walk1=		fswalk1,
-.open=		fsopen,
-.read=		fsread,
-.stat=		fsstat,
-.flush=		fsflush,
-.end=		hangupclient,
+.attach= fsattach,
+.walk1= fswalk1,
+.open= fsopen,
+.read= fsread,
+.stat= fsstat,
+.flush= fsflush,
+.end= hangupclient,
 };
 void
 threadmain(int argc, char **argv)

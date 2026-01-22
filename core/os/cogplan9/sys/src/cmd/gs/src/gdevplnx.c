@@ -109,7 +109,7 @@ REDUCE_DRAW,
 REDUCE_FAILED
 } reduced_color_t;
 #define REDUCE_PURE(edev, pixel)\
-((pixel) == (edev)->plane_white && !(edev)->any_marks ?  REDUCE_SKIP :\
+((pixel) == (edev)->plane_white && !(edev)->any_marks ? REDUCE_SKIP :\
 ((edev)->any_marks = true, REDUCE_DRAW))
 private reduced_color_t
 reduce_drawing_color(gx_device_color *ppdc, gx_device_plane_extract *edev,

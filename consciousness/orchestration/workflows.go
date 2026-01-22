@@ -1,365 +1,365 @@
 package orchestration
 import (
-	"context"
-	"fmt"
-	"strings"
-	"time"
+"context"
+"fmt"
+"strings"
+"time"
 )
 func (e *Engine) CreateDefaultAgent(ctx context.Context) (*Agent, error) {
-	agent := &Agent{
-		Name:        "default",
-		Description: "Default orchestration agent for general tasks",
-		Type:        AgentTypeGeneral,
-		Models:      []string{"llama3.2", "llama2", "codellama"},
-		Tools:       []string{"web_search", "calculator"},
-		Config: map[string]interface{}{
-			"max_concurrent_tasks": 3,
-			"default_model":        "llama3.2",
-			"timeout_seconds":      300,
-		},
-	}
-	err := e.CreateAgent(ctx, agent)
-	if err != nil {
-		return nil, err
-	}
-	return agent, nil
+agent := &Agent{
+Name:        "default",
+Description: "Default orchestration agent for general tasks",
+Type:        AgentTypeGeneral,
+Models:      []string{"llama3.2", "llama2", "codellama"},
+Tools:       []string{"web_search", "calculator"},
+Config: map[string]interface{}{
+"max_concurrent_tasks": 3,
+"default_model":        "llama3.2",
+"timeout_seconds":      300,
+},
+}
+err := e.CreateAgent(ctx, agent)
+if err != nil {
+return nil, err
+}
+return agent, nil
 }
 func (e *Engine) CreateSpecializedAgent(ctx context.Context, agentType AgentType, domain string) (*Agent, error) {
-	var agent *Agent
-	switch agentType {
-	case AgentTypeReflective:
-		agent = &Agent{
-			Name:        fmt.Sprintf("reflective-%s", domain),
-			Description: fmt.Sprintf("Self-reflective agent specialized in %s", domain),
-			Type:        AgentTypeReflective,
-			Models:      []string{"llama3.2", "llama2"},
-			Tools:       []string{"data_analysis"},
-			Config: map[string]interface{}{
-				"reflection_interval": 300,
-				"learning_rate":       0.1,
-				"domain":             domain,
-			},
-		}
-	case AgentTypeOrchestrator:
-		agent = &Agent{
-			Name:        "orchestrator-coordinator",
-			Description: "Orchestrator agent for coordinating multiple agents and complex workflows",
-			Type:        AgentTypeOrchestrator,
-			Models:      []string{"llama3.2"},
-			Tools:       []string{"web_search", "calculator", "data_analysis"},
-			Config: map[string]interface{}{
-				"max_sub_agents":    5,
-				"coordination_mode": "hierarchical",
-			},
-		}
-	case AgentTypeSpecialist:
-		agent = &Agent{
-			Name:        fmt.Sprintf("specialist-%s", domain),
-			Description: fmt.Sprintf("Specialist agent for %s domain tasks", domain),
-			Type:        AgentTypeSpecialist,
-			Models:      []string{"llama3.2", "codellama"},
-			Tools:       []string{"web_search", "data_analysis"},
-			Config: map[string]interface{}{
-				"specialization": domain,
-				"expertise_level": "advanced",
-			},
-		}
-	default:
-		return nil, fmt.Errorf("unsupported agent type: %s", agentType)
-	}
-	err := e.CreateAgent(ctx, agent)
-	if err != nil {
-		return nil, err
-	}
-	return agent, nil
+var agent *Agent
+switch agentType {
+case AgentTypeReflective:
+agent = &Agent{
+Name:        fmt.Sprintf("reflective-%s", domain),
+Description: fmt.Sprintf("Self-reflective agent specialized in %s", domain),
+Type:        AgentTypeReflective,
+Models:      []string{"llama3.2", "llama2"},
+Tools:       []string{"data_analysis"},
+Config: map[string]interface{}{
+"reflection_interval": 300,
+"learning_rate":       0.1,
+"domain":             domain,
+},
+}
+case AgentTypeOrchestrator:
+agent = &Agent{
+Name:        "orchestrator-coordinator",
+Description: "Orchestrator agent for coordinating multiple agents and complex workflows",
+Type:        AgentTypeOrchestrator,
+Models:      []string{"llama3.2"},
+Tools:       []string{"web_search", "calculator", "data_analysis"},
+Config: map[string]interface{}{
+"max_sub_agents":    5,
+"coordination_mode": "hierarchical",
+},
+}
+case AgentTypeSpecialist:
+agent = &Agent{
+Name:        fmt.Sprintf("specialist-%s", domain),
+Description: fmt.Sprintf("Specialist agent for %s domain tasks", domain),
+Type:        AgentTypeSpecialist,
+Models:      []string{"llama3.2", "codellama"},
+Tools:       []string{"web_search", "data_analysis"},
+Config: map[string]interface{}{
+"specialization": domain,
+"expertise_level": "advanced",
+},
+}
+default:
+return nil, fmt.Errorf("unsupported agent type: %s", agentType)
+}
+err := e.CreateAgent(ctx, agent)
+if err != nil {
+return nil, err
+}
+return agent, nil
 }
 func (e *Engine) SmartRouting(ctx context.Context, agentID string, input string, taskType string) (*TaskResult, error) {
-	agent, err := e.GetAgent(ctx, agentID)
-	if err != nil {
-		return nil, err
-	}
-	modelName := e.selectBestModel(agent, taskType, input)
-	task := &Task{
-		Type:      taskType,
-		Input:     input,
-		Status:    TaskStatusPending,
-		AgentID:   agentID,
-		ModelName: modelName,
-	}
-	e.mu.Lock()
-	e.tasks[task.ID] = task
-	e.mu.Unlock()
-	return e.ExecuteTask(ctx, task, agent)
+agent, err := e.GetAgent(ctx, agentID)
+if err != nil {
+return nil, err
+}
+modelName := e.selectBestModel(agent, taskType, input)
+task := &Task{
+Type:      taskType,
+Input:     input,
+Status:    TaskStatusPending,
+AgentID:   agentID,
+ModelName: modelName,
+}
+e.mu.Lock()
+e.tasks[task.ID] = task
+e.mu.Unlock()
+return e.ExecuteTask(ctx, task, agent)
 }
 func (e *Engine) selectBestModel(agent *Agent, taskType, input string) string {
-	if len(agent.Models) == 0 {
-		return ""
-	}
-	switch taskType {
-	case TaskTypeGenerate:
-		if strings.Contains(strings.ToLower(input), "code") ||
-			strings.Contains(strings.ToLower(input), "function") ||
-			strings.Contains(strings.ToLower(input), "programming") {
-			for _, model := range agent.Models {
-				if strings.Contains(strings.ToLower(model), "code") {
-					return model
-				}
-			}
-		}
-	case TaskTypeChat:
-		for _, model := range agent.Models {
-			if strings.Contains(strings.ToLower(model), "llama") &&
-				!strings.Contains(strings.ToLower(model), "code") {
-				return model
-			}
-		}
-	}
-	if defaultModel, ok := agent.Config["default_model"].(string); ok {
-		for _, model := range agent.Models {
-			if model == defaultModel {
-				return model
-			}
-		}
-	}
-	return agent.Models[0]
+if len(agent.Models) == 0 {
+return ""
+}
+switch taskType {
+case TaskTypeGenerate:
+if strings.Contains(strings.ToLower(input), "code") ||
+strings.Contains(strings.ToLower(input), "function") ||
+strings.Contains(strings.ToLower(input), "programming") {
+for _, model := range agent.Models {
+if strings.Contains(strings.ToLower(model), "code") {
+return model
+}
+}
+}
+case TaskTypeChat:
+for _, model := range agent.Models {
+if strings.Contains(strings.ToLower(model), "llama") &&
+!strings.Contains(strings.ToLower(model), "code") {
+return model
+}
+}
+}
+if defaultModel, ok := agent.Config["default_model"].(string); ok {
+for _, model := range agent.Models {
+if model == defaultModel {
+return model
+}
+}
+}
+return agent.Models[0]
 }
 func (e *Engine) MultiStepWorkflow(ctx context.Context, agentID string, steps []WorkflowStep) (*WorkflowResult, error) {
-	agent, err := e.GetAgent(ctx, agentID)
-	if err != nil {
-		return nil, err
-	}
-	result := &WorkflowResult{
-		Steps:   make([]WorkflowStepResult, len(steps)),
-		Success: true,
-	}
-	context := make(map[string]string)
-	for i, step := range steps {
-		input := e.replacePlaceholders(step.Input, context)
-		task := &Task{
-			Type:      step.Type,
-			Input:     input,
-			Status:    TaskStatusPending,
-			AgentID:   agentID,
-			ModelName: step.ModelName,
-		}
-		if task.ModelName == "" {
-			task.ModelName = e.selectBestModel(agent, step.Type, input)
-		}
-		stepResult, err := e.ExecuteTask(ctx, task, agent)
-		if err != nil {
-			result.Success = false
-			result.Error = fmt.Sprintf("Step %d failed: %v", i+1, err)
-			break
-		}
-		context[fmt.Sprintf("step%d", i+1)] = stepResult.Output
-		context[step.Name] = stepResult.Output
-		result.Steps[i] = WorkflowStepResult{
-			Name:      step.Name,
-			Type:      step.Type,
-			Input:     input,
-			Output:    stepResult.Output,
-			ModelUsed: stepResult.ModelUsed,
-			Success:   true,
-		}
-	}
-	return result, nil
+agent, err := e.GetAgent(ctx, agentID)
+if err != nil {
+return nil, err
+}
+result := &WorkflowResult{
+Steps:   make([]WorkflowStepResult, len(steps)),
+Success: true,
+}
+context := make(map[string]string)
+for i, step := range steps {
+input := e.replacePlaceholders(step.Input, context)
+task := &Task{
+Type:      step.Type,
+Input:     input,
+Status:    TaskStatusPending,
+AgentID:   agentID,
+ModelName: step.ModelName,
+}
+if task.ModelName == "" {
+task.ModelName = e.selectBestModel(agent, step.Type, input)
+}
+stepResult, err := e.ExecuteTask(ctx, task, agent)
+if err != nil {
+result.Success = false
+result.Error = fmt.Sprintf("Step %d failed: %v", i+1, err)
+break
+}
+context[fmt.Sprintf("step%d", i+1)] = stepResult.Output
+context[step.Name] = stepResult.Output
+result.Steps[i] = WorkflowStepResult{
+Name:      step.Name,
+Type:      step.Type,
+Input:     input,
+Output:    stepResult.Output,
+ModelUsed: stepResult.ModelUsed,
+Success:   true,
+}
+}
+return result, nil
 }
 func (e *Engine) EnhancedCoordinatedWorkflow(ctx context.Context, coordinatorID string, tasks []CoordinatedTask) (*CoordinatedWorkflowResult, error) {
-	coordinator, err := e.GetAgent(ctx, coordinatorID)
-	if err != nil {
-		return nil, err
-	}
-	if coordinator.Type != AgentTypeOrchestrator {
-		return nil, fmt.Errorf("agent must be of type orchestrator for coordinated workflows")
-	}
-	result := &CoordinatedWorkflowResult{
-		CoordinatorID: coordinatorID,
-		Tasks:         make([]CoordinatedTaskResult, len(tasks)),
-		Success:       true,
-		StartTime:     time.Now(),
-	}
-	for i, task := range tasks {
-		selectedAgent, err := e.selectOptimalAgent(ctx, task)
-		if err != nil {
-			result.Success = false
-			result.Error = fmt.Sprintf("Agent selection failed for task %d: %v", i, err)
-			break
-		}
-		executionResult, err := e.executeCoordinatedTask(ctx, task, selectedAgent, coordinator)
-		if err != nil {
-			result.Success = false
-			result.Error = fmt.Sprintf("Task %d execution failed: %v", i, err)
-			break
-		}
-		result.Tasks[i] = CoordinatedTaskResult{
-			TaskID:      task.ID,
-			AgentID:     selectedAgent.ID,
-			Type:        task.Type,
-			Input:       task.Input,
-			Output:      executionResult.Output,
-			Success:     true,
-			Coordination: fmt.Sprintf("Coordinated by %s", coordinator.Name),
-		}
-		e.updateAgentState(coordinator, fmt.Sprintf("coordinated_task_%d", i), executionResult.Output)
-	}
-	result.EndTime = time.Now()
-	result.Duration = result.EndTime.Sub(result.StartTime)
-	if coordinator.Type == AgentTypeReflective || 
-	   (coordinator.Config != nil && coordinator.Config["enable_reflection"] == true) {
-		reflection := e.performCoordinationReflection(coordinator, result)
-		e.updateAgentState(coordinator, "workflow_reflection", reflection)
-	}
-	return result, nil
+coordinator, err := e.GetAgent(ctx, coordinatorID)
+if err != nil {
+return nil, err
+}
+if coordinator.Type != AgentTypeOrchestrator {
+return nil, fmt.Errorf("agent must be of type orchestrator for coordinated workflows")
+}
+result := &CoordinatedWorkflowResult{
+CoordinatorID: coordinatorID,
+Tasks:         make([]CoordinatedTaskResult, len(tasks)),
+Success:       true,
+StartTime:     time.Now(),
+}
+for i, task := range tasks {
+selectedAgent, err := e.selectOptimalAgent(ctx, task)
+if err != nil {
+result.Success = false
+result.Error = fmt.Sprintf("Agent selection failed for task %d: %v", i, err)
+break
+}
+executionResult, err := e.executeCoordinatedTask(ctx, task, selectedAgent, coordinator)
+if err != nil {
+result.Success = false
+result.Error = fmt.Sprintf("Task %d execution failed: %v", i, err)
+break
+}
+result.Tasks[i] = CoordinatedTaskResult{
+TaskID:      task.ID,
+AgentID:     selectedAgent.ID,
+Type:        task.Type,
+Input:       task.Input,
+Output:      executionResult.Output,
+Success:     true,
+Coordination: fmt.Sprintf("Coordinated by %s", coordinator.Name),
+}
+e.updateAgentState(coordinator, fmt.Sprintf("coordinated_task_%d", i), executionResult.Output)
+}
+result.EndTime = time.Now()
+result.Duration = result.EndTime.Sub(result.StartTime)
+if coordinator.Type == AgentTypeReflective ||
+(coordinator.Config != nil && coordinator.Config["enable_reflection"] == true) {
+reflection := e.performCoordinationReflection(coordinator, result)
+e.updateAgentState(coordinator, "workflow_reflection", reflection)
+}
+return result, nil
 }
 func (e *Engine) selectOptimalAgent(ctx context.Context, task CoordinatedTask) (*Agent, error) {
-	agents, err := e.ListAgents(ctx)
-	if err != nil {
-		return nil, err
-	}
-	var bestAgent *Agent
-	var bestScore float64
-	for _, agent := range agents {
-		score := e.calculateAgentTaskFit(agent, task)
-		if score > bestScore {
-			bestScore = score
-			bestAgent = agent
-		}
-	}
-	if bestAgent == nil {
-		return nil, fmt.Errorf("no suitable agent found for task type: %s", task.Type)
-	}
-	return bestAgent, nil
+agents, err := e.ListAgents(ctx)
+if err != nil {
+return nil, err
+}
+var bestAgent *Agent
+var bestScore float64
+for _, agent := range agents {
+score := e.calculateAgentTaskFit(agent, task)
+if score > bestScore {
+bestScore = score
+bestAgent = agent
+}
+}
+if bestAgent == nil {
+return nil, fmt.Errorf("no suitable agent found for task type: %s", task.Type)
+}
+return bestAgent, nil
 }
 func (e *Engine) calculateAgentTaskFit(agent *Agent, task CoordinatedTask) float64 {
-	score := 0.0
-	switch task.Type {
-	case TaskTypeGenerate, TaskTypeChat:
-		if agent.Type == AgentTypeGeneral || agent.Type == AgentTypeSpecialist {
-			score += 0.3
-		}
-	case TaskTypeTool:
-		if len(agent.Tools) > 0 {
-			score += 0.4
-		}
-	case TaskTypeReflect:
-		if agent.Type == AgentTypeReflective {
-			score += 0.5
-		}
-	}
-	if len(agent.Models) > 0 {
-		score += 0.2
-	}
-	if task.RequiredTools != nil {
-		for _, requiredTool := range task.RequiredTools {
-			for _, agentTool := range agent.Tools {
-				if agentTool == requiredTool {
-					score += 0.1
-				}
-			}
-		}
-	}
-	if agent.State != nil && len(agent.State.Context) > 0 {
-		timeSinceLastInteraction := time.Since(agent.State.LastInteraction)
-		if timeSinceLastInteraction < time.Hour {
-			score += 0.1
-		}
-	}
-	return score
+score := 0.0
+switch task.Type {
+case TaskTypeGenerate, TaskTypeChat:
+if agent.Type == AgentTypeGeneral || agent.Type == AgentTypeSpecialist {
+score += 0.3
+}
+case TaskTypeTool:
+if len(agent.Tools) > 0 {
+score += 0.4
+}
+case TaskTypeReflect:
+if agent.Type == AgentTypeReflective {
+score += 0.5
+}
+}
+if len(agent.Models) > 0 {
+score += 0.2
+}
+if task.RequiredTools != nil {
+for _, requiredTool := range task.RequiredTools {
+for _, agentTool := range agent.Tools {
+if agentTool == requiredTool {
+score += 0.1
+}
+}
+}
+}
+if agent.State != nil && len(agent.State.Context) > 0 {
+timeSinceLastInteraction := time.Since(agent.State.LastInteraction)
+if timeSinceLastInteraction < time.Hour {
+score += 0.1
+}
+}
+return score
 }
 func (e *Engine) executeCoordinatedTask(ctx context.Context, task CoordinatedTask, agent *Agent, coordinator *Agent) (*TaskResult, error) {
-	regularTask := &Task{
-		ID:         task.ID,
-		Type:       task.Type,
-		Input:      task.Input,
-		Status:     TaskStatusPending,
-		AgentID:    agent.ID,
-		Parameters: task.Parameters,
-	}
-	if regularTask.Parameters == nil {
-		regularTask.Parameters = make(map[string]interface{})
-	}
-	regularTask.Parameters["coordinator_id"] = coordinator.ID
-	regularTask.Parameters["coordination_mode"] = "enhanced"
-	result, err := e.ExecuteTask(ctx, regularTask, agent)
-	if err != nil {
-		return nil, err
-	}
-	e.updateAgentState(agent, "coordinated_execution", result.Output)
-	e.updateAgentState(coordinator, "coordination_oversight", fmt.Sprintf("Supervised %s task by %s", task.Type, agent.Name))
-	return result, nil
+regularTask := &Task{
+ID:         task.ID,
+Type:       task.Type,
+Input:      task.Input,
+Status:     TaskStatusPending,
+AgentID:    agent.ID,
+Parameters: task.Parameters,
+}
+if regularTask.Parameters == nil {
+regularTask.Parameters = make(map[string]interface{})
+}
+regularTask.Parameters["coordinator_id"] = coordinator.ID
+regularTask.Parameters["coordination_mode"] = "enhanced"
+result, err := e.ExecuteTask(ctx, regularTask, agent)
+if err != nil {
+return nil, err
+}
+e.updateAgentState(agent, "coordinated_execution", result.Output)
+e.updateAgentState(coordinator, "coordination_oversight", fmt.Sprintf("Supervised %s task by %s", task.Type, agent.Name))
+return result, nil
 }
 func (e *Engine) performCoordinationReflection(coordinator *Agent, result *CoordinatedWorkflowResult) string {
-	reflection := fmt.Sprintf("Coordination session completed: %d tasks in %v", 
-		len(result.Tasks), result.Duration)
-	successRate := 0.0
-	for _, task := range result.Tasks {
-		if task.Success {
-			successRate += 1.0
-		}
-	}
-	successRate = successRate / float64(len(result.Tasks)) * 100
-	reflection += fmt.Sprintf(". Success rate: %.1f%%", successRate)
-	if successRate >= 90 {
-		reflection += ". Excellent coordination performance - agents worked efficiently together."
-	} else if successRate >= 70 {
-		reflection += ". Good coordination with room for optimization in agent selection."
-	} else {
-		reflection += ". Coordination challenges identified - reviewing agent assignment strategies."
-	}
-	return reflection
+reflection := fmt.Sprintf("Coordination session completed: %d tasks in %v",
+len(result.Tasks), result.Duration)
+successRate := 0.0
+for _, task := range result.Tasks {
+if task.Success {
+successRate += 1.0
+}
+}
+successRate = successRate / float64(len(result.Tasks)) * 100
+reflection += fmt.Sprintf(". Success rate: %.1f%%", successRate)
+if successRate >= 90 {
+reflection += ". Excellent coordination performance - agents worked efficiently together."
+} else if successRate >= 70 {
+reflection += ". Good coordination with room for optimization in agent selection."
+} else {
+reflection += ". Coordination challenges identified - reviewing agent assignment strategies."
+}
+return reflection
 }
 type CoordinatedTask struct {
-	ID            string                 `json:"id"`
-	Type          string                 `json:"type"`
-	Input         string                 `json:"input"`
-	RequiredTools []string               `json:"required_tools,omitempty"`
-	Parameters    map[string]interface{} `json:"parameters,omitempty"`
-	Priority      int                    `json:"priority,omitempty"`
+ID            string                 `json:"id"`
+Type          string                 `json:"type"`
+Input         string                 `json:"input"`
+RequiredTools []string               `json:"required_tools,omitempty"`
+Parameters    map[string]interface{} `json:"parameters,omitempty"`
+Priority      int                    `json:"priority,omitempty"`
 }
 type CoordinatedWorkflowResult struct {
-	CoordinatorID string                   `json:"coordinator_id"`
-	Tasks         []CoordinatedTaskResult  `json:"tasks"`
-	Success       bool                     `json:"success"`
-	Error         string                   `json:"error,omitempty"`
-	StartTime     time.Time                `json:"start_time"`
-	EndTime       time.Time                `json:"end_time"`
-	Duration      time.Duration            `json:"duration"`
+CoordinatorID string                   `json:"coordinator_id"`
+Tasks         []CoordinatedTaskResult  `json:"tasks"`
+Success       bool                     `json:"success"`
+Error         string                   `json:"error,omitempty"`
+StartTime     time.Time                `json:"start_time"`
+EndTime       time.Time                `json:"end_time"`
+Duration      time.Duration            `json:"duration"`
 }
 type CoordinatedTaskResult struct {
-	TaskID       string `json:"task_id"`
-	AgentID      string `json:"agent_id"`
-	Type         string `json:"type"`
-	Input        string `json:"input"`
-	Output       string `json:"output"`
-	Success      bool   `json:"success"`
-	Error        string `json:"error,omitempty"`
-	Coordination string `json:"coordination"`
+TaskID       string `json:"task_id"`
+AgentID      string `json:"agent_id"`
+Type         string `json:"type"`
+Input        string `json:"input"`
+Output       string `json:"output"`
+Success      bool   `json:"success"`
+Error        string `json:"error,omitempty"`
+Coordination string `json:"coordination"`
 }
 func (e *Engine) replacePlaceholders(input string, context map[string]string) string {
-	result := input
-	for key, value := range context {
-		placeholder := fmt.Sprintf("{{%s}}", key)
-		result = strings.ReplaceAll(result, placeholder, value)
-	}
-	return result
+result := input
+for key, value := range context {
+placeholder := fmt.Sprintf("{{%s}}", key)
+result = strings.ReplaceAll(result, placeholder, value)
+}
+return result
 }
 type WorkflowStep struct {
-	Name      string `json:"name"`
-	Type      string `json:"type"`
-	Input     string `json:"input"`
-	ModelName string `json:"model_name,omitempty"`
+Name      string `json:"name"`
+Type      string `json:"type"`
+Input     string `json:"input"`
+ModelName string `json:"model_name,omitempty"`
 }
 type WorkflowResult struct {
-	Steps   []WorkflowStepResult `json:"steps"`
-	Success bool                 `json:"success"`
-	Error   string               `json:"error,omitempty"`
+Steps   []WorkflowStepResult `json:"steps"`
+Success bool                 `json:"success"`
+Error   string               `json:"error,omitempty"`
 }
 type WorkflowStepResult struct {
-	Name      string `json:"name"`
-	Type      string `json:"type"`
-	Input     string `json:"input"`
-	Output    string `json:"output"`
-	ModelUsed string `json:"model_used"`
-	Success   bool   `json:"success"`
-	Error     string `json:"error,omitempty"`
+Name      string `json:"name"`
+Type      string `json:"type"`
+Input     string `json:"input"`
+Output    string `json:"output"`
+ModelUsed string `json:"model_used"`
+Success   bool   `json:"success"`
+Error     string `json:"error,omitempty"`
 }

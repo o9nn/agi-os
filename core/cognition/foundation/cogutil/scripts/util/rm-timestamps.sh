@@ -1,10 +1,10 @@
 #!/bin/bash
 set -u
 if [ $
-    echo "Description: remove timestamps from a log file"
-    echo "Wrong number of arguments"
-    echo "Usage: $0 LOG_FILE"
-    exit 1
+echo "Description: remove timestamps from a log file"
+echo "Wrong number of arguments"
+echo "Usage: $0 LOG_FILE"
+exit 1
 fi
 LOG_FILE="$1"
 date_re='[[:digit:]]\{4\}-[[:digit:]]\{2\}-[[:digit:]]\{2\}'

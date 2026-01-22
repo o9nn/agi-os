@@ -6,347 +6,347 @@ import { AbstractAgent } from '../../libs/mineflayer/base-agent'
 import { ActionAgentImpl } from '../action'
 import { PlanningLLMHandler } from './adapter'
 interface PlanContext {
-  goal: string
-  currentStep: number
-  startTime: number
-  lastUpdate: number
-  retryCount: number
-  isGenerating: boolean
-  pendingSteps: PlanStep[]
+goal: string
+currentStep: number
+startTime: number
+lastUpdate: number
+retryCount: number
+isGenerating: boolean
+pendingSteps: PlanStep[]
 }
 export interface PlanningAgentConfig extends AgentConfig {
-  llm: {
-    agent: Neuri
-    model?: string
-  }
+llm: {
+agent: Neuri
+model?: string
+}
 }
 export class PlanningAgentImpl extends AbstractAgent implements PlanningAgent {
-  public readonly type = 'planning' as const
-  private currentPlan: Plan | null = null
-  private context: PlanContext | null = null
-  private actionAgent: ActionAgent | null = null
-  private memoryAgent: MemoryAgent | null = null
-  private llmConfig: PlanningAgentConfig['llm']
-  private llmHandler: PlanningLLMHandler
-  constructor(config: PlanningAgentConfig) {
-    super(config)
-    this.llmConfig = config.llm
-    this.llmHandler = new PlanningLLMHandler({
-      agent: this.llmConfig.agent,
-      model: this.llmConfig.model,
-    })
-  }
-  protected async initializeAgent(): Promise<void> {
-    this.logger.log('Initializing planning agent')
-    this.actionAgent = new ActionAgentImpl({
-      id: 'action',
-      type: 'action',
-    })
-    await this.actionAgent.init()
-    this.on('message', async ({ sender, message }) => {
-      await this.handleAgentMessage(sender, message)
-    })
-    this.on('interrupt', () => {
-      this.handleInterrupt()
-    })
-  }
-  protected async destroyAgent(): Promise<void> {
-    this.currentPlan = null
-    this.context = null
-    this.actionAgent = null
-    this.memoryAgent = null
-    this.removeAllListeners()
-  }
-  public async createPlan(goal: string): Promise<Plan> {
-    if (!this.initialized) {
-      throw new Error('Planning agent not initialized')
-    }
-    this.logger.withField('goal', goal).log('Creating plan')
-    try {
-      const cachedPlan = await this.loadCachedPlan(goal)
-      if (cachedPlan) {
-        this.logger.log('Using cached plan')
-        return cachedPlan
-      }
-      const availableActions = this.actionAgent?.getAvailableActions() ?? []
-      const requirements = this.parseGoalRequirements(goal)
-      const requiresAction = this.doesGoalRequireAction(requirements)
-      if (!requiresAction) {
-        this.logger.log('Goal does not require actions')
-        return {
-          goal,
-          steps: [],
-          status: 'completed',
-          requiresAction: false,
-        }
-      }
-      const steps = await this.generatePlanSteps(goal, availableActions, 'system')
-      const plan: Plan = {
-        goal,
-        steps,
-        status: 'pending',
-        requiresAction: true,
-      }
-      await this.cachePlan(plan)
-      this.currentPlan = plan
-      this.context = {
-        goal,
-        currentStep: 0,
-        startTime: Date.now(),
-        lastUpdate: Date.now(),
-        retryCount: 0,
-        isGenerating: false,
-        pendingSteps: [],
-      }
-      return plan
-    }
-    catch (error) {
-      this.logger.withError(error).error('Failed to create plan')
-      throw error
-    }
-  }
-  public async executePlan(plan: Plan): Promise<void> {
-    if (!this.initialized) {
-      throw new Error('Planning agent not initialized')
-    }
-    if (!plan.requiresAction) {
-      this.logger.log('Plan does not require actions, skipping execution')
-      return
-    }
-    if (!this.actionAgent) {
-      throw new Error('Action agent not available')
-    }
-    this.logger.withField('plan', plan).log('Executing plan')
-    try {
-      plan.status = 'in_progress'
-      this.currentPlan = plan
-      for (const step of plan.steps) {
-        try {
-          this.logger.withField('step', step).log('Executing step')
-          await this.actionAgent.performAction(step)
-        }
-        catch (stepError) {
-          this.logger.withError(stepError).error('Failed to execute step')
-          if (this.context && this.context.retryCount < 3) {
-            this.context.retryCount++
-            const adjustedPlan = await this.adjustPlan(
-              plan,
-              stepError instanceof Error ? stepError.message : 'Unknown error',
-              'system',
-            )
-            await this.executePlan(adjustedPlan)
-            return
-          }
-          throw stepError
-        }
-      }
-      plan.status = 'completed'
-    }
-    catch (error) {
-      plan.status = 'failed'
-      throw error
-    }
-    finally {
-      this.context = null
-    }
-  }
-  public async adjustPlan(plan: Plan, feedback: string, sender: string): Promise<Plan> {
-    if (!this.initialized) {
-      throw new Error('Planning agent not initialized')
-    }
-    this.logger.withFields({ plan, feedback }).log('Adjusting plan')
-    try {
-      if (this.context) {
-        const currentStep = this.context.currentStep
-        const availableActions = this.actionAgent?.getAvailableActions() ?? []
-        const recoverySteps = this.generateRecoverySteps(feedback)
-        const newSteps = await this.generatePlanSteps(plan.goal, availableActions, sender, feedback)
-        const adjustedPlan: Plan = {
-          goal: plan.goal,
-          steps: [
-            ...plan.steps.slice(0, currentStep),
-            ...recoverySteps,
-            ...newSteps,
-          ],
-          status: 'pending',
-          requiresAction: true,
-        }
-        return adjustedPlan
-      }
-      return this.createPlan(plan.goal)
-    }
-    catch (error) {
-      this.logger.withError(error).error('Failed to adjust plan')
-      throw error
-    }
-  }
-  private generateRecoverySteps(feedback: string): PlanStep[] {
-    const steps: PlanStep[] = []
-    if (feedback.includes('not found')) {
-      steps.push({
-        description: 'Search in a wider area',
-        tool: 'searchForBlock',
-        params: {
-          blockType: 'oak_log',
-          range: 64,
-        },
-      })
-    }
-    if (feedback.includes('inventory full')) {
-      steps.push({
-        description: 'Clear inventory space',
-        tool: 'discard',
-        params: {
-          blockType: 'oak_log',
-          count: 1,
-        },
-      })
-    }
-    if (feedback.includes('blocked') || feedback.includes('cannot reach')) {
-      steps.push({
-        description: 'Move away from obstacles',
-        tool: 'moveAway',
-        params: {
-          range: 64,
-        },
-      })
-    }
-    if (feedback.includes('too far')) {
-      steps.push({
-        description: 'Move closer to target',
-        tool: 'moveAway',
-        params: {
-          range: 64,
-        },
-      })
-    }
-    if (feedback.includes('need tool')) {
-      steps.push(
-        {
-          description: 'Craft a wooden pickaxe',
-          tool: 'craftRecipe',
-          params: {
-            recipe: 'oak_pickaxe',
-          },
-        },
-        {
-          description: 'Equip the wooden pickaxe',
-          tool: 'equip',
-          params: {
-            item: 'oak_pickaxe',
-          },
-        },
-      )
-    }
-    return steps
-  }
-  private async loadCachedPlan(goal: string): Promise<Plan | null> {
-    if (!this.memoryAgent)
-      return null
-    const cachedPlan = this.memoryAgent.recall<Plan>(`plan:${goal}`)
-    if (cachedPlan && this.isPlanValid(cachedPlan)) {
-      return cachedPlan
-    }
-    return null
-  }
-  private async cachePlan(plan: Plan): Promise<void> {
-    if (!this.memoryAgent)
-      return
-    this.memoryAgent.remember(`plan:${plan.goal}`, plan)
-  }
-  private isPlanValid(_plan: Plan): boolean {
-    return true
-  }
-  private async handleAgentMessage(sender: string, message: string): Promise<void> {
-    if (sender === 'system') {
-      if (message.includes('interrupt')) {
-        this.handleInterrupt()
-      }
-    }
-    else {
-      this.logger.withFields({ sender, message }).log('Processing agent message')
-      if (this.currentPlan) {
-        await this.adjustPlan(this.currentPlan, message, sender)
-      }
-    }
-  }
-  private handleInterrupt(): void {
-    if (this.currentPlan) {
-      this.currentPlan.status = 'failed'
-      this.context = null
-    }
-  }
-  private doesGoalRequireAction(requirements: ReturnType<typeof this.parseGoalRequirements>): boolean {
-    return requirements.needsItems
-      || requirements.needsMovement
-      || requirements.needsInteraction
-      || requirements.needsCrafting
-      || requirements.needsCombat
-  }
-  private async generatePlanSteps(
-    goal: string,
-    availableActions: Action[],
-    sender: string,
-    feedback?: string,
-  ): Promise<PlanStep[]> {
-    this.logger.log('Generating plan using LLM')
-    return await this.llmHandler.generatePlan(goal, availableActions, sender, feedback)
-  }
-  private parseGoalRequirements(goal: string): {
-    needsItems: boolean
-    items?: string[]
-    needsMovement: boolean
-    location?: { x?: number, y?: number, z?: number }
-    needsInteraction: boolean
-    target?: string
-    needsCrafting: boolean
-    needsCombat: boolean
-  } {
-    const requirements = {
-      needsItems: false,
-      items: [] as string[],
-      needsMovement: false,
-      location: undefined as { x?: number, y?: number, z?: number } | undefined,
-      needsInteraction: false,
-      target: undefined as string | undefined,
-      needsCrafting: false,
-      needsCombat: false,
-    }
-    const goalLower = goal.toLowerCase()
-    const itemMatches = goalLower.match(/(collect|get|find|craft|make|build|use|equip) (\w+)/g)
-    if (itemMatches) {
-      requirements.needsItems = true
-      requirements.items = itemMatches.map(match => match.split(' ')[1])
-    }
-    const locationMatches = goalLower.match(/(go to|move to|at) (\d+)[, ]+(\d+)[, ]+(\d+)/g)
-    if (locationMatches) {
-      requirements.needsMovement = true
-      const [x, y, z] = locationMatches[0].split(/[, ]+/).slice(-3).map(Number)
-      requirements.location = { x, y, z }
-    }
-    const targetMatches = goalLower.match(/(interact with|use|open|activate) (\w+)/g)
-    if (targetMatches) {
-      requirements.needsInteraction = true
-      requirements.target = targetMatches[0].split(' ').pop()
-    }
-    if (goalLower.includes('collect') || goalLower.includes('get') || goalLower.includes('find')) {
-      requirements.needsItems = true
-      requirements.needsMovement = true
-    }
-    if (goalLower.includes('go to') || goalLower.includes('move to') || goalLower.includes('follow')) {
-      requirements.needsMovement = true
-    }
-    if (goalLower.includes('interact') || goalLower.includes('use') || goalLower.includes('open')) {
-      requirements.needsInteraction = true
-    }
-    if (goalLower.includes('craft') || goalLower.includes('make') || goalLower.includes('build')) {
-      requirements.needsCrafting = true
-      requirements.needsItems = true
-    }
-    if (goalLower.includes('attack') || goalLower.includes('fight') || goalLower.includes('kill')) {
-      requirements.needsCombat = true
-      requirements.needsMovement = true
-    }
-    return requirements
-  }
+public readonly type = 'planning' as const
+private currentPlan: Plan | null = null
+private context: PlanContext | null = null
+private actionAgent: ActionAgent | null = null
+private memoryAgent: MemoryAgent | null = null
+private llmConfig: PlanningAgentConfig['llm']
+private llmHandler: PlanningLLMHandler
+constructor(config: PlanningAgentConfig) {
+super(config)
+this.llmConfig = config.llm
+this.llmHandler = new PlanningLLMHandler({
+agent: this.llmConfig.agent,
+model: this.llmConfig.model,
+})
+}
+protected async initializeAgent(): Promise<void> {
+this.logger.log('Initializing planning agent')
+this.actionAgent = new ActionAgentImpl({
+id: 'action',
+type: 'action',
+})
+await this.actionAgent.init()
+this.on('message', async ({ sender, message }) => {
+await this.handleAgentMessage(sender, message)
+})
+this.on('interrupt', () => {
+this.handleInterrupt()
+})
+}
+protected async destroyAgent(): Promise<void> {
+this.currentPlan = null
+this.context = null
+this.actionAgent = null
+this.memoryAgent = null
+this.removeAllListeners()
+}
+public async createPlan(goal: string): Promise<Plan> {
+if (!this.initialized) {
+throw new Error('Planning agent not initialized')
+}
+this.logger.withField('goal', goal).log('Creating plan')
+try {
+const cachedPlan = await this.loadCachedPlan(goal)
+if (cachedPlan) {
+this.logger.log('Using cached plan')
+return cachedPlan
+}
+const availableActions = this.actionAgent?.getAvailableActions() ?? []
+const requirements = this.parseGoalRequirements(goal)
+const requiresAction = this.doesGoalRequireAction(requirements)
+if (!requiresAction) {
+this.logger.log('Goal does not require actions')
+return {
+goal,
+steps: [],
+status: 'completed',
+requiresAction: false,
+}
+}
+const steps = await this.generatePlanSteps(goal, availableActions, 'system')
+const plan: Plan = {
+goal,
+steps,
+status: 'pending',
+requiresAction: true,
+}
+await this.cachePlan(plan)
+this.currentPlan = plan
+this.context = {
+goal,
+currentStep: 0,
+startTime: Date.now(),
+lastUpdate: Date.now(),
+retryCount: 0,
+isGenerating: false,
+pendingSteps: [],
+}
+return plan
+}
+catch (error) {
+this.logger.withError(error).error('Failed to create plan')
+throw error
+}
+}
+public async executePlan(plan: Plan): Promise<void> {
+if (!this.initialized) {
+throw new Error('Planning agent not initialized')
+}
+if (!plan.requiresAction) {
+this.logger.log('Plan does not require actions, skipping execution')
+return
+}
+if (!this.actionAgent) {
+throw new Error('Action agent not available')
+}
+this.logger.withField('plan', plan).log('Executing plan')
+try {
+plan.status = 'in_progress'
+this.currentPlan = plan
+for (const step of plan.steps) {
+try {
+this.logger.withField('step', step).log('Executing step')
+await this.actionAgent.performAction(step)
+}
+catch (stepError) {
+this.logger.withError(stepError).error('Failed to execute step')
+if (this.context && this.context.retryCount < 3) {
+this.context.retryCount++
+const adjustedPlan = await this.adjustPlan(
+plan,
+stepError instanceof Error ? stepError.message : 'Unknown error',
+'system',
+)
+await this.executePlan(adjustedPlan)
+return
+}
+throw stepError
+}
+}
+plan.status = 'completed'
+}
+catch (error) {
+plan.status = 'failed'
+throw error
+}
+finally {
+this.context = null
+}
+}
+public async adjustPlan(plan: Plan, feedback: string, sender: string): Promise<Plan> {
+if (!this.initialized) {
+throw new Error('Planning agent not initialized')
+}
+this.logger.withFields({ plan, feedback }).log('Adjusting plan')
+try {
+if (this.context) {
+const currentStep = this.context.currentStep
+const availableActions = this.actionAgent?.getAvailableActions() ?? []
+const recoverySteps = this.generateRecoverySteps(feedback)
+const newSteps = await this.generatePlanSteps(plan.goal, availableActions, sender, feedback)
+const adjustedPlan: Plan = {
+goal: plan.goal,
+steps: [
+...plan.steps.slice(0, currentStep),
+...recoverySteps,
+...newSteps,
+],
+status: 'pending',
+requiresAction: true,
+}
+return adjustedPlan
+}
+return this.createPlan(plan.goal)
+}
+catch (error) {
+this.logger.withError(error).error('Failed to adjust plan')
+throw error
+}
+}
+private generateRecoverySteps(feedback: string): PlanStep[] {
+const steps: PlanStep[] = []
+if (feedback.includes('not found')) {
+steps.push({
+description: 'Search in a wider area',
+tool: 'searchForBlock',
+params: {
+blockType: 'oak_log',
+range: 64,
+},
+})
+}
+if (feedback.includes('inventory full')) {
+steps.push({
+description: 'Clear inventory space',
+tool: 'discard',
+params: {
+blockType: 'oak_log',
+count: 1,
+},
+})
+}
+if (feedback.includes('blocked') || feedback.includes('cannot reach')) {
+steps.push({
+description: 'Move away from obstacles',
+tool: 'moveAway',
+params: {
+range: 64,
+},
+})
+}
+if (feedback.includes('too far')) {
+steps.push({
+description: 'Move closer to target',
+tool: 'moveAway',
+params: {
+range: 64,
+},
+})
+}
+if (feedback.includes('need tool')) {
+steps.push(
+{
+description: 'Craft a wooden pickaxe',
+tool: 'craftRecipe',
+params: {
+recipe: 'oak_pickaxe',
+},
+},
+{
+description: 'Equip the wooden pickaxe',
+tool: 'equip',
+params: {
+item: 'oak_pickaxe',
+},
+},
+)
+}
+return steps
+}
+private async loadCachedPlan(goal: string): Promise<Plan | null> {
+if (!this.memoryAgent)
+return null
+const cachedPlan = this.memoryAgent.recall<Plan>(`plan:${goal}`)
+if (cachedPlan && this.isPlanValid(cachedPlan)) {
+return cachedPlan
+}
+return null
+}
+private async cachePlan(plan: Plan): Promise<void> {
+if (!this.memoryAgent)
+return
+this.memoryAgent.remember(`plan:${plan.goal}`, plan)
+}
+private isPlanValid(_plan: Plan): boolean {
+return true
+}
+private async handleAgentMessage(sender: string, message: string): Promise<void> {
+if (sender === 'system') {
+if (message.includes('interrupt')) {
+this.handleInterrupt()
+}
+}
+else {
+this.logger.withFields({ sender, message }).log('Processing agent message')
+if (this.currentPlan) {
+await this.adjustPlan(this.currentPlan, message, sender)
+}
+}
+}
+private handleInterrupt(): void {
+if (this.currentPlan) {
+this.currentPlan.status = 'failed'
+this.context = null
+}
+}
+private doesGoalRequireAction(requirements: ReturnType<typeof this.parseGoalRequirements>): boolean {
+return requirements.needsItems
+|| requirements.needsMovement
+|| requirements.needsInteraction
+|| requirements.needsCrafting
+|| requirements.needsCombat
+}
+private async generatePlanSteps(
+goal: string,
+availableActions: Action[],
+sender: string,
+feedback?: string,
+): Promise<PlanStep[]> {
+this.logger.log('Generating plan using LLM')
+return await this.llmHandler.generatePlan(goal, availableActions, sender, feedback)
+}
+private parseGoalRequirements(goal: string): {
+needsItems: boolean
+items?: string[]
+needsMovement: boolean
+location?: { x?: number, y?: number, z?: number }
+needsInteraction: boolean
+target?: string
+needsCrafting: boolean
+needsCombat: boolean
+} {
+const requirements = {
+needsItems: false,
+items: [] as string[],
+needsMovement: false,
+location: undefined as { x?: number, y?: number, z?: number } | undefined,
+needsInteraction: false,
+target: undefined as string | undefined,
+needsCrafting: false,
+needsCombat: false,
+}
+const goalLower = goal.toLowerCase()
+const itemMatches = goalLower.match(/(collect|get|find|craft|make|build|use|equip) (\w+)/g)
+if (itemMatches) {
+requirements.needsItems = true
+requirements.items = itemMatches.map(match => match.split(' ')[1])
+}
+const locationMatches = goalLower.match(/(go to|move to|at) (\d+)[, ]+(\d+)[, ]+(\d+)/g)
+if (locationMatches) {
+requirements.needsMovement = true
+const [x, y, z] = locationMatches[0].split(/[, ]+/).slice(-3).map(Number)
+requirements.location = { x, y, z }
+}
+const targetMatches = goalLower.match(/(interact with|use|open|activate) (\w+)/g)
+if (targetMatches) {
+requirements.needsInteraction = true
+requirements.target = targetMatches[0].split(' ').pop()
+}
+if (goalLower.includes('collect') || goalLower.includes('get') || goalLower.includes('find')) {
+requirements.needsItems = true
+requirements.needsMovement = true
+}
+if (goalLower.includes('go to') || goalLower.includes('move to') || goalLower.includes('follow')) {
+requirements.needsMovement = true
+}
+if (goalLower.includes('interact') || goalLower.includes('use') || goalLower.includes('open')) {
+requirements.needsInteraction = true
+}
+if (goalLower.includes('craft') || goalLower.includes('make') || goalLower.includes('build')) {
+requirements.needsCrafting = true
+requirements.needsItems = true
+}
+if (goalLower.includes('attack') || goalLower.includes('fight') || goalLower.includes('kill')) {
+requirements.needsCombat = true
+requirements.needsMovement = true
+}
+return requirements
+}
 }

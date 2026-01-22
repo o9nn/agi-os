@@ -357,7 +357,7 @@ fprintf(stderr, "Can't read %s.\n", cname);
 exit(1);
 }
 }
-fseek(in, 0L, 2  );
+fseek(in, 0L, 2 );
 end = ftell(in);
 cont = malloc(end + 1);
 if (cont == 0) {
@@ -429,7 +429,7 @@ token[len++] = ch;
 }
 token[len] = 0;
 *pin = in;
-return (len >= max_len ? -1  : len);
+return (len >= max_len ? -1 : len);
 }
 int
 add_entry(config_t * pconf, char *category, const char *item, int file_index)
@@ -460,7 +460,7 @@ pat = "device2_(%s%%s_device)";
 else
 goto err;
 list = &pconf->lists.named.devs;
-pre:		sprintf(template, pat, pconf->name_prefix);
+pre: sprintf(template, pat, pconf->name_prefix);
 pat = template;
 break;
 case 'e':
@@ -547,7 +547,7 @@ break;
 goto err;
 #undef IS_CAT
 default:
-err:		fprintf(stderr, "Definition not recognized: %s %s.\n",
+err: fprintf(stderr, "Definition not recognized: %s %s.\n",
 category, item);
 exit(1);
 }

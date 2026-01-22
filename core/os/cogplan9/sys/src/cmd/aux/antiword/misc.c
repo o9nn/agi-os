@@ -11,7 +11,7 @@
 #include <sys/stat.h>
 #endif
 #if !defined(S_ISREG)
-#define S_ISREG(x)	(((x) & S_IFMT) == S_IFREG)
+#define S_ISREG(x) (((x) & S_IFMT) == S_IFREG)
 #endif
 #include "antiword.h"
 #if defined(__vms)
@@ -21,7 +21,7 @@
 const char *
 szGetHomeDirectory(void)
 {
-const char	*szHome;
+const char *szHome;
 #if defined(__vms)
 szHome = decc$translate_vms(getenv("HOME"));
 #elif defined(__Plan9__)
@@ -55,8 +55,8 @@ long
 lGetFilesize(const char *szFilename)
 {
 #if defined(__riscos)
-os_error	*e;
-int	iType, iSize;
+os_error *e;
+int iType, iSize;
 e = SWI(2, 5, SWI_OS_File | XOS_Bit,
 17, szFilename,
 &iType, NULL, NULL, NULL, &iSize);
@@ -70,7 +70,7 @@ return -1;
 }
 return (long)iSize;
 #else
-struct stat	tBuffer;
+struct stat tBuffer;
 errno = 0;
 if (stat(szFilename, &tBuffer) != 0) {
 werr(0, "Get Filesize error %d", errno);
@@ -84,7 +84,7 @@ return (long)tBuffer.st_size;
 }
 #if defined(DEBUG)
 void
-vPrintBlock(const char	*szFile, int iLine,
+vPrintBlock(const char *szFile, int iLine,
 const UCHAR *aucBlock, size_t tLength)
 {
 int i, j;
@@ -107,7 +107,7 @@ fprintf(stderr, "\n");
 void
 vPrintUnicode(const char *szFile, int iLine, const UCHAR *aucUni, size_t tLen)
 {
-char	*szASCII;
+char *szASCII;
 fail(tLen % 2 != 0);
 tLen /= 2;
 szASCII = xmalloc(tLen + 1);
@@ -120,8 +120,8 @@ szASCII = xfree(szASCII);
 BOOL
 bCheckDoubleLinkedList(output_type *pAnchor)
 {
-output_type	*pCurr, *pLast;
-int		iInList;
+output_type *pCurr, *pLast;
+int iInList;
 pLast = pAnchor;
 iInList = 0;
 for (pCurr = pAnchor; pCurr != NULL; pCurr = pCurr->pNext) {
@@ -157,8 +157,8 @@ bReadBuffer(FILE *pFile, ULONG ulStartBlock,
 const ULONG *aulBlockDepot, size_t tBlockDepotLen, size_t tBlockSize,
 UCHAR *aucBuffer, ULONG ulOffset, size_t tToRead)
 {
-ULONG	ulBegin, ulIndex;
-size_t	tLen;
+ULONG ulBegin, ulIndex;
+size_t tLen;
 fail(pFile == NULL);
 fail(ulStartBlock > MAX_BLOCKNUMBER && ulStartBlock != END_OF_CHAIN);
 fail(aulBlockDepot == NULL);
@@ -197,7 +197,7 @@ return tToRead == 0;
 ULONG
 ulColor2Color(UCHAR ucFontColor)
 {
-static const ULONG	aulColorTable[] = {
+static const ULONG aulColorTable[] = {
 0x00000000UL,
 0x00000000UL,
 0xff000000UL,
@@ -224,7 +224,7 @@ return aulColorTable[(int)ucFontColor];
 static int
 iFindSplit(const char *szString, size_t tStringLen)
 {
-size_t	tSplit;
+size_t tSplit;
 if (tStringLen == 0) {
 return -1;
 }
@@ -241,8 +241,8 @@ return -1;
 output_type *
 pSplitList(output_type *pAnchor)
 {
-output_type	*pCurr, *pLeftOver;
-int		iIndex;
+output_type *pCurr, *pLeftOver;
+int iIndex;
 fail(pAnchor == NULL);
 for (pCurr = pAnchor; pCurr->pNext != NULL; pCurr = pCurr->pNext)
 ;
@@ -301,8 +301,8 @@ return pLeftOver;
 size_t
 tNumber2Roman(UINT uiNumber, BOOL bUpperCase, char *szOutput)
 {
-char	*outp, *p, *q;
-UINT	uiNextVal, uiValue;
+char *outp, *p, *q;
+UINT uiNextVal, uiValue;
 fail(szOutput == NULL);
 uiNumber %= 4000;
 if (uiNumber == 0) {
@@ -339,8 +339,8 @@ uiValue /= (UINT)(UCHAR)(*p++);
 size_t
 tNumber2Alpha(UINT uiNumber, BOOL bUpperCase, char *szOutput)
 {
-char	*outp;
-UINT	uiTmp;
+char *outp;
+UINT uiTmp;
 fail(szOutput == NULL);
 if (uiNumber == 0) {
 szOutput[0] = '\0';
@@ -368,10 +368,10 @@ return (size_t)(outp - szOutput);
 char *
 unincpy(char *s1, const UCHAR *s2, size_t n)
 {
-char	*pcDest;
-ULONG	ulChar;
-size_t	tLen;
-USHORT	usUni;
+char *pcDest;
+ULONG ulChar;
+size_t tLen;
+USHORT usUni;
 for (pcDest = s1, tLen = 0; tLen < n; pcDest++, tLen++) {
 usUni = usGetWord(tLen * 2, s2);
 if (usUni == 0) {
@@ -392,8 +392,8 @@ return s1;
 size_t
 unilen(const UCHAR *s)
 {
-size_t	tLen;
-USHORT	usUni;
+size_t tLen;
+USHORT usUni;
 tLen = 0;
 for (;;) {
 usUni = usGetWord(tLen, s);
@@ -406,7 +406,7 @@ tLen += 2;
 const char *
 szBasename(const char *szFilename)
 {
-const char	*szTmp;
+const char *szTmp;
 fail(szFilename == NULL);
 if (szFilename == NULL || szFilename[0] == '\0') {
 return "null";
@@ -420,7 +420,7 @@ return ++szTmp;
 long
 lComputeLeading(USHORT usFontSize)
 {
-long	lLeading;
+long lLeading;
 lLeading = (long)usFontSize * 500L;
 if (usFontSize < 18) {
 lLeading *= 112;
@@ -488,7 +488,7 @@ szResult[1] = '\0';
 BOOL
 bAllZero(const UCHAR *aucBytes, size_t tLength)
 {
-size_t	tIndex;
+size_t tIndex;
 if (aucBytes == NULL || tLength == 0) {
 return TRUE;
 }
@@ -504,10 +504,10 @@ static BOOL
 bGetCodesetFromLocale(char *szCodeset, size_t tMaxCodesetLength, BOOL *pbEuro)
 {
 #if !defined(__dos)
-const char	*szLocale;
-const char	*pcTmp;
-size_t		tIndex;
-char		szModifier[6];
+const char *szLocale;
+const char *pcTmp;
+size_t tIndex;
+char szModifier[6];
 #endif
 if (pbEuro != NULL) {
 *pbEuro = FALSE;
@@ -576,10 +576,10 @@ return TRUE;
 BOOL
 bGetNormalizedCodeset(char *szCodeset, size_t tMaxCodesetLength, BOOL *pbEuro)
 {
-BOOL	bOnlyDigits;
-const char	*pcSrc;
-char	*pcDest;
-char	*szTmp, *szCodesetNorm;
+BOOL bOnlyDigits;
+const char *pcSrc;
+char *pcDest;
+char *szTmp, *szCodesetNorm;
 if (pbEuro != NULL) {
 *pbEuro = FALSE;
 }
@@ -622,39 +622,39 @@ const char *
 szGetDefaultMappingFile(void)
 {
 static const struct {
-const char	*szCodeset;
-const char	*szMappingFile;
+const char *szCodeset;
+const char *szMappingFile;
 } atMappingFile[] = {
-{ "iso88591",	MAPPING_FILE_8859_1 },
-{ "iso88592",	MAPPING_FILE_8859_2 },
-{ "iso88593",	"8859-3.txt" },
-{ "iso88594",	"8859-4.txt" },
-{ "iso88595",	"8859-5.txt" },
-{ "iso88596",	MAPPING_FILE_8859_5 },
-{ "iso88597",	"8859-7.txt" },
-{ "iso88598",	"8859-8.txt" },
-{ "iso88599",	"8859-9.txt" },
-{ "iso885910",	"8859-10.txt" },
-{ "iso885913",	"8859-13.txt" },
-{ "iso885914",	"8859-14.txt" },
-{ "iso885915",	MAPPING_FILE_8859_15 },
-{ "iso885916",	"8859-16.txt" },
-{ "koi8r",	MAPPING_FILE_KOI8_R },
-{ "koi8u",	MAPPING_FILE_KOI8_U },
-{ "utf8",	MAPPING_FILE_UTF_8 },
-{ "cp437",	MAPPING_FILE_CP437 },
-{ "cp850",	"cp850.txt" },
-{ "cp852",	MAPPING_FILE_CP852 },
-{ "cp862",	"cp862.txt" },
-{ "cp864",	"cp864.txt" },
-{ "cp866",	MAPPING_FILE_CP866 },
-{ "cp1250",	MAPPING_FILE_CP1250 },
-{ "cp1251",	MAPPING_FILE_CP1251 },
-{ "cp1252",	"cp1252.txt" },
+{ "iso88591", MAPPING_FILE_8859_1 },
+{ "iso88592", MAPPING_FILE_8859_2 },
+{ "iso88593", "8859-3.txt" },
+{ "iso88594", "8859-4.txt" },
+{ "iso88595", "8859-5.txt" },
+{ "iso88596", MAPPING_FILE_8859_5 },
+{ "iso88597", "8859-7.txt" },
+{ "iso88598", "8859-8.txt" },
+{ "iso88599", "8859-9.txt" },
+{ "iso885910", "8859-10.txt" },
+{ "iso885913", "8859-13.txt" },
+{ "iso885914", "8859-14.txt" },
+{ "iso885915", MAPPING_FILE_8859_15 },
+{ "iso885916", "8859-16.txt" },
+{ "koi8r", MAPPING_FILE_KOI8_R },
+{ "koi8u", MAPPING_FILE_KOI8_U },
+{ "utf8", MAPPING_FILE_UTF_8 },
+{ "cp437", MAPPING_FILE_CP437 },
+{ "cp850", "cp850.txt" },
+{ "cp852", MAPPING_FILE_CP852 },
+{ "cp862", "cp862.txt" },
+{ "cp864", "cp864.txt" },
+{ "cp866", MAPPING_FILE_CP866 },
+{ "cp1250", MAPPING_FILE_CP1250 },
+{ "cp1251", MAPPING_FILE_CP1251 },
+{ "cp1252", "cp1252.txt" },
 };
-size_t	tIndex;
-BOOL	bEuro;
-char	szCodeset[20];
+size_t tIndex;
+BOOL bEuro;
+char szCodeset[20];
 szCodeset[0] = '\0';
 bEuro = FALSE;
 if (!bGetNormalizedCodeset(szCodeset, sizeof(szCodeset), &bEuro)) {
@@ -682,8 +682,8 @@ return MAPPING_FILE_8859_1;
 time_t
 tConvertDTTM(ULONG ulDTTM)
 {
-struct tm	tTime;
-time_t		tResult;
+struct tm tTime;
+time_t tResult;
 if (ulDTTM == 0) {
 return (time_t)-1;
 }

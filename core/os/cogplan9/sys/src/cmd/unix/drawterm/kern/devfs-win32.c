@@ -1,53 +1,53 @@
 #undef UNICODE
-#include	<windows.h>
-#include	<sys/types.h>
-#include	<sys/stat.h>
-#include	<fcntl.h>
+#include <windows.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #ifndef NAME_MAX
-#	define NAME_MAX 256
+# define NAME_MAX 256
 #endif
-#include	"u.h"
-#include	"lib.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
-typedef struct DIR	DIR;
-typedef	struct Ufsinfo	Ufsinfo;
+#include "u.h"
+#include "lib.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
+typedef struct DIR DIR;
+typedef struct Ufsinfo Ufsinfo;
 enum
 {
-NUID	= 256,
-NGID	= 256,
-MAXPATH	= 1024,
-MAXCOMP	= 128
+NUID = 256,
+NGID = 256,
+MAXPATH = 1024,
+MAXCOMP = 128
 };
 struct DIR
 {
-HANDLE	handle;
-char*	path;
-int	index;
-WIN32_FIND_DATA	wfd;
+HANDLE handle;
+char* path;
+int index;
+WIN32_FIND_DATA wfd;
 };
 struct Ufsinfo
 {
-int	mode;
-int	fd;
-int	uid;
-int	gid;
-DIR*	dir;
-ulong	offset;
-QLock	oq;
+int mode;
+int fd;
+int uid;
+int gid;
+DIR* dir;
+ulong offset;
+QLock oq;
 char nextname[NAME_MAX];
 };
-DIR*	opendir(char*);
-int	readdir(char*, DIR*);
-void	closedir(DIR*);
-void	rewinddir(DIR*);
-char	*base = "c:/.";
-static	Qid	fsqid(char*, struct stat *);
-static	void	fspath(Chan*, char*, char*);
-static	ulong	fsdirread(Chan*, uchar*, int, ulong);
-static	int	fsomode(int);
-static  int	chown(char *path, int uid, int);
+DIR* opendir(char*);
+int readdir(char*, DIR*);
+void closedir(DIR*);
+void rewinddir(DIR*);
+char *base = "c:/.";
+static Qid fsqid(char*, struct stat *);
+static void fspath(Chan*, char*, char*);
+static ulong fsdirread(Chan*, uchar*, int, ulong);
+static int fsomode(int);
+static int chown(char *path, int uid, int);
 static char*
 uc2name(Chan *c)
 {
@@ -382,7 +382,7 @@ static uchar *qdev;
 if(qdev == 0)
 qdev = mallocz(65536U, 1);
 q.type = 0;
-if((st->st_mode&S_IFMT) ==  S_IFDIR)
+if((st->st_mode&S_IFMT) == S_IFDIR)
 q.type = QTDIR;
 dev = st->st_dev & 0xFFFFUL;
 if(qdev[dev] == 0)

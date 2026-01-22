@@ -19,7 +19,7 @@
 #include <lwip/etharp.h>
 #include <lwip/sockets.h>
 #include <lwip/inet.h>
-#define GET_HWADDR_BYTE(x,n)  (((char*)x)[n])
+#define GET_HWADDR_BYTE(x,n) (((char*)x)[n])
 static short ether_filter[] = {
 #ifdef NETF_IN
 NETF_IN,

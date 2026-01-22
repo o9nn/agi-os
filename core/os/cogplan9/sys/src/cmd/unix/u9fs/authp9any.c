@@ -2,13 +2,13 @@
 #include <fcall.h>
 #include <u9fs.h>
 #include <stdlib.h>
-typedef struct	Ticket		Ticket;
-typedef struct	Ticketreq	Ticketreq;
-typedef struct	Authenticator	Authenticator;
+typedef struct Ticket Ticket;
+typedef struct Ticketreq Ticketreq;
+typedef struct Authenticator Authenticator;
 enum
 {
-DOMLEN=		48,
-CHALLEN=	8
+DOMLEN= 48,
+CHALLEN= 8
 };
 enum {
 HaveProtos,
@@ -43,39 +43,39 @@ AuthHr
 };
 struct Ticketreq
 {
-char	type;
-char	authid[NAMELEN];
-char	authdom[DOMLEN];
-char	chal[CHALLEN];
-char	hostid[NAMELEN];
-char	uid[NAMELEN];
+char type;
+char authid[NAMELEN];
+char authdom[DOMLEN];
+char chal[CHALLEN];
+char hostid[NAMELEN];
+char uid[NAMELEN];
 };
-#define	TICKREQLEN	(3*NAMELEN+CHALLEN+DOMLEN+1)
+#define TICKREQLEN (3*NAMELEN+CHALLEN+DOMLEN+1)
 struct Ticket
 {
-char	num;
-char	chal[CHALLEN];
-char	cuid[NAMELEN];
-char	suid[NAMELEN];
-char	key[DESKEYLEN];
+char num;
+char chal[CHALLEN];
+char cuid[NAMELEN];
+char suid[NAMELEN];
+char key[DESKEYLEN];
 };
-#define	TICKETLEN	(CHALLEN+2*NAMELEN+DESKEYLEN+1)
+#define TICKETLEN (CHALLEN+2*NAMELEN+DESKEYLEN+1)
 struct Authenticator
 {
-char	num;
-char	chal[CHALLEN];
-ulong	id;
+char num;
+char chal[CHALLEN];
+ulong id;
 };
-#define	AUTHENTLEN	(CHALLEN+4+1)
+#define AUTHENTLEN (CHALLEN+4+1)
 extern int chatty9p;
-static	int	convT2M(Ticket*, char*, char*);
-static	void	convM2T(char*, Ticket*, char*);
-static	void	convM2Tnoenc(char*, Ticket*);
-static	int	convA2M(Authenticator*, char*, char*);
-static	void	convM2A(char*, Authenticator*, char*);
-static	int	convTR2M(Ticketreq*, char*);
-static	void	convM2TR(char*, Ticketreq*);
-static	int	passtokey(char*, char*);
+static int convT2M(Ticket*, char*, char*);
+static void convM2T(char*, Ticket*, char*);
+static void convM2Tnoenc(char*, Ticket*);
+static int convA2M(Authenticator*, char*, char*);
+static void convM2A(char*, Authenticator*, char*);
+static int convTR2M(Ticketreq*, char*);
+static void convM2TR(char*, Ticketreq*);
+static int passtokey(char*, char*);
 static int
 encrypt9p(void *key, void *vbuf, int n)
 {
@@ -117,11 +117,11 @@ block_cipher(ekey, buf, 1);
 }
 return 1;
 }
-#define	CHAR(x)		*p++ = f->x
-#define	SHORT(x)	p[0] = f->x; p[1] = f->x>>8; p += 2
-#define	VLONG(q)	p[0] = (q); p[1] = (q)>>8; p[2] = (q)>>16; p[3] = (q)>>24; p += 4
-#define	LONG(x)		VLONG(f->x)
-#define	STRING(x,n)	memmove(p, f->x, n); p += n
+#define CHAR(x) *p++ = f->x
+#define SHORT(x) p[0] = f->x; p[1] = f->x>>8; p += 2
+#define VLONG(q) p[0] = (q); p[1] = (q)>>8; p[2] = (q)>>16; p[3] = (q)>>24; p += 4
+#define LONG(x) VLONG(f->x)
+#define STRING(x,n) memmove(p, f->x, n); p += n
 static int
 convTR2M(Ticketreq *f, char *ap)
 {
@@ -172,11 +172,11 @@ return n;
 #undef VLONG
 #undef LONG
 #undef STRING
-#define	CHAR(x)		f->x = *p++
-#define	SHORT(x)	f->x = (p[0] | (p[1]<<8)); p += 2
-#define	VLONG(q)	q = (p[0] | (p[1]<<8) | (p[2]<<16) | (p[3]<<24)); p += 4
-#define	LONG(x)		VLONG(f->x)
-#define	STRING(x,n)	memmove(f->x, p, n); p += n
+#define CHAR(x) f->x = *p++
+#define SHORT(x) f->x = (p[0] | (p[1]<<8)); p += 2
+#define VLONG(q) q = (p[0] | (p[1]<<8) | (p[2]<<16) | (p[3]<<24)); p += 4
+#define LONG(x) VLONG(f->x)
+#define STRING(x,n) memmove(f->x, p, n); p += n
 void
 convM2A(char *ap, Authenticator *f, char *key)
 {

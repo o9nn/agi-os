@@ -20,39 +20,39 @@ if (ftype & LLAMA_FTYPE_GUESSED) {
 return llama_model_ftype_name((enum llama_ftype) (ftype & ~LLAMA_FTYPE_GUESSED)) + " (guessed)";
 }
 switch (ftype) {
-case LLAMA_FTYPE_ALL_F32:         return "all F32";
-case LLAMA_FTYPE_MOSTLY_F16:      return "F16";
-case LLAMA_FTYPE_MOSTLY_BF16:     return "BF16";
-case LLAMA_FTYPE_MOSTLY_Q4_0:     return "Q4_0";
-case LLAMA_FTYPE_MOSTLY_Q4_1:     return "Q4_1";
-case LLAMA_FTYPE_MOSTLY_Q5_0:     return "Q5_0";
-case LLAMA_FTYPE_MOSTLY_Q5_1:     return "Q5_1";
-case LLAMA_FTYPE_MOSTLY_Q8_0:     return "Q8_0";
+case LLAMA_FTYPE_ALL_F32: return "all F32";
+case LLAMA_FTYPE_MOSTLY_F16: return "F16";
+case LLAMA_FTYPE_MOSTLY_BF16: return "BF16";
+case LLAMA_FTYPE_MOSTLY_Q4_0: return "Q4_0";
+case LLAMA_FTYPE_MOSTLY_Q4_1: return "Q4_1";
+case LLAMA_FTYPE_MOSTLY_Q5_0: return "Q5_0";
+case LLAMA_FTYPE_MOSTLY_Q5_1: return "Q5_1";
+case LLAMA_FTYPE_MOSTLY_Q8_0: return "Q8_0";
 case LLAMA_FTYPE_MOSTLY_MXFP4_MOE: return "MXFP4 MoE";
-case LLAMA_FTYPE_MOSTLY_Q2_K:     return "Q2_K - Medium";
-case LLAMA_FTYPE_MOSTLY_Q2_K_S:   return "Q2_K - Small";
-case LLAMA_FTYPE_MOSTLY_Q3_K_S:   return "Q3_K - Small";
-case LLAMA_FTYPE_MOSTLY_Q3_K_M:   return "Q3_K - Medium";
-case LLAMA_FTYPE_MOSTLY_Q3_K_L:   return "Q3_K - Large";
-case LLAMA_FTYPE_MOSTLY_Q4_K_S:   return "Q4_K - Small";
-case LLAMA_FTYPE_MOSTLY_Q4_K_M:   return "Q4_K - Medium";
-case LLAMA_FTYPE_MOSTLY_Q5_K_S:   return "Q5_K - Small";
-case LLAMA_FTYPE_MOSTLY_Q5_K_M:   return "Q5_K - Medium";
-case LLAMA_FTYPE_MOSTLY_Q6_K:     return "Q6_K";
-case LLAMA_FTYPE_MOSTLY_TQ1_0:    return "TQ1_0 - 1.69 bpw ternary";
-case LLAMA_FTYPE_MOSTLY_TQ2_0:    return "TQ2_0 - 2.06 bpw ternary";
-case LLAMA_FTYPE_MOSTLY_IQ2_XXS:  return "IQ2_XXS - 2.0625 bpw";
-case LLAMA_FTYPE_MOSTLY_IQ2_XS:   return "IQ2_XS - 2.3125 bpw";
-case LLAMA_FTYPE_MOSTLY_IQ2_S:    return "IQ2_S - 2.5 bpw";
-case LLAMA_FTYPE_MOSTLY_IQ2_M:    return "IQ2_M - 2.7 bpw";
-case LLAMA_FTYPE_MOSTLY_IQ3_XS:   return "IQ3_XS - 3.3 bpw";
-case LLAMA_FTYPE_MOSTLY_IQ3_XXS:  return "IQ3_XXS - 3.0625 bpw";
-case LLAMA_FTYPE_MOSTLY_IQ1_S:    return "IQ1_S - 1.5625 bpw";
-case LLAMA_FTYPE_MOSTLY_IQ1_M:    return "IQ1_M - 1.75 bpw";
-case LLAMA_FTYPE_MOSTLY_IQ4_NL:   return "IQ4_NL - 4.5 bpw";
-case LLAMA_FTYPE_MOSTLY_IQ4_XS:   return "IQ4_XS - 4.25 bpw";
-case LLAMA_FTYPE_MOSTLY_IQ3_S:    return "IQ3_S - 3.4375 bpw";
-case LLAMA_FTYPE_MOSTLY_IQ3_M:    return "IQ3_S mix - 3.66 bpw";
+case LLAMA_FTYPE_MOSTLY_Q2_K: return "Q2_K - Medium";
+case LLAMA_FTYPE_MOSTLY_Q2_K_S: return "Q2_K - Small";
+case LLAMA_FTYPE_MOSTLY_Q3_K_S: return "Q3_K - Small";
+case LLAMA_FTYPE_MOSTLY_Q3_K_M: return "Q3_K - Medium";
+case LLAMA_FTYPE_MOSTLY_Q3_K_L: return "Q3_K - Large";
+case LLAMA_FTYPE_MOSTLY_Q4_K_S: return "Q4_K - Small";
+case LLAMA_FTYPE_MOSTLY_Q4_K_M: return "Q4_K - Medium";
+case LLAMA_FTYPE_MOSTLY_Q5_K_S: return "Q5_K - Small";
+case LLAMA_FTYPE_MOSTLY_Q5_K_M: return "Q5_K - Medium";
+case LLAMA_FTYPE_MOSTLY_Q6_K: return "Q6_K";
+case LLAMA_FTYPE_MOSTLY_TQ1_0: return "TQ1_0 - 1.69 bpw ternary";
+case LLAMA_FTYPE_MOSTLY_TQ2_0: return "TQ2_0 - 2.06 bpw ternary";
+case LLAMA_FTYPE_MOSTLY_IQ2_XXS: return "IQ2_XXS - 2.0625 bpw";
+case LLAMA_FTYPE_MOSTLY_IQ2_XS: return "IQ2_XS - 2.3125 bpw";
+case LLAMA_FTYPE_MOSTLY_IQ2_S: return "IQ2_S - 2.5 bpw";
+case LLAMA_FTYPE_MOSTLY_IQ2_M: return "IQ2_M - 2.7 bpw";
+case LLAMA_FTYPE_MOSTLY_IQ3_XS: return "IQ3_XS - 3.3 bpw";
+case LLAMA_FTYPE_MOSTLY_IQ3_XXS: return "IQ3_XXS - 3.0625 bpw";
+case LLAMA_FTYPE_MOSTLY_IQ1_S: return "IQ1_S - 1.5625 bpw";
+case LLAMA_FTYPE_MOSTLY_IQ1_M: return "IQ1_M - 1.75 bpw";
+case LLAMA_FTYPE_MOSTLY_IQ4_NL: return "IQ4_NL - 4.5 bpw";
+case LLAMA_FTYPE_MOSTLY_IQ4_XS: return "IQ4_XS - 4.25 bpw";
+case LLAMA_FTYPE_MOSTLY_IQ3_S: return "IQ3_S - 3.4375 bpw";
+case LLAMA_FTYPE_MOSTLY_IQ3_M: return "IQ3_S mix - 3.66 bpw";
 default: return "unknown, may not work";
 }
 }
@@ -85,18 +85,18 @@ return gfun(ctx, kid);
 }
 };
 template<typename T> struct GKV_Base;
-template<> struct GKV_Base<bool        >: GKV_Base_Type<bool,         GGUF_TYPE_BOOL,    gguf_get_val_bool> {};
-template<> struct GKV_Base<uint8_t     >: GKV_Base_Type<uint8_t,      GGUF_TYPE_UINT8,   gguf_get_val_u8  > {};
-template<> struct GKV_Base<uint16_t    >: GKV_Base_Type<uint16_t,     GGUF_TYPE_UINT16,  gguf_get_val_u16 > {};
-template<> struct GKV_Base<uint32_t    >: GKV_Base_Type<uint32_t,     GGUF_TYPE_UINT32,  gguf_get_val_u32 > {};
-template<> struct GKV_Base<uint64_t    >: GKV_Base_Type<uint64_t,     GGUF_TYPE_UINT64,  gguf_get_val_u64 > {};
-template<> struct GKV_Base<int8_t      >: GKV_Base_Type<int8_t,       GGUF_TYPE_INT8,    gguf_get_val_i8  > {};
-template<> struct GKV_Base<int16_t     >: GKV_Base_Type<int16_t,      GGUF_TYPE_INT16,   gguf_get_val_i16 > {};
-template<> struct GKV_Base<int32_t     >: GKV_Base_Type<int32_t,      GGUF_TYPE_INT32,   gguf_get_val_i32 > {};
-template<> struct GKV_Base<int64_t     >: GKV_Base_Type<int64_t,      GGUF_TYPE_INT64,   gguf_get_val_i64 > {};
-template<> struct GKV_Base<float       >: GKV_Base_Type<float,        GGUF_TYPE_FLOAT32, gguf_get_val_f32 > {};
-template<> struct GKV_Base<double      >: GKV_Base_Type<double,       GGUF_TYPE_FLOAT64, gguf_get_val_f64 > {};
-template<> struct GKV_Base<const char *>: GKV_Base_Type<const char *, GGUF_TYPE_STRING,  gguf_get_val_str > {};
+template<> struct GKV_Base<bool >: GKV_Base_Type<bool, GGUF_TYPE_BOOL, gguf_get_val_bool> {};
+template<> struct GKV_Base<uint8_t >: GKV_Base_Type<uint8_t, GGUF_TYPE_UINT8, gguf_get_val_u8 > {};
+template<> struct GKV_Base<uint16_t >: GKV_Base_Type<uint16_t, GGUF_TYPE_UINT16, gguf_get_val_u16 > {};
+template<> struct GKV_Base<uint32_t >: GKV_Base_Type<uint32_t, GGUF_TYPE_UINT32, gguf_get_val_u32 > {};
+template<> struct GKV_Base<uint64_t >: GKV_Base_Type<uint64_t, GGUF_TYPE_UINT64, gguf_get_val_u64 > {};
+template<> struct GKV_Base<int8_t >: GKV_Base_Type<int8_t, GGUF_TYPE_INT8, gguf_get_val_i8 > {};
+template<> struct GKV_Base<int16_t >: GKV_Base_Type<int16_t, GGUF_TYPE_INT16, gguf_get_val_i16 > {};
+template<> struct GKV_Base<int32_t >: GKV_Base_Type<int32_t, GGUF_TYPE_INT32, gguf_get_val_i32 > {};
+template<> struct GKV_Base<int64_t >: GKV_Base_Type<int64_t, GGUF_TYPE_INT64, gguf_get_val_i64 > {};
+template<> struct GKV_Base<float >: GKV_Base_Type<float, GGUF_TYPE_FLOAT32, gguf_get_val_f32 > {};
+template<> struct GKV_Base<double >: GKV_Base_Type<double, GGUF_TYPE_FLOAT64, gguf_get_val_f64 > {};
+template<> struct GKV_Base<const char *>: GKV_Base_Type<const char *, GGUF_TYPE_STRING, gguf_get_val_str > {};
 template<> struct GKV_Base<std::string> {
 static constexpr gguf_type gt = GGUF_TYPE_STRING;
 static std::string getter(const gguf_context * ctx, const int kid) {
@@ -134,10 +134,10 @@ return GKV::getter(ctx, k);
 }
 static const char * override_type_to_str(const llama_model_kv_override_type ty) {
 switch (ty) {
-case LLAMA_KV_OVERRIDE_TYPE_BOOL:  return "bool";
-case LLAMA_KV_OVERRIDE_TYPE_INT:   return "int";
+case LLAMA_KV_OVERRIDE_TYPE_BOOL: return "bool";
+case LLAMA_KV_OVERRIDE_TYPE_INT: return "int";
 case LLAMA_KV_OVERRIDE_TYPE_FLOAT: return "float";
-case LLAMA_KV_OVERRIDE_TYPE_STR:   return "str";
+case LLAMA_KV_OVERRIDE_TYPE_STR: return "str";
 }
 return "unknown";
 }
@@ -147,10 +147,10 @@ if (ovrd->tag == expected_type) {
 LLAMA_LOG_INFO("%s: Using metadata override (%5s) '%s' = ",
 __func__, override_type_to_str(ovrd->tag), ovrd->key);
 switch (ovrd->tag) {
-case LLAMA_KV_OVERRIDE_TYPE_BOOL:  {
+case LLAMA_KV_OVERRIDE_TYPE_BOOL: {
 LLAMA_LOG_INFO("%s\n", ovrd->val_bool ? "true" : "false");
 } break;
-case LLAMA_KV_OVERRIDE_TYPE_INT:   {
+case LLAMA_KV_OVERRIDE_TYPE_INT: {
 LLAMA_LOG_INFO("%" PRId64 "\n", ovrd->val_i64);
 } break;
 case LLAMA_KV_OVERRIDE_TYPE_FLOAT: {
@@ -257,10 +257,10 @@ struct GGUFMeta::ArrayInfo arr_info =
 GGUFMeta::GKV<GGUFMeta::ArrayInfo>::get_kv(ctx, kid);
 switch (arr_info.gt) {
 case GGUF_TYPE_UINT32:
-case GGUF_TYPE_INT32:   GGML_ASSERT((std::is_same<T,     int32_t>::value) ||
-(std::is_same<T,    uint32_t>::value)); break;
-case GGUF_TYPE_FLOAT32: GGML_ASSERT((std::is_same<T,       float>::value)); break;
-case GGUF_TYPE_STRING:  GGML_ASSERT((std::is_same<T, std::string>::value)); break;
+case GGUF_TYPE_INT32: GGML_ASSERT((std::is_same<T, int32_t>::value) ||
+(std::is_same<T, uint32_t>::value)); break;
+case GGUF_TYPE_FLOAT32: GGML_ASSERT((std::is_same<T, float>::value)); break;
+case GGUF_TYPE_STRING: GGML_ASSERT((std::is_same<T, std::string>::value)); break;
 default:
 throw std::runtime_error(format("%s is not a string/float32/uint32/int32 array", key.c_str()));
 }
@@ -291,10 +291,10 @@ struct GGUFMeta::ArrayInfo arr_info =
 GGUFMeta::GKV<GGUFMeta::ArrayInfo>::get_kv(ctx, kid);
 switch (arr_info.gt) {
 case GGUF_TYPE_UINT32:
-case GGUF_TYPE_INT32:   GGML_ASSERT((std::is_same<T,     int32_t>::value) ||
-(std::is_same<T,    uint32_t>::value)); break;
-case GGUF_TYPE_FLOAT32: GGML_ASSERT((std::is_same<T,       float>::value)); break;
-case GGUF_TYPE_STRING:  GGML_ASSERT((std::is_same<T, std::string>::value)); break;
+case GGUF_TYPE_INT32: GGML_ASSERT((std::is_same<T, int32_t>::value) ||
+(std::is_same<T, uint32_t>::value)); break;
+case GGUF_TYPE_FLOAT32: GGML_ASSERT((std::is_same<T, float>::value)); break;
+case GGUF_TYPE_STRING: GGML_ASSERT((std::is_same<T, std::string>::value)); break;
 default:
 throw std::runtime_error(format("%s is not a string/float32/uint32/int32 array", key.c_str()));
 }
@@ -332,9 +332,9 @@ template<typename T>
 bool llama_model_loader::get_key(enum llm_kv kid, T & result, bool required) {
 return get_key(llm_kv(kid), result, required);
 }
-template bool llama_model_loader::get_key<bool>       (enum llm_kv kid, bool & result,        bool required);
-template bool llama_model_loader::get_key<float>      (enum llm_kv kid, float & result,       bool required);
-template bool llama_model_loader::get_key<uint32_t>   (enum llm_kv kid, uint32_t & result,    bool required);
+template bool llama_model_loader::get_key<bool> (enum llm_kv kid, bool & result, bool required);
+template bool llama_model_loader::get_key<float> (enum llm_kv kid, float & result, bool required);
+template bool llama_model_loader::get_key<uint32_t> (enum llm_kv kid, uint32_t & result, bool required);
 template bool llama_model_loader::get_key<std::string>(enum llm_kv kid, std::string & result, bool required);
 template<>
 bool llama_model_loader::get_key(enum llm_kv kid, enum llama_pooling_type & result, bool required) {
@@ -419,7 +419,7 @@ if (weights_map.find(tensor_name) != weights_map.end()) {
 throw std::runtime_error(format("invalid model: tensor '%s' is duplicated", ggml_get_name(cur)));
 }
 n_elements += ggml_nelements(cur);
-n_bytes    += ggml_nbytes(cur);
+n_bytes += ggml_nbytes(cur);
 weights_map.emplace(tensor_name, llama_tensor_weight(files.back().get(), 0, meta.get(), cur));
 }
 uint16_t n_split = 0;
@@ -468,7 +468,7 @@ if (weights_map.find(tensor_name) != weights_map.end()) {
 throw std::runtime_error(format("invalid model: tensor '%s' is duplicated", ggml_get_name(cur)));
 }
 n_elements += ggml_nelements(cur);
-n_bytes    += ggml_nbytes(cur);
+n_bytes += ggml_nbytes(cur);
 weights_map.emplace(tensor_name, llama_tensor_weight(files.back().get(), idx, ctx_gguf.get(), cur));
 }
 }
@@ -479,9 +479,9 @@ if (n_tensors != n_tensors_loaded) {
 throw std::runtime_error(format("corrupted model: %d tensors expected but %d found", n_tensors, n_tensors_loaded));
 }
 }
-LLAMA_LOG_INFO("%s: additional %d GGUFs metadata loaded.\n",  __func__, n_split - 1);
+LLAMA_LOG_INFO("%s: additional %d GGUFs metadata loaded.\n", __func__, n_split - 1);
 }
-n_kv      = gguf_get_n_kv(meta.get());
+n_kv = gguf_get_n_kv(meta.get());
 n_tensors = weights_map.size();
 fver = (enum llama_fver) gguf_get_version(meta.get());
 LLAMA_LOG_INFO("%s: loaded meta data with %d key-value pairs and %d tensors from %s (version %s)\n",
@@ -497,7 +497,7 @@ enum ggml_type type = tensor->type;
 n_type[type]++;
 if (n_type_max < n_type[type]) {
 n_type_max = n_type[type];
-type_max   = type;
+type_max = type;
 }
 if (trace > 0) {
 const uint16_t sid = w.idx;
@@ -507,30 +507,30 @@ ggml_nbytes(tensor)/1024.0f/1024.0f);
 }
 }
 switch (type_max) {
-case GGML_TYPE_F32:     ftype = LLAMA_FTYPE_ALL_F32;        break;
-case GGML_TYPE_F16:     ftype = LLAMA_FTYPE_MOSTLY_F16;     break;
-case GGML_TYPE_BF16:    ftype = LLAMA_FTYPE_MOSTLY_BF16;    break;
-case GGML_TYPE_Q4_0:    ftype = LLAMA_FTYPE_MOSTLY_Q4_0;    break;
-case GGML_TYPE_Q4_1:    ftype = LLAMA_FTYPE_MOSTLY_Q4_1;    break;
-case GGML_TYPE_Q5_0:    ftype = LLAMA_FTYPE_MOSTLY_Q5_0;    break;
-case GGML_TYPE_Q5_1:    ftype = LLAMA_FTYPE_MOSTLY_Q5_1;    break;
-case GGML_TYPE_Q8_0:    ftype = LLAMA_FTYPE_MOSTLY_Q8_0;    break;
-case GGML_TYPE_Q2_K:    ftype = LLAMA_FTYPE_MOSTLY_Q2_K;    break;
-case GGML_TYPE_Q3_K:    ftype = LLAMA_FTYPE_MOSTLY_Q3_K_M;  break;
-case GGML_TYPE_Q4_K:    ftype = LLAMA_FTYPE_MOSTLY_Q4_K_M;  break;
-case GGML_TYPE_Q5_K:    ftype = LLAMA_FTYPE_MOSTLY_Q5_K_M;  break;
-case GGML_TYPE_Q6_K:    ftype = LLAMA_FTYPE_MOSTLY_Q6_K;    break;
-case GGML_TYPE_TQ1_0:   ftype = LLAMA_FTYPE_MOSTLY_TQ1_0;   break;
-case GGML_TYPE_TQ2_0:   ftype = LLAMA_FTYPE_MOSTLY_TQ2_0;   break;
+case GGML_TYPE_F32: ftype = LLAMA_FTYPE_ALL_F32; break;
+case GGML_TYPE_F16: ftype = LLAMA_FTYPE_MOSTLY_F16; break;
+case GGML_TYPE_BF16: ftype = LLAMA_FTYPE_MOSTLY_BF16; break;
+case GGML_TYPE_Q4_0: ftype = LLAMA_FTYPE_MOSTLY_Q4_0; break;
+case GGML_TYPE_Q4_1: ftype = LLAMA_FTYPE_MOSTLY_Q4_1; break;
+case GGML_TYPE_Q5_0: ftype = LLAMA_FTYPE_MOSTLY_Q5_0; break;
+case GGML_TYPE_Q5_1: ftype = LLAMA_FTYPE_MOSTLY_Q5_1; break;
+case GGML_TYPE_Q8_0: ftype = LLAMA_FTYPE_MOSTLY_Q8_0; break;
+case GGML_TYPE_Q2_K: ftype = LLAMA_FTYPE_MOSTLY_Q2_K; break;
+case GGML_TYPE_Q3_K: ftype = LLAMA_FTYPE_MOSTLY_Q3_K_M; break;
+case GGML_TYPE_Q4_K: ftype = LLAMA_FTYPE_MOSTLY_Q4_K_M; break;
+case GGML_TYPE_Q5_K: ftype = LLAMA_FTYPE_MOSTLY_Q5_K_M; break;
+case GGML_TYPE_Q6_K: ftype = LLAMA_FTYPE_MOSTLY_Q6_K; break;
+case GGML_TYPE_TQ1_0: ftype = LLAMA_FTYPE_MOSTLY_TQ1_0; break;
+case GGML_TYPE_TQ2_0: ftype = LLAMA_FTYPE_MOSTLY_TQ2_0; break;
 case GGML_TYPE_IQ2_XXS: ftype = LLAMA_FTYPE_MOSTLY_IQ2_XXS; break;
-case GGML_TYPE_IQ2_XS:  ftype = LLAMA_FTYPE_MOSTLY_IQ2_XS;  break;
-case GGML_TYPE_IQ2_S:   ftype = LLAMA_FTYPE_MOSTLY_IQ2_S;   break;
+case GGML_TYPE_IQ2_XS: ftype = LLAMA_FTYPE_MOSTLY_IQ2_XS; break;
+case GGML_TYPE_IQ2_S: ftype = LLAMA_FTYPE_MOSTLY_IQ2_S; break;
 case GGML_TYPE_IQ3_XXS: ftype = LLAMA_FTYPE_MOSTLY_IQ3_XXS; break;
-case GGML_TYPE_IQ1_S:   ftype = LLAMA_FTYPE_MOSTLY_IQ1_S;   break;
-case GGML_TYPE_IQ1_M:   ftype = LLAMA_FTYPE_MOSTLY_IQ1_M;   break;
-case GGML_TYPE_IQ4_NL:  ftype = LLAMA_FTYPE_MOSTLY_IQ4_NL;  break;
-case GGML_TYPE_IQ4_XS:  ftype = LLAMA_FTYPE_MOSTLY_IQ4_XS;  break;
-case GGML_TYPE_IQ3_S:   ftype = LLAMA_FTYPE_MOSTLY_IQ3_S;   break;
+case GGML_TYPE_IQ1_S: ftype = LLAMA_FTYPE_MOSTLY_IQ1_S; break;
+case GGML_TYPE_IQ1_M: ftype = LLAMA_FTYPE_MOSTLY_IQ1_M; break;
+case GGML_TYPE_IQ4_NL: ftype = LLAMA_FTYPE_MOSTLY_IQ4_NL; break;
+case GGML_TYPE_IQ4_XS: ftype = LLAMA_FTYPE_MOSTLY_IQ4_XS; break;
+case GGML_TYPE_IQ3_S: ftype = LLAMA_FTYPE_MOSTLY_IQ3_S; break;
 default:
 {
 LLAMA_LOG_WARN("%s: unknown type %s\n", __func__, ggml_type_name(type_max));
@@ -546,13 +546,13 @@ ftype = (llama_ftype) ftype_val;
 }
 LLAMA_LOG_INFO("%s: Dumping metadata keys/values. Note: KV overrides do not apply in this output.\n", __func__);
 for (int i = 0; i < n_kv; i++) {
-const char * name           = gguf_get_key(meta.get(), i);
-const enum gguf_type type   = gguf_get_kv_type(meta.get(), i);
+const char * name = gguf_get_key(meta.get(), i);
+const enum gguf_type type = gguf_get_kv_type(meta.get(), i);
 const std::string type_name =
 type == GGUF_TYPE_ARRAY
 ? format("%s[%s,%zu]", gguf_type_name(type), gguf_type_name(gguf_get_arr_type(meta.get(), i)), gguf_get_arr_n(meta.get(), i))
 : gguf_type_name(type);
-std::string value          = gguf_kv_to_str(meta.get(), i);
+std::string value = gguf_kv_to_str(meta.get(), i);
 const size_t MAX_VALUE_LEN = 40;
 if (value.size() > MAX_VALUE_LEN) {
 value = format("%s...", value.substr(0, MAX_VALUE_LEN - 3).c_str());
@@ -706,7 +706,7 @@ void llama_model_loader::get_mapping_range(size_t * first, size_t * last, void *
 GGML_ASSERT(!mappings.empty());
 const auto & mapping = mappings.at(idx);
 *first = mapping->size();
-*last  = 0;
+*last = 0;
 *addr = mapping->addr();
 for (ggml_tensor * tensor = ggml_get_first_tensor(ctx); tensor; tensor = ggml_get_next_tensor(ctx, tensor)) {
 const auto * weight = get_weight(ggml_get_name(tensor));
@@ -714,7 +714,7 @@ if (!weight || weight->idx != idx) {
 continue;
 }
 *first = std::min(*first, weight->offs);
-*last  = std::max(*last,  weight->offs + ggml_nbytes(tensor));
+*last = std::max(*last, weight->offs + ggml_nbytes(tensor));
 }
 }
 void llama_model_loader::load_data_for(struct ggml_tensor * cur) const {
@@ -848,7 +848,7 @@ const auto & lmlock = lmlocks->at(weight->idx);
 lmlock->grow_to(weight->offs + n_size);
 }
 auto & mmap_used = mmaps_used[weight->idx];
-mmap_used.first  = std::min(mmap_used.first,  weight->offs);
+mmap_used.first = std::min(mmap_used.first, weight->offs);
 mmap_used.second = std::max(mmap_used.second, weight->offs + n_size);
 } else {
 ggml_backend_tensor_set(cur, data, 0, n_size);
@@ -933,7 +933,7 @@ void llama_model_loader::print_info() const {
 LLAMA_LOG_INFO("%s: file format = %s\n", __func__, llama_file_version_name(fver));
 LLAMA_LOG_INFO("%s: file type   = %s\n", __func__, llama_model_ftype_name(ftype).c_str());
 if (n_bytes < GiB) {
-LLAMA_LOG_INFO("%s: file size   = %.2f MiB (%.2f BPW) \n", __func__, n_bytes/1024.0/1024.0,        n_bytes*8.0/n_elements);
+LLAMA_LOG_INFO("%s: file size   = %.2f MiB (%.2f BPW) \n", __func__, n_bytes/1024.0/1024.0, n_bytes*8.0/n_elements);
 } else {
 LLAMA_LOG_INFO("%s: file size   = %.2f GiB (%.2f BPW) \n", __func__, n_bytes/1024.0/1024.0/1024.0, n_bytes*8.0/n_elements);
 }

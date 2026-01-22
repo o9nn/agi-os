@@ -10,11 +10,11 @@
 #include "screen.h"
 #define argv0 "drawterm"
 typedef struct Cursor Cursor;
-#undef	long
-#define	Font		XFont
-#define	Screen	XScreen
-#define	Display	XDisplay
-#define	Cursor	XCursor
+#undef long
+#define Font XFont
+#define Screen XScreen
+#define Display XDisplay
+#define Cursor XCursor
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>
@@ -22,39 +22,39 @@ typedef struct Cursor Cursor;
 #include <X11/StringDefs.h>
 #include <X11/keysym.h>
 #include "keysym2ucs.h"
-#undef	Font
-#undef	Screen
-#undef	Display
-#undef	Cursor
-#define	long	int
-#define RGB2K(r,g,b)	((156763*(r)+307758*(g)+59769*(b))>>19)
+#undef Font
+#undef Screen
+#undef Display
+#undef Cursor
+#define long int
+#define RGB2K(r,g,b) ((156763*(r)+307758*(g)+59769*(b))>>19)
 enum
 {
-PMundef	= ~0
+PMundef = ~0
 };
 typedef struct Xmem Xmem;
 struct Xmem
 {
-int	pmid;
+int pmid;
 XImage *xi;
-int	dirty;
+int dirty;
 Rectangle dirtyr;
 Rectangle r;
 uintptr pc;
 };
-static int	xgcfillcolor;
-static int	xgcfillcolor0;
-static int	xgcsimplecolor0;
-static int	xgcsimplepm0;
-static	XDisplay*	xdisplay;
-static int				xtblbit;
-static int 			plan9tox11[256];
-static int 			x11toplan9[256];
-static	GC		xgcfill, xgccopy, xgcsimplesrc, xgczero, xgcreplsrc;
-static	GC		xgcfill0, xgccopy0, xgcsimplesrc0, xgczero0, xgcreplsrc0;
-static	ulong	xscreenchan;
-static	Drawable	xscreenid;
-static	Visual		*xvis;
+static int xgcfillcolor;
+static int xgcfillcolor0;
+static int xgcsimplecolor0;
+static int xgcsimplepm0;
+static XDisplay* xdisplay;
+static int xtblbit;
+static int plan9tox11[256];
+static int x11toplan9[256];
+static GC xgcfill, xgccopy, xgcsimplesrc, xgczero, xgcreplsrc;
+static GC xgcfill0, xgccopy0, xgcsimplesrc0, xgczero0, xgcreplsrc0;
+static ulong xscreenchan;
+static Drawable xscreenid;
+static Visual *xvis;
 static int xdraw(Memdrawparam*);
 #define glenda_width 48
 #define glenda_height 48
@@ -371,34 +371,34 @@ return 1;
 }
 return 0;
 }
-static XColor			map[256];
-static XColor			map7[128];
-static uchar			map7to8[128][2];
-static Colormap		xcmap;
+static XColor map[256];
+static XColor map7[128];
+static uchar map7to8[128][2];
+static Colormap xcmap;
 extern int mousequeue;
 static Atom clipboard;
 static Atom utf8string;
 static Atom targets;
 static Atom text;
 static Atom compoundtext;
-static	Drawable	xdrawable;
-static	void		xexpose(XEvent*);
-static	void		xmouse(XEvent*);
-static	void		xkeyboard(XEvent*);
-static	void		xmapping(XEvent*);
-static	void		xdestroy(XEvent*);
-static	void		xselect(XEvent*, XDisplay*);
-static	void		xproc(void*);
-static	Memimage*		xinitscreen(void);
-static	void		initmap(Window);
-static	GC		creategc(Drawable);
-static	void		graphicscmap(XColor*);
-static	int		xscreendepth;
-static	XDisplay*	xkmcon;
-static	XDisplay*	xsnarfcon;
-static	ulong		xblack;
-static	ulong		xwhite;
-static	int	putsnarf, assertsnarf;
+static Drawable xdrawable;
+static void xexpose(XEvent*);
+static void xmouse(XEvent*);
+static void xkeyboard(XEvent*);
+static void xmapping(XEvent*);
+static void xdestroy(XEvent*);
+static void xselect(XEvent*, XDisplay*);
+static void xproc(void*);
+static Memimage* xinitscreen(void);
+static void initmap(Window);
+static GC creategc(Drawable);
+static void graphicscmap(XColor*);
+static int xscreendepth;
+static XDisplay* xkmcon;
+static XDisplay* xsnarfcon;
+static ulong xblack;
+static ulong xwhite;
+static int putsnarf, assertsnarf;
 Memimage *gscreen;
 Screeninfo screen;
 void
@@ -504,7 +504,7 @@ xproc(void *arg)
 {
 ulong mask;
 XEvent event;
-mask = 	KeyPressMask|
+mask = KeyPressMask|
 ButtonPressMask|
 ButtonReleaseMask|
 PointerMotionMask|
@@ -796,7 +796,7 @@ xcmap = XCreateColormap(xdisplay, w, xvis, AllocNone);
 c = map[19];
 if(!XAllocColor(xdisplay, xcmap, &c))
 panic("drawterm: screen-x11 can't alloc color");
-p  = c.pixel;
+p = c.pixel;
 pp = rgb2cmap((p>>16)&0xff,(p>>8)&0xff,p&0xff);
 if(pp!=map[19].pixel) {
 pp = rgb2cmap(p&0xff,(p>>8)&0xff,(p>>16)&0xff);

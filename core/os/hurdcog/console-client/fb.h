@@ -4,11 +4,11 @@
 #include "bdf.h"
 #include "display.h"
 #include "vga-hw.h"
-#define FB_VIDEO_MEM_MAX_W	1920
-#define FB_VIDEO_MEM_MAX_H	1080
-#define FB_VIDEO_MEM_MAX_BPP	32
-#define FONT_PIXELS_W		8
-#define FONT_PIXELS_H		16
+#define FB_VIDEO_MEM_MAX_W 1920
+#define FB_VIDEO_MEM_MAX_H 1080
+#define FB_VIDEO_MEM_MAX_BPP 32
+#define FONT_PIXELS_W 8
+#define FONT_PIXELS_H 16
 extern int fb_type;
 error_t fb_get_multiboot_params (void);
 error_t fb_display_init (void **handle, struct driver_ops *ops);
@@ -18,9 +18,9 @@ uint32_t framebuffer_pitch;
 uint32_t framebuffer_width;
 uint32_t framebuffer_height;
 uint8_t framebuffer_bpp;
-#define MULTIBOOT_FRAMEBUFFER_TYPE_INDEXED      0
-#define MULTIBOOT_FRAMEBUFFER_TYPE_RGB          1
-#define MULTIBOOT_FRAMEBUFFER_TYPE_EGA_TEXT     2
+#define MULTIBOOT_FRAMEBUFFER_TYPE_INDEXED 0
+#define MULTIBOOT_FRAMEBUFFER_TYPE_RGB 1
+#define MULTIBOOT_FRAMEBUFFER_TYPE_EGA_TEXT 2
 uint8_t framebuffer_type;
 union
 {

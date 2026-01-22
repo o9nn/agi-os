@@ -9,7 +9,7 @@ include "encoding.m";
 include "arg.m";
 P9export: module
 {
-init:	 fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 factotumfile := "/mnt/factotum/rpc";
 fail(status, msg: string)
@@ -29,7 +29,7 @@ if(arg == nil)
 nomod(Arg->PATH);
 arg->init(args);
 arg->setusage("9export [-aA9] [-k keyspec] [-e enc digest]");
-cryptalg := "";	# will be rc4_256 sha1
+cryptalg := ""; # will be rc4_256 sha1
 keyspec := "";
 noauth := 0;
 xflag := Sys->EXPWAIT;
@@ -47,7 +47,7 @@ cryptalg = nil;
 keyspec = arg->earg();
 '9' =>
 ;
-*   =>
+* =>
 arg->usage();
 }
 args = arg->argv();
@@ -103,7 +103,7 @@ nomod(SSL->PATH);
 base64 := load Encoding Encoding->BASE64PATH;
 if(base64 == nil)
 nomod(Encoding->BASE64PATH);
-key := array[16] of byte;	# myrand[4] secret[8] hisrand[4]
+key := array[16] of byte; # myrand[4] secret[8] hisrand[4]
 key[0:] = random->randombuf(Random->ReallyRandom, 4);
 ns := len secret;
 if(ns > 8)

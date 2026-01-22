@@ -2,14 +2,14 @@
 #include <bio.h>
 #include <regexp.h>
 enum {
-DEPTH		= 20,
-MAXCMDS		= 512,
-ADDSIZE		= 10000,
-MAXADDS		= 20,
-LBSIZE		= 8192,
-LABSIZE		= 50,
-MAXSUB		= 10,
-MAXFILES	= 120
+DEPTH = 20,
+MAXCMDS = 512,
+ADDSIZE = 10000,
+MAXADDS = 20,
+LBSIZE = 8192,
+LABSIZE = 50,
+MAXSUB = 10,
+MAXFILES = 120
 };
 typedef struct {
 enum {
@@ -19,144 +19,144 @@ A_LINE,
 A_RE,
 A_LAST
 }type;
-long	line;
-Reprog	*rp;
+long line;
+Reprog *rp;
 } Addr;
-typedef struct	SEDCOM {
-Addr	ad1;
-Addr	ad2;
-Reprog	*re1;
-Rune	*text;
-struct	SEDCOM	*lb1;
-Rune	*rhs;
-Biobuf*	fcode;
-char	command;
-char	gfl;
-char	pfl;
-char	active;
-char	negfl;
+typedef struct SEDCOM {
+Addr ad1;
+Addr ad2;
+Reprog *re1;
+Rune *text;
+struct SEDCOM *lb1;
+Rune *rhs;
+Biobuf* fcode;
+char command;
+char gfl;
+char pfl;
+char active;
+char negfl;
 } SedCom;
-#define ACOM	01
-#define BCOM	020
-#define CCOM	02
-#define	CDCOM	025
-#define	CNCOM	022
-#define COCOM	017
-#define	CPCOM	023
-#define DCOM	03
-#define ECOM	015
-#define EQCOM	013
-#define FCOM	016
-#define GCOM	027
-#define CGCOM	030
-#define HCOM	031
-#define CHCOM	032
-#define ICOM	04
-#define LCOM	05
-#define NCOM	012
-#define PCOM	010
-#define QCOM	011
-#define RCOM	06
-#define SCOM	07
-#define TCOM	021
-#define WCOM	014
-#define	CWCOM	024
-#define	YCOM	026
-#define XCOM	033
+#define ACOM 01
+#define BCOM 020
+#define CCOM 02
+#define CDCOM 025
+#define CNCOM 022
+#define COCOM 017
+#define CPCOM 023
+#define DCOM 03
+#define ECOM 015
+#define EQCOM 013
+#define FCOM 016
+#define GCOM 027
+#define CGCOM 030
+#define HCOM 031
+#define CHCOM 032
+#define ICOM 04
+#define LCOM 05
+#define NCOM 012
+#define PCOM 010
+#define QCOM 011
+#define RCOM 06
+#define SCOM 07
+#define TCOM 021
+#define WCOM 014
+#define CWCOM 024
+#define YCOM 026
+#define XCOM 033
 typedef struct label {
-Rune	uninm[9];
-SedCom	*chain;
-SedCom	*address;
+Rune uninm[9];
+SedCom *chain;
+SedCom *address;
 } Label;
-typedef	struct	FILE_CACHE {
+typedef struct FILE_CACHE {
 struct FILE_CACHE *next;
-char	*name;
+char *name;
 } FileCache;
 SedCom pspace[MAXCMDS];
 SedCom *pend = pspace+MAXCMDS;
 SedCom *rep = pspace;
-Reprog	*lastre = 0;
-Resub	subexp[MAXSUB];
-Rune	addspace[ADDSIZE];
-Rune	*addend = addspace+ADDSIZE;
-SedCom	*abuf[MAXADDS];
-SedCom	**aptr = abuf;
+Reprog *lastre = 0;
+Resub subexp[MAXSUB];
+Rune addspace[ADDSIZE];
+Rune *addend = addspace+ADDSIZE;
+SedCom *abuf[MAXADDS];
+SedCom **aptr = abuf;
 struct {
 enum PTYPE {
 P_ARG,
 P_FILE
 } type;
-Biobuf	*bp;
-char	*curr;
+Biobuf *bp;
+char *curr;
 } prog;
-Rune	genbuf[LBSIZE];
-FileCache	*fhead = 0;
-FileCache	*ftail = 0;
-Rune	*loc1;
-Rune	*loc2;
-Rune	seof;
-Rune	linebuf[LBSIZE+1];
-Rune	*lbend = linebuf+LBSIZE;
-Rune	*spend = linebuf;
-Rune	*cp;
-Rune	holdsp[LBSIZE+1];
-Rune	*hend = holdsp+LBSIZE;
-Rune	*hspend = holdsp;
-int	nflag;
-int	gflag;
-int	dolflag;
-int	sflag;
-int	jflag;
-int	delflag;
-long	lnum = 0;
-char	fname[MAXFILES][40];
-Biobuf	*fcode[MAXFILES];
-int	nfiles = 0;
-Biobuf	fout;
-Biobuf	bstdin;
-Biobuf*	f = 0;
-Label	ltab[LABSIZE];
-Label	*labend = ltab+LABSIZE;
-Label	*lab = ltab+1;
-int	depth = 0;
-Rune	bad;
-Rune	*badp = &bad;
-char	CGMES[]	 = 	"command garbled: %S";
-char	TMMES[]	 = 	"Too much text: %S";
-char	LTL[]	 = 	"Label too long: %S";
-char	AD0MES[] =	"No addresses allowed: %S";
-char	AD1MES[] =	"Only one address allowed: %S";
-void	address(Addr *);
-void	arout(void);
-int	cmp(char *, char *);
-int	rcmp(Rune *, Rune *);
-void	command(SedCom *);
-Reprog	*compile(void);
-Rune	*compsub(Rune *, Rune *);
-void	dechain(void);
-void	dosub(Rune *);
-int	ecmp(Rune *, Rune *, int);
-void	enroll(char *);
-void	errexit(void);
-int	executable(SedCom *);
-void	execute(void);
-void	fcomp(void);
-long	getrune(void);
-Rune	*gline(Rune *);
-int	match(Reprog *, Rune *);
-void	newfile(enum PTYPE, char *);
-int 	opendata(void);
-Biobuf	*open_file(char *);
-Rune	*place(Rune *, Rune *, Rune *);
-void	quit(char *, ...);
-int	rline(Rune *, Rune *);
-Label	*search(Label *);
-int	substitute(SedCom *);
-char	*text(char *);
-Rune	*stext(Rune *, Rune *);
-int	ycomp(SedCom *);
-char *	trans(int c);
-void	putline(Biobuf *bp, Rune *buf, int n);
+Rune genbuf[LBSIZE];
+FileCache *fhead = 0;
+FileCache *ftail = 0;
+Rune *loc1;
+Rune *loc2;
+Rune seof;
+Rune linebuf[LBSIZE+1];
+Rune *lbend = linebuf+LBSIZE;
+Rune *spend = linebuf;
+Rune *cp;
+Rune holdsp[LBSIZE+1];
+Rune *hend = holdsp+LBSIZE;
+Rune *hspend = holdsp;
+int nflag;
+int gflag;
+int dolflag;
+int sflag;
+int jflag;
+int delflag;
+long lnum = 0;
+char fname[MAXFILES][40];
+Biobuf *fcode[MAXFILES];
+int nfiles = 0;
+Biobuf fout;
+Biobuf bstdin;
+Biobuf* f = 0;
+Label ltab[LABSIZE];
+Label *labend = ltab+LABSIZE;
+Label *lab = ltab+1;
+int depth = 0;
+Rune bad;
+Rune *badp = &bad;
+char CGMES[] = "command garbled: %S";
+char TMMES[] = "Too much text: %S";
+char LTL[] = "Label too long: %S";
+char AD0MES[] = "No addresses allowed: %S";
+char AD1MES[] = "Only one address allowed: %S";
+void address(Addr *);
+void arout(void);
+int cmp(char *, char *);
+int rcmp(Rune *, Rune *);
+void command(SedCom *);
+Reprog *compile(void);
+Rune *compsub(Rune *, Rune *);
+void dechain(void);
+void dosub(Rune *);
+int ecmp(Rune *, Rune *, int);
+void enroll(char *);
+void errexit(void);
+int executable(SedCom *);
+void execute(void);
+void fcomp(void);
+long getrune(void);
+Rune *gline(Rune *);
+int match(Reprog *, Rune *);
+void newfile(enum PTYPE, char *);
+int opendata(void);
+Biobuf *open_file(char *);
+Rune *place(Rune *, Rune *, Rune *);
+void quit(char *, ...);
+int rline(Rune *, Rune *);
+Label *search(Label *);
+int substitute(SedCom *);
+char *text(char *);
+Rune *stext(Rune *, Rune *);
+int ycomp(SedCom *);
+char * trans(int c);
+void putline(Biobuf *bp, Rune *buf, int n);
 void
 main(int argc, char **argv)
 {
@@ -213,12 +213,12 @@ exits(0);
 void
 fcomp(void)
 {
-int	i;
-Label	*lpt;
-Rune	*tp;
-SedCom	*pt, *pt1;
-static Rune	*p = addspace;
-static SedCom	**cmpend[DEPTH];
+int i;
+Label *lpt;
+Rune *tp;
+SedCom *pt, *pt1;
+static Rune *p = addspace;
+static SedCom **cmpend[DEPTH];
 while (rline(linebuf, lbend) >= 0) {
 cp = linebuf;
 comploop:
@@ -456,7 +456,7 @@ rep->pfl = 2;
 }
 if(*cp == 'w') {
 cp++;
-if(*cp++ !=  ' ')
+if(*cp++ != ' ')
 quit(CGMES, linebuf);
 text(fname[nfiles]);
 for(i = nfiles - 1; i >= 0; i--)
@@ -724,7 +724,7 @@ return p;
 Label *
 search(Label *ptr)
 {
-Label	*rp;
+Label *rp;
 for (rp = ltab; rp < ptr; rp++)
 if(rcmp(rp->uninm, ptr->uninm) == 0)
 return(rp);
@@ -733,8 +733,8 @@ return(0);
 void
 dechain(void)
 {
-Label	*lptr;
-SedCom	*rptr, *trptr;
+Label *lptr;
+SedCom *rptr, *trptr;
 for(lptr = ltab; lptr < lab; lptr++) {
 if(lptr->address == 0)
 quit("Undefined label: %S", lptr->uninm);
@@ -796,7 +796,7 @@ return 1;
 void
 execute(void)
 {
-SedCom	*ipc;
+SedCom *ipc;
 while (spend = gline(linebuf)){
 for(ipc = pspace; ipc->command; ) {
 if (!executable(ipc)) {
@@ -1171,7 +1171,7 @@ break;
 case YCOM:
 p1 = linebuf;
 p2 = ipc->text;
-for (i = *p2++;	*p1; p1++)
+for (i = *p2++; *p1; p1++)
 if (*p1 <= i)
 *p1 = p2[*p1];
 break;
@@ -1194,11 +1194,11 @@ return 1;
 void
 arout(void)
 {
-int	c;
-char	*s;
-char	buf[128];
-Rune	*p1;
-Biobuf	*fi;
+int c;
+char *s;
+char buf[128];
+Rune *p1;
+Biobuf *fi;
 for (aptr = abuf; *aptr; aptr++) {
 if((*aptr)->command == ACOM) {
 for(p1 = (*aptr)->text; *p1; p1++ )

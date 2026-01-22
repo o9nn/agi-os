@@ -5,33 +5,33 @@
 #include "fns.h"
 enum
 {
-Nhole		= 128,
-Magichole	= 0x484F4C45,
+Nhole = 128,
+Magichole = 0x484F4C45,
 };
 typedef struct Hole Hole;
 typedef struct Xalloc Xalloc;
 typedef struct Xhdr Xhdr;
 struct Hole
 {
-ulong	addr;
-ulong	size;
-ulong	top;
-Hole*	link;
+ulong addr;
+ulong size;
+ulong top;
+Hole* link;
 };
 struct Xhdr
 {
-ulong	size;
-ulong	magix;
-char	data[];
+ulong size;
+ulong magix;
+char data[];
 };
 struct Xalloc
 {
 Lock;
-Hole	hole[Nhole];
-Hole*	flist;
-Hole*	table;
+Hole hole[Nhole];
+Hole* flist;
+Hole* table;
 };
-static Xalloc	xlists;
+static Xalloc xlists;
 void
 xinit(void)
 {

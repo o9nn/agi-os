@@ -3,13 +3,13 @@ import { useVRM, useVRMAutoLookAtDefaultCamera } from '@n3p6/react-three-vrm'
 import { useGameEntity } from '@n3p6/react-three-yuka'
 import { useModelStore } from '~/hooks/use-model-store'
 export const useGalatea = () => {
-  const model = useModelStore(({ model }) => model)
-  const galateaVRM = useVRM(model)
-  useVRMAutoLookAtDefaultCamera(galateaVRM)
-  const [galateaRef, galateaEntity] = useGameEntity(OrcustAutomaton)
-  return {
-    galateaEntity,
-    galateaRef,
-    galateaVRM,
-  }
+const model = useModelStore(({ model }) => model)
+const galateaVRM = useVRM(model)
+useVRMAutoLookAtDefaultCamera(galateaVRM)
+const [galateaRef, galateaEntity] = useGameEntity(OrcustAutomaton)
+return {
+galateaEntity,
+galateaRef,
+galateaVRM,
+}
 }

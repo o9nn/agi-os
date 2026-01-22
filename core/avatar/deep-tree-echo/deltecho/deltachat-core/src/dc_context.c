@@ -72,11 +72,11 @@ dc_sqlite3_set_config(context->sql, key, value);
 static int cb_precheck_imf(dc_imap_t* imap, const char* rfc724_mid,
 const char* server_folder, uint32_t server_uid)
 {
-int      rfc724_mid_exists = 0;
+int rfc724_mid_exists = 0;
 uint32_t msg_id = 0;
-char*    old_server_folder = NULL;
+char* old_server_folder = NULL;
 uint32_t old_server_uid = 0;
-int      mark_seen = 0;
+int mark_seen = 0;
 msg_id = dc_rfc724_mid_exists(imap->context, rfc724_mid,
 &old_server_folder, &old_server_uid);
 if (msg_id!=0)
@@ -121,19 +121,19 @@ dc_jobthread_init(&context->mvbox_thread, context, "MVBOX", "configured_mvbox_fo
 pthread_mutex_init(&context->smtpidle_condmutex, NULL);
 pthread_cond_init(&context->smtpidle_cond, NULL);
 pthread_mutex_init(&context->oauth2_critical, NULL);
-context->magic    = DC_CONTEXT_MAGIC;
+context->magic = DC_CONTEXT_MAGIC;
 context->userdata = userdata;
-context->cb       = cb? cb : cb_dummy;
-context->os_name  = dc_strdup_keep_null(os_name);
+context->cb = cb? cb : cb_dummy;
+context->os_name = dc_strdup_keep_null(os_name);
 context->shall_stop_ongoing = 1;
 dc_openssl_init();
 dc_pgp_init();
-context->sql      = dc_sqlite3_new(context);
+context->sql = dc_sqlite3_new(context);
 dc_job_kill_action(context, DC_JOB_EMPTY_SERVER);
-context->inbox    = dc_imap_new(cb_get_config, cb_set_config, cb_precheck_imf, cb_receive_imf, (void*)context, context);
+context->inbox = dc_imap_new(cb_get_config, cb_set_config, cb_precheck_imf, cb_receive_imf, (void*)context, context);
 context->sentbox_thread.imap = dc_imap_new(cb_get_config, cb_set_config, cb_precheck_imf, cb_receive_imf, (void*)context, context);
 context->mvbox_thread.imap = dc_imap_new(cb_get_config, cb_set_config, cb_precheck_imf, cb_receive_imf, (void*)context, context);
-context->smtp     = dc_smtp_new(context);
+context->smtp = dc_smtp_new(context);
 uintptr_t seed[5];
 seed[0] = (uintptr_t)time(NULL);
 seed[1] = (uintptr_t)seed;
@@ -256,7 +256,7 @@ return is_settable_config_key(key);
 }
 static char* get_config_keys_str()
 {
-dc_strbuilder_t  ret;
+dc_strbuilder_t ret;
 dc_strbuilder_init(&ret, 0);
 for (int i = 0; i < str_array_len(config_keys); i++) {
 if (strlen(ret.buf) > 0) {
@@ -292,7 +292,7 @@ return dc_strdup(NULL);
 }
 int dc_set_config(dc_context_t* context, const char* key, const char* value)
 {
-int   ret = 0;
+int ret = 0;
 char* rel_path = NULL;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC || key==NULL || !is_settable_config_key(key)) {
 return 0;
@@ -422,38 +422,38 @@ return dc_strdup(DC_VERSION_STR);
 }
 char* dc_get_info(dc_context_t* context)
 {
-const char*      unset = "0";
-char*            displayname = NULL;
-char*            temp = NULL;
-char*            l_readable_str = NULL;
-char*            l2_readable_str = NULL;
-char*            fingerprint_str = NULL;
+const char* unset = "0";
+char* displayname = NULL;
+char* temp = NULL;
+char* l_readable_str = NULL;
+char* l2_readable_str = NULL;
+char* fingerprint_str = NULL;
 dc_loginparam_t* l = NULL;
 dc_loginparam_t* l2 = NULL;
-int              inbox_watch = 0;
-int              sentbox_watch = 0;
-int              mvbox_watch = 0;
-int              mvbox_move = 0;
-int              folders_configured = 0;
-char*            configured_sentbox_folder = NULL;
-char*            configured_mvbox_folder = NULL;
-int              contacts = 0;
-int              chats = 0;
-int              real_msgs = 0;
-int              deaddrop_msgs = 0;
-int              is_configured = 0;
-int              dbversion = 0;
-int              show_emails = 0;
-int              mdns_enabled = 0;
-int              e2ee_enabled = 0;
-int              prv_key_cnt = 0;
-int              pub_key_cnt = 0;
-dc_key_t*        self_public = dc_key_new();
-int              rpgp_enabled = 0;
+int inbox_watch = 0;
+int sentbox_watch = 0;
+int mvbox_watch = 0;
+int mvbox_move = 0;
+int folders_configured = 0;
+char* configured_sentbox_folder = NULL;
+char* configured_mvbox_folder = NULL;
+int contacts = 0;
+int chats = 0;
+int real_msgs = 0;
+int deaddrop_msgs = 0;
+int is_configured = 0;
+int dbversion = 0;
+int show_emails = 0;
+int mdns_enabled = 0;
+int e2ee_enabled = 0;
+int prv_key_cnt = 0;
+int pub_key_cnt = 0;
+dc_key_t* self_public = dc_key_new();
+int rpgp_enabled = 0;
 #ifdef DC_USE_RPGP
 rpgp_enabled = 1;
 #endif
-dc_strbuilder_t  ret;
+dc_strbuilder_t ret;
 dc_strbuilder_init(&ret, 0);
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC) {
 return dc_strdup("ErrBadPtr");
@@ -462,16 +462,16 @@ l = dc_loginparam_new();
 l2 = dc_loginparam_new();
 dc_loginparam_read(l, context->sql, "");
 dc_loginparam_read(l2, context->sql, "configured_" );
-displayname     = dc_sqlite3_get_config(context->sql, "displayname", NULL);
-chats           = dc_get_chat_cnt(context);
-real_msgs       = dc_get_real_msg_cnt(context);
-deaddrop_msgs   = dc_get_deaddrop_msg_cnt(context);
-contacts        = dc_get_real_contact_cnt(context);
-is_configured   = dc_sqlite3_get_config_int(context->sql, "configured", 0);
-dbversion       = dc_sqlite3_get_config_int(context->sql, "dbversion", 0);
-e2ee_enabled    = dc_sqlite3_get_config_int(context->sql, "e2ee_enabled", DC_E2EE_DEFAULT_ENABLED);
-show_emails     = dc_sqlite3_get_config_int(context->sql, "show_emails", DC_SHOW_EMAILS_DEFAULT);
-mdns_enabled    = dc_sqlite3_get_config_int(context->sql, "mdns_enabled", DC_MDNS_DEFAULT_ENABLED);
+displayname = dc_sqlite3_get_config(context->sql, "displayname", NULL);
+chats = dc_get_chat_cnt(context);
+real_msgs = dc_get_real_msg_cnt(context);
+deaddrop_msgs = dc_get_deaddrop_msg_cnt(context);
+contacts = dc_get_real_contact_cnt(context);
+is_configured = dc_sqlite3_get_config_int(context->sql, "configured", 0);
+dbversion = dc_sqlite3_get_config_int(context->sql, "dbversion", 0);
+e2ee_enabled = dc_sqlite3_get_config_int(context->sql, "e2ee_enabled", DC_E2EE_DEFAULT_ENABLED);
+show_emails = dc_sqlite3_get_config_int(context->sql, "show_emails", DC_SHOW_EMAILS_DEFAULT);
+mdns_enabled = dc_sqlite3_get_config_int(context->sql, "mdns_enabled", DC_MDNS_DEFAULT_ENABLED);
 sqlite3_stmt* stmt = dc_sqlite3_prepare(context->sql, "SELECT COUNT(*) FROM keypairs;");
 sqlite3_step(stmt);
 prv_key_cnt = sqlite3_column_int(stmt, 0);
@@ -575,8 +575,8 @@ return ret.buf;
 }
 dc_array_t* dc_get_fresh_msgs(dc_context_t* context)
 {
-int           show_deaddrop = 0;
-dc_array_t*   ret = dc_array_new(context, 128);
+int show_deaddrop = 0;
+dc_array_t* ret = dc_array_new(context, 128);
 sqlite3_stmt* stmt = NULL;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC || ret==NULL) {
 goto cleanup;
@@ -604,11 +604,11 @@ return ret;
 }
 dc_array_t* dc_search_msgs(dc_context_t* context, uint32_t chat_id, const char* query)
 {
-int           success = 0;
-dc_array_t*   ret = dc_array_new(context, 100);
-char*         strLikeInText = NULL;
-char*         strLikeBeg = NULL;
-char*         real_query = NULL;
+int success = 0;
+dc_array_t* ret = dc_array_new(context, 100);
+char* strLikeInText = NULL;
+char* strLikeBeg = NULL;
+char* real_query = NULL;
 sqlite3_stmt* stmt = NULL;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC || ret==NULL || query==NULL) {
 goto cleanup;

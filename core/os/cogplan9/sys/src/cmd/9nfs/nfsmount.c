@@ -1,10 +1,10 @@
 #include "all.h"
-static int	mntnull(int, Rpccall*, Rpccall*);
-static int	mntmnt(int, Rpccall*, Rpccall*);
-static int	mntdump(int, Rpccall*, Rpccall*);
-static int	mntumnt(int, Rpccall*, Rpccall*);
-static int	mntumntall(int, Rpccall*, Rpccall*);
-static int	mntexport(int, Rpccall*, Rpccall*);
+static int mntnull(int, Rpccall*, Rpccall*);
+static int mntmnt(int, Rpccall*, Rpccall*);
+static int mntdump(int, Rpccall*, Rpccall*);
+static int mntumnt(int, Rpccall*, Rpccall*);
+static int mntumntall(int, Rpccall*, Rpccall*);
+static int mntexport(int, Rpccall*, Rpccall*);
 Procmap mntproc[] = {
 0, mntnull,
 1, mntmnt,
@@ -14,11 +14,11 @@ Procmap mntproc[] = {
 5, mntexport,
 0, 0
 };
-long		starttime;
-static int	noauth;
-char *		config;
-Session *	head;
-Session *	tail;
+long starttime;
+static int noauth;
+char * config;
+Session * head;
+Session * tail;
 int staletime = 10*60;
 void
 mnttimer(long now)

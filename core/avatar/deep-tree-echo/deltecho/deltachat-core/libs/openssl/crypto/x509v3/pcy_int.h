@@ -6,12 +6,12 @@ ASN1_OBJECT *valid_policy;
 STACK_OF(POLICYQUALINFO) *qualifier_set;
 STACK_OF(ASN1_OBJECT) *expected_policy_set;
 };
-#define POLICY_DATA_FLAG_MAPPED                 0x1
-#define POLICY_DATA_FLAG_MAPPED_ANY             0x2
-#define POLICY_DATA_FLAG_MAP_MASK               0x3
-#define POLICY_DATA_FLAG_SHARED_QUALIFIERS      0x4
-#define POLICY_DATA_FLAG_EXTRA_NODE             0x8
-#define POLICY_DATA_FLAG_CRITICAL               0x10
+#define POLICY_DATA_FLAG_MAPPED 0x1
+#define POLICY_DATA_FLAG_MAPPED_ANY 0x2
+#define POLICY_DATA_FLAG_MAP_MASK 0x3
+#define POLICY_DATA_FLAG_SHARED_QUALIFIERS 0x4
+#define POLICY_DATA_FLAG_EXTRA_NODE 0x8
+#define POLICY_DATA_FLAG_CRITICAL 0x10
 struct X509_POLICY_CACHE_st {
 X509_POLICY_DATA *anyPolicy;
 STACK_OF(X509_POLICY_DATA) *data;
@@ -38,7 +38,7 @@ STACK_OF(X509_POLICY_NODE) *auth_policies;
 STACK_OF(X509_POLICY_NODE) *user_policies;
 unsigned int flags;
 };
-#define POLICY_FLAG_ANY_POLICY          0x2
+#define POLICY_FLAG_ANY_POLICY 0x2
 #define node_data_critical(data) (data->flags & POLICY_DATA_FLAG_CRITICAL)
 #define node_critical(node) node_data_critical(node->data)
 X509_POLICY_DATA *policy_data_new(POLICYINFO *policy, const ASN1_OBJECT *id,

@@ -2,10 +2,10 @@ implement Authproto;
 # SSH RSA authentication.
 #
 # Client protocol:
-#	read public key
-#		if you don't like it, read another, repeat
-#	write challenge
-#	read response
+# read public key
+# if you don't like it, read another, repeat
+# write challenge
+# read response
 # all numbers are hexadecimal biginits parsable with strtomp.
 #
 include "sys.m";
@@ -26,7 +26,7 @@ init(f: Authio): string
 authio = f;
 sys = load Sys Sys->PATH;
 kr = load Keyring Keyring->PATH;
-#	base16 = load Encoding Encoding->BASE16PATH;
+# base16 = load Encoding Encoding->BASE16PATH;
 return nil;
 }
 interaction(attrs: list of ref Attr, io: ref IO): string

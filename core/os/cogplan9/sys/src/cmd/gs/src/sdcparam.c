@@ -35,7 +35,7 @@ static const byte natural_order[DCTSIZE2] =
 58, 59, 52, 45, 38, 31, 39, 46,
 53, 60, 61, 54, 47, 55, 62, 63
 };
-#define jpeg_order(x)  natural_order[x]
+#define jpeg_order(x) natural_order[x]
 static const byte inverse_natural_order[DCTSIZE2] =
 {
 0, 1, 5, 6, 14, 15, 27, 28,
@@ -47,9 +47,9 @@ static const byte inverse_natural_order[DCTSIZE2] =
 21, 34, 37, 47, 50, 56, 59, 61,
 35, 36, 48, 49, 57, 58, 62, 63
 };
-#define jpeg_inverse_order(x)  inverse_natural_order[x]
+#define jpeg_inverse_order(x) inverse_natural_order[x]
 #else
-#define jpeg_order(x)  (x)
+#define jpeg_order(x) (x)
 #define jpeg_inverse_order(x) (x)
 #endif
 private int
@@ -488,7 +488,7 @@ if (code < 0)
 return code;
 for (codes_size = 0, j = 0; j < 16; j++)
 codes_size += counts[j];
-if (codes_size > 256  )
+if (codes_size > 256 )
 return_error(gs_error_rangecheck);
 code = s_DCT_byte_params(huff_tables.list, istr, 16, codes_size,
 values);

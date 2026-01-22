@@ -84,7 +84,7 @@ tp->ts_recent_stamp = tcp_time_stamp;
 }
 }
 }
-#define PAWS_24DAYS	(HZ * 60 * 60 * 24 * 24)
+#define PAWS_24DAYS (HZ * 60 * 60 * 24 * 24)
 static __inline__ int tcp_paws_discard(struct tcp_opt *tp, struct tcphdr *th, unsigned len)
 {
 return ((s32)(tp->rcv_tsval - tp->ts_recent) < 0 &&
@@ -259,10 +259,10 @@ return 1;
 tcp_parse_options(sk, th, tp, 0);
 return 1;
 }
-#define FLAG_DATA		0x01
-#define FLAG_WIN_UPDATE		0x02
-#define FLAG_DATA_ACKED		0x04
-#define FLAG_RETRANS_DATA_ACKED	0x08
+#define FLAG_DATA 0x01
+#define FLAG_WIN_UPDATE 0x02
+#define FLAG_DATA_ACKED 0x04
+#define FLAG_RETRANS_DATA_ACKED 0x08
 static __inline__ void clear_fast_retransmit(struct tcp_opt *tp)
 {
 if (tp->dup_acks > 3)
@@ -485,7 +485,7 @@ tcp_ack_packets_out(sk, tp);
 tcp_clear_xmit_timer(sk, TIME_RETRANS);
 }
 flag &= (FLAG_DATA | FLAG_WIN_UPDATE);
-if ((ack == tp->snd_una	&& tp->packets_out && flag == 0) ||
+if ((ack == tp->snd_una && tp->packets_out && flag == 0) ||
 (tp->high_seq != 0)) {
 tcp_fast_retrans(sk, ack, flag);
 } else {
@@ -592,19 +592,19 @@ void tcp_time_wait(struct sock *sk)
 struct tcp_tw_bucket *tw;
 tw = kmem_cache_alloc(tcp_timewait_cachep, SLAB_ATOMIC);
 if(tw != NULL) {
-tw->daddr	= sk->daddr;
-tw->rcv_saddr	= sk->rcv_saddr;
+tw->daddr = sk->daddr;
+tw->rcv_saddr = sk->rcv_saddr;
 tw->bound_dev_if= sk->bound_dev_if;
-tw->num		= sk->num;
-tw->state	= TCP_TIME_WAIT;
-tw->sport	= sk->sport;
-tw->dport	= sk->dport;
-tw->family	= sk->family;
-tw->reuse	= sk->reuse;
-tw->rcv_nxt	= sk->tp_pinfo.af_tcp.rcv_nxt;
-tw->snd_nxt     = sk->tp_pinfo.af_tcp.snd_nxt;
-tw->window	= tcp_select_window(sk);
-tw->af_specific	= sk->tp_pinfo.af_tcp.af_specific;
+tw->num = sk->num;
+tw->state = TCP_TIME_WAIT;
+tw->sport = sk->sport;
+tw->dport = sk->dport;
+tw->family = sk->family;
+tw->reuse = sk->reuse;
+tw->rcv_nxt = sk->tp_pinfo.af_tcp.rcv_nxt;
+tw->snd_nxt = sk->tp_pinfo.af_tcp.snd_nxt;
+tw->window = tcp_select_window(sk);
+tw->af_specific = sk->tp_pinfo.af_tcp.af_specific;
 #if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
 if(tw->family == PF_INET6) {
 memcpy(&tw->v6_daddr,
@@ -999,7 +999,7 @@ SOCK_DEBUG(sk, "prune_queue: c=%x\n", tp->copied_seq);
 net_statistics.PruneCalled++;
 skb = __skb_dequeue_tail(&tp->out_of_order_queue);
 if(skb != NULL) {
-do {	net_statistics.OfoPruned += skb->len;
+do { net_statistics.OfoPruned += skb->len;
 kfree_skb(skb);
 skb = __skb_dequeue_tail(&tp->out_of_order_queue);
 } while(skb != NULL);

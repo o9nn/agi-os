@@ -1,5 +1,5 @@
 #ifndef gsbittab_INCLUDED
-#  define gsbittab_INCLUDED
+# define gsbittab_INCLUDED
 #define btab2_(v0,v2,v1)\
 v0,v1+v0,v2+v0,v2+v1+v0
 #define bit_table_2(v0,v2,v1) btab2_(v0,v2,v1)

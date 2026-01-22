@@ -21,20 +21,20 @@
 #include "ring.h"
 #include "xen.h"
 struct block_data {
-struct device	device;
-char		*name;
-int		open_count;
-char		*backend;
-domid_t		domid;
-char		*vbd;
-int		handle;
-unsigned	info;
-dev_mode_t	mode;
-unsigned	sector_size;
-unsigned long	nr_sectors;
-ipc_port_t	port;
-blkif_front_ring_t	ring;
-evtchn_port_t	evt;
+struct device device;
+char *name;
+int open_count;
+char *backend;
+domid_t domid;
+char *vbd;
+int handle;
+unsigned info;
+dev_mode_t mode;
+unsigned sector_size;
+unsigned long nr_sectors;
+ipc_port_t port;
+blkif_front_ring_t ring;
+evtchn_port_t evt;
 simple_lock_data_t lock;
 simple_lock_data_t pushlock;
 };
@@ -84,7 +84,7 @@ evtchn_port_t evt;
 hyp_store_transaction_t t;
 phys_addr_t addr;
 struct block_data *bd;
-blkif_sring_t	*ring;
+blkif_sring_t *ring;
 vbds = hyp_store_ls(0, 1, VBD_PATH);
 if (!vbds) {
 printf("hd: No block device (%s). Hoping you don't need any\n", hyp_store_error);

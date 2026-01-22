@@ -25,10 +25,10 @@ raise "fail:load";
 arg->init(args);
 while((op := arg->opt()) != 0)
 case op {
-'l' =>		lflag = 1;
-'L' =>	Lflag = 1;
-'s' =>		sflag = 1;
-* =>		usage();
+'l' => lflag = 1;
+'L' => Lflag = 1;
+'s' => sflag = 1;
+* => usage();
 }
 args = arg->argv();
 arg = nil;

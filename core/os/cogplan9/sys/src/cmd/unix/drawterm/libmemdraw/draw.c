@@ -3,8 +3,8 @@
 #include <draw.h>
 #include <memdraw.h>
 int drawdebug;
-static int	tablesbuilt;
-#define RGB2K(r,g,b)	((156763*(r)+307758*(g)+59769*(b))>>19)
+static int tablesbuilt;
+#define RGB2K(r,g,b) ((156763*(r)+307758*(g)+59769*(b))>>19)
 #define CALC11(a, v, tmp) \
 (tmp=(a)*(v)+128, (tmp+(tmp>>8))>>8)
 #define CALC12(a1, v1, a2, v2, tmp) \
@@ -23,13 +23,13 @@ static int	tablesbuilt;
 static void mktables(void);
 typedef int Subdraw(Memdrawparam*);
 static Subdraw chardraw, alphadraw, memoptdraw;
-static Memimage*	memones;
-static Memimage*	memzeros;
+static Memimage* memones;
+static Memimage* memzeros;
 Memimage *memwhite;
 Memimage *memblack;
 Memimage *memtransparent;
 Memimage *memopaque;
-int	_ifmt(Fmt*);
+int _ifmt(Fmt*);
 void
 _memimageinit(void)
 {
@@ -66,7 +66,7 @@ _memimagedrawsetup(Memimage *dst, Rectangle r, Memimage *src, Point p0, Memimage
 {
 if(mask == nil)
 mask = memopaque;
-DBG	print("memimagedraw %p/%luX %R @ %p %p/%luX %P %p/%luX %P... ", dst, dst->chan, r, dst->data->bdata, src, src->chan, p0, mask, mask->chan, p1);
+DBG print("memimagedraw %p/%luX %R @ %p %p/%luX %P %p/%luX %P... ", dst, dst->chan, r, dst->data->bdata, src, src->chan, p0, mask, mask->chan, p1);
 if(drawclip(dst, &r, src, &p0, mask, &p1, &par.sr, &par.mr) == 0){
 return nil;
 }
@@ -250,69 +250,69 @@ conv48[i][j] = replbit[4][(i>>sh)&mask];
 }
 }
 static uchar ones = 0xff;
-typedef struct	Buffer	Buffer;
+typedef struct Buffer Buffer;
 struct Buffer {
-uchar	*red;
-uchar	*grn;
-uchar	*blu;
-uchar	*alpha;
-uchar	*grey;
-ulong	*rgba;
-int	delta;
-uchar	*m;
-int		mskip;
-uchar	*bm;
-int		bmskip;
-uchar	*em;
-int		emskip;
+uchar *red;
+uchar *grn;
+uchar *blu;
+uchar *alpha;
+uchar *grey;
+ulong *rgba;
+int delta;
+uchar *m;
+int mskip;
+uchar *bm;
+int bmskip;
+uchar *em;
+int emskip;
 };
-typedef struct	Param	Param;
-typedef Buffer	Readfn(Param*, uchar*, int);
-typedef void	Writefn(Param*, uchar*, Buffer);
-typedef Buffer	Calcfn(Buffer, Buffer, Buffer, int, int, int);
+typedef struct Param Param;
+typedef Buffer Readfn(Param*, uchar*, int);
+typedef void Writefn(Param*, uchar*, Buffer);
+typedef Buffer Calcfn(Buffer, Buffer, Buffer, int, int, int);
 enum {
 MAXBCACHE = 16
 };
 struct Param {
-Readfn	*replcall;
-Readfn	*greymaskcall;
-Readfn	*convreadcall;
-Writefn	*convwritecall;
+Readfn *replcall;
+Readfn *greymaskcall;
+Readfn *convreadcall;
+Writefn *convwritecall;
 Memimage *img;
-Rectangle	r;
-int	dx;
-int	needbuf;
-int	convgrey;
-int	alphaonly;
-uchar	*bytey0s;
-uchar	*bytermin;
-uchar	*bytey0e;
-int		bwidth;
-int	replcache;
-Buffer	bcache[MAXBCACHE];
-ulong	bfilled;
-uchar	*bufbase;
-int	bufoff;
-int	bufdelta;
-int	dir;
-int	convbufoff;
-uchar	*convbuf;
-Param	*convdpar;
-int	convdx;
+Rectangle r;
+int dx;
+int needbuf;
+int convgrey;
+int alphaonly;
+uchar *bytey0s;
+uchar *bytermin;
+uchar *bytey0e;
+int bwidth;
+int replcache;
+Buffer bcache[MAXBCACHE];
+ulong bfilled;
+uchar *bufbase;
+int bufoff;
+int bufdelta;
+int dir;
+int convbufoff;
+uchar *convbuf;
+Param *convdpar;
+int convdx;
 };
 static uchar *drawbuf;
-static int	ndrawbuf;
-static int	mdrawbuf;
+static int ndrawbuf;
+static int mdrawbuf;
 static Param spar, mpar, dpar;
-static Readfn	greymaskread, replread, readptr;
-static Writefn	nullwrite;
-static Calcfn	alphacalc0, alphacalc14, alphacalc2810, alphacalc3679, alphacalc5, alphacalc11, alphacalcS;
-static Calcfn	boolcalc14, boolcalc236789, boolcalc1011;
-static Readfn*	readfn(Memimage*);
-static Readfn*	readalphafn(Memimage*);
-static Writefn*	writefn(Memimage*);
-static Calcfn*	boolcopyfn(Memimage*, Memimage*);
-static Readfn*	convfn(Memimage*, Param*, Memimage*, Param*);
+static Readfn greymaskread, replread, readptr;
+static Writefn nullwrite;
+static Calcfn alphacalc0, alphacalc14, alphacalc2810, alphacalc3679, alphacalc5, alphacalc11, alphacalcS;
+static Calcfn boolcalc14, boolcalc236789, boolcalc1011;
+static Readfn* readfn(Memimage*);
+static Readfn* readalphafn(Memimage*);
+static Writefn* writefn(Memimage*);
+static Calcfn* boolcopyfn(Memimage*, Memimage*);
+static Readfn* convfn(Memimage*, Param*, Memimage*, Param*);
 static Calcfn *alphacalc[Ncomp] =
 {
 alphacalc0,
@@ -520,9 +520,9 @@ DBG print("[");
 bmask = rdmask(&mpar, mpar.bufbase, masky);
 DBG print("]\n");
 bdst = rddst(&dpar, dpar.bufbase, dsty);
-DBG		dumpbuf("src", bsrc, dx);
-DBG		dumpbuf("mask", bmask, dx);
-DBG		dumpbuf("dst", bdst, dx);
+DBG dumpbuf("src", bsrc, dx);
+DBG dumpbuf("mask", bmask, dx);
+DBG dumpbuf("dst", bdst, dx);
 bdst = calc(bdst, bsrc, bmask, dx, isgrey, op);
 wrdst(&dpar, dpar.bytermin+dsty*dpar.bwidth, bdst);
 }

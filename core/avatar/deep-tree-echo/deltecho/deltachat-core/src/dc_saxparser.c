@@ -5,81 +5,81 @@
 #include "dc_tools.h"
 #include "dc_saxparser.h"
 static const char* s_ent[] = {
-"lt;",      "<",	"gt;",      ">",	"quot;",    "\"",	"apos;",    "'",
-"amp;",     "&",    "nbsp;",    " ",
-"iexcl;",   "¡",	"cent;",    "¢",	"pound;",   "£",	"curren;",  "¤",
-"yen;",     "¥",	"brvbar;",  "¦",	"sect;",    "§",	"uml;",     "¨",
-"copy;",    "©",	"ordf;",    "ª",	"laquo;",   "«",	"not;",     "¬",
-"shy;",     "-",	"reg;",     "®",	"macr;",    "¯",	"deg;",     "°",
-"plusmn;",  "±",	"sup2;",    "²",	"sup3;",    "³",	"acute;",   "´",
-"micro;",   "µ",	"para;",    "¶",	"middot;",  "·",	"cedil;",   "¸",
-"sup1;",    "¹",	"ordm;",    "º",	"raquo;",   "»",	"frac14;",  "¼",
-"frac12;",  "½",	"frac34;",  "¾",	"iquest;",  "¿",	"Agrave;",  "À",
-"Aacute;",  "Á",	"Acirc;",   "Â",	"Atilde;",  "Ã",	"Auml;",    "Ä",
-"Aring;",   "Å",	"AElig;",   "Æ",	"Ccedil;",  "Ç",	"Egrave;",  "È",
-"Eacute;",  "É",	"Ecirc;",   "Ê",	"Euml;",    "Ë",	"Igrave;",  "Ì",
-"Iacute;",  "Í",	"Icirc;",   "Î",	"Iuml;",    "Ï",	"ETH;",     "Ð",
-"Ntilde;",  "Ñ",	"Ograve;",  "Ò",	"Oacute;",  "Ó",	"Ocirc;",   "Ô",
-"Otilde;",  "Õ",	"Ouml;",    "Ö",	"times;",   "×",	"Oslash;",  "Ø",
-"Ugrave;",  "Ù",	"Uacute;",  "Ú",	"Ucirc;",   "Û",	"Uuml;",    "Ü",
-"Yacute;",  "Ý",	"THORN;",   "Þ",	"szlig;",   "ß",	"agrave;",  "à",
-"aacute;",  "á",	"acirc;",   "â",	"atilde;",  "ã",	"auml;",    "ä",
-"aring;",   "å",	"aelig;",   "æ",	"ccedil;",  "ç",	"egrave;",  "è",
-"eacute;",  "é",	"ecirc;",   "ê",	"euml;",    "ë",	"igrave;",  "ì",
-"iacute;",  "í",	"icirc;",   "î",	"iuml;",    "ï",	"eth;",     "ð",
-"ntilde;",  "ñ",	"ograve;",  "ò",	"oacute;",  "ó",	"ocirc;",   "ô",
-"otilde;",  "õ",	"ouml;",    "ö",	"divide;",  "÷",	"oslash;",  "ø",
-"ugrave;",  "ù",	"uacute;",  "ú",	"ucirc;",   "û",	"uuml;",    "ü",
-"yacute;",  "ý",	"thorn;",   "þ",	"yuml;",    "ÿ",	"OElig;",   "Œ",
-"oelig;",   "œ",	"Scaron;",  "Š",	"scaron;",  "š",	"Yuml;",    "Ÿ",
-"fnof;",    "ƒ",	"circ;",    "ˆ",	"tilde;",   "˜",	"Alpha;",   "Α",
-"Beta;",    "Β",	"Gamma;",   "Γ",	"Delta;",   "Δ",	"Epsilon;", "Ε",
-"Zeta;",    "Ζ",	"Eta;",     "Η",	"Theta;",   "Θ",	"Iota;",    "Ι",
-"Kappa;",   "Κ",	"Lambda;",  "Λ",	"Mu;",      "Μ",	"Nu;",      "Ν",
-"Xi;",      "Ξ",	"Omicron;", "Ο",	"Pi;",      "Π",	"Rho;",     "Ρ",
-"Sigma;",   "Σ",	"Tau;",     "Τ",	"Upsilon;", "Υ",	"Phi;",     "Φ",
-"Chi;",     "Χ",	"Psi;",     "Ψ",	"Omega;",   "Ω",	"alpha;",   "α",
-"beta;",    "β",	"gamma;",   "γ",	"delta;",   "δ",	"epsilon;", "ε",
-"zeta;",    "ζ",	"eta;",     "η",	"theta;",   "θ",	"iota;",    "ι",
-"kappa;",   "κ",	"lambda;",  "λ",	"mu;",      "μ",	"nu;",      "ν",
-"xi;",      "ξ",	"omicron;", "ο",	"pi;",      "π",	"rho;",     "ρ",
-"sigmaf;",  "ς",	"sigma;",   "σ",	"tau;",     "τ",	"upsilon;", "υ",
-"phi;",     "φ",	"chi;",     "χ",	"psi;",     "ψ",	"omega;",   "ω",
-"thetasym;","ϑ",	"upsih;",   "ϒ",	"piv;",     "ϖ",	"ensp;",    " ",
-"emsp;",    " ",	"thinsp;",  " ",	"zwnj;",    "" ,	"zwj;",     "" ,
-"lrm;",     "" ,	"rlm;",     "" ,	"ndash;",   "–",	"mdash;",   "—",
-"lsquo;",   "‘",	"rsquo;",   "’",	"sbquo;",   "‚",	"ldquo;",   "“",
-"rdquo;",   "”",	"bdquo;",   "„",	"dagger;",  "†",	"Dagger;",  "‡",
-"bull;",    "•",	"hellip;",  "…",	"permil;",  "‰",	"prime;",   "′",
-"Prime;",   "″",	"lsaquo;",  "‹",	"rsaquo;",  "›",	"oline;",   "‾",
-"frasl;",   "⁄",	"euro;",    "€",	"image;",   "ℑ",	"weierp;",  "℘",
-"real;",    "ℜ",	"trade;",   "™",	"alefsym;", "ℵ",	"larr;",    "←",
-"uarr;",    "↑",	"rarr;",    "→",	"darr;",    "↓",	"harr;",    "↔",
-"crarr;",   "↵",	"lArr;",    "⇐",	"uArr;",    "⇑",	"rArr;",    "⇒",
-"dArr;",    "⇓",	"hArr;",    "⇔",	"forall;",  "∀",	"part;",    "∂",
-"exist;",   "∃",	"empty;",   "∅",	"nabla;",   "∇",	"isin;",    "∈",
-"notin;",   "∉",	"ni;",      "∋",	"prod;",    "∏",	"sum;",     "∑",
-"minus;",   "−",	"lowast;",  "∗",	"radic;",   "√",	"prop;",    "∝",
-"infin;",   "∞",	"ang;",     "∠",	"and;",     "∧",	"or;",      "∨",
-"cap;",     "∩",	"cup;",     "∪",	"int;",     "∫",	"there4;",  "∴",
-"sim;",     "∼",	"cong;",    "≅",	"asymp;",   "≈",	"ne;",      "≠",
-"equiv;",   "≡",	"le;",      "≤",	"ge;",      "≥",	"sub;",     "⊂",
-"sup;",     "⊃",	"nsub;",    "⊄",	"sube;",    "⊆",	"supe;",    "⊇",
-"oplus;",   "⊕",	"otimes;",  "⊗",	"perp;",    "⊥",	"sdot;",    "⋅",
-"lceil;",   "⌈",	"rceil;",   "⌉",	"lfloor;",  "⌊",	"rfloor;",  "⌋",
-"lang;",    "<",	"rang;",    ">",	"loz;",     "◊",	"spades;",  "♠",
-"clubs;",   "♣",	"hearts;",  "♥",	"diams;",   "♦",
-NULL,       NULL,
+"lt;", "<", "gt;", ">", "quot;", "\"", "apos;", "'",
+"amp;", "&", "nbsp;", " ",
+"iexcl;", "¡", "cent;", "¢", "pound;", "£", "curren;", "¤",
+"yen;", "¥", "brvbar;", "¦", "sect;", "§", "uml;", "¨",
+"copy;", "©", "ordf;", "ª", "laquo;", "«", "not;", "¬",
+"shy;", "-", "reg;", "®", "macr;", "¯", "deg;", "°",
+"plusmn;", "±", "sup2;", "²", "sup3;", "³", "acute;", "´",
+"micro;", "µ", "para;", "¶", "middot;", "·", "cedil;", "¸",
+"sup1;", "¹", "ordm;", "º", "raquo;", "»", "frac14;", "¼",
+"frac12;", "½", "frac34;", "¾", "iquest;", "¿", "Agrave;", "À",
+"Aacute;", "Á", "Acirc;", "Â", "Atilde;", "Ã", "Auml;", "Ä",
+"Aring;", "Å", "AElig;", "Æ", "Ccedil;", "Ç", "Egrave;", "È",
+"Eacute;", "É", "Ecirc;", "Ê", "Euml;", "Ë", "Igrave;", "Ì",
+"Iacute;", "Í", "Icirc;", "Î", "Iuml;", "Ï", "ETH;", "Ð",
+"Ntilde;", "Ñ", "Ograve;", "Ò", "Oacute;", "Ó", "Ocirc;", "Ô",
+"Otilde;", "Õ", "Ouml;", "Ö", "times;", "×", "Oslash;", "Ø",
+"Ugrave;", "Ù", "Uacute;", "Ú", "Ucirc;", "Û", "Uuml;", "Ü",
+"Yacute;", "Ý", "THORN;", "Þ", "szlig;", "ß", "agrave;", "à",
+"aacute;", "á", "acirc;", "â", "atilde;", "ã", "auml;", "ä",
+"aring;", "å", "aelig;", "æ", "ccedil;", "ç", "egrave;", "è",
+"eacute;", "é", "ecirc;", "ê", "euml;", "ë", "igrave;", "ì",
+"iacute;", "í", "icirc;", "î", "iuml;", "ï", "eth;", "ð",
+"ntilde;", "ñ", "ograve;", "ò", "oacute;", "ó", "ocirc;", "ô",
+"otilde;", "õ", "ouml;", "ö", "divide;", "÷", "oslash;", "ø",
+"ugrave;", "ù", "uacute;", "ú", "ucirc;", "û", "uuml;", "ü",
+"yacute;", "ý", "thorn;", "þ", "yuml;", "ÿ", "OElig;", "Œ",
+"oelig;", "œ", "Scaron;", "Š", "scaron;", "š", "Yuml;", "Ÿ",
+"fnof;", "ƒ", "circ;", "ˆ", "tilde;", "˜", "Alpha;", "Α",
+"Beta;", "Β", "Gamma;", "Γ", "Delta;", "Δ", "Epsilon;", "Ε",
+"Zeta;", "Ζ", "Eta;", "Η", "Theta;", "Θ", "Iota;", "Ι",
+"Kappa;", "Κ", "Lambda;", "Λ", "Mu;", "Μ", "Nu;", "Ν",
+"Xi;", "Ξ", "Omicron;", "Ο", "Pi;", "Π", "Rho;", "Ρ",
+"Sigma;", "Σ", "Tau;", "Τ", "Upsilon;", "Υ", "Phi;", "Φ",
+"Chi;", "Χ", "Psi;", "Ψ", "Omega;", "Ω", "alpha;", "α",
+"beta;", "β", "gamma;", "γ", "delta;", "δ", "epsilon;", "ε",
+"zeta;", "ζ", "eta;", "η", "theta;", "θ", "iota;", "ι",
+"kappa;", "κ", "lambda;", "λ", "mu;", "μ", "nu;", "ν",
+"xi;", "ξ", "omicron;", "ο", "pi;", "π", "rho;", "ρ",
+"sigmaf;", "ς", "sigma;", "σ", "tau;", "τ", "upsilon;", "υ",
+"phi;", "φ", "chi;", "χ", "psi;", "ψ", "omega;", "ω",
+"thetasym;","ϑ", "upsih;", "ϒ", "piv;", "ϖ", "ensp;", " ",
+"emsp;", " ", "thinsp;", " ", "zwnj;", "" , "zwj;", "" ,
+"lrm;", "" , "rlm;", "" , "ndash;", "–", "mdash;", "—",
+"lsquo;", "‘", "rsquo;", "’", "sbquo;", "‚", "ldquo;", "“",
+"rdquo;", "”", "bdquo;", "„", "dagger;", "†", "Dagger;", "‡",
+"bull;", "•", "hellip;", "…", "permil;", "‰", "prime;", "′",
+"Prime;", "″", "lsaquo;", "‹", "rsaquo;", "›", "oline;", "‾",
+"frasl;", "⁄", "euro;", "€", "image;", "ℑ", "weierp;", "℘",
+"real;", "ℜ", "trade;", "™", "alefsym;", "ℵ", "larr;", "←",
+"uarr;", "↑", "rarr;", "→", "darr;", "↓", "harr;", "↔",
+"crarr;", "↵", "lArr;", "⇐", "uArr;", "⇑", "rArr;", "⇒",
+"dArr;", "⇓", "hArr;", "⇔", "forall;", "∀", "part;", "∂",
+"exist;", "∃", "empty;", "∅", "nabla;", "∇", "isin;", "∈",
+"notin;", "∉", "ni;", "∋", "prod;", "∏", "sum;", "∑",
+"minus;", "−", "lowast;", "∗", "radic;", "√", "prop;", "∝",
+"infin;", "∞", "ang;", "∠", "and;", "∧", "or;", "∨",
+"cap;", "∩", "cup;", "∪", "int;", "∫", "there4;", "∴",
+"sim;", "∼", "cong;", "≅", "asymp;", "≈", "ne;", "≠",
+"equiv;", "≡", "le;", "≤", "ge;", "≥", "sub;", "⊂",
+"sup;", "⊃", "nsub;", "⊄", "sube;", "⊆", "supe;", "⊇",
+"oplus;", "⊕", "otimes;", "⊗", "perp;", "⊥", "sdot;", "⋅",
+"lceil;", "⌈", "rceil;", "⌉", "lfloor;", "⌊", "rfloor;", "⌋",
+"lang;", "<", "rang;", ">", "loz;", "◊", "spades;", "♠",
+"clubs;", "♣", "hearts;", "♥", "diams;", "♦",
+NULL, NULL,
 };
 static char* xml_decode(char* s, char type)
 {
-char*       e = NULL;
-char*       r = s;
+char* e = NULL;
+char* r = s;
 const char* original_buf = s;
-long        b = 0;
-long        c = 0;
-long        d = 0;
-long        l = 0;
+long b = 0;
+long c = 0;
+long d = 0;
+long l = 0;
 for (; *s; s++) {
 while (*s == '\r') {
 *(s++) = '\n';
@@ -87,7 +87,7 @@ if (*s == '\n') memmove(s, (s + 1), strlen(s));
 }
 }
 for (s = r; ;) {
-while (*s && *s != '&'  && !isspace(*s)) s++;
+while (*s && *s != '&' && !isspace(*s)) s++;
 if (! *s)
 {
 break;
@@ -140,8 +140,8 @@ return r;
 }
 #define XML_WS "\t\r\n "
 static void def_starttag_cb (void* userdata, const char* tag, char** attr) { }
-static void def_endtag_cb   (void* userdata, const char* tag) { }
-static void def_text_cb     (void* userdata, const char* text, int len) { }
+static void def_endtag_cb (void* userdata, const char* tag) { }
+static void def_text_cb (void* userdata, const char* text, int len) { }
 static void call_text_cb(dc_saxparser_t* saxparser, char* text, size_t len, char type)
 {
 if (text && len)
@@ -156,11 +156,11 @@ text[len] = bak;
 }
 static void do_free_attr(char** attr, int* free_attr)
 {
-#define FREE_KEY    0x01
-#define FREE_VALUE  0x02
+#define FREE_KEY 0x01
+#define FREE_VALUE 0x02
 int i = 0;
 while (attr[i]) {
-if (free_attr[i>>1]&FREE_KEY   && attr[i])   { free(attr[i]); }
+if (free_attr[i>>1]&FREE_KEY && attr[i]) { free(attr[i]); }
 if (free_attr[i>>1]&FREE_VALUE && attr[i+1]) { free(attr[i+1]); }
 i += 2;
 }
@@ -181,10 +181,10 @@ return NULL;
 }
 void dc_saxparser_init(dc_saxparser_t* saxparser, void* userdata)
 {
-saxparser->userdata    = userdata;
+saxparser->userdata = userdata;
 saxparser->starttag_cb = def_starttag_cb;
-saxparser->endtag_cb   = def_endtag_cb;
-saxparser->text_cb     = def_text_cb;
+saxparser->endtag_cb = def_endtag_cb;
+saxparser->text_cb = def_text_cb;
 }
 void dc_saxparser_set_tag_handler(dc_saxparser_t* saxparser, dc_saxparser_starttag_cb_t starttag_cb, dc_saxparser_endtag_cb_t endtag_cb)
 {
@@ -192,7 +192,7 @@ if (saxparser==NULL) {
 return;
 }
 saxparser->starttag_cb = starttag_cb? starttag_cb : def_starttag_cb;
-saxparser->endtag_cb   = endtag_cb?   endtag_cb   : def_endtag_cb;
+saxparser->endtag_cb = endtag_cb? endtag_cb : def_endtag_cb;
 }
 void dc_saxparser_set_text_handler (dc_saxparser_t* saxparser, dc_saxparser_text_cb_t text_cb)
 {
@@ -203,20 +203,20 @@ saxparser->text_cb = text_cb? text_cb : def_text_cb;
 }
 void dc_saxparser_parse(dc_saxparser_t* saxparser, const char* buf_start__)
 {
-char  bak = 0;
+char bak = 0;
 char* buf_start = NULL;
 char* last_text_start = NULL;
 char* p = NULL;
 #define MAX_ATTR 100
-char*   attr[(MAX_ATTR+1)*2];
-int     free_attr[MAX_ATTR];
+char* attr[(MAX_ATTR+1)*2];
+int free_attr[MAX_ATTR];
 attr[0] = NULL;
 if (saxparser==NULL) {
 return;
 }
 buf_start = dc_strdup(buf_start__);
 last_text_start = buf_start;
-p               = buf_start;
+p = buf_start;
 while (*p)
 {
 if (*p=='<')
@@ -232,7 +232,7 @@ p += 3;
 else if (strncmp(p, "![CDATA[", 8)==0)
 {
 char* text_beg = p + 8;
-if ((p = strstr(p, "]]>"))!=NULL)  {
+if ((p = strstr(p, "]]>"))!=NULL) {
 call_text_cb(saxparser, text_beg, p-text_beg, 'c');
 p += 3;
 }
@@ -340,7 +340,7 @@ beg_attr_value_new = dc_strdup(NULL);
 if (attr_index < MAX_ATTR)
 {
 char* beg_attr_name_new = beg_attr_name;
-int   free_bits = (beg_attr_value_new != beg_attr_value)? FREE_VALUE : 0;
+int free_bits = (beg_attr_value_new != beg_attr_value)? FREE_VALUE : 0;
 if (after_attr_name==p) {
 bak = *after_attr_name;
 *after_attr_name = '\0';
@@ -352,9 +352,9 @@ else {
 *after_attr_name = '\0';
 }
 dc_strlower_in_place(beg_attr_name_new);
-attr[attr_index]         = beg_attr_name_new;
-attr[attr_index+1]       = beg_attr_value_new;
-attr[attr_index+2]       = NULL;
+attr[attr_index] = beg_attr_name_new;
+attr[attr_index+1] = beg_attr_value_new;
+attr[attr_index+2] = NULL;
 free_attr[attr_index>>1] = free_bits;
 attr_index += 2;
 }

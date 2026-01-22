@@ -48,7 +48,7 @@ t_draft_flat_us += ggml_time_us() - t_start_draft_us;
 const int n_input = inp.size();
 const int n_ctx = llama_n_ctx(ctx.get());
 int n_drafted = 0;
-int n_accept  = 0;
+int n_accept = 0;
 const int64_t t_start_ms = ggml_time_ms();
 for (int i_start = 0; i_start + n_ctx < n_input; i_start += n_ctx) {
 const std::vector<llama_token> inp_slice(inp.begin() + i_start, inp.begin() + i_start + n_ctx);
@@ -89,9 +89,9 @@ draft.erase(draft.begin());
 }
 if (i_start > 0 && i_start / 100000 != (i_start - n_ctx) / 100000) {
 const int64_t t_now_ms = ggml_time_ms();
-const int64_t eta_ms   = (n_input - i_start) * (t_now_ms - t_start_ms) / i_start;
-const int64_t eta_min  = eta_ms / (60*1000);
-const int64_t eta_s    = (eta_ms - 60*1000*eta_min) / 1000;
+const int64_t eta_ms = (n_input - i_start) * (t_now_ms - t_start_ms) / i_start;
+const int64_t eta_min = eta_ms / (60*1000);
+const int64_t eta_s = (eta_ms - 60*1000*eta_min) / 1000;
 LOG_INF("lookup-stats: %d/%d done, ETA: %02" PRId64 ":%02" PRId64 "\n", i_start, n_input, eta_min, eta_s);
 }
 common_ngram_cache_merge(ngram_cache_dynamic, ngram_cache_context);

@@ -1,6 +1,6 @@
 implement Envcmd;
 #
-# Copyright © 2000 Vita Nuova Limited.  All rights reserved.
+# Copyright © 2000 Vita Nuova Limited. All rights reserved.
 #
 include "sys.m";
 sys: Sys;

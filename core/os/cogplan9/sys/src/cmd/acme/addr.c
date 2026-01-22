@@ -131,7 +131,7 @@ warning(nil, "no match for regexp\n");
 return sel.r[0];
 }
 Range
-address(Mntdir *md, Text *t, Range lim, Range ar, void *a, uint q0, uint q1, int (*getc)(void*, uint),  int *evalp, uint *qp)
+address(Mntdir *md, Text *t, Range lim, Range ar, void *a, uint q0, uint q1, int (*getc)(void*, uint), int *evalp, uint *qp)
 {
 int dir, size, npat;
 int prevc, c, nc, n;

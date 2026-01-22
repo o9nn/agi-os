@@ -8,21 +8,21 @@
 #include <ddb/db_lex.h>
 #include <ddb/db_output.h>
 #include <ddb/db_input.h>
-#ifndef	DB_MAX_LINE
-#define	DB_MAX_LINE		24
-#define DB_MAX_WIDTH		80
+#ifndef DB_MAX_LINE
+#define DB_MAX_LINE 24
+#define DB_MAX_WIDTH 80
 #endif
-#define DB_MIN_MAX_WIDTH	20
-#define DB_MIN_MAX_LINE		3
-#define CTRL(c)			((c) & 0xff)
-int	db_output_position = 0;
-int	db_output_line = 0;
-int	db_last_non_space = 0;
-int	db_tab_stop_width = 8;
-#define	NEXT_TAB(i) \
+#define DB_MIN_MAX_WIDTH 20
+#define DB_MIN_MAX_LINE 3
+#define CTRL(c) ((c) & 0xff)
+int db_output_position = 0;
+int db_output_line = 0;
+int db_last_non_space = 0;
+int db_tab_stop_width = 8;
+#define NEXT_TAB(i) \
 ((((i) + db_tab_stop_width) / db_tab_stop_width) * db_tab_stop_width)
-int	db_max_line = DB_MAX_LINE;
-int	db_max_width = DB_MAX_WIDTH;
+int db_max_line = DB_MAX_LINE;
+int db_max_width = DB_MAX_WIDTH;
 void
 db_force_whitespace(void)
 {
@@ -121,7 +121,7 @@ db_printf("\n");
 int
 db_printf(const char *fmt, ...)
 {
-va_list	listp;
+va_list listp;
 va_start(listp, fmt);
 _doprnt(fmt, listp, db_id_putc, db_radix, 0);
 va_end(listp);

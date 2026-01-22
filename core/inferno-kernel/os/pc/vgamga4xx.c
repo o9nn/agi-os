@@ -1,75 +1,75 @@
-#include 	"u.h"
-#include 	"../port/lib.h"
-#include 	"mem.h"
-#include 	"dat.h"
-#include 	"fns.h"
-#include 	"io.h"
-#include 	"../port/error.h"
-#define	Image	IMAGE
-#include 	<draw.h>
-#include 	<memdraw.h>
-#include 	<cursor.h>
-#include	"screen.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "../port/error.h"
+#define Image IMAGE
+#include <draw.h>
+#include <memdraw.h>
+#include <cursor.h>
+#include "screen.h"
 enum {
-MATROX			= 0x102B,
-MGA4xx			= 0x0525,
-MGA200			= 0x0521,
-Kilo				= 1024,
-Meg				= 1024*1024,
-FCOL			= 0x1c24,
-FXRIGHT			= 0x1cac,
-FXLEFT			= 0x1ca8,
-YDST			= 0x1c90,
-YLEN			= 0x1c5c,
-DWGCTL			= 0x1c00,
-DWG_TRAP		= 0x04,
-DWG_BITBLT		= 0x08,
-DWG_ILOAD		= 0x09,
-DWG_LINEAR		= 0x0080,
-DWG_SOLID		= 0x0800,
-DWG_ARZERO		= 0x1000,
-DWG_SGNZERO	= 0x2000,
-DWG_SHIFTZERO	= 0x4000,
-DWG_REPLACE		= 0x000C0000,
-DWG_REPLACE2	= (DWG_REPLACE | 0x40),
-DWG_XOR		= 0x00060010,
-DWG_BFCOL		= 0x04000000,
-DWG_BMONOWF	= 0x08000000,
-DWG_TRANSC		= 0x40000000,
-SRCORG			= 0x2cb4,
-PITCH			= 0x1c8c,
-DSTORG			= 0x2cb8,
-PLNWRT			= 0x1c1c,
-ZORG			= 0x1c0c,
-MACCESS			= 0x1c04,
-STATUS			= 0x1e14,
-FXBNDRY			= 0x1C84,
-CXBNDRY			= 0x1C80,
-YTOP			= 0x1C98,
-YBOT			= 0x1C9C,
-YDSTLEN			= 0x1C88,
-AR0				= 0x1C60,
-AR1				= 0x1C64,
-AR2				= 0x1C68,
-AR3				= 0x1C6C,
-AR4				= 0x1C70,
-AR5				= 0x1C74,
-SGN				= 0x1C58,
-SGN_SCANLEFT = 		1,
-SGN_SCANRIGHT = 		0,
-SGN_SDY_POSITIVE = 	0,
-SGN_SDY_NEGATIVE = 	4,
-GO				= 0x0100,
-FIFOSTATUS		= 0x1E10,
-CACHEFLUSH		= 0x1FFF,
-CRTCEXTIDX		= 0x1FDE,
-CRTCEXTDATA		= 0x1FDF,
-FILL_OPERAND		= 0x800c7804,
+MATROX = 0x102B,
+MGA4xx = 0x0525,
+MGA200 = 0x0521,
+Kilo = 1024,
+Meg = 1024*1024,
+FCOL = 0x1c24,
+FXRIGHT = 0x1cac,
+FXLEFT = 0x1ca8,
+YDST = 0x1c90,
+YLEN = 0x1c5c,
+DWGCTL = 0x1c00,
+DWG_TRAP = 0x04,
+DWG_BITBLT = 0x08,
+DWG_ILOAD = 0x09,
+DWG_LINEAR = 0x0080,
+DWG_SOLID = 0x0800,
+DWG_ARZERO = 0x1000,
+DWG_SGNZERO = 0x2000,
+DWG_SHIFTZERO = 0x4000,
+DWG_REPLACE = 0x000C0000,
+DWG_REPLACE2 = (DWG_REPLACE | 0x40),
+DWG_XOR = 0x00060010,
+DWG_BFCOL = 0x04000000,
+DWG_BMONOWF = 0x08000000,
+DWG_TRANSC = 0x40000000,
+SRCORG = 0x2cb4,
+PITCH = 0x1c8c,
+DSTORG = 0x2cb8,
+PLNWRT = 0x1c1c,
+ZORG = 0x1c0c,
+MACCESS = 0x1c04,
+STATUS = 0x1e14,
+FXBNDRY = 0x1C84,
+CXBNDRY = 0x1C80,
+YTOP = 0x1C98,
+YBOT = 0x1C9C,
+YDSTLEN = 0x1C88,
+AR0 = 0x1C60,
+AR1 = 0x1C64,
+AR2 = 0x1C68,
+AR3 = 0x1C6C,
+AR4 = 0x1C70,
+AR5 = 0x1C74,
+SGN = 0x1C58,
+SGN_SCANLEFT = 1,
+SGN_SCANRIGHT = 0,
+SGN_SDY_POSITIVE = 0,
+SGN_SDY_NEGATIVE = 4,
+GO = 0x0100,
+FIFOSTATUS = 0x1E10,
+CACHEFLUSH = 0x1FFF,
+CRTCEXTIDX = 0x1FDE,
+CRTCEXTDATA = 0x1FDF,
+FILL_OPERAND = 0x800c7804,
 };
 static Pcidev*
 mgapcimatch(void)
 {
-Pcidev*	p;
+Pcidev* p;
 p = pcimatch(nil, MATROX, MGA4xx);
 if (p == nil)
 p = pcimatch(nil, MATROX, MGA200);
@@ -78,9 +78,9 @@ return p;
 static ulong
 mga4xxlinear(VGAscr* scr, int* size, int* align)
 {
-ulong 	aperture, oaperture;
-int 		oapsize, wasupamem;
-Pcidev *	p;
+ulong aperture, oaperture;
+int oapsize, wasupamem;
+Pcidev * p;
 oaperture = scr->aperture;
 oapsize = scr->apsize;
 wasupamem = scr->isupamem;
@@ -125,7 +125,7 @@ return ((uchar*)scr->io)[index];
 static uchar
 crtcextset(VGAscr* scr, int index, uchar set, uchar clr)
 {
-uchar	tmp;
+uchar tmp;
 mgawrite8(scr, CRTCEXTIDX, index);
 tmp = mgaread8(scr, CRTCEXTDATA);
 mgawrite8(scr, CRTCEXTIDX, index);
@@ -135,13 +135,13 @@ return tmp;
 static void
 mga4xxenable(VGAscr* scr)
 {
-Pcidev *	pci;
-int 		size, align;
-ulong 	aperture;
-int 		i, n, k;
-uchar *	p;
-uchar	x[16];
-uchar	crtcext3;
+Pcidev * pci;
+int size, align;
+ulong aperture;
+int i, n, k;
+uchar * p;
+uchar x[16];
+uchar crtcext3;
 if(scr->io)
 return;
 pci = mgapcimatch();
@@ -176,20 +176,20 @@ crtcextset(scr, 3, crtcext3, 0xff);
 }
 }
 enum {
-Index		= 0x00,
-Data			= 0x0A,
-Cxlsb		= 0x0C,
-Cxmsb		= 0x0D,
-Cylsb		= 0x0E,
-Cymsb		= 0x0F,
-Icuradrl		= 0x04,
-Icuradrh		= 0x05,
-Icctl			= 0x06,
+Index = 0x00,
+Data = 0x0A,
+Cxlsb = 0x0C,
+Cxmsb = 0x0D,
+Cylsb = 0x0E,
+Cymsb = 0x0F,
+Icuradrl = 0x04,
+Icuradrh = 0x05,
+Icctl = 0x06,
 };
 static void
 dac4xxdisable(VGAscr* scr)
 {
-uchar * 	dac4xx;
+uchar * dac4xx;
 if(scr->io == 0)
 return;
 dac4xx = KADDR(scr->io+0x3C00);
@@ -199,9 +199,9 @@ dac4xx = KADDR(scr->io+0x3C00);
 static void
 dac4xxload(VGAscr* scr, Cursor* curs)
 {
-int 		y;
-uchar *	p;
-uchar * 	dac4xx;
+int y;
+uchar * p;
+uchar * dac4xx;
 if(scr->io == 0)
 return;
 dac4xx = KADDR(scr->io+0x3C00);
@@ -233,8 +233,8 @@ scr->offset.y = 64 + curs->offset.y;
 static int
 dac4xxmove(VGAscr* scr, Point p)
 {
-int 		x, y;
-uchar *	dac4xx;
+int x, y;
+uchar * dac4xx;
 if(scr->io == 0)
 return 1;
 dac4xx = KADDR(scr->io + 0x3C00);
@@ -249,8 +249,8 @@ return 0;
 static void
 dac4xxenable(VGAscr* scr)
 {
-uchar *	dac4xx;
-ulong	storage;
+uchar * dac4xx;
+ulong storage;
 if(scr->io == 0)
 return;
 dac4xx = KADDR(scr->io+0x3C00);
@@ -264,32 +264,32 @@ scr->storage = (ulong) KADDR((ulong)scr->aperture + (ulong)storage);
 *(dac4xx+Index) = Icctl;
 *(dac4xx+Data) = 0x03;
 *(dac4xx+Index) = 0x08;
-*(dac4xx+Data)  = 0xff;
+*(dac4xx+Data) = 0xff;
 *(dac4xx+Index) = 0x09;
-*(dac4xx+Data)  = 0xff;
+*(dac4xx+Data) = 0xff;
 *(dac4xx+Index) = 0x0a;
-*(dac4xx+Data)  = 0xff;
+*(dac4xx+Data) = 0xff;
 *(dac4xx+Index) = 0x0c;
-*(dac4xx+Data)  = 0x00;
+*(dac4xx+Data) = 0x00;
 *(dac4xx+Index) = 0x0d;
-*(dac4xx+Data)  = 0x00;
+*(dac4xx+Data) = 0x00;
 *(dac4xx+Index) = 0x0e;
-*(dac4xx+Data)  = 0x00;
+*(dac4xx+Data) = 0x00;
 *(dac4xx+Index) = 0x10;
-*(dac4xx+Data)  = 0xff;
+*(dac4xx+Data) = 0xff;
 *(dac4xx+Index) = 0x11;
-*(dac4xx+Data)  = 0x00;
+*(dac4xx+Data) = 0x00;
 *(dac4xx+Index) = 0x12;
-*(dac4xx+Data)  = 0x00;
+*(dac4xx+Data) = 0x00;
 dac4xxload(scr, &arrow);
 dac4xxmove(scr, ZP);
 }
 static void
 mga4xxblank(VGAscr* scr, int blank)
 {
-char * 	cp;
-uchar * 	mga;
-uchar 	seq1, crtcext1;
+char * cp;
+uchar * mga;
+uchar seq1, crtcext1;
 if(scr->io == 0)
 return;
 mga = KADDR(scr->io);
@@ -320,7 +320,7 @@ crtcext1 |= *(mga + 0x1fdf) & ~0x30;
 static void
 mgawrite32(uchar * mga, ulong reg, ulong val)
 {
-ulong *	l;
+ulong * l;
 l = (ulong *)(&mga[reg]);
 l[0] = val;
 }
@@ -332,7 +332,7 @@ return *((ulong *)(&mga[reg]));
 static int
 mga4xxfill(VGAscr* scr, Rectangle r, ulong color)
 {
-uchar * 		mga;
+uchar * mga;
 if(scr->io == 0)
 return 0;
 mga = KADDR(scr->io);
@@ -347,22 +347,22 @@ while (mgaread32(mga, STATUS) & 0x00010000)
 ;
 return 1;
 }
-#define mga_fifo(n)	do {} while ((mgaread32(mga, FIFOSTATUS) & 0xFF) < (n))
+#define mga_fifo(n) do {} while ((mgaread32(mga, FIFOSTATUS) & 0xFF) < (n))
 static int
 mga4xxscroll(VGAscr* scr, Rectangle r_dst, Rectangle r_src)
 {
-uchar * 	mga;
-ulong	pitch, y;
-ulong 	width, height, start, end, scandir;
-int 		ydir;
+uchar * mga;
+ulong pitch, y;
+ulong width, height, start, end, scandir;
+int ydir;
 if(scr->io == 0)
 return 0;
 mga = KADDR(scr->io);
 pitch = Dx(scr->gscreen->r);
 mgawrite32(mga, DWGCTL, 0);
-scandir 	= 0;
-height 	= abs(Dy(r_src));
-width 	= abs(Dx(r_src));
+scandir = 0;
+height = abs(Dy(r_src));
+width = abs(Dx(r_src));
 assert(height == abs(Dy(r_dst)));
 assert(width == abs(Dx(r_dst)));
 if ((r_src.min.y == r_dst.min.y) && (r_src.min.x == r_dst.min.x))
@@ -428,8 +428,8 @@ return 1;
 static void
 mga4xxdrawinit(VGAscr* scr)
 {
-uchar * 	mga;
-Pcidev*	p;
+uchar * mga;
+Pcidev* p;
 p = pcimatch(nil, MATROX, MGA4xx);
 if (p == nil)
 return ;

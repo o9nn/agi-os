@@ -264,9 +264,9 @@ Unroll<ROWS * COLS>{}(storec);
 }
 };
 #endif
-#define LAUNCH_TINYGEMM_KERNEL_NN(MB_SIZE, NB_SIZE)                          \
-tinygemm_kernel_nn2<scalar_t, MB_SIZE, NB_SIZE>::apply(                  \
-A + mb_start * lda, B0 + nb_start * 2, B1 + nb_start * 2,            \
+#define LAUNCH_TINYGEMM_KERNEL_NN(MB_SIZE, NB_SIZE) \
+tinygemm_kernel_nn2<scalar_t, MB_SIZE, NB_SIZE>::apply( \
+A + mb_start * lda, B0 + nb_start * 2, B1 + nb_start * 2, \
 C + mb_start * ldc + nb_start, K, lda, ldb, ldc);
 template <typename scalar_t>
 void tinygemm_kernel(
@@ -356,8 +356,8 @@ Unroll<ROWS * COLS>{}(storec);
 }
 };
 #endif
-#define LAUNCH_TINYGEMM_KERNEL_NN2(MB_SIZE, NB_SIZE)                         \
-tinygemm_kernel_nn<scalar_t, MB_SIZE, NB_SIZE>::apply(                   \
+#define LAUNCH_TINYGEMM_KERNEL_NN2(MB_SIZE, NB_SIZE) \
+tinygemm_kernel_nn<scalar_t, MB_SIZE, NB_SIZE>::apply( \
 A + mb_start * lda, B + nb_start * 2, C + mb_start * ldc + nb_start, \
 K, lda, ldb, ldc);
 template <typename scalar_t>
@@ -707,15 +707,15 @@ TORCH_CHECK(block_size.has_value(), "missing block_size for fp8 w8a16.");
 TORCH_CHECK(block_size.value().size() == 2, "expect block_size.size() to be 2.");
 }
 }
-#define CHECK_MOE_SCALES_FP8(DIM0, DIM1)                 \
-auto w1s = w1_scale.value();                         \
-auto w2s = w2_scale.value();                         \
-auto block_size_val = block_size.value();            \
-int64_t block_size_N = block_size_val[0];            \
-int64_t block_size_K = block_size_val[1];            \
+#define CHECK_MOE_SCALES_FP8(DIM0, DIM1) \
+auto w1s = w1_scale.value(); \
+auto w2s = w2_scale.value(); \
+auto block_size_val = block_size.value(); \
+int64_t block_size_N = block_size_val[0]; \
+int64_t block_size_K = block_size_val[1]; \
 TORCH_CHECK(w1s.size(DIM0) == 2 * N / block_size_N); \
-TORCH_CHECK(w1s.size(DIM1) == K / block_size_K);     \
-TORCH_CHECK(w2s.size(DIM0) == K / block_size_N);     \
+TORCH_CHECK(w1s.size(DIM1) == K / block_size_K); \
+TORCH_CHECK(w2s.size(DIM0) == K / block_size_N); \
 TORCH_CHECK(w2s.size(DIM1) == N / block_size_K)
 at::Tensor fused_experts_cpu(
 at::Tensor& hidden_states,
@@ -771,8 +771,8 @@ topk_ids.options());
 int32_t* __restrict__ sorted_ids = buffer.data_ptr<int32_t>();
 int32_t* __restrict__ expert_ids = sorted_ids + max_num_tokens_padded;
 int32_t* __restrict__ total_cnts = expert_ids + max_num_blocks;
-int32_t* __restrict__ cumsums    = total_cnts + (num_threads + 1) * E;
-int32_t* __restrict__ offsets    = cumsums    + (E + 1);
+int32_t* __restrict__ cumsums = total_cnts + (num_threads + 1) * E;
+int32_t* __restrict__ offsets = cumsums + (E + 1);
 int64_t numel = M * topk;
 at::parallel_for(0, max_num_blocks, GRAIN_SIZE / BLOCK_M, [&](int64_t begin, int64_t end) {
 int64_t m_start = begin * BLOCK_M;

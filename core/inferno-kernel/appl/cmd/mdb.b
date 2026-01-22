@@ -440,7 +440,7 @@ das()
 {
 if(m == nil || m.magic == 0)
 return;
-for(i := dot;  count-- > 0 && i < m.isize; i++) {
+for(i := dot; count-- > 0 && i < m.isize; i++) {
 if(i % 10 == 0)
 print("#%d\n", i);
 print("\t%s\n", dis->inst2s(m.inst[i]));

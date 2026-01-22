@@ -1,5 +1,5 @@
 #ifndef gxfont_INCLUDED
-#  define gxfont_INCLUDED
+# define gxfont_INCLUDED
 #include "gsccode.h"
 #include "gsfont.h"
 #include "gsgdata.h"
@@ -9,11 +9,11 @@
 #include "gsstype.h"
 #include "gxftype.h"
 #ifndef gs_text_enum_DEFINED
-#  define gs_text_enum_DEFINED
+# define gs_text_enum_DEFINED
 typedef struct gs_text_enum_s gs_text_enum_t;
 #endif
 #ifndef gx_path_DEFINED
-#  define gx_path_DEFINED
+# define gx_path_DEFINED
 typedef struct gx_path_s gx_path;
 #endif
 #define FONT_IS_FIXED_WIDTH (1<<0)
@@ -158,24 +158,24 @@ byte chars[gs_font_name_max + 1];
 uint size;
 } gs_font_name;
 #define gs_font_common\
-gs_font *next, *prev;		\
+gs_font *next, *prev; \
 \
-gs_memory_t *memory;		\
-gs_font_dir *dir;		\
+gs_memory_t *memory; \
+gs_font_dir *dir; \
 bool is_resource;\
-gs_notify_list_t notify_list;	\
-gs_id id;			\
-gs_font *base;			\
-void *client_data;		\
+gs_notify_list_t notify_list; \
+gs_id id; \
+gs_font *base; \
+void *client_data; \
 gs_matrix FontMatrix;\
-gs_matrix orig_FontMatrix;      \
+gs_matrix orig_FontMatrix; \
 font_type FontType;\
 bool BitmapWidths;\
 fbit_type ExactSize, InBetweenSize, TransformedChar;\
-int WMode;			\
-int PaintType;			\
+int WMode; \
+int PaintType; \
 \
-float StrokeWidth;		\
+float StrokeWidth; \
 \
 gs_font_procs procs;\
 \
@@ -186,16 +186,16 @@ gs_font_common;
 };
 extern_st(st_gs_font);
 struct_proc_finalize(gs_font_finalize);
-#define public_st_gs_font()	\
+#define public_st_gs_font() \
 gs_public_st_complex_only(st_gs_font, gs_font, "gs_font",\
 0, font_enum_ptrs, font_reloc_ptrs, gs_font_finalize)
 #define st_gs_font_max_ptrs (st_gs_notify_list_max_ptrs + 5)
-#define private_st_gs_font_ptr()	\
+#define private_st_gs_font_ptr() \
 gs_private_st_ptr(st_gs_font_ptr, gs_font *, "gs_font *",\
 font_ptr_enum_ptrs, font_ptr_reloc_ptrs)
 #define st_gs_font_ptr_max_ptrs 1
 extern_st(st_gs_font_ptr_element);
-#define public_st_gs_font_ptr_element()	\
+#define public_st_gs_font_ptr_element() \
 gs_public_st_element(st_gs_font_ptr_element, gs_font *, "gs_font *[]",\
 font_ptr_element_enum_ptrs, font_ptr_element_reloc_ptrs, st_gs_font_ptr)
 gs_font *
@@ -218,16 +218,16 @@ gs_uid UID;\
 FAPI_server *FAPI; \
 void *FAPI_font_data; \
 gs_encoding_index_t encoding_index;\
-gs_encoding_index_t nearest_encoding_index  \
+gs_encoding_index_t nearest_encoding_index \
 #ifndef gs_font_base_DEFINED
-#  define gs_font_base_DEFINED
+# define gs_font_base_DEFINED
 typedef struct gs_font_base_s gs_font_base;
 #endif
 struct gs_font_base_s {
 gs_font_base_common;
 };
 extern_st(st_gs_font_base);
-#define public_st_gs_font_base()	\
+#define public_st_gs_font_base() \
 gs_public_st_suffix_add1_final(st_gs_font_base, gs_font_base,\
 "gs_font_base", font_base_enum_ptrs, font_base_reloc_ptrs,\
 gs_font_finalize, st_gs_font, UID.xvalues)

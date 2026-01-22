@@ -16,9 +16,9 @@
 #undef queue_empty
 struct device_emulation_ops linux_pcmcia_emulation_ops;
 struct mach_socket_device {
-struct mach_device   mach_dev;
-user_info_t          *user;
-ds_ioctl_arg_t       carry;
+struct mach_device mach_dev;
+user_info_t *user;
+ds_ioctl_arg_t carry;
 };
 static void
 ds_device_deallocate(void *p)
@@ -188,7 +188,7 @@ ior->io_op = IO_READ | IO_CALL;
 ior->io_mode = mode;
 ior->io_recnum = recnum;
 ior->io_data = 0;
-ior->io_count	= bytes_wanted;
+ior->io_count = bytes_wanted;
 ior->io_alloc_size = 0;
 ior->io_residual = 0;
 ior->io_error = 0;

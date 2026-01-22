@@ -3,14 +3,14 @@
 #include "antiword.h"
 typedef struct font_desc_tag {
 font_block_type tInfo;
-struct font_desc_tag    *pNext;
+struct font_desc_tag *pNext;
 } font_mem_type;
-static font_mem_type	*pAnchor = NULL;
-static font_mem_type	*pFontLast = NULL;
+static font_mem_type *pAnchor = NULL;
+static font_mem_type *pFontLast = NULL;
 void
 vDestroyFontInfoList(void)
 {
-font_mem_type	*pCurr, *pNext;
+font_mem_type *pCurr, *pNext;
 DBG_MSG("vDestroyFontInfoList");
 pCurr = pAnchor;
 while (pCurr != NULL) {
@@ -24,8 +24,8 @@ pFontLast = NULL;
 void
 vCorrectFontValues(font_block_type *pFontBlock)
 {
-UINT	uiRealSize;
-USHORT	usRealStyle;
+UINT uiRealSize;
+USHORT usRealStyle;
 uiRealSize = pFontBlock->usFontSize;
 usRealStyle = pFontBlock->usFontStyle;
 if (bIsSmallCapitals(pFontBlock->usFontStyle)) {
@@ -53,7 +53,7 @@ pFontBlock->usFontStyle = usRealStyle;
 void
 vAdd2FontInfoList(const font_block_type *pFontBlock)
 {
-font_mem_type	*pListMember;
+font_mem_type *pListMember;
 fail(pFontBlock == NULL);
 NO_DBG_MSG("bAdd2FontInfoList");
 if (pFontBlock->ulFileOffset == FC_INVALID) {
@@ -89,8 +89,8 @@ pFontLast = pListMember;
 const font_block_type *
 pGetNextFontInfoListItem(const font_block_type *pCurr)
 {
-const font_mem_type	*pRecord;
-size_t	tOffset;
+const font_mem_type *pRecord;
+size_t tOffset;
 if (pCurr == NULL) {
 if (pAnchor == NULL) {
 return NULL;

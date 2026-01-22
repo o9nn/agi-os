@@ -180,7 +180,7 @@ kfree_skb(skb);
 static void arp_solicit(struct neighbour *neigh, struct sk_buff *skb)
 {
 u32 saddr;
-u8  *dst_ha = NULL;
+u8 *dst_ha = NULL;
 struct device *dev = neigh->dev;
 struct device *dev2;
 struct in_device *in_dev2;
@@ -345,7 +345,7 @@ int addr_type;
 struct in_device *in_dev = dev->ip_ptr;
 struct neighbour *n;
 if (in_dev == NULL ||
-arp->ar_hln != dev->addr_len    ||
+arp->ar_hln != dev->addr_len ||
 dev->flags & IFF_NOARP ||
 skb->pkt_type == PACKET_OTHERHOST ||
 skb->pkt_type == PACKET_LOOPBACK ||
@@ -441,7 +441,7 @@ neigh_release(n);
 goto out;
 } else if (IN_DEV_FORWARD(in_dev)) {
 if ((rt->rt_flags&RTCF_DNAT) ||
-(addr_type == RTN_UNICAST  && rt->u.dst.dev != dev &&
+(addr_type == RTN_UNICAST && rt->u.dst.dev != dev &&
 (IN_DEV_PROXY_ARP(in_dev) || pneigh_lookup(&arp_tbl, &tip, dev, 0)))) {
 n = neigh_event_ns(&arp_tbl, sha, &sip, dev);
 neigh_release(n);
@@ -673,12 +673,12 @@ off_t pos=0;
 int size;
 char hbuffer[HBUFFERLEN];
 int i,j,k;
-const char hexbuf[] =  "0123456789ABCDEF";
+const char hexbuf[] = "0123456789ABCDEF";
 size = sprintf(buffer,"IP address       HW type     Flags       HW address            Mask     Device\n");
 pos+=size;
 len+=size;
 neigh_table_lock(&arp_tbl);
-for(i=0; i<=NEIGH_HASHMASK; i++)	{
+for(i=0; i<=NEIGH_HASHMASK; i++) {
 struct neighbour *n;
 for (n=arp_tbl.hash_buckets[i]; n; n=n->next) {
 struct device *dev = n->dev;
@@ -693,7 +693,7 @@ else {
 #endif
 for (k=0,j=0;k<HBUFFERLEN-3 && j<dev->addr_len;j++) {
 hbuffer[k++]=hexbuf[(n->ha[j]>>4)&15 ];
-hbuffer[k++]=hexbuf[n->ha[j]&15     ];
+hbuffer[k++]=hexbuf[n->ha[j]&15 ];
 hbuffer[k++]=':';
 }
 hbuffer[--k]=0;

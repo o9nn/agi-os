@@ -4,15 +4,15 @@
 #include "pci.h"
 #include "vga.h"
 enum {
-Frx		= 0x3D0,
-Mrx		= 0x3D2,
-Xrx		= 0x3D6,
+Frx = 0x3D0,
+Mrx = 0x3D2,
+Xrx = 0x3D6,
 };
 typedef struct {
 Pcidev* pci;
-uchar	fr[256];
-uchar	mr[256];
-uchar	xr[256];
+uchar fr[256];
+uchar mr[256];
+uchar xr[256];
 } HiQVideo;
 static uchar
 hiqvideoxi(long port, uchar index)

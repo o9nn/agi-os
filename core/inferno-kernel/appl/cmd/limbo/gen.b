@@ -1,33 +1,33 @@
-blocks:		int;			# nesting of blocks while generating code
-zinst:		Inst;
-firstinst:	ref Inst;
-lastinst:	ref Inst;
+blocks: int; # nesting of blocks while generating code
+zinst: Inst;
+firstinst: ref Inst;
+lastinst: ref Inst;
 include "disoptab.m";
 addrmode := array[int Rend] of
 {
-int Rreg =>	Afp,
-int Rmreg =>	Amp,
-int Roff =>	Aoff,
-int Rnoff =>	Anoff,
-int Rdesc =>	Adesc,
-int Rdescp =>	Adesc,
-int Rconst =>	Aimm,
-int Radr =>	Afpind,
-int Rmadr =>	Ampind,
-int Rpc =>	Apc,
+int Rreg => Afp,
+int Rmreg => Amp,
+int Roff => Aoff,
+int Rnoff => Anoff,
+int Rdesc => Adesc,
+int Rdescp => Adesc,
+int Rconst => Aimm,
+int Radr => Afpind,
+int Rmadr => Ampind,
+int Rpc => Apc,
 int Rldt => Aldt,
-* =>		Aerr,
+* => Aerr,
 };
-wtemp:		ref Decl;
-bigtemp:	ref Decl;
-ntemp:		int;
-retnode:	ref Node;
-nilnode:	ref Node;
-blockstack:	array of int;
-blockdep:	int;
-nblocks:	int;
-ntoz:	ref Node;
-#znode:		Node;
+wtemp: ref Decl;
+bigtemp: ref Decl;
+ntemp: int;
+retnode: ref Node;
+nilnode: ref Node;
+blockstack: array of int;
+blockdep: int;
+nblocks: int;
+ntoz: ref Node;
+#znode: Node;
 genstart()
 {
 d := mkdecl(nosrc, Dlocal, tint);
@@ -173,23 +173,23 @@ zcom1(n, nil);
 #
 #
 # costs ~7% in instruction count
-#	if(d.tref != 1)
-#		return;
-#	if(!tattr[d.ty.kind].isbig){
-#		if(tattr[d.ty.kind].isptr){	# or tmustzero()
-#			nilnode.decl.refs++;
-#			genmove(lastinst.src, Mas, d.ty, nilnode, n);
-#		}
-#	}else{
-#		if(d.desc.nmap != 0){		# tmustzero() is better
-#			zn := ref znode;
-#			zn.op = Oname;
-#			zn.addable = Rmreg;
-#			zn.decl = globalztup(d.ty);
-#			zn.ty = d.ty;
-#			genmove(lastinst.src, Mas, d.ty, zn, n);
-#		}
-#	}
+# if(d.tref != 1)
+# return;
+# if(!tattr[d.ty.kind].isbig){
+# if(tattr[d.ty.kind].isptr){ # or tmustzero()
+# nilnode.decl.refs++;
+# genmove(lastinst.src, Mas, d.ty, nilnode, n);
+# }
+# }else{
+# if(d.desc.nmap != 0){ # tmustzero() is better
+# zn := ref znode;
+# zn.op = Oname;
+# zn.addable = Rmreg;
+# zn.decl = globalztup(d.ty);
+# zn.ty = d.ty;
+# genmove(lastinst.src, Mas, d.ty, zn, n);
+# }
+# }
 }
 tfreelater(n: ref Node)
 {
@@ -232,7 +232,7 @@ d := n.decl;
 if(d.tref == 0)
 return n;
 # if(d.tref != 1)
-#	fatal("tacquire ref != 1: "+string d.tref);
+# fatal("tacquire ref != 1: "+string d.tref);
 d.tref++;
 return n;
 }
@@ -369,7 +369,7 @@ Tadtpick or
 Ttuple =>
 td := mktdesc(mt);
 if(td.nmap != 0){
-op++;		# sleazy
+op++; # sleazy
 usedesc(td);
 regm = Adesc;
 reg.decl = mt.decl;
@@ -412,7 +412,7 @@ if(mt.size == 0 && how == Mas)
 return nil;
 td := mktdesc(mt);
 if(td.nmap != 0){
-op++;		# sleazy
+op++; # sleazy
 usedesc(td);
 regm = Adesc;
 reg.decl = mt.decl;
@@ -906,7 +906,7 @@ mm = d;
 else
 mm = m;
 (op, p, a) = fixop(op, mm.ty, s.ty, d.ty);
-if(op == IMOVW){	# just zero d
+if(op == IMOVW){ # just zero d
 s = sumark(mkconst(src, big 0));
 return genrawop(src, op, s, nil, d);
 }
@@ -921,7 +921,7 @@ genfixcastop(src: Src, op: int, s, d: ref Node): ref Inst
 p, a: int;
 m: ref Node;
 (op, p, a) = fixop(op, s.ty, tint, d.ty);
-if(op == IMOVW){	# just zero d
+if(op == IMOVW){ # just zero d
 s = sumark(mkconst(src, big 0));
 return genrawop(src, op, s, nil, d);
 }

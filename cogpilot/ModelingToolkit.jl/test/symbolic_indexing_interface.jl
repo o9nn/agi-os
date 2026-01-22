@@ -56,43 +56,43 @@ pobs = parameter_observed(odesys, [a + b, a - b])
 ModelingToolkit.MTKParameters(odesys, [a => 1.0, b => 2.0]), 0.0) ≈ [3.0, -1.0]
 end
 # @testset "Clock system" begin
-#     dt = 0.1
-#     dt2 = 0.2
-#     @variables x(t)=0 y(t)=0 u(t)=0 yd1(t)=0 ud1(t)=0 yd2(t)=0 ud2(t)=0
-#     @parameters kp=1 r=1
-#     eqs = [
-#            # controller (time discrete part `dt=0.1`)
-#            yd1 ~ Sample(t, dt)(y)
-#            ud1 ~ kp * (r - yd1)
-#            # controller (time discrete part `dt=0.2`)
-#            yd2 ~ Sample(t, dt2)(y)
-#            ud2 ~ kp * (r - yd2)
-#            # plant (time continuous part)
-#            u ~ Hold(ud1) + Hold(ud2)
-#            D(x) ~ -x + u
-#            y ~ x]
-#     @mtkcompile cl = System(eqs, t)
-#     partition1_params = [Hold(ud1), Sample(t, dt)(y), ud1, yd1]
-#     partition2_params = [Hold(ud2), Sample(t, dt2)(y), ud2, yd2]
-#     @test all(
-#         Base.Fix1(is_timeseries_parameter, cl), vcat(partition1_params, partition2_params))
-#     @test allequal(timeseries_parameter_index(cl, p).timeseries_idx
-#     for p in partition1_params)
-#     @test allequal(timeseries_parameter_index(cl, p).timeseries_idx
-#     for p in partition2_params)
-#     tsidx1 = timeseries_parameter_index(cl, partition1_params[1]).timeseries_idx
-#     tsidx2 = timeseries_parameter_index(cl, partition2_params[1]).timeseries_idx
-#     @test tsidx1 != tsidx2
-#     ps = ModelingToolkit.MTKParameters(cl, [kp => 1.0, Sample(t, dt)(y) => 1.0])
-#     pobs = parameter_observed(cl, Shift(t, 1)(yd1))
-#     @test pobs.timeseries_idx == tsidx1
-#     @test pobs.observed_fn(ps, 0.0) == 1.0
-#     pobs = parameter_observed(cl, [Shift(t, 1)(yd1), Shift(t, 1)(ud1)])
-#     @test pobs.timeseries_idx == tsidx1
-#     @test pobs.observed_fn(ps, 0.0) == [1.0, 0.0]
-#     pobs = parameter_observed(cl, [Shift(t, 1)(yd1), Shift(t, 1)(ud2)])
-#     @test pobs.timeseries_idx === nothing
-#     @test pobs.observed_fn(ps, 0.0) == [1.0, 1.0]
+# dt = 0.1
+# dt2 = 0.2
+# @variables x(t)=0 y(t)=0 u(t)=0 yd1(t)=0 ud1(t)=0 yd2(t)=0 ud2(t)=0
+# @parameters kp=1 r=1
+# eqs = [
+# # controller (time discrete part `dt=0.1`)
+# yd1 ~ Sample(t, dt)(y)
+# ud1 ~ kp * (r - yd1)
+# # controller (time discrete part `dt=0.2`)
+# yd2 ~ Sample(t, dt2)(y)
+# ud2 ~ kp * (r - yd2)
+# # plant (time continuous part)
+# u ~ Hold(ud1) + Hold(ud2)
+# D(x) ~ -x + u
+# y ~ x]
+# @mtkcompile cl = System(eqs, t)
+# partition1_params = [Hold(ud1), Sample(t, dt)(y), ud1, yd1]
+# partition2_params = [Hold(ud2), Sample(t, dt2)(y), ud2, yd2]
+# @test all(
+# Base.Fix1(is_timeseries_parameter, cl), vcat(partition1_params, partition2_params))
+# @test allequal(timeseries_parameter_index(cl, p).timeseries_idx
+# for p in partition1_params)
+# @test allequal(timeseries_parameter_index(cl, p).timeseries_idx
+# for p in partition2_params)
+# tsidx1 = timeseries_parameter_index(cl, partition1_params[1]).timeseries_idx
+# tsidx2 = timeseries_parameter_index(cl, partition2_params[1]).timeseries_idx
+# @test tsidx1 != tsidx2
+# ps = ModelingToolkit.MTKParameters(cl, [kp => 1.0, Sample(t, dt)(y) => 1.0])
+# pobs = parameter_observed(cl, Shift(t, 1)(yd1))
+# @test pobs.timeseries_idx == tsidx1
+# @test pobs.observed_fn(ps, 0.0) == 1.0
+# pobs = parameter_observed(cl, [Shift(t, 1)(yd1), Shift(t, 1)(ud1)])
+# @test pobs.timeseries_idx == tsidx1
+# @test pobs.observed_fn(ps, 0.0) == [1.0, 0.0]
+# pobs = parameter_observed(cl, [Shift(t, 1)(yd1), Shift(t, 1)(ud2)])
+# @test pobs.timeseries_idx === nothing
+# @test pobs.observed_fn(ps, 0.0) == [1.0, 1.0]
 # end
 @testset "Nonlinear system" begin
 @variables x y z
@@ -133,7 +133,7 @@ eq = Dtt(u(t, x)) ~ C^2 * Dxx(u(t, x))
 bcs = [u(t, 0) ~ 0.0,# for all t > 0
 u(t, 1) ~ 0.0,# for all t > 0
 u(0, x) ~ x * (1.0 - x), #for all 0 < x < 1
-Dt(u(0, x)) ~ 0.0] #for all  0 < x < 1]
+Dt(u(0, x)) ~ 0.0] #for all 0 < x < 1]
 # Space and time domains
 domains = [t ∈ (0.0, 1.0),
 x ∈ (0.0, 1.0)]

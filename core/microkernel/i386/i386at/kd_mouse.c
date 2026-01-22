@@ -17,23 +17,23 @@
 #include "kd_mouse.h"
 static interrupt_handler_fn oldvect;
 static int oldunit;
-extern	struct	bus_device *cominfo[];
+extern struct bus_device *cominfo[];
 kd_event_queue mouse_queue;
 boolean_t mouse_in_use = FALSE;
-queue_head_t	mouse_read_queue = { &mouse_read_queue, &mouse_read_queue };
+queue_head_t mouse_read_queue = { &mouse_read_queue, &mouse_read_queue };
 u_char lastbuttons;
-#define MOUSE_UP	1
-#define MOUSE_DOWN	0
-#define MOUSE_ALL_UP	0x7
+#define MOUSE_UP 1
+#define MOUSE_DOWN 0
+#define MOUSE_ALL_UP 0x7
 int mouse_baud = BCNT1200;
-boolean_t	mouse_char_cmd = FALSE;
-boolean_t	mouse_char_wanted = FALSE;
-int		mouse_char_index;
-#define IBM_MOUSE_IRQ	12
+boolean_t mouse_char_cmd = FALSE;
+boolean_t mouse_char_wanted = FALSE;
+int mouse_char_index;
+#define IBM_MOUSE_IRQ 12
 static void
 init_mouse_hw(dev_t unit, int mode)
 {
-unsigned short base_addr  = cominfo[unit]->address;
+unsigned short base_addr = cominfo[unit]->address;
 outb(base_addr + RIE, 0);
 outb(base_addr + RLC, LCDLAB);
 outb(base_addr + RDLSB, mouse_baud & 0xff);
@@ -42,12 +42,12 @@ outb(base_addr + RLC, mode);
 outb(base_addr + RMC, MCDTR | MCRTS | MCOUT2);
 outb(base_addr + RIE, IERD | IELS);
 }
-#define	MOUSE_SYSTEM_MOUSE	0
-#define MICROSOFT_MOUSE		1
-#define IBM_MOUSE		2
-#define NO_MOUSE		3
-#define LOGITECH_TRACKMAN	4
-#define	MICROSOFT_MOUSE7	5
+#define MOUSE_SYSTEM_MOUSE 0
+#define MICROSOFT_MOUSE 1
+#define IBM_MOUSE 2
+#define NO_MOUSE 3
+#define LOGITECH_TRACKMAN 4
+#define MICROSOFT_MOUSE7 5
 static int mouse_type;
 static int mousebufsize;
 static int mousebufindex = 0;
@@ -113,8 +113,8 @@ splx(s);
 int mouse_packets = 0;
 void
 kd_mouse_open(
-dev_t 	dev,
-int 	mouse_pic)
+dev_t dev,
+int mouse_pic)
 {
 spl_t s = splhi();
 oldvect = ivect[mouse_pic];
@@ -124,8 +124,8 @@ splx(s);
 }
 void
 mouseclose(
-dev_t 	dev,
-int 	flags)
+dev_t dev,
+int flags)
 {
 switch (mouse_type) {
 case MICROSOFT_MOUSE:
@@ -148,13 +148,13 @@ mouse_in_use = FALSE;
 }
 void
 serial_mouse_close(
-dev_t 	dev,
-int 	flags)
+dev_t dev,
+int flags)
 {
 spl_t o_pri = splhi();
 int unit = minor(dev) & 0x7;
 int mouse_pic = cominfo[unit]->sysdep1;
-unsigned short base_addr  = cominfo[unit]->address;
+unsigned short base_addr = cominfo[unit]->address;
 assert(ivect[mouse_pic] == mouseintr);
 outb(base_addr + RIE, 0);
 outb(base_addr + RMC, 0);
@@ -164,8 +164,8 @@ iunit[mouse_pic] = oldunit;
 }
 void
 kd_mouse_close(
-dev_t 	dev,
-int 	mouse_pic)
+dev_t dev,
+int mouse_pic)
 {
 spl_t s = splhi();
 mask_irq(mouse_pic);
@@ -173,10 +173,10 @@ ivect[mouse_pic] = oldvect;
 splx(s);
 }
 io_return_t mousegetstat(
-dev_t		  dev,
-dev_flavor_t	  flavor,
-dev_status_t	  data,
-mach_msg_type_number_t	*count)
+dev_t dev,
+dev_flavor_t flavor,
+dev_status_t data,
+mach_msg_type_number_t *count)
 {
 switch (flavor) {
 case DEV_GET_SIZE:
@@ -191,11 +191,11 @@ return D_SUCCESS;
 }
 int
 mouseread(
-dev_t		dev,
-io_req_t	ior)
+dev_t dev,
+io_req_t ior)
 {
-int		err, count;
-spl_t		s;
+int err, count;
+spl_t s;
 if (ior->io_count % sizeof(kd_event) != 0)
 return D_INVALID_SIZE;
 err = device_read_alloc(ior, (vm_size_t)ior->io_count);
@@ -225,8 +225,8 @@ return (D_SUCCESS);
 }
 boolean_t mouse_read_done(io_req_t ior)
 {
-int	count;
-spl_t	s;
+int count;
+spl_t s;
 s = SPLKD();
 if (kdq_empty(&mouse_queue)) {
 ior->io_done = mouse_read_done;
@@ -249,7 +249,7 @@ return (TRUE);
 void
 mouseintr(int unit)
 {
-unsigned short base_addr  = cominfo[unit]->address;
+unsigned short base_addr = cominfo[unit]->address;
 unsigned char id, ls;
 id = inb(base_addr + RID);
 ls = inb(base_addr + RLS);
@@ -367,7 +367,7 @@ u_char buttons, buttonchanges;
 struct mouse_motion moved;
 buttons = ((mousebuf[0] & 0x30) >> 4);
 buttons |= middlegitech;
-#ifdef	gross_hack
+#ifdef gross_hack
 if (buttons == 0x03)
 buttons = 0x04;
 #endif
@@ -396,7 +396,7 @@ MOUSE_UP : MOUSE_DOWN);
 }
 }
 static void kd_mouse_write(
-unsigned char	ch)
+unsigned char ch)
 {
 while (inb(K_STATUS) & K_IBUF_FUL)
 continue;
@@ -407,7 +407,7 @@ outb(K_RDWR, ch);
 }
 static int kd_mouse_read(void)
 {
-int	ch;
+int ch;
 if (mouse_char_index >= mousebufsize)
 return -1;
 while (mousebufindex <= mouse_char_index) {
@@ -426,7 +426,7 @@ mouse_char_index = 0;
 void
 ibm_ps2_mouse_open(dev_t dev)
 {
-spl_t	s = spltty();
+spl_t s = spltty();
 lastbuttons = 0;
 mouse_char_cmd = TRUE;
 kd_sendcmd(0xa8);
@@ -458,7 +458,7 @@ splx(s);
 void
 ibm_ps2_mouse_close(dev_t dev)
 {
-spl_t	s = spltty();
+spl_t s = spltty();
 mouse_char_cmd = TRUE;
 kd_mouse_read_reset();
 kd_mouse_write(0xff);
@@ -488,9 +488,9 @@ mouse_moved(moved);
 if (buttonchanges != 0) {
 lastbuttons = buttons;
 if (buttonchanges & 1)
-mouse_button(MOUSE_LEFT,   !(buttons & 1));
+mouse_button(MOUSE_LEFT, !(buttons & 1));
 if (buttonchanges & 2)
-mouse_button(MOUSE_RIGHT,  !((buttons & 2) >> 1));
+mouse_button(MOUSE_RIGHT, !((buttons & 2) >> 1));
 if (buttonchanges & 4)
 mouse_button(MOUSE_MIDDLE, !((buttons & 4) >> 2));
 }
@@ -507,8 +507,8 @@ mouse_enqueue(&ev);
 }
 void
 mouse_button(
-kev_type 	which,
-u_char 		direction)
+kev_type which,
+u_char direction)
 {
 kd_event ev;
 ev.type = which;
@@ -525,7 +525,7 @@ printf_once("mouse: queue full\n");
 else
 kdq_put(&mouse_queue, ev);
 {
-io_req_t	ior;
+io_req_t ior;
 while ((ior = (io_req_t)dequeue_head(&mouse_read_queue)) != 0)
 iodone(ior);
 }

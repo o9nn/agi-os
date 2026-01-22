@@ -27,7 +27,7 @@ MONO,
 NOT_SET,
 MAX_INDICATOR
 } MPEG_mode;
-typedef struct  {
+typedef struct {
 unsigned long num_samples;
 int num_channels;
 int in_samplerate;
@@ -78,7 +78,7 @@ int useTemporal;
 int no_short_blocks;
 int emphasis;
 struct {
-void (*msgf)  (const char *format, va_list ap);
+void (*msgf) (const char *format, va_list ap);
 void (*debugf)(const char *format, va_list ap);
 void (*errorf)(const char *format, va_list ap);
 } report;
@@ -132,7 +132,7 @@ int CDECL lame_set_errorf(lame_global_flags *,
 void (*func)(const char *, va_list));
 int CDECL lame_set_debugf(lame_global_flags *,
 void (*func)(const char *, va_list));
-int CDECL lame_set_msgf  (lame_global_flags *,
+int CDECL lame_set_msgf (lame_global_flags *,
 void (*func)(const char *, va_list));
 int CDECL lame_set_brate(lame_global_flags *, int);
 int CDECL lame_get_brate(const lame_global_flags *);
@@ -206,11 +206,11 @@ int CDECL lame_get_framesize(const lame_global_flags *);
 int CDECL lame_get_frameNum(const lame_global_flags *);
 int CDECL lame_get_totalframes(const lame_global_flags *);
 int CDECL lame_init_params(lame_global_flags *);
-const  char*  CDECL get_lame_version       ( void );
-const  char*  CDECL get_lame_short_version ( void );
-const  char*  CDECL get_psy_version        ( void );
-const  char*  CDECL get_mp3x_version       ( void );
-const  char*  CDECL get_lame_url           ( void );
+const char* CDECL get_lame_version ( void );
+const char* CDECL get_lame_short_version ( void );
+const char* CDECL get_psy_version ( void );
+const char* CDECL get_mp3x_version ( void );
+const char* CDECL get_lame_url ( void );
 typedef struct {
 int major;
 int minor;
@@ -223,67 +223,67 @@ int psy_beta;
 const char *features;
 } lame_version_t;
 void CDECL get_lame_version_numerical ( lame_version_t *const );
-void CDECL lame_print_config(const lame_global_flags*  gfp);
+void CDECL lame_print_config(const lame_global_flags* gfp);
 int CDECL lame_encode_buffer (
-lame_global_flags*  gfp,
-const short int     buffer_l [],
-const short int     buffer_r [],
-const int           nsamples,
-unsigned char*      mp3buf,
-const int           mp3buf_size );
+lame_global_flags* gfp,
+const short int buffer_l [],
+const short int buffer_r [],
+const int nsamples,
+unsigned char* mp3buf,
+const int mp3buf_size );
 int CDECL lame_encode_buffer_interleaved(
-lame_global_flags*  gfp,
-short int           pcm[],
-int                 num_samples,
-unsigned char*      mp3buf,
-int                 mp3buf_size );
+lame_global_flags* gfp,
+short int pcm[],
+int num_samples,
+unsigned char* mp3buf,
+int mp3buf_size );
 int CDECL lame_encode_buffer_float(
-lame_global_flags*  gfp,
-const float     buffer_l [],
-const float     buffer_r [],
-const int           nsamples,
-unsigned char*      mp3buf,
-const int           mp3buf_size );
+lame_global_flags* gfp,
+const float buffer_l [],
+const float buffer_r [],
+const int nsamples,
+unsigned char* mp3buf,
+const int mp3buf_size );
 int CDECL lame_encode_buffer_long(
-lame_global_flags*  gfp,
-const long     buffer_l [],
-const long     buffer_r [],
-const int           nsamples,
-unsigned char*      mp3buf,
-const int           mp3buf_size );
+lame_global_flags* gfp,
+const long buffer_l [],
+const long buffer_r [],
+const int nsamples,
+unsigned char* mp3buf,
+const int mp3buf_size );
 int CDECL lame_encode_flush(
-lame_global_flags *  gfp,
-unsigned char*       mp3buf,
-int                  size);
+lame_global_flags * gfp,
+unsigned char* mp3buf,
+int size);
 #ifdef KLEMM_44
 int CDECL lame_encode_pcm (
-lame_t* const   lame,
-octetstream_t*  os,
-const void*     pcm,
-size_t          len,
-uint32_t        flags );
+lame_t* const lame,
+octetstream_t* os,
+const void* pcm,
+size_t len,
+uint32_t flags );
 int CDECL lame_encode_pcm_flush (
-lame_t*        const  lame,
-octetstream_t* const  os );
+lame_t* const lame,
+octetstream_t* const os );
 #endif
 void CDECL lame_bitrate_hist(
 const lame_global_flags *const gfp,
-int                      bitrate_count[14] );
+int bitrate_count[14] );
 void CDECL lame_bitrate_kbps(
 const lame_global_flags *const gfp,
-int                      bitrate_kbps [14] );
+int bitrate_kbps [14] );
 void CDECL lame_stereo_mode_hist(
 const lame_global_flags *const gfp,
-int                      stereo_mode_count[4] );
+int stereo_mode_count[4] );
 void CDECL lame_bitrate_stereo_mode_hist (
-const lame_global_flags*  gfp,
-int  bitrate_stmode_count [14] [4] );
+const lame_global_flags* gfp,
+int bitrate_stmode_count [14] [4] );
 void CDECL lame_mp3_tags_fid(lame_global_flags *,FILE* fid);
-int  CDECL lame_close (lame_global_flags *);
+int CDECL lame_close (lame_global_flags *);
 int CDECL lame_encode_finish(
-lame_global_flags*  gfp,
-unsigned char*      mp3buf,
-int                 size );
+lame_global_flags* gfp,
+unsigned char* mp3buf,
+int size );
 typedef struct {
 int header_parsed;
 int stereo;
@@ -298,77 +298,77 @@ int framenum;
 } mp3data_struct;
 int CDECL lame_decode_init(void);
 int CDECL lame_decode(
-unsigned char *  mp3buf,
-int              len,
-short            pcm_l[],
-short            pcm_r[] );
+unsigned char * mp3buf,
+int len,
+short pcm_l[],
+short pcm_r[] );
 int CDECL lame_decode_headers(
-unsigned char*   mp3buf,
-int              len,
-short            pcm_l[],
-short            pcm_r[],
-mp3data_struct*  mp3data );
+unsigned char* mp3buf,
+int len,
+short pcm_l[],
+short pcm_r[],
+mp3data_struct* mp3data );
 int CDECL lame_decode1(
-unsigned char*  mp3buf,
-int             len,
-short           pcm_l[],
-short           pcm_r[] );
+unsigned char* mp3buf,
+int len,
+short pcm_l[],
+short pcm_r[] );
 int CDECL lame_decode1_headers(
-unsigned char*   mp3buf,
-int              len,
-short            pcm_l[],
-short            pcm_r[],
-mp3data_struct*  mp3data );
+unsigned char* mp3buf,
+int len,
+short pcm_l[],
+short pcm_r[],
+mp3data_struct* mp3data );
 #if 0
 #define NUMTOCENTRIES 100
 typedef struct
 {
-int		h_id;
-int		samprate;
-int		flags;
-int		frames;
-int		bytes;
-int		vbr_scale;
-unsigned char	toc[NUMTOCENTRIES];
-int           headersize;
-}   VBRTAGDATA;
+int h_id;
+int samprate;
+int flags;
+int frames;
+int bytes;
+int vbr_scale;
+unsigned char toc[NUMTOCENTRIES];
+int headersize;
+} VBRTAGDATA;
 int CDECL GetVbrTag(
-VBRTAGDATA*     pTagData,
-unsigned char*  buf);
+VBRTAGDATA* pTagData,
+unsigned char* buf);
 #endif
 extern void id3tag_genre_list(
 void (*handler)(int, const char *, void *),
-void*  cookie);
-extern void id3tag_init   (lame_global_flags *gfp);
-extern void id3tag_add_v2   (lame_global_flags *gfp);
-extern void id3tag_v1_only  (lame_global_flags *gfp);
-extern void id3tag_v2_only  (lame_global_flags *gfp);
+void* cookie);
+extern void id3tag_init (lame_global_flags *gfp);
+extern void id3tag_add_v2 (lame_global_flags *gfp);
+extern void id3tag_v1_only (lame_global_flags *gfp);
+extern void id3tag_v2_only (lame_global_flags *gfp);
 extern void id3tag_space_v1 (lame_global_flags *gfp);
-extern void id3tag_pad_v2   (lame_global_flags *gfp);
+extern void id3tag_pad_v2 (lame_global_flags *gfp);
 extern void id3tag_set_title(
-lame_global_flags*  gfp,
-const char*         title );
+lame_global_flags* gfp,
+const char* title );
 extern void id3tag_set_artist(
-lame_global_flags*  gfp,
-const char*         artist );
+lame_global_flags* gfp,
+const char* artist );
 extern void id3tag_set_album(
-lame_global_flags*  gfp,
-const char*         album );
+lame_global_flags* gfp,
+const char* album );
 extern void id3tag_set_year(
-lame_global_flags*  gfp,
-const char*         year );
+lame_global_flags* gfp,
+const char* year );
 extern void id3tag_set_comment(
-lame_global_flags*  gfp,
-const char*         comment );
+lame_global_flags* gfp,
+const char* comment );
 extern void id3tag_set_track(
-lame_global_flags*  gfp,
-const char*         track );
+lame_global_flags* gfp,
+const char* track );
 extern int id3tag_set_genre(
-lame_global_flags*  gfp,
-const char*         genre );
-extern const int      bitrate_table    [3] [16];
-extern const int      samplerate_table [3] [ 4];
-#define LAME_MAXMP3BUFFER   16384
+lame_global_flags* gfp,
+const char* genre );
+extern const int bitrate_table [3] [16];
+extern const int samplerate_table [3] [ 4];
+#define LAME_MAXMP3BUFFER 16384
 #if defined(__cplusplus)
 }
 #endif

@@ -1,30 +1,30 @@
 (EvaluationLink
-	(PredicateNode "likes")
-	(ListLink
-		(ConceptNode "Tom")
-		(ConceptNode "baseball")
-	)
+(PredicateNode "likes")
+(ListLink
+(ConceptNode "Tom")
+(ConceptNode "baseball")
+)
 )
 (SatisfactionLink
-	(VariableNode "$X")
-	(EvaluationLink
-		(PredicateNode "likes")
-		(ListLink
-			(ConceptNode "Tom")
-			(VariableNode "$X")
-		)
-	)
+(VariableNode "$X")
+(EvaluationLink
+(PredicateNode "likes")
+(ListLink
+(ConceptNode "Tom")
+(VariableNode "$X")
+)
+)
 )
 (MemberLink
-	(ConceptNode "baseball")
-	(SatisfactionLink
-		(VariableNode "$X")
-		(EvaluationLink
-			(PredicateNode "likes")
-			(ListLink
-				(ConceptNode "Tom")
-				(VariableNode "$X")
-			)
-		)
-	)
+(ConceptNode "baseball")
+(SatisfactionLink
+(VariableNode "$X")
+(EvaluationLink
+(PredicateNode "likes")
+(ListLink
+(ConceptNode "Tom")
+(VariableNode "$X")
+)
+)
+)
 )

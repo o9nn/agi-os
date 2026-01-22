@@ -281,7 +281,7 @@ Fields:
 - `graph_to_tree::Dict{Int, Int}`: Graph ID -> Tree ID mapping
 """
 mutable struct TaskflowOntogeneticSystem
-dte_system::Any  # DeepTreeEchoSystem (avoid circular dependency)
+dte_system::Any # DeepTreeEchoSystem (avoid circular dependency)
 executor::TaskflowExecutor
 tree_to_graph::Dict{Int, Int}
 graph_to_tree::Dict{Int, Int}

@@ -15,7 +15,7 @@ secstore: Secstore;
 include "arg.m";
 Secstorec: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 Maxfilesize: con 128*1024;
 stderr: ref Sys->FD;
@@ -46,7 +46,7 @@ case o {
 'i' => iflag = 1;
 'k' => pass = arg->earg();
 'v' => verbose = 1;
-'s' =>	addr = arg->earg();
+'s' => addr = arg->earg();
 'u' => user = arg->earg();
 'p' => pin = arg->earg();
 * =>
@@ -97,14 +97,14 @@ erase();
 seckey = secstore->mkseckey(pass);
 filekey = secstore->mkfilekey(pass);
 for(i := 0; i < len pass; i++)
-pass[i] = 0;	# clear it
+pass[i] = 0; # clear it
 conn = secstore->dial(dial->netmkaddr(addr, "net", "secstore"));
 if(conn == nil)
 error(sys->sprint("can't connect to secstore: %r"));
 (srvname, diag) := secstore->auth(conn, user, seckey);
 if(srvname == nil){
 secstore->bye(conn);
-sys->fprint(stderr, "secstore: authentication failed: %s\n",  diag);
+sys->fprint(stderr, "secstore: authentication failed: %s\n", diag);
 if(iflag)
 raise "fail:auth";
 continue;
@@ -134,7 +134,7 @@ continue;
 }
 }
 if(op == 't'){
-erase();	# no longer need the keys
+erase(); # no longer need the keys
 entries := secstore->files(conn);
 for(; entries != nil; entries = tl entries){
 (name, size, date, hash, nil) := hd entries;
@@ -222,7 +222,7 @@ if(s[i] == '\n' || s[i] <= ' ')
 break;
 }
 if(s == nil || tail == nil || i < len s || s == "..")
-error(sys->sprint("can't use %q as a secstore file name", s));	# server checks as well, of course
+error(sys->sprint("can't use %q as a secstore file name", s)); # server checks as well, of course
 return tail;
 }
 verb(op: int, n: string)

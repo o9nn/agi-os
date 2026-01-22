@@ -20,6 +20,6 @@
 (display "Exporting Dictionary\n")
 (use-modules (opencog nlp lg-export))
 (export-csets gcf
-	(getenv "LG_DICT_EXPORT")
-	(getenv "LG_DICT_LOCALE")
-	#:INCLUDE-UNKNOWN #f)
+(getenv "LG_DICT_EXPORT")
+(getenv "LG_DICT_LOCALE")
+#:INCLUDE-UNKNOWN #f)

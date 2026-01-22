@@ -11,9 +11,9 @@
 #include <dmalloc.h>
 #endif
 #define NSATHSCALE 100
-const char  slen1_tab [16] = { 0, 0, 0, 0, 3, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4 };
-const char  slen2_tab [16] = { 0, 1, 2, 3, 0, 1, 2, 3, 1, 2, 3, 1, 2, 3, 2, 3 };
-const int  nr_of_sfb_block [6] [3] [4] =
+const char slen1_tab [16] = { 0, 0, 0, 0, 3, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4 };
+const char slen2_tab [16] = { 0, 1, 2, 3, 0, 1, 2, 3, 1, 2, 3, 1, 2, 3, 2, 3 };
+const int nr_of_sfb_block [6] [3] [4] =
 {
 {
 {6, 5, 5, 5},
@@ -46,7 +46,7 @@ const int  nr_of_sfb_block [6] [3] [4] =
 {6,18,9,0}
 }
 };
-const char  pretab [SBMAX_l] =
+const char pretab [SBMAX_l] =
 {
 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 1, 1, 1, 1, 2, 2, 3, 3, 3, 2, 0
@@ -143,7 +143,7 @@ FLOAT8 ATH_f;
 FLOAT8 samp_freq = gfp->out_samplerate;
 for (sfb = 0; sfb < SBMAX_l; sfb++) {
 start = gfc->scalefac_band.l[ sfb ];
-end   = gfc->scalefac_band.l[ sfb+1 ];
+end = gfc->scalefac_band.l[ sfb+1 ];
 ATH_l[sfb]=1e99;
 for (i = start ; i < end; i++) {
 FLOAT8 freq = i*samp_freq/(2*576);
@@ -153,7 +153,7 @@ ATH_l[sfb] = Min( ATH_l[sfb], ATH_f );
 }
 for (sfb = 0; sfb < SBMAX_s; sfb++){
 start = gfc->scalefac_band.s[ sfb ];
-end   = gfc->scalefac_band.s[ sfb+1 ];
+end = gfc->scalefac_band.s[ sfb+1 ];
 ATH_s[sfb] = 1e99;
 for (i = start ; i < end; i++) {
 FLOAT8 freq = i*samp_freq/(2*192);
@@ -257,10 +257,10 @@ return pow(pow(a,3.)+pow(b,3.)+pow(c,3.),1./3.);
 #endif
 int calc_xmin(
 lame_global_flags *gfp,
-const FLOAT8                xr [576],
+const FLOAT8 xr [576],
 const III_psy_ratio * const ratio,
-const gr_info       * const cod_info,
-III_psy_xmin  * const l3_xmin )
+const gr_info * const cod_info,
+III_psy_xmin * const l3_xmin )
 {
 lame_internal_flags *gfc=gfp->internal_flags;
 int sfb,j,start, end, bw,l, b, ath_over=0;
@@ -268,7 +268,7 @@ FLOAT8 en0, xmin, ener;
 if (cod_info->block_type==SHORT_TYPE) {
 for ( j=0, sfb = 0; sfb < SBMAX_s; sfb++ ) {
 start = gfc->scalefac_band.s[ sfb ];
-end   = gfc->scalefac_band.s[ sfb + 1 ];
+end = gfc->scalefac_band.s[ sfb + 1 ];
 bw = end - start;
 for ( b = 0; b < 3; b++ ) {
 for (en0 = 0.0, l = start; l < end; l++) {
@@ -304,7 +304,7 @@ if (gfp->useTemporal) {
 for (sfb = 0; sfb < SBMAX_s; sfb++ ) {
 for ( b = 1; b < 3; b++ ) {
 xmin = l3_xmin->s[sfb][b] * (1.0 - gfc->decay)
-+  l3_xmin->s[sfb][b-1] * gfc->decay;
++ l3_xmin->s[sfb][b-1] * gfc->decay;
 if (l3_xmin->s[sfb][b] < xmin)
 l3_xmin->s[sfb][b] = xmin;
 }
@@ -314,7 +314,7 @@ l3_xmin->s[sfb][b] = xmin;
 if (gfc->nsPsy.use) {
 for ( sfb = 0; sfb < SBMAX_l; sfb++ ){
 start = gfc->scalefac_band.l[ sfb ];
-end   = gfc->scalefac_band.l[ sfb+1 ];
+end = gfc->scalefac_band.l[ sfb+1 ];
 for (en0 = 0.0, l = start; l < end; l++ ) {
 ener = xr[l] * xr[l];
 en0 += ener;
@@ -342,7 +342,7 @@ l3_xmin->l[sfb] *= 0.001;
 } else {
 for ( sfb = 0; sfb < SBMAX_l; sfb++ ){
 start = gfc->scalefac_band.l[ sfb ];
-end   = gfc->scalefac_band.l[ sfb+1 ];
+end = gfc->scalefac_band.l[ sfb+1 ];
 bw = end - start;
 for (en0 = 0.0, l = start; l < end; l++ ) {
 ener = xr[l] * xr[l];
@@ -368,14 +368,14 @@ double penalties ( double noise )
 {
 return log ( 0.368 + 0.632 * noise * noise * noise );
 }
-int  calc_noise(
-const lame_internal_flags           * const gfc,
-const FLOAT8                    xr [576],
-const int                       ix [576],
-const gr_info           * const cod_info,
-const III_psy_xmin      * const l3_xmin,
-const III_scalefac_t    * const scalefac,
-III_psy_xmin      * xfsf,
+int calc_noise(
+const lame_internal_flags * const gfc,
+const FLOAT8 xr [576],
+const int ix [576],
+const gr_info * const cod_info,
+const III_psy_xmin * const l3_xmin,
+const III_scalefac_t * const scalefac,
+III_psy_xmin * xfsf,
 calc_noise_result * const res )
 {
 int sfb,start, end, j,l, i, over=0;
@@ -384,15 +384,15 @@ int count=0;
 FLOAT8 noise,noise_db;
 FLOAT8 over_noise = 1;
 FLOAT8 over_noise_db = 0;
-FLOAT8 tot_noise  = 1;
-FLOAT8 tot_noise_db  = 0;
-FLOAT8 max_noise  = 1E-20;
+FLOAT8 tot_noise = 1;
+FLOAT8 tot_noise_db = 0;
+FLOAT8 max_noise = 1E-20;
 double klemm_noise = 1E-37;
 if (cod_info->block_type == SHORT_TYPE) {
 int max_index = gfc->sfb21_extra ? SBMAX_s : SBPSY_s;
 for ( j=0, sfb = 0; sfb < max_index; sfb++ ) {
 start = gfc->scalefac_band.s[ sfb ];
-end   = gfc->scalefac_band.s[ sfb+1 ];
+end = gfc->scalefac_band.s[ sfb+1 ];
 for ( i = 0; i < 3; i++ ) {
 FLOAT8 step;
 int s;
@@ -413,8 +413,8 @@ temp -= fabs(xr[j]);
 sum += temp * temp;
 l++;
 } while (l < end);
-noise = xfsf->s[sfb][i]  = sum / l3_xmin->s[sfb][i];
-max_noise    = Max(max_noise,noise);
+noise = xfsf->s[sfb][i] = sum / l3_xmin->s[sfb][i];
+max_noise = Max(max_noise,noise);
 klemm_noise += penalties (noise);
 noise_db=10*log10(Max(noise,1E-20));
 tot_noise_db += noise_db;
@@ -437,7 +437,7 @@ assert(s<Q_MAX);
 assert(s>=0);
 step = POW20(s);
 start = gfc->scalefac_band.l[ sfb ];
-end   = gfc->scalefac_band.l[ sfb+1 ];
+end = gfc->scalefac_band.l[ sfb+1 ];
 for ( sum = 0.0, l = start; l < end; l++ ) {
 FLOAT8 temp;
 temp = fabs(xr[l]) - pow43[ix[l]] * step;
@@ -455,24 +455,24 @@ over_noise_db += noise_db;
 count++;
 }
 }
-res->tot_count  = count;
+res->tot_count = count;
 res->over_count = over;
-res->tot_noise   = tot_noise_db;
-res->over_noise  = over_noise_db;
-res->max_noise   = 10.*log10(Max(1e-20,max_noise ));
+res->tot_noise = tot_noise_db;
+res->over_noise = over_noise_db;
+res->max_noise = 10.*log10(Max(1e-20,max_noise ));
 res->klemm_noise = 10.*log10(Max(1e-20,klemm_noise));
 return over;
 }
 static
 void set_pinfo (
 lame_global_flags *gfp,
-const gr_info        * const cod_info,
-const III_psy_ratio  * const ratio,
+const gr_info * const cod_info,
+const III_psy_ratio * const ratio,
 const III_scalefac_t * const scalefac,
-const FLOAT8                 xr[576],
-const int                    l3_enc[576],
-const int                    gr,
-const int                    ch )
+const FLOAT8 xr[576],
+const int l3_enc[576],
+const int gr,
+const int ch )
 {
 lame_internal_flags *gfc=gfp->internal_flags;
 int sfb;
@@ -485,9 +485,9 @@ III_psy_xmin xfsf;
 calc_xmin (gfp,xr, ratio, cod_info, &l3_xmin);
 calc_noise (gfc, xr, l3_enc, cod_info, &l3_xmin, scalefac, &xfsf, &noise);
 if (cod_info->block_type == SHORT_TYPE) {
-for (j=0, sfb = 0; sfb < SBMAX_s; sfb++ )  {
+for (j=0, sfb = 0; sfb < SBMAX_s; sfb++ ) {
 start = gfc->scalefac_band.s[ sfb ];
-end   = gfc->scalefac_band.s[ sfb + 1 ];
+end = gfc->scalefac_band.s[ sfb + 1 ];
 bw = end - start;
 for ( i = 0; i < 3; i++ ) {
 for ( en0 = 0.0, l = start; l < end; l++ ) {
@@ -542,9 +542,9 @@ gfc->pinfo->LAMEsfb_s[gr][ch][3*sfb+i] -=
 }
 }
 } else {
-for ( sfb = 0; sfb < SBMAX_l; sfb++ )   {
+for ( sfb = 0; sfb < SBMAX_l; sfb++ ) {
 start = gfc->scalefac_band.l[ sfb ];
-end   = gfc->scalefac_band.l[ sfb+1 ];
+end = gfc->scalefac_band.l[ sfb+1 ];
 bw = end - start;
 for ( en0 = 0.0, l = start; l < end; l++ )
 en0 += xr[l] * xr[l];
@@ -573,7 +573,7 @@ gr,ch,
 }
 #endif
 en1=1e15;
-gfc->pinfo->xfsf[gr][ch][sfb] =  en1*xfsf.l[sfb]*l3_xmin.l[sfb]/bw;
+gfc->pinfo->xfsf[gr][ch][sfb] = en1*xfsf.l[sfb]*l3_xmin.l[sfb]/bw;
 gfc->pinfo->en[gr][ch][sfb] = en1*en0;
 if (ratio->en.l[sfb]>0)
 en0 = en0/ratio->en.l[sfb];
@@ -596,25 +596,25 @@ if (cod_info->preflag && sfb>=11)
 gfc->pinfo->LAMEsfb[gr][ch][sfb] -= ifqstep*pretab[sfb];
 }
 }
-gfc->pinfo->LAMEqss     [gr][ch] = cod_info->global_gain;
+gfc->pinfo->LAMEqss [gr][ch] = cod_info->global_gain;
 gfc->pinfo->LAMEmainbits[gr][ch] = cod_info->part2_3_length;
-gfc->pinfo->LAMEsfbits  [gr][ch] = cod_info->part2_length;
-gfc->pinfo->over      [gr][ch] = noise.over_count;
+gfc->pinfo->LAMEsfbits [gr][ch] = cod_info->part2_length;
+gfc->pinfo->over [gr][ch] = noise.over_count;
 gfc->pinfo->max_noise [gr][ch] = noise.max_noise;
 gfc->pinfo->over_noise[gr][ch] = noise.over_noise;
 gfc->pinfo->tot_noise [gr][ch] = noise.tot_noise;
 }
 void set_frame_pinfo(
 lame_global_flags *gfp,
-FLOAT8          xr       [2][2][576],
-III_psy_ratio   ratio    [2][2],
-int             l3_enc   [2][2][576],
-III_scalefac_t  scalefac [2][2] )
+FLOAT8 xr [2][2][576],
+III_psy_ratio ratio [2][2],
+int l3_enc [2][2][576],
+III_scalefac_t scalefac [2][2] )
 {
 lame_internal_flags *gfc=gfp->internal_flags;
-unsigned int          gr, ch, sfb;
-int                   act_l3enc[576];
-III_scalefac_t        act_scalefac [2];
+unsigned int gr, ch, sfb;
+int act_l3enc[576];
+III_scalefac_t act_scalefac [2];
 int scsfi[2] = {0,0};
 gfc->masking_lower = 1.0;
 for (ch = 0; ch < gfc->channels_out; ch ++) {
@@ -679,7 +679,7 @@ fi += 4;
 xp += 4;
 }
 }
-#  define ROUNDFAC -0.0946
+# define ROUNDFAC -0.0946
 void quantize_xrpow_ISO(const FLOAT8 xp[576], int pi[576], FLOAT8 istep)
 {
 int j;
@@ -700,13 +700,13 @@ xp+=4;
 }
 #else
 #define XRPOW_FTOI(src,dest) ((dest) = (int)(src))
-#define QUANTFAC(rx)  adj43[rx]
+#define QUANTFAC(rx) adj43[rx]
 #define ROUNDFAC 0.4054
 void quantize_xrpow(const FLOAT8 xr[576], int ix[576], FLOAT8 istep) {
 int j;
 for ( j = 576/8; j > 0; --j) {
-FLOAT8	x1, x2, x3, x4, x5, x6, x7, x8;
-int	rx1, rx2, rx3, rx4, rx5, rx6, rx7, rx8;
+FLOAT8 x1, x2, x3, x4, x5, x6, x7, x8;
+int rx1, rx2, rx3, rx4, rx5, rx6, rx7, rx8;
 x1 = *xr++ * istep;
 x2 = *xr++ * istep;
 XRPOW_FTOI(x1, rx1);
@@ -750,7 +750,7 @@ if (compareval0 > *xr) {
 *(ix++) = 0;
 xr++;
 } else {
-XRPOW_FTOI(  istep*(*(xr++))  + ROUNDFAC , *(ix++) );
+XRPOW_FTOI( istep*(*(xr++)) + ROUNDFAC , *(ix++) );
 }
 }
 }

@@ -8,50 +8,50 @@ enum {
 Nestmax = 40
 };
 struct Stack {
-int		n;
-int		slots[Nestmax];
+int n;
+int slots[Nestmax];
 };
 struct Pstate
 {
-Pstate*	next;
-int		skipping;
-int		skipwhite;
-int		curfont;
-int		curfg;
-Background	curbg;
-int		curvoff;
-uchar	curul;
-uchar	curjust;
-int		curanchor;
-int		curstate;
-int		literal;
-int		inpar;
-int		adjsize;
-Item*	items;
-Item*	lastit;
-Item*	prelastit;
-Stack	fntstylestk;
-Stack	fntsizestk;
-Stack	fgstk;
-Stack	ulstk;
-Stack	voffstk;
-Stack	listtypestk;
-Stack	listcntstk;
-Stack	juststk;
-Stack	hangstk;
+Pstate* next;
+int skipping;
+int skipwhite;
+int curfont;
+int curfg;
+Background curbg;
+int curvoff;
+uchar curul;
+uchar curjust;
+int curanchor;
+int curstate;
+int literal;
+int inpar;
+int adjsize;
+Item* items;
+Item* lastit;
+Item* prelastit;
+Stack fntstylestk;
+Stack fntsizestk;
+Stack fgstk;
+Stack ulstk;
+Stack voffstk;
+Stack listtypestk;
+Stack listcntstk;
+Stack juststk;
+Stack hangstk;
 };
 struct ItemSource
 {
-Docinfo*		doc;
-Pstate*		psstk;
-int			nforms;
-int			ntables;
-int			nanchors;
-int			nframes;
-Form*		curform;
-Map*		curmap;
-Table*		tabstk;
-Kidinfo*		kidstk;
+Docinfo* doc;
+Pstate* psstk;
+int nforms;
+int ntables;
+int nanchors;
+int nframes;
+Form* curform;
+Map* curmap;
+Table* tabstk;
+Kidinfo* kidstk;
 };
 enum {
 FRKIDMARGIN = 6,
@@ -68,54 +68,54 @@ SUPOFF = 6,
 NBSP = 160
 };
 static StringInt align_tab[] = {
-{L"baseline",	ALbaseline},
-{L"bottom",	ALbottom},
-{L"center",	ALcenter},
-{L"char",		ALchar},
-{L"justify",	ALjustify},
-{L"left",		ALleft},
-{L"middle",	ALmiddle},
-{L"right",		ALright},
-{L"top",		ALtop}
+{L"baseline", ALbaseline},
+{L"bottom", ALbottom},
+{L"center", ALcenter},
+{L"char", ALchar},
+{L"justify", ALjustify},
+{L"left", ALleft},
+{L"middle", ALmiddle},
+{L"right", ALright},
+{L"top", ALtop}
 };
 #define NALIGNTAB (sizeof(align_tab)/sizeof(StringInt))
 static StringInt input_tab[] = {
-{L"button",	Fbutton},
-{L"checkbox",	Fcheckbox},
-{L"file",		Ffile},
-{L"hidden",	Fhidden},
-{L"image",	Fimage},
-{L"password",	Fpassword},
-{L"radio",		Fradio},
-{L"reset",		Freset},
-{L"submit",	Fsubmit},
-{L"text",		Ftext}
+{L"button", Fbutton},
+{L"checkbox", Fcheckbox},
+{L"file", Ffile},
+{L"hidden", Fhidden},
+{L"image", Fimage},
+{L"password", Fpassword},
+{L"radio", Fradio},
+{L"reset", Freset},
+{L"submit", Fsubmit},
+{L"text", Ftext}
 };
 #define NINPUTTAB (sizeof(input_tab)/sizeof(StringInt))
 static StringInt clear_tab[] = {
-{L"all",	IFcleft|IFcright},
-{L"left",	IFcleft},
-{L"right",	IFcright}
+{L"all", IFcleft|IFcright},
+{L"left", IFcleft},
+{L"right", IFcright}
 };
 #define NCLEARTAB (sizeof(clear_tab)/sizeof(StringInt))
 static StringInt fscroll_tab[] = {
-{L"auto",	FRhscrollauto|FRvscrollauto},
-{L"no",	FRnoscroll},
-{L"yes",	FRhscroll|FRvscroll},
+{L"auto", FRhscrollauto|FRvscrollauto},
+{L"no", FRnoscroll},
+{L"yes", FRhscroll|FRvscroll},
 };
 #define NFSCROLLTAB (sizeof(fscroll_tab)/sizeof(StringInt))
 static StringInt shape_tab[] = {
-{L"circ",		SHcircle},
-{L"circle",		SHcircle},
-{L"poly",		SHpoly},
-{L"polygon",	SHpoly},
-{L"rect",		SHrect},
-{L"rectangle",	SHrect}
+{L"circ", SHcircle},
+{L"circle", SHcircle},
+{L"poly", SHpoly},
+{L"polygon", SHpoly},
+{L"rect", SHrect},
+{L"rectangle", SHrect}
 };
 #define NSHAPETAB (sizeof(shape_tab)/sizeof(StringInt))
 static StringInt method_tab[] = {
-{L"get",		HGet},
-{L"post",		HPost}
+{L"get", HGet},
+{L"post", HPost}
 };
 #define NMETHODTAB (sizeof(method_tab)/sizeof(StringInt))
 static Rune* roman[15]= {
@@ -164,7 +164,7 @@ static uchar scriptev[Numattrs]= {
 };
 static StringInt color_tab[] = {
 {L"aqua", 0x00FFFF},
-{L"black",  0x000000},
+{L"black", 0x000000},
 {L"blue", 0x0000CC},
 {L"fuchsia", 0xFF00FF},
 {L"gray", 0x808080},
@@ -181,116 +181,116 @@ static StringInt color_tab[] = {
 {L"yellow", 0xFFFF00}
 };
 #define NCOLORS (sizeof(color_tab)/sizeof(StringInt))
-static StringInt 		*targetmap;
-static int			targetmapsize;
-static int			ntargets;
+static StringInt *targetmap;
+static int targetmapsize;
+static int ntargets;
 static int buildinited = 0;
 #define SMALLBUFSIZE 240
 #define BIGBUFSIZE 2000
-int	dbgbuild = 0;
-int	warn = 0;
-static Align		aalign(Token* tok);
-static int			acolorval(Token* tok, int attid, int dflt);
-static void			addbrk(Pstate* ps, int sp, int clr);
-static void			additem(Pstate* ps, Item* it, Token* tok);
-static void			addlinebrk(Pstate* ps, int clr);
-static void			addnbsp(Pstate* ps);
-static void			addtext(Pstate* ps, Rune* s);
-static Dimen		adimen(Token* tok, int attid);
-static int			aflagval(Token* tok, int attid);
-static int			aintval(Token* tok, int attid, int dflt);
-static Rune*		astrval(Token* tok, int attid, Rune* dflt);
-static int			atabval(Token* tok, int attid, StringInt* tab, int ntab, int dflt);
-static int			atargval(Token* tok, int dflt);
-static int			auintval(Token* tok, int attid, int dflt);
-static Rune*		aurlval(Token* tok, int attid, Rune* dflt, Rune* base);
-static Rune*		aval(Token* tok, int attid);
-static void			buildinit(void);
-static Pstate*		cell_pstate(Pstate* oldps, int ishead);
-static void			changehang(Pstate* ps, int delta);
-static void			changeindent(Pstate* ps, int delta);
-static int			color(Rune* s, int dflt);
-static void			copystack(Stack* tostk, Stack* fromstk);
-static int			dimprint(char* buf, int nbuf, Dimen d);
-static Pstate*		finishcell(Table* curtab, Pstate* psstk);
-static void			finish_table(Table* t);
-static void			freeanchor(Anchor* a);
-static void			freedestanchor(DestAnchor* da);
-static void			freeform(Form* f);
-static void			freeformfield(Formfield* ff);
-static void			freeitem(Item* it);
-static void			freepstate(Pstate* p);
-static void			freepstatestack(Pstate* pshead);
-static void			freescriptevents(SEvent* ehead);
-static void			freetable(Table* t);
-static Map*		getmap(Docinfo* di, Rune* name);
-static Rune*		getpcdata(Token* toks, int tokslen, int* ptoki);
-static Pstate*		lastps(Pstate* psl);
-static Rune*		listmark(uchar ty, int n);
-static int			listtyval(Token* tok, int dflt);
-static Align		makealign(int halign, int valign);
-static Background	makebackground(Rune* imgurl, int color);
-static Dimen		makedimen(int kind, int spec);
-static Anchor*		newanchor(int index, Rune* name, Rune* href, int target, Anchor* link);
-static Area*		newarea(int shape, Rune* href, int target, Area* link);
-static DestAnchor*	newdestanchor(int index, Rune* name, Item* item, DestAnchor* link);
-static Docinfo*		newdocinfo(void);
-static Genattr*		newgenattr(Rune* id, Rune* class, Rune* style, Rune* title, Attr* events);
-static Form*		newform(int formid, Rune* name, Rune* action,
+int dbgbuild = 0;
+int warn = 0;
+static Align aalign(Token* tok);
+static int acolorval(Token* tok, int attid, int dflt);
+static void addbrk(Pstate* ps, int sp, int clr);
+static void additem(Pstate* ps, Item* it, Token* tok);
+static void addlinebrk(Pstate* ps, int clr);
+static void addnbsp(Pstate* ps);
+static void addtext(Pstate* ps, Rune* s);
+static Dimen adimen(Token* tok, int attid);
+static int aflagval(Token* tok, int attid);
+static int aintval(Token* tok, int attid, int dflt);
+static Rune* astrval(Token* tok, int attid, Rune* dflt);
+static int atabval(Token* tok, int attid, StringInt* tab, int ntab, int dflt);
+static int atargval(Token* tok, int dflt);
+static int auintval(Token* tok, int attid, int dflt);
+static Rune* aurlval(Token* tok, int attid, Rune* dflt, Rune* base);
+static Rune* aval(Token* tok, int attid);
+static void buildinit(void);
+static Pstate* cell_pstate(Pstate* oldps, int ishead);
+static void changehang(Pstate* ps, int delta);
+static void changeindent(Pstate* ps, int delta);
+static int color(Rune* s, int dflt);
+static void copystack(Stack* tostk, Stack* fromstk);
+static int dimprint(char* buf, int nbuf, Dimen d);
+static Pstate* finishcell(Table* curtab, Pstate* psstk);
+static void finish_table(Table* t);
+static void freeanchor(Anchor* a);
+static void freedestanchor(DestAnchor* da);
+static void freeform(Form* f);
+static void freeformfield(Formfield* ff);
+static void freeitem(Item* it);
+static void freepstate(Pstate* p);
+static void freepstatestack(Pstate* pshead);
+static void freescriptevents(SEvent* ehead);
+static void freetable(Table* t);
+static Map* getmap(Docinfo* di, Rune* name);
+static Rune* getpcdata(Token* toks, int tokslen, int* ptoki);
+static Pstate* lastps(Pstate* psl);
+static Rune* listmark(uchar ty, int n);
+static int listtyval(Token* tok, int dflt);
+static Align makealign(int halign, int valign);
+static Background makebackground(Rune* imgurl, int color);
+static Dimen makedimen(int kind, int spec);
+static Anchor* newanchor(int index, Rune* name, Rune* href, int target, Anchor* link);
+static Area* newarea(int shape, Rune* href, int target, Area* link);
+static DestAnchor* newdestanchor(int index, Rune* name, Item* item, DestAnchor* link);
+static Docinfo* newdocinfo(void);
+static Genattr* newgenattr(Rune* id, Rune* class, Rune* style, Rune* title, Attr* events);
+static Form* newform(int formid, Rune* name, Rune* action,
 int target, int method, Form* link);
-static Formfield*	newformfield(int ftype, int fieldid, Form* form, Rune* name,
+static Formfield* newformfield(int ftype, int fieldid, Form* form, Rune* name,
 Rune* value, int size, int maxlength, Formfield* link);
-static Item*		newifloat(Item* it, int side);
-static Item*		newiformfield(Formfield* ff);
-static Item*		newiimage(Rune* src, Rune* altrep, int align, int width, int height,
+static Item* newifloat(Item* it, int side);
+static Item* newiformfield(Formfield* ff);
+static Item* newiimage(Rune* src, Rune* altrep, int align, int width, int height,
 int hspace, int vspace, int border, int ismap, Map* map);
-static Item*		newirule(int align, int size, int noshade, int color, Dimen wspec);
-static Item*		newispacer(int spkind);
-static Item*		newitable(Table* t);
-static ItemSource*	newitemsource(Docinfo* di);
-static Item*		newitext(Rune* s, int fnt, int fg, int voff, int ul);
-static Kidinfo*		newkidinfo(int isframeset, Kidinfo* link);
-static Option*		newoption(int selected, Rune* value, Rune* display, Option* link);
-static Pstate*		newpstate(Pstate* link);
-static SEvent*		newscriptevent(int type, Rune* script, SEvent* link);
-static Table*		newtable(int tableid, Align align, Dimen width, int border,
+static Item* newirule(int align, int size, int noshade, int color, Dimen wspec);
+static Item* newispacer(int spkind);
+static Item* newitable(Table* t);
+static ItemSource* newitemsource(Docinfo* di);
+static Item* newitext(Rune* s, int fnt, int fg, int voff, int ul);
+static Kidinfo* newkidinfo(int isframeset, Kidinfo* link);
+static Option* newoption(int selected, Rune* value, Rune* display, Option* link);
+static Pstate* newpstate(Pstate* link);
+static SEvent* newscriptevent(int type, Rune* script, SEvent* link);
+static Table* newtable(int tableid, Align align, Dimen width, int border,
 int cellspacing, int cellpadding, Background bg, Token* tok, Table* link);
-static Tablecell*	newtablecell(int cellid, int rowspan, int colspan, Align align, Dimen wspec,
+static Tablecell* newtablecell(int cellid, int rowspan, int colspan, Align align, Dimen wspec,
 int hspec, Background bg, int flags, Tablecell* link);
-static Tablerow*	newtablerow(Align align, Background bg, int flags, Tablerow* link);
-static Dimen		parsedim(Rune* s, int ns);
-static void			pop(Stack* stk);
-static void			popfontsize(Pstate* ps);
-static void			popfontstyle(Pstate* ps);
-static void			popjust(Pstate* ps);
-static int			popretnewtop(Stack* stk, int dflt);
-static int			push(Stack* stk, int val);
-static void			pushfontsize(Pstate* ps, int sz);
-static void			pushfontstyle(Pstate* ps, int sty);
-static void			pushjust(Pstate* ps, int j);
-static Item*		textit(Pstate* ps, Rune* s);
-static Rune*		removeallwhite(Rune* s);
-static void			resetdocinfo(Docinfo* d);
-static void			setcurfont(Pstate* ps);
-static void			setcurjust(Pstate* ps);
-static void			setdimarray(Token* tok, int attid, Dimen** pans, int* panslen);
-static Rune*		stringalign(int a);
-static void			targetmapinit(void);
-static int			toint(Rune* s);
-static int			top(Stack* stk, int dflt);
-static void			trim_cell(Tablecell* c);
-static int			validalign(Align a);
-static int			validdimen(Dimen d);
-static int			validformfield(Formfield* f);
-static int			validhalign(int a);
-static int			validptr(void* p);
-static int			validStr(Rune* s);
-static int			validtable(Table* t);
-static int			validtablerow(Tablerow* r);
-static int			validtablecol(Tablecol* c);
-static int			validtablecell(Tablecell* c);
-static int			validvalign(int a);
-static int			Iconv(Fmt *f);
+static Tablerow* newtablerow(Align align, Background bg, int flags, Tablerow* link);
+static Dimen parsedim(Rune* s, int ns);
+static void pop(Stack* stk);
+static void popfontsize(Pstate* ps);
+static void popfontstyle(Pstate* ps);
+static void popjust(Pstate* ps);
+static int popretnewtop(Stack* stk, int dflt);
+static int push(Stack* stk, int val);
+static void pushfontsize(Pstate* ps, int sz);
+static void pushfontstyle(Pstate* ps, int sty);
+static void pushjust(Pstate* ps, int j);
+static Item* textit(Pstate* ps, Rune* s);
+static Rune* removeallwhite(Rune* s);
+static void resetdocinfo(Docinfo* d);
+static void setcurfont(Pstate* ps);
+static void setcurjust(Pstate* ps);
+static void setdimarray(Token* tok, int attid, Dimen** pans, int* panslen);
+static Rune* stringalign(int a);
+static void targetmapinit(void);
+static int toint(Rune* s);
+static int top(Stack* stk, int dflt);
+static void trim_cell(Tablecell* c);
+static int validalign(Align a);
+static int validdimen(Dimen d);
+static int validformfield(Formfield* f);
+static int validhalign(int a);
+static int validptr(void* p);
+static int validStr(Rune* s);
+static int validtable(Table* t);
+static int validtablerow(Tablerow* r);
+static int validtablecol(Tablecol* c);
+static int validtablecell(Tablecell* c);
+static int validvalign(int a);
+static int Iconv(Fmt *f);
 static void
 buildinit(void)
 {
@@ -301,8 +301,8 @@ buildinited = 1;
 static ItemSource*
 newitemsource(Docinfo* di)
 {
-ItemSource*	is;
-Pstate*	ps;
+ItemSource* is;
+Pstate* ps;
 ps = newpstate(nil);
 if(di->mediatype != TextHtml) {
 ps->curstate &= ~IFwrap;
@@ -327,8 +327,8 @@ Item*
 parsehtml(uchar* data, int datalen, Rune* pagesrc, int mtype, int chset, Docinfo** pdi)
 {
 Item *it;
-Docinfo*	di;
-ItemSource*	is;
+Docinfo* di;
+ItemSource* is;
 di = newdocinfo();
 di->src = _Strdup(pagesrc);
 di->base = _Strdup(pagesrc);
@@ -344,77 +344,77 @@ return it;
 static Item*
 getitems(ItemSource* is, uchar* data, int datalen)
 {
-int	i;
-int	j;
-int	nt;
-int	pt;
-int	doscripts;
-int	tokslen;
-int	toki;
-int	h;
-int	sz;
-int	method;
-int	n;
-int	nblank;
-int	norsz;
-int	bramt;
-int	sty;
-int	nosh;
-int	color;
-int	oldcuranchor;
-int	dfltbd;
-int	v;
-int	hang;
-int	isempty;
-int	tag;
-int	brksp;
-int	target;
-uchar	brk;
-uchar	flags;
-uchar	align;
-uchar	al;
-uchar	ty;
-uchar	ty2;
-Pstate*	ps;
-Pstate*	nextps;
-Pstate*	outerps;
-Table*	curtab;
-Token*	tok;
-Token*	toks;
-Docinfo*	di;
-Item*	ans;
-Item*	img;
-Item*	ffit;
-Item*	tabitem;
-Rune*	s;
-Rune*	t;
-Rune*	name;
-Rune*	enctype;
-Rune*	usemap;
-Rune*	prompt;
-Rune*	equiv;
-Rune*	val;
-Rune*	nsz;
-Rune*	script;
-Map*	map;
-Form*	frm;
-Iimage*	ii;
-Kidinfo*	kd;
-Kidinfo*	ks;
-Kidinfo*	pks;
-Dimen	wd;
-Option*	option;
-Table*	tab;
-Tablecell*	c;
-Tablerow*	tr;
-Formfield*	field;
-Formfield*	ff;
-Rune*	href;
-Rune*	src;
-Rune*	scriptsrc;
-Rune*	bgurl;
-Rune*	action;
-Background	bg;
+int i;
+int j;
+int nt;
+int pt;
+int doscripts;
+int tokslen;
+int toki;
+int h;
+int sz;
+int method;
+int n;
+int nblank;
+int norsz;
+int bramt;
+int sty;
+int nosh;
+int color;
+int oldcuranchor;
+int dfltbd;
+int v;
+int hang;
+int isempty;
+int tag;
+int brksp;
+int target;
+uchar brk;
+uchar flags;
+uchar align;
+uchar al;
+uchar ty;
+uchar ty2;
+Pstate* ps;
+Pstate* nextps;
+Pstate* outerps;
+Table* curtab;
+Token* tok;
+Token* toks;
+Docinfo* di;
+Item* ans;
+Item* img;
+Item* ffit;
+Item* tabitem;
+Rune* s;
+Rune* t;
+Rune* name;
+Rune* enctype;
+Rune* usemap;
+Rune* prompt;
+Rune* equiv;
+Rune* val;
+Rune* nsz;
+Rune* script;
+Map* map;
+Form* frm;
+Iimage* ii;
+Kidinfo* kd;
+Kidinfo* ks;
+Kidinfo* pks;
+Dimen wd;
+Option* option;
+Table* tab;
+Tablecell* c;
+Tablerow* tr;
+Formfield* field;
+Formfield* ff;
+Rune* href;
+Rune* src;
+Rune* scriptsrc;
+Rune* bgurl;
+Rune* action;
+Background bg;
 if(!buildinited)
 buildinit();
 doscripts = 0;
@@ -787,7 +787,7 @@ ks = newkidinfo(1, nil);
 pks = is->kidstk;
 if(pks == nil)
 di->kidinfo = ks;
-else  {
+else {
 ks->next = pks->kidinfos;
 pks->kidinfos = ks;
 }
@@ -1128,7 +1128,7 @@ continue;
 val = aval(tok, Avalue);
 option = newoption(aflagval(tok, Aselected), val, nil, field->options);
 field->options = option;
-option->display =  getpcdata(toks, tokslen, &toki);
+option->display = getpcdata(toks, tokslen, &toki);
 if(val == nil)
 option->value = _Strdup(option->display);
 break;
@@ -1577,13 +1577,13 @@ return ans;
 static Rune*
 getpcdata(Token* toks, int tokslen, int* ptoki)
 {
-Rune*	ans;
-Rune*	p;
-Rune*	trimans;
-int	anslen;
-int	trimanslen;
-int	toki;
-Token*	tok;
+Rune* ans;
+Rune* p;
+Rune* trimans;
+int anslen;
+int trimanslen;
+int toki;
+Token* tok;
 ans = nil;
 anslen = 0;
 toki = (*ptoki) + 1;
@@ -1623,7 +1623,7 @@ return ans;
 static Pstate*
 finishcell(Table* curtab, Pstate* psstk)
 {
-Tablecell*	c;
+Tablecell* c;
 Pstate* psstknext;
 c = curtab->cells;
 if(c != nil) {
@@ -1646,8 +1646,8 @@ return psstk;
 static Pstate*
 cell_pstate(Pstate* oldps, int ishead)
 {
-Pstate*	ps;
-int	sty;
+Pstate* ps;
+int sty;
 ps = newpstate(oldps);
 ps->skipwhite = 1;
 ps->curanchor = oldps->curanchor;
@@ -1667,7 +1667,7 @@ return ps;
 static Pstate*
 newpstate(Pstate* link)
 {
-Pstate*	ps;
+Pstate* ps;
 ps = (Pstate*)emalloc(sizeof(Pstate));
 ps->curfont = DefFnt;
 ps->curfg = Black;
@@ -1693,14 +1693,14 @@ return psl;
 static void
 additem(Pstate* ps, Item* it, Token* tok)
 {
-int	aid;
-int	any;
-Rune*	i;
-Rune*	c;
-Rune*	s;
-Rune*	t;
-Attr*	a;
-SEvent*	e;
+int aid;
+int any;
+Rune* i;
+Rune* c;
+Rune* s;
+Rune* t;
+Attr* a;
+SEvent* e;
 if(ps->skipping) {
 if(warn)
 fprint(2, "warning: skipping item: %I\n", it);
@@ -1757,17 +1757,17 @@ return newitext(s, ps->curfont, ps->curfg, ps->curvoff + Voffbias, ps->curul);
 static void
 addtext(Pstate* ps, Rune* s)
 {
-int	n;
-int	i;
-int	j;
-int	k;
-int	col;
-int	c;
-int	nsp;
-Item*	it;
-Rune*	ss;
-Rune*	p;
-Rune	buf[SMALLBUFSIZE];
+int n;
+int i;
+int j;
+int k;
+int col;
+int c;
+int nsp;
+Item* it;
+Rune* ss;
+Rune* p;
+Rune buf[SMALLBUFSIZE];
 assert(s != nil);
 n = runestrlen(s);
 i = 0;
@@ -1883,13 +1883,13 @@ free(s);
 static void
 addbrk(Pstate* ps, int sp, int clr)
 {
-int	state;
-Rune*	l;
-int		nl;
-Rune*	r;
-int		nr;
-Itext*	t;
-Rune*	s;
+int state;
+Rune* l;
+int nl;
+Rune* r;
+int nr;
+Itext* t;
+Rune* s;
 state = ps->curstate;
 clr = clr|(state&(IFcleft|IFcright));
 if(sp && !(ps->lastit == ps->items))
@@ -1923,8 +1923,8 @@ free(s);
 static void
 addlinebrk(Pstate* ps, int clr)
 {
-int	obrkstate;
-int	b;
+int obrkstate;
+int b;
 obrkstate = ps->curstate&(IFbrk|IFbrksp);
 b = IFnobrk;
 if(ps->lastit != nil) {
@@ -1949,7 +1949,7 @@ ps->curstate |= IFnobrk;
 static void
 changehang(Pstate* ps, int delta)
 {
-int	amt;
+int amt;
 amt = (ps->curstate&IFhangmask) + delta;
 if(amt < 0) {
 if(warn)
@@ -1961,7 +1961,7 @@ ps->curstate = (ps->curstate&~IFhangmask)|amt;
 static void
 changeindent(Pstate* ps, int delta)
 {
-int	amt;
+int amt;
 amt = ((ps->curstate&IFindentmask) >> IFindentshift) + delta;
 if(amt < 0) {
 if(warn)
@@ -2039,8 +2039,8 @@ setcurfont(ps);
 static void
 setcurfont(Pstate* ps)
 {
-int	sty;
-int	sz;
+int sty;
+int sz;
 sty = top(&ps->fntstylestk, FntR);
 sz = top(&ps->fntsizestk, Normal);
 if(sz < Tiny)
@@ -2064,8 +2064,8 @@ setcurjust(ps);
 static void
 setcurjust(Pstate* ps)
 {
-int	j;
-int	state;
+int j;
+int state;
 j = top(&ps->juststk, ALleft);
 if(j != ps->curjust) {
 ps->curjust = j;
@@ -2081,26 +2081,26 @@ ps->curstate = state;
 static void
 finish_table(Table* t)
 {
-int	ncol;
-int	nrow;
-int	r;
-Tablerow*	rl;
-Tablecell*	cl;
-int*	rowspancnt;
-Tablecell**	rowspancell;
-int	ri;
-int	ci;
-Tablecell*	c;
-Tablecell*	cnext;
-Tablerow*	row;
-Tablerow*	rownext;
-int	rcols;
-int	newncol;
-int	k;
-int	j;
-int	cspan;
-int	rspan;
-int	i;
+int ncol;
+int nrow;
+int r;
+Tablerow* rl;
+Tablecell* cl;
+int* rowspancnt;
+Tablecell** rowspancell;
+int ri;
+int ci;
+Tablecell* c;
+Tablecell* cnext;
+Tablerow* row;
+Tablerow* rownext;
+int rcols;
+int newncol;
+int k;
+int j;
+int cspan;
+int rspan;
+int i;
 rl = t->rows;
 t->nrow = nrow = _listlen((List*)rl);
 t->rows = (Tablerow*)emalloc(nrow * sizeof(Tablerow));
@@ -2189,15 +2189,15 @@ free(rowspancell);
 static void
 trim_cell(Tablecell* c)
 {
-int	dropping;
-Rune*	s;
-Rune*	x;
-Rune*	y;
-int		nx;
-int		ny;
-Item*	p;
-Itext*	q;
-Item*	pprev;
+int dropping;
+Rune* s;
+Rune* x;
+Rune* y;
+int nx;
+int ny;
+Item* p;
+Itext* q;
+Item* pprev;
 dropping = 1;
 while(c->content != nil && dropping) {
 p = c->content;
@@ -2231,10 +2231,10 @@ freeitem(p);
 static Rune*
 listmark(uchar ty, int n)
 {
-Rune*	s;
-Rune*	t;
-int	n2;
-int	i;
+Rune* s;
+Rune* t;
+int n2;
+int i;
 s = nil;
 switch(ty) {
 case LTdisc:
@@ -2288,7 +2288,7 @@ return s;
 static Map*
 getmap(Docinfo* di, Rune* name)
 {
-Map*	m;
+Map* m;
 for(m = di->maps; m != nil; m = m->next) {
 if(!_Strcmp(name, m->name))
 return m;
@@ -2314,14 +2314,14 @@ return a;
 static Rune*
 aval(Token* tok, int attid)
 {
-Rune*	ans;
+Rune* ans;
 _tokaval(tok, attid, &ans, 1);
 return ans;
 }
 static Rune*
 astrval(Token* tok, int attid, Rune* dflt)
 {
-Rune*	ans;
+Rune* ans;
 if(_tokaval(tok, attid, &ans, 1))
 return ans;
 else
@@ -2330,7 +2330,7 @@ return _Strdup(dflt);
 static int
 aintval(Token* tok, int attid, int dflt)
 {
-Rune*	ans;
+Rune* ans;
 if(!_tokaval(tok, attid, &ans, 0) || ans == nil)
 return dflt;
 else
@@ -2366,8 +2366,8 @@ return ans;
 static int
 atabval(Token* tok, int attid, StringInt* tab, int ntab, int dflt)
 {
-Rune*	aval;
-int	ans;
+Rune* aval;
+int ans;
 ans = dflt;
 if(_tokaval(tok, attid, &aval, 0)) {
 if(!_lookup(tab, ntab, aval, _Strlen(aval), &ans)) {
@@ -2381,8 +2381,8 @@ return ans;
 static int
 acolorval(Token* tok, int attid, int dflt)
 {
-Rune*	aval;
-int	ans;
+Rune* aval;
+int ans;
 ans = dflt;
 if(_tokaval(tok, attid, &aval, 0))
 ans = color(aval, dflt);
@@ -2391,8 +2391,8 @@ return ans;
 static int
 atargval(Token* tok, int dflt)
 {
-int	ans;
-Rune*	aval;
+int ans;
+Rune* aval;
 ans = dflt;
 if(_tokaval(tok, Atarget, &aval, 0)){
 ans = targetid(aval);
@@ -2402,9 +2402,9 @@ return ans;
 static int
 listtyval(Token* tok, int dflt)
 {
-Rune*	aval;
-int	ans;
-int	n;
+Rune* aval;
+int ans;
+int n;
 ans = dflt;
 if(_tokaval(tok, Atype, &aval, 0)) {
 n = _Strlen(aval);
@@ -2447,8 +2447,8 @@ return ans;
 static Rune*
 aurlval(Token* tok, int attid, Rune* dflt, Rune* base)
 {
-Rune*	ans;
-Rune*	url;
+Rune* ans;
+Rune* url;
 USED(base);
 ans = nil;
 if(_tokaval(tok, attid, &url, 0) && url != nil)
@@ -2460,11 +2460,11 @@ return ans;
 static Rune*
 removeallwhite(Rune* s)
 {
-int	j;
-int	n;
-int	i;
-int	c;
-Rune*	ans;
+int j;
+int n;
+int i;
+int c;
+Rune* ans;
 j = 0;
 n = _Strlen(s);
 for(i = 0; i < n; i++) {
@@ -2489,8 +2489,8 @@ return ans;
 static int
 aflagval(Token* tok, int attid)
 {
-int	val;
-Rune*	sval;
+int val;
+Rune* sval;
 val = 0;
 if(_tokaval(tok, attid, &sval, 0)) {
 val = 1;
@@ -2502,7 +2502,7 @@ return val;
 static Align
 makealign(int halign, int valign)
 {
-Align	al;
+Align al;
 al.halign = halign;
 al.valign = valign;
 return al;
@@ -2517,7 +2517,7 @@ atabval(tok, Avalign, align_tab, NALIGNTAB, ALnone));
 static Dimen
 adimen(Token* tok, int attid)
 {
-Rune*	wd;
+Rune* wd;
 if(_tokaval(tok, attid, &wd, 0))
 return parsedim(wd, _Strlen(wd));
 else
@@ -2526,18 +2526,18 @@ return makedimen(Dnone, 0);
 static Dimen
 parsedim(Rune* s, int ns)
 {
-int	kind;
-int	spec;
-Rune*	l;
-int	nl;
-Rune*	r;
-int	nr;
-int	mul;
-int	i;
-Rune*	f;
-int	nf;
-int	Tkdpi;
-Rune*	units;
+int kind;
+int spec;
+Rune* l;
+int nl;
+Rune* r;
+int nr;
+int mul;
+int i;
+Rune* f;
+int nf;
+int Tkdpi;
+Rune* units;
 kind = Dnone;
 spec = 0;
 _splitl(s, ns, L"^0-9", &l, &nl, &r, &nr);
@@ -2595,12 +2595,12 @@ return makedimen(kind, spec);
 static void
 setdimarray(Token* tok, int attid, Dimen** pans, int* panslen)
 {
-Rune*	s;
-Dimen*	d;
-int	k;
-int	nc;
+Rune* s;
+Dimen* d;
+int k;
+int nc;
 Rune* a[SMALLBUFSIZE];
-int	an[SMALLBUFSIZE];
+int an[SMALLBUFSIZE];
 if(_tokaval(tok, attid, &s, 0)) {
 nc = _splitall(s, _Strlen(s), L", ", a, an, SMALLBUFSIZE);
 if(nc > 0) {
@@ -2656,7 +2656,7 @@ newiimage(Rune* src, Rune* altrep, int align, int width, int height,
 int hspace, int vspace, int border, int ismap, Map* map)
 {
 Iimage* i;
-int	state;
+int state;
 state = 0;
 if(ismap)
 state = IFsmap;
@@ -2946,23 +2946,23 @@ free(p);
 static int
 Iconv(Fmt *f)
 {
-Item*	it;
-Itext*	t;
-Irule*	r;
-Iimage*	i;
-Ifloat*	fl;
-int	state;
-Formfield*	ff;
-Rune*	ty;
-Tablecell*	c;
-Table*	tab;
-char*	p;
-int	cl;
-int	hang;
-int	indent;
-int	bi;
-int	nbuf;
-char	buf[BIGBUFSIZE];
+Item* it;
+Itext* t;
+Irule* r;
+Iimage* i;
+Ifloat* fl;
+int state;
+Formfield* ff;
+Rune* ty;
+Tablecell* c;
+Table* tab;
+char* p;
+int cl;
+int hang;
+int indent;
+int bi;
+int nbuf;
+char buf[BIGBUFSIZE];
 it = va_arg(f->args, Item*);
 bi = 0;
 nbuf = sizeof(buf);
@@ -3070,7 +3070,7 @@ return fmtstrcpy(f, buf);
 static Rune*
 stringalign(int a)
 {
-Rune*	s;
+Rune* s;
 s = _revlookup(align_tab, NALIGNTAB, a);
 if(s == nil)
 s = L"none";
@@ -3079,8 +3079,8 @@ return s;
 static int
 dimprint(char* buf, int nbuf, Dimen d)
 {
-int	n;
-int	k;
+int n;
+int k;
 n = 0;
 n += snprint(buf, nbuf, "%d", dimenspec(d));
 k = dimenkind(d);
@@ -3093,7 +3093,7 @@ return n;
 void
 printitems(Item* items, char* msg)
 {
-Item*	il;
+Item* il;
 fprint(2, "%s\n", msg);
 il = items;
 while(il != nil) {
@@ -3276,7 +3276,7 @@ return (d.kindspec&Dspecmask);
 static Kidinfo*
 newkidinfo(int isframeset, Kidinfo* link)
 {
-Kidinfo*	ki;
+Kidinfo* ki;
 ki = (Kidinfo*)emalloc(sizeof(Kidinfo));
 ki->isframeset = isframeset;
 if(!isframeset) {
@@ -3291,7 +3291,7 @@ return ki;
 static Docinfo*
 newdocinfo(void)
 {
-Docinfo*	d;
+Docinfo* d;
 d = (Docinfo*)emalloc(sizeof(Docinfo));
 resetdocinfo(d);
 return d;

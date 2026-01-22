@@ -1,5 +1,5 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #include "feeddriver.h"
 #include <string.h>
@@ -279,7 +279,7 @@ for(i = 0 ; i < size ; i ++) {
 int do_quote_char;
 if (col + 2
 + 3
-+ 1  >= MAX_IMF_LINE) {
++ 1 >= MAX_IMF_LINE) {
 int old_pos;
 if (mmap_string_append(mmapstr, "?=") == NULL)
 return -1;
@@ -354,7 +354,7 @@ while ((* cur != ' ') && (* cur != '\t') && (* cur != '\0')) {
 cur ++;
 }
 if (cur - begin +
-1   > MAX_IMF_LINE)
+1 > MAX_IMF_LINE)
 * pto_be_quoted = 1;
 else
 * pto_be_quoted = to_be_quoted(begin, cur - begin);

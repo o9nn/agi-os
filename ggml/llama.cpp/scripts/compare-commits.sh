@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 if [ $
-    echo "usage: ./scripts/compare-commits.sh <commit1> <commit2> [tool] [additional arguments]"
-    echo "  tool: 'llama-bench' (default) or 'test-backend-ops'"
-    echo "  additional arguments: passed to the selected tool"
-    exit 1
+echo "usage: ./scripts/compare-commits.sh <commit1> <commit2> [tool] [additional arguments]"
+echo "  tool: 'llama-bench' (default) or 'test-backend-ops'"
+echo "  additional arguments: passed to the selected tool"
+exit 1
 fi
 set -e
 set -x
@@ -12,29 +12,29 @@ commit2=$2
 tool=${3:-llama-bench}
 additional_args="${@:4}"
 if [ "$tool" != "llama-bench" ] && [ "$tool" != "test-backend-ops" ]; then
-    echo "Error: tool must be 'llama-bench' or 'test-backend-ops'"
-    exit 1
+echo "Error: tool must be 'llama-bench' or 'test-backend-ops'"
+exit 1
 fi
 ./scripts/compare-llama-bench.py --check
 if [ "$tool" = "llama-bench" ]; then
-    db_file="llama-bench.sqlite"
-    target="llama-bench"
-    run_args="-o sql -oe md $additional_args"
+db_file="llama-bench.sqlite"
+target="llama-bench"
+run_args="-o sql -oe md $additional_args"
 else
-    db_file="test-backend-ops.sqlite"
-    target="test-backend-ops"
-    run_args="perf --output sql $additional_args"
+db_file="test-backend-ops.sqlite"
+target="test-backend-ops"
+run_args="perf --output sql $additional_args"
 fi
 rm -f "$db_file" > /dev/null
 if [ -n "$GGML_CUDA" ]; then
-    CMAKE_OPTS="${CMAKE_OPTS} -DGGML_CUDA=ON"
+CMAKE_OPTS="${CMAKE_OPTS} -DGGML_CUDA=ON"
 fi
 dir="build-bench"
 function run {
-    rm -fr ${dir} > /dev/null
-    cmake -B ${dir} -S . ${CMAKE_OPTS} > /dev/null
-    cmake --build ${dir} -t $target -j $(nproc) > /dev/null
-    ${dir}/bin/$target $run_args | sqlite3 "$db_file"
+rm -fr ${dir} > /dev/null
+cmake -B ${dir} -S . ${CMAKE_OPTS} > /dev/null
+cmake --build ${dir} -t $target -j $(nproc) > /dev/null
+${dir}/bin/$target $run_args | sqlite3 "$db_file"
 }
 git checkout $commit1 > /dev/null
 run

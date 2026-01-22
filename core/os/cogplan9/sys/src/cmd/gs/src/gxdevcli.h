@@ -1,5 +1,5 @@
 #ifndef gxdevcli_INCLUDED
-#  define gxdevcli_INCLUDED
+# define gxdevcli_INCLUDED
 #include "std.h"
 #include "stdint_.h"
 #include "gscompt.h"
@@ -18,39 +18,39 @@
 #include "gxtext.h"
 #include "gxcmap.h"
 #ifndef gx_device_DEFINED
-#  define gx_device_DEFINED
+# define gx_device_DEFINED
 typedef struct gx_device_s gx_device;
 #endif
 #ifndef gs_state_DEFINED
-#  define gs_state_DEFINED
+# define gs_state_DEFINED
 typedef struct gs_state_s gs_state;
 #endif
 #ifndef gx_path_DEFINED
-#  define gx_path_DEFINED
+# define gx_path_DEFINED
 typedef struct gx_path_s gx_path;
 #endif
 #ifndef gx_clip_path_DEFINED
-#  define gx_clip_path_DEFINED
+# define gx_clip_path_DEFINED
 typedef struct gx_clip_path_s gx_clip_path;
 #endif
 #ifndef gx_fill_params_DEFINED
-#  define gx_fill_params_DEFINED
+# define gx_fill_params_DEFINED
 typedef struct gx_fill_params_s gx_fill_params;
 #endif
 #ifndef gx_stroke_params_DEFINED
-#  define gx_stroke_params_DEFINED
+# define gx_stroke_params_DEFINED
 typedef struct gx_stroke_params_s gx_stroke_params;
 #endif
 #ifndef gs_imager_state_DEFINED
-#  define gs_imager_state_DEFINED
+# define gs_imager_state_DEFINED
 typedef struct gs_imager_state_s gs_imager_state;
 #endif
 #ifndef gx_image_enum_common_t_DEFINED
-#  define gx_image_enum_common_t_DEFINED
+# define gx_image_enum_common_t_DEFINED
 typedef struct gx_image_enum_common_s gx_image_enum_common_t;
 #endif
 #ifndef gs_pattern1_instance_t_DEFINED
-#  define gs_pattern1_instance_t_DEFINED
+# define gs_pattern1_instance_t_DEFINED
 typedef struct gs_pattern1_instance_s gs_pattern1_instance_t;
 #endif
 typedef gx_device_color gx_drawing_color;
@@ -63,7 +63,7 @@ gs_fixed_point start;
 gs_fixed_point end;
 } gs_fixed_edge;
 #ifndef gs_get_bits_params_DEFINED
-#  define gs_get_bits_params_DEFINED
+# define gs_get_bits_params_DEFINED
 typedef struct gs_get_bits_params_s gs_get_bits_params_t;
 #endif
 typedef struct gx_device_anti_alias_info_s {
@@ -106,15 +106,15 @@ uint dither_grays;
 uint dither_colors;
 gx_device_anti_alias_info anti_alias;
 gx_color_enc_sep_lin_t separable_and_linear;
-byte                   comp_shift[GX_DEVICE_COLOR_MAX_COMPONENTS];
-byte                   comp_bits[GX_DEVICE_COLOR_MAX_COMPONENTS];
-gx_color_index         comp_mask[GX_DEVICE_COLOR_MAX_COMPONENTS];
+byte comp_shift[GX_DEVICE_COLOR_MAX_COMPONENTS];
+byte comp_bits[GX_DEVICE_COLOR_MAX_COMPONENTS];
+gx_color_index comp_mask[GX_DEVICE_COLOR_MAX_COMPONENTS];
 const char * cm_name;
 gx_cm_opmode_t opmode;
 gx_color_index process_comps;
 } gx_device_color_info;
 #define dci_extended_alpha_values(mcmp, nc, p, d, gi, mg, \
-mc, dg, dc, ta, ga, sl, cn)   \
+mc, dg, dc, ta, ga, sl, cn) \
 {mcmp , \
 nc , \
 p , \
@@ -131,59 +131,59 @@ sl , \
 { 0 } , \
 cn ,\
 GX_CINFO_OPMODE_UNKNOWN ,\
-0  }
-#define gx_device_has_color(dev)                           \
-( (dev)->color_info.num_components > 1 ||                \
+0 }
+#define gx_device_has_color(dev) \
+( (dev)->color_info.num_components > 1 || \
 (dev)->color_info.gray_index == GX_CINFO_COMP_NO_INDEX )
-#define dci_std_cm_name(nc)                 \
-( (nc) == 1 ? "DeviceGray"              \
-: ((nc) == 3 ? "DeviceRGB"  \
+#define dci_std_cm_name(nc) \
+( (nc) == 1 ? "DeviceGray" \
+: ((nc) == 3 ? "DeviceRGB" \
 : "DeviceCMYK") )
-#define dci_std_polarity(nc)                    \
+#define dci_std_polarity(nc) \
 ( (nc) == 4 ? GX_CINFO_POLARITY_SUBTRACTIVE \
 : GX_CINFO_POLARITY_ADDITIVE )
-#define dci_std_gray_index(nc)    \
+#define dci_std_gray_index(nc) \
 ((nc) == 3 ? GX_CINFO_COMP_NO_INDEX : (nc) - 1)
 #define dci_alpha_values(nc, depth, mg, mc, dg, dc, ta, ga) \
-dci_extended_alpha_values(nc, nc,			    \
-dci_std_polarity(nc),         \
-depth,                        \
-dci_std_gray_index(nc),       \
-mg, mc, dg, dc, ta, ga,       \
-GX_CINFO_UNKNOWN_SEP_LIN,     \
+dci_extended_alpha_values(nc, nc, \
+dci_std_polarity(nc), \
+depth, \
+dci_std_gray_index(nc), \
+mg, mc, dg, dc, ta, ga, \
+GX_CINFO_UNKNOWN_SEP_LIN, \
 dci_std_cm_name(nc) )
-#define dci_std_color_depth(color_bits)   \
+#define dci_std_color_depth(color_bits) \
 ((color_bits) == 1 ? 1 : ((color_bits) + 7) & ~7)
-#define dci_std_color_num_components(color_bits)      \
-( (color_bits) <= 1 ? 1                           \
-: ((color_bits) % 3 == 0 ||     \
-(color_bits) == 4     ||     \
-(color_bits) == 8       ) ? 3 : 4 )
-#define dci_std_gray_bits(nc, color_bits)    \
+#define dci_std_color_num_components(color_bits) \
+( (color_bits) <= 1 ? 1 \
+: ((color_bits) % 3 == 0 || \
+(color_bits) == 4 || \
+(color_bits) == 8 ) ? 3 : 4 )
+#define dci_std_gray_bits(nc, color_bits) \
 ((color_bits) - ((nc) - 1) * ((color_bits) / (nc)))
-#define dci_std_color_bits(nc, color_bits)                        \
-( (nc) == 3                                                   \
-? (color_bits) / (nc)                                     \
-: ( (nc) == 1                                             \
-? 0                                                 \
+#define dci_std_color_bits(nc, color_bits) \
+( (nc) == 3 \
+? (color_bits) / (nc) \
+: ( (nc) == 1 \
+? 0 \
 : ((color_bits) - dci_std_gray_bits(nc, color_bits))\
 / ((nc) == 1 ? (1) : (nc) - 1) ) )
-#define dci_std_color_max_gray(nc, color_bits)            \
-( (nc) == 3                                           \
-? 0                                               \
+#define dci_std_color_max_gray(nc, color_bits) \
+( (nc) == 3 \
+? 0 \
 : (1 << dci_std_gray_bits(nc, color_bits)) - 1 )
-#define dci_std_color_max_color(nc, color_bits)               \
-( (nc) == 1                                               \
-? 0                                                   \
+#define dci_std_color_max_color(nc, color_bits) \
+( (nc) == 1 \
+? 0 \
 : (1 << dci_std_color_bits(nc, color_bits)) - 1 )
-#define dci_std_color_(nc, color_bits)                        \
-dci_values( nc,                                           \
-dci_std_color_depth(color_bits),              \
-dci_std_color_max_gray(nc, color_bits),       \
-dci_std_color_max_color(nc, color_bits),      \
-dci_std_color_max_gray(nc, color_bits) + 1,   \
+#define dci_std_color_(nc, color_bits) \
+dci_values( nc, \
+dci_std_color_depth(color_bits), \
+dci_std_color_max_gray(nc, color_bits), \
+dci_std_color_max_color(nc, color_bits), \
+dci_std_color_max_gray(nc, color_bits) + 1, \
 dci_std_color_max_color(nc, color_bits) + 1 )
-#define dci_std_color(color_bits)                             \
+#define dci_std_color(color_bits) \
 dci_std_color_( dci_std_color_num_components(color_bits), \
 color_bits )
 #define dci_values(nc,depth,mg,mc,dg,dc)\
@@ -213,48 +213,48 @@ typedef struct gx_device_cached_colors_s {
 gx_color_index black, white;
 } gx_device_cached_colors_t;
 #define gx_device_common\
-int params_size;		\
+int params_size; \
 \
-const gx_device_procs *static_procs;	\
+const gx_device_procs *static_procs; \
 \
-const char *dname;		\
-gs_memory_t *memory;		\
-gs_memory_type_ptr_t stype;	\
+const char *dname; \
+gs_memory_t *memory; \
+gs_memory_type_ptr_t stype; \
 \
-bool stype_is_dynamic;		\
+bool stype_is_dynamic; \
 \
-void (*finalize)(gx_device *);  \
+void (*finalize)(gx_device *); \
 \
-rc_header rc;			\
+rc_header rc; \
 \
-bool retained;			\
-bool is_open;			\
-int max_fill_band;		\
+bool retained; \
+bool is_open; \
+int max_fill_band; \
 \
 \
-gx_device_color_info color_info;	\
+gx_device_color_info color_info; \
 gx_device_cached_colors_t cached_colors;\
-int width;			\
-int height;			\
-int TrayOrientation;            \
-float MediaSize[2];		\
-float ImagingBBox[4];		\
+int width; \
+int height; \
+int TrayOrientation; \
+float MediaSize[2]; \
+float ImagingBBox[4]; \
 bool ImagingBBox_set;\
-float HWResolution[2];		\
-float MarginsHWResolution[2];	\
-float Margins[2];		\
+float HWResolution[2]; \
+float MarginsHWResolution[2]; \
+float Margins[2]; \
 \
 \
-float HWMargins[4];		\
+float HWMargins[4]; \
 \
-long PageCount;			\
-long ShowpageCount;		\
+long PageCount; \
+long ShowpageCount; \
 int NumCopies;\
 bool NumCopies_set;\
-bool IgnoreNumCopies;		\
-bool UseCIEColor;		\
-bool LockSafetyParams;		\
-gx_page_device_procs page_procs;	\
+bool IgnoreNumCopies; \
+bool UseCIEColor; \
+bool LockSafetyParams; \
+gx_page_device_procs page_procs; \
 \
 gx_device_procs procs
 #define x_pixels_per_inch HWResolution[0]
@@ -283,7 +283,7 @@ if ( dev_proc(dev, p) == 0 ) set_dev_proc(dev, p, dproc)
 #define assign_dev_procs(todev, fromdev)\
 ((todev)->procs = (fromdev)->procs)
 #ifndef gs_param_list_DEFINED
-#  define gs_param_list_DEFINED
+# define gs_param_list_DEFINED
 typedef struct gs_param_list_s gs_param_list;
 #endif
 #define dev_t_proc_open_device(proc, dev_t)\
@@ -613,7 +613,7 @@ int proc(dev_t *dev, const gs_state * pgs)
 #define dev_proc_update_spot_equivalent_colors(proc)\
 dev_t_proc_update_spot_equivalent_colors(proc, gx_device)
 #define gx_device_proc_struct(dev_t)\
-{	dev_t_proc_open_device((*open_device), dev_t);\
+{ dev_t_proc_open_device((*open_device), dev_t);\
 dev_t_proc_get_initial_matrix((*get_initial_matrix), dev_t);\
 dev_t_proc_sync_output((*sync_output), dev_t);\
 dev_t_proc_output_page((*output_page), dev_t);\
@@ -712,7 +712,7 @@ gx_device_common;
 };
 extern_st(st_device);
 struct_proc_finalize(gx_device_finalize);
-#define public_st_device()	\
+#define public_st_device() \
 gs_public_st_complex_only(st_device, gx_device, "gx_device",\
 0, gs_no_struct_enum_ptrs, gs_no_struct_reloc_ptrs, gx_device_finalize)
 #define st_device_max_ptrs 0
@@ -727,13 +727,13 @@ typedef struct gx_device_forward_s {
 gx_device_forward_common;
 } gx_device_forward;
 extern_st(st_device_forward);
-#define public_st_device_forward()	\
+#define public_st_device_forward() \
 gs_public_st_complex_only(st_device_forward, gx_device_forward,\
 "gx_device_forward", 0, device_forward_enum_ptrs,\
 device_forward_reloc_ptrs, gx_device_finalize)
 #define st_device_forward_max_ptrs (st_device_max_ptrs + 1)
 #ifndef gx_device_null_DEFINED
-#  define gx_device_null_DEFINED
+# define gx_device_null_DEFINED
 typedef struct gx_device_null_s gx_device_null;
 #endif
 struct gx_device_null_s {
@@ -743,7 +743,7 @@ extern const gx_device_null gs_null_device;
 #define gx_device_is_null(dev)\
 ((dev)->dname == gs_null_device.dname)
 extern_st(st_device_null);
-#define public_st_device_null()	\
+#define public_st_device_null() \
 gs_public_st_complex_only(st_device_null, gx_device_null,\
 "gx_device_null", 0, device_forward_enum_ptrs,\
 device_forward_reloc_ptrs, gx_device_finalize)
@@ -757,7 +757,7 @@ void gx_device_set_target(gx_device_forward *fdev, gx_device *target);
 void gx_device_retain(gx_device *dev, bool retained);
 uint gx_device_raster(const gx_device * dev, bool pad_to_word);
 int gx_device_adjust_resolution(gx_device * dev, int actual_width, int actual_height, int fit);
-void gx_device_set_margins(gx_device * dev, const float *margins  ,
+void gx_device_set_margins(gx_device * dev, const float *margins ,
 bool move_origin);
 void gx_device_set_width_height(gx_device * dev, int width, int height);
 void gx_device_set_resolution(gx_device * dev, floatp x_dpi, floatp y_dpi);

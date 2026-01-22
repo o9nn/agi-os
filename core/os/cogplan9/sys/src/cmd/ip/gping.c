@@ -7,71 +7,71 @@
 #include <event.h>
 #include <ip.h>
 #include "icmp.h"
-#define	MAXNUM	8
-typedef struct Graph	Graph;
-typedef struct Machine	Machine;
-typedef struct Req	Req;
+#define MAXNUM 8
+typedef struct Graph Graph;
+typedef struct Machine Machine;
+typedef struct Req Req;
 enum {
-Gmsglen	= 16,
+Gmsglen = 16,
 };
 struct Graph
 {
-int		colindex;
-Rectangle	r;
-long		*data;
-int		ndata;
-char		*label;
-void		(*newvalue)(Machine*, long*, long*, long*);
-void		(*update)(Graph*, long, long, long);
-Machine		*mach;
-int		overflow;
-Image		*overtmp;
-int		overtmplen;
-char		msg[Gmsglen];
-int		cursor;
-int		vmax;
+int colindex;
+Rectangle r;
+long *data;
+int ndata;
+char *label;
+void (*newvalue)(Machine*, long*, long*, long*);
+void (*update)(Graph*, long, long, long);
+Machine *mach;
+int overflow;
+Image *overtmp;
+int overtmplen;
+char msg[Gmsglen];
+int cursor;
+int vmax;
 };
 enum
 {
-MSGLEN		= 64,
-Rttmax		= 50,
+MSGLEN = 64,
+Rttmax = 50,
 };
 struct Req
 {
-int	seq;
-vlong	time;
-Req	*next;
+int seq;
+vlong time;
+Req *next;
 };
 struct Machine
 {
 Lock;
-char	*name;
-int	pingfd;
-int	nproc;
-int	rttmsgs;
-ulong	rttsum;
-ulong	lastrtt;
-int	lostmsgs;
-int	rcvdmsgs;
-ulong	lostavg;
-int	unreachable;
-ushort	seq;
-Req	*first;
-Req	*last;
-Req	*rcvd;
-char	buf[1024];
-char	*bufp;
-char	*ebufp;
+char *name;
+int pingfd;
+int nproc;
+int rttmsgs;
+ulong rttsum;
+ulong lastrtt;
+int lostmsgs;
+int rcvdmsgs;
+ulong lostavg;
+int unreachable;
+ushort seq;
+Req *first;
+Req *last;
+Req *rcvd;
+char buf[1024];
+char *bufp;
+char *ebufp;
 };
 enum
 {
-Ncolor		= 6,
-Ysqueeze	= 2,
-Labspace	= 2,
-Dot		= 2,
-Opwid		= 5,
-NPROC		= 128,
-NMACH		= 32,
+Ncolor = 6,
+Ysqueeze = 2,
+Labspace = 2,
+Dot = 2,
+Opwid = 5,
+NPROC = 128,
+NMACH = 32,
 };
 enum Menu2
 {
@@ -79,37 +79,37 @@ Mrtt,
 Mlost,
 Nmenu2,
 };
-char	*menu2str[Nmenu2+1] = {
+char *menu2str[Nmenu2+1] = {
 "add  sec rtt",
 "add  % lost ",
 nil,
 };
-void	rttval(Machine*, long*, long*, long*);
-void	lostval(Machine*, long*, long*, long*);
-Menu	menu2 = {menu2str, nil};
-int		present[Nmenu2];
-void		(*newvaluefn[Nmenu2])(Machine*, long*, long*, long*) = {
+void rttval(Machine*, long*, long*, long*);
+void lostval(Machine*, long*, long*, long*);
+Menu menu2 = {menu2str, nil};
+int present[Nmenu2];
+void (*newvaluefn[Nmenu2])(Machine*, long*, long*, long*) = {
 rttval,
 lostval,
 };
-Image		*cols[Ncolor][3];
-Graph		*graph;
-Machine		mach[NMACH];
-Font		*mediumfont;
-int		pids[NPROC];
-int		npid;
-int 		parity;
-int		nmach;
-int		ngraph;
-long		starttime;
-int		pinginterval;
-void	dropgraph(int);
-void	addgraph(int);
-void	startproc(void (*)(void*), void*);
-void	resize(void);
-long	rttscale(long);
-int	which2index(int);
-int	index2which(int);
+Image *cols[Ncolor][3];
+Graph *graph;
+Machine mach[NMACH];
+Font *mediumfont;
+int pids[NPROC];
+int npid;
+int parity;
+int nmach;
+int ngraph;
+long starttime;
+int pinginterval;
+void dropgraph(int);
+void addgraph(int);
+void startproc(void (*)(void*), void*);
+void resize(void);
+long rttscale(long);
+int which2index(int);
+int index2which(int);
 void
 killall(char *s)
 {

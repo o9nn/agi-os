@@ -48,7 +48,7 @@ return 1;
 }
 models.emplace_back(model);
 }
-for  (int m = 0; m < num_models; ++m) {
+for (int m = 0; m < num_models; ++m) {
 auto * model = models[m].get();
 for (int c = 0; c < num_contexts; ++c) {
 threads.emplace_back([&, m, c, model]() {

@@ -19,53 +19,53 @@ const char *argp_program_version = STANDARD_HURD_VERSION (ps);
 static const struct argp_option options[] =
 {
 {0,0,0,0, "Output format selection:", 1},
-{"format",     'F',     "FMT",  0,  "Use the output-format FMT; FMT may be"
+{"format", 'F', "FMT", 0, "Use the output-format FMT; FMT may be"
 " `default', `user', `vmem', `long',"
 " `jobc', `full', `hurd', `hurd-long',"
 " or a custom format-string"},
-{"posix-format",'o',    "FMT",  0,  "Use the posix-style output-format FMT"},
-{0,            'f',     0,      0,  "Use the `full' output-format"},
-{0,            'j',     0,      0,  "Use the `jobc' output-format"},
-{0,            'l',     0,      0,  "Use the `long' output-format"},
-{0,            'u',     0,      0,  "Use the `user' output-format"},
-{0,            'v',     0,      0,  "Use the `vmem' output-format"},
+{"posix-format",'o', "FMT", 0, "Use the posix-style output-format FMT"},
+{0, 'f', 0, 0, "Use the `full' output-format"},
+{0, 'j', 0, 0, "Use the `jobc' output-format"},
+{0, 'l', 0, 0, "Use the `long' output-format"},
+{0, 'u', 0, 0, "Use the `user' output-format"},
+{0, 'v', 0, 0, "Use the `vmem' output-format"},
 {0,0,0,0, "Process filtering (by default, other users'"
 " processes, threads, and process-group leaders are not shown):", 2},
-{"all-users",  'a',     0,      0,  "List other users' processes"},
-{0,            'd',     0,      0,  "List all processes except process group"
+{"all-users", 'a', 0, 0, "List other users' processes"},
+{0, 'd', 0, 0, "List all processes except process group"
 " leaders"},
-{"all",        'e',     0,      0,  "List all processes"},
-{0,		 'A',     0,      OPTION_ALIAS},
-{0,            'g',     0,      0,  "Include session and login leaders"},
-{"owner",      'U',     "USER", 0,  "Show only processes owned by USER"},
-{"not-owner",  'O',     "USER", 0,  "Show only processes not owned by USER"},
-{"no-parent",  'P',     0,      0,  "Include processes without parents"},
-{"threads",    'T',     0,      0,  "Show the threads for each process"},
-{"tty",        't',     "TTY",  OA, "Only show processes with controlling"
+{"all", 'e', 0, 0, "List all processes"},
+{0, 'A', 0, OPTION_ALIAS},
+{0, 'g', 0, 0, "Include session and login leaders"},
+{"owner", 'U', "USER", 0, "Show only processes owned by USER"},
+{"not-owner", 'O', "USER", 0, "Show only processes not owned by USER"},
+{"no-parent", 'P', 0, 0, "Include processes without parents"},
+{"threads", 'T', 0, 0, "Show the threads for each process"},
+{"tty", 't', "TTY", OA, "Only show processes with controlling"
 " terminal TTY"},
-{0,            'x',     0,      0,  "Include orphaned processes"},
+{0, 'x', 0, 0, "Include orphaned processes"},
 {0,0,0,0, "Elision of output fields:", 4},
-{"no-msg-port",'M',     0,      0,  "Don't show info that uses a process's"
+{"no-msg-port",'M', 0, 0, "Don't show info that uses a process's"
 " msg port"},
-{"nominal-fields",'n',  0,      0,  "Don't elide fields containing"
+{"nominal-fields",'n', 0, 0, "Don't elide fields containing"
 " `uninteresting' data"},
-{"all-fields", 'Q',     0,      0,  "Don't elide unusable fields (normally"
+{"all-fields", 'Q', 0, 0, "Don't elide unusable fields (normally"
 " if there's some reason ps can't print"
 " a field for any process, it's removed"
 " from the output entirely)"},
 {0,0,0,0, "Output attributes:"},
-{"no-header",  'H',     0,      0,  "Don't print a descriptive header line"},
-{"reverse",    'r',     0,      0,  "Reverse the order of any sort"},
-{"sort",       's',	  "FIELD",0, "Sort the output with respect to FIELD,"
+{"no-header", 'H', 0, 0, "Don't print a descriptive header line"},
+{"reverse", 'r', 0, 0, "Reverse the order of any sort"},
+{"sort", 's', "FIELD",0, "Sort the output with respect to FIELD,"
 " backwards if FIELD is prefixed by `-'"},
-{"top",	 'h',     "ENTRIES", OA, "Show the top ENTRIES processes"
+{"top", 'h', "ENTRIES", OA, "Show the top ENTRIES processes"
 " (default 10), or if ENTRIES is"
 " negative, the bottom -ENTRIES"},
-{"head",	 0,       0,      OPTION_ALIAS},
-{"bottom",     'b',     "ENTRIES", OA, "Show the bottom ENTRIES processes"
+{"head", 0, 0, OPTION_ALIAS},
+{"bottom", 'b', "ENTRIES", OA, "Show the bottom ENTRIES processes"
 " (default 10)"},
-{"tail",	 0,       0,      OPTION_ALIAS},
-{"width",      'w',     "WIDTH",OA, "If WIDTH is given, try to format the"
+{"tail", 0, 0, OPTION_ALIAS},
+{"width", 'w', "WIDTH",OA, "If WIDTH is given, try to format the"
 " output for WIDTH columns, otherwise,"
 " remove the default limit"},
 {0, 0}
@@ -74,11 +74,11 @@ static const char doc[] =
 "Show information about processes PID... (default all `interesting' processes)"
 "\vThe USER, LID, PID, PGRP, and SID arguments may also be comma separated"
 " lists.  The System V options -u and -g may be accessed with -O and -G.";
-#define FILTER_OWNER		0x01
-#define FILTER_NOT_LEADER	0x02
-#define FILTER_CTTY    		0x04
-#define FILTER_UNORPHANED	0x08
-#define FILTER_PARENTED		0x10
+#define FILTER_OWNER 0x01
+#define FILTER_NOT_LEADER 0x02
+#define FILTER_CTTY 0x04
+#define FILTER_UNORPHANED 0x08
+#define FILTER_PARENTED 0x10
 struct output_fmt
 {
 const char *name;

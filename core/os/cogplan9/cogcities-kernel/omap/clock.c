@@ -5,56 +5,56 @@
 #include "fns.h"
 #include "arm.h"
 enum {
-Debug		= 0,
-Tn0		= PHYSTIMER1,
-Tn1		= PHYSTIMER2,
-Tn0irq		= 37,
-Freebase	= 1,
-Clockfreqbase	= 32 * 1024,
-Tcycles		= Clockfreqbase / HZ,
-MinPeriod	= (Tcycles / 100 < 2? 2: Tcycles / 100),
-MaxPeriod	= Tcycles,
-Dogtimeout	= 20 * Clockfreqbase,
+Debug = 0,
+Tn0 = PHYSTIMER1,
+Tn1 = PHYSTIMER2,
+Tn0irq = 37,
+Freebase = 1,
+Clockfreqbase = 32 * 1024,
+Tcycles = Clockfreqbase / HZ,
+MinPeriod = (Tcycles / 100 < 2? 2: Tcycles / 100),
+MaxPeriod = Tcycles,
+Dogtimeout = 20 * Clockfreqbase,
 };
 enum {
-Noidle		= 1<<3,
-Softreset	= 1<<1,
-Resetdone	= 1<<0,
-Ovf_it		= 1<<1,
-Mat_it		= 1<<0,
-Wdovf_it	= 1<<0,
-Ar		= 1<<1,
-St		= 1<<0,
+Noidle = 1<<3,
+Softreset = 1<<1,
+Resetdone = 1<<0,
+Ovf_it = 1<<1,
+Mat_it = 1<<0,
+Wdovf_it = 1<<0,
+Ar = 1<<1,
+St = 1<<0,
 };
 typedef struct Timerregs Timerregs;
 struct Timerregs {
-uchar	pad0[0x10];
-ulong	ticpcfg;
-ulong	tistat;
-ulong	tisr;
-ulong	tier;
-ulong	twer;
-ulong	tclr;
-ulong	tcrr;
-ulong	tldr;
-ulong	ttgr;
-ulong	twps;
-ulong	tmar;
-ulong	tcar1;
-ulong	tsicr;
-ulong	tcar2;
+uchar pad0[0x10];
+ulong ticpcfg;
+ulong tistat;
+ulong tisr;
+ulong tier;
+ulong twer;
+ulong tclr;
+ulong tcrr;
+ulong tldr;
+ulong ttgr;
+ulong twps;
+ulong tmar;
+ulong tcar1;
+ulong tsicr;
+ulong tcar2;
 union {
-ulong	tpir;
-ulong	wspr;
+ulong tpir;
+ulong wspr;
 };
-ulong	tnir;
-ulong	tcvr;
-ulong	tocr;
-ulong	towr;
+ulong tnir;
+ulong tcvr;
+ulong tocr;
+ulong towr;
 };
 static int ticks;
 static Lock clklck;
-static ulong	rdcycles(void), rdbaseticks(void);
+static ulong rdcycles(void), rdbaseticks(void);
 static void
 wdogwrss(Timerregs *tn, ulong val)
 {
@@ -149,7 +149,7 @@ clockreset((Timerregs *)Tn0);
 clockreset((Timerregs *)Tn1);
 }
 enum {
-Instrs		= 10*Mhz,
+Instrs = 10*Mhz,
 };
 static long
 issue1loop(void)
@@ -302,14 +302,14 @@ return perfticks();
 }
 typedef union Counter Counter;
 union Counter {
-uvlong	uvl;
+uvlong uvl;
 struct {
-ulong	low;
-ulong	high;
+ulong low;
+ulong high;
 };
 };
 enum {
-Fastvlongops	= 0,
+Fastvlongops = 0,
 };
 uvlong
 fastticks(uvlong *hz)

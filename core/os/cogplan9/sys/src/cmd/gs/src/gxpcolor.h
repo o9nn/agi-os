@@ -1,12 +1,12 @@
 #ifndef gxpcolor_INCLUDED
-#  define gxpcolor_INCLUDED
+# define gxpcolor_INCLUDED
 #include "gspcolor.h"
 #include "gxcspace.h"
 #include "gxdevice.h"
 #include "gxdevmem.h"
 #include "gxpcache.h"
 #ifndef gs_pattern_type_DEFINED
-#  define gs_pattern_type_DEFINED
+# define gs_pattern_type_DEFINED
 typedef struct gs_pattern_type_s gs_pattern_type_t;
 #endif
 struct gs_pattern_type_s {
@@ -58,10 +58,10 @@ bool is_simple;
 bool is_dummy;
 uint index;
 };
-#define private_st_color_tile()	\
+#define private_st_color_tile() \
 gs_private_st_ptrs2(st_color_tile, gx_color_tile, "gx_color_tile",\
 color_tile_enum_ptrs, color_tile_reloc_ptrs, tbits.data, tmask.data)
-#define private_st_color_tile_element()	\
+#define private_st_color_tile_element() \
 gs_private_st_element(st_color_tile_element, gx_color_tile,\
 "gx_color_tile[]", color_tile_elt_enum_ptrs, color_tile_elt_reloc_ptrs,\
 st_color_tile)

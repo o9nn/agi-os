@@ -25,10 +25,10 @@ gx_ht_wts
 private int
 gx_ht_write_tf(
 const gx_transfer_map * pmap,
-byte *                  data,
-uint *                  psize )
+byte * data,
+uint * psize )
 {
-int                     req_size = 1;
+int req_size = 1;
 if ( pmap != 0 && pmap->proc != gs_identity_transfer)
 req_size += sizeof(pmap->values);
 if (req_size > *psize) {
@@ -46,13 +46,13 @@ return 0;
 }
 private int
 gx_ht_read_tf(
-gx_transfer_map **  ppmap,
-const byte *        data,
-uint                size,
-gs_memory_t *       mem )
+gx_transfer_map ** ppmap,
+const byte * data,
+uint size,
+gs_memory_t * mem )
 {
-gx_ht_tf_type_t     tf_type;
-gx_transfer_map *   pmap;
+gx_ht_tf_type_t tf_type;
+gx_transfer_map * pmap;
 if (size == 0)
 return_error(gs_error_rangecheck);
 --size;
@@ -85,20 +85,20 @@ return_error(gs_error_rangecheck);
 }
 private int
 gx_ht_write_component(
-const gx_ht_order_component *   pcomp,
-byte *                          data,
-uint *                          psize )
+const gx_ht_order_component * pcomp,
+byte * data,
+uint * psize )
 {
-const gx_ht_order *             porder = &pcomp->corder;
-byte *                          data0 = data;
-int                             code, levels_size, bits_size;
-uint			    tmp_size = 0;
-int                             req_size;
+const gx_ht_order * porder = &pcomp->corder;
+byte * data0 = data;
+int code, levels_size, bits_size;
+uint tmp_size = 0;
+int req_size;
 if (porder->wts != 0)
 return_error(gs_error_unknownerror);
 levels_size = porder->num_levels * sizeof(porder->levels[0]);
 bits_size = porder->num_bits * porder->procs->bit_data_elt_size;
-req_size =   1
+req_size = 1
 + enc_u_sizew(porder->width)
 + enc_u_sizew(porder->height)
 + enc_u_sizew(porder->shift)
@@ -134,16 +134,16 @@ return code;
 private int
 gx_ht_read_component(
 gx_ht_order_component * pcomp,
-const byte *            data,
-uint                    size,
-gs_memory_t *           mem )
+const byte * data,
+uint size,
+gs_memory_t * mem )
 {
-gx_ht_order             new_order;
-const byte *            data0 = data;
-const byte *            data_lim = data + size;
-gx_ht_order_type_t      order_type;
-int                     i, code, levels_size, bits_size;
-const gx_dht_proc *     phtrp = gx_device_halftone_list;
+gx_ht_order new_order;
+const byte * data0 = data;
+const byte * data_lim = data + size;
+gx_ht_order_type_t order_type;
+int i, code, levels_size, bits_size;
+const gx_dht_proc * phtrp = gx_device_halftone_list;
 if (size == 0)
 return_error(gs_error_rangecheck);
 --size;
@@ -187,13 +187,13 @@ return code;
 }
 data += code;
 for (i = 0; phtrp[i] != 0; i++) {
-const gx_device_halftone_resource_t *const *    pphtr = phtrp[i]();
-const gx_device_halftone_resource_t *           phtr;
+const gx_device_halftone_resource_t *const * pphtr = phtrp[i]();
+const gx_device_halftone_resource_t * phtr;
 while ((phtr = *pphtr++) != 0) {
 if ( phtr->num_levels * sizeof(phtr->levels[0]) >= levels_size &&
-phtr->Width * phtr->Height * phtr->elt_size >= bits_size  &&
-memcmp(phtr->levels, new_order.levels, levels_size) == 0  &&
-memcmp(phtr->bit_data, new_order.bit_data, bits_size) == 0  ) {
+phtr->Width * phtr->Height * phtr->elt_size >= bits_size &&
+memcmp(phtr->levels, new_order.levels, levels_size) == 0 &&
+memcmp(phtr->bit_data, new_order.bit_data, bits_size) == 0 ) {
 gs_free_object(mem, new_order.bit_data, "gx_ht_read_component");
 new_order.bit_data = (void *)phtr->bit_data;
 gs_free_object(mem, new_order.levels, "gx_ht_read_component");
@@ -209,19 +209,19 @@ return data - data0;
 }
 int
 gx_ht_write(
-const gx_device_halftone *  pdht,
-const gx_device *           dev,
-byte *                      data,
-uint *                      psize )
+const gx_device_halftone * pdht,
+const gx_device * dev,
+byte * data,
+uint * psize )
 {
-int                         num_dev_comps = pdht->num_dev_comp;
-int                         i, code;
-uint                        req_size = 2, used_size = 2;
+int num_dev_comps = pdht->num_dev_comp;
+int i, code;
+uint req_size = 2, used_size = 2;
 assert(pdht != 0 && pdht->components != 0);
 for ( i = 0, code = gs_error_rangecheck;
 i < num_dev_comps && code == gs_error_rangecheck;
 i++) {
-uint     tmp_size = 0;
+uint tmp_size = 0;
 assert(i == pdht->components[i].comp_number);
 code = gx_ht_write_component( &pdht->components[i],
 data,
@@ -238,7 +238,7 @@ req_size = *psize;
 *data++ = (byte)pdht->type;
 *data++ = (byte)num_dev_comps;
 for (i = 0, code = 0; i < num_dev_comps && code == 0; i++) {
-uint    tmp_size = req_size - used_size;
+uint tmp_size = req_size - used_size;
 code = gx_ht_write_component( &pdht->components[i],
 data,
 &tmp_size );
@@ -255,17 +255,17 @@ return 0;
 }
 int
 gx_ht_read_and_install(
-gs_imager_state *       pis,
-const gx_device *       dev,
-const byte *            data,
-uint                    size,
-gs_memory_t *           mem )
+gs_imager_state * pis,
+const gx_device * dev,
+const byte * data,
+uint size,
+gs_memory_t * mem )
 {
-gx_ht_order_component   components[GX_DEVICE_COLOR_MAX_COMPONENTS];
-const byte *            data0 = data;
-gx_device_halftone      dht;
-int                     num_dev_comps;
-int                     i, code;
+gx_ht_order_component components[GX_DEVICE_COLOR_MAX_COMPONENTS];
+const byte * data0 = data;
+gx_device_halftone dht;
+int num_dev_comps;
+int i, code;
 memset(&dht.order, 0, sizeof(dht.order));
 memset(&dht.rc, 0, sizeof(dht.rc));
 dht.id = gs_no_id;

@@ -5,88 +5,88 @@
 #include <bin.h>
 #include <httpd.h>
 #include "escape.h"
-typedef struct Hlex	Hlex;
-typedef struct MimeHead	MimeHead;
+typedef struct Hlex Hlex;
+typedef struct MimeHead MimeHead;
 enum
 {
-Word	= 1,
+Word = 1,
 QString,
 };
-#define UlongMax	4294967295UL
+#define UlongMax 4294967295UL
 struct Hlex
 {
-int	tok;
-int	eoh;
-int	eol;
-uchar	*hstart;
-jmp_buf	jmp;
-char	wordval[HMaxWord];
+int tok;
+int eoh;
+int eol;
+uchar *hstart;
+jmp_buf jmp;
+char wordval[HMaxWord];
 HConnect *c;
 };
 struct MimeHead
 {
-char	*name;
-void	(*parse)(Hlex*, char*);
-uchar	seen;
-uchar	ignore;
+char *name;
+void (*parse)(Hlex*, char*);
+uchar seen;
+uchar ignore;
 };
-static void	mimeaccept(Hlex*, char*);
-static void	mimeacceptchar(Hlex*, char*);
-static void	mimeacceptenc(Hlex*, char*);
-static void	mimeacceptlang(Hlex*, char*);
-static void	mimeagent(Hlex*, char*);
-static void	mimeauthorization(Hlex*, char*);
-static void	mimeconnection(Hlex*, char*);
-static void	mimecontlen(Hlex*, char*);
-static void	mimecookie(Hlex*, char*);
-static void	mimeexpect(Hlex*, char*);
-static void	mimefresh(Hlex*, char*);
-static void	mimefrom(Hlex*, char*);
-static void	mimehost(Hlex*, char*);
-static void	mimeifrange(Hlex*, char*);
-static void	mimeignore(Hlex*, char*);
-static void	mimematch(Hlex*, char*);
-static void	mimemodified(Hlex*, char*);
-static void	mimenomatch(Hlex*, char*);
-static void	mimerange(Hlex*, char*);
-static void	mimetransenc(Hlex*, char*);
-static void	mimeunmodified(Hlex*, char*);
-static MimeHead	mimehead[] =
+static void mimeaccept(Hlex*, char*);
+static void mimeacceptchar(Hlex*, char*);
+static void mimeacceptenc(Hlex*, char*);
+static void mimeacceptlang(Hlex*, char*);
+static void mimeagent(Hlex*, char*);
+static void mimeauthorization(Hlex*, char*);
+static void mimeconnection(Hlex*, char*);
+static void mimecontlen(Hlex*, char*);
+static void mimecookie(Hlex*, char*);
+static void mimeexpect(Hlex*, char*);
+static void mimefresh(Hlex*, char*);
+static void mimefrom(Hlex*, char*);
+static void mimehost(Hlex*, char*);
+static void mimeifrange(Hlex*, char*);
+static void mimeignore(Hlex*, char*);
+static void mimematch(Hlex*, char*);
+static void mimemodified(Hlex*, char*);
+static void mimenomatch(Hlex*, char*);
+static void mimerange(Hlex*, char*);
+static void mimetransenc(Hlex*, char*);
+static void mimeunmodified(Hlex*, char*);
+static MimeHead mimehead[] =
 {
-{"accept",		mimeaccept},
-{"accept-charset",	mimeacceptchar},
-{"accept-encoding",	mimeacceptenc},
-{"accept-language",	mimeacceptlang},
-{"authorization",	mimeauthorization},
-{"connection",		mimeconnection},
-{"content-length",	mimecontlen},
-{"cookie",		mimecookie},
-{"expect",		mimeexpect},
-{"fresh",		mimefresh},
-{"from",		mimefrom},
-{"host",		mimehost},
-{"if-match",		mimematch},
-{"if-modified-since",	mimemodified},
-{"if-none-match",	mimenomatch},
-{"if-range",		mimeifrange},
-{"if-unmodified-since",	mimeunmodified},
-{"range",		mimerange},
-{"transfer-encoding",	mimetransenc},
-{"user-agent",		mimeagent},
+{"accept", mimeaccept},
+{"accept-charset", mimeacceptchar},
+{"accept-encoding", mimeacceptenc},
+{"accept-language", mimeacceptlang},
+{"authorization", mimeauthorization},
+{"connection", mimeconnection},
+{"content-length", mimecontlen},
+{"cookie", mimecookie},
+{"expect", mimeexpect},
+{"fresh", mimefresh},
+{"from", mimefrom},
+{"host", mimehost},
+{"if-match", mimematch},
+{"if-modified-since", mimemodified},
+{"if-none-match", mimenomatch},
+{"if-range", mimeifrange},
+{"if-unmodified-since", mimeunmodified},
+{"range", mimerange},
+{"transfer-encoding", mimetransenc},
+{"user-agent", mimeagent},
 };
-char*		hmydomain;
-char*		hversion = "HTTP/1.1";
-static	void	lexhead(Hlex*);
-static	void	parsejump(Hlex*, char*);
-static	int	getc(Hlex*);
-static	void	ungetc(Hlex*);
-static	int	wordcr(Hlex*);
-static	int	wordnl(Hlex*);
-static	void	word(Hlex*, char*);
-static	int	lex1(Hlex*, int);
-static	int	lex(Hlex*);
-static	int	lexbase64(Hlex*);
-static	ulong	digtoul(char *s, char **e);
+char* hmydomain;
+char* hversion = "HTTP/1.1";
+static void lexhead(Hlex*);
+static void parsejump(Hlex*, char*);
+static int getc(Hlex*);
+static void ungetc(Hlex*);
+static int wordcr(Hlex*);
+static int wordnl(Hlex*);
+static void word(Hlex*, char*);
+static int lex1(Hlex*, int);
+static int lex(Hlex*);
+static int lexbase64(Hlex*);
+static ulong digtoul(char *s, char **e);
 void
 hreqcleanup(HConnect *c)
 {
@@ -261,7 +261,7 @@ return mimeok(h, name, multipart, head);
 }
 break;
 case ',':
-return  mimeok(h, name, multipart, head);
+return mimeok(h, name, multipart, head);
 default:
 return head;
 }

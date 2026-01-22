@@ -85,7 +85,7 @@ private unsigned int res_string2type(const char *type_string)
 {
 unsigned int type = type_string[0] << 24 |
 type_string[1] << 16 |
-type_string[2] <<  8 |
+type_string[2] << 8 |
 type_string[3];
 return (type);
 }

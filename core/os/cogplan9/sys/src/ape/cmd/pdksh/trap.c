@@ -22,7 +22,7 @@ Trap sigtraps[SIGNALS+1] = {
 { 18 , "TSTP", "Stopped" },
 { 19 , "TTIN", "Stopped (tty input)" },
 { 20 , "TTOU", "Stopped (tty output)" },
-{ SIGERR_,  "ERR",  "Error handler" },
+{ SIGERR_, "ERR", "Error handler" },
 };
 static struct sigaction Sigact_ign, Sigact_trap;
 void
@@ -30,9 +30,9 @@ inittraps()
 {
 #ifdef HAVE_SYS_SIGLIST
 # ifndef SYS_SIGLIST_DECLARED
-extern char	*sys_siglist[];
+extern char *sys_siglist[];
 # endif
-int	i;
+int i;
 for (i = 0; i < NSIG; i++)
 if (!sigtraps[i].name && sys_siglist[i] && sys_siglist[i][0])
 sigtraps[i].mess = sys_siglist[i];
@@ -174,10 +174,10 @@ void
 runtrap(p)
 Trap *p;
 {
-int	i = p->signal;
-char	*trapstr = p->trap;
-int	oexstat;
-int	UNINITIALIZED(old_changed);
+int i = p->signal;
+char *trapstr = p->trap;
+int oexstat;
+int UNINITIALIZED(old_changed);
 p->set = 0;
 if (trapstr == (char *) 0) {
 if (p->flags & TF_FATAL) {

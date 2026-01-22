@@ -3,8 +3,8 @@
 #include <bio.h>
 #include <thread.h>
 enum {
-Stacksize	= 8*1024,
-Bufsize		= 8*1024,
+Stacksize = 8*1024,
+Bufsize = 8*1024,
 };
 Channel *out;
 Channel *quit;
@@ -12,8 +12,8 @@ Channel *forkc;
 int nread = 0;
 typedef struct Str Str;
 struct Str {
-char	*buf;
-int	len;
+char *buf;
+int len;
 };
 void
 die(char *s)
@@ -183,8 +183,8 @@ if(argc != 2)
 usage();
 pid = atoi(argv[1]);
 }
-out   = chancreate(sizeof(char*), 0);
-quit  = chancreate(sizeof(char*), 0);
+out = chancreate(sizeof(char*), 0);
+quit = chancreate(sizeof(char*), 0);
 forkc = chancreate(sizeof(ulong *), 0);
 nread++;
 procrfork(writer, nil, Stacksize, 0);

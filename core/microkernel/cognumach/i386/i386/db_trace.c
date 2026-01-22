@@ -19,14 +19,14 @@
 #include <ddb/db_task_thread.h>
 #include "trap.h"
 struct db_variable db_regs[] = {
-{ "cs",	(long *)&ddb_regs.cs,  db_i386_reg_value },
+{ "cs", (long *)&ddb_regs.cs, db_i386_reg_value },
 #if !defined(__x86_64__) || defined(USER32)
-{ "ds",	(long *)&ddb_regs.ds,  db_i386_reg_value },
-{ "es",	(long *)&ddb_regs.es,  db_i386_reg_value },
-{ "fs",	(long *)&ddb_regs.fs,  db_i386_reg_value },
-{ "gs",	(long *)&ddb_regs.gs,  db_i386_reg_value },
+{ "ds", (long *)&ddb_regs.ds, db_i386_reg_value },
+{ "es", (long *)&ddb_regs.es, db_i386_reg_value },
+{ "fs", (long *)&ddb_regs.fs, db_i386_reg_value },
+{ "gs", (long *)&ddb_regs.gs, db_i386_reg_value },
 #endif
-{ "ss",	(long *)&ddb_regs.ss,  db_i386_reg_value },
+{ "ss", (long *)&ddb_regs.ss, db_i386_reg_value },
 { "eax",(long *)&ddb_regs.eax, db_i386_reg_value },
 { "ecx",(long *)&ddb_regs.ecx, db_i386_reg_value },
 { "edx",(long *)&ddb_regs.edx, db_i386_reg_value },
@@ -38,8 +38,8 @@ struct db_variable db_regs[] = {
 { "eip",(long *)&ddb_regs.eip, db_i386_reg_value },
 { "efl",(long *)&ddb_regs.efl, db_i386_reg_value },
 #ifdef __x86_64__
-{ "r8", (long *)&ddb_regs.r8,  db_i386_reg_value },
-{ "r9", (long *)&ddb_regs.r9,  db_i386_reg_value },
+{ "r8", (long *)&ddb_regs.r8, db_i386_reg_value },
+{ "r9", (long *)&ddb_regs.r9, db_i386_reg_value },
 { "r10",(long *)&ddb_regs.r10, db_i386_reg_value },
 { "r11",(long *)&ddb_regs.r11, db_i386_reg_value },
 { "r12",(long *)&ddb_regs.r12, db_i386_reg_value },
@@ -49,24 +49,24 @@ struct db_variable db_regs[] = {
 #endif
 };
 struct db_variable *db_eregs = db_regs + sizeof(db_regs)/sizeof(db_regs[0]);
-#define	INKERNEL(va)	(((vm_offset_t)(va)) >= VM_MIN_KERNEL_ADDRESS)
+#define INKERNEL(va) (((vm_offset_t)(va)) >= VM_MIN_KERNEL_ADDRESS)
 struct i386_frame {
-struct i386_frame	*f_frame;
-long			f_retaddr;
-long			f_arg0;
+struct i386_frame *f_frame;
+long f_retaddr;
+long f_arg0;
 };
-#define	TRAP		1
-#define	INTERRUPT	2
-#define SYSCALL		3
-db_addr_t	db_user_trap_symbol_value = 0;
-db_addr_t	db_kernel_trap_symbol_value = 0;
-db_addr_t	db_interrupt_symbol_value = 0;
-db_addr_t	db_return_to_iret_symbol_value = 0;
-db_addr_t	db_syscall_symbol_value = 0;
-boolean_t	db_trace_symbols_found = FALSE;
+#define TRAP 1
+#define INTERRUPT 2
+#define SYSCALL 3
+db_addr_t db_user_trap_symbol_value = 0;
+db_addr_t db_kernel_trap_symbol_value = 0;
+db_addr_t db_interrupt_symbol_value = 0;
+db_addr_t db_return_to_iret_symbol_value = 0;
+db_addr_t db_syscall_symbol_value = 0;
+boolean_t db_trace_symbols_found = FALSE;
 struct i386_kregs {
-char	*name;
-long	offset;
+char *name;
+long offset;
 } i386_kregs[] = {
 { "ebx", (long)(&((struct i386_kernel_state *)0)->k_ebx) },
 { "esp", (long)(&((struct i386_kernel_state *)0)->k_esp) },
@@ -98,14 +98,14 @@ return 0;
 }
 void
 db_i386_reg_value(
-struct	db_variable	*vp,
-db_expr_t		*valuep,
-int			flag,
-db_var_aux_param_t	ap)
+struct db_variable *vp,
+db_expr_t *valuep,
+int flag,
+db_var_aux_param_t ap)
 {
-long			*dp = 0;
-db_expr_t		null_reg = 0;
-thread_t		thread = ap->thread;
+long *dp = 0;
+db_expr_t null_reg = 0;
+thread_t thread = ap->thread;
 if (db_option(ap->modif, 'u')) {
 if (thread == THREAD_NULL) {
 if ((thread = current_thread()) == THREAD_NULL)
@@ -149,7 +149,7 @@ else
 static void
 db_find_trace_symbols(void)
 {
-db_expr_t	value;
+db_expr_t value;
 #ifdef __ELF__
 #define P
 #else
@@ -177,10 +177,10 @@ db_numargs(
 struct i386_frame *fp,
 task_t task)
 {
-long	*argp;
-long	inst;
-long	args;
-extern char	etext[];
+long *argp;
+long inst;
+long args;
+extern char etext[];
 argp = (long *)db_get_task_value((long)&fp->f_retaddr, sizeof(long), FALSE, task);
 if (argp < (long *)VM_MIN_KERNEL_ADDRESS || argp > (long *)etext)
 args = db_numargs_default;
@@ -200,25 +200,25 @@ return args;
 #endif
 struct interrupt_frame {
 struct i386_frame *if_frame;
-long		  if_retaddr;
-long		  if_unit;
-spl_t		  if_spl;
-long		  if_iretaddr;
-long		  if_edx;
-long		  if_ecx;
-long		  if_eax;
-long		  if_eip;
-long		  if_cs;
-long		  if_efl;
+long if_retaddr;
+long if_unit;
+spl_t if_spl;
+long if_iretaddr;
+long if_edx;
+long if_ecx;
+long if_eax;
+long if_eip;
+long if_cs;
+long if_efl;
 };
 static void
 db_nextframe(
 struct i386_frame **lfp,
 struct i386_frame **fp,
-db_addr_t	  *sp,
-db_addr_t	  *ip,
-long 		  frame_type,
-const thread_t	  thread)
+db_addr_t *sp,
+db_addr_t *ip,
+long frame_type,
+const thread_t thread)
 {
 struct i386_saved_state *saved_regs;
 struct interrupt_frame *ifp;
@@ -276,20 +276,20 @@ db_get_task_value((long)&(*fp)->f_frame, sizeof(long), FALSE, task);
 break;
 }
 }
-#define	F_USER_TRACE	1
-#define F_TRACE_THREAD	2
+#define F_USER_TRACE 1
+#define F_TRACE_THREAD 2
 void
 db_stack_trace_cmd(
-db_expr_t	addr,
-boolean_t	have_addr,
-db_expr_t	count,
-const char	*modif)
+db_expr_t addr,
+boolean_t have_addr,
+db_expr_t count,
+const char *modif)
 {
-boolean_t	trace_thread = FALSE;
+boolean_t trace_thread = FALSE;
 struct i386_frame *frame;
-db_addr_t	callpc, sp;
-int		flags = 0;
-thread_t	th;
+db_addr_t callpc, sp;
+int flags = 0;
+thread_t th;
 {
 const char *cp = modif;
 char c;
@@ -358,22 +358,22 @@ db_i386_stack_trace( th, frame, sp, callpc, count, flags );
 }
 void
 db_i386_stack_trace(
-const thread_t	th,
+const thread_t th,
 struct i386_frame *frame,
-db_addr_t	sp,
-db_addr_t	callpc,
-db_expr_t	count,
-int		flags)
+db_addr_t sp,
+db_addr_t callpc,
+db_expr_t count,
+int flags)
 {
-task_t		task;
-boolean_t	kernel_only;
-long		*argp;
-long		user_frame = 0;
+task_t task;
+boolean_t kernel_only;
+long *argp;
+long user_frame = 0;
 struct i386_frame *lastframe;
-int		frame_type;
-char		*filename;
-int		linenum;
-extern unsigned	long db_maxoff;
+int frame_type;
+char *filename;
+int linenum;
+extern unsigned long db_maxoff;
 if (count == -1)
 count = 65535;
 kernel_only = (flags & F_USER_TRACE) == 0;
@@ -386,9 +386,9 @@ user_frame++;
 }
 lastframe = 0;
 while (count--) {
-int 	narg;
-char *	name;
-db_expr_t	offset;
+int narg;
+char * name;
+db_expr_t offset;
 if (INKERNEL(callpc) && user_frame == 0) {
 db_addr_t call_func = 0;
 db_sym_t sym_tmp;

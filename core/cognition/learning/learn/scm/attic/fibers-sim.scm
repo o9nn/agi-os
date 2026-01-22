@@ -5,94 +5,94 @@
 (define SIM-ID "shape-mi")
 (define (make-fsimmer LLOBJ)
 "
-  make-fsimmer LLOBJ -- return function that computes and stores MI's.
-  This computes and stores both the MI and the Ranked-MI scores.
+make-fsimmer LLOBJ -- return function that computes and stores MI's.
+This computes and stores both the MI and the Ranked-MI scores.
 "
-	(define sap (add-similarity-api LLOBJ #f SIM-ID))
-	(define smi (add-symmetric-mi-compute LLOBJ))
-	(define ol2 (/ 1.0 (log 2.0)))
-	(define (log2 x) (if (< 0 x) (* (log x) ol2) -inf.0))
-	(define mmt-q (smi 'mmt-q))
-	(define (do-compute-sim WA WB)
-		(define fmi (smi 'mmt-fmi WA WB))
-		(define mwa (smi 'mmt-marginal WA))
-		(define mwb (smi 'mmt-marginal WB))
-		(define rmi (+ fmi (* 0.5 (log2 (* mwa mwb))) mmt-q))
-		(if (< -6 fmi)
-			(format #t "\tMI(`~A`, `~A`) = ~6F  rank-MI = ~6F\n"
-				(cog-name WA) (cog-name WB) fmi rmi))
-		(store-atom
-			(sap 'set-pair-similarity
-				(sap 'make-pair WA WB)
-				(FloatValue fmi rmi))))
-	(define request-chan #f)
-	(define reply-chan #f)
-	(define (mi-request-handler)
-		(define (wait-for-chan)
-			(when (not reply-chan) (yield) (sleep 0.1) (wait-for-chan)))
-		(define pr (get-message request-chan))
-		(define sim (do-compute-sim (car pr) (cdr pr)))
-		(put-message reply-chan sim)
-		(mi-request-handler))
-	(call-with-new-thread (lambda ()
-		(run-fibers (lambda ()
-			(set! request-chan (make-channel))
-			(set! reply-chan (make-channel))
-			(mi-request-handler)))))
-	(yield)
-	(sleep 0.1)
-	(define (compute-sim WA WB)
-		(put-message request-chan (cons WA WB))
-		(get-message reply-chan)
-	)
-	compute-sim
+(define sap (add-similarity-api LLOBJ #f SIM-ID))
+(define smi (add-symmetric-mi-compute LLOBJ))
+(define ol2 (/ 1.0 (log 2.0)))
+(define (log2 x) (if (< 0 x) (* (log x) ol2) -inf.0))
+(define mmt-q (smi 'mmt-q))
+(define (do-compute-sim WA WB)
+(define fmi (smi 'mmt-fmi WA WB))
+(define mwa (smi 'mmt-marginal WA))
+(define mwb (smi 'mmt-marginal WB))
+(define rmi (+ fmi (* 0.5 (log2 (* mwa mwb))) mmt-q))
+(if (< -6 fmi)
+(format #t "\tMI(`~A`, `~A`) = ~6F  rank-MI = ~6F\n"
+(cog-name WA) (cog-name WB) fmi rmi))
+(store-atom
+(sap 'set-pair-similarity
+(sap 'make-pair WA WB)
+(FloatValue fmi rmi))))
+(define request-chan #f)
+(define reply-chan #f)
+(define (mi-request-handler)
+(define (wait-for-chan)
+(when (not reply-chan) (yield) (sleep 0.1) (wait-for-chan)))
+(define pr (get-message request-chan))
+(define sim (do-compute-sim (car pr) (cdr pr)))
+(put-message reply-chan sim)
+(mi-request-handler))
+(call-with-new-thread (lambda ()
+(run-fibers (lambda ()
+(set! request-chan (make-channel))
+(set! reply-chan (make-channel))
+(mi-request-handler)))))
+(yield)
+(sleep 0.1)
+(define (compute-sim WA WB)
+(put-message request-chan (cons WA WB))
+(get-message reply-chan)
+)
+compute-sim
 )
 (define-public (fcompute-diag-mi-sims LLOBJ WORDLI START-RANK DEPTH)
 "
-  compute-diag-mi-sims LLOBJ WORDLI START-RANK DEPTH - compute MI.
-  This will compute the MI similarity of words lying around a diagonal.
-  The width of the diagonal is DEPTH. The diagonal is defined by the
-  the ranked words. Computations start at START-RANK and proceed to
-  DEPTH.  If the Similarity has already been recorded, it will not
-  be recomputed.
-  Think of a tri-diagonal matrix, but instead of three, its N-diagonal
-  with N given by DEPTH.
-  WORDLI is a list of words, presumed sorted by rank.
-  Examples: If START-RANK is 0 and DEPTH is 200, then the 200x200
-  block matrix of similarities will be computed. Since similarities
-  are symmetric, this is a symmetric matrix, and so 200 x 201 / 2
-  grand total similarities are computed.
-  If START-RANK is 300 and DEPTH is 200, then computations start at
-  the 300'th ranked word. This results in a total of 200x200
-  similarities, as 200 rows are computed, out to 200 places away from
-  the diagonal.
+compute-diag-mi-sims LLOBJ WORDLI START-RANK DEPTH - compute MI.
+This will compute the MI similarity of words lying around a diagonal.
+The width of the diagonal is DEPTH. The diagonal is defined by the
+the ranked words. Computations start at START-RANK and proceed to
+DEPTH.  If the Similarity has already been recorded, it will not
+be recomputed.
+Think of a tri-diagonal matrix, but instead of three, its N-diagonal
+with N given by DEPTH.
+WORDLI is a list of words, presumed sorted by rank.
+Examples: If START-RANK is 0 and DEPTH is 200, then the 200x200
+block matrix of similarities will be computed. Since similarities
+are symmetric, this is a symmetric matrix, and so 200 x 201 / 2
+grand total similarities are computed.
+If START-RANK is 300 and DEPTH is 200, then computations start at
+the 300'th ranked word. This results in a total of 200x200
+similarities, as 200 rows are computed, out to 200 places away from
+the diagonal.
 "
-	(define do-compute-sim (make-fsimmer LLOBJ))
-	(define sap (add-similarity-api LLOBJ #f SIM-ID))
-	(define (compute-sim WA WB)
-		(define miv (sap 'pair-count WA WB))
-		(if (not miv) (do-compute-sim WA WB)))
-	(define (batch-simlist ITEM ITEM-LIST)
-		(for-each
-			(lambda (item) (compute-sim ITEM item))
-			ITEM-LIST))
-	(define nwords (length WORDLI))
-	(define start (min START-RANK nwords))
-	(define depth (min DEPTH (- nwords start)))
-	(define row-range (take (drop WORDLI start) depth))
-	(define (col-start off) (max 0 (- (+ start off) depth)))
-	(define (col-end off) (min (+ start off) depth))
-	(define (col-range off)
-		(reverse (take (drop WORDLI (col-start off)) (col-end off))))
-	(define (do-one-row off)
-		(define pone (+ 1 off))
-		(batch-simlist (list-ref row-range off) (col-range pone)))
-	(define rpt-one-row
-		(make-progress-rpt do-one-row 10 #f
-			"Diag: Finished ~D rows in ~D secs (~D/sec)\n"
-			60))
+(define do-compute-sim (make-fsimmer LLOBJ))
+(define sap (add-similarity-api LLOBJ #f SIM-ID))
+(define (compute-sim WA WB)
+(define miv (sap 'pair-count WA WB))
+(if (not miv) (do-compute-sim WA WB)))
+(define (batch-simlist ITEM ITEM-LIST)
+(for-each
+(lambda (item) (compute-sim ITEM item))
+ITEM-LIST))
+(define nwords (length WORDLI))
+(define start (min START-RANK nwords))
+(define depth (min DEPTH (- nwords start)))
+(define row-range (take (drop WORDLI start) depth))
+(define (col-start off) (max 0 (- (+ start off) depth)))
+(define (col-end off) (min (+ start off) depth))
+(define (col-range off)
+(reverse (take (drop WORDLI (col-start off)) (col-end off))))
+(define (do-one-row off)
+(define pone (+ 1 off))
+(batch-simlist (list-ref row-range off) (col-range pone)))
+(define rpt-one-row
+(make-progress-rpt do-one-row 10 #f
+"Diag: Finished ~D rows in ~D secs (~D/sec)\n"
+60))
 (define e (make-elapsed-secs))
-	(for-each (lambda (n) (rpt-one-row n)) (iota depth))
+(for-each (lambda (n) (rpt-one-row n)) (iota depth))
 (format #t "done in ~A secs\n" (e))
 )
 #! ========

@@ -1,45 +1,45 @@
 #include "l.h"
-#define	OPVCC(o,xo,oe,rc) (((o)<<26)|((xo)<<1)|((oe)<<10)|((rc)&1))
-#define	OPCC(o,xo,rc) OPVCC((o),(xo),0,(rc))
-#define	OP(o,xo) OPVCC((o),(xo),0,0)
-#define	AOP_RRR(op,d,a,b) ((op)|(((d)&31L)<<21)|(((a)&31L)<<16)|(((b)&31L)<<11))
-#define	AOP_IRR(op,d,a,simm) ((op)|(((d)&31L)<<21)|(((a)&31L)<<16)|((simm)&0xFFFF))
-#define	LOP_RRR(op,a,s,b) ((op)|(((s)&31L)<<21)|(((a)&31L)<<16)|(((b)&31L)<<11))
-#define	LOP_IRR(op,a,s,uimm) ((op)|(((s)&31L)<<21)|(((a)&31L)<<16)|((uimm)&0xFFFF))
-#define	OP_BR(op,li,aa) ((op)|((li)&0x03FFFFFC)|((aa)<<1))
-#define	OP_BC(op,bo,bi,bd,aa) ((op)|(((bo)&0x1F)<<21)|(((bi)&0x1F)<<16)|((bd)&0xFFFC)|((aa)<<1))
-#define	OP_BCR(op,bo,bi) ((op)|(((bo)&0x1F)<<21)|(((bi)&0x1F)<<16))
-#define	OP_RLW(op,a,s,sh,mb,me) ((op)|(((s)&31L)<<21)|(((a)&31L)<<16)|(((sh)&31L)<<11)|\
+#define OPVCC(o,xo,oe,rc) (((o)<<26)|((xo)<<1)|((oe)<<10)|((rc)&1))
+#define OPCC(o,xo,rc) OPVCC((o),(xo),0,(rc))
+#define OP(o,xo) OPVCC((o),(xo),0,0)
+#define AOP_RRR(op,d,a,b) ((op)|(((d)&31L)<<21)|(((a)&31L)<<16)|(((b)&31L)<<11))
+#define AOP_IRR(op,d,a,simm) ((op)|(((d)&31L)<<21)|(((a)&31L)<<16)|((simm)&0xFFFF))
+#define LOP_RRR(op,a,s,b) ((op)|(((s)&31L)<<21)|(((a)&31L)<<16)|(((b)&31L)<<11))
+#define LOP_IRR(op,a,s,uimm) ((op)|(((s)&31L)<<21)|(((a)&31L)<<16)|((uimm)&0xFFFF))
+#define OP_BR(op,li,aa) ((op)|((li)&0x03FFFFFC)|((aa)<<1))
+#define OP_BC(op,bo,bi,bd,aa) ((op)|(((bo)&0x1F)<<21)|(((bi)&0x1F)<<16)|((bd)&0xFFFC)|((aa)<<1))
+#define OP_BCR(op,bo,bi) ((op)|(((bo)&0x1F)<<21)|(((bi)&0x1F)<<16))
+#define OP_RLW(op,a,s,sh,mb,me) ((op)|(((s)&31L)<<21)|(((a)&31L)<<16)|(((sh)&31L)<<11)|\
 (((mb)&31L)<<6)|(((me)&31L)<<1))
-#define	OP_ADD	OPVCC(31,266,0,0)
-#define	OP_ADDI	OPVCC(14,0,0,0)
-#define	OP_ADDIS OPVCC(15,0,0,0)
-#define	OP_ANDI	OPVCC(28,0,0,0)
-#define	OP_EXTSB	OPVCC(31,954,0,0)
-#define	OP_EXTSH OPVCC(31,922,0,0)
-#define	OP_MCRF	OPVCC(19,0,0,0)
-#define	OP_MCRFS OPVCC(63,64,0,0)
-#define	OP_MCRXR OPVCC(31,512,0,0)
-#define	OP_MFCR	OPVCC(31,19,0,0)
-#define	OP_MFFS	OPVCC(63,583,0,0)
-#define	OP_MFMSR OPVCC(31,83,0,0)
-#define	OP_MFSPR OPVCC(31,339,0,0)
-#define	OP_MFSR	OPVCC(31,595,0,0)
-#define	OP_MFSRIN	OPVCC(31,659,0,0)
-#define	OP_MTCRF OPVCC(31,144,0,0)
-#define	OP_MTFSF OPVCC(63,711,0,0)
-#define	OP_MTFSFI OPVCC(63,134,0,0)
-#define	OP_MTMSR OPVCC(31,146,0,0)
-#define	OP_MTSPR OPVCC(31,467,0,0)
-#define	OP_MTSR	OPVCC(31,210,0,0)
-#define	OP_MTSRIN	OPVCC(31,242,0,0)
-#define	OP_MULLW OPVCC(31,235,0,0)
-#define	OP_OR	OPVCC(31,444,0,0)
-#define	OP_ORI	OPVCC(24,0,0,0)
-#define	OP_RLWINM	OPVCC(21,0,0,0)
-#define	OP_SUBF	OPVCC(31,40,0,0)
-#define	oclass(v)	((v).class-1)
-long	oprrr(int), opirr(int), opload(int), opstore(int), oploadx(int), opstorex(int);
+#define OP_ADD OPVCC(31,266,0,0)
+#define OP_ADDI OPVCC(14,0,0,0)
+#define OP_ADDIS OPVCC(15,0,0,0)
+#define OP_ANDI OPVCC(28,0,0,0)
+#define OP_EXTSB OPVCC(31,954,0,0)
+#define OP_EXTSH OPVCC(31,922,0,0)
+#define OP_MCRF OPVCC(19,0,0,0)
+#define OP_MCRFS OPVCC(63,64,0,0)
+#define OP_MCRXR OPVCC(31,512,0,0)
+#define OP_MFCR OPVCC(31,19,0,0)
+#define OP_MFFS OPVCC(63,583,0,0)
+#define OP_MFMSR OPVCC(31,83,0,0)
+#define OP_MFSPR OPVCC(31,339,0,0)
+#define OP_MFSR OPVCC(31,595,0,0)
+#define OP_MFSRIN OPVCC(31,659,0,0)
+#define OP_MTCRF OPVCC(31,144,0,0)
+#define OP_MTFSF OPVCC(63,711,0,0)
+#define OP_MTFSFI OPVCC(63,134,0,0)
+#define OP_MTMSR OPVCC(31,146,0,0)
+#define OP_MTSPR OPVCC(31,467,0,0)
+#define OP_MTSR OPVCC(31,210,0,0)
+#define OP_MTSRIN OPVCC(31,242,0,0)
+#define OP_MULLW OPVCC(31,235,0,0)
+#define OP_OR OPVCC(31,444,0,0)
+#define OP_ORI OPVCC(24,0,0,0)
+#define OP_RLWINM OPVCC(21,0,0,0)
+#define OP_SUBF OPVCC(31,40,0,0)
+#define oclass(v) ((v).class-1)
+long oprrr(int), opirr(int), opload(int), opstore(int), oploadx(int), opstorex(int);
 int
 getmask(uchar *m, ulong v)
 {
@@ -737,325 +737,325 @@ long
 oprrr(int a)
 {
 switch(a) {
-case AADD:	return OPVCC(31,266,0,0);
-case AADDCC:	return OPVCC(31,266,0,1);
-case AADDV:	return OPVCC(31,266,1,0);
-case AADDVCC:	return OPVCC(31,266,1,1);
-case AADDC:	return OPVCC(31,10,0,0);
-case AADDCCC:	return OPVCC(31,10,0,1);
-case AADDCV:	return OPVCC(31,10,1,0);
-case AADDCVCC:	return OPVCC(31,10,1,1);
-case AADDE:	return OPVCC(31,138,0,0);
-case AADDECC:	return OPVCC(31,138,0,1);
-case AADDEV:	return OPVCC(31,138,1,0);
-case AADDEVCC:	return OPVCC(31,138,1,1);
-case AADDME:	return OPVCC(31,234,0,0);
-case AADDMECC:	return OPVCC(31,234,0,1);
-case AADDMEV:	return OPVCC(31,234,1,0);
-case AADDMEVCC:	return OPVCC(31,234,1,1);
-case AADDZE:	return OPVCC(31,202,0,0);
-case AADDZECC:	return OPVCC(31,202,0,1);
-case AADDZEV:	return OPVCC(31,202,1,0);
-case AADDZEVCC:	return OPVCC(31,202,1,1);
-case AAND:	return OPVCC(31,28,0,0);
-case AANDCC:	return OPVCC(31,28,0,1);
-case AANDN:	return OPVCC(31,60,0,0);
-case AANDNCC:	return OPVCC(31,60,0,1);
-case ACMP:	return OPVCC(31,0,0,0);
-case ACMPU:	return OPVCC(31,32,0,0);
-case ACNTLZW:	return OPVCC(31,26,0,0);
-case ACNTLZWCC:	return OPVCC(31,26,0,1);
-case ACRAND:	return OPVCC(19,257,0,0);
-case ACRANDN:	return OPVCC(19,129,0,0);
-case ACREQV:	return OPVCC(19,289,0,0);
-case ACRNAND:	return OPVCC(19,225,0,0);
-case ACRNOR:	return OPVCC(19,33,0,0);
-case ACROR:	return OPVCC(19,449,0,0);
-case ACRORN:	return OPVCC(19,417,0,0);
-case ACRXOR:	return OPVCC(19,193,0,0);
-case ADCBF:	return OPVCC(31,86,0,0);
-case ADCBI:	return OPVCC(31,470,0,0);
-case ADCBST:	return OPVCC(31,54,0,0);
-case ADCBT:	return OPVCC(31,278,0,0);
-case ADCBTST:	return OPVCC(31,246,0,0);
-case ADCBZ:	return OPVCC(31,1014,0,0);
+case AADD: return OPVCC(31,266,0,0);
+case AADDCC: return OPVCC(31,266,0,1);
+case AADDV: return OPVCC(31,266,1,0);
+case AADDVCC: return OPVCC(31,266,1,1);
+case AADDC: return OPVCC(31,10,0,0);
+case AADDCCC: return OPVCC(31,10,0,1);
+case AADDCV: return OPVCC(31,10,1,0);
+case AADDCVCC: return OPVCC(31,10,1,1);
+case AADDE: return OPVCC(31,138,0,0);
+case AADDECC: return OPVCC(31,138,0,1);
+case AADDEV: return OPVCC(31,138,1,0);
+case AADDEVCC: return OPVCC(31,138,1,1);
+case AADDME: return OPVCC(31,234,0,0);
+case AADDMECC: return OPVCC(31,234,0,1);
+case AADDMEV: return OPVCC(31,234,1,0);
+case AADDMEVCC: return OPVCC(31,234,1,1);
+case AADDZE: return OPVCC(31,202,0,0);
+case AADDZECC: return OPVCC(31,202,0,1);
+case AADDZEV: return OPVCC(31,202,1,0);
+case AADDZEVCC: return OPVCC(31,202,1,1);
+case AAND: return OPVCC(31,28,0,0);
+case AANDCC: return OPVCC(31,28,0,1);
+case AANDN: return OPVCC(31,60,0,0);
+case AANDNCC: return OPVCC(31,60,0,1);
+case ACMP: return OPVCC(31,0,0,0);
+case ACMPU: return OPVCC(31,32,0,0);
+case ACNTLZW: return OPVCC(31,26,0,0);
+case ACNTLZWCC: return OPVCC(31,26,0,1);
+case ACRAND: return OPVCC(19,257,0,0);
+case ACRANDN: return OPVCC(19,129,0,0);
+case ACREQV: return OPVCC(19,289,0,0);
+case ACRNAND: return OPVCC(19,225,0,0);
+case ACRNOR: return OPVCC(19,33,0,0);
+case ACROR: return OPVCC(19,449,0,0);
+case ACRORN: return OPVCC(19,417,0,0);
+case ACRXOR: return OPVCC(19,193,0,0);
+case ADCBF: return OPVCC(31,86,0,0);
+case ADCBI: return OPVCC(31,470,0,0);
+case ADCBST: return OPVCC(31,54,0,0);
+case ADCBT: return OPVCC(31,278,0,0);
+case ADCBTST: return OPVCC(31,246,0,0);
+case ADCBZ: return OPVCC(31,1014,0,0);
 case AREM:
-case ADIVW:	return OPVCC(31,491,0,0);
+case ADIVW: return OPVCC(31,491,0,0);
 case AREMCC:
-case ADIVWCC:	return OPVCC(31,491,0,1);
+case ADIVWCC: return OPVCC(31,491,0,1);
 case AREMV:
-case ADIVWV:	return OPVCC(31,491,1,0);
+case ADIVWV: return OPVCC(31,491,1,0);
 case AREMVCC:
-case ADIVWVCC:	return OPVCC(31,491,1,1);
+case ADIVWVCC: return OPVCC(31,491,1,1);
 case AREMU:
-case ADIVWU:	return OPVCC(31,459,0,0);
+case ADIVWU: return OPVCC(31,459,0,0);
 case AREMUCC:
-case ADIVWUCC:	return OPVCC(31,459,0,1);
+case ADIVWUCC: return OPVCC(31,459,0,1);
 case AREMUV:
-case ADIVWUV:	return OPVCC(31,459,1,0);
+case ADIVWUV: return OPVCC(31,459,1,0);
 case AREMUVCC:
-case ADIVWUVCC:	return OPVCC(31,459,1,1);
-case AEIEIO:	return OPVCC(31,854,0,0);
-case AEQV:	return OPVCC(31,284,0,0);
-case AEQVCC:	return OPVCC(31,284,0,1);
-case AEXTSB:	return OPVCC(31,954,0,0);
-case AEXTSBCC:	return OPVCC(31,954,0,1);
-case AEXTSH:	return OPVCC(31,922,0,0);
-case AEXTSHCC:	return OPVCC(31,922,0,1);
-case AFABS:	return OPVCC(63,264,0,0);
-case AFABSCC:	return OPVCC(63,264,0,1);
-case AFADD:	return OPVCC(63,21,0,0);
-case AFADDCC:	return OPVCC(63,21,0,1);
-case AFADDS:	return OPVCC(59,21,0,0);
-case AFADDSCC:	return OPVCC(59,21,0,1);
-case AFCMPO:	return OPVCC(63,32,0,0);
-case AFCMPU:	return OPVCC(63,0,0,0);
-case AFCTIW:	return OPVCC(63,14,0,0);
-case AFCTIWCC:	return OPVCC(63,14,0,1);
-case AFCTIWZ:	return OPVCC(63,15,0,0);
-case AFCTIWZCC:	return OPVCC(63,15,0,1);
-case AFDIV:	return OPVCC(63,18,0,0);
-case AFDIVCC:	return OPVCC(63,18,0,1);
-case AFDIVS:	return OPVCC(59,18,0,0);
-case AFDIVSCC:	return OPVCC(59,18,0,1);
-case AFMADD:	return OPVCC(63,29,0,0);
-case AFMADDCC:	return OPVCC(63,29,0,1);
-case AFMADDS:	return OPVCC(59,29,0,0);
-case AFMADDSCC:	return OPVCC(59,29,0,1);
+case ADIVWUVCC: return OPVCC(31,459,1,1);
+case AEIEIO: return OPVCC(31,854,0,0);
+case AEQV: return OPVCC(31,284,0,0);
+case AEQVCC: return OPVCC(31,284,0,1);
+case AEXTSB: return OPVCC(31,954,0,0);
+case AEXTSBCC: return OPVCC(31,954,0,1);
+case AEXTSH: return OPVCC(31,922,0,0);
+case AEXTSHCC: return OPVCC(31,922,0,1);
+case AFABS: return OPVCC(63,264,0,0);
+case AFABSCC: return OPVCC(63,264,0,1);
+case AFADD: return OPVCC(63,21,0,0);
+case AFADDCC: return OPVCC(63,21,0,1);
+case AFADDS: return OPVCC(59,21,0,0);
+case AFADDSCC: return OPVCC(59,21,0,1);
+case AFCMPO: return OPVCC(63,32,0,0);
+case AFCMPU: return OPVCC(63,0,0,0);
+case AFCTIW: return OPVCC(63,14,0,0);
+case AFCTIWCC: return OPVCC(63,14,0,1);
+case AFCTIWZ: return OPVCC(63,15,0,0);
+case AFCTIWZCC: return OPVCC(63,15,0,1);
+case AFDIV: return OPVCC(63,18,0,0);
+case AFDIVCC: return OPVCC(63,18,0,1);
+case AFDIVS: return OPVCC(59,18,0,0);
+case AFDIVSCC: return OPVCC(59,18,0,1);
+case AFMADD: return OPVCC(63,29,0,0);
+case AFMADDCC: return OPVCC(63,29,0,1);
+case AFMADDS: return OPVCC(59,29,0,0);
+case AFMADDSCC: return OPVCC(59,29,0,1);
 case AFMOVS:
-case AFMOVD:	return OPVCC(63,72,0,0);
-case AFMOVDCC:	return OPVCC(63,72,0,1);
-case AFMSUB:	return OPVCC(63,28,0,0);
-case AFMSUBCC:	return OPVCC(63,28,0,1);
-case AFMSUBS:	return OPVCC(59,28,0,0);
-case AFMSUBSCC:	return OPVCC(59,28,0,1);
-case AFMUL:	return OPVCC(63,25,0,0);
-case AFMULCC:	return OPVCC(63,25,0,1);
-case AFMULS:	return OPVCC(59,25,0,0);
-case AFMULSCC:	return OPVCC(59,25,0,1);
-case AFNABS:	return OPVCC(63,136,0,0);
-case AFNABSCC:	return OPVCC(63,136,0,1);
-case AFNEG:	return OPVCC(63,40,0,0);
-case AFNEGCC:	return OPVCC(63,40,0,1);
-case AFNMADD:	return OPVCC(63,31,0,0);
-case AFNMADDCC:	return OPVCC(63,31,0,1);
-case AFNMADDS:	return OPVCC(59,31,0,0);
-case AFNMADDSCC:	return OPVCC(59,31,0,1);
-case AFNMSUB:	return OPVCC(63,30,0,0);
-case AFNMSUBCC:	return OPVCC(63,30,0,1);
-case AFNMSUBS:	return OPVCC(59,30,0,0);
-case AFNMSUBSCC:	return OPVCC(59,30,0,1);
-case AFRES:	return OPVCC(59,24,0,0);
-case AFRESCC:	return OPVCC(59,24,0,1);
-case AFRSP:	return OPVCC(63,12,0,0);
-case AFRSPCC:	return OPVCC(63,12,0,1);
-case AFRSQRTE:	return OPVCC(63,26,0,0);
-case AFRSQRTECC:	return OPVCC(63,26,0,1);
-case AFSEL:	return OPVCC(63,23,0,0);
-case AFSELCC:	return OPVCC(63,23,0,1);
-case AFSQRT:	return OPVCC(63,22,0,0);
-case AFSQRTCC:	return OPVCC(63,22,0,1);
-case AFSQRTS:	return OPVCC(59,22,0,0);
-case AFSQRTSCC:	return OPVCC(59,22,0,1);
-case AFSUB:	return OPVCC(63,20,0,0);
-case AFSUBCC:	return OPVCC(63,20,0,1);
-case AFSUBS:	return OPVCC(59,20,0,0);
-case AFSUBSCC:	return OPVCC(59,20,0,1);
-case AFPMUL:	return OPVCC(0,8,0,0);
-case AFXMUL:	return OPVCC(0,9,0,0);
-case AFXPMUL:	return OPVCC(0,10,0,0);
-case AFXSMUL:	return OPVCC(0,11,0,0);
-case AFPADD:	return OPVCC(0,12,0,0);
-case AFPSUB:	return OPVCC(0,13,0,0);
-case AFPRE:	return OPVCC(0,14,0,0);
-case AFPRSQRTE:	return OPVCC(0,15,0,0);
-case AFPMADD:	return OPVCC(0,16,0,0);
-case AFXMADD:	return OPVCC(0,17,0,0);
-case AFXCPMADD:	return OPVCC(0,18,0,0);
-case AFXCSMADD:	return OPVCC(0,19,0,0);
-case AFPNMADD:	return OPVCC(0,20,0,0);
-case AFXNMADD:	return OPVCC(0,21,0,0);
-case AFXCPNMADD:	return OPVCC(0,22,0,0);
-case AFXCSNMADD:	return OPVCC(0,23,0,0);
-case AFPMSUB:	return OPVCC(0,24,0,0);
-case AFXMSUB:	return OPVCC(0,25,0,0);
-case AFXCPMSUB:	return OPVCC(0,26,0,0);
-case AFXCSMSUB:	return OPVCC(0,27,0,0);
-case AFPNMSUB:	return OPVCC(0,28,0,0);
-case AFXNMSUB:	return OPVCC(0,29,0,0);
-case AFXCPNMSUB:	return OPVCC(0,30,0,0);
-case AFXCSNMSUB:	return OPVCC(0,31,0,0);
-case AFPABS:	return OPVCC(0,96,0,0);
-case AFPNEG:	return OPVCC(0,160,0,0);
-case AFPRSP:	return OPVCC(0,192,0,0);
-case AFPNABS:	return OPVCC(0,224,0,0);
-case AFSCMP:	return OPVCC(0,320,0,0)|(3<<21);
-case AFSABS:	return OPVCC(0,352,0,0);
-case AFSNEG:	return OPVCC(0,416,0,0);
-case AFSNABS:	return OPVCC(0,480,0,0);
-case AFPCTIW:	return OPVCC(0,576,0,0);
-case AFPCTIWZ:	return OPVCC(0,704,0,0);
-case AFPMOVD:	return OPVCC(0,32,0,0);
-case AFSMOVD:	return OPVCC(0,288,0,0);
-case AFXMOVD:	return OPVCC(0,544,0,0);
-case AFMOVSPD:		return OPVCC(0,800,0,0);
-case AFMOVPSD:		return OPVCC(0,928,0,0);
-case AFXCPNPMA:	return OPVCC(4,24,0,0);
-case AFXCSNPMA:	return OPVCC(4,25,0,0);
-case AFXCPNSMA:	return OPVCC(4,26,0,0);
-case AFXCSNSMA:	return OPVCC(4,27,0,0);
-case AFXCXNPMA:	return OPVCC(4,29,0,0);
-case AFXCXNSMA:	return OPVCC(4,30,0,0);
-case AFXCXMA:	return OPVCC(4,28,0,0);
-case AFXCXNMS:	return OPVCC(4,31,0,0);
-case AICBI:	return OPVCC(31,982,0,0);
-case AISYNC:	return OPVCC(19,150,0,0);
-case AMTFSB0:	return OPVCC(63,70,0,0);
-case AMTFSB0CC:	return OPVCC(63,70,0,1);
-case AMTFSB1:	return OPVCC(63,38,0,0);
-case AMTFSB1CC:	return OPVCC(63,38,0,1);
-case AMULHW:	return OPVCC(31,75,0,0);
-case AMULHWCC:	return OPVCC(31,75,0,1);
-case AMULHWU:	return OPVCC(31,11,0,0);
-case AMULHWUCC:	return OPVCC(31,11,0,1);
-case AMULLW:	return OPVCC(31,235,0,0);
-case AMULLWCC:	return OPVCC(31,235,0,1);
-case AMULLWV:	return OPVCC(31,235,1,0);
-case AMULLWVCC:	return OPVCC(31,235,1,1);
-case AMACCHW:	return OPVCC(4,172,0,0);
-case AMACCHWCC:	return OPVCC(4,172,0,1);
-case AMACCHWS:	return OPVCC(4,236,0,0);
-case AMACCHWSCC:	return OPVCC(4,236,0,1);
-case AMACCHWSU:	return OPVCC(4,204,0,0);
-case AMACCHWSUCC:	return OPVCC(4,204,0,1);
-case AMACCHWSUV:	return OPVCC(4,204,1,0);
-case AMACCHWSUVCC:	return OPVCC(4,204,1,1);
-case AMACCHWSV:	return OPVCC(4,236,1,0);
-case AMACCHWSVCC:	return OPVCC(4,236,1,1);
-case AMACCHWU:	return OPVCC(4,140,0,0);
-case AMACCHWUCC:	return OPVCC(4,140,0,1);
-case AMACCHWUV:	return OPVCC(4,140,1,0);
-case AMACCHWUVCC:	return OPVCC(4,140,1,1);
-case AMACCHWV:	return OPVCC(4,172,1,0);
-case AMACCHWVCC:	return OPVCC(4,172,1,1);
-case AMACHHW:	return OPVCC(4,44,0,0);
-case AMACHHWCC:	return OPVCC(4,44,0,1);
-case AMACHHWS:	return OPVCC(4,108,0,0);
-case AMACHHWSCC:	return OPVCC(4,108,0,1);
-case AMACHHWSU:	return OPVCC(4,76,0,0);
-case AMACHHWSUCC:	return OPVCC(4,76,0,1);
-case AMACHHWSUV:	return OPVCC(4,76,1,0);
-case AMACHHWSUVCC:	return OPVCC(4,76,1,1);
-case AMACHHWSV:	return OPVCC(4,108,1,0);
-case AMACHHWSVCC:	return OPVCC(4,108,1,1);
-case AMACHHWU:	return OPVCC(4,12,0,0);
-case AMACHHWUCC:	return OPVCC(4,12,0,1);
-case AMACHHWUV:	return OPVCC(4,12,1,0);
-case AMACHHWUVCC:	return OPVCC(4,12,1,1);
-case AMACHHWV:	return OPVCC(4,44,1,0);
-case AMACHHWVCC:	return OPVCC(4,44,1,1);
-case AMACLHW:	return OPVCC(4,428,0,0);
-case AMACLHWCC:	return OPVCC(4,428,0,1);
-case AMACLHWS:	return OPVCC(4,492,0,0);
-case AMACLHWSCC:	return OPVCC(4,492,0,1);
-case AMACLHWSU:	return OPVCC(4,460,0,0);
-case AMACLHWSUCC:	return OPVCC(4,460,0,1);
-case AMACLHWSUV:	return OPVCC(4,460,1,0);
-case AMACLHWSUVCC:	return OPVCC(4,460,1,1);
-case AMACLHWSV:	return OPVCC(4,492,1,0);
-case AMACLHWSVCC:	return OPVCC(4,492,1,1);
-case AMACLHWU:	return OPVCC(4,396,0,0);
-case AMACLHWUCC:	return OPVCC(4,396,0,1);
-case AMACLHWUV:	return OPVCC(4,396,1,0);
-case AMACLHWUVCC:	return OPVCC(4,396,1,1);
-case AMACLHWV:	return OPVCC(4,428,1,0);
-case AMACLHWVCC:	return OPVCC(4,428,1,1);
-case AMULCHW:	return OPVCC(4,168,0,0);
-case AMULCHWCC:	return OPVCC(4,168,0,1);
-case AMULCHWU:	return OPVCC(4,136,0,0);
-case AMULCHWUCC:	return OPVCC(4,136,0,1);
-case AMULHHW:	return OPVCC(4,40,0,0);
-case AMULHHWCC:	return OPVCC(4,40,0,1);
-case AMULHHWU:	return OPVCC(4,8,0,0);
-case AMULHHWUCC:	return OPVCC(4,8,0,1);
-case AMULLHW:	return OPVCC(4,424,0,0);
-case AMULLHWCC:	return OPVCC(4,424,0,1);
-case AMULLHWU:	return OPVCC(4,392,0,0);
-case AMULLHWUCC:	return OPVCC(4,392,0,1);
-case ANMACCHW:	return OPVCC(4,174,0,0);
-case ANMACCHWCC:	return OPVCC(4,174,0,1);
-case ANMACCHWS:	return OPVCC(4,238,0,0);
-case ANMACCHWSCC:	return OPVCC(4,238,0,1);
-case ANMACCHWSV:	return OPVCC(4,238,1,0);
-case ANMACCHWSVCC:	return OPVCC(4,238,1,1);
-case ANMACCHWV:	return OPVCC(4,174,1,0);
-case ANMACCHWVCC:	return OPVCC(4,174,1,1);
-case ANMACHHW:	return OPVCC(4,46,0,0);
-case ANMACHHWCC:	return OPVCC(4,46,0,1);
-case ANMACHHWS:	return OPVCC(4,110,0,0);
-case ANMACHHWSCC:	return OPVCC(4,110,0,1);
-case ANMACHHWSV:	return OPVCC(4,110,1,0);
-case ANMACHHWSVCC:	return OPVCC(4,110,1,1);
-case ANMACHHWV:	return OPVCC(4,46,1,0);
-case ANMACHHWVCC:	return OPVCC(4,46,1,1);
-case ANMACLHW:	return OPVCC(4,430,0,0);
-case ANMACLHWCC:	return OPVCC(4,430,0,1);
-case ANMACLHWS:	return OPVCC(4,494,0,0);
-case ANMACLHWSCC:	return OPVCC(4,494,0,1);
-case ANMACLHWSV:	return OPVCC(4,494,1,0);
-case ANMACLHWSVCC:	return OPVCC(4,494,1,1);
-case ANMACLHWV:	return OPVCC(4,430,1,0);
-case ANMACLHWVCC:	return OPVCC(4,430,1,1);
-case ANAND:	return OPVCC(31,476,0,0);
-case ANANDCC:	return OPVCC(31,476,0,1);
-case ANEG:	return OPVCC(31,104,0,0);
-case ANEGCC:	return OPVCC(31,104,0,1);
-case ANEGV:	return OPVCC(31,104,1,0);
-case ANEGVCC:	return OPVCC(31,104,1,1);
-case ANOR:	return OPVCC(31,124,0,0);
-case ANORCC:	return OPVCC(31,124,0,1);
-case AOR:	return OPVCC(31,444,0,0);
-case AORCC:	return OPVCC(31,444,0,1);
-case AORN:	return OPVCC(31,412,0,0);
-case AORNCC:	return OPVCC(31,412,0,1);
-case ARFI:	return OPVCC(19,50,0,0);
-case ARFCI:	return OPVCC(19,51,0,0);
-case ARLWMI:	return OPVCC(20,0,0,0);
+case AFMOVD: return OPVCC(63,72,0,0);
+case AFMOVDCC: return OPVCC(63,72,0,1);
+case AFMSUB: return OPVCC(63,28,0,0);
+case AFMSUBCC: return OPVCC(63,28,0,1);
+case AFMSUBS: return OPVCC(59,28,0,0);
+case AFMSUBSCC: return OPVCC(59,28,0,1);
+case AFMUL: return OPVCC(63,25,0,0);
+case AFMULCC: return OPVCC(63,25,0,1);
+case AFMULS: return OPVCC(59,25,0,0);
+case AFMULSCC: return OPVCC(59,25,0,1);
+case AFNABS: return OPVCC(63,136,0,0);
+case AFNABSCC: return OPVCC(63,136,0,1);
+case AFNEG: return OPVCC(63,40,0,0);
+case AFNEGCC: return OPVCC(63,40,0,1);
+case AFNMADD: return OPVCC(63,31,0,0);
+case AFNMADDCC: return OPVCC(63,31,0,1);
+case AFNMADDS: return OPVCC(59,31,0,0);
+case AFNMADDSCC: return OPVCC(59,31,0,1);
+case AFNMSUB: return OPVCC(63,30,0,0);
+case AFNMSUBCC: return OPVCC(63,30,0,1);
+case AFNMSUBS: return OPVCC(59,30,0,0);
+case AFNMSUBSCC: return OPVCC(59,30,0,1);
+case AFRES: return OPVCC(59,24,0,0);
+case AFRESCC: return OPVCC(59,24,0,1);
+case AFRSP: return OPVCC(63,12,0,0);
+case AFRSPCC: return OPVCC(63,12,0,1);
+case AFRSQRTE: return OPVCC(63,26,0,0);
+case AFRSQRTECC: return OPVCC(63,26,0,1);
+case AFSEL: return OPVCC(63,23,0,0);
+case AFSELCC: return OPVCC(63,23,0,1);
+case AFSQRT: return OPVCC(63,22,0,0);
+case AFSQRTCC: return OPVCC(63,22,0,1);
+case AFSQRTS: return OPVCC(59,22,0,0);
+case AFSQRTSCC: return OPVCC(59,22,0,1);
+case AFSUB: return OPVCC(63,20,0,0);
+case AFSUBCC: return OPVCC(63,20,0,1);
+case AFSUBS: return OPVCC(59,20,0,0);
+case AFSUBSCC: return OPVCC(59,20,0,1);
+case AFPMUL: return OPVCC(0,8,0,0);
+case AFXMUL: return OPVCC(0,9,0,0);
+case AFXPMUL: return OPVCC(0,10,0,0);
+case AFXSMUL: return OPVCC(0,11,0,0);
+case AFPADD: return OPVCC(0,12,0,0);
+case AFPSUB: return OPVCC(0,13,0,0);
+case AFPRE: return OPVCC(0,14,0,0);
+case AFPRSQRTE: return OPVCC(0,15,0,0);
+case AFPMADD: return OPVCC(0,16,0,0);
+case AFXMADD: return OPVCC(0,17,0,0);
+case AFXCPMADD: return OPVCC(0,18,0,0);
+case AFXCSMADD: return OPVCC(0,19,0,0);
+case AFPNMADD: return OPVCC(0,20,0,0);
+case AFXNMADD: return OPVCC(0,21,0,0);
+case AFXCPNMADD: return OPVCC(0,22,0,0);
+case AFXCSNMADD: return OPVCC(0,23,0,0);
+case AFPMSUB: return OPVCC(0,24,0,0);
+case AFXMSUB: return OPVCC(0,25,0,0);
+case AFXCPMSUB: return OPVCC(0,26,0,0);
+case AFXCSMSUB: return OPVCC(0,27,0,0);
+case AFPNMSUB: return OPVCC(0,28,0,0);
+case AFXNMSUB: return OPVCC(0,29,0,0);
+case AFXCPNMSUB: return OPVCC(0,30,0,0);
+case AFXCSNMSUB: return OPVCC(0,31,0,0);
+case AFPABS: return OPVCC(0,96,0,0);
+case AFPNEG: return OPVCC(0,160,0,0);
+case AFPRSP: return OPVCC(0,192,0,0);
+case AFPNABS: return OPVCC(0,224,0,0);
+case AFSCMP: return OPVCC(0,320,0,0)|(3<<21);
+case AFSABS: return OPVCC(0,352,0,0);
+case AFSNEG: return OPVCC(0,416,0,0);
+case AFSNABS: return OPVCC(0,480,0,0);
+case AFPCTIW: return OPVCC(0,576,0,0);
+case AFPCTIWZ: return OPVCC(0,704,0,0);
+case AFPMOVD: return OPVCC(0,32,0,0);
+case AFSMOVD: return OPVCC(0,288,0,0);
+case AFXMOVD: return OPVCC(0,544,0,0);
+case AFMOVSPD: return OPVCC(0,800,0,0);
+case AFMOVPSD: return OPVCC(0,928,0,0);
+case AFXCPNPMA: return OPVCC(4,24,0,0);
+case AFXCSNPMA: return OPVCC(4,25,0,0);
+case AFXCPNSMA: return OPVCC(4,26,0,0);
+case AFXCSNSMA: return OPVCC(4,27,0,0);
+case AFXCXNPMA: return OPVCC(4,29,0,0);
+case AFXCXNSMA: return OPVCC(4,30,0,0);
+case AFXCXMA: return OPVCC(4,28,0,0);
+case AFXCXNMS: return OPVCC(4,31,0,0);
+case AICBI: return OPVCC(31,982,0,0);
+case AISYNC: return OPVCC(19,150,0,0);
+case AMTFSB0: return OPVCC(63,70,0,0);
+case AMTFSB0CC: return OPVCC(63,70,0,1);
+case AMTFSB1: return OPVCC(63,38,0,0);
+case AMTFSB1CC: return OPVCC(63,38,0,1);
+case AMULHW: return OPVCC(31,75,0,0);
+case AMULHWCC: return OPVCC(31,75,0,1);
+case AMULHWU: return OPVCC(31,11,0,0);
+case AMULHWUCC: return OPVCC(31,11,0,1);
+case AMULLW: return OPVCC(31,235,0,0);
+case AMULLWCC: return OPVCC(31,235,0,1);
+case AMULLWV: return OPVCC(31,235,1,0);
+case AMULLWVCC: return OPVCC(31,235,1,1);
+case AMACCHW: return OPVCC(4,172,0,0);
+case AMACCHWCC: return OPVCC(4,172,0,1);
+case AMACCHWS: return OPVCC(4,236,0,0);
+case AMACCHWSCC: return OPVCC(4,236,0,1);
+case AMACCHWSU: return OPVCC(4,204,0,0);
+case AMACCHWSUCC: return OPVCC(4,204,0,1);
+case AMACCHWSUV: return OPVCC(4,204,1,0);
+case AMACCHWSUVCC: return OPVCC(4,204,1,1);
+case AMACCHWSV: return OPVCC(4,236,1,0);
+case AMACCHWSVCC: return OPVCC(4,236,1,1);
+case AMACCHWU: return OPVCC(4,140,0,0);
+case AMACCHWUCC: return OPVCC(4,140,0,1);
+case AMACCHWUV: return OPVCC(4,140,1,0);
+case AMACCHWUVCC: return OPVCC(4,140,1,1);
+case AMACCHWV: return OPVCC(4,172,1,0);
+case AMACCHWVCC: return OPVCC(4,172,1,1);
+case AMACHHW: return OPVCC(4,44,0,0);
+case AMACHHWCC: return OPVCC(4,44,0,1);
+case AMACHHWS: return OPVCC(4,108,0,0);
+case AMACHHWSCC: return OPVCC(4,108,0,1);
+case AMACHHWSU: return OPVCC(4,76,0,0);
+case AMACHHWSUCC: return OPVCC(4,76,0,1);
+case AMACHHWSUV: return OPVCC(4,76,1,0);
+case AMACHHWSUVCC: return OPVCC(4,76,1,1);
+case AMACHHWSV: return OPVCC(4,108,1,0);
+case AMACHHWSVCC: return OPVCC(4,108,1,1);
+case AMACHHWU: return OPVCC(4,12,0,0);
+case AMACHHWUCC: return OPVCC(4,12,0,1);
+case AMACHHWUV: return OPVCC(4,12,1,0);
+case AMACHHWUVCC: return OPVCC(4,12,1,1);
+case AMACHHWV: return OPVCC(4,44,1,0);
+case AMACHHWVCC: return OPVCC(4,44,1,1);
+case AMACLHW: return OPVCC(4,428,0,0);
+case AMACLHWCC: return OPVCC(4,428,0,1);
+case AMACLHWS: return OPVCC(4,492,0,0);
+case AMACLHWSCC: return OPVCC(4,492,0,1);
+case AMACLHWSU: return OPVCC(4,460,0,0);
+case AMACLHWSUCC: return OPVCC(4,460,0,1);
+case AMACLHWSUV: return OPVCC(4,460,1,0);
+case AMACLHWSUVCC: return OPVCC(4,460,1,1);
+case AMACLHWSV: return OPVCC(4,492,1,0);
+case AMACLHWSVCC: return OPVCC(4,492,1,1);
+case AMACLHWU: return OPVCC(4,396,0,0);
+case AMACLHWUCC: return OPVCC(4,396,0,1);
+case AMACLHWUV: return OPVCC(4,396,1,0);
+case AMACLHWUVCC: return OPVCC(4,396,1,1);
+case AMACLHWV: return OPVCC(4,428,1,0);
+case AMACLHWVCC: return OPVCC(4,428,1,1);
+case AMULCHW: return OPVCC(4,168,0,0);
+case AMULCHWCC: return OPVCC(4,168,0,1);
+case AMULCHWU: return OPVCC(4,136,0,0);
+case AMULCHWUCC: return OPVCC(4,136,0,1);
+case AMULHHW: return OPVCC(4,40,0,0);
+case AMULHHWCC: return OPVCC(4,40,0,1);
+case AMULHHWU: return OPVCC(4,8,0,0);
+case AMULHHWUCC: return OPVCC(4,8,0,1);
+case AMULLHW: return OPVCC(4,424,0,0);
+case AMULLHWCC: return OPVCC(4,424,0,1);
+case AMULLHWU: return OPVCC(4,392,0,0);
+case AMULLHWUCC: return OPVCC(4,392,0,1);
+case ANMACCHW: return OPVCC(4,174,0,0);
+case ANMACCHWCC: return OPVCC(4,174,0,1);
+case ANMACCHWS: return OPVCC(4,238,0,0);
+case ANMACCHWSCC: return OPVCC(4,238,0,1);
+case ANMACCHWSV: return OPVCC(4,238,1,0);
+case ANMACCHWSVCC: return OPVCC(4,238,1,1);
+case ANMACCHWV: return OPVCC(4,174,1,0);
+case ANMACCHWVCC: return OPVCC(4,174,1,1);
+case ANMACHHW: return OPVCC(4,46,0,0);
+case ANMACHHWCC: return OPVCC(4,46,0,1);
+case ANMACHHWS: return OPVCC(4,110,0,0);
+case ANMACHHWSCC: return OPVCC(4,110,0,1);
+case ANMACHHWSV: return OPVCC(4,110,1,0);
+case ANMACHHWSVCC: return OPVCC(4,110,1,1);
+case ANMACHHWV: return OPVCC(4,46,1,0);
+case ANMACHHWVCC: return OPVCC(4,46,1,1);
+case ANMACLHW: return OPVCC(4,430,0,0);
+case ANMACLHWCC: return OPVCC(4,430,0,1);
+case ANMACLHWS: return OPVCC(4,494,0,0);
+case ANMACLHWSCC: return OPVCC(4,494,0,1);
+case ANMACLHWSV: return OPVCC(4,494,1,0);
+case ANMACLHWSVCC: return OPVCC(4,494,1,1);
+case ANMACLHWV: return OPVCC(4,430,1,0);
+case ANMACLHWVCC: return OPVCC(4,430,1,1);
+case ANAND: return OPVCC(31,476,0,0);
+case ANANDCC: return OPVCC(31,476,0,1);
+case ANEG: return OPVCC(31,104,0,0);
+case ANEGCC: return OPVCC(31,104,0,1);
+case ANEGV: return OPVCC(31,104,1,0);
+case ANEGVCC: return OPVCC(31,104,1,1);
+case ANOR: return OPVCC(31,124,0,0);
+case ANORCC: return OPVCC(31,124,0,1);
+case AOR: return OPVCC(31,444,0,0);
+case AORCC: return OPVCC(31,444,0,1);
+case AORN: return OPVCC(31,412,0,0);
+case AORNCC: return OPVCC(31,412,0,1);
+case ARFI: return OPVCC(19,50,0,0);
+case ARFCI: return OPVCC(19,51,0,0);
+case ARLWMI: return OPVCC(20,0,0,0);
 case ARLWMICC: return OPVCC(20,0,0,1);
-case ARLWNM:	return OPVCC(23,0,0,0);
-case ARLWNMCC:	return OPVCC(23,0,0,1);
-case ASYSCALL:	return OPVCC(17,1,0,0);
-case ASLW:	return OPVCC(31,24,0,0);
-case ASLWCC:	return OPVCC(31,24,0,1);
-case ASRAW:	return OPVCC(31,792,0,0);
-case ASRAWCC:	return OPVCC(31,792,0,1);
-case ASRW:	return OPVCC(31,536,0,0);
-case ASRWCC:	return OPVCC(31,536,0,1);
-case ASUB:	return OPVCC(31,40,0,0);
-case ASUBCC:	return OPVCC(31,40,0,1);
-case ASUBV:	return OPVCC(31,40,1,0);
-case ASUBVCC:	return OPVCC(31,40,1,1);
-case ASUBC:	return OPVCC(31,8,0,0);
-case ASUBCCC:	return OPVCC(31,8,0,1);
-case ASUBCV:	return OPVCC(31,8,1,0);
-case ASUBCVCC:	return OPVCC(31,8,1,1);
-case ASUBE:	return OPVCC(31,136,0,0);
-case ASUBECC:	return OPVCC(31,136,0,1);
-case ASUBEV:	return OPVCC(31,136,1,0);
-case ASUBEVCC:	return OPVCC(31,136,1,1);
-case ASUBME:	return OPVCC(31,232,0,0);
-case ASUBMECC:	return OPVCC(31,232,0,1);
-case ASUBMEV:	return OPVCC(31,232,1,0);
-case ASUBMEVCC:	return OPVCC(31,232,1,1);
-case ASUBZE:	return OPVCC(31,200,0,0);
-case ASUBZECC:	return OPVCC(31,200,0,1);
-case ASUBZEV:	return OPVCC(31,200,1,0);
-case ASUBZEVCC:	return OPVCC(31,200,1,1);
-case ASYNC:	return OPVCC(31,598,0,0);
-case ATLBIE:	return OPVCC(31,306,0,0);
-case ATW:	return OPVCC(31,4,0,0);
-case AXOR:	return OPVCC(31,316,0,0);
-case AXORCC:	return OPVCC(31,316,0,1);
+case ARLWNM: return OPVCC(23,0,0,0);
+case ARLWNMCC: return OPVCC(23,0,0,1);
+case ASYSCALL: return OPVCC(17,1,0,0);
+case ASLW: return OPVCC(31,24,0,0);
+case ASLWCC: return OPVCC(31,24,0,1);
+case ASRAW: return OPVCC(31,792,0,0);
+case ASRAWCC: return OPVCC(31,792,0,1);
+case ASRW: return OPVCC(31,536,0,0);
+case ASRWCC: return OPVCC(31,536,0,1);
+case ASUB: return OPVCC(31,40,0,0);
+case ASUBCC: return OPVCC(31,40,0,1);
+case ASUBV: return OPVCC(31,40,1,0);
+case ASUBVCC: return OPVCC(31,40,1,1);
+case ASUBC: return OPVCC(31,8,0,0);
+case ASUBCCC: return OPVCC(31,8,0,1);
+case ASUBCV: return OPVCC(31,8,1,0);
+case ASUBCVCC: return OPVCC(31,8,1,1);
+case ASUBE: return OPVCC(31,136,0,0);
+case ASUBECC: return OPVCC(31,136,0,1);
+case ASUBEV: return OPVCC(31,136,1,0);
+case ASUBEVCC: return OPVCC(31,136,1,1);
+case ASUBME: return OPVCC(31,232,0,0);
+case ASUBMECC: return OPVCC(31,232,0,1);
+case ASUBMEV: return OPVCC(31,232,1,0);
+case ASUBMEVCC: return OPVCC(31,232,1,1);
+case ASUBZE: return OPVCC(31,200,0,0);
+case ASUBZECC: return OPVCC(31,200,0,1);
+case ASUBZEV: return OPVCC(31,200,1,0);
+case ASUBZEVCC: return OPVCC(31,200,1,1);
+case ASYNC: return OPVCC(31,598,0,0);
+case ATLBIE: return OPVCC(31,306,0,0);
+case ATW: return OPVCC(31,4,0,0);
+case AXOR: return OPVCC(31,316,0,0);
+case AXORCC: return OPVCC(31,316,0,1);
 }
 diag("bad r/r opcode %A", a);
 return 0;
@@ -1064,41 +1064,41 @@ long
 opirr(int a)
 {
 switch(a) {
-case AADD:	return OPVCC(14,0,0,0);
-case AADDC:	return OPVCC(12,0,0,0);
-case AADDCCC:	return OPVCC(13,0,0,0);
-case AADD+AEND:	return OPVCC(15,0,0,0);
-case AANDCC:	return OPVCC(28,0,0,0);
-case AANDCC+AEND:	return OPVCC(29,0,0,0);
-case ABR:	return OPVCC(18,0,0,0);
-case ABL:	return OPVCC(18,0,0,0) | 1;
-case ABC:	return OPVCC(16,0,0,0);
-case ABCL:	return OPVCC(16,0,0,0) | 1;
-case ABEQ:	return AOP_RRR(16<<26,12,2,0);
-case ABGE:	return AOP_RRR(16<<26,4,0,0);
-case ABGT:	return AOP_RRR(16<<26,12,1,0);
-case ABLE:	return AOP_RRR(16<<26,4,1,0);
-case ABLT:	return AOP_RRR(16<<26,12,0,0);
-case ABNE:	return AOP_RRR(16<<26,4,2,0);
-case ABVC:	return AOP_RRR(16<<26,4,3,0);
-case ABVS:	return AOP_RRR(16<<26,12,3,0);
-case ACMP:	return OPVCC(11,0,0,0);
-case ACMPU:	return OPVCC(10,0,0,0);
-case ALSW:	return OPVCC(31,597,0,0);
-case AMULLW:	return OPVCC(7,0,0,0);
-case AOR:	return OPVCC(24,0,0,0);
-case AOR+AEND:	return OPVCC(25,0,0,0);
-case ARLWMI:	return OPVCC(20,0,0,0);
-case ARLWMICC:	return OPVCC(20,0,0,1);
-case ARLWNM:	return OPVCC(21,0,0,0);
-case ARLWNMCC:	return OPVCC(21,0,0,1);
-case ASRAW:	return OPVCC(31,824,0,0);
-case ASRAWCC:	return OPVCC(31,824,0,1);
-case ASTSW:	return OPVCC(31,725,0,0);
-case ASUBC:	return OPVCC(8,0,0,0);
-case ATW:	return OPVCC(3,0,0,0);
-case AXOR:	return OPVCC(26,0,0,0);
-case AXOR+AEND:	return OPVCC(27,0,0,0);
+case AADD: return OPVCC(14,0,0,0);
+case AADDC: return OPVCC(12,0,0,0);
+case AADDCCC: return OPVCC(13,0,0,0);
+case AADD+AEND: return OPVCC(15,0,0,0);
+case AANDCC: return OPVCC(28,0,0,0);
+case AANDCC+AEND: return OPVCC(29,0,0,0);
+case ABR: return OPVCC(18,0,0,0);
+case ABL: return OPVCC(18,0,0,0) | 1;
+case ABC: return OPVCC(16,0,0,0);
+case ABCL: return OPVCC(16,0,0,0) | 1;
+case ABEQ: return AOP_RRR(16<<26,12,2,0);
+case ABGE: return AOP_RRR(16<<26,4,0,0);
+case ABGT: return AOP_RRR(16<<26,12,1,0);
+case ABLE: return AOP_RRR(16<<26,4,1,0);
+case ABLT: return AOP_RRR(16<<26,12,0,0);
+case ABNE: return AOP_RRR(16<<26,4,2,0);
+case ABVC: return AOP_RRR(16<<26,4,3,0);
+case ABVS: return AOP_RRR(16<<26,12,3,0);
+case ACMP: return OPVCC(11,0,0,0);
+case ACMPU: return OPVCC(10,0,0,0);
+case ALSW: return OPVCC(31,597,0,0);
+case AMULLW: return OPVCC(7,0,0,0);
+case AOR: return OPVCC(24,0,0,0);
+case AOR+AEND: return OPVCC(25,0,0,0);
+case ARLWMI: return OPVCC(20,0,0,0);
+case ARLWMICC: return OPVCC(20,0,0,1);
+case ARLWNM: return OPVCC(21,0,0,0);
+case ARLWNMCC: return OPVCC(21,0,0,1);
+case ASRAW: return OPVCC(31,824,0,0);
+case ASRAWCC: return OPVCC(31,824,0,1);
+case ASTSW: return OPVCC(31,725,0,0);
+case ASUBC: return OPVCC(8,0,0,0);
+case ATW: return OPVCC(3,0,0,0);
+case AXOR: return OPVCC(26,0,0,0);
+case AXOR+AEND: return OPVCC(27,0,0,0);
 }
 diag("bad opcode i/r %A", a);
 return 0;
@@ -1107,21 +1107,21 @@ long
 opload(int a)
 {
 switch(a) {
-case AMOVW:	return OPVCC(32,0,0,0);
-case AMOVWU:	return OPVCC(33,0,0,0);
+case AMOVW: return OPVCC(32,0,0,0);
+case AMOVWU: return OPVCC(33,0,0,0);
 case AMOVB:
-case AMOVBZ:	return OPVCC(34,0,0,0);
+case AMOVBZ: return OPVCC(34,0,0,0);
 case AMOVBU:
-case AMOVBZU:	return OPVCC(35,0,0,0);
-case AFMOVD:	return OPVCC(50,0,0,0);
-case AFMOVDU:	return OPVCC(51,0,0,0);
-case AFMOVS:	return OPVCC(48,0,0,0);
-case AFMOVSU:	return OPVCC(49,0,0,0);
-case AMOVH:	return OPVCC(42,0,0,0);
-case AMOVHU:	return OPVCC(43,0,0,0);
-case AMOVHZ:	return OPVCC(40,0,0,0);
-case AMOVHZU:	return OPVCC(41,0,0,0);
-case AMOVMW:	return OPVCC(46,0,0,0);
+case AMOVBZU: return OPVCC(35,0,0,0);
+case AFMOVD: return OPVCC(50,0,0,0);
+case AFMOVDU: return OPVCC(51,0,0,0);
+case AFMOVS: return OPVCC(48,0,0,0);
+case AFMOVSU: return OPVCC(49,0,0,0);
+case AMOVH: return OPVCC(42,0,0,0);
+case AMOVHU: return OPVCC(43,0,0,0);
+case AMOVHZ: return OPVCC(40,0,0,0);
+case AMOVHZU: return OPVCC(41,0,0,0);
+case AMOVMW: return OPVCC(46,0,0,0);
 }
 diag("bad load opcode %A", a);
 return 0;
@@ -1131,36 +1131,36 @@ oploadx(int a)
 {
 switch(a) {
 case AMOVW: return OPVCC(31,23,0,0);
-case AMOVWU:	return OPVCC(31,55,0,0);
+case AMOVWU: return OPVCC(31,55,0,0);
 case AMOVB:
 case AMOVBZ: return OPVCC(31,87,0,0);
 case AMOVBU:
 case AMOVBZU: return OPVCC(31,119,0,0);
-case AFMOVD:	return OPVCC(31,599,0,0);
-case AFMOVDU:	return OPVCC(31,631,0,0);
-case AFMOVS:	return OPVCC(31,535,0,0);
-case AFMOVSU:	return OPVCC(31,567,0,0);
-case AMOVH:	return OPVCC(31,343,0,0);
-case AMOVHU:	return OPVCC(31,375,0,0);
-case AMOVHBR:	return OPVCC(31,790,0,0);
-case AMOVWBR:	return OPVCC(31,534,0,0);
-case AMOVHZ:	return OPVCC(31,279,0,0);
-case AMOVHZU:	return OPVCC(31,311,0,0);
-case AECIWX:	return OPVCC(31,310,0,0);
-case ALWAR:	return OPVCC(31,20,0,0);
-case ALSW:	return OPVCC(31,533,0,0);
-case AFSMOVS:	return OPVCC(31,142,0,0);
-case AFSMOVSU:	return OPVCC(31,174,0,0);
-case AFSMOVD:	return OPVCC(31,206,0,0);
-case AFSMOVDU:	return OPVCC(31,238,0,0);
-case AFXMOVS:	return OPVCC(31,270,0,0);
-case AFXMOVSU:	return OPVCC(31,302,0,0);
-case AFXMOVD:	return OPVCC(31,334,0,0);
-case AFXMOVDU:	return OPVCC(31,366,0,0);
-case AFPMOVS:	return OPVCC(31,398,0,0);
-case AFPMOVSU:	return OPVCC(31,430,0,0);
-case AFPMOVD:	return OPVCC(31,462,0,0);
-case AFPMOVDU:	return OPVCC(31,494,0,0);
+case AFMOVD: return OPVCC(31,599,0,0);
+case AFMOVDU: return OPVCC(31,631,0,0);
+case AFMOVS: return OPVCC(31,535,0,0);
+case AFMOVSU: return OPVCC(31,567,0,0);
+case AMOVH: return OPVCC(31,343,0,0);
+case AMOVHU: return OPVCC(31,375,0,0);
+case AMOVHBR: return OPVCC(31,790,0,0);
+case AMOVWBR: return OPVCC(31,534,0,0);
+case AMOVHZ: return OPVCC(31,279,0,0);
+case AMOVHZU: return OPVCC(31,311,0,0);
+case AECIWX: return OPVCC(31,310,0,0);
+case ALWAR: return OPVCC(31,20,0,0);
+case ALSW: return OPVCC(31,533,0,0);
+case AFSMOVS: return OPVCC(31,142,0,0);
+case AFSMOVSU: return OPVCC(31,174,0,0);
+case AFSMOVD: return OPVCC(31,206,0,0);
+case AFSMOVDU: return OPVCC(31,238,0,0);
+case AFXMOVS: return OPVCC(31,270,0,0);
+case AFXMOVSU: return OPVCC(31,302,0,0);
+case AFXMOVD: return OPVCC(31,334,0,0);
+case AFXMOVDU: return OPVCC(31,366,0,0);
+case AFPMOVS: return OPVCC(31,398,0,0);
+case AFPMOVSU: return OPVCC(31,430,0,0);
+case AFPMOVD: return OPVCC(31,462,0,0);
+case AFPMOVDU: return OPVCC(31,494,0,0);
 }
 diag("bad loadx opcode %A", a);
 return 0;
@@ -1170,21 +1170,21 @@ opstore(int a)
 {
 switch(a) {
 case AMOVB:
-case AMOVBZ:	return OPVCC(38,0,0,0);
+case AMOVBZ: return OPVCC(38,0,0,0);
 case AMOVBU:
-case AMOVBZU:	return OPVCC(39,0,0,0);
-case AFMOVD:	return OPVCC(54,0,0,0);
-case AFMOVDU:	return OPVCC(55,0,0,0);
-case AFMOVS:	return OPVCC(52,0,0,0);
-case AFMOVSU:	return OPVCC(53,0,0,0);
+case AMOVBZU: return OPVCC(39,0,0,0);
+case AFMOVD: return OPVCC(54,0,0,0);
+case AFMOVDU: return OPVCC(55,0,0,0);
+case AFMOVS: return OPVCC(52,0,0,0);
+case AFMOVSU: return OPVCC(53,0,0,0);
 case AMOVHZ:
-case AMOVH:	return OPVCC(44,0,0,0);
+case AMOVH: return OPVCC(44,0,0,0);
 case AMOVHZU:
-case AMOVHU:	return OPVCC(45,0,0,0);
-case AMOVMW:	return OPVCC(47,0,0,0);
-case ASTSW:	return OPVCC(31,725,0,0);
-case AMOVW:	return OPVCC(36,0,0,0);
-case AMOVWU:	return OPVCC(37,0,0,0);
+case AMOVHU: return OPVCC(45,0,0,0);
+case AMOVMW: return OPVCC(47,0,0,0);
+case ASTSW: return OPVCC(31,725,0,0);
+case AMOVW: return OPVCC(36,0,0,0);
+case AMOVWU: return OPVCC(37,0,0,0);
 }
 diag("unknown store opcode %A", a);
 return 0;
@@ -1194,35 +1194,35 @@ opstorex(int a)
 {
 switch(a) {
 case AMOVB:
-case AMOVBZ:	return OPVCC(31,215,0,0);
+case AMOVBZ: return OPVCC(31,215,0,0);
 case AMOVBU:
-case AMOVBZU:	return OPVCC(31,247,0,0);
-case AFMOVD:	return OPVCC(31,727,0,0);
-case AFMOVDU:	return OPVCC(31,759,0,0);
-case AFMOVS:	return OPVCC(31,663,0,0);
-case AFMOVSU:	return OPVCC(31,695,0,0);
+case AMOVBZU: return OPVCC(31,247,0,0);
+case AFMOVD: return OPVCC(31,727,0,0);
+case AFMOVDU: return OPVCC(31,759,0,0);
+case AFMOVS: return OPVCC(31,663,0,0);
+case AFMOVSU: return OPVCC(31,695,0,0);
 case AMOVHZ:
-case AMOVH:	return OPVCC(31,407,0,0);
-case AMOVHBR:	return OPVCC(31,918,0,0);
+case AMOVH: return OPVCC(31,407,0,0);
+case AMOVHBR: return OPVCC(31,918,0,0);
 case AMOVHZU:
-case AMOVHU:	return OPVCC(31,439,0,0);
-case AMOVW:	return OPVCC(31,151,0,0);
-case AMOVWU:	return OPVCC(31,183,0,0);
-case ASTSW:	return OPVCC(31,661,0,0);
-case AMOVWBR:	return OPVCC(31,662,0,0);
-case ASTWCCC:	return OPVCC(31,150,0,1);
-case AECOWX:	return OPVCC(31,438,0,0);
-case AFSMOVS:	return OPVCC(31,654,0,0);
-case AFSMOVDU:	return OPVCC(31,750,0,0);
-case AFXMOVS:	return OPVCC(31,782,0,0);
-case AFXMOVSU:	return OPVCC(31,814,0,0);
-case AFXMOVD:	return OPVCC(31,846,0,0);
-case AFXMOVDU:	return OPVCC(31,878,0,0);
-case AFPMOVS:	return OPVCC(31,910,0,0);
-case AFPMOVSU:	return OPVCC(31,942,0,0);
-case AFPMOVD:	return OPVCC(31,974,0,0);
-case AFPMOVDU:	return OPVCC(31,1006,0,0);
-case AFPMOVIW:	return OPVCC(31,526,0,0);
+case AMOVHU: return OPVCC(31,439,0,0);
+case AMOVW: return OPVCC(31,151,0,0);
+case AMOVWU: return OPVCC(31,183,0,0);
+case ASTSW: return OPVCC(31,661,0,0);
+case AMOVWBR: return OPVCC(31,662,0,0);
+case ASTWCCC: return OPVCC(31,150,0,1);
+case AECOWX: return OPVCC(31,438,0,0);
+case AFSMOVS: return OPVCC(31,654,0,0);
+case AFSMOVDU: return OPVCC(31,750,0,0);
+case AFXMOVS: return OPVCC(31,782,0,0);
+case AFXMOVSU: return OPVCC(31,814,0,0);
+case AFXMOVD: return OPVCC(31,846,0,0);
+case AFXMOVDU: return OPVCC(31,878,0,0);
+case AFPMOVS: return OPVCC(31,910,0,0);
+case AFPMOVSU: return OPVCC(31,942,0,0);
+case AFPMOVD: return OPVCC(31,974,0,0);
+case AFPMOVDU: return OPVCC(31,1006,0,0);
+case AFPMOVIW: return OPVCC(31,526,0,0);
 }
 diag("unknown storex opcode %A", a);
 return 0;

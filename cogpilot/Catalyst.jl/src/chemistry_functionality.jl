@@ -69,8 +69,8 @@ error(COMPOUND_CREATION_ERROR_BAD_SEPARATOR)
 # we get something like :([:C, :O]), rather than :([C, O]).
 composition = Catalyst.recursive_find_reactants!(expr.args[3], 1,
 Vector{DSLReactant}(undef, 0))
-components = :([])                                      # Becomes something like :([C, O]).
-coefficients = :([])                                    # Becomes something like :([1, 2]).
+components = :([]) # Becomes something like :([C, O]).
+coefficients = :([]) # Becomes something like :([1, 2]).
 for comp in composition
 push!(components.args, comp.reactant)
 push!(coefficients.args, comp.stoichiometry)
@@ -81,7 +81,7 @@ end
 # - The expression which creates the compound (species_expr, e.g. `CO2 = 1.0, [metadata=true]`).
 species_expr = expr.args[2]
 species_name, ivs, _, _, _ = find_varinfo_in_declaration(expr.args[2])
-# If no ivs were given, inserts  an expression which evaluates to the union of the ivs
+# If no ivs were given, inserts an expression which evaluates to the union of the ivs
 # for the species the compound depends on.
 ivs_get_expr = :(unique(reduce(
 vcat, (sorted_arguments(ModelingToolkit.unwrap(comp))
@@ -93,13 +93,13 @@ end
 # The `Expr(:escape, :(...))` is required so that the expressions are evaluated in
 # the scope the users use the macro in (to e.g. detect already exiting species).
 # Creates something like (where `compound_ivs` and `component_ivs` evaluates to all the compound's and components' ivs):
-#   `@species CO2(iv)`
-#   `isempty([])` && (length(component_ivs) > 1) && error("When ...)
-#   `issetequal(compound_ivs, component_ivs) || error("The ...)`
-#   `CO2 = ModelingToolkit.setmetadata(CO2, Catalyst.CompoundSpecies, true)`
-#   `CO2 = ModelingToolkit.setmetadata(CO2, Catalyst.CompoundSpecies, [C, O])`
-#   `CO2 = ModelingToolkit.setmetadata(CO2, Catalyst.CompoundSpecies, [1, 2])`
-#   `CO2 = ModelingToolkit.wrap(CO2)`
+# `@species CO2(iv)`
+# `isempty([])` && (length(component_ivs) > 1) && error("When ...)
+# `issetequal(compound_ivs, component_ivs) || error("The ...)`
+# `CO2 = ModelingToolkit.setmetadata(CO2, Catalyst.CompoundSpecies, true)`
+# `CO2 = ModelingToolkit.setmetadata(CO2, Catalyst.CompoundSpecies, [C, O])`
+# `CO2 = ModelingToolkit.setmetadata(CO2, Catalyst.CompoundSpecies, [1, 2])`
+# `CO2 = ModelingToolkit.wrap(CO2)`
 species_declaration_expr = Expr(:escape, :(@species $species_expr))
 multiple_ivs_error_check_expr = Expr(:escape,
 :($(isempty(ivs)) && (length($ivs_get_expr) > 1) &&
@@ -167,7 +167,7 @@ for arg in expr.args
 push!(compound_syms.args, find_varinfo_in_declaration(arg.args[2])[1])
 end
 push!(compound_declarations.args, :($(Expr(:escape, :($(compound_syms))))))
-# The output needs to be converted to Vector{Num} (from  Vector{SymbolicUtils.BasicSymbolic{Real}}) to be consistent with e.g. @variables.
+# The output needs to be converted to Vector{Num} (from Vector{SymbolicUtils.BasicSymbolic{Real}}) to be consistent with e.g. @variables.
 compound_declarations.args[end] = :([ModelingToolkit.wrap(cmp)
 for cmp in $(compound_declarations.args[end])])
 # Returns output that.

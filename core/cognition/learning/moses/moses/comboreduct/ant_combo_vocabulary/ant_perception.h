@@ -23,10 +23,10 @@ bool symmetric;
 bool identity_of_indiscernibles;
 };
 static const perception_basic_description pbd[] = {
-{ id::is_food_ahead,     "is_food_ahead",     "boolean" }
+{ id::is_food_ahead, "is_food_ahead", "boolean" }
 };
 static const perception_property_description ppd[] = {
-{ id::is_food_ahead,     false,      false,     false,      false,    false,    false }
+{ id::is_food_ahead, false, false, false, false, false, false }
 };
 }
 class ant_perception : public ant_operator<ant_perception_enum, id::ant_perception_count>, public perception_base {

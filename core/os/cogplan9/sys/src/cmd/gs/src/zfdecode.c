@@ -130,7 +130,7 @@ check_dict_read(*op);
 dop = op;
 } else
 dop = 0;
-if (   (code = dict_int_param(dop, "EarlyChange", 0, 1, 1,
+if ( (code = dict_int_param(dop, "EarlyChange", 0, 1, 1,
 &plzs->EarlyChange)) < 0 ||
 (code = dict_int_param(dop, "InitialCodeLength", 2, 11, 8,
 &plzs->InitialCodeLength)) < 0 ||
@@ -158,7 +158,7 @@ if ((code = dict_bool_param(op, "LowBitFirst", lzs.FirstBitLowOrder,
 &unit_size)) < 0
 )
 return code;
-if (code == 0  )
+if (code == 0 )
 lzs.InitialCodeLength = unit_size + 1;
 }
 return filter_read_predictor(i_ctx_p, 0, &s_LZWD_template,

@@ -90,7 +90,7 @@ y = 0;
 else
 y = 1;
 cart_pole(y, &x, &x_dot, &theta, &theta_dot);
-if (x < -2.4 || x > 2.4  || theta < -twelve_degrees ||
+if (x < -2.4 || x > 2.4 || theta < -twelve_degrees ||
 theta > twelve_degrees)
 return steps;
 }
@@ -115,8 +115,8 @@ temp = (force + POLEMASS_LENGTH * *theta_dot * *theta_dot * sintheta)
 thetaacc = (GRAVITY * sintheta - costheta* temp)
 / (LENGTH * (FOURTHIRDS - MASSPOLE * costheta * costheta
 / TOTAL_MASS));
-xacc  = temp - POLEMASS_LENGTH * thetaacc* costheta / TOTAL_MASS;
-*x  += TAU * *x_dot;
+xacc = temp - POLEMASS_LENGTH * thetaacc* costheta / TOTAL_MASS;
+*x += TAU * *x_dot;
 *x_dot += TAU * xacc;
 *theta += TAU * *theta_dot;
 *theta_dot += TAU * thetaacc;

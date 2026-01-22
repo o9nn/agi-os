@@ -31,7 +31,7 @@ bool on_heap;
 ms_entry entries[1];
 };
 #define ms_size_default 100
-#define ms_size_desired		\
+#define ms_size_desired \
 ((max_ushort - sizeof(gc_mark_stack)) / sizeof(ms_entry) - 10)
 #define ms_size_min 50
 private void gc_init_mark_stack(gc_mark_stack *, uint);
@@ -96,7 +96,7 @@ if ((mem = spaces[i]) != 0)
 ialloc_validate_memory(mem, gcst);
 }
 #else
-#  define end_phase(str) DO_NOTHING
+# define end_phase(str) DO_NOTHING
 #endif
 void
 gs_gc_reclaim(vm_spaces * pspaces, bool global)
@@ -361,10 +361,10 @@ end_phase("validate pointers");
 #endif
 }
 #ifdef DEBUG
-#  define debug_check_object(pre, cp, gcst)\
+# define debug_check_object(pre, cp, gcst)\
 ialloc_validate_object((pre) + 1, cp, gcst)
 #else
-#  define debug_check_object(pre, cp, gcst) DO_NOTHING
+# define debug_check_object(pre, cp, gcst) DO_NOTHING
 #endif
 private void
 ptr_struct_unmark(enum_ptr_t *pep, gc_state_t * ignored)
@@ -916,8 +916,8 @@ if_debug3('9', "  [9]relocate %s * 0x%lx to 0x%lx\n",
 cname, (ulong)obj, (ulong)robj);
 return robj;
 }
-private void  *
-igc_reloc_struct_ptr(const void  *obj, gc_state_t * gcst)
+private void *
+igc_reloc_struct_ptr(const void *obj, gc_state_t * gcst)
 {
 const obj_header_t *const optr = (const obj_header_t *)obj;
 const void *robj;

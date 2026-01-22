@@ -8,8 +8,8 @@
 #include "writer.h"
 #include "memory.h"
 struct pgp_output_t {
-pgp_writer_t	 writer;
-pgp_error_t	*errors;
+pgp_writer_t writer;
+pgp_error_t *errors;
 };
 pgp_output_t *pgp_output_new(void);
 void pgp_output_delete(pgp_output_t *);

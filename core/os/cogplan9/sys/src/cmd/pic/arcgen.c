@@ -1,7 +1,7 @@
-#include	<stdio.h>
-#include	<math.h>
-#include	"pic.h"
-#include	"y.tab.h"
+#include <stdio.h>
+#include <math.h>
+#include "pic.h"
+#include "y.tab.h"
 void arc_extreme(double, double, double, double, double, double);
 int quadrant(double x, double y);
 obj *arcgen(int type)
@@ -165,14 +165,14 @@ j = quadrant(x0,y0);
 k = quadrant(x1,y1);
 if (j == k && y1*x0 < x1*y0) {
 if( xmin > -r) xmin = -r; if( ymin > -r) ymin = -r;
-if( xmax <  r) xmax =  r; if( ymax <  r) ymax =  r;
+if( xmax < r) xmax = r; if( ymax < r) ymax = r;
 } else {
 while (j != k) {
 switch (j) {
-case 1: if( ymax <  r) ymax =  r; break;
+case 1: if( ymax < r) ymax = r; break;
 case 2: if( xmin > -r) xmin = -r; break;
 case 3: if( ymin > -r) ymin = -r; break;
-case 4: if( xmax <  r) xmax =  r; break;
+case 4: if( xmax < r) xmax = r; break;
 }
 j = j%4 + 1;
 }
@@ -185,9 +185,9 @@ extreme(xmax, ymax);
 }
 quadrant(double x, double y)
 {
-if (     x>=0.0 && y> 0.0) return(1);
+if ( x>=0.0 && y> 0.0) return(1);
 else if( x< 0.0 && y>=0.0) return(2);
 else if( x<=0.0 && y< 0.0) return(3);
 else if( x> 0.0 && y<=0.0) return(4);
-else			   return 0;
+else return 0;
 }

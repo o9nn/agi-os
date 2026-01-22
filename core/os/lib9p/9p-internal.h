@@ -3,11 +3,11 @@
 #include "9p.h"
 #include <pthread.h>
 #include <sys/socket.h>
-#define P9_MAX_MSG_SIZE  8192
-#define P9_MIN_MSG_SIZE  1024
-#define P9_MAX_STRING    256
-#define P9_NOFID         (~0U)
-#define P9_MAX_FID       65536
+#define P9_MAX_MSG_SIZE 8192
+#define P9_MIN_MSG_SIZE 1024
+#define P9_MAX_STRING 256
+#define P9_NOFID (~0U)
+#define P9_MAX_FID 65536
 struct p9_connection {
 int fd;
 uint32_t msize;
@@ -68,14 +68,14 @@ int p9_decode_stat(uint8_t **buf, size_t *len, struct p9_stat *stat);
 void p9_init_qid(struct p9_qid *qid, uint8_t type, uint32_t version, uint64_t path);
 void p9_free_stat(struct p9_stat *stat);
 int p9_copy_stat(struct p9_stat *dest, const struct p9_stat *src);
-#define P9_EIO          1
-#define P9_EPROTO       2
-#define P9_ENOMEM       3
-#define P9_EINVAL       4
-#define P9_ENOENT       5
-#define P9_EACCES       6
-#define P9_EEXIST       7
-#define P9_EISDIR       8
-#define P9_ENOTDIR      9
-#define P9_EMFILE       10
+#define P9_EIO 1
+#define P9_EPROTO 2
+#define P9_ENOMEM 3
+#define P9_EINVAL 4
+#define P9_ENOENT 5
+#define P9_EACCES 6
+#define P9_EEXIST 7
+#define P9_EISDIR 8
+#define P9_ENOTDIR 9
+#define P9_EMFILE 10
 #endif

@@ -16,27 +16,27 @@ include "debug.m";
 debug: Debug;
 Sym, Src, Exp, Module: import debug;
 include "wmdeb.m";
-include	"plumbmsg.m";
+include "plumbmsg.m";
 plumbmsg: Plumbmsg;
 Msg: import plumbmsg;
 include "workdir.m";
 workdir: Workdir;
 include "dis.m";
 dism: Dis;
-mods:		list of ref Mod;
-tktop:		ref Tk->Toplevel;
-context:		ref Draw->Context;
-opendir =	".";
-srcid:		int;
-xscroll, remcr:	int;
-sblpath :=	array[] of
+mods: list of ref Mod;
+tktop: ref Tk->Toplevel;
+context: ref Draw->Context;
+opendir = ".";
+srcid: int;
+xscroll, remcr: int;
+sblpath := array[] of
 {
-("/dis/",	"/appl/"),
-("/dis/",	"/appl/cmd/"),
-# ("/dis/mux/",	"/appl/mux/"),
-# ("/dis/lib/",	"/appl/lib/"),
-# ("/dis/wm/",	"/appl/wm/"),
-("/dis/sh.",	"/appl/cmd/sh/sh."),
+("/dis/", "/appl/"),
+("/dis/", "/appl/cmd/"),
+# ("/dis/mux/", "/appl/mux/"),
+# ("/dis/lib/", "/appl/lib/"),
+# ("/dis/wm/", "/appl/wm/"),
+("/dis/sh.", "/appl/cmd/sh/sh."),
 };
 plumbed := 0;
 but3: chan of string;
@@ -417,10 +417,10 @@ return m;
 }
 # log(s: string)
 # {
-#	fd := sys->open("/usr/jrf/debug", Sys->OWRITE);
-#	sys->seek(fd, 0, Sys->SEEKEND);
-#	sys->fprint(fd, "%s\n", s);
-#	fd = nil;
+# fd := sys->open("/usr/jrf/debug", Sys->OWRITE);
+# sys->seek(fd, 0, Sys->SEEKEND);
+# sys->fprint(fd, "%s\n", s);
+# fd = nil;
 # }
 findbm(dis: string): ref Mod
 {
@@ -480,7 +480,7 @@ if(m != nil
 && dir != "" && dir[0] != '/'
 && suffix(dir, opendir))
 addsearch(opendir[:len opendir - len dir]);
-else if(m != nil)	# remember anyway
+else if(m != nil) # remember anyway
 addsearch(opendir);
 return m;
 }

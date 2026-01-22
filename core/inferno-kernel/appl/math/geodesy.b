@@ -9,19 +9,19 @@ include "math/geodesy.m";
 Approx: con 0;
 Epsilon: con 0.000001;
 Mperft: con 0.3048;
-Earthrad: con 10800.0/Pi*6076.115*Mperft;	# in feet (about 4000 miles) : now metres
-Δt: con 16.0;	# now-1989
+Earthrad: con 10800.0/Pi*6076.115*Mperft; # in feet (about 4000 miles) : now metres
+Δt: con 16.0; # now-1989
 # lalo0: con "53:57:45N 01:04:55W";
 # os0: con "SE6022552235";
 # ellipsoids
 Airy1830, Airy1830m, Int1924, GRS80: con iota;
-Ngrid: con 100000;	# in metres
+Ngrid: con 100000; # in metres
 Vector: adt{
 x, y, z: real;
 };
 Latlong: adt{
-la: real;	# -Pi to Pi
-lo: real;	# -Pi to Pi
+la: real; # -Pi to Pi
+lo: real; # -Pi to Pi
 x: real;
 y: real;
 };
@@ -44,17 +44,17 @@ N0: real;
 e: int;
 };
 Helmert: adt{
-tx, ty, tz: real;	# metres
-s: real;		# ppm
-rx, ry, rz: real;	# secs
+tx, ty, tz: real; # metres
+s: real; # ppm
+rx, ry, rz: real; # secs
 };
 Format: adt{
-dat: int;	# datum
-cdat: int;	# converting datum
-prj: int;		# projection
-tmp: ref Mercator;	# actual projection
-orig: Lalo;	# origin of above projection
-zone: int;	# UTM zone
+dat: int; # datum
+cdat: int; # converting datum
+prj: int; # projection
+tmp: ref Mercator; # actual projection
+orig: Lalo; # origin of above projection
+zone: int; # UTM zone
 };
 # ellipsoids
 ells := array[] of {
@@ -360,7 +360,7 @@ ETRS89 =>
 return HM_IDENTITY;
 }
 }
-return HM_IDENTITY;	# Ireland65, ED50 not done
+return HM_IDENTITY; # Ireland65, ED50 not done
 }
 datum2datum(lalo: Lalo, f: int, t: int): Lalo
 {
@@ -419,8 +419,8 @@ t2 := tan(φ)**2;
 a := ells[e].a;
 b := ells[e].b;
 e2 := 1.0-(b/a)**2;
-if(φ0λ0 == nil)	# UTM
-(φ0, λ0) := utmlalo((φ, λ));	# don't use fmt.zone here
+if(φ0λ0 == nil) # UTM
+(φ0, λ0) := utmlalo((φ, λ)); # don't use fmt.zone here
 else
 (φ0, λ0) = fmt.orig;
 n := (a-b)/(a+b);
@@ -442,9 +442,9 @@ VI := ν*c**5*(5.0+14.0*η2+t2*(t2-18.0-58.0*η2))/120.0;
 N := I+λ2*(II+λ2*(III+IIIA*λ2));
 E := E0+λ*(IV+λ2*(V+VI*λ2));
 # if(E < 0.0 || E >= real(7*Ngrid))
-# 	E = 0.0;
+# E = 0.0;
 # if(N < 0.0 || N >= real(13*Ngrid))
-# 	N = 0.0;
+# N = 0.0;
 return (E, N);
 }
 en2lalo(en: Eano): Lalo
@@ -579,109 +579,109 @@ sys->print("\n");
 }
 # lalo2xy(la: real, lo: real, lalo: ref Latlong): Eano
 # {
-# 	x, y: real;
+# x, y: real;
 #
-# 	la0 := lalo.la;
-# 	lo0 := lalo.lo;
-# 	if(Approx){
-# 		x = Earthrad*cos(la0)*(lo-lo0)+lalo.x;
-# 		y = Earthrad*(la-la0)+lalo.y;
-# 	}
-# 	else{
-# 		x = Earthrad*cos(la)*sin(lo-lo0)+lalo.x;
-# 		y = Earthrad*(sin(la)*cos(la0)-sin(la0)*cos(la)*cos(lo-lo0))+lalo.y;
-# 	}
-# 	return (x, y);
+# la0 := lalo.la;
+# lo0 := lalo.lo;
+# if(Approx){
+# x = Earthrad*cos(la0)*(lo-lo0)+lalo.x;
+# y = Earthrad*(la-la0)+lalo.y;
+# }
+# else{
+# x = Earthrad*cos(la)*sin(lo-lo0)+lalo.x;
+# y = Earthrad*(sin(la)*cos(la0)-sin(la0)*cos(la)*cos(lo-lo0))+lalo.y;
+# }
+# return (x, y);
 # }
 # lalo2xyz(la: real, lo: real, lalo: ref Latlong): (int, int, int)
 # {
-# 	z: real;
+# z: real;
 #
-# 	la0 := lalo.la;
-#     	lo0 := lalo.lo;
-# 	(x, y) := lalo2xy(la, lo, lalo);
-# 	if(Approx)
-# 		z = Earthrad;
-# 	else
-# 		z = Earthrad*(sin(la)*sin(la0)+cos(la)*cos(la0)*cos(lo-lo0));
-# 	return (x, y, int z);
+# la0 := lalo.la;
+# lo0 := lalo.lo;
+# (x, y) := lalo2xy(la, lo, lalo);
+# if(Approx)
+# z = Earthrad;
+# else
+# z = Earthrad*(sin(la)*sin(la0)+cos(la)*cos(la0)*cos(lo-lo0));
+# return (x, y, int z);
 # }
 # xy2lalo(p: Eano, lalo: ref Latlong): (real, real)
 # {
-# 	la, lo: real;
+# la, lo: real;
 #
-# 	x := p.e;
-# 	y := p.n;
-# 	la0 := lalo.la;
-# 	lo0 := lalo.lo;
-# 	if(Approx){
-# 		la = la0 + (y-lalo.y)/Earthrad;
-# 		lo = lo0 + (x-lalo.x)/(Earthrad*cos(la0));
-# 	}
-# 	else{
-# 		a, b, c, d, bestd, r, r1, r2, lat, lon, tmp: real;
-# 		i, n: int;
+# x := p.e;
+# y := p.n;
+# la0 := lalo.la;
+# lo0 := lalo.lo;
+# if(Approx){
+# la = la0 + (y-lalo.y)/Earthrad;
+# lo = lo0 + (x-lalo.x)/(Earthrad*cos(la0));
+# }
+# else{
+# a, b, c, d, bestd, r, r1, r2, lat, lon, tmp: real;
+# i, n: int;
 #
-# 		bestd = -1.0;
-# 		la = lo = 0.0;
-# 		a = (x-lalo.x)/Earthrad;
-# 		b = (y-lalo.y)/Earthrad;
-# 		(n, r1, r2) = quad(1.0, -2.0*b*cos(la0), (a*a-1.0)*sin(la0)*sin(la0)+b*b);
-# 		if(n == 0)
-# 			return (la, lo);
-# 		while(--n >= 0){
-# 			if(n == 1)
-# 				r = r2;
-# 			else
-# 				r = r1;
-# 			if(fabs(r) <= 1.0){
-# 				lat = asin(r);
-# 				c = cos(lat);
-# 				if(small(c))
-# 					tmp = 0.0;	# lat = +90, -90, lon = lo0
-# 				else
-# 					tmp = a/c;
-# 				if(fabs(tmp) <= 1.0){
-# 					for(i = 0; i < 2; i++){
-# 						if(i == 0)
-# 							lon = norm(asin(tmp)+lo0);
-# 						else
-# 							lon = norm(Pi-asin(tmp)+lo0);
-# 						(X, Y, Z) := lalo2xyz(lat, lon, lalo);
-# 						# eliminate non-roots by d, root on other side of earth by Z
-# 						d = (real X-x)**2+(real Y-y)**2;
-# 						if(Z >= 0 && (bestd < 0.0 || d < bestd)){
-# 							bestd = d;
-# 							la = lat;
-# 							lo = lon;
-# 						}
-# 					}
-# 				}
-# 			}
-# 		}
-# 	}
-# 	return (la, lo);
+# bestd = -1.0;
+# la = lo = 0.0;
+# a = (x-lalo.x)/Earthrad;
+# b = (y-lalo.y)/Earthrad;
+# (n, r1, r2) = quad(1.0, -2.0*b*cos(la0), (a*a-1.0)*sin(la0)*sin(la0)+b*b);
+# if(n == 0)
+# return (la, lo);
+# while(--n >= 0){
+# if(n == 1)
+# r = r2;
+# else
+# r = r1;
+# if(fabs(r) <= 1.0){
+# lat = asin(r);
+# c = cos(lat);
+# if(small(c))
+# tmp = 0.0; # lat = +90, -90, lon = lo0
+# else
+# tmp = a/c;
+# if(fabs(tmp) <= 1.0){
+# for(i = 0; i < 2; i++){
+# if(i == 0)
+# lon = norm(asin(tmp)+lo0);
+# else
+# lon = norm(Pi-asin(tmp)+lo0);
+# (X, Y, Z) := lalo2xyz(lat, lon, lalo);
+# # eliminate non-roots by d, root on other side of earth by Z
+# d = (real X-x)**2+(real Y-y)**2;
+# if(Z >= 0 && (bestd < 0.0 || d < bestd)){
+# bestd = d;
+# la = lat;
+# lo = lon;
+# }
+# }
+# }
+# }
+# }
+# }
+# return (la, lo);
 # }
 # quad(a: real, b: real, c: real): (int, real, real)
 # {
-# 	r1, r2: real;
+# r1, r2: real;
 #
-# 	D := b*b-4.0*a*c;
-# 	if(small(a)){
-# 		if(small(b))
-# 			return (0, r1, r2);
-# 		r1 = r2 = -c/b;
-# 		return (1, r1, r2);
-# 	}
-# 	if(D < 0.0)
-# 		return (0, r1, r2);
-# 	D = sqrt(D);
-# 	r1 = (-b+D)/(2.0*a);
-# 	r2 = (-b-D)/(2.0*a);
-# 	if(small(D))
-# 		return (1, r1, r2);
-# 	else
-# 		return (2, r1, r2);
+# D := b*b-4.0*a*c;
+# if(small(a)){
+# if(small(b))
+# return (0, r1, r2);
+# r1 = r2 = -c/b;
+# return (1, r1, r2);
+# }
+# if(D < 0.0)
+# return (0, r1, r2);
+# D = sqrt(D);
+# r1 = (-b+D)/(2.0*a);
+# r2 = (-b-D)/(2.0*a);
+# if(small(D))
+# return (1, r1, r2);
+# else
+# return (2, r1, r2);
 # }
 d2(v: int): string
 {

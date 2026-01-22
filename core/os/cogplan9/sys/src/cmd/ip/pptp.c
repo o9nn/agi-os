@@ -3,46 +3,46 @@
 #include <bio.h>
 #include <ip.h>
 #include <thread.h>
-int	ack;
-int	alarmed;
-int	ctlechotime;
-int	ctlfd;
-int	ctlrcvtime;
-int	debug;
-int	grefd;
+int ack;
+int alarmed;
+int ctlechotime;
+int ctlfd;
+int ctlrcvtime;
+int debug;
+int grefd;
 uchar localip[IPaddrlen];
-int	localwin;
-char	*keyspec;
-int	now;
-char	*pppnetmntpt;
-int	pid;
+int localwin;
+char *keyspec;
+int now;
+char *pppnetmntpt;
+int pid;
 Channel *pidchan;
-int	pppfd;
-int	primary;
-int	rack;
-Channel	*rdchan;
-int	rdexpect;
-int	remid;
+int pppfd;
+int primary;
+int rack;
+Channel *rdchan;
+int rdexpect;
+int remid;
 uchar remoteip[IPaddrlen];
-int	remwin;
-int	rseq;
-int	seq;
-char	tcpdir[40];
+int remwin;
+int rseq;
+int seq;
+char tcpdir[40];
 Channel *tickchan;
-int	topppfd;
-int	aread(int, int, void*, int);
-int	catchalarm(void*, char*);
-void	dumpctlpkt(uchar*);
-void	getaddrs(void);
-void	*emalloc(long);
-void	ewrite(int, void*, int);
-void	myfatal(char*, ...);
+int topppfd;
+int aread(int, int, void*, int);
+int catchalarm(void*, char*);
+void dumpctlpkt(uchar*);
+void getaddrs(void);
+void *emalloc(long);
+void ewrite(int, void*, int);
+void myfatal(char*, ...);
 #pragma varargck argpos myfatal 1
-int	pptp(char*);
-void	pushppp(int);
-void	recordack(int);
-int	schedack(int, uchar*, int);
-void	waitacks(void);
+int pptp(char*);
+void pushppp(int);
+void recordack(int);
+int schedack(int, uchar*, int);
+void waitacks(void);
 void
 usage(void)
 {
@@ -95,40 +95,40 @@ fprint(2, "note rcved: %s\n", msg);
 return 0;
 }
 enum {
-Stack	= 8192,
-PptpProto	= 0x0100,
-Magic	= 0x1a2b3c4d,
-Window	= 16,
-Timeout	= 60,
+Stack = 8192,
+PptpProto = 0x0100,
+Magic = 0x1a2b3c4d,
+Window = 16,
+Timeout = 60,
 Pktsize = 2000,
-Tick	= 500,
+Tick = 500,
 Sendtimeout = 4,
 Servertimeout = 5*60*1000/Tick,
 Echointerval = 60*1000/Tick,
 };
 enum {
-Syncframe	= 0x1,
-Asyncframe	= 0x2,
-Analog		= 0x1,
-Digital		= 0x2,
-Version		= 0x100,
+Syncframe = 0x1,
+Asyncframe = 0x2,
+Analog = 0x1,
+Digital = 0x2,
+Version = 0x100,
 };
 enum {
-Tstart		= 1,
-Rstart		= 2,
-Tstop		= 3,
-Rstop		= 4,
-Techo		= 5,
-Recho		= 6,
-Tcallout	= 7,
-Rcallout	= 8,
-Tcallreq	= 9,
-Rcallreq	= 10,
-Acallcon	= 11,
-Tcallclear	= 12,
-Acalldis	= 13,
-Awaninfo	= 14,
-Alinkinfo	= 15,
+Tstart = 1,
+Rstart = 2,
+Tstop = 3,
+Rstop = 4,
+Techo = 5,
+Recho = 6,
+Tcallout = 7,
+Rcallout = 8,
+Tcallreq = 9,
+Rcallreq = 10,
+Acallcon = 11,
+Tcallclear = 12,
+Acalldis = 13,
+Awaninfo = 14,
+Alinkinfo = 15,
 };
 void
 recho(uchar *in)

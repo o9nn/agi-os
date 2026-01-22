@@ -12,13 +12,13 @@ include "security.m";
 include "arg.m";
 Convpasswd: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 PW: adt {
-id:	string;			# user id
-pw:	array of byte;	# password hashed by SHA
-expire:	int;		# expiration time (epoch seconds)
-other:	string;		# about the account
+id: string; # user id
+pw: array of byte; # password hashed by SHA
+expire: int; # expiration time (epoch seconds)
+other: string; # about the account
 };
 mntpt := "/mnt/keys";
 init(nil: ref Draw->Context, args: list of string)
@@ -37,10 +37,10 @@ arg->init(args);
 arg->setusage("convpasswd [-f] [-v] [-m /mnt/keys] [passwordfile]");
 while((o := arg->opt()) != 0)
 case o {
-'f' =>		force = 1;
-'m' =>	mntpt = arg->earg();
-'v' =>	verbose = 1;
-* =>		arg->usage();
+'f' => force = 1;
+'m' => mntpt = arg->earg();
+'v' => verbose = 1;
+* => arg->usage();
 }
 args = arg->argv();
 arg = nil;
@@ -89,7 +89,7 @@ d := sys->create(dir, Sys->OREAD, Sys->DMDIR|8r600);
 if(d == nil)
 return sys->sprint("can't create %s: %r", dir);
 }else if(!force)
-return nil;		# leave existing entry alone
+return nil; # leave existing entry alone
 secret := dir+"/secret";
 fd := sys->open(secret, Sys->OWRITE);
 if(fd == nil)

@@ -1,13 +1,13 @@
-#define	EXTERN
-#include	"l.h"
-#include	<ar.h>
-#ifndef	DEFAULT
-#define	DEFAULT	'9'
+#define EXTERN
+#include "l.h"
+#include <ar.h>
+#ifndef DEFAULT
+#define DEFAULT '9'
 #endif
-char	*noname		= "<none>";
-char	symname[]	= SYMDEF;
-char	thechar		= 'i';
-char	*thestring 	= "riscv";
+char *noname = "<none>";
+char symname[] = SYMDEF;
+char thechar = 'i';
+char *thestring = "riscv";
 int little;
 void
 main(int argc, char *argv[])
@@ -719,12 +719,12 @@ case AREMW:
 case AREMUW:
 o = AREM;
 break;
-case AADDW:	o = AADD; break;
-case ASUBW:	o = ASUB; break;
-case ASLLW:	o = ASLL; break;
-case ASRLW:	o = ASRL; break;
-case ASRAW:	o = ASRA; break;
-case AMULW:	o = AMUL; break;
+case AADDW: o = AADD; break;
+case ASUBW: o = ASUB; break;
+case ASLLW: o = ASLL; break;
+case ASRLW: o = ASRL; break;
+case ASRAW: o = ASRA; break;
+case AMULW: o = AMUL; break;
 }
 p->as = o;
 }

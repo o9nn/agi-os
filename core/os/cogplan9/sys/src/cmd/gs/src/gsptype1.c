@@ -345,11 +345,11 @@ gs_pattern1_set_color(const gs_client_color * pcc, gs_state * pgs)
 gs_pattern1_instance_t * pinst = (gs_pattern1_instance_t *)pcc->pattern;
 gs_pattern1_template_t * ptmplt = &pinst->template;
 if (ptmplt->PaintType == 2) {
-const gs_color_space *  pcs = pgs->color_space;
+const gs_color_space * pcs = pgs->color_space;
 pcs = (const gs_color_space *)&(pcs->params.pattern.base_space);
 return pcs->type->set_overprint(pcs, pgs);
 } else {
-gs_overprint_params_t   params;
+gs_overprint_params_t params;
 params.retain_any_comps = false;
 pgs->effective_overprint_mode = 0;
 return gs_state_update_overprint(pgs, &params);
@@ -384,9 +384,9 @@ pcspace
 #define st_pixmap_info_max_ptrs (1 + st_tile_bitmap_max_ptrs)
 private void
 free_pixmap_pattern(
-gs_memory_t *           pmem,
-void *                  pvpinst,
-client_name_t           cname
+gs_memory_t * pmem,
+void * pvpinst,
+client_name_t cname
 )
 {
 gs_pattern1_instance_t *pinst = (gs_pattern1_instance_t *)pvpinst;
@@ -461,7 +461,7 @@ false,
 (code = gs_image_enum_init( pen,
 pie,
 (gs_data_image_t *)&image,
-pgs )) >= 0      )
+pgs )) >= 0 )
 code = bitmap_paint(pen, (gs_data_image_t *) & image, pbitmap, pgs);
 gs_grestore(pgs);
 return code;
@@ -819,8 +819,8 @@ pdevc1->mask.id == pdevc2->mask.id;
 int
 gx_dc_pattern_get_nonzero_comps(
 const gx_device_color * pdevc_ignored,
-const gx_device *       dev_ignored,
-gx_color_index *        pcomp_bits_ignored )
+const gx_device * dev_ignored,
+gx_color_index * pcomp_bits_ignored )
 {
 return 1;
 }
@@ -847,23 +847,23 @@ pdevc1->mask.id == pdevc2->mask.id;
 }
 int
 gx_dc_pattern_write(
-const gx_device_color *         pdevc,
-const gx_device_color_saved *   psdc,
-const gx_device *               dev,
-byte *                          data,
-uint *                          psize )
+const gx_device_color * pdevc,
+const gx_device_color_saved * psdc,
+const gx_device * dev,
+byte * data,
+uint * psize )
 {
 return_error(gs_error_unknownerror);
 }
 int
 gx_dc_pattern_read(
-gx_device_color *       pdevc,
+gx_device_color * pdevc,
 const gs_imager_state * pis,
 const gx_device_color * prior_devc,
-const gx_device *       dev,
-const byte *            data,
-uint                    size,
-gs_memory_t *           mem )
+const gx_device * dev,
+const byte * data,
+uint size,
+gs_memory_t * mem )
 {
 return_error(gs_error_unknownerror);
 }

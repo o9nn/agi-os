@@ -14,11 +14,11 @@
 #include <sys/mman.h>
 #include <endian.h>
 typedef u_int32_t __u32;
-typedef int32_t   __s32;
+typedef int32_t __s32;
 typedef u_int16_t __u16;
-typedef int16_t   __s16;
-typedef u_int8_t  __u8;
-typedef int8_t    __s8;
+typedef int16_t __s16;
+typedef u_int8_t __u8;
+typedef int8_t __s8;
 #include "ext2_fs.h"
 #undef ext2_debug
 #ifdef EXT2FS_DEBUG
@@ -29,7 +29,7 @@ fprintf (stderr, "ext2fs: (debug) %s: " f "\n", __FUNCTION__ , ## a)
 #define ext2_debug(f, a...) \
 do { if (ext2_debug_flag) ext2_debug_(f, ## a); } while (0)
 #else
-#define ext2_debug(f, a...)	(void)0
+#define ext2_debug(f, a...) (void)0
 #endif
 #undef DONT_CACHE_MEMORY_OBJECTS
 typedef __u32 block_t;
@@ -106,7 +106,7 @@ FILE_DATA,
 struct node *node;
 vm_prot_t max_prot;
 };
-#define DISK_CACHE_BLOCKS	65536
+#define DISK_CACHE_BLOCKS 65536
 #include <hurd/diskfs-pager.h>
 void create_disk_pager (void);
 error_t inhibit_ext2_pager (void);
@@ -119,13 +119,13 @@ extern struct store_parsed *store_parsed;
 extern void *disk_cache;
 extern store_offset_t disk_cache_size;
 extern int disk_cache_blocks;
-#define DC_INCORE	0x01
-#define DC_UNTOUCHED	0x02
-#define DC_FIXED	0x04
-#define DC_DONT_REUSE	(DC_INCORE | DC_UNTOUCHED | DC_FIXED)
-#define DC_NO_BLOCK	((block_t) -1L)
+#define DC_INCORE 0x01
+#define DC_UNTOUCHED 0x02
+#define DC_FIXED 0x04
+#define DC_DONT_REUSE (DC_INCORE | DC_UNTOUCHED | DC_FIXED)
+#define DC_NO_BLOCK ((block_t) -1L)
 #ifdef DEBUG_DISK_CACHE
-#define DISK_CACHE_LAST_READ_XOR	0xDEADBEEF
+#define DISK_CACHE_LAST_READ_XOR 0xDEADBEEF
 #endif
 struct disk_cache_info
 {
@@ -144,18 +144,18 @@ extern pthread_cond_t disk_cache_reassociation;
 void *disk_cache_block_ref (block_t block);
 void disk_cache_block_ref_ptr (void *ptr);
 void _disk_cache_block_deref (void *ptr);
-#define disk_cache_block_deref(PTR)                             \
+#define disk_cache_block_deref(PTR) \
 do { _disk_cache_block_deref (PTR); PTR = NULL; } while (0)
 int disk_cache_block_is_ref (block_t block);
 extern struct ext2_super_block *sblock;
 extern int sblock_dirty;
-#define SBLOCK_BLOCK	1
-#define SBLOCK_SIZE	(sizeof (struct ext2_super_block))
+#define SBLOCK_BLOCK 1
+#define SBLOCK_SIZE (sizeof (struct ext2_super_block))
 extern unsigned int sblock_block;
-#define SBLOCK_OFFS	(sblock_block << 10)
+#define SBLOCK_OFFS (sblock_block << 10)
 extern unsigned int block_size;
 extern unsigned int log2_block_size;
-#define BLOCKSIZE_SCALE	(le32toh (sblock->s_log_block_size))
+#define BLOCKSIZE_SCALE (le32toh (sblock->s_log_block_size))
 extern unsigned log2_dev_blocks_per_fs_block;
 extern unsigned log2_stat_blocks_per_fs_block;
 extern vm_address_t zeroblock;
@@ -212,7 +212,7 @@ return offset;
 #endif
 #define bptr(block) boffs_ptr(boffs(block))
 #define bptr_block(ptr) boffs_block(bptr_offs(ptr))
-#define group_desc(num)	(&group_desc_image[num])
+#define group_desc(num) (&group_desc_image[num])
 extern struct ext2_group_desc *group_desc_image;
 #define group_desc_block (boffs_block (SBLOCK_OFFS) + 1)
 #define group_desc_size (groups_count * sizeof(struct ext2_group_desc))
@@ -241,7 +241,7 @@ ext2_debug ("(%p)", inode);
 disk_cache_block_deref (inode);
 }
 #endif
-#define dino_deref(INODE)                               \
+#define dino_deref(INODE) \
 do { _dino_deref (INODE); INODE = NULL; } while (0)
 void write_all_disknodes (void);
 extern pthread_spinlock_t global_lock;

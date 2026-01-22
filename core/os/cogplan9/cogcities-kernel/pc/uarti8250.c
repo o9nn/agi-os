@@ -6,127 +6,127 @@
 #include "io.h"
 #include "../port/error.h"
 enum {
-Uart0		= 0x3F8,
-Uart0IRQ	= 4,
-Uart1		= 0x2F8,
-Uart1IRQ	= 3,
-UartFREQ	= 1843200,
+Uart0 = 0x3F8,
+Uart0IRQ = 4,
+Uart1 = 0x2F8,
+Uart1IRQ = 3,
+UartFREQ = 1843200,
 };
 enum {
-Rbr		= 0,
-Thr		= 0,
-Ier		= 1,
-Iir		= 2,
-Fcr		= 2,
-Lcr		= 3,
-Mcr		= 4,
-Lsr		= 5,
-Msr		= 6,
-Scr		= 7,
-Dll		= 0,
-Dlm		= 1,
+Rbr = 0,
+Thr = 0,
+Ier = 1,
+Iir = 2,
+Fcr = 2,
+Lcr = 3,
+Mcr = 4,
+Lsr = 5,
+Msr = 6,
+Scr = 7,
+Dll = 0,
+Dlm = 1,
 };
 enum {
-Erda		= 0x01,
-Ethre		= 0x02,
-Erls		= 0x04,
-Ems		= 0x08,
+Erda = 0x01,
+Ethre = 0x02,
+Erls = 0x04,
+Ems = 0x08,
 };
 enum {
-Ims		= 0x00,
-Ip		= 0x01,
-Ithre		= 0x02,
-Irda		= 0x04,
-Irls		= 0x06,
-Ictoi		= 0x0C,
-IirMASK		= 0x3F,
-Ifena		= 0xC0,
+Ims = 0x00,
+Ip = 0x01,
+Ithre = 0x02,
+Irda = 0x04,
+Irls = 0x06,
+Ictoi = 0x0C,
+IirMASK = 0x3F,
+Ifena = 0xC0,
 };
 enum {
-FIFOena		= 0x01,
-FIFOrclr	= 0x02,
-FIFOtclr	= 0x04,
-FIFO1		= 0x00,
-FIFO4		= 0x40,
-FIFO8		= 0x80,
-FIFO14		= 0xC0,
+FIFOena = 0x01,
+FIFOrclr = 0x02,
+FIFOtclr = 0x04,
+FIFO1 = 0x00,
+FIFO4 = 0x40,
+FIFO8 = 0x80,
+FIFO14 = 0xC0,
 };
 enum {
-Wls5		= 0x00,
-Wls6		= 0x01,
-Wls7		= 0x02,
-Wls8		= 0x03,
-WlsMASK		= 0x03,
-Stb		= 0x04,
-Pen		= 0x08,
-Eps		= 0x10,
-Stp		= 0x20,
-Brk		= 0x40,
-Dlab		= 0x80,
+Wls5 = 0x00,
+Wls6 = 0x01,
+Wls7 = 0x02,
+Wls8 = 0x03,
+WlsMASK = 0x03,
+Stb = 0x04,
+Pen = 0x08,
+Eps = 0x10,
+Stp = 0x20,
+Brk = 0x40,
+Dlab = 0x80,
 };
 enum {
-Dtr		= 0x01,
-Rts		= 0x02,
-Out1		= 0x04,
-Ie		= 0x08,
-Dm		= 0x10,
+Dtr = 0x01,
+Rts = 0x02,
+Out1 = 0x04,
+Ie = 0x08,
+Dm = 0x10,
 };
 enum {
-Dr		= 0x01,
-Oe		= 0x02,
-Pe		= 0x04,
-Fe		= 0x08,
-Bi		= 0x10,
-Thre		= 0x20,
-Temt		= 0x40,
-FIFOerr		= 0x80,
+Dr = 0x01,
+Oe = 0x02,
+Pe = 0x04,
+Fe = 0x08,
+Bi = 0x10,
+Thre = 0x20,
+Temt = 0x40,
+FIFOerr = 0x80,
 };
 enum {
-Dcts		= 0x01,
-Ddsr		= 0x02,
-Teri		= 0x04,
-Ddcd		= 0x08,
-Cts		= 0x10,
-Dsr		= 0x20,
-Ri		= 0x40,
-Dcd		= 0x80,
+Dcts = 0x01,
+Ddsr = 0x02,
+Teri = 0x04,
+Ddcd = 0x08,
+Cts = 0x10,
+Dsr = 0x20,
+Ri = 0x40,
+Dcd = 0x80,
 };
 typedef struct Ctlr {
-int	io;
-int	irq;
-int	tbdf;
-int	iena;
-uchar	sticky[8];
+int io;
+int irq;
+int tbdf;
+int iena;
+uchar sticky[8];
 Lock;
-int	hasfifo;
-int	checkfifo;
-int	fena;
+int hasfifo;
+int checkfifo;
+int fena;
 } Ctlr;
 extern PhysUart i8250physuart;
 static Ctlr i8250ctlr[2] = {
-{	.io	= Uart0,
-.irq	= Uart0IRQ,
-.tbdf	= BUSUNKNOWN, },
-{	.io	= Uart1,
-.irq	= Uart1IRQ,
-.tbdf	= BUSUNKNOWN, },
+{ .io = Uart0,
+.irq = Uart0IRQ,
+.tbdf = BUSUNKNOWN, },
+{ .io = Uart1,
+.irq = Uart1IRQ,
+.tbdf = BUSUNKNOWN, },
 };
 static Uart i8250uart[2] = {
-{	.regs	= &i8250ctlr[0],
-.name	= "COM1",
-.freq	= UartFREQ,
-.phys	= &i8250physuart,
+{ .regs = &i8250ctlr[0],
+.name = "COM1",
+.freq = UartFREQ,
+.phys = &i8250physuart,
 .special= 0,
-.next	= &i8250uart[1], },
-{	.regs	= &i8250ctlr[1],
-.name	= "COM2",
-.freq	= UartFREQ,
-.phys	= &i8250physuart,
+.next = &i8250uart[1], },
+{ .regs = &i8250ctlr[1],
+.name = "COM2",
+.freq = UartFREQ,
+.phys = &i8250physuart,
 .special= 0,
-.next	= nil, },
+.next = nil, },
 };
-#define csr8r(c, r)	inb((c)->io+(r))
-#define csr8w(c, r, v)	outb((c)->io+(r), (c)->sticky[(r)]|(v))
+#define csr8r(c, r) inb((c)->io+(r))
+#define csr8w(c, r, v) outb((c)->io+(r), (c)->sticky[(r)]|(v))
 static long
 i8250status(Uart* uart, void* buf, long n, long offset)
 {
@@ -505,23 +505,23 @@ for(i = 0; !(csr8r(ctlr, Lsr)&Thre) && i < 128; i++)
 delay(1);
 }
 PhysUart i8250physuart = {
-.name		= "i8250",
-.pnp		= i8250pnp,
-.enable		= i8250enable,
-.disable	= i8250disable,
-.kick		= i8250kick,
-.dobreak	= i8250break,
-.baud		= i8250baud,
-.bits		= i8250bits,
-.stop		= i8250stop,
-.parity		= i8250parity,
-.modemctl	= i8250modemctl,
-.rts		= i8250rts,
-.dtr		= i8250dtr,
-.status		= i8250status,
-.fifo		= i8250fifo,
-.getc		= i8250getc,
-.putc		= i8250putc,
+.name = "i8250",
+.pnp = i8250pnp,
+.enable = i8250enable,
+.disable = i8250disable,
+.kick = i8250kick,
+.dobreak = i8250break,
+.baud = i8250baud,
+.bits = i8250bits,
+.stop = i8250stop,
+.parity = i8250parity,
+.modemctl = i8250modemctl,
+.rts = i8250rts,
+.dtr = i8250dtr,
+.status = i8250status,
+.fifo = i8250fifo,
+.getc = i8250getc,
+.putc = i8250putc,
 };
 void
 i8250config(char *p)

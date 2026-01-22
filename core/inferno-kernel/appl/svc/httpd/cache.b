@@ -14,9 +14,9 @@ lru ,cache_size : int; # lru link, and maximum size of cache.
 cur_size, cur_tag : int; # current size of cache and current number.
 lock: ref Semaphore;
 Cache_link : adt{
-name : string; 			# name of file
-contents : array of byte; 	# contents
-length : int; 			# length of file
+name : string; # name of file
+contents : array of byte; # contents
+length : int; # length of file
 qid:Sys->Qid;
 tag : int;
 };
@@ -77,7 +77,7 @@ cur_tag++;
 flag = 1;
 retval = (hd tmp).contents;
 } else { # cache is stale
-lru--;  if(lru<0) lru = 0;
+lru--; if(lru<0) lru = 0;
 link.tag = lru;
 stale = 1;
 }

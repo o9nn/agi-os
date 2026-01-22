@@ -1,14 +1,14 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
 #include "../port/flashif.h"
 typedef struct Flashtype Flashtype;
 struct Flashtype {
-char*	name;
-int	(*reset)(Flash*);
+char* name;
+int (*reset)(Flash*);
 Flashtype* next;
 };
 enum {
@@ -16,7 +16,7 @@ Nbanks = 2,
 };
 static struct
 {
-Flash*	card[Nbanks];
+Flash* card[Nbanks];
 Flashtype* types;
 }flash;
 enum{
@@ -25,16 +25,16 @@ Qflashdir,
 Qdata,
 Qctl,
 };
-#define	TYPE(q)	((ulong)(q) & 0xFF)
-#define	PART(q)	((ulong)(q)>>8)
-#define	QID(p,t)	(((p)<<8) | (t))
-static	Flashregion*	flashregion(Flash*, ulong);
-static	char*	flashnewpart(Flash*, char*, ulong, ulong);
-static	ulong	flashaddr(Flash*, Flashpart*, char*);
-static	void	protect(Flash*, ulong);
-static	void	eraseflash(Flash*, Flashregion*, ulong);
-static	long	readflash(Flash*, void*, long, int);
-static	long	writeflash(Flash*, long, void*,int);
+#define TYPE(q) ((ulong)(q) & 0xFF)
+#define PART(q) ((ulong)(q)>>8)
+#define QID(p,t) (((p)<<8) | (t))
+static Flashregion* flashregion(Flash*, ulong);
+static char* flashnewpart(Flash*, char*, ulong, ulong);
+static ulong flashaddr(Flash*, Flashpart*, char*);
+static void protect(Flash*, ulong);
+static void eraseflash(Flash*, Flashregion*, ulong);
+static long readflash(Flash*, void*, long, int);
+static long writeflash(Flash*, long, void*,int);
 static char Eprotect[] = "flash region protected";
 static int
 flash2gen(Chan *c, ulong p, Dir *dp)
@@ -255,11 +255,11 @@ CMsync,
 CMprotectboot,
 };
 static Cmdtab flashcmds[] = {
-{CMerase,	"erase",	2},
-{CMadd,		"add",		0},
-{CMremove,	"remove",	2},
-{CMsync,	"sync",		0},
-{CMprotectboot,	"protectboot",	0},
+{CMerase, "erase", 2},
+{CMadd, "add", 0},
+{CMremove, "remove", 2},
+{CMsync, "sync", 0},
+{CMprotectboot, "protectboot", 0},
 };
 static long
 flashwrite(Chan *c, void *buf, long n, vlong offset)

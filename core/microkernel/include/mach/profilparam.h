@@ -1,5 +1,5 @@
-#ifndef	_MACH_PROFILPARAM_H_
-#define	_MACH_PROFILPARAM_H_
-#define	NB_PROF_BUFFER		2
-#define	SIZE_PROF_BUFFER	100
+#ifndef _MACH_PROFILPARAM_H_
+#define _MACH_PROFILPARAM_H_
+#define NB_PROF_BUFFER 2
+#define SIZE_PROF_BUFFER 100
 #endif

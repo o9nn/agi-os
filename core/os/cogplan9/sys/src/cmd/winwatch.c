@@ -10,7 +10,7 @@ int dirty;
 char *label;
 Rectangle r;
 };
-Reprog  *exclude  = nil;
+Reprog *exclude = nil;
 Win *win;
 int nwin;
 int mwin;

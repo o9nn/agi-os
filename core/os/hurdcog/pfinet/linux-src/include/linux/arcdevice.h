@@ -3,24 +3,24 @@
 #include <linux/config.h>
 #include <linux/if_arcnet.h>
 #ifdef __KERNEL__
-#define ARC_20020     1
-#define ARC_RIM_I     2
-#define ARC_90xx      3
-#define ARC_90xx_IO   4
+#define ARC_20020 1
+#define ARC_RIM_I 2
+#define ARC_90xx 3
+#define ARC_90xx_IO 4
 #define MAX_ARCNET_DEVS 8
 #define DETECT_RECONFIGS
 #undef SHOW_RECONFIGS
 #define RECON_THRESHOLD 30
 #define TX_TIMEOUT (20*HZ/100)
 #undef ALPHA_WARNING
-#define D_NORMAL	1
-#define D_EXTRA		2
-#define	D_INIT		4
-#define D_INIT_REASONS	8
-#define D_DURING	16
-#define D_TX		32
-#define D_RX		64
-#define D_SKB		128
+#define D_NORMAL 1
+#define D_EXTRA 2
+#define D_INIT 4
+#define D_INIT_REASONS 8
+#define D_DURING 16
+#define D_TX 32
+#define D_RX 64
+#define D_SKB 128
 #ifndef ARCNET_DEBUG_MAX
 #define ARCNET_DEBUG_MAX (~0)
 #endif
@@ -32,40 +32,40 @@ extern int arcnet_debug;
 #define BUGMSG2(x,msg,args...) do { BUGLVL(x) printk(msg, ## args); } while (0)
 #define BUGMSG(x,msg,args...) \
 BUGMSG2(x,"%s%6s: " msg, \
-x==D_NORMAL	? KERN_WARNING : \
-x<=D_INIT_REASONS	? KERN_INFO    : KERN_DEBUG , \
+x==D_NORMAL ? KERN_WARNING : \
+x<=D_INIT_REASONS ? KERN_INFO : KERN_DEBUG , \
 dev->name , ## args)
 #define SETMASK AINTMASK(lp->intmask)
 #define RESETtime (HZ * 3 / 10)
-#define MTU	253
-#define MinTU	257
-#define XMTU	508
-#define TXFREEflag	0x01
-#define TXACKflag       0x02
-#define RECONflag       0x04
-#define TESTflag        0x08
-#define RESETflag       0x10
-#define RES1flag        0x20
-#define RES2flag        0x40
-#define NORXflag        0x80
-#define AUTOINCflag     0x40
-#define IOMAPflag       0x02
-#define ENABLE16flag    0x80
-#define NOTXcmd         0x01
-#define NORXcmd         0x02
-#define TXcmd           0x03
-#define RXcmd           0x04
-#define CONFIGcmd       0x05
-#define CFLAGScmd       0x06
-#define TESTcmd         0x07
-#define RESETclear      0x08
-#define CONFIGclear     0x10
-#define TESTload        0x08
-#define TESTvalue       0321
-#define RXbcasts        0x80
-#define NORMALconf      0x00
-#define EXTconf         0x08
-#define EnableReceiver()	ACOMMAND(RXcmd|(recbuf<<3)|RXbcasts)
+#define MTU 253
+#define MinTU 257
+#define XMTU 508
+#define TXFREEflag 0x01
+#define TXACKflag 0x02
+#define RECONflag 0x04
+#define TESTflag 0x08
+#define RESETflag 0x10
+#define RES1flag 0x20
+#define RES2flag 0x40
+#define NORXflag 0x80
+#define AUTOINCflag 0x40
+#define IOMAPflag 0x02
+#define ENABLE16flag 0x80
+#define NOTXcmd 0x01
+#define NORXcmd 0x02
+#define TXcmd 0x03
+#define RXcmd 0x04
+#define CONFIGcmd 0x05
+#define CFLAGScmd 0x06
+#define TESTcmd 0x07
+#define RESETclear 0x08
+#define CONFIGclear 0x10
+#define TESTload 0x08
+#define TESTvalue 0321
+#define RXbcasts 0x80
+#define NORMALconf 0x00
+#define EXTconf 0x08
+#define EnableReceiver() ACOMMAND(RXcmd|(recbuf<<3)|RXbcasts)
 #define JIFFER(time) for (delayval=jiffies+time; time_before(jiffies,delayval);) ;
 union ArcPacket
 {
@@ -74,19 +74,19 @@ u_char raw[512];
 };
 struct ClientData
 {
-u_char  saddr,
+u_char saddr,
 daddr;
-u_char	protocol_id,
+u_char protocol_id,
 split_flag;
-u_short	sequence;
+u_short sequence;
 };
 #define EXTRA_CLIENTDATA (sizeof(struct ClientData)-4)
 struct S_ClientData
 {
-u_char  saddr,
+u_char saddr,
 daddr,
 junk;
-u_char	protocol_id;
+u_char protocol_id;
 };
 #define S_EXTRA_CLIENTDATA (sizeof(struct S_ClientData)-1)
 struct Incoming

@@ -9,19 +9,19 @@ static int multicast_filter_limit = 32;
 static int options[MAX_UNITS] = {-1, -1, -1, -1, -1, -1, -1, -1};
 static int full_duplex[MAX_UNITS] = {-1, -1, -1, -1, -1, -1, -1, -1};
 static int rx_copybreak = 0;
-#define TX_RING_SIZE	16
-#define TX_QUEUE_LEN	10
-#define RX_RING_SIZE	32
-#define TX_TIMEOUT  (6*HZ)
-#define PKT_BUF_SZ		1536
+#define TX_RING_SIZE 16
+#define TX_QUEUE_LEN 10
+#define RX_RING_SIZE 32
+#define TX_TIMEOUT (6*HZ)
+#define PKT_BUF_SZ 1536
 #define TX_FIFO_THRESH 256
 #define RX_FIFO_THRESH 1
 #ifndef __KERNEL__
 #define __KERNEL__
 #endif
 #if !defined(__OPTIMIZE__)
-#warning  You must compile this file with the correct options!
-#warning  See the last lines of the source file.
+#warning You must compile this file with the correct options!
+#warning See the last lines of the source file.
 #error You must compile this driver with "-O".
 #endif
 #include <linux/config.h>
@@ -65,7 +65,7 @@ static int rx_copybreak = 0;
 #include "pci-scan.h"
 #include "kern_compat.h"
 #endif
-#if (LINUX_VERSION_CODE >= 0x20100)  &&  defined(MODULE)
+#if (LINUX_VERSION_CODE >= 0x20100) && defined(MODULE)
 char kernel_version[] = UTS_RELEASE;
 #endif
 MODULE_AUTHOR("Donald Becker <becker@scyld.com>");
@@ -163,7 +163,7 @@ u32 next;
 enum desc_status_bits {
 DescOwn=0x8000,
 };
-#define PRIV_ALIGN	15
+#define PRIV_ALIGN 15
 struct epic_private {
 struct epic_rx_desc rx_ring[RX_RING_SIZE];
 struct epic_tx_desc tx_ring[TX_RING_SIZE];
@@ -173,10 +173,10 @@ struct net_device *next_module;
 void *priv_addr;
 spinlock_t lock;
 unsigned int cur_tx, dirty_tx;
-struct descriptor  *last_tx_desc;
+struct descriptor *last_tx_desc;
 unsigned int cur_rx, dirty_rx;
 unsigned int rx_buf_sz;
-struct descriptor  *last_rx_desc;
+struct descriptor *last_rx_desc;
 long last_rx_time;
 int rx_copybreak;
 int msg_level;
@@ -232,7 +232,7 @@ return NULL;
 if (dev->mem_start) {
 option = dev->mem_start;
 duplex = (dev->mem_start & 16) ? 1 : 0;
-} else if (card_idx >= 0  &&  card_idx < MAX_UNITS) {
+} else if (card_idx >= 0 && card_idx < MAX_UNITS) {
 if (options[card_idx] >= 0)
 option = options[card_idx];
 if (full_duplex[card_idx] >= 0)
@@ -292,7 +292,7 @@ dev->if_port = ep->default_port;
 int phy, phy_idx = 0;
 for (phy = 1; phy < 32 && phy_idx < sizeof(ep->phys); phy++) {
 int mii_status = mdio_read(dev, phy, 1);
-if (mii_status != 0xffff  &&  mii_status != 0x0000) {
+if (mii_status != 0xffff && mii_status != 0x0000) {
 ep->phys[phy_idx++] = phy;
 printk(KERN_INFO "%s: Located MII transceiver #%d control "
 "%4.4x status %4.4x.\n",
@@ -301,7 +301,7 @@ dev->name, phy, mdio_read(dev, phy, 0), mii_status);
 }
 ep->mii_phy_cnt = phy_idx;
 }
-if (ep->mii_phy_cnt == 0  &&  ! (ep->chip_flags & NO_MII)) {
+if (ep->mii_phy_cnt == 0 && ! (ep->chip_flags & NO_MII)) {
 printk(KERN_WARNING "%s: ***WARNING***: No MII transceiver found!\n",
 dev->name);
 ep->phys[0] = 3;
@@ -313,7 +313,7 @@ if (xcvr) {
 printk(KERN_INFO "  Forcing %dMbs %s-duplex operation.\n",
 (xcvr & 0x300 ? 100 : 10),
 (xcvr & 0x220 ? "full" : "half"));
-ep->mii_bmcr  = xcvr & 0x300 ? 0x2000 : 0;
+ep->mii_bmcr = xcvr & 0x300 ? 0x2000 : 0;
 ep->mii_bmcr |= xcvr & 0x220 ? 0x0100 : 0;
 mdio_write(dev, phy, 0, ep->mii_bmcr);
 } else {
@@ -337,18 +337,18 @@ dev->set_multicast_list = &set_rx_mode;
 dev->do_ioctl = &mii_ioctl;
 return dev;
 }
-#define EE_SHIFT_CLK	0x04
-#define EE_CS			0x02
-#define EE_DATA_WRITE	0x08
-#define EE_WRITE_0		0x01
-#define EE_WRITE_1		0x09
-#define EE_DATA_READ	0x10
-#define EE_ENB			(0x0001 | EE_CS)
-#define eeprom_delay()	inl(ee_addr)
-#define EE_WRITE_CMD	(5 << 6)
-#define EE_READ64_CMD	(6 << 6)
-#define EE_READ256_CMD	(6 << 8)
-#define EE_ERASE_CMD	(7 << 6)
+#define EE_SHIFT_CLK 0x04
+#define EE_CS 0x02
+#define EE_DATA_WRITE 0x08
+#define EE_WRITE_0 0x01
+#define EE_WRITE_1 0x09
+#define EE_DATA_READ 0x10
+#define EE_ENB (0x0001 | EE_CS)
+#define eeprom_delay() inl(ee_addr)
+#define EE_WRITE_CMD (5 << 6)
+#define EE_READ64_CMD (6 << 6)
+#define EE_READ256_CMD (6 << 8)
+#define EE_ERASE_CMD (7 << 6)
 static int read_eeprom(long ioaddr, int location)
 {
 int i;
@@ -376,8 +376,8 @@ eeprom_delay();
 outl(EE_ENB & ~EE_CS, ee_addr);
 return retval;
 }
-#define MII_READOP		1
-#define MII_WRITEOP		2
+#define MII_READOP 1
+#define MII_WRITEOP 2
 static int mdio_read(struct net_device *dev, int phy_id, int location)
 {
 long ioaddr = dev->base_addr;
@@ -533,7 +533,7 @@ printk(KERN_DEBUG "%s: Other registers are IntMask %4.4x "
 dev->name, (int)inl(ioaddr + INTMASK),
 (int)inl(ioaddr + INTSTAT), (int)inl(ioaddr + RxSTAT));
 }
-if (ep->cur_tx - ep->dirty_tx > 1  &&
+if (ep->cur_tx - ep->dirty_tx > 1 &&
 jiffies - dev->trans_start > TX_TIMEOUT) {
 printk(KERN_WARNING "%s: Tx hung, %d vs. %d.\n",
 dev->name, ep->cur_tx, ep->dirty_tx);
@@ -912,7 +912,7 @@ if (dev->flags & IFF_PROMISC) {
 new_rx_mode = 0x002C;
 printk(KERN_INFO "%s: Promiscuous mode enabled.\n", dev->name);
 memset(mc_filter, 0xff, sizeof(mc_filter));
-} else if ((dev->mc_count > 0)  ||  (dev->flags & IFF_ALLMULTI)) {
+} else if ((dev->mc_count > 0) || (dev->flags & IFF_ALLMULTI)) {
 memset(mc_filter, 0xff, sizeof(mc_filter));
 new_rx_mode = 0x000C;
 } else if (dev->mc_count == 0) {

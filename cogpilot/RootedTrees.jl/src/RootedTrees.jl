@@ -145,29 +145,29 @@ t_src::RootedTree, src_offset, N)
 copyto!(t_dst.level_sequence, dst_offset, t_src.level_sequence, src_offset, N)
 return t_dst
 end
-#  #function RootedTree(sequence::Vector{T}, valid::Bool)
-#  function RootedTree(sequence::Array{T,1})
-#    length(sequence) < 1 && throw(ArgumentError("Rooted trees must have a root, in particular at least one element!"))#
+# #function RootedTree(sequence::Vector{T}, valid::Bool)
+# function RootedTree(sequence::Array{T,1})
+# length(sequence) < 1 && throw(ArgumentError("Rooted trees must have a root, in particular at least one element!"))#
 #
-#    ## If there is only one element, the sequence must be valid.
-#    #if !valid && length(sequence) > 1
-#    #  # Test, whether there is exactly one root element at the beginning of sequence, if necessary.
-#    #  root = sequence[1]
-#    #  for level in sequence[2:end]
-#    #    level <= root && throw(ArgumentError("Rooted trees must have exactly one element at root level at the beginning."))
-#    #  end
-#    #end
-#    # If there is only one element, the sequence must be valid.
-#    if length(sequence) > 1
-#      # Test, whether there is exactly one root element at the beginning of sequence, if necessary.
-#      root = sequence[1]
-#      for level in sequence[2:end]
-#        level <= root && throw(ArgumentError("Rooted trees must have exactly one element at root level at the beginning."))
-#      end
-#    end
+# ## If there is only one element, the sequence must be valid.
+# #if !valid && length(sequence) > 1
+# # # Test, whether there is exactly one root element at the beginning of sequence, if necessary.
+# # root = sequence[1]
+# # for level in sequence[2:end]
+# # level <= root && throw(ArgumentError("Rooted trees must have exactly one element at root level at the beginning."))
+# # end
+# #end
+# # If there is only one element, the sequence must be valid.
+# if length(sequence) > 1
+# # Test, whether there is exactly one root element at the beginning of sequence, if necessary.
+# root = sequence[1]
+# for level in sequence[2:end]
+# level <= root && throw(ArgumentError("Rooted trees must have exactly one element at root level at the beginning."))
+# end
+# end
 #
-#    new(sequence)
-#  end
+# new(sequence)
+# end
 #RootedTree{T<:Integer}(sequence::Vector{T}) = RootedTree{T}(sequence, false)
 function Base.show(io::IO, t::RootedTree{T}) where {T}
 printing_style = @load_preference("printing_style", "sequence")
@@ -264,9 +264,9 @@ end
 # to use simple bits representations, we measure the decrease compared to the
 # maximal possible increase.
 # The maximal drop in the level sequence is
-#   maximal_drop = length(t.level_sequence) - 3
+# maximal_drop = length(t.level_sequence) - 3
 # We need at most
-#   number_of_bits = trunc(Int, log2(maximal_drop)) + 1
+# number_of_bits = trunc(Int, log2(maximal_drop)) + 1
 # bits to represent this. Thus, 64 bit allow us to compute unique hashes for
 # level sequence up to length 16 in the following simple way; 64 bit result
 # in `number_of_bits = 4` for `maximal_drop = 16 - 3 = 13`.
@@ -295,21 +295,21 @@ canonical_representation!(copy(t))
 end
 # A very simple implementation of `canonical_representation!` could read as
 # follows.
-#   function canonical_representation!(t::RootedTree)
-#     subtr = subtrees(t)
-#     for i in eachindex(subtr)
-#       canonical_representation!(subtr[i])
-#     end
-#     sort!(subtr, rev=true)
+# function canonical_representation!(t::RootedTree)
+# subtr = subtrees(t)
+# for i in eachindex(subtr)
+# canonical_representation!(subtr[i])
+# end
+# sort!(subtr, rev=true)
 #
-#     i = 2
-#     for τ in subtr
-#       t.level_sequence[i:i+order(τ)-1] = τ.level_sequence
-#       i += order(τ)
-#     end
+# i = 2
+# for τ in subtr
+# t.level_sequence[i:i+order(τ)-1] = τ.level_sequence
+# i += order(τ)
+# end
 #
-#     RootedTree(t.level_sequence, true)
-#   end
+# RootedTree(t.level_sequence, true)
+# end
 # However, this would create a lot of intermediate allocations, which make it
 # rather slow. Since most trees in use are relatively small, we can use a
 # non-allocating sorting algorithm instead - although bubble sort is slower in
@@ -746,7 +746,7 @@ return (; forests, skeletons)
 end
 # A helper function to compute the binary representation of an integer `n` as
 # a vector of `Bool`s. This is a more efficient version of
-#   binary_digits!(digits, n) = digits!(digits, n, base=2)
+# binary_digits!(digits, n) = digits!(digits, n, base=2)
 function binary_digits!(digits::Vector{Bool}, n::Int)
 bit = 1
 for i in eachindex(digits)
@@ -846,7 +846,7 @@ edge_set_tmp = partitions.edge_set_tmp
 binary_digits!(edge_set, edge_set_value)
 # Compute the partition skeleton.
 # The following is a more efficient version of
-#   skeleton = partition_skeleton(t, edge_set)
+# skeleton = partition_skeleton(t, edge_set)
 # avoiding some allocations.
 resize!(edge_set_tmp, length(edge_set))
 copy!(edge_set_tmp, edge_set)
@@ -855,7 +855,7 @@ copy!(skeleton, t)
 partition_skeleton!(skeleton, edge_set_tmp)
 # Compute the partition forest.
 # The following is a more efficient version of
-#   forest = partition_forest(t, edge_set)
+# forest = partition_forest(t, edge_set)
 # avoiding some allocations and using a lazy iterator.
 resize!(edge_set_tmp, length(edge_set))
 copy!(edge_set_tmp, edge_set)
@@ -972,7 +972,7 @@ if !any(@view node_set[subtree_root_index:subtree_last_index])
 # If `iscanonical(t)`, the subtree starting at the root of `t`
 # is also in canonical representation. Thus, we don't need to
 # use the more expensive version
-#   push!(forest, rootedtree!(level_sequence))
+# push!(forest, rootedtree!(level_sequence))
 # but can use the cheaper version below.
 level_sequence = ls[subtree_root_index:subtree_last_index]
 push!(forest, RootedTree(level_sequence, iscanonical(t)))
@@ -988,8 +988,8 @@ if subtree_root_index == order(t) + 1
 # This is a valid ordered subtree.
 # The `level_sequence` will not automatically be a canonical representation.
 # TODO: splittings;
-#       Decide whether canonical representations should be used. Disabling
-#       them will increase the performance.
+# Decide whether canonical representations should be used. Disabling
+# them will increase the performance.
 level_sequence = ls[node_set]
 subtree = rootedtree!(level_sequence)
 return ((forest, subtree), node_set_value + 1)
@@ -1172,9 +1172,9 @@ result = "[" * result * "]"
 if normalize
 # normalize the result by grouping repeated occurrences of τ
 # TODO: Decide whether powers should also be used for subtrees,
-#       e.g., "[[τ]²]" instead of "[[τ][τ]]"
-#       for rootedtree([1, 2, 3, 2, 3]).
-#       Currently, powers are only used for τ.
+# e.g., "[[τ]²]" instead of "[[τ][τ]]"
+# for rootedtree([1, 2, 3, 2, 3]).
+# Currently, powers are only used for τ.
 for n in order(t):-1:2
 n_str = string(n)
 n_str = replace(n_str, "1" => "¹")

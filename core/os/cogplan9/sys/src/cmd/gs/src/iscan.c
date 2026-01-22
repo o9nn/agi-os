@@ -673,7 +673,7 @@ case '.':
 sign = 0;
 nr:
 retcode = scan_number(sptr + (sign & 1),
-endptr  ,
+endptr ,
 sign, myref, &newptr, PDFScanInvNum);
 if (retcode == 1 && decoder[newptr[-1]] == ctype_space) {
 sptr = newptr - 1;

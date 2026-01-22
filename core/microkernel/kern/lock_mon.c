@@ -12,22 +12,22 @@
 #include <kern/constants.h>
 def_simple_lock_data(, kdb_lock)
 def_simple_lock_data(, printf_lock)
-#if	NCPUS > 1 && MACH_LOCK_MON
+#if NCPUS > 1 && MACH_LOCK_MON
 #define TIME_STAMP 1
 typedef unsigned int time_stamp_t;
-#define	time_stamp (elapsed_ticks * MICROSECONDS_PER_MILLISEC / hz)
-#define LOCK_INFO_MAX	     LOCK_INFO_MAX_ENTRIES
+#define time_stamp (elapsed_ticks * MICROSECONDS_PER_MILLISEC / hz)
+#define LOCK_INFO_MAX LOCK_INFO_MAX_ENTRIES
 #define LOCK_INFO_HASH_COUNT LOCK_INFO_HASH_BUCKETS
-#define LOCK_INFO_PER_BUCKET	(LOCK_INFO_MAX/LOCK_INFO_HASH_COUNT)
-#define HASH_LOCK(lock)	((long)lock>>5 & (LOCK_INFO_HASH_COUNT-1))
+#define LOCK_INFO_PER_BUCKET (LOCK_INFO_MAX/LOCK_INFO_HASH_COUNT)
+#define HASH_LOCK(lock) ((long)lock>>5 & (LOCK_INFO_HASH_COUNT-1))
 struct lock_info {
-unsigned int	success;
-unsigned int	fail;
-unsigned int	masked;
-unsigned int	stack;
-time_stamp_t	time;
+unsigned int success;
+unsigned int fail;
+unsigned int masked;
+unsigned int stack;
+time_stamp_t time;
 decl_simple_lock_data(, *lock)
-vm_offset_t	caller;
+vm_offset_t caller;
 };
 struct lock_info_bucket {
 struct lock_info info[LOCK_INFO_PER_BUCKET];
@@ -41,7 +41,7 @@ struct lock_info *
 locate_lock_info(lock)
 decl_simple_lock_data(, **lock)
 {
-struct lock_info *li =  &(lock_info[HASH_LOCK(*lock)].info[0]);
+struct lock_info *li = &(lock_info[HASH_LOCK(*lock)].info[0]);
 int i;
 for (i=0; i < LOCK_INFO_PER_BUCKET; i++, li++)
 if (li->lock) {
@@ -215,7 +215,7 @@ db_printf("(%X)", li->lock);
 db_printf("\n");
 }
 #endif
-#if	TIME_STAMP
+#if TIME_STAMP
 void time_lock(int loops)
 {
 decl_simple_lock_data(, lock)
@@ -231,7 +231,7 @@ simple_unlock(&lock);
 }
 stamp = time_stamp - stamp;
 db_printf("%d stamps for simple_locks\n", stamp/loops);
-#if	MACH_LOCK_MON
+#if MACH_LOCK_MON
 stamp = time_stamp;
 for (i = 0; i < loops; i++) {
 _simple_lock(&lock);
@@ -242,7 +242,7 @@ db_printf("%d stamps for _simple_locks\n", stamp/loops);
 #endif
 }
 #endif
-#if	MACH_MP_DEBUG
+#if MACH_MP_DEBUG
 void
 retry_simple_lock(lock)
 decl_simple_lock_data(, *lock)

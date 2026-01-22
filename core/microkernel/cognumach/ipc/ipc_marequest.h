@@ -1,4 +1,4 @@
-#ifndef	_IPC_IPC_MAREQUEST_H_
+#ifndef _IPC_IPC_MAREQUEST_H_
 #define _IPC_IPC_MAREQUEST_H_
 #include <mach/kern_return.h>
 #include <mach/port.h>
@@ -10,11 +10,11 @@ mach_port_name_t imar_name;
 struct ipc_port *imar_soright;
 struct ipc_marequest *imar_next;
 } *ipc_marequest_t;
-#define	IMAR_NULL		((ipc_marequest_t) 0)
-#define	IPC_MAREQUEST_SIZE	16
+#define IMAR_NULL ((ipc_marequest_t) 0)
+#define IPC_MAREQUEST_SIZE 16
 extern void
 ipc_marequest_init(void);
-#if	MACH_IPC_DEBUG
+#if MACH_IPC_DEBUG
 extern unsigned int
 ipc_marequest_info(unsigned int *, hash_info_bucket_t *, unsigned int);
 #endif

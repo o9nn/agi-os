@@ -1,15 +1,15 @@
 #include "tdef.h"
 #include "fns.h"
 #include "ext.h"
-#define	MAXCH NCHARS
-char	*chnames[MAXCH];
-int	nchnames;
-#define	MAXPS	100
-int	pstab[MAXPS];
-int	nsizes;
-Font	fonts[MAXFONTS+1];
-#define	skipline(f)	while (getc(f) != '\n')
-#define	eq(s1, s2)	(strcmp(s1, s2) == 0)
+#define MAXCH NCHARS
+char *chnames[MAXCH];
+int nchnames;
+#define MAXPS 100
+int pstab[MAXPS];
+int nsizes;
+Font fonts[MAXFONTS+1];
+#define skipline(f) while (getc(f) != '\n')
+#define eq(s1, s2) (strcmp(s1, s2) == 0)
 getdesc(char *name)
 {
 FILE *fin;
@@ -117,7 +117,7 @@ n = strtol(ch+1, 0, 0);
 chtemp[n].num = n;
 #ifdef UNICODE
 } else if (mbtowc(&wc, ch, strlen(ch)) > 1) {
-chtemp[nw].num = chadd(ch,  MBchar, Install);
+chtemp[nw].num = chadd(ch, MBchar, Install);
 n = nw;
 nw++;
 #endif

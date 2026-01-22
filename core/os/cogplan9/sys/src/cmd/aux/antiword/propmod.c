@@ -2,17 +2,17 @@
 #include <string.h>
 #include "antiword.h"
 #if defined(DEBUG)
-#define ELEMENTS_TO_ADD	 3
+#define ELEMENTS_TO_ADD 3
 #else
-#define ELEMENTS_TO_ADD	30
+#define ELEMENTS_TO_ADD 30
 #endif
-static UCHAR	**ppAnchor = NULL;
-static size_t	tNextFree = 0;
-static size_t	tMaxElements = 0;
+static UCHAR **ppAnchor = NULL;
+static size_t tNextFree = 0;
+static size_t tMaxElements = 0;
 void
 vDestroyPropModList(void)
 {
-size_t	tIndex;
+size_t tIndex;
 DBG_MSG("vDestroyPropModList");
 for (tIndex = 0; tIndex < tNextFree; tIndex++) {
 ppAnchor[tIndex] = xfree(ppAnchor[tIndex]);
@@ -24,7 +24,7 @@ tMaxElements = 0;
 void
 vAdd2PropModList(const UCHAR *aucPropMod)
 {
-size_t	tSize, tLen;
+size_t tSize, tLen;
 fail(aucPropMod == NULL);
 NO_DBG_MSG("vAdd2PropModList");
 if (tNextFree >= tMaxElements) {
@@ -43,8 +43,8 @@ tNextFree++;
 const UCHAR *
 aucReadPropModListItem(USHORT usPropMod)
 {
-static UCHAR	aucBuffer[4];
-size_t	tIndex;
+static UCHAR aucBuffer[4];
+size_t tIndex;
 if (usPropMod == IGNORE_PROPMOD) {
 return NULL;
 }

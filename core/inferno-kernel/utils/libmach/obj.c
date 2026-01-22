@@ -4,16 +4,16 @@
 #include <ar.h>
 #include "mach.h"
 #include "obj.h"
-#define islocal(t)	((t)=='a' || (t)=='p')
+#define islocal(t) ((t)=='a' || (t)=='p')
 enum
 {
-NNAMES	= 50,
-MAXIS	= 8,
-MAXOFF	= 0x7fffffff,
-NHASH	= 1024,
-HASHMUL	= 79L,
+NNAMES = 50,
+MAXIS = 8,
+MAXOFF = 0x7fffffff,
+NHASH = 1024,
+HASHMUL = 79L,
 };
-int	_is5(char*),
+int _is5(char*),
 _is6(char*),
 _is8(char*),
 _is9(char*),
@@ -29,47 +29,47 @@ _readk(Biobuf*, Prog*),
 _readq(Biobuf*, Prog*),
 _readv(Biobuf*, Prog*),
 _readi(Biobuf*, Prog*);
-typedef struct Obj	Obj;
-typedef struct Symtab	Symtab;
-struct	Obj
+typedef struct Obj Obj;
+typedef struct Symtab Symtab;
+struct Obj
 {
-char	*name;
-int	(*is)(char*);
-int	(*read)(Biobuf*, Prog*);
+char *name;
+int (*is)(char*);
+int (*read)(Biobuf*, Prog*);
 };
-static Obj	obj[] =
+static Obj obj[] =
 {
 {0, 0,},
-"sparc .k",	_isk, _readk,
-"mips .v",	_isv, _readv,
-"386 .8",	_is8, _read8,
+"sparc .k", _isk, _readk,
+"mips .v", _isv, _readv,
+"386 .8", _is8, _read8,
 {0, 0,},
 {0, 0,},
 {0, 0,},
 {0, 0,},
-"arm .5",	_is5, _read5,
-"power .q",	_isq, _readq,
+"arm .5", _is5, _read5,
+"power .q", _isq, _readq,
 {0, 0,},
 {0, 0,},
 {0, 0,},
-"amd64 .6",	_is6, _read6,
+"amd64 .6", _is6, _read6,
 {0, 0,},
-"power64 .9",	_is9, _read9,
-"riscv .i",	_isi, _readi,
-"riscv64 .j",	_isi, _readi,
+"power64 .9", _is9, _read9,
+"riscv .i", _isi, _readi,
+"riscv64 .j", _isi, _readi,
 0, 0
 };
-struct	Symtab
+struct Symtab
 {
-struct	Sym 	s;
-struct	Symtab	*next;
+struct Sym s;
+struct Symtab *next;
 };
-static	Symtab *hash[NHASH];
-static	Sym	*names[NNAMES];
-static	int	processprog(Prog*,int);
-static	void	objreset(void);
-static	void	objlookup(int, char *, int, uint);
-static	void 	objupdate(int, int);
+static Symtab *hash[NHASH];
+static Sym *names[NNAMES];
+static int processprog(Prog*,int);
+static void objreset(void);
+static void objlookup(int, char *, int, uint);
+static void objupdate(int, int);
 int
 objtype(Biobuf *bp, char **name)
 {
@@ -121,7 +121,7 @@ if (!processprog(&p, doautos))
 return 0;
 return 1;
 }
-static	int
+static int
 processprog(Prog *p, int doautos)
 {
 if(p->kind == aNone)

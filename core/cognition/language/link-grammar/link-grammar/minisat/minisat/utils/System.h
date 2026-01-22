@@ -5,10 +5,10 @@ namespace Minisat {
 static inline double cpuTime(void);
 extern double memUsed();
 extern double memUsedPeak(bool strictlyPeak = false);
-extern void   setX86FPUPrecision();
-extern void   limitMemory(uint64_t max_mem_mb);
-extern void   limitTime(uint32_t max_cpu_time);
-extern void   sigTerm(void handler(int));
+extern void setX86FPUPrecision();
+extern void limitMemory(uint64_t max_mem_mb);
+extern void limitTime(uint32_t max_cpu_time);
+extern void sigTerm(void handler(int));
 }
 #if defined(_MSC_VER) || defined(__MINGW32__)
 #include <time.h>

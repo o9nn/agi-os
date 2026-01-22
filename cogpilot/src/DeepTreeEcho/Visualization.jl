@@ -118,7 +118,7 @@ Visualize a population of trees.
 function plot_tree_population(trees::Dict; title::String="Tree Population")
 if PLOTS_AVAILABLE
 # Create grid of tree plots
-n_trees = min(length(trees), 9)  # Max 9 trees in 3x3 grid
+n_trees = min(length(trees), 9) # Max 9 trees in 3x3 grid
 tree_list = collect(values(trees))[1:n_trees]
 plots = []
 for (i, tree) in enumerate(tree_list)

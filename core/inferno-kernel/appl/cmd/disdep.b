@@ -1,6 +1,6 @@
 implement Disdep;
 #
-# Copyright  © 2000 Vita Nuova Limited.  All rights reserved.
+# Copyright © 2000 Vita Nuova Limited. All rights reserved.
 #
 include "sys.m";
 sys: Sys;
@@ -21,23 +21,23 @@ hash: Hash;
 HashTable, HashVal: import hash;
 Disdep: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 Item: adt {
-name:	string;
-needs:	cyclic list of ref Item;
-visited:	int;
-find:		fn(s: string): ref Item;
+name: string;
+needs: cyclic list of ref Item;
+visited: int;
+find: fn(s: string): ref Item;
 };
 bout: ref Iobuf;
 pending: list of ref Item;
 roots: list of ref Item;
 tab: ref HashTable;
-aflag := 0;		# display all non-recursive dependencies
-oflag := 0;		# only list the immediate (outer) dependencies
-sflag := 0;		# include $system modules
-pflag := 0;		# show dependency sets as pairs, one per line
-showdepth := 0;	# indent to show the dependency structure
+aflag := 0; # display all non-recursive dependencies
+oflag := 0; # only list the immediate (outer) dependencies
+sflag := 0; # include $system modules
+pflag := 0; # show dependency sets as pairs, one per line
+showdepth := 0; # indent to show the dependency structure
 noload(mod: string)
 {
 sys->fprint(sys->fildes(2), "disdep: can't load %s: %r\n", mod);
@@ -149,7 +149,7 @@ return rev(needs);
 }
 prdep(f: ref Item, depth: int)
 {
-f.visited = 1;	# short-circuit self-reference
+f.visited = 1; # short-circuit self-reference
 for(nl := f.needs; nl != nil; nl = tl nl){
 n := hd nl;
 if(!n.visited){
@@ -195,7 +195,7 @@ bout.putc('\n');
 }
 isdisfile(s: string): int
 {
-if(len s > 4 && s[len s-4:]==".dis"){	# worth a look
+if(len s > 4 && s[len s-4:]==".dis"){ # worth a look
 for(i := 0; i < len s; i++)
 if(s[i] <= ' ' || s[i] == '%')
 return 0;
@@ -205,7 +205,7 @@ return 0;
 }
 isdol(s: string): int
 {
-return len s > 1 && s[0] == '$' && s[1]>='A' && s[1]<='Z';	# reasonable guess
+return len s > 1 && s[0] == '$' && s[1]>='A' && s[1]<='Z'; # reasonable guess
 }
 rev[T](l: list of T): list of T
 {

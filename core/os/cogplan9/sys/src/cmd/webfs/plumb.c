@@ -7,11 +7,11 @@
 #include <9p.h>
 #include "dat.h"
 #include "fns.h"
-static int		plumbsendfd;
-static int		plumbwebfd;
-static Channel	*plumbchan;
-static void	plumbwebproc(void*);
-static void	plumbwebthread(void*);
+static int plumbsendfd;
+static int plumbwebfd;
+static Channel *plumbchan;
+static void plumbwebproc(void*);
+static void plumbwebthread(void*);
 static void plumbsendproc(void*);
 void
 plumbinit(void)
@@ -76,8 +76,8 @@ a = next;
 }
 static struct
 {
-char	*ctype;
-char	*ext;
+char *ctype;
+char *ext;
 }
 ctypes[] =
 {

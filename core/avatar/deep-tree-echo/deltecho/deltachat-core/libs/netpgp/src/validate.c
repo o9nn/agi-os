@@ -47,7 +47,7 @@ static int
 add_sig_to_list(const pgp_sig_info_t *sig, pgp_sig_info_t **sigs,
 unsigned *count)
 {
-pgp_sig_info_t	*newsigs;
+pgp_sig_info_t *newsigs;
 if (*count == 0) {
 newsigs = calloc(*count + 1, sizeof(pgp_sig_info_t));
 } else {
@@ -69,11 +69,11 @@ const unsigned len,
 const pgp_sig_t *sig,
 const pgp_pubkey_t *signer)
 {
-unsigned    hashedlen;
-pgp_hash_t	hash;
-unsigned	n;
-uint8_t		hashout[PGP_MAX_HASH_SIZE];
-uint8_t		trailer[6];
+unsigned hashedlen;
+pgp_hash_t hash;
+unsigned n;
+uint8_t hashout[PGP_MAX_HASH_SIZE];
+uint8_t trailer[6];
 pgp_hash_any(&hash, sig->info.hash_alg);
 if (!hash.init(&hash)) {
 (void) fprintf(stderr, "check_binary_sig: bad hash init\n");
@@ -136,11 +136,11 @@ pgp_free_sig_info(&vdata->valid_sig_info);
 static pgp_cb_ret_t
 pgp_validate_key_cb(const pgp_packet_t *pkt, pgp_cbdata_t *cbinfo)
 {
-const pgp_contents_t	 *content = &pkt->u;
-validate_key_cb_t	 *vdata;
-pgp_error_t		**errors;
-pgp_io_t		 *io;
-unsigned		  valid = 0;
+const pgp_contents_t *content = &pkt->u;
+validate_key_cb_t *vdata;
+pgp_error_t **errors;
+pgp_io_t *io;
+unsigned valid = 0;
 io = cbinfo->io;
 if (pgp_get_debug_level(__FILE__)) {
 (void) fprintf(io->errs, "%s\n",
@@ -249,7 +249,7 @@ primary_pubkey =
 &vdata->key.pubkey:
 &vdata->key.seckey.pubkey;
 if(vdata->keyring){
-unsigned		  from;
+unsigned from;
 from = 0;
 pgp_getkeybyid(io, vdata->keyring,
 content->sig.info.signer_id,
@@ -382,14 +382,14 @@ return PGP_RELEASE_MEMORY;
 pgp_cb_ret_t
 validate_data_cb(const pgp_packet_t *pkt, pgp_cbdata_t *cbinfo)
 {
-const pgp_contents_t	 *content = &pkt->u;
-pgp_key_t	 *signer;
-validate_data_cb_t	 *data;
-pgp_pubkey_t		 *sigkey;
-pgp_error_t		**errors;
-pgp_io_t		 *io;
-unsigned		  from;
-unsigned		  valid = 0;
+const pgp_contents_t *content = &pkt->u;
+pgp_key_t *signer;
+validate_data_cb_t *data;
+pgp_pubkey_t *sigkey;
+pgp_error_t **errors;
+pgp_io_t *io;
+unsigned from;
+unsigned valid = 0;
 io = cbinfo->io;
 if (pgp_get_debug_level(__FILE__)) {
 (void) fprintf(io->errs, "validate_data_cb: %s\n",
@@ -542,9 +542,9 @@ return buf;
 static unsigned
 validate_result_status(FILE *errs, const char *f, pgp_validation_t *val)
 {
-time_t	now;
-time_t	t;
-char	buf[128];
+time_t now;
+time_t t;
+char buf[128];
 now = time(NULL);
 if (now < val->birthtime) {
 if (f) {
@@ -584,8 +584,8 @@ static pgp_cb_ret_t key_filter_cb (
 validate_key_cb_t *vdata,
 const pgp_subpacket_t *sigpkt)
 {
-pgp_key_t		*pubkey = NULL;
-pgp_key_t		*seckey = NULL;
+pgp_key_t *pubkey = NULL;
+pgp_key_t *seckey = NULL;
 key_filter_cb_t *filter = vdata->on_valid_args;
 if(vdata->not_commited){
 if((filter->pubkey = pgp_ensure_pubkey(filter->destpubring,
@@ -651,11 +651,11 @@ pgp_keyring_t *certring,
 const unsigned armour,
 const char *filename)
 {
-pgp_stream_t	*stream;
+pgp_stream_t *stream;
 validate_key_cb_t vdata;
 key_filter_cb_t filter;
-unsigned	 res = 1;
-int		 fd;
+unsigned res = 1;
+int fd;
 (void) memset(&vdata, 0x0, sizeof(vdata));
 vdata.result = NULL;
 vdata.getpassphrase = NULL;
@@ -745,18 +745,18 @@ const char *outfile,
 const int user_says_armoured,
 const pgp_keyring_t *keyring)
 {
-validate_data_cb_t	 validation;
-pgp_stream_t		*parse = NULL;
-struct stat		 st;
-const char		*signame;
-const int		 printerrors = 1;
-unsigned		 ret;
-char			 f[MAXPATHLEN];
-char			*dataname;
-int			 realarmour;
-int			 outfd = 0;
-int			 infd;
-int			 cc;
+validate_data_cb_t validation;
+pgp_stream_t *parse = NULL;
+struct stat st;
+const char *signame;
+const int printerrors = 1;
+unsigned ret;
+char f[MAXPATHLEN];
+char *dataname;
+int realarmour;
+int outfd = 0;
+int infd;
+int cc;
 if (stat(infile, &st) < 0) {
 (void) fprintf(io->errs,
 "pgp_validate_file: can't open '%s'\n", infile);
@@ -809,9 +809,9 @@ outfd = open(outfile, O_WRONLY | O_CREAT, 0666);
 if (outfd < 0) {
 ret = 0;
 } else if (validate_result_status(io->errs, infile, result)) {
-unsigned	 len;
-char		*cp;
-int		 i;
+unsigned len;
+char *cp;
+int i;
 len = (unsigned)pgp_mem_len(validation.mem);
 cp = pgp_mem_data(validation.mem);
 for (i = 0 ; i < (int)len ; i += cc) {
@@ -842,10 +842,10 @@ const int user_says_armoured,
 const pgp_keyring_t *keyring,
 pgp_memory_t *detachmem)
 {
-validate_data_cb_t	 validation;
-pgp_stream_t		*stream = NULL;
-const int		 printerrors = 1;
-int			 realarmour;
+validate_data_cb_t validation;
+pgp_stream_t *stream = NULL;
+const int printerrors = 1;
+int realarmour;
 pgp_setup_memory_read(io, &stream, mem, &validation, validate_data_cb, 1);
 (void) memset(&validation, 0x0, sizeof(validation));
 validation.result = result;

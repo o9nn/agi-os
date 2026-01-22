@@ -1,5 +1,5 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #include "imapdriver.h"
 #include "mail.h"
@@ -925,7 +925,7 @@ return imap_error_to_mail_error(r);
 }
 static int imapdriver_remove_message(mailsession * session, uint32_t num) {
 int res;
-struct mail_flags					*flags = NULL;
+struct mail_flags *flags = NULL;
 if (get_imap_session(session)->imap_selection_info == NULL) {
 res = MAIL_ERROR_BAD_STATE;
 goto err;

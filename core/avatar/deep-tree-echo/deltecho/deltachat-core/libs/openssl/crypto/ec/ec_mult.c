@@ -165,10 +165,10 @@ return r;
 #define EC_window_bits_for_scalar_size(b) \
 ((size_t) \
 ((b) >= 2000 ? 6 : \
-(b) >=  800 ? 5 : \
-(b) >=  300 ? 4 : \
-(b) >=   70 ? 3 : \
-(b) >=   20 ? 2 : \
+(b) >= 800 ? 5 : \
+(b) >= 300 ? 4 : \
+(b) >= 70 ? 3 : \
+(b) >= 20 ? 2 : \
 1))
 int ec_wNAF_mul(const EC_GROUP *group, EC_POINT *r, const BIGNUM *scalar,
 size_t num, const EC_POINT *points[], const BIGNUM *scalars[],

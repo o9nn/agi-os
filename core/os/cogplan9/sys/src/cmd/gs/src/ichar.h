@@ -1,5 +1,5 @@
 #ifndef ichar_INCLUDED
-#  define ichar_INCLUDED
+# define ichar_INCLUDED
 #define snumpush 9
 #define esenum(ep) r_ptr(ep, gs_text_enum_t)
 #define senum esenum(esp)

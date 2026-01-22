@@ -1,6 +1,6 @@
 implement Dialupchat;
 #
-# Copyright © 2001 Vita Nuova Holdings Limited.  All rights reserved.
+# Copyright © 2001 Vita Nuova Holdings Limited. All rights reserved.
 #
 include "sys.m";
 sys: Sys;
@@ -17,16 +17,16 @@ Dict: import translate;
 dict: ref Dict;
 Dialupchat: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 # Dimension constant for ISP Connect window
 WIDTH: con 300;
 HEIGHT: con 58;
-LightGreen: con "#00FF80";           # colour for successful blob
+LightGreen: con "#00FF80"; # colour for successful blob
 Blobx: con 8;
 Gapx: con 4;
-BARW: con (Blobx+Gapx)*10;			# Progress bar width
-BARH: con 18;			# Progress bar height
+BARW: con (Blobx+Gapx)*10; # Progress bar width
+BARH: con 18; # Progress bar height
 DIALQUANTA : con 1000;
 ICONQUANTA : con 5000;
 pppquanta := DIALQUANTA;
@@ -139,11 +139,11 @@ sys->print("pppchat: !%s\n", err);
 } else
 sys->print("pppchat: %s\n", status);
 (nf, flds) := sys->tokenize(status, " \t\n");
-#		for(i = 0; i < len status; i++)
-#			if(status[i] == ' ' || status[i] == '\t') {
-#				status = status[i+1:];
-#				break;
-#			}
+# for(i = 0; i < len status; i++)
+# if(status[i] == ' ' || status[i] == '\t') {
+# status = status[i+1:];
+# break;
+# }
 if(nf < 3)
 break;
 step := int hd flds; flds = tl flds;
@@ -188,7 +188,7 @@ winmapped = 0;
 tkcmd(t, "update");
 }
 <-ticks;
-ticks <-= 0;	# stop ppptimer
+ticks <-= 0; # stop ppptimer
 kill(ctlpid);
 }
 ppptimer(ticks: chan of int)
@@ -210,15 +210,15 @@ else
 lines <-= (nil, nil);
 }
 Progressbar: adt {
-t:	ref Tk->Toplevel;
-canvas:	string;
-csize:	Point;
-blobs:	list of string;
-mk:		fn(t: ref Tk->Toplevel, canvas: string, csize: Point): ref Progressbar;
-tkcreate:	fn(pb: self ref Progressbar): string;
-setcolour:	fn(pb: self ref Progressbar, c: string);
-stepto:	fn(pb: self ref Progressbar, step: int, col: string);
-destroy:	fn(pb: self ref Progressbar);
+t: ref Tk->Toplevel;
+canvas: string;
+csize: Point;
+blobs: list of string;
+mk: fn(t: ref Tk->Toplevel, canvas: string, csize: Point): ref Progressbar;
+tkcreate: fn(pb: self ref Progressbar): string;
+setcolour: fn(pb: self ref Progressbar, c: string);
+stepto: fn(pb: self ref Progressbar, step: int, col: string);
+destroy: fn(pb: self ref Progressbar);
 };
 Progressbar.mk(t: ref Tk->Toplevel, canvas: string, csize: Point): ref Progressbar
 {
@@ -243,11 +243,11 @@ if(nblob == step+1)
 return;
 p := Point(step*(Blobx+Gapx), 0);
 r := Rect(p, p.add((Blobx, pb.csize.y-2)));
-pb.blobs =  tkcmd(pb.t, sys->sprint("%s create rectangle %d %d %d %d -fill %s", pb.canvas, r.min.x,r.min.y, r.max.x,r.max.y, col)) :: pb.blobs;
+pb.blobs = tkcmd(pb.t, sys->sprint("%s create rectangle %d %d %d %d -fill %s", pb.canvas, r.min.x,r.min.y, r.max.x,r.max.y, col)) :: pb.blobs;
 }
 Progressbar.destroy(pb: self ref Progressbar)
 {
-tk->cmd(pb.t, "destroy "+pb.canvas);	# ignore errors
+tk->cmd(pb.t, "destroy "+pb.canvas); # ignore errors
 }
 tkcmd(t: ref Tk->Toplevel, s: string): string
 {

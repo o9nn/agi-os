@@ -10,10 +10,10 @@ ipc_table_size_t ipc_table_dnrequests;
 const unsigned int ipc_table_dnrequests_size = 64;
 void
 ipc_table_fill(
-ipc_table_size_t	its,
-unsigned int		num,
-unsigned int		min,
-vm_size_t		elemsize)
+ipc_table_size_t its,
+unsigned int num,
+unsigned int min,
+vm_size_t elemsize)
 {
 unsigned int index;
 vm_size_t minsize = min * elemsize;
@@ -54,14 +54,14 @@ ipc_table_dnrequests[ipc_table_dnrequests_size - 1].its_size = 0;
 }
 vm_offset_t
 ipc_table_alloc(
-vm_size_t	size)
+vm_size_t size)
 {
 return kalloc(size);
 }
 void
 ipc_table_free(
-vm_size_t	size,
-vm_offset_t	table)
+vm_size_t size,
+vm_offset_t table)
 {
 kfree(table, size);
 }

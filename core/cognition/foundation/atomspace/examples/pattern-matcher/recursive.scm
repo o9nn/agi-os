@@ -9,99 +9,99 @@
 (Inheritance (Concept "human") (Concept "mammal"))
 (Inheritance (Concept "Ben") (Concept "human"))
 (cog-evaluate!
-	(Evaluation
-		(Present (Inheritance (Variable "this") (Variable "that")))
-		(List (Concept "mammal") (Concept "vertebrate"))))
+(Evaluation
+(Present (Inheritance (Variable "this") (Variable "that")))
+(List (Concept "mammal") (Concept "vertebrate"))))
 (cog-evaluate!
-	(Evaluation
-		(Present (Inheritance (Variable "this") (Variable "that")))
-		(List (Concept "foobar") (Concept "vertebrate"))))
+(Evaluation
+(Present (Inheritance (Variable "this") (Variable "that")))
+(List (Concept "foobar") (Concept "vertebrate"))))
 (Define
-	(DefinedPredicate "simple is-a relation")
-	(Lambda
-		(VariableList (Variable "this") (Variable "that"))
-		(Present (Inheritance (Variable "this") (Variable "that")))))
+(DefinedPredicate "simple is-a relation")
+(Lambda
+(VariableList (Variable "this") (Variable "that"))
+(Present (Inheritance (Variable "this") (Variable "that")))))
 (cog-evaluate!
-	(Evaluation
-		(DefinedPredicate "simple is-a relation")
-		(List (Concept "mammal") (Concept "vertebrate"))))
+(Evaluation
+(DefinedPredicate "simple is-a relation")
+(List (Concept "mammal") (Concept "vertebrate"))))
 (cog-evaluate!
-	(Evaluation
-		(Lambda
-			(VariableList (Variable "this") (Variable "that"))
-			(Present (Inheritance (Variable "this") (Variable "that"))))
-		(List (Concept "mammal") (Concept "vertebrate"))))
+(Evaluation
+(Lambda
+(VariableList (Variable "this") (Variable "that"))
+(Present (Inheritance (Variable "this") (Variable "that"))))
+(List (Concept "mammal") (Concept "vertebrate"))))
 (cog-evaluate!
-	(Evaluation
-		(Absent (Inheritance (Variable "this") (Variable "that")))
-		(List (Concept "foobar") (Concept "vertebrate"))))
+(Evaluation
+(Absent (Inheritance (Variable "this") (Variable "that")))
+(List (Concept "foobar") (Concept "vertebrate"))))
 (cog-evaluate!
-	(Evaluation
-		(Not (Absent (Inheritance (Variable "this") (Variable "that"))))
-		(List (Concept "mammal") (Concept "vertebrate"))))
+(Evaluation
+(Not (Absent (Inheritance (Variable "this") (Variable "that"))))
+(List (Concept "mammal") (Concept "vertebrate"))))
 (cog-evaluate!
-	(Satisfaction
-		(Present
-			(Inheritance (Concept "human") (Variable "middle"))
-			(Inheritance (Variable "middle") (Concept "vertebrate")))))
+(Satisfaction
+(Present
+(Inheritance (Concept "human") (Variable "middle"))
+(Inheritance (Variable "middle") (Concept "vertebrate")))))
 (Define
-	(DefinedPredicate "grandparent relation")
-	(Lambda
-		(VariableList (Variable "this") (Variable "that"))
-		(Satisfaction
-			(Variable "middle")
-			(Present
-				(Inheritance (Variable "this") (Variable "middle"))
-				(Inheritance (Variable "middle") (Variable "that"))))))
+(DefinedPredicate "grandparent relation")
+(Lambda
+(VariableList (Variable "this") (Variable "that"))
+(Satisfaction
+(Variable "middle")
+(Present
+(Inheritance (Variable "this") (Variable "middle"))
+(Inheritance (Variable "middle") (Variable "that"))))))
 (cog-evaluate!
-	(Evaluation
-		(DefinedPredicate "grandparent relation")
-		(List (Concept "foobar") (Concept "vertebrate"))))
+(Evaluation
+(DefinedPredicate "grandparent relation")
+(List (Concept "foobar") (Concept "vertebrate"))))
 (cog-evaluate!
-	(Evaluation
-		(DefinedPredicate "grandparent relation")
-		(List (Concept "human") (Concept "vertebrate"))))
+(Evaluation
+(DefinedPredicate "grandparent relation")
+(List (Concept "human") (Concept "vertebrate"))))
 (Define
-	(DefinedPredicate "recursive relation")
-	(Lambda
-		(VariableList (Variable "this") (Variable "that"))
-		(SequentialOr
-			(Present
-				(Inheritance (Variable "this") (Variable "that")))
-			(Satisfaction
-				(Variable "middle")
-				(And
-					(Present
-						(Inheritance (Variable "this") (Variable "middle")))
-					(Continuation
-						(Put
-							(DefinedPredicate "recursive relation")
-							(List (Variable "middle") (Variable "that")))))))))
+(DefinedPredicate "recursive relation")
+(Lambda
+(VariableList (Variable "this") (Variable "that"))
+(SequentialOr
+(Present
+(Inheritance (Variable "this") (Variable "that")))
+(Satisfaction
+(Variable "middle")
+(And
+(Present
+(Inheritance (Variable "this") (Variable "middle")))
+(Continuation
+(Put
+(DefinedPredicate "recursive relation")
+(List (Variable "middle") (Variable "that")))))))))
 (cog-evaluate!
-	(Evaluation
-		(DefinedPredicate "recursive relation")
-		(List (Concept "Ben") (Concept "animal"))))
+(Evaluation
+(DefinedPredicate "recursive relation")
+(List (Concept "Ben") (Concept "animal"))))
 (cog-evaluate!
-	(Evaluation
-		(DefinedPredicate "recursive relation")
-		(List (Concept "Ben") (Concept "foobar"))))
+(Evaluation
+(DefinedPredicate "recursive relation")
+(List (Concept "Ben") (Concept "foobar"))))
 (cog-execute!
-	(Meet (TypedVariable (Variable "?inh") (Type 'Concept))
-		(Put
-			(DefinedPredicate "recursive relation")
-			(List (Concept "Ben") (Variable "?inh")))))
+(Meet (TypedVariable (Variable "?inh") (Type 'Concept))
+(Put
+(DefinedPredicate "recursive relation")
+(List (Concept "Ben") (Variable "?inh")))))
 (Inheritance (Concept "thing") (Concept "Ben"))
 (cog-evaluate!
-	(Evaluation
-		(DefinedPredicate "recursive relation")
-		(List (Concept "Ben") (Concept "animal"))))
+(Evaluation
+(DefinedPredicate "recursive relation")
+(List (Concept "Ben") (Concept "animal"))))
 (cog-evaluate!
-	(Evaluation
-		(DefinedPredicate "recursive relation")
-		(List (Concept "Ben") (Concept "foobar"))))
+(Evaluation
+(DefinedPredicate "recursive relation")
+(List (Concept "Ben") (Concept "foobar"))))
 (cog-execute!
-	(ExecutionOutput
-		(Lambda
-			(VariableList (Variable "this") (Variable "that"))
-			(Present (Inheritance (Variable "this") (Variable "that"))))
-		(List (Concept "mammal") (Concept "vertebrate"))))
+(ExecutionOutput
+(Lambda
+(VariableList (Variable "this") (Variable "that"))
+(Present (Inheritance (Variable "this") (Variable "that"))))
+(List (Concept "mammal") (Concept "vertebrate"))))

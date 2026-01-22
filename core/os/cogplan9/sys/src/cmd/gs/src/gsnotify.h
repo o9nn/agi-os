@@ -1,5 +1,5 @@
 #ifndef gsnotify_INCLUDED
-#  define gsnotify_INCLUDED
+# define gsnotify_INCLUDED
 #include "gsstype.h"
 #define GS_NOTIFY_PROC(proc)\
 int proc(void *proc_data, void *event_data)

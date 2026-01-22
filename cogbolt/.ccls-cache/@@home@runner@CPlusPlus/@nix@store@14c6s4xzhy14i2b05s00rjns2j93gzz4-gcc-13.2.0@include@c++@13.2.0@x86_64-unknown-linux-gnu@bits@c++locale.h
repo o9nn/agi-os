@@ -15,7 +15,7 @@ _GLIBCXX_END_NAMESPACE_VERSION
 namespace std _GLIBCXX_VISIBILITY(default)
 {
 _GLIBCXX_BEGIN_NAMESPACE_VERSION
-typedef __locale_t		__c_locale;
+typedef __locale_t __c_locale;
 #if defined _GLIBCXX_LONG_DOUBLE_ALT128_COMPAT \
 && defined __LONG_DOUBLE_IEEE128__
 namespace __gnu_cxx_ieee128 {

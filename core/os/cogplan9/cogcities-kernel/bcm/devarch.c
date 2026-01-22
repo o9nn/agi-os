@@ -14,7 +14,7 @@ typedef long Rdwrfn(Chan*, void*, long, vlong);
 static Rdwrfn *readfn[Qmax];
 static Rdwrfn *writefn[Qmax];
 static Dirtab archdir[Qmax] = {
-".",		{ Qdir, 0, QTDIR },	0,	0555,
+".", { Qdir, 0, QTDIR }, 0, 0555,
 };
 Lock archwlock;
 int narchdir = Qbase;

@@ -3,31 +3,31 @@
 #include <bio.h>
 #include "httpd.h"
 #include "httpsrv.h"
-typedef struct Point	Point;
-typedef struct OkPoint	OkPoint;
-typedef struct Strings	Strings;
+typedef struct Point Point;
+typedef struct OkPoint OkPoint;
+typedef struct Strings Strings;
 struct Point
 {
-int	x;
-int	y;
+int x;
+int y;
 };
 struct OkPoint
 {
-Point	p;
-int	ok;
+Point p;
+int ok;
 };
 struct Strings
 {
-char	*s1;
-char	*s2;
+char *s1;
+char *s2;
 };
-static	char *me;
-int		polytest(int, Point, Point, Point);
-Strings		getfield(char*);
-OkPoint		pt(char*);
-char*		translate(HConnect*, char*, char*);
-Point		sub(Point, Point);
-float		dist(Point, Point);
+static char *me;
+int polytest(int, Point, Point, Point);
+Strings getfield(char*);
+OkPoint pt(char*);
+char* translate(HConnect*, char*, char*);
+Point sub(Point, Point);
+float dist(Point, Point);
 void
 main(int argc, char **argv)
 {

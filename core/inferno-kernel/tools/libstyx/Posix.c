@@ -1,10 +1,10 @@
-#define	__EXTENSIONS__
-#define	_BSD_COMPAT
+#define __EXTENSIONS__
+#define _BSD_COMPAT
 #include <lib9.h>
-#include 	<sys/types.h>
-#include	<sys/time.h>
-#include	<sys/socket.h>
-#include	<netinet/in.h>
+#include <sys/types.h>
+#include <sys/time.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
 #include "styxserver.h"
 #include "styxaux.h"
 typedef struct Fdset Fdset;

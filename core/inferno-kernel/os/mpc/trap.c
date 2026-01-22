@@ -1,36 +1,36 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"ureg.h"
-#include	"io.h"
-#include	"../port/error.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "ureg.h"
+#include "io.h"
+#include "../port/error.h"
 enum
 {
-Maxhandler=	MaxVector
+Maxhandler= MaxVector
 };
-typedef struct Handler	Handler;
+typedef struct Handler Handler;
 struct Handler
 {
-void	(*r)(Ureg*, void*);
-void	*arg;
-char	name[KNAMELEN];
-Handler	*next;
-ulong	nintr;
-ulong	ticks;
-int	maxtick;
+void (*r)(Ureg*, void*);
+void *arg;
+char name[KNAMELEN];
+Handler *next;
+ulong nintr;
+ulong ticks;
+int maxtick;
 };
 struct
 {
-Handler	*ivec[MaxVector];
-Handler	h[Maxhandler];
-int	free;
-Handler*	freelist;
+Handler *ivec[MaxVector];
+Handler h[Maxhandler];
+int free;
+Handler* freelist;
 } halloc;
 Instr BREAK = 0x7fe00008;
 int (*breakhandler)(Ureg*, Proc*);
-void	kernfault(Ureg*, int);
+void kernfault(Ureg*, int);
 char *excname[] =
 {
 "reserved 0",
@@ -80,29 +80,29 @@ char *fpcause[] =
 "overflow",
 "invalid operation",
 };
-char	*fpexcname(Ureg*, ulong, char*);
-#define FPEXPMASK	0xfff80300
+char *fpexcname(Ureg*, ulong, char*);
+#define FPEXPMASK 0xfff80300
 char *regname[]={
-"CAUSE",	"SRR1",
-"PC",		"GOK",
-"LR",		"CR",
-"XER",	"CTR",
-"R0",		"R1",
-"R2",		"R3",
-"R4",		"R5",
-"R6",		"R7",
-"R8",		"R9",
-"R10",	"R11",
-"R12",	"R13",
-"R14",	"R15",
-"R16",	"R17",
-"R18",	"R19",
-"R20",	"R21",
-"R22",	"R23",
-"R24",	"R25",
-"R26",	"R27",
-"R28",	"R29",
-"R30",	"R31",
+"CAUSE", "SRR1",
+"PC", "GOK",
+"LR", "CR",
+"XER", "CTR",
+"R0", "R1",
+"R2", "R3",
+"R4", "R5",
+"R6", "R7",
+"R8", "R9",
+"R10", "R11",
+"R12", "R13",
+"R14", "R15",
+"R16", "R17",
+"R18", "R19",
+"R20", "R21",
+"R22", "R23",
+"R24", "R25",
+"R26", "R27",
+"R28", "R29",
+"R30", "R31",
 };
 void
 sethvec(int v, void (*r)(void))
@@ -228,9 +228,9 @@ print("SPURIOUS interrupt pc=0x%lux cause=0x%lux\n",
 ur->pc, ur->cause);
 panic("bad interrupt");
 }
-#define	LEV(n)	(((n)<<1)|1)
-#define	IRQ(n)	(((n)<<1)|0)
-Lock	veclock;
+#define LEV(n) (((n)<<1)|1)
+#define IRQ(n) (((n)<<1)|0)
+Lock veclock;
 void
 trapinit(void)
 {
@@ -402,7 +402,7 @@ return "no floating point exception";
 sprint(buf, "%s fppc=0x%lux", s, fppc);
 return buf;
 }
-#define KERNPC(x)	(KTZERO<(ulong)(x)&&(ulong)(x)<(ulong)etext)
+#define KERNPC(x) (KTZERO<(ulong)(x)&&(ulong)(x)<(ulong)etext)
 void
 kernfault(Ureg *ur, int code)
 {

@@ -9,18 +9,18 @@ include "draw.m";
 include "keyring.m";
 kr: Keyring;
 include "security.m";
-auth:	Auth;
+auth: Auth;
 include "dhcp.m";
 dhcpclient: Dhcpclient;
 Bootconf: import dhcpclient;
 I4EBOOT: con "/lib/boot.sh";
 Init: module
 {
-init:	fn();
+init: fn();
 };
 Command: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 Bootpreadlen: con 128;
 init()
@@ -66,11 +66,11 @@ fail(err);
 #
 # default namespace
 #
-dobind("#c", "/dev", Sys->MREPL);			# console
-dobind("#p", "/prog", Sys->MREPL);		# prog device
+dobind("#c", "/dev", Sys->MREPL); # console
+dobind("#p", "/prog", Sys->MREPL); # prog device
 sys->bind("#d", "/fd", Sys->MREPL);
 sys->pctl(Sys->NEWENV, nil);
-dobind("#e", "/env", Sys->MREPL|Sys->MCREATE);	# env device
+dobind("#e", "/env", Sys->MREPL|Sys->MCREATE); # env device
 sys->print("clock...\n");
 setclock();
 sys->print("boot...\n");
@@ -112,7 +112,7 @@ return sys->sprint("authentication failed: %s", err);
 sys->print("mount ...");
 c.cfd = nil;
 sys->pctl(Sys->NEWNS, nil);
-if(sys->mount(c.dfd, nil, "/", sys->MREPL, "") < 0)	# TO DO: would be better to mount behind
+if(sys->mount(c.dfd, nil, "/", sys->MREPL, "") < 0) # TO DO: would be better to mount behind
 return sys->sprint("mount failed: %r");
 sys->chdir("/");
 return nil;

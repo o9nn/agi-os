@@ -11,7 +11,7 @@ void (*_pcmspecialclose)(int);
 int
 pcmspecial(char *idstr, ISAConf *isa)
 {
-return (_pcmspecial  != nil)? _pcmspecial(idstr, isa): -1;
+return (_pcmspecial != nil)? _pcmspecial(idstr, isa): -1;
 }
 void
 pcmspecialclose(int a)
@@ -30,7 +30,7 @@ ioaddr = isaend;
 isaend += size;
 return ioaddr;
 }
-#define MAP(x,o)	(Rmap + (x)*0x8 + o)
+#define MAP(x,o) (Rmap + (x)*0x8 + o)
 enum {
 TI_vid = 0x104c,
 TI_1131_did = 0xAC15,
@@ -50,7 +50,7 @@ M = K * K,
 LegacyAddr = 0x3e0,
 NUMEVENTS = 10,
 TI1131xSC = 0x80,
-TI122X_SC_INTRTIE	= 1 << 29,
+TI122X_SC_INTRTIE = 1 << 29,
 TI12xxIM = 0x8c,
 TI1131xCC = 0x91,
 TI113X_CC_RIENB = 1 << 7,
@@ -64,20 +64,20 @@ TI1131xDC = 0x92,
 };
 typedef struct Variant Variant;
 struct Variant {
-ushort	vid;
-ushort	did;
-char	*name;
+ushort vid;
+ushort did;
+char *name;
 };
 static Variant variant[] = {
-{	Ricoh_vid,	Ricoh_475_did,	"Ricoh 475 PCI/Cardbus bridge",	},
-{	Ricoh_vid,	Ricoh_476_did,	"Ricoh 476 PCI/Cardbus bridge",	},
-{	Ricoh_vid,	Ricoh_478_did,	"Ricoh 478 PCI/Cardbus bridge",	},
-{	TI_vid,		TI_1131_did,	"TI PCI-1131 Cardbus Controller", },
-{	TI_vid,		TI_1250_did,	"TI PCI-1250 Cardbus Controller", },
-{	TI_vid,		TI_1450_did,	"TI PCI-1450 Cardbus Controller", },
-{	TI_vid,		TI_1251A_did,	"TI PCI-1251A Cardbus Controller", },
-{	TI_vid,		TI_1420_did,	"TI PCI-1420 Cardbus Controller", },
-{	O2_vid,		O2_OZ711M3_did,	"O2Micro OZ711M3 MemoryCardBus", },
+{ Ricoh_vid, Ricoh_475_did, "Ricoh 475 PCI/Cardbus bridge", },
+{ Ricoh_vid, Ricoh_476_did, "Ricoh 476 PCI/Cardbus bridge", },
+{ Ricoh_vid, Ricoh_478_did, "Ricoh 478 PCI/Cardbus bridge", },
+{ TI_vid, TI_1131_did, "TI PCI-1131 Cardbus Controller", },
+{ TI_vid, TI_1250_did, "TI PCI-1250 Cardbus Controller", },
+{ TI_vid, TI_1450_did, "TI PCI-1450 Cardbus Controller", },
+{ TI_vid, TI_1251A_did, "TI PCI-1251A Cardbus Controller", },
+{ TI_vid, TI_1420_did, "TI PCI-1420 Cardbus Controller", },
+{ O2_vid, O2_OZ711M3_did, "O2Micro OZ711M3 MemoryCardBus", },
 };
 enum {
 SocketEvent = 0,
@@ -117,103 +117,103 @@ Tvg46x,
 };
 enum
 {
-Rid=		0x0,
-Ris=		0x1,
-Rpc=	 	0x2,
-Foutena=	 (1<<7),
-Fautopower=	 (1<<5),
-Fcardena=	 (1<<4),
-Rigc= 		0x3,
-Fiocard=	 (1<<5),
-Fnotreset=	 (1<<6),
-FSMIena=	 (1<<4),
-Rcsc= 		0x4,
-Rcscic= 	0x5,
-Fchangeena=	 (1<<3),
-Fbwarnena=	 (1<<1),
-Fbdeadena=	 (1<<0),
-Rwe= 		0x6,
-Fmem16=	 (1<<5),
-Rio= 		0x7,
-Fwidth16=	 (1<<0),
-Fiocs16=	 (1<<1),
-Fzerows=	 (1<<2),
-Ftiming=	 (1<<3),
-Riobtm0lo=	0x8,
-Riobtm0hi=	0x9,
-Riotop0lo=	0xa,
-Riotop0hi=	0xb,
-Riobtm1lo=	0xc,
-Riobtm1hi=	0xd,
-Riotop1lo=	0xe,
-Riotop1hi=	0xf,
-Rmap=		0x10,
-Rmisc1=		0x16,
-F5Vdetect=	 (1<<0),
-Fvcc3V=	 (1<<1),
-Fpmint=	 (1<<2),
-Fpsirq=	 (1<<3),
-Fspeaker=	 (1<<4),
-Finpack=	 (1<<7),
-Rfifo=		0x17,
-Fflush=	 (1<<7),
-Rmisc2=		0x1E,
-Flowpow=	 (1<<1),
-Rchipinfo=	0x1F,
-Ratactl=	0x26,
-Mbtmlo=		0x0,
-Mbtmhi=		0x1,
-F16bit=	 (1<<7),
-Mtoplo=		0x2,
-Mtophi=		0x3,
-Ftimer1=	 (1<<6),
-Mofflo=		0x4,
-Moffhi=		0x5,
-Fregactive=	 (1<<6),
-Rconfig=	0,
-Creset=	 (1<<7),
-Clevel=	 (1<<6),
+Rid= 0x0,
+Ris= 0x1,
+Rpc= 0x2,
+Foutena= (1<<7),
+Fautopower= (1<<5),
+Fcardena= (1<<4),
+Rigc= 0x3,
+Fiocard= (1<<5),
+Fnotreset= (1<<6),
+FSMIena= (1<<4),
+Rcsc= 0x4,
+Rcscic= 0x5,
+Fchangeena= (1<<3),
+Fbwarnena= (1<<1),
+Fbdeadena= (1<<0),
+Rwe= 0x6,
+Fmem16= (1<<5),
+Rio= 0x7,
+Fwidth16= (1<<0),
+Fiocs16= (1<<1),
+Fzerows= (1<<2),
+Ftiming= (1<<3),
+Riobtm0lo= 0x8,
+Riobtm0hi= 0x9,
+Riotop0lo= 0xa,
+Riotop0hi= 0xb,
+Riobtm1lo= 0xc,
+Riobtm1hi= 0xd,
+Riotop1lo= 0xe,
+Riotop1hi= 0xf,
+Rmap= 0x10,
+Rmisc1= 0x16,
+F5Vdetect= (1<<0),
+Fvcc3V= (1<<1),
+Fpmint= (1<<2),
+Fpsirq= (1<<3),
+Fspeaker= (1<<4),
+Finpack= (1<<7),
+Rfifo= 0x17,
+Fflush= (1<<7),
+Rmisc2= 0x1E,
+Flowpow= (1<<1),
+Rchipinfo= 0x1F,
+Ratactl= 0x26,
+Mbtmlo= 0x0,
+Mbtmhi= 0x1,
+F16bit= (1<<7),
+Mtoplo= 0x2,
+Mtophi= 0x3,
+Ftimer1= (1<<6),
+Mofflo= 0x4,
+Moffhi= 0x5,
+Fregactive= (1<<6),
+Rconfig= 0,
+Creset= (1<<7),
+Clevel= (1<<6),
 };
 typedef struct Cisdat Cisdat;
 struct Cisdat {
-uchar		*cisbase;
-int		cispos;
-int		cisskip;
-int		cislen;
+uchar *cisbase;
+int cispos;
+int cisskip;
+int cislen;
 };
 typedef struct Pcminfo Pcminfo;
 struct Pcminfo {
-char		verstr[512];
-PCMmap		mmap[4];
-ulong		conf_addr;
-uchar		conf_present;
-int		nctab;
-PCMconftab	ctab[8];
-PCMconftab	*defctab;
-int		port;
-int		irq;
+char verstr[512];
+PCMmap mmap[4];
+ulong conf_addr;
+uchar conf_present;
+int nctab;
+PCMconftab ctab[8];
+PCMconftab *defctab;
+int port;
+int irq;
 };
 typedef struct Cardbus Cardbus;
 struct Cardbus {
 Lock;
-Variant		*variant;
-Pcidev		*pci;
-ulong		*regs;
-int		ltype;
-int		lindex;
-int		ldata;
-int		lbase;
-int		state;
-int		type;
-Pcminfo		linfo;
-int		special;
-int		refs;
-Lock		refslock;
+Variant *variant;
+Pcidev *pci;
+ulong *regs;
+int ltype;
+int lindex;
+int ldata;
+int lbase;
+int state;
+int type;
+Pcminfo linfo;
+int special;
+int refs;
+Lock refslock;
 };
 enum {
-Mshift=	12,
-Mgran=	(1<<Mshift),
-Mmask=	~(Mgran-1),
+Mshift= 12,
+Mgran= (1<<Mshift),
+Mmask= ~(Mgran-1),
 };
 static Cardbus cbslots[Nslots];
 static int nslots;
@@ -255,10 +255,10 @@ CardEjected,
 CardConfigured,
 };
 static char *messages[] = {
-[CardDetected]		"CardDetected",
-[CardPowered]		"CardPowered",
-[CardEjected]		"CardEjected",
-[CardConfigured]	"CardConfigured",
+[CardDetected] "CardDetected",
+[CardPowered] "CardPowered",
+[CardEjected] "CardEjected",
+[CardConfigured] "CardConfigured",
 };
 enum {
 SlotEmpty,
@@ -267,10 +267,10 @@ SlotPowered,
 SlotConfigured,
 };
 static char *states[] = {
-[SlotEmpty]		"SlotEmpty",
-[SlotFull]		"SlotFull",
-[SlotPowered]		"SlotPowered",
-[SlotConfigured]	"SlotConfigured",
+[SlotEmpty] "SlotEmpty",
+[SlotFull] "SlotFull",
+[SlotPowered] "SlotPowered",
+[SlotConfigured] "SlotConfigured",
 };
 static void
 engine(Cardbus *cb, int message)
@@ -973,7 +973,7 @@ static void
 tvers1(Cardbus *cb, Cisdat *cis, int )
 {
 uchar c, major, minor, last;
-int  i;
+int i;
 Pcminfo *pi;
 pi = &cb->linfo;
 if(readc(cis, &major) != 1)

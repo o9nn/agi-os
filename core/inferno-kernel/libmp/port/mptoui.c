@@ -20,6 +20,6 @@ x = *b->p;
 if(b->sign < 0)
 x = 0;
 else if(b->top > 1 || (sizeof(mpdigit) > sizeof(uint) && x > MAXUINT))
-x =  MAXUINT;
+x = MAXUINT;
 return x;
 }

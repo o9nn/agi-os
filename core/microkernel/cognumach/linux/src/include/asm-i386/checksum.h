@@ -13,10 +13,10 @@ jbe 2f
 addl 4(%1), %0
 adcl 8(%1), %0
 adcl 12(%1), %0
-1:	    adcl 16(%1), %0
+1: adcl 16(%1), %0
 lea 4(%1), %1
 decl %2
-jne	1b
+jne 1b
 adcl $0, %0
 movl %0, %2
 shrl $16, %0

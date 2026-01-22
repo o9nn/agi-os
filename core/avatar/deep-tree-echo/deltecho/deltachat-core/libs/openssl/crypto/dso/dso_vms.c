@@ -17,12 +17,12 @@ return NULL;
 # include <starlet.h>
 # include "vms_rms.h"
 # if __INITIAL_POINTER_SIZE && defined _ANSI_C_SOURCE
-#  if __INITIAL_POINTER_SIZE == 64
-#   pragma pointer_size save
-#   pragma pointer_size 32
+# if __INITIAL_POINTER_SIZE == 64
+# pragma pointer_size save
+# pragma pointer_size 32
 void *_malloc32(__size_t);
-#   pragma pointer_size restore
-#  endif
+# pragma pointer_size restore
+# endif
 # endif
 # pragma message disable DOLLARID
 static int vms_load(DSO *dso);
@@ -70,15 +70,15 @@ static int vms_load(DSO *dso)
 void *ptr = NULL;
 char *filename = DSO_convert_filename(dso, NULL);
 # if __INITIAL_POINTER_SIZE == 64
-#  define DSO_MALLOC _malloc32
-#  pragma pointer_size save
-#  pragma pointer_size 32
+# define DSO_MALLOC _malloc32
+# pragma pointer_size save
+# pragma pointer_size 32
 # else
-#  define DSO_MALLOC OPENSSL_malloc
+# define DSO_MALLOC OPENSSL_malloc
 # endif
 DSO_VMS_INTERNAL *p = NULL;
 # if __INITIAL_POINTER_SIZE == 64
-#  pragma pointer_size restore
+# pragma pointer_size restore
 # endif
 const char *sp1, *sp2;
 const char *ext = NULL;
@@ -189,14 +189,14 @@ int flags = 0;
 # endif
 struct dsc$descriptor_s symname_dsc;
 # if __INITIAL_POINTER_SIZE == 64
-#  define SYMNAME symname_32p
-#  pragma pointer_size save
-#  pragma pointer_size 32
+# define SYMNAME symname_32p
+# pragma pointer_size save
+# pragma pointer_size 32
 char *symname_32p;
-#  pragma pointer_size restore
+# pragma pointer_size restore
 char symname_32[NAMX_MAXRSS + 1];
 # else
-#  define SYMNAME ((char *) symname)
+# define SYMNAME ((char *) symname)
 # endif
 *sym = NULL;
 if ((dso == NULL) || (symname == NULL)) {
@@ -276,18 +276,18 @@ struct NAMX_STRUCT nam;
 char esa[NAMX_MAXRSS + 1];
 char *merged;
 # if __INITIAL_POINTER_SIZE == 64
-#  define FILESPEC1 filespec1_32p;
-#  define FILESPEC2 filespec2_32p;
-#  pragma pointer_size save
-#  pragma pointer_size 32
+# define FILESPEC1 filespec1_32p;
+# define FILESPEC2 filespec2_32p;
+# pragma pointer_size save
+# pragma pointer_size 32
 char *filespec1_32p;
 char *filespec2_32p;
-#  pragma pointer_size restore
+# pragma pointer_size restore
 char filespec1_32[NAMX_MAXRSS + 1];
 char filespec2_32[NAMX_MAXRSS + 1];
 # else
-#  define FILESPEC1 ((char *) filespec1)
-#  define FILESPEC2 ((char *) filespec2)
+# define FILESPEC1 ((char *) filespec1)
+# define FILESPEC2 ((char *) filespec2)
 # endif
 if (!filespec1)
 filespec1 = "";

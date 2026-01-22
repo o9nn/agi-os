@@ -7,9 +7,9 @@
 #include "secstore.h"
 enum{ CHK = 16, MAXFILES = 100 };
 typedef struct AuthConn{
-SConn	*conn;
-char	pass[64];
-int	passlen;
+SConn *conn;
+char pass[64];
+int passlen;
 } AuthConn;
 int verbose;
 Nvrsafe nvr;
@@ -91,7 +91,7 @@ sha1(key, nkey, skey, sha);
 setupAESstate(&aes, skey, AESbsize, ibr);
 memset(skey, 0, sizeof skey);
 ibr += AESbsize;
-n   -= AESbsize;
+n -= AESbsize;
 }
 aesCBCdecrypt(ibw-n, n, &aes);
 n = ibw - ibr - CHK;

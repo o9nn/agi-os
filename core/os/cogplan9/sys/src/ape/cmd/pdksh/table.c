@@ -1,7 +1,7 @@
 #include "sh.h"
-#define	INIT_TBLS	8
-static void     texpand     ARGS((struct table *tp, int nsize));
-static int      tnamecmp    ARGS((void *p1, void *p2));
+#define INIT_TBLS 8
+static void texpand ARGS((struct table *tp, int nsize));
+static int tnamecmp ARGS((void *p1, void *p2));
 unsigned int
 hash(n)
 register const char * n;

@@ -1,17 +1,17 @@
 #ifndef gdevpsf_INCLUDED
-#  define gdevpsf_INCLUDED
+# define gdevpsf_INCLUDED
 #include "gsccode.h"
 #include "gsgdata.h"
 #ifndef gs_font_DEFINED
-#  define gs_font_DEFINED
+# define gs_font_DEFINED
 typedef struct gs_font_s gs_font;
 #endif
 #ifndef gs_font_base_DEFINED
-#  define gs_font_base_DEFINED
+# define gs_font_base_DEFINED
 typedef struct gs_font_base_s gs_font_base;
 #endif
 #ifndef stream_DEFINED
-#  define stream_DEFINED
+# define stream_DEFINED
 typedef struct stream_s stream;
 #endif
 typedef struct psf_glyph_enum_s psf_glyph_enum_t;
@@ -56,7 +56,7 @@ gs_glyph *subset_glyphs;
 uint subset_size;
 } psf_outline_glyphs_t;
 #ifndef gs_font_type1_DEFINED
-#  define gs_font_type1_DEFINED
+# define gs_font_type1_DEFINED
 typedef struct gs_font_type1_s gs_font_type1;
 #endif
 typedef int (*glyph_data_proc_t)(gs_font_base *, gs_glyph,
@@ -91,14 +91,14 @@ gs_glyph *subset_glyphs, uint subset_size,
 const gs_const_string *alt_font_name,
 gs_int_rect *FontBBox);
 #ifndef gs_font_cid0_DEFINED
-#  define gs_font_cid0_DEFINED
+# define gs_font_cid0_DEFINED
 typedef struct gs_font_cid0_s gs_font_cid0;
 #endif
 int psf_write_cid0_font(stream *s, gs_font_cid0 *pfont, int options,
 const byte *subset_cids, uint subset_size,
 const gs_const_string *alt_font_name);
 #ifndef gs_cmap_DEFINED
-#  define gs_cmap_DEFINED
+# define gs_cmap_DEFINED
 typedef struct gs_cmap_s gs_cmap_t;
 #endif
 typedef int (*psf_put_name_chars_proc_t)(stream *, const byte *, uint);
@@ -106,7 +106,7 @@ int psf_write_cmap(const gs_memory_t *mem, stream *s, const gs_cmap_t *pcmap,
 psf_put_name_chars_proc_t put_name_chars,
 const gs_const_string *alt_cmap_name, int font_index_only);
 #ifndef gs_font_type42_DEFINED
-#  define gs_font_type42_DEFINED
+# define gs_font_type42_DEFINED
 typedef struct gs_font_type42_s gs_font_type42;
 #endif
 #define WRITE_TRUETYPE_CMAP 1
@@ -119,7 +119,7 @@ gs_glyph *subset_glyphs, uint subset_size,
 const gs_const_string *alt_font_name);
 int psf_write_truetype_stripped(stream *s, gs_font_type42 *pfont);
 #ifndef gs_font_cid2_DEFINED
-#  define gs_font_cid2_DEFINED
+# define gs_font_cid2_DEFINED
 typedef struct gs_font_cid2_s gs_font_cid2;
 #endif
 int psf_write_cid2_font(stream *s, gs_font_cid2 *pfont, int options,

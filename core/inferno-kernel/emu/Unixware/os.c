@@ -1,22 +1,22 @@
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
 #undef _POSIX_C_SOURCE
 #undef getwd
-#include	<unistd.h>
-#include	<thread.h>
-#include	<time.h>
-#include	<termios.h>
-#include	<signal.h>
-#include 	<pwd.h>
-#include	<sys/resource.h>
-#include	<sys/time.h>
+#include <unistd.h>
+#include <thread.h>
+#include <time.h>
+#include <termios.h>
+#include <signal.h>
+#include <pwd.h>
+#include <sys/resource.h>
+#include <sys/time.h>
 enum
 {
-DELETE  = 0x7F
+DELETE = 0x7F
 };
 char *hosttype = "Unixware";
-static thread_key_t	prdakey;
+static thread_key_t prdakey;
 static siginfo_t siginfo;
 extern int dflag;
 Proc*
@@ -323,7 +323,7 @@ return (vlong)t.tv_sec * 1000000 + t.tv_usec;
 int
 osmillisleep(ulong milsec)
 {
-struct  timespec time;
+struct timespec time;
 time.tv_sec = milsec/1000;
 time.tv_nsec= (milsec%1000)*1000000;
 nanosleep(&time,nil);

@@ -4,11 +4,11 @@
 #ifdef MODULE
 #define __exitused
 #else
-#define __exitused  __used
+#define __exitused __used
 #endif
 #define __init
 #define __initdata
-#define __exit          __exitused __cold notrace
+#define __exit __exitused __cold notrace
 #define __exitdata
 #define __devinit
 #define __devinitdata

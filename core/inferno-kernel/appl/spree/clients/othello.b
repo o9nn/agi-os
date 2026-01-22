@@ -8,11 +8,11 @@ include "tk.m";
 tk: Tk;
 include "tkclient.m";
 tkclient: Tkclient;
-SQ: con 30;		# Square size in pixels
+SQ: con 30; # Square size in pixels
 N: con 8;
 stderr: ref Sys->FD;
 Othello: module {
-init:   fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 Black, White, Nocolour: con iota;
 colours := array[] of {White => "white", Black => "black"};
@@ -33,7 +33,7 @@ sys->fprint(stderr, "othello: cannot load %s: %r\n", Tkclient->PATH);
 raise "fail:bad module";
 }
 tkclient->init();
-if (len argv >= 3) {		# argv: modname mnt dir ...
+if (len argv >= 3) { # argv: modname mnt dir ...
 membername = readfile(hd tl argv + "/name");
 sys->print("name is %s\n", membername);
 }

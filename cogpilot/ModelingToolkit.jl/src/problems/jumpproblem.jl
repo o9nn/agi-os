@@ -92,9 +92,9 @@ check_is_continuous(sys, T)
 end
 ###################### parameter mapper ###########################
 struct JumpSysMajParamMapper{U, V, W}
-paramexprs::U     # the parameter expressions to use for each jump rate constant
-sympars::V        # parameters(sys) from the underlying JumpSystem
-subdict::Any           # mapping from an element of parameters(sys) to its current numerical value
+paramexprs::U # the parameter expressions to use for each jump rate constant
+sympars::V # parameters(sys) from the underlying JumpSystem
+subdict::Any # mapping from an element of parameters(sys) to its current numerical value
 end
 function JumpSysMajParamMapper(js::System, p; jseqs = nothing, rateconsttype = Float64)
 eqs = (jseqs === nothing) ? jumps(js) : jseqs

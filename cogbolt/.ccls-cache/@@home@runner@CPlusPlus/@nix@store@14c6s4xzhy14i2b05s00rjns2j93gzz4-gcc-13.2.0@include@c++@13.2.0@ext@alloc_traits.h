@@ -13,14 +13,14 @@ struct __alloc_traits
 {
 typedef _Alloc allocator_type;
 #if __cplusplus >= 201103L
-typedef std::allocator_traits<_Alloc>           _Base_type;
-typedef typename _Base_type::value_type         value_type;
-typedef typename _Base_type::pointer            pointer;
-typedef typename _Base_type::const_pointer      const_pointer;
-typedef typename _Base_type::size_type          size_type;
-typedef typename _Base_type::difference_type    difference_type;
-typedef value_type&                             reference;
-typedef const value_type&                       const_reference;
+typedef std::allocator_traits<_Alloc> _Base_type;
+typedef typename _Base_type::value_type value_type;
+typedef typename _Base_type::pointer pointer;
+typedef typename _Base_type::const_pointer const_pointer;
+typedef typename _Base_type::size_type size_type;
+typedef typename _Base_type::difference_type difference_type;
+typedef value_type& reference;
+typedef const value_type& const_reference;
 using _Base_type::allocate;
 using _Base_type::deallocate;
 using _Base_type::construct;
@@ -75,13 +75,13 @@ template<typename _Tp>
 struct rebind
 { typedef typename _Base_type::template rebind_alloc<_Tp> other; };
 #else
-typedef typename _Alloc::pointer                pointer;
-typedef typename _Alloc::const_pointer          const_pointer;
-typedef typename _Alloc::value_type             value_type;
-typedef typename _Alloc::reference              reference;
-typedef typename _Alloc::const_reference        const_reference;
-typedef typename _Alloc::size_type              size_type;
-typedef typename _Alloc::difference_type        difference_type;
+typedef typename _Alloc::pointer pointer;
+typedef typename _Alloc::const_pointer const_pointer;
+typedef typename _Alloc::value_type value_type;
+typedef typename _Alloc::reference reference;
+typedef typename _Alloc::const_reference const_reference;
+typedef typename _Alloc::size_type size_type;
+typedef typename _Alloc::difference_type difference_type;
 __attribute__((__always_inline__)) _GLIBCXX_NODISCARD
 static pointer
 allocate(_Alloc& __a, size_type __n)

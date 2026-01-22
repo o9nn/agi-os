@@ -23,30 +23,30 @@ Debug: con 0;
 Update: adt {
 pick {
 Set =>
-o:		ref Object;
-objid:	int;			# member-specific id
-attr:		ref Attribute;
+o: ref Object;
+objid: int; # member-specific id
+attr: ref Attribute;
 Transfer =>
-srcid:	int;			# parent object
-from:	Range;		# range within src to transfer
-dstid:	int;			# destination object
-index:	int;			# insertion point
+srcid: int; # parent object
+from: Range; # range within src to transfer
+dstid: int; # destination object
+index: int; # insertion point
 Create =>
-objid:	int;
-parentid:	int;
-visibility:	Sets->Set;
-objtype:	string;
+objid: int;
+parentid: int;
+visibility: Sets->Set;
+objtype: string;
 Delete =>
-parentid:	int;
-r:		Range;
-objs:		array of int;
+parentid: int;
+r: Range;
+objs: array of int;
 Setvisibility =>
-objid:	int;
-visibility:	Sets->Set;		# set of members that can see it
+objid: int;
+visibility: Sets->Set; # set of members that can see it
 Action =>
-s:		string;
-objs:		list of int;
-rest:		string;
+s: string;
+objs: list of int;
+rest: string;
 Break =>
 # break in transmission
 }
@@ -60,27 +60,27 @@ isempty: fn(q: self ref Queue): int;
 peek: fn(q: self ref Queue): T;
 };
 Openfid: adt {
-fid:		int;
-uname:	string;
-fileid:	int;
-member:	ref Member;		# nil for non-clique files.
-updateq:	ref Queue;
-readreq:	ref Tmsg.Read;
-hungup:	int;
-# alias:	string;		# could use this to allow a member to play themselves
-new:		fn(fid: ref Fid, file: ref Qfile): ref Openfid;
-find:		fn(fid: int): ref Openfid;
-close:	fn(fid: self ref Openfid);
-#	cmd:		fn(fid: self ref Openfid, cmd: string): string;
+fid: int;
+uname: string;
+fileid: int;
+member: ref Member; # nil for non-clique files.
+updateq: ref Queue;
+readreq: ref Tmsg.Read;
+hungup: int;
+# alias: string; # could use this to allow a member to play themselves
+new: fn(fid: ref Fid, file: ref Qfile): ref Openfid;
+find: fn(fid: int): ref Openfid;
+close: fn(fid: self ref Openfid);
+# cmd: fn(fid: self ref Openfid, cmd: string): string;
 };
 Qfile: adt {
-id:		int;				# index into files array
-owner:	string;
-qid:		Sys->Qid;
-ofids:	list of ref Openfid;		# list of all fids that are holding this open
-needsupdate:	int;			# updates have been added since last updateall
-create:	fn(parent: big, d: Sys->Dir): ref Qfile;
-delete:	fn(f: self ref Qfile);
+id: int; # index into files array
+owner: string;
+qid: Sys->Qid;
+ofids: list of ref Openfid; # list of all fids that are holding this open
+needsupdate: int; # updates have been added since last updateall
+create: fn(parent: big, d: Sys->Dir): ref Qfile;
+delete: fn(f: self ref Qfile);
 };
 # which updates do we send even though the clique isn't yet started?
 alwayssend := array[] of {
@@ -92,13 +92,13 @@ tagof(Update.Setvisibility) => 0,
 tagof(Update.Action) => 1,
 tagof(Update.Break) => 1,
 };
-srv:		ref Styxserver;
-tree:		ref Nametree->Tree;
-cliques:	array of ref Clique;
-qfiles:	array of ref Qfile;
-fids :=	array[47] of list of ref Openfid;	# hash table
-lobby:	ref Clique;
-Qroot:	big;
+srv: ref Styxserver;
+tree: ref Nametree->Tree;
+cliques: array of ref Clique;
+qfiles: array of ref Qfile;
+fids := array[47] of list of ref Openfid; # hash table
+lobby: ref Clique;
+Qroot: big;
 sequence := 0;
 fROOT,
 fGAME,
@@ -255,7 +255,7 @@ updateall();
 return err;
 }
 srv.reply(ref Rmsg.Write(m.tag, len m.data));
-updateall();		# XXX might we need to do this on error too?
+updateall(); # XXX might we need to do this on error too?
 Clunk =>
 fid := srv.clunk(m);
 if (fid != nil) {
@@ -407,14 +407,14 @@ err = newmember(clique, ofid, cmd);
 else
 err = cliquerequest(clique, ref Rq.Command(ofid.member, cmd));
 * =>
-err = "invalid command " + string qid;		# XXX dud error message
+err = "invalid command " + string qid; # XXX dud error message
 }
 return err;
 }
 Clique.notify(src: self ref Clique, dstid: int, cmd: string)
 {
 if (cmd == nil)
-return;		# don't allow faking of clique exit.
+return; # don't allow faking of clique exit.
 if (dstid < 0 || dstid >= len cliques) {
 if (dstid != -1)
 sys->fprint(stderr, "%d cannot notify invalid %d: '%s'\n", src.id, dstid, cmd);
@@ -518,21 +518,21 @@ memberids = memberids.add(i);
 archive = ref *archive;
 archive.objects = nil;
 g := cliques[id] = ref Clique(
-id,			# id
-f.id,			# fileid
-fname,		# fname
-objs,			# objects
-archive,		# archive
-nil,			# freelist
-mod,		# mod
-memberids,		# memberids
+id, # id
+f.id, # fileid
+fname, # fname
+objs, # objects
+archive, # archive
+nil, # freelist
+mod, # mod
+memberids, # memberids
 suspended,
-chan of ref Rq,	# request
-chan of string,	# reply
-0,			# hungup
-0,			# started
--1,			# parentid
-nil			# notes
+chan of ref Rq, # request
+chan of string, # reply
+0, # hungup
+0, # started
+-1, # parentid
+nil # notes
 );
 if (parent != nil) {
 g.parentid = parent.id;
@@ -654,24 +654,24 @@ return nametree->tree.remove(mkqid(fGAMEDATA, clique.id | (f<<16)));
 # debugging...
 Clique.show(nil: self ref Clique, nil: ref Member)
 {
-#	sys->print("**************** all objects:\n");
-#	showobject(clique, clique.objects[0], p, 0, ~0);
-#	if (p == nil) {
-#		f := qfiles[clique.fileid];
-#		for (ol := f.ofids; ol != nil; ol = tl ol) {
-#			p = (hd ol).member;
-#			if (p == nil) {
-#				sys->print("lurker (name '%s')\n",
-#					(hd ol).uname);
-#				continue;
-#			}
-#			sys->print("member %d, '%s': ext->obj ", p.id, p.name);
-#			for (j := 0; j < len p.ext2obj; j++)
-#				if (p.ext2obj[j] != nil)
-#					sys->print("%d->%d[%d] ", j, p.ext2obj[j].id, p.ext(p.ext2obj[j].id));
-#			sys->print("\n");
-#		}
-#	}
+# sys->print("**************** all objects:\n");
+# showobject(clique, clique.objects[0], p, 0, ~0);
+# if (p == nil) {
+# f := qfiles[clique.fileid];
+# for (ol := f.ofids; ol != nil; ol = tl ol) {
+# p = (hd ol).member;
+# if (p == nil) {
+# sys->print("lurker (name '%s')\n",
+# (hd ol).uname);
+# continue;
+# }
+# sys->print("member %d, '%s': ext->obj ", p.id, p.name);
+# for (j := 0; j < len p.ext2obj; j++)
+# if (p.ext2obj[j] != nil)
+# sys->print("%d->%d[%d] ", j, p.ext2obj[j].id, p.ext(p.ext2obj[j].id));
+# sys->print("\n");
+# }
+# }
 }
 cliquerequest(clique: ref Clique, rq: ref Rq): string
 {
@@ -709,7 +709,7 @@ cliquerequest1(dst, ref Rq.Notify(srcid, cmd));
 }
 }
 if (n++ > 50)
-panic("probable loop in clique notification");	# XXX probably shouldn't panic, but useful for debugging
+panic("probable loop in clique notification"); # XXX probably shouldn't panic, but useful for debugging
 }
 }
 cliqueproc(clique: ref Clique)
@@ -1425,6 +1425,6 @@ names: list of string;
 (d, nil) := readdir->init(ARCHIVEDIR, Readdir->MTIME|Readdir->COMPACT);
 for (i := 0; i < len d; i++)
 if (len d[i].name < 4 || d[i].name[len d[i].name - 4:] != ".old")
-names = ARCHIVEDIR + "/" + d[i].name ::  names;
+names = ARCHIVEDIR + "/" + d[i].name :: names;
 return names;
 }

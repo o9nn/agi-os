@@ -60,68 +60,68 @@ flag2 : int;
 };
 F_ALPHABET, F_CUT, F_DEL, F_DELCOL, F_DUMP, F_EDIT, F_EXITX, F_FONTX, F_GET, F_ID, F_INCL, F_KILL, F_LIMBO, F_LINENO, F_LOCAL, F_LOOK, F_NEW, F_NEWCOL, F_PASTE, F_PUT, F_PUTALL, F_UNDO, F_SEND, F_SORT, F_TAB, F_ZEROX : con iota;
 exectab := array[] of {
-Exectab ( "Alphabet",	F_ALPHABET,	FALSE,	XXX,		XXX		),
-Exectab ( "Cut",		F_CUT,		TRUE,	TRUE,	TRUE	),
-Exectab ( "Del",			F_DEL,		FALSE,	FALSE,	XXX		),
-Exectab ( "Delcol",		F_DELCOL,	FALSE,	XXX,		XXX		),
-Exectab ( "Delete",		F_DEL,		FALSE,	TRUE,	XXX		),
-Exectab ( "Dump",		F_DUMP,		FALSE,	TRUE,	XXX		),
-Exectab ( "Edit",		F_EDIT,		FALSE,	XXX,		XXX		),
-Exectab ( "Exit",		F_EXITX,		FALSE,	XXX,		XXX		),
-Exectab ( "Font",		F_FONTX,		FALSE,	XXX,		XXX		),
-Exectab ( "Get",			F_GET,		FALSE,	TRUE,	XXX		),
-Exectab ( "ID",			F_ID,		FALSE,	XXX,		XXX		),
-Exectab ( "Incl",		F_INCL,		FALSE,	XXX,		XXX		),
-Exectab ( "Kill",			F_KILL,		FALSE,	XXX,		XXX		),
-Exectab ( "Limbo",		F_LIMBO,		FALSE,	XXX,		XXX   	),
-Exectab ( "Lineno",		F_LINENO,	FALSE,	XXX,		XXX		),
-Exectab ( "Load",		F_DUMP,		FALSE,	FALSE,	XXX		),
-Exectab ( "Local",		F_LOCAL,		FALSE,	XXX,		XXX		),
-Exectab ( "Look",		F_LOOK,		FALSE,	XXX,		XXX		),
-Exectab ( "New",		F_NEW,		FALSE,	XXX,		XXX		),
-Exectab ( "Newcol",		F_NEWCOL,	FALSE,	XXX,		XXX		),
-Exectab ( "Paste",		F_PASTE,		TRUE,	TRUE,	XXX		),
-Exectab ( "Put",			F_PUT,		FALSE,	XXX,		XXX		),
-Exectab ( "Putall",		F_PUTALL,	FALSE,	XXX,		XXX		),
-Exectab ( "Redo",		F_UNDO,		FALSE,	FALSE,	XXX		),
-Exectab ( "Send",		F_SEND,		TRUE,	XXX,		XXX		),
-Exectab ( "Snarf",		F_CUT,		FALSE,	TRUE,	FALSE	),
-Exectab ( "Sort",		F_SORT,		FALSE,	XXX,		XXX		),
-Exectab ( "Tab",		F_TAB,		FALSE,	XXX,		XXX		),
-Exectab ( "Undo",		F_UNDO,		FALSE,	TRUE,	XXX		),
-Exectab ( "Zerox",		F_ZEROX,		FALSE,	XXX,		XXX		),
-Exectab ( nil, 			0,			0,		0,		0		),
+Exectab ( "Alphabet", F_ALPHABET, FALSE, XXX, XXX ),
+Exectab ( "Cut", F_CUT, TRUE, TRUE, TRUE ),
+Exectab ( "Del", F_DEL, FALSE, FALSE, XXX ),
+Exectab ( "Delcol", F_DELCOL, FALSE, XXX, XXX ),
+Exectab ( "Delete", F_DEL, FALSE, TRUE, XXX ),
+Exectab ( "Dump", F_DUMP, FALSE, TRUE, XXX ),
+Exectab ( "Edit", F_EDIT, FALSE, XXX, XXX ),
+Exectab ( "Exit", F_EXITX, FALSE, XXX, XXX ),
+Exectab ( "Font", F_FONTX, FALSE, XXX, XXX ),
+Exectab ( "Get", F_GET, FALSE, TRUE, XXX ),
+Exectab ( "ID", F_ID, FALSE, XXX, XXX ),
+Exectab ( "Incl", F_INCL, FALSE, XXX, XXX ),
+Exectab ( "Kill", F_KILL, FALSE, XXX, XXX ),
+Exectab ( "Limbo", F_LIMBO, FALSE, XXX, XXX ),
+Exectab ( "Lineno", F_LINENO, FALSE, XXX, XXX ),
+Exectab ( "Load", F_DUMP, FALSE, FALSE, XXX ),
+Exectab ( "Local", F_LOCAL, FALSE, XXX, XXX ),
+Exectab ( "Look", F_LOOK, FALSE, XXX, XXX ),
+Exectab ( "New", F_NEW, FALSE, XXX, XXX ),
+Exectab ( "Newcol", F_NEWCOL, FALSE, XXX, XXX ),
+Exectab ( "Paste", F_PASTE, TRUE, TRUE, XXX ),
+Exectab ( "Put", F_PUT, FALSE, XXX, XXX ),
+Exectab ( "Putall", F_PUTALL, FALSE, XXX, XXX ),
+Exectab ( "Redo", F_UNDO, FALSE, FALSE, XXX ),
+Exectab ( "Send", F_SEND, TRUE, XXX, XXX ),
+Exectab ( "Snarf", F_CUT, FALSE, TRUE, FALSE ),
+Exectab ( "Sort", F_SORT, FALSE, XXX, XXX ),
+Exectab ( "Tab", F_TAB, FALSE, XXX, XXX ),
+Exectab ( "Undo", F_UNDO, FALSE, TRUE, XXX ),
+Exectab ( "Zerox", F_ZEROX, FALSE, XXX, XXX ),
+Exectab ( nil, 0, 0, 0, 0 ),
 };
 runfun(fun : int, et, t, argt : ref Text, flag1, flag2 : int, arg : string, narg : int)
 {
 case (fun) {
-F_ALPHABET	=> alphabet(et, argt, arg, narg);
-F_CUT 	 	=> cut(et, t, flag1, flag2);
-F_DEL 		=> del(et, flag1);
-F_DELCOL	=> delcol(et);
-F_DUMP 		=> dump(argt, flag1, arg, narg);
-F_EDIT		=> edit(et, argt, arg, narg);
-F_EXITX		=> exitx();
-F_FONTX		=> fontx(et, t, argt, arg, narg);
-F_GET 		=> get(et, t, argt, flag1, arg, narg);
-F_ID 		=> id(et);
-F_INCL 		=> incl(et, argt, arg, narg);
-F_KILL 		=> kill(argt, arg, narg);
-F_LIMBO		=> limbo(et);
-F_LINENO		=> lineno(et);
-F_LOCAL 		=> local(et, argt, arg);
-F_LOOK 		=> look(et, t, argt);
-F_NEW 		=> lookx->new(et, t, argt, flag1, flag2, arg, narg);
-F_NEWCOL	=> newcol(et);
-F_PASTE		=> paste(et, t, flag1, flag2);
-F_PUT		=> put(et, argt, arg, narg);
-F_PUTALL 	=> putall();
-F_UNDO 		=> undo(et, flag1);
-F_SEND		=> send(et, t);
-F_SORT		=> sort(et);
-F_TAB		=> tab(et, argt, arg, narg);
-F_ZEROX		=> zerox(et, t);
-*			=> error("bad case in runfun()");
+F_ALPHABET => alphabet(et, argt, arg, narg);
+F_CUT => cut(et, t, flag1, flag2);
+F_DEL => del(et, flag1);
+F_DELCOL => delcol(et);
+F_DUMP => dump(argt, flag1, arg, narg);
+F_EDIT => edit(et, argt, arg, narg);
+F_EXITX => exitx();
+F_FONTX => fontx(et, t, argt, arg, narg);
+F_GET => get(et, t, argt, flag1, arg, narg);
+F_ID => id(et);
+F_INCL => incl(et, argt, arg, narg);
+F_KILL => kill(argt, arg, narg);
+F_LIMBO => limbo(et);
+F_LINENO => lineno(et);
+F_LOCAL => local(et, argt, arg);
+F_LOOK => look(et, t, argt);
+F_NEW => lookx->new(et, t, argt, flag1, flag2, arg, narg);
+F_NEWCOL => newcol(et);
+F_PASTE => paste(et, t, flag1, flag2);
+F_PUT => put(et, argt, arg, narg);
+F_PUTALL => putall();
+F_UNDO => undo(et, flag1);
+F_SEND => send(et, t);
+F_SORT => sort(et);
+F_TAB => tab(et, argt, arg, narg);
+F_ZEROX => zerox(et, t);
+* => error("bad case in runfun()");
 }
 }
 lookup(r : string, n : int) : int
@@ -152,7 +152,7 @@ e : int;
 c, n, f : int;
 q0 = aq0;
 q1 = aq1;
-if(q1 == q0){	# expand to find word (actually file name)
+if(q1 == q0){ # expand to find word (actually file name)
 # if in selection, choose selection
 if(t.q1>t.q0 && t.q0<=q0 && q0<=t.q1){
 q0 = t.q0;
@@ -179,7 +179,7 @@ f |= 2;
 }
 (aa, a) = getbytearg(argt, TRUE, TRUE);
 if(a != nil){
-if(len a > EVENTSIZE){	# too big; too bad
+if(len a > EVENTSIZE){ # too big; too bad
 aa = a = nil;
 warning(nil, "`argument string too long\n");
 return;
@@ -229,7 +229,7 @@ r = nil;
 return;
 }
 (dir, n) = dirname(t, nil, 0);
-if(n==1 && dir[0]=='.'){	# sigh
+if(n==1 && dir[0]=='.'){ # sigh
 dir = nil;
 n = 0;
 }
@@ -382,7 +382,7 @@ dir = nil;
 ndir = 0;
 if(n>0 && arg[0]!='/'){
 (dir, ndir) = dirname(t, nil, 0);
-if(n==1 && dir[0]=='.'){	# sigh
+if(n==1 && dir[0]=='.'){ # sigh
 dir = nil;
 ndir = 0;
 }
@@ -504,7 +504,7 @@ warning(nil, sys->sprint("%s modified since last read\n", name));
 raise "e";
 }
 }
-fd = sys->create(name, OWRITE, 8r664);	# was 666
+fd = sys->create(name, OWRITE, 8r664); # was 666
 if(fd == nil){
 warning(nil, sprint("can't create file %s: %r\n", name));
 raise "e";
@@ -538,7 +538,7 @@ w.dirty = TRUE;
 f.unread = TRUE;
 }
 else{
-(ok, d0) = sys->fstat(fd);	# use old values if we failed
+(ok, d0) = sys->fstat(fd); # use old values if we failed
 if (ok >= 0)
 d = d0;
 f.qidpath = d.qid.path;
@@ -617,7 +617,7 @@ r : ref Astring;
 if(et!=t && dosnarf && et.w!=nil){
 if(et.w.body.q1>et.w.body.q0){
 t = et.w.body;
-t.file.mark();	# seq has been incremented by execute
+t.file.mark(); # seq has been incremented by execute
 }
 else if(et.w.tag.q1>et.w.tag.q0)
 t = et.w.tag;
@@ -661,7 +661,7 @@ if(t.w != nil){
 scrl->scrdraw(t);
 t.w.settag();
 }
-}else if(dosnarf)	# Snarf command
+}else if(dosnarf) # Snarf command
 dat->argtext = t;
 if(locked)
 t.w.unlock();
@@ -671,10 +671,10 @@ paste(et : ref Text, t : ref Text, selectall : int, tobody: int)
 c : int;
 q, q0, q1, n : int;
 r : ref Astring;
-# if(tobody), use body of executing window  (Paste or Send command)
+# if(tobody), use body of executing window (Paste or Send command)
 if(tobody && et!=nil && et.w!=nil){
 t = et.w.body;
-t.file.mark();	# seq has been incremented by execute
+t.file.mark(); # seq has been incremented by execute
 }
 if(t == nil)
 return;
@@ -810,7 +810,7 @@ if(s[l] == '/')
 s = s[l+1: ];
 s = "limbo -gw " + s;
 (dir, n) := dirname(et, nil, 0);
-if(n==1 && dir[0]=='.'){	# sigh
+if(n==1 && dir[0]=='.'){ # sigh
 dir = nil;
 n = 0;
 }
@@ -823,7 +823,7 @@ dir : string;
 n : int;
 (aa, a) = getbytearg(argt, TRUE, TRUE);
 (dir, n) = dirname(et, nil, 0);
-if(n==1 && dir[0]=='.'){	# sigh
+if(n==1 && dir[0]=='.'){ # sigh
 dir = nil;
 n = 0;
 }
@@ -947,7 +947,7 @@ t.reffont.close();
 t.reffont = newfont;
 t.frame.font = newfont.f;
 if(t.w.isdir){
-t.all.min.x++;	# force recolumnation; disgusting!
+t.all.min.x++; # force recolumnation; disgusting!
 for(i=0; i<t.w.ndl; i++){
 dp = t.w.dlp[i];
 aa = dp.r;
@@ -1078,7 +1078,7 @@ name = s[t:e];
 e = utils->strrchr(name, '/');
 if(e >= 0)
 name = name[e+1:];
-name += " ";	# add blank here for ease in waittask
+name += " "; # add blank here for ease in waittask
 c.name = name;
 name = nil;
 pipechar := 0;
@@ -1117,7 +1117,7 @@ winid = (dat->activewin).id;
 sys->pctl(Sys->FORKNS|Sys->NEWFD|Sys->FORKENV|Sys->NEWPGRP, 0::1::2::fsys->fsyscfd()::nil);
 if(rdir != nil){
 dir = rdir[0:ndir];
-sys->chdir(dir);	# ignore error: probably app. window
+sys->chdir(dir); # ignore error: probably app. window
 dir = nil;
 }
 if(filename != nil)
@@ -1166,7 +1166,7 @@ win.close();
 sys->pctl(Sys->FORKFD|Sys->NEWPGRP, nil);
 if(rdir != nil){
 dir = rdir[0:ndir];
-sys->chdir(dir);	# ignore error: probably app. window
+sys->chdir(dir); # ignore error: probably app. window
 dir = nil;
 }
 p = array[2] of ref Sys->FD;
@@ -1189,7 +1189,7 @@ p[0] = p[1] = nil;
 if(argaddr != nil)
 utils->setenv("acmeaddr", argaddr);
 hard := 0;
-if(len s > 512-10)	# may need to print into stack
+if(len s > 512-10) # may need to print into stack
 hard = 1;
 else {
 inarg = FALSE;
@@ -1236,7 +1236,7 @@ exit;
 }
 }
 if(arg != nil){
-s = sprint("%s '%s'", s, arg);	# BUG: what if quote in arg?
+s = sprint("%s '%s'", s, arg); # BUG: what if quote in arg?
 c.text = s;
 }
 av = nil;
@@ -1249,7 +1249,7 @@ exit;
 }
 # Nasty bug causes
 # Edit ,|nonexistentcommand
-# (or ,> or ,<) to lock up acme.  Easy fix.  Add these two lines
+# (or ,> or ,<) to lock up acme. Easy fix. Add these two lines
 # to the failure case of runwaittask():
 #
 # /sys/src/cmd/acme/exec.c:1287 a exec.c:1288,1289

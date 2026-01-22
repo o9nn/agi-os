@@ -1,28 +1,28 @@
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
-#include	"interp.h"
-#include	"kernel.h"
-#include	"draw.h"
-#include	"version.h"
-int		rebootargc = 0;
-char**		rebootargv;
-static	char	*imod = "/dis/emuinit.dis";
-extern	char*	hosttype;
-char*	tkfont;
-int	tkstylus;
-extern	int	mflag;
-int	dflag;
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
+#include "interp.h"
+#include "kernel.h"
+#include "draw.h"
+#include "version.h"
+int rebootargc = 0;
+char** rebootargv;
+static char *imod = "/dis/emuinit.dis";
+extern char* hosttype;
+char* tkfont;
+int tkstylus;
+extern int mflag;
+int dflag;
 int vflag;
-Procs	procs;
-char	*eve;
-int	Xsize	= 640;
-int	Ysize	= 480;
-int	bflag = 1;
-int	sflag;
-int	qflag;
-int	xtblbit;
-ulong	displaychan;
+Procs procs;
+char *eve;
+int Xsize = 640;
+int Ysize = 480;
+int bflag = 1;
+int sflag;
+int qflag;
+int xtblbit;
+ulong displaychan;
 char *cputype;
 static void
 usage(void)
@@ -159,7 +159,7 @@ xtblbit = 1;
 break;
 case 'G':
 break;
-case	'C':
+case 'C':
 cp = EARGF(badusage());
 displaychan = strtochan(cp);
 if(displaychan == 0){

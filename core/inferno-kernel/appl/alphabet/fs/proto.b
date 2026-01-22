@@ -126,7 +126,7 @@ for(; j < len sub; j++){
 s := sub[j].name;
 if(s == preventry){
 report(errorc, sys->sprint("duplicate entry %s", pathconcat(path, s)));
-continue;			# eliminate duplicates in proto
+continue; # eliminate duplicates in proto
 }
 if(s >= a[i].name)
 break;
@@ -276,7 +276,7 @@ else
 break;
 }
 if(i == len s || s[i] == '#' || s[i] == '\n')
-return readline(proto, indent);	# XXX sort out tail recursion!
+return readline(proto, indent); # XXX sort out tail recursion!
 if(spc <= indent){
 proto.lastline = s;
 return nil;

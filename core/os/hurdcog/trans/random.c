@@ -373,8 +373,8 @@ return (trivfs_demuxer (inp, outp)
 }
 static const struct argp_option options[] =
 {
-{"fast",	'f', 0,	0, "(ignored)"},
-{"secure",    's', 0, 0, "(ignored)"},
+{"fast", 'f', 0, 0, "(ignored)"},
+{"secure", 's', 0, 0, "(ignored)"},
 {"seed-file", 'S', "FILE", 0, "Use FILE to remember the seed"},
 {0}
 };

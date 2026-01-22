@@ -10,24 +10,24 @@ typedef struct Input Input;
 typedef struct Var Var;
 struct Input
 {
-char		*file;
-Biobuf	*fd;
-uchar	*s;
-uchar	*end;
-int		lineno;
-Input	*next;
+char *file;
+Biobuf *fd;
+uchar *s;
+uchar *end;
+int lineno;
+Input *next;
 };
 struct Var
 {
-char	*name;
-char	*value;
+char *name;
+char *value;
 char *qvalue;
 };
-static int		parsing;
-static int		nvars;
-static Var		*vars;
-static Input	*input;
-static char 	ebuf[4096];
+static int parsing;
+static int nvars;
+static Var *vars;
+static Input *input;
+static char ebuf[4096];
 char *badports[] =
 {
 ".",
@@ -172,7 +172,7 @@ return var->qvalue;
 return nil;
 }
 void
-setvariable(char  *s, int n, char *val, char *qval)
+setvariable(char *s, int n, char *val, char *qval)
 {
 Var *var;
 var = lookupvariable(s, n);
@@ -265,7 +265,7 @@ if(*s == '\''){
 s++;
 if(!quoting)
 quoting = 1;
-else  if(*s == '\''){
+else if(*s == '\''){
 *p++ = '\'';
 s++;
 }else

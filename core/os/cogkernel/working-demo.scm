@@ -2,139 +2,139 @@
 (format #t "=== Cognitive Kernel for GNU Hurd ===~%")
 (format #t "Initializing AtomSpace (Hypergraph Memory)...~%")
 (define (make-atom type name)
-  (list 'atom type name))
+(list 'atom type name))
 (define (atom? obj)
-  (and (list? obj) (eq? (car obj) 'atom)))
+(and (list? obj) (eq? (car obj) 'atom)))
 (define (atom-type atom)
-  (cadr atom))
+(cadr atom))
 (define (atom-name atom)
-  (caddr atom))
+(caddr atom))
 (define *atomspace* '())
 (define (atomspace-add! atom)
-  (set! *atomspace* (cons atom *atomspace*)))
+(set! *atomspace* (cons atom *atomspace*)))
 (define (atomspace-count)
-  (length *atomspace*))
+(length *atomspace*))
 (let ((hurd-atom (make-atom 'CONCEPT "GNU-Hurd"))
-      (kernel-atom (make-atom 'CONCEPT "Cognitive-Kernel")))
-  (atomspace-add! hurd-atom)
-  (atomspace-add! kernel-atom)
-  (format #t "✓ AtomSpace: ~a atoms created~%" (atomspace-count)))
+(kernel-atom (make-atom 'CONCEPT "Cognitive-Kernel")))
+(atomspace-add! hurd-atom)
+(atomspace-add! kernel-atom)
+(format #t "✓ AtomSpace: ~a atoms created~%" (atomspace-count)))
 (format #t "Initializing Agent System...~%")
 (define (make-agent id role)
-  (list 'agent id role 'idle))
+(list 'agent id role 'idle))
 (define (agent? obj)
-  (and (list? obj) (eq? (car obj) 'agent)))
+(and (list? obj) (eq? (car obj) 'agent)))
 (define (agent-id agent)
-  (cadr agent))
+(cadr agent))
 (define (agent-role agent)
-  (caddr agent))
+(caddr agent))
 (define (agent-execute! agent action)
-  (case (agent-role agent)
-    ((MONITOR) "System status monitored")
-    ((REPAIR) "Auto-repair initiated")
-    ((BUILD) "Build process started")
-    ((ANALYZE) "Pattern analysis complete")
-    (else "Agent action executed")))
+(case (agent-role agent)
+((MONITOR) "System status monitored")
+((REPAIR) "Auto-repair initiated")
+((BUILD) "Build process started")
+((ANALYZE) "Pattern analysis complete")
+(else "Agent action executed")))
 (let ((monitor-agent (make-agent "monitor" 'MONITOR))
-      (repair-agent (make-agent "repair" 'REPAIR)))
-  (let ((result1 (agent-execute! monitor-agent 'DETECT))
-        (result2 (agent-execute! repair-agent 'REPAIR)))
-    (format #t "✓ Agents: ~a - ~a~%" (agent-id monitor-agent) result1)
-    (format #t "✓ Agents: ~a - ~a~%" (agent-id repair-agent) result2)))
+(repair-agent (make-agent "repair" 'REPAIR)))
+(let ((result1 (agent-execute! monitor-agent 'DETECT))
+(result2 (agent-execute! repair-agent 'REPAIR)))
+(format #t "✓ Agents: ~a - ~a~%" (agent-id monitor-agent) result1)
+(format #t "✓ Agents: ~a - ~a~%" (agent-id repair-agent) result2)))
 (format #t "Initializing Attention Allocation...~%")
 (define (make-attention-value sti lti)
-  (list 'attention sti lti))
+(list 'attention sti lti))
 (define (attention-sti av)
-  (cadr av))
+(cadr av))
 (define (attention-lti av)
-  (caddr av))
+(caddr av))
 (let ((high-attention (make-attention-value 200 100))
-      (low-attention (make-attention-value 50 25)))
-  (format #t "✓ Attention: High priority STI=~a, Low priority STI=~a~%" 
-          (attention-sti high-attention) (attention-sti low-attention)))
+(low-attention (make-attention-value 50 25)))
+(format #t "✓ Attention: High priority STI=~a, Low priority STI=~a~%"
+(attention-sti high-attention) (attention-sti low-attention)))
 (format #t "Initializing Tensor Operations...~%")
 (define (make-tensor shape data)
-  (list 'tensor shape data))
+(list 'tensor shape data))
 (define (tensor-shape tensor)
-  (cadr tensor))
+(cadr tensor))
 (define (tensor-data tensor)
-  (caddr tensor))
+(caddr tensor))
 (define (tensor-add t1 t2)
-  (make-tensor (tensor-shape t1)
-               (map + (tensor-data t1) (tensor-data t2))))
+(make-tensor (tensor-shape t1)
+(map + (tensor-data t1) (tensor-data t2))))
 (let ((t1 (make-tensor '(2 2) '(1 2 3 4)))
-      (t2 (make-tensor '(2 2) '(5 6 7 8))))
-  (let ((result (tensor-add t1 t2)))
-    (format #t "✓ Tensors: Shape ~a, Result ~a~%" 
-            (tensor-shape result) (tensor-data result))))
+(t2 (make-tensor '(2 2) '(5 6 7 8))))
+(let ((result (tensor-add t1 t2)))
+(format #t "✓ Tensors: Shape ~a, Result ~a~%"
+(tensor-shape result) (tensor-data result))))
 (format #t "Demonstrating Cognitive Integration...~%")
 (define (cognitive-scenario)
-  "Simulate a cognitive response to a system issue"
-  (format #t "~%--- Cognitive Scenario: Build Failure Detection ---~%")
-  (let ((issue-atom (make-atom 'ISSUE "build-failure-libhurd")))
-    (atomspace-add! issue-atom)
-    (format #t "1. Issue atom created: ~a~%" (atom-name issue-atom)))
-  (let ((urgent-attention (make-attention-value 300 150)))
-    (format #t "2. Attention allocated: STI=~a (URGENT)~%" 
-            (attention-sti urgent-attention)))
-  (let ((build-agent (make-agent "build-coordinator" 'BUILD))
-        (repair-agent (make-agent "auto-repair" 'REPAIR)))
-    (let ((build-result (agent-execute! build-agent 'BUILD))
-          (repair-result (agent-execute! repair-agent 'REPAIR)))
-      (format #t "3. Agent responses:~%")
-      (format #t "   - ~a: ~a~%" (agent-id build-agent) build-result)
-      (format #t "   - ~a: ~a~%" (agent-id repair-agent) repair-result)))
-  (let ((memory-tensor (make-tensor '(10 5) (make-list 50 0.5)))
-        (agent-tensor (make-tensor '(5 8) (make-list 40 0.3))))
-    (format #t "4. Tensor membranes evolving:~%")
-    (format #t "   - Memory tensor: ~a~%" (tensor-shape memory-tensor))
-    (format #t "   - Agent tensor: ~a~%" (tensor-shape agent-tensor)))
-  (format #t "5. Cognitive cycle complete - system learning achieved~%"))
+"Simulate a cognitive response to a system issue"
+(format #t "~%--- Cognitive Scenario: Build Failure Detection ---~%")
+(let ((issue-atom (make-atom 'ISSUE "build-failure-libhurd")))
+(atomspace-add! issue-atom)
+(format #t "1. Issue atom created: ~a~%" (atom-name issue-atom)))
+(let ((urgent-attention (make-attention-value 300 150)))
+(format #t "2. Attention allocated: STI=~a (URGENT)~%"
+(attention-sti urgent-attention)))
+(let ((build-agent (make-agent "build-coordinator" 'BUILD))
+(repair-agent (make-agent "auto-repair" 'REPAIR)))
+(let ((build-result (agent-execute! build-agent 'BUILD))
+(repair-result (agent-execute! repair-agent 'REPAIR)))
+(format #t "3. Agent responses:~%")
+(format #t "   - ~a: ~a~%" (agent-id build-agent) build-result)
+(format #t "   - ~a: ~a~%" (agent-id repair-agent) repair-result)))
+(let ((memory-tensor (make-tensor '(10 5) (make-list 50 0.5)))
+(agent-tensor (make-tensor '(5 8) (make-list 40 0.3))))
+(format #t "4. Tensor membranes evolving:~%")
+(format #t "   - Memory tensor: ~a~%" (tensor-shape memory-tensor))
+(format #t "   - Agent tensor: ~a~%" (tensor-shape agent-tensor)))
+(format #t "5. Cognitive cycle complete - system learning achieved~%"))
 (cognitive-scenario)
 (format #t "~%=== Distributed Agent Communication Demo ===~%")
 (define demo-agent-system (make-agent-system '(4 8 10 4)))
 (let ((coordinator (make-agent "demo-coordinator" 'BUILD))
-      (monitor (make-agent "demo-monitor" 'MONITOR))
-      (repair (make-agent "demo-repair" 'REPAIR))
-      (analyzer (make-agent "demo-analyzer" 'ANALYZE)))
-  (agent-system-add! demo-agent-system coordinator)
-  (agent-system-add! demo-agent-system monitor)
-  (agent-system-add! demo-agent-system repair)
-  (agent-system-add! demo-agent-system analyzer)
-  (format #t "✓ Created demo system with ~a agents~%" 
-          (hash-count (const #t) (agent-system-agents demo-agent-system))))
+(monitor (make-agent "demo-monitor" 'MONITOR))
+(repair (make-agent "demo-repair" 'REPAIR))
+(analyzer (make-agent "demo-analyzer" 'ANALYZE)))
+(agent-system-add! demo-agent-system coordinator)
+(agent-system-add! demo-agent-system monitor)
+(agent-system-add! demo-agent-system repair)
+(agent-system-add! demo-agent-system analyzer)
+(format #t "✓ Created demo system with ~a agents~%"
+(hash-count (const #t) (agent-system-agents demo-agent-system))))
 (format #t "~%Demonstrating agent communication protocol...~%")
 (agent-system-enable-communication! demo-agent-system)
 (format #t "~%1. Coordinator requesting system status...~%")
-(agent-send-message! demo-agent-system 
-                     "demo-coordinator" 
-                     "demo-monitor" 
-                     'STATUS-QUERY 
-                     "pre-build-system-check")
+(agent-send-message! demo-agent-system
+"demo-coordinator"
+"demo-monitor"
+'STATUS-QUERY
+"pre-build-system-check")
 (format #t "~%2. Broadcasting coordination message...~%")
-(agent-system-broadcast! demo-agent-system 
-                         "demo-coordinator" 
-                         'COORDINATION 
-                         "prepare-for-distributed-build")
+(agent-system-broadcast! demo-agent-system
+"demo-coordinator"
+'COORDINATION
+"prepare-for-distributed-build")
 (format #t "~%3. Assigning analysis task...~%")
 (agent-send-message! demo-agent-system
-                     "demo-coordinator"
-                     "demo-analyzer"
-                     'TASK-ASSIGNMENT
-                     '(task . analyze-build-dependencies
-                       priority . high))
+"demo-coordinator"
+"demo-analyzer"
+'TASK-ASSIGNMENT
+'(task . analyze-build-dependencies
+priority . high))
 (format #t "~%4. Task completion notification...~%")
 (agent-send-message! demo-agent-system
-                     "demo-analyzer"
-                     "demo-coordinator"
-                     'TASK-COMPLETION
-                     '(task . analyze-build-dependencies
-                       result . dependencies-resolved
-                       next-action . initiate-build))
+"demo-analyzer"
+"demo-coordinator"
+'TASK-COMPLETION
+'(task . analyze-build-dependencies
+result . dependencies-resolved
+next-action . initiate-build))
 (format #t "~%=== Cognitive Kernel Status ===~%")
 (format #t "AtomSpace: ~a atoms in hypergraph~%" (atomspace-count))
-(format #t "Agent System: ~a agents with communication enabled~%" 
-        (hash-count (const #t) (agent-system-agents demo-agent-system)))
+(format #t "Agent System: ~a agents with communication enabled~%"
+(hash-count (const #t) (agent-system-agents demo-agent-system)))
 (format #t "Communication Protocol: atomspace-message-passing~%")
 (format #t "Transport Layer: distributed (fallback mode)~%")
 (format #t "Tensor Shapes: Memory[10x5], Agents[4x8x10x4], Attention[∞]~%")

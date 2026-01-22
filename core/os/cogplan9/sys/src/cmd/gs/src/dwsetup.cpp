@@ -62,8 +62,8 @@ BOOL write_cidfmap(const char *gspath, const char *cidpath);
 BOOL GetProgramFiles(LPTSTR path);
 int APIENTRY WinMain(HINSTANCE hInstance,
 HINSTANCE hPrevInstance,
-LPSTR     lpCmdLine,
-int       nCmdShow)
+LPSTR lpCmdLine,
+int nCmdShow)
 {
 MSG msg;
 g_hInstance = hInstance;
@@ -104,7 +104,7 @@ DWORD result;
 int start, end;
 result = SendDlgItemMessage(hwnd, IDC_TEXTWIN_MLE, EM_GETSEL, (WPARAM)0, (LPARAM)0);
 start = LOWORD(result);
-end   = HIWORD(result);
+end = HIWORD(result);
 if (start == end) {
 start = 0;
 end = twend;
@@ -794,7 +794,7 @@ BOOL bMore = TRUE;
 char *p;
 if (path) {
 strcpy(pattern, path);
-if (strlen(pattern) != 0)  {
+if (strlen(pattern) != 0) {
 p = pattern + strlen(pattern) -1;
 if (*p == '\\')
 *p = '\0';
@@ -805,7 +805,7 @@ if ( (p = strrchr(base, '\\')) != NULL )
 *(++p) = '\0';
 }
 else if (isalpha(pattern[0]) &&
-pattern[1]==':' && pattern[2]=='\0')  {
+pattern[1]==':' && pattern[2]=='\0') {
 strcat(pattern, "\\*");
 strcat(base, "\\");
 }
@@ -830,7 +830,7 @@ else {
 base[0] = '\0';
 strcpy(pattern, "*");
 }
-find_handle = FindFirstFile(pattern,  &find_data);
+find_handle = FindFirstFile(pattern, &find_data);
 if (find_handle == INVALID_HANDLE_VALUE)
 return 1;
 while (bMore) {
@@ -972,7 +972,7 @@ rc = RegOpenKeyEx(HKEY_LOCAL_MACHINE,
 "SOFTWARE\\Microsoft\\Windows\\CurrentVersion", 0, KEY_READ, &hkey);
 if (rc == ERROR_SUCCESS) {
 cbData = MAX_PATH;
-keytype =  REG_SZ;
+keytype = REG_SZ;
 if (rc == ERROR_SUCCESS)
 rc = RegQueryValueEx(hkey, "ProgramFilesDir", 0, &keytype,
 (LPBYTE)path, &cbData);

@@ -186,13 +186,13 @@ return (int(_S_word_bit) * (__x._M_p - __y._M_p)
 #pragma GCC diagnostic pop
 struct _Bit_iterator : public _Bit_iterator_base
 {
-typedef _Bit_reference  reference;
+typedef _Bit_reference reference;
 #if __cplusplus > 201703L
-typedef void	    pointer;
+typedef void pointer;
 #else
 typedef _Bit_reference* pointer;
 #endif
-typedef _Bit_iterator   iterator;
+typedef _Bit_iterator iterator;
 _GLIBCXX20_CONSTEXPR
 _Bit_iterator() : _Bit_iterator_base(0, 0) { }
 _GLIBCXX20_CONSTEXPR
@@ -277,14 +277,14 @@ return __tmp;
 };
 struct _Bit_const_iterator : public _Bit_iterator_base
 {
-typedef bool                 reference;
-typedef bool                 const_reference;
+typedef bool reference;
+typedef bool const_reference;
 #if __cplusplus > 201703L
-typedef void	    pointer;
+typedef void pointer;
 #else
-typedef const bool*          pointer;
+typedef const bool* pointer;
 #endif
-typedef _Bit_const_iterator  const_iterator;
+typedef _Bit_const_iterator const_iterator;
 _GLIBCXX20_CONSTEXPR
 _Bit_const_iterator() : _Bit_iterator_base(0, 0) { }
 _GLIBCXX20_CONSTEXPR
@@ -381,7 +381,7 @@ typedef typename _Bit_alloc_traits::pointer _Bit_pointer;
 struct _Bvector_impl_data
 {
 #if !_GLIBCXX_INLINE_VERSION
-_Bit_iterator	_M_start;
+_Bit_iterator _M_start;
 #else
 struct {
 _Bit_type* _M_p;
@@ -389,8 +389,8 @@ _GLIBCXX20_CONSTEXPR
 void operator=(_Bit_iterator __it) { _M_p = __it._M_p; }
 } _M_start;
 #endif
-_Bit_iterator	_M_finish;
-_Bit_pointer	_M_end_of_storage;
+_Bit_iterator _M_finish;
+_Bit_pointer _M_end_of_storage;
 _GLIBCXX20_CONSTEXPR
 _Bvector_impl_data() _GLIBCXX_NOEXCEPT
 : _M_start(), _M_finish(), _M_end_of_storage()
@@ -529,25 +529,25 @@ _S_nword(size_t __n)
 template<typename _Alloc>
 class vector<bool, _Alloc> : protected _Bvector_base<_Alloc>
 {
-typedef _Bvector_base<_Alloc>			_Base;
-typedef typename _Base::_Bit_pointer		_Bit_pointer;
-typedef typename _Base::_Bit_alloc_traits		_Bit_alloc_traits;
+typedef _Bvector_base<_Alloc> _Base;
+typedef typename _Base::_Bit_pointer _Bit_pointer;
+typedef typename _Base::_Bit_alloc_traits _Bit_alloc_traits;
 #if __cplusplus >= 201103L
 friend struct std::hash<vector>;
 #endif
 public:
-typedef bool					value_type;
-typedef size_t					size_type;
-typedef ptrdiff_t					difference_type;
-typedef _Bit_reference				reference;
-typedef bool					const_reference;
-typedef _Bit_reference*				pointer;
-typedef const bool*				const_pointer;
-typedef _Bit_iterator				iterator;
-typedef _Bit_const_iterator			const_iterator;
-typedef std::reverse_iterator<const_iterator>	const_reverse_iterator;
-typedef std::reverse_iterator<iterator>		reverse_iterator;
-typedef _Alloc					allocator_type;
+typedef bool value_type;
+typedef size_t size_type;
+typedef ptrdiff_t difference_type;
+typedef _Bit_reference reference;
+typedef bool const_reference;
+typedef _Bit_reference* pointer;
+typedef const bool* const_pointer;
+typedef _Bit_iterator iterator;
+typedef _Bit_const_iterator const_iterator;
+typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+typedef std::reverse_iterator<iterator> reverse_iterator;
+typedef _Alloc allocator_type;
 _GLIBCXX20_CONSTEXPR
 allocator_type
 get_allocator() const

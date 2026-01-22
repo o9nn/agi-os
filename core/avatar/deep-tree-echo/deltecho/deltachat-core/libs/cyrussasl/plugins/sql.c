@@ -623,7 +623,7 @@ settings->sql_update = SQL_BLANK_STRING;
 r = utils->getopt(utils->getopt_context, "SQL", "sql_usessl",
 &usessl, NULL);
 if (r || !usessl) usessl = "no";
-if (*usessl == '1' || *usessl == 'y'  || *usessl == 't' ||
+if (*usessl == '1' || *usessl == 'y' || *usessl == 't' ||
 (*usessl == 'o' && usessl[1] == 'n')) {
 settings->sql_usessl = 1;
 } else {
@@ -888,7 +888,7 @@ user_realm = sparams->serverFQDN;
 }
 ret = _plug_parseuser(sparams->utils, &userid, &realm, user_realm,
 sparams->serverFQDN, user_buf);
-if (ret != SASL_OK)	goto done;
+if (ret != SASL_OK) goto done;
 escap_userid = (char *) sparams->utils->malloc(strlen(userid)*2+1);
 escap_realm = (char *) sparams->utils->malloc(strlen(realm)*2+1);
 if (!escap_userid || !escap_realm) {

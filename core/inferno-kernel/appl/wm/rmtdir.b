@@ -6,18 +6,18 @@ draw: Draw;
 include "tk.m";
 tk: Tk;
 Toplevel: import tk;
-include	"tkclient.m";
+include "tkclient.m";
 tkclient: Tkclient;
 include "keyring.m";
 include "security.m";
 t: ref Toplevel;
 WmRmtdir: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 Wm: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 rmt_config := array[] of {
 "frame .f",
@@ -50,13 +50,13 @@ rmt_config := array[] of {
 init(ctxt: ref Draw->Context, nil: list of string)
 {
 menubut : chan of string;
-sys  = load Sys  Sys->PATH;
+sys = load Sys Sys->PATH;
 if (ctxt == nil) {
 sys->fprint(sys->fildes(2), "rmtdir: no window context\n");
 raise "fail:bad context";
 }
 draw = load Draw Draw->PATH;
-tk   = load Tk   Tk->PATH;
+tk = load Tk Tk->PATH;
 tkclient= load Tkclient Tkclient->PATH;
 tkclient->init();
 (t, menubut) = tkclient->toplevel(ctxt, "", sysname()+": Remote Connection", 0);
@@ -130,7 +130,7 @@ sys->sprint("%s",err)+"; update");
 break;
 }
 status("Mount");
-sys->pctl(sys->FORKNS, nil);	# don't fork before authentication
+sys->pctl(sys->FORKNS, nil); # don't fork before authentication
 n := sys->mount(fd, nil, "/n/remote", sys->MREPL, "");
 if(n < 0) {
 tk->cmd(t, ".status configure -text {Mount failed: "+

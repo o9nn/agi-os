@@ -7,12 +7,12 @@
 #if LINUX_VERSION_CODE >= 0x20100
 #include <linux/poll.h>
 #endif
-#define HFMODEM_MINOR         145
-#define HFMODEM_SRATE        8000
-#define HFMODEM_MAXBITS      4800
-#define HFMODEM_MINBAUD        40
-#define HFMODEM_MAXBAUD       400
-#define HFMODEM_MAXCORRLEN   ((HFMODEM_SRATE+HFMODEM_MINBAUD-1)/HFMODEM_MINBAUD)
+#define HFMODEM_MINOR 145
+#define HFMODEM_SRATE 8000
+#define HFMODEM_MAXBITS 4800
+#define HFMODEM_MINBAUD 40
+#define HFMODEM_MAXBAUD 400
+#define HFMODEM_MAXCORRLEN ((HFMODEM_SRATE+HFMODEM_MINBAUD-1)/HFMODEM_MINBAUD)
 typedef unsigned long hfmodem_time_t;
 typedef int hfmodem_soft_t;
 typedef unsigned long hfmodem_id_t;
@@ -43,21 +43,21 @@ struct hfmodem_ioctl_sample_params {
 __s16 *data;
 int len;
 };
-#define HFMODEM_IOCTL_FSKTXREQUEST    _IOW('H', 0, struct hfmodem_ioctl_fsk_tx_request)
-#define HFMODEM_IOCTL_FSKRXREQUEST    _IOW('H', 1, struct hfmodem_ioctl_fsk_rx_request)
-#define HFMODEM_IOCTL_CLEARRQ         _IO('H',  3)
-#define HFMODEM_IOCTL_GETCURTIME      _IOR('H', 4, hfmodem_time_t)
-#define HFMODEM_IOCTL_WAITRQ          _IOR('H', 5, hfmodem_id_t)
-#define HFMODEM_IOCTL_MIXERPARAMS     _IOW('H', 6, struct hfmodem_ioctl_mixer_params)
-#define HFMODEM_IOCTL_SAMPLESTART     _IOW('H', 7, struct hfmodem_ioctl_sample_params)
-#define HFMODEM_IOCTL_SAMPLEFINISHED  _IO('H',  8)
+#define HFMODEM_IOCTL_FSKTXREQUEST _IOW('H', 0, struct hfmodem_ioctl_fsk_tx_request)
+#define HFMODEM_IOCTL_FSKRXREQUEST _IOW('H', 1, struct hfmodem_ioctl_fsk_rx_request)
+#define HFMODEM_IOCTL_CLEARRQ _IO('H', 3)
+#define HFMODEM_IOCTL_GETCURTIME _IOR('H', 4, hfmodem_time_t)
+#define HFMODEM_IOCTL_WAITRQ _IOR('H', 5, hfmodem_id_t)
+#define HFMODEM_IOCTL_MIXERPARAMS _IOW('H', 6, struct hfmodem_ioctl_mixer_params)
+#define HFMODEM_IOCTL_SAMPLESTART _IOW('H', 7, struct hfmodem_ioctl_sample_params)
+#define HFMODEM_IOCTL_SAMPLEFINISHED _IO('H', 8)
 #ifdef __KERNEL__
 #include <linux/parport.h>
-#define DMA_MODE_AUTOINIT      0x10
+#define DMA_MODE_AUTOINIT 0x10
 #define NR_DEVICE 1
 #define HFMODEM_FRAGSAMPLES (HFMODEM_SRATE/100)
-#define HFMODEM_FRAGSIZE    (HFMODEM_FRAGSAMPLES*2)
-#define HFMODEM_NUMFRAGS    8
+#define HFMODEM_FRAGSIZE (HFMODEM_FRAGSAMPLES*2)
+#define HFMODEM_NUMFRAGS 8
 #define HFMODEM_EXCESSFRAGS 3
 #define HFMODEM_NUMRXSLOTS 20
 #define HFMODEM_NUMTXSLOTS 4

@@ -5,7 +5,7 @@
 #if !defined __GNU_LIBRARY__
 # include <ctype.h>
 #endif
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 extern char *optarg;
@@ -24,9 +24,9 @@ int has_arg;
 int *flag;
 int val;
 };
-# define no_argument            0
-# define required_argument      1
-# define optional_argument      2
+# define no_argument 0
+# define required_argument 1
+# define optional_argument 2
 #endif
 #if (defined __STDC__ && __STDC__) || defined __cplusplus
 # ifdef __GNU_LIBRARY__
@@ -54,7 +54,7 @@ extern int getopt_long_only ();
 extern int _getopt_internal ();
 # endif
 #endif
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif
 #undef __need_getopt

@@ -37,7 +37,7 @@ run(nil: ref Draw->Context, report: ref Report,
 opts: list of Option, args: list of ref Value): ref Value
 {
 sync := chan of string;
-spawn  fswriteproc(sync, (hd tl args).s().i, (hd args).x().i, report.start("fswrite"), opts!=nil);
+spawn fswriteproc(sync, (hd tl args).s().i, (hd args).x().i, report.start("fswrite"), opts!=nil);
 <-sync;
 return ref Value.Vr(sync);
 }
@@ -80,7 +80,7 @@ return;
 }else
 created = 0;
 }
-if(sys->chdir(d.dir.name) == -1){		# XXX beware of names starting with '#'
+if(sys->chdir(d.dir.name) == -1){ # XXX beware of names starting with '#'
 dreply <-= Next;
 report(errorc, sys->sprint("cannot cd to %q: %r", path));
 fd = nil;

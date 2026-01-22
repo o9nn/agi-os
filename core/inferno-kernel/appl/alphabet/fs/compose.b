@@ -12,18 +12,18 @@ Cmpchan,
 Nilentry, Option,
 Next, Down, Skip, Quit: import Fs;
 Compose: module {};
-AinB:	con 1<<3;
-BinA:	con 1<<2;
-AoutB:	con 1<<1;
-BoutA:	con 1<<0;
-A:		con AinB|AoutB;
-AoverB:	con AinB|AoutB|BoutA;
-AatopB:	con AinB|BoutA;
-AxorB:	con AoutB|BoutA;
-B:		con BinA|BoutA;
-BoverA:	con BinA|BoutA|AoutB;
-BatopA:	con BinA|AoutB;
-BxorA:	con BoutA|AoutB;
+AinB: con 1<<3;
+BinA: con 1<<2;
+AoutB: con 1<<1;
+BoutA: con 1<<0;
+A: con AinB|AoutB;
+AoverB: con AinB|AoutB|BoutA;
+AatopB: con AinB|BoutA;
+AxorB: con AoutB|BoutA;
+B: con BinA|BoutA;
+BoverA: con BinA|BoutA|AoutB;
+BatopA: con BinA|AoutB;
+BxorA: con BoutA|AoutB;
 ops := array[] of {
 AinB => "AinB",
 BinA => "BinA",

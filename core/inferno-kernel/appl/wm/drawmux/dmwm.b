@@ -18,10 +18,10 @@ include "dialog.m";
 dialog: Dialog;
 include "arg.m";
 Wm: module {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 Dmwm: module {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 Background: con int 16r777777FF;
 screen: ref Screen;
@@ -33,7 +33,7 @@ raise "fail:bad module";
 }
 init(ctxt: ref Draw->Context, argv: list of string)
 {
-sys  = load Sys Sys->PATH;
+sys = load Sys Sys->PATH;
 draw = load Draw Draw->PATH;
 if(draw == nil)
 badmodule(Draw->PATH);

@@ -7,45 +7,45 @@
 #include "drawfile.h"
 #endif
 #include "antiword.h"
-#define INITIAL_SIZE		40
-#define EXTENTION_SIZE		20
-#define OUTPUT_LINE()		\
+#define INITIAL_SIZE 40
+#define EXTENTION_SIZE 20
+#define OUTPUT_LINE() \
 do {\
 vAlign2Window(pDiag, pAnchor, lWidthMax, ucAlignment);\
 TRACE_MSG("after vAlign2Window");\
 pAnchor = pStartNewOutput(pAnchor, NULL);\
 pOutput = pAnchor;\
 } while(0)
-#define RESET_LINE()		\
+#define RESET_LINE() \
 do {\
 pAnchor = pStartNewOutput(pAnchor, NULL);\
 pOutput = pAnchor;\
 } while(0)
 #if defined(__riscos)
-static ULONG	ulDocumentLength;
-static ULONG	ulCharCounter;
-static int	iCurrPct, iPrevPct;
+static ULONG ulDocumentLength;
+static ULONG ulCharCounter;
+static int iCurrPct, iPrevPct;
 #endif
-static int	iWordVersion = -1;
-static BOOL	bOldMacFile = FALSE;
-static const section_block_type	*pSection = NULL;
-static const section_block_type	*pSectionNext = NULL;
-static options_type	tOptions;
-static const row_block_type	*pRowInfo = NULL;
-static BOOL	bStartRow = FALSE;
-static BOOL	bEndRowNorm = FALSE;
-static BOOL	bEndRowFast = FALSE;
-static BOOL	bIsTableRow = FALSE;
-static USHORT	usIstdNext = ISTD_NORMAL;
-static const style_block_type	*pStyleInfo = NULL;
-static style_block_type		tStyleNext;
-static BOOL	bStartStyle = FALSE;
-static BOOL	bStartStyleNext = FALSE;
-static const font_block_type	*pFontInfo = NULL;
-static font_block_type		tFontNext;
-static BOOL	bStartFont = FALSE;
-static BOOL	bStartFontNext = FALSE;
-static ULONG	ulFileOffsetImage = FC_INVALID;
+static int iWordVersion = -1;
+static BOOL bOldMacFile = FALSE;
+static const section_block_type *pSection = NULL;
+static const section_block_type *pSectionNext = NULL;
+static options_type tOptions;
+static const row_block_type *pRowInfo = NULL;
+static BOOL bStartRow = FALSE;
+static BOOL bEndRowNorm = FALSE;
+static BOOL bEndRowFast = FALSE;
+static BOOL bIsTableRow = FALSE;
+static USHORT usIstdNext = ISTD_NORMAL;
+static const style_block_type *pStyleInfo = NULL;
+static style_block_type tStyleNext;
+static BOOL bStartStyle = FALSE;
+static BOOL bStartStyleNext = FALSE;
+static const font_block_type *pFontInfo = NULL;
+static font_block_type tFontNext;
+static BOOL bStartFont = FALSE;
+static BOOL bStartFontNext = FALSE;
+static ULONG ulFileOffsetImage = FC_INVALID;
 static void
 vUpdateCounters(void)
 {
@@ -61,8 +61,8 @@ iPrevPct = iCurrPct;
 BOOL
 bOutputContainsText(const output_type *pAnchor)
 {
-const output_type	*pCurr;
-size_t	tIndex;
+const output_type *pCurr;
+size_t tIndex;
 fail(pAnchor == NULL);
 for (pCurr = pAnchor; pCurr != NULL; pCurr = pCurr->pNext) {
 fail(pCurr->lStringWidth < 0);
@@ -83,8 +83,8 @@ return FALSE;
 static long
 lTotalStringWidth(const output_type *pAnchor)
 {
-const output_type	*pCurr;
-long		lTotal;
+const output_type *pCurr;
+long lTotal;
 lTotal = 0;
 for (pCurr = pAnchor; pCurr != NULL; pCurr = pCurr->pNext) {
 DBG_DEC_C(pCurr->lStringWidth < 0, pCurr->lStringWidth);
@@ -113,8 +113,8 @@ pOutput->tNextFree++;
 static void
 vStoreChar(ULONG ulChar, BOOL bChangeAllowed, output_type *pOutput)
 {
-char	szResult[4];
-size_t	tIndex, tLen;
+char szResult[4];
+size_t tIndex, tLen;
 fail(pOutput == NULL);
 if (tOptions.eEncoding == encoding_utf_8 && bChangeAllowed) {
 DBG_HEX_C(ulChar > 0xffff, ulChar);
@@ -143,7 +143,7 @@ vStoreChar(ulChar, TRUE, pOutput);
 static void
 vStoreString(const char *szString, size_t tStringLength, output_type *pOutput)
 {
-size_t	tIndex;
+size_t tIndex;
 fail(szString == NULL || pOutput == NULL);
 for (tIndex = 0; tIndex < tStringLength; tIndex++) {
 vStoreCharacter((ULONG)(UCHAR)szString[tIndex], pOutput);
@@ -152,8 +152,8 @@ vStoreCharacter((ULONG)(UCHAR)szString[tIndex], pOutput);
 static void
 vStoreNumberAsDecimal(UINT uiNumber, output_type *pOutput)
 {
-size_t	tLen;
-char	szString[3 * sizeof(UINT) + 1];
+size_t tLen;
+char szString[3 * sizeof(UINT) + 1];
 fail(uiNumber == 0);
 fail(pOutput == NULL);
 tLen = (size_t)sprintf(szString, "%u", uiNumber);
@@ -162,8 +162,8 @@ vStoreString(szString, tLen, pOutput);
 static void
 vStoreNumberAsRoman(UINT uiNumber, output_type *pOutput)
 {
-size_t	tLen;
-char	szString[15];
+size_t tLen;
+char szString[15];
 fail(uiNumber == 0);
 fail(pOutput == NULL);
 tLen = tNumber2Roman(uiNumber, FALSE, szString);
@@ -173,8 +173,8 @@ static void
 vStoreStyle(diagram_type *pDiag, output_type *pOutput,
 const style_block_type *pStyle)
 {
-size_t	tLen;
-char	szString[120];
+size_t tLen;
+char szString[120];
 fail(pDiag == NULL);
 fail(pOutput == NULL);
 fail(pStyle == NULL);
@@ -192,9 +192,9 @@ BOOL bNoMarks, BOOL bFirstLine,
 UINT uiListNumber, UCHAR ucNFC, const char *szListChar,
 long lLeftIndentation, long lLeftIndentation1)
 {
-long	lWidth;
-size_t	tIndex, tNextFree;
-char	szLine[30];
+long lWidth;
+size_t tIndex, tNextFree;
+char szLine[30];
 fail(pDiag == NULL);
 fail(pOutput == NULL);
 fail(szListChar == NULL);
@@ -288,9 +288,9 @@ vStoreChar((ULONG)(UCHAR)szLine[tIndex], FALSE, pOutput);
 static void
 vPutSeparatorLine(output_type *pOutput)
 {
-long	lCharWidth;
-int	iCounter, iChars;
-char	szOne[2];
+long lCharWidth;
+int iCounter, iChars;
+char szOne[2];
 fail(pOutput == NULL);
 szOne[0] = OUR_EM_DASH;
 szOne[1] = '\0';
@@ -306,7 +306,7 @@ vStoreCharacter((ULONG)(UCHAR)OUR_EM_DASH, pOutput);
 static output_type *
 pStartNextOutput(output_type *pCurrent)
 {
-output_type	*pNew;
+output_type *pNew;
 TRACE_MSG("pStartNextOutput");
 if (pCurrent->tNextFree == 0) {
 fail(pCurrent->szStorage[0] != '\0');
@@ -331,10 +331,10 @@ return pNew;
 static output_type *
 pStartNewOutput(output_type *pAnchor, output_type *pLeftOver)
 {
-output_type	*pCurr, *pNext;
-USHORT		usFontStyle, usFontSize;
-drawfile_fontref	tFontRef;
-UCHAR		ucFontColor;
+output_type *pCurr, *pNext;
+USHORT usFontStyle, usFontSize;
+drawfile_fontref tFontRef;
+UCHAR ucFontColor;
 TRACE_MSG("pStartNewOutput");
 ucFontColor = FONT_COLOR_DEFAULT;
 usFontStyle = FONT_REGULAR;
@@ -378,11 +378,11 @@ return pLeftOver;
 static ULONG
 ulGetChar(FILE *pFile, list_id_enum eListID)
 {
-const font_block_type	*pCurr;
-ULONG		ulChar, ulFileOffset, ulCharPos;
-row_info_enum	eRowInfo;
-USHORT		usChar, usPropMod;
-BOOL		bSkip;
+const font_block_type *pCurr;
+ULONG ulChar, ulFileOffset, ulCharPos;
+row_info_enum eRowInfo;
+USHORT usChar, usPropMod;
+BOOL bSkip;
 fail(pFile == NULL);
 pCurr = pFontInfo;
 bSkip = FALSE;
@@ -490,26 +490,26 @@ return lChar2MilliPoints(iParagraphBreak);
 BOOL
 bWordDecryptor(FILE *pFile, long lFilesize, diagram_type *pDiag)
 {
-imagedata_type	tImage;
-const style_block_type	*pStyleTmp;
-const font_block_type	*pFontTmp;
-const char	*szListChar;
-output_type	*pAnchor, *pOutput, *pLeftOver;
-ULONG	ulChar;
-long	lBeforeIndentation, lAfterIndentation;
-long	lLeftIndentation, lLeftIndentation1, lRightIndentation;
-long	lWidthCurr, lWidthMax, lDefaultTabWidth, lHalfSpaceWidth, lTmp;
-list_id_enum 	eListID;
-image_info_enum	eRes;
-UINT	uiFootnoteNumber, uiEndnoteNumber, uiTmp;
-int	iListSeqNumber;
-BOOL	bWasTableRow, bTableFontClosed, bWasEndOfParagraph;
-BOOL	bInList, bWasInList, bNoMarks, bFirstLine;
-BOOL	bAllCapitals, bHiddenText, bMarkDelText, bSuccess;
-USHORT	usListNumber;
-USHORT	usFontStyle, usFontStyleMinimal, usFontSize, usTmp;
-UCHAR	ucFontNumber, ucFontColor;
-UCHAR	ucNFC, ucAlignment;
+imagedata_type tImage;
+const style_block_type *pStyleTmp;
+const font_block_type *pFontTmp;
+const char *szListChar;
+output_type *pAnchor, *pOutput, *pLeftOver;
+ULONG ulChar;
+long lBeforeIndentation, lAfterIndentation;
+long lLeftIndentation, lLeftIndentation1, lRightIndentation;
+long lWidthCurr, lWidthMax, lDefaultTabWidth, lHalfSpaceWidth, lTmp;
+list_id_enum eListID;
+image_info_enum eRes;
+UINT uiFootnoteNumber, uiEndnoteNumber, uiTmp;
+int iListSeqNumber;
+BOOL bWasTableRow, bTableFontClosed, bWasEndOfParagraph;
+BOOL bInList, bWasInList, bNoMarks, bFirstLine;
+BOOL bAllCapitals, bHiddenText, bMarkDelText, bSuccess;
+USHORT usListNumber;
+USHORT usFontStyle, usFontStyleMinimal, usFontSize, usTmp;
+UCHAR ucFontNumber, ucFontColor;
+UCHAR ucNFC, ucAlignment;
 fail(pFile == NULL || lFilesize <= 0 || pDiag == NULL);
 TRACE_MSG("bWordDecryptor");
 iWordVersion = iInitDocument(pFile, lFilesize);
@@ -1039,7 +1039,7 @@ return TRUE;
 static long
 lLastStringWidth(const output_type *pAnchor)
 {
-const output_type	*pCurr, *pStart;
+const output_type *pCurr, *pStart;
 pStart = NULL;
 for (pCurr = pAnchor; pCurr != NULL; pCurr = pCurr->pNext) {
 if (pCurr->tNextFree == 1 &&
@@ -1056,13 +1056,13 @@ return lTotalStringWidth(pStart);
 output_type *
 pHdrFtrDecryptor(FILE *pFile, ULONG ulCharPosStart, ULONG ulCharPosNext)
 {
-output_type	*pAnchor, *pOutput, *pLeftOver;
-ULONG	ulChar, ulFileOffset, ulCharPos;
-long	lWidthCurr, lWidthMax;
-long	lRightIndentation;
-USHORT	usChar;
-UCHAR	ucAlignment;
-BOOL	bSkip;
+output_type *pAnchor, *pOutput, *pLeftOver;
+ULONG ulChar, ulFileOffset, ulCharPos;
+long lWidthCurr, lWidthMax;
+long lRightIndentation;
+USHORT usChar;
+UCHAR ucAlignment;
+BOOL bSkip;
 fail(iWordVersion < 0);
 fail(tOptions.eConversionType == conversion_unknown);
 fail(tOptions.eEncoding == 0);
@@ -1168,12 +1168,12 @@ return NULL;
 char *
 szFootnoteDecryptor(FILE *pFile, ULONG ulCharPosStart, ULONG ulCharPosNext)
 {
-char	*szText;
-ULONG	ulChar, ulFileOffset, ulCharPos;
-USHORT	usChar;
-size_t	tLen, tIndex, tNextFree, tStorageSize;
-char	szResult[6];
-BOOL	bSkip;
+char *szText;
+ULONG ulChar, ulFileOffset, ulCharPos;
+USHORT usChar;
+size_t tLen, tIndex, tNextFree, tStorageSize;
+char szResult[6];
+BOOL bSkip;
 fail(iWordVersion < 0);
 fail(tOptions.eConversionType == conversion_unknown);
 fail(tOptions.eEncoding == 0);

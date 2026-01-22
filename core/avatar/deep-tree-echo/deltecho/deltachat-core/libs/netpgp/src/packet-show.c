@@ -205,7 +205,7 @@ list->strings = NULL;
 static void
 list_free_strings(pgp_list_t *list)
 {
-unsigned        i;
+unsigned i;
 for (i = 0; i < list->used; i++) {
 free(list->strings[i]);
 list->strings[i] = NULL;
@@ -221,7 +221,7 @@ list_init(list);
 static const char *
 find_bitfield(pgp_bit_map_t *map, uint8_t octet)
 {
-pgp_bit_map_t  *row;
+pgp_bit_map_t *row;
 for (row = map; row->string != NULL && row->mask != octet ; row++) {
 }
 return (row->string) ? row->string : "Unknown";
@@ -240,62 +240,62 @@ list_free_strings(&text->unknown);
 list_free(&text->unknown);
 free(text);
 }
-const char     *
+const char *
 pgp_show_packet_tag(pgp_content_enum packet_tag)
 {
-const char     *ret;
+const char *ret;
 ret = pgp_str_from_map(packet_tag, packet_tag_map);
 if (!ret) {
 ret = "Unknown Tag";
 }
 return ret;
 }
-const char     *
+const char *
 pgp_show_ss_type(pgp_content_enum ss_type)
 {
 return pgp_str_from_map(ss_type, ss_type_map);
 }
-const char     *
+const char *
 pgp_show_ss_rr_code(pgp_ss_rr_code_t ss_rr_code)
 {
 return pgp_str_from_map(ss_rr_code, ss_rr_code_map);
 }
-const char     *
+const char *
 pgp_show_sig_type(pgp_sig_type_t sig_type)
 {
 return pgp_str_from_map(sig_type, sig_type_map);
 }
-const char     *
+const char *
 pgp_show_pka(pgp_pubkey_alg_t pka)
 {
 return pgp_str_from_map(pka, pubkey_alg_map);
 }
-const char     *
+const char *
 pgp_show_ss_zpref(uint8_t octet)
 {
 return pgp_str_from_map(octet, compression_alg_map);
 }
-const char     *
+const char *
 pgp_show_hash_alg(uint8_t hash)
 {
 return pgp_str_from_map(hash, hash_alg_map);
 }
-const char     *
+const char *
 pgp_show_symm_alg(uint8_t hash)
 {
 return pgp_str_from_map(hash, symm_alg_map);
 }
-const char     *
+const char *
 pgp_show_ss_skapref(uint8_t octet)
 {
 return pgp_str_from_map(octet, symm_alg_map);
 }
-const char     *
+const char *
 pgp_show_ss_key_flag(uint8_t octet, pgp_bit_map_t *map)
 {
 return find_bitfield(map, octet);
 }
-const char     *
+const char *
 pgp_show_keyserv_pref(uint8_t prefs, pgp_bit_map_t *map)
 {
 return find_bitfield(map, prefs);

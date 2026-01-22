@@ -9,8 +9,8 @@
 (cog-evaluate! (LgHaveDictEntry (Word "дasdf") (LgDictNode "ru")))
 ,d lg-conn-linkable?
 (lg-conn-linkable?
-	(LgConnector (LgConn "Ss") (LgConnDir "+"))
-	(LgConnector (LgConn "S") (LgConnDir "-")))
+(LgConnector (LgConn "Ss") (LgConnDir "+"))
+(LgConnector (LgConn "S") (LgConnDir "-")))
 (lg-conn-type-match?
-	(LgConnector (LgConn "Ss") (LgConnDir "+"))
-	(LgConnector (LgConn "S") (LgConnDir "+")))
+(LgConnector (LgConn "Ss") (LgConnDir "+"))
+(LgConnector (LgConn "S") (LgConnDir "+")))

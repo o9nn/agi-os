@@ -15,51 +15,51 @@ include "sh.m";
 myself: Sh;
 myselfbuiltin: Shellbuiltin;
 YYSTYPE: adt {
-node:	ref Node;
-word:	string;
-redir:	ref Redir;
-optype:	int;
+node: ref Node;
+word: string;
+redir: ref Redir;
+optype: int;
 };
 YYLEX: adt {
-lval:			YYSTYPE;
-err:			string;	# if error has occurred
-errline:		int;		# line it occurred on.
-path:			string;	# name of file that's being read.
+lval: YYSTYPE;
+err: string; # if error has occurred
+errline: int; # line it occurred on.
+path: string; # name of file that's being read.
 # free caret state
-wasdollar:		int;
-atendword:	int;
-eof:			int;
-cbuf:			array of int;	# last chars read
-ncbuf:		int;			# number of chars in cbuf
-f:			ref Bufio->Iobuf;
-s:			string;
-strpos: 		int;			# string pos/cbuf index
-linenum:		int;
-prompt:		string;
-lastnl:		int;
-initstring:		fn(s: string): ref YYLEX;
-initfile:		fn(fd: ref Sys->FD, path: string): ref YYLEX;
-lex:			fn(l: self ref YYLEX): int;
-error:		fn(l: self ref YYLEX, err: string);
-getc:			fn(l: self ref YYLEX): int;
-ungetc:		fn(l: self ref YYLEX);
-EOF:			con -1;
+wasdollar: int;
+atendword: int;
+eof: int;
+cbuf: array of int; # last chars read
+ncbuf: int; # number of chars in cbuf
+f: ref Bufio->Iobuf;
+s: string;
+strpos: int; # string pos/cbuf index
+linenum: int;
+prompt: string;
+lastnl: int;
+initstring: fn(s: string): ref YYLEX;
+initfile: fn(fd: ref Sys->FD, path: string): ref YYLEX;
+lex: fn(l: self ref YYLEX): int;
+error: fn(l: self ref YYLEX, err: string);
+getc: fn(l: self ref YYLEX): int;
+ungetc: fn(l: self ref YYLEX);
+EOF: con -1;
 };
 Options: adt {
 lflag,
-nflag:		int;
-ctxtflags:		int;
-carg:			string;
+nflag: int;
+ctxtflags: int;
+carg: string;
 };
 # module definition is in shell.m
-DUP: con	57346;
-REDIR: con	57347;
-WORD: con	57348;
-OP: con	57349;
-END: con	57350;
-ERROR: con	57351;
-ANDAND: con	57352;
-OROR: con	57353;
+DUP: con 57346;
+REDIR: con 57347;
+WORD: con 57348;
+OP: con 57349;
+END: con 57350;
+ERROR: con 57351;
+ANDAND: con 57352;
+OROR: con 57353;
 YYEOFCODE: con 1;
 YYERRCODE: con 2;
 YYMAXDEPTH: con 200;
@@ -68,9 +68,9 @@ EPIPE: con "write on closed pipe";
 LIBSHELLRC: con "/lib/sh/profile";
 BUILTINPATH: con "/dis/sh";
 DEBUG: con 0;
-ENVSEP: con 0;				# word seperator in external environment
-ENVHASHSIZE: con 7;		# XXX profile usage of this...
-OAPPEND: con 16r80000;		# make sure this doesn't clash with O* constants in sys.m
+ENVSEP: con 0; # word seperator in external environment
+ENVHASHSIZE: con 7; # XXX profile usage of this...
+OAPPEND: con 16r80000; # make sure this doesn't clash with O* constants in sys.m
 OMASK: con 7;
 usage()
 {
@@ -117,9 +117,9 @@ case c {
 'i' =>
 interactive = Context.INTERACTIVE;
 'l' =>
-opts.lflag++;	# login (read $home/lib/profile)
+opts.lflag++; # login (read $home/lib/profile)
 'n' =>
-opts.nflag++;	# don't fork namespace
+opts.nflag++; # don't fork namespace
 'e' =>
 opts.ctxtflags |= Context.ERROREXIT;
 'x' =>
@@ -571,7 +571,7 @@ return (bqlist, nil);
 }
 rdir(fd: ref Sys->FD): ref Redirlist
 {
-return  ref Redirlist(Redirword(fd, nil, Redir(Sys->OWRITE, 1, -1)) :: nil);
+return ref Redirlist(Redirword(fd, nil, Redir(Sys->OWRITE, 1, -1)) :: nil);
 }
 concatwords(p1, p2: ref Listnode): ref Listnode
 {
@@ -901,7 +901,7 @@ err = sprint("%r");
 ctxt.fail("bad redir", sys->sprint("sh: cannot open %s: %s", path, err));
 }
 if (append)
-sys->seek(rfd, big 0, Sys->SEEKEND);	# not good enough, but alright for some purposes.
+sys->seek(rfd, big 0, Sys->SEEKEND); # not good enough, but alright for some purposes.
 }
 # XXX what happens if rfd.fd == fd1?
 # it probably gets closed automatically... which is not what we want!
@@ -1136,7 +1136,7 @@ Context.run(ctxt: self ref Context, args: list of ref Listnode, last: int): stri
 if (args == nil || ((hd args).cmd == nil && (hd args).word == nil))
 return nil;
 cmd := hd args;
-if (cmd.cmd != nil || cmd.word[0] == '{')	# }
+if (cmd.cmd != nil || cmd.word[0] == '{') # }
 return runblock(ctxt, args, last);
 if (ctxt.options() & ctxt.EXECPRINT)
 sys->fprint(stderr(), "%s\n", quoted(args, 0));
@@ -1411,7 +1411,7 @@ deglob(s: string): string
 j := 0;
 for (i := 0; i < len s; i++) {
 if (s[i] != GLOB) {
-if (i != j)		# a worthy optimisation???
+if (i != j) # a worthy optimisation???
 s[j] = s[i];
 j++;
 }
@@ -1501,10 +1501,10 @@ redirstr(rtype: int): string
 {
 case rtype {
 * or
-Sys->OREAD =>	return "<";
-Sys->OWRITE =>	return ">";
-Sys->OWRITE|OAPPEND =>	return ">>";
-Sys->ORDWR =>	return "<>";
+Sys->OREAD => return "<";
+Sys->OWRITE => return ">";
+Sys->OWRITE|OAPPEND => return ">>";
+Sys->ORDWR => return "<>";
 }
 }
 cmd2string(n: ref Node): string
@@ -1513,33 +1513,33 @@ if (n == nil)
 return "";
 s: string;
 case n.ntype {
-n_BLOCK =>	s = "{" + cmd2string(n.left) + "}";
-n_VAR =>		s = "$" + cmd2string(n.left);
+n_BLOCK => s = "{" + cmd2string(n.left) + "}";
+n_VAR => s = "$" + cmd2string(n.left);
 # XXX can this ever occur?
 if (n.right != nil)
 s += "(" + cmd2string(n.right) + ")";
-n_SQUASH =>	s = "$\"" + cmd2string(n.left);
-n_COUNT =>	s = "$#" + cmd2string(n.left);
-n_BQ =>		s = "`" + cmd2string(n.left);
-n_BQ2 =>		s = "\"" + cmd2string(n.left);
-n_REDIR =>	s = redirstr(n.redir.rtype);
+n_SQUASH => s = "$\"" + cmd2string(n.left);
+n_COUNT => s = "$#" + cmd2string(n.left);
+n_BQ => s = "`" + cmd2string(n.left);
+n_BQ2 => s = "\"" + cmd2string(n.left);
+n_REDIR => s = redirstr(n.redir.rtype);
 if (n.redir.fd1 != -1)
 s += fdassignstr(0, n.redir);
 s += cmd2string(n.left);
-n_DUP =>		s = redirstr(n.redir.rtype) + fdassignstr(1, n.redir);
-n_LIST =>		s = "(" + cmd2string(n.left) + ")";
-n_SEQ =>		s = cmd2string(n.left) + ";" + cmd2string(n.right);
-n_NOWAIT =>	s = cmd2string(n.left) + "&";
-n_CONCAT =>	s = cmd2string(n.left) + "^" + cmd2string(n.right);
-n_PIPE =>		s = cmd2string(n.left) + "|";
+n_DUP => s = redirstr(n.redir.rtype) + fdassignstr(1, n.redir);
+n_LIST => s = "(" + cmd2string(n.left) + ")";
+n_SEQ => s = cmd2string(n.left) + ";" + cmd2string(n.right);
+n_NOWAIT => s = cmd2string(n.left) + "&";
+n_CONCAT => s = cmd2string(n.left) + "^" + cmd2string(n.right);
+n_PIPE => s = cmd2string(n.left) + "|";
 if (n.redir != nil && (n.redir.fd1 != -1 || n.redir.fd2 != -1))
 s += fdassignstr(n.redir.fd2 != -1, n.redir);
 s += cmd2string(n.right);
-n_ASSIGN =>	s = cmd2string(n.left) + "=" + cmd2string(n.right);
-n_LOCAL =>	s = cmd2string(n.left) + ":=" + cmd2string(n.right);
-n_ADJ =>		s = cmd2string(n.left) + " " + cmd2string(n.right);
-n_WORD =>	s = quote(n.word, 1);
-* =>			s = sys->sprint("unknown%d", n.ntype);
+n_ASSIGN => s = cmd2string(n.left) + "=" + cmd2string(n.right);
+n_LOCAL => s = cmd2string(n.left) + ":=" + cmd2string(n.right);
+n_ADJ => s = cmd2string(n.left) + " " + cmd2string(n.right);
+n_WORD => s = quote(n.word, 1);
+* => s = sys->sprint("unknown%d", n.ntype);
 }
 return s;
 }
@@ -1599,11 +1599,11 @@ return nil;
 runsbuiltin(ctxt: ref Context, nil: Sh, argv: list of ref Listnode): list of ref Listnode
 {
 case (hd argv).word {
-"loaded" =>	return sbuiltin_loaded(ctxt, argv);
-"bquote" =>	return sbuiltin_quote(ctxt, argv, 0);
-"quote" =>	return sbuiltin_quote(ctxt, argv, 1);
-"unquote" =>	return sbuiltin_unquote(ctxt, argv);
-"builtin" =>	return sbuiltin_builtin(ctxt, argv);
+"loaded" => return sbuiltin_loaded(ctxt, argv);
+"bquote" => return sbuiltin_quote(ctxt, argv, 0);
+"quote" => return sbuiltin_quote(ctxt, argv, 1);
+"unquote" => return sbuiltin_unquote(ctxt, argv);
+"builtin" => return sbuiltin_builtin(ctxt, argv);
 }
 return nil;
 }
@@ -1612,15 +1612,15 @@ runbuiltin(ctxt: ref Context, nil: Sh, args: list of ref Listnode, lseq: int): s
 status := "";
 name := (hd args).word;
 case name {
-"load" =>		status = builtin_load(ctxt, args, lseq);
-"loaded" =>	status = builtin_loaded(ctxt, args, lseq);
-"unload" =>	status = builtin_unload(ctxt, args, lseq);
-"builtin" =>	status = builtin_builtin(ctxt, args, lseq);
-"whatis" =>	status = builtin_whatis(ctxt, args, lseq);
-"run" =>		status = builtin_run(ctxt, args, lseq);
-"exit" =>		status = builtin_exit(ctxt, args, lseq);
-"syncenv" =>	export(ctxt.env.localenv);
-"@" =>		status = builtin_subsh(ctxt, args, lseq);
+"load" => status = builtin_load(ctxt, args, lseq);
+"loaded" => status = builtin_loaded(ctxt, args, lseq);
+"unload" => status = builtin_unload(ctxt, args, lseq);
+"builtin" => status = builtin_builtin(ctxt, args, lseq);
+"whatis" => status = builtin_whatis(ctxt, args, lseq);
+"run" => status = builtin_run(ctxt, args, lseq);
+"exit" => status = builtin_exit(ctxt, args, lseq);
+"syncenv" => export(ctxt.env.localenv);
+"@" => status = builtin_subsh(ctxt, args, lseq);
 }
 return status;
 }
@@ -1757,12 +1757,12 @@ return nil;
 }
 found := 0;
 name := el.word;
-if (name != nil && name[0] == '{') {	#}
+if (name != nil && name[0] == '{') { #}
 sys->print("%s\n", name);
 return nil;;
 }
 if (name == nil)
-return nil;		# XXX questionable
+return nil; # XXX questionable
 w: string;
 val := ctxt.get(name);
 if (val != nil) {
@@ -1950,7 +1950,7 @@ l.prompt = prompt;
 l.err = nil;
 l.lval.node = nil;
 yyparse(l);
-l.lastnl = 0;		# don't print secondary prompt next time
+l.lastnl = 0; # don't print secondary prompt next time
 if (l.err != nil) {
 s: string;
 if (l.err == nil)
@@ -1963,7 +1963,7 @@ return (nil, s);
 }
 return (l.lval.node, nil);
 }
-blanklex: YYLEX;	# for hassle free zero initialisation
+blanklex: YYLEX; # for hassle free zero initialisation
 YYLEX.initstring(s: string): ref YYLEX
 {
 ret := ref blanklex;
@@ -1977,7 +1977,7 @@ YYLEX.initfile(fd: ref Sys->FD, path: string): ref YYLEX
 lex := ref blanklex;
 lex.f = bufio->fopen(fd, bufio->OREAD);
 lex.path = path;
-lex.cbuf = array[2] of int;		# number of characters of pushback
+lex.cbuf = array[2] of int; # number of characters of pushback
 lex.linenum = 1;
 lex.prompt = "";
 return lex;
@@ -2010,7 +2010,7 @@ tok = '\n';
 while ((c = l.getc()) != '\n' && c != l.EOF)
 ;
 l.ungetc();
-';' =>	tok = ';';
+';' => tok = ';';
 '&' =>
 c = l.getc();
 if(c == '&')
@@ -2019,10 +2019,10 @@ else{
 l.ungetc();
 tok = '&';
 }
-'^' =>	tok = '^';
-'{' =>	tok = '{';
-'}' =>	tok = '}';
-')' =>	tok = ')';
+'^' => tok = '^';
+'{' => tok = '{';
+'}' => tok = '}';
+')' => tok = ')';
 '(' => tok = '(';
 '=' => (tok, l.lval.optype) = ('=', n_ASSIGN);
 '$' =>
@@ -2110,7 +2110,7 @@ if (l.getc() != '\'') {
 l.ungetc();
 break;
 }
-s[len s] = '\'';	# 'xxx''yyy' becomes WORD(xxx'yyy)
+s[len s] = '\''; # 'xxx''yyy' becomes WORD(xxx'yyy)
 }
 l.lval.word = s;
 tok = WORD;
@@ -2163,12 +2163,12 @@ s: string;
 case t {
 '\n' => s = "'\\n'";
 33 to 127 => s = sprint("'%c'", t);
-DUP=>	s = "DUP";
+DUP=> s = "DUP";
 REDIR =>s = "REDIR";
-WORD =>	s = "WORD";
-OP =>	s = "OP";
-END =>	s = "END";
-ERROR=>	s = "ERROR";
+WORD => s = "WORD";
+OP => s = "OP";
+END => s = "END";
+ERROR=> s = "ERROR";
 * =>
 s = "<unknowntok"+ string t + ">";
 }
@@ -2185,7 +2185,7 @@ lex.strpos = len lex.cbuf - 1;
 }
 YYLEX.getc(lex: self ref YYLEX): int
 {
-if (lex.eof)				# EOF sticks
+if (lex.eof) # EOF sticks
 return lex.EOF;
 c: int;
 if (lex.f != nil) {
@@ -2276,81 +2276,81 @@ YYPRIVATE: con 57344;
 yytoknames: array of string;
 yystates: array of string;
 yydebug: con 0;
-YYLAST:	con 93;
+YYLAST: con 93;
 yyact := array[] of {
-12,  10,  15,   4,   5,  40,   8,  11,   9,   7,
-30,  31,  54,   6,  50,  35,  34,  32,  33,  21,
-36,  38,  34,  41,  43,  22,  29,   3,  28,  13,
-14,  16,  17,  20,  37,  42,   1,  23,  45,  51,
-44,  47,  48,  18,  39,  19,  41,  43,  56,  30,
-31,  46,  58,  57,  59,  60,  49,  13,  14,  16,
-17,  53,  13,  14,  16,  17,   2,  52,   0,  16,
-17,  18,  27,  19,  16,  17,  18,  52,  19,   0,
-26,  18,   0,  19,  24,  25,  18,  26,  19,   0,
-55,  24,  25,
+12, 10, 15, 4, 5, 40, 8, 11, 9, 7,
+30, 31, 54, 6, 50, 35, 34, 32, 33, 21,
+36, 38, 34, 41, 43, 22, 29, 3, 28, 13,
+14, 16, 17, 20, 37, 42, 1, 23, 45, 51,
+44, 47, 48, 18, 39, 19, 41, 43, 56, 30,
+31, 46, 58, 57, 59, 60, 49, 13, 14, 16,
+17, 53, 13, 14, 16, 17, 2, 52, 0, 16,
+17, 18, 27, 19, 16, 17, 18, 52, 19, 0,
+26, 18, 0, 19, 24, 25, 18, 26, 19, 0,
+55, 24, 25,
 };
 yypact := array[] of {
-25,-1000,  11,  11,  69,  58,  18,  14,-1000,  58,
-58,-1000,   5,-1000,  68,-1000,-1000,  68,-1000,  58,
--1000,-1000,-1000,-1000,-1000,-1000,  58,-1000,  58,-1000,
--1,-1000,-1000,  68,-1000,  -1,-1000,  -5,  63,-1000,
--9,  76,  58,-1000,  18,  14,  53,-1000,  58,  63,
--1000,  -1,-1000,  53,-1000,-1000,-1000,-1000,-1000,  -1,
+25,-1000, 11, 11, 69, 58, 18, 14,-1000, 58,
+58,-1000, 5,-1000, 68,-1000,-1000, 68,-1000, 58,
+-1000,-1000,-1000,-1000,-1000,-1000, 58,-1000, 58,-1000,
+-1,-1000,-1000, 68,-1000, -1,-1000, -5, 63,-1000,
+-9, 76, 58,-1000, 18, 14, 53,-1000, 58, 63,
+-1000, -1,-1000, 53,-1000,-1000,-1000,-1000,-1000, -1,
 -1000,
 };
 yypgo := array[] of {
-0,   1,   0,  44,   8,   6,  36,   7,  35,   4,
-9,   2,  66,   5,  34,  13,   3,  33,  21,
+0, 1, 0, 44, 8, 6, 36, 7, 35, 4,
+9, 2, 66, 5, 34, 13, 3, 33, 21,
 };
 yyr1 := array[] of {
-0,   6,   6,  17,  17,  12,  12,  13,  13,   9,
-9,   8,   8,  16,  16,  15,  15,  10,  10,  10,
-5,   5,   5,   5,   7,   7,   7,   1,   1,   4,
-4,   4,  14,  14,   3,   3,   3,   2,   2,  11,
-11,  11,  11,  18,  18,
+0, 6, 6, 17, 17, 12, 12, 13, 13, 9,
+9, 8, 8, 16, 16, 15, 15, 10, 10, 10,
+5, 5, 5, 5, 7, 7, 7, 1, 1, 4,
+4, 4, 14, 14, 3, 3, 3, 2, 2, 11,
+11, 11, 11, 18, 18,
 };
 yyr2 := array[] of {
-0,   2,   2,   1,   1,   1,   2,   1,   2,   2,
-2,   1,   2,   1,   3,   1,   3,   0,   1,   4,
-1,   2,   1,   1,   3,   3,   2,   1,   2,   1,
-2,   2,   1,   2,   2,   3,   3,   1,   4,   1,
-2,   3,   3,   0,   2,
+0, 2, 2, 1, 1, 1, 2, 1, 2, 2,
+2, 1, 2, 1, 3, 1, 3, 0, 1, 4,
+1, 2, 1, 1, 3, 3, 2, 1, 2, 1,
+2, 2, 1, 2, 2, 3, 3, 1, 4, 1,
+2, 3, 3, 0, 2,
 };
 yychk := array[] of {
--1000,  -6, -12,   2, -16,  -9, -15, -10,  -5,  -4,
--1,  -7,  -2,   4,   5, -11,   6,   7,  18,  20,
--17,   8,  14, -17,  15,  16,  11, -12,  10,  12,
--2,  -1,  -5,  13,  17,  -2, -11, -14, -18,  -3,
--13, -16,  -8,  -9, -15, -10, -18,  -7,  -4, -18,
-19,  -2,  14, -18,  21,  14, -13,  -5, -11,  -2,
+-1000, -6, -12, 2, -16, -9, -15, -10, -5, -4,
+-1, -7, -2, 4, 5, -11, 6, 7, 18, 20,
+-17, 8, 14, -17, 15, 16, 11, -12, 10, 12,
+-2, -1, -5, 13, 17, -2, -11, -14, -18, -3,
+-13, -16, -8, -9, -15, -10, -18, -7, -4, -18,
+19, -2, 14, -18, 21, 14, -13, -5, -11, -2,
 -1,
 };
 yydef := array[] of {
--2,  -2,   0,   0,   5,  17,  13,  15,  18,  20,
-22,  23,  29,  27,   0,  37,  39,   0,  43,  17,
-1,   3,   4,   2,   9,  10,  17,   6,  17,  43,
-30,  31,  21,  26,  43,  28,  40,   0,  32,  43,
-0,   7,  17,  11,  14,  16,   0,  24,  25,   0,
-41,  34,  44,  33,  42,  12,   8,  19,  38,  35,
+-2, -2, 0, 0, 5, 17, 13, 15, 18, 20,
+22, 23, 29, 27, 0, 37, 39, 0, 43, 17,
+1, 3, 4, 2, 9, 10, 17, 6, 17, 43,
+30, 31, 21, 26, 43, 28, 40, 0, 32, 43,
+0, 7, 17, 11, 14, 16, 0, 24, 25, 0,
+41, 34, 44, 33, 42, 12, 8, 19, 38, 35,
 36,
 };
 yytok1 := array[] of {
-1,   3,   3,   3,   3,   3,   3,   3,   3,   3,
-14,   3,   3,   3,   3,   3,   3,   3,   3,   3,
-3,   3,   3,   3,   3,   3,   3,   3,   3,   3,
-3,   3,   3,   3,   3,   3,   3,   3,  16,   3,
-18,  19,   3,   3,   3,   3,   3,   3,   3,   3,
-3,   3,   3,   3,   3,   3,   3,   3,   3,  15,
-3,  13,   3,   3,   3,   3,   3,   3,   3,   3,
-3,   3,   3,   3,   3,   3,   3,   3,   3,   3,
-3,   3,   3,   3,   3,   3,   3,   3,   3,   3,
-3,   3,   3,   3,  17,   3,   3,   3,   3,   3,
-3,   3,   3,   3,   3,   3,   3,   3,   3,   3,
-3,   3,   3,   3,   3,   3,   3,   3,   3,   3,
-3,   3,   3,  20,  12,  21,
+1, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+14, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+3, 3, 3, 3, 3, 3, 3, 3, 16, 3,
+18, 19, 3, 3, 3, 3, 3, 3, 3, 3,
+3, 3, 3, 3, 3, 3, 3, 3, 3, 15,
+3, 13, 3, 3, 3, 3, 3, 3, 3, 3,
+3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+3, 3, 3, 3, 17, 3, 3, 3, 3, 3,
+3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+3, 3, 3, 20, 12, 21,
 };
 yytok2 := array[] of {
-2,   3,   4,   5,   6,   7,   8,   9,  10,  11,
+2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
 };
 yytok3 := array[] of {
 0
@@ -2359,10 +2359,10 @@ YYSys: module
 {
 FD: adt
 {
-fd:	int;
+fd: int;
 };
-fildes:		fn(fd: int): ref FD;
-fprint:		fn(fd: ref FD, s: string, *): int;
+fildes: fn(fd: int): ref FD;
+fprint: fn(fd: ref FD, s: string, *): int;
 };
 yysys: YYSys;
 yystderr: ref YYSys->FD;
@@ -2399,7 +2399,7 @@ break;
 }
 }
 if(c == 0)
-c = yytok2[1];	# unknown char
+c = yytok2[1]; # unknown char
 }
 if(yydebug >= 3)
 yysys->fprint(yystderr, "lex %.4ux %s\n", yychar, yytokname(c));
@@ -2420,8 +2420,8 @@ yys := array[YYMAXDEPTH] of YYS;
 yyval: YYSTYPE;
 yystate := 0;
 yychar := -1;
-yynerrs := 0;		# number of errors
-yyerrflag := 0;		# error recovery flag
+yynerrs := 0; # number of errors
+yyerrflag := 0; # error recovery flag
 yyp := -1;
 yyn := 0;
 yystack:
@@ -2436,7 +2436,7 @@ yys[yyp].yys = yystate;
 yys[yyp].yyv = yyval;
 for(;;){
 yyn = yypact[yystate];
-if(yyn > YYFLAG) {	# simple state
+if(yyn > YYFLAG) { # simple state
 if(yychar < 0)
 yychar = yylex1(yylex);
 yyn += yychar;
@@ -2495,7 +2495,7 @@ yyerrflag = 3;
 while(yyp >= 0) {
 yyn = yypact[yys[yyp].yys] + YYERRCODE;
 if(yyn >= 0 && yyn < YYLAST) {
-yystate = yyact[yyn];  # simulate a shift of "error"
+yystate = yyact[yyn]; # simulate a shift of "error"
 if(yychk[yystate] == YYERRCODE)
 continue yystack;
 }

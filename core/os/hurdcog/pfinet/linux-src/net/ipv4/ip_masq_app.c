@@ -14,11 +14,11 @@
 #include <linux/stat.h>
 #include <linux/proc_fs.h>
 #include <net/ip_masq.h>
-#define IP_MASQ_APP_TAB_SIZE  16
+#define IP_MASQ_APP_TAB_SIZE 16
 #define IP_MASQ_APP_HASH(proto, port) ((port^proto) & (IP_MASQ_APP_TAB_SIZE-1))
 #define IP_MASQ_APP_TYPE(proto, port) ( proto<<16 | port )
-#define IP_MASQ_APP_PORT(type)        ( type & 0xffff )
-#define IP_MASQ_APP_PROTO(type)       ( (type>>16) & 0x00ff )
+#define IP_MASQ_APP_PORT(type) ( type & 0xffff )
+#define IP_MASQ_APP_PROTO(type) ( (type>>16) & 0x00ff )
 EXPORT_SYMBOL(register_ip_masq_app);
 EXPORT_SYMBOL(unregister_ip_masq_app);
 EXPORT_SYMBOL(ip_masq_skb_replace);
@@ -50,7 +50,7 @@ if (!mapp) {
 IP_MASQ_ERR("unregister_ip_masq_app(): NULL arg\n");
 return -EINVAL;
 }
-if (mapp->n_attach)  {
+if (mapp->n_attach) {
 IP_MASQ_ERR("unregister_ip_masq_app(): has %d attachments. failed\n",
 mapp->n_attach);
 return -EINVAL;
@@ -59,7 +59,7 @@ hash = IP_MASQ_APP_HASH(IP_MASQ_APP_PROTO(mapp->type), IP_MASQ_APP_PORT(mapp->ty
 save_flags(flags);
 cli();
 for (mapp_p = &ip_masq_app_base[hash]; *mapp_p ; mapp_p = &(*mapp_p)->next)
-if (mapp == (*mapp_p))  {
+if (mapp == (*mapp_p)) {
 *mapp_p = mapp->next;
 restore_flags(flags);
 return 0;
@@ -281,7 +281,7 @@ memcpy(skb->data + o_offset + n_len,o_buf + o_len,
 skb->len - (o_offset + o_len));
 }
 memcpy(skb->data + o_offset, n_buf, n_len);
-n_skb    = skb;
+n_skb = skb;
 skb->len = n_len;
 skb->end = skb->head+n_len;
 } else {

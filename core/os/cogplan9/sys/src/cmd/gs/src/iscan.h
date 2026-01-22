@@ -1,9 +1,9 @@
 #ifndef iscan_INCLUDED
-#  define iscan_INCLUDED
+# define iscan_INCLUDED
 #include "sa85x.h"
 #include "sstring.h"
 #ifndef scanner_state_DEFINED
-#  define scanner_state_DEFINED
+# define scanner_state_DEFINED
 typedef struct scanner_state_s scanner_state;
 #endif
 #define max_comment_line 255
@@ -54,7 +54,7 @@ stream_PSSD_state pssd;
 } s_ss;
 };
 extern_st(st_scanner_state);
-#define public_st_scanner_state()	\
+#define public_st_scanner_state() \
 gs_public_st_complex_only(st_scanner_state, scanner_state, "scanner state",\
 scanner_clear_marks, scanner_enum_ptrs, scanner_reloc_ptrs, 0)
 #define SCAN_FROM_STRING 1

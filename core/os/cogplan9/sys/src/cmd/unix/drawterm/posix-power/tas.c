@@ -3,7 +3,7 @@
 int
 tas(long *x)
 {
-int     v;
+int v;
 __asm__("\n	sync\n"
 "	li	r0,0\n"
 "	mr	r4,%1		\n"
@@ -20,13 +20,13 @@ __asm__("\n	sync\n"
 "	sync\n"
 "	isync\n"
 : "=r" (v)
-: "r"  (x)
+: "r" (x)
 : "cc", "memory", "r0", "r4", "r5"
 );
 switch(v) {
-case 0:		return 0;
+case 0: return 0;
 case 0xdeaddead: return 1;
-default:	print("tas: corrupted 0x%lux\n", v);
+default: print("tas: corrupted 0x%lux\n", v);
 }
 return 0;
 }

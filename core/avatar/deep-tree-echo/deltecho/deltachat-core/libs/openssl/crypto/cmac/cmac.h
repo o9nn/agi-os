@@ -15,7 +15,7 @@ const EVP_CIPHER *cipher, ENGINE *impl);
 int CMAC_Update(CMAC_CTX *ctx, const void *data, size_t dlen);
 int CMAC_Final(CMAC_CTX *ctx, unsigned char *out, size_t *poutlen);
 int CMAC_resume(CMAC_CTX *ctx);
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif
 #endif

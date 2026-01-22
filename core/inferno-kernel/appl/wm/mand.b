@@ -26,11 +26,11 @@ Calc: adt {
 xr, yr: array of FIX;
 parx, pary: FIX;
 # column order
-dispbase: array of COL;		# auxiliary display and border
+dispbase: array of COL; # auxiliary display and border
 imgch: chan of (ref Image, Rect);
 img: ref Image;
 maxx, maxy, supx, supy: int;
-disp: int;					# origin of auxiliary display
+disp: int; # origin of auxiliary display
 morj : int;
 winr: Rect;
 kdivisor: int;
@@ -38,34 +38,34 @@ pointsdone: int;
 };
 # BASE, LIMIT, MAXCOUNT, MINDELTA may be varied
 #
-#	calls with 256X128 on initial set
-#	---------------------------------
-#	crawl		58	(5% of time)
-#	fillline	894	(6% of time)
-#	isblank		5012	(0% of time)
-#	mcount		6928	(55% of time)
-#	getcolour	52942	(11% of time)
-#	displayset	1	(15% of time)
+# calls with 256X128 on initial set
+# ---------------------------------
+# crawl 58 (5% of time)
+# fillline 894 (6% of time)
+# isblank 5012 (0% of time)
+# mcount 6928 (55% of time)
+# getcolour 52942 (11% of time)
+# displayset 1 (15% of time)
 #
 WHITE : con 16r0;
 BLACK : con 16rff;
 COL : type byte;
-BASE	: con 60;		# 28
+BASE : con 60; # 28
 HBASE : con (BASE/2);
 SCALE : con (big 1<<BASE);
-TWO	: con (big 1<<(BASE+1));
+TWO : con (big 1<<(BASE+1));
 FOUR : con (big 1<<(BASE+2));
-NEG	: con (~((big 1<<(32-HBASE))-big 1));
-MINDELTA : con (big 1<<(HBASE-1));		# (1<<(HBASE-2))
+NEG : con (~((big 1<<(32-HBASE))-big 1));
+MINDELTA : con (big 1<<(HBASE-1)); # (1<<(HBASE-2))
 SCHEDCOUNT: con 100;
-BLANK : con 0;		# blank pixel
-BORDER : con 255;	# border pixel
-LIMIT : con 4;		# 4 or 5
+BLANK : con 0; # blank pixel
+BORDER : con 255; # border pixel
+LIMIT : con 4; # 4 or 5
 # pointcolour() returns values in the range 1..MAXCOUNT+1
 # these must not clash with 0 or 255
 # hence 0 <= MAXCOUNT <= 253
 #
-MAXCOUNT : con 253;		# 92  64
+MAXCOUNT : con 253; # 92 64
 # colour cube
 R, G, B : int;
 # initial width and height
@@ -76,8 +76,8 @@ x, y: real;
 };
 Fracrect: adt {
 min, max: Fracpoint;
-dx:	fn(r: self Fracrect): real;
-dy:	fn(r: self Fracrect): real;
+dx: fn(r: self Fracrect): real;
+dy: fn(r: self Fracrect): real;
 };
 Params: adt {
 r: Fracrect;
@@ -166,8 +166,8 @@ specr := Fracrect((-2.0, -1.5), (1.0, 1.5));
 p := Params(
 correctratio(specr, canvr),
 (0.0, 0.0),
-1,			# m
-1,			# kdivisor
+1, # m
+1, # kdivisor
 int cmd(win, "variable fill")
 );
 pid := -1;
@@ -225,7 +225,7 @@ if (u.r.dx() > 0 && u.r.dy() > 0) {
 stack = (specr, p) :: stack;
 specr.min = pt2real(u.r.min, win, p.r);
 specr.max = pt2real(u.r.max, win, p.r);
-(specr.min.y, specr.max.y) = (specr.max.y, specr.min.y);	# canonicalise
+(specr.min.y, specr.max.y) = (specr.max.y, specr.min.y); # canonicalise
 restart = 1;
 }
 Zoomout =>
@@ -407,7 +407,7 @@ calc.morj = p.m;
 initr(calc, p);
 calc.img.drawop(r, calc.img.display.white, nil, (0,0), Draw->S);
 if (p.fill) {
-calc.dispbase = array[calc.supx*calc.supy] of COL;		# auxiliary display and border
+calc.dispbase = array[calc.supx*calc.supy] of COL; # auxiliary display and border
 calc.disp = calc.maxy + 3;
 setdisp(calc);
 displayset(calc);
@@ -470,7 +470,7 @@ calc.dispbase[d] = byte col;
 x -= dir;
 d -= dird;
 }
-if (0 && pointcolour(calc, (x0+x+dir)/2, y) != col) {		# midpoint of line (island code)
+if (0 && pointcolour(calc, (x0+x+dir)/2, y) != col) { # midpoint of line (island code)
 # island - undo colouring or do properly
 do {
 d += dird;
@@ -479,7 +479,7 @@ x += dir;
 calc.dispbase[d] = byte pointcolour(calc, x, y);
 point(calc, calc.img, (x, y), int calc.dispbase[d]);
 } while (x != x0);
-return;				# abort crawl ?
+return; # abort crawl ?
 }
 horizline(calc, calc.img, x0, x, y, col);
 }
@@ -524,38 +524,38 @@ dxinc = -dyinc;
 }
 # spurious lines problem - disallow all acw paths
 #
-#	43--------->
-#	12--------->
+# 43--------->
+# 12--------->
 #
-#	654------------>
-#	7 3------------>
-#	812------------>
+# 654------------>
+# 7 3------------>
+# 812------------>
 #
 # Given a closed curve completely described by unit movements LRUD (left,
-# right, up, and down), calculate the enclosed area.  The description
+# right, up, and down), calculate the enclosed area. The description
 # may be cw or acw and of arbitrary shape.
 #
-# Based on Green's Theorem :-  area = integral  ydx
-#					    C
+# Based on Green's Theorem :- area = integral ydx
+# C
 # area = 0;
 # count = ARBITRARY_VALUE;
 # while( moves_are_left() ){
-#     move = next_move();
-#    switch(move){
-#        case L:
-#            area -= count;
-#            break;
-#        case R:
-#            area += count;
-#            break;
-#        case U:
-#            count++;
-#            break;
-#        case D:
-#            count--;
-#            break;
-#    }
-#    area = abs(area);
+# move = next_move();
+# switch(move){
+# case L:
+# area -= count;
+# break;
+# case R:
+# area += count;
+# break;
+# case U:
+# count++;
+# break;
+# case D:
+# count--;
+# break;
+# }
+# area = abs(area);
 crawlf(calc: ref Calc, x, y, d, col: int)
 {
 xinc, yinc, dxinc, dyinc : int;
@@ -595,7 +595,7 @@ xinc = -yinc;
 dxinc = -dyinc;
 }
 }
-if (area > 0)	# cw
+if (area > 0) # cw
 crawlt(calc, firstx, firsty, firstd, col);
 }
 displayset(calc: ref Calc)
@@ -663,7 +663,7 @@ if (0) {
 x >>= HBASE;
 y >>= HBASE;
 t := y*y;
-y = big 2*x*y+q;	# possible unserious overflow when BASE == 28
+y = big 2*x*y+q; # possible unserious overflow when BASE == 28
 x *= x;
 if (x+t >= FOUR)
 break;
@@ -688,7 +688,7 @@ if (0) {
 x >>= HBASE;
 y >>= HBASE;
 t := y*y;
-y = big 2*x*y+q;	# possible unserious overflow when BASE == 28
+y = big 2*x*y+q; # possible unserious overflow when BASE == 28
 x *= x;
 if (x+t >= FOUR)
 break;

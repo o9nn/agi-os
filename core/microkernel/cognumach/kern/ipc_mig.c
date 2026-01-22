@@ -32,8 +32,8 @@
 #include <machine/pcb.h>
 mach_msg_return_t
 mach_msg_send_from_kernel(
-mach_msg_header_t	*msg,
-mach_msg_size_t		send_size)
+mach_msg_header_t *msg,
+mach_msg_size_t send_size)
 {
 ipc_kmsg_t kmsg;
 mach_msg_return_t mr;
@@ -68,13 +68,13 @@ ipc_port_dealloc_reply(reply);
 }
 mach_msg_return_t
 mach_msg(
-mach_msg_header_t 	*msg,
-mach_msg_option_t 	option,
-mach_msg_size_t 	send_size,
-mach_msg_size_t 	rcv_size,
-mach_port_name_t 	rcv_name,
-mach_msg_timeout_t 	time_out,
-mach_port_name_t 	notify)
+mach_msg_header_t *msg,
+mach_msg_option_t option,
+mach_msg_size_t send_size,
+mach_msg_size_t rcv_size,
+mach_port_name_t rcv_name,
+mach_msg_timeout_t time_out,
+mach_port_name_t notify)
 {
 ipc_space_t space = current_space();
 vm_map_t map = current_map();
@@ -144,13 +144,13 @@ return self->ith_mig_reply;
 }
 void
 mig_dealloc_reply_port(
-mach_port_t	reply_port)
+mach_port_t reply_port)
 {
 panic("mig_dealloc_reply_port");
 }
 void
 mig_put_reply_port(
-mach_port_t	reply_port)
+mach_port_t reply_port)
 {
 }
 vm_size_t
@@ -172,31 +172,31 @@ mig_deallocate(vm_address_t addr, vm_size_t size)
 (void) size;
 vm_map_copy_discard((vm_map_copy_t) addr);
 }
-#define	fast_send_right_lookup(name, port, abort)			\
-MACRO_BEGIN								\
-ipc_space_t space = current_space();				\
-ipc_entry_t entry;						\
+#define fast_send_right_lookup(name, port, abort) \
+MACRO_BEGIN \
+ipc_space_t space = current_space(); \
+ipc_entry_t entry; \
 \
-is_read_lock(space);						\
-assert(space->is_active);					\
+is_read_lock(space); \
+assert(space->is_active); \
 \
-entry = ipc_entry_lookup (space, name);				\
-if (entry == IE_NULL) {						\
-is_read_unlock (space);					\
-abort;							\
-}								\
+entry = ipc_entry_lookup (space, name); \
+if (entry == IE_NULL) { \
+is_read_unlock (space); \
+abort; \
+} \
 \
-if (IE_BITS_TYPE (entry->ie_bits) != MACH_PORT_TYPE_SEND) {	\
-is_read_unlock (space);					\
-abort;							\
-}								\
+if (IE_BITS_TYPE (entry->ie_bits) != MACH_PORT_TYPE_SEND) { \
+is_read_unlock (space); \
+abort; \
+} \
 \
-port = (ipc_port_t) entry->ie_object;				\
-assert(port != IP_NULL);					\
+port = (ipc_port_t) entry->ie_object; \
+assert(port != IP_NULL); \
 \
-ip_lock(port);							\
+ip_lock(port); \
 \
-is_read_unlock(space);						\
+is_read_unlock(space); \
 MACRO_END
 static device_t
 port_name_to_device(mach_port_name_t name)
@@ -292,7 +292,7 @@ return task;
 }
 static vm_map_t
 port_name_to_map(
-mach_port_name_t	name)
+mach_port_name_t name)
 {
 ipc_port_t port;
 fast_send_right_lookup(name, port, goto abort);
@@ -359,22 +359,22 @@ return space;
 }
 kern_return_t
 syscall_vm_map(
-mach_port_name_t	target_map,
-rpc_vm_offset_t	*address,
-rpc_vm_size_t	size,
-rpc_vm_offset_t	mask,
-boolean_t	anywhere,
-mach_port_name_t	memory_object,
-rpc_vm_offset_t	offset,
-boolean_t	copy,
-vm_prot_t	cur_protection,
-vm_prot_t	max_protection,
-vm_inherit_t	inheritance)
+mach_port_name_t target_map,
+rpc_vm_offset_t *address,
+rpc_vm_size_t size,
+rpc_vm_offset_t mask,
+boolean_t anywhere,
+mach_port_name_t memory_object,
+rpc_vm_offset_t offset,
+boolean_t copy,
+vm_prot_t cur_protection,
+vm_prot_t max_protection,
+vm_inherit_t inheritance)
 {
-vm_map_t		map;
-ipc_port_t		port;
-vm_offset_t		addr;
-kern_return_t		result;
+vm_map_t map;
+ipc_port_t port;
+vm_offset_t addr;
+kern_return_t result;
 map = port_name_to_map(target_map);
 if (map == VM_MAP_NULL)
 return MACH_SEND_INTERRUPTED;
@@ -391,7 +391,7 @@ port = (ipc_port_t)invalid_name_to_port(memory_object);
 copyin_address(address, &addr);
 result = vm_map(map, &addr, size, mask, anywhere,
 port, offset, copy,
-cur_protection, max_protection,	inheritance);
+cur_protection, max_protection, inheritance);
 if (result == KERN_SUCCESS)
 copyout_address(&addr, address);
 if (IP_VALID(port))
@@ -400,14 +400,14 @@ vm_map_deallocate(map);
 return result;
 }
 kern_return_t syscall_vm_allocate(
-mach_port_name_t	target_map,
-rpc_vm_offset_t		*address,
-rpc_vm_size_t		size,
-boolean_t		anywhere)
+mach_port_name_t target_map,
+rpc_vm_offset_t *address,
+rpc_vm_size_t size,
+boolean_t anywhere)
 {
-vm_map_t		map;
-vm_offset_t		addr;
-kern_return_t		result;
+vm_map_t map;
+vm_offset_t addr;
+kern_return_t result;
 map = port_name_to_map(target_map);
 if (map == VM_MAP_NULL)
 return MACH_SEND_INTERRUPTED;
@@ -419,12 +419,12 @@ vm_map_deallocate(map);
 return result;
 }
 kern_return_t syscall_vm_deallocate(
-mach_port_name_t       	target_map,
-rpc_vm_offset_t		start,
-rpc_vm_size_t		size)
+mach_port_name_t target_map,
+rpc_vm_offset_t start,
+rpc_vm_size_t size)
 {
-vm_map_t		map;
-kern_return_t		result;
+vm_map_t map;
+kern_return_t result;
 map = port_name_to_map(target_map);
 if (map == VM_MAP_NULL)
 return MACH_SEND_INTERRUPTED;
@@ -433,14 +433,14 @@ vm_map_deallocate(map);
 return result;
 }
 kern_return_t syscall_task_create(
-mach_port_name_t	parent_task,
-boolean_t			inherit_memory,
-mach_port_name_t	*child_task)
+mach_port_name_t parent_task,
+boolean_t inherit_memory,
+mach_port_name_t *child_task)
 {
-task_t		t, c;
-ipc_port_t	port;
-mach_port_name_t 	name;
-kern_return_t	result;
+task_t t, c;
+ipc_port_t port;
+mach_port_name_t name;
+kern_return_t result;
 t = port_name_to_task(parent_task);
 if (t == TASK_NULL)
 return MACH_SEND_INTERRUPTED;
@@ -457,8 +457,8 @@ return result;
 }
 kern_return_t syscall_task_terminate(mach_port_name_t task)
 {
-task_t		t;
-kern_return_t	result;
+task_t t;
+kern_return_t result;
 t = port_name_to_task(task);
 if (t == TASK_NULL)
 return MACH_SEND_INTERRUPTED;
@@ -468,8 +468,8 @@ return result;
 }
 kern_return_t syscall_task_suspend(mach_port_name_t task)
 {
-task_t		t;
-kern_return_t	result;
+task_t t;
+kern_return_t result;
 t = port_name_to_task(task);
 if (t == TASK_NULL)
 return MACH_SEND_INTERRUPTED;
@@ -478,13 +478,13 @@ task_deallocate(t);
 return result;
 }
 kern_return_t syscall_task_set_special_port(
-mach_port_name_t	task,
-int		which_port,
-mach_port_name_t	port_name)
+mach_port_name_t task,
+int which_port,
+mach_port_name_t port_name)
 {
-task_t		t;
-ipc_port_t	port;
-kern_return_t	result;
+task_t t;
+ipc_port_t port;
+kern_return_t result;
 t = port_name_to_task(task);
 if (t == TASK_NULL)
 return MACH_SEND_INTERRUPTED;
@@ -506,9 +506,9 @@ return result;
 }
 kern_return_t
 syscall_mach_port_allocate(
-mach_port_name_t 	task,
-mach_port_right_t 	right,
-mach_port_name_t 	*namep)
+mach_port_name_t task,
+mach_port_right_t right,
+mach_port_name_t *namep)
 {
 ipc_space_t space;
 mach_port_name_t name;
@@ -526,9 +526,9 @@ return kr;
 }
 kern_return_t
 syscall_mach_port_allocate_name(
-mach_port_name_t 	task,
-mach_port_right_t 	right,
-mach_port_name_t 	name)
+mach_port_name_t task,
+mach_port_right_t right,
+mach_port_name_t name)
 {
 ipc_space_t space;
 kern_return_t kr;
@@ -555,10 +555,10 @@ return kr;
 }
 kern_return_t
 syscall_mach_port_insert_right(
-mach_port_name_t 		task,
-mach_port_name_t 		name,
-mach_port_name_t 		right,
-mach_msg_type_name_t 	rightType)
+mach_port_name_t task,
+mach_port_name_t name,
+mach_port_name_t right,
+mach_msg_type_name_t rightType)
 {
 ipc_space_t space;
 ipc_object_t object;
@@ -589,8 +589,8 @@ return kr;
 }
 kern_return_t syscall_thread_depress_abort(mach_port_name_t thread)
 {
-thread_t	t;
-kern_return_t	result;
+thread_t t;
+kern_return_t result;
 t = port_name_to_thread(thread);
 if (t == THREAD_NULL)
 return MACH_SEND_INTERRUPTED;
@@ -599,13 +599,13 @@ thread_deallocate(t);
 return result;
 }
 kern_return_t thread_set_self_state(
-int		flavor,
-thread_state_t	new_state,
-natural_t	new_state_count)
+int flavor,
+thread_state_t new_state,
+natural_t new_state_count)
 {
-thread_t	t = current_thread();
-kern_return_t	kr;
-natural_t	new_state_copy[THREAD_STATE_MAX];
+thread_t t = current_thread();
+kern_return_t kr;
+natural_t new_state_copy[THREAD_STATE_MAX];
 if (new_state_count <= 0 || new_state_count > THREAD_STATE_MAX)
 return KERN_INVALID_ARGUMENT;
 if (copyin(new_state, new_state_copy, new_state_count * sizeof(natural_t)))
@@ -617,15 +617,15 @@ thread_exception_return();
 return kr;
 }
 io_return_t
-syscall_device_write_request(mach_port_name_t	device_name,
-mach_port_name_t	reply_name,
-dev_mode_t		mode,
-rpc_recnum_t	recnum,
-rpc_vm_offset_t	data,
-rpc_vm_size_t	data_count)
+syscall_device_write_request(mach_port_name_t device_name,
+mach_port_name_t reply_name,
+dev_mode_t mode,
+rpc_recnum_t recnum,
+rpc_vm_offset_t data,
+rpc_vm_size_t data_count)
 {
-device_t	dev;
-io_return_t	res;
+device_t dev;
+io_return_t res;
 dev = port_name_to_device(device_name);
 if (dev == DEVICE_NULL)
 return KERN_INVALID_CAPABILITY;
@@ -640,15 +640,15 @@ device_deallocate(dev);
 return res;
 }
 io_return_t
-syscall_device_writev_request(mach_port_name_t	device_name,
-mach_port_name_t	reply_name,
-dev_mode_t	mode,
-rpc_recnum_t	recnum,
-rpc_io_buf_vec_t	*iovec,
-rpc_vm_size_t	iocount)
+syscall_device_writev_request(mach_port_name_t device_name,
+mach_port_name_t reply_name,
+dev_mode_t mode,
+rpc_recnum_t recnum,
+rpc_io_buf_vec_t *iovec,
+rpc_vm_size_t iocount)
 {
-device_t	dev;
-io_return_t	res;
+device_t dev;
+io_return_t res;
 dev = port_name_to_device(device_name);
 if (dev == DEVICE_NULL)
 return KERN_INVALID_CAPABILITY;

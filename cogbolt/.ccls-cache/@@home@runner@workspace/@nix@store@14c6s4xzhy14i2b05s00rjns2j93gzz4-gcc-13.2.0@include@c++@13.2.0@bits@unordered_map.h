@@ -44,25 +44,25 @@ typename _Pred = equal_to<_Key>,
 typename _Alloc = allocator<std::pair<const _Key, _Tp>>>
 class unordered_map
 {
-typedef __umap_hashtable<_Key, _Tp, _Hash, _Pred, _Alloc>  _Hashtable;
+typedef __umap_hashtable<_Key, _Tp, _Hash, _Pred, _Alloc> _Hashtable;
 _Hashtable _M_h;
 public:
-typedef typename _Hashtable::key_type	key_type;
-typedef typename _Hashtable::value_type	value_type;
-typedef typename _Hashtable::mapped_type	mapped_type;
-typedef typename _Hashtable::hasher	hasher;
-typedef typename _Hashtable::key_equal	key_equal;
+typedef typename _Hashtable::key_type key_type;
+typedef typename _Hashtable::value_type value_type;
+typedef typename _Hashtable::mapped_type mapped_type;
+typedef typename _Hashtable::hasher hasher;
+typedef typename _Hashtable::key_equal key_equal;
 typedef typename _Hashtable::allocator_type allocator_type;
-typedef typename _Hashtable::pointer		pointer;
-typedef typename _Hashtable::const_pointer	const_pointer;
-typedef typename _Hashtable::reference		reference;
-typedef typename _Hashtable::const_reference	const_reference;
-typedef typename _Hashtable::iterator		iterator;
-typedef typename _Hashtable::const_iterator	const_iterator;
-typedef typename _Hashtable::local_iterator	local_iterator;
-typedef typename _Hashtable::const_local_iterator	const_local_iterator;
-typedef typename _Hashtable::size_type		size_type;
-typedef typename _Hashtable::difference_type	difference_type;
+typedef typename _Hashtable::pointer pointer;
+typedef typename _Hashtable::const_pointer const_pointer;
+typedef typename _Hashtable::reference reference;
+typedef typename _Hashtable::const_reference const_reference;
+typedef typename _Hashtable::iterator iterator;
+typedef typename _Hashtable::const_iterator const_iterator;
+typedef typename _Hashtable::local_iterator local_iterator;
+typedef typename _Hashtable::const_local_iterator const_local_iterator;
+typedef typename _Hashtable::size_type size_type;
+typedef typename _Hashtable::difference_type difference_type;
 #if __cplusplus > 201402L
 using node_type = typename _Hashtable::node_type;
 using insert_return_type = typename _Hashtable::insert_return_type;
@@ -547,25 +547,25 @@ typename _Pred = equal_to<_Key>,
 typename _Alloc = allocator<std::pair<const _Key, _Tp>>>
 class unordered_multimap
 {
-typedef __ummap_hashtable<_Key, _Tp, _Hash, _Pred, _Alloc>  _Hashtable;
+typedef __ummap_hashtable<_Key, _Tp, _Hash, _Pred, _Alloc> _Hashtable;
 _Hashtable _M_h;
 public:
-typedef typename _Hashtable::key_type	key_type;
-typedef typename _Hashtable::value_type	value_type;
-typedef typename _Hashtable::mapped_type	mapped_type;
-typedef typename _Hashtable::hasher	hasher;
-typedef typename _Hashtable::key_equal	key_equal;
+typedef typename _Hashtable::key_type key_type;
+typedef typename _Hashtable::value_type value_type;
+typedef typename _Hashtable::mapped_type mapped_type;
+typedef typename _Hashtable::hasher hasher;
+typedef typename _Hashtable::key_equal key_equal;
 typedef typename _Hashtable::allocator_type allocator_type;
-typedef typename _Hashtable::pointer		pointer;
-typedef typename _Hashtable::const_pointer	const_pointer;
-typedef typename _Hashtable::reference		reference;
-typedef typename _Hashtable::const_reference	const_reference;
-typedef typename _Hashtable::iterator		iterator;
-typedef typename _Hashtable::const_iterator	const_iterator;
-typedef typename _Hashtable::local_iterator	local_iterator;
-typedef typename _Hashtable::const_local_iterator	const_local_iterator;
-typedef typename _Hashtable::size_type		size_type;
-typedef typename _Hashtable::difference_type	difference_type;
+typedef typename _Hashtable::pointer pointer;
+typedef typename _Hashtable::const_pointer const_pointer;
+typedef typename _Hashtable::reference reference;
+typedef typename _Hashtable::const_reference const_reference;
+typedef typename _Hashtable::iterator iterator;
+typedef typename _Hashtable::const_iterator const_iterator;
+typedef typename _Hashtable::local_iterator local_iterator;
+typedef typename _Hashtable::const_local_iterator const_local_iterator;
+typedef typename _Hashtable::size_type size_type;
+typedef typename _Hashtable::difference_type difference_type;
 #if __cplusplus > 201402L
 using node_type = typename _Hashtable::node_type;
 #endif

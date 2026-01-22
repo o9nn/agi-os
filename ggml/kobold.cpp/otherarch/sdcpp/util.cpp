@@ -168,7 +168,7 @@ unsigned int n_threads = std::thread::hardware_concurrency();
 return n_threads > 0 ? (n_threads <= 4 ? n_threads : n_threads / 2) : 4;
 }
 static sd_progress_cb_t sd_progress_cb = NULL;
-void* sd_progress_cb_data              = NULL;
+void* sd_progress_cb_data = NULL;
 std::u32string utf8_to_utf32(const std::string& utf8_str) {
 std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> converter;
 return converter.from_bytes(utf8_str);
@@ -207,22 +207,22 @@ return p1 + "/" + p2;
 std::vector<std::string> splitString(const std::string& str, char delimiter) {
 std::vector<std::string> result;
 size_t start = 0;
-size_t end   = str.find(delimiter);
+size_t end = str.find(delimiter);
 while (end != std::string::npos) {
 result.push_back(str.substr(start, end - start));
 start = end + 1;
-end   = str.find(delimiter, start);
+end = str.find(delimiter, start);
 }
 result.push_back(str.substr(start));
 return result;
 }
 sd_image_t* preprocess_id_image(sd_image_t* img) {
-int shortest_edge   = 224;
-int size            = shortest_edge;
+int shortest_edge = 224;
+int size = shortest_edge;
 sd_image_t* resized = NULL;
-uint32_t w          = img->width;
-uint32_t h          = img->height;
-uint32_t c          = img->channel;
+uint32_t w = img->width;
+uint32_t h = img->height;
+uint32_t c = img->channel;
 unsigned char* buf = (unsigned char*)malloc(sizeof(unsigned char) * 3 * size * size);
 if (!stbir_resize_uint8(img->data, w, h, 0,
 buf, size, size, 0,
@@ -251,8 +251,8 @@ if(sdloglevel<0 || sdquiet)
 return;
 }
 std::string progress = "  |";
-int max_progress     = 50;
-int32_t current      = (int32_t)(step * 1.f * max_progress / steps);
+int max_progress = 50;
+int32_t current = (int32_t)(step * 1.f * max_progress / steps);
 for (int i = 0; i < 50; i++) {
 if (i > current) {
 progress += " ";
@@ -287,7 +287,7 @@ std::string trim(const std::string& s) {
 return rtrim(ltrim(s));
 }
 static sd_log_cb_t sd_log_cb = NULL;
-void* sd_log_cb_data         = NULL;
+void* sd_log_cb_data = NULL;
 #define LOG_BUFFER_SIZE 1024
 void log_message(const char* format, ...) {
 if (sdloglevel>0) {
@@ -326,11 +326,11 @@ sd_log_cb(level, log_buffer, sd_log_cb_data);
 va_end(args);
 }
 void sd_set_log_callback(sd_log_cb_t cb, void* data) {
-sd_log_cb      = cb;
+sd_log_cb = cb;
 sd_log_cb_data = data;
 }
 void sd_set_progress_callback(sd_progress_cb_t cb, void* data) {
-sd_progress_cb      = cb;
+sd_progress_cb = cb;
 sd_progress_cb_data = data;
 }
 const char* sd_get_system_info() {
@@ -358,8 +358,8 @@ return ggml_type_name((ggml_type)type);
 }
 sd_image_f32_t sd_image_t_to_sd_image_f32_t(sd_image_t image) {
 sd_image_f32_t converted_image;
-converted_image.width   = image.width;
-converted_image.height  = image.height;
+converted_image.width = image.width;
+converted_image.height = image.height;
 converted_image.channel = image.channel;
 converted_image.data = (float*)malloc(image.width * image.height * image.channel * sizeof(float));
 for (int i = 0; i < image.width * image.height * image.channel; i++) {
@@ -372,8 +372,8 @@ return v1 * (1 - x_ratio) * (1 - y_ratio) + v2 * x_ratio * (1 - y_ratio) + v3 * 
 }
 sd_image_f32_t resize_sd_image_f32_t(sd_image_f32_t image, int target_width, int target_height) {
 sd_image_f32_t resized_image;
-resized_image.width   = target_width;
-resized_image.height  = target_height;
+resized_image.width = target_width;
+resized_image.height = target_height;
 resized_image.channel = image.channel;
 resized_image.data = (float*)malloc(target_width * target_height * image.channel * sizeof(float));
 for (int y = 0; y < target_height; y++) {
@@ -402,18 +402,18 @@ void normalize_sd_image_f32_t(sd_image_f32_t image, float means[3], float stds[3
 for (int y = 0; y < image.height; y++) {
 for (int x = 0; x < image.width; x++) {
 for (int k = 0; k < image.channel; k++) {
-int index         = (y * image.width + x) * image.channel + k;
+int index = (y * image.width + x) * image.channel + k;
 image.data[index] = (image.data[index] - means[k]) / stds[k];
 }
 }
 }
 }
 float means[3] = {0.48145466, 0.4578275, 0.40821073};
-float stds[3]  = {0.26862954, 0.26130258, 0.27577711};
+float stds[3] = {0.26862954, 0.26130258, 0.27577711};
 sd_image_f32_t clip_preprocess(sd_image_f32_t image, int size) {
 float scale = (float)size / fmin(image.width, image.height);
-int new_width       = (int)(scale * image.width);
-int new_height      = (int)(scale * image.height);
+int new_width = (int)(scale * image.width);
+int new_height = (int)(scale * image.height);
 float* resized_data = (float*)malloc(new_width * new_height * image.channel * sizeof(float));
 for (int y = 0; y < new_height; y++) {
 for (int x = 0; x < new_width; x++) {
@@ -438,10 +438,10 @@ float value = interpolate(v1, v2, v3, v4, x_ratio, y_ratio);
 int h = (new_height - size) / 2;
 int w = (new_width - size) / 2;
 sd_image_f32_t result;
-result.width   = size;
-result.height  = size;
+result.width = size;
+result.height = size;
 result.channel = image.channel;
-result.data    = (float*)malloc(size * size * image.channel * sizeof(float));
+result.data = (float*)malloc(size * size * image.channel * sizeof(float));
 for (int k = 0; k < image.channel; k++) {
 for (int i = 0; i < size; i++) {
 for (int j = 0; j < size; j++) {
@@ -454,9 +454,9 @@ free(resized_data);
 for (int k = 0; k < image.channel; k++) {
 for (int i = 0; i < size; i++) {
 for (int j = 0; j < size; j++) {
-int offset  = i * size * image.channel + j * image.channel + k;
+int offset = i * size * image.channel + j * image.channel + k;
 float value = *(result.data + offset);
-value       = (value - means[k]) / stds[k];
+value = (value - means[k]) / stds[k];
 *(result.data + offset) = value;
 }
 }
@@ -467,7 +467,7 @@ std::vector<std::pair<std::string, float>> parse_prompt_attention(const std::str
 std::vector<std::pair<std::string, float>> res;
 std::vector<int> round_brackets;
 std::vector<int> square_brackets;
-float round_bracket_multiplier  = 1.1f;
+float round_bracket_multiplier = 1.1f;
 float square_bracket_multiplier = 1 / 1.1f;
 std::regex re_attention(R"(\\\(|\\\)|\\\[|\\\]|\\\\|\\|\(|\[|:([+-]?[.\d]+)\)|\)|\]|[^\\()\[\]:]+|:)");
 std::regex re_break(R"(\s*\bBREAK\b\s*)");
@@ -479,7 +479,7 @@ res[p].second *= multiplier;
 std::smatch m;
 std::string remaining_text = text;
 while (std::regex_search(remaining_text, m, re_attention)) {
-std::string text   = m[0];
+std::string text = m[0];
 std::string weight = m[1];
 if (text == "(") {
 round_brackets.push_back((int)res.size());

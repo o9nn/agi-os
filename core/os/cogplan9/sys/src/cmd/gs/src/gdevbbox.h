@@ -1,5 +1,5 @@
 #ifndef gdevbbox_INCLUDED
-#  define gdevbbox_INCLUDED
+# define gdevbbox_INCLUDED
 typedef struct gx_device_bbox_procs_s {
 #define dev_bbox_proc_init_box(proc)\
 bool proc(void *proc_data)
@@ -38,7 +38,7 @@ struct gx_device_bbox_s {
 gx_device_bbox_common;
 };
 extern_st(st_device_bbox);
-#define public_st_device_bbox()	\
+#define public_st_device_bbox() \
 gs_public_st_suffix_add1_final(st_device_bbox, gx_device_bbox,\
 "gx_device_bbox", device_bbox_enum_ptrs, device_bbox_reloc_ptrs,\
 gx_device_finalize, st_device_forward, box_proc_data)

@@ -65,7 +65,7 @@ char*
 findkey(char **puser, char *dom)
 {
 char buf[1024], *f[50], *p, *ep, *nextp, *pass, *user;
-int nf, haveproto,  havedom, i;
+int nf, haveproto, havedom, i;
 for(p=secstorebuf; *p; p=nextp){
 nextp = strchr(p, '\n');
 if(nextp == nil){

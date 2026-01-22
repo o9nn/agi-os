@@ -1,13 +1,13 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"../port/error.h"
-#include	"libcrypt.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "../port/error.h"
+#include "libcrypt.h"
 #include <kernel.h>
-#define	DEBUG	0
+#define DEBUG 0
 extern void _startup(void);
 enum{
 Qdir,
@@ -16,15 +16,15 @@ Qkerndate,
 };
 static
 Dirtab testtab[]={
-".",			{ Qdir, 0, QTDIR},	0,	0555,
-"kt5sum",		{ Qkt5sum },		0,	0444,
-"kerndate",	{ Qkerndate },		0,	0444,
+".", { Qdir, 0, QTDIR}, 0, 0555,
+"kt5sum", { Qkt5sum }, 0, 0444,
+"kerndate", { Qkerndate }, 0, 0444,
 };
 void ktsum(char *digest)
 {
 uchar rawdigest[MD5dlen+1];
 int i;
-void *start =  _startup;
+void *start = _startup;
 ulong size = (ulong)etext - (ulong) start;
 md5(start, size, rawdigest, nil);
 for (i=0; i<MD5dlen; i++)

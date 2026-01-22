@@ -11,7 +11,7 @@ init(nil: ref Draw->Context, argv: list of string)
 {
 sys = load Sys Sys->PATH;
 draw = load Draw Draw->PATH;
-argv = tl argv;		# remove program name
+argv = tl argv; # remove program name
 m := n := 0;
 if(argv != nil){
 m = int hd argv;

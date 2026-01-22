@@ -1,32 +1,32 @@
-#include	<u.h>
-#include	<libc.h>
-#include	"compat.h"
-#include	"kbd.h"
-#include	"error.h"
-typedef struct Queue	Queue;
+#include <u.h>
+#include <libc.h>
+#include "compat.h"
+#include "kbd.h"
+#include "error.h"
+typedef struct Queue Queue;
 struct Queue
 {
-QLock	qwait;
-Rendez	rwait;
-Lock	lock;
-int	notempty;
-char	buf[1024];
-char	*w;
-char	*r;
-char	*e;
+QLock qwait;
+Rendez rwait;
+Lock lock;
+int notempty;
+char buf[1024];
+char *w;
+char *r;
+char *e;
 };
-Queue*	kbdq;
-Queue*	lineq;
-Snarf	snarf = {
-.vers =	1
+Queue* kbdq;
+Queue* lineq;
+Snarf snarf = {
+.vers = 1
 };
 static struct
 {
 QLock;
-int	raw;
-int	ctl;
-int	x;
-char	line[1024];
+int raw;
+int ctl;
+int x;
+char line[1024];
 } kbd;
 static void
 qwrite(Queue *q, void *v, int n)
@@ -155,11 +155,11 @@ Qsnarf,
 Qwinname,
 };
 static Dirtab consdir[]={
-".",		{Qdir, 0, QTDIR},	0,		DMDIR|0555,
-"cons",		{Qcons},	0,		0660,
-"consctl",	{Qconsctl},	0,		0220,
-"snarf",	{Qsnarf},	0,		0600,
-"winname",	{Qwinname},	0,		0000,
+".", {Qdir, 0, QTDIR}, 0, DMDIR|0555,
+"cons", {Qcons}, 0, 0660,
+"consctl", {Qconsctl}, 0, 0220,
+"snarf", {Qsnarf}, 0, 0600,
+"winname", {Qwinname}, 0, 0000,
 };
 static void
 consinit(void)
@@ -246,7 +246,7 @@ static long
 consread(Chan *c, void *buf, long n, vlong off)
 {
 char ch;
-int	send;
+int send;
 if(n <= 0)
 return n;
 switch((ulong)c->qid.path){

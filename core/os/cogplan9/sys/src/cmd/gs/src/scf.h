@@ -1,10 +1,10 @@
 #ifndef scf_INCLUDED
-#  define scf_INCLUDED
+# define scf_INCLUDED
 #include "shc.h"
 #if arch_sizeof_int > 2
-#  define cfe_max_width (2560 * 32000 * 2 / 3)
+# define cfe_max_width (2560 * 32000 * 2 / 3)
 #else
-#  define cfe_max_width (max_int - 40)
+# define cfe_max_width (max_int - 40)
 #endif
 #define cfe_max_code_bytes(width) ((width) / 2560 * 3 / 2 + 5)
 typedef hce_code cfe_run;
@@ -54,7 +54,7 @@ extern const cfd_node cf_uncompressed_decode[];
 #define skip_white_pixels(data, p, count, white_byte, rlen)\
 BEGIN\
 rlen = cf_byte_run_length[count & 7][data ^ 0xff];\
-if ( rlen >= 8 ) {		\
+if ( rlen >= 8 ) { \
 if ( white_byte == 0 ) {\
 if ( p[0] ) { data = p[0]; p += 1; rlen -= 8; }\
 else if ( p[1] ) { data = p[1]; p += 2; }\
@@ -67,7 +67,7 @@ data = p[2]; p += 3; rlen += 8;\
 data = p[3]; p += 4; rlen += 16;\
 } else if ( p[4] ) {\
 data = p[4]; p += 5; rlen += 24;\
-} else  {\
+} else {\
 data = p[5]; p += 6; rlen += 32;\
 }\
 }\
@@ -83,7 +83,7 @@ data = (byte)~p[2]; p += 3; rlen += 8;\
 data = (byte)~p[3]; p += 4; rlen += 16;\
 } else if ( p[4] != 0xff ) {\
 data = (byte)~p[4]; p += 5; rlen += 24;\
-} else  {\
+} else {\
 data = (byte)~p[5]; p += 6; rlen += 32;\
 }\
 }\

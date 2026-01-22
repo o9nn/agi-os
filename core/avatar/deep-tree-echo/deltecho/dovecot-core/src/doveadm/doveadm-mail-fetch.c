@@ -432,38 +432,38 @@ doveadm_print(value);
 return 0;
 }
 static const struct fetch_field fetch_fields[] = {
-{ "user",          0,                        fetch_user },
-{ "mailbox",       0,                        fetch_mailbox },
-{ "mailbox-guid",  0,                        fetch_mailbox_guid },
-{ "seq",           0,                        fetch_seq },
-{ "uid",           0,                        fetch_uid },
-{ "guid",          0,                        fetch_guid },
-{ "flags",         MAIL_FETCH_FLAGS,         fetch_flags },
-{ "modseq",        0,                        fetch_modseq },
-{ "hdr",           MAIL_FETCH_STREAM_HEADER, fetch_hdr },
-{ "body",          MAIL_FETCH_STREAM_BODY,   fetch_body },
-{ "body.preview",  MAIL_FETCH_BODY_SNIPPET,  fetch_body_snippet },
-{ "body.snippet",  MAIL_FETCH_BODY_SNIPPET,  fetch_body_snippet },
-{ "text",          MAIL_FETCH_STREAM_HEADER |
-MAIL_FETCH_STREAM_BODY,   fetch_text },
-{ "text.utf8",     MAIL_FETCH_STREAM_HEADER |
-MAIL_FETCH_STREAM_BODY,   fetch_text_utf8 },
+{ "user", 0, fetch_user },
+{ "mailbox", 0, fetch_mailbox },
+{ "mailbox-guid", 0, fetch_mailbox_guid },
+{ "seq", 0, fetch_seq },
+{ "uid", 0, fetch_uid },
+{ "guid", 0, fetch_guid },
+{ "flags", MAIL_FETCH_FLAGS, fetch_flags },
+{ "modseq", 0, fetch_modseq },
+{ "hdr", MAIL_FETCH_STREAM_HEADER, fetch_hdr },
+{ "body", MAIL_FETCH_STREAM_BODY, fetch_body },
+{ "body.preview", MAIL_FETCH_BODY_SNIPPET, fetch_body_snippet },
+{ "body.snippet", MAIL_FETCH_BODY_SNIPPET, fetch_body_snippet },
+{ "text", MAIL_FETCH_STREAM_HEADER |
+MAIL_FETCH_STREAM_BODY, fetch_text },
+{ "text.utf8", MAIL_FETCH_STREAM_HEADER |
+MAIL_FETCH_STREAM_BODY, fetch_text_utf8 },
 { "size.physical", MAIL_FETCH_PHYSICAL_SIZE, fetch_size_physical },
-{ "size.virtual",  MAIL_FETCH_VIRTUAL_SIZE,  fetch_size_virtual },
+{ "size.virtual", MAIL_FETCH_VIRTUAL_SIZE, fetch_size_virtual },
 { "date.received", MAIL_FETCH_RECEIVED_DATE, fetch_date_received },
-{ "date.sent",     MAIL_FETCH_DATE,          fetch_date_sent },
-{ "date.saved",    MAIL_FETCH_SAVE_DATE,     fetch_date_saved },
+{ "date.sent", MAIL_FETCH_DATE, fetch_date_sent },
+{ "date.saved", MAIL_FETCH_SAVE_DATE, fetch_date_saved },
 { "date.received.unixtime", MAIL_FETCH_RECEIVED_DATE, fetch_date_received_unixtime },
-{ "date.sent.unixtime",     MAIL_FETCH_DATE,          fetch_date_sent_unixtime },
-{ "date.saved.unixtime",    MAIL_FETCH_SAVE_DATE,     fetch_date_saved_unixtime },
+{ "date.sent.unixtime", MAIL_FETCH_DATE, fetch_date_sent_unixtime },
+{ "date.saved.unixtime", MAIL_FETCH_SAVE_DATE, fetch_date_saved_unixtime },
 { "imap.envelope", MAIL_FETCH_IMAP_ENVELOPE, fetch_imap_envelope },
-{ "imap.body",     MAIL_FETCH_IMAP_BODY,     fetch_imap_body },
+{ "imap.body", MAIL_FETCH_IMAP_BODY, fetch_imap_body },
 { "imap.bodystructure", MAIL_FETCH_IMAP_BODYSTRUCTURE, fetch_imap_bodystructure },
-{ "mime.parts",    MAIL_FETCH_MESSAGE_PARTS, fetch_mime_parts },
-{ "pop3.uidl",     MAIL_FETCH_UIDL_BACKEND,  fetch_pop3_uidl },
-{ "pop3.order",    MAIL_FETCH_POP3_ORDER,    fetch_pop3_order },
-{ "refcount",      MAIL_FETCH_REFCOUNT,      fetch_refcount },
-{ "storageid",     MAIL_FETCH_STORAGE_ID,    fetch_storageid }
+{ "mime.parts", MAIL_FETCH_MESSAGE_PARTS, fetch_mime_parts },
+{ "pop3.uidl", MAIL_FETCH_UIDL_BACKEND, fetch_pop3_uidl },
+{ "pop3.order", MAIL_FETCH_POP3_ORDER, fetch_pop3_order },
+{ "refcount", MAIL_FETCH_REFCOUNT, fetch_refcount },
+{ "storageid", MAIL_FETCH_STORAGE_ID, fetch_storageid }
 };
 static const struct fetch_field *fetch_field_find(const char *name)
 {

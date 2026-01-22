@@ -5,7 +5,7 @@ extern "C" {
 #endif
 #define LIBETPAN_MAILSTREAM_DEBUG
 #ifndef LIBETPAN_CONFIG_H
-#  include <libetpan/libetpan-config.h>
+# include <libetpan/libetpan-config.h>
 #endif
 #include <libetpan/carray.h>
 struct _mailstream;

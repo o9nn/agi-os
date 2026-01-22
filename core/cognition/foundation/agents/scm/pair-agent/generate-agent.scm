@@ -6,44 +6,44 @@
 (use-modules (srfi srfi-1))
 (cog-incoming-size (Bond "ANY"))
 (define (make-next-word-qry WORD)
-	(Meet (Variable "next")
-		(EdgeLink (Bond "ANY")
-			(List WORD (Variable "next")))))
+(Meet (Variable "next")
+(EdgeLink (Bond "ANY")
+(List WORD (Variable "next")))))
 (cog-incoming-size (Word "start"))
 (cog-incoming-size-by-type (Word "start") 'List)
 (define next-list
-	(cog-execute! (make-next-word-qry (Word "start"))))
+(cog-execute! (make-next-word-qry (Word "start"))))
 (length (cog-value->list next-list))
 (define (make-next-edge-qry WORD)
-	(Query (Variable "next")
-		(EdgeLink (Bond "ANY") (List WORD (Variable "next")))
-		(EdgeLink (Bond "ANY") (List WORD (Variable "next")))
-	))
+(Query (Variable "next")
+(EdgeLink (Bond "ANY") (List WORD (Variable "next")))
+(EdgeLink (Bond "ANY") (List WORD (Variable "next")))
+))
 (define next-edges
-	(cog-execute! (make-next-edge-qry (Word "start"))))
+(cog-execute! (make-next-edge-qry (Word "start"))))
 (length (cog-value->list next-edges))
 (cog-keys (car (cog-value->list next-edges)))
 (cog-value (car (cog-value->list next-edges)) (Predicate "*-Mutual Info Key-*"))
 (define (make-mipr-list START)
-	(Filter
-		(Rule
-			(Variable "edge")
-			(Variable "edge")
-			(ValueOf (Variable "edge") (Predicate "*-Mutual Info Key-*")))
-		(make-next-edge-qry START)))
+(Filter
+(Rule
+(Variable "edge")
+(Variable "edge")
+(ValueOf (Variable "edge") (Predicate "*-Mutual Info Key-*")))
+(make-next-edge-qry START)))
 (define next-mi
-	(cog-execute! (make-mipr-list (Word "start"))))
+(cog-execute! (make-mipr-list (Word "start"))))
 (length (cog-value->list next-mi))
 (car (cog-value->list next-mi))
 (define (make-mi-list START)
-	(Filter
-		(Rule
-			(TypedVariable (Variable "mi-pair") (Type 'FloatValue))
-			(Variable "mi-pair")
-			(Decimate (Number 0 1) (Variable "mi-pair")))
-		(make-mipr-list START)))
+(Filter
+(Rule
+(TypedVariable (Variable "mi-pair") (Type 'FloatValue))
+(Variable "mi-pair")
+(Decimate (Number 0 1) (Variable "mi-pair")))
+(make-mipr-list START)))
 (define next-mi
-	(cog-execute! (make-mi-list (Word "start"))))
+(cog-execute! (make-mi-list (Word "start"))))
 (length (cog-value->list next-mi))
 (car (cog-value->list next-mi))
 (cog-execute! (Accumulate (make-mi-list (Word "start"))))

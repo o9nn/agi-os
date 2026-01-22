@@ -1,34 +1,34 @@
 typedef struct {
-char	*t;
-int	fd;
-int	cfd;
-char	*id;
-char	response[128];
-char	error[128];
-int	fax;
-char	phase;
-char	ftsi[128];
-long	fdcs[8];
-long	fpts[8];
-long	fet;
-long	fhng;
-int	pageno;
-char	pageid[128];
-int	pagefd;
-int	valid;
-long	time;
-int	pid;
-char	ibuf[1024];
-char	*iptr;
-long	icount;
-Biobuf	*bp;
-long	wd;
-long	vr;
-long	ln;
-long	df;
+char *t;
+int fd;
+int cfd;
+char *id;
+char response[128];
+char error[128];
+int fax;
+char phase;
+char ftsi[128];
+long fdcs[8];
+long fpts[8];
+long fet;
+long fhng;
+int pageno;
+char pageid[128];
+int pagefd;
+int valid;
+long time;
+int pid;
+char ibuf[1024];
+char *iptr;
+long icount;
+Biobuf *bp;
+long wd;
+long vr;
+long ln;
+long df;
 } Modem;
 enum {
-Rok		= 0,
+Rok = 0,
 Rconnect,
 Rring,
 Rfailure,
@@ -38,7 +38,7 @@ Rhangup,
 Rnoise,
 };
 enum {
-Eok	= 0,
+Eok = 0,
 Eattn,
 Enoresponse,
 Enoanswer,
@@ -48,13 +48,13 @@ Esys,
 Eproto,
 };
 enum {
-Vfdcs		= 0x0001,
-Vftsi		= 0x0002,
-Vfpts		= 0x0004,
-Vfet		= 0x0008,
-Vfhng		= 0x0010,
-Vwd		= 0x4000,
-Vtype		= 0x8000,
+Vfdcs = 0x0001,
+Vftsi = 0x0002,
+Vfpts = 0x0004,
+Vfet = 0x0008,
+Vfhng = 0x0010,
+Vwd = 0x4000,
+Vtype = 0x8000,
 };
 extern int initfaxmodem(Modem*);
 extern int fcon(Modem*);

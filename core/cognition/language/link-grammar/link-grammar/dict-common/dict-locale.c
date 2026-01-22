@@ -276,7 +276,7 @@ return true;
 }
 bool dictionary_setup_defines(Dictionary dict)
 {
-dict->left_wall_defined  = dict_has_word(dict, LEFT_WALL_WORD);
+dict->left_wall_defined = dict_has_word(dict, LEFT_WALL_WORD);
 dict->right_wall_defined = dict_has_word(dict, RIGHT_WALL_WORD);
 dict->unknown_word_defined = dict_has_word(dict, UNKNOWN_WORD);
 dict->use_unknown_word = true;

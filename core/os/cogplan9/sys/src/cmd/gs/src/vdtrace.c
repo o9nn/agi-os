@@ -17,7 +17,7 @@ private inline double scale_y(vd_trace_interface *I, double y)
 #define SX(x) scale_x(vd_trace1, x)
 #define SY(y) scale_y(vd_trace1, y)
 private inline double bezier_point(double p0, double p1, double p2, double p3, double t)
-{   double s = 1-t;
+{ double s = 1-t;
 return p0*s*s*s + 3*p1*s*s*t + 3*p2*s*t*t + p3*t*t*t;
 }
 private void vd_flatten(double p0x, double p0y, double p1x, double p1y, double p2x, double p2y, double p3x, double p3y)
@@ -43,17 +43,17 @@ vd_lineto(p3x, p3y);
 #endif
 }
 void vd_impl_moveto(double x, double y)
-{   NullRET;
+{ NullRET;
 px = SX(x), py = SY(y);
 vd_trace1->moveto(vd_trace1, px, py);
 }
 void vd_impl_lineto(double x, double y)
-{   NullRET;
+{ NullRET;
 px = SX(x), py = SY(y);
 vd_trace1->lineto(vd_trace1, px, py);
 }
 void vd_impl_lineto_multi(const struct gs_fixed_point_s *p, int n)
-{   int i;
+{ int i;
 NullRET;
 for (i = 0; i < n; i++) {
 px = SX(p[i].x), py = SY(p[i].y);
@@ -61,7 +61,7 @@ vd_trace1->lineto(vd_trace1, px, py);
 }
 }
 void vd_impl_curveto(double x1, double y1, double x2, double y2, double x3, double y3)
-{   double p1x, p1y, p2x, p2y, p3x, p3y;
+{ double p1x, p1y, p2x, p2y, p3x, p3y;
 NullRET;
 p1x = SX(x1), p1y = SY(y1);
 p2x = SX(x2), p2y = SY(y2);
@@ -73,7 +73,7 @@ vd_flatten(px, py, p1x, p1y, p2x, p2y, p3x, p3y);
 px = p3x, py = p3y;
 }
 void vd_impl_bar(double x0, double y0, double x1, double y1, int w, unsigned long c)
-{   NullRET;
+{ NullRET;
 vd_trace1->setcolor(vd_trace1, c);
 vd_trace1->setlinewidth(vd_trace1, w);
 vd_trace1->beg_path(vd_trace1);
@@ -83,7 +83,7 @@ vd_trace1->end_path(vd_trace1);
 vd_trace1->stroke(vd_trace1);
 }
 void vd_impl_square(double x, double y, int w, unsigned int c)
-{   NullRET;
+{ NullRET;
 vd_trace1->setcolor(vd_trace1, c);
 vd_trace1->setlinewidth(vd_trace1, 1);
 vd_trace1->beg_path(vd_trace1);
@@ -96,7 +96,7 @@ vd_trace1->end_path(vd_trace1);
 vd_trace1->stroke(vd_trace1);
 }
 void vd_impl_rect(double x0, double y0, double x1, double y1, int w, unsigned int c)
-{   NullRET;
+{ NullRET;
 vd_trace1->setcolor(vd_trace1, c);
 vd_trace1->setlinewidth(vd_trace1, w);
 vd_trace1->beg_path(vd_trace1);
@@ -109,7 +109,7 @@ vd_trace1->end_path(vd_trace1);
 vd_trace1->stroke(vd_trace1);
 }
 void vd_impl_quad(double x0, double y0, double x1, double y1, double x2, double y2, double x3, double y3, int w, unsigned int c)
-{   NullRET;
+{ NullRET;
 vd_trace1->setcolor(vd_trace1, c);
 vd_trace1->setlinewidth(vd_trace1, w);
 vd_trace1->beg_path(vd_trace1);
@@ -122,7 +122,7 @@ vd_trace1->end_path(vd_trace1);
 vd_trace1->stroke(vd_trace1);
 }
 void vd_impl_curve(double x0, double y0, double x1, double y1, double x2, double y2, double x3, double y3, int w, unsigned long c)
-{   NullRET;
+{ NullRET;
 vd_trace1->setcolor(vd_trace1, c);
 vd_trace1->setlinewidth(vd_trace1, w);
 vd_trace1->beg_path(vd_trace1);
@@ -133,22 +133,22 @@ vd_trace1->end_path(vd_trace1);
 vd_trace1->stroke(vd_trace1);
 }
 void vd_impl_circle(double x, double y, int r, unsigned long c)
-{   NullRET;
+{ NullRET;
 vd_trace1->setcolor(vd_trace1, c);
 vd_trace1->setlinewidth(vd_trace1, 1);
 vd_trace1->circle(vd_trace1, SX(x), SY(y), r);
 }
 void vd_impl_round(double x, double y, int r, unsigned long c)
-{   NullRET;
+{ NullRET;
 vd_trace1->setcolor(vd_trace1, c);
 vd_trace1->setlinewidth(vd_trace1, 1);
 vd_trace1->round(vd_trace1, SX(x), SY(y), r);
 }
 void vd_impl_text(double x, double y, char *s, unsigned long c)
-{   NullRET;
+{ NullRET;
 vd_trace1->setcolor(vd_trace1, c);
 vd_trace1->text(vd_trace1, SX(x), SY(y), s);
 }
 void vd_setflag(char f, char v)
-{   vd_flags[f & 127] = v;
+{ vd_flags[f & 127] = v;
 }

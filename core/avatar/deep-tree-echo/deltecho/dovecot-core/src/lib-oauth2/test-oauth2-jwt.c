@@ -349,7 +349,7 @@ bool is_jwt;
 .is_jwt = TRUE
 },
 {
-.token  = "yJhbGciOiJIUzI1NiIsInR5",
+.token = "yJhbGciOiJIUzI1NiIsInR5",
 .is_jwt = FALSE
 },
 {

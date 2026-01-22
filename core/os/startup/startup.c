@@ -40,21 +40,21 @@
 #include "io_S.h"
 static int crash_flags = RB_AUTOBOOT;
 static int verbose = 0;
-#define BOOT(flags)	((flags & RB_HALT) ? "halt" : "reboot")
+#define BOOT(flags) ((flags & RB_HALT) ? "halt" : "reboot")
 const char *argp_program_version = STANDARD_HURD_VERSION (startup);
-#define OPT_KERNEL_TASK	-1
-#define _SERVERS_SHUTDOWN	_SERVERS	"/shutdown"
+#define OPT_KERNEL_TASK -1
+#define _SERVERS_SHUTDOWN _SERVERS "/shutdown"
 static struct argp_option
 options[] =
 {
 {"single-user", 's', 0, 0, "Startup system in single-user mode"},
-{"query",       'q', 0, 0, "Ask for the names of servers to start"},
-{"init-name",   'n', 0, 0 },
-{"crash-debug",  'H', 0, 0, "On system crash, go to kernel debugger"},
-{"debug",       'd', 0, 0 },
-{"fake-boot",   'f', 0, 0, "This hurd hasn't been booted on the raw machine"},
-{"verbose",     'v', 0, 0, "be verbose"},
-{0,             'x', 0, OPTION_HIDDEN},
+{"query", 'q', 0, 0, "Ask for the names of servers to start"},
+{"init-name", 'n', 0, 0 },
+{"crash-debug", 'H', 0, 0, "On system crash, go to kernel debugger"},
+{"debug", 'd', 0, 0 },
+{"fake-boot", 'f', 0, 0, "This hurd hasn't been booted on the raw machine"},
+{"verbose", 'v', 0, 0, "be verbose"},
+{0, 'x', 0, OPTION_HIDDEN},
 {"kernel-task", OPT_KERNEL_TASK, "PORT"},
 {0}
 };
@@ -77,8 +77,8 @@ static struct ntfy_task *ntfy_tasks;
 static mach_port_t startup;
 static mach_port_t notify;
 static mach_port_t port_set;
-#define host_priv	_hurd_host_priv
-#define device_master	_hurd_device_master
+#define host_priv _hurd_host_priv
+#define device_master _hurd_device_master
 static int bootstrap_args = 0;
 static mach_port_t procreply, authreply;
 static mach_msg_type_name_t procreplytype, authreplytype;
@@ -195,7 +195,7 @@ task_t task;
 err = proc_pid2task (procserver, pp[ind], &task);
 if (err == MACH_SEND_INVALID_DEST)
 goto procbad;
-else  if (err)
+else if (err)
 {
 error (0, err, "Getting task for pid %d", pp[ind]);
 continue;
@@ -476,8 +476,8 @@ return pid;
 }
 static void
 mig_reply_setup (
-const mach_msg_header_t	*in,
-mach_msg_header_t	*out)
+const mach_msg_header_t *in,
+mach_msg_header_t *out)
 {
 static const mach_msg_type_t RetCodeType = {
 .msgt_name = MACH_MSG_TYPE_INTEGER_32,
@@ -488,8 +488,8 @@ static const mach_msg_type_t RetCodeType = {
 .msgt_deallocate = FALSE,
 .msgt_unused = 0
 };
-#define	InP	(in)
-#define	OutP	((mig_reply_header_t *) out)
+#define InP (in)
+#define OutP ((mig_reply_header_t *) out)
 OutP->Head.msgh_bits =
 MACH_MSGH_BITS(MACH_MSGH_BITS_REMOTE(InP->msgh_bits), 0);
 OutP->Head.msgh_size = sizeof *OutP;
@@ -559,7 +559,7 @@ case 'n': bootstrap_args |= RB_INITNAME; break;
 case 'f': fakeboot = 1; break;
 case 'H': crash_flags = RB_DEBUGGER; break;
 case 'v': verbose++; break;
-case 'x':  break;
+case 'x': break;
 case OPT_KERNEL_TASK:
 kernel_task = atoi (arg);
 break;

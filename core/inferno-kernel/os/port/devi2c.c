@@ -13,14 +13,14 @@ Qctl,
 };
 static
 Dirtab i2ctab[]={
-".",	{Qdir, 0, QTDIR},	0,	0555,
-"i2cdata",		{Qdata, 0},	256,	0660,
-"i2cctl",		{Qctl, 0},		0,	0660,
+".", {Qdir, 0, QTDIR}, 0, 0555,
+"i2cdata", {Qdata, 0}, 256, 0660,
+"i2cctl", {Qctl, 0}, 0, 0660,
 };
 struct I2Cdir {
 Ref;
 I2Cdev;
-Dirtab	tab[nelem(i2ctab)];
+Dirtab tab[nelem(i2ctab)];
 };
 static void
 i2creset(void)

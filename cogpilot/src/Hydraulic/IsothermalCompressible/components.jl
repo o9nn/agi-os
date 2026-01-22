@@ -18,7 +18,7 @@ end
 end
 """
 Open(; name)
-Provides an "open" boundary condition for a hydraulic port such that mass flow `dm` is non-zero.  This is opposite from an un-connected hydraulic port or the `Cap` boundary component which sets the mass flow `dm` to zero.
+Provides an "open" boundary condition for a hydraulic port such that mass flow `dm` is non-zero. This is opposite from an un-connected hydraulic port or the `Cap` boundary component which sets the mass flow `dm` to zero.
 # Connectors:
 - `port`: hydraulic port
 """
@@ -37,7 +37,7 @@ end
 end
 """
 TubeBase(add_inertia = true, variable_length = true; area, length_int, head_factor = 1, perimeter = 2 * sqrt(area * pi), shape_factor = 64, name)
-Variable length internal flow model of the fully developed incompressible flow friction.  Includes optional inertia term when `add_inertia = true` to model wave propagation.  Hydraulic ports have equal flow but variable pressure.  Density is averaged over the pressures, used to calculated average flow velocity and flow friction.
+Variable length internal flow model of the fully developed incompressible flow friction. Includes optional inertia term when `add_inertia = true` to model wave propagation. Hydraulic ports have equal flow but variable pressure. Density is averaged over the pressures, used to calculated average flow velocity and flow friction.
 # States:
 - `x`: [m] length of the pipe
 - `ddm`: [kg/s^2] Rate of change of mass flow rate in control volume.
@@ -86,7 +86,7 @@ end
 dm = port_a.dm
 d_h = 4 * area / perimeter
 # Opting for a more numerically stable constant density (use head factor to compensate if needed)
-ρ = density_ref(port_a)  # (full_density(port_a) + full_density(port_b)) / 2
+ρ = density_ref(port_a) # (full_density(port_a) + full_density(port_b)) / 2
 μ = viscosity(port_a)
 f = friction_factor(dm, area, d_h, μ, shape_factor)
 u = dm / (ρ * area)
@@ -110,7 +110,7 @@ System(eqs, t, vars, pars; name, systems)
 end
 """
 Tube(N, add_inertia=true; p_int, area, length, head_factor=1, perimeter = 2 * sqrt(area * pi), shape_factor = 64, name)
-Constant length internal flow model discretized by `N` (`FixedVolume`: `N`, `TubeBase`:`N-1`) which models the fully developed flow friction, compressibility (when `N>1`), and inertia effects when `add_inertia = true`.  See `TubeBase` and `FixedVolume` for more information.
+Constant length internal flow model discretized by `N` (`FixedVolume`: `N`, `TubeBase`:`N-1`) which models the fully developed flow friction, compressibility (when `N>1`), and inertia effects when `add_inertia = true`. See `TubeBase` and `FixedVolume` for more information.
 # Parameters:
 - `p_int`: [Pa] initial pressure
 - `area`: [m^2] tube cross sectional area
@@ -167,7 +167,7 @@ end
 @deprecate Pipe Tube
 """
 FlowDivider(; n, name)
-Reduces the flow from `port_a` to `port_b` by `n`.  Useful for modeling parallel tubes efficiently by placing a `FlowDivider` on each end of a tube.
+Reduces the flow from `port_a` to `port_b` by `n`. Useful for modeling parallel tubes efficiently by placing a `FlowDivider` on each end of a tube.
 # Parameters:
 - `n`: divide flow from `port_a` to `port_b` by `n`
 # Connectors:
@@ -246,7 +246,7 @@ Valve with `area` input and discharge coefficient `Cd` defined by https:
 # Connectors:
 - `port_a`: hydraulic port
 - `port_b`: hydraulic port
-- `area`: real input setting the valve `area`.  When `reversible = true`, negative input reverses flow direction, otherwise a floor of `minimum_area` is enforced.
+- `area`: real input setting the valve `area`. When `reversible = true`, negative input reverses flow direction, otherwise a floor of `minimum_area` is enforced.
 """
 @component function Valve(reversible = false;
 Cd, Cd_reverse = Cd,
@@ -324,7 +324,7 @@ end
 # let
 dm = port.dm
 eqs = [D(m) ~ dm
-#    rho ~ full_density(port, p)
+# rho ~ full_density(port, p)
 p ~ full_pressure(port, rho) # see https:
 p ~ port.p
 m ~ rho * vol]
@@ -332,21 +332,21 @@ System(eqs, t, vars, pars; name, systems)
 end
 """
 Volume(; x, dx=0, p, drho=0, dm=0, area, direction = 1, name)
-Volume with moving wall with `flange` connector for converting hydraulic energy to 1D mechanical.  The `direction` argument aligns the mechanical port with the hydraulic port, useful when connecting two dynamic volumes together in oppsing directions to create an actuator.
+Volume with moving wall with `flange` connector for converting hydraulic energy to 1D mechanical. The `direction` argument aligns the mechanical port with the hydraulic port, useful when connecting two dynamic volumes together in oppsing directions to create an actuator.
 ```
 ┌─────────────────┐ ───
-│                 │  ▲
-│  │
-dm ────►               │  │ area
-│  │
-│                 │  ▼
+│ │ ▲
+│ │
+dm ────► │ │ area
+│ │
+│ │ ▼
 └─────────────────┤ ───
 │
 └─► x (= ∫ flange.v * direction)
 ```
 # Features:
-- volume discretization with flow resistance and inertia: use `N` to control number of volume and resistance elements.  Set `N=0` to turn off volume discretization. See `TubeBase` for more information about flow resistance.
-- minimum volume flow shutoff with damping and directional resistance.  Use `reversible=false` when problem defines volume position `x` and solves for `dm` to prevent numerical instability.
+- volume discretization with flow resistance and inertia: use `N` to control number of volume and resistance elements. Set `N=0` to turn off volume discretization. See `TubeBase` for more information about flow resistance.
+- minimum volume flow shutoff with damping and directional resistance. Use `reversible=false` when problem defines volume position `x` and solves for `dm` to prevent numerical instability.
 # Parameters:
 ## volume
 - `p`: [Pa] initial pressure
@@ -413,35 +413,35 @@ m ~ rho * x * area]
 System(eqs, t, vars, pars; name, systems)
 end
 """
-DynamicVolume(reversible = false; p_int,  area, x_int = 0, x_max, x_min = 0, x_damp = x_min, direction = +1, perimeter = 2 * sqrt(area * pi), shape_factor = 64, head_factor = 1, Cd = 1e2, Cd_reverse = Cd, name)
-Volume with moving wall with `flange` connector for converting hydraulic energy to 1D mechanical.  The `direction` argument aligns the mechanical port with the hydraulic port, useful when connecting two dynamic volumes together in oppsing directions to create an actuator.
+DynamicVolume(reversible = false; p_int, area, x_int = 0, x_max, x_min = 0, x_damp = x_min, direction = +1, perimeter = 2 * sqrt(area * pi), shape_factor = 64, head_factor = 1, Cd = 1e2, Cd_reverse = Cd, name)
+Volume with moving wall with `flange` connector for converting hydraulic energy to 1D mechanical. The `direction` argument aligns the mechanical port with the hydraulic port, useful when connecting two dynamic volumes together in oppsing directions to create an actuator.
 ```
 ┌─────────────────┐ ───
-│                 │  ▲
-│  │
-dm ────►               │  │ area
-│  │
-│                 │  ▼
+│ │ ▲
+│ │
+dm ────► │ │ area
+│ │
+│ │ ▼
 └─────────────────┤ ───
 │
 └─► x (= ∫ flange.v * direction)
 ```
 # Features:
-- minimum volume flow shutoff with damping and directional resistance.  Use `reversible=false` when problem defines volume position `x` and solves for `dm` to prevent numerical instability.
+- minimum volume flow shutoff with damping and directional resistance. Use `reversible=false` when problem defines volume position `x` and solves for `dm` to prevent numerical instability.
 # Parameters:
 ## volume
 - `p_int`: [Pa] initial pressure
 - `area`: [m^2] moving wall area
 - `x_max`: [m] max wall position, needed for volume discretization to apply the correct volume sizing as a function of `x`
 - `x_min`: [m] wall position that shuts off flow and prevents negative volume.
-- `x_damp`: [m] wall position that initiates a linear damping region before reaching full flow shut off.  Helps provide a smooth end stop.
+- `x_damp`: [m] wall position that initiates a linear damping region before reaching full flow shut off. Helps provide a smooth end stop.
 - `direction`: [+/-1] applies the direction conversion from the `flange` to `x`
 ## flow resistance
 - `perimeter`: [m] perimeter of the cross section (needed only for non-circular volumes)
 - `shape_factor`: shape factor, see `friction_factor` function
 - `head_factor`: effective length multiplier, used to account for addition friction from flow development and additional friction such as pipe bends, entrance/exit lossses, etc.
 ## flow shut off and damping
-- `Cd`: discharge coefficient for flow out of the volume.  *Note: area is 1m² when valve is fully open.  Ensure this does not induce unwanted flow resistance.*
+- `Cd`: discharge coefficient for flow out of the volume. *Note: area is 1m² when valve is fully open. Ensure this does not induce unwanted flow resistance.*
 - `Cd_reverse`: discharge coefficient for flow into the volume. Use a lower value to allow easy wall release, in some cases the wall can "stick".
 # Connectors:
 - `port`: hydraulic port
@@ -557,7 +557,7 @@ end
 SpoolValve2Way(reversible = false; m, g, x_int, Cd, d, name)
 2-ways spool valve with 4 ports and spool mass. Fluid flow direction S → A and B → R when `x` is positive and S → B and A → R when `x` is negative.
 # Parameters:
-- `m`: [kg] mass of the  spool
+- `m`: [kg] mass of the spool
 - `g`: [m/s²] gravity field acting on the spool, positive value acts in the positive direction
 - `x_int`: [m] initial valve opening
 - `d`: [m] orifice diameter
@@ -629,8 +629,8 @@ p_b_int,
 name)
 Actuator made of two DynamicVolumes connected in opposite direction with body mass attached.
 # Features:
-- volume discretization with flow resistance and inertia: use `N` to control number of volume and resistance elements.  Set `N=0` to turn off volume discretization. See `TubeBase` for more information about flow resistance.
-- minimum volume flow shutoff with damping and directional resistance.  Use `reversible=false` when problem defines volume position `x` and solves for `dm` to prevent numerical instability.
+- volume discretization with flow resistance and inertia: use `N` to control number of volume and resistance elements. Set `N=0` to turn off volume discretization. See `TubeBase` for more information about flow resistance.
+- minimum volume flow shutoff with damping and directional resistance. Use `reversible=false` when problem defines volume position `x` and solves for `dm` to prevent numerical instability.
 # Parameters:
 ## volume
 - `p_a_int`: [Pa] initial pressure for `port_a`
@@ -653,9 +653,9 @@ Actuator made of two DynamicVolumes connected in opposite direction with body ma
 ## flow shut off and damping
 - `minimum_volume_a`: [m^3] minimum volume `A` that shuts off flow and prevents negative volume.
 - `minimum_volume_b`: [m^3] minimum volume `B` that shuts off flow and prevents negative volume.
-- `damping_volume_a`: [m^3] volume of `A` that initiates a linear damping region before reaching full flow shut off.  Helps provide a smooth end stop.
-- `damping_volume_b`: [m^3] volume of `B` that initiates a linear damping region before reaching full flow shut off.  Helps provide a smooth end stop.
-- `Cd`: discharge coefficient for flow out of the volume.  *Note: area is 1m² when valve is fully open.  Ensure this does not induce unwanted flow resistance.*
+- `damping_volume_a`: [m^3] volume of `A` that initiates a linear damping region before reaching full flow shut off. Helps provide a smooth end stop.
+- `damping_volume_b`: [m^3] volume of `B` that initiates a linear damping region before reaching full flow shut off. Helps provide a smooth end stop.
+- `Cd`: discharge coefficient for flow out of the volume. *Note: area is 1m² when valve is fully open. Ensure this does not induce unwanted flow resistance.*
 - `Cd_reverse`: discharge coefficient for flow into the volume. Use a lower value to allow easy wall release, in some cases the wall can "stick".
 # Connectors:
 - `port_a`: hydraulic port
@@ -767,7 +767,7 @@ A valve in fixed position, with parameters for area and the discharge coefficien
 ┌
 │
 ▲
-dm ────►  effective area
+dm ────► effective area
 ▼
 │
 └

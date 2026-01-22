@@ -16,21 +16,21 @@
 #endif
 #include "version.h"
 #include "antiword.h"
-static char	*szTask = "!Antiword";
-static window_handle	tChoicesWindow = 0;
-static diagram_type	tDummyDiagram;
-static dialog2_block	*pInfoBox = NULL;
-#define PURPOSE_INFO_FIELD	2
-#define AUTHOR_INFO_FIELD	3
-#define VERSION_INFO_FIELD	4
-#define STATUS_INFO_FIELD	5
-#define ICONBAR_INFO_FIELD	0
-#define ICONBAR_CHOICES_FIELD	1
-#define ICONBAR_QUIT_FIELD	2
+static char *szTask = "!Antiword";
+static window_handle tChoicesWindow = 0;
+static diagram_type tDummyDiagram;
+static dialog2_block *pInfoBox = NULL;
+#define PURPOSE_INFO_FIELD 2
+#define AUTHOR_INFO_FIELD 3
+#define VERSION_INFO_FIELD 4
+#define STATUS_INFO_FIELD 5
+#define ICONBAR_INFO_FIELD 0
+#define ICONBAR_CHOICES_FIELD 1
+#define ICONBAR_QUIT_FIELD 2
 static BOOL
 bBarInfo(event_pollblock *pEvent, void *pvReference)
 {
-diagram_type	*pDiag;
+diagram_type *pDiag;
 TRACE_MSG("bBarInfo");
 fail(pEvent == NULL);
 fail(pEvent->type != event_SEND);
@@ -58,9 +58,9 @@ Icon_SetText(pBox->window, STATUS_INFO_FIELD, STATUSSTRING);
 static BOOL
 bMouseButtonClick(event_pollblock *pEvent, void *pvReference)
 {
-diagram_type	*pDiag;
-menu_ptr	pMenu;
-int		iPosY;
+diagram_type *pDiag;
+menu_ptr pMenu;
+int iPosY;
 TRACE_MSG("bMouseButtonClick");
 fail(pEvent == NULL);
 fail(pEvent->type != event_CLICK);
@@ -113,7 +113,7 @@ return FALSE;
 static diagram_type *
 pCreateTextWindow(const char *szFilename)
 {
-diagram_type	*pDiag;
+diagram_type *pDiag;
 TRACE_MSG("pCreateTextWindow");
 fail(szFilename == NULL || szFilename[0] == '\0');
 pDiag = pCreateDiagram(szTask+1, szFilename);
@@ -154,11 +154,11 @@ return pDiag;
 static void
 vProcessFile(const char *szFilename, int iFiletype)
 {
-options_type	tOptions;
-FILE		*pFile;
-diagram_type	*pDiag;
-long		lFilesize;
-int		iWordVersion;
+options_type tOptions;
+FILE *pFile;
+diagram_type *pDiag;
+long lFilesize;
+int iWordVersion;
 TRACE_MSG("vProcessFile");
 fail(szFilename == NULL || szFilename[0] == '\0');
 DBG_MSG(szFilename);
@@ -214,7 +214,7 @@ TRACE_MSG("after fclose");
 static void
 vSendAck(event_pollblock *pEvent)
 {
-message_block	tMessage;
+message_block tMessage;
 TRACE_MSG("vSendAck");
 fail(pEvent == NULL);
 fail(pEvent->type != event_SEND && pEvent->type != event_SENDWANTACK);
@@ -312,8 +312,8 @@ bChoicesKeyPressed, NULL);
 static void
 vInitialise(void)
 {
-int	aiMessages[] = {0};
-icon_handle	tBarIcon;
+int aiMessages[] = {0};
+icon_handle tBarIcon;
 TRACE_MSG("vInitialise");
 Resource_Initialise(szTask+1);
 Event_Initialise3(szTask+1, 310, aiMessages);
@@ -354,7 +354,7 @@ Handler_ModeChange, NULL);
 int
 main(int argc, char **argv)
 {
-int	iFirst, iFiletype;
+int iFirst, iFiletype;
 TRACE_MSG("main");
 vInitialise();
 iFirst = iReadOptions(argc, argv);

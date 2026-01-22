@@ -1,10 +1,10 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"io.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "io.h"
 enum {
 L3DataSetupTime = 1,
 L3DataHoldTime = 1,
@@ -21,7 +21,7 @@ GpioReg *g = GPIOREG;
 int s;
 s = splhi();
 g->gpsr = (L3Mode | L3Clock | L3Data);
-g->gpdr |=  (L3Mode | L3Clock | L3Data);
+g->gpdr |= (L3Mode | L3Clock | L3Data);
 splx(s);
 }
 static void

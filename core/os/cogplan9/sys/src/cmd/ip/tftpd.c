@@ -6,77 +6,77 @@
 #include <ndb.h>
 enum
 {
-Maxpath=	128,
-Maxerr=		256,
-Debug=		0,
-Opsize=		sizeof(short),
-Blksize=	sizeof(short),
-Hdrsize=	Opsize + Blksize,
-Ackerr=		-1,
-Ackok=		0,
-Ackrexmit=	1,
-Tftp_READ	= 1,
-Tftp_WRITE	= 2,
-Tftp_DATA	= 3,
-Tftp_ACK	= 4,
-Tftp_ERROR	= 5,
-Tftp_OACK	= 6,
-Errnotdef	= 0,
-Errnotfound	= 1,
-Errnoaccess	= 2,
-Errdiskfull	= 3,
-Errbadop	= 4,
-Errbadtid	= 5,
-Errexists	= 6,
-Errnouser	= 7,
-Errbadopt	= 8,
-Defsegsize	= 512,
-Maxsegsize	= 65464,
-Bandtmtu	= 1400,
-Bandtblksz	= Bandtmtu - 40 - 8,
-Bcavium		= 1432,
+Maxpath= 128,
+Maxerr= 256,
+Debug= 0,
+Opsize= sizeof(short),
+Blksize= sizeof(short),
+Hdrsize= Opsize + Blksize,
+Ackerr= -1,
+Ackok= 0,
+Ackrexmit= 1,
+Tftp_READ = 1,
+Tftp_WRITE = 2,
+Tftp_DATA = 3,
+Tftp_ACK = 4,
+Tftp_ERROR = 5,
+Tftp_OACK = 6,
+Errnotdef = 0,
+Errnotfound = 1,
+Errnoaccess = 2,
+Errdiskfull = 3,
+Errbadop = 4,
+Errbadtid = 5,
+Errexists = 6,
+Errnouser = 7,
+Errbadopt = 8,
+Defsegsize = 512,
+Maxsegsize = 65464,
+Bandtmtu = 1400,
+Bandtblksz = Bandtmtu - 40 - 8,
+Bcavium = 1432,
 };
 typedef struct Opt Opt;
 struct Opt {
-char	*name;
-int	*valp;
-int	min;
-int	max;
+char *name;
+int *valp;
+int min;
+int max;
 };
-int 	dbg;
-int	restricted;
-int	pid;
-int	blksize = Defsegsize;
-int	timeout = 5;
-int	tsize;
+int dbg;
+int restricted;
+int pid;
+int blksize = Defsegsize;
+int timeout = 5;
+int tsize;
 static Opt option[] = {
-"timeout",	&timeout,	1,	255,
-"blksize",	&blksize,	8,	Maxsegsize,
-"tsize",	&tsize,		0,	~0UL >> 1,
+"timeout", &timeout, 1, 255,
+"blksize", &blksize, 8, Maxsegsize,
+"tsize", &tsize, 0, ~0UL >> 1,
 };
-void	sendfile(int, char*, char*, int);
-void	recvfile(int, char*, char*);
-void	nak(int, int, char*);
-void	ack(int, ushort);
-void	clrcon(void);
-void	setuser(void);
-char*	sunkernel(char*);
-void	remoteaddr(char*, char*, int);
-void	doserve(int);
-char	bigbuf[32768];
-char	raddr[64];
-char	*dir = "/lib/tftpd";
-char	*dirsl;
-int	dirsllen;
-char	flog[] = "ipboot";
-char	net[Maxpath];
+void sendfile(int, char*, char*, int);
+void recvfile(int, char*, char*);
+void nak(int, int, char*);
+void ack(int, ushort);
+void clrcon(void);
+void setuser(void);
+char* sunkernel(char*);
+void remoteaddr(char*, char*, int);
+void doserve(int);
+char bigbuf[32768];
+char raddr[64];
+char *dir = "/lib/tftpd";
+char *dirsl;
+int dirsllen;
+char flog[] = "ipboot";
+char net[Maxpath];
 static char *opnames[] = {
-[Tftp_READ]	"read",
-[Tftp_WRITE]	"write",
-[Tftp_DATA]	"data",
-[Tftp_ACK]	"ack",
-[Tftp_ERROR]	"error",
-[Tftp_OACK]	"oack",
+[Tftp_READ] "read",
+[Tftp_WRITE] "write",
+[Tftp_DATA] "data",
+[Tftp_ACK] "ack",
+[Tftp_ERROR] "error",
+[Tftp_OACK] "oack",
 };
 void
 usage(void)

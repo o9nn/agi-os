@@ -8,9 +8,9 @@
 typedef struct Cache Cache;
 struct Cache
 {
-char		*name;
-CCache	**cache;
-int		ncache;
+char *name;
+CCache **cache;
+int ncache;
 };
 static struct Cache imagecache = {"image"};
 static struct Cache fontcache = {"font"};
@@ -58,7 +58,7 @@ return 1;
 static int
 freecacheitem(Cache *c, char *name)
 {
-CCache	*cc;
+CCache *cc;
 cc = getcacheitem(c, name);
 if(cc == nil){
 werrstr("%s name %q not in use", c->name, name);

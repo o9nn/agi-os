@@ -12,10 +12,10 @@ include "arg.m";
 arg: Arg;
 Mkext: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 LEN: con Sys->ATOMICIO;
-NFLDS: con 6;		# filename, modes, uid, gid, mtime, bytes
+NFLDS: con 6; # filename, modes, uid, gid, mtime, bytes
 bin: ref Iobuf;
 uflag := 0;
 tflag := 0;
@@ -306,7 +306,7 @@ if (ok < 0)
 return nil;
 omode := d.mode;
 d = sys->nulldir;
-d.mode = omode | 8r222;		# ensure parent is writable
+d.mode = omode | 8r222; # ensure parent is writable
 if(sys->wstat(p, d) < 0) {
 warn(sys->sprint("can't set modes for %s: %r", p));
 return nil;

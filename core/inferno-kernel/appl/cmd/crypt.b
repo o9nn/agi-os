@@ -93,7 +93,7 @@ error("couldn't get decrypt algorithm");
 alg = alg[len ALGSTR:];
 } else {
 msg := array of byte ("alg " + alg);
-e := msgio->sendmsg(sys->fildes(1),  msg, len msg);
+e := msgio->sendmsg(sys->fildes(1), msg, len msg);
 if (e == -1)
 error("couldn't write algorithm string");
 }
@@ -169,7 +169,7 @@ return (err, nil);
 alglists := array[len algnames] of list of string;
 for (i := 0; i < len algnames; i++) {
 (nil, f) := algnames[i];
-(nil, alglists[i]) = sys->tokenize(string readfile(dir + "/"  + f), " ");
+(nil, alglists[i]) = sys->tokenize(string readfile(dir + "/" + f), " ");
 }
 return (nil, alglists);
 }
@@ -201,7 +201,7 @@ case c {
 '\b' =>
 if (len s > 0)
 s = s[0:len s - 1];
-8r25 =>		# ^U
+8r25 => # ^U
 s = nil;
 * =>
 s[len s] = c;
@@ -219,7 +219,7 @@ readfile(f: string): array of byte
 fd := sys->open(f, Sys->OREAD);
 if (fd == nil)
 error(sys->sprint("cannot read %s: %r", f));
-buf := array[8192] of byte;	# >8K key? get real!
+buf := array[8192] of byte; # >8K key? get real!
 n := sys->read(fd, buf, len buf);
 if (n <= 0)
 return nil;

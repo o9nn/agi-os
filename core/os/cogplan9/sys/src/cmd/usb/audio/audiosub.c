@@ -7,17 +7,17 @@
 typedef struct Namelist Namelist;
 struct Namelist
 {
-short	index;
-char		*name;
+short index;
+char *name;
 };
 Namelist terminal_types[] = {
-{	0x100, "USB Terminal, undefined type"},
-{	0x101, "USB Streaming"},
-{	0x201, "Microphone"},
-{	0x301, "Speaker"},
-{	0x603, "Line connector"},
-{	0x605, "S/PDIF"},
-{	0, nil }
+{ 0x100, "USB Terminal, undefined type"},
+{ 0x101, "USB Streaming"},
+{ 0x201, "Microphone"},
+{ 0x301, "Speaker"},
+{ 0x603, "Line connector"},
+{ 0x605, "S/PDIF"},
+{ 0, nil }
 };
 units[2][8];
 nunits[2];

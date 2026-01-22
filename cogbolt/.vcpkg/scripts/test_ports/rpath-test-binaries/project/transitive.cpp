@@ -1,4 +1,4 @@
 const char* getTestStringBackend()
 {
-    return TEST_STRING;
+return TEST_STRING;
 }

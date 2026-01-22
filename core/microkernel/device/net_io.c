@@ -20,39 +20,39 @@
 #include <kern/slab.h>
 #include <kern/thread.h>
 #include <machine/spl.h>
-#if	MACH_TTD
+#if MACH_TTD
 #include <ttd/ttd_stub.h>
 #endif
-#if	MACH_TTD
+#if MACH_TTD
 int kttd_async_counter= 0;
 #endif
 def_simple_lock_data(static,net_queue_lock)
-boolean_t	net_thread_awake = FALSE;
-struct ipc_kmsg_queue	net_queue_high;
-int		net_queue_high_size = 0;
-int		net_queue_high_max = 0;
-struct ipc_kmsg_queue	net_queue_low;
-int		net_queue_low_size = 0;
-int		net_queue_low_max = 0;
+boolean_t net_thread_awake = FALSE;
+struct ipc_kmsg_queue net_queue_high;
+int net_queue_high_size = 0;
+int net_queue_high_max = 0;
+struct ipc_kmsg_queue net_queue_low;
+int net_queue_low_size = 0;
+int net_queue_low_max = 0;
 def_simple_lock_data(static,net_queue_free_lock)
-struct ipc_kmsg_queue	net_queue_free;
-int		net_queue_free_size = 0;
-int		net_queue_free_max = 0;
-int		net_queue_free_min = 3;
-int		net_queue_free_hits = 0;
-int		net_queue_free_steals = 0;
-int		net_queue_free_misses = 0;
-int		net_kmsg_send_high_hits = 0;
-int		net_kmsg_send_low_hits = 0;
-int		net_kmsg_send_high_misses = 0;
-int		net_kmsg_send_low_misses = 0;
-int		net_thread_awaken = 0;
-int		net_ast_taken = 0;
+struct ipc_kmsg_queue net_queue_free;
+int net_queue_free_size = 0;
+int net_queue_free_max = 0;
+int net_queue_free_min = 3;
+int net_queue_free_hits = 0;
+int net_queue_free_steals = 0;
+int net_queue_free_misses = 0;
+int net_kmsg_send_high_hits = 0;
+int net_kmsg_send_low_hits = 0;
+int net_kmsg_send_high_misses = 0;
+int net_kmsg_send_low_misses = 0;
+int net_thread_awaken = 0;
+int net_ast_taken = 0;
 def_simple_lock_data(static,net_kmsg_total_lock)
-int		net_kmsg_total = 0;
-int		net_kmsg_max;
-vm_size_t	net_kmsg_size;
-#define net_kmsg_want_more()		\
+int net_kmsg_total = 0;
+int net_kmsg_max;
+vm_size_t net_kmsg_size;
+#define net_kmsg_want_more() \
 (((net_queue_free_size + net_queue_low_size) < net_queue_free_min) && \
 (net_kmsg_total < net_kmsg_max))
 ipc_kmsg_t
@@ -142,28 +142,28 @@ net_kmsg_put(kmsg);
 }
 }
 struct net_rcv_port {
-queue_chain_t	input;
-queue_chain_t	output;
-ipc_port_t	rcv_port;
-int		rcv_qlimit;
-int		rcv_count;
-int		priority;
-filter_t	*filter_end;
-filter_t	filter[NET_MAX_FILTER];
+queue_chain_t input;
+queue_chain_t output;
+ipc_port_t rcv_port;
+int rcv_qlimit;
+int rcv_count;
+int priority;
+filter_t *filter_end;
+filter_t filter[NET_MAX_FILTER];
 };
-struct kmem_cache	net_rcv_cache;
-#define NET_HASH_SIZE   256
-#define N_NET_HASH      4
+struct kmem_cache net_rcv_cache;
+#define NET_HASH_SIZE 256
+#define N_NET_HASH 4
 #define N_NET_HASH_KEYS 4
 struct net_hash_entry {
-queue_chain_t   chain;
+queue_chain_t chain;
 #define he_next chain.next
 #define he_prev chain.prev
-ipc_port_t      rcv_port;
-int             rcv_qlimit;
-unsigned int	keys[N_NET_HASH_KEYS];
+ipc_port_t rcv_port;
+int rcv_qlimit;
+unsigned int keys[N_NET_HASH_KEYS];
 };
-struct kmem_cache	net_hash_entry_cache;
+struct kmem_cache net_hash_entry_cache;
 struct net_hash_header {
 struct net_rcv_port rcv;
 int n_keys;
@@ -173,18 +173,18 @@ net_hash_entry_t table[NET_HASH_SIZE];
 def_simple_lock_data(static,net_hash_header_lock)
 #define HASH_ITERATE(head, elt) (elt) = (net_hash_entry_t) (head); do {
 #define HASH_ITERATE_END(head, elt) \
-(elt) = (net_hash_entry_t) queue_next((queue_entry_t) (elt));	   \
+(elt) = (net_hash_entry_t) queue_next((queue_entry_t) (elt)); \
 } while ((elt) != (head));
-#define FILTER_ITERATE(if_port_list, fp, nextfp, chain)	\
-for ((fp) = (net_rcv_port_t) queue_first(if_port_list);	\
-!queue_end(if_port_list, (queue_entry_t)(fp));	\
-(fp) = (nextfp)) {					\
+#define FILTER_ITERATE(if_port_list, fp, nextfp, chain) \
+for ((fp) = (net_rcv_port_t) queue_first(if_port_list); \
+!queue_end(if_port_list, (queue_entry_t)(fp)); \
+(fp) = (nextfp)) { \
 (nextfp) = (net_rcv_port_t) queue_next(chain);
 #define FILTER_ITERATE_END }
-#define ENQUEUE_DEAD(dead, entry_p, chain)			\
-MACRO_BEGIN							\
-(entry_p)->chain.next = (queue_entry_t) (dead);		\
-(dead) = (queue_entry_t)(entry_p);			\
+#define ENQUEUE_DEAD(dead, entry_p, chain) \
+MACRO_BEGIN \
+(entry_p)->chain.next = (queue_entry_t) (dead); \
+(dead) = (queue_entry_t)(entry_p); \
 MACRO_END
 boolean_t ethernet_priority(const ipc_kmsg_t kmsg)
 {
@@ -316,10 +316,10 @@ net_thread_continue();
 }
 static void
 reorder_queue(
-queue_t		first,
-queue_t		last)
+queue_t first,
+queue_t last)
 {
-queue_entry_t	prev, next;
+queue_entry_t prev, next;
 prev = first->prev;
 next = last->next;
 prev->next = last;
@@ -331,13 +331,13 @@ first->prev = last;
 }
 void
 net_packet(
-struct ifnet		*ifp,
-ipc_kmsg_t		kmsg,
-unsigned int		count,
-boolean_t		priority)
+struct ifnet *ifp,
+ipc_kmsg_t kmsg,
+unsigned int count,
+boolean_t priority)
 {
 boolean_t awake;
-#if	MACH_TTD
+#if MACH_TTD
 if (kttd_enabled && kttd_handle_async(kmsg)) {
 if (kttd_debug)
 printf("**%x**", kttd_async_counter++);
@@ -366,17 +366,17 @@ ast_on(cpu_number(), AST_NETWORK);
 }
 int net_filter_queue_reorder = 0;
 void
-net_filter(const ipc_kmsg_t	kmsg,
-ipc_kmsg_queue_t	send_list)
+net_filter(const ipc_kmsg_t kmsg,
+ipc_kmsg_queue_t send_list)
 {
-struct ifnet		*ifp;
-net_rcv_port_t		infp, nextfp;
-ipc_kmsg_t		new_kmsg;
-net_hash_entry_t	entp, *hash_headp;
-ipc_port_t		dest;
-queue_entry_t		dead_infp = (queue_entry_t) 0;
-queue_entry_t		dead_entp = (queue_entry_t) 0;
-unsigned int		ret_count;
+struct ifnet *ifp;
+net_rcv_port_t infp, nextfp;
+ipc_kmsg_t new_kmsg;
+net_hash_entry_t entp, *hash_headp;
+ipc_port_t dest;
+queue_entry_t dead_infp = (queue_entry_t) 0;
+queue_entry_t dead_entp = (queue_entry_t) 0;
+unsigned int ret_count;
 queue_head_t *if_port_list;
 int count = net_kmsg(kmsg)->net_rcv_msg_packet_count;
 ifp = (struct ifnet *) kmsg->ikm_header.msgh_remote_port;
@@ -457,14 +457,14 @@ ipc_kmsg_enqueue(send_list, new_kmsg);
 net_rcv_port_t prevfp;
 int rcount = ++infp->rcv_count;
 if (infp->priority >= NET_HI_PRI) {
-#define REORDER_PRIO(chain)						\
-prevfp = (net_rcv_port_t) queue_prev(&infp->chain);	\
+#define REORDER_PRIO(chain) \
+prevfp = (net_rcv_port_t) queue_prev(&infp->chain); \
 \
-if ((queue_t)prevfp != if_port_list &&		\
-infp->priority == prevfp->priority) {		\
+if ((queue_t)prevfp != if_port_list && \
+infp->priority == prevfp->priority) { \
 \
-if (net_filter_queue_reorder			\
-&& (100 + prevfp->rcv_count < rcount))	\
+if (net_filter_queue_reorder \
+&& (100 + prevfp->rcv_count < rcount)) \
 reorder_queue(&prevfp->chain, &infp->chain);\
 }
 REORDER_PRIO(input);
@@ -486,18 +486,18 @@ net_kmsg_put(kmsg);
 }
 }
 boolean_t
-net_do_filter(net_rcv_port_t	infp,
-const char *	data,
-unsigned int	data_count,
-const char *	header)
+net_do_filter(net_rcv_port_t infp,
+const char * data,
+unsigned int data_count,
+const char * header)
 {
-int		stack[NET_FILTER_STACK_DEPTH+1];
-int		*sp;
-filter_t	*fp, *fpe;
-unsigned int	op, arg;
+int stack[NET_FILTER_STACK_DEPTH+1];
+int *sp;
+filter_t *fp, *fpe;
+unsigned int op, arg;
 data_count /= sizeof(unsigned short);
-#define	data_word	((unsigned short *)data)
-#define	header_word	((unsigned short *)header)
+#define data_word ((unsigned short *)data)
+#define header_word ((unsigned short *)header)
 sp = &stack[NET_FILTER_STACK_DEPTH];
 fp = &infp->filter[1];
 fpe = infp->filter_end;
@@ -605,17 +605,17 @@ break;
 }
 }
 return ((*sp) ? TRUE : FALSE);
-#undef	data_word
-#undef	header_word
+#undef data_word
+#undef header_word
 }
 static boolean_t
 parse_net_filter(
-filter_t		*filter,
-unsigned int		count)
+filter_t *filter,
+unsigned int count)
 {
-int			sp;
-filter_t		*fpe = &filter[count];
-filter_t		op, arg;
+int sp;
+filter_t *fpe = &filter[count];
+filter_t op, arg;
 filter++;
 sp = NET_FILTER_STACK_DEPTH;
 for (; filter < fpe; filter++) {
@@ -684,24 +684,24 @@ return (TRUE);
 }
 io_return_t
 net_set_filter(
-struct ifnet	*ifp,
-ipc_port_t	rcv_port,
-int		priority,
-filter_t	*filter,
-unsigned int	filter_count)
+struct ifnet *ifp,
+ipc_port_t rcv_port,
+int priority,
+filter_t *filter,
+unsigned int filter_count)
 {
-int				filter_bytes;
-bpf_insn_t			match;
-net_rcv_port_t		infp, my_infp;
-net_rcv_port_t		nextfp;
-net_hash_header_t		hhp;
-net_hash_entry_t		entp;
-net_hash_entry_t		*head, nextentp;
-queue_entry_t		dead_infp, dead_entp;
-int				i;
-int				ret, is_new_infp;
-io_return_t			rval;
-boolean_t			in, out;
+int filter_bytes;
+bpf_insn_t match;
+net_rcv_port_t infp, my_infp;
+net_rcv_port_t nextfp;
+net_hash_header_t hhp;
+net_hash_entry_t entp;
+net_hash_entry_t *head, nextentp;
+queue_entry_t dead_infp, dead_entp;
+int i;
+int ret, is_new_infp;
+io_return_t rval;
+boolean_t in, out;
 net_hash_entry_t hash_entp = NULL;
 filter_bytes = CSPF_BYTES(filter_count);
 match = (bpf_insn_t) 0;
@@ -869,10 +869,10 @@ return (rval);
 }
 io_return_t
 net_getstat(
-struct ifnet	*ifp,
-dev_flavor_t	flavor,
-dev_status_t	status,
-mach_msg_type_number_t	*count)
+struct ifnet *ifp,
+dev_flavor_t flavor,
+dev_status_t status,
+mach_msg_type_number_t *count)
 {
 switch (flavor) {
 case NET_STATUS:
@@ -882,19 +882,19 @@ if (*count < NET_STATUS_COUNT)
 return (D_INVALID_OPERATION);
 ns->min_packet_size = ifp->if_header_size;
 ns->max_packet_size = ifp->if_header_size + ifp->if_mtu;
-ns->header_format   = ifp->if_header_format;
-ns->header_size	    = ifp->if_header_size;
-ns->address_size    = ifp->if_address_size;
-ns->flags	    = ifp->if_flags;
-ns->mapped_size	    = 0;
+ns->header_format = ifp->if_header_format;
+ns->header_size = ifp->if_header_size;
+ns->address_size = ifp->if_address_size;
+ns->flags = ifp->if_flags;
+ns->mapped_size = 0;
 *count = NET_STATUS_COUNT;
 break;
 }
 case NET_ADDRESS:
 {
-int	addr_byte_count;
-int	addr_int_count;
-int	i;
+int addr_byte_count;
+int addr_int_count;
+int i;
 addr_byte_count = ifp->if_address_size;
 addr_int_count = (addr_byte_count + (sizeof(int)-1))
 / sizeof(int);
@@ -924,13 +924,13 @@ return (D_SUCCESS);
 }
 io_return_t
 net_write(
-struct 		ifnet *ifp,
-net_write_start_device_fn	start,
-io_req_t	ior)
+struct ifnet *ifp,
+net_write_start_device_fn start,
+io_req_t ior)
 {
-spl_t	s;
-kern_return_t	rc;
-boolean_t	wait;
+spl_t s;
+kern_return_t rc;
+boolean_t wait;
 if ((ifp->if_flags & (IFF_UP|IFF_RUNNING)) != (IFF_UP|IFF_RUNNING))
 return (D_DEVICE_DOWN);
 if (ior->io_count < ifp->if_header_size ||
@@ -951,7 +951,7 @@ return (D_IO_QUEUED);
 void
 net_io_init(void)
 {
-vm_size_t		size;
+vm_size_t size;
 size = sizeof(struct net_rcv_port);
 kmem_cache_init(&net_rcv_cache, "net_rcv_port", size, 0,
 NULL, 0);
@@ -974,8 +974,8 @@ simple_lock_init(&net_hash_header_lock);
 #define BPF_ALIGN
 #endif
 #ifndef BPF_ALIGN
-#define EXTRACT_SHORT(p)	((u_short)ntohs(*(u_short *)p))
-#define EXTRACT_LONG(p)		(ntohl(*(u_int *)p))
+#define EXTRACT_SHORT(p) ((u_short)ntohs(*(u_short *)p))
+#define EXTRACT_LONG(p) (ntohl(*(u_int *)p))
 #else
 #define EXTRACT_SHORT(p)\
 ((u_short)\
@@ -989,13 +989,13 @@ simple_lock_init(&net_hash_header_lock);
 #endif
 int
 bpf_do_filter(
-net_rcv_port_t		infp,
-char *			p,
-unsigned int		wirelen,
-char *			header,
-unsigned int    	hlen,
-net_hash_entry_t	**hash_headpp,
-net_hash_entry_t	*entpp)
+net_rcv_port_t infp,
+char * p,
+unsigned int wirelen,
+char * header,
+unsigned int hlen,
+net_hash_entry_t **hash_headpp,
+net_hash_entry_t *entpp)
 {
 bpf_insn_t pc, pc_end;
 unsigned int buflen;
@@ -1215,9 +1215,9 @@ return 0;
 }
 int
 bpf_validate(
-bpf_insn_t 	f,
-int 		bytes,
-bpf_insn_t 	*match)
+bpf_insn_t f,
+int bytes,
+bpf_insn_t *match)
 {
 int i, j, len;
 bpf_insn_t p;
@@ -1262,9 +1262,9 @@ return 0;
 }
 int
 bpf_eq(
-bpf_insn_t 	f1,
-bpf_insn_t 	f2,
-int 		bytes)
+bpf_insn_t f1,
+bpf_insn_t f2,
+int bytes)
 {
 int count;
 count = BPF_BYTES2LEN(bytes);
@@ -1292,8 +1292,8 @@ int
 bpf_match (net_hash_header_t hash,
 int n_keys,
 const unsigned int *keys,
-net_hash_entry_t 	**hash_headpp,
-net_hash_entry_t 	*entpp)
+net_hash_entry_t **hash_headpp,
+net_hash_entry_t *entpp)
 {
 net_hash_entry_t head, entp;
 int i;
@@ -1319,12 +1319,12 @@ return FALSE;
 }
 int
 hash_ent_remove(
-struct ifnet	*ifp,
-net_hash_header_t 	hp,
-int			used,
-net_hash_entry_t	*head,
-net_hash_entry_t	entp,
-queue_entry_t	*dead_p)
+struct ifnet *ifp,
+net_hash_header_t hp,
+int used,
+net_hash_entry_t *head,
+net_hash_entry_t entp,
+queue_entry_t *dead_p)
 {
 hp->ref_count--;
 if (*head == entp) {

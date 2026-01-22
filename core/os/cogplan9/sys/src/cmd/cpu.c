@@ -4,47 +4,47 @@
 #include <auth.h>
 #include <fcall.h>
 #include <libsec.h>
-#define	Maxfdata 8192
+#define Maxfdata 8192
 #define MaxStr 128
-void	remoteside(int);
-void	fatal(int, char*, ...);
-void	lclnoteproc(int);
-void	rmtnoteproc(void);
-void	catcher(void*, char*);
-void	usage(void);
-void	writestr(int, char*, char*, int);
-int	readstr(int, char*, int);
-char	*rexcall(int*, char*, char*);
-int	setamalg(char*);
+void remoteside(int);
+void fatal(int, char*, ...);
+void lclnoteproc(int);
+void rmtnoteproc(void);
+void catcher(void*, char*);
+void usage(void);
+void writestr(int, char*, char*, int);
+int readstr(int, char*, int);
+char *rexcall(int*, char*, char*);
+int setamalg(char*);
 char *keyspec = "";
-int 	notechan;
-int	exportpid;
-char	*system;
-int	cflag;
-int	dbg;
-char	*user;
-char	*patternfile;
-char	*origargs;
-char	*srvname = "ncpu";
-char	*exportfs = "/bin/exportfs";
-char	*ealgs = "rc4_256 sha1";
-int	msgsize = Maxfdata+IOHDRSZ;
-static int	netkeyauth(int);
-static int	netkeysrvauth(int, char*);
-static int	p9auth(int);
-static int	srvp9auth(int, char*);
-static int	noauth(int);
-static int	srvnoauth(int, char*);
+int notechan;
+int exportpid;
+char *system;
+int cflag;
+int dbg;
+char *user;
+char *patternfile;
+char *origargs;
+char *srvname = "ncpu";
+char *exportfs = "/bin/exportfs";
+char *ealgs = "rc4_256 sha1";
+int msgsize = Maxfdata+IOHDRSZ;
+static int netkeyauth(int);
+static int netkeysrvauth(int, char*);
+static int p9auth(int);
+static int srvp9auth(int, char*);
+static int noauth(int);
+static int srvnoauth(int, char*);
 typedef struct AuthMethod AuthMethod;
 struct AuthMethod {
-char	*name;
-int	(*cf)(int);
-int	(*sf)(int, char*);
+char *name;
+int (*cf)(int);
+int (*sf)(int, char*);
 } authmethod[] =
 {
-{ "p9",		p9auth,		srvp9auth,},
-{ "netkey",	netkeyauth,	netkeysrvauth,},
-{ nil,	nil}
+{ "p9", p9auth, srvp9auth,},
+{ "netkey", netkeyauth, netkeysrvauth,},
+{ nil, nil}
 };
 AuthMethod *am = authmethod;
 char *p9authproto = "p9any";
@@ -621,13 +621,13 @@ Qcpunote,
 Nfid = 32,
 };
 struct {
-char	*name;
-Qid	qid;
-ulong	perm;
+char *name;
+Qid qid;
+ulong perm;
 } fstab[] =
 {
-[Qdir]		{ ".",		{Qdir, 0, QTDIR},	DMDIR|0555	},
-[Qcpunote]	{ "cpunote",	{Qcpunote, 0},		0444		},
+[Qdir] { ".", {Qdir, 0, QTDIR}, DMDIR|0555 },
+[Qcpunote] { "cpunote", {Qcpunote, 0}, 0444 },
 };
 typedef struct Note Note;
 struct Note
@@ -644,9 +644,9 @@ Fcall f;
 typedef struct Fid Fid;
 struct Fid
 {
-int	fid;
-int	file;
-int	omode;
+int fid;
+int file;
+int omode;
 };
 Fid fids[Nfid];
 struct {
@@ -935,7 +935,7 @@ if(dbg)
 fprint(2, "postnote PNGROUP %d: %r\n", exportpid);
 close(fd);
 }
-char 	notebuf[ERRMAX];
+char notebuf[ERRMAX];
 void
 catcher(void*, char *text)
 {

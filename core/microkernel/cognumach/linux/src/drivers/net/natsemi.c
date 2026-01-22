@@ -9,17 +9,17 @@ static int rx_copybreak = 0;
 #define MAX_UNITS 8
 static int options[MAX_UNITS] = {-1, -1, -1, -1, -1, -1, -1, -1};
 static int full_duplex[MAX_UNITS] = {-1, -1, -1, -1, -1, -1, -1, -1};
-#define TX_RING_SIZE	16
-#define TX_QUEUE_LEN	10
-#define RX_RING_SIZE	32
-#define TX_TIMEOUT  (6*HZ)
-#define PKT_BUF_SZ		1536
+#define TX_RING_SIZE 16
+#define TX_QUEUE_LEN 10
+#define RX_RING_SIZE 32
+#define TX_TIMEOUT (6*HZ)
+#define PKT_BUF_SZ 1536
 #ifndef __KERNEL__
 #define __KERNEL__
 #endif
 #if !defined(__OPTIMIZE__)
-#warning  You must compile this file with the correct options!
-#warning  See the last lines of the source file.
+#warning You must compile this file with the correct options!
+#warning See the last lines of the source file.
 #error You must compile this driver with "-O".
 #endif
 #include <linux/config.h>
@@ -58,9 +58,9 @@ static int full_duplex[MAX_UNITS] = {-1, -1, -1, -1, -1, -1, -1, -1};
 #include "pci-scan.h"
 #include "kern_compat.h"
 #endif
-#define virt_to_le32desc(addr)  cpu_to_le32(virt_to_bus(addr))
-#define le32desc_to_virt(addr)  bus_to_virt(le32_to_cpu(addr))
-#if (LINUX_VERSION_CODE >= 0x20100)  &&  defined(MODULE)
+#define virt_to_le32desc(addr) cpu_to_le32(virt_to_bus(addr))
+#define le32desc_to_virt(addr) bus_to_virt(le32_to_cpu(addr))
+#if (LINUX_VERSION_CODE >= 0x20100) && defined(MODULE)
 char kernel_version[] = UTS_RELEASE;
 #endif
 MODULE_AUTHOR("Donald Becker <becker@scyld.com>");
@@ -87,7 +87,7 @@ static void *natsemi_probe1(struct pci_dev *pdev, void *init_dev,
 long ioaddr, int irq, int chip_idx, int find_cnt);
 static int power_event(void *dev_instance, int event);
 #ifdef USE_IO_OPS
-#define PCI_IOTYPE (PCI_USES_MASTER | PCI_USES_IO  | PCI_ADDR0)
+#define PCI_IOTYPE (PCI_USES_MASTER | PCI_USES_IO | PCI_ADDR0)
 #else
 #define PCI_IOTYPE (PCI_USES_MASTER | PCI_USES_MEM | PCI_ADDR1)
 #endif
@@ -149,7 +149,7 @@ DescOwn=0x80000000, DescMore=0x40000000, DescIntr=0x20000000,
 DescNoCRC=0x10000000,
 DescPktOK=0x08000000, RxTooLong=0x00400000,
 };
-#define PRIV_ALIGN	15
+#define PRIV_ALIGN 15
 struct netdev_private {
 struct netdev_desc rx_ring[RX_RING_SIZE];
 struct netdev_desc tx_ring[TX_RING_SIZE];
@@ -184,25 +184,25 @@ int multicast_filter_limit;
 int tx_config, rx_config;
 u16 advertising;
 };
-static int  eeprom_read(long ioaddr, int location);
-static int  mdio_read(struct net_device *dev, int phy_id, int location);
+static int eeprom_read(long ioaddr, int location);
+static int mdio_read(struct net_device *dev, int phy_id, int location);
 static void mdio_write(struct net_device *dev, int phy_id, int location,
 int value);
-static int  netdev_open(struct net_device *dev);
+static int netdev_open(struct net_device *dev);
 static void check_duplex(struct net_device *dev);
 static void netdev_timer(unsigned long data);
 static void tx_timeout(struct net_device *dev);
-static int  rx_ring_fill(struct net_device *dev);
+static int rx_ring_fill(struct net_device *dev);
 static void init_ring(struct net_device *dev);
-static int  start_tx(struct sk_buff *skb, struct net_device *dev);
+static int start_tx(struct sk_buff *skb, struct net_device *dev);
 static void intr_handler(int irq, void *dev_instance, struct pt_regs *regs);
 static void netdev_error(struct net_device *dev, int intr_status);
-static int  netdev_rx(struct net_device *dev);
+static int netdev_rx(struct net_device *dev);
 static void netdev_error(struct net_device *dev, int intr_status);
 static void set_rx_mode(struct net_device *dev);
 static struct net_device_stats *get_stats(struct net_device *dev);
 static int mii_ioctl(struct net_device *dev, struct ifreq *rq, int cmd);
-static int  netdev_close(struct net_device *dev);
+static int netdev_close(struct net_device *dev);
 static struct net_device *root_net_dev = NULL;
 #ifndef MODULE
 int natsemi_probe(struct net_device *dev)
@@ -271,7 +271,7 @@ writew(((option & 0x300) ? 0x2000 : 0) |
 ioaddr + NS_MII_BMCR);
 }
 }
-if (card_idx < MAX_UNITS  &&  full_duplex[card_idx] > 0)
+if (card_idx < MAX_UNITS && full_duplex[card_idx] > 0)
 np->full_duplex = 1;
 if (np->full_duplex) {
 if (np->msg_level & NETIF_MSG_PROBE)
@@ -301,7 +301,7 @@ dev->name, (int)readl(ioaddr + NS_MII_BMSR),
 (int)readl(ioaddr + NS_MIILinkPartner));
 return dev;
 }
-#define eeprom_delay(ee_addr)	readl(ee_addr)
+#define eeprom_delay(ee_addr) readl(ee_addr)
 enum EEPROM_Ctrl_Bits {
 EE_ShiftClk=0x04, EE_DataIn=0x01, EE_ChipSelect=0x08, EE_DataOut=0x02,
 };
@@ -447,8 +447,8 @@ dev->name, (int)readl(ioaddr + IntrStatus));
 if (np->rx_q_empty) {
 writel(SoftIntr, ioaddr + ChipCmd);
 }
-if (netif_queue_paused(dev)  &&
-np->cur_tx - np->dirty_tx > 1  &&
+if (netif_queue_paused(dev) &&
+np->cur_tx - np->dirty_tx > 1 &&
 (jiffies - dev->trans_start) > TX_TIMEOUT) {
 tx_timeout(dev);
 }
@@ -667,7 +667,7 @@ if (pkt_len < np->rx_copybreak
 && (skb = dev_alloc_skb(pkt_len + 2)) != NULL) {
 skb->dev = dev;
 skb_reserve(skb, 2);
-#if defined(HAS_IP_COPYSUM)  ||  (LINUX_VERSION_CODE >= 0x20100)
+#if defined(HAS_IP_COPYSUM) || (LINUX_VERSION_CODE >= 0x20100)
 eth_copy_and_sum(skb, np->rx_skbuff[entry]->tail, pkt_len, 0);
 skb_put(skb, pkt_len);
 #else
@@ -745,7 +745,7 @@ long ioaddr = dev->base_addr;
 struct netdev_private *np = (struct netdev_private *)dev->priv;
 int crc_errs = readl(ioaddr + RxCRCErrs);
 if (crc_errs != 0xffffffff) {
-np->stats.rx_crc_errors	+= crc_errs;
+np->stats.rx_crc_errors += crc_errs;
 np->stats.rx_missed_errors += readl(ioaddr + RxMissed);
 }
 return &np->stats;
@@ -774,7 +774,7 @@ printk(KERN_NOTICE "%s: Promiscuous mode enabled.\n", dev->name);
 rx_mode = AcceptBroadcast | AcceptAllMulticast | AcceptAllPhys
 | AcceptMyPhys;
 } else if ((dev->mc_count > np->multicast_filter_limit)
-||  (dev->flags & IFF_ALLMULTI)) {
+|| (dev->flags & IFF_ALLMULTI)) {
 rx_mode = AcceptBroadcast | AcceptAllMulticast | AcceptMyPhys;
 } else {
 struct dev_mc_list *mclist;

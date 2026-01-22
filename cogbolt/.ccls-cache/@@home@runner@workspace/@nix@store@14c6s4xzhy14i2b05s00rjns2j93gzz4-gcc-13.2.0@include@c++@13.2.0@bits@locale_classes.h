@@ -10,7 +10,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 class locale
 {
 public:
-typedef int	category;
+typedef int category;
 class facet;
 class id;
 class _Impl;
@@ -27,15 +27,15 @@ friend const _Facet*
 __try_use_facet(const locale&) _GLIBCXX_NOTHROW;
 template<typename _Cache>
 friend struct __use_cache;
-static const category none		= 0;
-static const category ctype		= 1L << 0;
-static const category numeric	= 1L << 1;
-static const category collate	= 1L << 2;
-static const category time		= 1L << 3;
-static const category monetary	= 1L << 4;
-static const category messages	= 1L << 5;
-static const category all		= (ctype | numeric | collate |
-time  | monetary | messages);
+static const category none = 0;
+static const category ctype = 1L << 0;
+static const category numeric = 1L << 1;
+static const category collate = 1L << 2;
+static const category time = 1L << 3;
+static const category monetary = 1L << 4;
+static const category messages = 1L << 5;
+static const category all = (ctype | numeric | collate |
+time | monetary | messages);
 locale() throw();
 locale(const locale& __other) throw();
 explicit
@@ -75,9 +75,9 @@ global(const locale& __loc);
 static const locale&
 classic();
 private:
-_Impl*		_M_impl;
-static _Impl*       _S_classic;
-static _Impl*	_S_global;
+_Impl* _M_impl;
+static _Impl* _S_classic;
+static _Impl* _S_global;
 static const char* const* const _S_categories;
 enum { _S_categories_size = 6 + _GLIBCXX_NUM_CATEGORIES };
 #ifdef __GTHREADS
@@ -102,11 +102,11 @@ class locale::facet
 private:
 friend class locale;
 friend class locale::_Impl;
-mutable _Atomic_word		_M_refcount;
-static __c_locale                   _S_c_locale;
-static const char			_S_c_name[2];
+mutable _Atomic_word _M_refcount;
+static __c_locale _S_c_locale;
+static const char _S_c_name[2];
 #ifdef __GTHREADS
-static __gthread_once_t		_S_once;
+static __gthread_once_t _S_once;
 #endif
 static void
 _S_initialize_once();
@@ -175,8 +175,8 @@ has_facet(const locale&) throw();
 template<typename _Facet>
 friend const _Facet*
 __try_use_facet(const locale&) _GLIBCXX_NOTHROW;
-mutable size_t		_M_index;
-static _Atomic_word		_S_refcount;
+mutable size_t _M_index;
+static _Atomic_word _S_refcount;
 void
 operator=(const id&);
 id(const id&);
@@ -202,17 +202,17 @@ __try_use_facet(const locale&) _GLIBCXX_NOTHROW;
 template<typename _Cache>
 friend struct __use_cache;
 private:
-_Atomic_word			_M_refcount;
-const facet**			_M_facets;
-size_t				_M_facets_size;
-const facet**			_M_caches;
-char**				_M_names;
-static const locale::id* const	_S_id_ctype[];
-static const locale::id* const	_S_id_numeric[];
-static const locale::id* const	_S_id_collate[];
-static const locale::id* const	_S_id_time[];
-static const locale::id* const	_S_id_monetary[];
-static const locale::id* const	_S_id_messages[];
+_Atomic_word _M_refcount;
+const facet** _M_facets;
+size_t _M_facets_size;
+const facet** _M_caches;
+char** _M_names;
+static const locale::id* const _S_id_ctype[];
+static const locale::id* const _S_id_numeric[];
+static const locale::id* const _S_id_collate[];
+static const locale::id* const _S_id_time[];
+static const locale::id* const _S_id_monetary[];
+static const locale::id* const _S_id_messages[];
 static const locale::id* const* const _S_facet_categories[];
 void
 _M_add_reference() throw()
@@ -277,12 +277,12 @@ template<typename _CharT>
 class _GLIBCXX_NAMESPACE_CXX11 collate : public locale::facet
 {
 public:
-typedef _CharT			char_type;
-typedef basic_string<_CharT>	string_type;
+typedef _CharT char_type;
+typedef basic_string<_CharT> string_type;
 protected:
-__c_locale			_M_c_locale_collate;
+__c_locale _M_c_locale_collate;
 public:
-static locale::id			id;
+static locale::id id;
 explicit
 collate(size_t __refs = 0)
 : facet(__refs), _M_c_locale_collate(_S_get_c_locale())
@@ -337,7 +337,7 @@ template<typename _CharT>
 class _GLIBCXX_NAMESPACE_CXX11 collate_byname : public collate<_CharT>
 {
 public:
-typedef _CharT               char_type;
+typedef _CharT char_type;
 typedef basic_string<_CharT> string_type;
 explicit
 collate_byname(const char* __s, size_t __refs = 0)

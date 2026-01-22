@@ -28,20 +28,20 @@ const char *argp_program_version = STANDARD_HURD_VERSION (w);
 #define OA OPTION_ARG_OPTIONAL
 static struct argp_option options[] =
 {
-{"format",     'F',     "FMT",  0,  "Use the custom output-format FMT"},
-{"no-header",  'H',     0,      0,  "Don't print a descriptive header line"},
-{0,		 'h',     0,   OPTION_ALIAS | OPTION_HIDDEN},
-{"reverse",    'r',     0,      0,  "Reverse the order of any sort"},
-{"sort",       's',     "FIELD",0,  "Sort the output with respect to FIELD,"
+{"format", 'F', "FMT", 0, "Use the custom output-format FMT"},
+{"no-header", 'H', 0, 0, "Don't print a descriptive header line"},
+{0, 'h', 0, OPTION_ALIAS | OPTION_HIDDEN},
+{"reverse", 'r', 0, 0, "Reverse the order of any sort"},
+{"sort", 's', "FIELD",0, "Sort the output with respect to FIELD,"
 " backwards if FIELD is prefixed by `-'"},
-{0,            'i',     0,	  0,  "Sort output by idle time"},
-{"tty",        't',     "TTY",  OA, "Only show entries for terminal TTY"},
-{"width",      'w',     "WIDTH",OA, "If WIDTH is given, try to format the"
+{0, 'i', 0, 0, "Sort output by idle time"},
+{"tty", 't', "TTY", OA, "Only show entries for terminal TTY"},
+{"width", 'w', "WIDTH",OA, "If WIDTH is given, try to format the"
 " output for WIDTH columns, otherwise,"
 " remove the default limit"},
-{"uptime",     'u',     0,      0,  "Only show the uptime and load info"},
-{"no-uptime",  'U',     0,      0,  "Don't show the uptime and load info"},
-{"raw-hosts",  'n',     0,      0,  "Show network addresses as numbers"},
+{"uptime", 'u', 0, 0, "Only show the uptime and load info"},
+{"no-uptime", 'U', 0, 0, "Don't show the uptime and load info"},
+{"raw-hosts", 'n', 0, 0, "Show network addresses as numbers"},
 {0, 0}
 };
 static char *args_doc = "[USER...]";
@@ -55,10 +55,10 @@ struct timeval idle;
 struct ps_user *user;
 char *host;
 };
-#define W_PSTAT_USER	(PSTAT_USER_BASE << 0)
-#define W_PSTAT_HOST	(PSTAT_USER_BASE << 1)
-#define W_PSTAT_IDLE	(PSTAT_USER_BASE << 2)
-#define W_PSTAT_LOGIN	(PSTAT_USER_BASE << 3)
+#define W_PSTAT_USER (PSTAT_USER_BASE << 0)
+#define W_PSTAT_HOST (PSTAT_USER_BASE << 1)
+#define W_PSTAT_IDLE (PSTAT_USER_BASE << 2)
+#define W_PSTAT_LOGIN (PSTAT_USER_BASE << 3)
 static ps_flags_t
 w_deps (ps_flags_t flags)
 {
@@ -178,11 +178,11 @@ const struct ps_getter w_host_getter =
 {"host", W_PSTAT_HOST, w_get_host};
 const struct ps_fmt_spec _w_specs[] =
 {
-{"User", 0, 8,   -1,0, &w_uname_getter,ps_emit_string, ps_cmp_strings},
-{"Name", 0, 16,  -1,0, &w_user_getter, ps_emit_user_name,ps_cmp_unames,ps_nominal_string},
-{"Login","Login@", -7,  -1,0,&w_login_getter,ps_emit_past_time,ps_cmp_times},
-{"From", 0, 14,  -1,0, &w_host_getter, ps_emit_string, ps_cmp_strings, ps_nominal_string},
-{"Idle", 0, -5,  -1,PS_FMT_FIELD_COLON_MOD, &w_idle_getter, ps_emit_minutes,ps_cmp_times},
+{"User", 0, 8, -1,0, &w_uname_getter,ps_emit_string, ps_cmp_strings},
+{"Name", 0, 16, -1,0, &w_user_getter, ps_emit_user_name,ps_cmp_unames,ps_nominal_string},
+{"Login","Login@", -7, -1,0,&w_login_getter,ps_emit_past_time,ps_cmp_times},
+{"From", 0, 14, -1,0, &w_host_getter, ps_emit_string, ps_cmp_strings, ps_nominal_string},
+{"Idle", 0, -5, -1,PS_FMT_FIELD_COLON_MOD, &w_idle_getter, ps_emit_minutes,ps_cmp_times},
 {"What=args"},
 {0}
 };

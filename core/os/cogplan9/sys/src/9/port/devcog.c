@@ -1,49 +1,49 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
 typedef struct CogAtom CogAtom;
 struct CogAtom
 {
-ulong	id;
-int	type;
-char	name[256];
-CogAtom	**outgoing;
-int	noutgoing;
-float	tvstrength;
-float	tvconf;
-short	sti;
-short	lti;
+ulong id;
+int type;
+char name[256];
+CogAtom **outgoing;
+int noutgoing;
+float tvstrength;
+float tvconf;
+short sti;
+short lti;
 Lock;
 };
 typedef struct KernelAtomSpace KernelAtomSpace;
 struct KernelAtomSpace
 {
-CogAtom	**atoms;
-int	natoms;
-int	maxatoms;
-ulong	nextid;
+CogAtom **atoms;
+int natoms;
+int maxatoms;
+ulong nextid;
 QLock;
 };
 typedef struct CogContext CogContext;
 struct CogContext
 {
-int	ref;
-int	ctxid;
+int ref;
+int ctxid;
 KernelAtomSpace *as;
-short	stitotal;
-short	ltitotal;
+short stitotal;
+short ltitotal;
 Lock;
 };
 typedef struct CogVMState CogVMState;
 struct CogVMState
 {
-int	running;
-ulong	cycles;
-ulong	inferences;
-ulong	allocations;
+int running;
+ulong cycles;
+ulong inferences;
+ulong allocations;
 Lock;
 };
 enum
@@ -66,21 +66,21 @@ MaxAtoms = 1000000,
 };
 static Dirtab cogdir[] =
 {
-".",		{Qdir, 0, QTDIR},	0,	DMDIR|0555,
-"clone",	{Qclone},		0,	0666,
-"atomspace",	{Qatomspace},		0,	0666,
-"pln",		{Qpln},			0,	0666,
-"ecan",		{Qecan},		0,	0666,
-"cogvm",	{Qcogvm},		0,	0444,
-"stats",	{Qstats},		0,	0444,
-"ctl",		{Qctl},			0,	0666,
+".", {Qdir, 0, QTDIR}, 0, DMDIR|0555,
+"clone", {Qclone}, 0, 0666,
+"atomspace", {Qatomspace}, 0, 0666,
+"pln", {Qpln}, 0, 0666,
+"ecan", {Qecan}, 0, 0666,
+"cogvm", {Qcogvm}, 0, 0444,
+"stats", {Qstats}, 0, 0444,
+"ctl", {Qctl}, 0, 0666,
 };
 static struct {
-KernelAtomSpace	atomspace;
-CogVMState	vmstate;
-CogContext	**contexts;
-int		ncontexts;
-int		maxcontexts;
+KernelAtomSpace atomspace;
+CogVMState vmstate;
+CogContext **contexts;
+int ncontexts;
+int maxcontexts;
 QLock;
 } cogkernel;
 static char Enomem[] = "out of cognitive memory";

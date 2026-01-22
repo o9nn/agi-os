@@ -9,11 +9,11 @@ Objects are represented as strings, and their multiplicity as integers.
 # Create multisets
 m1 = Multiset(Dict("a" => 2, "b" => 1))
 m2 = Multiset("a" => 2, "b" => 1)
-m3 = multiset"a{2}, b"  # Using string macro
+m3 = multiset"a{2}, b" # Using string macro
 # Operations
-m1 + m2  # Union
-m1 - m2  # Difference
-m1 ⊆ m2  # Inclusion
+m1 + m2 # Union
+m1 - m2 # Difference
+m1 ⊆ m2 # Inclusion
 ```
 """
 struct Multiset
@@ -48,7 +48,7 @@ result = copy(m1.objects)
 for (obj, count) in m2.objects
 current = get(result, obj, 0)
 if current < count
-return nothing  # Cannot subtract more than we have
+return nothing # Cannot subtract more than we have
 end
 new_count = current - count
 if new_count > 0

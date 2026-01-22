@@ -1,24 +1,24 @@
-#include	"all.h"
-#define	PTR	sizeof(char*)
-#define	SHORT	sizeof(int)
-#define	INT	sizeof(int)
-#define	LONG	sizeof(long)
-#define	IDIGIT	30
-#define	MAXCON	30
-static	int	convcount  = { 10 };
-#define	PUT(o, c)	if((o)->p < (o)->ep) *(o)->p++ = c
-static	int	noconv(Op*);
-static	int	cconv(Op*);
-static	int	dconv(Op*);
-static	int	hconv(Op*);
-static	int	lconv(Op*);
-static	int	oconv(Op*);
-static	int	sconv(Op*);
-static	int	uconv(Op*);
-static	int	xconv(Op*);
-static	int	percent(Op*);
+#include "all.h"
+#define PTR sizeof(char*)
+#define SHORT sizeof(int)
+#define INT sizeof(int)
+#define LONG sizeof(long)
+#define IDIGIT 30
+#define MAXCON 30
+static int convcount = { 10 };
+#define PUT(o, c) if((o)->p < (o)->ep) *(o)->p++ = c
+static int noconv(Op*);
+static int cconv(Op*);
+static int dconv(Op*);
+static int hconv(Op*);
+static int lconv(Op*);
+static int oconv(Op*);
+static int sconv(Op*);
+static int uconv(Op*);
+static int xconv(Op*);
+static int percent(Op*);
 static
-int	(*fmtconv[MAXCON])(Op*) =
+int (*fmtconv[MAXCON])(Op*) =
 {
 noconv,
 cconv, dconv, hconv, lconv,
@@ -26,7 +26,7 @@ oconv, sconv, uconv, xconv,
 percent,
 };
 static
-char	fmtindex[128] =
+char fmtindex[128] =
 {
 ['c'] 1,
 ['d'] 2,
@@ -190,13 +190,13 @@ n++;
 }
 }
 }
-static	int
+static int
 noconv(Op *op)
 {
 strconv("***", op, 0, -1);
 return 0;
 }
-static	int
+static int
 cconv(Op *op)
 {
 char b[2];
@@ -205,47 +205,47 @@ b[1] = 0;
 strconv(b, op, op->f1, -1);
 return INT;
 }
-static	int
+static int
 dconv(Op *op)
 {
 return numbconv(op, 10);
 }
-static	int
+static int
 hconv(Op *op)
 {
 USED(op);
 return -FSHORT;
 }
-static	int
+static int
 lconv(Op *op)
 {
 USED(op);
 return -FLONG;
 }
-static	int
+static int
 oconv(Op *op)
 {
 USED(op);
 return numbconv(op, 8);
 }
-static	int
+static int
 sconv(Op *op)
 {
 strconv(*(char**)op->argp, op, op->f1, op->f2);
 return PTR;
 }
-static	int
+static int
 uconv(Op *op)
 {
 USED(op);
 return -FUNSIGN;
 }
-static	int
+static int
 xconv(Op *op)
 {
 return numbconv(op, 16);
 }
-static	int
+static int
 percent(Op *op)
 {
 PUT(op, '%');

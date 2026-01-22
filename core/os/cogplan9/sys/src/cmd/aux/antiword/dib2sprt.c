@@ -10,11 +10,11 @@ static int
 iGetByteWidth(const imagedata_type *pImg)
 {
 switch (pImg->uiBitsPerComponent) {
-case  1:
+case 1:
 return (pImg->iWidth + 31) / 32 * sizeof(int);
-case  4:
+case 4:
 return (pImg->iWidth + 7) / 8 * sizeof(int);
-case  8:
+case 8:
 case 24:
 return (pImg->iWidth + 3) / 4 * sizeof(int);
 default:
@@ -25,24 +25,24 @@ return 0;
 static sprite_areainfo *
 pCreateBlankSprite(const imagedata_type *pImg, size_t *pSize)
 {
-sprite_areainfo	*pArea;
-UCHAR	*pucTmp;
-size_t	tSize;
-screen_modeval	uMode;
-int	iIndex, iPaletteEntries;
+sprite_areainfo *pArea;
+UCHAR *pucTmp;
+size_t tSize;
+screen_modeval uMode;
+int iIndex, iPaletteEntries;
 TRACE_MSG("pCreateBlankSprite");
 fail(pImg == NULL);
 fail(pSize == NULL);
 switch (pImg->uiBitsPerComponent) {
-case  1:
+case 1:
 uMode.screen_mode = 18;
 iPaletteEntries = 2;
 break;
-case  4:
+case 4:
 uMode.screen_mode = 20;
 iPaletteEntries = 16;
 break;
-case  8:
+case 8:
 case 24:
 uMode.screen_mode = 21;
 iPaletteEntries = 0;
@@ -81,7 +81,7 @@ return pArea;
 static int
 iReduceColor(int iRed, int iGreen, int iBlue)
 {
-int	iResult;
+int iResult;
 iResult = (iBlue & 0x80) ? 0x80 : 0;
 iResult |= (iGreen & 0x80) ? 0x40 : 0;
 iResult |= (iGreen & 0x40) ? 0x20 : 0;
@@ -95,8 +95,8 @@ return iResult;
 static void
 vDecode1bpp(FILE *pFile, UCHAR *pucData, const imagedata_type *pImg)
 {
-int	iX, iY, iByteWidth, iOffset, iTmp, iEighthWidth, iPadding;
-UCHAR	ucTmp;
+int iX, iY, iByteWidth, iOffset, iTmp, iEighthWidth, iPadding;
+UCHAR ucTmp;
 DBG_MSG("vDecode1bpp");
 fail(pFile == NULL);
 fail(pucData == NULL);
@@ -111,7 +111,7 @@ iTmp = iNextByte(pFile);
 if (iTmp == EOF) {
 return;
 }
-ucTmp  = (iTmp & BIT(0)) ? (UCHAR)BIT(7) : 0;
+ucTmp = (iTmp & BIT(0)) ? (UCHAR)BIT(7) : 0;
 ucTmp |= (iTmp & BIT(1)) ? (UCHAR)BIT(6) : 0;
 ucTmp |= (iTmp & BIT(2)) ? (UCHAR)BIT(5) : 0;
 ucTmp |= (iTmp & BIT(3)) ? (UCHAR)BIT(4) : 0;
@@ -128,8 +128,8 @@ iOffset = iY * iByteWidth + iX;
 static void
 vDecode4bpp(FILE *pFile, UCHAR *pucData, const imagedata_type *pImg)
 {
-int	iX, iY, iByteWidth, iOffset, iTmp, iHalfWidth, iPadding;
-UCHAR	ucTmp;
+int iX, iY, iByteWidth, iOffset, iTmp, iHalfWidth, iPadding;
+UCHAR ucTmp;
 DBG_MSG("vDecode4bpp");
 fail(pFile == NULL);
 fail(pucData == NULL);
@@ -155,7 +155,7 @@ iOffset = iY * iByteWidth + iX;
 static void
 vDecode8bpp(FILE *pFile, UCHAR *pucData, const imagedata_type *pImg)
 {
-int	iX, iY, iByteWidth, iOffset, iIndex, iPadding;
+int iX, iY, iByteWidth, iOffset, iIndex, iPadding;
 DBG_MSG("vDecode8bpp");
 fail(pFile == NULL);
 fail(pucData == NULL);
@@ -181,8 +181,8 @@ pImg->aucPalette[iIndex][2]);
 static void
 vDecode24bpp(FILE *pFile, UCHAR *pucData, const imagedata_type *pImg)
 {
-int	iX, iY, iTripleWidth, iByteWidth, iOffset, iPadding;
-int	iRed, iGreen, iBlue;
+int iX, iY, iTripleWidth, iByteWidth, iOffset, iPadding;
+int iRed, iGreen, iBlue;
 DBG_MSG("vDecode24bpp");
 fail(pFile == NULL);
 fail(pucData == NULL);
@@ -214,10 +214,10 @@ iReduceColor(iRed, iGreen, iBlue);
 static void
 vDecodeRle4(FILE *pFile, UCHAR *pucData, const imagedata_type *pImg)
 {
-int	iX, iY, iByteWidth, iOffset, iTmp, iHalfWidth;
-int	iRun, iRunLength, iHalfRun;
-BOOL	bEOL;
-UCHAR	ucTmp;
+int iX, iY, iByteWidth, iOffset, iTmp, iHalfWidth;
+int iRun, iRunLength, iHalfRun;
+BOOL bEOL;
+UCHAR ucTmp;
 DBG_MSG("vDecodeRle4");
 fail(pFile == NULL);
 fail(pucData == NULL);
@@ -289,8 +289,8 @@ DBG_DEC_C(iX != iHalfWidth, iX);
 static void
 vDecodeRle8(FILE *pFile, UCHAR *pucData, const imagedata_type *pImg)
 {
-int	iX, iY, iRun, iRunLength, iOffset, iIndex, iByteWidth;
-BOOL	bEOL;
+int iX, iY, iRun, iRunLength, iOffset, iIndex, iByteWidth;
+BOOL bEOL;
 DBG_MSG("vDecodeRle8");
 fail(pFile == NULL);
 fail(pucData == NULL);
@@ -364,9 +364,9 @@ DBG_DEC_C(iX != pImg->iWidth, iX);
 static void
 vCopy2File(UCHAR *pucSprite, size_t tSpriteSize)
 {
-FILE	*pOutFile;
-int	iIndex;
-char	szFilename[30];
+FILE *pOutFile;
+int iIndex;
+char szFilename[30];
 sprintf(szFilename, "<Wimp$ScrapDir>.sprt%04d", ++iPicCounter);
 pOutFile = fopen(szFilename, "wb");
 if (pOutFile == NULL) {
@@ -385,10 +385,10 @@ vSetFiletype(szFilename, FILETYPE_SPRITE);
 static void
 vDecodeDIB(diagram_type *pDiag, FILE *pFile, const imagedata_type *pImg)
 {
-sprite_areainfo	*pSprite;
-UCHAR	*pucPalette, *pucData;
-size_t	tSpriteSize;
-int	iHeaderSize;
+sprite_areainfo *pSprite;
+UCHAR *pucPalette, *pucData;
+size_t tSpriteSize;
+int iHeaderSize;
 iHeaderSize = (int)ulNextLong(pFile);
 (void)tSkipBytes(pFile, iHeaderSize - 4);
 if (pImg->uiBitsPerComponent <= 8) {
@@ -399,12 +399,12 @@ pSprite = pCreateBlankSprite(pImg, &tSpriteSize);
 pucPalette = (UCHAR *)pSprite +
 pSprite->firstoffset + sizeof(sprite_header);
 switch (pImg->uiBitsPerComponent) {
-case  1:
+case 1:
 fail(pImg->eCompression != compression_none);
 pucData = pucPalette + 2 * 8;
 vDecode1bpp(pFile, pucData, pImg);
 break;
-case  4:
+case 4:
 fail(pImg->eCompression != compression_none &&
 pImg->eCompression != compression_rle4);
 pucData = pucPalette + 16 * 8;
@@ -414,7 +414,7 @@ vDecodeRle4(pFile, pucData, pImg);
 vDecode4bpp(pFile, pucData, pImg);
 }
 break;
-case  8:
+case 8:
 fail(pImg->eCompression != compression_none &&
 pImg->eCompression != compression_rle8);
 pucData = pucPalette + 0 * 8;

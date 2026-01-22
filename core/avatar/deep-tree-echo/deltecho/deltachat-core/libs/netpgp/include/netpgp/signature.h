@@ -5,7 +5,7 @@
 #include "packet.h"
 #include "create.h"
 #include "memory.h"
-typedef struct pgp_create_sig_t	 pgp_create_sig_t;
+typedef struct pgp_create_sig_t pgp_create_sig_t;
 pgp_create_sig_t *pgp_create_sig_new(void);
 void pgp_create_sig_delete(pgp_create_sig_t *);
 unsigned pgp_check_useridcert_sig(const pgp_pubkey_t *,
@@ -37,7 +37,7 @@ const pgp_hash_alg_t,
 const pgp_sig_type_t);
 void pgp_sig_add_data(pgp_create_sig_t *, const void *, size_t);
 pgp_hash_t *pgp_sig_get_hash(pgp_create_sig_t *);
-unsigned   pgp_end_hashed_subpkts(pgp_create_sig_t *);
+unsigned pgp_end_hashed_subpkts(pgp_create_sig_t *);
 unsigned pgp_write_sig(pgp_output_t *, pgp_create_sig_t *,
 const pgp_pubkey_t *, const pgp_seckey_t *);
 unsigned pgp_add_issuer_keyid(pgp_create_sig_t *,
@@ -55,7 +55,7 @@ unsigned
 pgp_add_key_prefs(pgp_create_sig_t *sig);
 unsigned
 pgp_add_key_features(pgp_create_sig_t *sig);
-unsigned   pgp_sign_file(pgp_io_t *,
+unsigned pgp_sign_file(pgp_io_t *,
 const char *,
 const char *,
 const pgp_seckey_t *,
@@ -90,7 +90,7 @@ PGP_PGP_SIGNATURE
 #define CRC24_INIT 0xb704ceL
 unsigned pgp_writer_use_armored_sig(pgp_output_t *);
 void pgp_writer_push_armoured(pgp_output_t *, pgp_armor_type_t);
-pgp_memory_t   *pgp_sign_buf(pgp_io_t *,
+pgp_memory_t *pgp_sign_buf(pgp_io_t *,
 const void *,
 const size_t,
 const pgp_seckey_t *,
@@ -100,13 +100,13 @@ const char *,
 const unsigned,
 const unsigned);
 struct pgp_create_sig_t {
-pgp_hash_t		 hash;
-pgp_sig_t		 sig;
-pgp_memory_t		*mem;
-pgp_output_t		*output;
-unsigned		 hashoff;
-unsigned		 hashlen;
-unsigned 		 unhashoff;
+pgp_hash_t hash;
+pgp_sig_t sig;
+pgp_memory_t *mem;
+pgp_output_t *output;
+unsigned hashoff;
+unsigned hashlen;
+unsigned unhashoff;
 };
 void
 pgp_sig_start_key_rev(pgp_create_sig_t *sig,

@@ -8,10 +8,10 @@ struct notifier_block *next;
 int priority;
 };
 #ifdef __KERNEL__
-#define NOTIFY_DONE		0x0000
-#define NOTIFY_OK		0x0001
-#define NOTIFY_STOP_MASK	0x8000
-#define NOTIFY_BAD		(NOTIFY_STOP_MASK|0x0002)
+#define NOTIFY_DONE 0x0000
+#define NOTIFY_OK 0x0001
+#define NOTIFY_STOP_MASK 0x8000
+#define NOTIFY_BAD (NOTIFY_STOP_MASK|0x0002)
 extern __inline__ int notifier_chain_register(struct notifier_block **list, struct notifier_block *n)
 {
 while(*list)
@@ -50,8 +50,8 @@ nb=nb->next;
 }
 return ret;
 }
-#define NETDEV_UP	0x0001
-#define NETDEV_DOWN	0x0002
-#define NETDEV_REBOOT	0x0003
+#define NETDEV_UP 0x0001
+#define NETDEV_DOWN 0x0002
+#define NETDEV_REBOOT 0x0003
 #endif
 #endif

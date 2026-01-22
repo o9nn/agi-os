@@ -6,55 +6,55 @@
 #include "fns.h"
 enum
 {
-Desperate	= 0,
-Pagesz		= 255,
-Pagerrrecov	= 1,
-Pagwrparams	= 5,
-Pagcache	= 8,
-Pagcapmechsts	= 0x2a,
-Invistrack	= 0xff,
-Maxresptracks	= 120,
-Erawre	= 1<<7,
-Erarre	= 1<<6,
-Ertb	= 1<<5,
-Errc	= 1<<4,
-Erper	= 1<<2,
-Erdte	= 1<<1,
-Erdcr	= 1<<0,
-Kilo	= 1000LL,
-GB	= Kilo * Kilo * Kilo,
+Desperate = 0,
+Pagesz = 255,
+Pagerrrecov = 1,
+Pagwrparams = 5,
+Pagcache = 8,
+Pagcapmechsts = 0x2a,
+Invistrack = 0xff,
+Maxresptracks = 120,
+Erawre = 1<<7,
+Erarre = 1<<6,
+Ertb = 1<<5,
+Errc = 1<<4,
+Erper = 1<<2,
+Erdte = 1<<1,
+Erdcr = 1<<0,
+Kilo = 1000LL,
+GB = Kilo * Kilo * Kilo,
 };
 typedef struct Intfeat Intfeat;
 typedef struct Mmcaux Mmcaux;
 static Dev mmcdev;
 struct Mmcaux {
-uchar	page05[Pagesz];
-int	page05ok;
-int	pagecmdsz;
-long	mmcnwa;
-int	nropen;
-int	nwopen;
-vlong	ntotby;
-long	ntotbk;
+uchar page05[Pagesz];
+int page05ok;
+int pagecmdsz;
+long mmcnwa;
+int nropen;
+int nwopen;
+vlong ntotby;
+long ntotbk;
 };
 struct Intfeat {
-int	numb;
-char	*name;
+int numb;
+char *name;
 };
 enum {
-Featrandwrite	= 0x20,
-Featdfctmgmt	= 0x24,
-Featwriteonce	= 0x25,
-Featedfctrpt	= 0x29,
-Featdvdrw	= 0x2a,
+Featrandwrite = 0x20,
+Featdfctmgmt = 0x24,
+Featwriteonce = 0x25,
+Featedfctrpt = 0x29,
+Featdvdrw = 0x2a,
 };
 Intfeat intfeats[] = {
-Featrandwrite,	"random writable",
-Featdfctmgmt,	"hw defect mgmt.",
-Featwriteonce,	"write once",
-Featedfctrpt,	"enhanced defect reporting",
-Featdvdrw,	"dvd+rw",
-0x38,		"pseudo-overwrite",
+Featrandwrite, "random writable",
+Featdfctmgmt, "hw defect mgmt.",
+Featwriteonce, "write once",
+Featedfctrpt, "enhanced defect reporting",
+Featdvdrw, "dvd+rw",
+0x38, "pseudo-overwrite",
 };
 static char *dvdtype[] = {
 "dvd-rom",
@@ -119,8 +119,8 @@ cdb[0] = cmd;
 }
 enum {
 Mode10parmhdrlen= 8,
-Mode6parmhdrlen	= 4,
-Modepaghdrlen	= 2,
+Mode6parmhdrlen = 4,
+Modepaghdrlen = 2,
 };
 static int
 mmcgetpage10(Drive *drive, int page, void *v)
@@ -252,8 +252,8 @@ if (vflag)
 fprint(2, "no Pagcapmechsts mode page!\n");
 return;
 }
-maxread =   (buf[8]<<8)|buf[9];
-curread =  (buf[14]<<8)|buf[15];
+maxread = (buf[8]<<8)|buf[9];
+curread = (buf[14]<<8)|buf[15];
 maxwrite = (buf[18]<<8)|buf[19];
 curwrite = (buf[20]<<8)|buf[21];
 if(maxread && maxread < 170 || curread && curread < 170)
@@ -452,7 +452,7 @@ return -1;
 }
 tmode = resp[5] & 0x0D;
 gettypebs(tmode, t, i, &type, &bs);
-beg  = bige(&resp[8]);
+beg = bige(&resp[8]);
 size = bige(&resp[24]);
 track = &drive->track[i];
 track->mtime = drive->changetime;
@@ -1193,18 +1193,18 @@ aux->nropen++;
 return o;
 }
 enum {
-Flhlen		= 4,
-Fdlen		= 8,
-Formatdata	= 0x10,
-Immed		= 1<<1,
-Fmtfull		= 0,
-Fullbdrsrm	= 0,
+Flhlen = 4,
+Fdlen = 8,
+Formatdata = 0x10,
+Immed = 1<<1,
+Fmtfull = 0,
+Fullbdrsrm = 0,
 Fullbdrsrmspares= 1,
-Fullbdrrrm	= 2,
-Fmtbdrspares	= 0x32 << 2,
+Fullbdrrrm = 2,
+Fmtbdrspares = 0x32 << 2,
 Bdrsparessrmplus= 0,
 Bdrsparessrmminus=1,
-Bdrsparesrrm	= 2,
+Bdrsparesrrm = 2,
 };
 static int
 format(Drive *drive)
@@ -1314,8 +1314,8 @@ mmcwrite(Buf *buf, void *v, long nblk, ulong)
 return mmcxwrite(buf->otrack, v, nblk);
 }
 enum {
-Eccblk	= 128,
-Rsvslop	= 0,
+Eccblk = 128,
+Rsvslop = 0,
 };
 static int
 reserve(Drive *drive, int track)

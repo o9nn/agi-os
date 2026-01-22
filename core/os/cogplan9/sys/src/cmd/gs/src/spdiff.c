@@ -59,7 +59,7 @@ int count;
 int status = 0;
 uint s0 = ss->prev[0];
 byte t = 0;
-int  ti;
+int ti;
 const byte end_mask = ss->end_mask;
 int colors = ss->Colors;
 int nb = (colors * ss->BitsPerComponent) >> 3;

@@ -10,7 +10,7 @@ dc_contact_t* contact = NULL;
 if ((contact=calloc(1, sizeof(dc_contact_t)))==NULL) {
 exit(19);
 }
-contact->magic   = DC_CONTACT_MAGIC;
+contact->magic = DC_CONTACT_MAGIC;
 contact->context = context;
 return contact;
 }
@@ -122,7 +122,7 @@ return contact->blocked;
 }
 int dc_contact_is_verified_ex(dc_contact_t* contact, const dc_apeerstate_t* peerstate)
 {
-int              contact_verified = DC_NOT_VERIFIED;
+int contact_verified = DC_NOT_VERIFIED;
 dc_apeerstate_t* peerstate_to_delete = NULL;
 if (contact==NULL || contact->magic!=DC_CONTACT_MAGIC) {
 goto cleanup;
@@ -149,7 +149,7 @@ return dc_contact_is_verified_ex(contact, NULL);
 }
 int dc_contact_load_from_db(dc_contact_t* contact, dc_sqlite3_t* sql, uint32_t contact_id)
 {
-int           success = 0;
+int success = 0;
 sqlite3_stmt* stmt = NULL;
 if (contact==NULL || contact->magic!=DC_CONTACT_MAGIC || sql==NULL) {
 goto cleanup;
@@ -157,7 +157,7 @@ goto cleanup;
 dc_contact_empty(contact);
 if (contact_id==DC_CONTACT_ID_SELF)
 {
-contact->id   = contact_id;
+contact->id = contact_id;
 contact->name = dc_stock_str(contact->context, DC_STR_SELF);
 contact->addr = dc_sqlite3_get_config(sql, "configured_addr", "");
 }
@@ -171,12 +171,12 @@ sqlite3_bind_int(stmt, 1, contact_id);
 if (sqlite3_step(stmt)!=SQLITE_ROW) {
 goto cleanup;
 }
-contact->id               = contact_id;
-contact->name             = dc_strdup((char*)sqlite3_column_text (stmt, 0));
-contact->addr             = dc_strdup((char*)sqlite3_column_text (stmt, 1));
-contact->origin           =                  sqlite3_column_int  (stmt, 2);
-contact->blocked          =                  sqlite3_column_int  (stmt, 3);
-contact->authname         = dc_strdup((char*)sqlite3_column_text (stmt, 4));
+contact->id = contact_id;
+contact->name = dc_strdup((char*)sqlite3_column_text (stmt, 0));
+contact->addr = dc_strdup((char*)sqlite3_column_text (stmt, 1));
+contact->origin = sqlite3_column_int (stmt, 2);
+contact->blocked = sqlite3_column_int (stmt, 3);
+contact->authname = dc_strdup((char*)sqlite3_column_text (stmt, 4));
 }
 success = 1;
 cleanup:
@@ -208,15 +208,15 @@ if (len > 0) {
 char firstchar = full_name[0], lastchar = full_name[len-1];
 if ((firstchar=='\'' && lastchar=='\'')
 || (firstchar=='"'  && lastchar=='"')
-|| (firstchar=='<'  && lastchar=='>')) {
-full_name[0]     = ' ';
+|| (firstchar=='<' && lastchar=='>')) {
+full_name[0] = ' ';
 full_name[len-1] = ' ';
 }
 }
 char* p1 = strchr(full_name, ',');
 if (p1) {
 *p1 = 0;
-char* last_name  = dc_strdup(full_name);
+char* last_name = dc_strdup(full_name);
 char* first_name = dc_strdup(p1+1);
 dc_trim(last_name);
 dc_trim(first_name);
@@ -253,9 +253,9 @@ return ret;
 }
 int dc_addr_equals_self(dc_context_t* context, const char* addr)
 {
-int   ret             = 0;
+int ret = 0;
 char* normalized_addr = NULL;
-char* self_addr       = NULL;
+char* self_addr = NULL;
 if (context==NULL || addr==NULL) {
 goto cleanup;
 }
@@ -290,7 +290,7 @@ return addr_are_equal;
 int dc_real_contact_exists(dc_context_t* context, uint32_t contact_id)
 {
 sqlite3_stmt* stmt = NULL;
-int           ret = 0;
+int ret = 0;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC || context->sql->cobj==NULL
 || contact_id<=DC_CONTACT_ID_LAST_SPECIAL) {
 goto cleanup;
@@ -307,7 +307,7 @@ return ret;
 }
 size_t dc_get_real_contact_cnt(dc_context_t* context)
 {
-size_t        ret = 0;
+size_t ret = 0;
 sqlite3_stmt* stmt = NULL;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC || context->sql->cobj==NULL) {
 goto cleanup;
@@ -323,21 +323,21 @@ sqlite3_finalize(stmt);
 return ret;
 }
 uint32_t dc_add_or_lookup_contact( dc_context_t* context,
-const char*   name ,
-const char*   addr__,
-int           origin,
-int*          sth_modified )
+const char* name ,
+const char* addr__,
+int origin,
+int* sth_modified )
 {
-#define       CONTACT_MODIFIED 1
-#define       CONTACT_CREATED  2
+#define CONTACT_MODIFIED 1
+#define CONTACT_CREATED 2
 sqlite3_stmt* stmt = NULL;
-uint32_t      row_id = 0;
-int           dummy = 0;
-char*         addr = NULL;
-char*         addr_self = NULL;
-char*         row_name = NULL;
-char*         row_addr = NULL;
-char*         row_authname = NULL;
+uint32_t row_id = 0;
+int dummy = 0;
+char* addr = NULL;
+char* addr_self = NULL;
+char* row_name = NULL;
+char* row_addr = NULL;
+char* row_authname = NULL;
 if (sth_modified==NULL) {
 sth_modified = &dummy;
 }
@@ -360,11 +360,11 @@ stmt = dc_sqlite3_prepare(context->sql,
 sqlite3_bind_text(stmt, 1, (const char*)addr, -1, SQLITE_STATIC);
 if (sqlite3_step(stmt)==SQLITE_ROW)
 {
-int         row_origin, update_addr = 0, update_name = 0, update_authname = 0;
-row_id       = sqlite3_column_int(stmt, 0);
-row_name     = dc_strdup((char*)sqlite3_column_text(stmt, 1));
-row_addr     = dc_strdup((char*)sqlite3_column_text(stmt, 2));
-row_origin   = sqlite3_column_int(stmt, 3);
+int row_origin, update_addr = 0, update_name = 0, update_authname = 0;
+row_id = sqlite3_column_int(stmt, 0);
+row_name = dc_strdup((char*)sqlite3_column_text(stmt, 1));
+row_addr = dc_strdup((char*)sqlite3_column_text(stmt, 2));
+row_origin = sqlite3_column_int(stmt, 3);
 row_authname = dc_strdup((char*)sqlite3_column_text(stmt, 4));
 sqlite3_finalize (stmt);
 stmt = NULL;
@@ -388,12 +388,12 @@ if (update_name || update_authname || update_addr || origin>row_origin)
 {
 stmt = dc_sqlite3_prepare(context->sql,
 "UPDATE contacts SET name=?, addr=?, origin=?, authname=? WHERE id=?;");
-sqlite3_bind_text(stmt, 1, update_name?       name   : row_name, -1, SQLITE_STATIC);
-sqlite3_bind_text(stmt, 2, update_addr?       addr   : row_addr, -1, SQLITE_STATIC);
+sqlite3_bind_text(stmt, 1, update_name? name : row_name, -1, SQLITE_STATIC);
+sqlite3_bind_text(stmt, 2, update_addr? addr : row_addr, -1, SQLITE_STATIC);
 sqlite3_bind_int (stmt, 3, origin>row_origin? origin : row_origin);
-sqlite3_bind_text(stmt, 4, update_authname?   name   : row_authname, -1, SQLITE_STATIC);
+sqlite3_bind_text(stmt, 4, update_authname? name : row_authname, -1, SQLITE_STATIC);
 sqlite3_bind_int (stmt, 5, row_id);
-sqlite3_step     (stmt);
+sqlite3_step (stmt);
 sqlite3_finalize (stmt);
 stmt = NULL;
 if (update_name)
@@ -403,7 +403,7 @@ stmt = dc_sqlite3_prepare(context->sql,
 sqlite3_bind_text(stmt, 1, name, -1, SQLITE_STATIC);
 sqlite3_bind_int (stmt, 2, DC_CHAT_TYPE_SINGLE);
 sqlite3_bind_int (stmt, 3, row_id);
-sqlite3_step     (stmt);
+sqlite3_step (stmt);
 }
 *sth_modified = CONTACT_MODIFIED;
 }
@@ -415,7 +415,7 @@ stmt = NULL;
 stmt = dc_sqlite3_prepare(context->sql,
 "INSERT INTO contacts (name, addr, origin) VALUES(?, ?, ?);");
 sqlite3_bind_text(stmt, 1, name? name : "", -1, SQLITE_STATIC);
-sqlite3_bind_text(stmt, 2, addr,    -1, SQLITE_STATIC);
+sqlite3_bind_text(stmt, 2, addr, -1, SQLITE_STATIC);
 sqlite3_bind_int (stmt, 3, origin);
 if (sqlite3_step(stmt)==SQLITE_DONE)
 {
@@ -451,7 +451,7 @@ sqlite3_finalize(stmt);
 }
 int dc_is_contact_blocked(dc_context_t* context, uint32_t contact_id)
 {
-int           is_blocked = 0;
+int is_blocked = 0;
 dc_contact_t* contact = dc_contact_new(context);
 if (dc_contact_load_from_db(contact, context->sql, contact_id)) {
 if (contact->blocked) {
@@ -463,8 +463,8 @@ return is_blocked;
 }
 int dc_get_contact_origin(dc_context_t* context, uint32_t contact_id, int* ret_blocked)
 {
-int           ret = 0;
-int           dummy = 0; if (ret_blocked==NULL) { ret_blocked = &dummy; }
+int ret = 0;
+int dummy = 0; if (ret_blocked==NULL) { ret_blocked = &dummy; }
 dc_contact_t* contact = dc_contact_new(context);
 *ret_blocked = 0;
 if (!dc_contact_load_from_db(contact, context->sql, contact_id)) {
@@ -482,8 +482,8 @@ return ret;
 uint32_t dc_create_contact(dc_context_t* context, const char* name, const char* addr)
 {
 uint32_t contact_id = 0;
-int      sth_modified = 0;
-int      blocked = 0;
+int sth_modified = 0;
+int blocked = 0;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC || addr==NULL || addr[0]==0) {
 goto cleanup;
 }
@@ -499,10 +499,10 @@ return contact_id;
 int dc_add_address_book(dc_context_t* context, const char* adr_book)
 {
 carray* lines = NULL;
-size_t  i = 0;
-size_t  iCnt = 0;
-int     sth_modified = 0;
-int     modify_cnt = 0;
+size_t i = 0;
+size_t iCnt = 0;
+int sth_modified = 0;
+int modify_cnt = 0;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC || adr_book==NULL) {
 goto cleanup;
 }
@@ -545,9 +545,9 @@ return 1;
 }
 uint32_t dc_lookup_contact_id_by_addr(dc_context_t* context, const char* addr)
 {
-int           contact_id = 0;
-char*         addr_normalized = NULL;
-char*         addr_self = NULL;
+int contact_id = 0;
+char* addr_normalized = NULL;
+char* addr_self = NULL;
 sqlite3_stmt* stmt = NULL;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC || addr==NULL || addr[0]==0) {
 goto cleanup;
@@ -576,12 +576,12 @@ return contact_id;
 }
 dc_array_t* dc_get_contacts(dc_context_t* context, uint32_t listflags, const char* query)
 {
-char*         self_addr = NULL;
-char*         self_name = NULL;
-char*         self_name2 = NULL;
-int           add_self = 0;
-dc_array_t*   ret = dc_array_new(context, 100);
-char*         s3strLikeCmd = NULL;
+char* self_addr = NULL;
+char* self_name = NULL;
+char* self_name2 = NULL;
+int add_self = 0;
+dc_array_t* ret = dc_array_new(context, 100);
+char* s3strLikeCmd = NULL;
 sqlite3_stmt* stmt = NULL;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC) {
 goto cleanup;
@@ -605,7 +605,7 @@ sqlite3_bind_int (stmt, 3, DC_ORIGIN_MIN_CONTACT_LIST);
 sqlite3_bind_text(stmt, 4, s3strLikeCmd, -1, SQLITE_STATIC);
 sqlite3_bind_text(stmt, 5, s3strLikeCmd, -1, SQLITE_STATIC);
 sqlite3_bind_int (stmt, 6, (listflags&DC_GCL_VERIFIED_ONLY)? 0 : 1);
-self_name  = dc_sqlite3_get_config(context->sql, "displayname", "");
+self_name = dc_sqlite3_get_config(context->sql, "displayname", "");
 self_name2 = dc_stock_str(context, DC_STR_SELF);
 if (query==NULL || dc_str_contains(self_addr, query) || dc_str_contains(self_name, query) || dc_str_contains(self_name2, query)) {
 add_self = 1;
@@ -638,7 +638,7 @@ return ret;
 }
 dc_array_t* dc_get_blocked_contacts(dc_context_t* context)
 {
-dc_array_t*   ret = dc_array_new(context, 100);
+dc_array_t* ret = dc_array_new(context, 100);
 sqlite3_stmt* stmt = NULL;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC) {
 goto cleanup;
@@ -678,7 +678,7 @@ context->cb(context, DC_EVENT_MSGS_CHANGED, 0, 0);
 }
 int dc_get_blocked_cnt(dc_context_t* context)
 {
-int           ret = 0;
+int ret = 0;
 sqlite3_stmt* stmt = NULL;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC) {
 goto cleanup;
@@ -697,7 +697,7 @@ return ret;
 }
 void dc_block_contact(dc_context_t* context, uint32_t contact_id, int new_blocking)
 {
-int           send_event = 0;
+int send_event = 0;
 dc_contact_t* contact = dc_contact_new(context);
 sqlite3_stmt* stmt = NULL;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC || contact_id<=DC_CONTACT_ID_LAST_SPECIAL) {
@@ -751,17 +751,17 @@ dc_strbuilder_cat(ret, fingerprint_unverified);
 char* dc_get_contact_encrinfo(dc_context_t* context, uint32_t contact_id)
 {
 dc_loginparam_t* loginparam = dc_loginparam_new();
-dc_contact_t*    contact = dc_contact_new(context);
+dc_contact_t* contact = dc_contact_new(context);
 dc_apeerstate_t* peerstate = dc_apeerstate_new(context);
-dc_key_t*        self_key = dc_key_new();
-char*            fingerprint_self = NULL;
-char*            fingerprint_other_verified = NULL;
-char*            fingerprint_other_unverified = NULL;
-char*            p = NULL;
+dc_key_t* self_key = dc_key_new();
+char* fingerprint_self = NULL;
+char* fingerprint_other_verified = NULL;
+char* fingerprint_other_unverified = NULL;
+char* p = NULL;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC) {
 goto cleanup;
 }
-dc_strbuilder_t  ret;
+dc_strbuilder_t ret;
 dc_strbuilder_init(&ret, 0);
 if (!dc_contact_load_from_db(contact, context->sql, contact_id)) {
 goto cleanup;
@@ -816,7 +816,7 @@ return ret.buf;
 }
 int dc_delete_contact(dc_context_t* context, uint32_t contact_id)
 {
-int           success = 0;
+int success = 0;
 sqlite3_stmt* stmt = NULL;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC || contact_id<=DC_CONTACT_ID_LAST_SPECIAL) {
 goto cleanup;

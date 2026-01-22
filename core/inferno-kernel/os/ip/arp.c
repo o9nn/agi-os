@@ -8,10 +8,10 @@
 #include "ipv6.h"
 enum
 {
-NHASH		= (1<<6),
-NCACHE		= 256,
-AOK		= 1,
-AWAIT		= 2,
+NHASH = (1<<6),
+NCACHE = 256,
+AOK = 1,
+AWAIT = 2,
 };
 char *arpstate[] =
 {
@@ -22,18 +22,18 @@ char *arpstate[] =
 struct Arp
 {
 QLock;
-Fs	*f;
-Arpent	*hash[NHASH];
-Arpent	cache[NCACHE];
-Arpent	*rxmt;
-Proc	*rxmitp;
-Rendez	rxmtq;
-Block 	*dropf, *dropl;
+Fs *f;
+Arpent *hash[NHASH];
+Arpent cache[NCACHE];
+Arpent *rxmt;
+Proc *rxmitp;
+Rendez rxmtq;
+Block *dropf, *dropl;
 };
 char *Ebadarp = "bad arp";
 #define haship(s) ((s)[IPaddrlen-1]%NHASH)
-extern int 	ReTransTimer = RETRANS_TIMER;
-static void 	rxmitproc(void *v);
+extern int ReTransTimer = RETRANS_TIMER;
+static void rxmitproc(void *v);
 void
 arpinit(Fs *f)
 {
@@ -410,7 +410,7 @@ return len;
 }
 enum
 {
-Alinelen=	90,
+Alinelen= 90,
 };
 char *aformat = "%-6.6s %-8.8s %-40.40I %-32.32s\n";
 static void

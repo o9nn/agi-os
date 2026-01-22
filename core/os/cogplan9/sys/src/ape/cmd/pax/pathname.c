@@ -7,13 +7,13 @@ static char *copyright = "Copyright (c) 1989 Mark H. Colburn.\nAll rights reserv
 int dirneed(char *name)
 #else
 int dirneed(name)
-char           *name;
+char *name;
 #endif
 {
-char           *cp;
-char           *last;
-int             ok;
-static Stat     sb;
+char *cp;
+char *last;
+int ok;
+static Stat sb;
 last = (char *)NULL;
 for (cp = name; *cp;) {
 if (*cp++ == '/') {
@@ -34,14 +34,14 @@ return (ok ? 0 : -1);
 int nameopt(char *begin)
 #else
 int nameopt(begin)
-char           *begin;
+char *begin;
 #endif
 {
-char           *name;
-char           *item;
-int             idx;
-int             absolute;
-char           *element[PATHELEM];
+char *name;
+char *item;
+int idx;
+int absolute;
+char *element[PATHELEM];
 absolute = (*(name = begin) == '/');
 idx = 0;
 for (;;) {
@@ -96,8 +96,8 @@ return (idx);
 int dirmake(char *name, Stat *asb)
 #else
 int dirmake(name, asb)
-char           *name;
-Stat           *asb;
+char *name;
+Stat *asb;
 #endif
 {
 if (mkdir(name, (int) (asb->sb_mode & S_IPOPN)) < 0) {

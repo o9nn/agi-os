@@ -1,32 +1,32 @@
 #ifndef _KERN_COMPAT_H
 #define _KERN_COMPAT_H
-#if ! defined(LINUX_VERSION_CODE)  ||  (LINUX_VERSION_CODE < 0x10000)
+#if ! defined(LINUX_VERSION_CODE) || (LINUX_VERSION_CODE < 0x10000)
 #include <linux/version.h>
 #endif
-#if LINUX_VERSION_CODE < 0x20300  &&  defined(MODVERSIONS)
+#if LINUX_VERSION_CODE < 0x20300 && defined(MODVERSIONS)
 #include <linux/modversions.h>
 #endif
-#if LINUX_VERSION_CODE < 0x20100  &&  ! defined(__alpha__)
+#if LINUX_VERSION_CODE < 0x20100 && ! defined(__alpha__)
 #define ioremap(a,b)\
 (((unsigned long)(a) >= 0x100000) ? vremap(a,b) : (void*)(a))
 #define iounmap(v)\
 do { if ((unsigned long)(v) >= 0x100000) vfree(v);} while (0)
 #endif
 #if LINUX_VERSION_CODE < 0x20115
-#define MODULE_AUTHOR(name)  extern int nonesuch
-#define MODULE_DESCRIPTION(string)  extern int nonesuch
-#define MODULE_PARM(varname, typestring)  extern int nonesuch
+#define MODULE_AUTHOR(name) extern int nonesuch
+#define MODULE_DESCRIPTION(string) extern int nonesuch
+#define MODULE_PARM(varname, typestring) extern int nonesuch
 #define MODULE_PARM_DESC(var,desc) extern int nonesuch
 #endif
 #if !defined(MODULE_LICENSE)
-#define MODULE_LICENSE(license) 	\
-static const char __module_license[] __attribute__((section(".modinfo"))) =   \
+#define MODULE_LICENSE(license) \
+static const char __module_license[] __attribute__((section(".modinfo"))) = \
 "license=" license
 #endif
 #if !defined(MODULE_PARM_DESC)
-#define MODULE_PARM_DESC(var,desc)		\
-const char __module_parm_desc_##var[]		\
-__attribute__((section(".modinfo"))) =		\
+#define MODULE_PARM_DESC(var,desc) \
+const char __module_parm_desc_##var[] \
+__attribute__((section(".modinfo"))) = \
 "parm_desc_" __MODULE_STRING(var) "=" desc
 #endif
 #if LINUX_VERSION_CODE < 0x20123
@@ -36,17 +36,17 @@ __attribute__((section(".modinfo"))) =		\
 #define le16_to_cpu(val) (val)
 #define le16_to_cpus(val)
 #define le32_to_cpu(val) (val)
-#define cpu_to_be16(val) ((((val) & 0xff) << 8) +  (((val) >> 8) & 0xff))
+#define cpu_to_be16(val) ((((val) & 0xff) << 8) + (((val) >> 8) & 0xff))
 #define cpu_to_be32(val) ((cpu_to_be16(val) << 16) + cpu_to_be16((val) >> 16))
 typedef long spinlock_t;
 #define SPIN_LOCK_UNLOCKED 0
 #define spin_lock(lock)
 #define spin_unlock(lock)
-#define spin_lock_irqsave(lock, flags)	do {save_flags(flags); cli();} while(0)
+#define spin_lock_irqsave(lock, flags) do {save_flags(flags); cli();} while(0)
 #define spin_unlock_irqrestore(lock, flags) restore_flags(flags)
 #endif
 #if LINUX_VERSION_CODE <= 0x20139
-#define	net_device_stats enet_statistics
+#define net_device_stats enet_statistics
 #else
 #define NETSTATS_VER2
 #endif
@@ -61,22 +61,22 @@ typedef long spinlock_t;
 #endif
 #if !defined(HAVE_NETIF_MSG)
 enum {
-NETIF_MSG_DRV           = 0x0001,
-NETIF_MSG_PROBE         = 0x0002,
-NETIF_MSG_LINK          = 0x0004,
-NETIF_MSG_TIMER         = 0x0008,
-NETIF_MSG_IFDOWN        = 0x0010,
-NETIF_MSG_IFUP          = 0x0020,
-NETIF_MSG_RX_ERR        = 0x0040,
-NETIF_MSG_TX_ERR        = 0x0080,
-NETIF_MSG_TX_QUEUED     = 0x0100,
-NETIF_MSG_INTR          = 0x0200,
-NETIF_MSG_TX_DONE       = 0x0400,
-NETIF_MSG_RX_STATUS     = 0x0800,
-NETIF_MSG_PKTDATA       = 0x1000,
-NETIF_MSG_WOL           = 0x4000,
-NETIF_MSG_MISC          = 0x8000,
-NETIF_MSG_RXFILTER      = 0x10000,
+NETIF_MSG_DRV = 0x0001,
+NETIF_MSG_PROBE = 0x0002,
+NETIF_MSG_LINK = 0x0004,
+NETIF_MSG_TIMER = 0x0008,
+NETIF_MSG_IFDOWN = 0x0010,
+NETIF_MSG_IFUP = 0x0020,
+NETIF_MSG_RX_ERR = 0x0040,
+NETIF_MSG_TX_ERR = 0x0080,
+NETIF_MSG_TX_QUEUED = 0x0100,
+NETIF_MSG_INTR = 0x0200,
+NETIF_MSG_TX_DONE = 0x0400,
+NETIF_MSG_RX_STATUS = 0x0800,
+NETIF_MSG_PKTDATA = 0x1000,
+NETIF_MSG_WOL = 0x4000,
+NETIF_MSG_MISC = 0x8000,
+NETIF_MSG_RXFILTER = 0x10000,
 };
 #define NETIF_MSG_MAX 0x10000
 #endif
@@ -154,7 +154,7 @@ pcibios_write_config_dword(bus_number(pdev), devfn_number(pdev), where, val)
 #define capable(CAP_XXX) (suser())
 #endif
 #if ! defined(HAVE_NETIF_QUEUE)
-#define netif_wake_queue(dev)   do { clear_bit( 0, (void*)&(dev)->tbusy); mark_bh(NET_BH); } while (0)
+#define netif_wake_queue(dev) do { clear_bit( 0, (void*)&(dev)->tbusy); mark_bh(NET_BH); } while (0)
 #define netif_start_tx_queue(dev) do { (dev)->tbusy = 0; dev->start = 1; } while (0)
 #define netif_stop_tx_queue(dev) do { (dev)->tbusy = 1; dev->start = 0; } while (0)
 #define netif_queue_paused(dev) ((dev)->tbusy != 0)
@@ -165,22 +165,22 @@ pcibios_write_config_dword(bus_number(pdev), devfn_number(pdev), where, val)
 #define netif_device_attach(dev) do {; } while (0)
 #define netif_device_detach(dev) do {; } while (0)
 #define netif_device_present(dev) (1)
-#define netif_set_tx_timeout(dev, func, deltajiffs)   do {; } while (0)
-#define netif_link_down(dev)  (dev)->flags &= ~IFF_RUNNING
-#define netif_link_up(dev)  (dev)->flags |= IFF_RUNNING
+#define netif_set_tx_timeout(dev, func, deltajiffs) do {; } while (0)
+#define netif_link_down(dev) (dev)->flags &= ~IFF_RUNNING
+#define netif_link_up(dev) (dev)->flags |= IFF_RUNNING
 #else
 #define netif_start_tx_queue(dev) netif_start_queue(dev)
 #define netif_stop_tx_queue(dev) netif_stop_queue(dev)
 #define netif_queue_paused(dev) netif_queue_stopped(dev)
 #define netif_resume_tx_queue(dev) netif_wake_queue(dev)
-#define netif_pause_tx_queue(dev)  0
+#define netif_pause_tx_queue(dev) 0
 #define netif_unpause_tx_queue(dev) do {; } while (0)
 #ifdef __LINK_STATE_NOCARRIER
-#define netif_link_down(dev)  netif_carrier_off(dev)
-#define netif_link_up(dev)  netif_carrier_on(dev)
+#define netif_link_down(dev) netif_carrier_off(dev)
+#define netif_link_up(dev) netif_carrier_on(dev)
 #else
-#define netif_link_down(dev)  (dev)->flags &= ~IFF_RUNNING
-#define netif_link_up(dev)  (dev)->flags |= IFF_RUNNING
+#define netif_link_down(dev) (dev)->flags &= ~IFF_RUNNING
+#define netif_link_up(dev) (dev)->flags |= IFF_RUNNING
 #endif
 #endif
 #ifndef PCI_DMA_BUS_IS_PHYS

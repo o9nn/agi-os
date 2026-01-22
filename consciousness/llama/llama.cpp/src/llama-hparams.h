@@ -1,10 +1,10 @@
 #pragma once
 #include "llama.h"
 #include <array>
-#define LLAMA_MAX_LAYERS  512
+#define LLAMA_MAX_LAYERS 512
 #define LLAMA_MAX_EXPERTS 256
 enum llama_expert_gating_func_type {
-LLAMA_EXPERT_GATING_FUNC_TYPE_NONE    = 0,
+LLAMA_EXPERT_GATING_FUNC_TYPE_NONE = 0,
 LLAMA_EXPERT_GATING_FUNC_TYPE_SOFTMAX = 1,
 LLAMA_EXPERT_GATING_FUNC_TYPE_SIGMOID = 2,
 };
@@ -35,68 +35,68 @@ uint32_t n_expert_used = 0;
 uint32_t n_rel_attn_bkts = 0;
 uint32_t n_embd_head_k_mla = 0;
 uint32_t n_embd_head_v_mla = 0;
-struct llama_hparams_posnet   posnet;
+struct llama_hparams_posnet posnet;
 struct llama_hparams_convnext convnext;
 std::array<uint32_t, LLAMA_MAX_LAYERS> n_head_arr;
 std::array<uint32_t, LLAMA_MAX_LAYERS> n_head_kv_arr;
 std::array<uint32_t, LLAMA_MAX_LAYERS> n_ff_arr;
 std::array<std::array<uint32_t, LLAMA_MAX_LAYERS>, 4> n_bskcn_arr = {};
 uint32_t n_layer_dense_lead = 0;
-uint32_t n_lora_q           = 0;
-uint32_t n_lora_kv          = 0;
-uint32_t n_ff_exp           = 0;
-uint32_t n_ff_shexp         = 0;
-uint32_t n_expert_shared    = 0;
-uint32_t n_norm_groups      = 0;
-float    expert_weights_scale = 0.0;
-bool     expert_weights_norm  = false;
-uint32_t expert_gating_func   = LLAMA_EXPERT_GATING_FUNC_TYPE_NONE;
-uint32_t moe_every_n_layers   = 0;
+uint32_t n_lora_q = 0;
+uint32_t n_lora_kv = 0;
+uint32_t n_ff_exp = 0;
+uint32_t n_ff_shexp = 0;
+uint32_t n_expert_shared = 0;
+uint32_t n_norm_groups = 0;
+float expert_weights_scale = 0.0;
+bool expert_weights_norm = false;
+uint32_t expert_gating_func = LLAMA_EXPERT_GATING_FUNC_TYPE_NONE;
+uint32_t moe_every_n_layers = 0;
 float f_norm_eps;
 float f_norm_rms_eps;
 float f_norm_group_eps;
-float f_attn_logit_softcapping  = 50.0f;
+float f_attn_logit_softcapping = 50.0f;
 float f_final_logit_softcapping = 30.0f;
 uint32_t rescale_every_n_layers = 0;
-uint32_t time_mix_extra_dim     = 0;
-uint32_t time_decay_extra_dim   = 0;
-uint32_t wkv_head_size          = 0;
-uint32_t token_shift_count      = 2;
-uint32_t n_lora_decay           = 0;
-uint32_t n_lora_iclr            = 0;
-uint32_t n_lora_value_res_mix   = 0;
-uint32_t n_lora_gate            = 0;
-float    rope_attn_factor = 1.0f;
-float    rope_freq_base_train;
-float    rope_freq_base_train_swa;
-float    rope_freq_scale_train;
-float    rope_freq_scale_train_swa;
+uint32_t time_mix_extra_dim = 0;
+uint32_t time_decay_extra_dim = 0;
+uint32_t wkv_head_size = 0;
+uint32_t token_shift_count = 2;
+uint32_t n_lora_decay = 0;
+uint32_t n_lora_iclr = 0;
+uint32_t n_lora_value_res_mix = 0;
+uint32_t n_lora_gate = 0;
+float rope_attn_factor = 1.0f;
+float rope_freq_base_train;
+float rope_freq_base_train_swa;
+float rope_freq_scale_train;
+float rope_freq_scale_train_swa;
 uint32_t n_ctx_orig_yarn;
-float    rope_yarn_log_mul;
+float rope_yarn_log_mul;
 std::array<int, 4> rope_sections;
-uint32_t ssm_d_conv  = 0;
+uint32_t ssm_d_conv = 0;
 uint32_t ssm_d_inner = 0;
 uint32_t ssm_d_state = 0;
 uint32_t ssm_dt_rank = 0;
 bool ssm_dt_b_c_rms = false;
-float f_clamp_kqv      = 0.0f;
+float f_clamp_kqv = 0.0f;
 float f_max_alibi_bias = 0.0f;
-float f_logit_scale    = 0.0f;
-float f_residual_scale  = 0.0f;
+float f_logit_scale = 0.0f;
+float f_residual_scale = 0.0f;
 float f_embedding_scale = 0.0f;
 float f_attention_scale = 0.0f;
-bool causal_attn   = true;
-bool use_alibi     = false;
+bool causal_attn = true;
+bool use_alibi = false;
 bool attn_soft_cap = false;
-uint32_t n_moe_layer_step        = 0;
-bool     use_kq_norm             = true;
-uint32_t n_attn_chunk            = 0;
-uint32_t n_no_rope_layer_step    = 4;
+uint32_t n_moe_layer_step = 0;
+bool use_kq_norm = true;
+uint32_t n_attn_chunk = 0;
+uint32_t n_no_rope_layer_step = 4;
 uint32_t n_attn_temp_floor_scale = 8192;
-float    f_attn_temp_scale       = 0.1;
+float f_attn_temp_scale = 0.1;
 llama_token dec_start_token_id = LLAMA_TOKEN_NULL;
-enum llama_pooling_type      pooling_type            = LLAMA_POOLING_TYPE_NONE;
-enum llama_rope_type         rope_type               = LLAMA_ROPE_TYPE_NONE;
+enum llama_pooling_type pooling_type = LLAMA_POOLING_TYPE_NONE;
+enum llama_rope_type rope_type = LLAMA_ROPE_TYPE_NONE;
 enum llama_rope_scaling_type rope_scaling_type_train = LLAMA_ROPE_SCALING_TYPE_NONE;
 uint32_t n_head(uint32_t il = 0) const;
 uint32_t n_head_kv(uint32_t il = 0) const;

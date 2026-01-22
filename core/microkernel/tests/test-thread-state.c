@@ -4,21 +4,21 @@
 #include <mach.user.h>
 #include <mach_port.user.h>
 #if defined(__x86_64__) || defined(__i386__)
-#define THREAD_STATE_FLAVOR	i386_THREAD_STATE
-#define THREAD_STATE_COUNT	i386_THREAD_STATE_COUNT
+#define THREAD_STATE_FLAVOR i386_THREAD_STATE
+#define THREAD_STATE_COUNT i386_THREAD_STATE_COUNT
 #elif defined(__aarch64__)
-#define THREAD_STATE_FLAVOR	AARCH64_THREAD_STATE
-#define THREAD_STATE_COUNT	AARCH64_THREAD_STATE_COUNT
+#define THREAD_STATE_FLAVOR AARCH64_THREAD_STATE
+#define THREAD_STATE_COUNT AARCH64_THREAD_STATE_COUNT
 #else
 #error "Don't know which state to use on this platform"
 #endif
 static void __attribute__((noreturn)) fault_handler(
-vm_offset_t	fault_address,
-thread_state_t	state)
+vm_offset_t fault_address,
+thread_state_t state)
 {
-kern_return_t	kr;
-vm_size_t	i;
-vm_offset_t	addr = fault_address;
+kern_return_t kr;
+vm_size_t i;
+vm_offset_t addr = fault_address;
 printf("Handling a fault at 0x%p\n", fault_address);
 kr = vm_allocate(mach_task_self(), &addr, vm_page_size, FALSE);
 ASSERT_RET(kr, "failed to allocate missing memory");
@@ -30,23 +30,23 @@ ASSERT_RET(kr, "thread_set_self_state failed");
 FAILURE("thread_set_self_state returned");
 }
 kern_return_t catch_exception_raise(
-mach_port_t	exception_port,
-thread_t	thread,
-task_t		task,
-integer_t	exception,
-integer_t	code,
-long_integer_t	subcode)
+mach_port_t exception_port,
+thread_t thread,
+task_t task,
+integer_t exception,
+integer_t code,
+long_integer_t subcode)
 {
-kern_return_t			kr;
-vm_offset_t			off;
+kern_return_t kr;
+vm_offset_t off;
 #if defined(__x86_64__) || defined(__i386__)
-struct i386_thread_state	state;
+struct i386_thread_state state;
 #elif defined(__aarch64__)
-struct aarch64_thread_state	state;
+struct aarch64_thread_state state;
 #else
 #error "Don't know which state to use on this platform"
 #endif
-mach_msg_type_number_t		state_count = THREAD_STATE_COUNT;
+mach_msg_type_number_t state_count = THREAD_STATE_COUNT;
 printf("Received exception_raise(%u %u 0x%lx)\n", exception, code, subcode);
 if (exception != EXC_BAD_ACCESS)
 return KERN_FAILURE;
@@ -89,19 +89,19 @@ return KERN_SUCCESS;
 }
 static void exc_server_thread_body(void *arg)
 {
-kern_return_t	kr;
-mach_port_t	exc_port = (mach_port_t) (vm_offset_t) arg;
+kern_return_t kr;
+mach_port_t exc_port = (mach_port_t) (vm_offset_t) arg;
 boolean_t exc_server(
-mach_msg_header_t	*request,
-mach_msg_header_t	*reply);
+mach_msg_header_t *request,
+mach_msg_header_t *reply);
 kr = mach_msg_server(exc_server, 4096, exc_port, MACH_MSG_OPTION_NONE);
 ASSERT_RET(kr, "error in mach_msg_server");
 }
 static void do_count(void)
 {
-const int	*arr = (const int *) 0x10000000;
-int		i;
-unsigned long	count = 0;
+const int *arr = (const int *) 0x10000000;
+int i;
+unsigned long count = 0;
 for (i = 0; i < vm_page_size / sizeof(int) * 3; i++)
 count += arr[i];
 ASSERT(vm_page_size == 4096, "need a different answer for a different page size");
@@ -109,8 +109,8 @@ ASSERT(count == 0x17fa00, "bad count");
 }
 int main(int argc, char *argv[], int envc, char *envp[])
 {
-kern_return_t	kr;
-mach_port_t	exc_port = mach_reply_port();
+kern_return_t kr;
+mach_port_t exc_port = mach_reply_port();
 test_thread_start(mach_task_self(), exc_server_thread_body,
 (void *) (vm_offset_t) exc_port);
 kr = mach_port_insert_right(mach_task_self(), exc_port,

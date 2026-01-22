@@ -9,17 +9,17 @@ typedef struct Entry Entry;
 struct Entry
 {
 Control;
-int		border;
-CFont	*font;
-CImage	*image;
-CImage	*textcolor;
-CImage	*bordercolor;
-Rune		*text;
-int		ntext;
-int		cursor;
-int		align;
-int		hasfocus;
-int		lastbut;
+int border;
+CFont *font;
+CImage *image;
+CImage *textcolor;
+CImage *bordercolor;
+Rune *text;
+int ntext;
+int cursor;
+int align;
+int hasfocus;
+int lastbut;
 };
 enum{
 EAlign,
@@ -39,21 +39,21 @@ ETextcolor,
 EValue,
 };
 static char *cmds[] = {
-[EAlign] =			"align",
-[EBorder] =		"border",
-[EBordercolor] =	"bordercolor",
-[EData] = 			"data",
-[EFocus] = 		"focus",
-[EFont] =			"font",
-[EFormat] = 		"format",
-[EHide] =			"hide",
-[EImage] =		"image",
-[ERect] =			"rect",
-[EReveal] =		"reveal",
-[EShow] =			"show",
-[ESize] =			"size",
-[ETextcolor] =		"textcolor",
-[EValue] =			"value",
+[EAlign] = "align",
+[EBorder] = "border",
+[EBordercolor] = "bordercolor",
+[EData] = "data",
+[EFocus] = "focus",
+[EFont] = "font",
+[EFormat] = "format",
+[EHide] = "hide",
+[EImage] = "image",
+[ERect] = "rect",
+[EReveal] = "reveal",
+[EShow] = "show",
+[ESize] = "size",
+[ETextcolor] = "textcolor",
+[EValue] = "value",
 nil
 };
 static void

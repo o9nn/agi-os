@@ -1,44 +1,44 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"ip.h"
-#include	"ipv6.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "ip.h"
+#include "ipv6.h"
 #define DPRINT if(0)print
 enum
 {
-UDP_UDPHDR_SZ	= 8,
+UDP_UDPHDR_SZ = 8,
 UDP4_PHDR_OFF = 8,
 UDP4_PHDR_SZ = 12,
 UDP4_IPHDR_SZ = 20,
 UDP6_IPHDR_SZ = 40,
 UDP6_PHDR_SZ = 40,
 UDP6_PHDR_OFF = 0,
-IP_UDPPROTO	= 17,
-UDP_USEAD7	= 52,
-Udprxms		= 200,
-Udptickms	= 100,
-Udpmaxxmit	= 10,
+IP_UDPPROTO = 17,
+UDP_USEAD7 = 52,
+Udprxms = 200,
+Udptickms = 100,
+Udpmaxxmit = 10,
 };
 typedef struct Udp4hdr Udp4hdr;
 struct Udp4hdr
 {
-uchar	vihl;
-uchar	tos;
-uchar	length[2];
-uchar	id[2];
-uchar	frag[2];
-uchar	Unused;
-uchar	udpproto;
-uchar	udpplen[2];
-uchar	udpsrc[IPv4addrlen];
-uchar	udpdst[IPv4addrlen];
-uchar	udpsport[2];
-uchar	udpdport[2];
-uchar	udplen[2];
-uchar	udpcksum[2];
+uchar vihl;
+uchar tos;
+uchar length[2];
+uchar id[2];
+uchar frag[2];
+uchar Unused;
+uchar udpproto;
+uchar udpplen[2];
+uchar udpsrc[IPv4addrlen];
+uchar udpdst[IPv4addrlen];
+uchar udpsport[2];
+uchar udpdport[2];
+uchar udplen[2];
+uchar udpcksum[2];
 };
 typedef struct Udp6hdr Udp6hdr;
 struct Udp6hdr {
@@ -48,26 +48,26 @@ uchar nextheader;
 uchar hoplimit;
 uchar udpsrc[IPaddrlen];
 uchar udpdst[IPaddrlen];
-uchar	udpsport[2];
-uchar	udpdport[2];
-uchar	udplen[2];
-uchar	udpcksum[2];
+uchar udpsport[2];
+uchar udpdport[2];
+uchar udplen[2];
+uchar udpcksum[2];
 };
 typedef struct Udpstats Udpstats;
 struct Udpstats
 {
-uvlong	udpInDatagrams;
-ulong	udpNoPorts;
-ulong	udpInErrors;
-uvlong	udpOutDatagrams;
+uvlong udpInDatagrams;
+ulong udpNoPorts;
+ulong udpInErrors;
+uvlong udpOutDatagrams;
 };
 typedef struct Udppriv Udppriv;
 struct Udppriv
 {
-Ipht		ht;
-Udpstats	ustats;
-ulong		csumerr;
-ulong		lenerr;
+Ipht ht;
+Udpstats ustats;
+ulong csumerr;
+ulong lenerr;
 };
 void (*etherprofiler)(char *name, int qlen);
 void udpkick(void *x, Block *bp);
@@ -75,7 +75,7 @@ typedef struct Udpcb Udpcb;
 struct Udpcb
 {
 QLock;
-uchar	headers;
+uchar headers;
 };
 static char*
 udpconnect(Conv *c, char **argv, int argc)

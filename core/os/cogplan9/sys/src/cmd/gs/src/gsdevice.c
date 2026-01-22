@@ -383,7 +383,7 @@ gx_device_set_width_height(dev, actual_width, actual_height);
 return 0;
 }
 void
-gx_device_set_margins(gx_device * dev, const float *margins  ,
+gx_device_set_margins(gx_device * dev, const float *margins ,
 bool move_origin)
 {
 int i;

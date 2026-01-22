@@ -13,21 +13,21 @@ init: fn(nil: ref Draw->Context, nil: list of string);
 MAXNODES: con (1<<20)/4;
 verbose: int;
 # Doing
-# 	powers -p 3
+# powers -p 3
 # gives
-# 	[2] 1729 = 1**3 + 12**3 = 9**3 + 10**3
-# 	[2] 4104 = 2**3 + 16**3 = 9**3 + 15**3
+# [2] 1729 = 1**3 + 12**3 = 9**3 + 10**3
+# [2] 4104 = 2**3 + 16**3 = 9**3 + 15**3
 # ie 1729 can be written in two ways as the sum of 2 cubes as can 4104.
 # The options are
-# -p	the power to use - default 2
-# -n	the number of powers summed - default 2
-# -f	the minimum number of ways found before reporting it - default 2
-# -l	the least number to consider - default 0
-# -m	the greatest number to consider - default 8192
+# -p the power to use - default 2
+# -n the number of powers summed - default 2
+# -f the minimum number of ways found before reporting it - default 2
+# -l the least number to consider - default 0
+# -m the greatest number to consider - default 8192
 # Thus
-# 	pow -p 4 -n 3 -f 3 -l 0 -m 1000000
+# pow -p 4 -n 3 -f 3 -l 0 -m 1000000
 # gives
-# 	[3] 811538 = 12**4 + 17**4 + 29**4 = 7**4 + 21**4 + 28**4 = 4**4 + 23**4 + 27**4
+# [3] 811538 = 12**4 + 17**4 + 29**4 = 7**4 + 21**4 + 28**4 = 4**4 + 23**4 + 27**4
 # ie fourth powers, 3 in each sum, minimum of 3 representations, numbers from 0-1000000.
 # [2] 25
 # [3] 325
@@ -105,8 +105,8 @@ if(r > n-r)
 r = n-r;
 # f := g := 1;
 # for(i := 0; i < r; i++){
-# 	f *= n-i;
-# 	g *= i+1;
+# f *= n-i;
+# g *= i+1;
 # }
 # return f/g;
 num := array[r] of int;
@@ -142,7 +142,7 @@ nSr(n: int, i: int, j: int): int
 return nHr(j, n)-nHr(i, n);
 # s := 0;
 # for(k := i; k < j; k++)
-# 	s += nHr(k+1, n-1);
+# s += nHr(k+1, n-1);
 # return s;
 }
 nSrmax(n: int, i: int, m: int): int
@@ -424,7 +424,7 @@ for(;;){
 imin := iroot((min+big(n-1))/big(n), p);
 imax := nSrmax(n, imin, MAXNODES);
 max = big(imax)**p - big(1);
-while(max <= min){	# could do better
+while(max <= min){ # could do better
 imax++;
 max = big(imax)**p - big(1);
 }

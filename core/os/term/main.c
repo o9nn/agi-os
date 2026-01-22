@@ -71,12 +71,12 @@ return FALSE;
 }
 static struct argp_option options[] =
 {
-{"rdev",     'n', "ID", 0,
+{"rdev", 'n', "ID", 0,
 "The stat rdev number for this node; may be either a"
 " single integer, or of the form MAJOR,MINOR"},
-{"name",	'N', "NAME", 0,
+{"name", 'N', "NAME", 0,
 "The name of this node, to be returned by term_get_nodename."},
-{"type",	'T', "TYPE", 0,
+{"type", 'T', "TYPE", 0,
 "Backend type, see below.  This determines the meaning of the argument."},
 {0}
 };

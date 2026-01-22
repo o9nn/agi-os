@@ -8,34 +8,34 @@ ssl3: SSL3;
 Context: import ssl3;
 # Inferno supported cipher suites:
 ssl_suites := array [] of {
-byte 0, byte 16r03,	# RSA_EXPORT_WITH_RC4_40_MD5
-byte 0, byte 16r04,	# RSA_WITH_RC4_128_MD5
-byte 0, byte 16r05,	# RSA_WITH_RC4_128_SHA
-byte 0, byte 16r06,	# RSA_EXPORT_WITH_RC2_CBC_40_MD5
-byte 0, byte 16r07,	# RSA_WITH_IDEA_CBC_SHA
-byte 0, byte 16r08,	# RSA_EXPORT_WITH_DES40_CBC_SHA
-byte 0, byte 16r09,	# RSA_WITH_DES_CBC_SHA
-byte 0, byte 16r0A,	# RSA_WITH_3DES_EDE_CBC_SHA
-byte 0, byte 16r0B,	# DH_DSS_EXPORT_WITH_DES40_CBC_SHA
-byte 0, byte 16r0C,	# DH_DSS_WITH_DES_CBC_SHA
-byte 0, byte 16r0D,	# DH_DSS_WITH_3DES_EDE_CBC_SHA
-byte 0, byte 16r0E,	# DH_RSA_EXPORT_WITH_DES40_CBC_SHA
-byte 0, byte 16r0F,	# DH_RSA_WITH_DES_CBC_SHA
-byte 0, byte 16r10,	# DH_RSA_WITH_3DES_EDE_CBC_SHA
-byte 0, byte 16r11,	# DHE_DSS_EXPORT_WITH_DES40_CBC_SHA
-byte 0, byte 16r12,	# DHE_DSS_WITH_DES_CBC_SHA
-byte 0, byte 16r13,	# DHE_DSS_WITH_3DES_EDE_CBC_SHA
-byte 0, byte 16r14,	# DHE_RSA_EXPORT_WITH_DES40_CBC_SHA
-byte 0, byte 16r15,	# DHE_RSA_WITH_DES_CBC_SHA
-byte 0, byte 16r16,	# DHE_RSA_WITH_3DES_EDE_CBC_SHA
-byte 0, byte 16r17,	# DH_anon_EXPORT_WITH_RC4_40_MD5
-byte 0, byte 16r18,	# DH_anon_WITH_RC4_128_MD5
-byte 0, byte 16r19,	# DH_anon_EXPORT_WITH_DES40_CBC_SHA
-byte 0, byte 16r1A,	# DH_anon_WITH_DES_CBC_SHA
-byte 0, byte 16r1B,	# DH_anon_WITH_3DES_EDE_CBC_SHA
-byte 0, byte 16r1C,	# FORTEZZA_KEA_WITH_NULL_SHA
-byte 0, byte 16r1D,	# FORTEZZA_KEA_WITH_FORTEZZA_CBC_SHA
-byte 0, byte 16r1E,	# FORTEZZA_KEA_WITH_RC4_128_SHA
+byte 0, byte 16r03, # RSA_EXPORT_WITH_RC4_40_MD5
+byte 0, byte 16r04, # RSA_WITH_RC4_128_MD5
+byte 0, byte 16r05, # RSA_WITH_RC4_128_SHA
+byte 0, byte 16r06, # RSA_EXPORT_WITH_RC2_CBC_40_MD5
+byte 0, byte 16r07, # RSA_WITH_IDEA_CBC_SHA
+byte 0, byte 16r08, # RSA_EXPORT_WITH_DES40_CBC_SHA
+byte 0, byte 16r09, # RSA_WITH_DES_CBC_SHA
+byte 0, byte 16r0A, # RSA_WITH_3DES_EDE_CBC_SHA
+byte 0, byte 16r0B, # DH_DSS_EXPORT_WITH_DES40_CBC_SHA
+byte 0, byte 16r0C, # DH_DSS_WITH_DES_CBC_SHA
+byte 0, byte 16r0D, # DH_DSS_WITH_3DES_EDE_CBC_SHA
+byte 0, byte 16r0E, # DH_RSA_EXPORT_WITH_DES40_CBC_SHA
+byte 0, byte 16r0F, # DH_RSA_WITH_DES_CBC_SHA
+byte 0, byte 16r10, # DH_RSA_WITH_3DES_EDE_CBC_SHA
+byte 0, byte 16r11, # DHE_DSS_EXPORT_WITH_DES40_CBC_SHA
+byte 0, byte 16r12, # DHE_DSS_WITH_DES_CBC_SHA
+byte 0, byte 16r13, # DHE_DSS_WITH_3DES_EDE_CBC_SHA
+byte 0, byte 16r14, # DHE_RSA_EXPORT_WITH_DES40_CBC_SHA
+byte 0, byte 16r15, # DHE_RSA_WITH_DES_CBC_SHA
+byte 0, byte 16r16, # DHE_RSA_WITH_3DES_EDE_CBC_SHA
+byte 0, byte 16r17, # DH_anon_EXPORT_WITH_RC4_40_MD5
+byte 0, byte 16r18, # DH_anon_WITH_RC4_128_MD5
+byte 0, byte 16r19, # DH_anon_EXPORT_WITH_DES40_CBC_SHA
+byte 0, byte 16r1A, # DH_anon_WITH_DES_CBC_SHA
+byte 0, byte 16r1B, # DH_anon_WITH_3DES_EDE_CBC_SHA
+byte 0, byte 16r1C, # FORTEZZA_KEA_WITH_NULL_SHA
+byte 0, byte 16r1D, # FORTEZZA_KEA_WITH_FORTEZZA_CBC_SHA
+byte 0, byte 16r1E, # FORTEZZA_KEA_WITH_RC4_128_SHA
 };
 ssl_comprs := array [] of {byte 0};
 # local copies from CU
@@ -48,13 +48,13 @@ T: StringIntTab;
 DI: Dial;
 CU: CharonUtils;
 Netconn, ByteSource, Header, config, Nameval : import CU;
-ctype: array of byte;	# local copy of C->ctype
-HTTPD:		con 80;		# Default IP port
-HTTPSD:		con 443;	# Default IP port for HTTPS
+ctype: array of byte; # local copy of C->ctype
+HTTPD: con 80; # Default IP port
+HTTPSD: con 443; # Default IP port for HTTPS
 # For Inferno, won't be able to read more than this at one go anyway
-BLOCKSIZE:	con 1460;
+BLOCKSIZE: con 1460;
 # HTTP/1.1 Spec says 5, but we've seen more than that in non-looping redirs
-# MAXREDIR:	con 10;
+# MAXREDIR: con 10;
 # tstate bits
 THTTP_1_0, TPersist, TProxy, TSSL: con (1<<iota);
 # Header fields (in order: general, request, response, entity)
@@ -233,12 +233,12 @@ U->init();
 DI = cu->DI;
 C = cu->C;
 T = load StringIntTab StringIntTab->PATH;
-#	D = load Date CU->loadpath(Date->PATH);
-#	if (D == nil)
-#		CU->raise(sys->sprint("EXInternal: can't load Date: %r"));
-#	D->init(cu);
+# D = load Date CU->loadpath(Date->PATH);
+# if (D == nil)
+# CU->raise(sys->sprint("EXInternal: can't load Date: %r"));
+# D->init(cu);
 ctype = C->ctype;
-# sslhs = nil;	# load on demand
+# sslhs = nil; # load on demand
 ssl3 = nil; # load on demand
 mediatable = CU->makestrinttab(CU->mnames);
 agent = (CU->config).agentname;
@@ -278,14 +278,14 @@ if(dbg)
 sys->print("http %d: connected\n", nc.id);
 if(nc.tstate&TSSL) {
 #if(sslhs == nil) {
-#	sslhs = load SSLHS SSLHS->PATH;
-#	if(sslhs == nil)
-#		err = sys->sprint("can't load SSLHS: %r");
-#	else
-#		sslhs->init(2);
+# sslhs = load SSLHS SSLHS->PATH;
+# if(sslhs == nil)
+# err = sys->sprint("can't load SSLHS: %r");
+# else
+# sslhs->init(2);
 #}
 #if(err == "")
-#	(err, nc.conn) = sslhs->client(nc.conn.dfd, addr);
+# (err, nc.conn) = sslhs->client(nc.conn.dfd, addr);
 if(nc.tstate&TProxy) # tunelling SSL through proxy
 err = tunnel_ssl(nc);
 vers := 0;
@@ -313,7 +313,7 @@ nc.sslx.use_devssl();
 info := ref SSL3->Authinfo(ssl_suites, ssl_comprs, nil,
 0, nil, nil, nil);
 vers = 3;
-(err, nc.vers) =  nc.sslx.client(nc.conn.dfd, addr, vers, info);
+(err, nc.vers) = nc.sslx.client(nc.conn.dfd, addr, vers, info);
 }
 }
 }
@@ -409,19 +409,19 @@ httpvers = "1.1";
 reqhdr := HTTP_Header.new();
 if(nc.tstate&TSSL)
 reqhdr.usessl();
-reqhdr.startline = CU->hmeth[req.method] + " " +  requ + " HTTP/" + httpvers;
+reqhdr.startline = CU->hmeth[req.method] + " " + requ + " HTTP/" + httpvers;
 if(u.port != "")
 reqhdr.addval(HHost, u.host+ ":" + u.port);
 else
 reqhdr.addval(HHost, u.host);
 reqhdr.addval(HUserAgent, agent);
 reqhdr.addval(HAccept, "*/*; *");
-#	if(cr != nil && (cr.status == CRRevalidate || cr.status == CRMustRevalidate)) {
-#		if(cr.etag != "")
-#			reqhdr.addval(HIfNoneMatch, cr.etag);
-#		else
-#			reqhdr.addval(HIfModifiedSince, D->dateconv(cr.notafter));
-#	}
+# if(cr != nil && (cr.status == CRRevalidate || cr.status == CRMustRevalidate)) {
+# if(cr.etag != "")
+# reqhdr.addval(HIfNoneMatch, cr.etag);
+# else
+# reqhdr.addval(HIfModifiedSince, D->dateconv(cr.notafter));
+# }
 if(req.auth != "")
 reqhdr.addval(HAuthorization, "Basic " + req.auth);
 if(req.method == CU->HPost) {
@@ -552,52 +552,52 @@ return n;
 }
 #getdata(nc: ref Netconn, bs: ref ByteSource)
 #{
-#	buf := bs.data;
-#	n := 0;
-#	if(nc.tbuf != nil) {
-#		# initial data from overread of header
-#		# Note: can have more data in nc.tbuf than was
-#		# reported by the HTTP header
-#		n = len nc.tbuf;
-#		if (n > bs.hdr.length) {
-#			n = bs.hdr.length;
-#			nc.tbuf = nc.tbuf[0:n];
-#		}
-#		if(len buf <= n) {
-#			if(warn && len buf < n)
-#				sys->print("more initial data than specified length\n");
-#			bs.data = nc.tbuf;
-#		}
-#		else
-#			buf[0:] = nc.tbuf[:n];
-#		nc.tbuf = nil;
-#	}
-#	if(n == 0) {
-# 		if((nc.tstate&TSSL) && nc.sslx != nil)
-# 			n = nc.sslx.read(buf[bs.edata:], len buf - bs.edata);
-# 		else
-# 			n = sys->read(nc.conn.dfd, buf[bs.edata:], len buf - bs.edata);
-#	}
-#	if(dbg > 1)
-#		sys->print("http %d: read %d bytes\n", nc.id, n);
-#	if(n <= 0) {
-#		closeconn(nc);
-#		if(n < 0)
-#			bs.err = sys->sprint("%r");
-#	}
-#	else {
-#		bs.edata += n;
-#		if(bs.edata == len buf && bs.hdr.length != 100000000) {
-#			if(nc.tstate&THTTP_1_0) {
-#				closeconn(nc);
-#			}
-#		}
-#	}
-#	if(bs.err != "") {
-#		if(dbg)
-#			sys->print("http %d: error %s\n", nc.id, bs.err);
-#		closeconn(nc);
-#	}
+# buf := bs.data;
+# n := 0;
+# if(nc.tbuf != nil) {
+# # initial data from overread of header
+# # Note: can have more data in nc.tbuf than was
+# # reported by the HTTP header
+# n = len nc.tbuf;
+# if (n > bs.hdr.length) {
+# n = bs.hdr.length;
+# nc.tbuf = nc.tbuf[0:n];
+# }
+# if(len buf <= n) {
+# if(warn && len buf < n)
+# sys->print("more initial data than specified length\n");
+# bs.data = nc.tbuf;
+# }
+# else
+# buf[0:] = nc.tbuf[:n];
+# nc.tbuf = nil;
+# }
+# if(n == 0) {
+# if((nc.tstate&TSSL) && nc.sslx != nil)
+# n = nc.sslx.read(buf[bs.edata:], len buf - bs.edata);
+# else
+# n = sys->read(nc.conn.dfd, buf[bs.edata:], len buf - bs.edata);
+# }
+# if(dbg > 1)
+# sys->print("http %d: read %d bytes\n", nc.id, n);
+# if(n <= 0) {
+# closeconn(nc);
+# if(n < 0)
+# bs.err = sys->sprint("%r");
+# }
+# else {
+# bs.edata += n;
+# if(bs.edata == len buf && bs.hdr.length != 100000000) {
+# if(nc.tstate&THTTP_1_0) {
+# closeconn(nc);
+# }
+# }
+# }
+# if(bs.err != "") {
+# if(dbg)
+# sys->print("http %d: error %s\n", nc.id, bs.err);
+# closeconn(nc);
+# }
 #}
 hdrconv(hh: ref HTTP_Header, u: ref Parsedurl) : ref Header
 {
@@ -826,7 +826,7 @@ prevkey = key;
 }
 return ("", i, j);
 }
-# Write in big hunks.  Convert to Latin1.
+# Write in big hunks. Convert to Latin1.
 # Return last sys->write return value.
 HTTP_Header.write(h: self ref HTTP_Header, fd: ref sys->FD, sslx: ref SSL3->Context) : int
 {

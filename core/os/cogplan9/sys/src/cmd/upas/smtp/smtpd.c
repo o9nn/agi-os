@@ -8,40 +8,40 @@
 #include <libsec.h>
 #include <auth.h>
 #include "../smtp/y.tab.h"
-char	*me;
-char	*him="";
-char	*dom;
-process	*pp;
-String	*mailer;
+char *me;
+char *him="";
+char *dom;
+process *pp;
+String *mailer;
 NetConnInfo *nci;
-int	filterstate = ACCEPT;
-int	trusted;
-int	logged;
-int	rejectcount;
-int	hardreject;
-ulong	starttime;
-Biobuf	bin;
-int	debug;
-int	Dflag;
-int	fflag;
-int	gflag;
-int	rflag;
-int	sflag;
-int	authenticate;
-int	authenticated;
-int	passwordinclear;
-char	*tlscert;
-uchar	rsysip[IPaddrlen];
-List	senders;
-List	rcvers;
-char	pipbuf[ERRMAX];
-char	*piperror;
-String*	mailerpath(char*);
-int	pipemsg(int*);
-int	rejectcheck(void);
-String*	startcmd(void);
-static void	logmsg(char *action);
-static int	delaysecs(void);
+int filterstate = ACCEPT;
+int trusted;
+int logged;
+int rejectcount;
+int hardreject;
+ulong starttime;
+Biobuf bin;
+int debug;
+int Dflag;
+int fflag;
+int gflag;
+int rflag;
+int sflag;
+int authenticate;
+int authenticated;
+int passwordinclear;
+char *tlscert;
+uchar rsysip[IPaddrlen];
+List senders;
+List rcvers;
+char pipbuf[ERRMAX];
+char *piperror;
+String* mailerpath(char*);
+int pipemsg(int*);
+int rejectcheck(void);
+String* startcmd(void);
+static void logmsg(char *action);
+static int delaysecs(void);
 static int
 catchalarm(void *a, char *msg)
 {
@@ -211,7 +211,7 @@ seek(2, 0, 2);
 fprint(2, "%3lud ", time(0) - starttime);
 }
 }
-#define	SIZE	4096
+#define SIZE 4096
 int
 reply(char *fmt, ...)
 {
@@ -261,26 +261,26 @@ free(dp);
 reply("220 \r\n");
 }
 static char netaspam[256] = {
-[58]	1,
-[66]	1,
-[71]	1,
-[76]	1,
-[77]	1,
-[78]	1,
-[79]	1,
-[80]	1,
-[81]	1,
-[82]	1,
-[83]	1,
-[84]	1,
-[85]	1,
-[86]	1,
-[87]	1,
-[88]	1,
-[89]	1,
-[190]	1,
-[201]	1,
-[217]	1,
+[58] 1,
+[66] 1,
+[71] 1,
+[76] 1,
+[77] 1,
+[78] 1,
+[79] 1,
+[80] 1,
+[81] 1,
+[82] 1,
+[83] 1,
+[84] 1,
+[85] 1,
+[86] 1,
+[87] 1,
+[88] 1,
+[89] 1,
+[190] 1,
+[201] 1,
+[217] 1,
 };
 static int
 delaysecs(void)
@@ -443,9 +443,9 @@ reply("250 2.0.0 sender is %s\r\n", s_to_c(path));
 enum { Rcpt, Domain, Ntoks };
 typedef struct Sender Sender;
 struct Sender {
-Sender	*next;
-char	*rcpt;
-char	*domain;
+Sender *next;
+char *rcpt;
+char *domain;
 };
 static Sender *sendlist, *sendlast;
 static int
@@ -611,7 +611,7 @@ av[0] = s_to_c(mailer);
 av[1] = "-x";
 av[2] = s_to_c(path);
 av[3] = 0;
-pp = noshell_proc_start(av, (stream *)0, outstream(),  (stream *)0, 1, 0);
+pp = noshell_proc_start(av, (stream *)0, outstream(), (stream *)0, 1, 0);
 if (pp == 0) {
 reply("450 4.3.2 We're busy right now, try later\r\n");
 return;

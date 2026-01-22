@@ -6,14 +6,14 @@ static char *copyright = "Copyright (c) 1989 Mark H. Colburn.\nAll rights reserv
 #ifdef __STDC__
 static int star(char *, char *);
 #else
-static int      star();
+static int star();
 #endif
 #ifdef __STDC__
 static int star(char *source, char *pattern)
 #else
 static int star(source, pattern)
-char           *source;
-char           *pattern;
+char *source;
+char *pattern;
 #endif
 {
 while (!wildmat(pattern, source)) {
@@ -27,13 +27,13 @@ return (1);
 int wildmat(char *pattern, char *source)
 #else
 int wildmat(pattern, source)
-char           *pattern;
-char           *source;
+char *pattern;
+char *source;
 #endif
 {
-int             last;
-int             matched;
-int             reverse;
+int last;
+int matched;
+int reverse;
 for (; *pattern; source++, pattern++) {
 switch (*pattern) {
 case '\\':

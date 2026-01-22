@@ -24,20 +24,20 @@
 #include <pcmcia/cisreg.h>
 #include <pcmcia/ciscode.h>
 #ifndef MANFID_COMPAQ
-#define MANFID_COMPAQ 	   0x0138
-#define MANFID_COMPAQ2	   0x0183
+#define MANFID_COMPAQ 0x0138
+#define MANFID_COMPAQ2 0x0183
 #endif
 #include <pcmcia/ds.h>
-#define TX_TIMEOUT	((400*HZ)/1000)
-#define XIRCREG_CR  0
+#define TX_TIMEOUT ((400*HZ)/1000)
+#define XIRCREG_CR 0
 enum xirc_cr {
 TransmitPacket = 0x01,
 SoftReset = 0x02,
 EnableIntr = 0x04,
-ForceIntr  = 0x08,
+ForceIntr = 0x08,
 ClearTxFIFO = 0x10,
 ClearRxOvrun = 0x20,
-RestartTx	 = 0x40
+RestartTx = 0x40
 };
 #define XIRCREG_ESR 0
 enum xirc_esr {
@@ -47,24 +47,24 @@ TxPktPend = 0x08,
 IncorPolarity = 0x10,
 MediaSelect = 0x20
 };
-#define XIRCREG_PR  1
+#define XIRCREG_PR 1
 #define XIRCREG_EDP 4
 #define XIRCREG_ISR 6
 enum xirc_isr {
 TxBufOvr = 0x01,
-PktTxed  = 0x02,
-MACIntr  = 0x04,
+PktTxed = 0x02,
+MACIntr = 0x04,
 TxResGrant = 0x08,
 RxFullPkt = 0x20,
-RxPktRej  = 0x40,
+RxPktRej = 0x40,
 ForcedIntr= 0x80
 };
 #define XIRCREG1_IMR0 12
 #define XIRCREG1_IMR1 13
-#define XIRCREG0_TSO  8
-#define XIRCREG0_TRS  10
-#define XIRCREG0_DO   12
-#define XIRCREG0_RSR  12
+#define XIRCREG0_TSO 8
+#define XIRCREG0_TRS 10
+#define XIRCREG0_DO 12
+#define XIRCREG0_RSR 12
 enum xirc_rsr {
 PhyPkt = 0x01,
 BrdcstPkt = 0x02,
@@ -102,22 +102,22 @@ Online = 0x20,
 IntrAck = 0x40,
 Offline = 0x80
 };
-#define XIRCREG5_RHSA0	10
+#define XIRCREG5_RHSA0 10
 #define XIRCREG40_RXST0 9
 #define XIRCREG40_TXST0 11
 #define XIRCREG40_TXST1 12
 #define XIRCREG40_RMASK0 13
 #define XIRCREG40_TMASK0 14
 #define XIRCREG40_TMASK1 15
-#define XIRCREG42_SWC0	8
-#define XIRCREG42_SWC1	9
-#define XIRCREG42_BOC	10
-#define XIRCREG44_TDR0	8
-#define XIRCREG44_TDR1	9
+#define XIRCREG42_SWC0 8
+#define XIRCREG42_SWC1 9
+#define XIRCREG42_BOC 10
+#define XIRCREG44_TDR0 8
+#define XIRCREG44_TDR1 9
 #define XIRCREG44_RXBC_LO 10
 #define XIRCREG44_RXBC_HI 11
-#define XIRCREG45_REV	 15
-#define XIRCREG50_IA	8
+#define XIRCREG45_REV 15
+#define XIRCREG50_IA 8
 static char *if_names[] = { "Auto", "10BaseT", "10Base2", "AUI", "100BaseT" };
 #ifdef PCMCIA_DEBUG
 static int pc_debug = PCMCIA_DEBUG;
@@ -128,42 +128,42 @@ MODULE_PARM(pc_debug, "i");
 #endif
 static char *version =
 "xirc2ps_cs.c 1.31 1998/12/09 19:32:55 (dd9jn+kvh)";
-#define KDBG_XIRC KERN_DEBUG   "xirc2ps_cs: "
-#define KERR_XIRC KERN_ERR     "xirc2ps_cs: "
+#define KDBG_XIRC KERN_DEBUG "xirc2ps_cs: "
+#define KERR_XIRC KERN_ERR "xirc2ps_cs: "
 #define KWRN_XIRC KERN_WARNING "xirc2ps_cs: "
-#define KNOT_XIRC KERN_NOTICE  "xirc2ps_cs: "
-#define KINF_XIRC KERN_INFO    "xirc2ps_cs: "
-#define XIR_UNKNOWN  0
-#define XIR_CE	     1
-#define XIR_CE2      2
-#define XIR_CE3      3
-#define XIR_CEM      4
-#define XIR_CEM2     5
-#define XIR_CEM3     6
-#define XIR_CEM33    7
-#define XIR_CEM56M   8
-#define XIR_CEM56    9
-#define XIR_CM28    10
-#define XIR_CM33    11
-#define XIR_CM56    12
-#define XIR_CG	    13
-#define XIR_CBE     14
+#define KNOT_XIRC KERN_NOTICE "xirc2ps_cs: "
+#define KINF_XIRC KERN_INFO "xirc2ps_cs: "
+#define XIR_UNKNOWN 0
+#define XIR_CE 1
+#define XIR_CE2 2
+#define XIR_CE3 3
+#define XIR_CEM 4
+#define XIR_CEM2 5
+#define XIR_CEM3 6
+#define XIR_CEM33 7
+#define XIR_CEM56M 8
+#define XIR_CEM56 9
+#define XIR_CM28 10
+#define XIR_CM33 11
+#define XIR_CM56 12
+#define XIR_CG 13
+#define XIR_CBE 14
 MODULE_DESCRIPTION("Xircom PCMCIA ethernet driver");
 MODULE_LICENSE("Dual MPL/GPL");
 #define INT_MODULE_PARM(n, v) static int n = v; MODULE_PARM(n, "i")
 static int irq_list[4] = { -1 };
 MODULE_PARM(irq_list, "1-4i");
-INT_MODULE_PARM(irq_mask,	0xdeb8);
-INT_MODULE_PARM(if_port,	0);
-INT_MODULE_PARM(full_duplex,	0);
-INT_MODULE_PARM(do_sound, 	1);
-INT_MODULE_PARM(lockup_hack,	0);
+INT_MODULE_PARM(irq_mask, 0xdeb8);
+INT_MODULE_PARM(if_port, 0);
+INT_MODULE_PARM(full_duplex, 0);
+INT_MODULE_PARM(do_sound, 1);
+INT_MODULE_PARM(lockup_hack, 0);
 static unsigned maxrx_bytes = 22000;
 static void mii_idle(ioaddr_t ioaddr);
 static void mii_putbit(ioaddr_t ioaddr, unsigned data);
-static int  mii_getbit(ioaddr_t ioaddr);
+static int mii_getbit(ioaddr_t ioaddr);
 static void mii_wbits(ioaddr_t ioaddr, unsigned data, int len);
-static unsigned mii_rd(ioaddr_t ioaddr,	u_char phyaddr, u_char phyreg);
+static unsigned mii_rd(ioaddr_t ioaddr, u_char phyaddr, u_char phyreg);
 static void mii_wr(ioaddr_t ioaddr, u_char phyaddr, u_char phyreg,
 unsigned data, int len);
 static int has_ce2_string(dev_link_t * link);
@@ -239,17 +239,17 @@ return err;
 return CardServices(ParseTuple, handle, tuple, parse);
 }
 #define first_tuple(a, b, c) get_tuple(GetFirstTuple, a, b, c)
-#define next_tuple(a, b, c)  get_tuple(GetNextTuple, a, b, c)
-#define SelectPage(pgnr)   outb((pgnr), ioaddr + XIRCREG_PR)
-#define GetByte(reg)	   ((unsigned)inb(ioaddr + (reg)))
-#define GetWord(reg)	   ((unsigned)inw(ioaddr + (reg)))
+#define next_tuple(a, b, c) get_tuple(GetNextTuple, a, b, c)
+#define SelectPage(pgnr) outb((pgnr), ioaddr + XIRCREG_PR)
+#define GetByte(reg) ((unsigned)inb(ioaddr + (reg)))
+#define GetWord(reg) ((unsigned)inw(ioaddr + (reg)))
 #define PutByte(reg,value) outb((value), ioaddr+(reg))
 #define PutWord(reg,value) outw((value), ioaddr+(reg))
 static void
 busy_loop(u_long len)
 {
 #ifdef MACH
-__udelay(1000000 / HZ *  len);
+__udelay(1000000 / HZ * len);
 #else
 if (in_interrupt()) {
 u_long timeout = jiffies + len;
@@ -352,7 +352,7 @@ for (; m; m >>= 1)
 mii_putbit(ioaddr, data & m);
 }
 static unsigned
-mii_rd(ioaddr_t ioaddr,	u_char phyaddr, u_char phyreg)
+mii_rd(ioaddr_t ioaddr, u_char phyaddr, u_char phyreg)
 {
 int i;
 unsigned data=0, m;
@@ -494,9 +494,9 @@ return 0;
 if (mediaid & 0x10) {
 local->modem = 1;
 switch(prodid & 15) {
-case 1: local->card_type = XIR_CEM   ; break;
-case 2: local->card_type = XIR_CEM2  ; break;
-case 3: local->card_type = XIR_CEM3  ; break;
+case 1: local->card_type = XIR_CEM ; break;
+case 2: local->card_type = XIR_CEM2 ; break;
+case 3: local->card_type = XIR_CEM3 ; break;
 case 4: local->card_type = XIR_CEM33 ; break;
 case 5: local->card_type = XIR_CEM56M;
 local->mohawk = 1;
@@ -601,7 +601,7 @@ tuple.DesiredTuple = CISTPL_CONFIG;
 if ((err=first_tuple(handle, &tuple, &parse)))
 goto cis_error;
 link->conf.ConfigBase = parse.config.base;
-link->conf.Present =    parse.config.rmask[0];
+link->conf.Present = parse.config.rmask[0];
 tuple.DesiredTuple = CISTPL_FUNCE;
 for (err = first_tuple(handle, &tuple, &parse); !err;
 err = next_tuple(handle, &tuple, &parse)) {
@@ -666,7 +666,7 @@ link->io.NumPorts1 = 16;
 tuple.DesiredTuple = CISTPL_CFTABLE_ENTRY;
 for (err = first_tuple(handle, &tuple, &parse); !err;
 err = next_tuple(handle, &tuple, &parse)) {
-if (cf->io.nwin > 0  &&  (cf->io.win[0].base & 0xf) == 8) {
+if (cf->io.nwin > 0 && (cf->io.win[0].base & 0xf) == 8) {
 for (ioaddr = 0x300; ioaddr < 0x400; ioaddr += 0x10) {
 link->conf.ConfigIndex = cf->index ;
 link->io.BasePort2 = cf->io.win[0].base;
@@ -683,12 +683,12 @@ for (pass=0; pass < 2; pass++) {
 tuple.DesiredTuple = CISTPL_CFTABLE_ENTRY;
 for (err = first_tuple(handle, &tuple, &parse); !err;
 err = next_tuple(handle, &tuple, &parse)){
-if (cf->io.nwin > 0  &&  (cf->io.win[0].base & 0xf) == 8){
+if (cf->io.nwin > 0 && (cf->io.win[0].base & 0xf) == 8){
 link->conf.ConfigIndex = cf->index ;
 link->io.BasePort2 = cf->io.win[0].base;
 link->io.BasePort1 = link->io.BasePort2
 + (pass ? (cf->index & 0x20 ? -24:8)
-: (cf->index & 0x20 ?   8:-24));
+: (cf->index & 0x20 ? 8:-24));
 if (!(err=CardServices(RequestIO, link->handle,
 &link->io)))
 goto port_found;
@@ -760,7 +760,7 @@ goto config_error;
 }
 writeb(0x47, local->dingo_ccr + CISREG_COR);
 ioaddr = link->io.BasePort1;
-writeb(ioaddr & 0xff	  , local->dingo_ccr + CISREG_IOBASE_0);
+writeb(ioaddr & 0xff , local->dingo_ccr + CISREG_IOBASE_0);
 writeb((ioaddr >> 8)&0xff , local->dingo_ccr + CISREG_IOBASE_1);
 #if 0
 {
@@ -925,7 +925,7 @@ goto leave;
 }
 eth_status = GetByte(XIRCREG_ESR);
 SelectPage(0x40);
-rx_status  = GetByte(XIRCREG40_RXST0);
+rx_status = GetByte(XIRCREG40_RXST0);
 PutByte(XIRCREG40_RXST0, (~rx_status & 0xff));
 tx_status = GetByte(XIRCREG40_TXST0);
 tx_status |= GetByte(XIRCREG40_TXST1) << 8;
@@ -1296,7 +1296,7 @@ printk(KERN_DEBUG "%s: ESR is: %#02x\n", dev->name, value);
 #endif
 SelectPage(1);
 PutByte(XIRCREG1_IMR0, 0xff);
-PutByte(XIRCREG1_IMR1, 1	);
+PutByte(XIRCREG1_IMR1, 1 );
 value = GetByte(XIRCREG1_ECR);
 #if 0
 if (local->mohawk)
@@ -1318,9 +1318,9 @@ SelectPage(0x40);
 PutByte(XIRCREG40_RMASK0, 0xff);
 PutByte(XIRCREG40_TMASK0, 0xff);
 PutByte(XIRCREG40_TMASK1, 0xb0);
-PutByte(XIRCREG40_RXST0,  0x00);
-PutByte(XIRCREG40_TXST0,  0x00);
-PutByte(XIRCREG40_TXST1,  0x00);
+PutByte(XIRCREG40_RXST0, 0x00);
+PutByte(XIRCREG40_TXST0, 0x00);
+PutByte(XIRCREG40_TXST1, 0x00);
 if (full && local->mohawk && init_mii(dev)) {
 if (dev->if_port == 4 || local->dingo || local->new_mii) {
 printk(KERN_INFO "%s: MII selected\n", dev->name);
@@ -1381,7 +1381,7 @@ dev->if_port = if_port;
 local->probe_port = 0;
 return 1;
 }
-status = mii_rd(ioaddr,  0, 1);
+status = mii_rd(ioaddr, 0, 1);
 if ((status & 0xff00) != 0x7800)
 return 0;
 local->new_mii = (mii_rd(ioaddr, 0, 2) != 0xffff);
@@ -1391,7 +1391,7 @@ else if (dev->if_port == 4)
 control = 0x2000;
 else
 control = 0x0000;
-mii_wr(ioaddr,  0, 0, control, 16);
+mii_wr(ioaddr, 0, 0, control, 16);
 udelay(100);
 control = mii_rd(ioaddr, 0, 0);
 if (control & 0x0400) {
@@ -1403,7 +1403,7 @@ return 0;
 if (local->probe_port) {
 for (i=0; i < 35; i++) {
 busy_loop(HZ/10);
-status = mii_rd(ioaddr,  0, 1);
+status = mii_rd(ioaddr, 0, 1);
 if ((status & 0x0020) && (status & 0x0004))
 break;
 }
@@ -1412,7 +1412,7 @@ printk(KERN_INFO "%s: autonegotiation failed;"
 " using 10mbs\n", dev->name);
 if (!local->new_mii) {
 control = 0x0000;
-mii_wr(ioaddr,  0, 0, control, 16);
+mii_wr(ioaddr, 0, 0, control, 16);
 udelay(100);
 SelectPage(0);
 dev->if_port = (GetByte(XIRCREG_ESR) & MediaSelect) ? 1 : 2;

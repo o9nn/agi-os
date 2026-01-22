@@ -134,7 +134,7 @@ sys->print("bolt> ");
 line := sys->readln();
 if(line == nil)
 break;
-input := line[0:len(line)-1];  # Remove newline
+input := line[0:len(line)-1]; # Remove newline
 case input {
 "exit" => break;
 "help" => show_help();

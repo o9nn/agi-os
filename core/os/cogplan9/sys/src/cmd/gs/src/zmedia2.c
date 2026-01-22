@@ -152,7 +152,7 @@ mepos_penalty = (mepos < 0 || aelt.key.value.intval == mepos) ?
 if (r_has_type(&match.match_key, t_null))
 match.match_key = aelt.key;
 if (best_mismatch + mepos_penalty <= mbest) {
-if (best_mismatch + mepos_penalty < mbest  ||
+if (best_mismatch + mepos_penalty < mbest ||
 (r_has_type(&match.match_key, t_integer) &&
 match.match_key.value.intval > aelt.key.value.intval)) {
 reset_match(&match);
@@ -288,7 +288,7 @@ if (policy == 7) {
 gs_make_identity(pmat);
 *pmsize = *request;
 } else {
-int fit_direct  = rx - medium->p.x >= -5 && rx - medium->q.x <= 5
+int fit_direct = rx - medium->p.x >= -5 && rx - medium->q.x <= 5
 && ry - medium->p.y >= -5 && ry - medium->q.y <= 5;
 int fit_rotated = rx - medium->p.y >= -5 && rx - medium->q.y <= 5
 && ry - medium->p.x >= -5 && ry - medium->q.x <= 5;

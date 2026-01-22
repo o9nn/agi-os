@@ -1,8 +1,8 @@
 #include <u.h>
 #include <libc.h>
 #include <bio.h>
-typedef	void*	pointer;
-#pragma	varargck	type	"lx"	pointer
+typedef void* pointer;
+#pragma varargck type "lx" pointer
 #define FATAL 0
 #define NFATAL 1
 #define BLK sizeof(Blk)
@@ -16,148 +16,148 @@ typedef	void*	pointer;
 #define NL 1
 #define NG 2
 #define NE 3
-#define length(p)	((p)->wt-(p)->beg)
-#define rewind(p)	(p)->rd=(p)->beg
-#define create(p)	(p)->rd = (p)->wt = (p)->beg
-#define fsfile(p)	(p)->rd = (p)->wt
-#define truncate(p)	(p)->wt = (p)->rd
-#define sfeof(p)	(((p)->rd==(p)->wt)?1:0)
-#define sfbeg(p)	(((p)->rd==(p)->beg)?1:0)
-#define sungetc(p,c)	*(--(p)->rd)=c
-#define sgetc(p)	(((p)->rd==(p)->wt)?-1:*(p)->rd++)
-#define skipc(p)	{if((p)->rd<(p)->wt)(p)->rd++;}
-#define slookc(p)	(((p)->rd==(p)->wt)?-1:*(p)->rd)
-#define sbackc(p)	(((p)->rd==(p)->beg)?-1:*(--(p)->rd))
-#define backc(p)	{if((p)->rd>(p)->beg) --(p)->rd;}
-#define sputc(p,c)	{if((p)->wt==(p)->last)more(p);\
+#define length(p) ((p)->wt-(p)->beg)
+#define rewind(p) (p)->rd=(p)->beg
+#define create(p) (p)->rd = (p)->wt = (p)->beg
+#define fsfile(p) (p)->rd = (p)->wt
+#define truncate(p) (p)->wt = (p)->rd
+#define sfeof(p) (((p)->rd==(p)->wt)?1:0)
+#define sfbeg(p) (((p)->rd==(p)->beg)?1:0)
+#define sungetc(p,c) *(--(p)->rd)=c
+#define sgetc(p) (((p)->rd==(p)->wt)?-1:*(p)->rd++)
+#define skipc(p) {if((p)->rd<(p)->wt)(p)->rd++;}
+#define slookc(p) (((p)->rd==(p)->wt)?-1:*(p)->rd)
+#define sbackc(p) (((p)->rd==(p)->beg)?-1:*(--(p)->rd))
+#define backc(p) {if((p)->rd>(p)->beg) --(p)->rd;}
+#define sputc(p,c) {if((p)->wt==(p)->last)more(p);\
 *(p)->wt++ = c; }
-#define salterc(p,c)	{if((p)->rd==(p)->last)more(p);\
+#define salterc(p,c) {if((p)->rd==(p)->last)more(p);\
 *(p)->rd++ = c;\
 if((p)->rd>(p)->wt)(p)->wt=(p)->rd;}
-#define sunputc(p)	(*((p)->rd = --(p)->wt))
-#define sclobber(p)	((p)->rd = --(p)->wt)
-#define zero(p)		for(pp=(p)->beg;pp<(p)->last;)\
+#define sunputc(p) (*((p)->rd = --(p)->wt))
+#define sclobber(p) ((p)->rd = --(p)->wt)
+#define zero(p) for(pp=(p)->beg;pp<(p)->last;)\
 *pp++='\0'
-#define OUTC(x)		{Bputc(&bout,x); if(--count == 0){Bprint(&bout,"\\\n"); count=ll;} }
-#define TEST2		{if((count -= 2) <=0){Bprint(&bout,"\\\n");count=ll;}}
-#define EMPTY		if(stkerr != 0){Bprint(&bout,"stack empty\n"); continue; }
-#define EMPTYR(x)	if(stkerr!=0){pushp(x);Bprint(&bout,"stack empty\n");continue;}
-#define EMPTYS		if(stkerr != 0){Bprint(&bout,"stack empty\n"); return(1);}
-#define EMPTYSR(x)	if(stkerr !=0){Bprint(&bout,"stack empty\n");pushp(x);return(1);}
-#define error(p)	{Bprint(&bout,p); continue; }
-#define errorrt(p)	{Bprint(&bout,p); return(1); }
+#define OUTC(x) {Bputc(&bout,x); if(--count == 0){Bprint(&bout,"\\\n"); count=ll;} }
+#define TEST2 {if((count -= 2) <=0){Bprint(&bout,"\\\n");count=ll;}}
+#define EMPTY if(stkerr != 0){Bprint(&bout,"stack empty\n"); continue; }
+#define EMPTYR(x) if(stkerr!=0){pushp(x);Bprint(&bout,"stack empty\n");continue;}
+#define EMPTYS if(stkerr != 0){Bprint(&bout,"stack empty\n"); return(1);}
+#define EMPTYSR(x) if(stkerr !=0){Bprint(&bout,"stack empty\n");pushp(x);return(1);}
+#define error(p) {Bprint(&bout,p); continue; }
+#define errorrt(p) {Bprint(&bout,p); return(1); }
 #define LASTFUN 026
-typedef	struct	Blk	Blk;
-struct	Blk
+typedef struct Blk Blk;
+struct Blk
 {
-char	*rd;
-char	*wt;
-char	*beg;
-char	*last;
+char *rd;
+char *wt;
+char *beg;
+char *last;
 };
-typedef	struct	Sym	Sym;
-struct	Sym
+typedef struct Sym Sym;
+struct Sym
 {
-Sym	*next;
-Blk	*val;
+Sym *next;
+Blk *val;
 };
-typedef	struct	Wblk	Wblk;
-struct	Wblk
+typedef struct Wblk Wblk;
+struct Wblk
 {
-Blk	**rdw;
-Blk	**wtw;
-Blk	**begw;
-Blk	**lastw;
+Blk **rdw;
+Blk **wtw;
+Blk **begw;
+Blk **lastw;
 };
-Biobuf	*curfile, *fsave;
-Blk	*arg1, *arg2;
-uchar	savk;
-int	dbg;
-int	ifile;
-Blk	*scalptr, *basptr, *tenptr, *inbas;
-Blk	*sqtemp, *chptr, *strptr, *divxyz;
-Blk	*stack[STKSZ];
-Blk	**stkptr,**stkbeg;
-Blk	**stkend;
-Blk	*hfree;
-int	stkerr;
-int	lastchar;
-Blk	*readstk[RDSKSZ];
-Blk	**readptr;
-Blk	*rem;
-int	k;
-Blk	*irem;
-int	skd,skr;
-int	neg;
-Sym	symlst[TBLSZ];
-Sym	*stable[TBLSZ];
-Sym	*sptr, *sfree;
-long	rel;
-long	nbytes;
-long	all;
-long	headmor;
-long	obase;
-int	fw,fw1,ll;
-void	(*outdit)(Blk *p, int flg);
-int	logo;
-int	logten;
-int	count;
-char	*pp;
-char	*dummy;
-long	longest, maxsize, active;
-int	lall, lrel, lcopy, lmore, lbytes;
-int	inside;
-Biobuf	bin;
-Biobuf	bout;
-void	main(int argc, char *argv[]);
-void	commnds(void);
-Blk*	readin(void);
-Blk*	div(Blk *ddivd, Blk *ddivr);
-int	dscale(void);
-Blk*	removr(Blk *p, int n);
-Blk*	dcsqrt(Blk *p);
-void	init(int argc, char *argv[]);
-void	onintr(void);
-void	pushp(Blk *p);
-Blk*	pop(void);
-Blk*	readin(void);
-Blk*	add0(Blk *p, int ct);
-Blk*	mult(Blk *p, Blk *q);
-void	chsign(Blk *p);
-int	readc(void);
-void	unreadc(char c);
-void	binop(char c);
-void	dcprint(Blk *hptr);
-Blk*	dcexp(Blk *base, Blk *ex);
-Blk*	getdec(Blk *p, int sc);
-void	tenot(Blk *p, int sc);
-void	oneot(Blk *p, int sc, char ch);
-void	hexot(Blk *p, int flg);
-void	bigot(Blk *p, int flg);
-Blk*	add(Blk *a1, Blk *a2);
-int	eqk(void);
-Blk*	removc(Blk *p, int n);
-Blk*	scalint(Blk *p);
-Blk*	scale(Blk *p, int n);
-int	subt(void);
-int	command(void);
-int	cond(char c);
-void	load(void);
-int	log2(long n);
-Blk*	salloc(int size);
-Blk*	morehd(void);
-Blk*	copy(Blk *hptr, int size);
-void	sdump(char *s1, Blk *hptr);
-void	seekc(Blk *hptr, int n);
-void	salterwd(Blk *hptr, Blk *n);
-void	more(Blk *hptr);
-void	ospace(char *s);
-void	garbage(char *s);
-void	release(Blk *p);
-Blk*	dcgetwd(Blk *p);
-void	putwd(Blk *p, Blk *c);
-Blk*	lookwd(Blk *p);
-int	getstk(void);
+Biobuf *curfile, *fsave;
+Blk *arg1, *arg2;
+uchar savk;
+int dbg;
+int ifile;
+Blk *scalptr, *basptr, *tenptr, *inbas;
+Blk *sqtemp, *chptr, *strptr, *divxyz;
+Blk *stack[STKSZ];
+Blk **stkptr,**stkbeg;
+Blk **stkend;
+Blk *hfree;
+int stkerr;
+int lastchar;
+Blk *readstk[RDSKSZ];
+Blk **readptr;
+Blk *rem;
+int k;
+Blk *irem;
+int skd,skr;
+int neg;
+Sym symlst[TBLSZ];
+Sym *stable[TBLSZ];
+Sym *sptr, *sfree;
+long rel;
+long nbytes;
+long all;
+long headmor;
+long obase;
+int fw,fw1,ll;
+void (*outdit)(Blk *p, int flg);
+int logo;
+int logten;
+int count;
+char *pp;
+char *dummy;
+long longest, maxsize, active;
+int lall, lrel, lcopy, lmore, lbytes;
+int inside;
+Biobuf bin;
+Biobuf bout;
+void main(int argc, char *argv[]);
+void commnds(void);
+Blk* readin(void);
+Blk* div(Blk *ddivd, Blk *ddivr);
+int dscale(void);
+Blk* removr(Blk *p, int n);
+Blk* dcsqrt(Blk *p);
+void init(int argc, char *argv[]);
+void onintr(void);
+void pushp(Blk *p);
+Blk* pop(void);
+Blk* readin(void);
+Blk* add0(Blk *p, int ct);
+Blk* mult(Blk *p, Blk *q);
+void chsign(Blk *p);
+int readc(void);
+void unreadc(char c);
+void binop(char c);
+void dcprint(Blk *hptr);
+Blk* dcexp(Blk *base, Blk *ex);
+Blk* getdec(Blk *p, int sc);
+void tenot(Blk *p, int sc);
+void oneot(Blk *p, int sc, char ch);
+void hexot(Blk *p, int flg);
+void bigot(Blk *p, int flg);
+Blk* add(Blk *a1, Blk *a2);
+int eqk(void);
+Blk* removc(Blk *p, int n);
+Blk* scalint(Blk *p);
+Blk* scale(Blk *p, int n);
+int subt(void);
+int command(void);
+int cond(char c);
+void load(void);
+int log2(long n);
+Blk* salloc(int size);
+Blk* morehd(void);
+Blk* copy(Blk *hptr, int size);
+void sdump(char *s1, Blk *hptr);
+void seekc(Blk *hptr, int n);
+void salterwd(Blk *hptr, Blk *n);
+void more(Blk *hptr);
+void ospace(char *s);
+void garbage(char *s);
+void release(Blk *p);
+Blk* dcgetwd(Blk *p);
+void putwd(Blk *p, Blk *c);
+Blk* lookwd(Blk *p);
+int getstk(void);
 void
 tpr(char *cp, Blk *bp)
 {
@@ -519,7 +519,7 @@ if(length(p)>2) {
 error("Q?\n");
 }
 rewind(p);
-if((c =  sgetc(p))<0) {
+if((c = sgetc(p))<0) {
 error("neg Q\n");
 }
 release(p);
@@ -855,7 +855,7 @@ if(magic != 0)
 td = td<<3;
 dig = td/cc;
 under=0;
-if(td%cc < 8  && dig > 0 && magic) {
+if(td%cc < 8 && dig > 0 && magic) {
 dig--;
 under=1;
 }
@@ -887,7 +887,7 @@ salterc(p,dig);
 backc(p);
 fsfile(divd);
 d=sbackc(divd);
-if((d != 0) &&  (offset != 0)) {
+if((d != 0) && (offset != 0)) {
 d = sbackc(divd) + 100;
 salterc(divd,d);
 }

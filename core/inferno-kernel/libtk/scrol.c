@@ -1,60 +1,60 @@
 #include "lib9.h"
 #include "draw.h"
 #include "tk.h"
-#define	O(t, e)		((long)(&((t*)0)->e))
+#define O(t, e) ((long)(&((t*)0)->e))
 enum {
-Triangle	= 10,
-Elembw	= 1,
-Scrollbw	= 1,
-Tribw=	1,
+Triangle = 10,
+Elembw = 1,
+Scrollbw = 1,
+Tribw= 1,
 };
 typedef struct TkScroll TkScroll;
 struct TkScroll
 {
-int		activer;
-int		orient;
-int		dragpix;
-int		dragtop;
-int		dragbot;
-int		jump;
-int		flag;
-int		top;
-int		bot;
-int		a1;
-int		t1;
-int		t2;
-int		a2;
-char*		cmd;
+int activer;
+int orient;
+int dragpix;
+int dragtop;
+int dragbot;
+int jump;
+int flag;
+int top;
+int bot;
+int a1;
+int t1;
+int t2;
+int a2;
+char* cmd;
 };
 enum {
-ActiveA1	= (1<<0),
-ActiveA2	= (1<<1),
-ActiveB1	= (1<<2),
-ButtonA1	= (1<<3),
-ButtonA2	= (1<<4),
-ButtonB1	= (1<<5),
+ActiveA1 = (1<<0),
+ActiveA2 = (1<<1),
+ActiveB1 = (1<<2),
+ButtonA1 = (1<<3),
+ButtonA2 = (1<<4),
+ButtonB1 = (1<<5),
 Autorepeat = (1<<6)
 };
 static
 TkOption opts[] =
 {
-"activerelief",	OPTstab,	O(TkScroll, activer),	tkrelief,
-"command",	OPTtext,	O(TkScroll, cmd),	nil,
-"jump",	OPTstab,	O(TkScroll, jump),	tkbool,
-"orient",	OPTstab,	O(TkScroll, orient),	tkorient,
+"activerelief", OPTstab, O(TkScroll, activer), tkrelief,
+"command", OPTtext, O(TkScroll, cmd), nil,
+"jump", OPTstab, O(TkScroll, jump), tkbool,
+"orient", OPTstab, O(TkScroll, orient), tkorient,
 nil
 };
 static
 TkEbind b[] =
 {
-{TkLeave,		"%W activate {}"},
-{TkEnter,		"%W activate [%W identify %x %y]"},
-{TkMotion,		"%W activate [%W identify %x %y]"},
-{TkButton1P|TkMotion,	"%W tkScrollDrag %x %y"},
-{TkButton1P,		"%W tkScrolBut1P %x %y"},
-{TkButton1P|TkDouble,	"%W tkScrolBut1P %x %y"},
-{TkButton1R,	"%W tkScrolBut1R; %W activate [%W identify %x %y]"},
-{TkButton2P,		"%W tkScrolBut2P [%W fraction %x %y]"},
+{TkLeave, "%W activate {}"},
+{TkEnter, "%W activate [%W identify %x %y]"},
+{TkMotion, "%W activate [%W identify %x %y]"},
+{TkButton1P|TkMotion, "%W tkScrollDrag %x %y"},
+{TkButton1P, "%W tkScrolBut1P %x %y"},
+{TkButton1P|TkDouble, "%W tkScrolBut1P %x %y"},
+{TkButton1R, "%W tkScrolBut1R; %W activate [%W identify %x %y]"},
+{TkButton2P, "%W tkScrolBut2P [%W fraction %x %y]"},
 };
 static char*
 tkinitscroll(Tk *tk)
@@ -586,18 +586,18 @@ return nil;
 }
 TkCmdtab tkscrlbcmd[] =
 {
-"activate",		tkscrollactivate,
-"cget",			tkscrollcget,
-"configure",		tkscrollconf,
-"delta",		tkscrolldelta,
-"fraction",		tkscrollfraction,
-"get",			tkscrollget,
-"identify",		tkscrollidentify,
-"set",			tkscrollset,
-"tkScrollDrag",		tkScrollDrag,
-"tkScrolBut1P",		tkScrolBut1P,
-"tkScrolBut1R",		tkScrolBut1R,
-"tkScrolBut2P",		tkScrolBut2P,
+"activate", tkscrollactivate,
+"cget", tkscrollcget,
+"configure", tkscrollconf,
+"delta", tkscrolldelta,
+"fraction", tkscrollfraction,
+"get", tkscrollget,
+"identify", tkscrollidentify,
+"set", tkscrollset,
+"tkScrollDrag", tkScrollDrag,
+"tkScrolBut1P", tkScrolBut1P,
+"tkScrolBut1R", tkScrolBut1R,
+"tkScrolBut2P", tkScrolBut2P,
 nil
 };
 TkMethod scrollbarmethod = {

@@ -1,5 +1,5 @@
 #ifndef gxfcid_INCLUDED
-#  define gxfcid_INCLUDED
+# define gxfcid_INCLUDED
 #include "gxcid.h"
 #include "gxfont.h"
 #include "gxfont42.h"
@@ -10,7 +10,7 @@ int CIDCount;
 int GDBytes;
 } gs_font_cid_data;
 extern_st(st_gs_font_cid_data);
-#define public_st_gs_font_cid_data()	\
+#define public_st_gs_font_cid_data() \
 gs_public_st_suffix_add0_final(st_gs_font_cid_data,\
 gs_font_cid_data, "gs_font_cid_data",\
 font_cid_data_enum_ptrs, font_cid_data_reloc_ptrs,\
@@ -18,11 +18,11 @@ gs_font_finalize, st_cid_system_info)
 #define st_gs_font_cid_data_num_ptrs\
 st_cid_system_info_num_ptrs
 #ifndef gs_font_type1_DEFINED
-#  define gs_font_type1_DEFINED
+# define gs_font_type1_DEFINED
 typedef struct gs_font_type1_s gs_font_type1;
 #endif
 #ifndef gs_font_cid0_DEFINED
-#  define gs_font_cid0_DEFINED
+# define gs_font_cid0_DEFINED
 typedef struct gs_font_cid0_s gs_font_cid0;
 #endif
 #define MAX_FDBytes 4
@@ -62,7 +62,7 @@ font_cid1_enum_ptrs, font_cid1_reloc_ptrs, gs_font_finalize)
 #define st_gs_font_cid1_max_ptrs\
 (st_gs_font_max_ptrs + st_cid_system_info_num_ptrs)
 #ifndef gs_font_cid2_DEFINED
-#  define gs_font_cid2_DEFINED
+# define gs_font_cid2_DEFINED
 typedef struct gs_font_cid2_s gs_font_cid2;
 #endif
 typedef struct gs_font_cid2_data_s {

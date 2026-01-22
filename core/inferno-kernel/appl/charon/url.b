@@ -19,8 +19,8 @@ schemechars[alphabet[i]] = byte 1;
 return nil;
 }
 # To allow relative urls, only fill in specified pieces (don't apply defaults)
-#  general syntax: <scheme>:<scheme-specific>
-#  for IP schemes, <scheme-specific> is
+# general syntax: <scheme>:<scheme-specific>
+# for IP schemes, <scheme-specific> is
 #
 #
 parse(url: string): ref Parsedurl
@@ -192,7 +192,7 @@ revpath = seg :: revpath;
 while(revpath != nil && hd revpath == "..")
 revpath = tl revpath;
 if(revpath != nil) {
-ans ="/" +  (hd revpath) + ans;
+ans ="/" + (hd revpath) + ans;
 revpath = tl revpath;
 while(revpath != nil) {
 ans = "/" + (hd revpath) + ans;

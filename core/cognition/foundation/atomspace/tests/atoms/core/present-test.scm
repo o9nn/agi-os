@@ -6,34 +6,34 @@
 (Inheritance (Concept "chordate") (Concept "bilateria"))
 (Inheritance (Concept "vertebrate") (Concept "chordate"))
 (define (run-lamb-eval type str)
-	(cog-evaluate!
-		(Evaluation
-			(Lambda
-				(VariableList (Variable "this") (Variable "that"))
-				(type (Inheritance (Variable "this") (Variable "that"))))
-			(List (Concept str) (Concept "chordate")))))
+(cog-evaluate!
+(Evaluation
+(Lambda
+(VariableList (Variable "this") (Variable "that"))
+(type (Inheritance (Variable "this") (Variable "that"))))
+(List (Concept str) (Concept "chordate")))))
 (define (run-lnot-eval type str)
-	(cog-evaluate!
-		(Evaluation
-			(Lambda
-				(VariableList (Variable "this") (Variable "that"))
-				(Not (type (Inheritance (Variable "this") (Variable "that")))))
-			(List (Concept str) (Concept "chordate")))))
+(cog-evaluate!
+(Evaluation
+(Lambda
+(VariableList (Variable "this") (Variable "that"))
+(Not (type (Inheritance (Variable "this") (Variable "that")))))
+(List (Concept str) (Concept "chordate")))))
 (test-assert "vert" (equal? (stv 1 1) (run-lamb-eval Present "vertebrate")))
 (test-assert "junk" (equal? (stv 0 1) (run-lamb-eval Present "asdfasdf")))
 (test-assert "jabs" (equal? (stv 1 1) (run-lamb-eval Absent "asdfasdf")))
 (test-assert "jnot" (equal? (stv 0 1) (run-lnot-eval Absent "asdfasdf")))
 (test-assert "vnot" (equal? (stv 1 1) (run-lnot-eval Absent "vertebrate")))
 (define (run-bare-eval type str)
-	(cog-evaluate!
-		(Evaluation
-			(type (Inheritance (Variable "this") (Variable "that")))
-			(List (Concept str) (Concept "chordate")))))
+(cog-evaluate!
+(Evaluation
+(type (Inheritance (Variable "this") (Variable "that")))
+(List (Concept str) (Concept "chordate")))))
 (define (run-bnot-eval type str)
-	(cog-evaluate!
-		(Evaluation
-			(Not (type (Inheritance (Variable "this") (Variable "that"))))
-			(List (Concept str) (Concept "chordate")))))
+(cog-evaluate!
+(Evaluation
+(Not (type (Inheritance (Variable "this") (Variable "that"))))
+(List (Concept str) (Concept "chordate")))))
 (test-assert "bvert" (equal? (stv 1 1) (run-bare-eval Present "vertebrate")))
 (test-assert "bjunk" (equal? (stv 0 1) (run-bare-eval Present "asdfasdf")))
 (test-assert "bjabs" (equal? (stv 1 1) (run-bare-eval Absent "asdfasdf")))

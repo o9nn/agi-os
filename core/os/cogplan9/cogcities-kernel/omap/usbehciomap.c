@@ -1,13 +1,13 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"../port/error.h"
-#include	"../port/usb.h"
-#include	"../port/portusbehci.h"
-#include	"usbehci.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "../port/error.h"
+#include "../port/usb.h"
+#include "../port/portusbehci.h"
+#include "usbehci.h"
 static Ctlr* ctlrs[Nhcis];
 static void
 ehcireset(Ctlr *ctlr)
@@ -83,16 +83,16 @@ coherence();
 iunlock(ctlr);
 }
 enum {
-Control		= 1<<31,
-Write		= 2<<22,
-Read		= 3<<22,
-Portsh		= 24,
-Regaddrsh	= 16,
-Eregaddrsh	= 8,
-Funcctlreg	= 4,
-Ifcctlreg	= 7,
-Phystppullupoff	= 0x90,
-Phyrstport2	= 147,
+Control = 1<<31,
+Write = 2<<22,
+Read = 3<<22,
+Portsh = 24,
+Regaddrsh = 16,
+Eregaddrsh = 8,
+Funcctlreg = 4,
+Ifcctlreg = 7,
+Phystppullupoff = 0x90,
+Phyrstport2 = 147,
 };
 static void
 wrulpi(Eopio *opio, int port, int reg, uchar data)

@@ -9,7 +9,7 @@ extern int _uartprint(char*, ...);
 extern void uartkirkwoodconsole(void);
 extern void serialputs(char *, int);
 extern void serialputc(int c);
-#pragma	varargck argpos	_uartprint 1
+#pragma varargck argpos _uartprint 1
 extern void archreboot(void);
 extern void archconfinit(void);
 extern void archreset(void);
@@ -25,7 +25,7 @@ extern void cacheuwbinv(void);
 extern uintptr cankaddr(uintptr pa);
 extern void clockshutdown(void);
 extern int clz(ulong);
-int	cmpswap(long*, long, long);
+int cmpswap(long*, long, long);
 #define coherence barriers
 extern u32int controlget(void);
 extern u32int cpctget(void);
@@ -60,9 +60,9 @@ extern void mmuinvalidate(void);
 extern void mmuinvalidateaddr(u32int);
 extern u32int pidget(void);
 extern void pidput(u32int);
-void	procrestore(Proc *);
-void	procsave(Proc*);
-void	procsetup(Proc*);
+void procrestore(Proc *);
+void procsave(Proc*);
+void procsetup(Proc*);
 extern void _reset(void);
 extern void setr13(int, u32int*);
 extern void syscallfmt(int syscallno, ulong pc, va_list list);
@@ -93,12 +93,12 @@ extern void fpusysrfork(Ureg*);
 extern void fpusysrforkchild(Proc*, Ureg *, Proc*);
 extern int fpuemu(Ureg*);
 extern char* getenv(char*, char*, int);
-char*	getconf(char*);
+char* getconf(char*);
 uintptr mmukmap(uintptr, uintptr, usize);
 uintptr mmukunmap(uintptr, uintptr, usize);
 extern void* mmuuncache(void*, usize);
 #define sdfree(p) free(p)
-#define sdmalloc(n)	mallocalign(n, CACHELINESZ, 0, 0)
+#define sdmalloc(n) mallocalign(n, CACHELINESZ, 0, 0)
 extern void* ucalloc(usize);
 extern void* ucallocalign(usize size, int align, int span);
 extern Block* ucallocb(int);
@@ -115,49 +115,49 @@ extern int splfhi(void);
 extern int splflo(void);
 extern void sysprocsetup(Proc*);
 extern void validalign(uintptr, unsigned);
-ulong	pcibarsize(Pcidev*, int);
-void	pcibussize(Pcidev*, ulong*, ulong*);
-int	pcicfgr8(Pcidev*, int);
-int	pcicfgr16(Pcidev*, int);
-int	pcicfgr32(Pcidev*, int);
-void	pcicfgw8(Pcidev*, int, int);
-void	pcicfgw16(Pcidev*, int, int);
-void	pcicfgw32(Pcidev*, int, int);
-void	pciclrbme(Pcidev*);
-void	pciclrioe(Pcidev*);
-void	pciclrmwi(Pcidev*);
-int	pcigetpms(Pcidev*);
-void	pcihinv(Pcidev*);
-uchar	pciipin(Pcidev*, uchar);
+ulong pcibarsize(Pcidev*, int);
+void pcibussize(Pcidev*, ulong*, ulong*);
+int pcicfgr8(Pcidev*, int);
+int pcicfgr16(Pcidev*, int);
+int pcicfgr32(Pcidev*, int);
+void pcicfgw8(Pcidev*, int, int);
+void pcicfgw16(Pcidev*, int, int);
+void pcicfgw32(Pcidev*, int, int);
+void pciclrbme(Pcidev*);
+void pciclrioe(Pcidev*);
+void pciclrmwi(Pcidev*);
+int pcigetpms(Pcidev*);
+void pcihinv(Pcidev*);
+uchar pciipin(Pcidev*, uchar);
 Pcidev* pcimatch(Pcidev*, int, int);
 Pcidev* pcimatchtbdf(int);
-void	pcireset(void);
-int	pciscan(int, Pcidev**);
-void	pcisetbme(Pcidev*);
-void	pcisetioe(Pcidev*);
-void	pcisetmwi(Pcidev*);
-int	pcisetpms(Pcidev*, int);
-int	cas32(void*, u32int, u32int);
-#define CASU(p, e, n)	cas32((p), (u32int)(e), (u32int)(n))
-#define CASV(p, e, n)	cas32((p), (u32int)(e), (u32int)(n))
-#define CASW(addr, exp, new)	cas32((addr), (exp), (new))
+void pcireset(void);
+int pciscan(int, Pcidev**);
+void pcisetbme(Pcidev*);
+void pcisetioe(Pcidev*);
+void pcisetmwi(Pcidev*);
+int pcisetpms(Pcidev*, int);
+int cas32(void*, u32int, u32int);
+#define CASU(p, e, n) cas32((p), (u32int)(e), (u32int)(n))
+#define CASV(p, e, n) cas32((p), (u32int)(e), (u32int)(n))
+#define CASW(addr, exp, new) cas32((addr), (exp), (new))
 extern void forkret(void);
 extern int userureg(Ureg*);
-void*	vmap(uintptr, usize);
-void	vunmap(void*, usize);
+void* vmap(uintptr, usize);
+void vunmap(void*, usize);
 extern void kexit(Ureg*);
-#define	getpgcolor(a)	0
-#define	kmapinval()
-#define PTR2UINT(p)	((uintptr)(p))
-#define UINT2PTR(i)	((void*)(i))
-#define	waserror()	(up->nerrlab++, setlabel(&up->errlab[up->nerrlab-1]))
+#define getpgcolor(a) 0
+#define kmapinval()
+#define PTR2UINT(p) ((uintptr)(p))
+#define UINT2PTR(i) ((void*)(i))
+#define waserror() (up->nerrlab++, setlabel(&up->errlab[up->nerrlab-1]))
 #define wave(c) { \
 coherence(); \
-while ((*(ulong *)(PHYSCONS+4*5) & (1<<5)) == 0)  \
+while ((*(ulong *)(PHYSCONS+4*5) & (1<<5)) == 0) \
 ; \
 *(ulong *)PHYSCONS = (c); \
 coherence(); \
 }
-#define KADDR(pa)	UINT2PTR(KZERO|((uintptr)(pa)))
-#define PADDR(va)	PTR2UINT(((uintptr)(va)) & ~KSEGM)
-#define MASK(v)	((1UL << (v)) - 1)
+#define KADDR(pa) UINT2PTR(KZERO|((uintptr)(pa)))
+#define PADDR(va) PTR2UINT(((uintptr)(va)) & ~KSEGM)
+#define MASK(v) ((1UL << (v)) - 1)

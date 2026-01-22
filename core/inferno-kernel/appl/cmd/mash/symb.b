@@ -1,10 +1,10 @@
 #
-#	Symbol table routines.  A symbol table becomes copy-on-write
-#	when it is cloned.  The first modification will copy the hash table.
-#	Every list is then copied on first modification.
+# Symbol table routines. A symbol table becomes copy-on-write
+# when it is cloned. The first modification will copy the hash table.
+# Every list is then copied on first modification.
 #
 #
-#	Copy a hash list.
+# Copy a hash list.
 #
 cpsymbs(l: list of ref Symb): list of ref Symb
 {
@@ -16,14 +16,14 @@ l = tl l;
 return r;
 }
 #
-#	New symbol table.
+# New symbol table.
 #
 Stab.new(): ref Stab
 {
 return ref Stab(array[SHASH] of list of ref Symb, 0, 0);
 }
 #
-#	Clone a symbol table.  Copy Stab and mark contents copy-on-write.
+# Clone a symbol table. Copy Stab and mark contents copy-on-write.
 #
 Stab.clone(t: self ref Stab): ref Stab
 {
@@ -32,7 +32,7 @@ t.wmask = SMASK;
 return ref *t;
 }
 #
-#	Update symbol table entry, or add new entry.
+# Update symbol table entry, or add new entry.
 #
 Stab.update(t: self ref Stab, s: string, tag: int, v: list of string, f: ref Cmd, b: Mashbuiltin): ref Symb
 {
@@ -70,7 +70,7 @@ t.tab[x] = n :: l;
 return n;
 }
 #
-#	Make a list of a symbol table's contents.
+# Make a list of a symbol table's contents.
 #
 Stab.all(t: self ref Stab): list of ref Symb
 {
@@ -82,8 +82,8 @@ r = (ref *hd l) :: r;
 return r;
 }
 #
-#	Assign a list of strings to a variable.  The distinguished value
-#	"empty" is used to distinguish nil value from undefined.
+# Assign a list of strings to a variable. The distinguished value
+# "empty" is used to distinguish nil value from undefined.
 #
 Stab.assign(t: self ref Stab, s: string, v: list of string)
 {
@@ -92,21 +92,21 @@ v = empty;
 t.update(s, Svalue, v, nil, nil);
 }
 #
-#	Define a builtin.
+# Define a builtin.
 #
 Stab.defbuiltin(t: self ref Stab, s: string, b: Mashbuiltin)
 {
 t.update(s, Sbuiltin, nil, nil, b);
 }
 #
-#	Define a function.
+# Define a function.
 #
 Stab.define(t: self ref Stab, s: string, f: ref Cmd)
 {
 t.update(s, Sfunc, nil, f, nil);
 }
 #
-#	Symbol table lookup.
+# Symbol table lookup.
 #
 Stab.find(t: self ref Stab, s: string): ref Symb
 {
@@ -120,7 +120,7 @@ l = tl l;
 return nil;
 }
 #
-#	Function lookup.
+# Function lookup.
 #
 Stab.func(t: self ref Stab, s: string): ref Cmd
 {
@@ -130,14 +130,14 @@ return nil;
 return v.func;
 }
 #
-#	New environment.
+# New environment.
 #
 Env.new(): ref Env
 {
 return ref Env(Stab.new(), nil, ETop, nil, nil, nil, nil, nil, nil, 0);
 }
 #
-#	Clone environment.  No longer top-level or interactive.
+# Clone environment. No longer top-level or interactive.
 #
 Env.clone(e: self ref Env): ref Env
 {
@@ -149,14 +149,14 @@ e.local = e.local.clone();
 return e;
 }
 #
-#	Copy environment.
+# Copy environment.
 #
 Env.copy(e: self ref Env): ref Env
 {
 return ref *e;
 }
 #
-#	Fetch $n argument.
+# Fetch $n argument.
 #
 Env.arg(e: self ref Env, s: string): string
 {
@@ -167,7 +167,7 @@ else
 return e.args[n];
 }
 #
-#	Lookup builtin.
+# Lookup builtin.
 #
 Env.builtin(e: self ref Env, s: string): Mashbuiltin
 {
@@ -177,21 +177,21 @@ return nil;
 return v.builtin;
 }
 #
-#	Define a builtin.
+# Define a builtin.
 #
 Env.defbuiltin(e: self ref Env, s: string, b: Mashbuiltin)
 {
 e.global.defbuiltin(s, b);
 }
 #
-#	Define a function.
+# Define a function.
 #
 Env.define(e: self ref Env, s: string, f: ref Cmd)
 {
 e.global.define(s, f);
 }
 #
-#	Value of a shell variable (check locals then globals).
+# Value of a shell variable (check locals then globals).
 #
 Env.dollar(e: self ref Env, s: string): ref Symb
 {
@@ -206,7 +206,7 @@ return g;
 return nil;
 }
 #
-#	Lookup a function.
+# Lookup a function.
 #
 Env.func(e: self ref Env, s: string): ref Cmd
 {
@@ -216,7 +216,7 @@ return nil;
 return v.func;
 }
 #
-#	Local assignment.
+# Local assignment.
 #
 Env.let(e: self ref Env, s: string, v: list of string)
 {
@@ -225,7 +225,7 @@ e.local = Stab.new();
 e.local.assign(s, v);
 }
 #
-#	Assignment.  Update local or define global.
+# Assignment. Update local or define global.
 #
 Env.set(e: self ref Env, s: string, v: list of string)
 {
@@ -235,7 +235,7 @@ else
 e.global.assign(s, v);
 }
 #
-#	Report undefined.
+# Report undefined.
 #
 Env.undefined(e: self ref Env, s: string)
 {

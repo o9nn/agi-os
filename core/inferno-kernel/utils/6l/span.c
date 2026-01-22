@@ -1,6 +1,6 @@
-#include	"l.h"
-static int	rexflag;
-static int	asmode;
+#include "l.h"
+static int rexflag;
+static int asmode;
 void
 span(void)
 {
@@ -364,7 +364,7 @@ case D_SI:
 case D_DI:
 return Yrl;
 case D_F0+0:
-return	Yf0;
+return Yf0;
 case D_F0+1:
 case D_F0+2:
 case D_F0+3:
@@ -372,7 +372,7 @@ case D_F0+4:
 case D_F0+5:
 case D_F0+6:
 case D_F0+7:
-return	Yrf;
+return Yrf;
 case D_M0+0:
 case D_M0+1:
 case D_M0+2:
@@ -381,7 +381,7 @@ case D_M0+4:
 case D_M0+5:
 case D_M0+6:
 case D_M0+7:
-return	Ymr;
+return Ymr;
 case D_X0+0:
 case D_X0+1:
 case D_X0+2:
@@ -398,45 +398,45 @@ case D_X0+12:
 case D_X0+13:
 case D_X0+14:
 case D_X0+15:
-return	Yxr;
+return Yxr;
 case D_NONE:
 return Ynone;
-case D_CS:	return	Ycs;
-case D_SS:	return	Yss;
-case D_DS:	return	Yds;
-case D_ES:	return	Yes;
-case D_FS:	return	Yfs;
-case D_GS:	return	Ygs;
-case D_GDTR:	return	Ygdtr;
-case D_IDTR:	return	Yidtr;
-case D_LDTR:	return	Yldtr;
-case D_MSW:	return	Ymsw;
-case D_TASK:	return	Ytask;
-case D_CR+0:	return	Ycr0;
-case D_CR+1:	return	Ycr1;
-case D_CR+2:	return	Ycr2;
-case D_CR+3:	return	Ycr3;
-case D_CR+4:	return	Ycr4;
-case D_CR+5:	return	Ycr5;
-case D_CR+6:	return	Ycr6;
-case D_CR+7:	return	Ycr7;
-case D_CR+8:	return	Ycr8;
-case D_DR+0:	return	Ydr0;
-case D_DR+1:	return	Ydr1;
-case D_DR+2:	return	Ydr2;
-case D_DR+3:	return	Ydr3;
-case D_DR+4:	return	Ydr4;
-case D_DR+5:	return	Ydr5;
-case D_DR+6:	return	Ydr6;
-case D_DR+7:	return	Ydr7;
-case D_TR+0:	return	Ytr0;
-case D_TR+1:	return	Ytr1;
-case D_TR+2:	return	Ytr2;
-case D_TR+3:	return	Ytr3;
-case D_TR+4:	return	Ytr4;
-case D_TR+5:	return	Ytr5;
-case D_TR+6:	return	Ytr6;
-case D_TR+7:	return	Ytr7;
+case D_CS: return Ycs;
+case D_SS: return Yss;
+case D_DS: return Yds;
+case D_ES: return Yes;
+case D_FS: return Yfs;
+case D_GS: return Ygs;
+case D_GDTR: return Ygdtr;
+case D_IDTR: return Yidtr;
+case D_LDTR: return Yldtr;
+case D_MSW: return Ymsw;
+case D_TASK: return Ytask;
+case D_CR+0: return Ycr0;
+case D_CR+1: return Ycr1;
+case D_CR+2: return Ycr2;
+case D_CR+3: return Ycr3;
+case D_CR+4: return Ycr4;
+case D_CR+5: return Ycr5;
+case D_CR+6: return Ycr6;
+case D_CR+7: return Ycr7;
+case D_CR+8: return Ycr8;
+case D_DR+0: return Ydr0;
+case D_DR+1: return Ydr1;
+case D_DR+2: return Ydr2;
+case D_DR+3: return Ydr3;
+case D_DR+4: return Ydr4;
+case D_DR+5: return Ydr5;
+case D_DR+6: return Ydr6;
+case D_DR+7: return Ydr7;
+case D_TR+0: return Ytr0;
+case D_TR+1: return Ytr1;
+case D_TR+2: return Ytr2;
+case D_TR+3: return Ytr3;
+case D_TR+4: return Ytr4;
+case D_TR+5: return Ytr5;
+case D_TR+6: return Ytr6;
+case D_TR+7: return Ytr7;
 case D_EXTERN:
 case D_STATIC:
 case D_AUTO:
@@ -677,7 +677,7 @@ if(asmode != 64){
 put4(v);
 return;
 }
-*andptr++ = (0 <<  6) | (4 << 0) | (r << 3);
+*andptr++ = (0 << 6) | (4 << 0) | (r << 3);
 *andptr++ = (0 << 6) | (4 << 3) | (5 << 0);
 put4(v);
 return;
@@ -753,105 +753,105 @@ bytereg(Adr *a)
 if(a->index == D_NONE && (a->type >= D_AX && a->type <= D_R15))
 a->type = D_AL + (a->type-D_AX);
 }
-#define	E	0xff
-Movtab	ymovtab[] =
+#define E 0xff
+Movtab ymovtab[] =
 {
-{APUSHL,	Ycs,	Ynone,	0,	0x0e,E,0,0},
-{APUSHL,	Yss,	Ynone,	0,	0x16,E,0,0},
-{APUSHL,	Yds,	Ynone,	0,	0x1e,E,0,0},
-{APUSHL,	Yes,	Ynone,	0,	0x06,E,0,0},
-{APUSHL,	Yfs,	Ynone,	0,	0x0f,0xa0,E,0},
-{APUSHL,	Ygs,	Ynone,	0,	0x0f,0xa8,E,0},
-{APUSHQ,	Yfs,	Ynone,	0,	0x0f,0xa0,E,0},
-{APUSHQ,	Ygs,	Ynone,	0,	0x0f,0xa8,E,0},
-{APUSHW,	Ycs,	Ynone,	0,	Pe,0x0e,E,0},
-{APUSHW,	Yss,	Ynone,	0,	Pe,0x16,E,0},
-{APUSHW,	Yds,	Ynone,	0,	Pe,0x1e,E,0},
-{APUSHW,	Yes,	Ynone,	0,	Pe,0x06,E,0},
-{APUSHW,	Yfs,	Ynone,	0,	Pe,0x0f,0xa0,E},
-{APUSHW,	Ygs,	Ynone,	0,	Pe,0x0f,0xa8,E},
-{APOPL,	Ynone,	Yds,	0,	0x1f,E,0,0},
-{APOPL,	Ynone,	Yes,	0,	0x07,E,0,0},
-{APOPL,	Ynone,	Yss,	0,	0x17,E,0,0},
-{APOPL,	Ynone,	Yfs,	0,	0x0f,0xa1,E,0},
-{APOPL,	Ynone,	Ygs,	0,	0x0f,0xa9,E,0},
-{APOPQ,	Ynone,	Yfs,	0,	0x0f,0xa1,E,0},
-{APOPQ,	Ynone,	Ygs,	0,	0x0f,0xa9,E,0},
-{APOPW,	Ynone,	Yds,	0,	Pe,0x1f,E,0},
-{APOPW,	Ynone,	Yes,	0,	Pe,0x07,E,0},
-{APOPW,	Ynone,	Yss,	0,	Pe,0x17,E,0},
-{APOPW,	Ynone,	Yfs,	0,	Pe,0x0f,0xa1,E},
-{APOPW,	Ynone,	Ygs,	0,	Pe,0x0f,0xa9,E},
-{AMOVW,	Yes,	Yml,	1,	0x8c,0,0,0},
-{AMOVW,	Ycs,	Yml,	1,	0x8c,1,0,0},
-{AMOVW,	Yss,	Yml,	1,	0x8c,2,0,0},
-{AMOVW,	Yds,	Yml,	1,	0x8c,3,0,0},
-{AMOVW,	Yfs,	Yml,	1,	0x8c,4,0,0},
-{AMOVW,	Ygs,	Yml,	1,	0x8c,5,0,0},
-{AMOVW,	Yml,	Yes,	2,	0x8e,0,0,0},
-{AMOVW,	Yml,	Ycs,	2,	0x8e,1,0,0},
-{AMOVW,	Yml,	Yss,	2,	0x8e,2,0,0},
-{AMOVW,	Yml,	Yds,	2,	0x8e,3,0,0},
-{AMOVW,	Yml,	Yfs,	2,	0x8e,4,0,0},
-{AMOVW,	Yml,	Ygs,	2,	0x8e,5,0,0},
-{AMOVL,	Ycr0,	Yml,	3,	0x0f,0x20,0,0},
-{AMOVL,	Ycr2,	Yml,	3,	0x0f,0x20,2,0},
-{AMOVL,	Ycr3,	Yml,	3,	0x0f,0x20,3,0},
-{AMOVL,	Ycr4,	Yml,	3,	0x0f,0x20,4,0},
-{AMOVL,	Ycr8,	Yml,	3,	0x0f,0x20,8,0},
-{AMOVQ,	Ycr0,	Yml,	3,	0x0f,0x20,0,0},
-{AMOVQ,	Ycr2,	Yml,	3,	0x0f,0x20,2,0},
-{AMOVQ,	Ycr3,	Yml,	3,	0x0f,0x20,3,0},
-{AMOVQ,	Ycr4,	Yml,	3,	0x0f,0x20,4,0},
-{AMOVQ,	Ycr8,	Yml,	3,	0x0f,0x20,8,0},
-{AMOVL,	Yml,	Ycr0,	4,	0x0f,0x22,0,0},
-{AMOVL,	Yml,	Ycr2,	4,	0x0f,0x22,2,0},
-{AMOVL,	Yml,	Ycr3,	4,	0x0f,0x22,3,0},
-{AMOVL,	Yml,	Ycr4,	4,	0x0f,0x22,4,0},
-{AMOVL,	Yml,	Ycr8,	4,	0x0f,0x22,8,0},
-{AMOVQ,	Yml,	Ycr0,	4,	0x0f,0x22,0,0},
-{AMOVQ,	Yml,	Ycr2,	4,	0x0f,0x22,2,0},
-{AMOVQ,	Yml,	Ycr3,	4,	0x0f,0x22,3,0},
-{AMOVQ,	Yml,	Ycr4,	4,	0x0f,0x22,4,0},
-{AMOVQ,	Yml,	Ycr8,	4,	0x0f,0x22,8,0},
-{AMOVL,	Ydr0,	Yml,	3,	0x0f,0x21,0,0},
-{AMOVL,	Ydr6,	Yml,	3,	0x0f,0x21,6,0},
-{AMOVL,	Ydr7,	Yml,	3,	0x0f,0x21,7,0},
-{AMOVQ,	Ydr0,	Yml,	3,	0x0f,0x21,0,0},
-{AMOVQ,	Ydr6,	Yml,	3,	0x0f,0x21,6,0},
-{AMOVQ,	Ydr7,	Yml,	3,	0x0f,0x21,7,0},
-{AMOVL,	Yml,	Ydr0,	4,	0x0f,0x23,0,0},
-{AMOVL,	Yml,	Ydr6,	4,	0x0f,0x23,6,0},
-{AMOVL,	Yml,	Ydr7,	4,	0x0f,0x23,7,0},
-{AMOVQ,	Yml,	Ydr0,	4,	0x0f,0x23,0,0},
-{AMOVQ,	Yml,	Ydr6,	4,	0x0f,0x23,6,0},
-{AMOVQ,	Yml,	Ydr7,	4,	0x0f,0x23,7,0},
-{AMOVL,	Ytr6,	Yml,	3,	0x0f,0x24,6,0},
-{AMOVL,	Ytr7,	Yml,	3,	0x0f,0x24,7,0},
-{AMOVL,	Yml,	Ytr6,	4,	0x0f,0x26,6,E},
-{AMOVL,	Yml,	Ytr7,	4,	0x0f,0x26,7,E},
-{AMOVL,	Ym,	Ygdtr,	4,	0x0f,0x01,2,0},
-{AMOVL,	Ygdtr,	Ym,	3,	0x0f,0x01,0,0},
-{AMOVL,	Ym,	Yidtr,	4,	0x0f,0x01,3,0},
-{AMOVL,	Yidtr,	Ym,	3,	0x0f,0x01,1,0},
-{AMOVQ,	Ym,	Ygdtr,	4,	0x0f,0x01,2,0},
-{AMOVQ,	Ygdtr,	Ym,	3,	0x0f,0x01,0,0},
-{AMOVQ,	Ym,	Yidtr,	4,	0x0f,0x01,3,0},
-{AMOVQ,	Yidtr,	Ym,	3,	0x0f,0x01,1,0},
-{AMOVW,	Yml,	Yldtr,	4,	0x0f,0x00,2,0},
-{AMOVW,	Yldtr,	Yml,	3,	0x0f,0x00,0,0},
-{AMOVW,	Yml,	Ymsw,	4,	0x0f,0x01,6,0},
-{AMOVW,	Ymsw,	Yml,	3,	0x0f,0x01,4,0},
-{AMOVW,	Yml,	Ytask,	4,	0x0f,0x00,3,0},
-{AMOVW,	Ytask,	Yml,	3,	0x0f,0x00,1,0},
-{AMOVL,	Yml,	Ycol,	5,	0,0,0,0},
-{AMOVW,	Yml,	Ycol,	5,	Pe,0,0,0},
-{ASHLL,	Ycol,	Yml,	6,	0xa4,0xa5,0,0},
-{ASHRL,	Ycol,	Yml,	6,	0xac,0xad,0,0},
-{ASHLQ,	Ycol,	Yml,	6,	Pw,0xa4,0xa5,0},
-{ASHRQ,	Ycol,	Yml,	6,	Pw,0xac,0xad,0},
-{ASHLW,	Ycol,	Yml,	6,	Pe,0xa4,0xa5,0},
-{ASHRW,	Ycol,	Yml,	6,	Pe,0xac,0xad,0},
+{APUSHL, Ycs, Ynone, 0, 0x0e,E,0,0},
+{APUSHL, Yss, Ynone, 0, 0x16,E,0,0},
+{APUSHL, Yds, Ynone, 0, 0x1e,E,0,0},
+{APUSHL, Yes, Ynone, 0, 0x06,E,0,0},
+{APUSHL, Yfs, Ynone, 0, 0x0f,0xa0,E,0},
+{APUSHL, Ygs, Ynone, 0, 0x0f,0xa8,E,0},
+{APUSHQ, Yfs, Ynone, 0, 0x0f,0xa0,E,0},
+{APUSHQ, Ygs, Ynone, 0, 0x0f,0xa8,E,0},
+{APUSHW, Ycs, Ynone, 0, Pe,0x0e,E,0},
+{APUSHW, Yss, Ynone, 0, Pe,0x16,E,0},
+{APUSHW, Yds, Ynone, 0, Pe,0x1e,E,0},
+{APUSHW, Yes, Ynone, 0, Pe,0x06,E,0},
+{APUSHW, Yfs, Ynone, 0, Pe,0x0f,0xa0,E},
+{APUSHW, Ygs, Ynone, 0, Pe,0x0f,0xa8,E},
+{APOPL, Ynone, Yds, 0, 0x1f,E,0,0},
+{APOPL, Ynone, Yes, 0, 0x07,E,0,0},
+{APOPL, Ynone, Yss, 0, 0x17,E,0,0},
+{APOPL, Ynone, Yfs, 0, 0x0f,0xa1,E,0},
+{APOPL, Ynone, Ygs, 0, 0x0f,0xa9,E,0},
+{APOPQ, Ynone, Yfs, 0, 0x0f,0xa1,E,0},
+{APOPQ, Ynone, Ygs, 0, 0x0f,0xa9,E,0},
+{APOPW, Ynone, Yds, 0, Pe,0x1f,E,0},
+{APOPW, Ynone, Yes, 0, Pe,0x07,E,0},
+{APOPW, Ynone, Yss, 0, Pe,0x17,E,0},
+{APOPW, Ynone, Yfs, 0, Pe,0x0f,0xa1,E},
+{APOPW, Ynone, Ygs, 0, Pe,0x0f,0xa9,E},
+{AMOVW, Yes, Yml, 1, 0x8c,0,0,0},
+{AMOVW, Ycs, Yml, 1, 0x8c,1,0,0},
+{AMOVW, Yss, Yml, 1, 0x8c,2,0,0},
+{AMOVW, Yds, Yml, 1, 0x8c,3,0,0},
+{AMOVW, Yfs, Yml, 1, 0x8c,4,0,0},
+{AMOVW, Ygs, Yml, 1, 0x8c,5,0,0},
+{AMOVW, Yml, Yes, 2, 0x8e,0,0,0},
+{AMOVW, Yml, Ycs, 2, 0x8e,1,0,0},
+{AMOVW, Yml, Yss, 2, 0x8e,2,0,0},
+{AMOVW, Yml, Yds, 2, 0x8e,3,0,0},
+{AMOVW, Yml, Yfs, 2, 0x8e,4,0,0},
+{AMOVW, Yml, Ygs, 2, 0x8e,5,0,0},
+{AMOVL, Ycr0, Yml, 3, 0x0f,0x20,0,0},
+{AMOVL, Ycr2, Yml, 3, 0x0f,0x20,2,0},
+{AMOVL, Ycr3, Yml, 3, 0x0f,0x20,3,0},
+{AMOVL, Ycr4, Yml, 3, 0x0f,0x20,4,0},
+{AMOVL, Ycr8, Yml, 3, 0x0f,0x20,8,0},
+{AMOVQ, Ycr0, Yml, 3, 0x0f,0x20,0,0},
+{AMOVQ, Ycr2, Yml, 3, 0x0f,0x20,2,0},
+{AMOVQ, Ycr3, Yml, 3, 0x0f,0x20,3,0},
+{AMOVQ, Ycr4, Yml, 3, 0x0f,0x20,4,0},
+{AMOVQ, Ycr8, Yml, 3, 0x0f,0x20,8,0},
+{AMOVL, Yml, Ycr0, 4, 0x0f,0x22,0,0},
+{AMOVL, Yml, Ycr2, 4, 0x0f,0x22,2,0},
+{AMOVL, Yml, Ycr3, 4, 0x0f,0x22,3,0},
+{AMOVL, Yml, Ycr4, 4, 0x0f,0x22,4,0},
+{AMOVL, Yml, Ycr8, 4, 0x0f,0x22,8,0},
+{AMOVQ, Yml, Ycr0, 4, 0x0f,0x22,0,0},
+{AMOVQ, Yml, Ycr2, 4, 0x0f,0x22,2,0},
+{AMOVQ, Yml, Ycr3, 4, 0x0f,0x22,3,0},
+{AMOVQ, Yml, Ycr4, 4, 0x0f,0x22,4,0},
+{AMOVQ, Yml, Ycr8, 4, 0x0f,0x22,8,0},
+{AMOVL, Ydr0, Yml, 3, 0x0f,0x21,0,0},
+{AMOVL, Ydr6, Yml, 3, 0x0f,0x21,6,0},
+{AMOVL, Ydr7, Yml, 3, 0x0f,0x21,7,0},
+{AMOVQ, Ydr0, Yml, 3, 0x0f,0x21,0,0},
+{AMOVQ, Ydr6, Yml, 3, 0x0f,0x21,6,0},
+{AMOVQ, Ydr7, Yml, 3, 0x0f,0x21,7,0},
+{AMOVL, Yml, Ydr0, 4, 0x0f,0x23,0,0},
+{AMOVL, Yml, Ydr6, 4, 0x0f,0x23,6,0},
+{AMOVL, Yml, Ydr7, 4, 0x0f,0x23,7,0},
+{AMOVQ, Yml, Ydr0, 4, 0x0f,0x23,0,0},
+{AMOVQ, Yml, Ydr6, 4, 0x0f,0x23,6,0},
+{AMOVQ, Yml, Ydr7, 4, 0x0f,0x23,7,0},
+{AMOVL, Ytr6, Yml, 3, 0x0f,0x24,6,0},
+{AMOVL, Ytr7, Yml, 3, 0x0f,0x24,7,0},
+{AMOVL, Yml, Ytr6, 4, 0x0f,0x26,6,E},
+{AMOVL, Yml, Ytr7, 4, 0x0f,0x26,7,E},
+{AMOVL, Ym, Ygdtr, 4, 0x0f,0x01,2,0},
+{AMOVL, Ygdtr, Ym, 3, 0x0f,0x01,0,0},
+{AMOVL, Ym, Yidtr, 4, 0x0f,0x01,3,0},
+{AMOVL, Yidtr, Ym, 3, 0x0f,0x01,1,0},
+{AMOVQ, Ym, Ygdtr, 4, 0x0f,0x01,2,0},
+{AMOVQ, Ygdtr, Ym, 3, 0x0f,0x01,0,0},
+{AMOVQ, Ym, Yidtr, 4, 0x0f,0x01,3,0},
+{AMOVQ, Yidtr, Ym, 3, 0x0f,0x01,1,0},
+{AMOVW, Yml, Yldtr, 4, 0x0f,0x00,2,0},
+{AMOVW, Yldtr, Yml, 3, 0x0f,0x00,0,0},
+{AMOVW, Yml, Ymsw, 4, 0x0f,0x01,6,0},
+{AMOVW, Ymsw, Yml, 3, 0x0f,0x01,4,0},
+{AMOVW, Yml, Ytask, 4, 0x0f,0x00,3,0},
+{AMOVW, Ytask, Yml, 3, 0x0f,0x00,1,0},
+{AMOVL, Yml, Ycol, 5, 0,0,0,0},
+{AMOVW, Yml, Ycol, 5, Pe,0,0,0},
+{ASHLL, Ycol, Yml, 6, 0xa4,0xa5,0,0},
+{ASHRL, Ycol, Yml, 6, 0xac,0xad,0,0},
+{ASHLQ, Ycol, Yml, 6, Pw,0xa4,0xa5,0},
+{ASHRQ, Ycol, Yml, 6, Pw,0xac,0xad,0},
+{ASHLW, Ycol, Yml, 6, Pe,0xa4,0xa5,0},
+{ASHRW, Ycol, Yml, 6, Pe,0xac,0xad,0},
 0
 };
 int

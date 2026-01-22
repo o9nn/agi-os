@@ -15,7 +15,7 @@ FreeLink(const FreeLink&) = delete;
 FreeLink& operator=(const FreeLink&) = delete;
 virtual ~FreeLink() {}
 const FreeVariables& get_vars() const
-{ return  _vars; }
+{ return _vars; }
 bool is_closed(void) const { return 0 == _vars.varseq.size(); }
 static Handle factory(const Handle&);
 };

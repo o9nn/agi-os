@@ -25,9 +25,9 @@ println()
 println("Part 1: Initializing Deep Tree Echo Reservoir")
 println("-" ^ 70)
 reservoir = initialize_deep_tree_echo(
-order = 4,              # B-series order (rooted trees up to order 4)
-membrane_depth = 3,     # 3 levels of membrane hierarchy
-reservoir_size = 50     # 50 neurons per membrane
+order = 4, # B-series order (rooted trees up to order 4)
+membrane_depth = 3, # 3 levels of membrane hierarchy
+reservoir_size = 50 # 50 neurons per membrane
 )
 info = reservoir_info(reservoir)
 println("Reservoir initialized:")

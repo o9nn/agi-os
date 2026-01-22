@@ -1,5 +1,5 @@
 #ifndef sbhc_INCLUDED
-#  define sbhc_INCLUDED
+# define sbhc_INCLUDED
 #include "shc.h"
 #define max_zero_run 100
 #define stream_BHC_state_common\
@@ -17,7 +17,7 @@ typedef struct stream_BHCE_state_s {
 stream_BHC_state_common;
 hce_table encode;
 } stream_BHCE_state;
-#define private_st_BHCE_state()	\
+#define private_st_BHCE_state() \
 gs_private_st_ptrs3(st_BHCE_state, stream_BHCE_state,\
 "BoundedHuffmanEncode state", bhce_enum_ptrs, bhce_reloc_ptrs,\
 definition.counts, definition.values, encode.codes)
@@ -28,7 +28,7 @@ typedef struct stream_BHCD_state_s {
 stream_BHC_state_common;
 hcd_table decode;
 } stream_BHCD_state;
-#define private_st_BHCD_state()	\
+#define private_st_BHCD_state() \
 gs_private_st_ptrs3(st_BHCD_state, stream_BHCD_state,\
 "BoundedHuffmanDecode state", bhcd_enum_ptrs, bhcd_reloc_ptrs,\
 definition.counts, definition.values, decode.codes)

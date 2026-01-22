@@ -12,7 +12,7 @@ Random.seed!(42)
 @testset "RootedTreeOps" begin
 # Test tree generation
 trees = generate_all_trees(3)
-@test length(trees) == 2  # A000081: a(3) = 2
+@test length(trees) == 2 # A000081: a(3) = 2
 # Test tree similarity
 if length(trees) >= 2
 sim = tree_similarity(trees[1], trees[1])
@@ -40,7 +40,7 @@ child = crossover(genome, genome2)
 @test length(child.parents) == 2
 # Test mutation
 original_coeffs = copy(genome.coefficients)
-mutate!(genome, 1.0)  # 100% mutation rate
+mutate!(genome, 1.0) # 100% mutation rate
 # At least some coefficients should have changed
 changed = false
 for (tree, coeff) in genome.coefficients

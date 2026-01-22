@@ -10,11 +10,11 @@
 #include <acpifs.h>
 #include <ncache.h>
 #include <func_files.h>
-#define DIRENTS_CHUNK_SIZE      (8*1024)
+#define DIRENTS_CHUNK_SIZE (8*1024)
 #define DIRENT_ALIGN 4
 #define DIRENT_NAME_OFFS offsetof (struct dirent, d_name)
-#define DIRENT_LEN(name_len)                                                  \
-((DIRENT_NAME_OFFS + (name_len) + 1 + (DIRENT_ALIGN - 1))                   \
+#define DIRENT_LEN(name_len) \
+((DIRENT_NAME_OFFS + (name_len) + 1 + (DIRENT_ALIGN - 1)) \
 & ~(DIRENT_ALIGN - 1))
 static error_t
 get_dirents (struct acpifs_dirent *dir,

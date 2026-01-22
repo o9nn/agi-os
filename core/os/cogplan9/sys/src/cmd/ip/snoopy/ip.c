@@ -3,26 +3,26 @@
 #include <ip.h>
 #include "dat.h"
 #include "protos.h"
-typedef struct Hdr	Hdr;
+typedef struct Hdr Hdr;
 struct Hdr
 {
-uchar	vihl;
-uchar	tos;
-uchar	length[2];
-uchar	id[2];
-uchar	frag[2];
-uchar	ttl;
-uchar	proto;
-uchar	cksum[2];
-uchar	src[4];
-uchar	dst[4];
+uchar vihl;
+uchar tos;
+uchar length[2];
+uchar id[2];
+uchar frag[2];
+uchar ttl;
+uchar proto;
+uchar cksum[2];
+uchar src[4];
+uchar dst[4];
 };
 enum
 {
-IPHDR		= 20,
-IP_VER		= 0x40,
-IP_DF		= 0x4000,
-IP_MF		= 0x2000,
+IPHDR = 20,
+IP_VER = 0x40,
+IP_DF = 0x4000,
+IP_MF = 0x2000,
 };
 static Mux p_mux[] =
 {
@@ -132,11 +132,11 @@ Ot,
 };
 static Field p_fields[] =
 {
-{"s",	Fv4ip,	Os,	"source address",	} ,
-{"d",	Fv4ip,	Od,	"destination address",	} ,
-{"a",	Fv4ip,	Osd,	"source|destination address",} ,
-{"sd",	Fv4ip,	Osd,	"source|destination address",} ,
-{"t",	Fnum,	Ot,	"sub protocol number",	} ,
+{"s", Fv4ip, Os, "source address", } ,
+{"d", Fv4ip, Od, "destination address", } ,
+{"a", Fv4ip, Osd, "source|destination address",} ,
+{"sd", Fv4ip, Osd, "source|destination address",} ,
+{"t", Fnum, Ot, "sub protocol number", } ,
 {0}
 };
 static void
@@ -192,7 +192,7 @@ demux(p_mux, h->proto, h->proto, m, &dump);
 len = NetS(h->length);
 if(len < m->pe - m->ps)
 m->pe = m->ps + len;
-hl = (h->vihl  &0xf) << 2;
+hl = (h->vihl &0xf) << 2;
 m->p = seprint(m->p, m->e, "s=%V d=%V id=%4.4ux frag=%4.4ux ttl=%3d pr=%d ln=%d hl=%d",
 h->src, h->dst, NetS(h->id), NetS(h->frag), h->ttl, h->proto,
 NetS(h->length),

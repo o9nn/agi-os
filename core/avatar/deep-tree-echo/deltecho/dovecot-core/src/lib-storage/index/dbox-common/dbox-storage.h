@@ -14,8 +14,8 @@ struct dbox_save_context;
 #define DBOX_TMP_DELETE_SECS (36*60*60)
 #define DBOX_INDEX_FLAG_ALT MAIL_INDEX_MAIL_FLAG_BACKEND
 enum dbox_index_header_flags {
-DBOX_INDEX_HEADER_FLAG_HAVE_POP3_UIDLS	= 0x01,
-DBOX_INDEX_HEADER_FLAG_HAVE_POP3_ORDERS	= 0x02
+DBOX_INDEX_HEADER_FLAG_HAVE_POP3_UIDLS = 0x01,
+DBOX_INDEX_HEADER_FLAG_HAVE_POP3_ORDERS = 0x02
 };
 struct dbox_storage_vfuncs {
 void (*file_unrefed)(struct dbox_file *file);
@@ -37,7 +37,7 @@ struct dbox_storage_vfuncs v;
 struct fs *attachment_fs;
 const char *attachment_dir;
 };
-#define DBOX_STORAGE(s)		container_of(s, struct dbox_storage, storage)
+#define DBOX_STORAGE(s) container_of(s, struct dbox_storage, storage)
 void dbox_storage_get_list_settings(const struct mail_namespace *ns,
 struct mailbox_list_settings *set);
 int dbox_storage_create(struct mail_storage *storage,

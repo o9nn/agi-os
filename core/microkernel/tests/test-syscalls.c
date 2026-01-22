@@ -33,14 +33,14 @@ return KERN_SUCCESS;
 void test_syscall_bad_arg_on_stack(void *arg)
 {
 #ifdef __x86_64__
-asm volatile("movq	$0x123,%rsp;"			\
-"movq	$-25,%rax;"                     \
-"syscall;"                               \
+asm volatile("movq	$0x123,%rsp;" \
+"movq	$-25,%rax;" \
+"syscall;" \
 );
 #else
-asm volatile("mov	$0x123,%esp;"			\
-"mov	$-25,%eax;"                     \
-"lcall	$0x7,$0x0;"                     \
+asm volatile("mov	$0x123,%esp;" \
+"mov	$-25,%eax;" \
+"lcall	$0x7,$0x0;" \
 );
 #endif
 FAILURE("we shouldn't be here!");
@@ -48,12 +48,12 @@ FAILURE("we shouldn't be here!");
 void test_bad_syscall_num(void *arg)
 {
 #ifdef __x86_64__
-asm volatile("movq	$0x123456,%rax;"                \
-"syscall;"                               \
+asm volatile("movq	$0x123456,%rax;" \
+"syscall;" \
 );
 #else
-asm volatile("mov	$0x123456,%eax;"                \
-"lcall	$0x7,$0x0;"                     \
+asm volatile("mov	$0x123456,%eax;" \
+"lcall	$0x7,$0x0;" \
 );
 #endif
 FAILURE("we shouldn't be here!");

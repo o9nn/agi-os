@@ -111,7 +111,7 @@ unsigned char dmastatus);
 static int AM53C974_message(struct Scsi_Host *instance, Scsi_Cmnd *cmd, unsigned char msg);
 static void AM53C974_select(struct Scsi_Host *instance, Scsi_Cmnd *cmd, int tag);
 static void AM53C974_intr_reselect(struct Scsi_Host *instance, unsigned char statreg);
-static  __inline__ void AM53C974_transfer_dma(struct Scsi_Host *instance, short dir,
+static __inline__ void AM53C974_transfer_dma(struct Scsi_Host *instance, short dir,
 unsigned long length, char *data);
 static void AM53C974_dma_blast(struct Scsi_Host *instance, unsigned char dmastatus,
 unsigned char statreg);
@@ -130,16 +130,16 @@ S_IFDIR | S_IRUGO | S_IXUGO, 2
 static int deb_stop = 1;
 static void AM53C974_print_pci(struct Scsi_Host *instance)
 {
-int            i;
+int i;
 unsigned short vendor_id, device_id, command, status, scratch[8];
-unsigned long  class_revision, base;
-unsigned char  irq, cache_line_size, latency_timer, header_type;
+unsigned long class_revision, base;
+unsigned char irq, cache_line_size, latency_timer, header_type;
 AM53C974_PCIREG_OPEN();
 for (i = 0; i < 8; i++) *(scratch + i) = AM53C974_PCIREG_READ_WORD(instance, PCI_SCRATCH_REG_0 + 2*i);
 vendor_id = AM53C974_PCIREG_READ_WORD(instance, PCI_VENDOR_ID);
 device_id = AM53C974_PCIREG_READ_WORD(instance, PCI_DEVICE_ID);
-command   = AM53C974_PCIREG_READ_WORD(instance, PCI_COMMAND);
-status    = AM53C974_PCIREG_READ_WORD(instance, PCI_STATUS);
+command = AM53C974_PCIREG_READ_WORD(instance, PCI_COMMAND);
+status = AM53C974_PCIREG_READ_WORD(instance, PCI_STATUS);
 class_revision = AM53C974_PCIREG_READ_DWORD(instance, PCI_CLASS_REVISION);
 cache_line_size = AM53C974_PCIREG_READ_BYTE(instance, PCI_CACHE_LINE_SIZE);
 latency_timer = AM53C974_PCIREG_READ_BYTE(instance, PCI_LATENCY_TIMER);
@@ -172,7 +172,7 @@ static void AM53C974_print_phase(struct Scsi_Host *instance)
 {
 AM53C974_local_declare();
 unsigned char statreg, latched;
-int           i;
+int i;
 AM53C974_setio(instance);
 latched = (AM53C974_read_8(CNTLREG2)) & CNTLREG2_ENF;
 statreg = AM53C974_read_8(STATREG);
@@ -329,7 +329,7 @@ return (count);
 #endif
 int AM53C974_nobios_detect(Scsi_Host_Template *tpnt)
 {
-int          count = 0;
+int count = 0;
 pci_config_t pci_config;
 for (pci_config._pcibus = 0; pci_config._pcibus < 0x10; pci_config._pcibus++) {
 for (pci_config._cardnum = 0; pci_config._cardnum < 0x20; pci_config._cardnum++) {
@@ -338,7 +338,7 @@ config_cmd = 0x80000000 | (pci_config._pcibus<<16) | (pci_config._cardnum<<11);
 outl(config_cmd, 0xCF8);
 pci_config._device_vendor = inl(0xCFC);
 if ((pci_config._vendor == PCI_VENDOR_ID_AMD) && (pci_config._device == PCI_DEVICE_ID_AMD_SCSI)) {
-outl(config_cmd | PCI_COMMAND, 0xCF8); pci_config._status_command  = inl(0xCFC);
+outl(config_cmd | PCI_COMMAND, 0xCF8); pci_config._status_command = inl(0xCFC);
 outl(config_cmd | PCI_CLASS_REVISION, 0xCF8); pci_config._class_revision = inl(0xCFC);
 outl(config_cmd | PCI_CACHE_LINE_SIZE, 0xCF8); pci_config._bist_header_latency_cache = inl(0xCFC);
 outl(config_cmd | PCI_BASE_ADDRESS_0, 0xCF8); pci_config._base0 = inl(0xCFC);
@@ -404,8 +404,8 @@ return (count);
 static int AM53C974_init(Scsi_Host_Template *tpnt, pci_config_t pci_config)
 {
 AM53C974_local_declare();
-int                      i, j;
-struct Scsi_Host         *instance, *search;
+int i, j;
+struct Scsi_Host *instance, *search;
 struct AM53C974_hostdata *hostdata;
 #ifdef AM53C974_OPTION_DEBUG_PROBE_ONLY
 printk ("AM53C974: probe only enabled, aborting initialization\n");
@@ -498,7 +498,7 @@ AM53C974_write_8(CNTLREG4, (DEF_GLITCH<<6) | (DEF_PWD<<5) | (DEF_RAE<<3) | (DEF_
 }
 const char *AM53C974_info(struct Scsi_Host *instance)
 {
-static char       info[100];
+static char info[100];
 sprintf(info, "AM53/79C974 PCscsi driver rev. %d.%d; host I/O address: 0x%x; irq: %d\n",
 AM53C974_DRIVER_REVISION_MAJOR, AM53C974_DRIVER_REVISION_MINOR,
 instance->io_port, instance->irq);
@@ -534,9 +534,9 @@ sti();
 }
 int AM53C974_queue_command(Scsi_Cmnd *cmd, void (*done)(Scsi_Cmnd *))
 {
-struct Scsi_Host         *instance = cmd->host;
+struct Scsi_Host *instance = cmd->host;
 struct AM53C974_hostdata *hostdata = (struct AM53C974_hostdata *)instance->hostdata;
-Scsi_Cmnd                *tmp;
+Scsi_Cmnd *tmp;
 cli();
 DEB_QUEUE(printk(SEPARATOR_LINE));
 DEB_QUEUE(printk("scsi%d: AM53C974_queue_command called\n", instance->host_no));
@@ -563,10 +563,10 @@ return 0;
 static void AM53C974_main(void)
 {
 AM53C974_local_declare();
-Scsi_Cmnd                *tmp, *prev;
-struct Scsi_Host         *instance;
+Scsi_Cmnd *tmp, *prev;
+struct Scsi_Host *instance;
 struct AM53C974_hostdata *hostdata;
-int                      done;
+int done;
 do {
 cli();
 done = 1;
@@ -604,9 +604,9 @@ main_running = 0;
 static void AM53C974_intr(int irq, void *dev_id, struct pt_regs *regs)
 {
 AM53C974_local_declare();
-struct Scsi_Host         *instance;
+struct Scsi_Host *instance;
 struct AM53C974_hostdata *hostdata;
-unsigned char            cmdreg, dmastatus, statreg, isreg, instreg, cfifo;
+unsigned char cmdreg, dmastatus, statreg, isreg, instreg, cfifo;
 for (instance = first_instance; instance; instance = instance->next)
 if ((instance->irq == irq) && (instance->hostt == the_template)) goto FOUND;
 sti();
@@ -632,7 +632,7 @@ cli();
 if (!(AM53C974_read_8(DMACMD) & DMACMD_DIR)) {
 do {
 dmastatus = AM53C974_read_8(DMASTATUS);
-residual  = AM53C974_read_8(CTCLREG) | (AM53C974_read_8(CTCMREG) << 8) |
+residual = AM53C974_read_8(CTCLREG) | (AM53C974_read_8(CTCMREG) << 8) |
 (AM53C974_read_8(CTCHREG) << 16);
 residual += AM53C974_read_8(CFIREG) & CFIREG_CF;
 } while (!(dmastatus & DMASTATUS_SCSIINT) && residual);
@@ -797,7 +797,7 @@ static void AM53C974_intr_disconnect(struct Scsi_Host *instance)
 {
 AM53C974_local_declare();
 struct AM53C974_hostdata *hostdata = (struct AM53C974_hostdata *)instance->hostdata;
-Scsi_Cmnd                *cmd;
+Scsi_Cmnd *cmd;
 AM53C974_setio(instance);
 if (hostdata->sel_cmd != NULL) {
 cmd = (Scsi_Cmnd *)hostdata->sel_cmd;
@@ -890,7 +890,7 @@ static int AM53C974_sync_neg(struct Scsi_Host *instance, int target, unsigned ch
 {
 AM53C974_local_declare();
 struct AM53C974_hostdata *hostdata = (struct AM53C974_hostdata *)instance->hostdata;
-int                      period, offset, i, rate, rate_rem;
+int period, offset, i, rate, rate_rem;
 AM53C974_setio(instance);
 period = (DEF_CLK * msg[3] * 8 + 1000) / 2000;
 if (period < MIN_PERIOD) {
@@ -942,8 +942,8 @@ unsigned char dmastatus)
 {
 AM53C974_local_declare();
 struct AM53C974_hostdata *hostdata = (struct AM53C974_hostdata *)instance->hostdata;
-Scsi_Cmnd                *cmd = (Scsi_Cmnd *)hostdata->connected;
-int                      ret, i, len, residual=-1;
+Scsi_Cmnd *cmd = (Scsi_Cmnd *)hostdata->connected;
+int ret, i, len, residual=-1;
 AM53C974_setio(instance);
 DEB_INFO(printk(SEPARATOR_LINE));
 switch (statreg & STATREG_PHASE) {
@@ -1078,12 +1078,12 @@ static int AM53C974_message(struct Scsi_Host *instance, Scsi_Cmnd *cmd,
 unsigned char msg)
 {
 AM53C974_local_declare();
-static unsigned char     extended_msg[10];
-unsigned char            statreg;
-int                      len, ret = 0;
-unsigned char            *p;
+static unsigned char extended_msg[10];
+unsigned char statreg;
+int len, ret = 0;
+unsigned char *p;
 #ifdef AM53C974_DEBUG_MSG
-int                      j;
+int j;
 #endif
 struct AM53C974_hostdata *hostdata = (struct AM53C974_hostdata *)instance->hostdata;
 AM53C974_setio(instance);
@@ -1157,7 +1157,7 @@ switch (hostdata->last_message[0]) {
 case EXTENDED_MESSAGE:
 if (hostdata->last_message[2] == EXTENDED_SDTR) {
 printk("\ntarget %d: rate=%d Mhz, asynchronous (sync. negotiation rejected)\n",
-cmd->target,  DEF_CLK / DEF_STP);
+cmd->target, DEF_CLK / DEF_STP);
 hostdata->sync_off[cmd->target] = 0;
 hostdata->sync_per[cmd->target] = DEF_STP; }
 break;
@@ -1241,8 +1241,8 @@ static void AM53C974_select(struct Scsi_Host *instance, Scsi_Cmnd *cmd, int tag)
 {
 AM53C974_local_declare();
 struct AM53C974_hostdata *hostdata = (struct AM53C974_hostdata *)instance->hostdata;
-unsigned char            cfifo, tmp[3];
-unsigned int             i, len, cmd_size = COMMAND_SIZE(cmd->cmnd[0]);
+unsigned char cfifo, tmp[3];
+unsigned int i, len, cmd_size = COMMAND_SIZE(cmd->cmnd[0]);
 AM53C974_setio(instance);
 cfifo = AM53C974_cfifo();
 if (cfifo) {
@@ -1303,11 +1303,11 @@ static void AM53C974_intr_reselect(struct Scsi_Host *instance, unsigned char sta
 {
 AM53C974_local_declare();
 struct AM53C974_hostdata *hostdata = (struct AM53C974_hostdata *)instance->hostdata;
-unsigned char            cfifo, msg[3], lun, t, target = 0;
+unsigned char cfifo, msg[3], lun, t, target = 0;
 #ifdef SCSI2
-unsigned                char tag;
+unsigned char tag;
 #endif
-Scsi_Cmnd                *tmp = NULL, *prev;
+Scsi_Cmnd *tmp = NULL, *prev;
 AM53C974_setio(instance);
 cfifo = AM53C974_cfifo();
 if (hostdata->selecting) {
@@ -1407,9 +1407,9 @@ unsigned char statreg)
 {
 AM53C974_local_declare();
 struct AM53C974_hostdata *hostdata = (struct AM53C974_hostdata *)instance->hostdata;
-unsigned long            ctcreg;
-int                      dir = statreg & STATREG_IO;
-int                      cfifo, pio, i = 0;
+unsigned long ctcreg;
+int dir = statreg & STATREG_IO;
+int cfifo, pio, i = 0;
 AM53C974_setio(instance);
 do {
 cfifo = AM53C974_cfifo();
@@ -1444,9 +1444,9 @@ AM53C974_write_8(CNTLREG1, cntlreg1 | CNTLREG1_DISR);
 int AM53C974_abort(Scsi_Cmnd *cmd)
 {
 AM53C974_local_declare();
-struct Scsi_Host         *instance = cmd->host;
+struct Scsi_Host *instance = cmd->host;
 struct AM53C974_hostdata *hostdata = (struct AM53C974_hostdata *)instance->hostdata;
-Scsi_Cmnd                *tmp, **prev;
+Scsi_Cmnd *tmp, **prev;
 #ifdef AM53C974_DEBUG
 deb_stop = 1;
 #endif
@@ -1505,8 +1505,8 @@ return(SCSI_ABORT_NOT_RUNNING);
 int AM53C974_reset(Scsi_Cmnd *cmd, unsigned int flags)
 {
 AM53C974_local_declare();
-int                      i;
-struct Scsi_Host         *instance = cmd->host;
+int i;
+struct Scsi_Host *instance = cmd->host;
 struct AM53C974_hostdata *hostdata = (struct AM53C974_hostdata *)instance->hostdata;
 AM53C974_setio(instance);
 cli();

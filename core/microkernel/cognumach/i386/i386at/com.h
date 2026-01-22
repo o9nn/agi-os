@@ -20,16 +20,16 @@ void comstop(struct tty *tp, int flags);
 void comattach(struct bus_device *dev);
 extern io_return_t
 comgetstat(
-dev_t		dev,
-dev_flavor_t	flavor,
-dev_status_t	data,
-mach_msg_type_number_t	*count);
+dev_t dev,
+dev_flavor_t flavor,
+dev_status_t data,
+mach_msg_type_number_t *count);
 extern io_return_t
 comsetstat(
-dev_t		dev,
-dev_flavor_t	flavor,
-dev_status_t	data,
-mach_msg_type_number_t	count);
+dev_t dev,
+dev_flavor_t flavor,
+dev_status_t data,
+mach_msg_type_number_t count);
 #if MACH_KDB
 extern void kdb_kintr(void);
 extern void compr_addr(vm_offset_t addr);

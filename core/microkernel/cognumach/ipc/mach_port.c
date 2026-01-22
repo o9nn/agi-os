@@ -24,12 +24,12 @@
 #include <ipc/mach_port.server.h>
 static void
 mach_port_names_helper(
-ipc_port_timestamp_t	timestamp,
-ipc_entry_t		entry,
-mach_port_name_t	name,
-mach_port_name_t	*names,
-mach_port_type_t	*types,
-ipc_entry_num_t		*actualp)
+ipc_port_timestamp_t timestamp,
+ipc_entry_t entry,
+mach_port_name_t name,
+mach_port_name_t *names,
+mach_port_type_t *types,
+ipc_entry_num_t *actualp)
 {
 ipc_entry_bits_t bits = entry->ie_bits;
 ipc_port_request_index_t request = entry->ie_request;
@@ -64,11 +64,11 @@ types[actual] = type;
 }
 kern_return_t
 mach_port_names(
-ipc_space_t		space,
-mach_port_name_t	**namesp,
-mach_msg_type_number_t	*namesCnt,
-mach_port_type_t	**typesp,
-mach_msg_type_number_t	*typesCnt)
+ipc_space_t space,
+mach_port_name_t **namesp,
+mach_msg_type_number_t *namesCnt,
+mach_port_type_t **typesp,
+mach_msg_type_number_t *typesCnt)
 {
 ipc_entry_num_t actual;
 ipc_port_timestamp_t timestamp;
@@ -178,9 +178,9 @@ return KERN_SUCCESS;
 }
 kern_return_t
 mach_port_type(
-ipc_space_t		space,
-mach_port_name_t	name,
-mach_port_type_t	*typep)
+ipc_space_t space,
+mach_port_name_t name,
+mach_port_type_t *typep)
 {
 mach_port_urefs_t urefs;
 ipc_entry_t entry;
@@ -197,9 +197,9 @@ return kr;
 }
 kern_return_t
 mach_port_rename(
-ipc_space_t		space,
-mach_port_name_t	oname,
-mach_port_name_t	nname)
+ipc_space_t space,
+mach_port_name_t oname,
+mach_port_name_t nname)
 {
 if (space == IS_NULL)
 return KERN_INVALID_TASK;
@@ -209,9 +209,9 @@ return ipc_object_rename(space, oname, nname);
 }
 kern_return_t
 mach_port_allocate_name(
-ipc_space_t 		space,
-mach_port_right_t 	right,
-mach_port_name_t 	name)
+ipc_space_t space,
+mach_port_right_t right,
+mach_port_name_t name)
 {
 kern_return_t kr;
 if (space == IS_NULL)
@@ -244,9 +244,9 @@ return kr;
 }
 kern_return_t
 mach_port_allocate(
-ipc_space_t 		space,
-mach_port_right_t 	right,
-mach_port_name_t 	*namep)
+ipc_space_t space,
+mach_port_right_t right,
+mach_port_name_t *namep)
 {
 kern_return_t kr;
 if (space == IS_NULL)
@@ -278,8 +278,8 @@ return (kr);
 volatile boolean_t mach_port_deallocate_debug = FALSE;
 kern_return_t
 mach_port_destroy(
-ipc_space_t		space,
-mach_port_name_t	name)
+ipc_space_t space,
+mach_port_name_t name)
 {
 ipc_entry_t entry;
 kern_return_t kr;
@@ -299,8 +299,8 @@ return kr;
 }
 kern_return_t
 mach_port_deallocate(
-ipc_space_t		space,
-mach_port_name_t	name)
+ipc_space_t space,
+mach_port_name_t name)
 {
 ipc_entry_t entry;
 kern_return_t kr;
@@ -320,10 +320,10 @@ return kr;
 }
 kern_return_t
 mach_port_get_refs(
-ipc_space_t		space,
-mach_port_name_t	name,
-mach_port_right_t	right,
-mach_port_urefs_t	*urefsp)
+ipc_space_t space,
+mach_port_name_t name,
+mach_port_right_t right,
+mach_port_urefs_t *urefsp)
 {
 mach_port_type_t type;
 mach_port_urefs_t urefs;
@@ -362,10 +362,10 @@ return kr;
 }
 kern_return_t
 mach_port_mod_refs(
-ipc_space_t		space,
-mach_port_name_t	name,
-mach_port_right_t	right,
-mach_port_delta_t	delta)
+ipc_space_t space,
+mach_port_name_t name,
+mach_port_right_t right,
+mach_port_delta_t delta)
 {
 ipc_entry_t entry;
 kern_return_t kr;
@@ -392,9 +392,9 @@ return kr;
 }
 kern_return_t
 mach_port_set_qlimit(
-ipc_space_t 		space,
-mach_port_name_t 	name,
-mach_port_msgcount_t 	qlimit)
+ipc_space_t space,
+mach_port_name_t name,
+mach_port_msgcount_t qlimit)
 {
 ipc_port_t port;
 kern_return_t kr;
@@ -411,9 +411,9 @@ return KERN_SUCCESS;
 }
 kern_return_t
 mach_port_set_mscount(
-ipc_space_t		space,
-mach_port_name_t	name,
-mach_port_mscount_t	mscount)
+ipc_space_t space,
+mach_port_name_t name,
+mach_port_mscount_t mscount)
 {
 ipc_port_t port;
 kern_return_t kr;
@@ -428,9 +428,9 @@ return KERN_SUCCESS;
 }
 kern_return_t
 mach_port_set_seqno(
-ipc_space_t		space,
-mach_port_name_t	name,
-mach_port_seqno_t	seqno)
+ipc_space_t space,
+mach_port_name_t name,
+mach_port_seqno_t seqno)
 {
 ipc_port_t port;
 kern_return_t kr;
@@ -445,11 +445,11 @@ return KERN_SUCCESS;
 }
 static void
 mach_port_gst_helper(
-ipc_pset_t		pset,
-ipc_port_t		port,
-ipc_entry_num_t		maxnames,
-mach_port_name_t	*names,
-ipc_entry_num_t		*actualp)
+ipc_pset_t pset,
+ipc_port_t port,
+ipc_entry_num_t maxnames,
+mach_port_name_t *names,
+ipc_entry_num_t *actualp)
 {
 ipc_pset_t ip_pset;
 mach_port_name_t name;
@@ -469,10 +469,10 @@ names[actual] = name;
 }
 kern_return_t
 mach_port_get_set_status(
-ipc_space_t			space,
-mach_port_name_t		name,
-mach_port_name_t		**members,
-mach_msg_type_number_t		*membersCnt)
+ipc_space_t space,
+mach_port_name_t name,
+mach_port_name_t **members,
+mach_msg_type_number_t *membersCnt)
 {
 ipc_entry_num_t actual;
 ipc_entry_num_t maxnames;
@@ -550,9 +550,9 @@ return KERN_SUCCESS;
 }
 kern_return_t
 mach_port_move_member(
-ipc_space_t	space,
-mach_port_name_t	member,
-mach_port_name_t	after)
+ipc_space_t space,
+mach_port_name_t member,
+mach_port_name_t after)
 {
 ipc_entry_t entry;
 ipc_port_t port;
@@ -589,12 +589,12 @@ return kr;
 }
 kern_return_t
 mach_port_request_notification(
-ipc_space_t		space,
-mach_port_name_t		name,
-mach_msg_id_t		id,
-mach_port_mscount_t	sync,
-ipc_port_t		notify,
-ipc_port_t		*previousp)
+ipc_space_t space,
+mach_port_name_t name,
+mach_msg_id_t id,
+mach_port_mscount_t sync,
+ipc_port_t notify,
+ipc_port_t *previousp)
 {
 kern_return_t kr;
 if (space == IS_NULL)
@@ -634,10 +634,10 @@ return KERN_SUCCESS;
 }
 kern_return_t
 mach_port_insert_right(
-ipc_space_t		space,
-mach_port_name_t	name,
-ipc_port_t		poly,
-mach_msg_type_name_t	polyPoly)
+ipc_space_t space,
+mach_port_name_t name,
+ipc_port_t poly,
+mach_msg_type_name_t polyPoly)
 {
 if (space == IS_NULL)
 return KERN_INVALID_TASK;
@@ -651,11 +651,11 @@ polyPoly, FALSE, name);
 }
 kern_return_t
 mach_port_extract_right(
-ipc_space_t		space,
-mach_port_name_t	name,
-mach_msg_type_name_t	msgt_name,
-ipc_port_t		*poly,
-mach_msg_type_name_t	*polyPoly)
+ipc_space_t space,
+mach_port_name_t name,
+mach_msg_type_name_t msgt_name,
+ipc_port_t *poly,
+mach_msg_type_name_t *polyPoly)
 {
 kern_return_t kr;
 if (space == IS_NULL)
@@ -669,9 +669,9 @@ return kr;
 }
 kern_return_t
 mach_port_get_receive_status(
-ipc_space_t 		space,
-mach_port_name_t 	name,
-mach_port_status_t 	*statusp)
+ipc_space_t space,
+mach_port_name_t name,
+mach_port_status_t *statusp)
 {
 ipc_port_t port;
 kern_return_t kr;
@@ -715,10 +715,10 @@ return KERN_SUCCESS;
 #ifdef MIGRATING_THREADS
 kern_return_t
 mach_port_set_rpcinfo(
-ipc_space_t 	space,
-mach_port_name_t 	name,
-void 		*rpc_info,
-unsigned int 	rpc_info_count)
+ipc_space_t space,
+mach_port_name_t name,
+void *rpc_info,
+unsigned int rpc_info_count)
 {
 ipc_target_t target;
 ipc_object_t object;
@@ -749,12 +749,12 @@ printf("%d server activations in use, %d max\n", sacts, maxsacts);
 }
 kern_return_t
 mach_port_create_act(
-task_t 		task,
-mach_port_name_t 	name,
-vm_offset_t 	user_stack,
-vm_offset_t 	user_rbuf,
-vm_size_t 	user_rbuf_size,
-Act 		**out_act)
+task_t task,
+mach_port_name_t name,
+vm_offset_t user_stack,
+vm_offset_t user_rbuf,
+vm_size_t user_rbuf_size,
+Act **out_act)
 {
 ipc_target_t target;
 ipc_space_t space;
@@ -808,8 +808,8 @@ return KERN_SUCCESS;
 #ifdef RPCKERNELSIG
 kern_return_t
 mach_port_set_syscall_right(
-task_t 		task,
-mach_port_name_t 	name)
+task_t task,
+mach_port_name_t name)
 {
 ipc_entry_t entry;
 kern_return_t kr;
@@ -831,9 +831,9 @@ return KERN_SUCCESS;
 #endif
 kern_return_t
 mach_port_set_protected_payload(
-ipc_space_t		space,
-mach_port_name_t	name,
-rpc_uintptr_t		payload)
+ipc_space_t space,
+mach_port_name_t name,
+rpc_uintptr_t payload)
 {
 ipc_port_t port;
 kern_return_t kr;
@@ -848,8 +848,8 @@ return KERN_SUCCESS;
 }
 kern_return_t
 mach_port_clear_protected_payload(
-ipc_space_t		space,
-mach_port_name_t	name)
+ipc_space_t space,
+mach_port_name_t name)
 {
 ipc_port_t port;
 kern_return_t kr;
@@ -862,7 +862,7 @@ ipc_port_clear_protected_payload(port);
 ip_unlock(port);
 return KERN_SUCCESS;
 }
-#if	MACH_KDB
+#if MACH_KDB
 void
 db_debug_port_references (boolean_t enable)
 {

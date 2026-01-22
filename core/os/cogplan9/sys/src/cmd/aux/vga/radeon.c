@@ -4,11 +4,11 @@
 #include "pci.h"
 #include "vga.h"
 #include "radeon.h"
-static int	debug = 0;
-#define DBGPRINT	if (debug) print
+static int debug = 0;
+#define DBGPRINT if (debug) print
 enum {
-Kilo	 = 1024,
-Mega	 = Kilo *Kilo,
+Kilo = 1024,
+Mega = Kilo *Kilo,
 };
 enum {
 DISPLAY_CRT,
@@ -17,47 +17,47 @@ DISPLAY_LCD,
 };
 typedef struct Radeon Radeon;
 struct Radeon {
-uintptr	mmio;
-Pcidev	*pci;
-uchar	*bios;
-ulong	fbsize;
-int	display_type;
-ulong	ovr_clr;
-ulong	ovr_wid_top_bottom;
-ulong	ovr_wid_left_right;
-ulong	ov0_scale_cntl;
-ulong	subpic_cntl;
-ulong	viph_control;
-ulong	i2c_cntl_1;
-ulong	rbbm_soft_reset;
-ulong	cap0_trig_cntl;
-ulong	cap1_trig_cntl;
-ulong	gen_int_cntl;
-ulong	bus_cntl;
-ulong	crtc_gen_cntl;
-ulong	crtc_ext_cntl;
-ulong	dac_cntl;
-ulong	crtc_h_total_disp;
-ulong	crtc_h_sync_strt_wid;
-ulong	crtc_v_total_disp;
-ulong	crtc_v_sync_strt_wid;
-ulong	crtc_pitch;
-ulong	crtc_offset;
-ulong	crtc_offset_cntl;
-ulong	htotal_cntl;
-ulong	surface_cntl;
-int	r300_workaround;
-ushort	reference_freq;
-ushort	reference_div;
-ushort	xclk;
-ulong	max_pll_freq;
-ulong	min_pll_freq;
-ulong	pll_output_freq;
-ulong	feedback_div;
-ulong	dot_clock_freq;
-ulong	post_div;
-ulong	ppll_ref_div;
-ulong	ppll_div_3;
+uintptr mmio;
+Pcidev *pci;
+uchar *bios;
+ulong fbsize;
+int display_type;
+ulong ovr_clr;
+ulong ovr_wid_top_bottom;
+ulong ovr_wid_left_right;
+ulong ov0_scale_cntl;
+ulong subpic_cntl;
+ulong viph_control;
+ulong i2c_cntl_1;
+ulong rbbm_soft_reset;
+ulong cap0_trig_cntl;
+ulong cap1_trig_cntl;
+ulong gen_int_cntl;
+ulong bus_cntl;
+ulong crtc_gen_cntl;
+ulong crtc_ext_cntl;
+ulong dac_cntl;
+ulong crtc_h_total_disp;
+ulong crtc_h_sync_strt_wid;
+ulong crtc_v_total_disp;
+ulong crtc_v_sync_strt_wid;
+ulong crtc_pitch;
+ulong crtc_offset;
+ulong crtc_offset_cntl;
+ulong htotal_cntl;
+ulong surface_cntl;
+int r300_workaround;
+ushort reference_freq;
+ushort reference_div;
+ushort xclk;
+ulong max_pll_freq;
+ulong min_pll_freq;
+ulong pll_output_freq;
+ulong feedback_div;
+ulong dot_clock_freq;
+ulong post_div;
+ulong ppll_ref_div;
+ulong ppll_div_3;
 };
 extern char *readbios(long len, long offset);
 static void radeon300_workaround(Radeon*radeon);
@@ -134,11 +134,11 @@ return;
 radeon->bios = bios;
 offset = BIOS16(radeon, BIOS_START);
 pib = BIOS16(radeon, offset + 0x30);
-radeon->reference_freq	 = BIOS16(radeon, pib + 0x0e);
-radeon->reference_div	 = BIOS16(radeon, pib + 0x10);
-radeon->min_pll_freq	 = BIOS32(radeon, pib + 0x12);
-radeon->max_pll_freq	 = BIOS32(radeon, pib + 0x16);
-radeon->xclk		 = BIOS16(radeon, pib + 0x08);
+radeon->reference_freq = BIOS16(radeon, pib + 0x0e);
+radeon->reference_div = BIOS16(radeon, pib + 0x10);
+radeon->min_pll_freq = BIOS32(radeon, pib + 0x12);
+radeon->max_pll_freq = BIOS32(radeon, pib + 0x16);
+radeon->xclk = BIOS16(radeon, pib + 0x08);
 DBGPRINT("radeon: bios=0x%08ulx offset=0x%ux\n", addr, offset);
 DBGPRINT("radeon: pll_info_block: 0x%ux\n", pib);
 DBGPRINT("radeon: reference_freq: %ud\n", radeon->reference_freq);
@@ -232,16 +232,16 @@ return (n + d/2) / d;
 static void
 radeon_init_common_registers(Radeon*radeon)
 {
-radeon->ovr_clr		= 0;
-radeon->ovr_wid_left_right	= 0;
-radeon->ovr_wid_top_bottom	= 0;
-radeon->ov0_scale_cntl	= 0;
-radeon->subpic_cntl	= 0;
-radeon->viph_control	= 0;
-radeon->i2c_cntl_1	= 0;
-radeon->rbbm_soft_reset	= 0;
-radeon->cap0_trig_cntl	= 0;
-radeon->cap1_trig_cntl	= 0;
+radeon->ovr_clr = 0;
+radeon->ovr_wid_left_right = 0;
+radeon->ovr_wid_top_bottom = 0;
+radeon->ov0_scale_cntl = 0;
+radeon->subpic_cntl = 0;
+radeon->viph_control = 0;
+radeon->i2c_cntl_1 = 0;
+radeon->rbbm_soft_reset = 0;
+radeon->cap0_trig_cntl = 0;
+radeon->cap1_trig_cntl = 0;
 if (radeon->bus_cntl & BUS_READ_BURST)
 radeon->bus_cntl |= BUS_RD_DISCARD_EN;
 }
@@ -260,12 +260,12 @@ switch (mode->z) {
 case 6:
 format = 2;
 dac6bit = 1;
-bpp =  8;
+bpp = 8;
 break;
 case 8:
 format = 2;
 dac6bit = 0;
-bpp =  8;
+bpp = 8;
 break;
 case 15:
 format = 3;
@@ -321,8 +321,8 @@ radeon->crtc_pitch = (mode->x * bpp + bpp * 8 - 1) / (bpp * 8);
 radeon->crtc_pitch |= radeon->crtc_pitch << 16;
 }
 struct divider {
-int	divider;
-int	bitvalue;
+int divider;
+int bitvalue;
 };
 static void
 radeon_init_pll_registers(Radeon*radeon, ulong freq)
@@ -366,8 +366,8 @@ init(Vga*vga, Ctlr*ctlr)
 {
 Radeon *radeon;
 Mode *mode;
-radeon	 = vga->private;
-mode	 = vga->mode;
+radeon = vga->private;
+mode = vga->mode;
 DBGPRINT("radeon: monitor type = '%s'\n", mode->type);
 DBGPRINT("radeon: size = '%s'\n", mode->size);
 DBGPRINT("radeon: chan = '%s'\n", mode->chan);
@@ -399,18 +399,18 @@ OUTREGP(radeon, CRTC_EXT_CNTL, CRTC_CRT_ON,
 static void
 radeon_load_common_registers(Radeon*radeon)
 {
-OUTREG(radeon, OVR_CLR, 		radeon->ovr_clr);
-OUTREG(radeon, OVR_WID_LEFT_RIGHT, 	radeon->ovr_wid_left_right);
-OUTREG(radeon, OVR_WID_TOP_BOTTOM, 	radeon->ovr_wid_top_bottom);
-OUTREG(radeon, OV0_SCALE_CNTL, 		radeon->ov0_scale_cntl);
-OUTREG(radeon, SUBPIC_CNTL, 		radeon->subpic_cntl);
-OUTREG(radeon, VIPH_CONTROL, 		radeon->viph_control);
-OUTREG(radeon, I2C_CNTL_1, 		radeon->i2c_cntl_1);
-OUTREG(radeon, GEN_INT_CNTL, 		radeon->gen_int_cntl);
-OUTREG(radeon, CAP0_TRIG_CNTL, 		radeon->cap0_trig_cntl);
-OUTREG(radeon, CAP1_TRIG_CNTL, 		radeon->cap1_trig_cntl);
-OUTREG(radeon, BUS_CNTL, 		radeon->bus_cntl);
-OUTREG(radeon, SURFACE_CNTL, 		radeon->surface_cntl);
+OUTREG(radeon, OVR_CLR, radeon->ovr_clr);
+OUTREG(radeon, OVR_WID_LEFT_RIGHT, radeon->ovr_wid_left_right);
+OUTREG(radeon, OVR_WID_TOP_BOTTOM, radeon->ovr_wid_top_bottom);
+OUTREG(radeon, OV0_SCALE_CNTL, radeon->ov0_scale_cntl);
+OUTREG(radeon, SUBPIC_CNTL, radeon->subpic_cntl);
+OUTREG(radeon, VIPH_CONTROL, radeon->viph_control);
+OUTREG(radeon, I2C_CNTL_1, radeon->i2c_cntl_1);
+OUTREG(radeon, GEN_INT_CNTL, radeon->gen_int_cntl);
+OUTREG(radeon, CAP0_TRIG_CNTL, radeon->cap0_trig_cntl);
+OUTREG(radeon, CAP1_TRIG_CNTL, radeon->cap1_trig_cntl);
+OUTREG(radeon, BUS_CNTL, radeon->bus_cntl);
+OUTREG(radeon, SURFACE_CNTL, radeon->surface_cntl);
 }
 static void
 radeon_load_crtc_registers(Radeon*radeon)
@@ -420,13 +420,13 @@ OUTREGP(radeon, CRTC_EXT_CNTL, radeon->crtc_ext_cntl,
 CRTC_VSYNC_DIS | CRTC_HSYNC_DIS | CRTC_DISPLAY_DIS);
 OUTREGP(radeon, DAC_CNTL, radeon->dac_cntl,
 DAC_RANGE_CNTL | DAC_BLANKING);
-OUTREG(radeon, CRTC_H_TOTAL_DISP, 	radeon->crtc_h_total_disp);
-OUTREG(radeon, CRTC_H_SYNC_STRT_WID, 	radeon->crtc_h_sync_strt_wid);
-OUTREG(radeon, CRTC_V_TOTAL_DISP, 	radeon->crtc_v_total_disp);
-OUTREG(radeon, CRTC_V_SYNC_STRT_WID, 	radeon->crtc_v_sync_strt_wid);
-OUTREG(radeon, CRTC_OFFSET, 		radeon->crtc_offset);
-OUTREG(radeon, CRTC_OFFSET_CNTL, 	radeon->crtc_offset_cntl);
-OUTREG(radeon, CRTC_PITCH, 		radeon->crtc_pitch);
+OUTREG(radeon, CRTC_H_TOTAL_DISP, radeon->crtc_h_total_disp);
+OUTREG(radeon, CRTC_H_SYNC_STRT_WID, radeon->crtc_h_sync_strt_wid);
+OUTREG(radeon, CRTC_V_TOTAL_DISP, radeon->crtc_v_total_disp);
+OUTREG(radeon, CRTC_V_SYNC_STRT_WID, radeon->crtc_v_sync_strt_wid);
+OUTREG(radeon, CRTC_OFFSET, radeon->crtc_offset);
+OUTREG(radeon, CRTC_OFFSET_CNTL, radeon->crtc_offset_cntl);
+OUTREG(radeon, CRTC_PITCH, radeon->crtc_pitch);
 }
 static void
 radeon_pllwaitupd(Radeon*radeon)

@@ -1,26 +1,26 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"../port/edf.h"
-#include	<trace.h>
-int	edfprint = 0;
-#define DPRINT	if(edfprint)print
-static vlong	now;
-extern ulong	delayedscheds;
-extern Schedq	runq[Nrq];
-extern int	nrdy;
-extern ulong	runvec;
-ulong		nilcount;
-ulong		scheds;
-vlong		edfruntime;
-ulong		edfnrun;
-int		misseddeadlines;
-int		edfinited;
-QLock		edfschedlock;
-static Lock	thelock;
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "../port/edf.h"
+#include <trace.h>
+int edfprint = 0;
+#define DPRINT if(edfprint)print
+static vlong now;
+extern ulong delayedscheds;
+extern Schedq runq[Nrq];
+extern int nrdy;
+extern ulong runvec;
+ulong nilcount;
+ulong scheds;
+vlong edfruntime;
+ulong edfnrun;
+int misseddeadlines;
+int edfinited;
+QLock edfschedlock;
+static Lock thelock;
 enum{
 Dl,
 Rl,
@@ -28,11 +28,11 @@ Rl,
 static char *testschedulability(Proc*);
 static Proc *qschedulability;
 enum {
-Onemicrosecond =	1000ULL,
-Onemillisecond =	1000000ULL,
-Onesecond =		1000000000ULL,
-OneRound = 		Onemillisecond/2LL,
-MilliRound = 		Onemicrosecond/2LL,
+Onemicrosecond = 1000ULL,
+Onemillisecond = 1000000ULL,
+Onesecond = 1000000000ULL,
+OneRound = Onemillisecond/2LL,
+MilliRound = Onemicrosecond/2LL,
 };
 static int
 timeconv(Fmt *f)

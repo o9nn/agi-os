@@ -19,7 +19,7 @@
 #include "gximage.h"
 #include "gzht.h"
 #ifdef DEBUG
-#  define STATS
+# define STATS
 #endif
 iclass_proc(gs_image_class_1_simple);
 private irender_proc(image_render_skip);
@@ -129,11 +129,11 @@ calls, all0s, all1s, runs, lbit0, byte00, byte01, byte02, byte03,
 byte04, rbit0, lbit1, byte1, rbit1, thin, thin2, nwide, bwide,
 nfill, bfill;
 } stats_image_fast;
-#  define INCS(stat) ++stats_image_fast.stat
-#  define ADDS(stat, n) stats_image_fast.stat += n
+# define INCS(stat) ++stats_image_fast.stat
+# define ADDS(stat, n) stats_image_fast.stat += n
 #else
-#  define INCS(stat) DO_NOTHING
-#  define ADDS(stat, n) DO_NOTHING
+# define INCS(stat) DO_NOTHING
+# define ADDS(stat, n) DO_NOTHING
 #endif
 inline private void
 fill_row(byte *line, int line_x, uint raster, int value)
@@ -143,7 +143,7 @@ memset(line + (line_x >> 3), value, raster - (line_x >> 3));
 private void
 image_simple_expand(byte * line, int line_x, uint raster,
 const byte * buffer, int data_x, uint w,
-fixed xcur, fixed x_extent, byte zero  )
+fixed xcur, fixed x_extent, byte zero )
 {
 int dbitx = data_x & 7;
 byte sbit = 0x80 >> dbitx;
@@ -246,7 +246,7 @@ sbit >>= 1;
 INCS(lbit0);
 }
 if (!sbit) {
-sw:	    if ((data = psrc[1]) != 0) {
+sw: if ((data = psrc[1]) != 0) {
 psrc++;
 INCS(byte00);
 } else if ((data = psrc[2]) != 0) {

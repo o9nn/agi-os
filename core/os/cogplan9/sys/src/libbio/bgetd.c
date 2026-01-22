@@ -1,10 +1,10 @@
 #include <u.h>
 #include <libc.h>
 #include <bio.h>
-struct	bgetd
+struct bgetd
 {
-Biobufhdr*	b;
-int		eof;
+Biobufhdr* b;
+int eof;
 };
 static int
 Bgetdf(void *vp)

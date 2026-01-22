@@ -8,7 +8,7 @@ const unsigned char * name;
 unsigned int len;
 unsigned int hash;
 };
-#define init_name_hash()		0
+#define init_name_hash() 0
 static __inline__ unsigned long partial_name_hash(unsigned long c, unsigned long prevhash)
 {
 prevhash = (prevhash << 4) | (prevhash >> (8*sizeof(unsigned long)-4));
@@ -31,7 +31,7 @@ return end_name_hash(hash);
 struct dentry {
 int d_count;
 unsigned int d_flags;
-struct inode  * d_inode;
+struct inode * d_inode;
 struct dentry * d_parent;
 struct dentry * d_mounts;
 struct dentry * d_covers;
@@ -42,7 +42,7 @@ struct list_head d_subdirs;
 struct list_head d_alias;
 struct qstr d_name;
 unsigned long d_time;
-struct dentry_operations  *d_op;
+struct dentry_operations *d_op;
 struct super_block * d_sb;
 unsigned long d_reftime;
 void * d_fsdata;
@@ -57,7 +57,7 @@ void (*d_release)(struct dentry *);
 void (*d_iput)(struct dentry *, struct inode *);
 };
 #define DCACHE_AUTOFS_PENDING 0x0001
-#define DCACHE_NFSFS_RENAMED  0x0002
+#define DCACHE_NFSFS_RENAMED 0x0002
 static __inline__ void d_drop(struct dentry * dentry)
 {
 list_del(&dentry->d_hash);

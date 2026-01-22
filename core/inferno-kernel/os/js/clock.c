@@ -1,14 +1,14 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"ureg.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "ureg.h"
 typedef struct Clock0link Clock0link;
 typedef struct Clock0link {
-void		(*clock)(void);
-Clock0link*	link;
+void (*clock)(void);
+Clock0link* link;
 } Clock0link;
 static Clock0link *clock0link;
 static Lock clock0lock;
@@ -23,12 +23,12 @@ for(i=0; i<ms; i++)
 typedef struct Ctr Ctr;
 struct Ctr
 {
-ulong	lim;
-ulong	ctr;
-ulong	limnr;
-ulong	ctl;
+ulong lim;
+ulong ctr;
+ulong limnr;
+ulong ctl;
 };
-Ctr	*ctr;
+Ctr *ctr;
 void
 clockinit(void)
 {

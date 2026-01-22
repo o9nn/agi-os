@@ -5,14 +5,14 @@
 #define SECURE_COMPUTATIONS
 #define IGNORE_FILL_FLOW
 #ifndef HAVE_PRINT_FUNCTION
-#define Print( format, ap )  vfprintf( stderr, (format), (ap) )
+#define Print( format, ap ) vfprintf( stderr, (format), (ap) )
 #endif
-#define FT_BIG_ENDIAN     4321
-#define FT_LITTLE_ENDIAN  1234
+#define FT_BIG_ENDIAN 4321
+#define FT_LITTLE_ENDIAN 1234
 #ifdef WORDS_BIGENDIAN
-#define FT_BYTE_ORDER  FT_BIG_ENDIAN
+#define FT_BYTE_ORDER FT_BIG_ENDIAN
 #else
-#define FT_BYTE_ORDER  FT_LITTLE_ENDIAN
+#define FT_BYTE_ORDER FT_LITTLE_ENDIAN
 #endif
 #if FT_BYTE_ORDER == FT_BIG_ENDIAN
 #ifndef BUS_ERROR

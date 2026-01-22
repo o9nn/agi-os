@@ -14,8 +14,8 @@
 namespace std _GLIBCXX_VISIBILITY(default)
 {
 _GLIBCXX_BEGIN_NAMESPACE_VERSION
-#define  _GLIBCXX_NUM_FACETS 14
-#define  _GLIBCXX_NUM_CXX11_FACETS (_GLIBCXX_USE_DUAL_ABI ? 8 : 0)
+#define _GLIBCXX_NUM_FACETS 14
+#define _GLIBCXX_NUM_CXX11_FACETS (_GLIBCXX_USE_DUAL_ABI ? 8 : 0)
 #ifdef _GLIBCXX_USE_CHAR8_T
 # define _GLIBCXX_NUM_UNICODE_FACETS 4
 #else
@@ -147,9 +147,9 @@ template<typename _CharT>
 class ctype : public __ctype_abstract_base<_CharT>
 {
 public:
-typedef _CharT			char_type;
+typedef _CharT char_type;
 typedef typename __ctype_abstract_base<_CharT>::mask mask;
-static locale::id			id;
+static locale::id id;
 explicit
 ctype(size_t __refs = 0) : __ctype_abstract_base<_CharT>(__refs) { }
 protected:
@@ -188,20 +188,20 @@ template<>
 class ctype<char> : public locale::facet, public ctype_base
 {
 public:
-typedef char		char_type;
+typedef char char_type;
 protected:
-__c_locale		_M_c_locale_ctype;
-bool			_M_del;
-__to_type			_M_toupper;
-__to_type			_M_tolower;
-const mask*		_M_table;
-mutable char		_M_widen_ok;
-mutable char		_M_widen[1 + static_cast<unsigned char>(-1)];
-mutable char		_M_narrow[1 + static_cast<unsigned char>(-1)];
-mutable char		_M_narrow_ok;
+__c_locale _M_c_locale_ctype;
+bool _M_del;
+__to_type _M_toupper;
+__to_type _M_tolower;
+const mask* _M_table;
+mutable char _M_widen_ok;
+mutable char _M_widen[1 + static_cast<unsigned char>(-1)];
+mutable char _M_narrow[1 + static_cast<unsigned char>(-1)];
+mutable char _M_narrow_ok;
 public:
-static locale::id        id;
-static const size_t      table_size = 1 + static_cast<unsigned char>(-1);
+static locale::id id;
+static const size_t table_size = 1 + static_cast<unsigned char>(-1);
 explicit
 ctype(const mask* __table = 0, bool __del = false, size_t __refs = 0);
 explicit
@@ -318,17 +318,17 @@ template<>
 class ctype<wchar_t> : public __ctype_abstract_base<wchar_t>
 {
 public:
-typedef wchar_t		char_type;
-typedef wctype_t		__wmask_type;
+typedef wchar_t char_type;
+typedef wctype_t __wmask_type;
 protected:
-__c_locale		_M_c_locale_ctype;
-bool                      _M_narrow_ok;
-char                      _M_narrow[128];
-wint_t                    _M_widen[1 + static_cast<unsigned char>(-1)];
-mask                      _M_bit[16];
-__wmask_type              _M_wmask[16];
+__c_locale _M_c_locale_ctype;
+bool _M_narrow_ok;
+char _M_narrow[128];
+wint_t _M_widen[1 + static_cast<unsigned char>(-1)];
+mask _M_bit[16];
+__wmask_type _M_wmask[16];
 public:
-static locale::id		id;
+static locale::id id;
 explicit
 ctype(size_t __refs = 0);
 explicit
@@ -372,7 +372,7 @@ template<typename _CharT>
 class ctype_byname : public ctype<_CharT>
 {
 public:
-typedef typename ctype<_CharT>::mask  mask;
+typedef typename ctype<_CharT>::mask mask;
 explicit
 ctype_byname(const char* __s, size_t __refs = 0);
 #if __cplusplus >= 201103L
@@ -456,18 +456,18 @@ _S_format_float(const ios_base& __io, char* __fptr, char __mod) throw();
 template<typename _CharT>
 struct __numpunct_cache : public locale::facet
 {
-const char*			_M_grouping;
-size_t                            _M_grouping_size;
-bool				_M_use_grouping;
-const _CharT*			_M_truename;
-size_t                            _M_truename_size;
-const _CharT*			_M_falsename;
-size_t                            _M_falsename_size;
-_CharT				_M_decimal_point;
-_CharT				_M_thousands_sep;
-_CharT				_M_atoms_out[__num_base::_S_oend];
-_CharT				_M_atoms_in[__num_base::_S_iend];
-bool				_M_allocated;
+const char* _M_grouping;
+size_t _M_grouping_size;
+bool _M_use_grouping;
+const _CharT* _M_truename;
+size_t _M_truename_size;
+const _CharT* _M_falsename;
+size_t _M_falsename_size;
+_CharT _M_decimal_point;
+_CharT _M_thousands_sep;
+_CharT _M_atoms_out[__num_base::_S_oend];
+_CharT _M_atoms_in[__num_base::_S_iend];
+bool _M_allocated;
 __numpunct_cache(size_t __refs = 0)
 : facet(__refs), _M_grouping(0), _M_grouping_size(0),
 _M_use_grouping(false),
@@ -499,13 +499,13 @@ template<typename _CharT>
 class numpunct : public locale::facet
 {
 public:
-typedef _CharT			char_type;
-typedef basic_string<_CharT>	string_type;
-typedef __numpunct_cache<_CharT>  __cache_type;
+typedef _CharT char_type;
+typedef basic_string<_CharT> string_type;
+typedef __numpunct_cache<_CharT> __cache_type;
 protected:
-__cache_type*			_M_data;
+__cache_type* _M_data;
 public:
-static locale::id			id;
+static locale::id id;
 explicit
 numpunct(size_t __refs = 0)
 : facet(__refs), _M_data(0)
@@ -572,8 +572,8 @@ template<typename _CharT>
 class numpunct_byname : public numpunct<_CharT>
 {
 public:
-typedef _CharT			char_type;
-typedef basic_string<_CharT>	string_type;
+typedef _CharT char_type;
+typedef basic_string<_CharT> string_type;
 explicit
 numpunct_byname(const char* __s, size_t __refs = 0)
 : numpunct<_CharT>(__refs)
@@ -602,9 +602,9 @@ template<typename _CharT, typename _InIter>
 class num_get : public locale::facet
 {
 public:
-typedef _CharT			char_type;
-typedef _InIter			iter_type;
-static locale::id			id;
+typedef _CharT char_type;
+typedef _InIter iter_type;
+static locale::id id;
 explicit
 num_get(size_t __refs = 0) : facet(__refs) { }
 iter_type
@@ -621,11 +621,11 @@ ios_base::iostate& __err, unsigned short& __v) const
 { return this->do_get(__in, __end, __io, __err, __v); }
 iter_type
 get(iter_type __in, iter_type __end, ios_base& __io,
-ios_base::iostate& __err, unsigned int& __v)   const
+ios_base::iostate& __err, unsigned int& __v) const
 { return this->do_get(__in, __end, __io, __err, __v); }
 iter_type
 get(iter_type __in, iter_type __end, ios_base& __io,
-ios_base::iostate& __err, unsigned long& __v)  const
+ios_base::iostate& __err, unsigned long& __v) const
 { return this->do_get(__in, __end, __io, __err, __v); }
 #ifdef _GLIBCXX_USE_LONG_LONG
 iter_type
@@ -634,7 +634,7 @@ ios_base::iostate& __err, long long& __v) const
 { return this->do_get(__in, __end, __io, __err, __v); }
 iter_type
 get(iter_type __in, iter_type __end, ios_base& __io,
-ios_base::iostate& __err, unsigned long long& __v)  const
+ios_base::iostate& __err, unsigned long long& __v) const
 { return this->do_get(__in, __end, __io, __err, __v); }
 #endif
 iter_type
@@ -762,9 +762,9 @@ template<typename _CharT, typename _OutIter>
 class num_put : public locale::facet
 {
 public:
-typedef _CharT		char_type;
-typedef _OutIter		iter_type;
-static locale::id		id;
+typedef _CharT char_type;
+typedef _OutIter iter_type;
+static locale::id id;
 explicit
 num_put(size_t __refs = 0) : facet(__refs) { }
 iter_type

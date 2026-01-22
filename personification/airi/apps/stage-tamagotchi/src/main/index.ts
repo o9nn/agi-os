@@ -25,80 +25,80 @@ setGlobalLogLevel(LogLevel.Log)
 setupDebugger()
 const log = useLogg('main').useGlobalConfig()
 if (isLinux) {
-  app.commandLine.appendSwitch('enable-features', 'SharedArrayBuffer')
-  app.commandLine.appendSwitch('enable-unsafe-webgpu')
-  app.commandLine.appendSwitch('enable-features', 'Vulkan')
+app.commandLine.appendSwitch('enable-features', 'SharedArrayBuffer')
+app.commandLine.appendSwitch('enable-unsafe-webgpu')
+app.commandLine.appendSwitch('enable-features', 'Vulkan')
 }
 app.dock?.setIcon(icon)
 electronApp.setAppUserModelId('ai.moeru.airi')
 function setupTray(params: {
-  mainWindow: BrowserWindow
-  settingsWindow: () => Promise<BrowserWindow>
-  captionWindow: ReturnType<typeof setupCaptionWindowManager>
+mainWindow: BrowserWindow
+settingsWindow: () => Promise<BrowserWindow>
+captionWindow: ReturnType<typeof setupCaptionWindowManager>
 }): void {
-  once(() => {
-    const appTray = new Tray(nativeImage.createFromPath(macOSTrayIcon).resize({ width: 16 }))
-    onAppBeforeQuit(() => appTray.destroy())
-    const contextMenu = Menu.buildFromTemplate([
-      { label: 'Show', click: () => toggleWindowShow(params.mainWindow) },
-      { type: 'separator' },
-      { label: 'Settings...', click: () => params.settingsWindow().then(window => toggleWindowShow(window)) },
-      { type: 'separator' },
-      { label: 'Open Inlay...', click: () => setupInlayWindow() },
-      { label: 'Open Caption...', click: () => params.captionWindow.getWindow().then(window => toggleWindowShow(window)) },
-      {
-        type: 'submenu',
-        label: 'Caption Overlay',
-        submenu: Menu.buildFromTemplate([
-          { type: 'checkbox', label: 'Follow window', checked: params.captionWindow.getIsFollowingWindow(), click: async menuItem => await params.captionWindow.setFollowWindow(Boolean(menuItem.checked)) },
-          { label: 'Reset position', click: async () => await params.captionWindow.resetToSide() },
-        ]),
-      },
-      { type: 'separator' },
-      { label: 'Quit', click: () => app.quit() },
-    ])
-    appTray.setContextMenu(contextMenu)
-    appTray.setToolTip('Project AIRI')
-    appTray.addListener('click', () => toggleWindowShow(params.mainWindow))
-    if (isMacOS)
-      appTray.addListener('double-click', () => toggleWindowShow(params.mainWindow))
-  })()
+once(() => {
+const appTray = new Tray(nativeImage.createFromPath(macOSTrayIcon).resize({ width: 16 }))
+onAppBeforeQuit(() => appTray.destroy())
+const contextMenu = Menu.buildFromTemplate([
+{ label: 'Show', click: () => toggleWindowShow(params.mainWindow) },
+{ type: 'separator' },
+{ label: 'Settings...', click: () => params.settingsWindow().then(window => toggleWindowShow(window)) },
+{ type: 'separator' },
+{ label: 'Open Inlay...', click: () => setupInlayWindow() },
+{ label: 'Open Caption...', click: () => params.captionWindow.getWindow().then(window => toggleWindowShow(window)) },
+{
+type: 'submenu',
+label: 'Caption Overlay',
+submenu: Menu.buildFromTemplate([
+{ type: 'checkbox', label: 'Follow window', checked: params.captionWindow.getIsFollowingWindow(), click: async menuItem => await params.captionWindow.setFollowWindow(Boolean(menuItem.checked)) },
+{ label: 'Reset position', click: async () => await params.captionWindow.resetToSide() },
+]),
+},
+{ type: 'separator' },
+{ label: 'Quit', click: () => app.quit() },
+])
+appTray.setContextMenu(contextMenu)
+appTray.setToolTip('Project AIRI')
+appTray.addListener('click', () => toggleWindowShow(params.mainWindow))
+if (isMacOS)
+appTray.addListener('double-click', () => toggleWindowShow(params.mainWindow))
+})()
 }
 app.whenReady().then(async () => {
-  injecta.setLogger(createLoggLogger(useLogg('injecta').useGlobalConfig()))
-  const channelServerModule = injecta.provide('modules:channel-server', async () => setupChannelServer())
-  const settingsWindow = injecta.provide('windows:settings', () => setupSettingsWindowReusableFunc())
-  const chatWindow = injecta.provide('windows:chat', { build: () => setupChatWindowReusableFunc() })
-  const mainWindow = injecta.provide('windows:main', {
-    dependsOn: { settingsWindow, chatWindow },
-    build: async ({ dependsOn }: any) => setupMainWindow(dependsOn),
-  })
-  const captionWindow = injecta.provide('windows:caption', {
-    dependsOn: { mainWindow },
-    build: async ({ dependsOn }: any) => setupCaptionWindowManager(dependsOn),
-  })
-  const tray = injecta.provide('app:tray', {
-    dependsOn: { mainWindow, settingsWindow, captionWindow },
-    build: async ({ dependsOn }: any) => setupTray(dependsOn),
-  })
-  injecta.invoke({
-    dependsOn: { mainWindow, tray, channelServerModule },
-    callback: noop,
-  })
-  injecta.start().catch((err: any) => console.error(err))
-  emitAppReady()
-  openDebugger()
-  app.on('browser-window-created', (_, window) => optimizer.watchWindowShortcuts(window))
+injecta.setLogger(createLoggLogger(useLogg('injecta').useGlobalConfig()))
+const channelServerModule = injecta.provide('modules:channel-server', async () => setupChannelServer())
+const settingsWindow = injecta.provide('windows:settings', () => setupSettingsWindowReusableFunc())
+const chatWindow = injecta.provide('windows:chat', { build: () => setupChatWindowReusableFunc() })
+const mainWindow = injecta.provide('windows:main', {
+dependsOn: { settingsWindow, chatWindow },
+build: async ({ dependsOn }: any) => setupMainWindow(dependsOn),
+})
+const captionWindow = injecta.provide('windows:caption', {
+dependsOn: { mainWindow },
+build: async ({ dependsOn }: any) => setupCaptionWindowManager(dependsOn),
+})
+const tray = injecta.provide('app:tray', {
+dependsOn: { mainWindow, settingsWindow, captionWindow },
+build: async ({ dependsOn }: any) => setupTray(dependsOn),
+})
+injecta.invoke({
+dependsOn: { mainWindow, tray, channelServerModule },
+callback: noop,
+})
+injecta.start().catch((err: any) => console.error(err))
+emitAppReady()
+openDebugger()
+app.on('browser-window-created', (_, window) => optimizer.watchWindowShortcuts(window))
 }).catch((err) => {
-  log.withError(err).error('Error during app initialization')
+log.withError(err).error('Error during app initialization')
 })
 app.on('window-all-closed', () => {
-  emitAppWindowAllClosed()
-  if (platform !== 'darwin') {
-    app.quit()
-  }
+emitAppWindowAllClosed()
+if (platform !== 'darwin') {
+app.quit()
+}
 })
 app.on('before-quit', async () => {
-  emitAppBeforeQuit()
-  injecta.stop()
+emitAppBeforeQuit()
+injecta.stop()
 })

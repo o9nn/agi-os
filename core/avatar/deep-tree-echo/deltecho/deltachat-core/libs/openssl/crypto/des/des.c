@@ -4,13 +4,13 @@
 #include <openssl/opensslconf.h>
 #ifndef OPENSSL_SYS_MSDOS
 # ifndef OPENSSL_SYS_VMS
-#  include OPENSSL_UNISTD
+# include OPENSSL_UNISTD
 # else
-#  ifdef __DECC
-#   include <unistd.h>
-#  else
-#   include <math.h>
-#  endif
+# ifdef __DECC
+# include <unistd.h>
+# else
+# include <math.h>
+# endif
 # endif
 #else
 # include <io.h>
@@ -22,7 +22,7 @@
 # include <stat.h>
 #else
 # ifndef _IRIX
-#  include <sys/types.h>
+# include <sys/types.h>
 # endif
 # include <sys/stat.h>
 #endif
@@ -45,8 +45,8 @@ DES_cblock *ivec1, DES_cblock *ivec2, int enc);
 # define EXIT(a) exit(a)
 #endif
 #define BUFSIZE (8*1024)
-#define VERIFY  1
-#define KEYSIZ  8
+#define VERIFY 1
+#define KEYSIZ 8
 #define KEYSIZB 1024
 char key[KEYSIZB + 1];
 int do_encrypt, longk = 0;
@@ -54,8 +54,8 @@ FILE *DES_IN, *DES_OUT, *CKSUM_OUT;
 char uuname[200];
 unsigned char uubuf[50];
 int uubufnum = 0;
-#define INUUBUFN        (45*100)
-#define OUTUUBUF        (65*100)
+#define INUUBUFN (45*100)
+#define OUTUUBUF (65*100)
 unsigned char b[OUTUUBUF];
 unsigned char bb[300];
 DES_cblock cksum = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
@@ -634,12 +634,12 @@ tot += i;
 }
 return (tot);
 }
-#define ccc2l(c,l)      (l =((DES_LONG)(*((c)++)))<<16, \
+#define ccc2l(c,l) (l =((DES_LONG)(*((c)++)))<<16, \
 l|=((DES_LONG)(*((c)++)))<< 8, \
 l|=((DES_LONG)(*((c)++))))
-#define l2ccc(l,c)      (*((c)++)=(unsigned char)(((l)>>16)&0xff), \
+#define l2ccc(l,c) (*((c)++)=(unsigned char)(((l)>>16)&0xff), \
 *((c)++)=(unsigned char)(((l)>> 8)&0xff), \
-*((c)++)=(unsigned char)(((l)    )&0xff))
+*((c)++)=(unsigned char)(((l) )&0xff))
 int uuencode(unsigned char *in, int num, unsigned char *out)
 {
 int j, i, n, tot = 0;

@@ -59,10 +59,10 @@ exit_status = 255;
 gs_to_exit_with_code(minst->heap, exit_status, code);
 switch (exit_status) {
 case 0:
-exit_status =  exit_OK;
+exit_status = exit_OK;
 break;
 case 1:
-exit_status =  exit_FAILED;
+exit_status = exit_FAILED;
 break;
 }
 return exit_status;

@@ -100,9 +100,9 @@ return ((v4f32)res)[0];
 static inline __m256i ____m256i(__m128i in) {
 __m256i out = __lasx_xvldi(0);
 __asm__ volatile (
-".irp i," __ALL_REGS                "\n\t"
+".irp i," __ALL_REGS "\n\t"
 " .ifc %[out], " XREGS_PREFIX"\\i    \n\t"
-"  .irp j," __ALL_REGS              "\n\t"
+"  .irp j," __ALL_REGS "\n\t"
 "   .ifc %[in], " VREGS_PREFIX "\\j  \n\t"
 "    xvpermi.q $xr\\i, $xr\\j, 0x20  \n\t"
 "   .endif                           \n\t"
@@ -116,9 +116,9 @@ return out;
 static inline __m256i lasx_set_q(__m128i inhi, __m128i inlo) {
 __m256i out;
 __asm__ volatile (
-".irp i," __ALL_REGS                "\n\t"
+".irp i," __ALL_REGS "\n\t"
 " .ifc %[hi], " VREGS_PREFIX "\\i    \n\t"
-"  .irp j," __ALL_REGS              "\n\t"
+"  .irp j," __ALL_REGS "\n\t"
 "   .ifc %[lo], " VREGS_PREFIX "\\j  \n\t"
 "    xvpermi.q $xr\\i, $xr\\j, 0x20  \n\t"
 "   .endif                           \n\t"
@@ -126,9 +126,9 @@ __asm__ volatile (
 " .endif                             \n\t"
 ".endr                               \n\t"
 ".ifnc %[out], %[hi]                 \n\t"
-".irp i," __ALL_REGS                "\n\t"
+".irp i," __ALL_REGS "\n\t"
 " .ifc %[out], " XREGS_PREFIX "\\i   \n\t"
-"  .irp j," __ALL_REGS              "\n\t"
+"  .irp j," __ALL_REGS "\n\t"
 "   .ifc %[hi], " VREGS_PREFIX "\\j  \n\t"
 "    xvori.b $xr\\i, $xr\\j, 0       \n\t"
 "   .endif                           \n\t"
@@ -145,9 +145,9 @@ static inline __m128i lasx_extracti128_lo(__m256i in) {
 __m128i out;
 __asm__ volatile (
 ".ifnc %[out], %[in]                 \n\t"
-".irp i," __ALL_REGS                "\n\t"
+".irp i," __ALL_REGS "\n\t"
 " .ifc %[out], " VREGS_PREFIX "\\i   \n\t"
-"  .irp j," __ALL_REGS              "\n\t"
+"  .irp j," __ALL_REGS "\n\t"
 "   .ifc %[in], " XREGS_PREFIX "\\j  \n\t"
 "    vori.b $vr\\i, $vr\\j, 0        \n\t"
 "   .endif                           \n\t"
@@ -162,9 +162,9 @@ return out;
 static inline __m128i lasx_extracti128_hi(__m256i in) {
 __m128i out;
 __asm__ volatile (
-".irp i," __ALL_REGS                "\n\t"
+".irp i," __ALL_REGS "\n\t"
 " .ifc %[out], " VREGS_PREFIX "\\i   \n\t"
-"  .irp j," __ALL_REGS              "\n\t"
+"  .irp j," __ALL_REGS "\n\t"
 "   .ifc %[in], " XREGS_PREFIX "\\j  \n\t"
 "    xvpermi.q $xr\\i, $xr\\j, 0x11  \n\t"
 "   .endif                           \n\t"
@@ -299,8 +299,8 @@ return ((v4f32)res)[0];
 static inline int hsum_i32_8(const __m256i a) {
 __m256i tmp1 = __lasx_xvpermi_q(a, a, 0x11);
 __m256i tmp2 = __lasx_xvpermi_q(a, a, 0x00);
-__m128i  tmp1_128 = lasx_extracti128_lo(tmp1);
-__m128i  tmp2_128 = lasx_extracti128_lo(tmp2);
+__m128i tmp1_128 = lasx_extracti128_lo(tmp1);
+__m128i tmp2_128 = lasx_extracti128_lo(tmp2);
 __m128i sum128 = __lsx_vadd_w(tmp1_128, tmp2_128);
 __m128i ev = __lsx_vpickev_w(sum128, sum128);
 __m128i od = __lsx_vpickod_w(sum128, sum128);
@@ -308,7 +308,7 @@ __m128i sum64 = __lsx_vadd_w(ev, od);
 int sum64_1, sum64_2;
 sum64_1 = __lsx_vpickve2gr_w(sum64, 0);
 sum64_2 = __lsx_vpickve2gr_w(sum64, 1);
-return  sum64_1 + sum64_2;
+return sum64_1 + sum64_2;
 }
 static inline int hsum_i32_4(const __m128i a) {
 __m128i ev = __lsx_vpickev_w(a, a);
@@ -317,7 +317,7 @@ __m128i sum64 = __lsx_vadd_w(ev, od);
 int sum64_1, sum64_2;
 sum64_1 = __lsx_vpickve2gr_w(sum64, 0);
 sum64_2 = __lsx_vpickve2gr_w(sum64, 1);
-return  sum64_1 + sum64_2;
+return sum64_1 + sum64_2;
 }
 static inline __m256i bytes_from_bits_32(const uint8_t * x) {
 uint32_t x32;
@@ -363,7 +363,7 @@ tmp = __lsx_vmax_h(zero, *r0);
 tmp2 = __lsx_vsat_hu(tmp, 7);
 tmp = __lsx_vmax_h(zero, *r1);
 tmp3 = __lsx_vsat_hu(tmp, 7);
-return  __lsx_vpickev_b(tmp3, tmp2);
+return __lsx_vpickev_b(tmp3, tmp2);
 }
 #endif
 void quantize_row_q8_0(const float * GGML_RESTRICT x, void * GGML_RESTRICT vy, int64_t k) {
@@ -414,7 +414,7 @@ ni4 = lsx_packs_w( ni4, ni5 );
 ni6 = lsx_packs_w( ni6, ni7 );
 ni0 = lsx_packs_h( ni0, ni2 );
 ni4 = lsx_packs_h( ni4, ni6 );
-__lsx_vst(ni0, (__m128i *)(y[i].qs +  0), 0);
+__lsx_vst(ni0, (__m128i *)(y[i].qs + 0), 0);
 __lsx_vst(ni4, (__m128i *)(y[i].qs + 16), 0);
 }
 #else
@@ -472,7 +472,7 @@ ni4 = lsx_packs_w( ni4, ni5 );
 ni6 = lsx_packs_w( ni6, ni7 );
 ni0 = lsx_packs_h( ni0, ni2 );
 ni4 = lsx_packs_h( ni4, ni6 );
-__lsx_vst(ni0, (__m128i *)(y[i].qs +  0), 0);
+__lsx_vst(ni0, (__m128i *)(y[i].qs + 0), 0);
 __lsx_vst(ni4, (__m128i *)(y[i].qs + 16), 0);
 }
 #else
@@ -483,10 +483,10 @@ quantize_row_q8_1_ref(x, y, k);
 #if defined(__loongarch_asx)
 static inline __m256i get_scale_shuffle_q3k(int i) {
 static const uint8_t k_shuffle[128] = {
-0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,     2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3,
-4, 5, 4, 5, 4, 5, 4, 5, 4, 5, 4, 5, 4, 5, 4, 5,     6, 7, 6, 7, 6, 7, 6, 7, 6, 7, 6, 7, 6, 7, 6, 7,
-8, 9, 8, 9, 8, 9, 8, 9, 8, 9, 8, 9, 8, 9, 8, 9,    10,11,10,11,10,11,10,11,10,11,10,11,10,11,10,11,
-12,13,12,13,12,13,12,13,12,13,12,13,12,13,12,13,    14,15,14,15,14,15,14,15,14,15,14,15,14,15,14,15,
+0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3,
+4, 5, 4, 5, 4, 5, 4, 5, 4, 5, 4, 5, 4, 5, 4, 5, 6, 7, 6, 7, 6, 7, 6, 7, 6, 7, 6, 7, 6, 7, 6, 7,
+8, 9, 8, 9, 8, 9, 8, 9, 8, 9, 8, 9, 8, 9, 8, 9, 10,11,10,11,10,11,10,11,10,11,10,11,10,11,10,11,
+12,13,12,13,12,13,12,13,12,13,12,13,12,13,12,13, 14,15,14,15,14,15,14,15,14,15,14,15,14,15,14,15,
 };
 return __lasx_xvld((const __m256i*)k_shuffle + i, 0);
 }
@@ -590,7 +590,7 @@ int sumi0 = 0;
 int sumi1 = 0;
 for (int j = 0; j < qk/2; ++j) {
 const int v0 = (x[ib].qs[j] & 0x0F) - 8;
-const int v1 = (x[ib].qs[j] >>   4) - 8;
+const int v1 = (x[ib].qs[j] >> 4) - 8;
 sumi0 += (v0 * y[ib].qs[j]);
 sumi1 += (v1 * y[ib].qs[j + qk/2]);
 }
@@ -763,7 +763,7 @@ for (int i = 0; i < nb; ++i) {
 const float d = y[i].d * GGML_CPU_FP16_TO_FP32(x[i].d);
 const float dmin = -y[i].d * GGML_CPU_FP16_TO_FP32(x[i].dmin);
 const uint8_t * GGML_RESTRICT q2 = x[i].qs;
-const int8_t  * GGML_RESTRICT q8 = y[i].qs;
+const int8_t * GGML_RESTRICT q8 = y[i].qs;
 const __m128i mins_and_scales128 = __lsx_vld((const __m128i*)x[i].scales, 0);
 const __m128i scales128 = __lsx_vandi_b(mins_and_scales128, 0xf);
 const __m256i mins = lasx_ext8_16(__lsx_vsrli_b(mins_and_scales128, 4));
@@ -823,7 +823,7 @@ uint32_t aux[3];
 for (int i = 0; i < nb; ++i) {
 const float d = y[i].d * GGML_CPU_FP16_TO_FP32(x[i].d);
 const uint8_t * GGML_RESTRICT q3 = x[i].qs;
-const int8_t  * GGML_RESTRICT q8 = y[i].qs;
+const int8_t * GGML_RESTRICT q8 = y[i].qs;
 memcpy(aux, x[i].scales, 12);
 __m128i scales128 = lsx_set_w(
 ((aux[1] >> 4) & kmask2) | (((aux[2] >> 6) & kmask1) << 4),
@@ -863,7 +863,7 @@ p16_2 = lasx_madd_h(lasx_xvrepl128vei_h(scales_shuffled, 4 * j + 2), p16_2);
 p16_3 = lasx_madd_h(lasx_xvrepl128vei_h(scales_shuffled, 4 * j + 3), p16_3);
 p16_0 = __lasx_xvadd_w(p16_0, p16_1);
 p16_2 = __lasx_xvadd_w(p16_2, p16_3);
-sumi  = __lasx_xvadd_w(sumi, __lasx_xvadd_w(p16_0, p16_2));
+sumi = __lasx_xvadd_w(sumi, __lasx_xvadd_w(p16_0, p16_2));
 }
 acc = __lasx_xvfmadd_s(__lasx_xvreplfr2vr_s(d), __lasx_xvffint_s_w(sumi), acc);
 }
@@ -904,7 +904,7 @@ utmp[1] = (utmp[2] & kmask2) | (((utmp[0] >> 6) & kmask3) << 4);
 utmp[2] = uaux;
 utmp[0] &= kmask1;
 const uint8_t * GGML_RESTRICT q4 = x[i].qs;
-const int8_t  * GGML_RESTRICT q8 = y[i].qs;
+const int8_t * GGML_RESTRICT q8 = y[i].qs;
 const __m128i mins_and_scales128 = lsx_set_w(utmp[3], utmp[2], utmp[1], utmp[0]);
 const __m128i mins128 = __lsx_vexth_h_b(mins_and_scales128);
 const __m128i scales128 = __lsx_vsllwil_h_b(mins_and_scales128, 0);
@@ -947,7 +947,7 @@ UNUSED(utmp);
 ggml_vec_dot_q4_K_q8_K_generic(n, s, bs, vx, bx, vy, by, nrc);
 #endif
 }
-void ggml_vec_dot_q5_K_q8_K(int n, float * GGML_RESTRICT s, size_t bs, const void * GGML_RESTRICT vx, size_t bx, const void * GGML_RESTRICT vy,  size_t by, int nrc) {
+void ggml_vec_dot_q5_K_q8_K(int n, float * GGML_RESTRICT s, size_t bs, const void * GGML_RESTRICT vx, size_t bx, const void * GGML_RESTRICT vy, size_t by, int nrc) {
 assert(n % QK_K == 0);
 assert(nrc == 1);
 UNUSED(nrc);
@@ -966,7 +966,7 @@ __m256 acc = (__m256)__lasx_xvldi(0);
 __m128 acc_m = (__m128)__lsx_vldi(0);
 for (int i = 0; i < nb; ++i) {
 const uint8_t * GGML_RESTRICT q5 = x[i].qs;
-const int8_t  * GGML_RESTRICT q8 = y[i].qs;
+const int8_t * GGML_RESTRICT q8 = y[i].qs;
 const float d = y[i].d * GGML_CPU_FP16_TO_FP32(x[i].d);
 const float dmin = -y[i].d * GGML_CPU_FP16_TO_FP32(x[i].dmin);
 memcpy(utmp, x[i].scales, 12);
@@ -993,8 +993,8 @@ const __m256i q5l_0 = __lasx_xvandi_b(q5bits, 0xf);
 const __m256i q5l_1 = __lasx_xvsrli_b(q5bits, 4);
 const __m256i q5h_0 = __lasx_xvnori_b(__lasx_xvseqi_b(lasx_xvandi_b_bit(hbits, 2 * j + 0), 0), 0xef);
 const __m256i q5h_1 = __lasx_xvnori_b(__lasx_xvseqi_b(lasx_xvandi_b_bit(hbits, 2 * j + 1), 0), 0xef);
-const __m256i q5_0  = __lasx_xvor_v(q5l_0, q5h_0);
-const __m256i q5_1  = __lasx_xvor_v(q5l_1, q5h_1);
+const __m256i q5_0 = __lasx_xvor_v(q5l_0, q5h_0);
+const __m256i q5_1 = __lasx_xvor_v(q5l_1, q5h_1);
 const __m256i q8_0 = __lasx_xvld((const __m256i*)q8, 0); q8 += 32;
 const __m256i q8_1 = __lasx_xvld((const __m256i*)q8, 0); q8 += 32;
 __m256i p16_0 = lasx_madd_h_b(q5_0, q8_0);
@@ -1037,7 +1037,7 @@ for (int i = 0; i < nb; ++i) {
 const float d = y[i].d * GGML_CPU_FP16_TO_FP32(x[i].d);
 const uint8_t * GGML_RESTRICT q4 = x[i].ql;
 const uint8_t * GGML_RESTRICT qh = x[i].qh;
-const int8_t  * GGML_RESTRICT q8 = y[i].qs;
+const int8_t * GGML_RESTRICT q8 = y[i].qs;
 const __m128i scales128 = __lsx_vld((const __m128i*)x[i].scales, 0);
 const v16i8 shuffle_mask = {0, 2, 4, 6, 8, 10, 12, 14, 1, 3, 5, 7, 9, 11, 13, 15};
 const __m256i scales_shuffled = lasx_ext8_16(__lsx_vshuf_b(scales128, scales128, (__m128i)shuffle_mask));
@@ -1081,38 +1081,38 @@ ggml_vec_dot_q6_K_q8_K_generic(n, s, bs, vx, bx, vy, by, nrc);
 }
 #if defined(__loongarch_asx)
 static const int8_t keven_signs_q2xs[1024] = {
-1,  1,  1,  1,  1,  1,  1,  1, -1,  1,  1,  1,  1,  1,  1, -1,  1, -1,  1,  1,  1,  1,  1, -1, -1, -1,  1,  1,  1,  1,  1,  1,
-1,  1, -1,  1,  1,  1,  1, -1, -1,  1, -1,  1,  1,  1,  1,  1,  1, -1, -1,  1,  1,  1,  1,  1, -1, -1, -1,  1,  1,  1,  1, -1,
-1,  1,  1, -1,  1,  1,  1, -1, -1,  1,  1, -1,  1,  1,  1,  1,  1, -1,  1, -1,  1,  1,  1,  1, -1, -1,  1, -1,  1,  1,  1, -1,
-1,  1, -1, -1,  1,  1,  1,  1, -1,  1, -1, -1,  1,  1,  1, -1,  1, -1, -1, -1,  1,  1,  1, -1, -1, -1, -1, -1,  1,  1,  1,  1,
-1,  1,  1,  1, -1,  1,  1, -1, -1,  1,  1,  1, -1,  1,  1,  1,  1, -1,  1,  1, -1,  1,  1,  1, -1, -1,  1,  1, -1,  1,  1, -1,
-1,  1, -1,  1, -1,  1,  1,  1, -1,  1, -1,  1, -1,  1,  1, -1,  1, -1, -1,  1, -1,  1,  1, -1, -1, -1, -1,  1, -1,  1,  1,  1,
-1,  1,  1, -1, -1,  1,  1,  1, -1,  1,  1, -1, -1,  1,  1, -1,  1, -1,  1, -1, -1,  1,  1, -1, -1, -1,  1, -1, -1,  1,  1,  1,
-1,  1, -1, -1, -1,  1,  1, -1, -1,  1, -1, -1, -1,  1,  1,  1,  1, -1, -1, -1, -1,  1,  1,  1, -1, -1, -1, -1, -1,  1,  1, -1,
-1,  1,  1,  1,  1, -1,  1, -1, -1,  1,  1,  1,  1, -1,  1,  1,  1, -1,  1,  1,  1, -1,  1,  1, -1, -1,  1,  1,  1, -1,  1, -1,
-1,  1, -1,  1,  1, -1,  1,  1, -1,  1, -1,  1,  1, -1,  1, -1,  1, -1, -1,  1,  1, -1,  1, -1, -1, -1, -1,  1,  1, -1,  1,  1,
-1,  1,  1, -1,  1, -1,  1,  1, -1,  1,  1, -1,  1, -1,  1, -1,  1, -1,  1, -1,  1, -1,  1, -1, -1, -1,  1, -1,  1, -1,  1,  1,
-1,  1, -1, -1,  1, -1,  1, -1, -1,  1, -1, -1,  1, -1,  1,  1,  1, -1, -1, -1,  1, -1,  1,  1, -1, -1, -1, -1,  1, -1,  1, -1,
-1,  1,  1,  1, -1, -1,  1,  1, -1,  1,  1,  1, -1, -1,  1, -1,  1, -1,  1,  1, -1, -1,  1, -1, -1, -1,  1,  1, -1, -1,  1,  1,
-1,  1, -1,  1, -1, -1,  1, -1, -1,  1, -1,  1, -1, -1,  1,  1,  1, -1, -1,  1, -1, -1,  1,  1, -1, -1, -1,  1, -1, -1,  1, -1,
-1,  1,  1, -1, -1, -1,  1, -1, -1,  1,  1, -1, -1, -1,  1,  1,  1, -1,  1, -1, -1, -1,  1,  1, -1, -1,  1, -1, -1, -1,  1, -1,
-1,  1, -1, -1, -1, -1,  1,  1, -1,  1, -1, -1, -1, -1,  1, -1,  1, -1, -1, -1, -1, -1,  1, -1, -1, -1, -1, -1, -1, -1,  1,  1,
-1,  1,  1,  1,  1,  1, -1, -1, -1,  1,  1,  1,  1,  1, -1,  1,  1, -1,  1,  1,  1,  1, -1,  1, -1, -1,  1,  1,  1,  1, -1, -1,
-1,  1, -1,  1,  1,  1, -1,  1, -1,  1, -1,  1,  1,  1, -1, -1,  1, -1, -1,  1,  1,  1, -1, -1, -1, -1, -1,  1,  1,  1, -1,  1,
-1,  1,  1, -1,  1,  1, -1,  1, -1,  1,  1, -1,  1,  1, -1, -1,  1, -1,  1, -1,  1,  1, -1, -1, -1, -1,  1, -1,  1,  1, -1,  1,
-1,  1, -1, -1,  1,  1, -1, -1, -1,  1, -1, -1,  1,  1, -1,  1,  1, -1, -1, -1,  1,  1, -1,  1, -1, -1, -1, -1,  1,  1, -1, -1,
-1,  1,  1,  1, -1,  1, -1,  1, -1,  1,  1,  1, -1,  1, -1, -1,  1, -1,  1,  1, -1,  1, -1, -1, -1, -1,  1,  1, -1,  1, -1,  1,
-1,  1, -1,  1, -1,  1, -1, -1, -1,  1, -1,  1, -1,  1, -1,  1,  1, -1, -1,  1, -1,  1, -1,  1, -1, -1, -1,  1, -1,  1, -1, -1,
-1,  1,  1, -1, -1,  1, -1, -1, -1,  1,  1, -1, -1,  1, -1,  1,  1, -1,  1, -1, -1,  1, -1,  1, -1, -1,  1, -1, -1,  1, -1, -1,
-1,  1, -1, -1, -1,  1, -1,  1, -1,  1, -1, -1, -1,  1, -1, -1,  1, -1, -1, -1, -1,  1, -1, -1, -1, -1, -1, -1, -1,  1, -1,  1,
-1,  1,  1,  1,  1, -1, -1,  1, -1,  1,  1,  1,  1, -1, -1, -1,  1, -1,  1,  1,  1, -1, -1, -1, -1, -1,  1,  1,  1, -1, -1,  1,
-1,  1, -1,  1,  1, -1, -1, -1, -1,  1, -1,  1,  1, -1, -1,  1,  1, -1, -1,  1,  1, -1, -1,  1, -1, -1, -1,  1,  1, -1, -1, -1,
-1,  1,  1, -1,  1, -1, -1, -1, -1,  1,  1, -1,  1, -1, -1,  1,  1, -1,  1, -1,  1, -1, -1,  1, -1, -1,  1, -1,  1, -1, -1, -1,
-1,  1, -1, -1,  1, -1, -1,  1, -1,  1, -1, -1,  1, -1, -1, -1,  1, -1, -1, -1,  1, -1, -1, -1, -1, -1, -1, -1,  1, -1, -1,  1,
-1,  1,  1,  1, -1, -1, -1, -1, -1,  1,  1,  1, -1, -1, -1,  1,  1, -1,  1,  1, -1, -1, -1,  1, -1, -1,  1,  1, -1, -1, -1, -1,
-1,  1, -1,  1, -1, -1, -1,  1, -1,  1, -1,  1, -1, -1, -1, -1,  1, -1, -1,  1, -1, -1, -1, -1, -1, -1, -1,  1, -1, -1, -1,  1,
-1,  1,  1, -1, -1, -1, -1,  1, -1,  1,  1, -1, -1, -1, -1, -1,  1, -1,  1, -1, -1, -1, -1, -1, -1, -1,  1, -1, -1, -1, -1,  1,
-1,  1, -1, -1, -1, -1, -1, -1, -1,  1, -1, -1, -1, -1, -1,  1,  1, -1, -1, -1, -1, -1, -1,  1, -1, -1, -1, -1, -1, -1, -1, -1,
+1, 1, 1, 1, 1, 1, 1, 1, -1, 1, 1, 1, 1, 1, 1, -1, 1, -1, 1, 1, 1, 1, 1, -1, -1, -1, 1, 1, 1, 1, 1, 1,
+1, 1, -1, 1, 1, 1, 1, -1, -1, 1, -1, 1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, -1, -1, -1, 1, 1, 1, 1, -1,
+1, 1, 1, -1, 1, 1, 1, -1, -1, 1, 1, -1, 1, 1, 1, 1, 1, -1, 1, -1, 1, 1, 1, 1, -1, -1, 1, -1, 1, 1, 1, -1,
+1, 1, -1, -1, 1, 1, 1, 1, -1, 1, -1, -1, 1, 1, 1, -1, 1, -1, -1, -1, 1, 1, 1, -1, -1, -1, -1, -1, 1, 1, 1, 1,
+1, 1, 1, 1, -1, 1, 1, -1, -1, 1, 1, 1, -1, 1, 1, 1, 1, -1, 1, 1, -1, 1, 1, 1, -1, -1, 1, 1, -1, 1, 1, -1,
+1, 1, -1, 1, -1, 1, 1, 1, -1, 1, -1, 1, -1, 1, 1, -1, 1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, 1, -1, 1, 1, 1,
+1, 1, 1, -1, -1, 1, 1, 1, -1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, -1, -1, 1, 1, -1, -1, -1, 1, -1, -1, 1, 1, 1,
+1, 1, -1, -1, -1, 1, 1, -1, -1, 1, -1, -1, -1, 1, 1, 1, 1, -1, -1, -1, -1, 1, 1, 1, -1, -1, -1, -1, -1, 1, 1, -1,
+1, 1, 1, 1, 1, -1, 1, -1, -1, 1, 1, 1, 1, -1, 1, 1, 1, -1, 1, 1, 1, -1, 1, 1, -1, -1, 1, 1, 1, -1, 1, -1,
+1, 1, -1, 1, 1, -1, 1, 1, -1, 1, -1, 1, 1, -1, 1, -1, 1, -1, -1, 1, 1, -1, 1, -1, -1, -1, -1, 1, 1, -1, 1, 1,
+1, 1, 1, -1, 1, -1, 1, 1, -1, 1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, -1, -1, 1, -1, 1, -1, 1, 1,
+1, 1, -1, -1, 1, -1, 1, -1, -1, 1, -1, -1, 1, -1, 1, 1, 1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, 1, -1, 1, -1,
+1, 1, 1, 1, -1, -1, 1, 1, -1, 1, 1, 1, -1, -1, 1, -1, 1, -1, 1, 1, -1, -1, 1, -1, -1, -1, 1, 1, -1, -1, 1, 1,
+1, 1, -1, 1, -1, -1, 1, -1, -1, 1, -1, 1, -1, -1, 1, 1, 1, -1, -1, 1, -1, -1, 1, 1, -1, -1, -1, 1, -1, -1, 1, -1,
+1, 1, 1, -1, -1, -1, 1, -1, -1, 1, 1, -1, -1, -1, 1, 1, 1, -1, 1, -1, -1, -1, 1, 1, -1, -1, 1, -1, -1, -1, 1, -1,
+1, 1, -1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, -1, 1, -1, 1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, 1, 1,
+1, 1, 1, 1, 1, 1, -1, -1, -1, 1, 1, 1, 1, 1, -1, 1, 1, -1, 1, 1, 1, 1, -1, 1, -1, -1, 1, 1, 1, 1, -1, -1,
+1, 1, -1, 1, 1, 1, -1, 1, -1, 1, -1, 1, 1, 1, -1, -1, 1, -1, -1, 1, 1, 1, -1, -1, -1, -1, -1, 1, 1, 1, -1, 1,
+1, 1, 1, -1, 1, 1, -1, 1, -1, 1, 1, -1, 1, 1, -1, -1, 1, -1, 1, -1, 1, 1, -1, -1, -1, -1, 1, -1, 1, 1, -1, 1,
+1, 1, -1, -1, 1, 1, -1, -1, -1, 1, -1, -1, 1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, -1, 1, 1, -1, -1,
+1, 1, 1, 1, -1, 1, -1, 1, -1, 1, 1, 1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, -1, -1, -1, -1, 1, 1, -1, 1, -1, 1,
+1, 1, -1, 1, -1, 1, -1, -1, -1, 1, -1, 1, -1, 1, -1, 1, 1, -1, -1, 1, -1, 1, -1, 1, -1, -1, -1, 1, -1, 1, -1, -1,
+1, 1, 1, -1, -1, 1, -1, -1, -1, 1, 1, -1, -1, 1, -1, 1, 1, -1, 1, -1, -1, 1, -1, 1, -1, -1, 1, -1, -1, 1, -1, -1,
+1, 1, -1, -1, -1, 1, -1, 1, -1, 1, -1, -1, -1, 1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, 1, -1, 1,
+1, 1, 1, 1, 1, -1, -1, 1, -1, 1, 1, 1, 1, -1, -1, -1, 1, -1, 1, 1, 1, -1, -1, -1, -1, -1, 1, 1, 1, -1, -1, 1,
+1, 1, -1, 1, 1, -1, -1, -1, -1, 1, -1, 1, 1, -1, -1, 1, 1, -1, -1, 1, 1, -1, -1, 1, -1, -1, -1, 1, 1, -1, -1, -1,
+1, 1, 1, -1, 1, -1, -1, -1, -1, 1, 1, -1, 1, -1, -1, 1, 1, -1, 1, -1, 1, -1, -1, 1, -1, -1, 1, -1, 1, -1, -1, -1,
+1, 1, -1, -1, 1, -1, -1, 1, -1, 1, -1, -1, 1, -1, -1, -1, 1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, 1,
+1, 1, 1, 1, -1, -1, -1, -1, -1, 1, 1, 1, -1, -1, -1, 1, 1, -1, 1, 1, -1, -1, -1, 1, -1, -1, 1, 1, -1, -1, -1, -1,
+1, 1, -1, 1, -1, -1, -1, 1, -1, 1, -1, 1, -1, -1, -1, -1, 1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, 1,
+1, 1, 1, -1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, -1, 1, -1, 1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, 1,
+1, 1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, 1, 1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, -1,
 };
 #endif
 void ggml_vec_dot_iq2_xxs_q8_K(int n, float * GGML_RESTRICT s, size_t bs, const void * GGML_RESTRICT vx, size_t bx, const void * GGML_RESTRICT vy, size_t by, int nrc) {
@@ -1123,7 +1123,7 @@ UNUSED(bx);
 UNUSED(by);
 UNUSED(bs);
 const block_iq2_xxs * GGML_RESTRICT x = vx;
-const block_q8_K    * GGML_RESTRICT y = vy;
+const block_q8_K * GGML_RESTRICT y = vy;
 const int nb = n / QK_K;
 #if defined(__loongarch_asx)
 const uint64_t * signs64 = (const uint64_t *)keven_signs_q2xs;
@@ -1133,7 +1133,7 @@ __m256 accumf = (__m256)__lasx_xvldi(0);
 for (int i = 0; i < nb; ++i) {
 const float d = GGML_CPU_FP16_TO_FP32(x[i].d) * y[i].d;
 const uint16_t * GGML_RESTRICT q2 = x[i].qs;
-const int8_t   * GGML_RESTRICT q8 = y[i].qs;
+const int8_t * GGML_RESTRICT q8 = y[i].qs;
 __m256i sumi1 = __lasx_xvldi(0);
 __m256i sumi2 = __lasx_xvldi(0);
 for (int ib32 = 0; ib32 < QK_K/32; ib32 += 2) {
@@ -1143,13 +1143,13 @@ memcpy(aux32, q2, 4*sizeof(uint32_t)); q2 += 8;
 const __m256i q2_1 = lasx_set_d(iq2xxs_grid[aux8[ 3]], iq2xxs_grid[aux8[ 2]], iq2xxs_grid[aux8[1]], iq2xxs_grid[aux8[0]]);
 const __m256i q2_2 = lasx_set_d(iq2xxs_grid[aux8[11]], iq2xxs_grid[aux8[10]], iq2xxs_grid[aux8[9]], iq2xxs_grid[aux8[8]]);
 const __m256i s2_1 = lasx_set_d(signs64[(aux32[1] >> 21) & 127], signs64[(aux32[1] >> 14) & 127],
-signs64[(aux32[1] >>  7) & 127], signs64[(aux32[1] >>  0) & 127]);
+signs64[(aux32[1] >> 7) & 127], signs64[(aux32[1] >> 0) & 127]);
 const __m256i s2_2 = lasx_set_d(signs64[(aux32[3] >> 21) & 127], signs64[(aux32[3] >> 14) & 127],
-signs64[(aux32[3] >>  7) & 127], signs64[(aux32[3] >>  0) & 127]);
+signs64[(aux32[3] >> 7) & 127], signs64[(aux32[3] >> 0) & 127]);
 const __m256i q8s_1 = __lasx_xvsigncov_b(s2_1, q8_1);
 const __m256i q8s_2 = __lasx_xvsigncov_b(s2_2, q8_2);
-const __m256i dot1  = lasx_maddubs_h(q2_1, q8s_1);
-const __m256i dot2  = lasx_maddubs_h(q2_2, q8s_2);
+const __m256i dot1 = lasx_maddubs_h(q2_1, q8s_1);
+const __m256i dot2 = lasx_maddubs_h(q2_2, q8s_2);
 const uint16_t ls1 = aux32[1] >> 28;
 const uint16_t ls2 = aux32[3] >> 28;
 const __m256i p1 = lasx_madd_h(dot1, __lasx_xvreplgr2vr_h(2*ls1+1));
@@ -1175,7 +1175,7 @@ UNUSED(bx);
 UNUSED(by);
 UNUSED(bs);
 const block_iq2_xs * GGML_RESTRICT x = vx;
-const block_q8_K   * GGML_RESTRICT y = vy;
+const block_q8_K * GGML_RESTRICT y = vy;
 const int nb = n / QK_K;
 #if defined(__loongarch_asx)
 const __m256i mone = __lasx_xvreplgr2vr_b(1);
@@ -1209,7 +1209,7 @@ __m256 accumf = (__m256)__lasx_xvldi(0);
 for (int i = 0; i < nb; ++i) {
 const float d = GGML_CPU_FP16_TO_FP32(x[i].d) * y[i].d;
 const uint16_t * GGML_RESTRICT q2 = x[i].qs;
-const int8_t   * GGML_RESTRICT q8 = y[i].qs;
+const int8_t * GGML_RESTRICT q8 = y[i].qs;
 memcpy(&aux64, x[i].scales, 8);
 __m128i stmp = __lsx_vreplgr2vr_d(aux64);
 stmp = __lsx_vilvl_b( __lsx_vand_v(__lsx_vsrli_h(stmp, 4), m4), __lsx_vand_v(stmp, m4));
@@ -1217,7 +1217,7 @@ const __m128i scales = __lsx_vadd_b(__lsx_vslli_h(stmp, 1), m1);
 __m256i sumi1 = __lasx_xvldi(0);
 __m256i sumi2 = __lasx_xvldi(0);
 for (int ib32 = 0; ib32 < QK_K/32; ib32 += 4) {
-const __m256i q2_data = __lasx_xvld((const __m256i*)q2, 0);  q2 += 16;
+const __m256i q2_data = __lasx_xvld((const __m256i*)q2, 0); q2 += 16;
 aux_gindex = __lasx_xvand_v(q2_data, m511);
 const __m256i partial_sign_bits = __lasx_xvsrli_h(q2_data, 9);
 const __m256i partial_sign_bits_upper = __lasx_xvsrli_h(q2_data, 13);
@@ -1253,10 +1253,10 @@ const __m256i q8s_3 = __lasx_xvsigncov_b(__lasx_xvor_v(signs, mone), q8_3);
 signs = lasx_shuffle_b(full_signs_2, block_sign_shuffle_2);
 signs = __lasx_xvseq_b(__lasx_xvand_v(signs, bit_selector_mask), bit_selector_mask);
 const __m256i q8s_4 = __lasx_xvsigncov_b(__lasx_xvor_v(signs, mone), q8_4);
-const __m256i dot1  = lasx_maddubs_h(q2_1, q8s_1);
-const __m256i dot2  = lasx_maddubs_h(q2_2, q8s_2);
-const __m256i dot3  = lasx_maddubs_h(q2_3, q8s_3);
-const __m256i dot4  = lasx_maddubs_h(q2_4, q8s_4);
+const __m256i dot1 = lasx_maddubs_h(q2_1, q8s_1);
+const __m256i dot2 = lasx_maddubs_h(q2_2, q8s_2);
+const __m256i dot3 = lasx_maddubs_h(q2_3, q8s_3);
+const __m256i dot4 = lasx_maddubs_h(q2_4, q8s_4);
 const __m256i sc1 = lasx_ext8_16(lsx_shuffle_b(scales, get_scale_shuffle(ib32+0)));
 const __m256i sc2 = lasx_ext8_16(lsx_shuffle_b(scales, get_scale_shuffle(ib32+1)));
 const __m256i sc3 = lasx_ext8_16(lsx_shuffle_b(scales, get_scale_shuffle(ib32+2)));
@@ -1284,7 +1284,7 @@ UNUSED(bx);
 UNUSED(by);
 UNUSED(bs);
 const block_iq2_s * GGML_RESTRICT x = vx;
-const block_q8_K  * GGML_RESTRICT y = vy;
+const block_q8_K * GGML_RESTRICT y = vy;
 const int nb = n / QK_K;
 #if defined(__loongarch_asx)
 static const uint8_t k_mask1[32] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
@@ -1304,7 +1304,7 @@ const float d = GGML_CPU_FP16_TO_FP32(x[i].d) * y[i].d;
 const uint8_t * GGML_RESTRICT qs = x[i].qs;
 const uint8_t * GGML_RESTRICT qh = x[i].qh;
 const uint16_t * GGML_RESTRICT signs = (const uint16_t *)(x[i].qs + QK_K/8);
-const int8_t  * GGML_RESTRICT q8 = y[i].qs;
+const int8_t * GGML_RESTRICT q8 = y[i].qs;
 __m128i tmp1;
 memcpy(&aux64, x[i].scales, 8);
 tmp1 = __lsx_vinsgr2vr_d(tmp1, aux64, 0);
@@ -1334,8 +1334,8 @@ aux256 = __lasx_xvand_v(lasx_shuffle_b(aux256,mask1), mask2);
 const __m256i s2_2 = __lasx_xvseq_b(aux256, mask2);
 const __m256i q8s_2 = __lasx_xvsub_b(__lasx_xvxor_v(s2_2, q8_2), s2_2);
 signs += 4;
-const __m256i dot1  = lasx_maddubs_h(q2_1, q8s_1);
-const __m256i dot2  = lasx_maddubs_h(q2_2, q8s_2);
+const __m256i dot1 = lasx_maddubs_h(q2_1, q8s_1);
+const __m256i dot2 = lasx_maddubs_h(q2_2, q8s_2);
 const __m256i p1 = lasx_madd_h(dot1, lasx_shuffle_b(scales16, get_scale_shuffle_k4(ib32+0)));
 const __m256i p2 = lasx_madd_h(dot2, lasx_shuffle_b(scales16, get_scale_shuffle_k4(ib32+1)));
 sumi1 = __lasx_xvadd_w(sumi1, p1);
@@ -1359,7 +1359,7 @@ UNUSED(bx);
 UNUSED(by);
 UNUSED(bs);
 const block_iq3_xxs * GGML_RESTRICT x = vx;
-const block_q8_K    * GGML_RESTRICT y = vy;
+const block_q8_K * GGML_RESTRICT y = vy;
 const int nb = n / QK_K;
 #if defined(__loongarch_asx)
 const uint64_t * signs64 = (const uint64_t *)keven_signs_q2xs;
@@ -1369,7 +1369,7 @@ for (int i = 0; i < nb; ++i) {
 const float d = GGML_CPU_FP16_TO_FP32(x[i].d) * y[i].d;
 const uint8_t * GGML_RESTRICT q3 = x[i].qs;
 const uint8_t * GGML_RESTRICT gas = x[i].qs + QK_K/4;
-const int8_t  * GGML_RESTRICT q8 = y[i].qs;
+const int8_t * GGML_RESTRICT q8 = y[i].qs;
 __m256i sumi1 = __lasx_xvldi(0);
 __m256i sumi2 = __lasx_xvldi(0);
 for (int ib32 = 0; ib32 < QK_K/32; ib32 += 2) {
@@ -1383,13 +1383,13 @@ iq3xxs_grid[q3[3]], iq3xxs_grid[q3[2]], iq3xxs_grid[q3[1]], iq3xxs_grid[q3[0]]);
 q3 += 8;
 memcpy(aux32, gas, 8); gas += 8;
 const __m256i s2_1 = lasx_set_d(signs64[(aux32[0] >> 21) & 127], signs64[(aux32[0] >> 14) & 127],
-signs64[(aux32[0] >>  7) & 127], signs64[(aux32[0] >>  0) & 127]);
+signs64[(aux32[0] >> 7) & 127], signs64[(aux32[0] >> 0) & 127]);
 const __m256i s2_2 = lasx_set_d(signs64[(aux32[1] >> 21) & 127], signs64[(aux32[1] >> 14) & 127],
-signs64[(aux32[1] >>  7) & 127], signs64[(aux32[1] >>  0) & 127]);
+signs64[(aux32[1] >> 7) & 127], signs64[(aux32[1] >> 0) & 127]);
 const __m256i q8s_1 = __lasx_xvsigncov_b(s2_1, q8_1);
 const __m256i q8s_2 = __lasx_xvsigncov_b(s2_2, q8_2);
-const __m256i dot1  = lasx_maddubs_h(q2_1, q8s_1);
-const __m256i dot2  = lasx_maddubs_h(q2_2, q8s_2);
+const __m256i dot1 = lasx_maddubs_h(q2_1, q8s_1);
+const __m256i dot2 = lasx_maddubs_h(q2_2, q8s_2);
 const uint16_t ls1 = aux32[0] >> 28;
 const uint16_t ls2 = aux32[1] >> 28;
 const __m256i p1 = lasx_madd_h(dot1, __lasx_xvreplgr2vr_h(2*ls1+1));
@@ -1415,7 +1415,7 @@ UNUSED(bx);
 UNUSED(by);
 UNUSED(bs);
 const block_iq3_s * GGML_RESTRICT x = vx;
-const block_q8_K  * GGML_RESTRICT y = vy;
+const block_q8_K * GGML_RESTRICT y = vy;
 const int nb = n / QK_K;
 #if defined(__loongarch_asx)
 static const uint8_t k_mask1[32] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
@@ -1427,9 +1427,9 @@ static const uint8_t k_mask2[32] = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x
 const __m256i mask1 = __lasx_xvld((const __m256i*)k_mask1, 0);
 const __m256i mask2 = __lasx_xvld((const __m256i*)k_mask2, 0);
 __m256i idx_shift = lasx_set_w(1, 2, 3, 4, 5, 6, 7, 8);
-const __m256i idx_mask  = __lasx_xvreplgr2vr_w(256);
+const __m256i idx_mask = __lasx_xvreplgr2vr_w(256);
 typedef union {
-__m256i  vec[2];
+__m256i vec[2];
 uint32_t index[16];
 } index_t;
 index_t idx;
@@ -1439,7 +1439,7 @@ const float d = GGML_CPU_FP16_TO_FP32(x[i].d) * y[i].d;
 const uint8_t * GGML_RESTRICT qs = x[i].qs;
 const uint8_t * GGML_RESTRICT qh = x[i].qh;
 const uint16_t * GGML_RESTRICT signs = (const uint16_t *)x[i].signs;
-const int8_t  * GGML_RESTRICT q8 = y[i].qs;
+const int8_t * GGML_RESTRICT q8 = y[i].qs;
 __m256i sumi1 = __lasx_xvldi(0);
 __m256i sumi2 = __lasx_xvldi(0);
 for (int ib32 = 0; ib32 < QK_K/32; ib32 += 2) {
@@ -1470,9 +1470,9 @@ const __m256i s2_2 = __lasx_xvseq_b(aux256, mask2);
 const __m256i q8s_2 = __lasx_xvsub_b(__lasx_xvxor_v(s2_2, q8_2), s2_2);
 signs += 4;
 const __m256i dot1 = lasx_maddubs_h(q2_1, q8s_1);
-const __m256i dot2  = lasx_maddubs_h(q2_2, q8s_2);
+const __m256i dot2 = lasx_maddubs_h(q2_2, q8s_2);
 const uint16_t ls1 = x[i].scales[ib32/2] & 0xf;
-const uint16_t ls2 = x[i].scales[ib32/2] >>  4;
+const uint16_t ls2 = x[i].scales[ib32/2] >> 4;
 const __m256i p1 = lasx_madd_h(dot1, __lasx_xvreplgr2vr_h(2*ls1+1));
 const __m256i p2 = lasx_madd_h(dot2, __lasx_xvreplgr2vr_h(2*ls2+1));
 sumi1 = __lasx_xvadd_w(sumi1, p1);
@@ -1503,14 +1503,14 @@ UNUSED(bx);
 UNUSED(by);
 UNUSED(bs);
 const block_iq1_s * GGML_RESTRICT x = vx;
-const block_q8_K  * GGML_RESTRICT y = vy;
+const block_q8_K * GGML_RESTRICT y = vy;
 const int nb = n / QK_K;
 #if defined(__loongarch_asx)
 __m256 accum = (__m256)__lasx_xvldi(0);
 float accum1 = 0;
 for (int i = 0; i < nb; ++i) {
-const int8_t   * q8 = y[i].qs;
-const uint8_t  * qs = x[i].qs;
+const int8_t * q8 = y[i].qs;
+const uint8_t * qs = x[i].qs;
 const uint16_t * qh = x[i].qh;
 __m256i sumi = __lasx_xvldi(0);
 int sumi1 = 0;
@@ -1564,13 +1564,13 @@ UNUSED(bs);
 assert(n % QK4_NL == 0);
 static_assert(QK4_NL == QK8_0, "QK4_NL and QK8_0 must be the same");
 const block_iq4_nl * GGML_RESTRICT x = vx;
-const block_q8_0   * GGML_RESTRICT y = vy;
+const block_q8_0 * GGML_RESTRICT y = vy;
 const int nb = n / QK4_NL;
 int ib = 0;
 float sumf = 0;
 #if defined (__loongarch_asx)
 const __m128i values128 = __lsx_vld((const __m128i*)kvalues_iq4nl, 0);
-const __m128i m4b  = __lsx_vreplgr2vr_b(0x0f);
+const __m128i m4b = __lsx_vreplgr2vr_b(0x0f);
 const __m256i mone = __lasx_xvreplgr2vr_h(1);
 __m256 accum1 = (__m256)__lasx_xvldi(0);
 __m256 accum2 = (__m256)__lasx_xvldi(0);
@@ -1598,8 +1598,8 @@ for (; ib < nb; ++ib) {
 const float d = GGML_CPU_FP16_TO_FP32(y[ib].d)*GGML_CPU_FP16_TO_FP32(x[ib].d);
 int sumi1 = 0, sumi2 = 0;
 for (int j = 0; j < QK4_NL/2; ++j) {
-sumi1 += y[ib].qs[j+       0] * kvalues_iq4nl[x[ib].qs[j] & 0xf];
-sumi2 += y[ib].qs[j+QK4_NL/2] * kvalues_iq4nl[x[ib].qs[j] >>  4];
+sumi1 += y[ib].qs[j+ 0] * kvalues_iq4nl[x[ib].qs[j] & 0xf];
+sumi2 += y[ib].qs[j+QK4_NL/2] * kvalues_iq4nl[x[ib].qs[j] >> 4];
 }
 sumf += d * (sumi1 + sumi2);
 }
@@ -1613,14 +1613,14 @@ UNUSED(by);
 UNUSED(bs);
 assert(n % QK_K == 0);
 const block_iq4_xs * GGML_RESTRICT x = vx;
-const block_q8_K   * GGML_RESTRICT y = vy;
+const block_q8_K * GGML_RESTRICT y = vy;
 const int nb = n / QK_K;
 #if defined(__loongarch_asx)
 const __m128i values128 = __lsx_vld((const __m128i*)kvalues_iq4nl, 0);
 __m256 accum = (__m256)__lasx_xvldi(0);
 for (int ibl = 0; ibl < nb; ++ibl) {
 const uint8_t * qs = x[ibl].qs;
-const int8_t  * q8 = y[ibl].qs;
+const int8_t * q8 = y[ibl].qs;
 uint16_t sh = x[ibl].scales_h;
 __m256i sumi1 = __lasx_xvldi(0);
 __m256i sumi2 = __lasx_xvldi(0);
@@ -1636,7 +1636,7 @@ __lsx_vshuf_b(values128, values128, __lsx_vandi_b(q4bits_2, 0xf)));
 const __m256i p16_1 = mul_add_epi8(q4b_1, q8b_1);
 const __m256i p16_2 = mul_add_epi8(q4b_2, q8b_2);
 const int16_t ls1 = ((x[ibl].scales_l[ib/2] & 0xf) | ((sh << 4) & 0x30)) - 32;
-const int16_t ls2 = ((x[ibl].scales_l[ib/2] >>  4) | ((sh << 2) & 0x30)) - 32;
+const int16_t ls2 = ((x[ibl].scales_l[ib/2] >> 4) | ((sh << 2) & 0x30)) - 32;
 sh >>= 4;
 const __m256i p_1 = lasx_madd_h(p16_1, __lasx_xvreplgr2vr_h(ls1));
 const __m256i p_2 = lasx_madd_h(p16_2, __lasx_xvreplgr2vr_h(ls2));

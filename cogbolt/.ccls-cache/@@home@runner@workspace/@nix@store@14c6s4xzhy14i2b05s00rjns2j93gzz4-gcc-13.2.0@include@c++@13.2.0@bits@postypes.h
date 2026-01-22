@@ -6,17 +6,17 @@ namespace std _GLIBCXX_VISIBILITY(default)
 {
 _GLIBCXX_BEGIN_NAMESPACE_VERSION
 #ifdef __INT64_TYPE__
-typedef __INT64_TYPE__          streamoff;
+typedef __INT64_TYPE__ streamoff;
 #else
-typedef long long     streamoff;
+typedef long long streamoff;
 #endif
-typedef ptrdiff_t	streamsize;
+typedef ptrdiff_t streamsize;
 template<typename _StateT>
 class fpos
 {
 private:
-streamoff	                _M_off;
-_StateT			_M_state;
+streamoff _M_off;
+_StateT _M_state;
 public:
 fpos()
 : _M_off(0), _M_state() { }

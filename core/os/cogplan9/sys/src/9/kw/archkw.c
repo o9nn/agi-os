@@ -15,108 +15,108 @@ Debug = 0,
 };
 typedef struct GpioReg GpioReg;
 struct GpioReg {
-ulong	dataout;
-ulong	dataoutena;
-ulong	blinkena;
-ulong	datainpol;
-ulong	datain;
-ulong	intrcause;
-ulong	intrmask;
-ulong	intrlevelmask;
+ulong dataout;
+ulong dataoutena;
+ulong blinkena;
+ulong datainpol;
+ulong datain;
+ulong intrcause;
+ulong intrmask;
+ulong intrlevelmask;
 };
 typedef struct L2uncache L2uncache;
 typedef struct L2win L2win;
 struct L2uncache {
 struct L2win {
-ulong	base;
-ulong	size;
+ulong base;
+ulong size;
 } win[4];
 };
 enum {
-L2enable	= 1<<0,
+L2enable = 1<<0,
 };
 typedef struct Dramctl Dramctl;
 struct Dramctl {
-ulong	ctl;
-ulong	ddrctllo;
+ulong ctl;
+ulong ddrctllo;
 struct {
-ulong	lo;
-ulong	hi;
+ulong lo;
+ulong hi;
 } time;
-ulong	addrctl;
-ulong	opagectl;
-ulong	oper;
-ulong	mode;
-ulong	extmode;
-ulong	ddrctlhi;
-ulong	ddr2timelo;
-ulong	operctl;
+ulong addrctl;
+ulong opagectl;
+ulong oper;
+ulong mode;
+ulong extmode;
+ulong ddrctlhi;
+ulong ddr2timelo;
+ulong operctl;
 struct {
-ulong	lo;
-ulong	hi;
+ulong lo;
+ulong hi;
 } mbusctl;
-ulong	mbustimeout;
-ulong	ddrtimehi;
-ulong	sdinitctl;
-ulong	extsdmode1;
-ulong	extsdmode2;
+ulong mbustimeout;
+ulong ddrtimehi;
+ulong sdinitctl;
+ulong extsdmode1;
+ulong extsdmode2;
 struct {
-ulong	lo;
-ulong	hi;
+ulong lo;
+ulong hi;
 } odtctl;
-ulong	ddrodtctl;
-ulong	rbuffsel;
-ulong	accalib;
-ulong	dqcalib;
-ulong	dqscalib;
+ulong ddrodtctl;
+ulong rbuffsel;
+ulong accalib;
+ulong dqcalib;
+ulong dqscalib;
 };
 typedef struct SDramdReg SDramdReg;
 struct SDramdReg {
 struct {
-ulong	base;
-ulong	size;
+ulong base;
+ulong size;
 } win[4];
 };
 typedef struct Addrmap Addrmap;
 typedef struct Addrwin Addrwin;
 struct Addrmap {
 struct Addrwin {
-ulong	ctl;
-ulong	base;
-ulong	remaplo;
-ulong	remaphi;
+ulong ctl;
+ulong base;
+ulong remaplo;
+ulong remaphi;
 } win[8];
-ulong	dirba;
+ulong dirba;
 };
 Soc soc = {
-.cpu		= PHYSIO+0x20100,
-.devid		= PHYSIO+0x10034,
-.l2cache	= PHYSIO+0x20a00,
-.sdramc		= PHYSIO+0x01400,
-.iocfg		= PHYSIO+0x100e0,
-.addrmap	= PHYSIO+0x20000,
-.intr		= PHYSIO+0x20200,
-.nand		= PHYSIO+0x10418,
-.cesa		= PHYSIO+0x30000,
-.ehci		= PHYSIO+0x50000,
-.spi		= PHYSIO+0x10600,
-.twsi		= PHYSIO+0x11000,
-.analog		= PHYSIO+0x1007c,
-.pci		= PHYSIO+0x40000,
-.pcibase	= PHYSIO+0x41800,
-.rtc		= PHYSIO+0x10300,
-.clock		= PHYSIO+0x20300,
-.ether		= { PHYSIO+0x72000, PHYSIO+0x76000, },
-.sata		= { PHYSIO+0x80000,
+.cpu = PHYSIO+0x20100,
+.devid = PHYSIO+0x10034,
+.l2cache = PHYSIO+0x20a00,
+.sdramc = PHYSIO+0x01400,
+.iocfg = PHYSIO+0x100e0,
+.addrmap = PHYSIO+0x20000,
+.intr = PHYSIO+0x20200,
+.nand = PHYSIO+0x10418,
+.cesa = PHYSIO+0x30000,
+.ehci = PHYSIO+0x50000,
+.spi = PHYSIO+0x10600,
+.twsi = PHYSIO+0x11000,
+.analog = PHYSIO+0x1007c,
+.pci = PHYSIO+0x40000,
+.pcibase = PHYSIO+0x41800,
+.rtc = PHYSIO+0x10300,
+.clock = PHYSIO+0x20300,
+.ether = { PHYSIO+0x72000, PHYSIO+0x76000, },
+.sata = { PHYSIO+0x80000,
 PHYSIO+0x82000,
 PHYSIO+0x84000,
 },
-.uart		= { PHYSIO+0x12000, PHYSIO+0x12100, },
-.gpio		= { PHYSIO+0x10100, PHYSIO+0x10140, },
+.uart = { PHYSIO+0x12000, PHYSIO+0x12100, },
+.gpio = { PHYSIO+0x10100, PHYSIO+0x10140, },
 };
-#define WINTARG(ctl)	(((ctl) >> 4) & 017)
-#define WINATTR(ctl)	(((ctl) >> 8) & 0377)
-#define WIN64KSIZE(ctl)	(((ctl) >> 16) + 1)
+#define WINTARG(ctl) (((ctl) >> 4) & 017)
+#define WINATTR(ctl) (((ctl) >> 8) & 0377)
+#define WIN64KSIZE(ctl) (((ctl) >> 16) + 1)
 static void
 praddrwin(Addrwin *win, int i)
 {
@@ -200,7 +200,7 @@ setsways >>= 12;
 assoc = (setsways >> 3) & MASK(3);
 cp->nways = 1 << assoc;
 size = (setsways >> 6) & MASK(4);
-cp->size  = 1 << (size + 9);
+cp->size = 1 << (size + 9);
 len = setsways & MASK(2);
 cp->log2linelen = len + 3;
 cp->linelen = 1 << cp->log2linelen;
@@ -216,10 +216,10 @@ static char *types[] = {
 "write-through",
 "read data block",
 "reg 7 ops, no lock-down",
-[06]	"reg 7 ops, format A",
-[07]	"reg 7 ops, format B deprecated",
-[016]	"reg 7 ops, format C",
-[05]	"reg 7 ops, format D",
+[06] "reg 7 ops, format A",
+[07] "reg 7 ops, format B deprecated",
+[016] "reg 7 ops, format C",
+[05] "reg 7 ops, format D",
 };
 if (type >= nelem(types) || types[type] == nil)
 return "GOK";
@@ -322,10 +322,10 @@ ether->port = ctlno;
 return 1;
 }
 enum {
-KWOEValHigh	= 1<<(49-32),
-KWOEValLow	= 1<<29,
-KWOELow		= ~0,
-KWOEHigh	= ~0,
+KWOEValHigh = 1<<(49-32),
+KWOEValLow = 1<<29,
+KWOELow = ~0,
+KWOEHigh = ~0,
 };
 void
 archreset(void)
@@ -384,7 +384,7 @@ void
 archflashwp(Flash*, int)
 {
 }
-int	flashat(Flash *f, uintptr pa);
+int flashat(Flash *f, uintptr pa);
 int
 archflashreset(int bank, Flash *f)
 {

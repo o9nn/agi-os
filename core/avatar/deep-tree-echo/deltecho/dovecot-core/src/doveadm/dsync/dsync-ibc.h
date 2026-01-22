@@ -13,13 +13,13 @@ struct dsync_mail;
 struct dsync_mail_change;
 struct dsync_mail_request;
 enum dsync_ibc_send_ret {
-DSYNC_IBC_SEND_RET_OK	= 1,
-DSYNC_IBC_SEND_RET_FULL	= 0
+DSYNC_IBC_SEND_RET_OK = 1,
+DSYNC_IBC_SEND_RET_FULL = 0
 };
 enum dsync_ibc_recv_ret {
-DSYNC_IBC_RECV_RET_FINISHED	= -1,
-DSYNC_IBC_RECV_RET_TRYAGAIN	= 0,
-DSYNC_IBC_RECV_RET_OK		= 1
+DSYNC_IBC_RECV_RET_FINISHED = -1,
+DSYNC_IBC_RECV_RET_TRYAGAIN = 0,
+DSYNC_IBC_RECV_RET_OK = 1
 };
 enum dsync_ibc_eol_type {
 DSYNC_IBC_EOL_MAILBOX_STATE,

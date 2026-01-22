@@ -25,7 +25,7 @@
 #if MACH_DEBUG
 #include <kern/mach_debug.server.h>
 #endif
-#if	MACH_MACHINE_ROUTINES
+#if MACH_MACHINE_ROUTINES
 #include <machine/machine_routines.h>
 #include MACHINE_SERVER_HEADER
 #endif
@@ -45,8 +45,8 @@ return IKM_NULL;
 }
 ikm_init(reply, reply_size);
 {
-#define	InP	((mach_msg_header_t *) &request->ikm_header)
-#define	OutP	((mig_reply_header_t *) &reply->ikm_header)
+#define InP ((mach_msg_header_t *) &request->ikm_header)
+#define OutP ((mig_reply_header_t *) &reply->ikm_header)
 static const mach_msg_type_t RetCodeType = {
 .msgt_name = MACH_MSG_TYPE_INTEGER_32,
 .msgt_size = 32,
@@ -60,7 +60,7 @@ OutP->Head.msgh_bits =
 MACH_MSGH_BITS(MACH_MSGH_BITS_LOCAL(InP->msgh_bits), 0);
 OutP->Head.msgh_size = sizeof(mig_reply_header_t);
 OutP->Head.msgh_remote_port = InP->msgh_local_port;
-OutP->Head.msgh_local_port  = MACH_PORT_NULL;
+OutP->Head.msgh_local_port = MACH_PORT_NULL;
 OutP->Head.msgh_seqno = 0;
 OutP->Head.msgh_id = InP->msgh_id + MACH_EXCEPTION_REPLY_OFFSET;
 #if 0
@@ -94,8 +94,8 @@ _counts[i].id, _counts[i].count);
 }
 #endif
 OutP->RetCodeType = RetCodeType;
-#undef	InP
-#undef	OutP
+#undef InP
+#undef OutP
 }
 {
 check_simple_locks();
@@ -104,13 +104,13 @@ if ((routine = mach_server_routine(&request->ikm_header)) != 0
 || (routine = mach_host_server_routine(&request->ikm_header)) != 0
 || (routine = device_server_routine(&request->ikm_header)) != 0
 || (routine = device_pager_server_routine(&request->ikm_header)) != 0
-#if	MACH_DEBUG
+#if MACH_DEBUG
 || (routine = mach_debug_server_routine(&request->ikm_header)) != 0
 #endif
 || (routine = mach4_server_routine(&request->ikm_header)) != 0
 || (routine = gnumach_server_routine(&request->ikm_header)) != 0
 || (routine = experimental_server_routine(&request->ikm_header)) != 0
-#if	MACH_MACHINE_ROUTINES
+#if MACH_MACHINE_ROUTINES
 || (routine = MACHINE_SERVER_ROUTINE(&request->ikm_header)) != 0
 #endif
 ) {
@@ -121,7 +121,7 @@ if (!ipc_kobject_notify(&request->ikm_header,
 &reply->ikm_header)) {
 ((mig_reply_header_t *) &reply->ikm_header)->RetCode
 = MIG_BAD_ID;
-#if	MACH_IPC_TEST
+#if MACH_IPC_TEST
 printf("ipc_kobject_server: bogus kernel message, id=%d\n",
 request->ikm_header.msgh_id);
 #endif
@@ -176,7 +176,7 @@ ip_unlock(port);
 }
 void
 ipc_kobject_destroy(
-ipc_port_t	port)
+ipc_port_t port)
 {
 switch (ip_kotype(port)) {
 case IKOT_PAGER:
@@ -186,7 +186,7 @@ case IKOT_PAGER_TERMINATING:
 vm_object_pager_wakeup(port);
 break;
 default:
-#if	MACH_ASSERT
+#if MACH_ASSERT
 printf("ipc_kobject_destroy: port 0x%p, kobj 0x%zd, type %d\n",
 port, port->ip_kobject, ip_kotype(port));
 #endif

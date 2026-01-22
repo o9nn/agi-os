@@ -7,47 +7,47 @@
 #include "path.h"
 #include "ext.h"
 #include "postdaisy.h"
-char	*optnames = "a:c:f:h:l:m:n:o:p:r:s:v:x:y:A:C:E:J:L:P:DI";
-char	*prologue = POSTDAISY;
-char	*formfile = FORMFILE;
-int	formsperpage = 1;
-int	copies = 1;
-char	htabstops[COLUMNS];
-char	vtabstops[ROWS];
-int	res = RES;
-int	hmi = HMI;
-int	vmi = VMI;
-int	ohmi = HMI;
-int	ovmi = VMI;
-int	hpos = 0;
-int	vpos = 0;
-int	lastx = -1;
-int	lasty = -1;
-int	lasthmi = -1;
-int	lastc = -1;
-int	prevx = -1;
-int	leftmargin = LEFTMARGIN;
-int	rightmargin = RIGHTMARGIN;
-int	topmargin = TOPMARGIN;
-int	bottommargin = BOTTOMMARGIN;
-int	stringcount = 0;
-int	stringstart = 1;
-int	advance = 1;
-int	lfiscr = OFF;
-int	crislf = OFF;
-int	linespp = 0;
-int	markedpage = FALSE;
-int	page = 0;
-int	printed = 0;
-Fontmap	fontmap[] = FONTMAP;
-char	*fontname = "Courier";
-int	shadowprint = OFF;
-FILE	*fp_in;
-FILE	*fp_out = stdout;
-FILE	*fp_acct = NULL;
+char *optnames = "a:c:f:h:l:m:n:o:p:r:s:v:x:y:A:C:E:J:L:P:DI";
+char *prologue = POSTDAISY;
+char *formfile = FORMFILE;
+int formsperpage = 1;
+int copies = 1;
+char htabstops[COLUMNS];
+char vtabstops[ROWS];
+int res = RES;
+int hmi = HMI;
+int vmi = VMI;
+int ohmi = HMI;
+int ovmi = VMI;
+int hpos = 0;
+int vpos = 0;
+int lastx = -1;
+int lasty = -1;
+int lasthmi = -1;
+int lastc = -1;
+int prevx = -1;
+int leftmargin = LEFTMARGIN;
+int rightmargin = RIGHTMARGIN;
+int topmargin = TOPMARGIN;
+int bottommargin = BOTTOMMARGIN;
+int stringcount = 0;
+int stringstart = 1;
+int advance = 1;
+int lfiscr = OFF;
+int crislf = OFF;
+int linespp = 0;
+int markedpage = FALSE;
+int page = 0;
+int printed = 0;
+Fontmap fontmap[] = FONTMAP;
+char *fontname = "Courier";
+int shadowprint = OFF;
+FILE *fp_in;
+FILE *fp_out = stdout;
+FILE *fp_acct = NULL;
 main(agc, agv)
-int		agc;
-char	*agv[];
+int agc;
+char *agv[];
 {
 argc = agc;
 argv = agv;
@@ -63,8 +63,8 @@ exit(x_stat);
 }
 init_signals()
 {
-int		interrupt();
-if ( signal(SIGINT, interrupt) == SIG_IGN )  {
+int interrupt();
+if ( signal(SIGINT, interrupt) == SIG_IGN ) {
 signal(SIGINT, SIG_IGN);
 signal(SIGQUIT, SIG_IGN);
 signal(SIGHUP, SIG_IGN);
@@ -76,8 +76,8 @@ signal(SIGTERM, interrupt);
 }
 header()
 {
-int		ch;
-int		old_optind = optind;
+int ch;
+int old_optind = optind;
 while ( (ch = getopt(argc, argv, optnames)) != EOF )
 if ( ch == 'L' )
 prologue = optarg;
@@ -99,10 +99,10 @@ fprintf(stdout, "mark\n");
 }
 options()
 {
-int		ch;
-int		n;
-while ( (ch = getopt(argc, argv, optnames)) != EOF )  {
-switch ( ch )  {
+int ch;
+int n;
+while ( (ch = getopt(argc, argv, optnames)) != EOF ) {
+switch ( ch ) {
 case 'a':
 fprintf(stdout, "/aspectratio %s def\n", optarg);
 break;
@@ -197,9 +197,9 @@ argc -= optind;
 argv += optind;
 }
 char *get_font(name)
-char	*name;
+char *name;
 {
-int		i;
+int i;
 for ( i = 0; fontmap[i].name != NULL; i++ )
 if ( strcmp(name, fontmap[i].name) == 0 )
 return(fontmap[i].val);
@@ -210,7 +210,7 @@ setup()
 writerequest(0, stdout);
 setencoding(fontencoding);
 fprintf(stdout, "setup\n");
-if ( formsperpage > 1 )  {
+if ( formsperpage > 1 ) {
 if ( cat(formfile) == FALSE )
 error(FATAL, "can't read %s", formfile);
 fprintf(stdout, "%d setupforms\n", formsperpage);
@@ -223,7 +223,7 @@ fp_in = stdin;
 if ( argc < 1 )
 text();
 else {
-while ( argc > 0 )  {
+while ( argc > 0 ) {
 if ( strcmp(*argv, "-") == 0 )
 fp_in = stdin;
 else if ( (fp_in = fopen(*argv, "r")) == NULL )
@@ -250,12 +250,12 @@ fprintf(fp_acct, " print %d\n copies %d\n", printed, copies);
 }
 text()
 {
-int		ch;
+int ch;
 redirect(-1);
 formfeed();
 inittabs();
 while ( (ch = getc(fp_in)) != EOF )
-switch ( ch )  {
+switch ( ch ) {
 case '\010':
 backspace();
 break;
@@ -292,7 +292,7 @@ formfeed();
 }
 inittabs()
 {
-int		i;
+int i;
 for ( i = 0; i < COLUMNS; i++ )
 htabstops[i] = ((i % 8) == 0) ? ON : OFF;
 for ( i = 0; i < ROWS; i++ )
@@ -300,7 +300,7 @@ vtabstops[i] = ((i * ovmi) > BOTTOMMARGIN) ? ON : OFF;
 }
 cleartabs()
 {
-int		i;
+int i;
 for ( i = 0; i < ROWS; i++ )
 htabstops[i] = OFF;
 for ( i = 0; i < COLUMNS; i++ )
@@ -330,7 +330,7 @@ markedpage = FALSE;
 }
 linefeed()
 {
-int		line = 0;
+int line = 0;
 vmot(vmi);
 if ( lfiscr == ON )
 hgoto(leftmargin);
@@ -351,12 +351,12 @@ linefeed();
 }
 htab()
 {
-int		col;
-int		i;
+int col;
+int i;
 endline();
 col = hpos/ohmi + 1;
 for ( i = col; i < ROWS; i++ )
-if ( htabstops[i] == ON )  {
+if ( htabstops[i] == ON ) {
 col = i;
 break;
 }
@@ -365,12 +365,12 @@ lastx = hpos;
 }
 vtab()
 {
-int		line;
-int		i;
+int line;
+int i;
 endline();
 line = vpos/ovmi + 1;
 for ( i = line; i < COLUMNS; i++ )
-if ( vtabstops[i] == ON )  {
+if ( vtabstops[i] == ON ) {
 line = i;
 break;
 }
@@ -386,7 +386,7 @@ lastx = hpos;
 }
 escape()
 {
-int		ch;
+int ch;
 switch ( ch = getc(fp_in) ) {
 case 'T':
 topmargin = vpos;
@@ -512,36 +512,36 @@ break;
 }
 }
 vmot(n)
-int		n;
+int n;
 {
 vpos += n;
 }
 vgoto(n)
-int		n;
+int n;
 {
 vpos = n;
 }
 hmot(n)
-int		n;
+int n;
 {
 hpos += n * advance;
 if ( hpos < leftmargin )
 hpos = leftmargin;
 }
 hgoto(n)
-int		n;
+int n;
 {
 hpos = n;
 }
 changefont(name)
-char	*name;
+char *name;
 {
 endline();
 fprintf(fp_out, "%s f\n", name);
 }
 startline()
 {
-if ( stringcount < 1 )  {
+if ( stringcount < 1 ) {
 putc('(', fp_out);
 stringstart = lastx = hpos;
 lasty = vpos;
@@ -559,14 +559,14 @@ stringcount = 0;
 }
 endstring()
 {
-if ( stringcount > 0 )  {
+if ( stringcount > 0 ) {
 fprintf(fp_out, ")%d(", stringstart);
 lastx = stringstart = hpos;
 stringcount++;
 }
 }
 oput(ch)
-int		ch;
+int ch;
 {
 if ( stringcount > 100 )
 endline();
@@ -575,7 +575,7 @@ endline();
 if ( advance == -1 )
 hmot(hmi);
 startline();
-if ( lastc != ch || hpos != prevx )  {
+if ( lastc != ch || hpos != prevx ) {
 if ( lastx != hpos )
 endstring();
 if ( ch == '\\' || ch == '(' || ch == ')' )
@@ -590,9 +590,9 @@ hmot(hmi);
 markedpage = TRUE;
 }
 redirect(pg)
-int		pg;
+int pg;
 {
-static FILE	*fp_null = NULL;
+static FILE *fp_null = NULL;
 if ( pg >= 0 && in_olist(pg) == ON )
 fp_out = stdout;
 else if ( (fp_out = fp_null) == NULL )

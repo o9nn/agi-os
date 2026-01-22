@@ -27,8 +27,8 @@ static int ewrk3_debug = EWRK3_DEBUG;
 static int ewrk3_debug = 1;
 #endif
 #define EWRK3_NDA 0xffe0
-#define PROBE_LENGTH    32
-#define ETH_PROM_SIG    0xAA5500FFUL
+#define PROBE_LENGTH 32
+#define ETH_PROM_SIG 0xAA5500FFUL
 #ifndef EWRK3_SIGNATURE
 #define EWRK3_SIGNATURE {"DE203","DE204","DE205",""}
 #define EWRK3_STRLEN 8
@@ -52,30 +52,30 @@ static int ewrk3_debug = 1;
 #define CRC_POLYNOMIAL_BE 0x04c11db7UL
 #define CRC_POLYNOMIAL_LE 0xedb88320UL
 #define QUEUE_PKT_TIMEOUT (1*HZ)
-#define IO_ONLY         0x00
-#define SHMEM_2K        0x800
-#define SHMEM_32K       0x8000
-#define SHMEM_64K       0x10000
+#define IO_ONLY 0x00
+#define SHMEM_2K 0x800
+#define SHMEM_32K 0x8000
+#define SHMEM_64K 0x10000
 #define ENABLE_IRQs { \
 icr |= lp->irq_mask;\
-outb(icr, EWRK3_ICR);                     \
+outb(icr, EWRK3_ICR); \
 }
 #define DISABLE_IRQs { \
 icr = inb(EWRK3_ICR);\
 icr &= ~lp->irq_mask;\
-outb(icr, EWRK3_ICR);                     \
+outb(icr, EWRK3_ICR); \
 }
 #define START_EWRK3 { \
 csr = inb(EWRK3_CSR);\
 csr &= ~(CSR_TXD|CSR_RXD);\
-outb(csr, EWRK3_CSR);                     \
+outb(csr, EWRK3_CSR); \
 }
 #define STOP_EWRK3 { \
 csr = (CSR_TXD|CSR_RXD);\
-outb(csr, EWRK3_CSR);                     \
+outb(csr, EWRK3_CSR); \
 }
 #define EWRK3_PKT_STAT_SZ 16
-#define EWRK3_PKT_BIN_SZ  128
+#define EWRK3_PKT_BIN_SZ 128
 struct ewrk3_private {
 char adapter_name[80];
 u_long shmem_base;
@@ -102,31 +102,31 @@ u_char *mctbl;
 shmem_length = SHMEM_2K;\
 outb(((mem_start - 0x80000) >> 11), EWRK3_MBR);\
 }
-static int    ewrk3_open(struct device *dev);
-static int    ewrk3_queue_pkt(struct sk_buff *skb, struct device *dev);
-static void   ewrk3_interrupt(int irq, void *dev_id, struct pt_regs *regs);
-static int    ewrk3_close(struct device *dev);
+static int ewrk3_open(struct device *dev);
+static int ewrk3_queue_pkt(struct sk_buff *skb, struct device *dev);
+static void ewrk3_interrupt(int irq, void *dev_id, struct pt_regs *regs);
+static int ewrk3_close(struct device *dev);
 static struct enet_statistics *ewrk3_get_stats(struct device *dev);
-static void   set_multicast_list(struct device *dev);
-static int    ewrk3_ioctl(struct device *dev, struct ifreq *rq, int cmd);
-static int    ewrk3_hw_init(struct device *dev, u_long iobase);
-static void   ewrk3_init(struct device *dev);
-static int    ewrk3_rx(struct device *dev);
-static int    ewrk3_tx(struct device *dev);
-static void   EthwrkSignature(char * name, char *eeprom_image);
-static int    DevicePresent(u_long iobase);
-static void   SetMulticastFilter(struct device *dev);
-static int    EISA_signature(char *name, s32 eisa_id);
-static int    Read_EEPROM(u_long iobase, u_char eaddr);
-static int    Write_EEPROM(short data, u_long iobase, u_char eaddr);
+static void set_multicast_list(struct device *dev);
+static int ewrk3_ioctl(struct device *dev, struct ifreq *rq, int cmd);
+static int ewrk3_hw_init(struct device *dev, u_long iobase);
+static void ewrk3_init(struct device *dev);
+static int ewrk3_rx(struct device *dev);
+static int ewrk3_tx(struct device *dev);
+static void EthwrkSignature(char * name, char *eeprom_image);
+static int DevicePresent(u_long iobase);
+static void SetMulticastFilter(struct device *dev);
+static int EISA_signature(char *name, s32 eisa_id);
+static int Read_EEPROM(u_long iobase, u_char eaddr);
+static int Write_EEPROM(short data, u_long iobase, u_char eaddr);
 static u_char get_hw_addr (struct device *dev, u_char *eeprom_image, char chipType);
-static void   isa_probe(struct device *dev, u_long iobase);
-static void   eisa_probe(struct device *dev, u_long iobase);
+static void isa_probe(struct device *dev, u_long iobase);
+static void eisa_probe(struct device *dev, u_long iobase);
 static struct device *alloc_device(struct device *dev, u_long iobase);
-static int    ewrk3_dev_index(char *s);
+static int ewrk3_dev_index(char *s);
 static struct device *insert_device(struct device *dev, u_long iobase, int (*init)(struct device *));
 #ifdef MODULE
-int  init_module(void);
+int init_module(void);
 void cleanup_module(void);
 static int autoprobed = 1, loading_module = 1;
 # else
@@ -220,13 +220,13 @@ status = -ENXIO;
 } else {
 if (lemac == LeMAC2) {
 cmr &= ~(CMR_RA | CMR_WB | CMR_LINK | CMR_POLARITY | CMR_0WS);
-if (eeprom_image[EEPROM_MISC0] & READ_AHEAD)    cmr |= CMR_RA;
-if (eeprom_image[EEPROM_MISC0] & WRITE_BEHIND)  cmr |= CMR_WB;
-if (eeprom_image[EEPROM_NETMAN0] & NETMAN_POL)  cmr |= CMR_POLARITY;
+if (eeprom_image[EEPROM_MISC0] & READ_AHEAD) cmr |= CMR_RA;
+if (eeprom_image[EEPROM_MISC0] & WRITE_BEHIND) cmr |= CMR_WB;
+if (eeprom_image[EEPROM_NETMAN0] & NETMAN_POL) cmr |= CMR_POLARITY;
 if (eeprom_image[EEPROM_NETMAN0] & NETMAN_LINK) cmr |= CMR_LINK;
-if (eeprom_image[EEPROM_MISC0] & _0WS_ENA)      cmr |= CMR_0WS;
+if (eeprom_image[EEPROM_MISC0] & _0WS_ENA) cmr |= CMR_0WS;
 }
-if (eeprom_image[EEPROM_SETUP] & SETUP_DRAM)      cmr |= CMR_DRAM;
+if (eeprom_image[EEPROM_SETUP] & SETUP_DRAM) cmr |= CMR_DRAM;
 outb(cmr, EWRK3_CMR);
 cr = inb(EWRK3_CR);
 cr |= eeprom_image[EEPROM_SETUP] & SETUP_APD;
@@ -668,15 +668,15 @@ while ((tx_status = inb(EWRK3_TDQ)) > 0) {
 if (tx_status & T_VSTS) {
 if (tx_status & T_TXE) {
 lp->stats.tx_errors++;
-if (tx_status & T_NCL)    lp->stats.tx_carrier_errors++;
-if (tx_status & T_LCL)    lp->stats.tx_window_errors++;
+if (tx_status & T_NCL) lp->stats.tx_carrier_errors++;
+if (tx_status & T_LCL) lp->stats.tx_window_errors++;
 if (tx_status & T_CTU) {
 if ((tx_status & T_COLL) ^ T_XUR) {
 lp->pktStats.tx_underruns++;
 } else {
 lp->pktStats.excessive_underruns++;
 }
-} else 	if (tx_status & T_COLL) {
+} else if (tx_status & T_COLL) {
 if ((tx_status & T_COLL) ^ T_XCOLL) {
 lp->stats.collisions++;
 } else {

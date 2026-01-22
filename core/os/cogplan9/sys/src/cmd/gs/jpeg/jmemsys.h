@@ -1,12 +1,12 @@
 #ifdef NEED_SHORT_EXTERNAL_NAMES
-#define jpeg_get_small		jGetSmall
-#define jpeg_free_small		jFreeSmall
-#define jpeg_get_large		jGetLarge
-#define jpeg_free_large		jFreeLarge
-#define jpeg_mem_available	jMemAvail
-#define jpeg_open_backing_store	jOpenBackStore
-#define jpeg_mem_init		jMemInit
-#define jpeg_mem_term		jMemTerm
+#define jpeg_get_small jGetSmall
+#define jpeg_free_small jFreeSmall
+#define jpeg_get_large jGetLarge
+#define jpeg_free_large jFreeLarge
+#define jpeg_mem_available jMemAvail
+#define jpeg_open_backing_store jOpenBackStore
+#define jpeg_mem_init jMemInit
+#define jpeg_mem_term jMemTerm
 #endif
 EXTERN(void *) jpeg_get_small JPP((j_common_ptr cinfo, size_t sizeofobject));
 EXTERN(void) jpeg_free_small JPP((j_common_ptr cinfo, void * object,
@@ -16,13 +16,13 @@ size_t sizeofobject));
 EXTERN(void) jpeg_free_large JPP((j_common_ptr cinfo, void FAR * object,
 size_t sizeofobject));
 #ifndef MAX_ALLOC_CHUNK
-#define MAX_ALLOC_CHUNK  1000000000L
+#define MAX_ALLOC_CHUNK 1000000000L
 #endif
 EXTERN(long) jpeg_mem_available JPP((j_common_ptr cinfo,
 long min_bytes_needed,
 long max_bytes_needed,
 long already_allocated));
-#define TEMP_NAME_LENGTH   64
+#define TEMP_NAME_LENGTH 64
 #ifdef USE_MSDOS_MEMMGR
 typedef unsigned short XMSH;
 typedef unsigned short EMSH;

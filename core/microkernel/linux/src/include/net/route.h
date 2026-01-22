@@ -1,55 +1,55 @@
 #ifndef _ROUTE_H
 #define _ROUTE_H
 #include <linux/config.h>
-#define RT_CACHE_DEBUG		0
-#define RT_HASH_DIVISOR	    	256
-#define RT_CACHE_SIZE_MAX    	256
-#define RTZ_HASH_DIVISOR	256
+#define RT_CACHE_DEBUG 0
+#define RT_HASH_DIVISOR 256
+#define RT_CACHE_SIZE_MAX 256
+#define RTZ_HASH_DIVISOR 256
 #if RT_CACHE_DEBUG >= 2
 #define RTZ_HASHING_LIMIT 0
 #else
 #define RTZ_HASHING_LIMIT 16
 #endif
-#define RT_CACHE_TIMEOUT		(HZ*300)
-#define RT_CACHE_BUBBLE_THRESHOLD	(HZ*5)
+#define RT_CACHE_TIMEOUT (HZ*300)
+#define RT_CACHE_BUBBLE_THRESHOLD (HZ*5)
 #include <linux/route.h>
 #ifdef __KERNEL__
 #define RTF_LOCAL 0x8000
 #endif
 struct rtable
 {
-struct rtable		*rt_next;
-__u32			rt_dst;
-__u32			rt_src;
-__u32			rt_gateway;
-atomic_t		rt_refcnt;
-atomic_t		rt_use;
-unsigned long		rt_window;
-atomic_t		rt_lastuse;
-struct hh_cache		*rt_hh;
-struct device		*rt_dev;
-unsigned short		rt_flags;
-unsigned short		rt_mtu;
-unsigned short		rt_irtt;
-unsigned char		rt_tos;
+struct rtable *rt_next;
+__u32 rt_dst;
+__u32 rt_src;
+__u32 rt_gateway;
+atomic_t rt_refcnt;
+atomic_t rt_use;
+unsigned long rt_window;
+atomic_t rt_lastuse;
+struct hh_cache *rt_hh;
+struct device *rt_dev;
+unsigned short rt_flags;
+unsigned short rt_mtu;
+unsigned short rt_irtt;
+unsigned char rt_tos;
 };
-extern void		ip_rt_flush(struct device *dev);
-extern void		ip_rt_update(int event, struct device *dev);
-extern void		ip_rt_redirect(__u32 src, __u32 dst, __u32 gw, struct device *dev);
-extern struct rtable	*ip_rt_slow_route(__u32 daddr, int local, struct device *dev);
-extern struct device	*ip_rt_dev(__u32 addr);
-extern int		rt_get_info(char * buffer, char **start, off_t offset, int length, int dummy);
-extern int		rt_cache_get_info(char *buffer, char **start, off_t offset, int length, int dummy);
-extern int		ip_rt_ioctl(unsigned int cmd, void *arg);
-extern int		ip_rt_new(struct rtentry *rt);
-extern int		ip_rt_kill(struct rtentry *rt);
-extern void		ip_rt_check_expire(void);
-extern void		ip_rt_advice(struct rtable **rp, int advice);
-extern void		ip_rt_run_bh(void);
-extern atomic_t	    	ip_rt_lock;
-extern unsigned		ip_rt_bh_mask;
-extern struct rtable 	*ip_rt_hash_table[RT_HASH_DIVISOR];
-extern void	 	rt_free(struct rtable * rt);
+extern void ip_rt_flush(struct device *dev);
+extern void ip_rt_update(int event, struct device *dev);
+extern void ip_rt_redirect(__u32 src, __u32 dst, __u32 gw, struct device *dev);
+extern struct rtable *ip_rt_slow_route(__u32 daddr, int local, struct device *dev);
+extern struct device *ip_rt_dev(__u32 addr);
+extern int rt_get_info(char * buffer, char **start, off_t offset, int length, int dummy);
+extern int rt_cache_get_info(char *buffer, char **start, off_t offset, int length, int dummy);
+extern int ip_rt_ioctl(unsigned int cmd, void *arg);
+extern int ip_rt_new(struct rtentry *rt);
+extern int ip_rt_kill(struct rtentry *rt);
+extern void ip_rt_check_expire(void);
+extern void ip_rt_advice(struct rtable **rp, int advice);
+extern void ip_rt_run_bh(void);
+extern atomic_t ip_rt_lock;
+extern unsigned ip_rt_bh_mask;
+extern struct rtable *ip_rt_hash_table[RT_HASH_DIVISOR];
+extern void rt_free(struct rtable * rt);
 static __inline__ void ip_rt_fast_lock(void)
 {
 atomic_inc(&ip_rt_lock);

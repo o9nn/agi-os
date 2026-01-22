@@ -1,29 +1,29 @@
-#include	"u.h"
-#include	"lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"dosfs.h"
+#include "u.h"
+#include "lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "dosfs.h"
 extern char *premature;
-static void	bootdump(Dosboot*);
-static void	setname(Dosfile*, char*);
-long		dosreadseg(Dosfile*, long, long);
-#define chatty	1
-#define chat	if(chatty)print
+static void bootdump(Dosboot*);
+static void setname(Dosfile*, char*);
+long dosreadseg(Dosfile*, long, long);
+#define chatty 1
+#define chat if(chatty)print
 enum
 {
-Nbio=	16,
+Nbio= 16,
 };
-typedef struct	Clustbuf	Clustbuf;
+typedef struct Clustbuf Clustbuf;
 struct Clustbuf
 {
-int	age;
-long	sector;
-uchar	*iobuf;
-Dos	*dos;
-int	size;
+int age;
+long sector;
+uchar *iobuf;
+Dos *dos;
+int size;
 };
-Clustbuf	bio[Nbio];
+Clustbuf bio[Nbio];
 Clustbuf*
 getclust(Dos *dos, long sector)
 {
@@ -131,7 +131,7 @@ l++;
 }
 fp->lcurrent = l;
 fp->pcurrent = p;
-l =  dos->dataaddr + (p-2)*dos->clustsize;
+l = dos->dataaddr + (p-2)*dos->clustsize;
 chat("fileaddr %d -> %d\n", ltarget, l);
 return l;
 }
@@ -200,8 +200,8 @@ return 1;
 }
 return n >= 0 ? 0 : -1;
 }
-#define	JMPSHORT	0xeb
-#define JMPNEAR		0xe9
+#define JMPSHORT 0xeb
+#define JMPNEAR 0xe9
 int
 dosinit(Dos *dos, int start, int ishard)
 {

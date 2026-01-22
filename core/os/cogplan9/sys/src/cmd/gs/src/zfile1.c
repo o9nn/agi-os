@@ -26,7 +26,7 @@ buffer = ialloc_string(blen, "zfile_name_combine");
 if (buffer == 0)
 return_error(e_VMerror);
 prefix = op[-2].value.const_bytes;
-fname =  op[-1].value.const_bytes;
+fname = op[-1].value.const_bytes;
 no_sibling = op[0].value.boolval;
 if (gp_file_name_combine((const char *)prefix, plen,
 (const char *)fname, flen, no_sibling,
@@ -44,7 +44,7 @@ return 0;
 }
 private int
 zfile_name_is_absolute(i_ctx_t *i_ctx_p)
-{   os_ptr op = osp;
+{ os_ptr op = osp;
 check_type(op[0], t_string);
 make_bool(op, (gp_file_name_root((const char *)op->value.const_bytes,
 r_size(op)) > 0));
@@ -52,7 +52,7 @@ return 0;
 }
 private int
 push_string(i_ctx_t *i_ctx_p, const char *v)
-{   os_ptr op = osp;
+{ os_ptr op = osp;
 int len = strlen(v);
 push(1);
 make_const_string(op, avm_foreign | a_readonly,
@@ -61,19 +61,19 @@ return 0;
 }
 private int
 zfile_name_separator(i_ctx_t *i_ctx_p)
-{   return push_string(i_ctx_p, gp_file_name_separator());
+{ return push_string(i_ctx_p, gp_file_name_separator());
 }
 private int
 zfile_name_directory_separator(i_ctx_t *i_ctx_p)
-{   return push_string(i_ctx_p, gp_file_name_directory_separator());
+{ return push_string(i_ctx_p, gp_file_name_directory_separator());
 }
 private int
 zfile_name_current(i_ctx_t *i_ctx_p)
-{   return push_string(i_ctx_p, gp_file_name_current());
+{ return push_string(i_ctx_p, gp_file_name_current());
 }
 private int
 zfile_name_parent(i_ctx_t *i_ctx_p)
-{   return push_string(i_ctx_p, gp_file_name_parent());
+{ return push_string(i_ctx_p, gp_file_name_parent());
 }
 const op_def zfile1_op_defs[] =
 {

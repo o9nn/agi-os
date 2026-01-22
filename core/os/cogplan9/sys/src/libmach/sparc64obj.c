@@ -4,20 +4,20 @@
 #include <mach.h>
 #include "sparc64/u.out.h"
 #include "obj.h"
-typedef struct Addr	Addr;
+typedef struct Addr Addr;
 struct Addr
 {
-char	type;
-char	sym;
-char	name;
+char type;
+char sym;
+char name;
 };
 static Addr addr(Biobuf*);
 static char type2char(int);
-static	void	skip(Biobuf*, int);
+static void skip(Biobuf*, int);
 int
 _isu(char *s)
 {
-return  s[0] == ANAME
+return s[0] == ANAME
 && s[1] == D_FILE
 && s[2] == 1
 && s[3] == '<';
@@ -108,11 +108,11 @@ static char
 type2char(int t)
 {
 switch(t){
-case D_EXTERN:		return 'U';
-case D_STATIC:		return 'b';
-case D_AUTO:		return 'a';
-case D_PARAM:		return 'p';
-default:		return UNKNOWN;
+case D_EXTERN: return 'U';
+case D_STATIC: return 'b';
+case D_AUTO: return 'a';
+case D_PARAM: return 'p';
+default: return UNKNOWN;
 }
 }
 static void

@@ -68,7 +68,7 @@ template<typename _Tp>
 struct pointer_traits<_Tp*>
 {
 typedef _Tp* pointer;
-typedef _Tp  element_type;
+typedef _Tp element_type;
 typedef ptrdiff_t difference_type;
 template<typename _Up>
 using rebind = _Up*;

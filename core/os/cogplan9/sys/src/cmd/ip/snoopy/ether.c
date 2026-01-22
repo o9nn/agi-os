@@ -3,27 +3,27 @@
 #include <ip.h>
 #include "dat.h"
 #include "protos.h"
-typedef struct Hdr	Hdr;
+typedef struct Hdr Hdr;
 struct Hdr {
-uchar	d[6];
-uchar	s[6];
-uchar	type[2];
-char	data[1500];
+uchar d[6];
+uchar s[6];
+uchar type[2];
+char data[1500];
 };
-#define	ETHERMINTU	60
-#define	ETHERMAXTU	1514
-#define ETHERHDRSIZE	14
+#define ETHERMINTU 60
+#define ETHERMAXTU 1514
+#define ETHERHDRSIZE 14
 static Mux p_mux[] =
 {
-{"ip",		0x0800,	} ,
-{"arp",		0x0806,	} ,
-{"rarp",	0x0806,	} ,
-{"ip6", 	0x86dd, } ,
-{"pppoe_disc",	0x8863, },
-{"pppoe_sess",	0x8864, },
-{"eapol",	0x888e, },
-{"aoe",		0x88a2, } ,
-{"cec",		0xbcbc, } ,
+{"ip", 0x0800, } ,
+{"arp", 0x0806, } ,
+{"rarp", 0x0806, } ,
+{"ip6", 0x86dd, } ,
+{"pppoe_disc", 0x8863, },
+{"pppoe_sess", 0x8864, },
+{"eapol", 0x888e, },
+{"aoe", 0x88a2, } ,
+{"cec", 0xbcbc, } ,
 {0}
 };
 enum
@@ -35,11 +35,11 @@ Ot,
 };
 static Field p_fields[] =
 {
-{"s",	Fether,	Os,	"source address",	} ,
-{"d",	Fether,	Od,	"destination address",	} ,
-{"a",	Fether,	Oa,	"source|destination address" } ,
-{"sd",	Fether,	Oa,	"source|destination address" } ,
-{"t",	Fnum,	Ot,	"type" } ,
+{"s", Fether, Os, "source address", } ,
+{"d", Fether, Od, "destination address", } ,
+{"a", Fether, Oa, "source|destination address" } ,
+{"sd", Fether, Oa, "source|destination address" } ,
+{"t", Fnum, Ot, "type" } ,
 {0}
 };
 static void

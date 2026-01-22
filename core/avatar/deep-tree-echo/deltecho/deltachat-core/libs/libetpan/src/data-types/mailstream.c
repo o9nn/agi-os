@@ -1,8 +1,8 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #ifdef WIN32
-#	include "win_etpan.h"
+# include "win_etpan.h"
 #endif
 #include "mailstream.h"
 #include "maillock.h"
@@ -15,7 +15,7 @@
 #include <sys/stat.h>
 #define DEFAULT_NETWORK_TIMEOUT 300
 struct timeval mailstream_network_delay =
-{  DEFAULT_NETWORK_TIMEOUT, 0 };
+{ DEFAULT_NETWORK_TIMEOUT, 0 };
 LIBETPAN_EXPORT
 mailstream * mailstream_new(mailstream_low * low, size_t buffer_size)
 {
@@ -103,7 +103,7 @@ written = mailstream_low_write(s->low, cur_buf, left);
 if (written < 0)
 goto move_buffer;
 cur_buf += written;
-left -=  written;
+left -= written;
 }
 s->write_buffer_len = 0;
 return 0;

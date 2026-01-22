@@ -1,25 +1,25 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"io.h"
-#include	"audio.h"
-typedef struct	AQueue	AQueue;
-typedef struct	Buf	Buf;
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "io.h"
+#include "audio.h"
+typedef struct AQueue AQueue;
+typedef struct Buf Buf;
 enum
 {
-Qdir		= 0,
+Qdir = 0,
 Qaudio,
 Qvolume,
-Fmono		= 1,
-Fin		= 2,
-Fout		= 4,
-Aclosed		= 0,
+Fmono = 1,
+Fin = 2,
+Fout = 4,
+Aclosed = 0,
 Aread,
 Awrite,
-Vaudio		= 0,
+Vaudio = 0,
 Vsynth,
 Vcd,
 Vline,
@@ -29,88 +29,88 @@ Vtreb,
 Vbass,
 Vspeed,
 Nvol,
-Speed		= 44100,
-Ncmd		= 50,
+Speed = 44100,
+Ncmd = 50,
 };
 static
 Dirtab audiodir[] =
 {
-".",		{Qdir, 0, QTDIR},	0,	0555,
-"audio",	{Qaudio},		0,	0666,
-"volume",	{Qvolume},		0,	0666,
+".", {Qdir, 0, QTDIR}, 0, 0555,
+"audio", {Qaudio}, 0, 0666,
+"volume", {Qvolume}, 0, 0666,
 };
-struct	Buf
+struct Buf
 {
-uchar*	virt;
-ulong	phys;
-Buf*	next;
+uchar* virt;
+ulong phys;
+Buf* next;
 };
-struct	AQueue
+struct AQueue
 {
 Lock;
-Buf*	first;
-Buf*	last;
+Buf* first;
+Buf* last;
 };
-static	struct
+static struct
 {
 QLock;
-Rendez	vous;
-int	bufinit;
-int	curcount;
-int	active;
-int	intr;
-int	amode;
-int	rivol[Nvol];
-int	livol[Nvol];
-int	rovol[Nvol];
-int	lovol[Nvol];
-int	major;
-int	minor;
-Buf	buf[Nbuf];
-AQueue	empty;
-AQueue	full;
-Buf*	current;
-Buf*	filling;
+Rendez vous;
+int bufinit;
+int curcount;
+int active;
+int intr;
+int amode;
+int rivol[Nvol];
+int livol[Nvol];
+int rovol[Nvol];
+int lovol[Nvol];
+int major;
+int minor;
+Buf buf[Nbuf];
+AQueue empty;
+AQueue full;
+Buf* current;
+Buf* filling;
 } audio;
-static	struct
+static struct
 {
-char*	name;
-int	flag;
-int	ilval;
-int	irval;
+char* name;
+int flag;
+int ilval;
+int irval;
 } volumes[] =
 {
-[Vaudio]	"audio",	Fout, 		50,	50,
-[Vsynth]	"synth",	Fin|Fout,	0,	0,
-[Vcd]		"cd",		Fin|Fout,	0,	0,
-[Vline]		"line",		Fin|Fout,	0,	0,
-[Vmic]		"mic",		Fin|Fout|Fmono,	0,	0,
-[Vspeaker]	"speaker",	Fout|Fmono,	0,	0,
-[Vtreb]		"treb",		Fout, 		50,	50,
-[Vbass]		"bass",		Fout, 		50,	50,
-[Vspeed]	"speed",	Fin|Fout|Fmono,	Speed,	Speed,
+[Vaudio] "audio", Fout, 50, 50,
+[Vsynth] "synth", Fin|Fout, 0, 0,
+[Vcd] "cd", Fin|Fout, 0, 0,
+[Vline] "line", Fin|Fout, 0, 0,
+[Vmic] "mic", Fin|Fout|Fmono, 0, 0,
+[Vspeaker] "speaker", Fout|Fmono, 0, 0,
+[Vtreb] "treb", Fout, 50, 50,
+[Vbass] "bass", Fout, 50, 50,
+[Vspeed] "speed", Fin|Fout|Fmono, Speed, Speed,
 0
 };
 static struct
 {
 Lock;
-int	reset;
-int	read;
-int	write;
-int	wstatus;
-int	rstatus;
-int	mixaddr;
-int	mixdata;
-int	clri8;
-int	clri16;
-int	clri401;
-int	dma;
+int reset;
+int read;
+int write;
+int wstatus;
+int rstatus;
+int mixaddr;
+int mixdata;
+int clri8;
+int clri16;
+int clri401;
+int dma;
 } blaster;
-static	void	swab(uchar*);
-static	char	Emajor[]	= "soundblaster not responding/wrong version";
-static	char	Emode[]		= "illegal open mode";
-static	char	Evolume[]	= "illegal volume specifier";
-static	int
+static void swab(uchar*);
+static char Emajor[] = "soundblaster not responding/wrong version";
+static char Emode[] = "illegal open mode";
+static char Evolume[] = "illegal volume specifier";
+static int
 sbcmd(int val)
 {
 int i, s;
@@ -123,7 +123,7 @@ return 0;
 }
 return 1;
 }
-static	int
+static int
 sbread(void)
 {
 int i, s;
@@ -135,14 +135,14 @@ return inb(blaster.read);
 }
 return 0xbb;
 }
-static	int
+static int
 mxcmd(int addr, int val)
 {
 outb(blaster.mixaddr, addr);
 outb(blaster.mixdata, val);
 return 1;
 }
-static	int
+static int
 mxread(int addr)
 {
 int s;
@@ -150,7 +150,7 @@ outb(blaster.mixaddr, addr);
 s = inb(blaster.mixdata);
 return s;
 }
-static	void
+static void
 mxcmds(int s, int v)
 {
 if(v > 100)
@@ -159,7 +159,7 @@ if(v < 0)
 v = 0;
 mxcmd(s, (v*255)/100);
 }
-static	void
+static void
 mxcmdt(int s, int v)
 {
 if(v > 100)
@@ -169,7 +169,7 @@ mxcmd(s, 0);
 else
 mxcmd(s, 255-100+v);
 }
-static	void
+static void
 mxcmdu(int s, int v)
 {
 if(v > 100)
@@ -178,7 +178,7 @@ if(v <= 0)
 v = 0;
 mxcmd(s, 128-50+v);
 }
-static	void
+static void
 mxvolume(void)
 {
 int *left, *right;
@@ -234,7 +234,7 @@ mxcmd(0x3d, source);
 mxcmd(0x3e, source);
 iunlock(&blaster);
 }
-static	Buf*
+static Buf*
 getbuf(AQueue *q)
 {
 Buf *b;
@@ -245,7 +245,7 @@ q->first = b->next;
 iunlock(q);
 return b;
 }
-static	void
+static void
 putbuf(AQueue *q, Buf *b)
 {
 ilock(q);
@@ -257,7 +257,7 @@ q->first = b;
 q->last = b;
 iunlock(q);
 }
-static	void
+static void
 contindma(void)
 {
 Buf *b;
@@ -285,7 +285,7 @@ sbcmd(0xd5);
 audio.curcount = 0;
 audio.active = 0;
 }
-static	void
+static void
 startdma(void)
 {
 ulong count;
@@ -313,7 +313,7 @@ audio.active = 1;
 contindma();
 iunlock(&blaster);
 }
-static	void
+static void
 pokeaudio(void)
 {
 if(!audio.active)
@@ -380,7 +380,7 @@ audio.buf[i].virt = UNCACHED(uchar, p);
 audio.buf[i].phys = (ulong)PADDR(p);
 }
 }
-static	void
+static void
 setempty(void)
 {
 int i;
@@ -395,7 +395,7 @@ for(i=0; i<Nbuf; i++)
 putbuf(&audio.empty, &audio.buf[i]);
 iunlock(&blaster);
 }
-static	void
+static void
 resetlevel(void)
 {
 int i;
@@ -766,7 +766,7 @@ break;
 }
 return n0 - n;
 }
-static	void
+static void
 swab(uchar *a)
 {
 ulong *p, *ep, b;

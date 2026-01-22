@@ -18,28 +18,28 @@
 #include <sasl_otp_plugin_decl.h>
 #endif
 static const char plugin_id[] = "$Id: otp.c,v 1.43 2011/09/01 14:12:18 mel Exp $";
-#define OTP_SEQUENCE_MAX	9999
-#define OTP_SEQUENCE_DEFAULT	499
-#define OTP_SEQUENCE_REINIT	490
-#define OTP_SEED_MIN		1
-#define OTP_SEED_MAX		16
-#define OTP_HASH_SIZE		8
-#define OTP_CHALLENGE_MAX	100
-#define OTP_RESPONSE_MAX	100
-#define OTP_HEX_TYPE		"hex:"
-#define OTP_WORD_TYPE		"word:"
-#define OTP_INIT_HEX_TYPE	"init-hex:"
-#define OTP_INIT_WORD_TYPE	"init-word:"
+#define OTP_SEQUENCE_MAX 9999
+#define OTP_SEQUENCE_DEFAULT 499
+#define OTP_SEQUENCE_REINIT 490
+#define OTP_SEED_MIN 1
+#define OTP_SEED_MAX 16
+#define OTP_HASH_SIZE 8
+#define OTP_CHALLENGE_MAX 100
+#define OTP_RESPONSE_MAX 100
+#define OTP_HEX_TYPE "hex:"
+#define OTP_WORD_TYPE "word:"
+#define OTP_INIT_HEX_TYPE "init-hex:"
+#define OTP_INIT_WORD_TYPE "init-word:"
 typedef struct algorithm_option_s {
 const char *name;
 int swab;
 const char *evp_name;
 } algorithm_option_t;
 static algorithm_option_t algorithm_options[] = {
-{"md4",	0,	"md4"},
-{"md5",	0,	"md5"},
-{"sha1",	4,	"sha1"},
-{NULL,	0,	NULL}
+{"md4", 0, "md4"},
+{"md5", 0, "md5"},
+{"sha1", 4, "sha1"},
+{NULL, 0, NULL}
 };
 void bin2hex(unsigned char *bin, int binlen, char *hex)
 {
@@ -175,7 +175,7 @@ otp_common_mech_free(void *global_context __attribute__((unused)),
 const sasl_utils_t *utils __attribute__((unused)))
 {
 }
-#ifdef  HAVE_OPIE
+#ifdef HAVE_OPIE
 #include <opie.h>
 #endif
 typedef struct server_context {
@@ -377,8 +377,8 @@ NULL
 };
 #else
 #include "otp.h"
-#define OTP_MDA_DEFAULT		"md5"
-#define OTP_LOCK_TIMEOUT	5 * 60
+#define OTP_MDA_DEFAULT "md5"
+#define OTP_LOCK_TIMEOUT 5 * 60
 int hex2bin(char *hex, unsigned char *bin, int binlen)
 {
 int i;
@@ -991,10 +991,10 @@ goto cleanup;
 }
 sparams->utils->log(NULL, SASL_LOG_DEBUG, "Setpass for OTP successful\n");
 cleanup:
-if (user) 	_plug_free_string(sparams->utils, &user);
-if (user_only)     _plug_free_string(sparams->utils, &user_only);
-if (realm) 	_plug_free_string(sparams->utils, &realm);
-if (sec)    _plug_free_secret(sparams->utils, &sec);
+if (user) _plug_free_string(sparams->utils, &user);
+if (user_only) _plug_free_string(sparams->utils, &user_only);
+if (realm) _plug_free_string(sparams->utils, &realm);
+if (sec) _plug_free_secret(sparams->utils, &sec);
 return r;
 }
 static int otp_mech_avail(void *glob_context __attribute__((unused)),

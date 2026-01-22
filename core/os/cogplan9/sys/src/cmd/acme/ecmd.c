@@ -11,26 +11,26 @@
 #include "dat.h"
 #include "edit.h"
 #include "fns.h"
-int	Glooping;
-int	nest;
-char	Enoname[] = "no file name given";
-Address	addr;
-File	*menu;
-Rangeset	sel;
-extern	Text*	curtext;
-Rune	*collection;
-int	ncollection;
-int	append(File*, Cmd*, long);
-int	pdisplay(File*);
-void	pfilename(File*);
-void	looper(File*, Cmd*, int);
-void	filelooper(Cmd*, int);
-void	linelooper(File*, Cmd*);
-Address	lineaddr(long, Address, int);
-int	filematch(File*, String*);
-File	*tofile(String*);
-Rune*	cmdname(File *f, String *s, int);
-void	runpipe(Text*, int, Rune*, int, int);
+int Glooping;
+int nest;
+char Enoname[] = "no file name given";
+Address addr;
+File *menu;
+Rangeset sel;
+extern Text* curtext;
+Rune *collection;
+int ncollection;
+int append(File*, Cmd*, long);
+int pdisplay(File*);
+void pfilename(File*);
+void looper(File*, Cmd*, int);
+void filelooper(Cmd*, int);
+void linelooper(File*, Cmd*);
+Address lineaddr(long, Address, int);
+int filematch(File*, String*);
+File *tofile(String*);
+Rune* cmdname(File *f, String *s, int);
+void runpipe(Text*, int, Rune*, int, int);
 void
 clearcollection(void)
 {
@@ -465,7 +465,7 @@ bufread(t->file, sel.r[0].q0, rbuf, sel.r[0].q1-sel.r[0].q0);
 for(k=0; k<sel.r[0].q1-sel.r[0].q0; k++)
 Straddc(buf, rbuf[k]);
 }
-elogreplace(t->file, sel.r[0].q0, sel.r[0].q1,  buf->r, buf->n);
+elogreplace(t->file, sel.r[0].q0, sel.r[0].q1, buf->r, buf->n);
 delta -= sel.r[0].q1-sel.r[0].q0;
 delta += buf->n;
 didsub = 1;
@@ -807,9 +807,9 @@ free(rp);
 struct Looper
 {
 Cmd *cp;
-int	XY;
-Window	**w;
-int	nw;
+int XY;
+Window **w;
+int nw;
 } loopstruct;
 void
 alllooper(Window *w, void *v)
@@ -887,9 +887,9 @@ editerror("address");
 }
 }
 }
-File	*matchfile(String*);
-Address	charaddr(long, Address, int);
-Address	lineaddr(long, Address, int);
+File *matchfile(String*);
+Address charaddr(long, Address, int);
+Address lineaddr(long, Address, int);
 Address
 cmdaddress(Addr *ap, Address a, int sign)
 {
@@ -963,8 +963,8 @@ return a;
 return a;
 }
 struct Tofile{
-File		*f;
-String	*r;
+File *f;
+String *r;
 };
 void
 alltofile(Window *w, void *v)
@@ -1120,8 +1120,8 @@ return a;
 }
 struct Filecheck
 {
-File	*f;
-Rune	*r;
+File *f;
+Rune *r;
 int nr;
 };
 void

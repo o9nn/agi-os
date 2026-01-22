@@ -14,10 +14,10 @@
 #include <dmalloc.h>
 #endif
 void
-adjust_ATH( lame_global_flags* const  gfp,
-FLOAT8              tot_ener[2][4] )
+adjust_ATH( lame_global_flags* const gfp,
+FLOAT8 tot_ener[2][4] )
 {
-lame_internal_flags* const  gfc = gfp->internal_flags;
+lame_internal_flags* const gfc = gfp->internal_flags;
 int gr, channel;
 if (gfc->ATH->use_adjust) {
 FLOAT8 max_val = 0;
@@ -35,7 +35,7 @@ gfc->ATH->adjust = x;
 }
 else {
 #ifdef OLD_ATH_AUTO_ADJUST
-if      (0.5 < max_val / 32768) {
+if (0.5 < max_val / 32768) {
 gfc->ATH->adjust = 1.0;
 }
 else if (0.3 < max_val / 32768) {
@@ -83,12 +83,12 @@ gfc->ATH->adjust_limit = adj_lim_new;
 }
 }
 typedef FLOAT8 chgrdata[2][2];
-int  lame_encode_mp3_frame (
-lame_global_flags* const  gfp,
-sample_t*                 inbuf_l,
-sample_t*                 inbuf_r,
-unsigned char*            mp3buf,
-int                    mp3buf_size )
+int lame_encode_mp3_frame (
+lame_global_flags* const gfp,
+sample_t* inbuf_l,
+sample_t* inbuf_r,
+unsigned char* mp3buf,
+int mp3buf_size )
 {
 #ifdef macintosh
 static FLOAT8 xr[2][2][576];
@@ -118,12 +118,12 @@ memset((char *) masking_MS, 0, sizeof(masking_MS));
 memset((char *) scalefac, 0, sizeof(scalefac));
 inbuf[0]=inbuf_l;
 inbuf[1]=inbuf_r;
-check_ms_stereo =  (gfp->mode == JOINT_STEREO);
+check_ms_stereo = (gfp->mode == JOINT_STEREO);
 gfc->mode_ext = MPG_MD_LR_LR;
-if (gfc->lame_encode_frame_init==0 )  {
+if (gfc->lame_encode_frame_init==0 ) {
 gfc->lame_encode_frame_init=1;
 gfc->frac_SpF = ((gfp->version+1)*72000L*gfp->brate) % gfp->out_samplerate;
-gfc->slot_lag  = gfc->frac_SpF;
+gfc->slot_lag = gfc->frac_SpF;
 #if 576 < FFTOFFSET
 # error FFTOFFSET greater than 576: FFT uses a negative offset
 #endif
@@ -246,15 +246,15 @@ check_ms_stereo =
 (gfc->l3_side.gr[gr0].ch[0].tt.block_type==gfc->l3_side.gr[gr0].ch[1].tt.block_type) &&
 (gfc->l3_side.gr[gr1].ch[0].tt.block_type==gfc->l3_side.gr[gr1].ch[1].tt.block_type);
 }
-assert (  gfc->mode_ext == MPG_MD_LR_LR );
+assert ( gfc->mode_ext == MPG_MD_LR_LR );
 gfc->mode_ext = MPG_MD_LR_LR;
 if (gfp->force_ms) {
 gfc->mode_ext = MPG_MD_MS_LR;
 } else if (check_ms_stereo) {
-FLOAT8  ms_ratio_ave1;
-FLOAT8  ms_ratio_ave2;
-FLOAT8  threshold1    = 0.35;
-FLOAT8  threshold2    = 0.45;
+FLOAT8 ms_ratio_ave1;
+FLOAT8 ms_ratio_ave2;
+FLOAT8 threshold1 = 0.35;
+FLOAT8 threshold2 = 0.45;
 if (gfc->mode_gr==1) {
 ms_ratio_ave1 = 0.33 * ( gfc->ms_ratio[0] + ms_ratio_prev + ms_ratio_next );
 ms_ratio_ave2 = gfc->ms_ratio[0];
@@ -266,15 +266,15 @@ if (gfp->mode_automs) {
 if ( gfp->compression_ratio < 11.025 ) {
 double thr = (gfp->compression_ratio - 6.3) / (11.025 - 6.3);
 if (thr<0) thr=0;
-threshold1   *= thr;
-threshold2   *= thr;
+threshold1 *= thr;
+threshold2 *= thr;
 }
 }
-if ((ms_ratio_ave1 < threshold1  &&  ms_ratio_ave2 < threshold2) || gfc->nsPsy.use) {
-int  sum_pe_MS = pe_MS[0][0] + pe_MS[0][1] + pe_MS[1][0] + pe_MS[1][1];
-int  sum_pe_LR = pe   [0][0] + pe   [0][1] + pe   [1][0] + pe   [1][1];
+if ((ms_ratio_ave1 < threshold1 && ms_ratio_ave2 < threshold2) || gfc->nsPsy.use) {
+int sum_pe_MS = pe_MS[0][0] + pe_MS[0][1] + pe_MS[1][0] + pe_MS[1][1];
+int sum_pe_LR = pe [0][0] + pe [0][1] + pe [1][0] + pe [1][1];
 if (sum_pe_MS <= 1.07 * sum_pe_LR && !gfc->nsPsy.use) gfc->mode_ext = MPG_MD_MS_LR;
-if (sum_pe_MS <= 1.00 * sum_pe_LR &&  gfc->nsPsy.use) gfc->mode_ext = MPG_MD_MS_LR;
+if (sum_pe_MS <= 1.00 * sum_pe_LR && gfc->nsPsy.use) gfc->mode_ext = MPG_MD_MS_LR;
 }
 }
 if (gfp->analysis && gfc->pinfo != NULL) {

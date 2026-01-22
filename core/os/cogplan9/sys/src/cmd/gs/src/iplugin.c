@@ -8,20 +8,20 @@
 #include "icstate.h"
 extern_i_plugin_table();
 private void *i_plugin_mem_alloc(i_plugin_client_memory *mem, unsigned int nbytes, const char *cname)
-{   gs_memory_t *mem_raw = mem->client_data;
+{ gs_memory_t *mem_raw = mem->client_data;
 return mem_raw->procs.alloc_bytes_immovable(mem_raw, nbytes, cname);
 }
 private void i_plugin_mem_free(i_plugin_client_memory *mem, void *data, const char *cname)
-{   gs_memory_t *mem_raw = mem->client_data;
+{ gs_memory_t *mem_raw = mem->client_data;
 mem_raw->procs.free_object(mem_raw, data, cname);
 }
 void i_plugin_make_memory(i_plugin_client_memory *mem, gs_memory_t *mem_raw)
-{   mem->client_data = mem_raw;
+{ mem->client_data = mem_raw;
 mem->alloc = i_plugin_mem_alloc;
-mem->free  = i_plugin_mem_free;
+mem->free = i_plugin_mem_free;
 }
 int i_plugin_init(i_ctx_t *i_ctx_p)
-{   gs_memory_t *mem_raw = i_ctx_p->memory.current->non_gc_memory;
+{ gs_memory_t *mem_raw = i_ctx_p->memory.current->non_gc_memory;
 const i_plugin_instantiation_proc *p = i_plugin_table;
 i_plugin_holder *h;
 int code;
@@ -42,7 +42,7 @@ i_ctx_p->plugin_list = h;
 return 0;
 }
 void i_plugin_finit(gs_memory_t *mem_raw, i_plugin_holder *list)
-{   i_plugin_client_memory client_mem;
+{ i_plugin_client_memory client_mem;
 i_plugin_make_memory(&client_mem, mem_raw);
 while (list != 0) {
 i_plugin_holder *h = list;
@@ -52,10 +52,10 @@ gs_free_object(mem_raw, h, "plugin_holder");
 }
 }
 i_plugin_holder * i_plugin_get_list(i_ctx_t *i_ctx_p)
-{   return i_ctx_p->plugin_list;
+{ return i_ctx_p->plugin_list;
 }
 i_plugin_instance *i_plugin_find(i_ctx_t *i_ctx_p, const char *type, const char *subtype)
-{   i_plugin_holder *h = i_ctx_p->plugin_list;
+{ i_plugin_holder *h = i_ctx_p->plugin_list;
 for (; h != 0; h = h->next) {
 i_plugin_instance *I = h->I;
 if (!strcmp(I->d->type, type) && !strcmp(I->d->subtype, subtype))

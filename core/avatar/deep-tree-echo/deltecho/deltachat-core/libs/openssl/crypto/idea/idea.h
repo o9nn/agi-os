@@ -2,13 +2,13 @@
 # define HEADER_IDEA_H
 # include <openssl/opensslconf.h>
 # ifdef OPENSSL_NO_IDEA
-#  error IDEA is disabled.
+# error IDEA is disabled.
 # endif
-# define IDEA_ENCRYPT    1
-# define IDEA_DECRYPT    0
-# define IDEA_BLOCK      8
+# define IDEA_ENCRYPT 1
+# define IDEA_DECRYPT 0
+# define IDEA_BLOCK 8
 # define IDEA_KEY_LENGTH 16
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 typedef struct idea_key_st {
@@ -33,7 +33,7 @@ void idea_ofb64_encrypt(const unsigned char *in, unsigned char *out,
 long length, IDEA_KEY_SCHEDULE *ks, unsigned char *iv,
 int *num);
 void idea_encrypt(unsigned long *in, IDEA_KEY_SCHEDULE *ks);
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif
 #endif

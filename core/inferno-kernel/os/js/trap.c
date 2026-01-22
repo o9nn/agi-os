@@ -1,21 +1,21 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"ureg.h"
-#include	"io.h"
-#include	"../port/error.h"
-void	noted(Ureg**, ulong);
-void	rfnote(Ureg**);
-int	domuldiv(ulong, Ureg*);
-extern	Label catch;
-extern	void traplink(void);
-extern	void syslink(void);
-static	void faultsparc(Ureg *ur);
-static	void faultasync(Ureg *ur);
-long	ticks;
-static	char	excbuf[64];
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "ureg.h"
+#include "io.h"
+#include "../port/error.h"
+void noted(Ureg**, ulong);
+void rfnote(Ureg**);
+int domuldiv(ulong, Ureg*);
+extern Label catch;
+extern void traplink(void);
+extern void syslink(void);
+static void faultsparc(Ureg *ur);
+static void faultasync(Ureg *ur);
+long ticks;
+static char excbuf[64];
 char *trapname[]={
 "reset",
 "instruction access exception",
@@ -54,7 +54,7 @@ else{
 panic("fptrap not implemented\n");
 #ifdef notdef
 if(m->fpunsafe==0 && up->p->fpstate!=FPactive)
-panic("fptrap not active\n"); 							fsr = up->fpsave.env;
+panic("fptrap not active\n"); fsr = up->fpsave.env;
 sprint(excbuf, "fp: %s fppc=0x%lux",
 fptrapname[(fsr>>14)&7],
 up->fpsave.q[0].a, fsr);
@@ -370,8 +370,8 @@ return notrap;
 }
 enum
 {
-SE_WRITE	= 4<<5,
-SE_PROT		= 2<<2,
+SE_WRITE = 4<<5,
+SE_PROT = 2<<2,
 };
 static void
 faultsparc(Ureg *ur)

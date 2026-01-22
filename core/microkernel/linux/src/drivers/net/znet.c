@@ -18,29 +18,29 @@ static const char *version = "znet.c:v1.02 9/23/94 becker@cesdis.gsfc.nasa.gov\n
 #define ZNET_DEBUG 1
 #endif
 static unsigned int znet_debug = ZNET_DEBUG;
-#define DMA_RX_MODE		0x14
-#define DMA_TX_MODE		0x18
+#define DMA_RX_MODE 0x14
+#define DMA_TX_MODE 0x18
 #define dma_page_eq(ptr1, ptr2) ((long)(ptr1)>>17 == (long)(ptr2)>>17)
 #define DMA_BUF_SIZE 8192
 #define RX_BUF_SIZE 8192
 #define TX_BUF_SIZE 8192
-#define CMD0_CHNL_0			0x00
-#define CMD0_CHNL_1			0x10
+#define CMD0_CHNL_0 0x00
+#define CMD0_CHNL_1 0x10
 #define CMD0_NOP (CMD0_CHNL_0)
-#define CMD0_PORT_1	CMD0_CHNL_1
-#define CMD1_PORT_0	1
-#define CMD0_IA_SETUP		1
-#define CMD0_CONFIGURE		2
+#define CMD0_PORT_1 CMD0_CHNL_1
+#define CMD1_PORT_0 1
+#define CMD0_IA_SETUP 1
+#define CMD0_CONFIGURE 2
 #define CMD0_MULTICAST_LIST 3
-#define CMD0_TRANSMIT		4
-#define CMD0_DUMP			6
-#define CMD0_DIAGNOSE		7
-#define CMD0_Rx_ENABLE		8
-#define CMD0_Rx_DISABLE		10
-#define CMD0_Rx_STOP		11
-#define CMD0_RETRANSMIT		12
-#define CMD0_ABORT			13
-#define CMD0_RESET			14
+#define CMD0_TRANSMIT 4
+#define CMD0_DUMP 6
+#define CMD0_DIAGNOSE 7
+#define CMD0_Rx_ENABLE 8
+#define CMD0_Rx_DISABLE 10
+#define CMD0_Rx_STOP 11
+#define CMD0_RETRANSMIT 12
+#define CMD0_ABORT 13
+#define CMD0_RESET 14
 #define CMD0_ACK 0x80
 #define CMD0_STAT0 (0 << 5)
 #define CMD0_STAT1 (1 << 5)
@@ -91,11 +91,11 @@ char driver_options;
 char pad;
 };
 int znet_probe(struct device *dev);
-static int	znet_open(struct device *dev);
-static int	znet_send_packet(struct sk_buff *skb, struct device *dev);
-static void	znet_interrupt(int irq, void *dev_id, struct pt_regs *regs);
-static void	znet_rx(struct device *dev);
-static int	znet_close(struct device *dev);
+static int znet_open(struct device *dev);
+static int znet_send_packet(struct sk_buff *skb, struct device *dev);
+static void znet_interrupt(int irq, void *dev_id, struct pt_regs *regs);
+static void znet_rx(struct device *dev);
+static int znet_close(struct device *dev);
 static struct enet_statistics *net_get_stats(struct device *dev);
 static void set_multicast_list(struct device *dev);
 static void hardware_init(struct device *dev);
@@ -109,7 +109,7 @@ int i;
 struct netidblk *netinfo;
 char *p;
 for(p = (char *)0xf0000; p < (char *)0x100000; p++)
-if (*p == 'N'  &&  strncmp(p, "NETIDBLK", 8) == 0)
+if (*p == 'N' && strncmp(p, "NETIDBLK", 8) == 0)
 break;
 if (p >= (char *)0x100000) {
 if (znet_debug > 1)
@@ -159,7 +159,7 @@ zn.tx_end = zn.tx_start + zn.tx_buf_len;
 dev->open = &znet_open;
 dev->hard_start_xmit = &znet_send_packet;
 dev->stop = &znet_close;
-dev->get_stats	= net_get_stats;
+dev->get_stats = net_get_stats;
 dev->set_multicast_list = &set_multicast_list;
 ether_setup(dev);
 return 0;
@@ -253,7 +253,7 @@ printk(KERN_DEBUG "%s: Transmitter queued, length %d.\n", dev->name, length);
 dev_kfree_skb(skb, FREE_WRITE);
 return 0;
 }
-static void	znet_interrupt(int irq, void *dev_id, struct pt_regs * regs)
+static void znet_interrupt(int irq, void *dev_id, struct pt_regs * regs)
 {
 struct device *dev = irq2dev_map[irq];
 int ioaddr;
@@ -289,10 +289,10 @@ if (tx_status & 0x2000) {
 lp->stats.tx_packets++;
 lp->stats.collisions += tx_status & 0xf;
 } else {
-if (tx_status & 0x0600)  lp->stats.tx_carrier_errors++;
-if (tx_status & 0x0100)  lp->stats.tx_fifo_errors++;
+if (tx_status & 0x0600) lp->stats.tx_carrier_errors++;
+if (tx_status & 0x0100) lp->stats.tx_fifo_errors++;
 if (!(tx_status & 0x0040)) lp->stats.tx_heartbeat_errors++;
-if (tx_status & 0x0020)  lp->stats.tx_aborted_errors++;
+if (tx_status & 0x0020) lp->stats.tx_aborted_errors++;
 if ((tx_status | 0x0760) != 0x0760)
 lp->stats.tx_errors++;
 }
@@ -430,14 +430,14 @@ static void set_multicast_list(struct device *dev)
 {
 short ioaddr = dev->base_addr;
 if (dev->flags&IFF_PROMISC) {
-i593_init[7] &= ~3;		i593_init[7] |= 1;
-i593_init[13] &= ~8;	i593_init[13] |= 8;
+i593_init[7] &= ~3; i593_init[7] |= 1;
+i593_init[13] &= ~8; i593_init[13] |= 8;
 } else if (dev->mc_list || (dev->flags&IFF_ALLMULTI)) {
-i593_init[7] &= ~3;		i593_init[7] |= 0;
-i593_init[13] &= ~8;	i593_init[13] |= 8;
+i593_init[7] &= ~3; i593_init[7] |= 0;
+i593_init[13] &= ~8; i593_init[13] |= 8;
 } else {
-i593_init[7] &= ~3;		i593_init[7] |= 0;
-i593_init[13] &= ~8;	i593_init[13] |= 0;
+i593_init[7] &= ~3; i593_init[7] |= 0;
+i593_init[13] &= ~8; i593_init[13] |= 0;
 }
 *zn.tx_cur++ = sizeof(i593_init);
 memcpy(zn.tx_cur, i593_init, sizeof(i593_init));
@@ -499,7 +499,7 @@ printk("stat:%02x ", inb(ioaddr)); show_dma();
 outb(CMD0_IA_SETUP + CMD0_CHNL_1, ioaddr);
 printk("stat:%02x ", inb(ioaddr)); show_dma();
 update_stop_hit(ioaddr, 8192);
-if (znet_debug > 1)  printk("enabling Rx.\n");
+if (znet_debug > 1) printk("enabling Rx.\n");
 outb(CMD0_Rx_ENABLE+CMD0_CHNL_0, ioaddr);
 dev->tbusy = 0;
 }

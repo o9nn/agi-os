@@ -4,16 +4,16 @@
 #include "dat.h"
 #include "protos.h"
 enum {
-GRE_chksum	= (1<<15),
-GRE_routing	= (1<<14),
-GRE_key		= (1<<13),
-GRE_seq		= (1<<12),
-GRE_srcrt		= (1<<11),
-GRE_recur	= (7<<8),
-GRE_ack		= (1<<7),
-GRE_version	= 0x7,
+GRE_chksum = (1<<15),
+GRE_routing = (1<<14),
+GRE_key = (1<<13),
+GRE_seq = (1<<12),
+GRE_srcrt = (1<<11),
+GRE_recur = (7<<8),
+GRE_ack = (1<<7),
+GRE_version = 0x7,
 };
-typedef struct Hdr	Hdr;
+typedef struct Hdr Hdr;
 struct Hdr
 {
 ushort flags;
@@ -32,24 +32,24 @@ Oproto,
 };
 static Field p_fields[] =
 {
-{"proto",		Fnum,	Oproto,	"encapsulated protocol",	} ,
+{"proto", Fnum, Oproto, "encapsulated protocol", } ,
 {0}
 };
 static Mux p_mux[] =
 {
-{"pup",	0x0200, },
-{"xns",	0x0600, },
-{"ip",		0x0800, },
-{"chaos",	0x0804, },
-{"arp",	0x0806, },
-{"frarp",	0x0808, },
-{"vines",	0x0bad, },
-{"vinesecho",	0x0bae, },
-{"vinesloop",	0x0baf, },
-{"ppp",	0x880b, },
-{"llc",	0x007a, },
-{"dot1q",	0x8100, },
-{"eapol",	0x888e, },
+{"pup", 0x0200, },
+{"xns", 0x0600, },
+{"ip", 0x0800, },
+{"chaos", 0x0804, },
+{"arp", 0x0806, },
+{"frarp", 0x0808, },
+{"vines", 0x0bad, },
+{"vinesecho", 0x0bae, },
+{"vinesloop", 0x0baf, },
+{"ppp", 0x880b, },
+{"llc", 0x007a, },
+{"dot1q", 0x8100, },
+{"eapol", 0x888e, },
 {0},
 };
 int

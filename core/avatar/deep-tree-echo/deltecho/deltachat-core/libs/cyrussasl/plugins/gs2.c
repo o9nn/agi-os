@@ -17,11 +17,11 @@
 #include <errno.h>
 #include <assert.h>
 #include "gs2_token.h"
-#define GS2_CB_FLAG_MASK    0x0F
-#define GS2_CB_FLAG_N       0x00
-#define GS2_CB_FLAG_P       0x01
-#define GS2_CB_FLAG_Y       0x02
-#define GS2_NONSTD_FLAG     0x10
+#define GS2_CB_FLAG_MASK 0x0F
+#define GS2_CB_FLAG_N 0x00
+#define GS2_CB_FLAG_P 0x01
+#define GS2_CB_FLAG_Y 0x02
+#define GS2_NONSTD_FLAG 0x10
 typedef struct context {
 gss_ctx_id_t gss_ctx;
 gss_name_t client_name;
@@ -305,7 +305,7 @@ ret = SASL_CONTINUE;
 goto cleanup;
 }
 assert(maj_stat == GSS_S_COMPLETE);
-if ((out_flags & GSS_C_SEQUENCE_FLAG) == 0)  {
+if ((out_flags & GSS_C_SEQUENCE_FLAG) == 0) {
 ret = SASL_BADAUTH;
 goto cleanup;
 }
@@ -428,7 +428,7 @@ GSS_C_NO_BUFFER,
 GSS_C_NO_BUFFER);
 if (GSS_ERROR(major))
 continue;
-#define PLUG_AT(index)      (void *)((unsigned char *)plugs + (count * plugsize))
+#define PLUG_AT(index) (void *)((unsigned char *)plugs + (count * plugsize))
 if (plug_alloc(utils, PLUG_AT(count), &sasl_mech_name,
 &gs2_mechs->elements[i]) == SASL_OK)
 count++;
@@ -672,7 +672,7 @@ return SASL_NOMEM;
 text->gss_ctx = GSS_C_NO_CONTEXT;
 text->client_name = GSS_C_NO_NAME;
 text->server_creds = GSS_C_NO_CREDENTIAL;
-text->client_creds  = GSS_C_NO_CREDENTIAL;
+text->client_creds = GSS_C_NO_CREDENTIAL;
 text->plug.client = glob_context;
 ret = gs2_map_sasl_name(params->utils, text->plug.client->mech_name,
 &text->mechanism);
@@ -775,7 +775,7 @@ memcpy(p, cbinding->data, cbinding->len);
 }
 return SASL_OK;
 }
-#define CHECK_REMAIN(n)     do { if (remain < (n)) return SASL_BADPROT; } while (0)
+#define CHECK_REMAIN(n) do { if (remain < (n)) return SASL_BADPROT; } while (0)
 static int
 gs2_verify_initial_message(context_t *text,
 sasl_server_params_t *sparams,
@@ -881,7 +881,7 @@ case GS2_CB_FLAG_P:
 if (!SASL_CB_PRESENT(cparams))
 return SASL_BADPARAM;
 cbnamelen = strlen(cparams->cbinding->name);
-required += 1  + cbnamelen;
+required += 1 + cbnamelen;
 case GS2_CB_FLAG_N:
 case GS2_CB_FLAG_Y:
 required += 2;
@@ -895,7 +895,7 @@ strlen(authzid), &wire_authzid);
 if (ret != SASL_OK)
 return ret;
 wire_authzid_len = strlen(wire_authzid);
-required += 2  + wire_authzid_len;
+required += 2 + wire_authzid_len;
 }
 required += 1;
 ret = _plug_buf_alloc(text->utils, out, outlen, required);
@@ -993,7 +993,7 @@ return SASL_FAIL;
 *features = SASL_FEAT_WANT_CLIENT_FIRST | SASL_FEAT_CHANNEL_BINDING;
 if (prompts != NULL)
 *prompts = gs2_required_prompts;
-#define MA_PRESENT(a)   (gss_test_oid_set_member(&minor, (gss_OID)(a), \
+#define MA_PRESENT(a) (gss_test_oid_set_member(&minor, (gss_OID)(a), \
 attrs, &present) == GSS_S_COMPLETE && \
 present)
 if (MA_PRESENT(GSS_C_MA_PFS))
@@ -1145,7 +1145,7 @@ p += 3;
 return SASL_OK;
 }
 #define GOT_CREDS(text, params) ((text)->client_creds != NULL || (params)->gss_creds != NULL)
-#define CRED_ERROR(status)      ((status) == GSS_S_CRED_UNAVAIL || (status) == GSS_S_NO_CRED)
+#define CRED_ERROR(status) ((status) == GSS_S_CRED_UNAVAIL || (status) == GSS_S_NO_CRED)
 static int
 gs2_get_init_creds(context_t *text,
 sasl_client_params_t *params,

@@ -2,13 +2,13 @@
 #include <string.h>
 #include "grap.h"
 #include "y.tab.h"
-int	pointsize	= 10;
-int	ps_set		= 0;
-double	textht	= 1.0/6.0;
-double	textwid = 1;
-double	lab_up	= 0.0;
-double	lab_rt	= 0.0;
-double	lab_wid	= 0.0;
+int pointsize = 10;
+int ps_set = 0;
+double textht = 1.0/6.0;
+double textwid = 1;
+double lab_up = 0.0;
+double lab_rt = 0.0;
+double lab_wid = 0.0;
 void labelwid(double amt)
 {
 lab_wid = amt + .00001;
@@ -16,10 +16,10 @@ lab_wid = amt + .00001;
 void labelmove(int dir, double amt)
 {
 switch (dir) {
-case UP:	lab_up += amt; break;
-case DOWN:	lab_up -= amt; break;
-case LEFT:	lab_rt -= amt; break;
-case RIGHT:	lab_rt += amt; break;
+case UP: lab_up += amt; break;
+case DOWN: lab_up -= amt; break;
+case LEFT: lab_rt -= amt; break;
+case RIGHT: lab_rt += amt; break;
 }
 }
 void label(int label_side, Attr *stringlist)

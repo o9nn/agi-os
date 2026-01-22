@@ -24,9 +24,9 @@ p1, p2: Point;
 seg: fn(l: self Line, s1, s2: real): Line;
 };
 Dmember: adt {
-p:		ref Member;
-score:	int;
-bat:		ref Object;
+p: ref Member;
+score: int;
+bat: ref Object;
 };
 Eusage: con "bad command usage";
 colours := array[4] of {"blue", "orange", "yellow", "white"};
@@ -131,7 +131,7 @@ assert(n == 7, Eusage);
 bat := member.obj(int hd tl toks);
 assert(bat != nil, "no such bat");
 ball := clique.newobject(nil, All, "ball");
-ball.setattr("state", string bat.id +  " " + string ord +
+ball.setattr("state", string bat.id + " " + string ord +
 " " + concat(tl tl toks) + " " + string sys->millisec(), All);
 "lost" =>
 # lost ballid

@@ -1,5 +1,5 @@
 #ifndef std_INCLUDED
-#  define std_INCLUDED
+# define std_INCLUDED
 #include "stdpre.h"
 #include "arch.h"
 #define arch_align_short_mod ARCH_ALIGN_SHORT_MOD
@@ -65,28 +65,28 @@ typedef ulong bits32;
 #define max_uint arch_max_uint
 #define max_ulong arch_max_ulong
 #if arch_ptrs_are_signed
-#  define min_ptr min_long
-#  define max_ptr max_long
+# define min_ptr min_long
+# define max_ptr max_long
 #else
-#  define min_ptr ((ulong)0)
-#  define max_ptr max_ulong
+# define min_ptr ((ulong)0)
+# define max_ptr max_ulong
 #endif
 #define arith_rshift_slow(x,n) ((x) < 0 ? ~(~(x) >> (n)) : (x) >> (n))
 #if arch_arith_rshift == 2
-#  define arith_rshift(x,n) ((x) >> (n))
-#  define arith_rshift_1(x) ((x) >> 1)
+# define arith_rshift(x,n) ((x) >> (n))
+# define arith_rshift_1(x) ((x) >> 1)
 #else
 #if arch_arith_rshift == 1
-#  define arith_rshift(x,n) ((x) >> (n))
-#  define arith_rshift_1(x) arith_rshift_slow(x,1)
+# define arith_rshift(x,n) ((x) >> (n))
+# define arith_rshift_1(x) arith_rshift_slow(x,1)
 #else
-#  define arith_rshift(x,n) arith_rshift_slow(x,n)
-#  define arith_rshift_1(x) arith_rshift_slow(x,1)
+# define arith_rshift(x,n) arith_rshift_slow(x,n)
+# define arith_rshift_1(x) arith_rshift_slow(x,1)
 #endif
 #endif
 #include <stdio.h>
 #ifndef gs_memory_DEFINED
-#  define gs_memory_DEFINED
+# define gs_memory_DEFINED
 typedef struct gs_memory_s gs_memory_t;
 #endif
 #define init_proc(proc)\
@@ -106,10 +106,10 @@ int errprintf();
 #endif
 #if __LINE__
 void dprintf_file_and_line(const char *, int);
-#  define _dpl dprintf_file_and_line(__FILE__, __LINE__),
+# define _dpl dprintf_file_and_line(__FILE__, __LINE__),
 #else
 void dprintf_file_only(const char *);
-#  define _dpl dprintf_file_only(__FILE__),
+# define _dpl dprintf_file_only(__FILE__),
 #endif
 void dflush(void);
 #define dputc(chr) dprintf1("%c", chr)
@@ -197,10 +197,10 @@ long gs_revision_number(void);
 (_epi epf(str, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10))
 #if __LINE__
 void lprintf_file_and_line(const char *, int);
-#  define _epl _epi lprintf_file_and_line(__FILE__, __LINE__),
+# define _epl _epi lprintf_file_and_line(__FILE__, __LINE__),
 #else
 void lprintf_file_only(const char *);
-#  define _epl _epi lprintf_file_only(__FILE__)
+# define _epl _epi lprintf_file_only(__FILE__)
 #endif
 #define lprintf(str)\
 (_epl epf(str))
@@ -225,7 +225,7 @@ void lprintf_file_only(const char *);
 #define lprintf10(str,arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10)\
 (_epl epf(str, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10))
 #ifndef gs_memory_DEFINED
-#  define gs_memory_DEFINED
+# define gs_memory_DEFINED
 typedef struct gs_memory_s gs_memory_t;
 #endif
 #define init_proc(proc)\

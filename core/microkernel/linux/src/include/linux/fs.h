@@ -30,23 +30,23 @@ extern int max_files, nr_files;
 #ifndef NULL
 #define NULL ((void *) 0)
 #endif
-#define NIL_FILP	((struct file *)0)
-#define SEL_IN		1
-#define SEL_OUT		2
-#define SEL_EX		4
-#define MS_RDONLY	 1
-#define MS_NOSUID	 2
-#define MS_NODEV	 4
-#define MS_NOEXEC	 8
-#define MS_SYNCHRONOUS	16
-#define MS_REMOUNT	32
-#define MS_MANDLOCK	64
-#define S_WRITE		128
-#define S_APPEND	256
-#define S_IMMUTABLE	512
-#define MS_NOATIME	1024
-#define S_BAD_INODE	2048
-#define S_ZERO_WR	4096
+#define NIL_FILP ((struct file *)0)
+#define SEL_IN 1
+#define SEL_OUT 2
+#define SEL_EX 4
+#define MS_RDONLY 1
+#define MS_NOSUID 2
+#define MS_NODEV 4
+#define MS_NOEXEC 8
+#define MS_SYNCHRONOUS 16
+#define MS_REMOUNT 32
+#define MS_MANDLOCK 64
+#define S_WRITE 128
+#define S_APPEND 256
+#define S_IMMUTABLE 512
+#define MS_NOATIME 1024
+#define S_BAD_INODE 2048
+#define S_ZERO_WR 4096
 #define MS_RMT_MASK (MS_RDONLY|MS_NOSUID|MS_NODEV|MS_NOEXEC|MS_SYNCHRONOUS|MS_MANDLOCK|MS_NOATIME)
 #define MS_MGC_VAL 0xC0ED0000
 #define MS_MGC_MSK 0xffff0000
@@ -60,22 +60,22 @@ extern int max_files, nr_files;
 #define IS_APPEND(inode) ((inode)->i_flags & S_APPEND)
 #define IS_IMMUTABLE(inode) ((inode)->i_flags & S_IMMUTABLE)
 #define IS_NOATIME(inode) ((inode)->i_flags & MS_NOATIME)
-#define        IS_ZERO_WR(inode) ((inode)->i_flags & S_ZERO_WR)
+#define IS_ZERO_WR(inode) ((inode)->i_flags & S_ZERO_WR)
 #define UPDATE_ATIME(inode) \
 if (!IS_NOATIME(inode) && !IS_RDONLY(inode)) { \
 inode->i_atime = CURRENT_TIME; \
 inode->i_dirt = 1; \
 }
-#define BLKROSET   _IO(0x12,93)
-#define BLKROGET   _IO(0x12,94)
-#define BLKRRPART  _IO(0x12,95)
+#define BLKROSET _IO(0x12,93)
+#define BLKROGET _IO(0x12,94)
+#define BLKRRPART _IO(0x12,95)
 #define BLKGETSIZE _IO(0x12,96)
-#define BLKFLSBUF  _IO(0x12,97)
-#define BLKRASET   _IO(0x12,98)
-#define BLKRAGET   _IO(0x12,99)
+#define BLKFLSBUF _IO(0x12,97)
+#define BLKRASET _IO(0x12,98)
+#define BLKRAGET _IO(0x12,99)
 #define BMAP_IOCTL 1
-#define FIBMAP	   _IO(0x00,1)
-#define FIGETBSZ   _IO(0x00,2)
+#define FIBMAP _IO(0x00,1)
+#define FIGETBSZ _IO(0x00,2)
 #ifdef __KERNEL__
 #include <asm/semaphore.h>
 #include <asm/bitops.h>
@@ -84,15 +84,15 @@ extern unsigned long inode_init(unsigned long start, unsigned long end);
 extern unsigned long file_table_init(unsigned long start, unsigned long end);
 extern unsigned long name_cache_init(unsigned long start, unsigned long end);
 typedef char buffer_block[BLOCK_SIZE];
-#define BH_Uptodate		0
-#define BH_Dirty		1
-#define BH_Lock			2
-#define BH_Req			3
-#define BH_Touched		4
-#define BH_Has_aged		5
-#define BH_Protected		6
-#define BH_FreeOnIO		7
-#define BH_MD			8
+#define BH_Uptodate 0
+#define BH_Dirty 1
+#define BH_Lock 2
+#define BH_Req 3
+#define BH_Touched 4
+#define BH_Has_aged 5
+#define BH_Protected 6
+#define BH_FreeOnIO 7
+#define BH_MD 8
 struct buffer_head {
 unsigned long b_blocknr;
 kdev_t b_dev;
@@ -156,43 +156,43 @@ return test_bit(BH_Protected, &bh->b_state);
 #include <linux/sysv_fs_i.h>
 #include <linux/affs_fs_i.h>
 #include <linux/ufs_fs_i.h>
-#define ATTR_MODE	1
-#define ATTR_UID	2
-#define ATTR_GID	4
-#define ATTR_SIZE	8
-#define ATTR_ATIME	16
-#define ATTR_MTIME	32
-#define ATTR_CTIME	64
-#define ATTR_ATIME_SET	128
-#define ATTR_MTIME_SET	256
-#define ATTR_FORCE	512
+#define ATTR_MODE 1
+#define ATTR_UID 2
+#define ATTR_GID 4
+#define ATTR_SIZE 8
+#define ATTR_ATIME 16
+#define ATTR_MTIME 32
+#define ATTR_CTIME 64
+#define ATTR_ATIME_SET 128
+#define ATTR_MTIME_SET 256
+#define ATTR_FORCE 512
 struct iattr {
-unsigned int	ia_valid;
-umode_t		ia_mode;
-uid_t		ia_uid;
-gid_t		ia_gid;
-off_t		ia_size;
-time_t		ia_atime;
-time_t		ia_mtime;
-time_t		ia_ctime;
+unsigned int ia_valid;
+umode_t ia_mode;
+uid_t ia_uid;
+gid_t ia_gid;
+off_t ia_size;
+time_t ia_atime;
+time_t ia_mtime;
+time_t ia_ctime;
 };
 #include <linux/quota.h>
 struct inode {
-kdev_t		i_dev;
-unsigned long	i_ino;
-umode_t		i_mode;
-nlink_t		i_nlink;
-uid_t		i_uid;
-gid_t		i_gid;
-kdev_t		i_rdev;
-off_t		i_size;
-time_t		i_atime;
-time_t		i_mtime;
-time_t		i_ctime;
-unsigned long	i_blksize;
-unsigned long	i_blocks;
-unsigned long	i_version;
-unsigned long	i_nrpages;
+kdev_t i_dev;
+unsigned long i_ino;
+umode_t i_mode;
+nlink_t i_nlink;
+uid_t i_uid;
+gid_t i_gid;
+kdev_t i_rdev;
+off_t i_size;
+time_t i_atime;
+time_t i_mtime;
+time_t i_ctime;
+unsigned long i_blksize;
+unsigned long i_blocks;
+unsigned long i_version;
+unsigned long i_nrpages;
 struct semaphore i_sem;
 struct inode_operations *i_op;
 struct super_block *i_sb;
@@ -250,10 +250,10 @@ struct file_operations * f_op;
 unsigned long f_version;
 void *private_data;
 };
-#define FL_POSIX	1
-#define FL_FLOCK	2
-#define FL_BROKEN	4
-#define FL_ACCESS	8
+#define FL_POSIX 1
+#define FL_FLOCK 2
+#define FL_BROKEN 4
+#define FL_ACCESS 8
 struct file_lock {
 struct file_lock *fl_next;
 struct file_lock *fl_nextlink;
@@ -273,7 +273,7 @@ extern int fcntl_getlk(unsigned int fd, struct flock *l);
 extern int fcntl_setlk(unsigned int fd, unsigned int cmd, struct flock *l);
 extern void locks_remove_locks(struct task_struct *task, struct file *filp);
 #include <linux/stat.h>
-#define FLOCK_VERIFY_READ  1
+#define FLOCK_VERIFY_READ 1
 #define FLOCK_VERIFY_WRITE 2
 extern int locks_mandatory_locked(struct inode *inode);
 extern int locks_mandatory_area(int read_write, struct inode *inode,
@@ -297,9 +297,9 @@ count));
 return (0);
 }
 struct fasync_struct {
-int    magic;
-struct fasync_struct	*fa_next;
-struct file 		*fa_file;
+int magic;
+struct fasync_struct *fa_next;
+struct file *fa_file;
 };
 #define FASYNC_MAGIC 0x4601
 extern int fasync_helper(struct inode *, struct file *, int, struct fasync_struct **);
@@ -447,11 +447,11 @@ extern int try_to_free_buffer(struct buffer_head*, struct buffer_head**, int);
 extern int nr_buffers;
 extern int buffermem;
 extern int nr_buffer_heads;
-#define BUF_CLEAN	0
-#define BUF_LOCKED	1
-#define BUF_LOCKED1	2
-#define BUF_DIRTY	3
-#define NR_LIST		4
+#define BUF_CLEAN 0
+#define BUF_LOCKED 1
+#define BUF_LOCKED1 2
+#define BUF_DIRTY 3
+#define NR_LIST 4
 void mark_buffer_uptodate(struct buffer_head * bh, int on);
 extern inline void mark_buffer_clean(struct buffer_head * bh)
 {

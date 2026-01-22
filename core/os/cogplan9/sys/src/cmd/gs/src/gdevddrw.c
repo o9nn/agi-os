@@ -124,7 +124,7 @@ for (i = 0; i < num_components; i++) {
 int64_t fc = g->f[i] + (int64_t)g->num[i] * fixed_1;
 int32_t fc32;
 g->c[i] += (int32_t)(fc / g->den);
-fc32 = (int32_t)(fc -  fc / g->den * g->den);
+fc32 = (int32_t)(fc - fc / g->den * g->den);
 if (fc32 < 0) {
 fc32 += g->den;
 g->c[i]--;
@@ -153,10 +153,10 @@ int32_t xr = r->x - (r->xf == -r->h ? 1 : 0) - fixed_half;
 int32_t x0 = int2fixed(il) + fixed_half;
 int32_t x1 = int2fixed(ir) + fixed_half;
 int i;
-#   ifdef DEBUG
+# ifdef DEBUG
 if (arith_rshift_1(xr) - arith_rshift_1(xl) >= 0x3FFFFFFE)
 return_error(gs_error_unregistered);
-#   endif
+# endif
 xg->den = fixed2int(x1 - x0);
 for (i = 0; i < num_components; i++) {
 int32_t cl = lg->c[i];

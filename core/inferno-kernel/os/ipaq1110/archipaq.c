@@ -1,17 +1,17 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"io.h"
-#include	"draw.h"
-#include	<memdraw.h>
-#include	"screen.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "io.h"
+#include "draw.h"
+#include <memdraw.h>
+#include "screen.h"
 #include "../port/netif.h"
 #include "etherif.h"
-#include	"../port/flashif.h"
-#define	EGPIOADDR		0x49000000
+#include "../port/flashif.h"
+#define EGPIOADDR 0x49000000
 static ulong egpiocopy;
 static void
 egpiosc(ulong set, ulong clr)
@@ -201,10 +201,10 @@ MHz12_288 = 0
 };
 typedef struct Csel Csel;
 struct Csel{
-int	speed;
-int	cfs;
-int	gclk;
-int	div;
+int speed;
+int cfs;
+int gclk;
+int div;
 };
 static Csel csel[] = {
 {8000, Fs512, MHz4_096, 16},

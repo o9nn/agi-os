@@ -8,21 +8,21 @@
 #ifndef DB_HISTORY_SIZE
 #define DB_HISTORY_SIZE 4000
 #endif
-char *	db_lbuf_start;
-char *	db_lbuf_end;
-char *	db_lc;
-char *	db_le;
+char * db_lbuf_start;
+char * db_lbuf_end;
+char * db_lc;
+char * db_le;
 #if DB_HISTORY_SIZE != 0
-char    db_history[DB_HISTORY_SIZE];
-int     db_history_size = DB_HISTORY_SIZE;
-char *  db_history_curr = db_history;
-char *  db_history_last = db_history;
-char *  db_history_prev = (char *) 0;
+char db_history[DB_HISTORY_SIZE];
+int db_history_size = DB_HISTORY_SIZE;
+char * db_history_curr = db_history;
+char * db_history_last = db_history;
+char * db_history_prev = (char *) 0;
 #endif
-#define	CTRL(c)		((c) & 0x1f)
-#define	isspace(c)	((c) == ' ' || (c) == '\t')
-#define	BLANK		' '
-#define	BACKUP		'\b'
+#define CTRL(c) ((c) & 0x1f)
+#define isspace(c) ((c) == ' ' || (c) == '\t')
+#define BLANK ' '
+#define BACKUP '\b'
 static void
 db_putstring(const char *s, int count)
 {
@@ -35,12 +35,12 @@ db_putnchars(int c, int count)
 while (--count >= 0)
 cnputc(c);
 }
-#define	DEL_FWD		0
-#define	DEL_BWD		1
+#define DEL_FWD 0
+#define DEL_BWD 1
 static void
 db_delete(
-int	n,
-int	bwd)
+int n,
+int bwd)
 {
 char *p;
 if (bwd) {
@@ -293,12 +293,12 @@ return (FALSE);
 }
 int
 db_readline(
-char *	lstart,
-int	lsize)
+char * lstart,
+int lsize)
 {
 db_force_whitespace();
 db_lbuf_start = lstart;
-db_lbuf_end   = lstart + lsize - 1;
+db_lbuf_end = lstart + lsize - 1;
 db_lc = lstart;
 db_le = lstart;
 while (!db_inputchar(cngetc()))
@@ -310,7 +310,7 @@ return (db_le - db_lbuf_start);
 void
 db_check_interrupt(void)
 {
-int	c;
+int c;
 c = cnmaygetc();
 switch (c) {
 case -1:

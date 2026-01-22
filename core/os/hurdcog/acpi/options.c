@@ -9,11 +9,11 @@ parse_opt (int opt, char *arg, struct argp_state *state)
 {
 error_t err = 0;
 struct parse_hook *h = state->hook;
-#define RETURN(_err)                          \
+#define RETURN(_err) \
 do { return _err; } while (0)
-#define PERR(err, fmt, args...)               \
+#define PERR(err, fmt, args...) \
 do { argp_error (state, fmt , ##args); RETURN (err); } while (0)
-#define FAIL(rerr, status, perr, fmt, args...)  \
+#define FAIL(rerr, status, perr, fmt, args...) \
 do{ argp_failure (state, status, perr, fmt , ##args); RETURN (rerr); } while(0)
 if (!arg && state->next < state->argc && (*state->argv[state->next] != '-'))
 {
@@ -78,10 +78,10 @@ netfs_append_args (char **argz, size_t * argz_len)
 {
 error_t err = 0;
 struct acpifs_perm *p;
-#define ADD_OPT(fmt, args...)           \
-do { char buf[100];                   \
-if (! err) {                     \
-snprintf (buf, sizeof buf, fmt , ##args);      \
+#define ADD_OPT(fmt, args...) \
+do { char buf[100]; \
+if (! err) { \
+snprintf (buf, sizeof buf, fmt , ##args); \
 err = argz_add (argz, argz_len, buf); } } while (0)
 p = &fs->perm;
 if (p->uid >= 0)

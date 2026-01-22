@@ -78,7 +78,7 @@ fmtuserstring(&fmt, a, " ");
 a = va_arg(list, char*);
 fmtuserstring(&fmt, a, " ");
 i[0] = va_arg(list, int);
-fmtprint(&fmt, "%#ux",  i[0]);
+fmtprint(&fmt, "%#ux", i[0]);
 break;
 case CLOSE:
 case NOTED:

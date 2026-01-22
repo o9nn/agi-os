@@ -19,7 +19,7 @@
 #include "login-interface.h"
 #include "login-server-auth.h"
 #define TEST_SOCKET "./login-server-auth-test"
-#define SERVER_KILL_TIMEOUT_SECS    20
+#define SERVER_KILL_TIMEOUT_SECS 20
 static void main_deinit(void);
 struct server_connection {
 struct connection conn;

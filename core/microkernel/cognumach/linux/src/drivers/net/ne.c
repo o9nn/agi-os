@@ -20,12 +20,12 @@ static unsigned int netcard_portlist[] =
 #ifdef CONFIG_PCI
 static struct { unsigned short vendor, dev_id;}
 pci_clone_list[] = {
-{PCI_VENDOR_ID_REALTEK,		PCI_DEVICE_ID_REALTEK_8029},
-{PCI_VENDOR_ID_WINBOND2,	PCI_DEVICE_ID_WINBOND2_89C940},
-{PCI_VENDOR_ID_COMPEX,		PCI_DEVICE_ID_COMPEX_RL2000},
-{PCI_VENDOR_ID_KTI,		PCI_DEVICE_ID_KTI_ET32P2},
-{PCI_VENDOR_ID_NETVIN,		PCI_DEVICE_ID_NETVIN_NV5000SC},
-{PCI_VENDOR_ID_VIA,		PCI_DEVICE_ID_VIA_82C926},
+{PCI_VENDOR_ID_REALTEK, PCI_DEVICE_ID_REALTEK_8029},
+{PCI_VENDOR_ID_WINBOND2, PCI_DEVICE_ID_WINBOND2_89C940},
+{PCI_VENDOR_ID_COMPEX, PCI_DEVICE_ID_COMPEX_RL2000},
+{PCI_VENDOR_ID_KTI, PCI_DEVICE_ID_KTI_ET32P2},
+{PCI_VENDOR_ID_NETVIN, PCI_DEVICE_ID_NETVIN_NV5000SC},
+{PCI_VENDOR_ID_VIA, PCI_DEVICE_ID_VIA_82C926},
 {0,}
 };
 #endif
@@ -37,7 +37,7 @@ bad_clone_list[] = {
 {"DFI1000", "DFI2000", {'D', 'F', 'I',}},
 {"EtherNext UTP8", "EtherNext UTP16", {0x00, 0x00, 0x79}},
 {"NE1000","NE2000-invalid", {0x00, 0x00, 0xd8}},
-{"NN1000", "NN2000",  {0x08, 0x03, 0x08}},
+{"NN1000", "NN2000", {0x08, 0x03, 0x08}},
 {"4-DIM8","4-DIM16", {0x00,0x00,0x4d,}},
 {"Con-Intl_8", "Con-Intl_16", {0x00, 0x00, 0x24}},
 {"ET-100","ET-200", {0x00, 0x45, 0x54}},
@@ -47,15 +47,15 @@ bad_clone_list[] = {
 {0,}
 };
 #endif
-#define NE_BASE	 (dev->base_addr)
-#define NE_CMD	 	0x00
-#define NE_DATAPORT	0x10
-#define NE_RESET	0x1f
-#define NE_IO_EXTENT	0x20
-#define NE1SM_START_PG	0x20
-#define NE1SM_STOP_PG 	0x40
-#define NESM_START_PG	0x40
-#define NESM_STOP_PG	0x80
+#define NE_BASE (dev->base_addr)
+#define NE_CMD 0x00
+#define NE_DATAPORT 0x10
+#define NE_RESET 0x1f
+#define NE_IO_EXTENT 0x20
+#define NE1SM_START_PG 0x20
+#define NE1SM_STOP_PG 0x40
+#define NESM_START_PG 0x40
+#define NESM_STOP_PG 0x80
 static unsigned char pci_irq_line = 0;
 int ne_probe(struct device *dev);
 #ifdef CONFIG_PCI
@@ -160,7 +160,7 @@ int reg0 = inb_p(ioaddr);
 static unsigned version_printed = 0;
 if (reg0 == 0xFF)
 return ENODEV;
-{	int regd;
+{ int regd;
 outb_p(E8390_NODMA+E8390_PAGE1+E8390_STOP, ioaddr + E8390_CMD);
 regd = inb_p(ioaddr + 0x0d);
 outb_p(0xff, ioaddr + 0x0d);
@@ -176,11 +176,11 @@ if (dev == NULL) {
 printk(KERN_ERR "ne.c: Passed a NULL device.\n");
 dev = init_etherdev(0, 0);
 }
-if (ei_debug  &&  version_printed++ == 0)
+if (ei_debug && version_printed++ == 0)
 printk("%s", version);
 printk("NE*000 ethercard probe at %#3x:", ioaddr);
 bad_card = ((dev->base_addr != 0) && (dev->mem_end == 0xbad));
-{	unsigned long reset_start_time = jiffies;
+{ unsigned long reset_start_time = jiffies;
 outb(inb(ioaddr + NE_RESET), ioaddr + NE_RESET);
 while ((inb_p(ioaddr + EN0_ISR) & ENISR_RESET) == 0)
 if (jiffies - reset_start_time > 2*HZ/100) {
@@ -197,17 +197,17 @@ outb_p(0xff, ioaddr + EN0_ISR);
 {
 struct {unsigned char value, offset; } program_seq[] = {
 {E8390_NODMA+E8390_PAGE0+E8390_STOP, E8390_CMD},
-{0x48,	EN0_DCFG},
-{0x00,	EN0_RCNTLO},
-{0x00,	EN0_RCNTHI},
-{0x00,	EN0_IMR},
-{0xFF,	EN0_ISR},
+{0x48, EN0_DCFG},
+{0x00, EN0_RCNTLO},
+{0x00, EN0_RCNTHI},
+{0x00, EN0_IMR},
+{0xFF, EN0_ISR},
 {E8390_RXOFF, EN0_RXCR},
 {E8390_TXOFF, EN0_TXCR},
-{32,	EN0_RCNTLO},
-{0x00,	EN0_RCNTHI},
-{0x00,	EN0_RSARLO},
-{0x00,	EN0_RSARHI},
+{32, EN0_RCNTLO},
+{0x00, EN0_RCNTHI},
+{0x00, EN0_RSARLO},
+{0x00, EN0_RSARHI},
 {E8390_RREAD+E8390_START, E8390_CMD},
 };
 for (i = 0; i < sizeof(program_seq)/sizeof(program_seq[0]); i++)
@@ -232,8 +232,8 @@ stop_page = NESM_STOP_PG;
 start_page = NE1SM_START_PG;
 stop_page = NE1SM_STOP_PG;
 }
-neX000 = (SA_prom[14] == 0x57  &&  SA_prom[15] == 0x57);
-ctron =  (SA_prom[0] == 0x00 && SA_prom[1] == 0x00 && SA_prom[2] == 0x1d);
+neX000 = (SA_prom[14] == 0x57 && SA_prom[15] == 0x57);
+ctron = (SA_prom[0] == 0x00 && SA_prom[1] == 0x00 && SA_prom[2] == 0x1d);
 if (neX000 || bad_card) {
 name = (wordlength == 2) ? "NE2000" : "NE1000";
 } else if (ctron) {
@@ -453,7 +453,7 @@ retry:
 #endif
 #ifdef NE8390_RW_BUGFIX
 outb_p(0x42, nic_base + EN0_RCNTLO);
-outb_p(0x00,   nic_base + EN0_RCNTHI);
+outb_p(0x00, nic_base + EN0_RCNTHI);
 outb_p(0x42, nic_base + EN0_RSARLO);
 outb_p(0x00, nic_base + EN0_RSARHI);
 outb_p(E8390_RREAD+E8390_START, nic_base + NE_CMD);
@@ -463,7 +463,7 @@ SLOW_DOWN_IO;
 #endif
 outb_p(ENISR_RDC, nic_base + EN0_ISR);
 outb_p(count & 0xff, nic_base + EN0_RCNTLO);
-outb_p(count >> 8,   nic_base + EN0_RCNTHI);
+outb_p(count >> 8, nic_base + EN0_RCNTHI);
 outb_p(0x00, nic_base + EN0_RSARLO);
 outb_p(start_page, nic_base + EN0_RSARHI);
 outb_p(E8390_RWRITE+E8390_START, nic_base + NE_CMD);
@@ -504,8 +504,8 @@ ei_status.dmaing &= ~0x01;
 return;
 }
 #ifdef MODULE
-#define MAX_NE_CARDS	4
-#define NAMELEN		8
+#define MAX_NE_CARDS 4
+#define NAMELEN 8
 static char namelist[NAMELEN * MAX_NE_CARDS] = { 0, };
 static struct device dev_ne[MAX_NE_CARDS] = {
 {
@@ -516,8 +516,8 @@ NULL,
 },
 };
 static int io[MAX_NE_CARDS] = { 0, };
-static int irq[MAX_NE_CARDS]  = { 0, };
-static int bad[MAX_NE_CARDS]  = { 0, };
+static int irq[MAX_NE_CARDS] = { 0, };
+static int bad[MAX_NE_CARDS] = { 0, };
 int
 init_module(void)
 {

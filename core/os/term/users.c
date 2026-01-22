@@ -758,7 +758,7 @@ return EOPNOTSUPP;
 }
 pthread_mutex_lock (&global_lock);
 if (!(cred->po->openmodes & (O_READ|O_WRITE)))
-err =  EBADF;
+err = EBADF;
 else
 {
 if (flags == 0)
@@ -1549,7 +1549,7 @@ int *type)
 return io_select_common (cred, reply, reply_type, &ts, type);
 }
 kern_return_t
-trivfs_S_io_map  (struct trivfs_protid *cred,
+trivfs_S_io_map (struct trivfs_protid *cred,
 mach_port_t reply,
 mach_msg_type_name_t replyPoly,
 mach_port_t *rdobj,

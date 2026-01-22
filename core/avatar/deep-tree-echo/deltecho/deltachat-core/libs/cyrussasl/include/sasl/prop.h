@@ -2,18 +2,18 @@
 #define PROP_H 1
 #ifdef WIN32
 # ifdef LIBSASL_EXPORTS
-#  define LIBSASL_API  extern __declspec(dllexport)
+# define LIBSASL_API extern __declspec(dllexport)
 # else
-#  define LIBSASL_API  extern __declspec(dllimport)
+# define LIBSASL_API extern __declspec(dllimport)
 # endif
 #else
 # define LIBSASL_API extern
 #endif
 #ifdef WIN32
 # ifdef LIBSASL_EXPORTS
-#  define LIBSASL_VAR  extern __declspec(dllexport)
+# define LIBSASL_VAR extern __declspec(dllexport)
 # else
-#  define LIBSASL_VAR  extern __declspec(dllimport)
+# define LIBSASL_VAR extern __declspec(dllimport)
 # endif
 #else
 # define LIBSASL_VAR extern

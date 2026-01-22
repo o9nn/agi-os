@@ -19,10 +19,10 @@ aCENTRERIGHT, aCENTRELEFT, aUPPERRIGHT,
 EXPAND, FILLX, FILLY, Stackspec: import Cardlib;
 include "../gather.m";
 clique: ref Clique;
-open: array of ref Object;		# [8]
-cells: array of ref Object;		# [4]
-acepiles: array of ref Object;	# [4]
-txpiles: array of ref Object;	# [len open + len cells]
+open: array of ref Object; # [8]
+cells: array of ref Object; # [4]
+acepiles: array of ref Object; # [4]
+txpiles: array of ref Object; # [len open + len cells]
 deck: ref Object;
 fnames := array[] of {
 "qua",
@@ -52,22 +52,22 @@ suitsout := array[4] of {* => -1};
 mainmember: ref Cmember;
 CLICK: con iota;
 Openspec := Stackspec(
-"display",		# style
-19,			# maxcards
-0,			# conceal
-""			# title
+"display", # style
+19, # maxcards
+0, # conceal
+"" # title
 );
 Pilespec := Stackspec(
-"pile",		# style
-19,			# maxcards
-0,			# conceal
-"pile"		# title
+"pile", # style
+19, # maxcards
+0, # conceal
+"pile" # title
 );
 Untitledpilespec := Stackspec(
-"pile",		# style
-13,			# maxcards
-0,			# conceal
-""			# title
+"pile", # style
+13, # maxcards
+0, # conceal
+"" # title
 );
 clienttype(): string
 {
@@ -352,45 +352,45 @@ cp.sel.setrange(r);
 #randstate := 1;
 #srand(seed: int)
 #{
-#        randstate = seed;
+# randstate = seed;
 #}
 #
 #rand(): int
 #{
-#	randstate = randstate * 214013 + 2531011;
-#	return (randstate >> 16) & 0x7fff;
+# randstate = randstate * 214013 + 2531011;
+# return (randstate >> 16) & 0x7fff;
 #}
 ##From: jimh@MICROSOFT.com (Jim Horne)
 ##
 ##I'm happy to share the card shuffle algorithm, but I warn you,
 ##it does depend on the rand() and srand() function built into MS
-##compilers.  The good news is that I believe these work the same
+##compilers. The good news is that I believe these work the same
 ##for all our compilers.
 ##
 ##I use cards.dll which has it's own mapping of numbers (0-51) to
-##cards.  The following will give you the idea.  Play around with
+##cards. The following will give you the idea. Play around with
 ##this and you'll be able to generate all the cliques.
 ##
-##Go ahead and post the code.  People might as well have fun with it.
+##Go ahead and post the code. People might as well have fun with it.
 ##Please keep me posted on anything interesting that comes of it.
 ##Thanks.
 #
 #msdeal(cliquenumber: int): array of array of Card
 #{
-#	deck := array[52] of Card;
-#	for (i := 0; i < len deck; i++)	# put unique card in each deck loc.
-#		deck[i] = Card(i % 4, i / 4, 0);
-#	wleft := 52;				# cards left to be chosen in shuffle
-#	cards := array[8] of {* => array[7] of Card};
-#	max := array[8] of {* => 0};
-#	srand(cliquenumber);
-#	for (i = 0; i < 52; i++)	{
-#		j := rand() % wleft;
-#		card[i % 8][i / 8] = deck[j];
-#		max[i % 8] = i / 8;
-#		deck[j] = deck[--wleft];
-#	}
-#	for (i = 0; i < len cards; i++)
-#		cards[i] = cards[i][0:max[i]];
-#	return cards;
+# deck := array[52] of Card;
+# for (i := 0; i < len deck; i++) # put unique card in each deck loc.
+# deck[i] = Card(i % 4, i / 4, 0);
+# wleft := 52; # cards left to be chosen in shuffle
+# cards := array[8] of {* => array[7] of Card};
+# max := array[8] of {* => 0};
+# srand(cliquenumber);
+# for (i = 0; i < 52; i++) {
+# j := rand() % wleft;
+# card[i % 8][i / 8] = deck[j];
+# max[i % 8] = i / 8;
+# deck[j] = deck[--wleft];
+# }
+# for (i = 0; i < len cards; i++)
+# cards[i] = cards[i][0:max[i]];
+# return cards;
 #}

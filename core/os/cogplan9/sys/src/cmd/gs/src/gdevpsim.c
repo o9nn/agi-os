@@ -5,10 +5,10 @@
 #include "sa85x.h"
 #include "srlx.h"
 #ifndef X_DPI
-#  define X_DPI 300
+# define X_DPI 300
 #endif
 #ifndef Y_DPI
-#  define Y_DPI 300
+# define Y_DPI 300
 #endif
 private void
 ps_image_write_headers(FILE *f, gx_device_printer *pdev,

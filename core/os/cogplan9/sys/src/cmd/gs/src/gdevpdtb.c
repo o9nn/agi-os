@@ -486,7 +486,7 @@ return 0;
 }
 bool
 pdf_is_standard_font(pdf_base_font_t *bfont)
-{   return bfont->is_standard;
+{ return bfont->is_standard;
 }
 void
 pdf_set_FontFile_object(pdf_base_font_t *bfont, cos_dict_t *pcd)

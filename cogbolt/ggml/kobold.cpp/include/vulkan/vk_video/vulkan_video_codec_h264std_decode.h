@@ -16,34 +16,34 @@ STD_VIDEO_DECODE_H264_FIELD_ORDER_COUNT_INVALID = 0x7FFFFFFF,
 STD_VIDEO_DECODE_H264_FIELD_ORDER_COUNT_MAX_ENUM = 0x7FFFFFFF
 } StdVideoDecodeH264FieldOrderCount;
 typedef struct StdVideoDecodeH264PictureInfoFlags {
-uint32_t    field_pic_flag : 1;
-uint32_t    is_intra : 1;
-uint32_t    IdrPicFlag : 1;
-uint32_t    bottom_field_flag : 1;
-uint32_t    is_reference : 1;
-uint32_t    complementary_field_pair : 1;
+uint32_t field_pic_flag : 1;
+uint32_t is_intra : 1;
+uint32_t IdrPicFlag : 1;
+uint32_t bottom_field_flag : 1;
+uint32_t is_reference : 1;
+uint32_t complementary_field_pair : 1;
 } StdVideoDecodeH264PictureInfoFlags;
 typedef struct StdVideoDecodeH264PictureInfo {
-StdVideoDecodeH264PictureInfoFlags    flags;
-uint8_t                               seq_parameter_set_id;
-uint8_t                               pic_parameter_set_id;
-uint8_t                               reserved1;
-uint8_t                               reserved2;
-uint16_t                              frame_num;
-uint16_t                              idr_pic_id;
-int32_t                               PicOrderCnt[STD_VIDEO_DECODE_H264_FIELD_ORDER_COUNT_LIST_SIZE];
+StdVideoDecodeH264PictureInfoFlags flags;
+uint8_t seq_parameter_set_id;
+uint8_t pic_parameter_set_id;
+uint8_t reserved1;
+uint8_t reserved2;
+uint16_t frame_num;
+uint16_t idr_pic_id;
+int32_t PicOrderCnt[STD_VIDEO_DECODE_H264_FIELD_ORDER_COUNT_LIST_SIZE];
 } StdVideoDecodeH264PictureInfo;
 typedef struct StdVideoDecodeH264ReferenceInfoFlags {
-uint32_t    top_field_flag : 1;
-uint32_t    bottom_field_flag : 1;
-uint32_t    used_for_long_term_reference : 1;
-uint32_t    is_non_existing : 1;
+uint32_t top_field_flag : 1;
+uint32_t bottom_field_flag : 1;
+uint32_t used_for_long_term_reference : 1;
+uint32_t is_non_existing : 1;
 } StdVideoDecodeH264ReferenceInfoFlags;
 typedef struct StdVideoDecodeH264ReferenceInfo {
-StdVideoDecodeH264ReferenceInfoFlags    flags;
-uint16_t                                FrameNum;
-uint16_t                                reserved;
-int32_t                                 PicOrderCnt[STD_VIDEO_DECODE_H264_FIELD_ORDER_COUNT_LIST_SIZE];
+StdVideoDecodeH264ReferenceInfoFlags flags;
+uint16_t FrameNum;
+uint16_t reserved;
+int32_t PicOrderCnt[STD_VIDEO_DECODE_H264_FIELD_ORDER_COUNT_LIST_SIZE];
 } StdVideoDecodeH264ReferenceInfo;
 #ifdef __cplusplus
 }

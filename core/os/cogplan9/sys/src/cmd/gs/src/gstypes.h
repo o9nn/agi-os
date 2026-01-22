@@ -1,5 +1,5 @@
 #ifndef gstypes_INCLUDED
-#  define gstypes_INCLUDED
+# define gstypes_INCLUDED
 typedef ulong gs_id;
 #define gs_no_id 0L
 #define GS_STRING_COMMON\

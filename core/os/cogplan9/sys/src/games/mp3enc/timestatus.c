@@ -2,11 +2,11 @@
 # include <config.h>
 #endif
 #if 1
-# define SPEED_CHAR	"x"
-# define SPEED_MULT	1.
+# define SPEED_CHAR "x"
+# define SPEED_MULT 1.
 #else
-# define SPEED_CHAR	"%%"
-# define SPEED_MULT	100.
+# define SPEED_CHAR "%%"
+# define SPEED_MULT 100.
 #endif
 #include <assert.h>
 #include <time.h>
@@ -21,54 +21,54 @@
 #include <dmalloc.h>
 #endif
 typedef struct {
-double  start_time;
-double  elapsed_time;
-double  estimated_time;
-double  speed_index;
+double start_time;
+double elapsed_time;
+double estimated_time;
+double speed_index;
 } timestatus_t;
-static void  ts_calc_times (
-timestatus_t* const  tstime,
-const int            sample_freq,
-const int            frameNum,
-const int            totalframes,
-const int            framesize )
+static void ts_calc_times (
+timestatus_t* const tstime,
+const int sample_freq,
+const int frameNum,
+const int totalframes,
+const int framesize )
 {
-assert ( sample_freq >= 8000  &&  sample_freq <= 48000 );
-if ( frameNum > 0  &&  tstime->elapsed_time > 0 ) {
+assert ( sample_freq >= 8000 && sample_freq <= 48000 );
+if ( frameNum > 0 && tstime->elapsed_time > 0 ) {
 tstime->estimated_time = tstime->elapsed_time * totalframes / frameNum;
-tstime->speed_index    = framesize * frameNum / (sample_freq * tstime->elapsed_time);
+tstime->speed_index = framesize * frameNum / (sample_freq * tstime->elapsed_time);
 } else {
 tstime->estimated_time = 0.;
-tstime->speed_index    = 0.;
+tstime->speed_index = 0.;
 }
 }
-static void  ts_time_decompose ( const unsigned long time_in_sec, const char padded_char )
+static void ts_time_decompose ( const unsigned long time_in_sec, const char padded_char )
 {
 const unsigned long hour = time_in_sec / 3600;
-const unsigned int  min  = time_in_sec / 60 % 60;
-const unsigned int  sec  = time_in_sec % 60;
+const unsigned int min = time_in_sec / 60 % 60;
+const unsigned int sec = time_in_sec % 60;
 if ( hour == 0 )
-fprintf ( stderr,    "   %2u:%02u%c",       min, sec, padded_char );
+fprintf ( stderr, "   %2u:%02u%c", min, sec, padded_char );
 else if ( hour < 100 )
 fprintf ( stderr, "%2lu:%02u:%02u%c", hour, min, sec, padded_char );
 else
-fprintf ( stderr,         "%6lu h%c", hour,           padded_char );
+fprintf ( stderr, "%6lu h%c", hour, padded_char );
 }
 void timestatus ( const int samp_rate,
 const int frameNum,
 const int totalframes,
 const int framesize )
 {
-static timestatus_t  real_time;
-static timestatus_t  proc_time;
-int                  percent;
-static int           init = 0;
+static timestatus_t real_time;
+static timestatus_t proc_time;
+int percent;
+static int init = 0;
 if ( frameNum == 0 ) {
 real_time.start_time = GetRealTime ();
-proc_time.start_time = GetCPUTime  ();
+proc_time.start_time = GetCPUTime ();
 }
 real_time.elapsed_time = GetRealTime () - real_time.start_time;
-proc_time.elapsed_time = GetCPUTime  () - proc_time.start_time;
+proc_time.elapsed_time = GetCPUTime () - proc_time.start_time;
 if ( frameNum == 0 && init == 0 ) {
 fprintf ( stderr,
 "\r"
@@ -82,36 +82,36 @@ if (frameNum > 0)
 init = 0;
 ts_calc_times ( &real_time, samp_rate, frameNum, totalframes, framesize );
 ts_calc_times ( &proc_time, samp_rate, frameNum, totalframes, framesize );
-if ( frameNum < totalframes  ) {
+if ( frameNum < totalframes ) {
 percent = (int) (100. * frameNum / totalframes + 0.5 );
 } else {
 percent = 100;
 }
 fprintf ( stderr, "\r%6i/%-6i", frameNum, totalframes );
 fprintf ( stderr, percent < 100 ? " (%2d%%)|" : "(%3.3d%%)|", percent );
-ts_time_decompose ( (unsigned long)proc_time.elapsed_time  , '/' );
+ts_time_decompose ( (unsigned long)proc_time.elapsed_time , '/' );
 ts_time_decompose ( (unsigned long)proc_time.estimated_time, '|' );
-ts_time_decompose ( (unsigned long)real_time.elapsed_time  , '/' );
+ts_time_decompose ( (unsigned long)real_time.elapsed_time , '/' );
 ts_time_decompose ( (unsigned long)real_time.estimated_time, '|' );
-fprintf ( stderr, proc_time.speed_index <= 1.  ?
-"%9.4f" SPEED_CHAR "|"  :  "%#9.5g" SPEED_CHAR "|",
+fprintf ( stderr, proc_time.speed_index <= 1. ?
+"%9.4f" SPEED_CHAR "|" : "%#9.5g" SPEED_CHAR "|",
 SPEED_MULT * proc_time.speed_index );
 ts_time_decompose ( (unsigned long)(real_time.estimated_time - real_time.elapsed_time), ' ' );
-fflush  ( stderr );
+fflush ( stderr );
 }
 void timestatus_finish ( void )
 {
 fprintf ( stderr, "\n" );
-fflush  ( stderr );
+fflush ( stderr );
 }
 void timestatus_klemm ( const lame_global_flags* const gfp )
 {
-static double  last_time = 0.;
+static double last_time = 0.;
 if ( !silent )
-if ( gfp->frameNum == 0  ||
-gfp->frameNum == 9  ||
-GetRealTime () - last_time >= update_interval  ||
-GetRealTime () - last_time <  0 ) {
+if ( gfp->frameNum == 0 ||
+gfp->frameNum == 9 ||
+GetRealTime () - last_time >= update_interval ||
+GetRealTime () - last_time < 0 ) {
 #ifdef BRHIST
 brhist_jump_back();
 #endif
@@ -129,21 +129,21 @@ last_time = GetRealTime ();
 }
 void decoder_progress ( const lame_global_flags* const gfp, const mp3data_struct* const mp3data )
 {
-static int  last;
+static int last;
 fprintf ( stderr, "\rFrame#%6i/%-6i %3i kbps",
 mp3data->framenum, mp3data->totalframes, mp3data->bitrate );
 if ( mp3data->mode == JOINT_STEREO ) {
-int         curr = mp3data->mode_ext;
+int curr = mp3data->mode_ext;
 fprintf ( stderr, "  %s  %c" ,
-curr&2  ?  last&2 ? " MS " : "LMSR"  :  last&2 ? "LMSR" : "L  R",
-curr&1  ?  last&1 ? 'I'    : 'i'     :  last&1 ? 'i'    : ' ' );
+curr&2 ? last&2 ? " MS " : "LMSR" : last&2 ? "LMSR" : "L  R",
+curr&1 ? last&1 ? 'I' : 'i' : last&1 ? 'i' : ' ' );
 last = curr;
 } else {
 fprintf ( stderr, "         " );
 last = 0;
 }
 fprintf ( stderr, "        \b\b\b\b\b\b\b\b" );
-fflush  ( stderr );
+fflush ( stderr );
 }
 void decoder_progress_finish ( const lame_global_flags* const gfp )
 {

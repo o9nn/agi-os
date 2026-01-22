@@ -4,15 +4,15 @@
 #include <ndb.h>
 struct Ndbcache
 {
-Ndbcache	*next;
-char		*attr;
-char		*val;
-Ndbs		s;
-Ndbtuple	*t;
+Ndbcache *next;
+char *attr;
+char *val;
+Ndbs s;
+Ndbtuple *t;
 };
 enum
 {
-Maxcached=	128,
+Maxcached= 128,
 };
 static void
 ndbcachefree(Ndbcache *c)

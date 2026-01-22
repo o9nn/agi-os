@@ -69,11 +69,11 @@ compare_ignorecase(d1->content_subtype, d2->content_subtype) != 0) &&
 compare_ignorecase(d2->content_subtype, "octet-stream") != 0))
 return FALSE;
 if (compare_ignorecase(d1->content_transfer_encoding, d2->content_transfer_encoding) != 0 ||
-compare_field     (d1->content_id, d2->content_id) != 0 ||
-compare_field     (d1->content_description, d2->content_description) != 0 ||
+compare_field (d1->content_id, d2->content_id) != 0 ||
+compare_field (d1->content_description, d2->content_description) != 0 ||
 compare_ignorecase(d1->content_disposition, d2->content_disposition) != 0 ||
-compare_field     (d1->content_md5, d2->content_md5) != 0 ||
-compare_field     (d1->content_location, d2->content_location) != 0)
+compare_field (d1->content_md5, d2->content_md5) != 0 ||
+compare_field (d1->content_location, d2->content_location) != 0)
 return FALSE;
 return TRUE;
 }
@@ -82,7 +82,7 @@ FUZZ_BEGIN_STR(const char *bodystruct_orig)
 pool_t pool =
 pool_alloconly_create(MEMPOOL_GROWING"fuzz bodystructure", 1024);
 string_t *buffer = str_new(pool, 32);
-struct message_part *parts_orig  = NULL;
+struct message_part *parts_orig = NULL;
 struct message_part *parts_regen = NULL;
 const char *bodystruct_regen;
 const char *error ATTR_UNUSED;

@@ -7,52 +7,52 @@
 #include "../port/error.h"
 #include "../port/netif.h"
 enum {
-Nirq	= 4,
-Baseirq	= 12,
-Nchan	= 32,
+Nirq = 4,
+Baseirq = 12,
+Nchan = 32,
 };
 typedef struct Regs Regs;
 typedef struct Dchan Dchan;
 struct Regs {
-uchar	_pad0[8];
-ulong	irqsts[Nirq];
-ulong	irqen[Nirq];
-ulong	syssts;
-ulong	syscfg;
-uchar	_pad1[0x64 - 0x30];
-ulong	caps[5];
-ulong	gcr;
-ulong	_pad2;
+uchar _pad0[8];
+ulong irqsts[Nirq];
+ulong irqen[Nirq];
+ulong syssts;
+ulong syscfg;
+uchar _pad1[0x64 - 0x30];
+ulong caps[5];
+ulong gcr;
+ulong _pad2;
 struct Dchan {
-ulong	ccr;
-ulong	clnkctrl;
-ulong	cicr;
-ulong	csr;
-ulong	csdp;
-ulong	cen;
-ulong	cfn;
-ulong	cssa;
-ulong	cdsa;
-ulong	csei;
-ulong	csfi;
-ulong	cdei;
-ulong	cdfi;
-ulong	csac;
-ulong	cdac;
-ulong	ccen;
-ulong	ccfn;
-ulong	color;
-uchar	_pad3[24];
+ulong ccr;
+ulong clnkctrl;
+ulong cicr;
+ulong csr;
+ulong csdp;
+ulong cen;
+ulong cfn;
+ulong cssa;
+ulong cdsa;
+ulong csei;
+ulong csfi;
+ulong cdei;
+ulong cdfi;
+ulong csac;
+ulong cdac;
+ulong ccen;
+ulong ccfn;
+ulong color;
+uchar _pad3[24];
 } chan[Nchan];
 };
 enum {
-Blocki	= 1 << 5,
-Enable	= 1 << 7,
+Blocki = 1 << 5,
+Enable = 1 << 7,
 };
 typedef struct Xfer Xfer;
 static struct Xfer {
-Rendez	*rend;
-int	*done;
+Rendez *rend;
+int *done;
 } xfer[Nirq];
 int
 isdmadone(int irq)
@@ -126,7 +126,7 @@ cp->ccen = cp->ccfn = 0;
 cp->color = 0;
 }
 zerowds((void *)regs->irqsts, sizeof regs->irqsts / sizeof(ulong));
-zerowds((void *)regs->irqen,  sizeof regs->irqen / sizeof(ulong));
+zerowds((void *)regs->irqen, sizeof regs->irqen / sizeof(ulong));
 coherence();
 regs->gcr = 65;
 coherence();
@@ -136,9 +136,9 @@ intrenable(Baseirq + n, dmaintr, (void *)n, nil, name);
 }
 }
 enum {
-Testbyte	= 0252,
-Testsize	= 256,
-Scratch		= MB,
+Testbyte = 0252,
+Testsize = 256,
+Scratch = MB,
 };
 void
 dmatest(void)

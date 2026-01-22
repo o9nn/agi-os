@@ -1,17 +1,17 @@
 (use-modules (opencog) (opencog exec))
 (Evaluation (Predicate "ontology")
-	(List
-		(Concept "class")
-		(Member (Concept "crow") (Concept "bird"))))
+(List
+(Concept "class")
+(Member (Concept "crow") (Concept "bird"))))
 (define min-join
-	(MinimalJoin
-		(Present (Concept "crow"))
-		(Present (Concept "bird"))))
+(MinimalJoin
+(Present (Concept "crow"))
+(Present (Concept "bird"))))
 (define max-join
-	(MaximalJoin
-		(Present (Concept "crow"))
-		(Present (Concept "bird"))))
+(MaximalJoin
+(Present (Concept "crow"))
+(Present (Concept "bird"))))
 (define upper-set
-	(UpperSet
-		(Present (Concept "crow"))
-		(Present (Concept "bird"))))
+(UpperSet
+(Present (Concept "crow"))
+(Present (Concept "bird"))))

@@ -83,7 +83,7 @@ static inline ValuePtr ValueCast(const AttentionValuePtr& av)
 return std::shared_ptr<Value>(av, (Value*) av.get());
 }
 template<typename ... Type>
-static inline AttentionValuePtr createAttentionValue(Type&&...  args) {
+static inline AttentionValuePtr createAttentionValue(Type&&... args) {
 return AttentionValue::createAV(std::forward<Type>(args)...);
 }
 }

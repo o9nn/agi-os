@@ -14,7 +14,7 @@ sender : int;
 };
 Sender : adt {
 tid : int;
-idle : int;		# set by sender() when done, reset by main when about to assign work
+idle : int; # set by sender() when done, reset by main when about to assign work
 ctl : chan of chan of int;
 };
 sys : Sys;

@@ -7,7 +7,7 @@
 #include "ureg.h"
 #include "../port/error.h"
 #include "arm.h"
-#define INTREGS		(VIRTIO+0xB200)
+#define INTREGS (VIRTIO+0xB200)
 typedef struct Intregs Intregs;
 typedef struct Vctl Vctl;
 enum {
@@ -16,25 +16,25 @@ Nvec = 8,
 Fiqenable = 1<<7,
 };
 typedef struct Vpage0 {
-void	(*vectors[Nvec])(void);
-u32int	vtable[Nvec];
+void (*vectors[Nvec])(void);
+u32int vtable[Nvec];
 } Vpage0;
 struct Intregs {
-u32int	ARMpending;
-u32int	GPUpending[2];
-u32int	FIQctl;
-u32int	GPUenable[2];
-u32int	ARMenable;
-u32int	GPUdisable[2];
-u32int	ARMdisable;
+u32int ARMpending;
+u32int GPUpending[2];
+u32int FIQctl;
+u32int GPUenable[2];
+u32int ARMenable;
+u32int GPUdisable[2];
+u32int ARMdisable;
 };
 struct Vctl {
-Vctl	*next;
-int	irq;
-u32int	*reg;
-u32int	mask;
-void	(*f)(Ureg*, void*);
-void	*a;
+Vctl *next;
+int irq;
+u32int *reg;
+u32int mask;
+void (*f)(Ureg*, void*);
+void *a;
 };
 static Vctl *vctl, *vfiq;
 static char *trapnames[PsrMask+1] = {

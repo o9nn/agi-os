@@ -32,12 +32,12 @@ ggml_kleidiai_kernels * kernels;
 } static ctx = { CPU_FEATURE_NONE, NULL };
 static const char* cpu_feature_to_string(cpu_feature f) {
 switch (f) {
-case CPU_FEATURE_NONE:    return "NONE";
+case CPU_FEATURE_NONE: return "NONE";
 case CPU_FEATURE_DOTPROD: return "DOTPROD";
-case CPU_FEATURE_I8MM:    return "I8MM";
-case CPU_FEATURE_SVE:     return "SVE";
-case CPU_FEATURE_SME:     return "SME";
-default:                  return "UNKNOWN";
+case CPU_FEATURE_I8MM: return "I8MM";
+case CPU_FEATURE_SVE: return "SVE";
+case CPU_FEATURE_SME: return "SME";
+default: return "UNKNOWN";
 }
 }
 static void init_kleidiai_context(void) {
@@ -47,9 +47,9 @@ if (!initialized) {
 initialized = true;
 const char *env_var = getenv("GGML_KLEIDIAI_SME");
 int sme_enabled = 0;
-ctx.features  = (ggml_cpu_has_dotprod()     ? CPU_FEATURE_DOTPROD : CPU_FEATURE_NONE) |
-(ggml_cpu_has_matmul_int8() ? CPU_FEATURE_I8MM    : CPU_FEATURE_NONE) |
-(ggml_cpu_has_sve()         ? CPU_FEATURE_SVE     : CPU_FEATURE_NONE);
+ctx.features = (ggml_cpu_has_dotprod() ? CPU_FEATURE_DOTPROD : CPU_FEATURE_NONE) |
+(ggml_cpu_has_matmul_int8() ? CPU_FEATURE_I8MM : CPU_FEATURE_NONE) |
+(ggml_cpu_has_sve() ? CPU_FEATURE_SVE : CPU_FEATURE_NONE);
 if (env_var) {
 sme_enabled = atoi(env_var);
 }
@@ -145,7 +145,7 @@ const int nth = params->nth;
 const int ith = params->ith;
 const int64_t lhs_batch_size0 = ne12;
 const int64_t rhs_batch_size0 = ne02;
-const int64_t batch_size      = rhs_batch_size0;
+const int64_t batch_size = rhs_batch_size0;
 const int64_t r = lhs_batch_size0 / rhs_batch_size0;
 const int64_t m = ne11 * r;
 const int64_t n = ne01;
@@ -159,30 +159,30 @@ const int64_t kr = static_cast<int64_t>(kernel->get_kr());
 const int64_t sr = static_cast<int64_t>(kernel->get_sr());
 const size_t lhs_packed_size = variant_call<size_t>(kernels->lhs_info.packed_size, m, k, mr, kr, sr);
 const size_t rhs_packed_size = variant_call<size_t>(kernels->rhs_info.packed_size, n, k);
-const size_t kxn_size        = k * n * sizeof(float);
-const size_t bias_size       = n * sizeof(float);
+const size_t kxn_size = k * n * sizeof(float);
+const size_t bias_size = n * sizeof(float);
 const size_t wsize_required = lhs_packed_size + rhs_packed_size + kxn_size + bias_size;
 GGML_ASSERT(wsize_required <= params->wsize);
 uint8_t * lhs_packed = static_cast<uint8_t *>(params->wdata);
 uint8_t * rhs_packed = lhs_packed + lhs_packed_size;
-uint8_t * rhs_kxn    = rhs_packed + rhs_packed_size;
-uint8_t * bias       = rhs_kxn + kxn_size;
+uint8_t * rhs_kxn = rhs_packed + rhs_packed_size;
+uint8_t * bias = rhs_kxn + kxn_size;
 for (int64_t batch_idx = 0; batch_idx < batch_size; ++batch_idx) {
 const uint8_t * lhs_batch = static_cast<const uint8_t *>(src1->data) + batch_idx * m * lhs_stride;
 const uint8_t * rhs_batch = static_cast<const uint8_t *>(src0->data) + batch_idx * n * rhs_stride;
-uint8_t * dst_batch       = static_cast<uint8_t *>(dst->data) + batch_idx * m * dst_stride;
+uint8_t * dst_batch = static_cast<uint8_t *>(dst->data) + batch_idx * m * dst_stride;
 {
 const int64_t m_roundup_mr = kai_roundup(m, mr);
-const int64_t num_threads  = KAI_MIN(m_roundup_mr / mr, nth);
+const int64_t num_threads = KAI_MIN(m_roundup_mr / mr, nth);
 if (ith < num_threads) {
-const int64_t num_m_per_thread0   = round_down(m_roundup_mr / num_threads, mr);
+const int64_t num_m_per_thread0 = round_down(m_roundup_mr / num_threads, mr);
 const int64_t num_m_per_threadN_1 = m - (num_threads - 1) * num_m_per_thread0;
-const int64_t m_start          = ith * num_m_per_thread0;
+const int64_t m_start = ith * num_m_per_thread0;
 const int64_t num_m_per_thread = (ith == num_threads - 1) ? num_m_per_threadN_1 : num_m_per_thread0;
-const size_t lhs_offset        = variant_call<size_t>(kernels->gemm.get_lhs_offset, m_start, lhs_stride);
+const size_t lhs_offset = variant_call<size_t>(kernels->gemm.get_lhs_offset, m_start, lhs_stride);
 const size_t lhs_packed_offset = variant_call<size_t>(kernels->lhs_info.get_packed_offset, m_start, k, mr, kr, sr);
 const void * src_ptr = static_cast<const uint8_t *>(lhs_batch) + lhs_offset;
-void * dst_ptr       = static_cast<uint8_t *>(lhs_packed) + lhs_packed_offset;
+void * dst_ptr = static_cast<uint8_t *>(lhs_packed) + lhs_packed_offset;
 variant_call<void>(kernels->lhs_info.pack_func, num_m_per_thread, k, mr, kr, sr, 0, src_ptr, lhs_stride, dst_ptr);
 }
 }
@@ -197,20 +197,20 @@ ggml_barrier(params->threadpool);
 first_to_arrive.clear(std::memory_order_release);
 {
 const int64_t m_to_process = m;
-const int64_t m_start      = 0;
-const int64_t n_step      = static_cast<int64_t>(kernel->get_n_step());
+const int64_t m_start = 0;
+const int64_t n_step = static_cast<int64_t>(kernel->get_n_step());
 const int64_t num_threads = KAI_MIN(n / n_step, nth);
 if (ith < num_threads) {
-const int64_t num_n_per_thread0   = round_down(n / num_threads, n_step);
+const int64_t num_n_per_thread0 = round_down(n / num_threads, n_step);
 const int64_t num_n_per_threadN_1 = n - (num_threads - 1) * num_n_per_thread0;
-const int64_t n_start      = ith * num_n_per_thread0;
+const int64_t n_start = ith * num_n_per_thread0;
 const int64_t n_to_process = (ith == num_threads - 1) ? num_n_per_threadN_1 : num_n_per_thread0;
 const size_t lhs_packed_offset = variant_call<size_t>(kernel->get_lhs_offset, m_start, k);
 const size_t rhs_packed_offset = variant_call<size_t>(kernel->get_rhs_packed_offset, n_start, k);
-const size_t dst_offset        = kernel->get_dst_offset(m_start, n_start, dst_stride);
+const size_t dst_offset = kernel->get_dst_offset(m_start, n_start, dst_stride);
 const void * lhs_ptr = lhs_packed + lhs_packed_offset;
 const void * rhs_ptr = rhs_packed + rhs_packed_offset;
-float * dst_ptr      = reinterpret_cast<float *>(dst_batch + dst_offset);
+float * dst_ptr = reinterpret_cast<float *>(dst_batch + dst_offset);
 variant_call<void>(kernel->run_kernel, m_to_process, n_to_process, k, lhs_ptr, rhs_ptr, dst_ptr, dst_stride, sizeof(float), -FLT_MAX, FLT_MAX);
 }
 }
@@ -238,8 +238,8 @@ const size_t n = ne01;
 size_t mr = kernel->get_mr();
 size_t kr = kernel->get_kr();
 size_t sr = kernel->get_sr();
-const uint8_t * lhs        = static_cast<const uint8_t *>(src1->data);
-uint8_t * lhs_packed       = (uint8_t*)params->wdata;
+const uint8_t * lhs = static_cast<const uint8_t *>(src1->data);
+uint8_t * lhs_packed = (uint8_t*)params->wdata;
 const uint8_t * rhs_packed = static_cast<const uint8_t *>(src0->data);
 const size_t n_step = kernel->get_n_step();
 const size_t num_n_per_thread = kai_roundup(kai_roundup(n, nth) / nth, n_step);
@@ -255,20 +255,20 @@ if ((m_start + m_to_process) > m) {
 m_to_process = m - m_start;
 }
 if (m_start < m) {
-const size_t src_stride        = src1->nb[1];
-const float * src_ptr          = reinterpret_cast<const float *>(lhs + lhs_info->get_offset(m_start, dst->src[1]->nb[1]));
+const size_t src_stride = src1->nb[1];
+const float * src_ptr = reinterpret_cast<const float *>(lhs + lhs_info->get_offset(m_start, dst->src[1]->nb[1]));
 const size_t lhs_packed_offset = variant_call<size_t>(lhs_info->get_packed_offset, m_start, k, QK4_0, mr, kr, sr);
-void * lhs_packed_ptr          = static_cast<void *>(lhs_packed + lhs_packed_offset);
+void * lhs_packed_ptr = static_cast<void *>(lhs_packed + lhs_packed_offset);
 variant_call<void>(lhs_info->pack_func, m_to_process, k, QK4_0, mr, kr, sr, 0, src_ptr, src_stride, lhs_packed_ptr);
 }
 ggml_barrier(params->threadpool);
-const size_t dst_stride        = dst->nb[1];
+const size_t dst_stride = dst->nb[1];
 const size_t lhs_packed_offset = variant_call<size_t>(lhs_info->get_packed_offset, 0, k, QK4_0, mr, kr, sr);
 const size_t rhs_packed_offset = variant_call<size_t>(kernel->get_rhs_packed_offset, n_start, k, QK4_0);
-const size_t dst_offset        = kernel->get_dst_offset(0, n_start, dst_stride);
-const void * rhs_ptr           = static_cast<const void *>(rhs_packed + rhs_packed_offset);
-const void* lhs_ptr            = (const void*)((const char *)lhs_packed + lhs_packed_offset);
-float *dst_ptr                 = reinterpret_cast<float *>(static_cast<uint8_t *>(dst->data) + dst_offset);
+const size_t dst_offset = kernel->get_dst_offset(0, n_start, dst_stride);
+const void * rhs_ptr = static_cast<const void *>(rhs_packed + rhs_packed_offset);
+const void* lhs_ptr = (const void*)((const char *)lhs_packed + lhs_packed_offset);
+float *dst_ptr = reinterpret_cast<float *>(static_cast<uint8_t *>(dst->data) + dst_offset);
 variant_call<void>(kernel->run_kernel, m, n_to_process, k, QK4_0, lhs_ptr, rhs_ptr, dst_ptr, dst_stride,
 sizeof(float), -FLT_MAX, FLT_MAX);
 return true;
@@ -280,11 +280,11 @@ const ggml_tensor * src0 = dst->src[0];
 const ggml_tensor * src1 = dst->src[1];
 GGML_TENSOR_BINARY_OP_LOCALS
 rhs_packing_info * rhs_info = &ctx.kernels->rhs_info;
-kernel_info * kernel        = &ctx.kernels->gemm;
-const int64_t nc     = ne00;
-const int64_t nr     = ggml_nelements(src1);
+kernel_info * kernel = &ctx.kernels->gemm;
+const int64_t nc = ne00;
+const int64_t nr = ggml_nelements(src1);
 const size_t block_rows = kernel->get_nr();
-const size_t kr         = kernel->get_kr();
+const size_t kr = kernel->get_kr();
 const size_t num_bytes_multiplier = sizeof(uint16_t);
 const size_t packed_stride = rhs_info->packed_stride(nc, block_rows, kr, QK4_0);
 const int ith = params->ith;
@@ -307,9 +307,9 @@ GGML_ASSERT(tensor->type == GGML_TYPE_Q4_0);
 GGML_ASSERT(ctx.kernels);
 const size_t n = tensor->ne[1];
 const size_t k = tensor->ne[0];
-size_t nr      = ctx.kernels->gemm.get_nr();
-size_t kr      = ctx.kernels->gemm.get_kr();
-size_t sr      = ctx.kernels->gemm.get_sr();
+size_t nr = ctx.kernels->gemm.get_nr();
+size_t kr = ctx.kernels->gemm.get_kr();
+size_t sr = ctx.kernels->gemm.get_sr();
 struct kai_rhs_pack_qs4cxs1s0_param params;
 params.lhs_zero_point = 1;
 params.rhs_zero_point = 8;
@@ -333,7 +333,7 @@ const void * data, size_t offset, size_t size) {
 GGML_ASSERT(offset == 0);
 GGML_ASSERT(size == ggml_nbytes(tensor));
 auto tensor_traits = (ggml::cpu::kleidiai::tensor_traits *) tensor->extra;
-auto OK            = tensor_traits->repack(tensor, data, size);
+auto OK = tensor_traits->repack(tensor, data, size);
 GGML_ASSERT(OK == 0);
 GGML_UNUSED(buffer);
 }
@@ -346,11 +346,11 @@ ggml_backend_buffer_t buffer = ggml_backend_buft_alloc_buffer(ggml_backend_cpu_b
 if (buffer == nullptr) {
 return nullptr;
 }
-buffer->buft              = buft;
+buffer->buft = buft;
 buffer->iface.init_tensor = ggml_backend_cpu_kleidiai_buffer_init_tensor;
-buffer->iface.set_tensor  = ggml_backend_cpu_kleidiai_buffer_set_tensor;
-buffer->iface.get_tensor  = nullptr;
-buffer->iface.cpy_tensor  = nullptr;
+buffer->iface.set_tensor = ggml_backend_cpu_kleidiai_buffer_set_tensor;
+buffer->iface.get_tensor = nullptr;
+buffer->iface.cpy_tensor = nullptr;
 return buffer;
 }
 static size_t ggml_backend_cpu_kleidiai_buffer_type_get_alignment(ggml_backend_buffer_type_t buft) {
@@ -360,8 +360,8 @@ GGML_UNUSED(buft);
 static size_t ggml_backend_cpu_kleidiai_buffer_type_get_alloc_size(ggml_backend_buffer_type_t buft, const struct ggml_tensor * tensor) {
 GGML_ASSERT(tensor->type == GGML_TYPE_Q4_0);
 GGML_ASSERT(ctx.kernels);
-const size_t n  = tensor->ne[1];
-const size_t k  = tensor->ne[0];
+const size_t n = tensor->ne[1];
+const size_t k = tensor->ne[0];
 const size_t nr = ctx.kernels->gemm.get_nr();
 const size_t kr = ctx.kernels->gemm.get_kr();
 return variant_call<size_t>(ctx.kernels->rhs_info.packed_size, n, k, nr, kr, QK4_0);
@@ -395,7 +395,7 @@ return (ggml::cpu::tensor_traits *) op->src[0]->extra;
 }
 else if (ggml_kleidiai_select_kernels(ctx.features, op) &&
 op->src[0]->op == GGML_OP_VIEW &&
-(op->src[1]->op == GGML_OP_PERMUTE || op->src[1]->op ==  GGML_OP_SOFT_MAX) &&
+(op->src[1]->op == GGML_OP_PERMUTE || op->src[1]->op == GGML_OP_SOFT_MAX) &&
 op->src[1]->ne[1] > 1) {
 if ((op->src[0]->nb[0] != 2) ||
 (op->src[1]->nb[0] != 4) ||

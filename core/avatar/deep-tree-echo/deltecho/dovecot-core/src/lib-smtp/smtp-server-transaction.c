@@ -71,7 +71,7 @@ rcpts_count = 0;
 if (array_is_created(&trans->rcpt_to))
 rcpts = array_get_modifiable(&trans->rcpt_to, &rcpts_count);
 rcpts_aborted = rcpts_count + conn->state.pending_rcpt_cmds;
-rcpts_failed =  conn->state.denied_rcpt_cmds;
+rcpts_failed = conn->state.denied_rcpt_cmds;
 rcpts_total = rcpts_aborted + rcpts_failed;
 for (i = 0; i < rcpts_count; i++)
 smtp_server_recipient_destroy(&rcpts[i]);

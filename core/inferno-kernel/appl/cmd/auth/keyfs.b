@@ -1,6 +1,6 @@
 implement Keyfs;
 #
-# Copyright © 2002,2003 Vita Nuova Holdings Limited.  All rights reserved.
+# Copyright © 2002,2003 Vita Nuova Holdings Limited. All rights reserved.
 #
 include "sys.m";
 sys: Sys;
@@ -21,17 +21,17 @@ Enotfound, Eperm, Ebadarg, Edot: import styxservers;
 include "arg.m";
 Keyfs: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 User: adt
 {
-x:	int;		# table index
-name:	string;
-secret:	array of byte;	# eg, password hashed by SHA1
-expire:	int;	# expiration time (epoch seconds)
-status:	int;
-failed:	int;	# count of failed attempts
-path:		big;
+x: int; # table index
+name: string;
+secret: array of byte; # eg, password hashed by SHA1
+expire: int; # expiration time (epoch seconds)
+status: int;
+failed: int; # count of failed attempts
+path: big;
 };
 Qroot, Quser, Qsecret, Qlog, Qstatus, Qexpire: con iota;
 files := array[] of {
@@ -46,7 +46,7 @@ Maxfail: con 50;
 users: array of ref User;
 Sok, Sdisabled: con iota;
 status := array[] of {Sok => "ok", Sdisabled => "disabled" };
-Never: con 0;	# expiry time
+Never: con 0; # expiry time
 Eremoved: con "user has been removed";
 pathgen := 0;
 keyversion := 0;
@@ -125,13 +125,13 @@ exit;
 if(pwd != pwd0)
 error("key mismatch");
 for(i := 0; i < len pwd0; i++)
-pwd0[i] = ' ';	# clear it out
+pwd0[i] = ' '; # clear it out
 }
 }
 thekey = hashkey(pwd);
 for(i:=0; i<len pwd; i++)
-pwd[i] = ' ';	# clear it out
-sys->pctl(Sys->NEWPGRP|Sys->FORKFD, nil);	# immediately avoid sharing keyfd
+pwd[i] = ' '; # clear it out
+sys->pctl(Sys->NEWPGRP|Sys->FORKFD, nil); # immediately avoid sharing keyfd
 readkeys(keyfile);
 user = rf("/dev/user");
 if(user == nil)
@@ -182,7 +182,7 @@ skey := array[Keyring->SHA1dlen] of byte;
 sha := kr->sha1(array of byte "aescbc file", 11, nil, nil);
 kr->sha1(key, len key, skey, sha);
 for(i:=0; i<len key; i++)
-key[i] = byte 0;	# clear it out
+key[i] = byte 0; # clear it out
 #{sys->print("HEX="); for(i:=0;i<len skey&&i<AESbsize; i++)sys->print("%.2ux", int skey[i]);sys->print("\n");}
 return skey[0:AESbsize];
 }
@@ -245,7 +245,7 @@ if(c == nil){
 srv.reply(ref Rmsg.Error(m.tag, err));
 break;
 }
-case TYPE(c.path) {	# parent
+case TYPE(c.path) { # parent
 Qroot =>
 if((m.perm & Sys->DMDIR) == 0){
 srv.reply(ref Rmsg.Error(m.tag, Eperm));
@@ -276,7 +276,7 @@ srv.reply(ref Rmsg.Error(m.tag, err));
 break;
 }
 if(c.qtype & Sys->QTDIR){
-srv.read(m);	# does readdir
+srv.read(m); # does readdir
 break;
 }
 u := finduserpath(c.path);
@@ -373,7 +373,7 @@ srv.reply(ref Rmsg.Error(m.tag, Eperm));
 Remove =>
 c := srv.getfid(m.fid);
 if(c == nil){
-srv.remove(m);	# let it diagnose the errors
+srv.remove(m); # let it diagnose the errors
 break;
 }
 case TYPE(c.path) {
@@ -398,13 +398,13 @@ u.secret = nil;
 writekeys(keyfile);
 srv.reply(ref Rmsg.Remove(m.tag));
 * =>
-srv.remove(m);	# let it reject it
+srv.remove(m); # let it reject it
 }
 Wstat =>
 # rename user
 c := srv.getfid(m.fid);
 if(c == nil || TYPE(c.path) != Quser){
-srv.default(gm);	# let it reject it
+srv.default(gm); # let it reject it
 break;
 }
 u := finduserpath(c.path);
@@ -433,7 +433,7 @@ srv.reply(ref Rmsg.Wstat(m.tag));
 srv.default(gm);
 }
 }
-navops <-= nil;		# shut down navigator
+navops <-= nil; # shut down navigator
 }
 trim(s: string): string
 {
@@ -534,7 +534,7 @@ return (nil, Enotfound);
 }
 name = u.name;
 }
-return (dir(Qid(p,0,Sys->QTDIR), name, big 0, 8r500), nil);	# note: unwritable
+return (dir(Qid(p,0,Sys->QTDIR), name, big 0, 8r500), nil); # note: unwritable
 * =>
 l := 0;
 if(t == Qsecret){
@@ -584,7 +584,7 @@ if(n.name != ".."){
 n.reply <-= (nil, Enotfound);
 break;
 }
-n.reply <-= dirgen((n.path & ~big 16rF) | big Quser, nil, nil);	# parent directory
+n.reply <-= dirgen((n.path & ~big 16rF) | big Quser, nil, nil); # parent directory
 }
 Readdir =>
 case TYPE(n.path) {
@@ -624,7 +624,7 @@ return 0;
 t := (big string buf[0:n]) / big 1000000;
 return int t;
 }
-Checkpat: con "XXXXXXXXXXXXXXXX";	# it's what Plan 9's aescbc uses
+Checkpat: con "XXXXXXXXXXXXXXXX"; # it's what Plan 9's aescbc uses
 Checklen: con len Checkpat;
 Hdrlen: con 1+1+4;
 packedsize(u: ref User): int
@@ -643,7 +643,7 @@ a[5] = byte (u.expire>>24);
 bn := array of byte u.name;
 n := len bn;
 if(n > 255)
-error(sys->sprint("overlong user name: %s", u.name));	# shouldn't happen
+error(sys->sprint("overlong user name: %s", u.name)); # shouldn't happen
 a[6] = byte n;
 a[7:] = bn;
 n += 7;

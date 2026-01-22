@@ -24,11 +24,11 @@ include "protocaller.m";
 protocaller : Protocaller;
 WARN, ERROR, FATAL : import Protocaller;
 Create: module{
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 protofile: fn(new : string, old : string, d : ref Sys->Dir);
 protoerr: fn(lev : int, line : int, err : string);
 };
-bout: ref Iobuf;			# stdout when writing archive
+bout: ref Iobuf; # stdout when writing archive
 protof: string;
 notesf: string;
 oldroot: string;
@@ -45,7 +45,7 @@ md5s : ref Keyring->DigestState;
 w : ref Wrap->Wrapped;
 root := "/";
 prefix, notprefix: list of string;
-onlist: list of (string, string);	# NEW
+onlist: list of (string, string); # NEW
 remfile: string;
 n2o(n: string): string
 {
@@ -67,12 +67,12 @@ arch->init(bufio);
 daytime := load Daytime Daytime->PATH;
 now := daytime->now();
 # {
-#	for(i := 0; i < 21; i++){
-#		n := now+(i-9)*100000000;
-#		sys->print("%d	->	%s\n", n, wrap->now2string(n));
-#		if(wrap->string2now(wrap->now2string(n)) != n)
-#			sys->print("%d wrong\n", n);
-#	}
+# for(i := 0; i < 21; i++){
+# n := now+(i-9)*100000000;
+# sys->print("%d	->	%s\n", n, wrap->now2string(n));
+# if(wrap->string2now(wrap->now2string(n)) != n)
+# sys->print("%d wrong\n", n);
+# }
 # }
 daytime = nil;
 proto = load Proto Proto->PATH;
@@ -169,7 +169,7 @@ d.uid = uid;
 d.gid = gid;
 if (!(d.mode & Sys->DMDIR)) {
 # if(verb)
-#	fprint(stderr, "%s\n", new);
+# fprint(stderr, "%s\n", new);
 f := sys->open(old, Sys->OREAD);
 if(f == nil){
 warn(sys->sprint("can't open %s: %r", old));
@@ -241,8 +241,8 @@ if (w == nil)
 fatal("no such package found");
 # ignore any updates - NEW commented out
 # while (w.nu > 0 && w.u[w.nu-1].typ == wrap->UPD)
-#	w.nu--;
-# w.nu = 1;	NEW commented out
+# w.nu--;
+# w.nu = 1; NEW commented out
 if (protof == nil)
 protof = w.u[0].dir + "/proto";
 name = w.name;
@@ -273,7 +273,7 @@ md5s = nil;
 if (md5sfd == nil)
 fatal(sys->sprint("cannot create %s", md5sort));
 endc := chan of int;
-md5fd = nil;	# close md5file
+md5fd = nil; # close md5file
 spawn fsort(md5sfd, md5file, endc);
 md5sfd = nil;
 res := <- endc;
@@ -284,7 +284,7 @@ if (update) {
 if (rmfd == nil)
 fatal(sys->sprint("cannot create %s", rmfile));
 rmed: list of string;
-for(i := w.nu-1; i >= 0; i--){	# NEW does loop
+for(i := w.nu-1; i >= 0; i--){ # NEW does loop
 w.u[i].bmd5.seek(big 0, Bufio->SEEKSTART);
 while ((p := w.u[i].bmd5.gets('\n')) != nil) {
 if(prefix != nil && !wrap->match(p, prefix))
@@ -296,10 +296,10 @@ q = pathcat(root, q);
 (ok, nil) := sys->stat(q);
 if(ok < 0)
 (ok, nil) = sys->stat(n2o(q));
-if (len q >= 7 && q[len q - 7:] == "emu.new")	# quick hack for now
+if (len q >= 7 && q[len q - 7:] == "emu.new") # quick hack for now
 continue;
 if (ok < 0){
-for(r := rmed; r != nil; r = tl r)	# NEW to avoid duplication
+for(r := rmed; r != nil; r = tl r) # NEW to avoid duplication
 if(hd r == q)
 break;
 if(r == nil){

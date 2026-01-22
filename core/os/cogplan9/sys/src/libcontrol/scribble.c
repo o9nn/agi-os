@@ -10,15 +10,15 @@ typedef struct Scrib Scrib;
 struct Scrib
 {
 Control;
-int		border;
-CImage	*image;
-CImage	*color;
-CImage	*bordercolor;
-CFont	*font;
-int		align;
-int		lastbut;
-char		lastchar[8];
-Scribble	*scrib;
+int border;
+CImage *image;
+CImage *color;
+CImage *bordercolor;
+CFont *font;
+int align;
+int lastbut;
+char lastchar[8];
+Scribble *scrib;
 };
 enum{
 EAlign,
@@ -35,26 +35,26 @@ EShow,
 ESize,
 };
 static char *cmds[] = {
-[EAlign] =		"align",
-[EBorder] =	"border",
+[EAlign] = "align",
+[EBorder] = "border",
 [EBordercolor] ="bordercolor",
-[EFocus] = 	"focus",
-[EFont] =		"font",
-[EHide] =		"hide",
-[EImage] =	"image",
-[ELinecolor] =	"linecolor",
-[ERect] =		"rect",
-[EReveal] =	"reveal",
-[EShow] =		"show",
-[ESize] =		"size",
+[EFocus] = "focus",
+[EFont] = "font",
+[EHide] = "hide",
+[EImage] = "image",
+[ELinecolor] = "linecolor",
+[ERect] = "rect",
+[EReveal] = "reveal",
+[EShow] = "show",
+[ESize] = "size",
 nil
 };
-static void	scribshow(Scrib*);
+static void scribshow(Scrib*);
 static void scribchar(Scrib*, Rune);
-static void	resetstroke(Scrib *w);
-static void	displaystroke(Scrib *w);
-static void	displaylast(Scrib *w);
-static void	addpoint(Scrib *w, Point p);
+static void resetstroke(Scrib *w);
+static void displaystroke(Scrib *w);
+static void displaylast(Scrib *w);
+static void addpoint(Scrib *w, Point p);
 static void
 scribmouse(Control *c, Mouse *m)
 {
@@ -230,7 +230,7 @@ flushimage(display, 1);
 static void
 displaylast(Scrib *w)
 {
-int	    npt;
+int npt;
 Scribble *s = w->scrib;
 npt = s->ps.npts;
 if (npt > 2)
@@ -242,10 +242,10 @@ flushimage(display, 1);
 static void
 addpoint(Scrib *w, Point p)
 {
-pen_point	*ppa;
-Point	*pt;
-int		ppasize;
-Scribble	*s = w->scrib;
+pen_point *ppa;
+Point *pt;
+int ppasize;
+Scribble *s = w->scrib;
 if (s->ps.npts == s->ppasize) {
 ppasize = s->ppasize + 100;
 ppa = malloc ((sizeof (pen_point) + sizeof (Point)) * ppasize);

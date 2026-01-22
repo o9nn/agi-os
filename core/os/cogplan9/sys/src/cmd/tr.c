@@ -1,35 +1,35 @@
-#include 	<u.h>
-#include 	<libc.h>
+#include <u.h>
+#include <libc.h>
 typedef struct PCB
 {
-char	*base;
-char	*current;
-long	last;
-long	final;
+char *base;
+char *current;
+long last;
+long final;
 } Pcb;
-uchar	bits[] = { 1, 2, 4, 8, 16, 32, 64, 128 };
-#define	SETBIT(a, c)		((a)[(c)/8] |= bits[(c)&07])
-#define	CLEARBIT(a,c)		((a)[(c)/8] &= ~bits[(c)&07])
-#define	BITSET(a,c)		((a)[(c)/8] & bits[(c)&07])
-uchar	f[(Runemax+1)/8];
-uchar	t[(Runemax+1)/8];
-char 	wbuf[4096];
-char	*wptr;
+uchar bits[] = { 1, 2, 4, 8, 16, 32, 64, 128 };
+#define SETBIT(a, c) ((a)[(c)/8] |= bits[(c)&07])
+#define CLEARBIT(a,c) ((a)[(c)/8] &= ~bits[(c)&07])
+#define BITSET(a,c) ((a)[(c)/8] & bits[(c)&07])
+uchar f[(Runemax+1)/8];
+uchar t[(Runemax+1)/8];
+char wbuf[4096];
+char *wptr;
 Pcb pfrom, pto;
 int cflag;
 int dflag;
 int sflag;
-void	complement(void);
-void	delete(void);
-void	squeeze(void);
-void	translit(void);
-long	canon(Pcb*);
-char	*getrune(char*, Rune*);
-void	Pinit(Pcb*, char*);
-void	Prewind(Pcb *p);
-int	readrune(int, long*);
-void	wflush(int);
-void	writerune(int, Rune);
+void complement(void);
+void delete(void);
+void squeeze(void);
+void translit(void);
+long canon(Pcb*);
+char *getrune(char*, Rune*);
+void Pinit(Pcb*, char*);
+void Prewind(Pcb *p);
+int readrune(int, long*);
+void wflush(int);
+void writerune(int, Rune);
 static void
 usage(void)
 {
@@ -40,10 +40,10 @@ void
 main(int argc, char **argv)
 {
 ARGBEGIN{
-case 's':	sflag++; break;
-case 'd':	dflag++; break;
-case 'c':	cflag++; break;
-default:	usage();
+case 's': sflag++; break;
+case 'd': dflag++; break;
+case 'c': cflag++; break;
+default: usage();
 }ARGEND
 if(argc>0)
 Pinit(&pfrom, argv[0]);

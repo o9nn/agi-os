@@ -8,20 +8,20 @@ enum {
 Dontpost,
 Post,
 };
-char	cputype[64];
-char	sys[2*64];
-char 	reply[256];
-int	printcol;
-int	mflag;
-int	fflag;
-int	kflag;
-int	debugboot;
-int	nousbboot;
-char	*bargv[Nbarg];
-int	bargc;
-static void	swapproc(void);
-static Method	*rootserver(char*);
-static void	kbmap(void);
+char cputype[64];
+char sys[2*64];
+char reply[256];
+int printcol;
+int mflag;
+int fflag;
+int kflag;
+int debugboot;
+int nousbboot;
+char *bargv[Nbarg];
+int bargc;
+static void swapproc(void);
+static Method *rootserver(char*);
+static void kbmap(void);
 static void
 opencons(void)
 {

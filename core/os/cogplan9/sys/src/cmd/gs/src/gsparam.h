@@ -1,8 +1,8 @@
 #ifndef gsparam_INCLUDED
-#  define gsparam_INCLUDED
+# define gsparam_INCLUDED
 #include "gsstype.h"
 #ifndef gs_param_list_DEFINED
-#  define gs_param_list_DEFINED
+# define gs_param_list_DEFINED
 typedef struct gs_param_list_s gs_param_list;
 #endif
 typedef const char *gs_param_name;
@@ -191,7 +191,7 @@ int param_write_name_array(gs_param_list *, gs_param_name,
 const gs_param_string_array *);
 #define gs_param_list_common\
 const gs_param_list_procs *procs;\
-gs_memory_t *memory;	\
+gs_memory_t *memory; \
 bool persistent_keys
 struct gs_param_list_s {
 gs_param_list_common;
@@ -201,7 +201,7 @@ void gs_param_list_set_persistent_keys(gs_param_list *, bool);
 void param_init_enumerator(gs_param_enumerator_t * penum);
 typedef struct gs_param_item_s {
 const char *key;
-byte  type;
+byte type;
 short offset;
 } gs_param_item_t;
 #define gs_param_item_end { 0 }
@@ -225,10 +225,10 @@ uint count;
 bool any_requested;
 gs_param_collection_type_t coll_type;
 } gs_c_param_list;
-#define private_st_c_param_list()	\
+#define private_st_c_param_list() \
 gs_private_st_ptrs2(st_c_param_list, gs_c_param_list, "c_param_list",\
 c_param_list_enum_ptrs, c_param_list_reloc_ptrs, head, target)
-#define private_st_gs_param_string()	\
+#define private_st_gs_param_string() \
 gs_private_st_composite(st_gs_param_string, gs_param_string, "gs_param_string",\
 param_string_enum_ptrs, param_string_reloc_ptrs)
 void gs_c_param_list_set_target(gs_c_param_list *, gs_param_list *);

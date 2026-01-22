@@ -4,7 +4,7 @@
 #include <signal.h>
 #include <ctype.h>
 #ifdef plan9
-#define	isascii(c)	((unsigned char)(c)<=0177)
+#define isascii(c) ((unsigned char)(c)<=0177)
 #endif
 #include <sys/types.h>
 #include <fcntl.h>
@@ -13,30 +13,30 @@
 #include "path.h"
 #include "ext.h"
 #include "postprint.h"
-char	*optnames = "a:c:ef:l:m:n:o:p:r:s:t:x:y:A:C:E:J:L:P:R:DI";
-char	*prologue = POSTPRINT;
-char	*formfile = FORMFILE;
-int	formsperpage = 1;
-int	copies = 1;
-int	linespp = LINESPP;
-int	pointsize = POINTSIZE;
-int	tabstops = TABSTOPS;
-int	crmode = 0;
-int	extended = TRUE;
-int	col = 1;
-int	line = 1;
-int	stringcount = 0;
-int	stringstart = 1;
-Fontmap	fontmap[] = FONTMAP;
-char	*fontname = "Courier";
-int	page = 0;
-int	printed = 0;
-FILE	*fp_in = stdin;
-FILE	*fp_out = stdout;
-FILE	*fp_acct = NULL;
+char *optnames = "a:c:ef:l:m:n:o:p:r:s:t:x:y:A:C:E:J:L:P:R:DI";
+char *prologue = POSTPRINT;
+char *formfile = FORMFILE;
+int formsperpage = 1;
+int copies = 1;
+int linespp = LINESPP;
+int pointsize = POINTSIZE;
+int tabstops = TABSTOPS;
+int crmode = 0;
+int extended = TRUE;
+int col = 1;
+int line = 1;
+int stringcount = 0;
+int stringstart = 1;
+Fontmap fontmap[] = FONTMAP;
+char *fontname = "Courier";
+int page = 0;
+int printed = 0;
+FILE *fp_in = stdin;
+FILE *fp_out = stdout;
+FILE *fp_acct = NULL;
 main(agc, agv)
-int		agc;
-char	*agv[];
+int agc;
+char *agv[];
 {
 argc = agc;
 argv = agv;
@@ -64,8 +64,8 @@ signal(SIGTERM, interrupt);
 }
 header()
 {
-int		ch;
-int		old_optind = optind;
+int ch;
+int old_optind = optind;
 while ( (ch = getopt(argc, argv, optnames)) != EOF )
 if ( ch == 'L' )
 prologue = optarg;
@@ -87,7 +87,7 @@ fprintf(stdout, "mark\n");
 }
 options()
 {
-int		ch;
+int ch;
 while ( (ch = getopt(argc, argv, optnames)) != EOF ) {
 switch ( ch ) {
 case 'a':
@@ -178,9 +178,9 @@ argc -= optind;
 argv += optind;
 }
 char *get_font(name)
-char	*name;
+char *name;
 {
-int		i;
+int i;
 for ( i = 0; fontmap[i].name != NULL; i++ )
 if ( strcmp(name, fontmap[i].name) == 0 )
 return(fontmap[i].val);
@@ -232,7 +232,7 @@ fprintf(fp_acct, " print %d\n copies %d\n", printed, copies);
 }
 text()
 {
-int		ch;
+int ch;
 redirect(-1);
 formfeed();
 while ( (ch = getc(fp_in)) != EOF )
@@ -287,10 +287,10 @@ if ( ++line > linespp )
 formfeed();
 }
 spaces(ch)
-int		ch;
+int ch;
 {
-int		endcol;
-int		i;
+int endcol;
+int i;
 startline();
 endcol = col;
 do {
@@ -342,7 +342,7 @@ fprintf(fp_out, ")%d L\n", stringstart-1);
 stringcount = 0;
 }
 oput(ch)
-int		ch;
+int ch;
 {
 if ( isascii(ch) && isprint(ch) ) {
 startline();
@@ -357,9 +357,9 @@ col++;
 }
 }
 redirect(pg)
-int		pg;
+int pg;
 {
-static FILE	*fp_null = NULL;
+static FILE *fp_null = NULL;
 if ( pg >= 0 && in_olist(pg) == ON )
 fp_out = stdout;
 else if ( (fp_out = fp_null) == NULL )

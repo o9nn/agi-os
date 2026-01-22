@@ -159,7 +159,7 @@ end
 ```julia
 Encoder(; name, N = 4)
 ```
-Encodes `N` inputs to `n` outputs,  where `N=2ⁿ`. Exactly one of the inputs should be `1`.
+Encodes `N` inputs to `n` outputs, where `N=2ⁿ`. Exactly one of the inputs should be `1`.
 If the `i`th input is `1`, then the output corresponds to the binary representation of `i`.
 # Connectors
 - `d1`, `d2`, ...
@@ -209,7 +209,7 @@ end
 Decoder(; name, n = 2)
 ```
 Performs the reverse operation of an [`Encoder`](@ref). Decodes `n` inputs
-to `N` outputs,  where `N=2ⁿ`. The `i`th output is `1` if the values of
+to `N` outputs, where `N=2ⁿ`. The `i`th output is `1` if the values of
 the select lines correspond to the binary representation of `1`.
 # Connectors
 - `d1`, `d2`, ...

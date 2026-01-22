@@ -45,13 +45,13 @@ extern gid_t fs_gid;
 extern void *fat_image;
 extern vm_address_t zerocluster;
 extern struct dirrect dr_root_node;
-#define LOG2_BLOCKS_PER_CLUSTER					\
+#define LOG2_BLOCKS_PER_CLUSTER \
 (log2_bytes_per_cluster - store->log2_block_size)
-#define round_cluster(offs)					\
-((((offs) + bytes_per_cluster - 1)				\
+#define round_cluster(offs) \
+((((offs) + bytes_per_cluster - 1) \
 >> log2_bytes_per_cluster) << log2_bytes_per_cluster)
 #define FAT_FIRST_CLUSTER_BLOCK(cluster) \
-(((cluster - 2) << LOG2_BLOCKS_PER_CLUSTER) +	\
+(((cluster - 2) << LOG2_BLOCKS_PER_CLUSTER) + \
 (first_data_byte >> store->log2_block_size))
 void drop_pager_softrefs (struct node *);
 void allow_pager_softrefs (struct node *);

@@ -6,18 +6,18 @@
 #include <cassert>
 llama_kv_cache_unified_iswa::llama_kv_cache_unified_iswa(
 const llama_model & model,
-ggml_type   type_k,
-ggml_type   type_v,
-bool   v_trans,
-bool   offload,
-bool   swa_full,
-bool   unified,
-uint32_t   kv_size,
-uint32_t   n_seq_max,
-uint32_t   n_ubatch,
-uint32_t   n_pad) : hparams(model.hparams), unified(unified) {
+ggml_type type_k,
+ggml_type type_v,
+bool v_trans,
+bool offload,
+bool swa_full,
+bool unified,
+uint32_t kv_size,
+uint32_t n_seq_max,
+uint32_t n_ubatch,
+uint32_t n_pad) : hparams(model.hparams), unified(unified) {
 llama_kv_cache_unified::layer_filter_cb filter_base = [&](int32_t il) { return !model.hparams.is_swa(il); };
-llama_kv_cache_unified::layer_filter_cb filter_swa  = [&](int32_t il) { return  model.hparams.is_swa(il); };
+llama_kv_cache_unified::layer_filter_cb filter_swa = [&](int32_t il) { return model.hparams.is_swa(il); };
 const uint32_t size_base = kv_size;
 uint32_t size_swa = std::min(size_base, GGML_PAD(hparams.n_swa*(unified ? n_seq_max : 1) + n_ubatch, n_pad));
 size_swa += 128;
@@ -172,7 +172,7 @@ slot_info_vec_t sinfos_swa,
 std::vector<llama_ubatch> ubatches) :
 ubatches(std::move(ubatches)),
 ctx_base(new llama_kv_cache_unified_context(kv->get_base(), std::move(sinfos_base), this->ubatches)),
-ctx_swa (new llama_kv_cache_unified_context(kv->get_swa (), std::move(sinfos_swa),  this->ubatches)),
+ctx_swa (new llama_kv_cache_unified_context(kv->get_swa (), std::move(sinfos_swa), this->ubatches)),
 status(llama_memory_status_combine(ctx_base->get_status(), ctx_swa->get_status())) {
 }
 llama_kv_cache_unified_iswa_context:: ~llama_kv_cache_unified_iswa_context() = default;
@@ -203,7 +203,7 @@ const llama_kv_cache_unified_context * llama_kv_cache_unified_iswa_context::get_
 assert(status == LLAMA_MEMORY_STATUS_SUCCESS);
 return static_cast<const llama_kv_cache_unified_context *>(ctx_base.get());
 }
-const llama_kv_cache_unified_context * llama_kv_cache_unified_iswa_context::get_swa()  const {
+const llama_kv_cache_unified_context * llama_kv_cache_unified_iswa_context::get_swa() const {
 assert(status == LLAMA_MEMORY_STATUS_SUCCESS);
 return static_cast<const llama_kv_cache_unified_context *>(ctx_swa.get());
 }

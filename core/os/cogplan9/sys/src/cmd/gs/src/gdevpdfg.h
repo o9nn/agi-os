@@ -1,5 +1,5 @@
 #ifndef gdevpdfg_INCLUDED
-#  define gdevpdfg_INCLUDED
+# define gdevpdfg_INCLUDED
 #include "gscspace.h"
 typedef struct pdf_color_space_names_s {
 const char *DeviceCMYK;
@@ -15,7 +15,7 @@ extern const pdf_color_space_names_t
 pdf_color_space_names,
 pdf_color_space_names_short;
 #ifndef gs_color_space_DEFINED
-#  define gs_color_space_DEFINED
+# define gs_color_space_DEFINED
 typedef struct gs_color_space_s gs_color_space;
 #endif
 typedef struct pdf_color_space_s pdf_color_space_t;
@@ -25,7 +25,7 @@ const gs_range_t *ranges;
 uint serialized_size;
 byte *serialized;
 };
-#define public_st_pdf_color_space()  \
+#define public_st_pdf_color_space() \
 gs_public_st_suffix_add2(st_pdf_color_space, pdf_color_space_t,\
 "pdf_color_space_t", pdf_color_space_enum_ptrs,\
 pdf_color_space_reloc_ptrs, st_pdf_resource, ranges, serialized)
@@ -79,7 +79,7 @@ struct pdf_pattern_s {
 pdf_resource_common(pdf_pattern_t);
 pdf_pattern_t *substitute;
 };
-#define private_st_pdf_pattern()  \
+#define private_st_pdf_pattern() \
 gs_private_st_suffix_add1(st_pdf_pattern, pdf_pattern_t,\
 "pdf_pattern_t", pdf_pattern_enum_ptrs,\
 pdf_pattern_reloc_ptrs, st_pdf_resource, substitute)

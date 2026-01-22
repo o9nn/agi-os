@@ -1,46 +1,46 @@
-#include	"all.h"
-#define	DSIZE		546000
-#define	MAXDEPTH	100
-static	char*	abits;
-static	long	sizabits;
-static	char*	qbits;
-static	long	sizqbits;
-static	char*	name;
-static	long	sizname;
-static	long	fstart;
-static	long	fsize;
-static	long	nfiles;
-static	long	maxq;
-static	char*	fence;
-static	char*	fencebase;
-static	Device	dev;
-static	long	ndup;
-static	long	nused;
-static	long	nfdup;
-static	long	nqbad;
-static	long	nfree;
-static	long	nbad;
-static	int	mod;
-static	int	flags;
-static	int	ronly;
-static	int	cwflag;
-static	long	sbaddr;
-static	long	oldblock;
-static	int	depth;
-static	int	maxdepth;
-static	int	fsck(Dentry*);
-static	void	ckfreelist(Superb*);
-static	void	mkfreelist(Superb*);
-static	Dentry*	maked(long, int, long);
-static	void	modd(long, int, Dentry*);
-static	void	xread(long, long);
-static	int	amark(long);
-static	int	fmark(long);
-static	void	missing(void);
-static	void	qmark(long);
-static	void*	zalloc(ulong);
-static	void*	dalloc(ulong);
-static	Iobuf*	xtag(long, int, long);
+#include "all.h"
+#define DSIZE 546000
+#define MAXDEPTH 100
+static char* abits;
+static long sizabits;
+static char* qbits;
+static long sizqbits;
+static char* name;
+static long sizname;
+static long fstart;
+static long fsize;
+static long nfiles;
+static long maxq;
+static char* fence;
+static char* fencebase;
+static Device dev;
+static long ndup;
+static long nused;
+static long nfdup;
+static long nqbad;
+static long nfree;
+static long nbad;
+static int mod;
+static int flags;
+static int ronly;
+static int cwflag;
+static long sbaddr;
+static long oldblock;
+static int depth;
+static int maxdepth;
+static int fsck(Dentry*);
+static void ckfreelist(Superb*);
+static void mkfreelist(Superb*);
+static Dentry* maked(long, int, long);
+static void modd(long, int, Dentry*);
+static void xread(long, long);
+static int amark(long);
+static int fmark(long);
+static void missing(void);
+static void qmark(long);
+static void* zalloc(ulong);
+static void* dalloc(ulong);
+static Iobuf* xtag(long, int, long);
 static
 void*
 zalloc(ulong n)

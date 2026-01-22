@@ -10,9 +10,9 @@
 #include <sys/time.h>
 #include <math.h>
 #include <float.h>
-#define DTESN_COGNITIVE_MEMORY_POOL_SIZE    (32 * 1024 * 1024)
-#define DTESN_COGNITIVE_DEFAULT_TIMEOUT_MS  1000
-#define DTESN_COGNITIVE_MAX_SYSTEMS         64
+#define DTESN_COGNITIVE_MEMORY_POOL_SIZE (32 * 1024 * 1024)
+#define DTESN_COGNITIVE_DEFAULT_TIMEOUT_MS 1000
+#define DTESN_COGNITIVE_MAX_SYSTEMS 64
 static bool g_cognitive_initialized = false;
 static pthread_mutex_t g_cognitive_lock = PTHREAD_MUTEX_INITIALIZER;
 static uint32_t g_next_system_id = 1;

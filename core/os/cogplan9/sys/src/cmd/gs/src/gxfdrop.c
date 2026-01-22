@@ -13,17 +13,17 @@
 gs_private_st_simple(st_margin, margin, "margin");
 gs_public_st_simple(st_section, section, "section");
 void init_section(section *sect, int i0, int i1)
-{   int i;
+{ int i;
 for (i = i0; i < i1; i++) {
-#	if ADJUST_SERIF && CHECK_SPOT_CONTIGUITY
+# if ADJUST_SERIF && CHECK_SPOT_CONTIGUITY
 sect[i].x0 = fixed_1;
 sect[i].x1 = 0;
-#	endif
+# endif
 sect[i].y0 = sect[i].y1 = -1;
 }
 }
 private margin * alloc_margin(line_list * ll)
-{   margin *m;
+{ margin *m;
 assert(ll->fo->pseudo_rasterization);
 if (ll->free_margin_list != 0) {
 m = ll->free_margin_list;
@@ -37,7 +37,7 @@ m = gs_alloc_struct(ll->memory, margin, &st_margin, "filling contiguity margin")
 return m;
 }
 private void release_margin_list(line_list * ll, margin_set *ms)
-{   margin * m1 = ms->margin_list;
+{ margin * m1 = ms->margin_list;
 if (m1 == 0)
 return;
 while (m1->next != 0)
@@ -47,9 +47,9 @@ ll->free_margin_list = ms->margin_list;
 ms->margin_list = ms->margin_touched = 0;
 }
 void free_all_margins(line_list * ll)
-{   margin * m = ll->free_margin_list;
+{ margin * m = ll->free_margin_list;
 ll->free_margin_list = 0;
-while (m != 0)  {
+while (m != 0) {
 margin * m1 = m->next;
 if (m < ll->local_margins || m >= ll->local_margins + MAX_LOCAL_ACTIVE)
 gs_free_object(ll->memory, m, "filling contiguity margin");
@@ -63,7 +63,7 @@ margin *m0 = set->margin_touched, *m1;
 assert(ii0 >= 0 && ii1 <= ll->bbox_width);
 set->margin_touched = 0;
 if (m0 != 0) {
-margin  *m_last = m0, *mb, *me;
+margin *m_last = m0, *mb, *me;
 assert(set->margin_list != 0);
 if (i1 < m0->ibeg) {
 do {
@@ -147,20 +147,20 @@ set->margin_touched = m1;
 return 0;
 }
 private inline int to_interval(int x, int l, int u)
-{   return x < l ? l : x > u ? u : x;
+{ return x < l ? l : x > u ? u : x;
 }
 private inline fixed Y_AT_X(active_line *alp, fixed xp)
-{   return alp->start.y + fixed_mult_quo(xp - alp->start.x,  alp->diff.y, alp->diff.x);
+{ return alp->start.y + fixed_mult_quo(xp - alp->start.x, alp->diff.y, alp->diff.x);
 }
 private int margin_boundary(line_list * ll, margin_set * set, active_line * alp,
 fixed xx0, fixed xx1, fixed yy0, fixed yy1, int dir, fixed y0, fixed y1)
-{   section *sect = set->sect;
+{ section *sect = set->sect;
 fixed x0, x1, xmin, xmax;
 int xp0, xp;
 int i0, i;
-#   if !CHECK_SPOT_CONTIGUITY
+# if !CHECK_SPOT_CONTIGUITY
 int i1;
-#   endif
+# endif
 if (yy0 > yy1)
 return 0;
 if (alp == 0)
@@ -171,7 +171,7 @@ x1 = (yy1 == y1 ? alp->x_next : AL_X_AT_Y(alp, yy1));
 }
 xmin = min(x0, x1);
 xmax = max(x0, x1);
-#   if !CHECK_SPOT_CONTIGUITY
+# if !CHECK_SPOT_CONTIGUITY
 xp0 = fixed_floor(xmin) + fixed_half;
 i0 = fixed2int(xp0) - ll->bbox_left;
 if (xp0 < xmin) {
@@ -196,7 +196,7 @@ h = (short)dy;
 if (*b == -1 || (*b != -2 && ( ud ? *b > h : *b < h)))
 *b = h;
 }
-#   else
+# else
 xp0 = fixed_floor(xmin) + fixed_half;
 i0 = fixed2int(xp0) - ll->bbox_left;
 if (xp0 < xmin) {
@@ -221,14 +221,14 @@ if (*b == -1 || (*b != -2 && ( ud ? *b > h : *b < h)))
 *b = h;
 }
 assert(i0 >= 0 && i <= ll->bbox_width);
-#	endif
+# endif
 if (i > i0)
 return store_margin(ll, set, i0, i);
 return 0;
 }
 int continue_margin_common(line_list * ll, margin_set * set, active_line * flp, active_line * alp, fixed y0, fixed y1)
-{   int code;
-#   if ADJUST_SERIF
+{ int code;
+# if ADJUST_SERIF
 section *sect = set->sect;
 fixed yy0 = max(max(y0, alp->start.y), set->y);
 fixed yy1 = min(min(y1, alp->end.y), set->y + fixed_1);
@@ -253,7 +253,7 @@ code = store_margin(ll, set, i0, i1);
 if (code < 0)
 return code;
 }
-#   endif
+# endif
 code = margin_boundary(ll, set, flp, 0, 0, yy0, yy1, 1, y0, y1);
 if (code < 0)
 return code;
@@ -282,7 +282,7 @@ return code;
 return 0;
 }
 int margin_interior(line_list * ll, active_line * flp, active_line * alp, fixed y0, fixed y1)
-{   int code;
+{ int code;
 fixed yy0, yy1;
 yy0 = ll->margin_set0.y;
 if (y0 <= yy0 && yy0 <= y1) {
@@ -313,7 +313,7 @@ fixed xx0 = max(x0, min(hlp->start.x, hlp->end.x));
 fixed xx1 = min(x1, max(hlp->start.x, hlp->end.x));
 if (xx0 < xx1) {
 vd_bar(xx0, y, xx1, y, 1, RGB(255, 0, 255));
-code =  margin_boundary(ll, set, 0, xx0, xx1, y, y, side, 0, 0);
+code = margin_boundary(ll, set, 0, xx0, xx1, y, y, side, 0, 0);
 if (code < 0)
 return code;
 }
@@ -322,7 +322,7 @@ return 0;
 }
 private inline int process_h_side(line_list * ll, margin_set * set, active_line * hlp,
 active_line * plp, active_line * flp, active_line * alp, int side, fixed y0, fixed y1)
-{   if (plp != 0 || flp != 0 || (plp == 0 && flp == 0 && alp == 0)) {
+{ if (plp != 0 || flp != 0 || (plp == 0 && flp == 0 && alp == 0)) {
 int code = process_h_sect(ll, set, hlp, plp, flp, -side, y0, y1);
 if (code < 0)
 return code;
@@ -336,7 +336,7 @@ return 0;
 }
 private inline int process_h_list(line_list * ll, active_line * hlp, active_line * plp,
 active_line * flp, active_line * alp, int side, fixed y0, fixed y1)
-{   fixed y = hlp->start.y;
+{ fixed y = hlp->start.y;
 if (ll->margin_set0.y <= y && y <= ll->margin_set0.y + fixed_1) {
 int code = process_h_side(ll, &ll->margin_set0, hlp, plp, flp, alp, side, y0, y1);
 if (code < 0)
@@ -390,41 +390,41 @@ y0 = 0;
 if (y1 == -1)
 y1 = fixed_scale - 1;
 hh = compute_padding(&sect[i]);
-#	if ADJUST_SERIF
+# if ADJUST_SERIF
 if (hh >= 0) {
-#		if !CHECK_SPOT_CONTIGUITY
+# if !CHECK_SPOT_CONTIGUITY
 if (i == i0 && i + 1 < i1) {
 int hhh = compute_padding(&sect[i + 1]);
 hh = hhh;
 } else if (i == i1 - 1 && i > i0)
 hh = h;
-#		else
+# else
 if (sect[i].x0 > 0 && sect[i].x1 == fixed_1 && i + 1 < i1) {
-#			if INTERTRAP_STEM_BUG
+# if INTERTRAP_STEM_BUG
 int hhh = hh;
-#			endif
+# endif
 hh = (i + 1 < i1 ? compute_padding(&sect[i + 1]) : -2);
-#			if INTERTRAP_STEM_BUG
+# if INTERTRAP_STEM_BUG
 if (i > i0 && i + 1 < i1 && hh == -2 &&
 compute_padding(&sect[i - 1]) == -2) {
 hh = hhh;
 }
-#			endif
+# endif
 } else if (sect[i].x0 == 0 && sect[i].x1 < fixed_1) {
-#			if INTERTRAP_STEM_BUG
+# if INTERTRAP_STEM_BUG
 int hhh = hh;
-#			endif
+# endif
 hh = h;
-#			if INTERTRAP_STEM_BUG
+# if INTERTRAP_STEM_BUG
 if (i > i0 && i + 1 < i1 && hh == -2 &&
 compute_padding(&sect[i - 1]) == -2) {
 DO_NOTHING;
 }
-#			endif
+# endif
 }
-#		endif
+# endif
 }
-#	endif
+# endif
 if (h != hh) {
 if (h >= 0) {
 VD_RECT(ir + ll->bbox_left, iy + h, i - ir, 1, VD_MARG_COLOR);
@@ -446,7 +446,7 @@ init_section(sect, i0, i1);
 return 0;
 }
 int close_margins(gx_device * dev, line_list * ll, margin_set *ms)
-{   margin *m = ms->margin_list;
+{ margin *m = ms->margin_list;
 int code;
 for (; m != 0; m = m->next) {
 code = fill_margin(dev, ll, ms, m->ibeg, m->iend);
@@ -457,7 +457,7 @@ release_margin_list(ll, ms);
 return 0;
 }
 int start_margin_set(gx_device * dev, line_list * ll, fixed y0)
-{   int code;
+{ int code;
 fixed ym = fixed_pixround(y0) - fixed_half;
 margin_set s;
 if (ll->margin_set0.y == ym)

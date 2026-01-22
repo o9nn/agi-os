@@ -13,16 +13,16 @@ static const char *version =
 #include "8390.h"
 static unsigned int hpplus_portlist[] =
 {0x200, 0x240, 0x280, 0x2C0, 0x300, 0x320, 0x340, 0};
-#define HP_ID			0x00
-#define HP_PAGING		0x02
-#define HPP_OPTION		0x04
-#define HPP_OUT_ADDR	0x08
-#define HPP_IN_ADDR		0x0A
-#define HP_DATAPORT		0x0c
-#define NIC_OFFSET		0x10
-#define HP_IO_EXTENT	32
-#define HP_START_PG		0x00
-#define HP_STOP_PG		0x80
+#define HP_ID 0x00
+#define HP_PAGING 0x02
+#define HPP_OPTION 0x04
+#define HPP_OUT_ADDR 0x08
+#define HPP_IN_ADDR 0x0A
+#define HP_DATAPORT 0x0c
+#define NIC_OFFSET 0x10
+#define HP_IO_EXTENT 32
+#define HP_START_PG 0x00
+#define HP_STOP_PG 0x80
 enum PageName {
 Perf_Page = 0,
 MAC_Page = 1,
@@ -86,7 +86,7 @@ if (dev == NULL) {
 printk("hp-plus.c: Passed a NULL device.\n");
 dev = init_etherdev(0, 0);
 }
-if (ei_debug  &&  version_printed++ == 0)
+if (ei_debug && version_printed++ == 0)
 printk("%s", version);
 printk("%s: %s at %#3x,", dev->name, name, ioaddr);
 outw(MAC_Page, ioaddr + HP_PAGING);
@@ -258,8 +258,8 @@ outw(option_reg, ioaddr + HPP_OPTION);
 return;
 }
 #ifdef MODULE
-#define MAX_HPP_CARDS	4
-#define NAMELEN		8
+#define MAX_HPP_CARDS 4
+#define NAMELEN 8
 static char namelist[NAMELEN * MAX_HPP_CARDS] = { 0, };
 static struct device dev_hpp[MAX_HPP_CARDS] = {
 {
@@ -270,7 +270,7 @@ NULL,
 },
 };
 static int io[MAX_HPP_CARDS] = { 0, };
-static int irq[MAX_HPP_CARDS]  = { 0, };
+static int irq[MAX_HPP_CARDS] = { 0, };
 int
 init_module(void)
 {
@@ -281,7 +281,7 @@ dev->name = namelist+(NAMELEN*this_dev);
 dev->irq = irq[this_dev];
 dev->base_addr = io[this_dev];
 dev->init = hp_plus_probe;
-if (io[this_dev] == 0)  {
+if (io[this_dev] == 0) {
 if (this_dev != 0) break;
 printk(KERN_NOTICE "hp-plus.c: Presently autoprobing (not recommended) for a single card.\n");
 }

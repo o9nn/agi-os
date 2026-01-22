@@ -5,37 +5,37 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const alternativeDirectory = process.env['DELTACHAT_LOCALE_DIR']
 let cachedResult: string | null = null
 export function getLocaleDirectoryPath() {
-  if (cachedResult) {
-    return cachedResult
-  }
-  const places = [
-    alternativeDirectory,
-    join(__dirname, '../_locales'), 
-    join(__dirname, '../../../_locales'), 
-  ]
-  if (alternativeDirectory && !isValidLocaleDirectory(alternativeDirectory)) {
-    throw new Error(
-      `Custom locale directory specified in \`DELTACHAT_LOCALE_DIR\` env var is not a valid locale directory.
-      Make sure it exists and contains atleast the following files:
-      - _languages.json        
-      - _untranslated_en.json  
-      - en.json                
-      Path to the invalid directory: ${alternativeDirectory}`
-    )
-  }
-  const directory = places.find(isValidLocaleDirectory)
-  if (!directory) {
-    throw new Error('Failed to find locale data')
-  }
-  cachedResult = directory
-  return directory
+if (cachedResult) {
+return cachedResult
+}
+const places = [
+alternativeDirectory,
+join(__dirname, '../_locales'),
+join(__dirname, '../../../_locales'),
+]
+if (alternativeDirectory && !isValidLocaleDirectory(alternativeDirectory)) {
+throw new Error(
+`Custom locale directory specified in \`DELTACHAT_LOCALE_DIR\` env var is not a valid locale directory.
+Make sure it exists and contains atleast the following files:
+- _languages.json
+- _untranslated_en.json
+- en.json
+Path to the invalid directory: ${alternativeDirectory}`
+)
+}
+const directory = places.find(isValidLocaleDirectory)
+if (!directory) {
+throw new Error('Failed to find locale data')
+}
+cachedResult = directory
+return directory
 }
 function isValidLocaleDirectory(path: string | undefined): boolean {
-  return (
-    path !== undefined &&
-    existsSync(path) &&
-    existsSync(join(path, '_languages.json')) &&
-    existsSync(join(path, '_untranslated_en.json')) &&
-    existsSync(join(path, 'en.json'))
-  )
+return (
+path !== undefined &&
+existsSync(path) &&
+existsSync(join(path, '_languages.json')) &&
+existsSync(join(path, '_untranslated_en.json')) &&
+existsSync(join(path, 'en.json'))
+)
 }

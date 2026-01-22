@@ -110,7 +110,7 @@ openwrap(f : string, d : string, all : int) : ref Wrapped
 if (d == nil)
 d = "/";
 if((w := openmount(f, d)) != nil)
-return w;		# don't mess about if /wrap/ structure exists
+return w; # don't mess about if /wrap/ structure exists
 (ok, dir) := sys->stat(f);
 if (ok < 0)
 return nil;
@@ -127,7 +127,7 @@ return openmount(f, d);
 }
 (ok, dir) = sys->stat(f);
 if (ok < 0 || dir.mode & Sys->DMDIR)
-return openmount(f, d);		# ?
+return openmount(f, d); # ?
 if (mountarch(f, d, all) < 0)
 return nil;
 return openmount(nil, d);
@@ -155,7 +155,7 @@ if (t == 0)
 return (NONE, 0);
 # buf := sys->sprint("%ud", t);
 # if (buf != elem)
-#	return (NONE, 0);
+# return (NONE, 0);
 rv := NONE;
 p := base + "/" + elem + "/package";
 (ok, nil) := sys->stat(p);
@@ -315,7 +315,7 @@ continue;
 if(rdigest == nil || memcmp(rdigest, digest, keyring->MD5dlen) == 0 || (ardigest != nil && memcmp(ardigest, digest, keyring->MD5dlen) == 0))
 break;
 else
-return (-1, 0);	# NEW
+return (-1, 0); # NEW
 }
 if(i < 0)
 return (-1, 0);
@@ -606,7 +606,7 @@ return sys->sprint("%ud", n);
 if(n < 0)
 return nil;
 q := n/TEN2EIGHT;
-s := "0" +  string (n-TEN2EIGHT*q);
+s := "0" + string (n-TEN2EIGHT*q);
 while(len s < 9)
 s = "0" + s;
 if(q <= 9)

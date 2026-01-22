@@ -7,8 +7,8 @@ cogport=$PORT
 observe=$OBSERVE
 haveping=`echo foo | $netcat $coghost $cogport`
 if [[ $? -ne 0 ]] ; then
-	echo "Error: Unable to ping cogserver; not processing file."
-	exit 1
+echo "Error: Unable to ping cogserver; not processing file."
+exit 1
 fi
 alen=${
 blen=$(($alen+2))
@@ -24,8 +24,8 @@ cwd=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 cat "$splitdir/$rest" | $cwd/submit-block.pl $coghost $cogport "$observe"
 haveping=`echo foo | $netcat $coghost $cogport`
 if [[ $? -ne 0 ]] ; then
-	echo "Error: Failed to ping cogserver after processing $rest"
-	exit 1
+echo "Error: Failed to ping cogserver after processing $rest"
+exit 1
 fi
 mv "$splitdir/$rest" "$subdir/$rest"
 rm "$basepath/$rest"

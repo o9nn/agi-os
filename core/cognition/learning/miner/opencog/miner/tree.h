@@ -68,18 +68,18 @@ class iterator_base
 #endif
 {
 public:
-typedef T                               value_type;
-typedef T*                              pointer;
-typedef T&                              reference;
-typedef size_t                          size_type;
-typedef ptrdiff_t                       difference_type;
+typedef T value_type;
+typedef T* pointer;
+typedef T& reference;
+typedef size_t size_type;
+typedef ptrdiff_t difference_type;
 typedef std::bidirectional_iterator_tag iterator_category;
 typedef typename tree<T,tree_node_allocator>::sibling_iterator sibling_iterator;
 iterator_base();
 iterator_base(tree_node *);
-T&             operator*() const;
-T*             operator->() const;
-void         skip_children();
+T& operator*() const;
+T* operator->() const;
+void skip_children();
 unsigned int number_of_children() const;
 bool is_childless() const {
 return (node->first_child==NULL);
@@ -108,14 +108,14 @@ pre_order_iterator();
 pre_order_iterator(tree_node *);
 pre_order_iterator(const iterator_base&);
 pre_order_iterator(const sibling_iterator&);
-bool    operator==(const pre_order_iterator&) const;
-bool    operator!=(const pre_order_iterator&) const;
-pre_order_iterator&  operator++();
-pre_order_iterator&  operator--();
-pre_order_iterator   operator++(int);
-pre_order_iterator   operator--(int);
-pre_order_iterator&  operator+=(unsigned int);
-pre_order_iterator&  operator-=(unsigned int);
+bool operator==(const pre_order_iterator&) const;
+bool operator!=(const pre_order_iterator&) const;
+pre_order_iterator& operator++();
+pre_order_iterator& operator--();
+pre_order_iterator operator++(int);
+pre_order_iterator operator--(int);
+pre_order_iterator& operator+=(unsigned int);
+pre_order_iterator& operator-=(unsigned int);
 };
 class post_order_iterator : public iterator_base {
 public:
@@ -123,14 +123,14 @@ post_order_iterator();
 post_order_iterator(tree_node *);
 post_order_iterator(const iterator_base&);
 post_order_iterator(const sibling_iterator&);
-bool    operator==(const post_order_iterator&) const;
-bool    operator!=(const post_order_iterator&) const;
-post_order_iterator&  operator++();
-post_order_iterator&  operator--();
-post_order_iterator   operator++(int);
-post_order_iterator   operator--(int);
-post_order_iterator&  operator+=(unsigned int);
-post_order_iterator&  operator-=(unsigned int);
+bool operator==(const post_order_iterator&) const;
+bool operator!=(const post_order_iterator&) const;
+post_order_iterator& operator++();
+post_order_iterator& operator--();
+post_order_iterator operator++(int);
+post_order_iterator operator--(int);
+post_order_iterator& operator+=(unsigned int);
+post_order_iterator& operator-=(unsigned int);
 void descend_all();
 };
 class breadth_first_queued_iterator : public iterator_base {
@@ -138,15 +138,15 @@ public:
 breadth_first_queued_iterator();
 breadth_first_queued_iterator(tree_node *);
 breadth_first_queued_iterator(const iterator_base&);
-bool    operator==(const breadth_first_queued_iterator&) const;
-bool    operator!=(const breadth_first_queued_iterator&) const;
-breadth_first_queued_iterator&  operator++();
-breadth_first_queued_iterator   operator++(int);
-breadth_first_queued_iterator&  operator+=(unsigned int);
+bool operator==(const breadth_first_queued_iterator&) const;
+bool operator!=(const breadth_first_queued_iterator&) const;
+breadth_first_queued_iterator& operator++();
+breadth_first_queued_iterator operator++(int);
+breadth_first_queued_iterator& operator+=(unsigned int);
 private:
 std::queue<tree_node *> traversal_queue;
 };
-typedef pre_order_iterator            iterator;
+typedef pre_order_iterator iterator;
 typedef breadth_first_queued_iterator breadth_first_iterator;
 class fixed_depth_iterator : public iterator_base {
 public:
@@ -155,14 +155,14 @@ fixed_depth_iterator(tree_node *);
 fixed_depth_iterator(const iterator_base&);
 fixed_depth_iterator(const sibling_iterator&);
 fixed_depth_iterator(const fixed_depth_iterator&);
-bool    operator==(const fixed_depth_iterator&) const;
-bool    operator!=(const fixed_depth_iterator&) const;
-fixed_depth_iterator&  operator++();
-fixed_depth_iterator&  operator--();
-fixed_depth_iterator   operator++(int);
-fixed_depth_iterator   operator--(int);
-fixed_depth_iterator&  operator+=(unsigned int);
-fixed_depth_iterator&  operator-=(unsigned int);
+bool operator==(const fixed_depth_iterator&) const;
+bool operator!=(const fixed_depth_iterator&) const;
+fixed_depth_iterator& operator++();
+fixed_depth_iterator& operator--();
+fixed_depth_iterator operator++(int);
+fixed_depth_iterator operator--(int);
+fixed_depth_iterator& operator+=(unsigned int);
+fixed_depth_iterator& operator-=(unsigned int);
 tree_node *first_parent_;
 private:
 void set_first_parent_();
@@ -174,14 +174,14 @@ sibling_iterator();
 sibling_iterator(tree_node *);
 sibling_iterator(const sibling_iterator&);
 sibling_iterator(const iterator_base&);
-bool    operator==(const sibling_iterator&) const;
-bool    operator!=(const sibling_iterator&) const;
-sibling_iterator&  operator++();
-sibling_iterator&  operator--();
-sibling_iterator   operator++(int);
-sibling_iterator   operator--(int);
-sibling_iterator&  operator+=(unsigned int);
-sibling_iterator&  operator-=(unsigned int);
+bool operator==(const sibling_iterator&) const;
+bool operator!=(const sibling_iterator&) const;
+sibling_iterator& operator++();
+sibling_iterator& operator--();
+sibling_iterator operator++(int);
+sibling_iterator operator--(int);
+sibling_iterator& operator+=(unsigned int);
+sibling_iterator& operator-=(unsigned int);
 friend class tree;
 friend class iterator_base;
 friend class pre_order_iterator;
@@ -196,14 +196,14 @@ leaf_iterator();
 leaf_iterator(tree_node *);
 leaf_iterator(const sibling_iterator&);
 leaf_iterator(const iterator_base&);
-bool    operator==(const leaf_iterator&) const;
-bool    operator!=(const leaf_iterator&) const;
-leaf_iterator&  operator++();
-leaf_iterator&  operator--();
-leaf_iterator   operator++(int);
-leaf_iterator   operator--(int);
-leaf_iterator&  operator+=(unsigned int);
-leaf_iterator&  operator-=(unsigned int);
+bool operator==(const leaf_iterator&) const;
+bool operator!=(const leaf_iterator&) const;
+leaf_iterator& operator++();
+leaf_iterator& operator--();
+leaf_iterator operator++(int);
+leaf_iterator operator--(int);
+leaf_iterator& operator+=(unsigned int);
+leaf_iterator& operator-=(unsigned int);
 };
 class upwards_iterator : public iterator_base {
 public:
@@ -211,36 +211,36 @@ upwards_iterator();
 upwards_iterator(tree_node *);
 upwards_iterator(const sibling_iterator&);
 upwards_iterator(const iterator_base&);
-bool    operator==(const upwards_iterator&) const;
-bool    operator!=(const upwards_iterator&) const;
-upwards_iterator&  operator++();
-upwards_iterator   operator++(int);
-upwards_iterator&  operator+=(unsigned int);
-upwards_iterator&  operator-=(unsigned int);
+bool operator==(const upwards_iterator&) const;
+bool operator!=(const upwards_iterator&) const;
+upwards_iterator& operator++();
+upwards_iterator operator++(int);
+upwards_iterator& operator+=(unsigned int);
+upwards_iterator& operator-=(unsigned int);
 };
-inline pre_order_iterator   begin() const;
-inline pre_order_iterator   end() const;
-post_order_iterator  begin_post() const;
-post_order_iterator  end_post() const;
+inline pre_order_iterator begin() const;
+inline pre_order_iterator end() const;
+post_order_iterator begin_post() const;
+post_order_iterator end_post() const;
 fixed_depth_iterator begin_fixed(const iterator_base&, unsigned int) const;
 fixed_depth_iterator end_fixed(const iterator_base&, unsigned int) const;
 breadth_first_queued_iterator begin_breadth_first() const;
 breadth_first_queued_iterator end_breadth_first() const;
-sibling_iterator     begin(const iterator_base&) const;
-sibling_iterator     end(const iterator_base&) const;
-leaf_iterator   begin_leaf() const;
-leaf_iterator   end_leaf() const;
+sibling_iterator begin(const iterator_base&) const;
+sibling_iterator end(const iterator_base&) const;
+leaf_iterator begin_leaf() const;
+leaf_iterator end_leaf() const;
 template<typename iter>
 upwards_iterator begin_upwards(iter it) const { return upwards_iterator(it); }
 upwards_iterator end_upwards() const { return upwards_iterator(NULL); }
 template<typename iter> iter parent(iter) const;
-template<typename	iter> iter last_child(iter) const;
+template<typename iter> iter last_child(iter) const;
 template<typename iter> iter previous_sibling(iter) const;
 template<typename iter> iter next_sibling(iter) const;
 template<typename iter> iter next_at_same_depth(iter) const;
-void     clear();
+void clear();
 template<typename iter> iter erase(iter);
-void     erase_children(const iterator_base&);
+void erase_children(const iterator_base&);
 template<typename iter> iter append_child(iter position);
 template<typename iter> iter prepend_child(iter position);
 template<typename iter> iter append_children(iter position,int n);
@@ -265,7 +265,7 @@ template<typename iter> iter insert_above(iter position, const T& x);
 template<typename iter> iter replace(iter position, const T& x);
 template<typename iter> iter replace(iter position, const iterator_base& from);
 sibling_iterator replace(sibling_iterator orig_begin, sibling_iterator orig_end,
-sibling_iterator new_begin,  sibling_iterator new_end);
+sibling_iterator new_begin, sibling_iterator new_end);
 template<typename iter> iter flatten(iter position);
 template<typename iter> iter reparent(iter position, sibling_iterator begin, sibling_iterator end);
 template<typename iter> iter reparent(iter position, iter from);
@@ -274,38 +274,38 @@ template<typename iter> iter move_after(iter target, iter source);
 template<typename iter> iter move_before(iter target, iter source);
 sibling_iterator move_before(sibling_iterator target, sibling_iterator source);
 template<typename iter> iter move_ontop(iter target, iter source);
-void     merge(sibling_iterator, sibling_iterator, sibling_iterator, sibling_iterator,
+void merge(sibling_iterator, sibling_iterator, sibling_iterator, sibling_iterator,
 bool duplicate_leaves=false);
-void     sort(sibling_iterator from, sibling_iterator to, bool deep=false);
+void sort(sibling_iterator from, sibling_iterator to, bool deep=false);
 template<class StrictWeakOrdering>
-void     sort(sibling_iterator from, sibling_iterator to, StrictWeakOrdering comp, bool deep=false);
+void sort(sibling_iterator from, sibling_iterator to, StrictWeakOrdering comp, bool deep=false);
 template<class Predicate>
 sibling_iterator partition(sibling_iterator from, sibling_iterator to,Predicate comp);
 template<class StrictWeakOrdering>
-void     sort_on_subtrees(sibling_iterator from, sibling_iterator to, StrictWeakOrdering comp, bool deep=false);
+void sort_on_subtrees(sibling_iterator from, sibling_iterator to, StrictWeakOrdering comp, bool deep=false);
 template<typename iter>
-bool     equal(const iter& one, const iter& two, const iter& three) const;
+bool equal(const iter& one, const iter& two, const iter& three) const;
 template<typename iter, class BinaryPredicate>
-bool     equal(const iter& one, const iter& two, const iter& three, BinaryPredicate) const;
+bool equal(const iter& one, const iter& two, const iter& three, BinaryPredicate) const;
 template<typename iter>
-bool     equal_subtree(const iter& one, const iter& two) const;
+bool equal_subtree(const iter& one, const iter& two) const;
 template<typename iter, class BinaryPredicate>
-bool     equal_subtree(const iter& one, const iter& two, BinaryPredicate) const;
-tree     subtree(sibling_iterator from, sibling_iterator to) const;
-void     subtree(tree&, sibling_iterator from, sibling_iterator to) const;
-void     swap(sibling_iterator it);
-void     swap(iterator, iterator);
-int      size() const;
-int      subtree_size(const iterator_base& it) const;
-bool     empty() const;
-int      depth(const iterator_base&) const;
+bool equal_subtree(const iter& one, const iter& two, BinaryPredicate) const;
+tree subtree(sibling_iterator from, sibling_iterator to) const;
+void subtree(tree&, sibling_iterator from, sibling_iterator to) const;
+void swap(sibling_iterator it);
+void swap(iterator, iterator);
+int size() const;
+int subtree_size(const iterator_base& it) const;
+bool empty() const;
+int depth(const iterator_base&) const;
 unsigned int number_of_children(const iterator_base&) const;
 unsigned int number_of_siblings(const iterator_base&) const;
-bool     is_in_subtree(const iterator_base& position, const iterator_base& begin,
+bool is_in_subtree(const iterator_base& position, const iterator_base& begin,
 const iterator_base& end) const;
 pre_order_iterator find_subtree(const iterator_base& it, const iterator_base& begin,
 const iterator_base& end) const;
-bool     is_valid(const iterator_base&) const;
+bool is_valid(const iterator_base&) const;
 void validate(const iterator_base& it) const;
 void validate() const { validate(begin()); }
 int max_depth(const iterator_base& it) const {
@@ -321,7 +321,7 @@ b=std::max(b,max_branching(sib));
 return std::max(b,i);
 }
 unsigned int sibling_index(sibling_iterator it) const;
-sibling_iterator  child(const iterator_base& position, unsigned int) const;
+sibling_iterator child(const iterator_base& position, unsigned int) const;
 class iterator_base_less {
 public:
 bool operator()(const typename tree<T, tree_node_allocator>::iterator_base& one,
@@ -689,7 +689,7 @@ ret.node=ret.node->first_child;
 }
 if(relative_depth<0) {
 if(ret.node->next_sibling==0) goto upper;
-else                          goto lower;
+else goto lower;
 }
 }
 return ret;
@@ -821,7 +821,7 @@ return iter(position.node->last_child);
 }
 template <class T, class tree_node_allocator>
 template <class iter>
-iter tree<T, tree_node_allocator>::prepend_children(iter position,  const std::initializer_list<T>& il) {
+iter tree<T, tree_node_allocator>::prepend_children(iter position, const std::initializer_list<T>& il) {
 iter res=position;
 for (const T& x : il)
 res=prepend_child(position,x);
@@ -1004,7 +1004,7 @@ if (position==from)
 return position;
 tree_node *current_from=from.node;
 tree_node *start_from=from.node;
-tree_node *current_to  =position.node;
+tree_node *current_to =position.node;
 erase_children(position);
 tree_node* tmp = alloc_.allocate(1,0);
 kp::constructor(&tmp->data, (*from));
@@ -1184,11 +1184,11 @@ if(dst->next_sibling)
 if(dst->next_sibling==src)
 return source;
 if(src->prev_sibling!=0) src->prev_sibling->next_sibling=src->next_sibling;
-else                     src->parent->first_child=src->next_sibling;
+else src->parent->first_child=src->next_sibling;
 if(src->next_sibling!=0) src->next_sibling->prev_sibling=src->prev_sibling;
-else                     src->parent->last_child=src->prev_sibling;
+else src->parent->last_child=src->prev_sibling;
 if(dst->next_sibling!=0) dst->next_sibling->prev_sibling=src;
-else                     dst->parent->last_child=src;
+else dst->parent->last_child=src;
 src->next_sibling=dst->next_sibling;
 dst->next_sibling=src;
 src->prev_sibling=dst;
@@ -1207,11 +1207,11 @@ if(dst->prev_sibling)
 if(dst->prev_sibling==src)
 return source;
 if(src->prev_sibling!=0) src->prev_sibling->next_sibling=src->next_sibling;
-else                     src->parent->first_child=src->next_sibling;
+else src->parent->first_child=src->next_sibling;
 if(src->next_sibling!=0) src->next_sibling->prev_sibling=src->prev_sibling;
-else                     src->parent->last_child=src->prev_sibling;
+else src->parent->last_child=src->prev_sibling;
 if(dst->prev_sibling!=0) dst->prev_sibling->next_sibling=src;
-else                     dst->parent->first_child=src;
+else dst->parent->first_child=src;
 src->prev_sibling=dst->prev_sibling;
 dst->prev_sibling=src;
 src->next_sibling=dst;
@@ -1236,12 +1236,12 @@ if(dst_prev_sibling)
 if(dst_prev_sibling==src)
 return source;
 if(src->prev_sibling!=0) src->prev_sibling->next_sibling=src->next_sibling;
-else                     src->parent->first_child=src->next_sibling;
+else src->parent->first_child=src->next_sibling;
 if(src->next_sibling!=0) src->next_sibling->prev_sibling=src->prev_sibling;
-else                     src->parent->last_child=src->prev_sibling;
+else src->parent->last_child=src->prev_sibling;
 if(dst_prev_sibling!=0) dst_prev_sibling->next_sibling=src;
-else if (dst)           dst->parent->first_child=src;
-else                    target.parent_->first_child=src;
+else if (dst) dst->parent->first_child=src;
+else target.parent_->first_child=src;
 src->prev_sibling=dst_prev_sibling;
 if(dst) {
 dst->prev_sibling=src;
@@ -1263,20 +1263,20 @@ tree_node *b_next_sibling=dst->next_sibling;
 tree_node *b_parent=dst->parent;
 erase(target);
 if(src->prev_sibling!=0) src->prev_sibling->next_sibling=src->next_sibling;
-else                     src->parent->first_child=src->next_sibling;
+else src->parent->first_child=src->next_sibling;
 if(src->next_sibling!=0) src->next_sibling->prev_sibling=src->prev_sibling;
-else                     src->parent->last_child=src->prev_sibling;
+else src->parent->last_child=src->prev_sibling;
 if(b_prev_sibling!=0) b_prev_sibling->next_sibling=src;
-else                  b_parent->first_child=src;
+else b_parent->first_child=src;
 if(b_next_sibling!=0) b_next_sibling->prev_sibling=src;
-else                  b_parent->last_child=src;
+else b_parent->last_child=src;
 src->prev_sibling=b_prev_sibling;
 src->next_sibling=b_next_sibling;
 src->parent=b_parent;
 return src;
 }
 template <class T, class tree_node_allocator>
-void tree<T, tree_node_allocator>::merge(sibling_iterator to1,   sibling_iterator to2,
+void tree<T, tree_node_allocator>::merge(sibling_iterator to1, sibling_iterator to2,
 sibling_iterator from1, sibling_iterator from2,
 bool duplicate_leaves)
 {
@@ -1567,17 +1567,17 @@ tree_node *par2=two.node->parent;
 one.node->parent=par2;
 one.node->next_sibling=nxt2;
 if(nxt2) nxt2->prev_sibling=one.node;
-else     par2->last_child=one.node;
+else par2->last_child=one.node;
 one.node->prev_sibling=pre2;
 if(pre2) pre2->next_sibling=one.node;
-else     par2->first_child=one.node;
+else par2->first_child=one.node;
 two.node->parent=par1;
 two.node->next_sibling=nxt1;
 if(nxt1) nxt1->prev_sibling=two.node;
-else     par1->last_child=two.node;
+else par1->last_child=two.node;
 two.node->prev_sibling=pre1;
 if(pre1) pre1->next_sibling=two.node;
-else     par1->first_child=two.node;
+else par1->first_child=two.node;
 }
 }
 template <class T, class tree_node_allocator>
@@ -2120,7 +2120,7 @@ this->node=this->node->first_child;
 }
 if(relative_depth<0) {
 if(this->node->next_sibling==0) goto upper;
-else                          goto lower;
+else goto lower;
 }
 }
 return *this;
@@ -2183,7 +2183,7 @@ return *this;
 }
 template <class T, class tree_node_allocator>
 tree<T, tree_node_allocator>::sibling_iterator::sibling_iterator()
-: iterator_base(),parent_(0) {  }
+: iterator_base(),parent_(0) { }
 template <class T, class tree_node_allocator>
 tree<T, tree_node_allocator>::sibling_iterator::sibling_iterator(tree_node *tn)
 : iterator_base(tn),parent_(tn==0 ? 0 : tn->parent) { }
@@ -2601,7 +2601,7 @@ throw opencog::InconsistenceException(TRACE_INFO,
 "tree - %s.",
 stream.str().c_str());
 }
-return  in;
+return in;
 }
 }
 #endif

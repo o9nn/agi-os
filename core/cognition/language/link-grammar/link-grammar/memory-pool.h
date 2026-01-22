@@ -37,7 +37,7 @@ max_align_t dummy;
 #endif
 #define FLDSIZE_NEXT sizeof(char *)
 #define POOL_NEXT_BLOCK(blk, offset_next) (*(char **)((blk)+(offset_next)))
-struct  Pool_desc_s
+struct Pool_desc_s
 {
 char *ring;
 char *alloc_next;

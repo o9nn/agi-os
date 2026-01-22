@@ -1,8 +1,8 @@
-#include	"u.h"
-#include	"lib.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
+#include "u.h"
+#include "lib.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
 enum
 {
 Qdir = 0,
@@ -23,9 +23,9 @@ int ndir;
 int mdir;
 };
 static Dirtab rootdir[Nrootfiles] = {
-"#/",		{Qdir, 0, QTDIR},	0,		DMDIR|0555,
-"boot",	{Qboot, 0, QTDIR},	0,		DMDIR|0555,
-"mnt",	{Qmnt, 0, QTDIR},	0,		DMDIR|0555,
+"#/", {Qdir, 0, QTDIR}, 0, DMDIR|0555,
+"boot", {Qboot, 0, QTDIR}, 0, DMDIR|0555,
+"mnt", {Qmnt, 0, QTDIR}, 0, DMDIR|0555,
 };
 static uchar *rootdata[Nrootfiles];
 static Dirlist rootlist =
@@ -37,7 +37,7 @@ rootdata,
 Nrootfiles
 };
 static Dirtab bootdir[Nbootfiles] = {
-"boot",	{Qboot, 0, QTDIR},	0,		DMDIR|0555,
+"boot", {Qboot, 0, QTDIR}, 0, DMDIR|0555,
 };
 static uchar *bootdata[Nbootfiles];
 static Dirlist bootlist =
@@ -50,8 +50,8 @@ Nbootfiles
 };
 static uchar *mntdata[Nmntfiles];
 static Dirtab mntdir[Nmntfiles] = {
-"mnt",	{Qmnt, 0, QTDIR},	0,		DMDIR|0555,
-"factotum",	{Qfactotum, 0, QTDIR},	0,	DMDIR|0555,
+"mnt", {Qmnt, 0, QTDIR}, 0, DMDIR|0555,
+"factotum", {Qfactotum, 0, QTDIR}, 0, DMDIR|0555,
 };
 static Dirlist mntlist =
 {
@@ -176,7 +176,7 @@ return -1;
 static Walkqid*
 rootwalk(Chan *c, Chan *nc, char **name, int nname)
 {
-return devwalk(c,  nc, name, nname, nil, 0, rootgen);
+return devwalk(c, nc, name, nname, nil, 0, rootgen);
 }
 static int
 rootstat(Chan *c, uchar *dp, int n)

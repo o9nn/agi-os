@@ -283,7 +283,7 @@ event_add_str(event, "error", error);
 else if (ret == 0)
 event_add_str(event, "key_not_found", "yes");
 event_set_name(event, "dict_lookup_finished");
-e_debug(event, "Lookup finished for '%s': %s",  key, ret > 0 ?
+e_debug(event, "Lookup finished for '%s': %s", key, ret > 0 ?
 "found" :
 "not found");
 }

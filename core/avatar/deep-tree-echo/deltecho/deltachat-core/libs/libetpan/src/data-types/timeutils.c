@@ -1,10 +1,10 @@
 #include "timeutils.h"
 #ifndef WRONG
-#define WRONG	(-1)
+#define WRONG (-1)
 #endif
 static int tmcomp(struct tm * atmp, struct tm * btmp)
 {
-register int	result;
+register int result;
 if ((result = (atmp->tm_year - btmp->tm_year)) == 0 &&
 (result = (atmp->tm_mon - btmp->tm_mon)) == 0 &&
 (result = (atmp->tm_mday - btmp->tm_mday)) == 0 &&
@@ -15,11 +15,11 @@ return result;
 }
 time_t mail_mkgmtime(struct tm * tmp)
 {
-register int			dir;
-register int			bits;
-register int			saved_seconds;
-time_t				t;
-struct tm			yourtm, *mytm;
+register int dir;
+register int bits;
+register int saved_seconds;
+time_t t;
+struct tm yourtm, *mytm;
 yourtm = *tmp;
 saved_seconds = yourtm.tm_sec;
 yourtm.tm_sec = 0;

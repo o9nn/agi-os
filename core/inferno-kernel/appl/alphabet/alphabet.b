@@ -22,43 +22,43 @@ proxy: fn(): chan of ref Proxy->Typescmd[ref Alphabet->Value];
 # to do:
 # - sort out concurrent access to alphabet.
 # - if multiple options are given where only one is expected,
-#	most modules ignore some values, where they should
-#	discard them correctly. this could cause a malicious user
-#	to hang up an alphabet expression (waiting for report to end)
+# most modules ignore some values, where they should
+# discard them correctly. this could cause a malicious user
+# to hang up an alphabet expression (waiting for report to end)
 # - proper implementation of endpointsrv:
-#	- resilience to failures
-#	- security of endpoints
-#	- no need for write(0)... (or maybe there is)
+# - resilience to failures
+# - security of endpoints
+# - no need for write(0)... (or maybe there is)
 # - proper implementation of rexecsrv:
-#	- should be aware of user
+# - should be aware of user
 Debug: con 0;
 autodeclare := 0;
 Module: adt {
-modname:	string;		# used when loading on demand.
-typeset:		ref Typeset;
-sig:			string;
-c:			chan of ref Modulecmd[ref Value];
-m:			Mainmodule;
-def:			ref Sh->Cmd;
-defmods:		ref Strhash[cyclic ref Module];
-refcount:		int;
-find:		fn(ctxt: ref Evalctxt, s: string): (ref Module, string);
-typesig:	fn(m: self ref Module): string;
-run:		fn(m: self ref Module, ctxt: ref Evalctxt,
+modname: string; # used when loading on demand.
+typeset: ref Typeset;
+sig: string;
+c: chan of ref Modulecmd[ref Value];
+m: Mainmodule;
+def: ref Sh->Cmd;
+defmods: ref Strhash[cyclic ref Module];
+refcount: int;
+find: fn(ctxt: ref Evalctxt, s: string): (ref Module, string);
+typesig: fn(m: self ref Module): string;
+run: fn(m: self ref Module, ctxt: ref Evalctxt,
 errorc: chan of string,
 opts: list of (int, list of ref Value),
 args: list of ref Value): ref Value;
-typename2c:	fn(s: string): int;
-mks:		fn(ctxt: ref Evalctxt, s: string): ref Value;
-mkc:		fn(ctxt: ref Evalctxt, c: ref Sh->Cmd): ref Value;
-ensureloaded:	fn(m: self ref Module): string;
-cvt:		fn(ctxt: ref Evalctxt, v: ref Value, tc: int, errorc: chan of string): ref Value;
+typename2c: fn(s: string): int;
+mks: fn(ctxt: ref Evalctxt, s: string): ref Value;
+mkc: fn(ctxt: ref Evalctxt, c: ref Sh->Cmd): ref Value;
+ensureloaded: fn(m: self ref Module): string;
+cvt: fn(ctxt: ref Evalctxt, v: ref Value, tc: int, errorc: chan of string): ref Value;
 };
 Evalctxt: adt {
-modules:	ref Strhash[ref Module];
+modules: ref Strhash[ref Module];
 drawctxt: ref Draw->Context;
 report: ref Report;
-#	stopc: chan of int;
+# stopc: chan of int;
 };
 # used for rewriting expressions.
 Rvalue: adt {
@@ -67,28 +67,28 @@ tc: int;
 refcount: int;
 opts: list of (int, list of ref Rvalue);
 args: list of ref Rvalue;
-dup:		fn(t: self ref Rvalue): ref Rvalue;
-free:		fn(v: self ref Rvalue, used: int);
-isstring:	fn(v: self ref Rvalue): int;
-gets:		fn(t: self ref Rvalue): string;
-type2s:	fn(tc: int): string;
-typec:	fn(t: self ref Rvalue): int;
+dup: fn(t: self ref Rvalue): ref Rvalue;
+free: fn(v: self ref Rvalue, used: int);
+isstring: fn(v: self ref Rvalue): int;
+gets: fn(t: self ref Rvalue): string;
+type2s: fn(tc: int): string;
+typec: fn(t: self ref Rvalue): int;
 };
 Rmodule: adt {
 m: ref Module;
-cvt:		fn(ctxt: ref Revalctxt, v: ref Rvalue, tc: int, errorc: chan of string): ref Rvalue;
-find:		fn(nil: ref Revalctxt, s: string): (ref Rmodule, string);
-typesig:	fn(m: self ref Rmodule): string;
-run:		fn(m: self ref Rmodule, ctxt: ref Revalctxt, errorc: chan of string,
+cvt: fn(ctxt: ref Revalctxt, v: ref Rvalue, tc: int, errorc: chan of string): ref Rvalue;
+find: fn(nil: ref Revalctxt, s: string): (ref Rmodule, string);
+typesig: fn(m: self ref Rmodule): string;
+run: fn(m: self ref Rmodule, ctxt: ref Revalctxt, errorc: chan of string,
 opts: list of (int, list of ref Rvalue), args: list of ref Rvalue): ref Rvalue;
-mks:		fn(ctxt: ref Revalctxt, s: string): ref Rvalue;
-mkc:		fn(ctxt: ref Revalctxt, c: ref Sh->Cmd): ref Rvalue;
-typename2c:	fn(s: string): int;
+mks: fn(ctxt: ref Revalctxt, s: string): ref Rvalue;
+mkc: fn(ctxt: ref Revalctxt, c: ref Sh->Cmd): ref Rvalue;
+typename2c: fn(s: string): int;
 };
 Revalctxt: adt {
 modules: ref Strhash[ref Module];
 used: ref Strhash[ref Module];
-defs:	int;
+defs: int;
 vals: list of ref Rvalue;
 };
 Renv: adt {
@@ -98,38 +98,38 @@ n: int;
 Typeset: adt {
 name: string;
 c: chan of ref Typescmd[ref Value];
-types: ref Table[cyclic ref Type];		# indexed by external type character
+types: ref Table[cyclic ref Type]; # indexed by external type character
 parent: ref Typeset;
-gettype:	fn(ts: self ref Typeset, tc: int): ref Type;
+gettype: fn(ts: self ref Typeset, tc: int): ref Type;
 };
 Type: adt {
-id:	int;
-tc:	int;
+id: int;
+tc: int;
 transform: list of ref Transform;
 typeset: ref Typeset;
-qname:	string;
-name:	string;
+qname: string;
+name: string;
 };
 Transform: adt {
-dst: int;				# which type we're transforming into.
-all: Set;				# set of all types this transformation can lead to.
-expr: ref Sh->Cmd;		# transformation operation.
+dst: int; # which type we're transforming into.
+all: Set; # set of all types this transformation can lead to.
+expr: ref Sh->Cmd; # transformation operation.
 };
 Table: adt[T] {
-items:	array of list of (int, T);
-nilval:	T;
+items: array of list of (int, T);
+nilval: T;
 new: fn(nslots: int, nilval: T): ref Table[T];
-add:	fn(t: self ref Table, id: int, x: T): int;
-del:	fn(t: self ref Table, id: int): int;
-find:	fn(t: self ref Table, id: int): T;
+add: fn(t: self ref Table, id: int, x: T): int;
+del: fn(t: self ref Table, id: int): int;
+find: fn(t: self ref Table, id: int): T;
 };
 Strhash: adt[T] {
-items:	array of list of (string, T);
-nilval:	T;
+items: array of list of (string, T);
+nilval: T;
 new: fn(nslots: int, nilval: T): ref Strhash[T];
-add:	fn(t: self ref Strhash, id: string, x: T);
-del:	fn(t: self ref Strhash, id: string);
-find:	fn(t: self ref Strhash, id: string): T;
+add: fn(t: self ref Strhash, id: string, x: T);
+del: fn(t: self ref Strhash, id: string);
+find: fn(t: self ref Strhash, id: string): T;
 };
 Copy: module {
 initcopy: fn(
@@ -146,9 +146,9 @@ typesets: list of ref Typeset;
 roottypeset: ref Typeset;
 modules: ref Strhash[ref Module];
 typebyname: ref Strhash[ref Type];
-typebyc: ref Table[ref Type];	# indexed by internal type character.
-types: array of ref Type;		# indexed by id.
-currtypec := 16r25a0;		# pretty graphics.
+typebyc: ref Table[ref Type]; # indexed by internal type character.
+types: array of ref Type; # indexed by id.
+currtypec := 16r25a0; # pretty graphics.
 checkload[T](m: T, path: string): T
 {
 if(m != nil)
@@ -182,7 +182,7 @@ typebyc.add(types[i].tc, types[i]);
 typebyname.add(types[i].qname, types[i]);
 roottypeset.types.add(types[i].tc, types[i]);
 }
-#	typebyc.add('a', ref Type(-1, 'a', nil, nil, "/any", "any"));		# not sure about this anymore
+# typebyc.add('a', ref Type(-1, 'a', nil, nil, "/any", "any")); # not sure about this anymore
 modules = modules.new(3, nil);
 }
 initcopy(
@@ -356,7 +356,7 @@ return (nil, nil);
 }
 args: list of ref Rvalue;
 for(i := len sig - 1; i >= 1; i--)
-args = ref Rvalue(mk(-1, nil, nil), sig[i], 1, nil, nil) :: args;	# N.Vb. cmd node is never used.
+args = ref Rvalue(mk(-1, nil, nil), sig[i], 1, nil, nil) :: args; # N.Vb. cmd node is never used.
 c: Eval->Context[ref Rvalue, ref Rmodule, ref Revalctxt];
 v := c.eval(expr, ctxt, errorc, args);
 if(v != nil && tc != -1)
@@ -394,7 +394,7 @@ for(a := (hd opts).t1; a != nil; a = tl a)
 c = mk(n_ADJ, c, gen(hd a, env));
 }
 if(args != nil && len (hd args).i.word > 1 && (hd args).i.word[0] == '-')
-c = mk(n_ADJ, c, mkw("--"));		# XXX potentially dodgy; some sigs don't interpret "--"?
+c = mk(n_ADJ, c, mkw("--")); # XXX potentially dodgy; some sigs don't interpret "--"?
 # use pipe notation when possible
 arg0: ref Sh->Cmd;
 if(args != nil){
@@ -664,60 +664,60 @@ r = (hd ml).t0 :: r;
 return r;
 }
 #Cmpdeclts: adt {
-#	gt: fn(nil: self ref Cmpdeclts, d1, d2: ref Decltypeset): int
+# gt: fn(nil: self ref Cmpdeclts, d1, d2: ref Decltypeset): int
 #};
 #Cmpdeclts.gt(nil: self ref Cmpdeclts, d1, d2: ref Decltypeset)
 #{
-#	return d1.name > d2.name;
+# return d1.name > d2.name;
 #}
 #Cmpstring: adt {
-#	gt: fn(nil: self ref Cmpdeclts, d1, d2: string): int
+# gt: fn(nil: self ref Cmpdeclts, d1, d2: string): int
 #};
 #Cmpstring.gt(nil: self ref Cmpstring, d1, d2: string): int
 #{
-#	return d1 > d2;
+# return d1 > d2;
 #}
 #Cmptype: adt {
-#	gt: fn(nil: self ref Cmptype, d1, d2: ref Type): int
+# gt: fn(nil: self ref Cmptype, d1, d2: ref Type): int
 #};
 #Cmptype.gt(nil: self ref Cmptype, d1, d2: ref Type): int
 #{
-#	return d1.name > d2.name;
+# return d1.name > d2.name;
 #}
 #
 #getdecls(): ref Declarations
 #{
-#	cmptype: ref Cmptype;
-#	d := ref Declarations(array[len typesets] of ref Decltypeset);
-#	i := 0;
-#	ta := array[len types] of ref Type;
-#	for(tsl := typesets; tsl != nil; tsl = tl tsl){
-#		t := hd tsl;
-#		ts := ref Decltypeset;
-#		ts.name = t.name;
+# cmptype: ref Cmptype;
+# d := ref Declarations(array[len typesets] of ref Decltypeset);
+# i := 0;
+# ta := array[len types] of ref Type;
+# for(tsl := typesets; tsl != nil; tsl = tl tsl){
+# t := hd tsl;
+# ts := ref Decltypeset;
+# ts.name = t.name;
 #
-#		# all types in the typeset, in alphabetical order.
-#		j := 0;
-#		for(k := 0; k < len t.types.items; k++)
-#			for(tt := t.types.items[k]; tt != nil; tt = tl tt)
-#				ta[j++] = hd tt;
-#		sort(cmptype, ta[0:j]);
-#		ts.types = array[j] of string;
-#		for(k = 0; k < j; k++){
-#			ts.types[k] = ta[k].name;
-#			ts.alphabet[k] = ta[k].tc;
-#		}
+# # all types in the typeset, in alphabetical order.
+# j := 0;
+# for(k := 0; k < len t.types.items; k++)
+# for(tt := t.types.items[k]; tt != nil; tt = tl tt)
+# ta[j++] = hd tt;
+# sort(cmptype, ta[0:j]);
+# ts.types = array[j] of string;
+# for(k = 0; k < j; k++){
+# ts.types[k] = ta[k].name;
+# ts.alphabet[k] = ta[k].tc;
+# }
 #
-#		# all modules in the typeset
-#		c := gettypesetmodules(ts.name);
-#		while((m := <-c) != nil){
+# # all modules in the typeset
+# c := gettypesetmodules(ts.name);
+# while((m := <-c) != nil){
 #
 #
-#	d.types = array[len types] of string;
-#	for(i := 0; i < len types; i++){
-#		d.alphabet[i] = types[i].tc;
-#		d.types[i] = types[i].qname;
-#	}
+# d.types = array[len types] of string;
+# for(i := 0; i < len types; i++){
+# d.alphabet[i] = types[i].tc;
+# d.types[i] = types[i].qname;
+# }
 #
 gettypesetmodules(tsname: string): chan of string
 {
@@ -933,7 +933,7 @@ if(tc != '*'){
 t := m.typeset.gettype(sig[i]);
 if(t == nil){
 sys->print("no type found for '%c' in sig %q\n", sig[i], origsig);
-return nil;		# XXX is it alright to break here?
+return nil; # XXX is it alright to break here?
 }
 sig[i] = t.tc;
 }
@@ -996,7 +996,7 @@ if(l == nil){
 report(errorc, sys->sprint("error: no way to get from %s to %s", gettype(v.typec()).qname,
 types[dstid].qname));
 v.free(0);
-return nil;		# should only happen the first time.
+return nil; # should only happen the first time.
 }
 t := hd l;
 c: Eval->Context[ref Value, ref Module, ref Evalctxt];
@@ -1064,7 +1064,7 @@ Vz =>
 if(nxv.i.typec == xv.i.typec)
 return nxv;
 }
-sys->print("oh dear, invalid duplicated value from typeset %s\n",  gettype(xv.i.typec).typeset.name);
+sys->print("oh dear, invalid duplicated value from typeset %s\n", gettype(xv.i.typec).typeset.name);
 return nil;
 }
 return v;
@@ -1201,7 +1201,7 @@ break;
 if(l == nil){
 report(errorc, sys->sprint("error: no way to get from %s to %s", gettype(v.typec()).qname,
 types[dstid].qname));
-return nil;		# should only happen the first time.
+return nil; # should only happen the first time.
 }
 t := hd l;
 c: Eval->Context[ref Rvalue, ref Rmodule, ref Revalctxt];
@@ -1345,7 +1345,7 @@ return (1, a);
 bsetadd(reached, t.id);
 for(l := t.transform; l != nil; l = tl l){
 (found, at) := findambiguous(types[(hd l).dst], dt, reached,
-sys->sprint("%s|%s", s, sh->cmd2string((hd l).expr)));	# XXX rewite correctly
+sys->sprint("%s|%s", s, sh->cmd2string((hd l).expr))); # XXX rewite correctly
 for(; at != nil; at = tl at)
 a = hd at :: a;
 if(found)

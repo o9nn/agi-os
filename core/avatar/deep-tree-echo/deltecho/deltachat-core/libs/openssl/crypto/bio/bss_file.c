@@ -1,9 +1,9 @@
 #ifndef HEADER_BSS_FILE_C
 # define HEADER_BSS_FILE_C
 # if defined(__linux) || defined(__sun) || defined(__hpux)
-#  ifndef _FILE_OFFSET_BITS
-#   define _FILE_OFFSET_BITS 64
-#  endif
+# ifndef _FILE_OFFSET_BITS
+# define _FILE_OFFSET_BITS 64
+# endif
 # endif
 # include <stdio.h>
 # include <errno.h>
@@ -11,7 +11,7 @@
 # include "bio_lcl.h"
 # include <openssl/err.h>
 # if defined(OPENSSL_SYS_NETWARE) && defined(NETWARE_CLIB)
-#  include <nwfileio.h>
+# include <nwfileio.h>
 # endif
 # if !defined(OPENSSL_NO_STDIO)
 static int MS_CALLBACK file_write(BIO *h, const char *buf, int num);
@@ -36,7 +36,7 @@ NULL,
 static FILE *file_fopen(const char *filename, const char *mode)
 {
 FILE *file = NULL;
-#  if defined(_WIN32) && defined(CP_UTF8)
+# if defined(_WIN32) && defined(CP_UTF8)
 int sz, len_0 = (int)strlen(filename) + 1;
 DWORD flags;
 if ((sz = MultiByteToWideChar(CP_UTF8, (flags = MB_ERR_INVALID_CHARS),
@@ -59,14 +59,14 @@ file = fopen(filename, mode);
 } else if (GetLastError() == ERROR_NO_UNICODE_TRANSLATION) {
 file = fopen(filename, mode);
 }
-#  else
+# else
 file = fopen(filename, mode);
-#  endif
+# endif
 return (file);
 }
 BIO *BIO_new_file(const char *filename, const char *mode)
 {
-BIO  *ret;
+BIO *ret;
 FILE *file = file_fopen(filename, mode);
 if (file == NULL) {
 SYSerr(SYS_F_FOPEN, get_last_sys_error());
@@ -186,35 +186,35 @@ file_free(b);
 b->shutdown = (int)num & BIO_CLOSE;
 b->ptr = ptr;
 b->init = 1;
-#  if BIO_FLAGS_UPLINK!=0
-#   if defined(__MINGW32__) && defined(__MSVCRT__) && !defined(_IOB_ENTRIES)
-#    define _IOB_ENTRIES 20
-#   endif
-#   if defined(_IOB_ENTRIES)
+# if BIO_FLAGS_UPLINK!=0
+# if defined(__MINGW32__) && defined(__MSVCRT__) && !defined(_IOB_ENTRIES)
+# define _IOB_ENTRIES 20
+# endif
+# if defined(_IOB_ENTRIES)
 if ((size_t)ptr >= (size_t)stdin &&
 (size_t)ptr < (size_t)(stdin + _IOB_ENTRIES))
 BIO_clear_flags(b, BIO_FLAGS_UPLINK);
-#   endif
-#  endif
-#  ifdef UP_fsetmod
+# endif
+# endif
+# ifdef UP_fsetmod
 if (b->flags & BIO_FLAGS_UPLINK)
 UP_fsetmod(b->ptr, (char)((num & BIO_FP_TEXT) ? 't' : 'b'));
 else
-#  endif
+# endif
 {
-#  if defined(OPENSSL_SYS_WINDOWS)
+# if defined(OPENSSL_SYS_WINDOWS)
 int fd = _fileno((FILE *)ptr);
 if (num & BIO_FP_TEXT)
 _setmode(fd, _O_TEXT);
 else
 _setmode(fd, _O_BINARY);
-#  elif defined(OPENSSL_SYS_NETWARE) && defined(NETWARE_CLIB)
+# elif defined(OPENSSL_SYS_NETWARE) && defined(NETWARE_CLIB)
 int fd = fileno((FILE *)ptr);
 if (num & BIO_FP_TEXT)
 setmode(fd, O_TEXT);
 else
 setmode(fd, O_BINARY);
-#  elif defined(OPENSSL_SYS_MSDOS)
+# elif defined(OPENSSL_SYS_MSDOS)
 int fd = fileno((FILE *)ptr);
 if (num & BIO_FP_TEXT)
 _setmode(fd, _O_TEXT);
@@ -225,13 +225,13 @@ _setmode(fd, _O_BINARY);
 } else
 _setmode(fd, _O_BINARY);
 }
-#  elif defined(OPENSSL_SYS_OS2) || defined(OPENSSL_SYS_WIN32_CYGWIN)
+# elif defined(OPENSSL_SYS_OS2) || defined(OPENSSL_SYS_WIN32_CYGWIN)
 int fd = fileno((FILE *)ptr);
 if (num & BIO_FP_TEXT)
 setmode(fd, O_TEXT);
 else
 setmode(fd, O_BINARY);
-#  endif
+# endif
 }
 break;
 case BIO_C_SET_FILENAME:
@@ -253,18 +253,18 @@ BIOerr(BIO_F_FILE_CTRL, BIO_R_BAD_FOPEN_MODE);
 ret = 0;
 break;
 }
-#  if defined(OPENSSL_SYS_MSDOS) || defined(OPENSSL_SYS_WINDOWS) || defined(OPENSSL_SYS_OS2) || defined(OPENSSL_SYS_WIN32_CYGWIN)
+# if defined(OPENSSL_SYS_MSDOS) || defined(OPENSSL_SYS_WINDOWS) || defined(OPENSSL_SYS_OS2) || defined(OPENSSL_SYS_WIN32_CYGWIN)
 if (!(num & BIO_FP_TEXT))
 strcat(p, "b");
 else
 strcat(p, "t");
-#  endif
-#  if defined(OPENSSL_SYS_NETWARE)
+# endif
+# if defined(OPENSSL_SYS_NETWARE)
 if (!(num & BIO_FP_TEXT))
 strcat(p, "b");
 else
 strcat(p, "t");
-#  endif
+# endif
 fp = file_fopen(ptr, p);
 if (fp == NULL) {
 SYSerr(SYS_F_FOPEN, get_last_sys_error());

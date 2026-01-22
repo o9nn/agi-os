@@ -17,9 +17,9 @@ Qlocal,
 Qremote,
 Qstatus,
 };
-#define PATH(type, n)	((type)|((n)<<8))
-#define TYPE(path)		((int)(path) & 0xFF)
-#define NUM(path)		((uint)(path)>>8)
+#define PATH(type, n) ((type)|((n)<<8))
+#define TYPE(path) ((int)(path) & 0xFF)
+#define NUM(path) ((uint)(path)>>8)
 typedef struct Tab Tab;
 struct Tab
 {
@@ -28,15 +28,15 @@ ulong mode;
 };
 Tab tab[] =
 {
-"/",		DMDIR|0555,
-"exec",	DMDIR|0555,
-"clone",	0666,
-nil,		DMDIR|0555,
-"ctl",		0666,
-"data",	0666,
-"local",	0444,
-"remote",	0444,
-"status",	0444,
+"/", DMDIR|0555,
+"exec", DMDIR|0555,
+"clone", 0666,
+nil, DMDIR|0555,
+"ctl", 0666,
+"data", 0666,
+"local", 0444,
+"remote", 0444,
+"status", 0444,
 };
 void
 setexecname(char *s)
@@ -368,12 +368,12 @@ procrfork(fsthread, nil, STACK, RFNAMEG);
 }
 Srv fs =
 {
-.attach=		fssend,
-.destroyfid=	fsdestroyfid,
-.walk1=		fswalk1,
-.open=		fssend,
-.read=		fssend,
-.write=		fssend,
-.stat=		fssend,
-.flush=		fssend,
+.attach= fssend,
+.destroyfid= fsdestroyfid,
+.walk1= fswalk1,
+.open= fssend,
+.read= fssend,
+.write= fssend,
+.stat= fssend,
+.flush= fssend,
 };

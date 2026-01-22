@@ -21,14 +21,14 @@ int i, tmp;
 char *str, *endptr;
 if (argc < 2)
 error (1, 0, "Usage: %s file [flags] [cmd] [len] [sleep_time]\n\
-file          : file name/device name\n\
-flags         : r (O_RDONLY) | w (O_WRONLY) | rw (O_RDWR)      : [rw]\n\
-cmd           : g (F_GETLK), s (F_SETLK), sw (F_SETLKW)        : [s]\n\
-lock.l_type   : rl (F_RDLCK), wl (F_WRLCK), ul [F_UNLCK]       : [ul]\n\
-lock.l_whence : ss (SEEK_SET), sc (SEEK_CUR), se (SEEK_END)    : [ss]\n\
-lock.l_start  : b <number>                                     : [b 0]\n\
-lock.l_len    : l <number>                                     : [l 0]\n\
-sleep_time    : st <number>                                    : [st 10]\n",
+file : file name/device name\n\
+flags : r (O_RDONLY) | w (O_WRONLY) | rw (O_RDWR) : [rw]\n\
+cmd : g (F_GETLK), s (F_SETLK), sw (F_SETLKW) : [s]\n\
+lock.l_type : rl (F_RDLCK), wl (F_WRLCK), ul [F_UNLCK] : [ul]\n\
+lock.l_whence : ss (SEEK_SET), sc (SEEK_CUR), se (SEEK_END) : [ss]\n\
+lock.l_start : b <number> : [b 0]\n\
+lock.l_len : l <number> : [l 0]\n\
+sleep_time : st <number> : [st 10]\n",
 argv[0]);
 *file_name = argv[1];
 for (i = 2; i < argc; i++)

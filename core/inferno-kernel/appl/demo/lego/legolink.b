@@ -296,7 +296,7 @@ tmr.cancel();
 }
 }
 TX_HDR : con 3;
-DL_HDR : con 5;	# 16r45 seqLSB seqMSB lenLSB lenMSB
+DL_HDR : con 5; # 16r45 seqLSB seqMSB lenLSB lenMSB
 DL_CKSM : con 1;
 LN_HDR : con 1;
 LN_JUNK : con 2;
@@ -327,17 +327,17 @@ data = comp;
 # DL_HDR LN_HDR data cksum
 # last byte of data is stored in cksum byte
 llen := LN_HDR + len data;
-blklen := LN_LEN + llen - 1;	# llen includes cksum
+blklen := LN_LEN + llen - 1; # llen includes cksum
 ldata := array [DL_HDR + blklen + 1] of byte;
 # DL_HDR
 if (seqnum == 0)
 ldata[0] = byte 16r45;
 else
 ldata[0] = byte 16r4d;
-ldata[1] = byte 0;				# blk number LSB
-ldata[2] = byte 0;				# blk number MSB
-ldata[3] = byte (blklen & 16rff);		# blk length LSB
-ldata[4] = byte ((blklen >> 8) & 16rff);	# blk length MSB
+ldata[1] = byte 0; # blk number LSB
+ldata[2] = byte 0; # blk number MSB
+ldata[3] = byte (blklen & 16rff); # blk length LSB
+ldata[4] = byte ((blklen >> 8) & 16rff); # blk length MSB
 # LN_LEN
 ldata[5] = byte (llen & 16rff);
 ldata[6] = byte ((llen>>8) & 16rff);

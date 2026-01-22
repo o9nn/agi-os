@@ -1,17 +1,17 @@
 #!/bin/bash
 set -e
 if [ -n "$GITHUB_ACTIONS" ]; then
-    CI_SYSTEM="GitHub Actions"
-    CI_COMMIT="${GITHUB_SHA}"
-    CI_BRANCH="${GITHUB_REF_NAME}"
+CI_SYSTEM="GitHub Actions"
+CI_COMMIT="${GITHUB_SHA}"
+CI_BRANCH="${GITHUB_REF_NAME}"
 elif [ -n "$GITLAB_CI" ]; then
-    CI_SYSTEM="GitLab CI"
-    CI_COMMIT="${CI_COMMIT_SHA}"
-    CI_BRANCH="${CI_COMMIT_REF_NAME}"
+CI_SYSTEM="GitLab CI"
+CI_COMMIT="${CI_COMMIT_SHA}"
+CI_BRANCH="${CI_COMMIT_REF_NAME}"
 else
-    CI_SYSTEM="Local"
-    CI_COMMIT=$(git rev-parse HEAD 2>/dev/null || echo "unknown")
-    CI_BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "unknown")
+CI_SYSTEM="Local"
+CI_COMMIT=$(git rev-parse HEAD 2>/dev/null || echo "unknown")
+CI_BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "unknown")
 fi
 echo "=========================================="
 echo "OpenCog CI/CD Build System"
@@ -24,15 +24,15 @@ echo ""
 echo "Installing build dependencies..."
 sudo apt-get update -qq
 sudo apt-get install -y -qq \
-    build-essential \
-    debhelper \
-    cmake \
-    devscripts \
-    fakeroot \
-    lintian \
-    git \
-    wget \
-    curl
+build-essential \
+debhelper \
+cmake \
+devscripts \
+fakeroot \
+lintian \
+git \
+wget \
+curl
 export BUILD_DIR=$(pwd)
 export PARALLEL_JOBS=$(nproc)
 export INSTALL_PACKAGES="yes"
@@ -41,9 +41,9 @@ echo ""
 echo "Starting package builds..."
 echo ""
 if ! bash build-all-packages.sh; then
-    echo ""
-    echo "Build failed!"
-    exit 1
+echo ""
+echo "Build failed!"
+exit 1
 fi
 echo ""
 echo "=========================================="

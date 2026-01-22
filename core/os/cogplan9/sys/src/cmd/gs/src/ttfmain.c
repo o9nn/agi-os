@@ -17,23 +17,23 @@ int flags;
 short arg1, arg2;
 };
 private Fixed AVE(F26Dot6 a, F26Dot6 b)
-{   return (a + b) / 2;
+{ return (a + b) / 2;
 }
 private F26Dot6 shortToF26Dot6(short a)
-{   return (F26Dot6)a << 6;
+{ return (F26Dot6)a << 6;
 }
 private F26Dot6 floatToF26Dot6(float a)
-{   return (F26Dot6)(a * (1 << 6) + 0.5);
+{ return (F26Dot6)(a * (1 << 6) + 0.5);
 }
 private Fixed floatToF16Dot16(float a)
-{   return (F26Dot6)(a * (1 << 16) + 0.5);
+{ return (F26Dot6)(a * (1 << 16) + 0.5);
 }
 private void TransformF26Dot6PointFix(F26Dot6Point *pt, F26Dot6 dx, F26Dot6 dy, FixMatrix *m)
-{   pt->x = MulDiv(dx, m->a, 65536) + MulDiv(dy, m->c, 65536) + (m->tx >> 10);
+{ pt->x = MulDiv(dx, m->a, 65536) + MulDiv(dy, m->c, 65536) + (m->tx >> 10);
 pt->y = MulDiv(dx, m->b, 65536) + MulDiv(dy, m->d, 65536) + (m->ty >> 10);
 }
 private void TransformF26Dot6PointFloat(FloatPoint *pt, F26Dot6 dx, F26Dot6 dy, FloatMatrix *m)
-{   pt->x = dx * m->a / 64 + dy * m->c / 64 + m->tx;
+{ pt->x = dx * m->a / 64 + dy * m->c / 64 + m->tx;
 pt->y = dx * m->b / 64 + dy * m->d / 64 + m->ty;
 }
 private ttfPtrElem *ttfFont__get_table_ptr(ttfFont *f, char *id)
@@ -64,11 +64,11 @@ if (!memcmp(id, "cmap", 4))
 return &f->t_cmap;
 return 0;
 }
-TT_Error  TT_Set_Instance_CharSizes(TT_Instance  instance,
-TT_F26Dot6   charWidth,
-TT_F26Dot6   charHeight)
+TT_Error TT_Set_Instance_CharSizes(TT_Instance instance,
+TT_F26Dot6 charWidth,
+TT_F26Dot6 charHeight)
 {
-PInstance  ins = instance.z;
+PInstance ins = instance.z;
 if ( !ins )
 return TT_Err_Invalid_Instance_Handle;
 if (charWidth < 1*64)
@@ -89,7 +89,7 @@ if (charWidth > charHeight)
 ins->metrics.pointSize = charWidth;
 else
 ins->metrics.pointSize = charHeight;
-ins->valid  = FALSE;
+ins->valid = FALSE;
 return Instance_Reset(ins, FALSE);
 }
 int ttfInterpreter__obtain(ttfMemory *mem, ttfInterpreter **ptti)
@@ -136,7 +136,7 @@ this->DebugRepaint = DebugRepaint;
 this->DebugPrint = DebugPrint;
 }
 void ttfFont__finit(ttfFont *this)
-{   ttfMemory *mem = this->tti->ttf_memory;
+{ ttfMemory *mem = this->tti->ttf_memory;
 if (this->exec)
 Context_Destroy(this->exec);
 this->exec = NULL;
@@ -153,7 +153,7 @@ this->face = NULL;
 FontError ttfFont__Open(ttfInterpreter *tti, ttfFont *this, ttfReader *r,
 unsigned int nTTC, float w, float h,
 bool design_grid)
-{   char sVersion[4], sVersion0[4] = {0, 1, 0, 0};
+{ char sVersion[4], sVersion0[4] = {0, 1, 0, 0};
 unsigned int nNumTables, i;
 TT_Error code;
 int k;
@@ -181,7 +181,7 @@ r->Read(r, sVersion, 4);
 }
 if(memcmp(sVersion, sVersion0, 4) && memcmp(sVersion, "true", 4))
 return fUnimplemented;
-nNumTables    = ttfReader__UShort(r);
+nNumTables = ttfReader__UShort(r);
 ttfReader__UShort(r);
 ttfReader__UShort(r);
 ttfReader__UShort(r);
@@ -271,7 +271,7 @@ ww = floatToF26Dot6(w);
 hh = floatToF26Dot6(h);
 }
 code = TT_Set_Instance_CharSizes(I, ww, hh);
-this->inst->metrics  = this->exec->metrics;
+this->inst->metrics = this->exec->metrics;
 if (code == TT_Err_Invalid_Engine)
 return fPatented;
 if (code == TT_Err_Out_Of_Memory)
@@ -283,7 +283,7 @@ return fBadFontData;
 return code;
 }
 private void ttfFont__StartGlyph(ttfFont *this)
-{   Context_Load( this->exec, this->inst );
+{ Context_Load( this->exec, this->inst );
 if ( this->inst->GS.instruct_control & 2 )
 this->exec->GS = Default_GraphicsState;
 else
@@ -294,10 +294,10 @@ private void ttfFont__StopGlyph(ttfFont *this)
 {
 Context_Save(this->exec, this->inst);
 }
-private void  mount_zone( PGlyph_Zone  source,
-PGlyph_Zone  target )
+private void mount_zone( PGlyph_Zone source,
+PGlyph_Zone target )
 {
-Int  np, nc;
+Int np, nc;
 np = source->n_points;
 nc = source->n_contours;
 target->org_x = source->org_x + np;
@@ -306,14 +306,14 @@ target->cur_x = source->cur_x + np;
 target->cur_y = source->cur_y + np;
 target->touch = source->touch + np;
 target->contours = source->contours + nc;
-target->n_points   = 0;
+target->n_points = 0;
 target->n_contours = 0;
 }
-private void  Init_Glyph_Component( PSubglyph_Record    element,
-PSubglyph_Record    original,
-PExecution_Context  exec )
+private void Init_Glyph_Component( PSubglyph_Record element,
+PSubglyph_Record original,
+PExecution_Context exec )
 {
-element->index     = -1;
+element->index = -1;
 element->is_scaled = FALSE;
 element->is_hinted = FALSE;
 if (original)
@@ -321,7 +321,7 @@ mount_zone( &original->zone, &element->zone );
 else
 element->zone = exec->pts;
 element->zone.n_contours = 0;
-element->zone.n_points   = 0;
+element->zone.n_points = 0;
 element->arg1 = 0;
 element->arg2 = 0;
 element->element_flag = 0;
@@ -332,20 +332,20 @@ element->transform.yx = 0;
 element->transform.yy = 1 << 16;
 element->transform.ox = 0;
 element->transform.oy = 0;
-element->leftBearing  = 0;
+element->leftBearing = 0;
 element->advanceWidth = 0;
 }
-private void  cur_to_org( Int  n, PGlyph_Zone  zone )
+private void cur_to_org( Int n, PGlyph_Zone zone )
 {
-Int  k;
+Int k;
 for ( k = 0; k < n; k++ )
 zone->org_x[k] = zone->cur_x[k];
 for ( k = 0; k < n; k++ )
 zone->org_y[k] = zone->cur_y[k];
 }
-private void  org_to_cur( Int  n, PGlyph_Zone  zone )
+private void org_to_cur( Int n, PGlyph_Zone zone )
 {
-Int  k;
+Int k;
 for ( k = 0; k < n; k++ )
 zone->cur_x[k] = zone->org_x[k];
 for ( k = 0; k < n; k++ )
@@ -362,7 +362,7 @@ this->bVertical = bVertical;
 this->exp = exp;
 }
 private void MoveGlyphOutline(TGlyph_Zone *pts, int nOffset, ttfGlyphOutline *out, FixMatrix *m)
-{   F26Dot6* x = pts->org_x + nOffset;
+{ F26Dot6* x = pts->org_x + nOffset;
 F26Dot6* y = pts->org_y + nOffset;
 short count = out->pointCount;
 F26Dot6Point p;
@@ -378,7 +378,7 @@ TransformF26Dot6PointFix(&p, *x, *y, m);
 }
 private FontError ttfOutliner__BuildGlyphOutlineAux(ttfOutliner *this, int glyphIndex,
 FixMatrix *m_orig, ttfGlyphOutline* gOutline)
-{   ttfFont *pFont = this->pFont;
+{ ttfFont *pFont = this->pFont;
 ttfReader *r = this->r;
 ttfInterpreter *tti = pFont->tti;
 short sideBearing;
@@ -391,7 +391,7 @@ unsigned int nNextGlyphPtr = 0;
 unsigned int nPosBeg;
 TExecution_Context *exec = pFont->exec;
 TGlyph_Zone *pts = &exec->pts;
-TSubglyph_Record  subglyph;
+TSubglyph_Record subglyph;
 ttfSubGlyphUsage *usage = tti->usage + tti->usage_top;
 const byte *glyph = NULL;
 int glyph_size;
@@ -643,7 +643,7 @@ for (--count; count >= 0; --count)
 *onCurve++ = flag;
 }
 }
-{   short coord = (this->bVertical ? 0 : sideBearing - subglyph.bbox.xMin);
+{ short coord = (this->bVertical ? 0 : sideBearing - subglyph.bbox.xMin);
 F26Dot6* x = pts->org_x;
 onCurve = pts->touch;
 while (onCurve < stop) {
@@ -657,7 +657,7 @@ coord += ttfReader__Short(r);
 *x++ = Scale_X(&exec->metrics, coord);
 }
 }
-{   short coord = 0;
+{ short coord = 0;
 F26Dot6* y = pts->org_y;
 onCurve = pts->touch;
 while (onCurve < stop) {
@@ -682,13 +682,13 @@ int k;
 F26Dot6 x;
 TT_Error code;
 exec->is_composite = FALSE;
-pts->org_x[nPoints    ] = Scale_X(&exec->metrics, subglyph.pp1.x);
-pts->org_y[nPoints    ] = Scale_Y(&exec->metrics, subglyph.pp1.y);
+pts->org_x[nPoints ] = Scale_X(&exec->metrics, subglyph.pp1.x);
+pts->org_y[nPoints ] = Scale_Y(&exec->metrics, subglyph.pp1.y);
 pts->org_x[nPoints + 1] = Scale_X(&exec->metrics, subglyph.pp2.x);
 pts->org_y[nPoints + 1] = Scale_Y(&exec->metrics, subglyph.pp2.y);
-pts->touch[nPoints    ] = 0;
+pts->touch[nPoints ] = 0;
 pts->touch[nPoints + 1] = 0;
-pts->n_points   = nPoints + 2;
+pts->n_points = nPoints + 2;
 pts->n_contours = gOutline->contourCount;
 x = pts->org_x[nPoints];
 x = ((x + 32) & -64) - x;
@@ -734,7 +734,7 @@ return ttfOutliner__BuildGlyphOutlineAux(this, glyphIndex, &m_orig, gOutline);
 }
 #define AVECTOR_BUG 1
 void ttfOutliner__DrawGlyphOutline(ttfOutliner *this)
-{   ttfGlyphOutline* out = &this->out;
+{ ttfGlyphOutline* out = &this->out;
 FloatMatrix *m = &this->post_transform;
 ttfFont *pFont = this->pFont;
 ttfExport *exp = this->exp;
@@ -747,7 +747,7 @@ F26Dot6* y = pts->org_y;
 F26Dot6 px, py;
 short sp, ctr;
 FloatPoint p0, p1, p2, p3;
-#   if AVECTOR_BUG
+# if AVECTOR_BUG
 short xMinB = out->xMinB >> 6, xMaxB=out->xMaxB >> 6;
 short yMinB = out->yMinB >> 6, yMaxB=out->yMaxB >> 6;
 short expand=pFont->nUnitsPerEm*2;
@@ -760,7 +760,7 @@ xMin = Scale_X(&exec->metrics, xMinB);
 xMax = Scale_X(&exec->metrics, xMaxB);
 yMin = Scale_X(&exec->metrics, yMinB);
 yMax = Scale_X(&exec->metrics, yMaxB);
-#   endif
+# endif
 TransformF26Dot6PointFloat(&p1, out->advance.x, out->advance.y, m);
 p1.x -= this->post_transform.tx;
 p1.y -= this->post_transform.ty;
@@ -779,7 +779,7 @@ continue;
 if (exp->bPoints) {
 for (pt = 0; pt <= ep; pt++) {
 px = x[pt], py = y[pt];
-#		if AVECTOR_BUG
+# if AVECTOR_BUG
 if (x[pt] < xMin || xMax < x[pt] || y[pt] < yMin || yMax < y[pt]) {
 short prevIndex = pt == 0 ? ep : pt - 1;
 short nextIndex = pt == ep ? 0 : pt + 1;
@@ -788,7 +788,7 @@ nextIndex = 0;
 px=AVE(x[prevIndex], x[nextIndex]);
 py=AVE(y[prevIndex], y[nextIndex]);
 }
-#		endif
+# endif
 TransformF26Dot6PointFloat(&p0, px, py, m);
 exp->Point(exp, &p0, onCurve[pt], !pt);
 }
@@ -827,12 +827,12 @@ p0 = p1;
 F26Dot6 prevX, prevY, nextX, nextY;
 px = x[pt];
 py = y[pt];
-#		    if AVECTOR_BUG
+# if AVECTOR_BUG
 if(x[pt] < xMin || xMax < x[pt] || y[pt] < yMin || yMax < y[pt]) {
 px=AVE(x[prevIndex], x[nextIndex]);
 py=AVE(y[prevIndex], y[nextIndex]);
 }
-#		    endif
+# endif
 if (onCurve[prevIndex] & 1) {
 prevX = x[prevIndex];
 prevY = y[prevIndex];
@@ -876,7 +876,7 @@ sp = *endP++;
 }
 FontError ttfOutliner__Outline(ttfOutliner *this, int glyphIndex,
 float orig_x, float orig_y, FloatMatrix *m1)
-{   ttfFont *pFont = this->pFont;
+{ ttfFont *pFont = this->pFont;
 FontError error;
 this->post_transform = *m1;
 this->out.contourCount = 0;

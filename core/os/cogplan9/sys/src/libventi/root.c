@@ -22,7 +22,7 @@ p += sizeof(r->name);
 memmove(p, r->type, sizeof(r->type));
 p += sizeof(r->type);
 memmove(p, r->score, VtScoreSize);
-p +=  VtScoreSize;
+p += VtScoreSize;
 U16PUT(p, r->blocksize);
 p += 2;
 memmove(p, r->prev, VtScoreSize);
@@ -48,7 +48,7 @@ memmove(r->type, p, sizeof(r->type));
 r->type[sizeof(r->type)-1] = 0;
 p += sizeof(r->type);
 memmove(r->score, p, VtScoreSize);
-p +=  VtScoreSize;
+p += VtScoreSize;
 r->blocksize = U16GET(p);
 if(checksize(r->blocksize) < 0)
 return -1;

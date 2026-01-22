@@ -1,8 +1,8 @@
 #
-# Copyright © 1996-1999 Lucent Technologies Inc.  All rights reserved.
-#	Modified version of edit
-#	D.B.Knudsen
-# Revisions Copyright © 2000-2002 Vita Nuova Holdings Limited.  All rights reserved.
+# Copyright © 1996-1999 Lucent Technologies Inc. All rights reserved.
+# Modified version of edit
+# D.B.Knudsen
+# Revisions Copyright © 2000-2002 Vita Nuova Holdings Limited. All rights reserved.
 #
 implement WmEdit;
 include "sys.m";
@@ -20,7 +20,7 @@ include "selectfile.m";
 selectfile: Selectfile;
 WmEdit: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 ErrIco: con "error -fg red";
 ed: ref Tk->Toplevel;
@@ -40,9 +40,9 @@ ed_config := array[] of {
 "menubutton .m.edit -text Edit -menu .m.edit.menu",
 "menubutton .m.search -text Search -menu .m.search.menu",
 "menubutton .m.options -text Options -menu .m.options.menu",
-#	"label .m.filename",
+# "label .m.filename",
 "pack .m.file .m.edit .m.search .m.options -side left",
-#	"pack .m.filename -padx 10 -side left",
+# "pack .m.filename -padx 10 -side left",
 "menu .m.file.menu",
 ".m.file.menu add command -label New -command {send c new}",
 ".m.file.menu add command -label Open... -command {send c open}",
@@ -155,23 +155,23 @@ set_dirty(); do_limbo_check(s);
 }
 else
 case s {
-"exit" =>	if ( check_dirty() ){ set_clean(); break cmdloop; }
-"dirtied" =>	set_dirty(); do_limbo_check(s);
-"new" =>	if ( check_dirty()) {set_clean(); do_new();}
-"open" =>	if ( check_dirty() && do_open()) set_clean();
-"save" =>	do_save(0);
-"saveas" =>	do_save(1);
-"cut" =>	do_snarf(1); set_dirty();
-"copy" =>	do_snarf(0);
-"paste" =>	do_paste(); set_dirty();
-"search" =>	do_search(SEARCH);
-"searchf" =>	do_search(SEARCHFOR);
-"replace" =>	do_replace(REPLACE);
-"replacew" =>	do_replace(REPLACEWITH);
-"replaceall" =>	do_replaceall();
-"limbo" =>	do_limbo();
-"indent" =>	do_indent();
-"reindent" =>	re_indent();
+"exit" => if ( check_dirty() ){ set_clean(); break cmdloop; }
+"dirtied" => set_dirty(); do_limbo_check(s);
+"new" => if ( check_dirty()) {set_clean(); do_new();}
+"open" => if ( check_dirty() && do_open()) set_clean();
+"save" => do_save(0);
+"saveas" => do_save(1);
+"cut" => do_snarf(1); set_dirty();
+"copy" => do_snarf(0);
+"paste" => do_paste(); set_dirty();
+"search" => do_search(SEARCH);
+"searchf" => do_search(SEARCHFOR);
+"replace" => do_replace(REPLACE);
+"replacew" => do_replace(REPLACEWITH);
+"replaceall" => do_replaceall();
+"limbo" => do_limbo();
+"indent" => do_indent();
+"reindent" => re_indent();
 }
 cmd(ed, "focus .b.t");
 }
@@ -201,10 +201,10 @@ dirty = 1;
 tkclient->settitle(ed, "Edit " + curfile + " (dirty)");
 cmd(ed, "update");
 }
-#	We want to just remove the binding, but Inferno's tk does not
-#	recognize the - in front of the command.  To make it do so would
-#	require changes to utils.c and ebind.c in /tk
-#	cmd(ed, "bind .b.t <Key> -{send c dirtied}");
+# We want to just remove the binding, but Inferno's tk does not
+# recognize the - in front of the command. To make it do so would
+# require changes to utils.c and ebind.c in /tk
+# cmd(ed, "bind .b.t <Key> -{send c dirtied}");
 }
 set_clean()
 {
@@ -216,15 +216,15 @@ cmd(ed, "update");
 }
 }
 BLOCK, TEMP : con iota;
-is_limbo	:= 0;		# initially not limbo
+is_limbo := 0; # initially not limbo
 this_word := "";
 last_keyword := "";
-in_comment	:= 0;
-first_char	:= 1;
-indent		: list of int;
+in_comment := 0;
+first_char := 1;
+indent : list of int;
 last_kw_is_block := 0;
-tab		:= "\t";
-tabs		:= array[] of {
+tab := "\t";
+tabs := array[] of {
 "", "\t", "\t\t", "\t\t\t", "\t\t\t\t", "\t\t\t\t\t",
 "\t\t\t\t\t\t", "\t\t\t\t\t\t\t", "\t\t\t\t\t\t\t\t"
 };
@@ -258,13 +258,13 @@ return;
 if ( len s < 11 )
 return;
 #
-#   Maybe we should actually remember where the insert point is.
-#   In general we can get it via .b.t index insert, but for most
-#   characters, we could maintain the position with simple arithmetic.
+# Maybe we should actually remember where the insert point is.
+# In general we can get it via .b.t index insert, but for most
+# characters, we could maintain the position with simple arithmetic.
 #
-#   Also, we need to insert code in cut and paste operations to keep
-#   track of various things when in limbo mode.  Also need to catch
-#   text deletions via typeover of selection.
+# Also, we need to insert code in cut and paste operations to keep
+# track of various things when in limbo mode. Also need to catch
+# text deletions via typeover of selection.
 #
 char := s[9];
 if ( char == '\\' && len s > 10 )
@@ -307,17 +307,17 @@ string current + ".0 insert");
 add_indent();
 cmd(ed, ".b.t insert insert '}");
 }
-#	    ';' =>
-#		last_kw_is_block = 0;
-#	    '\b' =>	# By the time we see this, the character has
-#			# already been wiped out, probably.
-#			# To know what it was we'd need a lastchar,
-#			# reset for each mouse button up and \b
-#	    '\u007f' =>	# Here, we have to know what used to be ahead of the
-#			# insert point.
+# ';' =>
+# last_kw_is_block = 0;
+# '\b' => # By the time we see this, the character has
+# # already been wiped out, probably.
+# # To know what it was we'd need a lastchar,
+# # reset for each mouse button up and \b
+# '\u007f' => # Here, we have to know what used to be ahead of the
+# # insert point.
 '#' =>
 # if ( ! in_quote ) {
-#	cmd(ed, ".b.t tag add comment insert-1chars");
+# cmd(ed, ".b.t tag add comment insert-1chars");
 in_comment = 1;
 # }
 'A' to 'Z' or 'a' to 'z' or '0' to '9' or '_' =>
@@ -345,7 +345,7 @@ is_keyword(word : string) : int
 l := len keywords;
 for ( i := 0; i < l; i++ )
 if ( word == keywords[i] ) {
-if ( i != 26 )	# don't set for 'nil'
+if ( i != 26 ) # don't set for 'nil'
 last_kw_is_block = int (block_keyword >> i) & 1;
 return 1;
 }
@@ -373,7 +373,7 @@ options := list of {
 "Cancel",
 "Open another file"
 };
-if(dialog->prompt(context, ed.image, ErrIco, "Open file", e, 0,  options) == 0)
+if(dialog->prompt(context, ed.image, ErrIco, "Open file", e, 0, options) == 0)
 break;
 }
 return 0;
@@ -456,13 +456,13 @@ if ( prompt == REPLACEWITH ) {
 replacewith = dialog->getstring(context, ed.image, "Replacement String");
 range = cmd(ed, ".b.t tag nextrange sel 1.0");
 if(range == "" || (len range > 0 && range[0] == '!'))
-return;			# nothing currently selected
+return; # nothing currently selected
 }
-if ( range != "" ) {		# there's something selected
+if ( range != "" ) { # there's something selected
 cmd(ed, ".b.t mark set insert sel.first");
 }
-else {				# have to find a string
-if ( searchfor == "" ) {	# no search string!
+else { # have to find a string
+if ( searchfor == "" ) { # no search string!
 if ( do_search(SEARCHFOR) == 0 )
 return;
 }
@@ -478,9 +478,9 @@ cur := cmd(ed, ".b.t index insert");
 if ( cur == "" || cur[0] == '!' )
 return;
 dirt := 0;
-if ( searchfor == "" )		# no search string
+if ( searchfor == "" ) # no search string
 searchfor = dialog->getstring(context, ed.image, "Search For");
-if ( searchfor == "" )		# still no search string
+if ( searchfor == "" ) # still no search string
 return;
 srch := tk->quote(searchfor);
 repl := tk->quote(replacewith);
@@ -550,7 +550,7 @@ sys->print("savetfile only wrote %d of %d: %r\n", i, n);
 return 0;
 }
 curfile = path;
-#	cmd(ed, ".m.filename configure -text '" + curfile);
+# cmd(ed, ".m.filename configure -text '" + curfile);
 tkclient->settitle(ed, "Edit " + curfile);
 return 1;
 }
@@ -567,7 +567,7 @@ word = "";
 line := tk->cmd(ed, ".b.t get " + string i + ".0 " +
 string (i+1) + ".0");
 l := len line;
-ll :		for ( j := 0; j < l; j++ ) {
+ll : for ( j := 0; j < l; j++ ) {
 c := line[j];
 if ( quote && (c = line[j]) != quote )
 continue;
@@ -628,12 +628,12 @@ cmd(ed, ".b.t insert insert '" + tabs[8]);
 cmd(ed, ".b.t insert insert '" + tabs[i]);
 }
 #
-#	We should also look at the previous line, maybe.
-#	And the line after.  That may be too much.
+# We should also look at the previous line, maybe.
+# And the line after. That may be too much.
 #
-#	This is also the logical place to check if we are in a keyword,
-#	reinitialize this_word (which presents problems if we are in the
-#	middle of a word, etc.)  Also check if we are in a comment or not.
+# This is also the logical place to check if we are in a keyword,
+# reinitialize this_word (which presents problems if we are in the
+# middle of a word, etc.) Also check if we are in a comment or not.
 #
 re_indent()
 {
@@ -649,7 +649,7 @@ if ( l >= lt && init[:lt] == tabs[i] )
 break;
 }
 for ( indent = nil; len indent < i; indent = 0 :: indent) ;
-in_comment = 0;		# Are we in a comment?
+in_comment = 0; # Are we in a comment?
 for ( i = len tabs[i]; i < l; i++ )
 if ( init[i] == '#' ) {
 in_comment = 1;
@@ -658,7 +658,7 @@ break;
 }
 cmd(win: ref Tk->Toplevel, s: string): string
 {
-#	sys->print("%s\n", s);
+# sys->print("%s\n", s);
 r := tk->cmd(win, s);
 if (r != nil && r[0] == '!') {
 sys->print("wm/edit: error executing '%s': %s\n", s, r);

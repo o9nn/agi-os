@@ -3,8 +3,8 @@ private byte *
 escp2c_pick_best(byte *col)
 {
 static byte colour[8][3] = {
-{  0,  0,  0},{255,  0,  0},{  0,255,  0},{255,255,  0},
-{  0,  0,255},{255,  0,255},{  0,255,255},{255,255,255}};
+{ 0, 0, 0},{255, 0, 0},{ 0,255, 0},{255,255, 0},
+{ 0, 0,255},{255, 0,255},{ 0,255,255},{255,255,255}};
 register int x, y, z, dx, dy, dz, dz2, dx2, dx3, dx4;
 register byte *p;
 register long md, d;
@@ -163,10 +163,10 @@ dir = 1;
 escp2c_conv_stc(in, out, fullcolor_line_size);
 }
 } else {
-if(sd->color_info.num_components != 3)                       return -1;
-if(( sd->stc.dither                    == NULL) ||
-((sd->stc.dither->flags & STC_TYPE) != STC_BYTE))         return -2;
-if((sd->stc.dither->flags/STC_SCAN) < 1)                     return -3;
+if(sd->color_info.num_components != 3) return -1;
+if(( sd->stc.dither == NULL) ||
+((sd->stc.dither->flags & STC_TYPE) != STC_BYTE)) return -2;
+if((sd->stc.dither->flags/STC_SCAN) < 1) return -3;
 memset(buf,0,-fullcolor_line_size);
 }
 return 0;

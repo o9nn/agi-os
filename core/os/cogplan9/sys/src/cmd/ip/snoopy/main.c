@@ -18,23 +18,23 @@ int toflag;
 char *prom = "promiscuous";
 enum
 {
-Pktlen=	64*1024,
-Blen=	16*1024,
+Pktlen= 64*1024,
+Blen= 16*1024,
 };
 Filter *filter;
 Proto *root;
 Biobuf out;
 vlong starttime, pkttime;
 int pcap;
-int	filterpkt(Filter *f, uchar *ps, uchar *pe, Proto *pr, int);
-void	printpkt(char *p, char *e, uchar *ps, uchar *pe);
-void	mkprotograph(void);
-Proto*	findproto(char *name);
-Filter*	compile(Filter *f);
-void	printfilter(Filter *f, char *tag);
-void	printhelp(char*);
-void	tracepkt(uchar*, int);
-void	pcaphdr(void);
+int filterpkt(Filter *f, uchar *ps, uchar *pe, Proto *pr, int);
+void printpkt(char *p, char *e, uchar *ps, uchar *pe);
+void mkprotograph(void);
+Proto* findproto(char *name);
+Filter* compile(Filter *f);
+void printfilter(Filter *f, char *tag);
+void printhelp(char*);
+void tracepkt(uchar*, int);
+void pcaphdr(void);
 void
 printusage(void)
 {
@@ -237,18 +237,18 @@ return _filterpkt(f, &m);
 #define PCAP_VERSION_MINOR 4
 #define TCPDUMP_MAGIC 0xa1b2c3d4
 struct pcap_file_header {
-ulong		magic;
-ushort		version_major;
-ushort		version_minor;
-long		thiszone;
-ulong		sigfigs;
-ulong		snaplen;
-ulong		linktype;
+ulong magic;
+ushort version_major;
+ushort version_minor;
+long thiszone;
+ulong sigfigs;
+ulong snaplen;
+ulong linktype;
 };
 struct pcap_pkthdr {
-uvlong	ts;
-ulong	caplen;
-ulong	len;
+uvlong ts;
+ulong caplen;
+ulong len;
 };
 void
 pcaphdr(void)

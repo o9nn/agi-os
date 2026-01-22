@@ -4,14 +4,14 @@
 #include "dwbinit.h"
 #include <setjmp.h>
 #include <time.h>
-char	*Version	= "March 11, 1994";
+char *Version = "March 11, 1994";
 #ifndef DWBVERSION
-#define DWBVERSION      "???"
+#define DWBVERSION "???"
 #endif
-char	*DWBfontdir = FONTDIR;
-char	*DWBntermdir = NTERMDIR;
-char	*DWBalthyphens = ALTHYPHENS;
-char	*DWBhomedir = "";
+char *DWBfontdir = FONTDIR;
+char *DWBntermdir = NTERMDIR;
+char *DWBalthyphens = ALTHYPHENS;
+char *DWBhomedir = "";
 dwbinit dwbpaths[] = {
 &DWBfontdir, NULL, 0,
 &DWBntermdir, NULL, 0,
@@ -20,16 +20,16 @@ dwbinit dwbpaths[] = {
 NULL, nextf, NS,
 NULL, NULL, 0
 };
-int	TROFF	= 1;
+int TROFF = 1;
 jmp_buf sjbuf;
-Offset	ipl[NSO];
-static	FILE	*ifile	= stdin;
-static	FILE	*ifl[NSO];
-char	cfname[NSO+1][NS] = {  "stdin" };
-int	cfline[NSO];
-char	*progname;
-int	trace = 0;
-int	trace1 = 0;
+Offset ipl[NSO];
+static FILE *ifile = stdin;
+static FILE *ifl[NSO];
+char cfname[NSO+1][NS] = { "stdin" };
+int cfline[NSO];
+char *progname;
+int trace = 0;
+int trace1 = 0;
 main(int argc, char *argv[])
 {
 char *p;
@@ -251,7 +251,7 @@ numtabp[MO].val = ltime->tm_mon + 1;
 numtabp[DY].val = ltime->tm_mday;
 numtabp[DW].val = ltime->tm_wday + 1;
 }
-char	errbuf[200];
+char errbuf[200];
 void errprint(void)
 {
 int savecd = numtabp[CD].val;
@@ -597,7 +597,7 @@ setcbits(c, WORDSP);
 *i = 0;
 pushback(xbuf);
 }
-char	ifilt[32] = { 0, 001, 002, 003, 0, 005, 006, 007, 010, 011, 012 };
+char ifilt[32] = { 0, 001, 002, 003, 0, 005, 006, 007, 010, 011, 012 };
 Tchar getch0(void)
 {
 Tchar i;
@@ -903,7 +903,7 @@ ERROR "casecf: not reading from file" WARN;
 done(02);
 }
 eof = &nextf[2];
-if (!*eof)  {
+if (!*eof) {
 ERROR "casecf: missing end of input token" WARN;
 done(02);
 }

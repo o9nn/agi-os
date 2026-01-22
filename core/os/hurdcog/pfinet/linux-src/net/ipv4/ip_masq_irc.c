@@ -65,7 +65,7 @@ data_limit = skb->h.raw + skb->len;
 while (data < (data_limit - ( 22 + MAXMATCHLEN ) ) )
 {
 int i;
-if (memcmp(data,"\1DCC ",5))  {
+if (memcmp(data,"\1DCC ",5)) {
 data ++;
 continue;
 }

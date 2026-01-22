@@ -165,7 +165,7 @@ return_error(e_invalidaccess);
 case t_string:
 sdata = op2->value.bytes;
 ssize = r_size(op2);
-str:	    check_write(*op2);
+str: check_write(*op2);
 check_int_ltu(*op1, ssize);
 check_int_leu(*op, 0xff);
 sdata[(uint)op1->value.intval] = (byte)op->value.intval;

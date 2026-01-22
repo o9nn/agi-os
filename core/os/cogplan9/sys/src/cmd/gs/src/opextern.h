@@ -1,5 +1,5 @@
 #ifndef opextern_INCLUDED
-#  define opextern_INCLUDED
+# define opextern_INCLUDED
 int zadd(i_ctx_t *);
 int zdef(i_ctx_t *);
 int zdup(i_ctx_t *);

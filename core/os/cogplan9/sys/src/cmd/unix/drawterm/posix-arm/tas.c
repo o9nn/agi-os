@@ -3,7 +3,7 @@
 int
 tas(long *x)
 {
-int     v, t, i = 1;
+int v, t, i = 1;
 #if ARMv5
 __asm__(
 "swp  %0, %1, [%2]"

@@ -22,7 +22,7 @@ int y_end = min(y + height, penum->rect.h);
 int width_spp = penum->rect.w * penum->spp;
 int num_planes = penum->num_planes;
 int num_components_per_plane = 1;
-#define BCOUNT(plane)		\
+#define BCOUNT(plane) \
 (((penum->rect.w + (plane).data_x) * penum->spp * penum->bps / num_planes\
 + 7) >> 3)
 fixed adjust = penum->adjust;

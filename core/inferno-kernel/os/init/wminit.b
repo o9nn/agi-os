@@ -7,7 +7,7 @@ sys: Sys;
 FD, Connection, sprint, Dir: import sys;
 print, fprint, open, bind, mount, dial, sleep, read: import sys;
 include "security.m";
-auth:	Auth;
+auth: Auth;
 include "draw.m";
 draw: Draw;
 Context: import draw;
@@ -15,11 +15,11 @@ include "keyring.m";
 kr: Keyring;
 Init: module
 {
-init:	fn();
+init: fn();
 };
 Command: module
 {
-init:	fn(ctxt: ref Context, argv: list of string);
+init: fn(ctxt: ref Context, argv: list of string);
 };
 rootfs(server: string): int
 {
@@ -131,18 +131,18 @@ sys->print("done\n");
 #
 # default namespace
 #
-bind("#c", "/dev", sys->MREPL);			# console
-bind("#t", "/dev", sys->MAFTER);		# serial port
+bind("#c", "/dev", sys->MREPL); # console
+bind("#t", "/dev", sys->MAFTER); # serial port
 bind("#H", "/dev", sys->MAFTER);
 if(spec != nil)
-bind(spec, "/nvfs", sys->MBEFORE|sys->MCREATE);	# our keys
-bind("#E", "/dev", sys->MBEFORE);		# mpeg
-bind("#l", "/net", sys->MBEFORE);		# ethernet
-bind("#I", "/net", sys->MBEFORE);		# TCP/IP
-bind("#V", "/dev", sys->MAFTER);		# hauppauge TV
-bind("#p", "/prog", sys->MREPL);		# prog device
+bind(spec, "/nvfs", sys->MBEFORE|sys->MCREATE); # our keys
+bind("#E", "/dev", sys->MBEFORE); # mpeg
+bind("#l", "/net", sys->MBEFORE); # ethernet
+bind("#I", "/net", sys->MBEFORE); # TCP/IP
+bind("#V", "/dev", sys->MAFTER); # hauppauge TV
+bind("#p", "/prog", sys->MREPL); # prog device
 sys->bind("#d", "/fd", Sys->MREPL);
-if(bind("#m", "/dev", sys->MAFTER) >= 0){		# mouse setup device
+if(bind("#m", "/dev", sys->MAFTER) >= 0){ # mouse setup device
 mouse := load Command "/dis/mouse.dis";
 if (mouse != nil) {
 print("Setting up mouse\n");

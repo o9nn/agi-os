@@ -4,9 +4,9 @@
 #include "pop3c-settings.h"
 #include "iostream-ssl.h"
 enum pop3c_capability {
-POP3C_CAPABILITY_PIPELINING	= 0x01,
-POP3C_CAPABILITY_TOP		= 0x02,
-POP3C_CAPABILITY_UIDL		= 0x04
+POP3C_CAPABILITY_PIPELINING = 0x01,
+POP3C_CAPABILITY_TOP = 0x02,
+POP3C_CAPABILITY_UIDL = 0x04
 };
 enum pop3c_command_state {
 POP3C_COMMAND_STATE_OK,

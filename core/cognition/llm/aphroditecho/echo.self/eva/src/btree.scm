@@ -10,10 +10,10 @@
 (define (halt) (behavior-tree-halt))
 (define-public (dispatch-text TXT-ATOM)
 "
-  dispatch-text TXT-ATOM
-  Pass the TXT-ATOM that STT heard into the OpenCog chatbot.
+dispatch-text TXT-ATOM
+Pass the TXT-ATOM that STT heard into the OpenCog chatbot.
 "
-	(stv 1 1)
+(stv 1 1)
 )
 (run-behavior-tree-gc)
 (TrueLink)

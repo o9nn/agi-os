@@ -2,27 +2,27 @@
 #include "draw.h"
 #include "tk.h"
 #include "canvs.h"
-#define	O(t, e)		((long)(&((t*)0)->e))
+#define O(t, e) ((long)(&((t*)0)->e))
 typedef struct TkCbits TkCbits;
 struct TkCbits
 {
-int	anchor;
-Point	anchorp;
-Image*	bitmap;
+int anchor;
+Point anchorp;
+Image* bitmap;
 };
 static
 TkOption bitopts[] =
 {
-"anchor",	OPTstab,	O(TkCbits, anchor),	tkanchor,
-"bitmap",	OPTbmap,	O(TkCbits, bitmap),	nil,
+"anchor", OPTstab, O(TkCbits, anchor), tkanchor,
+"bitmap", OPTbmap, O(TkCbits, bitmap), nil,
 nil
 };
 static
 TkOption itemopts[] =
 {
-"tags",		OPTctag,	O(TkCitem, tags),	nil,
-"background",	OPTcolr,	O(TkCitem, env),	IAUX(TkCbackgnd),
-"foreground",	OPTcolr,	O(TkCitem, env),	IAUX(TkCforegnd),
+"tags", OPTctag, O(TkCitem, tags), nil,
+"background", OPTcolr, O(TkCitem, env), IAUX(TkCbackgnd),
+"foreground", OPTcolr, O(TkCitem, env), IAUX(TkCforegnd),
 nil
 };
 void

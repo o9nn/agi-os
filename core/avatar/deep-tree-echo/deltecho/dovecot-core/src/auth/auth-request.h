@@ -1,7 +1,7 @@
 #ifndef AUTH_REQUEST_H
 #define AUTH_REQUEST_H
 #ifndef AUTH_REQUEST_FIELDS_CONST
-#  define AUTH_REQUEST_FIELDS_CONST const
+# define AUTH_REQUEST_FIELDS_CONST const
 #endif
 #include "array.h"
 #include "net.h"

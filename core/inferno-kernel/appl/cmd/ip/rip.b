@@ -1,6 +1,6 @@
 implement Rip;
 # basic RIP implementation
-#	understands v2, sends v1
+# understands v2, sends v1
 include "sys.m";
 sys: Sys;
 include "draw.m";
@@ -19,55 +19,55 @@ attrdb: Attrdb;
 include "arg.m";
 Rip: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 # rip header:
-#	op[1] version[1] pad[2]
-Oop: con 0;	# op: byte
-Oversion: con 1;	# version: byte
-Opad: con 2;	# 2 byte pad
-Riphdrlen: con	Opad+2;	# op[1] version[1] mbz[2]
+# op[1] version[1] pad[2]
+Oop: con 0; # op: byte
+Oversion: con 1; # version: byte
+Opad: con 2; # 2 byte pad
+Riphdrlen: con Opad+2; # op[1] version[1] mbz[2]
 # rip route entry:
-#	type[2] tag[2] addr[4] mask[4] nexthop[4] metric[4]
-Otype: con 0;	# type[2]
-Otag: con Otype+2;	# tag[2] v2 or mbz v1
-Oaddr: con Otag+2;	# addr[4]
-Omask: con Oaddr+4;	# mask[4] v2 or mbz v1
+# type[2] tag[2] addr[4] mask[4] nexthop[4] metric[4]
+Otype: con 0; # type[2]
+Otag: con Otype+2; # tag[2] v2 or mbz v1
+Oaddr: con Otag+2; # addr[4]
+Omask: con Oaddr+4; # mask[4] v2 or mbz v1
 Onexthop: con Omask+4;
-Ometric: con Onexthop+4;	# metric[4]
+Ometric: con Onexthop+4; # metric[4]
 Ipdestlen: con Ometric+4;
 Maxripmsg: con 512;
 # operations
-OpRequest: con 1;		# want route
-OpReply: con 2;		# all or part of route table
-HopLimit: con 16;		# defined by protocol as `infinity'
-RoutesInPkt: con 25; 	# limit defined by protocol
+OpRequest: con 1; # want route
+OpReply: con 2; # all or part of route table
+HopLimit: con 16; # defined by protocol as `infinity'
+RoutesInPkt: con 25; # limit defined by protocol
 RIPport: con 520;
 Expired: con 180;
 Discard: con 240;
-OutputRate: con 60;	# seconds between routing table transmissions
-NetworkCost: con 1;	# assume the simple case
+OutputRate: con 60; # seconds between routing table transmissions
+NetworkCost: con 1; # assume the simple case
 Gateway: adt {
-dest:	IPaddr;
-mask:	IPaddr;
-gateway:	IPaddr;
-metric:	int;
-valid:	int;
-changed:	int;
-local:	int;
-time:	int;
-contains:	fn(g: self ref Gateway, a: IPaddr): int;
+dest: IPaddr;
+mask: IPaddr;
+gateway: IPaddr;
+metric: int;
+valid: int;
+changed: int;
+local: int;
+time: int;
+contains: fn(g: self ref Gateway, a: IPaddr): int;
 };
-netfd:	ref Sys->FD;
-routefd:	ref Sys->FD;
-AF_INET:	con 2;
+netfd: ref Sys->FD;
+routefd: ref Sys->FD;
+AF_INET: con 2;
 routes: array of ref Gateway;
 Routeinc: con 50;
 defroute: ref Gateway;
 debug := 0;
 nochange := 0;
 quiet := 1;
-myversion := 1;	# default protocol version
+myversion := 1; # default protocol version
 logfile := "iproute";
 netdir := "/net";
 now: int;
@@ -90,12 +90,12 @@ arg->init(args);
 arg->setusage("ip/rip [-d] [-r]");
 while((o := arg->opt()) != 0)
 case o {
-'d' =>	debug++;
-'b' =>	quiet = 0;
-'2' =>	myversion = 2;
-'n' =>	nochange = 1;
-'x' =>	netdir = arg->earg();
-* =>	arg->usage();
+'d' => debug++;
+'b' => quiet = 0;
+'2' => myversion = 2;
+'n' => nochange = 1;
+'x' => netdir = arg->earg();
+* => arg->usage();
 }
 args = arg->argv();
 if(args != nil)
@@ -135,7 +135,7 @@ continue;
 bp := buf[IP->Udphdrlen + Riphdrlen:];
 case int hdr[Oop] {
 OpRequest =>
-# TO DO: transmit in response to request?  only if something interesting to say...
+# TO DO: transmit in response to request? only if something interesting to say...
 ;
 OpReply =>
 # wrong source port?
@@ -253,10 +253,10 @@ if(metric <= 0 || metric > HopLimit)
 return;
 # 1058/3.4.2: response processing
 # ignore route if IP address is:
-#	class D or E
-#	net 0 (except perhaps 0.0.0.0)
-#	net 127
-#	broadcast address (all 1s host part)
+# class D or E
+# net 0 (except perhaps 0.0.0.0)
+# net 127
+# broadcast address (all 1s host part)
 # we allow host routes
 if(dest.ismulticast() || dest.a[0] == byte 0 || dest.a[0] == byte 16r7F){
 if(debug > 1)
@@ -280,7 +280,7 @@ updateroute(dest, mask, gwa: IPaddr, metric: int)
 r := lookup(dest);
 if(r.valid){
 if(r.local)
-return;	# local, don't touch
+return; # local, don't touch
 if(r.gateway.eq(gwa)){
 if(metric != HopLimit){
 r.metric = metric;
@@ -291,10 +291,10 @@ if(r.metric != HopLimit){
 r.metric = metric;
 r.changed = 1;
 r.time = now - (Discard-120);
-delroute(r);	# don't use it for routing
+delroute(r); # don't use it for routing
 # route remains valid but advertised with metric HopLimit
 } else if(now >= r.time+Discard){
-delroute(r);	# finally dead
+delroute(r); # finally dead
 r.valid = 0;
 r.changed = 1;
 }
@@ -307,7 +307,7 @@ r.gateway = gwa;
 r.time = now;
 addroute(r);
 }
-} else if(metric < HopLimit){	# new entry
+} else if(metric < HopLimit){ # new entry
 # 1058/3.4.2: don't add route-to-host if host is on net/subnet
 # for which we have at least as good a route
 if(!mask.eq(ip->allbits) ||
@@ -326,7 +326,7 @@ addroute(r);
 sender()
 {
 for(;;){
-sys->sleep(OutputRate*1000);	# could add some random fizz
+sys->sleep(OutputRate*1000); # could add some random fizz
 sendall(OpReply, 1);
 }
 }
@@ -360,7 +360,7 @@ sys->print("rip: send %s\n", dst.text());
 buf := array[Maxripmsg+IP->Udphdrlen] of byte;
 hdr := Udphdr.new();
 hdr.lport = hdr.rport = RIPport;
-hdr.raddr = dst;	# needn't copy
+hdr.raddr = dst; # needn't copy
 hdr.pack(buf, IP->Udphdrlen);
 o := IP->Udphdrlen;
 buf[o] = byte op;
@@ -368,7 +368,7 @@ buf[o+1] = byte myversion;
 buf[o+2] = byte 0;
 buf[o+3] = byte 0;
 o += Riphdrlen;
-#	rips := buf[IP->Udphdrlen+Riphdrlen:];
+# rips := buf[IP->Udphdrlen+Riphdrlen:];
 if(op == OpRequest){
 buf[o:] = zeroentry;
 ip->put4(buf, o+Ometric, HopLimit);
@@ -442,7 +442,7 @@ r := routes[i];
 if(r == nil || !r.valid)
 continue;
 if(r.contains(a) && (pr == nil || !maskle(r.mask, pr.mask)))
-pr = r;	# more specific mask
+pr = r; # more specific mask
 }
 return pr;
 }
@@ -452,7 +452,7 @@ net: ref Ifcaddr;
 for(l := nets; l != nil; l = tl l){
 ifc := hd l;
 if(isonnet(addr, ifc) &&
-(net == nil || maskle(ifc.mask, net.mask)))	# less specific mask?
+(net == nil || maskle(ifc.mask, net.mask))) # less specific mask?
 net = ifc;
 }
 if(net != nil)
@@ -465,8 +465,8 @@ return a.mask(n.mask).eq(n.net);
 }
 isbroadcast(a: IPaddr, mask: IPaddr): int
 {
-h := a.maskn(mask);	# host part
-hm := (ip->allbits).maskn(mask);	# host part of mask
+h := a.maskn(mask); # host part
+hm := (ip->allbits).maskn(mask); # host part of mask
 return h.eq(hm);
 }
 iszero(a: IPaddr): int
@@ -479,16 +479,16 @@ return a.mask(b).eq(a);
 }
 #
 # add ipdest mask gateway
-# add 0.0.0.0 0.0.0.0 gateway	(default)
+# add 0.0.0.0 0.0.0.0 gateway (default)
 # delete ipdest mask
 #
 addroute(g: ref Gateway)
 {
 if(iszero(g.mask) && iszero(g.dest))
-g.valid = 0;	# don't change default route
+g.valid = 0; # don't change default route
 else if(defroute != nil && defroute.gateway.eq(g.gateway)){
 if(debug)
-syslog(0, logfile, sys->sprint("default %s %s", g.dest.text(), g.mask.text()));	# don't need a new entry
+syslog(0, logfile, sys->sprint("default %s %s", g.dest.text(), g.mask.text())); # don't need a new entry
 g.valid = 1;
 g.changed = 1;
 } else {

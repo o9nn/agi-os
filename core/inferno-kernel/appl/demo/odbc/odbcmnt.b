@@ -1,6 +1,6 @@
 implement Odbcmnt;
 #
-# Copyright © 2003 Vita Nuova Holdings Limited.  All rights reserved.
+# Copyright © 2003 Vita Nuova Holdings Limited. All rights reserved.
 #
 include "sys.m";
 sys: Sys;
@@ -27,10 +27,10 @@ ctype: string;
 size: int;
 };
 Qroot: con iota;
-WINCHARSET := "windows-1252";		# BUG: odbc.c should do the conversion!
+WINCHARSET := "windows-1252"; # BUG: odbc.c should do the conversion!
 Odbcmnt: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 init(nil: ref Draw->Context, argv: list of string)
 {
@@ -70,7 +70,7 @@ while((o := arg->opt()) != 0)
 case o {
 'a' =>
 addr = arg->earg();
-*   =>
+* =>
 usage();
 }
 argv = arg->argv();
@@ -200,7 +200,7 @@ i := 0;
 for (sl := sources; sl!=nil; sl=tl sl) {
 (srcname, srcdriver) := split1(hd sl, ":");
 # Don't do anything with 'srvdriver' - could make a driver
-#    file to read - but does anyone care about it?
+# file to read - but does anyone care about it?
 (clonefd, ctlfd, cmdfd, datafd, e) := newconv(dbdir, srcname);
 if (e != nil)
 sys->fprint(sys->fildes(2), "Odbcmnt: %s\n",e);
@@ -257,7 +257,7 @@ break serverloop;
 Read =>
 c := srv.getfid(m.fid);
 if(c.qtype & Sys->QTDIR){
-srv.read(m);	# does readdir
+srv.read(m); # does readdir
 break;
 }
 case gettype(c.path) {
@@ -371,11 +371,11 @@ read_fd(fd: ref Sys->FD): string
 {
 MAX : con Sys->ATOMICIO;
 buf := array[MAX] of byte;
-#	sys->seek(fd, big 0, Sys->SEEKSTART);
+# sys->seek(fd, big 0, Sys->SEEKSTART);
 size := sys->read(fd, buf, MAX);
 if (size <= 0) {
-#		if (size < 0)
-#			sys->fprint(stderr, "read_fd error: %r\n");
+# if (size < 0)
+# sys->fprint(stderr, "read_fd error: %r\n");
 return nil;
 }
 return string buf[0:size];

@@ -1,12 +1,12 @@
 implement Dbfs;
 #
-# Copyright © 1999, 2002 Vita Nuova Limited.  All rights reserved.
+# Copyright © 1999, 2002 Vita Nuova Limited. All rights reserved.
 #
 # Enhanced to include record locking, index field generation and update notification
 # TO DO:
-#	make writing & reading more like real files; don't ignore offsets.
-#	open with OTRUNC should work.
-#	provide some way of compacting a dbfs file.
+# make writing & reading more like real files; don't ignore offsets.
+# open with OTRUNC should work.
+# provide some way of compacting a dbfs file.
 include "sys.m";
 sys: Sys;
 Qid: import Sys;
@@ -27,49 +27,49 @@ Iobuf: import bufio;
 include "sh.m";
 sh: Sh;
 Record: adt {
-id:		int;			# file number in directory (if block is allocated)
-offset:	int;			# start of data
-count:	int;			# length of block (excluding header)
-datalen:	int;			# length of data (-1 if block is free)
-vers:		int;			# version
-new:		fn(offset: int, length: int): ref Record;
-qid:		fn(r: self ref Record): Sys->Qid;
+id: int; # file number in directory (if block is allocated)
+offset: int; # start of data
+count: int; # length of block (excluding header)
+datalen: int; # length of data (-1 if block is free)
+vers: int; # version
+new: fn(offset: int, length: int): ref Record;
+qid: fn(r: self ref Record): Sys->Qid;
 };
 # Record lock
 Lock: adt {
 qpath: big;
-fid:	int;
+fid: int;
 };
 HEADLEN: con 10;
 MINSIZE: con 20;
 Database: adt {
-file:		ref Iobuf;
-records:	array of ref Record;
-maxid:	int;
-locking:	int;
-locklist:	list of Lock;
-indexing:	int;
-stats:	int;
-index:	int;
-s_reads:	int;
-s_writes:	int;
-s_creates:	int;
-s_removes:	int;
-updcmd:	string;
-vers:		int;
-build:	fn(f: ref Iobuf, locking, indexing: int, stats: int, updcmd: string): (ref Database, string);
-write:	fn(db: self ref Database, n: int, data: array of byte): int;
-read:		fn(db: self ref Database, n: int): array of byte;
-remove:	fn(db: self ref Database, n: int);
-create:	fn(db: self ref Database, data: array of byte): ref Record;
-updated:	fn(db: self ref Database);
-lock:		fn(db: self ref Database, c: ref Styxservers->Fid): int;
-unlock:	fn(db: self ref Database, c: ref Styxservers->Fid);
-ownlock:	fn(db: self ref Database, c: ref Styxservers->Fid): int;
+file: ref Iobuf;
+records: array of ref Record;
+maxid: int;
+locking: int;
+locklist: list of Lock;
+indexing: int;
+stats: int;
+index: int;
+s_reads: int;
+s_writes: int;
+s_creates: int;
+s_removes: int;
+updcmd: string;
+vers: int;
+build: fn(f: ref Iobuf, locking, indexing: int, stats: int, updcmd: string): (ref Database, string);
+write: fn(db: self ref Database, n: int, data: array of byte): int;
+read: fn(db: self ref Database, n: int): array of byte;
+remove: fn(db: self ref Database, n: int);
+create: fn(db: self ref Database, data: array of byte): ref Record;
+updated: fn(db: self ref Database);
+lock: fn(db: self ref Database, c: ref Styxservers->Fid): int;
+unlock: fn(db: self ref Database, c: ref Styxservers->Fid);
+ownlock: fn(db: self ref Database, c: ref Styxservers->Fid): int;
 };
 Dbfs: module
 {
-init:	fn(ctxt: ref Draw->Context, nil: list of string);
+init: fn(ctxt: ref Draw->Context, nil: list of string);
 };
 Qdir, Qnew, Qdata, Qindex, Qstats: con iota;
 stderr: ref Sys->FD;
@@ -122,19 +122,19 @@ indexing := 0;
 updcmd := "";
 while((o := arg->opt()) != 0)
 case o {
-'a' =>	flags = Sys->MAFTER;
-'b' =>	flags = Sys->MBEFORE;
-'r' =>		flags = Sys->MREPL;
-'c' =>	copt = 1;
-'e' =>	empty = 1;
-'l' =>		locking = 1;
-'u' =>	updcmd = arg->arg();
+'a' => flags = Sys->MAFTER;
+'b' => flags = Sys->MBEFORE;
+'r' => flags = Sys->MREPL;
+'c' => copt = 1;
+'e' => empty = 1;
+'l' => locking = 1;
+'u' => updcmd = arg->arg();
 if(updcmd == nil)
 usage();
-'x' =>	indexing = 1;
+'x' => indexing = 1;
 stats = 1;
-'D' =>	styxservers->traceset(1);
-* =>		usage();
+'D' => styxservers->traceset(1);
+* => usage();
 }
 args = arg->argv();
 arg = nil;
@@ -201,7 +201,7 @@ return string b[0:n];
 serveloop(tchan: chan of ref Tmsg, srv: ref Styxserver, pidc: chan of int, navops: chan of ref Navop)
 {
 pidc <-= sys->pctl(Sys->FORKNS|Sys->NEWFD, stderr.fd::1::2::database.file.fd.fd::srv.fd.fd::nil);
-#	stderr = sys->fildes(stderr.fd);
+# stderr = sys->fildes(stderr.fd);
 database.file.fd = sys->fildes(database.file.fd.fd);
 Serve:
 while((gm := <-tchan) != nil){
@@ -287,7 +287,7 @@ srv.reply(ref Rmsg.Error(m.tag, sys->sprint("%r")));
 break;
 }
 if(changed)
-database.updated();	# run the command before reply
+database.updated(); # run the command before reply
 srv.reply(ref Rmsg.Write(m.tag, len m.data));
 }
 * =>
@@ -319,7 +319,7 @@ srv.delfid(c);
 srv.default(gm);
 }
 }
-navops <-= nil;		# shut down navigator
+navops <-= nil; # shut down navigator
 }
 eqbytes(a, b: array of byte): int
 {
@@ -433,7 +433,7 @@ break;
 }
 case n.name {
 ".." =>
-;	# nop
+; # nop
 "new" =>
 n.path = QPATH(0, Qnew);
 "stats" =>
@@ -449,7 +449,7 @@ continue;
 }
 n.path = QPATH(0, Qindex);
 * =>
-if(len n.name < 1 || !(n.name[0]>='0' && n.name[0]<='9')){	# weak test for now
+if(len n.name < 1 || !(n.name[0]>='0' && n.name[0]<='9')){ # weak test for now
 n.reply <-= (nil, Enotfound);
 continue;
 }
@@ -461,7 +461,7 @@ if(int m.path != Qdir){
 n.reply <-= (nil, "not a directory");
 break;
 }
-o := 1;	# Qnew;
+o := 1; # Qnew;
 stats := -1;
 indexing := -1;
 if(database.indexing)
@@ -478,7 +478,7 @@ if(i == indexing)
 n.reply <-= dirgen(QPATH(0, Qindex));
 if(i == stats)
 n.reply <-= dirgen(QPATH(0, Qstats));
-j := dirslot(i-o);	# n² but fine if the file will be small
+j := dirslot(i-o); # n² but fine if the file will be small
 if(j < 0)
 break Dread;
 r := database.records[j];
@@ -547,7 +547,7 @@ db.file.flush();
 freerec(db, recno);
 n := allocrec(db, len data);
 if(n == -1)
-return -1;		# BUG: we lose the original data in this case.
+return -1; # BUG: we lose the original data in this case.
 db.records[n].id = r.id;
 db.write(n, data);
 }

@@ -70,7 +70,7 @@
 #endif
 #endif
 #if !HAVE_DUP2
-#define dup2(f,t)	(close (t),  fcntl (f,F_DUPFD,t))
+#define dup2(f,t) (close (t), fcntl (f,F_DUPFD,t))
 #endif
 #ifndef O_RDONLY
 #define O_RDONLY 0
@@ -98,13 +98,13 @@
 # define dirent direct
 # define NAMLEN(dirent) ((dirent)->d_namlen)
 # if HAVE_SYS_NDIR_H
-#  include <sys/ndir.h>
+# include <sys/ndir.h>
 # endif
 # if HAVE_SYS_DIR_H
-#  include <sys/dir.h>
+# include <sys/dir.h>
 # endif
 # if HAVE_NDIR_H
-#  include <ndir.h>
+# include <ndir.h>
 # endif
 #endif
 #if HAVE_VFORK_H
@@ -131,17 +131,17 @@ char *getenv ();
 #if STDC_HEADERS || HAVE_STRING_H
 # include <string.h>
 # ifndef bzero
-#  define bzero(s, n) memset (s, 0, n)
+# define bzero(s, n) memset (s, 0, n)
 # endif
 #else
 # if !HAVE_STRCHR
-#  define strchr index
-#  define strrchr rindex
+# define strchr index
+# define strrchr rindex
 # endif
 char *strchr (), *strrchr ();
 # if !HAVE_MEMCHR
-#  define memcmp(s1, s2, n) bcmp (s1, s2, n)
-#  define memcpy(d, s, n) bcopy (s, d, n)
+# define memcmp(s1, s2, n) bcmp (s1, s2, n)
+# define memcpy(d, s, n) bcopy (s, d, n)
 void *memchr ();
 # endif
 #endif
@@ -197,7 +197,7 @@ extern int errno;
 #define SYSTEM_QUOTE_ARG(q, a) \
 { \
 *(q)++ = '\''; \
-for (;  *(a);  *(q)++ = *(a)++) \
+for (; *(a); *(q)++ = *(a)++) \
 if (*(a) == '\'') \
 { \
 *(q)++ = '\''; \

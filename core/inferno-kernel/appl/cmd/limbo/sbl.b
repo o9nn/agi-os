@@ -1,47 +1,47 @@
 sbltname := array[Tend] of
 {
-Tnone =>	byte 'n',
-Tadt =>		byte 'a',
-Tadtpick =>	byte 'a',
-Tarray =>	byte 'A',
-Tbig =>		byte 'B',
-Tbyte =>	byte 'b',
-Tchan =>	byte 'C',
-Treal =>	byte 'f',
-Tfn =>		byte 'F',
-Tint =>		byte 'i',
-Tlist =>	byte 'L',
-Tmodule =>	byte 'm',
-Tref =>		byte 'R',
-Tstring =>	byte 's',
-Ttuple =>	byte 't',
+Tnone => byte 'n',
+Tadt => byte 'a',
+Tadtpick => byte 'a',
+Tarray => byte 'A',
+Tbig => byte 'B',
+Tbyte => byte 'b',
+Tchan => byte 'C',
+Treal => byte 'f',
+Tfn => byte 'F',
+Tint => byte 'i',
+Tlist => byte 'L',
+Tmodule => byte 'm',
+Tref => byte 'R',
+Tstring => byte 's',
+Ttuple => byte 't',
 Texception => byte 't',
 Tfix => byte 'i',
 Tpoly => byte 'P',
-Tainit =>	byte '?',
-Talt =>		byte '?',
-Tany =>		byte 'N',
-Tarrow =>	byte '?',
-Tcase =>	byte '?',
-Tcasel =>	byte '?',
-Tcasec =>	byte '?',
-Tdot =>		byte '?',
-Terror =>	byte '?',
-Tgoto =>	byte '?',
-Tid =>		byte '?',
-Tiface =>	byte '?',
+Tainit => byte '?',
+Talt => byte '?',
+Tany => byte 'N',
+Tarrow => byte '?',
+Tcase => byte '?',
+Tcasel => byte '?',
+Tcasec => byte '?',
+Tdot => byte '?',
+Terror => byte '?',
+Tgoto => byte '?',
+Tid => byte '?',
+Tiface => byte '?',
 Texcept => byte '?',
 Tinst => byte '?',
 };
-sbltadtpick:	con byte 'p';
-sfiles:		ref Sym;
-ftail:		ref Sym;
-nsfiles:	int;
-blockid:	int;
-lastf:		int;
-lastline:	int;
-MAXSBLINT:	con 12;
-MAXSBLSRC:	con 6*(MAXSBLINT+1);
+sbltadtpick: con byte 'p';
+sfiles: ref Sym;
+ftail: ref Sym;
+nsfiles: int;
+blockid: int;
+lastf: int;
+lastline: int;
+MAXSBLINT: con 12;
+MAXSBLSRC: con 6*(MAXSBLINT+1);
 sblmod(m: ref Decl)
 {
 bsym.puts("limbo .sbl 2.1\n");
@@ -176,7 +176,7 @@ return s.stop == 0;
 sblinst(in: ref Inst, ninst: int)
 {
 src: Src;
-MAXSBL:	con 8*1024;
+MAXSBL: con 8*1024;
 buf := array[MAXSBL] of byte;
 n := 0;
 bsym.puts(string ninst);
@@ -193,7 +193,7 @@ n = 0;
 }
 if(isnilsrc(in.src))
 in.src = src;
-else if(isnilstopsrc(in.src)){	# how does this happen ?
+else if(isnilstopsrc(in.src)){ # how does this happen ?
 in.src.stop = in.src.start;
 in.src.stop++;
 }

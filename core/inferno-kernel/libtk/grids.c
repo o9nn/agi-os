@@ -1,50 +1,50 @@
 #include "lib9.h"
 #include "draw.h"
 #include "tk.h"
-#define	O(t, e)		((long)(&((t*)0)->e))
+#define O(t, e) ((long)(&((t*)0)->e))
 typedef struct TkGridparam TkGridparam;
 typedef struct TkBeamparam TkBeamparam;
 struct TkGridparam{
-Point	span;
-Tk*	in;
-Point	pad;
+Point span;
+Tk* in;
+Point pad;
 Point ipad;
-char	*row;
+char *row;
 char *col;
-int	sticky;
+int sticky;
 };
 struct TkBeamparam{
-int	minsize;
-int	maxsize;
-int	weight;
-int	pad;
-char	*name;
-int	equalise;
+int minsize;
+int maxsize;
+int weight;
+int pad;
+char *name;
+int equalise;
 };
 static
 TkOption opts[] =
 {
-"padx",		OPTnndist,	O(TkGridparam, pad.x),	nil,
-"pady",		OPTnndist,	O(TkGridparam, pad.y),	nil,
-"ipadx",	OPTnndist,	O(TkGridparam, ipad.x),	nil,
-"ipady",	OPTnndist,	O(TkGridparam, ipad.y),	nil,
-"in",		OPTwinp,		O(TkGridparam, in),		nil,
-"row",	OPTtext,		O(TkGridparam, row), nil,
-"column",	OPTtext,		O(TkGridparam, col), nil,
-"rowspan",	OPTnndist,	O(TkGridparam, span.y), nil,
-"columnspan",	OPTnndist,	O(TkGridparam, span.x), nil,
-"sticky",	OPTsticky,		O(TkGridparam, sticky), nil,
+"padx", OPTnndist, O(TkGridparam, pad.x), nil,
+"pady", OPTnndist, O(TkGridparam, pad.y), nil,
+"ipadx", OPTnndist, O(TkGridparam, ipad.x), nil,
+"ipady", OPTnndist, O(TkGridparam, ipad.y), nil,
+"in", OPTwinp, O(TkGridparam, in), nil,
+"row", OPTtext, O(TkGridparam, row), nil,
+"column", OPTtext, O(TkGridparam, col), nil,
+"rowspan", OPTnndist, O(TkGridparam, span.y), nil,
+"columnspan", OPTnndist, O(TkGridparam, span.x), nil,
+"sticky", OPTsticky, O(TkGridparam, sticky), nil,
 nil
 };
 static
 TkOption beamopts[] =
 {
-"minsize",		OPTnndist,	O(TkBeamparam, minsize),	nil,
-"maxsize",	OPTnndist,	O(TkBeamparam, maxsize),	nil,
-"weight",		OPTnndist,	O(TkBeamparam, weight),	nil,
-"pad",		OPTnndist,	O(TkBeamparam, pad),		nil,
-"name",		OPTtext,		O(TkBeamparam, name),		nil,
-"equalise",	OPTstab,		O(TkBeamparam, equalise),	tkbool,
+"minsize", OPTnndist, O(TkBeamparam, minsize), nil,
+"maxsize", OPTnndist, O(TkBeamparam, maxsize), nil,
+"weight", OPTnndist, O(TkBeamparam, weight), nil,
+"pad", OPTnndist, O(TkBeamparam, pad), nil,
+"name", OPTtext, O(TkBeamparam, name), nil,
+"equalise", OPTstab, O(TkBeamparam, equalise), tkbool,
 nil
 };
 void
@@ -595,7 +595,7 @@ int x, i, fpad;
 if(blen == 0 || f < 0)
 return -1;
 fpad = 0;
-x =  0;
+x = 0;
 for(i = 0; i < blen; i++){
 x += maximum(fpad, beam[i].pad);
 if(x <= f && f < x + beam[i].act)

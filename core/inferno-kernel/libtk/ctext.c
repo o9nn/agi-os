@@ -3,48 +3,48 @@
 #include "draw.h"
 #include "tk.h"
 #include "canvs.h"
-#define	O(t, e)		((long)(&((t*)0)->e))
+#define O(t, e) ((long)(&((t*)0)->e))
 enum {
-Cvsicursor	= 1,
+Cvsicursor = 1,
 };
 typedef struct TkCtext TkCtext;
 struct TkCtext
 {
-int	anchor;
-Point	anchorp;
-int	justify;
-int	icursor;
-int	focus;
-int	pixwidth;
-int	pixheight;
-int	sell;
-int	self;
-int	selfrom;
-int	sbw;
-int	width;
-int	nlines;
-Image*	stipple;
-Image*	pen;
-char*	text;
-int	tlen;
-TkEnv	*env;
+int anchor;
+Point anchorp;
+int justify;
+int icursor;
+int focus;
+int pixwidth;
+int pixheight;
+int sell;
+int self;
+int selfrom;
+int sbw;
+int width;
+int nlines;
+Image* stipple;
+Image* pen;
+char* text;
+int tlen;
+TkEnv *env;
 };
 static
 TkOption textopts[] =
 {
-"anchor",	OPTstab,	O(TkCtext, anchor),	tkanchor,
-"justify",	OPTstab,	O(TkCtext, justify),	tktabjust,
-"width",	OPTdist,	O(TkCtext, width),	IAUX(O(TkCtext, env)),
-"stipple",	OPTbmap,	O(TkCtext, stipple),	nil,
-"text",		OPTtext,	O(TkCtext, text),	nil,
+"anchor", OPTstab, O(TkCtext, anchor), tkanchor,
+"justify", OPTstab, O(TkCtext, justify), tktabjust,
+"width", OPTdist, O(TkCtext, width), IAUX(O(TkCtext, env)),
+"stipple", OPTbmap, O(TkCtext, stipple), nil,
+"text", OPTtext, O(TkCtext, text), nil,
 nil
 };
 static
 TkOption itemopts[] =
 {
-"tags",		OPTctag,	O(TkCitem, tags),	nil,
-"font",		OPTfont,	O(TkCitem, env),	nil,
-"fill",		OPTcolr,	O(TkCitem, env),	IAUX(TkCfill),
+"tags", OPTctag, O(TkCitem, tags), nil,
+"font", OPTfont, O(TkCitem, env), nil,
+"fill", OPTcolr, O(TkCitem, env), IAUX(TkCfill),
 nil
 };
 static char*

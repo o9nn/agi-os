@@ -125,8 +125,8 @@ goto o2;
 case 4:
 word = word * 85L + 84L;
 q[3] = (byte) (word >> 8);
-o2:	    q[2] = (byte) (word >> 16);
-o1:	    q[1] = (byte) (word >> 24);
+o2: q[2] = (byte) (word >> 16);
+o1: q[1] = (byte) (word >> 24);
 q += ccount - 1;
 pw->ptr = q;
 }

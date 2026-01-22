@@ -1,77 +1,77 @@
-#define _LARGEFILE64_SOURCE	1
+#define _LARGEFILE64_SOURCE 1
 #define _FILE_OFFSET_BITS 64
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
-#include	<sys/types.h>
-#include	<sys/stat.h>
-#include	<fcntl.h>
-#include	<sys/socket.h>
-#include	<sys/un.h>
-#include	<utime.h>
-#include	<dirent.h>
-#include	<stdio.h>
-#define	__EXTENSIONS__
-#undef	getwd
-#include	<unistd.h>
-#include	<pwd.h>
-#include	<grp.h>
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <sys/socket.h>
+#include <sys/un.h>
+#include <utime.h>
+#include <dirent.h>
+#include <stdio.h>
+#define __EXTENSIONS__
+#undef getwd
+#include <unistd.h>
+#include <pwd.h>
+#include <grp.h>
 typedef struct Fsinfo Fsinfo;
 struct Fsinfo
 {
-int	uid;
-int	gid;
-int	mode;
-DIR*	dir;
-struct dirent*	de;
-int	fd;
-ulong	offset;
-int	eod;
-int	issocket;
-QLock	oq;
-char*	spec;
-Cname*	name;
-Qid	rootqid;
+int uid;
+int gid;
+int mode;
+DIR* dir;
+struct dirent* de;
+int fd;
+ulong offset;
+int eod;
+int issocket;
+QLock oq;
+char* spec;
+Cname* name;
+Qid rootqid;
 };
-#define	FS(c)	((Fsinfo*)(c)->aux)
+#define FS(c) ((Fsinfo*)(c)->aux)
 enum
 {
-IDSHIFT	= 8,
-NID	= 1 << IDSHIFT,
-IDMASK	= NID - 1,
-MAXPATH	= 1024
+IDSHIFT = 8,
+NID = 1 << IDSHIFT,
+IDMASK = NID - 1,
+MAXPATH = 1024
 };
 typedef struct User User;
 struct User
 {
-int	id;
-int	gid;
-char*	name;
-int	nmem;
-int*	mem;
-User*	next;
+int id;
+int gid;
+char* name;
+int nmem;
+int* mem;
+User* next;
 };
-char	rootdir[MAXROOT] = ROOT;
-static	User*	uidmap[NID];
-static	User*	gidmap[NID];
-static	QLock	idl;
-static	User*	name2user(User**, char*, User* (*get)(char*));
-static	User*	id2user(User**, int, User* (*get)(int));
-static	User*	newuid(int);
-static	User*	newgid(int);
-static	User*	newuname(char*);
-static	User*	newgname(char*);
-static	Qid	fsqid(struct stat *);
-static	void	fspath(Cname*, char*, char*);
-static	int	fsdirconv(Chan*, char*, char*, struct stat*, uchar*, int, int);
-static	Cname*	fswalkpath(Cname*, char*, int);
-static	char*	fslastelem(Cname*);
-static	int ingroup(int id, int gid);
-static	void	fsperm(Chan*, int);
-static	long	fsdirread(Chan*, uchar*, int, vlong);
-static	int	fsomode(int);
-static	void	fsremove(Chan*);
-static	vlong osdisksize(int);
+char rootdir[MAXROOT] = ROOT;
+static User* uidmap[NID];
+static User* gidmap[NID];
+static QLock idl;
+static User* name2user(User**, char*, User* (*get)(char*));
+static User* id2user(User**, int, User* (*get)(int));
+static User* newuid(int);
+static User* newgid(int);
+static User* newuname(char*);
+static User* newgname(char*);
+static Qid fsqid(struct stat *);
+static void fspath(Cname*, char*, char*);
+static int fsdirconv(Chan*, char*, char*, struct stat*, uchar*, int, int);
+static Cname* fswalkpath(Cname*, char*, int);
+static char* fslastelem(Cname*);
+static int ingroup(int id, int gid);
+static void fsperm(Chan*, int);
+static long fsdirread(Chan*, uchar*, int, vlong);
+static int fsomode(int);
+static void fsremove(Chan*);
+static vlong osdisksize(int);
 static int
 xstat(char *f, struct stat *sb)
 {
@@ -531,7 +531,7 @@ utbuf.modtime = d->mtime;
 else
 utbuf.modtime = st.st_mtime;
 if(d->atime != ~0)
-utbuf.actime  = d->atime;
+utbuf.actime = d->atime;
 else
 utbuf.actime = st.st_atime;
 if(utime(FS(c)->name->s, &utbuf) < 0)

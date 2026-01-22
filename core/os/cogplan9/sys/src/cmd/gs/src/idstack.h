@@ -1,5 +1,5 @@
 #ifndef idstack_INCLUDED
-#  define idstack_INCLUDED
+# define idstack_INCLUDED
 #include "iddstack.h"
 #include "idsdata.h"
 #include "istack.h"

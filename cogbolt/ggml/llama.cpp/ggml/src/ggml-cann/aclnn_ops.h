@@ -129,10 +129,10 @@ ACL_CHECK(aclnn_func_(workspace_addr_, workspace_size_, executor_, stream_));
 }
 private:
 aclnn_func_t aclnn_func_;
-void *          workspace_addr_;
-uint64_t        workspace_size_;
+void * workspace_addr_;
+uint64_t workspace_size_;
 aclOpExecutor * executor_;
-aclrtStream     stream_;
+aclrtStream stream_;
 };
 class release_resource_task : public cann_task {
 public:
@@ -173,25 +173,25 @@ size_t size_;
 int32_t value_;
 aclrtStream stream_;
 };
-#define GGML_CANN_CALL_ACLNN_OP(CTX, OP_NAME, ...)                                          \
-do {                                                                                    \
-uint64_t        workspaceSize = 0;                                                  \
-aclOpExecutor * executor;                                                           \
-void *          workspaceAddr = nullptr;                                            \
+#define GGML_CANN_CALL_ACLNN_OP(CTX, OP_NAME, ...) \
+do { \
+uint64_t workspaceSize = 0; \
+aclOpExecutor * executor; \
+void * workspaceAddr = nullptr; \
 ACL_CHECK(aclnn##OP_NAME##GetWorkspaceSize(__VA_ARGS__, &workspaceSize, &executor));\
 \
-if (workspaceSize > 0) {                                                            \
-ggml_cann_pool_alloc workspace_allocator(CTX.pool(), workspaceSize);            \
-workspaceAddr = workspace_allocator.get();                                      \
-}                                                                                   \
-if (CTX.async_mode) {                                                               \
-auto task =                                                                     \
-std::make_unique<aclnn_task>(aclnn##OP_NAME, workspaceAddr, workspaceSize,  \
+if (workspaceSize > 0) { \
+ggml_cann_pool_alloc workspace_allocator(CTX.pool(), workspaceSize); \
+workspaceAddr = workspace_allocator.get(); \
+} \
+if (CTX.async_mode) { \
+auto task = \
+std::make_unique<aclnn_task>(aclnn##OP_NAME, workspaceAddr, workspaceSize, \
 executor, CTX.stream()); \
-CTX.task_queue.submit_task(std::move(task));                                    \
-} else {                                                                            \
+CTX.task_queue.submit_task(std::move(task)); \
+} else { \
 ACL_CHECK(aclnn##OP_NAME(workspaceAddr, workspaceSize, executor, CTX.stream()));\
-}                                                                                   \
+} \
 } while (0)
 template <typename... Args>
 void ggml_cann_release_resources(ggml_backend_cann_context & ctx, Args &&... args) {
@@ -274,24 +274,24 @@ ggml_backend_cann_context& ctx, ggml_tensor* dst);
 void ggml_cann_op_unary_gated(
 std::function<void(ggml_backend_cann_context&, aclTensor*, aclTensor*)> unary_op,
 ggml_backend_cann_context& ctx, ggml_tensor* dst);
-#define GGML_CANN_CALL_OP_UNARY(OP_NAME)                              \
-do {                                                              \
-auto lambda = [](ggml_backend_cann_context& ctx,              \
-aclTensor* acl_src,                                       \
-aclTensor* acl_dst) {                                     \
-GGML_CANN_CALL_ACLNN_OP(ctx, OP_NAME, acl_src, acl_dst);  \
-};                                                            \
-ggml_cann_op_unary(lambda, ctx, dst);                         \
-}                                                                 \
+#define GGML_CANN_CALL_OP_UNARY(OP_NAME) \
+do { \
+auto lambda = [](ggml_backend_cann_context& ctx, \
+aclTensor* acl_src, \
+aclTensor* acl_dst) { \
+GGML_CANN_CALL_ACLNN_OP(ctx, OP_NAME, acl_src, acl_dst); \
+}; \
+ggml_cann_op_unary(lambda, ctx, dst); \
+} \
 while (0)
-#define GGML_CANN_CALL_OP_UNARY_GATED(OP_NAME)                        \
-do {                                                              \
-auto lambda = [](ggml_backend_cann_context& ctx,              \
-aclTensor* acl_src,                                       \
-aclTensor* acl_dst) {                                     \
-GGML_CANN_CALL_ACLNN_OP(ctx, OP_NAME, acl_src, acl_dst);  \
-};                                                            \
-ggml_cann_op_unary_gated(lambda, ctx, dst);                   \
-}                                                                 \
+#define GGML_CANN_CALL_OP_UNARY_GATED(OP_NAME) \
+do { \
+auto lambda = [](ggml_backend_cann_context& ctx, \
+aclTensor* acl_src, \
+aclTensor* acl_dst) { \
+GGML_CANN_CALL_ACLNN_OP(ctx, OP_NAME, acl_src, acl_dst); \
+}; \
+ggml_cann_op_unary_gated(lambda, ctx, dst); \
+} \
 while (0)
 #endif

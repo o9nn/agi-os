@@ -24,135 +24,135 @@ Ftpfs: module
 init: fn(nil: ref Draw->Context, argv: list of string);
 };
 #
-#	File system node.  Refers to parent and file structure.
-#	Siblings are linked.  The head is parent.children.
+# File system node. Refers to parent and file structure.
+# Siblings are linked. The head is parent.children.
 #
 Node: adt
 {
-dir:		Dir;
-uniq:		int;
-parent:		cyclic ref Node;
-sibs:		cyclic ref Node;
-children:	cyclic ref Node;
-file:		cyclic ref File;
-depth:		int;
-remname:	string;
-cached:		int;
-valid:		int;
-extendpath:	fn(parent: self ref Node, elem: string): ref Node;
-fixsymbolic:	fn(n: self ref Node);
-invalidate:	fn(n: self ref Node);
-markcached:	fn(n: self ref Node);
-uncache:	fn(n: self ref Node);
-uncachedir:	fn(parent: self ref Node, child: ref Node);
-stat:		fn(n: self ref Node): array of byte;
-qid:		fn(n: self ref Node): Sys->Qid;
-fileget:	fn(n: self ref Node): ref File;
-filefree:	fn(n: self ref Node);
-fileclean:	fn(n: self ref Node);
-fileisdirty:	fn(n: self ref Node): int;
-filedirty:	fn(n: self ref Node);
-fileread:	fn(n: self ref Node, b: array of byte, off, c: int): int;
-filewrite:	fn(n: self ref Node, b: array of byte, off, c: int): int;
-action:		fn(n: self ref Node, cmd: string): int;
-createdir:	fn(n: self ref Node): int;
-createfile:	fn(n: self ref Node): int;
-changedir:	fn(n: self ref Node): int;
-docreate:	fn(n: self ref Node): int;
-pathname:	fn(n: self ref Node): string;
-readdir:	fn(n: self ref Node): int;
-readfile:	fn(n: self ref Node): int;
-removedir:	fn(n: self ref Node): int;
-removefile:	fn(n: self ref Node): int;
+dir: Dir;
+uniq: int;
+parent: cyclic ref Node;
+sibs: cyclic ref Node;
+children: cyclic ref Node;
+file: cyclic ref File;
+depth: int;
+remname: string;
+cached: int;
+valid: int;
+extendpath: fn(parent: self ref Node, elem: string): ref Node;
+fixsymbolic: fn(n: self ref Node);
+invalidate: fn(n: self ref Node);
+markcached: fn(n: self ref Node);
+uncache: fn(n: self ref Node);
+uncachedir: fn(parent: self ref Node, child: ref Node);
+stat: fn(n: self ref Node): array of byte;
+qid: fn(n: self ref Node): Sys->Qid;
+fileget: fn(n: self ref Node): ref File;
+filefree: fn(n: self ref Node);
+fileclean: fn(n: self ref Node);
+fileisdirty: fn(n: self ref Node): int;
+filedirty: fn(n: self ref Node);
+fileread: fn(n: self ref Node, b: array of byte, off, c: int): int;
+filewrite: fn(n: self ref Node, b: array of byte, off, c: int): int;
+action: fn(n: self ref Node, cmd: string): int;
+createdir: fn(n: self ref Node): int;
+createfile: fn(n: self ref Node): int;
+changedir: fn(n: self ref Node): int;
+docreate: fn(n: self ref Node): int;
+pathname: fn(n: self ref Node): string;
+readdir: fn(n: self ref Node): int;
+readfile: fn(n: self ref Node): int;
+removedir: fn(n: self ref Node): int;
+removefile: fn(n: self ref Node): int;
 };
 #
-#	Styx protocol file identifier.
+# Styx protocol file identifier.
 #
 Fid: adt
 {
-fid:	int;
-node:	ref Node;
-busy:	int;
+fid: int;
+node: ref Node;
+busy: int;
 };
 #
-#	Foreign file with cache.
+# Foreign file with cache.
 #
 File: adt
 {
-cache:		array of byte;
-length:		int;
-offset:		int;
-fd:		ref FD;
-inuse, dirty:	int;
-atime:		int;
-node:		cyclic ref Node;
-tempname:	string;
-createtmp:	fn(f: self ref File): ref FD;
+cache: array of byte;
+length: int;
+offset: int;
+fd: ref FD;
+inuse, dirty: int;
+atime: int;
+node: cyclic ref Node;
+tempname: string;
+createtmp: fn(f: self ref File): ref FD;
 };
-ftp:		ref Connection;
-dfid:			ref FD;
-dfidiob:		ref Iobuf;
-buffresidue:	int = 0;
-tbuff:		array of byte;
-rbuff:		array of byte;
-ccfd:			ref FD;
-stdin, stderr:	ref FD;
-fids:		list of ref Fid;
-BSZ:		con 8192;
-Chunk:		con 1024;
-Nfiles:		con 128;
-CHSYML:		con 16r40000000;
-mountpoint:	string = "/n/ftp";
-user:			string = nil;
-password:		string;
-hostname:	string = "kremvax";
-anon:		string = "anon";
-firewall:		string = "tcp!$proxy!402";
-myname:		string = "anon";
-myhost:		string = "lucent.com";
-proxyid:		string;
-proxyhost:	string;
-errstr:		string;
-net:			string;
-port:			int;
-Enosuchfile:	con "file does not exist";
-Eftpproto:	con "ftp protocol error";
-Eshutdown:	con "remote shutdown";
-Eioerror:	con "io error";
-Enotadirectory:	con "not a directory";
-Eisadirectory:	con "is a directory";
-Epermission:	con "permission denied";
-Ebadoffset:	con "bad offset";
-Ebadlength:	con "bad length";
-Enowstat:	con "wstat not implemented";
-Emesgmismatch:	con "message size mismatch";
-remdir:		ref Node;
-remroot:	ref Node;
-remrootpath:	string;
+ftp: ref Connection;
+dfid: ref FD;
+dfidiob: ref Iobuf;
+buffresidue: int = 0;
+tbuff: array of byte;
+rbuff: array of byte;
+ccfd: ref FD;
+stdin, stderr: ref FD;
+fids: list of ref Fid;
+BSZ: con 8192;
+Chunk: con 1024;
+Nfiles: con 128;
+CHSYML: con 16r40000000;
+mountpoint: string = "/n/ftp";
+user: string = nil;
+password: string;
+hostname: string = "kremvax";
+anon: string = "anon";
+firewall: string = "tcp!$proxy!402";
+myname: string = "anon";
+myhost: string = "lucent.com";
+proxyid: string;
+proxyhost: string;
+errstr: string;
+net: string;
+port: int;
+Enosuchfile: con "file does not exist";
+Eftpproto: con "ftp protocol error";
+Eshutdown: con "remote shutdown";
+Eioerror: con "io error";
+Enotadirectory: con "not a directory";
+Eisadirectory: con "is a directory";
+Epermission: con "permission denied";
+Ebadoffset: con "bad offset";
+Ebadlength: con "bad length";
+Enowstat: con "wstat not implemented";
+Emesgmismatch: con "message size mismatch";
+remdir: ref Node;
+remroot: ref Node;
+remrootpath: string;
 heartbeatpid: int;
 #
-#	FTP protocol codes are 3 digits >= 100.
-#	The code type is obtained by dividing by 100.
+# FTP protocol codes are 3 digits >= 100.
+# The code type is obtained by dividing by 100.
 #
-Syserr:		con -2;
-Syntax:		con -1;
-Shutdown:	con 0;
-Extra:		con 1;
-Success:	con 2;
-Incomplete:	con 3;
-TempFail:	con 4;
-PermFail:	con 5;
-Impossible:	con 6;
-Err:		con 7;
-debug:		int = 0;
-quiet:		int = 0;
-active:		int = 0;
-cdtoroot:		int = 0;
-proxy:		int = 0;
-mountfd:	ref FD;
+Syserr: con -2;
+Syntax: con -1;
+Shutdown: con 0;
+Extra: con 1;
+Success: con 2;
+Incomplete: con 3;
+TempFail: con 4;
+PermFail: con 5;
+Impossible: con 6;
+Err: con 7;
+debug: int = 0;
+quiet: int = 0;
+active: int = 0;
+cdtoroot: int = 0;
+proxy: int = 0;
+mountfd: ref FD;
 styxfd: ref FD;
 #
-#	Set up FDs for service.
+# Set up FDs for service.
 #
 connect(): string
 {
@@ -169,8 +169,8 @@ sys->fprint(sys->fildes(2), "ftpfs: %s\n", s);
 raise "fail:"+s;
 }
 #
-#	Mount server.  Must be spawned because it does
-#	an attach transaction.
+# Mount server. Must be spawned because it does
+# an attach transaction.
 #
 mount(mountpoint: string)
 {
@@ -181,13 +181,13 @@ shutdown();
 mountfd = nil;
 }
 #
-#	Keep the link alive.
+# Keep the link alive.
 #
-beatquanta:	con 10;
-beatlimit:	con 10;
-beatcount:	int;
-activity:	int;
-transfer:	int;
+beatquanta: con 10;
+beatlimit: con 10;
+beatcount: int;
+activity: int;
+transfer: int;
 heartbeat(pidc: chan of int)
 {
 pid := sys->pctl(0, nil);
@@ -211,7 +211,7 @@ activity = 0;
 }
 }
 #
-#	Control lock.
+# Control lock.
 #
 ctllock: chan of int;
 acquire()
@@ -223,7 +223,7 @@ release()
 <-ctllock;
 }
 #
-#	Data formatting routines.
+# Data formatting routines.
 #
 sendreply(r: ref Rmsg)
 {
@@ -254,10 +254,10 @@ errstr = s;
 return -1;
 }
 #
-#	Node routines.
+# Node routines.
 #
-anode:	Node;
-npath:	int	= 1;
+anode: Node;
+npath: int = 1;
 newnode(parent: ref Node, name: string): ref Node
 {
 n := ref anode;
@@ -346,16 +346,16 @@ return Sys->Qid(big n.uniq, 0, Sys->QTDIR);
 return Sys->Qid(big n.uniq, 0, Sys->QTFILE);
 }
 #
-#	File routines.
+# File routines.
 #
-ntmp:	int;
-files:	list of ref File;
-nfiles:	int;
-afile:	File;
-atime:	int;
+ntmp: int;
+files: list of ref File;
+nfiles: int;
+afile: File;
+atime: int;
 #
-#	Allocate a file structure for a node.  If too many
-#	are already allocated discard the oldest.
+# Allocate a file structure for a node. If too many
+# are already allocated discard the oldest.
 #
 Node.fileget(n: self ref Node): ref File
 {
@@ -392,8 +392,8 @@ f.fd = nil;
 return f;
 }
 #
-#	Create a temporary file for a local copy of a file.
-#	If too many are open uncache parent.
+# Create a temporary file for a local copy of a file.
+# If too many are open uncache parent.
 #
 File.createtmp(f: self ref File): ref FD
 {
@@ -407,7 +407,7 @@ ntmp++;
 return f.fd;
 }
 #
-#	Read 'c' bytes at offset 'off' from a file into buffer 'b'.
+# Read 'c' bytes at offset 'off' from a file into buffer 'b'.
 #
 Node.fileread(n: self ref Node, b: array of byte, off, c: int): int
 {
@@ -451,7 +451,7 @@ off += i;
 return t;
 }
 #
-#	Write 'c' bytes at offset 'off' to a file from buffer 'b'.
+# Write 'c' bytes at offset 'off' to a file from buffer 'b'.
 #
 Node.filewrite(n: self ref Node, b: array of byte, off, c: int): int
 {
@@ -534,9 +534,9 @@ f = n.fileget();
 f.dirty = 1;
 }
 #
-#	Fid management.
+# Fid management.
 #
-afid:	Fid;
+afid: Fid;
 getfid(fid: int): ref Fid
 {
 l: list of ref Fid;
@@ -563,7 +563,7 @@ ff.fid = fid;
 return ff;
 }
 #
-#	FTP protocol.
+# FTP protocol.
 #
 fail(s: int, l: string)
 {
@@ -825,7 +825,7 @@ m: string;
 listenport = dial->announce("tcp!" + net + "!0");
 if(listenport == nil)
 return nil;
-(x1, x2)  := getnet(listenport.dir);
+(x1, x2) := getnet(listenport.dir);
 (nil, x4) := sys->tokenize(x1, ".");
 t := sys->sprint("PORT %s,%d,%d", commas(x4), int x2 / 256, int x2&255);
 acquire();
@@ -872,7 +872,7 @@ else
 return passive(cmd);
 }
 #
-#	File list cracking routines.
+# File list cracking routines.
 #
 fields(l: list of string, n: int): array of string
 {
@@ -883,8 +883,8 @@ l = tl l;
 }
 return a;
 }
-now:	ref Tm;
-months:	con "janfebmaraprmayjunjulaugsepoctnovdec";
+now: ref Tm;
+months: con "janfebmaraprmayjunjulaugsepoctnovdec";
 cracktime(month, day, year, hms: string): int
 {
 tm: Tm;
@@ -933,7 +933,7 @@ crackmode(p: string): int
 {
 flags := 0;
 case len p {
-10 =>	# unix and new style plan 9
+10 => # unix and new style plan 9
 case p[0] {
 'l' =>
 return CHSYML | 0777;
@@ -941,7 +941,7 @@ return CHSYML | 0777;
 flags = Sys->DMDIR;
 }
 p = p[1:10];
-11 =>	# old style plan 9
+11 => # old style plan 9
 if (p[0] == 'l')
 flags = Sys->DMDIR;
 p = p[2:11];
@@ -973,7 +973,7 @@ f := fields(l, n);
 if (n > 2 && f[n - 2] == "->")
 n -= 2;
 case n {
-8 =>	# ls -l
+8 => # ls -l
 ln = f[7];
 d.uid = f[2];
 d.gid = f[2];
@@ -984,7 +984,7 @@ if (len a != len f[6])
 d.atime = cracktime(f[4], f[5], nil, f[6]);
 else
 d.atime = cracktime(f[4], f[5], f[6], nil);
-9 =>	# ls -lg
+9 => # ls -lg
 ln = f[8];
 d.uid = f[2];
 d.gid = f[3];
@@ -995,7 +995,7 @@ if (len a != len f[7])
 d.atime = cracktime(f[5], f[6], nil, f[7]);
 else
 d.atime = cracktime(f[5], f[6], f[7], nil);
-10 =>	# plan 9
+10 => # plan 9
 ln = f[9];
 d.uid = f[3];
 d.gid = f[4];
@@ -1006,7 +1006,7 @@ if (len a != len f[8])
 d.atime = cracktime(f[6], f[7], nil, f[8]);
 else
 d.atime = cracktime(f[6], f[7], f[8], nil);
-4 =>	# NT
+4 => # NT
 ln = f[3];
 d.uid = anon;
 d.gid = anon;
@@ -1021,7 +1021,7 @@ d.length = big f[2];
 (n, l) = sys->tokenize(f[0], "/-");
 if (n == 3)
 d.atime = cracktime(hd l, hd tl l, f[2], f[1]);
-1 =>	# ls
+1 => # ls
 ln = f[0];
 d.uid = anon;
 d.gid = anon;
@@ -1155,7 +1155,7 @@ if (r == Success)
 release();
 case r {
 Success
-#	or Incomplete
+# or Incomplete
 =>
 remdir = n;
 return 0;
@@ -1232,7 +1232,7 @@ return "/";
 return s;
 }
 #
-#	User info for firewall.
+# User info for firewall.
 #
 getuser()
 {
@@ -1341,7 +1341,7 @@ return def;
 return s;
 }
 #
-#	Entry point.  Load modules and initiate protocol.
+# Entry point. Load modules and initiate protocol.
 #
 nomod(s: string)
 {
@@ -1537,7 +1537,7 @@ spawn heartbeat(pidc);
 heartbeatpid = <-pidc;
 if (debug)
 sys->print("heartbeatpid %d\n", heartbeatpid);
-spawn server();				# dies when receive on chan fails
+spawn server(); # dies when receive on chan fails
 }
 kill(pid: int)
 {
@@ -1552,7 +1552,7 @@ shutdown()
 mountfd = nil;
 }
 #
-#	Styx transactions.
+# Styx transactions.
 #
 versionT(t: ref Tmsg.Version)
 {

@@ -6,97 +6,97 @@
 #include "io.h"
 #include "ureg.h"
 #include "../port/error.h"
-#define	Image	IMAGE
+#define Image IMAGE
 #include <draw.h>
 #include <memdraw.h>
 #include <cursor.h>
 #include "screen.h"
 enum {
-Tabstop	= 4,
-Scroll	= 8,
-Tft	= 0x60,
+Tabstop = 4,
+Scroll = 8,
+Tft = 0x60,
 Loadmode = 2 << 1,
 Fifosize = 0x400,
-Midlemode	= 2 << 12,
-Sidlemode	= 2 << 3,
-EnableWakeup	= 1 << 2,
-Autoidle	= 1 << 0,
-Ipc		= 1 << 14,
-Ihs		= 1 << 13,
-Ivs		= 1 << 12,
-Acb		= 0x28,
-Burstsize	= 2 << 6,
-Format		= 6 << 1,
-Gfxenable	= 1 << 0,
-Gpout1		= 1 << 16,
-Gpout0		= 1 << 15,
-Tftdata		= 3 << 8,
-Digital		= 1 << 6,
-Lcd		= 1 << 5,
-Stntft		= 1 << 3,
-Digitalen	= 1 << 1,
+Midlemode = 2 << 12,
+Sidlemode = 2 << 3,
+EnableWakeup = 1 << 2,
+Autoidle = 1 << 0,
+Ipc = 1 << 14,
+Ihs = 1 << 13,
+Ivs = 1 << 12,
+Acb = 0x28,
+Burstsize = 2 << 6,
+Format = 6 << 1,
+Gfxenable = 1 << 0,
+Gpout1 = 1 << 16,
+Gpout0 = 1 << 15,
+Tftdata = 3 << 8,
+Digital = 1 << 6,
+Lcd = 1 << 5,
+Stntft = 1 << 3,
+Digitalen = 1 << 1,
 };
 typedef struct Dispcregs Dispc;
 typedef struct Dssregs Dss;
 typedef struct Ioregs Ioregs;
 struct Ioregs {
-ulong 	rev;
-uchar	_pad0[0x10-0x4];
-ulong	sysconf;
-ulong	sysstat;
-ulong	irqstat1;
-ulong	irqen1;
-ulong	wkupen;
-ulong	_pad1;
-ulong	irqsts2;
-ulong	irqen2;
-ulong	_pad2[4];
-ulong	ctrl;
+ulong rev;
+uchar _pad0[0x10-0x4];
+ulong sysconf;
+ulong sysstat;
+ulong irqstat1;
+ulong irqen1;
+ulong wkupen;
+ulong _pad1;
+ulong irqsts2;
+ulong irqen2;
+ulong _pad2[4];
+ulong ctrl;
 };
 struct Dssregs {
 Ioregs;
-ulong	sdicrtl;
-ulong	pllcrtl;
-uchar	_pad3[0x5c-0x4c];
-ulong	sdistat;
+ulong sdicrtl;
+ulong pllcrtl;
+uchar _pad3[0x5c-0x4c];
+ulong sdistat;
 };
 struct Dispcregs {
 Ioregs;
-ulong	config;
-ulong	_pad3;
-ulong 	defaultcolor[2];
-ulong	transcolor[2];
-ulong	linestat;
-ulong	linenum;
-ulong	timing_h;
-ulong	timing_v;
-ulong	pol_req;
-ulong	divisor;
-ulong	alpha;
-ulong	digsize;
-ulong	lcdsize;
-ulong	base[2];
-ulong	pos;
-ulong	size;
-ulong	_pad4[4];
-ulong	attrib;
-ulong	fifothr;
-ulong	fifosize;
-ulong	rowinc;
-ulong	pixelinc;
-ulong	winskip;
-ulong	palette;
-uchar	_pad5[0x5d4 - 0x4bc];
-ulong	datacycle[3];
-uchar	_pad5[0x620 - 0x5e0];
-ulong	cprcoefr;
-ulong	cprcoefg;
-ulong	cprcoefb;
-ulong	preload;
+ulong config;
+ulong _pad3;
+ulong defaultcolor[2];
+ulong transcolor[2];
+ulong linestat;
+ulong linenum;
+ulong timing_h;
+ulong timing_v;
+ulong pol_req;
+ulong divisor;
+ulong alpha;
+ulong digsize;
+ulong lcdsize;
+ulong base[2];
+ulong pos;
+ulong size;
+ulong _pad4[4];
+ulong attrib;
+ulong fifothr;
+ulong fifosize;
+ulong rowinc;
+ulong pixelinc;
+ulong winskip;
+ulong palette;
+uchar _pad5[0x5d4 - 0x4bc];
+ulong datacycle[3];
+uchar _pad5[0x620 - 0x5e0];
+ulong cprcoefr;
+ulong cprcoefg;
+ulong cprcoefb;
+ulong preload;
 };
-int	drawdebug;
-Point	ZP = {0, 0};
-Cursor	arrow = {
+int drawdebug;
+Point ZP = {0, 0};
+Cursor arrow = {
 { -1, -1 },
 { 0xFF, 0xFF, 0x80, 0x01, 0x80, 0x02, 0x80, 0x0C,
 0x80, 0x10, 0x80, 0x10, 0x80, 0x08, 0x80, 0x04,
@@ -111,10 +111,10 @@ Cursor	arrow = {
 };
 OScreen oscreen;
 Settings settings[] = {
-[Res800x600]   {  800,  600, 60, RGB16,  40000,	 88, 40, 128,	23, 1, 5, },
-[Res1024x768]  { 1024,  768, 60, RGB16,  65000,	160, 24, 136,	29, 3, 7, },
-[Res1280x1024] { 1280, 1024, 60, RGB16, 108000,	248, 48, 112,	38, 1, 4, },
-[Res1400x1050] { 1400, 1050, 50, RGB16, 108000, 248, 48, 112,	38, 1, 4, },
+[Res800x600] { 800, 600, 60, RGB16, 40000, 88, 40, 128, 23, 1, 5, },
+[Res1024x768] { 1024, 768, 60, RGB16, 65000, 160, 24, 136, 29, 3, 7, },
+[Res1280x1024] { 1280, 1024, 60, RGB16, 108000, 248, 48, 112, 38, 1, 4, },
+[Res1400x1050] { 1400, 1050, 50, RGB16, 108000, 248, 48, 112, 38, 1, 4, },
 };
 Omap3fb *framebuf;
 Memimage *gscreen;
@@ -137,30 +137,30 @@ static Memimage *conscol;
 static Memimage *back;
 static Memsubfont *memdefont;
 static Lock screenlock;
-static Point	curpos;
-static int	h, w;
-static int	landscape = 0;
-static ushort	*vscreen;
+static Point curpos;
+static int h, w;
+static int landscape = 0;
+static ushort *vscreen;
 static Rectangle window;
 static Dispc *dispc = (Dispc *)PHYSDISPC;
-static Dss *dss	= (Dss *)PHYSDSS;
-static	void	omapscreenputs(char *s, int n);
-static	ulong	rep(ulong, int);
-static	void	screenputc(char *buf);
-static	void	screenwin(void);
-int	swvisible;
-int	swenabled;
-Memimage*	swback;
-Memimage*	swimg;
-Memimage*	swmask;
-Memimage*	swimg1;
-Memimage*	swmask1;
-Point	swoffset;
-Rectangle	swrect;
-Point	swpt;
-Point	swvispt;
-int	swvers;
-int	swvisvers;
+static Dss *dss = (Dss *)PHYSDSS;
+static void omapscreenputs(char *s, int n);
+static ulong rep(ulong, int);
+static void screenputc(char *buf);
+static void screenwin(void);
+int swvisible;
+int swenabled;
+Memimage* swback;
+Memimage* swimg;
+Memimage* swmask;
+Memimage* swimg1;
+Memimage* swmask1;
+Point swoffset;
+Rectangle swrect;
+Point swpt;
+Point swvispt;
+int swvers;
+int swvisvers;
 static void
 lcdoff(void)
 {
@@ -321,7 +321,7 @@ for(j=0x80; j; j>>=1){
 }
 swoffset = curs->offset;
 swvers++;
-memimagedraw(swimg1,  swimg1->r,  swimg,  ZP, memopaque, ZP, S);
+memimagedraw(swimg1, swimg1->r, swimg, ZP, memopaque, ZP, S);
 memimagedraw(swmask1, swmask1->r, swmask, ZP, memopaque, ZP, S);
 }
 void
@@ -372,11 +372,11 @@ freememimage(swmask1);
 freememimage(swimg);
 freememimage(swimg1);
 }
-swback  = allocmemimage(Rect(0,0,32,32), gscreen->chan);
-swmask  = allocmemimage(Rect(0,0,16,16), GREY8);
+swback = allocmemimage(Rect(0,0,32,32), gscreen->chan);
+swmask = allocmemimage(Rect(0,0,16,16), GREY8);
 swmask1 = allocmemimage(Rect(0,0,16,16), GREY1);
-swimg   = allocmemimage(Rect(0,0,16,16), GREY8);
-swimg1  = allocmemimage(Rect(0,0,16,16), GREY1);
+swimg = allocmemimage(Rect(0,0,16,16), GREY8);
+swimg1 = allocmemimage(Rect(0,0,16,16), GREY1);
 if(swback==nil || swmask==nil || swmask1==nil || swimg==nil || swimg1 == nil){
 print("software cursor: allocmemimage fails\n");
 return;
@@ -442,7 +442,7 @@ r.max.y = Ht;
 if (rectclip(&r, gscreen->r) == 0)
 return;
 start = (ulong)&framebuf->pixel[r.min.y*Wid + r.min.x];
-end   = (ulong)&framebuf->pixel[(r.max.y - 1)*Wid + r.max.x -1];
+end = (ulong)&framebuf->pixel[(r.max.y - 1)*Wid + r.max.x -1];
 cachedwbse((ulong *)start, end - start);
 }
 uchar*

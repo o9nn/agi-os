@@ -1,41 +1,41 @@
 (BindLink
-    (ListLink
-        (ConceptNode "YOU")
-        (ConceptNode "ARE")
-        (ConceptNode "BEAUTIFUL")
-    )
-    (DefinedPredicateNode "be happy")
+(ListLink
+(ConceptNode "YOU")
+(ConceptNode "ARE")
+(ConceptNode "BEAUTIFUL")
+)
+(DefinedPredicateNode "be happy")
 )
 (BindLink
-        (ListLink
-            (ConceptNode "YOU")
-            (ConceptNode "ARE")
-            (GlobNode "$blah")
-            (ConceptNode "BEAUTIFUL")
-        )
-        (DefinedPredicateNode "be happy")
+(ListLink
+(ConceptNode "YOU")
+(ConceptNode "ARE")
+(GlobNode "$blah")
+(ConceptNode "BEAUTIFUL")
+)
+(DefinedPredicateNode "be happy")
 )
 (BindLink
-        (ListLink
-            (ConceptNode "YOU")
-            (ConceptNode "ARE")
-            (GlobNode "$blah")
-            (ConceptNode "BEAUTIFUL")
-            (GlobNode "$blah2")
-        )
-        (DefinedPredicateNode "be happy")
+(ListLink
+(ConceptNode "YOU")
+(ConceptNode "ARE")
+(GlobNode "$blah")
+(ConceptNode "BEAUTIFUL")
+(GlobNode "$blah2")
+)
+(DefinedPredicateNode "be happy")
 )
 (BindLink
-    (ListLink
-        (ConceptNode "BE")
-        (ConceptNode "HAPPY")
-    )
-    (DefinedPredicateNode "be happy"))
+(ListLink
+(ConceptNode "BE")
+(ConceptNode "HAPPY")
+)
+(DefinedPredicateNode "be happy"))
 (BindLink
-  (ListLink
-    (ConceptNode "ARE")
-    (ConceptNode "YOU")
-    (ConceptNode "BORED")
-  )
-  (DefinedPredicateNode "yawn")
+(ListLink
+(ConceptNode "ARE")
+(ConceptNode "YOU")
+(ConceptNode "BORED")
+)
+(DefinedPredicateNode "yawn")
 )

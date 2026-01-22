@@ -12,11 +12,11 @@ scheme@(guile-user)>
 (define sto (CogStorageNode "cog://localhost:17001"))
 (cog-open sto)
 (cog-set-value!
-	(WriteThruProxy "wthru mirror")
-	(*-proxy-parts-*)
-	(List
-		(RocksStorageNode "rocks:///tmp/foo.rdb")
-		(RocksStorageNode "rocks:///tmp/bar.rdb")))
+(WriteThruProxy "wthru mirror")
+(*-proxy-parts-*)
+(List
+(RocksStorageNode "rocks:///tmp/foo.rdb")
+(RocksStorageNode "rocks:///tmp/bar.rdb")))
 (cog-set-value! sto (*-set-proxy-*) (WriteThruProxy "wthru mirror"))
 (cog-set-value! sto (*-proxy-open-*) (VoidValue))
 (store-atom (Concept "foo" (stv 0.3 0.6)))
@@ -39,11 +39,11 @@ scheme@(guile-user)>
 (define sto (CogStorageNode "cog://localhost:17001"))
 (cog-open sto)
 (cog-set-value!
-	(ReadThruProxy "rthru balance")
-	(*-proxy-parts-*)
-	(List
-		(RocksStorageNode "rocks:///tmp/foo.rdb")
-		(RocksStorageNode "rocks:///tmp/bar.rdb")))
+(ReadThruProxy "rthru balance")
+(*-proxy-parts-*)
+(List
+(RocksStorageNode "rocks:///tmp/foo.rdb")
+(RocksStorageNode "rocks:///tmp/bar.rdb")))
 (cog-set-value! sto (*-set-proxy-*) (ReadThruProxy "rthru balance"))
 (cog-set-value! sto (*-proxy-open-*) (VoidValue))
 (fetch-atom (Concept "foo"))

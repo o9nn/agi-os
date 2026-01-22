@@ -36,7 +36,7 @@ static struct ipv4_devconf ipv4_devconf_dflt = { 1, 1, 1, 1, 1, };
 #ifdef CONFIG_RTNETLINK
 static void rtmsg_ifa(int event, struct in_ifaddr *);
 #else
-#define rtmsg_ifa(a,b)	do { } while(0)
+#define rtmsg_ifa(a,b) do { } while(0)
 #endif
 static struct notifier_block *inetaddr_chain;
 static void inet_del_ifa(struct in_device *in_dev, struct in_ifaddr **ifap, int destroy);
@@ -220,7 +220,7 @@ return NULL;
 int
 inet_rtm_deladdr(struct sk_buff *skb, struct nlmsghdr *nlh, void *arg)
 {
-struct rtattr  **rta = arg;
+struct rtattr **rta = arg;
 struct in_device *in_dev;
 struct ifaddrmsg *ifm = NLMSG_DATA(nlh);
 struct in_ifaddr *ifa, **ifap;
@@ -657,8 +657,8 @@ static int inet_fill_ifaddr(struct sk_buff *skb, struct in_ifaddr *ifa,
 u32 pid, u32 seq, int event)
 {
 struct ifaddrmsg *ifm;
-struct nlmsghdr  *nlh;
-unsigned char	 *b = skb->tail;
+struct nlmsghdr *nlh;
+unsigned char *b = skb->tail;
 nlh = NLMSG_PUT(skb, pid, seq, event, sizeof(*ifm));
 ifm = NLMSG_DATA(nlh);
 ifm->ifa_family = AF_INET;
@@ -732,32 +732,32 @@ netlink_broadcast(rtnl, skb, 0, RTMGRP_IPV4_IFADDR, GFP_KERNEL);
 }
 static struct rtnetlink_link inet_rtnetlink_table[RTM_MAX-RTM_BASE+1] =
 {
-{ NULL,			NULL,			},
-{ NULL,			NULL,			},
-{ NULL,			NULL,			},
-{ NULL,			NULL,			},
-{ inet_rtm_newaddr,	NULL,			},
-{ inet_rtm_deladdr,	NULL,			},
-{ NULL,			inet_dump_ifaddr,	},
-{ NULL,			NULL,			},
-{ inet_rtm_newroute,	NULL,			},
-{ inet_rtm_delroute,	NULL,			},
-{ inet_rtm_getroute,	inet_dump_fib,		},
-{ NULL,			NULL,			},
-{ NULL,			NULL,			},
-{ NULL,			NULL,			},
-{ NULL,			NULL,			},
-{ NULL,			NULL,			},
+{ NULL, NULL, },
+{ NULL, NULL, },
+{ NULL, NULL, },
+{ NULL, NULL, },
+{ inet_rtm_newaddr, NULL, },
+{ inet_rtm_deladdr, NULL, },
+{ NULL, inet_dump_ifaddr, },
+{ NULL, NULL, },
+{ inet_rtm_newroute, NULL, },
+{ inet_rtm_delroute, NULL, },
+{ inet_rtm_getroute, inet_dump_fib, },
+{ NULL, NULL, },
+{ NULL, NULL, },
+{ NULL, NULL, },
+{ NULL, NULL, },
+{ NULL, NULL, },
 #ifdef CONFIG_IP_MULTIPLE_TABLES
-{ inet_rtm_newrule,	NULL,			},
-{ inet_rtm_delrule,	NULL,			},
-{ NULL,			inet_dump_rules,	},
-{ NULL,			NULL,			},
+{ inet_rtm_newrule, NULL, },
+{ inet_rtm_delrule, NULL, },
+{ NULL, inet_dump_rules, },
+{ NULL, NULL, },
 #else
-{ NULL,			NULL,			},
-{ NULL,			NULL,			},
-{ NULL,			NULL,			},
-{ NULL,			NULL,			},
+{ NULL, NULL, },
+{ NULL, NULL, },
+{ NULL, NULL, },
+{ NULL, NULL, },
 #endif
 };
 #endif

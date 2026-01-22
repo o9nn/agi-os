@@ -1,8 +1,8 @@
 #ifndef _LINUX_SMB_FS_H
 #define _LINUX_SMB_FS_H
 #include <linux/smb.h>
-#define	SMB_IOC_GETMOUNTUID		_IOR('u', 1, __kernel_uid_t)
-#define SMB_IOC_NEWCONN                 _IOW('u', 2, struct smb_conn_opt)
+#define SMB_IOC_GETMOUNTUID _IOR('u', 1, __kernel_uid_t)
+#define SMB_IOC_NEWCONN _IOW('u', 2, struct smb_conn_opt)
 #ifdef __KERNEL__
 #include <asm/unaligned.h>
 #define WVAL(buf,pos) \
@@ -34,26 +34,26 @@ vfree(obj);
 #else
 #define smb_kmalloc(s,p) kmalloc(s,p)
 #define smb_kfree_s(o,s) kfree_s(o,s)
-#define smb_vmalloc(s)   vmalloc(s)
-#define smb_vfree(o)     vfree(o)
+#define smb_vmalloc(s) vmalloc(s)
+#define smb_vfree(o) vfree(o)
 #endif
-#define SMB_F_CACHEVALID	0x01
-#define SMB_F_LOCALWRITE	0x02
-#define SMB_FIX_WIN95	0x0001
-#define SMB_FIX_OLDATTR	0x0002
-#define SMB_FIX_DIRATTR	0x0004
-#define SMB_CAP_RAW_MODE         0x0001
-#define SMB_CAP_MPX_MODE         0x0002
-#define SMB_CAP_UNICODE          0x0004
-#define SMB_CAP_LARGE_FILES      0x0008
-#define SMB_CAP_NT_SMBS          0x0010
-#define SMB_CAP_RPC_REMOTE_APIS  0x0020
-#define SMB_CAP_STATUS32         0x0040
+#define SMB_F_CACHEVALID 0x01
+#define SMB_F_LOCALWRITE 0x02
+#define SMB_FIX_WIN95 0x0001
+#define SMB_FIX_OLDATTR 0x0002
+#define SMB_FIX_DIRATTR 0x0004
+#define SMB_CAP_RAW_MODE 0x0001
+#define SMB_CAP_MPX_MODE 0x0002
+#define SMB_CAP_UNICODE 0x0004
+#define SMB_CAP_LARGE_FILES 0x0008
+#define SMB_CAP_NT_SMBS 0x0010
+#define SMB_CAP_RPC_REMOTE_APIS 0x0020
+#define SMB_CAP_STATUS32 0x0040
 #define SMB_CAP_LEVEL_II_OPLOCKS 0x0080
-#define SMB_CAP_LOCK_AND_READ    0x0100
-#define SMB_CAP_NT_FIND          0x0200
-#define SMB_CAP_DFS              0x1000
-#define SMB_CAP_LARGE_READX      0x4000
+#define SMB_CAP_LOCK_AND_READ 0x0100
+#define SMB_CAP_NT_FIND 0x0200
+#define SMB_CAP_DFS 0x1000
+#define SMB_CAP_LARGE_READX 0x4000
 int smb_mmap(struct file *, struct vm_area_struct *);
 extern struct inode_operations smb_file_inode_operations;
 extern struct inode_operations smb_dir_inode_operations;
@@ -62,8 +62,8 @@ int smb_ioctl (struct inode *, struct file *, unsigned int, unsigned long);
 struct super_block *smb_read_super(struct super_block *, void *, int);
 void smb_get_inode_attr(struct inode *, struct smb_fattr *);
 void smb_invalidate_inodes(struct smb_sb_info *);
-int  smb_revalidate_inode(struct dentry *);
-int  smb_notify_change(struct dentry *, struct iattr *);
+int smb_revalidate_inode(struct dentry *);
+int smb_notify_change(struct dentry *, struct iattr *);
 unsigned long smb_invent_inos(unsigned long);
 struct inode *smb_iget(struct super_block *, struct smb_fattr *);
 extern int init_smb_fs(void);
@@ -122,11 +122,11 @@ struct cache_block * block;
 };
 #define NINDEX (PAGE_SIZE-64)/sizeof(struct cache_index)
 struct cache_head {
-int	valid;
-int	status;
-int	entries;
-int	pages;
-int	idx;
+int valid;
+int status;
+int entries;
+int pages;
+int idx;
 struct cache_index index[NINDEX];
 };
 struct cache_entry {
@@ -137,7 +137,7 @@ unsigned short offset;
 struct cache_block {
 union {
 struct cache_entry table[1];
-char	names[PAGE_SIZE];
+char names[PAGE_SIZE];
 } cb_data;
 };
 struct cache_dirent {
@@ -149,9 +149,9 @@ char * name;
 struct cache_head * smb_get_dircache(struct dentry *);
 void smb_init_dircache(struct cache_head *);
 void smb_free_dircache(struct cache_head *);
-int  smb_refill_dircache(struct cache_head *, struct dentry *);
+int smb_refill_dircache(struct cache_head *, struct dentry *);
 void smb_add_to_cache(struct cache_head *, struct cache_dirent *, off_t);
-int  smb_find_in_cache(struct cache_head *, off_t, struct cache_dirent *);
+int smb_find_in_cache(struct cache_head *, off_t, struct cache_dirent *);
 void smb_invalid_dir_cache(struct inode *);
 #endif
 #endif

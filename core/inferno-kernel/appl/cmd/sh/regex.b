@@ -180,7 +180,7 @@ return (matched, s + w[beg:]);
 elem(a: array of (int, int), i: int, w: string): string
 {
 if (i < 0 || i >= len a)
-return nil;		# XXX could raise failure here. (invalid backslash escape)
+return nil; # XXX could raise failure here. (invalid backslash escape)
 (s, e) := a[i];
 if (s == -1)
 return nil;

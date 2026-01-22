@@ -1,46 +1,46 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"io.h"
-typedef struct Rtc	Rtc;
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "io.h"
+typedef struct Rtc Rtc;
 struct Rtc
 {
-int	sec;
-int	min;
-int	hour;
-int	wday;
-int	mday;
-int	mon;
-int	year;
+int sec;
+int min;
+int hour;
+int wday;
+int mday;
+int mon;
+int year;
 };
-static uchar	rtcgencksum(void);
-static void	setrtc(Rtc *rtc);
-static long	rtctime(void);
-static int	*yrsize(int yr);
-static int	*yrsize(int yr);
-static ulong	rtc2sec(Rtc *rtc);
-static void	sec2rtc(ulong secs, Rtc *rtc);
+static uchar rtcgencksum(void);
+static void setrtc(Rtc *rtc);
+static long rtctime(void);
+static int *yrsize(int yr);
+static int *yrsize(int yr);
+static ulong rtc2sec(Rtc *rtc);
+static void sec2rtc(ulong secs, Rtc *rtc);
 static struct
 {
-uchar	*cksum;
-uchar	*ram;
-RTCdev	*rtc;
+uchar *cksum;
+uchar *ram;
+RTCdev *rtc;
 }nvr;
 enum{
 Qdir,
 Qrtc,
 Qnvram,
 };
-QLock	rtclock;
+QLock rtclock;
 static Dirtab rtcdir[]={
-".",		{Qdir, 0, QTDIR},	0,	0555,
-"rtc",		{Qrtc, 0},	0,		0666,
-"nvram",	{Qnvram, 0},	NVWRITE,	0666,
+".", {Qdir, 0, QTDIR}, 0, 0555,
+"rtc", {Qrtc, 0}, 0, 0666,
+"nvram", {Qnvram, 0}, NVWRITE, 0666,
 };
-#define	NRTC	(sizeof(rtcdir)/sizeof(rtcdir[0]))
+#define NRTC (sizeof(rtcdir)/sizeof(rtcdir[0]))
 static void
 rtcinit(void)
 {
@@ -179,8 +179,8 @@ return n;
 error(Egreg);
 return 0;
 }
-#define bcd2dec(bcd)	(((((bcd)>>4) & 0x0F) * 10) + ((bcd) & 0x0F))
-#define dec2bcd(dec)	((((dec)/10)<<4)|((dec)%10))
+#define bcd2dec(bcd) (((((bcd)>>4) & 0x0F) * 10) + ((bcd) & 0x0F))
+#define dec2bcd(dec) ((((dec)/10)<<4)|((dec)%10))
 static void
 setrtc(Rtc *rtc)
 {
@@ -225,11 +225,11 @@ return rtc2sec(&rtc);
 #define SEC2MIN 60L
 #define SEC2HOUR (60L*SEC2MIN)
 #define SEC2DAY (24L*SEC2HOUR)
-static	int	dmsize[] =
+static int dmsize[] =
 {
 365, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 };
-static	int	ldmsize[] =
+static int ldmsize[] =
 {
 366, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 };

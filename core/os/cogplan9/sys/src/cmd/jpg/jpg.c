@@ -4,24 +4,24 @@
 #include <draw.h>
 #include <event.h>
 #include "imagefile.h"
-int		cflag = 0;
-int		dflag = 0;
-int		eflag = 0;
-int		jflag = 0;
-int		fflag = 0;
-int		Fflag = 0;
-int		nineflag = 0;
-int		threeflag = 0;
-int		colorspace = CYCbCr;
-int		output = 0;
-ulong	outchan = CMAP8;
-Image	*image;
-int		defaultcolor = 1;
+int cflag = 0;
+int dflag = 0;
+int eflag = 0;
+int jflag = 0;
+int fflag = 0;
+int Fflag = 0;
+int nineflag = 0;
+int threeflag = 0;
+int colorspace = CYCbCr;
+int output = 0;
+ulong outchan = CMAP8;
+Image *image;
+int defaultcolor = 1;
 enum{
-Border	= 2,
-Edge		= 5
+Border = 2,
+Edge = 5
 };
-char	*show(int, char*, int);
+char *show(int, char*, int);
 void
 eresized(int new)
 {
@@ -222,7 +222,7 @@ char buf[32];
 if(Binit(&b, fd, OREAD) < 0)
 return nil;
 outchan = outc;
-rpt:	array = Breadjpg(&b, colorspace);
+rpt: array = Breadjpg(&b, colorspace);
 if(array == nil || array[0]==nil){
 fprint(2, "jpg: decode %s failed: %r\n", name);
 return "decode";

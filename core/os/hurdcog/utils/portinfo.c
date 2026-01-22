@@ -16,20 +16,20 @@
 const char *argp_program_version = STANDARD_HURD_VERSION (portinfo);
 static const struct argp_option options[] = {
 {0,0,0,0,0, 1},
-{"verbose",	'v', 0, 0, "Give more detailed information"},
-{"members",   'm', 0, 0, "Show members of port-sets"},
-{"hex-names",	'x', 0, 0, "Show port names in hexadecimal"},
+{"verbose", 'v', 0, 0, "Give more detailed information"},
+{"members", 'm', 0, 0, "Show members of port-sets"},
+{"hex-names", 'x', 0, 0, "Show port names in hexadecimal"},
 #if 0
 {"query-process", 'q', 0, 0, "Query the process itself for the identity of"
 " the ports in question -- requires the process be in a sane state"},
 #endif
 {"hold", '*', 0, OPTION_HIDDEN},
 {0,0,0,0, "Selecting which names to show:", 2},
-{"receive",	'r', 0, 0, "Show ports with receive rights"},
-{"send",	's', 0, 0, "Show ports with send rights"},
-{"send-once",	'o', 0, 0, "Show ports with send once rights"},
+{"receive", 'r', 0, 0, "Show ports with receive rights"},
+{"send", 's', 0, 0, "Show ports with send rights"},
+{"send-once", 'o', 0, 0, "Show ports with send once rights"},
 {"dead-names",'d', 0, 0, "Show dead names"},
-{"port-sets",	'p', 0, 0, "Show port sets"},
+{"port-sets", 'p', 0, 0, "Show port sets"},
 {0,0,0,0, "Translating port names between tasks:", 3},
 {"translate", 't', "PID", 0, "Translate port names to process PID"},
 #if 0
@@ -38,11 +38,11 @@ static const struct argp_option options[] = {
 #endif
 {"no-translation-errors", 'E', 0, 0,
 "Don't display an error if a specified port can't be translated" },
-{"search",    'a', 0, 0,  "Search all processes for the given ports"},
+{"search", 'a', 0, 0, "Search all processes for the given ports"},
 #if 0
-{"target-receive",  'R', 0, 0,
+{"target-receive", 'R', 0, 0,
 "Only show ports that translate into receive rights"},
-{"target-send",     'S', 0, 0,
+{"target-send", 'S', 0, 0,
 "Only show ports that translate into send rights"},
 {"target-send-once",'O', 0, 0,
 "Only show ports that translate into send-once rights"},

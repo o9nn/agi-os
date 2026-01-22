@@ -1,5 +1,5 @@
 #ifndef sdcparam_INCLUDED
-#  define sdcparam_INCLUDED
+# define sdcparam_INCLUDED
 int s_DCT_get_params(gs_param_list * plist, const stream_DCT_state * ss,
 const stream_DCT_state * defaults);
 int s_DCT_get_quantization_tables(gs_param_list * plist,

@@ -1,12 +1,12 @@
-#define DEBUGFILE	"iostats.out"
-#define DONESTR		"done"
-#define DEBUG		if(!dbg){}else fprint
-#define MAXPROC		16
-#define FHASHSIZE	64
-#define fidhash(s)	fhash[s%FHASHSIZE]
+#define DEBUGFILE "iostats.out"
+#define DONESTR "done"
+#define DEBUG if(!dbg){}else fprint
+#define MAXPROC 16
+#define FHASHSIZE 64
+#define fidhash(s) fhash[s%FHASHSIZE]
 enum{
-Maxfdata	= 8192,
-Maxrpc		= 20000,
+Maxfdata = 8192,
+Maxrpc = 20000,
 };
 typedef struct Fsrpc Fsrpc;
 typedef struct Fid Fid;
@@ -17,108 +17,108 @@ typedef struct Rpc Rpc;
 typedef struct Frec Frec;
 struct Frec
 {
-Frec	*next;
-char	*op;
-ulong	nread;
-ulong	nwrite;
-ulong	bread;
-ulong	bwrite;
-ulong	opens;
+Frec *next;
+char *op;
+ulong nread;
+ulong nwrite;
+ulong bread;
+ulong bwrite;
+ulong opens;
 };
 struct Rpc
 {
-char	*name;
-ulong	count;
-vlong	time;
-vlong	lo;
-vlong	hi;
-ulong	bin;
-ulong	bout;
+char *name;
+ulong count;
+vlong time;
+vlong lo;
+vlong hi;
+ulong bin;
+ulong bout;
 };
 struct Stats
 {
-ulong	totread;
-ulong	totwrite;
-ulong	nrpc;
-ulong	nproto;
-Rpc	rpc[Maxrpc];
+ulong totread;
+ulong totwrite;
+ulong nrpc;
+ulong nproto;
+Rpc rpc[Maxrpc];
 };
 struct Fsrpc
 {
-int	busy;
-uintptr	pid;
-int	canint;
-int	flushtag;
-Fcall	work;
-uchar	buf[IOHDRSZ+Maxfdata];
+int busy;
+uintptr pid;
+int canint;
+int flushtag;
+Fcall work;
+uchar buf[IOHDRSZ+Maxfdata];
 };
 struct Fid
 {
-int	fid;
-File	*f;
-int	mode;
-int	nr;
-Fid	*next;
-ulong	nread;
-ulong	nwrite;
-ulong	bread;
-ulong	bwrite;
-vlong	offset;
+int fid;
+File *f;
+int mode;
+int nr;
+Fid *next;
+ulong nread;
+ulong nwrite;
+ulong bread;
+ulong bwrite;
+vlong offset;
 };
 struct File
 {
-char	*name;
-Qid	qid;
-int	inval;
-File	*parent;
-File	*child;
-File	*childlist;
+char *name;
+Qid qid;
+int inval;
+File *parent;
+File *child;
+File *childlist;
 };
 struct Proc
 {
-uintptr	pid;
-int	busy;
-Proc	*next;
+uintptr pid;
+int busy;
+Proc *next;
 };
 enum
 {
-Nr_workbufs 	= 40,
-Dsegpad		= 8192,
-Fidchunk	= 1000,
+Nr_workbufs = 40,
+Dsegpad = 8192,
+Fidchunk = 1000,
 };
-Extern Fsrpc	*Workq;
-Extern int  	dbg;
-Extern File	*root;
-Extern Fid	**fhash;
-Extern Fid	*fidfree;
-Extern int	qid;
-Extern Proc	*Proclist;
-Extern int	done;
-Extern Stats	*stats;
-Extern Frec	*frhead;
-Extern Frec	*frtail;
-Extern int	myiounit;
+Extern Fsrpc *Workq;
+Extern int dbg;
+Extern File *root;
+Extern Fid **fhash;
+Extern Fid *fidfree;
+Extern int qid;
+Extern Proc *Proclist;
+Extern int done;
+Extern Stats *stats;
+Extern Frec *frhead;
+Extern Frec *frtail;
+Extern int myiounit;
 void Xcreate(Fsrpc*), Xclunk(Fsrpc*);
 void Xversion(Fsrpc*), Xauth(Fsrpc*), Xflush(Fsrpc*);
 void Xattach(Fsrpc*), Xwalk(Fsrpc*), Xauth(Fsrpc*);
 void Xremove(Fsrpc*), Xstat(Fsrpc*), Xwstat(Fsrpc*);
 void slave(Fsrpc*);
-void	reply(Fcall*, Fcall*, char*);
-Fid 	*getfid(int);
-int	freefid(int);
-Fid	*newfid(int);
-Fsrpc	*getsbuf(void);
-void	initroot(void);
-void	fatal(char*);
-void	makepath(char*, File*, char*);
-File	*file(File*, char*);
-void	slaveopen(Fsrpc*);
-void	slaveread(Fsrpc*);
-void	slavewrite(Fsrpc*);
-void	blockingslave(void);
-void	reopen(Fid *f);
-void	noteproc(int, char*);
-void	flushaction(void*, char*);
-void	catcher(void*, char*);
-ulong	msec(void);
-void	fidreport(Fid*);
+void reply(Fcall*, Fcall*, char*);
+Fid *getfid(int);
+int freefid(int);
+Fid *newfid(int);
+Fsrpc *getsbuf(void);
+void initroot(void);
+void fatal(char*);
+void makepath(char*, File*, char*);
+File *file(File*, char*);
+void slaveopen(Fsrpc*);
+void slaveread(Fsrpc*);
+void slavewrite(Fsrpc*);
+void blockingslave(void);
+void reopen(Fid *f);
+void noteproc(int, char*);
+void flushaction(void*, char*);
+void catcher(void*, char*);
+ulong msec(void);
+void fidreport(Fid*);

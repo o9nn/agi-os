@@ -7,6 +7,6 @@
 (define crisp-modus-ponens-tv (stv 0.4 0.9))
 (define crisp-deduction-tv (stv 0.6 0.9))
 (define fc-rules (list (list crisp-modus-ponens-rule-name crisp-modus-ponens-tv)
-                       (list fc-deduction-rule-name crisp-deduction-tv)))
+(list fc-deduction-rule-name crisp-deduction-tv)))
 (ure-add-rules fc-rbs fc-rules)
 (ure-set-num-parameter fc-rbs "URE:maximum-iterations" 20)

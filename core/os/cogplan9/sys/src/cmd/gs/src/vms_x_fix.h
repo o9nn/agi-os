@@ -1,5 +1,5 @@
 #ifndef vms_x_fix_INCLUDED
-#  define vms_x_fix_INCLUDED
+# define vms_x_fix_INCLUDED
 #define DtSaverGetWindows DTSAVERGETWINDOWS
 #define XAddHosts XADDHOSTS
 #define XAllocClassHint XALLOCCLASSHINT

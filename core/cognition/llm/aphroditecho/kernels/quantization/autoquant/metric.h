@@ -7,20 +7,20 @@
 namespace aphrodite {
 namespace autoquant {
 struct Metric {
-int  id;
+int id;
 bool feasible;
 bool prefer;
 std::array<int, 3> cta_shape;
 std::array<int, 3> warp_shape;
-int   warps;
-int   stages;
-int   max_active_ctas;
+int warps;
+int stages;
+int max_active_ctas;
 float smem;
 float cta_cnt_m;
 float cta_cnt_n;
 float cta_iter_k;
 float grid_size;
-int   active_ctas;
+int active_ctas;
 float waves;
 float waves1;
 float occupancy;
@@ -35,9 +35,9 @@ float grid_sum;
 float grid_norm;
 float cta_sum;
 float cta_wave;
-int   best;
+int best;
 float time;
-int   count;
+int count;
 };
 inline void DumpMetrics(std::ostream& os, const std::vector<Metric>& metrics, const std::vector<int>& indices = {})
 {
@@ -47,18 +47,18 @@ ss << std::setw(4) << shape[0] << std::setw(4) << shape[1] << std::setw(4) << sh
 return ss.str();
 };
 std::vector<std::tuple<std::string, int>> infos{
-{"id", 4},       {"valid", 6},      {"cta_mnk", 14},   {"warp_mnk", 14},   {"warps", 6},     {"stages", 8},
-{"smem", 8},     {"cta_cnt_m", 10}, {"cta_cnt_n", 10}, {"cta_iter_k", 11}, {"max_ctas", 9},  {"act_ctas", 10},
-{"waves", 12},   {"waves1", 12},    {"occupancy", 12}, {"%tile", 10},      {"%wave", 10},    {"grid_a0", 12},
-{"grid_b0", 12}, {"grid_a1", 12},   {"grid_b1", 12},   {"grid_mm", 12},    {"grid_sum", 12}, {"cta_cnt", 8},
-{"cta_sum", 8},  {"cta_wave", 9},   {"grid_norm", 12}, {"time", 12},       {"best", 7}};
+{"id", 4}, {"valid", 6}, {"cta_mnk", 14}, {"warp_mnk", 14}, {"warps", 6}, {"stages", 8},
+{"smem", 8}, {"cta_cnt_m", 10}, {"cta_cnt_n", 10}, {"cta_iter_k", 11}, {"max_ctas", 9}, {"act_ctas", 10},
+{"waves", 12}, {"waves1", 12}, {"occupancy", 12}, {"%tile", 10}, {"%wave", 10}, {"grid_a0", 12},
+{"grid_b0", 12}, {"grid_a1", 12}, {"grid_b1", 12}, {"grid_mm", 12}, {"grid_sum", 12}, {"cta_cnt", 8},
+{"cta_sum", 8}, {"cta_wave", 9}, {"grid_norm", 12}, {"time", 12}, {"best", 7}};
 for (const auto& [name, width] : infos) {
 os << std::setw(width) << name;
 }
 os << "\n";
 for (size_t i = 0; i < metrics.size(); ++i) {
 auto& metric = indices.empty() ? metrics[i] : metrics[indices[i]];
-int   c      = 0;
+int c = 0;
 os << std::setw(std::get<1>(infos[c++])) << metric.id;
 os << std::setw(std::get<1>(infos[c++])) << metric.feasible;
 os << std::setw(std::get<1>(infos[c++])) << dump_shape(metric.cta_shape);

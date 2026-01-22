@@ -199,7 +199,7 @@ static void affix_list_delete(Dictionary dict)
 {
 if (NULL == dict->afdict_class) return;
 Afdict_class * atc = dict->afdict_class;
-for (size_t i = 0;  i < AFDICT_NUM_ENTRIES; i++)
+for (size_t i = 0; i < AFDICT_NUM_ENTRIES; i++)
 {
 if (atc[i].length > 0) free(atc[i].string);
 if (atc[i].Nregexes > 0)

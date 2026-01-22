@@ -12,10 +12,10 @@
 #include "sfntenum.h"
 #define DOES_ANYONE_USE_THIS_STRUCTURE
 #include "ttpcleo.h"
-#undef  DOES_ANYONE_USE_THIS_STRUCTURE
+#undef DOES_ANYONE_USE_THIS_STRUCTURE
 #include "gxfapi.h"
 GLOBAL const SW16 trace_sw = 0;
-GLOBAL UW16  PCLswapHdr( FSP LPUB8 p, UW16 gifct );
+GLOBAL UW16 PCLswapHdr( FSP LPUB8 p, UW16 gifct );
 typedef struct pcleo_glyph_list_elem_s pcleo_glyph_list_elem;
 struct pcleo_glyph_list_elem_s {
 UW16 chId;
@@ -40,9 +40,9 @@ char decodingID[12];
 } ufst_common_font_data;
 typedef struct {
 PCLETTO_CHR_HDR h;
-UW16   add_data;
-UW16   charDataSize;
-UW16   glyphID;
+UW16 add_data;
+UW16 charDataSize;
+UW16 glyphID;
 } PCLETTO_CHDR;
 typedef struct fapi_ufst_server_s fapi_ufst_server;
 struct fapi_ufst_server_s {
@@ -61,10 +61,10 @@ FAPI_metrics_type metrics_type;
 FracInt sb_x, aw_x;
 };
 private inline fapi_ufst_server *If_to_I(FAPI_server *If)
-{   return (fapi_ufst_server *)If;
+{ return (fapi_ufst_server *)If;
 }
 private inline fapi_ufst_server *IFS_to_I(IF_STATE *pIFS)
-{   return (fapi_ufst_server *)((char *)pIFS - offset_of(fapi_ufst_server, IFS));
+{ return (fapi_ufst_server *)((char *)pIFS - offset_of(fapi_ufst_server, IFS));
 }
 private inline void release_char_data_inline(fapi_ufst_server *r)
 {
@@ -74,11 +74,11 @@ r->char_data = 0;
 }
 }
 private FAPI_retcode open_UFST(fapi_ufst_server *r)
-{   IFCONFIG   config_block;
+{ IFCONFIG config_block;
 int code;
 if ((code = CGIFinit(&r->IFS)) != 0)
 return code;
-r->IFS.mem_avail[BUFFER_POOL]  = 6000000L;
+r->IFS.mem_avail[BUFFER_POOL] = 6000000L;
 config_block.num_files = 10;
 config_block.bit_map_width = 1;
 if ((code = CGIFconfig(&r->IFS, &config_block)) != 0)
@@ -88,14 +88,14 @@ return code;
 return 0;
 }
 private FAPI_retcode ensure_open(FAPI_server *server)
-{   fapi_ufst_server *r = If_to_I(server);
+{ fapi_ufst_server *r = If_to_I(server);
 if (r->bInitialized)
 return 0;
 r->bInitialized = 1;
 return open_UFST(r);
 }
 private UW16 get_font_type(FILE *f)
-{   char buf[20], mark_PS[]="%!";
+{ char buf[20], mark_PS[]="%!";
 int i;
 if (fread(buf, 1, sizeof(buf), f) != sizeof(buf))
 return 0;
@@ -115,7 +115,7 @@ private int choose_decoding_PS(fapi_ufst_server *r, ufst_common_font_data *d, co
 return 1;
 }
 private int choose_decoding_TT(fapi_ufst_server *r, ufst_common_font_data *d, const char *cmapId)
-{   int platId, specId, i;
+{ int platId, specId, i;
 CMAP_QUERY q;
 UW16 font_access;
 bool failed;
@@ -138,7 +138,7 @@ return 0;
 }
 private void scan_xlatmap(fapi_ufst_server *r, ufst_common_font_data *d, const char *xlatmap, const char *font_kind,
 int (*choose_proc)(fapi_ufst_server *r, ufst_common_font_data *d, const char *cmapId))
-{   const char *p = xlatmap;
+{ const char *p = xlatmap;
 while(*p) {
 int good_kind =!strcmp(p, font_kind);
 p += strlen(p) + 2;
@@ -156,20 +156,20 @@ return;
 d->decodingID[0] = 0;
 }
 private void choose_decoding(fapi_ufst_server *r, ufst_common_font_data *d, const char *xlatmap)
-{   if (xlatmap != 0)
+{ if (xlatmap != 0)
 switch (d->font_type) {
-case FC_IF_TYPE:  break;
+case FC_IF_TYPE: break;
 case FC_PST1_TYPE: scan_xlatmap(r, d, xlatmap, "PostScript", choose_decoding_PS); break;
-case FC_TT_TYPE:   scan_xlatmap(r, d, xlatmap, "TrueType", choose_decoding_TT); break;
-case FC_FCO_TYPE:  scan_xlatmap(r, d, xlatmap, "PostScript", choose_decoding_PS); break;
+case FC_TT_TYPE: scan_xlatmap(r, d, xlatmap, "TrueType", choose_decoding_TT); break;
+case FC_FCO_TYPE: scan_xlatmap(r, d, xlatmap, "PostScript", choose_decoding_PS); break;
 }
 }
 private inline void store_word(byte **p, ushort w)
-{   *((*p)++) = w / 256;
+{ *((*p)++) = w / 256;
 *((*p)++) = w % 256;
 }
 private LPUB8 get_TT_glyph(fapi_ufst_server *r, FAPI_font *ff, UW16 chId)
-{   pcleo_glyph_list_elem *g;
+{ pcleo_glyph_list_elem *g;
 PCLETTO_CHDR *h;
 ufst_common_font_data *d = (ufst_common_font_data *)r->fc.font_hdr - 1;
 LPUB8 q;
@@ -218,7 +218,7 @@ store_word(&q, 0);
 return (LPUB8)h;
 }
 private LPUB8 get_T1_glyph(fapi_ufst_server *r, FAPI_font *ff, UW16 chId)
-{   ushort glyph_length = ff->get_glyph(ff, chId, 0, 0);
+{ ushort glyph_length = ff->get_glyph(ff, chId, 0, 0);
 LPUB8 q;
 pcleo_glyph_list_elem *g = (pcleo_glyph_list_elem *)r->client_mem.alloc(&r->client_mem, sizeof(pcleo_glyph_list_elem) + sizeof(PS_CHAR_HDR) + 2 + 2 + glyph_length + 1, "PSEO char");
 PS_CHAR_HDR *h;
@@ -248,18 +248,18 @@ q += glyph_length;
 return (LPUB8)h;
 }
 private pcleo_glyph_list_elem * find_glyph(ufst_common_font_data *d, UW16 chId)
-{   pcleo_glyph_list_elem *e;
+{ pcleo_glyph_list_elem *e;
 for (e = d->glyphs; e != 0; e = e->next)
 if (e->chId == chId)
 return e;
 return 0;
 }
-private LPUB8 gs_PCLEO_charptr(LPUB8 pfont_hdr, UW16  sym_code)
+private LPUB8 gs_PCLEO_charptr(LPUB8 pfont_hdr, UW16 sym_code)
 {
 return 0;
 }
 private LPUB8 gs_PCLchId2ptr(IF_STATE *pIFS, UW16 chId)
-{   fapi_ufst_server *r = IFS_to_I(pIFS);
+{ fapi_ufst_server *r = IFS_to_I(pIFS);
 FAPI_font *ff = r->ff;
 ufst_common_font_data *d = (ufst_common_font_data *)r->fc.font_hdr - 1;
 pcleo_glyph_list_elem *g = find_glyph(d, chId);
@@ -273,10 +273,10 @@ result = get_TT_glyph(r, ff, chId);
 return result;
 }
 private LPUB8 gs_PCLglyphID2Ptr(IF_STATE *pIFS, UW16 glyphID)
-{   return gs_PCLchId2ptr(pIFS, glyphID);
+{ return gs_PCLchId2ptr(pIFS, glyphID);
 }
 private inline void pack_word(LPUB8 *p, UW16 v)
-{   LPUB8 q = (LPUB8)&v;
+{ LPUB8 q = (LPUB8)&v;
 #if (BYTEORDER == LOHI)
 (*p)[1] = q[0];
 (*p)[0] = q[1];
@@ -286,7 +286,7 @@ private inline void pack_word(LPUB8 *p, UW16 v)
 *p += 2;
 }
 private inline void pack_long(LPUB8 *p, UL32 v)
-{   LPUB8 q = (LPUB8)&v;
+{ LPUB8 q = (LPUB8)&v;
 #if (BYTEORDER == LOHI)
 (*p)[3] = q[0];
 (*p)[2] = q[1];
@@ -298,7 +298,7 @@ private inline void pack_long(LPUB8 *p, UL32 v)
 *p += 4;
 }
 private inline void pack_float(LPUB8 *p, float v)
-{   sprintf((char *)(*p), "%f", v);
+{ sprintf((char *)(*p), "%f", v);
 *p += strlen((const char *)*p) + 1;
 }
 #define PACK_ZERO(p) *(p++) = 0
@@ -306,7 +306,7 @@ private inline void pack_float(LPUB8 *p, float v)
 #define PACK_WORD(p, i, var) pack_word(&p, ff->get_word(ff, var, i))
 #define PACK_LONG(p, i, var) pack_long(&p, ff->get_long(ff, var, i))
 private void pack_pseo_word_array(fapi_ufst_server *r, FAPI_font *ff, UB8 **p, UW16 max_count, fapi_font_feature count_id, fapi_font_feature array_id)
-{   UW16 k = min(ff->get_word(ff, count_id, 0), max_count), j;
+{ UW16 k = min(ff->get_word(ff, count_id, 0), max_count), j;
 pack_word(p, k);
 for (j = 0; j < k; j++)
 PACK_WORD(*p, j, array_id);
@@ -314,7 +314,7 @@ for (; j < max_count; j++)
 pack_word(p, 0);
 }
 private void pack_pseo_fhdr(fapi_ufst_server *r, FAPI_font *ff, UB8 *p)
-{   ushort j, n, skip = 0;
+{ ushort j, n, skip = 0;
 while ((UL32)p & 0x03)
 PACK_ZERO(p);
 pack_long(&p, 1);
@@ -381,11 +381,11 @@ break;
 code = CGIFfco_Access(&r->IFS, (LPUB8)font_file_path, i, TFATRIB_KEY, &size, (SB8 *)pBuffer);
 if (code)
 break;
-{   char *tfName          = (char *)pBuffer + pBuffer->tfName;
-char *pcltTypeface    = (char *)pBuffer + pBuffer->pcltTypeface;
-char *pcltFileName    = (char *)pBuffer + pBuffer->pcltFileName;
-char *familyName      = (char *)pBuffer + pBuffer->familyName;
-char *weightName      = (char *)pBuffer + pBuffer->weightName;
+{ char *tfName = (char *)pBuffer + pBuffer->tfName;
+char *pcltTypeface = (char *)pBuffer + pBuffer->pcltTypeface;
+char *pcltFileName = (char *)pBuffer + pBuffer->pcltFileName;
+char *familyName = (char *)pBuffer + pBuffer->familyName;
+char *weightName = (char *)pBuffer + pBuffer->weightName;
 char *copyrightNotice = (char *)pBuffer + pBuffer->copyrightNotice;
 pBuffer += 0;
 }
@@ -395,14 +395,14 @@ free(pBuffer);
 #endif
 }
 private char *my_strdup(fapi_ufst_server *r, const char *s, const char *cname)
-{   int l = strlen(s) + 1;
+{ int l = strlen(s) + 1;
 char *p = (char *)r->client_mem.alloc(&r->client_mem, l, cname);
 if (p != 0)
 memcpy(p, s, l);
 return p;
 }
 private FAPI_retcode fco_open(fapi_ufst_server *r, const char *font_file_path, fco_list_elem **result)
-{   fco_list_elem *e = r->fco_list;
+{ fco_list_elem *e = r->fco_list;
 int code;
 for (; e != 0; e = e->next) {
 if (!strcmp(e->file_path, font_file_path))
@@ -433,7 +433,7 @@ e->open_count++;
 return 0;
 }
 private FAPI_retcode make_font_data(fapi_ufst_server *r, const char *font_file_path, int subfont, FAPI_font *ff, ufst_common_font_data **return_data)
-{   ulong area_length = sizeof(ufst_common_font_data), tt_size = 0;
+{ ulong area_length = sizeof(ufst_common_font_data), tt_size = 0;
 LPUB8 buf;
 PCLETTO_FHDR *h;
 ufst_common_font_data *d;
@@ -444,12 +444,12 @@ r->fc.ttc_index = subfont;
 if (ff->font_file_path == NULL) {
 area_length += PCLETTOFONTHDRSIZE;
 if (ff->is_type1) {
-int subrs_count  = ff->get_word(ff, FAPI_FONT_FEATURE_Subrs_count, 0);
+int subrs_count = ff->get_word(ff, FAPI_FONT_FEATURE_Subrs_count, 0);
 int subrs_length = ff->get_long(ff, FAPI_FONT_FEATURE_Subrs_total_size, 0);
 int subrs_area_size = subrs_count * 5 + subrs_length + 2;
 area_length += 360 + subrs_area_size;
 } else {
-tt_size  = ff->get_long(ff, FAPI_FONT_FEATURE_TT_size, 0);
+tt_size = ff->get_long(ff, FAPI_FONT_FEATURE_TT_size, 0);
 if (tt_size == 0)
 return e_invalidfont;
 area_length += tt_size + (use_XL_format ? 6 : 4) + 4 + 2;
@@ -546,7 +546,7 @@ pseg[3] = tt_size % 256;
 d->tt_font_body_offset = (LPUB8)fontdata - (LPUB8)d;
 if (ff->serialize_tt_font(ff, fontdata, tt_size))
 return e_invalidfont;
-*(fontdata + tt_size    ) = 255;
+*(fontdata + tt_size ) = 255;
 *(fontdata + tt_size + 1) = 255;
 *(fontdata + tt_size + 2) = 0;
 *(fontdata + tt_size + 3) = 0;
@@ -558,7 +558,7 @@ return e_invalidfont;
 return 0;
 }
 private void prepare_typeface(fapi_ufst_server *r, ufst_common_font_data *d)
-{   r->fc.format = d->font_type;
+{ r->fc.format = d->font_type;
 r->fc.font_id = d->font_id;
 r->fc.font_hdr = (UB8 *)(d + 1);
 if (!d->is_disk_font)
@@ -566,7 +566,7 @@ r->fc.format |= FC_EXTERN_TYPE;
 }
 private FAPI_retcode get_scaled_font(FAPI_server *server, FAPI_font *ff, int subfont,
 const FAPI_font_scale *font_scale, const char *xlatmap, bool bVertical, FAPI_descendant_code dc)
-{   fapi_ufst_server *r = If_to_I(server);
+{ fapi_ufst_server *r = If_to_I(server);
 FONTCONTEXT *fc = &r->fc;
 ufst_common_font_data *d = (ufst_common_font_data *)ff->server_font_data;
 const double scale = F_ONE;
@@ -592,9 +592,9 @@ r->tran_yx = font_scale->matrix[2] / scale, r->tran_yy = font_scale->matrix[3] /
 hx = hypot(r->tran_xx, r->tran_xy), hy = hypot(r->tran_yx, r->tran_yy);
 sx = r->tran_xx * r->tran_yx + r->tran_xy * r->tran_yy;
 sy = r->tran_xx * r->tran_yy - r->tran_xy * r->tran_yx;
-fc->xspot     = F_ONE;
-fc->yspot     = F_ONE;
-fc->fc_type   = FC_MAT2_TYPE;
+fc->xspot = F_ONE;
+fc->yspot = F_ONE;
+fc->fc_type = FC_MAT2_TYPE;
 fc->s.m2.m[0] = (int)((double)font_scale->matrix[0] / hx + 0.5);
 fc->s.m2.m[1] = (int)((double)font_scale->matrix[1] / hx + 0.5);
 fc->s.m2.m[2] = (int)((double)font_scale->matrix[2] / hy + 0.5);
@@ -603,8 +603,8 @@ fc->s.m2.matrix_scale = 16;
 fc->s.m2.xworld_res = font_scale->HWResolution[0] >> 16;
 fc->s.m2.yworld_res = font_scale->HWResolution[1] >> 16;
 fc->s.m2.world_scale = 0;
-fc->s.m2.point_size   = (int)(hy * 8 + 0.5);
-fc->s.m2.set_size     = (int)(hx * 8 + 0.5);
+fc->s.m2.point_size = (int)(hy * 8 + 0.5);
+fc->s.m2.set_size = (int)(hx * 8 + 0.5);
 fc->numXsubpixels = font_scale->subpixels[0];
 fc->numYsubpixels = font_scale->subpixels[1];
 fc->alignment = (font_scale->align_to_pixels ? GAGG : GAPP);
@@ -614,18 +614,18 @@ fc->ssnum = RAW_GLYPH;
 else if (ff->font_file_path != NULL && ff->is_cid) {
 if (d->platformId == 3) {
 switch (d->specificId) {
-case 1 : fc->ssnum = UNICODE;   break;
+case 1 : fc->ssnum = UNICODE; break;
 case 2 : fc->ssnum = SHIFT_JIS; break;
-case 3 : fc->ssnum = GB;        break;
-case 4 : fc->ssnum = BIG5;      break;
-case 5 : fc->ssnum = WANSUNG;   break;
-case 6 : fc->ssnum = JOHAB;     break;
+case 3 : fc->ssnum = GB; break;
+case 4 : fc->ssnum = BIG5; break;
+case 5 : fc->ssnum = WANSUNG; break;
+case 6 : fc->ssnum = JOHAB; break;
 }
 } else {
 }
 }
-fc->format      |= FC_NON_Z_WIND;
-fc->format      |= FC_INCHES_TYPE;
+fc->format |= FC_NON_Z_WIND;
+fc->format |= FC_INCHES_TYPE;
 fc->user_platID = d->platformId;
 fc->user_specID = d->specificId;
 fc->ExtndFlags = EF_TT_CMAPTABL;
@@ -634,7 +634,7 @@ fc->ExtndFlags |= EF_XLFONT_TYPE;
 if (bVertical)
 fc->ExtndFlags |= EF_UFSTVERT_TYPE;
 fc->dl_ssnum = (d->specificId << 4) | d->platformId;
-fc->ttc_index   = subfont;
+fc->ttc_index = subfont;
 r->callback_error = 0;
 gx_set_UFST_Callbacks(gs_PCLEO_charptr, gs_PCLchId2ptr, gs_PCLglyphID2Ptr);
 code = CGIFfont(&r->IFS, fc);
@@ -643,13 +643,13 @@ return r->callback_error;
 return code;
 }
 private FAPI_retcode get_decodingID(FAPI_server *server, FAPI_font *ff, const char **decodingID_result)
-{   fapi_ufst_server *r = If_to_I(server);
+{ fapi_ufst_server *r = If_to_I(server);
 ufst_common_font_data *d = (ufst_common_font_data *)r->fc.font_hdr - 1;
 *decodingID_result = d->decodingID;
 return 0;
 }
 private FAPI_retcode get_font_bbox(FAPI_server *server, FAPI_font *ff, int BBox[4])
-{   fapi_ufst_server *r = If_to_I(server);
+{ fapi_ufst_server *r = If_to_I(server);
 SW16 VLCPower = 0;
 int code;
 if ((code = CGIFbound_box(&r->IFS, BBox, &VLCPower)) < 0)
@@ -665,7 +665,7 @@ BBox[3] >>= VLCPower;
 return 0;
 }
 private FAPI_retcode get_font_proportional_feature(FAPI_server *server, FAPI_font *ff, int subfont, bool *bProportional)
-{   fapi_ufst_server *r = If_to_I(server);
+{ fapi_ufst_server *r = If_to_I(server);
 UB8 buf[74];
 UL32 length = sizeof(buf);
 *bProportional = false;
@@ -677,13 +677,13 @@ return 0;
 return 0;
 }
 private inline void make_asciiz_char_name(char *buf, int buf_length, FAPI_char_ref *c)
-{   int len = min(buf_length - 1, c->char_name_length);
+{ int len = min(buf_length - 1, c->char_name_length);
 memcpy(buf, c->char_name, len);
 buf[len] = 0;
 }
 #define MAX_CHAR_NAME_LENGTH 30
 private FAPI_retcode can_retrieve_char_by_name(FAPI_server *server, FAPI_font *ff, FAPI_char_ref *c, int *result)
-{   fapi_ufst_server *r = If_to_I(server);
+{ fapi_ufst_server *r = If_to_I(server);
 *result = 0;
 switch (r->fc.format & FC_FONTTYPE_MASK) {
 case FC_PST1_TYPE :
@@ -703,19 +703,19 @@ break;
 return 0;
 }
 private FAPI_retcode can_replace_metrics(FAPI_server *server, FAPI_font *ff, FAPI_char_ref *c, int *result)
-{   *result = (!ff->is_type1 && ff->font_file_path == NULL &&
+{ *result = (!ff->is_type1 && ff->font_file_path == NULL &&
 c->metrics_scale == 0 && c->metrics_type == FAPI_METRICS_REPLACE);
 return 0;
 }
 private void release_glyphs(fapi_ufst_server *r, ufst_common_font_data *d)
-{   while (d->glyphs != 0) {
+{ while (d->glyphs != 0) {
 pcleo_glyph_list_elem *e = d->glyphs;
 d->glyphs = e->next;
 r->client_mem.free(&r->client_mem, e, "PCLEO char");
 }
 }
 private FAPI_retcode get_char_width(FAPI_server *server, FAPI_font *ff, FAPI_char_ref *c, FAPI_metrics *metrics)
-{   fapi_ufst_server *r = If_to_I(server);
+{ fapi_ufst_server *r = If_to_I(server);
 UW16 buffer[2];
 UW16 cc = (UW16)c->char_code;
 char PSchar_name[MAX_CHAR_NAME_LENGTH];
@@ -732,11 +732,11 @@ metrics->em_x = metrics->em_y = buffer[1];
 return 0;
 }
 private int export_outline(fapi_ufst_server *r, PIFOUTLINE pol, FAPI_path *p)
-{   POUTLINE_CHAR outchar;
+{ POUTLINE_CHAR outchar;
 SW16 num_contrs,num_segmts;
 LPSB8 segment;
 PINTRVECTOR points;
-SW16  i,j;
+SW16 i,j;
 if (pol == NULL)
 return 0;
 p->shift += r->If.frac_shift + pol->VLCpower;
@@ -773,7 +773,7 @@ segment++;
 return 0;
 }
 private inline void set_metrics(fapi_ufst_server *r, FAPI_metrics *metrics, SL32 design_bbox[4], SW16 design_escapement, int escapement, SW16 du_emx, SW16 du_emy)
-{   metrics->escapement = design_escapement;
+{ metrics->escapement = design_escapement;
 metrics->em_x = du_emx;
 metrics->em_y = du_emy;
 metrics->bbox_x0 = design_bbox[0];
@@ -782,7 +782,7 @@ metrics->bbox_x1 = design_bbox[2];
 metrics->bbox_y1 = design_bbox[3];
 }
 private FAPI_retcode get_char(fapi_ufst_server *r, FAPI_font *ff, FAPI_char_ref *c, FAPI_path *p, FAPI_metrics *metrics, UW16 format)
-{   UW16 code;
+{ UW16 code;
 UW16 cc = (UW16)c->char_code;
 SL32 design_bbox[4];
 SW16 design_escapement;
@@ -835,16 +835,16 @@ release_char_data_inline(r);
 return 0;
 }
 private FAPI_retcode get_char_outline_metrics(FAPI_server *server, FAPI_font *ff, FAPI_char_ref *c, FAPI_metrics *metrics)
-{   fapi_ufst_server *r = If_to_I(server);
+{ fapi_ufst_server *r = If_to_I(server);
 release_char_data_inline(r);
 return get_char(r, ff, c, NULL, metrics, FC_CUBIC_TYPE);
 }
 private FAPI_retcode get_char_outline(FAPI_server *server, FAPI_path *p)
-{   fapi_ufst_server *r = If_to_I(server);
+{ fapi_ufst_server *r = If_to_I(server);
 return export_outline(r, (IFOUTLINE *)r->char_data, p);
 }
 private FAPI_retcode get_char_raster_metrics(FAPI_server *server, FAPI_font *ff, FAPI_char_ref *c, FAPI_metrics *metrics)
-{   fapi_ufst_server *r = If_to_I(server);
+{ fapi_ufst_server *r = If_to_I(server);
 int code;
 release_char_data_inline(r);
 code = get_char(r, ff, c, NULL, metrics, FC_BITMAP_TYPE);
@@ -853,7 +853,7 @@ return e_limitcheck;
 return code;
 }
 private FAPI_retcode get_char_raster(FAPI_server *server, FAPI_raster *rast)
-{   fapi_ufst_server *r = If_to_I(server);
+{ fapi_ufst_server *r = If_to_I(server);
 if (!r->bRaster)
 return e_limitcheck;
 else if (r->char_data == NULL) {
@@ -867,19 +867,19 @@ rast->width = pbm->width << CHUNK_SHIFT;
 rast->line_step = (pbm->width + (1 << (CHUNK_SHIFT - 3)) - 1) >> (CHUNK_SHIFT - 3);
 if (rast->width != 0) {
 rast->orig_x = pbm->left_indent * 16 + pbm->xorigin;
-rast->orig_y = pbm->top_indent  * 16 + pbm->yorigin;
+rast->orig_y = pbm->top_indent * 16 + pbm->yorigin;
 } else
 rast->orig_x = rast->orig_y = 0;
 }
 return 0;
 }
 private FAPI_retcode release_char_data(FAPI_server *server)
-{   fapi_ufst_server *r = If_to_I(server);
+{ fapi_ufst_server *r = If_to_I(server);
 release_char_data_inline(r);
 return 0;
 }
 private void release_fco(fapi_ufst_server *r, SW16 fcHandle)
-{   fco_list_elem **e = &r->fco_list;
+{ fco_list_elem **e = &r->fco_list;
 for (; *e != 0; )
 if ((*e)->fcHandle == fcHandle && (--(*e)->open_count) == 0) {
 fco_list_elem *ee = *e;
@@ -891,7 +891,7 @@ r->client_mem.free(&r->client_mem, ee, "fco_list_elem");
 e = &(*e)->next;
 }
 private FAPI_retcode release_typeface(FAPI_server *server, void *font_data)
-{   fapi_ufst_server *r = If_to_I(server);
+{ fapi_ufst_server *r = If_to_I(server);
 ufst_common_font_data *d;
 FAPI_retcode code = 0;
 release_char_data_inline(r);
@@ -915,7 +915,7 @@ private const i_plugin_descriptor ufst_descriptor = {
 gs_fapiufst_finit
 };
 private const FAPI_server If0 = {
-{   &ufst_descriptor
+{ &ufst_descriptor
 },
 16,
 ensure_open,
@@ -935,7 +935,7 @@ release_typeface
 };
 plugin_instantiation_proc(gs_fapiufst_instantiate);
 int gs_fapiufst_instantiate(i_ctx_t *i_ctx_p, i_plugin_client_memory *client_mem, i_plugin_instance **p_instance)
-{   fapi_ufst_server *r = (fapi_ufst_server *)client_mem->alloc(client_mem, sizeof(fapi_ufst_server), "fapi_ufst_server");
+{ fapi_ufst_server *r = (fapi_ufst_server *)client_mem->alloc(client_mem, sizeof(fapi_ufst_server), "fapi_ufst_server");
 if (r == 0)
 return e_Fatal;
 memset(r, 0, sizeof(*r));
@@ -945,7 +945,7 @@ r->client_mem = *client_mem;
 return 0;
 }
 private void gs_fapiufst_finit(i_plugin_instance *this, i_plugin_client_memory *mem)
-{   fapi_ufst_server *r = (fapi_ufst_server *)this;
+{ fapi_ufst_server *r = (fapi_ufst_server *)this;
 if (r->If.ig.d != &ufst_descriptor)
 return;
 release_char_data_inline(r);

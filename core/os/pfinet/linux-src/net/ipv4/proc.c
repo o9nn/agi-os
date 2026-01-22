@@ -38,46 +38,46 @@ sk->socket ? sk->socket->inode->i_uid : 0,
 }
 static inline void get__sock(struct sock *sp, char *tmpbuf, int i, int format)
 {
-unsigned long  dest, src;
+unsigned long dest, src;
 unsigned short destp, srcp;
 int timer_active, timer_active1, timer_active2;
 int tw_bucket = 0;
 unsigned long timer_expires;
 struct tcp_opt *tp = &sp->tp_pinfo.af_tcp;
-dest  = sp->daddr;
-src   = sp->rcv_saddr;
+dest = sp->daddr;
+src = sp->rcv_saddr;
 destp = sp->dport;
-srcp  = sp->sport;
+srcp = sp->sport;
 destp = ntohs(destp);
-srcp  = ntohs(srcp);
+srcp = ntohs(srcp);
 if((format == 0) && (sp->state == TCP_TIME_WAIT)) {
 extern int tcp_tw_death_row_slot;
 struct tcp_tw_bucket *tw = (struct tcp_tw_bucket *)sp;
 int slot_dist;
-tw_bucket	= 1;
-timer_active1	= timer_active2 = 0;
-timer_active	= 3;
-slot_dist	= tw->death_slot;
+tw_bucket = 1;
+timer_active1 = timer_active2 = 0;
+timer_active = 3;
+slot_dist = tw->death_slot;
 if(slot_dist > tcp_tw_death_row_slot)
 slot_dist = (TCP_TWKILL_SLOTS - slot_dist) + tcp_tw_death_row_slot;
 else
 slot_dist = tcp_tw_death_row_slot - slot_dist;
-timer_expires	= jiffies + (slot_dist * TCP_TWKILL_PERIOD);
+timer_expires = jiffies + (slot_dist * TCP_TWKILL_PERIOD);
 } else {
 timer_active1 = del_timer(&tp->retransmit_timer);
 timer_active2 = del_timer(&sp->timer);
 if (!timer_active1) tp->retransmit_timer.expires=0;
 if (!timer_active2) sp->timer.expires=0;
-timer_active	= 0;
-timer_expires	= (unsigned) -1;
+timer_active = 0;
+timer_expires = (unsigned) -1;
 }
 if (timer_active1 && tp->retransmit_timer.expires < timer_expires) {
-timer_active	= 1;
-timer_expires	= tp->retransmit_timer.expires;
+timer_active = 1;
+timer_expires = tp->retransmit_timer.expires;
 }
 if (timer_active2 && sp->timer.expires < timer_expires) {
-timer_active	= 2;
-timer_expires	= sp->timer.expires;
+timer_active = 2;
+timer_expires = sp->timer.expires;
 }
 if(timer_active == 0)
 timer_expires = jiffies;
@@ -169,7 +169,7 @@ return get__netinfo(&raw_prot, buffer,1, start, offset, length);
 int afinet_get_info(char *buffer, char **start, off_t offset, int length, int dummy)
 {
 extern int socket_get_info(char *, char **, off_t, int);
-int len  = socket_get_info(buffer,start,offset,length);
+int len = socket_get_info(buffer,start,offset,length);
 len += sprintf(buffer+len,"TCP: inuse %d highest %d\n",
 tcp_prot.inuse, tcp_prot.highestinuse);
 len += sprintf(buffer+len,"UDP: inuse %d highest %d\n",

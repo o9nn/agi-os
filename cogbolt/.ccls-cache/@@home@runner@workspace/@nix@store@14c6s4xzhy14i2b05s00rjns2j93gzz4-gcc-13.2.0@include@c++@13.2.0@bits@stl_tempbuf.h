@@ -50,14 +50,14 @@ class _Temporary_buffer
 {
 __glibcxx_class_requires(_ForwardIterator, _ForwardIteratorConcept)
 public:
-typedef _Tp         value_type;
+typedef _Tp value_type;
 typedef value_type* pointer;
-typedef pointer     iterator;
-typedef ptrdiff_t   size_type;
+typedef pointer iterator;
+typedef ptrdiff_t size_type;
 protected:
-size_type  _M_original_len;
-size_type  _M_len;
-pointer    _M_buffer;
+size_type _M_original_len;
+size_type _M_len;
+pointer _M_buffer;
 public:
 size_type
 size() const

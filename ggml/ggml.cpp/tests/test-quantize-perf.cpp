@@ -17,9 +17,9 @@
 #define WARMUP 5
 #define ITERATIONS 10
 #define MAX_ITERATIONS 100000000
-#define L1_SIZE      32*128
-#define L2_SIZE     32*2048
-#define L3_SIZE    32*20480
+#define L1_SIZE 32*128
+#define L2_SIZE 32*2048
+#define L3_SIZE 32*20480
 #define MEM_SIZE 32*2048000
 struct quantize_perf_params {
 std::vector<std::string> include_types;
@@ -76,10 +76,10 @@ min_time_cycles = std::min(min_time_cycles, end_cycles - start_cycles);
 total_time_us += end_time - start_time;
 min_time_us = std::min(min_time_us, end_time - start_time);
 }
-printf("      min cycles/%d vals   : %9.2f\n",  QK, QK * min_time_cycles / (float) size);
-printf("      avg cycles/%d vals   : %9.2f\n",  QK, QK * total_time_cycles / (float) (size * iterations));
-printf("      float32 throughput   : %9.2f GB/s\n",  gigabytes_per_second(4 * size * iterations, total_time_us));
-printf("      quantized throughput : %9.2f GB/s\n",  gigabytes_per_second(q_size * iterations, total_time_us));
+printf("      min cycles/%d vals   : %9.2f\n", QK, QK * min_time_cycles / (float) size);
+printf("      avg cycles/%d vals   : %9.2f\n", QK, QK * total_time_cycles / (float) (size * iterations));
+printf("      float32 throughput   : %9.2f GB/s\n", gigabytes_per_second(4 * size * iterations, total_time_us));
+printf("      quantized throughput : %9.2f GB/s\n", gigabytes_per_second(q_size * iterations, total_time_us));
 }
 static void usage(char * argv[]) {
 printf("Benchmark quantization specific functions on synthetic data\n");
@@ -96,7 +96,7 @@ printf("                        quantize_row_q_dot, vec_dot_q (all)\n");
 printf("  --type TYPE           set test type as");
 for (int i = 0; i < GGML_TYPE_COUNT; i++) {
 ggml_type type = (ggml_type) i;
-const auto * qfns     = ggml_get_type_traits(type);
+const auto * qfns = ggml_get_type_traits(type);
 const auto * qfns_cpu = ggml_get_type_traits_cpu(type);
 if (ggml_type_name(type) != NULL) {
 if (qfns_cpu->from_float && qfns->to_float) {
@@ -209,14 +209,14 @@ std::sort(params.test_sizes.begin(), params.test_sizes.end());
 size_t largest = params.test_sizes.back();
 std::vector<uint8_t> test_data1_v(largest*4 + MAX_ALIGNMENT*2);
 std::vector<uint8_t> test_data2_v(largest*4 + MAX_ALIGNMENT*2);
-std::vector<uint8_t> test_q1_v   (largest*4 + MAX_ALIGNMENT*2);
-std::vector<uint8_t> test_q2_v   (largest*4 + MAX_ALIGNMENT*2);
-std::vector<uint8_t> test_out_v  (largest*4 + MAX_ALIGNMENT*2);
+std::vector<uint8_t> test_q1_v (largest*4 + MAX_ALIGNMENT*2);
+std::vector<uint8_t> test_q2_v (largest*4 + MAX_ALIGNMENT*2);
+std::vector<uint8_t> test_out_v (largest*4 + MAX_ALIGNMENT*2);
 float * test_data1 = (float *) align_with_offset(test_data1_v.data(), params.alignment_offset);
 float * test_data2 = (float *) align_with_offset(test_data2_v.data(), params.alignment_offset);
-float * test_q1    = (float *) align_with_offset(test_q1_v.data(),    params.alignment_offset);
-float * test_q2    = (float *) align_with_offset(test_q2_v.data(),    params.alignment_offset);
-float * test_out   = (float *) align_with_offset(test_out_v.data(),   params.alignment_offset);
+float * test_q1 = (float *) align_with_offset(test_q1_v.data(), params.alignment_offset);
+float * test_q2 = (float *) align_with_offset(test_q2_v.data(), params.alignment_offset);
+float * test_out = (float *) align_with_offset(test_out_v.data(), params.alignment_offset);
 generate_data(0, largest, test_data1);
 generate_data(1, largest, test_data2);
 int64_t iterations = params.iterations;

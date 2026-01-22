@@ -141,7 +141,7 @@ graph_oprob = ODEProblem(graph_lrs, u0_graph_grid, (0.0, 100.0), [pV_graph_grid;
 masked_sol = solve(masked_oprob, QNDF(); saveat=0.1, abstol=1e-9, reltol=1e-9)
 graph_sol = solve(graph_oprob, QNDF(); saveat=0.1, abstol=1e-9, reltol=1e-9)
 @test base_osol ≈ masked_sol atol = 1e-6 rtol = 1e-6
-@test base_osol ≈  graph_sol atol = 1e-6 rtol = 1e-6
+@test base_osol ≈ graph_sol atol = 1e-6 rtol = 1e-6
 @test masked_sol ≈ graph_sol atol = 1e-6 rtol = 1e-6
 end
 end

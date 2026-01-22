@@ -8,17 +8,17 @@
 #include "print.h"
 #include "catset.h"
 #include "../debug.h"
-char		*user, *mapname, *svrname;
-int		p[2];
-int		mfd[2];
-int		debug = 0;
-Biobuf		*f;
-char		*file;
+char *user, *mapname, *svrname;
+int p[2];
+int mfd[2];
+int debug = 0;
+Biobuf *f;
+char *file;
 Object *root;
-Object **	otab;
-int		notab;
-int		sotab;
-int		hotab;
+Object ** otab;
+int notab;
+int sotab;
+int hotab;
 char usage[] = "Usage: %s [-f] [-l] [mapfile]\n";
 char *startdir;
 Object **catobjects;

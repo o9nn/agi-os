@@ -15,25 +15,25 @@ TIMESTAMP_FORMAT_UPTIME,
 TIMESTAMP_FORMAT_SIMPLE,
 TIMESTAMP_FORMAT_PRECISE
 } console_timestamp_format_t;
-#define ASSERT(cond, msg) do {                                          \
-if (!(cond))                                                        \
-{                                                                 \
-printf("%s: " #cond " failed: %s\n",                            \
-TEST_FAILURE_MARKER, (msg));                             \
-halt();                                                         \
-}                                                                 \
+#define ASSERT(cond, msg) do { \
+if (!(cond)) \
+{ \
+printf("%s: " #cond " failed: %s\n", \
+TEST_FAILURE_MARKER, (msg)); \
+halt(); \
+} \
 } while (0)
-#define ASSERT_RET(ret, msg) do {                                       \
-if ((ret) != KERN_SUCCESS)                                          \
-{                                                                 \
-printf("%s %s (0x%x): %s\n",                                    \
-TEST_FAILURE_MARKER, e2s((ret)), (ret), (msg));          \
-halt();                                                         \
-}                                                                 \
+#define ASSERT_RET(ret, msg) do { \
+if ((ret) != KERN_SUCCESS) \
+{ \
+printf("%s %s (0x%x): %s\n", \
+TEST_FAILURE_MARKER, e2s((ret)), (ret), (msg)); \
+halt(); \
+} \
 } while (0)
-#define FAILURE(msg) do {                                \
-printf("%s: %s\n", TEST_FAILURE_MARKER, (msg));      \
-halt();                                              \
+#define FAILURE(msg) do { \
+printf("%s: %s\n", TEST_FAILURE_MARKER, (msg)); \
+halt(); \
 } while (0)
 extern const char* TEST_SUCCESS_MARKER;
 extern const char* TEST_FAILURE_MARKER;
@@ -61,16 +61,16 @@ void benchmark_iterations(benchmark_t *bench, uint64_t iterations,
 void (*test_func)(void*), void *arg);
 extern void mach_msg_destroy(mach_msg_header_t *msg);
 extern mach_msg_return_t mach_msg_server(
-boolean_t		(*demux) (mach_msg_header_t *request,
+boolean_t (*demux) (mach_msg_header_t *request,
 mach_msg_header_t *reply),
-mach_msg_size_t		max_size,
-mach_port_t		rcv_name,
-mach_msg_option_t	options);
+mach_msg_size_t max_size,
+mach_port_t rcv_name,
+mach_msg_option_t options);
 extern mach_msg_return_t mach_msg_server_once(
-boolean_t		(*demux) (mach_msg_header_t *request,
+boolean_t (*demux) (mach_msg_header_t *request,
 mach_msg_header_t *reply),
-mach_msg_size_t		max_size,
-mach_port_t		rcv_name,
-mach_msg_option_t	options);
+mach_msg_size_t max_size,
+mach_port_t rcv_name,
+mach_msg_option_t options);
 int main(int argc, char *argv[], int envc, char *envp[]);
 #endif

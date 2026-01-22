@@ -20,14 +20,14 @@
 #include <pcmcia/ciscode.h>
 #include <pcmcia/ds.h>
 #include <pcmcia/cisreg.h>
-#define PCNET_CMD	0x00
-#define PCNET_DATAPORT	0x10
-#define PCNET_RESET	0x1f
-#define PCNET_MISC	0x18
-#define PCNET_START_PG	0x40
-#define PCNET_STOP_PG	0x80
-#define SOCKET_START_PG	0x01
-#define SOCKET_STOP_PG	0xff
+#define PCNET_CMD 0x00
+#define PCNET_DATAPORT 0x10
+#define PCNET_RESET 0x1f
+#define PCNET_MISC 0x18
+#define PCNET_START_PG 0x40
+#define PCNET_STOP_PG 0x80
+#define SOCKET_START_PG 0x01
+#define SOCKET_STOP_PG 0xff
 #define PCNET_RDC_TIMEOUT (2*HZ/100)
 static char *if_names[] = { "auto", "10baseT", "10base2"};
 #ifdef PCMCIA_DEBUG
@@ -43,17 +43,17 @@ MODULE_AUTHOR("David Hinds <dahinds@users.sourceforge.net>");
 MODULE_DESCRIPTION("NE2000 compatible PCMCIA ethernet driver");
 MODULE_LICENSE("GPL");
 #define INT_MODULE_PARM(n, v) static int n = v; MODULE_PARM(n, "i")
-INT_MODULE_PARM(irq_mask,	0xdeb8);
+INT_MODULE_PARM(irq_mask, 0xdeb8);
 static int irq_list[4] = { -1 };
 MODULE_PARM(irq_list, "1-4i");
-INT_MODULE_PARM(if_port,	1);
-INT_MODULE_PARM(use_big_buf,	1);
-INT_MODULE_PARM(mem_speed,	0);
-INT_MODULE_PARM(delay_output,	0);
-INT_MODULE_PARM(delay_time,	4);
-INT_MODULE_PARM(use_shmem,	-1);
-INT_MODULE_PARM(full_duplex,	0);
-static int hw_addr[6] = { 0,  };
+INT_MODULE_PARM(if_port, 1);
+INT_MODULE_PARM(use_big_buf, 1);
+INT_MODULE_PARM(mem_speed, 0);
+INT_MODULE_PARM(delay_output, 0);
+INT_MODULE_PARM(delay_time, 4);
+INT_MODULE_PARM(use_shmem, -1);
+INT_MODULE_PARM(full_duplex, 0);
+static int hw_addr[6] = { 0, };
 MODULE_PARM(hw_addr, "6i");
 static void mii_phy_probe(struct net_device *dev);
 static void pcnet_config(dev_link_t *link);
@@ -76,100 +76,100 @@ static void pcnet_detach(dev_link_t *);
 static dev_info_t dev_info = "pcnet_cs";
 static dev_link_t *dev_list;
 typedef struct hw_info_t {
-u_int	offset;
-u_char	a0, a1, a2;
-u_int	flags;
+u_int offset;
+u_char a0, a1, a2;
+u_int flags;
 } hw_info_t;
-#define DELAY_OUTPUT	0x01
-#define HAS_MISC_REG	0x02
-#define USE_BIG_BUF	0x04
-#define HAS_IBM_MISC	0x08
-#define IS_DL10019	0x10
-#define IS_DL10022	0x20
-#define HAS_MII		0x40
-#define USE_SHMEM	0x80
-#define AM79C9XX_HOME_PHY	0x00006B90
-#define AM79C9XX_ETH_PHY	0x00006B70
-#define MII_PHYID_REV_MASK	0xfffffff0
-#define MII_PHYID_REG1		0x02
-#define MII_PHYID_REG2		0x03
+#define DELAY_OUTPUT 0x01
+#define HAS_MISC_REG 0x02
+#define USE_BIG_BUF 0x04
+#define HAS_IBM_MISC 0x08
+#define IS_DL10019 0x10
+#define IS_DL10022 0x20
+#define HAS_MII 0x40
+#define USE_SHMEM 0x80
+#define AM79C9XX_HOME_PHY 0x00006B90
+#define AM79C9XX_ETH_PHY 0x00006B70
+#define MII_PHYID_REV_MASK 0xfffffff0
+#define MII_PHYID_REG1 0x02
+#define MII_PHYID_REG2 0x03
 static hw_info_t hw_info[] = {
-{  0x0ff0, 0x00, 0x00, 0xe8, DELAY_OUTPUT },
-{  0x0ff0, 0x00, 0x00, 0xf4, 0 },
-{  0x03f4, 0x00, 0x20, 0xe5, 0 },
-{  0x4910, 0x00, 0x00, 0x94,
+{ 0x0ff0, 0x00, 0x00, 0xe8, DELAY_OUTPUT },
+{ 0x0ff0, 0x00, 0x00, 0xf4, 0 },
+{ 0x03f4, 0x00, 0x20, 0xe5, 0 },
+{ 0x4910, 0x00, 0x00, 0x94,
 DELAY_OUTPUT | HAS_IBM_MISC },
-{  0x0110, 0x00, 0x40, 0xc7, 0 },
-{  0x0ff0, 0x00, 0x20, 0xe8, 0 },
-{  0x0110, 0x00, 0x80, 0x19, 0 },
-{  0x0040, 0x00, 0x80, 0xc8, 0 },
-{  0x0110, 0x00, 0x40, 0x33, 0 },
-{  0x01c0, 0x00, 0x00, 0xb4, 0 },
-{  0x0ff0, 0x00, 0x00, 0x48,
+{ 0x0110, 0x00, 0x40, 0xc7, 0 },
+{ 0x0ff0, 0x00, 0x20, 0xe8, 0 },
+{ 0x0110, 0x00, 0x80, 0x19, 0 },
+{ 0x0040, 0x00, 0x80, 0xc8, 0 },
+{ 0x0110, 0x00, 0x40, 0x33, 0 },
+{ 0x01c0, 0x00, 0x00, 0xb4, 0 },
+{ 0x0ff0, 0x00, 0x00, 0x48,
 HAS_MISC_REG | HAS_IBM_MISC },
-{  0xb8, 0x08, 0x00, 0x42, 0 },
-{  0x01c0, 0x00, 0x40, 0x4c, 0 },
-{  0x0ff0, 0x08, 0x00, 0x5a,
+{ 0xb8, 0x08, 0x00, 0x42, 0 },
+{ 0x01c0, 0x00, 0x40, 0x4c, 0 },
+{ 0x0ff0, 0x08, 0x00, 0x5a,
 HAS_MISC_REG | HAS_IBM_MISC },
-{  0x0ff0, 0x00, 0x04, 0xac,
+{ 0x0ff0, 0x00, 0x04, 0xac,
 HAS_MISC_REG | HAS_IBM_MISC },
-{  0x0ff0, 0x00, 0x06, 0x29,
+{ 0x0ff0, 0x00, 0x06, 0x29,
 HAS_MISC_REG | HAS_IBM_MISC },
-{  0x0374, 0x08, 0x00, 0x5a,
+{ 0x0374, 0x08, 0x00, 0x5a,
 HAS_MISC_REG | HAS_IBM_MISC },
-{  0x0374, 0x00, 0x04, 0xac,
+{ 0x0374, 0x00, 0x04, 0xac,
 HAS_MISC_REG | HAS_IBM_MISC },
-{  0x0ff0, 0x00, 0x60, 0x87,
+{ 0x0ff0, 0x00, 0x60, 0x87,
 HAS_MISC_REG | HAS_IBM_MISC },
-{  0x0374, 0x08, 0x00, 0x17,
+{ 0x0374, 0x08, 0x00, 0x17,
 HAS_MISC_REG | HAS_IBM_MISC },
-{  0x0374, 0x00, 0xc0, 0xa8,
+{ 0x0374, 0x00, 0xc0, 0xa8,
 HAS_MISC_REG | HAS_IBM_MISC },
-{  0x0374, 0x00, 0xa0, 0xb0,
+{ 0x0374, 0x00, 0xa0, 0xb0,
 HAS_MISC_REG | HAS_IBM_MISC },
-{  0x0198, 0x00, 0x20, 0xe0,
+{ 0x0198, 0x00, 0x20, 0xe0,
 HAS_MISC_REG | HAS_IBM_MISC },
-{  0x0ff0, 0x00, 0xa0, 0xb0, 0 },
-{  0x0110, 0x00, 0x40, 0xf6, 0 },
-{  0x0ff0, 0x00, 0xc0, 0xf0,
+{ 0x0ff0, 0x00, 0xa0, 0xb0, 0 },
+{ 0x0110, 0x00, 0x40, 0xf6, 0 },
+{ 0x0ff0, 0x00, 0xc0, 0xf0,
 HAS_MISC_REG | HAS_IBM_MISC },
-{  0x0ff0, 0xe2, 0x0c, 0x0f,
+{ 0x0ff0, 0xe2, 0x0c, 0x0f,
 HAS_MISC_REG | HAS_IBM_MISC },
-{  0x0180, 0x00, 0xc0, 0xf0, 0 },
-{  0x5000, 0x00, 0x00, 0xe8, 0 },
-{  0x003a, 0x00, 0x80, 0xc6, 0 },
-{  0x0ff0, 0x00, 0xa0, 0x0c, 0 },
-{  0x0ff0, 0x00, 0x00, 0x65,
+{ 0x0180, 0x00, 0xc0, 0xf0, 0 },
+{ 0x5000, 0x00, 0x00, 0xe8, 0 },
+{ 0x003a, 0x00, 0x80, 0xc6, 0 },
+{ 0x0ff0, 0x00, 0xa0, 0x0c, 0 },
+{ 0x0ff0, 0x00, 0x00, 0x65,
 HAS_MISC_REG | HAS_IBM_MISC },
-{  0x0ff0, 0x00, 0x80, 0x45,
+{ 0x0ff0, 0x00, 0x80, 0x45,
 HAS_MISC_REG | HAS_IBM_MISC },
-{  0x07f0, 0x00, 0x20, 0xe0, 0 },
-{  0x0110, 0x00, 0x40, 0x95, 0 },
-{  0x0ff0, 0x00, 0x20, 0xcb, 0 },
-{  0x4000, 0x00, 0xc0, 0x1b,
+{ 0x07f0, 0x00, 0x20, 0xe0, 0 },
+{ 0x0110, 0x00, 0x40, 0x95, 0 },
+{ 0x0ff0, 0x00, 0x20, 0xcb, 0 },
+{ 0x4000, 0x00, 0xc0, 0x1b,
 DELAY_OUTPUT | HAS_MISC_REG | USE_BIG_BUF },
-{  0x01c0, 0x00, 0xc0, 0x1b, 0 },
-{  0x0110, 0x00, 0xe0, 0x98, 0 },
-{  0x0060, 0x00, 0x40, 0x05, 0 },
-{  0x0ff0, 0x00, 0x00, 0x4c, 0 },
-{  0x01c8, 0x00, 0xa0, 0x0c, 0 }
+{ 0x01c0, 0x00, 0xc0, 0x1b, 0 },
+{ 0x0110, 0x00, 0xe0, 0x98, 0 },
+{ 0x0060, 0x00, 0x40, 0x05, 0 },
+{ 0x0ff0, 0x00, 0x00, 0x4c, 0 },
+{ 0x01c8, 0x00, 0xa0, 0x0c, 0 }
 };
-#define NR_INFO		(sizeof(hw_info)/sizeof(hw_info_t))
+#define NR_INFO (sizeof(hw_info)/sizeof(hw_info_t))
 static hw_info_t default_info = { 0, 0, 0, 0, 0 };
 static hw_info_t dl10019_info = { 0, 0, 0, 0, IS_DL10019|HAS_MII };
 static hw_info_t dl10022_info = { 0, 0, 0, 0, IS_DL10022|HAS_MII };
 typedef struct pcnet_dev_t {
-struct net_device	dev;
-dev_link_t		link;
-dev_node_t		node;
-u_int		flags;
-caddr_t		base;
-struct timer_list	watchdog;
-int			stale, fast_poll;
-u_char		phy_id;
-u_char		eth_phy, pna_phy;
-u_short		link_status;
-u_long		mii_reset;
+struct net_device dev;
+dev_link_t link;
+dev_node_t node;
+u_int flags;
+caddr_t base;
+struct timer_list watchdog;
+int stale, fast_poll;
+u_char phy_id;
+u_char eth_phy, pna_phy;
+u_short link_status;
+u_long mii_reset;
 } pcnet_dev_t;
 static void flush_stale_links(void)
 {
@@ -311,17 +311,17 @@ struct {
 u_char value, offset;
 } program_seq[] = {
 {E8390_NODMA+E8390_PAGE0+E8390_STOP, E8390_CMD},
-{0x48,	EN0_DCFG},
-{0x00,	EN0_RCNTLO},
-{0x00,	EN0_RCNTHI},
-{0x00,	EN0_IMR},
-{0xFF,	EN0_ISR},
+{0x48, EN0_DCFG},
+{0x00, EN0_RCNTLO},
+{0x00, EN0_RCNTHI},
+{0x00, EN0_IMR},
+{0xFF, EN0_ISR},
 {E8390_RXOFF, EN0_RXCR},
 {E8390_TXOFF, EN0_TXCR},
-{32,	EN0_RCNTLO},
-{0x00,	EN0_RCNTHI},
-{0x00,	EN0_RSARLO},
-{0x00,	EN0_RSARHI},
+{32, EN0_RCNTLO},
+{0x00, EN0_RCNTHI},
+{0x00, EN0_RSARLO},
+{0x00, EN0_RSARHI},
 {E8390_RREAD+E8390_START, E8390_CMD},
 };
 pcnet_reset_8390(dev);
@@ -642,16 +642,16 @@ break;
 }
 return 0;
 }
-#define DLINK_GPIO		0x1c
-#define DLINK_DIAG		0x1d
-#define DLINK_EEPROM		0x1e
-#define MDIO_SHIFT_CLK		0x80
-#define MDIO_DATA_OUT		0x40
-#define MDIO_DIR_WRITE		0x30
-#define MDIO_DATA_WRITE0	(MDIO_DIR_WRITE)
-#define MDIO_DATA_WRITE1	(MDIO_DIR_WRITE | MDIO_DATA_OUT)
-#define MDIO_DATA_READ		0x10
-#define MDIO_MASK		0x0f
+#define DLINK_GPIO 0x1c
+#define DLINK_DIAG 0x1d
+#define DLINK_EEPROM 0x1e
+#define MDIO_SHIFT_CLK 0x80
+#define MDIO_DATA_OUT 0x40
+#define MDIO_DIR_WRITE 0x30
+#define MDIO_DATA_WRITE0 (MDIO_DIR_WRITE)
+#define MDIO_DATA_WRITE1 (MDIO_DIR_WRITE | MDIO_DATA_OUT)
+#define MDIO_DATA_READ 0x10
+#define MDIO_MASK 0x0f
 static void mdio_sync(ioaddr_t addr)
 {
 int bits, mask = inb(addr) & MDIO_MASK;
@@ -700,15 +700,15 @@ outb_p(0x08, addr);
 outb_p(0x0c, addr);
 outb_p(0x00, addr);
 }
-#define EE_EEP		0x40
-#define EE_ASIC		0x10
-#define EE_CS		0x08
-#define EE_CK		0x04
-#define EE_DO		0x02
-#define EE_DI		0x01
-#define EE_ADOT		0x01
-#define EE_READ_CMD	0x06
-#define DL19FDUPLX	0x0400
+#define EE_EEP 0x40
+#define EE_ASIC 0x10
+#define EE_CS 0x08
+#define EE_CK 0x04
+#define EE_DO 0x02
+#define EE_DI 0x01
+#define EE_ADOT 0x01
+#define EE_READ_CMD 0x06
+#define DL19FDUPLX 0x0400
 static int read_eeprom(ioaddr_t ioaddr, int location)
 {
 int i, retval = 0;
@@ -1075,7 +1075,7 @@ retry:
 #endif
 outb_p(ENISR_RDC, nic_base + EN0_ISR);
 outb_p(count & 0xff, nic_base + EN0_RCNTLO);
-outb_p(count >> 8,   nic_base + EN0_RCNTHI);
+outb_p(count >> 8, nic_base + EN0_RCNTHI);
 outb_p(0x00, nic_base + EN0_RSARLO);
 outb_p(start_page, nic_base + EN0_RSARHI);
 outb_p(E8390_RWRITE+E8390_START, nic_base + PCNET_CMD);

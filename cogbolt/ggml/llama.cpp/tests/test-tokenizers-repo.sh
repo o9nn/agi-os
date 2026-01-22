@@ -1,29 +1,29 @@
 #!/usr/bin/env bash
 if [ $
-    printf "Usage: $0 <git-repo> <target-folder> [<test-exe>]\n"
-    exit 1
+printf "Usage: $0 <git-repo> <target-folder> [<test-exe>]\n"
+exit 1
 fi
 if [ $
-    toktest=$3
+toktest=$3
 else
-    toktest="./test-tokenizer-0"
+toktest="./test-tokenizer-0"
 fi
 if [ ! -x $toktest ]; then
-    printf "Test executable \"$toktest\" not found!\n"
-    exit 1
+printf "Test executable \"$toktest\" not found!\n"
+exit 1
 fi
 repo=$1
 folder=$2
 if [ -d $folder ] && [ -d $folder/.git ]; then
-    (cd $folder; git pull)
+(cd $folder; git pull)
 else
-    git clone $repo $folder
+git clone $repo $folder
 fi
 shopt -s globstar
 for gguf in $folder/**/*.gguf; do
-    if [ -f $gguf.inp ] && [ -f $gguf.out ]; then
-        $toktest $gguf
-    else
-        printf "Found \"$gguf\" without matching inp/out files, ignoring...\n"
-    fi
+if [ -f $gguf.inp ] && [ -f $gguf.out ]; then
+$toktest $gguf
+else
+printf "Found \"$gguf\" without matching inp/out files, ignoring...\n"
+fi
 done

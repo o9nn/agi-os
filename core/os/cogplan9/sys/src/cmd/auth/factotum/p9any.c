@@ -25,14 +25,14 @@ Maxphase,
 };
 static char *phasenames[Maxphase] =
 {
-[CNeedProtos]	"CNeedProtos",
-[CHaveProto]	"CHaveProto",
-[CNeedOK]	"CNeedOK",
-[CRelay]	"CRelay",
-[SHaveProtos]	"SHaveProtos",
-[SNeedProto]	"SNeedProto",
-[SHaveOK]	"SHaveOK",
-[SRelay]	"SRelay",
+[CNeedProtos] "CNeedProtos",
+[CHaveProto] "CHaveProto",
+[CNeedOK] "CNeedOK",
+[CRelay] "CRelay",
+[SHaveProtos] "SHaveProtos",
+[SNeedProto] "SNeedProto",
+[SHaveOK] "SHaveOK",
+[SRelay] "SRelay",
 };
 static int
 p9anyinit(Proto*, Fsstate *fss)
@@ -366,9 +366,9 @@ return passret(fss, s, ret);
 }
 Proto p9any =
 {
-.name=	"p9any",
-.init=		p9anyinit,
-.write=	p9anywrite,
-.read=	p9anyread,
-.close=	p9anyclose,
+.name= "p9any",
+.init= p9anyinit,
+.write= p9anywrite,
+.read= p9anyread,
+.close= p9anyclose,
 };

@@ -1,5 +1,5 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #include "nntpdriver.h"
 #include <string.h>
@@ -774,7 +774,7 @@ res = maildriver_imf_error_to_mail_error(r);
 goto free_list;
 }
 }
-if (item->ovr_message_id != NULL)  {
+if (item->ovr_message_id != NULL) {
 char * msgid_str;
 struct mailimf_message_id * msgid;
 struct mailimf_field * field;

@@ -1,8 +1,8 @@
 #ifndef gdevpdtb_INCLUDED
-#  define gdevpdtb_INCLUDED
+# define gdevpdtb_INCLUDED
 #include "gdevpdtx.h"
 #ifndef pdf_base_font_DEFINED
-#  define pdf_base_font_DEFINED
+# define pdf_base_font_DEFINED
 typedef struct pdf_base_font_s pdf_base_font_t;
 #endif
 int pdf_base_font_alloc(gx_device_pdf *pdev, pdf_base_font_t **ppbfont,

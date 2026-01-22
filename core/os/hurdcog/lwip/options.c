@@ -40,16 +40,16 @@ parse_opt (int opt, char *arg, struct argp_state *state)
 error_t err = 0;
 struct parse_hook *h = state->hook;
 int i;
-#define RETURN(_err)                          \
+#define RETURN(_err) \
 do { return _err; } while (0)
-#define PERR(err, fmt, args...)               \
+#define PERR(err, fmt, args...) \
 do { argp_error (state, fmt , ##args); RETURN (err); } while (0)
-#define FAIL(rerr, status, perr, fmt, args...)  \
+#define FAIL(rerr, status, perr, fmt, args...) \
 do{ argp_failure (state, status, perr, fmt , ##args); RETURN (rerr); } while(0)
-#undef	ADDR
-#define ADDR(str, type)                         \
-({ unsigned long addr = inet_addr (str);      \
-if (addr == INADDR_NONE) PERR (EINVAL, "Malformed %s", type);  \
+#undef ADDR
+#define ADDR(str, type) \
+({ unsigned long addr = inet_addr (str); \
+if (addr == INADDR_NONE) PERR (EINVAL, "Malformed %s", type); \
 addr; })
 if (!arg && state->next < state->argc && (*state->argv[state->next] != '-'))
 {
@@ -200,14 +200,14 @@ int i;
 uint32_t addr, netmask, gateway;
 uint32_t addr6[LWIP_IPV6_NUM_ADDRESSES][4];
 uint8_t addr6_prefix_len[LWIP_IPV6_NUM_ADDRESSES];
-#define ADD_OPT(fmt, args...)           \
-do { char buf[100];                   \
-if (! err) {                     \
-snprintf (buf, sizeof buf, fmt , ##args);      \
+#define ADD_OPT(fmt, args...) \
+do { char buf[100]; \
+if (! err) { \
+snprintf (buf, sizeof buf, fmt , ##args); \
 err = argz_add (argz, argz_len, buf); } } while (0)
-#define ADD_ADDR_OPT(name, addr)        \
-do { struct in_addr i;                \
-i.s_addr = (addr);               \
+#define ADD_ADDR_OPT(name, addr) \
+do { struct in_addr i; \
+i.s_addr = (addr); \
 ADD_OPT ("--%s=%s", name, inet_ntoa (i)); } while (0)
 NETIF_FOREACH(netif)
 {

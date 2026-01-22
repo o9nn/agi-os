@@ -76,7 +76,7 @@ unsigned short x[3];
 if (! strcmp (filename, "."))
 return np->nn_stat.st_ino;
 if (! strcmp (filename, ".."))
-return np->nn->parent ? np->nn->parent->nn_stat.st_ino :  2;
+return np->nn->parent ? np->nn->parent->nn_stat.st_ino : 2;
 assert_backtrace (sizeof np->nn_stat.st_ino > sizeof x);
 memcpy (x, &np->nn_stat.st_ino, sizeof x);
 while (*filename)

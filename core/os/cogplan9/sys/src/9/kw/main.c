@@ -8,14 +8,14 @@
 #include <pool.h>
 #include <tos.h>
 #include "reboot.h"
-#define BOOTARGS	((char*)CONFADDR)
-#define	BOOTARGSLEN	(16*KiB)
-#define	MAXCONF		64
-#define MAXCONFLINE	160
+#define BOOTARGS ((char*)CONFADDR)
+#define BOOTARGSLEN (16*KiB)
+#define MAXCONF 64
+#define MAXCONFLINE 160
 enum {
-Maxmem	= 512*MB,
-Minmem	= 256*MB,
-Ustkheadroom	= sizeof(Sargs) + sizeof(uintptr) + sizeof(Tos),
+Maxmem = 512*MB,
+Minmem = 256*MB,
+Ustkheadroom = sizeof(Sargs) + sizeof(uintptr) + sizeof(Tos),
 };
 #define isascii(c) ((uchar)(c) > 0 && (uchar)(c) < 0177)
 uintptr kseg0 = KZERO;
@@ -145,19 +145,19 @@ return nil;
 #include "io.h"
 typedef struct Spiregs Spiregs;
 struct Spiregs {
-ulong	ictl;
-ulong	icfg;
-ulong	out;
-ulong	in;
-ulong	ic;
-ulong	im;
-ulong	_pad[2];
-ulong	dwrcfg;
-ulong	dwrhdr;
+ulong ictl;
+ulong icfg;
+ulong out;
+ulong in;
+ulong ic;
+ulong im;
+ulong _pad[2];
+ulong dwrcfg;
+ulong dwrhdr;
 };
 enum {
-Csnact	= 1<<0,
-Bytelen	= 1<<5,
+Csnact = 1<<0,
+Bytelen = 1<<5,
 Dirrdcmd= 1<<10,
 };
 static void
@@ -168,8 +168,8 @@ for (; max > 0; max--)
 iprint("%02.2ux ", *bp++);
 iprint("...\n");
 }
-void	archconsole(void);
-vlong	probeaddr(uintptr);
+void archconsole(void);
+vlong probeaddr(uintptr);
 static void
 spiprobe(void)
 {

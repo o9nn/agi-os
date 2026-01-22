@@ -5,8 +5,8 @@
 #include "httpsrv.h"
 enum
 {
-MaxLog		= 24*1024,
-LockSecs	= MaxLog/500,
+MaxLog = 24*1024,
+LockSecs = MaxLog/500,
 };
 static int
 dangerous(char *s)

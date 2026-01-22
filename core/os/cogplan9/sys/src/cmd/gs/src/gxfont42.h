@@ -1,11 +1,11 @@
 #ifndef gxfont42_INCLUDED
-#  define gxfont42_INCLUDED
+# define gxfont42_INCLUDED
 #ifndef gs_glyph_cache_DEFINED
-#  define gs_glyph_cache_DEFINED
+# define gs_glyph_cache_DEFINED
 typedef struct gs_glyph_cache_s gs_glyph_cache;
 #endif
 #ifndef cached_fm_pair_DEFINED
-#  define cached_fm_pair_DEFINED
+# define cached_fm_pair_DEFINED
 typedef struct cached_fm_pair_s cached_fm_pair;
 #endif
 #ifndef gs_type42_data_DEFINED
@@ -13,7 +13,7 @@ typedef struct cached_fm_pair_s cached_fm_pair;
 typedef struct gs_type42_data_s gs_type42_data;
 #endif
 #ifndef gs_font_type42_DEFINED
-#  define gs_font_type42_DEFINED
+# define gs_font_type42_DEFINED
 typedef struct gs_font_type42_s gs_font_type42;
 #endif
 typedef struct gs_type42_mtx_s {
@@ -49,7 +49,7 @@ struct gs_font_type42_s {
 gs_font_type42_common;
 };
 extern_st(st_gs_font_type42);
-#define public_st_gs_font_type42()	\
+#define public_st_gs_font_type42() \
 gs_public_st_suffix_add3_final(st_gs_font_type42, gs_font_type42,\
 "gs_font_type42", font_type42_enum_ptrs, font_type42_reloc_ptrs,\
 gs_font_finalize, st_gs_font_base, data.proc_data, data.len_glyphs, \

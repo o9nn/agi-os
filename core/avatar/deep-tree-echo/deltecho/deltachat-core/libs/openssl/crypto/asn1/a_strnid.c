@@ -64,15 +64,15 @@ if (ret <= 0)
 return NULL;
 return *out;
 }
-#define ub_name                         32768
-#define ub_common_name                  64
-#define ub_locality_name                128
-#define ub_state_name                   128
-#define ub_organization_name            64
-#define ub_organization_unit_name       64
-#define ub_title                        64
-#define ub_email_address                128
-#define ub_serial_number                64
+#define ub_name 32768
+#define ub_common_name 64
+#define ub_locality_name 128
+#define ub_state_name 128
+#define ub_organization_name 64
+#define ub_organization_unit_name 64
+#define ub_title 64
+#define ub_email_address 128
+#define ub_serial_number 64
 static const ASN1_STRING_TABLE tbl_standard[] = {
 {NID_commonName, 1, ub_common_name, DIRSTRING_TYPE, 0},
 {NID_countryName, 2, 2, B_ASN1_PRINTABLESTRING, STABLE_NO_MASK},

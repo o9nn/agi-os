@@ -8,8 +8,8 @@ goto cleanup;
 }
 stmt = dc_sqlite3_prepare(context->sql,
 "INSERT INTO tokens (namespc, foreign_id, token, timestamp) VALUES (?, ?, ?, ?);");
-sqlite3_bind_int  (stmt, 1, (int)namespc);
-sqlite3_bind_int  (stmt, 2, (int)foreign_id);
+sqlite3_bind_int (stmt, 1, (int)namespc);
+sqlite3_bind_int (stmt, 2, (int)foreign_id);
 sqlite3_bind_text (stmt, 3, token, -1, SQLITE_STATIC);
 sqlite3_bind_int64(stmt, 4, time(NULL));
 sqlite3_step(stmt);
@@ -18,7 +18,7 @@ sqlite3_finalize(stmt);
 }
 char* dc_token_lookup(dc_context_t* context, dc_tokennamespc_t namespc, uint32_t foreign_id)
 {
-char*         token = NULL;
+char* token = NULL;
 sqlite3_stmt* stmt = NULL;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC) {
 goto cleanup;
@@ -35,7 +35,7 @@ return token;
 }
 int dc_token_exists(dc_context_t* context, dc_tokennamespc_t namespc, const char* token)
 {
-int           exists = 0;
+int exists = 0;
 sqlite3_stmt* stmt = NULL;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC || token==NULL) {
 goto cleanup;

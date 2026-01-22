@@ -23,12 +23,12 @@
 #undef USE_STATIC_SCSI_MEMORY
 const unsigned char scsi_command_size[8] = { 6, 10, 10, 12, 12, 12, 10, 10 };
 #define INTERNAL_ERROR (panic ("Internal error in file %s, line %d.\n", __FILE__, __LINE__))
-#define SECTOR_SIZE		512
-#define SECTORS_PER_PAGE	(PAGE_SIZE/SECTOR_SIZE)
+#define SECTOR_SIZE 512
+#define SECTORS_PER_PAGE (PAGE_SIZE/SECTOR_SIZE)
 #if SECTORS_PER_PAGE <= 8
-typedef unsigned char	FreeSectorBitmap;
+typedef unsigned char FreeSectorBitmap;
 #elif SECTORS_PER_PAGE <= 32
-typedef unsigned int	FreeSectorBitmap;
+typedef unsigned int FreeSectorBitmap;
 #else
 # error You lose.
 #endif
@@ -105,14 +105,14 @@ static void scsi_dump_status(void);
 #endif
 #define MIN_RESET_DELAY (2*HZ)
 #define MIN_RESET_PERIOD (15*HZ)
-#define BLIST_NOLUN     0x01
-#define BLIST_FORCELUN  0x02
-#define BLIST_BORKEN    0x04
-#define BLIST_KEY       0x08
+#define BLIST_NOLUN 0x01
+#define BLIST_FORCELUN 0x02
+#define BLIST_BORKEN 0x04
+#define BLIST_KEY 0x08
 #define BLIST_SINGLELUN 0x10
-#define BLIST_NOTQ	0x20
+#define BLIST_NOTQ 0x20
 #define BLIST_SPARSELUN 0x40
-#define BLIST_MAX5LUN	0x80
+#define BLIST_MAX5LUN 0x80
 struct dev_info{
 const char * vendor;
 const char * model;
@@ -192,7 +192,7 @@ return device_list[i].flags;
 }
 return 0;
 }
-void scsi_make_blocked_list(void)  {
+void scsi_make_blocked_list(void) {
 int block_count = 0, index;
 unsigned long flags;
 struct Scsi_Host * sh[128], * shpnt;
@@ -538,8 +538,8 @@ return 0;
 return 1;
 }
 #define NORMAL_TIMEOUT 0
-#define IN_ABORT  1
-#define IN_RESET  2
+#define IN_ABORT 1
+#define IN_RESET 2
 #define IN_RESET2 4
 #define IN_RESET3 8
 static void scsi_times_out (Scsi_Cmnd * SCpnt)
@@ -654,7 +654,7 @@ SCpnt->request.rq_status = RQ_SCSI_BUSY;
 SCpnt->request.sem = NULL;
 }
 SCpnt->use_sg = 0;
-SCpnt->old_use_sg  = 0;
+SCpnt->old_use_sg = 0;
 SCpnt->transfersize = 0;
 SCpnt->underflow = 0;
 SCpnt->cmd_len = 0;
@@ -788,7 +788,7 @@ break;
 }
 }
 SCpnt->use_sg = 0;
-SCpnt->old_use_sg  = 0;
+SCpnt->old_use_sg = 0;
 SCpnt->transfersize = 0;
 SCpnt->cmd_len = 0;
 SCpnt->underflow = 0;
@@ -809,7 +809,7 @@ unsigned long *ret = 0;
 #ifdef __mips__
 __asm__ __volatile__ ("move\t%0,$31":"=r"(ret));
 #else
-ret =  __builtin_return_address(0);
+ret = __builtin_return_address(0);
 #endif
 #endif
 host = SCpnt->host;
@@ -1011,9 +1011,9 @@ if(host_byte(result) == DID_ABORT && SCpnt->abort_reason)
 SCpnt->result = result = (result & 0xff00ffff) |
 (SCpnt->abort_reason << 16);
 #define FINISHED 0
-#define MAYREDO  1
-#define REDO     3
-#define PENDING  4
+#define MAYREDO 1
+#define REDO 3
+#define PENDING 4
 #ifdef DEBUG
 printk("In scsi_done(host = %d, result = %06x)\n", host->host_no, result);
 #endif
@@ -1093,7 +1093,7 @@ case SUGGEST_ABORT:
 printk("SENSE SUGGEST ABORT - status = FINISHED");
 #endif
 status = FINISHED;
-exit =  DRIVER_SENSE | SUGGEST_ABORT;
+exit = DRIVER_SENSE | SUGGEST_ABORT;
 break;
 default:
 printk ("Internal error %s %d \n", __FILE__,
@@ -1106,7 +1106,7 @@ else
 printk("COMMAND COMPLETE message returned, "
 "status = FINISHED. \n");
 #endif
-exit =  DRIVER_OK;
+exit = DRIVER_OK;
 status = FINISHED;
 }
 break;
@@ -1120,7 +1120,7 @@ status = REDO;
 break;
 case SUGGEST_REMAP:
 status = FINISHED;
-exit =  DRIVER_SENSE | SUGGEST_ABORT;
+exit = DRIVER_SENSE | SUGGEST_ABORT;
 break;
 case SUGGEST_RETRY:
 status = MAYREDO;
@@ -1128,7 +1128,7 @@ exit = DRIVER_SENSE | SUGGEST_RETRY;
 break;
 case SUGGEST_ABORT:
 status = FINISHED;
-exit =  DRIVER_SENSE | SUGGEST_ABORT;
+exit = DRIVER_SENSE | SUGGEST_ABORT;
 break;
 case SUGGEST_SENSE:
 scsi_request_sense (SCpnt);
@@ -1185,7 +1185,7 @@ else
 #ifdef DEBUG
 printk ("Retrying.\n");
 #endif
-SCpnt->flags  |= WAS_TIMEDOUT;
+SCpnt->flags |= WAS_TIMEDOUT;
 SCpnt->internal_timeout &= ~IN_ABORT;
 status = REDO;
 }
@@ -1198,7 +1198,7 @@ case DID_NO_CONNECT:
 #ifdef DEBUG
 printk("Couldn't connect.\n");
 #endif
-exit  = (DRIVER_HARD | SUGGEST_ABORT);
+exit = (DRIVER_HARD | SUGGEST_ABORT);
 break;
 case DID_ERROR:
 status = MAYREDO;
@@ -1229,7 +1229,7 @@ exit = DRIVER_SENSE | SUGGEST_RETRY;
 break;
 case SUGGEST_ABORT:
 status = FINISHED;
-exit =  DRIVER_SENSE | SUGGEST_ABORT;
+exit = DRIVER_SENSE | SUGGEST_ABORT;
 break;
 case SUGGEST_SENSE:
 scsi_request_sense (SCpnt);
@@ -1691,7 +1691,7 @@ printk("scsi_free %p %d\n",obj, len);
 for (page = 0; page < dma_sectors / SECTORS_PER_PAGE; page++) {
 unsigned long page_addr = (unsigned long) dma_malloc_pages[page];
 if ((unsigned long) obj >= page_addr &&
-(unsigned long) obj <  page_addr + PAGE_SIZE)
+(unsigned long) obj < page_addr + PAGE_SIZE)
 {
 sector = (((unsigned long) obj) - page_addr) >> 9;
 nbits = len >> 9;
@@ -1876,8 +1876,8 @@ struct Scsi_Device_Template *SDTpnt;
 Scsi_Device *scd, *scd_h = NULL;
 struct Scsi_Host *HBA_ptr;
 char *p;
-int   host, channel, id, lun;
-int	  size, len = 0;
+int host, channel, id, lun;
+int size, len = 0;
 off_t begin = 0;
 off_t pos = 0;
 scd = scsi_devices;
@@ -1921,10 +1921,10 @@ if(!buffer || length < 25 || strncmp("scsi", buffer, 4))
 return(-EINVAL);
 if(!strncmp("add-single-device", buffer + 5, 17)) {
 p = buffer + 23;
-host    = simple_strtoul(p, &p, 0);
+host = simple_strtoul(p, &p, 0);
 channel = simple_strtoul(p+1, &p, 0);
-id      = simple_strtoul(p+1, &p, 0);
-lun     = simple_strtoul(p+1, &p, 0);
+id = simple_strtoul(p+1, &p, 0);
+lun = simple_strtoul(p+1, &p, 0);
 printk("scsi singledevice %d %d %d %d\n", host, channel,
 id, lun);
 while(scd && (scd->host->host_no != host
@@ -1944,10 +1944,10 @@ return(length);
 }
 else if(!strncmp("remove-single-device", buffer + 5, 20)) {
 p = buffer + 26;
-host    = simple_strtoul(p, &p, 0);
+host = simple_strtoul(p, &p, 0);
 channel = simple_strtoul(p+1, &p, 0);
-id      = simple_strtoul(p+1, &p, 0);
-lun     = simple_strtoul(p+1, &p, 0);
+id = simple_strtoul(p+1, &p, 0);
+lun = simple_strtoul(p+1, &p, 0);
 while(scd != NULL) {
 if(scd->host->host_no == host
 && scd->channel == channel
@@ -2297,11 +2297,11 @@ if(tpnt->init && tpnt->dev_noticed)
 if ((*tpnt->init)()) return 1;
 for(SDpnt = scsi_devices; SDpnt; SDpnt = SDpnt->next)
 {
-if(tpnt->attach)  (*tpnt->attach)(SDpnt);
+if(tpnt->attach) (*tpnt->attach)(SDpnt);
 if(SDpnt->attached && SDpnt->has_cmdblocks == 0)
 scsi_build_commandblocks(SDpnt);
 }
-if(tpnt->finish && tpnt->nr_dev)  (*tpnt->finish)();
+if(tpnt->finish && tpnt->nr_dev) (*tpnt->finish)();
 MOD_INC_USE_COUNT;
 return 0;
 }

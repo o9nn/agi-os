@@ -1,9 +1,9 @@
-#include	<u.h>
-#include	<libc.h>
-#include	<bio.h>
-#include	"sky.h"
-static	void	unshuffle(Pix*, int, int, Pix*);
-static	void	unshuffle1(Pix*, int, Pix*);
+#include <u.h>
+#include <libc.h>
+#include <bio.h>
+#include "sky.h"
+static void unshuffle(Pix*, int, int, Pix*);
+static void unshuffle1(Pix*, int, Pix*);
 void
 hinv(Pix *a, int nx, int ny)
 {
@@ -54,36 +54,36 @@ for(i = 0; i<nxtop-oddx; i += 2) {
 s00 = ny*i;
 s10 = s00+ny;
 for(j = 0; j<nytop-oddy; j += 2) {
-h0 = a[s00  ] << shift;
-hx = a[s10  ] << shift;
+h0 = a[s00 ] << shift;
+hx = a[s10 ] << shift;
 hy = a[s00+1] << shift;
 hc = a[s10+1] << shift;
 a[s10+1] = (h0 + hx + hy + hc + 2) >> 2;
-a[s10  ] = (h0 + hx - hy - hc + 2) >> 2;
+a[s10 ] = (h0 + hx - hy - hc + 2) >> 2;
 a[s00+1] = (h0 - hx + hy - hc + 2) >> 2;
-a[s00  ] = (h0 - hx - hy + hc + 2) >> 2;
+a[s00 ] = (h0 - hx - hy + hc + 2) >> 2;
 s00 += 2;
 s10 += 2;
 }
 if(oddy) {
-h0 = a[s00  ] << shift;
-hx = a[s10  ] << shift;
-a[s10  ] = (h0 + hx + 2) >> 2;
-a[s00  ] = (h0 - hx + 2) >> 2;
+h0 = a[s00 ] << shift;
+hx = a[s10 ] << shift;
+a[s10 ] = (h0 + hx + 2) >> 2;
+a[s00 ] = (h0 - hx + 2) >> 2;
 }
 }
 if(oddx) {
 s00 = ny*i;
 for(j = 0; j<nytop-oddy; j += 2) {
-h0 = a[s00  ] << shift;
+h0 = a[s00 ] << shift;
 hy = a[s00+1] << shift;
 a[s00+1] = (h0 + hy + 2) >> 2;
-a[s00  ] = (h0 - hy + 2) >> 2;
+a[s00 ] = (h0 - hy + 2) >> 2;
 s00 += 2;
 }
 if(oddy) {
-h0 = a[s00  ] << shift;
-a[s00  ] = (h0 + 2) >> 2;
+h0 = a[s00 ] << shift;
+a[s00 ] = (h0 + 2) >> 2;
 }
 }
 }

@@ -4,7 +4,7 @@
 extern unsigned int csum_partial(unsigned char * buff, int len, unsigned int sum);
 #define csum_partial_copy(src, dst, len, sum) \
 csum_partial_copy_nocheck(src,dst,len,sum)
-#define csum_partial_copy_fromuser(s, d, l, w)  \
+#define csum_partial_copy_fromuser(s, d, l, w) \
 csum_partial_copy_from_user((char *) (s), (d), (l), (w), NULL)
 extern unsigned int csum_partial_copy_sparc64(const char *src, char *dst, int len, unsigned int sum);
 extern __inline__ unsigned int
@@ -19,7 +19,7 @@ csum_partial_copy_from_user(const char *src, char *dst, int len,
 unsigned int sum, int *err)
 {
 __asm__ __volatile__ ("wr	%%g0, %0, %%asi
-stx	%1, [%%sp + 0x7ff + 128]
+stx %1, [%%sp + 0x7ff + 128]
 " : : "i" (ASI_S), "r" (err));
 return csum_partial_copy_sparc64(src, dst, len, sum);
 }
@@ -36,30 +36,30 @@ unsigned int ihl)
 {
 unsigned short sum;
 __asm__ __volatile__("
-sub		%2, 4, %%g7		! IEU0
-lduw		[%1 + 0x00], %0		! Load	Group
-lduw		[%1 + 0x04], %%g2	! Load	Group
-lduw		[%1 + 0x08], %%g3	! Load	Group
-addcc		%%g2, %0, %0		! IEU1	1 Load Bubble + Group
-lduw		[%1 + 0x0c], %%g2	! Load
-addccc		%%g3, %0, %0		! Sngle	Group no Bubble
-lduw		[%1 + 0x10], %%g3	! Load	Group
-addccc		%%g2, %0, %0		! Sngle	Group no Bubble
-addc		%0, %%g0, %0		! Sngle Group
-1:	addcc		%%g3, %0, %0		! IEU1	Group no Bubble
-add		%1, 4, %1		! IEU0
-addccc		%0, %%g0, %0		! Sngle Group no Bubble
-subcc		%%g7, 1, %%g7		! IEU1	Group
-be,a,pt		%%icc, 2f		! CTI
-sll		%0, 16, %%g2		! IEU0
-lduw		[%1 + 0x10], %%g3	! Load	Group
-ba,pt		%%xcc, 1b		! CTI
-nop					! IEU0
-2:	addcc		%0, %%g2, %%g2		! IEU1	Group
-srl		%%g2, 16, %0		! IEU0	Group regdep	XXX Scheisse!
-addc		%0, %%g0, %0		! Sngle	Group
-xnor		%%g0, %0, %0		! IEU0	Group
-srl		%0, 0, %0		! IEU0	Group		XXX Scheisse!
+sub %2, 4, %%g7 ! IEU0
+lduw [%1 + 0x00], %0 ! Load Group
+lduw [%1 + 0x04], %%g2 ! Load Group
+lduw [%1 + 0x08], %%g3 ! Load Group
+addcc %%g2, %0, %0 ! IEU1 1 Load Bubble + Group
+lduw [%1 + 0x0c], %%g2 ! Load
+addccc %%g3, %0, %0 ! Sngle Group no Bubble
+lduw [%1 + 0x10], %%g3 ! Load Group
+addccc %%g2, %0, %0 ! Sngle Group no Bubble
+addc %0, %%g0, %0 ! Sngle Group
+1: addcc %%g3, %0, %0 ! IEU1 Group no Bubble
+add %1, 4, %1 ! IEU0
+addccc %0, %%g0, %0 ! Sngle Group no Bubble
+subcc %%g7, 1, %%g7 ! IEU1 Group
+be,a,pt %%icc, 2f ! CTI
+sll %0, 16, %%g2 ! IEU0
+lduw [%1 + 0x10], %%g3 ! Load Group
+ba,pt %%xcc, 1b ! CTI
+nop ! IEU0
+2: addcc %0, %%g2, %%g2 ! IEU1 Group
+srl %%g2, 16, %0 ! IEU0 Group regdep XXX Scheisse!
+addc %0, %%g0, %0 ! Sngle Group
+xnor %%g0, %0, %0 ! IEU0 Group
+srl %0, 0, %0 ! IEU0 Group XXX Scheisse!
 "	: "=r" (sum), "=&r" (iph)
 : "r" (ihl), "1" (iph)
 : "g2", "g3", "g7", "cc");
@@ -69,10 +69,10 @@ extern __inline__ unsigned short csum_fold(unsigned int sum)
 {
 unsigned int tmp;
 __asm__ __volatile__("
-addcc		%0, %1, %1
-srl		%1, 16, %1
-addc		%1, %%g0, %1
-xnor		%%g0, %1, %0
+addcc %0, %1, %1
+srl %1, 16, %1
+addc %1, %%g0, %1
+xnor %%g0, %1, %0
 "	: "=&r" (sum), "=r" (tmp)
 : "0" (sum), "1" (sum<<16)
 : "cc");
@@ -85,10 +85,10 @@ unsigned short proto,
 unsigned int sum)
 {
 __asm__ __volatile__("
-addcc		%1, %0, %0
-addccc		%2, %0, %0
-addccc		%3, %0, %0
-addc		%0, %%g0, %0
+addcc %1, %0, %0
+addccc %2, %0, %0
+addccc %3, %0, %0
+addc %0, %%g0, %0
 "	: "=r" (sum), "=r" (saddr)
 : "r" (daddr), "r" ((proto<<16)+len), "0" (sum), "1" (saddr)
 : "cc");
@@ -110,25 +110,25 @@ unsigned short proto,
 unsigned int sum)
 {
 __asm__ __volatile__ ("
-addcc		%3, %4, %%g7
-addccc		%5, %%g7, %%g7
-lduw		[%2 + 0x0c], %%g2
-lduw		[%2 + 0x08], %%g3
-addccc		%%g2, %%g7, %%g7
-lduw		[%2 + 0x04], %%g2
-addccc		%%g3, %%g7, %%g7
-lduw		[%2 + 0x00], %%g3
-addccc		%%g2, %%g7, %%g7
-lduw		[%1 + 0x0c], %%g2
-addccc		%%g3, %%g7, %%g7
-lduw		[%1 + 0x08], %%g3
-addccc		%%g2, %%g7, %%g7
-lduw		[%1 + 0x04], %%g2
-addccc		%%g3, %%g7, %%g7
-lduw		[%1 + 0x00], %%g3
-addccc		%%g2, %%g7, %%g7
-addccc		%%g3, %%g7, %0
-addc		0, %0, %0
+addcc %3, %4, %%g7
+addccc %5, %%g7, %%g7
+lduw [%2 + 0x0c], %%g2
+lduw [%2 + 0x08], %%g3
+addccc %%g2, %%g7, %%g7
+lduw [%2 + 0x04], %%g2
+addccc %%g3, %%g7, %%g7
+lduw [%2 + 0x00], %%g3
+addccc %%g2, %%g7, %%g7
+lduw [%1 + 0x0c], %%g2
+addccc %%g3, %%g7, %%g7
+lduw [%1 + 0x08], %%g3
+addccc %%g2, %%g7, %%g7
+lduw [%1 + 0x04], %%g2
+addccc %%g3, %%g7, %%g7
+lduw [%1 + 0x00], %%g3
+addccc %%g2, %%g7, %%g7
+addccc %%g3, %%g7, %0
+addc 0, %0, %0
 "	: "=&r" (sum)
 : "r" (saddr), "r" (daddr), "r"(htonl((__u32) (len))),
 "r"(htonl(proto)), "r"(sum)

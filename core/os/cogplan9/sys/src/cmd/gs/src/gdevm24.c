@@ -39,13 +39,13 @@ byte b = (byte)color
 #define putw(ptr, wxyz)\
 *(bits32 *)(ptr) = (wxyz)
 #if arch_is_big_endian
-#  define set_color24_cache(crgb, r, g, b)\
+# define set_color24_cache(crgb, r, g, b)\
 mdev->color24.rgbr = rgbr = ((bits32)(crgb) << 8) | (r),\
 mdev->color24.gbrg = gbrg = (rgbr << 8) | (g),\
 mdev->color24.brgb = brgb = (gbrg << 8) | (b),\
 mdev->color24.rgb = (crgb)
 #else
-#  define set_color24_cache(crgb, r, g, b)\
+# define set_color24_cache(crgb, r, g, b)\
 mdev->color24.rgbr = rgbr =\
 ((bits32)(r) << 24) | ((bits32)(b) << 16) |\
 ((bits16)(g) << 8) | (r),\

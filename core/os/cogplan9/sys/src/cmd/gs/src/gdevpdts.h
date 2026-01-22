@@ -1,8 +1,8 @@
 #ifndef gdevpdts_INCLUDED
-#  define gdevpdts_INCLUDED
+# define gdevpdts_INCLUDED
 #include "gsmatrix.h"
 #ifndef pdf_text_state_DEFINED
-#  define pdf_text_state_DEFINED
+# define pdf_text_state_DEFINED
 typedef struct pdf_text_state_s pdf_text_state_t;
 #endif
 typedef struct pdf_text_state_values_s {
@@ -14,11 +14,11 @@ int render_mode;
 float word_spacing;
 } pdf_text_state_values_t;
 #define TEXT_STATE_VALUES_DEFAULT\
-0,				\
-NULL,			\
-0,				\
-{ identity_matrix_body },	\
-0,				\
+0, \
+NULL, \
+0, \
+{ identity_matrix_body }, \
+0, \
 0
 int pdf_from_stream_to_text(gx_device_pdf *pdev);
 int pdf_from_string_to_text(gx_device_pdf *pdev);

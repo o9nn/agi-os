@@ -7,12 +7,12 @@ static char *copyright = "Copyright (c) 1989 Mark H. Colburn.\nAll rights reserv
 int pass(char *dirname)
 #else
 int pass(dirname)
-char	*dirname;
+char *dirname;
 #endif
 {
-char            name[PATH_MAX + 1];
-int             fd;
-Stat            sb;
+char name[PATH_MAX + 1];
+int fd;
+Stat sb;
 while (name_next(name, &sb) >= 0 && (fd = openin(name, &sb)) >= 0) {
 if (rplhead != (Replstr *)NULL) {
 rpl_name(name);
@@ -35,15 +35,15 @@ fprintf(stderr, "%s/%s\n", dirname, name);
 int passitem(char *from, Stat *asb, int ifd, char *dir)
 #else
 int passitem(from, asb, ifd, dir)
-char           *from;
-Stat           *asb;
-int             ifd;
-char           *dir;
+char *from;
+Stat *asb;
+int ifd;
+char *dir;
 #endif
 {
-int             ofd;
-time_t          tstamp[2];
-char            to[PATH_MAX + 1];
+int ofd;
+time_t tstamp[2];
+char to[PATH_MAX + 1];
 if (nameopt(strcat(strcat(strcpy(to, dir), "/"), from)) < 0) {
 return (-1);
 }

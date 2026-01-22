@@ -20,22 +20,22 @@ struct sk_buff *skb, int ring_offset);
 static void ultra32_block_output(struct device *dev, int count,
 const unsigned char *buf, const int start_page);
 static int ultra32_close(struct device *dev);
-#define ULTRA32_CMDREG	0
-#define	 ULTRA32_RESET	0x80
-#define	 ULTRA32_MEMENB	0x40
+#define ULTRA32_CMDREG 0
+#define ULTRA32_RESET 0x80
+#define ULTRA32_MEMENB 0x40
 #define ULTRA32_NIC_OFFSET 16
 #define ULTRA32_IO_EXTENT 32
-#define EN0_ERWCNT		0x08
-#define ULTRA32_BASE	0xca0
-#define ULTRA32_ID	0x1080a34d
-#define ULTRA32_IDPORT	(-0x20)
-#define ULTRA32_CFG1	0x04
-#define ULTRA32_CFG2	0x05
-#define ULTRA32_CFG3	(-0x18)
-#define ULTRA32_CFG4	(-0x17)
-#define ULTRA32_CFG5	(-0x16)
-#define ULTRA32_CFG6	(-0x15)
-#define ULTRA32_CFG7	0x0d
+#define EN0_ERWCNT 0x08
+#define ULTRA32_BASE 0xca0
+#define ULTRA32_ID 0x1080a34d
+#define ULTRA32_IDPORT (-0x20)
+#define ULTRA32_CFG1 0x04
+#define ULTRA32_CFG2 0x05
+#define ULTRA32_CFG3 (-0x18)
+#define ULTRA32_CFG4 (-0x17)
+#define ULTRA32_CFG5 (-0x16)
+#define ULTRA32_CFG6 (-0x15)
+#define ULTRA32_CFG7 0x0d
 int ultra32_probe(struct device *dev)
 {
 const char *ifmap[] = {"UTP No Link", "", "UTP/AUI", "UTP/BNC"};
@@ -74,7 +74,7 @@ if (dev == NULL) {
 printk("smc-ultra32.c: Passed a NULL device.\n");
 dev = init_etherdev(0, 0);
 }
-if (ei_debug  &&  version_printed++ == 0)
+if (ei_debug && version_printed++ == 0)
 printk("%s", version);
 model_name = "SMC Ultra32";
 printk("%s: %s at 0x%X,", dev->name, model_name, ioaddr);
@@ -108,7 +108,7 @@ return -ENOMEM;
 request_region(ioaddr, ULTRA32_IO_EXTENT, model_name);
 dev->base_addr = ioaddr + ULTRA32_NIC_OFFSET;
 ei_status.reg0 = inb(ioaddr + ULTRA32_CFG3) & 0xfc;
-dev->mem_start =  0xc0000 + ((ei_status.reg0 & 0x7c) << 11);
+dev->mem_start = 0xc0000 + ((ei_status.reg0 & 0x7c) << 11);
 ei_status.name = model_name;
 ei_status.word16 = 1;
 ei_status.tx_start_page = 0;
@@ -217,8 +217,8 @@ outb(ei_status.reg0, RamReg);
 memcpy_toio(xfer_start, buf, count);
 }
 #ifdef MODULE
-#define MAX_ULTRA32_CARDS   4
-#define NAMELEN		    8
+#define MAX_ULTRA32_CARDS 4
+#define NAMELEN 8
 static char namelist[NAMELEN * MAX_ULTRA32_CARDS] = { 0, };
 static struct device dev_ultra[MAX_ULTRA32_CARDS] = {
 {

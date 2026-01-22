@@ -1,56 +1,56 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"pool.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
-#define left	u.s.bhl
-#define right	u.s.bhr
-#define fwd	u.s.bhf
-#define prev	u.s.bhv
-#define parent	u.s.bhp
-typedef struct Bhdr	Bhdr;
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "pool.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
+#define left u.s.bhl
+#define right u.s.bhr
+#define fwd u.s.bhf
+#define prev u.s.bhv
+#define parent u.s.bhp
+typedef struct Bhdr Bhdr;
 struct Bhdr {
-ulong	magic;
-ulong	size;
+ulong magic;
+ulong size;
 };
 enum {
 NOT_MAGIC = 0xdeadfa11,
 };
 struct Pool
 {
-char*	name;
-ulong	maxsize;
-int	quanta;
-int	chunk;
-ulong	cursize;
-ulong	arenasize;
-ulong	hw;
-Lock	l;
-Bhdr*	root;
-Bhdr*	chain;
-int	nalloc;
-int	nfree;
-int	nbrk;
-int	lastfree;
-void	(*move)(void*, void*);
+char* name;
+ulong maxsize;
+int quanta;
+int chunk;
+ulong cursize;
+ulong arenasize;
+ulong hw;
+Lock l;
+Bhdr* root;
+Bhdr* chain;
+int nalloc;
+int nfree;
+int nbrk;
+int lastfree;
+void (*move)(void*, void*);
 };
 struct
 {
-int	n;
-Pool	pool[MAXPOOL];
-Lock	l;
+int n;
+Pool pool[MAXPOOL];
+Lock l;
 } table = {
 2,
 {
-{ "Main",	 4*1024*1024, 31,  128*1024 },
-{ "Image",	 16*1024*1024, 31, 2*1024*1024 },
+{ "Main", 4*1024*1024, 31, 128*1024 },
+{ "Image", 16*1024*1024, 31, 2*1024*1024 },
 }
 };
-Pool*	mainmem = &table.pool[0];
-Pool*	imagmem = &table.pool[1];
-int	poolcompact(Pool*);
+Pool* mainmem = &table.pool[0];
+Pool* imagmem = &table.pool[1];
+int poolcompact(Pool*);
 Bhdr*
 poolchain(Pool *p)
 {
@@ -326,8 +326,8 @@ return n;
 }
 Lock pcxlock;
 struct {
-ulong	n;
-ulong	pc;
+ulong n;
+ulong pc;
 } pcx[1024];
 static void
 remember(ulong pc, void *v)

@@ -2,14 +2,14 @@
 #define _RAID1_H
 #include <linux/md.h>
 struct mirror_info {
-int		number;
-int		raid_disk;
-kdev_t		dev;
-int		next;
-int		sect_limit;
-int		operational;
-int		write_only;
-int		spare;
+int number;
+int raid_disk;
+kdev_t dev;
+int next;
+int sect_limit;
+int operational;
+int write_only;
+int spare;
 };
 struct raid1_data {
 struct md_dev *mddev;
@@ -17,18 +17,18 @@ struct mirror_info mirrors[MD_SB_DISKS];
 int raid_disks;
 int working_disks;
 int last_used;
-unsigned long	next_sect;
-int		sect_count;
+unsigned long next_sect;
+int sect_count;
 int resync_running;
 };
 struct raid1_bh {
-unsigned int		remaining;
-int			cmd;
-unsigned long		state;
-struct md_dev		*mddev;
-struct buffer_head	*master_bh;
-struct buffer_head	*mirror_bh [MD_SB_DISKS];
-struct buffer_head	bh_req;
-struct buffer_head	*next_retry;
+unsigned int remaining;
+int cmd;
+unsigned long state;
+struct md_dev *mddev;
+struct buffer_head *master_bh;
+struct buffer_head *mirror_bh [MD_SB_DISKS];
+struct buffer_head bh_req;
+struct buffer_head *next_retry;
 };
 #endif

@@ -54,25 +54,25 @@ cmd_put_drawing_color(gx_device_clist_writer * cldev, gx_clist_state * pcls,
 const gx_drawing_color * pdcolor)
 {
 const gx_device_halftone * pdht = pdcolor->type->get_dev_halftone(pdcolor);
-int                        code, di;
-uint                       dc_size = 0, req_size;
-gx_device_color_saved *    psdc = &pcls->sdc;
-byte *                     dp;
-byte *                     dp0;
-gs_int_point               color_phase;
-if ( pdht != NULL                          &&
-pdht->id != cldev->device_halftone_id   ) {
+int code, di;
+uint dc_size = 0, req_size;
+gx_device_color_saved * psdc = &pcls->sdc;
+byte * dp;
+byte * dp0;
+gs_int_point color_phase;
+if ( pdht != NULL &&
+pdht->id != cldev->device_halftone_id ) {
 if ((code = cmd_put_halftone(cldev, pdht)) < 0)
 return code;
 color_unset(psdc);
 }
 if ( pdcolor->type->get_phase(pdcolor, &color_phase) &&
 (color_phase.x != pcls->tile_phase.x ||
-color_phase.y != pcls->tile_phase.y   )        &&
+color_phase.y != pcls->tile_phase.y ) &&
 (code = cmd_set_tile_phase( cldev,
 pcls,
 color_phase.x,
-color_phase.y )) < 0  )
+color_phase.y )) < 0 )
 return code;
 di = gx_get_dc_type_index(pdcolor);
 code = pdcolor->type->write( pdcolor,
@@ -482,7 +482,7 @@ code = cmd_put_path(cdev, pcls, ppath,
 int2fixed(max(y - 1, y0)),
 int2fixed(min(y + height + 1, y1)),
 op,
-true, sn_none  );
+true, sn_none );
 if (code < 0)
 return code;
 } END_RECTS_NO_ERROR;
@@ -647,7 +647,7 @@ code = cmd_put_path(cdev, pcls, &path,
 int2fixed(max(y - 1, y0)),
 int2fixed(min(y + height + 1, y1)),
 cmd_opv_polyfill,
-true, sn_none  );
+true, sn_none );
 if (code < 0)
 goto out;
 } END_RECTS_NO_ERROR;

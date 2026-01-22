@@ -1,54 +1,54 @@
-#include	"u.h"
-#include	"lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"ureg.h"
-void	intr0(void), intr1(void), intr2(void), intr3(void);
-void	intr4(void), intr5(void), intr6(void), intr7(void);
-void	intr8(void), intr9(void), intr10(void), intr11(void);
-void	intr12(void), intr13(void), intr14(void), intr15(void);
-void	intr16(void);
-void	intr24(void), intr25(void), intr26(void), intr27(void);
-void	intr28(void), intr29(void), intr30(void), intr31(void);
-void	intr32(void), intr33(void), intr34(void), intr35(void);
-void	intr36(void), intr37(void), intr38(void), intr39(void);
-void	intr64(void);
-void	intrbad(void);
+#include "u.h"
+#include "lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "ureg.h"
+void intr0(void), intr1(void), intr2(void), intr3(void);
+void intr4(void), intr5(void), intr6(void), intr7(void);
+void intr8(void), intr9(void), intr10(void), intr11(void);
+void intr12(void), intr13(void), intr14(void), intr15(void);
+void intr16(void);
+void intr24(void), intr25(void), intr26(void), intr27(void);
+void intr28(void), intr29(void), intr30(void), intr31(void);
+void intr32(void), intr33(void), intr34(void), intr35(void);
+void intr36(void), intr37(void), intr38(void), intr39(void);
+void intr64(void);
+void intrbad(void);
 enum
 {
-Int0ctl=	0x20,
-Int0aux=	0x21,
-Int1ctl=	0xA0,
-Int1aux=	0xA1,
-Icw1=		0x10,
-Ocw2=		0x00,
-Ocw3=		0x08,
-EOI=		0x20,
-Elcr1=		0x4D0,
-Elcr2=		0x4D1,
+Int0ctl= 0x20,
+Int0aux= 0x21,
+Int1ctl= 0xA0,
+Int1aux= 0xA1,
+Icw1= 0x10,
+Ocw2= 0x00,
+Ocw3= 0x08,
+EOI= 0x20,
+Elcr1= 0x4D0,
+Elcr2= 0x4D1,
 };
-int	int0mask = 0xff;
-int	int1mask = 0xff;
+int int0mask = 0xff;
+int int1mask = 0xff;
 int i8259elcr;
 Segdesc ilt[256];
 enum
 {
-Maxhandler=	32,
+Maxhandler= 32,
 };
-typedef struct Handler	Handler;
+typedef struct Handler Handler;
 struct Handler
 {
-void	(*r)(Ureg*, void*);
-void	*arg;
-Handler	*next;
+void (*r)(Ureg*, void*);
+void *arg;
+Handler *next;
 };
 struct
 {
-Handler	*ivec[256];
-Handler	h[Maxhandler];
-int	nextfree;
+Handler *ivec[256];
+Handler h[Maxhandler];
+int nextfree;
 } halloc;
 void
 sethvec(int v, void (*r)(void), int type, int pri)

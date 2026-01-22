@@ -1,5 +1,5 @@
 #ifndef gxistate_INCLUDED
-#  define gxistate_INCLUDED
+# define gxistate_INCLUDED
 #include "gscsel.h"
 #include "gsrefct.h"
 #include "gsropt.h"
@@ -13,15 +13,15 @@
 #include "gscspace.h"
 #include "gstrans.h"
 #ifndef gs_halftone_DEFINED
-#  define gs_halftone_DEFINED
+# define gs_halftone_DEFINED
 typedef struct gs_halftone_s gs_halftone;
 #endif
 #ifndef gx_device_color_DEFINED
-#  define gx_device_color_DEFINED
+# define gx_device_color_DEFINED
 typedef struct gx_device_color_s gx_device_color;
 #endif
 #ifndef gx_device_halftone_DEFINED
-#  define gx_device_halftone_DEFINED
+# define gx_device_halftone_DEFINED
 typedef struct gx_device_halftone_s gx_device_halftone;
 #endif
 typedef struct gx_transfer_s {
@@ -38,31 +38,31 @@ gx_transfer_map *gray;
 \
 \
 \
-gs_halftone *halftone;			\
+gs_halftone *halftone; \
 gs_int_point screen_phase[gs_color_select_count];\
 \
-gx_device_halftone *dev_ht;		\
+gx_device_halftone *dev_ht; \
 \
 \
 \
-struct gs_cie_render_s *cie_render;	\
-gx_transfer_map *black_generation;	\
-gx_transfer_map *undercolor_removal;	\
+struct gs_cie_render_s *cie_render; \
+gx_transfer_map *black_generation; \
+gx_transfer_map *undercolor_removal; \
 \
 \
 \
 \
 \
-gx_transfer set_transfer;		\
+gx_transfer set_transfer; \
 gx_transfer_map *effective_transfer[GX_DEVICE_COLOR_MAX_COMPONENTS]; \
 \
 \
 \
 \
 \
-struct gx_cie_joint_caches_s *cie_joint_caches;		\
+struct gx_cie_joint_caches_s *cie_joint_caches; \
 \
-const struct gx_color_map_procs_s *cmap_procs;		\
+const struct gx_color_map_procs_s *cmap_procs; \
 \
 gs_devicen_color_map color_component_map;\
 \
@@ -130,7 +130,7 @@ gs_color_rendering_state_common
 #define gs_current_logical_op_inline(pis) ((pis)->log_op)
 #define gs_set_logical_op_inline(pis, lop) ((pis)->log_op = (lop))
 #ifndef gs_imager_state_DEFINED
-#  define gs_imager_state_DEFINED
+# define gs_imager_state_DEFINED
 typedef struct gs_imager_state_s gs_imager_state;
 #endif
 struct gs_imager_state_s {
@@ -144,7 +144,7 @@ lop_default, gx_max_color_value, BLEND_MODE_Compatible,\
 { 1.0, 0 }, { 1.0, 0 }, 0, 0, 0, 0, 0, 0, 0, 1.0,\
 { fixed_half, fixed_half }, 0, 0, 0, 1.0,\
 gx_default_get_cmap_procs
-#define public_st_imager_state()	\
+#define public_st_imager_state() \
 gs_public_st_composite(st_imager_state, gs_imager_state, "gs_imager_state",\
 imager_state_enum_ptrs, imager_state_reloc_ptrs)
 int gs_imager_state_initialize(gs_imager_state * pis, gs_memory_t * mem);

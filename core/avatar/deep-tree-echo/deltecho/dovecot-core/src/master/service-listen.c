@@ -3,7 +3,7 @@
 #include "ioloop.h"
 #include "net.h"
 #ifdef HAVE_LIBSYSTEMD
-#  include <systemd/sd-daemon.h>
+# include <systemd/sd-daemon.h>
 #endif
 #include "service.h"
 #include "service-listen.h"

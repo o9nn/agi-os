@@ -3,25 +3,25 @@
 #include <ip.h>
 #include "dat.h"
 #include "protos.h"
-typedef struct Hdr	Hdr;
+typedef struct Hdr Hdr;
 struct Hdr
 {
-uchar	vcf[4];
-uchar	length[2];
-uchar	proto;
-uchar	ttl;
-uchar	src[IPaddrlen];
-uchar	dst[IPaddrlen];
+uchar vcf[4];
+uchar length[2];
+uchar proto;
+uchar ttl;
+uchar src[IPaddrlen];
+uchar dst[IPaddrlen];
 };
 enum
 {
-IP6HDR		= 40,
-IP_VER		= 0x60,
-HBH_HDR		= 0,
-ROUT_HDR	= 43,
-FRAG_HDR	= 44,
-FRAG_HSZ	= 8,
-DEST_HDR	= 60,
+IP6HDR = 40,
+IP_VER = 0x60,
+HBH_HDR = 0,
+ROUT_HDR = 43,
+FRAG_HDR = 44,
+FRAG_HSZ = 8,
+DEST_HDR = 60,
 };
 static Mux p_mux[] =
 {
@@ -129,10 +129,10 @@ Ot,
 };
 static Field p_fields[] =
 {
-{"s",	Fv6ip,	Os,	"source address",	} ,
-{"d",	Fv6ip,	Od,	"destination address",	} ,
-{"a",	Fv6ip,	Osd,	"source|destination address",} ,
-{"t",	Fnum,	Ot,	"sub protocol number",	} ,
+{"s", Fv6ip, Os, "source address", } ,
+{"d", Fv6ip, Od, "destination address", } ,
+{"a", Fv6ip, Osd, "source|destination address",} ,
+{"t", Fnum, Ot, "sub protocol number", } ,
 {0}
 };
 static void

@@ -24,28 +24,28 @@ EShow,
 ESize,
 };
 static char *cmds[] = {
-[EAdd] =			"add",
-[EBorder] =		"border",
-[EBordercolor] =	"bordercolor",
-[EFocus] = 		"focus",
-[EHide] =			"hide",
-[EImage] =		"image",
-[ERect] =			"rect",
-[ERemove] =		"remove",
-[EReveal] =		"reveal",
-[ESeparation] =		"separation",
-[EShow] =			"show",
-[ESize] =			"size",
+[EAdd] = "add",
+[EBorder] = "border",
+[EBordercolor] = "bordercolor",
+[EFocus] = "focus",
+[EHide] = "hide",
+[EImage] = "image",
+[ERect] = "rect",
+[ERemove] = "remove",
+[EReveal] = "reveal",
+[ESeparation] = "separation",
+[EShow] = "show",
+[ESize] = "size",
 };
-static void		boxboxresize(Group*, Rectangle);
-static void		columnresize(Group*, Rectangle);
-static void		groupctl(Control *c, CParse *cp);
-static void		groupfree(Control*);
-static void		groupmouse(Control *, Mouse *);
-static void		groupsize(Control *c);
-static void		removegroup(Group*, int);
-static void		rowresize(Group*, Rectangle);
-static void		stackresize(Group*, Rectangle);
+static void boxboxresize(Group*, Rectangle);
+static void columnresize(Group*, Rectangle);
+static void groupctl(Control *c, CParse *cp);
+static void groupfree(Control*);
+static void groupmouse(Control *, Mouse *);
+static void groupsize(Control *c);
+static void removegroup(Group*, int);
+static void rowresize(Group*, Rectangle);
+static void stackresize(Group*, Rectangle);
 static void
 groupinit(Group *g)
 {

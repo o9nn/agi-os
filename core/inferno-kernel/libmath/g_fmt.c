@@ -25,7 +25,7 @@ goto done;
 s = s0 = dtoa(x, 0, 0, &decpt, &sign, &se);
 if (sign)
 *b++ = '-';
-if (decpt == 9999)  {
+if (decpt == 9999) {
 while(*b++ = *s++);
 goto done0;
 }

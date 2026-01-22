@@ -5,7 +5,7 @@
 #include <openssl/objects.h>
 #include <openssl/x509.h>
 #include "rsa_locl.h"
-#define SSL_SIG_LENGTH  36
+#define SSL_SIG_LENGTH 36
 int RSA_sign(int type, const unsigned char *m, unsigned int m_len,
 unsigned char *sigret, unsigned int *siglen, RSA *rsa)
 {

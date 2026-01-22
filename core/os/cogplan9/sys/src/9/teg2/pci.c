@@ -4,12 +4,12 @@
 #include "dat.h"
 #include "fns.h"
 #include "io.h"
-#define DBG	if(0) pcilog
+#define DBG if(0) pcilog
 typedef struct Pci Pci;
 struct
 {
-char	output[PCICONSSIZE];
-int	ptr;
+char output[PCICONSSIZE];
+int ptr;
 }PCICONS;
 int
 pcilog(char *fmt, ...)
@@ -26,79 +26,79 @@ return n;
 }
 enum
 {
-MaxFNO		= 7,
-MaxUBN		= 255,
+MaxFNO = 7,
+MaxUBN = 255,
 };
 enum
 {
-IOen		= (1<<0),
-MEMen		= (1<<1),
-MASen		= (1<<2),
-MemWrInv	= (1<<4),
-PErrEn		= (1<<6),
-SErrEn		= (1<<8),
+IOen = (1<<0),
+MEMen = (1<<1),
+MASen = (1<<2),
+MemWrInv = (1<<4),
+PErrEn = (1<<6),
+SErrEn = (1<<8),
 };
 typedef struct {
-ulong	cap;
-ulong	ctl;
+ulong cap;
+ulong ctl;
 } Capctl;
 typedef struct {
-Capctl	dev;
-Capctl	link;
-Capctl	slot;
+Capctl dev;
+Capctl link;
+Capctl slot;
 } Devlinkslot;
 struct Pci {
-ulong	id;
-ulong	cs;
-ulong	revclass;
-ulong	misc;
-ulong	bar[2];
-ulong	bus;
-ulong	ioaddrs;
-ulong	memaddrs;
-ulong	prefmem;
-ulong	prefbasehi;
-ulong	preflimhi;
-ulong	ioaddrhi;
-ulong	cfgcapoff;
-ulong	rom;
-ulong	intr;
-ulong	subsysid;
-ulong	subsyscap;
-Capctl	pwrmgmt;
-ulong	msictlcap;
-ulong	msimsgaddr[2];
-ulong	msimsgdata;
-uchar	_pad0[0x80-0x60];
-ulong	pciecap;
+ulong id;
+ulong cs;
+ulong revclass;
+ulong misc;
+ulong bar[2];
+ulong bus;
+ulong ioaddrs;
+ulong memaddrs;
+ulong prefmem;
+ulong prefbasehi;
+ulong preflimhi;
+ulong ioaddrhi;
+ulong cfgcapoff;
+ulong rom;
+ulong intr;
+ulong subsysid;
+ulong subsyscap;
+Capctl pwrmgmt;
+ulong msictlcap;
+ulong msimsgaddr[2];
+ulong msimsgdata;
+uchar _pad0[0x80-0x60];
+ulong pciecap;
 Devlinkslot port0;
-ulong	rootctl;
-ulong	rootsts;
+ulong rootctl;
+ulong rootsts;
 Devlinkslot port1;
 };
 enum {
-Port0		= 0,
-Port1		= 0x1000,
-Pads		= 0x3000,
-Afi		= 0x3800,
-Aficfg		= Afi + 0xac,
-Cfgspace	= 0x4000,
-Ecfgspace	= 0x104000,
-Iospace		= 1<<0,
-Memspace	= 1<<1,
-Busmaster	= 1<<2,
-Fpcion		= 1<<0,
+Port0 = 0,
+Port1 = 0x1000,
+Pads = 0x3000,
+Afi = 0x3800,
+Aficfg = Afi + 0xac,
+Cfgspace = 0x4000,
+Ecfgspace = 0x104000,
+Iospace = 1<<0,
+Memspace = 1<<1,
+Busmaster = 1<<2,
+Fpcion = 1<<0,
 };
 struct Pcictlr {
 union {
-uchar	_padpci[0x1000];
+uchar _padpci[0x1000];
 Pci;
 } ports[2];
-uchar	_padpads[0x1000];
-uchar	pads[0x800];
-uchar	afi[0x800];
-ulong	cfg[0x1000];
-ulong	extcfg[0x1000];
+uchar _padpads[0x1000];
+uchar pads[0x800];
+uchar afi[0x800];
+ulong cfg[0x1000];
+ulong extcfg[0x1000];
 };
 static Lock pcicfglock;
 static Lock pcicfginitlock;
@@ -324,7 +324,7 @@ if(getconf("*pcihinv"))
 pcihinv(nil);
 }
 enum {
-Afiintrcode	= 0xb8,
+Afiintrcode = 0xb8,
 };
 void
 pcieintrdone(void)

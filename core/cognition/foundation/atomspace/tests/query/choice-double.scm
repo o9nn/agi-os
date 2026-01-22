@@ -9,13 +9,13 @@
 (List (Member (Concept "Joe") (Concept "Representative")))
 (List (Member (Concept "Hank") (Concept "CEO")))
 (define double
-	(Bind
-		(And
-			(Choice
-				(Member (Variable "$x") (Concept "ways and means"))
-				(Member (Variable "$x") (Concept "agriculture")))
-			(List
-				(Choice
-					(Member (Variable "$x") (Concept "Senator"))
-					(Member (Variable "$x") (Concept "Representative")))))
-		(Variable "$x")))
+(Bind
+(And
+(Choice
+(Member (Variable "$x") (Concept "ways and means"))
+(Member (Variable "$x") (Concept "agriculture")))
+(List
+(Choice
+(Member (Variable "$x") (Concept "Senator"))
+(Member (Variable "$x") (Concept "Representative")))))
+(Variable "$x")))

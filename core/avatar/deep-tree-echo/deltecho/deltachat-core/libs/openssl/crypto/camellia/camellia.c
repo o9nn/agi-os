@@ -4,45 +4,45 @@
 #include <stdlib.h>
 #if !defined(PEDANTIC) && !defined(OPENSSL_NO_ASM) && !defined(OPENSSL_NO_INLINE_ASM)
 # if defined(_MSC_VER) && (defined(_M_IX86) || defined(_M_AMD64) || defined(_M_X64))
-#  define RightRotate(x, s) _lrotr(x, s)
-#  define LeftRotate(x, s)  _lrotl(x, s)
-#  if _MSC_VER >= 1400
-#   define SWAP(x) _byteswap_ulong(x)
-#  else
-#   define SWAP(x) (_lrotl(x, 8) & 0x00ff00ff | _lrotr(x, 8) & 0xff00ff00)
-#  endif
-#  define GETU32(p)   SWAP(*((u32 *)(p)))
-#  define PUTU32(p,v) (*((u32 *)(p)) = SWAP((v)))
+# define RightRotate(x, s) _lrotr(x, s)
+# define LeftRotate(x, s) _lrotl(x, s)
+# if _MSC_VER >= 1400
+# define SWAP(x) _byteswap_ulong(x)
+# else
+# define SWAP(x) (_lrotl(x, 8) & 0x00ff00ff | _lrotr(x, 8) & 0xff00ff00)
+# endif
+# define GETU32(p) SWAP(*((u32 *)(p)))
+# define PUTU32(p,v) (*((u32 *)(p)) = SWAP((v)))
 # elif defined(__GNUC__) && __GNUC__>=2
-#  if defined(__i386) || defined(__x86_64)
-#   define RightRotate(x,s) ({u32 ret; asm ("rorl %1,%0":"=r"(ret):"I"(s),"0"(x):"cc"); ret; })
-#   define LeftRotate(x,s)  ({u32 ret; asm ("roll %1,%0":"=r"(ret):"I"(s),"0"(x):"cc"); ret; })
-#   if defined(B_ENDIAN)
-#    define GETU32(p)   (*(u32 *)(p))
-#    define PUTU32(p,v) (*(u32 *)(p)=(v))
-#   else
-#    define GETU32(p)   ({u32 r=*(const u32 *)(p); asm("bswapl %0":"=r"(r):"0"(r)); r; })
-#    define PUTU32(p,v) ({u32 r=(v); asm("bswapl %0":"=r"(r):"0"(r)); *(u32 *)(p)=r; })
-#   endif
-#  elif defined(_ARCH_PPC) || defined(_ARCH_PPC64) || \
+# if defined(__i386) || defined(__x86_64)
+# define RightRotate(x,s) ({u32 ret; asm ("rorl %1,%0":"=r"(ret):"I"(s),"0"(x):"cc"); ret; })
+# define LeftRotate(x,s) ({u32 ret; asm ("roll %1,%0":"=r"(ret):"I"(s),"0"(x):"cc"); ret; })
+# if defined(B_ENDIAN)
+# define GETU32(p) (*(u32 *)(p))
+# define PUTU32(p,v) (*(u32 *)(p)=(v))
+# else
+# define GETU32(p) ({u32 r=*(const u32 *)(p); asm("bswapl %0":"=r"(r):"0"(r)); r; })
+# define PUTU32(p,v) ({u32 r=(v); asm("bswapl %0":"=r"(r):"0"(r)); *(u32 *)(p)=r; })
+# endif
+# elif defined(_ARCH_PPC) || defined(_ARCH_PPC64) || \
 defined(__powerpc) || defined(__ppc__) || defined(__powerpc64__)
-#   define LeftRotate(x,s)  ({u32 ret; asm ("rlwinm %0,%1,%2,0,31":"=r"(ret):"r"(x),"I"(s)); ret; })
-#   define RightRotate(x,s) LeftRotate(x,(32-s))
-#  elif defined(__s390x__)
-#   define LeftRotate(x,s)  ({u32 ret; asm ("rll %0,%1,%2":"=r"(ret):"r"(x),"I"(s)); ret; })
-#   define RightRotate(x,s) LeftRotate(x,(32-s))
-#   define GETU32(p)   (*(u32 *)(p))
-#   define PUTU32(p,v) (*(u32 *)(p)=(v))
-#  endif
+# define LeftRotate(x,s) ({u32 ret; asm ("rlwinm %0,%1,%2,0,31":"=r"(ret):"r"(x),"I"(s)); ret; })
+# define RightRotate(x,s) LeftRotate(x,(32-s))
+# elif defined(__s390x__)
+# define LeftRotate(x,s) ({u32 ret; asm ("rll %0,%1,%2":"=r"(ret):"r"(x),"I"(s)); ret; })
+# define RightRotate(x,s) LeftRotate(x,(32-s))
+# define GETU32(p) (*(u32 *)(p))
+# define PUTU32(p,v) (*(u32 *)(p)=(v))
+# endif
 # endif
 #endif
 #if !defined(RightRotate) && !defined(LeftRotate)
 # define RightRotate(x, s) ( ((x) >> (s)) + ((x) << (32 - s)) )
-# define LeftRotate(x, s)  ( ((x) << (s)) + ((x) >> (32 - s)) )
+# define LeftRotate(x, s) ( ((x) << (s)) + ((x) >> (32 - s)) )
 #endif
 #if !defined(GETU32) && !defined(PUTU32)
-# define GETU32(p)   (((u32)(p)[0] << 24) ^ ((u32)(p)[1] << 16) ^ ((u32)(p)[2] <<  8) ^ ((u32)(p)[3]))
-# define PUTU32(p,v) ((p)[0] = (u8)((v) >> 24), (p)[1] = (u8)((v) >> 16), (p)[2] = (u8)((v) >>  8), (p)[3] = (u8)(v))
+# define GETU32(p) (((u32)(p)[0] << 24) ^ ((u32)(p)[1] << 16) ^ ((u32)(p)[2] << 8) ^ ((u32)(p)[3]))
+# define PUTU32(p,v) ((p)[0] = (u8)((v) >> 24), (p)[1] = (u8)((v) >> 16), (p)[2] = (u8)((v) >> 8), (p)[3] = (u8)(v))
 #endif
 #define SBOX1_1110 Camellia_SBOX[0]
 #define SBOX4_4404 Camellia_SBOX[1]
@@ -229,16 +229,16 @@ static const u32 SIGMA[] = {
 #define Camellia_Feistel(_s0,_s1,_s2,_s3,_key) do {\
 register u32 _t0,_t1,_t2,_t3;\
 \
-_t0  = _s0 ^ (_key)[0];\
-_t3  = SBOX4_4404[_t0&0xff];\
-_t1  = _s1 ^ (_key)[1];\
+_t0 = _s0 ^ (_key)[0];\
+_t3 = SBOX4_4404[_t0&0xff];\
+_t1 = _s1 ^ (_key)[1];\
 _t3 ^= SBOX3_3033[(_t0 >> 8)&0xff];\
-_t2  = SBOX1_1110[_t1&0xff];\
+_t2 = SBOX1_1110[_t1&0xff];\
 _t3 ^= SBOX2_0222[(_t0 >> 16)&0xff];\
 _t2 ^= SBOX4_4404[(_t1 >> 8)&0xff];\
 _t3 ^= SBOX1_1110[(_t0 >> 24)];\
 _t2 ^= _t3;\
-_t3  = RightRotate(_t3,8);\
+_t3 = RightRotate(_t3,8);\
 _t2 ^= SBOX3_3033[(_t1 >> 16)&0xff];\
 _s3 ^= _t3;\
 _t2 ^= SBOX2_0222[(_t1 >> 24)];\

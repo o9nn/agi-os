@@ -6,8 +6,8 @@
 #include <9p.h>
 #include "dat.h"
 #include "fns.h"
-#define putext2(e)	putbuf((e).buf)
-#define dirtyext2(e)	dirtybuf((e).buf)
+#define putext2(e) putbuf((e).buf)
+#define dirtyext2(e) dirtybuf((e).buf)
 static Intmap *uidmap, *gidmap;
 static int
 getnum(char *s, int *n)
@@ -221,7 +221,7 @@ if( !buf ){
 putbuf(ibuf);
 return -1;
 }
-for(offset=0 ; offset < xf->block_size ;  ){
+for(offset=0 ; offset < xf->block_size ; ){
 dir = (DirEntry *)(buf->iobuf + offset);
 if( dir->name_len==strlen(name) &&
 !strncmp(name, dir->name, dir->name_len) ){
@@ -264,7 +264,7 @@ if( !buf ){
 putbuf(ibuf);
 return 0;
 }
-for(offset=0 ; offset < xf->block_size ;  ){
+for(offset=0 ; offset < xf->block_size ; ){
 dir = (DirEntry *)(buf->iobuf + offset);
 if( f->inbr == dir->inode ){
 len = (dir->name_len < EXT2_NAME_LEN) ? dir->name_len : EXT2_NAME_LEN;
@@ -291,7 +291,7 @@ Inode *inode;
 Iobuf *ibuf;
 char *name;
 memset(dir, 0, sizeof(Dir));
-if(  f->inbr == EXT2_ROOT_INODE ){
+if( f->inbr == EXT2_ROOT_INODE ){
 dir->name = estrdup9p("/");
 dir->qid = (Qid){0,0,QTDIR};
 dir->mode = DMDIR | 0777;
@@ -354,7 +354,7 @@ inode->i_mode = (getmode(f) & ~0777) | (stat->mode & 0777);
 dirtybuf(ibuf);
 }
 if (stat->mtime != ~0)
-if(  inode->i_mtime != stat->mtime ){
+if( inode->i_mtime != stat->mtime ){
 inode->i_mtime = stat->mtime;
 dirtybuf(ibuf);
 }
@@ -453,7 +453,7 @@ putbuf(ibuf);
 return -1;
 }
 chat("%d, ", buffer->addr);
-for(off=0 ; off < xf->block_size ;  ){
+for(off=0 ; off < xf->block_size ; ){
 edir = (DirEntry *)(buffer->iobuf + off);
 off += edir->rec_len;
 if( (edir->name[0] == '.' ) && (edir->name_len == 1))
@@ -467,7 +467,7 @@ if( index++ < f->dirindex )
 continue;
 if( get_inode(&ft, edir->inode) < 0 ){
 chat("can't find ino no %d ] ...", edir->inode);
-error:			putbuf(buffer);
+error: putbuf(buffer);
 putbuf(ibuf);
 return -1;
 }
@@ -707,7 +707,7 @@ errno = Enospace;
 return 0;
 }
 eb = getext2(xf, EXT2_BBLOCK, group);
-r = memscan(eb.u.bmp,  0, xf->blocks_per_group>>3);
+r = memscan(eb.u.bmp, 0, xf->blocks_per_group>>3);
 block = (r - eb.u.bmp) <<3;
 if( block < xf->blocks_per_group )
 goto search_back;
@@ -797,7 +797,7 @@ baddr = block_getblk(f, baddr, block);
 return baddr;
 }
 block -= addr_per_block;
-if( block < addr_per_block * addr_per_block  ){
+if( block < addr_per_block * addr_per_block ){
 baddr = inode_getblk(f, EXT2_DIND_BLOCK);
 baddr = block_getblk(f, baddr, block / addr_per_block);
 baddr = block_getblk(f, baddr, block & ( addr_per_block-1));
@@ -1195,7 +1195,7 @@ putbuf(ibuf);
 return -1;
 }
 if( inode->i_size <= offset ){
-de  = (DirEntry *)buf->iobuf;
+de = (DirEntry *)buf->iobuf;
 de->inode = 0;
 de->rec_len = xf->block_size;
 dirtybuf(buf);
@@ -1249,7 +1249,7 @@ return -1;
 }
 es = getext2(xf, EXT2_SUPER, 0);
 if( file->pinbr >= es.u.sb->s_inodes_count ){
-chat("inode number %d is too big...",  file->pinbr);
+chat("inode number %d is too big...", file->pinbr);
 putext2(es);
 errno = Eintern;
 return -1;
@@ -1342,7 +1342,7 @@ if( !buf ){
 putbuf(ibuf);
 return 0;
 }
-for(offset=0 ; offset < xf->block_size ;  ){
+for(offset=0 ; offset < xf->block_size ; ){
 de = (DirEntry *)(buf->iobuf + offset);
 if(de->inode)
 count++;
@@ -1470,7 +1470,7 @@ buf = getbuf(xf, inode->i_block[i]);
 if( !buf )
 return -1;
 pde = 0;
-for(offset=0 ; offset < xf->block_size ;  ){
+for(offset=0 ; offset < xf->block_size ; ){
 de = (DirEntry *)(buf->iobuf + offset);
 if( de->inode == inbr ){
 if( pde )

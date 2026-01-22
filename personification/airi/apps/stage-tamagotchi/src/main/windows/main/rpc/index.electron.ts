@@ -6,15 +6,15 @@ import { electronOpenChat, electronOpenMainDevtools, electronOpenSettings } from
 import { createScreenService, createWindowService } from '../../../services/electron'
 import { toggleWindowShow } from '../../shared'
 export function setupMainWindowElectronInvokes(params: {
-  window: BrowserWindow
-  settingsWindow: () => Promise<BrowserWindow>
-  chatWindow: () => Promise<BrowserWindow>
+window: BrowserWindow
+settingsWindow: () => Promise<BrowserWindow>
+chatWindow: () => Promise<BrowserWindow>
 }) {
-  ipcMain.setMaxListeners(0)
-  const { context } = createContext(ipcMain, params.window)
-  createScreenService({ context, window: params.window })
-  createWindowService({ context, window: params.window })
-  defineInvokeHandler(context, electronOpenMainDevtools, () => params.window.webContents.openDevTools({ mode: 'detach' }))
-  defineInvokeHandler(context, electronOpenSettings, async () => toggleWindowShow(await params.settingsWindow()))
-  defineInvokeHandler(context, electronOpenChat, async () => toggleWindowShow(await params.chatWindow()))
+ipcMain.setMaxListeners(0)
+const { context } = createContext(ipcMain, params.window)
+createScreenService({ context, window: params.window })
+createWindowService({ context, window: params.window })
+defineInvokeHandler(context, electronOpenMainDevtools, () => params.window.webContents.openDevTools({ mode: 'detach' }))
+defineInvokeHandler(context, electronOpenSettings, async () => toggleWindowShow(await params.settingsWindow()))
+defineInvokeHandler(context, electronOpenChat, async () => toggleWindowShow(await params.chatWindow()))
 }

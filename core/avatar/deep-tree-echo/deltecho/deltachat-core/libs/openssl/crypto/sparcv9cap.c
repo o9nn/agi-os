@@ -6,10 +6,10 @@
 #include <sys/time.h>
 #include <openssl/bn.h>
 #define SPARCV9_TICK_PRIVILEGED (1<<0)
-#define SPARCV9_PREFER_FPU      (1<<1)
-#define SPARCV9_VIS1            (1<<2)
-#define SPARCV9_VIS2            (1<<3)
-#define SPARCV9_FMADD           (1<<4)
+#define SPARCV9_PREFER_FPU (1<<1)
+#define SPARCV9_VIS1 (1<<2)
+#define SPARCV9_VIS2 (1<<3)
+#define SPARCV9_FMADD (1<<4)
 static int OPENSSL_sparcv9cap_P = SPARCV9_TICK_PRIVILEGED;
 int bn_mul_mont(BN_ULONG *rp, const BN_ULONG *ap, const BN_ULONG *bp,
 const BN_ULONG *np, const BN_ULONG *n0, int num)

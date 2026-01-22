@@ -118,7 +118,7 @@ if (blank < len line)
 line = line[0:blank];
 if(strcmp(line[5*12:], pat1) == 0){
 # exact match: take that
-f = nil;	# should also free t->addr's
+f = nil; # should also free t->addr's
 f = array[1] of File;
 if(f == nil)
 rerror("out of memory");
@@ -272,8 +272,8 @@ afd = nil;
 cfd = nil;
 # buf = string ab;
 ab = nil;
-f[i].q0 = 0; 	# int buf;
-f[i].q1 = 5;		# int buf[12:];
+f[i].q0 = 0; # int buf;
+f[i].q1 = 5; # int buf[12:];
 f[i].ok = 1;
 debug(sys->sprint("q0=%d q1=%d\n", f[i].q0, f[i].q1));
 }

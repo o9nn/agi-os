@@ -25,25 +25,25 @@ NAMEFONT: con "/fonts/charon/plain.small.font";
 TITLEFONT: con "/fonts/charon/bold.normal.font";
 HEADERFONT: con "/fonts/charon/italic.normal.font";
 Object: adt {
-id:	int;
+id: int;
 pick {
 Session =>
-filename:		string;
-owner:		string;
-invitations: 	list of string;
-members:		list of string;
-invited:		int;
+filename: string;
+owner: string;
+invitations: list of string;
+members: list of string;
+invited: int;
 Sessiontype =>
-start:			string;
-name:		string;
-title:			string;
-clienttype:	string;
+start: string;
+name: string;
+title: string;
+clienttype: string;
 Invite =>
-session:		ref Object.Session;
-name:		string;
+session: ref Object.Session;
+name: string;
 Member =>
-parentid:		int;
-name:		string;
+parentid: int;
+name: string;
 Archive =>
 Other =>
 }
@@ -298,7 +298,7 @@ o = ref Object.Sessiontype(id, nil, nil, nil, nil);
 cmd(win, "grid rowinsert .t.s 0");
 cmd(win, "grid rowconfigure .t.s 0 -name id" + string id);
 f := ".t.s.f" + string id;
-cmd(win, "frame " + f);			# dummy, so we can destroy row easily
+cmd(win, "frame " + f); # dummy, so we can destroy row easily
 cmd(win, "label "+f+".name");
 cmd(win, "grid "+f+".name -row id" + string id + " -column name -in .t.s");
 cmd(win, "button "+f+".watch -text Watch -command {send e watch " + string id + "}");
@@ -434,7 +434,7 @@ cmd(win, sys->sprint(".t.s.f%d.members configure -text '%s", o.parentid, concat(
 chat.addtext(o.name + " has arrived\n");
 }
 }
-Invite  =>
+Invite =>
 case attr {
 "name" =>
 o.name = hd val;

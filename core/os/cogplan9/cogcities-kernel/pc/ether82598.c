@@ -7,267 +7,267 @@
 #include "../port/error.h"
 #include "../port/netif.h"
 #include "etherif.h"
-#define NEXTPOW2(x, m)	(((x)+1) & (m))
+#define NEXTPOW2(x, m) (((x)+1) & (m))
 enum {
-Rbsz	= ETHERMAXTU+32,
+Rbsz = ETHERMAXTU+32,
 Descalign= 128,
-Nrd	= 256,
-Nrb	= 1024,
-Ntd	= 128,
-Goslow	= 0,
+Nrd = 256,
+Nrb = 1024,
+Ntd = 128,
+Goslow = 0,
 };
 enum {
-Ctrl		= 0x00000/4,
-Status		= 0x00008/4,
-Ctrlext		= 0x00018/4,
-Esdp		= 0x00020/4,
-Esodp		= 0x00028/4,
-Ledctl		= 0x00200/4,
-Tcptimer	= 0x0004c/4,
-Ecc		= 0x110b0/4,
-Eec		= 0x10010/4,
-Eerd		= 0x10014/4,
-Fla		= 0x1001c/4,
-Flop		= 0x1013c/4,
-Grc		= 0x10200/4,
-Icr		= 0x00800/4,
-Ics		= 0x00808/4,
-Ims		= 0x00880/4,
-Imc		= 0x00888/4,
-Iac		= 0x00810/4,
-Iam		= 0x00890/4,
-Itr		= 0x00820/4,
-Ivar		= 0x00900/4,
-Msixt		= 0x0000/4,
-Msipba		= 0x2000/4,
-Pbacl		= 0x11068/4,
-Gpie		= 0x00898/4,
-Pfctop		= 0x03008/4,
-Fcttv		= 0x03200/4,
-Fcrtl		= 0x03220/4,
-Fcrth		= 0x03260/4,
-Rcrtv		= 0x032a0/4,
-Tfcs		= 0x0ce00/4,
-Rbal		= 0x01000/4,
-Rbah		= 0x01004/4,
-Rdlen		= 0x01008/4,
-Rdh		= 0x01010/4,
-Rdt		= 0x01018/4,
-Rxdctl		= 0x01028/4,
-Srrctl		= 0x02100/4,
-Dcarxctl	= 0x02200/4,
-Rdrxctl		= 0x02f00/4,
-Rxpbsize	= 0x03c00/4,
-Rxctl		= 0x03000/4,
-Dropen		= 0x03d04/4,
-Rxcsum		= 0x05000/4,
-Rfctl		= 0x05008/4,
-Mta		= 0x05200/4,
-Ral98		= 0x05400/4,
-Rah98		= 0x05404/4,
-Ral99		= 0x0a200/4,
-Rah99		= 0x0a204/4,
-Psrtype		= 0x05480/4,
-Vfta		= 0x0a000/4,
-Fctrl		= 0x05080/4,
-Vlnctrl		= 0x05088/4,
-Msctctrl	= 0x05090/4,
-Mrqc		= 0x05818/4,
-Vmdctl		= 0x0581c/4,
-Imir		= 0x05a80/4,
-Imirext		= 0x05aa0/4,
-Imirvp		= 0x05ac0/4,
-Reta		= 0x05c00/4,
-Rssrk		= 0x05c80/4,
-Tdbal		= 0x06000/4,
-Tdbah		= 0x06004/4,
-Tdlen		= 0x06008/4,
-Tdh		= 0x06010/4,
-Tdt		= 0x06018/4,
-Txdctl		= 0x06028/4,
-Tdwbal		= 0x06038/4,
-Tdwbah		= 0x0603c/4,
-Dtxctl98	= 0x07e00/4,
-Dtxctl99	= 0x04a80/4,
-Tdcatxctrl98	= 0x07200/4,
-Tdcatxctrl99	= 0x0600c/4,
-Tipg		= 0x0cb00/4,
-Txpbsize	= 0x0cc00/4,
-Hlreg0		= 0x04240/4,
-Hlreg1		= 0x04244/4,
-Msca		= 0x0425c/4,
-Msrwd		= 0x04260/4,
-Mhadd		= 0x04268/4,
-Pcss1		= 0x04288/4,
-Pcss2		= 0x0428c/4,
-Xpcss		= 0x04290/4,
-Serdesc		= 0x04298/4,
-Macs		= 0x0429c/4,
-Autoc		= 0x042a0/4,
-Links		= 0x042a4/4,
-Links2		= 0x04324/4,
-Autoc2		= 0x042a8/4,
+Ctrl = 0x00000/4,
+Status = 0x00008/4,
+Ctrlext = 0x00018/4,
+Esdp = 0x00020/4,
+Esodp = 0x00028/4,
+Ledctl = 0x00200/4,
+Tcptimer = 0x0004c/4,
+Ecc = 0x110b0/4,
+Eec = 0x10010/4,
+Eerd = 0x10014/4,
+Fla = 0x1001c/4,
+Flop = 0x1013c/4,
+Grc = 0x10200/4,
+Icr = 0x00800/4,
+Ics = 0x00808/4,
+Ims = 0x00880/4,
+Imc = 0x00888/4,
+Iac = 0x00810/4,
+Iam = 0x00890/4,
+Itr = 0x00820/4,
+Ivar = 0x00900/4,
+Msixt = 0x0000/4,
+Msipba = 0x2000/4,
+Pbacl = 0x11068/4,
+Gpie = 0x00898/4,
+Pfctop = 0x03008/4,
+Fcttv = 0x03200/4,
+Fcrtl = 0x03220/4,
+Fcrth = 0x03260/4,
+Rcrtv = 0x032a0/4,
+Tfcs = 0x0ce00/4,
+Rbal = 0x01000/4,
+Rbah = 0x01004/4,
+Rdlen = 0x01008/4,
+Rdh = 0x01010/4,
+Rdt = 0x01018/4,
+Rxdctl = 0x01028/4,
+Srrctl = 0x02100/4,
+Dcarxctl = 0x02200/4,
+Rdrxctl = 0x02f00/4,
+Rxpbsize = 0x03c00/4,
+Rxctl = 0x03000/4,
+Dropen = 0x03d04/4,
+Rxcsum = 0x05000/4,
+Rfctl = 0x05008/4,
+Mta = 0x05200/4,
+Ral98 = 0x05400/4,
+Rah98 = 0x05404/4,
+Ral99 = 0x0a200/4,
+Rah99 = 0x0a204/4,
+Psrtype = 0x05480/4,
+Vfta = 0x0a000/4,
+Fctrl = 0x05080/4,
+Vlnctrl = 0x05088/4,
+Msctctrl = 0x05090/4,
+Mrqc = 0x05818/4,
+Vmdctl = 0x0581c/4,
+Imir = 0x05a80/4,
+Imirext = 0x05aa0/4,
+Imirvp = 0x05ac0/4,
+Reta = 0x05c00/4,
+Rssrk = 0x05c80/4,
+Tdbal = 0x06000/4,
+Tdbah = 0x06004/4,
+Tdlen = 0x06008/4,
+Tdh = 0x06010/4,
+Tdt = 0x06018/4,
+Txdctl = 0x06028/4,
+Tdwbal = 0x06038/4,
+Tdwbah = 0x0603c/4,
+Dtxctl98 = 0x07e00/4,
+Dtxctl99 = 0x04a80/4,
+Tdcatxctrl98 = 0x07200/4,
+Tdcatxctrl99 = 0x0600c/4,
+Tipg = 0x0cb00/4,
+Txpbsize = 0x0cc00/4,
+Hlreg0 = 0x04240/4,
+Hlreg1 = 0x04244/4,
+Msca = 0x0425c/4,
+Msrwd = 0x04260/4,
+Mhadd = 0x04268/4,
+Pcss1 = 0x04288/4,
+Pcss2 = 0x0428c/4,
+Xpcss = 0x04290/4,
+Serdesc = 0x04298/4,
+Macs = 0x0429c/4,
+Autoc = 0x042a0/4,
+Links = 0x042a4/4,
+Links2 = 0x04324/4,
+Autoc2 = 0x042a8/4,
 };
 enum {
-Factive		= 1<<0,
-Enable		= 1<<31,
-Rst		= 1<<26,
-Ten		= 1<<25,
-Te		= 1<<0,
-Bam		= 1<<10,
-Upe 		= 1<<9,
-Mpe 		= 1<<8,
-Pthresh		= 0,
-Hthresh		= 8,
-Wthresh		= 16,
-Renable		= 1<<25,
-Rxen		= 1<<0,
-Dmbyps		= 1<<1,
-Rdmt½		= 0,
-Rdmt¼		= 1,
-Rdmt⅛		= 2,
-Crcstrip	= 1<<1,
-Rscfrstsize	= 037<<17,
-Ippcse		= 1<<12,
-EEstart		= 1<<0,
-EEdone		= 1<<1,
-Irx0		= 1<<0,
-Itx0		= 1<<1,
-Lsc		= 1<<20,
-Lnkup		= 1<<30,
-Lnkspd		= 1<<29,
-Txcrcen		= 1<<0,
-Rxcrcstrip	= 1<<1,
-Jumboen		= 1<<2,
-Txpaden		= 1<<10,
-Flu		= 1<<0,
-Lmsshift	= 13,
-Lmsmask		= 7,
+Factive = 1<<0,
+Enable = 1<<31,
+Rst = 1<<26,
+Ten = 1<<25,
+Te = 1<<0,
+Bam = 1<<10,
+Upe = 1<<9,
+Mpe = 1<<8,
+Pthresh = 0,
+Hthresh = 8,
+Wthresh = 16,
+Renable = 1<<25,
+Rxen = 1<<0,
+Dmbyps = 1<<1,
+Rdmt½ = 0,
+Rdmt¼ = 1,
+Rdmt⅛ = 2,
+Crcstrip = 1<<1,
+Rscfrstsize = 037<<17,
+Ippcse = 1<<12,
+EEstart = 1<<0,
+EEdone = 1<<1,
+Irx0 = 1<<0,
+Itx0 = 1<<1,
+Lsc = 1<<20,
+Lnkup = 1<<30,
+Lnkspd = 1<<29,
+Txcrcen = 1<<0,
+Rxcrcstrip = 1<<1,
+Jumboen = 1<<2,
+Txpaden = 1<<10,
+Flu = 1<<0,
+Lmsshift = 13,
+Lmsmask = 7,
 };
 typedef struct Ctlr Ctlr;
 typedef struct Rd Rd;
 typedef struct Td Td;
 typedef struct {
-uint	reg;
-char	*name;
+uint reg;
+char *name;
 } Stat;
 Stat stattab[] = {
-0x4000,	"crc error",
-0x4004,	"illegal byte",
-0x4008,	"short packet",
-0x3fa0,	"missed pkt0",
-0x4034,	"mac local flt",
-0x4038,	"mac rmt flt",
-0x4040,	"rx length err",
-0x3f60,	"xon tx",
-0xcf60,	"xon rx",
-0x3f68,	"xoff tx",
-0xcf68,	"xoff rx",
-0x405c,	"rx 040",
-0x4060,	"rx 07f",
-0x4064,	"rx 100",
-0x4068,	"rx 200",
-0x406c,	"rx 3ff",
-0x4070,	"rx big",
-0x4074,	"rx ok",
-0x4078,	"rx bcast",
-0x3fc0,	"rx no buf0",
-0x40a4,	"rx runt",
-0x40a8,	"rx frag",
-0x40ac,	"rx ovrsz",
-0x40b0,	"rx jab",
-0x40d0,	"rx pkt",
-0x40d4,	"tx pkt",
-0x40d8,	"tx 040",
-0x40dc,	"tx 07f",
-0x40e0,	"tx 100",
-0x40e4,	"tx 200",
-0x40e8,	"tx 3ff",
-0x40ec,	"tx big",
-0x40f4,	"tx bcast",
-0x4120,	"xsum err",
+0x4000, "crc error",
+0x4004, "illegal byte",
+0x4008, "short packet",
+0x3fa0, "missed pkt0",
+0x4034, "mac local flt",
+0x4038, "mac rmt flt",
+0x4040, "rx length err",
+0x3f60, "xon tx",
+0xcf60, "xon rx",
+0x3f68, "xoff tx",
+0xcf68, "xoff rx",
+0x405c, "rx 040",
+0x4060, "rx 07f",
+0x4064, "rx 100",
+0x4068, "rx 200",
+0x406c, "rx 3ff",
+0x4070, "rx big",
+0x4074, "rx ok",
+0x4078, "rx bcast",
+0x3fc0, "rx no buf0",
+0x40a4, "rx runt",
+0x40a8, "rx frag",
+0x40ac, "rx ovrsz",
+0x40b0, "rx jab",
+0x40d0, "rx pkt",
+0x40d4, "tx pkt",
+0x40d8, "tx 040",
+0x40dc, "tx 07f",
+0x40e0, "tx 100",
+0x40e4, "tx 200",
+0x40e8, "tx 3ff",
+0x40ec, "tx big",
+0x40f4, "tx bcast",
+0x4120, "xsum err",
 };
 enum {
-Pif	= 1<<7,
-Ipcs	= 1<<6,
-L4cs	= 1<<5,
-Tcpcs	= 1<<4,
-Vp	= 1<<3,
-Ixsm	= 1<<2,
-Reop	= 1<<1,
-Rdd	= 1<<0,
+Pif = 1<<7,
+Ipcs = 1<<6,
+L4cs = 1<<5,
+Tcpcs = 1<<4,
+Vp = 1<<3,
+Ixsm = 1<<2,
+Reop = 1<<1,
+Rdd = 1<<0,
 };
 struct Rd {
-u32int	addr[2];
-ushort	length;
-ushort	cksum;
-uchar	status;
-uchar	errors;
-ushort	vlan;
+u32int addr[2];
+ushort length;
+ushort cksum;
+uchar status;
+uchar errors;
+ushort vlan;
 };
 enum {
-Rs	= 1<<3,
-Ic	= 1<<2,
-Ifcs	= 1<<1,
-Teop	= 1<<0,
-Tdd	= 1<<0,
+Rs = 1<<3,
+Ic = 1<<2,
+Ifcs = 1<<1,
+Teop = 1<<0,
+Tdd = 1<<0,
 };
 struct Td {
-u32int	addr[2];
-ushort	length;
-uchar	cso;
-uchar	cmd;
-uchar	status;
-uchar	css;
-ushort	vlan;
+u32int addr[2];
+ushort length;
+uchar cso;
+uchar cmd;
+uchar status;
+uchar css;
+ushort vlan;
 };
 struct Ctlr {
-Pcidev	*p;
-Ether	*edev;
-int	type;
-u32int	*reg;
-u32int	*msix;
-u32int	*physreg;
-u32int	*physmsix;
-uchar	flag;
-int	nrd;
-int	ntd;
-int	nrb;
-uint	rbsz;
-int	procsrunning;
-int	attached;
-Lock	slock;
-Lock	alock;
-QLock	tlock;
-Rendez	lrendez;
-Rendez	trendez;
-Rendez	rrendez;
-uint	im;
-uint	lim;
-uint	rim;
-uint	tim;
-Lock	imlock;
-Rd*	rdba;
-Block**	rb;
-int	rdt;
-int	rdfree;
-Td*	tdba;
-int	tdh;
-int	tdt;
-Block**	tb;
-uchar	ra[Eaddrlen];
-uchar	mta[128];
-ulong	stats[nelem(stattab)];
-uint	speeds[3];
+Pcidev *p;
+Ether *edev;
+int type;
+u32int *reg;
+u32int *msix;
+u32int *physreg;
+u32int *physmsix;
+uchar flag;
+int nrd;
+int ntd;
+int nrb;
+uint rbsz;
+int procsrunning;
+int attached;
+Lock slock;
+Lock alock;
+QLock tlock;
+Rendez lrendez;
+Rendez trendez;
+Rendez rrendez;
+uint im;
+uint lim;
+uint rim;
+uint tim;
+Lock imlock;
+Rd* rdba;
+Block** rb;
+int rdt;
+int rdfree;
+Td* tdba;
+int tdh;
+int tdt;
+Block** tb;
+uchar ra[Eaddrlen];
+uchar mta[128];
+ulong stats[nelem(stattab)];
+uint speeds[3];
 };
 enum {
 I82598 = 1,
 I82599,
 };
-static	Ctlr	*ctlrtab[4];
-static	int	nctlr;
-static	Lock	rblock;
-static	Block	*rbpool;
+static Ctlr *ctlrtab[4];
+static int nctlr;
+static Lock rblock;
+static Block *rbpool;
 static void
 readstats(Ctlr *c)
 {
@@ -296,7 +296,7 @@ q = p + READSTR;
 readstats(c);
 for(i = 0; i < nelem(stattab); i++)
 if(c->stats[i] > 0)
-p = seprint(p, q, "%.10s  %uld\n", stattab[i].name,					c->stats[i]);
+p = seprint(p, q, "%.10s  %uld\n", stattab[i].name, c->stats[i]);
 t = c->speeds;
 p = seprint(p, q, "speeds: 0:%d 1000:%d 10000:%d\n", t[0], t[1], t[2]);
 p = seprint(p, q, "mtu: min:%d max:%d\n", e->minmtu, e->maxmtu);
@@ -645,7 +645,7 @@ if((eeread(c, 0) & 0xc0) != 0x40)
 return -1;
 u = 0;
 for(i = 0; i < 0x40; i++)
-u +=  eeread(c, i);
+u += eeread(c, i);
 for(i = 3; i < 0xf; i++){
 p = eeread(c, i);
 l = eeread(c, p++);
@@ -696,8 +696,8 @@ c->reg[Fcrth] = 0x40000 | Enable;
 c->reg[Rcrtv] = 0x6000;
 } else
 c->reg[Fcrtl] = c->reg[Fcrth] = c->reg[Rcrtv] = 0;
-c->reg[Ivar+0] =     0 | 1<<7;
-c->reg[Ivar+64/4] =  1 | 1<<7;
+c->reg[Ivar+0] = 0 | 1<<7;
+c->reg[Ivar+64/4] = 1 | 1<<7;
 if (Goslow) {
 for(i = Itr; i < Itr + 20; i++)
 c->reg[i] = 128;

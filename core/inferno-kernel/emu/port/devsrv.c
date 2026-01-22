@@ -1,60 +1,60 @@
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
-#include	"interp.h"
-#include	<isa.h>
-#include	"runt.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
+#include "interp.h"
+#include <isa.h>
+#include "runt.h"
 typedef struct SrvFile SrvFile;
 typedef struct Pending Pending;
 struct Pending
 {
-Pending*	next;
-Pending*	prev;
+Pending* next;
+Pending* prev;
 int fid;
-Channel*	rc;
-Channel*	wc;
+Channel* rc;
+Channel* wc;
 };
 struct SrvFile
 {
-char*	name;
-char*	user;
-ulong		perm;
-Qid		qid;
-int		ref;
-char*	spec;
-SrvFile*	devlist;
-SrvFile*	entry;
-int		opens;
-int		flags;
-vlong	length;
-Channel*	read;
-Channel*	write;
-SrvFile*	dir;
-Pending	waitlist;
+char* name;
+char* user;
+ulong perm;
+Qid qid;
+int ref;
+char* spec;
+SrvFile* devlist;
+SrvFile* entry;
+int opens;
+int flags;
+vlong length;
+Channel* read;
+Channel* write;
+SrvFile* dir;
+Pending waitlist;
 };
 enum
 {
-SORCLOSE	= (1<<0),
-SRDCLOSE	= (1<<1),
-SWRCLOSE	= (1<<2),
-SREMOVED	= (1<<3),
+SORCLOSE = (1<<0),
+SRDCLOSE = (1<<1),
+SWRCLOSE = (1<<2),
+SREMOVED = (1<<3),
 };
 typedef struct SrvDev SrvDev;
 struct SrvDev
 {
-Type*	Rread;
-Type*	Rwrite;
-QLock	l;
-ulong	pathgen;
-SrvFile*	devices;
+Type* Rread;
+Type* Rwrite;
+QLock l;
+ulong pathgen;
+SrvFile* devices;
 };
 static SrvDev dev;
-void	freechan(Heap*, int);
-static void	freerdchan(Heap*, int);
-static void	freewrchan(Heap*, int);
+void freechan(Heap*, int);
+static void freerdchan(Heap*, int);
+static void freewrchan(Heap*, int);
 static void delwaiting(Pending*);
-Type	*Trdchan;
-Type	*Twrchan;
+Type *Trdchan;
+Type *Twrchan;
 static int
 srvgen(Chan *c, char *name, Dirtab *tab, int ntab, int s, Dir *dp)
 {

@@ -1,19 +1,19 @@
 #ifndef gsdevice_INCLUDED
-#  define gsdevice_INCLUDED
+# define gsdevice_INCLUDED
 #ifndef gx_device_DEFINED
-#  define gx_device_DEFINED
+# define gx_device_DEFINED
 typedef struct gx_device_s gx_device;
 #endif
 #ifndef gx_device_memory_DEFINED
-#  define gx_device_memory_DEFINED
+# define gx_device_memory_DEFINED
 typedef struct gx_device_memory_s gx_device_memory;
 #endif
 #ifndef gs_matrix_DEFINED
-#  define gs_matrix_DEFINED
+# define gs_matrix_DEFINED
 typedef struct gs_matrix_s gs_matrix;
 #endif
 #ifndef gs_param_list_DEFINED
-#  define gs_param_list_DEFINED
+# define gs_param_list_DEFINED
 typedef struct gs_param_list_s gs_param_list;
 #endif
 int gs_opendevice(gx_device *);
@@ -48,13 +48,13 @@ gs_get_device_or_hw_params(dev, plist, true)
 int gs_putdeviceparams(gx_device *, gs_param_list *);
 int gs_closedevice(gx_device *);
 #ifndef gs_imager_state_DEFINED
-#  define gs_imager_state_DEFINED
+# define gs_imager_state_DEFINED
 typedef struct gs_imager_state_s gs_imager_state;
 #endif
 int gs_imager_putdeviceparams(gs_imager_state *pis, gx_device *dev,
 gs_param_list *plist);
 #ifndef gs_state_DEFINED
-#  define gs_state_DEFINED
+# define gs_state_DEFINED
 typedef struct gs_state_s gs_state;
 #endif
 int gs_flushpage(gs_state *);
@@ -66,7 +66,7 @@ int gs_setdevice_no_erase(gs_state *, gx_device *);
 int gs_setdevice_no_init(gs_state *, gx_device *);
 gx_device *gs_currentdevice(const gs_state *);
 #ifndef gs_currentdevice_inline
-#  define gs_currentdevice_inline(pgs) gs_currentdevice(pgs)
+# define gs_currentdevice_inline(pgs) gs_currentdevice(pgs)
 #endif
 int gs_state_putdeviceparams(gs_state *pgs, gs_param_list *plist);
 #endif

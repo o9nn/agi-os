@@ -25,11 +25,11 @@ int line_size_color_plane;
 byte data[DATA_SIZE];
 byte plane_data[LINE_SIZE * 3];
 fputs("\033@",prn_stream);
-{	int lnum;
+{ int lnum;
 int line_size = gdev_mem_bytes_per_scan_line((gx_device *)pdev);
 int num_blank_lines = 0;
 for ( lnum = 0; lnum < pdev->height; lnum++ )
-{	byte *end_data = data + line_size;
+{ byte *end_data = data + line_size;
 gdev_prn_copy_scan_lines(pdev, lnum,
 (byte *)data, line_size);
 while ( end_data > data && end_data[-1] == 0 )
@@ -39,7 +39,7 @@ if ( end_data == data )
 num_blank_lines++;
 }
 else
-{	int i;
+{ int i;
 byte *odp;
 byte *row;
 memset(end_data, 0, 7);
@@ -71,7 +71,7 @@ if ( num_blank_lines > 0 )
 if (lnum == 0)
 {
 fputs("\0330",prn_stream);
-vtp = (num_blank_lines  / 8);
+vtp = (num_blank_lines / 8);
 fprintf(prn_stream,"\033B%c\000",vtp);
 fputs("\013",prn_stream);
 num_blank_lines = 0;
@@ -99,7 +99,7 @@ fputc('\000',prn_stream);
 fputs("\124\124",prn_stream);
 for ( row = plane_data + LINE_SIZE * 2, i = 0;
 i < 3; row -= LINE_SIZE, i++ )
-{	int jj;
+{ int jj;
 byte ctemp;
 odp = row;
 for (jj=0; jj< line_size_color_plane; jj++)

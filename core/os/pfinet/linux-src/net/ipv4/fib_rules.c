@@ -28,26 +28,26 @@
 struct fib_rule
 {
 struct fib_rule *r_next;
-u32		r_preference;
-unsigned char	r_table;
-unsigned char	r_action;
-unsigned char	r_dst_len;
-unsigned char	r_src_len;
-u32		r_src;
-u32		r_srcmask;
-u32		r_dst;
-u32		r_dstmask;
-u32		r_srcmap;
-u8		r_flags;
-u8		r_tos;
+u32 r_preference;
+unsigned char r_table;
+unsigned char r_action;
+unsigned char r_dst_len;
+unsigned char r_src_len;
+u32 r_src;
+u32 r_srcmask;
+u32 r_dst;
+u32 r_dstmask;
+u32 r_srcmap;
+u8 r_flags;
+u8 r_tos;
 #ifdef CONFIG_IP_ROUTE_FWMARK
-u32		r_fwmark;
+u32 r_fwmark;
 #endif
-int		r_ifindex;
+int r_ifindex;
 #ifdef CONFIG_NET_CLS_ROUTE
-__u32		r_tclassid;
+__u32 r_tclassid;
 #endif
-char		r_ifname[IFNAMSIZ];
+char r_ifname[IFNAMSIZ];
 };
 static struct fib_rule default_rule = { NULL, 0x7FFF, RT_TABLE_DEFAULT, RTN_UNICAST, };
 static struct fib_rule main_rule = { &default_rule, 0x7FFE, RT_TABLE_MAIN, RTN_UNICAST, };
@@ -285,8 +285,8 @@ struct fib_rule *r,
 struct netlink_callback *cb)
 {
 struct rtmsg *rtm;
-struct nlmsghdr  *nlh;
-unsigned char	 *b = skb->tail;
+struct nlmsghdr *nlh;
+unsigned char *b = skb->tail;
 nlh = NLMSG_PUT(skb, NETLINK_CREDS(cb->skb)->pid, cb->nlh->nlmsg_seq, RTM_NEWRULE, sizeof(*rtm));
 rtm = NLMSG_DATA(nlh);
 rtm->rtm_family = AF_INET;

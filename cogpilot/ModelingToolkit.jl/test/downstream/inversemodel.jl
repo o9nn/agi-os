@@ -71,8 +71,8 @@ end
 end
 @mtkmodel InverseControlledTank begin
 begin
-c0 = 0.8    #  "Nominal concentration
-T0 = 308.5 #  "Nominal temperature
+c0 = 0.8 # "Nominal concentration
+T0 = 308.5 # "Nominal temperature
 x10 = 0.42
 x20 = 0.01
 u0 = -0.0224

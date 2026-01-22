@@ -4,8 +4,8 @@
 #include "fns.h"
 #include "getflags.h"
 char *Signame[] = {
-"sigexit",	"sighup",	"sigint",	"sigquit",
-"sigalrm",	"sigkill",	"sigfpe",	"sigterm",
+"sigexit", "sighup", "sigint", "sigquit",
+"sigalrm", "sigkill", "sigfpe", "sigterm",
 0
 };
 char *syssigname[] = {
@@ -24,16 +24,16 @@ char *Fdprefix = "/fd/";
 void execfinit(void);
 void execbind(void);
 builtin Builtin[] = {
-"cd",		execcd,
-"whatis",	execwhatis,
-"eval",		execeval,
-"exec",		execexec,
-"exit",		execexit,
-"shift",	execshift,
-"wait",		execwait,
-".",		execdot,
-"finit",	execfinit,
-"flag",		execflag,
+"cd", execcd,
+"whatis", execwhatis,
+"eval", execeval,
+"exec", execexec,
+"exit", execexit,
+"shift", execshift,
+"wait", execwait,
+".", execdot,
+"finit", execfinit,
+"flag", execflag,
 0
 };
 void
@@ -281,7 +281,7 @@ rerrstr(file, sizeof file);
 pfmt(err, "%s: %s\n", argv[1], file);
 efree((char *)argv);
 }
-#define	NDIR	256
+#define NDIR 256
 int
 Globsize(char *p)
 {
@@ -298,12 +298,12 @@ globlen++;
 }
 return isglob?globlen:0;
 }
-#define	NFD	50
-#define	NDBUF	32
+#define NFD 50
+#define NDBUF 32
 struct{
-Dir	*dbuf;
-int	i;
-int	n;
+Dir *dbuf;
+int i;
+int n;
 }dir[NFD];
 int
 Opendir(char *name)

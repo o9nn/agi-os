@@ -2,18 +2,18 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
-typedef  unsigned int   UInt32;
-typedef  int            Int32;
-typedef  unsigned char  UChar;
-typedef  char           Char;
-typedef  unsigned char  Bool;
-#define True    ((Bool)1)
-#define False   ((Bool)0)
+typedef unsigned int UInt32;
+typedef int Int32;
+typedef unsigned char UChar;
+typedef char Char;
+typedef unsigned char Bool;
+#define True ((Bool)1)
+#define False ((Bool)0)
 Char inFileName[2000];
 Char outFileName[2000];
 Char progName[2000];
 UInt32 bytesOut = 0;
-UInt32 bytesIn  = 0;
+UInt32 bytesIn = 0;
 void readError ( void )
 {
 fprintf ( stderr,
@@ -45,10 +45,10 @@ exit ( 1 );
 }
 typedef
 struct {
-FILE*  handle;
-Int32  buffer;
-Int32  buffLive;
-Char   mode;
+FILE* handle;
+Int32 buffer;
+Int32 buffLive;
+Char mode;
 }
 BitStream;
 BitStream* bsOpenReadStream ( FILE* stream )
@@ -142,8 +142,8 @@ name[n-3] == 'b' &&
 name[n-2] == 'z' &&
 name[n-1] == '2');
 }
-#define BLOCK_HEADER_HI  0x00003141UL
-#define BLOCK_HEADER_LO  0x59265359UL
+#define BLOCK_HEADER_HI 0x00003141UL
+#define BLOCK_HEADER_LO 0x59265359UL
 #define BLOCK_ENDMARK_HI 0x00001772UL
 #define BLOCK_ENDMARK_LO 0x45385090UL
 UInt32 bStart[20000];
@@ -152,14 +152,14 @@ UInt32 rbStart[20000];
 UInt32 rbEnd[20000];
 Int32 main ( Int32 argc, Char** argv )
 {
-FILE*       inFile;
-FILE*       outFile;
-BitStream*  bsIn, *bsWr;
-Int32       currBlock, b, wrBlock;
-UInt32      bitsRead;
-Int32       rbCtr;
-UInt32      buffHi, buffLo, blockCRC;
-Char*       p;
+FILE* inFile;
+FILE* outFile;
+BitStream* bsIn, *bsWr;
+Int32 currBlock, b, wrBlock;
+UInt32 bitsRead;
+Int32 rbCtr;
+UInt32 buffHi, buffLo, blockCRC;
+Char* p;
 strncpy ( progName, argv[0], sizeof progName );
 progName[sizeof progName-1] = 0;
 inFileName[0] = outFileName[0] = 0;
@@ -191,7 +191,7 @@ if (bitsRead >= bStart[currBlock] &&
 bEnd[currBlock] = bitsRead-1;
 if (currBlock > 0)
 fprintf ( stderr, "   block %d runs from %d to %d (incomplete)\n",
-currBlock,  bStart[currBlock], bEnd[currBlock] );
+currBlock, bStart[currBlock], bEnd[currBlock] );
 } else
 currBlock--;
 break;
@@ -210,7 +210,7 @@ bEnd[currBlock] = 0;
 if (currBlock > 0 &&
 (bEnd[currBlock] - bStart[currBlock]) >= 130) {
 fprintf ( stderr, "   block %d runs from %d to %d\n",
-rbCtr+1,  bStart[currBlock], bEnd[currBlock] );
+rbCtr+1, bStart[currBlock], bEnd[currBlock] );
 rbStart[rbCtr] = bStart[currBlock];
 rbEnd[rbCtr] = bEnd[currBlock];
 rbCtr++;

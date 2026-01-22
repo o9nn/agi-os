@@ -1315,8 +1315,8 @@ ret->wbuf_freelist->head = NULL;
 #ifndef OPENSSL_NO_ENGINE
 ret->client_cert_engine = NULL;
 # ifdef OPENSSL_SSL_CLIENT_ENGINE_AUTO
-#  define eng_strx(x)     #x
-#  define eng_str(x)      eng_strx(x)
+# define eng_strx(x) #x
+# define eng_str(x) eng_strx(x)
 {
 ENGINE *eng;
 eng = ENGINE_by_id(eng_str(OPENSSL_SSL_CLIENT_ENGINE_AUTO));
@@ -2204,9 +2204,9 @@ void (*cb) (const SSL *ssl, int type, int val))
 {
 ssl->info_callback = cb;
 }
-void (*SSL_get_info_callback(const SSL *ssl)) (const SSL *  ,
-int  ,
-int  ) {
+void (*SSL_get_info_callback(const SSL *ssl)) (const SSL * ,
+int ,
+int ) {
 return ssl->info_callback;
 }
 int SSL_state(const SSL *ssl)

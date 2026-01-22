@@ -1,4 +1,4 @@
-#define DIR	"/lib/sky"
+#define DIR "/lib/sky"
 typedef enum
 {
 Planet,
@@ -33,7 +33,7 @@ NONGC,
 }Type;
 enum
 {
-Pppo1	= 0,
+Pppo1 = 0,
 Pppo2,
 Pppo3,
 Pppo4,
@@ -92,186 +92,186 @@ Ppltdecm,
 Ppltdecs,
 Pnparam,
 };
-#define	UNKNOWNMAG	32767
-#define	NPlanet			20
-typedef float	Angle;
-typedef long	DAngle;
-typedef short	Mag;
-typedef long	Key;
+#define UNKNOWNMAG 32767
+#define NPlanet 20
+typedef float Angle;
+typedef long DAngle;
+typedef short Mag;
+typedef long Key;
 typedef struct NGCrec NGCrec;
 struct NGCrec{
-DAngle	ra;
-DAngle	dec;
-DAngle	dummy1;
-DAngle	diam;
-Mag	mag;
-short	ngc;
-char	diamlim;
-char	type;
-char	magtype;
-char	dummy2;
-char	desc[52];
+DAngle ra;
+DAngle dec;
+DAngle dummy1;
+DAngle diam;
+Mag mag;
+short ngc;
+char diamlim;
+char type;
+char magtype;
+char dummy2;
+char desc[52];
 };
 typedef struct Abellrec Abellrec;
 struct Abellrec{
-DAngle	ra;
-DAngle	dec;
-DAngle	glat;
-DAngle	glong;
-Mag	mag10;
-short	abell;
-DAngle	rad;
-short	pop;
-short	dist;
-char	distgrp;
-char	richgrp;
-char	flag;
-char	pad;
+DAngle ra;
+DAngle dec;
+DAngle glat;
+DAngle glong;
+Mag mag10;
+short abell;
+DAngle rad;
+short pop;
+short dist;
+char distgrp;
+char richgrp;
+char flag;
+char pad;
 };
 typedef struct Planetrec Planetrec;
 struct Planetrec{
-DAngle	ra;
-DAngle	dec;
-DAngle	az;
-DAngle	alt;
-DAngle	semidiam;
-double	phase;
-char		name[16];
+DAngle ra;
+DAngle dec;
+DAngle az;
+DAngle alt;
+DAngle semidiam;
+double phase;
+char name[16];
 };
 typedef struct SAOrec SAOrec;
 struct SAOrec{
-DAngle	ra;
-DAngle	dec;
-DAngle	dra;
-DAngle	ddec;
-Mag	mag;
-Mag	mpg;
-char	spec[3];
-char	code;
-char	compid[2];
-char	hdcode;
-char	pad1;
-long	hd;
-char	name[3];
-char	nname;
+DAngle ra;
+DAngle dec;
+DAngle dra;
+DAngle ddec;
+Mag mag;
+Mag mpg;
+char spec[3];
+char code;
+char compid[2];
+char hdcode;
+char pad1;
+long hd;
+char name[3];
+char nname;
 };
 typedef struct Mindexrec Mindexrec;
 struct Mindexrec{
-char	m;
-char	dummy;
-short	ngc;
+char m;
+char dummy;
+short ngc;
 };
 typedef struct Bayerec Bayerec;
 struct Bayerec{
-long	sao;
-char	name[3];
-char	pad;
+long sao;
+char name[3];
+char pad;
 };
 typedef struct Namedrec Namedrec;
 struct Namedrec{
-char	name[36];
+char name[36];
 };
 typedef struct Namerec Namerec;
 struct Namerec{
-long	sao;
-long	ngc;
-long	abell;
-char	name[36];
+long sao;
+long ngc;
+long abell;
+char name[36];
 };
 typedef struct Patchrec Patchrec;
 struct Patchrec{
-int	nkey;
-long	key[60];
+int nkey;
+long key[60];
 };
 typedef struct Record Record;
 struct Record{
-Type	type;
-long	index;
+Type type;
+long index;
 union{
-SAOrec	sao;
-NGCrec	ngc;
-Abellrec	abell;
-Namedrec	named;
-Patchrec	patch;
-Planetrec	planet;
+SAOrec sao;
+NGCrec ngc;
+Abellrec abell;
+Namedrec named;
+Patchrec patch;
+Planetrec planet;
 };
 };
 typedef struct Name Name;
 struct Name{
-char	*name;
-int	type;
+char *name;
+int type;
 };
-typedef	struct	Plate	Plate;
-struct	Plate
+typedef struct Plate Plate;
+struct Plate
 {
-char	rgn[7];
-char	disk;
-Angle	ra;
-Angle	dec;
+char rgn[7];
+char disk;
+Angle ra;
+Angle dec;
 };
-typedef	struct	Header	Header;
-struct	Header
+typedef struct Header Header;
+struct Header
 {
-float	param[Pnparam];
-int	amdflag;
-float	x;
-float	y;
-float	xi;
-float	eta;
+float param[Pnparam];
+int amdflag;
+float x;
+float y;
+float xi;
+float eta;
 };
-typedef	long	Pix;
-typedef struct	Img Img;
-struct	Img
+typedef long Pix;
+typedef struct Img Img;
+struct Img
 {
-int	nx;
-int	ny;
-Pix	a[1];
+int nx;
+int ny;
+Pix a[1];
 };
-#define	RAD(x)	((x)*PI_180)
-#define	DEG(x)	((x)/PI_180)
-#define	ARCSECONDS_PER_RADIAN	(DEG(1)*3600)
-#define	MILLIARCSEC	(1000*60*60)
-int	nplate;
-Plate	plate[2000];
-double	PI_180;
-double	TWOPI;
-double	LN2;
-int	debug;
+#define RAD(x) ((x)*PI_180)
+#define DEG(x) ((x)/PI_180)
+#define ARCSECONDS_PER_RADIAN (DEG(1)*3600)
+#define MILLIARCSEC (1000*60*60)
+int nplate;
+Plate plate[2000];
+double PI_180;
+double TWOPI;
+double LN2;
+int debug;
 struct
 {
-float	min;
-float	max;
-float	gamma;
-float	absgamma;
-float	mult1;
-float	mult2;
-int	neg;
+float min;
+float max;
+float gamma;
+float absgamma;
+float mult1;
+float mult2;
+int neg;
 } gam;
 typedef struct Picture Picture;
 struct Picture
 {
-int	minx;
-int	miny;
-int	maxx;
-int	maxy;
-char	name[16];
-uchar	*data;
+int minx;
+int miny;
+int maxx;
+int maxy;
+char name[16];
+uchar *data;
 };
 typedef struct Image Image;
-extern	double	PI_180;
-extern	double	TWOPI;
-extern	char	*progname;
-extern	char	*desctab[][2];
-extern	Name	names[];
-extern	Record	*rec;
-extern	long		nrec;
-extern	Planetrec	*planet;
-extern	int		folded;
-extern	DAngle	ramin;
-extern	DAngle	ramax;
-extern	DAngle	decmin;
-extern	DAngle	decmax;
-extern	Biobuf	bout;
+extern double PI_180;
+extern double TWOPI;
+extern char *progname;
+extern char *desctab[][2];
+extern Name names[];
+extern Record *rec;
+extern long nrec;
+extern Planetrec *planet;
+extern int folded;
+extern DAngle ramin;
+extern DAngle ramax;
+extern DAngle decmin;
+extern DAngle decmax;
+extern Biobuf bout;
 extern void saoopen(void);
 extern void ngcopen(void);
 extern void patchopen(void);
@@ -299,36 +299,36 @@ extern char*hm5(Angle);
 extern long dangle(Angle);
 extern Angle angle(DAngle);
 extern void prdesc(char*, char*(*)[2], short*);
-extern double	xsqrt(double);
-extern Angle	dist(Angle, Angle, Angle, Angle);
-extern Header*	getheader(char*);
-extern char*	getword(char*, char*);
-extern void	amdinv(Header*, Angle, Angle, float, float);
-extern void	ppoinv(Header*, Angle, Angle);
-extern void	xypos(Header*, Angle, Angle, float, float);
-extern void	traneqstd(Header*, Angle, Angle);
-extern Angle	getra(char*);
-extern Angle	getdec(char*);
-extern void	getplates(void);
-extern Img*	dssread(char*);
-extern void	hinv(Pix*, int, int);
-extern int	input_bit(Biobuf*);
-extern int	input_nbits(Biobuf*, int);
-extern int	input_huffman(Biobuf*);
-extern	int	input_nybble(Biobuf*);
-extern void	qtree_decode(Biobuf*, Pix*, int, int, int, int);
-extern void	start_inputing_bits(void);
-extern Picture*	image(Angle, Angle, Angle, Angle);
-extern char*	dssmount(int);
-extern int	dogamma(Pix);
-extern void	displaypic(Picture*);
-extern void	displayimage(Image*);
-extern void	plot(char*);
-extern void	astro(char*, int);
-extern char*	alpha(char*, char*);
-extern char*	skipbl(char*);
-extern void	flatten(void);
-extern int		bbox(long, long, int);
-extern int		inbbox(DAngle, DAngle);
-extern char*	nameof(Record*);
-#define	NINDEX	400
+extern double xsqrt(double);
+extern Angle dist(Angle, Angle, Angle, Angle);
+extern Header* getheader(char*);
+extern char* getword(char*, char*);
+extern void amdinv(Header*, Angle, Angle, float, float);
+extern void ppoinv(Header*, Angle, Angle);
+extern void xypos(Header*, Angle, Angle, float, float);
+extern void traneqstd(Header*, Angle, Angle);
+extern Angle getra(char*);
+extern Angle getdec(char*);
+extern void getplates(void);
+extern Img* dssread(char*);
+extern void hinv(Pix*, int, int);
+extern int input_bit(Biobuf*);
+extern int input_nbits(Biobuf*, int);
+extern int input_huffman(Biobuf*);
+extern int input_nybble(Biobuf*);
+extern void qtree_decode(Biobuf*, Pix*, int, int, int, int);
+extern void start_inputing_bits(void);
+extern Picture* image(Angle, Angle, Angle, Angle);
+extern char* dssmount(int);
+extern int dogamma(Pix);
+extern void displaypic(Picture*);
+extern void displayimage(Image*);
+extern void plot(char*);
+extern void astro(char*, int);
+extern char* alpha(char*, char*);
+extern char* skipbl(char*);
+extern void flatten(void);
+extern int bbox(long, long, int);
+extern int inbbox(DAngle, DAngle);
+extern char* nameof(Record*);
+#define NINDEX 400

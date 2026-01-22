@@ -7,7 +7,7 @@
 (define tname "read-proxy-test")
 (test-begin tname)
 (define sto (PostgresStorageNode
-	"postgres:///opencog_test?user=opencog_tester&password=cheese"))
+"postgres:///opencog_test?user=opencog_tester&password=cheese"))
 (define wsto (WriteThruProxy "writer"))
 (cog-set-value! wsto (Predicate "*-proxy-parts-*") sto)
 (cog-open wsto)
@@ -18,7 +18,7 @@
 (cog-close wsto)
 (cog-atomspace-clear)
 (set! sto (PostgresStorageNode
-	"postgres:///opencog_test?user=opencog_tester&password=cheese"))
+"postgres:///opencog_test?user=opencog_tester&password=cheese"))
 (define rsto (ReadThruProxy "reader"))
 (cog-set-value! rsto (Predicate "*-proxy-parts-*") sto)
 (cog-open rsto)

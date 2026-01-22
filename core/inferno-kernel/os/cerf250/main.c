@@ -6,10 +6,10 @@
 #include "../port/error.h"
 #include "io.h"
 #include "version.h"
-#define	MAXCONF		32
+#define MAXCONF 32
 Mach *m = (Mach*)MACHADDR;
 Proc *up = 0;
-Vectorpage	*page0 = (Vectorpage*)KZERO;
+Vectorpage *page0 = (Vectorpage*)KZERO;
 Conf conf;
 extern ulong kerndate;
 extern int cflag;
@@ -21,8 +21,8 @@ char *confname[MAXCONF];
 char *confval[MAXCONF];
 int nconf;
 void addconf(char *, char *);
-void	eepromscan(void);
-char*	getconf(char*);
+void eepromscan(void);
+char* getconf(char*);
 void
 doc(char *m)
 {
@@ -131,7 +131,7 @@ print("cpu halted\n");
 for(;;){
 }
 }
-Conf	conf;
+Conf conf;
 void
 addconf(char *name, char *val)
 {

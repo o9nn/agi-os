@@ -163,7 +163,7 @@ if ((x>=0) && (y>=0) && (x < img->width) && (y < img->height)) {
 if (x + width > img->width)
 width = img->width - x;
 if (y + height > img->height)
-height =  img->height - y;
+height = img->height - y;
 switch (color) {
 case DISPLAY_COLORS_NATIVE:
 if (depth == DISPLAY_DEPTH_8)
@@ -772,9 +772,9 @@ black += cyan + magenta + yellow;
 cyan = magenta = yellow = 0;
 }
 }
-*d++ = (255-cyan)    * (255-black) / 255;
+*d++ = (255-cyan) * (255-black) / 255;
 *d++ = (255-magenta) * (255-black) / 255;
-*d++ = (255-yellow)  * (255-black) / 255;
+*d++ = (255-yellow) * (255-black) / 255;
 }
 }
 }
@@ -814,9 +814,9 @@ black += cyan + magenta + yellow;
 cyan = magenta = yellow = 0;
 }
 }
-*d++ = (255-cyan)    * (255-black) / 255;
+*d++ = (255-cyan) * (255-black) / 255;
 *d++ = (255-magenta) * (255-black) / 255;
-*d++ = (255-yellow)  * (255-black) / 255;
+*d++ = (255-yellow) * (255-black) / 255;
 }
 }
 }
@@ -858,10 +858,10 @@ for (j=0; j<num_comp; j++) {
 devicen = &img->devicen[j];
 if (devicen->visible && devicen->used) {
 value = s[j];
-cyan    += value*devicen->cyan   /65535;
+cyan += value*devicen->cyan /65535;
 magenta += value*devicen->magenta/65535;
-yellow  += value*devicen->yellow /65535;
-black   += value*devicen->black  /65535;
+yellow += value*devicen->yellow /65535;
+black += value*devicen->black /65535;
 }
 }
 }
@@ -873,9 +873,9 @@ if (yellow > 255)
 yellow = 255;
 if (black > 255)
 black = 255;
-*d++ = (255-cyan)    * (255-black) / 255;
+*d++ = (255-cyan) * (255-black) / 255;
 *d++ = (255-magenta) * (255-black) / 255;
-*d++ = (255-yellow)  * (255-black) / 255;
+*d++ = (255-yellow) * (255-black) / 255;
 s += 8;
 }
 }
@@ -916,10 +916,10 @@ return -1;
 img->devicen[comp_num].used = 1;
 strncpy(img->devicen[comp_num].name, name,
 sizeof(img->devicen[comp_num].name)-1);
-img->devicen[comp_num].cyan    = c;
+img->devicen[comp_num].cyan = c;
 img->devicen[comp_num].magenta = m;
-img->devicen[comp_num].yellow  = y;
-img->devicen[comp_num].black   = k;
+img->devicen[comp_num].yellow = y;
+img->devicen[comp_num].black = k;
 return 0;
 }
 display_callback display = {

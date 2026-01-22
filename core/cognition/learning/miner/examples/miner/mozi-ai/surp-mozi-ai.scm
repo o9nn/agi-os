@@ -10,33 +10,33 @@
 (use-modules (opencog bioscience))
 (load "mozi-ai-utils.scm")
 (define log-filename (string-append
-                      (rm-extension ptns-filename "scm")
-                      "-"
-                      (rm-extension kb-filename "scm")
-                      "-" (symbol->string surp)
-                      ".log"))
+(rm-extension ptns-filename "scm")
+"-"
+(rm-extension kb-filename "scm")
+"-" (symbol->string surp)
+".log"))
 (cog-logger-set-level! "debug")
 (cog-logger-set-filename! log-filename)
 (ure-logger-set-level! "debug")
 (ure-logger-set-filename! log-filename)
 (define (run-surprisingness)
-  (let* (
-         (db-cpt (Concept kb-filename))
-         (ptns-filepath (string-append "ptns/" ptns-filename))
-         (msg (cog-logger-debug "Loading ~a" ptns-filepath))
-         (ptns-lst (load-patterns ptns-filepath db-cpt))
-         (kb-filepath (string-append "kbs/" kb-filename))
-         (msg (cog-logger-debug "Loading ~a" kb-filepath))
-         (db-lst (load-min-preprocess kb-filepath))
-         (dmy (fill-db-cpt db-cpt db-lst))
-         (msg (cog-logger-info "Run surprisingness over ~a with patterns ~a"
-                               kb-filename ptns-filename))
-         (msg (cog-logger-info (string-append "With parameters:\n"
-                                              "surp = ~a\n"
-                                              "max-cnjs = ~a")
-                               surp max-cnjs))
-         (results (cog-outgoing-set (cog-surp surp max-cnjs db-cpt db-ratio)))
-         (msg (cog-logger-info "Results of surprisingness over ~a:\nsize = ~a\n~a"
-                               kb-filename (length results) results)))
-    results))
+(let* (
+(db-cpt (Concept kb-filename))
+(ptns-filepath (string-append "ptns/" ptns-filename))
+(msg (cog-logger-debug "Loading ~a" ptns-filepath))
+(ptns-lst (load-patterns ptns-filepath db-cpt))
+(kb-filepath (string-append "kbs/" kb-filename))
+(msg (cog-logger-debug "Loading ~a" kb-filepath))
+(db-lst (load-min-preprocess kb-filepath))
+(dmy (fill-db-cpt db-cpt db-lst))
+(msg (cog-logger-info "Run surprisingness over ~a with patterns ~a"
+kb-filename ptns-filename))
+(msg (cog-logger-info (string-append "With parameters:\n"
+"surp = ~a\n"
+"max-cnjs = ~a")
+surp max-cnjs))
+(results (cog-outgoing-set (cog-surp surp max-cnjs db-cpt db-ratio)))
+(msg (cog-logger-info "Results of surprisingness over ~a:\nsize = ~a\n~a"
+kb-filename (length results) results)))
+results))
 (define results (run-surprisingness))

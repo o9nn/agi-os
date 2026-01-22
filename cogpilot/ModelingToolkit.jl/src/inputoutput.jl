@@ -95,7 +95,7 @@ Example: `sys.u ~ sys.inner.u` will bind `sys.inner.u`, but `sys.u` remains an u
 function same_or_inner_namespace(u, var)
 nu = get_namespace(u)
 nv = get_namespace(var)
-nu == nv ||           # namespaces are the same
+nu == nv || # namespaces are the same
 startswith(nv, nu) || # or nv starts with nu, i.e., nv is an inner namespace to nu
 occursin(NAMESPACE_SEPARATOR, string(getname(var))) &&
 !occursin(NAMESPACE_SEPARATOR, string(getname(u))) # or u is top level but var is internal
@@ -132,17 +132,17 @@ has_var(ex, x) = x ∈ Set(get_variables(ex))
 """
 (f_oop, f_ip), x_sym, p_sym, io_sys = generate_control_function(
 sys::System,
-inputs             = unbound_inputs(sys),
+inputs = unbound_inputs(sys),
 disturbance_inputs = disturbances(sys);
-implicit_dae       = false,
-simplify           = false,
-split              = true,
+implicit_dae = false,
+simplify = false,
+split = true,
 )
 For a system `sys` with inputs (as determined by [`unbound_inputs`](@ref) or user specified), generate functions with additional input argument `u`
 The returned functions are the out-of-place (`f_oop`) and in-place (`f_ip`) forms:
 ```
-f_oop : (x,u,p,t)      -> rhs
-f_ip  : (xout,x,u,p,t) -> nothing
+f_oop : (x,u,p,t) -> rhs
+f_ip : (xout,x,u,p,t) -> nothing
 ```
 The return values also include the chosen state-realization (the remaining unknowns) `x_sym` and parameters, in the order they appear as arguments to `f`.
 If `disturbance_inputs` is an array of variables, the generated dynamics function will preserve any state and dynamics associated with disturbance inputs, but the disturbance inputs themselves will (by default) not be included as inputs to the generated function. The use case for this is to generate dynamics for state observers that estimate the influence of unmeasured disturbances, and thus require unknown variables for the disturbance model, but without disturbance inputs since the disturbances are not available for measurement. To add an input argument corresponding to the disturbance inputs, either include the disturbance inputs among the control inputs, or set `disturbance_argument=true`, in which case an additional input argument `w` is added to the generated function `(x,u,p,t,w)->rhs`.
@@ -317,7 +317,7 @@ t = ModelingToolkitStandardLibrary.Blocks.t
 m1 = 1
 m2 = 1
 k = 1000 # Spring stiffness
-c = 10   # Damping coefficient
+c = 10 # Damping coefficient
 @named inertia1 = Inertia(; J = m1)
 @named inertia2 = Inertia(; J = m2)
 @named spring = Spring(; c = k)

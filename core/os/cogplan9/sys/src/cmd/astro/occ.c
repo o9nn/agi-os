@@ -1,6 +1,6 @@
 #include "astro.h"
-Occ	 o1, o2;
-Obj2	 xo1, xo2;
+Occ o1, o2;
+Obj2 xo1, xo2;
 void
 occult(Obj2 *p1, Obj2 *p2, double)
 {

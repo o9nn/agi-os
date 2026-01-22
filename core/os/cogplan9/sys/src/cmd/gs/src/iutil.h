@@ -1,5 +1,5 @@
 #ifndef iutil_INCLUDED
-#  define iutil_INCLUDED
+# define iutil_INCLUDED
 void refcpy_to_new(ref * to, const ref * from, uint size,
 gs_dual_memory_t *dmem);
 int refcpy_to_old(ref * aref, uint index, const ref * from, uint size,
@@ -28,7 +28,7 @@ int int_param(const ref *, int, int *);
 int make_reals(ref *, const double *, int);
 int make_floats(ref *, const float *, int);
 #ifndef gs_matrix_DEFINED
-#  define gs_matrix_DEFINED
+# define gs_matrix_DEFINED
 typedef struct gs_matrix_s gs_matrix;
 #endif
 int read_matrix(const gs_memory_t *mem, const ref *, gs_matrix *);

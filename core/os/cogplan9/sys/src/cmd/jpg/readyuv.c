@@ -95,7 +95,7 @@ a->chanlen = pixels * lines;
 a->r = Rect(0, 0, pixels, lines);
 if ((frm = malloc(pixels*2*lines*sizeof(ushort))) == nil)
 goto Error;
-for (c = 0; c  < 3; c++)
+for (c = 0; c < 3; c++)
 if ((a->chans[c] = malloc(pixels*lines)) == nil)
 goto Error;
 if ((buf = malloc(pixels*2)) == nil)

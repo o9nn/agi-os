@@ -49,7 +49,7 @@ cmd = tl cmd;
 mtext := "";
 i := 0;
 while (len cmd) {
-msg :=  (hd cmd).word;
+msg := (hd cmd).word;
 cmd = tl cmd;
 if (i++ > 0)
 mtext = mtext + " ";
@@ -69,7 +69,7 @@ return nil;
 }
 sevtran(sname: string): int
 {
-SEVMAP :=  array[] of {"INF", "WRN", "ERR", "FTL"};
+SEVMAP := array[] of {"INF", "WRN", "ERR", "FTL"};
 for (i:=0; i<len SEVMAP; i++)
 if (sname == SEVMAP[i])
 return i;

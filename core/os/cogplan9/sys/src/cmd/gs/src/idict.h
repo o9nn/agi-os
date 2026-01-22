@@ -1,5 +1,5 @@
 #ifndef idict_INCLUDED
-#  define idict_INCLUDED
+# define idict_INCLUDED
 #include "iddstack.h"
 struct dict_s {
 ref values;
@@ -13,7 +13,7 @@ ref memory;
 extern const uint dict_max_size;
 extern bool dict_auto_expand;
 #ifndef gs_ref_memory_DEFINED
-#  define gs_ref_memory_DEFINED
+# define gs_ref_memory_DEFINED
 typedef struct gs_ref_memory_s gs_ref_memory_t;
 #endif
 int dict_alloc(gs_ref_memory_t *, uint maxlength, ref * pdref);
@@ -56,24 +56,24 @@ dict_hash_mod_mask(hash, size))
 uint dict_round_size_small(uint rsize);
 uint dict_round_size_large(uint rsize);
 #if arch_small_memory
-#  define dict_hash_mod(h, s) dict_hash_mod_small(h, s)
-#  define dict_hash_mod_inline(h, s) dict_hash_mod_inline_small(h, s)
-#  define dict_round_size(s) dict_round_size_small(s)
+# define dict_hash_mod(h, s) dict_hash_mod_small(h, s)
+# define dict_hash_mod_inline(h, s) dict_hash_mod_inline_small(h, s)
+# define dict_round_size(s) dict_round_size_small(s)
 #else
-#  ifdef DEBUG
-#    define dict_hash_mod(h, s)\
+# ifdef DEBUG
+# define dict_hash_mod(h, s)\
 (gs_debug_c('.') ? dict_hash_mod_small(h, s) :\
 dict_hash_mod_large(h, s))
-#    define dict_hash_mod_inline(h, s)\
+# define dict_hash_mod_inline(h, s)\
 (gs_debug_c('.') ? dict_hash_mod_inline_small(h, s) :\
 dict_hash_mod_inline_large(h, s))
-#    define dict_round_size(s)\
+# define dict_round_size(s)\
 (gs_debug_c('.') ? dict_round_size_small(s) :\
 dict_round_size_large(s))
-#  else
-#    define dict_hash_mod(h, s) dict_hash_mod_large(h, s)
-#    define dict_hash_mod_inline(h, s) dict_hash_mod_inline_large(h, s)
-#    define dict_round_size(s) dict_round_size_large(s)
-#  endif
+# else
+# define dict_hash_mod(h, s) dict_hash_mod_large(h, s)
+# define dict_hash_mod_inline(h, s) dict_hash_mod_inline_large(h, s)
+# define dict_round_size(s) dict_round_size_large(s)
+# endif
 #endif
 #endif

@@ -327,7 +327,7 @@ Bprint(&stdout, "dbdumpmode\n");
 Bprint(&stdout, "type=%s, size=%s\n", mode->type, mode->size);
 Bprint(&stdout, "frequency=%d\n", mode->frequency);
 Bprint(&stdout, "x=%d (0x%X), y=%d (0x%X), z=%d (0x%X)\n",
-mode->x, mode->x, mode->y,  mode->y, mode->z, mode->z);
+mode->x, mode->x, mode->y, mode->y, mode->z, mode->z);
 Bprint(&stdout, "ht=%d (0x%X), shb=%d (0x%X), ehb=%d (0x%X)\n",
 mode->ht, mode->ht, mode->shb, mode->shb, mode->ehb, mode->ehb);
 Bprint(&stdout, "shs=%d (0x%X), ehs=%d (0x%X)\n",

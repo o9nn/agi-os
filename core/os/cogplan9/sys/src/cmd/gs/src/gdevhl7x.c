@@ -3,7 +3,7 @@
 typedef struct {
 short width;
 short height;
-}                 PaperFormat;
+} PaperFormat;
 typedef unsigned char Byte;
 typedef struct {
 Byte * data;
@@ -11,36 +11,36 @@ short maxSize;
 short current;
 } ByteList;
 typedef struct {
-short  previousSize;
-Byte   previousData[1500];
-short  nbBlankLines;
-short  nbLinesSent;
-short  pageWidth;
-short  pageHeight;
-short  horizontalOffset;
-short  resolution;
+short previousSize;
+Byte previousData[1500];
+short nbBlankLines;
+short nbLinesSent;
+short pageWidth;
+short pageHeight;
+short horizontalOffset;
+short resolution;
 } Summary;
 private const int DumpFinished = 0;
 private const int DumpContinue = 1;
 private const int HL7X0_LENGTH = 5;
-private void  makeCommandsForSequence(Byte     * pSource,
-short      length,
+private void makeCommandsForSequence(Byte * pSource,
+short length,
 ByteList * pCommandList,
-short      offset,
-Byte     * pCommandCount,
-short      rest);
+short offset,
+Byte * pCommandCount,
+short rest);
 private int dumpPage(gx_device_printer * pSource,
-Byte              * pLineTmp,
-ByteList          * pCommandList,
-Summary           * pSummary
+Byte * pLineTmp,
+ByteList * pCommandList,
+Summary * pSummary
 );
 private void initSummary(Summary * s,short pw, short ph, short resolution);
 private void resetPreviousData(Summary * s);
-private void makeFullLine( Byte      * pCurrentLine,
-Byte      * pPreviousLine,
-short       lineWidth,
-ByteList  * commandsList,
-short       horizontalOffset
+private void makeFullLine( Byte * pCurrentLine,
+Byte * pPreviousLine,
+short lineWidth,
+ByteList * commandsList,
+short horizontalOffset
 );
 private void initByteList(ByteList *list, Byte *array, short maxSize,short initCurrent);
 private void addByte(ByteList *list,Byte value );
@@ -53,19 +53,19 @@ private short roomLeft(ByteList * list);
 private void dumpToPrinter(ByteList * list,FILE * printStream);
 private int hl7x0_print_page(gx_device_printer *, FILE *, int, int, ByteList *);
 #ifdef X_DPI
-#  define X_DPI2 X_DPI
+# define X_DPI2 X_DPI
 #else
-#  define X_DPI 300
-#  define X_DPI2 600
+# define X_DPI 300
+# define X_DPI2 600
 #endif
 #ifdef Y_DPI
-#  define Y_DPI2 Y_DPI
+# define Y_DPI2 Y_DPI
 #else
-#  define Y_DPI 300
-#  define Y_DPI2 600
+# define Y_DPI 300
+# define Y_DPI2 600
 #endif
 #define LETTER_WIDTH 5100
-#define LEFT_MARGIN  30
+#define LEFT_MARGIN 30
 private const PaperFormat tableOfFormats[] = {
 { 2550, 3300 },
 { 2550, 4200 },
@@ -93,11 +93,11 @@ private const PaperFormat tableOfFormats[] = {
 private short MaxLineLength(short resolution){
 return (((156 * resolution / 150 ) * 5 )/4) + 8;
 }
-#define HL7X0_MARGINS_A4	0.1, 0.15, 0.07, 0.05
+#define HL7X0_MARGINS_A4 0.1, 0.15, 0.07, 0.05
 #define HL7X0_MARGINS_LETTER 0.275, 0.20, 0.25, 0.07
 #define W sizeof(word)
-#define HL720    0
-#define HL730    0
+#define HL720 0
+#define HL730 0
 private dev_proc_open_device(hl7x0_open);
 private dev_proc_close_device(hl7x0_close);
 private dev_proc_print_page(hl720_print_page);
@@ -155,7 +155,7 @@ return hl7x0_print_page(pdev, prn_stream, HL720, 300,
 }
 private int
 hl730_print_page(gx_device_printer *pdev, FILE *prn_stream)
-{	return hl720_print_page(pdev, prn_stream);
+{ return hl720_print_page(pdev, prn_stream);
 }
 private int
 hl7x0_print_page(gx_device_printer *pdev, FILE *printStream, int ptype,
@@ -163,12 +163,12 @@ int dots_per_inch, ByteList *initCommand)
 {
 Byte FormFeed[] = {'@','G',0x00,0x00,0x01,0xFF,'@','F'};
 ByteList formFeedCommand;
-int line_size       = gdev_mem_bytes_per_scan_line((gx_device *)pdev);
+int line_size = gdev_mem_bytes_per_scan_line((gx_device *)pdev);
 int x_dpi = pdev->x_pixels_per_inch;
 int num_rows = dev_print_scan_lines(pdev);
 int result;
-int sizeOfBuffer   = MaxLineLength(x_dpi) + 30;
-Byte * storage      = (Byte *) gs_malloc(pdev->memory,
+int sizeOfBuffer = MaxLineLength(x_dpi) + 30;
+Byte * storage = (Byte *) gs_malloc(pdev->memory,
 sizeOfBuffer + line_size,
 1,
 "hl7x0_print_page");
@@ -228,26 +228,26 @@ private void resetPreviousData(Summary * s){
 memset(s->previousData,0,s->pageWidth);
 }
 private int dumpPage(gx_device_printer * pSource,
-Byte              * pLineTmp,
-ByteList          * pCommandList,
-Summary           * pSummary
+Byte * pLineTmp,
+ByteList * pCommandList,
+Summary * pSummary
 ){
 Byte * pSaveCommandStart;
-short  lineNB;
+short lineNB;
 short usefulLength;
 short tmpLength;
 pSaveCommandStart = currentPosition(pCommandList);
 addNBytes(pCommandList,0,HL7X0_LENGTH);
-for (lineNB = pSummary->nbLinesSent  ;
+for (lineNB = pSummary->nbLinesSent ;
 lineNB < pSummary->pageHeight ; lineNB ++ ) {
 gdev_prn_copy_scan_lines(pSource,
 lineNB,
 pLineTmp,
 pSummary->pageWidth);
-usefulLength =  stripTrailingBlanks(pLineTmp,pSummary->pageWidth);
+usefulLength = stripTrailingBlanks(pLineTmp,pSummary->pageWidth);
 if (usefulLength != 0) {
 if (pSummary->nbBlankLines != 0) {
-if ( isThereEnoughRoom( pCommandList, pSummary->nbBlankLines )   ) {
+if ( isThereEnoughRoom( pCommandList, pSummary->nbBlankLines ) ) {
 addNBytes(pCommandList,0xff,pSummary->nbBlankLines);
 pSummary->nbBlankLines = 0;
 }
@@ -296,11 +296,11 @@ pSummary->nbLinesSent ++;
 }
 if (pCommandList->current > HL7X0_LENGTH){
 short size = pCommandList->current - HL7X0_LENGTH;
-*(pSaveCommandStart++)  = '@';
-*(pSaveCommandStart++)  = 'G';
-*(pSaveCommandStart++)  = (Byte) (size >> 16);
-*(pSaveCommandStart++)  = (Byte) (size >> 8);
-*(pSaveCommandStart++)  = (Byte) (size);
+*(pSaveCommandStart++) = '@';
+*(pSaveCommandStart++) = 'G';
+*(pSaveCommandStart++) = (Byte) (size >> 16);
+*(pSaveCommandStart++) = (Byte) (size >> 8);
+*(pSaveCommandStart++) = (Byte) (size);
 }
 else {
 pCommandList->current = 0;
@@ -312,11 +312,11 @@ else {
 return DumpContinue;
 }
 }
-private void makeFullLine( Byte      * pCurrentLine,
-Byte      * pPreviousLine,
-short       lineWidth,
-ByteList  * commandsList,
-short       horizontalOffset
+private void makeFullLine( Byte * pCurrentLine,
+Byte * pPreviousLine,
+short lineWidth,
+ByteList * commandsList,
+short horizontalOffset
 ){
 Byte *pPreviousTmp;
 Byte *pCurrentTmp;
@@ -332,7 +332,7 @@ pNumberOfCommands = currentPosition(commandsList);
 addByte(commandsList,0);
 pPreviousTmp = pPreviousLine;
 pCurrentTmp = pCurrentLine;
-for (loopCounter = lineWidth ;  0 < loopCounter ; loopCounter -- )
+for (loopCounter = lineWidth ; 0 < loopCounter ; loopCounter -- )
 *pPreviousTmp++ ^= *pCurrentTmp++;
 pStartOfSequence = pPreviousLine;
 remainingWidth = lineWidth;
@@ -379,24 +379,24 @@ horizontalOffset = 1;
 }
 }
 private void makeSequenceWithoutRepeat(
-Byte     * pSequence,
-short      lengthOfSequence,
+Byte * pSequence,
+short lengthOfSequence,
 ByteList * pCommandList,
-short      offset             );
+short offset );
 private void makeSequenceWithRepeat(
-Byte     * pSequence,
-short      lengthOfSequence,
+Byte * pSequence,
+short lengthOfSequence,
 ByteList * pCommandList,
-short      offset             );
-private void makeCommandsForSequence(Byte     * pSource,
-short      length,
+short offset );
+private void makeCommandsForSequence(Byte * pSource,
+short length,
 ByteList * pCommandList,
-short      offset,
-Byte     * pNumberOfCommands,
-short      rest)         {
+short offset,
+Byte * pNumberOfCommands,
+short rest) {
 Byte * pStartOfSequence;
 Byte * pEndOfSequence;
-short  remainingLength = length - 1;
+short remainingLength = length - 1;
 pStartOfSequence = pSource;
 pEndOfSequence = pStartOfSequence + 1;
 while (true) {
@@ -466,13 +466,13 @@ pStartOfSequence = pEndOfSequence ++ ;
 }
 }
 private void makeSequenceWithoutRepeat(
-Byte     * pSequence,
-short      lengthOfSequence,
+Byte * pSequence,
+short lengthOfSequence,
 ByteList * pCommandList,
-short      offset             ){
-static const short MAX_OFFSET         = 15;
+short offset ){
+static const short MAX_OFFSET = 15;
 static const short POSITION_OF_OFFSET = 3;
-static const short MAX_LENGTH         =  7;
+static const short MAX_LENGTH = 7;
 Byte tmpFirstByte = 0;
 Byte * pSaveFirstByte;
 short reducedLength = lengthOfSequence - 1;
@@ -495,13 +495,13 @@ addArray(pCommandList, pSequence, lengthOfSequence);
 return ;
 }
 private void makeSequenceWithRepeat(
-Byte     * pSequence,
-short      lengthOfSequence,
+Byte * pSequence,
+short lengthOfSequence,
 ByteList * pCommandList,
-short      offset             ){
-static const short MAX_OFFSET         = 3;
+short offset ){
+static const short MAX_OFFSET = 3;
 static const short POSITION_OF_OFFSET = 5;
-static const short MAX_LENGTH         =  31;
+static const short MAX_LENGTH = 31;
 Byte tmpFirstByte = 0x80;
 Byte * pSaveFirstByte;
 short reducedLength = lengthOfSequence - 2;

@@ -12,20 +12,20 @@
 enum {
 STACKSIZE = 2048 * sizeof(void*),
 };
-int	debug = 0;
-char	usage[] = "Usage: %s [-d mask] [-t] [-w]\n";
+int debug = 0;
+char usage[] = "Usage: %s [-d mask] [-t] [-w]\n";
 typedef struct But {
-char	*name;
-Control	*ctl;
+char *name;
+Control *ctl;
 } But;
 typedef struct Simpleitem {
-char	*address;
-char	*data;
+char *address;
+char *data;
 } Simpleitem;
 typedef struct Multiitem {
-char	*address;
-int	ndata;
-char	**data;
+char *address;
+int ndata;
+char **data;
 } Multiitem;
 enum {
 WinBrowse,
@@ -75,15 +75,15 @@ Playlistwin,
 Nalt,
 };
 But buts[] = {
-[Exitbutton] =		{"skull", nil},
-[Pausebutton] =		{"pause", nil},
-[Playbutton] =		{"play", nil},
-[Stopbutton] =		{"stop", nil},
-[Prevbutton] =		{"prev", nil},
-[Nextbutton] =		{"next", nil},
-[Rootbutton] =		{"root", nil},
-[Deletebutton] =	{"trash", nil},
-[Helpbutton] =		{"question", nil},
+[Exitbutton] = {"skull", nil},
+[Pausebutton] = {"pause", nil},
+[Playbutton] = {"play", nil},
+[Stopbutton] = {"stop", nil},
+[Prevbutton] = {"prev", nil},
+[Nextbutton] = {"next", nil},
+[Rootbutton] = {"root", nil},
+[Deletebutton] = {"trash", nil},
+[Helpbutton] = {"question", nil},
 };
 struct tab {
 char *tabname;
@@ -91,10 +91,10 @@ char *winname;
 Control *tab;
 Control *win;
 } tabs[4] = {
-[WinBrowse] =	{"Browse",	"browsewin",	nil, nil},
-[WinPlay] =	{"Playing",	"playwin",	nil, nil},
-[WinPlaylist] =	{"Playlist",	"listwin",	nil, nil},
-[WinError] =	{"Errors",	"errorwin",	nil, nil},
+[WinBrowse] = {"Browse", "browsewin", nil, nil},
+[WinPlay] = {"Playing", "playwin", nil, nil},
+[WinPlaylist] = {"Playlist", "listwin", nil, nil},
+[WinError] = {"Errors", "errorwin", nil, nil},
 };
 char *helptext[] = {
 "Buttons, left to right:",
@@ -131,37 +131,37 @@ char *helptext[] = {
 nil,
 };
 struct Browsestack {
-char	*onum;
-int	scrollpos;
+char *onum;
+int scrollpos;
 } browsestack[Browsedepth];
 int browsesp;
 int browseline;
-Control		*vol;
-Control		*browsetopwin;
-Control		*browsebotwin;
-Control		*playlistwin;
-Control		*errortext;
-Control		*browsetopscr;
-Control		*browsebotscr;
-Playstate	playstate;
-ulong		playingbuts = 1<<Pausebutton | 1<<Stopbutton | 1<<Prevbutton | 1<<Nextbutton;
-ulong		activebuts;
-int		tabht;
-Image		*vol1img;
-Image		*vol2img;
-int		resizeready;
-int		borderwidth = 1;
-int		butht, butwid;
-int		errorlines;
-int		tflag;
-int		pflag;
-Controlset	*cs;
-char		*root;
-Multiitem	parent;
-Simpleitem	children[2048];
-int		nchildren;
-int		selected;
-Channel		*playevent;
+Control *vol;
+Control *browsetopwin;
+Control *browsebotwin;
+Control *playlistwin;
+Control *errortext;
+Control *browsetopscr;
+Control *browsebotscr;
+Playstate playstate;
+ulong playingbuts = 1<<Pausebutton | 1<<Stopbutton | 1<<Prevbutton | 1<<Nextbutton;
+ulong activebuts;
+int tabht;
+Image *vol1img;
+Image *vol2img;
+int resizeready;
+int borderwidth = 1;
+int butht, butwid;
+int errorlines;
+int tflag;
+int pflag;
+Controlset *cs;
+char *root;
+Multiitem parent;
+Simpleitem children[2048];
+int nchildren;
+int selected;
+Channel *playevent;
 void
 readbuts(void)
 {
@@ -581,8 +581,8 @@ else
 n = playlist.nentries - Dy(playlistwin->rect)/romanfont->height + 1;
 if(n < 0) n = 0;
 if(n < playlist.nentries){
-chanprint(cs->ctl, "playlistwin topline %d",  n);
-chanprint(cs->ctl, "playlistscr value %d",  n);
+chanprint(cs->ctl, "playlistwin topline %d", n);
+chanprint(cs->ctl, "playlistscr value %d", n);
 }
 chanprint(cs->ctl, "playlist show");
 }
@@ -686,22 +686,22 @@ static char *eventstr, *args[64], *s;
 static char buf[4096];
 int a, n, i;
 Alt alts[] = {
-[Exitbutton] =		{buts[Exitbutton].ctl->event, &eventstr, CHANRCV},
-[Pausebutton] =		{buts[Pausebutton].ctl->event, &eventstr, CHANRCV},
-[Playbutton] =		{buts[Playbutton].ctl->event, &eventstr, CHANRCV},
-[Stopbutton] =		{buts[Stopbutton].ctl->event, &eventstr, CHANRCV},
-[Prevbutton] =		{buts[Prevbutton].ctl->event, &eventstr, CHANRCV},
-[Nextbutton] =		{buts[Nextbutton].ctl->event, &eventstr, CHANRCV},
-[Rootbutton] =		{buts[Rootbutton].ctl->event, &eventstr, CHANRCV},
-[Deletebutton] =	{buts[Deletebutton].ctl->event, &eventstr, CHANRCV},
-[Helpbutton] =		{buts[Helpbutton].ctl->event, &eventstr, CHANRCV},
-[Volume] =		{vol->event, &eventstr, CHANRCV},
-[Browsetopwin] =	{browsetopwin->event, &eventstr, CHANRCV},
-[Browsebotwin] =	{browsebotwin->event, &eventstr, CHANRCV},
-[Browsebotscr] =	{browsebotscr->event, &eventstr, CHANRCV},
-[Playevent] =		{playevent, &eventstr, CHANRCV},
-[Playlistwin] =		{playlistwin->event, &eventstr, CHANRCV},
-[Nalt] =		{nil, nil, CHANEND}
+[Exitbutton] = {buts[Exitbutton].ctl->event, &eventstr, CHANRCV},
+[Pausebutton] = {buts[Pausebutton].ctl->event, &eventstr, CHANRCV},
+[Playbutton] = {buts[Playbutton].ctl->event, &eventstr, CHANRCV},
+[Stopbutton] = {buts[Stopbutton].ctl->event, &eventstr, CHANRCV},
+[Prevbutton] = {buts[Prevbutton].ctl->event, &eventstr, CHANRCV},
+[Nextbutton] = {buts[Nextbutton].ctl->event, &eventstr, CHANRCV},
+[Rootbutton] = {buts[Rootbutton].ctl->event, &eventstr, CHANRCV},
+[Deletebutton] = {buts[Deletebutton].ctl->event, &eventstr, CHANRCV},
+[Helpbutton] = {buts[Helpbutton].ctl->event, &eventstr, CHANRCV},
+[Volume] = {vol->event, &eventstr, CHANRCV},
+[Browsetopwin] = {browsetopwin->event, &eventstr, CHANRCV},
+[Browsebotwin] = {browsebotwin->event, &eventstr, CHANRCV},
+[Browsebotscr] = {browsebotscr->event, &eventstr, CHANRCV},
+[Playevent] = {playevent, &eventstr, CHANRCV},
+[Playlistwin] = {playlistwin->event, &eventstr, CHANRCV},
+[Nalt] = {nil, nil, CHANEND}
 };
 activate(vol);
 activate(controlcalled("tabs"));
@@ -888,8 +888,8 @@ else
 n = errorlines - Dy(errortext->rect)/romanfont->height + 1;
 if(n < 0) n = 0;
 if(n < errorlines){
-chanprint(cs->ctl, "errortext topline %d",  n);
-chanprint(cs->ctl, "errorscr value %d",  n);
+chanprint(cs->ctl, "errortext topline %d", n);
+chanprint(cs->ctl, "errorscr value %d", n);
 }
 chanprint(cs->ctl, "tabs value %d", WinError);
 }else if(strcmp(args[1], "play") ==0){

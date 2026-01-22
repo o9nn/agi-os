@@ -7,7 +7,7 @@ if ((lot=calloc(1, sizeof(dc_lot_t)))==NULL) {
 exit(27);
 }
 lot->magic = DC_LOT_MAGIC;
-lot->text1_meaning  = 0;
+lot->text1_meaning = 0;
 return lot;
 }
 void dc_lot_unref(dc_lot_t* set)
@@ -123,7 +123,7 @@ lot->text1 = dc_contact_get_first_name(contact);
 lot->text1_meaning = DC_TEXT1_USERNAME;
 }
 }
-lot->text2     = dc_msg_get_summarytext_by_raw(msg->type, msg->text, msg->param, DC_SUMMARY_CHARACTERS, context);
+lot->text2 = dc_msg_get_summarytext_by_raw(msg->type, msg->text, msg->param, DC_SUMMARY_CHARACTERS, context);
 lot->timestamp = dc_msg_get_timestamp(msg);
-lot->state     = msg->state;
+lot->state = msg->state;
 }

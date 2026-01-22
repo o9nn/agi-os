@@ -81,7 +81,7 @@ return 0;
 int
 gs_cspace_init_DeviceGray(const gs_memory_t *mem, gs_color_space *pcs)
 {
-static gs_color_space  dev_gray_proto;
+static gs_color_space dev_gray_proto;
 if (dev_gray_proto.id == 0)
 gs_cspace_init( &dev_gray_proto,
 &gs_color_space_type_DeviceGray,
@@ -92,7 +92,7 @@ return 0;
 int
 gs_cspace_build_DeviceGray(gs_color_space ** ppcspace, gs_memory_t * pmem)
 {
-int     code = gs_cspace_alloc(ppcspace, NULL, pmem);
+int code = gs_cspace_alloc(ppcspace, NULL, pmem);
 if (code >= 0)
 code = gs_cspace_init_DeviceGray(pmem, *ppcspace);
 return code;
@@ -100,7 +100,7 @@ return code;
 int
 gs_cspace_init_DeviceRGB(const gs_memory_t *mem, gs_color_space *pcs)
 {
-static gs_color_space  dev_rgb_proto;
+static gs_color_space dev_rgb_proto;
 if (dev_rgb_proto.id == 0)
 gs_cspace_init( &dev_rgb_proto,
 &gs_color_space_type_DeviceRGB,
@@ -111,7 +111,7 @@ return 0;
 int
 gs_cspace_build_DeviceRGB(gs_color_space ** ppcspace, gs_memory_t * pmem)
 {
-int     code = gs_cspace_alloc(ppcspace, NULL, pmem);
+int code = gs_cspace_alloc(ppcspace, NULL, pmem);
 if (code >= 0)
 code = gs_cspace_init_DeviceRGB(pmem, *ppcspace);
 return code;
@@ -119,7 +119,7 @@ return code;
 int
 gs_cspace_init_DeviceCMYK(const gs_memory_t *mem, gs_color_space *pcs)
 {
-static gs_color_space  dev_cmyk_proto;
+static gs_color_space dev_cmyk_proto;
 if (dev_cmyk_proto.id == 0)
 gs_cspace_init( &dev_cmyk_proto,
 &gs_color_space_type_DeviceCMYK,
@@ -130,7 +130,7 @@ return 0;
 int
 gs_cspace_build_DeviceCMYK(gs_color_space ** ppcspace, gs_memory_t * pmem)
 {
-int     code = gs_cspace_alloc(ppcspace, NULL, pmem);
+int code = gs_cspace_alloc(ppcspace, NULL, pmem);
 if (code >= 0)
 code = gs_cspace_init_DeviceCMYK(pmem, *ppcspace);
 return code;
@@ -208,8 +208,8 @@ return 0;
 int
 gx_spot_colors_set_overprint(const gs_color_space * pcs, gs_state * pgs)
 {
-gs_imager_state *       pis = (gs_imager_state *)pgs;
-gs_overprint_params_t   params;
+gs_imager_state * pis = (gs_imager_state *)pgs;
+gs_overprint_params_t params;
 if ((params.retain_any_comps = pis->overprint))
 params.retain_spot_comps = true;
 pgs->effective_overprint_mode = 0;
@@ -218,10 +218,10 @@ return gs_state_update_overprint(pgs, &params);
 private bool
 check_single_comp(int comp, frac targ_val, int ncomps, const frac * pval)
 {
-int     i;
+int i;
 for (i = 0; i < ncomps; i++) {
-if ( (i != comp && pval[i] != frac_0)  ||
-(i == comp && pval[i] != targ_val)  )
+if ( (i != comp && pval[i] != frac_0) ||
+(i == comp && pval[i] != targ_val) )
 return false;
 }
 return true;
@@ -229,42 +229,42 @@ return true;
 private gx_color_index
 check_cmyk_color_model_comps(gx_device * dev)
 {
-gx_device_color_info *          pcinfo = &dev->color_info;
-int                             ncomps = pcinfo->num_components;
-int                             cyan_c, magenta_c, yellow_c, black_c;
-const gx_cm_color_map_procs *   pprocs;
+gx_device_color_info * pcinfo = &dev->color_info;
+int ncomps = pcinfo->num_components;
+int cyan_c, magenta_c, yellow_c, black_c;
+const gx_cm_color_map_procs * pprocs;
 cm_map_proc_cmyk((*map_cmyk));
-frac                            frac_14 = frac_1 / 4;
-frac                            out[GX_DEVICE_COLOR_MAX_COMPONENTS];
-gx_color_index                  process_comps;
-if ( ncomps < 4                                       ||
+frac frac_14 = frac_1 / 4;
+frac out[GX_DEVICE_COLOR_MAX_COMPONENTS];
+gx_color_index process_comps;
+if ( ncomps < 4 ||
 (cyan_c = dev_proc(dev, get_color_comp_index)(
 dev,
 "Cyan",
 sizeof("Cyan") - 1,
-NO_COMP_NAME_TYPE )) < 0           ||
-cyan_c == GX_DEVICE_COLOR_MAX_COMPONENTS         ||
+NO_COMP_NAME_TYPE )) < 0 ||
+cyan_c == GX_DEVICE_COLOR_MAX_COMPONENTS ||
 (magenta_c = dev_proc(dev, get_color_comp_index)(
 dev,
 "Magenta",
 sizeof("Magenta") - 1,
-NO_COMP_NAME_TYPE )) < 0        ||
-magenta_c == GX_DEVICE_COLOR_MAX_COMPONENTS      ||
+NO_COMP_NAME_TYPE )) < 0 ||
+magenta_c == GX_DEVICE_COLOR_MAX_COMPONENTS ||
 (yellow_c = dev_proc(dev, get_color_comp_index)(
 dev,
 "Yellow",
 sizeof("Yellow") - 1,
-NO_COMP_NAME_TYPE )) < 0               ||
-yellow_c == GX_DEVICE_COLOR_MAX_COMPONENTS       ||
+NO_COMP_NAME_TYPE )) < 0 ||
+yellow_c == GX_DEVICE_COLOR_MAX_COMPONENTS ||
 (black_c = dev_proc(dev, get_color_comp_index)(
 dev,
 "Black",
 sizeof("Black") - 1,
-NO_COMP_NAME_TYPE )) < 0                         ||
-black_c == GX_DEVICE_COLOR_MAX_COMPONENTS          )
+NO_COMP_NAME_TYPE )) < 0 ||
+black_c == GX_DEVICE_COLOR_MAX_COMPONENTS )
 return 0;
 if ( (pprocs = dev_proc(dev, get_color_mapping_procs)(dev)) == 0 ||
-(map_cmyk = pprocs->map_cmyk) == 0                            )
+(map_cmyk = pprocs->map_cmyk) == 0 )
 return 0;
 map_cmyk(dev, frac_14, frac_0, frac_0, frac_0, out);
 if (!check_single_comp(cyan_c, frac_14, ncomps, out))
@@ -278,7 +278,7 @@ return false;
 map_cmyk(dev, frac_0, frac_0, frac_0, frac_14, out);
 if (!check_single_comp(black_c, frac_14, ncomps, out))
 return 0;
-process_comps =  ((gx_color_index)1 << cyan_c)
+process_comps = ((gx_color_index)1 << cyan_c)
 | ((gx_color_index)1 << magenta_c)
 | ((gx_color_index)1 << yellow_c)
 | ((gx_color_index)1 << black_c);
@@ -289,14 +289,14 @@ return process_comps;
 private int
 gx_set_overprint_DeviceCMYK(const gs_color_space * pcs, gs_state * pgs)
 {
-gx_device *             dev = pgs->device;
-gx_device_color_info *  pcinfo = (dev == 0 ? 0 : &dev->color_info);
-gx_color_index          drawn_comps = 0;
-gs_overprint_params_t   params;
-if ( !pgs->overprint                      ||
-pgs->overprint_mode != 1             ||
-pcinfo == 0                          ||
-pcinfo->opmode == GX_CINFO_OPMODE_NOT  )
+gx_device * dev = pgs->device;
+gx_device_color_info * pcinfo = (dev == 0 ? 0 : &dev->color_info);
+gx_color_index drawn_comps = 0;
+gs_overprint_params_t params;
+if ( !pgs->overprint ||
+pgs->overprint_mode != 1 ||
+pcinfo == 0 ||
+pcinfo->opmode == GX_CINFO_OPMODE_NOT )
 return gx_spot_colors_set_overprint(pcs, pgs);
 if (pcinfo->opmode == GX_CINFO_OPMODE_UNKNOWN)
 drawn_comps = check_cmyk_color_model_comps(dev);
@@ -306,8 +306,8 @@ if (drawn_comps == 0)
 return gx_spot_colors_set_overprint(pcs, pgs);
 pgs->effective_overprint_mode = 1;
 if (color_is_set(pgs->dev_color)) {
-gx_color_index  nz_comps;
-int             code;
+gx_color_index nz_comps;
+int code;
 dev_color_proc_get_nonzero_comps((*procp));
 procp = pgs->dev_color->type->get_nonzero_comps;
 if ((code = procp(pgs->dev_color, dev, &nz_comps)) < 0)

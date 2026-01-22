@@ -25,13 +25,13 @@
 #include "szlibx.h"
 #define sbuf_size 512
 #if 1
-#  define compression_filter_name "FlateDecode"
-#  define compression_filter_template s_zlibE_template
-#  define compression_filter_state stream_zlib_state
+# define compression_filter_name "FlateDecode"
+# define compression_filter_template s_zlibE_template
+# define compression_filter_state stream_zlib_state
 #else
-#  define compression_filter_name "LZWDecode"
-#  define compression_filter_template s_LZWE_template
-#  define compression_filter_state stream_LZW_state
+# define compression_filter_name "LZWDecode"
+# define compression_filter_template s_LZWE_template
+# define compression_filter_state stream_LZW_state
 #endif
 extern stream_state_proc_get_params(s_DCTE_get_params, stream_DCT_state);
 extern stream_state_proc_get_params(s_CF_get_params, stream_CF_state);
@@ -105,7 +105,7 @@ private int
 copy_ps_file_stripping(stream *s, const char *fname, bool HaveTrueTypes)
 {
 FILE *f;
-char buf[1024], *p, *q  = buf;
+char buf[1024], *p, *q = buf;
 int n, l = 0, m = sizeof(buf) - 1, outl = 0;
 bool skipping = false;
 f = gp_fopen(fname, "rb");
@@ -338,9 +338,9 @@ md5_byte_t zero[2] = {0, 0}, t;
 int KeySize = pdev->KeyLength / 8;
 md5_init(&md5);
 md5_append(&md5, pdev->EncryptionKey, KeySize);
-t = (byte)(object_id >>  0);  md5_append(&md5, &t, 1);
-t = (byte)(object_id >>  8);  md5_append(&md5, &t, 1);
-t = (byte)(object_id >> 16);  md5_append(&md5, &t, 1);
+t = (byte)(object_id >> 0); md5_append(&md5, &t, 1);
+t = (byte)(object_id >> 8); md5_append(&md5, &t, 1);
+t = (byte)(object_id >> 16); md5_append(&md5, &t, 1);
 md5_append(&md5, zero, 2);
 md5_finish(&md5, key);
 return min(KeySize + 5, 16);
@@ -1403,7 +1403,7 @@ return code;
 int
 pdf_begin_data_stream(gx_device_pdf *pdev, pdf_data_writer_t *pdw,
 int options, gs_id object_id)
-{   int code;
+{ int code;
 pdw->pdev = pdev;
 pdw->binary.target = pdev->strm;
 pdw->binary.dev = (gx_device_psdf *)pdev;
@@ -1417,7 +1417,7 @@ return code;
 }
 int
 pdf_end_data(pdf_data_writer_t *pdw)
-{   int code;
+{ int code;
 code = pdf_close_aside(pdw->pdev);
 if (code < 0)
 return code;

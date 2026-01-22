@@ -1,6 +1,6 @@
 #ifndef BIO_DEBUG
 # ifndef NDEBUG
-#  define NDEBUG
+# define NDEBUG
 # endif
 #endif
 #include <stdio.h>
@@ -16,7 +16,7 @@
 #include <openssl/bio.h>
 #if defined(BN_LLONG) || defined(SIXTY_FOUR_BIT)
 # ifndef HAVE_LONG_LONG
-#  define HAVE_LONG_LONG 1
+# define HAVE_LONG_LONG 1
 # endif
 #endif
 #ifdef HAVE_LONG_DOUBLE
@@ -26,9 +26,9 @@
 #endif
 #ifdef HAVE_LONG_LONG
 # if defined(_WIN32) && !defined(__GNUC__)
-#  define LLONG __int64
+# define LLONG __int64
 # else
-#  define LLONG long long
+# define LLONG long long
 # endif
 #else
 # define LLONG long
@@ -43,25 +43,25 @@ static int doapr_outch(char **, char **, size_t *, size_t *, int);
 static int _dopr(char **sbuffer, char **buffer,
 size_t *maxlen, size_t *retlen, int *truncated,
 const char *format, va_list args);
-#define DP_S_DEFAULT    0
-#define DP_S_FLAGS      1
-#define DP_S_MIN        2
-#define DP_S_DOT        3
-#define DP_S_MAX        4
-#define DP_S_MOD        5
-#define DP_S_CONV       6
-#define DP_S_DONE       7
-#define DP_F_MINUS      (1 << 0)
-#define DP_F_PLUS       (1 << 1)
-#define DP_F_SPACE      (1 << 2)
-#define DP_F_NUM        (1 << 3)
-#define DP_F_ZERO       (1 << 4)
-#define DP_F_UP         (1 << 5)
-#define DP_F_UNSIGNED   (1 << 6)
-#define DP_C_SHORT      1
-#define DP_C_LONG       2
-#define DP_C_LDOUBLE    3
-#define DP_C_LLONG      4
+#define DP_S_DEFAULT 0
+#define DP_S_FLAGS 1
+#define DP_S_MIN 2
+#define DP_S_DOT 3
+#define DP_S_MAX 4
+#define DP_S_MOD 5
+#define DP_S_CONV 6
+#define DP_S_DONE 7
+#define DP_F_MINUS (1 << 0)
+#define DP_F_PLUS (1 << 1)
+#define DP_F_SPACE (1 << 2)
+#define DP_F_NUM (1 << 3)
+#define DP_F_ZERO (1 << 4)
+#define DP_F_UP (1 << 5)
+#define DP_F_UNSIGNED (1 << 6)
+#define DP_C_SHORT 1
+#define DP_C_LONG 2
+#define DP_C_LDOUBLE 3
+#define DP_C_LLONG 4
 #define char_to_int(p) (p - '0')
 #define OSSL_MAX(p,q) ((p >= q) ? p : q)
 static int
@@ -575,7 +575,7 @@ return 0;
 }
 return 1;
 }
-#define BUFFER_INC  1024
+#define BUFFER_INC 1024
 static int
 doapr_outch(char **sbuffer,
 char **buffer, size_t *currlen, size_t *maxlen, int c)

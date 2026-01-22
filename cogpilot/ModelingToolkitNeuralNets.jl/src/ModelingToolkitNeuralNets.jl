@@ -50,7 +50,7 @@ SymbolicNeuralNetwork(; n_input = 1, n_output = 1,
 chain = multi_layer_feed_forward(n_input, n_output),
 rng = Xoshiro(0),
 init_params = Lux.initialparameters(rng, chain),
-nn_name =  :NN,
+nn_name = :NN,
 nn_p_name = :p,
 eltype = Float64)
 Create symbolic parameter for a neural network and one for its parameters.

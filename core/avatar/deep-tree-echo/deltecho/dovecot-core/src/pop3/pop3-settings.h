@@ -2,8 +2,8 @@
 #define POP3_SETTINGS_H
 struct mail_user_settings;
 enum pop3_client_workarounds {
-WORKAROUND_OUTLOOK_NO_NULS		= 0x01,
-WORKAROUND_OE_NS_EOH			= 0x02
+WORKAROUND_OUTLOOK_NO_NULS = 0x01,
+WORKAROUND_OE_NS_EOH = 0x02
 };
 enum pop3_delete_type {
 POP3_DELETE_TYPE_EXPUNGE = 0,

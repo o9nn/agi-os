@@ -4,12 +4,12 @@
 #include <string.h>
 #include <unistd.h>
 #include <math.h>
-#define EXAMPLE_DEPTH           4
-#define EXAMPLE_ORDER           5
-#define EXAMPLE_NEURONS         100
-#define EXAMPLE_MEMBRANES       9
-#define EXAMPLE_INPUT_DIM       10
-#define EXAMPLE_OUTPUT_DIM      5
+#define EXAMPLE_DEPTH 4
+#define EXAMPLE_ORDER 5
+#define EXAMPLE_NEURONS 100
+#define EXAMPLE_MEMBRANES 9
+#define EXAMPLE_INPUT_DIM 10
+#define EXAMPLE_OUTPUT_DIM 5
 #define EXAMPLE_EVOLUTION_STEPS 10
 static void print_version_info(void)
 {

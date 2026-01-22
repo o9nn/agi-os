@@ -50,7 +50,7 @@ void
 timerinit(void)
 {
 *(ushort*)Timer_ctrl = 0;
-*(ulong*)Timer0_load = m->bushz  / HZ;
+*(ulong*)Timer0_load = m->bushz / HZ;
 *(ulong*)Timer0_cnt = m->bushz / HZ;
 *(ulong*)Timer1_load = m->bushz;
 *(ulong*)Timer1_cnt = m->bushz;

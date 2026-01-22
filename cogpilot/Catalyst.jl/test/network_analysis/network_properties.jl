@@ -68,7 +68,7 @@ let
 rn2 = @reaction_network begin
 (k₁, k₂), E + S1 <--> ES1
 (k₃, k₄), E + S2 <--> ES2
-(k₅, k₆),  S2 + ES1 <--> ES1S2
+(k₅, k₆), S2 + ES1 <--> ES1S2
 (k₆, k₇), ES1S2 <--> S1 + ES2
 k₈, ES1S2 --> E+P
 (k₉, k₁₀), S1 <--> 0
@@ -93,7 +93,7 @@ let
 rn3 = @reaction_network begin
 (k₁, k₂), A11 <--> 0
 (k₃, k₄), A11 <--> A13
-(k₅, k₆),  0 <--> A12
+(k₅, k₆), 0 <--> A12
 (k₆, k₇), 0 <--> A2
 k₈, A10 --> 0
 (k₉, k₁₀), A12 <--> A6

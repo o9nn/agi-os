@@ -34,7 +34,7 @@ return;
 drawop(tmp, tmp->r, im, nil, im->r.min, S);
 switch(axis){
 case Xaxis:
-range = Rect(a, im->r.min.y,  c, im->r.max.y);
+range = Rect(a, im->r.min.y, c, im->r.max.y);
 dr0 = range;
 dr0.max.x = dr0.min.x+(c-b);
 p0 = Pt(b, im->r.min.y);
@@ -43,7 +43,7 @@ dr1.min.x = dr1.max.x-(b-a);
 p1 = Pt(a, im->r.min.y);
 break;
 case Yaxis:
-range = Rect(im->r.min.x, a,  im->r.max.x, c);
+range = Rect(im->r.min.x, a, im->r.max.x, c);
 dr0 = range;
 dr0.max.y = dr0.min.y+(c-b);
 p0 = Pt(im->r.min.x, b);

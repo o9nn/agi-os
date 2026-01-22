@@ -1,27 +1,27 @@
-#include	<plan9.h>
+#include <plan9.h>
 char *argv0;
 enum
 {
-Bit1	= 7,
-Bitx	= 6,
-Bit2	= 5,
-Bit3	= 4,
-Bit4	= 3,
-T1	= ((1<<(Bit1+1))-1) ^ 0xFF,
-Tx	= ((1<<(Bitx+1))-1) ^ 0xFF,
-T2	= ((1<<(Bit2+1))-1) ^ 0xFF,
-T3	= ((1<<(Bit3+1))-1) ^ 0xFF,
-T4	= ((1<<(Bit4+1))-1) ^ 0xFF,
-T5	= ((1<<(Bit5+1))-1) ^ 0xFF,
-Rune1	= (1<<(Bit1+0*Bitx))-1,
-Rune2	= (1<<(Bit2+1*Bitx))-1,
-Rune3	= (1<<(Bit3+2*Bitx))-1,
-Rune4	= (1<<(Bit4+3*Bitx))-1,
-Maskx	= (1<<Bitx)-1,
-Testx	= Maskx ^ 0xFF,
-SurrogateMin	= 0xD800,
-SurrogateMax	= 0xDFFF,
-Bad	= Runeerror
+Bit1 = 7,
+Bitx = 6,
+Bit2 = 5,
+Bit3 = 4,
+Bit4 = 3,
+T1 = ((1<<(Bit1+1))-1) ^ 0xFF,
+Tx = ((1<<(Bitx+1))-1) ^ 0xFF,
+T2 = ((1<<(Bit2+1))-1) ^ 0xFF,
+T3 = ((1<<(Bit3+1))-1) ^ 0xFF,
+T4 = ((1<<(Bit4+1))-1) ^ 0xFF,
+T5 = ((1<<(Bit5+1))-1) ^ 0xFF,
+Rune1 = (1<<(Bit1+0*Bitx))-1,
+Rune2 = (1<<(Bit2+1*Bitx))-1,
+Rune3 = (1<<(Bit3+2*Bitx))-1,
+Rune4 = (1<<(Bit4+3*Bitx))-1,
+Maskx = (1<<Bitx)-1,
+Testx = Maskx ^ 0xFF,
+SurrogateMin = 0xD800,
+SurrogateMax = 0xDFFF,
+Bad = Runeerror
 };
 int
 chartorune(Rune *rune, char *str)
@@ -94,9 +94,9 @@ c = Runeerror;
 if (SurrogateMin <= c && c <= SurrogateMax)
 c = Runeerror;
 if (c <= Rune3) {
-str[0] = T3 |  (c >> 2*Bitx);
+str[0] = T3 | (c >> 2*Bitx);
 str[1] = Tx | ((c >> 1*Bitx) & Maskx);
-str[2] = Tx |  (c & Maskx);
+str[2] = Tx | (c & Maskx);
 return 3;
 }
 str[0] = T4 | (c >> 3*Bitx);

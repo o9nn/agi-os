@@ -1,9 +1,9 @@
 #include "lib.h"
 #include "json-syntax.h"
-const unsigned char json_uchar_char_mask   = (1<<0);
+const unsigned char json_uchar_char_mask = (1<<0);
 const unsigned char json_control_char_mask = (1<<1);
-const unsigned char json_ws_char_mask      = (1<<2);
-const unsigned char json_digit_char_mask   = (1<<3);
+const unsigned char json_ws_char_mask = (1<<2);
+const unsigned char json_digit_char_mask = (1<<3);
 const unsigned char json_char_lookup[128] = {
 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02,
 0x02, 0x04, 0x04, 0x02, 0x02, 0x04, 0x02, 0x02,

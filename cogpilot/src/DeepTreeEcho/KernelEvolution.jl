@@ -32,12 +32,12 @@ EvolutionConfig
 Configuration for evolutionary algorithm.
 """
 struct EvolutionConfig
-population_size::Int      # Population size
-mutation_rate::Float64    # Base mutation rate
-crossover_rate::Float64   # Crossover probability
-elitism_rate::Float64     # Fraction to preserve via elitism
-tournament_size::Int      # Tournament selection size
-max_generations::Int      # Maximum generations
+population_size::Int # Population size
+mutation_rate::Float64 # Base mutation rate
+crossover_rate::Float64 # Crossover probability
+elitism_rate::Float64 # Fraction to preserve via elitism
+tournament_size::Int # Tournament selection size
+max_generations::Int # Maximum generations
 fitness_threshold::Float64 # Convergence threshold
 function EvolutionConfig(;
 population_size::Int=20,

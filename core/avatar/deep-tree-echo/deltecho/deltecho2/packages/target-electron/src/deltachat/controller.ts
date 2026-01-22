@@ -14,124 +14,124 @@ const app = rawApp as ExtendedAppMainProcess
 const log = getLogger('main/deltachat')
 const logCoreEvent = getLogger('core/event')
 class ElectronMainTransport extends yerpc.BaseTransport {
-  constructor(private sender: (message: yerpc.Message) => void) {
-    super()
-  }
-  onMessage(message: yerpc.Message): void {
-    this._onmessage(message)
-  }
-  _send(message: yerpc.Message): void {
-    this.sender(message)
-  }
+constructor(private sender: (message: yerpc.Message) => void) {
+super()
+}
+onMessage(message: yerpc.Message): void {
+this._onmessage(message)
+}
+_send(message: yerpc.Message): void {
+this.sender(message)
+}
 }
 export class JRPCDeltaChat extends BaseDeltaChat<ElectronMainTransport> {}
 export default class DeltaChatController extends EventEmitter {
-  _inner_account_manager: StdioServer | null = null
-  get account_manager(): Readonly<StdioServer> {
-    if (!this._inner_account_manager) {
-      throw new Error('account manager is not defined (yet?)')
-    }
-    return this._inner_account_manager
-  }
-  rpcServerPath?: string
-  constructor(public cwd: string) {
-    super()
-  }
-  _jsonrpcRemote: JRPCDeltaChat | null = null
-  get jsonrpcRemote(): Readonly<JRPCDeltaChat> {
-    if (!this._jsonrpcRemote) {
-      throw new Error('_jsonrpcRemote is not defined (yet?)')
-    }
-    return this._jsonrpcRemote
-  }
-  async init() {
-    log.debug('Check if legacy accounts need migration')
-    if (await migrateAccountsIfNeeded(this.cwd, getLogger('migration'))) {
-      DesktopSettings.update({
-        lastAccount: undefined,
-        lastChats: {},
-        lastSaveDialogLocation: undefined,
-      })
-    }
-    log.debug('Initiating DeltaChatNode')
-    let serverPath = await getRPCServerPath({
-      disableEnvPath: !rc_config['allow-unsafe-core-replacement'],
-    })
-    if (serverPath.includes('app.asar')) {
-      serverPath = serverPath.replace('app.asar', 'app.asar.unpacked')
-    }
-    this.rpcServerPath = serverPath
-    log.info('using deltachat-rpc-server at', { serverPath })
-    this._inner_account_manager = new StdioServer(
-      response => {
-        try {
-          if (response.indexOf('"id":"main-') !== -1) {
-            const message = JSON.parse(response)
-            if (message.id.startsWith('main-')) {
-              message.id = Number(message.id.replace('main-', ''))
-              mainProcessTransport.onMessage(message)
-              return
-            }
-          }
-        } catch (error) {
-          log.error('jsonrpc-decode', error)
-        }
-        mainWindow.send('json-rpc-message', response)
-        if (response.indexOf('event') !== -1)
-          try {
-            const { result } = JSON.parse(response)
-            const { contextId, event } = result
-            if (
-              contextId !== undefined &&
-              typeof event === 'object' &&
-              event.kind
-            ) {
-              if (event.kind === 'WebxdcRealtimeData') {
-                return
-              }
-              if (event.kind === 'Warning') {
-                logCoreEvent.warn(contextId, event.msg)
-              } else if (event.kind === 'Info') {
-                logCoreEvent.info(contextId, event.msg)
-              } else if (event.kind.startsWith('Error')) {
-                logCoreEvent.error(contextId, event.msg)
-              } else if (app.rc['log-debug']) {
-                const event_clone = Object.assign({}, event) as Partial<
-                  typeof event
-                >
-                delete event_clone.kind
-                logCoreEvent.debug(contextId, event.kind, event)
-              }
-            }
-          } catch (error) {
-            return
-          }
-      },
-      this.cwd,
-      serverPath
-    )
-    this.account_manager.start()
-    log.info('HI')
-    const mainProcessTransport = new ElectronMainTransport(message => {
-      message.id = `main-${message.id}`
-      this.account_manager.send(JSON.stringify(message))
-    })
-    ipcMain.handle('json-rpc-request', (_ev, message) => {
-      this.account_manager.send(message)
-    })
-    this._jsonrpcRemote = new JRPCDeltaChat(mainProcessTransport, false)
-    if (DesktopSettings.state.syncAllAccounts) {
-      log.info('Ready, starting accounts io...')
-      this.jsonrpcRemote.rpc.startIoForAllAccounts()
-      log.info('Started accounts io.')
-    }
-    for (const account of await this.jsonrpcRemote.rpc.getAllAccountIds()) {
-      this.jsonrpcRemote.rpc.setConfig(
-        account,
-        'verified_one_on_one_chats',
-        '1'
-      )
-    }
-  }
-  readonly webxdc = new DCWebxdc(this)
+_inner_account_manager: StdioServer | null = null
+get account_manager(): Readonly<StdioServer> {
+if (!this._inner_account_manager) {
+throw new Error('account manager is not defined (yet?)')
+}
+return this._inner_account_manager
+}
+rpcServerPath?: string
+constructor(public cwd: string) {
+super()
+}
+_jsonrpcRemote: JRPCDeltaChat | null = null
+get jsonrpcRemote(): Readonly<JRPCDeltaChat> {
+if (!this._jsonrpcRemote) {
+throw new Error('_jsonrpcRemote is not defined (yet?)')
+}
+return this._jsonrpcRemote
+}
+async init() {
+log.debug('Check if legacy accounts need migration')
+if (await migrateAccountsIfNeeded(this.cwd, getLogger('migration'))) {
+DesktopSettings.update({
+lastAccount: undefined,
+lastChats: {},
+lastSaveDialogLocation: undefined,
+})
+}
+log.debug('Initiating DeltaChatNode')
+let serverPath = await getRPCServerPath({
+disableEnvPath: !rc_config['allow-unsafe-core-replacement'],
+})
+if (serverPath.includes('app.asar')) {
+serverPath = serverPath.replace('app.asar', 'app.asar.unpacked')
+}
+this.rpcServerPath = serverPath
+log.info('using deltachat-rpc-server at', { serverPath })
+this._inner_account_manager = new StdioServer(
+response => {
+try {
+if (response.indexOf('"id":"main-') !== -1) {
+const message = JSON.parse(response)
+if (message.id.startsWith('main-')) {
+message.id = Number(message.id.replace('main-', ''))
+mainProcessTransport.onMessage(message)
+return
+}
+}
+} catch (error) {
+log.error('jsonrpc-decode', error)
+}
+mainWindow.send('json-rpc-message', response)
+if (response.indexOf('event') !== -1)
+try {
+const { result } = JSON.parse(response)
+const { contextId, event } = result
+if (
+contextId !== undefined &&
+typeof event === 'object' &&
+event.kind
+) {
+if (event.kind === 'WebxdcRealtimeData') {
+return
+}
+if (event.kind === 'Warning') {
+logCoreEvent.warn(contextId, event.msg)
+} else if (event.kind === 'Info') {
+logCoreEvent.info(contextId, event.msg)
+} else if (event.kind.startsWith('Error')) {
+logCoreEvent.error(contextId, event.msg)
+} else if (app.rc['log-debug']) {
+const event_clone = Object.assign({}, event) as Partial<
+typeof event
+>
+delete event_clone.kind
+logCoreEvent.debug(contextId, event.kind, event)
+}
+}
+} catch (error) {
+return
+}
+},
+this.cwd,
+serverPath
+)
+this.account_manager.start()
+log.info('HI')
+const mainProcessTransport = new ElectronMainTransport(message => {
+message.id = `main-${message.id}`
+this.account_manager.send(JSON.stringify(message))
+})
+ipcMain.handle('json-rpc-request', (_ev, message) => {
+this.account_manager.send(message)
+})
+this._jsonrpcRemote = new JRPCDeltaChat(mainProcessTransport, false)
+if (DesktopSettings.state.syncAllAccounts) {
+log.info('Ready, starting accounts io...')
+this.jsonrpcRemote.rpc.startIoForAllAccounts()
+log.info('Started accounts io.')
+}
+for (const account of await this.jsonrpcRemote.rpc.getAllAccountIds()) {
+this.jsonrpcRemote.rpc.setConfig(
+account,
+'verified_one_on_one_chats',
+'1'
+)
+}
+}
+readonly webxdc = new DCWebxdc(this)
 }

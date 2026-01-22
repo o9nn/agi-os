@@ -210,8 +210,8 @@ X509_CRL *crl;
 CMS_OtherRevocationInfoFormat *other;
 } d;
 };
-# define CMS_REVCHOICE_CRL               0
-# define CMS_REVCHOICE_OTHER             1
+# define CMS_REVCHOICE_CRL 0
+# define CMS_REVCHOICE_OTHER 1
 struct CMS_OtherRevocationInfoFormat_st {
 ASN1_OBJECT *otherRevInfoFormat;
 ASN1_TYPE *otherRevInfo;
@@ -226,11 +226,11 @@ ASN1_STRING *v2AttrCert;
 CMS_OtherCertificateFormat *other;
 } d;
 };
-# define CMS_CERTCHOICE_CERT             0
-# define CMS_CERTCHOICE_EXCERT           1
-# define CMS_CERTCHOICE_V1ACERT          2
-# define CMS_CERTCHOICE_V2ACERT          3
-# define CMS_CERTCHOICE_OTHER            4
+# define CMS_CERTCHOICE_CERT 0
+# define CMS_CERTCHOICE_EXCERT 1
+# define CMS_CERTCHOICE_V1ACERT 2
+# define CMS_CERTCHOICE_V2ACERT 3
+# define CMS_CERTCHOICE_OTHER 4
 struct CMS_OtherCertificateFormat_st {
 ASN1_OBJECT *otherCertFormat;
 ASN1_TYPE *otherCert;
@@ -271,10 +271,10 @@ DECLARE_ASN1_ITEM(CMS_Attributes_Verify)
 DECLARE_ASN1_ITEM(CMS_RecipientInfo)
 DECLARE_ASN1_ITEM(CMS_PasswordRecipientInfo)
 DECLARE_ASN1_ALLOC_FUNCTIONS(CMS_IssuerAndSerialNumber)
-# define CMS_SIGNERINFO_ISSUER_SERIAL    0
-# define CMS_SIGNERINFO_KEYIDENTIFIER    1
-# define CMS_RECIPINFO_ISSUER_SERIAL     0
-# define CMS_RECIPINFO_KEYIDENTIFIER     1
+# define CMS_SIGNERINFO_ISSUER_SERIAL 0
+# define CMS_SIGNERINFO_KEYIDENTIFIER 1
+# define CMS_RECIPINFO_ISSUER_SERIAL 0
+# define CMS_RECIPINFO_KEYIDENTIFIER 1
 BIO *cms_content_bio(CMS_ContentInfo *cms);
 CMS_ContentInfo *cms_Data_create(void);
 CMS_ContentInfo *cms_DigestedData_create(const EVP_MD *md);
@@ -307,7 +307,7 @@ BIO *cms_EnvelopedData_init_bio(CMS_ContentInfo *cms);
 CMS_EnvelopedData *cms_get0_enveloped(CMS_ContentInfo *cms);
 int cms_RecipientInfo_pwri_crypt(CMS_ContentInfo *cms, CMS_RecipientInfo *ri,
 int en_de);
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif
 #endif

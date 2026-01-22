@@ -3,10 +3,10 @@
 #include <bio.h>
 #include "httpd.h"
 #include "httpsrv.h"
-static	Hio		*hout;
-static	Hio		houtb;
-static	HConnect	*connect;
-void	doconvert(char*, int);
+static Hio *hout;
+static Hio houtb;
+static HConnect *connect;
+void doconvert(char*, int);
 void
 error(char *title, char *fmt, ...)
 {
@@ -28,7 +28,7 @@ hflush(hout);
 writelog(connect, "Reply: 404\nReason: %s\n", title);
 exits(nil);
 }
-typedef struct Hit	Hit;
+typedef struct Hit Hit;
 struct Hit
 {
 Hit *next;

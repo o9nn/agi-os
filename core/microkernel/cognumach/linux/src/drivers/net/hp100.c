@@ -40,9 +40,9 @@ typedef struct net_device_stats hp100_stats_t;
 #include <linux/init.h>
 #endif
 #include "hp100.h"
-#define HP100_BUS_ISA     0
-#define HP100_BUS_EISA    1
-#define HP100_BUS_PCI     2
+#define HP100_BUS_ISA 0
+#define HP100_BUS_EISA 1
+#define HP100_BUS_PCI 2
 #ifndef PCI_DEVICE_ID_HP_J2585B
 #define PCI_DEVICE_ID_HP_J2585B 0x1031
 #endif
@@ -58,11 +58,11 @@ typedef struct net_device_stats hp100_stats_t;
 #ifndef PCI_DEVICE_ID_COMPEX2_100VG
 #define PCI_DEVICE_ID_COMPEX2_100VG 0x0005
 #endif
-#define HP100_REGION_SIZE  0x20
-#define HP100_MAX_PACKET_SIZE  (1536+4)
-#define HP100_MIN_PACKET_SIZE  60
+#define HP100_REGION_SIZE 0x20
+#define HP100_MAX_PACKET_SIZE (1536+4)
+#define HP100_MIN_PACKET_SIZE 60
 #ifndef HP100_DEFAULT_RX_RATIO
-#define HP100_DEFAULT_RX_RATIO  75
+#define HP100_DEFAULT_RX_RATIO 75
 #endif
 #ifndef HP100_DEFAULT_PRIORITY_TX
 #define HP100_DEFAULT_PRIORITY_TX 0
@@ -111,26 +111,26 @@ int txrcommit;
 static struct hp100_eisa_id hp100_eisa_ids[] = {
 { 0x80F1F022, "HP J2577 rev A", HP100_BUS_EISA },
 { 0x50F1F022, "HP J2573 rev A", HP100_BUS_ISA },
-{ 0x2019F022, "HP 27248B",      HP100_BUS_EISA },
-{ 0x4019F022, "HP J2577",       HP100_BUS_EISA },
-{ 0x5019F022, "HP J2573",       HP100_BUS_ISA },
-{ 0x1030103c, "HP J2585A", 	    HP100_BUS_PCI },
-{ 0x1041103c, "HP J2585B",      HP100_BUS_PCI },
-{ 0x1042103c, "HP J2970",       HP100_BUS_PCI },
-{ 0x1040103c, "HP J2973",       HP100_BUS_PCI },
+{ 0x2019F022, "HP 27248B", HP100_BUS_EISA },
+{ 0x4019F022, "HP J2577", HP100_BUS_EISA },
+{ 0x5019F022, "HP J2573", HP100_BUS_ISA },
+{ 0x1030103c, "HP J2585A", HP100_BUS_PCI },
+{ 0x1041103c, "HP J2585B", HP100_BUS_PCI },
+{ 0x1042103c, "HP J2970", HP100_BUS_PCI },
+{ 0x1040103c, "HP J2973", HP100_BUS_PCI },
 { 0x0103180e, "ReadyLink ENET100-VG4", HP100_BUS_EISA },
 { 0x0104180e, "FreedomLine 100/VG", HP100_BUS_EISA },
 { 0x021211f6, "FreedomLine 100/VG", HP100_BUS_PCI },
 { 0x011211f6, "ReadyLink ENET100-VG4", HP100_BUS_PCI }
 };
-#define HP100_EISA_IDS_SIZE	(sizeof(hp100_eisa_ids)/sizeof(struct hp100_eisa_id))
+#define HP100_EISA_IDS_SIZE (sizeof(hp100_eisa_ids)/sizeof(struct hp100_eisa_id))
 static struct hp100_pci_id hp100_pci_ids[] = {
-{ PCI_VENDOR_ID_HP, 		PCI_DEVICE_ID_HP_J2585A },
-{ PCI_VENDOR_ID_HP,		PCI_DEVICE_ID_HP_J2585B },
-{ PCI_VENDOR_ID_COMPEX,	PCI_DEVICE_ID_COMPEX_ENET100VG4 },
-{ PCI_VENDOR_ID_COMPEX2,	PCI_DEVICE_ID_COMPEX2_100VG }
+{ PCI_VENDOR_ID_HP, PCI_DEVICE_ID_HP_J2585A },
+{ PCI_VENDOR_ID_HP, PCI_DEVICE_ID_HP_J2585B },
+{ PCI_VENDOR_ID_COMPEX, PCI_DEVICE_ID_COMPEX_ENET100VG4 },
+{ PCI_VENDOR_ID_COMPEX2, PCI_DEVICE_ID_COMPEX2_100VG }
 };
-#define HP100_PCI_IDS_SIZE	(sizeof(hp100_pci_ids)/sizeof(struct hp100_pci_id))
+#define HP100_PCI_IDS_SIZE (sizeof(hp100_pci_ids)/sizeof(struct hp100_pci_id))
 static int hp100_rx_ratio = HP100_DEFAULT_RX_RATIO;
 static int hp100_priority_tx = HP100_DEFAULT_PRIORITY_TX;
 static int hp100_mode = 1;
@@ -139,11 +139,11 @@ MODULE_PARM( hp100_rx_ratio, "1i" );
 MODULE_PARM( hp100_priority_tx, "1i" );
 MODULE_PARM( hp100_mode, "1i" );
 #endif
-static int  hp100_probe1( struct device *dev, int ioaddr, u_char bus, u_char pci_bus, u_char pci_device_fn  );
-static int  hp100_open( struct device *dev );
-static int  hp100_close( struct device *dev );
-static int  hp100_start_xmit( struct sk_buff *skb, struct device *dev );
-static int  hp100_start_xmit_bm (struct sk_buff *skb, struct device *dev );
+static int hp100_probe1( struct device *dev, int ioaddr, u_char bus, u_char pci_bus, u_char pci_device_fn );
+static int hp100_open( struct device *dev );
+static int hp100_close( struct device *dev );
+static int hp100_start_xmit( struct sk_buff *skb, struct device *dev );
+static int hp100_start_xmit_bm (struct sk_buff *skb, struct device *dev );
 static void hp100_rx( struct device *dev );
 static hp100_stats_t *hp100_get_stats( struct device *dev );
 static void hp100_misc_interrupt( struct device *dev );
@@ -154,15 +154,15 @@ static void hp100_interrupt( int irq, void *dev_id, struct pt_regs *regs );
 static void hp100_start_interface( struct device *dev );
 static void hp100_stop_interface( struct device *dev );
 static void hp100_load_eeprom( struct device *dev, u_short ioaddr );
-static int  hp100_sense_lan( struct device *dev );
-static int  hp100_login_to_vg_hub( struct device *dev, u_short force_relogin );
-static int  hp100_down_vg_link( struct device *dev );
+static int hp100_sense_lan( struct device *dev );
+static int hp100_login_to_vg_hub( struct device *dev, u_short force_relogin );
+static int hp100_down_vg_link( struct device *dev );
 static void hp100_cascade_reset( struct device *dev, u_short enable );
 static void hp100_BM_shutdown( struct device *dev );
 static void hp100_mmuinit( struct device *dev );
 static void hp100_init_pdls( struct device *dev );
-static int  hp100_init_rxpdl( struct device *dev, register hp100_ring_t *ringptr, register u_int *pdlptr);
-static int  hp100_init_txpdl( struct device *dev, register hp100_ring_t *ringptr, register u_int *pdlptr);
+static int hp100_init_rxpdl( struct device *dev, register hp100_ring_t *ringptr, register u_int *pdlptr);
+static int hp100_init_txpdl( struct device *dev, register hp100_ring_t *ringptr, register u_int *pdlptr);
 static void hp100_rxfill( struct device *dev );
 static void hp100_hwinit( struct device *dev );
 static void hp100_clean_txring( struct device *dev );
@@ -385,8 +385,8 @@ if(chip==HP100_CHIPID_LASSEN)
 {
 hp100_outw(HP100_BM_WRITE|
 HP100_BM_READ | HP100_SET_HB, OPTION_LSW);
-hp100_outw(HP100_IO_EN   |
-HP100_MEM_EN  | HP100_RESET_LB, OPTION_LSW);
+hp100_outw(HP100_IO_EN |
+HP100_MEM_EN | HP100_RESET_LB, OPTION_LSW);
 printk("hp100: %s: Busmaster mode requested.\n",dev->name);
 }
 local_mode=1;
@@ -530,9 +530,9 @@ dev->name,
 (u_int)lp->page_vaddr_algn,
 (u_int)lp->page_vaddr_algn+MAX_RINGSIZE);
 #endif
-lp->rxrcommit  = lp->txrcommit = 0;
-lp->rxrhead    = lp->rxrtail   = &(lp->rxring[0]);
-lp->txrhead    = lp->txrtail   = &(lp->txring[0]);
+lp->rxrcommit = lp->txrcommit = 0;
+lp->rxrhead = lp->rxrtail = &(lp->rxring[0]);
+lp->txrhead = lp->txrtail = &(lp->txring[0]);
 }
 hp100_hwinit( dev );
 lp->lan_type = hp100_sense_lan( dev );
@@ -540,8 +540,8 @@ printk( "hp100: %s: %s at 0x%x, IRQ %d, ",
 dev->name, lp->id->name, ioaddr, dev->irq );
 switch ( bus ) {
 case HP100_BUS_EISA: printk( "EISA" ); break;
-case HP100_BUS_PCI:  printk( "PCI" );  break;
-default:     printk( "ISA" );  break;
+case HP100_BUS_PCI: printk( "PCI" ); break;
+default: printk( "ISA" ); break;
 }
 printk( " bus, %dk SRAM (rx/tx %d%%).\n",
 lp->memory_size >> 10, lp->rx_ratio );
@@ -600,19 +600,19 @@ hp100_load_eeprom( dev, 0 );
 wait();
 hp100_cascade_reset( dev, TRUE );
 hp100_outw( HP100_DEBUG_EN |
-HP100_RX_HDR   |
-HP100_EE_EN    |
+HP100_RX_HDR |
+HP100_EE_EN |
 HP100_BM_WRITE |
-HP100_BM_READ  | HP100_RESET_HB |
+HP100_BM_READ | HP100_RESET_HB |
 HP100_FAKE_INT |
-HP100_INT_EN   |
-HP100_MEM_EN   |
-HP100_IO_EN    | HP100_RESET_LB, OPTION_LSW);
-hp100_outw( HP100_TRI_INT  |
+HP100_INT_EN |
+HP100_MEM_EN |
+HP100_IO_EN | HP100_RESET_LB, OPTION_LSW);
+hp100_outw( HP100_TRI_INT |
 HP100_MMAP_DIS | HP100_SET_HB, OPTION_LSW );
 hp100_outb( HP100_PRIORITY_TX |
 HP100_ADV_NXT_PKT |
-HP100_TX_CMD      | HP100_RESET_LB, OPTION_MSW );
+HP100_TX_CMD | HP100_RESET_LB, OPTION_MSW );
 hp100_mmuinit( dev );
 wait();
 hp100_cascade_reset( dev, FALSE );
@@ -639,22 +639,22 @@ hp100_page( PERFORMANCE );
 hp100_outw( 0xfefe, IRQ_MASK );
 hp100_outw( 0xffff, IRQ_STATUS );
 hp100_outw( HP100_DEBUG_EN |
-HP100_RX_HDR   |
-HP100_EE_EN    | HP100_RESET_HB |
-HP100_IO_EN    |
+HP100_RX_HDR |
+HP100_EE_EN | HP100_RESET_HB |
+HP100_IO_EN |
 HP100_FAKE_INT |
-HP100_INT_EN   | HP100_RESET_LB, OPTION_LSW );
+HP100_INT_EN | HP100_RESET_LB, OPTION_LSW );
 hp100_outw( HP100_TRI_INT | HP100_SET_HB, OPTION_LSW);
 if(lp->mode==1)
 {
 hp100_outw( HP100_BM_WRITE |
-HP100_BM_READ  |
+HP100_BM_READ |
 HP100_MMAP_DIS | HP100_SET_HB, OPTION_LSW );
 }
 else if(lp->mode==2)
 {
 hp100_outw( HP100_BM_WRITE |
-HP100_BM_READ  | HP100_RESET_HB, OPTION_LSW );
+HP100_BM_READ | HP100_RESET_HB, OPTION_LSW );
 hp100_outw( HP100_MMAP_DIS | HP100_RESET_HB, OPTION_LSW );
 hp100_outw( HP100_MEM_EN | HP100_SET_LB, OPTION_LSW );
 hp100_outw( HP100_IO_EN | HP100_SET_LB, OPTION_LSW );
@@ -662,7 +662,7 @@ hp100_outw( HP100_IO_EN | HP100_SET_LB, OPTION_LSW );
 else if( lp->mode==3 )
 {
 hp100_outw( HP100_MMAP_DIS | HP100_SET_HB |
-HP100_IO_EN    | HP100_SET_LB, OPTION_LSW );
+HP100_IO_EN | HP100_SET_LB, OPTION_LSW );
 }
 hp100_page( HW_MAP );
 hp100_outb( 0, EARLYRXCFG );
@@ -693,7 +693,7 @@ int xmit_stop, recv_stop;
 if((lp->chip==HP100_CHIPID_RAINIER)||(lp->chip==HP100_CHIPID_SHASTA))
 {
 int pdl_stop;
-pdl_stop  = lp->memory_size;
+pdl_stop = lp->memory_size;
 xmit_stop = ( pdl_stop-508*(MAX_RX_PDL)-16 )& ~(0x03ff);
 recv_stop = ( xmit_stop * (lp->rx_ratio)/100 ) &~(0x03ff);
 hp100_outw( (pdl_stop>>4)-1, PDL_MEM_STOP );
@@ -733,7 +733,7 @@ HP100_TX_EN|
 HP100_ACC_ERRORED|
 HP100_ACC_MC|
 HP100_ACC_BC|
-HP100_ACC_PHY),   MAC_CFG_1 );
+HP100_ACC_PHY), MAC_CFG_1 );
 hp100_outb( 0x00, MAC_CFG_2 );
 hp100_outb( 0x00, VG_LAN_CFG_2);
 if(lp->priority_tx)
@@ -741,7 +741,7 @@ hp100_outb( HP100_PRIORITY_TX | HP100_SET_LB, OPTION_MSW );
 else
 hp100_outb( HP100_PRIORITY_TX | HP100_RESET_LB, OPTION_MSW );
 hp100_outb( HP100_ADV_NXT_PKT |
-HP100_TX_CMD      | HP100_RESET_LB, OPTION_MSW );
+HP100_TX_CMD | HP100_RESET_LB, OPTION_MSW );
 if(lp->mode==1)
 hp100_init_pdls( dev );
 hp100_page( PERFORMANCE );
@@ -804,9 +804,9 @@ return 0;
 static void hp100_init_pdls( struct device *dev )
 {
 struct hp100_private *lp = (struct hp100_private *)dev->priv;
-hp100_ring_t         *ringptr;
-u_int                *pageptr;
-int                  i;
+hp100_ring_t *ringptr;
+u_int *pageptr;
+int i;
 #ifdef HP100_DEBUG_B
 int ioaddr = dev->base_addr;
 #endif
@@ -842,9 +842,9 @@ static int hp100_init_rxpdl( struct device *dev, register hp100_ring_t *ringptr,
 {
 if( 0!=( ((unsigned)pdlptr) & 0xf) )
 printk("hp100: %s: Init rxpdl: Unaligned pdlptr 0x%x.\n",dev->name,(unsigned)pdlptr);
-ringptr->pdl       = pdlptr+1;
+ringptr->pdl = pdlptr+1;
 ringptr->pdl_paddr = virt_to_bus(pdlptr+1);
-ringptr->skb       = (void *) NULL;
+ringptr->skb = (void *) NULL;
 *(pdlptr+2) =(u_int) virt_to_bus(pdlptr);
 *(pdlptr+3) = 4;
 return( ( ((MAX_RX_FRAG*2+2)+3) /4)*4 );
@@ -853,7 +853,7 @@ static int hp100_init_txpdl( struct device *dev, register hp100_ring_t *ringptr,
 {
 if( 0!=( ((unsigned)pdlptr) & 0xf) )
 printk("hp100: %s: Init txpdl: Unaligned pdlptr 0x%x.\n",dev->name,(unsigned) pdlptr);
-ringptr->pdl       = pdlptr;
+ringptr->pdl = pdlptr;
 ringptr->pdl_paddr = virt_to_bus(pdlptr);
 ringptr->skb = (void *) NULL;
 return((((MAX_TX_FRAG*2+2)+3)/4)*4);
@@ -903,8 +903,8 @@ return(0);
 static void hp100_rxfill( struct device *dev )
 {
 int ioaddr=dev->base_addr;
-struct hp100_private  *lp      = (struct hp100_private *)dev->priv;
-hp100_ring_t    *ringptr;
+struct hp100_private *lp = (struct hp100_private *)dev->priv;
+hp100_ring_t *ringptr;
 #ifdef HP100_DEBUG_B
 hp100_outw( 0x4208, TRACE );
 printk("hp100: %s: rxfill\n",dev->name);
@@ -1087,8 +1087,8 @@ return 0;
 static void hp100_clean_txring( struct device *dev )
 {
 struct hp100_private *lp = (struct hp100_private *)dev->priv;
-int    ioaddr = dev->base_addr;
-int    donecount;
+int ioaddr = dev->base_addr;
+int donecount;
 #ifdef HP100_DEBUG_B
 hp100_outw( 0x4211, TRACE );
 printk("hp100: %s: clean txring\n", dev->name);
@@ -1672,7 +1672,7 @@ else
 printk("hp100: %s: rx_pdl_fill_compl interrupt although not busmaster?\n", dev->name);
 }
 }
-if ( val & HP100_RX_PACKET  )
+if ( val & HP100_RX_PACKET )
 {
 if(lp->mode!=1)
 hp100_rx( dev );
@@ -1745,17 +1745,17 @@ hp100_outw( 0xffff, IRQ_STATUS );
 if(lp->mode==1)
 {
 hp100_outw( HP100_RX_PDL_FILL_COMPL |
-HP100_RX_PDA_ZERO  |
-HP100_RX_ERROR     |
-HP100_SET_HB  |
-HP100_TX_COMPLETE  |
-HP100_TX_ERROR     | HP100_SET_LB, IRQ_MASK );
+HP100_RX_PDA_ZERO |
+HP100_RX_ERROR |
+HP100_SET_HB |
+HP100_TX_COMPLETE |
+HP100_TX_ERROR | HP100_SET_LB, IRQ_MASK );
 }
 else
 {
-hp100_outw( HP100_RX_PACKET  |
-HP100_RX_ERROR   | HP100_SET_HB |
-HP100_TX_ERROR   | HP100_SET_LB , IRQ_MASK );
+hp100_outw( HP100_RX_PACKET |
+HP100_RX_ERROR | HP100_SET_HB |
+HP100_TX_ERROR | HP100_SET_LB , IRQ_MASK );
 }
 hp100_set_multicast_list( dev );
 restore_flags( flags );
@@ -2097,7 +2097,7 @@ devname[4] };
 static struct device *hp100_devlist[5] = { NULL, NULL, NULL, NULL, NULL };
 int init_module( void )
 {
-int	i, cards;
+int i, cards;
 if (hp100_port == 0 && !EISA_bus && !pcibios_present())
 printk("hp100: You should not use auto-probing with insmod!\n");
 i = -1; cards = 0;
@@ -2120,7 +2120,7 @@ return cards > 0 ? 0 : -ENODEV;
 }
 void cleanup_module( void )
 {
-int		i;
+int i;
 for(i = 0; i < 5; i++)
 if(hp100_devlist[i] != (struct device *) NULL)
 {

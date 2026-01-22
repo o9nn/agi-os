@@ -35,7 +35,7 @@ void parse_result(std::istream& in, scored_combo_tree_set& candidates, int& eval
 void parse_result(const proc_map::value_type& pmv,
 scored_combo_tree_set& candidates, int& evals);
 host_proc_map init(const jobs_t& jobs);
-proc_map::iterator remove_proc(proc_map& pm,  proc_map::iterator it);
+proc_map::iterator remove_proc(proc_map& pm, proc_map::iterator it);
 void killall(proc_map& pm);
 void killall(host_proc_map& hpm);
 host_proc_map::iterator find_free_resource(host_proc_map& hpm,

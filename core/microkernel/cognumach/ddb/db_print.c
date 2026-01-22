@@ -20,21 +20,21 @@
 #include <ddb/db_sym.h>
 #include <ddb/db_task_thread.h>
 #include <ddb/db_print.h>
-extern unsigned long	db_maxoff;
+extern unsigned long db_maxoff;
 void
 db_show_regs(
-db_expr_t	addr,
-boolean_t	have_addr,
-db_expr_t	count,
-char		*modif)
+db_expr_t addr,
+boolean_t have_addr,
+db_expr_t count,
+char *modif)
 {
-struct 		db_variable *regp;
-db_expr_t	value;
-db_addr_t	offset;
-char *		name;
-int 		i;
+struct db_variable *regp;
+db_expr_t value;
+db_addr_t offset;
+char * name;
+int i;
 struct db_var_aux_param aux_param;
-task_t		task = TASK_NULL;
+task_t task = TASK_NULL;
 aux_param.modif = modif;
 aux_param.thread = THREAD_NULL;
 if (db_option(modif, 't')) {
@@ -73,26 +73,26 @@ db_printf("\n");
 }
 }
 }
-#define OPTION_LONG		0x001
-#define OPTION_USER		0x002
-#define OPTION_SCHED		0x004
-#define OPTION_INDENT		0x100
-#define OPTION_THREAD_TITLE	0x200
-#define OPTION_TASK_TITLE	0x400
-#ifndef	DB_TASK_NAME
+#define OPTION_LONG 0x001
+#define OPTION_USER 0x002
+#define OPTION_SCHED 0x004
+#define OPTION_INDENT 0x100
+#define OPTION_THREAD_TITLE 0x200
+#define OPTION_TASK_TITLE 0x400
+#ifndef DB_TASK_NAME
 #define DB_TASK_NAME(task)
-#define DB_TASK_NAME_TITLE	""
+#define DB_TASK_NAME_TITLE ""
 #endif
-#ifndef	db_thread_fp_used
-#define db_thread_fp_used(thread)	FALSE
+#ifndef db_thread_fp_used
+#define db_thread_fp_used(thread) FALSE
 #endif
 static char *
 db_thread_stat(
-const thread_t 	thread,
-char	 	status[9])
+const thread_t thread,
+char status[9])
 {
 char *p = status;
-*p++ = (thread->state & TH_RUN)  ? 'R' : '.';
+*p++ = (thread->state & TH_RUN) ? 'R' : '.';
 *p++ = (thread->state & TH_WAIT) ? 'W' : '.';
 *p++ = (thread->state & TH_SUSP) ? 'S' : '.';
 *p++ = (thread->state & TH_SWAPPED) ? 'O' : '.';
@@ -105,8 +105,8 @@ return(status);
 void
 db_print_thread(
 thread_t thread,
-int	 thread_id,
-int	 flag)
+int thread_id,
+int flag)
 {
 char status[9];
 if (flag & OPTION_USER) {
@@ -153,7 +153,7 @@ thread->priority,
 thread->max_priority,
 thread->sched_pri,
 thread->depress_priority,
-#if	MACH_FIXPRI
+#if MACH_FIXPRI
 thread->policy == POLICY_TIMESHARE ? 'T' : 'F',
 thread->sched_data,
 #else
@@ -201,9 +201,9 @@ db_printf("\n");
 }
 static void
 db_print_task(
-task_t	task,
-int	task_id,
-int	flag)
+task_t task,
+int task_id,
+int flag)
 {
 thread_t thread;
 int thread_id;
@@ -285,10 +285,10 @@ db_printf("count(%d) low(%d)\n", rq->count, rq->low);
 }
 void
 db_show_all_runqs(
-db_expr_t	addr,
-boolean_t	have_addr,
-db_expr_t	count,
-const char *	modif)
+db_expr_t addr,
+boolean_t have_addr,
+db_expr_t count,
+const char * modif)
 {
 int i = 0;
 processor_set_t pset;
@@ -305,10 +305,10 @@ db_printf("Stuck threads:\t%d", stuck_count);
 }
 void
 db_show_all_threads(
-db_expr_t	addr,
-boolean_t	have_addr,
-db_expr_t	count,
-const char *	modif)
+db_expr_t addr,
+boolean_t have_addr,
+db_expr_t count,
+const char * modif)
 {
 task_t task;
 int task_id;
@@ -332,8 +332,8 @@ task_id++;
 }
 db_addr_t
 db_task_from_space(
-ipc_space_t	space,
-int		*task_id)
+ipc_space_t space,
+int *task_id)
 {
 task_t task;
 int tid = 0;
@@ -352,14 +352,14 @@ return (0);
 }
 void
 db_show_one_thread(
-db_expr_t	addr,
-boolean_t	have_addr,
-db_expr_t	count,
-const char *	modif)
+db_expr_t addr,
+boolean_t have_addr,
+db_expr_t count,
+const char * modif)
 {
-int		flag;
-int		thread_id;
-thread_t	thread;
+int flag;
+int thread_id;
+thread_t thread;
 flag = OPTION_THREAD_TITLE;
 if (db_option(modif, 'u'))
 flag |= OPTION_USER;
@@ -392,14 +392,14 @@ db_print_thread(thread, thread_id, flag);
 }
 void
 db_show_one_task(
-db_expr_t	addr,
-boolean_t	have_addr,
-db_expr_t	count,
-const char *	modif)
+db_expr_t addr,
+boolean_t have_addr,
+db_expr_t count,
+const char * modif)
 {
-int		flag;
-int		task_id;
-task_t		task;
+int flag;
+int task_id;
+task_t task;
 flag = OPTION_TASK_TITLE;
 if (db_option(modif, 'u'))
 flag |= OPTION_USER;
@@ -456,10 +456,10 @@ db_printf(", receiver_name=0x%x)", port->ip_receiver_name);
 }
 void
 db_show_port_id(
-db_expr_t	addr,
-boolean_t	have_addr,
-db_expr_t	count,
-const char *	modif)
+db_expr_t addr,
+boolean_t have_addr,
+db_expr_t count,
+const char * modif)
 {
 thread_t thread;
 if (!have_addr) {

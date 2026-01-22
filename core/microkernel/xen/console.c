@@ -76,7 +76,7 @@ while (console->in_prod != console->in_cons) {
 int c = hyp_ring_cell(console->in, console->in_cons);
 mb();
 console->in_cons++;
-#if	MACH_KDB
+#if MACH_KDB
 if (c == (char)0xA3) {
 printf("pound pressed\n");
 kdb_kintr();
@@ -101,7 +101,7 @@ return char_write(&hypcn_tty, ior);
 }
 static void hypcnstart(struct tty *tp)
 {
-spl_t	o_pri;
+spl_t o_pri;
 int ch;
 unsigned char c;
 if (tp->t_state & TS_TTSTOP)
@@ -138,8 +138,8 @@ return tty_portdeath(&hypcn_tty, (ipc_port_t) port);
 }
 int hypcnopen(dev_t dev, int flag, io_req_t ior)
 {
-struct tty 	*tp = &hypcn_tty;
-spl_t	o_pri;
+struct tty *tp = &hypcn_tty;
+spl_t o_pri;
 o_pri = simple_lock_irq(&tp->t_lock);
 if (!(tp->t_state & (TS_ISOPEN|TS_WOPEN))) {
 simple_unlock_nocheck(&tp->t_lock.slock);
@@ -156,7 +156,7 @@ return (char_open(dev, tp, flag, ior));
 }
 void hypcnclose(dev_t dev, int flag)
 {
-struct tty	*tp = &hypcn_tty;
+struct tty *tp = &hypcn_tty;
 spl_t s;
 s = simple_lock_irq(&tp->t_lock);
 ttyclose(tp);
@@ -175,7 +175,7 @@ return 0;
 simple_lock_init_irq(&outlock);
 simple_lock_init_irq(&inlock);
 console = (void*) mfn_to_kv(boot_info.console_mfn);
-#ifdef	MACH_PV_PAGETABLES
+#ifdef MACH_PV_PAGETABLES
 pmap_set_page_readwrite(console);
 #endif
 hyp_evt_handler(boot_info.console_evtchn, (interrupt_handler_fn)hypcnintr, 0, SPL6);

@@ -12,7 +12,7 @@ typedef const __int32_t *wctrans_t;
 extern wctrans_t wctrans (const char *__property) __THROW;
 extern wint_t towctrans (wint_t __wc, wctrans_t __desc) __THROW;
 # ifdef __USE_XOPEN2K8
-#  include <bits/types/locale_t.h>
+# include <bits/types/locale_t.h>
 extern int iswalnum_l (wint_t __wc, locale_t __locale) __THROW;
 extern int iswalpha_l (wint_t __wc, locale_t __locale) __THROW;
 extern int iswcntrl_l (wint_t __wc, locale_t __locale) __THROW;

@@ -1,51 +1,51 @@
 # include "defs.h"
-nameblkp mainname	= NULL;
-nameblkp firstname	= NULL;
-lineblkp sufflist	= NULL;
-struct varblock *firstvar	= NULL;
-struct pattern *firstpat	= NULL;
-struct dirhd *firstod		= NULL;
-wildp firstwild			= NULL;
-wildp lastwild			= NULL;
+nameblkp mainname = NULL;
+nameblkp firstname = NULL;
+lineblkp sufflist = NULL;
+struct varblock *firstvar = NULL;
+struct pattern *firstpat = NULL;
+struct dirhd *firstod = NULL;
+wildp firstwild = NULL;
+wildp lastwild = NULL;
 nameblkp *hashtab;
 int nhashed;
 int hashsize;
 int hashthresh;
-int proclimit	= PROCLIMIT;
-int nproc	= 0;
-int proclive	= 0;
+int proclimit = PROCLIMIT;
+int nproc = 0;
+int proclive = 0;
 struct process procstack[MAXPROC];
-int sigivalue	= 0;
-int sigqvalue	= 0;
-int dbgflag	= NO;
-int prtrflag	= NO;
-int silflag	= NO;
-int noexflag	= NO;
-int keepgoing	= NO;
-int noruleflag	= NO;
-int touchflag	= NO;
-int questflag	= NO;
-int oldflag	= YES;
-int ndocoms	= NO;
-int ignerr	= NO;
-int forceshell	= NO;
-int okdel	= YES;
-int envlast	= NO;
-int inarglist	= NO;
-char **envpp	= NULL;
+int sigivalue = 0;
+int sigqvalue = 0;
+int dbgflag = NO;
+int prtrflag = NO;
+int silflag = NO;
+int noexflag = NO;
+int keepgoing = NO;
+int noruleflag = NO;
+int touchflag = NO;
+int questflag = NO;
+int oldflag = YES;
+int ndocoms = NO;
+int ignerr = NO;
+int forceshell = NO;
+int okdel = YES;
+int envlast = NO;
+int inarglist = NO;
+char **envpp = NULL;
 extern char *dfltmacro[];
 extern char *dfltpat[];
 extern char *dfltsuff[];
 extern char **environ;
 char **linesptr;
-char *prompt	= "";
-int nopdir	= 0;
+char *prompt = "";
+int nopdir = 0;
 char funny[128];
-static void	loadenv(void);
-static int	isprecious(char *);
-static int	rddescf(char *);
-static void	rdarray(char **);
-static void	printdesc(int);
+static void loadenv(void);
+static int isprecious(char *);
+static int rddescf(char *);
+static void rdarray(char **);
+static void printdesc(int);
 void
 main(int argc, char **argv)
 {
@@ -74,7 +74,7 @@ inarglist = NO;
 for(i=1; i<argc; ++i)
 if(argv[i]!=0 && argv[i][0]=='-')
 {
-for(j=1 ; (c=argv[i][j])!='\0' ; ++j)  switch(c)
+for(j=1 ; (c=argv[i][j])!='\0' ; ++j) switch(c)
 {
 case 'd':
 ++dbgflag;
@@ -156,7 +156,7 @@ argv[i] = NULL;
 if(mkflagp > makeflags+1)
 setvar("MAKEFLAGS", makeflags, NO);
 if( !descset )
-if(	!rddescf("makefile") &&
+if( !rddescf("makefile") &&
 !rddescf("Makefile") &&
 (exists(s = "s.makefile") || exists(s = "s.Makefile")) )
 {
@@ -204,7 +204,7 @@ if(dbgflag) printdesc(YES);
 if(nfargs == 0)
 if(mainname == 0)
 fatal("No arguments or description file");
-else	{
+else {
 doname(mainname, 0, &tjunk, NO);
 if(dbgflag) printdesc(YES);
 }
@@ -262,7 +262,7 @@ rdarray(dfltsuff);
 if(!envlast)
 loadenv();
 }
-return  parse(descfile);
+return parse(descfile);
 }
 static void
 rdarray(char **s)

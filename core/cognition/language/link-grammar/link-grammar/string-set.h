@@ -31,7 +31,7 @@ str_mem_pool *string_pool;
 String_set * string_set_create(void);
 const char * string_set_add(const char * source_string, String_set * ss);
 const char * string_set_lookup(const char * source_string, String_set * ss);
-void         string_set_delete(String_set *ss);
+void string_set_delete(String_set *ss);
 static inline bool string_set_cmp(const char *s1, const char *s2)
 {
 #ifdef DEBUG

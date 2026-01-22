@@ -97,7 +97,7 @@ q->val = (long)iq[j].val;
 q->label = iq[j].label;
 q++;
 }
-qsort(iql,  q-iql, sizeof(C1), swcmp);
+qsort(iql, q-iql, sizeof(C1), swcmp);
 iqh[nh].label = pc;
 nh++;
 swit1(iql, q-iql, def, vr[0]);

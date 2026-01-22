@@ -3,7 +3,7 @@
 #include <oventi.h>
 enum {
 IdealAlignment = 32,
-ChunkSize 	= 128*1024,
+ChunkSize = 128*1024,
 };
 void
 vtMemFree(void *p)

@@ -21,24 +21,24 @@ template<typename _CharT, typename _Traits>
 class basic_ios : public ios_base
 {
 public:
-typedef _CharT                                 char_type;
-typedef typename _Traits::int_type             int_type;
-typedef typename _Traits::pos_type             pos_type;
-typedef typename _Traits::off_type             off_type;
-typedef _Traits                                traits_type;
-typedef ctype<_CharT>                          __ctype_type;
+typedef _CharT char_type;
+typedef typename _Traits::int_type int_type;
+typedef typename _Traits::pos_type pos_type;
+typedef typename _Traits::off_type off_type;
+typedef _Traits traits_type;
+typedef ctype<_CharT> __ctype_type;
 typedef num_put<_CharT, ostreambuf_iterator<_CharT, _Traits> >
 __num_put_type;
 typedef num_get<_CharT, istreambuf_iterator<_CharT, _Traits> >
 __num_get_type;
 protected:
-basic_ostream<_CharT, _Traits>*                _M_tie;
-mutable char_type                              _M_fill;
-mutable bool                                   _M_fill_init;
-basic_streambuf<_CharT, _Traits>*              _M_streambuf;
-const __ctype_type*                            _M_ctype;
-const __num_put_type*                          _M_num_put;
-const __num_get_type*                          _M_num_get;
+basic_ostream<_CharT, _Traits>* _M_tie;
+mutable char_type _M_fill;
+mutable bool _M_fill_init;
+basic_streambuf<_CharT, _Traits>* _M_streambuf;
+const __ctype_type* _M_ctype;
+const __num_put_type* _M_num_put;
+const __num_get_type* _M_num_get;
 public:
 #if __cplusplus >= 201103L
 explicit operator bool() const

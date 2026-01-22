@@ -3,31 +3,31 @@
 # include <openssl/opensslconf.h>
 # include <openssl/symhacks.h>
 # ifndef OPENSSL_NO_BUFFER
-#  include <openssl/buffer.h>
+# include <openssl/buffer.h>
 # endif
 # ifndef OPENSSL_NO_EVP
-#  include <openssl/evp.h>
+# include <openssl/evp.h>
 # endif
 # ifndef OPENSSL_NO_BIO
-#  include <openssl/bio.h>
+# include <openssl/bio.h>
 # endif
 # include <openssl/stack.h>
 # include <openssl/asn1.h>
 # include <openssl/safestack.h>
 # ifndef OPENSSL_NO_RSA
-#  include <openssl/rsa.h>
+# include <openssl/rsa.h>
 # endif
 # ifndef OPENSSL_NO_DSA
-#  include <openssl/dsa.h>
+# include <openssl/dsa.h>
 # endif
 # ifndef OPENSSL_NO_DH
-#  include <openssl/dh.h>
+# include <openssl/dh.h>
 # endif
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 # ifdef WIN32
-#  undef X509_NAME
+# undef X509_NAME
 # endif
 # include <openssl/x509.h>
 # include <openssl/x509v3.h>
@@ -60,20 +60,20 @@ ASN1_INTEGER *nonce;
 GENERAL_NAME *tsa;
 STACK_OF(X509_EXTENSION) *extensions;
 } TS_TST_INFO;
-# define TS_STATUS_GRANTED                       0
-# define TS_STATUS_GRANTED_WITH_MODS             1
-# define TS_STATUS_REJECTION                     2
-# define TS_STATUS_WAITING                       3
-# define TS_STATUS_REVOCATION_WARNING            4
-# define TS_STATUS_REVOCATION_NOTIFICATION       5
-# define TS_INFO_BAD_ALG                 0
-# define TS_INFO_BAD_REQUEST             2
-# define TS_INFO_BAD_DATA_FORMAT         5
-# define TS_INFO_TIME_NOT_AVAILABLE      14
-# define TS_INFO_UNACCEPTED_POLICY       15
-# define TS_INFO_UNACCEPTED_EXTENSION    16
-# define TS_INFO_ADD_INFO_NOT_AVAILABLE  17
-# define TS_INFO_SYSTEM_FAILURE          25
+# define TS_STATUS_GRANTED 0
+# define TS_STATUS_GRANTED_WITH_MODS 1
+# define TS_STATUS_REJECTION 2
+# define TS_STATUS_WAITING 3
+# define TS_STATUS_REVOCATION_WARNING 4
+# define TS_STATUS_REVOCATION_NOTIFICATION 5
+# define TS_INFO_BAD_ALG 0
+# define TS_INFO_BAD_REQUEST 2
+# define TS_INFO_BAD_DATA_FORMAT 5
+# define TS_INFO_TIME_NOT_AVAILABLE 14
+# define TS_INFO_UNACCEPTED_POLICY 15
+# define TS_INFO_UNACCEPTED_EXTENSION 16
+# define TS_INFO_ADD_INFO_NOT_AVAILABLE 17
+# define TS_INFO_SYSTEM_FAILURE 25
 typedef struct TS_status_info_st {
 ASN1_INTEGER *status;
 STACK_OF(ASN1_UTF8STRING) *text;
@@ -235,9 +235,9 @@ X509_EXTENSION *TS_TST_INFO_get_ext(TS_TST_INFO *a, int loc);
 X509_EXTENSION *TS_TST_INFO_delete_ext(TS_TST_INFO *a, int loc);
 int TS_TST_INFO_add_ext(TS_TST_INFO *a, X509_EXTENSION *ex, int loc);
 void *TS_TST_INFO_get_ext_d2i(TS_TST_INFO *a, int nid, int *crit, int *idx);
-# define TS_TSA_NAME             0x01
-# define TS_ORDERING             0x02
-# define TS_ESS_CERT_ID_CHAIN    0x04
+# define TS_TSA_NAME 0x01
+# define TS_ORDERING 0x02
+# define TS_ESS_CERT_ID_CHAIN 0x04
 struct TS_resp_ctx;
 typedef ASN1_INTEGER *(*TS_serial_cb) (struct TS_resp_ctx *, void *);
 typedef int (*TS_time_cb) (struct TS_resp_ctx *, void *, long *sec,
@@ -280,7 +280,7 @@ int TS_RESP_CTX_set_accuracy(TS_RESP_CTX *ctx,
 int secs, int millis, int micros);
 int TS_RESP_CTX_set_clock_precision_digits(TS_RESP_CTX *ctx,
 unsigned clock_precision_digits);
-# define TS_MAX_CLOCK_PRECISION_DIGITS   6
+# define TS_MAX_CLOCK_PRECISION_DIGITS 6
 void TS_RESP_CTX_add_flags(TS_RESP_CTX *ctx, int flags);
 void TS_RESP_CTX_set_serial_cb(TS_RESP_CTX *ctx, TS_serial_cb cb, void *data);
 void TS_RESP_CTX_set_time_cb(TS_RESP_CTX *ctx, TS_time_cb cb, void *data);
@@ -296,27 +296,27 @@ TS_TST_INFO *TS_RESP_CTX_get_tst_info(TS_RESP_CTX *ctx);
 TS_RESP *TS_RESP_create_response(TS_RESP_CTX *ctx, BIO *req_bio);
 int TS_RESP_verify_signature(PKCS7 *token, STACK_OF(X509) *certs,
 X509_STORE *store, X509 **signer_out);
-# define TS_VFY_SIGNATURE        (1u << 0)
-# define TS_VFY_VERSION          (1u << 1)
-# define TS_VFY_POLICY           (1u << 2)
-# define TS_VFY_IMPRINT          (1u << 3)
-# define TS_VFY_DATA             (1u << 4)
-# define TS_VFY_NONCE            (1u << 5)
-# define TS_VFY_SIGNER           (1u << 6)
-# define TS_VFY_TSA_NAME         (1u << 7)
-# define TS_VFY_ALL_IMPRINT      (TS_VFY_SIGNATURE       \
-| TS_VFY_VERSION       \
-| TS_VFY_POLICY        \
-| TS_VFY_IMPRINT       \
-| TS_VFY_NONCE         \
-| TS_VFY_SIGNER        \
+# define TS_VFY_SIGNATURE (1u << 0)
+# define TS_VFY_VERSION (1u << 1)
+# define TS_VFY_POLICY (1u << 2)
+# define TS_VFY_IMPRINT (1u << 3)
+# define TS_VFY_DATA (1u << 4)
+# define TS_VFY_NONCE (1u << 5)
+# define TS_VFY_SIGNER (1u << 6)
+# define TS_VFY_TSA_NAME (1u << 7)
+# define TS_VFY_ALL_IMPRINT (TS_VFY_SIGNATURE \
+| TS_VFY_VERSION \
+| TS_VFY_POLICY \
+| TS_VFY_IMPRINT \
+| TS_VFY_NONCE \
+| TS_VFY_SIGNER \
 | TS_VFY_TSA_NAME)
-# define TS_VFY_ALL_DATA         (TS_VFY_SIGNATURE       \
-| TS_VFY_VERSION       \
-| TS_VFY_POLICY        \
-| TS_VFY_DATA          \
-| TS_VFY_NONCE         \
-| TS_VFY_SIGNER        \
+# define TS_VFY_ALL_DATA (TS_VFY_SIGNATURE \
+| TS_VFY_VERSION \
+| TS_VFY_POLICY \
+| TS_VFY_DATA \
+| TS_VFY_NONCE \
+| TS_VFY_SIGNER \
 | TS_VFY_TSA_NAME)
 typedef struct TS_verify_ctx {
 unsigned flags;
@@ -373,93 +373,93 @@ int TS_CONF_set_tsa_name(CONF *conf, const char *section, TS_RESP_CTX *ctx);
 int TS_CONF_set_ess_cert_id_chain(CONF *conf, const char *section,
 TS_RESP_CTX *ctx);
 void ERR_load_TS_strings(void);
-# define TS_F_D2I_TS_RESP                                 147
-# define TS_F_DEF_SERIAL_CB                               110
-# define TS_F_DEF_TIME_CB                                 111
-# define TS_F_ESS_ADD_SIGNING_CERT                        112
-# define TS_F_ESS_CERT_ID_NEW_INIT                        113
-# define TS_F_ESS_SIGNING_CERT_NEW_INIT                   114
-# define TS_F_INT_TS_RESP_VERIFY_TOKEN                    149
-# define TS_F_PKCS7_TO_TS_TST_INFO                        148
-# define TS_F_TS_ACCURACY_SET_MICROS                      115
-# define TS_F_TS_ACCURACY_SET_MILLIS                      116
-# define TS_F_TS_ACCURACY_SET_SECONDS                     117
-# define TS_F_TS_CHECK_IMPRINTS                           100
-# define TS_F_TS_CHECK_NONCES                             101
-# define TS_F_TS_CHECK_POLICY                             102
-# define TS_F_TS_CHECK_SIGNING_CERTS                      103
-# define TS_F_TS_CHECK_STATUS_INFO                        104
-# define TS_F_TS_COMPUTE_IMPRINT                          145
-# define TS_F_TS_CONF_SET_DEFAULT_ENGINE                  146
-# define TS_F_TS_GET_STATUS_TEXT                          105
-# define TS_F_TS_MSG_IMPRINT_SET_ALGO                     118
-# define TS_F_TS_REQ_SET_MSG_IMPRINT                      119
-# define TS_F_TS_REQ_SET_NONCE                            120
-# define TS_F_TS_REQ_SET_POLICY_ID                        121
-# define TS_F_TS_RESP_CREATE_RESPONSE                     122
-# define TS_F_TS_RESP_CREATE_TST_INFO                     123
-# define TS_F_TS_RESP_CTX_ADD_FAILURE_INFO                124
-# define TS_F_TS_RESP_CTX_ADD_MD                          125
-# define TS_F_TS_RESP_CTX_ADD_POLICY                      126
-# define TS_F_TS_RESP_CTX_NEW                             127
-# define TS_F_TS_RESP_CTX_SET_ACCURACY                    128
-# define TS_F_TS_RESP_CTX_SET_CERTS                       129
-# define TS_F_TS_RESP_CTX_SET_DEF_POLICY                  130
-# define TS_F_TS_RESP_CTX_SET_SIGNER_CERT                 131
-# define TS_F_TS_RESP_CTX_SET_STATUS_INFO                 132
-# define TS_F_TS_RESP_GET_POLICY                          133
-# define TS_F_TS_RESP_SET_GENTIME_WITH_PRECISION          134
-# define TS_F_TS_RESP_SET_STATUS_INFO                     135
-# define TS_F_TS_RESP_SET_TST_INFO                        150
-# define TS_F_TS_RESP_SIGN                                136
-# define TS_F_TS_RESP_VERIFY_SIGNATURE                    106
-# define TS_F_TS_RESP_VERIFY_TOKEN                        107
-# define TS_F_TS_TST_INFO_SET_ACCURACY                    137
-# define TS_F_TS_TST_INFO_SET_MSG_IMPRINT                 138
-# define TS_F_TS_TST_INFO_SET_NONCE                       139
-# define TS_F_TS_TST_INFO_SET_POLICY_ID                   140
-# define TS_F_TS_TST_INFO_SET_SERIAL                      141
-# define TS_F_TS_TST_INFO_SET_TIME                        142
-# define TS_F_TS_TST_INFO_SET_TSA                         143
-# define TS_F_TS_VERIFY                                   108
-# define TS_F_TS_VERIFY_CERT                              109
-# define TS_F_TS_VERIFY_CTX_NEW                           144
-# define TS_R_BAD_PKCS7_TYPE                              132
-# define TS_R_BAD_TYPE                                    133
-# define TS_R_CERTIFICATE_VERIFY_ERROR                    100
-# define TS_R_COULD_NOT_SET_ENGINE                        127
-# define TS_R_COULD_NOT_SET_TIME                          115
-# define TS_R_D2I_TS_RESP_INT_FAILED                      128
-# define TS_R_DETACHED_CONTENT                            134
-# define TS_R_ESS_ADD_SIGNING_CERT_ERROR                  116
-# define TS_R_ESS_SIGNING_CERTIFICATE_ERROR               101
-# define TS_R_INVALID_NULL_POINTER                        102
-# define TS_R_INVALID_SIGNER_CERTIFICATE_PURPOSE          117
-# define TS_R_MESSAGE_IMPRINT_MISMATCH                    103
-# define TS_R_NONCE_MISMATCH                              104
-# define TS_R_NONCE_NOT_RETURNED                          105
-# define TS_R_NO_CONTENT                                  106
-# define TS_R_NO_TIME_STAMP_TOKEN                         107
-# define TS_R_PKCS7_ADD_SIGNATURE_ERROR                   118
-# define TS_R_PKCS7_ADD_SIGNED_ATTR_ERROR                 119
-# define TS_R_PKCS7_TO_TS_TST_INFO_FAILED                 129
-# define TS_R_POLICY_MISMATCH                             108
-# define TS_R_PRIVATE_KEY_DOES_NOT_MATCH_CERTIFICATE      120
-# define TS_R_RESPONSE_SETUP_ERROR                        121
-# define TS_R_SIGNATURE_FAILURE                           109
-# define TS_R_THERE_MUST_BE_ONE_SIGNER                    110
-# define TS_R_TIME_SYSCALL_ERROR                          122
-# define TS_R_TOKEN_NOT_PRESENT                           130
-# define TS_R_TOKEN_PRESENT                               131
-# define TS_R_TSA_NAME_MISMATCH                           111
-# define TS_R_TSA_UNTRUSTED                               112
-# define TS_R_TST_INFO_SETUP_ERROR                        123
-# define TS_R_TS_DATASIGN                                 124
-# define TS_R_UNACCEPTABLE_POLICY                         125
-# define TS_R_UNSUPPORTED_MD_ALGORITHM                    126
-# define TS_R_UNSUPPORTED_VERSION                         113
-# define TS_R_WRONG_CONTENT_TYPE                          114
-#ifdef  __cplusplus
+# define TS_F_D2I_TS_RESP 147
+# define TS_F_DEF_SERIAL_CB 110
+# define TS_F_DEF_TIME_CB 111
+# define TS_F_ESS_ADD_SIGNING_CERT 112
+# define TS_F_ESS_CERT_ID_NEW_INIT 113
+# define TS_F_ESS_SIGNING_CERT_NEW_INIT 114
+# define TS_F_INT_TS_RESP_VERIFY_TOKEN 149
+# define TS_F_PKCS7_TO_TS_TST_INFO 148
+# define TS_F_TS_ACCURACY_SET_MICROS 115
+# define TS_F_TS_ACCURACY_SET_MILLIS 116
+# define TS_F_TS_ACCURACY_SET_SECONDS 117
+# define TS_F_TS_CHECK_IMPRINTS 100
+# define TS_F_TS_CHECK_NONCES 101
+# define TS_F_TS_CHECK_POLICY 102
+# define TS_F_TS_CHECK_SIGNING_CERTS 103
+# define TS_F_TS_CHECK_STATUS_INFO 104
+# define TS_F_TS_COMPUTE_IMPRINT 145
+# define TS_F_TS_CONF_SET_DEFAULT_ENGINE 146
+# define TS_F_TS_GET_STATUS_TEXT 105
+# define TS_F_TS_MSG_IMPRINT_SET_ALGO 118
+# define TS_F_TS_REQ_SET_MSG_IMPRINT 119
+# define TS_F_TS_REQ_SET_NONCE 120
+# define TS_F_TS_REQ_SET_POLICY_ID 121
+# define TS_F_TS_RESP_CREATE_RESPONSE 122
+# define TS_F_TS_RESP_CREATE_TST_INFO 123
+# define TS_F_TS_RESP_CTX_ADD_FAILURE_INFO 124
+# define TS_F_TS_RESP_CTX_ADD_MD 125
+# define TS_F_TS_RESP_CTX_ADD_POLICY 126
+# define TS_F_TS_RESP_CTX_NEW 127
+# define TS_F_TS_RESP_CTX_SET_ACCURACY 128
+# define TS_F_TS_RESP_CTX_SET_CERTS 129
+# define TS_F_TS_RESP_CTX_SET_DEF_POLICY 130
+# define TS_F_TS_RESP_CTX_SET_SIGNER_CERT 131
+# define TS_F_TS_RESP_CTX_SET_STATUS_INFO 132
+# define TS_F_TS_RESP_GET_POLICY 133
+# define TS_F_TS_RESP_SET_GENTIME_WITH_PRECISION 134
+# define TS_F_TS_RESP_SET_STATUS_INFO 135
+# define TS_F_TS_RESP_SET_TST_INFO 150
+# define TS_F_TS_RESP_SIGN 136
+# define TS_F_TS_RESP_VERIFY_SIGNATURE 106
+# define TS_F_TS_RESP_VERIFY_TOKEN 107
+# define TS_F_TS_TST_INFO_SET_ACCURACY 137
+# define TS_F_TS_TST_INFO_SET_MSG_IMPRINT 138
+# define TS_F_TS_TST_INFO_SET_NONCE 139
+# define TS_F_TS_TST_INFO_SET_POLICY_ID 140
+# define TS_F_TS_TST_INFO_SET_SERIAL 141
+# define TS_F_TS_TST_INFO_SET_TIME 142
+# define TS_F_TS_TST_INFO_SET_TSA 143
+# define TS_F_TS_VERIFY 108
+# define TS_F_TS_VERIFY_CERT 109
+# define TS_F_TS_VERIFY_CTX_NEW 144
+# define TS_R_BAD_PKCS7_TYPE 132
+# define TS_R_BAD_TYPE 133
+# define TS_R_CERTIFICATE_VERIFY_ERROR 100
+# define TS_R_COULD_NOT_SET_ENGINE 127
+# define TS_R_COULD_NOT_SET_TIME 115
+# define TS_R_D2I_TS_RESP_INT_FAILED 128
+# define TS_R_DETACHED_CONTENT 134
+# define TS_R_ESS_ADD_SIGNING_CERT_ERROR 116
+# define TS_R_ESS_SIGNING_CERTIFICATE_ERROR 101
+# define TS_R_INVALID_NULL_POINTER 102
+# define TS_R_INVALID_SIGNER_CERTIFICATE_PURPOSE 117
+# define TS_R_MESSAGE_IMPRINT_MISMATCH 103
+# define TS_R_NONCE_MISMATCH 104
+# define TS_R_NONCE_NOT_RETURNED 105
+# define TS_R_NO_CONTENT 106
+# define TS_R_NO_TIME_STAMP_TOKEN 107
+# define TS_R_PKCS7_ADD_SIGNATURE_ERROR 118
+# define TS_R_PKCS7_ADD_SIGNED_ATTR_ERROR 119
+# define TS_R_PKCS7_TO_TS_TST_INFO_FAILED 129
+# define TS_R_POLICY_MISMATCH 108
+# define TS_R_PRIVATE_KEY_DOES_NOT_MATCH_CERTIFICATE 120
+# define TS_R_RESPONSE_SETUP_ERROR 121
+# define TS_R_SIGNATURE_FAILURE 109
+# define TS_R_THERE_MUST_BE_ONE_SIGNER 110
+# define TS_R_TIME_SYSCALL_ERROR 122
+# define TS_R_TOKEN_NOT_PRESENT 130
+# define TS_R_TOKEN_PRESENT 131
+# define TS_R_TSA_NAME_MISMATCH 111
+# define TS_R_TSA_UNTRUSTED 112
+# define TS_R_TST_INFO_SETUP_ERROR 123
+# define TS_R_TS_DATASIGN 124
+# define TS_R_UNACCEPTABLE_POLICY 125
+# define TS_R_UNSUPPORTED_MD_ALGORITHM 126
+# define TS_R_UNSUPPORTED_VERSION 113
+# define TS_R_WRONG_CONTENT_TYPE 114
+#ifdef __cplusplus
 }
 #endif
 #endif

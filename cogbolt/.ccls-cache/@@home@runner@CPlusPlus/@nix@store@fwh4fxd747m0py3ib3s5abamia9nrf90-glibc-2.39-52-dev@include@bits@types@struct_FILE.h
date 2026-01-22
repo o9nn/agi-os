@@ -52,12 +52,12 @@ size_t __pad5;
 int _mode;
 char _unused2[15 * sizeof (int) - 4 * sizeof (void *) - sizeof (size_t)];
 };
-#define __getc_unlocked_body(_fp)					\
-(__glibc_unlikely ((_fp)->_IO_read_ptr >= (_fp)->_IO_read_end)	\
+#define __getc_unlocked_body(_fp) \
+(__glibc_unlikely ((_fp)->_IO_read_ptr >= (_fp)->_IO_read_end) \
 ? __uflow (_fp) : *(unsigned char *) (_fp)->_IO_read_ptr++)
-#define __putc_unlocked_body(_ch, _fp)					\
-(__glibc_unlikely ((_fp)->_IO_write_ptr >= (_fp)->_IO_write_end)	\
-? __overflow (_fp, (unsigned char) (_ch))				\
+#define __putc_unlocked_body(_ch, _fp) \
+(__glibc_unlikely ((_fp)->_IO_write_ptr >= (_fp)->_IO_write_end) \
+? __overflow (_fp, (unsigned char) (_ch)) \
 : (unsigned char) (*(_fp)->_IO_write_ptr++ = (_ch)))
 #define _IO_EOF_SEEN 0x0010
 #define __feof_unlocked_body(_fp) (((_fp)->_flags & _IO_EOF_SEEN) != 0)

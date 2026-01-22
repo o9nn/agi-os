@@ -1,8 +1,8 @@
 #ifndef gxdevmem_INCLUDED
-#  define gxdevmem_INCLUDED
+# define gxdevmem_INCLUDED
 #include "gxrplane.h"
 #ifndef gx_device_memory_DEFINED
-#  define gx_device_memory_DEFINED
+# define gx_device_memory_DEFINED
 typedef struct gx_device_memory_s gx_device_memory;
 #endif
 struct gx_device_memory_s {
@@ -55,24 +55,24 @@ gs_public_st_composite_use_final(st_device_memory, gx_device_memory,\
 gx_device_finalize)
 #define st_device_memory_max_ptrs (st_device_forward_max_ptrs + 2)
 #define mem_device_init_private\
-0,			\
-(byte *)0,		\
-0,			\
-true,			\
-0,			\
-true,			\
-0,			\
-{ { 0 } },		\
-{ identity_matrix_body },	\
-(byte **)0,		\
-{ (byte *)0, 0 },	\
-{ gx_no_color_index },	\
-{ gx_no_color_index },	\
-{ gx_no_color_index },	\
-{ gx_no_color_index },	\
-{ gx_no_color_index },	\
-{ 0, 0 }, 0,		\
-0, 0, 0, 0,		\
+0, \
+(byte *)0, \
+0, \
+true, \
+0, \
+true, \
+0, \
+{ { 0 } }, \
+{ identity_matrix_body }, \
+(byte **)0, \
+{ (byte *)0, 0 }, \
+{ gx_no_color_index }, \
+{ gx_no_color_index }, \
+{ gx_no_color_index }, \
+{ gx_no_color_index }, \
+{ gx_no_color_index }, \
+{ 0, 0 }, 0, \
+0, 0, 0, 0, \
 gx_no_color_index
 ulong gdev_mem_bits_size(const gx_device_memory *mdev, int width,
 int height);

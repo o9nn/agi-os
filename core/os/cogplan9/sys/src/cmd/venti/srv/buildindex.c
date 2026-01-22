@@ -6,24 +6,24 @@ enum
 MinBufSize = 64*1024,
 MaxBufSize = 4*1024*1024,
 };
-int		dumb;
-int		errors;
-char		**isect;
-int		nisect;
-int		bloom;
-int		zero;
-u32int	isectmem;
-u64int	totalbuckets;
-u64int	totalclumps;
-Channel	*arenadonechan;
-Channel	*isectdonechan;
-Index	*ix;
-u64int	arenaentries;
-u64int	skipentries;
-u64int	indexentries;
+int dumb;
+int errors;
+char **isect;
+int nisect;
+int bloom;
+int zero;
+u32int isectmem;
+u64int totalbuckets;
+u64int totalclumps;
+Channel *arenadonechan;
+Channel *isectdonechan;
+Index *ix;
+u64int arenaentries;
+u64int skipentries;
+u64int indexentries;
 static int shouldprocess(ISect*);
-static void	isectproc(void*);
-static void	arenapartproc(void*);
+static void isectproc(void*);
+static void arenapartproc(void*);
 void
 usage(void)
 {

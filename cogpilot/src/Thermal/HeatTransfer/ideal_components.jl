@@ -50,7 +50,7 @@ end
 ThermalResistor(; name, R)
 Lumped thermal element transporting heat without storing it.
 # States:
-- `dT`:  [`K`] Temperature difference across the component a.T - b.T
+- `dT`: [`K`] Temperature difference across the component a.T - b.T
 - `Q_flow`: [`W`] Heat flow rate from port a -> port b
 # Connectors:
 - `port_a`
@@ -71,7 +71,7 @@ end
 ConvectiveConductor(; name, G)
 Lumped thermal element for heat convection.
 # States:
-- `dT`:  [`K`] Temperature difference across the component `solid.T` - `fluid.T`
+- `dT`: [`K`] Temperature difference across the component `solid.T` - `fluid.T`
 - `Q_flow`: [`W`] Heat flow rate from `solid` -> `fluid`
 # Connectors:
 - `solid`
@@ -113,7 +113,7 @@ end
 BodyRadiation(; name, G)
 Lumped thermal element for radiation heat transfer.
 # States:
-- `dT`:  [`K`] Temperature difference across the component a.T - b.T
+- `dT`: [`K`] Temperature difference across the component a.T - b.T
 - `Q_flow`: [`W`] Heat flow rate from port a -> port b
 # Connectors:
 - `port_a`

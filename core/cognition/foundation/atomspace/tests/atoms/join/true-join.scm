@@ -2,40 +2,40 @@
 (Evaluation (Predicate "Pa") (List (Concept "A")))
 (Evaluation (Predicate "Pab") (List (Concept "A") (Concept "B")))
 (Evaluation (Predicate "Pabc")
-	(List (Concept "A") (Concept "B") (Concept "C")))
+(List (Concept "A") (Concept "B") (Concept "C")))
 (define min-filter-ab
-	(MinimalJoin
-		(VariableList
-			(TypedVariable (Variable "X") (Signature (Concept "A")))
-			(TypedVariable (Variable "Y") (Signature (Concept "B"))))))
+(MinimalJoin
+(VariableList
+(TypedVariable (Variable "X") (Signature (Concept "A")))
+(TypedVariable (Variable "Y") (Signature (Concept "B"))))))
 (define max-filter-ab
-	(MaximalJoin
-		(VariableList
-			(TypedVariable (Variable "X") (Signature (Concept "A")))
-			(TypedVariable (Variable "Y") (Signature (Concept "B"))))))
+(MaximalJoin
+(VariableList
+(TypedVariable (Variable "X") (Signature (Concept "A")))
+(TypedVariable (Variable "Y") (Signature (Concept "B"))))))
 (define min-filter-ap
-	(MinimalJoin
-		(VariableList
-			(TypedVariable (Variable "Y") (Signature (Concept "B")))
-			(TypedVariable (Variable "P") (Type 'PredicateNode)))))
+(MinimalJoin
+(VariableList
+(TypedVariable (Variable "Y") (Signature (Concept "B")))
+(TypedVariable (Variable "P") (Type 'PredicateNode)))))
 (define max-filter-ap
-	(MaximalJoin
-		(VariableList
-			(TypedVariable (Variable "Y") (Signature (Concept "B")))
-			(TypedVariable (Variable "P") (Type 'PredicateNode)))))
+(MaximalJoin
+(VariableList
+(TypedVariable (Variable "Y") (Signature (Concept "B")))
+(TypedVariable (Variable "P") (Type 'PredicateNode)))))
 (define min-const-ab
-	(MinimalJoin
-		(Present (Concept "A"))
-		(Present (Concept "B"))))
+(MinimalJoin
+(Present (Concept "A"))
+(Present (Concept "B"))))
 (define max-const-ab
-	(MaximalJoin
-		(Present (Concept "A"))
-		(Present (Concept "B"))))
+(MaximalJoin
+(Present (Concept "A"))
+(Present (Concept "B"))))
 (define min-const-ap
-	(MinimalJoin
-		(TypedVariable (Variable "P") (Type 'PredicateNode))
-		(Present (Concept "B"))))
+(MinimalJoin
+(TypedVariable (Variable "P") (Type 'PredicateNode))
+(Present (Concept "B"))))
 (define max-const-ap
-	(MaximalJoin
-		(TypedVariable (Variable "P") (Type 'PredicateNode))
-		(Present (Concept "B"))))
+(MaximalJoin
+(TypedVariable (Variable "P") (Type 'PredicateNode))
+(Present (Concept "B"))))

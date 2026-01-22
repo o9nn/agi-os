@@ -11,19 +11,19 @@ public:
 using layer_filter_cb = std::function<bool(int32_t il)>;
 llama_memory_hybrid(
 const llama_model & model,
-ggml_type    type_k,
-ggml_type    type_v,
-bool    v_trans,
-uint32_t    kv_size,
-uint32_t    n_pad,
-uint32_t    n_swa,
-llama_swa_type    swa_type,
-ggml_type    type_r,
-ggml_type    type_s,
-uint32_t    rs_size,
-uint32_t    n_seq_max,
-bool    offload,
-bool    unified,
+ggml_type type_k,
+ggml_type type_v,
+bool v_trans,
+uint32_t kv_size,
+uint32_t n_pad,
+uint32_t n_swa,
+llama_swa_type swa_type,
+ggml_type type_r,
+ggml_type type_s,
+uint32_t rs_size,
+uint32_t n_seq_max,
+bool offload,
+bool unified,
 layer_filter_cb && filter_attn = nullptr,
 layer_filter_cb && filter_recr = nullptr);
 ~llama_memory_hybrid() = default;
@@ -35,15 +35,15 @@ llama_memory_context_ptr init_full() override;
 llama_memory_context_ptr init_update(llama_context * lctx, bool optimize) override;
 bool get_can_shift() const override;
 void clear(bool data) override;
-bool seq_rm  (llama_seq_id seq_id,                              llama_pos p0, llama_pos p1) override;
-void seq_cp  (llama_seq_id seq_id_src, llama_seq_id seq_id_dst, llama_pos p0, llama_pos p1) override;
-void seq_keep(llama_seq_id seq_id)                                                          override;
-void seq_add (llama_seq_id seq_id,                              llama_pos p0, llama_pos p1, llama_pos shift) override;
-void seq_div (llama_seq_id seq_id,                              llama_pos p0, llama_pos p1, int d) override;
+bool seq_rm (llama_seq_id seq_id, llama_pos p0, llama_pos p1) override;
+void seq_cp (llama_seq_id seq_id_src, llama_seq_id seq_id_dst, llama_pos p0, llama_pos p1) override;
+void seq_keep(llama_seq_id seq_id) override;
+void seq_add (llama_seq_id seq_id, llama_pos p0, llama_pos p1, llama_pos shift) override;
+void seq_div (llama_seq_id seq_id, llama_pos p0, llama_pos p1, int d) override;
 llama_pos seq_pos_min(llama_seq_id seq_id) const override;
 llama_pos seq_pos_max(llama_seq_id seq_id) const override;
 void state_write(llama_io_write_i & io, llama_seq_id seq_id = -1) const override;
-void state_read (llama_io_read_i  & io, llama_seq_id seq_id = -1)       override;
+void state_read (llama_io_read_i & io, llama_seq_id seq_id = -1) override;
 llama_kv_cache_unified * get_mem_attn() const;
 llama_memory_recurrent * get_mem_recr() const;
 private:
@@ -59,15 +59,15 @@ explicit llama_memory_hybrid_context(llama_memory_hybrid * mem);
 explicit llama_memory_hybrid_context(
 llama_memory_hybrid * mem,
 llama_context * lctx,
-bool   optimize);
+bool optimize);
 llama_memory_hybrid_context(
 llama_memory_hybrid * mem,
-slot_info_vec_t   sinfos_attn,
-std::vector<llama_ubatch>   ubatches);
+slot_info_vec_t sinfos_attn,
+std::vector<llama_ubatch> ubatches);
 ~llama_memory_hybrid_context() = default;
-bool next()  override;
+bool next() override;
 bool apply() override;
-llama_memory_status  get_status() const override;
+llama_memory_status get_status() const override;
 const llama_ubatch & get_ubatch() const override;
 const llama_kv_cache_unified_context * get_attn() const;
 const llama_memory_recurrent_context * get_recr() const;

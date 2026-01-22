@@ -509,7 +509,7 @@ struct mailimap_flag_list * mbd_flags;
 struct mailimap_mailbox_list * mbd_list;
 struct mailimap_mailbox_list * mbd_lsub;
 clist * mbd_search;
-struct mailimap_mailbox_data_status *  mbd_status;
+struct mailimap_mailbox_data_status * mbd_status;
 uint32_t mbd_exists;
 uint32_t mbd_recent;
 struct mailimap_extension_data * mbd_extension;
@@ -1358,8 +1358,8 @@ struct mailimap_flag_list * sel_flags;
 uint32_t sel_exists;
 uint32_t sel_recent;
 uint32_t sel_unseen;
-uint8_t  sel_has_exists:1;
-uint8_t  sel_has_recent:1;
+uint8_t sel_has_exists:1;
+uint8_t sel_has_recent:1;
 };
 LIBETPAN_EXPORT
 struct mailimap_selection_info *

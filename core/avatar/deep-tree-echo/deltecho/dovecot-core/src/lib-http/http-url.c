@@ -188,7 +188,7 @@ return FALSE;
 if (url == NULL)
 return TRUE;
 if (ret > 0)
-url->enc_fragment =  p_strdup(parser->pool, fragment);
+url->enc_fragment = p_strdup(parser->pool, fragment);
 else if (url_parser->relative && !have_path)
 url->enc_fragment = p_strdup(parser->pool, base->enc_fragment);
 return TRUE;

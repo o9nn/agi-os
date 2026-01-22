@@ -21,11 +21,11 @@ return (-1);
 # include <sys/types.h>
 # include <sys/socket.h>
 # ifndef NO_SYS_UN_H
-#  ifdef OPENSSL_SYS_VXWORKS
-#   include <streams/un.h>
-#  else
-#   include <sys/un.h>
-#  endif
+# ifdef OPENSSL_SYS_VXWORKS
+# include <streams/un.h>
+# else
+# include <sys/un.h>
+# endif
 # else
 struct sockaddr_un {
 short sun_family;
@@ -35,7 +35,7 @@ char sun_path[108];
 # include <string.h>
 # include <errno.h>
 # ifndef offsetof
-#  define offsetof(TYPE, MEMBER) ((size_t) &((TYPE *)0)->MEMBER)
+# define offsetof(TYPE, MEMBER) ((size_t) &((TYPE *)0)->MEMBER)
 # endif
 int RAND_query_egd_bytes(const char *path, unsigned char *buf, int bytes)
 {

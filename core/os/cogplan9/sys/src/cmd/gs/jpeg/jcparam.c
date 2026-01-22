@@ -31,24 +31,24 @@ jpeg_set_linear_quality (j_compress_ptr cinfo, int scale_factor,
 boolean force_baseline)
 {
 static const unsigned int std_luminance_quant_tbl[DCTSIZE2] = {
-16,  11,  10,  16,  24,  40,  51,  61,
-12,  12,  14,  19,  26,  58,  60,  55,
-14,  13,  16,  24,  40,  57,  69,  56,
-14,  17,  22,  29,  51,  87,  80,  62,
-18,  22,  37,  56,  68, 109, 103,  77,
-24,  35,  55,  64,  81, 104, 113,  92,
-49,  64,  78,  87, 103, 121, 120, 101,
-72,  92,  95,  98, 112, 100, 103,  99
+16, 11, 10, 16, 24, 40, 51, 61,
+12, 12, 14, 19, 26, 58, 60, 55,
+14, 13, 16, 24, 40, 57, 69, 56,
+14, 17, 22, 29, 51, 87, 80, 62,
+18, 22, 37, 56, 68, 109, 103, 77,
+24, 35, 55, 64, 81, 104, 113, 92,
+49, 64, 78, 87, 103, 121, 120, 101,
+72, 92, 95, 98, 112, 100, 103, 99
 };
 static const unsigned int std_chrominance_quant_tbl[DCTSIZE2] = {
-17,  18,  24,  47,  99,  99,  99,  99,
-18,  21,  26,  66,  99,  99,  99,  99,
-24,  26,  56,  99,  99,  99,  99,  99,
-47,  66,  99,  99,  99,  99,  99,  99,
-99,  99,  99,  99,  99,  99,  99,  99,
-99,  99,  99,  99,  99,  99,  99,  99,
-99,  99,  99,  99,  99,  99,  99,  99,
-99,  99,  99,  99,  99,  99,  99,  99
+17, 18, 24, 47, 99, 99, 99, 99,
+18, 21, 26, 66, 99, 99, 99, 99,
+24, 26, 56, 99, 99, 99, 99, 99,
+47, 66, 99, 99, 99, 99, 99, 99,
+99, 99, 99, 99, 99, 99, 99, 99,
+99, 99, 99, 99, 99, 99, 99, 99,
+99, 99, 99, 99, 99, 99, 99, 99,
+99, 99, 99, 99, 99, 99, 99, 99
 };
 jpeg_add_quant_table(cinfo, 0, std_luminance_quant_tbl,
 scale_factor, force_baseline);
@@ -92,15 +92,15 @@ LOCAL(void)
 std_huff_tables (j_compress_ptr cinfo)
 {
 static const UINT8 bits_dc_luminance[17] =
-{  0, 0, 1, 5, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0 };
+{ 0, 0, 1, 5, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0 };
 static const UINT8 val_dc_luminance[] =
 { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 static const UINT8 bits_dc_chrominance[17] =
-{  0, 0, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 };
+{ 0, 0, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 };
 static const UINT8 val_dc_chrominance[] =
 { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 static const UINT8 bits_ac_luminance[17] =
-{  0, 0, 2, 1, 3, 3, 2, 4, 3, 5, 5, 4, 4, 0, 0, 1, 0x7d };
+{ 0, 0, 2, 1, 3, 3, 2, 4, 3, 5, 5, 4, 4, 0, 0, 1, 0x7d };
 static const UINT8 val_ac_luminance[] =
 { 0x01, 0x02, 0x03, 0x00, 0x04, 0x11, 0x05, 0x12,
 0x21, 0x31, 0x41, 0x06, 0x13, 0x51, 0x61, 0x07,
@@ -124,7 +124,7 @@ static const UINT8 val_ac_luminance[] =
 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8,
 0xf9, 0xfa };
 static const UINT8 bits_ac_chrominance[17] =
-{  0, 0, 2, 1, 2, 4, 4, 3, 4, 7, 5, 4, 4, 0, 1, 2, 0x77 };
+{ 0, 0, 2, 1, 2, 4, 4, 3, 4, 7, 5, 4, 4, 0, 1, 2, 0x77 };
 static const UINT8 val_ac_chrominance[] =
 { 0x00, 0x01, 0x02, 0x03, 0x11, 0x04, 0x05, 0x21,
 0x31, 0x06, 0x12, 0x41, 0x51, 0x07, 0x61, 0x71,
@@ -224,7 +224,7 @@ jpeg_set_colorspace (j_compress_ptr cinfo, J_COLOR_SPACE colorspace)
 {
 jpeg_component_info * compptr;
 int ci;
-#define SET_COMP(index,id,hsamp,vsamp,quant,dctbl,actbl)  \
+#define SET_COMP(index,id,hsamp,vsamp,quant,dctbl,actbl) \
 (compptr = &cinfo->comp_info[index], \
 compptr->component_id = (id), \
 compptr->h_samp_factor = (hsamp), \

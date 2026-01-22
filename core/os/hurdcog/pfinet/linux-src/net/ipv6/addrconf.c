@@ -37,9 +37,9 @@
 static void addrconf_sysctl_register(struct inet6_dev *idev, struct ipv6_devconf *p);
 static void addrconf_sysctl_unregister(struct ipv6_devconf *p);
 #endif
-static struct inet6_ifaddr		*inet6_addr_lst[IN6_ADDR_HSIZE];
-static struct inet6_dev		*inet6_dev_lst[IN6_ADDR_HSIZE];
-static atomic_t			addr_list_lock = ATOMIC_INIT(0);
+static struct inet6_ifaddr *inet6_addr_lst[IN6_ADDR_HSIZE];
+static struct inet6_dev *inet6_dev_lst[IN6_ADDR_HSIZE];
+static atomic_t addr_list_lock = ATOMIC_INIT(0);
 void addrconf_verify(unsigned long);
 static struct timer_list addr_chk_timer = {
 NULL, NULL,
@@ -443,17 +443,17 @@ static void sit_route_add(struct device *dev)
 {
 struct in6_rtmsg rtmsg;
 memset(&rtmsg, 0, sizeof(rtmsg));
-rtmsg.rtmsg_type	= RTMSG_NEWROUTE;
-rtmsg.rtmsg_metric	= IP6_RT_PRIO_ADDRCONF;
-rtmsg.rtmsg_dst_len	= 96;
-rtmsg.rtmsg_flags	= RTF_UP|RTF_NONEXTHOP;
-rtmsg.rtmsg_ifindex	= dev->ifindex;
+rtmsg.rtmsg_type = RTMSG_NEWROUTE;
+rtmsg.rtmsg_metric = IP6_RT_PRIO_ADDRCONF;
+rtmsg.rtmsg_dst_len = 96;
+rtmsg.rtmsg_flags = RTF_UP|RTF_NONEXTHOP;
+rtmsg.rtmsg_ifindex = dev->ifindex;
 ip6_route_add(&rtmsg);
 }
 static void addrconf_add_lroute(struct device *dev)
 {
 struct in6_addr addr;
-ipv6_addr_set(&addr,  __constant_htonl(0xFE800000), 0, 0, 0);
+ipv6_addr_set(&addr, __constant_htonl(0xFE800000), 0, 0, 0);
 addrconf_prefix_route(&addr, 10, dev, 0, RTF_ADDRCONF);
 }
 static struct inet6_dev *addrconf_add_dev(struct device *dev)
@@ -577,7 +577,7 @@ if (dev == NULL)
 goto err_exit;
 if (dev->type == ARPHRD_SIT) {
 struct ifreq ifr;
-mm_segment_t	oldfs;
+mm_segment_t oldfs;
 struct ip_tunnel_parm p;
 err = -EADDRNOTAVAIL;
 if (!(ipv6_addr_type(&ireq.ifr6_addr) & IPV6_ADDR_COMPATv4))
@@ -745,7 +745,7 @@ addrconf_unlock();
 static void init_loopback(struct device *dev)
 {
 struct in6_addr addr;
-struct inet6_dev  *idev;
+struct inet6_dev *idev;
 struct inet6_ifaddr * ifp;
 memset(&addr, 0, sizeof(struct in6_addr));
 addr.s6_addr[15] = 1;
@@ -777,7 +777,7 @@ addrconf_unlock();
 static void addrconf_dev_config(struct device *dev)
 {
 struct in6_addr addr;
-struct inet6_dev    * idev;
+struct inet6_dev * idev;
 if (dev->type != ARPHRD_ETHER) {
 return;
 }
@@ -983,7 +983,7 @@ add_timer(&ifp->timer);
 }
 static void addrconf_dad_completed(struct inet6_ifaddr *ifp)
 {
-struct device *	dev = ifp->idev->dev;
+struct device * dev = ifp->idev->dev;
 ipv6_ifa_notify(RTM_NEWADDR, ifp);
 if (ifp->idev->cnf.forwarding == 0 &&
 (dev->flags&IFF_LOOPBACK) == 0 &&
@@ -1114,7 +1114,7 @@ return inet6_addr_del(ifm->ifa_index, pfx, ifm->ifa_prefixlen);
 static int
 inet6_rtm_newaddr(struct sk_buff *skb, struct nlmsghdr *nlh, void *arg)
 {
-struct rtattr  **rta = arg;
+struct rtattr **rta = arg;
 struct ifaddrmsg *ifm = NLMSG_DATA(nlh);
 struct in6_addr *pfx;
 pfx = NULL;
@@ -1136,9 +1136,9 @@ static int inet6_fill_ifaddr(struct sk_buff *skb, struct inet6_ifaddr *ifa,
 u32 pid, u32 seq, int event)
 {
 struct ifaddrmsg *ifm;
-struct nlmsghdr  *nlh;
+struct nlmsghdr *nlh;
 struct ifa_cacheinfo ci;
-unsigned char	 *b = skb->tail;
+unsigned char *b = skb->tail;
 nlh = NLMSG_PUT(skb, pid, seq, event, sizeof(*ifm));
 ifm = NLMSG_DATA(nlh);
 ifm->ifa_family = AF_INET6;
@@ -1220,18 +1220,18 @@ netlink_broadcast(rtnl, skb, 0, RTMGRP_IPV6_IFADDR, GFP_ATOMIC);
 }
 static struct rtnetlink_link inet6_rtnetlink_table[RTM_MAX-RTM_BASE+1] =
 {
-{ NULL,			NULL,			},
-{ NULL,			NULL,			},
-{ NULL,			NULL,			},
-{ NULL,			NULL,			},
-{ inet6_rtm_newaddr,	NULL,			},
-{ inet6_rtm_deladdr,	NULL,			},
-{ NULL,			inet6_dump_ifaddr,	},
-{ NULL,			NULL,			},
-{ inet6_rtm_newroute,	NULL,			},
-{ inet6_rtm_delroute,	NULL,			},
-{ inet6_rtm_getroute,	inet6_dump_fib,		},
-{ NULL,			NULL,			},
+{ NULL, NULL, },
+{ NULL, NULL, },
+{ NULL, NULL, },
+{ NULL, NULL, },
+{ inet6_rtm_newaddr, NULL, },
+{ inet6_rtm_deladdr, NULL, },
+{ NULL, inet6_dump_ifaddr, },
+{ NULL, NULL, },
+{ inet6_rtm_newroute, NULL, },
+{ inet6_rtm_delroute, NULL, },
+{ inet6_rtm_getroute, inet6_dump_fib, },
+{ NULL, NULL, },
 };
 #endif
 static void ipv6_ifa_notify(int event, struct inet6_ifaddr *ifp)

@@ -7,34 +7,34 @@
 #include "path.h"
 #include "ext.h"
 #include "posttek.h"
-char	*optnames = "a:c:f:m:n:o:p:w:x:y:A:C:E:J:L:P:R:DI";
-char	*prologue = POSTTEK;
-char	*formfile = FORMFILE;
-int	formsperpage = 1;
-int	copies = 1;
-int	charheight[] = CHARHEIGHT;
-int	charwidth[] = CHARWIDTH;
-int	tekfont = TEKFONT;
-char	intensity[] = INTENSITY;
-char	*styles[] = STYLES;
-int	linestyle = 0;
-int	linetype = 0;
-int	dispmode = ALPHA;
-int	points = 0;
-int	characters = 0;
-int	pen = UP;
-int	margin = 0;
-Point	cursor;
-Fontmap	fontmap[] = FONTMAP;
-char	*fontname = "Courier";
-int	page = 0;
-int	printed = 0;
-FILE	*fp_in;
-FILE	*fp_out = stdout;
-FILE	*fp_acct = NULL;
+char *optnames = "a:c:f:m:n:o:p:w:x:y:A:C:E:J:L:P:R:DI";
+char *prologue = POSTTEK;
+char *formfile = FORMFILE;
+int formsperpage = 1;
+int copies = 1;
+int charheight[] = CHARHEIGHT;
+int charwidth[] = CHARWIDTH;
+int tekfont = TEKFONT;
+char intensity[] = INTENSITY;
+char *styles[] = STYLES;
+int linestyle = 0;
+int linetype = 0;
+int dispmode = ALPHA;
+int points = 0;
+int characters = 0;
+int pen = UP;
+int margin = 0;
+Point cursor;
+Fontmap fontmap[] = FONTMAP;
+char *fontname = "Courier";
+int page = 0;
+int printed = 0;
+FILE *fp_in;
+FILE *fp_out = stdout;
+FILE *fp_acct = NULL;
 main(agc, agv)
-int		agc;
-char	*agv[];
+int agc;
+char *agv[];
 {
 argv = agv;
 argc = agc;
@@ -50,7 +50,7 @@ exit(x_stat);
 }
 init_signals()
 {
-if ( signal(SIGINT, interrupt) == SIG_IGN )  {
+if ( signal(SIGINT, interrupt) == SIG_IGN ) {
 signal(SIGINT, SIG_IGN);
 signal(SIGQUIT, SIG_IGN);
 signal(SIGHUP, SIG_IGN);
@@ -62,8 +62,8 @@ signal(SIGTERM, interrupt);
 }
 header()
 {
-int		ch;
-int		old_optind = optind;
+int ch;
+int old_optind = optind;
 while ( (ch = getopt(argc, argv, optnames)) != EOF )
 if ( ch == 'L' )
 prologue = optarg;
@@ -83,9 +83,9 @@ fprintf(stdout, "mark\n");
 }
 options()
 {
-int		ch;
-while ( (ch = getopt(argc, argv, optnames)) != EOF )  {
-switch ( ch )  {
+int ch;
+while ( (ch = getopt(argc, argv, optnames)) != EOF ) {
+switch ( ch ) {
 case 'a':
 fprintf(stdout, "/aspectratio %s def\n", optarg);
 break;
@@ -161,9 +161,9 @@ argc -= optind;
 argv += optind;
 }
 char *get_font(name)
-char	*name;
+char *name;
 {
-int		i;
+int i;
 for ( i = 0; fontmap[i].name != NULL; i++ )
 if ( strcmp(name, fontmap[i].name) == 0 )
 return(fontmap[i].val);
@@ -174,7 +174,7 @@ setup()
 writerequest(0, stdout);
 setencoding(fontencoding);
 fprintf(stdout, "setup\n");
-if ( formsperpage > 1 )  {
+if ( formsperpage > 1 ) {
 if ( cat(formfile) == FALSE )
 error(FATAL, "can't read %s", formfile);
 fprintf(stdout, "%d setupforms\n", formsperpage);
@@ -185,8 +185,8 @@ arguments()
 {
 if ( argc < 1 )
 statemachine(fp_in = stdin);
-else  {
-while ( argc > 0 )  {
+else {
+while ( argc > 0 ) {
 if ( strcmp(*argv, "-") == 0 )
 fp_in = stdin;
 else if ( (fp_in = fopen(*argv, "r")) == NULL )
@@ -212,13 +212,13 @@ if ( fp_acct != NULL )
 fprintf(fp_acct, " print %d\n copies %d\n", printed, copies);
 }
 statemachine(fp)
-FILE	*fp;
+FILE *fp;
 {
 redirect(-1);
 formfeed();
 dispmode = RESET;
 while ( 1 )
-switch ( dispmode )  {
+switch ( dispmode ) {
 case RESET:
 reset();
 break;
@@ -252,15 +252,15 @@ setmode(ALPHA);
 }
 alpha()
 {
-int		c;
-int		x, y;
+int c;
+int x, y;
 if ( (c = nextchar()) == OUTMODED )
 return;
 if ( (c < 040) && ((c = control(c)) <= 0) )
 return;
 x = cursor.x;
 y = cursor.y;
-switch ( c )  {
+switch ( c ) {
 case DEL:
 return;
 case BS:
@@ -282,7 +282,7 @@ case ' ':
 default:
 if ( characters++ == 0 )
 fprintf(fp_out, "%d %d (", cursor.x, cursor.y);
-switch ( c )  {
+switch ( c ) {
 case '(':
 case ')':
 case '\\':
@@ -311,12 +311,12 @@ move(x, y);
 }
 graph()
 {
-int			c;
-int			b;
-int			x, y;
-static int		hix, hiy;
-static int		lox, loy;
-static int		extra;
+int c;
+int b;
+int x, y;
+static int hix, hiy;
+static int lox, loy;
+static int extra;
 if ((c = nextchar()) < 040) {
 control(c);
 return;
@@ -355,7 +355,7 @@ if (extra & 020)
 margin = TEKXMAX/2;
 x = (hix<<7) | (lox<<2) | (extra & 03);
 y = (hiy<<7) | (loy<<2) | ((extra & 014)>>2);
-if ( points > 100 )  {
+if ( points > 100 ) {
 draw();
 points = 1;
 }
@@ -365,8 +365,8 @@ move(x, y);
 }
 point()
 {
-int		c;
-if ( dispmode == SPECIALPOINT )  {
+int c;
+if ( dispmode == SPECIALPOINT ) {
 if ( (c = nextchar()) < 040 || c > 0175 )
 return(control(c));
 fprintf(fp_out, "%d %d i\n", intensity[c - ' '], c & 0100);
@@ -376,8 +376,8 @@ draw();
 }
 incremental()
 {
-int		c;
-int		x, y;
+int c;
+int x, y;
 if ( (c = nextchar()) == OUTMODED )
 return;
 if ( (c < 040) && ((c = control(c)) <= 0) )
@@ -391,7 +391,7 @@ if ( c & 010 ) y--;
 if ( c & 01 ) x++;
 if ( c & 02 ) x--;
 move(x, y);
-if ( pen == DOWN )  {
+if ( pen == DOWN ) {
 points = 1;
 draw();
 }
@@ -401,9 +401,9 @@ gin()
 control(nextchar());
 }
 control(c)
-int		c;
+int c;
 {
-switch ( c )  {
+switch ( c ) {
 case BEL:
 return(0);
 case BS:
@@ -411,19 +411,19 @@ case HT:
 case VT:
 return(dispmode == ALPHA ? c : 0);
 case CR:
-if ( dispmode != ALPHA )  {
+if ( dispmode != ALPHA ) {
 setmode(ALPHA);
 ungetc(c, fp_in);
 return(OUTMODED);
 } else return(c);
 case FS:
-if ( (dispmode == ALPHA) || (dispmode == GRAPH) )  {
+if ( (dispmode == ALPHA) || (dispmode == GRAPH) ) {
 setmode(POINT);
 return(OUTMODED);
 }
 return(0);
 case GS:
-if ( (dispmode == ALPHA) || (dispmode == GRAPH) )  {
+if ( (dispmode == ALPHA) || (dispmode == GRAPH) ) {
 setmode(GRAPH);
 return(OUTMODED);
 }
@@ -432,7 +432,7 @@ case NL:
 ungetc(CR, fp_in);
 return(dispmode == ALPHA ? c : 0);
 case RS:
-if ( dispmode != GIN )  {
+if ( dispmode != GIN ) {
 setmode(INCREMENTAL);
 return(OUTMODED);
 }
@@ -452,12 +452,12 @@ return(c < 040 ? 0 : c);
 }
 esc()
 {
-int		c;
-int		ignore;
-do  {
+int c;
+int ignore;
+do {
 c = nextchar();
 ignore = 0;
-switch ( c )  {
+switch ( c ) {
 case CAN:
 return(0);
 case CR:
@@ -502,7 +502,7 @@ fprintf(fp_out, "%d w\n", (linetype = (c & 010))/010);
 if ( ((c + 1) & 7) >= 6 )
 break;
 if ( (c + 1) & 7 )
-if ( (c & 7) != linestyle )  {
+if ( (c & 7) != linestyle ) {
 linestyle = c & 7;
 setmode(dispmode);
 fprintf(fp_out, "%s l\n", styles[linestyle]);
@@ -513,15 +513,15 @@ return(0);
 return(0);
 }
 move(x, y)
-int		x, y;
+int x, y;
 {
 cursor.x = x;
 cursor.y = y;
 }
 setmode(mode)
-int		mode;
+int mode;
 {
-switch ( dispmode )  {
+switch ( dispmode ) {
 case ALPHA:
 text();
 break;
@@ -540,9 +540,9 @@ margin = 0;
 move(0, TEKYMAX);
 }
 setfont(newfont)
-int		newfont;
+int newfont;
 {
-if ( newfont != tekfont )  {
+if ( newfont != tekfont ) {
 setmode(dispmode);
 fprintf(fp_out, "%d f\n", charwidth[newfont]);
 }
@@ -585,17 +585,17 @@ home();
 }
 nextchar()
 {
-int		ch;
-if ( (ch = getc(fp_in)) == EOF )  {
+int ch;
+if ( (ch = getc(fp_in)) == EOF ) {
 setmode(EXIT);
 ch = OUTMODED;
 }
 return(ch);
 }
 redirect(pg)
-int		pg;
+int pg;
 {
-static FILE	*fp_null = NULL;
+static FILE *fp_null = NULL;
 if ( pg >= 0 && in_olist(pg) == ON )
 fp_out = stdout;
 else if ( (fp_out = fp_null) == NULL )

@@ -13,7 +13,7 @@
 #include "plugin_common.h"
 #ifdef WIN32
 BOOL APIENTRY DllMain( HANDLE hModule,
-DWORD  ul_reason_for_call,
+DWORD ul_reason_for_call,
 LPVOID lpReserved
 )
 {

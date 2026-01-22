@@ -542,9 +542,9 @@ end
 end
 # See Section 2.3 and Table 2 of
 # - Philippe Chartier, Ernst Hairer, Gilles Vilmart (2010)
-#   Algebraic Structures of B-series.
-#   Foundations of Computational Mathematics
-#   [DOI: 10.1007/s10208-010-9065-1](https:
+# Algebraic Structures of B-series.
+# Foundations of Computational Mathematics
+# [DOI: 10.1007/s10208-010-9065-1](https:
 @testset "partitions" begin
 let t = rootedtree([1, 2, 3, 4, 3])
 edge_set = [true, true, false, false]
@@ -660,9 +660,9 @@ end
 end
 # See Table 3 of
 # - Philippe Chartier, Ernst Hairer, Gilles Vilmart (2010)
-#   Algebraic Structures of B-series.
-#   Foundations of Computational Mathematics
-#   [DOI: 10.1007/s10208-010-9065-1](https:
+# Algebraic Structures of B-series.
+# Foundations of Computational Mathematics
+# [DOI: 10.1007/s10208-010-9065-1](https:
 @testset "all_partitions" begin
 t = rootedtree([1, 2, 3, 3])
 forests, skeletons = all_partitions(t)
@@ -732,9 +732,9 @@ end
 end
 # See Section 2.2 and Table 1 of
 # - Philippe Chartier, Ernst Hairer, Gilles Vilmart (2010)
-#   Algebraic Structures of B-series.
-#   Foundations of Computational Mathematics
-#   [DOI: 10.1007/s10208-010-9065-1](https:
+# Algebraic Structures of B-series.
+# Foundations of Computational Mathematics
+# [DOI: 10.1007/s10208-010-9065-1](https:
 @testset "splittings" begin
 t = rootedtree([1, 2, 3, 2, 2])
 splittings = all_splittings(t)
@@ -1148,9 +1148,9 @@ end
 end
 # See Sections 2.3 & 6.1 and Table 2 of
 # - Philippe Chartier, Ernst Hairer, Gilles Vilmart (2010)
-#   Algebraic Structures of B-series.
-#   Foundations of Computational Mathematics
-#   [DOI: 10.1007/s10208-010-9065-1](https:
+# Algebraic Structures of B-series.
+# Foundations of Computational Mathematics
+# [DOI: 10.1007/s10208-010-9065-1](https:
 @testset "partitions" begin
 # Example in Section 6.1
 let t = rootedtree([1, 2, 3, 3], Bool[0, 1, 0, 0])
@@ -1290,9 +1290,9 @@ end
 end
 # See Table 3 of
 # - Philippe Chartier, Ernst Hairer, Gilles Vilmart (2010)
-#   Algebraic Structures of B-series.
-#   Foundations of Computational Mathematics
-#   [DOI: 10.1007/s10208-010-9065-1](https:
+# Algebraic Structures of B-series.
+# Foundations of Computational Mathematics
+# [DOI: 10.1007/s10208-010-9065-1](https:
 @testset "PartitionIterator" begin
 t = rootedtree([1, 2, 3, 3], Bool[1, 0, 1, 0])
 partitions = collect(PartitionIterator(t))

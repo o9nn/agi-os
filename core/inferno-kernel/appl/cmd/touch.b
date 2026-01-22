@@ -27,9 +27,9 @@ arg->setusage("touch [-c] [-t time] file ...");
 now := daytime->now();
 while((c := arg->opt()) != 0)
 case c {
-'t' =>		now = int arg->earg();
-'c' =>	force = 0;
-* =>	arg->usage();
+'t' => now = int arg->earg();
+'c' => force = 0;
+* => arg->usage();
 }
 args = arg->argv();
 if(args == nil)
@@ -53,7 +53,7 @@ dir.mtime = now;
 if(rc >= 0){
 if(sys->wstat(name, dir) >= 0)
 return 0;
-force = 0;	# we don't want to create it: it's there, we just can't wstat it
+force = 0; # we don't want to create it: it's there, we just can't wstat it
 }
 if(force == 0) {
 sys->fprint(stderr, "touch: %s: cannot change time: %r\n", name);

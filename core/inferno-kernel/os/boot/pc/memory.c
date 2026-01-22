@@ -4,27 +4,27 @@
 #include "dat.h"
 #include "fns.h"
 #include "io.h"
-#define MEMDEBUG	0
-#define PDX(va)		((((ulong)(va))>>22) & 0x03FF)
-#define PTX(va)		((((ulong)(va))>>12) & 0x03FF)
+#define MEMDEBUG 0
+#define PDX(va) ((((ulong)(va))>>22) & 0x03FF)
+#define PTX(va) ((((ulong)(va))>>12) & 0x03FF)
 enum {
-MemUPA		= 0,
-MemRAM		= 1,
-MemUMB		= 2,
-NMemType	= 3,
-KB		= 1024,
-MemMinMB	= 4,
-MemMaxMB	= 768,
-NMemBase	= 10,
+MemUPA = 0,
+MemRAM = 1,
+MemUMB = 2,
+NMemType = 3,
+KB = 1024,
+MemMinMB = 4,
+MemMaxMB = 768,
+NMemBase = 10,
 };
 typedef struct {
-int	size;
-ulong	addr;
+int size;
+ulong addr;
 } Map;
 typedef struct {
-char*	name;
-Map*	map;
-Map*	mapend;
+char* name;
+Map* map;
+Map* mapend;
 Lock;
 } RMap;
 static Map mapupa[8];

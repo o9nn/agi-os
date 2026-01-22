@@ -2,109 +2,109 @@
 #include <bio.h>
 #include <mach.h>
 #include <ar.h>
-typedef struct	Arsymref
+typedef struct Arsymref
 {
-char	*name;
-int	type;
-int	len;
-long	offset;
-struct	Arsymref *next;
+char *name;
+int type;
+int len;
+long offset;
+struct Arsymref *next;
 } Arsymref;
-typedef struct	Armember
+typedef struct Armember
 {
-struct Armember	*next;
-struct ar_hdr	hdr;
-long		size;
-long		date;
-void		*member;
+struct Armember *next;
+struct ar_hdr hdr;
+long size;
+long date;
+void *member;
 } Armember;
-typedef	struct Arfile
+typedef struct Arfile
 {
-int	paged;
-char	*fname;
-int	fd;
-long	size;
+int paged;
+char *fname;
+int fd;
+long size;
 Armember *head;
 Armember *tail;
 Arsymref *sym;
 } Arfile;
 typedef struct Hashchain
 {
-char	*name;
+char *name;
 struct Hashchain *next;
 } Hashchain;
-#define	NHASH	1024
-#define	HEADER_IO(cmd, f, h)	cmd(f, h.name, sizeof(h.name)) != sizeof(h.name)\
+#define NHASH 1024
+#define HEADER_IO(cmd, f, h) cmd(f, h.name, sizeof(h.name)) != sizeof(h.name)\
 || cmd(f, h.date, sizeof(h.date)) != sizeof(h.date)\
 || cmd(f, h.uid, sizeof(h.uid)) != sizeof(h.uid)\
 || cmd(f, h.gid, sizeof(h.gid)) != sizeof(h.gid)\
 || cmd(f, h.mode, sizeof(h.mode)) != sizeof(h.mode)\
 || cmd(f, h.size, sizeof(h.size)) != sizeof(h.size)\
 || cmd(f, h.fmag, sizeof(h.fmag)) != sizeof(h.fmag)
-char	*man =		"mrxtdpq";
-char	*opt =		"uvnbailo";
-char	artemp[] =	"/tmp/vXXXXX";
-char	movtemp[] =	"/tmp/v1XXXXX";
-char	tailtemp[] =	"/tmp/v2XXXXX";
-char	symdef[] =	"__.SYMDEF";
-int	aflag;
-int	bflag;
-int	cflag;
-int	oflag;
-int	uflag;
-int	vflag;
+char *man = "mrxtdpq";
+char *opt = "uvnbailo";
+char artemp[] = "/tmp/vXXXXX";
+char movtemp[] = "/tmp/v1XXXXX";
+char tailtemp[] = "/tmp/v2XXXXX";
+char symdef[] = "__.SYMDEF";
+int aflag;
+int bflag;
+int cflag;
+int oflag;
+int uflag;
+int vflag;
 Arfile *astart, *amiddle, *aend;
-int	allobj = 1;
-int	symdefsize;
-int	dupfound;
-Hashchain	*hash[NHASH];
-#define	ARNAMESIZE	sizeof(astart->tail->hdr.name)
-char	poname[ARNAMESIZE+1];
-char	*file;
-Biobuf	bout;
+int allobj = 1;
+int symdefsize;
+int dupfound;
+Hashchain *hash[NHASH];
+#define ARNAMESIZE sizeof(astart->tail->hdr.name)
+char poname[ARNAMESIZE+1];
+char *file;
+Biobuf bout;
 Biobuf bar;
-void	arcopy(Biobuf*, Arfile*, Armember*);
-int	arcreate(char*);
-void	arfree(Arfile*);
-void	arinsert(Arfile*, Armember*);
-char	*armalloc(int);
-void	armove(Biobuf*, Arfile*, Armember*);
-void	arread(Biobuf*, Armember*, int);
-void	arstream(int, Arfile*);
-int	arwrite(int, Armember*);
-int	bamatch(char*, char*);
-int	duplicate(char*);
+void arcopy(Biobuf*, Arfile*, Armember*);
+int arcreate(char*);
+void arfree(Arfile*);
+void arinsert(Arfile*, Armember*);
+char *armalloc(int);
+void armove(Biobuf*, Arfile*, Armember*);
+void arread(Biobuf*, Armember*, int);
+void arstream(int, Arfile*);
+int arwrite(int, Armember*);
+int bamatch(char*, char*);
+int duplicate(char*);
 Armember *getdir(Biobuf*);
-int	getspace(void);
-void	install(char*, Arfile*, Arfile*, Arfile*, int);
-void	longt(Armember*);
-int	match(int, char**);
-void	mesg(int, char*);
+int getspace(void);
+void install(char*, Arfile*, Arfile*, Arfile*, int);
+void longt(Armember*);
+int match(int, char**);
+void mesg(int, char*);
 char *myctime(long);
-Arfile	*newtempfile(char*);
+Arfile *newtempfile(char*);
 Armember *newmember(void);
-void	objsym(Sym*, void*);
-int	openar(char*, int, int);
-int	page(Arfile*);
-void	pmode(long);
-void	rl(int);
-void	scanobj(Biobuf*, Arfile*, int);
-void	ar_select(int*, long);
-void	setcom(void(*)(char*, int, char**));
-void	skip(Biobuf*, long);
-int	symcomp(void*, void*);
-void	trim(char*, char*, int);
-void	usage(void);
-void	wrerr(void);
-void	wrsym(Biobuf*, int, Arsymref*);
-void	arcmd(char*, int, char**);
-void	dcmd(char*, int, char**);
-void	xcmd(char*, int, char**);
-void	tcmd(char*, int, char**);
-void	pcmd(char*, int, char**);
-void	mcmd(char*, int, char**);
-void	qcmd(char*, int, char**);
-void	(*comfun)(char*, int, char**);
+void objsym(Sym*, void*);
+int openar(char*, int, int);
+int page(Arfile*);
+void pmode(long);
+void rl(int);
+void scanobj(Biobuf*, Arfile*, int);
+void ar_select(int*, long);
+void setcom(void(*)(char*, int, char**));
+void skip(Biobuf*, long);
+int symcomp(void*, void*);
+void trim(char*, char*, int);
+void usage(void);
+void wrerr(void);
+void wrsym(Biobuf*, int, Arsymref*);
+void arcmd(char*, int, char**);
+void dcmd(char*, int, char**);
+void xcmd(char*, int, char**);
+void tcmd(char*, int, char**);
+void pcmd(char*, int, char**);
+void mcmd(char*, int, char**);
+void qcmd(char*, int, char**);
+void (*comfun)(char*, int, char**);
 void
 main(int argc, char *argv[])
 {
@@ -114,25 +114,25 @@ if(argc < 3)
 usage();
 for (cp = argv[1]; *cp; cp++) {
 switch(*cp) {
-case 'a':	aflag = 1;	break;
-case 'b':	bflag = 1;	break;
-case 'c':	cflag = 1;	break;
-case 'd':	setcom(dcmd);	break;
-case 'i':	bflag = 1;	break;
+case 'a': aflag = 1; break;
+case 'b': bflag = 1; break;
+case 'c': cflag = 1; break;
+case 'd': setcom(dcmd); break;
+case 'i': bflag = 1; break;
 case 'l':
 strcpy(artemp, "vXXXXX");
 strcpy(movtemp, "v1XXXXX");
 strcpy(tailtemp, "v2XXXXX");
 break;
-case 'm':	setcom(mcmd);	break;
-case 'o':	oflag = 1;	break;
-case 'p':	setcom(pcmd);	break;
-case 'q':	setcom(qcmd);	break;
-case 'r':	setcom(arcmd);	break;
-case 't':	setcom(tcmd);	break;
-case 'u':	uflag = 1;	break;
-case 'v':	vflag = 1;	break;
-case 'x':	setcom(xcmd);	break;
+case 'm': setcom(mcmd); break;
+case 'o': oflag = 1; break;
+case 'p': setcom(pcmd); break;
+case 'q': setcom(qcmd); break;
+case 'r': setcom(arcmd); break;
+case 't': setcom(tcmd); break;
+case 'u': uflag = 1; break;
+case 'v': vflag = 1; break;
+case 'x': setcom(xcmd); break;
 default:
 fprint(2, "ar: bad option `%c'\n", *cp);
 exits("error");
@@ -497,7 +497,7 @@ objsym(Sym *s, void *p)
 int n;
 Arsymref *as;
 Arfile *ap;
-if (s->type != 'T' &&  s->type != 'D')
+if (s->type != 'T' && s->type != 'D')
 return;
 ap = (Arfile*)p;
 as = (Arsymref*)armalloc(sizeof(Arsymref));
@@ -813,18 +813,18 @@ return;
 *p = 0;
 }
 }
-#define	SUID	04000
-#define	SGID	02000
-#define	ROWN	0400
-#define	WOWN	0200
-#define	XOWN	0100
-#define	RGRP	040
-#define	WGRP	020
-#define	XGRP	010
-#define	ROTH	04
-#define	WOTH	02
-#define	XOTH	01
-#define	STXT	01000
+#define SUID 04000
+#define SGID 02000
+#define ROWN 0400
+#define WOWN 0200
+#define XOWN 0100
+#define RGRP 040
+#define WGRP 020
+#define XGRP 010
+#define ROTH 04
+#define WOTH 02
+#define XOTH 01
+#define STXT 01000
 void
 longt(Armember *bp)
 {
@@ -835,16 +835,16 @@ Bprint(&bout, "%7ld", bp->size);
 cp = myctime(bp->date);
 Bprint(&bout, " %-12.12s %-4.4s ", cp+4, cp+24);
 }
-int	m1[] = { 1, ROWN, 'r', '-' };
-int	m2[] = { 1, WOWN, 'w', '-' };
-int	m3[] = { 2, SUID, 's', XOWN, 'x', '-' };
-int	m4[] = { 1, RGRP, 'r', '-' };
-int	m5[] = { 1, WGRP, 'w', '-' };
-int	m6[] = { 2, SGID, 's', XGRP, 'x', '-' };
-int	m7[] = { 1, ROTH, 'r', '-' };
-int	m8[] = { 1, WOTH, 'w', '-' };
-int	m9[] = { 2, STXT, 't', XOTH, 'x', '-' };
-int	*m[] = { m1, m2, m3, m4, m5, m6, m7, m8, m9};
+int m1[] = { 1, ROWN, 'r', '-' };
+int m2[] = { 1, WOWN, 'w', '-' };
+int m3[] = { 2, SUID, 's', XOWN, 'x', '-' };
+int m4[] = { 1, RGRP, 'r', '-' };
+int m5[] = { 1, WGRP, 'w', '-' };
+int m6[] = { 2, SGID, 's', XGRP, 'x', '-' };
+int m7[] = { 1, ROTH, 'r', '-' };
+int m8[] = { 1, WOTH, 'w', '-' };
+int m9[] = { 2, STXT, 't', XOTH, 'x', '-' };
+int *m[] = { m1, m2, m3, m4, m5, m6, m7, m8, m9};
 void
 pmode(long mode)
 {

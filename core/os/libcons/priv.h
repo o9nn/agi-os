@@ -7,10 +7,10 @@ BELL_OFF,
 BELL_VISUAL,
 BELL_AUDIBLE
 } bell_type_t;
-#define CONS_EVT_MOUSE_MOVE	(1 << 1)
-#define CONS_EVT_MOUSE_BUTTON	(1 << 2)
-#define CONS_EVT_KEYPRESS	(1 << 4)
-#define CONS_EVT_OUTPUT		(1 << 8)
+#define CONS_EVT_MOUSE_MOVE (1 << 1)
+#define CONS_EVT_MOUSE_BUTTON (1 << 2)
+#define CONS_EVT_KEYPRESS (1 << 4)
+#define CONS_EVT_OUTPUT (1 << 8)
 extern int _cons_slack;
 extern int _cons_jump_down_on_input;
 extern int _cons_jump_down_on_output;

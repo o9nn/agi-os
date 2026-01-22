@@ -4,72 +4,72 @@
 #include <fcall.h>
 #include <String.h>
 #include "ftpfs.h"
-typedef struct Fid	Fid;
+typedef struct Fid Fid;
 struct Fid
 {
-int	fid;
-Node	*node;
-int	busy;
-Fid	*next;
-int	open;
+int fid;
+Node *node;
+int busy;
+Fid *next;
+int open;
 };
-Fid	*fids;
-char	errstring[128];
-int	mfd;
-int	messagesize = 4*1024*IOHDRSZ;
-uchar	mdata[8*1024*IOHDRSZ];
-uchar	mbuf[8*1024*IOHDRSZ];
-Fcall	rhdr;
-Fcall	thdr;
-int	debug;
-int	usenlst;
-int	usetls;
-char	*ext;
-int	quiet;
-int	kapid = -1;
-int	dying;
-int	dokeepalive;
-char	*rflush(Fid*), *rnop(Fid*), *rversion(Fid*),
+Fid *fids;
+char errstring[128];
+int mfd;
+int messagesize = 4*1024*IOHDRSZ;
+uchar mdata[8*1024*IOHDRSZ];
+uchar mbuf[8*1024*IOHDRSZ];
+Fcall rhdr;
+Fcall thdr;
+int debug;
+int usenlst;
+int usetls;
+char *ext;
+int quiet;
+int kapid = -1;
+int dying;
+int dokeepalive;
+char *rflush(Fid*), *rnop(Fid*), *rversion(Fid*),
 *rattach(Fid*), *rclone(Fid*), *rwalk(Fid*),
 *rclwalk(Fid*), *ropen(Fid*), *rcreate(Fid*),
 *rread(Fid*), *rwrite(Fid*), *rclunk(Fid*),
 *rremove(Fid*), *rstat(Fid*), *rwstat(Fid*),
 *rauth(Fid*);;
-void	mountinit(char*);
-void	io(void);
-int	readpdir(Node*);
-char 	*(*fcalls[])(Fid*) = {
-[Tflush]	rflush,
-[Tversion]	rversion,
-[Tattach]	rattach,
-[Tauth]		rauth,
-[Twalk]		rwalk,
-[Topen]		ropen,
-[Tcreate]	rcreate,
-[Tread]		rread,
-[Twrite]	rwrite,
-[Tclunk]	rclunk,
-[Tremove]	rremove,
-[Tstat]		rstat,
-[Twstat]	rwstat,
+void mountinit(char*);
+void io(void);
+int readpdir(Node*);
+char *(*fcalls[])(Fid*) = {
+[Tflush] rflush,
+[Tversion] rversion,
+[Tattach] rattach,
+[Tauth] rauth,
+[Twalk] rwalk,
+[Topen] ropen,
+[Tcreate] rcreate,
+[Tread] rread,
+[Twrite] rwrite,
+[Tclunk] rclunk,
+[Tremove] rremove,
+[Tstat] rstat,
+[Twstat] rwstat,
 };
 OS oslist[] = {
-{ Plan9,	"Plan 9", },
-{ Plan9,	"Plan9", },
-{ Plan9,	"UNIX Type: L8 Version: Plan 9", },
-{ Unix,		"SUN", },
-{ Unix,		"UNIX", },
-{ VMS,		"VMS", },
-{ VM,		"VM", },
-{ Tops,		"TOPS", },
-{ MVS,		"MVS", },
-{ NetWare,	"NetWare", },
-{ NetWare,	"NETWARE", },
-{ OS½,		"OS/2", },
-{ TSO,		"TSO", },
-{ NT,		"Windows_NT", },
-{ NT,		"WINDOWS_NT", },
-{ Unknown,	0 },
+{ Plan9, "Plan 9", },
+{ Plan9, "Plan9", },
+{ Plan9, "UNIX Type: L8 Version: Plan 9", },
+{ Unix, "SUN", },
+{ Unix, "UNIX", },
+{ VMS, "VMS", },
+{ VM, "VM", },
+{ Tops, "TOPS", },
+{ MVS, "MVS", },
+{ NetWare, "NetWare", },
+{ NetWare, "NETWARE", },
+{ OS½, "OS/2", },
+{ TSO, "TSO", },
+{ NT, "Windows_NT", },
+{ NT, "WINDOWS_NT", },
+{ Unknown, 0 },
 };
 char *nouid = "?uid?";
 #define S2P(x) (((ulong)(x)) & 0xffffff)

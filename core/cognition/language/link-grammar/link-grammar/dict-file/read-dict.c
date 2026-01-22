@@ -18,13 +18,13 @@
 #include "word-file.h"
 struct FileCursor_s
 {
-Dictionary      dict;
-const char    * input;
-const char    * pin;
-bool            recursive_error;
-bool            is_special;
-int             already_got_it;
-char            token[MAX_TOKEN_LENGTH];
+Dictionary dict;
+const char * input;
+const char * pin;
+bool recursive_error;
+bool is_special;
+int already_got_it;
+char token[MAX_TOKEN_LENGTH];
 };
 typedef struct FileCursor_s * FileCursor;
 static bool link_advance(FileCursor);
@@ -35,11 +35,11 @@ fcurs->recursive_error = true;
 Dictionary dict = fcurs->dict;
 char token[MAX_TOKEN_LENGTH];
 strcpy(token, fcurs->token);
-bool save_is_special    = fcurs->is_special;
+bool save_is_special = fcurs->is_special;
 const char * save_input = fcurs->input;
-const char * save_pin   = fcurs->pin;
+const char * save_pin = fcurs->pin;
 int save_already_got_it = fcurs->already_got_it;
-int save_line_number    = dict->line_number;
+int save_line_number = dict->line_number;
 #define ERRBUFLEN 1024
 char tokens[ERRBUFLEN], t[ERRBUFLEN];
 int pos = 1;
@@ -52,11 +52,11 @@ if (!link_advance(fcurs)) break;
 }
 tokens[pos] = '\0';
 strcpy(fcurs->token, token);
-fcurs->is_special     = save_is_special;
-fcurs->input          = save_input;
-fcurs->pin            = save_pin;
+fcurs->is_special = save_is_special;
+fcurs->input = save_input;
+fcurs->pin = save_pin;
 fcurs->already_got_it = save_already_got_it;
-dict->line_number     = save_line_number;
+dict->line_number = save_line_number;
 if (s2)
 {
 prt_error("Error: While parsing dictionary \"%s\":\n"
@@ -270,7 +270,7 @@ multi = true;
 }
 else
 constring = fcurs->token;
-return  make_connector_node(dict, dict->Exp_pool,
+return make_connector_node(dict, dict->Exp_pool,
 constring, dir, multi);
 }
 static unsigned int exptag_macro_add(Dictionary dict, const char *tag)
@@ -503,7 +503,7 @@ op = AND_type;
 }
 else if (is_equal(fcurs, '|') || (strcmp(fcurs->token, "or") == 0))
 {
-op =  OR_type;
+op = OR_type;
 }
 else if (is_equal(fcurs, SYM_AND) || (strcmp(fcurs->token, "sym") == 0))
 {
@@ -656,8 +656,8 @@ const char * save_name = dict->name;
 int save_line_number = dict->line_number;
 dict->name = dict_name;
 bool rc = read_dictionary(dict, instr);
-dict->name            = save_name;
-dict->line_number     = save_line_number;
+dict->name = save_name;
+dict->line_number = save_line_number;
 free_file_contents(instr);
 if (!rc) goto syntax_error;
 if (!link_advance(fcurs)) goto syntax_error;

@@ -4,10 +4,10 @@
 #include "test-common.h"
 #include "mailbox-list-private.h"
 enum test_flags {
-TEST_FLAG_NO_VNAME		= BIT(0),
-TEST_FLAG_NO_STORAGE_NAME	= BIT(1),
-TEST_FLAG_NO_MUTF7		= BIT(2),
-TEST_FLAG_NO_UTF8		= BIT(3),
+TEST_FLAG_NO_VNAME = BIT(0),
+TEST_FLAG_NO_STORAGE_NAME = BIT(1),
+TEST_FLAG_NO_MUTF7 = BIT(2),
+TEST_FLAG_NO_UTF8 = BIT(3),
 };
 struct test_mailbox_list_name {
 const char *vname;

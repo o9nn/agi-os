@@ -8,22 +8,22 @@
 typedef struct URL URL;
 struct URL
 {
-int	method;
-char	*host;
-char	*port;
-char	*page;
-char	*etag;
-char	*redirect;
-char	*postbody;
-char	*cred;
+int method;
+char *host;
+char *port;
+char *page;
+char *etag;
+char *redirect;
+char *postbody;
+char *cred;
 char *rhead;
-long	mtime;
+long mtime;
 };
 typedef struct Range Range;
 struct Range
 {
-long	start;
-long	end;
+long start;
+long end;
 };
 typedef struct Out Out;
 struct Out
@@ -50,34 +50,34 @@ Changed = -3,
 };
 int debug;
 char *ofile;
-int	doftp(URL*, URL*, Range*, Out*, long);
-int	dohttp(URL*, URL*,  Range*, Out*, long);
-int	crackurl(URL*, char*);
-Range*	crackrange(char*);
-int	getheader(int, char*, int);
-int	httpheaders(int, int, URL*, Range*);
-int	httprcode(int);
-int	cistrncmp(char*, char*, int);
-int	cistrcmp(char*, char*);
-void	initibuf(void);
-int	readline(int, char*, int);
-int	readibuf(int, char*, int);
-int	dfprint(int, char*, ...);
-void	unreadline(char*);
-int	output(Out*, char*, int);
-void	setoffset(Out*, int);
-int	verbose;
-char	*net;
-char	tcpdir[NETPATHLEN];
-int	headerprint;
+int doftp(URL*, URL*, Range*, Out*, long);
+int dohttp(URL*, URL*, Range*, Out*, long);
+int crackurl(URL*, char*);
+Range* crackrange(char*);
+int getheader(int, char*, int);
+int httpheaders(int, int, URL*, Range*);
+int httprcode(int);
+int cistrncmp(char*, char*, int);
+int cistrcmp(char*, char*);
+void initibuf(void);
+int readline(int, char*, int);
+int readibuf(int, char*, int);
+int dfprint(int, char*, ...);
+void unreadline(char*);
+int output(Out*, char*, int);
+void setoffset(Out*, int);
+int verbose;
+char *net;
+char tcpdir[NETPATHLEN];
+int headerprint;
 struct {
-char	*name;
-int	(*f)(URL*, URL*, Range*, Out*, long);
+char *name;
+int (*f)(URL*, URL*, Range*, Out*, long);
 } method[] = {
-[Http]	{ "http",	dohttp },
-[Https]	{ "https",	dohttp },
-[Ftp]	{ "ftp",	doftp },
-[Other]	{ "_______",	nil },
+[Http] { "http", dohttp },
+[Https] { "https", dohttp },
+[Ftp] { "ftp", doftp },
+[Other] { "_______", nil },
 };
 void
 usage(void)
@@ -262,8 +262,8 @@ char *month[] = {
 };
 struct
 {
-int	fd;
-long	mtime;
+int fd;
+long mtime;
 } note;
 void
 catch(void*, char*)
@@ -313,14 +313,14 @@ fd = tfd;
 }
 if(u->postbody == nil){
 if(px->host == nil){
-dfprint(fd,	"GET %s HTTP/1.0\r\n"
+dfprint(fd, "GET %s HTTP/1.0\r\n"
 "Host: %s\r\n"
 "User-agent: Plan9/hget\r\n"
 "Cache-Control: no-cache\r\n"
 "Pragma: no-cache\r\n",
 u->page, u->host);
 } else {
-dfprint(fd,	"GET http:
+dfprint(fd, "GET http:
 "Host: %s\r\n"
 "User-agent: Plan9/hget\r\n"
 "Cache-Control: no-cache\r\n"
@@ -328,7 +328,7 @@ dfprint(fd,	"GET http:
 u->host, u->page, u->host);
 }
 } else {
-dfprint(fd,	"POST %s HTTP/1.0\r\n"
+dfprint(fd, "POST %s HTTP/1.0\r\n"
 "Host: %s\r\n"
 "Content-type: application/x-www-form-urlencoded\r\n"
 "Content-length: %d\r\n"
@@ -364,7 +364,7 @@ cfd = -1;
 }
 dfprint(fd, "\r\n", u->host);
 if(u->postbody)
-dfprint(fd,	"%s", u->postbody);
+dfprint(fd, "%s", u->postbody);
 auth = 0;
 redirect = 0;
 initibuf();
@@ -491,13 +491,13 @@ return -1;
 buf[n] = 0;
 return atoi(p+1);
 }
-void	hhetag(char*, URL*, Range*);
-void	hhmtime(char*, URL*, Range*);
-void	hhclen(char*, URL*, Range*);
-void	hhcrange(char*, URL*, Range*);
-void	hhuri(char*, URL*, Range*);
-void	hhlocation(char*, URL*, Range*);
-void	hhauth(char*, URL*, Range*);
+void hhetag(char*, URL*, Range*);
+void hhmtime(char*, URL*, Range*);
+void hhclen(char*, URL*, Range*);
+void hhcrange(char*, URL*, Range*);
+void hhuri(char*, URL*, Range*);
+void hhlocation(char*, URL*, Range*);
+void hhauth(char*, URL*, Range*);
 struct {
 char *name;
 void (*f)(char*, URL*, Range*);
@@ -572,7 +572,7 @@ sysfatal("file changed underfoot");
 } else
 u->etag = strdup(p);
 }
-char*	monthchars = "janfebmaraprmayjunjulaugsepoctnovdec";
+char* monthchars = "janfebmaraprmayjunjulaugsepoctnovdec";
 void
 hhmtime(char *p, URL *u, Range*)
 {
@@ -686,13 +686,13 @@ assert(u->cred = strdup(cred));
 }
 enum
 {
-Extra=		1,
-Success=	2,
-Incomplete=	3,
-TempFail=	4,
-PermFail=	5,
-Nnetdir=	64,
-Ndialstr=	64,
+Extra= 1,
+Success= 2,
+Incomplete= 3,
+TempFail= 4,
+PermFail= 5,
+Nnetdir= 64,
+Ndialstr= 64,
 };
 int ftpcmd(int, char*, ...);
 int ftprcode(int, char*, int);

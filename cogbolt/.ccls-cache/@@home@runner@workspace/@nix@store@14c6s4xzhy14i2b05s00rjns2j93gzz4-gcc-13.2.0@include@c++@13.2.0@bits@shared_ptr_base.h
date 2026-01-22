@@ -129,8 +129,8 @@ return __atomic_load_n(&_M_use_count, __ATOMIC_RELAXED);
 private:
 _Sp_counted_base(_Sp_counted_base const&) = delete;
 _Sp_counted_base& operator=(_Sp_counted_base const&) = delete;
-_Atomic_word  _M_use_count;
-_Atomic_word  _M_weak_count;
+_Atomic_word _M_use_count;
+_Atomic_word _M_weak_count;
 };
 template<>
 inline bool
@@ -294,7 +294,7 @@ _M_get_deleter(const std::type_info&) noexcept
 _Sp_counted_ptr(const _Sp_counted_ptr&) = delete;
 _Sp_counted_ptr& operator=(const _Sp_counted_ptr&) = delete;
 private:
-_Ptr             _M_ptr;
+_Ptr _M_ptr;
 };
 template<>
 inline void
@@ -332,8 +332,8 @@ class _Sp_counted_deleter final : public _Sp_counted_base<_Lp>
 {
 class _Impl : _Sp_ebo_helper<0, _Deleter>, _Sp_ebo_helper<1, _Alloc>
 {
-typedef _Sp_ebo_helper<0, _Deleter>	_Del_base;
-typedef _Sp_ebo_helper<1, _Alloc>	_Alloc_base;
+typedef _Sp_ebo_helper<0, _Deleter> _Del_base;
+typedef _Sp_ebo_helper<1, _Alloc> _Alloc_base;
 public:
 _Impl(_Ptr __p, _Deleter __d, const _Alloc& __a) noexcept
 : _Del_base(std::move(__d)), _Alloc_base(__a), _M_ptr(__p)
@@ -396,7 +396,7 @@ class _Sp_counted_ptr_inplace final : public _Sp_counted_base<_Lp>
 {
 class _Impl : _Sp_ebo_helper<0, _Alloc>
 {
-typedef _Sp_ebo_helper<0, _Alloc>	_A_base;
+typedef _Sp_ebo_helper<0, _Alloc> _A_base;
 public:
 explicit _Impl(_Alloc __a) noexcept : _A_base(__a) { }
 _Alloc& _M_alloc() noexcept { return _A_base::_S_get(*this); }
@@ -654,11 +654,11 @@ __throw_exception_again;
 }
 }
 template<typename _Ptr>
-__shared_count(_Ptr __p,  false_type)
+__shared_count(_Ptr __p, false_type)
 : __shared_count(__p)
 { }
 template<typename _Ptr>
-__shared_count(_Ptr __p,  true_type)
+__shared_count(_Ptr __p, true_type)
 : __shared_count(__p, __sp_array_delete{}, allocator<void>())
 { }
 template<typename _Ptr, typename _Deleter,
@@ -824,7 +824,7 @@ friend class __weak_count<_Lp>;
 #if __cplusplus >= 202002L
 template<typename> friend class _Sp_atomic;
 #endif
-_Sp_counted_base<_Lp>*  _M_pi;
+_Sp_counted_base<_Lp>* _M_pi;
 };
 template<_Lock_policy _Lp>
 class __weak_count
@@ -907,7 +907,7 @@ friend class __shared_count<_Lp>;
 #if __cplusplus >= 202002L
 template<typename> friend class _Sp_atomic;
 #endif
-_Sp_counted_base<_Lp>*  _M_pi;
+_Sp_counted_base<_Lp>* _M_pi;
 };
 template<_Lock_policy _Lp>
 inline
@@ -1325,8 +1325,8 @@ friend _Del* get_deleter(const shared_ptr<_Tp1>&) noexcept;
 #if __cplusplus >= 202002L
 friend _Sp_atomic<shared_ptr<_Tp>>;
 #endif
-element_type*	   _M_ptr;
-__shared_count<_Lp>  _M_refcount;
+element_type* _M_ptr;
+__shared_count<_Lp> _M_refcount;
 };
 template<typename _Tp1, typename _Tp2, _Lock_policy _Lp>
 inline bool
@@ -1574,8 +1574,8 @@ friend class enable_shared_from_this<_Tp>;
 #if __cplusplus >= 202002L
 friend _Sp_atomic<weak_ptr<_Tp>>;
 #endif
-element_type*	 _M_ptr;
-__weak_count<_Lp>  _M_refcount;
+element_type* _M_ptr;
+__weak_count<_Lp> _M_refcount;
 };
 template<typename _Tp, _Lock_policy _Lp>
 inline void
@@ -1651,7 +1651,7 @@ const __enable_shared_from_this* __p)
 { return __p; }
 template<typename, _Lock_policy>
 friend class __shared_ptr;
-mutable __weak_ptr<_Tp, _Lp>  _M_weak_this;
+mutable __weak_ptr<_Tp, _Lp> _M_weak_this;
 };
 template<typename _Tp, _Lock_policy _Lp = __default_lock_policy,
 typename _Alloc, typename... _Args>

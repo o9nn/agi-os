@@ -172,8 +172,8 @@ if (! afdict_init(dict))
 goto failure;
 if (! anysplit_init(dict->affix_table))
 goto failure;
-dict->base_knowledge  = pp_knowledge_open(pp_name);
-dict->hpsg_knowledge  = pp_knowledge_open(cons_name);
+dict->base_knowledge = pp_knowledge_open(pp_name);
+dict->hpsg_knowledge = pp_knowledge_open(cons_name);
 condesc_setup(dict);
 if ((0 == strncmp(dict->lang, "any", 3)) ||
 (NULL != dict->affix_table->anysplit))

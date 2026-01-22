@@ -8,13 +8,13 @@
 #include <thread.h>
 #include <9p.h>
 #include "cifs.h"
-#define NTLMV2_TEST	1
-#define DEF_AUTH 	"ntlmv2"
+#define NTLMV2_TEST 1
+#define DEF_AUTH "ntlmv2"
 static enum {
-MACkeylen	= 40,
-MAClen		= 8,
-MACoff		= 14,
-Bliplen		= 8,
+MACkeylen = 40,
+MAClen = 8,
+MACoff = 14,
+Bliplen = 8,
 };
 static void
 dmp(char *s, int seq, void *buf, int n)
@@ -290,13 +290,13 @@ free(up);
 return ap;
 }
 struct {
-char	*name;
-Auth	*(*func)(char *, char *, uchar *, int);
+char *name;
+Auth *(*func)(char *, char *, uchar *, int);
 } methods[] = {
-{ "plain",	auth_plain },
-{ "lm+ntlm",	auth_lm_and_ntlm },
-{ "ntlm",	auth_ntlm },
-{ "ntlmv2",	auth_ntlmv2 },
+{ "plain", auth_plain },
+{ "lm+ntlm", auth_lm_and_ntlm },
+{ "ntlm", auth_ntlm },
+{ "ntlmv2", auth_ntlmv2 },
 };
 void
 autherr(void)

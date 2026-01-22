@@ -1,45 +1,45 @@
 #include "mailstream_cancel.h"
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #ifdef WIN32
-#	include <win_etpan.h>
+# include <win_etpan.h>
 #endif
 #ifdef LIBETPAN_REENTRANT
-#	ifndef WIN32
-#		include <pthread.h>
-#	endif
+# ifndef WIN32
+# include <pthread.h>
+# endif
 #endif
 #include <stdlib.h>
 #ifdef HAVE_UNISTD_H
-#	include <unistd.h>
+# include <unistd.h>
 #endif
 #ifdef WIN32
-#	include <io.h>
-#	include <fcntl.h>
+# include <io.h>
+# include <fcntl.h>
 #endif
 #ifdef LIBETPAN_REENTRANT
-#	ifdef WIN32
-#		define MUTEX_KEY	CRITICAL_SECTION
+# ifdef WIN32
+# define MUTEX_KEY CRITICAL_SECTION
 static int MUTEX_INIT(CRITICAL_SECTION* mutex) {
 InitializeCriticalSection( mutex);
 return 0;
 }
-#		define MUTEX_LOCK(x) EnterCriticalSection(x)
-#		define MUTEX_UNLOCK(x) LeaveCriticalSection(x)
-#		define MUTEX_DESTROY(x) DeleteCriticalSection(x);
-#	else
-#		define MUTEX_KEY	 pthread_mutex_t
-#		define MUTEX_INIT(x) pthread_mutex_init(x, NULL)
-#		define MUTEX_DESTROY(x) pthread_mutex_destroy(x);
-#		define MUTEX_LOCK(x) pthread_mutex_lock(x)
-#		define MUTEX_UNLOCK(x) pthread_mutex_unlock(x)
-#	endif
+# define MUTEX_LOCK(x) EnterCriticalSection(x)
+# define MUTEX_UNLOCK(x) LeaveCriticalSection(x)
+# define MUTEX_DESTROY(x) DeleteCriticalSection(x);
+# else
+# define MUTEX_KEY pthread_mutex_t
+# define MUTEX_INIT(x) pthread_mutex_init(x, NULL)
+# define MUTEX_DESTROY(x) pthread_mutex_destroy(x);
+# define MUTEX_LOCK(x) pthread_mutex_lock(x)
+# define MUTEX_UNLOCK(x) pthread_mutex_unlock(x)
+# endif
 #else
-#	define MUTEX_INIT(x)
-#	define MUTEX_DESTROY(x)
-#	define MUTEX_LOCK(x)
-#	define MUTEX_UNLOCK(x)
+# define MUTEX_INIT(x)
+# define MUTEX_DESTROY(x)
+# define MUTEX_LOCK(x)
+# define MUTEX_UNLOCK(x)
 #endif
 struct mailstream_cancel_internal {
 #ifdef LIBETPAN_REENTRANT

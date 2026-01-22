@@ -2,7 +2,7 @@
 #include <libc.h>
 #include "httpd.h"
 #include "httpsrv.h"
-int		logall[3];
+int logall[3];
 static char *
 monname[12] =
 {
@@ -85,7 +85,7 @@ bufp = seprint(bufp, bufe, " \"%.*s\"",
 (int)utfnlen((char*)c->header, strcspn((char*)c->header, "\r\n")),
 (char*)c->header);
 }else{
-bufp = seprint(bufp, bufe, " \"%s %s HTTP/%d.%d\"", c->req.meth, c->req.uri, c->req.vermaj,  c->req.vermin);
+bufp = seprint(bufp, bufe, " \"%s %s HTTP/%d.%d\"", c->req.meth, c->req.uri, c->req.vermaj, c->req.vermin);
 }
 bufp = seprint(bufp, bufe, " %s %lld\n", statuscode, objectsize);
 write(logall[2], buf, bufp-buf);

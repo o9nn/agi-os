@@ -5,7 +5,7 @@
 (Set (Concept "A") (Concept "B"))
 (Set (Concept "A") (Concept "B") (Concept "C"))
 (Evaluation (Predicate "foo")
-	(List (Concept "B") (Concept "C") (Concept "oh boy!")))
+(List (Concept "B") (Concept "C") (Concept "oh boy!")))
 (store-atomspace)
 (cog-atomspace-clear)
 (cog-get-all-roots)
@@ -35,7 +35,7 @@
 (cog-value get-tail metadata)
 (cog-value->list (cog-value get-tail metadata))
 (strftime "%c" (localtime  (inexact->exact (car
-	(cog-value->list (cog-value get-tail metadata))))))
+(cog-value->list (cog-value get-tail metadata))))))
 (define b-holders (MaximalJoin (Present (Concept "B"))))
 : Just like before...
 (fetch-query b-holders results-key)

@@ -3,10 +3,10 @@ import rehypeRemark from 'rehype-remark'
 import remarkStringify from 'remark-stringify'
 import { unified } from 'unified'
 export async function toMarkdown(html: string): Promise<string> {
-  const htmlToMarkdownProcessor = unified()
-    .use(rehypeParse, { fragment: true })
-    .use(rehypeRemark)
-    .use(remarkStringify, { bullet: '-' })
-  const result = await htmlToMarkdownProcessor.process(html)
-  return result.toString()
+const htmlToMarkdownProcessor = unified()
+.use(rehypeParse, { fragment: true })
+.use(rehypeRemark)
+.use(remarkStringify, { bullet: '-' })
+const result = await htmlToMarkdownProcessor.process(html)
+return result.toString()
 }

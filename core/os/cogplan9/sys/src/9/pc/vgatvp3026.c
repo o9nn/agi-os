@@ -5,23 +5,23 @@
 #include "fns.h"
 #include "io.h"
 #include "../port/error.h"
-#define	Image	IMAGE
+#define Image IMAGE
 #include <draw.h>
 #include <memdraw.h>
 #include <cursor.h>
 #include "screen.h"
 enum {
-Index		= 0x00,
-Data		= 0x0A,
-CaddrW		= 0x04,
-Cdata		= 0x05,
-Cctl		= 0x09,
-Cram		= 0x0B,
-Cxlsb		= 0x0C,
-Cxmsb		= 0x0D,
-Cylsb		= 0x0E,
-Cymsb		= 0x0F,
-Icctl		= 0x06,
+Index = 0x00,
+Data = 0x0A,
+CaddrW = 0x04,
+Cdata = 0x05,
+Cctl = 0x09,
+Cram = 0x0B,
+Cxlsb = 0x0C,
+Cxmsb = 0x0D,
+Cylsb = 0x0E,
+Cymsb = 0x0F,
+Icctl = 0x06,
 };
 static ushort dacxreg[4] = {
 PaddrW, Pdata, Pixmask, PaddrR

@@ -26,12 +26,12 @@
 #include <kern/macros.h>
 #include <kern/constants.h>
 #include <mach/machine/vm_types.h>
-#if	MACH_KDB
+#if MACH_KDB
 #include <machine/trap.h>
 #include <ddb/db_output.h>
 boolean_t debug_user_with_kdb = FALSE;
 #endif
-#ifdef	KEEP_STACKS
+#ifdef KEEP_STACKS
 #endif
 void
 exception(
@@ -108,7 +108,7 @@ thread_halt_self(thread_exception_return);
 if (thread_suspend (self) == KERN_SUCCESS)
 thread_exception_return ();
 #endif
-#if	MACH_KDB
+#if MACH_KDB
 if (debug_user_with_kdb) {
 db_printf("No exception server, calling kdb...\n");
 thread_kdb_return();
@@ -118,28 +118,28 @@ thread_kdb_return();
 thread_halt_self(thread_exception_return);
 panic("terminating the task didn't kill us");
 }
-#define MACH_EXCEPTION_ID		MACH_EXCEPTION_BASE_ID
-#define MACH_EXCEPTION_REPLY_ID		(MACH_EXCEPTION_ID + MACH_EXCEPTION_REPLY_OFFSET)
+#define MACH_EXCEPTION_ID MACH_EXCEPTION_BASE_ID
+#define MACH_EXCEPTION_REPLY_ID (MACH_EXCEPTION_ID + MACH_EXCEPTION_REPLY_OFFSET)
 struct mach_exception {
-mach_msg_header_t	Head;
-mach_msg_type_t		threadType;
-mach_port_t		thread;
-mach_msg_type_t		taskType;
-mach_port_t		task;
-mach_msg_type_t		exceptionType;
-integer_t		exception;
-mach_msg_type_t		codeType;
-integer_t		code;
-mach_msg_type_t		subcodeType;
-rpc_long_integer_t	subcode;
+mach_msg_header_t Head;
+mach_msg_type_t threadType;
+mach_port_t thread;
+mach_msg_type_t taskType;
+mach_port_t task;
+mach_msg_type_t exceptionType;
+integer_t exception;
+mach_msg_type_t codeType;
+integer_t code;
+mach_msg_type_t subcodeType;
+rpc_long_integer_t subcode;
 };
-#define	INTEGER_T_SIZE_IN_BITS	(8 * sizeof(integer_t))
-#define	INTEGER_T_TYPE		MACH_MSG_TYPE_INTEGER_T
-#define RPC_LONG_INTEGER_T_SIZE_IN_BITS	(8 * sizeof(rpc_long_integer_t))
+#define INTEGER_T_SIZE_IN_BITS (8 * sizeof(integer_t))
+#define INTEGER_T_TYPE MACH_MSG_TYPE_INTEGER_T
+#define RPC_LONG_INTEGER_T_SIZE_IN_BITS (8 * sizeof(rpc_long_integer_t))
 #if defined(__LP64__) && !defined(USER32)
-#define RPC_LONG_INTEGER_T_TYPE	MACH_MSG_TYPE_INTEGER_64
+#define RPC_LONG_INTEGER_T_TYPE MACH_MSG_TYPE_INTEGER_64
 #else
-#define RPC_LONG_INTEGER_T_TYPE	MACH_MSG_TYPE_INTEGER_32
+#define RPC_LONG_INTEGER_T_TYPE MACH_MSG_TYPE_INTEGER_32
 #endif
 mach_msg_type_t exc_port_proto = {
 .msgt_name = MACH_MSG_TYPE_PORT_SEND,
@@ -171,12 +171,12 @@ mach_msg_type_t exc_subcode_proto = {
 int exception_raise_misses = 0;
 void
 exception_raise(
-ipc_port_t 	dest_port,
-ipc_port_t 	thread_port,
-ipc_port_t 	task_port,
-integer_t 	_exception,
-integer_t 	code,
-long_integer_t 	subcode)
+ipc_port_t dest_port,
+ipc_port_t thread_port,
+ipc_port_t task_port,
+integer_t _exception,
+integer_t code,
+long_integer_t subcode)
 {
 ipc_thread_t self = current_thread();
 ipc_thread_t receiver;
@@ -381,7 +381,7 @@ kmsg->ikm_header.msgh_size);
 thread_syscall_return(mr);
 }
 thread_syscall_return(MACH_MSG_SUCCESS);
-#ifndef	__GNUC__
+#ifndef __GNUC__
 return;
 #endif
 slow_exception_raise: {
@@ -481,7 +481,7 @@ thread_exception_return();
 void
 exception_raise_continue_slow(
 mach_msg_return_t mr,
-ipc_kmsg_t 	  kmsg,
+ipc_kmsg_t kmsg,
 mach_port_seqno_t seqno)
 {
 ipc_thread_t self = current_thread();

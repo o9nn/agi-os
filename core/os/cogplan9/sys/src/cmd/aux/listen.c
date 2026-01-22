@@ -1,36 +1,36 @@
 #include <u.h>
 #include <libc.h>
 #include <auth.h>
-#define	NAMELEN	64
-typedef struct Service	Service;
+#define NAMELEN 64
+typedef struct Service Service;
 struct Service
 {
-char	serv[NAMELEN];
-char	remote[3*NAMELEN];
-char	prog[5*NAMELEN+1];
+char serv[NAMELEN];
+char remote[3*NAMELEN];
+char prog[5*NAMELEN+1];
 };
-typedef struct Announce	Announce;
+typedef struct Announce Announce;
 struct Announce
 {
-Announce	*next;
-char	*a;
-int	announced;
-int	whined;
+Announce *next;
+char *a;
+int announced;
+int whined;
 };
-int	readstr(char*, char*, char*, int);
-void	dolisten(char*, char*, int, char*, char*);
-void	newcall(int, char*, char*, Service*);
-int 	findserv(char*, char*, Service*, char*);
-int	getserv(char*, char*, Service*);
-void	error(char*);
-void	scandir(char*, char*, char*);
-void	becomenone(void);
-void	listendir(char*, char*, int);
-char	listenlog[] = "listen";
-int	quiet;
-int	immutable;
-char	*cpu;
-char	*proto;
+int readstr(char*, char*, char*, int);
+void dolisten(char*, char*, int, char*, char*);
+void newcall(int, char*, char*, Service*);
+int findserv(char*, char*, Service*, char*);
+int getserv(char*, char*, Service*);
+void error(char*);
+void scandir(char*, char*, char*);
+void becomenone(void);
+void listendir(char*, char*, int);
+char listenlog[] = "listen";
+int quiet;
+int immutable;
+char *cpu;
+char *proto;
 Announce *announcements;
 #define SEC 1000
 char *namespace;

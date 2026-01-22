@@ -6,12 +6,12 @@
 #include "ip.h"
 enum
 {
-IPaddrlen=	16,
-IPv4addrlen=	4,
-IPv4off=	12,
-IPllen=		4,
+IPaddrlen= 16,
+IPv4addrlen= 4,
+IPv4off= 12,
+IPllen= 4,
 };
-extern	int	fmtstrcpy(Fmt*, char*);
+extern int fmtstrcpy(Fmt*, char*);
 uchar v4prefix[IPaddrlen] = {
 0, 0, 0, 0,
 0, 0, 0, 0,

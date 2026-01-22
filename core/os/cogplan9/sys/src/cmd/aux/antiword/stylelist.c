@@ -3,21 +3,21 @@
 #include <ctype.h>
 #include "antiword.h"
 typedef struct style_mem_tag {
-style_block_type	tInfo;
-ULONG			ulSequenceNumber;
-struct style_mem_tag	*pNext;
+style_block_type tInfo;
+ULONG ulSequenceNumber;
+struct style_mem_tag *pNext;
 } style_mem_type;
-static style_mem_type	*pAnchor = NULL;
-static style_mem_type	*pStyleLast = NULL;
-static conversion_type	eConversionType = conversion_unknown;
-static encoding_type	eEncoding = encoding_neutral;
-static const style_mem_type	*pMidPtr = NULL;
-static BOOL		bMoveMidPtr = FALSE;
-static BOOL		bInSequence = TRUE;
+static style_mem_type *pAnchor = NULL;
+static style_mem_type *pStyleLast = NULL;
+static conversion_type eConversionType = conversion_unknown;
+static encoding_type eEncoding = encoding_neutral;
+static const style_mem_type *pMidPtr = NULL;
+static BOOL bMoveMidPtr = FALSE;
+static BOOL bInSequence = TRUE;
 void
 vDestroyStyleInfoList(void)
 {
-style_mem_type	*pCurr, *pNext;
+style_mem_type *pCurr, *pNext;
 DBG_MSG("vDestroyStyleInfoList");
 pCurr = pAnchor;
 while (pCurr != NULL) {
@@ -34,8 +34,8 @@ bInSequence = TRUE;
 static void
 vConvertListCharacter(UCHAR ucNFC, USHORT usListChar, char *szListChar)
 {
-options_type	tOptions;
-size_t	tLen;
+options_type tOptions;
+size_t tLen;
 fail(szListChar == NULL);
 fail(szListChar[0] != '\0');
 if (usListChar < 0x80 && isprint((int)usListChar)) {
@@ -58,7 +58,7 @@ eConversionType = tOptions.eConversionType;
 eEncoding = tOptions.eEncoding;
 }
 switch (usListChar) {
-case 0x0000: case 0x00b7: case 0x00fe: case  0xf021: case 0xf043:
+case 0x0000: case 0x00b7: case 0x00fe: case 0xf021: case 0xf043:
 case 0xf06c: case 0xf093: case 0xf0b7:
 usListChar = 0x2022;
 break;
@@ -179,8 +179,8 @@ level_type_enum
 eGetNumType(UCHAR ucNumLevel)
 {
 switch (ucNumLevel) {
-case  1: case  2: case  3: case  4: case  5:
-case  6: case  7: case  8: case  9:
+case 1: case 2: case 3: case 4: case 5:
+case 6: case 7: case 8: case 9:
 return level_type_outline;
 case 10:
 return level_type_numbering;
@@ -232,7 +232,7 @@ pStyleBlock->szListChar);
 void
 vAdd2StyleInfoList(const style_block_type *pStyleBlock)
 {
-style_mem_type	*pListMember;
+style_mem_type *pListMember;
 fail(pStyleBlock == NULL);
 NO_DBG_MSG("bAdd2StyleInfoList");
 if (pStyleBlock->ulFileOffset == FC_INVALID) {
@@ -289,8 +289,8 @@ pStyleLast = pListMember;
 const style_block_type *
 pGetNextStyleInfoListItem(const style_block_type *pCurr)
 {
-const style_mem_type	*pRecord;
-size_t	tOffset;
+const style_mem_type *pRecord;
+size_t tOffset;
 if (pCurr == NULL) {
 if (pAnchor == NULL) {
 return NULL;
@@ -308,7 +308,7 @@ return &pRecord->pNext->tInfo;
 const style_block_type *
 pGetNextTextStyle(const style_block_type *pCurr)
 {
-const style_block_type	*pRecord;
+const style_block_type *pRecord;
 pRecord = pCurr;
 do {
 pRecord = pGetNextStyleInfoListItem(pRecord);
@@ -321,8 +321,8 @@ return pRecord;
 USHORT
 usGetIstd(ULONG ulFileOffset)
 {
-const style_mem_type	*pCurr, *pBest, *pStart;
-ULONG	ulSeq, ulBest;
+const style_mem_type *pCurr, *pBest, *pStart;
+ULONG ulSeq, ulBest;
 ulSeq = ulGetSeqNumber(ulFileOffset);
 if (ulSeq == FC_INVALID) {
 return ISTD_NORMAL;

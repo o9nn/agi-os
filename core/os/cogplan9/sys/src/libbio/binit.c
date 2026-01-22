@@ -1,8 +1,8 @@
-#include	<u.h>
-#include	<libc.h>
-#include	<bio.h>
-static	Biobufhdr*	wbufs[20];
-static	int		atexitflag;
+#include <u.h>
+#include <libc.h>
+#include <bio.h>
+static Biobufhdr* wbufs[20];
+static int atexitflag;
 static
 void
 batexit(void)

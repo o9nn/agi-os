@@ -462,13 +462,13 @@ ps = [:k1 => 0.1, :k2 => 0.2, :k3 => 0.3, :k4 => 0.4]
 # @variables X1 X2 X3
 # @parameters k1 k2 k3 k4 Γ[1:1] = missing [guess = ones(1)]
 # eqs = [
-#     0 ~ -k1*X1 + k2*X2 - k3*X1*X2 + (1
-#     0 ~ k1*X1 - k2*X2 - k3*X1*X2 + (1
-#     0 ~ -X1 - X2 - X3 + Γ[1]
+# 0 ~ -k1*X1 + k2*X2 - k3*X1*X2 + (1
+# 0 ~ k1*X1 - k2*X2 - k3*X1*X2 + (1
+# 0 ~ -X1 - X2 - X3 + Γ[1]
 # ]
 # initeqs = [Γ[1] ~ Initial(X1) + Initial(X3) + Initial(X2)]
 # @named nlsys = NonlinearSystem(eqs, [X1, X2, X3], [k1, k2, k3, k4, Γ];
-#     initialization_eqs = initeqs)
+# initialization_eqs = initeqs)
 # WITHOUT structural_simplify
 nlsys = convert(NonlinearSystem, rn; remove_conserved = true,
 conseqs_remake_warn = false)

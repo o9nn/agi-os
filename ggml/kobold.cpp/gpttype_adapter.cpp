@@ -52,7 +52,7 @@ int last_draft_success = 0;
 int last_draft_failed = 0;
 stop_reason last_stop_reason = stop_reason::INVALID;
 std::vector<std::string> generated_tokens;
-llama_grammar *  grammar = nullptr;
+llama_grammar * grammar = nullptr;
 llama_grammar_parser parsed_grammar;
 static std::string current_grammar = "";
 static FileFormat file_format = FileFormat::BADFORMAT;
@@ -174,7 +174,7 @@ return vocab.id_to_token[id];
 }
 static void TokenizeString(const std::string & str_to_tokenize, std::vector<int> & output_tokens, FileFormat file_format, bool add_bos)
 {
-if (file_format == FileFormat::GGML || file_format == FileFormat::GGHF || file_format == FileFormat::GGJT || file_format == FileFormat::GGJT_2  || file_format == FileFormat::GGJT_3 || file_format == FileFormat::GGUF_GENERIC)
+if (file_format == FileFormat::GGML || file_format == FileFormat::GGHF || file_format == FileFormat::GGJT || file_format == FileFormat::GGJT_2 || file_format == FileFormat::GGJT_3 || file_format == FileFormat::GGUF_GENERIC)
 {
 if(file_format == FileFormat::GGHF || file_format == FileFormat::GGJT || file_format == FileFormat::GGJT_2 )
 {
@@ -468,28 +468,28 @@ embd.push_back(current_context_tokens[current_context_tokens.size()-1]);
 const char * kcpp_print_system_info(void) {
 ggml_cpu_init();
 static std::string s;
-s  = "";
-s += "AVX = "         + std::to_string(ggml_cpu_has_avx())         + " | ";
-s += "AVX_VNNI = "    + std::to_string(ggml_cpu_has_avx_vnni())    + " | ";
-s += "AVX2 = "        + std::to_string(ggml_cpu_has_avx2())        + " | ";
-s += "AVX512 = "      + std::to_string(ggml_cpu_has_avx512())      + " | ";
+s = "";
+s += "AVX = " + std::to_string(ggml_cpu_has_avx()) + " | ";
+s += "AVX_VNNI = " + std::to_string(ggml_cpu_has_avx_vnni()) + " | ";
+s += "AVX2 = " + std::to_string(ggml_cpu_has_avx2()) + " | ";
+s += "AVX512 = " + std::to_string(ggml_cpu_has_avx512()) + " | ";
 s += "AVX512_VBMI = " + std::to_string(ggml_cpu_has_avx512_vbmi()) + " | ";
 s += "AVX512_VNNI = " + std::to_string(ggml_cpu_has_avx512_vnni()) + " | ";
 s += "AVX512_BF16 = " + std::to_string(ggml_cpu_has_avx512_bf16()) + " | ";
-s += "AMX_INT8 = "    + std::to_string(ggml_cpu_has_amx_int8())    + " | ";
-s += "FMA = "         + std::to_string(ggml_cpu_has_fma())         + " | ";
-s += "NEON = "        + std::to_string(ggml_cpu_has_neon())        + " | ";
-s += "SVE = "         + std::to_string(ggml_cpu_has_sve())         + " | ";
-s += "ARM_FMA = "     + std::to_string(ggml_cpu_has_arm_fma())     + " | ";
-s += "F16C = "        + std::to_string(ggml_cpu_has_f16c())        + " | ";
-s += "FP16_VA = "     + std::to_string(ggml_cpu_has_fp16_va())     + " | ";
-s += "RISCV_VECT = "  + std::to_string(ggml_cpu_has_riscv_v())     + " | ";
-s += "WASM_SIMD = "   + std::to_string(ggml_cpu_has_wasm_simd())   + " | ";
-s += "SSE3 = "        + std::to_string(ggml_cpu_has_sse3())        + " | ";
-s += "SSSE3 = "       + std::to_string(ggml_cpu_has_ssse3())       + " | ";
-s += "VSX = "         + std::to_string(ggml_cpu_has_vsx())         + " | ";
+s += "AMX_INT8 = " + std::to_string(ggml_cpu_has_amx_int8()) + " | ";
+s += "FMA = " + std::to_string(ggml_cpu_has_fma()) + " | ";
+s += "NEON = " + std::to_string(ggml_cpu_has_neon()) + " | ";
+s += "SVE = " + std::to_string(ggml_cpu_has_sve()) + " | ";
+s += "ARM_FMA = " + std::to_string(ggml_cpu_has_arm_fma()) + " | ";
+s += "F16C = " + std::to_string(ggml_cpu_has_f16c()) + " | ";
+s += "FP16_VA = " + std::to_string(ggml_cpu_has_fp16_va()) + " | ";
+s += "RISCV_VECT = " + std::to_string(ggml_cpu_has_riscv_v()) + " | ";
+s += "WASM_SIMD = " + std::to_string(ggml_cpu_has_wasm_simd()) + " | ";
+s += "SSE3 = " + std::to_string(ggml_cpu_has_sse3()) + " | ";
+s += "SSSE3 = " + std::to_string(ggml_cpu_has_ssse3()) + " | ";
+s += "VSX = " + std::to_string(ggml_cpu_has_vsx()) + " | ";
 s += "MATMUL_INT8 = " + std::to_string(ggml_cpu_has_matmul_int8()) + " | ";
-s += "LLAMAFILE = "   + std::to_string(ggml_cpu_has_llamafile())   + " | ";
+s += "LLAMAFILE = " + std::to_string(ggml_cpu_has_llamafile()) + " | ";
 return s.c_str();
 }
 static void speculative_decoding_setup(std::string spec_model_filename, const llama_model_params & base_model_params, const llama_context_params & base_ctx_params, int base_n_vocab, const float * draft_gpusplit, int draft_gpulayers)
@@ -521,7 +521,7 @@ draft_model_params.tensor_split = draft_gpusplit;
 draft_ctx_params.n_batch = base_ctx_params.n_batch;
 draft_ctx_params.n_ubatch = base_ctx_params.n_ubatch;
 draft_ctx_params.n_threads = base_ctx_params.n_threads;
-draft_ctx_params.n_threads_batch =  base_ctx_params.n_threads_batch;
+draft_ctx_params.n_threads_batch = base_ctx_params.n_threads_batch;
 draft_ctx_params.flash_attn = base_ctx_params.flash_attn;
 draft_ctx_params.type_k = base_ctx_params.type_k;
 draft_ctx_params.type_v = base_ctx_params.type_v;
@@ -653,9 +653,9 @@ return a.logit > b.logit;
 if (k <= 128) {
 std::partial_sort(cur_p->data, cur_p->data + k, cur_p->data + cur_p->size, comp);
 } else {
-constexpr int   nbuckets     = 128;
-constexpr float bucket_low   = -10.0f;
-constexpr float bucket_high  =  10.0f;
+constexpr int nbuckets = 128;
+constexpr float bucket_low = -10.0f;
+constexpr float bucket_high = 10.0f;
 constexpr float bucket_scale = nbuckets/(bucket_high - bucket_low);
 constexpr float bucket_inter = -bucket_low * bucket_scale;
 std::vector<int> bucket_idx(cur_p->size);
@@ -964,7 +964,7 @@ printf("]\n");
 void sample_rep_pen(int n_ctx, int rep_pen_range, float rep_pen, float rep_pen_slope, float presence_penalty, llama_token_data_array * candidates_p)
 {
 auto last_n_repeat = std::min(std::min((int)last_n_tokens.size(), rep_pen_range), n_ctx);
-const llama_token * last_tokens =  last_n_tokens.data() + last_n_tokens.size() - last_n_repeat;
+const llama_token * last_tokens = last_n_tokens.data() + last_n_tokens.size() - last_n_repeat;
 size_t last_tokens_size = last_n_repeat;
 llama_token_data_array * candidates = candidates_p;
 if (last_tokens_size == 0 || (rep_pen == 1.0f && presence_penalty==0)) {
@@ -1128,7 +1128,7 @@ void sample_top_n_sigma(llama_token_data_array * cur_p, float nsigma) {
 if (nsigma <= 0.0f || cur_p->size <= 1) {
 return;
 }
-float nsigmax    = cur_p->data[0].logit;
+float nsigmax = cur_p->data[0].logit;
 float logits_sum = 0;
 for (size_t i = 0; i < cur_p->size; ++i) {
 if (cur_p->data[i].logit > nsigmax) {
@@ -1142,7 +1142,7 @@ for (size_t i = 0; i < cur_p->size; ++i) {
 nsigacc += pow(cur_p->data[i].logit - nsigmean, 2);
 }
 float nsigstd = sqrt(nsigacc / cur_p->size);
-auto last   = std::remove_if(cur_p->data, cur_p->data + cur_p->size,
+auto last = std::remove_if(cur_p->data, cur_p->data + cur_p->size,
 [&](auto & tk) { return tk.logit < nsigmax - (nsigma * nsigstd); });
 cur_p->size = last - cur_p->data;
 sample_softmax(cur_p);
@@ -1224,13 +1224,13 @@ break;
 }
 const std::vector<llama_token> eog_tokens = GetEogIDs(file_format,n_vocab);
 std::vector<std::pair<std::vector<uint32_t>, llama_partial_utf8>> candidates_decoded;
-std::vector<llama_grammar_candidate>                              candidates_grammar;
+std::vector<llama_grammar_candidate> candidates_grammar;
 std::vector<uint8_t> rejects;
 candidates_decoded.reserve(candidates->size);
 candidates_grammar.reserve(candidates->size);
 rejects.assign(candidates->size, false);
 for (size_t i = 0; i < candidates->size; ++i) {
-const llama_token id    = candidates->data[i].id;
+const llama_token id = candidates->data[i].id;
 const std::string piece = FileFormatTokenizeID(id,file_format);
 bool found_eog = std::find(eog_tokens.begin(), eog_tokens.end(), id) != eog_tokens.end();
 if (found_eog) {
@@ -1248,7 +1248,7 @@ for (auto reject: llama_grammar_reject_candidates(grammar->rules, grammar->stack
 rejects[reject.index] = true;
 }
 auto first = candidates->data;
-auto last  = first + candidates->size;
+auto last = first + candidates->size;
 last = std::remove_if(first, last,
 [&](const llama_token_data & tk){ return rejects[&tk - first]; });
 candidates->size = last - first;
@@ -1384,7 +1384,7 @@ return;
 GGML_ASSERT(false);
 }
 const std::string piece = FileFormatTokenizeID(token,file_format);
-const auto   decoded     = decode_utf8(piece.c_str(), grammar->partial_utf8);
+const auto decoded = decode_utf8(piece.c_str(), grammar->partial_utf8);
 const auto & code_points = decoded.first;
 for (auto it = code_points.begin(), end = code_points.end() - 1; it != end; ++it) {
 llama_grammar_accept(grammar, *it);
@@ -1416,7 +1416,7 @@ grammar = llama_grammar_init_impl(nullptr,grammar_rules.data(), grammar_rules.si
 }
 }
 static bool kcpp_eval_image(llama_context * ctx_llama, float * img_embd, int num_img_tokens, int n_batch, int * n_past) {
-int n_embd  = llama_n_embd(llama_get_model(ctx_llama));
+int n_embd = llama_n_embd(llama_get_model(ctx_llama));
 for (int i = 0; i < num_img_tokens; i += n_batch) {
 int n_eval = num_img_tokens - i;
 if (n_eval > n_batch) {
@@ -1586,7 +1586,7 @@ if(!add_bos_token)
 {
 printf("\n======\nBOS token prefix was disabled! Your output may be degraded unless model was designed for it!\n======\n");
 }
-neox_ctx_v2.hparams.n_ctx  = neox_ctx_v3.hparams.n_ctx
+neox_ctx_v2.hparams.n_ctx = neox_ctx_v3.hparams.n_ctx
 = gptj_ctx_v1.hparams.n_ctx = gptj_ctx_v2.hparams.n_ctx = gptj_ctx_v3.hparams.n_ctx
 = gpt2_ctx_v1.hparams.n_ctx = gpt2_ctx_v2.hparams.n_ctx = gpt2_ctx_v3.hparams.n_ctx
 = mpt_ctx_v3.hparams.n_ctx = kcpp_data->n_ctx;
@@ -1848,8 +1848,8 @@ if(tensoroverrides!="" && ggml_backend_dev_count()>1)
 printf("Handling Override Tensors for backends: ");
 std::map<std::string, ggml_backend_buffer_type_t> buft_list;
 for (size_t i = 0; i < ggml_backend_dev_count(); ++i) {
-auto *      dev  = ggml_backend_dev_get(i);
-auto *      buft = ggml_backend_dev_buffer_type(dev);
+auto * dev = ggml_backend_dev_get(i);
+auto * buft = ggml_backend_dev_buffer_type(dev);
 if (buft) {
 std::string name = ggml_backend_buft_name(buft);
 printf("%s ", name.c_str());
@@ -1872,7 +1872,7 @@ continue;
 llama_model_tensor_buft_override nto;
 temp_tensor_names.push_back(tensor_name);
 nto.pattern = temp_tensor_names[temp_tensor_names.size()-1].c_str();
-nto.buft =  buft_list.at(buffer_type);
+nto.buft = buft_list.at(buffer_type);
 tenos.push_back(nto);
 printf("Override Tensor: %s to %s\n",tensor_name.c_str(),buffer_type.c_str());
 }
@@ -1980,7 +1980,7 @@ if(clp_ctx_v == nullptr && clp_ctx_a == nullptr) {
 fprintf(stderr, "%s: error: failed to load mmproj model!\n", __func__);
 return ModelLoadResult::FAIL;
 }
-const int n_embd_llm  = llama_n_embd(llamamodel);
+const int n_embd_llm = llama_n_embd(llamamodel);
 int n_embd_clip_a = -1;
 int n_embd_clip_v = -1;
 if (clp_ctx_v)
@@ -3854,7 +3854,7 @@ return 0;
 auto res = llama_state_get_data(llama_ctx_v4, savestates[slot].current_savestate_buffer.data(), newsize);
 if (res > 0) {
 totalbytes += res;
-savestates[slot].current_savestate_size   = newsize;
+savestates[slot].current_savestate_size = newsize;
 savestates[slot].savestate_context_tokens = current_context_tokens;
 printf("\nKV Save State %d: Created SaveState of %zu tokens, costing %zu MB.\n",slot,current_context_tokens.size(),savestates[slot].current_savestate_size/(1024*1024));
 }

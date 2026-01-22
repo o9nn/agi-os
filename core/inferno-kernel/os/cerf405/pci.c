@@ -5,23 +5,23 @@
 #include "fns.h"
 #include "io.h"
 #include "../port/error.h"
-#define DBG	if(0) pcilog
+#define DBG if(0) pcilog
 typedef struct Pcicfg Pcicfg;
 struct Pcicfg {
-ulong	addr;
+ulong addr;
 union {
-ulong	l;
-uchar	b[4];
-ushort	s[2];
+ulong l;
+uchar b[4];
+ushort s[2];
 } data;
 };
-static Pcicfg*	pcicfg;
-static ulong*	pciack;
-static ulong*	pcimem;
+static Pcicfg* pcicfg;
+static ulong* pciack;
+static ulong* pcimem;
 struct
 {
-char	output[16384];
-int	ptr;
+char output[16384];
+int ptr;
 }PCICONS;
 int
 pcilog(char *fmt, ...)
@@ -38,17 +38,17 @@ return n;
 }
 enum
 {
-MaxFNO		= 7,
-MaxUBN		= 255,
+MaxFNO = 7,
+MaxUBN = 255,
 };
 enum
 {
-IOen		= (1<<0),
-MEMen		= (1<<1),
-MASen		= (1<<2),
-MemWrInv	= (1<<4),
-PErrEn		= (1<<6),
-SErrEn		= (1<<8),
+IOen = (1<<0),
+MEMen = (1<<1),
+MASen = (1<<2),
+MemWrInv = (1<<4),
+PErrEn = (1<<6),
+SErrEn = (1<<8),
 };
 static Lock pcicfglock;
 static QLock pcicfginitlock;
@@ -61,11 +61,11 @@ static Pcidev* pcitail;
 static int pcicfgrw32(int, int, int, int);
 static int pcicfgrw8(int, int, int, int);
 static char* bustypes[] = {
-[BusOPB]	"OPB",
-[BusPLB]	"PLB",
-[BusPCI]	"PCI",
+[BusOPB] "OPB",
+[BusPLB] "PLB",
+[BusPCI] "PCI",
 };
-#pragma	varargck	type	"T"	int
+#pragma varargck type "T" int
 static int
 tbdffmt(Fmt* fmt)
 {
@@ -625,41 +625,41 @@ pcicfgw16(p, PciPCR, pcr);
 typedef struct Pciplbregs Pciplbregs;
 struct Pciplbregs {
 struct {
-ulong	la;
-ulong	ma;
-ulong	pcila;
-ulong	pciha;
+ulong la;
+ulong ma;
+ulong pcila;
+ulong pciha;
 } pmm[3];
 struct {
-ulong	ms;
-ulong	la;
+ulong ms;
+ulong la;
 } ptm[2];
 };
 enum {
-Pre=	1<<1,
-Ena=	1<<0,
+Pre= 1<<1,
+Ena= 1<<0,
 };
 enum {
-Cpc0Srr=	0xF6,
-Rpci=	1<<18,
-Cpc0PCI=	0xF9,
-Spe=	1<<4,
-Hostcfgen=	1<<3,
-Arben=	1<<1,
+Cpc0Srr= 0xF6,
+Rpci= 1<<18,
+Cpc0PCI= 0xF9,
+Spe= 1<<4,
+Hostcfgen= 1<<3,
+Arben= 1<<1,
 };
 enum {
-Se=	1<<8,
-Per=	1<<6,
-Me=	1<<2,
-Ma=	1<<1,
-Depe=	1<<15,
-Sse=		1<<14,
-Rma=	1<<13,
-Rta=		1<<12,
-Sta=		1<<11,
-Dpe=	1<<8,
-F66C=	1<<5,
-Pf=		1<<3,
+Se= 1<<8,
+Per= 1<<6,
+Me= 1<<2,
+Ma= 1<<1,
+Depe= 1<<15,
+Sse= 1<<14,
+Rma= 1<<13,
+Rta= 1<<12,
+Sta= 1<<11,
+Dpe= 1<<8,
+F66C= 1<<5,
+Pf= 1<<3,
 };
 static void
 pcidumpdev(ulong tbdf)

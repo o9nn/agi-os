@@ -1,5 +1,5 @@
 #ifndef iestack_INCLUDED
-#  define iestack_INCLUDED
+# define iestack_INCLUDED
 #include "iesdata.h"
 #include "istack.h"
 typedef s_ptr es_ptr;

@@ -4,10 +4,10 @@
 #include <openssl/bn.h>
 #if defined(__SUNPRO_C)
 # if __SUNPRO_C >= 0x520
-#  pragma error_messages (off,E_ARRAY_OF_INCOMPLETE_NONAME,E_ARRAY_OF_INCOMPLETE)
+# pragma error_messages (off,E_ARRAY_OF_INCOMPLETE_NONAME,E_ARRAY_OF_INCOMPLETE)
 # endif
 #endif
-#define EC_FLAGS_DEFAULT_OCT    0x1
+#define EC_FLAGS_DEFAULT_OCT 0x1
 struct ec_method_st {
 int flags;
 int field_type;
@@ -73,7 +73,7 @@ BN_CTX *);
 int (*field_decode) (const EC_GROUP *, BIGNUM *r, const BIGNUM *a,
 BN_CTX *);
 int (*field_set_to_one) (const EC_GROUP *, BIGNUM *r, BN_CTX *);
-}  ;
+} ;
 typedef struct ec_extra_data_st {
 struct ec_extra_data_st *next;
 void *data;
@@ -99,7 +99,7 @@ void *field_data1;
 void *field_data2;
 int (*field_mod_func) (BIGNUM *, const BIGNUM *, const BIGNUM *,
 BN_CTX *);
-}  ;
+} ;
 struct ec_key_st {
 int version;
 EC_GROUP *group;
@@ -110,7 +110,7 @@ point_conversion_form_t conv_form;
 int references;
 int flags;
 EC_EXTRA_DATA *method_data;
-}  ;
+} ;
 int EC_EX_DATA_set_data(EC_EXTRA_DATA **, void *data,
 void *(*dup_func) (void *),
 void (*free_func) (void *),
@@ -132,7 +132,7 @@ BIGNUM X;
 BIGNUM Y;
 BIGNUM Z;
 int Z_is_one;
-}  ;
+} ;
 int ec_wNAF_mul(const EC_GROUP *group, EC_POINT *r, const BIGNUM *scalar,
 size_t num, const EC_POINT *points[], const BIGNUM *scalars[],
 BN_CTX *);

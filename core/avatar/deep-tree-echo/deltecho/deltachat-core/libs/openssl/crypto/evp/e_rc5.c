@@ -12,7 +12,7 @@ typedef struct {
 int rounds;
 RC5_32_KEY ks;
 } EVP_RC5_KEY;
-# define data(ctx)       EVP_C_DATA(EVP_RC5_KEY,ctx)
+# define data(ctx) EVP_C_DATA(EVP_RC5_KEY,ctx)
 IMPLEMENT_BLOCK_CIPHER(rc5_32_12_16, ks, RC5_32, EVP_RC5_KEY, NID_rc5,
 8, RC5_32_KEY_LENGTH, 8, 64,
 EVP_CIPH_VARIABLE_LENGTH | EVP_CIPH_CTRL_INIT,

@@ -7,10 +7,10 @@
 #include <time.h>
 #include <pthread.h>
 #include <sys/time.h>
-#define TEST_MAX_CPUS           4
-#define TEST_MAX_TASKS          100
-#define TEST_STRESS_DURATION    5
-#define TEST_TOLERANCE_PERCENT  10
+#define TEST_MAX_CPUS 4
+#define TEST_MAX_TASKS 100
+#define TEST_STRESS_DURATION 5
+#define TEST_TOLERANCE_PERCENT 10
 static int tests_run = 0;
 static int tests_passed = 0;
 static int tests_failed = 0;

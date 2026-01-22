@@ -18,86 +18,86 @@ typedef struct Readreq Readreq;
 typedef struct Sendreq Sendreq;
 struct Dirtab
 {
-char		*name;
-uchar	type;
-uint		qid;
-uint		perm;
-int		nopen;
-Fid		*fopen;
-Holdq	*holdq;
-Readreq	*readq;
-Sendreq	*sendq;
+char *name;
+uchar type;
+uint qid;
+uint perm;
+int nopen;
+Fid *fopen;
+Holdq *holdq;
+Readreq *readq;
+Sendreq *sendq;
 };
 struct Fid
 {
-int		fid;
-int		busy;
-int		open;
-int		mode;
-Qid		qid;
-Dirtab	*dir;
-long		offset;
-char		*writebuf;
-Fid		*next;
-Fid		*nextopen;
+int fid;
+int busy;
+int open;
+int mode;
+Qid qid;
+Dirtab *dir;
+long offset;
+char *writebuf;
+Fid *next;
+Fid *nextopen;
 };
 struct Readreq
 {
-Fid		*fid;
-Fcall		*fcall;
-uchar	*buf;
-Readreq	*next;
+Fid *fid;
+Fcall *fcall;
+uchar *buf;
+Readreq *next;
 };
 struct Sendreq
 {
-int			nfid;
-int			nleft;
-Fid			**fid;
-Plumbmsg	*msg;
-char			*pack;
-int			npack;
-Sendreq		*next;
+int nfid;
+int nleft;
+Fid **fid;
+Plumbmsg *msg;
+char *pack;
+int npack;
+Sendreq *next;
 };
 struct Holdq
 {
-Plumbmsg	*msg;
-Holdq		*next;
+Plumbmsg *msg;
+Holdq *next;
 };
 struct
 {
 Lock;
-int			ref;
+int ref;
 } rulesref;
 enum
 {
-DEBUG	= 0,
-NDIR	= 50,
-Nhash	= 16,
-Qdir		= 0,
-Qrules	= 1,
-Qsend	= 2,
-Qport	= 3,
-NQID	= Qport
+DEBUG = 0,
+NDIR = 50,
+Nhash = 16,
+Qdir = 0,
+Qrules = 1,
+Qsend = 2,
+Qport = 3,
+NQID = Qport
 };
 static Dirtab dir[NDIR] =
 {
-{ ".",			QTDIR,	Qdir,			0500|DMDIR },
-{ "rules",		QTFILE,	Qrules,		0600 },
-{ "send",		QTFILE,	Qsend,		0200 },
+{ ".", QTDIR, Qdir, 0500|DMDIR },
+{ "rules", QTFILE, Qrules, 0600 },
+{ "send", QTFILE, Qsend, 0200 },
 };
-static int	ndir = NQID;
-static int		srvfd;
-static int		srvclosefd;
-static int		clockfd;
-static int		clock;
-static Fid		*fids[Nhash];
-static QLock	readlock;
-static QLock	queue;
-static char	srvfile[128];
-static int		messagesize = 8192+IOHDRSZ;
-static void	fsysproc(void*);
+static int ndir = NQID;
+static int srvfd;
+static int srvclosefd;
+static int clockfd;
+static int clock;
+static Fid *fids[Nhash];
+static QLock readlock;
+static QLock queue;
+static char srvfile[128];
+static int messagesize = 8192+IOHDRSZ;
+static void fsysproc(void*);
 static void fsysrespond(Fcall*, uchar*, char*);
-static Fid*	newfid(int);
+static Fid* newfid(int);
 static Fcall* fsysflush(Fcall*, uchar*, Fid*);
 static Fcall* fsysversion(Fcall*, uchar*, Fid*);
 static Fcall* fsysauth(Fcall*, uchar*, Fid*);
@@ -111,32 +111,32 @@ static Fcall* fsysclunk(Fcall*, uchar*, Fid*);
 static Fcall* fsysremove(Fcall*, uchar*, Fid*);
 static Fcall* fsysstat(Fcall*, uchar*, Fid*);
 static Fcall* fsyswstat(Fcall*, uchar*, Fid*);
-Fcall* 	(*fcall[Tmax])(Fcall*, uchar*, Fid*) =
+Fcall* (*fcall[Tmax])(Fcall*, uchar*, Fid*) =
 {
-[Tflush]	= fsysflush,
-[Tversion]	= fsysversion,
-[Tauth]	= fsysauth,
-[Tattach]	= fsysattach,
-[Twalk]	= fsyswalk,
-[Topen]	= fsysopen,
-[Tcreate]	= fsyscreate,
-[Tread]	= fsysread,
-[Twrite]	= fsyswrite,
-[Tclunk]	= fsysclunk,
+[Tflush] = fsysflush,
+[Tversion] = fsysversion,
+[Tauth] = fsysauth,
+[Tattach] = fsysattach,
+[Twalk] = fsyswalk,
+[Topen] = fsysopen,
+[Tcreate] = fsyscreate,
+[Tread] = fsysread,
+[Twrite] = fsyswrite,
+[Tclunk] = fsysclunk,
 [Tremove]= fsysremove,
-[Tstat]	= fsysstat,
-[Twstat]	= fsyswstat,
+[Tstat] = fsysstat,
+[Twstat] = fsyswstat,
 };
-char	Ebadfcall[] =	"bad fcall type";
-char	Eperm[] = 	"permission denied";
-char	Enomem[] =	"malloc failed for buffer";
-char	Enotdir[] =	"not a directory";
-char	Enoexist[] =	"plumb file does not exist";
-char	Eisdir[] =		"file is a directory";
-char	Ebadmsg[] =	"bad plumb message format";
+char Ebadfcall[] = "bad fcall type";
+char Eperm[] = "permission denied";
+char Enomem[] = "malloc failed for buffer";
+char Enotdir[] = "not a directory";
+char Enoexist[] = "plumb file does not exist";
+char Eisdir[] = "file is a directory";
+char Ebadmsg[] = "bad plumb message format";
 char Enosuchport[] ="no such plumb port";
-char Enoport[] =	"couldn't find destination for message";
-char	Einuse[] = 	"file already open";
+char Enoport[] = "couldn't find destination for message";
+char Einuse[] = "file already open";
 void
 addport(char *port)
 {
@@ -559,7 +559,7 @@ fsysrespond(t, buf, "clone of an open fid");
 return t;
 }
 nf = nil;
-if(t->fid  != t->newfid){
+if(t->fid != t->newfid){
 nf = newfid(t->newfid);
 if(nf->busy){
 fsysrespond(t, buf, "clone to a busy fid");

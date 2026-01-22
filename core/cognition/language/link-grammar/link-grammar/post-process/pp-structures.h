@@ -8,19 +8,19 @@ typedef struct DTreeLeaf_s DTreeLeaf;
 typedef struct List_o_links_struct List_o_links;
 struct Domain_s
 {
-const char *   string;
+const char * string;
 List_o_links * lol;
-DTreeLeaf *    child;
-Domain *       parent;
-size_t         size;
-size_t         start_link;
-char           type;
+DTreeLeaf * child;
+Domain * parent;
+size_t size;
+size_t start_link;
+char type;
 };
 struct DTreeLeaf_s
 {
-Domain *    parent;
+Domain * parent;
 DTreeLeaf * next;
-int         link;
+int link;
 };
 struct PP_data_s
 {
@@ -36,7 +36,7 @@ size_t vlength;
 };
 struct Postprocessor_s
 {
-pp_knowledge  * knowledge;
+pp_knowledge * knowledge;
 int n_global_rules_firing;
 int n_local_rules_firing;
 pp_linkset *set_of_links_of_sentence;
@@ -50,8 +50,8 @@ PP_data pp_data;
 };
 struct PP_domains_s
 {
-size_t          num_domains;
-const char **   domain_name;
+size_t num_domains;
+const char ** domain_name;
 };
 struct List_o_links_struct
 {
@@ -74,17 +74,17 @@ typedef struct StartingLinkAndDomain_s StartingLinkAndDomain;
 struct StartingLinkAndDomain_s
 {
 const char *starting_link;
-int   domain;
+int domain;
 };
 typedef struct pp_rule_s
 {
 const char *selector;
 bool selector_has_wildcard;
 pp_linkset *link_set;
-int   link_set_size;
-int   domain;
-const char  **link_array;
-const char  *msg;
+int link_set_size;
+int domain;
+const char **link_array;
+const char *msg;
 int use_count;
 } pp_rule;
 typedef struct PPLexTable_s PPLexTable;

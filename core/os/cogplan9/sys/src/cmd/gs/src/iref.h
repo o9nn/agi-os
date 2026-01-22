@@ -1,8 +1,8 @@
 #ifndef iref_INCLUDED
-#  define iref_INCLUDED
+# define iref_INCLUDED
 #ifndef ref_DEFINED
 typedef struct ref_s ref;
-#  define ref_DEFINED
+# define ref_DEFINED
 #endif
 typedef ushort ref_packed;
 #define log2_sizeof_ref_packed arch_log2_sizeof_short
@@ -39,27 +39,27 @@ t_next_index
 #define _REF_TYPE_IS_DICTIONARY 8
 extern const byte ref_type_properties[1 << 6];
 #define REF_TYPE_PROPERTIES_DATA\
-0,				\
-0,				\
+0, \
+0, \
 _REF_TYPE_USES_ACCESS | _REF_TYPE_IS_DICTIONARY, \
 _REF_TYPE_USES_ACCESS | _REF_TYPE_USES_SIZE, \
 _REF_TYPE_USES_ACCESS | _REF_TYPE_USES_SIZE, \
 _REF_TYPE_USES_ACCESS | _REF_TYPE_USES_SIZE, \
 _REF_TYPE_USES_ACCESS | _REF_TYPE_USES_SIZE, \
 _REF_TYPE_USES_ACCESS | _REF_TYPE_USES_SIZE, \
-0,				\
-_REF_TYPE_USES_ACCESS,		\
-0,				\
-0,				\
-0,				\
-_REF_TYPE_USES_SIZE,		\
-_REF_TYPE_IS_NULL,		\
-_REF_TYPE_USES_SIZE,		\
-0,				\
-0,				\
+0, \
+_REF_TYPE_USES_ACCESS, \
+0, \
+0, \
+0, \
+_REF_TYPE_USES_SIZE, \
+_REF_TYPE_IS_NULL, \
+_REF_TYPE_USES_SIZE, \
+0, \
+0, \
 _REF_TYPE_USES_ACCESS | _REF_TYPE_USES_SIZE, \
-_REF_TYPE_USES_ACCESS,		\
-_REF_TYPE_USES_SIZE,		\
+_REF_TYPE_USES_ACCESS, \
+_REF_TYPE_USES_SIZE, \
 \
 _REF_TYPE_USES_SIZE,_REF_TYPE_USES_SIZE,_REF_TYPE_USES_SIZE, \
 _REF_TYPE_USES_SIZE,_REF_TYPE_USES_SIZE,_REF_TYPE_USES_SIZE,_REF_TYPE_USES_SIZE, \
@@ -138,19 +138,19 @@ _REF_ATTR_PRINT_FLAG(0x8000,'?')
 typedef struct dict_s dict;
 typedef struct name_s name;
 #ifndef stream_DEFINED
-#  define stream_DEFINED
+# define stream_DEFINED
 typedef struct stream_s stream;
 #endif
 #ifndef gx_device_DEFINED
-#  define gx_device_DEFINED
+# define gx_device_DEFINED
 typedef struct gx_device_s gx_device;
 #endif
 #ifndef obj_header_DEFINED
-#  define obj_header_DEFINED
+# define obj_header_DEFINED
 typedef struct obj_header_s obj_header_t;
 #endif
 #ifndef i_ctx_t_DEFINED
-#  define i_ctx_t_DEFINED
+# define i_ctx_t_DEFINED
 typedef struct gs_context_state_s i_ctx_t;
 #endif
 typedef int (*op_proc_t)(i_ctx_t *i_ctx_p);
@@ -191,15 +191,15 @@ obj_header_t *pstruct;
 #define r_dec_size(rp,dec) ((rp)->tas.rsize -= (dec))
 #define r_set_size(rp,siz) ((rp)->tas.rsize = (siz))
 #if r_type_shift == 8
-#  if arch_is_big_endian
-#    define r_type(rp) (((const byte *)&((rp)->tas.type_attrs))[sizeof(ushort)-2])
-#  else
-#    define r_type(rp) (((const byte *)&((rp)->tas.type_attrs))[1])
-#  endif
-#  define r_has_type(rp,typ) (r_type(rp) == (typ))
+# if arch_is_big_endian
+# define r_type(rp) (((const byte *)&((rp)->tas.type_attrs))[sizeof(ushort)-2])
+# else
+# define r_type(rp) (((const byte *)&((rp)->tas.type_attrs))[1])
+# endif
+# define r_has_type(rp,typ) (r_type(rp) == (typ))
 #else
-#  define r_type(rp) ((rp)->tas.type_attrs >> r_type_shift)
-#  define r_has_type(rp,typ) r_has_type_attrs(rp,typ,0)
+# define r_type(rp) ((rp)->tas.type_attrs >> r_type_shift)
+# define r_has_type(rp,typ) r_has_type_attrs(rp,typ,0)
 #endif
 #define r_btype(rp)\
 ((rp)->tas.type_attrs >= (t_next_index << r_type_shift) ?\
@@ -223,7 +223,7 @@ _REF_HAS_MASKED_TYPE_ATTRS(rp,typ,1,mask)
 #define r_type_xe(rp)\
 _REF_TAS_TYPE_XE(((const ushort *)(rp))[offset_of(ref, tas.type_attrs) / sizeof(ushort)])
 #define type_xe_value(typ,xe) _REF_TAS_TYPE_XE(((typ) << r_type_shift) + (xe))
-#define r_has_attr(rp,mask1)		\
+#define r_has_attr(rp,mask1) \
 (r_type_attrs(rp) & (mask1))
 #define r_has_attrs(rp,mask) !(~r_type_attrs(rp) & (mask))
 #define r_has_masked_attrs(rp,attrs,mask)\
@@ -237,7 +237,7 @@ r_store_attrs(rp,mask,(sp)->tas.type_attrs & (mask))
 #define r_ptr(rp,typ) ((typ *)((rp)->value.pstruct))
 #define r_set_ptr(rp,ptr) ((rp)->value.pstruct = (obj_header_t *)(ptr))
 #define empty_ref_data(type, attrs)\
-{  {  ((type) << r_type_shift) | (attrs),\
+{ { ((type) << r_type_shift) | (attrs),\
 0 } }
 #define arch_sizeof_ref sizeof(ref)
 #define arch_align_ref_mod\

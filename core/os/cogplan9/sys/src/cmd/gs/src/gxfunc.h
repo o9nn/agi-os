@@ -1,9 +1,9 @@
 #ifndef gxfunc_INCLUDED
-#  define gxfunc_INCLUDED
+# define gxfunc_INCLUDED
 #include "gsfunc.h"
 #include "gsstruct.h"
 extern_st(st_function);
-#define public_st_function()	\
+#define public_st_function() \
 gs_public_st_ptrs2(st_function, gs_function_t, "gs_function_t",\
 function_enum_ptrs, function_reloc_ptrs, params.Domain, params.Range)
 void fn_common_free_params(gs_function_params_t * params, gs_memory_t * mem);

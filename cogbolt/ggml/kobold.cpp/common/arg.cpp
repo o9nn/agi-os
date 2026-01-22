@@ -10,7 +10,7 @@
 #if defined(_WIN32)
 #define WIN32_LEAN_AND_MEAN
 #ifndef NOMINMAX
-#   define NOMINMAX
+# define NOMINMAX
 #endif
 #include <windows.h>
 #endif
@@ -158,9 +158,9 @@ return true;
 #ifdef __linux__
 #include <linux/limits.h>
 #elif defined(_WIN32)
-#   if !defined(PATH_MAX)
-#   define PATH_MAX MAX_PATH
-#   endif
+# if !defined(PATH_MAX)
+# define PATH_MAX MAX_PATH
+# endif
 #elif defined(_AIX)
 #include <sys/limits.h>
 #else
@@ -235,7 +235,7 @@ std::string last_modified;
 common_load_model_from_url_headers headers;
 bool head_request_ok = false;
 bool should_download = !file_exists;
-curl_ptr       curl(curl_easy_init(), &curl_easy_cleanup);
+curl_ptr curl(curl_easy_init(), &curl_easy_cleanup);
 curl_slist_ptr http_headers;
 if (!curl) {
 LOG_ERR("%s: error initializing libcurl\n", __func__);
@@ -434,7 +434,7 @@ common_download_file_multiple(urls, bearer_token, offline);
 return true;
 }
 std::pair<long, std::vector<char>> common_remote_get_content(const std::string & url, const common_remote_params & params) {
-curl_ptr       curl(curl_easy_init(), &curl_easy_cleanup);
+curl_ptr curl(curl_easy_init(), &curl_easy_cleanup);
 curl_slist_ptr http_headers;
 std::vector<char> res_buffer;
 curl_easy_setopt(curl.get(), CURLOPT_URL, url.c_str());
@@ -594,7 +594,7 @@ exit(1);
 model.hf_repo = auto_detected.repo;
 model.hf_file = auto_detected.ggufFile;
 if (!auto_detected.mmprojFile.empty()) {
-result.found_mmproj   = true;
+result.found_mmproj = true;
 result.mmproj.hf_repo = model.hf_repo;
 result.mmproj.hf_file = auto_detected.mmprojFile;
 }
@@ -730,9 +730,9 @@ throw std::invalid_argument(string_format(
 arg.c_str(), e.what(), arg_to_options[arg]->to_string().c_str()));
 }
 }
-postprocess_cpu_params(params.cpuparams,       nullptr);
+postprocess_cpu_params(params.cpuparams, nullptr);
 postprocess_cpu_params(params.cpuparams_batch, &params.cpuparams);
-postprocess_cpu_params(params.speculative.cpuparams,       &params.cpuparams);
+postprocess_cpu_params(params.speculative.cpuparams, &params.cpuparams);
 postprocess_cpu_params(params.speculative.cpuparams_batch, &params.cpuparams_batch);
 if (params.prompt_cache_all && (params.interactive || params.interactive_first)) {
 throw std::invalid_argument("error: --prompt-cache-all not supported in interactive mode yet\n");
@@ -746,12 +746,12 @@ params.mmproj = res.mmproj;
 }
 for (auto & ex : mmproj_examples) {
 if (ctx_arg.ex == ex) {
-common_params_handle_model(params.mmproj,    params.hf_token, "", params.offline);
+common_params_handle_model(params.mmproj, params.hf_token, "", params.offline);
 break;
 }
 }
 common_params_handle_model(params.speculative.model, params.hf_token, "", params.offline);
-common_params_handle_model(params.vocoder.model,     params.hf_token, "", params.offline);
+common_params_handle_model(params.vocoder.model, params.hf_token, "", params.offline);
 }
 if (params.escape) {
 string_process_escapes(params.prompt);
@@ -991,7 +991,7 @@ common_params_context common_params_parser_init(common_params & params, llama_ex
 ggml_backend_load_all();
 common_params_context ctx_arg(params);
 ctx_arg.print_usage = print_usage;
-ctx_arg.ex          = ex;
+ctx_arg.ex = ex;
 std::string sampler_type_chars;
 std::string sampler_type_names;
 for (const auto & sampler : params.sampling.samplers) {
@@ -1738,7 +1738,7 @@ add_opt(common_arg(
 [](common_params & params, const std::string & value) {
 if (value == "none") { params.pooling_type = LLAMA_POOLING_TYPE_NONE; }
 else if (value == "mean") { params.pooling_type = LLAMA_POOLING_TYPE_MEAN; }
-else if (value == "cls")  { params.pooling_type = LLAMA_POOLING_TYPE_CLS;  }
+else if (value == "cls") { params.pooling_type = LLAMA_POOLING_TYPE_CLS; }
 else if (value == "last") { params.pooling_type = LLAMA_POOLING_TYPE_LAST; }
 else if (value == "rank") { params.pooling_type = LLAMA_POOLING_TYPE_RANK; }
 else { throw std::invalid_argument("invalid value"); }
@@ -2402,7 +2402,7 @@ add_opt(common_arg(
 string_format("output format for imatrix file (default: %s)", params.imat_dat > 0 ? "dat" : "gguf"),
 [](common_params & params, const std::string & value) {
 if (value == "gguf") { params.imat_dat = -1; }
-else if (value == "dat")  { params.imat_dat = 1;  }
+else if (value == "dat") { params.imat_dat = 1; }
 else { throw std::invalid_argument("invalid output format"); }
 }
 ).set_examples({LLAMA_EXAMPLE_IMATRIX}));
@@ -2598,7 +2598,7 @@ params.ssl_file_cert = value;
 add_opt(common_arg(
 {"--chat-template-kwargs"}, "STRING",
 string_format("sets additional params for the json template parser"),
-[](common_params & params, const std::string &  value) {
+[](common_params & params, const std::string & value) {
 auto parsed = json::parse(value);
 for (const auto & item : parsed.items()) {
 params.default_template_kwargs[item.key()] = item.value().dump();
@@ -2609,7 +2609,7 @@ add_opt(common_arg(
 {"-to", "--timeout"}, "N",
 string_format("server read/write timeout in seconds (default: %d)", params.timeout_read),
 [](common_params & params, int value) {
-params.timeout_read  = value;
+params.timeout_read = value;
 params.timeout_write = value;
 }
 ).set_examples({LLAMA_EXAMPLE_SERVER}).set_env("LLAMA_ARG_TIMEOUT"));
@@ -2684,8 +2684,8 @@ add_opt(common_arg(
 [](common_params & params, const std::string & value) {
 if (value == "deepseek") { params.reasoning_format = COMMON_REASONING_FORMAT_DEEPSEEK; }
 else if (value == "deepseek-legacy") { params.reasoning_format = COMMON_REASONING_FORMAT_DEEPSEEK_LEGACY; }
-else if (value == "none") {     params.reasoning_format = COMMON_REASONING_FORMAT_NONE; }
-else if (value == "auto") {     params.reasoning_format = COMMON_REASONING_FORMAT_AUTO; }
+else if (value == "none") { params.reasoning_format = COMMON_REASONING_FORMAT_NONE; }
+else if (value == "auto") { params.reasoning_format = COMMON_REASONING_FORMAT_AUTO; }
 else { throw std::invalid_argument("invalid value"); }
 }
 ).set_examples({LLAMA_EXAMPLE_SERVER, LLAMA_EXAMPLE_MAIN}).set_env("LLAMA_ARG_THINK"));

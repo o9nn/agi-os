@@ -1,147 +1,147 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"tv.h"
-#include	<draw.h>
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "tv.h"
+#include <draw.h>
 enum {
-MemSize=			1,
-MemAddr=			0xB8000,
-CompressReg=			-14,
-SLReg1=				-2,
-SLReg2=				-1,
-Bt812Index=			-5,
-Bt812Data=			-6,
-Bt2VideoPresent=		0x40,
-Bt4ColorBars=			0x40,
-Bt5YCFormat=			0x80,
-Bt7TriState=			0x0C,
-Vxp500Index=			0,
-Vxp500Data=			1,
-MemoryWindowBaseAddrA=		0x14,
-MemoryWindowBaseAddrB=		0x15,
-MemoryPageReg=			0x16,
-MemoryConfReg=			0x18,
-ISAControl=			0x30,
-I2CControl=			0x34,
-InputVideoConfA=		0x38,
-InputVideoConfB=		0x39,
-ISASourceWindowWidthA=		0x3A,
-ISASourceWindowWidthB=		0x3B,
-ISASourceWindowHeightA=		0x3C,
-ISASourceWindowHeightB=		0x3D,
-InputHorzCropLeftA=		0x40,
-InputHorzCropLeftB=		0x41,
-InputHorzCropRightA=		0x44,
-InputHorzCropRightB=		0x45,
-InputHorzCropTopA=		0x48,
-InputHorzCropTopB=		0x49,
-InputHorzCropBottomA=		0x4C,
-InputHorzCropBottomB=		0x4D,
-InputHorzFilter=		0x50,
-InputHorzScaleControlA=		0x54,
-InputHorzScaleControlB=		0x55,
-InputVertInterpolControl=	0x58,
-InputVertScaleControlA=		0x5C,
-InputVertScaleControlB=		0x5D,
-InputFieldPixelBufStatus=	0x64,
-VideoInputFrameBufDepthA=	0x68,
-VideoInputFrameBufDepthB=	0x69,
-AcquisitionControl=		0x6C,
-AcquisitionAddrA=		0x70,
-AcquisitionAddrB=		0x71,
-AcquisitionAddrC=		0x72,
-VideoBufferLayoutControl=	0x73,
-CaptureControl=			0x80,
-CaptureViewPortAddrA=		0x81,
-CaptureViewPortAddrB=		0x82,
-CaptureViewPortAddrC=		0x83,
-CaptureViewPortWidthA=		0x84,
-CaptureViewPortWidthB=		0x85,
-CaptureViewPortHeightA=		0x86,
-CaptureViewPortHeightB=		0x87,
-CapturePixelBufLow=		0x88,
-CapturePixelBufHigh=		0x89,
-CaptureMultiBufDepthA=		0x8A,
-CaptureMultiBufDepthB=		0x8B,
-DisplayControl=			0x92,
-VGAControl=			0x94,
-OutputProcControlA=		0x96,
-OutputProcControlB=		0x97,
-DisplayViewPortStartAddrA=	0xA0,
-DisplayViewPortStartAddrB=	0xA1,
-DisplayViewPortStartAddrC=	0xA2,
-DisplayViewPortWidthA=		0xA4,
-DisplayViewPortWidthB=		0xA5,
-DisplayViewPortHeightA=		0xA6,
-DisplayViewPortHeightB=		0xA7,
-DisplayViewPortOrigTopA=	0xA8,
-DisplayViewPortOrigTopB=	0xA9,
-DisplayViewPortOrigLeftA=	0xAA,
-DisplayViewPortOrigLeftB=	0xAB,
-DisplayWindowLeftA=		0xB0,
-DisplayWindowLeftB=		0xB1,
-DisplayWindowRightA=		0xB4,
-DisplayWindowRightB=		0xB5,
-DisplayWindowTopA=		0xB8,
-DisplayWindowTopB=		0xB9,
-DisplayWindowBottomA=		0xBC,
-DisplayWindowBottomB=		0xBD,
-OutputVertZoomControlA=		0xC0,
-OutputVertZoomControlB=		0xC1,
-OutputHorzZoomControlA=		0xC4,
-OutputHorzZoomControlB=		0xC5,
-BrightnessControl=		0xC8,
-ContrastControl=		0xC9,
-SaturationControl=		0xCA,
-VideoOutIntrStatus=		0xD3,
-PixelClk=			0x03,
-SmartLock=			0x00,
-FeatureConnector=		0x01,
-Divider=			0x02,
-Window=				0x08,
-KeyWindow=			0x0C,
-HSyncLow=			0x20,
-VSyncLow=			0x40,
-ClkBit=				0x01,
-DataBit=			0x02,
-HoldBit=			0x04,
-SelBit=				0x08,
-DivControl=			0x40,
-I2C_Clock=			0x02,
-I2C_Data=			0x08,
-I2C_RdClock=			0x10,
-I2C_RdData=			0x20,
-I2C_RdData_D=			0x40,
-Adr5249=			0x22,
-Adr8444=			0x48,
-Adr6300=			0x80,
-Adr6320=			0x80,
-AdrTuner=			0xC0,
-TEA6300=			0,
-TEA6320T=			1,
+MemSize= 1,
+MemAddr= 0xB8000,
+CompressReg= -14,
+SLReg1= -2,
+SLReg2= -1,
+Bt812Index= -5,
+Bt812Data= -6,
+Bt2VideoPresent= 0x40,
+Bt4ColorBars= 0x40,
+Bt5YCFormat= 0x80,
+Bt7TriState= 0x0C,
+Vxp500Index= 0,
+Vxp500Data= 1,
+MemoryWindowBaseAddrA= 0x14,
+MemoryWindowBaseAddrB= 0x15,
+MemoryPageReg= 0x16,
+MemoryConfReg= 0x18,
+ISAControl= 0x30,
+I2CControl= 0x34,
+InputVideoConfA= 0x38,
+InputVideoConfB= 0x39,
+ISASourceWindowWidthA= 0x3A,
+ISASourceWindowWidthB= 0x3B,
+ISASourceWindowHeightA= 0x3C,
+ISASourceWindowHeightB= 0x3D,
+InputHorzCropLeftA= 0x40,
+InputHorzCropLeftB= 0x41,
+InputHorzCropRightA= 0x44,
+InputHorzCropRightB= 0x45,
+InputHorzCropTopA= 0x48,
+InputHorzCropTopB= 0x49,
+InputHorzCropBottomA= 0x4C,
+InputHorzCropBottomB= 0x4D,
+InputHorzFilter= 0x50,
+InputHorzScaleControlA= 0x54,
+InputHorzScaleControlB= 0x55,
+InputVertInterpolControl= 0x58,
+InputVertScaleControlA= 0x5C,
+InputVertScaleControlB= 0x5D,
+InputFieldPixelBufStatus= 0x64,
+VideoInputFrameBufDepthA= 0x68,
+VideoInputFrameBufDepthB= 0x69,
+AcquisitionControl= 0x6C,
+AcquisitionAddrA= 0x70,
+AcquisitionAddrB= 0x71,
+AcquisitionAddrC= 0x72,
+VideoBufferLayoutControl= 0x73,
+CaptureControl= 0x80,
+CaptureViewPortAddrA= 0x81,
+CaptureViewPortAddrB= 0x82,
+CaptureViewPortAddrC= 0x83,
+CaptureViewPortWidthA= 0x84,
+CaptureViewPortWidthB= 0x85,
+CaptureViewPortHeightA= 0x86,
+CaptureViewPortHeightB= 0x87,
+CapturePixelBufLow= 0x88,
+CapturePixelBufHigh= 0x89,
+CaptureMultiBufDepthA= 0x8A,
+CaptureMultiBufDepthB= 0x8B,
+DisplayControl= 0x92,
+VGAControl= 0x94,
+OutputProcControlA= 0x96,
+OutputProcControlB= 0x97,
+DisplayViewPortStartAddrA= 0xA0,
+DisplayViewPortStartAddrB= 0xA1,
+DisplayViewPortStartAddrC= 0xA2,
+DisplayViewPortWidthA= 0xA4,
+DisplayViewPortWidthB= 0xA5,
+DisplayViewPortHeightA= 0xA6,
+DisplayViewPortHeightB= 0xA7,
+DisplayViewPortOrigTopA= 0xA8,
+DisplayViewPortOrigTopB= 0xA9,
+DisplayViewPortOrigLeftA= 0xAA,
+DisplayViewPortOrigLeftB= 0xAB,
+DisplayWindowLeftA= 0xB0,
+DisplayWindowLeftB= 0xB1,
+DisplayWindowRightA= 0xB4,
+DisplayWindowRightB= 0xB5,
+DisplayWindowTopA= 0xB8,
+DisplayWindowTopB= 0xB9,
+DisplayWindowBottomA= 0xBC,
+DisplayWindowBottomB= 0xBD,
+OutputVertZoomControlA= 0xC0,
+OutputVertZoomControlB= 0xC1,
+OutputHorzZoomControlA= 0xC4,
+OutputHorzZoomControlB= 0xC5,
+BrightnessControl= 0xC8,
+ContrastControl= 0xC9,
+SaturationControl= 0xCA,
+VideoOutIntrStatus= 0xD3,
+PixelClk= 0x03,
+SmartLock= 0x00,
+FeatureConnector= 0x01,
+Divider= 0x02,
+Window= 0x08,
+KeyWindow= 0x0C,
+HSyncLow= 0x20,
+VSyncLow= 0x40,
+ClkBit= 0x01,
+DataBit= 0x02,
+HoldBit= 0x04,
+SelBit= 0x08,
+DivControl= 0x40,
+I2C_Clock= 0x02,
+I2C_Data= 0x08,
+I2C_RdClock= 0x10,
+I2C_RdData= 0x20,
+I2C_RdData_D= 0x40,
+Adr5249= 0x22,
+Adr8444= 0x48,
+Adr6300= 0x80,
+Adr6320= 0x80,
+AdrTuner= 0xC0,
+TEA6300= 0,
+TEA6320T= 1,
 NTSC_M = 0,
 NTSC_443 = 1,
 External = 2,
-NTSCCropLeft= 			36,
-NTSCCropRight=			558,
-Vxp500Brightness=		1,
-Vxp500Contrast=			2,
-Vxp500Saturation=		3,
-Bt812Brightness=		4,
-Bt812Contrast=			5,
-Bt812Saturation=		6,
-Bt812Hue=			7,
-Bt812BW=			8,
-RevisionPP=			0,
-RevisionA=			1,
-HighQ=				2,
-VGAMiscOut=			0x3CC,
-VGAIndex=			0x3D4,
-VGAData=			0x3D5,
-VGAHorzTotal=			0x00,
+NTSCCropLeft= 36,
+NTSCCropRight= 558,
+Vxp500Brightness= 1,
+Vxp500Contrast= 2,
+Vxp500Saturation= 3,
+Bt812Brightness= 4,
+Bt812Contrast= 5,
+Bt812Saturation= 6,
+Bt812Hue= 7,
+Bt812BW= 8,
+RevisionPP= 0,
+RevisionA= 1,
+HighQ= 2,
+VGAMiscOut= 0x3CC,
+VGAIndex= 0x3D4,
+VGAData= 0x3D5,
+VGAHorzTotal= 0x00,
 };
 enum {
 Qdir,
@@ -150,9 +150,9 @@ Qctl,
 };
 static
 Dirtab tvtab[]={
-".",		{Qdir, 0, QTDIR},	0,	0555,
-"tv",		{Qdata, 0},	0,	0666,
-"tvctl",	{Qctl, 0},	0,	0666,
+".", {Qdir, 0, QTDIR}, 0, 0555,
+"tv", {Qdata, 0}, 0, 0666,
+"tvctl", {Qctl, 0}, 0, 0666,
 };
 static
 int ports[] = {
@@ -161,14 +161,14 @@ int ports[] = {
 };
 static
 int defaults[] = {
-Vxp500Brightness,	0,
-Vxp500Contrast,		54,
-Vxp500Saturation,	54,
-Bt812Brightness,	13,
-Bt812Contrast,		57,
-Bt812Saturation,	51,
-Bt812Hue,		0,
-Bt812BW,		0,
+Vxp500Brightness, 0,
+Vxp500Contrast, 54,
+Vxp500Saturation, 54,
+Bt812Brightness, 13,
+Bt812Contrast, 57,
+Bt812Saturation, 51,
+Bt812Hue, 0,
+Bt812BW, 0,
 };
 static int port;
 static int soundchip;
@@ -650,7 +650,7 @@ setvolume(0, 0);
 }
 static
 long hrcfreq[] = {
-0,  7200,  5400,  6000,  6600,  7800,  8400, 17400,
+0, 7200, 5400, 6000, 6600, 7800, 8400, 17400,
 18000, 18600, 19200, 19800, 20400, 21000, 12000, 12600,
 13200, 13800, 14400, 15000, 15600, 16200, 16800, 21600,
 22200, 22800, 23400, 24000, 24600, 25200, 25800, 26400,
@@ -661,7 +661,7 @@ long hrcfreq[] = {
 46200, 46800, 47400, 48000, 48600, 49200, 49800, 50400,
 51000, 51600, 52200, 52800, 53400, 54000, 54600, 55200,
 55800, 56400, 57000, 57600, 58200, 58800, 59400, 60000,
-60600, 61200, 61800, 62400, 63000, 63600, 64200,  9000,
+60600, 61200, 61800, 62400, 63000, 63600, 64200, 9000,
 9600, 10200, 10800, 11400, 64800, 65400, 66000, 66600,
 67200, 67800, 68400, 69000, 69600, 70200, 70800, 71400,
 72000, 72600, 73200, 73800, 74400, 75000, 75600, 76200,
@@ -731,7 +731,7 @@ setreg(OutputProcControlB, val | 0x80);
 static void
 setvgareg(int data)
 {
-setreg(VGAControl,  (getreg(VGAControl) & ~0x06) | (data & 0x06));
+setreg(VGAControl, (getreg(VGAControl) & ~0x06) | (data & 0x06));
 waitforretrace();
 setreg(VGAControl, data);
 }
@@ -833,7 +833,7 @@ switch (extdiv) {
 case 1: external = 0; break;
 case 2: external = 1; break;
 case 3: external = 1; nslreg2 |= 0x40; break;
-case 4:	external = 1; nslreg2 |= 0x80; break;
+case 4: external = 1; nslreg2 |= 0x80; break;
 default: return;
 }
 if ((slreg1 & PixelClk) == 0) {
@@ -994,18 +994,18 @@ uchar bt812init[] = {
 };
 static ushort actpixs = 720;
 static ulong Hdesired = 13500000L;
-static ushort horzfreq[] =	{   15734,    15625,        0 };
-static ushort Vdelay[]	=	{      22,       25,       25 };
-static ushort s2b[] =		{      90,       90,        0 };
-static ushort actlines[] =	{     485,      485,      575 };
-static ulong subcarfreq[] =	{ 3579545,  4433619,  4433619 };
+static ushort horzfreq[] = { 15734, 15625, 0 };
+static ushort Vdelay[] = { 22, 25, 25 };
+static ushort s2b[] = { 90, 90, 0 };
+static ushort actlines[] = { 485, 485, 575 };
+static ulong subcarfreq[] = { 3579545, 4433619, 4433619 };
 static
 unsigned int framewidth[5][4] = {
-1024,  512,  512, 512,
-1536,  768,  768, 384,
+1024, 512, 512, 512,
+1536, 768, 768, 384,
 2048, 1024, 1024, 512,
-1024,  512,  512, 512,
-1536,  768,  768, 384
+1024, 512, 512, 512,
+1536, 768, 768, 384
 };
 static
 unsigned int frameheight[5][4] = {
@@ -1019,7 +1019,7 @@ static
 uchar horzfilter[] = { 3, 3, 2, 2, 1, 1, 0, 0 };
 static
 uchar interleave[] = { 2, 3, 4, 2, 3 };
-#define	ADJUST(n)	(((n) * hrsmult + hrsdiv - 1) / hrsdiv)
+#define ADJUST(n) (((n) * hrsmult + hrsdiv - 1) / hrsdiv)
 static int q = 100;
 static int ilv = 2;
 static int hrsmult = 1;

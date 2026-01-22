@@ -5,10 +5,10 @@
 #include "api-types.h"
 #include "dict-structures.h"
 #include "string-id.h"
-#define DIALECT_COST_MAX         9999.0F
-#define DIALECT_COST_DISABLE    10000.0F
-#define DIALECT_SUB             10001.0F
-#define DIALECT_SECTION         10002.0F
+#define DIALECT_COST_MAX 9999.0F
+#define DIALECT_COST_DISABLE 10000.0F
+#define DIALECT_SUB 10001.0F
+#define DIALECT_SECTION 10002.0F
 typedef struct
 {
 const char *name;

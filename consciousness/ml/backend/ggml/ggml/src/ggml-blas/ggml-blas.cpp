@@ -5,15 +5,15 @@
 #include <vector>
 #include <cstring>
 #if defined(GGML_BLAS_USE_ACCELERATE)
-#   include <Accelerate/Accelerate.h>
+# include <Accelerate/Accelerate.h>
 #elif defined(GGML_BLAS_USE_MKL)
-#   include <mkl.h>
+# include <mkl.h>
 #elif defined(GGML_BLAS_USE_BLIS)
-#   include <blis.h>
+# include <blis.h>
 #elif defined(GGML_BLAS_USE_NVPL)
-#   include <nvpl_blas.h>
+# include <nvpl_blas.h>
 #else
-#   include <cblas.h>
+# include <cblas.h>
 #endif
 struct ggml_backend_blas_context {
 int n_threads = GGML_DEFAULT_N_THREADS;
@@ -40,8 +40,8 @@ GGML_ASSERT(nb1 <= nb2);
 GGML_ASSERT(nb2 <= nb3);
 const int64_t r2 = ne12/ne02;
 const int64_t r3 = ne13/ne03;
-const int64_t ne_plane      = ne01*ne00;
-const size_t  desired_wsize = type == GGML_TYPE_F32 ? 0 : ne03*ne02*ne_plane*sizeof(float);
+const int64_t ne_plane = ne01*ne00;
+const size_t desired_wsize = type == GGML_TYPE_F32 ? 0 : ne03*ne02*ne_plane*sizeof(float);
 if (ctx->work_size < desired_wsize) {
 ctx->work_data.reset(new char[desired_wsize]);
 ctx->work_size = desired_wsize;
@@ -52,8 +52,8 @@ const auto * type_traits = ggml_get_type_traits(type);
 ggml_to_float_t const to_float = type_traits->to_float;
 for (int64_t i03 = 0; i03 < ne03; i03++) {
 for (int64_t i02 = 0; i02 < ne02; i02++) {
-const void  *       x      = (char *)  src0->data + i02*nb02          + i03*nb03;
-float * const wplane = (float *) wdata      + i02*ne_plane      + i03*ne02*ne_plane;
+const void * x = (char *) src0->data + i02*nb02 + i03*nb03;
+float * const wplane = (float *) wdata + i02*ne_plane + i03*ne02*ne_plane;
 const int min_cols_per_thread = 4096;
 const int min_rows_per_thread = std::max((int)(min_cols_per_thread/ne00), 1);
 const int n_threads = std::max(std::min(ctx->n_threads, (int)(ne01/min_rows_per_thread)), 1);
@@ -64,8 +64,8 @@ to_float((const char *) x + i01*nb01, wplane + i01*ne00, ne00);
 }
 #else
 for (int i = 1; i < n_threads; i++) {
-const int64_t start =       i*ne01/n_threads;
-const int64_t end   = (i + 1)*ne01/n_threads;
+const int64_t start = i*ne01/n_threads;
+const int64_t end = (i + 1)*ne01/n_threads;
 if (start < end) {
 ctx->tasks.push_back(std::async(std::launch::async, [=]() {
 for (int64_t i01 = start; i01 < end; i01++) {
@@ -76,7 +76,7 @@ to_float((const char *) x + i01*nb01, wplane + i01*ne00, ne00);
 }
 {
 const int64_t start = 0;
-const int64_t end   = ne01/n_threads;
+const int64_t end = ne01/n_threads;
 for (int64_t i01 = start; i01 < end; i01++) {
 to_float((const char *) x + i01*nb01, wplane + i01*ne00, ne00);
 }
@@ -106,15 +106,15 @@ const int64_t i03 = i13/r3;
 const int64_t i02 = i12/r2;
 const float * x = (float *) ((char *) src0->data + i02*nb02 + i03*nb03);
 const float * y = (float *) ((char *) src1->data + i12*nb12 + i13*nb13);
-float * d = (float *) ((char *)  dst->data + i12*nb2  + i13*nb3);
+float * d = (float *) ((char *) dst->data + i12*nb2 + i13*nb3);
 if (type != GGML_TYPE_F32) {
 x = (float *) wdata + i02*ne_plane + i03*ne02*ne_plane;
 }
 cblas_sgemm(CblasRowMajor, CblasNoTrans, CblasTrans,
 ne1, ne01, ne10,
-1.0f,   y, ne10,
+1.0f, y, ne10,
 x, ne00,
-0.0f,   d, ne01);
+0.0f, d, ne01);
 }
 }
 }
@@ -122,11 +122,11 @@ static void ggml_backend_blas_out_prod(ggml_backend_blas_context * ctx, struct g
 const struct ggml_tensor * src0 = dst->src[0];
 const struct ggml_tensor * src1 = dst->src[1];
 GGML_TENSOR_BINARY_OP_LOCALS
-GGML_ASSERT(ne0  == ne00);
-GGML_ASSERT(ne1  == ne10);
-GGML_ASSERT(ne2  == ne02);
+GGML_ASSERT(ne0 == ne00);
+GGML_ASSERT(ne1 == ne10);
+GGML_ASSERT(ne2 == ne02);
 GGML_ASSERT(ne02 == ne12);
-GGML_ASSERT(ne3  == ne13);
+GGML_ASSERT(ne3 == ne13);
 GGML_ASSERT(ne03 == ne13);
 GGML_ASSERT(nb00 == sizeof(float));
 GGML_ASSERT(nb0 == sizeof(float));
@@ -256,9 +256,9 @@ return GGML_BACKEND_DEVICE_TYPE_ACCEL;
 GGML_UNUSED(dev);
 }
 static void ggml_backend_blas_device_get_props(ggml_backend_dev_t dev, struct ggml_backend_dev_props * props) {
-props->name        = ggml_backend_blas_device_get_name(dev);
+props->name = ggml_backend_blas_device_get_name(dev);
 props->description = ggml_backend_blas_device_get_description(dev);
-props->type        = ggml_backend_blas_device_get_type(dev);
+props->type = ggml_backend_blas_device_get_type(dev);
 ggml_backend_blas_device_get_memory(dev, &props->memory_free, &props->memory_total);
 props->caps = {
 false,

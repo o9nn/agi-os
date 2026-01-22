@@ -1,5 +1,5 @@
 #ifndef ifunc_INCLUDED
-#  define ifunc_INCLUDED
+# define ifunc_INCLUDED
 #include "gsfunc.h"
 #define build_function_proc(proc)\
 int proc(i_ctx_t *i_ctx_p, const ref *op, const gs_function_params_t *params, int depth,\

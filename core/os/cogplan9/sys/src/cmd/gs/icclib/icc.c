@@ -63,11 +63,11 @@ FILE *fp
 icmFileStd *p;
 if ((p = (icmFileStd *) calloc(1,sizeof(icmFileStd))) == NULL)
 return NULL;
-p->seek  = icmFileStd_seek;
-p->read  = icmFileStd_read;
+p->seek = icmFileStd_seek;
+p->read = icmFileStd_read;
 p->write = icmFileStd_write;
 p->flush = icmFileStd_flush;
-p->del   = icmFileStd_delete;
+p->del = icmFileStd_delete;
 p->fp = fp;
 p->doclose = 0;
 return (icmFile *)p;
@@ -169,11 +169,11 @@ size_t length
 icmFileMem *p;
 if ((p = (icmFileMem *) calloc(1,sizeof(icmFileMem))) == NULL)
 return NULL;
-p->seek  = icmFileMem_seek;
-p->read  = icmFileMem_read;
+p->seek = icmFileMem_seek;
+p->read = icmFileMem_read;
 p->write = icmFileMem_write;
 p->flush = icmFileMem_flush;
-p->del   = icmFileMem_delete;
+p->del = icmFileMem_delete;
 p->cur = p->start = base;
 p->end = p->start + length;
 return (icmFile *)p;
@@ -214,11 +214,11 @@ icmAlloc *new_icmAllocStd() {
 icmAllocStd *p;
 if ((p = (icmAllocStd *) calloc(1,sizeof(icmAllocStd))) == NULL)
 return NULL;
-p->malloc  = icmAllocStd_malloc;
-p->calloc  = icmAllocStd_calloc;
+p->malloc = icmAllocStd_malloc;
+p->calloc = icmAllocStd_calloc;
 p->realloc = icmAllocStd_realloc;
-p->free    = icmAllocStd_free;
-p->del     = icmAllocStd_delete;
+p->free = icmAllocStd_free;
+p->del = icmAllocStd_delete;
 return (icmAlloc *)p;
 }
 static unsigned int read_UInt8Number(char *p) {
@@ -235,7 +235,7 @@ return 0;
 static unsigned int read_UInt16Number(char *p) {
 unsigned int rv;
 rv = 256 * (unsigned int)((ORD8 *)p)[0]
-+       (unsigned int)((ORD8 *)p)[1];
++ (unsigned int)((ORD8 *)p)[1];
 return rv;
 }
 static int write_UInt16Number(unsigned int d, char *p) {
@@ -248,9 +248,9 @@ return 0;
 static unsigned int read_UInt32Number(char *p) {
 unsigned int rv;
 rv = 16777216 * (unsigned int)((ORD8 *)p)[0]
-+    65536 * (unsigned int)((ORD8 *)p)[1]
-+      256 * (unsigned int)((ORD8 *)p)[2]
-+            (unsigned int)((ORD8 *)p)[3];
++ 65536 * (unsigned int)((ORD8 *)p)[1]
++ 256 * (unsigned int)((ORD8 *)p)[2]
++ (unsigned int)((ORD8 *)p)[3];
 return rv;
 }
 static int write_UInt32Number(unsigned int d, char *p) {
@@ -262,13 +262,13 @@ return 0;
 }
 static void read_UInt64Number(icmUint64 *d, char *p) {
 d->h = 16777216 * (unsigned int)((ORD8 *)p)[0]
-+    65536 * (unsigned int)((ORD8 *)p)[1]
-+      256 * (unsigned int)((ORD8 *)p)[2]
-+            (unsigned int)((ORD8 *)p)[3];
++ 65536 * (unsigned int)((ORD8 *)p)[1]
++ 256 * (unsigned int)((ORD8 *)p)[2]
++ (unsigned int)((ORD8 *)p)[3];
 d->l = 16777216 * (unsigned int)((ORD8 *)p)[4]
-+    65536 * (unsigned int)((ORD8 *)p)[5]
-+      256 * (unsigned int)((ORD8 *)p)[6]
-+            (unsigned int)((ORD8 *)p)[7];
++ 65536 * (unsigned int)((ORD8 *)p)[5]
++ 256 * (unsigned int)((ORD8 *)p)[6]
++ (unsigned int)((ORD8 *)p)[7];
 }
 static int write_UInt64Number(icmUint64 *d, char *p) {
 ((ORD8 *)p)[0] = (ORD8)(d->h >> 24);
@@ -284,7 +284,7 @@ return 0;
 static double read_U8Fixed8Number(char *p) {
 ORD32 o32;
 o32 = 256 * (ORD32)((ORD8 *)p)[0]
-+       (ORD32)((ORD8 *)p)[1];
++ (ORD32)((ORD8 *)p)[1];
 return (double)o32/256.0;
 }
 static int write_U8Fixed8Number(double d, char *p) {
@@ -302,9 +302,9 @@ return 0;
 static double read_U16Fixed16Number(char *p) {
 ORD32 o32;
 o32 = 16777216 * (ORD32)((ORD8 *)p)[0]
-+    65536 * (ORD32)((ORD8 *)p)[1]
-+      256 * (ORD32)((ORD8 *)p)[2]
-+            (ORD32)((ORD8 *)p)[3];
++ 65536 * (ORD32)((ORD8 *)p)[1]
++ 256 * (ORD32)((ORD8 *)p)[2]
++ (ORD32)((ORD8 *)p)[3];
 return (double)o32/65536.0;
 }
 static int write_U16Fixed16Number(double d, char *p) {
@@ -338,7 +338,7 @@ return 0;
 static int read_SInt16Number(char *p) {
 int rv;
 rv = 256 * (int)((INR8 *)p)[0]
-+       (int)((ORD8 *)p)[1];
++ (int)((ORD8 *)p)[1];
 return rv;
 }
 static int write_SInt16Number(int d, char *p) {
@@ -354,9 +354,9 @@ return 0;
 static int read_SInt32Number(char *p) {
 int rv;
 rv = 16777216 * (int)((INR8 *)p)[0]
-+    65536 * (int)((ORD8 *)p)[1]
-+      256 * (int)((ORD8 *)p)[2]
-+            (int)((ORD8 *)p)[3];
++ 65536 * (int)((ORD8 *)p)[1]
++ 256 * (int)((ORD8 *)p)[2]
++ (int)((ORD8 *)p)[3];
 return rv;
 }
 static int write_SInt32Number(int d, char *p) {
@@ -369,13 +369,13 @@ return 0;
 #ifdef NEVER
 static void read_SInt64Number(icmInt64 *d, char *p) {
 d->h = 16777216 * (int)((INR8 *)p)[0]
-+    65536 * (int)((ORD8 *)p)[1]
-+      256 * (int)((ORD8 *)p)[2]
-+            (int)((ORD8 *)p)[3];
++ 65536 * (int)((ORD8 *)p)[1]
++ 256 * (int)((ORD8 *)p)[2]
++ (int)((ORD8 *)p)[3];
 d->l = 16777216 * (unsigned int)((ORD8 *)p)[4]
-+    65536 * (unsigned int)((ORD8 *)p)[5]
-+      256 * (unsigned int)((ORD8 *)p)[6]
-+            (unsigned int)((ORD8 *)p)[7];
++ 65536 * (unsigned int)((ORD8 *)p)[5]
++ 256 * (unsigned int)((ORD8 *)p)[6]
++ (unsigned int)((ORD8 *)p)[7];
 }
 static int write_SInt64Number(icmInt64 *d, char *p) {
 ((INR8 *)p)[0] = (INR8)(d->h >> 24);
@@ -392,9 +392,9 @@ return 0;
 static double read_S15Fixed16Number(char *p) {
 INR32 i32;
 i32 = 16777216 * (INR32)((INR8 *)p)[0]
-+    65536 * (INR32)((ORD8 *)p)[1]
-+      256 * (INR32)((ORD8 *)p)[2]
-+            (INR32)((ORD8 *)p)[3];
++ 65536 * (INR32)((ORD8 *)p)[1]
++ 256 * (INR32)((ORD8 *)p)[2]
++ (INR32)((ORD8 *)p)[3];
 return (double)i32/65536.0;
 }
 static int write_S15Fixed16Number(double d, char *p) {
@@ -414,7 +414,7 @@ return 0;
 static double read_PCSXYZ16Number(char *p) {
 ORD32 o32;
 o32 = 256 * (ORD32)((ORD8 *)p)[0]
-+       (ORD32)((ORD8 *)p)[1];
++ (ORD32)((ORD8 *)p)[1];
 return (double)o32/32768.0;
 }
 static int write_PCSXYZ16Number(double d, char *p) {
@@ -466,7 +466,7 @@ return 0;
 static double read_PCSL16Number(char *p) {
 ORD32 o32;
 o32 = 256 * (ORD32)((ORD8 *)p)[0]
-+       (ORD32)((ORD8 *)p)[1];
++ (ORD32)((ORD8 *)p)[1];
 return (double)o32/652.800;
 }
 static int write_PCSL16Number(double d, char *p) {
@@ -484,7 +484,7 @@ return 0;
 static double read_PCSab16Number(char *p) {
 ORD32 o32;
 o32 = 256 * (ORD32)((ORD8 *)p)[0]
-+       (ORD32)((ORD8 *)p)[1];
++ (ORD32)((ORD8 *)p)[1];
 return ((double)o32/256.0)-128.0;
 }
 static int write_PCSab16Number(double d, char *p) {
@@ -501,7 +501,7 @@ return 0;
 }
 static double read_DCS8Number(char *p) {
 unsigned int rv;
-rv =   (unsigned int)((ORD8 *)p)[0];
+rv = (unsigned int)((ORD8 *)p)[0];
 return (double)rv/255.0;
 }
 static int write_DCS8Number(double d, char *p) {
@@ -518,7 +518,7 @@ return 0;
 static double read_DCS16Number(char *p) {
 unsigned int rv;
 rv = 256 * (unsigned int)((ORD8 *)p)[0]
-+       (unsigned int)((ORD8 *)p)[1];
++ (unsigned int)((ORD8 *)p)[1];
 return (double)rv/65535.0;
 }
 static int write_DCS16Number(double d, char *p) {
@@ -1210,7 +1210,7 @@ sprintf(icp->err,"icmUInt8Array_read: malloc() failed");
 return icp->errc = 2;
 }
 bp = buf;
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->read(icp->fp, bp, 1, len) != len) {
 sprintf(icp->err,"icmUInt8Array_read: fseek() or fread() failed");
 icp->al->free(icp->al, buf);
@@ -1263,7 +1263,7 @@ icp->al->free(icp->al, buf);
 return icp->errc = rv;
 }
 }
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->write(icp->fp, buf, 1, len) != len) {
 sprintf(icp->err,"icmUInt8Array_write fseek() or fwrite() failed");
 icp->al->free(icp->al, buf);
@@ -1275,7 +1275,7 @@ return 0;
 static void icmUInt8Array_dump(
 icmBase *pp,
 FILE *op,
-int   verb
+int verb
 ) {
 icmUInt8Array *p = (icmUInt8Array *)pp;
 if (verb <= 0)
@@ -1319,15 +1319,15 @@ icc *icp
 icmUInt8Array *p;
 if ((p = (icmUInt8Array *) icp->al->calloc(icp->al,1,sizeof(icmUInt8Array))) == NULL)
 return NULL;
-p->ttype    = icSigUInt8ArrayType;
+p->ttype = icSigUInt8ArrayType;
 p->refcount = 1;
 p->get_size = icmUInt8Array_get_size;
-p->read     = icmUInt8Array_read;
-p->write    = icmUInt8Array_write;
-p->dump     = icmUInt8Array_dump;
+p->read = icmUInt8Array_read;
+p->write = icmUInt8Array_write;
+p->dump = icmUInt8Array_dump;
 p->allocate = icmUInt8Array_allocate;
-p->del      = icmUInt8Array_delete;
-p->icp      = icp;
+p->del = icmUInt8Array_delete;
+p->icp = icp;
 return (icmBase *)p;
 }
 static unsigned int icmUInt16Array_get_size(
@@ -1358,7 +1358,7 @@ sprintf(icp->err,"icmUInt16Array_read: malloc() failed");
 return icp->errc = 2;
 }
 bp = buf;
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->read(icp->fp, bp, 1, len) != len) {
 sprintf(icp->err,"icmUInt16Array_read: fseek() or fread() failed");
 icp->al->free(icp->al, buf);
@@ -1411,7 +1411,7 @@ icp->al->free(icp->al, buf);
 return icp->errc = rv;
 }
 }
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->write(icp->fp, buf, 1, len) != len) {
 sprintf(icp->err,"icmUInt16Array_write fseek() or fwrite() failed");
 icp->al->free(icp->al, buf);
@@ -1423,7 +1423,7 @@ return 0;
 static void icmUInt16Array_dump(
 icmBase *pp,
 FILE *op,
-int   verb
+int verb
 ) {
 icmUInt16Array *p = (icmUInt16Array *)pp;
 if (verb <= 0)
@@ -1467,15 +1467,15 @@ icc *icp
 icmUInt16Array *p;
 if ((p = (icmUInt16Array *) icp->al->calloc(icp->al,1,sizeof(icmUInt16Array))) == NULL)
 return NULL;
-p->ttype    = icSigUInt16ArrayType;
+p->ttype = icSigUInt16ArrayType;
 p->refcount = 1;
 p->get_size = icmUInt16Array_get_size;
-p->read     = icmUInt16Array_read;
-p->write    = icmUInt16Array_write;
-p->dump     = icmUInt16Array_dump;
+p->read = icmUInt16Array_read;
+p->write = icmUInt16Array_write;
+p->dump = icmUInt16Array_dump;
 p->allocate = icmUInt16Array_allocate;
-p->del      = icmUInt16Array_delete;
-p->icp      = icp;
+p->del = icmUInt16Array_delete;
+p->icp = icp;
 return (icmBase *)p;
 }
 static unsigned int icmUInt32Array_get_size(
@@ -1506,7 +1506,7 @@ sprintf(icp->err,"icmUInt32Array_read: malloc() failed");
 return icp->errc = 2;
 }
 bp = buf;
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->read(icp->fp, bp, 1, len) != len) {
 sprintf(icp->err,"icmUInt32Array_read: fseek() or fread() failed");
 icp->al->free(icp->al, buf);
@@ -1559,7 +1559,7 @@ icp->al->free(icp->al, buf);
 return icp->errc = rv;
 }
 }
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->write(icp->fp, buf, 1, len) != len) {
 sprintf(icp->err,"icmUInt32Array_write fseek() or fwrite() failed");
 icp->al->free(icp->al, buf);
@@ -1571,7 +1571,7 @@ return 0;
 static void icmUInt32Array_dump(
 icmBase *pp,
 FILE *op,
-int   verb
+int verb
 ) {
 icmUInt32Array *p = (icmUInt32Array *)pp;
 if (verb <= 0)
@@ -1615,15 +1615,15 @@ icc *icp
 icmUInt32Array *p;
 if ((p = (icmUInt32Array *) icp->al->calloc(icp->al,1,sizeof(icmUInt32Array))) == NULL)
 return NULL;
-p->ttype    = icSigUInt32ArrayType;
+p->ttype = icSigUInt32ArrayType;
 p->refcount = 1;
 p->get_size = icmUInt32Array_get_size;
-p->read     = icmUInt32Array_read;
-p->write    = icmUInt32Array_write;
-p->dump     = icmUInt32Array_dump;
+p->read = icmUInt32Array_read;
+p->write = icmUInt32Array_write;
+p->dump = icmUInt32Array_dump;
 p->allocate = icmUInt32Array_allocate;
-p->del      = icmUInt32Array_delete;
-p->icp      = icp;
+p->del = icmUInt32Array_delete;
+p->icp = icp;
 return (icmBase *)p;
 }
 static unsigned int icmUInt64Array_get_size(
@@ -1654,7 +1654,7 @@ sprintf(icp->err,"icmUInt64Array_read: malloc() failed");
 return icp->errc = 2;
 }
 bp = buf;
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->read(icp->fp, bp, 1, len) != len) {
 sprintf(icp->err,"icmUInt64Array_read: fseek() or fread() failed");
 icp->al->free(icp->al, buf);
@@ -1707,7 +1707,7 @@ icp->al->free(icp->al, buf);
 return icp->errc = rv;
 }
 }
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->write(icp->fp, buf, 1, len) != len) {
 sprintf(icp->err,"icmUInt64Array_write fseek() or fwrite() failed");
 icp->al->free(icp->al, buf);
@@ -1719,7 +1719,7 @@ return 0;
 static void icmUInt64Array_dump(
 icmBase *pp,
 FILE *op,
-int   verb
+int verb
 ) {
 icmUInt64Array *p = (icmUInt64Array *)pp;
 if (verb <= 0)
@@ -1763,15 +1763,15 @@ icc *icp
 icmUInt64Array *p;
 if ((p = (icmUInt64Array *) icp->al->calloc(icp->al,1,sizeof(icmUInt64Array))) == NULL)
 return NULL;
-p->ttype    = icSigUInt64ArrayType;
+p->ttype = icSigUInt64ArrayType;
 p->refcount = 1;
 p->get_size = icmUInt64Array_get_size;
-p->read     = icmUInt64Array_read;
-p->write    = icmUInt64Array_write;
-p->dump     = icmUInt64Array_dump;
+p->read = icmUInt64Array_read;
+p->write = icmUInt64Array_write;
+p->dump = icmUInt64Array_dump;
 p->allocate = icmUInt64Array_allocate;
-p->del      = icmUInt64Array_delete;
-p->icp      = icp;
+p->del = icmUInt64Array_delete;
+p->icp = icp;
 return (icmBase *)p;
 }
 static unsigned int icmU16Fixed16Array_get_size(
@@ -1802,7 +1802,7 @@ sprintf(icp->err,"icmU16Fixed16Array_read: malloc() failed");
 return icp->errc = 2;
 }
 bp = buf;
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->read(icp->fp, bp, 1, len) != len) {
 sprintf(icp->err,"icmU16Fixed16Array_read: fseek() or fread() failed");
 icp->al->free(icp->al, buf);
@@ -1855,7 +1855,7 @@ icp->al->free(icp->al, buf);
 return icp->errc = rv;
 }
 }
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->write(icp->fp, buf, 1, len) != len) {
 sprintf(icp->err,"icmU16Fixed16Array_write fseek() or fwrite() failed");
 icp->al->free(icp->al, buf);
@@ -1867,7 +1867,7 @@ return 0;
 static void icmU16Fixed16Array_dump(
 icmBase *pp,
 FILE *op,
-int   verb
+int verb
 ) {
 icmU16Fixed16Array *p = (icmU16Fixed16Array *)pp;
 if (verb <= 0)
@@ -1911,15 +1911,15 @@ icc *icp
 icmU16Fixed16Array *p;
 if ((p = (icmU16Fixed16Array *) icp->al->calloc(icp->al,1,sizeof(icmU16Fixed16Array))) == NULL)
 return NULL;
-p->ttype    = icSigU16Fixed16ArrayType;
+p->ttype = icSigU16Fixed16ArrayType;
 p->refcount = 1;
 p->get_size = icmU16Fixed16Array_get_size;
-p->read     = icmU16Fixed16Array_read;
-p->write    = icmU16Fixed16Array_write;
-p->dump     = icmU16Fixed16Array_dump;
+p->read = icmU16Fixed16Array_read;
+p->write = icmU16Fixed16Array_write;
+p->dump = icmU16Fixed16Array_dump;
 p->allocate = icmU16Fixed16Array_allocate;
-p->del      = icmU16Fixed16Array_delete;
-p->icp      = icp;
+p->del = icmU16Fixed16Array_delete;
+p->icp = icp;
 return (icmBase *)p;
 }
 static unsigned int icmS15Fixed16Array_get_size(
@@ -1950,7 +1950,7 @@ sprintf(icp->err,"icmS15Fixed16Array_read: malloc() failed");
 return icp->errc = 2;
 }
 bp = buf;
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->read(icp->fp, bp, 1, len) != len) {
 sprintf(icp->err,"icmS15Fixed16Array_read: fseek() or fread() failed");
 icp->al->free(icp->al, buf);
@@ -2003,7 +2003,7 @@ icp->al->free(icp->al, buf);
 return icp->errc = rv;
 }
 }
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->write(icp->fp, buf, 1, len) != len) {
 sprintf(icp->err,"icmS15Fixed16Array_write fseek() or fwrite() failed");
 icp->al->free(icp->al, buf);
@@ -2015,7 +2015,7 @@ return 0;
 static void icmS15Fixed16Array_dump(
 icmBase *pp,
 FILE *op,
-int   verb
+int verb
 ) {
 icmS15Fixed16Array *p = (icmS15Fixed16Array *)pp;
 if (verb <= 0)
@@ -2059,15 +2059,15 @@ icc *icp
 icmS15Fixed16Array *p;
 if ((p = (icmS15Fixed16Array *) icp->al->calloc(icp->al,1,sizeof(icmS15Fixed16Array))) == NULL)
 return NULL;
-p->ttype    = icSigS15Fixed16ArrayType;
+p->ttype = icSigS15Fixed16ArrayType;
 p->refcount = 1;
 p->get_size = icmS15Fixed16Array_get_size;
-p->read     = icmS15Fixed16Array_read;
-p->write    = icmS15Fixed16Array_write;
-p->dump     = icmS15Fixed16Array_dump;
+p->read = icmS15Fixed16Array_read;
+p->write = icmS15Fixed16Array_write;
+p->dump = icmS15Fixed16Array_dump;
 p->allocate = icmS15Fixed16Array_allocate;
-p->del      = icmS15Fixed16Array_delete;
-p->icp      = icp;
+p->del = icmS15Fixed16Array_delete;
+p->icp = icp;
 return (icmBase *)p;
 }
 static int write_XYZNumber(icmXYZNumber *p, char *d) {
@@ -2129,7 +2129,7 @@ sprintf(icp->err,"icmXYZArray_read: malloc() failed");
 return icp->errc = 2;
 }
 bp = buf;
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->read(icp->fp, bp, 1, len) != len) {
 sprintf(icp->err,"icmXYZArray_read: fseek() or fread() failed");
 icp->al->free(icp->al, buf);
@@ -2182,7 +2182,7 @@ icp->al->free(icp->al, buf);
 return icp->errc = rv;
 }
 }
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->write(icp->fp, buf, 1, len) != len) {
 sprintf(icp->err,"icmXYZArray_write fseek() or fwrite() failed");
 icp->al->free(icp->al, buf);
@@ -2194,7 +2194,7 @@ return 0;
 static void icmXYZArray_dump(
 icmBase *pp,
 FILE *op,
-int   verb
+int verb
 ) {
 icmXYZArray *p = (icmXYZArray *)pp;
 if (verb <= 0)
@@ -2239,15 +2239,15 @@ icc *icp
 icmXYZArray *p;
 if ((p = (icmXYZArray *) icp->al->calloc(icp->al,1,sizeof(icmXYZArray))) == NULL)
 return NULL;
-p->ttype    = icSigXYZArrayType;
+p->ttype = icSigXYZArrayType;
 p->refcount = 1;
 p->get_size = icmXYZArray_get_size;
-p->read     = icmXYZArray_read;
-p->write    = icmXYZArray_write;
-p->dump     = icmXYZArray_dump;
+p->read = icmXYZArray_read;
+p->write = icmXYZArray_write;
+p->dump = icmXYZArray_dump;
 p->allocate = icmXYZArray_allocate;
-p->del      = icmXYZArray_delete;
-p->icp      = icp;
+p->del = icmXYZArray_delete;
+p->icp = icp;
 return (icmBase *)p;
 }
 static int icmCurve_lookup_fwd(
@@ -2286,10 +2286,10 @@ val = p->data[ix];
 return rv;
 }
 static int icmTable_setup_bwd(
-icc          *icp,
-icmRevTable  *rt,
+icc *icp,
+icmRevTable *rt,
 unsigned long size,
-double       *data
+double *data
 ) {
 int i;
 rt->size = size;
@@ -2347,8 +2347,8 @@ rt->inited = 1;
 return 0;
 }
 static void icmTable_delete_bwd(
-icc          *icp,
-icmRevTable  *rt
+icc *icp,
+icmRevTable *rt
 ) {
 if (rt->inited != 0) {
 while (rt->rsize > 0)
@@ -2376,8 +2376,8 @@ val = rsize_1;
 ix = (int)floor(val);
 if (ix > (rt->size-2))
 ix = (rt->size-2);
-if (rt->rlists[ix] != NULL)  {
-for (i = 2; i < rt->rlists[ix][1]; i++)  {
+if (rt->rlists[ix] != NULL) {
+for (i = 2; i < rt->rlists[ix][1]; i++) {
 double lv,hv;
 k = rt->rlists[ix][i];
 lv = rt->data[k];
@@ -2462,7 +2462,7 @@ return icp->errc = 2;
 }
 bp = buf;
 end = buf + len;
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->read(icp->fp, bp, 1, len) != len) {
 sprintf(icp->err,"icmCurve_read: fseek() or fread() failed");
 icp->al->free(icp->al, buf);
@@ -2565,7 +2565,7 @@ return icp->errc = rv;
 }
 }
 }
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->write(icp->fp, buf, 1, len) != len) {
 sprintf(icp->err,"icmCurve_write fseek() or fwrite() failed");
 icp->al->free(icp->al, buf);
@@ -2577,7 +2577,7 @@ return 0;
 static void icmCurve_dump(
 icmBase *pp,
 FILE *op,
-int   verb
+int verb
 ) {
 icmCurve *p = (icmCurve *)pp;
 if (verb <= 0)
@@ -2636,15 +2636,15 @@ icc *icp
 icmCurve *p;
 if ((p = (icmCurve *) icp->al->calloc(icp->al,1,sizeof(icmCurve))) == NULL)
 return NULL;
-p->ttype    = icSigCurveType;
+p->ttype = icSigCurveType;
 p->refcount = 1;
 p->get_size = icmCurve_get_size;
-p->read     = icmCurve_read;
-p->write    = icmCurve_write;
-p->dump     = icmCurve_dump;
+p->read = icmCurve_read;
+p->write = icmCurve_write;
+p->dump = icmCurve_dump;
 p->allocate = icmCurve_allocate;
-p->del      = icmCurve_delete;
-p->icp      = icp;
+p->del = icmCurve_delete;
+p->icp = icp;
 p->lookup_fwd = icmCurve_lookup_fwd;
 p->lookup_bwd = icmCurve_lookup_bwd;
 p->rt.inited = 0;
@@ -2679,7 +2679,7 @@ sprintf(icp->err,"icmData_read: malloc() failed");
 return icp->errc = 2;
 }
 bp = buf;
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->read(icp->fp, bp, 1, len) != len) {
 sprintf(icp->err,"icmData_read: fseek() or fread() failed");
 icp->al->free(icp->al, buf);
@@ -2768,7 +2768,7 @@ return icp->errc = 1;
 }
 memcpy((void *)bp, (void *)p->data, p->size);
 }
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->write(icp->fp, buf, 1, len) != len) {
 sprintf(icp->err,"icmData_write fseek() or fwrite() failed");
 icp->al->free(icp->al, buf);
@@ -2780,7 +2780,7 @@ return 0;
 static void icmData_dump(
 icmBase *pp,
 FILE *op,
-int   verb
+int verb
 ) {
 icmData *p = (icmData *)pp;
 unsigned long i, r, c, size = 0;
@@ -2865,15 +2865,15 @@ icc *icp
 icmData *p;
 if ((p = (icmData *) icp->al->calloc(icp->al,1,sizeof(icmData))) == NULL)
 return NULL;
-p->ttype    = icSigDataType;
+p->ttype = icSigDataType;
 p->refcount = 1;
 p->get_size = icmData_get_size;
-p->read     = icmData_read;
-p->write    = icmData_write;
-p->dump     = icmData_dump;
+p->read = icmData_read;
+p->write = icmData_write;
+p->dump = icmData_dump;
 p->allocate = icmData_allocate;
-p->del      = icmData_delete;
-p->icp      = icp;
+p->del = icmData_delete;
+p->icp = icp;
 p->flag = icmDataUndef;
 return (icmBase *)p;
 }
@@ -2904,7 +2904,7 @@ sprintf(icp->err,"icmText_read: malloc() failed");
 return icp->errc = 2;
 }
 bp = buf;
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->read(icp->fp, bp, 1, len) != len) {
 sprintf(icp->err,"icmText_read: fseek() or fread() failed");
 icp->al->free(icp->al, buf);
@@ -2962,7 +2962,7 @@ return icp->errc = 1;
 }
 memcpy((void *)bp, (void *)p->data, p->size);
 }
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->write(icp->fp, buf, 1, len) != len) {
 sprintf(icp->err,"icmText_write fseek() or fwrite() failed");
 icp->al->free(icp->al, buf);
@@ -2974,7 +2974,7 @@ return 0;
 static void icmText_dump(
 icmBase *pp,
 FILE *op,
-int   verb
+int verb
 ) {
 icmText *p = (icmText *)pp;
 unsigned long i, r, c, size;
@@ -3041,15 +3041,15 @@ icc *icp
 icmText *p;
 if ((p = (icmText *) icp->al->calloc(icp->al,1,sizeof(icmText))) == NULL)
 return NULL;
-p->ttype    = icSigTextType;
+p->ttype = icSigTextType;
 p->refcount = 1;
 p->get_size = icmText_get_size;
-p->read     = icmText_read;
-p->write    = icmText_write;
-p->dump     = icmText_dump;
+p->read = icmText_read;
+p->write = icmText_write;
+p->dump = icmText_dump;
 p->allocate = icmText_allocate;
-p->del      = icmText_delete;
-p->icp      = icp;
+p->del = icmText_delete;
+p->icp = icp;
 return (icmBase *)p;
 }
 static int write_DateTimeNumber(icmDateTimeNumber *p, char *d) {
@@ -3061,13 +3061,13 @@ if (p->year < 1900 || p->year > 3000
 || p->minutes > 59
 || p->seconds > 59)
 return 1;
-if ((rv = write_UInt16Number(p->year,    d + 0)) != 0)
+if ((rv = write_UInt16Number(p->year, d + 0)) != 0)
 return rv;
-if ((rv = write_UInt16Number(p->month,   d + 2)) != 0)
+if ((rv = write_UInt16Number(p->month, d + 2)) != 0)
 return rv;
-if ((rv = write_UInt16Number(p->day,     d + 4)) != 0)
+if ((rv = write_UInt16Number(p->day, d + 4)) != 0)
 return rv;
-if ((rv = write_UInt16Number(p->hours,   d + 6)) != 0)
+if ((rv = write_UInt16Number(p->hours, d + 6)) != 0)
 return rv;
 if ((rv = write_UInt16Number(p->minutes, d + 8)) != 0)
 return rv;
@@ -3076,10 +3076,10 @@ return rv;
 return 0;
 }
 static int read_DateTimeNumber(icmDateTimeNumber *p, char *d) {
-p->year    = read_UInt16Number(d + 0);
-p->month   = read_UInt16Number(d + 2);
-p->day     = read_UInt16Number(d + 4);
-p->hours   = read_UInt16Number(d + 6);
+p->year = read_UInt16Number(d + 0);
+p->month = read_UInt16Number(d + 2);
+p->day = read_UInt16Number(d + 4);
+p->hours = read_UInt16Number(d + 6);
 p->minutes = read_UInt16Number(d + 8);
 p->seconds = read_UInt16Number(d + 10);
 if (p->year < 1900 || p->year > 3000
@@ -3117,10 +3117,10 @@ time_t cclk;
 struct tm *ctm;
 cclk = time(NULL);
 ctm = localtime(&cclk);
-p->year    = ctm->tm_year + 1900;
-p->month   = ctm->tm_mon + 1;
-p->day     = ctm->tm_mday;
-p->hours   = ctm->tm_hour;
+p->year = ctm->tm_year + 1900;
+p->month = ctm->tm_mon + 1;
+p->day = ctm->tm_mday;
+p->hours = ctm->tm_hour;
 p->minutes = ctm->tm_min;
 p->seconds = ctm->tm_sec;
 }
@@ -3150,7 +3150,7 @@ sprintf(icp->err,"icmDateTimeNumber_read: malloc() failed");
 return icp->errc = 2;
 }
 bp = buf;
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->read(icp->fp, bp, 1, len) != len) {
 sprintf(icp->err,"icmDateTimeNumber_read: fseek() or fread() failed");
 icp->al->free(icp->al, buf);
@@ -3197,7 +3197,7 @@ sprintf(icp->err,"icmDateTimeNumber_write: write_DateTimeNumber() failed");
 icp->al->free(icp->al, buf);
 return icp->errc = rv;
 }
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->write(icp->fp, buf, 1, len) != len) {
 sprintf(icp->err,"icmDateTimeNumber_write fseek() or fwrite() failed");
 icp->al->free(icp->al, buf);
@@ -3209,7 +3209,7 @@ return 0;
 static void icmDateTimeNumber_dump(
 icmBase *pp,
 FILE *op,
-int   verb
+int verb
 ) {
 icmDateTimeNumber *p = (icmDateTimeNumber *)pp;
 if (verb <= 0)
@@ -3235,15 +3235,15 @@ icc *icp
 icmDateTimeNumber *p;
 if ((p = (icmDateTimeNumber *) icp->al->calloc(icp->al,1,sizeof(icmDateTimeNumber))) == NULL)
 return NULL;
-p->ttype    = icSigDateTimeType;
+p->ttype = icSigDateTimeType;
 p->refcount = 1;
 p->get_size = icmDateTimeNumber_get_size;
-p->read     = icmDateTimeNumber_read;
-p->write    = icmDateTimeNumber_write;
-p->dump     = icmDateTimeNumber_dump;
+p->read = icmDateTimeNumber_read;
+p->write = icmDateTimeNumber_write;
+p->dump = icmDateTimeNumber_dump;
 p->allocate = icmDateTimeNumber_allocate;
-p->del      = icmDateTimeNumber_delete;
-p->icp      = icp;
+p->del = icmDateTimeNumber_delete;
+p->icp = icp;
 setcur_DateTimeNumber(p);
 return (icmBase *)p;
 }
@@ -3259,7 +3259,7 @@ icmLut *p
 int i, j;
 for (j = 0; j < 3; j++) {
 for (i = 0; i < 3; i++) {
-if (   (i == j && p->e[j][i] != 1.0)
+if ( (i == j && p->e[j][i] != 1.0)
 || (i != j && p->e[j][i] != 0.0))
 return 1;
 }
@@ -3312,8 +3312,8 @@ double *out,
 double *in
 ) {
 double t0,t1;
-t0     = p->e[0][0] * in[0] + p->e[0][1] * in[1] + p->e[0][2] * in[2];
-t1     = p->e[1][0] * in[0] + p->e[1][1] * in[1] + p->e[1][2] * in[2];
+t0 = p->e[0][0] * in[0] + p->e[0][1] * in[1] + p->e[0][2] * in[2];
+t1 = p->e[1][0] * in[0] + p->e[1][1] * in[1] + p->e[1][2] * in[2];
 out[2] = p->e[2][0] * in[0] + p->e[2][1] * in[1] + p->e[2][2] * in[2];
 out[0] = t0;
 out[1] = t1;
@@ -3368,7 +3368,7 @@ return icp->errc = 2;
 {
 int e;
 double clutPoints_1 = (double)(p->clutPoints-1);
-int    clutPoints_2 = p->clutPoints-2;
+int clutPoints_2 = p->clutPoints-2;
 gp = p->clutTable;
 for (e = 0; e < p->inputChan; e++) {
 int x;
@@ -3425,11 +3425,11 @@ double *in
 int rv = 0;
 double *gp;
 double co[MAX_CHAN];
-int    si[MAX_CHAN];
+int si[MAX_CHAN];
 {
 int e;
 double clutPoints_1 = (double)(p->clutPoints-1);
-int    clutPoints_2 = p->clutPoints-2;
+int clutPoints_2 = p->clutPoints-2;
 gp = p->clutTable;
 for (e = 0; e < p->inputChan; e++) {
 int x;
@@ -3517,7 +3517,7 @@ return rv;
 unsigned
 psh_init(
 psh *p,
-int      di,
+int di,
 unsigned res,
 int co[]
 ) {
@@ -3561,18 +3561,18 @@ for (e = 0; e < di; e++)
 co[e] = 0;
 for (b = 0; b < bits; b++) {
 if (b & 1) {
-for (e = di-1; e >= 0; e--)  {
+for (e = di-1; e >= 0; e--) {
 co[e] |= (gix & 1) << b;
 gix >>= 1;
 }
 } else {
-for (e = 0; e < di; e++)  {
+for (e = 0; e < di; e++) {
 co[e] |= (gix & 1) << b;
 gix >>= 1;
 }
 }
 }
-for (e = 0; e < di; e++)  {
+for (e = 0; e < di; e++) {
 unsigned sh, tv;
 for(sh = 1, tv = co[e];; sh <<= 1) {
 unsigned ptv = tv;
@@ -3588,20 +3588,20 @@ co[e] = tv;
 return (p->ix == 0);
 }
 typedef enum {
-icmFromLuti   = 0,
-icmToLuti     = 1,
-icmFromLutv   = 2,
-icmToLutv     = 3
+icmFromLuti = 0,
+icmToLuti = 1,
+icmFromLutv = 2,
+icmToLutv = 3
 } icmNormFlag;
 static int getNormFunc(
 icColorSpaceSignature csig,
-icTagTypeSignature    tagSig,
-icmNormFlag           flag,
-void               (**nfunc)(double *out, double *in)
+icTagTypeSignature tagSig,
+icmNormFlag flag,
+void (**nfunc)(double *out, double *in)
 );
 static int icmLut_set_tables (
 icmLut *p,
-void   *cbctx,
+void *cbctx,
 icColorSpaceSignature insig,
 icColorSpaceSignature outsig,
 void (*infunc)(void *cbcntx, double *out, double *in),
@@ -3647,8 +3647,8 @@ if (inmin == NULL) {
 if (insig == icSigLabData) {
 double mn[3], mx[3];
 if (p->inputEnt >= 64) {
-mn[0] =   0.0, mn[1] = -127.0, mn[2] = -127.0;
-mx[0] = 100.0, mx[1] =  127.0, mx[2] =  127.0;
+mn[0] = 0.0, mn[1] = -127.0, mn[2] = -127.0;
+mx[0] = 100.0, mx[1] = 127.0, mx[2] = 127.0;
 itoentry(imin, mn);
 itoentry(imax, mx);
 } else {
@@ -3674,8 +3674,8 @@ if (clutmin == NULL) {
 if (outsig == icSigLabData) {
 double mn[3], mx[3];
 if (p->outputEnt >= 64) {
-mn[0] =   0.0, mn[1] = -127.0, mn[2] = -127.0;
-mx[0] = 100.0, mx[1] =  127.0, mx[2] =  127.0;
+mn[0] = 0.0, mn[1] = -127.0, mn[2] = -127.0;
+mx[0] = 100.0, mx[1] = 127.0, mx[2] = 127.0;
 otoentry(omin, mn);
 otoentry(omax, mx);
 } else {
@@ -3805,7 +3805,7 @@ sprintf(icp->err,"icmLut_read: malloc() failed");
 return icp->errc = 2;
 }
 bp = buf;
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->read(icp->fp, bp, 1, len) != len) {
 sprintf(icp->err,"icmLut_read: fseek() or fread() failed");
 icp->al->free(icp->al, buf);
@@ -3847,11 +3847,11 @@ p->e[j][i] = read_S15Fixed16Number(bp + 12 + ((j * 3 + i) * 4));
 }
 }
 if (p->ttype == icSigLut8Type) {
-p->inputEnt  = 256;
+p->inputEnt = 256;
 p->outputEnt = 256;
 bp = buf+48;
 } else {
-p->inputEnt  = read_UInt16Number(bp+48);
+p->inputEnt = read_UInt16Number(bp+48);
 p->outputEnt = read_UInt16Number(bp+50);
 bp = buf+52;
 }
@@ -4028,7 +4028,7 @@ return icp->errc = rv;
 }
 }
 }
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->write(icp->fp, buf, 1, len) != len) {
 sprintf(icp->err,"icmLut_write fseek() or fwrite() failed");
 icp->al->free(icp->al, buf);
@@ -4040,7 +4040,7 @@ return 0;
 static void icmLut_dump(
 icmBase *pp,
 FILE *op,
-int   verb
+int verb
 ) {
 icmLut *p = (icmLut *)pp;
 if (verb <= 0)
@@ -4179,23 +4179,23 @@ int i,j;
 icmLut *p;
 if ((p = (icmLut *) icp->al->calloc(icp->al,1,sizeof(icmLut))) == NULL)
 return NULL;
-p->ttype    = icSigLut16Type;
+p->ttype = icSigLut16Type;
 p->refcount = 1;
 p->get_size = icmLut_get_size;
-p->read     = icmLut_read;
-p->write    = icmLut_write;
-p->dump     = icmLut_dump;
+p->read = icmLut_read;
+p->write = icmLut_write;
+p->dump = icmLut_dump;
 p->allocate = icmLut_allocate;
-p->del      = icmLut_delete;
-p->nu_matrix      = icmLut_nu_matrix;
-p->min_max        = icmLut_min_max;
-p->lookup_matrix  = icmLut_lookup_matrix;
-p->lookup_input   = icmLut_lookup_input;
+p->del = icmLut_delete;
+p->nu_matrix = icmLut_nu_matrix;
+p->min_max = icmLut_min_max;
+p->lookup_matrix = icmLut_lookup_matrix;
+p->lookup_input = icmLut_lookup_input;
 p->lookup_clut_nl = icmLut_lookup_clut_nl;
 p->lookup_clut_sx = icmLut_lookup_clut_sx;
-p->lookup_output  = icmLut_lookup_output;
+p->lookup_output = icmLut_lookup_output;
 p->set_tables = icmLut_set_tables;
-p->icp      = icp;
+p->icp = icp;
 for (i = 0; i < 3; i++)
 for (j = 0; j < 3; j++) {
 if (i == j)
@@ -4241,7 +4241,7 @@ sprintf(icp->err,"icmMeasurement_read: malloc() failed");
 return icp->errc = 2;
 }
 bp = buf;
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->read(icp->fp, bp, 1, len) != len) {
 sprintf(icp->err,"icmMeasurement_read: fseek() or fread() failed");
 icp->al->free(icp->al, buf);
@@ -4310,7 +4310,7 @@ sprintf(icp->err,"icmMeasurementa_write, illuminant: write_SInt32Number() failed
 icp->al->free(icp->al, buf);
 return icp->errc = rv;
 }
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->write(icp->fp, buf, 1, len) != len) {
 sprintf(icp->err,"icmMeasurement_write fseek() or fwrite() failed");
 icp->al->free(icp->al, buf);
@@ -4322,7 +4322,7 @@ return 0;
 static void icmMeasurement_dump(
 icmBase *pp,
 FILE *op,
-int   verb
+int verb
 ) {
 icmMeasurement *p = (icmMeasurement *)pp;
 if (verb <= 0)
@@ -4352,15 +4352,15 @@ icc *icp
 icmMeasurement *p;
 if ((p = (icmMeasurement *) icp->al->calloc(icp->al,1,sizeof(icmMeasurement))) == NULL)
 return NULL;
-p->ttype    = icSigMeasurementType;
+p->ttype = icSigMeasurementType;
 p->refcount = 1;
 p->get_size = icmMeasurement_get_size;
-p->read     = icmMeasurement_read;
-p->write    = icmMeasurement_write;
-p->dump     = icmMeasurement_dump;
+p->read = icmMeasurement_read;
+p->write = icmMeasurement_write;
+p->dump = icmMeasurement_dump;
 p->allocate = icmMeasurement_allocate;
-p->del      = icmMeasurement_delete;
-p->icp      = icp;
+p->del = icmMeasurement_delete;
+p->icp = icp;
 return (icmBase *)p;
 }
 static int read_NamedColorVal(
@@ -4415,7 +4415,7 @@ p->pcsCoords[1] = read_PCSXYZ16Number(bp+34);
 p->pcsCoords[2] = read_PCSXYZ16Number(bp+36);
 break;
 case icSigLabData:
-p->pcsCoords[0] =  read_PCSL16Number(bp+32);
+p->pcsCoords[0] = read_PCSL16Number(bp+32);
 p->pcsCoords[1] = read_PCSab16Number(bp+34);
 p->pcsCoords[2] = read_PCSab16Number(bp+36);
 break;
@@ -4469,7 +4469,7 @@ rv |= write_PCSXYZ16Number(p->pcsCoords[1], bp+34);
 rv |= write_PCSXYZ16Number(p->pcsCoords[2], bp+36);
 break;
 case icSigLabData:
-rv |=  write_PCSL16Number(p->pcsCoords[0], bp+32);
+rv |= write_PCSL16Number(p->pcsCoords[0], bp+32);
 rv |= write_PCSab16Number(p->pcsCoords[1], bp+34);
 rv |= write_PCSab16Number(p->pcsCoords[2], bp+36);
 break;
@@ -4536,7 +4536,7 @@ return icp->errc = 2;
 }
 bp = buf;
 end = buf + len;
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->read(icp->fp, bp, 1, len) != len) {
 sprintf(icp->err,"icmNamedColor_read: fseek() or fread() failed");
 icp->al->free(icp->al, buf);
@@ -4711,7 +4711,7 @@ return rv;
 }
 }
 }
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->write(icp->fp, buf, 1, len) != len) {
 sprintf(icp->err,"icmNamedColor_write fseek() or fwrite() failed");
 icp->al->free(icp->al, buf);
@@ -4723,7 +4723,7 @@ return 0;
 static void icmNamedColor_dump(
 icmBase *pp,
 FILE *op,
-int   verb
+int verb
 ) {
 icmNamedColor *p = (icmNamedColor *)pp;
 icc *icp = p->icp;
@@ -4807,15 +4807,15 @@ icc *icp
 icmNamedColor *p;
 if ((p = (icmNamedColor *) icp->al->calloc(icp->al,1,sizeof(icmNamedColor))) == NULL)
 return NULL;
-p->ttype    = icSigNamedColor2Type;
+p->ttype = icSigNamedColor2Type;
 p->refcount = 1;
 p->get_size = icmNamedColor_get_size;
-p->read     = icmNamedColor_read;
-p->write    = icmNamedColor_write;
-p->dump     = icmNamedColor_dump;
+p->read = icmNamedColor_read;
+p->write = icmNamedColor_write;
+p->dump = icmNamedColor_dump;
 p->allocate = icmNamedColor_allocate;
-p->del      = icmNamedColor_delete;
-p->icp      = icp;
+p->del = icmNamedColor_delete;
+p->icp = icp;
 p->nDeviceCoords = number_ColorSpaceSignature(icp->header->colorSpace);
 return (icmBase *)p;
 }
@@ -4853,7 +4853,7 @@ return icp->errc = 2;
 }
 bp = buf;
 end = buf + len;
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->read(icp->fp, bp, 1, len) != len) {
 sprintf(icp->err,"icmTextDescription_read: fseek() or fread() failed");
 icp->al->free(icp->al, buf);
@@ -4992,7 +4992,7 @@ if ((rv = p->core_write(p, &bp)) != 0) {
 icp->al->free(icp->al, buf);
 return rv;
 }
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->write(icp->fp, buf, 1, len) != len) {
 sprintf(icp->err,"icmTextDescription_write fseek() or fwrite() failed");
 icp->al->free(icp->al, buf);
@@ -5094,7 +5094,7 @@ return 0;
 static void icmTextDescription_dump(
 icmBase *pp,
 FILE *op,
-int   verb
+int verb
 ) {
 icmTextDescription *p = (icmTextDescription *)pp;
 unsigned long i, r, c;
@@ -5237,16 +5237,16 @@ icmTextDescription *p,
 icc *icp
 ) {
 memset((void *)p, 0, sizeof(icmTextDescription));
-p->ttype    = icSigTextDescriptionType;
+p->ttype = icSigTextDescriptionType;
 p->refcount = 1;
 p->get_size = icmTextDescription_get_size;
-p->read     = icmTextDescription_read;
-p->write    = icmTextDescription_write;
-p->dump     = icmTextDescription_dump;
+p->read = icmTextDescription_read;
+p->write = icmTextDescription_write;
+p->dump = icmTextDescription_dump;
 p->allocate = icmTextDescription_allocate;
-p->del      = icmTextDescription_delete;
-p->icp      = icp;
-p->core_read  = icmTextDescription_core_read;
+p->del = icmTextDescription_delete;
+p->icp = icp;
+p->core_read = icmTextDescription_core_read;
 p->core_write = icmTextDescription_core_write;
 }
 static icmBase *new_icmTextDescription(
@@ -5332,8 +5332,8 @@ return 0;
 static void icmDescStruct_dump(
 icmDescStruct *p,
 FILE *op,
-int   verb,
-int   index
+int verb,
+int index
 ) {
 if (verb <= 0)
 return;
@@ -5407,7 +5407,7 @@ return icp->errc = 2;
 }
 bp = buf;
 end = buf + len;
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->read(icp->fp, bp, 1, len) != len) {
 sprintf(icp->err,"icmProfileSequenceDesc_read: fseek() or fread() failed");
 icp->al->free(icp->al, buf);
@@ -5468,7 +5468,7 @@ icp->al->free(icp->al, buf);
 return rv;
 }
 }
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->write(icp->fp, buf, 1, len) != len) {
 sprintf(icp->err,"icmProfileSequenceDesc_write fseek() or fwrite() failed");
 icp->al->free(icp->al, buf);
@@ -5480,7 +5480,7 @@ return 0;
 static void icmProfileSequenceDesc_dump(
 icmBase *pp,
 FILE *op,
-int   verb
+int verb
 ) {
 icmProfileSequenceDesc *p = (icmProfileSequenceDesc *)pp;
 if (verb <= 0)
@@ -5532,15 +5532,15 @@ icc *icp
 icmProfileSequenceDesc *p;
 if ((p = (icmProfileSequenceDesc *) icp->al->calloc(icp->al,1,sizeof(icmProfileSequenceDesc))) == NULL)
 return NULL;
-p->ttype    = icSigProfileSequenceDescType;
+p->ttype = icSigProfileSequenceDescType;
 p->refcount = 1;
 p->get_size = icmProfileSequenceDesc_get_size;
-p->read     = icmProfileSequenceDesc_read;
-p->write    = icmProfileSequenceDesc_write;
-p->dump     = icmProfileSequenceDesc_dump;
+p->read = icmProfileSequenceDesc_read;
+p->write = icmProfileSequenceDesc_write;
+p->dump = icmProfileSequenceDesc_dump;
 p->allocate = icmProfileSequenceDesc_allocate;
-p->del      = icmProfileSequenceDesc_delete;
-p->icp      = icp;
+p->del = icmProfileSequenceDesc_delete;
+p->icp = icp;
 return (icmBase *)p;
 }
 static unsigned int icmSignature_get_size(
@@ -5568,7 +5568,7 @@ sprintf(icp->err,"icmSignature_read: malloc() failed");
 return icp->errc = 2;
 }
 bp = buf;
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->read(icp->fp, bp, 1, len) != len) {
 sprintf(icp->err,"icmSignature_read: fseek() or fread() failed");
 icp->al->free(icp->al, buf);
@@ -5609,7 +5609,7 @@ sprintf(icp->err,"icmSignaturea_write: write_SInt32Number() failed");
 icp->al->free(icp->al, buf);
 return icp->errc = rv;
 }
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->write(icp->fp, buf, 1, len) != len) {
 sprintf(icp->err,"icmSignature_write fseek() or fwrite() failed");
 icp->al->free(icp->al, buf);
@@ -5621,7 +5621,7 @@ return 0;
 static void icmSignature_dump(
 icmBase *pp,
 FILE *op,
-int   verb
+int verb
 ) {
 icmSignature *p = (icmSignature *)pp;
 if (verb <= 0)
@@ -5647,20 +5647,20 @@ icc *icp
 icmSignature *p;
 if ((p = (icmSignature *) icp->al->calloc(icp->al,1,sizeof(icmSignature))) == NULL)
 return NULL;
-p->ttype    = icSigSignatureType;
+p->ttype = icSigSignatureType;
 p->refcount = 1;
 p->get_size = icmSignature_get_size;
-p->read     = icmSignature_read;
-p->write    = icmSignature_write;
-p->dump     = icmSignature_dump;
+p->read = icmSignature_read;
+p->write = icmSignature_write;
+p->dump = icmSignature_dump;
 p->allocate = icmSignature_allocate;
-p->del      = icmSignature_delete;
-p->icp      = icp;
+p->del = icmSignature_delete;
+p->icp = icp;
 return (icmBase *)p;
 }
 static int read_ScreeningData(icmScreeningData *p, char *d) {
 p->frequency = read_S15Fixed16Number(d + 0);
-p->angle     = read_S15Fixed16Number(d + 4);
+p->angle = read_S15Fixed16Number(d + 4);
 p->spotShape = (icSpotShape)read_SInt32Number(d + 8);
 return 0;
 }
@@ -5703,7 +5703,7 @@ return icp->errc = 2;
 }
 bp = buf;
 end = buf + len;
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->read(icp->fp, bp, 1, len) != len) {
 sprintf(icp->err,"icmScreening_read: fseek() or fread() failed");
 icp->al->free(icp->al, buf);
@@ -5715,7 +5715,7 @@ icp->al->free(icp->al, buf);
 return icp->errc = 1;
 }
 p->screeningFlag = read_UInt32Number(bp+8);
-p->channels      = read_UInt32Number(bp+12);
+p->channels = read_UInt32Number(bp+12);
 bp = bp + 16;
 if ((rv = p->allocate((icmBase *)p)) != 0) {
 icp->al->free(icp->al, buf);
@@ -5772,7 +5772,7 @@ icp->al->free(icp->al, buf);
 return icp->errc = rv;
 }
 }
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->write(icp->fp, buf, 1, len) != len) {
 sprintf(icp->err,"icmScreening_write fseek() or fwrite() failed");
 icp->al->free(icp->al, buf);
@@ -5784,7 +5784,7 @@ return 0;
 static void icmScreening_dump(
 icmBase *pp,
 FILE *op,
-int   verb
+int verb
 ) {
 icmScreening *p = (icmScreening *)pp;
 if (verb <= 0)
@@ -5833,15 +5833,15 @@ icc *icp
 icmScreening *p;
 if ((p = (icmScreening *) icp->al->calloc(icp->al,1,sizeof(icmScreening))) == NULL)
 return NULL;
-p->ttype    = icSigScreeningType;
+p->ttype = icSigScreeningType;
 p->refcount = 1;
 p->get_size = icmScreening_get_size;
-p->read     = icmScreening_read;
-p->write    = icmScreening_write;
-p->dump     = icmScreening_dump;
+p->read = icmScreening_read;
+p->write = icmScreening_write;
+p->dump = icmScreening_dump;
 p->allocate = icmScreening_allocate;
-p->del      = icmScreening_delete;
-p->icp      = icp;
+p->del = icmScreening_delete;
+p->icp = icp;
 return (icmBase *)p;
 }
 static unsigned int icmUcrBg_get_size(
@@ -5875,7 +5875,7 @@ return icp->errc = 2;
 }
 bp = buf;
 end = buf + len;
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->read(icp->fp, bp, 1, len) != len) {
 sprintf(icp->err,"icmUcrBg_read: fseek() or fread() failed");
 icp->al->free(icp->al, buf);
@@ -6026,7 +6026,7 @@ return icp->errc = 1;
 }
 memcpy((void *)bp, (void *)p->string, p->size);
 }
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->write(icp->fp, buf, 1, len) != len) {
 sprintf(icp->err,"icmUcrBg_write fseek() or fwrite() failed");
 icp->al->free(icp->al, buf);
@@ -6038,7 +6038,7 @@ return 0;
 static void icmUcrBg_dump(
 icmBase *pp,
 FILE *op,
-int   verb
+int verb
 ) {
 icmUcrBg *p = (icmUcrBg *)pp;
 if (verb <= 0)
@@ -6154,15 +6154,15 @@ icc *icp
 icmUcrBg *p;
 if ((p = (icmUcrBg *) icp->al->calloc(icp->al,1,sizeof(icmUcrBg))) == NULL)
 return NULL;
-p->ttype    = icSigUcrBgType;
+p->ttype = icSigUcrBgType;
 p->refcount = 1;
 p->get_size = icmUcrBg_get_size;
-p->read     = icmUcrBg_read;
-p->write    = icmUcrBg_write;
-p->dump     = icmUcrBg_dump;
+p->read = icmUcrBg_read;
+p->write = icmUcrBg_write;
+p->dump = icmUcrBg_dump;
 p->allocate = icmUcrBg_allocate;
-p->del      = icmUcrBg_delete;
-p->icp      = icp;
+p->del = icmUcrBg_delete;
+p->icp = icp;
 return (icmBase *)p;
 }
 static unsigned int icmVideoCardGamma_get_size(
@@ -6207,7 +6207,7 @@ sprintf(icp->err,"icmVideoCardGamma_read: malloc() failed");
 return icp->errc = 2;
 }
 bp = buf;
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->read(icp->fp, bp, 1, len) != len) {
 sprintf(icp->err,"icmVideoCardGamma_read: fseek() or fread() failed");
 icp->al->free(icp->al, buf);
@@ -6221,9 +6221,9 @@ return icp->errc = 1;
 p->tagType = read_UInt32Number(bp+8);
 switch ((int)p->tagType) {
 case icmVideoCardGammaTableType:
-p->u.table.channels   = read_UInt16Number(bp+12);
+p->u.table.channels = read_UInt16Number(bp+12);
 p->u.table.entryCount = read_UInt16Number(bp+14);
-p->u.table.entrySize  = read_UInt16Number(bp+16);
+p->u.table.entrySize = read_UInt16Number(bp+16);
 if (len-18 < p->u.table.channels*p->u.table.entryCount*p->u.table.entrySize) {
 sprintf(icp->err,"icmVideoCardGamma_read: Tag too small to be legal");
 return icp->errc = 1;
@@ -6257,15 +6257,15 @@ if (len < 48) {
 sprintf(icp->err,"icmVideoCardGamma_read: Tag too small to be legal");
 return icp->errc = 1;
 }
-p->u.formula.redGamma   = read_S15Fixed16Number(bp+12);
-p->u.formula.redMin     = read_S15Fixed16Number(bp+16);
-p->u.formula.redMax     = read_S15Fixed16Number(bp+20);
+p->u.formula.redGamma = read_S15Fixed16Number(bp+12);
+p->u.formula.redMin = read_S15Fixed16Number(bp+16);
+p->u.formula.redMax = read_S15Fixed16Number(bp+20);
 p->u.formula.greenGamma = read_S15Fixed16Number(bp+24);
-p->u.formula.greenMin   = read_S15Fixed16Number(bp+28);
-p->u.formula.greenMax   = read_S15Fixed16Number(bp+32);
-p->u.formula.blueGamma  = read_S15Fixed16Number(bp+36);
-p->u.formula.blueMin    = read_S15Fixed16Number(bp+40);
-p->u.formula.blueMax    = read_S15Fixed16Number(bp+44);
+p->u.formula.greenMin = read_S15Fixed16Number(bp+28);
+p->u.formula.greenMax = read_S15Fixed16Number(bp+32);
+p->u.formula.blueGamma = read_S15Fixed16Number(bp+36);
+p->u.formula.blueMin = read_S15Fixed16Number(bp+40);
+p->u.formula.blueMax = read_S15Fixed16Number(bp+44);
 break;
 default:
 sprintf(icp->err,"icmVideoCardGammaTable_read: Unknown gamma format for icmVideoCardGamma");
@@ -6391,7 +6391,7 @@ sprintf(icp->err,"icmVideoCardGammaTable_write: Unknown gamma format for icmVide
 icp->al->free(icp->al, buf);
 return icp->errc = 1;
 }
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->write(icp->fp, buf, 1, len) != len) {
 sprintf(icp->err,"icmViewingConditions_write fseek() or fwrite() failed");
 icp->al->free(icp->al, buf);
@@ -6403,7 +6403,7 @@ return 0;
 static void icmVideoCardGamma_dump(
 icmBase *pp,
 FILE *op,
-int   verb
+int verb
 ) {
 icmVideoCardGamma *p = (icmVideoCardGamma *)pp;
 int c,i;
@@ -6489,15 +6489,15 @@ icc *icp
 icmVideoCardGamma *p;
 if ((p = (icmVideoCardGamma *) icp->al->calloc(icp->al,1,sizeof(icmVideoCardGamma))) == NULL)
 return NULL;
-p->ttype    = icSigVideoCardGammaType;
+p->ttype = icSigVideoCardGammaType;
 p->refcount = 1;
 p->get_size = icmVideoCardGamma_get_size;
-p->read     = icmVideoCardGamma_read;
-p->write    = icmVideoCardGamma_write;
-p->dump     = icmVideoCardGamma_dump;
+p->read = icmVideoCardGamma_read;
+p->write = icmVideoCardGamma_write;
+p->dump = icmVideoCardGamma_dump;
 p->allocate = icmVideoCardGamma_allocate;
-p->del      = icmVideoCardGamma_delete;
-p->icp      = icp;
+p->del = icmVideoCardGamma_delete;
+p->icp = icp;
 return (icmBase *)p;
 }
 static unsigned int icmViewingConditions_get_size(
@@ -6528,7 +6528,7 @@ sprintf(icp->err,"icmViewingConditions_read: malloc() failed");
 return icp->errc = 2;
 }
 bp = buf;
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->read(icp->fp, bp, 1, len) != len) {
 sprintf(icp->err,"icmViewingConditions_read: fseek() or fread() failed");
 icp->al->free(icp->al, buf);
@@ -6589,7 +6589,7 @@ sprintf(icp->err,"icmViewingConditionsa_write: write_SInt32Number() failed");
 icp->al->free(icp->al, buf);
 return icp->errc = rv;
 }
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->write(icp->fp, buf, 1, len) != len) {
 sprintf(icp->err,"icmViewingConditions_write fseek() or fwrite() failed");
 icp->al->free(icp->al, buf);
@@ -6601,7 +6601,7 @@ return 0;
 static void icmViewingConditions_dump(
 icmBase *pp,
 FILE *op,
-int   verb
+int verb
 ) {
 icmViewingConditions *p = (icmViewingConditions *)pp;
 if (verb <= 0)
@@ -6629,15 +6629,15 @@ icc *icp
 icmViewingConditions *p;
 if ((p = (icmViewingConditions *) icp->al->calloc(icp->al,1,sizeof(icmViewingConditions))) == NULL)
 return NULL;
-p->ttype    = icSigViewingConditionsType;
+p->ttype = icSigViewingConditionsType;
 p->refcount = 1;
 p->get_size = icmViewingConditions_get_size;
-p->read     = icmViewingConditions_read;
-p->write    = icmViewingConditions_write;
-p->dump     = icmViewingConditions_dump;
+p->read = icmViewingConditions_read;
+p->write = icmViewingConditions_write;
+p->dump = icmViewingConditions_dump;
 p->allocate = icmViewingConditions_allocate;
-p->del      = icmViewingConditions_delete;
-p->icp      = icp;
+p->del = icmViewingConditions_delete;
+p->icp = icp;
 return (icmBase *)p;
 }
 static unsigned int icmCrdInfo_get_size(
@@ -6672,7 +6672,7 @@ return icp->errc = 2;
 }
 bp = buf;
 end = buf + len;
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->read(icp->fp, bp, 1, len) != len) {
 sprintf(icp->err,"icmCrdInfo_read: fseek() or fread() failed");
 icp->al->free(icp->al, buf);
@@ -6794,7 +6794,7 @@ memcpy((void *)bp, (void *)p->crdname[t], p->crdsize[t]);
 bp += p->crdsize[t];
 }
 }
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->write(icp->fp, buf, 1, len) != len) {
 sprintf(icp->err,"icmCrdInfo_write fseek() or fwrite() failed");
 icp->al->free(icp->al, buf);
@@ -6806,7 +6806,7 @@ return 0;
 static void icmCrdInfo_dump(
 icmBase *pp,
 FILE *op,
-int   verb
+int verb
 ) {
 icmCrdInfo *p = (icmCrdInfo *)pp;
 unsigned long i, r, c, size, t;
@@ -6922,15 +6922,15 @@ icc *icp
 icmCrdInfo *p;
 if ((p = (icmCrdInfo *) icp->al->calloc(icp->al,1,sizeof(icmCrdInfo))) == NULL)
 return NULL;
-p->ttype    = icSigCrdInfoType;
+p->ttype = icSigCrdInfoType;
 p->refcount = 1;
 p->get_size = icmCrdInfo_get_size;
-p->read     = icmCrdInfo_read;
-p->write    = icmCrdInfo_write;
-p->dump     = icmCrdInfo_dump;
+p->read = icmCrdInfo_read;
+p->write = icmCrdInfo_write;
+p->dump = icmCrdInfo_dump;
 p->allocate = icmCrdInfo_allocate;
-p->del      = icmCrdInfo_delete;
-p->icp      = icp;
+p->del = icmCrdInfo_delete;
+p->icp = icp;
 return (icmBase *)p;
 }
 static unsigned int icmHeader_get_size(
@@ -6955,19 +6955,19 @@ if ((buf = (char *) icp->al->malloc(icp->al, len)) == NULL) {
 sprintf(icp->err,"icmHeader_read: malloc() failed");
 return icp->errc = 2;
 }
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->read(icp->fp, buf, 1, len) != len) {
 sprintf(icp->err,"icmHeader_read: fseek() or fread() failed");
 icp->al->free(icp->al, buf);
 return icp->errc = 1;
 }
-p->size  = read_UInt32Number(buf + 0);
+p->size = read_UInt32Number(buf + 0);
 p->cmmId = read_SInt32Number(buf + 4);
-tt       = read_UInt8Number(buf + 8);
-p->majv  = (tt >> 4) * 10 + (tt & 0xf);
-tt       = read_UInt8Number(buf + 9);
-p->minv  = (tt >> 4);
-p->bfv   = (tt & 0xf);
+tt = read_UInt8Number(buf + 8);
+p->majv = (tt >> 4) * 10 + (tt & 0xf);
+tt = read_UInt8Number(buf + 9);
+p->minv = (tt >> 4);
+p->bfv = (tt & 0xf);
 p->deviceClass = (icProfileClassSignature)
 read_SInt32Number(buf + 12);
 p->colorSpace = (icColorSpaceSignature)
@@ -7028,7 +7028,7 @@ return icp->errc = rv;
 }
 if (p->majv < 0 || p->majv > 99
 || p->minv < 0 || p->minv > 9
-|| p->bfv  < 0 || p->bfv  > 9) {
+|| p->bfv < 0 || p->bfv > 9) {
 sprintf(icp->err,"icmHeader_write: version number");
 icp->al->free(icp->al, buf);
 return icp->errc = 1;
@@ -7110,7 +7110,7 @@ sprintf(icp->err,"icmHeader_write: SInt32Number creator");
 icp->al->free(icp->al, buf);
 return icp->errc = rv;
 }
-if (   icp->fp->seek(icp->fp, of) != 0
+if ( icp->fp->seek(icp->fp, of) != 0
 || icp->fp->write(icp->fp, buf, 1, len) != len) {
 sprintf(icp->err,"icmHeader_write fseek() or fwrite() failed");
 icp->al->free(icp->al, buf);
@@ -7122,7 +7122,7 @@ return rv;
 static void icmHeader_dump(
 icmHeader *p,
 FILE *op,
-int   verb
+int verb
 ) {
 if (verb <= 0)
 return;
@@ -7156,108 +7156,108 @@ icc *icp
 icmHeader *p;
 if ((p = (icmHeader *) icp->al->calloc(icp->al,1,sizeof(icmHeader))) == NULL)
 return NULL;
-p->icp      = icp;
+p->icp = icp;
 p->get_size = icmHeader_get_size;
-p->read     = icmHeader_read;
-p->write    = icmHeader_write;
-p->dump     = icmHeader_dump;
-p->del      = icmHeader_delete;
+p->read = icmHeader_read;
+p->write = icmHeader_write;
+p->dump = icmHeader_dump;
+p->del = icmHeader_delete;
 return p;
 }
 static struct {
-icTagTypeSignature  ttype;
-icmBase *              (*new_obj)(icc *icp);
+icTagTypeSignature ttype;
+icmBase * (*new_obj)(icc *icp);
 } typetable[] = {
-{icSigCrdInfoType,             new_icmCrdInfo},
-{icSigCurveType,               new_icmCurve},
-{icSigDataType,                new_icmData},
-{icSigDateTimeType,            new_icmDateTimeNumber},
-{icSigLut16Type,               new_icmLut},
-{icSigLut8Type,                new_icmLut},
-{icSigMeasurementType,         new_icmMeasurement},
-{icSigNamedColorType,          new_icmNamedColor},
-{icSigNamedColor2Type,         new_icmNamedColor},
+{icSigCrdInfoType, new_icmCrdInfo},
+{icSigCurveType, new_icmCurve},
+{icSigDataType, new_icmData},
+{icSigDateTimeType, new_icmDateTimeNumber},
+{icSigLut16Type, new_icmLut},
+{icSigLut8Type, new_icmLut},
+{icSigMeasurementType, new_icmMeasurement},
+{icSigNamedColorType, new_icmNamedColor},
+{icSigNamedColor2Type, new_icmNamedColor},
 {icSigProfileSequenceDescType, new_icmProfileSequenceDesc},
-{icSigS15Fixed16ArrayType,     new_icmS15Fixed16Array},
-{icSigScreeningType,           new_icmScreening},
-{icSigSignatureType,           new_icmSignature},
-{icSigTextDescriptionType,     new_icmTextDescription},
-{icSigTextType,                new_icmText},
-{icSigU16Fixed16ArrayType,     new_icmU16Fixed16Array},
-{icSigUcrBgType,               new_icmUcrBg},
-{icSigVideoCardGammaType,      new_icmVideoCardGamma},
-{icSigUInt16ArrayType,         new_icmUInt16Array},
-{icSigUInt32ArrayType,         new_icmUInt32Array},
-{icSigUInt64ArrayType,         new_icmUInt64Array},
-{icSigUInt8ArrayType,          new_icmUInt8Array},
-{icSigViewingConditionsType,   new_icmViewingConditions},
-{icSigXYZArrayType,            new_icmXYZArray},
-{icMaxEnumType,                NULL}
+{icSigS15Fixed16ArrayType, new_icmS15Fixed16Array},
+{icSigScreeningType, new_icmScreening},
+{icSigSignatureType, new_icmSignature},
+{icSigTextDescriptionType, new_icmTextDescription},
+{icSigTextType, new_icmText},
+{icSigU16Fixed16ArrayType, new_icmU16Fixed16Array},
+{icSigUcrBgType, new_icmUcrBg},
+{icSigVideoCardGammaType, new_icmVideoCardGamma},
+{icSigUInt16ArrayType, new_icmUInt16Array},
+{icSigUInt32ArrayType, new_icmUInt32Array},
+{icSigUInt64ArrayType, new_icmUInt64Array},
+{icSigUInt8ArrayType, new_icmUInt8Array},
+{icSigViewingConditionsType, new_icmViewingConditions},
+{icSigXYZArrayType, new_icmXYZArray},
+{icMaxEnumType, NULL}
 };
 static struct {
-icTagSignature      sig;
-icTagTypeSignature  ttypes[4];
+icTagSignature sig;
+icTagTypeSignature ttypes[4];
 } sigtypetable[] = {
-{icSigAToB0Tag,					{icSigLut8Type,icSigLut16Type,icMaxEnumType}},
-{icSigAToB1Tag,					{icSigLut8Type,icSigLut16Type,icMaxEnumType}},
-{icSigAToB2Tag,					{icSigLut8Type,icSigLut16Type,icMaxEnumType}},
-{icSigBlueColorantTag,			{icSigXYZType,icMaxEnumType}},
-{icSigBlueTRCTag,				{icSigCurveType,icMaxEnumType}},
-{icSigBToA0Tag,					{icSigLut8Type,icSigLut16Type,icMaxEnumType}},
-{icSigBToA1Tag,					{icSigLut8Type,icSigLut16Type,icMaxEnumType}},
-{icSigBToA2Tag,					{icSigLut8Type,icSigLut16Type,icMaxEnumType}},
-{icSigCalibrationDateTimeTag,	{icSigDateTimeType,icMaxEnumType}},
-{icSigCharTargetTag,			{icSigTextType,icMaxEnumType}},
-{icSigCopyrightTag,				{icSigTextType,icMaxEnumType}},
-{icSigCrdInfoTag,				{icSigCrdInfoType,icMaxEnumType}},
-{icSigDeviceMfgDescTag,			{icSigTextDescriptionType,icMaxEnumType}},
-{icSigDeviceModelDescTag,		{icSigTextDescriptionType,icMaxEnumType}},
-{icSigGamutTag,					{icSigLut8Type,icSigLut16Type,icMaxEnumType}},
-{icSigGrayTRCTag,				{icSigCurveType,icMaxEnumType}},
-{icSigGreenColorantTag,			{icSigXYZType,icMaxEnumType}},
-{icSigGreenTRCTag,				{icSigCurveType,icMaxEnumType}},
-{icSigLuminanceTag,				{icSigXYZType,icMaxEnumType}},
-{icSigMeasurementTag,			{icSigMeasurementType,icMaxEnumType}},
-{icSigMediaBlackPointTag,		{icSigXYZType,icMaxEnumType}},
-{icSigMediaWhitePointTag,		{icSigXYZType,icMaxEnumType}},
-{icSigNamedColorTag,			{icSigNamedColorType,icMaxEnumType}},
-{icSigNamedColor2Tag,			{icSigNamedColor2Type,icMaxEnumType}},
-{icSigPreview0Tag,				{icSigLut8Type,icSigLut16Type,icMaxEnumType}},
-{icSigPreview1Tag,				{icSigLut8Type,icSigLut16Type,icMaxEnumType}},
-{icSigPreview2Tag,				{icSigLut8Type,icSigLut16Type,icMaxEnumType}},
-{icSigProfileDescriptionTag,	{icSigTextDescriptionType,icMaxEnumType}},
-{icSigProfileSequenceDescTag,	{icSigProfileSequenceDescType,icMaxEnumType}},
-{icSigPs2CRD0Tag,				{icSigDataType,icMaxEnumType}},
-{icSigPs2CRD1Tag,				{icSigDataType,icMaxEnumType}},
-{icSigPs2CRD2Tag,				{icSigDataType,icMaxEnumType}},
-{icSigPs2CRD3Tag,				{icSigDataType,icMaxEnumType}},
-{icSigPs2CSATag,				{icSigDataType,icMaxEnumType}},
-{icSigPs2RenderingIntentTag,	{icSigDataType,icMaxEnumType}},
-{icSigRedColorantTag,			{icSigXYZType,icMaxEnumType}},
-{icSigRedTRCTag,				{icSigCurveType,icMaxEnumType}},
-{icSigScreeningDescTag,			{icSigTextDescriptionType,icMaxEnumType}},
-{icSigScreeningTag,				{icSigScreeningType,icMaxEnumType}},
-{icSigTechnologyTag,			{icSigSignatureType,icMaxEnumType}},
-{icSigUcrBgTag,					{icSigUcrBgType,icMaxEnumType}},
-{icSigVideoCardGammaTag,		{icSigVideoCardGammaType,icMaxEnumType}},
-{icSigViewingCondDescTag,		{icSigTextDescriptionType,icMaxEnumType}},
-{icSigViewingConditionsTag,		{icSigViewingConditionsType,icMaxEnumType}},
-{icMaxEnumType,					{icMaxEnumType}}
+{icSigAToB0Tag, {icSigLut8Type,icSigLut16Type,icMaxEnumType}},
+{icSigAToB1Tag, {icSigLut8Type,icSigLut16Type,icMaxEnumType}},
+{icSigAToB2Tag, {icSigLut8Type,icSigLut16Type,icMaxEnumType}},
+{icSigBlueColorantTag, {icSigXYZType,icMaxEnumType}},
+{icSigBlueTRCTag, {icSigCurveType,icMaxEnumType}},
+{icSigBToA0Tag, {icSigLut8Type,icSigLut16Type,icMaxEnumType}},
+{icSigBToA1Tag, {icSigLut8Type,icSigLut16Type,icMaxEnumType}},
+{icSigBToA2Tag, {icSigLut8Type,icSigLut16Type,icMaxEnumType}},
+{icSigCalibrationDateTimeTag, {icSigDateTimeType,icMaxEnumType}},
+{icSigCharTargetTag, {icSigTextType,icMaxEnumType}},
+{icSigCopyrightTag, {icSigTextType,icMaxEnumType}},
+{icSigCrdInfoTag, {icSigCrdInfoType,icMaxEnumType}},
+{icSigDeviceMfgDescTag, {icSigTextDescriptionType,icMaxEnumType}},
+{icSigDeviceModelDescTag, {icSigTextDescriptionType,icMaxEnumType}},
+{icSigGamutTag, {icSigLut8Type,icSigLut16Type,icMaxEnumType}},
+{icSigGrayTRCTag, {icSigCurveType,icMaxEnumType}},
+{icSigGreenColorantTag, {icSigXYZType,icMaxEnumType}},
+{icSigGreenTRCTag, {icSigCurveType,icMaxEnumType}},
+{icSigLuminanceTag, {icSigXYZType,icMaxEnumType}},
+{icSigMeasurementTag, {icSigMeasurementType,icMaxEnumType}},
+{icSigMediaBlackPointTag, {icSigXYZType,icMaxEnumType}},
+{icSigMediaWhitePointTag, {icSigXYZType,icMaxEnumType}},
+{icSigNamedColorTag, {icSigNamedColorType,icMaxEnumType}},
+{icSigNamedColor2Tag, {icSigNamedColor2Type,icMaxEnumType}},
+{icSigPreview0Tag, {icSigLut8Type,icSigLut16Type,icMaxEnumType}},
+{icSigPreview1Tag, {icSigLut8Type,icSigLut16Type,icMaxEnumType}},
+{icSigPreview2Tag, {icSigLut8Type,icSigLut16Type,icMaxEnumType}},
+{icSigProfileDescriptionTag, {icSigTextDescriptionType,icMaxEnumType}},
+{icSigProfileSequenceDescTag, {icSigProfileSequenceDescType,icMaxEnumType}},
+{icSigPs2CRD0Tag, {icSigDataType,icMaxEnumType}},
+{icSigPs2CRD1Tag, {icSigDataType,icMaxEnumType}},
+{icSigPs2CRD2Tag, {icSigDataType,icMaxEnumType}},
+{icSigPs2CRD3Tag, {icSigDataType,icMaxEnumType}},
+{icSigPs2CSATag, {icSigDataType,icMaxEnumType}},
+{icSigPs2RenderingIntentTag, {icSigDataType,icMaxEnumType}},
+{icSigRedColorantTag, {icSigXYZType,icMaxEnumType}},
+{icSigRedTRCTag, {icSigCurveType,icMaxEnumType}},
+{icSigScreeningDescTag, {icSigTextDescriptionType,icMaxEnumType}},
+{icSigScreeningTag, {icSigScreeningType,icMaxEnumType}},
+{icSigTechnologyTag, {icSigSignatureType,icMaxEnumType}},
+{icSigUcrBgTag, {icSigUcrBgType,icMaxEnumType}},
+{icSigVideoCardGammaTag, {icSigVideoCardGammaType,icMaxEnumType}},
+{icSigViewingCondDescTag, {icSigTextDescriptionType,icMaxEnumType}},
+{icSigViewingConditionsTag, {icSigViewingConditionsType,icMaxEnumType}},
+{icMaxEnumType, {icMaxEnumType}}
 };
-#define icSigPCSData  ((icColorSpaceSignature) 0x50435320L)
+#define icSigPCSData ((icColorSpaceSignature) 0x50435320L)
 static struct {
 icProfileClassSignature sig;
-int      			    chans;
-icColorSpaceSignature   colsig;
-icColorSpaceSignature   pcssig;
-icTagSignature          tags[12];
+int chans;
+icColorSpaceSignature colsig;
+icColorSpaceSignature pcssig;
+icTagSignature tags[12];
 } tagchecktable[] = {
-{icSigInputClass,      -1, icMaxEnumData, icSigPCSData,
+{icSigInputClass, -1, icMaxEnumData, icSigPCSData,
 {icSigProfileDescriptionTag,
 icSigGrayTRCTag,
 icSigMediaWhitePointTag,
 icSigCopyrightTag, icMaxEnumType}},
-{icSigInputClass,      -3, icMaxEnumData, icSigXYZData,
+{icSigInputClass, -3, icMaxEnumData, icSigXYZData,
 {icSigProfileDescriptionTag,
 icSigRedColorantTag,
 icSigGreenColorantTag,
@@ -7267,17 +7267,17 @@ icSigGreenTRCTag,
 icSigBlueTRCTag,
 icSigMediaWhitePointTag,
 icSigCopyrightTag, icMaxEnumType}},
-{icSigInputClass,     -100, icMaxEnumData, icSigPCSData,
+{icSigInputClass, -100, icMaxEnumData, icSigPCSData,
 {icSigProfileDescriptionTag,
 icSigAToB0Tag,
 icSigMediaWhitePointTag,
 icSigCopyrightTag, icMaxEnumType}},
-{icSigDisplayClass,     -1, icMaxEnumData, icSigPCSData,
+{icSigDisplayClass, -1, icMaxEnumData, icSigPCSData,
 {icSigProfileDescriptionTag,
 icSigGrayTRCTag,
 icSigMediaWhitePointTag,
 icSigCopyrightTag, icMaxEnumType}},
-{icSigDisplayClass,     -3, icSigRgbData, icSigXYZData,
+{icSigDisplayClass, -3, icSigRgbData, icSigXYZData,
 {icSigProfileDescriptionTag,
 icSigRedColorantTag,
 icSigGreenColorantTag,
@@ -7287,17 +7287,17 @@ icSigGreenTRCTag,
 icSigBlueTRCTag,
 icSigMediaWhitePointTag,
 icSigCopyrightTag, icMaxEnumType}},
-{icSigDisplayClass,     -100, icMaxEnumData, icSigPCSData,
+{icSigDisplayClass, -100, icMaxEnumData, icSigPCSData,
 {icSigProfileDescriptionTag,
 icSigAToB0Tag,
 icSigMediaWhitePointTag,
 icSigCopyrightTag, icMaxEnumType}},
-{icSigOutputClass,     -1, icMaxEnumData, icSigPCSData,
+{icSigOutputClass, -1, icMaxEnumData, icSigPCSData,
 {icSigProfileDescriptionTag,
 icSigGrayTRCTag,
 icSigMediaWhitePointTag,
 icSigCopyrightTag, icMaxEnumType}},
-{icSigOutputClass,     -1, icMaxEnumData, icSigPCSData,
+{icSigOutputClass, -1, icMaxEnumData, icSigPCSData,
 {icSigProfileDescriptionTag,
 icSigAToB0Tag,
 icSigBToA0Tag,
@@ -7308,7 +7308,7 @@ icSigAToB2Tag,
 icSigBToA2Tag,
 icSigMediaWhitePointTag,
 icSigCopyrightTag, icMaxEnumType}},
-{icSigOutputClass,     -2, icMaxEnumData, icSigPCSData,
+{icSigOutputClass, -2, icMaxEnumData, icSigPCSData,
 {icSigProfileDescriptionTag,
 icSigAToB0Tag,
 icSigBToA0Tag,
@@ -7319,7 +7319,7 @@ icSigAToB2Tag,
 icSigBToA2Tag,
 icSigMediaWhitePointTag,
 icSigCopyrightTag, icMaxEnumType}},
-{icSigOutputClass,     -3, icMaxEnumData, icSigPCSData,
+{icSigOutputClass, -3, icMaxEnumData, icSigPCSData,
 {icSigProfileDescriptionTag,
 icSigAToB0Tag,
 icSigBToA0Tag,
@@ -7330,7 +7330,7 @@ icSigAToB2Tag,
 icSigBToA2Tag,
 icSigMediaWhitePointTag,
 icSigCopyrightTag, icMaxEnumType}},
-{icSigOutputClass,     -4, icMaxEnumData, icSigPCSData,
+{icSigOutputClass, -4, icMaxEnumData, icSigPCSData,
 {icSigProfileDescriptionTag,
 icSigAToB0Tag,
 icSigBToA0Tag,
@@ -7341,49 +7341,49 @@ icSigAToB2Tag,
 icSigBToA2Tag,
 icSigMediaWhitePointTag,
 icSigCopyrightTag, icMaxEnumType}},
-{icSigOutputClass,     -100, icMaxEnumData, icSigPCSData,
+{icSigOutputClass, -100, icMaxEnumData, icSigPCSData,
 {icSigProfileDescriptionTag,
 icSigBToA0Tag,
 icSigBToA1Tag,
 icSigBToA2Tag,
 icSigMediaWhitePointTag,
 icSigCopyrightTag, icMaxEnumType}},
-{icSigLinkClass,      -100, icMaxEnumData, icMaxEnumData,
+{icSigLinkClass, -100, icMaxEnumData, icMaxEnumData,
 {icSigProfileDescriptionTag,
 icSigAToB0Tag,
 icSigProfileSequenceDescTag,
 icSigCopyrightTag, icMaxEnumType}},
-{icSigColorSpaceClass,       -100, icMaxEnumData, icSigPCSData,
+{icSigColorSpaceClass, -100, icMaxEnumData, icSigPCSData,
 {icSigProfileDescriptionTag,
 icSigBToA0Tag,
 icSigAToB0Tag,
 icSigMediaWhitePointTag,
 icSigCopyrightTag, icMaxEnumType}},
-{icSigAbstractClass,      -100, icSigPCSData, icSigPCSData,
+{icSigAbstractClass, -100, icSigPCSData, icSigPCSData,
 {icSigProfileDescriptionTag,
 icSigAToB0Tag,
 icSigMediaWhitePointTag,
 icSigCopyrightTag, icMaxEnumType}},
-{icSigNamedColorClass,        -200, icMaxEnumData, icMaxEnumData,
+{icSigNamedColorClass, -200, icMaxEnumData, icMaxEnumData,
 {icSigProfileDescriptionTag,
 icSigNamedColor2Tag,
 icSigMediaWhitePointTag,
 icSigCopyrightTag, icMaxEnumType}},
-{icSigNamedColorClass,        -100, icMaxEnumData, icMaxEnumData,
+{icSigNamedColorClass, -100, icMaxEnumData, icMaxEnumData,
 {icSigProfileDescriptionTag,
 icSigNamedColorTag,
 icSigMediaWhitePointTag,
 icSigCopyrightTag, icMaxEnumType}},
-{icMaxEnumType,-1,icMaxEnumData, icMaxEnumData,		{icMaxEnumType}}
+{icMaxEnumType,-1,icMaxEnumData, icMaxEnumData, {icMaxEnumType}}
 };
 static int check_icc_legal(
 icc *p
 ) {
 int i, j;
-icProfileClassSignature  sig;
+icProfileClassSignature sig;
 icColorSpaceSignature colsig;
 icColorSpaceSignature pcssig;
-int      	          dchans;
+int dchans;
 if (p->header == NULL) {
 sprintf(p->err,"icc_check_legal: Header is missing");
 return p->errc = 1;
@@ -7393,15 +7393,15 @@ colsig = p->header->colorSpace;
 dchans = number_ColorSpaceSignature(colsig);
 pcssig = p->header->pcs;
 for (i = 0; tagchecktable[i].sig != icMaxEnumType; i++) {
-if (    tagchecktable[i].sig   == sig
-&& (   tagchecktable[i].chans == dchans
+if ( tagchecktable[i].sig == sig
+&& ( tagchecktable[i].chans == dchans
 || tagchecktable[i].chans == -dchans
 || tagchecktable[i].chans < -99)
-&& (   tagchecktable[i].colsig == colsig
+&& ( tagchecktable[i].colsig == colsig
 || (tagchecktable[i].colsig == icSigPCSData
 && (colsig == icSigXYZData || colsig == icSigLabData))
 || tagchecktable[i].colsig == icMaxEnumData)
-&& (   tagchecktable[i].pcssig == pcssig
+&& ( tagchecktable[i].pcssig == pcssig
 || (tagchecktable[i].pcssig == icSigPCSData
 && (pcssig == icSigXYZData || pcssig == icSigLabData))
 || tagchecktable[i].pcssig == icMaxEnumData)) {
@@ -7441,7 +7441,7 @@ return p->errc = 1;
 if (p->header->read(p->header, 128, of)) {
 return 1;
 }
-if (   p->fp->seek(p->fp, of + 128) != 0
+if ( p->fp->seek(p->fp, of + 128) != 0
 || p->fp->read(p->fp, tcbuf, 1, 4) != 4) {
 sprintf(p->err,"icc_read: fseek() or fread() failed on tag count");
 return p->errc = 1;
@@ -7460,7 +7460,7 @@ p->al->free(p->al, p->data);
 p->data = NULL;
 return p->errc = 2;
 }
-if (   p->fp->seek(p->fp, of + 128) != 0
+if ( p->fp->seek(p->fp, of + 128) != 0
 || p->fp->read(p->fp, buf, 1, len) != len) {
 sprintf(p->err,"icc_read: fseek() or fread() failed on tag table");
 p->al->free(p->al, p->data);
@@ -7473,7 +7473,7 @@ for (i = 0; i < p->count; i++, bp += 12) {
 p->data[i].sig = (icTagSignature)read_SInt32Number(bp + 0);
 p->data[i].offset = read_UInt32Number(bp + 4);
 p->data[i].size = read_UInt32Number(bp + 8);
-if (   p->fp->seek(p->fp, of + p->data[i].offset) != 0
+if ( p->fp->seek(p->fp, of + p->data[i].offset) != 0
 || p->fp->read(p->fp, tcbuf, 1, 4) != 4) {
 sprintf(p->err,"icc_read: fseek() or fread() failed on tag headers");
 p->al->free(p->al, p->data);
@@ -7582,7 +7582,7 @@ sprintf(p->err,"icc_write: corrupted link");
 return p->errc = 2;
 }
 p->data[i].offset = p->data[k].offset;
-p->data[i].size   = p->data[k].size;
+p->data[i].size = p->data[k].size;
 }
 if ((rv = write_SInt32Number((int)p->data[i].sig,bp + 0)) != 0) {
 sprintf(p->err,"icc_write: write_SInt32Number() failed on tag signature");
@@ -7606,7 +7606,7 @@ if ((rv = p->header->write(p->header, of)) != 0) {
 p->al->free(p->al, buf);
 return rv;
 }
-if (   p->fp->seek(p->fp, of + 128) != 0
+if ( p->fp->seek(p->fp, of + 128) != 0
 || p->fp->write(p->fp, buf, 1, len) != len) {
 sprintf(p->err,"icc_write: fseek() or fwrite() failed");
 p->al->free(p->al, buf);
@@ -7632,7 +7632,7 @@ return rv;
 static icmBase *icc_add_tag(
 icc *p,
 icTagSignature sig,
-icTagTypeSignature  ttype
+icTagTypeSignature ttype
 ) {
 icmBase *tp;
 icmBase *nob;
@@ -7741,8 +7741,8 @@ p->errc = 2;
 return NULL;
 }
 p->data = (icmTag *)tp;
-p->data[p->count].sig  = sig;
-p->data[p->count].ttype  = p->data[exi].ttype;
+p->data[p->count].sig = sig;
+p->data[p->count].ttype = p->data[exi].ttype;
 p->data[p->count].offset = p->data[exi].offset;
 p->data[p->count].size = p->data[exi].size;
 p->data[p->count].objp = p->data[exi].objp;
@@ -7790,9 +7790,9 @@ return p->data[i].objp;
 for (k = 0; k < p->count; k++) {
 if (i == k)
 continue;
-if (p->data[i].ttype  == p->data[k].ttype
+if (p->data[i].ttype == p->data[k].ttype
 && p->data[i].offset == p->data[k].offset
-&& p->data[i].size   == p->data[k].size
+&& p->data[i].size == p->data[k].size
 && p->data[k].objp != NULL)
 break;
 }
@@ -7911,7 +7911,7 @@ return 0;
 static void icc_dump(
 icc *p,
 FILE *op,
-int   verb
+int verb
 ) {
 int i;
 if (verb <= 0)
@@ -7950,7 +7950,7 @@ icc *p
 ) {
 int i;
 icmAlloc *al = p->al;
-int del_al   = p->del_al;
+int del_al = p->del_al;
 if (p->header != NULL)
 (p->header->del)(p->header);
 for (i = 0; i < p->count; i++) {
@@ -8076,38 +8076,38 @@ void (*fromLut16)(double *out, double *in);
 void (*toLut8)(double *out, double *in);
 void (*toLut16)(double *out, double *in);
 } colnormtable[] = {
-{icSigXYZData,     NULL,         Lut_Lut2XYZ,   NULL,         Lut_XYZ2Lut },
-{icSigLabData,     Lut_Lut2Lab8, Lut_Lut2Lab16, Lut_Lab2Lut8, Lut_Lab2Lut16 },
-{icSigLuvData,     Lut_Lut2Luv,  Lut_Lut2Luv,   Lut_Luv2Lut,  Lut_Luv2Lut },
-{icSigYxyData,     Lut_3,        Lut_3,         Lut_3,        Lut_3 },
-{icSigRgbData,     Lut_3,        Lut_3,         Lut_3,        Lut_3 },
-{icSigGrayData,    Lut_1,        Lut_1,         Lut_1,        Lut_1 },
-{icSigHsvData,     Lut_3,        Lut_3,         Lut_3,        Lut_3 },
-{icSigHlsData,     Lut_3,        Lut_3,         Lut_3,        Lut_3 },
-{icSigCmykData,    Lut_4,        Lut_4,         Lut_4,        Lut_4 },
-{icSigCmyData,     Lut_3,        Lut_3,         Lut_3,        Lut_3 },
-{icSigMch6Data,    Lut_6,        Lut_6,         Lut_6,        Lut_6 },
-{icSig2colorData,  Lut_2,        Lut_2,         Lut_2,        Lut_2 },
-{icSig3colorData,  Lut_3,        Lut_3,         Lut_3,        Lut_3 },
-{icSig4colorData,  Lut_4,        Lut_4,         Lut_4,        Lut_4 },
-{icSig5colorData,  Lut_5,        Lut_5,         Lut_5,        Lut_5 },
-{icSig6colorData,  Lut_6,        Lut_6,         Lut_6,        Lut_6 },
-{icSig7colorData,  Lut_7,        Lut_7,         Lut_7,        Lut_7 },
-{icSig8colorData,  Lut_8,        Lut_8,         Lut_8,        Lut_8 },
-{icSig9colorData,  Lut_9,        Lut_9,         Lut_9,        Lut_9 },
-{icSig10colorData, Lut_10,       Lut_10,        Lut_10,       Lut_10 },
-{icSig11colorData, Lut_11,       Lut_11,        Lut_11,       Lut_11 },
-{icSig12colorData, Lut_12,       Lut_12,        Lut_12,       Lut_12 },
-{icSig13colorData, Lut_13,       Lut_13,        Lut_13,       Lut_13 },
-{icSig14colorData, Lut_14,       Lut_14,        Lut_14,       Lut_14 },
-{icSig15colorData, Lut_15,       Lut_15,        Lut_15,       Lut_15 },
-{icMaxEnumData,    NULL,         NULL,          NULL,         NULL   }
+{icSigXYZData, NULL, Lut_Lut2XYZ, NULL, Lut_XYZ2Lut },
+{icSigLabData, Lut_Lut2Lab8, Lut_Lut2Lab16, Lut_Lab2Lut8, Lut_Lab2Lut16 },
+{icSigLuvData, Lut_Lut2Luv, Lut_Lut2Luv, Lut_Luv2Lut, Lut_Luv2Lut },
+{icSigYxyData, Lut_3, Lut_3, Lut_3, Lut_3 },
+{icSigRgbData, Lut_3, Lut_3, Lut_3, Lut_3 },
+{icSigGrayData, Lut_1, Lut_1, Lut_1, Lut_1 },
+{icSigHsvData, Lut_3, Lut_3, Lut_3, Lut_3 },
+{icSigHlsData, Lut_3, Lut_3, Lut_3, Lut_3 },
+{icSigCmykData, Lut_4, Lut_4, Lut_4, Lut_4 },
+{icSigCmyData, Lut_3, Lut_3, Lut_3, Lut_3 },
+{icSigMch6Data, Lut_6, Lut_6, Lut_6, Lut_6 },
+{icSig2colorData, Lut_2, Lut_2, Lut_2, Lut_2 },
+{icSig3colorData, Lut_3, Lut_3, Lut_3, Lut_3 },
+{icSig4colorData, Lut_4, Lut_4, Lut_4, Lut_4 },
+{icSig5colorData, Lut_5, Lut_5, Lut_5, Lut_5 },
+{icSig6colorData, Lut_6, Lut_6, Lut_6, Lut_6 },
+{icSig7colorData, Lut_7, Lut_7, Lut_7, Lut_7 },
+{icSig8colorData, Lut_8, Lut_8, Lut_8, Lut_8 },
+{icSig9colorData, Lut_9, Lut_9, Lut_9, Lut_9 },
+{icSig10colorData, Lut_10, Lut_10, Lut_10, Lut_10 },
+{icSig11colorData, Lut_11, Lut_11, Lut_11, Lut_11 },
+{icSig12colorData, Lut_12, Lut_12, Lut_12, Lut_12 },
+{icSig13colorData, Lut_13, Lut_13, Lut_13, Lut_13 },
+{icSig14colorData, Lut_14, Lut_14, Lut_14, Lut_14 },
+{icSig15colorData, Lut_15, Lut_15, Lut_15, Lut_15 },
+{icMaxEnumData, NULL, NULL, NULL, NULL }
 };
 static int getNormFunc(
 icColorSpaceSignature csig,
-icTagTypeSignature    tagSig,
-icmNormFlag           flag,
-void               (**nfunc)(double *out, double *in)
+icTagTypeSignature tagSig,
+icmNormFlag flag,
+void (**nfunc)(double *out, double *in)
 ) {
 int i;
 for (i = 0; colnormtable[i].csig != icMaxEnumData; i++) {
@@ -8115,7 +8115,7 @@ if (colnormtable[i].csig == csig)
 break;
 }
 if (colnormtable[i].csig == icMaxEnumData) {
-*nfunc   = NULL;
+*nfunc = NULL;
 return 1;
 }
 if (flag == icmFromLuti || flag == icmFromLutv) {
@@ -8126,7 +8126,7 @@ return 0;
 *nfunc = colnormtable[i].fromLut16;
 return 0;
 } else {
-*nfunc   = NULL;
+*nfunc = NULL;
 return 1;
 }
 } else if (flag == icmToLuti || flag == icmToLutv) {
@@ -8137,11 +8137,11 @@ return 0;
 *nfunc = colnormtable[i].toLut16;
 return 0;
 } else {
-*nfunc   = NULL;
+*nfunc = NULL;
 return 1;
 }
 } else {
-*nfunc   = NULL;
+*nfunc = NULL;
 return 1;
 }
 return 0;
@@ -8152,34 +8152,34 @@ int same;
 double min[15];
 double max[15];
 } colorrangetable[] = {
-{icSigXYZData,     1, { 0.0 } , { 1.0 + 32767.0/32768.0 } },
-{icSigLabData,     0, { 0.0, -128.0, -128.0 },
+{icSigXYZData, 1, { 0.0 } , { 1.0 + 32767.0/32768.0 } },
+{icSigLabData, 0, { 0.0, -128.0, -128.0 },
 { 100.0 + 25500.0/65280.0, 127.0 + 255.0/256.0, 127.0 + 255.0/256.0 } },
-{icSigLuvData,     0, { 0.0, -128.0, -128.0 },
+{icSigLuvData, 0, { 0.0, -128.0, -128.0 },
 { 100.0, 127.0 + 255.0/256.0, 127.0 + 255.0/256.0 } },
-{icSigYxyData,     1, { 0.0 }, { 1.0 } },
-{icSigRgbData,     1, { 0.0 }, { 1.0 } },
-{icSigGrayData,    1, { 0.0 }, { 1.0 } },
-{icSigHsvData,     1, { 0.0 }, { 1.0 } },
-{icSigHlsData,     1, { 0.0 }, { 1.0 } },
-{icSigCmykData,    1, { 0.0 }, { 1.0 } },
-{icSigCmyData,     1, { 0.0 }, { 1.0 } },
-{icSigMch6Data,    1, { 0.0 }, { 1.0 } },
-{icSig2colorData,  1, { 0.0 }, { 1.0 } },
-{icSig3colorData,  1, { 0.0 }, { 1.0 } },
-{icSig4colorData,  1, { 0.0 }, { 1.0 } },
-{icSig5colorData,  1, { 0.0 }, { 1.0 } },
-{icSig6colorData,  1, { 0.0 }, { 1.0 } },
-{icSig7colorData,  1, { 0.0 }, { 1.0 } },
-{icSig8colorData,  1, { 0.0 }, { 1.0 } },
-{icSig9colorData,  1, { 0.0 }, { 1.0 } },
+{icSigYxyData, 1, { 0.0 }, { 1.0 } },
+{icSigRgbData, 1, { 0.0 }, { 1.0 } },
+{icSigGrayData, 1, { 0.0 }, { 1.0 } },
+{icSigHsvData, 1, { 0.0 }, { 1.0 } },
+{icSigHlsData, 1, { 0.0 }, { 1.0 } },
+{icSigCmykData, 1, { 0.0 }, { 1.0 } },
+{icSigCmyData, 1, { 0.0 }, { 1.0 } },
+{icSigMch6Data, 1, { 0.0 }, { 1.0 } },
+{icSig2colorData, 1, { 0.0 }, { 1.0 } },
+{icSig3colorData, 1, { 0.0 }, { 1.0 } },
+{icSig4colorData, 1, { 0.0 }, { 1.0 } },
+{icSig5colorData, 1, { 0.0 }, { 1.0 } },
+{icSig6colorData, 1, { 0.0 }, { 1.0 } },
+{icSig7colorData, 1, { 0.0 }, { 1.0 } },
+{icSig8colorData, 1, { 0.0 }, { 1.0 } },
+{icSig9colorData, 1, { 0.0 }, { 1.0 } },
 {icSig10colorData, 1, { 0.0 }, { 1.0 } },
 {icSig11colorData, 1, { 0.0 }, { 1.0 } },
 {icSig12colorData, 1, { 0.0 }, { 1.0 } },
 {icSig13colorData, 1, { 0.0 }, { 1.0 } },
 {icSig14colorData, 1, { 0.0 }, { 1.0 } },
 {icSig15colorData, 1, { 0.0 }, { 1.0 } },
-{icMaxEnumData     }
+{icMaxEnumData }
 };
 static int getRange(
 icColorSpaceSignature csig,
@@ -8220,15 +8220,15 @@ double a1, a2, a3, b1, b2, b3, c1, c2, c3;
 a1 = in[0][0]; b1 = in[0][1]; c1 = in[0][2];
 a2 = in[1][0]; b2 = in[1][1]; c2 = in[1][2];
 a3 = in[2][0]; b3 = in[2][1]; c3 = in[2][2];
-out[0][0]  =   det2x2(b2, b3, c2, c3);
-out[1][0]  = - det2x2(a2, a3, c2, c3);
-out[2][0]  =   det2x2(a2, a3, b2, b3);
-out[0][1]  = - det2x2(b1, b3, c1, c3);
-out[1][1]  =   det2x2(a1, a3, c1, c3);
-out[2][1]  = - det2x2(a1, a3, b1, b3);
-out[0][2]  =   det2x2(b1, b2, c1, c2);
-out[1][2]  = - det2x2(a1, a2, c1, c2);
-out[2][2]  =   det2x2(a1, a2, b1, b2);
+out[0][0] = det2x2(b2, b3, c2, c3);
+out[1][0] = - det2x2(a2, a3, c2, c3);
+out[2][0] = det2x2(a2, a3, b2, b3);
+out[0][1] = - det2x2(b1, b3, c1, c3);
+out[1][1] = det2x2(a1, a3, c1, c3);
+out[2][1] = - det2x2(a1, a3, b1, b3);
+out[0][2] = det2x2(b1, b2, c1, c2);
+out[1][2] = - det2x2(a1, a2, c1, c2);
+out[2][2] = det2x2(a1, a2, b1, b2);
 }
 static double det3x3(double in[3][3]) {
 double a1, a2, a3, b1, b2, b3, c1, c2, c3;
@@ -8241,7 +8241,7 @@ ans = a1 * det2x2(b2, b3, c2, c3)
 + c1 * det2x2(a2, a3, b2, b3);
 return ans;
 }
-#define SMALL_NUMBER	1.e-8
+#define SMALL_NUMBER 1.e-8
 static int inverse3x3(
 double out[3][3],
 double in[3][3]
@@ -8429,9 +8429,9 @@ double mat[3][3]
 double dst[3], src[3];
 double vkmat[3][3];
 double bradford[3][3] = {
-{  0.8951,  0.2664, -0.1614 },
-{ -0.7502,  1.7135,  0.0367 },
-{  0.0389, -0.0685,  1.0296 }
+{ 0.8951, 0.2664, -0.1614 },
+{ -0.7502, 1.7135, 0.0367 },
+{ 0.0389, -0.0685, 1.0296 }
 };
 double ibradford[3][3];
 if (!(flags & ICM_CAM_MULMATRIX)) {
@@ -8704,42 +8704,42 @@ icp->al->free(icp->al, p);
 }
 static icmLuBase *
 new_icmLuMono(
-struct _icc          *icp,
+struct _icc *icp,
 icColorSpaceSignature inSpace,
 icColorSpaceSignature outSpace,
 icColorSpaceSignature pcs,
 icColorSpaceSignature e_inSpace,
 icColorSpaceSignature e_outSpace,
 icColorSpaceSignature e_pcs,
-icmXYZNumber          whitePoint,
-icmXYZNumber          blackPoint,
-icRenderingIntent     intent,
-icmLookupFunc         func,
+icmXYZNumber whitePoint,
+icmXYZNumber blackPoint,
+icRenderingIntent intent,
+icmLookupFunc func,
 int dir
 ) {
 icmLuMono *p;
 if ((p = (icmLuMono *) icp->al->calloc(icp->al,1,sizeof(icmLuMono))) == NULL)
 return NULL;
-p->icp      = icp;
-p->del      = icmLuMono_delete;
+p->icp = icp;
+p->del = icmLuMono_delete;
 p->lutspaces= icmLutSpaces;
-p->spaces   = icmLuSpaces;
+p->spaces = icmLuSpaces;
 p->get_ranges = icmLu_get_ranges;
 p->wh_bk_points = icmLuWh_bk_points;
 p->fwd_lookup = icmLuMonoFwd_lookup;
-p->fwd_curve  = icmLuMonoFwd_curve;
-p->fwd_map    = icmLuMonoFwd_map;
-p->fwd_abs    = icmLuMonoFwd_abs;
+p->fwd_curve = icmLuMonoFwd_curve;
+p->fwd_map = icmLuMonoFwd_map;
+p->fwd_abs = icmLuMonoFwd_abs;
 p->bwd_lookup = icmLuMonoBwd_lookup;
-p->bwd_abs    = icmLuMonoFwd_abs;
-p->bwd_map    = icmLuMonoFwd_map;
-p->bwd_curve  = icmLuMonoFwd_curve;
+p->bwd_abs = icmLuMonoFwd_abs;
+p->bwd_map = icmLuMonoFwd_map;
+p->bwd_curve = icmLuMonoFwd_curve;
 if (dir) {
-p->ttype      = icmMonoBwdType;
-p->lookup     = icmLuMonoBwd_lookup;
+p->ttype = icmMonoBwdType;
+p->lookup = icmLuMonoBwd_lookup;
 } else {
-p->ttype      = icmMonoFwdType;
-p->lookup     = icmLuMonoFwd_lookup;
+p->ttype = icmMonoFwdType;
+p->lookup = icmLuMonoFwd_lookup;
 }
 if (number_ColorSpaceSignature(icp->header->colorSpace) != 1
 || ( icp->header->pcs != icSigXYZData && icp->header->pcs != icSigLabData)) {
@@ -8754,48 +8754,48 @@ return NULL;
 p->pcswht = icp->header->illuminant;
 p->whitePoint = whitePoint;
 p->blackPoint = blackPoint;
-p->intent   = intent;
+p->intent = intent;
 p->function = func;
-p->inSpace  = inSpace;
+p->inSpace = inSpace;
 p->outSpace = outSpace;
-p->pcs      = pcs;
-p->e_inSpace  = e_inSpace;
+p->pcs = pcs;
+p->e_inSpace = e_inSpace;
 p->e_outSpace = e_outSpace;
-p->e_pcs      = e_pcs;
+p->e_pcs = e_pcs;
 icmChromAdaptMatrix(ICM_CAM_BRADFORD, whitePoint, icmD50, p->toAbs);
-icmChromAdaptMatrix(ICM_CAM_BRADFORD, icmD50, whitePoint,  p->fromAbs);
+icmChromAdaptMatrix(ICM_CAM_BRADFORD, icmD50, whitePoint, p->fromAbs);
 return (icmLuBase *)p;
 }
 static icmLuBase *
 new_icmLuMonoFwd(
-struct _icc          *icp,
+struct _icc *icp,
 icColorSpaceSignature inSpace,
 icColorSpaceSignature outSpace,
 icColorSpaceSignature pcs,
 icColorSpaceSignature e_inSpace,
 icColorSpaceSignature e_outSpace,
 icColorSpaceSignature e_pcs,
-icmXYZNumber          whitePoint,
-icmXYZNumber          blackPoint,
-icRenderingIntent     intent,
-icmLookupFunc         func
+icmXYZNumber whitePoint,
+icmXYZNumber blackPoint,
+icRenderingIntent intent,
+icmLookupFunc func
 ) {
 return new_icmLuMono(icp, inSpace, outSpace, pcs, e_inSpace, e_outSpace, e_pcs,
 whitePoint, blackPoint, intent, func, 0);
 }
 static icmLuBase *
 new_icmLuMonoBwd(
-struct _icc          *icp,
+struct _icc *icp,
 icColorSpaceSignature inSpace,
 icColorSpaceSignature outSpace,
 icColorSpaceSignature pcs,
 icColorSpaceSignature e_inSpace,
 icColorSpaceSignature e_outSpace,
 icColorSpaceSignature e_pcs,
-icmXYZNumber          whitePoint,
-icmXYZNumber          blackPoint,
-icRenderingIntent     intent,
-icmLookupFunc         func
+icmXYZNumber whitePoint,
+icmXYZNumber blackPoint,
+icRenderingIntent intent,
+icmLookupFunc func
 ) {
 return new_icmLuMono(icp, inSpace, outSpace, pcs, e_inSpace, e_outSpace, e_pcs,
 whitePoint, blackPoint, intent, func, 1);
@@ -8808,7 +8808,7 @@ double *in
 ) {
 icc *icp = p->icp;
 int rv = 0;
-if ((rv |= p->redCurve->lookup_fwd(  p->redCurve,  &out[0],&in[0])) > 1
+if ((rv |= p->redCurve->lookup_fwd( p->redCurve, &out[0],&in[0])) > 1
 || (rv |= p->greenCurve->lookup_fwd(p->greenCurve,&out[1],&in[1])) > 1
 || (rv |= p->blueCurve->lookup_fwd( p->blueCurve, &out[2],&in[2])) > 1) {
 sprintf(icp->err,"icc_lookup: Curve->lookup_fwd() failed");
@@ -8909,7 +8909,7 @@ double *in
 icc *icp = p->icp;
 int rv = 0;
 if ((rv |= p->redCurve->lookup_bwd(p->redCurve,&out[0],&out[0])) > 1
-||	(rv |= p->greenCurve->lookup_bwd(p->greenCurve,&out[1],&out[1])) > 1
+|| (rv |= p->greenCurve->lookup_bwd(p->greenCurve,&out[1],&out[1])) > 1
 || (rv |= p->blueCurve->lookup_bwd(p->blueCurve,&out[2],&out[2])) > 1) {
 sprintf(icp->err,"icc_lookup: Curve->lookup_bwd() failed");
 icp->errc = rv;
@@ -8939,42 +8939,42 @@ icp->al->free(icp->al, p);
 }
 static icmLuBase *
 new_icmLuMatrix(
-struct _icc          *icp,
+struct _icc *icp,
 icColorSpaceSignature inSpace,
 icColorSpaceSignature outSpace,
 icColorSpaceSignature pcs,
 icColorSpaceSignature e_inSpace,
 icColorSpaceSignature e_outSpace,
 icColorSpaceSignature e_pcs,
-icmXYZNumber          whitePoint,
-icmXYZNumber          blackPoint,
-icRenderingIntent     intent,
-icmLookupFunc         func,
+icmXYZNumber whitePoint,
+icmXYZNumber blackPoint,
+icRenderingIntent intent,
+icmLookupFunc func,
 int dir
 ) {
 icmLuMatrix *p;
 if ((p = (icmLuMatrix *) icp->al->calloc(icp->al,1,sizeof(icmLuMatrix))) == NULL)
 return NULL;
-p->icp      = icp;
-p->del      = icmLuMatrix_delete;
+p->icp = icp;
+p->del = icmLuMatrix_delete;
 p->lutspaces= icmLutSpaces;
-p->spaces   = icmLuSpaces;
+p->spaces = icmLuSpaces;
 p->get_ranges = icmLu_get_ranges;
 p->wh_bk_points = icmLuWh_bk_points;
 p->fwd_lookup = icmLuMatrixFwd_lookup;
-p->fwd_curve  = icmLuMatrixFwd_curve;
+p->fwd_curve = icmLuMatrixFwd_curve;
 p->fwd_matrix = icmLuMatrixFwd_matrix;
-p->fwd_abs    = icmLuMatrixFwd_abs;
+p->fwd_abs = icmLuMatrixFwd_abs;
 p->bwd_lookup = icmLuMatrixBwd_lookup;
-p->bwd_abs    = icmLuMatrixBwd_abs;
+p->bwd_abs = icmLuMatrixBwd_abs;
 p->bwd_matrix = icmLuMatrixBwd_matrix;
-p->bwd_curve  = icmLuMatrixBwd_curve;
+p->bwd_curve = icmLuMatrixBwd_curve;
 if (dir) {
-p->ttype      = icmMatrixBwdType;
-p->lookup     = icmLuMatrixBwd_lookup;
+p->ttype = icmMatrixBwdType;
+p->lookup = icmLuMatrixBwd_lookup;
 } else {
-p->ttype      = icmMatrixFwdType;
-p->lookup     = icmLuMatrixFwd_lookup;
+p->ttype = icmMatrixFwdType;
+p->lookup = icmLuMatrixFwd_lookup;
 }
 if ((p->redCurve = (icmCurve *)icp->read_tag(icp, icSigRedTRCTag)) == NULL
 || p->redCurve->ttype != icSigCurveType
@@ -9009,48 +9009,48 @@ return NULL;
 p->pcswht = icp->header->illuminant;
 p->whitePoint = whitePoint;
 p->blackPoint = blackPoint;
-p->intent   = intent;
+p->intent = intent;
 p->function = func;
-p->inSpace  = inSpace;
+p->inSpace = inSpace;
 p->outSpace = outSpace;
-p->pcs      = pcs;
-p->e_inSpace  = e_inSpace;
+p->pcs = pcs;
+p->e_inSpace = e_inSpace;
 p->e_outSpace = e_outSpace;
-p->e_pcs      = e_pcs;
+p->e_pcs = e_pcs;
 icmChromAdaptMatrix(ICM_CAM_BRADFORD, whitePoint, icmD50, p->toAbs);
-icmChromAdaptMatrix(ICM_CAM_BRADFORD, icmD50, whitePoint,  p->fromAbs);
+icmChromAdaptMatrix(ICM_CAM_BRADFORD, icmD50, whitePoint, p->fromAbs);
 return (icmLuBase *)p;
 }
 static icmLuBase *
 new_icmLuMatrixFwd(
-struct _icc          *icp,
+struct _icc *icp,
 icColorSpaceSignature inSpace,
 icColorSpaceSignature outSpace,
 icColorSpaceSignature pcs,
 icColorSpaceSignature e_inSpace,
 icColorSpaceSignature e_outSpace,
 icColorSpaceSignature e_pcs,
-icmXYZNumber          whitePoint,
-icmXYZNumber          blackPoint,
-icRenderingIntent     intent,
-icmLookupFunc         func
+icmXYZNumber whitePoint,
+icmXYZNumber blackPoint,
+icRenderingIntent intent,
+icmLookupFunc func
 ) {
 return new_icmLuMatrix(icp, inSpace, outSpace, pcs, e_inSpace, e_outSpace, e_pcs,
 whitePoint, blackPoint, intent, func, 0);
 }
 static icmLuBase *
 new_icmLuMatrixBwd(
-struct _icc          *icp,
+struct _icc *icp,
 icColorSpaceSignature inSpace,
 icColorSpaceSignature outSpace,
 icColorSpaceSignature pcs,
 icColorSpaceSignature e_inSpace,
 icColorSpaceSignature e_outSpace,
 icColorSpaceSignature e_pcs,
-icmXYZNumber          whitePoint,
-icmXYZNumber          blackPoint,
-icRenderingIntent     intent,
-icmLookupFunc         func
+icmXYZNumber whitePoint,
+icmXYZNumber blackPoint,
+icRenderingIntent intent,
+icmLookupFunc func
 ) {
 return new_icmLuMatrix(icp, inSpace, outSpace, pcs, e_inSpace, e_outSpace, e_pcs,
 whitePoint, blackPoint, intent, func, 1);
@@ -9283,8 +9283,8 @@ icmXYZ2Lab(&p->pcswht, out, out);
 return rv;
 }
 static void icmLuLut_get_info(
-icmLuLut     *p,
-icmLut       **lutp,
+icmLuLut *p,
+icmLut **lutp,
 icmXYZNumber *pcswhtp,
 icmXYZNumber *whitep,
 icmXYZNumber *blackp
@@ -9411,57 +9411,57 @@ icp->al->free(icp->al, p);
 }
 static icmLuBase *
 new_icmLuLut(
-icc                   *icp,
-icTagSignature        ttag,
+icc *icp,
+icTagSignature ttag,
 icColorSpaceSignature inSpace,
 icColorSpaceSignature outSpace,
 icColorSpaceSignature pcs,
 icColorSpaceSignature e_inSpace,
 icColorSpaceSignature e_outSpace,
 icColorSpaceSignature e_pcs,
-icmXYZNumber          whitePoint,
-icmXYZNumber          blackPoint,
-icRenderingIntent     intent,
-icmLookupFunc         func
+icmXYZNumber whitePoint,
+icmXYZNumber blackPoint,
+icRenderingIntent intent,
+icmLookupFunc func
 ) {
 icmLuLut *p;
 if ((p = (icmLuLut *) icp->al->calloc(icp->al,1,sizeof(icmLuLut))) == NULL)
 return NULL;
-p->ttype    = icmLutType;
-p->icp      = icp;
-p->del      = icmLuLut_delete;
+p->ttype = icmLutType;
+p->icp = icp;
+p->del = icmLuLut_delete;
 p->lutspaces= icmLutSpaces;
-p->spaces   = icmLuSpaces;
+p->spaces = icmLuSpaces;
 p->wh_bk_points = icmLuWh_bk_points;
-p->lookup   = icmLuLut_lookup;
-p->in_abs   = icmLuLut_in_abs;
-p->matrix   = icmLuLut_matrix;
-p->input    = icmLuLut_input;
-p->clut     = icmLuLut_clut;
-p->output   = icmLuLut_output;
-p->out_abs  = icmLuLut_out_abs;
-p->inv_in_abs   = icmLuLut_inv_in_abs;
-p->inv_matrix   = icmLuLut_inv_matrix;
-p->inv_input    = icmLuLut_inv_input;
-p->inv_output   = icmLuLut_inv_output;
-p->inv_out_abs  = icmLuLut_inv_out_abs;
-p->pcswht   = icp->header->illuminant;
+p->lookup = icmLuLut_lookup;
+p->in_abs = icmLuLut_in_abs;
+p->matrix = icmLuLut_matrix;
+p->input = icmLuLut_input;
+p->clut = icmLuLut_clut;
+p->output = icmLuLut_output;
+p->out_abs = icmLuLut_out_abs;
+p->inv_in_abs = icmLuLut_inv_in_abs;
+p->inv_matrix = icmLuLut_inv_matrix;
+p->inv_input = icmLuLut_inv_input;
+p->inv_output = icmLuLut_inv_output;
+p->inv_out_abs = icmLuLut_inv_out_abs;
+p->pcswht = icp->header->illuminant;
 p->whitePoint = whitePoint;
 p->blackPoint = blackPoint;
-p->intent   = intent;
+p->intent = intent;
 p->function = func;
-p->inSpace  = inSpace;
+p->inSpace = inSpace;
 p->outSpace = outSpace;
-p->pcs      = pcs;
-p->e_inSpace  = e_inSpace;
+p->pcs = pcs;
+p->e_inSpace = e_inSpace;
 p->e_outSpace = e_outSpace;
-p->e_pcs      = e_pcs;
+p->e_pcs = e_pcs;
 p->get_info = icmLuLut_get_info;
 p->get_lutranges = icmLuLut_get_lutranges;
 p->get_ranges = icmLuLut_get_ranges;
 p->get_matrix = icmLuLut_get_matrix;
 icmChromAdaptMatrix(ICM_CAM_BRADFORD, whitePoint, icmD50, p->toAbs);
-icmChromAdaptMatrix(ICM_CAM_BRADFORD, icmD50, whitePoint,  p->fromAbs);
+icmChromAdaptMatrix(ICM_CAM_BRADFORD, icmD50, whitePoint, p->fromAbs);
 if ((p->lut = (icmLut *)icp->read_tag(icp, ttag)) == NULL
 || (p->lut->ttype != icSigLut8Type && p->lut->ttype != icSigLut16Type)) {
 p->del((icmLuBase *)p);
@@ -9832,7 +9832,7 @@ e_pcs, icSigGrayData, e_pcs,
 whitePoint, blackPoint, intent, func);
 break;
 case icmPreview:
-switch (intent)  {
+switch (intent) {
 case icRelativeColorimetric:
 ttag = icSigPreview1Tag;
 break;
@@ -9969,20 +9969,20 @@ if ((p = (icc *) al->calloc(al, 1,sizeof(icc))) == NULL)
 return NULL;
 p->al = al;
 p->del_al = del_al;
-p->get_size      = icc_get_size;
-p->read          = icc_read;
-p->write         = icc_write;
-p->dump          = icc_dump;
-p->del           = icc_delete;
-p->add_tag       = icc_add_tag;
-p->link_tag      = icc_link_tag;
-p->find_tag      = icc_find_tag;
-p->read_tag      = icc_read_tag;
-p->rename_tag    = icc_rename_tag;
-p->unread_tag    = icc_unread_tag;
+p->get_size = icc_get_size;
+p->read = icc_read;
+p->write = icc_write;
+p->dump = icc_dump;
+p->del = icc_delete;
+p->add_tag = icc_add_tag;
+p->link_tag = icc_link_tag;
+p->find_tag = icc_find_tag;
+p->read_tag = icc_read_tag;
+p->rename_tag = icc_rename_tag;
+p->unread_tag = icc_unread_tag;
 p->read_all_tags = icc_read_all_tags;
-p->delete_tag    = icc_delete_tag;
-p->get_luobj  = icc_get_luobj;
+p->delete_tag = icc_delete_tag;
+p->get_luobj = icc_get_luobj;
 #if defined(__IBMC__) && defined(_M_IX86)
 _control87(EM_UNDERFLOW, EM_UNDERFLOW);
 #endif
@@ -10005,7 +10005,7 @@ p->header->creator = str2tag("argl");
 p->header->cmmId = str2tag("argl");
 p->header->majv = 2;
 p->header->minv = 1;
-p->header->bfv  = 0;
+p->header->bfv = 0;
 setcur_DateTimeNumber(&p->header->date);
 p->header->platform = icSigMicrosoft;
 p->header->illuminant = icmD50;

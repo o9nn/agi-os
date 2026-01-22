@@ -13,53 +13,53 @@ enum
 {
 Noblock,
 Block,
-Defstksize	= 8192,
-Maxstring	= 128,
-Maxpath		= 256,
-Maxcsreply	= 64*80,
-Maxconnms	= 2*60*1000,
+Defstksize = 8192,
+Maxstring = 128,
+Maxpath = 256,
+Maxcsreply = 64*80,
+Maxconnms = 2*60*1000,
 };
 struct DS {
-char	buf[Maxstring];
-char	*netdir;
-char	*proto;
-char	*rem;
-char	*local;
-char	*dir;
-int	*cfdp;
+char buf[Maxstring];
+char *netdir;
+char *proto;
+char *rem;
+char *local;
+char *dir;
+int *cfdp;
 };
 struct Conn {
-int	cfd;
-char	dir[NETPATHLEN+1];
+int cfd;
+char dir[NETPATHLEN+1];
 };
 struct Dest {
-DS	*ds;
+DS *ds;
 Channel *reschan;
-int	nkid;
-int	kidthrids[64];
-int	windfd;
-char	err[ERRMAX];
-long	oalarm;
-int	naddrs;
-char	*nextaddr;
-char	addrlist[Maxcsreply];
+int nkid;
+int kidthrids[64];
+int windfd;
+char err[ERRMAX];
+long oalarm;
+int naddrs;
+char *nextaddr;
+char addrlist[Maxcsreply];
 };
 struct Kidargs {
-Dest	*dp;
-int	thridsme;
-char	*clone;
-char	*dest;
+Dest *dp;
+int thridsme;
+char *clone;
+char *dest;
 };
 struct Restup {
-int	dfd;
-int	cfd;
-char	*err;
-char	*conndir;
+int dfd;
+int cfd;
+char *err;
+char *conndir;
 };
-static int	call(char*, char*, Dest*, Conn*);
-static int	call1(char*, char*, Dest*, Conn*);
-static int	csdial(DS*);
-static void	_dial_string_parse(char*, DS*);
+static int call(char*, char*, Dest*, Conn*);
+static int call1(char*, char*, Dest*, Conn*);
+static int csdial(DS*);
+static void _dial_string_parse(char*, DS*);
 static int
 dialimpl(char *dest, char *local, char *dir, int *cfdp)
 {

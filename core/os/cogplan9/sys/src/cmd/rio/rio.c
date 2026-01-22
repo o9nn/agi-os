@@ -10,28 +10,28 @@
 #include <plumb.h>
 #include "dat.h"
 #include "fns.h"
-void		resize(void);
-void		move(void);
-void		delete(void);
-void		hide(void);
-void		unhide(int);
-void		newtile(int);
-Image	*sweep(void);
-Image	*bandsize(Window*);
-Image*	drag(Window*, Rectangle*);
-void		refresh(Rectangle);
-void		resized(void);
-Channel	*exitchan;
-Channel	*winclosechan;
-Rectangle	viewr;
-int		threadrforkflag = 0;
-void	mousethread(void*);
-void	keyboardthread(void*);
+void resize(void);
+void move(void);
+void delete(void);
+void hide(void);
+void unhide(int);
+void newtile(int);
+Image *sweep(void);
+Image *bandsize(Window*);
+Image* drag(Window*, Rectangle*);
+void refresh(Rectangle);
+void resized(void);
+Channel *exitchan;
+Channel *winclosechan;
+Rectangle viewr;
+int threadrforkflag = 0;
+void mousethread(void*);
+void keyboardthread(void*);
 void winclosethread(void*);
 void deletethread(void*);
-void	initcmd(void*);
-char		*fontname;
-int		mainpid;
+void initcmd(void*);
+char *fontname;
+int mainpid;
 enum
 {
 New,
@@ -50,27 +50,27 @@ Plumb,
 Send,
 Scroll,
 };
-char		*menu2str[] = {
-[Cut]		"cut",
-[Paste]		"paste",
-[Snarf]		"snarf",
-[Plumb]		"plumb",
-[Send]		"send",
-[Scroll]		"scroll",
+char *menu2str[] = {
+[Cut] "cut",
+[Paste] "paste",
+[Snarf] "snarf",
+[Plumb] "plumb",
+[Send] "send",
+[Scroll] "scroll",
 nil
 };
 Menu menu2 =
 {
 menu2str
 };
-int	Hidden = Exit+1;
-char		*menu3str[100] = {
-[New]		"New",
-[Reshape]	"Resize",
-[Move]		"Move",
-[Delete]		"Delete",
-[Hide]		"Hide",
-[Exit]		"Exit",
+int Hidden = Exit+1;
+char *menu3str[100] = {
+[New] "New",
+[Reshape] "Resize",
+[Move] "Move",
+[Delete] "Delete",
+[Hide] "Hide",
+[Exit] "Exit",
 nil
 };
 Menu menu3 =

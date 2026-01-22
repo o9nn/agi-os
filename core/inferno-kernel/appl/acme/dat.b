@@ -18,19 +18,19 @@ mouse.xy = (0, 0);
 }
 # lockmgr()
 # {
-# 	l : ref Lock;
+# l : ref Lock;
 #
-# 	acme->lockpid = sys->pctl(0, nil);
-# 	for (;;) {
-# 		alt {
-# 			l = <- lc =>
-# 				if (l.cnt++ == 0)
-# 					l.chann <-= 1;
-# 			l = <- uc =>
-# 				if (--l.cnt > 0)
-# 					l.chann <-= 1;
-# 		}
-# 	}
+# acme->lockpid = sys->pctl(0, nil);
+# for (;;) {
+# alt {
+# l = <- lc =>
+# if (l.cnt++ == 0)
+# l.chann <-= 1;
+# l = <- uc =>
+# if (--l.cnt > 0)
+# l.chann <-= 1;
+# }
+# }
 # }
 Lock.init() : ref Lock
 {

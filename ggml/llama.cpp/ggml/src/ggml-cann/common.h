@@ -21,12 +21,12 @@
 #define GGML_CANN_MAX_STREAMS 8
 [[noreturn]] void ggml_cann_error(const char* stmt, const char* func,
 const char* file, int line, const char* msg);
-#define ACL_CHECK_GEN(stmt, success, error_fn)                                \
-do {                                                                      \
-int err_code = (stmt);                                                \
-if (err_code != (success)) {                                          \
+#define ACL_CHECK_GEN(stmt, success, error_fn) \
+do { \
+int err_code = (stmt); \
+if (err_code != (success)) { \
 ggml_cann_error(#stmt, __func__, __FILE__, __LINE__, error_fn()); \
-}                                                                     \
+} \
 } while (0);
 #define ACL_CHECK(stmt) ACL_CHECK_GEN(stmt, 0, aclGetRecentErrMsg)
 struct ggml_cann_device_info {

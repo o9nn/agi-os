@@ -1,7 +1,7 @@
 #ifndef __ASM_SPINLOCK_H
 #define __ASM_SPINLOCK_H
 #ifndef __SMP__
-#define DEBUG_SPINLOCKS	0
+#define DEBUG_SPINLOCKS 0
 #if (DEBUG_SPINLOCKS < 1)
 #if (__GNUC__ > 2) || (__GNUC__ == 2 && __GNUC_MINOR__ >= 8)
 typedef struct { } spinlock_t;
@@ -10,13 +10,13 @@ typedef struct { } spinlock_t;
 typedef struct { int gcc_is_buggy; } spinlock_t;
 #define SPIN_LOCK_UNLOCKED (spinlock_t) { 0 }
 #endif
-#define spin_lock_init(lock)	do { } while(0)
-#define spin_lock(lock)		(void)(lock)
-#define spin_trylock(lock)	(1)
-#define spin_unlock_wait(lock)	do { } while(0)
-#define spin_unlock(lock)	do { } while(0)
-#define spin_lock_irq(lock)	cli()
-#define spin_unlock_irq(lock)	sti()
+#define spin_lock_init(lock) do { } while(0)
+#define spin_lock(lock) (void)(lock)
+#define spin_trylock(lock) (1)
+#define spin_unlock_wait(lock) do { } while(0)
+#define spin_unlock(lock) do { } while(0)
+#define spin_lock_irq(lock) cli()
+#define spin_unlock_irq(lock) sti()
 #define spin_lock_irqsave(lock, flags) \
 do { save_flags(flags); cli(); } while (0)
 #define spin_unlock_irqrestore(lock, flags) \
@@ -26,13 +26,13 @@ typedef struct {
 volatile unsigned int lock;
 } spinlock_t;
 #define SPIN_LOCK_UNLOCKED (spinlock_t) { 0 }
-#define spin_lock_init(x)	do { (x)->lock = 0; } while (0)
-#define spin_trylock(lock)	(!test_and_set_bit(0,(lock)))
-#define spin_lock(x)		do { (x)->lock = 1; } while (0)
-#define spin_unlock_wait(x)	do { } while (0)
-#define spin_unlock(x)		do { (x)->lock = 0; } while (0)
-#define spin_lock_irq(x)	do { cli(); spin_lock(x); } while (0)
-#define spin_unlock_irq(x)	do { spin_unlock(x); sti(); } while (0)
+#define spin_lock_init(x) do { (x)->lock = 0; } while (0)
+#define spin_trylock(lock) (!test_and_set_bit(0,(lock)))
+#define spin_lock(x) do { (x)->lock = 1; } while (0)
+#define spin_unlock_wait(x) do { } while (0)
+#define spin_unlock(x) do { (x)->lock = 0; } while (0)
+#define spin_lock_irq(x) do { cli(); spin_lock(x); } while (0)
+#define spin_unlock_irq(x) do { spin_unlock(x); sti(); } while (0)
 #define spin_lock_irqsave(x, flags) \
 do { save_flags(flags); spin_lock_irq(x); } while (0)
 #define spin_unlock_irqrestore(x, flags) \
@@ -45,14 +45,14 @@ const char *module;
 } spinlock_t;
 #define SPIN_LOCK_UNLOCKED (spinlock_t) { 0, 25, __BASE_FILE__ }
 #include <linux/kernel.h>
-#define spin_lock_init(x)	do { (x)->lock = 0; } while (0)
-#define spin_trylock(lock)	(!test_and_set_bit(0,(lock)))
-#define spin_lock(x)		do {unsigned long __spinflags; save_flags(__spinflags); cli(); if ((x)->lock&&(x)->babble) {printk("%s:%d: spin_lock(%s:%p) already locked\n", __BASE_FILE__,__LINE__, (x)->module, (x));(x)->babble--;} (x)->lock = 1; restore_flags(__spinflags);} while (0)
-#define spin_unlock_wait(x)	do {unsigned long __spinflags; save_flags(__spinflags); cli(); if ((x)->lock&&(x)->babble) {printk("%s:%d: spin_unlock_wait(%s:%p) deadlock\n", __BASE_FILE__,__LINE__, (x)->module, (x));(x)->babble--;} restore_flags(__spinflags);} while (0)
-#define spin_unlock(x)		do {unsigned long __spinflags; save_flags(__spinflags); cli(); if (!(x)->lock&&(x)->babble) {printk("%s:%d: spin_unlock(%s:%p) not locked\n", __BASE_FILE__,__LINE__, (x)->module, (x));(x)->babble--;} (x)->lock = 0; restore_flags(__spinflags);} while (0)
-#define spin_lock_irq(x)	do {cli(); if ((x)->lock&&(x)->babble) {printk("%s:%d: spin_lock_irq(%s:%p) already locked\n", __BASE_FILE__,__LINE__, (x)->module, (x));(x)->babble--;} (x)->lock = 1;} while (0)
-#define spin_unlock_irq(x)	do {cli(); if (!(x)->lock&&(x)->babble) {printk("%s:%d: spin_unlock_irq(%s:%p) not locked\n", __BASE_FILE__,__LINE__, (x)->module, (x));(x)->babble--;} (x)->lock = 0; sti();} while (0)
-#define spin_lock_irqsave(x,flags)      do {save_flags(flags); cli(); if ((x)->lock&&(x)->babble) {printk("%s:%d: spin_lock_irqsave(%s:%p) already locked\n", __BASE_FILE__,__LINE__, (x)->module, (x));(x)->babble--;} (x)->lock = 1;} while (0)
+#define spin_lock_init(x) do { (x)->lock = 0; } while (0)
+#define spin_trylock(lock) (!test_and_set_bit(0,(lock)))
+#define spin_lock(x) do {unsigned long __spinflags; save_flags(__spinflags); cli(); if ((x)->lock&&(x)->babble) {printk("%s:%d: spin_lock(%s:%p) already locked\n", __BASE_FILE__,__LINE__, (x)->module, (x));(x)->babble--;} (x)->lock = 1; restore_flags(__spinflags);} while (0)
+#define spin_unlock_wait(x) do {unsigned long __spinflags; save_flags(__spinflags); cli(); if ((x)->lock&&(x)->babble) {printk("%s:%d: spin_unlock_wait(%s:%p) deadlock\n", __BASE_FILE__,__LINE__, (x)->module, (x));(x)->babble--;} restore_flags(__spinflags);} while (0)
+#define spin_unlock(x) do {unsigned long __spinflags; save_flags(__spinflags); cli(); if (!(x)->lock&&(x)->babble) {printk("%s:%d: spin_unlock(%s:%p) not locked\n", __BASE_FILE__,__LINE__, (x)->module, (x));(x)->babble--;} (x)->lock = 0; restore_flags(__spinflags);} while (0)
+#define spin_lock_irq(x) do {cli(); if ((x)->lock&&(x)->babble) {printk("%s:%d: spin_lock_irq(%s:%p) already locked\n", __BASE_FILE__,__LINE__, (x)->module, (x));(x)->babble--;} (x)->lock = 1;} while (0)
+#define spin_unlock_irq(x) do {cli(); if (!(x)->lock&&(x)->babble) {printk("%s:%d: spin_unlock_irq(%s:%p) not locked\n", __BASE_FILE__,__LINE__, (x)->module, (x));(x)->babble--;} (x)->lock = 0; sti();} while (0)
+#define spin_lock_irqsave(x,flags) do {save_flags(flags); cli(); if ((x)->lock&&(x)->babble) {printk("%s:%d: spin_lock_irqsave(%s:%p) already locked\n", __BASE_FILE__,__LINE__, (x)->module, (x));(x)->babble--;} (x)->lock = 1;} while (0)
 #define spin_unlock_irqrestore(x,flags) do {cli(); if (!(x)->lock&&(x)->babble) {printk("%s:%d: spin_unlock_irqrestore(%s:%p) not locked\n", __BASE_FILE__,__LINE__, (x)->module, (x));(x)->babble--;} (x)->lock = 0; restore_flags(flags);} while (0)
 #endif
 #if (__GNUC__ > 2) || (__GNUC__ == 2 && __GNUC_MINOR__ >= 8)
@@ -62,19 +62,19 @@ typedef struct { } rwlock_t;
 typedef struct { int gcc_is_buggy; } rwlock_t;
 #define RW_LOCK_UNLOCKED (rwlock_t) { 0 }
 #endif
-#define read_lock(lock)		(void)(lock)
-#define read_unlock(lock)	do { } while(0)
-#define write_lock(lock)	(void)(lock)
-#define write_unlock(lock)	do { } while(0)
-#define read_lock_irq(lock)	cli()
-#define read_unlock_irq(lock)	sti()
-#define write_lock_irq(lock)	cli()
-#define write_unlock_irq(lock)	sti()
-#define read_lock_irqsave(lock, flags)	\
+#define read_lock(lock) (void)(lock)
+#define read_unlock(lock) do { } while(0)
+#define write_lock(lock) (void)(lock)
+#define write_unlock(lock) do { } while(0)
+#define read_lock_irq(lock) cli()
+#define read_unlock_irq(lock) sti()
+#define write_lock_irq(lock) cli()
+#define write_unlock_irq(lock) sti()
+#define read_lock_irqsave(lock, flags) \
 do { save_flags(flags); cli(); } while (0)
 #define read_unlock_irqrestore(lock, flags) \
 restore_flags(flags)
-#define write_lock_irqsave(lock, flags)	\
+#define write_lock_irqsave(lock, flags) \
 do { save_flags(flags); cli(); } while (0)
 #define write_unlock_irqrestore(lock, flags) \
 restore_flags(flags)
@@ -83,8 +83,8 @@ typedef struct {
 volatile unsigned int lock;
 } spinlock_t;
 #define SPIN_LOCK_UNLOCKED (spinlock_t) { 0 }
-#define spin_lock_init(x)	do { (x)->lock = 0; } while(0)
-#define spin_unlock_wait(x)	do { barrier(); } while(((volatile spinlock_t *)(x))->lock)
+#define spin_lock_init(x) do { (x)->lock = 0; } while(0)
+#define spin_unlock_wait(x) do { barrier(); } while(((volatile spinlock_t *)(x))->lock)
 typedef struct { unsigned long a[100]; } __dummy_lock_t;
 #define __dummy_lock(lock) (*(__dummy_lock_t *)(lock))
 #define spin_lock_string \
@@ -122,7 +122,7 @@ volatile unsigned int lock;
 unsigned long previous;
 } rwlock_t;
 #define RW_LOCK_UNLOCKED (rwlock_t) { 0, 0 }
-#define read_lock(rw)	\
+#define read_lock(rw) \
 asm volatile("\n1:\t" \
 "lock ; incl %0\n\t" \
 "js 2f\n" \
@@ -153,15 +153,15 @@ asm volatile("\n1:\t" \
 :"=m" (__dummy_lock(&(rw)->lock)))
 #define write_unlock(rw) \
 asm volatile("lock ; btrl $31,%0":"=m" (__dummy_lock(&(rw)->lock)))
-#define read_lock_irq(lock)	do { __cli(); read_lock(lock); } while (0)
-#define read_unlock_irq(lock)	do { read_unlock(lock); __sti(); } while (0)
-#define write_lock_irq(lock)	do { __cli(); write_lock(lock); } while (0)
-#define write_unlock_irq(lock)	do { write_unlock(lock); __sti(); } while (0)
-#define read_lock_irqsave(lock, flags)	\
+#define read_lock_irq(lock) do { __cli(); read_lock(lock); } while (0)
+#define read_unlock_irq(lock) do { read_unlock(lock); __sti(); } while (0)
+#define write_lock_irq(lock) do { __cli(); write_lock(lock); } while (0)
+#define write_unlock_irq(lock) do { write_unlock(lock); __sti(); } while (0)
+#define read_lock_irqsave(lock, flags) \
 do { __save_flags(flags); __cli(); read_lock(lock); } while (0)
 #define read_unlock_irqrestore(lock, flags) \
 do { read_unlock(lock); __restore_flags(flags); } while (0)
-#define write_lock_irqsave(lock, flags)	\
+#define write_lock_irqsave(lock, flags) \
 do { __save_flags(flags); __cli(); write_lock(lock); } while (0)
 #define write_unlock_irqrestore(lock, flags) \
 do { write_unlock(lock); __restore_flags(flags); } while (0)

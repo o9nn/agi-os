@@ -1,11 +1,11 @@
-#include	<u.h>
-#include	<libc.h>
-#include	<bio.h>
-#include	"sky.h"
-static void	qtree_expand(Biobuf*, uchar*, int, int, uchar*);
-static void	qtree_copy(uchar*, int, int, uchar*, int);
-static void	qtree_bitins(uchar*, int, int, Pix*, int, int);
-static void	read_bdirect(Biobuf*, Pix*, int, int, int, uchar*, int);
+#include <u.h>
+#include <libc.h>
+#include <bio.h>
+#include "sky.h"
+static void qtree_expand(Biobuf*, uchar*, int, int, uchar*);
+static void qtree_copy(uchar*, int, int, uchar*, int);
+static void qtree_bitins(uchar*, int, int, Pix*, int, int);
+static void read_bdirect(Biobuf*, Pix*, int, int, int, uchar*, int);
 void
 qtree_decode(Biobuf *infile, Pix *a, int n, int nqx, int nqy, int nbitplanes)
 {
@@ -94,27 +94,27 @@ for(i = 0; i<nx-1; i += 2) {
 s00 = n*i;
 s10 = s00+n;
 for(j = 0; j<ny-1; j += 2) {
-b[s10+1] =  b[s00]     & 1;
-b[s10  ] = (b[s00]>>1) & 1;
+b[s10+1] = b[s00] & 1;
+b[s10 ] = (b[s00]>>1) & 1;
 b[s00+1] = (b[s00]>>2) & 1;
-b[s00  ] = (b[s00]>>3) & 1;
+b[s00 ] = (b[s00]>>3) & 1;
 s00 += 2;
 s10 += 2;
 }
 if(j < ny) {
-b[s10  ] = (b[s00]>>1) & 1;
-b[s00  ] = (b[s00]>>3) & 1;
+b[s10 ] = (b[s00]>>1) & 1;
+b[s00 ] = (b[s00]>>3) & 1;
 }
 }
 if(i < nx) {
 s00 = n*i;
 for (j = 0; j<ny-1; j += 2) {
 b[s00+1] = (b[s00]>>2) & 1;
-b[s00  ] = (b[s00]>>3) & 1;
+b[s00 ] = (b[s00]>>3) & 1;
 s00 += 2;
 }
 if(j < ny) {
-b[s00  ] = (b[s00]>>3) & 1;
+b[s00 ] = (b[s00]>>3) & 1;
 }
 }
 }
@@ -130,7 +130,7 @@ s00 = &b[n*i];
 s10 = s00+n;
 for(j=0; j<ny-1; j+=2) {
 px = *a++;
-s10[1] |= ( px     & 1) << bit;
+s10[1] |= ( px & 1) << bit;
 s10[0] |= ((px>>1) & 1) << bit;
 s00[1] |= ((px>>2) & 1) << bit;
 s00[0] |= ((px>>3) & 1) << bit;

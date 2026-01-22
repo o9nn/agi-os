@@ -110,7 +110,7 @@ test_assert_idx(has_nuls == test_cases[i].has_nuls, i);
 test_assert_idx(input->v_offset == test_cases[i].header_len, i);
 message_get_body_size(input, &body_size, &has_nuls);
 test_assert_idx(has_nuls == test_cases[i].has_nuls, i);
-test_assert_idx(input->v_offset  - body_size.physical_size ==
+test_assert_idx(input->v_offset - body_size.physical_size ==
 test_cases[i].header_len, i);
 test_assert_idx(body_size.physical_size + header_size.physical_size ==
 test_cases[i].message_len, i);
@@ -123,7 +123,7 @@ message_skip_virtual(input, 2, &last_cr);
 test_assert_idx(!last_cr, i);
 message_get_body_size(input, &body_size, &has_nuls);
 test_assert_idx(has_nuls == test_cases[i].has_nuls, i);
-test_assert_idx(input->v_offset  - body_size.physical_size ==
+test_assert_idx(input->v_offset - body_size.physical_size ==
 test_cases[i].header_len, i);
 test_assert_idx(body_size.physical_size + test_cases[i].body_newlines ==
 body_size.virtual_size, i);

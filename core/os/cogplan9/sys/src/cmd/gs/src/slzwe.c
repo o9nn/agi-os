@@ -21,13 +21,13 @@ gs_private_st_simple(st_lzwe_table, lzw_encode_table, "lzw_encode_table");
 ((uint)((code) * 59 + (chr) * ((hash_size / 256) | 1)) % hash_size)
 private byte *
 lzw_put_code(register stream_LZW_state *ss, byte *q, uint code)
-{	uint size = ss->code_size;
+{ uint size = ss->code_size;
 byte cb = (ss->bits << ss->bits_left) +
 (code >> (size - ss->bits_left));
 if_debug2('W', "[w]writing 0x%x,%d\n", code, ss->code_size);
 *++q = cb;
 if ( (ss->bits_left += 8 - size) <= 0 )
-{	*++q = code >> -ss->bits_left;
+{ *++q = code >> -ss->bits_left;
 ss->bits_left += 8;
 }
 ss->bits = code;
@@ -35,7 +35,7 @@ return q;
 }
 private void
 lzw_reset_encode(stream_LZW_state *ss)
-{	register int c;
+{ register int c;
 lzw_encode_table *table = ss->table.encode;
 ss->next_code = code_0;
 ss->code_size = 9;
@@ -43,7 +43,7 @@ ss->prev_code = code_eod;
 for ( c = 0; c < hash_size; c++ )
 table->hashed[c] = code_eod;
 for ( c = 0; c < 256; c++ )
-{	lzw_encode *ec = &table->encode[c];
+{ lzw_encode *ec = &table->encode[c];
 register ushort *tc = &table->hashed[encode_hash(code_eod, c)];
 while ( *tc != code_eod )
 if ( ++tc == &table->hashed[hash_size] )
@@ -56,7 +56,7 @@ table->encode[code_eod].prefix = code_reset;
 #define ss ((stream_LZW_state *)st)
 private int
 s_LZWE_init(stream_state *st)
-{	ss->bits_left = 8;
+{ ss->bits_left = 8;
 ss->table.encode = gs_alloc_struct(st->memory,
 lzw_encode_table, &st_lzwe_table, "LZWEncode init");
 if ( ss->table.encode == 0 )
@@ -68,7 +68,7 @@ return 0;
 private int
 s_LZWE_process(stream_state *st, stream_cursor_read *pr,
 stream_cursor_write *pw, bool last)
-{	register const byte *p = pr->ptr;
+{ register const byte *p = pr->ptr;
 const byte *rlimit = pr->limit;
 register byte *q = pw->ptr;
 byte *wlimit = pw->limit;
@@ -89,30 +89,30 @@ q = lzw_put_code(ss, q, code_reset);
 ss->first = false;
 }
 while ( p < rlimit )
-{	byte c = p[1];
+{ byte c = p[1];
 ushort *tp;
 for ( tp = &table->hashed[encode_hash(code, c)]; ; )
-{	lzw_encode *ep = &table->encode[*tp];
+{ lzw_encode *ep = &table->encode[*tp];
 if ( ep->prefix == code && ep->datum == c )
-{	code = *tp;
+{ code = *tp;
 p++;
 break;
 }
 else if ( *tp != code_eod )
-{	if ( ++tp == table_end )
+{ if ( ++tp == table_end )
 tp = &table->hashed[0];
 }
 else
 {
 if ( wlimit - q <= 4 )
-{	status = 1;
+{ status = 1;
 goto out;
 }
 q = lzw_put_code(ss, q, code);
 if ( ss->next_code == limit_code )
 {
 if ( ss->next_code == encode_max )
-{	q = lzw_put_code(ss, q, code_reset);
+{ q = lzw_put_code(ss, q, code_reset);
 lzw_reset_encode(ss);
 set_limit_code();
 goto cx;
@@ -126,30 +126,30 @@ ss->next_code, code, c);
 ep = &table->encode[*tp];
 ep->datum = c;
 ep->prefix = code;
-cx:				code = code_eod;
+cx: code = code_eod;
 break;
 }
 }
 }
 if ( last && status == 0 )
-{	if ( wlimit - q < 4 )
+{ if ( wlimit - q < 4 )
 status = 1;
 else
-{	if ( code != code_eod )
-{	q = lzw_put_code(ss, q, code);
+{ if ( code != code_eod )
+{ q = lzw_put_code(ss, q, code);
 }
 q = lzw_put_code(ss, q, code_eod);
 if ( ss->bits_left < 8 )
 *++q = ss->bits << ss->bits_left;
 }
 }
-out:	ss->prev_code = code;
+out: ss->prev_code = code;
 pr->ptr = p;
 pw->ptr = q;
 return status;
 }
 #undef ss
 const stream_template s_LZWE_template =
-{	&st_LZW_state, s_LZWE_init, s_LZWE_process, 1, 4, s_LZW_release,
+{ &st_LZW_state, s_LZWE_init, s_LZWE_process, 1, 4, s_LZW_release,
 s_LZW_set_defaults
 };

@@ -1,27 +1,27 @@
-#include	<u.h>
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"../port/edf.h"
-#include	<trace.h>
-int	schedgain = 30;
-int	nrdy;
-Ref	noteidalloc;
+#include <u.h>
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "../port/edf.h"
+#include <trace.h>
+int schedgain = 30;
+int nrdy;
+Ref noteidalloc;
 void updatecpu(Proc*);
 int reprioritize(Proc*);
-ulong	delayedscheds;
+ulong delayedscheds;
 long skipscheds;
 long preempts;
 ulong load;
-static Ref	pidalloc;
+static Ref pidalloc;
 static struct Procalloc
 {
 Lock;
-Proc*	ht[128];
-Proc*	arena;
-Proc*	free;
+Proc* ht[128];
+Proc* arena;
+Proc* free;
 } procalloc;
 enum
 {
@@ -29,8 +29,8 @@ Q=10,
 DQ=4,
 Scaling=2,
 };
-Schedq	runq[Nrq];
-ulong	runvec;
+Schedq runq[Nrq];
+ulong runvec;
 char *statename[] =
 {
 "Dead",
@@ -674,12 +674,12 @@ ready(p);
 unlock(p->rgrp);
 return ret;
 }
-#define	NBROKEN 4
+#define NBROKEN 4
 struct
 {
 QLock;
-int	n;
-Proc	*p[NBROKEN];
+int n;
+Proc *p[NBROKEN];
 }broken;
 void
 addbroken(Proc *p)
@@ -897,7 +897,7 @@ s = p->psstate;
 if(s == 0)
 s = statename[p->state];
 print("%3lud:%10s pc %8lux dbgpc %8lux  %8s (%s) ut %ld st %ld bss %lux qpc %lux nl %lud nd %lud lpc %lux pri %lud\n",
-p->pid, p->text, p->pc, dbgpc(p),  s, statename[p->state],
+p->pid, p->text, p->pc, dbgpc(p), s, statename[p->state],
 p->time[0], p->time[1], bss, p->qpc, p->nlocks.ref, p->delaysched, p->lastlock ? p->lastlock->pc : 0, p->priority);
 }
 void

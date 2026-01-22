@@ -401,7 +401,7 @@ obj_string_data(mem, op, pchars, prlen);
 return gs_note_error(e_rangecheck);
 }
 ushort
-op_find_index(const ref * pref  )
+op_find_index(const ref * pref )
 {
 op_proc_t proc = real_opproc(pref);
 const op_def *const *opp = op_defs_all;
@@ -560,12 +560,12 @@ return 0;
 int
 process_float_array(const gs_memory_t *mem, const ref * parray, int count, float * pval)
 {
-int         code = 0, indx0 = 0;
+int code = 0, indx0 = 0;
 if (r_has_type(parray, t_array))
 return float_params(parray->value.refs + count - 1, count, pval);
 while (count > 0 && code >= 0) {
-int     i, subcount;
-ref     ref_buff[20];
+int i, subcount;
+ref ref_buff[20];
 subcount = (count > countof(ref_buff) ? countof(ref_buff) : count);
 for (i = 0; i < subcount && code >= 0; i++)
 code = array_get(mem, parray, (long)(i + indx0), &ref_buff[i]);

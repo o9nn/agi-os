@@ -8,52 +8,52 @@ import debounce from 'debounce'
 const log = getLogger('main/state')
 const SAVE_DEBOUNCE_INTERVAL = 1000
 class PersistentState extends EventEmitter {
-  constructor() {
-    super()
-  }
-  private inner_state: null | DesktopSettingsType = null
-  get state(): Readonly<DesktopSettingsType> {
-    if (this.inner_state == null) {
-      throw new Error('Can not access persistent state before initialisation')
-    }
-    return this.inner_state
-  }
-  async load() {
-    const default_state = getDefaultState()
-    let saved: Partial<DesktopSettingsType> = {}
-    try {
-      saved = (await promisify(cb =>
-        appConfig.read(cb)
-      )()) as DesktopSettingsType
-      if (typeof saved.lastAccount !== 'number' || saved.lastAccount < 0) {
-        saved.lastAccount = undefined
-      }
-    } catch (error) {
-      log.debug(error)
-      log.info('Missing configuration file. Using default values.')
-    }
-    this.inner_state = Object.assign(default_state, saved)
-  }
-  update(state: Partial<DesktopSettingsType>) {
-    this.inner_state = { ...this.inner_state, ...state } as DesktopSettingsType
-    this.save()
-  }
-  save() {
-    this.save = debounce(this.saveImmediate, SAVE_DEBOUNCE_INTERVAL)
-    this.saveImmediate()
-  }
-  saveImmediate(): Promise<void> {
-    log.info(`Saving state to ${appConfig.filePath}`)
-    const copy = Object.assign({}, this.inner_state)
-    return new Promise((res, rej) => {
-      appConfig.write(copy, (err: any) => {
-        if (err) {
-          log.error('State save failed', err)
-          rej(err)
-        }
-        res(err)
-      })
-    })
-  }
+constructor() {
+super()
+}
+private inner_state: null | DesktopSettingsType = null
+get state(): Readonly<DesktopSettingsType> {
+if (this.inner_state == null) {
+throw new Error('Can not access persistent state before initialisation')
+}
+return this.inner_state
+}
+async load() {
+const default_state = getDefaultState()
+let saved: Partial<DesktopSettingsType> = {}
+try {
+saved = (await promisify(cb =>
+appConfig.read(cb)
+)()) as DesktopSettingsType
+if (typeof saved.lastAccount !== 'number' || saved.lastAccount < 0) {
+saved.lastAccount = undefined
+}
+} catch (error) {
+log.debug(error)
+log.info('Missing configuration file. Using default values.')
+}
+this.inner_state = Object.assign(default_state, saved)
+}
+update(state: Partial<DesktopSettingsType>) {
+this.inner_state = { ...this.inner_state, ...state } as DesktopSettingsType
+this.save()
+}
+save() {
+this.save = debounce(this.saveImmediate, SAVE_DEBOUNCE_INTERVAL)
+this.saveImmediate()
+}
+saveImmediate(): Promise<void> {
+log.info(`Saving state to ${appConfig.filePath}`)
+const copy = Object.assign({}, this.inner_state)
+return new Promise((res, rej) => {
+appConfig.write(copy, (err: any) => {
+if (err) {
+log.error('State save failed', err)
+rej(err)
+}
+res(err)
+})
+})
+}
 }
 export const DesktopSettings = new PersistentState()

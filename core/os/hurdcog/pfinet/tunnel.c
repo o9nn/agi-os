@@ -132,7 +132,7 @@ else
 asprintf (&tdev->devname, "/dev/%s", tdev->dev.name);
 tdev->underlying = file_name_lookup (tdev->devname, O_CREAT|O_NOTRANS, 0664);
 if (tdev->underlying == MACH_PORT_NULL)
-error (2,  1, "%s", tdev->dev.name);
+error (2, 1, "%s", tdev->dev.name);
 err = trivfs_create_control (tdev->underlying, tunnel_cntlclass,
 pfinet_bucket, tunnel_class, pfinet_bucket,
 &tdev->cntl);

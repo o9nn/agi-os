@@ -30,18 +30,18 @@ static int max_interrupt_work = 20;
 #include <linux/skbuff.h>
 static int pcnet32_debug = 1;
 #ifndef __powerpc__
-#define le16_to_cpu(val)  (val)
-#define le32_to_cpu(val)  (val)
+#define le16_to_cpu(val) (val)
+#define le32_to_cpu(val) (val)
 #endif
 #if (LINUX_VERSION_CODE < 0x20123)
 #endif
-#define TX_RING_SIZE			(1 << (PCNET_LOG_TX_BUFFERS))
-#define TX_RING_MOD_MASK		(TX_RING_SIZE - 1)
-#define TX_RING_LEN_BITS		((PCNET_LOG_TX_BUFFERS) << 12)
-#define RX_RING_SIZE			(1 << (PCNET_LOG_RX_BUFFERS))
-#define RX_RING_MOD_MASK		(RX_RING_SIZE - 1)
-#define RX_RING_LEN_BITS		((PCNET_LOG_RX_BUFFERS) << 4)
-#define PKT_BUF_SZ		1544
+#define TX_RING_SIZE (1 << (PCNET_LOG_TX_BUFFERS))
+#define TX_RING_MOD_MASK (TX_RING_SIZE - 1)
+#define TX_RING_LEN_BITS ((PCNET_LOG_TX_BUFFERS) << 12)
+#define RX_RING_SIZE (1 << (PCNET_LOG_RX_BUFFERS))
+#define RX_RING_MOD_MASK (RX_RING_SIZE - 1)
+#define RX_RING_LEN_BITS ((PCNET_LOG_RX_BUFFERS) << 4)
+#define PKT_BUF_SZ 1544
 enum pcnet_offsets { PCNET32_DATA=0x10, PCNET32_ADDR=0x12, PCNET32_RESET=0x14,
 PCNET32_BUS_IF=0x16,};
 #define PCNET32_TOTAL_SIZE 0x20
@@ -62,16 +62,16 @@ u32 reserved;
 struct pcnet32_init_block {
 u16 mode;
 u16 tlen_rlen;
-u8  phys_addr[6];
+u8 phys_addr[6];
 u16 reserved;
 u32 filter[2];
 u32 rx_ring;
 u32 tx_ring;
 };
 struct pcnet32_private {
-struct pcnet32_rx_head   rx_ring[RX_RING_SIZE];
-struct pcnet32_tx_head   tx_ring[TX_RING_SIZE];
-struct pcnet32_init_block	init_block;
+struct pcnet32_rx_head rx_ring[RX_RING_SIZE];
+struct pcnet32_tx_head tx_ring[TX_RING_SIZE];
+struct pcnet32_init_block init_block;
 const char *name;
 struct device *next_module;
 struct sk_buff* tx_skbuff[TX_RING_SIZE];
@@ -92,16 +92,16 @@ int flags;
 {0x2621, "PCnet/PCI II 79C970A", 0},
 {0x2623, "PCnet/FAST 79C971", 0},
 {0x2624, "PCnet/FAST+ 79C972", 0},
-{0x0, 	 "PCnet32 (unknown)", 0},
+{0x0, "PCnet32 (unknown)", 0},
 };
-int  pcnet32_probe(struct device *dev);
-static int  pcnet32_probe1(struct device *dev, unsigned int ioaddr, unsigned char irq_line);
-static int  pcnet32_open(struct device *dev);
+int pcnet32_probe(struct device *dev);
+static int pcnet32_probe1(struct device *dev, unsigned int ioaddr, unsigned char irq_line);
+static int pcnet32_open(struct device *dev);
 static void pcnet32_init_ring(struct device *dev);
-static int  pcnet32_start_xmit(struct sk_buff *skb, struct device *dev);
-static int  pcnet32_rx(struct device *dev);
+static int pcnet32_start_xmit(struct sk_buff *skb, struct device *dev);
+static int pcnet32_rx(struct device *dev);
 static void pcnet32_interrupt(int irq, void *dev_id, struct pt_regs *regs);
-static int  pcnet32_close(struct device *dev);
+static int pcnet32_close(struct device *dev);
 static struct enet_statistics *pcnet32_get_stats(struct device *dev);
 static void pcnet32_set_multicast_list(struct device *dev);
 static struct device *root_pcnet32_dev = NULL;

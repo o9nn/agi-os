@@ -9,13 +9,13 @@ dev_error (error_t err)
 {
 switch (err)
 {
-case D_IO_ERROR:		return EIO;
-case D_WOULD_BLOCK:		return EAGAIN;
-case D_NO_SUCH_DEVICE:	return ENXIO;
-case D_ALREADY_OPEN:	return EBUSY;
-case D_DEVICE_DOWN: 	return ENXIO;
-case D_INVALID_OPERATION:	return EBADF;
-case D_NO_MEMORY:		return ENOMEM;
+case D_IO_ERROR: return EIO;
+case D_WOULD_BLOCK: return EAGAIN;
+case D_NO_SUCH_DEVICE: return ENXIO;
+case D_ALREADY_OPEN: return EBUSY;
+case D_DEVICE_DOWN: return ENXIO;
+case D_INVALID_OPERATION: return EBADF;
+case D_NO_MEMORY: return ENOMEM;
 default:
 break;
 }

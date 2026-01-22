@@ -109,7 +109,7 @@ c[j] = b[j].serial;
 c[j] = -1;
 }
 static int
-newcand(int x, int  y, int pred)
+newcand(int x, int y, int pred)
 {
 struct cand *q;
 clist = REALLOC(clist, struct cand, (clen+1));
@@ -249,13 +249,13 @@ for(;;){
 if(b1s >= b1e){
 if(b1s >= &buf1[BUF])
 b1s = buf1;
-n = read(f1, b1s,  &buf1[BUF] - b1s);
+n = read(f1, b1s, &buf1[BUF] - b1s);
 b1e = b1s + n;
 }
 if(b2s >= b2e){
 if(b2s >= &buf2[BUF])
 b2s = buf2;
-n = read(f2, b2s,  &buf2[BUF] - b2s);
+n = read(f2, b2s, &buf2[BUF] - b2s);
 b2e = b2s + n;
 }
 n = b2e - b2s;

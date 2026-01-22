@@ -49,8 +49,8 @@ else
 memcpy (*ids, idvec->ids, idvec->num * sizeof *ids);
 *nids = idvec->num;
 }
-#define C(auth, ids)	idvec_copyout (&auth->ids, ids, n##ids)
-#define OUTIDS(auth)	(C (auth, euids), C (auth, egids), \
+#define C(auth, ids) idvec_copyout (&auth->ids, ids, n##ids)
+#define OUTIDS(auth) (C (auth, euids), C (auth, egids), \
 C (auth, auids), C (auth, agids))
 kern_return_t
 S_auth_getids (struct authhandle *auth,
@@ -98,7 +98,7 @@ auths[i + 1] = auth_port_to_handle (authpts[i]);
 #define groupmember(gid, auth) \
 (idvec_contains (&(auth)->egids, gid) \
 || idvec_contains (&(auth)->agids, gid))
-#define isroot(auth)		isuid (0, auth)
+#define isroot(auth) isuid (0, auth)
 for (i = 0; i < nauths; i++)
 if (auths[i] && isroot (auths[i]))
 {
@@ -276,7 +276,7 @@ return 0;
 struct argp argp = { 0, parse_opt, "COMMAND...", "\
 Run COMMAND with a fake authentication handle that claims to be root or \
 any arbitrary identity derived from that handle, but in fact is always just \
-a proxy for your real authentication handle.  This means that all processes \
+a proxy for your real authentication handle. This means that all processes \
 created by the COMMAND will have your privileges, even though it may \
 believe it has restricted them to different identities or no identity at all.\
 " };

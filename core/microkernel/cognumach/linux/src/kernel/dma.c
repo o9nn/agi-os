@@ -3,7 +3,7 @@
 #include <asm/dma.h>
 #include <asm/system.h>
 struct dma_chan {
-int  lock;
+int lock;
 const char *device_id;
 };
 static struct dma_chan dma_chan_busy[MAX_DMA_CHANNELS] = {

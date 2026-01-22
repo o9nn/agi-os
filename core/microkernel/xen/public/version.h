@@ -1,6 +1,6 @@
 #ifndef __XEN_PUBLIC_VERSION_H__
 #define __XEN_PUBLIC_VERSION_H__
-#define XENVER_version      0
+#define XENVER_version 0
 #define XENVER_extraversion 1
 typedef char xen_extraversion_t[16];
 #define XEN_EXTRAVERSION_LEN (sizeof(xen_extraversion_t))
@@ -26,7 +26,7 @@ typedef struct xen_platform_parameters xen_platform_parameters_t;
 #define XENVER_get_features 6
 struct xen_feature_info {
 unsigned int submap_idx;
-uint32_t     submap;
+uint32_t submap;
 };
 typedef struct xen_feature_info xen_feature_info_t;
 #include "features.h"

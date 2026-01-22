@@ -12,14 +12,14 @@ typedef struct Font Font;
 typedef struct HTMLfont HTMLfont;
 enum
 {
-Italic	=	16,
+Italic = 16,
 Bold,
 CW,
 Indent1,
 Indent2,
 Indent3,
-Heading =	25,
-Anchor =	26,
+Heading = 25,
+Anchor = 26,
 };
 enum
 {
@@ -42,23 +42,23 @@ int value;
 };
 #include "chars.h"
 struct Font{
-char		*name;
-HTMLfont	*htmlfont;
+char *name;
+HTMLfont *htmlfont;
 };
 struct HTMLfont{
-char	*name;
-char	*htmlname;
-int	bit;
+char *name;
+char *htmlname;
+int bit;
 };
 HTMLfont htmlfonts[] =
 {
-"R",		nil,	0,
-"LucidaSans",	nil,	0,
-"I",		"i",	Italic,
-"LucidaSansI",	"i",	Italic,
-"CW",		"tt",	CW,
-"LucidaCW",	"tt",	CW,
-nil,	nil,
+"R", nil, 0,
+"LucidaSans", nil, 0,
+"I", "i", Italic,
+"LucidaSansI", "i", Italic,
+"CW", "tt", CW,
+"LucidaCW", "tt", CW,
+nil, nil,
 };
 #define TABLE "<table border=0 cellpadding=0 cellspacing=0>"
 char*
@@ -95,34 +95,34 @@ offattr[8*sizeof(int)] =
 "</b></font>",
 "</a>",
 };
-Font	*font[Nfont];
-Biobuf	bout;
-int	debug = 0;
-int	page = 1;
-int	ft = 1;
-int	vp = 0;
-int	hp = 0;
-int	ps = 1;
-int	res = 720;
-int	didP = 0;
-int	atnewline = 1;
-int	prevlineH = 0;
-Char	attr = 0;
-Char	*chars;
-int	nchars;
-int	nalloc;
-char**	anchors;
-int	nanchors;
-char	*filename;
-int	cno;
-char	buf[8192];
-char	*title = "Plan 9 man page";
-void	process(Biobuf*, char*);
-void	mountfont(int, char*);
-void	switchfont(int);
-void	header(char*);
-void	flush(void);
-void	trailer(void);
+Font *font[Nfont];
+Biobuf bout;
+int debug = 0;
+int page = 1;
+int ft = 1;
+int vp = 0;
+int hp = 0;
+int ps = 1;
+int res = 720;
+int didP = 0;
+int atnewline = 1;
+int prevlineH = 0;
+Char attr = 0;
+Char *chars;
+int nchars;
+int nalloc;
+char** anchors;
+int nanchors;
+char *filename;
+int cno;
+char buf[8192];
+char *title = "Plan 9 man page";
+void process(Biobuf*, char*);
+void mountfont(int, char*);
+void switchfont(int);
+void header(char*);
+void flush(void);
+void trailer(void);
 void*
 emalloc(ulong n)
 {

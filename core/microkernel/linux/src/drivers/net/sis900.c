@@ -31,22 +31,22 @@ static int max_interrupt_work = 20;
 static int multicast_filter_limit = 128;
 #define sis900_debug debug
 static int sis900_debug = 0;
-#define TX_TIMEOUT  (4*HZ)
+#define TX_TIMEOUT (4*HZ)
 enum pci_flags_bit {
 PCI_USES_IO=1, PCI_USES_MEM=2, PCI_USES_MASTER=4,
 PCI_ADDR0=0x10<<0, PCI_ADDR1=0x10<<1, PCI_ADDR2=0x10<<2, PCI_ADDR3=0x10<<3,
 };
 struct mac_chip_info {
 const char *name;
-u16	vendor_id, device_id, flags;
-int	io_size;
+u16 vendor_id, device_id, flags;
+int io_size;
 struct device *(*probe) (struct mac_chip_info *mac, long ioaddr, int irq,
-int pci_index,  unsigned char pci_device_fn, unsigned char pci_bus, struct device * net_dev);
+int pci_index, unsigned char pci_device_fn, unsigned char pci_bus, struct device * net_dev);
 };
 static struct device * sis900_mac_probe (struct mac_chip_info * mac, long ioaddr, int irq,
-int pci_index,  unsigned char pci_device_fn,
+int pci_index, unsigned char pci_device_fn,
 unsigned char pci_bus, struct device * net_dev);
-static struct mac_chip_info  mac_chip_table[] = {
+static struct mac_chip_info mac_chip_table[] = {
 { "SiS 900 PCI Fast Ethernet", PCI_VENDOR_ID_SI, PCI_DEVICE_ID_SI_900,
 PCI_COMMAND_IO|PCI_COMMAND_MASTER, SIS900_TOTAL_SIZE, sis900_mac_probe},
 { "SiS 7016 PCI Fast Ethernet",PCI_VENDOR_ID_SI, PCI_DEVICE_ID_SI_7016,
@@ -58,18 +58,18 @@ static struct mii_chip_info {
 const char * name;
 u16 phy_id0;
 u16 phy_id1;
-u8  phy_types;
-#define	HOME 	0x0001
-#define LAN	0x0002
-#define MIX	0x0003
+u8 phy_types;
+#define HOME 0x0001
+#define LAN 0x0002
+#define MIX 0x0003
 } mii_chip_table[] = {
-{ "SiS 900 Internal MII PHY", 		0x001d, 0x8000, LAN },
-{ "SiS 7014 Physical Layer Solution", 	0x0016, 0xf830, LAN },
-{ "AMD 79C901 10BASE-T PHY",  		0x0000, 0x6B70, LAN },
-{ "AMD 79C901 HomePNA PHY",		0x0000, 0x6B90, HOME},
-{ "ICS LAN PHY",			0x0015, 0xF440, LAN },
-{ "NS  83851 PHY",			0x2000, 0x5C20, MIX },
-{ "Realtek RTL8201 PHY",		0x0000, 0x8200, LAN },
+{ "SiS 900 Internal MII PHY", 0x001d, 0x8000, LAN },
+{ "SiS 7014 Physical Layer Solution", 0x0016, 0xf830, LAN },
+{ "AMD 79C901 10BASE-T PHY", 0x0000, 0x6B70, LAN },
+{ "AMD 79C901 HomePNA PHY", 0x0000, 0x6B90, HOME},
+{ "ICS LAN PHY", 0x0015, 0xF440, LAN },
+{ "NS  83851 PHY", 0x2000, 0x5C20, MIX },
+{ "Realtek RTL8201 PHY", 0x0000, 0x8200, LAN },
 {0,},
 };
 struct mii_phy {
@@ -78,12 +78,12 @@ int phy_addr;
 u16 phy_id0;
 u16 phy_id1;
 u16 status;
-u8  phy_types;
+u8 phy_types;
 };
 typedef struct _BufferDesc {
-u32	link;
-u32	cmdsts;
-u32	bufptr;
+u32 link;
+u32 cmdsts;
+u32 bufptr;
 } BufferDesc;
 struct sis900_private {
 struct device *next_module;
@@ -96,7 +96,7 @@ struct mii_phy * mii;
 struct mii_phy * first_mii;
 unsigned int cur_phy;
 struct timer_list timer;
-u8     autong_complete;
+u8 autong_complete;
 unsigned int cur_rx, dirty_rx;
 unsigned int cur_tx, dirty_tx;
 struct sk_buff *tx_skbuff[NUM_TX_DESC];
@@ -391,7 +391,7 @@ sis_priv->mii = NULL;
 sis900_default_phy( net_dev );
 if( (sis_priv->mii->phy_id0 == 0x001D) &&
 ( (sis_priv->mii->phy_id1&0xFFF0) == 0x8000) )
-status = sis900_reset_phy( net_dev,  sis_priv->cur_phy );
+status = sis900_reset_phy( net_dev, sis_priv->cur_phy );
 if ((sis_priv->mii->phy_id0 == 0x0015) &&
 ((sis_priv->mii->phy_id1&0xFFF0) == 0xF440))
 mdio_write(net_dev, sis_priv->cur_phy, 0x0018, 0xD200);
@@ -461,12 +461,12 @@ status = mdio_read(net_dev, phy->phy_addr, MII_STATUS);
 status = mdio_read(net_dev, phy->phy_addr, MII_STATUS);
 cap = MII_NWAY_CSMA_CD |
 ((phy->status & MII_STAT_CAN_TX_FDX)? MII_NWAY_TX_FDX:0) |
-((phy->status & MII_STAT_CAN_TX)    ? MII_NWAY_TX:0) |
+((phy->status & MII_STAT_CAN_TX) ? MII_NWAY_TX:0) |
 ((phy->status & MII_STAT_CAN_T_FDX) ? MII_NWAY_T_FDX:0)|
-((phy->status & MII_STAT_CAN_T)     ? MII_NWAY_T:0);
+((phy->status & MII_STAT_CAN_T) ? MII_NWAY_T:0);
 mdio_write( net_dev, phy->phy_addr, MII_ANADV, cap );
 }
-#define eeprom_delay()	inl(ee_addr)
+#define eeprom_delay() inl(ee_addr)
 static u16 read_eeprom(long ioaddr, int location)
 {
 int i;
@@ -498,7 +498,7 @@ outl(0, ee_addr);
 eeprom_delay();
 return (retval);
 }
-#define mdio_delay()	inl(mdio_addr)
+#define mdio_delay() inl(mdio_addr)
 static void mdio_idle(long mdio_addr)
 {
 outl(MDIO | MDDIR, mdio_addr);
@@ -694,7 +694,7 @@ int i, maxcount=10;
 int not_found;
 u8 pci_bus, pci_device_fn;
 if ( !(revision == SIS630E_900_REV || revision == SIS630EA1_900_REV ||
-revision == SIS630A_900_REV || revision ==  SIS630ET_900_REV) )
+revision == SIS630A_900_REV || revision == SIS630ET_900_REV) )
 return;
 not_found = pcibios_find_device(SIS630_VENDOR_ID, SIS630_DEVICE_ID,
 sis_priv->pci_index,
@@ -780,7 +780,7 @@ sis_priv->LinkOn = FALSE;
 printk(KERN_INFO "%s: Media Link Off\n", net_dev->name);
 if( (mii_phy->phy_id0 == 0x001D) &&
 ( (mii_phy->phy_id1 & 0xFFF0) == 0x8000 ))
-sis900_reset_phy( net_dev,  sis_priv->cur_phy );
+sis900_reset_phy( net_dev, sis_priv->cur_phy );
 pcibios_read_config_byte(sis_priv->pci_bus, sis_priv->pci_device_fn, PCI_CLASS_REVISION, &revision);
 sis630_set_eq(net_dev, revision);
 goto LookForLink;
@@ -794,7 +794,7 @@ static void sis900_check_mode (struct device *net_dev, struct mii_phy *mii_phy)
 struct sis900_private *sis_priv = (struct sis900_private *)net_dev->priv;
 long ioaddr = net_dev->base_addr;
 int speed, duplex;
-if( mii_phy->phy_types == LAN  ){
+if( mii_phy->phy_types == LAN ){
 outl( ~EXD & inl( ioaddr + cfg ), ioaddr + cfg);
 sis900_set_capability(net_dev , mii_phy);
 sis900_auto_negotiate(net_dev, sis_priv->cur_phy);
@@ -859,7 +859,7 @@ u16 autoadv, autorec;
 int i = 0;
 while (i++ < 2)
 status = mdio_read(net_dev, phy_addr, MII_STATUS);
-if (!(status & MII_STAT_LINK))	return;
+if (!(status & MII_STAT_LINK)) return;
 autoadv = mdio_read(net_dev, phy_addr, MII_ANADV);
 autorec = mdio_read(net_dev, phy_addr, MII_ANLPAR);
 status = autoadv & autorec;
@@ -912,7 +912,7 @@ sis900_start_xmit(struct sk_buff *skb, struct device *net_dev)
 {
 struct sis900_private *sis_priv = (struct sis900_private *)net_dev->priv;
 long ioaddr = net_dev->base_addr;
-unsigned int  entry;
+unsigned int entry;
 if (test_and_set_bit(0, (void*)&net_dev->tbusy) != 0) {
 if (jiffies - net_dev->trans_start > TX_TIMEOUT)
 sis900_tx_timeout(net_dev);
@@ -1171,7 +1171,7 @@ static u16 sis900_compute_hashtable_index(u8 *addr, u8 revision)
 {
 #define POLYNOMIAL 0x04C11DB7L
 u32 crc = 0xffffffff, msb;
-int  i, j;
+int i, j;
 u32 byte;
 for (i = 0; i < 6; i++) {
 byte = *addr++;

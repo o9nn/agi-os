@@ -6,7 +6,7 @@
 # include <openssl/x509.h>
 # include <openssl/md2.h>
 # ifndef OPENSSL_NO_RSA
-#  include <openssl/rsa.h>
+# include <openssl/rsa.h>
 # endif
 static int init(EVP_MD_CTX *ctx)
 {

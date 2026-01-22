@@ -89,27 +89,27 @@ static double scaling;
 static struct file *track;
 static int ntrack;
 static char *symbolfile;
-void	clamp(double *px, double v);
-void	clipinit(void);
-double	diddle(struct place *, double, double);
-double	diddle(struct place *, double, double);
-void	dobounds(double, double, double, double, int);
-void	dogrid(double, double, double, double);
-int	duple(struct place *, double);
-double	fmax(double, double);
-double	fmin(double, double);
-void	getdata(char *);
-int	gridpt(double, double, int);
-int	inpoly(double, double);
-int	inwindow(struct place *);
-void	pathnames(void);
-int	pnorm(double);
-void	radbds(double *w, double *rw);
-void	revlon(struct place *, double);
-void	satellite(struct file *);
-int	seeable(double, double);
-void	windlim(void);
-void	realcut(void);
+void clamp(double *px, double v);
+void clipinit(void);
+double diddle(struct place *, double, double);
+double diddle(struct place *, double, double);
+void dobounds(double, double, double, double, int);
+void dogrid(double, double, double, double);
+int duple(struct place *, double);
+double fmax(double, double);
+double fmin(double, double);
+void getdata(char *);
+int gridpt(double, double, int);
+int inpoly(double, double);
+int inwindow(struct place *);
+void pathnames(void);
+int pnorm(double);
+void radbds(double *w, double *rw);
+void revlon(struct place *, double);
+void satellite(struct file *);
+int seeable(double, double);
+void windlim(void);
+void realcut(void);
 int
 option(char *s)
 {
@@ -153,7 +153,7 @@ t++;
 }
 }
 fprintf(stderr,"projections:\n");
-for(i=0;index[i].name;i++)  {
+for(i=0;index[i].name;i++) {
 fprintf(stderr,"%s",index[i].name);
 for(k=0; k<index[i].npar; k++)
 fprintf(stderr," p%d", k);

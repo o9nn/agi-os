@@ -83,12 +83,12 @@ s = &(key->S[0]);
 l = data[0];
 r = data[1];
 l ^= p[BF_ROUNDS + 1];
-#  if BF_ROUNDS == 20
+# if BF_ROUNDS == 20
 BF_ENC(r, l, s, p[20]);
 BF_ENC(l, r, s, p[19]);
 BF_ENC(r, l, s, p[18]);
 BF_ENC(l, r, s, p[17]);
-#  endif
+# endif
 BF_ENC(r, l, s, p[16]);
 BF_ENC(l, r, s, p[15]);
 BF_ENC(r, l, s, p[14]);
@@ -114,12 +114,12 @@ l = data[0];
 r = data[1];
 k = (BF_LONG *)key;
 l ^= k[BF_ROUNDS + 1];
-#  if BF_ROUNDS == 20
+# if BF_ROUNDS == 20
 BF_ENC(r, l, k, 20);
 BF_ENC(l, r, k, 19);
 BF_ENC(r, l, k, 18);
 BF_ENC(l, r, k, 17);
-#  endif
+# endif
 BF_ENC(r, l, k, 16);
 BF_ENC(l, r, k, 15);
 BF_ENC(r, l, k, 14);

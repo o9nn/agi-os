@@ -1,8 +1,8 @@
 #include <string.h>
 #include "antiword.h"
-static encoding_type	eEncoding = encoding_neutral;
-static long		lYtopCurr = 0;
-static UCHAR		ucNbsp = 0;
+static encoding_type eEncoding = encoding_neutral;
+static long lYtopCurr = 0;
+static UCHAR ucNbsp = 0;
 void
 vPrologueFMT(diagram_type *pDiag, const options_type *pOptions)
 {
@@ -17,7 +17,7 @@ static void
 vPrintFMT(FILE *pFile,
 const char *szString, size_t tStringLength, USHORT usFontstyle)
 {
-const UCHAR	*pucByte, *pucStart, *pucLast, *pucNonSpace;
+const UCHAR *pucByte, *pucStart, *pucLast, *pucNonSpace;
 fail(szString == NULL);
 if (szString == NULL || szString[0] == '\0' || tStringLength == 0) {
 return;
@@ -80,7 +80,7 @@ pucByte++;
 static void
 vMoveTo(diagram_type *pDiag)
 {
-int	iCount, iNbr;
+int iCount, iNbr;
 fail(pDiag == NULL);
 fail(pDiag->pOutFile == NULL);
 if (pDiag->lYtop != lYtopCurr) {

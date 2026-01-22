@@ -1,17 +1,17 @@
 #ifndef _VTX_H
 #define _VTX_H
-#define VTXIOCGETINFO  0x7101
-#define VTXIOCCLRPAGE  0x7102
+#define VTXIOCGETINFO 0x7101
+#define VTXIOCCLRPAGE 0x7102
 #define VTXIOCCLRFOUND 0x7103
-#define VTXIOCPAGEREQ  0x7104
-#define VTXIOCGETSTAT  0x7105
-#define VTXIOCGETPAGE  0x7106
-#define VTXIOCSTOPDAU  0x7107
-#define VTXIOCPUTPAGE  0x7108
-#define VTXIOCSETDISP  0x7109
-#define VTXIOCPUTSTAT  0x710a
+#define VTXIOCPAGEREQ 0x7104
+#define VTXIOCGETSTAT 0x7105
+#define VTXIOCGETPAGE 0x7106
+#define VTXIOCSTOPDAU 0x7107
+#define VTXIOCPUTPAGE 0x7108
+#define VTXIOCSETDISP 0x7109
+#define VTXIOCPUTSTAT 0x710a
 #define VTXIOCCLRCACHE 0x710b
-#define VTXIOCSETVIRT  0x710c
+#define VTXIOCSETVIRT 0x710c
 #define SAA5243 0
 #define SAA5246 1
 #define SAA5249 2
@@ -23,13 +23,13 @@ int numpages;
 int cct_type;
 }
 vtx_info_t;
-#define MIN_UNIT   (1<<0)
-#define MIN_TEN    (1<<1)
-#define HR_UNIT    (1<<2)
-#define HR_TEN     (1<<3)
-#define PG_UNIT    (1<<4)
-#define PG_TEN     (1<<5)
-#define PG_HUND    (1<<6)
+#define MIN_UNIT (1<<0)
+#define MIN_TEN (1<<1)
+#define HR_UNIT (1<<2)
+#define HR_TEN (1<<3)
+#define PG_UNIT (1<<4)
+#define PG_TEN (1<<5)
+#define PG_HUND (1<<6)
 #define PGMASK_MAX (1<<7)
 #define PGMASK_PAGE (PG_HUND | PG_TEN | PG_UNIT)
 #define PGMASK_HOUR (HR_TEN | HR_UNIT)
@@ -70,12 +70,12 @@ vtx_pageinfo_t;
 typedef enum {
 DISPOFF, DISPNORM, DISPTRANS, DISPINS, INTERLACE_OFFSET
 } vtxdisp_t;
-#define TUNIOCGETINFO  0x7201
-#define TUNIOCRESET    0x7202
-#define TUNIOCSETFREQ  0x7203
-#define TUNIOCGETFREQ  0x7204
-#define TUNIOCSETCHAN  0x7205
-#define TUNIOCGETCHAN  0x7206
+#define TUNIOCGETINFO 0x7201
+#define TUNIOCRESET 0x7202
+#define TUNIOCSETFREQ 0x7203
+#define TUNIOCGETFREQ 0x7204
+#define TUNIOCSETCHAN 0x7205
+#define TUNIOCGETCHAN 0x7206
 typedef struct
 {
 int version_major, version_minor;

@@ -219,21 +219,21 @@ int type;
 void *offset;
 };
 Ctab ctltab[] = {
-"acceptcookies",	Bool,		(void*)offsetof(Ctl, acceptcookies),
-"sendcookies",		Bool,		(void*)offsetof(Ctl, sendcookies),
-"redirectlimit",		Int,		(void*)offsetof(Ctl, redirectlimit),
-"useragent",		String,	(void*)offsetof(Ctl, useragent),
+"acceptcookies", Bool, (void*)offsetof(Ctl, acceptcookies),
+"sendcookies", Bool, (void*)offsetof(Ctl, sendcookies),
+"redirectlimit", Int, (void*)offsetof(Ctl, redirectlimit),
+"useragent", String, (void*)offsetof(Ctl, useragent),
 };
 Ctab globaltab[] = {
-"chatty9p",		Int,		&chatty9p,
-"fsdebug",		Int,		&fsdebug,
-"cookiedebug",		Int,		&cookiedebug,
-"urldebug",		Int,		&urldebug,
-"httpdebug",		Int,		&httpdebug,
+"chatty9p", Int, &chatty9p,
+"fsdebug", Int, &fsdebug,
+"cookiedebug", Int, &cookiedebug,
+"urldebug", Int, &urldebug,
+"httpdebug", Int, &httpdebug,
 };
 Ctab clienttab[] = {
-"baseurl",			XUrl,		(void*)offsetof(Client, baseurl),
-"url",				XUrl,		(void*)offsetof(Client, url),
+"baseurl", XUrl, (void*)offsetof(Client, baseurl),
+"url", XUrl, (void*)offsetof(Client, url),
 };
 static Ctab*
 findcmd(char *cmd, Ctab *tab, int ntab)

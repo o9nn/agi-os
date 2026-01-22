@@ -124,12 +124,12 @@ if (plumbmsg->init(1, "edit", Dat->PLUMBSIZE) >= 0)
 plumbed = 1;
 main(argl);
 }
-#	exception{
-#		* =>
-#			sys->fprint(sys->fildes(2), "acme: fatal: %s\n", utils->getexc());
-#			sys->print("acme: fatal: %s\n", utils->getexc());
-#			shutdown("error");
-#	}
+# exception{
+# * =>
+# sys->fprint(sys->fildes(2), "acme: fatal: %s\n", utils->getexc());
+# sys->print("acme: fatal: %s\n", utils->getexc());
+# shutdown("error");
+# }
 }
 timing(s : string)
 {
@@ -227,8 +227,8 @@ reffont.r = Ref.init();
 reffont.f = font;
 reffonts = array[2] of ref Reffont;
 reffonts[0] = reffont;
-reffont.r.inc();	# one to hold up 'font' variable
-reffont.r.inc();	# one to hold up reffonts[0]
+reffont.r.inc(); # one to hold up 'font' variable
+reffont.r.inc(); # one to hold up reffonts[0]
 fontcache = array[1] of ref Reffont;
 nfontcache = 1;
 fontcache[0] = reffont;
@@ -255,7 +255,7 @@ fsys->fsysinit();
 dat->disk = (dat->disk).init();
 row = rowm->newrow();
 if(loadfile != nil) {
-row.qlock.lock();	# tasks->procs now
+row.qlock.lock(); # tasks->procs now
 row.loadx(loadfile, TRUE);
 row.qlock.unlock();
 }
@@ -425,7 +425,7 @@ else
 timer = null;
 alt {
 r = <- ckeyboard =>
-gotkey = 1;	# do this case again
+gotkey = 1; # do this case again
 * =>
 gotkey = 0;
 }
@@ -562,7 +562,7 @@ w.settag();
 argtext = t;
 seltext = t;
 if(t.col != nil)
-activecol = t.col;	# button 1 only
+activecol = t.col; # button 1 only
 if(t.w != nil && t == t.w.body)
 dat->activewin = t.w;
 }else if(mouse.buttons & 2){
@@ -780,7 +780,7 @@ r = reffonts[fix];
 }
 if(r == nil){
 for(i=0; i<nfontcache; i++)
-if(name ==  fontcache[i].f.name){
+if(name == fontcache[i].f.name){
 r = fontcache[i];
 break;
 }
@@ -855,8 +855,8 @@ byte 16r00, byte 16r3E, byte 16r00, byte 16r1C,
 byte 16r00, byte 16r08, byte 16r00, byte 16r00,
 };
 # outer boundary of width 1 is white
-# next  boundary of width 3 is black
-# next  boundary of width 1 is white
+# next boundary of width 3 is black
+# next boundary of width 1 is white
 # inner boundary of width 4 is transparent
 boxbits := array[64] of {
 byte 16rFF, byte 16rFF, byte 16rFF, byte 16rFF,
@@ -908,13 +908,13 @@ draw(modbutton, r, tagcols[BACK], nil, r.min);
 r.max.x -= 2;
 draw(modbutton, r, tagcols[BORD], nil, (0, 0));
 r = r.inset(2);
-draw(modbutton, r, display.rgb(16r00, 16r00, 16r99), nil, (0, 0));	# was DMedblue
+draw(modbutton, r, display.rgb(16r00, 16r00, 16r99), nil, (0, 0)); # was DMedblue
 r = button.r;
 colbutton = balloc(r, mainwin.chans, Draw->White);
 draw(colbutton, r, tagcols[BACK], nil, r.min);
 r.max.x -= 2;
 draw(colbutton, r, tagcols[BORD], nil, (0, 0));
-#	arrowcursor = ref Cursor((-1, -1), (16, 32), arrowbits);
+# arrowcursor = ref Cursor((-1, -1), (16, 32), arrowbits);
 boxcursor = ref Cursor((-7, -7), (16, 32), boxbits);
 but2col = display.rgb(16raa, 16r00, 16r00);
 but3col = display.rgb(16r00, 16r66, 16r00);

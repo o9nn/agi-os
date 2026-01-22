@@ -16,7 +16,7 @@
 #include <net/icmp.h>
 #include <net/protocol.h>
 #include <net/ipip.h>
-#define HASH_SIZE  16
+#define HASH_SIZE 16
 #define HASH(addr) ((addr^(addr>>4))&0xF)
 static int ipip_fb_tunnel_init(struct device *dev);
 static int ipip_tunnel_init(struct device *dev);
@@ -316,16 +316,16 @@ static int ipip_tunnel_xmit(struct sk_buff *skb, struct device *dev)
 {
 struct ip_tunnel *tunnel = (struct ip_tunnel*)dev->priv;
 struct net_device_stats *stats = &tunnel->stat;
-struct iphdr  *tiph = &tunnel->parms.iph;
-u8     tos = tunnel->parms.iph.tos;
-u16    df = tiph->frag_off;
+struct iphdr *tiph = &tunnel->parms.iph;
+u8 tos = tunnel->parms.iph.tos;
+u16 df = tiph->frag_off;
 struct rtable *rt;
 struct device *tdev;
-struct iphdr  *old_iph = skb->nh.iph;
-struct iphdr  *iph;
-int    max_headroom;
-u32    dst = tiph->daddr;
-int    mtu;
+struct iphdr *old_iph = skb->nh.iph;
+struct iphdr *iph;
+int max_headroom;
+u32 dst = tiph->daddr;
+int mtu;
 if (tunnel->recursion++) {
 tunnel->stat.collisions++;
 goto tx_error;
@@ -393,18 +393,18 @@ skb->nh.raw = skb_push(skb, sizeof(struct iphdr));
 memset(&(IPCB(skb)->opt), 0, sizeof(IPCB(skb)->opt));
 dst_release(skb->dst);
 skb->dst = &rt->u.dst;
-iph 			=	skb->nh.iph;
-iph->version		=	4;
-iph->ihl		=	sizeof(struct iphdr)>>2;
-iph->frag_off		=	df;
-iph->protocol		=	IPPROTO_IPIP;
-iph->tos		=	tos;
-iph->daddr		=	rt->rt_dst;
-iph->saddr		=	rt->rt_src;
+iph = skb->nh.iph;
+iph->version = 4;
+iph->ihl = sizeof(struct iphdr)>>2;
+iph->frag_off = df;
+iph->protocol = IPPROTO_IPIP;
+iph->tos = tos;
+iph->daddr = rt->rt_dst;
+iph->saddr = rt->rt_src;
 if ((iph->ttl = tiph->ttl) == 0)
-iph->ttl	=	old_iph->ttl;
-iph->tot_len		=	htons(skb->len);
-iph->id			=	htons(ip_id_count++);
+iph->ttl = old_iph->ttl;
+iph->tot_len = htons(skb->len);
+iph->id = htons(ip_id_count++);
 ip_send_check(iph);
 stats->tx_bytes += skb->len;
 stats->tx_packets++;
@@ -532,18 +532,18 @@ return 0;
 static void ipip_tunnel_init_gen(struct device *dev)
 {
 struct ip_tunnel *t = (struct ip_tunnel*)dev->priv;
-dev->destructor		= ipip_tunnel_destroy;
-dev->hard_start_xmit	= ipip_tunnel_xmit;
-dev->get_stats		= ipip_tunnel_get_stats;
-dev->do_ioctl		= ipip_tunnel_ioctl;
-dev->change_mtu		= ipip_tunnel_change_mtu;
+dev->destructor = ipip_tunnel_destroy;
+dev->hard_start_xmit = ipip_tunnel_xmit;
+dev->get_stats = ipip_tunnel_get_stats;
+dev->do_ioctl = ipip_tunnel_ioctl;
+dev->change_mtu = ipip_tunnel_change_mtu;
 dev_init_buffers(dev);
-dev->type		= ARPHRD_TUNNEL;
-dev->hard_header_len 	= LL_MAX_HEADER + sizeof(struct iphdr);
-dev->mtu		= 1500 - sizeof(struct iphdr);
-dev->flags		= IFF_NOARP;
-dev->iflink		= 0;
-dev->addr_len		= 4;
+dev->type = ARPHRD_TUNNEL;
+dev->hard_header_len = LL_MAX_HEADER + sizeof(struct iphdr);
+dev->mtu = 1500 - sizeof(struct iphdr);
+dev->flags = IFF_NOARP;
+dev->iflink = 0;
+dev->addr_len = 4;
 memcpy(dev->dev_addr, &t->parms.iph.saddr, 4);
 memcpy(dev->broadcast, &t->parms.iph.daddr, 4);
 }
@@ -589,14 +589,14 @@ __initfunc(int ipip_fb_tunnel_init(struct device *dev))
 struct iphdr *iph;
 ipip_tunnel_init_gen(dev);
 #ifdef MODULE
-dev->open		= ipip_fb_tunnel_open;
-dev->stop		= ipip_fb_tunnel_close;
+dev->open = ipip_fb_tunnel_open;
+dev->stop = ipip_fb_tunnel_close;
 #endif
 iph = &ipip_fb_tunnel.parms.iph;
-iph->version		= 4;
-iph->protocol		= IPPROTO_IPIP;
-iph->ihl		= 5;
-tunnels_wc[0]		= &ipip_fb_tunnel;
+iph->version = 4;
+iph->protocol = IPPROTO_IPIP;
+iph->ihl = 5;
+tunnels_wc[0] = &ipip_fb_tunnel;
 return 0;
 }
 static struct inet_protocol ipip_protocol = {

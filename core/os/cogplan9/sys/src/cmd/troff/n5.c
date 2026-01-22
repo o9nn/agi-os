@@ -1,9 +1,9 @@
 #include "tdef.h"
 #include "fns.h"
 #include "ext.h"
-int	iflist[NIF];
-int	ifx;
-int	ifnum = 0;
+int iflist[NIF];
+int ifx;
+int ifnum = 0;
 void casead(void)
 {
 int i;
@@ -480,7 +480,7 @@ if (skip()) {
 e0:
 if (evi == 0)
 return;
-nxev =  evlist[--evi];
+nxev = evlist[--evi];
 goto e1;
 }
 noscale++;
@@ -607,7 +607,7 @@ void eatblk(int inblk)
 int cnt, i;
 cnt = 0;
 do {
-if (ch)	{
+if (ch) {
 i = cbits(ch);
 ch = 0;
 } else
@@ -617,8 +617,8 @@ cnt++;
 else {
 if (cnt == 1)
 switch (i) {
-case '{':  i = LEFT; break;
-case '}':  i = RIGHT; break;
+case '{': i = LEFT; break;
+case '}': i = RIGHT; break;
 case '\n': i = 'x'; break;
 }
 cnt = 0;
@@ -715,7 +715,7 @@ pushi(RD_OFFSET, PAIR('r','d'));
 }
 rdtty(void)
 {
-char	onechar;
+char onechar;
 onechar = 0;
 if (read(0, &onechar, 1) == 1) {
 if (onechar == '\n')
@@ -833,7 +833,7 @@ mchbits();
 void caseuf(void)
 {
 int i, j;
-if (skip() || !(i = getrq()) || i == 'S' ||  (j = findft(i))  == -1)
+if (skip() || !(i = getrq()) || i == 'S' || (j = findft(i)) == -1)
 ulfont = ULFONT;
 else
 ulfont = j;

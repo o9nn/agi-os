@@ -102,12 +102,12 @@ return 1;
 }
 int dc_key_set_from_file(dc_key_t* key, const char* pathNfilename, dc_context_t* context)
 {
-char*       buf = NULL;
+char* buf = NULL;
 const char* headerline = NULL;
 const char* base64 = NULL;
-size_t      buf_bytes = 0;
-int         type = -1;
-int         success = 0;
+size_t buf_bytes = 0;
+int type = -1;
+int success = 0;
 dc_key_empty(key);
 if (key==NULL || pathNfilename==NULL) {
 goto cleanup;
@@ -155,7 +155,7 @@ return memcmp(key->binary, o->binary, o->bytes)==0? 1 : 0;
 }
 int dc_key_save_self_keypair(const dc_key_t* public_key, const dc_key_t* private_key, const char* addr, int is_default, dc_sqlite3_t* sql)
 {
-int           success = 0;
+int success = 0;
 sqlite3_stmt* stmt = NULL;
 if (public_key==NULL || private_key==NULL || addr==NULL || sql==NULL
 || public_key->binary==NULL || private_key->binary==NULL) {
@@ -164,7 +164,7 @@ goto cleanup;
 stmt = dc_sqlite3_prepare(sql,
 "INSERT INTO keypairs (addr, is_default, public_key, private_key, created) VALUES (?,?,?,?,?);");
 sqlite3_bind_text (stmt, 1, addr, -1, SQLITE_STATIC);
-sqlite3_bind_int  (stmt, 2, is_default);
+sqlite3_bind_int (stmt, 2, is_default);
 sqlite3_bind_blob (stmt, 3, public_key->binary, public_key->bytes, SQLITE_STATIC);
 sqlite3_bind_blob (stmt, 4, private_key->binary, private_key->bytes, SQLITE_STATIC);
 sqlite3_bind_int64(stmt, 5, time(NULL));
@@ -178,7 +178,7 @@ return success;
 }
 int dc_key_load_self_public(dc_key_t* key, const char* self_addr, dc_sqlite3_t* sql)
 {
-int           success = 0;
+int success = 0;
 sqlite3_stmt* stmt = NULL;
 if (key==NULL || self_addr==NULL || sql==NULL) {
 goto cleanup;
@@ -198,7 +198,7 @@ return success;
 }
 int dc_key_load_self_private(dc_key_t* key, const char* self_addr, dc_sqlite3_t* sql)
 {
-int           success = 0;
+int success = 0;
 sqlite3_stmt* stmt = NULL;
 if (key==NULL || self_addr==NULL || sql==NULL) {
 goto cleanup;
@@ -303,7 +303,7 @@ return ret;
 }
 int dc_key_render_asc_to_file(const dc_key_t* key, const char* file, dc_context_t* context )
 {
-int   success = 0;
+int success = 0;
 char* file_content = NULL;
 if (key==NULL || file==NULL || context==NULL) {
 goto cleanup;
@@ -323,8 +323,8 @@ return success;
 }
 char* dc_format_fingerprint(const char* fingerprint)
 {
-int             i = 0;
-int             fingerprint_len = strlen(fingerprint);
+int i = 0;
+int fingerprint_len = strlen(fingerprint);
 dc_strbuilder_t ret;
 dc_strbuilder_init(&ret, 0);
 while (fingerprint[i]) {
@@ -360,8 +360,8 @@ return out.buf;
 char* dc_key_get_fingerprint(const dc_key_t* key)
 {
 uint8_t* fingerprint_buf = NULL;
-size_t   fingerprint_bytes = 0;
-char*    fingerprint_hex = NULL;
+size_t fingerprint_bytes = 0;
+char* fingerprint_hex = NULL;
 if (key==NULL) {
 goto cleanup;
 }

@@ -1,10 +1,10 @@
 #ifndef scommon_INCLUDED
-#  define scommon_INCLUDED
+# define scommon_INCLUDED
 #include "gsmemory.h"
 #include "gstypes.h"
 #include "gsstype.h"
 #ifndef stream_DEFINED
-#  define stream_DEFINED
+# define stream_DEFINED
 typedef struct stream_s stream;
 #endif
 typedef struct stream_state_s stream_state;
@@ -52,7 +52,7 @@ int proc(gs_param_list *plist, state_type *ss)
 const stream_template *template;\
 gs_memory_t *memory;\
 stream_proc_report_error((*report_error));\
-int min_left;  \
+int min_left; \
 char error_string[STREAM_MAX_ERROR_STRING + 1]
 struct stream_state_s {
 stream_state_common;

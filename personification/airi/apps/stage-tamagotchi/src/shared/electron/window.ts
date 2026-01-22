@@ -5,6 +5,6 @@ export const startLoopGetBounds = defineInvokeEventa('eventa:event:electron:wind
 const getBounds = defineInvokeEventa<ReturnType<BrowserWindow['getBounds']>>('eventa:invoke:electron:window:get-bounds')
 const setIgnoreMouseEvents = defineInvokeEventa<void, [boolean, { forward: boolean }]>('eventa:invoke:electron:window:set-ignore-mouse-events')
 export const window = {
-  getBounds,
-  setIgnoreMouseEvents,
+getBounds,
+setIgnoreMouseEvents,
 }

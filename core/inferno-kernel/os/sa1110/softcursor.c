@@ -11,23 +11,23 @@
 #include "gscreen.h"
 typedef struct Cursordata Cursordata;
 struct Cursordata {
-Physdisplay	*vd;
-ulong	*fb;
+Physdisplay *vd;
+ulong *fb;
 Rectangle r;
-int	depth;
-int 	width;
-int	x;
-int	y;
-int	hotx;
-int	hoty;
-int	cbwid;
-int	f;
-int	dx;
-int	dy;
-int	hidecount;
-uchar	data[CURSWID*CURSHGT];
-uchar	mask[CURSWID*CURSHGT];
-uchar	save[CURSWID*CURSHGT];
+int depth;
+int width;
+int x;
+int y;
+int hotx;
+int hoty;
+int cbwid;
+int f;
+int dx;
+int dy;
+int hidecount;
+uchar data[CURSWID*CURSHGT];
+uchar mask[CURSWID*CURSHGT];
+uchar save[CURSWID*CURSHGT];
 };
 static Cursordata *cd = nil;
 enum {
@@ -36,9 +36,9 @@ Drawn = 0x02,
 Bitswap = 0x10,
 };
 static Rectangle cursoroffrect;
-static int	cursorisoff;
+static int cursorisoff;
 static void swcursorflush(Point);
-static void	swcurs_draw_or_undraw(Cursordata *);
+static void swcurs_draw_or_undraw(Cursordata *);
 static void
 cursorupdate0(void)
 {

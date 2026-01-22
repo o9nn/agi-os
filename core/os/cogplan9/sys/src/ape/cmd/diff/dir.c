@@ -60,7 +60,7 @@ return -1;
 }
 dirdata->names = names = (char const **) xmalloc (sizeof (char *)
 * (nnames + 1));
-for (i = 0;  i < nnames;  i++)
+for (i = 0; i < nnames; i++)
 {
 names[i] = data;
 data += strlen (data) + 1;

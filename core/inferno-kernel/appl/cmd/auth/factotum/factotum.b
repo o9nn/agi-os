@@ -14,14 +14,14 @@ include "arg.m";
 include "readdir.m";
 Factotum: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 #confirm, log
 Files: adt {
-ctl:	ref Sys->FileIO;
-rpc:	ref Sys->FileIO;
-proto:	ref Sys->FileIO;
-needkey:	ref Sys->FileIO;
+ctl: ref Sys->FileIO;
+rpc: ref Sys->FileIO;
+proto: ref Sys->FileIO;
+needkey: ref Sys->FileIO;
 };
 Debug: con 0;
 debug := Debug;
@@ -41,10 +41,10 @@ arg->init(args);
 arg->setusage("auth/factotum [-d] [-m /mnt/factotum] [-s factotum]");
 while((o := arg->opt()) != 0)
 case o {
-'d' =>	debug++;
-'m' =>	mntpt = arg->earg();
-'s' =>		svcname = "#s"+arg->earg();
-* =>	arg->usage();
+'d' => debug++;
+'m' => mntpt = arg->earg();
+'s' => svcname = "#s"+arg->earg();
+* => arg->usage();
 }
 args = arg->argv();
 if(args != nil)
@@ -88,7 +88,7 @@ privacy();
 allkeys := array[0] of ref Key;
 pidc := chan of int;
 donec := chan of ref Fid;
-#	keyc := chan of (list of ref Attr, chan of (ref Key, string));
+# keyc := chan of (list of ref Attr, chan of (ref Key, string));
 needfid := -1;
 needed, needy: list of (int, list of ref Attr, chan of (list of ref Key, string));
 needread: Sys->Rread;
@@ -130,7 +130,7 @@ case verb {
 "key" =>
 k := Key.mk(parseline(s));
 if(k == nil){
-wc <-= (len data, nil);	# ignore it
+wc <-= (len data, nil); # ignore it
 break;
 }
 if(lookattrval(k.attrs, "proto") == nil){
@@ -222,7 +222,7 @@ needread = rc;
 (nil, data, fid, wc) := <-files.needkey.write =>
 if(wc == nil){
 if(needfid == fid){
-needfid = -1;	# TO DO? give needkey errors back to request
+needfid = -1; # TO DO? give needkey errors back to request
 needread = nil;
 }
 break;
@@ -358,7 +358,7 @@ reply(rpc, "error "+e);
 rpc = rio(r);
 continue;
 }
-r.attrs = attrs;	# saved for attr request
+r.attrs = attrs; # saved for attr request
 ok(rpc);
 io := ref IO(r, nil);
 {
@@ -395,7 +395,7 @@ if(p == nil)
 return (nil, nil, "did not specify protocol");
 if(debug > 1)
 sys->print("proto=%s\n", p);
-if(any(p, "./"))	# avoid unpleasantness
+if(any(p, "./")) # avoid unpleasantness
 return (nil, nil, "illegal protocol: "+p);
 proto := load Authproto "/dis/auth/proto/"+p+".dis";
 if(proto == nil)
@@ -651,7 +651,7 @@ if(anyattr(lv, (hd rl).name) == nil)
 nl = ref(*hd rl) :: nl;
 # new values
 for(; lv != nil; lv = tl lv){
-a := lookattr(rv, (hd lv).name);	# won't take queries
+a := lookattr(rv, (hd lv).name); # won't take queries
 if(a != nil)
 nl = ref *a :: nl;
 }
@@ -809,7 +809,7 @@ ea := parseline(extra);
 for(; ea != nil; ea = tl ea)
 attrs = hd ea :: attrs;
 kc := chan of (list of ref Key, string);
-keymanc <-= (attrs, 1, kc);	# TO DO: 1 => 0 for not needed
+keymanc <-= (attrs, 1, kc); # TO DO: 1 => 0 for not needed
 return <-kc;
 }
 IO.needkey(nil: self ref IO, attrs: list of ref Attr, extra: string): (ref Key, string)
@@ -875,7 +875,7 @@ Oread =>
 io.rpc = rpc;
 if(rpc.nbytes >= 3)
 return nil;
-io.toosmall(128+3);		# make them read something
+io.toosmall(128+3); # make them read something
 Owrite =>
 io.rpc = rpc;
 if(rpc.arg == nil)

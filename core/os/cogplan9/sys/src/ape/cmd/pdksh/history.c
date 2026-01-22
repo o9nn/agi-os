@@ -2,18 +2,18 @@
 #include "ksh_stat.h"
 #ifdef HISTORY
 # ifdef EASY_HISTORY
-#  ifndef HISTFILE
-#   ifdef OS2
-#    define HISTFILE "history.ksh"
-#   else
-#    define HISTFILE ".pdksh_history"
-#   endif
-#  endif
+# ifndef HISTFILE
+# ifdef OS2
+# define HISTFILE "history.ksh"
 # else
-#  include <sys/file.h>
-#  include <sys/mman.h>
-static int	histfd;
-static int	hsize;
+# define HISTFILE ".pdksh_history"
+# endif
+# endif
+# else
+# include <sys/file.h>
+# include <sys/mman.h>
+static int histfd;
+static int hsize;
 static int hist_count_lines ARGS((unsigned char *, int));
 static int hist_shrink ARGS((unsigned char *, int));
 static unsigned char *hist_skip_back ARGS((unsigned char *,int *,int));
@@ -21,24 +21,24 @@ static void histload ARGS((Source *, unsigned char *, int));
 static void histinsert ARGS((Source *, int, unsigned char *));
 static void writehistfile ARGS((int, char *));
 static int sprinkle ARGS((int));
-#  ifdef MAP_FILE
-#   define MAP_FLAGS	(MAP_FILE|MAP_PRIVATE)
-#  else
-#   define MAP_FLAGS	MAP_PRIVATE
-#  endif
+# ifdef MAP_FILE
+# define MAP_FLAGS (MAP_FILE|MAP_PRIVATE)
+# else
+# define MAP_FLAGS MAP_PRIVATE
 # endif
-static int	hist_execute ARGS((char *cmd));
-static int	hist_replace ARGS((char **hp, const char *pat, const char *rep,
+# endif
+static int hist_execute ARGS((char *cmd));
+static int hist_replace ARGS((char **hp, const char *pat, const char *rep,
 int global));
-static char   **hist_get ARGS((const char *str, int approx, int allow_cur));
-static char   **hist_get_newest ARGS((int allow_cur));
-static char   **hist_get_oldest ARGS(());
-static void	histbackup ARGS((void));
-static char   **current;
-static int	curpos;
-static char    *hname;
-static int	hstarted;
-static Source	*hist_source;
+static char **hist_get ARGS((const char *str, int approx, int allow_cur));
+static char **hist_get_newest ARGS((int allow_cur));
+static char **hist_get_oldest ARGS(());
+static void histbackup ARGS((void));
+static char **current;
+static int curpos;
+static char *hname;
+static int hstarted;
+static Source *hist_source;
 int
 c_fc(wp)
 char **wp;
@@ -371,9 +371,9 @@ return curpos;
 }
 int
 histnum(n)
-int	n;
+int n;
 {
-int	last = histptr - history;
+int last = histptr - history;
 if (n < 0 || n >= last) {
 current = histptr;
 curpos = last;
@@ -386,15 +386,15 @@ return n;
 }
 int
 findhist(start, fwd, str, anchored)
-int	start;
-int	fwd;
-const char  *str;
-int	anchored;
+int start;
+int fwd;
+const char *str;
+int anchored;
 {
-char	**hp;
-int	maxhist = histptr - history;
-int	incr = fwd ? 1 : -1;
-int	len = strlen(str);
+char **hp;
+int maxhist = histptr - history;
+int incr = fwd ? 1 : -1;
+int len = strlen(str);
 if (start < 0 || start >= maxhist)
 start = maxhist;
 hp = &history[start];
@@ -478,10 +478,10 @@ histptr = hp;
 void
 histappend(cmd, nl_separate)
 const char *cmd;
-int	nl_separate;
+int nl_separate;
 {
-int	hlen, clen;
-char	*p;
+int hlen, clen;
+char *p;
 hlen = strlen(*histptr);
 clen = strlen(cmd);
 if (clen > 0 && cmd[clen-1] == '\n')
@@ -588,16 +588,16 @@ hp[0] = hp[1];
 *hp = c;
 histptr = hp;
 }
-# define HMAGIC1		0xab
-# define HMAGIC2		0xcd
-# define COMMAND		0xff
+# define HMAGIC1 0xab
+# define HMAGIC2 0xcd
+# define COMMAND 0xff
 void
 hist_init(s)
 Source *s;
 {
-unsigned char	*base;
-int	lines;
-int	fd;
+unsigned char *base;
+int lines;
+int fd;
 if (Flag(FTALKING) == 0)
 return;
 hstarted = 1;
@@ -621,7 +621,7 @@ return;
 else if (hsize > 0) {
 base = (unsigned char *)mmap(0, hsize, PROT_READ, MAP_FLAGS, histfd, 0);
 if ((int)base == -1 || *base != HMAGIC1 || base[1] != HMAGIC2) {
-if ((int)base !=  -1)
+if ((int)base != -1)
 munmap((caddr_t)base, hsize);
 hist_finish();
 unlink(hname);
@@ -685,8 +685,8 @@ unsigned char *oldbase;
 int oldbytes;
 {
 int fd;
-char	nfile[1024];
-struct	stat statb;
+char nfile[1024];
+struct stat statb;
 unsigned char *nbase = oldbase;
 int nbytes = oldbytes;
 nbase = hist_skip_back(nbase, &nbytes, histsize);
@@ -741,8 +741,8 @@ register unsigned char *base;
 register int bytes;
 {
 State state;
-int	lno;
-unsigned char	*line;
+int lno;
+unsigned char *line;
 for (state = shdr; bytes-- > 0; base++) {
 switch (state) {
 case shdr:
@@ -799,11 +799,11 @@ writehistfile(lno, cmd)
 int lno;
 char *cmd;
 {
-int	sizenow;
-unsigned char	*base;
-unsigned char	*new;
-int	bytes;
-char	hdr[5];
+int sizenow;
+unsigned char *base;
+unsigned char *new;
+int bytes;
+char hdr[5];
 (void) flock(histfd, LOCK_EX);
 sizenow = lseek(histfd, 0L, SEEK_END);
 if (sizenow != hsize) {

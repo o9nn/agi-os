@@ -3,7 +3,7 @@
 #include "dc_job.h"
 void dc_do_heuristics_moves(dc_context_t* context, const char* folder, uint32_t msg_id)
 {
-dc_msg_t*     msg = NULL;
+dc_msg_t* msg = NULL;
 sqlite3_stmt* stmt = NULL;
 if (dc_sqlite3_get_config_int(context->sql, "mvbox_move", DC_MVBOX_MOVE_DEFAULT)==0) {
 goto cleanup;

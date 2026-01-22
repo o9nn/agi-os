@@ -3,9 +3,9 @@
 #include "interp.h"
 #include "raise.h"
 #include <kernel.h>
-#define	A(r)	*((Array**)(r))
-Module*	modules;
-int	dontcompile;
+#define A(r) *((Array**)(r))
+Module* modules;
+int dontcompile;
 static int
 operand(uchar **p)
 {
@@ -43,7 +43,7 @@ disw(uchar **p)
 ulong v;
 uchar *c;
 c = *p;
-v  = c[0] << 24;
+v = c[0] << 24;
 v |= c[1] << 16;
 v |= c[2] << 8;
 v |= c[3];
@@ -373,7 +373,7 @@ goto bad;
 for(i = 0; i < lsize; i++, l++) {
 pc = operand(isp);
 de = operand(isp);
-v  = disw(isp);
+v = disw(isp);
 pt = nil;
 if(de != -1)
 pt = m->type[de];

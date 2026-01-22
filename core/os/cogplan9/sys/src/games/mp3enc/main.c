@@ -45,7 +45,7 @@ short Buffer[2][1152];
 unsigned char mp3buffer[LAME_MAXMP3BUFFER];
 FILE *outf;
 lame_global_flags *gf;
-static char inPath[]  = "-";
+static char inPath[] = "-";
 static char outPath[] = "-";
 static const char *mode_names[2][4] = {
 { "stereo", "j-stereo", "dual-ch", "single-ch" },

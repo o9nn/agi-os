@@ -4,15 +4,15 @@
 #ifdef OPENSSL_SYS_VMS
 # if __CRTL_VER >= 70000000 && \
 (defined _POSIX_C_SOURCE || !defined _ANSI_C_SOURCE)
-#  define VMS_GMTIME_OK
+# define VMS_GMTIME_OK
 # endif
 # ifndef VMS_GMTIME_OK
-#  include <libdtdef.h>
-#  include <lib$routines.h>
-#  include <lnmdef.h>
-#  include <starlet.h>
-#  include <descrip.h>
-#  include <stdlib.h>
+# include <libdtdef.h>
+# include <lib$routines.h>
+# include <lnmdef.h>
+# include <starlet.h>
+# include <descrip.h>
+# include <stdlib.h>
 # endif
 #endif
 struct tm *OPENSSL_gmtime(const time_t *timer, struct tm *result)

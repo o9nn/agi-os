@@ -1,71 +1,71 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
 enum
 {
-IntelVendID=	0x8086,
-Piix4PMID=	0x7113,
-SMBbase=	0x90,
-SMBconfig=	0xd2,
-SMBintrselect=	(7<<1),
-SMIenable=	(0<<1),
-IRQ9enable=	(4<<1),
-SMBenable=	(1<<0),
-Hoststatus=	0x0,
-Failed=		(1<<4),
-Bus_error=	(1<<3),
-Dev_error=	(1<<2),
-Host_complete=	(1<<1),
-Host_busy=	(1<<0),
-Slavestatus=	0x1,
-Alert_sts=	(1<<5),
-Shdw2_sts=	(1<<4),
-Shdw1_sts=	(1<<3),
-Slv_sts=	(1<<2),
-Slv_bsy=	(1<<0),
-Hostcontrol=	0x2,
-Start=		(1<<6),
-Cmd_prot=	(7<<2),
-Quick=		(0<<2),
-Byte=		(1<<2),
-ByteData=	(2<<2),
-WordData=	(3<<2),
-Kill=		(1<<1),
-Ienable=	(1<<0),
-Hostcommand=	0x3,
-Hostaddress=	0x4,
-AddressMask=	(0x7f<<1),
-Read=		(1<<0),
-Hostdata0=	0x5,
-Hostdata1=	0x6,
-Blockdata=	0x7,
-Slavecontrol=	0x8,
-Alert_en=	(1<<3),
-Shdw2_en=	(1<<2),
-Shdw1_en=	(1<<1),
-Slv_en=		(1<<0),
-Shadowcommand=	0x9,
-Slaveevent=	0xa,
-Slavedata=	0xc,
+IntelVendID= 0x8086,
+Piix4PMID= 0x7113,
+SMBbase= 0x90,
+SMBconfig= 0xd2,
+SMBintrselect= (7<<1),
+SMIenable= (0<<1),
+IRQ9enable= (4<<1),
+SMBenable= (1<<0),
+Hoststatus= 0x0,
+Failed= (1<<4),
+Bus_error= (1<<3),
+Dev_error= (1<<2),
+Host_complete= (1<<1),
+Host_busy= (1<<0),
+Slavestatus= 0x1,
+Alert_sts= (1<<5),
+Shdw2_sts= (1<<4),
+Shdw1_sts= (1<<3),
+Slv_sts= (1<<2),
+Slv_bsy= (1<<0),
+Hostcontrol= 0x2,
+Start= (1<<6),
+Cmd_prot= (7<<2),
+Quick= (0<<2),
+Byte= (1<<2),
+ByteData= (2<<2),
+WordData= (3<<2),
+Kill= (1<<1),
+Ienable= (1<<0),
+Hostcommand= 0x3,
+Hostaddress= 0x4,
+AddressMask= (0x7f<<1),
+Read= (1<<0),
+Hostdata0= 0x5,
+Hostdata1= 0x6,
+Blockdata= 0x7,
+Slavecontrol= 0x8,
+Alert_en= (1<<3),
+Shdw2_en= (1<<2),
+Shdw1_en= (1<<1),
+Slv_en= (1<<0),
+Shadowcommand= 0x9,
+Slaveevent= 0xa,
+Slavedata= 0xc,
 };
 static struct
 {
-int	rw;
-int	cmd;
-int	len;
-int	proto;
+int rw;
+int cmd;
+int len;
+int proto;
 } proto[] =
 {
-[SMBquick]	{ 0,	0,	0,	Quick },
-[SMBsend]	{ 0,	1,	0,	Byte },
-[SMBbytewrite]	{ 0,	1,	1,	ByteData },
-[SMBwordwrite]	{ 0,	1,	2,	WordData },
-[SMBrecv]	{ Read,	0,	1, 	Byte },
-[SMBbyteread]	{ Read,	1,	1,	ByteData },
-[SMBwordread]	{ Read,	1,	2,	WordData },
+[SMBquick] { 0, 0, 0, Quick },
+[SMBsend] { 0, 1, 0, Byte },
+[SMBbytewrite] { 0, 1, 1, ByteData },
+[SMBwordwrite] { 0, 1, 2, WordData },
+[SMBrecv] { Read, 0, 1, Byte },
+[SMBbyteread] { Read, 1, 1, ByteData },
+[SMBwordread] { Read, 1, 2, WordData },
 };
 static void
 transact(SMBus *s, int type, int addr, int cmd, uchar *data)

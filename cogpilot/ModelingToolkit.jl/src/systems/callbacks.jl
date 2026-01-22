@@ -373,8 +373,8 @@ SymbolicDiscreteCallback(conditions::Vector{Equation}, affect = nothing, iv = no
 initialize = nothing, finalize = nothing, alg_eqs = Equation[])
 A callback that triggers at the first timestep that the conditions are satisfied.
 The condition can be one of:
-- Δt::Real              - periodic events with period Δt
-- ts::Vector{Real}      - events trigger at these preset times given by `ts`
+- Δt::Real - periodic events with period Δt
+- ts::Vector{Real} - events trigger at these preset times given by `ts`
 - eqs::Vector{Symbolic} - events trigger when the condition evaluates to true
 Arguments:
 - iv: The independent variable of the system. This must be specified if the independent variable appears in one of the equations explicitly, as in x ~ t + 1.

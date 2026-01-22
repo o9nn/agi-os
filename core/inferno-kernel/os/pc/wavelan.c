@@ -10,7 +10,7 @@
 #include "wavelan.h"
 enum
 {
-MSperTick=	50,
+MSperTick= 50,
 };
 void
 csr_outs(Ctlr *ctlr, int reg, ushort arg)
@@ -674,8 +674,8 @@ ctlr->state &= ~Power;
 }
 iunlock(ctlr);
 }
-#define PRINTSTAT(fmt,val)	l += snprint(p+l, READSTR-l, (fmt), (val))
-#define PRINTSTR(fmt)		l += snprint(p+l, READSTR-l, (fmt))
+#define PRINTSTAT(fmt,val) l += snprint(p+l, READSTR-l, (fmt), (val))
+#define PRINTSTR(fmt) l += snprint(p+l, READSTR-l, (fmt))
 long
 w_ifstat(Ether* ether, void* a, long n, ulong offset)
 {
@@ -1013,7 +1013,7 @@ ctlr->netname[WNameLen-1] = 0;
 ctlr->wantname[WNameLen-1] = 0;
 ctlr->nodename[WNameLen-1] =0;
 ltv.type = WTyp_Mac;
-ltv.len	= 4;
+ltv.len = 4;
 if(w_inltv(ctlr, &ltv)){
 iprint("#l%d: unable to read mac addr\n",
 ether->ctlrno);
@@ -1047,7 +1047,7 @@ ether->multicast = w_multicast;
 ether->scanbs = w_scanbs;
 ether->arg = ether;
 DEBUG("#l%d: irq %d port %lx type %s",
-ether->ctlrno, ether->irq, ether->port,	ether->type);
+ether->ctlrno, ether->irq, ether->port, ether->type);
 DEBUG(" %2.2ux%2.2ux%2.2ux%2.2ux%2.2ux%2.2ux\n",
 ether->ea[0], ether->ea[1], ether->ea[2],
 ether->ea[3], ether->ea[4], ether->ea[5]);

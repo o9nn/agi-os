@@ -1,17 +1,17 @@
 #!/bin/bash
 set -exou pipefail
 detect_host_arch() {
-  case "$(uname -m)" in
-    x86_64)
-      echo "amd64"
-      ;;
-    aarch64 | arm64)
-      echo "arm64"
-      ;;
-    *)
-      uname -m
-      ;;
-  esac
+case "$(uname -m)" in
+x86_64)
+echo "amd64"
+;;
+aarch64 | arm64)
+echo "arm64"
+;;
+*)
+uname -m
+;;
+esac
 }
 ARCH=$(detect_host_arch)
 IMAGE_NAME="das-builder:$ARCH"
@@ -29,20 +29,20 @@ CONTAINER_LIB_DIR=$CONTAINER_WORKDIR/lib/$ARCH
 CONTAINER_BIN_DIR=$CONTAINER_WORKDIR/bin/$ARCH
 CONTAINER_CACHE=/home/"${CONTAINER_USER}"/.cache
 docker run --rm \
-  $([ "$ARCH" != "arm64" ] && echo "--user=$(id -u):$(id -g) --volume /etc/passwd:/etc/passwd:ro" || echo "--user=$CONTAINER_USER") \
-  --privileged \
-  --name="${CONTAINER_NAME}" \
-  -e BIN_DIR=$CONTAINER_BIN_DIR \
-  -e LIB_DIR=$CONTAINER_LIB_DIR \
-  --network=host \
-  --volume "$LOCAL_CACHE":"$CONTAINER_CACHE" \
-  --volume "$LOCAL_WORKDIR":"$CONTAINER_WORKDIR" \
-  --volume "/tmp:/tmp" \
-  --workdir "$CONTAINER_WORKSPACE_DIR" \
-  "${IMAGE_NAME}" \
-  ./scripts/bazel_exec.sh "$@"
+$([ "$ARCH" != "arm64" ] && echo "--user=$(id -u):$(id -g) --volume /etc/passwd:/etc/passwd:ro" || echo "--user=$CONTAINER_USER") \
+--privileged \
+--name="${CONTAINER_NAME}" \
+-e BIN_DIR=$CONTAINER_BIN_DIR \
+-e LIB_DIR=$CONTAINER_LIB_DIR \
+--network=host \
+--volume "$LOCAL_CACHE":"$CONTAINER_CACHE" \
+--volume "$LOCAL_WORKDIR":"$CONTAINER_WORKDIR" \
+--volume "/tmp:/tmp" \
+--workdir "$CONTAINER_WORKSPACE_DIR" \
+"${IMAGE_NAME}" \
+./scripts/bazel_exec.sh "$@"
 sleep 1
 if docker ps -a --format '{{.Names}}' | grep -q "^${CONTAINER_NAME}$"; then
-  echo "Removing existing container: ${CONTAINER_NAME}"
-  _=$(docker rm -f "${CONTAINER_NAME}" 2>&1 > /dev/null || true)
+echo "Removing existing container: ${CONTAINER_NAME}"
+_=$(docker rm -f "${CONTAINER_NAME}" 2>&1 > /dev/null || true)
 fi

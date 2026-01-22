@@ -1,31 +1,31 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-static void	imagereclaim(void);
-static void	imagechanreclaim(void);
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+static void imagereclaim(void);
+static void imagechanreclaim(void);
 #include "io.h"
 static Physseg physseg[10] = {
-{ SG_SHARED,	"shared",	0,	SEGMAXSIZE,	0, 	0 },
-{ SG_BSS,	"memory",	0,	SEGMAXSIZE,	0,	0 },
-{ 0,		0,		0,	0,		0,	0 },
+{ SG_SHARED, "shared", 0, SEGMAXSIZE, 0, 0 },
+{ SG_BSS, "memory", 0, SEGMAXSIZE, 0, 0 },
+{ 0, 0, 0, 0, 0, 0 },
 };
 static Lock physseglock;
-#define NFREECHAN	64
-#define IHASHSIZE	64
-#define ihash(s)	imagealloc.hash[s%IHASHSIZE]
+#define NFREECHAN 64
+#define IHASHSIZE 64
+#define ihash(s) imagealloc.hash[s%IHASHSIZE]
 static struct Imagealloc
 {
 Lock;
-Image	*free;
-Image	*hash[IHASHSIZE];
-QLock	ireclaim;
-Chan	**freechan;
-int	nfreechan;
-int	szfreechan;
-QLock	fcreclaim;
+Image *free;
+Image *hash[IHASHSIZE];
+QLock ireclaim;
+Chan **freechan;
+int nfreechan;
+int szfreechan;
+QLock fcreclaim;
 }imagealloc;
 Segment* (*_globalsegattach)(Proc*, char*);
 void
@@ -253,10 +253,10 @@ incref(i->s);
 return i;
 }
 static struct {
-int	calls;
-int	loops;
-uvlong	ticks;
-uvlong	maxt;
+int calls;
+int loops;
+uvlong ticks;
+uvlong maxt;
 } irstats;
 static void
 imagereclaim(void)

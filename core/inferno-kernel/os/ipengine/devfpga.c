@@ -1,16 +1,16 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"io.h"
-#include	"archipe.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "io.h"
+#include "archipe.h"
 enum {
 FPGASIZE = 8*1024*1024,
 FPGATMR = 2-1,
 TIMERSH = FPGATMR*4,
-COM3=	IBIT(1)|IBIT(2),
+COM3= IBIT(1)|IBIT(2),
 ConfDone = 1<<1,
 nStatus = 1<<0,
 };
@@ -25,10 +25,10 @@ Qstatus,
 };
 static struct {
 QLock;
-int	clkspeed;
+int clkspeed;
 } fpga;
 static void resetfpga(void);
-static void	startfpga(int);
+static void startfpga(int);
 static int endfpga(void);
 static int fpgastatus(void);
 static void powerfpga(int);
@@ -36,13 +36,13 @@ static void vclkenable(int);
 static void vclkset(char*, char*, char*, char*);
 static void memmovew(ushort*, ushort*, long);
 static Dirtab fpgadir[]={
-".",			{Qdir, 0, QTDIR},	0,	0555,
-"fpgamemb",		{Qmemb, 0},	FPGASIZE,	0666,
-"fpgamemw",		{Qmemw, 0},	FPGASIZE, 0666,
-"fpgaprog",	{Qprog, 0},	0,	0222,
-"fpgastatus",	{Qstatus, 0},	0,	0444,
-"fpgactl",		{Qctl, 0},		0,	0666,
-"fpgaclk",		{Qclk, 0},		0,	0666,
+".", {Qdir, 0, QTDIR}, 0, 0555,
+"fpgamemb", {Qmemb, 0}, FPGASIZE, 0666,
+"fpgamemw", {Qmemw, 0}, FPGASIZE, 0666,
+"fpgaprog", {Qprog, 0}, 0, 0222,
+"fpgastatus", {Qstatus, 0}, 0, 0444,
+"fpgactl", {Qctl, 0}, 0, 0666,
+"fpgaclk", {Qclk, 0}, 0, 0666,
 };
 static char Eodd[] = "odd count or offset";
 static void
@@ -305,14 +305,14 @@ return;
 count >>= 1;
 n = (count+7) >> 3;
 switch(count&7) {
-case 0: do {	*to++ = *from++;
-case 7:		*to++ = *from++;
-case 6:		*to++ = *from++;
-case 5:		*to++ = *from++;
-case 4:		*to++ = *from++;
-case 3:		*to++ = *from++;
-case 2:		*to++ = *from++;
-case 1:		*to++ = *from++;
+case 0: do { *to++ = *from++;
+case 7: *to++ = *from++;
+case 6: *to++ = *from++;
+case 5: *to++ = *from++;
+case 4: *to++ = *from++;
+case 3: *to++ = *from++;
+case 2: *to++ = *from++;
+case 1: *to++ = *from++;
 } while(--n > 0);
 }
 }

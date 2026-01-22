@@ -9,10 +9,10 @@ typedef struct Box Box;
 struct Box
 {
 Control;
-int		border;
-CImage	*bordercolor;
-CImage	*image;
-int		align;
+int border;
+CImage *bordercolor;
+CImage *image;
+int align;
 };
 enum{
 EAlign,
@@ -27,16 +27,16 @@ EShow,
 ESize,
 };
 static char *cmds[] = {
-[EAlign] =		"align",
-[EBorder] =	"border",
+[EAlign] = "align",
+[EBorder] = "border",
 [EBordercolor] ="bordercolor",
-[EFocus] = 	"focus",
-[EHide] =		"hide",
-[EImage] =	"image",
-[ERect] =		"rect",
-[EReveal] =	"reveal",
-[EShow] =		"show",
-[ESize] =		"size",
+[EFocus] = "focus",
+[EHide] = "hide",
+[EImage] = "image",
+[ERect] = "rect",
+[EReveal] = "reveal",
+[EShow] = "show",
+[ESize] = "size",
 nil
 };
 static void

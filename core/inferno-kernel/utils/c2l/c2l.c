@@ -1,19 +1,19 @@
 #define EXTERN
 #include "cc.h"
-#define SZ_CHAR	1
-#define SZ_SHORT	2
-#define SZ_INT	4
-#define SZ_LONG	4
-#define SZ_FLOAT	4
-#define SZ_IND	4
-#define SZ_VLONG	8
-#define SZ_DOUBLE	8
+#define SZ_CHAR 1
+#define SZ_SHORT 2
+#define SZ_INT 4
+#define SZ_LONG 4
+#define SZ_FLOAT 4
+#define SZ_IND 4
+#define SZ_VLONG 8
+#define SZ_DOUBLE 8
 char buf[128], mbuf[128];
 static Sym *sysop, *bioop, *libcop;
 static int again;
-#define	STAR	0x80
-#define	RET		0x80
-#define	LARR	(-1729)
+#define STAR 0x80
+#define RET 0x80
+#define LARR (-1729)
 static void swalk(void);
 static int isdec(Node*);
 static int isconst(Node*, vlong);
@@ -35,7 +35,7 @@ static Node* lastn(Node*);
 static char* hasm(void);
 static void prn(Node*, int);
 static int isfn(Type*);
-schar	ewidth[NTYPE] =
+schar ewidth[NTYPE] =
 {
 -1,
 SZ_CHAR,
@@ -58,7 +58,7 @@ SZ_IND,
 -1,
 SZ_INT,
 };
-long	ncast[NTYPE] =
+long ncast[NTYPE] =
 {
 0,
 BCHAR|BUCHAR,
@@ -98,7 +98,7 @@ SAUTO,
 typedef struct Scope Scope;
 struct Scope{
 Node *n;
-int	k;
+int k;
 Scope *nxt;
 };
 static void
@@ -245,7 +245,7 @@ t->mark = tc;
 static int
 marked(Type *t)
 {
-return t == T ? 0 :  t->mark;
+return t == T ? 0 : t->mark;
 }
 static Sym*
 decsym(Node *n)
@@ -632,7 +632,7 @@ Syml *r;
 typedef struct Modl Modl;
 struct Modl{
 char *mod;
-int	ld;
+int ld;
 Modl *nxt;
 };
 static void
@@ -824,7 +824,7 @@ case CXXX:
 case CTYPEDEF:
 return 1;
 case CEXTERN:
-case	CGLOBL:
+case CGLOBL:
 case CSTATIC:
 case CLOCAL:
 return s->type != T && s->type->etype == TENUM;
@@ -966,152 +966,152 @@ decind();
 pgen0(p);
 }
 static int lastsec = 0;
-#define ASSOC		1
-#define RASSOC	2
-#define POSTOP	4
-#define LEFT	1
-#define RIGHT	2
-#define PRE	4
-#define POST	8
+#define ASSOC 1
+#define RASSOC 2
+#define POSTOP 4
+#define LEFT 1
+#define RIGHT 2
+#define PRE 4
+#define POST 8
 static int space[] = { 0, 0, 2, 0, 4, 5, 0, 0, 0, 9, 10, 0, 0, 0, 0, 0, 0, 0, 0 };
 static struct{
 char *name;
-int	prec;
-int	kind;
+int prec;
+int kind;
 } ops[] = {
-"",		0,	0,
-"",		16,	0,
-"+",		12,	ASSOC,
-"&",		14,	RASSOC,
-"&",		8,	ASSOC,
-"&&",	5,	ASSOC,
-"",		16,	0,
-"=",		2,	RASSOC,
-"=",		2,	RASSOC,
-"+=",		2,	RASSOC,
-"&=",		2,	RASSOC,
-"<<=",	2,	RASSOC,
-">>=",	2,	RASSOC,
-"/=",		2,	RASSOC,
-"<<",		11,	0,
-">>",		11,	0,
-"/=",		2,	RASSOC,
-"%=",		2,	RASSOC,
-"*=",		2,	RASSOC,
-">>=",	2,	RASSOC,
-"%=",		2,	RASSOC,
-"*=",		2,	RASSOC,
-"|=",		2,	RASSOC,
-"-=",		2,	RASSOC,
-"^=",		2,	RASSOC,
-"",		-1,	0,
-"",		-1,	0,
-"",		-1,	0,
-"",		14,	RASSOC,
-"",		1,	ASSOC,
-"",		3,	RASSOC,
-"",		16,	0,
-"",		-1,	0,
-"/",		13,	0,
-".",		15,	0,
-"...",		16,	0,
-"",		-1,	0,
-"",		-1,	0,
-"==",		9,	0,
-"",		-1,	0,
-"",		15,	0,
-">=",		10,	0,
-"",		-1,	0,
-">",		10,	0,
-">",		10,	0,
-">=",		10,	0,
-"",		-1,	0,
-"*",		14,	RASSOC,
-"",		-1,	0,
-"",		16,	0,
-"",		-1,	0,
-"/",		13,	0,
-"<=",		10,	0,
-"",		16,	0,
-"%",		13,	0,
-"*",		13,	ASSOC,
-"<",		10,	0,
-"<=",		10,	0,
-">>",		11,	0,
-"<",		10,	0,
-"%",		13,	0,
-"*",		13,	ASSOC,
-"",		16,	0,
-"!=",		9,	0,
-"!",		14,	RASSOC,
-"|",		6,	ASSOC,
-"||",		4,	ASSOC,
-"--",		14,	RASSOC|POSTOP,
-"++",		14,	RASSOC|POSTOP,
-"--",		14,	RASSOC,
-"++",		14,	RASSOC,
-"",		16,	0,
-"",		-1,	0,
-"",		0,	0,
-"SET",	-1,	0,
-"signof",	14,	RASSOC,
-"sizeof",	14,	RASSOC,
-"",		16,	0,
-"",		16,	0,
-"",		16,	0,
-"-",		12,	0,
-"",		-1,	0,
-"",		16,	0,
-"USED",	-1,	0,
-"",		-1,	0,
-"^",		7,	ASSOC,
-"-",		14,	RASSOC,
-"~",		14,	RASSOC,
-"",		16,	0,
-"",		-1,	0,
-"",		-1,	0,
-"",		-1,	0,
-"",		-1,	0,
-"+",		14,	RASSOC,
-"",		-1,	0,
-".",		15,	0,
-"",		15,	0,
-"",		-1,	0,
-":=",		2,	RASSOC,
-"",		16,	0,
-"",		14,	RASSOC,
-"",		17,	0,
-"",		14,	RASSOC,
-"",		14,	RASSOC,
-"",		15,	0,
-"&",		14,	RASSOC,
-"",		16,	0,
-"",		16,	0,
-"",		16,	0,
-"",		16,	0,
-".",		15,	0,
-"",		16,	0,
-".",		15,	0,
-"",		15,	0,
-"+",		12,	ASSOC,
-"",		-1,	0,
-".",		15,	0,
-"->",		15,	0,
-nil,		-1,	0,
-nil,		-1,	0,
-nil,		-1,	0,
-nil,		-1,	0,
-nil,		-1,	0,
-nil,		-1,	0,
-nil,		-1,	0,
-"",		-1,	0,
+"", 0, 0,
+"", 16, 0,
+"+", 12, ASSOC,
+"&", 14, RASSOC,
+"&", 8, ASSOC,
+"&&", 5, ASSOC,
+"", 16, 0,
+"=", 2, RASSOC,
+"=", 2, RASSOC,
+"+=", 2, RASSOC,
+"&=", 2, RASSOC,
+"<<=", 2, RASSOC,
+">>=", 2, RASSOC,
+"/=", 2, RASSOC,
+"<<", 11, 0,
+">>", 11, 0,
+"/=", 2, RASSOC,
+"%=", 2, RASSOC,
+"*=", 2, RASSOC,
+">>=", 2, RASSOC,
+"%=", 2, RASSOC,
+"*=", 2, RASSOC,
+"|=", 2, RASSOC,
+"-=", 2, RASSOC,
+"^=", 2, RASSOC,
+"", -1, 0,
+"", -1, 0,
+"", -1, 0,
+"", 14, RASSOC,
+"", 1, ASSOC,
+"", 3, RASSOC,
+"", 16, 0,
+"", -1, 0,
+"/", 13, 0,
+".", 15, 0,
+"...", 16, 0,
+"", -1, 0,
+"", -1, 0,
+"==", 9, 0,
+"", -1, 0,
+"", 15, 0,
+">=", 10, 0,
+"", -1, 0,
+">", 10, 0,
+">", 10, 0,
+">=", 10, 0,
+"", -1, 0,
+"*", 14, RASSOC,
+"", -1, 0,
+"", 16, 0,
+"", -1, 0,
+"/", 13, 0,
+"<=", 10, 0,
+"", 16, 0,
+"%", 13, 0,
+"*", 13, ASSOC,
+"<", 10, 0,
+"<=", 10, 0,
+">>", 11, 0,
+"<", 10, 0,
+"%", 13, 0,
+"*", 13, ASSOC,
+"", 16, 0,
+"!=", 9, 0,
+"!", 14, RASSOC,
+"|", 6, ASSOC,
+"||", 4, ASSOC,
+"--", 14, RASSOC|POSTOP,
+"++", 14, RASSOC|POSTOP,
+"--", 14, RASSOC,
+"++", 14, RASSOC,
+"", 16, 0,
+"", -1, 0,
+"", 0, 0,
+"SET", -1, 0,
+"signof", 14, RASSOC,
+"sizeof", 14, RASSOC,
+"", 16, 0,
+"", 16, 0,
+"", 16, 0,
+"-", 12, 0,
+"", -1, 0,
+"", 16, 0,
+"USED", -1, 0,
+"", -1, 0,
+"^", 7, ASSOC,
+"-", 14, RASSOC,
+"~", 14, RASSOC,
+"", 16, 0,
+"", -1, 0,
+"", -1, 0,
+"", -1, 0,
+"", -1, 0,
+"+", 14, RASSOC,
+"", -1, 0,
+".", 15, 0,
+"", 15, 0,
+"", -1, 0,
+":=", 2, RASSOC,
+"", 16, 0,
+"", 14, RASSOC,
+"", 17, 0,
+"", 14, RASSOC,
+"", 14, RASSOC,
+"", 15, 0,
+"&", 14, RASSOC,
+"", 16, 0,
+"", 16, 0,
+"", 16, 0,
+"", 16, 0,
+".", 15, 0,
+"", 16, 0,
+".", 15, 0,
+"", 15, 0,
+"+", 12, ASSOC,
+"", -1, 0,
+".", 15, 0,
+"->", 15, 0,
+nil, -1, 0,
+nil, -1, 0,
+nil, -1, 0,
+nil, -1, 0,
+nil, -1, 0,
+nil, -1, 0,
+nil, -1, 0,
+"", -1, 0,
 };
-#define COMPLEX	32
-#define NOBR	2
-#define NOIN	4
-#define YESBR	8
-#define NONL	16
-#define NOENL	32
+#define COMPLEX 32
+#define NOBR 2
+#define NOIN 4
+#define YESBR 8
+#define NONL 16
+#define NOENL 32
 enum{
 LNONE,
 LSTRLEN,
@@ -1147,7 +1147,7 @@ static Type* ntype(Node*);
 static int rewe(Node*, Type*, int);
 static void rewlc(Node*, int, Type*);
 static Node* con(vlong);
-static void	clrbrk(Node*);
+static void clrbrk(Node*);
 static int hasbrk(Node*);
 static int isgen(char*);
 static int simple(Node*);
@@ -1163,10 +1163,10 @@ static int
 rev(int op)
 {
 switch(op){
-case OLT:	return OGT;
-case OLE:	return OGE;
-case OGT:	return OLT;
-case OGE:	return OLE;
+case OLT: return OGT;
+case OLE: return OGE;
+case OGT: return OLT;
+case OGE: return OLE;
 }
 return op;
 }
@@ -1699,7 +1699,7 @@ return teq(n->type, nn->type) && isname(n) && isname(nn) && n->type->etype != TA
 void
 vtgen2(Node *n)
 {
-int  t, c, comma = 0;
+int t, c, comma = 0;
 Node *nn;
 Sym *s;
 nn = n;
@@ -1851,8 +1851,8 @@ n = con(s->vconst);
 n->kind = s->kind;
 return n;
 }
-#define ARITH	1
-#define GEOM	2
+#define ARITH 1
+#define GEOM 2
 static Syml*
 newsyml(Sym *s, Syml **frees)
 {
@@ -2267,7 +2267,7 @@ prdelim(": ");
 tgen(n->left->type->link, 0, 0);
 }
 break;
-case	ONIL:
+case ONIL:
 prid("nil");
 break;
 case OCAST:
@@ -3575,45 +3575,45 @@ return i;
 }
 static struct{
 char *name;
-int	args;
-int	fd;
+int args;
+int fd;
 char *lname;
 } sysops[] = {
-"create",	1,	RET,	nil,
-"dirstat",	1,	0,	"stat",
-"dirfstat",	0,	1,	"fstat",
-"dirwstat",	1,	0,	"wstat",
-"dirfwstat",	0,	1,	"fwstat",
-"dirread",	0,	1,	nil,
-"dup",	0,	0,	nil,
-"fprint",	2|STAR,	1,	nil,
-"fprintf",	2|STAR,	1,	"fprint",
-"open",	1,	RET,	nil,
-"print",	1|STAR,	0,	nil,
-"printf",	1|STAR,	0,	"print",
-"read",	0,	1,	nil,
-"remove",	1,	0,	nil,
-"seek",	0,	1,	nil,
-"sleep",	0,	0,	nil,
-"sprint",	1|STAR,	0,	nil,
-"sprintf",	1|STAR,	0,	"sprint",
-"write",	0,	1,	nil,
+"create", 1, RET, nil,
+"dirstat", 1, 0, "stat",
+"dirfstat", 0, 1, "fstat",
+"dirwstat", 1, 0, "wstat",
+"dirfwstat", 0, 1, "fwstat",
+"dirread", 0, 1, nil,
+"dup", 0, 0, nil,
+"fprint", 2|STAR, 1, nil,
+"fprintf", 2|STAR, 1, "fprint",
+"open", 1, RET, nil,
+"print", 1|STAR, 0, nil,
+"printf", 1|STAR, 0, "print",
+"read", 0, 1, nil,
+"remove", 1, 0, nil,
+"seek", 0, 1, nil,
+"sleep", 0, 0, nil,
+"sprint", 1|STAR, 0, nil,
+"sprintf", 1|STAR, 0, "sprint",
+"write", 0, 1, nil,
 0
 };
-#define BIOTMP	"__bio__"
+#define BIOTMP "__bio__"
 static struct{
-char	*name;
-char	*lname;
+char *name;
+char *lname;
 } bioops[] = {
-"Bflush",	"flush",
-"Bgetc",	"getc",
-"Bprint",	"puts",
-"Bputc",	"putc",
-"Bread",	"read",
-"Bseek",	"seek",
-"Bungetc",	"ungetc",
-"Bwrite",	"write",
-BIOTMP,	nil,
+"Bflush", "flush",
+"Bgetc", "getc",
+"Bprint", "puts",
+"Bputc", "putc",
+"Bread", "read",
+"Bseek", "seek",
+"Bungetc", "ungetc",
+"Bwrite", "write",
+BIOTMP, nil,
 0
 };
 char *libcops[] = {
@@ -3641,35 +3641,35 @@ char *libcops[] = {
 };
 static struct{
 char *name;
-int	type;
-int	string;
+int type;
+int string;
 } xops[] = {
-"strlen",	LSTRLEN,	1,
-"strcmp",	LSTRCMP,	1,
-"strcpy",	LSTRCPY,	1,
-"strcat",	LSTRCAT,	1,
-"strncmp",	LSTRNCMP,	1,
-"strncpy",	LSTRNCPY,	1,
-"strncat",	LSTRNCAT,	1,
-"strdup",	LSTRDUP,	1,
-"memcpy",	LMEMMOVE,	0,
-"memmove",	LMEMMOVE,	0,
-"malloc",	LMALLOC,	0,
-"free",	LFREE,	0,
-"exit",	LEXIT,	0,
-"exits",	LEXIT,	0,
-"close",	LCLOSE,	0,
-"atoi",	LATOI,	0,
-"atol",	LATOI,	0,
-"atoll",	LATOL,	0,
-"atof",	LATOF,	0,
-"atod",	LATOF,	0,
-"print",	LPRINT,	0,
-"printf",	LPRINT,	0,
-"fprint",	LFPRINT,	0,
-"fprintf",	LFPRINT,	0,
-"sprint",	LSPRINT,	0,
-"sprintf",	LSPRINT,	0,
+"strlen", LSTRLEN, 1,
+"strcmp", LSTRCMP, 1,
+"strcpy", LSTRCPY, 1,
+"strcat", LSTRCAT, 1,
+"strncmp", LSTRNCMP, 1,
+"strncpy", LSTRNCPY, 1,
+"strncat", LSTRNCAT, 1,
+"strdup", LSTRDUP, 1,
+"memcpy", LMEMMOVE, 0,
+"memmove", LMEMMOVE, 0,
+"malloc", LMALLOC, 0,
+"free", LFREE, 0,
+"exit", LEXIT, 0,
+"exits", LEXIT, 0,
+"close", LCLOSE, 0,
+"atoi", LATOI, 0,
+"atol", LATOI, 0,
+"atoll", LATOL, 0,
+"atof", LATOF, 0,
+"atod", LATOF, 0,
+"print", LPRINT, 0,
+"printf", LPRINT, 0,
+"fprint", LFPRINT, 0,
+"fprintf", LFPRINT, 0,
+"sprint", LSPRINT, 0,
+"sprintf", LSPRINT, 0,
 0
 };
 char *mathsops[] = {

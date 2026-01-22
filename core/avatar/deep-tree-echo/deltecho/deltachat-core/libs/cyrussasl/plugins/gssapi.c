@@ -5,17 +5,17 @@
 #include <gssapi/gssapi.h>
 #endif
 #ifdef WIN32
-#  include <winsock2.h>
-#  ifndef R_OK
-#    define R_OK 04
-#  endif
-#  include <io.h>
+# include <winsock2.h>
+# ifndef R_OK
+# define R_OK 04
+# endif
+# include <io.h>
 #else
-#  include <sys/param.h>
-#  include <sys/socket.h>
-#  include <netinet/in.h>
-#  include <arpa/inet.h>
-#  include <netdb.h>
+# include <sys/param.h>
+# include <sys/socket.h>
+# include <netinet/in.h>
+# include <arpa/inet.h>
+# include <netdb.h>
 #endif
 #include <fcntl.h>
 #include <stdio.h>
@@ -37,17 +37,17 @@ extern gss_OID gss_nt_service_name;
 #endif
 #ifdef WANT_KERBEROS5_3DES
 #ifdef CSF_GSS_C_DES3_FLAG
-#define K5_MAX_SSF	112
+#define K5_MAX_SSF 112
 #endif
 #ifdef GSS_KRB5_CONF_C_QOP_DES3_KD
-#define K5_MAX_SSF	112
+#define K5_MAX_SSF 112
 #endif
 #endif
 #ifndef K5_MAX_SSF
-#define K5_MAX_SSF	56
+#define K5_MAX_SSF 56
 #endif
 #ifdef GSS_USE_MUTEXES
-#define GSS_LOCK_MUTEX(utils)  \
+#define GSS_LOCK_MUTEX(utils) \
 if(((sasl_utils_t *)(utils))->mutex_lock(gss_mutex) != 0) { \
 return SASL_FAIL; \
 }
@@ -65,8 +65,8 @@ int state;
 gss_OID mech_type;
 int http_mode;
 gss_ctx_id_t gss_ctx;
-gss_name_t   client_name;
-gss_name_t   server_name;
+gss_name_t client_name;
+gss_name_t server_name;
 gss_cred_id_t server_creds;
 gss_cred_id_t client_creds;
 sasl_ssf_t limitssf, requiressf;
@@ -91,9 +91,9 @@ SASL_GSSAPI_STATE_SSFCAP = 2,
 SASL_GSSAPI_STATE_SSFREQ = 3,
 SASL_GSSAPI_STATE_AUTHENTICATED = 4
 };
-#define LAYER_CONFIDENTIALITY	4
-#define LAYER_INTEGRITY		2
-#define LAYER_NONE		1
+#define LAYER_CONFIDENTIALITY 4
+#define LAYER_INTEGRITY 2
+#define LAYER_NONE 1
 #define sasl_gss_log(x,y,z) sasl_gss_seterror_(x,y,z,1)
 #define sasl_gss_seterror(x,y,z) sasl_gss_seterror_(x,y,z,0)
 static int
@@ -220,7 +220,7 @@ inblob = &bufinfo;
 }
 if (text->state != SASL_GSSAPI_STATE_AUTHENTICATED) return SASL_NOTDONE;
 input_token = &real_input_token;
-real_input_token.value  = inblob->data;
+real_input_token.value = inblob->data;
 real_input_token.length = inblob->curlen;
 output_token = &real_output_token;
 output_token->value = NULL;
@@ -980,8 +980,8 @@ if (ret != SASL_OK) {
 sasl_gss_free_context_contents(text);
 return ret;
 }
-if (text->client_creds != GSS_C_NO_CREDENTIAL)	{
-oparams->client_creds =  &text->client_creds;
+if (text->client_creds != GSS_C_NO_CREDENTIAL) {
+oparams->client_creds = &text->client_creds;
 }
 else {
 oparams->client_creds = NULL;
@@ -1109,7 +1109,7 @@ text->mech_type = (gss_OID) glob_context;
 text->gss_ctx = GSS_C_NO_CONTEXT;
 text->client_name = GSS_C_NO_NAME;
 text->server_creds = GSS_C_NO_CREDENTIAL;
-text->client_creds  = GSS_C_NO_CREDENTIAL;
+text->client_creds = GSS_C_NO_CREDENTIAL;
 text->http_mode = (params->flags & SASL_NEED_HTTP);
 *conn_context = text;
 return SASL_OK;
@@ -1216,7 +1216,7 @@ req_flags |= GSS_C_CONF_FLAG;
 }
 }
 if (params->props.security_flags & SASL_SEC_PASS_CREDENTIALS) {
-req_flags = req_flags |  GSS_C_DELEG_FLAG;
+req_flags = req_flags | GSS_C_DELEG_FLAG;
 }
 GSS_LOCK_MUTEX(params->utils);
 maj_stat = gss_init_sec_context(&min_stat,

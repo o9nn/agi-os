@@ -1,27 +1,27 @@
 #include "lib9.h"
 #include "draw.h"
 #include "tk.h"
-#define	O(t, e)		((long)(&((t*)0)->e))
+#define O(t, e) ((long)(&((t*)0)->e))
 typedef struct Pack Pack;
 struct Pack
 {
-Tk*	t;
-Pack*	next;
+Tk* t;
+Pack* next;
 };
 static Pack *packorder;
 static int tkpacker(Tk *);
 typedef struct TkParam TkParam;
 struct TkParam
 {
-Point	pad;
-Point	ipad;
-int	side;
-int	anchor;
-int	fill;
-Tk*	in;
-Tk*	before;
-Tk*	after;
-int	expand;
+Point pad;
+Point ipad;
+int side;
+int anchor;
+int fill;
+Tk* in;
+Tk* before;
+Tk* after;
+int expand;
 };
 TkParam defparam = {
 {-1, -1},
@@ -37,35 +37,35 @@ BoolX
 static
 TkStab tkside[] =
 {
-"top",		Tktop,
-"bottom",	Tkbottom,
-"left",		Tkleft,
-"right",	Tkright,
+"top", Tktop,
+"bottom", Tkbottom,
+"left", Tkleft,
+"right", Tkright,
 nil
 };
 static
 TkStab tkfill[] =
 {
-"none",		0,
-"x",		Tkfillx,
-"y",		Tkfilly,
-"both",		Tkfillx|Tkfilly,
+"none", 0,
+"x", Tkfillx,
+"y", Tkfilly,
+"both", Tkfillx|Tkfilly,
 nil
 };
 static
 TkOption opts[] =
 {
-"padx",		OPTnndist,	O(TkParam, pad.x),	nil,
-"pady",		OPTnndist,	O(TkParam, pad.y),	nil,
-"ipadx",	OPTnndist,	O(TkParam, ipad.x),	nil,
-"ipady",	OPTnndist,	O(TkParam, ipad.y),	nil,
-"side",		OPTstab,	O(TkParam, side),	tkside,
-"anchor",	OPTstab,	O(TkParam, anchor),	tkanchor,
-"fill",		OPTstab,	O(TkParam, fill),	tkfill,
-"in",		OPTwinp,	O(TkParam, in),		nil,
-"before",	OPTwinp,	O(TkParam, before),	nil,
-"after",	OPTwinp,	O(TkParam, after),	nil,
-"expand",	OPTstab,	O(TkParam, expand),	tkbool,
+"padx", OPTnndist, O(TkParam, pad.x), nil,
+"pady", OPTnndist, O(TkParam, pad.y), nil,
+"ipadx", OPTnndist, O(TkParam, ipad.x), nil,
+"ipady", OPTnndist, O(TkParam, ipad.y), nil,
+"side", OPTstab, O(TkParam, side), tkside,
+"anchor", OPTstab, O(TkParam, anchor), tkanchor,
+"fill", OPTstab, O(TkParam, fill), tkfill,
+"in", OPTwinp, O(TkParam, in), nil,
+"before", OPTwinp, O(TkParam, before), nil,
+"after", OPTwinp, O(TkParam, after), nil,
+"expand", OPTstab, O(TkParam, expand), tkbool,
 nil
 };
 void

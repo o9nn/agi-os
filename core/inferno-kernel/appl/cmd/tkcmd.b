@@ -12,7 +12,7 @@ tkclient: Tkclient;
 include "bufio.m";
 include "arg.m";
 Tkcmd : module {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 usage()
 {
@@ -26,10 +26,10 @@ raise "fail:bad module";
 }
 init(ctxt: ref Draw->Context, argv: list of string)
 {
-sys  = load Sys  Sys->PATH;
+sys = load Sys Sys->PATH;
 stderr = sys->fildes(2);
 draw = load Draw Draw->PATH;
-tk = load Tk   Tk->PATH;
+tk = load Tk Tk->PATH;
 if (tk == nil)
 badmodule(Tk->PATH);
 tkclient = load Tkclient Tkclient->PATH;
@@ -122,7 +122,7 @@ grab_lines(new_inp, unfin: string, lines: chan of string, sync: chan of int)
 sync <-= sys->pctl(0, nil);
 {
 bufmod := load Bufio Bufio->PATH;
-Iobuf:	import bufmod;
+Iobuf: import bufmod;
 if (bufmod == nil) {
 lines <-= nil;
 return;

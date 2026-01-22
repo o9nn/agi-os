@@ -1,5 +1,5 @@
 #ifndef gsbitops_INCLUDED
-#  define gsbitops_INCLUDED
+# define gsbitops_INCLUDED
 #define sample_end_\
 default: return_error(gs_error_rangecheck);\
 } END
@@ -192,9 +192,9 @@ BEGIN bit += (bpv); ptr += bit >> 3; bit &= 7; END
 #define mono_fill_chunk uint
 #define mono_fill_chunk_bytes arch_sizeof_int
 #if mono_fill_chunk_bytes == 2
-#  define mono_fill_make_pattern(byt) (uint)((uint)(byt) * 0x0101)
+# define mono_fill_make_pattern(byt) (uint)((uint)(byt) * 0x0101)
 #else
-#  define mono_fill_make_pattern(byt) (uint)((uint)(byt) * 0x01010101)
+# define mono_fill_make_pattern(byt) (uint)((uint)(byt) * 0x01010101)
 #endif
 void bits_fill_rectangle(byte * dest, int dest_bit, uint raster,
 mono_fill_chunk pattern, int width_bits, int height);

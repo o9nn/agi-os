@@ -296,7 +296,7 @@ dcrypt_deinitialize();
 }
 int main(int argc, char **argv)
 {
-void (*tests[])(void)  = {
+void (*tests[])(void) = {
 test_setup,
 test_generate_user_key,
 test_generate_inbox_key,

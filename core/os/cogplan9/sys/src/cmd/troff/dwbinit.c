@@ -4,25 +4,25 @@
 #include <stdlib.h>
 #include "dwbinit.h"
 #ifndef DWBCONFIG
-#define DWBCONFIG	"/dev/null"
+#define DWBCONFIG "/dev/null"
 #endif
 #ifndef DWBENV
-#define DWBENV		"DWBHOME"
+#define DWBENV "DWBHOME"
 #endif
 #ifndef DWBHOME
-#define DWBHOME		""
+#define DWBHOME ""
 #endif
 #ifndef DWBDEBUG
-#define DWBDEBUG	"DWBDEBUG"
+#define DWBDEBUG "DWBDEBUG"
 #endif
 #ifndef DWBPREFIX
-#define DWBPREFIX	"\\*(.P"
+#define DWBPREFIX "\\*(.P"
 #endif
 void DWBdebug(dwbinit *ptr, int level)
 {
-char	*path;
-char	*home;
-static char	*debug = NULL;
+char *path;
+char *home;
+static char *debug = NULL;
 if ( debug == NULL && (debug = getenv(DWBDEBUG)) == NULL )
 debug = "OFF";
 if ( strcmp(debug, "ON") == 0 ) {
@@ -46,12 +46,12 @@ fprintf(stderr, "  WARNING - absolute path\n");
 }
 char *DWBhome(void)
 {
-FILE	*fp;
-char	*ptr;
-char	*path;
-int		len;
-char	buf[200];
-char	*home = NULL;
+FILE *fp;
+char *ptr;
+char *path;
+int len;
+char buf[200];
+char *home = NULL;
 if ( (fp = fopen(DWBCONFIG, "r")) != NULL ) {
 len = strlen(DWBENV);
 while ( fgets(buf, sizeof(buf), fp) != NULL ) {
@@ -80,12 +80,12 @@ return(home);
 }
 void DWBinit(char *prog, dwbinit *paths)
 {
-char	*prefix;
-char	*value;
-char	*path;
-int		plen;
-int		length;
-dwbinit	*opaths = paths;
+char *prefix;
+char *value;
+char *path;
+int plen;
+int length;
+dwbinit *opaths = paths;
 if ( (prefix = DWBhome()) == NULL ) {
 fprintf(stderr, "%s: no DWB home directory\n", prog);
 exit(1);
@@ -132,9 +132,9 @@ DWBdebug(opaths, 1);
 }
 void DWBprefix( char *prog, char *path, int length)
 {
-char	*home;
-char	buf[512];
-int		len = strlen(DWBPREFIX);
+char *home;
+char buf[512];
+int len = strlen(DWBPREFIX);
 if ( strncmp(path, DWBPREFIX, len) == 0 ) {
 if ( (home = DWBhome()) != NULL ) {
 if ( strlen(home) + strlen(path+len) < length ) {

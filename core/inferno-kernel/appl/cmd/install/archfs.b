@@ -18,14 +18,14 @@ arch : Arch;
 # add write some day
 Iobuf : import bufio;
 Tmsg, Rmsg: import styx;
-Einuse		: con "fid already in use";
-Ebadfid		: con "bad fid";
-Eopen		: con "fid already opened";
-Enotfound	: con "file does not exist";
-Enotdir		: con "not a directory";
-Eperm		: con "permission denied";
-Ebadarg		: con "bad argument";
-Eexists		: con "file already exists";
+Einuse : con "fid already in use";
+Ebadfid : con "bad fid";
+Eopen : con "fid already opened";
+Enotfound : con "file does not exist";
+Enotdir : con "not a directory";
+Eperm : con "permission denied";
+Ebadarg : con "bad argument";
+Eexists : con "file already exists";
 UID : con "inferno";
 GID : con "inferno";
 DEBUG: con 0;
@@ -52,7 +52,7 @@ buf : array of byte;
 skip := 0;
 # Archfs : module
 # {
-# 	init : fn(ctxt : ref Draw->Context, args : list of string);
+# init : fn(ctxt : ref Draw->Context, args : list of string);
 # };
 init(nil : ref Draw->Context, args : list of string)
 {
@@ -180,7 +180,7 @@ err = 1;
 }
 break;
 }
-dir  = lookup(dir, m.names[k]);
+dir = lookup(dir, m.names[k]);
 if (dir == nil) {
 if(k == 0){
 error(fd, m, Enotfound);
@@ -517,9 +517,9 @@ return d;
 }
 # pr(d : ref Dir)
 # {
-#	dir := d.dir;
-#	sys->print("%s %s %s %x %x %x %d %d %d %d %d %d\n",
-#		dir.name, dir.uid, dir.gid, dir.qid.path, dir.qid.vers, dir.mode, dir.atime, dir.mtime, dir.length, dir.dtype, dir.dev, d.offset);
+# dir := d.dir;
+# sys->print("%s %s %s %x %x %x %d %d %d %d %d %d\n",
+# dir.name, dir.uid, dir.gid, dir.qid.path, dir.qid.vers, dir.mode, dir.atime, dir.mtime, dir.length, dir.dtype, dir.dev, d.offset);
 # }
 fatal(e : string, pr: int)
 {

@@ -178,57 +178,57 @@ ISELF,
 };
 enum
 {
-MAXDIS	= ISELF+1,
-XMAGIC	= 819248,
-SMAGIC	= 923426,
-AMP	= 0x00,
-AFP	= 0x01,
-AIMM	= 0x02,
-AXXX	= 0x03,
-AIND	= 0x04,
-AMASK	= 0x07,
-AOFF	= 0x08,
-AVAL	= 0x10,
-ARM	= 0xC0,
-AXNON	= 0x00,
-AXIMM	= 0x40,
-AXINF	= 0x80,
-AXINM	= 0xC0,
-DEFZ	= 0,
-DEFB	= 1,
-DEFW	= 2,
-DEFS	= 3,
-DEFF	= 4,
-DEFA	= 5,
-DIND	= 6,
-DAPOP	= 7,
-DEFL	= 8,
+MAXDIS = ISELF+1,
+XMAGIC = 819248,
+SMAGIC = 923426,
+AMP = 0x00,
+AFP = 0x01,
+AIMM = 0x02,
+AXXX = 0x03,
+AIND = 0x04,
+AMASK = 0x07,
+AOFF = 0x08,
+AVAL = 0x10,
+ARM = 0xC0,
+AXNON = 0x00,
+AXIMM = 0x40,
+AXINF = 0x80,
+AXINM = 0xC0,
+DEFZ = 0,
+DEFB = 1,
+DEFW = 2,
+DEFS = 3,
+DEFF = 4,
+DEFA = 5,
+DIND = 6,
+DAPOP = 7,
+DEFL = 8,
 DEFSS = 9,
 DADEPTH = 4,
-REGLINK	= 0,
+REGLINK = 0,
 REGFRAME= 1,
-REGMOD	= 2,
-REGTYP	= 3,
-REGRET	= 4,
-NREG	= 5,
-IBY2WD	= 4,
-IBY2FT	= 8,
-IBY2LG	= 8,
-MUSTCOMPILE	= (1<<0),
-DONTCOMPILE	= (1<<1),
-SHAREMP		= (1<<2),
-DYNMOD		= (1<<3),
-HASLDT0	= (1<<4),
-HASEXCEPT	= (1<<5),
-HASLDT	= (1<<6),
+REGMOD = 2,
+REGTYP = 3,
+REGRET = 4,
+NREG = 5,
+IBY2WD = 4,
+IBY2FT = 8,
+IBY2LG = 8,
+MUSTCOMPILE = (1<<0),
+DONTCOMPILE = (1<<1),
+SHAREMP = (1<<2),
+DYNMOD = (1<<3),
+HASLDT0 = (1<<4),
+HASEXCEPT = (1<<5),
+HASLDT = (1<<6),
 };
-#define DTYPE(x)	(x>>4)
-#define DBYTE(x, l)	((x<<4)|l)
-#define DMAX		(1<<4)
-#define DLEN(x)		(x& (DMAX-1))
-#define SRC(x)		((x)<<3)
-#define DST(x)		((x)<<0)
-#define USRC(x)		(((x)>>3)&AMASK)
-#define UDST(x)		((x)&AMASK)
-#define UXSRC(x)	((x)&(AMASK<<3))
-#define UXDST(x)	((x)&(AMASK<<0))
+#define DTYPE(x) (x>>4)
+#define DBYTE(x, l) ((x<<4)|l)
+#define DMAX (1<<4)
+#define DLEN(x) (x& (DMAX-1))
+#define SRC(x) ((x)<<3)
+#define DST(x) ((x)<<0)
+#define USRC(x) (((x)>>3)&AMASK)
+#define UDST(x) ((x)&AMASK)
+#define UXSRC(x) ((x)&(AMASK<<3))
+#define UXDST(x) ((x)&(AMASK<<0))

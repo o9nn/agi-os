@@ -230,7 +230,7 @@ c = p;
 <-reshape =>
 ch = 'r';
 rc := <-rq =>
-rl  = rc :: rl;
+rl = rc :: rl;
 continue;
 }
 if(rl == nil)
@@ -277,7 +277,7 @@ if(sys->bind("#₪", "/srv", Sys->MCREATE) == -1){
 sync <-= sys->sprint("cannot bind srv device: %r");
 exit;
 }
-srvname := "/srv/9win."+string sys->pctl(0, nil);	# XXX do better.
+srvname := "/srv/9win."+string sys->pctl(0, nil); # XXX do better.
 fd := sys->create(srvname, Sys->ORDWR, 8r600);
 if(fd == nil){
 sync <-= sys->sprint("cannot create %s: %r", srvname);
@@ -305,22 +305,22 @@ ctl <-= "exit";
 inf2p9key(c: int): int
 {
 KF: import Keyboard;
-P9KF: con	16rF000;
-Spec: con	16rF800;
-Khome: con	P9KF|16r0D;
-Kup: con	P9KF|16r0E;
-Kpgup: con	P9KF|16r0F;
-Kprint: con	P9KF|16r10;
-Kleft: con	P9KF|16r11;
-Kright: con	P9KF|16r12;
-Kdown: con	Spec|16r00;
-Kview: con	Spec|16r00;
-Kpgdown: con	P9KF|16r13;
-Kins: con	P9KF|16r14;
-Kend: con	P9KF|16r18;
-Kalt: con		P9KF|16r15;
-Kshift: con	P9KF|16r16;
-Kctl: con		P9KF|16r17;
+P9KF: con 16rF000;
+Spec: con 16rF800;
+Khome: con P9KF|16r0D;
+Kup: con P9KF|16r0E;
+Kpgup: con P9KF|16r0F;
+Kprint: con P9KF|16r10;
+Kleft: con P9KF|16r11;
+Kright: con P9KF|16r12;
+Kdown: con Spec|16r00;
+Kview: con Spec|16r00;
+Kpgdown: con P9KF|16r13;
+Kins: con P9KF|16r14;
+Kend: con P9KF|16r18;
+Kalt: con P9KF|16r15;
+Kshift: con P9KF|16r16;
+Kctl: con P9KF|16r17;
 case c {
 Keyboard->LShift =>
 return Kshift;
@@ -407,7 +407,7 @@ s = s[1:];
 n--;
 }
 for(i := 0; i < n; i++) {
-if(s[i] == '-' && i > 0 && i < n-1)  {
+if(s[i] == '-' && i > 0 && i < n-1) {
 if(c >= s[i-1] && c <= s[i+1]) {
 ans = 1;
 break;

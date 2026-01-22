@@ -1,8 +1,8 @@
 #ifndef gsstruct_INCLUDED
-#  define gsstruct_INCLUDED
+# define gsstruct_INCLUDED
 #include "gsstype.h"
 #ifndef obj_header_DEFINED
-#  define obj_header_DEFINED
+# define obj_header_DEFINED
 typedef struct obj_header_s obj_header_t;
 #endif
 struct gs_ptr_procs_s {
@@ -28,7 +28,7 @@ gs_ptr_type_t ptype;
 void **p;
 bool free_on_unregister;
 };
-#define public_st_gc_root_t()	\
+#define public_st_gc_root_t() \
 gs_public_st_ptrs1(st_gc_root_t, gs_gc_root_t, "gs_gc_root_t",\
 gc_root_enum_ptrs, gc_root_reloc_ptrs, next)
 #define if_debug_root(c, msg, rp)\
@@ -78,7 +78,7 @@ GC_ELT_STRING,
 GC_ELT_CONST_STRING
 } gc_ptr_type_index_t;
 typedef struct gc_ptr_element_s {
-ushort  type;
+ushort type;
 ushort offset;
 } gc_ptr_element_t;
 #define GC_OBJ_ELT(typ, elt)\
@@ -135,23 +135,23 @@ ENUM_PTRS_BEGIN_PROC(proc)\
 #define ENUM_PTRS_WITH(proc, stype_ptr)\
 ENUM_PTRS_BEGIN_PROC(proc)\
 { EV_CONST stype_ptr = vptr; switch ( index ) { default:
-#define ENUM_OBJ(optr)		\
+#define ENUM_OBJ(optr) \
 (pep->ptr = (const void *)(optr), ptr_struct_type)
 #define ENUM_STRING2(sdata, ssize) \
 (pep->ptr = sdata, pep->size = ssize, ptr_string_type)
-#define ENUM_STRING(sptr)	\
+#define ENUM_STRING(sptr) \
 ENUM_STRING2((sptr)->data, (sptr)->size)
-#define ENUM_CONST_STRING2(sdata, ssize)	\
+#define ENUM_CONST_STRING2(sdata, ssize) \
 (pep->ptr = sdata, pep->size = ssize, ptr_const_string_type)
-#define ENUM_CONST_STRING(sptr)	\
+#define ENUM_CONST_STRING(sptr) \
 ENUM_CONST_STRING2((sptr)->data, (sptr)->size)
 extern gs_ptr_type_t
 enum_bytestring(enum_ptr_t *pep, const gs_bytestring *pbs);
-#define ENUM_BYTESTRING(ptr)	\
+#define ENUM_BYTESTRING(ptr) \
 enum_bytestring(pep, ptr)
 extern gs_ptr_type_t
 enum_const_bytestring(enum_ptr_t *pep, const gs_const_bytestring *pbs);
-#define ENUM_CONST_BYTESTRING(ptr)  \
+#define ENUM_CONST_BYTESTRING(ptr) \
 enum_const_bytestring(pep, ptr)
 #define ENUM_OBJ_ELT(typ, elt)\
 ENUM_OBJ(((const typ *)vptr)->elt)
@@ -174,7 +174,7 @@ case i: return ENUM_PARAM_STRING_ELT(typ, elt)
 #define ENUM_CONST_STRING_PTR(i, typ, elt)\
 case i: return ENUM_CONST_STRING_ELT(typ, elt)
 #define ENUM_PTRS_END\
-}  ENUM_PTRS_END_PROC }
+} ENUM_PTRS_END_PROC }
 #define ENUM_PTRS_END_PROC
 #define RELOC_PTRS_BEGIN(proc)\
 void proc(void *vptr, uint size, const gs_memory_struct_type_t *pstype, gc_state_t *gcst) {
@@ -184,7 +184,7 @@ RELOC_PTRS_BEGIN(proc) stype_ptr = vptr;
 (gc_proc(gcst, reloc_struct_ptr)((const void *)(ptr), gcst))
 #define RELOC_OBJ_VAR(ptrvar)\
 (ptrvar = RELOC_OBJ(ptrvar))
-#define RELOC_VAR(ptrvar)	\
+#define RELOC_VAR(ptrvar) \
 RELOC_OBJ_VAR(ptrvar)
 #define RELOC_STRING_VAR(ptrvar)\
 (gc_proc(gcst, reloc_string)(&(ptrvar), gcst))

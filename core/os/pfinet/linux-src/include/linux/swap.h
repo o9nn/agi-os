@@ -1,9 +1,9 @@
 #ifndef _LINUX_SWAP_H
 #define _LINUX_SWAP_H
 #include <asm/page.h>
-#define SWAP_FLAG_PREFER	0x8000
-#define SWAP_FLAG_PRIO_MASK	0x7fff
-#define SWAP_FLAG_PRIO_SHIFT	0
+#define SWAP_FLAG_PREFER 0x8000
+#define SWAP_FLAG_PRIO_MASK 0x7fff
+#define SWAP_FLAG_PRIO_SHIFT 0
 #define MAX_SWAPFILES 8
 union swap_header {
 struct
@@ -13,7 +13,7 @@ char magic[10];
 } magic;
 struct
 {
-char	     bootbits[1024];
+char bootbits[1024];
 unsigned int version;
 unsigned int last_page;
 unsigned int nr_badpages;
@@ -27,11 +27,11 @@ unsigned int badpages[1];
 ((__swapoffset(magic.magic) - __swapoffset(info.badpages)) / sizeof(int))
 #undef DEBUG_SWAP
 #include <asm/atomic.h>
-#define SWP_USED	1
-#define SWP_WRITEOK	3
+#define SWP_USED 1
+#define SWP_WRITEOK 3
 #define SWAP_CLUSTER_MAX 32
-#define SWAP_MAP_MAX	0x7fff
-#define SWAP_MAP_BAD	0x8000
+#define SWAP_MAP_MAX 0x7fff
+#define SWAP_MAP_BAD 0x8000
 struct swap_info_struct {
 unsigned int flags;
 kdev_t swap_device;
@@ -111,7 +111,7 @@ if (PageSwapCache(page))
 count += swap_count(page->offset) - 2;
 if (PageFreeAfter(page))
 count--;
-return  count > 1;
+return count > 1;
 }
 #endif
 #endif

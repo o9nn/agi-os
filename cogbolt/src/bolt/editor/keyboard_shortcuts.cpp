@@ -215,93 +215,93 @@ initFileTreeShortcuts();
 initSearchShortcuts();
 }
 void KeyboardShortcuts::initGlobalShortcuts() {
-registerShortcut("Ctrl+S", "save", []() {  },
+registerShortcut("Ctrl+S", "save", []() { },
 ShortcutContext::Global, "Save current file");
-registerShortcut("Ctrl+O", "open", []() {  },
+registerShortcut("Ctrl+O", "open", []() { },
 ShortcutContext::Global, "Open file");
-registerShortcut("Ctrl+N", "new", []() {  },
+registerShortcut("Ctrl+N", "new", []() { },
 ShortcutContext::Global, "Create new file");
-registerShortcut("Ctrl+Shift+S", "saveAs", []() {  },
+registerShortcut("Ctrl+Shift+S", "saveAs", []() { },
 ShortcutContext::Global, "Save file as");
-registerShortcut("Ctrl+W", "close", []() {  },
+registerShortcut("Ctrl+W", "close", []() { },
 ShortcutContext::Global, "Close current file");
-registerShortcut("Ctrl+Shift+T", "reopenTab", []() {  },
+registerShortcut("Ctrl+Shift+T", "reopenTab", []() { },
 ShortcutContext::Global, "Reopen last closed tab");
 }
 void KeyboardShortcuts::initEditorShortcuts() {
-registerShortcut("Ctrl+Z", "undo", []() {  },
+registerShortcut("Ctrl+Z", "undo", []() { },
 ShortcutContext::Editor, "Undo");
-registerShortcut("Ctrl+Y", "redo", []() {  },
+registerShortcut("Ctrl+Y", "redo", []() { },
 ShortcutContext::Editor, "Redo");
-registerShortcut("Ctrl+Shift+Z", "redo", []() {  },
+registerShortcut("Ctrl+Shift+Z", "redo", []() { },
 ShortcutContext::Editor, "Redo (alternative)");
-registerShortcut("Ctrl+X", "cut", []() {  },
+registerShortcut("Ctrl+X", "cut", []() { },
 ShortcutContext::Editor, "Cut");
-registerShortcut("Ctrl+C", "copy", []() {  },
+registerShortcut("Ctrl+C", "copy", []() { },
 ShortcutContext::Editor, "Copy");
-registerShortcut("Ctrl+V", "paste", []() {  },
+registerShortcut("Ctrl+V", "paste", []() { },
 ShortcutContext::Editor, "Paste");
-registerShortcut("Ctrl+A", "selectAll", []() {  },
+registerShortcut("Ctrl+A", "selectAll", []() { },
 ShortcutContext::Editor, "Select all");
-registerShortcut("Ctrl+D", "addCursorAtNextOccurrence", []() {  },
+registerShortcut("Ctrl+D", "addCursorAtNextOccurrence", []() { },
 ShortcutContext::Editor, "Add cursor at next occurrence");
-registerShortcut("Ctrl+Shift+L", "selectAllOccurrences", []() {  },
+registerShortcut("Ctrl+Shift+L", "selectAllOccurrences", []() { },
 ShortcutContext::Editor, "Select all occurrences");
-registerShortcut("Ctrl+Alt+Up", "addCursorAbove", []() {  },
+registerShortcut("Ctrl+Alt+Up", "addCursorAbove", []() { },
 ShortcutContext::Editor, "Add cursor above");
-registerShortcut("Ctrl+Alt+Down", "addCursorBelow", []() {  },
+registerShortcut("Ctrl+Alt+Down", "addCursorBelow", []() { },
 ShortcutContext::Editor, "Add cursor below");
-registerShortcut("Escape", "clearExtraCursors", []() {  },
+registerShortcut("Escape", "clearExtraCursors", []() { },
 ShortcutContext::Editor, "Clear extra cursors");
-registerShortcut("Ctrl+Shift+[", "foldRegion", []() {  },
+registerShortcut("Ctrl+Shift+[", "foldRegion", []() { },
 ShortcutContext::Editor, "Fold region");
-registerShortcut("Ctrl+Shift+]", "unfoldRegion", []() {  },
+registerShortcut("Ctrl+Shift+]", "unfoldRegion", []() { },
 ShortcutContext::Editor, "Unfold region");
-registerShortcut("Ctrl+K Ctrl+0", "foldAll", []() {  },
+registerShortcut("Ctrl+K Ctrl+0", "foldAll", []() { },
 ShortcutContext::Editor, "Fold all");
-registerShortcut("Ctrl+K Ctrl+J", "unfoldAll", []() {  },
+registerShortcut("Ctrl+K Ctrl+J", "unfoldAll", []() { },
 ShortcutContext::Editor, "Unfold all");
 }
 void KeyboardShortcuts::initFileTreeShortcuts() {
-registerShortcut("Ctrl+Shift+E", "toggleFileTree", []() {  },
+registerShortcut("Ctrl+Shift+E", "toggleFileTree", []() { },
 ShortcutContext::FileTree, "Toggle file tree");
-registerShortcut("F2", "rename", []() {  },
+registerShortcut("F2", "rename", []() { },
 ShortcutContext::FileTree, "Rename file");
-registerShortcut("Delete", "delete", []() {  },
+registerShortcut("Delete", "delete", []() { },
 ShortcutContext::FileTree, "Delete file");
-registerShortcut("Ctrl+Shift+N", "newFile", []() {  },
+registerShortcut("Ctrl+Shift+N", "newFile", []() { },
 ShortcutContext::FileTree, "New file");
-registerShortcut("Ctrl+Shift+Alt+N", "newFolder", []() {  },
+registerShortcut("Ctrl+Shift+Alt+N", "newFolder", []() { },
 ShortcutContext::FileTree, "New folder");
 }
 void KeyboardShortcuts::initSearchShortcuts() {
-registerShortcut("Ctrl+F", "find", []() {  },
+registerShortcut("Ctrl+F", "find", []() { },
 ShortcutContext::Search, "Find");
-registerShortcut("Ctrl+H", "replace", []() {  },
+registerShortcut("Ctrl+H", "replace", []() { },
 ShortcutContext::Search, "Find and replace");
-registerShortcut("F3", "findNext", []() {  },
+registerShortcut("F3", "findNext", []() { },
 ShortcutContext::Search, "Find next");
-registerShortcut("Shift+F3", "findPrevious", []() {  },
+registerShortcut("Shift+F3", "findPrevious", []() { },
 ShortcutContext::Search, "Find previous");
-registerShortcut("Ctrl+G", "goto", []() {  },
+registerShortcut("Ctrl+G", "goto", []() { },
 ShortcutContext::Search, "Go to line");
-registerShortcut("Ctrl+Shift+F", "findInFiles", []() {  },
+registerShortcut("Ctrl+Shift+F", "findInFiles", []() { },
 ShortcutContext::Search, "Find in files");
 }
 void KeyboardShortcuts::initDebuggingShortcuts() {
-registerShortcut("F5", "startDebugging", []() {  },
+registerShortcut("F5", "startDebugging", []() { },
 ShortcutContext::Debugging, "Start debugging");
-registerShortcut("Ctrl+F5", "runWithoutDebugging", []() {  },
+registerShortcut("Ctrl+F5", "runWithoutDebugging", []() { },
 ShortcutContext::Debugging, "Run without debugging");
-registerShortcut("Shift+F5", "stopDebugging", []() {  },
+registerShortcut("Shift+F5", "stopDebugging", []() { },
 ShortcutContext::Debugging, "Stop debugging");
-registerShortcut("F9", "toggleBreakpoint", []() {  },
+registerShortcut("F9", "toggleBreakpoint", []() { },
 ShortcutContext::Debugging, "Toggle breakpoint");
-registerShortcut("F10", "stepOver", []() {  },
+registerShortcut("F10", "stepOver", []() { },
 ShortcutContext::Debugging, "Step over");
-registerShortcut("F11", "stepInto", []() {  },
+registerShortcut("F11", "stepInto", []() { },
 ShortcutContext::Debugging, "Step into");
-registerShortcut("Shift+F11", "stepOut", []() {  },
+registerShortcut("Shift+F11", "stepOut", []() { },
 ShortcutContext::Debugging, "Step out");
 }
 bool KeyboardShortcuts::isKeyConflict(const KeyCombination& keyCombination, ShortcutContext context,

@@ -29,8 +29,8 @@ S_IFDIR | S_IRUGO | S_IXUGO, 2
 #endif
 #define VERSION "1.12"
 #define ARRAY_SIZE(arr) (sizeof (arr) / sizeof (arr)[0])
-#define PACKED		__attribute__((packed))
-#define ALIGNED(x)	__attribute__((aligned(x)))
+#define PACKED __attribute__((packed))
+#define ALIGNED(x) __attribute__((aligned(x)))
 typedef struct {
 unsigned int address;
 unsigned int num_bytes;
@@ -94,7 +94,7 @@ struct mscp mscp[ULTRASTOR_MAX_CMDS];
 } config = {0};
 int ultrastor_bus_reset = 0;
 static const void *const bios_segment_table[8] = {
-NULL,	     (void *)0xC4000, (void *)0xC8000, (void *)0xCC000,
+NULL, (void *)0xC4000, (void *)0xC8000, (void *)0xCC000,
 (void *)0xD0000, (void *)0xD4000, (void *)0xD8000, (void *)0xDC000,
 };
 static const unsigned char interrupt_table_14f[4] = { 15, 14, 11, 10 };
@@ -105,7 +105,7 @@ unsigned char sectors;
 } mapping_table[4] = { { 16, 63 }, { 64, 32 }, { 64, 63 }, { 64, 32 } };
 #ifndef PORT_OVERRIDE
 static const unsigned short ultrastor_ports_14f[] = {
-0x330, 0x340,  0x230, 0x240, 0x210, 0x130, 0x140,
+0x330, 0x340, 0x230, 0x240, 0x210, 0x130, 0x140,
 };
 #endif
 static void ultrastor_interrupt(int, void *, struct pt_regs *);

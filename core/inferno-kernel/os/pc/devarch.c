@@ -9,19 +9,19 @@
 typedef struct IOMap IOMap;
 struct IOMap
 {
-IOMap	*next;
-int	reserved;
-char	tag[13];
-ulong	start;
-ulong	end;
+IOMap *next;
+int reserved;
+char tag[13];
+ulong start;
+ulong end;
 };
 static struct
 {
 Lock;
-IOMap	*m;
-IOMap	*free;
-IOMap	maps[32];
-QLock	ql;
+IOMap *m;
+IOMap *free;
+IOMap maps[32];
+QLock ql;
 } iomap;
 enum {
 Qdir = 0,
@@ -36,11 +36,11 @@ typedef long Rdwrfn(Chan*, void*, long, vlong);
 static Rdwrfn *readfn[Qmax];
 static Rdwrfn *writefn[Qmax];
 static Dirtab archdir[Qmax] = {
-".",		{ Qdir, 0, QTDIR },	0,	0555,
-"ioalloc",	{ Qioalloc, 0 },	0,	0444,
-"iob",		{ Qiob, 0 },		0,	0660,
-"iow",		{ Qiow, 0 },		0,	0660,
-"iol",		{ Qiol, 0 },		0,	0660,
+".", { Qdir, 0, QTDIR }, 0, 0555,
+"ioalloc", { Qioalloc, 0 }, 0, 0444,
+"iob", { Qiob, 0 }, 0, 0660,
+"iow", { Qiow, 0 }, 0, 0660,
+"iol", { Qiol, 0 }, 0, 0660,
 };
 Lock archwlock;
 int narchdir = Qbase;
@@ -405,93 +405,93 @@ void (*coherence)(void) = nop;
 PCArch* arch;
 extern PCArch* knownarch[];
 PCArch archgeneric = {
-.id=		"generic",
-.ident=		0,
-.reset=		i8042reset,
-.serialpower=	unimplemented,
-.modempower=	unimplemented,
-.intrinit=	i8259init,
-.intrenable=	i8259enable,
-.intrvecno=	i8259vecno,
-.intrdisable=	i8259disable,
-.clockenable=	i8253enable,
-.fastclock=	i8253read,
-.timerset=	i8253timerset,
+.id= "generic",
+.ident= 0,
+.reset= i8042reset,
+.serialpower= unimplemented,
+.modempower= unimplemented,
+.intrinit= i8259init,
+.intrenable= i8259enable,
+.intrvecno= i8259vecno,
+.intrdisable= i8259disable,
+.clockenable= i8253enable,
+.fastclock= i8253read,
+.timerset= i8253timerset,
 };
 typedef struct X86type X86type;
 struct X86type {
-int	family;
-int	model;
-int	aalcycles;
-char*	name;
+int family;
+int model;
+int aalcycles;
+char* name;
 };
 static X86type x86intel[] =
 {
-{ 4,	0,	22,	"486DX", },
-{ 4,	1,	22,	"486DX50", },
-{ 4,	2,	22,	"486SX", },
-{ 4,	3,	22,	"486DX2", },
-{ 4,	4,	22,	"486SL", },
-{ 4,	5,	22,	"486SX2", },
-{ 4,	7,	22,	"DX2WB", },
-{ 4,	8,	22,	"DX4", },
-{ 4,	9,	22,	"DX4WB", },
-{ 5,	0,	23,	"P5", },
-{ 5,	1,	23,	"P5", },
-{ 5,	2,	23,	"P54C", },
-{ 5,	3,	23,	"P24T", },
-{ 5,	4,	23,	"P55C MMX", },
-{ 5,	7,	23,	"P54C VRT", },
-{ 6,	1,	16,	"PentiumPro", },
-{ 6,	3,	16,	"PentiumII", },
-{ 6,	5,	16,	"PentiumII/Xeon", },
-{ 6,	6,	16,	"Celeron", },
-{ 6,	7,	16,	"PentiumIII/Xeon", },
-{ 6,	8,	16,	"PentiumIII/Xeon", },
-{ 6,	0xB,	16,	"PentiumIII/Xeon", },
-{ 0xF,	1,	16,	"P4", },
-{ 0xF,	2,	16,	"PentiumIV/Xeon", },
-{ 3,	-1,	32,	"386", },
-{ 4,	-1,	22,	"486", },
-{ 5,	-1,	23,	"P5", },
-{ 6,	-1,	16,	"P6", },
-{ 0xF,	-1,	16,	"P4", },
-{ -1,	-1,	16,	"unknown", },
+{ 4, 0, 22, "486DX", },
+{ 4, 1, 22, "486DX50", },
+{ 4, 2, 22, "486SX", },
+{ 4, 3, 22, "486DX2", },
+{ 4, 4, 22, "486SL", },
+{ 4, 5, 22, "486SX2", },
+{ 4, 7, 22, "DX2WB", },
+{ 4, 8, 22, "DX4", },
+{ 4, 9, 22, "DX4WB", },
+{ 5, 0, 23, "P5", },
+{ 5, 1, 23, "P5", },
+{ 5, 2, 23, "P54C", },
+{ 5, 3, 23, "P24T", },
+{ 5, 4, 23, "P55C MMX", },
+{ 5, 7, 23, "P54C VRT", },
+{ 6, 1, 16, "PentiumPro", },
+{ 6, 3, 16, "PentiumII", },
+{ 6, 5, 16, "PentiumII/Xeon", },
+{ 6, 6, 16, "Celeron", },
+{ 6, 7, 16, "PentiumIII/Xeon", },
+{ 6, 8, 16, "PentiumIII/Xeon", },
+{ 6, 0xB, 16, "PentiumIII/Xeon", },
+{ 0xF, 1, 16, "P4", },
+{ 0xF, 2, 16, "PentiumIV/Xeon", },
+{ 3, -1, 32, "386", },
+{ 4, -1, 22, "486", },
+{ 5, -1, 23, "P5", },
+{ 6, -1, 16, "P6", },
+{ 0xF, -1, 16, "P4", },
+{ -1, -1, 16, "unknown", },
 };
 static X86type x86amd[] =
 {
-{ 5,	0,	23,	"AMD-K5", },
-{ 5,	1,	23,	"AMD-K5", },
-{ 5,	2,	23,	"AMD-K5", },
-{ 5,	3,	23,	"AMD-K5", },
-{ 5,	6,	11,	"AMD-K6", },
-{ 5,	7,	11,	"AMD-K6", },
-{ 5,	8,	11,	"AMD-K6-2", },
-{ 5,	9,	11,	"AMD-K6-III", },
-{ 6,	1,	11,	"AMD-Athlon", },
-{ 6,	2,	11,	"AMD-Athlon", },
-{ 4,	-1,	22,	"Am486", },
-{ 5,	-1,	23,	"AMD-K5/K6", },
-{ 6,	-1,	11,	"AMD-Athlon", },
-{ 0xF,	-1,	11,	"AMD64", },
-{ -1,	-1,	11,	"unknown", },
+{ 5, 0, 23, "AMD-K5", },
+{ 5, 1, 23, "AMD-K5", },
+{ 5, 2, 23, "AMD-K5", },
+{ 5, 3, 23, "AMD-K5", },
+{ 5, 6, 11, "AMD-K6", },
+{ 5, 7, 11, "AMD-K6", },
+{ 5, 8, 11, "AMD-K6-2", },
+{ 5, 9, 11, "AMD-K6-III", },
+{ 6, 1, 11, "AMD-Athlon", },
+{ 6, 2, 11, "AMD-Athlon", },
+{ 4, -1, 22, "Am486", },
+{ 5, -1, 23, "AMD-K5/K6", },
+{ 6, -1, 11, "AMD-Athlon", },
+{ 0xF, -1, 11, "AMD64", },
+{ -1, -1, 11, "unknown", },
 };
 static X86type x86winchip[] =
 {
-{5,	4,	23,	"Winchip",},
-{6,	7,	23,	"Via C3 Samuel 2 or Ezra",},
-{6,	8,	23,	"Via C3 Ezra-T",},
-{ -1,	-1,	23,	"unknown", },
+{5, 4, 23, "Winchip",},
+{6, 7, 23, "Via C3 Samuel 2 or Ezra",},
+{6, 8, 23, "Via C3 Ezra-T",},
+{ -1, -1, 23, "unknown", },
 };
 static X86type x86sis[] =
 {
-{5,	0,	23,	"SiS 55x",},
-{ -1,	-1,	23,	"unknown", },
+{5, 0, 23, "SiS 55x",},
+{ -1, -1, 23, "unknown", },
 };
 static X86type *cputype;
-static void	simplecycles(uvlong*);
-void	(*cycles)(uvlong*) = simplecycles;
-void	_cycles(uvlong*);
+static void simplecycles(uvlong*);
+void (*cycles)(uvlong*) = simplecycles;
+void _cycles(uvlong*);
 static void
 simplecycles(uvlong*x)
 {
@@ -606,9 +606,9 @@ CMi8253set,
 };
 static Cmdtab archctlmsg[] =
 {
-CMpge,		"pge",		2,
-CMcoherence,	"coherence",	2,
-CMi8253set,	"i8253set",	2,
+CMpge, "pge", 2,
+CMcoherence, "coherence", 2,
+CMi8253set, "i8253set", 2,
 };
 static long
 archctlwrite(Chan*, void *a, long n, vlong)

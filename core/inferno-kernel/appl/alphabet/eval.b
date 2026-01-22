@@ -4,7 +4,7 @@ sys: Sys;
 include "draw.m";
 include "sh.m";
 sh: Sh;
-n_BLOCK,  n_VAR, n_BQ, n_BQ2, n_REDIR,
+n_BLOCK, n_VAR, n_BQ, n_BQ2, n_REDIR,
 n_DUP, n_LIST, n_SEQ, n_CONCAT, n_PIPE, n_ADJ,
 n_WORD, n_NOWAIT, n_SQUASH, n_COUNT,
 n_ASSIGN, n_LOCAL: import sh;
@@ -34,41 +34,41 @@ WORD, VALUE: con iota;
 Evalstate: adt[V, M, C]
 for {
 V =>
-dup:	fn(t: self V): V;
-free:		fn(t: self V, used: int);
-gets:		fn(t: self V): string;
-isstring:	fn(t: self V): int;
-type2s:	fn(tc: int): string;
-typec:	fn(t: self V): int;
+dup: fn(t: self V): V;
+free: fn(t: self V, used: int);
+gets: fn(t: self V): string;
+isstring: fn(t: self V): int;
+type2s: fn(tc: int): string;
+typec: fn(t: self V): int;
 M =>
 find: fn(c: C, s: string): (M, string);
-typesig:	fn(m: self M): string;
-run:		fn(m: self M, c: C,
+typesig: fn(m: self M): string;
+run: fn(m: self M, c: C,
 errorc: chan of string,
 opts: list of (int, list of V), args: list of V): V;
-mks:		fn(c: C, s: string): V;
-mkc: 	fn(c: C, cmd: ref Sh->Cmd): V;
+mks: fn(c: C, s: string): V;
+mkc: fn(c: C, cmd: ref Sh->Cmd): V;
 typename2c: fn(s: string): int;
-cvt:		fn(c: C, v: V, tc: int, errorc: chan of string): V;
+cvt: fn(c: C, v: V, tc: int, errorc: chan of string): V;
 }
 {
 ctxt: C;
 errorc: chan of string;
-expr:	fn(e: self ref Evalstate, c: ref Sh->Cmd, env: Env[V]): V;
-runcmd:	fn(e: self ref Evalstate, cmd: ref Sh->Cmd, arg0: V, args: list of V): V;
-getargs:	fn(e: self ref Evalstate, c: ref Sh->Cmd, env: Env[V]): (ref Sh->Cmd, list of V);
-getvar:	fn(e: self ref Evalstate, c: ref Sh->Cmd, env: Env[V]): V;
+expr: fn(e: self ref Evalstate, c: ref Sh->Cmd, env: Env[V]): V;
+runcmd: fn(e: self ref Evalstate, cmd: ref Sh->Cmd, arg0: V, args: list of V): V;
+getargs: fn(e: self ref Evalstate, c: ref Sh->Cmd, env: Env[V]): (ref Sh->Cmd, list of V);
+getvar: fn(e: self ref Evalstate, c: ref Sh->Cmd, env: Env[V]): V;
 };
 Env: adt[V]
 for {
 V =>
 free: fn(v: self V, used: int);
-dup:	fn(v: self V): V;
+dup: fn(v: self V): V;
 }
 {
 items: array of V;
 new: fn(args: list of V, nilval: V): Env[V];
-get:	fn(t: self Env, id: int): V;
+get: fn(t: self Env, id: int): V;
 discard: fn(t: self Env);
 };
 Context[V, M, Ectxt].eval(expr: ref Sh->Cmd, ctxt: Ectxt, errorc: chan of string,
@@ -163,7 +163,7 @@ deglob(s: string): string
 j := 0;
 for (i := 0; i < len s; i++) {
 if (s[i] != Sh->GLOB) {
-if (i != j)		# a worthy optimisation???
+if (i != j) # a worthy optimisation???
 s[j] = s[i];
 j++;
 }
@@ -206,7 +206,7 @@ if(r == nil)
 raise "error: command failed";
 return r;
 }else{
-v: V;	# XXX prevent spurious (?) compiler error message: "type polymorphic type does not have a 'discard' function"
+v: V; # XXX prevent spurious (?) compiler error message: "type polymorphic type does not have a 'discard' function"
 env := Env[V].new(args, v);
 {
 v = e.expr(cmd, env);
@@ -224,7 +224,7 @@ blocksig[M, Ectxt](nilm: M, ctxt: Ectxt, e: ref Sh->Cmd): (string, string)
 for{
 M =>
 typename2c: fn(s: string): int;
-find:	fn(c: Ectxt, s: string): (M, string);
+find: fn(c: Ectxt, s: string): (M, string);
 typesig: fn(m: self M): string;
 }
 {
@@ -236,7 +236,7 @@ blocksig0[M, Ectxt](nilm: M, ctxt, e: ref Sh->Cmd): (string, ref Sh->Cmd, string
 for{
 M =>
 typename2c: fn(s: string): int;
-find:	fn(c: Ectxt, s: string): (M, string);
+find: fn(c: Ectxt, s: string): (M, string);
 typesig: fn(m: self M): string;
 }
 {
@@ -289,7 +289,7 @@ pipesig[M, Ectxt](nilm: M, ctxt: Ectxt, e: ref Sh->Cmd): (int, string)
 for{
 M =>
 typename2c: fn(s: string): int;
-find:	fn(c: Ectxt, s: string): (M, string);
+find: fn(c: Ectxt, s: string): (M, string);
 typesig: fn(m: self M): string;
 }
 {
@@ -463,7 +463,7 @@ typecompat(t0, t1: string): int
 {
 (rt0, at0, ot0) := splittype(t0);
 (rt1, at1, ot1) := splittype(t1);
-if((rt0 != rt1 && rt0 != 'a') || at0 != at1)	# XXX could do better for repeated args.
+if((rt0 != rt1 && rt0 != 'a') || at0 != at1) # XXX could do better for repeated args.
 return 0;
 for(i := 1; i < len ot0; i++){
 for(j := i; j < len ot0; j++)

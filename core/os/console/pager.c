@@ -65,7 +65,7 @@ vm_address_t *offset,
 vm_size_t *size)
 {
 *offset = 0;
-*size =  upi->memobj_npages * vm_page_size;
+*size = upi->memobj_npages * vm_page_size;
 return 0;
 }
 void

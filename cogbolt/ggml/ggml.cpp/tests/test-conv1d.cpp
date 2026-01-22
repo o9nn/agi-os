@@ -80,7 +80,7 @@ model.backend = ggml_backend_cpu_init();
 }
 model.buffer = ggml_backend_alloc_buffer(model.backend, buffer_size);
 model.ctx = ggml_init(params);
-model.a = ggml_new_tensor_3d(model.ctx, GGML_TYPE_F16,  K, IC, OC);
+model.a = ggml_new_tensor_3d(model.ctx, GGML_TYPE_F16, K, IC, OC);
 model.b = ggml_new_tensor_3d(model.ctx, GGML_TYPE_F32, IL, IC, N);
 ggml_tallocr alloc = ggml_tallocr_new(model.buffer);
 ggml_tallocr_alloc(&alloc, model.a);
@@ -109,7 +109,7 @@ buf.data(),
 true,
 };
 struct ggml_context * ctx0 = ggml_init(params0);
-struct ggml_cgraph  * gf = ggml_new_graph(ctx0);
+struct ggml_cgraph * gf = ggml_new_graph(ctx0);
 int s0 = 1;
 int p0 = 1;
 int d0 = 1;

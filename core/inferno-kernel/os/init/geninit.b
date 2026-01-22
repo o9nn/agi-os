@@ -13,11 +13,11 @@ include "keyring.m";
 kr: Keyring;
 Init: module
 {
-init:	fn();
+init: fn();
 };
 Shell: module
 {
-init:	fn(ctxt: ref Context, argv: list of string);
+init: fn(ctxt: ref Context, argv: list of string);
 };
 init()
 {
@@ -38,11 +38,11 @@ print("Standalone mode\n");
 # default namespace
 #
 sys->unmount(nil, "/dev");
-bind("#p", "/prog", sys->MREPL);		# prog device
+bind("#p", "/prog", sys->MREPL); # prog device
 sys->bind("#d", "/fd", Sys->MREPL);
-bind("#c", "/dev", sys->MBEFORE);		# console
-bind("#m", "/dev", sys->MAFTER);		# mouse setup device
-bind("#t", "/dev", sys->MAFTER);		# serial device
+bind("#c", "/dev", sys->MBEFORE); # console
+bind("#m", "/dev", sys->MAFTER); # mouse setup device
+bind("#t", "/dev", sys->MAFTER); # serial device
 mouse := load Shell "/dis/mouse.dis";
 if (mouse != nil) {
 print("Setting up mouse\n");

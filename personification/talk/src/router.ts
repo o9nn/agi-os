@@ -1,9 +1,9 @@
 import { components, hooks, utils } from '@generouted/react-router/client'
 export type Path =
-  | `/`
-  | `/room/:uuid`
+| `/`
+| `/room/:uuid`
 export type Params = {
-  '/room/:uuid': { uuid: string }
+'/room/:uuid': { uuid: string }
 }
 export type ModalPath = never
 export const { Link, Navigate } = components<Path, Params>()

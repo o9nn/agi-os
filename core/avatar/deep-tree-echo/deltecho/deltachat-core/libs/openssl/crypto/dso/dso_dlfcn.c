@@ -11,18 +11,18 @@ return NULL;
 }
 #else
 # ifdef HAVE_DLFCN_H
-#  ifdef __osf__
-#   define __EXTENSIONS__
-#  endif
-#  include <dlfcn.h>
-#  define HAVE_DLINFO 1
-#  if defined(_AIX) || defined(__CYGWIN__) || \
+# ifdef __osf__
+# define __EXTENSIONS__
+# endif
+# include <dlfcn.h>
+# define HAVE_DLINFO 1
+# if defined(_AIX) || defined(__CYGWIN__) || \
 defined(__SCO_VERSION__) || defined(_SCO_ELF) || \
-(defined(__osf__) && !defined(RTLD_NEXT))     || \
+(defined(__osf__) && !defined(RTLD_NEXT)) || \
 (defined(__OpenBSD__) && !defined(RTLD_SELF)) || \
 defined(__ANDROID__)
-#   undef HAVE_DLINFO
-#  endif
+# undef HAVE_DLINFO
+# endif
 # endif
 # define DSO_MAX_TRANSLATED_SIZE 256
 static int dlfcn_load(DSO *dso);
@@ -63,21 +63,21 @@ DSO_METHOD *DSO_METHOD_dlfcn(void)
 return (&dso_meth_dlfcn);
 }
 # if defined(__OpenBSD__) || defined(__NetBSD__)
-#  ifdef DL_LAZY
-#   define DLOPEN_FLAG DL_LAZY
-#  else
-#   ifdef RTLD_NOW
-#    define DLOPEN_FLAG RTLD_NOW
-#   else
-#    define DLOPEN_FLAG 0
-#   endif
-#  endif
+# ifdef DL_LAZY
+# define DLOPEN_FLAG DL_LAZY
 # else
-#  ifdef OPENSSL_SYS_SUNOS
-#   define DLOPEN_FLAG 1
-#  else
-#   define DLOPEN_FLAG RTLD_NOW
-#  endif
+# ifdef RTLD_NOW
+# define DLOPEN_FLAG RTLD_NOW
+# else
+# define DLOPEN_FLAG 0
+# endif
+# endif
+# else
+# ifdef OPENSSL_SYS_SUNOS
+# define DLOPEN_FLAG 1
+# else
+# define DLOPEN_FLAG RTLD_NOW
+# endif
 # endif
 static int dlfcn_load(DSO *dso)
 {
@@ -224,11 +224,11 @@ strcpy(&merged[spec2len + 1], filespec1);
 return (merged);
 }
 # ifdef OPENSSL_SYS_MACOSX
-#  define DSO_ext ".dylib"
-#  define DSO_extlen 6
+# define DSO_ext ".dylib"
+# define DSO_extlen 6
 # else
-#  define DSO_ext ".so"
-#  define DSO_extlen 3
+# define DSO_ext ".so"
+# define DSO_extlen 3
 # endif
 static char *dlfcn_name_converter(DSO *dso, const char *filename)
 {
@@ -257,9 +257,9 @@ sprintf(translated, "%s", filename);
 return (translated);
 }
 # ifdef __sgi
-#  include <rld_interface.h>
-#  ifndef _RLD_INTERFACE_DLFCN_H_DLADDR
-#   define _RLD_INTERFACE_DLFCN_H_DLADDR
+# include <rld_interface.h>
+# ifndef _RLD_INTERFACE_DLFCN_H_DLADDR
+# define _RLD_INTERFACE_DLFCN_H_DLADDR
 typedef struct Dl_info {
 const char *dli_fname;
 void *dli_fbase;
@@ -269,10 +269,10 @@ int dli_version;
 int dli_reserved1;
 long dli_reserved[4];
 } Dl_info;
-#  else
+# else
 typedef struct Dl_info Dl_info;
-#  endif
-#  define _RLD_DLADDR             14
+# endif
+# define _RLD_DLADDR 14
 static int dladdr(void *address, Dl_info *dl)
 {
 void *v;

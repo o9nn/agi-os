@@ -10,13 +10,13 @@ x = key->x;
 y = key->y;
 d = key->data;
 #if defined(RC4_CHUNK)
-# define RC4_STEP       ( \
-x=(x+1) &0xff,  \
-tx=d[x],        \
-y=(tx+y)&0xff,  \
-ty=d[y],        \
-d[y]=tx,        \
-d[x]=ty,        \
+# define RC4_STEP ( \
+x=(x+1) &0xff, \
+tx=d[x], \
+y=(tx+y)&0xff, \
+ty=d[y], \
+d[y]=tx, \
+d[x]=ty, \
 (RC4_CHUNK)d[(tx+ty)&0xff]\
 )
 if ((((size_t)indata & (sizeof(RC4_CHUNK) - 1)) |
@@ -29,7 +29,7 @@ char little;
 1
 };
 if (!is_endian.little) {
-# define BESHFT(c)      (((sizeof(RC4_CHUNK)-(c)-1)*8)&(sizeof(RC4_CHUNK)*8-1))
+# define BESHFT(c) (((sizeof(RC4_CHUNK)-(c)-1)*8)&(sizeof(RC4_CHUNK)*8-1))
 for (; len & (0 - sizeof(RC4_CHUNK)); len -= sizeof(RC4_CHUNK)) {
 ichunk = *(RC4_CHUNK *) indata;
 otp = RC4_STEP << BESHFT(0);
@@ -78,7 +78,7 @@ key->x = x;
 key->y = y;
 return;
 } else {
-# define LESHFT(c)      (((c)*8)&(sizeof(RC4_CHUNK)*8-1))
+# define LESHFT(c) (((c)*8)&(sizeof(RC4_CHUNK)*8-1))
 for (; len & (0 - sizeof(RC4_CHUNK)); len -= sizeof(RC4_CHUNK)) {
 ichunk = *(RC4_CHUNK *) indata;
 otp = RC4_STEP;

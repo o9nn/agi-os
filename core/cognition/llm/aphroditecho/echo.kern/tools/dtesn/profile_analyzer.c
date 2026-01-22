@@ -7,14 +7,14 @@
 #include <errno.h>
 #include "../../include/dtesn/profiler.h"
 static struct option long_options[] = {
-{"help",        no_argument,       0, 'h'},
-{"version",     no_argument,       0, 'v'},
-{"output",      required_argument, 0, 'o'},
-{"format",      required_argument, 0, 'f'},
-{"threshold",   required_argument, 0, 't'},
-{"reset",       no_argument,       0, 'r'},
-{"overhead",    no_argument,       0, 'O'},
-{"continuous",  required_argument, 0, 'c'},
+{"help", no_argument, 0, 'h'},
+{"version", no_argument, 0, 'v'},
+{"output", required_argument, 0, 'o'},
+{"format", required_argument, 0, 'f'},
+{"threshold", required_argument, 0, 't'},
+{"reset", no_argument, 0, 'r'},
+{"overhead", no_argument, 0, 'O'},
+{"continuous", required_argument, 0, 'c'},
 {0, 0, 0, 0}
 };
 typedef enum {

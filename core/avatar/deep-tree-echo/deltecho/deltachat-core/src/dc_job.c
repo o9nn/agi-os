@@ -10,7 +10,7 @@
 static void dc_send_mdn(dc_context_t* context, uint32_t msg_id);
 static int connect_to_inbox(dc_context_t* context)
 {
-int   ret_connected = DC_NOT_CONNECTED;
+int ret_connected = DC_NOT_CONNECTED;
 ret_connected = dc_connect_to_configured_imap(context, context->inbox);
 if (!ret_connected) {
 goto cleanup;
@@ -21,8 +21,8 @@ return ret_connected;
 }
 static void dc_job_do_DC_JOB_DELETE_MSG_ON_IMAP(dc_context_t* context, dc_job_t* job)
 {
-int           delete_from_server = 1;
-dc_msg_t*     msg = dc_msg_new_untyped(context);
+int delete_from_server = 1;
+dc_msg_t* msg = dc_msg_new_untyped(context);
 if (!dc_msg_load_from_db(msg, context, job->foreign_id)
 || msg->rfc724_mid==NULL || msg->rfc724_mid[0]==0 ) {
 goto cleanup;
@@ -74,8 +74,8 @@ free(mvbox_name);
 static void dc_job_do_DC_JOB_MOVE_MSG(dc_context_t* context, dc_job_t* job)
 {
 dc_msg_t* msg = dc_msg_new_untyped(context);
-char*     dest_folder = NULL;
-uint32_t  dest_uid = 0;
+char* dest_folder = NULL;
+uint32_t dest_uid = 0;
 if (!dc_imap_is_connected(context->inbox)) {
 connect_to_inbox(context);
 if (!dc_imap_is_connected(context->inbox)) {
@@ -91,10 +91,10 @@ dc_configure_folders(context, context->inbox, DC_CREATE_MVBOX);
 }
 dest_folder = dc_sqlite3_get_config(context->sql, "configured_mvbox_folder", NULL);
 switch (dc_imap_move(context->inbox, msg->server_folder, msg->server_uid, dest_folder, &dest_uid)) {
-case DC_FAILED:       goto cleanup;
-case DC_RETRY_LATER:  dc_job_try_again_later(job, DC_STANDARD_DELAY, NULL); break;
+case DC_FAILED: goto cleanup;
+case DC_RETRY_LATER: dc_job_try_again_later(job, DC_STANDARD_DELAY, NULL); break;
 case DC_ALREADY_DONE: break;
-case DC_SUCCESS:      dc_update_server_uid(context, msg->rfc724_mid, dest_folder, dest_uid); break;
+case DC_SUCCESS: dc_update_server_uid(context, msg->rfc724_mid, dest_folder, dest_uid); break;
 }
 cleanup:
 free(dest_folder);
@@ -114,18 +114,18 @@ if (!dc_msg_load_from_db(msg, context, job->foreign_id)) {
 goto cleanup;
 }
 switch (dc_imap_set_seen(context->inbox, msg->server_folder, msg->server_uid)) {
-case DC_FAILED:      goto cleanup;
+case DC_FAILED: goto cleanup;
 case DC_RETRY_LATER: dc_job_try_again_later(job, DC_STANDARD_DELAY, NULL); goto cleanup;
-default:             break;
+default: break;
 }
 if (dc_param_get_int(msg->param, DC_PARAM_WANTS_MDN, 0)
 && dc_sqlite3_get_config_int(context->sql, "mdns_enabled", DC_MDNS_DEFAULT_ENABLED))
 {
 switch (dc_imap_set_mdnsent(context->inbox, msg->server_folder, msg->server_uid)) {
-case DC_FAILED:       goto cleanup;
-case DC_RETRY_LATER:  dc_job_try_again_later(job, DC_STANDARD_DELAY, NULL); goto cleanup;
+case DC_FAILED: goto cleanup;
+case DC_RETRY_LATER: dc_job_try_again_later(job, DC_STANDARD_DELAY, NULL); goto cleanup;
 case DC_ALREADY_DONE: break;
-case DC_SUCCESS:      dc_send_mdn(context, msg->id); break;
+case DC_SUCCESS: dc_send_mdn(context, msg->id); break;
 }
 }
 cleanup:
@@ -133,10 +133,10 @@ dc_msg_unref(msg);
 }
 static void dc_job_do_DC_JOB_MARKSEEN_MDN_ON_IMAP(dc_context_t* context, dc_job_t* job)
 {
-char*     folder = dc_param_get(job->param, DC_PARAM_SERVER_FOLDER, NULL);
-uint32_t  uid = dc_param_get_int(job->param, DC_PARAM_SERVER_UID, 0);
-char*     dest_folder = NULL;
-uint32_t  dest_uid = 0;
+char* folder = dc_param_get(job->param, DC_PARAM_SERVER_FOLDER, NULL);
+uint32_t uid = dc_param_get_int(job->param, DC_PARAM_SERVER_UID, 0);
+char* dest_folder = NULL;
+uint32_t dest_uid = 0;
 if (!dc_imap_is_connected(context->inbox)) {
 connect_to_inbox(context);
 if (!dc_imap_is_connected(context->inbox)) {
@@ -154,9 +154,9 @@ dc_configure_folders(context, context->inbox, DC_CREATE_MVBOX);
 }
 dest_folder = dc_sqlite3_get_config(context->sql, "configured_mvbox_folder", NULL);
 switch (dc_imap_move(context->inbox, folder, uid, dest_folder, &dest_uid)) {
-case DC_FAILED:      goto cleanup;
+case DC_FAILED: goto cleanup;
 case DC_RETRY_LATER: dc_job_try_again_later(job, DC_STANDARD_DELAY, NULL); break;
-default:             break;
+default: break;
 }
 }
 cleanup:
@@ -165,10 +165,10 @@ free(dest_folder);
 }
 static int dc_add_smtp_job(dc_context_t* context, int action, dc_mimefactory_t* mimefactory)
 {
-char*            pathNfilename = NULL;
-int              success = 0;
-char*            recipients = NULL;
-dc_param_t*      param = dc_param_new();
+char* pathNfilename = NULL;
+int success = 0;
+char* recipients = NULL;
+dc_param_t* param = dc_param_new();
 pathNfilename = dc_get_fine_pathNfilename(context, "$BLOBDIR", mimefactory->rfc724_mid);
 if (!pathNfilename) {
 dc_log_error(context, 0, "Could not find free file name for message with ID <%s>.", mimefactory->rfc724_mid);
@@ -230,7 +230,7 @@ goto cleanup;
 }
 if (clist_search_string_nocase(mimefactory.recipients_addr, mimefactory.from_addr)==0) {
 clist_append(mimefactory.recipients_names, NULL);
-clist_append(mimefactory.recipients_addr,  (void*)dc_strdup(mimefactory.from_addr));
+clist_append(mimefactory.recipients_addr, (void*)dc_strdup(mimefactory.from_addr));
 }
 }
 dc_sqlite3_begin_transaction(context->sql);
@@ -256,11 +256,11 @@ return success;
 }
 static void dc_job_do_DC_JOB_SEND(dc_context_t* context, dc_job_t* job)
 {
-char*         filename = NULL;
-void*         buf = NULL;
-size_t        buf_bytes = 0;
-char*         recipients = NULL;
-clist*        recipients_list = NULL;
+char* filename = NULL;
+void* buf = NULL;
+size_t buf_bytes = 0;
+char* recipients = NULL;
+clist* recipients_list = NULL;
 sqlite3_stmt* stmt = NULL;
 if (!dc_smtp_is_connected(context->smtp)) {
 dc_loginparam_t* loginparam = dc_loginparam_new();
@@ -372,7 +372,7 @@ return seconds;
 }
 static time_t get_next_wakeup_time(dc_context_t* context, int thread)
 {
-time_t        wakeup_time = 0;
+time_t wakeup_time = 0;
 sqlite3_stmt* stmt = NULL;
 stmt = dc_sqlite3_prepare(context->sql,
 "SELECT MIN(desired_timestamp)"
@@ -390,20 +390,20 @@ return wakeup_time;
 }
 int dc_job_action_exists(dc_context_t* context, int action)
 {
-int           job_exists = 0;
+int job_exists = 0;
 sqlite3_stmt* stmt = NULL;
 stmt = dc_sqlite3_prepare(context->sql,
 "SELECT id FROM jobs WHERE action=?;");
-sqlite3_bind_int  (stmt, 1, action);
+sqlite3_bind_int (stmt, 1, action);
 job_exists = (sqlite3_step(stmt)==SQLITE_ROW);
 sqlite3_finalize(stmt);
 return job_exists;
 }
 void dc_job_add(dc_context_t* context, int action, int foreign_id, const char* param, int delay_seconds)
 {
-time_t        timestamp = time(NULL);
+time_t timestamp = time(NULL);
 sqlite3_stmt* stmt = NULL;
-int           thread = 0;
+int thread = 0;
 if (action >= DC_IMAP_THREAD && action < DC_IMAP_THREAD+1000) {
 thread = DC_IMAP_THREAD;
 }
@@ -416,10 +416,10 @@ return;
 stmt = dc_sqlite3_prepare(context->sql,
 "INSERT INTO jobs (added_timestamp, thread, action, foreign_id, param, desired_timestamp) VALUES (?,?,?,?,?,?);");
 sqlite3_bind_int64(stmt, 1, timestamp);
-sqlite3_bind_int  (stmt, 2, thread);
-sqlite3_bind_int  (stmt, 3, action);
-sqlite3_bind_int  (stmt, 4, foreign_id);
-sqlite3_bind_text (stmt, 5, param? param : "",  -1, SQLITE_STATIC);
+sqlite3_bind_int (stmt, 2, thread);
+sqlite3_bind_int (stmt, 3, action);
+sqlite3_bind_int (stmt, 4, foreign_id);
+sqlite3_bind_text (stmt, 5, param? param : "", -1, SQLITE_STATIC);
 sqlite3_bind_int64(stmt, 6, timestamp+delay_seconds);
 sqlite3_step(stmt);
 sqlite3_finalize(stmt);
@@ -439,7 +439,7 @@ sqlite3_stmt* stmt = dc_sqlite3_prepare(context->sql,
 sqlite3_bind_int64(stmt, 1, job->desired_timestamp);
 sqlite3_bind_int64(stmt, 2, job->tries);
 sqlite3_bind_text (stmt, 3, job->param->packed, -1, SQLITE_STATIC);
-sqlite3_bind_int  (stmt, 4, job->job_id);
+sqlite3_bind_int (stmt, 4, job->job_id);
 sqlite3_step(stmt);
 sqlite3_finalize(stmt);
 }
@@ -474,9 +474,9 @@ sqlite3_finalize(stmt);
 static void dc_job_perform(dc_context_t* context, int thread, int probe_network)
 {
 sqlite3_stmt* select_stmt = NULL;
-dc_job_t      job;
-#define       THREAD_STR (thread==DC_IMAP_THREAD? "INBOX" : "SMTP")
-#define       IS_EXCLUSIVE_JOB (DC_JOB_CONFIGURE_IMAP==job.action || DC_JOB_IMEX_IMAP==job.action || DC_JOB_EMPTY_SERVER==job.action)
+dc_job_t job;
+#define THREAD_STR (thread==DC_IMAP_THREAD? "INBOX" : "SMTP")
+#define IS_EXCLUSIVE_JOB (DC_JOB_CONFIGURE_IMAP==job.action || DC_JOB_IMEX_IMAP==job.action || DC_JOB_EMPTY_SERVER==job.action)
 memset(&job, 0, sizeof(dc_job_t));
 job.param = dc_param_new();
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC) {
@@ -500,13 +500,13 @@ sqlite3_bind_int64(select_stmt, 1, thread);
 }
 while (sqlite3_step(select_stmt)==SQLITE_ROW)
 {
-job.job_id                          = sqlite3_column_int  (select_stmt, 0);
-job.action                          = sqlite3_column_int  (select_stmt, 1);
-job.foreign_id                      = sqlite3_column_int  (select_stmt, 2);
+job.job_id = sqlite3_column_int (select_stmt, 0);
+job.action = sqlite3_column_int (select_stmt, 1);
+job.foreign_id = sqlite3_column_int (select_stmt, 2);
 dc_param_set_packed(job.param, (char*)sqlite3_column_text (select_stmt, 3));
-job.added_timestamp                 = sqlite3_column_int64(select_stmt, 4);
-job.desired_timestamp               = sqlite3_column_int64(select_stmt, 5);
-job.tries                           = sqlite3_column_int  (select_stmt, 6);
+job.added_timestamp = sqlite3_column_int64(select_stmt, 4);
+job.desired_timestamp = sqlite3_column_int64(select_stmt, 5);
+job.tries = sqlite3_column_int (select_stmt, 6);
 dc_log_info(context, 0, "%s-job #%i, action %i started...", THREAD_STR, (int)job.job_id, (int)job.action);
 if (IS_EXCLUSIVE_JOB) {
 dc_job_kill_action(context, job.action);
@@ -520,18 +520,18 @@ for (int tries = 0; tries <= 1; tries++)
 {
 job.try_again = DC_DONT_TRY_AGAIN;
 switch (job.action) {
-case DC_JOB_SEND_MSG_TO_SMTP:     dc_job_do_DC_JOB_SEND                 (context, &job); break;
-case DC_JOB_DELETE_MSG_ON_IMAP:   dc_job_do_DC_JOB_DELETE_MSG_ON_IMAP   (context, &job); break;
+case DC_JOB_SEND_MSG_TO_SMTP: dc_job_do_DC_JOB_SEND (context, &job); break;
+case DC_JOB_DELETE_MSG_ON_IMAP: dc_job_do_DC_JOB_DELETE_MSG_ON_IMAP (context, &job); break;
 case DC_JOB_MARKSEEN_MSG_ON_IMAP: dc_job_do_DC_JOB_MARKSEEN_MSG_ON_IMAP (context, &job); break;
 case DC_JOB_MARKSEEN_MDN_ON_IMAP: dc_job_do_DC_JOB_MARKSEEN_MDN_ON_IMAP (context, &job); break;
-case DC_JOB_MOVE_MSG:             dc_job_do_DC_JOB_MOVE_MSG             (context, &job); break;
-case DC_JOB_SEND_MDN:             dc_job_do_DC_JOB_SEND                 (context, &job); break;
-case DC_JOB_CONFIGURE_IMAP:       dc_job_do_DC_JOB_CONFIGURE_IMAP       (context, &job); break;
-case DC_JOB_IMEX_IMAP:            dc_job_do_DC_JOB_IMEX_IMAP            (context, &job); break;
+case DC_JOB_MOVE_MSG: dc_job_do_DC_JOB_MOVE_MSG (context, &job); break;
+case DC_JOB_SEND_MDN: dc_job_do_DC_JOB_SEND (context, &job); break;
+case DC_JOB_CONFIGURE_IMAP: dc_job_do_DC_JOB_CONFIGURE_IMAP (context, &job); break;
+case DC_JOB_IMEX_IMAP: dc_job_do_DC_JOB_IMEX_IMAP (context, &job); break;
 case DC_JOB_MAYBE_SEND_LOCATIONS: dc_job_do_DC_JOB_MAYBE_SEND_LOCATIONS (context, &job); break;
 case DC_JOB_MAYBE_SEND_LOC_ENDED: dc_job_do_DC_JOB_MAYBE_SEND_LOC_ENDED (context, &job); break;
-case DC_JOB_EMPTY_SERVER:         dc_job_do_DC_JOB_EMPTY_SERVER         (context, &job); break;
-case DC_JOB_HOUSEKEEPING:         dc_housekeeping                       (context);       break;
+case DC_JOB_EMPTY_SERVER: dc_job_do_DC_JOB_EMPTY_SERVER (context, &job); break;
+case DC_JOB_HOUSEKEEPING: dc_housekeeping (context); break;
 }
 if (job.try_again!=DC_AT_ONCE) {
 break;
@@ -727,7 +727,7 @@ else
 int r = 0;
 struct timespec wakeup_at;
 memset(&wakeup_at, 0, sizeof(wakeup_at));
-wakeup_at.tv_sec  = get_next_wakeup_time(context, DC_SMTP_THREAD)+1;
+wakeup_at.tv_sec = get_next_wakeup_time(context, DC_SMTP_THREAD)+1;
 while (context->smtpidle_condflag==0 && r==0) {
 r = pthread_cond_timedwait(&context->smtpidle_cond, &context->smtpidle_condmutex, &wakeup_at);
 }

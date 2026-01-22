@@ -30,7 +30,7 @@ static void JPAKE_ZKP_release(JPAKE_ZKP *zkp)
 BN_free(zkp->b);
 BN_free(zkp->gr);
 }
-#define JPAKE_STEP_PART_init    JPAKE_STEP2_init
+#define JPAKE_STEP_PART_init JPAKE_STEP2_init
 #define JPAKE_STEP_PART_release JPAKE_STEP2_release
 void JPAKE_STEP_PART_init(JPAKE_STEP_PART *p)
 {

@@ -1,47 +1,47 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"io.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "io.h"
 enum {
-PortSelect =	0xE7,
-Port =		0xE1,
-DQ =		1<<0,
-CLK =		1<<1,
-RST =		1<<2,
-TL =		1<<3,
-TH =		1<<4,
-Mread =		0xA0,
-Mwrite =	0,
-Rtemp =		0x0A,
-Rcounter =	0x00,
-Rslope = 	0x09,
-Rhi =		0x01,
-Rlo =		0x02,
-Rconfig =	0x0C,
-Cdone =	1<<7,
-Cthf =		1<<6,
-Ctlf =		1<<5,
-Cnvb =		1<<4,
-Ccpu =		1<<1,
-C1shot =	1<<0,
-Startconv =	0xEE,
-Stopconv =	0x22,
-ALOTEMP = 	0,
-AHITEMP =	1,
+PortSelect = 0xE7,
+Port = 0xE1,
+DQ = 1<<0,
+CLK = 1<<1,
+RST = 1<<2,
+TL = 1<<3,
+TH = 1<<4,
+Mread = 0xA0,
+Mwrite = 0,
+Rtemp = 0x0A,
+Rcounter = 0x00,
+Rslope = 0x09,
+Rhi = 0x01,
+Rlo = 0x02,
+Rconfig = 0x0C,
+Cdone = 1<<7,
+Cthf = 1<<6,
+Ctlf = 1<<5,
+Cnvb = 1<<4,
+Ccpu = 1<<1,
+C1shot = 1<<0,
+Startconv = 0xEE,
+Stopconv = 0x22,
+ALOTEMP = 0,
+AHITEMP = 1,
 };
-#define send(v)	outb(Port, v); delay(1)
-#define recv()	(!(inb(Port) & 1))
+#define send(v) outb(Port, v); delay(1)
+#define recv() (!(inb(Port) & 1))
 enum {
 Qdir = 0,
 Qtemp,
 Qalarm,
 };
 Dirtab ds1620tab[]={
-"temp",		{Qtemp, 0},	0,	0666,
-"alarm",	{Qalarm, 0},	0,	0444,
+"temp", {Qtemp, 0}, 0, 0666,
+"alarm", {Qalarm, 0}, 0, 0444,
 };
 typedef struct Temp Temp;
 struct Temp

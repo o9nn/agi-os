@@ -117,7 +117,7 @@ const struct test_case *test_case)
 {
 set.ssl_username_from_cert = test_case->set_cert_username;
 struct auth *auth = auth_default_service();
-struct auth_request *request = auth_request_new(mech,  NULL);
+struct auth_request *request = auth_request_new(mech, NULL);
 request->handler = handler;
 request->id = running_test+1;
 request->mech_password = NULL;
@@ -199,7 +199,7 @@ static struct test_case tests[] = {
 {&mech_otp, UCHAR_LEN("init-word:END KERN BALM NICK EROS WAVY:md5 499 ke1235:BABY FAIN OILY NIL TIDY DADE"), "otp_phase_2", NULL , TRUE, TRUE, FALSE},
 {&mech_oauthbearer, UCHAR_LEN("n,a=testuser,p=cHJvb2Y=,f=nonstandart\x01host=server\x01port=143\x01""auth=Bearer vF9dft4qmTc2Nvb3RlckBhbHRhdmlzdGEuY29tCg==\x01\x01"), "testuser", NULL, FALSE, TRUE, FALSE},
 {&mech_scram_sha1, UCHAR_LEN("n,,n=testuser,r=rOprNGfwEbeRWgbNEkqO"), "testuser", NULL, TRUE, FALSE, FALSE},
-{&mech_scram_sha256, UCHAR_LEN("n,,n=testuser,r=rOprNGfwEbeRWgbNEkqO"), "testuser",  NULL, TRUE, FALSE, FALSE},
+{&mech_scram_sha256, UCHAR_LEN("n,,n=testuser,r=rOprNGfwEbeRWgbNEkqO"), "testuser", NULL, TRUE, FALSE, FALSE},
 {&mech_xoauth2, UCHAR_LEN("user=testuser\x01""auth=Bearer vF9dft4qmTc2Nvb3RlckBhdHRhdmlzdGEuY29tCg==\x01\x01"), "testuser", NULL, TRUE, FALSE, FALSE},
 {&mech_apop, UCHAR_LEN(""), NULL, NULL, FALSE, FALSE, FALSE},
 {&mech_cram_md5, UCHAR_LEN(""), NULL, NULL, FALSE, FALSE, FALSE},

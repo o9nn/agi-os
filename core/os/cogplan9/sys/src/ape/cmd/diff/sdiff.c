@@ -88,26 +88,26 @@ usage ()
 {
 printf ("Usage: %s [OPTIONS]... FILE1 FILE2\n\n", program_name);
 printf ("%s", "\
--o FILE  --output=FILE  Operate interactively, sending output to FILE.\n\n");
+-o FILE --output=FILE Operate interactively, sending output to FILE.\n\n");
 printf ("%s", "\
--i  --ignore-case  Consider upper- and lower-case to be the same.\n\
--W  --ignore-all-space  Ignore all white space.\n\
--b  --ignore-space-change  Ignore changes in the amount of white space.\n\
--B  --ignore-blank-lines  Ignore changes whose lines are all blank.\n\
--I RE  --ignore-matching-lines=RE  Ignore changes whose lines all match RE.\n\
--a  --text  Treat all files as text.\n\n");
+-i --ignore-case Consider upper- and lower-case to be the same.\n\
+-W --ignore-all-space Ignore all white space.\n\
+-b --ignore-space-change Ignore changes in the amount of white space.\n\
+-B --ignore-blank-lines Ignore changes whose lines are all blank.\n\
+-I RE --ignore-matching-lines=RE Ignore changes whose lines all match RE.\n\
+-a --text Treat all files as text.\n\n");
 printf ("%s", "\
--w NUM  --width=NUM  Output at most NUM (default 130) characters per line.\n\
--l  --left-column  Output only the left column of common lines.\n\
--s  --suppress-common-lines  Do not output common lines.\n\n");
+-w NUM --width=NUM Output at most NUM (default 130) characters per line.\n\
+-l --left-column Output only the left column of common lines.\n\
+-s --suppress-common-lines Do not output common lines.\n\n");
 printf ("\
--t  --expand-tabs  Expand tabs to spaces in output.\n\n");
+-t --expand-tabs Expand tabs to spaces in output.\n\n");
 printf ("%s", "\
--d  --minimal  Try hard to find a smaller set of changes.\n\
--H  --speed-large-files  Assume large files and many scattered small changes.\n\n");
+-d --minimal Try hard to find a smaller set of changes.\n\
+-H --speed-large-files Assume large files and many scattered small changes.\n\n");
 printf ("%s", "\
--v  --version  Output version info.\n\
---help  Output this help.\n\n\
+-v --version Output version info.\n\
+--help Output this help.\n\n\
 If FILE1 or FILE2 is `-', read standard input.\n");
 }
 static void
@@ -432,10 +432,10 @@ trapsigs ();
 size_t cmdsize = 1;
 char *p, *command;
 int i;
-for (i = 0;  diffargv[i];  i++)
+for (i = 0; diffargv[i]; i++)
 cmdsize += 4 * strlen (diffargv[i]) + 3;
 command = p = xmalloc (cmdsize);
-for (i = 0;  diffargv[i];  i++)
+for (i = 0; diffargv[i]; i++)
 {
 char const *a = diffargv[i];
 SYSTEM_QUOTE_ARG (p, a);
@@ -589,9 +589,9 @@ catchaction.sa_handler = catchsig;
 catchaction.sa_flags = SA_INTERRUPT;
 #endif
 sigemptyset (&catchaction.sa_mask);
-for (i = 0;  i < NUM_SIGS;  i++)
+for (i = 0; i < NUM_SIGS; i++)
 sigaddset (&catchaction.sa_mask, sigs[i]);
-for (i = 0;  i < NUM_SIGS;  i++)
+for (i = 0; i < NUM_SIGS; i++)
 {
 sigaction (sigs[i], 0, &initial_action[i]);
 if (initial_handler (i) != SIG_IGN
@@ -599,7 +599,7 @@ if (initial_handler (i) != SIG_IGN
 fatal ("signal error");
 }
 #else
-for (i = 0;  i < NUM_SIGS;  i++)
+for (i = 0; i < NUM_SIGS; i++)
 {
 initial_action[i] = signal (sigs[i], SIG_IGN);
 if (initial_handler (i) != SIG_IGN
@@ -621,8 +621,8 @@ int s;
 {
 int i;
 if (sigs_trapped)
-for (i = 0;  i < NUM_SIGS;  i++)
-if ((!s || sigs[i] == s)  &&  initial_handler (i) != SIG_IGN)
+for (i = 0; i < NUM_SIGS; i++)
+if ((!s || sigs[i] == s) && initial_handler (i) != SIG_IGN)
 #if HAVE_SIGACTION
 sigaction (sigs[i], &initial_action[i], 0);
 #else

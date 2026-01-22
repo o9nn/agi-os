@@ -16,29 +16,29 @@ extern "C" {
 typedef unsigned long size_t;
 #endif
 #ifndef bcopy
-extern void	bcopy(void*, void*, size_t);
+extern void bcopy(void*, void*, size_t);
 #endif
 #ifndef bcmp
-extern int	bcmp(void*, void*, size_t);
+extern int bcmp(void*, void*, size_t);
 #endif
 #ifndef bzero
-extern void	bzero(void*, size_t);
+extern void bzero(void*, size_t);
 #endif
-extern int	ffs(unsigned int);
-extern void	bhappy(void*);
-extern int	rresvport(int*);
-extern int	rcmd(char**, int, char*, char*, char*, int*);
-extern int	strcasecmp(char*, char*);
-extern int 	putenv(char*);
-extern int	strncasecmp(char*, char*,int);
-extern int	getopt(int, char**, char*);
-extern int	opterr;
-extern int	optind;
-extern int	optopt;
-extern char	*optarg;
-extern char	*mktemp(char *);
-extern char	*sys_errlist[];
-extern int		sys_nerr;
+extern int ffs(unsigned int);
+extern void bhappy(void*);
+extern int rresvport(int*);
+extern int rcmd(char**, int, char*, char*, char*, int*);
+extern int strcasecmp(char*, char*);
+extern int putenv(char*);
+extern int strncasecmp(char*, char*,int);
+extern int getopt(int, char**, char*);
+extern int opterr;
+extern int optind;
+extern int optopt;
+extern char *optarg;
+extern char *mktemp(char *);
+extern char *sys_errlist[];
+extern int sys_nerr;
 #ifdef __cplusplus
 }
 #endif

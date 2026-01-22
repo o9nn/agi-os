@@ -124,19 +124,19 @@ sys = mtkcompile(sys; allow_symbolic = true)
 prob = ODEProblem(sys, [], (0, 5))
 sol = solve(prob, Rodas5P(); abstol = 1e-6, reltol = 1e-9)
 # begin
-#     fig = Figure()
-#     ax = Axis(fig[1,1], ylabel="position [m]", xlabel="time [s]")
-#     lines!(ax, sol.t, sol[sys.vol1.x]; label="vol1")
-#     lines!(ax, sol.t, sol[sys.vol2.x]; label="vol2")
-#     Legend(fig[1,2], ax)
-#     ax = Axis(fig[2,1], ylabel="pressure [bar]", xlabel="time [s]")
-#     lines!(ax, sol.t, sol[sys.vol1.damper.port_a.p]/1e5; label="vol1")
-#     lines!(ax, sol.t, sol[sys.vol2.damper.port_a.p]/1e5; label="vol2")
-#     ylims!(ax, 10-2, 10+2)
-#     ax = Axis(fig[3,1], ylabel="area", xlabel="time [s]")
-#     lines!(ax, sol.t, sol[sys.vol1.damper.area]; label="area 1")
-#     lines!(ax, sol.t, sol[sys.vol2.damper.area]; label="area 2")
-#     display(fig)
+# fig = Figure()
+# ax = Axis(fig[1,1], ylabel="position [m]", xlabel="time [s]")
+# lines!(ax, sol.t, sol[sys.vol1.x]; label="vol1")
+# lines!(ax, sol.t, sol[sys.vol2.x]; label="vol2")
+# Legend(fig[1,2], ax)
+# ax = Axis(fig[2,1], ylabel="pressure [bar]", xlabel="time [s]")
+# lines!(ax, sol.t, sol[sys.vol1.damper.port_a.p]/1e5; label="vol1")
+# lines!(ax, sol.t, sol[sys.vol2.damper.port_a.p]/1e5; label="vol2")
+# ylims!(ax, 10-2, 10+2)
+# ax = Axis(fig[3,1], ylabel="area", xlabel="time [s]")
+# lines!(ax, sol.t, sol[sys.vol1.damper.area]; label="area 1")
+# lines!(ax, sol.t, sol[sys.vol2.damper.area]; label="area 2")
+# display(fig)
 # end
 # volume/mass should stop moving at opposite ends
 @test sol(0; idxs = sys.vol1.x) == 0.1
@@ -204,14 +204,14 @@ push!(systems, input)
 eqs = [connect(input.output, pos.s)
 connect(valve.flange, pos.flange)
 connect(valve.port_a, piston.port_a)
-#    connect(piston.flange, body.flange)
+# connect(piston.flange, body.flange)
 connect(piston.port_b, valve.port_b)
-#    connect(piston.port_b, pipe.port_b)
-# #    connect(piston.port_b, m1.port_a)
-# #    connect(m1.port_b, pipe.port_b)
+# connect(piston.port_b, pipe.port_b)
+# # connect(piston.port_b, m1.port_a)
+# # connect(m1.port_b, pipe.port_b)
 # connect(pipe.port_a, valve.port_b)
-# #    connect(pipe.port_a, m2.port_b)
-# #    connect(m2.port_a, valve.port_b)
+# # connect(pipe.port_a, m2.port_b)
+# # connect(m2.port_a, valve.port_b)
 connect(src.port, valve.port_s)
 connect(snk.port, valve.port_r)
 connect(fluid, src.port, snk.port)
@@ -289,43 +289,43 @@ end
 #TODO
 # @testset "Component Flow Reversals" begin
 # # Check Component Flow Reversals
-#     function System(; name)
-#         pars = []
-#         systems = @named begin
-#             fluid = IC.HydraulicFluid()
-#             source = IC.Pressure()
-#             sink = IC.FixedPressure(; p = 101325)
-#             pipe = IC.Tube(1, false; area = 0.1, length =.1, head_factor = 1)
-#             osc = Sine(; frequency = 0.01, amplitude = 100, offset = 101325)
-#         end
-#         eqs = [connect(fluid, pipe.port_a)
-#             connect(source.port, pipe.port_a)
-#             connect(pipe.port_b, sink.port)
-#             connect(osc.output, source.p)]
-#         System(eqs, t, [], []; systems)
-#     end
-#     @named sys = System()
-#     syss = mtkcompile.([sys])
-#     tspan = (0.0, 1000.0)
-#     prob = ODEProblem(sys, tspan)  # u0 guess can be supplied or not
-#     @time sol = solve(prob)
+# function System(; name)
+# pars = []
+# systems = @named begin
+# fluid = IC.HydraulicFluid()
+# source = IC.Pressure()
+# sink = IC.FixedPressure(; p = 101325)
+# pipe = IC.Tube(1, false; area = 0.1, length =.1, head_factor = 1)
+# osc = Sine(; frequency = 0.01, amplitude = 100, offset = 101325)
+# end
+# eqs = [connect(fluid, pipe.port_a)
+# connect(source.port, pipe.port_a)
+# connect(pipe.port_b, sink.port)
+# connect(osc.output, source.p)]
+# System(eqs, t, [], []; systems)
+# end
+# @named sys = System()
+# syss = mtkcompile.([sys])
+# tspan = (0.0, 1000.0)
+# prob = ODEProblem(sys, tspan) # u0 guess can be supplied or not
+# @time sol = solve(prob)
 # end
 #TODO
 # @testset "Tube Discretization" begin
-#     # Check Tube Discretization
+# # Check Tube Discretization
 # end
 #TODO
 # @testset "Pressure BC" begin
-#     # Ensure Pressure Boundary Condition Works
+# # Ensure Pressure Boundary Condition Works
 # end
 #TODO
 # @testset "Massflow BC" begin
-#     # Ensure Massflow Boundary Condition Works
+# # Ensure Massflow Boundary Condition Works
 # end
 #TODO
 # @testset "Splitter Flow Test" begin
-#     # Ensure FlowDivider Splits Flow Properly
-#     # 1) Set flow into port A, expect reduction in port B
-#     # 2) Set flow into port B, expect increase in port B
+# # Ensure FlowDivider Splits Flow Properly
+# # 1) Set flow into port A, expect reduction in port B
+# # 2) Set flow into port B, expect increase in port B
 # end
 #TODO: Test Valve Inversion

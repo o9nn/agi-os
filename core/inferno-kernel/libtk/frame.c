@@ -204,11 +204,11 @@ free(inf);
 static
 TkCmdtab tkframecmd[] =
 {
-"cget",			tkframecget,
-"configure",		tkframeconf,
-"map",			tkframemap,
-"unmap",		tkframeunmap,
-"suspend",		tkframesuspend,
+"cget", tkframecget,
+"configure", tkframeconf,
+"map", tkframemap,
+"unmap", tkframeunmap,
+"suspend", tkframesuspend,
 nil
 };
 TkMethod framemethod = {

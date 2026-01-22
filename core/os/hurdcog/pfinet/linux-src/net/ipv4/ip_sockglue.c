@@ -27,11 +27,11 @@
 #include <linux/errqueue.h>
 #include <asm/uaccess.h>
 #define MAX(a,b) ((a)>(b)?(a):(b))
-#define IP_CMSG_PKTINFO		1
-#define IP_CMSG_TTL		2
-#define IP_CMSG_TOS		4
-#define IP_CMSG_RECVOPTS	8
-#define IP_CMSG_RETOPTS		16
+#define IP_CMSG_PKTINFO 1
+#define IP_CMSG_TTL 2
+#define IP_CMSG_TOS 4
+#define IP_CMSG_RECVOPTS 8
+#define IP_CMSG_RETOPTS 16
 static void ip_cmsg_recv_pktinfo(struct msghdr *msg, struct sk_buff *skb)
 {
 struct in_pktinfo info;
@@ -221,7 +221,7 @@ struct sk_buff *skb, *skb2;
 struct sockaddr_in *sin;
 struct {
 struct sock_extended_err ee;
-struct sockaddr_in	 offender;
+struct sockaddr_in offender;
 } errhdr;
 int err;
 int copied;
@@ -328,19 +328,19 @@ sk->ip_cmsg_flags &= ~IP_CMSG_PKTINFO;
 return 0;
 case IP_RECVTTL:
 if (val)
-sk->ip_cmsg_flags |=  IP_CMSG_TTL;
+sk->ip_cmsg_flags |= IP_CMSG_TTL;
 else
 sk->ip_cmsg_flags &= ~IP_CMSG_TTL;
 return 0;
 case IP_RECVTOS:
 if (val)
-sk->ip_cmsg_flags |=  IP_CMSG_TOS;
+sk->ip_cmsg_flags |= IP_CMSG_TOS;
 else
 sk->ip_cmsg_flags &= ~IP_CMSG_TOS;
 return 0;
 case IP_RECVOPTS:
 if (val)
-sk->ip_cmsg_flags |=  IP_CMSG_RECVOPTS;
+sk->ip_cmsg_flags |= IP_CMSG_RECVOPTS;
 else
 sk->ip_cmsg_flags &= ~IP_CMSG_RECVOPTS;
 return 0;
@@ -418,7 +418,7 @@ return -EFAULT;
 if (!mreq.imr_ifindex) {
 if (mreq.imr_address.s_addr == INADDR_ANY) {
 sk->ip_mc_index = 0;
-sk->ip_mc_addr  = 0;
+sk->ip_mc_addr = 0;
 return 0;
 }
 dev = ip_dev_find(mreq.imr_address.s_addr);
@@ -429,7 +429,7 @@ return -EADDRNOTAVAIL;
 if (sk->bound_dev_if && dev->ifindex != sk->bound_dev_if)
 return -EINVAL;
 sk->ip_mc_index = mreq.imr_ifindex;
-sk->ip_mc_addr  = mreq.imr_address.s_addr;
+sk->ip_mc_addr = mreq.imr_address.s_addr;
 return 0;
 }
 case IP_ADD_MEMBERSHIP:

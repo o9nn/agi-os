@@ -3,113 +3,113 @@
 #include <mach.h>
 #include "ic/i.out.h"
 static char *riscvexcep(Map*, Rgetter);
-typedef struct	Instr	Instr;
-struct	Instr
+typedef struct Instr Instr;
+struct Instr
 {
-Map	*map;
-ulong	w;
-uvlong	addr;
+Map *map;
+ulong w;
+uvlong addr;
 char *fmt;
 int n;
-int	op;
-int	func3;
-int	func7;
-char	rs1, rs2, rs3, rd;
-char	rv64;
-long	imm;
-char*	curr;
-char*	end;
+int op;
+int func3;
+int func7;
+char rs1, rs2, rs3, rd;
+char rv64;
+long imm;
+char* curr;
+char* end;
 };
-typedef struct Optab	Optab;
+typedef struct Optab Optab;
 struct Optab {
-int	func7;
-int	op[8];
+int func7;
+int op[8];
 };
-typedef struct Opclass	Opclass;
+typedef struct Opclass Opclass;
 struct Opclass {
-char	*fmt;
-Optab	tab[4];
+char *fmt;
+Optab tab[4];
 };
 enum {
-OLOAD,	 OLOAD_FP,  Ocustom_0,	OMISC_MEM, OOP_IMM, OAUIPC, OOP_IMM_32,	O48b,
-OSTORE,	 OSTORE_FP, Ocustom_1,	OAMO,	   OOP,	    OLUI,   OOP_32,	O64b,
-OMADD,	 OMSUB,	    ONMSUB,	ONMADD,	   OOP_FP,  Ores_0, Ocustom_2,	O48b_2,
-OBRANCH, OJALR,	    Ores_1,	OJAL,	   OSYSTEM, Ores_2, Ocustom_3,	O80b
+OLOAD, OLOAD_FP, Ocustom_0, OMISC_MEM, OOP_IMM, OAUIPC, OOP_IMM_32, O48b,
+OSTORE, OSTORE_FP, Ocustom_1, OAMO, OOP, OLUI, OOP_32, O64b,
+OMADD, OMSUB, ONMSUB, ONMADD, OOP_FP, Ores_0, Ocustom_2, O48b_2,
+OBRANCH, OJALR, Ores_1, OJAL, OSYSTEM, Ores_2, Ocustom_3, O80b
 };
 static
 #include "ic/enam.c"
 static Opclass opOLOAD = {
 "a,d",
-0,	AMOVB,	AMOVH,	AMOVW,	AMOV,	AMOVBU,	AMOVHU,	AMOVWU,	0,
+0, AMOVB, AMOVH, AMOVW, AMOV, AMOVBU, AMOVHU, AMOVWU, 0,
 };
 static Opclass opOLOAD_FP = {
 "a,fd",
-0,	0,	0,	AMOVF,	AMOVD,	0,	0,	0,	0,
+0, 0, 0, AMOVF, AMOVD, 0, 0, 0, 0,
 };
 static Opclass opOMISC_MEM = {
 "",
-0,	AFENCE,	AFENCE_I,0,	0,	0,	0,	0,	0,
+0, AFENCE, AFENCE_I,0, 0, 0, 0, 0, 0,
 };
 static Opclass opOOP_IMM = {
 "$i,s,d",
-0x20,	0,	0,	0,	0,	0,	ASRA,	0,	0,
-0,	AADD,	ASLL,	ASLT,	ASLTU,	AXOR,	ASRL,	AOR,	AAND,
+0x20, 0, 0, 0, 0, 0, ASRA, 0, 0,
+0, AADD, ASLL, ASLT, ASLTU, AXOR, ASRL, AOR, AAND,
 };
 static Opclass opOAUIPC = {
 "$i(PC),d",
-0,	ALUI,	ALUI,	ALUI,	ALUI,	ALUI,	ALUI,	ALUI,	ALUI,
+0, ALUI, ALUI, ALUI, ALUI, ALUI, ALUI, ALUI, ALUI,
 };
 static Opclass opOOP_IMM_32 = {
 "$i,s,d",
-0x20,	0,	0,	0,	0,	0,	ASRAW,	0,	0,
-0,	AADDW,	ASLLW,	0,	0,	0,	ASRLW,	0,	0,
+0x20, 0, 0, 0, 0, 0, ASRAW, 0, 0,
+0, AADDW, ASLLW, 0, 0, 0, ASRLW, 0, 0,
 };
 static Opclass opOSTORE = {
 "2,a",
-0,	AMOVB,	AMOVH,	AMOVW,	AMOV,	0,	0,	0,	0,
+0, AMOVB, AMOVH, AMOVW, AMOV, 0, 0, 0, 0,
 };
 static Opclass opOSTORE_FP = {
 "f2,a",
-0,	0,	0,	AMOVF,	AMOVD,	0,	0,	0,	0,
+0, 0, 0, AMOVF, AMOVD, 0, 0, 0, 0,
 };
 static Opclass opOAMO = {
 "7,2,s,d",
-0x04,	0,	0,	ASWAP_W,ASWAP_D,0,	0,	0,	0,
-0x08,	0,	0,	ALR_W,	ALR_D,	0,	0,	0,	0,
-0x0C,	0,	0,	ASC_W,	ASC_D,	0,	0,	0,	0,
-0,	0,	0,	AAMO_W,	AAMO_D,	0,	0,	0,	0,
+0x04, 0, 0, ASWAP_W,ASWAP_D,0, 0, 0, 0,
+0x08, 0, 0, ALR_W, ALR_D, 0, 0, 0, 0,
+0x0C, 0, 0, ASC_W, ASC_D, 0, 0, 0, 0,
+0, 0, 0, AAMO_W, AAMO_D, 0, 0, 0, 0,
 };
 static Opclass opOOP = {
 "2,s,d",
-0x01,	AMUL,	AMULH,	AMULHSU,AMULHU,	ADIV,	ADIVU,	AREM,	AREMU,
-0x20,	ASUB,	0,	0,	0,	0,	ASRA,	0,	0,
-0,	AADD,	ASLL,	ASLT,	ASLTU,	AXOR,	ASRL,	AOR,	AAND,
+0x01, AMUL, AMULH, AMULHSU,AMULHU, ADIV, ADIVU, AREM, AREMU,
+0x20, ASUB, 0, 0, 0, 0, ASRA, 0, 0,
+0, AADD, ASLL, ASLT, ASLTU, AXOR, ASRL, AOR, AAND,
 };
 static Opclass opOLUI = {
 "$i,d",
-0,	ALUI,	ALUI,	ALUI,	ALUI,	ALUI,	ALUI,	ALUI,	ALUI,
+0, ALUI, ALUI, ALUI, ALUI, ALUI, ALUI, ALUI, ALUI,
 };
 static Opclass opOOP_32 = {
 "2,s,d",
-0x01,	AMULW,	0,	0,	0,	ADIVW,	ADIVUW,	AREMW,	AREMUW,
-0x20,	ASUBW,	0,	0,	0,	0,	ASRAW,	0,	0,
-0,	AADDW,	ASLLW,	0,	0,	0,	ASRLW,	0,	0,
+0x01, AMULW, 0, 0, 0, ADIVW, ADIVUW, AREMW, AREMUW,
+0x20, ASUBW, 0, 0, 0, 0, ASRAW, 0, 0,
+0, AADDW, ASLLW, 0, 0, 0, ASRLW, 0, 0,
 };
 static Opclass opOBRANCH = {
 "2,s,p",
-0,	ABEQ,	ABNE,	0,	0,	ABLT,	ABGE,	ABLTU,	ABGEU,
+0, ABEQ, ABNE, 0, 0, ABLT, ABGE, ABLTU, ABGEU,
 };
 static Opclass opOJALR = {
 "d,a",
-0,	AJALR,	AJALR,	AJALR,	AJALR,	AJALR,	AJALR,	AJALR,	AJALR,
+0, AJALR, AJALR, AJALR, AJALR, AJALR, AJALR, AJALR, AJALR,
 };
 static Opclass opOJAL = {
 "d,p",
-0,	AJAL,	AJAL,	AJAL,	AJAL,	AJAL,	AJAL,	AJAL,	AJAL,
+0, AJAL, AJAL, AJAL, AJAL, AJAL, AJAL, AJAL, AJAL,
 };
 static Opclass opOSYSTEM = {
 "",
-0,	ASYS,	ACSRRW,	ACSRRS,	ACSRRC,	0,	ACSRRWI,ACSRRSI,ACSRRCI,
+0, ASYS, ACSRRW, ACSRRS, ACSRRC, 0, ACSRRWI,ACSRRSI,ACSRRCI,
 };
 static char fmtcsr[] = "c,s,d";
 static char fmtcsri[] = "c,js,d";
@@ -118,88 +118,88 @@ static char *fmtOSYSTEM[8] = {
 };
 static Opclass opOOP_FP = {
 "fs,fd",
-0x0,	AADDF,	ASUBF,	AMULF,	ADIVF,	AMOVF,	0,	0,	0,
-0x1,	AMOVDF,	0,	0,	0,	0,	0,	0,	0,
-0x2,	ACMPLEF,ACMPLTF,ACMPEQF,0,	0,	0,	0,	0,
-0x3,	AMOVFW,	0,	AMOVFV,	0,	AMOVWF,	AMOVUF,	AMOVVF,	AMOVUVF,
+0x0, AADDF, ASUBF, AMULF, ADIVF, AMOVF, 0, 0, 0,
+0x1, AMOVDF, 0, 0, 0, 0, 0, 0, 0,
+0x2, ACMPLEF,ACMPLTF,ACMPEQF,0, 0, 0, 0, 0,
+0x3, AMOVFW, 0, AMOVFV, 0, AMOVWF, AMOVUF, AMOVVF, AMOVUVF,
 };
 static Opclass opOOP_DP = {
 "f2,fs,fd",
-0x0,	AADDD,	ASUBD,	AMULD,	ADIVD,	AMOVD,	0,	0,	0,
-0x1,	AMOVFD,	0,	0,	0,	0,	0,	0,	0,
-0x2,	ACMPLED,ACMPLTD,ACMPEQD,0,	0,	0,	0,	0,
-0x3,	AMOVDW,	0,	AMOVDV,	0,	AMOVWD,	AMOVUD,	AMOVVD,	AMOVUVD,
+0x0, AADDD, ASUBD, AMULD, ADIVD, AMOVD, 0, 0, 0,
+0x1, AMOVFD, 0, 0, 0, 0, 0, 0, 0,
+0x2, ACMPLED,ACMPLTD,ACMPEQD,0, 0, 0, 0, 0,
+0x3, AMOVDW, 0, AMOVDV, 0, AMOVWD, AMOVUD, AMOVVD, AMOVUVD,
 };
 typedef struct Compclass Compclass;
 struct Compclass {
-char	*fmt;
-uchar	immbits[18];
+char *fmt;
+uchar immbits[18];
 };
 static Compclass rv32compressed[0x2D] = {
 {"ADDI4SPN $i,d", 22, 6, 5, 11, 12, 7, 8, 9, 10},
-{"FLD a,fd",      24, 10, 11, 12, 5, 6},
-{"LW a,d",        25, 6, 10, 11, 12, 5},
-{"FLW a,fd",      25, 6, 10, 11, 12, 5},
-{"? ",	0},
-{"FSD f2,a",      24, 10, 11, 12, 5, 6},
-{"SW 2,a",        25, 6, 10, 11, 12, 5},
-{"FSW f2,a",      25, 6, 10, 11, 12, 5},
-{"ADDI $i,d",    ~26, 2, 3, 4, 5, 6, 12},
-{"JAL p",        ~20, 3, 4, 5, 11, 2, 7, 6, 9, 10, 8, 12},
-{"LI $i,d",      ~26, 2, 3, 4, 5, 6, 12},
-{"LUI $i,d",     ~14, 2, 3, 4, 5, 6, 12},
-{"? ",	0},
-{"J p",          ~20, 3, 4, 5, 11, 2, 7, 6, 9, 10, 8, 12},
-{"BEQZ s,p",     ~23, 3, 4, 10, 11, 2, 5, 6, 12},
-{"BNEZ s,p",     ~23, 3, 4, 10, 11, 2, 5, 6, 12},
-{"SLLI $i,d",     26, 2, 3, 4, 5, 6, 12},
-{"FLDSP i,fd",    23, 5, 6, 12, 2, 3, 4},
-{"LWSP i,d",      24, 4, 5, 6, 12, 2, 3},
-{"FLWSP i,fd",    24, 4, 5, 6, 12, 2, 3},
-{"? ",	0},
-{"FSDSP f2,$i",   23, 10, 11, 12, 7, 8, 9},
-{"SWSP 2,$i",     24, 9, 10, 11, 12, 7, 8},
-{"FSWSP f2,$i",   24, 9, 10, 11, 12, 7, 8},
-{"SRLI $i,d",     26, 2, 3, 4, 5, 6, 12},
-{"SRAI $i,d",     26, 2, 3, 4, 5, 6, 12},
-{"ANDI $i,d",    ~26, 2, 3, 4, 5, 6, 12},
-{"SUB 2,d",	0},
-{"XOR 2,d",	0},
-{"OR 2,d",	0},
-{"AND 2,d",	0},
-{"SUBW 2,d",	0},
-{"ADDW 2,d",	0},
-{"? ",	0},
-{"? ",	0},
-{"JR s",	0},
-{"MV 2,d",	0},
-{"JALR s",	0},
-{"ADD 2,d",	0},
-{"ADDI16SP $i",  ~22, 6, 2, 5, 3, 4, 12},
-{"LD a,d",	24, 10, 11, 12, 5, 6},
-{"SD 2,a",	24, 10, 11, 12, 5, 6},
-{"ADDIW $i,d",	~26, 2, 3, 4, 5, 6, 12},
-{"LDSP i,d",	23, 5, 6, 12, 2, 3, },
-{"SDSP 2,i",	23, 10, 11, 12, 7, 8, 9}
+{"FLD a,fd", 24, 10, 11, 12, 5, 6},
+{"LW a,d", 25, 6, 10, 11, 12, 5},
+{"FLW a,fd", 25, 6, 10, 11, 12, 5},
+{"? ", 0},
+{"FSD f2,a", 24, 10, 11, 12, 5, 6},
+{"SW 2,a", 25, 6, 10, 11, 12, 5},
+{"FSW f2,a", 25, 6, 10, 11, 12, 5},
+{"ADDI $i,d", ~26, 2, 3, 4, 5, 6, 12},
+{"JAL p", ~20, 3, 4, 5, 11, 2, 7, 6, 9, 10, 8, 12},
+{"LI $i,d", ~26, 2, 3, 4, 5, 6, 12},
+{"LUI $i,d", ~14, 2, 3, 4, 5, 6, 12},
+{"? ", 0},
+{"J p", ~20, 3, 4, 5, 11, 2, 7, 6, 9, 10, 8, 12},
+{"BEQZ s,p", ~23, 3, 4, 10, 11, 2, 5, 6, 12},
+{"BNEZ s,p", ~23, 3, 4, 10, 11, 2, 5, 6, 12},
+{"SLLI $i,d", 26, 2, 3, 4, 5, 6, 12},
+{"FLDSP i,fd", 23, 5, 6, 12, 2, 3, 4},
+{"LWSP i,d", 24, 4, 5, 6, 12, 2, 3},
+{"FLWSP i,fd", 24, 4, 5, 6, 12, 2, 3},
+{"? ", 0},
+{"FSDSP f2,$i", 23, 10, 11, 12, 7, 8, 9},
+{"SWSP 2,$i", 24, 9, 10, 11, 12, 7, 8},
+{"FSWSP f2,$i", 24, 9, 10, 11, 12, 7, 8},
+{"SRLI $i,d", 26, 2, 3, 4, 5, 6, 12},
+{"SRAI $i,d", 26, 2, 3, 4, 5, 6, 12},
+{"ANDI $i,d", ~26, 2, 3, 4, 5, 6, 12},
+{"SUB 2,d", 0},
+{"XOR 2,d", 0},
+{"OR 2,d", 0},
+{"AND 2,d", 0},
+{"SUBW 2,d", 0},
+{"ADDW 2,d", 0},
+{"? ", 0},
+{"? ", 0},
+{"JR s", 0},
+{"MV 2,d", 0},
+{"JALR s", 0},
+{"ADD 2,d", 0},
+{"ADDI16SP $i", ~22, 6, 2, 5, 3, 4, 12},
+{"LD a,d", 24, 10, 11, 12, 5, 6},
+{"SD 2,a", 24, 10, 11, 12, 5, 6},
+{"ADDIW $i,d", ~26, 2, 3, 4, 5, 6, 12},
+{"LDSP i,d", 23, 5, 6, 12, 2, 3, },
+{"SDSP 2,i", 23, 10, 11, 12, 7, 8, 9}
 };
 static Opclass *opclass[32] = {
-[OLOAD]		&opOLOAD,
-[OLOAD_FP]	&opOLOAD_FP,
-[OMISC_MEM]	&opOMISC_MEM,
-[OOP_IMM]	&opOOP_IMM,
-[OAUIPC]	&opOAUIPC,
-[OOP_IMM_32]	&opOOP_IMM_32,
-[OSTORE]	&opOSTORE,
-[OSTORE_FP]	&opOSTORE_FP,
-[OAMO]		&opOAMO,
-[OOP]		&opOOP,
-[OLUI]		&opOLUI,
-[OOP_FP]	&opOOP_FP,
-[OOP_32]	&opOOP_32,
-[OBRANCH]	&opOBRANCH,
-[OJALR]		&opOJALR,
-[OJAL]		&opOJAL,
-[OSYSTEM]	&opOSYSTEM,
+[OLOAD] &opOLOAD,
+[OLOAD_FP] &opOLOAD_FP,
+[OMISC_MEM] &opOMISC_MEM,
+[OOP_IMM] &opOOP_IMM,
+[OAUIPC] &opOAUIPC,
+[OOP_IMM_32] &opOOP_IMM_32,
+[OSTORE] &opOSTORE,
+[OSTORE_FP] &opOSTORE_FP,
+[OAMO] &opOAMO,
+[OOP] &opOOP,
+[OLUI] &opOLUI,
+[OOP_FP] &opOOP_FP,
+[OOP_32] &opOOP_32,
+[OBRANCH] &opOBRANCH,
+[OJALR] &opOJALR,
+[OJAL] &opOJAL,
+[OSYSTEM] &opOSYSTEM,
 };
 static int
 gsymoff(char *buf, int n, ulong v, int space)
@@ -226,7 +226,7 @@ return snprint(buf, n, "%s+%llux", s.name, v-s.value);
 else
 return snprint(buf, n, "#%lux", v);
 }
-#pragma	varargck	argpos	bprint		2
+#pragma varargck argpos bprint 2
 static void
 bprint(Instr *i, char *fmt, ...)
 {
@@ -343,7 +343,7 @@ op = w&0x3;
 i->op = op;
 switch(op){
 case 0:
-i->rd  = 8 + ((w>>2)&0x7);
+i->rd = 8 + ((w>>2)&0x7);
 i->rs1 = 8 + ((w>>7)&0x7);
 i->rs2 = i->rd;
 break;
@@ -375,11 +375,11 @@ break;
 if(aop == 0x0B && i->rd == 2)
 aop = 0x27;
 if(i->rv64) switch(aop){
-case 0x03:	aop = 0x28; break;
-case 0x07:	aop = 0x29; break;
-case 0x09:	aop = 0x2A; break;
-case 0x13:	aop = 0x2B; break;
-case 0x17:	aop = 0x2C; break;
+case 0x03: aop = 0x28; break;
+case 0x07: aop = 0x29; break;
+case 0x09: aop = 0x2A; break;
+case 0x13: aop = 0x2B; break;
+case 0x17: aop = 0x2C; break;
 }
 cop = &rv32compressed[aop];
 i->fmt = cop->fmt;
@@ -411,9 +411,9 @@ i->rs1 = (w>>15)&0x1F;
 i->rs2 = (w>>20)&0x1F;
 i->rs3 = (w>>27)&0x1F;
 i->rd = (w>>7)&0x1F;
-#define FIELD(hi,lo,off)	(w>>(lo-off))&(((1<<(hi-lo+1))-1)<<off)
-#define LFIELD(hi,lo,off)	(w<<(off-lo))&(((1<<(hi-lo+1))-1)<<off)
-#define SFIELD(lo,off)		((long)(w&((~0)<<lo))>>(lo-off))
+#define FIELD(hi,lo,off) (w>>(lo-off))&(((1<<(hi-lo+1))-1)<<off)
+#define LFIELD(hi,lo,off) (w<<(off-lo))&(((1<<(hi-lo+1))-1)<<off)
+#define SFIELD(lo,off) ((long)(w&((~0)<<lo))>>(lo-off))
 switch(op>>2) {
 case OSTORE:
 case OSTORE_FP:
@@ -452,7 +452,7 @@ char *op;
 switch(aop){
 case AJAL:
 if(i->rd == 0){
-format(i, "JMP",	"p");
+format(i, "JMP", "p");
 return 1;
 }
 break;

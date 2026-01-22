@@ -5,7 +5,7 @@
 #include "fns.h"
 #include "../port/netif.h"
 #include "../port/error.h"
-#include	<libsec.h>
+#include <libsec.h>
 #include "../port/thwack.h"
 typedef struct Sdp Sdp;
 typedef struct Conv Conv;
@@ -16,7 +16,7 @@ typedef struct Algorithm Algorithm;
 typedef struct CipherRc4 CipherRc4;
 enum
 {
-Qtopdir=	1,
+Qtopdir= 1,
 Qsdpdir,
 Qclone,
 Qlog,
@@ -30,56 +30,56 @@ Qrstats,
 MaxQ,
 Maxconv= 256,
 Nfs= 4,
-MaxRetries=	12,
+MaxRetries= 12,
 KeepAlive = 300,
 SecretLength= 32,
 SeqMax = (1<<24),
 SeqWindow = 32,
 NCompStats = 8,
 };
-#define TYPE(x) 	(((ulong)(x).path) & 0xff)
-#define CONV(x) 	((((ulong)(x).path) >> 8)&(Maxconv-1))
-#define QID(x, y) 	(((x)<<8) | (y))
+#define TYPE(x) (((ulong)(x).path) & 0xff)
+#define CONV(x) ((((ulong)(x).path) >> 8)&(Maxconv-1))
+#define QID(x, y) (((x)<<8) | (y))
 struct Stats
 {
-ulong	outPackets;
-ulong	outDataPackets;
-ulong	outDataBytes;
-ulong	outCompDataBytes;
-ulong	outCompBytes;
-ulong	outCompStats[NCompStats];
-ulong	inPackets;
-ulong	inDataPackets;
-ulong	inDataBytes;
-ulong	inCompDataBytes;
-ulong	inMissing;
-ulong	inDup;
-ulong	inReorder;
-ulong	inBadComp;
-ulong	inBadAuth;
-ulong	inBadSeq;
-ulong	inBadOther;
+ulong outPackets;
+ulong outDataPackets;
+ulong outDataBytes;
+ulong outCompDataBytes;
+ulong outCompBytes;
+ulong outCompStats[NCompStats];
+ulong inPackets;
+ulong inDataPackets;
+ulong inDataBytes;
+ulong inCompDataBytes;
+ulong inMissing;
+ulong inDup;
+ulong inReorder;
+ulong inBadComp;
+ulong inBadAuth;
+ulong inBadSeq;
+ulong inBadOther;
 };
 struct OneWay
 {
-Rendez	statsready;
-ulong	seqwrap;
-ulong	seq;
-ulong	window;
-uchar	secret[SecretLength];
-QLock	controllk;
-Rendez	controlready;
-Block	*controlpkt;
-ulong	controlseq;
-void	*cipherstate;
-int		cipherivlen;
-int		cipherblklen;
-int		(*cipher)(OneWay*, uchar *buf, int len);
-void	*authstate;
-int		authlen;
-int		(*auth)(OneWay*, uchar *buf, int len);
-void	*compstate;
-int		(*comp)(Conv*, int subtype, ulong seq, Block **);
+Rendez statsready;
+ulong seqwrap;
+ulong seq;
+ulong window;
+uchar secret[SecretLength];
+QLock controllk;
+Rendez controlready;
+Block *controlpkt;
+ulong controlseq;
+void *cipherstate;
+int cipherivlen;
+int cipherblklen;
+int (*cipher)(OneWay*, uchar *buf, int len);
+void *authstate;
+int authlen;
+int (*auth)(OneWay*, uchar *buf, int len);
+void *compstate;
+int (*comp)(Conv*, int subtype, ulong seq, Block **);
 };
 enum {
 CFree,
@@ -93,18 +93,18 @@ CClosed,
 };
 struct Conv {
 QLock;
-Sdp	*sdp;
-int	id;
+Sdp *sdp;
+int id;
 int ref;
 int state;
 int dataopen;
 int controlopen;
 int reader;
-Stats	lstats;
-Stats	rstats;
-ulong	lastrecv;
-ulong	timeout;
-int		retries;
+Stats lstats;
+Stats rstats;
+ulong lastrecv;
+ulong timeout;
+int retries;
 ulong dialid;
 ulong acceptid;
 QLock readlk;
@@ -112,18 +112,18 @@ Proc *readproc;
 Chan *chan;
 char *channame;
 char owner[KNAMELEN];
-int	perm;
+int perm;
 Algorithm *auth;
 Algorithm *cipher;
 Algorithm *comp;
 int drop;
-OneWay	in;
-OneWay	out;
+OneWay in;
+OneWay out;
 };
 struct Sdp {
 QLock;
 Log;
-int	nconv;
+int nconv;
 Conv *conv[Maxconv];
 int ackproc;
 };
@@ -151,32 +151,32 @@ ConReset,
 };
 struct AckPkt
 {
-uchar	cseq[4];
-uchar	outPackets[4];
-uchar	outDataPackets[4];
-uchar	outDataBytes[4];
-uchar	outCompDataBytes[4];
-uchar	outCompStats[4*NCompStats];
-uchar	inPackets[4];
-uchar	inDataPackets[4];
-uchar	inDataBytes[4];
-uchar	inCompDataBytes[4];
-uchar	inMissing[4];
-uchar	inDup[4];
-uchar	inReorder[4];
-uchar	inBadComp[4];
-uchar	inBadAuth[4];
-uchar	inBadSeq[4];
-uchar	inBadOther[4];
+uchar cseq[4];
+uchar outPackets[4];
+uchar outDataPackets[4];
+uchar outDataBytes[4];
+uchar outCompDataBytes[4];
+uchar outCompStats[4*NCompStats];
+uchar inPackets[4];
+uchar inDataPackets[4];
+uchar inDataBytes[4];
+uchar inCompDataBytes[4];
+uchar inMissing[4];
+uchar inDup[4];
+uchar inReorder[4];
+uchar inBadComp[4];
+uchar inBadAuth[4];
+uchar inBadSeq[4];
+uchar inBadOther[4];
 };
 struct Algorithm
 {
-char 	*name;
-int		keylen;
-void	(*init)(Conv*);
+char *name;
+int keylen;
+void (*init)(Conv*);
 };
 enum {
-RC4forward	= 10*1024*1024,
+RC4forward = 10*1024*1024,
 RC4back = 100*1024,
 };
 struct CipherRc4
@@ -189,45 +189,45 @@ ulong oseq;
 RC4state old;
 };
 static Dirtab sdpdirtab[]={
-"log",		{Qlog},		0,	0666,
-"clone",	{Qclone},		0,	0666,
+"log", {Qlog}, 0, 0666,
+"clone", {Qclone}, 0, 0666,
 };
 static Dirtab convdirtab[]={
-"ctl",		{Qctl},	0,	0666,
-"data",		{Qdata},	0,	0666,
-"control",	{Qcontrol},	0,	0666,
-"status",	{Qstatus},	0,	0444,
-"stats",	{Qstats},	0,	0444,
-"rstats",	{Qrstats},	0,	0444,
+"ctl", {Qctl}, 0, 0666,
+"data", {Qdata}, 0, 0666,
+"control", {Qcontrol}, 0, 0666,
+"status", {Qstatus}, 0, 0444,
+"stats", {Qstats}, 0, 0444,
+"rstats", {Qrstats}, 0, 0444,
 };
 static int m2p[] = {
-[OREAD]		4,
-[OWRITE]	2,
-[ORDWR]		6
+[OREAD] 4,
+[OWRITE] 2,
+[ORDWR] 6
 };
 enum {
-Logcompress=	(1<<0),
-Logauth=	(1<<1),
-Loghmac=	(1<<2),
+Logcompress= (1<<0),
+Logauth= (1<<1),
+Loghmac= (1<<2),
 };
 static Logflag logflags[] =
 {
-{ "compress",	Logcompress, },
-{ "auth",	Logauth, },
-{ "hmac",	Loghmac, },
-{ nil,		0, },
+{ "compress", Logcompress, },
+{ "auth", Logauth, },
+{ "hmac", Loghmac, },
+{ nil, 0, },
 };
-static Dirtab	*dirtab[MaxQ];
+static Dirtab *dirtab[MaxQ];
 static Sdp sdptab[Nfs];
 static char *convstatename[] = {
-[CFree]		"Free",
-[CInit]		"Init",
-[CDial]		"Dial",
-[CAccept]	"Accept",
-[COpen]		"Open",
+[CFree] "Free",
+[CInit] "Init",
+[CDial] "Dial",
+[CAccept] "Accept",
+[COpen] "Open",
 [CLocalClose] "LocalClose",
 [CRemoteClose] "RemoteClose",
-[CClosed]	"Closed",
+[CClosed] "Closed",
 };
 static int sdpgen(Chan *c, char*, Dirtab*, int, int s, Dir *dp);
 static Conv *sdpclone(Sdp *sdp);
@@ -262,24 +262,24 @@ static void nullcompinit(Conv*c);
 static void thwackcompinit(Conv*c);
 static Algorithm cipheralg[] =
 {
-"null",			0,	nullcipherinit,
-"des_56_cbc",	7,	descipherinit,
-"rc4_128",		16,	rc4cipherinit,
-"rc4_256",		32,	rc4cipherinit,
-nil,			0,	nil,
+"null", 0, nullcipherinit,
+"des_56_cbc", 7, descipherinit,
+"rc4_128", 16, rc4cipherinit,
+"rc4_256", 32, rc4cipherinit,
+nil, 0, nil,
 };
 static Algorithm authalg[] =
 {
-"null",			0,	nullauthinit,
-"hmac_sha1_96",	16,	shaauthinit,
-"hmac_md5_96",	16,	md5authinit,
-nil,			0,	nil,
+"null", 0, nullauthinit,
+"hmac_sha1_96", 16, shaauthinit,
+"hmac_md5_96", 16, md5authinit,
+nil, 0, nil,
 };
 static Algorithm compalg[] =
 {
-"null",			0,	nullcompinit,
-"thwack",		0,	thwackcompinit,
-nil,			0,	nil,
+"null", 0, nullcompinit,
+"thwack", 0, thwackcompinit,
+nil, 0, nil,
 };
 static void
 sdpinit(void)
@@ -394,7 +394,7 @@ return ch;
 static void
 sdpclose(Chan* ch)
 {
-Sdp *sdp  = sdptab + ch->dev;
+Sdp *sdp = sdptab + ch->dev;
 Conv *c;
 if(!(ch->flag & COPEN))
 return;

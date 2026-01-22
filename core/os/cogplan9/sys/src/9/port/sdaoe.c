@@ -8,19 +8,19 @@
 #include "../port/sd.h"
 #include "../port/netif.h"
 #include "../port/aoe.h"
-#define uprint(...)	snprint(up->genbuf, sizeof up->genbuf, __VA_ARGS__);
+#define uprint(...) snprint(up->genbuf, sizeof up->genbuf, __VA_ARGS__);
 enum {
-Nctlr	= 32,
-Maxpath	= 128,
-Probeintvl	= 100,
-Probemax	= 20,
+Nctlr = 32,
+Maxpath = 128,
+Probeintvl = 100,
+Probemax = 20,
 };
 enum {
-Dllba 	= 1<<0,
-Dsmart	= 1<<1,
-Dpower	= 1<<2,
-Dnop	= 1<<3,
-Datapi	= 1<<4,
+Dllba = 1<<0,
+Dsmart = 1<<1,
+Dpower = 1<<2,
+Dnop = 1<<3,
+Datapi = 1<<4,
 Datapi16= 1<<5,
 };
 static char *flagname[] = {
@@ -34,26 +34,26 @@ static char *flagname[] = {
 typedef struct Ctlr Ctlr;
 struct Ctlr{
 QLock;
-Ctlr	*next;
-SDunit	*unit;
-char	path[Maxpath];
-Chan	*c;
-ulong	vers;
-uchar	mediachange;
-uchar	flag;
-uchar	smart;
-uchar	smartrs;
-uchar	feat;
-uvlong	sectors;
-char	serial[20+1];
-char	firmware[8+1];
-char	model[40+1];
-char	ident[0x100];
+Ctlr *next;
+SDunit *unit;
+char path[Maxpath];
+Chan *c;
+ulong vers;
+uchar mediachange;
+uchar flag;
+uchar smart;
+uchar smartrs;
+uchar feat;
+uvlong sectors;
+char serial[20+1];
+char firmware[8+1];
+char model[40+1];
+char ident[0x100];
 };
-void	aoeidmove(char *p, ushort *a, unsigned n);
-static	Lock	ctlrlock;
-static	Ctlr	*head;
-static	Ctlr	*tail;
+void aoeidmove(char *p, ushort *a, unsigned n);
+static Lock ctlrlock;
+static Ctlr *head;
+static Ctlr *tail;
 SDifc sdaoeifc;
 static ushort
 gbit16(void *a)
@@ -68,7 +68,7 @@ gbit32(void *a)
 ulong j;
 uchar *i;
 i = a;
-j  = i[3] << 24;
+j = i[3] << 24;
 j |= i[2] << 16;
 j |= i[1] << 8;
 j |= i[0];
@@ -237,8 +237,8 @@ s->ifc = &sdaoeifc;
 s->nunit = 1;
 return s;
 }
-static char 	*probef[32];
-static int 	nprobe;
+static char *probef[32];
+static int nprobe;
 static int
 pnpprobeid(char *s)
 {
@@ -395,10 +395,10 @@ if(r->clen == 16){
 if(cmd[2] || cmd[3])
 return sdsetsense(r, SDcheck, 3, 0xc, 2);
 lba = (uvlong)cmd[4]<<40 | (uvlong)cmd[5]<<32;
-lba |=   cmd[6]<<24 |  cmd[7]<<16 |  cmd[8]<<8 | cmd[9];
+lba |= cmd[6]<<24 | cmd[7]<<16 | cmd[8]<<8 | cmd[9];
 count = cmd[10]<<24 | cmd[11]<<16 | cmd[12]<<8 | cmd[13];
 }else{
-lba  = cmd[2]<<24 | cmd[3]<<16 | cmd[4]<<8 | cmd[5];
+lba = cmd[2]<<24 | cmd[3]<<16 | cmd[4]<<8 | cmd[5];
 count = cmd[7]<<8 | cmd[8];
 }
 count *= Aoesectsz;

@@ -15,12 +15,12 @@
 #define __boot
 #define __bootdata
 #define __init
-#define boot_memmove    memmove
-#define boot_panic(s)   panic("%s", s)
-#define boot_strlen     strlen
-#define BOOT_CGAMEM     phystokv(0xb8000)
-#define BOOT_CGACHARS   (80 * 25)
-#define BOOT_CGACOLOR   0x7
+#define boot_memmove memmove
+#define boot_panic(s) panic("%s", s)
+#define boot_strlen strlen
+#define BOOT_CGAMEM phystokv(0xb8000)
+#define BOOT_CGACHARS (80 * 25)
+#define BOOT_CGACOLOR 0x7
 #define BIOSMEM_MAX_BOOT_DATA 64
 struct biosmem_boot_data {
 phys_addr_t start;
@@ -31,16 +31,16 @@ static struct biosmem_boot_data biosmem_boot_data_array[BIOSMEM_MAX_BOOT_DATA]
 __bootdata;
 static unsigned int biosmem_nr_boot_data __bootdata;
 #define BIOSMEM_MAX_MAP_SIZE 128
-#define BIOSMEM_TYPE_AVAILABLE  1
-#define BIOSMEM_TYPE_RESERVED   2
-#define BIOSMEM_TYPE_ACPI       3
-#define BIOSMEM_TYPE_NVS        4
-#define BIOSMEM_TYPE_UNUSABLE   5
-#define BIOSMEM_TYPE_DISABLED   6
-#define BIOSMEM_MASK_NARROW    (((1u << BIOSMEM_TYPE_AVAILABLE) | \
+#define BIOSMEM_TYPE_AVAILABLE 1
+#define BIOSMEM_TYPE_RESERVED 2
+#define BIOSMEM_TYPE_ACPI 3
+#define BIOSMEM_TYPE_NVS 4
+#define BIOSMEM_TYPE_UNUSABLE 5
+#define BIOSMEM_TYPE_DISABLED 6
+#define BIOSMEM_MASK_NARROW (((1u << BIOSMEM_TYPE_AVAILABLE) | \
 (1u << BIOSMEM_TYPE_NVS) | \
 (1u << BIOSMEM_TYPE_DISABLED)))
-#define BIOSMEM_NEEDS_NARROW(t)	((1u << t) & BIOSMEM_MASK_NARROW)
+#define BIOSMEM_NEEDS_NARROW(t) ((1u << t) & BIOSMEM_MASK_NARROW)
 struct biosmem_map_entry {
 uint64_t base_addr;
 uint64_t length;

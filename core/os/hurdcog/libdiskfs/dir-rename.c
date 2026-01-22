@@ -17,7 +17,7 @@ return EOPNOTSUPP;
 if (! tocred)
 return EXDEV;
 if (!strcmp (fromname, ".") || !strcmp (fromname, "..")
-|| !strcmp (toname,   ".") || !strcmp (toname,   ".."))
+|| !strcmp (toname, ".") || !strcmp (toname, ".."))
 return EINVAL;
 if (tocred->po->shadow_root != fromcred->po->shadow_root)
 return EXDEV;

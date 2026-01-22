@@ -23,13 +23,13 @@ perm : int;
 atime : int;
 mtime : int;
 nopen : int;
-data : array of array of byte;			# allocated in blks, no holes
+data : array of array of byte; # allocated in blks, no holes
 length : int;
-parent : cyclic ref Memfile;	# Dir entry linkage
+parent : cyclic ref Memfile; # Dir entry linkage
 kids : cyclic ref Memfile;
 prev : cyclic ref Memfile;
 next : cyclic ref Memfile;
-hashnext : cyclic ref Memfile;	# Qid hash linkage
+hashnext : cyclic ref Memfile; # Qid hash linkage
 };
 Qidhash : adt {
 buckets : array of ref Memfile;
@@ -124,7 +124,7 @@ qhash := Qidhash.new();
 root := newmf(qhash, nil, "memfs", srv.uname, 8r755 | Sys->DMDIR);
 root.parent = root;
 while((tmsg := <-tc) != nil) {
-#		sys->print("%s\n", tmsg.text());
+# sys->print("%s\n", tmsg.text());
 Msg:
 pick tm := tmsg {
 Readerror =>

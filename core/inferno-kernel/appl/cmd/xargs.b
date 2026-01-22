@@ -10,7 +10,7 @@ bufio: Bufio;
 Iobuf: import bufio;
 Xargs: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 stderr: ref Sys->FD;
 usage()
@@ -59,7 +59,7 @@ if (args == nil)
 rargs = cmd :: rargs;
 else
 rargs = append(cmd :: args, rargs);
-sh->init(ctxt, rargs);		# BUG: process environment?
+sh->init(ctxt, rargs); # BUG: process environment?
 }
 }
 reverse[T](l: list of T): list of T

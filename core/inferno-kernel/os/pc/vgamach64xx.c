@@ -5,126 +5,126 @@
 #include "fns.h"
 #include "io.h"
 #include "../port/error.h"
-#define	Image	IMAGE
+#define Image IMAGE
 #include <draw.h>
 #include <memdraw.h>
 #include <cursor.h>
 #include "screen.h"
 char Eunsupportedformat[] = "unsupported video format";
 char Enotconfigured[] = "device not configured";
-#define SCALE_ZERO_EXTEND           	0x0
-#define SCALE_DYNAMIC               		0x1
-#define SCALE_RED_TEMP_6500K        	0x0
-#define SCALE_RED_TEMP_9800K        	0x2
-#define SCALE_HORZ_BLEND            	0x0
-#define SCALE_HORZ_REP              		0x4
-#define SCALE_VERT_BLEND            		0x0
-#define SCALE_VERT_REP              		0x8
-#define SCALE_BANDWIDTH_NORMAL     0x0
-#define SCALE_BANDWIDTH_EXCEEDED  0x4000000
-#define SCALE_BANDWIDTH_RESET       	0x4000000
-#define SCALE_CLK_ACTIVITY          	0x0
-#define SCALE_CLK_CONTINUOUS        	0x20000000
-#define OVERLAY_DISABLE             		0x0
-#define OVERLAY_ENABLE              		0x40000000
-#define SCALE_DISABLE               		0x0
-#define SCALE_ENABLE                		0x80000000
-#define SCALER_FRAME_READ_MODE_FULL 	0x0
-#define SCALER_BUF_MODE_SINGLE      		0x0
-#define SCALER_BUF_MODE_DOUBLE      		0x40000
-#define SCALER_BUF_NEXT_0           		0x0
-#define SCALER_BUF_NEXT_1           		0x80000
-#define SCALER_BUF_STATUS_0         		0x0
-#define SCALER_BUF_STATUS_1         		0x100000
-#define OVERLAY_MIX_G_CMP           		0x0
-#define OVERLAY_MIX_ALWAYS_G        		0x100
-#define OVERLAY_MIX_ALWAYS_V        		0x200
-#define OVERLAY_MIX_NOT_G           		0x300
-#define OVERLAY_MIX_NOT_V           		0x400
-#define OVERLAY_MIX_G_XOR_V         		0x500
-#define OVERLAY_MIX_NOT_G_XOR_V     	0x600
-#define OVERLAY_MIX_V_CMP           		0x700
-#define OVERLAY_MIX_NOT_G_OR_NOT_V	0x800
-#define OVERLAY_MIX_G_OR_NOT_V      	0x900
-#define OVERLAY_MIX_NOT_G_OR_V      	0xA00
-#define OVERLAY_MIX_G_OR_V          		0xB00
-#define OVERLAY_MIX_G_AND_V         		0xC00
-#define OVERLAY_MIX_NOT_G_AND_V     	0xD00
-#define OVERLAY_MIX_G_AND_NOT_V     	0xE00
-#define OVERLAY_MIX_NOT_G_AND_NOT_V 	0xF00
-#define OVERLAY_EXCLUSIVE_NORMAL    	0x0
-#define OVERLAY_EXCLUSIVE_V_ONLY    	0x80000000
-#define VIDEO_IN_8BPP               			0x2
-#define VIDEO_IN_16BPP              			0x4
-#define VIDEO_IN_32BPP              			0x6
-#define VIDEO_IN_VYUY422            			0xB
-#define VIDEO_IN_YVYU422            			0xC
-#define SCALE_IN_15BPP              			0x30000
-#define SCALE_IN_16BPP              			0x40000
-#define SCALE_IN_32BPP              			0x60000
-#define SCALE_IN_YUV9               			0x90000
-#define SCALE_IN_YUV12              			0xA0000
-#define SCALE_IN_VYUY422            			0xB0000
-#define SCALE_IN_YVYU422            			0xC0000
-#define HOST_YUV_APERTURE_UPPER     		0x0
-#define HOST_YUV_APERTURE_LOWER     	0x20000000
-#define HOST_MEM_MODE_Y             		0x40000000
-#define HOST_MEM_MODE_U             		0x80000000
-#define HOST_MEM_MODE_V             		0xC0000000
-#define HOST_MEM_MODE_NORMAL     		HOST_YUV_APERTURE_UPPER
+#define SCALE_ZERO_EXTEND 0x0
+#define SCALE_DYNAMIC 0x1
+#define SCALE_RED_TEMP_6500K 0x0
+#define SCALE_RED_TEMP_9800K 0x2
+#define SCALE_HORZ_BLEND 0x0
+#define SCALE_HORZ_REP 0x4
+#define SCALE_VERT_BLEND 0x0
+#define SCALE_VERT_REP 0x8
+#define SCALE_BANDWIDTH_NORMAL 0x0
+#define SCALE_BANDWIDTH_EXCEEDED 0x4000000
+#define SCALE_BANDWIDTH_RESET 0x4000000
+#define SCALE_CLK_ACTIVITY 0x0
+#define SCALE_CLK_CONTINUOUS 0x20000000
+#define OVERLAY_DISABLE 0x0
+#define OVERLAY_ENABLE 0x40000000
+#define SCALE_DISABLE 0x0
+#define SCALE_ENABLE 0x80000000
+#define SCALER_FRAME_READ_MODE_FULL 0x0
+#define SCALER_BUF_MODE_SINGLE 0x0
+#define SCALER_BUF_MODE_DOUBLE 0x40000
+#define SCALER_BUF_NEXT_0 0x0
+#define SCALER_BUF_NEXT_1 0x80000
+#define SCALER_BUF_STATUS_0 0x0
+#define SCALER_BUF_STATUS_1 0x100000
+#define OVERLAY_MIX_G_CMP 0x0
+#define OVERLAY_MIX_ALWAYS_G 0x100
+#define OVERLAY_MIX_ALWAYS_V 0x200
+#define OVERLAY_MIX_NOT_G 0x300
+#define OVERLAY_MIX_NOT_V 0x400
+#define OVERLAY_MIX_G_XOR_V 0x500
+#define OVERLAY_MIX_NOT_G_XOR_V 0x600
+#define OVERLAY_MIX_V_CMP 0x700
+#define OVERLAY_MIX_NOT_G_OR_NOT_V 0x800
+#define OVERLAY_MIX_G_OR_NOT_V 0x900
+#define OVERLAY_MIX_NOT_G_OR_V 0xA00
+#define OVERLAY_MIX_G_OR_V 0xB00
+#define OVERLAY_MIX_G_AND_V 0xC00
+#define OVERLAY_MIX_NOT_G_AND_V 0xD00
+#define OVERLAY_MIX_G_AND_NOT_V 0xE00
+#define OVERLAY_MIX_NOT_G_AND_NOT_V 0xF00
+#define OVERLAY_EXCLUSIVE_NORMAL 0x0
+#define OVERLAY_EXCLUSIVE_V_ONLY 0x80000000
+#define VIDEO_IN_8BPP 0x2
+#define VIDEO_IN_16BPP 0x4
+#define VIDEO_IN_32BPP 0x6
+#define VIDEO_IN_VYUY422 0xB
+#define VIDEO_IN_YVYU422 0xC
+#define SCALE_IN_15BPP 0x30000
+#define SCALE_IN_16BPP 0x40000
+#define SCALE_IN_32BPP 0x60000
+#define SCALE_IN_YUV9 0x90000
+#define SCALE_IN_YUV12 0xA0000
+#define SCALE_IN_VYUY422 0xB0000
+#define SCALE_IN_YVYU422 0xC0000
+#define HOST_YUV_APERTURE_UPPER 0x0
+#define HOST_YUV_APERTURE_LOWER 0x20000000
+#define HOST_MEM_MODE_Y 0x40000000
+#define HOST_MEM_MODE_U 0x80000000
+#define HOST_MEM_MODE_V 0xC0000000
+#define HOST_MEM_MODE_NORMAL HOST_YUV_APERTURE_UPPER
 static Chan *ovl_chan;
 static int ovl_width;
 static int ovl_height;
 static int ovl_format;
 static ulong ovl_fib;
 enum {
-VTGTB1S1        = 0x01,
-VT4GTIIC        	= 0x3A,
-GTB1U1          	= 0x19,
-GTB1S2          	= 0x41,
-GTB2U1          	= 0x1A,
-GTB2U2          	= 0x5A,
-GTB2U3          	= 0x9A,
-GTIIIC1U1       	= 0x1B,
-GTIIIC1U2       	= 0x5B,
-GTIIIC2U1       	= 0x1C,
-GTIIIC2U2       	= 0x5C,
-GTIIIC2U3       	= 0x7C,
-GTBC            	= 0x3A,
-LTPRO           	= 0x9C,
+VTGTB1S1 = 0x01,
+VT4GTIIC = 0x3A,
+GTB1U1 = 0x19,
+GTB1S2 = 0x41,
+GTB2U1 = 0x1A,
+GTB2U2 = 0x5A,
+GTB2U3 = 0x9A,
+GTIIIC1U1 = 0x1B,
+GTIIIC1U2 = 0x5B,
+GTIIIC2U1 = 0x1C,
+GTIIIC2U2 = 0x5C,
+GTIIIC2U3 = 0x7C,
+GTBC = 0x3A,
+LTPRO = 0x9C,
 };
 typedef struct Mach64types Mach64types;
 struct Mach64types {
-ushort 	m64_id;
-int 		m64_vtgt;
-ulong	m64_ovlclock;
-int		m64_pro;
+ushort m64_id;
+int m64_vtgt;
+ulong m64_ovlclock;
+int m64_pro;
 };
 static ulong mach64refclock;
 static Mach64types *mach64type;
 static int mach64revb;
 static ulong mach64overlay;
 static Mach64types mach64s[] = {
-('C'<<8)|'T',	0,	1350000, 	0,
-('E'<<8)|'T',	0,	1350000, 	0,
-('G'<<8)|'B',	1,	1250000,		1,
-('G'<<8)|'D',	1,	1250000,		1,
-('G'<<8)|'I',	1,	1250000,		1,
-('G'<<8)|'M',	0,	1350000,		0,
-('G'<<8)|'P',	1,	1250000,		1,
-('G'<<8)|'Q',	1,	1250000,		1,
-('G'<<8)|'R',	1,	1250000,		1,
-('G'<<8)|'T',	1,	800000,		0,
-('G'<<8)|'U',	1,	1000000,		0,
-('G'<<8)|'V',	1,	1000000,		0,
-('G'<<8)|'Z',	1,	1000000,		0,
-('V'<<8)|'T',	1,	800000,		0,
-('V'<<8)|'U',	1,	800000,		0,
-('V'<<8)|'V',	1,	1000000,		0,
-('L'<<8)|'B',	0,	1350000,		1,
-('L'<<8)|'I',		0,	1350000,		0,
-('L'<<8)|'M',	0,	1350000,		0,
-('L'<<8)|'P',	0,	1350000,		1,
+('C'<<8)|'T', 0, 1350000, 0,
+('E'<<8)|'T', 0, 1350000, 0,
+('G'<<8)|'B', 1, 1250000, 1,
+('G'<<8)|'D', 1, 1250000, 1,
+('G'<<8)|'I', 1, 1250000, 1,
+('G'<<8)|'M', 0, 1350000, 0,
+('G'<<8)|'P', 1, 1250000, 1,
+('G'<<8)|'Q', 1, 1250000, 1,
+('G'<<8)|'R', 1, 1250000, 1,
+('G'<<8)|'T', 1, 800000, 0,
+('G'<<8)|'U', 1, 1000000, 0,
+('G'<<8)|'V', 1, 1000000, 0,
+('G'<<8)|'Z', 1, 1000000, 0,
+('V'<<8)|'T', 1, 800000, 0,
+('V'<<8)|'U', 1, 800000, 0,
+('V'<<8)|'V', 1, 1000000, 0,
+('L'<<8)|'B', 0, 1350000, 1,
+('L'<<8)|'I', 0, 1350000, 0,
+('L'<<8)|'M', 0, 1350000, 0,
+('L'<<8)|'P', 0, 1350000, 1,
 };
 static int hwfill(VGAscr*, Rectangle, ulong);
 static int hwscroll(VGAscr*, Rectangle, Rectangle);
@@ -199,18 +199,18 @@ addvgaseg("mach64screen", aperture, osize);
 return aperture;
 }
 enum {
-CrtcOffPitch	= 0x05,
-CrtcGenCtl	= 0x07,
-CurClr0		= 0x0B,
-CurClr1		= 0x0C,
-CurOffset	= 0x0D,
-CurHVposn	= 0x0E,
-CurHVoff	= 0x0F,
-BusCntl	= 0x13,
-GenTestCntl	= 0x19,
-CrtcHsyncDis	= 0x04,
-CrtcVsyncDis	= 0x08,
-ContextMask	= 0x100,
+CrtcOffPitch = 0x05,
+CrtcGenCtl = 0x07,
+CurClr0 = 0x0B,
+CurClr1 = 0x0C,
+CurOffset = 0x0D,
+CurHVposn = 0x0E,
+CurHVoff = 0x0F,
+BusCntl = 0x13,
+GenTestCntl = 0x19,
+CrtcHsyncDis = 0x04,
+CrtcVsyncDis = 0x08,
+ContextMask = 0x100,
 FifoStat,
 GuiStat,
 DpFrgdClr,
@@ -288,80 +288,80 @@ LCD_PowerMngmnt,
 LCD_ZvgPio,
 Nlcd,
 };
-#define Bank1			(-0x100)
+#define Bank1 (-0x100)
 static int mmoffset[] = {
-[HTotalDisp]		0x00,
-[VTotalDisp]		0x02,
-[CrtcOffPitch]		0x05,
-[CrtcGenCntl]		0x07,
-[CurClr0]			0x18,
-[CurClr1]			0x19,
-[CurOffset]		0x1A,
-[CurHVposn]		0x1B,
-[CurHVoff]		0x1C,
-[ClockCntl]		0x24,
-[BusCntl]			0x28,
-[LcdIndex]		0x29,
-[LcdData]			0x2A,
-[GenTestCntl]		0x34,
-[ConfigChipId]		0x38,
-[DstOffPitch]		0x40,
-[DstYX]			0x43,
-[DstHeight]		0x45,
-[DstHeightWidth]	0x46,
-[DstBresErr]		0x49,
-[DstBresInc]		0x4A,
-[DstBresDec]		0x4B,
-[DstCntl]			0x4C,
-[SrcOffPitch]		0x60,
-[SrcYX]			0x63,
-[SrcWidth1]		0x64,
-[SrcYXstart]		0x69,
-[SrcHeight1Width1]	0x66,
-[SrcHeight2Width2]	0x6C,
-[SrcCntl]			0x6D,
-[HostCntl]			0x90,
-[PatReg0]			0xA0,
-[PatReg1]			0xA1,
-[PatCntl]			0xA2,
-[ScLeft]			0xA8,
-[ScRight]			0xA9,
-[ScLeftRight]		0xAA,
-[ScTop]			0xAB,
-[ScBottom] 		0xAC,
-[ScTopBottom]		0xAD,
-[DpBkgdClr]		0xB0,
-[DpFrgdClr]		0xB1,
-[DpWriteMask]		0xB2,
-[DpChainMask]		0xB3,
-[DpPixWidth]		0xB4,
-[DpMix]			0xB5,
-[DpSrc]			0xB6,
-[ClrCmpClr]		0xC0,
-[ClrCmpMask]		0xC1,
-[ClrCmpCntl]		0xC2,
-[FifoStat]			0xC4,
-[ContextMask]		0xC8,
-[GuiTrajCntl]		0xCC,
-[GuiStat]			0xCE,
-[OverlayYX]		Bank1 + 0x00,
-[OverlayYXEnd]		Bank1 + 0x01,
-[OverlayKeyCntl]	Bank1 + 0x06,
-[OverlayScaleInc]	Bank1 + 0x08,
-[OverlayScaleCntl]	Bank1 + 0x09,
-[ScalerHeightWidth]	Bank1 + 0x0A,
-[ScalerBuf0Offset]	Bank1 + 0x0D,
-[ScalerBuf0Pitch]	Bank1 + 0x0F,
-[VideoFormat]		Bank1 + 0x12,
-[CaptureConfig]	Bank1 + 0x14,
-[Buf0Offset]		Bank1 + 0x20,
-[Buf0Pitch]		Bank1 + 0x23,
-[ScalerColourCntl]	Bank1 + 0x54,
-[ScalerHCoef0]		Bank1 + 0x55,
-[ScalerHCoef1]		Bank1 + 0x56,
-[ScalerHCoef2]		Bank1 + 0x57,
-[ScalerHCoef3]		Bank1 + 0x58,
-[ScalerHCoef4]		Bank1 + 0x59,
+[HTotalDisp] 0x00,
+[VTotalDisp] 0x02,
+[CrtcOffPitch] 0x05,
+[CrtcGenCntl] 0x07,
+[CurClr0] 0x18,
+[CurClr1] 0x19,
+[CurOffset] 0x1A,
+[CurHVposn] 0x1B,
+[CurHVoff] 0x1C,
+[ClockCntl] 0x24,
+[BusCntl] 0x28,
+[LcdIndex] 0x29,
+[LcdData] 0x2A,
+[GenTestCntl] 0x34,
+[ConfigChipId] 0x38,
+[DstOffPitch] 0x40,
+[DstYX] 0x43,
+[DstHeight] 0x45,
+[DstHeightWidth] 0x46,
+[DstBresErr] 0x49,
+[DstBresInc] 0x4A,
+[DstBresDec] 0x4B,
+[DstCntl] 0x4C,
+[SrcOffPitch] 0x60,
+[SrcYX] 0x63,
+[SrcWidth1] 0x64,
+[SrcYXstart] 0x69,
+[SrcHeight1Width1] 0x66,
+[SrcHeight2Width2] 0x6C,
+[SrcCntl] 0x6D,
+[HostCntl] 0x90,
+[PatReg0] 0xA0,
+[PatReg1] 0xA1,
+[PatCntl] 0xA2,
+[ScLeft] 0xA8,
+[ScRight] 0xA9,
+[ScLeftRight] 0xAA,
+[ScTop] 0xAB,
+[ScBottom] 0xAC,
+[ScTopBottom] 0xAD,
+[DpBkgdClr] 0xB0,
+[DpFrgdClr] 0xB1,
+[DpWriteMask] 0xB2,
+[DpChainMask] 0xB3,
+[DpPixWidth] 0xB4,
+[DpMix] 0xB5,
+[DpSrc] 0xB6,
+[ClrCmpClr] 0xC0,
+[ClrCmpMask] 0xC1,
+[ClrCmpCntl] 0xC2,
+[FifoStat] 0xC4,
+[ContextMask] 0xC8,
+[GuiTrajCntl] 0xCC,
+[GuiStat] 0xCE,
+[OverlayYX] Bank1 + 0x00,
+[OverlayYXEnd] Bank1 + 0x01,
+[OverlayKeyCntl] Bank1 + 0x06,
+[OverlayScaleInc] Bank1 + 0x08,
+[OverlayScaleCntl] Bank1 + 0x09,
+[ScalerHeightWidth] Bank1 + 0x0A,
+[ScalerBuf0Offset] Bank1 + 0x0D,
+[ScalerBuf0Pitch] Bank1 + 0x0F,
+[VideoFormat] Bank1 + 0x12,
+[CaptureConfig] Bank1 + 0x14,
+[Buf0Offset] Bank1 + 0x20,
+[Buf0Pitch] Bank1 + 0x23,
+[ScalerColourCntl] Bank1 + 0x54,
+[ScalerHCoef0] Bank1 + 0x55,
+[ScalerHCoef1] Bank1 + 0x56,
+[ScalerHCoef2] Bank1 + 0x57,
+[ScalerHCoef3] Bank1 + 0x58,
+[ScalerHCoef4] Bank1 + 0x59,
 };
 static ulong
 ior32(VGAscr* scr, int r)
@@ -642,7 +642,7 @@ iow32(scr, DpPixWidth, 0x00060606);
 iow32(scr, DpChainMask, 0x8080);
 break;
 }
-bios  = KADDR(0xC000);
+bios = KADDR(0xC000);
 table = *(ushort *)(bios + 0x48);
 table = *(ushort *)(bios + table + 0x10);
 switch (*(ushort *)(bios + table + 0x08)) {
@@ -787,7 +787,7 @@ if(blank) {
 x = lcdr32(scr, LCD_GenCtrl);
 if(x & 3) {
 crtlcd = x & 3;
-lcdw32(scr, LCD_GenCtrl,  x&~3);
+lcdw32(scr, LCD_GenCtrl, x&~3);
 }
 } else {
 if(crtlcd == 0)
@@ -828,9 +828,9 @@ if (c != ovl_chan)
 error(Einuse);
 if (strcmp(format, "YUYV"))
 error(Eunsupportedformat);
-ovl_width  = w;
+ovl_width = w;
 ovl_height = h;
-ovl_fib       = w * h * sizeof(ushort);
+ovl_fib = w * h * sizeof(ushort);
 waitforidle(scr);
 scr->mmio[mmoffset[BusCntl]] |= 0x08000000;
 scr->mmio[mmoffset[OverlayScaleCntl]] =
@@ -942,19 +942,19 @@ CMstatus,
 };
 static void (*ovl_cmds[])(VGAscr *, Chan *, char **) =
 {
-[CMclosectl]	ovl_closectl,
-[CMconfigure]	ovl_configure,
-[CMenable]	ovl_enable,
-[CMopenctl]	ovl_openctl,
-[CMstatus]	ovl_status,
+[CMclosectl] ovl_closectl,
+[CMconfigure] ovl_configure,
+[CMenable] ovl_enable,
+[CMopenctl] ovl_openctl,
+[CMstatus] ovl_status,
 };
 static Cmdtab mach64xxcmd[] =
 {
-CMclosectl,	"closectl",	1,
-CMconfigure,	"configure",	4,
-CMenable,	"enable",	5,
-CMopenctl,	"openctl",	1,
-CMstatus,	"status",	1,
+CMclosectl, "closectl", 1,
+CMconfigure, "configure", 4,
+CMenable, "enable", 5,
+CMopenctl, "openctl", 1,
+CMstatus, "status", 1,
 };
 static void
 mach64xxovlctl(VGAscr *scr, Chan *c, void *a, int n)
@@ -984,17 +984,17 @@ uchar *src;
 int _len;
 if (ovl_chan == nil) return len;
 _len = len;
-src   = (uchar *)a;
+src = (uchar *)a;
 while (len > 0) {
 ulong _offs;
 int nb;
 _offs = (ulong)(offs % ovl_fib);
-nb     = (_offs + len > ovl_fib)? ovl_fib - _offs: len;
+nb = (_offs + len > ovl_fib)? ovl_fib - _offs: len;
 memmove((uchar *)KADDR(scr->aperture + mach64overlay + _offs),
 src, nb);
 offs += nb;
-src  += nb;
-len  -= nb;
+src += nb;
+len -= nb;
 }
 return _len;
 }

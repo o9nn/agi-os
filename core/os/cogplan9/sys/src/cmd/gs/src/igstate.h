@@ -1,5 +1,5 @@
 #ifndef igstate_INCLUDED
-#  define igstate_INCLUDED
+# define igstate_INCLUDED
 #include "gsstate.h"
 #include "gxstate.h"
 #include "imemory.h"
@@ -9,7 +9,7 @@ typedef struct igstate_obj_s {
 ref gstate;
 } igstate_obj;
 extern_st(st_igstate_obj);
-#define public_st_igstate_obj()	\
+#define public_st_igstate_obj() \
 gs_public_st_ref_struct(st_igstate_obj, igstate_obj, "gstatetype")
 #define igstate_ptr(rp) r_ptr(&r_ptr(rp, igstate_obj)->gstate, gs_state)
 typedef struct ref_device_n_params_s {
@@ -45,7 +45,7 @@ ref array;
 ref_color_procs procs;
 } ref_colorspace;
 #ifndef int_remap_color_info_DEFINED
-#  define int_remap_color_info_DEFINED
+# define int_remap_color_info_DEFINED
 typedef struct int_remap_color_info_s int_remap_color_info_t;
 #endif
 typedef struct int_gstate_s {
@@ -69,7 +69,7 @@ ref remap_color_info;
 ref opacity_mask, shape_mask;
 } int_gstate;
 #define clear_pagedevice(pigs) make_null(&(pigs)->pagedevice)
-#define private_st_int_gstate()	\
+#define private_st_int_gstate() \
 gs_private_st_ref_struct(st_int_gstate, int_gstate, "int_gstate")
 #define int_gstate_map_refs(p,m)\
 { register ref *rp_ = (ref *)(p);\

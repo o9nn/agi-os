@@ -162,7 +162,7 @@ minibatch = 0)
 A training strategy which uses quasi-Monte Carlo sampling for low discrepancy sequences
 that accelerate the convergence in high dimensional spaces over pure random sequences.
 ## Positional Arguments
-* `points`:  the number of quasi-random points in a sample
+* `points`: the number of quasi-random points in a sample
 ## Keyword Arguments
 * `bcs_points`: the number of quasi-random points in a sample for boundary conditions
 (by default, it equals `points`),

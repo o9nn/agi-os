@@ -2,9 +2,9 @@
 #define AUTH_PROXY_H
 #include "net.h"
 enum auth_proxy_ssl_flags {
-AUTH_PROXY_SSL_FLAG_YES		= BIT(0),
-AUTH_PROXY_SSL_FLAG_STARTTLS	= BIT(1),
-AUTH_PROXY_SSL_FLAG_ANY_CERT	= BIT(2),
+AUTH_PROXY_SSL_FLAG_YES = BIT(0),
+AUTH_PROXY_SSL_FLAG_STARTTLS = BIT(1),
+AUTH_PROXY_SSL_FLAG_ANY_CERT = BIT(2),
 };
 struct auth_proxy_settings {
 bool proxy;

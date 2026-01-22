@@ -28,11 +28,11 @@
 #else
 #define DBG(x) do { } while(0)
 #endif
-#define CONF_BASE_TIMEOUT	(HZ*5)
-#define CONF_RETRIES	 	10
-#define CONF_TIMEOUT_RANDOM	(HZ)
-#define CONF_TIMEOUT_MULT	*5/4
-#define CONF_TIMEOUT_MAX	(HZ*30)
+#define CONF_BASE_TIMEOUT (HZ*5)
+#define CONF_RETRIES 10
+#define CONF_TIMEOUT_RANDOM (HZ)
+#define CONF_TIMEOUT_MULT *5/4
+#define CONF_TIMEOUT_MAX (HZ*30)
 static char user_dev_name[IFNAMSIZ] __initdata = { 0, };
 u32 ic_myaddr __initdata = INADDR_NONE;
 u32 ic_servaddr __initdata = INADDR_NONE;

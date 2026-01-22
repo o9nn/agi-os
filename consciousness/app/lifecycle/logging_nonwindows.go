@@ -1,5 +1,5 @@
 package lifecycle
 import "log/slog"
 func ShowLogs() {
-	slog.Warn("not implemented")
+slog.Warn("not implemented")
 }

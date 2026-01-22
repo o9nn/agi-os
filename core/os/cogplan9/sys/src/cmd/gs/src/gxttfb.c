@@ -205,17 +205,17 @@ ttfMemory super;
 gs_memory_t *memory;
 } gx_ttfMemory;
 gs_private_st_simple(st_gx_ttfMemory, gx_ttfMemory, "gx_ttfMemory");
-private void *gx_ttfMemory__alloc_bytes(ttfMemory *this, int size,  const char *cname)
+private void *gx_ttfMemory__alloc_bytes(ttfMemory *this, int size, const char *cname)
 {
 gs_memory_t *mem = ((gx_ttfMemory *)this)->memory;
 return gs_alloc_bytes(mem, size, cname);
 }
-private void *gx_ttfMemory__alloc_struct(ttfMemory *this, const ttfMemoryDescriptor *d,  const char *cname)
+private void *gx_ttfMemory__alloc_struct(ttfMemory *this, const ttfMemoryDescriptor *d, const char *cname)
 {
 gs_memory_t *mem = ((gx_ttfMemory *)this)->memory;
 return mem->procs.alloc_struct(mem, (const gs_memory_struct_type_t *)d, cname);
 }
-private void gx_ttfMemory__free(ttfMemory *this, void *p,  const char *cname)
+private void gx_ttfMemory__free(ttfMemory *this, void *p, const char *cname)
 {
 gs_memory_t *mem = ((gx_ttfMemory *)this)->memory;
 gs_free_object(mem, p, cname);
@@ -302,7 +302,7 @@ recover:
 this->patented = true;
 return 0;
 default:
-{	int code = r->super.Error(&r->super);
+{ int code = r->super.Error(&r->super);
 if (code < 0)
 return code;
 return_error(gs_error_invalidfont);
@@ -365,7 +365,7 @@ private void gx_ttfExport__DebugPaint(ttfExport *this)
 }
 private int
 path_to_hinter(t1_hinter *h, gx_path *path)
-{   int code;
+{ int code;
 gs_path_enum penum;
 gs_fixed_point pts[3], p;
 bool first = true;
@@ -407,7 +407,7 @@ return 0;
 #define exch(a,b) a^=b; b^=a; a^=b;
 private void
 transpose_path(gx_path *path)
-{   segment *s = (segment *)path->first_subpath;
+{ segment *s = (segment *)path->first_subpath;
 exch(path->bbox.p.x, path->bbox.p.y);
 exch(path->bbox.q.x, path->bbox.q.y);
 for (; s; s = s->next) {
@@ -586,7 +586,7 @@ return_error(gs_error_VMerror);
 case fUnimplemented:
 return_error(gs_error_unregistered);
 default:
-{	int code = r->super.Error(&r->super);
+{ int code = r->super.Error(&r->super);
 if (code < 0)
 return code;
 return_error(gs_error_invalidfont);

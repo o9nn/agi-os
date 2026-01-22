@@ -8,10 +8,10 @@ stderr: ref Sys->FD;
 mouse: module {
 init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
-Sleep500: 	con 500;
-Sleep1000:	con 1000;
-Sleep2000:	con 2000;
-TIMEOUT: 	con 5000;
+Sleep500: con 500;
+Sleep1000: con 1000;
+Sleep2000: con 2000;
+TIMEOUT: con 5000;
 fail := "fail:";
 usage()
 {
@@ -241,7 +241,7 @@ return 'M';
 return 0;
 }
 # check for type C by seeing if it responds to the status
-# command "s".  the mouse is at an unknown speed so we
+# command "s". the mouse is at an unknown speed so we
 # have to check all possible speeds.
 C(ctl, data: ref Sys->FD): int
 {

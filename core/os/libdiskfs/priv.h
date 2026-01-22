@@ -18,11 +18,11 @@ extern char *_diskfs_chroot_directory;
 extern char **_diskfs_boot_command;
 extern struct hurd_port _diskfs_exec_portcell;
 extern const struct argp_option diskfs_common_options[];
-#define OPT_SUID_OK	600
-#define OPT_EXEC_OK	601
-#define OPT_ATIME	602
-#define OPT_NO_INHERIT_DIR_GROUP	603
-#define OPT_INHERIT_DIR_GROUP		604
+#define OPT_SUID_OK 600
+#define OPT_EXEC_OK 601
+#define OPT_ATIME 602
+#define OPT_NO_INHERIT_DIR_GROUP 603
+#define OPT_INHERIT_DIR_GROUP 604
 #define DEFAULT_SYNC_INTERVAL 30
 #define DEFAULT_SYNC_INTERVAL_STRING STRINGIFY(DEFAULT_SYNC_INTERVAL)
 #define STRINGIFY(x) STRINGIFY_1(x)
@@ -43,25 +43,25 @@ extern int _diskfs_ncontrol_ports;
 extern pthread_spinlock_t _diskfs_control_lock;
 extern fshelp_fetch_root_callback1_t _diskfs_translator_callback1;
 extern fshelp_fetch_root_callback2_t _diskfs_translator_callback2;
-#define CHANGE_NODE_FIELD(PROTID, OPERATION)				    \
-({									    \
-error_t err = 0;							    \
-struct node *np;							    \
+#define CHANGE_NODE_FIELD(PROTID, OPERATION) \
+({ \
+error_t err = 0; \
+struct node *np; \
 \
-if (!(PROTID))							    \
-return EOPNOTSUPP;							    \
+if (!(PROTID)) \
+return EOPNOTSUPP; \
 \
-if (diskfs_check_readonly ())						    \
-return EROFS;							    \
+if (diskfs_check_readonly ()) \
+return EROFS; \
 \
-np = (PROTID)->po->np;						    \
+np = (PROTID)->po->np; \
 \
-pthread_mutex_lock (&np->lock);					    \
-(OPERATION);								    \
-if (diskfs_synchronous)						    \
-diskfs_node_update (np, 1);						    \
-pthread_mutex_unlock (&np->lock);					    \
-return err;								    \
+pthread_mutex_lock (&np->lock); \
+(OPERATION); \
+if (diskfs_synchronous) \
+diskfs_node_update (np, 1); \
+pthread_mutex_unlock (&np->lock); \
+return err; \
 })
 #define HONORED_STATE_MODES (O_APPEND|O_ASYNC|O_FSYNC|O_NONBLOCK|O_NOATIME)
 #define OPENONLY_STATE_MODES \

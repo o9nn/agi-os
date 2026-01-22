@@ -35,21 +35,21 @@
 #define OBJ_length(o) ((o)->length)
 #endif
 #ifndef HAVE_EVP_MD_CTX_new
-#  define EVP_MD_CTX_new() EVP_MD_CTX_create()
-#  define EVP_MD_CTX_free(ctx) EVP_MD_CTX_destroy(ctx)
+# define EVP_MD_CTX_new() EVP_MD_CTX_create()
+# define EVP_MD_CTX_free(ctx) EVP_MD_CTX_destroy(ctx)
 #endif
 #ifndef HAVE_HMAC_CTX_new
-#  define HMAC_Init_ex(ctx, key, key_len, md, impl) \
+# define HMAC_Init_ex(ctx, key, key_len, md, impl) \
 HMAC_Init_ex(&(ctx), key, key_len, md, impl)
-#  define HMAC_Update(ctx, data, len) HMAC_Update(&(ctx), data, len)
-#  define HMAC_Final(ctx, md, len) HMAC_Final(&(ctx), md, len)
-#  define HMAC_CTX_free(ctx) HMAC_cleanup(&(ctx))
+# define HMAC_Update(ctx, data, len) HMAC_Update(&(ctx), data, len)
+# define HMAC_Final(ctx, md, len) HMAC_Final(&(ctx), md, len)
+# define HMAC_CTX_free(ctx) HMAC_cleanup(&(ctx))
 #else
-#  define HMAC_CTX_free(ctx) \
+# define HMAC_CTX_free(ctx) \
 STMT_START { HMAC_CTX_free(ctx); (ctx) = NULL; } STMT_END
 #endif
 #ifndef HAVE_BN_secure_new
-#  define BN_secure_new BN_new
+# define BN_secure_new BN_new
 #endif
 #define OID_TEXT_MAX_LEN 80
 #define t_base64url_decode_str(x) t_base64url_decode_str(BASE64_DECODE_FLAG_IGNORE_PADDING, (x))

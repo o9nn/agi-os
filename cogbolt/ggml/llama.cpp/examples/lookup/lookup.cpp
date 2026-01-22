@@ -48,7 +48,7 @@ ngram_cache_dynamic = common_ngram_cache_load(params.lookup_cache_dynamic);
 }
 t_draft_flat_us += ggml_time_us() - t_start_draft_us;
 }
-const int max_context_size     = llama_n_ctx(ctx);
+const int max_context_size = llama_n_ctx(ctx);
 const int max_tokens_list_size = max_context_size - 4;
 if ((int) inp.size() > max_tokens_list_size) {
 LOG_ERR("%s: prompt too long (%d tokens, max %d)\n", __func__, (int) inp.size(), max_tokens_list_size);
@@ -62,11 +62,11 @@ fflush(stderr);
 const int n_input = inp.size();
 const auto t_enc_start = ggml_time_us();
 llama_decode(ctx, llama_batch_get_one( inp.data(), n_input - 1));
-llama_decode(ctx, llama_batch_get_one(&inp.back(),           1));
+llama_decode(ctx, llama_batch_get_one(&inp.back(), 1));
 const auto t_enc_end = ggml_time_us();
 int n_predict = 0;
 int n_drafted = 0;
-int n_accept  = 0;
+int n_accept = 0;
 int n_past = inp.size();
 bool has_eos = false;
 struct common_sampler * smpl = common_sampler_init(model, params.sampling);
@@ -142,8 +142,8 @@ auto t_dec_end = ggml_time_us();
 common_ngram_cache_merge(ngram_cache_dynamic, ngram_cache_context);
 common_ngram_cache_save(ngram_cache_dynamic, params.lookup_cache_dynamic);
 LOG("\n\n");
-LOG_INF("encoded %4d tokens in %8.3f seconds, speed: %8.3f t/s\n", n_input,   (t_enc_end - t_enc_start) / 1e6f, inp.size() / ((t_enc_end - t_enc_start) / 1e6f));
-LOG_INF("decoded %4d tokens in %8.3f seconds, speed: %8.3f t/s\n", n_predict, (t_dec_end - t_dec_start) / 1e6f, n_predict  / ((t_dec_end - t_dec_start) / 1e6f));
+LOG_INF("encoded %4d tokens in %8.3f seconds, speed: %8.3f t/s\n", n_input, (t_enc_end - t_enc_start) / 1e6f, inp.size() / ((t_enc_end - t_enc_start) / 1e6f));
+LOG_INF("decoded %4d tokens in %8.3f seconds, speed: %8.3f t/s\n", n_predict, (t_dec_end - t_dec_start) / 1e6f, n_predict / ((t_dec_end - t_dec_start) / 1e6f));
 LOG_INF("\n");
 LOG_INF("n_draft      = %d\n", n_draft);
 LOG_INF("n_predict    = %d\n", n_predict);

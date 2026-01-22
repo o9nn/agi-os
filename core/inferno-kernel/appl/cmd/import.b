@@ -10,7 +10,7 @@ include "encoding.m";
 include "arg.m";
 Import: module
 {
-init:	 fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 factotumfile := "/mnt/factotum/rpc";
 fail(status, msg: string)
@@ -36,7 +36,7 @@ nomod(Arg->PATH);
 arg->init(args);
 arg->setusage("import [-a|-b] [-c] [-e enc digest] host file [localfile]");
 flags := 0;
-cryptalg := "";	# will be rc4_256 sha1
+cryptalg := ""; # will be rc4_256 sha1
 keyspec := "";
 while((o := arg->opt()) != 0)
 case o {
@@ -54,7 +54,7 @@ cryptalg = nil;
 keyspec = arg->earg();
 '9' =>
 ;
-*   =>
+* =>
 arg->usage();
 }
 args = arg->argv();
@@ -73,7 +73,7 @@ fail("factotum", sys->sprint("can't open %s: %r", factotumfile));
 dest := dial->netmkaddr(addr, "net", "exportfs");
 c := dial->dial(dest, nil);
 if(c == nil)
-fail("dial failed",  sys->sprint("can't dial %s: %r", dest));
+fail("dial failed", sys->sprint("can't dial %s: %r", dest));
 ai := factotum->proxy(c.dfd, facfd, "proto=p9any role=client "+keyspec);
 if(ai == nil)
 fail("auth", sys->sprint("can't authenticate import: %r"));
@@ -99,7 +99,7 @@ if(base64 == nil)
 nomod(Encoding->BASE64PATH);
 if(sys->fprint(c.dfd, "impo nofilter ssl\n") < 0)
 fail("import", sys->sprint("can't write to remote: %r"));
-key := array[16] of byte;	# myrand[4] secret[8] hisrand[4]
+key := array[16] of byte; # myrand[4] secret[8] hisrand[4]
 key[0:] = random->randombuf(Random->ReallyRandom, 4);
 ns := len ai.secret;
 if(ns > 8)

@@ -10,111 +10,111 @@
 (cog-pointmem-auto-step-time-on facemap)
 (define face-loc-time-span (NumberNode 8000))
 (define (get-last-location map-name id-node elapse)
-	(define at-loc
-		(gar (cog-pointmem-get-last-locs-of-atom map-name id-node elapse)))
-	(if (null? at-loc)
-		(ListLink (Number 0) (Number 0) (Number 0))
-		(gddr at-loc)
-	)
+(define at-loc
+(gar (cog-pointmem-get-last-locs-of-atom map-name id-node elapse)))
+(if (null? at-loc)
+(ListLink (Number 0) (Number 0) (Number 0))
+(gddr at-loc)
+)
 )
 (define-public (get-face-coords FACE-ID)
-	(get-last-location facemap FACE-ID face-loc-time-span))
+(get-last-location facemap FACE-ID face-loc-time-span))
 (DefineLink
-	(DefinedPredicate "look-at-face")
-	(LambdaLink
-		(Variable "$face-id")
-		(Evaluation
-			(DefinedPredicate "Do look at point")
-			(ExecutionOutputLink
-				(GroundedSchema "scm: get-face-coords")
-				(ListLink (Variable "$face-id")))
-		)))
+(DefinedPredicate "look-at-face")
+(LambdaLink
+(Variable "$face-id")
+(Evaluation
+(DefinedPredicate "Do look at point")
+(ExecutionOutputLink
+(GroundedSchema "scm: get-face-coords")
+(ListLink (Variable "$face-id")))
+)))
 (DefineLink
-	(DefinedPredicate "glance-at-face")
-	(LambdaLink
-		(Variable "$face-id")
-		(Evaluation
-			(DefinedPredicate "Do gaze at point")
-			(ExecutionOutputLink
-				(GroundedSchema "scm: get-face-coords")
-				(ListLink (Variable "$face-id")))
-		)))
+(DefinedPredicate "glance-at-face")
+(LambdaLink
+(Variable "$face-id")
+(Evaluation
+(DefinedPredicate "Do gaze at point")
+(ExecutionOutputLink
+(GroundedSchema "scm: get-face-coords")
+(ListLink (Variable "$face-id")))
+)))
 (define (who-said? sent)
-	(cog-execute!
-	(Put
-		(State request-eye-contact-state (VariableNode "$fid"))
-		(Get (State last-speaker (Variable "$fid")))
-	))
-	(cog-execute!
-	(PutLink
-		(AtTimeLink
-			(EvaluationLink
-				(PredicateNode "say_face")
-					(ListLink
-						(VariableNode "$fid")
-						(SentenceNode sent)))
-            (TimeNode (number->string (current-time)))
-            (Concept "sound-perception"))
-		(Get (State last-speaker (Variable "$fid")))
-	))
+(cog-execute!
+(Put
+(State request-eye-contact-state (VariableNode "$fid"))
+(Get (State last-speaker (Variable "$fid")))
+))
+(cog-execute!
+(PutLink
+(AtTimeLink
+(EvaluationLink
+(PredicateNode "say_face")
+(ListLink
+(VariableNode "$fid")
+(SentenceNode sent)))
+(TimeNode (number->string (current-time)))
+(Concept "sound-perception"))
+(Get (State last-speaker (Variable "$fid")))
+))
 )
 (define (dot-prod ax ay az bx by bz) (+ (* ax bx) (* ay by)(* az bz)))
 (define (magnitude ax ay az) (sqrt (+ (* ax ax) (* ay ay) (* az az))))
 (define (angle ax ay az bx by bz)
-	(let* ((dp (dot-prod ax ay az bx by bz))
-			(denom (* (magnitude ax ay az)(magnitude bx by bz))))
-		(if (> denom 0)
-			(acos (/ dp denom))
-			0.0
-		)
-	)
+(let* ((dp (dot-prod ax ay az bx by bz))
+(denom (* (magnitude ax ay az)(magnitude bx by bz))))
+(if (> denom 0)
+(acos (/ dp denom))
+0.0
+)
+)
 )
 (define (angle_face_id_snd FACE-ID xx yy zz)
-	(define (space-nodes at-loc-link)
-		(cog-outgoing-set (cadr
-			(cog-outgoing-set (cadr (cog-outgoing-set at-loc-link))))))
-	(define (loc-link-x at-loc-link)
-		(cog-number (car (space-nodes at-loc-link))))
-	(define (loc-link-y at-loc-link)
-		(cog-number (cadr (space-nodes at-loc-link))))
-	(define (loc-link-z at-loc-link)
-		(cog-number (caddr (space-nodes at-loc-link))))
-	(let* ((loc-atom (get-face-coords FACE-ID)))
-		(if (null? loc-atom)
-			6.2831853
-			(angle
-				(loc-link-x loc-atom)
-				(loc-link-y loc-atom)
-				(loc-link-z loc-atom)
-				xx yy zz)
-		)
-	)
+(define (space-nodes at-loc-link)
+(cog-outgoing-set (cadr
+(cog-outgoing-set (cadr (cog-outgoing-set at-loc-link))))))
+(define (loc-link-x at-loc-link)
+(cog-number (car (space-nodes at-loc-link))))
+(define (loc-link-y at-loc-link)
+(cog-number (cadr (space-nodes at-loc-link))))
+(define (loc-link-z at-loc-link)
+(cog-number (caddr (space-nodes at-loc-link))))
+(let* ((loc-atom (get-face-coords FACE-ID)))
+(if (null? loc-atom)
+6.2831853
+(angle
+(loc-link-x loc-atom)
+(loc-link-y loc-atom)
+(loc-link-z loc-atom)
+xx yy zz)
+)
+)
 )
 (define (face-nearest-sound xx yy zz)
-	(define (get-visible-faces)
-	   (define visible-face (PredicateNode "visible face"))
-		(filter (lambda(y) (equal? (cog-type y) 'NumberNode))
-			(map (lambda (x) (car (cog-outgoing-set x)))
-				(cog-chase-link 'EvaluationLink 'ListLink visible-face))))
-	(define face-list
-		(map
-			(lambda (ATOM)
-				(list ATOM (angle_face_id_snd ATOM xx yy zz)))
-			 (get-visible-faces)))
-	(if (< (length face-list) 1)
-		(list)
-		(let* ((alist (append-map (lambda (x)(cdr x)) face-list))
-				(amin (fold (lambda (n p) (min (abs p) (abs n)))
-					(car alist) alist)))
-			(if (> (* 3.1415926 (/ 15.0 180.0)) amin)
-				(car (car (filter
-					(lambda (x) (> (+ amin 0.0001) (abs (cadr x)))) face-list)))
-				(list)
-			)
-		)
-	)
+(define (get-visible-faces)
+(define visible-face (PredicateNode "visible face"))
+(filter (lambda(y) (equal? (cog-type y) 'NumberNode))
+(map (lambda (x) (car (cog-outgoing-set x)))
+(cog-chase-link 'EvaluationLink 'ListLink visible-face))))
+(define face-list
+(map
+(lambda (ATOM)
+(list ATOM (angle_face_id_snd ATOM xx yy zz)))
+(get-visible-faces)))
+(if (< (length face-list) 1)
+(list)
+(let* ((alist (append-map (lambda (x)(cdr x)) face-list))
+(amin (fold (lambda (n p) (min (abs p) (abs n)))
+(car alist) alist)))
+(if (> (* 3.1415926 (/ 15.0 180.0)) amin)
+(car (car (filter
+(lambda (x) (> (+ amin 0.0001) (abs (cadr x)))) face-list)))
+(list)
+)
+)
+)
 )
 (define-public (map-sound xx yy zz)
-	(define fid (face-nearest-sound xx yy zz))
-	(if (not (null? fid)) (StateLink last-speaker fid))
+(define fid (face-nearest-sound xx yy zz))
+(if (not (null? fid)) (StateLink last-speaker fid))
 )

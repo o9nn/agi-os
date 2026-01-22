@@ -28,25 +28,25 @@
 #ifdef CONFIG_IP_MASQUERADE
 #include <net/ip_masq.h>
 #endif
-#define min(a,b)	((a)<(b)?(a):(b))
+#define min(a,b) ((a)<(b)?(a):(b))
 struct icmp_mib icmp_statistics;
 struct icmp_err icmp_err_convert[] = {
-{ ENETUNREACH,	0 },
-{ EHOSTUNREACH,	0 },
-{ ENOPROTOOPT,	1 },
-{ ECONNREFUSED,	1 },
-{ EMSGSIZE,		0 },
-{ EOPNOTSUPP,		0 },
-{ ENETUNREACH,	1 },
-{ EHOSTDOWN,		1 },
-{ ENONET,		1 },
-{ ENETUNREACH,	1 },
-{ EHOSTUNREACH,	1 },
-{ ENETUNREACH,	0 },
-{ EHOSTUNREACH,	0 },
-{ EHOSTUNREACH,	1 },
-{ EHOSTUNREACH,	1 },
-{ EHOSTUNREACH,	1 }
+{ ENETUNREACH, 0 },
+{ EHOSTUNREACH, 0 },
+{ ENOPROTOOPT, 1 },
+{ ECONNREFUSED, 1 },
+{ EMSGSIZE, 0 },
+{ EOPNOTSUPP, 0 },
+{ ENETUNREACH, 1 },
+{ EHOSTDOWN, 1 },
+{ ENONET, 1 },
+{ ENETUNREACH, 1 },
+{ EHOSTUNREACH, 1 },
+{ ENETUNREACH, 0 },
+{ EHOSTUNREACH, 0 },
+{ EHOSTUNREACH, 1 },
+{ EHOSTUNREACH, 1 },
+{ EHOSTUNREACH, 1 }
 };
 int sysctl_icmp_echo_ignore_all = 0;
 int sysctl_icmp_echo_ignore_broadcasts = 0;
@@ -57,7 +57,7 @@ struct icmp_control
 unsigned long *output;
 unsigned long *input;
 void (*handler)(struct icmphdr *icmph, struct sk_buff *skb, int len);
-short	error;
+short error;
 int *timeout;
 };
 static struct icmp_control icmp_pointers[NR_ICMP_TYPES+1];
@@ -68,7 +68,7 @@ int data_len;
 struct icmphdr icmph;
 unsigned long csum;
 struct ip_options replyopts;
-unsigned char  optbuf[40];
+unsigned char optbuf[40];
 };
 struct inode icmp_inode;
 struct socket *icmp_socket=&icmp_inode.u.socket_i;
@@ -159,7 +159,7 @@ struct icmp_bxm icmp_param;
 struct rtable *rt = (struct rtable*)skb_in->dst;
 struct ipcm_cookie ipc;
 u32 saddr;
-u8  tos;
+u8 tos;
 iph = skb_in->nh.iph;
 if (skb_in->pkt_type!=PACKET_HOST)
 return;
@@ -473,11 +473,11 @@ static struct icmp_control icmp_pointers[NR_ICMP_TYPES+1] = {
 { &dummy, &icmp_statistics.IcmpInErrors, icmp_discard, 1, },
 { &icmp_statistics.IcmpOutTimeExcds, &icmp_statistics.IcmpInTimeExcds, icmp_unreach, 1, &sysctl_icmp_timeexceed_time },
 { &icmp_statistics.IcmpOutParmProbs, &icmp_statistics.IcmpInParmProbs, icmp_unreach, 1, &sysctl_icmp_paramprob_time },
-{ &icmp_statistics.IcmpOutTimestamps, &icmp_statistics.IcmpInTimestamps, icmp_timestamp, 0,  },
+{ &icmp_statistics.IcmpOutTimestamps, &icmp_statistics.IcmpInTimestamps, icmp_timestamp, 0, },
 { &icmp_statistics.IcmpOutTimestampReps, &icmp_statistics.IcmpInTimestampReps, icmp_discard, 0, },
 { &dummy, &dummy, icmp_discard, 0, },
 { &dummy, &dummy, icmp_discard, 0, },
-{ &icmp_statistics.IcmpOutAddrMasks, &icmp_statistics.IcmpInAddrMasks, icmp_address, 0,  },
+{ &icmp_statistics.IcmpOutAddrMasks, &icmp_statistics.IcmpInAddrMasks, icmp_address, 0, },
 { &icmp_statistics.IcmpOutAddrMaskReps, &icmp_statistics.IcmpInAddrMaskReps, icmp_address_reply, 0, }
 };
 __initfunc(void icmp_init(struct net_proto_family *ops))

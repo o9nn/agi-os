@@ -3,40 +3,40 @@
 #include "pool.h"
 enum
 {
-Quanta		= 50,
-MaxQuanta	= 15*Quanta,
-PTRHASH		= (1<<5)
+Quanta = 50,
+MaxQuanta = 15*Quanta,
+PTRHASH = (1<<5)
 };
 static int quanta = Quanta;
 static int gce, gct = 1;
 typedef struct Ptrhash Ptrhash;
 struct Ptrhash
 {
-Heap	*value;
-Ptrhash	*next;
+Heap *value;
+Ptrhash *next;
 };
-int	nprop;
-int	gchalt;
-int	mflag;
-int	mutator = 0;
-int	gccolor = 3;
-ulong	gcnruns;
-ulong	gcsweeps;
-ulong	gcbroken;
-ulong	gchalted;
-ulong	gcepochs;
-uvlong	gcdestroys;
-uvlong	gcinspects;
-static	int	marker  = 1;
-static	int	sweeper = 2;
-static	Bhdr*	base;
-static	Bhdr*	limit;
-Bhdr*	ptr;
-static	int	visit;
-extern	Pool*	heapmem;
-static	Ptrhash	*ptrtab[PTRHASH];
-static	Ptrhash	*ptrfree;
-#define	HASHPTR(p)	(((ulong)(p) >> 6) & (PTRHASH - 1))
+int nprop;
+int gchalt;
+int mflag;
+int mutator = 0;
+int gccolor = 3;
+ulong gcnruns;
+ulong gcsweeps;
+ulong gcbroken;
+ulong gchalted;
+ulong gcepochs;
+uvlong gcdestroys;
+uvlong gcinspects;
+static int marker = 1;
+static int sweeper = 2;
+static Bhdr* base;
+static Bhdr* limit;
+Bhdr* ptr;
+static int visit;
+extern Pool* heapmem;
+static Ptrhash *ptrtab[PTRHASH];
+static Ptrhash *ptrfree;
+#define HASHPTR(p) (((ulong)(p) >> 6) & (PTRHASH - 1))
 void
 ptradd(Heap *v)
 {
@@ -54,7 +54,7 @@ ptrtab[h] = p;
 void
 ptrdel(Heap *v)
 {
-Ptrhash	*p, **l;
+Ptrhash *p, **l;
 for (l = &ptrtab[HASHPTR(v)]; (p = *l) != nil; l = &p->next) {
 if (p->value == v) {
 *l = p->next;
@@ -67,9 +67,9 @@ return;
 static void
 ptrmark(void)
 {
-int	i;
-Heap	*h;
-Ptrhash	*p;
+int i;
+Heap *h;
+Ptrhash *p;
 for (i = 0; i < PTRHASH; i++) {
 for (p = ptrtab[i]; p != nil; p = p->next) {
 h = p->value;

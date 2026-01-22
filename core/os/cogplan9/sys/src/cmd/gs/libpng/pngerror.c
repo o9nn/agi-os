@@ -143,13 +143,13 @@ else
 fprintf(stderr, "libpng error: %s\n", error_message);
 #endif
 #ifdef PNG_SETJMP_SUPPORTED
-#  ifdef USE_FAR_KEYWORD
+# ifdef USE_FAR_KEYWORD
 {
 jmp_buf jmpbuf;
 png_memcpy(jmpbuf,png_ptr->jmpbuf,png_sizeof(jmp_buf));
 longjmp(jmpbuf, 1);
 }
-#  else
+# else
 longjmp(png_ptr->jmpbuf, 1);
 # endif
 #else
@@ -167,7 +167,7 @@ static void
 png_default_warning(png_structp png_ptr, png_const_charp warning_message)
 {
 #ifndef PNG_NO_CONSOLE_IO
-#  ifdef PNG_ERROR_NUMBERS_SUPPORTED
+# ifdef PNG_ERROR_NUMBERS_SUPPORTED
 if (*warning_message == '#')
 {
 int offset;
@@ -188,7 +188,7 @@ else
 fprintf(stderr, "libpng warning: %s\n", warning_message);
 }
 else
-#  endif
+# endif
 fprintf(stderr, "libpng warning: %s\n", warning_message);
 #else
 ;

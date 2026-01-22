@@ -1,21 +1,21 @@
 implement Mashlib;
 #
-#	Mashlib	- All of the real work except for the parsing.
+# Mashlib - All of the real work except for the parsing.
 #
-include	"mash.m";
-include	"mashparse.m";
-Iobuf:			import bufio;
-HashTable, HashVal:	import hash;
-include	"depends.b";
-include	"dump.b";
-include	"exec.b";
-include	"expr.b";
-include	"lex.b";
-include	"misc.b";
-include	"serve.b";
-include	"symb.b";
-include	"xeq.b";
-lib:		Mashlib;
+include "mash.m";
+include "mashparse.m";
+Iobuf: import bufio;
+HashTable, HashVal: import hash;
+include "depends.b";
+include "dump.b";
+include "exec.b";
+include "expr.b";
+include "lex.b";
+include "misc.b";
+include "serve.b";
+include "symb.b";
+include "xeq.b";
+lib: Mashlib;
 initmash(ctxt: ref Draw->Context, top: ref Tk->Toplevel, s: Sys, e: ref Env, l: Mashlib, p: Mashparse)
 {
 gctxt = ctxt;
@@ -24,7 +24,7 @@ sys = s;
 lib = l;
 parse = p;
 if (top != nil) {
-tk =  load Tk Tk->PATH;
+tk = load Tk Tk->PATH;
 if (tk == nil)
 e.couldnot("load", Tk->PATH);
 }

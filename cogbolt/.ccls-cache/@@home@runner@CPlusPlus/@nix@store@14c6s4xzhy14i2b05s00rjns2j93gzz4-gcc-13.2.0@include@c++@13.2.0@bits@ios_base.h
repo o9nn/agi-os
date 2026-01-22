@@ -14,24 +14,24 @@ namespace std _GLIBCXX_VISIBILITY(default)
 _GLIBCXX_BEGIN_NAMESPACE_VERSION
 enum _Ios_Fmtflags
 {
-_S_boolalpha 	= 1L << 0,
-_S_dec 		= 1L << 1,
-_S_fixed 		= 1L << 2,
-_S_hex 		= 1L << 3,
-_S_internal 	= 1L << 4,
-_S_left 		= 1L << 5,
-_S_oct 		= 1L << 6,
-_S_right 		= 1L << 7,
-_S_scientific 	= 1L << 8,
-_S_showbase 	= 1L << 9,
-_S_showpoint 	= 1L << 10,
-_S_showpos 	= 1L << 11,
-_S_skipws 	= 1L << 12,
-_S_unitbuf 	= 1L << 13,
-_S_uppercase 	= 1L << 14,
-_S_adjustfield 	= _S_left | _S_right | _S_internal,
-_S_basefield 	= _S_dec | _S_oct | _S_hex,
-_S_floatfield 	= _S_scientific | _S_fixed,
+_S_boolalpha = 1L << 0,
+_S_dec = 1L << 1,
+_S_fixed = 1L << 2,
+_S_hex = 1L << 3,
+_S_internal = 1L << 4,
+_S_left = 1L << 5,
+_S_oct = 1L << 6,
+_S_right = 1L << 7,
+_S_scientific = 1L << 8,
+_S_showbase = 1L << 9,
+_S_showpoint = 1L << 10,
+_S_showpos = 1L << 11,
+_S_skipws = 1L << 12,
+_S_unitbuf = 1L << 13,
+_S_uppercase = 1L << 14,
+_S_adjustfield = _S_left | _S_right | _S_internal,
+_S_basefield = _S_dec | _S_oct | _S_hex,
+_S_floatfield = _S_scientific | _S_fixed,
 _S_ios_fmtflags_end = 1L << 16,
 _S_ios_fmtflags_max = __INT_MAX__,
 _S_ios_fmtflags_min = ~__INT_MAX__
@@ -59,13 +59,13 @@ operator^=(_Ios_Fmtflags& __a, _Ios_Fmtflags __b)
 { return __a = __a ^ __b; }
 enum _Ios_Openmode
 {
-_S_app 		= 1L << 0,
-_S_ate 		= 1L << 1,
-_S_bin 		= 1L << 2,
-_S_in 		= 1L << 3,
-_S_out 		= 1L << 4,
-_S_trunc 		= 1L << 5,
-_S_noreplace 	= 1L << 6,
+_S_app = 1L << 0,
+_S_ate = 1L << 1,
+_S_bin = 1L << 2,
+_S_in = 1L << 3,
+_S_out = 1L << 4,
+_S_trunc = 1L << 5,
+_S_noreplace = 1L << 6,
 _S_ios_openmode_end = 1L << 16,
 _S_ios_openmode_max = __INT_MAX__,
 _S_ios_openmode_min = ~__INT_MAX__
@@ -93,10 +93,10 @@ operator^=(_Ios_Openmode& __a, _Ios_Openmode __b)
 { return __a = __a ^ __b; }
 enum _Ios_Iostate
 {
-_S_goodbit 		= 0,
-_S_badbit 		= 1L << 0,
-_S_eofbit 		= 1L << 1,
-_S_failbit		= 1L << 2,
+_S_goodbit = 0,
+_S_badbit = 1L << 0,
+_S_eofbit = 1L << 1,
+_S_failbit = 1L << 2,
 _S_ios_iostate_end = 1L << 16,
 _S_ios_iostate_max = __INT_MAX__,
 _S_ios_iostate_min = ~__INT_MAX__
@@ -119,7 +119,7 @@ operator|=(_Ios_Iostate& __a, _Ios_Iostate __b)
 inline const _Ios_Iostate&
 operator&=(_Ios_Iostate& __a, _Ios_Iostate __b)
 { return __a = __a & __b; }
-inline const  _Ios_Iostate&
+inline const _Ios_Iostate&
 operator^=(_Ios_Iostate& __a, _Ios_Iostate __b)
 { return __a = __a ^ __b; }
 enum _Ios_Seekdir
@@ -154,8 +154,8 @@ struct error_code
 {
 error_code() { }
 private:
-int		_M_value;
-const void*	_M_cat;
+int _M_value;
+const void* _M_cat;
 } _M_code;
 };
 #endif
@@ -204,45 +204,45 @@ string _M_msg;
 };
 #endif
 typedef _Ios_Fmtflags fmtflags;
-static const fmtflags boolalpha =   _S_boolalpha;
-static const fmtflags dec =         _S_dec;
-static const fmtflags fixed =       _S_fixed;
-static const fmtflags hex =         _S_hex;
-static const fmtflags internal =    _S_internal;
-static const fmtflags left =        _S_left;
-static const fmtflags oct =         _S_oct;
-static const fmtflags right =       _S_right;
-static const fmtflags scientific =  _S_scientific;
-static const fmtflags showbase =    _S_showbase;
-static const fmtflags showpoint =   _S_showpoint;
-static const fmtflags showpos =     _S_showpos;
-static const fmtflags skipws =      _S_skipws;
-static const fmtflags unitbuf =     _S_unitbuf;
-static const fmtflags uppercase =   _S_uppercase;
+static const fmtflags boolalpha = _S_boolalpha;
+static const fmtflags dec = _S_dec;
+static const fmtflags fixed = _S_fixed;
+static const fmtflags hex = _S_hex;
+static const fmtflags internal = _S_internal;
+static const fmtflags left = _S_left;
+static const fmtflags oct = _S_oct;
+static const fmtflags right = _S_right;
+static const fmtflags scientific = _S_scientific;
+static const fmtflags showbase = _S_showbase;
+static const fmtflags showpoint = _S_showpoint;
+static const fmtflags showpos = _S_showpos;
+static const fmtflags skipws = _S_skipws;
+static const fmtflags unitbuf = _S_unitbuf;
+static const fmtflags uppercase = _S_uppercase;
 static const fmtflags adjustfield = _S_adjustfield;
-static const fmtflags basefield =   _S_basefield;
-static const fmtflags floatfield =  _S_floatfield;
+static const fmtflags basefield = _S_basefield;
+static const fmtflags floatfield = _S_floatfield;
 typedef _Ios_Iostate iostate;
-static const iostate badbit =	_S_badbit;
-static const iostate eofbit =	_S_eofbit;
-static const iostate failbit =	_S_failbit;
-static const iostate goodbit =	_S_goodbit;
+static const iostate badbit = _S_badbit;
+static const iostate eofbit = _S_eofbit;
+static const iostate failbit = _S_failbit;
+static const iostate goodbit = _S_goodbit;
 typedef _Ios_Openmode openmode;
-static const openmode app =		_S_app;
-static const openmode ate =		_S_ate;
-static const openmode binary =	_S_bin;
-static const openmode in =		_S_in;
-static const openmode out =		_S_out;
-static const openmode trunc =	_S_trunc;
-static const openmode __noreplace =	_S_noreplace;
+static const openmode app = _S_app;
+static const openmode ate = _S_ate;
+static const openmode binary = _S_bin;
+static const openmode in = _S_in;
+static const openmode out = _S_out;
+static const openmode trunc = _S_trunc;
+static const openmode __noreplace = _S_noreplace;
 #if __cplusplus >= 202100L
 #define __cpp_lib_ios_noreplace 202207L
-static const openmode noreplace =	_S_noreplace;
+static const openmode noreplace = _S_noreplace;
 #endif
 typedef _Ios_Seekdir seekdir;
-static const seekdir beg =		_S_beg;
-static const seekdir cur =		_S_cur;
-static const seekdir end =		_S_end;
+static const seekdir beg = _S_beg;
+static const seekdir cur = _S_cur;
+static const seekdir end = _S_end;
 #if __cplusplus <= 201402L
 typedef int io_state
 _GLIBCXX_DEPRECATED_SUGGEST("std::iostate");
@@ -265,17 +265,17 @@ typedef void (*event_callback) (event __e, ios_base& __b, int __i);
 void
 register_callback(event_callback __fn, int __index);
 protected:
-streamsize		_M_precision;
-streamsize		_M_width;
-fmtflags		_M_flags;
-iostate		_M_exception;
-iostate		_M_streambuf_state;
+streamsize _M_precision;
+streamsize _M_width;
+fmtflags _M_flags;
+iostate _M_exception;
+iostate _M_streambuf_state;
 struct _Callback_list
 {
-_Callback_list*		_M_next;
-ios_base::event_callback	_M_fn;
-int			_M_index;
-_Atomic_word		_M_refcount;
+_Callback_list* _M_next;
+ios_base::event_callback _M_fn;
+int _M_index;
+_Atomic_word _M_refcount;
 _Callback_list(ios_base::event_callback __fn, int __index,
 _Callback_list* __cb)
 : _M_next(__cb), _M_fn(__fn), _M_index(__index), _M_refcount(0) { }
@@ -293,25 +293,25 @@ _GLIBCXX_SYNCHRONIZATION_HAPPENS_AFTER(&_M_refcount);
 return __res;
 }
 };
-_Callback_list*	_M_callbacks;
+_Callback_list* _M_callbacks;
 void
 _M_call_callbacks(event __ev) throw();
 void
 _M_dispose_callbacks(void) throw();
 struct _Words
 {
-void*	_M_pword;
-long	_M_iword;
+void* _M_pword;
+long _M_iword;
 _Words() : _M_pword(0), _M_iword(0) { }
 };
-_Words		_M_word_zero;
+_Words _M_word_zero;
 enum { _S_local_word_size = 8 };
-_Words		_M_local_word[_S_local_word_size];
-int			_M_word_size;
-_Words*		_M_word;
+_Words _M_local_word[_S_local_word_size];
+int _M_word_size;
+_Words* _M_word;
 _Words&
 _M_grow_words(int __index, bool __iword);
-locale		_M_ios_locale;
+locale _M_ios_locale;
 void
 _M_init() throw();
 public:
@@ -326,8 +326,8 @@ Init(const Init&) = default;
 Init& operator=(const Init&) = default;
 #endif
 private:
-static _Atomic_word	_S_refcount;
-static bool		_S_synced_with_stdio;
+static _Atomic_word _S_refcount;
+static bool _S_synced_with_stdio;
 };
 fmtflags
 flags() const

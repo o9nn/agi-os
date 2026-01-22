@@ -7,17 +7,17 @@
 typedef struct TokenSource TokenSource;
 struct TokenSource
 {
-int			i;
-uchar*		data;
-int			edata;
-int			chset;
-int			mtype;
+int i;
+uchar* data;
+int edata;
+int chset;
+int mtype;
 };
 enum {
 EOF = -2,
 EOB = -1
 };
-#define ISNAMCHAR(c)	((c)<256 && (isalpha(c) || isdigit(c) || (c) == '-' || (c) == '.'))
+#define ISNAMCHAR(c) ((c)<256 && (isalpha(c) || isdigit(c) || (c) == '-' || (c) == '.'))
 #define SMALLBUFSIZE 240
 #define BIGBUFSIZE 2000
 Rune* tagnames[] = {
@@ -236,7 +236,7 @@ L"vlink",
 L"vspace",
 L"width"
 };
-StringInt	chartab[]= {
+StringInt chartab[]= {
 {L"AElig", 198},
 {L"Aacute", 193},
 {L"Acirc", 194},
@@ -509,31 +509,31 @@ enum {
 Winstart = 127,
 Winend = 159
 };
-static int	winchars[]= { 8226,
+static int winchars[]= { 8226,
 8226, 8226, 8218, 402, 8222, 8230, 8224, 8225,
 710, 8240, 352, 8249, 338, 8226, 8226, 8226,
 8226, 8216, 8217, 8220, 8221, 8226, 8211, 8212,
 732, 8482, 353, 8250, 339, 8226, 8226, 376};
-static StringInt*	tagtable;
-static StringInt*	attrtable;
-static void	lexinit(void);
-static int		getplaindata(TokenSource* ts, Token* a, int* pai);
-static int		getdata(TokenSource* ts, int firstc, int starti, Token* a, int* pai);
-static int		getscriptdata(TokenSource* ts, int firstc, int starti, Token* a, int* pai, int findtag);
-static int		gettag(TokenSource* ts, int starti, Token* a, int* pai);
-static Rune*	buftostr(Rune* s, Rune* buf, int j);
-static int		comment(TokenSource* ts);
-static int		findstr(TokenSource* ts, Rune* s);
-static int		ampersand(TokenSource* ts);
-static int		lowerc(int c);
-static int		getchar(TokenSource* ts);
-static void		ungetchar(TokenSource* ts, int c);
-static void		backup(TokenSource* ts, int savei);
-static void		freeinsidetoken(Token* t);
-static void		freeattrs(Attr* ahead);
-static Attr*	newattr(int attid, Rune* value, Attr* link);
-static int		Tconv(Fmt* f);
-int	dbglex = 0;
+static StringInt* tagtable;
+static StringInt* attrtable;
+static void lexinit(void);
+static int getplaindata(TokenSource* ts, Token* a, int* pai);
+static int getdata(TokenSource* ts, int firstc, int starti, Token* a, int* pai);
+static int getscriptdata(TokenSource* ts, int firstc, int starti, Token* a, int* pai, int findtag);
+static int gettag(TokenSource* ts, int starti, Token* a, int* pai);
+static Rune* buftostr(Rune* s, Rune* buf, int j);
+static int comment(TokenSource* ts);
+static int findstr(TokenSource* ts, Rune* s);
+static int ampersand(TokenSource* ts);
+static int lowerc(int c);
+static int getchar(TokenSource* ts);
+static void ungetchar(TokenSource* ts, int c);
+static void backup(TokenSource* ts, int savei);
+static void freeinsidetoken(Token* t);
+static void freeattrs(Attr* ahead);
+static Attr* newattr(int attid, Rune* value, Attr* link);
+static int Tconv(Fmt* f);
+int dbglex = 0;
 static int lexinited = 0;
 static void
 lexinit(void)
@@ -546,7 +546,7 @@ lexinited = 1;
 static TokenSource*
 newtokensource(uchar* data, int edata, int chset, int mtype)
 {
-TokenSource*	ans;
+TokenSource* ans;
 assert(chset == US_Ascii || chset == ISO_8859_1 ||
 chset == UTF_8 || chset == Unicode);
 ans = (TokenSource*)emalloc(sizeof(TokenSource));
@@ -563,13 +563,13 @@ ToksChunk = 500,
 Token*
 _gettoks(uchar* data, int datalen, int chset, int mtype, int* plen)
 {
-TokenSource*	ts;
-Token*		a;
-int	alen;
-int	ai;
-int	starti;
-int	c;
-int	tag;
+TokenSource* ts;
+Token* a;
+int alen;
+int ai;
+int starti;
+int c;
+int tag;
 if(!lexinited)
 lexinit();
 ts = newtokensource(data, datalen, chset, mtype);
@@ -630,12 +630,12 @@ return a;
 static int
 getplaindata(TokenSource* ts, Token* a, int* pai)
 {
-Rune*	s;
-int	j;
-int	starti;
-int	c;
-Token*	tok;
-Rune	buf[BIGBUFSIZE];
+Rune* s;
+int j;
+int starti;
+int c;
+Token* tok;
+Rune buf[BIGBUFSIZE];
 s = nil;
 j = 0;
 starti = ts->i;
@@ -691,11 +691,11 @@ return s;
 static int
 getdata(TokenSource* ts, int firstc, int starti, Token* a, int* pai)
 {
-Rune*	s;
-int	j;
-int	c;
-Token*	tok;
-Rune	buf[SMALLBUFSIZE];
+Rune* s;
+int j;
+int c;
+Token* tok;
+Rune buf[SMALLBUFSIZE];
 s = nil;
 j = 0;
 for(c = firstc; c >= 0; c = getchar(ts)){
@@ -746,15 +746,15 @@ return Data;
 static int
 getscriptdata(TokenSource* ts, int firstc, int starti, Token* a, int* pai, int findtag)
 {
-Rune*	s;
-int	j;
-int	tstarti;
-int	savei;
-int	c;
-int	tag;
-int	done;
-Token*	tok;
-Rune	buf[BIGBUFSIZE];
+Rune* s;
+int j;
+int tstarti;
+int savei;
+int c;
+int tag;
+int done;
+Token* tok;
+Rune buf[BIGBUFSIZE];
 s = nil;
 j = 0;
 tstarti = starti;
@@ -815,21 +815,21 @@ return -1;
 static int
 gettag(TokenSource* ts, int starti, Token* a, int* pai)
 {
-int	rbra;
-int	ans;
-Attr*	al;
-int	nexti;
-int	c;
-int	ti;
-int	afnd;
-int	attid;
-int	quote;
-Rune*	val;
-int	nv;
-int	i;
-int	tag;
-Token*	tok;
-Rune	buf[BIGBUFSIZE];
+int rbra;
+int ans;
+Attr* al;
+int nexti;
+int c;
+int ti;
+int afnd;
+int attid;
+int quote;
+Rune* val;
+int nv;
+int i;
+int tag;
+Token* tok;
+Rune buf[BIGBUFSIZE];
 rbra = 0;
 nexti = ts->i;
 tok = &a[*pai];
@@ -1035,9 +1035,9 @@ return Data;
 static int
 comment(TokenSource* ts)
 {
-int	nexti;
-int	havecomment;
-int	c;
+int nexti;
+int havecomment;
+int c;
 nexti = ts->i;
 havecomment = 0;
 c = getchar(ts);
@@ -1065,11 +1065,11 @@ return -1;
 static int
 findstr(TokenSource* ts, Rune* s)
 {
-int	c0;
-int	n;
-int	nexti;
-int	i;
-int	c;
+int c0;
+int n;
+int nexti;
+int i;
+int c;
 c0 = s[0];
 n = runestrlen(s);
 while(1) {
@@ -1098,13 +1098,13 @@ return 0;
 static int
 ampersand(TokenSource* ts)
 {
-int	savei;
-int	c;
-int	fnd;
-int	ans;
-int	v;
-int	k;
-Rune	buf[25];
+int savei;
+int c;
+int fnd;
+int ans;
+int v;
+int k;
+Rune buf[25];
 savei = ts->i;
 c = getchar(ts);
 fnd = 0;
@@ -1171,11 +1171,11 @@ return ans;
 static int
 getchar(TokenSource* ts)
 {
-uchar*	buf;
-int	c;
-int	n;
-int	ok;
-Rune	r;
+uchar* buf;
+int c;
+int n;
+int ok;
+Rune r;
 if(ts->i >= ts->edata)
 return -1;
 buf = ts->data;
@@ -1225,9 +1225,9 @@ return c;
 static void
 ungetchar(TokenSource* ts, int c)
 {
-int	n;
-Rune	r;
-char	a[UTFmax];
+int n;
+Rune r;
+char a[UTFmax];
 n = 1;
 switch(ts->chset) {
 case UTF_8:
@@ -1252,7 +1252,7 @@ ts->i = savei;
 int
 _tokaval(Token* t, int attid, Rune** pans, int xfer)
 {
-Attr*	attr;
+Attr* attr;
 attr = t->attr;
 while(attr != nil) {
 if(attr->attid == attid) {
@@ -1271,14 +1271,14 @@ return 0;
 static int
 Tconv(Fmt *f)
 {
-Token*	t;
-int	i;
-int	tag;
-char*	srbra;
-Rune*	aname;
-Rune*	tname;
-Attr*	a;
-char	buf[BIGBUFSIZE];
+Token* t;
+int i;
+int tag;
+char* srbra;
+Rune* aname;
+Rune* tname;
+Attr* a;
+char buf[BIGBUFSIZE];
 t = va_arg(f->args, Token*);
 if(t == nil)
 sprint(buf, "<null>");

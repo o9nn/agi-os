@@ -1,35 +1,35 @@
 #include "stdinc.h"
 #include "dat.h"
 #include "fns.h"
-typedef struct LumpQueue	LumpQueue;
-typedef struct WLump		WLump;
+typedef struct LumpQueue LumpQueue;
+typedef struct WLump WLump;
 enum
 {
-MaxLumpQ	= 1 << 3
+MaxLumpQ = 1 << 3
 };
 struct WLump
 {
-Lump	*u;
-Packet	*p;
-int	creator;
-int	gen;
-uint	ms;
+Lump *u;
+Packet *p;
+int creator;
+int gen;
+uint ms;
 };
 struct LumpQueue
 {
-QLock	lock;
-Rendez 	flush;
-Rendez	full;
-Rendez	empty;
-WLump	q[MaxLumpQ];
-int	w;
-int	r;
+QLock lock;
+Rendez flush;
+Rendez full;
+Rendez empty;
+WLump q[MaxLumpQ];
+int w;
+int r;
 };
-static LumpQueue	*lumpqs;
-static int		nqs;
-static QLock		glk;
-static int		gen;
-static void	queueproc(void *vq);
+static LumpQueue *lumpqs;
+static int nqs;
+static QLock glk;
+static int gen;
+static void queueproc(void *vq);
 int
 initlumpqueues(int nq)
 {

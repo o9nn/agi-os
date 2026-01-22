@@ -13,52 +13,52 @@ str: String;
 include "arg.m";
 Burn: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 Avr: adt {
-id:	int;
-rev:	int;
-flashsize:	int;
-eepromsize:	int;
-fusebytes:	int;
-lockbytes:	int;
-serfprog:	int;	# serial fuse programming support
-serlprog:	int;	# serial lockbit programming support
-serflread:	int;	# serial fuse/lockbit reading support
-commonlfr:	int;	# lockbits and fuses are combined
-sermemprog:	int;	# serial memory programming support
-pagesize:	int;
-eeprompagesize:	int;
-selftimed:	int;	# all instructions are self-timed
-fullpar:	int;	# part has full parallel interface
-polling:	int;	# polling can be used during SPI access
-fpoll:	int;	# flash poll value
-epoll1:	int;	# eeprom poll value 1
-epoll2:	int;	# eeprom poll value 2
-name:	string;
-signalpagel:	int;	# posn of PAGEL signal (16rD7 by default)
-signalbs2:	int;	# posn of BS2 signal (16rA0 by default)
+id: int;
+rev: int;
+flashsize: int;
+eepromsize: int;
+fusebytes: int;
+lockbytes: int;
+serfprog: int; # serial fuse programming support
+serlprog: int; # serial lockbit programming support
+serflread: int; # serial fuse/lockbit reading support
+commonlfr: int; # lockbits and fuses are combined
+sermemprog: int; # serial memory programming support
+pagesize: int;
+eeprompagesize: int;
+selftimed: int; # all instructions are self-timed
+fullpar: int; # part has full parallel interface
+polling: int; # polling can be used during SPI access
+fpoll: int; # flash poll value
+epoll1: int; # eeprom poll value 1
+epoll2: int; # eeprom poll value 2
+name: string;
+signalpagel: int; # posn of PAGEL signal (16rD7 by default)
+signalbs2: int; # posn of BS2 signal (16rA0 by default)
 };
 F, T: con iota;
-ATMEGA128: con 16rB2;	# 128k devices
+ATMEGA128: con 16rB2; # 128k devices
 avrs: array of Avr = array[] of {
-(ATMEGA128,  1, 131072, 4096, 3, 1, T,  T,  T,  F, T,  256, 8,  T,  T,  T,  16rFF, 16rFF, 16rFF, "ATmega128",   16rD7, 16rA0),
+(ATMEGA128, 1, 131072, 4096, 3, 1, T, T, T, F, T, 256, 8, T, T, T, 16rFF, 16rFF, 16rFF, "ATmega128", 16rD7, 16rA0),
 };
 sfd: ref Sys->FD;
 cfd: ref Sys->FD;
 rd: ref Rd;
 mib510 := 1;
 Rd: adt {
-c:	chan of array of byte;
-pid:	int;
-fd:	ref Sys->FD;
-buf:	array of byte;
-new:	fn(fd: ref Sys->FD): ref Rd;
-read:	fn(r: self ref Rd, ms: int): array of byte;
-readn:	fn(r: self ref Rd, n: int, ms: int): array of byte;
-flush:	fn(r: self ref Rd);
-stop:	fn(r: self ref Rd);
-reader:	fn(r: self ref Rd, c: chan of int);
+c: chan of array of byte;
+pid: int;
+fd: ref Sys->FD;
+buf: array of byte;
+new: fn(fd: ref Sys->FD): ref Rd;
+read: fn(r: self ref Rd, ms: int): array of byte;
+readn: fn(r: self ref Rd, n: int, ms: int): array of byte;
+flush: fn(r: self ref Rd);
+stop: fn(r: self ref Rd);
+reader: fn(r: self ref Rd, c: chan of int);
 };
 debug := 0;
 verify := 0;
@@ -79,15 +79,15 @@ arg->init(args);
 arg->setusage("burn [-rD] [-d serialdev] file.out");
 while((o := arg->opt()) != 0)
 case o {
-'D' =>	debug++;
-'e' =>	erase = 0;
-'r' =>	verify = 1;
-'d' =>	serial = arg->earg();
-'i' =>	ignore = 1;
-'E' =>	fuseext = fuseval(arg->earg());
-'L' =>	fuselow = fuseval(arg->earg());
-'H' =>	fusehigh = fuseval(arg->earg());
-* =>	arg->usage();
+'D' => debug++;
+'e' => erase = 0;
+'r' => verify = 1;
+'d' => serial = arg->earg();
+'i' => ignore = 1;
+'E' => fuseext = fuseval(arg->earg());
+'L' => fuselow = fuseval(arg->earg());
+'H' => fusehigh = fuseval(arg->earg());
+* => arg->usage();
 }
 args = arg->argv();
 if(len args != 1)
@@ -105,7 +105,7 @@ cfd = sys->open(serial+"ctl", Sys->ORDWR);
 sys->fprint(cfd, "f");
 sys->fprint(cfd, "b115200");
 sys->fprint(cfd, "i8");
-#	sys->fprint(cfd, "f\nb115200\ni8");
+# sys->fprint(cfd, "f\nb115200\ni8");
 rd = Rd.new(sfd);
 initialise();
 if(fuseext >= 0 || fuselow >= 0 || fusehigh >= 0){
@@ -221,7 +221,7 @@ return len cd;
 }
 shutdown()
 {
-#	setisp(0);
+# setisp(0);
 if(rd != nil){
 rd.stop();
 rd = nil;
@@ -365,10 +365,10 @@ csum += b;
 addr = (addr << 8) | b;
 }
 case s[1] {
-'0' or		# used as segment name (seems to be srec file name with TinyOS)
-'1' to '3' or	# data
-'5' or		# plot so far
-'7' to '9' =>	# end/start address
+'0' or # used as segment name (seems to be srec file name with TinyOS)
+'1' to '3' or # data
+'5' or # plot so far
+'7' to '9' => # end/start address
 ;
 * =>
 badsrec("type: "+s);
@@ -490,7 +490,7 @@ return c;
 #
 # STK500 communication protocol
 #
-STK_SIGN_ON_MESSAGE: con "AVR STK";   # Sign on string for Cmd_STK_GET_SIGN_ON
+STK_SIGN_ON_MESSAGE: con "AVR STK"; # Sign on string for Cmd_STK_GET_SIGN_ON
 # Responses
 Resp_STK_OK: con byte 16r10;
 Resp_STK_FAILED: con byte 16r11;
@@ -553,14 +553,14 @@ Parm_STK_POLLING: con byte 16r95; # ' ' - TRUE or FALSE
 Parm_STK_SELFTIMED: con byte 16r96; # ' ' - TRUE or FALSE
 # status bits
 Stat_STK_INSYNC: con byte 16r01; # INSYNC status bit, '1' - INSYNC
-Stat_STK_PROGMODE: con byte 16r02; # Programming mode,  '1' - PROGMODE
-Stat_STK_STANDALONE: con byte 16r04; # Standalone mode,   '1' - SM mode
-Stat_STK_RESET: con byte 16r08; # RESET button,      '1' - Pushed
-Stat_STK_PROGRAM: con byte 16r10; # Program button, '   1' - Pushed
-Stat_STK_LEDG: con byte 16r20; # Green LED status,  '1' - Lit
-Stat_STK_LEDR: con byte 16r40; # Red LED status,    '1' - Lit
-Stat_STK_LEDBLINK: con byte 16r80; # LED blink ON/OFF,  '1' - Blink
-ispmode := array[] of {byte 16rAA, byte 16r55, byte 16r55, byte 16rAA, byte 16r17, byte 16r51, byte 16r31, byte 16r13,  byte 0};	# last byte is 1 to switch isp on 0 to switch off
+Stat_STK_PROGMODE: con byte 16r02; # Programming mode, '1' - PROGMODE
+Stat_STK_STANDALONE: con byte 16r04; # Standalone mode, '1' - SM mode
+Stat_STK_RESET: con byte 16r08; # RESET button, '1' - Pushed
+Stat_STK_PROGRAM: con byte 16r10; # Program button, ' 1' - Pushed
+Stat_STK_LEDG: con byte 16r20; # Green LED status, '1' - Lit
+Stat_STK_LEDR: con byte 16r40; # Red LED status, '1' - Lit
+Stat_STK_LEDBLINK: con byte 16r80; # LED blink ON/OFF, '1' - Blink
+ispmode := array[] of {byte 16rAA, byte 16r55, byte 16r55, byte 16rAA, byte 16r17, byte 16r51, byte 16r31, byte 16r13, byte 0}; # last byte is 1 to switch isp on 0 to switch off
 ck(r: array of byte)
 {
 if(r == nil)
@@ -599,7 +599,7 @@ if(len r != 5 || r[0] != Cmd_STK_READ_SIGN || r[4] != Sync_CRC_EOP){
 sys->fprint(sys->fildes(2), "bad reply %s\n", dump(r));
 return nil;
 }
-return r[1:len r-1];	# trim proto bytes
+return r[1:len r-1]; # trim proto bytes
 }
 pgrpc(a: array of byte, repn: int): array of byte
 {
@@ -620,7 +620,7 @@ err("lost synchronisation");
 sys->fprint(sys->fildes(2), "bad reply %s\n", dump(r));
 return nil;
 }
-return r[1:len r-1];	# trim sync bytes
+return r[1:len r-1]; # trim sync bytes
 }
 send(a: array of byte, repn: int): array of byte
 {
@@ -647,7 +647,7 @@ b := array[] of {
 Cmd_STK_SET_DEVICE,
 byte d.id,
 byte d.rev,
-byte 0,	# prog type (CHECK)
+byte 0, # prog type (CHECK)
 byte d.fullpar,
 byte d.polling,
 byte d.selftimed,
@@ -670,7 +670,7 @@ byte 4,
 byte d.eeprompagesize,
 byte d.signalpagel,
 byte d.signalbs2,
-byte 0	# ResetDisable
+byte 0 # ResetDisable
 };
 ck(rpc(b, 0));
 }
@@ -713,7 +713,7 @@ r = send(array[] of {Cmd_STK_READ_PAGE, byte (nb>>8), byte nb, byte memtype, Syn
 l := len r;
 # AVR601 says last byte should be Resp_STK_OK but it's not, at least on MIB; check for both
 if(l >= 2 && r[0] == Resp_STK_INSYNC && (r[l-1] == Resp_STK_INSYNC || r[l-1] == Resp_STK_OK))
-r = r[1:l-1];	# trim framing bytes
+r = r[1:l-1]; # trim framing bytes
 else{
 sys->print("bad reply: %s\n", dump(r));
 r = nil;

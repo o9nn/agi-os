@@ -16,8 +16,8 @@
 #include "http-client.h"
 #include <unistd.h>
 #include <sys/signal.h>
-#define CLIENT_PROGRESS_TIMEOUT     10
-#define SERVER_KILL_TIMEOUT_SECS    20
+#define CLIENT_PROGRESS_TIMEOUT 10
+#define SERVER_KILL_TIMEOUT_SECS 20
 static void main_deinit(void);
 struct server_connection {
 struct connection conn;
@@ -1582,7 +1582,7 @@ http_client, "GET", net_ip2addr(&bind_ip),
 test_client_client_deinit_early_response, ctx);
 http_client_request_set_port(hreq, bind_ports[0]);
 http_client_request_submit(hreq);
-hreq =  http_client_request(
+hreq = http_client_request(
 http_client, "GET", net_ip2addr(&bind_ip),
 "/client-deinit-early2.txt",
 test_client_client_deinit_early_response, ctx);

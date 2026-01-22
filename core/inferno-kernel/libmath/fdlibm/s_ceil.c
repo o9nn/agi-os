@@ -4,8 +4,8 @@ double ceil(double x)
 {
 int i0,i1,j0;
 unsigned i,j;
-i0 =  __HI(x);
-i1 =  __LO(x);
+i0 = __HI(x);
+i1 = __LO(x);
 j0 = ((i0>>20)&0x7ff)-0x3ff;
 if(j0<20) {
 if(j0<0) {

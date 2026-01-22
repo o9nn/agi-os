@@ -1,89 +1,89 @@
 #define UNICODE
 #define Unknown win_Unknown
-#include	<windows.h>
-#include	<winbase.h>
+#include <windows.h>
+#include <winbase.h>
 #undef Unknown
-#undef	Sleep
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
-#include	"r16.h"
-#include	<lm.h>
+#undef Sleep
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
+#include "r16.h"
+#include <lm.h>
 #ifndef SID_MAX_SUB_AUTHORITIES
-#define	SID_MAX_SUB_AUTHORITIES	15
+#define SID_MAX_SUB_AUTHORITIES 15
 #endif
 enum
 {
-MAX_SID		= sizeof(SID) + SID_MAX_SUB_AUTHORITIES*sizeof(DWORD),
-ACL_ROCK	= sizeof(ACL) + 20*(sizeof(ACCESS_ALLOWED_ACE)+MAX_SID),
-SD_ROCK		= SECURITY_DESCRIPTOR_MIN_LENGTH + MAX_SID + ACL_ROCK,
-MAXCOMP		= 128,
+MAX_SID = sizeof(SID) + SID_MAX_SUB_AUTHORITIES*sizeof(DWORD),
+ACL_ROCK = sizeof(ACL) + 20*(sizeof(ACCESS_ALLOWED_ACE)+MAX_SID),
+SD_ROCK = SECURITY_DESCRIPTOR_MIN_LENGTH + MAX_SID + ACL_ROCK,
+MAXCOMP = 128,
 };
-typedef struct	User	User;
-typedef struct  Gmem	Gmem;
-typedef	struct	Stat	Stat;
-typedef	struct Fsinfo	Fsinfo;
-typedef	WIN32_FIND_DATA	Fsdir;
+typedef struct User User;
+typedef struct Gmem Gmem;
+typedef struct Stat Stat;
+typedef struct Fsinfo Fsinfo;
+typedef WIN32_FIND_DATA Fsdir;
 #ifndef INVALID_SET_FILE_POINTER
-#define	INVALID_SET_FILE_POINTER	((DWORD)-1)
+#define INVALID_SET_FILE_POINTER ((DWORD)-1)
 #endif
 struct Fsinfo
 {
-int	uid;
-int	gid;
-int	mode;
-int	fd;
-vlong	offset;
-QLock	oq;
-char*	spec;
-Rune16*	srv;
-Cname*	name;
-ushort	usesec;
-ushort	checksec;
-Fsdir*	de;
+int uid;
+int gid;
+int mode;
+int fd;
+vlong offset;
+QLock oq;
+char* spec;
+Rune16* srv;
+Cname* name;
+ushort usesec;
+ushort checksec;
+Fsdir* de;
 };
-#define	FS(c)	((Fsinfo*)(c)->aux)
+#define FS(c) ((Fsinfo*)(c)->aux)
 struct User
 {
-QLock	lk;
-SID	*sid;
-Rune16	*name;
-Rune16	*dom;
-int	type;
-int	gotgroup;
-Gmem	*group;
-User	*next;
+QLock lk;
+SID *sid;
+Rune16 *name;
+Rune16 *dom;
+int type;
+int gotgroup;
+Gmem *group;
+User *next;
 };
 struct Gmem
 {
-User	*user;
-Gmem	*next;
+User *user;
+Gmem *next;
 };
 struct Stat
 {
-User	*owner;
-User	*group;
-ulong	mode;
+User *owner;
+User *group;
+ulong mode;
 };
-static	SID	*creatorowner;
-static	SID	*creatorgroup;
-static	SID	*everyone;
-static	SID	*ntignore;
-static	SID	*ntroot;
+static SID *creatorowner;
+static SID *creatorgroup;
+static SID *everyone;
+static SID *ntignore;
+static SID *ntroot;
 static struct
 {
-QLock	lk;
-User	*u;
+QLock lk;
+User *u;
 }users;
-#define	NOMODE	(READ_CONTROL|FILE_READ_EA|FILE_READ_ATTRIBUTES)
-#define	RMODE	(READ_CONTROL|SYNCHRONIZE\
+#define NOMODE (READ_CONTROL|FILE_READ_EA|FILE_READ_ATTRIBUTES)
+#define RMODE (READ_CONTROL|SYNCHRONIZE\
 |FILE_READ_DATA|FILE_READ_EA|FILE_READ_ATTRIBUTES)
-#define	XMODE	(READ_CONTROL|SYNCHRONIZE\
+#define XMODE (READ_CONTROL|SYNCHRONIZE\
 |FILE_EXECUTE|FILE_READ_ATTRIBUTES)
-#define	WMODE	(DELETE|READ_CONTROL|SYNCHRONIZE|WRITE_DAC|WRITE_OWNER\
+#define WMODE (DELETE|READ_CONTROL|SYNCHRONIZE|WRITE_DAC|WRITE_OWNER\
 |FILE_WRITE_DATA|FILE_APPEND_DATA|FILE_WRITE_EA\
 |FILE_DELETE_CHILD|FILE_WRITE_ATTRIBUTES)
-static	int
+static int
 modetomask[] =
 {
 NOMODE,
@@ -95,62 +95,62 @@ RMODE|XMODE,
 RMODE|WMODE,
 RMODE|WMODE|XMODE,
 };
-extern	DWORD	PlatformId;
-char    rootdir[MAXROOT] = "\\inferno";
-Rune16	rootname[] = L"inferno-server";
-static	Qid	rootqid;
-static	User	*fsnone;
-static	User	*fsuser;
-static	Rune16	*ntsrv;
-static	int	usesec;
-static	int	checksec;
-static	int	isserver;
-static	int	file_share_delete;
-static	uchar	isntfrog[256];
-static	void		fsremove(Chan*);
-wchar_t	*widen(char *s);
-char		*narrowen(wchar_t *ws);
-int		widebytes(wchar_t *ws);
+extern DWORD PlatformId;
+char rootdir[MAXROOT] = "\\inferno";
+Rune16 rootname[] = L"inferno-server";
+static Qid rootqid;
+static User *fsnone;
+static User *fsuser;
+static Rune16 *ntsrv;
+static int usesec;
+static int checksec;
+static int isserver;
+static int file_share_delete;
+static uchar isntfrog[256];
+static void fsremove(Chan*);
+wchar_t *widen(char *s);
+char *narrowen(wchar_t *ws);
+int widebytes(wchar_t *ws);
 static char Etoolong[] = "file name too long";
-extern	int		nth2fd(HANDLE);
-extern	HANDLE		ntfd2h(int);
-static	int		cnisroot(Cname*);
-static	int		fsisroot(Chan*);
-static	int		okelem(char*, int);
-static	int		fsexist(char*, Qid*);
-static	char*	fspath(Cname*, char*, char*, char*);
-static	Cname*	fswalkpath(Cname*, char*, int);
-static	char*	fslastelem(Cname*);
-static	long		fsdirread(Chan*, uchar*, int, vlong);
-static	ulong		fsqidpath(char*);
-static	int		fsomode(int);
-static	int		fsdirset(char*, int, WIN32_FIND_DATA*, char*, Chan*, int isdir);
-static 	int		fsdirsize(WIN32_FIND_DATA*, char*, Chan*);
-static	void		fssettime(char*, long, long);
-static	long		unixtime(FILETIME);
-static	FILETIME	wintime(ulong);
-static	void		secinit(void);
-static	int		secstat(Dir*, char*, Rune16*);
-static	int		secsize(char*, Rune16*);
-static	void		seccheck(char*, ulong, Rune16*);
-static	int		sechasperm(char*, ulong, Rune16*);
-static	SECURITY_DESCRIPTOR* secsd(char*, char[SD_ROCK]);
-static	int		secsdhasperm(SECURITY_DESCRIPTOR*, ulong, Rune16*);
-static	int		secsdstat(SECURITY_DESCRIPTOR*, Stat*, Rune16*);
-static	SECURITY_DESCRIPTOR* secmksd(char[SD_ROCK], Stat*, ACL*, int);
-static	SID		*dupsid(SID*);
-static	int		ismembersid(Rune16*, User*, SID*);
-static	int		ismember(User*, User*);
-static	User		*sidtouser(Rune16*, SID*);
-static	User		*domnametouser(Rune16*, Rune16*, Rune16*);
-static	User		*nametouser(Rune16*, Rune16*);
-static	User		*unametouser(Rune16*, char*);
-static	void		addgroups(User*, int);
-static	User		*mkuser(SID*, int, Rune16*, Rune16*);
-static	Rune16		*domsrv(Rune16 *, Rune16[MAX_PATH]);
-static	Rune16		*filesrv(char*);
-static	int		fsacls(char*);
-static	User		*secuser(void);
+extern int nth2fd(HANDLE);
+extern HANDLE ntfd2h(int);
+static int cnisroot(Cname*);
+static int fsisroot(Chan*);
+static int okelem(char*, int);
+static int fsexist(char*, Qid*);
+static char* fspath(Cname*, char*, char*, char*);
+static Cname* fswalkpath(Cname*, char*, int);
+static char* fslastelem(Cname*);
+static long fsdirread(Chan*, uchar*, int, vlong);
+static ulong fsqidpath(char*);
+static int fsomode(int);
+static int fsdirset(char*, int, WIN32_FIND_DATA*, char*, Chan*, int isdir);
+static int fsdirsize(WIN32_FIND_DATA*, char*, Chan*);
+static void fssettime(char*, long, long);
+static long unixtime(FILETIME);
+static FILETIME wintime(ulong);
+static void secinit(void);
+static int secstat(Dir*, char*, Rune16*);
+static int secsize(char*, Rune16*);
+static void seccheck(char*, ulong, Rune16*);
+static int sechasperm(char*, ulong, Rune16*);
+static SECURITY_DESCRIPTOR* secsd(char*, char[SD_ROCK]);
+static int secsdhasperm(SECURITY_DESCRIPTOR*, ulong, Rune16*);
+static int secsdstat(SECURITY_DESCRIPTOR*, Stat*, Rune16*);
+static SECURITY_DESCRIPTOR* secmksd(char[SD_ROCK], Stat*, ACL*, int);
+static SID *dupsid(SID*);
+static int ismembersid(Rune16*, User*, SID*);
+static int ismember(User*, User*);
+static User *sidtouser(Rune16*, SID*);
+static User *domnametouser(Rune16*, Rune16*, Rune16*);
+static User *nametouser(Rune16*, Rune16*);
+static User *unametouser(Rune16*, char*);
+static void addgroups(User*, int);
+static User *mkuser(SID*, int, Rune16*, Rune16*);
+static Rune16 *domsrv(Rune16 *, Rune16[MAX_PATH]);
+static Rune16 *filesrv(char*);
+static int fsacls(char*);
+static User *secuser(void);
 int
 winfilematch(char *path, WIN32_FIND_DATA *data)
 {
@@ -878,7 +878,7 @@ FS(c)->fd = nth2fd(INVALID_HANDLE_VALUE);
 if(!MoveFile(wspath, wsnewpath)) {
 oserror();
 } else if(!file_share_delete && c->flag & COPEN) {
-int	aflag;
+int aflag;
 SECURITY_ATTRIBUTES sa;
 sa.nLength = sizeof(sa);
 sa.lpSecurityDescriptor = sd;
@@ -952,7 +952,7 @@ n = DeleteFile(wspath);
 if (!n) {
 if (FS(c)->usesec && secok) {
 ACL *acl = (ACL *) smalloc(ACL_ROCK);
-st.mode =  mode;
+st.mode = mode;
 sd = secmksd(sdrock, &st, acl, attr & FILE_ATTRIBUTE_DIRECTORY);
 if(sd != nil) {
 SetFileSecurity(wspath, DACL_SECURITY_INFORMATION, sd);

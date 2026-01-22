@@ -37,16 +37,16 @@ clamp16[i] = 255 >> 4;
 }
 include "closest.m";
 include "rgbvmap.m";
-#	rgb(y, cb, cr: int): (int, int, int)
-#	{
-#		Y := real y;
-#		Cb := real (cb - 128);
-#		Cr := real (cr - 128);
-#		r := int (Y+1.402*Cr);
-#		g := int (Y-0.34414*Cb-0.71414*Cr);
-#		b := int (Y+1.772*Cb);
-#		return (r, g, b);
-#	}
+# rgb(y, cb, cr: int): (int, int, int)
+# {
+# Y := real y;
+# Cb := real (cb - 128);
+# Cr := real (cr - 128);
+# r := int (Y+1.402*Cr);
+# g := int (Y-0.34414*Cb-0.71414*Cr);
+# b := int (Y+1.772*Cb);
+# return (r, g, b);
+# }
 B: con 16;
 M: con (1 << B);
 B0: con int (-0.34414 * real M);

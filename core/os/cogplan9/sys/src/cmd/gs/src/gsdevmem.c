@@ -79,7 +79,7 @@ switch (num_components) {
 case 1:
 q[0] = q[1] = q[2] = *p++;
 break;
-default  :
+default :
 q[0] = p[0], q[1] = p[1], q[2] = p[2];
 p += 3;
 }

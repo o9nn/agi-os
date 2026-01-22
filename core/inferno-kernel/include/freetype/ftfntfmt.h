@@ -8,8 +8,8 @@
 #endif
 FT_BEGIN_HEADER
 FT_EXPORT( const char* )
-FT_Get_Font_Format( FT_Face  face );
+FT_Get_Font_Format( FT_Face face );
 FT_EXPORT( const char* )
-FT_Get_X11_Font_Format( FT_Face  face );
+FT_Get_X11_Font_Format( FT_Face face );
 FT_END_HEADER
 #endif

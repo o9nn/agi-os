@@ -4,97 +4,97 @@
 #include <ip.h>
 enum
 {
-Version=	1,
-Pasize=		4,
-AF_INET=	2,
-AF_UNSPEC=	0,
-Request=	1,
-Response=	2,
-Traceon=	3,
-Traceoff=	4,
-Infinity=	16,
-Maxpacket=	488,
+Version= 1,
+Pasize= 4,
+AF_INET= 2,
+AF_UNSPEC= 0,
+Request= 1,
+Response= 2,
+Traceon= 3,
+Traceoff= 4,
+Infinity= 16,
+Maxpacket= 488,
 };
-typedef struct Rip	Rip;
+typedef struct Rip Rip;
 struct Rip
 {
-uchar	family[2];
-uchar	port[2];
-uchar	addr[Pasize];
-uchar	pad[8];
-uchar	metric[4];
+uchar family[2];
+uchar port[2];
+uchar addr[Pasize];
+uchar pad[8];
+uchar metric[4];
 };
-typedef struct Ripmsg	Ripmsg;
+typedef struct Ripmsg Ripmsg;
 struct Ripmsg
 {
-uchar	type;
-uchar	vers;
-uchar	pad[2];
-Rip	rip[1];
+uchar type;
+uchar vers;
+uchar pad[2];
+Rip rip[1];
 };
 enum
 {
-Maxroutes=	(Maxpacket-4)/sizeof(Ripmsg),
+Maxroutes= (Maxpacket-4)/sizeof(Ripmsg),
 };
 enum
 {
-Nroute=	2048,
-Nhash=	256,
-Nifc=	16,
+Nroute= 2048,
+Nhash= 256,
+Nifc= 16,
 };
-typedef struct Route	Route;
+typedef struct Route Route;
 struct Route
 {
-Route	*next;
-uchar	dest[Pasize];
-uchar	mask[Pasize];
-uchar	gate[Pasize];
-int	metric;
-int	inuse;
-long	time;
+Route *next;
+uchar dest[Pasize];
+uchar mask[Pasize];
+uchar gate[Pasize];
+int metric;
+int inuse;
+long time;
 };
 struct {
-Route	route[Nroute];
-Route	*hash[Nhash];
-int	nroute;
-Route	def;
+Route route[Nroute];
+Route *hash[Nhash];
+int nroute;
+Route def;
 } ralloc;
-typedef struct Ifc	Ifc;
+typedef struct Ifc Ifc;
 struct Ifc
 {
-int	bcast;
-uchar	addr[Pasize];
-uchar	mask[Pasize];
-uchar	net[Pasize];
-uchar	*cmask;
-uchar	cnet[Pasize];
+int bcast;
+uchar addr[Pasize];
+uchar mask[Pasize];
+uchar net[Pasize];
+uchar *cmask;
+uchar cnet[Pasize];
 };
 struct {
-Ifc	ifc[Nifc];
-int	nifc;
+Ifc ifc[Nifc];
+int nifc;
 } ialloc;
 typedef struct Bnet Bnet;
 struct Bnet
 {
-Bnet	*next;
-uchar	addr[Pasize];
+Bnet *next;
+uchar addr[Pasize];
 };
-Bnet	*bnets;
-int	ripfd;
-long	now;
-int	debug;
-int	readonly;
-char	routefile[256];
-char	netdir[256];
-int	openport(void);
-void	readroutes(void);
-void	readifcs(void);
-void	considerroute(Route*);
-void	installroute(Route*);
-void	removeroute(Route*);
-uchar	*getmask(uchar*);
-void	broadcast(void);
-void	timeoutroutes(void);
+Bnet *bnets;
+int ripfd;
+long now;
+int debug;
+int readonly;
+char routefile[256];
+char netdir[256];
+int openport(void);
+void readroutes(void);
+void readifcs(void);
+void considerroute(Route*);
+void installroute(Route*);
+void removeroute(Route*);
+uchar *getmask(uchar*);
+void broadcast(void);
+void timeoutroutes(void);
 void
 fatal(int syserr, char *fmt, ...)
 {

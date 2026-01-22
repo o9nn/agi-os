@@ -1,5 +1,5 @@
 #ifndef gxfixed_INCLUDED
-#  define gxfixed_INCLUDED
+# define gxfixed_INCLUDED
 typedef long fixed;
 typedef ulong ufixed;
 #define ARCH_SIZEOF_FIXED ARCH_SIZEOF_LONG
@@ -25,21 +25,21 @@ typedef ulong ufixed;
 #define fixed2int_pixround(x) fixed2int(fixed_pre_pixround(x))
 #define fixed_is_int(x) !((x)&_fixed_fraction_v)
 #if arch_ints_are_short & !arch_is_big_endian
-#  define _fixed_hi(x) *((const uint *)&(x)+1)
-#  define _fixed_lo(x) *((const uint *)&(x))
-#  define fixed2int_var(x)\
+# define _fixed_hi(x) *((const uint *)&(x)+1)
+# define _fixed_lo(x) *((const uint *)&(x))
+# define fixed2int_var(x)\
 ((int)((_fixed_hi(x) << (16-_fixed_shift)) +\
 (_fixed_lo(x) >> _fixed_shift)))
-#  define fixed2int_var_rounded(x)\
+# define fixed2int_var_rounded(x)\
 ((int)((_fixed_hi(x) << (16-_fixed_shift)) +\
 (((_fixed_lo(x) >> (_fixed_shift-1))+1)>>1)))
-#  define fixed2int_var_ceiling(x)\
+# define fixed2int_var_ceiling(x)\
 (fixed2int_var(x) -\
 arith_rshift((int)-(_fixed_lo(x) & _fixed_fraction_v), _fixed_shift))
 #else
-#  define fixed2int_var(x) fixed2int(x)
-#  define fixed2int_var_rounded(x) fixed2int_rounded(x)
-#  define fixed2int_var_ceiling(x) fixed2int_ceiling(x)
+# define fixed2int_var(x) fixed2int(x)
+# define fixed2int_var_rounded(x) fixed2int_rounded(x)
+# define fixed2int_var_ceiling(x) fixed2int_ceiling(x)
 #endif
 #define fixed2int_var_pixround(x) fixed2int_pixround(x)
 #define fixed2long(x) ((long)_fixed_rshift(x))
@@ -56,16 +56,16 @@ arith_rshift((int)-(_fixed_lo(x) & _fixed_fraction_v), _fixed_shift))
 #define fixed_fraction(x) ((int)(x)&_fixed_fraction_v)
 #define fixed_truncated(x) ((x) < 0 ? fixed_ceiling(x) : fixed_floor(x))
 #if arch_sizeof_int == arch_sizeof_long
-#  define max_int_in_fixed fixed2int(max_fixed)
-#  define min_int_in_fixed fixed2int(min_fixed)
+# define max_int_in_fixed fixed2int(max_fixed)
+# define min_int_in_fixed fixed2int(min_fixed)
 #else
-#  define max_int_in_fixed max_int
-#  define min_int_in_fixed min_int
+# define max_int_in_fixed max_int
+# define min_int_in_fixed min_int
 #endif
 #ifdef USE_FPU
-#  define USE_FPU_FIXED (USE_FPU < 0 && arch_floats_are_IEEE && arch_sizeof_long == 4)
+# define USE_FPU_FIXED (USE_FPU < 0 && arch_floats_are_IEEE && arch_sizeof_long == 4)
 #else
-#  define USE_FPU_FIXED 0
+# define USE_FPU_FIXED 0
 #endif
 #define CHECK_SET_FIXED_SUM(r, a, b) \
 ((((a) ^ (b)) >= 0) && ((((a)+(b)) ^ (a)) < 0) ? \
@@ -80,13 +80,13 @@ set_fmul2fixed_(&vr, *(const long *)&vfa, *(const long *)&vfb)
 #define FINISH_FMUL2FIXED_VARS(vr, dtemp)\
 DO_NOTHING
 int set_dfmul2fixed_(fixed *, ulong, long, long);
-#  if arch_is_big_endian
-#  define CHECK_DFMUL2FIXED_VARS(vr, vda, vfb, dtemp)\
+# if arch_is_big_endian
+# define CHECK_DFMUL2FIXED_VARS(vr, vda, vfb, dtemp)\
 set_dfmul2fixed_(&vr, ((const ulong *)&vda)[1], *(const long *)&vfb, *(const long *)&vda)
-#  else
-#  define CHECK_DFMUL2FIXED_VARS(vr, vda, vfb, dtemp)\
+# else
+# define CHECK_DFMUL2FIXED_VARS(vr, vda, vfb, dtemp)\
 set_dfmul2fixed_(&vr, *(const ulong *)&vda, *(const long *)&vfb, ((const long *)&vda)[1])
-#  endif
+# endif
 #define FINISH_DFMUL2FIXED_VARS(vr, dtemp)\
 DO_NOTHING
 #else

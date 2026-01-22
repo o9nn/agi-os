@@ -15,7 +15,7 @@ return 0;
 # include <openssl/bn.h>
 # include <openssl/ecdsa.h>
 # ifndef OPENSSL_NO_ENGINE
-#  include <openssl/engine.h>
+# include <openssl/engine.h>
 # endif
 # include <openssl/err.h>
 # include <openssl/rand.h>

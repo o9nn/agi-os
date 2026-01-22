@@ -1,16 +1,16 @@
 #define Unknown win_Unknown
-#include	<windows.h>
+#include <windows.h>
 #undef Unknown
-#undef	Sleep
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
-#include	<sys/types.h>
-#include	<sys/stat.h>
-#include	<fcntl.h>
-#include	<stdio.h>
-#include	<lm.h>
-#include	<direct.h>
+#undef Sleep
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <stdio.h>
+#include <lm.h>
+#include <direct.h>
 static void openport(int);
 static void wrctl(int, char*);
 static long rdstat(int, void*, long, ulong );
@@ -24,20 +24,20 @@ Nqid = 3,
 Maxctl = 128,
 CommBufSize = ((((8192+128)*2)+3) & ~3)
 };
-#define NETTYPE(x)	((x)&0x0F)
-#define NETID(x)	((x)>>4)
-#define NETQID(i,t)	(((i)<<4)|(t))
+#define NETTYPE(x) ((x)&0x0F)
+#define NETID(x) ((x)>>4)
+#define NETQID(i,t) (((i)<<4)|(t))
 static Dirtab *eiadir;
 static int ndir;
 typedef struct Eia Eia;
 struct Eia {
-Ref	r;
-HANDLE      comfh;
-int		restore;
-DCB		dcb;
-int		id;
+Ref r;
+HANDLE comfh;
+int restore;
+DCB dcb;
+int id;
 };
-static COMMTIMEOUTS  timeouts;
+static COMMTIMEOUTS timeouts;
 static char* sysdev[] = {
 "COM1:",
 "COM2:",
@@ -52,30 +52,30 @@ NULL
 static Eia *eia;
 typedef struct OptTable OptTable;
 struct OptTable {
-char   *str;
-DWORD  flag;
+char *str;
+DWORD flag;
 };
 #define BAD ((DWORD)-1)
 static OptTable size[] = {
-{"5",	5},
-{"6",	6},
-{"7",	7},
-{"8",	8},
-{NULL,  BAD}
+{"5", 5},
+{"6", 6},
+{"7", 7},
+{"8", 8},
+{NULL, BAD}
 };
 static OptTable stopbits[] = {
-{"1",    ONESTOPBIT},
-{"1.5",  ONE5STOPBITS},
-{"2",    TWOSTOPBITS},
-{NULL,   BAD}
+{"1", ONESTOPBIT},
+{"1.5", ONE5STOPBITS},
+{"2", TWOSTOPBITS},
+{NULL, BAD}
 };
 static OptTable parity[] = {
-{"o",    ODDPARITY},
-{"e",    EVENPARITY},
-{"s",    SPACEPARITY},
-{"m",    MARKPARITY},
-{"n",    NOPARITY},
-{NULL,   NOPARITY}
+{"o", ODDPARITY},
+{"e", EVENPARITY},
+{"s", SPACEPARITY},
+{"m", MARKPARITY},
+{"n", NOPARITY},
+{NULL, NOPARITY}
 };
 static char *
 ftos(OptTable *tbl, DWORD flag)
@@ -96,10 +96,10 @@ return tbl->flag;
 static void
 eiainit(void)
 {
-int     i,x;
-byte    ports;
-int     nports;
-int     max;
+int i,x;
+byte ports;
+int nports;
+int max;
 Dirtab *dp;
 timeouts.ReadIntervalTimeout = 2;
 timeouts.ReadTotalTimeoutMultiplier = 0;
@@ -351,14 +351,14 @@ char *s;
 DCB dcb;
 DWORD modemstatus;
 DWORD porterr;
-COMSTAT  portstat;
+COMSTAT portstat;
 int frame, overrun, i;
 static enum {
 L_CTS, L_DSR, L_RING, L_DCD, L_DTR, L_RTS, L_MAX
 };
 int status[L_MAX];
 static char* lines[] = {
-"cts", "dsr", "ring", "dcd", "dtr",	"rts", NULL
+"cts", "dsr", "ring", "dcd", "dtr", "rts", NULL
 };
 if(!ClearCommError(comfh, &porterr, &portstat))
 oserror();
@@ -389,11 +389,11 @@ static void
 wrctl(int port, char *cmd)
 {
 DCB dcb;
-int nf, n,  i;
+int nf, n, i;
 char *f[16];
 HANDLE comfh = eia[port].comfh;
-DWORD  flag, opt;
-BOOL   rslt;
+DWORD flag, opt;
+BOOL rslt;
 int chg;
 if(!GetCommState(comfh, &dcb))
 oserror();

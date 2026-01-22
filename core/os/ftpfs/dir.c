@@ -275,7 +275,7 @@ else if (entry->stat_timestamp + dir->fs->params.stat_timeout < timestamp)
 {
 if (need_bulk_stat (timestamp, dir))
 {
-err =  refresh_dir (entry->dir, 1, timestamp, entry);
+err = refresh_dir (entry->dir, 1, timestamp, entry);
 if (!err && entry->noent)
 err = ENOENT;
 }
@@ -409,7 +409,7 @@ if (!e || e->name_timestamp + dir->fs->params.name_timeout < timestamp)
 {
 if (need_bulk_stat (timestamp, dir))
 {
-err =  refresh_dir (dir, 1, timestamp, e);
+err = refresh_dir (dir, 1, timestamp, e);
 if (!err && !e)
 e = lookup (dir, name, 0);
 }

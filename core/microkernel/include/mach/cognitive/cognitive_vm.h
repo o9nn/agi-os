@@ -2,8 +2,8 @@
 #define _MACH_COGNITIVE_VM_H_
 #include <mach/vm_types.h>
 #include <mach/vm_prot.h>
-#define VM_REGION_ATOMSPACE     0x1000
-#define VM_REGION_COGNITIVE     0x2000
+#define VM_REGION_ATOMSPACE 0x1000
+#define VM_REGION_COGNITIVE 0x2000
 typedef struct {
 vm_address_t base_address;
 vm_size_t size;

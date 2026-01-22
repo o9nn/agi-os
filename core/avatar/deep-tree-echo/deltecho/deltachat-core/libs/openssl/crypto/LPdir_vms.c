@@ -15,7 +15,7 @@
 #endif
 #include "vms_rms.h"
 #ifndef EVMSERR
-# define EVMSERR        65535
+# define EVMSERR 65535
 #endif
 struct LP_dir_context_st {
 unsigned long VMS_context;

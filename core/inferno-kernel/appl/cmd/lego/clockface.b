@@ -4,34 +4,34 @@ include "sys.m";
 sys: Sys;
 include "draw.m";
 Clockface: module {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
-hmpath:	con "motor/0";		# hour-hand motor
-mmpath:	con "motor/2";		# minute-hand motor
-allmpath:	con "motor/012";	# all motors (for stopall msg)
-hbpath:	con "sensor/0";	# hour-hand sensor
-mbpath:	con "sensor/2";	# minute-hand sensor
-lspath:	con "sensor/1";	# light sensor;
-ONTHRESH:	con 780;		# light sensor thresholds
-OFFTHRESH:	con 740;
-NCLICKS:		con 120;
-MINCLICKS:	con 2;		# min number of clicks required to stop a motor
+hmpath: con "motor/0"; # hour-hand motor
+mmpath: con "motor/2"; # minute-hand motor
+allmpath: con "motor/012"; # all motors (for stopall msg)
+hbpath: con "sensor/0"; # hour-hand sensor
+mbpath: con "sensor/2"; # minute-hand sensor
+lspath: con "sensor/1"; # light sensor;
+ONTHRESH: con 780; # light sensor thresholds
+OFFTHRESH: con 740;
+NCLICKS: con 120;
+MINCLICKS: con 2; # min number of clicks required to stop a motor
 Hand: adt {
-motor:	ref Sys->FD;
-sensor:	ref Sys->FD;
-fwd:		array of byte;
-rev:		array of byte;
-stop:		array of byte;
-pos:		int;
-time:		int;
+motor: ref Sys->FD;
+sensor: ref Sys->FD;
+fwd: array of byte;
+rev: array of byte;
+stop: array of byte;
+pos: int;
+time: int;
 };
-lightsensor:	ref Sys->FD;
-allmotors:		ref Sys->FD;
-hourhand:	ref Hand;
-minutehand:	ref Hand;
-timedata:		array of byte;
-readq:		list of Sys->Rread;
-verbose		:= 0;
+lightsensor: ref Sys->FD;
+allmotors: ref Sys->FD;
+hourhand: ref Hand;
+minutehand: ref Hand;
+timedata: array of byte;
+readq: list of Sys->Rread;
+verbose := 0;
 init(nil: ref Draw->Context, argv: list of string)
 {
 sys = load Sys Sys->PATH;

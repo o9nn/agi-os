@@ -32,10 +32,10 @@ Holds references to JAX modules and configuration.
 """
 mutable struct JAXBackend
 available::Bool
-jax::Union{Nothing, Any}  # PyObject for jax module
-jnp::Union{Nothing, Any}  # PyObject for jax.numpy module
-dlpack::Union{Nothing, Any}  # PyObject for jax.dlpack module
-python_lib::Symbol  # :PythonCall or :PyCall
+jax::Union{Nothing, Any} # PyObject for jax module
+jnp::Union{Nothing, Any} # PyObject for jax.numpy module
+dlpack::Union{Nothing, Any} # PyObject for jax.dlpack module
+python_lib::Symbol # :PythonCall or :PyCall
 end
 # Global backend instance
 const JAX_BACKEND = Ref{JAXBackend}(JAXBackend(false, nothing, nothing, nothing, :none))
@@ -158,7 +158,7 @@ Convert JAX array to Julia array.
 - Julia Array
 # Example
 ```julia
-jax_arr = ...  # JAX array
+jax_arr = ... # JAX array
 julia_arr = jax_to_julia(jax_arr)
 ```
 """
@@ -239,7 +239,7 @@ my_func(x) = x .^ 2 .+ 1
 my_func_jit = jax_jit(my_func)
 # Use compiled version
 x = randn(Float32, 1000)
-y = my_func_jit(x)  # Fast!
+y = my_func_jit(x) # Fast!
 ```
 """
 function jax_jit(f::Function)
@@ -279,8 +279,8 @@ process_single(x) = sum(x .^ 2)
 # Vectorize to process batch
 process_batch = jax_vmap(process_single)
 # Process multiple inputs at once
-batch = randn(Float32, 32, 10)  # 32 samples of size 10
-results = process_batch(batch)   # Returns 32 results
+batch = randn(Float32, 32, 10) # 32 samples of size 10
+results = process_batch(batch) # Returns 32 results
 ```
 """
 function jax_vmap(f::Function, in_axes=0)

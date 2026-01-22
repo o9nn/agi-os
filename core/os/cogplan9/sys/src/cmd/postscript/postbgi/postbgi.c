@@ -5,40 +5,40 @@
 #include <math.h>
 #include <ctype.h>
 #ifdef plan9
-#define	isascii(c)	((unsigned char)(c)<=0177)
+#define isascii(c) ((unsigned char)(c)<=0177)
 #endif
 #include "comments.h"
 #include "gen.h"
 #include "path.h"
 #include "ext.h"
 #include "postbgi.h"
-char	*optnames = "a:c:f:m:n:o:p:w:x:y:A:C:E:J:L:P:R:DI";
-char	*prologue = POSTBGI;
-char	*formfile = FORMFILE;
-int	formsperpage = 1;
-int	copies = 1;
-char	*styles[] = STYLES;
-int	hpos = 0;
-int	vpos = 0;
-int	bgisize = BGISIZE;
-int	linespace;
-int	bgimode;
-int	in_subr = FALSE;
-int	in_global = FALSE;
-int	subr_id = 0;
-int	shpos = 0;
-int	svpos = 0;
-Disp	displacement[64];
-Fontmap	fontmap[] = FONTMAP;
-char	*fontname = "Courier";
-int	page = 0;
-int	printed = 0;
-FILE	*fp_in = stdin;
-FILE	*fp_out = NULL;
-FILE	*fp_acct = NULL;
+char *optnames = "a:c:f:m:n:o:p:w:x:y:A:C:E:J:L:P:R:DI";
+char *prologue = POSTBGI;
+char *formfile = FORMFILE;
+int formsperpage = 1;
+int copies = 1;
+char *styles[] = STYLES;
+int hpos = 0;
+int vpos = 0;
+int bgisize = BGISIZE;
+int linespace;
+int bgimode;
+int in_subr = FALSE;
+int in_global = FALSE;
+int subr_id = 0;
+int shpos = 0;
+int svpos = 0;
+Disp displacement[64];
+Fontmap fontmap[] = FONTMAP;
+char *fontname = "Courier";
+int page = 0;
+int printed = 0;
+FILE *fp_in = stdin;
+FILE *fp_out = NULL;
+FILE *fp_acct = NULL;
 main(agc, agv)
-int		agc;
-char	*agv[];
+int agc;
+char *agv[];
 {
 argc = agc;
 argv = agv;
@@ -54,7 +54,7 @@ exit(x_stat);
 }
 init_signals()
 {
-if ( signal(SIGINT, interrupt) == SIG_IGN )  {
+if ( signal(SIGINT, interrupt) == SIG_IGN ) {
 signal(SIGINT, SIG_IGN);
 signal(SIGQUIT, SIG_IGN);
 signal(SIGHUP, SIG_IGN);
@@ -66,8 +66,8 @@ signal(SIGTERM, interrupt);
 }
 header()
 {
-int		ch;
-int		old_optind = optind;
+int ch;
+int old_optind = optind;
 while ( (ch = getopt(argc, argv, optnames)) != EOF )
 if ( ch == 'L' )
 prologue = optarg;
@@ -87,9 +87,9 @@ fprintf(stdout, "mark\n");
 }
 options()
 {
-int		ch;
-while ( (ch = getopt(argc, argv, optnames)) != EOF )  {
-switch ( ch )  {
+int ch;
+while ( (ch = getopt(argc, argv, optnames)) != EOF ) {
+switch ( ch ) {
 case 'a':
 fprintf(stdout, "/aspectratio %s def\n", optarg);
 break;
@@ -165,9 +165,9 @@ argc -= optind;
 argv += optind;
 }
 char *get_font(name)
-char	*name;
+char *name;
 {
-int		i;
+int i;
 for ( i = 0; fontmap[i].name != NULL; i++ )
 if ( strcmp(name, fontmap[i].name) == 0 )
 return(fontmap[i].val);
@@ -178,7 +178,7 @@ setup()
 writerequest(0, stdout);
 setencoding(fontencoding);
 fprintf(stdout, "setup\n");
-if ( formsperpage > 1 )  {
+if ( formsperpage > 1 ) {
 if ( cat(formfile) == FALSE )
 error(FATAL, "can't read %s", formfile);
 fprintf(stdout, "%d setupforms\n", formsperpage);
@@ -190,7 +190,7 @@ arguments()
 if ( argc < 1 )
 conv();
 else
-while ( argc > 0 )  {
+while ( argc > 0 ) {
 if ( strcmp(*argv, "-") == 0 )
 fp_in = stdin;
 else if ( (fp_in = fopen(*argv, "r")) == NULL )
@@ -216,12 +216,12 @@ fprintf(fp_acct, " print %d\n copies %d\n", printed, copies);
 }
 conv()
 {
-int		ch;
+int ch;
 redirect(-1);
 bgimode = 0;
 formfeed();
-while ( (ch = get_char()) != EOF )  {
-switch ( ch )  {
+while ( (ch = get_char()) != EOF ) {
+switch ( ch ) {
 case BRCHAR:
 bgimode = ch;
 text(90);
@@ -332,17 +332,17 @@ fprintf(stderr, "\n");
 formfeed();
 }
 hgoto(n)
-int		n;
+int n;
 {
 hpos = n;
 }
 vgoto(n)
-int		n;
+int n;
 {
 vpos = n;
 }
 setsize(n)
-int		n;
+int n;
 {
 bgisize = n;
 linespace = LINESPACE(bgisize);
@@ -352,23 +352,23 @@ fprintf(stderr, "BGI size = %d\n", n);
 }
 repeat()
 {
-int		count;
-int		ch;
+int count;
+int ch;
 count = get_int();
-while ( (ch = get_char()) != EOF  &&  ch != BENDR ) ;
+while ( (ch = get_char()) != EOF && ch != BENDR ) ;
 }
 text(angle)
-int		angle;
+int angle;
 {
-int		ch;
+int ch;
 fprintf(fp_out, "%d %d %d(", angle, hpos, vpos);
-while ( (ch = get_char()) != EOF )  {
-if ( ch == BGRAPH || ch == BCHAR || ch == BRCHAR )  {
+while ( (ch = get_char()) != EOF ) {
+if ( ch == BGRAPH || ch == BCHAR || ch == BRCHAR ) {
 ungetc(ch, fp_in);
 position--;
 break;
 }
-switch ( ch )  {
+switch ( ch ) {
 case '\012':
 vgoto(vpos - linespace);
 case '\015':
@@ -390,8 +390,8 @@ fprintf(fp_out, ") t\n");
 }
 formfeed()
 {
-int		ch;
-if ( bgimode == BGRAPH && (ch = get_char()) != EOF  &&  ! (ch & MSB) )  {
+int ch;
+if ( bgimode == BGRAPH && (ch = get_char()) != EOF && ! (ch & MSB) ) {
 ungetc(ch, fp_in);
 position--;
 }
@@ -421,7 +421,7 @@ if ( in_subr == TRUE )
 error(FATAL, "can't handle nested subroutine definitions");
 if ( (subr_id = get_data()) == EOF )
 error(FATAL, "missing subroutine identifier");
-if ( in_global == FALSE )  {
+if ( in_global == FALSE ) {
 fprintf(fp_out, "cleartomark\n");
 fprintf(fp_out, "saveobj restore\n");
 fprintf(fp_out, "%s", BEGINGLOBAL);
@@ -437,12 +437,12 @@ in_subr = TRUE;
 }
 subr_end()
 {
-int		ch;
+int ch;
 if ( in_subr == FALSE )
 error(FATAL, "subroutine end without corresponding start");
 fprintf(fp_out, "grestore\n");
 fprintf(fp_out, "} def\n");
-if ( in_global == TRUE && (ch = get_char()) != BSUB )  {
+if ( in_global == TRUE && (ch = get_char()) != BSUB ) {
 fprintf(fp_out, "%s", ENDGLOBAL);
 fprintf(fp_out, "/saveobj save def\n");
 fprintf(fp_out, "mark\n");
@@ -457,9 +457,9 @@ in_subr = FALSE;
 }
 subr_call()
 {
-int		ch;
-int		id;
-while ( (ch = get_char()) != EOF && (ch & MSB) )  {
+int ch;
+int id;
+while ( (ch = get_char()) != EOF && (ch & MSB) ) {
 id = ch & DMASK;
 fprintf(fp_out, "%d %d S%d\n", hpos, vpos, id);
 hgoto(hpos + displacement[id].dx);
@@ -468,27 +468,27 @@ vgoto(vpos + displacement[id].dy);
 ungetc(ch, fp_in);
 }
 vector(var, mode)
-int		var;
-int		mode;
+int var;
+int mode;
 {
-int		ch;
-int		x, y;
-int		count = 0;
+int ch;
+int x, y;
+int count = 0;
 x = hpos;
 y = vpos;
-while ( (ch = get_char()) != EOF  &&  ch & MSB )  {
+while ( (ch = get_char()) != EOF && ch & MSB ) {
 if ( var == X_COORD )
 x += get_int(ch);
 else if ( var == Y_COORD )
 y += get_int(ch);
-else if ( var == LONGVECTOR )  {
+else if ( var == LONGVECTOR ) {
 x += get_int(ch);
 y += get_int(0);
 } else {
 x += ((ch & MSBMAG) * ((ch & SGNB) ? -1 : 1));
 y += (((ch = get_data()) & MSBMAG) * ((ch & SGNB) ? -1 : 1));
 }
-if ( mode == VISIBLE )  {
+if ( mode == VISIBLE ) {
 fprintf(fp_out, "%d %d\n", hpos - x, vpos - y);
 count++;
 }
@@ -505,10 +505,10 @@ ungetc(ch, fp_in);
 position--;
 }
 rectangle(mode)
-int		mode;
+int mode;
 {
-int		deltax;
-int		deltay;
+int deltax;
+int deltay;
 deltax = get_int(0);
 deltay = get_int(0);
 if ( mode == OUTLINE )
@@ -517,8 +517,8 @@ else fprintf(fp_out, "1 %d %d %d %d R\n", deltax, deltay, hpos, vpos);
 }
 trapezoid()
 {
-int		kind;
-int		d[6];
+int kind;
+int d[6];
 kind = get_data();
 d[0] = get_int(0);
 d[1] = 0;
@@ -526,7 +526,7 @@ d[2] = get_int(0);
 d[3] = get_int(0);
 d[4] = get_int(0);
 d[5] = 0;
-if ( kind == 2 )  {
+if ( kind == 2 ) {
 d[1] = d[0];
 d[0] = 0;
 d[5] = d[4];
@@ -535,18 +535,18 @@ d[4] = 0;
 fprintf(fp_out, "%d %d %d %d %d %d %d %d T\n", d[4], d[5], d[2], d[3], d[0], d[1], hpos, vpos);
 }
 point_plot(mode, ch)
-int		mode;
-int		ch;
+int mode;
+int ch;
 {
-int		c;
-int		x, y;
-int		deltax;
-if ( mode == BPOINT1 )  {
+int c;
+int x, y;
+int deltax;
+if ( mode == BPOINT1 ) {
 deltax = get_int(0);
 x = hpos - deltax;
 }
-while ( (c = get_char()) != EOF  &&  (c & MSB) )  {
-if ( mode == BPOINT1 )  {
+while ( (c = get_char()) != EOF && (c & MSB) ) {
+if ( mode == BPOINT1 ) {
 y = get_int(c);
 x += deltax;
 } else {
@@ -558,7 +558,7 @@ vgoto(y);
 fprintf(fp_out, "%d %d\n", hpos, vpos);
 }
 putc('(', fp_out);
-switch ( ch )  {
+switch ( ch ) {
 case '(':
 case ')':
 case '\\':
@@ -572,15 +572,15 @@ position--;
 }
 line_plot()
 {
-int		c;
-int		deltax;
-int		x0, y0;
-int		x1, y1;
-int		count = 0;
+int c;
+int deltax;
+int x0, y0;
+int x1, y1;
+int count = 0;
 deltax = get_int(0);
 x1 = hpos;
 y1 = get_int(0);
-while ( (c = get_char()) != EOF  &&  (c & MSB) )  {
+while ( (c = get_char()) != EOF && (c & MSB) ) {
 x0 = x1;
 y0 = y1;
 x1 += deltax;
@@ -596,12 +596,12 @@ ungetc(c, fp_in);
 position--;
 }
 arc(mode)
-int		mode;
+int mode;
 {
-int		dx1, dy1;
-int		dx2, dy2;
-int		radius;
-int		angle1, angle2;
+int dx1, dy1;
+int dx2, dy2;
+int radius;
+int angle1, angle2;
 dx1 = get_int(0);
 dy1 = get_int(0);
 dx2 = get_int(0);
@@ -615,15 +615,15 @@ fprintf(fp_out, "%d %d %d %d %d arcn stroke\n", hpos, vpos, radius, angle1, angl
 }
 pattern()
 {
-double	red = 0;
-double	green = 0;
-double	blue = 0;
-int		kind;
-int		val;
-int		i;
+double red = 0;
+double green = 0;
+double blue = 0;
+int kind;
+int val;
+int i;
 if ( (kind = get_char()) == EOF )
 error(FATAL, "bad pattern command");
-for ( i = 0; i < 4; i++ )  {
+for ( i = 0; i < 4; i++ ) {
 val = get_data();
 red += get_color(val, RED);
 green += get_color(val, GREEN);
@@ -632,19 +632,19 @@ blue += get_color(val, BLUE);
 fprintf(fp_out, "%g %g %g c\n", red/4, green/4, blue/4);
 }
 get_color(val, component)
-int		val;
-int		component;
+int val;
+int component;
 {
-int		primary;
-int		plane;
-unsigned	rgbcolor;
+int primary;
+int plane;
+unsigned rgbcolor;
 primary = (val >> 3) & 07;
 plane = val & 07;
 rgbcolor = (~(primary ^ plane)) & 07;
 if ( debug == ON )
 fprintf(stderr, "val = %o, primary = %o, plane = %o, rgbcolor = %o\n",
 val, primary, plane, rgbcolor);
-switch ( component )  {
+switch ( component ) {
 case RED:
 return(rgbcolor>>2);
 case GREEN:
@@ -657,14 +657,14 @@ return(0);
 }
 }
 set_color(val)
-int		val;
+int val;
 {
 fprintf(fp_out, "%d %d %d c\n", get_color(val, RED), get_color(val, GREEN), get_color(val, BLUE));
 }
 get_int(highbyte)
-int		highbyte;
+int highbyte;
 {
-int		lowbyte;
+int lowbyte;
 if ( highbyte == 0 )
 highbyte = get_data();
 lowbyte = get_data();
@@ -672,15 +672,15 @@ return(highbyte & SGNB ? -MAG(highbyte, lowbyte) : MAG(highbyte, lowbyte));
 }
 get_data()
 {
-int		val;
-if ( (val = get_char()) == EOF  ||  ! (val & MSB) )
+int val;
+if ( (val = get_char()) == EOF || ! (val & MSB) )
 error(FATAL, "missing data value");
 return(val & DMASK);
 }
 get_char()
 {
-int		ch;
-if ( (ch = getc(fp_in)) != EOF )  {
+int ch;
+if ( (ch = getc(fp_in)) != EOF ) {
 position++;
 ch &= CHMASK;
 }
@@ -689,9 +689,9 @@ fprintf(stderr, "%o ", ch);
 return(ch);
 }
 redirect(pg)
-int		pg;
+int pg;
 {
-static FILE	*fp_null = NULL;
+static FILE *fp_null = NULL;
 if ( pg >= 0 && in_olist(pg) == ON )
 fp_out = stdout;
 else if ( (fp_out = fp_null) == NULL )

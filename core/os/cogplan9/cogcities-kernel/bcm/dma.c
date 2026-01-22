@@ -5,65 +5,65 @@
 #include "dat.h"
 #include "fns.h"
 #include "io.h"
-#define DMAREGS	(VIRTIO+0x7000)
-#define DBG	if(Dbg)
+#define DMAREGS (VIRTIO+0x7000)
+#define DBG if(Dbg)
 enum {
-Nchan		= 7,
-Regsize		= 0x100,
-Cbalign		= 32,
-Dbg		= 0,
-Cs		= 0x00>>2,
-Conblkad	= 0x04>>2,
-Ti		= 0x08>>2,
-Sourcead	= 0x0c>>2,
-Destad		= 0x10>>2,
-Txfrlen		= 0x14>>2,
-Stride		= 0x18>>2,
-Nextconbk	= 0x1c>>2,
-Debug		= 0x20>>2,
-Intstatus	= 0xfe0>>2,
-Enable		= 0xff0>>2,
-Reset		= 1<<31,
-Abort		= 1<<30,
-Error		= 1<<8,
-Waitwrite	= 1<<6,
-Waitdreq	= 1<<5,
-Paused		= 1<<4,
-Dreq		= 1<<3,
-Int		= 1<<2,
-End		= 1<<1,
-Active		= 1<<0,
+Nchan = 7,
+Regsize = 0x100,
+Cbalign = 32,
+Dbg = 0,
+Cs = 0x00>>2,
+Conblkad = 0x04>>2,
+Ti = 0x08>>2,
+Sourcead = 0x0c>>2,
+Destad = 0x10>>2,
+Txfrlen = 0x14>>2,
+Stride = 0x18>>2,
+Nextconbk = 0x1c>>2,
+Debug = 0x20>>2,
+Intstatus = 0xfe0>>2,
+Enable = 0xff0>>2,
+Reset = 1<<31,
+Abort = 1<<30,
+Error = 1<<8,
+Waitwrite = 1<<6,
+Waitdreq = 1<<5,
+Paused = 1<<4,
+Dreq = 1<<3,
+Int = 1<<2,
+End = 1<<1,
+Active = 1<<0,
 Permapshift= 16,
-Srcignore	= 1<<11,
-Srcdreq		= 1<<10,
-Srcwidth128	= 1<<9,
-Srcinc		= 1<<8,
-Destignore	= 1<<7,
-Destdreq	= 1<<6,
-Destwidth128	= 1<<5,
-Destinc		= 1<<4,
-Waitresp	= 1<<3,
-Tdmode		= 1<<1,
-Inten		= 1<<0,
-Lite		= 1<<28,
-Clrerrors	= 7<<0,
+Srcignore = 1<<11,
+Srcdreq = 1<<10,
+Srcwidth128 = 1<<9,
+Srcinc = 1<<8,
+Destignore = 1<<7,
+Destdreq = 1<<6,
+Destwidth128 = 1<<5,
+Destinc = 1<<4,
+Waitresp = 1<<3,
+Tdmode = 1<<1,
+Inten = 1<<0,
+Lite = 1<<28,
+Clrerrors = 7<<0,
 };
 typedef struct Ctlr Ctlr;
 typedef struct Cb Cb;
 struct Ctlr {
-u32int	*regs;
-Cb	*cb;
-Rendez	r;
-int	dmadone;
+u32int *regs;
+Cb *cb;
+Rendez r;
+int dmadone;
 };
 struct Cb {
-u32int	ti;
-u32int	sourcead;
-u32int	destad;
-u32int	txfrlen;
-u32int	stride;
-u32int	nextconbk;
-u32int	reserved[2];
+u32int ti;
+u32int sourcead;
+u32int destad;
+u32int txfrlen;
+u32int stride;
+u32int nextconbk;
+u32int reserved[2];
 };
 static Ctlr dma[Nchan];
 static u32int *dmaregs = (u32int*)DMAREGS;

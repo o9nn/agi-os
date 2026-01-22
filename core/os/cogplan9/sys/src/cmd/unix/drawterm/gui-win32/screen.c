@@ -1,5 +1,5 @@
 #define _WIN32_WINNT 0x0500
-#include	<windows.h>
+#include <windows.h>
 #undef Rectangle
 #define Rectangle _Rectangle
 #include "u.h"
@@ -12,24 +12,24 @@
 #include <memdraw.h>
 #include "screen.h"
 #include "keyboard.h"
-Memimage	*gscreen;
-Screeninfo	screen;
+Memimage *gscreen;
+Screeninfo screen;
 extern int mousequeue;
 static int depth;
-static	HINSTANCE	inst;
-static	HWND		window;
-static	HPALETTE	palette;
-static	LOGPALETTE	*logpal;
-static  Lock		gdilock;
-static 	BITMAPINFO	*bmi;
-static	HCURSOR		hcursor;
-static void	winproc(void *);
+static HINSTANCE inst;
+static HWND window;
+static HPALETTE palette;
+static LOGPALETTE *logpal;
+static Lock gdilock;
+static BITMAPINFO *bmi;
+static HCURSOR hcursor;
+static void winproc(void *);
 static LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
-static void	paletteinit(void);
-static void	bmiinit(void);
+static void paletteinit(void);
+static void bmiinit(void);
 static int readybit;
-static Rendez	rend;
-Point	ZP;
+static Rendez rend;
+Point ZP;
 static int
 isready(void*a)
 {

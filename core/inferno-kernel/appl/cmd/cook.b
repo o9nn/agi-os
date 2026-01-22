@@ -28,7 +28,7 @@ include "strinttab.m";
 T: StringIntTab;
 Cook: module
 {
-init:	fn(ctxt: ref Draw->Context, args: list of string);
+init: fn(ctxt: ref Draw->Context, args: list of string);
 };
 # keep this sorted by name
 tagstringtab := array[] of { T->StringInt
@@ -81,8 +81,8 @@ fmtstringtab := array[] of { T->StringInt
 };
 Transtab: adt
 {
-ch:		int;
-trans:	string;
+ch: int;
+trans: string;
 };
 # Order doesn't matter for these table
 ltranstab := array[] of { Transtab
@@ -102,8 +102,8 @@ ltranstab := array[] of { Transtab
 ('<', "\\textless{}"),
 ('>', "\\textgreater{}"),
 (' ', "~"),
-('-', "-"),  # needs special case ligature treatment
-('\t', " "),   # needs special case treatment
+('-', "-"), # needs special case ligature treatment
+('\t', " "), # needs special case treatment
 };
 htranstab := array[] of { Transtab
 ('α', "&alpha;"),
@@ -1304,10 +1304,10 @@ lfixexercise(e: ref Celem)
 dropwhite(e.contents);
 ec := e.contents;
 # Expect:
-#     "Exercise " <Label> ":" rest
-#  If so, drop the first and third.
+# "Exercise " <Label> ":" rest
+# If so, drop the first and third.
 # Or
-#	"Exercise:" rest
+# "Exercise:" rest
 # If so, drop the first.
 s := stringof(ec);
 if(s == "Exercise ") {
@@ -1672,7 +1672,7 @@ cl = "</FONT></I>";
 nstate |= SHA;
 Italic*NSIZE+Size10 =>
 if(state & SHA) {
-op =  "<I><FONT SIZE=3>";
+op = "<I><FONT SIZE=3>";
 cl = "</FONT></I>";
 nstate &= ~SHA;
 }
@@ -1698,7 +1698,7 @@ cl = "</FONT></B>";
 nstate |= SHA;
 Bold*NSIZE+Size10 =>
 if(state & SHA) {
-op =  "<B><FONT SIZE=3>";
+op = "<B><FONT SIZE=3>";
 cl = "</FONT></B>";
 nstate &= ~SHA;
 }
@@ -1724,7 +1724,7 @@ cl = "</FONT></TT>";
 nstate |= SHA;
 Type*NSIZE+Size10 =>
 if(state & SHA) {
-op =  "<TT><FONT SIZE=3>";
+op = "<TT><FONT SIZE=3>";
 cl = "</FONT></TT>";
 nstate &= ~SHA;
 }

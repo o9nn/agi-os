@@ -5,7 +5,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-TT_Error  RunIns( PExecution_Context  exc );
+TT_Error RunIns( PExecution_Context exc );
 #ifdef __cplusplus
 }
 #endif

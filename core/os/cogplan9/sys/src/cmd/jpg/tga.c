@@ -4,20 +4,20 @@
 #include <draw.h>
 #include <event.h>
 #include "imagefile.h"
-int		cflag = 0;
-int		dflag = 0;
-int		eflag = 0;
-int		nineflag = 0;
-int		threeflag = 0;
-int		output = 0;
-ulong		outchan = CMAP8;
-int		defaultcolor = 1;
-Image	*image;
+int cflag = 0;
+int dflag = 0;
+int eflag = 0;
+int nineflag = 0;
+int threeflag = 0;
+int output = 0;
+ulong outchan = CMAP8;
+int defaultcolor = 1;
+Image *image;
 enum{
-Border	= 2,
-Edge		= 5
+Border = 2,
+Edge = 5
 };
-char	*show(int, char*);
+char *show(int, char*);
 Rawimage** readtga(int fd);
 void
 eresized(int new)

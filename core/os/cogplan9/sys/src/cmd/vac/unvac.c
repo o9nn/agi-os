@@ -141,7 +141,7 @@ void
 unvac(VacFile *f, char *name, VacDir *vdir)
 {
 static char buf[65536];
-int fd, n, m,  bsize;
+int fd, n, m, bsize;
 ulong mode, mode9;
 char *newname;
 char *what;

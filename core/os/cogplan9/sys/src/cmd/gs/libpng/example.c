@@ -1,7 +1,7 @@
 #if 0
 #include "png.h"
 #ifndef png_jmpbuf
-#  define png_jmpbuf(png_ptr) ((png_ptr)->jmpbuf)
+# define png_jmpbuf(png_ptr) ((png_ptr)->jmpbuf)
 #endif
 #define PNG_BYTES_TO_CHECK 4
 int check_if_png(char *file_name, FILE **fp)
@@ -247,7 +247,7 @@ info_ptr = png_create_info_struct(png_ptr);
 if (info_ptr == NULL)
 {
 fclose(fp);
-png_destroy_write_struct(&png_ptr,  png_infopp_NULL);
+png_destroy_write_struct(&png_ptr, png_infopp_NULL);
 return (ERROR);
 }
 if (setjmp(png_jmpbuf(png_ptr)))

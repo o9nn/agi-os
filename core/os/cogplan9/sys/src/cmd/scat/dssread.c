@@ -1,15 +1,15 @@
-#include	<u.h>
-#include	<libc.h>
-#include	<bio.h>
-#include	"sky.h"
-static	void	dodecode(Biobuf*, Pix*, int, int, uchar*);
-static	long	getlong(uchar*);
-int	debug;
+#include <u.h>
+#include <libc.h>
+#include <bio.h>
+#include "sky.h"
+static void dodecode(Biobuf*, Pix*, int, int, uchar*);
+static long getlong(uchar*);
+int debug;
 Img*
 dssread(char *file)
 {
 int nx, ny, scale, sumall;
-Pix  *p, *pend;
+Pix *p, *pend;
 uchar buf[21];
 Biobuf *bp;
 Img *ip;
@@ -52,7 +52,7 @@ return ip;
 }
 static
 void
-dodecode(Biobuf *infile, Pix  *a, int nx, int ny, uchar *nbitplanes)
+dodecode(Biobuf *infile, Pix *a, int nx, int ny, uchar *nbitplanes)
 {
 int nel, nx2, ny2, bits, mask;
 Pix *aend, px;
@@ -61,9 +61,9 @@ nx2 = (nx+1)/2;
 ny2 = (ny+1)/2;
 memset(a, 0, nel*sizeof(*a));
 start_inputing_bits();
-qtree_decode(infile, &a[0],          ny, nx2,  ny2,  nbitplanes[0]);
-qtree_decode(infile, &a[ny2],        ny, nx2,  ny/2, nbitplanes[1]);
-qtree_decode(infile, &a[ny*nx2],     ny, nx/2, ny2,  nbitplanes[1]);
+qtree_decode(infile, &a[0], ny, nx2, ny2, nbitplanes[0]);
+qtree_decode(infile, &a[ny2], ny, nx2, ny/2, nbitplanes[1]);
+qtree_decode(infile, &a[ny*nx2], ny, nx/2, ny2, nbitplanes[1]);
 qtree_decode(infile, &a[ny*nx2+ny2], ny, nx/2, ny/2, nbitplanes[2]);
 if(input_nybble(infile) != 0){
 fprint(2, "dodecode: bad bit plane values\n");
@@ -85,7 +85,7 @@ mask >>= 1;
 }
 }
 static
-long	getlong(uchar *p)
+long getlong(uchar *p)
 {
 return (p[0]<<24) | (p[1]<<16) | (p[2]<<8) | p[3];
 }

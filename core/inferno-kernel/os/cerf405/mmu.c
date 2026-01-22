@@ -1,19 +1,19 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-extern	ulong	tlbtab[], tlbtabe[];
-static	int	tlbx;
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+extern ulong tlbtab[], tlbtabe[];
+static int tlbx;
 enum
 {
-Isarc=	0x018,
-Iscntl=	0x019,
-Isen=		1<<31,
-Dsarc=	0x01A,
-Dscntl=	0x01B,
-Dsen=		1<<31,
-Dof=		1<<30,
+Isarc= 0x018,
+Iscntl= 0x019,
+Isen= 1<<31,
+Dsarc= 0x01A,
+Dscntl= 0x01B,
+Dsen= 1<<31,
+Dof= 1<<30,
 };
 void
 mmuinit(void)

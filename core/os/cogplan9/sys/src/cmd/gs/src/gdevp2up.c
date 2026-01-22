@@ -61,10 +61,10 @@ if (code < 0)
 return code;
 pages[0].page = &pdev2->odd_page;
 pages[0].offset.x = x_offset;
-pages[0].offset.y = 0  ;
+pages[0].offset.y = 0 ;
 pages[1].page = &even_page;
 pages[1].offset.x = pdev->width + x_offset * 3;
-pages[1].offset.y = 0  ;
+pages[1].offset.y = 0 ;
 prdev = (gx_device_printer *)
 gs_alloc_bytes(pdev->memory, prdev_size,
 "pcx2up_print_page(device)");

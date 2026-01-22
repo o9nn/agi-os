@@ -3,54 +3,54 @@
 #include "tk.h"
 struct TkCol
 {
-ulong	rgba1;
-ulong	rgba3;
-Image*	i;
-TkCol*	forw;
+ulong rgba1;
+ulong rgba3;
+Image* i;
+TkCol* forw;
 };
-extern void	rptwakeup(void*, void*);
-extern void*	rptproc(char*, int, void*, int (*)(void*), int (*)(void*,int), void (*)(void*));
+extern void rptwakeup(void*, void*);
+extern void* rptproc(char*, int, void*, int (*)(void*), int (*)(void*,int), void (*)(void*));
 typedef struct Cmd Cmd;
 struct Cmd
 {
-char*	name;
-char*	(*fn)(TkTop*, char*, char**);
+char* name;
+char* (*fn)(TkTop*, char*, char**);
 };
 static struct Cmd cmdmain[] =
 {
-"bind",		tkbind,
-"button",	tkbutton,
-"canvas",	tkcanvas,
-"checkbutton",	tkcheckbutton,
+"bind", tkbind,
+"button", tkbutton,
+"canvas", tkcanvas,
+"checkbutton", tkcheckbutton,
 "choicebutton", tkchoicebutton,
-"cursor",	tkcursorcmd,
-"destroy",	tkdestroy,
-"entry",	tkentry,
-"focus",	tkfocus,
-"frame",	tkframe,
-"grab",		tkgrab,
-"grid",	tkgrid,
-"image",	tkimage,
-"label",	tklabel,
-"listbox",	tklistbox,
-"lower",	tklower,
-"menu",		tkmenu,
-"menubutton",	tkmenubutton,
-"pack",		tkpack,
-"panel",		tkpanel,
-"puts",		tkputs,
-"radiobutton",	tkradiobutton,
-"raise",	tkraise,
-"scale",	tkscale,
-"scrollbar",	tkscrollbar,
-"see",	tkseecmd,
-"send",		tksend,
-"text",		tktext,
-"update",	tkupdatecmd,
-"variable",	tkvariable,
-"winfo",	tkwinfo,
+"cursor", tkcursorcmd,
+"destroy", tkdestroy,
+"entry", tkentry,
+"focus", tkfocus,
+"frame", tkframe,
+"grab", tkgrab,
+"grid", tkgrid,
+"image", tkimage,
+"label", tklabel,
+"listbox", tklistbox,
+"lower", tklower,
+"menu", tkmenu,
+"menubutton", tkmenubutton,
+"pack", tkpack,
+"panel", tkpanel,
+"puts", tkputs,
+"radiobutton", tkradiobutton,
+"raise", tkraise,
+"scale", tkscale,
+"scrollbar", tkscrollbar,
+"see", tkseecmd,
+"send", tksend,
+"text", tktext,
+"update", tkupdatecmd,
+"variable", tkvariable,
+"winfo", tkwinfo,
 };
-char*	tkfont;
+char* tkfont;
 static void *autorpt;
 static int rptid;
 static Tk *rptw;
@@ -321,8 +321,8 @@ if (*h < 0)
 static void
 hsv2rgb(int h, int s, int v, int *r, int *g, int *b)
 {
-int	i;
-int	f,p,q,t;
+int i;
+int f,p,q,t;
 if (s == 0 && h == 0) {
 *r = *g = *b = v;
 } else {
@@ -349,8 +349,8 @@ case 5: *r = v; *g = p; *b = q; break;
 }
 }
 enum {
-MINDELTA	= 0x10,
-DELTA	= 0x30,
+MINDELTA = 0x10,
+DELTA = 0x30,
 };
 ulong
 tkrgbashade(ulong rgba, int shade)
@@ -1503,32 +1503,32 @@ static struct {
 char *name;
 int mask;
 } events[] = {
-"Button1P",	TkButton1P,
-"Button1R",	TkButton1R,
-"Button2P",	TkButton2P,
-"Button2R",	TkButton2R,
-"Button3P",	TkButton3P,
-"Button3R",	TkButton3R,
-"Button4P",	TkButton4P,
-"Button4R",	TkButton4R,
-"Button5P",	TkButton5P,
-"Button5R",	TkButton5R,
-"Button6P",	TkButton6P,
-"Button6R",	TkButton6R,
-"Extn1",		TkExtn1,
-"Extn2",		TkExtn2,
-"Takefocus",	TkTakefocus,
-"Destroy",		TkDestroy,
-"Enter",		TkEnter,
-"Leave",		TkLeave,
-"Motion",		TkMotion,
-"Map",		TkMap,
-"Unmap",		TkUnmap,
-"Key",		TkKey,
-"Focusin",		TkFocusin,
-"Focusout",	TkFocusout,
-"Configure",	TkConfigure,
-"Double",		TkDouble,
+"Button1P", TkButton1P,
+"Button1R", TkButton1R,
+"Button2P", TkButton2P,
+"Button2R", TkButton2R,
+"Button3P", TkButton3P,
+"Button3R", TkButton3R,
+"Button4P", TkButton4P,
+"Button4R", TkButton4R,
+"Button5P", TkButton5P,
+"Button5R", TkButton5R,
+"Button6P", TkButton6P,
+"Button6R", TkButton6R,
+"Extn1", TkExtn1,
+"Extn2", TkExtn2,
+"Takefocus", TkTakefocus,
+"Destroy", TkDestroy,
+"Enter", TkEnter,
+"Leave", TkLeave,
+"Motion", TkMotion,
+"Map", TkMap,
+"Unmap", TkUnmap,
+"Key", TkKey,
+"Focusin", TkFocusin,
+"Focusout", TkFocusout,
+"Configure", TkConfigure,
+"Double", TkDouble,
 0
 };
 int

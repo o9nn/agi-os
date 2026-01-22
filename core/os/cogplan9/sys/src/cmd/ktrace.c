@@ -3,17 +3,17 @@
 #include <bio.h>
 #include <mach.h>
 #include <ctype.h>
-static	int	rtrace(uvlong, uvlong, uvlong);
-static	int	ctrace(uvlong, uvlong, uvlong);
-static	int	i386trace(uvlong, uvlong, uvlong);
-static	int	amd64trace(uvlong, uvlong, uvlong);
-static	uvlong	getval(uvlong);
-static	void	inithdr(int);
-static	void	fatal(char*, ...);
-static	void	readstack(void);
-static	Fhdr	fhdr;
-static	int	interactive;
-#define	FRAMENAME	".frame"
+static int rtrace(uvlong, uvlong, uvlong);
+static int ctrace(uvlong, uvlong, uvlong);
+static int i386trace(uvlong, uvlong, uvlong);
+static int amd64trace(uvlong, uvlong, uvlong);
+static uvlong getval(uvlong);
+static void inithdr(int);
+static void fatal(char*, ...);
+static void readstack(void);
+static Fhdr fhdr;
+static int interactive;
+#define FRAMENAME ".frame"
 static void
 usage(void)
 {
@@ -202,7 +202,7 @@ break;
 sp += f.value-mach->szaddr;
 }else if(strcmp(s.name, "forkret") == 0){
 print("
-sp +=  15 * mach->szaddr;
+sp += 15 * mach->szaddr;
 }
 pc = getval(sp);
 if(pc == 0 && strcmp(s.name, "forkret") == 0){

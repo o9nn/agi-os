@@ -116,10 +116,10 @@ end
 function Base.show(io::IO, t::ColoredRootedTree{T}) where {T}
 # print(io, "ColoredRootedTree{", T, "}: [")
 # if !isempty(t)
-#   print(io, first(t.level_sequence), " (", first(t.color_sequence), ")")
-#   for i in Iterators.drop(eachindex(t.level_sequence, t.color_sequence), 1)
-#     print(io, ", ", t.level_sequence[i], " (", t.color_sequence[i], ")")
-#   end
+# print(io, first(t.level_sequence), " (", first(t.color_sequence), ")")
+# for i in Iterators.drop(eachindex(t.level_sequence, t.color_sequence), 1)
+# print(io, ", ", t.level_sequence[i], " (", t.color_sequence[i], ")")
+# end
 # end
 # print(io, "]")
 print(io, "ColoredRootedTree{", T, "}: ")
@@ -196,9 +196,9 @@ end
 # to use simple bits representations, we measure the decrease compared to the
 # maximal possible increase.
 # The maximal drop in the level sequence is
-#   maximal_drop = length(t.level_sequence) - 3
+# maximal_drop = length(t.level_sequence) - 3
 # We need at most
-#   number_of_bits = trunc(Int, log2(maximal_drop)) + 1
+# number_of_bits = trunc(Int, log2(maximal_drop)) + 1
 # bits to represent this. Thus, 64 bit allow us to compute unique hashes for
 # level sequence up to length 16 in the following simple way; 64 bit result
 # in `number_of_bits = 4` for `maximal_drop = 16 - 3 = 13`.
@@ -226,20 +226,20 @@ end
 # generation and canonical representation
 # A very simple implementation of `canonical_representation!` could read as
 # follows.
-#     function canonical_representation!(t::ColoredRootedTree)
-#       subtr = subtrees(t)
-#       for i in eachindex(subtr)
-#         canonical_representation!(subtr[i])
-#       end
-#       sort!(subtr, rev=true)
-#       i = 2
-#       for τ in subtr
-#         t.level_sequence[i:i+order(τ)-1] = τ.level_sequence
-#         t.color_sequence[i:i+order(τ)-1] = τ.color_sequence
-#         i += order(τ)
-#       end
-#       ColoredRootedTree(t.level_sequence, t.color_sequence, true)
-#     end
+# function canonical_representation!(t::ColoredRootedTree)
+# subtr = subtrees(t)
+# for i in eachindex(subtr)
+# canonical_representation!(subtr[i])
+# end
+# sort!(subtr, rev=true)
+# i = 2
+# for τ in subtr
+# t.level_sequence[i:i+order(τ)-1] = τ.level_sequence
+# t.color_sequence[i:i+order(τ)-1] = τ.color_sequence
+# i += order(τ)
+# end
+# ColoredRootedTree(t.level_sequence, t.color_sequence, true)
+# end
 # However, this would create a lot of intermediate allocations, which make it
 # rather slow. Since most trees in use are relatively small, we can use a
 # non-allocating sorting algorithm instead - although bubble sort is slower in
@@ -366,11 +366,11 @@ while color_id < iter.number_of_colors
 binary_digits!(iter.t.color_sequence, color_id)
 # This simple enumeration of all possible colors can also yield colored
 # trees that are not in canonical representation. For example, the trees
-#   rootedtree([1, 2, 2], Bool[0, 0, 1])
-#   rootedtree([1, 2, 2], Bool[1, 0, 1])
+# rootedtree([1, 2, 2], Bool[0, 0, 1])
+# rootedtree([1, 2, 2], Bool[1, 0, 1])
 # are not in canonical representation.
 # TODO: ColoredRootedTrees. Is there a more efficient way to get only
-#       canonical representations?
+# canonical representations?
 if check_canonical(iter.t)
 return (iter.t, (inner_state, color_id + 1))
 else
@@ -522,9 +522,9 @@ result = "[" * result * "]" * colormap[root_color(t)]
 if normalize
 # normalize the result by grouping repeated occurrences of τ
 # TODO: Decide whether powers should also be used for subtrees,
-#       e.g., "[[τ]²]" instead of "[[τ][τ]]"
-#       for rootedtree([1, 2, 3, 2, 3]).
-#       Currently, powers are only used for τ.
+# e.g., "[[τ]²]" instead of "[[τ][τ]]"
+# for rootedtree([1, 2, 3, 2, 3]).
+# Currently, powers are only used for τ.
 for n in order(t):-1:2
 n_str = string(n)
 n_str = replace(n_str, "1" => "¹")

@@ -40,148 +40,148 @@ static const char *version =
 #else
 #define DEBUG(n, args...)
 #endif
-#define TX_TIMEOUT		((400*HZ)/1000)
-#define INTR_WORK		4
-#define MEMORY_WAIT_TIME       	8
+#define TX_TIMEOUT ((400*HZ)/1000)
+#define INTR_WORK 4
+#define MEMORY_WAIT_TIME 8
 static dev_info_t dev_info = "smc91c92_cs";
 static dev_link_t *dev_list;
 struct smc_private {
-dev_link_t			link;
-struct net_device		dev;
-u_short			manfid;
-u_short			cardid;
-struct net_device_stats	stats;
-dev_node_t			node;
-struct sk_buff		*saved_skb;
-int				packets_waiting;
-caddr_t			base;
-u_short			cfg;
-struct timer_list		media;
-int				watchdog, tx_err;
-u_short			media_status;
-u_short			fast_poll;
-u_short			link_status;
-int				phy_id;
-int				duplex;
-int				rx_ovrn;
+dev_link_t link;
+struct net_device dev;
+u_short manfid;
+u_short cardid;
+struct net_device_stats stats;
+dev_node_t node;
+struct sk_buff *saved_skb;
+int packets_waiting;
+caddr_t base;
+u_short cfg;
+struct timer_list media;
+int watchdog, tx_err;
+u_short media_status;
+u_short fast_poll;
+u_short link_status;
+int phy_id;
+int duplex;
+int rx_ovrn;
 };
-#define MEGAHERTZ_ISR		0x0380
-#define MOT_LAN			0x0000
-#define MOT_UART		0x0020
-#define MOT_EEPROM		0x20
+#define MEGAHERTZ_ISR 0x0380
+#define MOT_LAN 0x0000
+#define MOT_UART 0x0020
+#define MOT_EEPROM 0x20
 #define MOT_NORMAL \
 (COR_LEVEL_REQ | COR_FUNC_ENA | COR_ADDR_DECODE | COR_IREQ_ENA)
-#define OSITECH_AUI_CTL		0x0c
-#define OSITECH_PWRDOWN		0x0d
-#define OSITECH_RESET		0x0e
-#define OSITECH_ISR		0x0f
-#define OSITECH_AUI_PWR		0x0c
-#define OSITECH_RESET_ISR	0x0e
-#define OSI_AUI_PWR		0x40
-#define OSI_LAN_PWRDOWN		0x02
-#define OSI_MODEM_PWRDOWN	0x01
-#define OSI_LAN_RESET		0x02
-#define OSI_MODEM_RESET		0x01
-#define	BANK_SELECT		14
-#define SMC_SELECT_BANK(x)  { outw(x, ioaddr + BANK_SELECT); }
-#define	TCR 		0
-#define	 TCR_CLEAR	0
-#define  TCR_ENABLE	0x0001
-#define	 TCR_PAD_EN	0x0080
-#define  TCR_MONCSN	0x0400
-#define  TCR_FDUPLX	0x0800
-#define	 TCR_NORMAL TCR_ENABLE | TCR_PAD_EN
-#define EPH		2
-#define  EPH_TX_SUC	0x0001
-#define  EPH_SNGLCOL	0x0002
-#define  EPH_MULCOL	0x0004
-#define  EPH_LTX_MULT	0x0008
-#define  EPH_16COL	0x0010
-#define  EPH_SQET	0x0020
-#define  EPH_LTX_BRD	0x0040
-#define  EPH_TX_DEFR	0x0080
-#define  EPH_LAT_COL	0x0200
-#define  EPH_LOST_CAR	0x0400
-#define  EPH_EXC_DEF	0x0800
-#define  EPH_CTR_ROL	0x1000
-#define  EPH_RX_OVRN	0x2000
-#define  EPH_LINK_OK	0x4000
-#define  EPH_TX_UNRN	0x8000
-#define MEMINFO		8
-#define MEMCFG		10
-#define CONFIG			0
-#define  CFG_MII_SELECT		0x8000
-#define  CFG_NO_WAIT		0x1000
-#define  CFG_FULL_STEP		0x0400
-#define  CFG_SET_SQLCH		0x0200
-#define  CFG_AUI_SELECT	 	0x0100
-#define  CFG_16BIT		0x0080
-#define  CFG_DIS_LINK		0x0040
-#define  CFG_STATIC		0x0030
-#define  CFG_IRQ_SEL_1		0x0004
-#define  CFG_IRQ_SEL_0		0x0002
-#define BASE_ADDR		2
-#define	ADDR0			4
-#define	GENERAL			10
-#define	CONTROL			12
-#define  CTL_STORE		0x0001
-#define  CTL_RELOAD		0x0002
-#define  CTL_EE_SELECT		0x0004
-#define  CTL_TE_ENABLE		0x0020
-#define  CTL_CR_ENABLE		0x0040
-#define  CTL_LE_ENABLE		0x0080
-#define  CTL_AUTO_RELEASE	0x0800
-#define	 CTL_POWERDOWN		0x2000
-#define MMU_CMD		0
-#define	 MC_ALLOC	0x20
-#define	 MC_RESET	0x40
-#define  MC_RELEASE  	0x80
-#define  MC_FREEPKT  	0xA0
-#define  MC_ENQUEUE	0xC0
-#define	PNR_ARR		2
-#define FIFO_PORTS	4
-#define  FP_RXEMPTY	0x8000
-#define	POINTER		6
-#define  PTR_AUTO_INC	0x0040
-#define  PTR_READ	0x2000
-#define	 PTR_AUTOINC 	0x4000
-#define	 PTR_RCV	0x8000
-#define	DATA_1		8
-#define	INTERRUPT	12
-#define  IM_RCV_INT		0x1
-#define	 IM_TX_INT		0x2
-#define	 IM_TX_EMPTY_INT	0x4
-#define	 IM_ALLOC_INT		0x8
-#define	 IM_RX_OVRN_INT		0x10
-#define	 IM_EPH_INT		0x20
-#define	RCR		4
+#define OSITECH_AUI_CTL 0x0c
+#define OSITECH_PWRDOWN 0x0d
+#define OSITECH_RESET 0x0e
+#define OSITECH_ISR 0x0f
+#define OSITECH_AUI_PWR 0x0c
+#define OSITECH_RESET_ISR 0x0e
+#define OSI_AUI_PWR 0x40
+#define OSI_LAN_PWRDOWN 0x02
+#define OSI_MODEM_PWRDOWN 0x01
+#define OSI_LAN_RESET 0x02
+#define OSI_MODEM_RESET 0x01
+#define BANK_SELECT 14
+#define SMC_SELECT_BANK(x) { outw(x, ioaddr + BANK_SELECT); }
+#define TCR 0
+#define TCR_CLEAR 0
+#define TCR_ENABLE 0x0001
+#define TCR_PAD_EN 0x0080
+#define TCR_MONCSN 0x0400
+#define TCR_FDUPLX 0x0800
+#define TCR_NORMAL TCR_ENABLE | TCR_PAD_EN
+#define EPH 2
+#define EPH_TX_SUC 0x0001
+#define EPH_SNGLCOL 0x0002
+#define EPH_MULCOL 0x0004
+#define EPH_LTX_MULT 0x0008
+#define EPH_16COL 0x0010
+#define EPH_SQET 0x0020
+#define EPH_LTX_BRD 0x0040
+#define EPH_TX_DEFR 0x0080
+#define EPH_LAT_COL 0x0200
+#define EPH_LOST_CAR 0x0400
+#define EPH_EXC_DEF 0x0800
+#define EPH_CTR_ROL 0x1000
+#define EPH_RX_OVRN 0x2000
+#define EPH_LINK_OK 0x4000
+#define EPH_TX_UNRN 0x8000
+#define MEMINFO 8
+#define MEMCFG 10
+#define CONFIG 0
+#define CFG_MII_SELECT 0x8000
+#define CFG_NO_WAIT 0x1000
+#define CFG_FULL_STEP 0x0400
+#define CFG_SET_SQLCH 0x0200
+#define CFG_AUI_SELECT 0x0100
+#define CFG_16BIT 0x0080
+#define CFG_DIS_LINK 0x0040
+#define CFG_STATIC 0x0030
+#define CFG_IRQ_SEL_1 0x0004
+#define CFG_IRQ_SEL_0 0x0002
+#define BASE_ADDR 2
+#define ADDR0 4
+#define GENERAL 10
+#define CONTROL 12
+#define CTL_STORE 0x0001
+#define CTL_RELOAD 0x0002
+#define CTL_EE_SELECT 0x0004
+#define CTL_TE_ENABLE 0x0020
+#define CTL_CR_ENABLE 0x0040
+#define CTL_LE_ENABLE 0x0080
+#define CTL_AUTO_RELEASE 0x0800
+#define CTL_POWERDOWN 0x2000
+#define MMU_CMD 0
+#define MC_ALLOC 0x20
+#define MC_RESET 0x40
+#define MC_RELEASE 0x80
+#define MC_FREEPKT 0xA0
+#define MC_ENQUEUE 0xC0
+#define PNR_ARR 2
+#define FIFO_PORTS 4
+#define FP_RXEMPTY 0x8000
+#define POINTER 6
+#define PTR_AUTO_INC 0x0040
+#define PTR_READ 0x2000
+#define PTR_AUTOINC 0x4000
+#define PTR_RCV 0x8000
+#define DATA_1 8
+#define INTERRUPT 12
+#define IM_RCV_INT 0x1
+#define IM_TX_INT 0x2
+#define IM_TX_EMPTY_INT 0x4
+#define IM_ALLOC_INT 0x8
+#define IM_RX_OVRN_INT 0x10
+#define IM_EPH_INT 0x20
+#define RCR 4
 enum RxCfg { RxAllMulti = 0x0004, RxPromisc = 0x0002,
 RxEnable = 0x0100, RxStripCRC = 0x0200};
-#define  RCR_SOFTRESET	0x8000
-#define	 RCR_STRIP_CRC	0x200
-#define  RCR_ENABLE	0x100
-#define  RCR_ALMUL	0x4
-#define	 RCR_PROMISC	0x2
-#define	 RCR_NORMAL	(RCR_STRIP_CRC | RCR_ENABLE)
-#define  RCR_CLEAR	0x0
-#define	COUNTER		6
-#define	MULTICAST0	0
-#define	MULTICAST2	2
-#define	MULTICAST4	4
-#define	MULTICAST6	6
-#define MGMT    	8
-#define REVISION	0x0a
+#define RCR_SOFTRESET 0x8000
+#define RCR_STRIP_CRC 0x200
+#define RCR_ENABLE 0x100
+#define RCR_ALMUL 0x4
+#define RCR_PROMISC 0x2
+#define RCR_NORMAL (RCR_STRIP_CRC | RCR_ENABLE)
+#define RCR_CLEAR 0x0
+#define COUNTER 6
+#define MULTICAST0 0
+#define MULTICAST2 2
+#define MULTICAST4 4
+#define MULTICAST6 6
+#define MGMT 8
+#define REVISION 0x0a
 #define TS_SUCCESS 0x0001
-#define TS_16COL   0x0010
-#define TS_LATCOL  0x0200
+#define TS_16COL 0x0010
+#define TS_LATCOL 0x0200
 #define TS_LOSTCAR 0x0400
-#define RS_ALGNERR	0x8000
-#define RS_BADCRC	0x2000
-#define RS_ODDFRAME	0x1000
-#define RS_TOOLONG	0x0800
-#define RS_TOOSHORT	0x0400
-#define RS_MULTICAST	0x0001
-#define RS_ERRORS	(RS_ALGNERR | RS_BADCRC | RS_TOOLONG | RS_TOOSHORT)
+#define RS_ALGNERR 0x8000
+#define RS_BADCRC 0x2000
+#define RS_ODDFRAME 0x1000
+#define RS_TOOLONG 0x0800
+#define RS_TOOSHORT 0x0400
+#define RS_MULTICAST 0x0001
+#define RS_ERRORS (RS_ALGNERR | RS_BADCRC | RS_TOOLONG | RS_TOOSHORT)
 #define set_bits(v, p) outw(inw(p)|(v), (p))
 #define mask_bits(v, p) outw(inw(p)&(v), (p))
 static dev_link_t *smc91c92_attach(void);
@@ -441,12 +441,12 @@ struct smc_private *smc = link->priv;
 struct net_device *dev = &smc->dev;
 ioaddr_t ioaddr = dev->base_addr;
 ioaddr_t iouart = link->io.BasePort2;
-writeb(iouart & 0xff,        smc->base + MOT_UART + CISREG_IOBASE_0);
+writeb(iouart & 0xff, smc->base + MOT_UART + CISREG_IOBASE_0);
 writeb((iouart >> 8) & 0xff, smc->base + MOT_UART + CISREG_IOBASE_1);
-writeb(MOT_NORMAL,           smc->base + MOT_UART + CISREG_COR);
-writeb(ioaddr & 0xff,        smc->base + MOT_LAN + CISREG_IOBASE_0);
+writeb(MOT_NORMAL, smc->base + MOT_UART + CISREG_COR);
+writeb(ioaddr & 0xff, smc->base + MOT_LAN + CISREG_IOBASE_0);
 writeb((ioaddr >> 8) & 0xff, smc->base + MOT_LAN + CISREG_IOBASE_1);
-writeb(MOT_NORMAL,           smc->base + MOT_LAN + CISREG_COR);
+writeb(MOT_NORMAL, smc->base + MOT_LAN + CISREG_COR);
 mdelay(100);
 }
 static int mot_setup(dev_link_t *link)
@@ -469,7 +469,7 @@ if (wait == 0) break;
 if (wait)
 return -1;
 addr = inw(ioaddr + GENERAL);
-dev->dev_addr[2*i]   = addr & 0xff;
+dev->dev_addr[2*i] = addr & 0xff;
 dev->dev_addr[2*i+1] = (addr >> 8) & 0xff;
 }
 return 0;
@@ -867,12 +867,12 @@ break;
 }
 return 0;
 }
-#define MDIO_SHIFT_CLK		0x04
-#define MDIO_DATA_OUT		0x01
-#define MDIO_DIR_WRITE		0x08
-#define MDIO_DATA_WRITE0	(MDIO_DIR_WRITE)
-#define MDIO_DATA_WRITE1	(MDIO_DIR_WRITE | MDIO_DATA_OUT)
-#define MDIO_DATA_READ		0x02
+#define MDIO_SHIFT_CLK 0x04
+#define MDIO_DATA_OUT 0x01
+#define MDIO_DIR_WRITE 0x08
+#define MDIO_DATA_WRITE0 (MDIO_DIR_WRITE)
+#define MDIO_DATA_WRITE1 (MDIO_DIR_WRITE | MDIO_DATA_OUT)
+#define MDIO_DATA_READ 0x02
 static void mdio_sync(ioaddr_t addr)
 {
 int bits;
@@ -1122,7 +1122,7 @@ outw(PTR_AUTOINC | PTR_READ | 0, ioaddr + POINTER);
 tx_status = inw(ioaddr + DATA_1);
 smc->stats.tx_errors++;
 if (tx_status & TS_LOSTCAR) smc->stats.tx_carrier_errors++;
-if (tx_status & TS_LATCOL)  smc->stats.tx_window_errors++;
+if (tx_status & TS_LATCOL) smc->stats.tx_window_errors++;
 if (tx_status & TS_16COL) {
 smc->stats.tx_aborted_errors++;
 smc->tx_err++;
@@ -1289,10 +1289,10 @@ if (rx_status & RS_MULTICAST)
 smc->stats.multicast++;
 } else {
 smc->stats.rx_errors++;
-if (rx_status & RS_ALGNERR)  smc->stats.rx_frame_errors++;
+if (rx_status & RS_ALGNERR) smc->stats.rx_frame_errors++;
 if (rx_status & (RS_TOOSHORT | RS_TOOLONG))
 smc->stats.rx_length_errors++;
-if (rx_status & RS_BADCRC)	smc->stats.rx_crc_errors++;
+if (rx_status & RS_BADCRC) smc->stats.rx_crc_errors++;
 }
 outw(MC_RELEASE, ioaddr + MMU_CMD);
 return;
@@ -1305,8 +1305,8 @@ return &smc->stats;
 static void fill_multicast_tbl(int count, struct dev_mc_list *addrs,
 u_char *multicast_table)
 {
-struct dev_mc_list	*mc_addr;
-for (mc_addr = addrs;  mc_addr && --count > 0;  mc_addr = mc_addr->next) {
+struct dev_mc_list *mc_addr;
+for (mc_addr = addrs; mc_addr && --count > 0; mc_addr = mc_addr->next) {
 u_int position = ether_crc(6, mc_addr->dmi_addr);
 #ifndef final_version
 if ((mc_addr->dmi_addr[0] & 1) == 0)
@@ -1327,7 +1327,7 @@ rx_cfg_setting = RxStripCRC | RxEnable | RxPromisc | RxAllMulti;
 } else if (dev->flags & IFF_ALLMULTI)
 rx_cfg_setting = RxStripCRC | RxEnable | RxAllMulti;
 else {
-if (dev->mc_count)  {
+if (dev->mc_count) {
 fill_multicast_tbl(dev->mc_count, dev->mc_list,
 (u_char *)multicast_table);
 }

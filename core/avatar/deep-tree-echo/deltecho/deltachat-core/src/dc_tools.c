@@ -58,7 +58,7 @@ return str;
 }
 void dc_ltrim(char* buf)
 {
-size_t               len = 0;
+size_t len = 0;
 const unsigned char* cur = NULL;
 if (buf && *buf) {
 len = strlen(buf);
@@ -73,7 +73,7 @@ memmove(buf, cur, len + 1);
 }
 void dc_rtrim(char* buf)
 {
-size_t         len = 0;
+size_t len = 0;
 unsigned char* cur = NULL;
 if (buf && *buf) {
 len = strlen(buf);
@@ -160,7 +160,7 @@ return out;
 char* dc_binary_to_uc_hex(const uint8_t* buf, size_t bytes)
 {
 char* hex = NULL;
-int   i = 0;
+int i = 0;
 if (buf==NULL || bytes<=0) {
 goto cleanup;
 }
@@ -175,9 +175,9 @@ return hex;
 }
 char* dc_mprintf(const char* format, ...)
 {
-char  testbuf[1];
+char testbuf[1];
 char* buf = NULL;
-int   char_cnt_without_zero = 0;
+int char_cnt_without_zero = 0;
 va_list argp;
 va_list argp_copy;
 va_start(argp, format);
@@ -239,21 +239,21 @@ if (buf==NULL) {
 return;
 }
 unsigned char* p1 = (unsigned char*)buf;
-int            p1len = strlen(buf);
-int            c = 0;
-int            i = 0;
-int            ix = 0;
-int            n = 0;
-int            j = 0;
+int p1len = strlen(buf);
+int c = 0;
+int i = 0;
+int ix = 0;
+int n = 0;
+int j = 0;
 for (i=0, ix=p1len; i < ix; i++)
 {
 c = p1[i];
-if (c > 0 && c <= 0x7f)                            { n=0; }
-else if ((c & 0xE0) == 0xC0)                            { n=1; }
+if (c > 0 && c <= 0x7f) { n=0; }
+else if ((c & 0xE0) == 0xC0) { n=1; }
 else if (c==0xed && i<(ix-1) && (p1[i+1] & 0xa0)==0xa0) { goto error; }
-else if ((c & 0xF0) == 0xE0)                            { n=2; }
-else if ((c & 0xF8) == 0xF0)                            { n=3; }
-else                                                    { goto error; }
+else if ((c & 0xF0) == 0xE0) { n=2; }
+else if ((c & 0xF8) == 0xF0) { n=3; }
+else { goto error; }
 for (j = 0; j < n && i < ix; j++) {
 if ((++i == ix) || (( p1[i] & 0xC0) != 0x80)) {
 goto error;
@@ -310,7 +310,7 @@ else {
 if (lastIsCharacter) {
 size_t used_bytes = (size_t)((uintptr_t)p1 - (uintptr_t)buf);
 if (dc_utf8_strnlen(buf, used_bytes) >= approx_characters) {
-size_t      buf_bytes = strlen(buf);
+size_t buf_bytes = strlen(buf);
 if (buf_bytes-used_bytes >= strlen(ellipse_utf8) ) {
 strcpy((char*)p1, ellipse_utf8);
 }
@@ -350,10 +350,10 @@ strcat(p, DC_EDITORIAL_ELLIPSE);
 }
 carray* dc_split_into_lines(const char* buf_terminated)
 {
-carray*      lines = carray_new(1024);
-size_t       line_chars = 0;
-const char*  p1 = buf_terminated;
-const char*  line_start = p1;
+carray* lines = carray_new(1024);
+size_t line_chars = 0;
+const char* p1 = buf_terminated;
+const char* line_start = p1;
 unsigned int l_indx = 0;
 while (*p1) {
 if (*p1=='\n') {
@@ -433,7 +433,7 @@ const char* p1 = str;
 while (1) {
 const char* p2 = strstr(p1, delimiter);
 if (p2==NULL) {
-clist_append(list,  (void*)strdup(p1));
+clist_append(list, (void*)strdup(p1));
 break;
 }
 else {
@@ -492,10 +492,10 @@ return result;
 }
 time_t mkgmtime(struct tm * tmp)
 {
-int       dir = 0;
-int       bits = 0;
-int       saved_seconds = 0;
-time_t    t = 0;
+int dir = 0;
+int bits = 0;
+int saved_seconds = 0;
+time_t t = 0;
 struct tm yourtm;
 struct tm mytm;
 yourtm = *tmp;
@@ -516,7 +516,7 @@ if (bits < 0)
 --t;
 else if (dir > 0)
 t -= (time_t) 1 << bits;
-else    t += (time_t) 1 << bits;
+else t += (time_t) 1 << bits;
 continue;
 }
 break;
@@ -527,15 +527,15 @@ return t;
 time_t dc_timestamp_from_date(struct mailimf_date_time * date_time)
 {
 struct tm tmval;
-time_t    timeval = 0;
-int       zone_min = 0;
-int       zone_hour = 0;
+time_t timeval = 0;
+int zone_min = 0;
+int zone_hour = 0;
 memset(&tmval, 0, sizeof(struct tm));
-tmval.tm_sec  = date_time->dt_sec;
-tmval.tm_min  = date_time->dt_min;
+tmval.tm_sec = date_time->dt_sec;
+tmval.tm_min = date_time->dt_min;
 tmval.tm_hour = date_time->dt_hour;
 tmval.tm_mday = date_time->dt_day;
-tmval.tm_mon  = date_time->dt_month - 1;
+tmval.tm_mon = date_time->dt_month - 1;
 if (date_time->dt_year < 1000) {
 tmval.tm_year = date_time->dt_year + 2000 - 1900;
 }
@@ -556,7 +556,7 @@ return timeval;
 }
 long dc_gm2local_offset(void)
 {
-time_t    gmtime = time(NULL);
+time_t gmtime = time(NULL);
 struct tm timeinfo = {0};
 localtime_r(&gmtime, &timeinfo);
 return timeinfo.tm_gmtoff;
@@ -571,13 +571,13 @@ return dc_mprintf("%02i.%02i.%04i %02i:%02i:%02i",
 }
 struct mailimap_date_time* dc_timestamp_to_mailimap_date_time(time_t timeval)
 {
-struct tm                  gmt;
-struct tm                  lt;
-int                        off = 0;
+struct tm gmt;
+struct tm lt;
+int off = 0;
 struct mailimap_date_time* date_time;
-int                        sign = 0;
-int                        hour = 0;
-int                        min = 0;
+int sign = 0;
+int hour = 0;
+int min = 0;
 gmtime_r(&timeval, &gmt);
 localtime_r(&timeval, &lt);
 off = (int) ((mkgmtime(&lt) - mkgmtime(&gmt)) / 60);
@@ -598,8 +598,8 @@ lt.tm_hour, lt.tm_min, lt.tm_sec,
 off);
 return date_time;
 }
-#define DC_MAX_SECONDS_TO_LEND_FROM_FUTURE   5
-#define SMEAR_LOCK   { pthread_mutex_lock(&context->smear_critical); }
+#define DC_MAX_SECONDS_TO_LEND_FROM_FUTURE 5
+#define SMEAR_LOCK { pthread_mutex_lock(&context->smear_critical); }
 #define SMEAR_UNLOCK { pthread_mutex_unlock(&context->smear_critical); }
 time_t dc_create_smeared_timestamp(dc_context_t* context)
 {
@@ -640,17 +640,17 @@ static char* encode_66bits_as_base64(uint32_t v1, uint32_t v2, uint32_t fill )
 {
 char* ret = malloc(12); if (ret==NULL) { exit(34); }
 static const char chars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
-ret[ 0] = chars[   (v1>>26) & 0x3F  ];
-ret[ 1] = chars[   (v1>>20) & 0x3F  ];
-ret[ 2] = chars[   (v1>>14) & 0x3F  ];
-ret[ 3] = chars[   (v1>> 8) & 0x3F  ];
-ret[ 4] = chars[   (v1>> 2) & 0x3F  ];
+ret[ 0] = chars[ (v1>>26) & 0x3F ];
+ret[ 1] = chars[ (v1>>20) & 0x3F ];
+ret[ 2] = chars[ (v1>>14) & 0x3F ];
+ret[ 3] = chars[ (v1>> 8) & 0x3F ];
+ret[ 4] = chars[ (v1>> 2) & 0x3F ];
 ret[ 5] = chars[ ( (v1<< 4) & 0x30) | ( (v2>>28) & 0x0F) ];
-ret[ 6] = chars[                         (v2>>22) & 0x3F   ];
-ret[ 7] = chars[                         (v2>>16) & 0x3F   ];
-ret[ 8] = chars[                         (v2>>10) & 0x3F   ];
-ret[ 9] = chars[                         (v2>> 4) & 0x3F   ];
-ret[10] = chars[                       ( (v2<< 2) & 0x3C) | (fill & 0x03) ];
+ret[ 6] = chars[ (v2>>22) & 0x3F ];
+ret[ 7] = chars[ (v2>>16) & 0x3F ];
+ret[ 8] = chars[ (v2>>10) & 0x3F ];
+ret[ 9] = chars[ (v2>> 4) & 0x3F ];
+ret[10] = chars[ ( (v2<< 2) & 0x3C) | (fill & 0x03) ];
 ret[11] = 0;
 return ret;
 }
@@ -664,9 +664,9 @@ return encode_66bits_as_base64(buf[0], buf[1], buf[2]);
 }
 char* dc_create_outgoing_rfc724_mid(const char* grpid, const char* from_addr)
 {
-char*       rand1 = NULL;
-char*       rand2 = dc_create_id();
-char*       ret = NULL;
+char* rand1 = NULL;
+char* rand2 = dc_create_id();
+char* ret = NULL;
 const char* at_hostname = strchr(from_addr, '@');
 if (at_hostname==NULL) {
 at_hostname = "@nohost";
@@ -687,8 +687,8 @@ char* dc_create_incoming_rfc724_mid(time_t message_timestamp, uint32_t contact_i
 if (contact_ids_to==NULL || dc_array_get_cnt(contact_ids_to)==0) {
 return NULL;
 }
-size_t   i = 0;
-size_t   icnt = dc_array_get_cnt(contact_ids_to);
+size_t i = 0;
+size_t icnt = dc_array_get_cnt(contact_ids_to);
 uint32_t largest_id_to = 0;
 for (i = 0; i < icnt; i++) {
 uint32_t cur_id = dc_array_get_id(contact_ids_to, i);
@@ -700,10 +700,10 @@ return dc_mprintf("%lu-%lu-%lu@stub", (unsigned long)message_timestamp, (unsigne
 }
 char* dc_extract_grpid_from_rfc724_mid(const char* mid)
 {
-int   success = 0;
+int success = 0;
 char* grpid = NULL;
 char* p1 = NULL;
-int   grpid_len = 0;
+int grpid_len = 0;
 if (mid==NULL || strlen(mid)<8 || mid[0]!='G' || mid[1]!='r' || mid[2]!='.') {
 goto cleanup;
 }
@@ -713,7 +713,7 @@ if (p1==NULL) {
 goto cleanup;
 }
 *p1 = 0;
-#define DC_ALSO_VALID_ID_LEN  16
+#define DC_ALSO_VALID_ID_LEN 16
 grpid_len = strlen(grpid);
 if (grpid_len!=DC_CREATE_ID_LEN && grpid_len!=DC_ALSO_VALID_ID_LEN) {
 goto cleanup;
@@ -782,8 +782,8 @@ suffix = dc_strdup(p1);
 else {
 suffix = dc_strdup(NULL);
 }
-if (ret_basename            ) { *ret_basename              = basename; } else { free(basename); }
-if (ret_all_suffixes_incl_dot) { *ret_all_suffixes_incl_dot = suffix;   } else { free(suffix);   }
+if (ret_basename ) { *ret_basename = basename; } else { free(basename); }
+if (ret_all_suffixes_incl_dot) { *ret_all_suffixes_incl_dot = suffix; } else { free(suffix); }
 }
 char* dc_get_filesuffix_lc(const char* pathNfilename)
 {
@@ -809,7 +809,7 @@ while (buf[pos]==0xFF)
 {
 if (buf[pos+1]==0xC0 || buf[pos+1]==0xC1 || buf[pos+1]==0xC2 || buf[pos+1]==0xC3 || buf[pos+1]==0xC9 || buf[pos+1]==0xCA || buf[pos+1]==0xCB) {
 *ret_height = (buf[pos+5]<<8) + buf[pos+6];
-*ret_width  = (buf[pos+7]<<8) + buf[pos+8];
+*ret_width = (buf[pos+7]<<8) + buf[pos+8];
 return 1;
 }
 pos += 2+(buf[pos+2]<<8)+buf[pos+3];
@@ -818,14 +818,14 @@ if (pos+12>buf_bytes) { break; }
 }
 if (buf[0]=='G' && buf[1]=='I' && buf[2]=='F')
 {
-*ret_width  = buf[6] + (buf[7]<<8);
+*ret_width = buf[6] + (buf[7]<<8);
 *ret_height = buf[8] + (buf[9]<<8);
 return 1;
 }
 if (buf[0]==0x89 && buf[1]=='P' && buf[2]=='N' && buf[3]=='G' && buf[4]==0x0D && buf[5]==0x0A && buf[6]==0x1A && buf[7]==0x0A
 && buf[12]=='I' && buf[13]=='H' && buf[14]=='D' && buf[15]=='R')
 {
-*ret_width  = (buf[16]<<24) + (buf[17]<<16) + (buf[18]<<8) + (buf[19]<<0);
+*ret_width = (buf[16]<<24) + (buf[17]<<16) + (buf[18]<<8) + (buf[19]<<0);
 *ret_height = (buf[20]<<24) + (buf[21]<<16) + (buf[22]<<8) + (buf[23]<<0);
 return 1;
 }
@@ -833,7 +833,7 @@ return 0;
 }
 char* dc_get_abs_path(dc_context_t* context, const char* pathNfilename)
 {
-int   success           = 0;
+int success = 0;
 char* pathNfilename_abs = NULL;
 if (context==NULL || pathNfilename==NULL) {
 goto cleanup;
@@ -855,7 +855,7 @@ return pathNfilename_abs;
 }
 int dc_file_exist(dc_context_t* context, const char* pathNfilename)
 {
-int   exist = 0;
+int exist = 0;
 char* pathNfilename_abs = NULL;
 if ((pathNfilename_abs=dc_get_abs_path(context, pathNfilename))==NULL) {
 goto cleanup;
@@ -871,7 +871,7 @@ return exist;
 uint64_t dc_get_filebytes(dc_context_t* context, const char* pathNfilename)
 {
 uint64_t filebytes = 0;
-char*    pathNfilename_abs = NULL;
+char* pathNfilename_abs = NULL;
 if ((pathNfilename_abs=dc_get_abs_path(context, pathNfilename))==NULL) {
 goto cleanup;
 }
@@ -885,7 +885,7 @@ return filebytes;
 }
 int dc_delete_file(dc_context_t* context, const char* pathNfilename)
 {
-int   success = 0;
+int success = 0;
 char* pathNfilename_abs = NULL;
 if ((pathNfilename_abs=dc_get_abs_path(context, pathNfilename))==NULL) {
 goto cleanup;
@@ -901,15 +901,15 @@ return success;
 }
 int dc_copy_file(dc_context_t* context, const char* src, const char* dest)
 {
-int     success = 0;
-char*   src_abs = NULL;
-char*   dest_abs = NULL;
-int     fd_src = -1;
-int     fd_dest = -1;
+int success = 0;
+char* src_abs = NULL;
+char* dest_abs = NULL;
+int fd_src = -1;
+int fd_dest = -1;
 #define DC_COPY_BUF_SIZE 4096
-char    buf[DC_COPY_BUF_SIZE];
-size_t  bytes_read = 0;
-int     anything_copied = 0;
+char buf[DC_COPY_BUF_SIZE];
+size_t bytes_read = 0;
+int anything_copied = 0;
 if ((src_abs=dc_get_abs_path(context, src))==NULL
 || (dest_abs=dc_get_abs_path(context, dest))==NULL) {
 goto cleanup;
@@ -946,7 +946,7 @@ return success;
 }
 int dc_create_folder(dc_context_t* context, const char* pathNfilename)
 {
-int   success = 0;
+int success = 0;
 char* pathNfilename_abs = NULL;
 if ((pathNfilename_abs=dc_get_abs_path(context, pathNfilename))==NULL) {
 goto cleanup;
@@ -965,7 +965,7 @@ return success;
 }
 int dc_write_file(dc_context_t* context, const char* pathNfilename, const void* buf, size_t buf_bytes)
 {
-int   success = 0;
+int success = 0;
 char* pathNfilename_abs = NULL;
 if ((pathNfilename_abs=dc_get_abs_path(context, pathNfilename))==NULL) {
 goto cleanup;
@@ -989,7 +989,7 @@ return success;
 }
 int dc_read_file(dc_context_t* context, const char* pathNfilename, void** buf, size_t* buf_bytes)
 {
-int   success = 0;
+int success = 0;
 char* pathNfilename_abs = NULL;
 FILE* f = NULL;
 if (pathNfilename==NULL || buf==NULL || buf_bytes==NULL) {
@@ -1026,13 +1026,13 @@ return success;
 }
 char* dc_get_fine_pathNfilename(dc_context_t* context, const char* pathNfolder, const char* desired_filenameNsuffix__)
 {
-char*  ret = NULL;
-char*  pathNfolder_wo_slash = NULL;
-char*  filenameNsuffix = NULL;
-char*  basename = NULL;
-char*  dotNSuffix = NULL;
+char* ret = NULL;
+char* pathNfolder_wo_slash = NULL;
+char* filenameNsuffix = NULL;
+char* basename = NULL;
+char* dotNSuffix = NULL;
 time_t now = time(NULL);
-int    i = 0;
+int i = 0;
 pathNfolder_wo_slash = dc_strdup(pathNfolder);
 dc_ensure_no_slash(pathNfolder_wo_slash);
 filenameNsuffix = dc_strdup(desired_filenameNsuffix__);
@@ -1078,7 +1078,7 @@ return 0;
 }
 int dc_make_rel_and_copy(dc_context_t* context, char** path)
 {
-int   success = 0;
+int success = 0;
 char* filename = NULL;
 char* blobdir_path = NULL;
 if (context==NULL || path==NULL || *path==NULL) {

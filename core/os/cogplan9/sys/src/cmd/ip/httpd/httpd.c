@@ -6,36 +6,36 @@
 #include "httpd.h"
 #include "httpsrv.h"
 enum {
-Nbuckets	= 256,
+Nbuckets = 256,
 };
-typedef struct Strings		Strings;
-typedef struct System		System;
+typedef struct Strings Strings;
+typedef struct System System;
 struct Strings
 {
-char	*s1;
-char	*s2;
+char *s1;
+char *s2;
 };
 struct System {
-char	*rsys;
-ulong	reqs;
-ulong	first;
-ulong	last;
-System	*next;
+char *rsys;
+ulong reqs;
+ulong first;
+ulong last;
+System *next;
 };
-char	*netdir;
-char	*HTTPLOG = "httpd/log";
-static	char		netdirb[256];
-static	char		*namespace;
-static	System		syss[Nbuckets];
-static	void		becomenone(char*);
-static	char		*csquery(char*, char*, char*);
-static	void		dolisten(char*);
-static	int		doreq(HConnect*);
-static	int		send(HConnect*);
-static	Strings		stripmagic(HConnect*, char*);
-static	char*		stripprefix(char*, char*);
-static	char*		sysdom(void);
-static	int		notfound(HConnect *c, char *url);
+char *netdir;
+char *HTTPLOG = "httpd/log";
+static char netdirb[256];
+static char *namespace;
+static System syss[Nbuckets];
+static void becomenone(char*);
+static char *csquery(char*, char*, char*);
+static void dolisten(char*);
+static int doreq(HConnect*);
+static int send(HConnect*);
+static Strings stripmagic(HConnect*, char*);
+static char* stripprefix(char*, char*);
+static char* sysdom(void);
+static int notfound(HConnect *c, char *url);
 uchar *certificate;
 int certlen;
 PEMChain *certchain;

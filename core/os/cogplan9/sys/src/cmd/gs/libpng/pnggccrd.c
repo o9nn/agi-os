@@ -4,51 +4,51 @@
 int PNGAPI png_mmx_support(void);
 #ifdef PNG_USE_LOCAL_ARRAYS
 static const int FARDATA png_pass_start[7] = {0, 4, 0, 2, 0, 1, 0};
-static const int FARDATA png_pass_inc[7]   = {8, 8, 4, 4, 2, 2, 1};
+static const int FARDATA png_pass_inc[7] = {8, 8, 4, 4, 2, 2, 1};
 static const int FARDATA png_pass_width[7] = {8, 4, 4, 2, 2, 1, 1};
 #endif
 #if defined(PNG_ASSEMBLER_CODE_SUPPORTED)
 #if defined(__DJGPP__) || defined(WIN32) || defined(__CYGWIN__)
-#  define _mmx_supported  mmx_supported
-#  define _const4         const4
-#  define _const6         const6
-#  define _mask8_0        mask8_0
-#  define _mask16_1       mask16_1
-#  define _mask16_0       mask16_0
-#  define _mask24_2       mask24_2
-#  define _mask24_1       mask24_1
-#  define _mask24_0       mask24_0
-#  define _mask32_3       mask32_3
-#  define _mask32_2       mask32_2
-#  define _mask32_1       mask32_1
-#  define _mask32_0       mask32_0
-#  define _mask48_5       mask48_5
-#  define _mask48_4       mask48_4
-#  define _mask48_3       mask48_3
-#  define _mask48_2       mask48_2
-#  define _mask48_1       mask48_1
-#  define _mask48_0       mask48_0
-#  define _LBCarryMask    LBCarryMask
-#  define _HBClearMask    HBClearMask
-#  define _ActiveMask     ActiveMask
-#  define _ActiveMask2    ActiveMask2
-#  define _ActiveMaskEnd  ActiveMaskEnd
-#  define _ShiftBpp       ShiftBpp
-#  define _ShiftRem       ShiftRem
+# define _mmx_supported mmx_supported
+# define _const4 const4
+# define _const6 const6
+# define _mask8_0 mask8_0
+# define _mask16_1 mask16_1
+# define _mask16_0 mask16_0
+# define _mask24_2 mask24_2
+# define _mask24_1 mask24_1
+# define _mask24_0 mask24_0
+# define _mask32_3 mask32_3
+# define _mask32_2 mask32_2
+# define _mask32_1 mask32_1
+# define _mask32_0 mask32_0
+# define _mask48_5 mask48_5
+# define _mask48_4 mask48_4
+# define _mask48_3 mask48_3
+# define _mask48_2 mask48_2
+# define _mask48_1 mask48_1
+# define _mask48_0 mask48_0
+# define _LBCarryMask LBCarryMask
+# define _HBClearMask HBClearMask
+# define _ActiveMask ActiveMask
+# define _ActiveMask2 ActiveMask2
+# define _ActiveMaskEnd ActiveMaskEnd
+# define _ShiftBpp ShiftBpp
+# define _ShiftRem ShiftRem
 #ifdef PNG_THREAD_UNSAFE_OK
-#  define _unmask         unmask
-#  define _FullLength     FullLength
-#  define _MMXLength      MMXLength
-#  define _dif            dif
-#  define _patemp         patemp
-#  define _pbtemp         pbtemp
-#  define _pctemp         pctemp
+# define _unmask unmask
+# define _FullLength FullLength
+# define _MMXLength MMXLength
+# define _dif dif
+# define _patemp patemp
+# define _pbtemp pbtemp
+# define _pctemp pctemp
 #endif
 #endif
 #ifdef PNG_THREAD_UNSAFE_OK
 static int _unmask;
 #endif
-static unsigned long long _mask8_0  = 0x0102040810204080LL;
+static unsigned long long _mask8_0 = 0x0102040810204080LL;
 static unsigned long long _mask16_1 = 0x0101020204040808LL;
 static unsigned long long _mask16_0 = 0x1010202040408080LL;
 static unsigned long long _mask24_2 = 0x0101010202020404LL;
@@ -64,15 +64,15 @@ static unsigned long long _mask48_3 = 0x0404080808080808LL;
 static unsigned long long _mask48_2 = 0x1010101010102020LL;
 static unsigned long long _mask48_1 = 0x2020202040404040LL;
 static unsigned long long _mask48_0 = 0x4040808080808080LL;
-static unsigned long long _const4   = 0x0000000000FFFFFFLL;
-static unsigned long long _const6   = 0x00000000000000FFLL;
+static unsigned long long _const4 = 0x0000000000FFFFFFLL;
+static unsigned long long _const6 = 0x00000000000000FFLL;
 #ifdef PNG_THREAD_UNSAFE_OK
-static png_uint_32  _FullLength;
-static png_uint_32  _MMXLength;
-static int          _dif;
-static int          _patemp;
-static int          _pbtemp;
-static int          _pctemp;
+static png_uint_32 _FullLength;
+static png_uint_32 _MMXLength;
+static int _dif;
+static int _patemp;
+static int _pbtemp;
+static int _pctemp;
 #endif
 void
 png_squelch_warnings(void)
@@ -84,9 +84,9 @@ _pbtemp = _pbtemp;
 _pctemp = _pctemp;
 _MMXLength = _MMXLength;
 #endif
-_const4  = _const4;
-_const6  = _const6;
-_mask8_0  = _mask8_0;
+_const4 = _const4;
+_const6 = _const6;
+_mask8_0 = _mask8_0;
 _mask16_1 = _mask16_1;
 _mask16_0 = _mask16_0;
 _mask24_2 = _mask24_2;
@@ -106,11 +106,11 @@ _mask48_0 = _mask48_0;
 #endif
 static int _mmx_supported = 2;
 #if defined(PNG_HAVE_ASSEMBLER_COMBINE_ROW)
-#define BPP2  2
-#define BPP3  3
-#define BPP4  4
-#define BPP6  6
-#define BPP8  8
+#define BPP2 2
+#define BPP3 3
+#define BPP4 4
+#define BPP6 6
+#define BPP8 8
 void
 png_combine_row(png_structp png_ptr, png_bytep row, int mask)
 {
@@ -305,7 +305,7 @@ int dummy_value_D;
 _unmask = ~mask;
 srcptr = png_ptr->row_buf + 1;
 dstptr = row;
-len  = png_ptr->width &~7;
+len = png_ptr->width &~7;
 diff = (int) (png_ptr->width & 7);
 __asm__ __volatile__ (
 "movd      _unmask, %%mm7  \n\t"
@@ -381,7 +381,7 @@ dstptr += stride;
 }
 if (diff)
 {
-final_val+=diff  ;
+final_val+=diff ;
 for (; i < final_val; i += stride)
 {
 if (rep_bytes > (int)(final_val-i))
@@ -416,7 +416,7 @@ int dummy_value_D;
 _unmask = ~mask;
 srcptr = png_ptr->row_buf + 1;
 dstptr = row;
-len  = png_ptr->width &~7;
+len = png_ptr->width &~7;
 diff = (int) (png_ptr->width & 7);
 __asm__ __volatile__ (
 "movd      _unmask, %%mm7   \n\t"
@@ -539,7 +539,7 @@ int dummy_value_D;
 _unmask = ~mask;
 srcptr = png_ptr->row_buf + 1;
 dstptr = row;
-len  = png_ptr->width &~7;
+len = png_ptr->width &~7;
 diff = (int) (png_ptr->width & 7);
 __asm__ __volatile__ (
 "movd      _unmask, %%mm7   \n\t"
@@ -675,7 +675,7 @@ int dummy_value_D;
 _unmask = ~mask;
 srcptr = png_ptr->row_buf + 1;
 dstptr = row;
-len  = png_ptr->width &~7;
+len = png_ptr->width &~7;
 diff = (int) (png_ptr->width & 7);
 __asm__ __volatile__ (
 "movd      _unmask, %%mm7   \n\t"
@@ -818,7 +818,7 @@ int dummy_value_D;
 _unmask = ~mask;
 srcptr = png_ptr->row_buf + 1;
 dstptr = row;
-len  = png_ptr->width &~7;
+len = png_ptr->width &~7;
 diff = (int) (png_ptr->width & 7);
 __asm__ __volatile__ (
 "movd      _unmask, %%mm7   \n\t"
@@ -2071,7 +2071,7 @@ row_info->rowbytes = PNG_ROWBYTES(row_info->pixel_depth,final_width);
 #if defined(PNG_ASSEMBLER_CODE_SUPPORTED)
 union uAll {
 long long use;
-double  align;
+double align;
 } _LBCarryMask = {0x0101010101010101LL},
 _HBClearMask = {0x7f7f7f7f7f7f7f7fLL},
 _ActiveMask, _ActiveMask2, _ActiveMaskEnd, _ShiftBpp, _ShiftRem;
@@ -2085,7 +2085,7 @@ int dummy_value_c;
 int dummy_value_S;
 int dummy_value_D;
 bpp = (row_info->pixel_depth + 7) >> 3;
-_FullLength  = row_info->rowbytes;
+_FullLength = row_info->rowbytes;
 __asm__ __volatile__ (
 #ifdef __PIC__
 "pushl %%ebx                 \n\t"
@@ -2145,7 +2145,7 @@ switch (bpp)
 {
 case 3:
 {
-_ActiveMask.use  = 0x0000000000ffffffLL;
+_ActiveMask.use = 0x0000000000ffffffLL;
 _ShiftBpp.use = 24;
 _ShiftRem.use = 40;
 __asm__ __volatile__ (
@@ -2211,7 +2211,7 @@ break;
 case 6:
 case 4:
 {
-_ActiveMask.use  = 0xffffffffffffffffLL;
+_ActiveMask.use = 0xffffffffffffffffLL;
 _ShiftBpp.use = bpp << 3;
 _ShiftRem.use = 64 - _ShiftBpp.use;
 __asm__ __volatile__ (
@@ -2267,7 +2267,7 @@ __asm__ __volatile__ (
 break;
 case 2:
 {
-_ActiveMask.use  = 0x000000000000ffffLL;
+_ActiveMask.use = 0x000000000000ffffLL;
 _ShiftBpp.use = 16;
 _ShiftRem.use = 48;
 __asm__ __volatile__ (
@@ -2507,7 +2507,7 @@ int dummy_value_c;
 int dummy_value_S;
 int dummy_value_D;
 bpp = (row_info->pixel_depth + 7) >> 3;
-_FullLength  = row_info->rowbytes;
+_FullLength = row_info->rowbytes;
 __asm__ __volatile__ (
 #ifdef __PIC__
 "pushl %%ebx                 \n\t"
@@ -2770,7 +2770,7 @@ __asm__ __volatile__ (
 break;
 case 6:
 {
-_ActiveMask.use  = 0x00000000ffffffffLL;
+_ActiveMask.use = 0x00000000ffffffffLL;
 _ActiveMask2.use = 0xffffffff00000000LL;
 _ShiftBpp.use = bpp << 3;
 _ShiftRem.use = 64 - _ShiftBpp.use;
@@ -2895,7 +2895,7 @@ __asm__ __volatile__ (
 break;
 case 4:
 {
-_ActiveMask.use  = 0x00000000ffffffffLL;
+_ActiveMask.use = 0x00000000ffffffffLL;
 __asm__ __volatile__ (
 "movl _dif, %%ecx            \n\t"
 "pxor %%mm0, %%mm0           \n\t"
@@ -3007,7 +3007,7 @@ __asm__ __volatile__ (
 break;
 case 8:
 {
-_ActiveMask.use  = 0x00000000ffffffffLL;
+_ActiveMask.use = 0x00000000ffffffffLL;
 __asm__ __volatile__ (
 "movl _dif, %%ecx            \n\t"
 "pxor %%mm0, %%mm0           \n\t"
@@ -3320,9 +3320,9 @@ switch (bpp)
 {
 case 3:
 {
-_ActiveMask.use  = 0x0000ffffff000000LL;
+_ActiveMask.use = 0x0000ffffff000000LL;
 _ShiftBpp.use = 24;
-_ShiftRem.use  = 40;
+_ShiftRem.use = 40;
 __asm__ __volatile__ (
 "movq _ActiveMask, %%mm7       \n\t"
 "movl %%edi, %%esi            \n\t"
@@ -3697,10 +3697,10 @@ row, png_bytep prev_row, int filter)
 char filnm[10];
 #endif
 #if defined(PNG_ASSEMBLER_CODE_SUPPORTED)
-#define UseMMX_sub    1
-#define UseMMX_up     1
-#define UseMMX_avg    1
-#define UseMMX_paeth  1
+#define UseMMX_sub 1
+#define UseMMX_up 1
+#define UseMMX_avg 1
+#define UseMMX_paeth 1
 if (_mmx_supported == 2) {
 #if !defined(PNG_1_0_X)
 png_warning(png_ptr, "asm_flags may not have been initialized");

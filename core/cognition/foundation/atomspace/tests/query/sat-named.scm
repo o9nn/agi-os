@@ -1,24 +1,24 @@
 (EvaluationLink
-	(PredicateNode "likes")
-	(ListLink
-		(ConceptNode "Tom")
-		(ConceptNode "baseball")
-	)
+(PredicateNode "likes")
+(ListLink
+(ConceptNode "Tom")
+(ConceptNode "baseball")
+)
 )
 (DefineLink
-	(DefinedPredicate "Does Tom like X?")
-	(SatisfactionLink
-		(VariableNode "$X")
-		(EvaluationLink
-			(PredicateNode "likes")
-			(ListLink
-				(ConceptNode "Tom")
-				(VariableNode "$X")
-			)
-		)
-	)
+(DefinedPredicate "Does Tom like X?")
+(SatisfactionLink
+(VariableNode "$X")
+(EvaluationLink
+(PredicateNode "likes")
+(ListLink
+(ConceptNode "Tom")
+(VariableNode "$X")
+)
+)
+)
 )
 (MemberLink
-	(ConceptNode "baseball")
-	(ConceptNode "Does Tom like X?")
+(ConceptNode "baseball")
+(ConceptNode "Does Tom like X?")
 )

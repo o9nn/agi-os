@@ -5,13 +5,13 @@
 #include "fns.h"
 #include "io.h"
 #include "../port/error.h"
-#define	Image	IMAGE
+#define Image IMAGE
 #include <draw.h>
 #include <memdraw.h>
 #include <cursor.h>
 #include "screen.h"
 enum {
-Xrx		= 0x3D6,
+Xrx = 0x3D6,
 };
 static uchar
 hiqvideoxi(long port, uchar index)

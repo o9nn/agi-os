@@ -17,14 +17,14 @@ typedef struct gx_device_dfax_s gx_device_dfax;
 private gx_device_procs dfax_procs =
 prn_procs(dfax_prn_open, gdev_prn_output_page, gdev_prn_close);
 gx_device_dfax far_data gs_dfaxlow_device =
-{   prn_device_std_body(gx_device_dfax, dfax_procs, "dfaxlow",
+{ prn_device_std_body(gx_device_dfax, dfax_procs, "dfaxlow",
 DEFAULT_WIDTH_10THS, DEFAULT_HEIGHT_10THS,
 X_DPI, Y_DPI/2,
 0,0,0,0,
 1, dfax_print_page)
 };
 gx_device_dfax far_data gs_dfaxhigh_device =
-{   prn_device_std_body(gx_device_dfax, dfax_procs, "dfaxhigh",
+{ prn_device_std_body(gx_device_dfax, dfax_procs, "dfaxhigh",
 DEFAULT_WIDTH_10THS, DEFAULT_HEIGHT_10THS,
 X_DPI, Y_DPI,
 0,0,0,0,
@@ -33,12 +33,12 @@ X_DPI, Y_DPI,
 #define dfdev ((gx_device_dfax *)dev)
 private int
 dfax_prn_open(gx_device *dev)
-{	dfdev->pageno = 0;
+{ dfdev->pageno = 0;
 return gdev_fax_open(dev);
 }
 private int
 dfax_print_page(gx_device_printer *dev, FILE *prn_stream)
-{	stream_CFE_state state;
+{ stream_CFE_state state;
 static char hdr[64] = "\000PC Research, Inc\000\000\000\000\000\000";
 int code;
 gdev_fax_init_state(&state, (gx_device_fax *)dev);

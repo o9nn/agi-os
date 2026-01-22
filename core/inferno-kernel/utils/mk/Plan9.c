@@ -1,7 +1,7 @@
-#include	"mk.h"
-char 	*shell =	"/bin/rc";
-char 	*shellname =	"rc";
-static	Word	*encodenulls(char*, int);
+#include "mk.h"
+char *shell = "/bin/rc";
+char *shellname = "rc";
+static Word *encodenulls(char*, int);
 void
 readenv(void)
 {

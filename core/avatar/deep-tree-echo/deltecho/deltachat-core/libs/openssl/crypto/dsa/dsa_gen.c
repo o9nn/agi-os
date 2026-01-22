@@ -1,8 +1,8 @@
 #undef GENUINE_DSA
 #ifdef GENUINE_DSA
-# define HASH    EVP_sha()
+# define HASH EVP_sha()
 #else
-# define HASH    EVP_sha1()
+# define HASH EVP_sha1()
 #endif
 #include <openssl/opensslconf.h>
 #ifndef OPENSSL_NO_SHA
@@ -14,7 +14,7 @@
 # include <openssl/sha.h>
 # include "dsa_locl.h"
 # ifdef OPENSSL_FIPS
-#  include <openssl/fips.h>
+# include <openssl/fips.h>
 # endif
 int DSA_generate_parameters_ex(DSA *ret, int bits,
 const unsigned char *seed_in, int seed_len,

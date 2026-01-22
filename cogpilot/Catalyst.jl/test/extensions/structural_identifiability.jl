@@ -250,8 +250,8 @@ id_report = assess_identifiability(rs; measured_quantities = [:x2], loglevel)
 :k1 => :globally
 )
 # Example from
-#   Identifiability of chemical reaction networks
-#   DOI: 10.1007/s10910-007-9307-x
+# Identifiability of chemical reaction networks
+# DOI: 10.1007/s10910-007-9307-x
 # The rate constants a, b, c are not identifiable even if all of the species
 # are observed.
 rs = @reaction_network begin
@@ -264,9 +264,9 @@ id_report = assess_identifiability(rs; measured_quantities = [:A0, :A1, :A2], lo
 :A0 => :globally,
 :A1 => :globally,
 :A2 => :globally,
-:a  => :nonidentifiable,
-:b  => :nonidentifiable,
-:c  => :nonidentifiable
+:a => :nonidentifiable,
+:b => :nonidentifiable,
+:c => :nonidentifiable
 )
 # Test with no parameters
 rs = @reaction_network begin

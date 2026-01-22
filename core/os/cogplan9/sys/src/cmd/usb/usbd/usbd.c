@@ -705,10 +705,10 @@ free(s);
 static void
 args(void)
 {
-getenvint("usbdebug",	&usbdebug);
-getenvint("usbfsdebug",	&usbfsdebug);
-getenvdrvargs("kbargs",    "kb");
-getenvdrvargs("diskargs",  "disk");
+getenvint("usbdebug", &usbdebug);
+getenvint("usbfsdebug", &usbfsdebug);
+getenvdrvargs("kbargs", "kb");
+getenvdrvargs("diskargs", "disk");
 getenvdrvargs("etherargs", "ether");
 }
 static void

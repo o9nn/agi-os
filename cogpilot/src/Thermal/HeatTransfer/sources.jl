@@ -22,7 +22,7 @@ port = HeatPort()
 end
 @equations begin
 port.Q_flow ~ ifelse(alpha == 0.0,
--Q_flow,  # Simplified equation when alpha is 0
+-Q_flow, # Simplified equation when alpha is 0
 -Q_flow * (1 + alpha * (port.T - T_ref)))
 end
 end

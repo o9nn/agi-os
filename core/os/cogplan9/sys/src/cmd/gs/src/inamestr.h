@@ -1,5 +1,5 @@
 #ifndef inamestr_INCLUDED
-#  define inamestr_INCLUDED
+# define inamestr_INCLUDED
 #include "inameidx.h"
 #define NAME_HASH_PERMUTATION_DATA\
 1, 87, 49, 12, 176, 178, 102, 166, 121, 193, 6, 84, 249, 230, 44, 163,\
@@ -29,9 +29,9 @@ hash = (hash << 8) | hperm[(byte)hash ^ *p++];\
 END
 typedef struct name_string_s {
 #if EXTEND_NAMES
-#  define name_extension_bits 6
+# define name_extension_bits 6
 #else
-#  define name_extension_bits 0
+# define name_extension_bits 0
 #endif
 unsigned next_index:16 + name_extension_bits;
 unsigned foreign_string:1;

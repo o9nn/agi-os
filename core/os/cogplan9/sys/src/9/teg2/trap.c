@@ -6,95 +6,95 @@
 #include "../port/error.h"
 #include "ureg.h"
 #include "arm.h"
-#define ISSGI(irq)	((uint)(irq) < Nsgi)
+#define ISSGI(irq) ((uint)(irq) < Nsgi)
 enum {
 Debug = 0,
 Nvec = 8,
 Bi2long = BI2BY * sizeof(long),
 Nirqs = 1024,
-Nsgi =	16,
-Nppi =	32,
+Nsgi = 16,
+Nppi = 32,
 };
 typedef struct Intrcpuregs Intrcpuregs;
 typedef struct Intrdistregs Intrdistregs;
 struct Intrdistregs {
-ulong	ctl;
-ulong	ctlrtype;
-ulong	distid;
-uchar	_pad0[0x80 - 0xc];
-ulong	grp[32];
-ulong	setena[32];
-ulong	clrena[32];
-ulong	setpend[32];
-ulong	clrpend[32];
-ulong	setact[32];
-ulong	clract[32];
-uchar	pri[1020];
-ulong	_rsrvd1;
-uchar	targ[1020];
-ulong	_rsrvd2;
-ulong	cfg[64];
-ulong	_pad1[64];
-ulong	nsac[64];
-ulong	swgen;
-uchar	_pad2[0xf10 - 0xf04];
-uchar	clrsgipend[16];
-uchar	setsgipend[16];
+ulong ctl;
+ulong ctlrtype;
+ulong distid;
+uchar _pad0[0x80 - 0xc];
+ulong grp[32];
+ulong setena[32];
+ulong clrena[32];
+ulong setpend[32];
+ulong clrpend[32];
+ulong setact[32];
+ulong clract[32];
+uchar pri[1020];
+ulong _rsrvd1;
+uchar targ[1020];
+ulong _rsrvd2;
+ulong cfg[64];
+ulong _pad1[64];
+ulong nsac[64];
+ulong swgen;
+uchar _pad2[0xf10 - 0xf04];
+uchar clrsgipend[16];
+uchar setsgipend[16];
 };
 enum {
-Forw2cpuif =	1,
-Cpunoshft =	5,
-Cpunomask =	MASK(3),
-Intrlines =	MASK(5),
-Level =		0<<1,
-Edge =		1<<1,
-Toall =		0<<0,
-To1 =		1<<0,
-Totargets =	0,
-Tonotme =	1<<24,
-Tome =		2<<24,
+Forw2cpuif = 1,
+Cpunoshft = 5,
+Cpunomask = MASK(3),
+Intrlines = MASK(5),
+Level = 0<<1,
+Edge = 1<<1,
+Toall = 0<<0,
+To1 = 1<<0,
+Totargets = 0,
+Tonotme = 1<<24,
+Tome = 2<<24,
 };
 struct Intrcpuregs {
-ulong	ctl;
-ulong	primask;
-ulong	binpt;
-ulong	ack;
-ulong	end;
-ulong	runpri;
-ulong	hipripend;
-ulong	alibinpt;
-ulong	aliack;
-ulong	aliend;
-ulong	alihipripend;
-uchar	_pad0[0xd0 - 0x2c];
-ulong	actpri[4];
-ulong	nsactpri[4];
-uchar	_pad0[0xfc - 0xf0];
-ulong	ifid;
-uchar	_pad0[0x1000 - 0x100];
-ulong	deact;
+ulong ctl;
+ulong primask;
+ulong binpt;
+ulong ack;
+ulong end;
+ulong runpri;
+ulong hipripend;
+ulong alibinpt;
+ulong aliack;
+ulong aliend;
+ulong alihipripend;
+uchar _pad0[0xd0 - 0x2c];
+ulong actpri[4];
+ulong nsactpri[4];
+uchar _pad0[0xfc - 0xf0];
+ulong ifid;
+uchar _pad0[0x1000 - 0x100];
+ulong deact;
 };
 enum {
-Enable =	1,
-Eoinodeact =	1<<9,
-Intrmask =	MASK(10),
-Cpuidshift =	10,
-Cpuidmask =	MASK(3),
-Archversshift =	16,
-Archversmask =	MASK(4),
+Enable = 1,
+Eoinodeact = 1<<9,
+Intrmask = MASK(10),
+Cpuidshift = 10,
+Cpuidmask = MASK(3),
+Archversshift = 16,
+Archversmask = MASK(4),
 };
 typedef struct Vctl Vctl;
 typedef struct Vctl {
-Vctl*	next;
-char	*name;
-void	(*f)(Ureg*, void*);
-void*	a;
+Vctl* next;
+char *name;
+void (*f)(Ureg*, void*);
+void* a;
 } Vctl;
 static Lock vctllock;
 static Vctl* vctl[Nirqs];
 typedef struct Vpage0 {
-void	(*vectors[Nvec])(void);
-u32int	vtable[Nvec];
+void (*vectors[Nvec])(void);
+u32int vtable[Nvec];
 } Vpage0;
 enum
 {
@@ -323,7 +323,7 @@ setr13(PsrMund, m->sund);
 setr13(PsrMsys, m->ssys);
 splx(s);
 assert((idp->distid & MASK(12)) == 0x43b);
-assert((icp->ifid   & MASK(12)) == 0x43b);
+assert((icp->ifid & MASK(12)) == 0x43b);
 ilock(&distlock);
 idp->ctl = 0;
 icp->ctl = 0;

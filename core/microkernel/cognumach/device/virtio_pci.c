@@ -3,9 +3,9 @@
 #include <kern/printf.h>
 #include <kern/kalloc.h>
 #include <machine/pio.h>
-#define VIRTIO_PCI_VENDOR_ID    0x1AF4
-#define VIRTIO_PCI_DEVICE_MIN   0x1000
-#define VIRTIO_PCI_DEVICE_MAX   0x103F
+#define VIRTIO_PCI_VENDOR_ID 0x1AF4
+#define VIRTIO_PCI_DEVICE_MIN 0x1000
+#define VIRTIO_PCI_DEVICE_MAX 0x103F
 struct pci_dev {
 uint16_t vendor_id;
 uint16_t device_id;

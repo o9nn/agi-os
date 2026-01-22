@@ -8,22 +8,22 @@
 #include <frame.h>
 #include "flayer.h"
 #include "samterm.h"
-int	mainstacksize = 16*1024;
-Text	cmd;
-Rune	*scratch;
-long	nscralloc;
-Cursor	*cursor;
-Flayer	*which = 0;
-Flayer	*work = 0;
-long	snarflen;
-long	typestart = -1;
-long	typeend = -1;
-long	typeesc = -1;
-long	modified = 0;
-char	hostlock = 1;
-char	hasunlocked = 0;
-int	maxtab = 8;
-int	autoindent;
+int mainstacksize = 16*1024;
+Text cmd;
+Rune *scratch;
+long nscralloc;
+Cursor *cursor;
+Flayer *which = 0;
+Flayer *work = 0;
+long snarflen;
+long typestart = -1;
+long typeend = -1;
+long typeesc = -1;
+long modified = 0;
+char hostlock = 1;
+char hasunlocked = 0;
+int maxtab = 8;
+int autoindent;
 void
 threadmain(int argc, char *argv[])
 {
@@ -379,17 +379,17 @@ outTslS(Ttype, t->tag, typestart, scratch);
 typestart = -1;
 typeend = -1;
 }
-#define	BACKSCROLLKEY	Kup
-#define	ENDKEY	Kend
-#define	ESC		0x1B
-#define	HOMEKEY	Khome
-#define	LEFTARROW	Kleft
-#define	LINEEND	0x05
-#define	LINESTART	0x01
-#define	PAGEDOWN	Kpgdown
-#define	PAGEUP	Kpgup
-#define	RIGHTARROW	Kright
-#define	SCROLLKEY	Kdown
+#define BACKSCROLLKEY Kup
+#define ENDKEY Kend
+#define ESC 0x1B
+#define HOMEKEY Khome
+#define LEFTARROW Kleft
+#define LINEEND 0x05
+#define LINESTART 0x01
+#define PAGEDOWN Kpgdown
+#define PAGEUP Kpgup
+#define RIGHTARROW Kright
+#define SCROLLKEY Kdown
 int
 nontypingkey(int c)
 {

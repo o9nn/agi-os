@@ -1,15 +1,15 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"../port/error.h"
-#include	"usb.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "../port/error.h"
+#include "usb.h"
 #define XPRINT if(debug)print
 static int Chatty = 0;
 static int debug = 0;
-static	char	Estalled[] = "usb endpoint stalled";
+static char Estalled[] = "usb endpoint stalled";
 enum
 {
 Cmd = 0,
@@ -20,54 +20,54 @@ Flbaseadd = 8,
 SOFMod = 0xC,
 Portsc0 = 0x10,
 Portsc1 = 0x12,
-Suspend =		1<<12,
-PortReset =		1<<9,
-SlowDevice =		1<<8,
-ResumeDetect =	1<<6,
-PortChange =		1<<3,
-PortEnable =		1<<2,
-StatusChange =	1<<1,
-DevicePresent =	1<<0,
-NFRAME = 	1024,
-FRAMESIZE=	NFRAME*sizeof(ulong),
-Vf =			1<<2,
-IsQH =		1<<1,
-Terminate =	1<<0,
-SPD =		1<<29,
-ErrLimit0 =	0<<27,
-ErrLimit1 =	1<<27,
-ErrLimit2 =	2<<27,
-ErrLimit3 =	3<<27,
-LowSpeed =	1<<26,
-IsoSelect =	1<<25,
-IOC =		1<<24,
-Active =		1<<23,
-Stalled =		1<<22,
-DataBufferErr =	1<<21,
-Babbling =	1<<20,
-NAKed =		1<<19,
+Suspend = 1<<12,
+PortReset = 1<<9,
+SlowDevice = 1<<8,
+ResumeDetect = 1<<6,
+PortChange = 1<<3,
+PortEnable = 1<<2,
+StatusChange = 1<<1,
+DevicePresent = 1<<0,
+NFRAME = 1024,
+FRAMESIZE= NFRAME*sizeof(ulong),
+Vf = 1<<2,
+IsQH = 1<<1,
+Terminate = 1<<0,
+SPD = 1<<29,
+ErrLimit0 = 0<<27,
+ErrLimit1 = 1<<27,
+ErrLimit2 = 2<<27,
+ErrLimit3 = 3<<27,
+LowSpeed = 1<<26,
+IsoSelect = 1<<25,
+IOC = 1<<24,
+Active = 1<<23,
+Stalled = 1<<22,
+DataBufferErr = 1<<21,
+Babbling = 1<<20,
+NAKed = 1<<19,
 CRCorTimeout = 1<<18,
-BitstuffErr =	1<<17,
+BitstuffErr = 1<<17,
 AnyError = (Stalled | DataBufferErr | Babbling | NAKed | CRCorTimeout | BitstuffErr),
-IsDATA1 =	1<<19,
-CancelTD=	1<<0,
-IsoClean=		1<<2,
+IsDATA1 = 1<<19,
+CancelTD= 1<<0,
+IsoClean= 1<<2,
 };
 static struct
 {
-int	bit;
-char	*name;
+int bit;
+char *name;
 }
 portstatus[] =
 {
-{ Suspend,		"suspend", },
-{ PortReset,		"reset", },
-{ SlowDevice,		"lowspeed", },
-{ ResumeDetect,	"resume", },
-{ PortChange,		"portchange", },
-{ PortEnable,		"enable", },
-{ StatusChange,	"statuschange", },
-{ DevicePresent,	"present", },
+{ Suspend, "suspend", },
+{ PortReset, "reset", },
+{ SlowDevice, "lowspeed", },
+{ ResumeDetect, "resume", },
+{ PortChange, "portchange", },
+{ PortEnable, "enable", },
+{ StatusChange, "statuschange", },
+{ DevicePresent, "present", },
 };
 typedef struct Ctlr Ctlr;
 typedef struct Endptx Endptx;
@@ -76,72 +76,72 @@ typedef struct TD TD;
 struct Ctlr
 {
 Lock;
-Ctlr*	next;
-Pcidev*	pcidev;
-int	active;
-int	io;
-ulong*	frames;
-ulong*	frameld;
-QLock	resetl;
-TD*	tdpool;
-TD*	freetd;
-QH*	qhpool;
-QH*	freeqh;
-QH*	ctlq;
-QH*	bwsop;
-QH*	bulkq;
-QH*	recvq;
-Udev*	ports[2];
+Ctlr* next;
+Pcidev* pcidev;
+int active;
+int io;
+ulong* frames;
+ulong* frameld;
+QLock resetl;
+TD* tdpool;
+TD* freetd;
+QH* qhpool;
+QH* freeqh;
+QH* ctlq;
+QH* bwsop;
+QH* bulkq;
+QH* recvq;
+Udev* ports[2];
 struct {
 Lock;
-Endpt*	f;
+Endpt* f;
 } activends;
-long		usbints;
-long		framenumber;
-long		frameptr;
-long		usbbogus;
+long usbints;
+long framenumber;
+long frameptr;
+long usbbogus;
 };
-#define	IN(x)	ins(ctlr->io+(x))
-#define	OUT(x, v)	outs(ctlr->io+(x), (v))
+#define IN(x) ins(ctlr->io+(x))
+#define OUT(x, v) outs(ctlr->io+(x), (v))
 static Ctlr* ctlrhead;
 static Ctlr* ctlrtail;
 struct Endptx
 {
-QH*		epq;
-void*	tdalloc;
-void*	bpalloc;
-uchar*	bp0;
-TD	*	td0;
-TD	*	etd;
-TD	*	xtd;
+QH* epq;
+void* tdalloc;
+void* bpalloc;
+uchar* bp0;
+TD * td0;
+TD * etd;
+TD * xtd;
 };
 struct TD
 {
-ulong	link;
-ulong	status;
-ulong	dev;
-ulong	buffer;
-ulong	flags;
+ulong link;
+ulong status;
+ulong dev;
+ulong buffer;
+ulong flags;
 union{
-Block*	bp;
-ulong	offset;
+Block* bp;
+ulong offset;
 };
-Endpt*	ep;
-TD*		next;
+Endpt* ep;
+TD* next;
 };
-#define	TFOL(p)	((TD*)KADDR((ulong)(p) & ~(0xF|PCIWINDOW)))
+#define TFOL(p) ((TD*)KADDR((ulong)(p) & ~(0xF|PCIWINDOW)))
 struct QH
 {
-ulong	head;
-ulong	entries;
-QH*		hlink;
-TD*		first;
-QH*		next;
-TD*		last;
-ulong	_d1;
-ulong	_d2;
+ulong head;
+ulong entries;
+QH* hlink;
+TD* first;
+QH* next;
+TD* last;
+ulong _d1;
+ulong _d2;
 };
-#define	QFOL(p)	((QH*)KADDR((ulong)(p) & ~(0xF|PCIWINDOW)))
+#define QFOL(p) ((QH*)KADDR((ulong)(p) & ~(0xF|PCIWINDOW)))
 static TD *
 alloctd(Ctlr *ctlr)
 {
@@ -736,7 +736,7 @@ panic("epbulk: allocqh");
 queueqh(ctlr, x->epq);
 }
 }
-static	int	ioport[] = {-1, Portsc0, Portsc1};
+static int ioport[] = {-1, Portsc0, Portsc1};
 static void
 portreset(Usbhost *uh, int port)
 {

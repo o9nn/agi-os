@@ -13,7 +13,7 @@
 #include <machine/spl.h>
 void ipc_host_init(void)
 {
-ipc_port_t	port;
+ipc_port_t port;
 port = ipc_port_alloc_kernel();
 if (port == IP_NULL)
 panic("ipc_host_init");
@@ -37,9 +37,9 @@ return ipc_port_copyout_send(sright, current_space());
 }
 void
 ipc_processor_init(
-processor_t	processor)
+processor_t processor)
 {
-ipc_port_t	port;
+ipc_port_t port;
 port = ipc_port_alloc_kernel();
 if (port == IP_NULL)
 panic("ipc_processor_init");
@@ -48,9 +48,9 @@ ipc_kobject_set(port, (ipc_kobject_t) processor, IKOT_PROCESSOR);
 }
 void
 ipc_pset_init(
-processor_set_t		pset)
+processor_set_t pset)
 {
-ipc_port_t	port;
+ipc_port_t port;
 port = ipc_port_alloc_kernel();
 if (port == IP_NULL)
 panic("ipc_pset_init");
@@ -62,7 +62,7 @@ pset->pset_name_self = port;
 }
 void
 ipc_pset_enable(
-processor_set_t		pset)
+processor_set_t pset)
 {
 pset_lock(pset);
 if (pset->active) {
@@ -78,7 +78,7 @@ pset_unlock(pset);
 }
 void
 ipc_pset_disable(
-processor_set_t		pset)
+processor_set_t pset)
 {
 ipc_kobject_set(pset->pset_self, IKO_NULL, IKOT_NONE);
 ipc_kobject_set(pset->pset_name_self, IKO_NULL, IKOT_NONE);
@@ -86,15 +86,15 @@ pset->ref_count -= 2;
 }
 void
 ipc_pset_terminate(
-processor_set_t		pset)
+processor_set_t pset)
 {
 ipc_port_dealloc_kernel(pset->pset_self);
 ipc_port_dealloc_kernel(pset->pset_name_self);
 }
 kern_return_t
 processor_set_default(
-const host_t	host,
-processor_set_t	*pset)
+const host_t host,
+processor_set_t *pset)
 {
 if (host == HOST_NULL)
 return KERN_INVALID_ARGUMENT;
@@ -104,7 +104,7 @@ return KERN_SUCCESS;
 }
 host_t
 convert_port_to_host(
-ipc_port_t	port)
+ipc_port_t port)
 {
 host_t host = HOST_NULL;
 if (IP_VALID(port)) {
@@ -119,7 +119,7 @@ return host;
 }
 host_t
 convert_port_to_host_priv(
-ipc_port_t	port)
+ipc_port_t port)
 {
 host_t host = HOST_NULL;
 if (IP_VALID(port)) {
@@ -133,7 +133,7 @@ return host;
 }
 processor_t
 convert_port_to_processor(
-ipc_port_t	port)
+ipc_port_t port)
 {
 processor_t processor = PROCESSOR_NULL;
 if (IP_VALID(port)) {
@@ -147,7 +147,7 @@ return processor;
 }
 processor_set_t
 convert_port_to_pset(
-ipc_port_t	port)
+ipc_port_t port)
 {
 processor_set_t pset = PROCESSOR_SET_NULL;
 if (IP_VALID(port)) {
@@ -163,7 +163,7 @@ return pset;
 }
 processor_set_t
 convert_port_to_pset_name(
-ipc_port_t	port)
+ipc_port_t port)
 {
 processor_set_t pset = PROCESSOR_SET_NULL;
 if (IP_VALID(port)) {
@@ -180,7 +180,7 @@ return pset;
 }
 ipc_port_t
 convert_host_to_port(
-host_t		host)
+host_t host)
 {
 ipc_port_t port;
 port = ipc_port_make_send(host->host_self);
@@ -195,7 +195,7 @@ return port;
 }
 ipc_port_t
 convert_pset_to_port(
-processor_set_t		pset)
+processor_set_t pset)
 {
 ipc_port_t port;
 pset_lock(pset);
@@ -209,7 +209,7 @@ return port;
 }
 ipc_port_t
 convert_pset_name_to_port(
-processor_set_t		pset)
+processor_set_t pset)
 {
 ipc_port_t port;
 pset_lock(pset);

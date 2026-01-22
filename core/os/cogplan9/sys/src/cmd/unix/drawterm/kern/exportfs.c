@@ -1,82 +1,82 @@
-#include	"u.h"
-#include	"lib.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
-typedef	struct Fid	Fid;
-typedef	struct Export	Export;
-typedef	struct Exq	Exq;
-#define	nil	((void*)0)
+#include "u.h"
+#include "lib.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
+typedef struct Fid Fid;
+typedef struct Export Export;
+typedef struct Exq Exq;
+#define nil ((void*)0)
 enum
 {
-Nfidhash	= 1,
-MAXRPC		= MAXMSG+MAXFDATA,
-MAXDIRREAD	= (MAXFDATA/DIRLEN)*DIRLEN
+Nfidhash = 1,
+MAXRPC = MAXMSG+MAXFDATA,
+MAXDIRREAD = (MAXFDATA/DIRLEN)*DIRLEN
 };
 struct Export
 {
-Ref	r;
-Exq*	work;
-Lock	fidlock;
-Fid*	fid[Nfidhash];
-Chan*	root;
-Chan*	io;
-Pgrp*	pgrp;
-int	npart;
-char	part[MAXRPC];
+Ref r;
+Exq* work;
+Lock fidlock;
+Fid* fid[Nfidhash];
+Chan* root;
+Chan* io;
+Pgrp* pgrp;
+int npart;
+char part[MAXRPC];
 };
 struct Fid
 {
-Fid*	next;
-Fid**	last;
-Chan*	chan;
-long	offset;
-int	fid;
-int	ref;
-int	attached;
+Fid* next;
+Fid** last;
+Chan* chan;
+long offset;
+int fid;
+int ref;
+int attached;
 };
 struct Exq
 {
-Lock	lk;
-int	nointr;
-int	noresponse;
-Exq*	next;
-int	shut;
-Export*	export;
-void*	slave;
-Fcall	rpc;
-char	buf[MAXRPC];
+Lock lk;
+int nointr;
+int noresponse;
+Exq* next;
+int shut;
+Export* export;
+void* slave;
+Fcall rpc;
+char buf[MAXRPC];
 };
 struct
 {
-Lock	l;
-Qlock	qwait;
-Rendez	rwait;
-Exq	*head;
-Exq	*tail;
+Lock l;
+Qlock qwait;
+Rendez rwait;
+Exq *head;
+Exq *tail;
 }exq;
-static void	exshutdown(Export*);
-static void	exflush(Export*, int, int);
-static void	exslave(void*);
-static void	exfree(Export*);
-static void	exportproc(Export*);
-static char*	Exauth(Export*, Fcall*);
-static char*	Exattach(Export*, Fcall*);
-static char*	Exclunk(Export*, Fcall*);
-static char*	Excreate(Export*, Fcall*);
-static char*	Exopen(Export*, Fcall*);
-static char*	Exread(Export*, Fcall*);
-static char*	Exremove(Export*, Fcall*);
-static char*	Exstat(Export*, Fcall*);
-static char*	Exwalk(Export*, Fcall*);
-static char*	Exwrite(Export*, Fcall*);
-static char*	Exwstat(Export*, Fcall*);
-static char*	Exversion(Export*, Fcall*);
-static char	*(*fcalls[Tmax])(Export*, Fcall*);
-static char	Enofid[]   = "no such fid";
-static char	Eseekdir[] = "can't seek on a directory";
-static char	Ereaddir[] = "unaligned read of a directory";
-static int	exdebug = 0;
+static void exshutdown(Export*);
+static void exflush(Export*, int, int);
+static void exslave(void*);
+static void exfree(Export*);
+static void exportproc(Export*);
+static char* Exauth(Export*, Fcall*);
+static char* Exattach(Export*, Fcall*);
+static char* Exclunk(Export*, Fcall*);
+static char* Excreate(Export*, Fcall*);
+static char* Exopen(Export*, Fcall*);
+static char* Exread(Export*, Fcall*);
+static char* Exremove(Export*, Fcall*);
+static char* Exstat(Export*, Fcall*);
+static char* Exwalk(Export*, Fcall*);
+static char* Exwrite(Export*, Fcall*);
+static char* Exwstat(Export*, Fcall*);
+static char* Exversion(Export*, Fcall*);
+static char *(*fcalls[Tmax])(Export*, Fcall*);
+static char Enofid[] = "no such fid";
+static char Eseekdir[] = "can't seek on a directory";
+static char Ereaddir[] = "unaligned read of a directory";
+static int exdebug = 0;
 int
 sysexport(int fd)
 {

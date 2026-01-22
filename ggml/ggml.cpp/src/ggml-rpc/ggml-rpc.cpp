@@ -10,20 +10,20 @@
 #include <unordered_map>
 #include <unordered_set>
 #ifdef _WIN32
-#  define WIN32_LEAN_AND_MEAN
-#  ifndef NOMINMAX
-#     define NOMINMAX
-#  endif
-#  include <windows.h>
-#  include <winsock2.h>
+# define WIN32_LEAN_AND_MEAN
+# ifndef NOMINMAX
+# define NOMINMAX
+# endif
+# include <windows.h>
+# include <winsock2.h>
 #else
-#  include <arpa/inet.h>
-#  include <sys/socket.h>
-#  include <sys/types.h>
-#  include <netinet/in.h>
-#  include <netinet/tcp.h>
-#  include <netdb.h>
-#  include <unistd.h>
+# include <arpa/inet.h>
+# include <sys/socket.h>
+# include <sys/types.h>
+# include <netinet/in.h>
+# include <netinet/tcp.h>
+# include <netdb.h>
+# include <unistd.h>
 #endif
 #include <cstring>
 #include <fstream>
@@ -56,8 +56,8 @@ uint64_t buffer;
 uint32_t ne[GGML_MAX_DIMS];
 uint32_t nb[GGML_MAX_DIMS];
 uint32_t op;
-int32_t  op_params[GGML_MAX_OP_PARAMS / sizeof(int32_t)];
-int32_t  flags;
+int32_t op_params[GGML_MAX_OP_PARAMS / sizeof(int32_t)];
+int32_t flags;
 uint64_t src[GGML_MAX_SRC];
 uint64_t view_src;
 uint64_t view_offs;
@@ -1049,9 +1049,9 @@ if (src == nullptr || dst == nullptr || src->buffer == nullptr || dst->buffer ==
 GGML_LOG_ERROR("[%s] error deserializing tensors\n", __func__);
 return false;
 }
-uint64_t src_size   = (uint64_t) ggml_nbytes(src);
-uint64_t dst_data   = (uint64_t) dst->data;
-uint64_t dst_base   = (uint64_t) ggml_backend_buffer_get_base(dst->buffer);
+uint64_t src_size = (uint64_t) ggml_nbytes(src);
+uint64_t dst_data = (uint64_t) dst->data;
+uint64_t dst_base = (uint64_t) ggml_backend_buffer_get_base(dst->buffer);
 uint64_t dst_buf_sz = (uint64_t) ggml_backend_buffer_get_size(dst->buffer);
 if (dst_data + src_size > dst_base + dst_buf_sz) {
 GGML_PRINT_DEBUG("[%s] out-of-bounds write in rpc_server::copy_tensor:\n"
@@ -1447,9 +1447,9 @@ return GGML_BACKEND_DEVICE_TYPE_GPU;
 GGML_UNUSED(dev);
 }
 static void ggml_backend_rpc_device_get_props(ggml_backend_dev_t dev, struct ggml_backend_dev_props * props) {
-props->name        = ggml_backend_rpc_device_get_name(dev);
+props->name = ggml_backend_rpc_device_get_name(dev);
 props->description = ggml_backend_rpc_device_get_description(dev);
-props->type        = ggml_backend_rpc_device_get_type(dev);
+props->type = ggml_backend_rpc_device_get_type(dev);
 ggml_backend_rpc_device_get_memory(dev, &props->memory_free, &props->memory_total);
 props->caps = {
 false,

@@ -381,8 +381,6 @@ def test_chunked_prefill_preempt():
     assert out.num_batched_tokens == max_num_batched_tokens
 @pytest.mark.parametrize('num_scheduler_steps', [1, 5])
 def test_chunked_prefill_spec_prefill(num_scheduler_steps):
-    """prefill batch depending on whether multi-step scheduling is enabled"""
-    'or not'
     block_size = 4
     max_seqs = 30
     max_model_len = 200

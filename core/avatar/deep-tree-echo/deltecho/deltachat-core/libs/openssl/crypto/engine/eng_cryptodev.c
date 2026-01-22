@@ -6,10 +6,10 @@
 (defined(OpenBSD) || defined(__FreeBSD__))
 # include <sys/param.h>
 # if (OpenBSD >= 200112) || ((__FreeBSD_version >= 470101 && __FreeBSD_version < 500000) || __FreeBSD_version >= 500041)
-#  define HAVE_CRYPTODEV
+# define HAVE_CRYPTODEV
 # endif
 # if (OpenBSD >= 200110)
-#  define HAVE_SYSLOG_R
+# define HAVE_SYSLOG_R
 # endif
 #endif
 #ifndef HAVE_CRYPTODEV
@@ -682,7 +682,7 @@ sizeof(struct dev_crypto_state),
 const EVP_MD cryptodev_md5 = {
 NID_md5,
 NID_undef,
-16  ,
+16 ,
 EVP_MD_FLAG_ONESHOT,
 cryptodev_digest_init,
 cryptodev_digest_update,
@@ -690,7 +690,7 @@ cryptodev_digest_final,
 cryptodev_digest_copy,
 cryptodev_digest_cleanup,
 EVP_PKEY_NULL_method,
-64  ,
+64 ,
 sizeof(struct dev_crypto_state),
 };
 # endif

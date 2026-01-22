@@ -9,24 +9,24 @@ extern void pcb_init (task_t parent_task, thread_t thread);
 extern void pcb_terminate (thread_t thread);
 extern void pcb_collect (thread_t thread);
 extern kern_return_t thread_setstatus (
-thread_t        thread,
-int             flavor,
-thread_state_t  tstate,
-unsigned int    count);
+thread_t thread,
+int flavor,
+thread_state_t tstate,
+unsigned int count);
 extern kern_return_t thread_getstatus (
-thread_t        thread,
-int             flavor,
-thread_state_t  tstate,
-unsigned int    *count);
+thread_t thread,
+int flavor,
+thread_state_t tstate,
+unsigned int *count);
 extern void thread_set_syscall_return (
-thread_t        thread,
-kern_return_t   retval);
+thread_t thread,
+kern_return_t retval);
 extern vm_offset_t user_stack_low (vm_size_t stack_size);
 extern vm_offset_t set_user_regs (
 vm_offset_t stack_base,
 vm_offset_t stack_size,
 const struct exec_info *exec_info,
-vm_size_t   arg_size);
+vm_size_t arg_size);
 extern void load_context (thread_t new);
 extern void stack_attach (
 thread_t thread,

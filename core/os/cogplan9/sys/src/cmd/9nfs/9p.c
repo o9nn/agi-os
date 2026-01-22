@@ -1,20 +1,20 @@
 #include "all.h"
 static char *tnames[] = {
-[Tversion]	"version",
-[Tauth]		"auth",
-[Tattach]	"attach",
-[Tflush]	"flush",
-[Twalk]		"walk",
-[Topen]		"open",
-[Tcreate]	"create",
-[Tread]		"read",
-[Twrite]	"write",
-[Tclunk]	"clunk",
-[Tremove]	"remove",
-[Tstat]		"stat",
-[Twstat]	"wstat",
+[Tversion] "version",
+[Tauth] "auth",
+[Tattach] "attach",
+[Tflush] "flush",
+[Twalk] "walk",
+[Topen] "open",
+[Tcreate] "create",
+[Tread] "read",
+[Twrite] "write",
+[Tclunk] "clunk",
+[Tremove] "remove",
+[Tstat] "stat",
+[Twstat] "wstat",
 };
-int	messagesize = IOHDRSZ+Maxfdata;
+int messagesize = IOHDRSZ+Maxfdata;
 int
 xmesg(Session *s, int t)
 {
@@ -73,10 +73,10 @@ return 0;
 s->f.fid = f - s->fids;
 return xmesg(s, Tclunk);
 }
-#define	UNLINK(p)	((p)->prev->next = (p)->next, (p)->next->prev = (p)->prev)
-#define	LINK(h, p)	((p)->next = (h)->next, (p)->prev = (h), \
+#define UNLINK(p) ((p)->prev->next = (p)->next, (p)->next->prev = (p)->prev)
+#define LINK(h, p) ((p)->next = (h)->next, (p)->prev = (h), \
 (h)->next->prev = (p), (h)->next = (p))
-#define	TOFRONT(h, p)	((h)->next != (p) ? (UNLINK(p), LINK(h,p)) : 0)
+#define TOFRONT(h, p) ((h)->next != (p) ? (UNLINK(p), LINK(h,p)) : 0)
 Fid *
 newfid(Session *s)
 {

@@ -2,7 +2,7 @@ implement P;
 # Original by Steve Arons, based on Plan 9 p
 include "sys.m";
 sys: Sys;
-FD:	import Sys;
+FD: import Sys;
 include "draw.m";
 include "string.m";
 str: String;
@@ -13,18 +13,18 @@ include "sh.m";
 stderr: ref FD;
 outb, cons: ref Iobuf;
 drawctxt: ref Draw->Context;
-nlines := 22;	# 1/3rd 66-line nroff page (!)
+nlines := 22; # 1/3rd 66-line nroff page (!)
 progname := "p";
 P: module
 {
-init:  fn(ctxt:  ref Draw->Context, argv:  list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 usage()
 {
 sys->fprint(stderr, "Usage: p [-number] [file...]\n");
 raise "fail:usage";
 }
-init(ctxt: ref Draw->Context, argv:  list of string)
+init(ctxt: ref Draw->Context, argv: list of string)
 {
 sys = load Sys Sys->PATH;
 bufio = load Bufio Bufio->PATH;

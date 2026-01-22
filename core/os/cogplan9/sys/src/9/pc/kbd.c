@@ -1,160 +1,160 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"../port/error.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "../port/error.h"
 enum {
-Data=		0x60,
-Status=		0x64,
-Inready=	0x01,
-Outbusy=	0x02,
-Sysflag=	0x04,
-Cmddata=	0x08,
-Inhibit=	0x10,
-Minready=	0x20,
-Rtimeout=	0x40,
-Parity=	0x80,
-Cmd=		0x64,
-Spec=		0xF800,
-PF=		Spec|0x20,
-View=		Spec|0x00,
-KF=		0xF000,
-Shift=		Spec|0x60,
-Break=		Spec|0x61,
-Ctrl=		Spec|0x62,
-Latin=		Spec|0x63,
-Caps=		Spec|0x64,
-Num=		Spec|0x65,
-Middle=		Spec|0x66,
-Altgr=		Spec|0x67,
-Kmouse=		Spec|0x100,
-No=		0x00,
-Home=		KF|13,
-Up=		KF|14,
-Pgup=		KF|15,
-Print=		KF|16,
-Left=		KF|17,
-Right=		KF|18,
-End=		KF|24,
-Down=		View,
-Pgdown=		KF|19,
-Ins=		KF|20,
-Del=		0x7F,
-Scroll=		KF|21,
-Nscan=	128,
-Int=	0,
+Data= 0x60,
+Status= 0x64,
+Inready= 0x01,
+Outbusy= 0x02,
+Sysflag= 0x04,
+Cmddata= 0x08,
+Inhibit= 0x10,
+Minready= 0x20,
+Rtimeout= 0x40,
+Parity= 0x80,
+Cmd= 0x64,
+Spec= 0xF800,
+PF= Spec|0x20,
+View= Spec|0x00,
+KF= 0xF000,
+Shift= Spec|0x60,
+Break= Spec|0x61,
+Ctrl= Spec|0x62,
+Latin= Spec|0x63,
+Caps= Spec|0x64,
+Num= Spec|0x65,
+Middle= Spec|0x66,
+Altgr= Spec|0x67,
+Kmouse= Spec|0x100,
+No= 0x00,
+Home= KF|13,
+Up= KF|14,
+Pgup= KF|15,
+Print= KF|16,
+Left= KF|17,
+Right= KF|18,
+End= KF|24,
+Down= View,
+Pgdown= KF|19,
+Ins= KF|20,
+Del= 0x7F,
+Scroll= KF|21,
+Nscan= 128,
+Int= 0,
 Ext,
 Nscans,
 };
 Rune kbtab[Nscan] =
 {
-[0x00]	No,	0x1b,	'1',	'2',	'3',	'4',	'5',	'6',
-[0x08]	'7',	'8',	'9',	'0',	'-',	'=',	'\b',	'\t',
-[0x10]	'q',	'w',	'e',	'r',	't',	'y',	'u',	'i',
-[0x18]	'o',	'p',	'[',	']',	'\n',	Ctrl,	'a',	's',
-[0x20]	'd',	'f',	'g',	'h',	'j',	'k',	'l',	';',
-[0x28]	'\'',	'`',	Shift,	'\\',	'z',	'x',	'c',	'v',
-[0x30]	'b',	'n',	'm',	',',	'.',	'/',	Shift,	'*',
-[0x38]	Latin,	' ',	Ctrl,	KF|1,	KF|2,	KF|3,	KF|4,	KF|5,
-[0x40]	KF|6,	KF|7,	KF|8,	KF|9,	KF|10,	Num,	Scroll,	'7',
-[0x48]	'8',	'9',	'-',	'4',	'5',	'6',	'+',	'1',
-[0x50]	'2',	'3',	'0',	'.',	No,	No,	No,	KF|11,
-[0x58]	KF|12,	No,	No,	No,	No,	No,	No,	No,
-[0x60]	No,	No,	No,	No,	No,	No,	No,	No,
-[0x68]	No,	No,	No,	No,	No,	No,	No,	No,
-[0x70]	No,	No,	No,	No,	No,	No,	No,	No,
-[0x78]	No,	View,	No,	Up,	No,	No,	No,	No,
+[0x00] No, 0x1b, '1', '2', '3', '4', '5', '6',
+[0x08] '7', '8', '9', '0', '-', '=', '\b', '\t',
+[0x10] 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i',
+[0x18] 'o', 'p', '[', ']', '\n', Ctrl, 'a', 's',
+[0x20] 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';',
+[0x28] '\'', '`', Shift, '\\', 'z', 'x', 'c', 'v',
+[0x30] 'b', 'n', 'm', ',', '.', '/', Shift, '*',
+[0x38] Latin, ' ', Ctrl, KF|1, KF|2, KF|3, KF|4, KF|5,
+[0x40] KF|6, KF|7, KF|8, KF|9, KF|10, Num, Scroll, '7',
+[0x48] '8', '9', '-', '4', '5', '6', '+', '1',
+[0x50] '2', '3', '0', '.', No, No, No, KF|11,
+[0x58] KF|12, No, No, No, No, No, No, No,
+[0x60] No, No, No, No, No, No, No, No,
+[0x68] No, No, No, No, No, No, No, No,
+[0x70] No, No, No, No, No, No, No, No,
+[0x78] No, View, No, Up, No, No, No, No,
 };
 Rune kbtabshift[Nscan] =
 {
-[0x00]	No,	0x1b,	'!',	'@',	'#',	'$',	'%',	'^',
-[0x08]	'&',	'*',	'(',	')',	'_',	'+',	'\b',	'\t',
-[0x10]	'Q',	'W',	'E',	'R',	'T',	'Y',	'U',	'I',
-[0x18]	'O',	'P',	'{',	'}',	'\n',	Ctrl,	'A',	'S',
-[0x20]	'D',	'F',	'G',	'H',	'J',	'K',	'L',	':',
-[0x28]	'"',	'~',	Shift,	'|',	'Z',	'X',	'C',	'V',
-[0x30]	'B',	'N',	'M',	'<',	'>',	'?',	Shift,	'*',
-[0x38]	Latin,	' ',	Ctrl,	KF|1,	KF|2,	KF|3,	KF|4,	KF|5,
-[0x40]	KF|6,	KF|7,	KF|8,	KF|9,	KF|10,	Num,	Scroll,	'7',
-[0x48]	'8',	'9',	'-',	'4',	'5',	'6',	'+',	'1',
-[0x50]	'2',	'3',	'0',	'.',	No,	No,	No,	KF|11,
-[0x58]	KF|12,	No,	No,	No,	No,	No,	No,	No,
-[0x60]	No,	No,	No,	No,	No,	No,	No,	No,
-[0x68]	No,	No,	No,	No,	No,	No,	No,	No,
-[0x70]	No,	No,	No,	No,	No,	No,	No,	No,
-[0x78]	No,	Up,	No,	Up,	No,	No,	No,	No,
+[0x00] No, 0x1b, '!', '@', '#', '$', '%', '^',
+[0x08] '&', '*', '(', ')', '_', '+', '\b', '\t',
+[0x10] 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I',
+[0x18] 'O', 'P', '{', '}', '\n', Ctrl, 'A', 'S',
+[0x20] 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':',
+[0x28] '"',	'~',	Shift,	'|',	'Z',	'X',	'C',	'V',
+[0x30] 'B', 'N', 'M', '<', '>', '?', Shift, '*',
+[0x38] Latin, ' ', Ctrl, KF|1, KF|2, KF|3, KF|4, KF|5,
+[0x40] KF|6, KF|7, KF|8, KF|9, KF|10, Num, Scroll, '7',
+[0x48] '8', '9', '-', '4', '5', '6', '+', '1',
+[0x50] '2', '3', '0', '.', No, No, No, KF|11,
+[0x58] KF|12, No, No, No, No, No, No, No,
+[0x60] No, No, No, No, No, No, No, No,
+[0x68] No, No, No, No, No, No, No, No,
+[0x70] No, No, No, No, No, No, No, No,
+[0x78] No, Up, No, Up, No, No, No, No,
 };
 Rune kbtabesc1[Nscan] =
 {
-[0x00]	No,	No,	No,	No,	No,	No,	No,	No,
-[0x08]	No,	No,	No,	No,	No,	No,	No,	No,
-[0x10]	No,	No,	No,	No,	No,	No,	No,	No,
-[0x18]	No,	No,	No,	No,	'\n',	Ctrl,	No,	No,
-[0x20]	No,	No,	No,	No,	No,	No,	No,	No,
-[0x28]	No,	No,	Shift,	No,	No,	No,	No,	No,
-[0x30]	No,	No,	No,	No,	No,	'/',	No,	Print,
-[0x38]	Altgr,	No,	No,	No,	No,	No,	No,	No,
-[0x40]	No,	No,	No,	No,	No,	No,	Break,	Home,
-[0x48]	Up,	Pgup,	No,	Left,	No,	Right,	No,	End,
-[0x50]	Down,	Pgdown,	Ins,	Del,	No,	No,	No,	No,
-[0x58]	No,	No,	No,	No,	No,	No,	No,	No,
-[0x60]	No,	No,	No,	No,	No,	No,	No,	No,
-[0x68]	No,	No,	No,	No,	No,	No,	No,	No,
-[0x70]	No,	No,	No,	No,	No,	No,	No,	No,
-[0x78]	No,	Up,	No,	No,	No,	No,	No,	No,
+[0x00] No, No, No, No, No, No, No, No,
+[0x08] No, No, No, No, No, No, No, No,
+[0x10] No, No, No, No, No, No, No, No,
+[0x18] No, No, No, No, '\n', Ctrl, No, No,
+[0x20] No, No, No, No, No, No, No, No,
+[0x28] No, No, Shift, No, No, No, No, No,
+[0x30] No, No, No, No, No, '/', No, Print,
+[0x38] Altgr, No, No, No, No, No, No, No,
+[0x40] No, No, No, No, No, No, Break, Home,
+[0x48] Up, Pgup, No, Left, No, Right, No, End,
+[0x50] Down, Pgdown, Ins, Del, No, No, No, No,
+[0x58] No, No, No, No, No, No, No, No,
+[0x60] No, No, No, No, No, No, No, No,
+[0x68] No, No, No, No, No, No, No, No,
+[0x70] No, No, No, No, No, No, No, No,
+[0x78] No, Up, No, No, No, No, No, No,
 };
 Rune kbtabaltgr[Nscan] =
 {
-[0x00]	No,	No,	No,	No,	No,	No,	No,	No,
-[0x08]	No,	No,	No,	No,	No,	No,	No,	No,
-[0x10]	No,	No,	No,	No,	No,	No,	No,	No,
-[0x18]	No,	No,	No,	No,	'\n',	Ctrl,	No,	No,
-[0x20]	No,	No,	No,	No,	No,	No,	No,	No,
-[0x28]	No,	No,	Shift,	No,	No,	No,	No,	No,
-[0x30]	No,	No,	No,	No,	No,	'/',	No,	Print,
-[0x38]	Altgr,	No,	No,	No,	No,	No,	No,	No,
-[0x40]	No,	No,	No,	No,	No,	No,	Break,	Home,
-[0x48]	Up,	Pgup,	No,	Left,	No,	Right,	No,	End,
-[0x50]	Down,	Pgdown,	Ins,	Del,	No,	No,	No,	No,
-[0x58]	No,	No,	No,	No,	No,	No,	No,	No,
-[0x60]	No,	No,	No,	No,	No,	No,	No,	No,
-[0x68]	No,	No,	No,	No,	No,	No,	No,	No,
-[0x70]	No,	No,	No,	No,	No,	No,	No,	No,
-[0x78]	No,	Up,	No,	No,	No,	No,	No,	No,
+[0x00] No, No, No, No, No, No, No, No,
+[0x08] No, No, No, No, No, No, No, No,
+[0x10] No, No, No, No, No, No, No, No,
+[0x18] No, No, No, No, '\n', Ctrl, No, No,
+[0x20] No, No, No, No, No, No, No, No,
+[0x28] No, No, Shift, No, No, No, No, No,
+[0x30] No, No, No, No, No, '/', No, Print,
+[0x38] Altgr, No, No, No, No, No, No, No,
+[0x40] No, No, No, No, No, No, Break, Home,
+[0x48] Up, Pgup, No, Left, No, Right, No, End,
+[0x50] Down, Pgdown, Ins, Del, No, No, No, No,
+[0x58] No, No, No, No, No, No, No, No,
+[0x60] No, No, No, No, No, No, No, No,
+[0x68] No, No, No, No, No, No, No, No,
+[0x70] No, No, No, No, No, No, No, No,
+[0x78] No, Up, No, No, No, No, No, No,
 };
 Rune kbtabctrl[Nscan] =
 {
-[0x00]	No,	'', 	'', 	'', 	'', 	'', 	'', 	'',
-[0x08]	'', 	'', 	'', 	'', 	'
-', 	'', 	'\b',	'\t',
-[0x10]	'', 	'', 	'', 	'', 	'', 	'', 	'', 	'\t',
-[0x18]	'', 	'', 	'', 	'', 	'\n',	Ctrl,	'', 	'',
-[0x20]	'', 	'', 	'', 	'\b',	'\n',	'', 	'', 	'',
-[0x28]	'', 	No, 	Shift,	'', 	'', 	'', 	'', 	'',
-[0x30]	'', 	'', 	'
-', 	'', 	'', 	'', 	Shift,	'\n',
-[0x38]	Latin,	No, 	Ctrl,	'', 	'', 	'', 	'', 	'',
-[0x40]	'', 	'', 	'', 	'
-', 	'', 	'', 	'', 	'',
-[0x48]	'', 	'', 	'
-', 	'', 	'', 	'', 	'', 	'',
-[0x50]	'', 	'', 	'', 	'', 	No,	No,	No,	'',
-[0x58]	'', 	No,	No,	No,	No,	No,	No,	No,
-[0x60]	No,	No,	No,	No,	No,	No,	No,	No,
-[0x68]	No,	No,	No,	No,	No,	No,	No,	No,
-[0x70]	No,	No,	No,	No,	No,	No,	No,	No,
-[0x78]	No,	'', 	No,	'\b',	No,	No,	No,	No,
+[0x00] No, '', '', '', '', '', '', '',
+[0x08] '', '', '', '', '
+', '', '\b', '\t',
+[0x10] '', '', '', '', '', '', '', '\t',
+[0x18] '', '', '', '', '\n', Ctrl, '', '',
+[0x20] '', '', '', '\b', '\n', '', '', '',
+[0x28] '', No, Shift, '', '', '', '', '',
+[0x30] '', '', '
+', '', '', '', Shift, '\n',
+[0x38] Latin, No, Ctrl, '', '', '', '', '',
+[0x40] '', '', '', '
+', '', '', '', '',
+[0x48] '', '', '
+', '', '', '', '', '',
+[0x50] '', '', '', '', No, No, No, '',
+[0x58] '', No, No, No, No, No, No, No,
+[0x60] No, No, No, No, No, No, No, No,
+[0x68] No, No, No, No, No, No, No, No,
+[0x70] No, No, No, No, No, No, No, No,
+[0x78] No, '', No, '\b', No, No, No, No,
 };
 enum
 {
-Cscs1=		(1<<6),
-Cauxdis=	(1<<5),
-Ckbddis=	(1<<4),
-Csf=		(1<<2),
-Cauxint=	(1<<1),
-Ckbdint=	(1<<0),
+Cscs1= (1<<6),
+Cauxdis= (1<<5),
+Ckbddis= (1<<4),
+Csf= (1<<2),
+Cauxint= (1<<1),
+Ckbdint= (1<<0),
 };
 int mouseshifted;
 void (*kbdmouse)(int);
@@ -265,18 +265,18 @@ return i;
 }
 typedef struct Kbscan Kbscan;
 struct Kbscan {
-int	esc1;
-int	esc2;
-int	alt;
-int	altgr;
-int	caps;
-int	ctl;
-int	num;
-int	shift;
-int	collecting;
-int	nk;
-Rune	kc[5];
-int	buttons;
+int esc1;
+int esc2;
+int alt;
+int altgr;
+int caps;
+int ctl;
+int num;
+int shift;
+int collecting;
+int nk;
+Rune kc[5];
+int buttons;
 };
 Kbscan kbscans[Nscans];
 static int kdebug;

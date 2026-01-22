@@ -9,74 +9,74 @@ typedef struct Type Type;
 typedef struct Medium Medium;
 typedef struct Mode Mode;
 enum {
-Dany		= -1,
-Nmedia		= 16,
-Sflashfs		= 1<<0,
-Snotflash		= 1<<1,
+Dany = -1,
+Nmedia = 16,
+Sflashfs = 1<<0,
+Snotflash = 1<<1,
 };
 enum {
 Tflash,
 Tuart,
 Tether,
 Thard,
-Tany		= -1,
+Tany = -1,
 };
 enum {
-Fnone		= 0x00,
-Fdos		= 0x01,
-Ndos		= 0x00,
-Fboot		= 0x02,
-Nboot		= 0x01,
-Fbootp		= 0x04,
-Nbootp		= 0x02,
-Fflash		= 0x08,
-Fuart		= 0x10,
-NName		= 0x03,
-Fany		= Fbootp|Fboot|Fdos|Fflash|Fuart,
-Fini		= 0x10,
-Fprobe		= 0x80,
+Fnone = 0x00,
+Fdos = 0x01,
+Ndos = 0x00,
+Fboot = 0x02,
+Nboot = 0x01,
+Fbootp = 0x04,
+Nbootp = 0x02,
+Fflash = 0x08,
+Fuart = 0x10,
+NName = 0x03,
+Fany = Fbootp|Fboot|Fdos|Fflash|Fuart,
+Fini = 0x10,
+Fprobe = 0x80,
 };
 enum {
-Mauto		= 0x00,
-Mlocal		= 0x01,
-Manual		= 0x02,
-NMode		= 0x03,
+Mauto = 0x00,
+Mlocal = 0x01,
+Manual = 0x02,
+NMode = 0x03,
 };
 typedef struct Type {
-int	type;
-char	*cname;
-int	flag;
-int	(*init)(void);
-long	(*read)(int, void*, long);
-long	(*seek)(int, long);
+int type;
+char *cname;
+int flag;
+int (*init)(void);
+long (*read)(int, void*, long);
+long (*seek)(int, long);
 Partition* (*setpart)(int, char*);
-char*	name[NName];
-int	mask;
-Medium*	media;
+char* name[NName];
+int mask;
+Medium* media;
 } Type;
 typedef struct Medium {
-Type*	type;
-int	flag;
+Type* type;
+int flag;
 Partition* partition;
 Dos;
-Medium*	next;
+Medium* next;
 } Medium;
 typedef struct Mode {
-char*	name;
-int	mode;
+char* name;
+int mode;
 } Mode;
 static Type types[] = {
-{	Tflash, "flash",
+{ Tflash, "flash",
 Fflash,
 flashinit, 0, 0, 0,
 { 0, "F", 0, }
 },
-{	Tether, "ether",
+{ Tether, "ether",
 Fbootp,
 etherinit, 0, 0, 0,
 { 0, 0, "e", },
 },
-{	Thard, "ata",
+{ Thard, "ata",
 Fini|Fboot|Fdos,
 0, 0, 0, 0,
 { "hd", "h", 0, },
@@ -86,9 +86,9 @@ Fini|Fboot|Fdos,
 static Medium media[Nmedia];
 static Medium *curmedium = media;
 static Mode modes[NMode+1] = {
-[Mauto]		{ "auto",   Mauto,  },
-[Mlocal]	{ "local",  Mlocal, },
-[Manual]	{ "manual", Manual, },
+[Mauto] { "auto", Mauto, },
+[Mlocal] { "local", Mlocal, },
+[Manual] { "manual", Manual, },
 };
 static char *inis[] = {
 "inferno/inferno.ini",
@@ -98,7 +98,7 @@ static char *inis[] = {
 0,
 };
 char **ini;
-int	predawn;
+int predawn;
 static int
 parse(char *line, int *type, int *flag, int *dev, char *file)
 {
@@ -384,8 +384,8 @@ lp++;
 }
 return i;
 }
-static	Map	memv[512];
-static	RMap	rammap = {"physical memory"};
+static Map memv[512];
+static RMap rammap = {"physical memory"};
 void
 meminit(void)
 {

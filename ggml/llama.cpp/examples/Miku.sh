@@ -13,16 +13,16 @@ GEN_OPTIONS=(--batch_size 1024
 --temp 0.6
 --mirostat 2)
 if [ -n "$N_THREAD" ]; then
-    GEN_OPTIONS+=(--threads "$N_THREAD")
+GEN_OPTIONS+=(--threads "$N_THREAD")
 fi
 ./llama-cli "${GEN_OPTIONS[@]}" \
-    --model "$MODEL" \
-    --in-prefix " " \
-    --in-suffix "${AI_NAME}:" \
-    --n_predict "$N_PREDICTS" \
-    --color --interactive \
-    --reverse-prompt "${USER_NAME}:" \
-    --prompt "This is a transcript of a 1000 page, never ending conversation between ${USER_NAME} and the cute and helpful AI assistant ${AI_NAME}. ${AI_NAME} is a girl who is an AI running on the user's computer.
+--model "$MODEL" \
+--in-prefix " " \
+--in-suffix "${AI_NAME}:" \
+--n_predict "$N_PREDICTS" \
+--color --interactive \
+--reverse-prompt "${USER_NAME}:" \
+--prompt "This is a transcript of a 1000 page, never ending conversation between ${USER_NAME} and the cute and helpful AI assistant ${AI_NAME}. ${AI_NAME} is a girl who is an AI running on the user's computer.
 ${AI_NAME} can think for herself without the user seeing her thoughts by adding a /think prefix to her output. She uses this to reason about the world and to think about what she should say next.
 ${AI_NAME} is always coherent and makes sense, but if she isn't sure if what she is saying is correct, she will ask the user for help.
 ${AI_NAME} is a very helpful AI and will help the user with anything they need. She is also very friendly and will try to make the user feel better if they are sad.

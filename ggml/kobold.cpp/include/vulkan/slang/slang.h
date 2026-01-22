@@ -792,23 +792,23 @@ uint16_t data3;
 uint8_t data4[8];
 };
 #define SLANG_COM_INTERFACE(a, b, c, d0, d1, d2, d3, d4, d5, d6, d7) \
-public:                                                              \
-SLANG_FORCE_INLINE constexpr static SlangUUID getTypeGuid()      \
-{                                                                \
-return {a, b, c, d0, d1, d2, d3, d4, d5, d6, d7};            \
+public: \
+SLANG_FORCE_INLINE constexpr static SlangUUID getTypeGuid() \
+{ \
+return {a, b, c, d0, d1, d2, d3, d4, d5, d6, d7}; \
 }
 #define SLANG_CLASS_GUID(a, b, c, d0, d1, d2, d3, d4, d5, d6, d7) \
-SLANG_FORCE_INLINE constexpr static SlangUUID getTypeGuid()   \
-{                                                             \
-return {a, b, c, d0, d1, d2, d3, d4, d5, d6, d7};         \
+SLANG_FORCE_INLINE constexpr static SlangUUID getTypeGuid() \
+{ \
+return {a, b, c, d0, d1, d2, d3, d4, d5, d6, d7}; \
 }
-#define SLANG_IID_PPV_ARGS(ppType)                                                         \
-std::decay_t<decltype(**(ppType))>::getTypeGuid(),                                     \
-(                                                                                  \
-(void)[] {                                                                     \
-static_assert(                                                             \
+#define SLANG_IID_PPV_ARGS(ppType) \
+std::decay_t<decltype(**(ppType))>::getTypeGuid(), \
+( \
+(void)[] { \
+static_assert( \
 std::is_base_of_v<ISlangUnknown, std::decay_t<decltype(**(ppType))>>); \
-},                                                                             \
+}, \
 reinterpret_cast<void**>(ppType))
 struct ISlangUnknown
 {

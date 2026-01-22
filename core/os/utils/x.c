@@ -28,11 +28,11 @@
 #include <hurd/lookup.h>
 static struct argp_option options[] =
 {
-{"add",	'a', "USER",   0, "Add following ids"},
-{"remove",	'r', "USER",   0, "Remove following ids"},
-{"user",	'u', "USER",  0, "Add USER to the effective uids"},
-{"avail-user",'U', "USER",  0, "Add USER to the available uids"},
-{"group",     'g', "GROUP", 0, "Add GROUP to the effective groups"},
+{"add", 'a', "USER", 0, "Add following ids"},
+{"remove", 'r', "USER", 0, "Remove following ids"},
+{"user", 'u', "USER", 0, "Add USER to the effective uids"},
+{"avail-user",'U', "USER", 0, "Add USER to the available uids"},
+{"group", 'g', "GROUP", 0, "Add GROUP to the effective groups"},
 {"avail-group",'G',"GROUP", 0, "Add GROUP to the available groups"},
 {0, 0}
 };

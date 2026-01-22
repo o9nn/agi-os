@@ -1,14 +1,14 @@
 #include <u.h>
 #include <libc.h>
 #include <pool.h>
-typedef struct Alloc	Alloc;
-typedef struct Arena	Arena;
-typedef struct Bhdr	Bhdr;
-typedef struct Btail	Btail;
-typedef struct Free	Free;
+typedef struct Alloc Alloc;
+typedef struct Arena Arena;
+typedef struct Bhdr Bhdr;
+typedef struct Btail Btail;
+typedef struct Free Free;
 struct Bhdr {
-ulong	magic;
-ulong	size;
+ulong magic;
+ulong size;
 };
 enum {
 NOT_MAGIC = 0xdeadfa11,
@@ -24,20 +24,20 @@ TAIL_MAGIC0 = 0xBE,
 TAIL_MAGIC1 = 0xEF
 };
 struct Btail {
-uchar	magic0;
-uchar	datasize[2];
-uchar	magic1;
-ulong	size;
+uchar magic0;
+uchar datasize[2];
+uchar magic1;
+ulong size;
 };
-#define B2T(b)	((Btail*)((uchar*)(b)+(b)->size-sizeof(Btail)))
+#define B2T(b) ((Btail*)((uchar*)(b)+(b)->size-sizeof(Btail)))
 #define B2PT(b) ((Btail*)((uchar*)(b)-sizeof(Btail)))
 #define T2HDR(t) ((Bhdr*)((uchar*)(t)+sizeof(Btail)-(t)->size))
 struct Free {
 Bhdr;
-Free*	left;
-Free*	right;
-Free*	next;
-Free*	prev;
+Free* left;
+Free* right;
+Free* next;
+Free* prev;
 };
 enum {
 FREE_MAGIC = 0xBA5EBA11,
@@ -51,17 +51,17 @@ UNALLOC_MAGIC = 0xCAB00D1E+1,
 };
 struct Arena {
 Bhdr;
-Arena*	aup;
-Arena*	down;
-ulong	asize;
-ulong	pad;
+Arena* aup;
+Arena* down;
+ulong asize;
+ulong pad;
 };
 enum {
 ARENA_MAGIC = 0xC0A1E5CE+1,
 ARENATAIL_MAGIC = 0xEC5E1A0C+1,
 };
-#define A2TB(a)	((Bhdr*)((uchar*)(a)+(a)->asize-sizeof(Bhdr)))
-#define A2B(a)	B2NB(a)
+#define A2TB(a) ((Bhdr*)((uchar*)(a)+(a)->asize-sizeof(Bhdr)))
+#define A2B(a) B2NB(a)
 enum {
 ALIGN_MAGIC = 0xA1F1D1C1,
 };
@@ -69,44 +69,44 @@ enum {
 MINBLOCKSIZE = sizeof(Free)+sizeof(Btail)
 };
 static uchar datamagic[] = { 0xFE, 0xF1, 0xF0, 0xFA };
-#define	Poison	(void*)0xCafeBabe
-#define _B2D(a)	((void*)((uchar*)a+sizeof(Bhdr)))
-#define _D2B(v)	((Alloc*)((uchar*)v-sizeof(Bhdr)))
-static void*	B2D(Pool*, Alloc*);
-static Alloc*	D2B(Pool*, void*);
-static Arena*	arenamerge(Pool*, Arena*, Arena*);
-static void		blockcheck(Pool*, Bhdr*);
-static Alloc*	blockmerge(Pool*, Bhdr*, Bhdr*);
-static Alloc*	blocksetdsize(Pool*, Alloc*, ulong);
-static Bhdr*	blocksetsize(Bhdr*, ulong);
-static ulong	bsize2asize(Pool*, ulong);
-static ulong	dsize2bsize(Pool*, ulong);
-static ulong	getdsize(Alloc*);
-static Alloc*	trim(Pool*, Alloc*, ulong);
-static Free*	listadd(Free*, Free*);
-static void		logstack(Pool*);
-static Free**	ltreewalk(Free**, ulong);
-static void		memmark(void*, int, ulong);
-static Free*	pooladd(Pool*, Alloc*);
-static void*	poolallocl(Pool*, ulong);
-static void		poolcheckl(Pool*);
-static void		poolcheckarena(Pool*, Arena*);
-static int		poolcompactl(Pool*);
-static Alloc*	pooldel(Pool*, Free*);
-static void		pooldumpl(Pool*);
-static void		pooldumparena(Pool*, Arena*);
-static void		poolfreel(Pool*, void*);
-static void		poolnewarena(Pool*, ulong);
-static void*	poolreallocl(Pool*, void*, ulong);
-static Free*	treedelete(Free*, Free*);
-static Free*	treeinsert(Free*, Free*);
-static Free*	treelookup(Free*, ulong);
-static Free*	treelookupgt(Free*, ulong);
-#define antagonism	if(!(p->flags & POOL_ANTAGONISM)){}else
-#define paranoia	if(!(p->flags & POOL_PARANOIA)){}else
-#define verbosity	if(!(p->flags & POOL_VERBOSITY)){}else
-#define DPRINT	if(!(p->flags & POOL_DEBUGGING)){}else p->print
-#define LOG		if(!(p->flags & POOL_LOGGING)){}else p->print
+#define Poison (void*)0xCafeBabe
+#define _B2D(a) ((void*)((uchar*)a+sizeof(Bhdr)))
+#define _D2B(v) ((Alloc*)((uchar*)v-sizeof(Bhdr)))
+static void* B2D(Pool*, Alloc*);
+static Alloc* D2B(Pool*, void*);
+static Arena* arenamerge(Pool*, Arena*, Arena*);
+static void blockcheck(Pool*, Bhdr*);
+static Alloc* blockmerge(Pool*, Bhdr*, Bhdr*);
+static Alloc* blocksetdsize(Pool*, Alloc*, ulong);
+static Bhdr* blocksetsize(Bhdr*, ulong);
+static ulong bsize2asize(Pool*, ulong);
+static ulong dsize2bsize(Pool*, ulong);
+static ulong getdsize(Alloc*);
+static Alloc* trim(Pool*, Alloc*, ulong);
+static Free* listadd(Free*, Free*);
+static void logstack(Pool*);
+static Free** ltreewalk(Free**, ulong);
+static void memmark(void*, int, ulong);
+static Free* pooladd(Pool*, Alloc*);
+static void* poolallocl(Pool*, ulong);
+static void poolcheckl(Pool*);
+static void poolcheckarena(Pool*, Arena*);
+static int poolcompactl(Pool*);
+static Alloc* pooldel(Pool*, Free*);
+static void pooldumpl(Pool*);
+static void pooldumparena(Pool*, Arena*);
+static void poolfreel(Pool*, void*);
+static void poolnewarena(Pool*, ulong);
+static void* poolreallocl(Pool*, void*, ulong);
+static Free* treedelete(Free*, Free*);
+static Free* treeinsert(Free*, Free*);
+static Free* treelookup(Free*, ulong);
+static Free* treelookupgt(Free*, ulong);
+#define antagonism if(!(p->flags & POOL_ANTAGONISM)){}else
+#define paranoia if(!(p->flags & POOL_PARANOIA)){}else
+#define verbosity if(!(p->flags & POOL_VERBOSITY)){}else
+#define DPRINT if(!(p->flags & POOL_DEBUGGING)){}else p->print
+#define LOG if(!(p->flags & POOL_LOGGING)){}else p->print
 static void
 checklist(Free *t)
 {
@@ -590,7 +590,7 @@ if(t->magic1 != TAIL_MAGIC1)
 panicblock(p, b, "corrupt tail magic1");
 if(T2HDR(t) != b)
 panicblock(p, b, "corrupt tail ptr");
-if(dsize2bsize(p, dsize)  > a->size)
+if(dsize2bsize(p, dsize) > a->size)
 panicblock(p, b, "too much block data");
 if(eq > bq+4)
 eq = bq+4;

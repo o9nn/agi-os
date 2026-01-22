@@ -7,7 +7,7 @@
 #include "ggml_v3.h"
 #include "llama.h"
 struct gpt_vocab {
-using id    = int32_t;
+using id = int32_t;
 using token = std::string;
 std::map<token, id> token_to_id;
 std::map<id, token> id_to_token;

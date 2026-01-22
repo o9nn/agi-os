@@ -17,9 +17,9 @@ uint32_t sequence_number;
 uint64_t timestamp_ns;
 uint8_t payload[64];
 } cross_component_test_data_t;
-#define CROSS_COMPONENT_TEST_ITERATIONS     100
-#define CROSS_COMPONENT_TEST_TIMEOUT_MS     1000
-#define CROSS_COMPONENT_TEST_PATTERN        0xDEADBEEF
+#define CROSS_COMPONENT_TEST_ITERATIONS 100
+#define CROSS_COMPONENT_TEST_TIMEOUT_MS 1000
+#define CROSS_COMPONENT_TEST_PATTERN 0xDEADBEEF
 static dtesn_test_result_t test_memory_psystem_integration(void);
 static dtesn_test_result_t test_psystem_esn_integration(void);
 static dtesn_test_result_t test_esn_bseries_integration(void);

@@ -5,11 +5,11 @@
 (define psu (add-support-api psa))
 (psa 'fetch-pairs)
 (define (score SCORE-FN ITEM-LIST)
-	(map (lambda (wrd) (cons (SCORE-FN wrd) wrd)) ITEM-LIST))
+(map (lambda (wrd) (cons (SCORE-FN wrd) wrd)) ITEM-LIST))
 (define (prt-hist bins fname)
-	(define outport (open-file fname "w"))
-	(print-bincounts-tsv bins outport)
-	(close outport))
+(define outport (open-file fname "w"))
+(print-bincounts-tsv bins outport)
+(close outport))
 (define all-sects (psa 'get-all-elts))
 (define (sect-mi SECT) (psf 'pair-fmi SECT))
 (define scored-sect-mi (score sect-mi all-sects))
@@ -21,8 +21,8 @@
 (prt-hist binned-sect-mi "/tmp/r4-sect-mi-0-0-0.dat")
 (define (sect-freq SECT) (psf 'pair-freq SECT))
 (define weighted-sect-mi
-   (bin-count-weighted scored-sect-mi 200
-      (lambda (scored-item) (sect-freq (cdr scored-item)))))
+(bin-count-weighted scored-sect-mi 200
+(lambda (scored-item) (sect-freq (cdr scored-item)))))
 (prt-hist weighted-sect-mi "/tmp/r4-wei-mi-10-4-2.dat" )
 (prt-hist weighted-sect-mi "/tmp/r4-wei-mi-5-2-2.dat" )
 (prt-hist weighted-sect-mi "/tmp/r4-wei-mi-2-2-2.dat" )

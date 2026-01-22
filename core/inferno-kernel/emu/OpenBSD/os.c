@@ -1,25 +1,25 @@
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
 #undef getwd
 #include <sys/types.h>
 #include <sys/mman.h>
-#include	<sys/param.h>
-#include	<sys/resource.h>
-#include 	<sys/socket.h>
-#include	<sys/time.h>
-#include	<signal.h>
-#include	<time.h>
-#include	<termios.h>
-#include	<sched.h>
-#include	<pwd.h>
-#include	<errno.h>
-#include	<unistd.h>
+#include <sys/param.h>
+#include <sys/resource.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <signal.h>
+#include <time.h>
+#include <termios.h>
+#include <sched.h>
+#include <pwd.h>
+#include <errno.h>
+#include <unistd.h>
 enum
 {
-DELETE  = 0x7F,
+DELETE = 0x7F,
 NSTACKSPERALLOC = 16,
-X11STACK=	256*1024
+X11STACK= 256*1024
 };
 char *hosttype = "OpenBSD";
 extern int dflag;

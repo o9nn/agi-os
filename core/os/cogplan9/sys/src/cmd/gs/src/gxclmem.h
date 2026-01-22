@@ -1,8 +1,8 @@
 #ifndef gxclmem_INCLUDED
-#  define gxclmem_INCLUDED
+# define gxclmem_INCLUDED
 #include "gxclio.h"
 #include "strimpl.h"
-#define MEMFILE_DATA_SIZE	(16384 - 160)
+#define MEMFILE_DATA_SIZE (16384 - 160)
 typedef struct RAW_BUFFER {
 struct RAW_BUFFER *fwd, *back;
 struct LOG_MEMFILE_BLK *log_blk;
@@ -44,7 +44,7 @@ bool compressor_initialized;
 stream_state *compress_state;
 stream_state *decompress_state;
 } MEMFILE;
-#define private_st_MEMFILE()	\
+#define private_st_MEMFILE() \
 gs_private_st_ptrs2(st_MEMFILE, MEMFILE, "MEMFILE",\
 MEMFILE_enum_ptrs, MEMFILE_reloc_ptrs, compress_state, decompress_state)
 #define memfile_fopen(fname, fmode, pcf, mem, data_mem, compress)\

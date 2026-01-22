@@ -10,17 +10,17 @@
 typedef struct Wd Wd;
 struct Wd {
 Lock;
-int	model;
-int	inuse;
-uint	ticks;
+int model;
+int inuse;
+uint ticks;
 };
 static Wd x86wd;
 enum {
-P6		= 0,
-P4		= 1,
-K6		= 2,
-K8		= 3,
-Twogigs		= 1ul << 31,
+P6 = 0,
+P4 = 1,
+K6 = 2,
+K8 = 3,
+Twogigs = 1ul << 31,
 };
 static long
 interval(void)

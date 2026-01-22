@@ -1,43 +1,43 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	<a.out.h>
-#include	<dynld.h>
-#include	<kernel.h>
-#define	DBG	if(1) print
-#define	NATIVE
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include <a.out.h>
+#include <dynld.h>
+#include <kernel.h>
+#define DBG if(1) print
+#define NATIVE
 extern ulong ndevs;
 enum
 {
 Qdir,
 Qdynld,
 Qdynsyms,
-DEVCHAR	= 'L',
+DEVCHAR = 'L',
 };
-static Dirtab	dltab[] =
+static Dirtab dltab[] =
 {
-".",			{Qdir, 0, QTDIR},	0,	DMDIR|0555,
-"dynld",		{Qdynld},	0,	0644,
-"dynsyms",	{Qdynsyms},	0,	0444,
+".", {Qdir, 0, QTDIR}, 0, DMDIR|0555,
+"dynld", {Qdynld}, 0, 0644,
+"dynsyms", {Qdynsyms}, 0, 0444,
 };
 typedef struct Dyndev Dyndev;
 struct Dyndev
 {
-char*	name;
-char*	tag;
-char*	path;
-Dynobj*	o;
-Dev*	dev;
-Dyndev*	next;
+char* name;
+char* tag;
+char* path;
+Dynobj* o;
+Dev* dev;
+Dyndev* next;
 };
-static	Dyndev	*loaded;
-static	QLock	dllock;
-static	Dyndev**	finddyndev(char*);
-static	int	matched(Dyndev*, char*, char*);
-extern	Dynobj*	kdynloadfd(int, Dynsym*, int, ulong);
+static Dyndev *loaded;
+static QLock dllock;
+static Dyndev** finddyndev(char*);
+static int matched(Dyndev*, char*, char*);
+extern Dynobj* kdynloadfd(int, Dynsym*, int, ulong);
 static void
 dlfree(Dyndev *l)
 {

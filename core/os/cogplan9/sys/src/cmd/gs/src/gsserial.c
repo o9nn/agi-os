@@ -4,7 +4,7 @@
 int
 enc_u_size_uint(uint uval)
 {
-int     i = 1;
+int i = 1;
 while ((uval >>= enc_u_shift) > 0)
 ++i;
 return i;
@@ -22,7 +22,7 @@ return enc_u_sizew((uint)ival << 1);
 byte *
 enc_u_put_uint(uint uval, byte * ptr)
 {
-int     tmp_v;
+int tmp_v;
 for (;;) {
 tmp_v = uval & (enc_u_lim_1b - 1);
 if ((uval >>= enc_u_shift) == 0)
@@ -35,7 +35,7 @@ return ptr;
 byte *
 enc_s_put_int(int ival, byte * ptr)
 {
-uint    uval, tmp_v;
+uint uval, tmp_v;
 if (ival < 0 && ival != enc_s_min_int)
 uval = (uint)-ival;
 else
@@ -52,8 +52,8 @@ return ptr;
 const byte *
 enc_u_get_uint(uint * pval, const byte * ptr)
 {
-uint    uval = 0, tmp_val;
-int     shift = 0;
+uint uval = 0, tmp_val;
+int shift = 0;
 while (((tmp_val = *ptr++) & enc_u_lim_1b) != 0) {
 uval |= (tmp_val & (enc_u_lim_1b - 1)) << shift;
 shift += enc_u_shift;
@@ -64,21 +64,21 @@ return ptr;
 byte *
 enc_u_get_uint_nc(uint * pval, byte * ptr)
 {
-const byte *    tmp_ptr = ptr;
+const byte * tmp_ptr = ptr;
 tmp_ptr = enc_u_get_uint(pval, tmp_ptr);
 return ptr += tmp_ptr - ptr;
 }
 const byte *
 enc_s_get_int(int * pval, const byte * ptr)
 {
-int     ival = *ptr++;
-bool    neg = false;
+int ival = *ptr++;
+bool neg = false;
 if ((ival & (enc_s_max_1b + 1)) != 0) {
 ival ^= enc_s_max_1b + 1;
 neg = true;
 }
 if ((ival & enc_u_lim_1b) != 0) {
-uint     tmp_val;
+uint tmp_val;
 ival ^= enc_u_lim_1b;
 ptr = enc_u_get_uint(&tmp_val, ptr);
 ival |= tmp_val << enc_s_shift0;
@@ -91,7 +91,7 @@ return ptr;
 byte *
 enc_s_get_int_nc(int * pval, byte * ptr)
 {
-const byte *    tmp_ptr = ptr;
+const byte * tmp_ptr = ptr;
 tmp_ptr = enc_s_get_int(pval, tmp_ptr);
 return ptr += tmp_ptr - ptr;
 }
@@ -107,8 +107,8 @@ fprintf( stderr,
 uval,
 len,
 enc_u_sizew(uval) );
-if ( len > 1                                                           &&
-(len > enc_u_sizew_max  || uval < 1U << (enc_u_shift * (len - 1)))  )
+if ( len > 1 &&
+(len > enc_u_sizew_max || uval < 1U << (enc_u_shift * (len - 1))) )
 fprintf( stderr, "unsigned encoding too large for %u (%d bytes)\n",
 uval,
 len );
@@ -116,7 +116,7 @@ len );
 void
 check_s_sizew(int ival, int len)
 {
-uint    uval;
+uint uval;
 if (len != enc_s_sizew(ival))
 fprintf( stderr,
 "Size calculation error for (signed) %d (%d != %d)\n",
@@ -129,8 +129,8 @@ if (ival < 0 && ival != enc_s_min_int)
 uval = (uint)-ival;
 else
 uval = (uint)ival;
-if ( len > enc_s_sizew_max                                 ||
-uval < 1U << (enc_s_shift1 * (len - 2) + enc_s_shift0)  )
+if ( len > enc_s_sizew_max ||
+uval < 1U << (enc_s_shift1 * (len - 2) + enc_s_shift0) )
 fprintf( stderr,
 "signed encoding too large for %d (%d bytes)\n",
 ival,
@@ -139,11 +139,11 @@ len );
 void
 check_u(uint uval)
 {
-byte            buff[32];
-byte *          cp0 = buff;
-const byte *    cp1 = buff;
-byte *          cp2 = buff;
-uint            res_val;
+byte buff[32];
+byte * cp0 = buff;
+const byte * cp1 = buff;
+byte * cp2 = buff;
+uint res_val;
 memset(buff, 0, sizeof(buff));
 enc_u_putw(uval, cp0);
 check_u_sizew(uval, cp0 - buff);
@@ -178,11 +178,11 @@ res_val );
 void
 check_s(int ival)
 {
-byte            buff[32];
-byte *          cp0 = buff;
-const byte *    cp1 = buff;
-byte *          cp2 = buff;
-int             res_val;
+byte buff[32];
+byte * cp0 = buff;
+const byte * cp1 = buff;
+byte * cp2 = buff;
+int res_val;
 memset(buff, 0, sizeof(buff));
 enc_s_putw(ival, cp0);
 check_s_sizew(ival, cp0 - buff);
@@ -217,7 +217,7 @@ res_val );
 void
 check_u_vals(uint uval)
 {
-uint    diff = 1;
+uint diff = 1;
 check_u(uval);
 do {
 check_u(uval - diff);
@@ -227,7 +227,7 @@ check_u(uval + diff);
 void
 check_s_vals(int ival)
 {
-int     diff = 1;
+int diff = 1;
 check_s(ival);
 if (ival == enc_s_min_int) {
 do {
@@ -235,7 +235,7 @@ check_s(ival - diff);
 check_s(ival + diff);
 } while ((diff <<= 1) != enc_s_min_int);
 } else {
-int     abs_val = (ival < 0 ? -ival : ival);
+int abs_val = (ival < 0 ? -ival : ival);
 do {
 check_s(ival - diff);
 check_s(ival + diff);
@@ -245,8 +245,8 @@ check_s(ival + diff);
 int
 main(void)
 {
-uint     uval;
-int      ival;
+uint uval;
+int ival;
 check_u_vals(0);
 for (uval = 1; uval != 0; uval <<= 1)
 check_u_vals(uval);

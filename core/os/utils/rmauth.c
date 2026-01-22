@@ -11,7 +11,7 @@ const char *argp_program_version = STANDARD_HURD_VERSION (rmauth);
 static const struct argp_option options[] =
 {
 #ifndef UNSU
-{"save",   's', 0, 0, "Save removed effective ids as available ids"},
+{"save", 's', 0, 0, "Save removed effective ids as available ids"},
 #endif
 { 0 }
 };

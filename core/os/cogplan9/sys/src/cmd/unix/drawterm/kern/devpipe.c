@@ -1,23 +1,23 @@
-#include	"u.h"
-#include	"lib.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
-#include	"netif.h"
-typedef struct Pipe	Pipe;
+#include "u.h"
+#include "lib.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
+#include "netif.h"
+typedef struct Pipe Pipe;
 struct Pipe
 {
 QLock lk;
-Pipe	*next;
-int	ref;
-ulong	path;
-Queue	*q[2];
-int	qref[2];
+Pipe *next;
+int ref;
+ulong path;
+Queue *q[2];
+int qref[2];
 };
 struct
 {
 Lock lk;
-ulong	path;
+ulong path;
 } pipealloc;
 enum
 {
@@ -27,9 +27,9 @@ Qdata1,
 };
 Dirtab pipedir[] =
 {
-".",		{Qdir,0,QTDIR},	0,		DMDIR|0500,
-"data",		{Qdata0},	0,		0600,
-"data1",	{Qdata1},	0,		0600,
+".", {Qdir,0,QTDIR}, 0, DMDIR|0500,
+"data", {Qdata0}, 0, 0600,
+"data1", {Qdata1}, 0, 0600,
 };
 #define NPIPEDIR 3
 static void

@@ -11,12 +11,12 @@
 #include <stdarg.h>
 #if defined __USE_XOPEN2K || defined __USE_XOPEN2K8
 # ifdef __GNUC__
-#  ifndef _VA_LIST_DEFINED
+# ifndef _VA_LIST_DEFINED
 typedef __gnuc_va_list va_list;
-#   define _VA_LIST_DEFINED
-#  endif
+# define _VA_LIST_DEFINED
+# endif
 # else
-#  include <stdarg.h>
+# include <stdarg.h>
 # endif
 #endif
 #include <bits/wchar.h>
@@ -57,7 +57,7 @@ const wchar_t *__restrict __src, size_t __n)
 __THROW __nonnull ((1, 2)) __attr_access ((__write_only__, 1, 3));
 extern size_t wcslcat (wchar_t *__restrict __dest,
 const wchar_t *__restrict __src, size_t __n)
-__THROW __nonnull ((1, 2))  __attr_access ((__read_write__, 1, 3));
+__THROW __nonnull ((1, 2)) __attr_access ((__read_write__, 1, 3));
 #endif
 extern wchar_t *wcscat (wchar_t *__restrict __dest,
 const wchar_t *__restrict __src)
@@ -212,7 +212,7 @@ mbstate_t *__restrict __ps) __THROW;
 extern size_t wcsrtombs (char *__restrict __dst,
 const wchar_t **__restrict __src, size_t __len,
 mbstate_t *__restrict __ps) __THROW;
-#ifdef	__USE_XOPEN2K8
+#ifdef __USE_XOPEN2K8
 extern size_t mbsnrtowcs (wchar_t *__restrict __dst,
 const char **__restrict __src, size_t __nmc,
 size_t __len, mbstate_t *__restrict __ps) __THROW;
@@ -307,7 +307,7 @@ extern unsigned long long int __REDIRECT_NTH (wcstoull,
 (const wchar_t *__restrict __nptr,
 wchar_t **__restrict __endptr,
 int __base), __isoc23_wcstoull);
-#  ifdef __USE_GNU
+# ifdef __USE_GNU
 __extension__
 extern long long int __REDIRECT_NTH (wcstoq, (const wchar_t *__restrict __nptr,
 wchar_t **__restrict __endptr,
@@ -317,7 +317,7 @@ extern unsigned long long int __REDIRECT_NTH (wcstouq,
 (const wchar_t *__restrict __nptr,
 wchar_t **__restrict __endptr,
 int __base), __isoc23_wcstoull);
-#  endif
+# endif
 # else
 extern long int __isoc23_wcstol (const wchar_t *__restrict __nptr,
 wchar_t **__restrict __endptr, int __base)
@@ -336,14 +336,14 @@ extern unsigned long long int __isoc23_wcstoull (const wchar_t *__restrict __npt
 wchar_t **__restrict __endptr,
 int __base)
 __THROW;
-#  define wcstol __isoc23_wcstol
-#  define wcstoul __isoc23_wcstoul
-#  define wcstoll __isoc23_wcstoll
-#  define wcstoull __isoc23_wcstoull
-#  ifdef __USE_GNU
-#   define wcstoq __isoc23_wcstoll
-#   define wcstouq __isoc23_wcstoull
-#  endif
+# define wcstol __isoc23_wcstol
+# define wcstoul __isoc23_wcstoul
+# define wcstoll __isoc23_wcstoll
+# define wcstoull __isoc23_wcstoull
+# ifdef __USE_GNU
+# define wcstoq __isoc23_wcstoll
+# define wcstouq __isoc23_wcstoull
+# endif
 # endif
 #endif
 #ifdef __USE_GNU
@@ -363,7 +363,7 @@ wchar_t **__restrict __endptr,
 int __base, locale_t __loc)
 __THROW;
 # if __GLIBC_USE (C2X_STRTOL)
-#  ifdef __REDIRECT
+# ifdef __REDIRECT
 extern long int __REDIRECT_NTH (wcstol_l, (const wchar_t *__restrict __nptr,
 wchar_t **__restrict __endptr,
 int __base, locale_t __loc),
@@ -385,7 +385,7 @@ extern unsigned long long int __REDIRECT_NTH (wcstoull_l,
 wchar_t **__restrict __endptr,
 int __base, locale_t __loc),
 __isoc23_wcstoull_l);
-#  else
+# else
 extern long int __isoc23_wcstol_l (const wchar_t *__restrict __nptr,
 wchar_t **__restrict __endptr, int __base,
 locale_t __loc) __THROW;
@@ -403,11 +403,11 @@ extern unsigned long long int __isoc23_wcstoull_l (const wchar_t *__restrict __n
 wchar_t **__restrict __endptr,
 int __base, locale_t __loc)
 __THROW;
-#   define wcstol_l __isoc23_wcstol_l
-#   define wcstoul_l __isoc23_wcstoul_l
-#   define wcstoll_l __isoc23_wcstoll_l
-#   define wcstoull_l __isoc23_wcstoull_l
-#  endif
+# define wcstol_l __isoc23_wcstol_l
+# define wcstoul_l __isoc23_wcstoul_l
+# define wcstoll_l __isoc23_wcstoll_l
+# define wcstoull_l __isoc23_wcstoull_l
+# endif
 # endif
 extern double wcstod_l (const wchar_t *__restrict __nptr,
 wchar_t **__restrict __endptr, locale_t __loc)
@@ -463,14 +463,14 @@ __THROW;
 #endif
 #if defined __USE_XOPEN2K8 || __GLIBC_USE (LIB_EXT2)
 # ifndef __attr_dealloc_fclose
-#   if defined __has_builtin
-#     if __has_builtin (__builtin_fclose)
-#      define __attr_dealloc_fclose __attr_dealloc (__builtin_fclose, 1)
-#     endif
-#   endif
+# if defined __has_builtin
+# if __has_builtin (__builtin_fclose)
+# define __attr_dealloc_fclose __attr_dealloc (__builtin_fclose, 1)
+# endif
+# endif
 # endif
 # ifndef __attr_dealloc_fclose
-#  define __attr_dealloc_fclose
+# define __attr_dealloc_fclose
 # endif
 extern __FILE *open_wmemstream (wchar_t **__bufloc, size_t *__sizeloc) __THROW
 __attribute_malloc__ __attr_dealloc_fclose;
@@ -506,8 +506,8 @@ const wchar_t *__restrict __format, ...)
 __THROW ;
 # if !__GLIBC_USE (DEPRECATED_SCANF) && !defined __LDBL_COMPAT \
 && __LDOUBLE_REDIRECTS_TO_FLOAT128_ABI == 0
-#  if __GLIBC_USE (C2X_STRTOL)
-#   ifdef __REDIRECT
+# if __GLIBC_USE (C2X_STRTOL)
+# ifdef __REDIRECT
 extern int __REDIRECT (fwscanf, (__FILE *__restrict __stream,
 const wchar_t *__restrict __format, ...),
 __isoc23_fwscanf)
@@ -519,19 +519,19 @@ extern int __REDIRECT_NTH (swscanf, (const wchar_t *__restrict __s,
 const wchar_t *__restrict __format,
 ...), __isoc23_swscanf)
 ;
-#   else
+# else
 extern int __isoc23_fwscanf (__FILE *__restrict __stream,
 const wchar_t *__restrict __format, ...);
 extern int __isoc23_wscanf (const wchar_t *__restrict __format, ...);
 extern int __isoc23_swscanf (const wchar_t *__restrict __s,
 const wchar_t *__restrict __format, ...)
 __THROW;
-#    define fwscanf __isoc23_fwscanf
-#    define wscanf __isoc23_wscanf
-#    define swscanf __isoc23_swscanf
-#   endif
-#  else
-#   ifdef __REDIRECT
+# define fwscanf __isoc23_fwscanf
+# define wscanf __isoc23_wscanf
+# define swscanf __isoc23_swscanf
+# endif
+# else
+# ifdef __REDIRECT
 extern int __REDIRECT (fwscanf, (__FILE *__restrict __stream,
 const wchar_t *__restrict __format, ...),
 __isoc99_fwscanf)
@@ -543,18 +543,18 @@ extern int __REDIRECT_NTH (swscanf, (const wchar_t *__restrict __s,
 const wchar_t *__restrict __format,
 ...), __isoc99_swscanf)
 ;
-#   else
+# else
 extern int __isoc99_fwscanf (__FILE *__restrict __stream,
 const wchar_t *__restrict __format, ...);
 extern int __isoc99_wscanf (const wchar_t *__restrict __format, ...);
 extern int __isoc99_swscanf (const wchar_t *__restrict __s,
 const wchar_t *__restrict __format, ...)
 __THROW;
-#    define fwscanf __isoc99_fwscanf
-#    define wscanf __isoc99_wscanf
-#    define swscanf __isoc99_swscanf
-#   endif
-#  endif
+# define fwscanf __isoc99_fwscanf
+# define wscanf __isoc99_wscanf
+# define swscanf __isoc99_swscanf
+# endif
+# endif
 # endif
 #endif
 #ifdef __USE_ISOC99
@@ -573,8 +573,8 @@ __THROW ;
 && (!defined __LDBL_COMPAT || !defined __REDIRECT) \
 && (defined __STRICT_ANSI__ || defined __USE_XOPEN2K) \
 && __LDOUBLE_REDIRECTS_TO_FLOAT128_ABI == 0
-#  if __GLIBC_USE (C2X_STRTOL)
-#   ifdef __REDIRECT
+# if __GLIBC_USE (C2X_STRTOL)
+# ifdef __REDIRECT
 extern int __REDIRECT (vfwscanf, (__FILE *__restrict __s,
 const wchar_t *__restrict __format,
 __gnuc_va_list __arg), __isoc23_vfwscanf)
@@ -586,7 +586,7 @@ extern int __REDIRECT_NTH (vswscanf, (const wchar_t *__restrict __s,
 const wchar_t *__restrict __format,
 __gnuc_va_list __arg), __isoc23_vswscanf)
 ;
-#   else
+# else
 extern int __isoc23_vfwscanf (__FILE *__restrict __s,
 const wchar_t *__restrict __format,
 __gnuc_va_list __arg);
@@ -595,12 +595,12 @@ __gnuc_va_list __arg);
 extern int __isoc23_vswscanf (const wchar_t *__restrict __s,
 const wchar_t *__restrict __format,
 __gnuc_va_list __arg) __THROW;
-#    define vfwscanf __isoc23_vfwscanf
-#    define vwscanf __isoc23_vwscanf
-#    define vswscanf __isoc23_vswscanf
-#   endif
-#  else
-#   ifdef __REDIRECT
+# define vfwscanf __isoc23_vfwscanf
+# define vwscanf __isoc23_vwscanf
+# define vswscanf __isoc23_vswscanf
+# endif
+# else
+# ifdef __REDIRECT
 extern int __REDIRECT (vfwscanf, (__FILE *__restrict __s,
 const wchar_t *__restrict __format,
 __gnuc_va_list __arg), __isoc99_vfwscanf)
@@ -612,7 +612,7 @@ extern int __REDIRECT_NTH (vswscanf, (const wchar_t *__restrict __s,
 const wchar_t *__restrict __format,
 __gnuc_va_list __arg), __isoc99_vswscanf)
 ;
-#   else
+# else
 extern int __isoc99_vfwscanf (__FILE *__restrict __s,
 const wchar_t *__restrict __format,
 __gnuc_va_list __arg);
@@ -621,11 +621,11 @@ __gnuc_va_list __arg);
 extern int __isoc99_vswscanf (const wchar_t *__restrict __s,
 const wchar_t *__restrict __format,
 __gnuc_va_list __arg) __THROW;
-#    define vfwscanf __isoc99_vfwscanf
-#    define vwscanf __isoc99_vwscanf
-#    define vswscanf __isoc99_vswscanf
-#   endif
-#  endif
+# define vfwscanf __isoc99_vfwscanf
+# define vwscanf __isoc99_vwscanf
+# define vswscanf __isoc99_vswscanf
+# endif
+# endif
 # endif
 #endif
 extern wint_t fgetwc (__FILE *__stream);

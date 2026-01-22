@@ -68,11 +68,11 @@ x.buf = array[fsys->messagesize+UTFmax] of byte;
 return x;
 }
 Ctlsize : con 5*12;
-Edel		:= "deleted window";
-Ebadctl	:= "ill-formed control message";
-Ebadaddr	:= "bad address syntax";
-Eaddr	:= "address out of range";
-Einuse	:= "already in use";
+Edel := "deleted window";
+Ebadctl := "ill-formed control message";
+Ebadaddr := "bad address syntax";
+Eaddr := "address out of range";
+Einuse := "already in use";
 Ebadevent:= "bad event syntax";
 clampaddr(w : ref Window)
 {
@@ -113,7 +113,7 @@ Xopen => x.open();
 Xclose => x.close();
 Xread => x.read();
 Xwrite => x.write();
-* =>		error("bad case in Xfid.ctl()");
+* => error("bad case in Xfid.ctl()");
 }
 bflush();
 cxfidfree <-= x;
@@ -153,8 +153,8 @@ Xfid.walk(nil : self ref Xfid, cw: chan of ref Window)
 # fc : Smsg0;
 w : ref Window;
 # if(name(x.fcall) != "new")
-#	error("unknown path in walk\n");
-row.qlock.lock();	# tasks->procs now
+# error("unknown path in walk\n");
+row.qlock.lock(); # tasks->procs now
 w = utils->newwindow(nil);
 w.settag();
 # w.refx.inc();
@@ -175,7 +175,7 @@ fc.iounit = 0;
 w = x.f.w;
 if(w != nil){
 t := w.body;
-row.qlock.lock();	# tasks->procs now
+row.qlock.lock(); # tasks->procs now
 w.lock('E');
 q = FILE(x.f.qid);
 case(q){
@@ -194,8 +194,8 @@ QWrdsel =>
 #
 # Use a temporary file.
 # A pipe would be the obvious, but we can't afford the
-# broken pipe notification.  Using the code to read QWbody
-# is n², which should probably also be fixed.  Even then,
+# broken pipe notification. Using the code to read QWbody
+# is n², which should probably also be fixed. Even then,
 # though, we'd need to squirrel away the data in case it's
 # modified during the operation, e.g. by |sort
 #
@@ -262,14 +262,14 @@ w = x.f.w;
 # BUG in C version ? fsysclunk() has just set busy, open to FALSE
 # x.f.busy = FALSE;
 # if(!x.f.open){
-#	if(w != nil)
-#		w.close();
-#	respond(x, fc, nil);
-#	return;
+# if(w != nil)
+# w.close();
+# respond(x, fc, nil);
+# return;
 # }
 # x.f.open = FALSE;
 if(w != nil){
-row.qlock.lock();	# tasks->procs now
+row.qlock.lock(); # tasks->procs now
 w.lock('E');
 q = FILE(x.f.qid);
 case(q){
@@ -402,7 +402,7 @@ w.unlock();
 }
 Xfid.write(x : self ref Xfid)
 {
-fc  : Smsg0;
+fc : Smsg0;
 c, cnt, qid, q, nb, nr, eval : int;
 w : ref Window;
 r : string;
@@ -412,7 +412,7 @@ q0, tq0, tq1 : int;
 md : ref Mntdir;
 qid = FILE(x.f.qid);
 w = x.f.w;
-row.qlock.lock();	# tasks->procs now
+row.qlock.lock(); # tasks->procs now
 if(w != nil){
 c = 'F';
 if(qid==QWtag || qid==QWbody)
@@ -595,17 +595,17 @@ r = string data(x.fcall)[0:nb];
 loop :
 for(n=0; n<len r; n+=m){
 p = r[n:];
-if(strncmp(p, "lock", 4) == 0){	# make window exclusive use
+if(strncmp(p, "lock", 4) == 0){ # make window exclusive use
 w.ctllock.lock();
 w.ctlfid = x.f.fid;
 m = 4;
 }else
-if(strncmp(p, "unlock", 6) == 0){	# release exclusive use
+if(strncmp(p, "unlock", 6) == 0){ # release exclusive use
 w.ctlfid = ~0;
 w.ctllock.unlock();
 m = 6;
 }else
-if(strncmp(p, "clean", 5) == 0){	# mark window 'clean', seq=0
+if(strncmp(p, "clean", 5) == 0){ # mark window 'clean', seq=0
 t = w.body;
 t.eq0 = ~0;
 t.file.reset();
@@ -614,12 +614,12 @@ w.dirty = FALSE;
 settag = TRUE;
 m = 5;
 }else
-if(strncmp(p, "show", 4) == 0){	# show dot
+if(strncmp(p, "show", 4) == 0){ # show dot
 t = w.body;
 t.show(t.q0, t.q1, TRUE);
 m = 4;
 }else
-if(strncmp(p, "name ", 5) == 0){	# set file name
+if(strncmp(p, "name ", 5) == 0){ # set file name
 pp = p[5:];
 m = 5;
 q = utils->strchr(pp, '\n');
@@ -638,7 +638,7 @@ w.body.file.mark();
 w.setname(nm, len nm);
 m += (q+1);
 }else
-if(strncmp(p, "dump ", 5) == 0){	# set dump string
+if(strncmp(p, "dump ", 5) == 0){ # set dump string
 pp = p[5:];
 m = 5;
 q = utils->strchr(pp, '\n');
@@ -650,7 +650,7 @@ nm := pp[0:q];
 w.dumpstr = nm;
 m += (q+1);
 }else
-if(strncmp(p, "dumpdir ", 8) == 0){	# set dump directory
+if(strncmp(p, "dumpdir ", 8) == 0){ # set dump directory
 pp = p[8:];
 m = 8;
 q = utils->strchr(pp, '\n');
@@ -662,11 +662,11 @@ nm := pp[0:q];
 w.dumpdir = nm;
 m += (q+1);
 }else
-if(strncmp(p, "delete", 6) == 0){	# delete for sure
+if(strncmp(p, "delete", 6) == 0){ # delete for sure
 w.col.close(w, TRUE);
 m = 6;
 }else
-if(strncmp(p, "del", 3) == 0){	# delete, but check dirty
+if(strncmp(p, "del", 3) == 0){ # delete, but check dirty
 if(!w.clean(TRUE, FALSE)){
 err = "file dirty";
 break;
@@ -674,15 +674,15 @@ break;
 w.col.close(w, TRUE);
 m = 3;
 }else
-if(strncmp(p, "get", 3) == 0){	# get file
+if(strncmp(p, "get", 3) == 0){ # get file
 exec->get(w.body, nil, nil, FALSE, nil, 0);
 m = 3;
 }else
-if(strncmp(p, "put", 3) == 0){	# put file
+if(strncmp(p, "put", 3) == 0){ # put file
 exec->put(w.body, nil, nil, 0);
 m = 3;
 }else
-if(strncmp(p, "dot=addr", 8) == 0){	# set dot
+if(strncmp(p, "dot=addr", 8) == 0){ # set dot
 w.body.commit(TRUE);
 clampaddr(w);
 w.body.q0 = w.addr.q0;
@@ -691,46 +691,46 @@ w.body.setselect(w.body.q0, w.body.q1);
 settag = TRUE;
 m = 8;
 }else
-if(strncmp(p, "addr=dot", 8) == 0){	# set addr
+if(strncmp(p, "addr=dot", 8) == 0){ # set addr
 w.addr.q0 = w.body.q0;
 w.addr.q1 = w.body.q1;
 m = 8;
 }else
-if(strncmp(p, "limit=addr", 10) == 0){	# set limit
+if(strncmp(p, "limit=addr", 10) == 0){ # set limit
 w.body.commit(TRUE);
 clampaddr(w);
 w.limit.q0 = w.addr.q0;
 w.limit.q1 = w.addr.q1;
 m = 10;
 }else
-if(strncmp(p, "nomark", 6) == 0){	# turn off automatic marking
+if(strncmp(p, "nomark", 6) == 0){ # turn off automatic marking
 w.nomark = TRUE;
 m = 6;
 }else
-if(strncmp(p, "mark", 4) == 0){	# mark file
+if(strncmp(p, "mark", 4) == 0){ # mark file
 seq++;
 w.body.file.mark();
 settag = TRUE;
 m = 4;
 }else
-if(strncmp(p, "noscroll", 8) == 0){	# turn off automatic scrolling
+if(strncmp(p, "noscroll", 8) == 0){ # turn off automatic scrolling
 w.noscroll = TRUE;
 m = 8;
 }else
-if(strncmp(p, "cleartag", 8) == 0){	# wipe tag right of bar
+if(strncmp(p, "cleartag", 8) == 0){ # wipe tag right of bar
 w.cleartag();
 settag = TRUE;
 m = 8;
 }else
-if(strncmp(p, "scroll", 6) == 0){	# turn on automatic scrolling (writes to body only)
+if(strncmp(p, "scroll", 6) == 0){ # turn on automatic scrolling (writes to body only)
 w.noscroll = FALSE;
 m = 6;
 }else
-if(strncmp(p, "noecho", 6) == 0){	# don't echo chars - mask them
+if(strncmp(p, "noecho", 6) == 0){ # don't echo chars - mask them
 w.echomode = EM_MASK;
 m = 6;
 }else
-if (strncmp(p, "echo", 4) == 0){		# echo chars (normal state)
+if (strncmp(p, "echo", 4) == 0){ # echo chars (normal state)
 w.echomode = EM_NORMAL;
 m = 4;
 }else{
@@ -768,7 +768,7 @@ r = string data(x.fcall)[0:nb];
 loop :
 for(n=0; n<len r; n+=m){
 p = n;
-w.owner = r[p++];	# disgusting
+w.owner = r[p++]; # disgusting
 c = r[p++];
 while(r[p] == ' ')
 p++;

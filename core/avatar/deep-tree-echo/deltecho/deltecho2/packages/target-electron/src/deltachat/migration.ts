@@ -5,139 +5,139 @@ import { Logger } from '../../../shared/logger.js'
 import { mkdir, readdir, rename, rm, rmdir, stat } from 'fs/promises'
 import { DcEvent } from '@deltachat/jsonrpc-client'
 export async function migrateAccountsIfNeeded(
-  cwd: string,
-  log: Logger,
-  treatFailedMigrationAsError: boolean = false
+cwd: string,
+log: Logger,
+treatFailedMigrationAsError: boolean = false
 ): Promise<boolean> {
-  let tmpDC
-  const eventLogger = (accountId: number, event: DcEvent) =>
-    log.debug('core-event', { accountId, ...event })
-  try {
-    const new_accounts_format = existsSync(join(cwd, 'accounts.toml'))
-    if (new_accounts_format) {
-      log.debug('migration not needed: accounts.toml already exists')
-      return false
-    }
-    log.debug('accounts.toml not found, checking if there is previous data')
-    const configPath = join(cwd, '..')
-    const accountFoldersFormat1 = (await readdir(configPath)).filter(
-      folderName => {
-        const path = join(configPath, folderName)
-        try {
-          const db_path = join(path, 'db.sqlite')
-          return (
-            lstatSync(path).isDirectory() &&
-            existsSync(db_path) &&
-            lstatSync(db_path).isFile() &&
-            !lstatSync(path).isSymbolicLink()
-          )
-        } catch (error) {
-          log.debug('error while testing if folder is account', error)
-          return false
-        }
-      }
-    )
-    const migrateFromFormat1 = accountFoldersFormat1.length !== 0
-    const migrateFromFormat2 = existsSync(cwd)
-    if (!migrateFromFormat1 && !migrateFromFormat2) {
-      log.info('migration not needed: nothing to migrate')
-      return false
-    }
-    const path_accounts = join(cwd, '..', 'accounts')
-    const pathAccountsOld = join(cwd, '..', 'accounts_old')
-    if (migrateFromFormat2) {
-      log.info(`found old some accounts (format 2), we need to migrate...`)
-      await rename(path_accounts, pathAccountsOld)
-    }
-    tmpDC = await startDeltaChat(path_accounts, {
-      muteStdErr: false,
-    })
-    tmpDC.on('ALL', eventLogger)
-    const oldFoldersToDelete = []
-    if (migrateFromFormat1) {
-      log.info(
-        `found old ${accountFoldersFormat1.length} legacy accounts (1), we need to migrate...`
-      )
-      for (const folder of accountFoldersFormat1) {
-        log.debug(`migrating legacy account "${folder}"`)
-        const pathDBFile = join(configPath, folder, 'db.sqlite')
-        const blobsFolder = join(configPath, folder, 'db.sqlite-blobs')
-        if (!existsSync(blobsFolder)) {
-          await mkdir(blobsFolder, { recursive: true })
-        }
-        try {
-          await tmpDC.rpc.migrateAccount(pathDBFile)
-          oldFoldersToDelete.push(folder)
-        } catch (error) {
-          log.error(`Failed to migrate account at path "${pathDBFile}"`, error)
-          if (treatFailedMigrationAsError) {
-            throw error
-          }
-        }
-      }
-    }
-    if (migrateFromFormat2) {
-      for (const entry of await readdir(pathAccountsOld)) {
-        const stat_result = await stat(join(pathAccountsOld, entry))
-        if (!stat_result.isDirectory()) continue
-        log.debug(`migrating account "${join(pathAccountsOld, entry)}"`)
-        const path_dbfile = join(pathAccountsOld, entry, 'db.sqlite')
-        if (!existsSync(path_dbfile)) {
-          log.warn(
-            'found an old accounts folder without a db.sqlite file, skipping'
-          )
-          continue
-        }
-        const blobsFolder = join(pathAccountsOld, entry, 'db.sqlite-blobs')
-        if (!existsSync(blobsFolder)) {
-          await mkdir(blobsFolder, { recursive: true })
-        }
-        try {
-          const account_id = await tmpDC.rpc.migrateAccount(path_dbfile)
-          const old_sticker_folder = join(pathAccountsOld, entry, 'stickers')
-          if (existsSync(old_sticker_folder)) {
-            log.debug('found stickers, migrating them', old_sticker_folder)
-            try {
-              const blobdir = await tmpDC.rpc.getBlobDir(account_id)
-              if (!blobdir) {
-                throw new Error('blobdir is undefined')
-              }
-              const new_sticker_folder = join(blobdir, '../stickers')
-              await rename(old_sticker_folder, new_sticker_folder)
-            } catch (error) {
-              log.error('stickers migration failed', old_sticker_folder, error)
-              if (treatFailedMigrationAsError) {
-                throw error
-              }
-            }
-          }
-          oldFoldersToDelete.push(join(pathAccountsOld, entry))
-        } catch (error) {
-          log.error(
-            `Failed to migrate account at path "${path_dbfile}":`,
-            error
-          )
-        }
-      }
-    }
-    tmpDC.off('ALL', eventLogger)
-    tmpDC.close()
-    for (const oldFolder of oldFoldersToDelete.map(f => join(configPath, f))) {
-      try {
-        try {
-          await rm(join(oldFolder, '.DS_Store'))
-        } catch (error) {
-        }
-        await rmdir(oldFolder)
-      } catch (error) {
-        log.error('Failed to cleanup old folder:', oldFolder, error)
-      }
-    }
-    log.info('migration completed')
-    return true
-  } catch (err) {
-    tmpDC?.off('ALL', eventLogger)
-    tmpDC?.close()
-    throw err
-  }
+let tmpDC
+const eventLogger = (accountId: number, event: DcEvent) =>
+log.debug('core-event', { accountId, ...event })
+try {
+const new_accounts_format = existsSync(join(cwd, 'accounts.toml'))
+if (new_accounts_format) {
+log.debug('migration not needed: accounts.toml already exists')
+return false
+}
+log.debug('accounts.toml not found, checking if there is previous data')
+const configPath = join(cwd, '..')
+const accountFoldersFormat1 = (await readdir(configPath)).filter(
+folderName => {
+const path = join(configPath, folderName)
+try {
+const db_path = join(path, 'db.sqlite')
+return (
+lstatSync(path).isDirectory() &&
+existsSync(db_path) &&
+lstatSync(db_path).isFile() &&
+!lstatSync(path).isSymbolicLink()
+)
+} catch (error) {
+log.debug('error while testing if folder is account', error)
+return false
+}
+}
+)
+const migrateFromFormat1 = accountFoldersFormat1.length !== 0
+const migrateFromFormat2 = existsSync(cwd)
+if (!migrateFromFormat1 && !migrateFromFormat2) {
+log.info('migration not needed: nothing to migrate')
+return false
+}
+const path_accounts = join(cwd, '..', 'accounts')
+const pathAccountsOld = join(cwd, '..', 'accounts_old')
+if (migrateFromFormat2) {
+log.info(`found old some accounts (format 2), we need to migrate...`)
+await rename(path_accounts, pathAccountsOld)
+}
+tmpDC = await startDeltaChat(path_accounts, {
+muteStdErr: false,
+})
+tmpDC.on('ALL', eventLogger)
+const oldFoldersToDelete = []
+if (migrateFromFormat1) {
+log.info(
+`found old ${accountFoldersFormat1.length} legacy accounts (1), we need to migrate...`
+)
+for (const folder of accountFoldersFormat1) {
+log.debug(`migrating legacy account "${folder}"`)
+const pathDBFile = join(configPath, folder, 'db.sqlite')
+const blobsFolder = join(configPath, folder, 'db.sqlite-blobs')
+if (!existsSync(blobsFolder)) {
+await mkdir(blobsFolder, { recursive: true })
+}
+try {
+await tmpDC.rpc.migrateAccount(pathDBFile)
+oldFoldersToDelete.push(folder)
+} catch (error) {
+log.error(`Failed to migrate account at path "${pathDBFile}"`, error)
+if (treatFailedMigrationAsError) {
+throw error
+}
+}
+}
+}
+if (migrateFromFormat2) {
+for (const entry of await readdir(pathAccountsOld)) {
+const stat_result = await stat(join(pathAccountsOld, entry))
+if (!stat_result.isDirectory()) continue
+log.debug(`migrating account "${join(pathAccountsOld, entry)}"`)
+const path_dbfile = join(pathAccountsOld, entry, 'db.sqlite')
+if (!existsSync(path_dbfile)) {
+log.warn(
+'found an old accounts folder without a db.sqlite file, skipping'
+)
+continue
+}
+const blobsFolder = join(pathAccountsOld, entry, 'db.sqlite-blobs')
+if (!existsSync(blobsFolder)) {
+await mkdir(blobsFolder, { recursive: true })
+}
+try {
+const account_id = await tmpDC.rpc.migrateAccount(path_dbfile)
+const old_sticker_folder = join(pathAccountsOld, entry, 'stickers')
+if (existsSync(old_sticker_folder)) {
+log.debug('found stickers, migrating them', old_sticker_folder)
+try {
+const blobdir = await tmpDC.rpc.getBlobDir(account_id)
+if (!blobdir) {
+throw new Error('blobdir is undefined')
+}
+const new_sticker_folder = join(blobdir, '../stickers')
+await rename(old_sticker_folder, new_sticker_folder)
+} catch (error) {
+log.error('stickers migration failed', old_sticker_folder, error)
+if (treatFailedMigrationAsError) {
+throw error
+}
+}
+}
+oldFoldersToDelete.push(join(pathAccountsOld, entry))
+} catch (error) {
+log.error(
+`Failed to migrate account at path "${path_dbfile}":`,
+error
+)
+}
+}
+}
+tmpDC.off('ALL', eventLogger)
+tmpDC.close()
+for (const oldFolder of oldFoldersToDelete.map(f => join(configPath, f))) {
+try {
+try {
+await rm(join(oldFolder, '.DS_Store'))
+} catch (error) {
+}
+await rmdir(oldFolder)
+} catch (error) {
+log.error('Failed to cleanup old folder:', oldFolder, error)
+}
+}
+log.info('migration completed')
+return true
+} catch (err) {
+tmpDC?.off('ALL', eventLogger)
+tmpDC?.close()
+throw err
+}
 }

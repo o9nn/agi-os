@@ -1,10 +1,10 @@
 #ifndef __LINUX_SHAPER_H
 #define __LINUX_SHAPER_H
 #ifdef __KERNEL__
-#define SHAPER_QLEN	10
-#define SHAPER_LATENCY	(5*HZ)
-#define SHAPER_MAXSLIP	2
-#define SHAPER_BURST	(HZ/50)
+#define SHAPER_QLEN 10
+#define SHAPER_LATENCY (5*HZ)
+#define SHAPER_MAXSLIP 2
+#define SHAPER_BURST (HZ/50)
 struct shaper
 {
 struct sk_buff_head sendq;
@@ -16,33 +16,33 @@ __u32 recovery;
 unsigned long locked;
 struct net_device_stats stats;
 struct device *dev;
-int  (*hard_start_xmit) (struct sk_buff *skb,
+int (*hard_start_xmit) (struct sk_buff *skb,
 struct device *dev);
-int  (*hard_header) (struct sk_buff *skb,
+int (*hard_header) (struct sk_buff *skb,
 struct device *dev,
 unsigned short type,
 void *daddr,
 void *saddr,
 unsigned len);
-int  (*rebuild_header)(struct sk_buff *skb);
+int (*rebuild_header)(struct sk_buff *skb);
 int (*hard_header_cache)(struct neighbour *neigh, struct hh_cache *hh);
-void (*header_cache_update)(struct hh_cache *hh, struct device *dev, unsigned char *  haddr);
+void (*header_cache_update)(struct hh_cache *hh, struct device *dev, unsigned char * haddr);
 struct net_device_stats* (*get_stats)(struct device *dev);
 struct wait_queue *wait_queue;
 struct timer_list timer;
 };
 #endif
-#define SHAPER_SET_DEV		0x0001
-#define SHAPER_SET_SPEED	0x0002
-#define SHAPER_GET_DEV		0x0003
-#define SHAPER_GET_SPEED	0x0004
+#define SHAPER_SET_DEV 0x0001
+#define SHAPER_SET_SPEED 0x0002
+#define SHAPER_GET_DEV 0x0003
+#define SHAPER_GET_SPEED 0x0004
 struct shaperconf
 {
-__u16	ss_cmd;
+__u16 ss_cmd;
 union
 {
-char 	ssu_name[14];
-__u32	ssu_speed;
+char ssu_name[14];
+__u32 ssu_speed;
 } ss_u;
 #define ss_speed ss_u.ssu_speed
 #define ss_name ss_u.ssu_name

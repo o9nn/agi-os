@@ -4,15 +4,15 @@
 #include <string.h>
 #include <math.h>
 #include <ctype.h>
-#define min(A,B)	((A)<(B) ? (A) : (B))
-#define max(A,B)	((A)>(B) ? (A) : (B))
-#define maxeql(A,B)	if (A < (B)) A = (B);
-#define mineql(A,B)	if (A > (B)) A = (B);
-#define eatarg0		(argc--, argv++)
+#define min(A,B) ((A)<(B) ? (A) : (B))
+#define max(A,B) ((A)>(B) ? (A) : (B))
+#define maxeql(A,B) if (A < (B)) A = (B);
+#define mineql(A,B) if (A > (B)) A = (B);
+#define eatarg0 (argc--, argv++)
 #define arrayLength(A) ((sizeof A)/ (sizeof A[0]))
 FILE *infile;
 char *fname;
-int   warncnt;
+int warncnt;
 char *myname;
 void getname (char *arg) {
 register char *p;

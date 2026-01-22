@@ -8,10 +8,10 @@
 #include <linux/uaccess.h>
 #include <linux/mutex.h>
 #include <linux/sched.h>
-#define __NR_sys_membrane_create      500
-#define __NR_sys_membrane_evolve      501
-#define __NR_sys_membrane_get_state   502
-#define __NR_sys_membrane_destroy     503
+#define __NR_sys_membrane_create 500
+#define __NR_sys_membrane_evolve 501
+#define __NR_sys_membrane_get_state 502
+#define __NR_sys_membrane_destroy 503
 #define __NR_sys_membrane_communicate 504
 static dtesn_psystem_t *g_kernel_psystem = NULL;
 static DEFINE_MUTEX(g_kernel_psystem_mutex);

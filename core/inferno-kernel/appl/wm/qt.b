@@ -6,14 +6,14 @@ draw: Draw;
 include "tk.m";
 tk: Tk;
 Toplevel: import tk;
-include	"tkclient.m";
+include "tkclient.m";
 tkclient: Tkclient;
 ctxt: ref Draw->Context;
 include "quicktime.m";
 qt: QuickTime;
 WmQt: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 Stopped, Playing: con iota;
 task_cfg := array[] of {
@@ -35,13 +35,13 @@ task_cfg := array[] of {
 };
 init(xctxt: ref Draw->Context, nil: list of string)
 {
-sys  = load Sys  Sys->PATH;
+sys = load Sys Sys->PATH;
 if (ctxt == nil) {
 sys->fprint(sys->fildes(2), "qt: no window context\n");
 raise "fail:bad context";
 }
 draw = load Draw Draw->PATH;
-tk   = load Tk   Tk->PATH;
+tk = load Tk Tk->PATH;
 tkclient= load Tkclient Tkclient->PATH;
 ctxt = xctxt;
 tkclient->init();

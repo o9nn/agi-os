@@ -138,9 +138,9 @@ XTERN char *revision;
 #endif
 #ifndef PARAMS
 # ifdef __STDC__
-#  define PARAMS(args) args
+# define PARAMS(args) args
 # else
-#  define PARAMS(args) ()
+# define PARAMS(args) ()
 # endif
 #endif
 GENERIC_OBJECT *xmalloc PARAMS ((size_t));
@@ -153,8 +153,8 @@ extern int errno;
 # include <string.h>
 #else
 # if !HAVE_MEMCHR
-#  define memcmp(s1, s2, n) bcmp (s1, s2, n)
-#  define memcpy(d, s, n) bcopy (s, d, n)
+# define memcmp(s1, s2, n) bcmp (s1, s2, n)
+# define memcpy(d, s, n) bcopy (s, d, n)
 GENERIC_OBJECT *memchr ();
 # endif
 #endif

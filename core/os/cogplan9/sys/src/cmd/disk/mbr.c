@@ -2,24 +2,24 @@
 #include <libc.h>
 #include <disk.h>
 typedef struct {
-uchar	active;
-uchar	starth;
-uchar	starts;
-uchar	startc;
-uchar	type;
-uchar	endh;
-uchar	ends;
-uchar	endc;
-uchar	lba[4];
-uchar	size[4];
+uchar active;
+uchar starth;
+uchar starts;
+uchar startc;
+uchar type;
+uchar endh;
+uchar ends;
+uchar endc;
+uchar lba[4];
+uchar size[4];
 } Tentry;
 enum {
 Toffset = 0x1BE,
-Type9	= 0x39,
+Type9 = 0x39,
 };
 static int ndefmbr = Toffset;
 static char defmbr[512] = {
-[0x000]	0xEB, 0x3C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+[0x000] 0xEB, 0x3C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 [0x03E] 0xFA, 0xFC, 0x8C, 0xC8, 0x8E, 0xD8, 0x8E, 0xD0,
 0xBC, 0x00, 0x7C, 0xBE, 0x77, 0x7C, 0xE8, 0x19,
@@ -28,15 +28,15 @@ static char defmbr[512] = {
 0x26, 0x89, 0x07, 0xEA, 0x00, 0x00, 0xFF, 0xFF,
 0xEB, 0xD6, 0xAC, 0x0A, 0xC0, 0x74, 0x09, 0xB4,
 0x0E, 0xBB, 0x07, 0x00, 0xCD, 0x10, 0xEB, 0xF2,
-0xC3,  'N',  'o',  't',  ' ',  'a',  ' ',  'b',
-'o',  'o',  't',  'a',  'b',  'l',  'e',  ' ',
-'d',  'i',  's',  'c',  ' ',  'o',  'r',  ' ',
-'d',  'i',  's',  'c',  ' ',  'e',  'r',  'r',
-'o',  'r', '\r', '\n',  'P',  'r',  'e',  's',
-'s',  ' ',  'a',  'l',  'm',  'o',  's',  't',
-' ',  'a',  'n',  'y',  ' ',  'k',  'e',  'y',
-' ',  't',  'o',  ' ',  'r',  'e',  'b',  'o',
-'o',  't',  '.',  '.',  '.', 0x00, 0x00, 0x00,
+0xC3, 'N', 'o', 't', ' ', 'a', ' ', 'b',
+'o', 'o', 't', 'a', 'b', 'l', 'e', ' ',
+'d', 'i', 's', 'c', ' ', 'o', 'r', ' ',
+'d', 'i', 's', 'c', ' ', 'e', 'r', 'r',
+'o', 'r', '\r', '\n', 'P', 'r', 'e', 's',
+'s', ' ', 'a', 'l', 'm', 'o', 's', 't',
+' ', 'a', 'n', 'y', ' ', 'k', 'e', 'y',
+' ', 't', 'o', ' ', 'r', 'e', 'b', 'o',
+'o', 't', '.', '.', '.', 0x00, 0x00, 0x00,
 };
 void
 usage(void)

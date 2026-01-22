@@ -4,13 +4,13 @@
 #include "pci.h"
 #include "vga.h"
 enum {
-Cr0		= 0x00,
-Midr		= 0x01,
-Didr		= 0x02,
-Rtest		= 0x03,
-Gtest		= 0x04,
-Btest		= 0x05,
-Nir		= 0x06,
+Cr0 = 0x00,
+Midr = 0x01,
+Didr = 0x02,
+Rtest = 0x03,
+Gtest = 0x04,
+Btest = 0x05,
+Nir = 0x06,
 };
 static void
 attdacio(uchar reg)

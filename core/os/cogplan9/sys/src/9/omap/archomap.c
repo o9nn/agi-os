@@ -24,70 +24,70 @@ typedef struct Prm Prm;
 typedef struct Usbotg Usbotg;
 typedef struct Usbtll Usbtll;
 struct Usbotg {
-uchar	faddr;
-uchar	power;
-ushort	intrtx;
-ushort	intrrx;
-ushort	intrtxe;
-ushort	intrrxe;
-uchar	intrusb;
-uchar	intrusbe;
-ushort	frame;
-uchar	index;
-uchar	testmode;
-uchar	_pad0[0x400 - 0x10];
-ulong	otgrev;
-ulong	otgsyscfg;
-ulong	otgsyssts;
-ulong	otgifcsel;
-uchar	_pad1[0x414 - 0x410];
-ulong	otgforcestdby;
+uchar faddr;
+uchar power;
+ushort intrtx;
+ushort intrrx;
+ushort intrtxe;
+ushort intrrxe;
+uchar intrusb;
+uchar intrusbe;
+ushort frame;
+uchar index;
+uchar testmode;
+uchar _pad0[0x400 - 0x10];
+ulong otgrev;
+ulong otgsyscfg;
+ulong otgsyssts;
+ulong otgifcsel;
+uchar _pad1[0x414 - 0x410];
+ulong otgforcestdby;
 };
 enum {
-Hsen		= 1<<5,
-Forcehost	= 1<<7,
-Forcehs		= 1<<4,
-Midle		= 1<<12,
-Sidle		= 1<<3,
+Hsen = 1<<5,
+Forcehost = 1<<7,
+Forcehs = 1<<4,
+Midle = 1<<12,
+Sidle = 1<<3,
 };
 struct Usbtll {
-ulong	revision;
-uchar	_pad0[0x10-0x4];
-ulong	sysconfig;
-ulong	sysstatus;
-ulong	irqstatus;
-ulong	irqenable;
+ulong revision;
+uchar _pad0[0x10-0x4];
+ulong sysconfig;
+ulong sysstatus;
+ulong irqstatus;
+ulong irqenable;
 };
 enum {
-Softreset	= 1<<1,
-Resetdone	= 1<<0,
-Ehci_resetdone	= 1<<2,
-Ohci_resetdone	= 1<<1,
+Softreset = 1<<1,
+Resetdone = 1<<0,
+Ehci_resetdone = 1<<2,
+Ohci_resetdone = 1<<1,
 };
 struct L3protreg {
-uvlong	req_info_perm;
-uvlong	read_perm;
-uvlong	write_perm;
-uvlong	addr_match;
+uvlong req_info_perm;
+uvlong read_perm;
+uvlong write_perm;
+uvlong addr_match;
 };
 enum {
-Permusbhost	= 1<<9,
-Permusbotg	= 1<<4,
-Permsysdma	= 1<<3,
-Permmpu		= 1<<1,
+Permusbhost = 1<<9,
+Permusbotg = 1<<4,
+Permsysdma = 1<<3,
+Permmpu = 1<<1,
 };
 struct L3agent {
-uchar	_pad0[0x20];
-uvlong	ctl;
-uvlong	sts;
-uchar	_pad1[0x58 - 0x30];
-uvlong	errlog;
-uvlong	errlogaddr;
+uchar _pad0[0x20];
+uvlong ctl;
+uvlong sts;
+uchar _pad1[0x58 - 0x30];
+uvlong errlog;
+uvlong errlogaddr;
 };
 struct L3regs {
 L3protreg *base;
-int	upper;
-char	*name;
+int upper;
+char *name;
 };
 L3regs l3regs[] = {
 (L3protreg *)(PHYSL3GPMCPM+0x48), 7, "gpmc",
@@ -98,140 +98,140 @@ L3regs l3regs[] = {
 (L3protreg *)(PHYSL3IVA+0x48), 3, "iva2.2",
 };
 struct Cm {
-ulong	fclken;
-ulong	fclken2;
-ulong	fclken3;
-uchar	_pad0[0x10 - 0xc];
-ulong	iclken;
-ulong	iclken2;
-ulong	iclken3;
-uchar	_pad1[0x20 - 0x1c];
-ulong	idlest;
-ulong	idlest2;
-ulong	idlest3;
-uchar	_pad2[0x30 - 0x2c];
-ulong	autoidle;
-ulong	autoidle2;
-ulong	autoidle3;
-uchar	_pad3[0x40 - 0x3c];
+ulong fclken;
+ulong fclken2;
+ulong fclken3;
+uchar _pad0[0x10 - 0xc];
+ulong iclken;
+ulong iclken2;
+ulong iclken3;
+uchar _pad1[0x20 - 0x1c];
+ulong idlest;
+ulong idlest2;
+ulong idlest3;
+uchar _pad2[0x30 - 0x2c];
+ulong autoidle;
+ulong autoidle2;
+ulong autoidle3;
+uchar _pad3[0x40 - 0x3c];
 union {
-ulong	clksel[5];
+ulong clksel[5];
 struct unused {
-ulong	sleepdep;
-ulong	clkstctrl;
-ulong	clkstst;
+ulong sleepdep;
+ulong clkstctrl;
+ulong clkstst;
 };
-uchar	_pad4[0x70 - 0x40];
+uchar _pad4[0x70 - 0x40];
 };
-ulong	clkoutctrl;
+ulong clkoutctrl;
 };
 struct Prm {
-uchar	_pad[0x50];
-ulong	rstctrl;
+uchar _pad[0x50];
+ulong rstctrl;
 };
 struct Gpio {
-ulong	_pad0[4];
-ulong	sysconfig;
-ulong	sysstatus;
-ulong	irqsts1;
-ulong	irqen1;
-ulong	wkupen;
-ulong	_pad1;
-ulong	irqsts2;
-ulong	irqen2;
-ulong	ctrl;
-ulong	oe;
-ulong	datain;
-ulong	dataout;
-ulong	lvldet0;
-ulong	lvldet1;
-ulong	risingdet;
-ulong	fallingdet;
-ulong	deben;
-ulong	debtime;
-ulong	_pad2[2];
-ulong	clrirqen1;
-ulong	setirqen1;
-ulong	_pad3[2];
-ulong	clrirqen2;
-ulong	setirqen2;
-ulong	_pad4[2];
-ulong	clrwkupen;
-ulong	setwkupen;
-ulong	_pad5[2];
-ulong	clrdataout;
-ulong	setdataout;
+ulong _pad0[4];
+ulong sysconfig;
+ulong sysstatus;
+ulong irqsts1;
+ulong irqen1;
+ulong wkupen;
+ulong _pad1;
+ulong irqsts2;
+ulong irqen2;
+ulong ctrl;
+ulong oe;
+ulong datain;
+ulong dataout;
+ulong lvldet0;
+ulong lvldet1;
+ulong risingdet;
+ulong fallingdet;
+ulong deben;
+ulong debtime;
+ulong _pad2[2];
+ulong clrirqen1;
+ulong setirqen1;
+ulong _pad3[2];
+ulong clrirqen2;
+ulong setirqen2;
+ulong _pad4[2];
+ulong clrwkupen;
+ulong setwkupen;
+ulong _pad5[2];
+ulong clrdataout;
+ulong setdataout;
 };
 enum {
-Wkusimocp	= 1 << 9,
-Wkwdt2		= 1 << 5,
-Wkgpio1		= 1 << 3,
-Wkgpt1		= 1 << 0,
-Dssl3l4		= 1 << 0,
-Dsstv		= 1 << 2,
-Dss2		= 1 << 1,
-Dss1		= 1 << 0,
-Pergpio6	= 1 << 17,
-Pergpio5	= 1 << 16,
-Pergpio4	= 1 << 15,
-Pergpio3	= 1 << 14,
-Pergpio2	= 1 << 13,
-Perwdt3		= 1 << 12,
-Peruart3	= 1 << 11,
-Pergpt9		= 1 << 10,
-Pergpt8		= 1 << 9,
-Pergpt7		= 1 << 8,
-Pergpt6		= 1 << 7,
-Pergpt5		= 1 << 6,
-Pergpt4		= 1 << 5,
-Pergpt3		= 1 << 4,
-Pergpt2		= 1 << 3,
-Perenable	= Pergpio6 | Pergpio5 | Perwdt3 | Pergpt2 | Peruart3,
-Usbhost2	= 1 << 1,
-Usbhost1	= 1 << 0,
-Usbhost		= Usbhost1,
-Usbhostidle	= 1 << 1,
-Usbhoststdby	= 1 << 0,
-Coreusbhsotg	= 1 << 4,
-Core3usbtll	= 1 << 2,
+Wkusimocp = 1 << 9,
+Wkwdt2 = 1 << 5,
+Wkgpio1 = 1 << 3,
+Wkgpt1 = 1 << 0,
+Dssl3l4 = 1 << 0,
+Dsstv = 1 << 2,
+Dss2 = 1 << 1,
+Dss1 = 1 << 0,
+Pergpio6 = 1 << 17,
+Pergpio5 = 1 << 16,
+Pergpio4 = 1 << 15,
+Pergpio3 = 1 << 14,
+Pergpio2 = 1 << 13,
+Perwdt3 = 1 << 12,
+Peruart3 = 1 << 11,
+Pergpt9 = 1 << 10,
+Pergpt8 = 1 << 9,
+Pergpt7 = 1 << 8,
+Pergpt6 = 1 << 7,
+Pergpt5 = 1 << 6,
+Pergpt4 = 1 << 5,
+Pergpt3 = 1 << 4,
+Pergpt2 = 1 << 3,
+Perenable = Pergpio6 | Pergpio5 | Perwdt3 | Pergpt2 | Peruart3,
+Usbhost2 = 1 << 1,
+Usbhost1 = 1 << 0,
+Usbhost = Usbhost1,
+Usbhostidle = 1 << 1,
+Usbhoststdby = 1 << 0,
+Coreusbhsotg = 1 << 4,
+Core3usbtll = 1 << 2,
 Coreusbhsotgidle = 1 << 5,
 Coreusbhsotgstdby= 1 << 4,
-Dplllock	= 7,
-Dplllocked	= 1,
-Dpllbypassed	= 0,
-Gpio1idle	= 1 << 3,
-Dssidle		= 1 << 1,
-Gpio1vidmagic	= 1<<24 | 1<<8 | 1<<5,
+Dplllock = 7,
+Dplllocked = 1,
+Dpllbypassed = 0,
+Gpio1idle = 1 << 3,
+Dssidle = 1 << 1,
+Gpio1vidmagic = 1<<24 | 1<<8 | 1<<5,
 };
 enum {
-Rstgs		= 1 << 1,
-Fpsid		= 0,
+Rstgs = 1 << 1,
+Fpsid = 0,
 Fpscr,
-Mvfr1		= 6,
+Mvfr1 = 6,
 Mvfr0,
 Fpexc,
 };
 enum {
-Ethergpio	= 176,
-Etherchanbit	= 1 << (Ethergpio % 32),
+Ethergpio = 176,
+Etherchanbit = 1 << (Ethergpio % 32),
 };
 enum {
-Cawt	= 1 << 31,
-Cawb	= 1 << 30,
-Cara	= 1 << 29,
-Cawa	= 1 << 28,
+Cawt = 1 << 31,
+Cawb = 1 << 30,
+Cara = 1 << 29,
+Cawa = 1 << 28,
 };
 struct Gen {
-ulong	padconf_off;
-ulong	devconf0;
-uchar	_pad0[0x68 - 8];
-ulong	devconf1;
+ulong padconf_off;
+ulong devconf0;
+uchar _pad0[0x68 - 8];
+ulong devconf1;
 };
 struct Cntrl {
-ulong	_pad0;
-ulong	id;
-ulong	_pad1;
-ulong	skuid;
+ulong _pad0;
+ulong id;
+ulong _pad1;
+ulong skuid;
 };
 static char *
 devidstr(ulong)
@@ -343,7 +343,7 @@ static void
 p16(uchar *p, ulong v)
 {
 *p++ = v>>8;
-*p   = v;
+*p = v;
 }
 static void
 p32(uchar *p, ulong v)
@@ -351,7 +351,7 @@ p32(uchar *p, ulong v)
 *p++ = v>>24;
 *p++ = v>>16;
 *p++ = v>>8;
-*p   = v;
+*p = v;
 }
 int
 archether(unsigned ctlrno, Ether *ether)
@@ -426,7 +426,7 @@ pll->fclken = pll->fclken & ~(MASK(3) << 16 | MASK(3)) |
 coherence();
 while (pll->idlest & 3)
 ;
-pll->fclken =  (FREQSEL(3) | Dplllock) << 16 |
+pll->fclken = (FREQSEL(3) | Dplllock) << 16 |
 FREQSEL(3) | Dplllock;
 coherence();
 while ((pll->idlest & 3) != 3)
@@ -498,7 +498,7 @@ static void
 configcore(void)
 {
 Cm *core = (Cm *)PHYSSCMCORE;
-core->iclken  |= Coreusbhsotg;
+core->iclken |= Coreusbhsotg;
 core->iclken3 |= Core3usbtll;
 coherence();
 core->fclken3 |= Core3usbtll;
@@ -629,7 +629,7 @@ cpwrsc(CpIDcssel, CpID, CpIDid, 0, (level - 1) << 1);
 setsways = cprdsc(CpIDcsize, CpID, CpIDid, 0);
 cp->l1ip = cprdsc(0, CpID, CpIDidct, CpIDct);
 cp->level = level;
-cp->nways = ((setsways >> 3)  & MASK(10)) + 1;
+cp->nways = ((setsways >> 3) & MASK(10)) + 1;
 cp->nsets = ((setsways >> 13) & MASK(15)) + 1;
 cp->log2linelen = (setsways & MASK(2)) + 2 + 2;
 cp->linelen = 1 << cp->log2linelen;
@@ -680,58 +680,58 @@ else
 return armarchs[sa];
 }
 enum {
-Inena	= 1 << 8,
-Indis	= 0 << 8,
-Ptup	= 1 << 4,
-Ptdown	= 0 << 4,
-Ptena	= 1 << 3,
-Ptdis	= 0 << 3,
-Muxmode	= MASK(3),
-GpmcA1		= 0x4800207A,
-GpmcA2		= 0x4800207C,
-GpmcA3		= 0x4800207E,
-GpmcA4		= 0x48002080,
-GpmcA5		= 0x48002082,
-GpmcA6		= 0x48002084,
-GpmcA7		= 0x48002086,
-GpmcA8		= 0x48002088,
-GpmcA9		= 0x4800208A,
-GpmcA10		= 0x4800208C,
-GpmcD0		= 0x4800208E,
-GpmcD1		= 0x48002090,
-GpmcD2		= 0x48002092,
-GpmcD3		= 0x48002094,
-GpmcD4		= 0x48002096,
-GpmcD5		= 0x48002098,
-GpmcD6		= 0x4800209A,
-GpmcD7		= 0x4800209C,
-GpmcD8		= 0x4800209E,
-GpmcD9		= 0x480020A0,
-GpmcD10		= 0x480020A2,
-GpmcD11		= 0x480020A4,
-GpmcD12		= 0x480020A6,
-GpmcD13		= 0x480020A8,
-GpmcD14		= 0x480020AA,
-GpmcD15		= 0x480020AC,
-GpmcNCS0	= 0x480020AE,
-GpmcNCS1	= 0x480020B0,
-GpmcNCS2	= 0x480020B2,
-GpmcNCS3	= 0x480020B4,
-GpmcNCS4	= 0x480020B6,
-GpmcNCS5	= 0x480020B8,
-GpmcNCS6	= 0x480020BA,
-GpmcNCS7	= 0x480020BC,
-GpmcCLK		= 0x480020BE,
-GpmcNADV_ALE	= 0x480020C0,
-GpmcNOE		= 0x480020C2,
-GpmcNWE		= 0x480020C4,
-GpmcNBE0_CLE	= 0x480020C6,
-GpmcNBE1	= 0x480020C8,
-GpmcNWP		= 0x480020CA,
-GpmcWAIT0	= 0x480020CC,
-GpmcWAIT1	= 0x480020CE,
-GpmcWAIT2	= 0x480020D0,
-GpmcWAIT3	= 0x480020D2,
+Inena = 1 << 8,
+Indis = 0 << 8,
+Ptup = 1 << 4,
+Ptdown = 0 << 4,
+Ptena = 1 << 3,
+Ptdis = 0 << 3,
+Muxmode = MASK(3),
+GpmcA1 = 0x4800207A,
+GpmcA2 = 0x4800207C,
+GpmcA3 = 0x4800207E,
+GpmcA4 = 0x48002080,
+GpmcA5 = 0x48002082,
+GpmcA6 = 0x48002084,
+GpmcA7 = 0x48002086,
+GpmcA8 = 0x48002088,
+GpmcA9 = 0x4800208A,
+GpmcA10 = 0x4800208C,
+GpmcD0 = 0x4800208E,
+GpmcD1 = 0x48002090,
+GpmcD2 = 0x48002092,
+GpmcD3 = 0x48002094,
+GpmcD4 = 0x48002096,
+GpmcD5 = 0x48002098,
+GpmcD6 = 0x4800209A,
+GpmcD7 = 0x4800209C,
+GpmcD8 = 0x4800209E,
+GpmcD9 = 0x480020A0,
+GpmcD10 = 0x480020A2,
+GpmcD11 = 0x480020A4,
+GpmcD12 = 0x480020A6,
+GpmcD13 = 0x480020A8,
+GpmcD14 = 0x480020AA,
+GpmcD15 = 0x480020AC,
+GpmcNCS0 = 0x480020AE,
+GpmcNCS1 = 0x480020B0,
+GpmcNCS2 = 0x480020B2,
+GpmcNCS3 = 0x480020B4,
+GpmcNCS4 = 0x480020B6,
+GpmcNCS5 = 0x480020B8,
+GpmcNCS6 = 0x480020BA,
+GpmcNCS7 = 0x480020BC,
+GpmcCLK = 0x480020BE,
+GpmcNADV_ALE = 0x480020C0,
+GpmcNOE = 0x480020C2,
+GpmcNWE = 0x480020C4,
+GpmcNBE0_CLE = 0x480020C6,
+GpmcNBE1 = 0x480020C8,
+GpmcNWP = 0x480020CA,
+GpmcWAIT0 = 0x480020CC,
+GpmcWAIT1 = 0x480020CE,
+GpmcWAIT2 = 0x480020D0,
+GpmcWAIT3 = 0x480020D2,
 };
 void
 setmuxmode(ulong addr, int shorts, int mode)
@@ -761,51 +761,51 @@ setmuxmode(0x4800219a, 4, 0);
 setmuxmode(0x480021aa, 4, 2);
 setmuxmode(0x48002240, 2, 3);
 *(ushort *)0x480021d2 = Inena | Ptup | Ptena | 4;
-*(ushort *)GpmcA1	= Indis | Ptup | Ptena | 0;
-*(ushort *)GpmcA2	= Indis | Ptup | Ptena | 0;
-*(ushort *)GpmcA3	= Indis | Ptup | Ptena | 0;
-*(ushort *)GpmcA4	= Indis | Ptup | Ptena | 0;
-*(ushort *)GpmcA5	= Indis | Ptup | Ptena | 0;
-*(ushort *)GpmcA6	= Indis | Ptup | Ptena | 0;
-*(ushort *)GpmcA7	= Indis | Ptup | Ptena | 0;
-*(ushort *)GpmcA8	= Indis | Ptup | Ptena | 0;
-*(ushort *)GpmcA9	= Indis | Ptup | Ptena | 0;
-*(ushort *)GpmcA10	= Indis | Ptup | Ptena | 0;
-*(ushort *)GpmcD0	= Inena | Ptup | Ptena | 0;
-*(ushort *)GpmcD1	= Inena | Ptup | Ptena | 0;
-*(ushort *)GpmcD2	= Inena | Ptup | Ptena | 0;
-*(ushort *)GpmcD3	= Inena | Ptup | Ptena | 0;
-*(ushort *)GpmcD4	= Inena | Ptup | Ptena | 0;
-*(ushort *)GpmcD5	= Inena | Ptup | Ptena | 0;
-*(ushort *)GpmcD6	= Inena | Ptup | Ptena | 0;
-*(ushort *)GpmcD7	= Inena | Ptup | Ptena | 0;
-*(ushort *)GpmcD8	= Inena | Ptup | Ptena | 0;
-*(ushort *)GpmcD9	= Inena | Ptup | Ptena | 0;
-*(ushort *)GpmcD10	= Inena | Ptup | Ptena | 0;
-*(ushort *)GpmcD11	= Inena | Ptup | Ptena | 0;
-*(ushort *)GpmcD12	= Inena | Ptup | Ptena | 0;
-*(ushort *)GpmcD13	= Inena | Ptup | Ptena | 0;
-*(ushort *)GpmcD14	= Inena | Ptup | Ptena | 0;
-*(ushort *)GpmcD15	= Inena | Ptup | Ptena | 0;
-*(ushort *)GpmcNCS0	= Indis | Ptup | Ptena | 0;
-*(ushort *)GpmcNCS1	= Indis | Ptup | Ptena | 0;
-*(ushort *)GpmcNCS2	= Indis | Ptup | Ptena | 0;
-*(ushort *)GpmcNCS3	= Indis | Ptup | Ptena | 0;
-*(ushort *)GpmcNCS4	= Indis | Ptup | Ptena | 0;
-*(ushort *)GpmcNCS5	= Indis | Ptup | Ptena | 0;
-*(ushort *)GpmcNCS6	= Indis | Ptup | Ptena | 0;
-*(ushort *)GpmcNOE	= Indis | Ptdown | Ptdis | 0;
-*(ushort *)GpmcNWE	= Indis | Ptdown | Ptdis | 0;
-*(ushort *)GpmcWAIT2	= Inena | Ptup | Ptena | 4;
-*(ushort *)GpmcNCS7	= Inena | Ptup | Ptena | 1;
-*(ushort *)GpmcCLK	= Indis | Ptdown | Ptdis | 0;
-*(ushort *)GpmcNBE1	= Inena | Ptdown | Ptdis | 0;
-*(ushort *)GpmcNADV_ALE	= Indis | Ptdown | Ptdis | 0;
-*(ushort *)GpmcNBE0_CLE	= Indis | Ptdown | Ptdis | 0;
-*(ushort *)GpmcNWP	= Inena | Ptdown | Ptdis | 0;
-*(ushort *)GpmcWAIT0	= Inena | Ptup | Ptena | 0;
-*(ushort *)GpmcWAIT1	= Inena | Ptup | Ptena | 0;
-*(ushort *)GpmcWAIT3	= Inena | Ptup | Ptena | 0;
+*(ushort *)GpmcA1 = Indis | Ptup | Ptena | 0;
+*(ushort *)GpmcA2 = Indis | Ptup | Ptena | 0;
+*(ushort *)GpmcA3 = Indis | Ptup | Ptena | 0;
+*(ushort *)GpmcA4 = Indis | Ptup | Ptena | 0;
+*(ushort *)GpmcA5 = Indis | Ptup | Ptena | 0;
+*(ushort *)GpmcA6 = Indis | Ptup | Ptena | 0;
+*(ushort *)GpmcA7 = Indis | Ptup | Ptena | 0;
+*(ushort *)GpmcA8 = Indis | Ptup | Ptena | 0;
+*(ushort *)GpmcA9 = Indis | Ptup | Ptena | 0;
+*(ushort *)GpmcA10 = Indis | Ptup | Ptena | 0;
+*(ushort *)GpmcD0 = Inena | Ptup | Ptena | 0;
+*(ushort *)GpmcD1 = Inena | Ptup | Ptena | 0;
+*(ushort *)GpmcD2 = Inena | Ptup | Ptena | 0;
+*(ushort *)GpmcD3 = Inena | Ptup | Ptena | 0;
+*(ushort *)GpmcD4 = Inena | Ptup | Ptena | 0;
+*(ushort *)GpmcD5 = Inena | Ptup | Ptena | 0;
+*(ushort *)GpmcD6 = Inena | Ptup | Ptena | 0;
+*(ushort *)GpmcD7 = Inena | Ptup | Ptena | 0;
+*(ushort *)GpmcD8 = Inena | Ptup | Ptena | 0;
+*(ushort *)GpmcD9 = Inena | Ptup | Ptena | 0;
+*(ushort *)GpmcD10 = Inena | Ptup | Ptena | 0;
+*(ushort *)GpmcD11 = Inena | Ptup | Ptena | 0;
+*(ushort *)GpmcD12 = Inena | Ptup | Ptena | 0;
+*(ushort *)GpmcD13 = Inena | Ptup | Ptena | 0;
+*(ushort *)GpmcD14 = Inena | Ptup | Ptena | 0;
+*(ushort *)GpmcD15 = Inena | Ptup | Ptena | 0;
+*(ushort *)GpmcNCS0 = Indis | Ptup | Ptena | 0;
+*(ushort *)GpmcNCS1 = Indis | Ptup | Ptena | 0;
+*(ushort *)GpmcNCS2 = Indis | Ptup | Ptena | 0;
+*(ushort *)GpmcNCS3 = Indis | Ptup | Ptena | 0;
+*(ushort *)GpmcNCS4 = Indis | Ptup | Ptena | 0;
+*(ushort *)GpmcNCS5 = Indis | Ptup | Ptena | 0;
+*(ushort *)GpmcNCS6 = Indis | Ptup | Ptena | 0;
+*(ushort *)GpmcNOE = Indis | Ptdown | Ptdis | 0;
+*(ushort *)GpmcNWE = Indis | Ptdown | Ptdis | 0;
+*(ushort *)GpmcWAIT2 = Inena | Ptup | Ptena | 4;
+*(ushort *)GpmcNCS7 = Inena | Ptup | Ptena | 1;
+*(ushort *)GpmcCLK = Indis | Ptdown | Ptdis | 0;
+*(ushort *)GpmcNBE1 = Inena | Ptdown | Ptdis | 0;
+*(ushort *)GpmcNADV_ALE = Indis | Ptdown | Ptdis | 0;
+*(ushort *)GpmcNBE0_CLE = Indis | Ptdown | Ptdis | 0;
+*(ushort *)GpmcNWP = Inena | Ptdown | Ptdis | 0;
+*(ushort *)GpmcWAIT0 = Inena | Ptup | Ptena | 0;
+*(ushort *)GpmcWAIT1 = Inena | Ptup | Ptena | 0;
+*(ushort *)GpmcWAIT3 = Inena | Ptup | Ptena | 0;
 for (off = 0xc0; off <= 0xc4; off += sizeof(short))
 *((ushort *)(PHYSSCM + off)) |= 0xe00;
 coherence();

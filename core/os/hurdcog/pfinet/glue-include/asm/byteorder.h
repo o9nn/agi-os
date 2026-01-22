@@ -9,42 +9,42 @@
 BO_cvt (bits, from, to, *(const u_int##bits##_t *) (p))
 #define BO_cvts(bits, from, to, p) \
 ({ const u_int##bits##_t *_p = (p); *_p = BO_cvt (bits, from, to, *_p); })
-#define	__cpu_to_le64(x)	BO_cvt (64, BYTE_ORDER, LITTLE_ENDIAN,	(x))
-#define	__le64_to_cpu(x)	BO_cvt (64, LITTLE_ENDIAN, BYTE_ORDER,	(x))
-#define	__cpu_to_le32(x)	BO_cvt (32, BYTE_ORDER, LITTLE_ENDIAN,	(x))
-#define	__le32_to_cpu(x)	BO_cvt (32, LITTLE_ENDIAN, BYTE_ORDER,	(x))
-#define	__cpu_to_le16(x)	BO_cvt (16, BYTE_ORDER, LITTLE_ENDIAN,	(x))
-#define	__le16_to_cpu(x)	BO_cvt (16, LITTLE_ENDIAN, BYTE_ORDER,	(x))
-#define	__cpu_to_be64(x)	BO_cvt (64, BYTE_ORDER, BIG_ENDIAN,	(x))
-#define	__be64_to_cpu(x)	BO_cvt (64, BIG_ENDIAN, BYTE_ORDER,	(x))
-#define	__cpu_to_be32(x)	BO_cvt (32, BYTE_ORDER, BIG_ENDIAN,	(x))
-#define	__be32_to_cpu(x)	BO_cvt (32, BIG_ENDIAN, BYTE_ORDER,	(x))
-#define	__cpu_to_be16(x)	BO_cvt (16, BYTE_ORDER, BIG_ENDIAN,	(x))
-#define	__be16_to_cpu(x)	BO_cvt (16, BIG_ENDIAN, BYTE_ORDER,	(x))
-#define	__cpu_to_le64p(p)	BO_cvtp (64, BYTE_ORDER, LITTLE_ENDIAN,	(p))
-#define	__le64_to_cpup(p)	BO_cvtp (64, LITTLE_ENDIAN, BYTE_ORDER,	(p))
-#define	__cpu_to_le32p(p)	BO_cvtp (32, BYTE_ORDER, LITTLE_ENDIAN,	(p))
-#define	__le32_to_cpup(p)	BO_cvtp (32, LITTLE_ENDIAN, BYTE_ORDER,	(p))
-#define	__cpu_to_le16p(p)	BO_cvtp (16, BYTE_ORDER, LITTLE_ENDIAN,	(p))
-#define	__le16_to_cpup(p)	BO_cvtp (16, LITTLE_ENDIAN, BYTE_ORDER,	(p))
-#define	__cpu_to_be64p(p)	BO_cvtp (64, BYTE_ORDER, BIG_ENDIAN,	(p))
-#define	__be64_to_cpup(p)	BO_cvtp (64, BIG_ENDIAN, BYTE_ORDER,	(p))
-#define	__cpu_to_be32p(p)	BO_cvtp (32, BYTE_ORDER, BIG_ENDIAN,	(p))
-#define	__be32_to_cpup(p)	BO_cvtp (32, BIG_ENDIAN, BYTE_ORDER,	(p))
-#define	__cpu_to_be16p(p)	BO_cvtp (16, BYTE_ORDER, BIG_ENDIAN,	(p))
-#define	__be16_to_cpup(p)	BO_cvtp (16, BIG_ENDIAN, BYTE_ORDER,	(p))
-#define	__cpu_to_le64s(p)	BO_cvts (64, BYTE_ORDER, LITTLE_ENDIAN,	(p))
-#define	__le64_to_cpus(p)	BO_cvts (64, LITTLE_ENDIAN, BYTE_ORDER,	(p))
-#define	__cpu_to_le32s(p)	BO_cvts (32, BYTE_ORDER, LITTLE_ENDIAN,	(p))
-#define	__le32_to_cpus(p)	BO_cvts (32, LITTLE_ENDIAN, BYTE_ORDER,	(p))
-#define	__cpu_to_le16s(p)	BO_cvts (16, BYTE_ORDER, LITTLE_ENDIAN,	(p))
-#define	__le16_to_cpus(p)	BO_cvts (16, LITTLE_ENDIAN, BYTE_ORDER,	(p))
-#define	__cpu_to_be64s(p)	BO_cvts (64, BYTE_ORDER, BIG_ENDIAN,	(p))
-#define	__be64_to_cpus(p)	BO_cvts (64, BIG_ENDIAN, BYTE_ORDER,	(p))
-#define	__cpu_to_be32s(p)	BO_cvts (32, BYTE_ORDER, BIG_ENDIAN,	(p))
-#define	__be32_to_cpus(p)	BO_cvts (32, BIG_ENDIAN, BYTE_ORDER,	(p))
-#define	__cpu_to_be16s(p)	BO_cvts (16, BYTE_ORDER, BIG_ENDIAN,	(p))
-#define	__be16_to_cpus(p)	BO_cvts (16, BIG_ENDIAN, BYTE_ORDER,	(p))
+#define __cpu_to_le64(x) BO_cvt (64, BYTE_ORDER, LITTLE_ENDIAN, (x))
+#define __le64_to_cpu(x) BO_cvt (64, LITTLE_ENDIAN, BYTE_ORDER, (x))
+#define __cpu_to_le32(x) BO_cvt (32, BYTE_ORDER, LITTLE_ENDIAN, (x))
+#define __le32_to_cpu(x) BO_cvt (32, LITTLE_ENDIAN, BYTE_ORDER, (x))
+#define __cpu_to_le16(x) BO_cvt (16, BYTE_ORDER, LITTLE_ENDIAN, (x))
+#define __le16_to_cpu(x) BO_cvt (16, LITTLE_ENDIAN, BYTE_ORDER, (x))
+#define __cpu_to_be64(x) BO_cvt (64, BYTE_ORDER, BIG_ENDIAN, (x))
+#define __be64_to_cpu(x) BO_cvt (64, BIG_ENDIAN, BYTE_ORDER, (x))
+#define __cpu_to_be32(x) BO_cvt (32, BYTE_ORDER, BIG_ENDIAN, (x))
+#define __be32_to_cpu(x) BO_cvt (32, BIG_ENDIAN, BYTE_ORDER, (x))
+#define __cpu_to_be16(x) BO_cvt (16, BYTE_ORDER, BIG_ENDIAN, (x))
+#define __be16_to_cpu(x) BO_cvt (16, BIG_ENDIAN, BYTE_ORDER, (x))
+#define __cpu_to_le64p(p) BO_cvtp (64, BYTE_ORDER, LITTLE_ENDIAN, (p))
+#define __le64_to_cpup(p) BO_cvtp (64, LITTLE_ENDIAN, BYTE_ORDER, (p))
+#define __cpu_to_le32p(p) BO_cvtp (32, BYTE_ORDER, LITTLE_ENDIAN, (p))
+#define __le32_to_cpup(p) BO_cvtp (32, LITTLE_ENDIAN, BYTE_ORDER, (p))
+#define __cpu_to_le16p(p) BO_cvtp (16, BYTE_ORDER, LITTLE_ENDIAN, (p))
+#define __le16_to_cpup(p) BO_cvtp (16, LITTLE_ENDIAN, BYTE_ORDER, (p))
+#define __cpu_to_be64p(p) BO_cvtp (64, BYTE_ORDER, BIG_ENDIAN, (p))
+#define __be64_to_cpup(p) BO_cvtp (64, BIG_ENDIAN, BYTE_ORDER, (p))
+#define __cpu_to_be32p(p) BO_cvtp (32, BYTE_ORDER, BIG_ENDIAN, (p))
+#define __be32_to_cpup(p) BO_cvtp (32, BIG_ENDIAN, BYTE_ORDER, (p))
+#define __cpu_to_be16p(p) BO_cvtp (16, BYTE_ORDER, BIG_ENDIAN, (p))
+#define __be16_to_cpup(p) BO_cvtp (16, BIG_ENDIAN, BYTE_ORDER, (p))
+#define __cpu_to_le64s(p) BO_cvts (64, BYTE_ORDER, LITTLE_ENDIAN, (p))
+#define __le64_to_cpus(p) BO_cvts (64, LITTLE_ENDIAN, BYTE_ORDER, (p))
+#define __cpu_to_le32s(p) BO_cvts (32, BYTE_ORDER, LITTLE_ENDIAN, (p))
+#define __le32_to_cpus(p) BO_cvts (32, LITTLE_ENDIAN, BYTE_ORDER, (p))
+#define __cpu_to_le16s(p) BO_cvts (16, BYTE_ORDER, LITTLE_ENDIAN, (p))
+#define __le16_to_cpus(p) BO_cvts (16, LITTLE_ENDIAN, BYTE_ORDER, (p))
+#define __cpu_to_be64s(p) BO_cvts (64, BYTE_ORDER, BIG_ENDIAN, (p))
+#define __be64_to_cpus(p) BO_cvts (64, BIG_ENDIAN, BYTE_ORDER, (p))
+#define __cpu_to_be32s(p) BO_cvts (32, BYTE_ORDER, BIG_ENDIAN, (p))
+#define __be32_to_cpus(p) BO_cvts (32, BIG_ENDIAN, BYTE_ORDER, (p))
+#define __cpu_to_be16s(p) BO_cvts (16, BYTE_ORDER, BIG_ENDIAN, (p))
+#define __be16_to_cpus(p) BO_cvts (16, BIG_ENDIAN, BYTE_ORDER, (p))
 #define cpu_to_le64 __cpu_to_le64
 #define le64_to_cpu __le64_to_cpu
 #define cpu_to_le32 __cpu_to_le32
@@ -90,36 +90,36 @@ BO_cvt (bits, from, to, *(const u_int##bits##_t *) (p))
 #endif
 #include <netinet/in.h>
 #if BYTE_ORDER == BIG_ENDIAN
-#	if !defined(__constant_htonl)
-#		define __constant_htonl(x) (x)
-#	endif
-#	if !defined(__constant_htons)
-#		define __constant_htons(x) (x)
-#	endif
+# if !defined(__constant_htonl)
+# define __constant_htonl(x) (x)
+# endif
+# if !defined(__constant_htons)
+# define __constant_htons(x) (x)
+# endif
 #elif BYTE_ORDER == LITTLE_ENDIAN
-#	if !defined(__constant_htonl)
-#		define __constant_htonl(x) \
+# if !defined(__constant_htonl)
+# define __constant_htonl(x) \
 ((unsigned long int)((((unsigned long int)(x) & 0x000000ffU) << 24) | \
-(((unsigned long int)(x) & 0x0000ff00U) <<  8) | \
-(((unsigned long int)(x) & 0x00ff0000U) >>  8) | \
+(((unsigned long int)(x) & 0x0000ff00U) << 8) | \
+(((unsigned long int)(x) & 0x00ff0000U) >> 8) | \
 (((unsigned long int)(x) & 0xff000000U) >> 24)))
-#	endif
-#	if !defined(__constant_htons)
-#		define __constant_htons(x) \
+# endif
+# if !defined(__constant_htons)
+# define __constant_htons(x) \
 ((unsigned short int)((((unsigned short int)(x) & 0x00ff) << 8) | \
 (((unsigned short int)(x) & 0xff00) >> 8)))
-#	endif
+# endif
 #else
-#	error "Don't know if bytes are big- or little-endian!"
+# error "Don't know if bytes are big- or little-endian!"
 #endif
-#define	__constant_ntohl	__constant_htonl
-#define	__constant_ntohs	__constant_htons
+#define __constant_ntohl __constant_htonl
+#define __constant_ntohs __constant_htons
 #if BYTE_ORDER == BIG_ENDIAN
-#undef	__LITTLE_ENDIAN
+#undef __LITTLE_ENDIAN
 #elif BYTE_ORDER == LITTLE_ENDIAN
-#undef	__BIG_ENDIAN
+#undef __BIG_ENDIAN
 #endif
-#undef	__PDP_ENDIAN
-#undef	__BYTE_ORDER
-#define	__BYTE_ORDER    ?????crash?????
+#undef __PDP_ENDIAN
+#undef __BYTE_ORDER
+#define __BYTE_ORDER ?????crash?????
 #endif

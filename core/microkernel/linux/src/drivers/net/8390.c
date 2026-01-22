@@ -61,7 +61,7 @@ int length, send_length, output_page;
 if (dev->tbusy) {
 int txsr = inb(e8390_base+EN0_TSR), isr;
 int tickssofar = jiffies - dev->trans_start;
-if (tickssofar < TX_TIMEOUT ||	(tickssofar < (TX_TIMEOUT+5) && ! (txsr & ENTSR_PTX))) {
+if (tickssofar < TX_TIMEOUT || (tickssofar < (TX_TIMEOUT+5) && ! (txsr & ENTSR_PTX))) {
 return 1;
 }
 isr = inb(e8390_base+EN0_ISR);
@@ -98,13 +98,13 @@ send_length = ETH_ZLEN < length ? length : ETH_ZLEN;
 if (ei_local->tx1 == 0) {
 output_page = ei_local->tx_start_page;
 ei_local->tx1 = send_length;
-if (ei_debug  &&  ei_local->tx2 > 0)
+if (ei_debug && ei_local->tx2 > 0)
 printk("%s: idle transmitter tx2=%d, lasttx=%d, txing=%d.\n",
 dev->name, ei_local->tx2, ei_local->lasttx, ei_local->txing);
 } else if (ei_local->tx2 == 0) {
 output_page = ei_local->tx_start_page + TX_1X_PAGES;
 ei_local->tx2 = send_length;
-if (ei_debug  &&  ei_local->tx1 > 0)
+if (ei_debug && ei_local->tx1 > 0)
 printk("%s: idle transmitter, tx1=%d, lasttx=%d, txing=%d.\n",
 dev->name, ei_local->tx1, ei_local->lasttx, ei_local->txing);
 } else {
@@ -130,7 +130,7 @@ ei_local->lasttx = -2;
 }
 } else
 ei_local->txqueue++;
-dev->tbusy = (ei_local->tx1  &&  ei_local->tx2);
+dev->tbusy = (ei_local->tx1 && ei_local->tx2);
 #else
 ei_block_output(dev, length, skb->data, ei_local->tx_start_page);
 ei_local->txing = 1;
@@ -187,7 +187,7 @@ ei_tx_err(dev);
 }
 if (interrupts & ENISR_COUNTERS) {
 ei_local->stat.rx_frame_errors += inb_p(e8390_base + EN0_COUNTER0);
-ei_local->stat.rx_crc_errors   += inb_p(e8390_base + EN0_COUNTER1);
+ei_local->stat.rx_crc_errors += inb_p(e8390_base + EN0_COUNTER1);
 ei_local->stat.rx_missed_errors+= inb_p(e8390_base + EN0_COUNTER2);
 outb_p(ENISR_COUNTERS, e8390_base + EN0_ISR);
 }
@@ -259,7 +259,7 @@ ei_local->lasttx = 2;
 } else
 ei_local->lasttx = 20, ei_local->txing = 0;
 } else if (ei_local->tx2 < 0) {
-if (ei_local->lasttx != 2  &&  ei_local->lasttx != -2)
+if (ei_local->lasttx != 2 && ei_local->lasttx != -2)
 printk("%s: bogus last_tx_buffer %d, tx2=%d.\n",
 ei_local->name, ei_local->lasttx, ei_local->tx2);
 ei_local->tx2 = 0;
@@ -287,7 +287,7 @@ else {
 ei_local->stat.tx_errors++;
 if (status & ENTSR_ABT) ei_local->stat.tx_aborted_errors++;
 if (status & ENTSR_CRS) ei_local->stat.tx_carrier_errors++;
-if (status & ENTSR_FU)  ei_local->stat.tx_fifo_errors++;
+if (status & ENTSR_FU) ei_local->stat.tx_fifo_errors++;
 if (status & ENTSR_CDH) ei_local->stat.tx_heartbeat_errors++;
 if (status & ENTSR_OWC) ei_local->stat.tx_window_errors++;
 }
@@ -310,7 +310,7 @@ outb_p(E8390_NODMA+E8390_PAGE0, e8390_base + E8390_CMD);
 this_frame = inb_p(e8390_base + EN0_BOUNDARY) + 1;
 if (this_frame >= ei_local->stop_page)
 this_frame = ei_local->rx_start_page;
-if (ei_debug > 0  &&  this_frame != ei_local->current_page)
+if (ei_debug > 0 && this_frame != ei_local->current_page)
 printk("%s: mismatched read page pointers %2x vs %2x.\n",
 dev->name, this_frame, ei_local->current_page);
 if (this_frame == rxing_page)
@@ -328,7 +328,7 @@ outb(ei_local->current_page-1, e8390_base+EN0_BOUNDARY);
 ei_local->stat.rx_errors++;
 continue;
 }
-if (pkt_len < 60  ||  pkt_len > 1518) {
+if (pkt_len < 60 || pkt_len > 1518) {
 if (ei_debug)
 printk("%s: bogus packet size: %d, status=%#2x nxpg=%#2x.\n",
 dev->name, rx_frame.count, rx_frame.status,
@@ -407,7 +407,7 @@ short ioaddr = dev->base_addr;
 struct ei_device *ei_local = (struct ei_device *) dev->priv;
 if (dev->start == 0) return &ei_local->stat;
 ei_local->stat.rx_frame_errors += inb_p(ioaddr + EN0_COUNTER0);
-ei_local->stat.rx_crc_errors   += inb_p(ioaddr + EN0_COUNTER1);
+ei_local->stat.rx_crc_errors += inb_p(ioaddr + EN0_COUNTER1);
 ei_local->stat.rx_missed_errors+= inb_p(ioaddr + EN0_COUNTER2);
 return &ei_local->stat;
 }
@@ -436,7 +436,7 @@ return -ENOMEM;
 memset(dev->priv, 0, sizeof(struct ei_device));
 }
 dev->hard_start_xmit = &ei_start_xmit;
-dev->get_stats	= get_stats;
+dev->get_stats = get_stats;
 dev->set_multicast_list = &set_multicast_list;
 ether_setup(dev);
 return 0;
@@ -450,18 +450,18 @@ int endcfg = ei_local->word16 ? (0x48 | ENDCFG_WTS) : 0x48;
 unsigned long flags;
 outb_p(E8390_NODMA+E8390_PAGE0+E8390_STOP, e8390_base);
 outb_p(endcfg, e8390_base + EN0_DCFG);
-outb_p(0x00,  e8390_base + EN0_RCNTLO);
-outb_p(0x00,  e8390_base + EN0_RCNTHI);
+outb_p(0x00, e8390_base + EN0_RCNTLO);
+outb_p(0x00, e8390_base + EN0_RCNTHI);
 outb_p(E8390_RXOFF, e8390_base + EN0_RXCR);
 outb_p(E8390_TXOFF, e8390_base + EN0_TXCR);
-outb_p(ei_local->tx_start_page,	 e8390_base + EN0_TPSR);
+outb_p(ei_local->tx_start_page, e8390_base + EN0_TPSR);
 ei_local->tx1 = ei_local->tx2 = 0;
-outb_p(ei_local->rx_start_page,	 e8390_base + EN0_STARTPG);
+outb_p(ei_local->rx_start_page, e8390_base + EN0_STARTPG);
 outb_p(ei_local->stop_page-1, e8390_base + EN0_BOUNDARY);
 ei_local->current_page = ei_local->rx_start_page;
-outb_p(ei_local->stop_page,	  e8390_base + EN0_STOPPG);
+outb_p(ei_local->stop_page, e8390_base + EN0_STOPPG);
 outb_p(0xFF, e8390_base + EN0_ISR);
-outb_p(0x00,  e8390_base + EN0_IMR);
+outb_p(0x00, e8390_base + EN0_IMR);
 save_flags(flags);
 cli();
 outb_p(E8390_NODMA + E8390_PAGE1 + E8390_STOP, e8390_base);
@@ -470,7 +470,7 @@ outb_p(dev->dev_addr[i], e8390_base + EN1_PHYS + i);
 }
 for(i = 0; i < 8; i++)
 outb_p(0xff, e8390_base + EN1_MULT + i);
-outb_p(ei_local->rx_start_page,	 e8390_base + EN1_CURPAG);
+outb_p(ei_local->rx_start_page, e8390_base + EN1_CURPAG);
 outb_p(E8390_NODMA+E8390_PAGE0+E8390_STOP, e8390_base);
 restore_flags(flags);
 dev->tbusy = 0;
@@ -478,11 +478,11 @@ dev->interrupt = 0;
 ei_local->tx1 = ei_local->tx2 = 0;
 ei_local->txing = 0;
 if (startp) {
-outb_p(0xff,  e8390_base + EN0_ISR);
-outb_p(ENISR_ALL,  e8390_base + EN0_IMR);
+outb_p(0xff, e8390_base + EN0_ISR);
+outb_p(ENISR_ALL, e8390_base + EN0_IMR);
 outb_p(E8390_NODMA+E8390_PAGE0+E8390_START, e8390_base);
 outb_p(E8390_TXCONFIG, e8390_base + EN0_TXCR);
-outb_p(E8390_RXCONFIG,	e8390_base + EN0_RXCR);
+outb_p(E8390_RXCONFIG, e8390_base + EN0_RXCR);
 dev->set_multicast_list(dev);
 }
 return;

@@ -1,23 +1,23 @@
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
 #define MAXRPC (IOHDRSZ+8192)
 struct Mntrpc
 {
-Chan*	c;
-Mntrpc*	list;
-Fcall	request;
-Fcall 	reply;
-Mnt*	m;
-Rendez	r;
-uchar*	rpc;
-uint		rpclen;
-Block	*b;
-char	done;
-uvlong	stime;
-ulong	reqlen;
-ulong	replen;
-Mntrpc*	flushed;
+Chan* c;
+Mntrpc* list;
+Fcall request;
+Fcall reply;
+Mnt* m;
+Rendez r;
+uchar* rpc;
+uint rpclen;
+Block *b;
+char done;
+uvlong stime;
+ulong reqlen;
+ulong replen;
+Mntrpc* flushed;
 };
 enum
 {
@@ -27,33 +27,33 @@ NMASK = (64*1024)>>TAGSHIFT,
 };
 struct Mntalloc
 {
-Lock	l;
-Mnt*	list;
-Mnt*	mntfree;
-Mntrpc*	rpcfree;
-int	nrpcfree;
-int	nrpcused;
-ulong	id;
-ulong	tagmask[NMASK];
+Lock l;
+Mnt* list;
+Mnt* mntfree;
+Mntrpc* rpcfree;
+int nrpcfree;
+int nrpcused;
+ulong id;
+ulong tagmask[NMASK];
 }mntalloc;
-void	mattach(Mnt*, Chan*, char*);
-Mnt*	mntchk(Chan*);
-void	mntdirfix(uchar*, Chan*);
-Mntrpc*	mntflushalloc(Mntrpc*, ulong);
-void	mntflushfree(Mnt*, Mntrpc*);
-void	mntfree(Mntrpc*);
-void	mntgate(Mnt*);
-void	mntpntfree(Mnt*);
-void	mntqrm(Mnt*, Mntrpc*);
-Mntrpc*	mntralloc(Chan*, ulong);
-long	mntrdwr(int, Chan*, void*, long, vlong);
-int	mntrpcread(Mnt*, Mntrpc*);
-void	mountio(Mnt*, Mntrpc*);
-void	mountmux(Mnt*, Mntrpc*);
-void	mountrpc(Mnt*, Mntrpc*);
-int	rpcattn(void*);
-Chan*	mntchan(void);
-char	Esbadstat[] = "invalid directory entry received from server";
+void mattach(Mnt*, Chan*, char*);
+Mnt* mntchk(Chan*);
+void mntdirfix(uchar*, Chan*);
+Mntrpc* mntflushalloc(Mntrpc*, ulong);
+void mntflushfree(Mnt*, Mntrpc*);
+void mntfree(Mntrpc*);
+void mntgate(Mnt*);
+void mntpntfree(Mnt*);
+void mntqrm(Mnt*, Mntrpc*);
+Mntrpc* mntralloc(Chan*, ulong);
+long mntrdwr(int, Chan*, void*, long, vlong);
+int mntrpcread(Mnt*, Mntrpc*);
+void mountio(Mnt*, Mntrpc*);
+void mountmux(Mnt*, Mntrpc*);
+void mountrpc(Mnt*, Mntrpc*);
+int rpcattn(void*);
+Chan* mntchan(void);
+char Esbadstat[] = "invalid directory entry received from server";
 char Enoversion[] = "version not established for mount channel";
 void (*mntstats)(int, Chan*, uvlong, ulong);
 static void
@@ -235,10 +235,10 @@ Mnt *m;
 Chan *c;
 Mntrpc *r;
 struct bogus{
-Chan	*chan;
-Chan	*authchan;
-char	*spec;
-int	flags;
+Chan *chan;
+Chan *authchan;
+char *spec;
+int flags;
 }bogus;
 bogus = *((struct bogus *)muxattach);
 c = bogus.chan;

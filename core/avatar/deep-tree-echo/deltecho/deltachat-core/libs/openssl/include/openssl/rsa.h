@@ -2,17 +2,17 @@
 # define HEADER_RSA_H
 # include <openssl/asn1.h>
 # ifndef OPENSSL_NO_BIO
-#  include <openssl/bio.h>
+# include <openssl/bio.h>
 # endif
 # include <openssl/crypto.h>
 # include <openssl/ossl_typ.h>
 # ifndef OPENSSL_NO_DEPRECATED
-#  include <openssl/bn.h>
+# include <openssl/bn.h>
 # endif
 # ifdef OPENSSL_NO_RSA
-#  error RSA is disabled.
+# error RSA is disabled.
 # endif
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 struct rsa_meth_st {
@@ -65,27 +65,27 @@ BN_BLINDING *blinding;
 BN_BLINDING *mt_blinding;
 };
 # ifndef OPENSSL_RSA_MAX_MODULUS_BITS
-#  define OPENSSL_RSA_MAX_MODULUS_BITS   16384
+# define OPENSSL_RSA_MAX_MODULUS_BITS 16384
 # endif
 # ifndef OPENSSL_RSA_SMALL_MODULUS_BITS
-#  define OPENSSL_RSA_SMALL_MODULUS_BITS 3072
+# define OPENSSL_RSA_SMALL_MODULUS_BITS 3072
 # endif
 # ifndef OPENSSL_RSA_MAX_PUBEXP_BITS
-#  define OPENSSL_RSA_MAX_PUBEXP_BITS    64
+# define OPENSSL_RSA_MAX_PUBEXP_BITS 64
 # endif
-# define RSA_3   0x3L
-# define RSA_F4  0x10001L
-# define RSA_METHOD_FLAG_NO_CHECK        0x0001
-# define RSA_FLAG_CACHE_PUBLIC           0x0002
-# define RSA_FLAG_CACHE_PRIVATE          0x0004
-# define RSA_FLAG_BLINDING               0x0008
-# define RSA_FLAG_THREAD_SAFE            0x0010
-# define RSA_FLAG_EXT_PKEY               0x0020
-# define RSA_FLAG_SIGN_VER               0x0040
-# define RSA_FLAG_NO_BLINDING            0x0080
-# define RSA_FLAG_NO_CONSTTIME           0x0100
+# define RSA_3 0x3L
+# define RSA_F4 0x10001L
+# define RSA_METHOD_FLAG_NO_CHECK 0x0001
+# define RSA_FLAG_CACHE_PUBLIC 0x0002
+# define RSA_FLAG_CACHE_PRIVATE 0x0004
+# define RSA_FLAG_BLINDING 0x0008
+# define RSA_FLAG_THREAD_SAFE 0x0010
+# define RSA_FLAG_EXT_PKEY 0x0020
+# define RSA_FLAG_SIGN_VER 0x0040
+# define RSA_FLAG_NO_BLINDING 0x0080
+# define RSA_FLAG_NO_CONSTTIME 0x0100
 # ifdef OPENSSL_USE_DEPRECATED
-#  define RSA_FLAG_NO_EXP_CONSTTIME RSA_FLAG_NO_CONSTTIME
+# define RSA_FLAG_NO_EXP_CONSTTIME RSA_FLAG_NO_CONSTTIME
 # endif
 # define EVP_PKEY_CTX_set_rsa_padding(ctx, pad) \
 EVP_PKEY_CTX_ctrl(ctx, EVP_PKEY_RSA, -1, EVP_PKEY_CTRL_RSA_PADDING, \
@@ -109,29 +109,29 @@ EVP_PKEY_CTRL_RSA_KEYGEN_BITS, bits, NULL)
 # define EVP_PKEY_CTX_set_rsa_keygen_pubexp(ctx, pubexp) \
 EVP_PKEY_CTX_ctrl(ctx, EVP_PKEY_RSA, EVP_PKEY_OP_KEYGEN, \
 EVP_PKEY_CTRL_RSA_KEYGEN_PUBEXP, 0, pubexp)
-# define  EVP_PKEY_CTX_set_rsa_mgf1_md(ctx, md)  \
-EVP_PKEY_CTX_ctrl(ctx, EVP_PKEY_RSA, EVP_PKEY_OP_TYPE_SIG,  \
+# define EVP_PKEY_CTX_set_rsa_mgf1_md(ctx, md) \
+EVP_PKEY_CTX_ctrl(ctx, EVP_PKEY_RSA, EVP_PKEY_OP_TYPE_SIG, \
 EVP_PKEY_CTRL_RSA_MGF1_MD, 0, (void *)md)
-# define  EVP_PKEY_CTX_get_rsa_mgf1_md(ctx, pmd) \
-EVP_PKEY_CTX_ctrl(ctx, EVP_PKEY_RSA, EVP_PKEY_OP_TYPE_SIG,  \
+# define EVP_PKEY_CTX_get_rsa_mgf1_md(ctx, pmd) \
+EVP_PKEY_CTX_ctrl(ctx, EVP_PKEY_RSA, EVP_PKEY_OP_TYPE_SIG, \
 EVP_PKEY_CTRL_GET_RSA_MGF1_MD, 0, (void *)pmd)
-# define EVP_PKEY_CTRL_RSA_PADDING       (EVP_PKEY_ALG_CTRL + 1)
-# define EVP_PKEY_CTRL_RSA_PSS_SALTLEN   (EVP_PKEY_ALG_CTRL + 2)
-# define EVP_PKEY_CTRL_RSA_KEYGEN_BITS   (EVP_PKEY_ALG_CTRL + 3)
+# define EVP_PKEY_CTRL_RSA_PADDING (EVP_PKEY_ALG_CTRL + 1)
+# define EVP_PKEY_CTRL_RSA_PSS_SALTLEN (EVP_PKEY_ALG_CTRL + 2)
+# define EVP_PKEY_CTRL_RSA_KEYGEN_BITS (EVP_PKEY_ALG_CTRL + 3)
 # define EVP_PKEY_CTRL_RSA_KEYGEN_PUBEXP (EVP_PKEY_ALG_CTRL + 4)
-# define EVP_PKEY_CTRL_RSA_MGF1_MD       (EVP_PKEY_ALG_CTRL + 5)
-# define EVP_PKEY_CTRL_GET_RSA_PADDING           (EVP_PKEY_ALG_CTRL + 6)
-# define EVP_PKEY_CTRL_GET_RSA_PSS_SALTLEN       (EVP_PKEY_ALG_CTRL + 7)
-# define EVP_PKEY_CTRL_GET_RSA_MGF1_MD           (EVP_PKEY_ALG_CTRL + 8)
-# define RSA_PKCS1_PADDING       1
-# define RSA_SSLV23_PADDING      2
-# define RSA_NO_PADDING          3
-# define RSA_PKCS1_OAEP_PADDING  4
-# define RSA_X931_PADDING        5
-# define RSA_PKCS1_PSS_PADDING   6
-# define RSA_PKCS1_PADDING_SIZE  11
-# define RSA_set_app_data(s,arg)         RSA_set_ex_data(s,0,arg)
-# define RSA_get_app_data(s)             RSA_get_ex_data(s,0)
+# define EVP_PKEY_CTRL_RSA_MGF1_MD (EVP_PKEY_ALG_CTRL + 5)
+# define EVP_PKEY_CTRL_GET_RSA_PADDING (EVP_PKEY_ALG_CTRL + 6)
+# define EVP_PKEY_CTRL_GET_RSA_PSS_SALTLEN (EVP_PKEY_ALG_CTRL + 7)
+# define EVP_PKEY_CTRL_GET_RSA_MGF1_MD (EVP_PKEY_ALG_CTRL + 8)
+# define RSA_PKCS1_PADDING 1
+# define RSA_SSLV23_PADDING 2
+# define RSA_NO_PADDING 3
+# define RSA_PKCS1_OAEP_PADDING 4
+# define RSA_X931_PADDING 5
+# define RSA_PKCS1_PSS_PADDING 6
+# define RSA_PKCS1_PADDING_SIZE 11
+# define RSA_set_app_data(s,arg) RSA_set_ex_data(s,0,arg)
+# define RSA_get_app_data(s) RSA_get_ex_data(s,0)
 RSA *RSA_new(void);
 RSA *RSA_new_method(ENGINE *engine);
 int RSA_size(const RSA *rsa);
@@ -252,128 +252,128 @@ int RSA_set_ex_data(RSA *r, int idx, void *arg);
 void *RSA_get_ex_data(const RSA *r, int idx);
 RSA *RSAPublicKey_dup(RSA *rsa);
 RSA *RSAPrivateKey_dup(RSA *rsa);
-# define RSA_FLAG_FIPS_METHOD                    0x0400
-# define RSA_FLAG_NON_FIPS_ALLOW                 0x0400
-# define RSA_FLAG_CHECKED                        0x0800
+# define RSA_FLAG_FIPS_METHOD 0x0400
+# define RSA_FLAG_NON_FIPS_ALLOW 0x0400
+# define RSA_FLAG_CHECKED 0x0800
 void ERR_load_RSA_strings(void);
-# define RSA_F_CHECK_PADDING_MD                           140
-# define RSA_F_DO_RSA_PRINT                               146
-# define RSA_F_INT_RSA_VERIFY                             145
-# define RSA_F_MEMORY_LOCK                                100
-# define RSA_F_OLD_RSA_PRIV_DECODE                        147
-# define RSA_F_PKEY_RSA_CTRL                              143
-# define RSA_F_PKEY_RSA_CTRL_STR                          144
-# define RSA_F_PKEY_RSA_SIGN                              142
-# define RSA_F_PKEY_RSA_VERIFY                            154
-# define RSA_F_PKEY_RSA_VERIFYRECOVER                     141
-# define RSA_F_RSA_BUILTIN_KEYGEN                         129
-# define RSA_F_RSA_CHECK_KEY                              123
-# define RSA_F_RSA_EAY_PRIVATE_DECRYPT                    101
-# define RSA_F_RSA_EAY_PRIVATE_ENCRYPT                    102
-# define RSA_F_RSA_EAY_PUBLIC_DECRYPT                     103
-# define RSA_F_RSA_EAY_PUBLIC_ENCRYPT                     104
-# define RSA_F_RSA_GENERATE_KEY                           105
-# define RSA_F_RSA_GENERATE_KEY_EX                        155
-# define RSA_F_RSA_ITEM_VERIFY                            156
-# define RSA_F_RSA_MEMORY_LOCK                            130
-# define RSA_F_RSA_NEW_METHOD                             106
-# define RSA_F_RSA_NULL                                   124
-# define RSA_F_RSA_NULL_MOD_EXP                           131
-# define RSA_F_RSA_NULL_PRIVATE_DECRYPT                   132
-# define RSA_F_RSA_NULL_PRIVATE_ENCRYPT                   133
-# define RSA_F_RSA_NULL_PUBLIC_DECRYPT                    134
-# define RSA_F_RSA_NULL_PUBLIC_ENCRYPT                    135
-# define RSA_F_RSA_PADDING_ADD_NONE                       107
-# define RSA_F_RSA_PADDING_ADD_PKCS1_OAEP                 121
-# define RSA_F_RSA_PADDING_ADD_PKCS1_PSS                  125
-# define RSA_F_RSA_PADDING_ADD_PKCS1_PSS_MGF1             148
-# define RSA_F_RSA_PADDING_ADD_PKCS1_TYPE_1               108
-# define RSA_F_RSA_PADDING_ADD_PKCS1_TYPE_2               109
-# define RSA_F_RSA_PADDING_ADD_SSLV23                     110
-# define RSA_F_RSA_PADDING_ADD_X931                       127
-# define RSA_F_RSA_PADDING_CHECK_NONE                     111
-# define RSA_F_RSA_PADDING_CHECK_PKCS1_OAEP               122
-# define RSA_F_RSA_PADDING_CHECK_PKCS1_TYPE_1             112
-# define RSA_F_RSA_PADDING_CHECK_PKCS1_TYPE_2             113
-# define RSA_F_RSA_PADDING_CHECK_SSLV23                   114
-# define RSA_F_RSA_PADDING_CHECK_X931                     128
-# define RSA_F_RSA_PRINT                                  115
-# define RSA_F_RSA_PRINT_FP                               116
-# define RSA_F_RSA_PRIVATE_DECRYPT                        150
-# define RSA_F_RSA_PRIVATE_ENCRYPT                        151
-# define RSA_F_RSA_PRIV_DECODE                            137
-# define RSA_F_RSA_PRIV_ENCODE                            138
-# define RSA_F_RSA_PUBLIC_DECRYPT                         152
-# define RSA_F_RSA_PUBLIC_ENCRYPT                         153
-# define RSA_F_RSA_PUB_DECODE                             139
-# define RSA_F_RSA_SETUP_BLINDING                         136
-# define RSA_F_RSA_SIGN                                   117
-# define RSA_F_RSA_SIGN_ASN1_OCTET_STRING                 118
-# define RSA_F_RSA_VERIFY                                 119
-# define RSA_F_RSA_VERIFY_ASN1_OCTET_STRING               120
-# define RSA_F_RSA_VERIFY_PKCS1_PSS                       126
-# define RSA_F_RSA_VERIFY_PKCS1_PSS_MGF1                  149
-# define RSA_R_ALGORITHM_MISMATCH                         100
-# define RSA_R_BAD_E_VALUE                                101
-# define RSA_R_BAD_FIXED_HEADER_DECRYPT                   102
-# define RSA_R_BAD_PAD_BYTE_COUNT                         103
-# define RSA_R_BAD_SIGNATURE                              104
-# define RSA_R_BLOCK_TYPE_IS_NOT_01                       106
-# define RSA_R_BLOCK_TYPE_IS_NOT_02                       107
-# define RSA_R_DATA_GREATER_THAN_MOD_LEN                  108
-# define RSA_R_DATA_TOO_LARGE                             109
-# define RSA_R_DATA_TOO_LARGE_FOR_KEY_SIZE                110
-# define RSA_R_DATA_TOO_LARGE_FOR_MODULUS                 132
-# define RSA_R_DATA_TOO_SMALL                             111
-# define RSA_R_DATA_TOO_SMALL_FOR_KEY_SIZE                122
-# define RSA_R_DIGEST_TOO_BIG_FOR_RSA_KEY                 112
-# define RSA_R_DMP1_NOT_CONGRUENT_TO_D                    124
-# define RSA_R_DMQ1_NOT_CONGRUENT_TO_D                    125
-# define RSA_R_D_E_NOT_CONGRUENT_TO_1                     123
-# define RSA_R_FIRST_OCTET_INVALID                        133
-# define RSA_R_ILLEGAL_OR_UNSUPPORTED_PADDING_MODE        144
-# define RSA_R_INVALID_DIGEST_LENGTH                      143
-# define RSA_R_INVALID_HEADER                             137
-# define RSA_R_INVALID_KEYBITS                            145
-# define RSA_R_INVALID_MESSAGE_LENGTH                     131
-# define RSA_R_INVALID_MGF1_MD                            156
-# define RSA_R_INVALID_PADDING                            138
-# define RSA_R_INVALID_PADDING_MODE                       141
-# define RSA_R_INVALID_PSS_PARAMETERS                     149
-# define RSA_R_INVALID_PSS_SALTLEN                        146
-# define RSA_R_INVALID_SALT_LENGTH                        150
-# define RSA_R_INVALID_TRAILER                            139
-# define RSA_R_INVALID_X931_DIGEST                        142
-# define RSA_R_IQMP_NOT_INVERSE_OF_Q                      126
-# define RSA_R_KEY_SIZE_TOO_SMALL                         120
-# define RSA_R_LAST_OCTET_INVALID                         134
-# define RSA_R_MODULUS_TOO_LARGE                          105
-# define RSA_R_NON_FIPS_RSA_METHOD                        157
-# define RSA_R_NO_PUBLIC_EXPONENT                         140
-# define RSA_R_NULL_BEFORE_BLOCK_MISSING                  113
-# define RSA_R_N_DOES_NOT_EQUAL_P_Q                       127
-# define RSA_R_OAEP_DECODING_ERROR                        121
-# define RSA_R_OPERATION_NOT_ALLOWED_IN_FIPS_MODE         158
-# define RSA_R_OPERATION_NOT_SUPPORTED_FOR_THIS_KEYTYPE   148
-# define RSA_R_PADDING_CHECK_FAILED                       114
-# define RSA_R_PKCS_DECODING_ERROR                        159
-# define RSA_R_P_NOT_PRIME                                128
-# define RSA_R_Q_NOT_PRIME                                129
-# define RSA_R_RSA_OPERATIONS_NOT_SUPPORTED               130
-# define RSA_R_SLEN_CHECK_FAILED                          136
-# define RSA_R_SLEN_RECOVERY_FAILED                       135
-# define RSA_R_SSLV3_ROLLBACK_ATTACK                      115
+# define RSA_F_CHECK_PADDING_MD 140
+# define RSA_F_DO_RSA_PRINT 146
+# define RSA_F_INT_RSA_VERIFY 145
+# define RSA_F_MEMORY_LOCK 100
+# define RSA_F_OLD_RSA_PRIV_DECODE 147
+# define RSA_F_PKEY_RSA_CTRL 143
+# define RSA_F_PKEY_RSA_CTRL_STR 144
+# define RSA_F_PKEY_RSA_SIGN 142
+# define RSA_F_PKEY_RSA_VERIFY 154
+# define RSA_F_PKEY_RSA_VERIFYRECOVER 141
+# define RSA_F_RSA_BUILTIN_KEYGEN 129
+# define RSA_F_RSA_CHECK_KEY 123
+# define RSA_F_RSA_EAY_PRIVATE_DECRYPT 101
+# define RSA_F_RSA_EAY_PRIVATE_ENCRYPT 102
+# define RSA_F_RSA_EAY_PUBLIC_DECRYPT 103
+# define RSA_F_RSA_EAY_PUBLIC_ENCRYPT 104
+# define RSA_F_RSA_GENERATE_KEY 105
+# define RSA_F_RSA_GENERATE_KEY_EX 155
+# define RSA_F_RSA_ITEM_VERIFY 156
+# define RSA_F_RSA_MEMORY_LOCK 130
+# define RSA_F_RSA_NEW_METHOD 106
+# define RSA_F_RSA_NULL 124
+# define RSA_F_RSA_NULL_MOD_EXP 131
+# define RSA_F_RSA_NULL_PRIVATE_DECRYPT 132
+# define RSA_F_RSA_NULL_PRIVATE_ENCRYPT 133
+# define RSA_F_RSA_NULL_PUBLIC_DECRYPT 134
+# define RSA_F_RSA_NULL_PUBLIC_ENCRYPT 135
+# define RSA_F_RSA_PADDING_ADD_NONE 107
+# define RSA_F_RSA_PADDING_ADD_PKCS1_OAEP 121
+# define RSA_F_RSA_PADDING_ADD_PKCS1_PSS 125
+# define RSA_F_RSA_PADDING_ADD_PKCS1_PSS_MGF1 148
+# define RSA_F_RSA_PADDING_ADD_PKCS1_TYPE_1 108
+# define RSA_F_RSA_PADDING_ADD_PKCS1_TYPE_2 109
+# define RSA_F_RSA_PADDING_ADD_SSLV23 110
+# define RSA_F_RSA_PADDING_ADD_X931 127
+# define RSA_F_RSA_PADDING_CHECK_NONE 111
+# define RSA_F_RSA_PADDING_CHECK_PKCS1_OAEP 122
+# define RSA_F_RSA_PADDING_CHECK_PKCS1_TYPE_1 112
+# define RSA_F_RSA_PADDING_CHECK_PKCS1_TYPE_2 113
+# define RSA_F_RSA_PADDING_CHECK_SSLV23 114
+# define RSA_F_RSA_PADDING_CHECK_X931 128
+# define RSA_F_RSA_PRINT 115
+# define RSA_F_RSA_PRINT_FP 116
+# define RSA_F_RSA_PRIVATE_DECRYPT 150
+# define RSA_F_RSA_PRIVATE_ENCRYPT 151
+# define RSA_F_RSA_PRIV_DECODE 137
+# define RSA_F_RSA_PRIV_ENCODE 138
+# define RSA_F_RSA_PUBLIC_DECRYPT 152
+# define RSA_F_RSA_PUBLIC_ENCRYPT 153
+# define RSA_F_RSA_PUB_DECODE 139
+# define RSA_F_RSA_SETUP_BLINDING 136
+# define RSA_F_RSA_SIGN 117
+# define RSA_F_RSA_SIGN_ASN1_OCTET_STRING 118
+# define RSA_F_RSA_VERIFY 119
+# define RSA_F_RSA_VERIFY_ASN1_OCTET_STRING 120
+# define RSA_F_RSA_VERIFY_PKCS1_PSS 126
+# define RSA_F_RSA_VERIFY_PKCS1_PSS_MGF1 149
+# define RSA_R_ALGORITHM_MISMATCH 100
+# define RSA_R_BAD_E_VALUE 101
+# define RSA_R_BAD_FIXED_HEADER_DECRYPT 102
+# define RSA_R_BAD_PAD_BYTE_COUNT 103
+# define RSA_R_BAD_SIGNATURE 104
+# define RSA_R_BLOCK_TYPE_IS_NOT_01 106
+# define RSA_R_BLOCK_TYPE_IS_NOT_02 107
+# define RSA_R_DATA_GREATER_THAN_MOD_LEN 108
+# define RSA_R_DATA_TOO_LARGE 109
+# define RSA_R_DATA_TOO_LARGE_FOR_KEY_SIZE 110
+# define RSA_R_DATA_TOO_LARGE_FOR_MODULUS 132
+# define RSA_R_DATA_TOO_SMALL 111
+# define RSA_R_DATA_TOO_SMALL_FOR_KEY_SIZE 122
+# define RSA_R_DIGEST_TOO_BIG_FOR_RSA_KEY 112
+# define RSA_R_DMP1_NOT_CONGRUENT_TO_D 124
+# define RSA_R_DMQ1_NOT_CONGRUENT_TO_D 125
+# define RSA_R_D_E_NOT_CONGRUENT_TO_1 123
+# define RSA_R_FIRST_OCTET_INVALID 133
+# define RSA_R_ILLEGAL_OR_UNSUPPORTED_PADDING_MODE 144
+# define RSA_R_INVALID_DIGEST_LENGTH 143
+# define RSA_R_INVALID_HEADER 137
+# define RSA_R_INVALID_KEYBITS 145
+# define RSA_R_INVALID_MESSAGE_LENGTH 131
+# define RSA_R_INVALID_MGF1_MD 156
+# define RSA_R_INVALID_PADDING 138
+# define RSA_R_INVALID_PADDING_MODE 141
+# define RSA_R_INVALID_PSS_PARAMETERS 149
+# define RSA_R_INVALID_PSS_SALTLEN 146
+# define RSA_R_INVALID_SALT_LENGTH 150
+# define RSA_R_INVALID_TRAILER 139
+# define RSA_R_INVALID_X931_DIGEST 142
+# define RSA_R_IQMP_NOT_INVERSE_OF_Q 126
+# define RSA_R_KEY_SIZE_TOO_SMALL 120
+# define RSA_R_LAST_OCTET_INVALID 134
+# define RSA_R_MODULUS_TOO_LARGE 105
+# define RSA_R_NON_FIPS_RSA_METHOD 157
+# define RSA_R_NO_PUBLIC_EXPONENT 140
+# define RSA_R_NULL_BEFORE_BLOCK_MISSING 113
+# define RSA_R_N_DOES_NOT_EQUAL_P_Q 127
+# define RSA_R_OAEP_DECODING_ERROR 121
+# define RSA_R_OPERATION_NOT_ALLOWED_IN_FIPS_MODE 158
+# define RSA_R_OPERATION_NOT_SUPPORTED_FOR_THIS_KEYTYPE 148
+# define RSA_R_PADDING_CHECK_FAILED 114
+# define RSA_R_PKCS_DECODING_ERROR 159
+# define RSA_R_P_NOT_PRIME 128
+# define RSA_R_Q_NOT_PRIME 129
+# define RSA_R_RSA_OPERATIONS_NOT_SUPPORTED 130
+# define RSA_R_SLEN_CHECK_FAILED 136
+# define RSA_R_SLEN_RECOVERY_FAILED 135
+# define RSA_R_SSLV3_ROLLBACK_ATTACK 115
 # define RSA_R_THE_ASN1_OBJECT_IDENTIFIER_IS_NOT_KNOWN_FOR_THIS_MD 116
-# define RSA_R_UNKNOWN_ALGORITHM_TYPE                     117
-# define RSA_R_UNKNOWN_MASK_DIGEST                        151
-# define RSA_R_UNKNOWN_PADDING_TYPE                       118
-# define RSA_R_UNKNOWN_PSS_DIGEST                         152
-# define RSA_R_UNSUPPORTED_MASK_ALGORITHM                 153
-# define RSA_R_UNSUPPORTED_MASK_PARAMETER                 154
-# define RSA_R_UNSUPPORTED_SIGNATURE_TYPE                 155
-# define RSA_R_VALUE_MISSING                              147
-# define RSA_R_WRONG_SIGNATURE_LENGTH                     119
-#ifdef  __cplusplus
+# define RSA_R_UNKNOWN_ALGORITHM_TYPE 117
+# define RSA_R_UNKNOWN_MASK_DIGEST 151
+# define RSA_R_UNKNOWN_PADDING_TYPE 118
+# define RSA_R_UNKNOWN_PSS_DIGEST 152
+# define RSA_R_UNSUPPORTED_MASK_ALGORITHM 153
+# define RSA_R_UNSUPPORTED_MASK_PARAMETER 154
+# define RSA_R_UNSUPPORTED_SIGNATURE_TYPE 155
+# define RSA_R_VALUE_MISSING 147
+# define RSA_R_WRONG_SIGNATURE_LENGTH 119
+#ifdef __cplusplus
 }
 #endif
 #endif

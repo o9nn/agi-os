@@ -480,9 +480,9 @@ bool (*is_stdin)(const stream *))
 {
 uint count = *pcount;
 #if '\n' == '\r'
-#  define LF 0xa
+# define LF 0xa
 #else
-#  define LF '\n'
+# define LF '\n'
 #endif
 if (count == 0 && s_out && prompt) {
 uint ignore_n;

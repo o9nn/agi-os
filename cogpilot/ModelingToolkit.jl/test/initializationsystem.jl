@@ -728,8 +728,8 @@ end
 @parameters p=2.0 q=missing [guess=1.0] c=1.0
 @variables x=1.0 z=3.0
 # eqs = [0 ~ p * (y - x),
-#     0 ~ x * (q - z) - y,
-#     0 ~ x * y - c * z]
+# 0 ~ x * (q - z) - y,
+# 0 ~ x * y - c * z]
 # specifically written this way due to
 # https:
 eqs = [0 ~ -c * z + (q - z) * (x^2)
@@ -737,8 +737,8 @@ eqs = [0 ~ -c * z + (q - z) * (x^2)
 @named sys = System(eqs; initialization_eqs = [p^2 + q^2 + 2p * q ~ 0])
 sys = complete(sys)
 # @mtkcompile sys = NonlinearSystem(
-#     [p * x^2 + q * y^3 ~ 0, x - q ~ 0]; defaults = [q => missing],
-#     guesses = [q => 1.0], initialization_eqs = [p^2 + q^2 + 2p * q ~ 0])
+# [p * x^2 + q * y^3 ~ 0, x - q ~ 0]; defaults = [q => missing],
+# guesses = [q => 1.0], initialization_eqs = [p^2 + q^2 + 2p * q ~ 0])
 for (probT, algs) in prob_alg_combinations
 if ctor != identity
 probT = probT{false}

@@ -23,14 +23,14 @@ typedef string_mark_unit bword;
 #define bword_bits (1 << bword_log2_bits)
 #define bword_1s (~(bword)0)
 #if arch_is_big_endian
-#  if bword_bytes == 2
-#    define bword_swap_bytes(m) m = (m << 8) | (m >> 8)
-#  else
-#    define bword_swap_bytes(m)\
+# if bword_bytes == 2
+# define bword_swap_bytes(m) m = (m << 8) | (m >> 8)
+# else
+# define bword_swap_bytes(m)\
 m = (m << 24) | ((m & 0xff00) << 8) | ((m >> 8) & 0xff00) | (m >> 24)
-#  endif
+# endif
 #else
-#  define bword_swap_bytes(m) DO_NOTHING
+# define bword_swap_bytes(m) DO_NOTHING
 #endif
 private bool
 gc_mark_string(const byte * ptr, uint size, bool set, const chunk_t * cp)
@@ -173,9 +173,9 @@ register string_reloc_offset reloc = 0;
 {
 const bword *wp = (const bword *)bitp;
 #if string_data_quantum == bword_bits
-#  define RELOC_TEST_1S(wp) (wp[-1])
+# define RELOC_TEST_1S(wp) (wp[-1])
 #else
-#  define RELOC_TEST_1S(wp) (wp[-1] & wp[-2])
+# define RELOC_TEST_1S(wp) (wp[-1] & wp[-2])
 #endif
 while (count && RELOC_TEST_1S(wp) == bword_1s) {
 wp -= string_data_quantum / bword_bits;

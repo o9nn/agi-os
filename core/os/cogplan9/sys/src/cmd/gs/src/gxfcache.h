@@ -1,5 +1,5 @@
 #ifndef gxfcache_INCLUDED
-#  define gxfcache_INCLUDED
+# define gxfcache_INCLUDED
 #include "gsccode.h"
 #include "gsuid.h"
 #include "gsxfont.h"
@@ -7,35 +7,35 @@
 #include "gxfixed.h"
 #include "gxftype.h"
 #ifndef gs_font_DEFINED
-#  define gs_font_DEFINED
+# define gs_font_DEFINED
 typedef struct gs_font_s gs_font;
 #endif
 #ifndef cached_fm_pair_DEFINED
-#  define cached_fm_pair_DEFINED
+# define cached_fm_pair_DEFINED
 typedef struct cached_fm_pair_s cached_fm_pair;
 #endif
 #ifndef gs_matrix_DEFINED
-#  define gs_matrix_DEFINED
+# define gs_matrix_DEFINED
 typedef struct gs_matrix_s gs_matrix;
 #endif
 #ifndef ttfFont_DEFINED
-#  define ttfFont_DEFINED
+# define ttfFont_DEFINED
 typedef struct ttfFont_s ttfFont;
 #endif
 #ifndef gx_ttfReader_DEFINED
-#  define gx_ttfReader_DEFINED
+# define gx_ttfReader_DEFINED
 typedef struct gx_ttfReader_s gx_ttfReader;
 #endif
 #ifndef ttfInterpreter_DEFINED
-#  define ttfInterpreter_DEFINED
+# define ttfInterpreter_DEFINED
 typedef struct ttfInterpreter_s ttfInterpreter;
 #endif
 #ifndef gx_device_spot_analyzer_DEFINED
-#   define gx_device_spot_analyzer_DEFINED
+# define gx_device_spot_analyzer_DEFINED
 typedef struct gx_device_spot_analyzer_s gx_device_spot_analyzer;
 #endif
 #ifndef gs_state_DEFINED
-#  define gs_state_DEFINED
+# define gs_state_DEFINED
 typedef struct gs_state_s gs_state;
 #endif
 struct cached_fm_pair_s {
@@ -57,7 +57,7 @@ bool design_grid;
 gs_private_st_ptrs5(st_cached_fm_pair, cached_fm_pair,\
 "cached_fm_pair", fm_pair_enum_ptrs, fm_pair_reloc_ptrs,\
 font, UID.xvalues, xfont, ttf, ttr)
-#define private_st_cached_fm_pair_elt()	\
+#define private_st_cached_fm_pair_elt() \
 gs_private_st_element(st_cached_fm_pair_element, cached_fm_pair,\
 "cached_fm_pair[]", fm_pair_element_enum_ptrs, fm_pair_element_reloc_ptrs,\
 st_cached_fm_pair)
@@ -77,7 +77,7 @@ typedef gx_cached_bits_head cached_char_head;
 #define cc_head_is_free(cch) cb_head_is_free(cch)
 #define cc_head_set_free(cch) cb_head_set_free(cch)
 #ifndef cached_char_DEFINED
-#  define cached_char_DEFINED
+# define cached_char_DEFINED
 typedef struct cached_char_s cached_char;
 #endif
 struct cached_char_s {
@@ -137,7 +137,7 @@ gs_glyph_mark_proc_t mark_glyph;
 void *mark_glyph_data;
 } char_cache;
 #ifndef gs_font_dir_DEFINED
-#  define gs_font_dir_DEFINED
+# define gs_font_dir_DEFINED
 typedef struct gs_font_dir_s gs_font_dir;
 #endif
 struct gs_font_dir_s {
@@ -156,7 +156,7 @@ uint grid_fit_tt;
 gx_device_spot_analyzer *san;
 int (*global_glyph_code)(const gs_memory_t *mem, gs_const_string *gstr, gs_glyph *pglyph);
 };
-#define private_st_font_dir()	\
+#define private_st_font_dir() \
 gs_private_st_composite(st_font_dir, gs_font_dir, "gs_font_dir",\
 font_dir_enum_ptrs, font_dir_reloc_ptrs)
 #define font_dir_do_ptrs(m)\

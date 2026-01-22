@@ -12,8 +12,8 @@ typedef struct {
 ushort rgb, index;
 } dc_entry;
 private dc_entry dynamic_colors[dc_hash_size + 1];
-#define XDPI   60
-#define YDPI   60
+#define XDPI 60
+#define YDPI 60
 #ifndef A4
 #define YSIZE (20.0 * YDPI / 2.5)
 #define XSIZE (8.5 / 11)*YSIZE
@@ -53,7 +53,7 @@ gx_device_lvga256 far_data gs_lvga256_device =
 {std_device_color_body(gx_device_lvga256, &lvga256_procs, "lvga256",
 0, 0,
 1, 1,
-8, 31, 4  )
+8, 31, 4 )
 };
 int
 lvga256_open(gx_device * dev)

@@ -13,19 +13,19 @@
 #include <ddb/db_write_cmd.h>
 void
 db_write_cmd(
-db_expr_t	address,
-boolean_t	have_addr,
-db_expr_t	count,
-const char *	modif)
+db_expr_t address,
+boolean_t have_addr,
+db_expr_t count,
+const char * modif)
 {
-db_addr_t	addr;
-db_expr_t	old_value;
-db_expr_t	new_value;
-int		size;
-boolean_t	wrote_one = FALSE;
-boolean_t	t_opt, u_opt;
-thread_t	thread;
-task_t		task;
+db_addr_t addr;
+db_expr_t old_value;
+db_expr_t new_value;
+int size;
+boolean_t wrote_one = FALSE;
+boolean_t t_opt, u_opt;
+thread_t thread;
+task_t task;
 addr = (db_addr_t) address;
 size = db_size_option(modif, &u_opt, &t_opt);
 if (t_opt)

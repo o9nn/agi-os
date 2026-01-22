@@ -1,5 +1,5 @@
 #ifndef errno__INCLUDED
-#  define errno__INCLUDED
+# define errno__INCLUDED
 #include "std.h"
 #include <errno.h>
 #ifndef errno

@@ -9,19 +9,19 @@ typedef struct Slider Slider;
 struct Slider
 {
 Control;
-int		border;
-CImage	*image;
-CImage	*textcolor;
-CImage	*bordercolor;
-CImage	*indicatorcolor;
-int		absolute;
-int		max;
-int		vis;
-int		value;
-int		clamphigh;
-int		clamplow;
-int		horizontal;
-int		lastbut;
+int border;
+CImage *image;
+CImage *textcolor;
+CImage *bordercolor;
+CImage *indicatorcolor;
+int absolute;
+int max;
+int vis;
+int value;
+int clamphigh;
+int clamplow;
+int horizontal;
+int lastbut;
 };
 enum{
 EAbsolute,
@@ -43,23 +43,23 @@ EValue,
 EVis,
 };
 static char *cmds[] = {
-[EAbsolute] =		"absolute",
-[EBorder] =		"border",
-[EBordercolor] =	"bordercolor",
-[EClamp] =		"clamp",
-[EFocus] = 		"focus",
-[EFormat] = 		"format",
-[EHide] =			"hide",
-[EImage] =		"image",
-[EIndicatorcolor] =	"indicatorcolor",
-[EMax] =			"max",
-[EOrient] =		"orient",
-[ERect] =			"rect",
-[EReveal] =		"reveal",
-[EShow] =			"show",
-[ESize] =			"size",
-[EValue] =			"value",
-[EVis] =			"vis",
+[EAbsolute] = "absolute",
+[EBorder] = "border",
+[EBordercolor] = "bordercolor",
+[EClamp] = "clamp",
+[EFocus] = "focus",
+[EFormat] = "format",
+[EHide] = "hide",
+[EImage] = "image",
+[EIndicatorcolor] = "indicatorcolor",
+[EMax] = "max",
+[EOrient] = "orient",
+[ERect] = "rect",
+[EReveal] = "reveal",
+[EShow] = "show",
+[ESize] = "size",
+[EValue] = "value",
+[EVis] = "vis",
 };
 static void
 sliderfree(Control *c)

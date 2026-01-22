@@ -109,7 +109,7 @@ switch (key[0]) {
 case 'c': case 'C':
 if (strcasecmp(key, "Connection") == 0)
 resp->have_hdr_connection = TRUE;
-else 	if (strcasecmp(key, "Content-Length") == 0)
+else if (strcasecmp(key, "Content-Length") == 0)
 resp->have_hdr_body_spec = TRUE;
 break;
 case 'd': case 'D':

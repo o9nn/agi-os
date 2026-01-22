@@ -6,71 +6,71 @@
 typedef struct Iphdr Iphdr;
 struct Iphdr
 {
-uchar	vihl;
-uchar	tos;
-uchar	length[2];
-uchar	id[2];
-uchar	frag[2];
-uchar	ttl;
-uchar	proto;
-uchar	cksum[2];
-ulong	src;
-ulong	dst;
+uchar vihl;
+uchar tos;
+uchar length[2];
+uchar id[2];
+uchar frag[2];
+uchar ttl;
+uchar proto;
+uchar cksum[2];
+ulong src;
+ulong dst;
 };
 typedef struct Tcphdr Tcphdr;
 struct Tcphdr
 {
-ulong	ports;
-uchar	seq[4];
-uchar	ack[4];
-uchar	flag[2];
-uchar	win[2];
-uchar	cksum[2];
-uchar	urg[2];
+ulong ports;
+uchar seq[4];
+uchar ack[4];
+uchar flag[2];
+uchar win[2];
+uchar cksum[2];
+uchar urg[2];
 };
 typedef struct Ilhdr Ilhdr;
 struct Ilhdr
 {
-uchar	sum[2];
-uchar	len[2];
-uchar	type;
-uchar	spec;
-uchar	src[2];
-uchar	dst[2];
-uchar	id[4];
-uchar	ack[4];
+uchar sum[2];
+uchar len[2];
+uchar type;
+uchar spec;
+uchar src[2];
+uchar dst[2];
+uchar id[4];
+uchar ack[4];
 };
 enum
 {
-URG		= 0x20,
-ACK		= 0x10,
-PSH		= 0x08,
-RST		= 0x04,
-SYN		= 0x02,
-FIN		= 0x01,
-IP_DF		= 0x4000,
-IP_TCPPROTO	= 6,
-IP_ILPROTO	= 40,
-IL_IPHDR	= 20,
+URG = 0x20,
+ACK = 0x10,
+PSH = 0x08,
+RST = 0x04,
+SYN = 0x02,
+FIN = 0x01,
+IP_DF = 0x4000,
+IP_TCPPROTO = 6,
+IP_ILPROTO = 40,
+IL_IPHDR = 20,
 };
 typedef struct Hdr Hdr;
 struct Hdr
 {
-uchar	buf[128];
-Iphdr	*ip;
-Tcphdr	*tcp;
-int	len;
+uchar buf[128];
+Iphdr *ip;
+Tcphdr *tcp;
+int len;
 };
 typedef struct Tcpc Tcpc;
 struct Tcpc
 {
-uchar	lastrecv;
-uchar	lastxmit;
-uchar	basexmit;
-uchar	err;
-uchar	compressid;
-Hdr	t[MAX_STATES];
-Hdr	r[MAX_STATES];
+uchar lastrecv;
+uchar lastxmit;
+uchar basexmit;
+uchar err;
+uchar compressid;
+Hdr t[MAX_STATES];
+Hdr r[MAX_STATES];
 };
 enum
 {
@@ -82,7 +82,7 @@ NEW_P=(1<<4),
 NEW_I=(1<<5),
 NEW_C=(1<<6),
 NEW_T=(1<<7),
-TCP_PUSH_BIT	= 0x10,
+TCP_PUSH_BIT = 0x10,
 };
 #define SPECIAL_I (NEW_S|NEW_W|NEW_U)
 #define SPECIAL_D (NEW_S|NEW_A|NEW_W|NEW_U)
@@ -90,7 +90,7 @@ TCP_PUSH_BIT	= 0x10,
 int
 encode(void *p, ulong n)
 {
-uchar	*cp;
+uchar *cp;
 cp = p;
 if(n >= 256 || n == 0) {
 *cp++ = 0;
@@ -120,15 +120,15 @@ hnputs(f, nhgets(f) + (ulong)*cp++); \
 Block*
 tcpcompress(Tcpc *comp, Block *b, int *protop)
 {
-Iphdr	*ip;
-Tcphdr	*tcp;
-ulong 	iplen, tcplen, hlen;
-ulong 	deltaS, deltaA;
-ulong 	changes;
-uchar 	new_seq[16];
-uchar 	*cp;
-Hdr	*h;
-int 	i, j;
+Iphdr *ip;
+Tcphdr *tcp;
+ulong iplen, tcplen, hlen;
+ulong deltaS, deltaA;
+ulong changes;
+uchar new_seq[16];
+uchar *cp;
+Hdr *h;
+int i, j;
 ip = (Iphdr*)b->rptr;
 iplen = (ip->vihl & 0xf) << 2;
 tcp = (Tcphdr*)(b->rptr + iplen);
@@ -160,8 +160,8 @@ goto rescue;
 }
 }
 found:
-if(ip->vihl  != h->ip->vihl || ip->tos   != h->ip->tos ||
-ip->ttl   != h->ip->ttl  || ip->proto != h->ip->proto)
+if(ip->vihl != h->ip->vihl || ip->tos != h->ip->tos ||
+ip->ttl != h->ip->ttl || ip->proto != h->ip->proto)
 goto rescue;
 if(iplen != sizeof(Iphdr) && memcmp(ip+1, h->ip+1, iplen - sizeof(Iphdr)))
 goto rescue;
@@ -253,12 +253,12 @@ return b;
 Block*
 tcpuncompress(Tcpc *comp, Block *b, int type)
 {
-uchar	*cp, changes;
-int	i;
-int	iplen, len;
-Iphdr	*ip;
-Tcphdr	*tcp;
-Hdr	*h;
+uchar *cp, changes;
+int i;
+int iplen, len;
+Iphdr *ip;
+Tcphdr *tcp;
+Hdr *h;
 if(type == Pvjutcp) {
 ip = (Iphdr*)b->rptr;
 if(ip->proto >= MAX_STATES)
@@ -371,7 +371,7 @@ return c;
 Block*
 compress(Tcpc *tcp, Block *b, int *protop)
 {
-Iphdr		*ip;
+Iphdr *ip;
 ip = (Iphdr*)b->rptr;
 if((nhgets(ip->frag) & 0x3fff) != 0){
 *protop = Pip;

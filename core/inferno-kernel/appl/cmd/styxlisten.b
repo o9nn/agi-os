@@ -53,7 +53,7 @@ algs = arg->earg() :: algs;
 'f' or
 'k' =>
 keyfile = arg->earg();
-if (! (keyfile[0] == '/' || (len keyfile > 2 &&  keyfile[0:2] == "./")))
+if (! (keyfile[0] == '/' || (len keyfile > 2 && keyfile[0:2] == "./")))
 keyfile = "/usr/" + user() + "/keyring/" + keyfile;
 'h' =>
 passhostnames = 1;
@@ -87,7 +87,7 @@ c := dial->announce(addr);
 if (c == nil)
 error(sys->sprint("cannot announce on %s: %r", addr));
 if(!trusted){
-sys->unmount(nil, "/mnt/keys");	# should do for now
+sys->unmount(nil, "/mnt/keys"); # should do for now
 # become none?
 }
 lsync := chan[1] of int;
@@ -177,7 +177,7 @@ stdin = nil;
 sync <-= 0;
 sh := load Sh Sh->PATH;
 e := sh->run(ctxt, argv);
-kill(<-lsync, "kill");		# kill listener, as command has exited
+kill(<-lsync, "kill"); # kill listener, as command has exited
 if(verbose){
 if(e != nil)
 sys->fprint(stderr(), "styxlisten: command exited with error: %s\n", e);

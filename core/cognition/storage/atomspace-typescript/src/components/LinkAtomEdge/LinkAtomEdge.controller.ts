@@ -1,5 +1,5 @@
 const LinkAtomEdgeController = {
-  init: () => {
-  }
+init: () => {
+}
 }
 export default LinkAtomEdgeController;

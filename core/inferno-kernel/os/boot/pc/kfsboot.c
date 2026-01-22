@@ -1,13 +1,13 @@
-#include	"u.h"
-#include	"lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"fs.h"
+#include "u.h"
+#include "lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "fs.h"
 typedef struct Tag Tag;
 enum
 {
-Tnone		= 0,
+Tnone = 0,
 Tsuper,
 Tdir,
 Tind1,
@@ -19,15 +19,15 @@ Tvirgo,
 Tcache,
 MAXTAG
 };
-#define	QPDIR	0x80000000L
-#define	QPNONE	0
-#define	QPROOT	1
-#define	QPSUPER	2
-struct	Tag
+#define QPDIR 0x80000000L
+#define QPNONE 0
+#define QPROOT 1
+#define QPSUPER 2
+struct Tag
 {
-short	pad;
-short	tag;
-long	path;
+short pad;
+short tag;
+long path;
 };
 static int thisblock = -1;
 static Fs *thisfs;

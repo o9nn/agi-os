@@ -25,8 +25,8 @@ static const double aT[] = {
 1.62858201153657823623e-02,
 };
 static const double
-one   = 1.0,
-Huge   = 1.0e300;
+one = 1.0,
+Huge = 1.0e300;
 double atan(double x)
 {
 double w,s1,s2,z;
@@ -37,8 +37,8 @@ if(ix>=0x44100000) {
 if(ix>0x7ff00000||
 (ix==0x7ff00000&&(__LO(x)!=0)))
 return x+x;
-if(hx>0) return  atanhi[3]+atanlo[3];
-else     return -atanhi[3]-atanlo[3];
+if(hx>0) return atanhi[3]+atanlo[3];
+else return -atanhi[3]-atanlo[3];
 } if (ix < 0x3fdc0000) {
 if (ix < 0x3e200000) {
 if(Huge+x>one) return x;
@@ -50,13 +50,13 @@ if (ix < 0x3ff30000) {
 if (ix < 0x3fe60000) {
 id = 0; x = (2.0*x-one)/(2.0+x);
 } else {
-id = 1; x  = (x-one)/(x+one);
+id = 1; x = (x-one)/(x+one);
 }
 } else {
 if (ix < 0x40038000) {
-id = 2; x  = (x-1.5)/(one+1.5*x);
+id = 2; x = (x-1.5)/(one+1.5*x);
 } else {
-id = 3; x  = -1.0/x;
+id = 3; x = -1.0/x;
 }
 }}
 z = x*x;

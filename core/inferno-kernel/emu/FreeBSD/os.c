@@ -1,22 +1,22 @@
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
 #undef getwd
-#include	<signal.h>
-#include 	<sys/socket.h>
-#include	<time.h>
-#include	<sys/time.h>
-#include	<termios.h>
-#include	<sched.h>
-#include	<pwd.h>
-#include	<errno.h>
-#include	<unistd.h>
-#include	<sys/resource.h>
+#include <signal.h>
+#include <sys/socket.h>
+#include <time.h>
+#include <sys/time.h>
+#include <termios.h>
+#include <sched.h>
+#include <pwd.h>
+#include <errno.h>
+#include <unistd.h>
+#include <sys/resource.h>
 enum
 {
-DELETE  = 0x7F,
+DELETE = 0x7F,
 NSTACKSPERALLOC = 16,
-X11STACK=	256*1024
+X11STACK= 256*1024
 };
 char *hosttype = "FreeBSD";
 extern void unlockandexit(int*);

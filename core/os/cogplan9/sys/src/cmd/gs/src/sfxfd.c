@@ -12,9 +12,9 @@ sread_fileno(stream *, FILE *, byte *, uint),
 swrite_fileno(stream *, FILE *, byte *, uint),
 sappend_fileno(stream *, FILE *, byte *, uint);
 #else
-#  define sread_fileno sread_file
-#  define swrite_fileno swrite_file
-#  define sappend_fileno sappend_file
+# define sread_fileno sread_file
+# define swrite_fileno swrite_file
+# define sappend_fileno sappend_file
 #endif
 private int
 s_fileno_available(stream *, long *),

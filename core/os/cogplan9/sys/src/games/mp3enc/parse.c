@@ -12,12 +12,12 @@
 #include "main.h"
 #include "get_audio.h"
 sound_file_format input_format;
-int	swapbytes;
-int	silent;
-int	brhist;
-float	update_interval;
-int	mp3_delay;
-int	mp3_delay_set;
+int swapbytes;
+int silent;
+int brhist;
+float update_interval;
+int mp3_delay;
+int mp3_delay_set;
 static int
 lame_version_print(FILE*const fp)
 {
@@ -254,7 +254,7 @@ return 0;
 static void
 display_bitrate(FILE*const fp, const char*const version, const int div, const int index)
 {
-int	i;
+int i;
 fprintf(fp, "\nMPEG-%-3s layer III sample frequencies (kHz):  %2d  %2d  %g\n"
 "bitrates (kbps):",
 version, 32 / div, 48 / div, 44.1 / div);
@@ -265,8 +265,8 @@ fprintf(fp, "\n");
 int
 display_bitrates(FILE*const fp)
 {
-display_bitrate(fp, "1"  , 1, 1);
-display_bitrate(fp, "2"  , 2, 0);
+display_bitrate(fp, "1" , 1, 1);
+display_bitrate(fp, "2" , 2, 0);
 display_bitrate(fp, "2.5", 4, 0);
 fprintf(fp, "\n");
 fflush(fp);
@@ -274,83 +274,83 @@ return 0;
 }
 typedef struct {
 const char*name;
-long	resample;
-short	highpass_freq;
-short	lowpass_freq;
-short	lowpass_width;
+long resample;
+short highpass_freq;
+short lowpass_freq;
+short lowpass_width;
 signed char no_short_blocks;
 signed char quality;
 MPEG_mode mode;
-short	cbr;
+short cbr;
 signed char xvbr_mode;
-short	vbr_min;
-short	vbr_max;
+short vbr_min;
+short vbr_max;
 } preset_t;
 const preset_t Presets [] = {
-{ "phone" ,  8000, 125,  3400,    0,  1,  5, MONO        ,  16,  6,   8,  24 },
-{ "phon+" , 11025, 100,  4000,    0,  1,  5, MONO        ,  24,  4,  16,  32 },
-{ "lw"    , 11025,  -1,  4000,    0,  0,  5, MONO        ,  24,  3,  16,  56 },
-{ "mw-eu" , 11025,  -1,  4000,    0,  0,  5, MONO        ,  24,  3,  16,  56 },
-{ "mw-us" , 16000,  -1,  7500,    0,  0,  5, MONO        ,  40,  3,  24, 112 },
-{ "sw"    , 11025,  -1,  4000,    0,  0,  5, MONO        ,  24,  3,  16,  56 },
-{ "fm"    , 32000,  -1, 15000,    0,  0,  3, JOINT_STEREO, 112,  3,  80, 256 },
-{ "voice" , 24000,  -1, 12000,    0,  1,  5, MONO        ,  56,  4,  40, 112 },
-{ "radio" ,    -1,  -1, 15000,    0,  0,  3, JOINT_STEREO, 128,  3,  96, 256 },
-{ "tape"  ,    -1,  -1, 18000,  900,  0,  3, JOINT_STEREO, 128,  3,  96, 256 },
-{ "hifi"  ,    -1,  -1, 18000,  900,  0, -1, JOINT_STEREO, 160,  2, 112, 320 },
-{ "cd"    ,    -1,  -1,    -1,   -1,  0, -1, STEREO      , 192,  1, 128, 320 },
-{ "studio",    -1,  -1,    -1,   -1,  0, -1, STEREO      , 256,  0, 160, 320 },
+{ "phone" , 8000, 125, 3400, 0, 1, 5, MONO , 16, 6, 8, 24 },
+{ "phon+" , 11025, 100, 4000, 0, 1, 5, MONO , 24, 4, 16, 32 },
+{ "lw" , 11025, -1, 4000, 0, 0, 5, MONO , 24, 3, 16, 56 },
+{ "mw-eu" , 11025, -1, 4000, 0, 0, 5, MONO , 24, 3, 16, 56 },
+{ "mw-us" , 16000, -1, 7500, 0, 0, 5, MONO , 40, 3, 24, 112 },
+{ "sw" , 11025, -1, 4000, 0, 0, 5, MONO , 24, 3, 16, 56 },
+{ "fm" , 32000, -1, 15000, 0, 0, 3, JOINT_STEREO, 112, 3, 80, 256 },
+{ "voice" , 24000, -1, 12000, 0, 1, 5, MONO , 56, 4, 40, 112 },
+{ "radio" , -1, -1, 15000, 0, 0, 3, JOINT_STEREO, 128, 3, 96, 256 },
+{ "tape" , -1, -1, 18000, 900, 0, 3, JOINT_STEREO, 128, 3, 96, 256 },
+{ "hifi" , -1, -1, 18000, 900, 0, -1, JOINT_STEREO, 160, 2, 112, 320 },
+{ "cd" , -1, -1, -1, -1, 0, -1, STEREO , 192, 1, 128, 320 },
+{ "studio", -1, -1, -1, -1, 0, -1, STEREO , 256, 0, 160, 320 },
 };
 static int
 presets_info(const lame_global_flags*gfp, FILE*const fp, const char*ProgramName)
 {
-int	i;
+int i;
 fprintf(fp, "\n");
 lame_version_print(fp);
 fprintf(fp, "Presets are some shortcuts for common settings.\n");
 fprintf(fp, "They can be combined with -v if you want VBR MP3s.\n");
 fprintf(fp, "\n                ");
 for (i = 0; i < sizeof(Presets) / sizeof(*Presets); i++)
-fprintf(fp,  strlen(Presets[i].name) <= 4? "%5s ": " %-5s",
+fprintf(fp, strlen(Presets[i].name) <= 4? "%5s ": " %-5s",
 Presets[i].name);
 fprintf(fp, "\n=================");
 for (i = 0; i < sizeof(Presets) / sizeof(*Presets); i++)
-fprintf(fp,  "======");
+fprintf(fp, "======");
 fprintf(fp, "\n--resample      ");
 for (i = 0; i < sizeof(Presets) / sizeof(*Presets); i++)
 if (Presets[i].resample < 0)
-fprintf(fp,  "      ");
+fprintf(fp, "      ");
 else
-fprintf(fp,  "%6.3g",  Presets[i].resample * 1.e-3);
+fprintf(fp, "%6.3g", Presets[i].resample * 1.e-3);
 fprintf(fp, "\n--highpass      ");
 for (i = 0; i < sizeof(Presets) / sizeof(*Presets); i++)
 if (Presets[i].highpass_freq < 0)
-fprintf(fp,  "      ");
+fprintf(fp, "      ");
 else
-fprintf(fp,  "%6.3g",  Presets[i].highpass_freq * 1.e-3);
+fprintf(fp, "%6.3g", Presets[i].highpass_freq * 1.e-3);
 fprintf(fp, "\n--lowpass       ");
 for (i = 0; i < sizeof(Presets) / sizeof(*Presets); i++)
 if (Presets[i].lowpass_freq < 0)
-fprintf(fp,  "      ");
+fprintf(fp, "      ");
 else
-fprintf(fp,  "%6.3g",  Presets[i].lowpass_freq * 1.e-3);
+fprintf(fp, "%6.3g", Presets[i].lowpass_freq * 1.e-3);
 fprintf(fp, "\n--lowpass-width ");
 for (i = 0; i < sizeof(Presets) / sizeof(*Presets); i++)
 if (Presets[i].lowpass_width < 0)
-fprintf(fp,  "      ");
+fprintf(fp, "      ");
 else
-fprintf(fp,  "%6.3g",  Presets[i].lowpass_width * 1.e-3);
+fprintf(fp, "%6.3g", Presets[i].lowpass_width * 1.e-3);
 fprintf(fp, "\n--noshort       ");
 for (i = 0; i < sizeof(Presets) / sizeof(*Presets); i++)
 switch (Presets[i].no_short_blocks ) {
 case 1:
-fprintf(fp,  "   yes");
+fprintf(fp, "   yes");
 break;
 case 0:
-fprintf(fp,  "    no");
+fprintf(fp, "    no");
 break;
 case -1:
-fprintf(fp,  "      ");
+fprintf(fp, "      ");
 break;
 default:
 assert (0);
@@ -399,22 +399,22 @@ break;
 }
 fprintf(fp, "\n-b              ");
 for (i = 0; i < sizeof(Presets) / sizeof(*Presets); i++)
-fprintf(fp,  "%6u", Presets[i].cbr);
+fprintf(fp, "%6u", Presets[i].cbr);
 fprintf(fp, "\n-- PLUS WITH -v ");
 for (i = 0; i < sizeof(Presets) / sizeof(*Presets); i++)
-fprintf(fp,  "------");
+fprintf(fp, "------");
 fprintf(fp, "-\n-V              ");
 for (i = 0; i < sizeof(Presets) / sizeof(*Presets); i++)
-fprintf(fp,  "%6u", Presets[i].xvbr_mode);
+fprintf(fp, "%6u", Presets[i].xvbr_mode);
 fprintf(fp, "\n-b              ");
 for (i = 0; i < sizeof(Presets) / sizeof(*Presets); i++)
-fprintf(fp,  "%6u", Presets[i].vbr_min);
+fprintf(fp, "%6u", Presets[i].vbr_min);
 fprintf(fp, "\n-B              ");
 for (i = 0; i < sizeof(Presets) / sizeof(*Presets); i++)
-fprintf(fp,  "%6u", Presets[i].vbr_max);
+fprintf(fp, "%6u", Presets[i].vbr_max);
 fprintf(fp, "\n----------------");
 for (i = 0; i < sizeof(Presets) / sizeof(*Presets); i++)
-fprintf(fp,  "------");
+fprintf(fp, "------");
 fprintf(fp, "-\nEXAMPLES:\n");
 fprintf(fp, " a) --preset fm\n");
 fprintf(fp, "    equal to: -mj -b112 --resample 32 --lowpass 15 --lowpass-width 0\n");
@@ -425,7 +425,7 @@ return 0;
 static int
 presets_setup(lame_global_flags*gfp, const char*preset_name, const char*ProgramName)
 {
-int	i;
+int i;
 for (i = 0; i < sizeof Presets / sizeof *Presets; i++)
 if (0 == strncmp(preset_name, Presets[i].name, strlen(preset_name))) {
 if (Presets[i].resample >= 0)
@@ -434,13 +434,13 @@ Presets[i].resample);
 if (Presets[i].highpass_freq >= 0)
 gfp ->highpassfreq = Presets[i].highpass_freq,
 gfp ->highpasswidth = 0;
-gfp ->lowpassfreq          = Presets[i].lowpass_freq;
-gfp ->lowpasswidth         = Presets[i].lowpass_width;
-gfp ->no_short_blocks      = Presets[i].no_short_blocks;
+gfp ->lowpassfreq = Presets[i].lowpass_freq;
+gfp ->lowpasswidth = Presets[i].lowpass_width;
+gfp ->no_short_blocks = Presets[i].no_short_blocks;
 (void) lame_set_quality(gfp, Presets[i].quality);
 (void) lame_set_mode(gfp, Presets[i].mode);
-gfp ->brate                = Presets[i].cbr;
-gfp ->VBR_q                = Presets[i].xvbr_mode;
+gfp ->brate = Presets[i].cbr;
+gfp ->VBR_q = Presets[i].xvbr_mode;
 gfp ->VBR_min_bitrate_kbps = Presets[i].vbr_min;
 gfp ->VBR_max_bitrate_kbps = Presets[i].vbr_max;
 return 0;
@@ -456,7 +456,7 @@ printf("%3d %s\n", num, name);
 static int
 local_strcasecmp(const char*s1, const char*s2)
 {
-unsigned char	c1, c2;
+unsigned char c1, c2;
 do {
 c1 = tolower(*s1);
 c2 = tolower(*s2);
@@ -470,7 +470,7 @@ return c1 - c2;
 static int
 filename_to_type(const char*FileName)
 {
-int	len = strlen(FileName);
+int len = strlen(FileName);
 if (len < 4)
 return sf_unknown;
 FileName += len - 4;
@@ -499,7 +499,7 @@ if (freq >= 1.e3)
 freq *= 1.e-3;
 switch ((int)freq) {
 case 8:
-return  8000;
+return 8000;
 case 11:
 return 11025;
 case 12:
@@ -521,27 +521,27 @@ fprintf(stderr, "Illegal resample frequency: %.3f kHz\n", freq);
 return 0;
 }
 }
-#define T_IF(str)	if (0 == local_strcasecmp (token,str) ) {
-#define T_ELIF(str)	} else if (0 == local_strcasecmp (token,str) ) {
+#define T_IF(str) if (0 == local_strcasecmp (token,str) ) {
+#define T_ELIF(str) } else if (0 == local_strcasecmp (token,str) ) {
 #define T_ELIF2(str1,str2) } else if (0 == local_strcasecmp(token,str1) || \
 0 == local_strcasecmp(token,str2)) {
-#define T_ELSE		} else {
-#define T_END		}
+#define T_ELSE } else {
+#define T_END }
 int
 parse_args(lame_global_flags*gfp, int argc, char **argv)
 {
-int err, i, autoconvert  = 0;
+int err, i, autoconvert = 0;
 double val;
 const char *ProgramName = argv[0];
-silent   = 0;
-brhist   = 1;
+silent = 0;
+brhist = 1;
 mp3_delay = 0;
 mp3_delay_set = 0;
 id3tag_init(gfp);
 for (i = 0, err = 0; ++i < argc && !err; ) {
-char	c;
+char c;
 char *token, *arg, *nextArg;
-int	argUsed;
+int argUsed;
 token = argv[i];
 if (*token++ == '-' ) {
 argUsed = 0;
@@ -573,7 +573,7 @@ gfp->VBR_mean_bitrate_kbps = atoi(nextArg);
 if (gfp ->VBR_mean_bitrate_kbps >= 8000)
 gfp->VBR_mean_bitrate_kbps = (gfp->VBR_mean_bitrate_kbps + 500 )/1000;
 gfp->VBR_mean_bitrate_kbps = Min(gfp->VBR_mean_bitrate_kbps, 320);
-gfp->VBR_mean_bitrate_kbps = Max(gfp->VBR_mean_bitrate_kbps,   8);
+gfp->VBR_mean_bitrate_kbps = Max(gfp->VBR_mean_bitrate_kbps, 8);
 T_ELIF ("mp1input")
 input_format = sf_mp1;
 T_ELIF ("mp2input")
@@ -684,7 +684,7 @@ T_ELIF ("genre-list")
 id3tag_genre_list(genre_list_handler, NULL);
 return - 2;
 T_ELIF ("lowpass")
-val     = atof(nextArg);
+val = atof(nextArg);
 argUsed = 1;
 gfp ->lowpassfreq = val * (val < 50. ? 1.e3 : 1.e0 ) + 0.5;
 if (val < 0.001 || val > 50000. ) {
@@ -693,23 +693,23 @@ return -1;
 }
 T_ELIF ("lowpass-width")
 argUsed = 1;
-gfp->lowpasswidth =  1000.0 * atof(nextArg ) + 0.5;
-if (gfp->lowpasswidth  < 0) {
+gfp->lowpasswidth = 1000.0 * atof(nextArg ) + 0.5;
+if (gfp->lowpasswidth < 0) {
 fprintf(stderr, "Must specify lowpass width with --lowpass-width freq, freq >= 0 kHz\n");
 return -1;
 }
 T_ELIF ("highpass")
 val = atof(nextArg);
 argUsed = 1;
-gfp->highpassfreq =  val * (val < 16. ? 1.e3 : 1.e0 ) + 0.5;
+gfp->highpassfreq = val * (val < 16. ? 1.e3 : 1.e0 ) + 0.5;
 if (val < 0.001 || val > 50000. ) {
 fprintf(stderr, "Must specify highpass with --highpass freq, freq >= 0.001 kHz\n");
 return -1;
 }
 T_ELIF ("highpass-width")
 argUsed = 1;
-gfp->highpasswidth =  1000.0 * atof(nextArg ) + 0.5;
-if (gfp->highpasswidth  < 0) {
+gfp->highpasswidth = 1000.0 * atof(nextArg ) + 0.5;
+if (gfp->highpasswidth < 0) {
 fprintf(stderr, "Must specify highpass width with --highpass-width freq, freq >= 0 kHz\n");
 return -1;
 }
@@ -723,13 +723,13 @@ return -1;
 }
 T_ELIF ("comp")
 argUsed = 1;
-gfp->compression_ratio =  atof(nextArg);
+gfp->compression_ratio = atof(nextArg);
 if (gfp->compression_ratio < 1.0 ) {
 fprintf(stderr, "Must specify compression ratio >= 1.0\n");
 return -1;
 }
 T_ELIF ("notemp")
-gfp->useTemporal =  0;
+gfp->useTemporal = 0;
 T_ELIF ("nspsytune")
 gfp->exp_nspsytune |= 1;
 gfp->experimentalZ = 1;
@@ -739,14 +739,14 @@ gfp->exp_nspsytune |= 2;
 T_ELIF ("ns-bass")
 argUsed = 1;
 {
-double	d;
-int	k;
+double d;
+int k;
 d = atof(nextArg);
 k = (int)(d * 4);
 if (k < -32)
 k = -32;
-if (k >  31)
-k =  31;
+if (k > 31)
+k = 31;
 if (k < 0)
 k += 64;
 gfp->exp_nspsytune |= (k << 2);
@@ -754,14 +754,14 @@ gfp->exp_nspsytune |= (k << 2);
 T_ELIF ("ns-alto")
 argUsed = 1;
 {
-double	d;
-int	k;
+double d;
+int k;
 d = atof(nextArg);
 k = (int)(d * 4);
 if (k < -32)
 k = -32;
-if (k >  31)
-k =  31;
+if (k > 31)
+k = 31;
 if (k < 0)
 k += 64;
 gfp->exp_nspsytune |= (k << 8);
@@ -769,14 +769,14 @@ gfp->exp_nspsytune |= (k << 8);
 T_ELIF ("ns-treble")
 argUsed = 1;
 {
-double	d;
-int	k;
+double d;
+int k;
 d = atof(nextArg);
 k = (int)(d * 4);
 if (k < -32)
 k = -32;
-if (k >  31)
-k =  31;
+if (k > 31)
+k = 31;
 if (k < 0)
 k += 64;
 gfp->exp_nspsytune |= (k << 14);
@@ -959,7 +959,7 @@ case 'c':
 gfp->copyright = 1;
 break;
 case 'o':
-gfp->original  = 0;
+gfp->original = 0;
 break;
 case '?':
 long_help(gfp, stderr, ProgramName, 0 );
@@ -1011,7 +1011,7 @@ else if (MONO == lame_get_mode(gfp ))
 else
 (void) lame_set_num_channels(gfp, 2);
 if (gfp->free_format) {
-if (gfp ->brate < 8  ||  gfp ->brate > 640) {
+if (gfp ->brate < 8 || gfp ->brate > 640) {
 fprintf(stderr, "For free format, specify a bitrate between 8 and 640 kbps\n");
 return -1;
 }

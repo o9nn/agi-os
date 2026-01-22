@@ -11,44 +11,44 @@
 #include "ftpfs.h"
 enum
 {
-Extra=		1,
-Success=	2,
-Incomplete=	3,
-TempFail=	4,
-PermFail=	5,
-Impossible=	6,
+Extra= 1,
+Success= 2,
+Incomplete= 3,
+TempFail= 4,
+PermFail= 5,
+Impossible= 6,
 };
-Node	*remdir;
-Node	*remroot;
-int	ctlfd;
-Biobuf	ctlin;
-Biobuf	stdin;
-Biobuf	dbuf;
-char	msg[512];
-char	net[Maxpath];
-int	listenfd;
-char	netdir[Maxpath];
-int	os, defos;
-char	topsdir[64];
-String	*remrootpath;
-char	*user;
-int	nopassive;
-long	lastsend;
+Node *remdir;
+Node *remroot;
+int ctlfd;
+Biobuf ctlin;
+Biobuf stdin;
+Biobuf dbuf;
+char msg[512];
+char net[Maxpath];
+int listenfd;
+char netdir[Maxpath];
+int os, defos;
+char topsdir[64];
+String *remrootpath;
+char *user;
+int nopassive;
+long lastsend;
 extern int usetls;
-static void	sendrequest(char*, char*);
-static int	getreply(Biobuf*, char*, int, int);
-static int	active(int, Biobuf**, char*, char*);
-static int	passive(int, Biobuf**, char*, char*);
-static int	data(int, Biobuf**, char*, char*);
-static int	port(void);
-static void	ascii(void);
-static void	image(void);
-static void	unixpath(Node*, String*);
-static void	vmspath(Node*, String*);
-static void	mvspath(Node*, String*);
-static Node*	vmsdir(char*);
-static int	getpassword(char*, char*);
-static int	nw_mode(char dirlet, char *s);
+static void sendrequest(char*, char*);
+static int getreply(Biobuf*, char*, int, int);
+static int active(int, Biobuf**, char*, char*);
+static int passive(int, Biobuf**, char*, char*);
+static int data(int, Biobuf**, char*, char*);
+static int port(void);
+static void ascii(void);
+static void image(void);
+static void unixpath(Node*, String*);
+static void vmspath(Node*, String*);
+static void mvspath(Node*, String*);
+static Node* vmsdir(char*);
+static int getpassword(char*, char*);
+static int nw_mode(char dirlet, char *s);
 void
 hello(char *dest)
 {

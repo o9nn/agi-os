@@ -9,7 +9,7 @@
 #if __cplusplus >= 202002L
 # include <compare>
 # if _GLIBCXX_HOSTED
-#  include <ostream>
+# include <ostream>
 # endif
 #endif
 #if __cplusplus > 202002L && defined(__cpp_constexpr_dynamic_alloc)
@@ -105,11 +105,11 @@ _M_deleter() = std::forward<_Dp>(__u._M_deleter());
 return *this;
 }
 _GLIBCXX23_CONSTEXPR
-pointer&   _M_ptr() noexcept { return std::get<0>(_M_t); }
+pointer& _M_ptr() noexcept { return std::get<0>(_M_t); }
 _GLIBCXX23_CONSTEXPR
-pointer    _M_ptr() const noexcept { return std::get<0>(_M_t); }
+pointer _M_ptr() const noexcept { return std::get<0>(_M_t); }
 _GLIBCXX23_CONSTEXPR
-_Dp&       _M_deleter() noexcept { return std::get<1>(_M_t); }
+_Dp& _M_deleter() noexcept { return std::get<1>(_M_t); }
 _GLIBCXX23_CONSTEXPR
 const _Dp& _M_deleter() const noexcept { return std::get<1>(_M_t); }
 _GLIBCXX23_CONSTEXPR
@@ -176,9 +176,9 @@ using _DeleterConstraint =
 typename __uniq_ptr_impl<_Tp, _Up>::_DeleterConstraint::type;
 __uniq_ptr_data<_Tp, _Dp> _M_t;
 public:
-using pointer	  = typename __uniq_ptr_impl<_Tp, _Dp>::pointer;
-using element_type  = _Tp;
-using deleter_type  = _Dp;
+using pointer = typename __uniq_ptr_impl<_Tp, _Dp>::pointer;
+using element_type = _Tp;
+using deleter_type = _Dp;
 private:
 template<typename _Up, typename _Ep>
 using __safe_conversion_up = __and_<
@@ -333,9 +333,9 @@ using __is_derived_Tp
 = __and_< is_base_of<_Tp, _Up>,
 __not_<is_same<__remove_cv_t<_Tp>, __remove_cv_t<_Up>>> >;
 public:
-using pointer	  = typename __uniq_ptr_impl<_Tp, _Dp>::pointer;
-using element_type  = _Tp;
-using deleter_type  = _Dp;
+using pointer = typename __uniq_ptr_impl<_Tp, _Dp>::pointer;
+using element_type = _Tp;
+using deleter_type = _Dp;
 template<typename _Up, typename _Ep,
 typename _UPtr = unique_ptr<_Up, _Ep>,
 typename _UP_pointer = typename _UPtr::pointer,

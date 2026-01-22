@@ -1,7 +1,7 @@
 #include <linux/config.h>
 #include <linux/netdevice.h>
 #include <linux/errno.h>
-#define	NEXT_DEV	NULL
+#define NEXT_DEV NULL
 extern int tulip_probe(struct device *dev);
 extern int hp100_probe(struct device *dev);
 extern int ultra_probe(struct device *dev);
@@ -34,7 +34,7 @@ extern int sundance_probe(struct device *);
 extern int starfire_probe(struct device *);
 extern int myson803_probe(struct device *);
 extern int igige_probe(struct device *);
-#if	defined(CONFIG_WAVELAN)
+#if defined(CONFIG_WAVELAN)
 extern int wavelan_probe(struct device *);
 #endif
 extern int el16_probe(struct device *);
@@ -70,7 +70,7 @@ static int
 ethif_probe(struct device *dev)
 {
 u_long base_addr = dev->base_addr;
-if ((base_addr == 0xffe0)  ||  (base_addr == 1))
+if ((base_addr == 0xffe0) || (base_addr == 1))
 return 1;
 if (1
 #ifdef CONFIG_DE4X5
@@ -208,7 +208,7 @@ if (1
 #ifdef CONFIG_EL1
 && el1_probe(dev)
 #endif
-#if	defined(CONFIG_WAVELAN)
+#if defined(CONFIG_WAVELAN)
 && wavelan_probe(dev)
 #endif
 #ifdef CONFIG_EL16
@@ -264,8 +264,8 @@ return 0;
 #ifdef CONFIG_SDLA
 extern int sdla_init(struct device *);
 static struct device sdla0_dev = { "sdla0", 0, 0, 0, 0, 0, 0, 0, 0, 0, NEXT_DEV, sdla_init, };
-#   undef NEXT_DEV
-#   define NEXT_DEV	(&sdla0_dev)
+# undef NEXT_DEV
+# define NEXT_DEV (&sdla0_dev)
 #endif
 #ifdef CONFIG_NETROM
 extern int nr_init(struct device *);
@@ -273,21 +273,21 @@ static struct device nr3_dev = { "nr3", 0, 0, 0, 0, 0, 0, 0, 0, 0, NEXT_DEV, nr_
 static struct device nr2_dev = { "nr2", 0, 0, 0, 0, 0, 0, 0, 0, 0, &nr3_dev, nr_init, };
 static struct device nr1_dev = { "nr1", 0, 0, 0, 0, 0, 0, 0, 0, 0, &nr2_dev, nr_init, };
 static struct device nr0_dev = { "nr0", 0, 0, 0, 0, 0, 0, 0, 0, 0, &nr1_dev, nr_init, };
-#   undef NEXT_DEV
-#   define	NEXT_DEV	(&nr0_dev)
+# undef NEXT_DEV
+# define NEXT_DEV (&nr0_dev)
 #endif
 #ifdef CONFIG_ATP
 static struct device atp_dev = {
-"atp0", 0, 0, 0, 0, 0, 0, 0, 0, 0, NEXT_DEV, atp_init,  };
-#   undef NEXT_DEV
-#   define NEXT_DEV	(&atp_dev)
+"atp0", 0, 0, 0, 0, 0, 0, 0, 0, 0, NEXT_DEV, atp_init, };
+# undef NEXT_DEV
+# define NEXT_DEV (&atp_dev)
 #endif
 #ifdef CONFIG_ARCNET
 extern int arcnet_probe(struct device *dev);
 static struct device arcnet_dev = {
 "arc0", 0x0, 0x0, 0x0, 0x0, 0, 0, 0, 0, 0, NEXT_DEV, arcnet_probe, };
-#   undef	NEXT_DEV
-#   define	NEXT_DEV	(&arcnet_dev)
+# undef NEXT_DEV
+# define NEXT_DEV (&arcnet_dev)
 #endif
 #ifdef MACH
 #ifndef ETH1_ADDR
@@ -324,8 +324,8 @@ static struct device eth1_dev = {
 #endif
 static struct device eth0_dev = {
 "eth0", 0, 0, 0, 0, ETH0_ADDR, ETH0_IRQ, 0, 0, 0, &eth1_dev, ethif_probe };
-#   undef NEXT_DEV
-#   define NEXT_DEV	(&eth0_dev)
+# undef NEXT_DEV
+# define NEXT_DEV (&eth0_dev)
 #if defined(PLIP) || defined(CONFIG_PLIP)
 extern int plip_init(struct device *);
 static struct device plip2_dev = {
@@ -334,8 +334,8 @@ static struct device plip1_dev = {
 "plip1", 0, 0, 0, 0, 0x378, 7, 0, 0, 0, &plip2_dev, plip_init, };
 static struct device plip0_dev = {
 "plip0", 0, 0, 0, 0, 0x3BC, 5, 0, 0, 0, &plip1_dev, plip_init, };
-#   undef NEXT_DEV
-#   define NEXT_DEV	(&plip0_dev)
+# undef NEXT_DEV
+# define NEXT_DEV (&plip0_dev)
 #endif
 #if defined(SLIP) || defined(CONFIG_SLIP)
 extern int slip_init_ctrl_dev(struct device *);
@@ -362,8 +362,8 @@ static struct device ppp_bootstrap = {
 extern int dummy_init(struct device *dev);
 static struct device dummy_dev = {
 "dummy", 0x0, 0x0, 0x0, 0x0, 0, 0, 0, 0, 0, NEXT_DEV, dummy_init, };
-#   undef	NEXT_DEV
-#   define	NEXT_DEV	(&dummy_dev)
+# undef NEXT_DEV
+# define NEXT_DEV (&dummy_dev)
 #endif
 #ifdef CONFIG_EQUALIZER
 extern int eql_init(struct device *dev);
@@ -376,8 +376,8 @@ struct device eql_dev = {
 NEXT_DEV,
 eql_init
 };
-#   undef       NEXT_DEV
-#   define      NEXT_DEV        (&eql_dev)
+# undef NEXT_DEV
+# define NEXT_DEV (&eql_dev)
 #endif
 #ifdef CONFIG_IBMTR
 extern int tok_probe(struct device *dev);
@@ -393,8 +393,8 @@ static struct device ibmtr_dev1 = {
 NEXT_DEV,
 tok_probe
 };
-#   undef	NEXT_DEV
-#   define	NEXT_DEV	(&ibmtr_dev1)
+# undef NEXT_DEV
+# define NEXT_DEV (&ibmtr_dev1)
 static struct device ibmtr_dev0 = {
 "tr0",
 0x0,
@@ -407,8 +407,8 @@ static struct device ibmtr_dev0 = {
 NEXT_DEV,
 tok_probe
 };
-#   undef	NEXT_DEV
-#   define	NEXT_DEV	(&ibmtr_dev0)
+# undef NEXT_DEV
+# define NEXT_DEV (&ibmtr_dev0)
 #endif
 #ifdef CONFIG_DEFXX
 extern int dfx_probe(struct device *dev);
@@ -428,8 +428,8 @@ static struct device fddi1_dev =
 {"fddi1", 0, 0, 0, 0, 0, 0, 0, 0, 0, &fddi2_dev, dfx_probe};
 static struct device fddi0_dev =
 {"fddi0", 0, 0, 0, 0, 0, 0, 0, 0, 0, &fddi1_dev, dfx_probe};
-#undef	NEXT_DEV
-#define	NEXT_DEV	(&fddi0_dev)
+#undef NEXT_DEV
+#define NEXT_DEV (&fddi0_dev)
 #endif
 #ifdef CONFIG_NET_IPIP
 extern int tunnel_init(struct device *);
@@ -459,22 +459,22 @@ static struct device tunnel_dev0 =
 &tunnel_dev1,
 tunnel_init
 };
-#   undef	NEXT_DEV
-#   define	NEXT_DEV	(&tunnel_dev0)
+# undef NEXT_DEV
+# define NEXT_DEV (&tunnel_dev0)
 #endif
 #ifdef CONFIG_APFDDI
 extern int apfddi_init(struct device *dev);
 static struct device fddi_dev = {
 "fddi", 0x0, 0x0, 0x0, 0x0, 0, 0, 0, 0, 0, NEXT_DEV, apfddi_init };
-#   undef       NEXT_DEV
-#   define      NEXT_DEV        (&fddi_dev)
+# undef NEXT_DEV
+# define NEXT_DEV (&fddi_dev)
 #endif
 #ifdef CONFIG_APBIF
 extern int bif_init(struct device *dev);
 static struct device bif_dev = {
 "bif", 0x0, 0x0, 0x0, 0x0, 0, 0, 0, 0, 0, NEXT_DEV, bif_init };
-#   undef       NEXT_DEV
-#   define      NEXT_DEV        (&bif_dev)
+# undef NEXT_DEV
+# define NEXT_DEV (&bif_dev)
 #endif
 #ifdef MACH
 struct device *dev_base = &eth0_dev;

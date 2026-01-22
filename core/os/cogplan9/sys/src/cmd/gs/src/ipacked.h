@@ -1,5 +1,5 @@
 #ifndef ipacked_INCLUDED
-#  define ipacked_INCLUDED
+# define ipacked_INCLUDED
 #define r_packed_type_shift 13
 #define r_packed_value_bits 12
 typedef enum {
@@ -20,7 +20,7 @@ pt_executable_name = 7
 #define pt_tag(pt) ((ref_packed)(pt) << r_packed_type_shift)
 #define packed_value_mask ((1 << r_packed_value_bits) - 1)
 #define packed_max_value packed_value_mask
-#define r_is_packed(rp)  (*(const ref_packed *)(rp) >= pt_tag(pt_min_packed))
+#define r_is_packed(rp) (*(const ref_packed *)(rp) >= pt_tag(pt_min_packed))
 #define r_packed_is_name(prp) (*(prp) >= pt_tag(pt_min_name))
 #define r_packed_is_exec_name(prp) (*(prp) >= pt_tag(pt_min_exec_name))
 #define packed_name_max_index packed_max_value

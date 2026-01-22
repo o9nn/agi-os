@@ -5,7 +5,7 @@
 private const long COMPRESSION_THRESHOLD = 300000;
 #define NEED_TO_COMPRESS(f)\
 ((f)->ok_to_compress && (f)->total_space > COMPRESSION_THRESHOLD)
-#define GET_NUM_RAW_BUFFERS( f ) 					\
+#define GET_NUM_RAW_BUFFERS( f ) \
 max(f->log_length/MEMFILE_DATA_SIZE/32, 8)
 #define MALLOC(f, siz, cname)\
 (void *)gs_alloc_bytes((f)->data_memory, siz, cname)
@@ -28,11 +28,11 @@ const byte *decomp_rd_ptr1, *decomp_rd_limit1;
 #endif
 void *
 allocateWithReserve(
-MEMFILE  *f,
-int      sizeofBlock,
-int      *return_code,
-const   char     *allocName,
-const   char     *errorMessage
+MEMFILE *f,
+int sizeofBlock,
+int *return_code,
+const char *allocName,
+const char *errorMessage
 )
 {
 int code = 0;
@@ -65,7 +65,7 @@ return block;
 }
 int
 memfile_fopen(char fname[gp_file_name_sizeof], const char *fmode,
-clist_file_ptr   * pf,
+clist_file_ptr * pf,
 gs_memory_t *mem, gs_memory_t *data_mem, bool ok_to_compress)
 {
 MEMFILE *f = 0;
@@ -96,7 +96,7 @@ if ((code = memfile_init_empty(f)) < 0)
 goto finish;
 if ((code = memfile_set_memory_warning(f, 0)) < 0)
 goto finish;
-f->ok_to_compress =  true;
+f->ok_to_compress = true;
 f->compress_state = 0;
 f->decompress_state = 0;
 if (f->ok_to_compress) {

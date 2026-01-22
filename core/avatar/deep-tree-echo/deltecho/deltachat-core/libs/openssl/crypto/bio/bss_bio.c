@@ -1,11 +1,11 @@
 #ifdef BIO_DEBUG
 # ifndef BIO_PAIR_DEBUG
-#  define BIO_PAIR_DEBUG
+# define BIO_PAIR_DEBUG
 # endif
 #endif
 #ifndef BIO_PAIR_DEBUG
 # ifndef NDEBUG
-#  define NDEBUG
+# define NDEBUG
 # endif
 #endif
 #include <assert.h>
@@ -36,7 +36,7 @@ BIO_TYPE_BIO,
 bio_write,
 bio_read,
 bio_puts,
-NULL  ,
+NULL ,
 bio_ctrl,
 bio_new,
 bio_free,

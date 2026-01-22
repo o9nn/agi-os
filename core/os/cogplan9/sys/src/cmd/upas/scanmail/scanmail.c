@@ -1,31 +1,31 @@
 #include "common.h"
 #include "spam.h"
-int	cflag;
-int	debug;
-int	hflag;
-int	nflag;
-int	sflag;
-int	tflag;
-int	vflag;
-Biobuf	bin, bout, *cout;
-char	patfile[128];
-char	linefile[128];
-char	holdqueue[128];
-char	copydir[128];
-char	header[Hdrsize+2];
-char	cmd[1024];
-char	**qname;
-char	**qdir;
-char	*sender;
-String	*recips;
-char*	canon(Biobuf*, char*, char*, int*);
-int	matcher(char*, Pattern*, char*, Resub*);
-int	matchaction(int, char*, Resub*);
-Biobuf	*opencopy(char*);
-Biobuf	*opendump(char*);
-char	*qmail(char**, char*, int, Biobuf*);
-void	saveline(char*, char*, Resub*);
-int	optoutofspamfilter(char*);
+int cflag;
+int debug;
+int hflag;
+int nflag;
+int sflag;
+int tflag;
+int vflag;
+Biobuf bin, bout, *cout;
+char patfile[128];
+char linefile[128];
+char holdqueue[128];
+char copydir[128];
+char header[Hdrsize+2];
+char cmd[1024];
+char **qname;
+char **qdir;
+char *sender;
+String *recips;
+char* canon(Biobuf*, char*, char*, int*);
+int matcher(char*, Pattern*, char*, Resub*);
+int matchaction(int, char*, Resub*);
+Biobuf *opencopy(char*);
+Biobuf *opendump(char*);
+char *qmail(char**, char*, int, Biobuf*);
+void saveline(char*, char*, Resub*);
+int optoutofspamfilter(char*);
 void
 usage(void)
 {
@@ -92,7 +92,7 @@ argv++;
 strecpy(patfile, patfile+sizeof patfile, *argv);
 break;
 case 'q':
-if(argv[0][2] ||  argv[1] == 0)
+if(argv[0][2] || argv[1] == 0)
 usage();
 *a++ = argv[0];
 argc--;

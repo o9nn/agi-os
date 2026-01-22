@@ -20,49 +20,49 @@ end -= 1;
 return str.substr(start, end - start);
 }
 static const std::map<std::string, llm_chat_template> LLM_CHAT_TEMPLATES = {
-{ "chatml",            LLM_CHAT_TEMPLATE_CHATML            },
-{ "llama2",            LLM_CHAT_TEMPLATE_LLAMA_2           },
-{ "llama2-sys",        LLM_CHAT_TEMPLATE_LLAMA_2_SYS       },
-{ "llama2-sys-bos",    LLM_CHAT_TEMPLATE_LLAMA_2_SYS_BOS   },
-{ "llama2-sys-strip",  LLM_CHAT_TEMPLATE_LLAMA_2_SYS_STRIP },
-{ "mistral-v1",        LLM_CHAT_TEMPLATE_MISTRAL_V1        },
-{ "mistral-v3",        LLM_CHAT_TEMPLATE_MISTRAL_V3        },
+{ "chatml", LLM_CHAT_TEMPLATE_CHATML },
+{ "llama2", LLM_CHAT_TEMPLATE_LLAMA_2 },
+{ "llama2-sys", LLM_CHAT_TEMPLATE_LLAMA_2_SYS },
+{ "llama2-sys-bos", LLM_CHAT_TEMPLATE_LLAMA_2_SYS_BOS },
+{ "llama2-sys-strip", LLM_CHAT_TEMPLATE_LLAMA_2_SYS_STRIP },
+{ "mistral-v1", LLM_CHAT_TEMPLATE_MISTRAL_V1 },
+{ "mistral-v3", LLM_CHAT_TEMPLATE_MISTRAL_V3 },
 { "mistral-v3-tekken", LLM_CHAT_TEMPLATE_MISTRAL_V3_TEKKEN },
-{ "mistral-v7",        LLM_CHAT_TEMPLATE_MISTRAL_V7        },
+{ "mistral-v7", LLM_CHAT_TEMPLATE_MISTRAL_V7 },
 { "mistral-v7-tekken", LLM_CHAT_TEMPLATE_MISTRAL_V7_TEKKEN },
-{ "phi3",              LLM_CHAT_TEMPLATE_PHI_3             },
-{ "phi4",              LLM_CHAT_TEMPLATE_PHI_4             },
-{ "falcon3",           LLM_CHAT_TEMPLATE_FALCON_3          },
-{ "zephyr",            LLM_CHAT_TEMPLATE_ZEPHYR            },
-{ "monarch",           LLM_CHAT_TEMPLATE_MONARCH           },
-{ "gemma",             LLM_CHAT_TEMPLATE_GEMMA             },
-{ "orion",             LLM_CHAT_TEMPLATE_ORION             },
-{ "openchat",          LLM_CHAT_TEMPLATE_OPENCHAT          },
-{ "vicuna",            LLM_CHAT_TEMPLATE_VICUNA            },
-{ "vicuna-orca",       LLM_CHAT_TEMPLATE_VICUNA_ORCA       },
-{ "deepseek",          LLM_CHAT_TEMPLATE_DEEPSEEK          },
-{ "deepseek2",         LLM_CHAT_TEMPLATE_DEEPSEEK_2        },
-{ "deepseek3",         LLM_CHAT_TEMPLATE_DEEPSEEK_3        },
-{ "command-r",         LLM_CHAT_TEMPLATE_COMMAND_R         },
-{ "llama3",            LLM_CHAT_TEMPLATE_LLAMA_3           },
-{ "chatglm3",          LLM_CHAT_TEMPLATE_CHATGLM_3         },
-{ "chatglm4",          LLM_CHAT_TEMPLATE_CHATGLM_4         },
-{ "glmedge",           LLM_CHAT_TEMPLATE_GLMEDGE           },
-{ "minicpm",           LLM_CHAT_TEMPLATE_MINICPM           },
-{ "exaone3",           LLM_CHAT_TEMPLATE_EXAONE_3          },
-{ "exaone4",           LLM_CHAT_TEMPLATE_EXAONE_4          },
-{ "rwkv-world",        LLM_CHAT_TEMPLATE_RWKV_WORLD        },
-{ "granite",           LLM_CHAT_TEMPLATE_GRANITE           },
-{ "gigachat",          LLM_CHAT_TEMPLATE_GIGACHAT          },
-{ "megrez",            LLM_CHAT_TEMPLATE_MEGREZ            },
-{ "yandex",            LLM_CHAT_TEMPLATE_YANDEX            },
-{ "bailing",           LLM_CHAT_TEMPLATE_BAILING           },
-{ "llama4",            LLM_CHAT_TEMPLATE_LLAMA4            },
-{ "smolvlm",           LLM_CHAT_TEMPLATE_SMOLVLM           },
-{ "hunyuan-moe",       LLM_CHAT_TEMPLATE_HUNYUAN_MOE       },
-{ "gpt-oss",           LLM_CHAT_TEMPLATE_OPENAI_MOE        },
-{ "hunyuan-dense",     LLM_CHAT_TEMPLATE_HUNYUAN_DENSE     },
-{ "kimi-k2",           LLM_CHAT_TEMPLATE_KIMI_K2           },
+{ "phi3", LLM_CHAT_TEMPLATE_PHI_3 },
+{ "phi4", LLM_CHAT_TEMPLATE_PHI_4 },
+{ "falcon3", LLM_CHAT_TEMPLATE_FALCON_3 },
+{ "zephyr", LLM_CHAT_TEMPLATE_ZEPHYR },
+{ "monarch", LLM_CHAT_TEMPLATE_MONARCH },
+{ "gemma", LLM_CHAT_TEMPLATE_GEMMA },
+{ "orion", LLM_CHAT_TEMPLATE_ORION },
+{ "openchat", LLM_CHAT_TEMPLATE_OPENCHAT },
+{ "vicuna", LLM_CHAT_TEMPLATE_VICUNA },
+{ "vicuna-orca", LLM_CHAT_TEMPLATE_VICUNA_ORCA },
+{ "deepseek", LLM_CHAT_TEMPLATE_DEEPSEEK },
+{ "deepseek2", LLM_CHAT_TEMPLATE_DEEPSEEK_2 },
+{ "deepseek3", LLM_CHAT_TEMPLATE_DEEPSEEK_3 },
+{ "command-r", LLM_CHAT_TEMPLATE_COMMAND_R },
+{ "llama3", LLM_CHAT_TEMPLATE_LLAMA_3 },
+{ "chatglm3", LLM_CHAT_TEMPLATE_CHATGLM_3 },
+{ "chatglm4", LLM_CHAT_TEMPLATE_CHATGLM_4 },
+{ "glmedge", LLM_CHAT_TEMPLATE_GLMEDGE },
+{ "minicpm", LLM_CHAT_TEMPLATE_MINICPM },
+{ "exaone3", LLM_CHAT_TEMPLATE_EXAONE_3 },
+{ "exaone4", LLM_CHAT_TEMPLATE_EXAONE_4 },
+{ "rwkv-world", LLM_CHAT_TEMPLATE_RWKV_WORLD },
+{ "granite", LLM_CHAT_TEMPLATE_GRANITE },
+{ "gigachat", LLM_CHAT_TEMPLATE_GIGACHAT },
+{ "megrez", LLM_CHAT_TEMPLATE_MEGREZ },
+{ "yandex", LLM_CHAT_TEMPLATE_YANDEX },
+{ "bailing", LLM_CHAT_TEMPLATE_BAILING },
+{ "llama4", LLM_CHAT_TEMPLATE_LLAMA4 },
+{ "smolvlm", LLM_CHAT_TEMPLATE_SMOLVLM },
+{ "hunyuan-moe", LLM_CHAT_TEMPLATE_HUNYUAN_MOE },
+{ "gpt-oss", LLM_CHAT_TEMPLATE_OPENAI_MOE },
+{ "hunyuan-dense", LLM_CHAT_TEMPLATE_HUNYUAN_DENSE },
+{ "kimi-k2", LLM_CHAT_TEMPLATE_KIMI_K2 },
 };
 llm_chat_template llm_chat_template_from_str(const std::string & name) {
 return LLM_CHAT_TEMPLATES.at(name);
@@ -537,7 +537,7 @@ ss << "assistant<|role_sep|>" << chat[i]->content << "<|message_sep|>";
 if (add_ass) {
 ss << "assistant<|role_sep|>";
 }
-}  else if (tmpl == LLM_CHAT_TEMPLATE_MEGREZ) {
+} else if (tmpl == LLM_CHAT_TEMPLATE_MEGREZ) {
 for (auto message : chat) {
 std::string role(message->role);
 ss << "<|role_start|>" << role << "<|role_end|>" << message->content << "<|turn_end|>";
@@ -557,7 +557,7 @@ ss << " Ассистент: " << chat[i]->content << "\n\n";
 if (add_ass) {
 ss << " Ассистент:[SEP]";
 }
-}  else if (tmpl == LLM_CHAT_TEMPLATE_BAILING) {
+} else if (tmpl == LLM_CHAT_TEMPLATE_BAILING) {
 for (auto message : chat) {
 std::string role(message->role);
 if (role == "user") {

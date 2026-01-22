@@ -1,6 +1,6 @@
 #!/bin/sh
 if [ ! -d "build-aux" ]; then
-    mkdir build-aux
+mkdir build-aux
 fi
 touch build-aux/config.rpath
 autoreconf -vif

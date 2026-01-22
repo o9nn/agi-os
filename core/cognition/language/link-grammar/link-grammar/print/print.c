@@ -83,9 +83,9 @@ static void print_a_link(dyn_str * s, const Linkage linkage, LinkIdx link)
 {
 WordIdx l, r;
 const char *label, *llabel, *rlabel;
-l      = linkage_get_link_lword(linkage, link);
-r      = linkage_get_link_rword(linkage, link);
-label  = linkage_get_link_label(linkage, link);
+l = linkage_get_link_lword(linkage, link);
+r = linkage_get_link_rword(linkage, link);
+label = linkage_get_link_label(linkage, link);
 llabel = linkage_get_link_llabel(linkage, link);
 rlabel = linkage_get_link_rlabel(linkage, link);
 if (l == 0)
@@ -1041,7 +1041,7 @@ for (wi = w_start; (wi == w_start) ||
 size_t nalt = altlen(sent->word[wi].alternatives);
 max_nalt = MAX(max_nalt, nalt);
 }
-for (ai=0; ai < max_nalt;  ai++)
+for (ai=0; ai < max_nalt; ai++)
 {
 if (debugprint)
 {

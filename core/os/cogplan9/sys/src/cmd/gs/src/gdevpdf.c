@@ -82,10 +82,10 @@ private dev_proc_open_device(pdf_open);
 private dev_proc_output_page(pdf_output_page);
 private dev_proc_close_device(pdf_close);
 #ifndef X_DPI
-#  define X_DPI 720
+# define X_DPI 720
 #endif
 #ifndef Y_DPI
-#  define Y_DPI 720
+# define Y_DPI 720
 #endif
 #define PDF_DEVICE_NAME "pdfwrite"
 #define PDF_DEVICE_IDENT gs_pdfwrite_device
@@ -344,10 +344,10 @@ md5_init(&md5);
 copy_padded(buf, &pdev->UserPassword);
 md5_append(&md5, buf, sizeof(buf));
 md5_append(&md5, pdev->EncryptionO, sizeof(pdev->EncryptionO));
-t = (byte)(pdev->Permissions >>  0);  md5_append(&md5, &t, 1);
-t = (byte)(pdev->Permissions >>  8);  md5_append(&md5, &t, 1);
-t = (byte)(pdev->Permissions >> 16);  md5_append(&md5, &t, 1);
-t = (byte)(pdev->Permissions >> 24);  md5_append(&md5, &t, 1);
+t = (byte)(pdev->Permissions >> 0); md5_append(&md5, &t, 1);
+t = (byte)(pdev->Permissions >> 8); md5_append(&md5, &t, 1);
+t = (byte)(pdev->Permissions >> 16); md5_append(&md5, &t, 1);
+t = (byte)(pdev->Permissions >> 24); md5_append(&md5, &t, 1);
 md5_append(&md5, pdev->fileID, sizeof(pdev->fileID));
 if (pdev->EncryptionR == 3)
 if (!pdev->EncryptMetadata) {
@@ -567,7 +567,7 @@ dsc_orientation >= 0 ) {
 const pdf_text_rotation_t *ptr =
 (page != NULL ? &page->text_rotation : &pdev->text_rotation);
 int angle = -1;
-#define  Bug687800
+#define Bug687800
 #ifndef Bug687800
 const gs_point *pbox = &(page != NULL ? page : &pdev->pages[0])->MediaBox;
 if (dsc_orientation >= 0 && pbox->x > pbox->y) {

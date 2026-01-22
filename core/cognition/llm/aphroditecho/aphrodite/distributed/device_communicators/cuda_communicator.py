@@ -101,7 +101,6 @@ class CudaCommunicator(DeviceCommunicatorBase):
             pynccl_comm.reduce_scatter(output, input_)
         return output.movedim(0, dim).contiguous()
     def send(self, tensor: torch.Tensor, dst: Optional[int]=None) -> None:
-        """NOTE: `dst` is the local rank of the destination rank."""
         if dst is None:
             dst = (self.rank_in_group + 1) % self.world_size
         pynccl_comm = self.pynccl_comm
@@ -110,7 +109,6 @@ class CudaCommunicator(DeviceCommunicatorBase):
         else:
             torch.distributed.send(tensor, self.ranks[dst], self.device_group)
     def recv(self, size: torch.Size, dtype: torch.dtype, src: Optional[int]=None) -> torch.Tensor:
-        """NOTE: `src` is the local rank of the source rank."""
         if src is None:
             src = (self.rank_in_group - 1) % self.world_size
         tensor = torch.empty(size, dtype=dtype, device=self.device)

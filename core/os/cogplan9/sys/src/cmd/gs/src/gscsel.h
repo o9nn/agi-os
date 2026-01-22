@@ -1,5 +1,5 @@
 #ifndef gscsel_INCLUDED
-#  define gscsel_INCLUDED
+# define gscsel_INCLUDED
 typedef enum {
 gs_color_select_all = -1,
 gs_color_select_texture = 0,

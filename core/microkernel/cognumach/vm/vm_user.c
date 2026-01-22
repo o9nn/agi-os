@@ -17,22 +17,22 @@
 #include <vm/vm_kern.h>
 #include <vm/vm_map.h>
 #ifdef USER32
-#define USER32_ADDRESS_SIGN_BIT     0x80000000UL
-#define USER32_HIGH_BITS_MASK       0xffffffff00000000ULL
-#define USER32_MAX_ADDRESS          0x100000000ULL
+#define USER32_ADDRESS_SIGN_BIT 0x80000000UL
+#define USER32_HIGH_BITS_MASK 0xffffffff00000000ULL
+#define USER32_MAX_ADDRESS 0x100000000ULL
 #endif
 #include <vm/vm_object.h>
 #include <vm/memory_object_proxy.h>
 #include <vm/vm_page.h>
 #include <kern/perf_analysis.h>
-vm_statistics_data_t	vm_stat;
+vm_statistics_data_t vm_stat;
 kern_return_t vm_allocate(
-vm_map_t	map,
-vm_offset_t	*addr,
-vm_size_t	size,
-boolean_t	anywhere)
+vm_map_t map,
+vm_offset_t *addr,
+vm_size_t size,
+boolean_t anywhere)
 {
-kern_return_t	result;
+kern_return_t result;
 uint64_t perf_start_time;
 uint32_t task_id = 0, thread_id = 0;
 perf_start_time = PERF_EVENT_TIME_START(PERF_EVENT_VM_ALLOC);
@@ -75,9 +75,9 @@ task_id, thread_id, result, size);
 return(result);
 }
 kern_return_t vm_deallocate(
-vm_map_t		map,
-vm_offset_t		start,
-vm_size_t		size)
+vm_map_t map,
+vm_offset_t start,
+vm_size_t size)
 {
 kern_return_t result;
 uint64_t perf_start_time;
@@ -105,10 +105,10 @@ task_id, thread_id, result, size);
 return result;
 }
 kern_return_t vm_inherit(
-vm_map_t		map,
-vm_offset_t		start,
-vm_size_t		size,
-vm_inherit_t		new_inheritance)
+vm_map_t map,
+vm_offset_t start,
+vm_size_t size,
+vm_inherit_t new_inheritance)
 {
 if (map == VM_MAP_NULL)
 return(KERN_INVALID_ARGUMENT);
@@ -128,11 +128,11 @@ round_page(start+size),
 new_inheritance));
 }
 kern_return_t vm_protect(
-vm_map_t		map,
-vm_offset_t		start,
-vm_size_t		size,
-boolean_t		set_maximum,
-vm_prot_t		new_protection)
+vm_map_t map,
+vm_offset_t start,
+vm_size_t size,
+boolean_t set_maximum,
+vm_prot_t new_protection)
 {
 if ((map == VM_MAP_NULL) ||
 (new_protection & ~(VM_PROT_ALL|VM_PROT_NOTIFY)))
@@ -146,8 +146,8 @@ new_protection,
 set_maximum));
 }
 kern_return_t vm_statistics(
-vm_map_t		map,
-vm_statistics_data_t	*stat)
+vm_map_t map,
+vm_statistics_data_t *stat)
 {
 if (map == VM_MAP_NULL)
 return(KERN_INVALID_ARGUMENT);
@@ -160,8 +160,8 @@ stat->wire_count = vm_page_wire_count;
 return(KERN_SUCCESS);
 }
 kern_return_t vm_cache_statistics(
-vm_map_t			map,
-vm_cache_statistics_data_t	*stats)
+vm_map_t map,
+vm_cache_statistics_data_t *stats)
 {
 if (map == VM_MAP_NULL)
 return KERN_INVALID_ARGUMENT;
@@ -179,10 +179,10 @@ stats->slab_reclaim_count = 0;
 return KERN_SUCCESS;
 }
 kern_return_t vm_machine_attribute(
-vm_map_t	map,
-vm_address_t	address,
-vm_size_t	size,
-vm_machine_attribute_t	attribute,
+vm_map_t map,
+vm_address_t address,
+vm_size_t size,
+vm_machine_attribute_t attribute,
 vm_machine_attribute_val_t* value)
 {
 if (map == VM_MAP_NULL)
@@ -192,14 +192,14 @@ return(KERN_INVALID_ARGUMENT);
 return vm_map_machine_attribute(map, address, size, attribute, value);
 }
 kern_return_t vm_read(
-vm_map_t	map,
-vm_address_t	address,
-vm_size_t	size,
-pointer_t	*data,
-mach_msg_type_number_t	*data_size)
+vm_map_t map,
+vm_address_t address,
+vm_size_t size,
+pointer_t *data,
+mach_msg_type_number_t *data_size)
 {
-kern_return_t	error;
-vm_map_copy_t	ipc_address;
+kern_return_t error;
+vm_map_copy_t ipc_address;
 if (map == VM_MAP_NULL)
 return(KERN_INVALID_ARGUMENT);
 if ((error = vm_map_copyin(map,
@@ -213,10 +213,10 @@ FALSE,
 return(error);
 }
 kern_return_t vm_write(
-vm_map_t	map,
-vm_address_t	address,
-pointer_t	data,
-mach_msg_type_number_t	size)
+vm_map_t map,
+vm_address_t address,
+pointer_t data,
+mach_msg_type_number_t size)
 {
 if (map == VM_MAP_NULL)
 return KERN_INVALID_ARGUMENT;
@@ -224,10 +224,10 @@ return vm_map_copy_overwrite(map, address, (vm_map_copy_t) data,
 FALSE );
 }
 kern_return_t vm_copy(
-vm_map_t	map,
-vm_address_t	source_address,
-vm_size_t	size,
-vm_address_t	dest_address)
+vm_map_t map,
+vm_address_t source_address,
+vm_size_t size,
+vm_address_t dest_address)
 {
 vm_map_copy_t copy;
 kern_return_t kr;
@@ -246,20 +246,20 @@ return kr;
 return KERN_SUCCESS;
 }
 kern_return_t vm_map(
-vm_map_t	target_map,
-vm_offset_t	*address,
-vm_size_t	size,
-vm_offset_t	mask,
-boolean_t	anywhere,
-ipc_port_t	memory_object,
-vm_offset_t	offset,
-boolean_t	copy,
-vm_prot_t	cur_protection,
-vm_prot_t	max_protection,
-vm_inherit_t	inheritance)
+vm_map_t target_map,
+vm_offset_t *address,
+vm_size_t size,
+vm_offset_t mask,
+boolean_t anywhere,
+ipc_port_t memory_object,
+vm_offset_t offset,
+boolean_t copy,
+vm_prot_t cur_protection,
+vm_prot_t max_protection,
+vm_inherit_t inheritance)
 {
-vm_object_t	object;
-kern_return_t	result;
+vm_object_t object;
+kern_return_t result;
 if ((target_map == VM_MAP_NULL) ||
 (cur_protection & ~VM_PROT_ALL) ||
 (max_protection & ~VM_PROT_ALL))
@@ -313,8 +313,8 @@ if ((object = vm_object_enter(real_memobj, size, FALSE))
 return KERN_INVALID_ARGUMENT;
 }
 if (copy) {
-vm_object_t	new_object;
-vm_offset_t	new_offset;
+vm_object_t new_object;
+vm_offset_t new_offset;
 result = vm_object_copy_strategically(object, offset, size,
 &new_object, &new_offset,
 &copy);
@@ -386,12 +386,12 @@ return KERN_INVALID_ARGUMENT;
 return vm_map_pageable_all(map, flags);
 }
 kern_return_t vm_object_sync(
-vm_object_t		object,
-vm_offset_t		offset,
-vm_size_t		size,
-boolean_t		should_flush,
-boolean_t		should_return,
-boolean_t		should_iosync)
+vm_object_t object,
+vm_offset_t offset,
+vm_size_t size,
+boolean_t should_flush,
+boolean_t should_return,
+boolean_t should_iosync)
 {
 if (object == VM_OBJECT_NULL)
 return KERN_INVALID_ARGUMENT;
@@ -399,7 +399,7 @@ vm_object_reference(object);
 (void) should_iosync;
 size = round_page(offset + size) - trunc_page(offset);
 offset = trunc_page(offset);
-return  memory_object_lock_request(object, offset, size,
+return memory_object_lock_request(object, offset, size,
 should_return ?
 MEMORY_OBJECT_RETURN_ALL :
 MEMORY_OBJECT_RETURN_NONE,
@@ -408,34 +408,34 @@ VM_PROT_NO_CHANGE,
 NULL, 0);
 }
 kern_return_t vm_msync(
-vm_map_t		map,
-vm_address_t		address,
-vm_size_t		size,
-vm_sync_t		sync_flags)
+vm_map_t map,
+vm_address_t address,
+vm_size_t size,
+vm_sync_t sync_flags)
 {
 if (map == VM_MAP_NULL)
 return KERN_INVALID_ARGUMENT;
 return vm_map_msync(map, (vm_offset_t) address, size, sync_flags);
 }
 kern_return_t vm_allocate_contiguous(
-host_t			host_priv,
-vm_map_t		map,
-vm_address_t		*result_vaddr,
-rpc_phys_addr_t		*result_paddr,
-vm_size_t		size,
-rpc_phys_addr_t		pmin,
-rpc_phys_addr_t		pmax,
-rpc_phys_addr_t		palign)
+host_t host_priv,
+vm_map_t map,
+vm_address_t *result_vaddr,
+rpc_phys_addr_t *result_paddr,
+vm_size_t size,
+rpc_phys_addr_t pmin,
+rpc_phys_addr_t pmax,
+rpc_phys_addr_t palign)
 {
-vm_size_t		alloc_size;
-unsigned int		npages;
-unsigned int		i;
-unsigned int		order;
-unsigned int		selector;
-vm_page_t		pages;
-vm_object_t		object;
-kern_return_t		kr;
-vm_address_t		vaddr;
+vm_size_t alloc_size;
+unsigned int npages;
+unsigned int i;
+unsigned int order;
+unsigned int selector;
+vm_page_t pages;
+vm_object_t object;
+kern_return_t kr;
+vm_address_t vaddr;
 if (host_priv == HOST_NULL)
 return KERN_INVALID_HOST;
 if (map == VM_MAP_NULL)
@@ -527,12 +527,12 @@ assert(*result_paddr + size <= pmax);
 return KERN_SUCCESS;
 }
 kern_return_t vm_pages_phys(
-host_t				host,
-vm_map_t			map,
-vm_address_t			address,
-vm_size_t			size,
-rpc_phys_addr_array_t		*pagespp,
-mach_msg_type_number_t		*countp)
+host_t host,
+vm_map_t map,
+vm_address_t address,
+vm_size_t size,
+rpc_phys_addr_array_t *pagespp,
+mach_msg_type_number_t *countp)
 {
 if (host == HOST_NULL)
 return KERN_INVALID_HOST;

@@ -1,5 +1,5 @@
 #ifndef gspenum_INCLUDED
-#  define gspenum_INCLUDED
+# define gspenum_INCLUDED
 #define gs_pe_moveto 1
 #define gs_pe_lineto 2
 #define gs_pe_curveto 3

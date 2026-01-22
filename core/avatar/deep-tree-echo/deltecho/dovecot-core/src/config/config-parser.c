@@ -21,10 +21,10 @@
 #include <fcntl.h>
 #include <time.h>
 #ifdef HAVE_GLOB_H
-#  include <glob.h>
+# include <glob.h>
 #endif
 #ifndef GLOB_BRACE
-#  define GLOB_BRACE 0
+# define GLOB_BRACE 0
 #endif
 #define DNS_LOOKUP_TIMEOUT_SECS 30
 #define DNS_LOOKUP_WARN_SECS 5

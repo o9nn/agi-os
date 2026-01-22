@@ -48,7 +48,7 @@ return code;
 }
 private int
 shade_next_patch(shade_coord_stream_t * cs, int BitsPerFlag,
-patch_curve_t curve[4], gs_fixed_point interior[4]  )
+patch_curve_t curve[4], gs_fixed_point interior[4] )
 {
 int flag = shade_next_flag(cs, BitsPerFlag);
 int num_colors, code;
@@ -75,8 +75,8 @@ curve[0] = curve[2], curve[1].vertex = curve[3].vertex;
 goto v3;
 case 3:
 curve[1].vertex = curve[0].vertex, curve[0] = curve[3];
-v3:	    num_colors = 2;
-vx:	    if ((code = shade_next_coords(cs, curve[1].control, 2)) < 0 ||
+v3: num_colors = 2;
+vx: if ((code = shade_next_coords(cs, curve[1].control, 2)) < 0 ||
 (code = shade_next_curve(cs, &curve[2])) < 0 ||
 (code = shade_next_curve(cs, &curve[3])) < 0 ||
 (interior != 0 &&
@@ -110,20 +110,20 @@ pfs->inside = false;
 pfs->n_color_args = 1;
 pfs->fixed_flat = float2fixed(pfs->pis->flatness);
 pfs->smoothness = pfs->pis->smoothness;
-#   if LAZY_WEDGES
+# if LAZY_WEDGES
 code = wedge_vertex_list_elem_buffer_alloc(pfs);
 if (code < 0)
 return code;
-#   endif
+# endif
 pfs->max_small_coord = 1 << ((sizeof(int64_t) * 8 - 1) / 3);
 return 0;
 }
 void
 term_patch_fill_state(patch_fill_state_t *pfs)
 {
-#   if LAZY_WEDGES
+# if LAZY_WEDGES
 wedge_vertex_list_elem_buffer_free(pfs);
-#   endif
+# endif
 }
 inline private void
 patch_resolve_color_inline(patch_color_t * ppcr, const patch_fill_state_t *pfs)
@@ -498,19 +498,19 @@ s.pt.x = pole[pole_step * 3].x;
 s.pt.y = pole[pole_step * 3].y;
 k = gx_curve_log2_samples(pole[0].x, pole[0].y, &s, fixed_flat);
 {
-#	if LAZY_WEDGES || QUADRANGLES
+# if LAZY_WEDGES || QUADRANGLES
 int k1;
 fixed L = any_abs(pole[1].x - pole[0].x) + any_abs(pole[1].y - pole[0].y) +
 any_abs(pole[2].x - pole[1].x) + any_abs(pole[2].y - pole[1].y) +
 any_abs(pole[3].x - pole[2].x) + any_abs(pole[3].y - pole[2].y);
-#	endif
-#	if LAZY_WEDGES
+# endif
+# if LAZY_WEDGES
 k1 = ilog2(L / fixed_1 / (1 << (LAZY_WEDGES_MAX_LEVEL - 1)));
 k = max(k, k1);
-#	endif
-#	if QUADRANGLES
+# endif
+# if QUADRANGLES
 k = max(k, ilog2(L) - ilog2(pfs->max_small_coord));
-#	endif
+# endif
 }
 return 1 << k;
 }
@@ -568,9 +568,9 @@ return true;
 fixed d23x = dx3 - dx2, d23y = dy3 - dy2;
 int64_t det = (int64_t)dx1 * d23y - (int64_t)dy1 * d23x;
 int64_t mul = (int64_t)dx2 * d23y - (int64_t)dy2 * d23x;
-#	define USE_DOUBLE 0
-#	define USE_INT64_T (1 || !USE_DOUBLE)
-#	if USE_DOUBLE
+# define USE_DOUBLE 0
+# define USE_INT64_T (1 || !USE_DOUBLE)
+# if USE_DOUBLE
 {
 double dy = dy1 * (double)mul / (double)det;
 fixed iy;
@@ -589,8 +589,8 @@ iy = (int)floor(dy);
 *ry = q[i0].y + iy;
 *ey = (dy > iy ? 1 : 0);
 }
-#	endif
-#	if USE_INT64_T
+# endif
+# if USE_INT64_T
 {
 int64_t num = dy1 * mul, iiy;
 fixed iy;
@@ -620,14 +620,14 @@ return false;
 }
 pry = q[i0].y + (fixed)iy;
 pey = (iy * det < num ? 1 : 0);
-#	    if USE_DOUBLE && USE_INT64_T
+# if USE_DOUBLE && USE_INT64_T
 assert(*ry == pry);
 assert(*ey == pey);
-#	    endif
+# endif
 *ry = pry;
 *ey = pey;
 }
-#	endif
+# endif
 return true;
 }
 return false;
@@ -670,10 +670,10 @@ fixed ytop = min(ytop0, swap_axes ? pfs->rect.q.x : pfs->rect.q.y);
 vd_save;
 if (ybot > ytop)
 return 0;
-#   if NOFILL_TEST
+# if NOFILL_TEST
 if (dbg_nofill)
 return 0;
-#   endif
+# endif
 make_trapezoid(q, vi0, vi1, vi2, vi3, ybot, ytop, swap_axes, orient, &le, &re);
 if (!VD_TRACE_DOWN)
 vd_disable;
@@ -741,8 +741,8 @@ patch_color_t c1 = *c;
 gx_device_color dc;
 int code;
 vd_save;
-#   if NOFILL_TEST
-#   endif
+# if NOFILL_TEST
+# endif
 code = patch_color_to_device_color(pfs, &c1, &dc);
 if (code < 0)
 return code;
@@ -837,7 +837,7 @@ code = is_color_linear(pfs, c0, c1);
 if (code < 0)
 return code;
 if (code > 0)
-pfs->linear_color =  true;
+pfs->linear_color = true;
 }
 if (!pfs->unlinear && pfs->linear_color) {
 gx_device *pdev = pfs->dev;
@@ -1087,7 +1087,7 @@ e->p = *p;
 e->level = max(l->beg->level, l->end->level) + 1;
 e->divide_count = 0;
 l->beg->next = l->end->prev = e;
-{	int sx = l->beg->p.x < l->end->p.x ? 1 : -1;
+{ int sx = l->beg->p.x < l->end->p.x ? 1 : -1;
 int sy = l->beg->p.y < l->end->p.y ? 1 : -1;
 assert((p->x - l->beg->p.x) * sx >= 0);
 assert((p->y - l->beg->p.y) * sy >= 0);
@@ -1179,14 +1179,14 @@ l->beg = l0->beg;
 private inline int
 fill_triangle_wedge_aux(patch_fill_state_t *pfs,
 const shading_vertex_t *q0, const shading_vertex_t *q1, const shading_vertex_t *q2)
-{   int code;
+{ int code;
 const gs_fixed_point *p0, *p1, *p2;
 gs_fixed_point qq0, qq1, qq2;
 fixed dx = any_abs(q0->p.x - q1->p.x), dy = any_abs(q0->p.y - q1->p.y);
 bool swap_axes;
-#   if SKIP_TEST
+# if SKIP_TEST
 dbg_wedge_triangle_cnt++;
-#   endif
+# endif
 if (dx > dy) {
 swap_axes = true;
 qq0.x = q0->p.y;
@@ -1247,7 +1247,7 @@ return code;
 if (code == 0)
 return 1;
 }
-{   gx_device *pdev = pfs->dev;
+{ gx_device *pdev = pfs->dev;
 frac31 fc[3][GX_DEVICE_COLOR_MAX_COMPONENTS];
 gs_fill_attributes fa;
 gx_device_color dc[3];
@@ -1525,10 +1525,10 @@ gs_fixed_edge ue;
 int code;
 gx_device_color dc;
 vd_save;
-#   if NOFILL_TEST
+# if NOFILL_TEST
 if (dbg_nofill)
 return 0;
-#   endif
+# endif
 if (!VD_TRACE_DOWN)
 vd_disable;
 code = patch_color_to_device_color(pfs, c, &dc);
@@ -1605,19 +1605,19 @@ patch_interpolate_color(&c, &c1, &c2, pfs, 0.5);
 code = patch_color_to_device_color(pfs, &c, &dc);
 if (code < 0)
 return code;
-{	gs_fixed_point qq[4];
+{ gs_fixed_point qq[4];
 make_vertices(qq, p);
-#	if 0
+# if 0
 dx = span_x(qq, 4);
 dy = span_y(qq, 4);
 if (dy < dx) {
 do_swap_axes(qq, 4);
 swap_axes = true;
 }
-#	endif
+# endif
 wrap_vertices_by_y(q, qq);
 }
-{	fixed dx1 = q[1].x - q[0].x, dy1 = q[1].y - q[0].y;
+{ fixed dx1 = q[1].x - q[0].x, dy1 = q[1].y - q[0].y;
 fixed dx3 = q[3].x - q[0].x, dy3 = q[3].y - q[0].y;
 int64_t g13 = (int64_t)dx1 * dy3, h13 = (int64_t)dy1 * dx3;
 if (g13 == h13) {
@@ -1931,8 +1931,8 @@ divide_bar(pfs, p1, p2, 2, &p12);
 divide_bar(pfs, p2, p0, 2, &p20);
 if (LAZY_WEDGES) {
 init_wedge_vertex_list(L, count_of(L));
-make_wedge_median(pfs, &L01, l01, true,  &p0->p, &p1->p, &p01.p);
-make_wedge_median(pfs, &L12, l12, true,  &p1->p, &p2->p, &p12.p);
+make_wedge_median(pfs, &L01, l01, true, &p0->p, &p1->p, &p01.p);
+make_wedge_median(pfs, &L12, l12, true, &p1->p, &p2->p, &p12.p);
 make_wedge_median(pfs, &L20, l20, false, &p2->p, &p0->p, &p20.p);
 } else {
 code = fill_triangle_wedge(pfs, p0, p1, &p01);
@@ -1998,9 +1998,9 @@ fixed sd20 = max(any_abs(p0->p.x - p2->p.x), any_abs(p0->p.y - p2->p.y));
 fixed sd1 = max(sd01, sd12);
 fixed sd = max(sd1, sd20);
 double cd = 0;
-#   if SKIP_TEST
+# if SKIP_TEST
 dbg_triangle_cnt++;
-#   endif
+# endif
 if (pfs->Function == NULL) {
 double d01 = color_span(pfs, &p1->c, &p0->c);
 double d12 = color_span(pfs, &p2->c, &p1->c);
@@ -2419,7 +2419,7 @@ init_wedge_vertex_list(&l0, 1);
 if (divide_v) {
 divide_quadrangle_by_v(pfs, &s0, &s1, q, p);
 if (LAZY_WEDGES) {
-make_wedge_median(pfs, &l1, p->l0111, true,  &p->p[0][1]->p, &p->p[1][1]->p, &s0.p[1][1]->p);
+make_wedge_median(pfs, &l1, p->l0111, true, &p->p[0][1]->p, &p->p[1][1]->p, &s0.p[1][1]->p);
 make_wedge_median(pfs, &l2, p->l1000, false, &p->p[1][0]->p, &p->p[0][0]->p, &s0.p[1][0]->p);
 s0.l1110 = s1.l0001 = &l0;
 s0.l0111 = s1.l0111 = &l1;
@@ -2457,7 +2457,7 @@ code = terminate_wedge_vertex_list(pfs, &l0, &s0.p[1][0]->c, &s0.p[1][1]->c);
 } else if (divide_u) {
 divide_quadrangle_by_u(pfs, &s0, &s1, q, p);
 if (LAZY_WEDGES) {
-make_wedge_median(pfs, &l1, p->l0001, true,  &p->p[0][0]->p, &p->p[0][1]->p, &s0.p[0][1]->p);
+make_wedge_median(pfs, &l1, p->l0001, true, &p->p[0][0]->p, &p->p[0][1]->p, &s0.p[0][1]->p);
 make_wedge_median(pfs, &l2, p->l1110, false, &p->p[1][1]->p, &p->p[1][0]->p, &s0.p[1][1]->p);
 s0.l0111 = s1.l1000 = &l0;
 s0.l0001 = s1.l0001 = &l1;
@@ -2555,9 +2555,9 @@ wedge_vertex_list_t l[4];
 int code;
 init_wedge_vertex_list(l, count_of(l));
 make_quadrangle(p, qq, l, &q);
-#	if SKIP_TEST
+# if SKIP_TEST
 dbg_quad_cnt++;
-#	endif
+# endif
 code = fill_quadrangle(pfs, &q, true, 0);
 if (LAZY_WEDGES) {
 code = terminate_wedge_vertex_list(pfs, &l[0], &q.p[0][0]->c, &q.p[0][1]->c);
@@ -2631,7 +2631,7 @@ return false;
 }
 private inline int
 vector_pair_orientation(const gs_fixed_point *p0, const gs_fixed_point *p1, const gs_fixed_point *p2)
-{   fixed dx1 = p1->x - p0->x, dy1 = p1->y - p0->y;
+{ fixed dx1 = p1->x - p0->x, dy1 = p1->y - p0->y;
 fixed dx2 = p2->x - p0->x, dy2 = p2->y - p0->y;
 int64_t vp = (int64_t)dx1 * dy2 - (int64_t)dy1 * dx2;
 return (vp > 0 ? 1 : vp < 0 ? -1 : 0);
@@ -2713,10 +2713,10 @@ is_curve_x_small(const gs_fixed_point *pole, int pole_step, fixed fixed_flat)
 {
 fixed xmin0 = min(pole[0 * pole_step].x, pole[1 * pole_step].x);
 fixed xmin1 = min(pole[2 * pole_step].x, pole[3 * pole_step].x);
-fixed xmin =  min(xmin0, xmin1);
+fixed xmin = min(xmin0, xmin1);
 fixed xmax0 = max(pole[0 * pole_step].x, pole[1 * pole_step].x);
 fixed xmax1 = max(pole[2 * pole_step].x, pole[3 * pole_step].x);
-fixed xmax =  max(xmax0, xmax1);
+fixed xmax = max(xmax0, xmax1);
 if(xmax - xmin <= fixed_1)
 return true;
 return false;
@@ -2726,10 +2726,10 @@ is_curve_y_small(const gs_fixed_point *pole, int pole_step, fixed fixed_flat)
 {
 fixed ymin0 = min(pole[0 * pole_step].y, pole[1 * pole_step].y);
 fixed ymin1 = min(pole[2 * pole_step].y, pole[3 * pole_step].y);
-fixed ymin =  min(ymin0, ymin1);
+fixed ymin = min(ymin0, ymin1);
 fixed ymax0 = max(pole[0 * pole_step].y, pole[1 * pole_step].y);
 fixed ymax1 = max(pole[2 * pole_step].y, pole[3 * pole_step].y);
-fixed ymax =  max(ymax0, ymax1);
+fixed ymax = max(ymax0, ymax1);
 if (ymax - ymin <= fixed_1)
 return true;
 return false;
@@ -2764,7 +2764,7 @@ return fill_stripe(pfs, p);
 if (!is_x_bended(p))
 return fill_stripe(pfs, p);
 }
-{	tensor_patch s0, s1;
+{ tensor_patch s0, s1;
 shading_vertex_t q0, q1, q2;
 int code;
 split_patch(pfs, &s0, &s1, p);
@@ -2965,17 +2965,17 @@ ku[0] = curve_samples(pfs, p.pole[0], 1, pfs->fixed_flat);
 ku[3] = curve_samples(pfs, p.pole[3], 1, pfs->fixed_flat);
 kum = max(ku[0], ku[3]);
 km = max(kvm, kum);
-#   if NOFILL_TEST
+# if NOFILL_TEST
 dbg_nofill = false;
-#   endif
+# endif
 code = fill_wedges(pfs, ku[0], kum, p.pole[0], 1, &p.c[0][0], &p.c[0][1],
 interpatch_padding | inpatch_wedge);
 if (code >= 0) {
-#	if NOFILL_TEST
+# if NOFILL_TEST
 dbg_nofill = false;
 code = fill_patch(pfs, &p, kvm, kv[0], kv[3]);
 dbg_nofill = true;
-#	endif
+# endif
 code = fill_patch(pfs, &p, kvm, kv[0], kv[3]);
 }
 if (code >= 0)

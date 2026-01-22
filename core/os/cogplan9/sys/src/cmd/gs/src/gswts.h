@@ -1,7 +1,7 @@
 #ifndef gswts_INCLUDED
-#  define gswts_INCLUDED
+# define gswts_INCLUDED
 #ifndef gs_wts_screen_enum_t_DEFINED
-#  define gs_wts_screen_enum_t_DEFINED
+# define gs_wts_screen_enum_t_DEFINED
 typedef struct gs_wts_screen_enum_s gs_wts_screen_enum_t;
 #endif
 typedef struct gx_wts_cell_params_s gx_wts_cell_params_t;

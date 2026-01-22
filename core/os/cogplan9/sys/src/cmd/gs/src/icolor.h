@@ -1,5 +1,5 @@
 #ifndef icolor_INCLUDED
-#  define icolor_INCLUDED
+# define icolor_INCLUDED
 extern const int zcolor_remap_one_ostack;
 extern const int zcolor_remap_one_estack;
 int zcolor_remap_one(i_ctx_t *, const ref *, gx_transfer_map *,

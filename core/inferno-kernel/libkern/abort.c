@@ -2,6 +2,6 @@
 void
 abort(void)
 {
-	while(*(int*)0)
-		;
+while(*(int*)0)
+;
 }

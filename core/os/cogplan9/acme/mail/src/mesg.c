@@ -9,28 +9,28 @@ enum
 {
 DIRCHUNK = 32*sizeof(Dir)
 };
-char	regexchars[] = "\\/[].+?()*^$";
-char	deleted[] = "(deleted)-";
-char	deletedrx[] = "\\(deleted\\)-";
-char	deletedrx01[] = "(\\(deleted\\)-)?";
-char	deletedaddr[] = "-#0;/^\\(deleted\\)-/";
+char regexchars[] = "\\/[].+?()*^$";
+char deleted[] = "(deleted)-";
+char deletedrx[] = "\\(deleted\\)-";
+char deletedrx01[] = "(\\(deleted\\)-)?";
+char deletedaddr[] = "-#0;/^\\(deleted\\)-/";
 struct{
-char	*type;
-char	*port;
+char *type;
+char *port;
 char *suffix;
 } ports[] = {
-"text/",			"edit",		".txt",
-"image/gif",			"image",	".gif",
-"image/jpeg",			"image",	".jpg",
-"image/jpeg",			"image",	".jpeg",
-"image/png",			"image",	".png",
-"image/tiff",			"image",	".tif",
-"application/postscript",	"postscript",	".ps",
-"application/pdf",		"postscript",	".pdf",
-"application/msword",		"msword",	".doc",
-"application/rtf",		"msword",	".rtf",
-"audio/x-wav",			"wav",		".wav",
-nil,	nil
+"text/", "edit", ".txt",
+"image/gif", "image", ".gif",
+"image/jpeg", "image", ".jpg",
+"image/jpeg", "image", ".jpeg",
+"image/png", "image", ".png",
+"image/tiff", "image", ".tif",
+"application/postscript", "postscript", ".ps",
+"application/pdf", "postscript", ".pdf",
+"application/msword", "msword", ".doc",
+"application/rtf", "msword", ".rtf",
+"audio/x-wav", "wav", ".wav",
+nil, nil
 };
 char *goodtypes[] = {
 "text",
@@ -44,10 +44,10 @@ nil,
 };
 struct{
 char *type;
-char	*ext;
+char *ext;
 } exts[] = {
-"image/gif",	".gif",
-"image/jpeg",	".jpg",
+"image/gif", ".gif",
+"image/jpeg", ".jpg",
 nil, nil
 };
 char *okheaders[] =
@@ -646,7 +646,7 @@ else if(!isalpha(*s) && !isdigit(*s) && !strchr("_.-+/", *s))
 return 0;
 return nat==1;
 }
-char addrdelim[] =  "/[ \t\\n<>()\\[\\]]/";
+char addrdelim[] = "/[ \t\\n<>()\\[\\]]/";
 char*
 expandaddr(Window *w, Event *e)
 {

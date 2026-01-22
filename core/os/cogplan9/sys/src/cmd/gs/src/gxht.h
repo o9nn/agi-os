@@ -1,5 +1,5 @@
 #ifndef gxht_INCLUDED
-#  define gxht_INCLUDED
+# define gxht_INCLUDED
 #include "gsht1.h"
 #include "gsrefct.h"
 #include "gxhttype.h"
@@ -34,7 +34,7 @@ gs_const_bytestring thresholds;
 } gs_threshold2_halftone;
 typedef struct gs_client_order_halftone_s gs_client_order_halftone;
 #ifndef gx_ht_order_DEFINED
-#  define gx_ht_order_DEFINED
+# define gx_ht_order_DEFINED
 typedef struct gx_ht_order_s gx_ht_order;
 #endif
 typedef struct gs_client_order_ht_procs_s {
@@ -64,7 +64,7 @@ gs_client_order_halftone client_order;
 } params;
 } gs_halftone_component;
 extern_st(st_halftone_component);
-#define public_st_halftone_component()	\
+#define public_st_halftone_component() \
 gs_public_st_composite(st_halftone_component, gs_halftone_component,\
 "gs_halftone_component", halftone_component_enum_ptrs,\
 halftone_component_reloc_ptrs)
@@ -97,7 +97,7 @@ gs_multiple_halftone multiple;
 } params;
 };
 extern_st(st_halftone);
-#define public_st_halftone()	\
+#define public_st_halftone() \
 gs_public_st_composite(st_halftone, gs_halftone, "gs_halftone",\
 halftone_enum_ptrs, halftone_reloc_ptrs)
 #define st_halftone_max_ptrs\

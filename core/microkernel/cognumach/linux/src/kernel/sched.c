@@ -362,8 +362,8 @@ printk("       *q = %p\n",*q);
 }
 static inline int waking_non_zero(struct semaphore *sem)
 {
-int	ret ;
-long	flags ;
+int ret ;
+long flags ;
 get_buzz_lock(&sem->lock) ;
 save_flags(flags) ;
 cli() ;
@@ -382,14 +382,14 @@ int __do_down(struct semaphore * sem, int task_state)
 {
 struct task_struct *tsk = current;
 struct wait_queue wait = { tsk, NULL };
-int		  ret = 0 ;
+int ret = 0 ;
 tsk->state = task_state;
 add_wait_queue(&sem->wait, &wait);
 for (;;)
 {
 if (waking_non_zero(sem))
 break ;
-if (   task_state == TASK_INTERRUPTIBLE
+if ( task_state == TASK_INTERRUPTIBLE
 && (tsk->signal & ~tsk->blocked)
 )
 {
@@ -696,7 +696,7 @@ ltemp = time_freq + pps_freq;
 if (ltemp < 0)
 time_adj -= -ltemp >> (SHIFT_USEC + SHIFT_HZ - SHIFT_SCALE);
 else
-time_adj +=  ltemp >> (SHIFT_USEC + SHIFT_HZ - SHIFT_SCALE);
+time_adj += ltemp >> (SHIFT_USEC + SHIFT_HZ - SHIFT_SCALE);
 #if HZ == 100
 if (time_adj < 0)
 time_adj -= (-time_adj >> 2) + (-time_adj >> 5);
@@ -783,7 +783,7 @@ do_it_prof(p, ticks);
 }
 static void update_process_times(unsigned long ticks, unsigned long system)
 {
-#ifndef  __SMP__
+#ifndef __SMP__
 struct task_struct * p = current;
 unsigned long user = ticks - system;
 if (p->pid) {

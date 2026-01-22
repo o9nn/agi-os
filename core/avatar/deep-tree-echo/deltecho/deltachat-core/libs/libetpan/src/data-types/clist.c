@@ -1,9 +1,9 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #include <stdlib.h>
 #ifndef LIBETPAN_CONFIG_H
-#	include "libetpan-config.h"
+# include "libetpan-config.h"
 #endif
 #include "clist.h"
 clist * clist_new(void) {
@@ -126,7 +126,7 @@ lst->first = iter->next;
 if (iter->next) {
 iter->next->previous = iter->previous;
 ret = iter->next;
-}  else {
+} else {
 lst->last = iter->previous;
 ret = NULL;
 }

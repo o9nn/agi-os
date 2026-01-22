@@ -5,25 +5,25 @@
 #include "iostream-lz4.h"
 #include "compression.h"
 #ifndef HAVE_BZLIB
-#  define i_stream_create_bz2 NULL
-#  define o_stream_create_bz2 NULL
-#  define compression_get_min_level_bz2 NULL
-#  define compression_get_default_level_bz2 NULL
-#  define compression_get_max_level_bz2 NULL
+# define i_stream_create_bz2 NULL
+# define o_stream_create_bz2 NULL
+# define compression_get_min_level_bz2 NULL
+# define compression_get_default_level_bz2 NULL
+# define compression_get_max_level_bz2 NULL
 #endif
 #ifndef HAVE_LZ4
-#  define i_stream_create_lz4 NULL
-#  define o_stream_create_lz4 NULL
-#  define compression_get_min_level_lz4 NULL
-#  define compression_get_default_level_lz4 NULL
-#  define compression_get_max_level_lz4 NULL
+# define i_stream_create_lz4 NULL
+# define o_stream_create_lz4 NULL
+# define compression_get_min_level_lz4 NULL
+# define compression_get_default_level_lz4 NULL
+# define compression_get_max_level_lz4 NULL
 #endif
 #ifndef HAVE_ZSTD
-#  define i_stream_create_zstd NULL
-#  define o_stream_create_zstd NULL
-#  define compression_get_min_level_zstd NULL
-#  define compression_get_default_level_zstd NULL
-#  define compression_get_max_level_zstd NULL
+# define i_stream_create_zstd NULL
+# define o_stream_create_zstd NULL
+# define compression_get_min_level_zstd NULL
+# define compression_get_default_level_zstd NULL
+# define compression_get_max_level_zstd NULL
 #endif
 static bool is_compressed_zlib(struct istream *input)
 {
@@ -54,7 +54,7 @@ if (i_stream_read_bytes(input, &data, &size, IOSTREAM_LZ4_MAGIC_LEN) <= 0)
 return FALSE;
 return memcmp(data, IOSTREAM_LZ4_MAGIC, IOSTREAM_LZ4_MAGIC_LEN) == 0;
 }
-#define ZSTD_MAGICNUMBER            0xFD2FB528
+#define ZSTD_MAGICNUMBER 0xFD2FB528
 static bool is_compressed_zstd(struct istream *input)
 {
 const unsigned char *data;

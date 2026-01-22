@@ -1,5 +1,5 @@
 #ifndef sarc4_INCLUDED
-#  define sarc4_INCLUDED
+# define sarc4_INCLUDED
 #include "scommon.h"
 struct stream_arcfour_state_s
 {
@@ -13,7 +13,7 @@ typedef struct stream_arcfour_state_s stream_arcfour_state;
 #endif
 int s_arcfour_set_key(stream_arcfour_state * state, const unsigned char *key,
 int keylength);
-#define private_st_arcfour_state()	\
+#define private_st_arcfour_state() \
 gs_private_st_simple(st_arcfour_state, stream_arcfour_state,\
 "Arcfour filter state")
 extern const stream_template s_arcfour_template;

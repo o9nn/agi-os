@@ -8,9 +8,9 @@
 #include "minisat/mtl/Vec.h"
 #include "minisat/utils/ParseUtils.h"
 namespace Minisat {
-extern void parseOptions     (int& argc, char** argv, bool strict = false);
-extern void printUsageAndExit(int  argc, char** argv, bool verbose = false);
-extern void setUsageHelp     (const char* str);
+extern void parseOptions (int& argc, char** argv, bool strict = false);
+extern void printUsageAndExit(int argc, char** argv, bool verbose = false);
+extern void setUsageHelp (const char* str);
 extern void setHelpPrefixStr (const char* str);
 class Option
 {
@@ -20,8 +20,8 @@ const char* description;
 const char* category;
 const char* type_name;
 static vec<Option*>& getOptionList () { static vec<Option*> options; return options; }
-static const char*&  getUsageString() { static const char* usage_str; return usage_str; }
-static const char*&  getHelpPrefixString() { static const char* help_prefix_str = ""; return help_prefix_str; }
+static const char*& getUsageString() { static const char* usage_str; return usage_str; }
+static const char*& getHelpPrefixString() { static const char* help_prefix_str = ""; return help_prefix_str; }
 struct OptionLt {
 bool operator()(const Option* x, const Option* y) {
 int test1 = strcmp(x->category, y->category);
@@ -32,21 +32,21 @@ Option(const char* name_,
 const char* desc_,
 const char* cate_,
 const char* type_) :
-name       (name_)
+name (name_)
 , description(desc_)
-, category   (cate_)
-, type_name  (type_)
+, category (cate_)
+, type_name (type_)
 {
 getOptionList().push(this);
 }
 public:
 virtual ~Option() {}
-virtual bool parse             (const char* str)      = 0;
-virtual void help              (bool verbose = false) = 0;
-friend  void parseOptions      (int& argc, char** argv, bool strict);
-friend  void printUsageAndExit (int  argc, char** argv, bool verbose);
-friend  void setUsageHelp      (const char* str);
-friend  void setHelpPrefixStr  (const char* str);
+virtual bool parse (const char* str) = 0;
+virtual void help (bool verbose = false) = 0;
+friend void parseOptions (int& argc, char** argv, bool strict);
+friend void printUsageAndExit (int argc, char** argv, bool verbose);
+friend void setUsageHelp (const char* str);
+friend void setHelpPrefixStr (const char* str);
 };
 struct IntRange {
 int begin;
@@ -61,27 +61,27 @@ Int64Range(int64_t b, int64_t e) : begin(b), end(e) {}
 struct DoubleRange {
 double begin;
 double end;
-bool  begin_inclusive;
-bool  end_inclusive;
+bool begin_inclusive;
+bool end_inclusive;
 DoubleRange(double b, bool binc, double e, bool einc) : begin(b), end(e), begin_inclusive(binc), end_inclusive(einc) {}
 };
 class DoubleOption : public Option
 {
 protected:
 DoubleRange range;
-double      value;
+double value;
 public:
 DoubleOption(const char* c, const char* n, const char* d, double def = double(), DoubleRange r = DoubleRange(-HUGE_VAL, false, HUGE_VAL, false))
 : Option(n, d, c, "<double>"), range(r), value(def) {
 }
-operator      double   (void) const { return value; }
-operator      double&  (void)       { return value; }
-DoubleOption& operator=(double x)   { value = x; return *this; }
+operator double (void) const { return value; }
+operator double& (void) { return value; }
+DoubleOption& operator=(double x) { value = x; return *this; }
 virtual bool parse(const char* str){
 const char* span = str;
 if (!match(span, "-") || !match(span, name) || !match(span, "="))
 return false;
-char*  end;
+char* end;
 double tmp = strtod(span, &end);
 if (end == NULL)
 return false;
@@ -112,18 +112,18 @@ class IntOption : public Option
 {
 protected:
 IntRange range;
-int32_t  value;
+int32_t value;
 public:
 IntOption(const char* c, const char* n, const char* d, int32_t def = int32_t(), IntRange r = IntRange(INT32_MIN, INT32_MAX))
 : Option(n, d, c, "<int32>"), range(r), value(def) {}
-operator   int32_t   (void) const { return value; }
-operator   int32_t&  (void)       { return value; }
-IntOption& operator= (int32_t x)  { value = x; return *this; }
+operator int32_t (void) const { return value; }
+operator int32_t& (void) { return value; }
+IntOption& operator= (int32_t x) { value = x; return *this; }
 virtual bool parse(const char* str){
 const char* span = str;
 if (!match(span, "-") || !match(span, name) || !match(span, "="))
 return false;
-char*   end;
+char* end;
 int32_t tmp = strtol(span, &end, 10);
 if (end == NULL)
 return false;
@@ -159,18 +159,18 @@ class Int64Option : public Option
 {
 protected:
 Int64Range range;
-int64_t  value;
+int64_t value;
 public:
 Int64Option(const char* c, const char* n, const char* d, int64_t def = int64_t(), Int64Range r = Int64Range(INT64_MIN, INT64_MAX))
 : Option(n, d, c, "<int64>"), range(r), value(def) {}
-operator     int64_t   (void) const { return value; }
-operator     int64_t&  (void)       { return value; }
-Int64Option& operator= (int64_t x)  { value = x; return *this; }
+operator int64_t (void) const { return value; }
+operator int64_t& (void) { return value; }
+Int64Option& operator= (int64_t x) { value = x; return *this; }
 virtual bool parse(const char* str){
 const char* span = str;
 if (!match(span, "-") || !match(span, name) || !match(span, "="))
 return false;
-char*   end;
+char* end;
 int64_t tmp = strtoll(span, &end, 10);
 if (end == NULL)
 return false;
@@ -208,9 +208,9 @@ const char* value;
 public:
 StringOption(const char* c, const char* n, const char* d, const char* def = NULL)
 : Option(n, d, c, "<string>"), value(def) {}
-operator      const char*  (void) const     { return value; }
-operator      const char*& (void)           { return value; }
-StringOption& operator=    (const char* x)  { value = x; return *this; }
+operator const char* (void) const { return value; }
+operator const char*& (void) { return value; }
+StringOption& operator= (const char* x) { value = x; return *this; }
 virtual bool parse(const char* str){
 const char* span = str;
 if (!match(span, "-") || !match(span, name) || !match(span, "="))
@@ -232,9 +232,9 @@ bool value;
 public:
 BoolOption(const char* c, const char* n, const char* d, bool v)
 : Option(n, d, c, "<bool>"), value(v) {}
-operator    bool     (void) const { return value; }
-operator    bool&    (void)       { return value; }
-BoolOption& operator=(bool b)     { value = b; return *this; }
+operator bool (void) const { return value; }
+operator bool& (void) { return value; }
+BoolOption& operator=(bool b) { value = b; return *this; }
 virtual bool parse(const char* str){
 const char* span = str;
 if (match(span, "-")){

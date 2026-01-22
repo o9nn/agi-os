@@ -1,23 +1,23 @@
 #include <lib9.h>
 #include <bio.h>
 #include <mach.h>
-void	record(uchar*, int);
-void	usage(void);
-void	dosegment(long, int);
+void record(uchar*, int);
+void usage(void);
+void dosegment(long, int);
 void trailer(ulong);
 void header(void);
 enum
 {
 Recordsize = 32
 };
-int	dsegonly;
-int	supressend;
-int	binary;
-ulong	addr;
-ulong 	psize = 4096;
-ulong	startaddr = 0x030000;
-Biobuf 	bout;
-Biobuf	bio;
+int dsegonly;
+int supressend;
+int binary;
+ulong addr;
+ulong psize = 4096;
+ulong startaddr = 0x030000;
+Biobuf bout;
+Biobuf bio;
 void
 main(int argc, char **argv)
 {

@@ -8,10 +8,10 @@ private int path_alloc_copy(gx_path *);
 private int gx_path_new_subpath(gx_path *);
 #ifdef DEBUG
 private void gx_print_segment(const segment *);
-#  define trace_segment(msg, pseg)\
+# define trace_segment(msg, pseg)\
 if ( gs_debug_c('P') ) dlprintf(msg), gx_print_segment(pseg);
 #else
-#  define trace_segment(msg, pseg) DO_NOTHING
+# define trace_segment(msg, pseg) DO_NOTHING
 #endif
 #define outside_bbox(ppath, px, py)\
 (px < ppath->bbox.p.x || px > ppath->bbox.q.x ||\

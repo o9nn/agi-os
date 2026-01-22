@@ -5,11 +5,11 @@
 #include "fns.h"
 #include "io.h"
 #include "../port/error.h"
-#define DBG	if(0) pcilog
+#define DBG if(0) pcilog
 struct
 {
-char	output[16384];
-int	ptr;
+char output[16384];
+int ptr;
 }PCICONS;
 int
 pcilog(char *fmt, ...)
@@ -26,21 +26,21 @@ return n;
 }
 enum
 {
-PciADDR		= 0xCF8,
-PciDATA		= 0xCFC,
-PciCSE		= 0xCF8,
-PciFORWARD	= 0xCFA,
-MaxFNO		= 7,
-MaxUBN		= 255,
+PciADDR = 0xCF8,
+PciDATA = 0xCFC,
+PciCSE = 0xCF8,
+PciFORWARD = 0xCFA,
+MaxFNO = 7,
+MaxUBN = 255,
 };
 enum
 {
-IOen		= (1<<0),
-MEMen		= (1<<1),
-MASen		= (1<<2),
-MemWrInv	= (1<<4),
-PErrEn		= (1<<6),
-SErrEn		= (1<<8),
+IOen = (1<<0),
+MEMen = (1<<1),
+MASen = (1<<2),
+MemWrInv = (1<<4),
+PErrEn = (1<<6),
+SErrEn = (1<<8),
 };
 static Lock pcicfglock;
 static Lock pcicfginitlock;
@@ -74,7 +74,7 @@ static char* bustypes[] = {
 "VME",
 "XPRESS",
 };
-#pragma	varargck	type	"T"	int
+#pragma varargck type "T" int
 static int
 tbdffmt(Fmt* fmt)
 {
@@ -453,10 +453,10 @@ pcicfgw8(router, 0x5c + (link>>1), pirq);
 typedef struct Bridge Bridge;
 struct Bridge
 {
-ushort	vid;
-ushort	did;
-uchar	(*get)(Pcidev *, uchar);
-void	(*set)(Pcidev *, uchar, uchar);
+ushort vid;
+ushort did;
+uchar (*get)(Pcidev *, uchar);
+void (*set)(Pcidev *, uchar, uchar);
 };
 static Bridge southbridges[] = {
 { 0x8086, 0x122e, pIIxget, pIIxset },
@@ -487,24 +487,24 @@ static Bridge southbridges[] = {
 };
 typedef struct Slot Slot;
 struct Slot {
-uchar	bus;
-uchar	dev;
-uchar	maps[12];
-uchar	slot;
-uchar	reserved;
+uchar bus;
+uchar dev;
+uchar maps[12];
+uchar slot;
+uchar reserved;
 };
 typedef struct Router Router;
 struct Router {
-uchar	signature[4];
-uchar	version[2];
-uchar	size[2];
-uchar	bus;
-uchar	devfn;
-uchar	pciirqs[2];
-uchar	compat[4];
-uchar	miniport[4];
-uchar	reserved[11];
-uchar	checksum;
+uchar signature[4];
+uchar version[2];
+uchar size[2];
+uchar bus;
+uchar devfn;
+uchar pciirqs[2];
+uchar compat[4];
+uchar miniport[4];
+uchar reserved[11];
+uchar checksum;
 };
 static ushort pciirqs;
 static Bridge *southbridge;

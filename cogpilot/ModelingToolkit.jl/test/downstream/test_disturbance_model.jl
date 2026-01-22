@@ -17,7 +17,7 @@ indexof(sym, syms) = findfirst(isequal(sym), syms)
 m1 = 1
 m2 = 1
 k = 10 # Spring stiffness
-c = 3  # Damping coefficient
+c = 3 # Damping coefficient
 end
 @components begin
 inertia1 = Inertia(; J = m1, phi = 0, w = 0)
@@ -124,7 +124,7 @@ end
 @named model_with_disturbance = SystemModelWithDisturbanceModel()
 # ssys = mtkcompile(open_loop(model_with_disturbance, :d)) # Open loop worked, but it's a bit awkward that we have to use it here
 # lsys3 = named_ss(model_with_disturbance, [:u, :d1],
-#     [P.inertia1.phi, P.inertia2.phi, P.inertia1.w, P.inertia2.w])
+# [P.inertia1.phi, P.inertia2.phi, P.inertia1.w, P.inertia2.w])
 ssys = mtkcompile(model_with_disturbance)
 prob = ODEProblem(ssys, [], (0.0, 10.0))
 sol = solve(prob, Tsit5())
@@ -185,7 +185,7 @@ d = [0, 0, 1]
 # d0 = LowLevelParticleFilters.SimpleMvNormal(x0, 10.0I(nx))
 # measurement_model = UKFMeasurementModel{Float64, false, false}(measurement, R2; nx, ny)
 # kf = UnscentedKalmanFilter{false, false, true, false}(
-#     discrete_dynamics, measurement_model, R1, d0; nu, Ts, p)
+# discrete_dynamics, measurement_model, R1, d0; nu, Ts, p)
 # tvec = 0:Ts:sol.t[end]
 # u = vcat.(Array(sol(tvec, idxs = P.torque.tau.u)))
 # y = collect.(eachcol(Array(sol(tvec, idxs = outputs)) .+ 1e-2 .* randn.()))

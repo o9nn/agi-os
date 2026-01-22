@@ -23,79 +23,79 @@
 (define num-synonyms #f)
 (define synonym-exp #f)
 (define x
-	(begin
-		(if (not (access? param-file R_OK))
-			(begin
-				(format #t "Error: unable to access parameters file '~A'\n" param-file)
-				(exit -1)))
-		(load param-file)
-	))
+(begin
+(if (not (access? param-file R_OK))
+(begin
+(format #t "Error: unable to access parameters file '~A'\n" param-file)
+(exit -1)))
+(load param-file)
+))
 (define secgen
-	(make-section-generator
-		num-link-types
-		max-disjunct-size
-		section-size
-		link-type-exp
-		disjunct-exp
-		section-exp))
+(make-section-generator
+num-link-types
+max-disjunct-size
+section-size
+link-type-exp
+disjunct-exp
+section-exp))
 (define posgen
-	(make-pos-generator
-		num-pos
-		secgen))
+(make-pos-generator
+num-pos
+secgen))
 (define classgen
-	(make-class-generator
-		num-classes
-		num-pos
-		class-size
-		class-exp))
+(make-class-generator
+num-classes
+num-pos
+class-size
+class-exp))
 (define wallgen
-	(make-wall-generator
-		num-classes
-		num-wall-types
-		num-to-wall
-		sentence-enders))
+(make-wall-generator
+num-classes
+num-wall-types
+num-to-wall
+sentence-enders))
 (define sensegen
-	(make-sense-generator
-		sense-frac
-		num-classes
-		num-senses
-		sense-exp))
+(make-sense-generator
+sense-frac
+num-classes
+num-senses
+sense-exp))
 (define wordgen
-	(make-word-generator
-		num-classes
-		num-synonyms
-		synonym-exp))
+(make-word-generator
+num-classes
+num-synonyms
+synonym-exp))
 (define (copy-boilerplate)
-	(define x
-		(if (not (getenv "COMMON_DIR"))
-		(begin
-			(format #t "Error: Environment variable $COMMON_DIR is not defined.\n")
-			(format #t "This directory needed for its template files.\n")
-			(exit -1))))
-	(define source-dir (string-append (getenv "COMMON_DIR") "/fake-lang"))
-	(define DIR_STREAM (opendir source-dir))
-	(define (copy-dir)
-		(define DIRENT (readdir DIR_STREAM))
-		(if (not (eof-object? DIRENT))
-			(let ((lgfi (string-append source-dir "/" DIRENT))
-					(tofi (string-append dict-dir "/" DIRENT)))
-				(if (equal? 'regular (stat:type (stat lgfi)))
-					(copy-file lgfi tofi))
-				(copy-dir)
-			)))
-	(if (not (or (getenv "COMMON_DIR") (access? source-dir R_OK)))
-		(begin
-			(format #t "Error: unable to access '~A'\n" (source-dir))
-			(format #t "This directory needed for its template files\n")
-			(exit -1)))
-	(if (access? dict-dir R_OK)
-		(begin
-			(format #t "Error: target directory exists: ~A\n" dict-dir)
-			(format #t "Remove or rename this directory and try again\n")
-			(exit -1)))
-	(mkdir dict-dir)
-	(copy-dir)
-	(copy-file param-file (string-append dict-dir "/dict-conf.scm"))
+(define x
+(if (not (getenv "COMMON_DIR"))
+(begin
+(format #t "Error: Environment variable $COMMON_DIR is not defined.\n")
+(format #t "This directory needed for its template files.\n")
+(exit -1))))
+(define source-dir (string-append (getenv "COMMON_DIR") "/fake-lang"))
+(define DIR_STREAM (opendir source-dir))
+(define (copy-dir)
+(define DIRENT (readdir DIR_STREAM))
+(if (not (eof-object? DIRENT))
+(let ((lgfi (string-append source-dir "/" DIRENT))
+(tofi (string-append dict-dir "/" DIRENT)))
+(if (equal? 'regular (stat:type (stat lgfi)))
+(copy-file lgfi tofi))
+(copy-dir)
+)))
+(if (not (or (getenv "COMMON_DIR") (access? source-dir R_OK)))
+(begin
+(format #t "Error: unable to access '~A'\n" (source-dir))
+(format #t "This directory needed for its template files\n")
+(exit -1)))
+(if (access? dict-dir R_OK)
+(begin
+(format #t "Error: target directory exists: ~A\n" dict-dir)
+(format #t "Remove or rename this directory and try again\n")
+(exit -1)))
+(mkdir dict-dir)
+(copy-dir)
+(copy-file param-file (string-append dict-dir "/dict-conf.scm"))
 )
 (define xx (copy-boilerplate))
 (define dict-file (string-append dict-dir "/4.0.dict"))

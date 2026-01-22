@@ -20,16 +20,16 @@
 #if RGB_BLUE == 2
 #define C2_SCALE B_SCALE
 #endif
-#define MAXNUMCOLORS  (MAXJSAMPLE+1)
-#define HIST_C0_BITS  5
-#define HIST_C1_BITS  6
-#define HIST_C2_BITS  5
-#define HIST_C0_ELEMS  (1<<HIST_C0_BITS)
-#define HIST_C1_ELEMS  (1<<HIST_C1_BITS)
-#define HIST_C2_ELEMS  (1<<HIST_C2_BITS)
-#define C0_SHIFT  (BITS_IN_JSAMPLE-HIST_C0_BITS)
-#define C1_SHIFT  (BITS_IN_JSAMPLE-HIST_C1_BITS)
-#define C2_SHIFT  (BITS_IN_JSAMPLE-HIST_C2_BITS)
+#define MAXNUMCOLORS (MAXJSAMPLE+1)
+#define HIST_C0_BITS 5
+#define HIST_C1_BITS 6
+#define HIST_C2_BITS 5
+#define HIST_C0_ELEMS (1<<HIST_C0_BITS)
+#define HIST_C1_ELEMS (1<<HIST_C1_BITS)
+#define HIST_C2_ELEMS (1<<HIST_C2_BITS)
+#define C0_SHIFT (BITS_IN_JSAMPLE-HIST_C0_BITS)
+#define C1_SHIFT (BITS_IN_JSAMPLE-HIST_C1_BITS)
+#define C2_SHIFT (BITS_IN_JSAMPLE-HIST_C2_BITS)
 typedef UINT16 histcell;
 typedef histcell FAR * histptr;
 typedef histcell hist1d[HIST_C2_ELEMS];
@@ -125,9 +125,9 @@ int c0,c1,c2;
 int c0min,c0max,c1min,c1max,c2min,c2max;
 INT32 dist0,dist1,dist2;
 long ccount;
-c0min = boxp->c0min;  c0max = boxp->c0max;
-c1min = boxp->c1min;  c1max = boxp->c1max;
-c2min = boxp->c2min;  c2max = boxp->c2max;
+c0min = boxp->c0min; c0max = boxp->c0max;
+c1min = boxp->c1min; c1max = boxp->c1max;
+c2min = boxp->c2min; c2max = boxp->c2max;
 if (c0max > c0min)
 for (c0 = c0min; c0 <= c0max; c0++)
 for (c1 = c1min; c1 <= c1max; c1++) {
@@ -275,9 +275,9 @@ long total = 0;
 long c0total = 0;
 long c1total = 0;
 long c2total = 0;
-c0min = boxp->c0min;  c0max = boxp->c0max;
-c1min = boxp->c1min;  c1max = boxp->c1max;
-c2min = boxp->c2min;  c2max = boxp->c2max;
+c0min = boxp->c0min; c0max = boxp->c0max;
+c1min = boxp->c1min; c1max = boxp->c1max;
+c2min = boxp->c2min; c2max = boxp->c2max;
 for (c0 = c0min; c0 <= c0max; c0++)
 for (c1 = c1min; c1 <= c1max; c1++) {
 histp = & histogram[c0][c1][c2min];
@@ -316,15 +316,15 @@ compute_color(cinfo, & boxlist[i], i);
 cinfo->actual_number_of_colors = numboxes;
 TRACEMS1(cinfo, 1, JTRC_QUANT_SELECTED, numboxes);
 }
-#define BOX_C0_LOG  (HIST_C0_BITS-3)
-#define BOX_C1_LOG  (HIST_C1_BITS-3)
-#define BOX_C2_LOG  (HIST_C2_BITS-3)
-#define BOX_C0_ELEMS  (1<<BOX_C0_LOG)
-#define BOX_C1_ELEMS  (1<<BOX_C1_LOG)
-#define BOX_C2_ELEMS  (1<<BOX_C2_LOG)
-#define BOX_C0_SHIFT  (C0_SHIFT + BOX_C0_LOG)
-#define BOX_C1_SHIFT  (C1_SHIFT + BOX_C1_LOG)
-#define BOX_C2_SHIFT  (C2_SHIFT + BOX_C2_LOG)
+#define BOX_C0_LOG (HIST_C0_BITS-3)
+#define BOX_C1_LOG (HIST_C1_BITS-3)
+#define BOX_C2_LOG (HIST_C2_BITS-3)
+#define BOX_C0_ELEMS (1<<BOX_C0_LOG)
+#define BOX_C1_ELEMS (1<<BOX_C1_LOG)
+#define BOX_C2_ELEMS (1<<BOX_C2_LOG)
+#define BOX_C0_SHIFT (C0_SHIFT + BOX_C0_LOG)
+#define BOX_C1_SHIFT (C1_SHIFT + BOX_C1_LOG)
+#define BOX_C2_SHIFT (C2_SHIFT + BOX_C2_LOG)
 LOCAL(int)
 find_nearby_colors (j_decompress_ptr cinfo, int minc0, int minc1, int minc2,
 JSAMPLE colorlist[])
@@ -432,9 +432,9 @@ INT32 bestdist[BOX_C0_ELEMS * BOX_C1_ELEMS * BOX_C2_ELEMS];
 bptr = bestdist;
 for (i = BOX_C0_ELEMS*BOX_C1_ELEMS*BOX_C2_ELEMS-1; i >= 0; i--)
 *bptr++ = 0x7FFFFFFFL;
-#define STEP_C0  ((1 << C0_SHIFT) * C0_SCALE)
-#define STEP_C1  ((1 << C1_SHIFT) * C1_SCALE)
-#define STEP_C2  ((1 << C2_SHIFT) * C2_SCALE)
+#define STEP_C0 ((1 << C0_SHIFT) * C0_SCALE)
+#define STEP_C1 ((1 << C1_SHIFT) * C1_SCALE)
+#define STEP_C2 ((1 << C2_SHIFT) * C2_SCALE)
 for (i = 0; i < numcolors; i++) {
 icolor = GETJSAMPLE(colorlist[i]);
 inc0 = (minc0 - GETJSAMPLE(cinfo->colormap[0][icolor])) * C0_SCALE;

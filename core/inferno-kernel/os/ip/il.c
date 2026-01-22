@@ -1,10 +1,10 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"ip.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "ip.h"
 enum
 {
 Ilclosed,
@@ -15,7 +15,7 @@ Illistening,
 Ilclosing,
 Ilopening,
 };
-char	*ilstates[] =
+char *ilstates[] =
 {
 "Closed",
 "Syncer",
@@ -35,7 +35,7 @@ Ilquery,
 Ilstate,
 Ilclose,
 };
-char	*iltype[] =
+char *iltype[] =
 {
 "sync",
 "data",
@@ -47,91 +47,91 @@ char	*iltype[] =
 };
 enum
 {
-Seconds		= 1000,
-Iltickms 	= 50,
-AckDelay	= 2*Iltickms,
-MaxTimeout 	= 30*Seconds,
-QueryTime	= 10*Seconds,
-DeathTime	= 30*QueryTime,
-MaxRexmit 	= 16,
-Defaultwin	= 20,
-LogAGain	= 3,
-AGain		= 1<<LogAGain,
-LogDGain	= 2,
-DGain		= 1<<LogDGain,
-DefByteRate	= 100,
-DefRtt		= 50,
-Maxrq		= 64*1024,
+Seconds = 1000,
+Iltickms = 50,
+AckDelay = 2*Iltickms,
+MaxTimeout = 30*Seconds,
+QueryTime = 10*Seconds,
+DeathTime = 30*QueryTime,
+MaxRexmit = 16,
+Defaultwin = 20,
+LogAGain = 3,
+AGain = 1<<LogAGain,
+LogDGain = 2,
+DGain = 1<<LogDGain,
+DefByteRate = 100,
+DefRtt = 50,
+Maxrq = 64*1024,
 };
 enum
 {
-Nqt=	8,
+Nqt= 8,
 };
 typedef struct Ilcb Ilcb;
 struct Ilcb
 {
-int	state;
-Conv	*conv;
-QLock	ackq;
-Block	*unacked;
-Block	*unackedtail;
-ulong	unackedbytes;
-QLock	outo;
-Block	*outoforder;
-ulong	next;
-ulong	recvd;
-ulong	acksent;
-ulong	start;
-ulong	rstart;
-int	window;
-int	rxquery;
-int	rxtot;
-int	rexmit;
-ulong	qt[Nqt+1];
-int	qtx;
-int	fasttimeout;
-ulong	lastxmit;
-ulong	lastrecv;
-ulong	timeout;
-ulong	acktime;
-ulong	querytime;
-int	delay;
-int	rate;
-int	mdev;
-int	maxrtt;
-ulong	rttack;
-int	rttlen;
-uvlong	rttstart;
+int state;
+Conv *conv;
+QLock ackq;
+Block *unacked;
+Block *unackedtail;
+ulong unackedbytes;
+QLock outo;
+Block *outoforder;
+ulong next;
+ulong recvd;
+ulong acksent;
+ulong start;
+ulong rstart;
+int window;
+int rxquery;
+int rxtot;
+int rexmit;
+ulong qt[Nqt+1];
+int qtx;
+int fasttimeout;
+ulong lastxmit;
+ulong lastrecv;
+ulong timeout;
+ulong acktime;
+ulong querytime;
+int delay;
+int rate;
+int mdev;
+int maxrtt;
+ulong rttack;
+int rttlen;
+uvlong rttstart;
 };
 enum
 {
-IL_IPSIZE 	= 20,
-IL_HDRSIZE	= 18,
-IL_LISTEN	= 0,
-IL_CONNECT	= 1,
-IP_ILPROTO	= 40,
+IL_IPSIZE = 20,
+IL_HDRSIZE = 18,
+IL_LISTEN = 0,
+IL_CONNECT = 1,
+IP_ILPROTO = 40,
 };
 typedef struct Ilhdr Ilhdr;
 struct Ilhdr
 {
-uchar	vihl;
-uchar	tos;
-uchar	length[2];
-uchar	id[2];
-uchar	frag[2];
-uchar	ttl;
-uchar	proto;
-uchar	cksum[2];
-uchar	src[4];
-uchar	dst[4];
-uchar	ilsum[2];
-uchar	illen[2];
-uchar	iltype;
-uchar	ilspec;
-uchar	ilsrc[2];
-uchar	ildst[2];
-uchar	ilid[4];
-uchar	ilack[4];
+uchar vihl;
+uchar tos;
+uchar length[2];
+uchar id[2];
+uchar frag[2];
+uchar ttl;
+uchar proto;
+uchar cksum[2];
+uchar src[4];
+uchar dst[4];
+uchar ilsum[2];
+uchar illen[2];
+uchar iltype;
+uchar ilspec;
+uchar ilsrc[2];
+uchar ildst[2];
+uchar ilid[4];
+uchar ilack[4];
 };
 enum
 {
@@ -149,56 +149,56 @@ Nstats,
 };
 static char *statnames[] =
 {
-[InMsgs]	"InMsgs",
-[OutMsgs]	"OutMsgs",
-[CsumErrs]	"CsumErrs",
-[HlenErrs]	"HlenErr",
-[LenErrs]	"LenErrs",
-[OutOfOrder]	"OutOfOrder",
-[Retrans]	"Retrans",
-[DupMsg]	"DupMsg",
-[DupBytes]	"DupBytes",
-[DroppedMsgs]	"DroppedMsgs",
+[InMsgs] "InMsgs",
+[OutMsgs] "OutMsgs",
+[CsumErrs] "CsumErrs",
+[HlenErrs] "HlenErr",
+[LenErrs] "LenErrs",
+[OutOfOrder] "OutOfOrder",
+[Retrans] "Retrans",
+[DupMsg] "DupMsg",
+[DupBytes] "DupBytes",
+[DroppedMsgs] "DroppedMsgs",
 };
 typedef struct Ilpriv Ilpriv;
 struct Ilpriv
 {
-Ipht	ht;
-ulong	stats[Nstats];
-ulong	csumerr;
-ulong	hlenerr;
-ulong	lenerr;
-ulong	order;
-ulong	rexmit;
-ulong	dup;
-ulong	dupb;
-int	ackprocstarted;
-QLock	apl;
+Ipht ht;
+ulong stats[Nstats];
+ulong csumerr;
+ulong hlenerr;
+ulong lenerr;
+ulong order;
+ulong rexmit;
+ulong dup;
+ulong dupb;
+int ackprocstarted;
+QLock apl;
 };
-void	ilrcvmsg(Conv*, Block*);
-void	ilsendctl(Conv*, Ilhdr*, int, ulong, ulong, int);
-void	ilackq(Ilcb*, Block*);
-void	ilprocess(Conv*, Ilhdr*, Block*);
-void	ilpullup(Conv*);
-void	ilhangup(Conv*, char*);
-void	ilfreeq(Ilcb*);
-void	ilrexmit(Ilcb*);
-void	ilbackoff(Ilcb*);
-void	ilsettimeout(Ilcb*);
-char*	ilstart(Conv*, int, int);
-void	ilackproc(void*);
-void	iloutoforder(Conv*, Ilhdr*, Block*);
-void	iliput(Proto*, Ipifc*, Block*);
-void	iladvise(Proto*, Block*, char*);
-int	ilnextqt(Ilcb*);
-void	ilcbinit(Ilcb*);
-int	later(ulong, ulong, char*);
-void	ilreject(Fs*, Ilhdr*);
-void	illocalclose(Conv *c);
-int 	ilcksum = 1;
-static 	int 	initseq = 25001;
-static	ulong	scalediv, scalemul;
-static	char	*etime = "connection timed out";
+void ilrcvmsg(Conv*, Block*);
+void ilsendctl(Conv*, Ilhdr*, int, ulong, ulong, int);
+void ilackq(Ilcb*, Block*);
+void ilprocess(Conv*, Ilhdr*, Block*);
+void ilpullup(Conv*);
+void ilhangup(Conv*, char*);
+void ilfreeq(Ilcb*);
+void ilrexmit(Ilcb*);
+void ilbackoff(Ilcb*);
+void ilsettimeout(Ilcb*);
+char* ilstart(Conv*, int, int);
+void ilackproc(void*);
+void iloutoforder(Conv*, Ilhdr*, Block*);
+void iliput(Proto*, Ipifc*, Block*);
+void iladvise(Proto*, Block*, char*);
+int ilnextqt(Ilcb*);
+void ilcbinit(Ilcb*);
+int later(ulong, ulong, char*);
+void ilreject(Fs*, Ilhdr*);
+void illocalclose(Conv *c);
+int ilcksum = 1;
+static int initseq = 25001;
+static ulong scalediv, scalemul;
+static char *etime = "connection timed out";
 static char*
 ilconnect(Conv *c, char **argv, int argc)
 {
@@ -391,7 +391,7 @@ delay = ic->delay;
 rate = ic->rate;
 if(rtt > 120000 || rtt < 0)
 return;
-ic->rttlen += blocklen(bp)  + IL_IPSIZE + IL_HDRSIZE;
+ic->rttlen += blocklen(bp) + IL_IPSIZE + IL_HDRSIZE;
 if(ic->rttlen < 256){
 delay += rtt - (delay>>LogAGain);
 if(delay < AGain)
@@ -722,7 +722,7 @@ Ilcb *ic;
 ic = (Ilcb*)s->ptcl;
 USED(ic);
 netlog(s->p->f, Logilmsg, "%11s rcv %d/%d snt %d/%d pkt(%s id %d ack %d %d->%d) ",
-ilstates[ic->state],  ic->rstart, ic->recvd, ic->start,
+ilstates[ic->state], ic->rstart, ic->recvd, ic->start,
 ic->next, iltype[h->iltype], nhgetl(h->ilid),
 nhgetl(h->ilack), nhgets(h->ilsrc), nhgets(h->ildst));
 _ilprocess(s, h, bp);

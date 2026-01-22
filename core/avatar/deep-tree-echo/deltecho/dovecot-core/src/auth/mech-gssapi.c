@@ -8,24 +8,24 @@
 #include "passdb.h"
 #if defined(BUILTIN_GSSAPI) || defined(PLUGIN_BUILD)
 #ifdef HAVE_GSSAPI_GSSAPI_H
-#  include <gssapi/gssapi.h>
+# include <gssapi/gssapi.h>
 #elif defined (HAVE_GSSAPI_H)
-#  include <gssapi.h>
+# include <gssapi.h>
 #endif
 #ifdef HAVE_GSSAPI_GSSAPI_KRB5_H
-#  include <gssapi/gssapi_krb5.h>
+# include <gssapi/gssapi_krb5.h>
 #elif defined (HAVE_GSSAPI_KRB5_H)
-#  include <gssapi_krb5.h>
+# include <gssapi_krb5.h>
 #endif
 #ifdef HAVE_GSSAPI_GSSAPI_EXT_H
-#  include <gssapi/gssapi_ext.h>
+# include <gssapi/gssapi_ext.h>
 #endif
 #define krb5_boolean2bool(X) ((X) != 0)
 enum sasl_gssapi_qop {
 SASL_GSSAPI_QOP_UNSPECIFIED = 0x00,
-SASL_GSSAPI_QOP_AUTH_ONLY   = 0x01,
-SASL_GSSAPI_QOP_AUTH_INT    = 0x02,
-SASL_GSSAPI_QOP_AUTH_CONF   = 0x04
+SASL_GSSAPI_QOP_AUTH_ONLY = 0x01,
+SASL_GSSAPI_QOP_AUTH_INT = 0x02,
+SASL_GSSAPI_QOP_AUTH_CONF = 0x04
 };
 struct gssapi_auth_request {
 struct auth_request auth_request;

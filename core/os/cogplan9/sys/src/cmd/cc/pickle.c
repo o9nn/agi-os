@@ -48,22 +48,22 @@ if(s->type == t)
 return s;
 return 0;
 }
-char	picklechar[NTYPE];
-Init	picklecinit[] =
+char picklechar[NTYPE];
+Init picklecinit[] =
 {
-TCHAR,		'C',	0,
-TUCHAR,		'b',	0,
-TSHORT,		'd',	0,
-TUSHORT,		'u',	0,
-TLONG,		'D',	0,
-TULONG,		'U',	0,
-TVLONG,		'V',	0,
-TUVLONG,	'W',	0,
-TFLOAT,		'f',	0,
-TDOUBLE,		'F',	0,
-TARRAY,		'a',	0,
-TIND,		'X',	0,
--1,		0,	0,
+TCHAR, 'C', 0,
+TUCHAR, 'b', 0,
+TSHORT, 'd', 0,
+TUSHORT, 'u', 0,
+TLONG, 'D', 0,
+TULONG, 'U', 0,
+TVLONG, 'V', 0,
+TUVLONG, 'W', 0,
+TFLOAT, 'f', 0,
+TDOUBLE, 'F', 0,
+TARRAY, 'a', 0,
+TIND, 'X', 0,
+-1, 0, 0,
 };
 static void
 pickleinit(void)

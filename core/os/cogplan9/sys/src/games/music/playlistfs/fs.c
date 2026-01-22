@@ -6,75 +6,75 @@
 #include "playlist.h"
 typedef struct Wmsg Wmsg;
 enum {
-Busy =	0x01,
-Open =	0x02,
-Trunc =	0x04,
-Eof =	0x08,
+Busy = 0x01,
+Open = 0x02,
+Trunc = 0x04,
+Eof = 0x08,
 };
 File files[] = {
-[Qdir] =	{.dir = {0,0,{Qdir, 0,QTDIR},		0555|DMDIR,	0,0,0,	"."}},
-[Qplayctl] =	{.dir = {0,0,{Qplayctl, 0,QTFILE},	0666,		0,0,0,	"playctl"}},
-[Qplaylist] =	{.dir = {0,0,{Qplaylist, 0,QTFILE},	0666|DMAPPEND,	0,0,0,	"playlist"}},
-[Qplayvol] =	{.dir = {0,0,{Qplayvol, 0,QTFILE},	0666,		0,0,0,	"playvol"}},
-[Qplaystat] =	{.dir = {0,0,{Qplaystat, 0,QTFILE},	0444,		0,0,0,	"playstat"}},
+[Qdir] = {.dir = {0,0,{Qdir, 0,QTDIR}, 0555|DMDIR, 0,0,0, "."}},
+[Qplayctl] = {.dir = {0,0,{Qplayctl, 0,QTFILE}, 0666, 0,0,0, "playctl"}},
+[Qplaylist] = {.dir = {0,0,{Qplaylist, 0,QTFILE}, 0666|DMAPPEND, 0,0,0, "playlist"}},
+[Qplayvol] = {.dir = {0,0,{Qplayvol, 0,QTFILE}, 0666, 0,0,0, "playvol"}},
+[Qplaystat] = {.dir = {0,0,{Qplaystat, 0,QTFILE}, 0444, 0,0,0, "playstat"}},
 };
-Channel		*reqs;
-Channel		*workers;
-Channel		*volumechan;
-Channel		*playchan;
-Channel		*playlistreq;
-Playlist	playlist;
-int		volume[8];
+Channel *reqs;
+Channel *workers;
+Channel *volumechan;
+Channel *playchan;
+Channel *playlistreq;
+Playlist playlist;
+int volume[8];
 char *statetxt[] = {
-[Nostate] =	"panic!",
-[Error] =	"error",
-[Stop] =	"stop",
-[Pause] =	"pause",
-[Play] =	"play",
-[Resume] =	"resume",
-[Skip] =	"skip",
+[Nostate] = "panic!",
+[Error] = "error",
+[Stop] = "stop",
+[Pause] = "pause",
+[Play] = "play",
+[Resume] = "resume",
+[Skip] = "skip",
 nil
 };
-Pmsg	playstate = {Stop, 0};
-char	*rflush(Worker*), *rauth(Worker*),
+Pmsg playstate = {Stop, 0};
+char *rflush(Worker*), *rauth(Worker*),
 *rattach(Worker*), *rwalk(Worker*),
 *ropen(Worker*), *rcreate(Worker*),
 *rread(Worker*), *rwrite(Worker*), *rclunk(Worker*),
 *rremove(Worker*), *rstat(Worker*), *rwstat(Worker*),
 *rversion(Worker*);
-char 	*(*fcalls[])(Worker*) = {
-[Tflush]	rflush,
-[Tversion]	rversion,
-[Tauth]		rauth,
-[Tattach]	rattach,
-[Twalk]		rwalk,
-[Topen]		ropen,
-[Tcreate]	rcreate,
-[Tread]		rread,
-[Twrite]	rwrite,
-[Tclunk]	rclunk,
-[Tremove]	rremove,
-[Tstat]		rstat,
-[Twstat]	rwstat,
+char *(*fcalls[])(Worker*) = {
+[Tflush] rflush,
+[Tversion] rversion,
+[Tauth] rauth,
+[Tattach] rattach,
+[Twalk] rwalk,
+[Topen] ropen,
+[Tcreate] rcreate,
+[Tread] rread,
+[Twrite] rwrite,
+[Tclunk] rclunk,
+[Tremove] rremove,
+[Tstat] rstat,
+[Twstat] rwstat,
 };
-int	messagesize = Messagesize;
-Fid	*fids;
-char	Eperm[] =	"permission denied";
-char	Enotdir[] =	"not a directory";
-char	Enoauth[] =	"authentication not required";
-char	Enotexist[] =	"file does not exist";
-char	Einuse[] =	"file in use";
-char	Eexist[] =	"file exists";
-char	Enotowner[] =	"not owner";
-char	Eisopen[] = 	"file already open for I/O";
-char	Excl[] = 	"exclusive use file already open";
-char	Ename[] = 	"illegal name";
-char	Ebadctl[] =	"unknown control message";
-char	Epast[] =	"reading past eof";
-Fid	*oldfid(int);
-Fid	*newfid(int);
-void	volumeupdater(void*);
-void	playupdater(void*);
+int messagesize = Messagesize;
+Fid *fids;
+char Eperm[] = "permission denied";
+char Enotdir[] = "not a directory";
+char Enoauth[] = "authentication not required";
+char Enotexist[] = "file does not exist";
+char Einuse[] = "file in use";
+char Eexist[] = "file exists";
+char Enotowner[] = "not owner";
+char Eisopen[] = "file already open for I/O";
+char Excl[] = "exclusive use file already open";
+char Ename[] = "illegal name";
+char Ebadctl[] = "unknown control message";
+char Epast[] = "reading past eof";
+Fid *oldfid(int);
+Fid *newfid(int);
+void volumeupdater(void*);
+void playupdater(void*);
 char *playerror;
 static int
 lookup(char *cmd, char *list[])
@@ -400,7 +400,7 @@ else
 i = playstate.off;
 newstate = playstate;
 if ((cmd = lookup(fields[0], statetxt)) < 0)
-return  Ebadctl;
+return Ebadctl;
 switch(cmd){
 case Play:
 newstate.cmd = cmd;

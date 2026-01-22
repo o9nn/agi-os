@@ -5,28 +5,28 @@
 #include "fns.h"
 #include "../port/error.h"
 #include "ip.h"
-static void	netdevbind(Ipifc *ifc, int argc, char **argv);
-static void	netdevunbind(Ipifc *ifc);
-static void	netdevbwrite(Ipifc *ifc, Block *bp, int version, uchar *ip);
-static void	netdevread(void *a);
-typedef struct	Netdevrock Netdevrock;
+static void netdevbind(Ipifc *ifc, int argc, char **argv);
+static void netdevunbind(Ipifc *ifc);
+static void netdevbwrite(Ipifc *ifc, Block *bp, int version, uchar *ip);
+static void netdevread(void *a);
+typedef struct Netdevrock Netdevrock;
 struct Netdevrock
 {
-Fs	*f;
-Proc	*readp;
-Chan	*mchan;
+Fs *f;
+Proc *readp;
+Chan *mchan;
 };
 Medium netdevmedium =
 {
-.name=		"netdev",
-.hsize=		0,
-.mintu=	0,
-.maxtu=	64000,
-.maclen=	0,
-.bind=		netdevbind,
-.unbind=	netdevunbind,
-.bwrite=	netdevbwrite,
-.unbindonclose=	0,
+.name= "netdev",
+.hsize= 0,
+.mintu= 0,
+.maxtu= 64000,
+.maclen= 0,
+.bind= netdevbind,
+.unbind= netdevunbind,
+.bwrite= netdevbwrite,
+.unbindonclose= 0,
 };
 static void
 netdevbind(Ipifc *ifc, int argc, char **argv)

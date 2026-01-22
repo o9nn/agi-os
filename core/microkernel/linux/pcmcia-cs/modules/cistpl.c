@@ -32,12 +32,12 @@ static const u_int exponent[] = {
 (mantissa[(((v)>>3)&15)-1] * exponent[(v)&7] / 10)
 #define POWER_CVT(v) \
 (mantissa[((v)>>3)&15] * exponent[(v)&7] / 10)
-#define POWER_SCALE(v)		(exponent[(v)&7])
-#define MAX_TUPLES		200
+#define POWER_SCALE(v) (exponent[(v)&7])
+#define MAX_TUPLES 200
 #define INT_MODULE_PARM(n, v) static int n = v; MODULE_PARM(n, "i")
-INT_MODULE_PARM(cis_width,	0);
-#define IS_ATTR		1
-#define IS_INDIRECT	8
+INT_MODULE_PARM(cis_width, 0);
+#define IS_ATTR 1
+#define IS_INDIRECT 8
 static int setup_cis_mem(socket_info_t *s);
 static void set_cis_map(socket_info_t *s, pccard_mem_map *mem)
 {
@@ -287,15 +287,15 @@ memcpy(s->fake_cis, cis->Data, cis->Length);
 return CS_SUCCESS;
 }
 typedef struct tuple_flags {
-u_int		link_space:4;
-u_int		has_link:1;
-u_int		mfc_fn:3;
-u_int		space:4;
+u_int link_space:4;
+u_int has_link:1;
+u_int mfc_fn:3;
+u_int space:4;
 } tuple_flags;
-#define LINK_SPACE(f)	(((tuple_flags *)(&(f)))->link_space)
-#define HAS_LINK(f)	(((tuple_flags *)(&(f)))->has_link)
-#define MFC_FN(f)	(((tuple_flags *)(&(f)))->mfc_fn)
-#define SPACE(f)	(((tuple_flags *)(&(f)))->space)
+#define LINK_SPACE(f) (((tuple_flags *)(&(f)))->link_space)
+#define HAS_LINK(f) (((tuple_flags *)(&(f)))->has_link)
+#define MFC_FN(f) (((tuple_flags *)(&(f)))->mfc_fn)
+#define SPACE(f) (((tuple_flags *)(&(f)))->space)
 int get_next_tuple(client_handle_t handle, tuple_t *tuple);
 int get_first_tuple(client_handle_t handle, tuple_t *tuple)
 {
@@ -448,7 +448,7 @@ tuple->TupleLink = link[1];
 tuple->CISOffset = ofs + 2;
 return CS_SUCCESS;
 }
-#define _MIN(a, b)		(((a) < (b)) ? (a) : (b))
+#define _MIN(a, b) (((a) < (b)) ? (a) : (b))
 int get_tuple_data(client_handle_t handle, tuple_t *tuple)
 {
 socket_info_t *s;
@@ -480,7 +480,7 @@ if (*p == 0xff) break;
 device->dev[i].type = (*p >> 4);
 device->dev[i].wp = (*p & 0x08) ? 1 : 0;
 switch (*p & 0x07) {
-case 0: device->dev[i].speed = 0;   break;
+case 0: device->dev[i].speed = 0; break;
 case 1: device->dev[i].speed = 250; break;
 case 2: device->dev[i].speed = 200; break;
 case 3: device->dev[i].speed = 150; break;
@@ -968,10 +968,10 @@ for (n = 0; n < CISTPL_MAX_DEVICES; n++) {
 if (p > q-6) break;
 geo->geo[n].buswidth = p[0];
 geo->geo[n].erase_block = 1 << (p[1]-1);
-geo->geo[n].read_block  = 1 << (p[2]-1);
+geo->geo[n].read_block = 1 << (p[2]-1);
 geo->geo[n].write_block = 1 << (p[3]-1);
-geo->geo[n].partition   = 1 << (p[4]-1);
-geo->geo[n].interleave  = 1 << (p[5]-1);
+geo->geo[n].partition = 1 << (p[4]-1);
+geo->geo[n].interleave = 1 << (p[5]-1);
 p += 6;
 }
 geo->ngeo = n;

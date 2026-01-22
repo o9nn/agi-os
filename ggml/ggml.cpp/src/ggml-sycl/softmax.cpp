@@ -17,7 +17,7 @@ float slope = 1.0f;
 if (max_bias > 0.0f) {
 const uint32_t h = rowx/nrows_y;
 const float base = h < n_head_log2 ? m0 : m1;
-const int   exp  = h < n_head_log2 ? h + 1 : 2*(h - n_head_log2) + 1;
+const int exp = h < n_head_log2 ? h + 1 : 2*(h - n_head_log2) + 1;
 slope = sycl::pow(base, float(exp));
 }
 float *vals = vals_smem ? buf + sycl::max(nwarps, WARP_SIZE) : dst + rowx * ncols;
@@ -124,9 +124,9 @@ const sycl::range<3> block_dims(1, 1, nth);
 const sycl::range<3> block_nums(1, 1, nrows_x);
 const size_t n_val_tmp = nth / WARP_SIZE;
 const size_t n_local_scratch = (GGML_PAD(ncols_x, WARP_SIZE) + n_val_tmp);
-const uint32_t n_head_kv   = nrows_x/nrows_y;
+const uint32_t n_head_kv = nrows_x/nrows_y;
 const uint32_t n_head_log2 = 1u << (uint32_t) floorf(log2f((float) n_head_kv));
-const float m0 = powf(2.0f, -(max_bias       ) / n_head_log2);
+const float m0 = powf(2.0f, -(max_bias ) / n_head_log2);
 const float m1 = powf(2.0f, -(max_bias / 2.0f) / n_head_log2);
 const size_t local_mem_size = stream->get_device().get_info<sycl::info::device::local_mem_size>();
 if (n_local_scratch*sizeof(float) < local_mem_size) {

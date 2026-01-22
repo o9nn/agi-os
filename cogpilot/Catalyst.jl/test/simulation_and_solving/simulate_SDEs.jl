@@ -244,7 +244,7 @@ sol = solve(sprob, ImplicitEM(); saveat = 1.0, seed = rand(rng, 1:100))
 @test var(sol[:X1]) < var(sol[:X3])
 end
 end
-# Tests  using complicated noise scaling expressions.
+# Tests using complicated noise scaling expressions.
 let
 noise_scaling_network = @reaction_network begin
 @parameters η1 η2 η3 η4

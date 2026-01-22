@@ -9,10 +9,10 @@
 #include "fns.h"
 typedef struct Aux Aux;
 struct Aux {
-int	doff;
-Otrack	*o;
+int doff;
+Otrack *o;
 };
-ulong	getnwa(Drive *);
+ulong getnwa(Drive *);
 static void checktoc(Drive*);
 int vflag;
 static Drive *drive;
@@ -581,16 +581,16 @@ bufwrite(Otrack *t, void *v, long n)
 return bwrite(t->buf, v, n);
 }
 Srv fs = {
-.attach=	fsattach,
-.destroyfid=	fsdestroyfid,
-.clone=		fsclone,
-.walk1=		fswalk1,
-.open=		fsopen,
-.read=		fsread,
-.write=		fswrite,
-.create=	fscreate,
-.remove=	fsremove,
-.stat=		fsstat,
+.attach= fsattach,
+.destroyfid= fsdestroyfid,
+.clone= fsclone,
+.walk1= fswalk1,
+.open= fsopen,
+.read= fsread,
+.write= fswrite,
+.create= fscreate,
+.remove= fsremove,
+.stat= fsstat,
 };
 void
 usage(void)

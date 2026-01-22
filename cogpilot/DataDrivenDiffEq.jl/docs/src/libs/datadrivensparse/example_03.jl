@@ -44,7 +44,7 @@ summarystats(res)
 #md system = get_basis(res)
 #md println(system) #hide
 #md plot(
-#md     plot(prob), plot(res), layout = (1,2)
+#md plot(prob), plot(res), layout = (1,2)
 #md )
 #md # ## [Copy-Pasteable Code](@id michaelis_menten_copy_paste)
 #md #

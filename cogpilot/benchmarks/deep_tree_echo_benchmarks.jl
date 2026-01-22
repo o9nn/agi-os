@@ -19,7 +19,7 @@ using .DeepTreeEcho.OntogeneticEngine
 using .DeepTreeEcho.TaskflowIntegration
 println("""
 ╔════════════════════════════════════════════════════════════════╗
-║  DEEP TREE ECHO PERFORMANCE BENCHMARKS                         ║
+║ DEEP TREE ECHO PERFORMANCE BENCHMARKS ║
 ╚════════════════════════════════════════════════════════════════╝
 """)
 Random.seed!(42)
@@ -81,7 +81,7 @@ create_task!(graph, "task_$i", () -> sum(rand(100)))
 end
 # Add dependencies (chain structure)
 for i in 2:n_tasks
-if i % 5 != 0  # Some parallel branches
+if i % 5 != 0 # Some parallel branches
 add_dependency!(graph, i-1, i)
 end
 end
@@ -219,7 +219,7 @@ memory += sizeof(system.jsurface_state.velocity)
 # Ridge coefficients
 memory += sizeof(system.ridge.coefficients)
 # Garden trees
-memory += length(system.garden.trees) * 200  # Rough estimate per tree
+memory += length(system.garden.trees) * 200 # Rough estimate per tree
 # Reservoir states
 for membrane in values(system.reservoir.membranes)
 if !isnothing(membrane.reservoir_state)

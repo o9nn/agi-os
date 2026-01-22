@@ -1,5 +1,5 @@
 #ifndef gxxfont_INCLUDED
-#  define gxxfont_INCLUDED
+# define gxxfont_INCLUDED
 #include "gsccode.h"
 #include "gsmatrix.h"
 #include "gsuid.h"

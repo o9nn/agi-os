@@ -8,66 +8,66 @@
 typedef struct Ctlr Ctlr;
 typedef struct I2C I2C;
 struct I2C {
-uchar	i2mod;
-uchar	rsv12a[3];
-uchar	i2add;
-uchar	rsv12b[3];
-uchar	i2brg;
-uchar	rsv12c[3];
-uchar	i2com;
-uchar	rsv12d[3];
-uchar	i2cer;
-uchar	rsv12e[3];
-uchar	i2cmr;
+uchar i2mod;
+uchar rsv12a[3];
+uchar i2add;
+uchar rsv12b[3];
+uchar i2brg;
+uchar rsv12c[3];
+uchar i2com;
+uchar rsv12d[3];
+uchar i2cer;
+uchar rsv12e[3];
+uchar i2cmr;
 };
 enum {
-RxeOV=		1<<1,
-TxS=			1<<10,
-TxeNAK=		1<<2,
-TxeUN=		1<<1,
-TxeCL=		1<<0,
-TxERR=		(TxeNAK|TxeUN|TxeCL),
-REVD=	1<<5,
-GCD=	1<<4,
-FLT=		1<<3,
-PDIV=	3<<1,
-EN=		1<<0,
-STR=		1<<7,
-I2CM=	1<<0,
-I2CS=	0<<0,
-TXE =	1<<4,
-BSY =	1<<2,
-TXB =	1<<1,
-RXB =	1<<0,
-I2CSDA =	IBIT(27),
+RxeOV= 1<<1,
+TxS= 1<<10,
+TxeNAK= 1<<2,
+TxeUN= 1<<1,
+TxeCL= 1<<0,
+TxERR= (TxeNAK|TxeUN|TxeCL),
+REVD= 1<<5,
+GCD= 1<<4,
+FLT= 1<<3,
+PDIV= 3<<1,
+EN= 1<<0,
+STR= 1<<7,
+I2CM= 1<<0,
+I2CS= 0<<0,
+TXE = 1<<4,
+BSY = 1<<2,
+TXB = 1<<1,
+RXB = 1<<0,
+I2CSDA = IBIT(27),
 I2CSCL = IBIT(26),
-Rbit =	1<<0,
-MaxIO =	128,
-MaxSA =	2,
-Bufsize =	(MaxIO+MaxSA+1+4)&~3,
-Freq =	100000,
+Rbit = 1<<0,
+MaxIO = 128,
+MaxSA = 2,
+Bufsize = (MaxIO+MaxSA+1+4)&~3,
+Freq = 100000,
 I2CTimeout = 250,
 Chatty = 0,
 };
-#define	DPRINT	if(Chatty)print
-#define	DCFLUSH(a,n)
+#define DPRINT if(Chatty)print
+#define DCFLUSH(a,n)
 struct Ctlr {
 Lock;
-QLock	io;
-int	init;
-int	busywait;
-I2C*	i2c;
-IOCparam*	sp;
-BD*	rd;
-BD*	td;
-int	phase;
-Rendez	r;
-char*	addr;
-char*	txbuf;
-char*	rxbuf;
+QLock io;
+int init;
+int busywait;
+I2C* i2c;
+IOCparam* sp;
+BD* rd;
+BD* td;
+int phase;
+Rendez r;
+char* addr;
+char* txbuf;
+char* rxbuf;
 };
-static	Ctlr	i2ctlr[1];
-static	void	interrupt(Ureg*, void*);
+static Ctlr i2ctlr[1];
+static void interrupt(Ureg*, void*);
 static void
 enable(void)
 {

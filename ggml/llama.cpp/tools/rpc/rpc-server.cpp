@@ -3,16 +3,16 @@
 #endif
 #include "ggml-rpc.h"
 #ifdef _WIN32
-#  define NOMINMAX
-#  define DIRECTORY_SEPARATOR '\\'
-#  include <locale>
-#  include <windows.h>
-#  include <fcntl.h>
-#  include <io.h>
+# define NOMINMAX
+# define DIRECTORY_SEPARATOR '\\'
+# include <locale>
+# include <windows.h>
+# include <fcntl.h>
+# include <io.h>
 #else
-#  define DIRECTORY_SEPARATOR '/'
-#  include <unistd.h>
-#  include <sys/stat.h>
+# define DIRECTORY_SEPARATOR '/'
+# include <unistd.h>
+# include <sys/stat.h>
 #endif
 #include <codecvt>
 #include <string>
@@ -95,7 +95,7 @@ cache_directory = std::getenv("HOME") + std::string("/Library/Caches/");
 #elif defined(_WIN32)
 cache_directory = std::getenv("LOCALAPPDATA");
 #else
-#  error Unknown architecture
+# error Unknown architecture
 #endif
 cache_directory = ensure_trailing_slash(cache_directory);
 cache_directory += "llama.cpp";
@@ -103,11 +103,11 @@ cache_directory += "llama.cpp";
 return ensure_trailing_slash(cache_directory);
 }
 struct rpc_server_params {
-std::string host        = "127.0.0.1";
-int         port        = 50052;
-size_t      backend_mem = 0;
-bool        use_cache   = false;
-int         n_threads   = std::max(1U, std::thread::hardware_concurrency()/2);
+std::string host = "127.0.0.1";
+int port = 50052;
+size_t backend_mem = 0;
+bool use_cache = false;
+int n_threads = std::max(1U, std::thread::hardware_concurrency()/2);
 std::string device;
 };
 static void print_usage(int , char ** argv, rpc_server_params params) {

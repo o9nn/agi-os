@@ -12,14 +12,14 @@
 #include "fns.h"
 #include "edit.h"
 static char Wsequence[] = "warning: changes out of sequence\n";
-static int	warned = FALSE;
+static int warned = FALSE;
 typedef struct Buflog Buflog;
 struct Buflog
 {
-short	type;
-uint		q0;
-uint		nd;
-uint		nr;
+short type;
+uint q0;
+uint nd;
+uint nr;
 };
 enum
 {

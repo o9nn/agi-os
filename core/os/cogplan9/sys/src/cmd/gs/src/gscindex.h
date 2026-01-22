@@ -1,5 +1,5 @@
 #ifndef gscindex_INCLUDED
-#  define gscindex_INCLUDED
+# define gscindex_INCLUDED
 #include "gscspace.h"
 extern int gs_cspace_build_Indexed(
 gs_color_space ** ppcspace,

@@ -35,40 +35,40 @@ editing = Inactive;
 linex: con "\n";
 wordx: con "\t\n";
 cmdtab = array[28] of {
-#		cmdc	text	regexp	addr	defcmd	defaddr	count	token	 fn
-Cmdt ( '\n',	0,	0,	0,	0,	aDot,	0,	nil,		C_nl ),
-Cmdt ( 'a',		1,	0,	0,	0,	aDot,	0,	nil,		C_a ),
-Cmdt ( 'b',		0,	0,	0,	0,	aNo,		0,	linex,	C_b ),
-Cmdt ( 'c',		1,	0,	0,	0,	aDot,	0,	nil,		C_c ),
-Cmdt ( 'd',		0,	0,	0,	0,	aDot,	0,	nil,		C_d ),
-Cmdt ( 'e',		0,	0,	0,	0,	aNo,		0,	wordx,	C_e ),
-Cmdt ( 'f',		0,	0,	0,	0,	aNo,		0,	wordx,	C_f ),
-Cmdt ( 'g',		0,	1,	0,	'p',	aDot,	0,	nil,		C_g ),
-Cmdt ( 'i',		1,	0,	0,	0,	aDot,	0,	nil,		C_i ),
-Cmdt ( 'm',	0,	0,	1,	0,	aDot,	0,	nil,		C_m ),
-Cmdt ( 'p',		0,	0,	0,	0,	aDot,	0,	nil,		C_p ),
-Cmdt ( 'r',		0,	0,	0,	0,	aDot,	0,	wordx,	C_e ),
-Cmdt ( 's',		0,	1,	0,	0,	aDot,	1,	nil,		C_s ),
-Cmdt ( 't',		0,	0,	1,	0,	aDot,	0,	nil,		C_m ),
-Cmdt ( 'u',		0,	0,	0,	0,	aNo,		2,	nil,		C_u ),
-Cmdt ( 'v',		0,	1,	0,	'p',	aDot,	0,	nil,		C_g ),
-Cmdt ( 'w',	0,	0,	0,	0,	aAll,		0,	wordx,	C_w ),
-Cmdt ( 'x',		0,	1,	0,	'p',	aDot,	0,	nil,		C_x ),
-Cmdt ( 'y',		0,	1,	0,	'p',	aDot,	0,	nil,		C_x ),
-Cmdt ( '=',		0,	0,	0,	0,	aDot,	0,	linex,	C_eq ),
-Cmdt ( 'B',		0,	0,	0,	0,	aNo,		0,	linex,	C_B ),
-Cmdt ( 'D',	0,	0,	0,	0,	aNo,		0,	linex,	C_D ),
-Cmdt ( 'X',		0,	1,	0,	'f',	aNo,		0,	nil,		C_X ),
-Cmdt ( 'Y',		0,	1,	0,	'f',	aNo,		0,	nil,		C_X ),
-Cmdt ( '<',		0,	0,	0,	0,	aDot,	0,	linex,	C_pipe ),
-Cmdt ( '|',		0,	0,	0,	0,	aDot,	0,	linex,	C_pipe ),
-Cmdt ( '>',		0,	0,	0,	0,	aDot,	0,	linex,	C_pipe ),
+# cmdc text regexp addr defcmd defaddr count token fn
+Cmdt ( '\n', 0, 0, 0, 0, aDot, 0, nil, C_nl ),
+Cmdt ( 'a', 1, 0, 0, 0, aDot, 0, nil, C_a ),
+Cmdt ( 'b', 0, 0, 0, 0, aNo, 0, linex, C_b ),
+Cmdt ( 'c', 1, 0, 0, 0, aDot, 0, nil, C_c ),
+Cmdt ( 'd', 0, 0, 0, 0, aDot, 0, nil, C_d ),
+Cmdt ( 'e', 0, 0, 0, 0, aNo, 0, wordx, C_e ),
+Cmdt ( 'f', 0, 0, 0, 0, aNo, 0, wordx, C_f ),
+Cmdt ( 'g', 0, 1, 0, 'p', aDot, 0, nil, C_g ),
+Cmdt ( 'i', 1, 0, 0, 0, aDot, 0, nil, C_i ),
+Cmdt ( 'm', 0, 0, 1, 0, aDot, 0, nil, C_m ),
+Cmdt ( 'p', 0, 0, 0, 0, aDot, 0, nil, C_p ),
+Cmdt ( 'r', 0, 0, 0, 0, aDot, 0, wordx, C_e ),
+Cmdt ( 's', 0, 1, 0, 0, aDot, 1, nil, C_s ),
+Cmdt ( 't', 0, 0, 1, 0, aDot, 0, nil, C_m ),
+Cmdt ( 'u', 0, 0, 0, 0, aNo, 2, nil, C_u ),
+Cmdt ( 'v', 0, 1, 0, 'p', aDot, 0, nil, C_g ),
+Cmdt ( 'w', 0, 0, 0, 0, aAll, 0, wordx, C_w ),
+Cmdt ( 'x', 0, 1, 0, 'p', aDot, 0, nil, C_x ),
+Cmdt ( 'y', 0, 1, 0, 'p', aDot, 0, nil, C_x ),
+Cmdt ( '=', 0, 0, 0, 0, aDot, 0, linex, C_eq ),
+Cmdt ( 'B', 0, 0, 0, 0, aNo, 0, linex, C_B ),
+Cmdt ( 'D', 0, 0, 0, 0, aNo, 0, linex, C_D ),
+Cmdt ( 'X', 0, 1, 0, 'f', aNo, 0, nil, C_X ),
+Cmdt ( 'Y', 0, 1, 0, 'f', aNo, 0, nil, C_X ),
+Cmdt ( '<', 0, 0, 0, 0, aDot, 0, linex, C_pipe ),
+Cmdt ( '|', 0, 0, 0, 0, aDot, 0, linex, C_pipe ),
+Cmdt ( '>', 0, 0, 0, 0, aDot, 0, linex, C_pipe ),
 # deliberately unimplemented
-# Cmdt ( 'k',	0,	0,	0,	0,	aDot,	0,	nil,		C_k ),
-# Cmdt ( 'n',	0,	0,	0,	0,	aNo,		0,	nil,		C_n ),
-# Cmdt ( 'q',	0,	0,	0,	0,	aNo,		0,	nil,		C_q ),
-# Cmdt ( '!',	0,	0,	0,	0,	aNo,		0,	linex,	C_plan9 ),
-Cmdt (0,		0,	0,	0,	0,	0,		0,	nil,		-1 )
+# Cmdt ( 'k', 0, 0, 0, 0, aDot, 0, nil, C_k ),
+# Cmdt ( 'n', 0, 0, 0, 0, aNo, 0, nil, C_n ),
+# Cmdt ( 'q', 0, 0, 0, 0, aNo, 0, nil, C_q ),
+# Cmdt ( '!', 0, 0, 0, 0, aNo, 0, linex, C_plan9 ),
+Cmdt (0, 0, 0, 0, 0, 0, 0, nil, -1 )
 };
 cmdstartp: string;
 cmdendp: int;
@@ -106,8 +106,8 @@ sync := chan of int;
 spawn editwaitproc(mypid, sync);
 yourpid := <- sync;
 while((cmdp=parsecmd(0)) != nil){
-#		ocurfile = curfile;
-#		loaded = curfile && !curfile->unread;
+# ocurfile = curfile;
+# loaded = curfile && !curfile->unread;
 if(cmdexec(curtext, cmdp) == 0)
 break;
 freecmd();
@@ -132,7 +132,7 @@ i: int;
 f: ref File;
 t = w.body;
 f = t.file;
-if(f.curtext != t)		# do curtext only
+if(f.curtext != t) # do curtext only
 return;
 if(f.elog.typex == Null)
 elogterm(f);
@@ -152,7 +152,7 @@ editerror(s: string)
 {
 # print("%s", s);
 freecmd();
-allwindows(ALLELOGTERM, nil);	# truncate the edit logs
+allwindows(ALLELOGTERM, nil); # truncate the edit logs
 editerrc <-= s;
 exit;
 }
@@ -215,7 +215,7 @@ if(signok>1 && nextc()=='-'){
 sign = -1;
 getch();
 }
-if((c=nextc())<'0' || '9'<c)	# no number defaults to 1
+if((c=nextc())<'0' || '9'<c) # no number defaults to 1
 return sign;
 while('0'<=(c=getch()) && c<='9')
 n = n*10 + (c-'0');
@@ -235,34 +235,34 @@ return c;
 # Check that list has room for one more element.
 # growlist(l: ref List)
 # {
-#	if(l.elems == nil || l.nalloc==0){
-#		l.nalloc = INCR;
-#		l.elems = array[INCR] of Listelement;
-#		l.nused = 0;
-#	}else if(l.nused == l.nalloc){
-#		old := l.elems;
-#		l.elems = array[l.nalloc+INCR] of Listelement;
-#		l.elems[0:] = old[0:l.nalloc];
-#		l.nalloc += INCR;
-#	}
+# if(l.elems == nil || l.nalloc==0){
+# l.nalloc = INCR;
+# l.elems = array[INCR] of Listelement;
+# l.nused = 0;
+# }else if(l.nused == l.nalloc){
+# old := l.elems;
+# l.elems = array[l.nalloc+INCR] of Listelement;
+# l.elems[0:] = old[0:l.nalloc];
+# l.nalloc += INCR;
+# }
 # }
 # Remove the ith element from the list
 # dellist(l: ref List, i: int)
 # {
-#	l.elems[i:] = l.elems[i+1:l.nused];
-#	l.nused--;
+# l.elems[i:] = l.elems[i+1:l.nused];
+# l.nused--;
 # }
 # Add a new element, whose position is i, to the list
 # inslist(l: ref List, i: int, val: int)
 # {
-#	growlist(l);
-#	l.elems[i+1:] = l.elems[i:l.nused];
-#	l.elems[i] = val;
-#	l.nused++;
+# growlist(l);
+# l.elems[i+1:] = l.elems[i:l.nused];
+# l.elems[i] = val;
+# l.nused++;
 # }
 # listfree(l: ref List)
 # {
-#	l.elems = nil;
+# l.elems = nil;
 # }
 allocstring(n: int): ref String
 {
@@ -335,12 +335,12 @@ ungetch();
 c='\\';
 }else if(c == 'n')
 c='\n';
-else if(c!=delim && (cmd=='s' || c!='\\'))	# s does its own
+else if(c!=delim && (cmd=='s' || c!='\\')) # s does its own
 Straddc(s, '\\');
 }
 Straddc(s, c);
 }
-ungetch();	# let client read whether delimiter, '\n' or whatever
+ungetch(); # let client read whether delimiter, '\n' or whatever
 }
 collecttoken(end: string): ref String
 {
@@ -406,8 +406,8 @@ return nil;
 if((c=getch())==-1)
 return nil;
 cmd.cmdc = c;
-if(cmd.cmdc=='c' && nextc()=='d'){	# sleazy two-character case
-getch();		# the 'd'
+if(cmd.cmdc=='c' && nextc()=='d'){ # sleazy two-character case
+getch(); # the 'd'
 cmd.cmdc='c'|16r100;
 }
 i = cmdlookup(cmd.cmdc);
@@ -519,7 +519,7 @@ editerror("no regular expression defined");
 r = newstring(lastpat.n);
 k := lastpat.n;
 for(j := 0; j < k; j++)
-r.r[j] = lastpat.r[j];	# newstring put \0 at end
+r.r[j] = lastpat.r[j]; # newstring put \0 at end
 return r;
 }
 simpleaddr(): ref Addr

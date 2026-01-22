@@ -172,7 +172,7 @@ first(left[v]);
 break;
 }
 break;
-case STAR: case QUEST: case PLUS:  case RSTR:
+case STAR: case QUEST: case PLUS: case RSTR:
 first(left[v]);
 break;
 case RCAT: case DIV:
@@ -399,7 +399,7 @@ for(i=0; i<st; i++){
 if(sfall[i] != -1) continue;
 if(cpackflg[st] == 1) if(!(cpackflg[i] == 1)) continue;
 p = gotof[i];
-if(p == -1)  continue;
+if(p == -1) continue;
 tcnt = nexts[p];
 if(tcnt > cnt) continue;
 diff = 0;
@@ -649,7 +649,7 @@ void
 layout(void)
 {
 int i, j, k;
-int  top, bot, startup, omin;
+int top, bot, startup, omin;
 for(i=0; i<outsize;i++)
 verify[i] = advance[i] = 0;
 omin = 0;

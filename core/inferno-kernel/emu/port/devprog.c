@@ -1,10 +1,10 @@
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
-#include	<interp.h>
-#include	<isa.h>
-#include	"runt.h"
-int	SECURE = 0;
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
+#include <interp.h>
+#include <isa.h>
+#include "runt.h"
+int SECURE = 0;
 enum
 {
 Qdir,
@@ -23,18 +23,18 @@ Qexception,
 };
 Dirtab progdir[] =
 {
-"ctl",		{Qctl},		0,			0200,
-"dbgctl",	{Qdbgctl},	0,			0600,
-"heap",		{Qheap},	0,			0600,
-"ns",		{Qns},		0,			0400,
-"nsgrp",	{Qnsgrp},	0,			0444,
-"pgrp",		{Qpgrp},	0,			0444,
-"stack",	{Qstack},	0,			0400,
-"status",	{Qstatus},	0,			0444,
-"text",		{Qtext},	0,			0000,
-"wait",		{Qwait},	0,			0400,
-"fd",		{Qfd},		0,			0400,
-"exception",	{Qexception},	0,	0400,
+"ctl", {Qctl}, 0, 0200,
+"dbgctl", {Qdbgctl}, 0, 0600,
+"heap", {Qheap}, 0, 0600,
+"ns", {Qns}, 0, 0400,
+"nsgrp", {Qnsgrp}, 0, 0444,
+"pgrp", {Qpgrp}, 0, 0444,
+"stack", {Qstack}, 0, 0400,
+"status", {Qstatus}, 0, 0444,
+"text", {Qtext}, 0, 0000,
+"wait", {Qwait}, 0, 0400,
+"fd", {Qfd}, 0, 0400,
+"exception", {Qexception}, 0, 0400,
 };
 enum
 {
@@ -46,11 +46,11 @@ CMprivate
 };
 static
 Cmdtab progcmd[] = {
-CMkill,	"kill",	1,
-CMkillgrp,	"killgrp",	1,
+CMkill, "kill", 1,
+CMkillgrp, "killgrp", 1,
 CMrestricted, "restricted", 1,
 CMexceptions, "exceptions", 2,
-CMprivate, "private",	1,
+CMprivate, "private", 1,
 };
 enum
 {
@@ -65,48 +65,48 @@ CDbpt
 };
 static
 Cmdtab progdbgcmd[] = {
-CDstep,	"step",	0,
-CDtoret,	"toret",	1,
-CDcont,	"cont",	1,
-CDstart,	"start",	1,
-CDstop,	"stop",	1,
-CDunstop,	"unstop",	1,
-CDmaim,	"maim",	1,
-CDbpt,	"bpt",	4,
+CDstep, "step", 0,
+CDtoret, "toret", 1,
+CDcont, "cont", 1,
+CDstart, "start", 1,
+CDstop, "stop", 1,
+CDunstop, "unstop", 1,
+CDmaim, "maim", 1,
+CDbpt, "bpt", 4,
 };
 typedef struct Heapqry Heapqry;
 struct Heapqry
 {
-char	fmt;
-ulong	addr;
-ulong	module;
-int	count;
+char fmt;
+ulong addr;
+ulong module;
+int count;
 };
-typedef struct Bpt	Bpt;
+typedef struct Bpt Bpt;
 struct Bpt
 {
-Bpt	*next;
-int	pc;
-char	*file;
-char	path[1];
+Bpt *next;
+int pc;
+char *file;
+char path[1];
 };
 typedef struct Progctl Progctl;
 struct Progctl
 {
-Rendez	r;
-int	ref;
-Proc	*debugger;
-char	*msg;
-int	step;
-int	stop;
-Bpt*	bpts;
-Queue*	q;
+Rendez r;
+int ref;
+Proc *debugger;
+char *msg;
+int step;
+int stop;
+Bpt* bpts;
+Queue* q;
 };
-#define	QSHIFT		4
-#define	QID(q)		(((ulong)(q).path&0x0000000F)>>0)
-#define QPID(pid)	(((pid)<<QSHIFT))
-#define	PID(q)		((q).vers)
-#define PATH(q)		((ulong)(q).path&~((1<<QSHIFT)-1))
+#define QSHIFT 4
+#define QID(q) (((ulong)(q).path&0x0000000F)>>0)
+#define QPID(pid) (((pid)<<QSHIFT))
+#define PID(q) ((q).vers)
+#define PATH(q) ((ulong)(q).path&~((1<<QSHIFT)-1))
 static char *progstate[] =
 {
 "alt",
@@ -118,16 +118,16 @@ static char *progstate[] =
 "exiting",
 "broken",
 };
-static	void	dbgstep(Progctl*, Prog*, int);
-static	void	dbgstart(Prog*);
-static	void	freebpts(Bpt*);
-static	Bpt*	delbpt(Bpt*, char*, int);
-static	Bpt*	setbpt(Bpt*, char*, int);
-static	void	mntscan(Mntwalk*, Pgrp*);
-extern	Type	*Trdchan;
-extern	Type	*Twrchan;
-extern	Module*	modules;
-static  char 	Emisalign[] = "misaligned address";
+static void dbgstep(Progctl*, Prog*, int);
+static void dbgstart(Prog*);
+static void freebpts(Bpt*);
+static Bpt* delbpt(Bpt*, char*, int);
+static Bpt* setbpt(Bpt*, char*, int);
+static void mntscan(Mntwalk*, Pgrp*);
+extern Type *Trdchan;
+extern Type *Twrchan;
+extern Module* modules;
+static char Emisalign[] = "misaligned address";
 static int
 proggen(Chan *c, char *name, Dirtab *tab, int ntab, int s, Dir *dp)
 {

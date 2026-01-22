@@ -457,7 +457,7 @@ WCHAR wsz[MAX_PATH];
 MultiByteToWideChar(CP_ACP, 0, name, -1, wsz, MAX_PATH);
 hres = CoCreateInstance(CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER,
 IID_IShellLink, (void **)&psl);
-if (SUCCEEDED(hres))    {
+if (SUCCEEDED(hres)) {
 IPersistFile* ppf;
 hres = psl->QueryInterface(IID_IPersistFile, (void **)&ppf);
 if (SUCCEEDED(hres)) {

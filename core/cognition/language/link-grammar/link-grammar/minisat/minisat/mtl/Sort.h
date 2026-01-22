@@ -9,8 +9,8 @@ bool operator () (T x, T y) { return x < y; }
 template <class T, class LessThan>
 void selectionSort(T* array, int size, LessThan lt)
 {
-int     i, j, best_i;
-T       tmp;
+int i, j, best_i;
+T tmp;
 for (i = 0; i < size-1; i++){
 best_i = i;
 for (j = i+1; j < size; j++){
@@ -28,17 +28,17 @@ void sort(T* array, int size, LessThan lt)
 if (size <= 15)
 selectionSort(array, size, lt);
 else{
-T           pivot = array[size / 2];
-T           tmp;
-int         i = -1;
-int         j = size;
+T pivot = array[size / 2];
+T tmp;
+int i = -1;
+int j = size;
 for(;;){
 do i++; while(lt(array[i], pivot));
 do j--; while(lt(pivot, array[j]));
 if (i >= j) break;
 tmp = array[i]; array[i] = array[j]; array[j] = tmp;
 }
-sort(array    , i     , lt);
+sort(array , i , lt);
 sort(&array[i], size-i, lt);
 }
 }

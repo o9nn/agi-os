@@ -46,7 +46,7 @@ HandleSet replace(const Traverse&) const;
 void find_top(Traverse&, const Handle&) const;
 HandleSet container(AtomSpace*, JoinCallback*, bool) const;
 virtual QueueValuePtr do_execute(AtomSpace*,
-JoinCallback*,  bool silent);
+JoinCallback*, bool silent);
 public:
 JoinLink(const HandleSeq&&, Type=JOIN_LINK);
 JoinLink(const JoinLink&) = delete;

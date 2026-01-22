@@ -23,12 +23,12 @@
 static const char plugin_id[] = "$Id: passdss.c,v 1.5 2008/10/29 17:59:41 murch Exp $";
 const char g[] = "2";
 const char N[] = "FFFFFFFFFFFFFFFFC90FDAA22168C234C4C6628B80DC1CD129024E088A67CC74020BBEA63B139B22514A08798E3404DDEF9519B3CD3A431B302B0A6DF25F14374FE1356D6D51C245E485B576625E7EC6F44C42E9A637ED6B0BFF5CB6F406B7EDEE386BFB5A899FA5AE9F24117C4B1FE649286651ECE65381FFFFFFFFFFFFFFFF";
-#define NO_LAYER_FLAG		(1<<0)
-#define INTEGRITY_LAYER_FLAG	(1<<1)
-#define PRIVACY_LAYER_FLAG	(1<<2)
-#define NO_LAYER_SSF		0
-#define INTEGRITY_LAYER_SSF	1
-#define PRIVACY_LAYER_SSF	112
+#define NO_LAYER_FLAG (1<<0)
+#define INTEGRITY_LAYER_FLAG (1<<1)
+#define PRIVACY_LAYER_FLAG (1<<2)
+#define NO_LAYER_SSF 0
+#define INTEGRITY_LAYER_SSF 1
+#define PRIVACY_LAYER_SSF 112
 typedef struct context {
 int state;
 char *authid;
@@ -56,8 +56,8 @@ unsigned char cs_encryption_key[2 * EVP_MAX_MD_SIZE];
 unsigned char sc_encryption_key[2 * EVP_MAX_MD_SIZE];
 uint32_t pktnum_out;
 uint32_t pktnum_in;
-char           *encode_buf, *decode_buf, *decode_pkt_buf;
-unsigned       encode_buf_len, decode_buf_len, decode_pkt_buf_len;
+char *encode_buf, *decode_buf, *decode_pkt_buf;
+unsigned encode_buf_len, decode_buf_len, decode_pkt_buf_len;
 decode_context_t decode_context;
 } context_t;
 static int passdss_encode(void *context,
@@ -479,11 +479,11 @@ done:
 va_end(ap);
 return r;
 }
-#define DOHASH(out, in1, len1, in2, len2, in3, len3)	\
-EVP_DigestInit(&mdctx, EVP_sha1());			\
-EVP_DigestUpdate(&mdctx, in1, len1);		\
-EVP_DigestUpdate(&mdctx, in2, len2);		\
-EVP_DigestUpdate(&mdctx, in3, len3);		\
+#define DOHASH(out, in1, len1, in2, len2, in3, len3) \
+EVP_DigestInit(&mdctx, EVP_sha1()); \
+EVP_DigestUpdate(&mdctx, in1, len1); \
+EVP_DigestUpdate(&mdctx, in2, len2); \
+EVP_DigestUpdate(&mdctx, in3, len3); \
 EVP_DigestFinal(&mdctx, out, NULL)
 void CalcLayerParams(context_t *text, char *K, unsigned Klen,
 char *hash, unsigned hashlen)
@@ -505,19 +505,19 @@ const sasl_utils_t *utils)
 {
 context_t *text = (context_t *) conn_context;
 if (!text) return;
-if (text->authid)		utils->free(text->authid);
-if (text->userid)		utils->free(text->userid);
-if (text->free_password)	_plug_free_secret(utils, &(text->password));
-if (text->dh)		DH_free(text->dh);
+if (text->authid) utils->free(text->authid);
+if (text->userid) utils->free(text->userid);
+if (text->free_password) _plug_free_secret(utils, &(text->password));
+if (text->dh) DH_free(text->dh);
 HMAC_CTX_cleanup(&text->hmac_send_ctx);
 HMAC_CTX_cleanup(&text->hmac_recv_ctx);
 EVP_CIPHER_CTX_cleanup(&text->cipher_enc_ctx);
 EVP_CIPHER_CTX_cleanup(&text->cipher_dec_ctx);
 _plug_decode_free(&text->decode_context);
-if (text->encode_buf)	utils->free(text->encode_buf);
-if (text->decode_buf)	utils->free(text->decode_buf);
-if (text->decode_pkt_buf)	utils->free(text->decode_pkt_buf);
-if (text->out_buf)		utils->free(text->out_buf);
+if (text->encode_buf) utils->free(text->encode_buf);
+if (text->decode_buf) utils->free(text->decode_buf);
+if (text->decode_pkt_buf) utils->free(text->decode_pkt_buf);
+if (text->out_buf) utils->free(text->out_buf);
 utils->free(text);
 }
 static int passdss_server_mech_new(void *glob_context __attribute__((unused)),

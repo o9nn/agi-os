@@ -20,13 +20,13 @@ const char *argp_program_version = STANDARD_HURD_VERSION (mail.local);
 static const struct argp_option
 options[] =
 {
-{"from",    'f',	"USER",	0, "Record sender as USER"},
-{0,         'd',	0,     	OPTION_ALIAS|OPTION_HIDDEN},
-{0,         'r',	0,     	OPTION_ALIAS|OPTION_HIDDEN},
-{"file",    OPT_FILE, "FILE",	0, "Deliver FILE instead of standard input"},
-{"remove",  OPT_REMOVE, 0,   	0, "Remove FILE after successful delivery"},
-{"mail-dir",'m',	"DIR", 	0, "Look for mailboxes in DIR"},
-{"use-lock-file",'l',	0,     	OPTION_HIDDEN,
+{"from", 'f', "USER", 0, "Record sender as USER"},
+{0, 'd', 0, OPTION_ALIAS|OPTION_HIDDEN},
+{0, 'r', 0, OPTION_ALIAS|OPTION_HIDDEN},
+{"file", OPT_FILE, "FILE", 0, "Deliver FILE instead of standard input"},
+{"remove", OPT_REMOVE, 0, 0, "Remove FILE after successful delivery"},
+{"mail-dir",'m', "DIR", 0, "Look for mailboxes in DIR"},
+{"use-lock-file",'l', 0, OPTION_HIDDEN,
 "Use a lock file instead of flock for mailboxes"},
 {0}
 };
@@ -82,9 +82,9 @@ return EX_UNAVAILABLE;
 ({ syslog (LOG_ERR, fmt ": %m" , ##args); err_to_ex (errno); })
 #define ERR(fmt, args...) \
 ({ syslog (LOG_ERR, fmt , ##args); EX_UNAVAILABLE; })
-#define SYSERRX(code, fmt, args...)					      \
-({ error_t _code = (code);						      \
-syslog (LOG_ERR, fmt ": %s" , ##args , strerror (_code));		      \
+#define SYSERRX(code, fmt, args...) \
+({ error_t _code = (code); \
+syslog (LOG_ERR, fmt ": %s" , ##args , strerror (_code)); \
 err_to_ex (_code); })
 static void
 bfree (char *blk, size_t blk_len)
@@ -163,9 +163,9 @@ int ex = write_header (out, out_name, params);
 #define match_len (sizeof HDR_PFX - 1)
 if (ex)
 return ex;
-#define BWRITE(p, p_len)						      \
-({ size_t _len = (p_len);						      \
-if (_len > 0 && (ex = bwrite (out, out_name, p, _len)))		      \
+#define BWRITE(p, p_len) \
+({ size_t _len = (p_len); \
+if (_len > 0 && (ex = bwrite (out, out_name, p, _len))) \
 break; })
 do
 {
@@ -212,7 +212,7 @@ bfree (blk, blk_len);
 return ex;
 }
 #define D_PROCESS 0x1
-#define D_REWIND  0x2
+#define D_REWIND 0x2
 static int
 deliver (int msg, char *msg_name, char *rcpt, int flags, struct params *params)
 {

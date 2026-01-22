@@ -8,14 +8,14 @@ echo "========================================="
 echo "Updating $PACKAGE_NAME package"
 echo "========================================="
 if [ ! -d "$SOURCE_DIR" ]; then
-    echo "Creating source directory structure..."
-    mkdir -p "$SOURCE_DIR/src"
-    mkdir -p "$SOURCE_DIR/include/machspace"
-    mkdir -p "$SOURCE_DIR/guile"
-    mkdir -p "$SOURCE_DIR/tests"
+echo "Creating source directory structure..."
+mkdir -p "$SOURCE_DIR/src"
+mkdir -p "$SOURCE_DIR/include/machspace"
+mkdir -p "$SOURCE_DIR/guile"
+mkdir -p "$SOURCE_DIR/tests"
 fi
 if [ ! -f "$SOURCE_DIR/CMakeLists.txt" ]; then
-    cat > "$SOURCE_DIR/CMakeLists.txt" << 'EOF'
+cat > "$SOURCE_DIR/CMakeLists.txt" << 'EOF'
 cmake_minimum_required(VERSION 3.10)
 project(hurdcog-atomspace-bridge VERSION 1.0.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
@@ -24,52 +24,52 @@ find_package(PkgConfig REQUIRED)
 pkg_check_modules(COGUTIL REQUIRED cogutil)
 pkg_check_modules(ATOMSPACE REQUIRED atomspace)
 include_directories(
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
-    ${COGUTIL_INCLUDE_DIRS}
-    ${ATOMSPACE_INCLUDE_DIRS}
+${CMAKE_CURRENT_SOURCE_DIR}/include
+${COGUTIL_INCLUDE_DIRS}
+${ATOMSPACE_INCLUDE_DIRS}
 )
 set(MACHSPACE_SOURCES
-    src/machspace_core.cpp
-    src/machspace_atoms.cpp
-    src/machspace_attention.cpp
-    src/machspace_ipc.cpp
+src/machspace_core.cpp
+src/machspace_atoms.cpp
+src/machspace_attention.cpp
+src/machspace_ipc.cpp
 )
 add_library(machspace SHARED ${MACHSPACE_SOURCES})
 target_link_libraries(machspace
-    ${COGUTIL_LIBRARIES}
-    ${ATOMSPACE_LIBRARIES}
+${COGUTIL_LIBRARIES}
+${ATOMSPACE_LIBRARIES}
 )
 install(TARGETS machspace
-    LIBRARY DESTINATION lib
-    ARCHIVE DESTINATION lib
+LIBRARY DESTINATION lib
+ARCHIVE DESTINATION lib
 )
 install(DIRECTORY include/machspace
-    DESTINATION include
+DESTINATION include
 )
 install(DIRECTORY guile/
-    DESTINATION share/guile/site/3.0/machspace
+DESTINATION share/guile/site/3.0/machspace
 )
 EOF
 fi
 if [ ! -f "$SOURCE_DIR/src/machspace_core.cpp" ]; then
-    cat > "$SOURCE_DIR/src/machspace_core.cpp" << 'EOF'
+cat > "$SOURCE_DIR/src/machspace_core.cpp" << 'EOF'
 // MachSpace Core Implementation
 // Provides kernel-level AtomSpace integration
 namespace machspace {
 // Initialize MachSpace subsystem
 bool initialize() {
-    // TODO: Implement MachSpace initialization
-    return true;
+// TODO: Implement MachSpace initialization
+return true;
 }
 // Shutdown MachSpace subsystem
 void shutdown() {
-    // TODO: Implement MachSpace shutdown
+// TODO: Implement MachSpace shutdown
 }
 } // namespace machspace
 EOF
 fi
 if [ ! -f "$SOURCE_DIR/include/machspace/core.h" ]; then
-    cat > "$SOURCE_DIR/include/machspace/core.h" << 'EOF'
+cat > "$SOURCE_DIR/include/machspace/core.h" << 'EOF'
 namespace machspace {
 // Initialize MachSpace subsystem
 bool initialize();
@@ -81,9 +81,9 @@ fi
 echo "Creating orig tarball..."
 cd ..
 tar czf "${PACKAGE_NAME}_${VERSION}.orig.tar.gz" \
-    --exclude=debian \
-    --exclude=.git \
-    "$PACKAGE_NAME"
+--exclude=debian \
+--exclude=.git \
+"$PACKAGE_NAME"
 echo "========================================="
 echo "$PACKAGE_NAME package updated successfully"
 echo "Version: $VERSION"

@@ -16,21 +16,21 @@ return ss.str();
 }
 static bool gguf_ex_write(const std::string & fname) {
 struct gguf_context * ctx = gguf_init_empty();
-gguf_set_val_u8  (ctx, "some.parameter.uint8",    0x12);
-gguf_set_val_i8  (ctx, "some.parameter.int8",    -0x13);
-gguf_set_val_u16 (ctx, "some.parameter.uint16",   0x1234);
-gguf_set_val_i16 (ctx, "some.parameter.int16",   -0x1235);
-gguf_set_val_u32 (ctx, "some.parameter.uint32",   0x12345678);
-gguf_set_val_i32 (ctx, "some.parameter.int32",   -0x12345679);
-gguf_set_val_f32 (ctx, "some.parameter.float32",  0.123456789f);
-gguf_set_val_u64 (ctx, "some.parameter.uint64",   0x123456789abcdef0ull);
-gguf_set_val_i64 (ctx, "some.parameter.int64",   -0x123456789abcdef1ll);
-gguf_set_val_f64 (ctx, "some.parameter.float64",  0.1234567890123456789);
-gguf_set_val_bool(ctx, "some.parameter.bool",     true);
-gguf_set_val_str (ctx, "some.parameter.string",   "hello world");
-gguf_set_arr_data(ctx, "some.parameter.arr.i16", GGUF_TYPE_INT16,   std::vector<int16_t>{ 1, 2, 3, 4, }.data(), 4);
+gguf_set_val_u8 (ctx, "some.parameter.uint8", 0x12);
+gguf_set_val_i8 (ctx, "some.parameter.int8", -0x13);
+gguf_set_val_u16 (ctx, "some.parameter.uint16", 0x1234);
+gguf_set_val_i16 (ctx, "some.parameter.int16", -0x1235);
+gguf_set_val_u32 (ctx, "some.parameter.uint32", 0x12345678);
+gguf_set_val_i32 (ctx, "some.parameter.int32", -0x12345679);
+gguf_set_val_f32 (ctx, "some.parameter.float32", 0.123456789f);
+gguf_set_val_u64 (ctx, "some.parameter.uint64", 0x123456789abcdef0ull);
+gguf_set_val_i64 (ctx, "some.parameter.int64", -0x123456789abcdef1ll);
+gguf_set_val_f64 (ctx, "some.parameter.float64", 0.1234567890123456789);
+gguf_set_val_bool(ctx, "some.parameter.bool", true);
+gguf_set_val_str (ctx, "some.parameter.string", "hello world");
+gguf_set_arr_data(ctx, "some.parameter.arr.i16", GGUF_TYPE_INT16, std::vector<int16_t>{ 1, 2, 3, 4, }.data(), 4);
 gguf_set_arr_data(ctx, "some.parameter.arr.f32", GGUF_TYPE_FLOAT32, std::vector<float>{ 3.145f, 2.718f, 1.414f, }.data(), 3);
-gguf_set_arr_str (ctx, "some.parameter.arr.str",                    std::vector<const char *>{ "hello", "world", "!" }.data(), 3);
+gguf_set_arr_str (ctx, "some.parameter.arr.str", std::vector<const char *>{ "hello", "world", "!" }.data(), 3);
 struct ggml_init_params params = {
 128ull*1024ull*1024ull,
 NULL,
@@ -96,8 +96,8 @@ printf("%s: find key: %s found, kv[%d] value = %s\n", __func__, findkey, keyidx,
 const int n_tensors = gguf_get_n_tensors(ctx);
 printf("%s: n_tensors: %d\n", __func__, n_tensors);
 for (int i = 0; i < n_tensors; ++i) {
-const char * name   = gguf_get_tensor_name  (ctx, i);
-const size_t size   = gguf_get_tensor_size  (ctx, i);
+const char * name = gguf_get_tensor_name (ctx, i);
+const size_t size = gguf_get_tensor_size (ctx, i);
 const size_t offset = gguf_get_tensor_offset(ctx, i);
 printf("%s: tensor[%d]: name = %s, size = %zu, offset = %zu\n", __func__, i, name, size, offset);
 }
@@ -127,8 +127,8 @@ printf("%s: kv[%d]: key = %s\n", __func__, i, key);
 const int n_tensors = gguf_get_n_tensors(ctx);
 printf("%s: n_tensors: %d\n", __func__, n_tensors);
 for (int i = 0; i < n_tensors; ++i) {
-const char * name   = gguf_get_tensor_name  (ctx, i);
-const size_t size   = gguf_get_tensor_size  (ctx, i);
+const char * name = gguf_get_tensor_name (ctx, i);
+const size_t size = gguf_get_tensor_size (ctx, i);
 const size_t offset = gguf_get_tensor_offset(ctx, i);
 printf("%s: tensor[%d]: name = %s, size = %zu, offset = %zu\n", __func__, i, name, size, offset);
 }

@@ -9,82 +9,82 @@
 #include "dns.h"
 enum
 {
-Maxrequest=		1024,
-Maxreply=		8192,
-Maxrrr=			32,
-Maxfdata=		8192,
-Defmaxage=		60*60,
-Qdir=			0,
-Qdns=			1,
+Maxrequest= 1024,
+Maxreply= 8192,
+Maxrrr= 32,
+Maxfdata= 8192,
+Defmaxage= 60*60,
+Qdir= 0,
+Qdns= 1,
 };
-typedef struct Mfile	Mfile;
-typedef struct Job	Job;
-typedef struct Network	Network;
-extern	ulong	start;
+typedef struct Mfile Mfile;
+typedef struct Job Job;
+typedef struct Network Network;
+extern ulong start;
 int vers;
 static volatile int stop;
 struct Mfile
 {
-Mfile		*next;
-int		ref;
-char		*user;
-Qid		qid;
-int		fid;
-int		type;
-char		reply[Maxreply];
-ushort		rr[Maxrrr];
-ushort		nrr;
+Mfile *next;
+int ref;
+char *user;
+Qid qid;
+int fid;
+int type;
+char reply[Maxreply];
+ushort rr[Maxrrr];
+ushort nrr;
 };
 struct Job
 {
-Job	*next;
-int	flushed;
-Fcall	request;
-Fcall	reply;
+Job *next;
+int flushed;
+Fcall request;
+Fcall reply;
 };
-Lock	joblock;
-Job	*joblist;
+Lock joblock;
+Job *joblist;
 struct {
 Lock;
-Mfile	*inuse;
+Mfile *inuse;
 } mfalloc;
-Cfg	cfg;
-int	debug;
-uchar	ipaddr[IPaddrlen];
-int	maxage = Defmaxage;
-int	mfd[2];
-int	needrefresh;
-ulong	now;
-vlong	nowns;
-int	sendnotifies;
-int	testing;
-char	*trace;
-int	traceactivity;
-char	*zonerefreshprogram;
-char	*logfile = "dns";
-char	*dbfile;
-char	mntpt[Maxpath];
-int	addforwtarg(char *);
-int	fillreply(Mfile*, int);
-void	freejob(Job*);
-void	io(void);
-void	mountinit(char*, char*);
-Job*	newjob(void);
-void	rattach(Job*, Mfile*);
-void	rauth(Job*);
-void	rclunk(Job*, Mfile*);
-void	rcreate(Job*, Mfile*);
-void	rflush(Job*);
-void	ropen(Job*, Mfile*);
-void	rread(Job*, Mfile*);
-void	rremove(Job*, Mfile*);
-void	rstat(Job*, Mfile*);
-void	rversion(Job*);
-char*	rwalk(Job*, Mfile*);
-void	rwrite(Job*, Mfile*, Request*);
-void	rwstat(Job*, Mfile*);
-void	sendmsg(Job*, char*);
-void	setext(char*, int, char*);
+Cfg cfg;
+int debug;
+uchar ipaddr[IPaddrlen];
+int maxage = Defmaxage;
+int mfd[2];
+int needrefresh;
+ulong now;
+vlong nowns;
+int sendnotifies;
+int testing;
+char *trace;
+int traceactivity;
+char *zonerefreshprogram;
+char *logfile = "dns";
+char *dbfile;
+char mntpt[Maxpath];
+int addforwtarg(char *);
+int fillreply(Mfile*, int);
+void freejob(Job*);
+void io(void);
+void mountinit(char*, char*);
+Job* newjob(void);
+void rattach(Job*, Mfile*);
+void rauth(Job*);
+void rclunk(Job*, Mfile*);
+void rcreate(Job*, Mfile*);
+void rflush(Job*);
+void ropen(Job*, Mfile*);
+void rread(Job*, Mfile*);
+void rremove(Job*, Mfile*);
+void rstat(Job*, Mfile*);
+void rversion(Job*);
+char* rwalk(Job*, Mfile*);
+void rwrite(Job*, Mfile*, Request*);
+void rwstat(Job*, Mfile*);
+void sendmsg(Job*, char*);
+void setext(char*, int, char*);
 static char *lookupqueryold(Job*, Mfile*, Request*, char*, char*, int, int);
 static char *lookupquerynew(Job*, Mfile*, Request*, char*, char*, int, int);
 static char *respond(Job*, Mfile*, RR*, char*, int, int);
@@ -101,7 +101,7 @@ justremount(char *service, char *mntpt)
 int f;
 f = open(service, ORDWR);
 if(f < 0)
-abort(); 	;
+abort(); ;
 while (mount(f, -1, mntpt, MAFTER, "") < 0) {
 dnslog("dns mount -a on %s failed: %r", mntpt);
 sleep(5000);
@@ -183,7 +183,7 @@ sysfatal("can't read my ip address");
 dnslog("starting %s%sdns %s%s%son %I's %s",
 (cfg.straddle? "straddling ": ""),
 (cfg.cachedb? "caching ": ""),
-(cfg.serve?   "udp server ": ""),
+(cfg.serve? "udp server ": ""),
 (cfg.justforw? "forwarding-only ": ""),
 (cfg.resolver? "resolver ": ""), ipaddr, mntpt);
 opendatabase();
@@ -491,7 +491,7 @@ Mfile *nmf;
 Qid qid;
 err = 0;
 nmf = nil;
-elems  = job->request.wname;
+elems = job->request.wname;
 nelems = job->request.nwname;
 job->reply.nwqid = 0;
 if(job->request.newfid != job->request.fid){

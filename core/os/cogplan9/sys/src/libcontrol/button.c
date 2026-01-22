@@ -9,18 +9,18 @@ typedef struct Button Button;
 struct Button
 {
 Control;
-CImage	*image;
-CImage	*mask;
-CImage	*light;
-CImage	*pale;
-CImage	*bordercolor;
-int		pressed;
-int		lastbut;
-int		lastshow;
-int		border;
-int		align;
-int		off;
-int		prepress;
+CImage *image;
+CImage *mask;
+CImage *light;
+CImage *pale;
+CImage *bordercolor;
+int pressed;
+int lastbut;
+int lastshow;
+int border;
+int align;
+int off;
+int prepress;
 };
 enum{
 EAlign,
@@ -40,21 +40,21 @@ ESize,
 EValue,
 };
 static char *cmds[] = {
-[EAlign] = 		"align",
-[EBorder] = 	"border",
+[EAlign] = "align",
+[EBorder] = "border",
 [EBordercolor] = "bordercolor",
-[EFocus] = 	"focus",
-[EFormat] = 	"format",
-[EHide] =		"hide",
-[EImage] =	"image",
-[ELight] =		"light",
-[EMask] =		"mask",
-[EPale] =		"pale",
-[ERect] =		"rect",
-[EReveal] =	"reveal",
-[EShow] =		"show",
-[ESize] =		"size",
-[EValue] =		"value",
+[EFocus] = "focus",
+[EFormat] = "format",
+[EHide] = "hide",
+[EImage] = "image",
+[ELight] = "light",
+[EMask] = "mask",
+[EPale] = "pale",
+[ERect] = "rect",
+[EReveal] = "reveal",
+[EShow] = "show",
+[ESize] = "size",
+[EValue] = "value",
 nil
 };
 static void

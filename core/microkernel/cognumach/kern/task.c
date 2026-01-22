@@ -22,7 +22,7 @@
 #include <kern/task_notify.user.h>
 #include <vm/vm_kern.h>
 #include <machine/spl.h>
-task_t	kernel_task = TASK_NULL;
+task_t kernel_task = TASK_NULL;
 struct kmem_cache task_cache;
 ipc_port_t new_task_notification = NULL;
 void task_init(void)
@@ -36,9 +36,9 @@ machine_task_module_init ();
 vm_map_set_name(kernel_map, kernel_task->name);
 }
 kern_return_t task_create(
-task_t		parent_task,
-boolean_t	inherit_memory,
-task_t		*child_task)
+task_t parent_task,
+boolean_t inherit_memory,
+task_t *child_task)
 {
 if (parent_task == TASK_NULL)
 return KERN_INVALID_TASK;
@@ -47,12 +47,12 @@ child_task);
 }
 kern_return_t
 task_create_kernel(
-task_t		parent_task,
-boolean_t	inherit_memory,
-task_t		*child_task)
+task_t parent_task,
+boolean_t inherit_memory,
+task_t *child_task)
 {
-task_t		new_task;
-processor_set_t	pset;
+task_t new_task;
+processor_set_t pset;
 #if FAST_TAS
 int i;
 #endif
@@ -60,7 +60,7 @@ new_task = (task_t) kmem_cache_alloc(&task_cache);
 if (new_task == TASK_NULL)
 return KERN_RESOURCE_SHORTAGE;
 new_task->ref_count = 2;
-if (child_task == &kernel_task)  {
+if (child_task == &kernel_task) {
 new_task->map = kernel_map;
 } else if (inherit_memory) {
 new_task->map = vm_map_fork(parent_task->map);
@@ -121,19 +121,19 @@ pset_unlock(pset);
 new_task->may_assign = TRUE;
 new_task->assign_active = FALSE;
 new_task->essential = FALSE;
-#if	MACH_PCSAMPLE
+#if MACH_PCSAMPLE
 new_task->pc_sample.buffer = 0;
 new_task->pc_sample.seqno = 0;
 new_task->pc_sample.sampletypes = 0;
 #endif
-#if	FAST_TAS
-for (i = 0; i < TASK_FAST_TAS_NRAS; i++)  {
+#if FAST_TAS
+for (i = 0; i < TASK_FAST_TAS_NRAS; i++) {
 if (inherit_memory) {
 new_task->fast_tas_base[i] = parent_task->fast_tas_base[i];
-new_task->fast_tas_end[i]  = parent_task->fast_tas_end[i];
+new_task->fast_tas_end[i] = parent_task->fast_tas_end[i];
 } else {
 new_task->fast_tas_base[i] = (vm_offset_t)0;
-new_task->fast_tas_end[i]  = (vm_offset_t)0;
+new_task->fast_tas_end[i] = (vm_offset_t)0;
 }
 }
 #endif
@@ -157,7 +157,7 @@ ipc_task_enable(new_task);
 return KERN_SUCCESS;
 }
 void task_deallocate(
-task_t	task)
+task_t task)
 {
 int c;
 processor_set_t pset;
@@ -180,7 +180,7 @@ is_release(task->itk_space);
 kmem_cache_free(&task_cache, (vm_offset_t) task);
 }
 void task_reference(
-task_t	task)
+task_t task)
 {
 if (task == TASK_NULL)
 return;
@@ -189,12 +189,12 @@ task->ref_count++;
 task_unlock(task);
 }
 kern_return_t task_terminate(
-task_t	task)
+task_t task)
 {
-thread_t		thread, cur_thread;
-queue_head_t		*list;
-task_t			cur_task;
-spl_t			s;
+thread_t thread, cur_thread;
+queue_head_t *list;
+task_t cur_task;
+spl_t s;
 if (task == TASK_NULL)
 return KERN_INVALID_ARGUMENT;
 list = &task->thread_list;
@@ -280,10 +280,10 @@ task_unlock(task);
 return KERN_SUCCESS;
 }
 void task_hold_locked(
-task_t	task)
+task_t task)
 {
-queue_head_t	*list;
-thread_t	thread, cur_thread;
+queue_head_t *list;
+thread_t thread, cur_thread;
 assert(task->active);
 cur_thread = current_thread();
 task->suspend_count++;
@@ -294,7 +294,7 @@ thread_hold(thread);
 }
 }
 kern_return_t task_hold(
-task_t	task)
+task_t task)
 {
 task_lock(task);
 if (!task->active) {
@@ -306,12 +306,12 @@ task_unlock(task);
 return KERN_SUCCESS;
 }
 kern_return_t task_dowait(
-task_t	task,
+task_t task,
 boolean_t must_wait)
 {
-queue_head_t	*list;
-thread_t	thread, cur_thread, prev_thread;
-kern_return_t	ret = KERN_SUCCESS;
+queue_head_t *list;
+thread_t thread, cur_thread, prev_thread;
+kern_return_t ret = KERN_SUCCESS;
 cur_thread = current_thread();
 list = &task->thread_list;
 prev_thread = THREAD_NULL;
@@ -337,10 +337,10 @@ thread_deallocate(prev_thread);
 return ret;
 }
 kern_return_t task_release(
-task_t	task)
+task_t task)
 {
-queue_head_t	*list;
-thread_t	thread, next;
+queue_head_t *list;
+thread_t thread, next;
 task_lock(task);
 if (!task->active) {
 task_unlock(task);
@@ -358,9 +358,9 @@ task_unlock(task);
 return KERN_SUCCESS;
 }
 kern_return_t task_threads(
-task_t		task,
-thread_array_t	*thread_list,
-natural_t	*count)
+task_t task,
+thread_array_t *thread_list,
+natural_t *count)
 {
 unsigned int actual;
 thread_t thread;
@@ -427,9 +427,9 @@ convert_thread_to_port(threads[i]);
 return KERN_SUCCESS;
 }
 kern_return_t task_suspend(
-task_t	task)
+task_t task)
 {
-boolean_t	hold;
+boolean_t hold;
 if (task == TASK_NULL)
 return KERN_INVALID_ARGUMENT;
 hold = FALSE;
@@ -454,9 +454,9 @@ ast_on(cpu_number(), AST_BLOCK);
 return KERN_SUCCESS;
 }
 kern_return_t task_resume(
-task_t	task)
+task_t task)
 {
-boolean_t	release;
+boolean_t release;
 if (task == TASK_NULL)
 return KERN_INVALID_ARGUMENT;
 release = FALSE;
@@ -475,24 +475,24 @@ return task_release(task);
 return KERN_SUCCESS;
 }
 kern_return_t task_info(
-task_t			task,
-int			flavor,
-task_info_t		task_info_out,
-natural_t		*task_info_count)
+task_t task,
+int flavor,
+task_info_t task_info_out,
+natural_t *task_info_count)
 {
-vm_map_t		map;
+vm_map_t map;
 if (task == TASK_NULL)
 return KERN_INVALID_ARGUMENT;
 switch (flavor) {
 case TASK_BASIC_INFO:
 {
-task_basic_info_t	basic_info;
+task_basic_info_t basic_info;
 if (*task_info_count <
 TASK_BASIC_INFO_COUNT - 3 * sizeof(time_value64_t)/sizeof(integer_t))
 return KERN_INVALID_ARGUMENT;
 basic_info = (task_basic_info_t) task_info_out;
 map = (task == kernel_task) ? kernel_map : task->map;
-basic_info->virtual_size  = map->size;
+basic_info->virtual_size = map->size;
 basic_info->resident_size = ((rpc_vm_size_t) pmap_resident_count(map->pmap))
 * PAGE_SIZE;
 task_lock(task);
@@ -517,7 +517,7 @@ break;
 }
 case TASK_EVENTS_INFO:
 {
-task_events_info_t	event_info;
+task_events_info_t event_info;
 if (*task_info_count < TASK_EVENTS_INFO_COUNT) {
 return KERN_INVALID_ARGUMENT;
 }
@@ -537,7 +537,7 @@ break;
 case TASK_THREAD_TIMES_INFO:
 {
 task_thread_times_info_t times_info;
-thread_t	thread;
+thread_t thread;
 if (*task_info_count < TASK_THREAD_TIMES_INFO_COUNT - (2 * sizeof(time_value64_t)) / sizeof(integer_t)) {
 return KERN_INVALID_ARGUMENT;
 }
@@ -550,7 +550,7 @@ queue_iterate(&task->thread_list, thread,
 thread_t, thread_list)
 {
 time_value64_t user_time, system_time;
-spl_t		 s;
+spl_t s;
 s = splsched();
 thread_lock(thread);
 thread_read_times(thread, &user_time, &system_time);
@@ -575,17 +575,17 @@ return KERN_INVALID_ARGUMENT;
 }
 return KERN_SUCCESS;
 }
-#if	MACH_HOST
+#if MACH_HOST
 kern_return_t
 task_assign(
-task_t		task,
-processor_set_t	new_pset,
-boolean_t	assign_threads)
+task_t task,
+processor_set_t new_pset,
+boolean_t assign_threads)
 {
-kern_return_t		ret = KERN_SUCCESS;
-thread_t	thread, prev_thread;
-queue_head_t	*list;
-processor_set_t	pset;
+kern_return_t ret = KERN_SUCCESS;
+thread_t thread, prev_thread;
+queue_head_t *list;
+processor_set_t pset;
 if (task == TASK_NULL || new_pset == PROCESSOR_SET_NULL) {
 return KERN_INVALID_ARGUMENT;
 }
@@ -597,7 +597,7 @@ task_unlock(task);
 thread_block(thread_no_continuation);
 task_lock(task);
 }
-if (task->processor_set == new_pset)  {
+if (task->processor_set == new_pset) {
 task_unlock(task);
 return KERN_SUCCESS;
 }
@@ -673,23 +673,23 @@ return ret;
 #else
 kern_return_t
 task_assign(
-task_t		task,
-processor_set_t	new_pset,
-boolean_t	assign_threads)
+task_t task,
+processor_set_t new_pset,
+boolean_t assign_threads)
 {
 return KERN_FAILURE;
 }
 #endif
 kern_return_t
 task_assign_default(
-task_t		task,
-boolean_t	assign_threads)
+task_t task,
+boolean_t assign_threads)
 {
 return task_assign(task, &default_pset, assign_threads);
 }
 kern_return_t task_get_assignment(
-task_t		task,
-processor_set_t	*pset)
+task_t task,
+processor_set_t *pset)
 {
 if (task == TASK_NULL)
 return KERN_INVALID_ARGUMENT;
@@ -701,18 +701,18 @@ return KERN_SUCCESS;
 }
 kern_return_t
 task_priority(
-task_t		task,
-int		priority,
-boolean_t	change_threads)
+task_t task,
+int priority,
+boolean_t change_threads)
 {
-kern_return_t	ret = KERN_SUCCESS;
+kern_return_t ret = KERN_SUCCESS;
 if (task == TASK_NULL || invalid_pri(priority))
 return KERN_INVALID_ARGUMENT;
 task_lock(task);
 task->priority = priority;
 if (change_threads) {
-thread_t	thread;
-queue_head_t	*list;
+thread_t thread;
+queue_head_t *list;
 list = &task->thread_list;
 queue_iterate(list, thread, thread_t, thread_list) {
 if (thread_priority(thread, priority, FALSE)
@@ -725,8 +725,8 @@ return ret;
 }
 kern_return_t
 task_set_name(
-task_t			task,
-const_kernel_debug_name_t	name)
+task_t task,
+const_kernel_debug_name_t name)
 {
 if (task == TASK_NULL)
 return KERN_INVALID_ARGUMENT;
@@ -736,8 +736,8 @@ return KERN_SUCCESS;
 }
 kern_return_t
 task_set_essential(
-task_t			task,
-boolean_t		essential)
+task_t task,
+boolean_t essential)
 {
 if (task == TASK_NULL)
 return KERN_INVALID_ARGUMENT;
@@ -746,8 +746,8 @@ return KERN_SUCCESS;
 }
 static void task_collect_scan(void)
 {
-task_t			task, prev_task;
-processor_set_t		pset, prev_pset;
+task_t task, prev_task;
+processor_set_t pset, prev_pset;
 prev_task = TASK_NULL;
 prev_pset = PROCESSOR_SET_NULL;
 simple_lock(&all_psets_lock);
@@ -799,21 +799,21 @@ vm_offset_t endpc,
 int flavor)
 {
 kern_return_t ret = KERN_FAILURE;
-#if	FAST_TAS
+#if FAST_TAS
 int i;
 ret = KERN_SUCCESS;
 task_lock(task);
-switch (flavor)  {
+switch (flavor) {
 case TASK_RAS_CONTROL_PURGE_ALL:
 for (i = 0; i < TASK_FAST_TAS_NRAS; i++) {
 task->fast_tas_base[i] = task->fast_tas_end[i] = 0;
 }
 break;
 case TASK_RAS_CONTROL_PURGE_ONE:
-for (i = 0; i < TASK_FAST_TAS_NRAS; i++)  {
+for (i = 0; i < TASK_FAST_TAS_NRAS; i++) {
 if ( (task->fast_tas_base[i] == pc)
-&& (task->fast_tas_end[i] == endpc))  {
-while (i < TASK_FAST_TAS_NRAS-1)  {
+&& (task->fast_tas_end[i] == endpc)) {
+while (i < TASK_FAST_TAS_NRAS-1) {
 task->fast_tas_base[i] = task->fast_tas_base[i+1];
 task->fast_tas_end[i] = task->fast_tas_end[i+1];
 i++;
@@ -832,9 +832,9 @@ for (i = 0; i < TASK_FAST_TAS_NRAS; i++) {
 task->fast_tas_base[i] = task->fast_tas_end[i] = 0;
 }
 case TASK_RAS_CONTROL_INSTALL_ONE:
-for (i = 0; i < TASK_FAST_TAS_NRAS; i++)  {
+for (i = 0; i < TASK_FAST_TAS_NRAS; i++) {
 if ( (task->fast_tas_base[i] == pc)
-&& (task->fast_tas_end[i] == endpc))   {
+&& (task->fast_tas_end[i] == endpc)) {
 break;
 }
 if ((task->fast_tas_base[i] == 0) && (task->fast_tas_end[i] == 0)){
@@ -843,7 +843,7 @@ task->fast_tas_end[i] = endpc;
 break;
 }
 }
-if (i == TASK_FAST_TAS_NRAS)  {
+if (i == TASK_FAST_TAS_NRAS) {
 ret = KERN_RESOURCE_SHORTAGE;
 }
 break;

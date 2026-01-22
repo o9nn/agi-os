@@ -5,7 +5,7 @@
 # include "evp_locl.h"
 # include <openssl/objects.h>
 # include <openssl/rc4.h>
-# define EVP_RC4_KEY_SIZE                16
+# define EVP_RC4_KEY_SIZE 16
 typedef struct {
 RC4_KEY ks;
 } EVP_RC4_KEY;
@@ -29,7 +29,7 @@ NULL
 };
 static const EVP_CIPHER r4_40_cipher = {
 NID_rc4_40,
-1, 5  , 0,
+1, 5 , 0,
 EVP_CIPH_VARIABLE_LENGTH,
 rc4_init_key,
 rc4_cipher,

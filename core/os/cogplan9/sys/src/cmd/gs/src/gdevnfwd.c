@@ -705,7 +705,7 @@ gx_forward_map_cmyk_color,\
 gx_forward_get_xfont_procs,\
 gx_forward_get_xfont_device,\
 gx_forward_map_rgb_alpha_color,\
-get_page_device,	\
+get_page_device, \
 gx_default_get_alpha_bits,\
 null_copy_alpha,\
 gx_forward_get_band,\
@@ -730,15 +730,15 @@ gx_non_imaging_create_compositor,\
 gx_forward_get_hardware_params,\
 gx_default_text_begin,\
 gx_default_finish_copydevice,\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-NULL,				\
-gx_default_DevGray_get_color_mapping_procs,	\
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+gx_default_DevGray_get_color_mapping_procs, \
 gx_default_DevGray_get_color_comp_index,\
-gx_default_gray_fast_encode,		\
-null_decode_color,		\
+gx_default_gray_fast_encode, \
+null_decode_color, \
 gx_default_pattern_manage,\
 gx_default_fill_rectangle_hl_color,\
 gx_default_include_color_space\
@@ -747,14 +747,14 @@ const gx_device_null gs_null_device = {
 std_device_std_body_type_open(gx_device_null, 0, "null", &st_device_null,
 0, 0, 72, 72),
 null_procs(gx_forward_upright_get_initial_matrix,
-gx_default_get_page_device      ),
+gx_default_get_page_device ),
 0
 };
 const gx_device_null gs_nullpage_device = {
 std_device_std_body_type_open(gx_device_null, 0, "nullpage", &st_device_null,
-72  , 72  , 72, 72),
+72 , 72 , 72, 72),
 null_procs( gx_forward_get_initial_matrix,
-gx_page_device_get_page_device  ),
+gx_page_device_get_page_device ),
 0
 };
 private void
@@ -770,7 +770,7 @@ dev_proc(tdev, get_initial_matrix)(tdev, pmat);
 private int
 null_decode_color(gx_device * dev, gx_color_index cindex, gx_color_value colors[])
 {
-colors[0] = (cindex & 1) ?  gx_max_color_value : 0;
+colors[0] = (cindex & 1) ? gx_max_color_value : 0;
 return 0;
 }
 private int

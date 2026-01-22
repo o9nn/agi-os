@@ -35,51 +35,51 @@
 #define SECTOR_BITS 9
 #define SECTORS_PER_FRAME (CD_FRAMESIZE / SECTOR_SIZE)
 #define MIN(a,b) ((a) < (b) ? (a) : (b))
-#define PACKET_COMMAND        4315
+#define PACKET_COMMAND 4315
 #define REQUEST_SENSE_COMMAND 4316
-#define RESET_DRIVE_COMMAND   4317
-#define TEST_UNIT_READY         0x00
-#define REQUEST_SENSE           0x03
-#define START_STOP              0x1b
-#define ALLOW_MEDIUM_REMOVAL    0x1e
-#define READ_CAPACITY		0x25
-#define READ_10                 0x28
-#define MODE_SENSE_10           0x5a
-#define MODE_SELECT_10          0x55
-#define READ_CD                 0xbe
-#define LOAD_UNLOAD             0xa6
-#define NO_SENSE                0x00
-#define RECOVERED_ERROR         0x01
-#define NOT_READY               0x02
-#define MEDIUM_ERROR            0x03
-#define HARDWARE_ERROR          0x04
-#define ILLEGAL_REQUEST         0x05
-#define UNIT_ATTENTION          0x06
-#define DATA_PROTECT            0x07
-#define ABORTED_COMMAND         0x0b
-#define MISCOMPARE              0x0e
+#define RESET_DRIVE_COMMAND 4317
+#define TEST_UNIT_READY 0x00
+#define REQUEST_SENSE 0x03
+#define START_STOP 0x1b
+#define ALLOW_MEDIUM_REMOVAL 0x1e
+#define READ_CAPACITY 0x25
+#define READ_10 0x28
+#define MODE_SENSE_10 0x5a
+#define MODE_SELECT_10 0x55
+#define READ_CD 0xbe
+#define LOAD_UNLOAD 0xa6
+#define NO_SENSE 0x00
+#define RECOVERED_ERROR 0x01
+#define NOT_READY 0x02
+#define MEDIUM_ERROR 0x03
+#define HARDWARE_ERROR 0x04
+#define ILLEGAL_REQUEST 0x05
+#define UNIT_ATTENTION 0x06
+#define DATA_PROTECT 0x07
+#define ABORTED_COMMAND 0x0b
+#define MISCOMPARE 0x0e
 struct ide_cd_config_flags {
-__u8 drq_interrupt    : 1;
-__u8 no_doorlock      : 1;
+__u8 drq_interrupt : 1;
+__u8 no_doorlock : 1;
 #if ! STANDARD_ATAPI
-__u8 old_readcd       : 1;
-__u8 playmsf_as_bcd   : 1;
-__u8 tocaddr_as_bcd   : 1;
+__u8 old_readcd : 1;
+__u8 playmsf_as_bcd : 1;
+__u8 tocaddr_as_bcd : 1;
 __u8 toctracks_as_bcd : 1;
-__u8 subchan_as_bcd   : 1;
+__u8 subchan_as_bcd : 1;
 #endif
-__u8 reserved         : 1;
+__u8 reserved : 1;
 };
 #define CDROM_CONFIG_FLAGS(drive) ((struct ide_cd_config_flags *)&((drive)->bios_sect))
 struct ide_cd_state_flags {
 __u8 media_changed : 1;
-__u8 toc_valid     : 1;
-__u8 door_locked   : 1;
+__u8 toc_valid : 1;
+__u8 door_locked : 1;
 __u8 eject_on_close: 1;
-__u8 sanyo_slot    : 2;
-__u8 reserved      : 2;
+__u8 sanyo_slot : 2;
+__u8 reserved : 2;
 };
-#define CDROM_STATE_FLAGS(drive)  ((struct ide_cd_state_flags *)&((drive)->bios_head))
+#define CDROM_STATE_FLAGS(drive) ((struct ide_cd_state_flags *)&((drive)->bios_head))
 #define SECTOR_BUFFER_SIZE CD_FRAMESIZE
 static inline
 void cdrom_in_bytes (ide_drive_t *drive, void *buffer, uint bytecount)
@@ -425,7 +425,7 @@ OUT_BYTE (0, IDE_FEATURE_REG);
 OUT_BYTE (0, IDE_NSECTOR_REG);
 OUT_BYTE (0, IDE_SECTOR_REG);
 OUT_BYTE (xferlen & 0xff, IDE_LCYL_REG);
-OUT_BYTE (xferlen >> 8  , IDE_HCYL_REG);
+OUT_BYTE (xferlen >> 8 , IDE_HCYL_REG);
 OUT_BYTE (drive->ctl, IDE_CONTROL_REG);
 if (CDROM_CONFIG_FLAGS (drive)->drq_interrupt) {
 ide_set_handler (drive, handler, WAIT_CMD);
@@ -828,7 +828,7 @@ void msf_from_bcd (struct atapi_msf *msf)
 {
 msf->minute = bcd2bin (msf->minute);
 msf->second = bcd2bin (msf->second);
-msf->frame  = bcd2bin (msf->frame);
+msf->frame = bcd2bin (msf->frame);
 }
 #endif
 static inline
@@ -847,7 +847,7 @@ int msf_to_lba (byte m, byte s, byte f)
 return (((m * CD_SECS) + s) * CD_FRAMES + f) - CD_BLOCK_OFFSET;
 }
 static int
-cdrom_check_status (ide_drive_t  *drive,
+cdrom_check_status (ide_drive_t *drive,
 struct atapi_request_sense *reqbuf)
 {
 struct packet_command pc;
@@ -969,7 +969,7 @@ int stat, ntracks, i;
 struct atapi_toc *toc = drive->cdrom_info.toc;
 struct {
 struct atapi_toc_header hdr;
-struct atapi_toc_entry  ent;
+struct atapi_toc_entry ent;
 } ms_tmp;
 if (toc == NULL) {
 toc = (struct atapi_toc *) kmalloc (sizeof (struct atapi_toc),
@@ -991,7 +991,7 @@ if (stat) return stat;
 #if ! STANDARD_ATAPI
 if (CDROM_CONFIG_FLAGS (drive)->toctracks_as_bcd) {
 toc->hdr.first_track = bcd2bin (toc->hdr.first_track);
-toc->hdr.last_track  = bcd2bin (toc->hdr.last_track);
+toc->hdr.last_track = bcd2bin (toc->hdr.last_track);
 }
 #endif
 ntracks = toc->hdr.last_track - toc->hdr.first_track + 1;
@@ -1007,7 +1007,7 @@ toc->hdr.toc_length = ntohs (toc->hdr.toc_length);
 #if ! STANDARD_ATAPI
 if (CDROM_CONFIG_FLAGS (drive)->toctracks_as_bcd) {
 toc->hdr.first_track = bcd2bin (toc->hdr.first_track);
-toc->hdr.last_track  = bcd2bin (toc->hdr.last_track);
+toc->hdr.last_track = bcd2bin (toc->hdr.last_track);
 }
 #endif
 for (i=0; i<=ntracks; i++) {
@@ -1288,7 +1288,7 @@ NULL);
 if (stat) return stat;
 if (ti.cdti_trk1 != CDROM_LEADOUT) ++last_toc;
 lba_start = first_toc->addr.lba;
-lba_end   = last_toc->addr.lba;
+lba_end = last_toc->addr.lba;
 if (lba_end <= lba_start) return -EINVAL;
 return cdrom_play_lba_range (drive, lba_start, lba_end, NULL);
 }
@@ -1319,7 +1319,7 @@ stat = cdrom_get_toc_entry (drive, tocentry.cdte_track, &toce,
 NULL);
 if (stat) return stat;
 tocentry.cdte_ctrl = toce->control;
-tocentry.cdte_adr  = toce->adr;
+tocentry.cdte_adr = toce->adr;
 if (tocentry.cdte_format == CDROM_MSF) {
 lba_to_msf (toce->addr.lba,
 &tocentry.cdte_addr.msf.minute,
@@ -1375,8 +1375,8 @@ scbuf.acdsc_reladdr.msf.frame);
 }
 subchnl.cdsc_audiostatus = scbuf.acdsc_audiostatus;
 subchnl.cdsc_ctrl = scbuf.acdsc_ctrl;
-subchnl.cdsc_trk  = scbuf.acdsc_trk;
-subchnl.cdsc_ind  = scbuf.acdsc_ind;
+subchnl.cdsc_trk = scbuf.acdsc_trk;
+subchnl.cdsc_ind = scbuf.acdsc_ind;
 memcpy_tofs ((void *) arg, &subchnl, sizeof (subchnl));
 return stat;
 }
@@ -1590,7 +1590,7 @@ stat = verify_area (VERIFY_WRITE, (void *) arg, len);
 if (stat) return stat;
 }
 lena = len;
-if (lena  < 0) lena = 0;
+if (lena < 0) lena = 0;
 {
 char buf[lena];
 if (len > 0) {
@@ -1658,8 +1658,8 @@ CD_FRAMESIZE;
 drive->special.all = 0;
 drive->ready_stat = 0;
 CDROM_STATE_FLAGS (drive)->media_changed = 0;
-CDROM_STATE_FLAGS (drive)->toc_valid     = 0;
-CDROM_STATE_FLAGS (drive)->door_locked   = 0;
+CDROM_STATE_FLAGS (drive)->toc_valid = 0;
+CDROM_STATE_FLAGS (drive)->door_locked = 0;
 CDROM_STATE_FLAGS (drive)->eject_on_close= 0;
 #if NO_DOOR_LOCKING
 CDROM_CONFIG_FLAGS (drive)->no_doorlock = 1;
@@ -1716,8 +1716,8 @@ CDROM_STATE_FLAGS (drive)->sanyo_slot = 3;
 }
 }
 #endif
-drive->cdrom_info.toc               = NULL;
-drive->cdrom_info.sector_buffer     = NULL;
-drive->cdrom_info.sector_buffered   = 0;
+drive->cdrom_info.toc = NULL;
+drive->cdrom_info.sector_buffer = NULL;
+drive->cdrom_info.sector_buffered = 0;
 drive->cdrom_info.nsectors_buffered = 0;
 }

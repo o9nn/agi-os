@@ -16,7 +16,7 @@ static const char * const medianame[32] = {
 "100baseFx-FDX", "MII 10baseT", "MII 10baseT-FDX", "MII",
 "10baseT(forced)", "MII 100baseTx", "MII 100baseTx-FDX", "MII 100baseT4",
 "MII 100baseFx-HDX", "MII 100baseFx-FDX", "Home-PNA 1Mbps", "Invalid-19",
-"","","","", "","","","",  "","","","Transceiver reset",
+"","","","", "","","","", "","","","Transceiver reset",
 };
 #ifdef REVERSE_PROBE_ORDER
 static int reverse_probe = 1;
@@ -37,22 +37,22 @@ static int csr0 = 0x01A00000 | 0x8000;
 static int csr0 = 0x00A00000 | 0x4800;
 #endif
 static int multicast_filter_limit = 32;
-#define TX_RING_SIZE	16
-#define TX_QUEUE_LEN	10
-#define RX_RING_SIZE	32
-#define TX_TIMEOUT  (6*HZ)
-#define PKT_BUF_SZ		1536
-#define FULL_DUPLEX_MAGIC	0x6969
+#define TX_RING_SIZE 16
+#define TX_QUEUE_LEN 10
+#define RX_RING_SIZE 32
+#define TX_TIMEOUT (6*HZ)
+#define PKT_BUF_SZ 1536
+#define FULL_DUPLEX_MAGIC 0x6969
 #ifndef __KERNEL__
 #define __KERNEL__
 #endif
 #if !defined(__OPTIMIZE__)
-#warning  You must compile this file with the correct options!
-#warning  See the last lines of the source file.
+#warning You must compile this file with the correct options!
+#warning See the last lines of the source file.
 #error You must compile this driver with "-O".
 #endif
 #include <linux/config.h>
-#if defined(CONFIG_SMP)  &&  ! defined(__SMP__)
+#if defined(CONFIG_SMP) && ! defined(__SMP__)
 #define __SMP__
 #endif
 #if defined(CONFIG_MODVERSIONS) && defined(MODULE) && ! defined(MODVERSIONS)
@@ -88,8 +88,8 @@ static int multicast_filter_limit = 32;
 #include "pci-scan.h"
 #include "kern_compat.h"
 #endif
-#define virt_to_le32desc(addr)  cpu_to_le32(virt_to_bus(addr))
-#if (LINUX_VERSION_CODE >= 0x20100)  &&  defined(MODULE)
+#define virt_to_le32desc(addr) cpu_to_le32(virt_to_bus(addr))
+#if (LINUX_VERSION_CODE >= 0x20100) && defined(MODULE)
 char kernel_version[] = UTS_RELEASE;
 #endif
 MODULE_AUTHOR("Donald Becker <becker@scyld.com>");
@@ -119,7 +119,7 @@ MODULE_PARM_DESC(reverse_probe, "Search PCI devices in reverse order to work "
 MODULE_PARM_DESC(csr0, "Special setting for the CSR0 PCI bus parameter "
 "register.");
 #endif
-#if (LINUX_VERSION_CODE < 0x20100)  ||  ! defined(MODULE)
+#if (LINUX_VERSION_CODE < 0x20100) || ! defined(MODULE)
 #define USE_IO_OPS
 #endif
 #ifndef USE_IO_OPS
@@ -140,13 +140,13 @@ static void *tulip_probe1(struct pci_dev *pdev, void *init_dev,
 long ioaddr, int irq, int chip_idx, int find_cnt);
 static int tulip_pwr_event(void *dev_instance, int event);
 #ifdef USE_IO_OPS
-#define TULIP_IOTYPE  PCI_USES_MASTER | PCI_USES_IO | PCI_ADDR0
+#define TULIP_IOTYPE PCI_USES_MASTER | PCI_USES_IO | PCI_ADDR0
 #define TULIP_SIZE 0x80
 #define TULIP_SIZE1 0x100
 #else
-#define TULIP_IOTYPE  PCI_USES_MASTER | PCI_USES_MEM | PCI_ADDR1
-#define TULIP_SIZE   0x400
-#define TULIP_SIZE1	0x400
+#define TULIP_IOTYPE PCI_USES_MASTER | PCI_USES_MEM | PCI_ADDR1
+#define TULIP_SIZE 0x400
+#define TULIP_SIZE1 0x400
 #endif
 enum tulip_chips {
 DC21040=0, DC21041=1, DC21140=2, DC21142=3, DC21143=3,
@@ -309,8 +309,8 @@ enum MediaIs {
 MediaIsFD = 1, MediaAlwaysFD=2, MediaIsMII=4, MediaIsFx=8,
 MediaIs100=16};
 static const char media_cap[32] =
-{0,0,0,16,  3,19,16,24,  27,4,7,5, 0,20,23,20,  28,31,0,0, };
-static u8 t21040_csr13[] = {2,0x0C,8,4,  4,0,0,0, 0,0,0,0, 4,0,0,0};
+{0,0,0,16, 3,19,16,24, 27,4,7,5, 0,20,23,20, 28,31,0,0, };
+static u8 t21040_csr13[] = {2,0x0C,8,4, 4,0,0,0, 0,0,0,0, 4,0,0,0};
 static u16 t21041_csr13[] = { 0xEF01, 0xEF09, 0xEF09, 0xEF01, 0xEF09, };
 static u16 t21041_csr14[] = { 0xFFFF, 0xF7FD, 0xF7FD, 0x6F3F, 0x6F3D, };
 static u16 t21041_csr15[] = { 0x0008, 0x0006, 0x000E, 0x0008, 0x0008, };
@@ -318,7 +318,7 @@ static u16 t21142_csr13[] = { 0x0001, 0x0009, 0x0009, 0x0000, 0x0001, };
 static u16 t21142_csr14[] = { 0xFFFF, 0x0705, 0x0705, 0x0000, 0x7F3D, };
 static u16 t21142_csr15[] = { 0x0008, 0x0006, 0x000E, 0x0008, 0x0008, };
 enum tulip_offsets {
-CSR0=0,    CSR1=0x08, CSR2=0x10, CSR3=0x18, CSR4=0x20, CSR5=0x28,
+CSR0=0, CSR1=0x08, CSR2=0x10, CSR3=0x18, CSR4=0x20, CSR5=0x28,
 CSR6=0x30, CSR7=0x38, CSR8=0x40, CSR9=0x48, CSR10=0x50, CSR11=0x58,
 CSR12=0x60, CSR13=0x68, CSR14=0x70, CSR15=0x78 };
 enum status_bits {
@@ -365,7 +365,7 @@ int info_type;
 int index;
 unsigned char *info;
 };
-#define PRIV_ALIGN	15
+#define PRIV_ALIGN 15
 struct tulip_private {
 struct tulip_rx_desc rx_ring[RX_RING_SIZE];
 struct tulip_tx_desc tx_ring[TX_RING_SIZE];
@@ -415,7 +415,7 @@ static int read_eeprom(long ioaddr, int location, int addr_len);
 static int mdio_read(struct net_device *dev, int phy_id, int location);
 static void mdio_write(struct net_device *dev, int phy_id, int location, int value);
 static int tulip_open(struct net_device *dev);
-static int  check_duplex(struct net_device *dev);
+static int check_duplex(struct net_device *dev);
 static void select_media(struct net_device *dev, int startup);
 static void init_media(struct net_device *dev);
 static void nway_lnk_change(struct net_device *dev, int csr5);
@@ -470,7 +470,7 @@ printk(KERN_INFO "%s: %s rev %d at %#3lx,",
 dev->name, pci_id_tbl[pci_tbl_idx].name, chip_rev, ioaddr);
 outl(inl(ioaddr + CSR6) & ~TxOn & ~RxOn, ioaddr + CSR6);
 inl(ioaddr + CSR8);
-if (chip_idx == DC21041  &&  inl(ioaddr + CSR9) & 0x8000) {
+if (chip_idx == DC21041 && inl(ioaddr + CSR9) & 0x8000) {
 printk(" 21040 compatible mode,");
 chip_idx = DC21040;
 }
@@ -481,7 +481,7 @@ for (i = 0; i < 6; i++) {
 int value, boguscnt = 100000;
 do
 value = inl(ioaddr + CSR9);
-while (value < 0  && --boguscnt > 0);
+while (value < 0 && --boguscnt > 0);
 dev->dev_addr[i] = value;
 sum += value & 0xff;
 }
@@ -491,7 +491,7 @@ int value, boguscnt = 100000;
 outl(0x600 | i, ioaddr + 0x98);
 do
 value = inl(ioaddr + CSR9);
-while (value < 0  && --boguscnt > 0);
+while (value < 0 && --boguscnt > 0);
 put_unaligned(le16_to_cpu(value), ((u16*)dev->dev_addr) + i);
 sum += value & 0xffff;
 }
@@ -512,9 +512,9 @@ for (i = 0; i < 8; i ++)
 if (ee_data[i] != ee_data[16+i])
 sa_offset = 20;
 if (chip_idx == CONEXANT) {
-if (ee_data[0x198] == 0x04  &&  ee_data[0x199] == 6)
+if (ee_data[0x198] == 0x04 && ee_data[0x199] == 6)
 sa_offset = 0x19A;
-} else if (ee_data[0] == 0xff  &&  ee_data[1] == 0xff &&
+} else if (ee_data[0] == 0xff && ee_data[1] == 0xff &&
 ee_data[2] == 0) {
 sa_offset = 2;
 multiport_cnt = 4;
@@ -524,14 +524,14 @@ dev->dev_addr[i] = ee_data[i + sa_offset];
 sum += ee_data[i + sa_offset];
 }
 }
-if ((dev->dev_addr[0] == 0xA0  ||  dev->dev_addr[0] == 0xC0)
-&&  dev->dev_addr[1] == 0x00)
+if ((dev->dev_addr[0] == 0xA0 || dev->dev_addr[0] == 0xC0)
+&& dev->dev_addr[1] == 0x00)
 for (i = 0; i < 6; i+=2) {
 char tmp = dev->dev_addr[i];
 dev->dev_addr[i] = dev->dev_addr[i+1];
 dev->dev_addr[i+1] = tmp;
 }
-if (sum == 0  || sum == 6*0xff) {
+if (sum == 0 || sum == 6*0xff) {
 printk(" EEPROM not present,");
 for (i = 0; i < 5; i++)
 dev->dev_addr[i] = last_phys_addr[i];
@@ -560,7 +560,7 @@ tp->rx_copybreak = rx_copybreak;
 tp->max_interrupt_work = max_interrupt_work;
 tp->multicast_filter_limit = multicast_filter_limit;
 tp->csr0 = csr0;
-if (chip_idx == DC21143  &&  chip_rev == 65)
+if (chip_idx == DC21143 && chip_rev == 65)
 tp->csr0 &= ~0x01000000;
 else if (tp->flags & IS_ASIX)
 tp->csr0 |= 0x2000;
@@ -574,7 +574,7 @@ tp->default_port = TULIP_DEFAULT_MEDIA;
 #ifdef TULIP_NO_MEDIA_SWITCH
 tp->medialock = 1;
 #endif
-if (find_cnt >= 0  &&  find_cnt < MAX_UNITS) {
+if (find_cnt >= 0 && find_cnt < MAX_UNITS) {
 if (options[find_cnt] & 0x1f)
 tp->default_port = options[find_cnt] & 0x1f;
 if ((options[find_cnt] & 0x200) || full_duplex[find_cnt] > 0)
@@ -628,10 +628,10 @@ struct tulip_private *tp = (struct tulip_private *)dev->priv;
 long ioaddr = dev->base_addr;
 int i;
 if ((tp->flags & ALWAYS_CHECK_MII) ||
-(tp->mtable  &&  tp->mtable->has_mii) ||
-( ! tp->mtable  &&  (tp->flags & HAS_MII))) {
+(tp->mtable && tp->mtable->has_mii) ||
+( ! tp->mtable && (tp->flags & HAS_MII))) {
 int phyn, phy_idx = 0;
-if (tp->mtable  &&  tp->mtable->has_mii) {
+if (tp->mtable && tp->mtable->has_mii) {
 for (i = 0; i < tp->mtable->leafcount; i++)
 if (tp->mtable->mleaf[i].media == 11) {
 tp->cur_index = i;
@@ -645,7 +645,7 @@ for (phyn = 1; phyn <= 32 && phy_idx < sizeof(tp->phys); phyn++) {
 int phy = phyn & 0x1f;
 int mii_status = mdio_read(dev, phy, 1);
 if ((mii_status & 0x8301) == 0x8001 ||
-((mii_status & 0x8000) == 0  && (mii_status & 0x7800) != 0)) {
+((mii_status & 0x8000) == 0 && (mii_status & 0x7800) != 0)) {
 int mii_reg0 = mdio_read(dev, phy, 0);
 int mii_advert = mdio_read(dev, phy, 4);
 int to_advert;
@@ -672,7 +672,7 @@ mdio_write(dev, phy, 0, (mii_reg0 & ~0x3000) |
 }
 }
 tp->mii_cnt = phy_idx;
-if (tp->mtable  &&  tp->mtable->has_mii  &&  phy_idx == 0) {
+if (tp->mtable && tp->mtable->has_mii && phy_idx == 0) {
 printk(KERN_INFO "%s: ***WARNING***: No MII transceiver found!\n",
 dev->name);
 tp->phys[0] = 1;
@@ -698,7 +698,7 @@ outl(tp->mtable->csr12dir | 0x100, ioaddr + CSR12);
 break;
 case DC21142:
 case PNIC2:
-if (tp->mii_cnt  ||  media_cap[dev->if_port] & MediaIsMII) {
+if (tp->mii_cnt || media_cap[dev->if_port] & MediaIsMII) {
 outl(0x82020000, ioaddr + CSR6);
 outl(0x0000, ioaddr + CSR13);
 outl(0x0000, ioaddr + CSR14);
@@ -743,14 +743,14 @@ u16 newtable[32];
 0x0000, 0x009E,
 0x0004, 0x009E,
 0x0903, 0x006D,
-0x0905, 0x006D,  }},
+0x0905, 0x006D, }},
 {"Cogent EM100", 0, 0, 0x92, { 0x1e00, 0x0000, 0x0800, 0x063f,
 0x0107, 0x8021,
 0x0108, 0x8021,
 0x0100, 0x009E,
 0x0104, 0x009E,
 0x0103, 0x006D,
-0x0105, 0x006D,  }},
+0x0105, 0x006D, }},
 {"Maxtech NX-110", 0, 0, 0xE8, { 0x1e00, 0x0000, 0x0800, 0x0513,
 0x1001, 0x009E,
 0x0000, 0x009E,
@@ -802,9 +802,9 @@ return;
 }
 for (i = 0; eeprom_fixups[i].name; i++) {
 if (dev->dev_addr[0] == eeprom_fixups[i].addr0
-&&  dev->dev_addr[1] == eeprom_fixups[i].addr1
-&&  dev->dev_addr[2] == eeprom_fixups[i].addr2) {
-if (dev->dev_addr[2] == 0xE8  &&  ee_data[0x1a] == 0x55)
+&& dev->dev_addr[1] == eeprom_fixups[i].addr1
+&& dev->dev_addr[2] == eeprom_fixups[i].addr2) {
+if (dev->dev_addr[2] == 0xE8 && ee_data[0x1a] == 0x55)
 i++;
 memcpy(ee_data + 26, eeprom_fixups[i].newtable,
 sizeof(eeprom_fixups[i].newtable));
@@ -828,7 +828,7 @@ struct tulip_private *otp;
 last_ee_data = ee_data;
 for (prev_dev = tp->next_module; prev_dev; prev_dev = otp->next_module) {
 otp = (struct tulip_private *)prev_dev->priv;
-if (otp->eeprom[0] == 0xff  &&  otp->mtable == 0) {
+if (otp->eeprom[0] == 0xff && otp->mtable == 0) {
 parse_eeprom(prev_dev);
 start_link(prev_dev);
 } else
@@ -943,15 +943,15 @@ if (new_advertise)
 tp->sym_advertise = new_advertise;
 }
 }
-#define EE_SHIFT_CLK	0x02
-#define EE_CS			0x01
-#define EE_DATA_WRITE	0x04
-#define EE_WRITE_0		0x01
-#define EE_WRITE_1		0x05
-#define EE_DATA_READ	0x08
-#define EE_ENB			(0x4800 | EE_CS)
-#define eeprom_delay()	inl(ee_addr)
-#define EE_READ_CMD		(6)
+#define EE_SHIFT_CLK 0x02
+#define EE_CS 0x01
+#define EE_DATA_WRITE 0x04
+#define EE_WRITE_0 0x01
+#define EE_WRITE_1 0x05
+#define EE_DATA_READ 0x08
+#define EE_ENB (0x4800 | EE_CS)
+#define eeprom_delay() inl(ee_addr)
+#define EE_READ_CMD (6)
 static int read_eeprom(long ioaddr, int location, int addr_len)
 {
 int i;
@@ -981,15 +981,15 @@ outl(EE_ENB & ~EE_CS, ee_addr);
 return retval;
 }
 #define mdio_delay() inl(mdio_addr)
-#define MDIO_SHIFT_CLK	0x10000
+#define MDIO_SHIFT_CLK 0x10000
 #define MDIO_DATA_WRITE0 0x00000
 #define MDIO_DATA_WRITE1 0x20000
-#define MDIO_ENB		0x00000
-#define MDIO_ENB_IN		0x40000
-#define MDIO_DATA_READ	0x80000
+#define MDIO_ENB 0x00000
+#define MDIO_ENB_IN 0x40000
+#define MDIO_DATA_READ 0x80000
 static const unsigned char comet_miireg2offset[32] = {
-0xB4, 0xB8, 0xBC, 0xC0,  0xC4, 0xC8, 0xCC, 0,  0,0,0,0,  0,0,0,0,
-0,0xD0,0,0,  0,0,0,0,  0,0,0,0, 0, 0xD4, 0xD8, 0xDC, };
+0xB4, 0xB8, 0xBC, 0xC0, 0xC4, 0xC8, 0xCC, 0, 0,0,0,0, 0,0,0,0,
+0,0xD0,0,0, 0,0,0,0, 0,0,0,0, 0, 0xD4, 0xD8, 0xDC, };
 static int mdio_read(struct net_device *dev, int phy_id, int location)
 {
 struct tulip_private *tp = (struct tulip_private *)dev->priv;
@@ -1001,7 +1001,7 @@ long mdio_addr = ioaddr + CSR9;
 unsigned long flags;
 if (location & ~0x1f)
 return 0xffff;
-if (tp->chip_id == COMET  &&  phy_id == 30) {
+if (tp->chip_id == COMET && phy_id == 30) {
 if (comet_miireg2offset[location])
 return inl(ioaddr + comet_miireg2offset[location]);
 return 0xffff;
@@ -1053,7 +1053,7 @@ long mdio_addr = ioaddr + CSR9;
 unsigned long flags;
 if (location & ~0x1f)
 return;
-if (tp->chip_id == COMET  &&  phy_id == 30) {
+if (tp->chip_id == COMET && phy_id == 30) {
 if (comet_miireg2offset[location])
 outl(val, ioaddr + comet_miireg2offset[location]);
 return;
@@ -1099,7 +1099,7 @@ long ioaddr = dev->base_addr;
 int next_tick = 3*HZ;
 if (tp->flags & HAS_PWRDWN)
 pci_write_config_dword(tp->pci_dev, 0x40, 0);
-if (tp->mii_cnt  ||  (tp->mtable  &&  tp->mtable->has_mii))
+if (tp->mii_cnt || (tp->mtable && tp->mtable->has_mii))
 outl(0x00040000, ioaddr + CSR6);
 outl(0x00000001, ioaddr + CSR0);
 MOD_INC_USE_COUNT;
@@ -1123,11 +1123,11 @@ u32 addr_low = cpu_to_le32(get_unaligned((u32 *)dev->dev_addr));
 u32 addr_high = cpu_to_le16(get_unaligned((u16 *)(dev->dev_addr+4)));
 if (tp->flags & IS_ASIX) {
 outl(0, ioaddr + CSR13);
-outl(addr_low,  ioaddr + CSR14);
+outl(addr_low, ioaddr + CSR14);
 outl(1, ioaddr + CSR13);
 outl(addr_high, ioaddr + CSR14);
 } else if (tp->flags & COMET_MAC_ADDR) {
-outl(addr_low,  ioaddr + 0xA4);
+outl(addr_low, ioaddr + 0xA4);
 outl(addr_high, ioaddr + 0xA8);
 outl(0, ioaddr + 0xAC);
 outl(0, ioaddr + 0xB0);
@@ -1197,7 +1197,7 @@ tp->csr6 = 0;
 tp->cur_index = i;
 tp->nwayset = 0;
 if (dev->if_port) {
-if (tp->chip_id == DC21143  &&
+if (tp->chip_id == DC21143 &&
 (media_cap[dev->if_port] & MediaIsMII)) {
 outl(0x0000, ioaddr + CSR13);
 outl(0x0000, ioaddr + CSR14);
@@ -1421,7 +1421,7 @@ outl(0x32, ioaddr + CSR12);
 new_csr6 = 0x00420000;
 outl(0x0001B078, ioaddr + 0xB8);
 outl(0x0201B078, ioaddr + 0xB8);
-} else if (dev->if_port == 3  ||  dev->if_port == 5) {
+} else if (dev->if_port == 3 || dev->if_port == 5) {
 outl(0x33, ioaddr + CSR12);
 new_csr6 = 0x01860000;
 outl(startup ? 0x0201F868 : 0x0001F868, ioaddr + 0xB8);
@@ -1481,7 +1481,7 @@ printk(KERN_INFO "%s: MII link partner %4.4x, negotiated %4.4x.\n",
 dev->name, mii_reg5, negotiated);
 if (mii_reg5 == 0xffff)
 return -2;
-if ((mii_reg5 & 0x4000) == 0  &&
+if ((mii_reg5 & 0x4000) == 0 &&
 ((mii_reg1 = mdio_read(dev, tp->phys[0], 1)) & 0x0004) == 0) {
 int new_reg1 = mdio_read(dev, tp->phys[0], 1);
 if ((new_reg1 & 0x0004) == 0) {
@@ -1498,7 +1498,7 @@ tp->full_duplex = duplex;
 if (negotiated & 0x0380)
 tp->csr6 &= ~0x00400000;
 if (tp->full_duplex) tp->csr6 |= FullDuplex;
-else				 tp->csr6 &= ~FullDuplex;
+else tp->csr6 &= ~FullDuplex;
 outl(tp->csr6 | RxOn, ioaddr + CSR6);
 outl(tp->csr6 | TxOn | RxOn, ioaddr + CSR6);
 if (tp->msg_level & NETIF_MSG_LINK)
@@ -1525,7 +1525,7 @@ dev->name, medianame[dev->if_port], (int)inl(ioaddr + CSR5),
 (int)inl(ioaddr + CSR14), (int)inl(ioaddr + CSR15));
 switch (tp->chip_id) {
 case DC21040:
-if (!tp->medialock  &&  (csr12 & 0x0002)) {
+if (!tp->medialock && (csr12 & 0x0002)) {
 if (tp->msg_level & NETIF_MSG_TIMER)
 printk(KERN_INFO "%s: No link beat found.\n",
 dev->name);
@@ -1581,7 +1581,7 @@ next_tick = 20*HZ;
 break;
 }
 break;
-case DC21140:  case DC21142: case MX98713: case COMPEX9881: default: {
+case DC21140: case DC21142: case MX98713: case COMPEX9881: default: {
 struct medialeaf *mleaf;
 unsigned char *p;
 if (tp->mtable == NULL) {
@@ -1644,7 +1644,7 @@ outl(tp->csr6 | TxOn | RxOn, ioaddr + CSR6);
 next_tick = (24*HZ)/10;
 break;
 }
-case 1:  case 3:
+case 1: case 3:
 actually_mii:
 check_duplex(dev);
 next_tick = 60*HZ;
@@ -1717,7 +1717,7 @@ outl(tp->csr6 | TxOn | RxOn, ioaddr + CSR6);
 }
 next_tick = 3*HZ;
 }
-if (tp->cur_tx - tp->dirty_tx > 0  &&
+if (tp->cur_tx - tp->dirty_tx > 0 &&
 jiffies - dev->trans_start > TX_TIMEOUT) {
 printk(KERN_WARNING "%s: Tx hung, %d vs. %d.\n",
 dev->name, tp->cur_tx, tp->dirty_tx);
@@ -1730,7 +1730,7 @@ static void nway_start(struct net_device *dev)
 {
 struct tulip_private *tp = (struct tulip_private *)dev->priv;
 long ioaddr = dev->base_addr;
-int csr14 = ((tp->sym_advertise & 0x0780) << 9)  |
+int csr14 = ((tp->sym_advertise & 0x0780) << 9) |
 ((tp->sym_advertise&0x0020)<<1) | 0xffbf;
 dev->if_port = 0;
 tp->nway = tp->mediasense = 1;
@@ -1747,7 +1747,7 @@ outl(csr14, ioaddr + CSR14);
 tp->csr6 = 0x82420000 | (tp->sym_advertise & 0x0040 ? FullDuplex : 0)
 | (tp->csr6 & 0x20ff);
 outl(tp->csr6, ioaddr + CSR6);
-if (tp->mtable  &&  tp->mtable->csr15dir) {
+if (tp->mtable && tp->mtable->csr15dir) {
 outl(tp->mtable->csr15dir, ioaddr + CSR15);
 outl(tp->mtable->csr15val, ioaddr + CSR15);
 } else if (tp->chip_id != PNIC2)
@@ -1777,18 +1777,18 @@ return;
 if (tp->msg_level & NETIF_MSG_LINK)
 printk(KERN_INFO"%s: 21143 link status interrupt %8.8x, CSR5 %x, "
 "%8.8x.\n", dev->name, csr12, csr5, (int)inl(ioaddr + CSR14));
-if (tp->nway  &&  !tp->nwayset  &&  (csr12 & 0x7000) == 0x5000) {
+if (tp->nway && !tp->nwayset && (csr12 & 0x7000) == 0x5000) {
 int setup_done = 0;
 int negotiated = tp->sym_advertise & (csr12 >> 16);
 tp->lpar = csr12 >> 16;
 tp->nwayset = 1;
-if (negotiated & 0x0100)		dev->if_port = 5;
-else if (negotiated & 0x0080)	dev->if_port = 3;
-else if (negotiated & 0x0040)	dev->if_port = 4;
-else if (negotiated & 0x0020)	dev->if_port = 0;
+if (negotiated & 0x0100) dev->if_port = 5;
+else if (negotiated & 0x0080) dev->if_port = 3;
+else if (negotiated & 0x0040) dev->if_port = 4;
+else if (negotiated & 0x0020) dev->if_port = 0;
 else {
 tp->nwayset = 0;
-if ((csr12 & 2) == 0  &&  (tp->sym_advertise & 0x0180))
+if ((csr12 & 2) == 0 && (tp->sym_advertise & 0x0180))
 dev->if_port = 3;
 }
 tp->full_duplex = (media_cap[dev->if_port] & MediaAlwaysFD) ? 1:0;
@@ -1831,27 +1831,27 @@ if (tp->msg_level & NETIF_MSG_LINK)
 printk(KERN_DEBUG "%s:  Setting CSR6 %8.8x/%x CSR12 %8.8x.\n",
 dev->name, tp->csr6, (int)inl(ioaddr + CSR6),
 (int)inl(ioaddr + CSR12));
-} else if ((tp->nwayset  &&  (csr5 & 0x08000000)
-&& (dev->if_port == 3  ||  dev->if_port == 5)
+} else if ((tp->nwayset && (csr5 & 0x08000000)
+&& (dev->if_port == 3 || dev->if_port == 5)
 && (csr12 & 2) == 2) ||
 (tp->nway && (csr5 & (TPLnkFail)))) {
 del_timer(&tp->timer);
 nway_start(dev);
 tp->timer.expires = jiffies + 3*HZ;
 add_timer(&tp->timer);
-} else if (dev->if_port == 3  ||  dev->if_port == 5) {
+} else if (dev->if_port == 3 || dev->if_port == 5) {
 if (tp->msg_level & NETIF_MSG_LINK)
 printk(KERN_INFO"%s: 21143 %s link beat %s.\n",
 dev->name, medianame[dev->if_port],
 (csr12 & 2) ? "failed" : "good");
-if ((csr12 & 2)  &&  ! tp->medialock) {
+if ((csr12 & 2) && ! tp->medialock) {
 del_timer(&tp->timer);
 nway_start(dev);
 tp->timer.expires = jiffies + 3*HZ;
 add_timer(&tp->timer);
 } else if (dev->if_port == 5)
 outl(inl(ioaddr + CSR14) & ~0x080, ioaddr + CSR14);
-} else if (dev->if_port == 0  ||  dev->if_port == 4) {
+} else if (dev->if_port == 0 || dev->if_port == 4) {
 if ((csr12 & 4) == 0)
 printk(KERN_INFO"%s: 21143 10baseT link beat good.\n",
 dev->name);
@@ -1896,10 +1896,10 @@ long ioaddr = dev->base_addr;
 u32 phy_reg = inl(ioaddr + 0xB8);
 u32 new_csr6 = tp->csr6 & ~0x40C40200;
 if (phy_reg & 0x78000000) {
-if (phy_reg & 0x20000000)		dev->if_port = 5;
-else if (phy_reg & 0x40000000)	dev->if_port = 3;
-else if (phy_reg & 0x10000000)	dev->if_port = 4;
-else if (phy_reg & 0x08000000)	dev->if_port = 0;
+if (phy_reg & 0x20000000) dev->if_port = 5;
+else if (phy_reg & 0x40000000) dev->if_port = 3;
+else if (phy_reg & 0x10000000) dev->if_port = 4;
+else if (phy_reg & 0x08000000) dev->if_port = 0;
 tp->nwayset = 1;
 new_csr6 = (dev->if_port & 1) ? 0x01860000 : 0x00420000;
 outl(0x32 | (dev->if_port & 1), ioaddr + CSR12);
@@ -1930,7 +1930,7 @@ printk(KERN_DEBUG "%s: PNIC link changed state %8.8x, CSR5 %8.8x.\n",
 dev->name, phy_reg, csr5);
 if (inl(ioaddr + CSR5) & TPLnkFail) {
 outl((inl(ioaddr + CSR7) & ~TPLnkFail) | TPLnkPass, ioaddr + CSR7);
-if (! tp->nwayset  ||  jiffies - dev->trans_start > 1*HZ) {
+if (! tp->nwayset || jiffies - dev->trans_start > 1*HZ) {
 tp->csr6 = 0x00420000 | (tp->csr6 & 0x0000fdff);
 outl(tp->csr6, ioaddr + CSR6);
 outl(0x30, ioaddr + CSR12);
@@ -1975,7 +1975,7 @@ dev->name, medianame[dev->if_port], csr12,
 (int)inl(ioaddr + CSR5), (int)inl(ioaddr + 0xB8));
 next_tick = 3*HZ;
 if (tp->medialock) {
-} else if (tp->nwayset  &&  (dev->if_port & 1)) {
+} else if (tp->nwayset && (dev->if_port & 1)) {
 next_tick = 1*HZ;
 } else if (dev->if_port == 0) {
 dev->if_port = 3;
@@ -2035,7 +2035,7 @@ return;
 }
 } else switch (tp->chip_id) {
 case DC21040:
-if ( !tp->medialock  &&  inl(ioaddr + CSR12) & 0x0002) {
+if ( !tp->medialock && inl(ioaddr + CSR12) & 0x0002) {
 dev->if_port = (dev->if_port == 2 ? 0 : 2);
 printk(KERN_INFO "%s: transmit timed out, switching to "
 "%s.\n",
@@ -2077,7 +2077,7 @@ dev->name, tulip_tbl[tp->chip_id].chip_name,
 (int)inl(ioaddr + CSR5), (int)inl(ioaddr + CSR12),
 (int)inl(ioaddr + CSR13), (int)inl(ioaddr + CSR14),
 (int)inl(ioaddr + CSR15));
-if ( ! tp->medialock  &&  tp->mtable) {
+if ( ! tp->medialock && tp->mtable) {
 do
 --tp->cur_index;
 while (tp->cur_index >= 0
@@ -2102,7 +2102,7 @@ printk(KERN_WARNING "%s: Transmit timed out, status %8.8x, CSR12 "
 "%8.8x, resetting...\n",
 dev->name, (int)inl(ioaddr + CSR5), (int)inl(ioaddr + CSR12));
 }
-#if defined(way_too_many_messages)  &&  defined(__i386__)
+#if defined(way_too_many_messages) && defined(__i386__)
 if (tp->msg_level & NETIF_MSG_TXERR) {
 int i;
 for (i = 0; i < RX_RING_SIZE; i++) {
@@ -2275,7 +2275,7 @@ dev->name, dirty_tx, tp->cur_tx, tp->tx_full);
 dirty_tx += TX_RING_SIZE;
 }
 #endif
-if (tp->tx_full && tp->cur_tx - dirty_tx  < TX_QUEUE_LEN - 4) {
+if (tp->tx_full && tp->cur_tx - dirty_tx < TX_QUEUE_LEN - 4) {
 tp->tx_full = 0;
 netif_resume_tx_queue(dev);
 }
@@ -2502,7 +2502,7 @@ static struct net_device_stats *tulip_get_stats(struct net_device *dev)
 struct tulip_private *tp = (struct tulip_private *)dev->priv;
 long ioaddr = dev->base_addr;
 int csr8 = inl(ioaddr + CSR8);
-if (netif_running(dev)  &&  csr8 != 0xffffffff)
+if (netif_running(dev) && csr8 != 0xffffffff)
 tp->stats.rx_missed_errors += (u16)csr8;
 return &tp->stats;
 }
@@ -2526,7 +2526,7 @@ data[0] = 1;
 else
 return -ENODEV;
 case 0x8948: case 0x89F1:
-if (data[0] == 32  &&  (tp->flags & HAS_NWAY)) {
+if (data[0] == 32 && (tp->flags & HAS_NWAY)) {
 int csr12 = inl(ioaddr + CSR12);
 int csr14 = inl(ioaddr + CSR14);
 switch (regnum) {
@@ -2573,7 +2573,7 @@ break;
 case 4: tp->mii_advertise = data[2]; break;
 }
 }
-if (data[0] == 32  &&  (tp->flags & HAS_NWAY)) {
+if (data[0] == 32 && (tp->flags & HAS_NWAY)) {
 u16 value = data[2];
 if (regnum == 0) {
 if ((value & 0x1200) == 0x1200)
@@ -2651,11 +2651,11 @@ if (dev->flags & IFF_PROMISC) {
 tp->csr6 |= AcceptAllMulticast | AcceptAllPhys;
 csr6 |= AcceptAllMulticast | AcceptAllPhys;
 printk(KERN_INFO "%s: Promiscuous mode enabled.\n", dev->name);
-} else if ((dev->mc_count > tp->multicast_filter_limit)  ||
+} else if ((dev->mc_count > tp->multicast_filter_limit) ||
 (dev->flags & IFF_ALLMULTI)) {
 tp->csr6 |= AcceptAllMulticast;
 csr6 |= AcceptAllMulticast;
-} else	if (tp->flags & MC_HASH_ONLY) {
+} else if (tp->flags & MC_HASH_ONLY) {
 struct dev_mc_list *mclist;
 int i;
 if (dev->mc_count > tp->multicast_filter_limit) {
@@ -2680,7 +2680,7 @@ mclist->dmi_addr[2], mclist->dmi_addr[3],
 mclist->dmi_addr[4], mclist->dmi_addr[5],
 ether_crc(ETH_ALEN, mclist->dmi_addr), filterbit);
 }
-if (mc_filter[0] == tp->mc_filter[0]  &&
+if (mc_filter[0] == tp->mc_filter[0] &&
 mc_filter[1] == tp->mc_filter[1])
 ;
 else if (tp->flags & IS_ASIX) {
@@ -2792,7 +2792,7 @@ outl(virt_to_bus(tp->rx_ring), ioaddr + CSR3);
 outl(virt_to_bus(tp->tx_ring), ioaddr + CSR4);
 if (tp->mii_cnt) {
 dev->if_port = 11;
-if (tp->mtable  &&  tp->mtable->has_mii)
+if (tp->mtable && tp->mtable->has_mii)
 select_media(dev, 1);
 tp->csr6 = 0x820E0000;
 dev->if_port = 11;

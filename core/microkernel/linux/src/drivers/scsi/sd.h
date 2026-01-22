@@ -10,7 +10,7 @@ extern struct hd_struct * sd;
 typedef struct scsi_disk {
 unsigned capacity;
 unsigned sector_size;
-Scsi_Device	 *device;
+Scsi_Device *device;
 unsigned char ready;
 unsigned char write_prot;
 unsigned char sector_bit_size;

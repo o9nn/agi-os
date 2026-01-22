@@ -2,14 +2,14 @@
 #define _HACK_INTERRUPT_H_
 #include <linux/netdevice.h>
 #include "pfinet.h"
-#define in_interrupt()		(0)
-#define synchronize_irq()	((void) 0)
-#define synchronize_bh()	((void) 0)
-#define start_bh_atomic()	((void) 0)
-#define end_bh_atomic()		((void) 0)
+#define in_interrupt() (0)
+#define synchronize_irq() ((void) 0)
+#define synchronize_bh() ((void) 0)
+#define start_bh_atomic() ((void) 0)
+#define end_bh_atomic() ((void) 0)
 extern pthread_cond_t net_bh_wakeup;
 extern int net_bh_raised;
-#define NET_BH	0xb00bee51
+#define NET_BH 0xb00bee51
 static inline void
 mark_bh (int bh)
 {

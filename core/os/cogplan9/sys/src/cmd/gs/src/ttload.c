@@ -6,48 +6,48 @@
 #include "ttload.h"
 #include "ttfinp.h"
 #ifdef DEBUG
-#  define DebugTrace( font, fmt )  (void)(!font->DebugPrint ? 0 : font->DebugPrint(font, fmt))
-#  define DebugTrace1( font, fmt, x)  (void)(!font->DebugPrint ? 0 : font->DebugPrint(font, fmt, x))
+# define DebugTrace( font, fmt ) (void)(!font->DebugPrint ? 0 : font->DebugPrint(font, fmt))
+# define DebugTrace1( font, fmt, x) (void)(!font->DebugPrint ? 0 : font->DebugPrint(font, fmt, x))
 #else
-#  define DebugTrace( font, fmt )
-#  define DebugTrace1( font, fmt, x)
+# define DebugTrace( font, fmt )
+# define DebugTrace1( font, fmt, x)
 #endif
-TT_Error  Load_TrueType_MaxProfile( PFace  face )
+TT_Error Load_TrueType_MaxProfile( PFace face )
 {
 ttfReader *r = face->r;
 ttfFont *font = face->font;
-PMaxProfile  maxProfile = &face->maxProfile;
+PMaxProfile maxProfile = &face->maxProfile;
 r->Seek(r, font->t_maxp.nPos);
 DebugTrace(font, "MaxProfile " );
-maxProfile->version               = GET_ULong();
-maxProfile->numGlyphs             = GET_UShort();
-maxProfile->maxPoints             = GET_UShort();
-maxProfile->maxContours           = GET_UShort();
-maxProfile->maxCompositePoints    = GET_UShort();
-maxProfile->maxCompositeContours  = GET_UShort();
-maxProfile->maxZones              = GET_UShort();
-maxProfile->maxTwilightPoints     = GET_UShort();
-maxProfile->maxStorage            = GET_UShort();
-maxProfile->maxFunctionDefs       = GET_UShort();
-maxProfile->maxInstructionDefs    = GET_UShort();
-maxProfile->maxStackElements      = GET_UShort();
+maxProfile->version = GET_ULong();
+maxProfile->numGlyphs = GET_UShort();
+maxProfile->maxPoints = GET_UShort();
+maxProfile->maxContours = GET_UShort();
+maxProfile->maxCompositePoints = GET_UShort();
+maxProfile->maxCompositeContours = GET_UShort();
+maxProfile->maxZones = GET_UShort();
+maxProfile->maxTwilightPoints = GET_UShort();
+maxProfile->maxStorage = GET_UShort();
+maxProfile->maxFunctionDefs = GET_UShort();
+maxProfile->maxInstructionDefs = GET_UShort();
+maxProfile->maxStackElements = GET_UShort();
 maxProfile->maxSizeOfInstructions = GET_UShort();
-maxProfile->maxComponentElements  = GET_UShort();
-maxProfile->maxComponentDepth     = GET_UShort();
-face->numGlyphs     = maxProfile->numGlyphs;
-face->maxPoints     = MAX( maxProfile->maxCompositePoints,
+maxProfile->maxComponentElements = GET_UShort();
+maxProfile->maxComponentDepth = GET_UShort();
+face->numGlyphs = maxProfile->numGlyphs;
+face->maxPoints = MAX( maxProfile->maxCompositePoints,
 maxProfile->maxPoints );
-face->maxContours   = MAX( maxProfile->maxCompositeContours,
+face->maxContours = MAX( maxProfile->maxCompositeContours,
 maxProfile->maxContours );
 face->maxComponents = maxProfile->maxComponentElements +
 maxProfile->maxComponentDepth;
 DebugTrace(font, "loaded\n");
 return TT_Err_Ok;
 }
-TT_Error  Load_TrueType_CVT( PFace  face )
+TT_Error Load_TrueType_CVT( PFace face )
 {
-long  n;
-Int  limit;
+long n;
+Int limit;
 ttfReader *r = face->r;
 ttfFont *font = face->font;
 ttfMemory *mem = font->tti->ttf_memory;
@@ -55,10 +55,10 @@ r->Seek(r, font->t_cvt_.nPos);
 face->cvt=NULL;
 DebugTrace(font, "CVT ");
 face->cvtSize = font->t_cvt_.nLen / 2;
-#   if 0
+# if 0
 if(face->cvtSize < 300)
 face->cvtSize = 300;
-#   endif
+# endif
 if(face->cvtSize > 0) {
 face->cvt = mem->alloc_bytes(mem, face->cvtSize * sizeof(Short), "Load_TrueType_CVT");
 if (!face->cvt)
@@ -70,7 +70,7 @@ face->cvt[n] = GET_Short();
 DebugTrace(font, "loaded\n");
 return TT_Err_Ok;
 }
-TT_Error  Load_TrueType_Programs( PFace  face )
+TT_Error Load_TrueType_Programs( PFace face )
 {
 ttfReader *r = face->r;
 ttfFont *font = face->font;

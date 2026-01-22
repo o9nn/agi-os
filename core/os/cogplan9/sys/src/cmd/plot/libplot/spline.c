@@ -1,7 +1,7 @@
 #include "mplot.h"
 void splin(int mode, int num[], double *ff[]){
-int	i,  *np, n;
-double	xa, ya, xc, yc, *xp, *yp, *xp0, *yp0, *xpe, *ype;
+int i, *np, n;
+double xa, ya, xc, yc, *xp, *yp, *xp0, *yp0, *xpe, *ype;
 double **fp;
 np = num;
 fp = ff;

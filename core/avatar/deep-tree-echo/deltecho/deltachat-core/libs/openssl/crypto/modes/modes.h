@@ -1,5 +1,5 @@
 #include <stddef.h>
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 typedef void (*block128_f) (const unsigned char in[16],
@@ -123,6 +123,6 @@ int CRYPTO_xts128_encrypt(const XTS128_CONTEXT *ctx,
 const unsigned char iv[16],
 const unsigned char *inp, unsigned char *out,
 size_t len, int enc);
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif

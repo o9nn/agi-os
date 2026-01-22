@@ -1,5 +1,5 @@
 #ifndef gxstdio_INCLUDED
-#  define gxstdio_INCLUDED
+# define gxstdio_INCLUDED
 #include "gsio.h"
 #undef stdin
 #define stdin gs_stdin

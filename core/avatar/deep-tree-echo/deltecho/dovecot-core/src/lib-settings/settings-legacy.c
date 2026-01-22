@@ -6,10 +6,10 @@
 #include <stdio.h>
 #include <fcntl.h>
 #ifdef HAVE_GLOB_H
-#  include <glob.h>
+# include <glob.h>
 #endif
 #ifndef GLOB_BRACE
-#  define GLOB_BRACE 0
+# define GLOB_BRACE 0
 #endif
 #define SECTION_ERRORMSG "%s (section changed in %s at line %d)"
 struct input_stack {

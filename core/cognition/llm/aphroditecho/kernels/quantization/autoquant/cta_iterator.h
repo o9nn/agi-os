@@ -64,7 +64,7 @@ assert(APHRODITE_ARCH_SM80);
 template<int WARPS, int CTA_M, int CTA_N, int CTA_K, int STAGES, int SLICES>
 struct IteratorA {
 static constexpr int SLICE_K = CTA_K / SLICES;
-using AccessType                 = uint4;
+using AccessType = uint4;
 static constexpr int kAccessSize = sizeof(AccessType);
 static_assert(CTA_M % 32 == 0 && CTA_K % 32 == 0, "A is pre-formatted as 32x32 tiles");
 static constexpr int kShapeM = CTA_M;
@@ -89,7 +89,7 @@ static constexpr int kSizePerStage = kShapeK * kShapeM;
 static constexpr int kSmemByteSize = kAccessSize * STAGES * kSizePerStage;
 const uint* src_;
 AccessType* smem_;
-uint32_t    smem_int_ptr_;
+uint32_t smem_int_ptr_;
 const int m_;
 const int k_;
 const int warp_id_;
@@ -184,7 +184,7 @@ cp_async_cg_A(smem_int_ptr_ + dst_offset_, (const AccessType*)src_ + src_offset_
 template<int WARPS, int CTA_M, int CTA_N, int CTA_K, int STAGES, int SLICES, int GROUP_SIZE, typename T_Q>
 struct IteratorQ {
 static constexpr int SLICE_K = CTA_K / SLICES;
-using AccessType                 = uint;
+using AccessType = uint;
 static constexpr int kAccessSize = sizeof(AccessType);
 static constexpr int kAccessM = kAccessSize / sizeof(T_Q);
 static constexpr int kAccessK = GROUP_SIZE;
@@ -196,16 +196,16 @@ static constexpr int kWarpIterM = CTA_M / kWarpAccessM;
 static constexpr int kWarpIterK = SLICE_K / kWarpAccessK;
 static constexpr int kWarpM = kWarpIterM >= WARPS ? WARPS : kWarpIterM;
 static constexpr int kWarpK = WARPS > kWarpIterM ? WARPS / kWarpM : 1;
-static constexpr int kIterM     = kWarpIterM / kWarpM;
-static constexpr int kIterK     = kWarpIterK >= kWarpK ? kWarpIterK / kWarpK : 1;
+static constexpr int kIterM = kWarpIterM / kWarpM;
+static constexpr int kIterK = kWarpIterK >= kWarpK ? kWarpIterK / kWarpK : 1;
 static constexpr int kIterCount = kIterM * kIterK;
 static constexpr int kWarpFootprintM = kWarpAccessM * kIterM;
 static constexpr int kWarpFootprintK = kWarpAccessK * kIterK;
 static constexpr int kSizePerStage = std::max(SLICE_K / GROUP_SIZE, 1) * CTA_M;
 static constexpr int kSmemByteSize = sizeof(uint) * STAGES * kSizePerStage;
 const T_Q* const src_;
-T_Q* const       smem_;
-uint32_t const     smem_int_ptr_;
+T_Q* const smem_;
+uint32_t const smem_int_ptr_;
 const int m_;
 const int k_;
 bool is_out_of_bound_;
@@ -312,10 +312,10 @@ cp_async_ca(smem_int_ptr_ + dst_offset_, (const AccessType*)src_ + src_offset_, 
 };
 template<int WARPS, int CTA_M, int CTA_N, int CTA_K, int STAGES, int SLICES, typename T_BC>
 struct IteratorB {
-static constexpr int SLICE_K      = CTA_K / SLICES;
+static constexpr int SLICE_K = CTA_K / SLICES;
 static constexpr int kElementSize = sizeof(T_BC);
-using AccessType                  = uint4;
-static constexpr int kAccessSize  = sizeof(AccessType);
+using AccessType = uint4;
+static constexpr int kAccessSize = sizeof(AccessType);
 static constexpr int kShapeK = SLICE_K;
 static constexpr int kShapeN = CTA_N;
 static constexpr int kAccessK = kAccessSize / sizeof(T_BC);
@@ -334,26 +334,26 @@ static constexpr int kIterCount = kIterK * kIterN;
 static_assert(kIterCount > 0);
 static constexpr int kWarpFootprintK = kWarpAccessK * kIterK;
 static constexpr int kWarpFootprintN = kWarpAccessN * kIterN;
-static constexpr int kSmemPadCtaK  = SLICE_K + 8;
-static constexpr int kSizePerTile  = CTA_N * kSmemPadCtaK;
+static constexpr int kSmemPadCtaK = SLICE_K + 8;
+static constexpr int kSizePerTile = CTA_N * kSmemPadCtaK;
 static constexpr int kSmemByteSize = kElementSize * STAGES * kSizePerTile;
-const T_BC*       src_;
+const T_BC* src_;
 AccessType* const smem_;
-const uint32_t    smem_int_ptr_;
-const int         k_;
-const int         n_;
-const int         cta_n_;
-const int         warp_id_;
-const int         lane_id_;
-const int         c_;
-const int         s_;
+const uint32_t smem_int_ptr_;
+const int k_;
+const int n_;
+const int cta_n_;
+const int warp_id_;
+const int lane_id_;
+const int c_;
+const int s_;
 int src_offset_n_;
 int src_offset_;
 int dst_offset_;
-int  src_step_k_;
-int  src_step_n_;
-int  dst_step_k_;
-int  dst_step_n_;
+int src_step_k_;
+int src_step_n_;
+int dst_step_k_;
+int dst_step_n_;
 bool is_valid_n_;
 int tmp_src_offset_;
 int tmp_dst_offset_;
@@ -380,7 +380,7 @@ const int warp_thread_offset_n = lane_id_ / kWarpThreadC;
 const int cta_thread_offset_k = kWarpFootprintK * warp_offset_k + warp_thread_offset_k * kAccessK;
 const int cta_thread_offset_n = kWarpFootprintN * warp_offset_n + warp_thread_offset_n;
 const int src_offset_k = cta_thread_offset_k + cta_k;
-src_offset_n_          = cta_thread_offset_n + cta_n_;
+src_offset_n_ = cta_thread_offset_n + cta_n_;
 src_offset_ = src_offset_n_ * k_ + src_offset_k;
 const int dst_offset_k = cta_thread_offset_k;
 const int dst_offset_n = cta_thread_offset_n;
@@ -392,10 +392,10 @@ dst_step_n_ = kWarpAccessN * kSmemPadCtaK - kIterK * kWarpAccessK;
 dst_offset_ *= kElementSize;
 dst_step_k_ *= kElementSize;
 dst_step_n_ *= kElementSize;
-tmp_src_offset_   = src_offset_;
-tmp_dst_offset_   = dst_offset_;
+tmp_src_offset_ = src_offset_;
+tmp_dst_offset_ = dst_offset_;
 tmp_src_offset_n_ = src_offset_n_;
-is_valid_n_       = tmp_src_offset_n_ < n_;
+is_valid_n_ = tmp_src_offset_n_ < n_;
 }
 __device__ void prefetch_stage(bool mask)
 {
@@ -443,8 +443,8 @@ dst_offset_ += kElementSize * kSizePerTile;
 if (dst_offset_ >= kSmemByteSize) {
 dst_offset_ -= kSmemByteSize;
 }
-tmp_src_offset_   = src_offset_;
-tmp_dst_offset_   = dst_offset_;
+tmp_src_offset_ = src_offset_;
+tmp_dst_offset_ = dst_offset_;
 tmp_src_offset_n_ = src_offset_n_;
 is_valid_n_ = tmp_src_offset_n_ < n_;
 }

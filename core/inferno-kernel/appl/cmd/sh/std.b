@@ -79,23 +79,23 @@ val := c.get("fn-" + name);
 if (val != nil)
 return c.run(hd val :: tl cmd, last);
 case name {
-"if" =>		status = builtin_if(c, cmd, last);
-"while" =>		status = builtin_while(c, cmd, last);
-"and" =>		status = builtin_and(c, cmd, last);
-"apply" =>	status = builtin_apply(c, cmd, last);
-"for" =>		status = builtin_for(c, cmd, last);
-"or" =>		status = builtin_or(c, cmd, last);
-"!" =>		status = builtin_not(c, cmd, last);
-"fn" =>		status = builtin_fn(c, cmd, last, 0);
-"subfn" =>	status = builtin_fn(c, cmd, last, 1);
-"~" =>		status = builtin_twiddle(c, cmd, last);
-"status" =>	status = builtin_status(c, cmd, last);
-"pctl" =>		status = builtin_pctl(c, cmd, last);
-"raise" =>		status = builtin_raise(c, cmd, last);
-"rescue" =>	status = builtin_rescue(c, cmd, last);
-"flag" =>		status = builtin_flag(c, cmd, last);
-"getlines" =>	status = builtin_getlines(c, cmd, last);
-"no" =>		status = builtin_no(c, cmd, last);
+"if" => status = builtin_if(c, cmd, last);
+"while" => status = builtin_while(c, cmd, last);
+"and" => status = builtin_and(c, cmd, last);
+"apply" => status = builtin_apply(c, cmd, last);
+"for" => status = builtin_for(c, cmd, last);
+"or" => status = builtin_or(c, cmd, last);
+"!" => status = builtin_not(c, cmd, last);
+"fn" => status = builtin_fn(c, cmd, last, 0);
+"subfn" => status = builtin_fn(c, cmd, last, 1);
+"~" => status = builtin_twiddle(c, cmd, last);
+"status" => status = builtin_status(c, cmd, last);
+"pctl" => status = builtin_pctl(c, cmd, last);
+"raise" => status = builtin_raise(c, cmd, last);
+"rescue" => status = builtin_rescue(c, cmd, last);
+"flag" => status = builtin_flag(c, cmd, last);
+"getlines" => status = builtin_getlines(c, cmd, last);
+"no" => status = builtin_no(c, cmd, last);
 }
 return status;
 }
@@ -171,7 +171,7 @@ args = tl args;
 if ((hd args).cmd != nil)
 return ref Listnode((hd args).cmd, nil) :: nil;
 w := (hd args).word;
-if (w == nil || w[0] != '{')	#}
+if (w == nil || w[0] != '{') #}
 ctxt.fail("parse error", "parse: argument must be a braced block");
 (n, err) := sh->parse(w);
 if (err != nil)
@@ -183,7 +183,7 @@ sbuiltin_env(ctxt: ref Context, nil: list of ref Listnode): list of ref Listnode
 vl: list of string;
 for (e := ctxt.envlist(); e != nil; e = tl e) {
 (n, v) := hd e;
-if (v != nil)		# XXX this is debatable... someone might want to see null local vars.
+if (v != nil) # XXX this is debatable... someone might want to see null local vars.
 vl = n :: vl;
 }
 return sh->stringlist2list(vl);
@@ -200,7 +200,7 @@ return n.word;
 sbuiltin_split(ctxt: ref Context, args: list of ref Listnode): list of ref Listnode
 {
 n := len args;
-if (n < 2  || n > 3)
+if (n < 2 || n > 3)
 builtinusage(ctxt, "split [separators] value");
 seps: string;
 if (n == 2) {
@@ -280,19 +280,19 @@ if (n == 3)
 p = (hd tl tl args).word;
 mask := 0;
 case flag {
-'v' =>	mask = Context.VERBOSE;
-'x' =>	mask = Context.EXECPRINT;
-'e' =>	mask = Context.ERROREXIT;
-'i' =>		mask = Context.INTERACTIVE;
-* =>		builtinusage(ctxt, "flag [vxei] [+-]");
+'v' => mask = Context.VERBOSE;
+'x' => mask = Context.EXECPRINT;
+'e' => mask = Context.ERROREXIT;
+'i' => mask = Context.INTERACTIVE;
+* => builtinusage(ctxt, "flag [vxei] [+-]");
 }
 case p {
-"" =>		if (ctxt.options() & mask)
+"" => if (ctxt.options() & mask)
 return nil;
 return "not set";
-"-" =>	ctxt.setoptions(mask, 0);
-"+" =>	ctxt.setoptions(mask, 1);
-* =>		builtinusage(ctxt, "flag [vxei] [+-]");
+"-" => ctxt.setoptions(mask, 0);
+"+" => ctxt.setoptions(mask, 1);
+* => builtinusage(ctxt, "flag [vxei] [+-]");
 }
 return nil;
 }
@@ -389,7 +389,7 @@ return status;
 builtin_getlines(ctxt: ref Context, argv: list of ref Listnode, nil: int) : string
 {
 n := len argv;
-if (n < 2  || n > 3)
+if (n < 2 || n > 3)
 builtinusage(ctxt, "getlines [separators] {cmd}");
 argv = tl argv;
 seps := "\n";
@@ -617,30 +617,30 @@ return "no match";
 }
 #builtin_echo(ctxt: ref Context, argv: list of ref Listnode, nil: int): string
 #{
-#	argv = tl argv;
-#	nflag := 0;
-#	if (argv != nil && word(hd argv) == "-n") {
-#		nflag = 1;
-#		argv = tl argv;
-#	}
-#	s: string;
-#	if (argv != nil) {
-#		s = word(hd argv);
-#		for (argv = tl argv; argv != nil; argv = tl argv)
-#			s += " " + word(hd argv);
-#	}
-#	e: int;
-#	if (nflag)
-#		e = sys->print("%s", s);
-#	else
-#		e = sys->print("%s\n", s);
-#	if (e == -1) {
-#		err := sys->sprint("%r");
-#		if (ctxt.options() & ctxt.VERBOSE)
-#			sys->fprint(sys->fildes(2), "echo: write error: %s\n", err);
-#		return err;
-#	}
-#	return nil;
+# argv = tl argv;
+# nflag := 0;
+# if (argv != nil && word(hd argv) == "-n") {
+# nflag = 1;
+# argv = tl argv;
+# }
+# s: string;
+# if (argv != nil) {
+# s = word(hd argv);
+# for (argv = tl argv; argv != nil; argv = tl argv)
+# s += " " + word(hd argv);
+# }
+# e: int;
+# if (nflag)
+# e = sys->print("%s", s);
+# else
+# e = sys->print("%s\n", s);
+# if (e == -1) {
+# err := sys->sprint("%r");
+# if (ctxt.options() & ctxt.VERBOSE)
+# sys->fprint(sys->fildes(2), "echo: write error: %s\n", err);
+# return err;
+# }
+# return nil;
 #}
 ENOEXIST: con "file does not exist";
 TMPDIR: con "/tmp/pipes";

@@ -3,22 +3,22 @@
 #include <ip.h>
 #include "dat.h"
 #include "protos.h"
-typedef struct Hdr	Hdr;
+typedef struct Hdr Hdr;
 struct Hdr
 {
-uchar	hrd[2];
-uchar	pro[2];
-uchar	hln;
-uchar	pln;
-uchar	op[2];
-uchar	sha[6];
-uchar	spa[4];
-uchar	tha[6];
-uchar	tpa[4];
+uchar hrd[2];
+uchar pro[2];
+uchar hln;
+uchar pln;
+uchar op[2];
+uchar sha[6];
+uchar spa[4];
+uchar tha[6];
+uchar tpa[4];
 };
 enum
 {
-ARPLEN=	28,
+ARPLEN= 28,
 };
 enum
 {
@@ -32,12 +32,12 @@ Opa,
 };
 static Field p_fields[] =
 {
-{"spa",		Fv4ip,	Ospa,	"protocol source",	} ,
-{"tpa",		Fv4ip,	Otpa,	"protocol target",	} ,
-{"a",		Fv4ip,	Ostpa,	"protocol source/target",	} ,
-{"sha",		Fba,	Osha,	"hardware source",	} ,
-{"tha",		Fba,	Otha,	"hardware target",	} ,
-{"ah",	 	Fba,	Ostha,	"hardware source/target",	} ,
+{"spa", Fv4ip, Ospa, "protocol source", } ,
+{"tpa", Fv4ip, Otpa, "protocol target", } ,
+{"a", Fv4ip, Ostpa, "protocol source/target", } ,
+{"sha", Fba, Osha, "hardware source", } ,
+{"tha", Fba, Otha, "hardware target", } ,
+{"ah", Fba, Ostha, "hardware source/target", } ,
 {0}
 };
 static void

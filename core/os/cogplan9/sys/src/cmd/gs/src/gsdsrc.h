@@ -1,8 +1,8 @@
 #ifndef gsdsrc_INCLUDED
-#  define gsdsrc_INCLUDED
+# define gsdsrc_INCLUDED
 #include "gsstruct.h"
 #ifndef stream_DEFINED
-#  define stream_DEFINED
+# define stream_DEFINED
 typedef struct stream_s stream;
 #endif
 #define data_source_proc_access(proc)\
@@ -15,7 +15,7 @@ data_source_type_floats,
 data_source_type_stream
 } gs_data_source_type_t;
 #ifndef gs_data_source_DEFINED
-#  define gs_data_source_DEFINED
+# define gs_data_source_DEFINED
 typedef struct gs_data_source_s gs_data_source_t;
 #endif
 struct gs_data_source_s {
@@ -38,7 +38,7 @@ data_source_access_only(psrc, start, length, buf, (const byte **)0)
 #define data_source_copy(psrc, start, length, buf)\
 data_source_access(psrc, start, length, buf, (const byte **)0)
 extern_st(st_data_source);
-#define public_st_data_source()	\
+#define public_st_data_source() \
 gs_public_st_composite(st_data_source, gs_data_source_t, "gs_data_source_t",\
 data_source_enum_ptrs, data_source_reloc_ptrs)
 #define st_data_source_max_ptrs 1

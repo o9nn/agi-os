@@ -10,12 +10,12 @@
 #include <unixio.h>
 extern char *getenv(const char *);
 #ifdef VMS
-#  define fopen_VMS fopen
+# define fopen_VMS fopen
 #else
-#  define fopen_VMS(name, mode, m1, m2) fopen(name, mode)
+# define fopen_VMS(name, mode, m1, m2) fopen(name, mode)
 #endif
 #define DSC$K_DTYPE_T 14
-#define DSC$K_CLASS_S  1
+#define DSC$K_CLASS_S 1
 struct dsc$descriptor_s {
 unsigned short dsc$w_length;
 unsigned char dsc$b_dtype;
@@ -24,9 +24,9 @@ char *dsc$a_pointer;
 };
 typedef struct dsc$descriptor_s descrip;
 #define RMS_IS_ERROR_OR_NMF(rmsv) (((rmsv) & 1) == 0)
-#define RMS$_NMF    99018
+#define RMS$_NMF 99018
 #define RMS$_NORMAL 65537
-#define NAM$C_MAXRSS  255
+#define NAM$C_MAXRSS 255
 struct file_enum_s {
 uint context, length;
 descrip pattern;
@@ -319,22 +319,22 @@ bool gp_file_name_is_current(const char *fname, uint len)
 return len == 0;
 }
 const char *gp_file_name_separator(void)
-{   return "]";
+{ return "]";
 }
 const char *gp_file_name_directory_separator(void)
-{   return ".";
+{ return ".";
 }
 const char *gp_file_name_parent(void)
-{   return "-";
+{ return "-";
 }
 const char *gp_file_name_current(void)
-{   return "";
+{ return "";
 }
 bool gp_file_name_is_partent_allowed(void)
-{   return false;
+{ return false;
 }
 bool gp_file_name_is_empty_item_meanful(void)
-{   return true;
+{ return true;
 }
 gp_file_name_combine_result
 gp_file_name_combine(const char *prefix, uint plen, const char *fname, uint flen,

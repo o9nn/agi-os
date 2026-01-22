@@ -101,7 +101,7 @@ return 0;
 static void
 hide_mousecursor (struct vga_display *disp)
 {
-char *oldpos  = vga_videomem + 2 * ((int) disp->mousecursor.posy * disp->width
+char *oldpos = vga_videomem + 2 * ((int) disp->mousecursor.posy * disp->width
 + (int) disp->mousecursor.posx) + 1;
 if (!disp->mousecursor.visible)
 return;
@@ -111,7 +111,7 @@ disp->mousecursor.visible = 0;
 static void
 draw_mousecursor (struct vga_display *disp)
 {
-char *newpos  = vga_videomem + 2 * ((int) disp->mousecursor.posy * disp->width
+char *newpos = vga_videomem + 2 * ((int) disp->mousecursor.posy * disp->width
 + (int) disp->mousecursor.posx) + 1;
 if (disp->mousecursor.visible)
 return;
@@ -122,16 +122,16 @@ disp->mousecursor.visible = 1;
 static const char doc[] = "VGA Driver";
 static const struct argp_option options[] =
 {
-{"font",		'f', "FONT", 0, "Use FONT for normal text"},
-{"font-italic",	'i', "FONT", 0, "Use FONT for italic text"},
-{"font-bold",	'b', "FONT", 0, "Use FONT for bold text"},
+{"font", 'f', "FONT", 0, "Use FONT for normal text"},
+{"font-italic", 'i', "FONT", 0, "Use FONT for italic text"},
+{"font-bold", 'b', "FONT", 0, "Use FONT for bold text"},
 {"font-bold-italic",'a', "FONT", 0,
 "Use FONT for text that is both bold and italic"},
-{"max-colors",	'm', 0     , 0,
+{"max-colors", 'm', 0 , 0,
 "Prefer a lot of colors above a lot of glyphs"},
-{"max-glyphs",	'g', 0     , 0,
+{"max-glyphs", 'g', 0 , 0,
 "Prefer a lot of glyphs above a lot of colors"},
-{"font-width",	'w', "NUM" , 0, "Force using NUM pixel-wide glyphs"},
+{"font-width", 'w', "NUM" , 0, "Force using NUM pixel-wide glyphs"},
 { 0 }
 };
 static error_t
@@ -220,18 +220,18 @@ err = vga_init ();
 if (err)
 return err;
 dynacolor_init ();
-#define LOAD_FONT(x,y)							\
-do {									\
-font_file = fopen (vga_display_##x ?: DEFAULT_VGA_##y, "r");		\
-if (font_file)							\
-{									\
-bdf_error_t bdferr = bdf_read (font_file, &x, NULL);		\
-if (bdferr)							\
-x = NULL;							\
-else								\
-bdf_sort_glyphs (x);						\
-fclose (font_file);						\
-}									\
+#define LOAD_FONT(x,y) \
+do { \
+font_file = fopen (vga_display_##x ?: DEFAULT_VGA_##y, "r"); \
+if (font_file) \
+{ \
+bdf_error_t bdferr = bdf_read (font_file, &x, NULL); \
+if (bdferr) \
+x = NULL; \
+else \
+bdf_sort_glyphs (x); \
+fclose (font_file); \
+} \
 } while (0)
 LOAD_FONT (font, FONT);
 LOAD_FONT (font_italic, FONT_ITALIC);
@@ -464,8 +464,8 @@ length -= skip;
 col = 0;
 row++;
 }
-pos  = vga_videomem + 2 * (row * disp->width + col);
-mouse_cursor_pos  = (vga_videomem + 2
+pos = vga_videomem + 2 * (row * disp->width + col);
+mouse_cursor_pos = (vga_videomem + 2
 * ((int) disp->mousecursor.posy
 * disp->width + (int) disp->mousecursor.posx) + 1);
 while (length--)

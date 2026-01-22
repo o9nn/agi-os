@@ -40,41 +40,41 @@ Handle factory(const Handle&) const;
 ClassServer& classserver();
 #define TOKENPASTE(x, y) x ## y
 #define TOKENPASTE2(x, y) TOKENPASTE(x, y)
-#define DEFINE_LINK_FACTORY(CNAME,CTYPE)                          \
+#define DEFINE_LINK_FACTORY(CNAME,CTYPE) \
 \
-Handle CNAME::factory(const Handle& base)                         \
-{                                                                 \
+Handle CNAME::factory(const Handle& base) \
+{ \
 \
-if (CNAME##Cast(base)) return base;                            \
+if (CNAME##Cast(base)) return base; \
 \
-Handle h(create##CNAME(std::move(base->getOutgoingSet()),      \
-base->get_type()));                     \
-return h;                                                      \
-}                                                                 \
+Handle h(create##CNAME(std::move(base->getOutgoingSet()), \
+base->get_type())); \
+return h; \
+} \
 \
 \
 \
-static __attribute__ ((constructor (110))) void                   \
-TOKENPASTE2(init, __COUNTER__)(void)                           \
-{                                                                 \
-classserver().addFactory(CTYPE, &CNAME::factory);              \
+static __attribute__ ((constructor (110))) void \
+TOKENPASTE2(init, __COUNTER__)(void) \
+{ \
+classserver().addFactory(CTYPE, &CNAME::factory); \
 }
-#define DEFINE_NODE_FACTORY(CNAME,CTYPE)                          \
+#define DEFINE_NODE_FACTORY(CNAME,CTYPE) \
 \
-Handle CNAME::factory(const Handle& base)                         \
-{                                                                 \
-if (CNAME##Cast(base)) return base;                            \
-Handle h(create##CNAME(base->get_type(),                       \
-std::move(base->get_name())));          \
-return h;                                                      \
-}                                                                 \
+Handle CNAME::factory(const Handle& base) \
+{ \
+if (CNAME##Cast(base)) return base; \
+Handle h(create##CNAME(base->get_type(), \
+std::move(base->get_name()))); \
+return h; \
+} \
 \
 \
 \
-static __attribute__ ((constructor (110))) void                   \
-TOKENPASTE2(init, __COUNTER__)(void)                           \
-{                                                                 \
-classserver().addFactory(CTYPE, &CNAME::factory);              \
+static __attribute__ ((constructor (110))) void \
+TOKENPASTE2(init, __COUNTER__)(void) \
+{ \
+classserver().addFactory(CTYPE, &CNAME::factory); \
 }
 }
 #endif

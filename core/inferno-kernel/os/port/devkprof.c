@@ -1,13 +1,13 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
 #ifndef LRES
-#define	LRES	3
+#define LRES 3
 #endif
-#define	SZ	4
+#define SZ 4
 enum {
 SpecialTotalTicks,
 SpecialOutsideTicks,
@@ -19,11 +19,11 @@ SpecialMax
 };
 struct
 {
-int	minpc;
-int	maxpc;
-int	nbuf;
-int	time;
-ulong	*buf;
+int minpc;
+int maxpc;
+int nbuf;
+int time;
+ulong *buf;
 }kprof;
 enum{
 Qdir,
@@ -32,12 +32,12 @@ Qctl,
 Kprofmaxqid,
 };
 Dirtab kproftab[]={
-".",		{Qdir, 0, QTDIR},	0,	0500,
-"kpdata",	{Qdata},		0,	0600,
-"kpctl",	{Qctl},		0,	0600,
+".", {Qdir, 0, QTDIR}, 0, 0500,
+"kpdata", {Qdata}, 0, 0600,
+"kpctl", {Qctl}, 0, 0600,
 };
 void kproftimer(ulong);
-void	(*kproftick)(ulong);
+void (*kproftick)(ulong);
 static void
 kprofinit(void)
 {

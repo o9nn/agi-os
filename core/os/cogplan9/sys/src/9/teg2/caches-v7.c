@@ -46,7 +46,7 @@ setsways = cp->setsways;
 cpwrsc(CpIDcssel, CpID, CpIDid, 0, (level - 1) << 1);
 setsways = cprdsc(CpIDcsize, CpID, CpIDid, 0);
 cp->l1ip = cpctget();
-cp->nways = ((setsways >> 3)  & MASK(10)) + 1;
+cp->nways = ((setsways >> 3) & MASK(10)) + 1;
 cp->nsets = ((setsways >> 13) & MASK(15)) + 1;
 cp->log2linelen = (setsways & MASK(2)) + 2 + 2;
 }

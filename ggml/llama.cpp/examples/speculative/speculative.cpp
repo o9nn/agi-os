@@ -10,12 +10,12 @@
 #include <set>
 #include <string>
 #include <vector>
-#define SPEC_VOCAB_MAX_SIZE_DIFFERENCE  128
+#define SPEC_VOCAB_MAX_SIZE_DIFFERENCE 128
 #define SPEC_VOCAB_CHECK_START_TOKEN_ID 5
 struct seq_draft {
-bool active   = false;
+bool active = false;
 bool drafting = false;
-bool skip     = false;
+bool skip = false;
 int i_batch_dft = 0;
 std::vector<int> i_batch_tgt;
 std::vector<llama_token> tokens;
@@ -49,7 +49,7 @@ llama_context * ctx_tgt = NULL;
 llama_context * ctx_dft = NULL;
 common_init_result llama_init_tgt = common_init_from_params(params);
 model_tgt = llama_init_tgt.model.get();
-ctx_tgt   = llama_init_tgt.context.get();
+ctx_tgt = llama_init_tgt.context.get();
 params.devices = params.speculative.devices;
 params.model = params.speculative.model;
 params.n_gpu_layers = params.speculative.n_gpu_layers;
@@ -59,7 +59,7 @@ params.cpuparams.n_threads = params.speculative.cpuparams.n_threads;
 params.cpuparams_batch.n_threads = params.speculative.cpuparams_batch.n_threads;
 common_init_result llama_init_dft = common_init_from_params(params);
 model_dft = llama_init_dft.model.get();
-ctx_dft   = llama_init_dft.context.get();
+ctx_dft = llama_init_dft.context.get();
 const llama_vocab * vocab_tgt = llama_model_get_vocab(model_tgt);
 const llama_vocab * vocab_dft = llama_model_get_vocab(model_dft);
 const bool vocab_type_tgt = llama_vocab_type(vocab_tgt);
@@ -83,7 +83,7 @@ return 1;
 {
 const int n_vocab_tgt = llama_vocab_n_tokens(vocab_tgt);
 const int n_vocab_dft = llama_vocab_n_tokens(vocab_dft);
-const int vocab_diff  = n_vocab_tgt > n_vocab_dft
+const int vocab_diff = n_vocab_tgt > n_vocab_dft
 ? n_vocab_tgt - n_vocab_dft
 : n_vocab_dft - n_vocab_tgt;
 if (vocab_diff > SPEC_VOCAB_MAX_SIZE_DIFFERENCE) {
@@ -108,7 +108,7 @@ auto * mem_tgt = llama_get_memory(ctx_tgt);
 auto * mem_dft = llama_get_memory(ctx_dft);
 std::vector<llama_token> inp;
 inp = common_tokenize(ctx_tgt, params.prompt, true, true);
-const int max_context_size     = llama_n_ctx(ctx_tgt);
+const int max_context_size = llama_n_ctx(ctx_tgt);
 const int max_tokens_list_size = max_context_size - 4;
 if ((int) inp.size() > max_tokens_list_size) {
 LOG_ERR("%s: prompt too long (%d tokens, max %d)\n", __func__, (int) inp.size(), max_tokens_list_size);
@@ -121,13 +121,13 @@ LOG("%s", common_token_to_piece(ctx_tgt, id).c_str());
 const int n_input = inp.size();
 const auto t_enc_start = ggml_time_us();
 llama_decode(ctx_tgt, llama_batch_get_one( inp.data(), n_input - 1));
-llama_decode(ctx_tgt, llama_batch_get_one(&inp.back(),           1));
+llama_decode(ctx_tgt, llama_batch_get_one(&inp.back(), 1));
 llama_decode(ctx_dft, llama_batch_get_one( inp.data(), n_input));
 const auto t_enc_end = ggml_time_us();
 int n_draft = params.speculative.n_max;
 int n_predict = 0;
 int n_drafted = 0;
-int n_accept  = 0;
+int n_accept = 0;
 int n_past_tgt = inp.size();
 int n_past_dft = inp.size();
 bool has_eos = false;
@@ -151,7 +151,7 @@ active_seqs.insert(s);
 const auto & tokens = drafts[s].tokens;
 LOG_DBG("draft %d: %s\n", s, string_from(ctx_dft, tokens).c_str());
 }
-int i_dft  = 0;
+int i_dft = 0;
 int s_keep = 0;
 llama_token token_id;
 std::string token_str;
@@ -298,11 +298,11 @@ LOG_DBG("the sampled target token (%d, '%s') did not match, or we ran out of dra
 {
 LOG_DBG("keeping sequence %d, n_past_tgt = %d, n_past_dft = %d\n", s_keep, n_past_tgt, n_past_dft);
 llama_memory_seq_keep(mem_dft, s_keep);
-llama_memory_seq_cp  (mem_dft, s_keep, 0, -1, -1);
+llama_memory_seq_cp (mem_dft, s_keep, 0, -1, -1);
 llama_memory_seq_keep(mem_dft, 0);
-llama_memory_seq_rm  (mem_tgt, s_keep, n_past_tgt, -1);
+llama_memory_seq_rm (mem_tgt, s_keep, n_past_tgt, -1);
 llama_memory_seq_keep(mem_tgt, s_keep);
-llama_memory_seq_cp  (mem_tgt, s_keep, 0, -1, -1);
+llama_memory_seq_cp (mem_tgt, s_keep, 0, -1, -1);
 llama_memory_seq_keep(mem_tgt, 0);
 }
 for (int s = 0; s < n_seq_dft; ++s) {
@@ -315,7 +315,7 @@ drafts[0].tokens.push_back(token_id);
 drafts[0].dists.push_back(std::vector<llama_token_data>());
 drafts[0].i_batch_tgt.push_back(0);
 common_batch_clear(batch_dft);
-common_batch_add  (batch_dft, token_id, n_past_dft, { 0 }, true);
+common_batch_add (batch_dft, token_id, n_past_dft, { 0 }, true);
 llama_memory_seq_rm(mem_dft, 0, n_past_dft, -1);
 llama_decode(ctx_dft, batch_dft);
 ++n_past_dft;
@@ -327,17 +327,17 @@ if (drafts[0].smpl) {
 common_sampler_free(drafts[0].smpl);
 }
 drafts[0].smpl = common_sampler_clone(smpl);
-int n_seq_cur  = 1;
+int n_seq_cur = 1;
 int n_past_cur = n_past_dft;
 for (int s = 0; s < n_seq_dft; ++s) {
-drafts[s].active   = false;
+drafts[s].active = false;
 drafts[s].drafting = false;
 }
-drafts[0].active      = true;
-drafts[0].drafting    = true;
+drafts[0].active = true;
+drafts[0].drafting = true;
 drafts[0].i_batch_dft = 0;
 common_batch_clear(batch_tgt);
-common_batch_add  (batch_tgt, drafts[0].tokens[0], n_past_tgt, { 0 }, true);
+common_batch_add (batch_tgt, drafts[0].tokens[0], n_past_tgt, { 0 }, true);
 for (int i = 0; i < n_draft; ++i) {
 batch_dft.n_tokens = 0;
 for (int s = 0; s < n_seq_dft; ++s) {
@@ -357,7 +357,7 @@ std::vector<int> sa(1, s);
 for (int f = 1; f < 8; ++f) {
 if (n_seq_cur < n_seq_dft && cur_p->data[f].p > p_draft_split) {
 LOG_DBG("splitting seq %3d into %3d\n", s, n_seq_cur);
-llama_memory_seq_rm(mem_dft,    n_seq_cur, -1, -1);
+llama_memory_seq_rm(mem_dft, n_seq_cur, -1, -1);
 llama_memory_seq_cp(mem_dft, s, n_seq_cur, -1, -1);
 for (int t = 0; t < batch_tgt.n_tokens; ++t) {
 for (int p = 0; p < batch_tgt.n_seq_id[t]; ++p) {
@@ -368,11 +368,11 @@ break;
 }
 }
 }
-drafts[n_seq_cur].active   = true;
+drafts[n_seq_cur].active = true;
 drafts[n_seq_cur].drafting = true;
-drafts[n_seq_cur].skip     = true;
-drafts[n_seq_cur].tokens      = drafts[s].tokens;
-drafts[n_seq_cur].dists       = drafts[s].dists;
+drafts[n_seq_cur].skip = true;
+drafts[n_seq_cur].tokens = drafts[s].tokens;
+drafts[n_seq_cur].dists = drafts[s].dists;
 drafts[n_seq_cur].i_batch_dft = drafts[s].i_batch_dft;
 drafts[n_seq_cur].i_batch_tgt = drafts[s].i_batch_tgt;
 if (drafts[n_seq_cur].smpl) {
@@ -428,8 +428,8 @@ drafts[s].dists.erase(drafts[s].dists.begin());
 }
 auto t_dec_end = ggml_time_us();
 LOG("\n\n");
-LOG_INF("encoded %4d tokens in %8.3f seconds, speed: %8.3f t/s\n", n_input,   (t_enc_end - t_enc_start) / 1e6f, inp.size() / ((t_enc_end - t_enc_start) / 1e6f));
-LOG_INF("decoded %4d tokens in %8.3f seconds, speed: %8.3f t/s\n", n_predict, (t_dec_end - t_dec_start) / 1e6f, n_predict  / ((t_dec_end - t_dec_start) / 1e6f));
+LOG_INF("encoded %4d tokens in %8.3f seconds, speed: %8.3f t/s\n", n_input, (t_enc_end - t_enc_start) / 1e6f, inp.size() / ((t_enc_end - t_enc_start) / 1e6f));
+LOG_INF("decoded %4d tokens in %8.3f seconds, speed: %8.3f t/s\n", n_predict, (t_dec_end - t_dec_start) / 1e6f, n_predict / ((t_dec_end - t_dec_start) / 1e6f));
 LOG_INF("\n");
 LOG_INF("n_draft   = %d\n", n_draft);
 LOG_INF("n_predict = %d\n", n_predict);

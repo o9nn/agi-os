@@ -1,39 +1,39 @@
 (use-modules (opencog eva-behavior))
 (DefineLink
-	(DefinedSchema "rightwards")
-	(ListLink
-		(Number 1)
-		(Number -0.5)
-		(Number 0)
-	))
+(DefinedSchema "rightwards")
+(ListLink
+(Number 1)
+(Number -0.5)
+(Number 0)
+))
 (DefineLink
-	(DefinedSchema "leftwards")
-	(ListLink
-		(Number 1)
-		(Number 0.5)
-		(Number 0)
-	))
+(DefinedSchema "leftwards")
+(ListLink
+(Number 1)
+(Number 0.5)
+(Number 0)
+))
 (DefineLink
-	(DefinedSchema "upwards")
-	(ListLink
-		(Number 1)
-		(Number 0)
-		(Number 0.3)
-	))
+(DefinedSchema "upwards")
+(ListLink
+(Number 1)
+(Number 0)
+(Number 0.3)
+))
 (DefineLink
-	(DefinedSchema "downwards")
-	(ListLink
-		(Number 1)
-		(Number 0)
-		(Number -0.3)
-	))
+(DefinedSchema "downwards")
+(ListLink
+(Number 1)
+(Number 0)
+(Number -0.3)
+))
 (DefineLink
-	(DefinedSchema "forwards")
-	(ListLink
-		(Number 1)
-		(Number 0)
-		(Number 0)
-	))
+(DefinedSchema "forwards")
+(ListLink
+(Number 1)
+(Number 0)
+(Number 0)
+))
 (ReferenceLink (WordNode "up")       (DefinedSchema "upwards"))
 (ReferenceLink (WordNode "down")     (DefinedSchema "downwards"))
 (ReferenceLink (WordNode "right")    (DefinedSchema "rightwards"))
@@ -48,14 +48,14 @@
 (ReferenceLink (WordNode "look") (DefinedPredicate "Gaze command"))
 (ReferenceLink (WordNode "turn") (DefinedPredicate "Look command"))
 (InheritanceLink (DefinedPredicate "Gaze command")
-	(ConceptNode "pred-direction"))
+(ConceptNode "pred-direction"))
 (InheritanceLink (DefinedPredicate "Look command")
-	(ConceptNode "pred-direction"))
+(ConceptNode "pred-direction"))
 (EvaluationLink
-	(PredicateNode "turn-action")
-	(ListLink
-		(ConceptNode "pred-direction")
-		(ConceptNode "schema-direction")))
+(PredicateNode "turn-action")
+(ListLink
+(ConceptNode "pred-direction")
+(ConceptNode "schema-direction")))
 (ReferenceLink (WordNode "up")       (Concept "upward"))
 (ReferenceLink (WordNode "down")     (Concept "downward"))
 (ReferenceLink (WordNode "right")    (Concept "rightwards"))
@@ -73,10 +73,10 @@
 (Inheritance (Anchor "*-gaze-direction-*") (Concept "model-direction"))
 (Inheritance (Anchor "*-head-direction-*") (Concept "model-direction"))
 (EvaluationLink
-	(PredicateNode "turn-model")
-	(ListLink
-		(ConceptNode "model-direction")
-		(ConceptNode "concept-direction")))
+(PredicateNode "turn-model")
+(ListLink
+(ConceptNode "model-direction")
+(ConceptNode "concept-direction")))
 (ReferenceLink (WordNode "me")       (DefinedSchema "current-speaker"))
 (ReferenceLink (WordNode "her")      (DefinedSchema "other-speaker"))
 (ReferenceLink (WordNode "him")      (DefinedSchema "other-speaker"))
@@ -92,82 +92,82 @@
 (ReferenceLink (WordNode "face") (DefinedPredicate "Look-at-thing cmd"))
 (Inheritance (DefinedPredicate "Look-at-thing cmd") (Concept "look-at-cmd"))
 (EvaluationLink
-	(PredicateNode "look-at-action")
-	(ListLink
-		(ConceptNode "look-at-cmd")
-		(ConceptNode "schema-thing")))
+(PredicateNode "look-at-action")
+(ListLink
+(ConceptNode "look-at-cmd")
+(ConceptNode "schema-thing")))
 (DefineLink
-	(DefinedSchema "afraid")
-	(ListLink
-		(Concept "imperative")
-		(Concept "afraid")
-	))
+(DefinedSchema "afraid")
+(ListLink
+(Concept "imperative")
+(Concept "afraid")
+))
 (DefineLink
-	(DefinedSchema "amused")
-	(ListLink
-		(Concept "imperative")
-		(Concept "amused")
-	))
+(DefinedSchema "amused")
+(ListLink
+(Concept "imperative")
+(Concept "amused")
+))
 (DefineLink
-	(DefinedSchema "bored")
-	(ListLink
-		(Concept "imperative")
-		(Concept "bored")
-	))
+(DefinedSchema "bored")
+(ListLink
+(Concept "imperative")
+(Concept "bored")
+))
 (DefineLink
-	(DefinedSchema "comprehending")
-	(ListLink
-		(Concept "imperative")
-		(Concept "comprehending")
-	))
+(DefinedSchema "comprehending")
+(ListLink
+(Concept "imperative")
+(Concept "comprehending")
+))
 (DefineLink
-	(DefinedSchema "confused")
-	(ListLink
-		(Concept "imperative")
-		(Concept "confused")
-	))
+(DefinedSchema "confused")
+(ListLink
+(Concept "imperative")
+(Concept "confused")
+))
 (DefineLink
-	(DefinedSchema "engaged")
-	(ListLink
-		(Concept "imperative")
-		(Concept "engaged")
-	))
+(DefinedSchema "engaged")
+(ListLink
+(Concept "imperative")
+(Concept "engaged")
+))
 (DefineLink
-	(DefinedSchema "happy")
-	(ListLink
-		(Concept "imperative")
-		(Concept "happy")
-	))
+(DefinedSchema "happy")
+(ListLink
+(Concept "imperative")
+(Concept "happy")
+))
 (DefineLink
-	(DefinedSchema "irritated")
-	(ListLink
-		(Concept "imperative")
-		(Concept "irritated")
-	))
+(DefinedSchema "irritated")
+(ListLink
+(Concept "imperative")
+(Concept "irritated")
+))
 (DefineLink
-	(DefinedSchema "recoil")
-	(ListLink
-		(Concept "imperative")
-		(Concept "recoil")
-	))
+(DefinedSchema "recoil")
+(ListLink
+(Concept "imperative")
+(Concept "recoil")
+))
 (DefineLink
-	(DefinedSchema "sad")
-	(ListLink
-		(Concept "imperative")
-		(Concept "sad")
-	))
+(DefinedSchema "sad")
+(ListLink
+(Concept "imperative")
+(Concept "sad")
+))
 (DefineLink
-	(DefinedSchema "surprised")
-	(ListLink
-		(Concept "imperative")
-		(Concept "surprised")
-	))
+(DefinedSchema "surprised")
+(ListLink
+(Concept "imperative")
+(Concept "surprised")
+))
 (DefineLink
-	(DefinedSchema "worry")
-	(ListLink
-		(Concept "imperative")
-		(Concept "worry")
-	))
+(DefinedSchema "worry")
+(ListLink
+(Concept "imperative")
+(Concept "worry")
+))
 (ReferenceLink (Word "express-action") (DefinedPredicate "Show class expression"))
 (ReferenceLink (WordNode "dramatize") (DefinedPredicate "Show class expression"))
 (ReferenceLink (WordNode "emote")   (DefinedPredicate "Show class expression"))
@@ -321,7 +321,7 @@
 (ReferenceLink (WordNode "worriment")    (DefinedSchema "worry"))
 (ReferenceLink (WordNode "worry")        (DefinedSchema "worry"))
 (InheritanceLink (DefinedPredicate "Show class expression")
-	(ConceptNode "pred-express"))
+(ConceptNode "pred-express"))
 (InheritanceLink (DefinedSchema "afraid")    (ConceptNode "schema-express"))
 (InheritanceLink (DefinedSchema "amused")    (ConceptNode "schema-express"))
 (InheritanceLink (DefinedSchema "bored")     (ConceptNode "schema-express"))
@@ -335,53 +335,53 @@
 (InheritanceLink (DefinedSchema "surprised") (ConceptNode "schema-express"))
 (InheritanceLink (DefinedSchema "worry")     (ConceptNode "schema-express"))
 (EvaluationLink
-	(PredicateNode "express-action")
-	(ListLink
-		(ConceptNode "pred-express")
-		(ConceptNode "schema-express")))
+(PredicateNode "express-action")
+(ListLink
+(ConceptNode "pred-express")
+(ConceptNode "schema-express")))
 (Reference (Word "express") (Anchor "*-facial-expression-*"))
 (Inheritance (Anchor "*-facial-expression-*") (Concept "model-expression"))
 (EvaluationLink
-	(PredicateNode "express-model")
-	(ListLink
-		(ConceptNode "model-expression")
-		(ConceptNode "schema-express")))
+(PredicateNode "express-model")
+(ListLink
+(ConceptNode "model-expression")
+(ConceptNode "schema-express")))
 (DefineLink
-	(DefinedSchema "amused-gest")
-	(ListLink
-		(Concept "imperative")
-		(Concept "amused")
-	))
+(DefinedSchema "amused-gest")
+(ListLink
+(Concept "imperative")
+(Concept "amused")
+))
 (DefineLink
-	(DefinedSchema "blink")
-	(ListLink
-		(Concept "imperative")
-		(Concept "blink")
-	))
+(DefinedSchema "blink")
+(ListLink
+(Concept "imperative")
+(Concept "blink")
+))
 (DefineLink
-	(DefinedSchema "nod-1")
-	(ListLink
-		(Concept "imperative")
-		(Concept "nod-1")
-	))
+(DefinedSchema "nod-1")
+(ListLink
+(Concept "imperative")
+(Concept "nod-1")
+))
 (DefineLink
-	(DefinedSchema "shake-2")
-	(ListLink
-		(Concept "imperative")
-		(Concept "shake-2")
-	))
+(DefinedSchema "shake-2")
+(ListLink
+(Concept "imperative")
+(Concept "shake-2")
+))
 (DefineLink
-	(DefinedSchema "thoughtful")
-	(ListLink
-		(Concept "imperative")
-		(Concept "thoughtful")
-	))
+(DefinedSchema "thoughtful")
+(ListLink
+(Concept "imperative")
+(Concept "thoughtful")
+))
 (DefineLink
-	(DefinedSchema "yawn-1")
-	(ListLink
-		(Concept "imperative")
-		(Concept "yawn-1")
-	))
+(DefinedSchema "yawn-1")
+(ListLink
+(Concept "imperative")
+(Concept "yawn-1")
+))
 (ReferenceLink (WordNode "amused")     (DefinedSchema "amused-gest"))
 (ReferenceLink (WordNode "amusement")  (DefinedSchema "amused-gest"))
 (ReferenceLink (WordNode "bob")        (DefinedSchema "nod-1"))
@@ -410,7 +410,7 @@
 (ReferenceLink (Word "pretend")     (DefinedPredicate "Show class gesture"))
 (ReferenceLink (Word "show")        (DefinedPredicate "Show class gesture"))
 (InheritanceLink (DefinedPredicate "Show class gesture")
-	(ConceptNode "pred-gesture"))
+(ConceptNode "pred-gesture"))
 (InheritanceLink (DefinedSchema "amused-gest")(Concept "schema-gesture"))
 (InheritanceLink (DefinedSchema "blink")      (Concept "schema-gesture"))
 (InheritanceLink (DefinedSchema "nod-1")      (Concept "schema-gesture"))
@@ -418,19 +418,19 @@
 (InheritanceLink (DefinedSchema "thoughtful") (Concept "schema-gesture"))
 (InheritanceLink (DefinedSchema "yawn-1")     (Concept "schema-gesture"))
 (EvaluationLink
-	(Predicate "gesture-action")
-	(ListLink
-		(Concept "pred-gesture")
-		(Concept "schema-gesture")))
+(Predicate "gesture-action")
+(ListLink
+(Concept "pred-gesture")
+(Concept "schema-gesture")))
 (Define
-	(DefinedSchema "reasoning-demo")
-	(List (Concept "reasoning-demo")))
+(DefinedSchema "reasoning-demo")
+(List (Concept "reasoning-demo")))
 (Define
-	(DefinedSchema "philosophy-demo")
-	(List (Concept "philosophy-demo")))
+(DefinedSchema "philosophy-demo")
+(List (Concept "philosophy-demo")))
 (Define
-	(DefinedSchema "saliency-demo")
-	(List (Concept "saliency-demo")))
+(DefinedSchema "saliency-demo")
+(List (Concept "saliency-demo")))
 (Reference (Word "show") (DefinedPredicate "Do show demo"))
 (Reference (Word "reasoning") (DefinedSchema "reasoning-demo"))
 (Reference (Word "philosophy") (DefinedSchema "philosophy-demo"))
@@ -440,7 +440,7 @@
 (Inheritance (DefinedSchema "philosophy-demo") (Concept "schema-demo"))
 (Inheritance (DefinedSchema "saliency-demo") (Concept "schema-demo"))
 (Evaluation
-	(Predicate "demo-action")
-	(List
-		(Concept "pred-demo")
-		(Concept "schema-demo")))
+(Predicate "demo-action")
+(List
+(Concept "pred-demo")
+(Concept "schema-demo")))

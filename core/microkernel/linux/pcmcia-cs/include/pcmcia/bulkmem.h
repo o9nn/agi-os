@@ -1,115 +1,115 @@
 #ifndef _LINUX_BULKMEM_H
 #define _LINUX_BULKMEM_H
 typedef struct region_info_t {
-u_int		Attributes;
-u_int		CardOffset;
-u_int		RegionSize;
-u_int		AccessSpeed;
-u_int		BlockSize;
-u_int		PartMultiple;
-u_char		JedecMfr, JedecInfo;
-memory_handle_t	next;
+u_int Attributes;
+u_int CardOffset;
+u_int RegionSize;
+u_int AccessSpeed;
+u_int BlockSize;
+u_int PartMultiple;
+u_char JedecMfr, JedecInfo;
+memory_handle_t next;
 } region_info_t;
-#define REGION_TYPE		0x0001
-#define REGION_TYPE_CM		0x0000
-#define REGION_TYPE_AM		0x0001
-#define REGION_PREFETCH		0x0008
-#define REGION_CACHEABLE	0x0010
-#define REGION_BAR_MASK		0xe000
-#define REGION_BAR_SHIFT	13
+#define REGION_TYPE 0x0001
+#define REGION_TYPE_CM 0x0000
+#define REGION_TYPE_AM 0x0001
+#define REGION_PREFETCH 0x0008
+#define REGION_CACHEABLE 0x0010
+#define REGION_BAR_MASK 0xe000
+#define REGION_BAR_SHIFT 13
 typedef struct open_mem_t {
-u_int		Attributes;
-u_int		Offset;
+u_int Attributes;
+u_int Offset;
 } open_mem_t;
-#define MEMORY_TYPE		0x0001
-#define MEMORY_TYPE_CM		0x0000
-#define MEMORY_TYPE_AM		0x0001
-#define MEMORY_EXCLUSIVE	0x0002
-#define MEMORY_PREFETCH		0x0008
-#define MEMORY_CACHEABLE	0x0010
-#define MEMORY_BAR_MASK		0xe000
-#define MEMORY_BAR_SHIFT	13
+#define MEMORY_TYPE 0x0001
+#define MEMORY_TYPE_CM 0x0000
+#define MEMORY_TYPE_AM 0x0001
+#define MEMORY_EXCLUSIVE 0x0002
+#define MEMORY_PREFETCH 0x0008
+#define MEMORY_CACHEABLE 0x0010
+#define MEMORY_BAR_MASK 0xe000
+#define MEMORY_BAR_SHIFT 13
 typedef struct eraseq_entry_t {
-memory_handle_t	Handle;
-u_char		State;
-u_int		Size;
-u_int		Offset;
-void		*Optional;
+memory_handle_t Handle;
+u_char State;
+u_int Size;
+u_int Offset;
+void *Optional;
 } eraseq_entry_t;
 typedef struct eraseq_hdr_t {
-int			QueueEntryCnt;
-eraseq_entry_t	*QueueEntryArray;
+int QueueEntryCnt;
+eraseq_entry_t *QueueEntryArray;
 } eraseq_hdr_t;
-#define ERASE_QUEUED		0x00
-#define ERASE_IN_PROGRESS(n)	(((n) > 0) && ((n) < 0x80))
-#define ERASE_IDLE		0xff
-#define ERASE_PASSED		0xe0
-#define ERASE_FAILED		0xe1
-#define ERASE_MISSING		0x80
-#define ERASE_MEDIA_WRPROT	0x84
-#define ERASE_NOT_ERASABLE	0x85
-#define ERASE_BAD_OFFSET	0xc1
-#define ERASE_BAD_TECH		0xc2
-#define ERASE_BAD_SOCKET	0xc3
-#define ERASE_BAD_VCC		0xc4
-#define ERASE_BAD_VPP		0xc5
-#define ERASE_BAD_SIZE		0xc6
+#define ERASE_QUEUED 0x00
+#define ERASE_IN_PROGRESS(n) (((n) > 0) && ((n) < 0x80))
+#define ERASE_IDLE 0xff
+#define ERASE_PASSED 0xe0
+#define ERASE_FAILED 0xe1
+#define ERASE_MISSING 0x80
+#define ERASE_MEDIA_WRPROT 0x84
+#define ERASE_NOT_ERASABLE 0x85
+#define ERASE_BAD_OFFSET 0xc1
+#define ERASE_BAD_TECH 0xc2
+#define ERASE_BAD_SOCKET 0xc3
+#define ERASE_BAD_VCC 0xc4
+#define ERASE_BAD_VPP 0xc5
+#define ERASE_BAD_SIZE 0xc6
 typedef struct copy_op_t {
-u_int		Attributes;
-u_int		SourceOffset;
-u_int		DestOffset;
-u_int		Count;
+u_int Attributes;
+u_int SourceOffset;
+u_int DestOffset;
+u_int Count;
 } copy_op_t;
 typedef struct mem_op_t {
-u_int	Attributes;
-u_int	Offset;
-u_int	Count;
+u_int Attributes;
+u_int Offset;
+u_int Count;
 } mem_op_t;
-#define MEM_OP_BUFFER		0x01
-#define MEM_OP_BUFFER_USER	0x00
-#define MEM_OP_BUFFER_KERNEL	0x01
-#define MEM_OP_DISABLE_ERASE	0x02
-#define MEM_OP_VERIFY		0x04
+#define MEM_OP_BUFFER 0x01
+#define MEM_OP_BUFFER_USER 0x00
+#define MEM_OP_BUFFER_KERNEL 0x01
+#define MEM_OP_DISABLE_ERASE 0x02
+#define MEM_OP_VERIFY 0x04
 typedef struct mtd_reg_t {
-u_int	Attributes;
-u_int	Offset;
-u_long	MediaID;
+u_int Attributes;
+u_int Offset;
+u_long MediaID;
 } mtd_reg_t;
 typedef struct mtd_request_t {
-u_int	SrcCardOffset;
-u_int	DestCardOffset;
-u_int	TransferLength;
-u_int	Function;
-u_long	MediaID;
-u_int	Status;
-u_int	Timeout;
+u_int SrcCardOffset;
+u_int DestCardOffset;
+u_int TransferLength;
+u_int Function;
+u_long MediaID;
+u_int Status;
+u_int Timeout;
 } mtd_request_t;
-#define MTD_REQ_ACTION		0x003
-#define MTD_REQ_ERASE		0x000
-#define MTD_REQ_READ		0x001
-#define MTD_REQ_WRITE		0x002
-#define MTD_REQ_COPY		0x003
-#define MTD_REQ_NOERASE		0x004
-#define MTD_REQ_VERIFY		0x008
-#define MTD_REQ_READY		0x010
-#define MTD_REQ_TIMEOUT		0x020
-#define MTD_REQ_LAST		0x040
-#define MTD_REQ_FIRST		0x080
-#define MTD_REQ_KERNEL		0x100
-#define MTD_WAITREQ	0x00
-#define MTD_WAITTIMER	0x01
-#define MTD_WAITRDY	0x02
-#define MTD_WAITPOWER	0x03
+#define MTD_REQ_ACTION 0x003
+#define MTD_REQ_ERASE 0x000
+#define MTD_REQ_READ 0x001
+#define MTD_REQ_WRITE 0x002
+#define MTD_REQ_COPY 0x003
+#define MTD_REQ_NOERASE 0x004
+#define MTD_REQ_VERIFY 0x008
+#define MTD_REQ_READY 0x010
+#define MTD_REQ_TIMEOUT 0x020
+#define MTD_REQ_LAST 0x040
+#define MTD_REQ_FIRST 0x080
+#define MTD_REQ_KERNEL 0x100
+#define MTD_WAITREQ 0x00
+#define MTD_WAITTIMER 0x01
+#define MTD_WAITRDY 0x02
+#define MTD_WAITPOWER 0x03
 typedef struct mtd_mod_win_t {
-u_int	Attributes;
-u_int	AccessSpeed;
-u_int	CardOffset;
+u_int Attributes;
+u_int AccessSpeed;
+u_int CardOffset;
 } mtd_mod_win_t;
 typedef struct mtd_vpp_req_t {
-u_char	Vpp1, Vpp2;
+u_char Vpp1, Vpp2;
 } mtd_vpp_req_t;
 typedef struct mtd_rdy_req_t {
-u_int	Mask;
+u_int Mask;
 } mtd_rdy_req_t;
 enum mtd_helper {
 MTDRequestWindow, MTDModifyWindow, MTDReleaseWindow,

@@ -1,45 +1,45 @@
 #!/bin/bash
 set -e
 if [ -n "${BASH_SOURCE[0]}" ]; then
-    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    REPO_ROOT="$SCRIPT_DIR"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$SCRIPT_DIR"
 else
-    REPO_ROOT="$(pwd)"
+REPO_ROOT="$(pwd)"
 fi
 echo "=============================================="
 echo "Advanced Development Tools Validation"
 echo "=============================================="
 if [ ! -f "$REPO_ROOT/configure.ac" ] && [ ! -f "configure.ac" ]; then
-    echo "Error: Not in GNU Mach repository root"
-    echo "Current directory: $(pwd)"
-    echo "Script expects to find configure.ac"
-    exit 1
+echo "Error: Not in GNU Mach repository root"
+echo "Current directory: $(pwd)"
+echo "Script expects to find configure.ac"
+exit 1
 fi
 if [ -f "configure.ac" ]; then
-    REPO_ROOT="$(pwd)"
+REPO_ROOT="$(pwd)"
 fi
 cd "$REPO_ROOT"
 check_file() {
-    local file="$1"
-    local description="$2"
-    if [ -f "$file" ]; then
-        echo "✓ $description: $file"
-        return 0
-    else
-        echo "✗ Missing $description: $file"
-        return 1
-    fi
+local file="$1"
+local description="$2"
+if [ -f "$file" ]; then
+echo "✓ $description: $file"
+return 0
+else
+echo "✗ Missing $description: $file"
+return 1
+fi
 }
 check_dir() {
-    local dir="$1"
-    local description="$2"
-    if [ -d "$dir" ]; then
-        echo "✓ $description: $dir"
-        return 0
-    else
-        echo "✗ Missing $description: $dir"
-        return 1
-    fi
+local dir="$1"
+local description="$2"
+if [ -d "$dir" ]; then
+echo "✓ $description: $dir"
+return 0
+else
+echo "✗ Missing $description: $dir"
+return 1
+fi
 }
 echo ""
 echo "=== 1. Checking Valgrind Integration ==="
@@ -49,16 +49,16 @@ check_file "kern/valgrind.c" "Valgrind kernel implementation" || ((VALGRIND_ERRO
 check_file "docs/valgrind-integration.md" "Valgrind documentation" || ((VALGRIND_ERRORS++))
 check_file "tests/test-valgrind.c" "Valgrind test suite" || ((VALGRIND_ERRORS++))
 if grep -q "MACH_VALGRIND_ENABLE_CALL" include/mach/valgrind.h; then
-    echo "✓ Valgrind syscall definitions present"
+echo "✓ Valgrind syscall definitions present"
 else
-    echo "✗ Valgrind syscall definitions missing"
-    ((VALGRIND_ERRORS++))
+echo "✗ Valgrind syscall definitions missing"
+((VALGRIND_ERRORS++))
 fi
 if grep -q "valgrind_init()" kern/startup.c; then
-    echo "✓ Valgrind initialization in kernel startup"
+echo "✓ Valgrind initialization in kernel startup"
 else
-    echo "✗ Valgrind initialization missing from kernel startup"
-    ((VALGRIND_ERRORS++))
+echo "✗ Valgrind initialization missing from kernel startup"
+((VALGRIND_ERRORS++))
 fi
 echo "Valgrind Integration Status: $((6-VALGRIND_ERRORS))/6 checks passed"
 echo ""
@@ -71,10 +71,10 @@ check_file "kern/unified_debug.c" "Unified debug implementation" || ((DEBUG_ERRO
 check_file "docs/whole-system-debugging.md" "Debug documentation" || ((DEBUG_ERRORS++))
 check_file "tests/test-whole-system-debugging.c" "Debug test suite" || ((DEBUG_ERRORS++))
 if grep -q "sysdebug_init" kern/system_debug.c; then
-    echo "✓ System debugging initialization present"
+echo "✓ System debugging initialization present"
 else
-    echo "✗ System debugging initialization missing"
-    ((DEBUG_ERRORS++))
+echo "✗ System debugging initialization missing"
+((DEBUG_ERRORS++))
 fi
 echo "Whole System Debugging Status: $((7-DEBUG_ERRORS))/7 checks passed"
 echo ""
@@ -89,10 +89,10 @@ check_file "docs/advanced-security-analysis.md" "Security documentation" || ((SE
 check_file "tests/test-security-analysis.c" "Security test suite" || ((SECURITY_ERRORS++))
 check_file "scripts/security-vulnerability-scanner.sh" "Vulnerability scanner" || ((SECURITY_ERRORS++))
 if grep -q "security_monitor_init" kern/security_monitor.c; then
-    echo "✓ Security monitoring initialization present"
+echo "✓ Security monitoring initialization present"
 else
-    echo "✗ Security monitoring initialization missing"
-    ((SECURITY_ERRORS++))
+echo "✗ Security monitoring initialization missing"
+((SECURITY_ERRORS++))
 fi
 echo "Security Analysis Status: $((9-SECURITY_ERRORS))/9 checks passed"
 echo ""
@@ -104,22 +104,22 @@ check_file "kern/development_tools.h" "Development tools header" || ((INTEGRATIO
 check_file "kern/development_tools.srv" "Development tools MIG server" || ((INTEGRATION_ERRORS++))
 check_file "tests/test-advanced-development-tools.c" "Integration test suite" || ((INTEGRATION_ERRORS++))
 if grep -q "development_tools.c" Makefrag.am; then
-    echo "✓ Development tools in build system"
+echo "✓ Development tools in build system"
 else
-    echo "✗ Development tools missing from build system"
-    ((INTEGRATION_ERRORS++))
+echo "✗ Development tools missing from build system"
+((INTEGRATION_ERRORS++))
 fi
 if grep -q "development_tools_init()" kern/startup.c; then
-    echo "✓ Development tools initialization in kernel startup"
+echo "✓ Development tools initialization in kernel startup"
 else
-    echo "✗ Development tools initialization missing from kernel startup" 
-    ((INTEGRATION_ERRORS++))
+echo "✗ Development tools initialization missing from kernel startup"
+((INTEGRATION_ERRORS++))
 fi
 if grep -q "test-advanced-development-tools" tests/user-qemu.mk; then
-    echo "✓ Integration tests in test suite"
+echo "✓ Integration tests in test suite"
 else
-    echo "✗ Integration tests missing from test suite"
-    ((INTEGRATION_ERRORS++))
+echo "✗ Integration tests missing from test suite"
+((INTEGRATION_ERRORS++))
 fi
 echo "Integration Status: $((8-INTEGRATION_ERRORS))/8 checks passed"
 echo ""
@@ -127,38 +127,38 @@ echo "=== 5. Running Validation Checks ==="
 echo "Checking implementation patterns..."
 PATTERN_ERRORS=0
 if grep -q "KERN_INVALID_HOST" kern/development_tools.c; then
-    echo "✓ Proper error handling in syscall implementations"
+echo "✓ Proper error handling in syscall implementations"
 else
-    echo "✗ Missing proper error handling patterns"
-    ((PATTERN_ERRORS++))
+echo "✗ Missing proper error handling patterns"
+((PATTERN_ERRORS++))
 fi
 if grep -q "kmem_alloc" kern/development_tools.c; then
-    echo "✓ Proper kernel memory allocation"
+echo "✓ Proper kernel memory allocation"
 else
-    echo "✗ Missing proper memory allocation patterns"
-    ((PATTERN_ERRORS++))
+echo "✗ Missing proper memory allocation patterns"
+((PATTERN_ERRORS++))
 fi
 if grep -q "simple_lock" kern/development_tools.c; then
-    echo "✓ Proper locking mechanisms"
+echo "✓ Proper locking mechanisms"
 else
-    echo "✗ Missing proper locking patterns"
-    ((PATTERN_ERRORS++))
+echo "✗ Missing proper locking patterns"
+((PATTERN_ERRORS++))
 fi
 echo "Implementation Patterns: $((3-PATTERN_ERRORS))/3 checks passed"
 echo ""
 echo "=== 6. Checking Documentation ==="
 DOC_ERRORS=0
 if [ -f "docs/advanced-security-analysis.md" ] && [ -f "docs/valgrind-integration.md" ] && [ -f "docs/whole-system-debugging.md" ]; then
-    echo "✓ Comprehensive documentation present"
+echo "✓ Comprehensive documentation present"
 else
-    echo "✗ Missing comprehensive documentation"
-    ((DOC_ERRORS++))
+echo "✗ Missing comprehensive documentation"
+((DOC_ERRORS++))
 fi
 if grep -q -i "Usage:\|Example" docs/valgrind-integration.md 2>/dev/null; then
-    echo "✓ Usage examples in documentation"
+echo "✓ Usage examples in documentation"
 else
-    echo "✗ Missing usage examples in documentation"
-    ((DOC_ERRORS++))
+echo "✗ Missing usage examples in documentation"
+((DOC_ERRORS++))
 fi
 echo "Documentation Status: $((2-DOC_ERRORS))/2 checks passed"
 echo ""
@@ -170,48 +170,48 @@ TOTAL_CHECKS=35
 echo "Overall Status: $((TOTAL_CHECKS-TOTAL_ERRORS))/$TOTAL_CHECKS checks passed"
 echo ""
 if [ $VALGRIND_ERRORS -eq 0 ]; then
-    echo "✅ Valgrind Integration - COMPLETE"
+echo "✅ Valgrind Integration - COMPLETE"
 else
-    echo "❌ Valgrind Integration - INCOMPLETE ($VALGRIND_ERRORS issues)"
+echo "❌ Valgrind Integration - INCOMPLETE ($VALGRIND_ERRORS issues)"
 fi
 if [ $DEBUG_ERRORS -eq 0 ]; then
-    echo "✅ Whole System Debugging - COMPLETE"  
+echo "✅ Whole System Debugging - COMPLETE"
 else
-    echo "❌ Whole System Debugging - INCOMPLETE ($DEBUG_ERRORS issues)"
+echo "❌ Whole System Debugging - INCOMPLETE ($DEBUG_ERRORS issues)"
 fi
 if [ $SECURITY_ERRORS -eq 0 ]; then
-    echo "✅ Security Analysis Framework - COMPLETE"
+echo "✅ Security Analysis Framework - COMPLETE"
 else
-    echo "❌ Security Analysis Framework - INCOMPLETE ($SECURITY_ERRORS issues)"
+echo "❌ Security Analysis Framework - INCOMPLETE ($SECURITY_ERRORS issues)"
 fi
 if [ $INTEGRATION_ERRORS -eq 0 ]; then
-    echo "✅ Advanced Tools Integration - COMPLETE"
+echo "✅ Advanced Tools Integration - COMPLETE"
 else
-    echo "❌ Advanced Tools Integration - INCOMPLETE ($INTEGRATION_ERRORS issues)"
+echo "❌ Advanced Tools Integration - INCOMPLETE ($INTEGRATION_ERRORS issues)"
 fi
 if [ $PATTERN_ERRORS -eq 0 ]; then
-    echo "✅ Implementation Quality - EXCELLENT"
+echo "✅ Implementation Quality - EXCELLENT"
 else
-    echo "❌ Implementation Quality - NEEDS IMPROVEMENT ($PATTERN_ERRORS issues)"
+echo "❌ Implementation Quality - NEEDS IMPROVEMENT ($PATTERN_ERRORS issues)"
 fi
 if [ $DOC_ERRORS -eq 0 ]; then
-    echo "✅ Documentation - COMPLETE"
+echo "✅ Documentation - COMPLETE"
 else
-    echo "❌ Documentation - INCOMPLETE ($DOC_ERRORS issues)"
+echo "❌ Documentation - INCOMPLETE ($DOC_ERRORS issues)"
 fi
 echo ""
 echo "=============================================="
 if [ $TOTAL_ERRORS -eq 0 ]; then
-    echo "🎉 ADVANCED DEVELOPMENT TOOLS - FULLY IMPLEMENTED"
-    echo "   All components are complete and integrated:"
-    echo "   • Valgrind memory tracking with kernel support"
-    echo "   • System-wide debugging with unified interface" 
-    echo "   • Advanced security analysis with CFI and monitoring"
-    echo "   • Complete syscall interface for user-space integration"
-    echo "   • Comprehensive test suite and documentation"
-    exit 0
+echo "🎉 ADVANCED DEVELOPMENT TOOLS - FULLY IMPLEMENTED"
+echo "   All components are complete and integrated:"
+echo "   • Valgrind memory tracking with kernel support"
+echo "   • System-wide debugging with unified interface"
+echo "   • Advanced security analysis with CFI and monitoring"
+echo "   • Complete syscall interface for user-space integration"
+echo "   • Comprehensive test suite and documentation"
+exit 0
 else
-    echo "⚠️  ADVANCED DEVELOPMENT TOOLS - PARTIALLY IMPLEMENTED"
-    echo "   $TOTAL_ERRORS issues need to be addressed for full completion"
-    exit 1
+echo "⚠️  ADVANCED DEVELOPMENT TOOLS - PARTIALLY IMPLEMENTED"
+echo "   $TOTAL_ERRORS issues need to be addressed for full completion"
+exit 1
 fi

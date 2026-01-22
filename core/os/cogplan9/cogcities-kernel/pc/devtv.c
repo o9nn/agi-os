@@ -1,12 +1,12 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
 #include "io.h"
 #include "hcwAMC.h"
-#define max(a, b)	(((a) > (b))? (a): (b))
+#define max(a, b) (((a) > (b))? (a): (b))
 enum {
 Qdir = 0,
 Qsubdir,
@@ -33,7 +33,7 @@ ntsc_clkx1hactive = 754,
 ntsc_vdelay = 26,
 ntsc_vscale = 0,
 i2c_nostop = 1 << 5,
-i2c_nos1b  = 1 << 4,
+i2c_nos1b = 1 << 4,
 i2c_timing = 7 << 4,
 i2c_bt848w3b = 1 << 2,
 i2c_bt848scl = 1 << 1,
@@ -68,9 +68,9 @@ adc_crush = 1 << 0,
 colorfmt_rgb16 = 2 << 4 | 2 << 0,
 colorfmt_YCbCr422 = 8 << 4 | 8 << 0,
 colorfmt_YCbCr411 = 9 << 4 | 9 << 0,
-colorctl_gamma     = 1 << 4,
-capctl_fullframe   = 1 << 4,
-capctl_captureodd  = 1 << 1,
+colorctl_gamma = 1 << 4,
+capctl_fullframe = 1 << 4,
+capctl_captureodd = 1 << 1,
 capctl_captureeven = 1 << 0,
 vbipacksize = 0x190,
 intstat_riscstatshift = 28,
@@ -203,134 +203,134 @@ Srate_48000 = 7,
 };
 typedef struct Variant Variant;
 struct Variant {
-ushort	vid;
-ushort	did;
-char	*name;
+ushort vid;
+ushort did;
+char *name;
 };
 typedef struct Bt848 Bt848;
 struct Bt848 {
-ulong	devstat;
-ulong	iform;
-ulong	tdec;
-ulong	ecrop;
-ulong	evdelaylo;
-ulong	evactivelo;
-ulong	ehdelaylo;
-ulong	ehactivelo;
-ulong	ehscalehi;
-ulong	ehscalelo;
-ulong	bright;
-ulong	econtrol;
-ulong	contrastlo;
-ulong	satulo;
-ulong	satvlo;
-ulong	hue;
-ulong	escloop;
-ulong	pad0;
-ulong	oform;
-ulong	evscalehi;
-ulong	evscalelo;
-ulong	test;
-ulong	pad1[2];
-ulong	adelay;
-ulong	bdelay;
-ulong	adc;
-ulong	evtc;
-ulong	pad2[3];
-ulong	sreset;
-ulong	tglb;
-ulong	tgctrl;
-ulong	pad3;
-ulong	ocrop;
-ulong	ovdelaylo;
-ulong	ovactivelo;
-ulong	ohdelaylo;
-ulong	ohactivelo;
-ulong	ohscalehi;
-ulong	ohscalelo;
-ulong	pad4;
-ulong	ocontrol;
-ulong	pad5[4];
-ulong	oscloop;
-ulong	pad6[2];
-ulong	ovscalehi;
-ulong	ovscalelo;
-ulong	colorfmt;
-ulong	colorctl;
-ulong	capctl;
-ulong	vbipacksize;
-ulong	vbipackdel;
-ulong	fcap;
-ulong	ovtc;
-ulong	pllflo;
-ulong	pllfhi;
-ulong	pllxci;
-ulong	dvsif;
-ulong	intstat;
-ulong	intmask;
-ulong	pad7;
-ulong	gpiodmactl;
-ulong	i2c;
-ulong	riscstrtadd;
-ulong	gpioouten;
-ulong	gpioreginp;
-ulong	risccount;
-ulong	pad8[55];
-ulong	gpiodata[64];
+ulong devstat;
+ulong iform;
+ulong tdec;
+ulong ecrop;
+ulong evdelaylo;
+ulong evactivelo;
+ulong ehdelaylo;
+ulong ehactivelo;
+ulong ehscalehi;
+ulong ehscalelo;
+ulong bright;
+ulong econtrol;
+ulong contrastlo;
+ulong satulo;
+ulong satvlo;
+ulong hue;
+ulong escloop;
+ulong pad0;
+ulong oform;
+ulong evscalehi;
+ulong evscalelo;
+ulong test;
+ulong pad1[2];
+ulong adelay;
+ulong bdelay;
+ulong adc;
+ulong evtc;
+ulong pad2[3];
+ulong sreset;
+ulong tglb;
+ulong tgctrl;
+ulong pad3;
+ulong ocrop;
+ulong ovdelaylo;
+ulong ovactivelo;
+ulong ohdelaylo;
+ulong ohactivelo;
+ulong ohscalehi;
+ulong ohscalelo;
+ulong pad4;
+ulong ocontrol;
+ulong pad5[4];
+ulong oscloop;
+ulong pad6[2];
+ulong ovscalehi;
+ulong ovscalelo;
+ulong colorfmt;
+ulong colorctl;
+ulong capctl;
+ulong vbipacksize;
+ulong vbipackdel;
+ulong fcap;
+ulong ovtc;
+ulong pllflo;
+ulong pllfhi;
+ulong pllxci;
+ulong dvsif;
+ulong intstat;
+ulong intmask;
+ulong pad7;
+ulong gpiodmactl;
+ulong i2c;
+ulong riscstrtadd;
+ulong gpioouten;
+ulong gpioreginp;
+ulong risccount;
+ulong pad8[55];
+ulong gpiodata[64];
 };
-#define packetlen	i2c
+#define packetlen i2c
 typedef struct Tuner Tuner;
 struct Tuner {
-char	*name;
-ushort	freq_vhfh;
-ushort	freq_uhf;
-uchar	VHF_L;
-uchar	VHF_H;
-uchar	UHF;
-uchar	cfg;
-ushort	offs;
+char *name;
+ushort freq_vhfh;
+ushort freq_uhf;
+uchar VHF_L;
+uchar VHF_H;
+uchar UHF;
+uchar cfg;
+ushort offs;
 };
 typedef struct Frame Frame;
 struct Frame {
-ulong	*fstart;
-ulong	*fjmp;
-uchar	*fbase;
+ulong *fstart;
+ulong *fjmp;
+uchar *fbase;
 };
 typedef struct Tv Tv;
 struct Tv {
 Lock;
 Rendez;
-Bt848	*bt848;
-Bt848	*bt878;
-Variant	*variant;
-Tuner	*tuner;
-Pcidev	*pci;
-uchar	i2ctuneraddr;
-uchar	i2ccmd;
-int	board;
-ulong	cfmt;
-int	channel;
-Ref	fref;
-int	nframes;
-Frame	*frames;
-int	lvframe;
-uchar	*amux;
-int	nablocks;
-int	absize;
-int	narblocks;
-ulong	*arisc;
-uchar	*abuf;
-char	ainfo[128];
-int	msp;
-Lock	kfirlock;
-ulong	i2cstate;
-int	gpiostate;
-ulong	alterareg;
-ulong	alteraclock;
-int	asrate;
-uchar	aleft, aright;
-ulong	kfirclock;
-Ref	aref;
+Bt848 *bt848;
+Bt848 *bt878;
+Variant *variant;
+Tuner *tuner;
+Pcidev *pci;
+uchar i2ctuneraddr;
+uchar i2ccmd;
+int board;
+ulong cfmt;
+int channel;
+Ref fref;
+int nframes;
+Frame *frames;
+int lvframe;
+uchar *amux;
+int nablocks;
+int absize;
+int narblocks;
+ulong *arisc;
+uchar *abuf;
+char ainfo[128];
+int msp;
+Lock kfirlock;
+ulong i2cstate;
+int gpiostate;
+ulong alterareg;
+ulong alteraclock;
+int asrate;
+uchar aleft, aright;
+ulong kfirclock;
+Ref aref;
 };
 enum {
 TemicPAL = 0,
@@ -351,7 +351,7 @@ static Tuner tuners[] = {
 0x02, 0x04, 0x01, 0x8e, 623 },
 {"Philips PAL_I", Freqmultiplier * 140.25, Freqmultiplier * 463.25,
 0xa0, 0x90, 0x30, 0x8e, 623 },
-{"Philips NTSC",  Freqmultiplier * 157.25, Freqmultiplier * 451.25,
+{"Philips NTSC", Freqmultiplier * 157.25, Freqmultiplier * 451.25,
 0xA0, 0x90, 0x30, 0x8e, 732 },
 {"Philips SECAM", Freqmultiplier * 168.25, Freqmultiplier * 447.25,
 0xA7, 0x97, 0x37, 0x8e, 623 },
@@ -408,15 +408,15 @@ CMvolume,
 CMmute,
 };
 static Cmdtab tvctlmsg[] = {
-CMvstart,	"vstart",	2,
-CMastart,	"astart",	5,
-CMastop,	"astop",	1,
-CMvgastart,	"vgastart",	3,
-CMvstop,	"vstop",	1,
-CMchannel,	"channel",	3,
-CMcolormode,	"colormode",	2,
-CMvolume,	"volume",	3,
-CMmute,		"mute",		1,
+CMvstart, "vstart", 2,
+CMastart, "astart", 5,
+CMastop, "astop", 1,
+CMvgastart, "vgastart", 3,
+CMvstop, "vstop", 1,
+CMchannel, "channel", 3,
+CMcolormode, "colormode", 2,
+CMvolume, "volume", 3,
+CMmute, "mute", 1,
 };
 static Variant variant[] = {
 { Brooktree_vid, Brooktree_848_did, "Brooktree 848 TV tuner", },
@@ -601,9 +601,9 @@ tvattach(char *spec)
 {
 return devattach('V', spec);
 }
-#define TYPE(q)		((int)((q).path & 0xff))
-#define DEV(q)		((int)(((q).path >> 8) & 0xff))
-#define QID(d, t)	((((d) & 0xff) << 8) | (t))
+#define TYPE(q) ((int)((q).path & 0xff))
+#define DEV(q) ((int)(((q).path >> 8) & 0xff))
+#define QID(d, t) ((((d) & 0xff) << 8) | (t))
 static int
 tv1gen(Chan *c, int i, Dir *dp)
 {
@@ -969,7 +969,7 @@ i2cread(Tv *tv, uchar off, uchar *v)
 Bt848 *bt848 = tv->bt848;
 ulong intstat;
 int i;
-bt848->intstat	= intstat_i2cdone;
+bt848->intstat = intstat_i2cdone;
 bt848->i2c = (off << 24) | tv->i2ccmd;
 intstat = -1;
 for (i = 0; i != 1000; i++) {
@@ -992,7 +992,7 @@ i2cwrite(Tv *tv, uchar addr, uchar sub, uchar data, int both)
 Bt848 *bt848 = tv->bt848;
 ulong intstat, d;
 int i;
-bt848->intstat	= intstat_i2cdone;
+bt848->intstat = intstat_i2cdone;
 d = (addr << 24) | (sub << 16) | tv->i2ccmd;
 if (both)
 d |= (data << 8) | i2c_bt848w3b;
@@ -1190,7 +1190,7 @@ if ((frames[i].fbase = (uchar *)malloc(bpf)) == nil)
 error(Enomem);
 switch (tv->cfmt) {
 case colorfmt_YCbCr422:
-frames[i].fstart = riscplanar422(PADDR(frames[i].fbase),				i, w, h, &frames[i].fjmp);
+frames[i].fstart = riscplanar422(PADDR(frames[i].fbase), i, w, h, &frames[i].fjmp);
 break;
 case colorfmt_YCbCr411:
 frames[i].fstart = riscplanar411(PADDR(frames[i].fbase),
@@ -1325,7 +1325,7 @@ tv->frames = nil;
 iunlock(tv);
 }
 static long hrcfreq[] = {
-0,  7200,  5400,  6000,  6600,  7800,  8400, 17400,
+0, 7200, 5400, 6000, 6600, 7800, 8400, 17400,
 18000, 18600, 19200, 19800, 20400, 21000, 12000, 12600,
 13200, 13800, 14400, 15000, 15600, 16200, 16800, 21600,
 22200, 22800, 23400, 24000, 24600, 25200, 25800, 26400,
@@ -1336,7 +1336,7 @@ static long hrcfreq[] = {
 46200, 46800, 47400, 48000, 48600, 49200, 49800, 50400,
 51000, 51600, 52200, 52800, 53400, 54000, 54600, 55200,
 55800, 56400, 57000, 57600, 58200, 58800, 59400, 60000,
-60600, 61200, 61800, 62400, 63000, 63600, 64200,  9000,
+60600, 61200, 61800, 62400, 63000, 63600, 64200, 9000,
 9600, 10200, 10800, 11400, 64800, 65400, 66000, 66600,
 67200, 67800, 68400, 69000, 69600, 70200, 70800, 71400,
 72000, 72600, 73200, 73800, 74400, 75000, 75600, 76200,
@@ -1368,13 +1368,13 @@ if (tv->msp)
 msptune(tv);
 }
 static struct {
-char	*cmode;
-ulong	realmode;
-ulong	cbits;
+char *cmode;
+ulong realmode;
+ulong cbits;
 } colormodes[] = {
-{ "RGB16",	colorfmt_rgb16,		colorfmt_rgb16, },
-{ "YCbCr422",	colorfmt_YCbCr422,	colorfmt_YCbCr422, },
-{ "YCbCr411",	colorfmt_YCbCr411,	colorfmt_YCbCr422, },
+{ "RGB16", colorfmt_rgb16, colorfmt_rgb16, },
+{ "YCbCr422", colorfmt_YCbCr422, colorfmt_YCbCr422, },
+{ "YCbCr411", colorfmt_YCbCr411, colorfmt_YCbCr422, },
 };
 static void
 colormode(Tv *tv, char *colormode)
@@ -1554,7 +1554,7 @@ if (!i2c_wr8(tv, b[0] | 1, 2000)) {
 i2c_stop(tv);
 continue;
 }
-*data  = i2c_rd8(tv, 0) << 8;
+*data = i2c_rd8(tv, 0) << 8;
 *data |= i2c_rd8(tv, 1);
 i2c_stop(tv);
 return 1;

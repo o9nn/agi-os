@@ -1,5 +1,5 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #include <string.h>
 #include <stdlib.h>
@@ -1815,7 +1815,7 @@ goto err;
 r = mailimap_oparenth_parse(fd, buffer, parser_ctx, &cur_token);
 if (r != MAILIMAP_NO_ERROR) {
 r = mailimap_string_parse(fd, buffer, parser_ctx, &cur_token, &name, NULL,
-+                                progr_rate, progr_fun);
++ progr_rate, progr_fun);
 if (r != MAILIMAP_NO_ERROR) {
 res = r;
 goto err;
@@ -2559,7 +2559,7 @@ mailimap_body_parse,
 mailimap_body_free,
 progr_rate, progr_fun);
 if (r == MAILIMAP_ERROR_PARSE) {
-body_list =  clist_new();
+body_list = clist_new();
 if (body_list == NULL) {
 res = MAILIMAP_ERROR_MEMORY;
 goto err;
@@ -2650,7 +2650,7 @@ free(media);
 mailimap_body_fields_free(body_fields);
 return NULL;
 }
-body_1part =  mailimap_body_type_1part_new(MAILIMAP_BODY_TYPE_1PART_TEXT,
+body_1part = mailimap_body_type_1part_new(MAILIMAP_BODY_TYPE_1PART_TEXT,
 NULL, NULL, body_type_text,
 NULL);
 if (body_1part == NULL) {
@@ -8098,7 +8098,7 @@ size_t * indx, uint32_t * result)
 int r;
 uint32_t value;
 size_t cur_token;
-cur_token  = * indx;
+cur_token = * indx;
 r = mailimap_nz_number_parse(fd, buffer, parser_ctx, &cur_token, &value);
 if (r == MAILIMAP_NO_ERROR) {
 * indx = cur_token;
@@ -8120,7 +8120,7 @@ size_t cur_token;
 int r;
 uint32_t left;
 uint32_t right;
-cur_token  = * indx;
+cur_token = * indx;
 r = mailimap_seq_number_parse(fd, buffer, parser_ctx, &cur_token, &left);
 if (r != MAILIMAP_NO_ERROR) {
 return r;

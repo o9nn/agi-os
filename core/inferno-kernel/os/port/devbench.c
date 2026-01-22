@@ -12,14 +12,14 @@
 #include "benchmod.h"
 typedef enum { None, Calibrate, Base, Op, Intr, Dis, Gc, MS2T, xTest};
 static struct {
-int		inuse;
-int		test;
-void*	scratch;
-char*	buf;
-int		bufsz;
-char*	wpos;
-void		(*op)(void);
-vlong	tickstart;
+int inuse;
+int test;
+void* scratch;
+char* buf;
+int bufsz;
+char* wpos;
+void (*op)(void);
+vlong tickstart;
 } bench;
 static void
 log(char *msg, ...)
@@ -191,10 +191,10 @@ enum {
 Maxprocs=3,
 };
 struct Psync {
-Rendez	r;
-int	flag;
-int	id;
-int	awaken;
+Rendez r;
+int flag;
+int id;
+int awaken;
 };
 static Psync timesync[Maxprocs];
 static Ref nactive;
@@ -283,21 +283,21 @@ return n;
 }
 typedef struct Ictr Ictr;
 struct Ictr {
-ulong	base;
-ulong	sleep;
-ulong	spllo;
-ulong	intr;
-ulong	isave;
-ulong	arrive;
-ulong	wakeup;
-ulong	awake;
+ulong base;
+ulong sleep;
+ulong spllo;
+ulong intr;
+ulong isave;
+ulong arrive;
+ulong wakeup;
+ulong awake;
 };
 static Ictr counters[5], *curct;
 static int intrwant;
 static Rendez vous;
-int	spltbl;
-int	intrtbl;
-int	isavetbl;
+int spltbl;
+int intrtbl;
+int isavetbl;
 static int ienable;
 static void
 intrwake(void)
@@ -364,18 +364,18 @@ log("%ld\t%ld\t%ld\t%ld\t%ld\t%ld\t%ld\t%ld (%s)\n", ic->sleep, ic->spllo, ic->i
 setpri(PriNormal);
 return n;
 }
-typedef struct  {
-vlong	n;
-vlong	min;
-vlong 	max;
-vlong	sum;
-vlong	sumsq;
+typedef struct {
+vlong n;
+vlong min;
+vlong max;
+vlong sum;
+vlong sumsq;
 } Stat;
 static void
 stat(enum { Reset, Inc } op, Stat *c, vlong val)
 {
 switch(op) {
-case	Reset:
+case Reset:
 c->n = 0;
 c->sum = 0;
 c->sumsq = 0;
@@ -406,35 +406,35 @@ d->max = s->max;
 }
 enum
 {
-HSIZE	= 31,
-MAXCOUNT	= 100000000L,
+HSIZE = 31,
+MAXCOUNT = 100000000L,
 };
 typedef struct {
-int		op;
-int		pc;
-long		count;
-Stat	t;
+int op;
+int pc;
+long count;
+Stat t;
 } Istat;
 typedef struct Mstat Mstat;
 struct Mstat {
-char*	name;
-char*	path;
-int		ninst;
-Istat*	inst;
-Inst*		base;
-Mstat*	hash;
-Mstat*	link;
+char* name;
+char* path;
+int ninst;
+Istat* inst;
+Inst* base;
+Mstat* hash;
+Mstat* link;
 };
 struct
 {
-Mstat*	hash[HSIZE];
-Mstat*	list;
+Mstat* hash[HSIZE];
+Mstat* list;
 } vmstat;
 extern struct
 {
-char*	name;
-int	op;
-int	terminal;
+char* name;
+int op;
+int terminal;
 }keywds[];
 static char *
 opname(int op)
@@ -500,8 +500,8 @@ bxec(Prog *p)
 {
 int op, pc;
 vlong t0, t;
-Mstat*	ms;
-Istat*	is;
+Mstat* ms;
+Istat* is;
 Module *om;
 R = p->R;
 R.MP = R.M->MP;
@@ -549,19 +549,19 @@ addrun(new);
 p->R = R;
 }
 static struct {
-int		set;
-int 		op, pc;
-vlong	t0, t;
-vlong	base;
-Mstat	*ms;
-Module	*om;
-int		timing;
+int set;
+int op, pc;
+vlong t0, t;
+vlong base;
+Mstat *ms;
+Module *om;
+int timing;
 } C;
 enum { Nop = 0 };
 void
 dopostcomp(vlong t)
 {
-Istat*	is;
+Istat* is;
 C.t = t;
 C.set = 0;
 if(C.ms != 0) {
@@ -703,7 +703,7 @@ t1 = archrdtsc();
 t1 -= t0;
 tot += t1;
 }
-log(" %.2f",  ts2us(tot));
+log(" %.2f", ts2us(tot));
 nidle--;
 if(nidle == 0) {
 log("\n");
@@ -728,7 +728,7 @@ for(i=0; i<1000; i++) {
 t0 = archrdtsc();
 rungc(head);
 t1 = archrdtsc();
-log(" %.2f",  ts2us(t1-t0));
+log(" %.2f", ts2us(t1-t0));
 release();
 acquire();
 }
@@ -744,7 +744,7 @@ rungc(head);
 release();
 acquire();
 t1 = archrdtsc();
-log(" %.2f",  ts2us(t1-t0));
+log(" %.2f", ts2us(t1-t0));
 }
 log("\n");
 }
@@ -792,7 +792,7 @@ Bench_enablegc(void *)
 {
 gcunlock();
 }
-#define fdchk(x)	((x) == (Bench_FD*)H ? -1 : (x)->fd)
+#define fdchk(x) ((x) == (Bench_FD*)H ? -1 : (x)->fd)
 void
 Bench_read(void *fp)
 {
@@ -819,15 +819,15 @@ ussched = bus(0);
 log("%lld %lld %lld %lud %lld\n", usrelease, uskread, usacquire, m->ticks, ussched);
 }
 long (*Test[])(int report, void *va, long n, ulong offset) = {
-[None]		notest,
-[Calibrate]	cal,
-[Base]		base,
-[Op]			timeop,
-[Intr]			intrtime,
-[Dis]			distime,
-[Gc]			gctime,
-[MS2T]		ms2ts,
-[xTest]		test,
+[None] notest,
+[Calibrate] cal,
+[Base] base,
+[Op] timeop,
+[Intr] intrtime,
+[Dis] distime,
+[Gc] gctime,
+[MS2T] ms2ts,
+[xTest] test,
 };
 enum {
 Benchdirqid,
@@ -837,10 +837,10 @@ Benchusqid,
 };
 #define Data 0
 static Dirtab benchtab[]={
-".",		{Benchdirqid,0,QTDIR},	0,	0555,
-"bdata",	{Benchdataqid},		0,	0444,
-"bctl",	{Benchctlqid},		0,	0660,
-"busec",	{Benchusqid},		0,	0660,
+".", {Benchdirqid,0,QTDIR}, 0, 0555,
+"bdata", {Benchdataqid}, 0, 0444,
+"bctl", {Benchctlqid}, 0, 0660,
+"busec", {Benchusqid}, 0, 0660,
 };
 static void
 benchreset(void)
@@ -963,7 +963,7 @@ error(Ebadusefd);
 }
 return n;
 }
-Dev	benchdevtab = {
+Dev benchdevtab = {
 'x',
 "bench",
 benchreset,

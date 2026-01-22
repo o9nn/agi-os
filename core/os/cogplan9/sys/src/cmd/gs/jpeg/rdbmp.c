@@ -2,17 +2,17 @@
 #ifdef BMP_SUPPORTED
 #ifdef HAVE_UNSIGNED_CHAR
 typedef unsigned char U_CHAR;
-#define UCH(x)	((int) (x))
+#define UCH(x) ((int) (x))
 #else
 #ifdef CHAR_IS_UNSIGNED
 typedef char U_CHAR;
-#define UCH(x)	((int) (x))
+#define UCH(x) ((int) (x))
 #else
 typedef char U_CHAR;
-#define UCH(x)	((int) (x) & 0xFF)
+#define UCH(x) ((int) (x) & 0xFF)
 #endif
 #endif
-#define	ReadOK(file,buffer,len)	(JFREAD(file,buffer,len) == ((size_t) (len)))
+#define ReadOK(file,buffer,len) (JFREAD(file,buffer,len) == ((size_t) (len)))
 typedef struct _bmp_source_struct * bmp_source_ptr;
 typedef struct _bmp_source_struct {
 struct cjpeg_source_struct pub;
@@ -148,9 +148,9 @@ start_input_bmp (j_compress_ptr cinfo, cjpeg_source_ptr sinfo)
 bmp_source_ptr source = (bmp_source_ptr) sinfo;
 U_CHAR bmpfileheader[14];
 U_CHAR bmpinfoheader[64];
-#define GET_2B(array,offset)  ((unsigned int) UCH(array[offset]) + \
+#define GET_2B(array,offset) ((unsigned int) UCH(array[offset]) + \
 (((unsigned int) UCH(array[offset+1])) << 8))
-#define GET_4B(array,offset)  ((INT32) UCH(array[offset]) + \
+#define GET_4B(array,offset) ((INT32) UCH(array[offset]) + \
 (((INT32) UCH(array[offset+1])) << 8) + \
 (((INT32) UCH(array[offset+2])) << 16) + \
 (((INT32) UCH(array[offset+3])) << 24))

@@ -1,25 +1,25 @@
 (use-modules (srfi srfi-1))
 (define-public (print-LG-flat DEST DICT)
 "
-  print-LG-flat DEST DICT - print a Link-Grammar style dictionary.
-  Prints a flat-file style dictionary. That is a \"4.0.dict\" style
-  file. This does NOT print the file boilerplate, it only prints
-  the raw dictionary contents.
-  The DEST must be the destination file-handle, or #t to print to
-  stdout, or #f to print to string.
-  The DICT must be a dictionary.
+print-LG-flat DEST DICT - print a Link-Grammar style dictionary.
+Prints a flat-file style dictionary. That is a \"4.0.dict\" style
+file. This does NOT print the file boilerplate, it only prints
+the raw dictionary contents.
+The DEST must be the destination file-handle, or #t to print to
+stdout, or #f to print to string.
+The DICT must be a dictionary.
 "
-	(define (prt-wordlist WL)
-		(string-join
-			(map (lambda (WORD) (format #f "~A" WORD)) WL)))
-	(define (prt-junct CL)
-		(string-join
-			(map (lambda (CON) (format #f "~A" CON)) CL) " or "))
-	(for-each
-		(lambda (ENTRY)
-			(format DEST "\n~A: ~A;\n"
-				(prt-wordlist (first ENTRY))
-				(prt-junct (second ENTRY)))
-		)
-		DICT)
+(define (prt-wordlist WL)
+(string-join
+(map (lambda (WORD) (format #f "~A" WORD)) WL)))
+(define (prt-junct CL)
+(string-join
+(map (lambda (CON) (format #f "~A" CON)) CL) " or "))
+(for-each
+(lambda (ENTRY)
+(format DEST "\n~A: ~A;\n"
+(prt-wordlist (first ENTRY))
+(prt-junct (second ENTRY)))
+)
+DICT)
 )

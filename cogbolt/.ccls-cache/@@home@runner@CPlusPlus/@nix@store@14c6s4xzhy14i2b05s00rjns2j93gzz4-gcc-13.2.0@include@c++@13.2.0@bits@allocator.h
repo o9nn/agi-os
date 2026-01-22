@@ -13,11 +13,11 @@ template<>
 class allocator<void>
 {
 public:
-typedef void        value_type;
-typedef size_t      size_type;
-typedef ptrdiff_t   difference_type;
+typedef void value_type;
+typedef size_t size_type;
+typedef ptrdiff_t difference_type;
 #if __cplusplus <= 201703L
-typedef void*       pointer;
+typedef void* pointer;
 typedef const void* const_pointer;
 template<typename _Tp1>
 struct rebind
@@ -42,13 +42,13 @@ template<typename _Tp>
 class allocator : public __allocator_base<_Tp>
 {
 public:
-typedef _Tp        value_type;
-typedef size_t     size_type;
-typedef ptrdiff_t  difference_type;
+typedef _Tp value_type;
+typedef size_t size_type;
+typedef ptrdiff_t difference_type;
 #if __cplusplus <= 201703L
-typedef _Tp*       pointer;
+typedef _Tp* pointer;
 typedef const _Tp* const_pointer;
-typedef _Tp&       reference;
+typedef _Tp& reference;
 typedef const _Tp& const_reference;
 template<typename _Tp1>
 struct rebind

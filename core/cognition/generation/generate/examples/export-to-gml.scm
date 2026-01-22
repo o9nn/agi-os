@@ -3,15 +3,15 @@
 (load "basic-network.scm")
 (load "parameters.scm")
 (define graph-set
-	(cog-random-aggregate polarity-set lexis weights basic-net-params
-		(Concept "burr-3")))
+(cog-random-aggregate polarity-set lexis weights basic-net-params
+(Concept "burr-3")))
 (cog-arity graph-set)
 (define gml-string (export-to-gml graph-set))
 (define just-one (Set (gar graph-set)))
 (define just-one-gml (export-to-gml just-one))
 (let ((outport (open-file "/tmp/basic-random-net.gml" "w")))
-   (put-string outport just-one-gml)
-   (close outport))
+(put-string outport just-one-gml)
+(close outport))
 (State (Member close-fraction basic-net-params) (Number 0))
 (State (Member max-solutions basic-net-params) (Number 1))
 (cog-set-value! b1 weights (FloatValue 1))
@@ -21,10 +21,10 @@
 (cog-set-value! b5 weights (FloatValue (/ 1.0 25)))
 (cog-set-value! b6 weights (FloatValue (/ 1.0 36)))
 (define one-tree
-	(cog-random-aggregate polarity-set lexis weights basic-net-params
-		(Concept "burr-6")))
+(cog-random-aggregate polarity-set lexis weights basic-net-params
+(Concept "burr-6")))
 (define tree-gml-string (export-to-gml one-tree))
 (let ((outport (open-file "/tmp/basic-random-tree.gml" "w")))
-   (put-string outport tree-gml-string)
-   (close outport))
+(put-string outport tree-gml-string)
+(close outport))
 *unspecified*

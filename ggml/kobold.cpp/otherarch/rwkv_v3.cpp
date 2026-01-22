@@ -480,7 +480,7 @@ return;
 }
 const size_t memory_required_overhead = size_t(128) * 1024 * 1024;
 const size_t memory_required_overhead_sc = size_t(64) * 1024 * 1024;
-ctx = ggml_v3_init({ future_ctx.objects_count * GGML_V3_OBJECT_SIZE + future_ctx.memory_size  + memory_required_overhead, NULL, false});
+ctx = ggml_v3_init({ future_ctx.objects_count * GGML_V3_OBJECT_SIZE + future_ctx.memory_size + memory_required_overhead, NULL, false});
 if (!ctx) {
 return;
 }
@@ -1444,18 +1444,18 @@ return true;
 }
 const char * rwkv_get_system_info_string(void) {
 static std::string s;
-s  = "";
-s += "AVX="       + std::to_string(ggml_v3_cpu_has_avx())       + " ";
-s += "AVX2="      + std::to_string(ggml_v3_cpu_has_avx2())      + " ";
-s += "AVX512="    + std::to_string(ggml_v3_cpu_has_avx512())    + " ";
-s += "FMA="       + std::to_string(ggml_v3_cpu_has_fma())       + " ";
-s += "NEON="      + std::to_string(ggml_v3_cpu_has_neon())      + " ";
-s += "ARM_FMA="   + std::to_string(ggml_v3_cpu_has_arm_fma())   + " ";
-s += "F16C="      + std::to_string(ggml_v3_cpu_has_f16c())      + " ";
-s += "FP16_VA="   + std::to_string(ggml_v3_cpu_has_fp16_va())   + " ";
+s = "";
+s += "AVX=" + std::to_string(ggml_v3_cpu_has_avx()) + " ";
+s += "AVX2=" + std::to_string(ggml_v3_cpu_has_avx2()) + " ";
+s += "AVX512=" + std::to_string(ggml_v3_cpu_has_avx512()) + " ";
+s += "FMA=" + std::to_string(ggml_v3_cpu_has_fma()) + " ";
+s += "NEON=" + std::to_string(ggml_v3_cpu_has_neon()) + " ";
+s += "ARM_FMA=" + std::to_string(ggml_v3_cpu_has_arm_fma()) + " ";
+s += "F16C=" + std::to_string(ggml_v3_cpu_has_f16c()) + " ";
+s += "FP16_VA=" + std::to_string(ggml_v3_cpu_has_fp16_va()) + " ";
 s += "WASM_SIMD=" + std::to_string(ggml_v3_cpu_has_wasm_simd()) + " ";
-s += "BLAS="      + std::to_string(ggml_v3_cpu_has_blas())      + " ";
-s += "SSE3="      + std::to_string(ggml_v3_cpu_has_sse3())      + " ";
-s += "VSX="       + std::to_string(ggml_v3_cpu_has_vsx());
+s += "BLAS=" + std::to_string(ggml_v3_cpu_has_blas()) + " ";
+s += "SSE3=" + std::to_string(ggml_v3_cpu_has_sse3()) + " ";
+s += "VSX=" + std::to_string(ggml_v3_cpu_has_vsx());
 return s.c_str();
 }

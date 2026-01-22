@@ -13,20 +13,20 @@ new->gids = gids;
 new->hook = 0;
 return 0;
 }
-#define E(err_)				\
-do {				\
-error_t err = err_;		\
-if (err)			\
-{				\
-*user = 0;		\
-if (! uids)		\
-return err;		\
-idvec_free (uids);	\
-if (! gids)		\
-return err;		\
-idvec_free (gids);	\
-return err;		\
-}				\
+#define E(err_) \
+do { \
+error_t err = err_; \
+if (err) \
+{ \
+*user = 0; \
+if (! uids) \
+return err; \
+idvec_free (uids); \
+if (! gids) \
+return err; \
+idvec_free (gids); \
+return err; \
+} \
 } while (0)
 error_t
 iohelp_create_empty_iouser (struct iouser **user)

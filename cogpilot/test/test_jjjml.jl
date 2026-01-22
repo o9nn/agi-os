@@ -27,16 +27,16 @@ x = Float32[-2, -1, 0, 1, 2]
 # Test tanh
 y = tanh_activation(x)
 @test all(y .>= -1) && all(y .<= 1)
-@test y[3] ≈ 0  # tanh(0) = 0
+@test y[3] ≈ 0 # tanh(0) = 0
 # Test sigmoid
 y = sigmoid_activation(x)
 @test all(y .> 0) && all(y .< 1)
-@test y[3] ≈ 0.5  # sigmoid(0) = 0.5
+@test y[3] ≈ 0.5 # sigmoid(0) = 0.5
 # Test ReLU
 y = relu_activation(x)
 @test all(y .>= 0)
-@test y[1:2] == [0, 0]  # Negative values zeroed
-@test y[4:5] == [1, 2]  # Positive values unchanged
+@test y[1:2] == [0, 0] # Negative values zeroed
+@test y[4:5] == [1, 2] # Positive values unchanged
 # Test GELU
 y = gelu_activation(x)
 @test length(y) == length(x)
@@ -89,7 +89,7 @@ kernel = BSeriesKernel(3, T=Float64)
 @test kernel.order == 3
 @test length(kernel.genome) >= 1
 # Test B-series evaluation
-f = y -> -y  # dy/dt = -y, exact solution: y(t) = y0 * exp(-t)
+f = y -> -y # dy/dt = -y, exact solution: y(t) = y0 * exp(-t)
 y0 = [1.0]
 h = 0.1
 y1 = evaluate_bseries(kernel, f, y0, h)
@@ -97,7 +97,7 @@ y1 = evaluate_bseries(kernel, f, y0, h)
 @test isfinite(y1[1])
 # B-series should approximate exp(-0.1) ≈ 0.9048
 # (won't be exact with simplified implementation)
-@test y1[1] < y0[1]  # Should decrease
+@test y1[1] < y0[1] # Should decrease
 # Test integration over time
 times, trajectory = integrate_bseries(kernel, f, y0, (0.0, 1.0), 0.1)
 @test length(times) > 1
@@ -185,7 +185,7 @@ arr_restored_4bit = dequantize(qarr_4bit)
 @test size(arr_restored_4bit) == size(arr)
 # Test Q4_K compression ratio
 ratio_4bit = compression_ratio(qarr_4bit)
-@test ratio_4bit > 3.0  # Should be ~5x
+@test ratio_4bit > 3.0 # Should be ~5x
 # Test Q8_0 quantization
 qtype_8bit = Q8_0()
 qarr_8bit = quantize(arr, qtype_8bit)
@@ -195,7 +195,7 @@ arr_restored_8bit = dequantize(qarr_8bit)
 @test size(arr_restored_8bit) == size(arr)
 # Test Q8_0 compression ratio
 ratio_8bit = compression_ratio(qarr_8bit)
-@test ratio_8bit > 2.0  # Should be ~3.6x
+@test ratio_8bit > 2.0 # Should be ~3.6x
 # Test F16 quantization
 qtype_f16 = F16()
 qarr_f16 = quantize(arr, qtype_f16)
@@ -205,7 +205,7 @@ arr_restored_f16 = dequantize(qarr_f16)
 @test size(arr_restored_f16) == size(arr)
 # Test F16 compression ratio
 ratio_f16 = compression_ratio(qarr_f16)
-@test ratio_f16 ≈ 2.0  # Should be exactly 2x
+@test ratio_f16 ≈ 2.0 # Should be exactly 2x
 # Test quantization error (8-bit should be more accurate than 4-bit)
 error_4bit = quantization_error(arr, qarr_4bit)
 error_8bit = quantization_error(arr, qarr_8bit)

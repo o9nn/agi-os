@@ -181,16 +181,16 @@ case ASLT:
 case ASLTU:
 case ASGT:
 case ASGTU:
-case AADD:  case AADDW:
-case ASUB:  case ASUBW:
-case ASLL:  case ASLLW:
-case ASRL:  case ASRLW:
-case ASRA:  case ASRAW:
+case AADD: case AADDW:
+case ASUB: case ASUBW:
+case ASLL: case ASLLW:
+case ASRL: case ASRLW:
+case ASRA: case ASRAW:
 case AOR:
 case AAND:
 case AXOR:
-case AMUL:  case AMULW:
-case ADIV:  case ADIVW:
+case AMUL: case AMULW:
+case ADIV: case ADIVW:
 case ADIVU: case ADIVUW:
 case AADDD:
 case AADDF:
@@ -390,16 +390,16 @@ case ACMPLED:
 case ACMPLEF:
 case ACMPLTD:
 case ACMPLTF:
-case AADD:  case AADDW:
-case ASUB:  case ASUBW:
-case ASLL:  case ASLLW:
-case ASRL:  case ASRLW:
-case ASRA:  case ASRAW:
+case AADD: case AADDW:
+case ASUB: case ASUBW:
+case ASLL: case ASLLW:
+case ASRL: case ASRLW:
+case ASRA: case ASRAW:
 case AOR:
 case AAND:
 case AXOR:
-case AMUL:  case AMULW:
-case ADIV:  case ADIVW:
+case AMUL: case AMULW:
+case ADIV: case ADIVW:
 case ADIVU: case ADIVUW:
 case AADDF:
 case AADDD:
@@ -514,16 +514,16 @@ case ASLT:
 case ASLTU:
 case ASGT:
 case ASGTU:
-case AADD:  case AADDW:
-case ASUB:  case ASUBW:
-case ASLL:  case ASLLW:
-case ASRL:  case ASRLW:
-case ASRA:  case ASRAW:
+case AADD: case AADDW:
+case ASUB: case ASUBW:
+case ASLL: case ASLLW:
+case ASRL: case ASRLW:
+case ASRA: case ASRAW:
 case AOR:
 case AAND:
 case AXOR:
-case AMUL:  case AMULW:
-case ADIV:  case ADIVW:
+case AMUL: case AMULW:
+case ADIV: case ADIVW:
 case ADIVU: case ADIVUW:
 return D_REG;
 case ACMPEQD:

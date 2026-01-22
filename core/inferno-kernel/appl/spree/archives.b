@@ -18,20 +18,20 @@ stderr: ref Sys->FD;
 Qc: con " \t{}=\n";
 Saveinfo: adt {
 clique: ref Clique;
-idmap: array of int;		# map clique id to archive id
-memberids:	Set;			# set of member ids to archive
+idmap: array of int; # map clique id to archive id
+memberids: Set; # set of member ids to archive
 };
 Error: exception(string);
 Cliqueparse: adt {
-iob:		ref Iobuf;
-line:		int;
-filename:	string;
-lasttok:	int;
-errstr:	string;
-gettok:	fn(gp: self ref Cliqueparse): (int, string) raises (Error);
-lgettok:	fn(gp: self ref Cliqueparse, t: int): string raises (Error);
-getline:	fn(gp: self ref Cliqueparse): list of string raises (Error);
-error:	fn(gp: self ref Cliqueparse, e: string) raises (Error);
+iob: ref Iobuf;
+line: int;
+filename: string;
+lasttok: int;
+errstr: string;
+gettok: fn(gp: self ref Cliqueparse): (int, string) raises (Error);
+lgettok: fn(gp: self ref Cliqueparse, t: int): string raises (Error);
+getline: fn(gp: self ref Cliqueparse): list of string raises (Error);
+error: fn(gp: self ref Cliqueparse, e: string) raises (Error);
 };
 WORD: con 16rff;
 init(cliquemod: Spree)
@@ -73,7 +73,7 @@ if (memberids.holds(p.id))
 pa[i++] = (p.name, p.id);
 }
 pa = pa[0:i];
-sortmembers(pa);		# ensure members stay in the same order when rearchived.
+sortmembers(pa); # ensure members stay in the same order when rearchived.
 pl: list of string;
 for (i = len pa - 1; i >= 0; i--) {
 si.idmap[pa[i].t1] = i;
@@ -242,7 +242,7 @@ readobject(gp: ref Cliqueparse): ref Object raises (Error)
 {
 # object format:
 # objtype visibility [attr[{vis}]=val]... [{\nchildren\n}]\n
-(t, s) := gp.gettok();			#{
+(t, s) := gp.gettok(); #{
 if (t == Bufio->EOF || t == '}')
 return nil;
 if (t != WORD)
@@ -251,22 +251,22 @@ objtype := s;
 vis := sets->str2set(gp.lgettok(WORD));
 attrs := Attributes.new();
 objs: array of ref Object;
-loop:	for (;;) {
+loop: for (;;) {
 (t, s) = gp.gettok();
 case t {
 WORD =>
 attr := s;
 attrvis := All;
 (t, s) = gp.gettok();
-if (t == '{') {		#}
-attrvis = sets->str2set(gp.lgettok(WORD));	#{
+if (t == '{') { #}
+attrvis = sets->str2set(gp.lgettok(WORD)); #{
 gp.lgettok('}');
 gp.lgettok('=');
 } else if (t != '=')
 gp.error("expected '='");
 val := gp.lgettok(WORD);
 attrs.set(attr, val, attrvis);
-'{' =>		#}
+'{' => #}
 gp.lgettok('\n');
 objl: list of ref Object;
 while ((obj := readobject(gp)) != nil)
@@ -280,7 +280,7 @@ break loop;
 '\n' =>
 break loop;
 * =>
-gp.error("expected WORD or '{'");	#}
+gp.error("expected WORD or '{'"); #}
 }
 }
 return ref Object(-1, attrs, vis, -1, objs, -1, objtype);
@@ -352,7 +352,7 @@ if (iob.getc() != '\'') {
 iob.ungetc();
 break;
 }
-s[len s] = '\'';	# 'xxx''yyy' becomes WORD(xxx'yyy)
+s[len s] = '\''; # 'xxx''yyy' becomes WORD(xxx'yyy)
 }
 t = WORD;
 * =>

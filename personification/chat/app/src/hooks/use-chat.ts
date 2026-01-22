@@ -8,34 +8,34 @@ import { useCharacterCard } from './use-character-card'
 import { useMessages } from './use-messages'
 import { useLLMProvider, useTTSProvider } from './use-providers'
 export const useChat = () => {
-  const mode = useXR(({ mode }) => mode)
-  const [llmProvider] = useLLMProvider()
-  const [ttsProvider] = useTTSProvider()
-  const [character] = useCharacterCard()
-  const [msg, setMsg] = useMessages()
-  const audioContext = useAudioContext()
-  const setAudioBuffer = useSetAudioBuffer()
-  const send = async (content: string) => {
-    if (import.meta.env.DEV)
-      console.log('useChat Request:', content)
-    const { messages, text: input } = await generateText({
-      ...llmProvider,
-      messages: [
-        ...(character
-          ? [toSystemMessage(character, { mode, userName: 'User' })]
-          : []),
-        ...msg,
-        { content, role: 'user' },
-      ],
-    })
-    if (import.meta.env.DEV)
-      console.log('useChat Response:', input)
-    if (input != null) {
-      setMsg(character ? messages.slice(1) : messages)
-      const arrayBuffer = await generateSpeech({ ...ttsProvider, input })
-      const audioBuffer = await audioContext.decodeAudioData(arrayBuffer)
-      setAudioBuffer(audioBuffer)
-    }
-  }
-  return { send }
+const mode = useXR(({ mode }) => mode)
+const [llmProvider] = useLLMProvider()
+const [ttsProvider] = useTTSProvider()
+const [character] = useCharacterCard()
+const [msg, setMsg] = useMessages()
+const audioContext = useAudioContext()
+const setAudioBuffer = useSetAudioBuffer()
+const send = async (content: string) => {
+if (import.meta.env.DEV)
+console.log('useChat Request:', content)
+const { messages, text: input } = await generateText({
+...llmProvider,
+messages: [
+...(character
+? [toSystemMessage(character, { mode, userName: 'User' })]
+: []),
+...msg,
+{ content, role: 'user' },
+],
+})
+if (import.meta.env.DEV)
+console.log('useChat Response:', input)
+if (input != null) {
+setMsg(character ? messages.slice(1) : messages)
+const arrayBuffer = await generateSpeech({ ...ttsProvider, input })
+const audioBuffer = await audioContext.decodeAudioData(arrayBuffer)
+setAudioBuffer(audioBuffer)
+}
+}
+return { send }
 }

@@ -8,6 +8,6 @@ import 'uno.css'
 import '@proj-airi/font-departure-mono/index.css'
 const router = createRouter({ routes, history: createWebHashHistory() })
 createApp(App)
-  .use(MotionPlugin)
-  .use(router)
-  .mount('#app')
+.use(MotionPlugin)
+.use(router)
+.mount('#app')

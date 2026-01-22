@@ -15,11 +15,11 @@ include "security.m";
 auth: Auth;
 Init: module
 {
-init:	fn();
+init: fn();
 };
 Logon: module
 {
-init:	fn(ctxt: ref Context, argv: list of string);
+init: fn(ctxt: ref Context, argv: list of string);
 };
 rootfs(server: string): int
 {
@@ -125,13 +125,13 @@ sys->print("done\n");
 #
 # default namespace
 #
-bind("#c", "/dev", sys->MBEFORE);		# console
+bind("#c", "/dev", sys->MBEFORE); # console
 bind("#r", "/dev", sys->MAFTER);
 if(spec != nil)
-bind(spec, "/nvfs", sys->MBEFORE|sys->MCREATE);	# our keys
-bind("#l", "/net", sys->MBEFORE);		# ethernet
-bind("#I", "/net", sys->MBEFORE);		# TCP/IP
-bind("#p", "/prog", sys->MREPL);		# prog device
+bind(spec, "/nvfs", sys->MBEFORE|sys->MCREATE); # our keys
+bind("#l", "/net", sys->MBEFORE); # ethernet
+bind("#I", "/net", sys->MBEFORE); # TCP/IP
+bind("#p", "/prog", sys->MREPL); # prog device
 sys->bind("#d", "/fd", Sys->MREPL);
 sys->print("clock...\n");
 setclock();

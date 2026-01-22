@@ -237,19 +237,19 @@ lapic_eoi(void)
 lapic->eoi.r = 0;
 }
 #define HPET32(x) *((volatile uint32_t *)((uint8_t *)hpet_addr + x))
-#define HPET_CAP_PERIOD			0x04
-#define HPET_CFG			0x10
-# define HPET_CFG_ENABLE		(1 << 0)
-# define HPET_LEGACY_ROUTE		(1 << 1)
-#define HPET_COUNTER			0xf0
-#define HPET_T0_CFG			0x100
-# define HPET_T0_32BIT_MODE		(1 << 8)
-# define HPET_T0_VAL_SET		(1 << 6)
-# define HPET_T0_TYPE_PERIODIC		(1 << 3)
-# define HPET_T0_INT_ENABLE		(1 << 2)
-#define HPET_T0_COMPARATOR		0x108
-#define FSEC_PER_NSEC			1000000
-#define NSEC_PER_USEC			1000
+#define HPET_CAP_PERIOD 0x04
+#define HPET_CFG 0x10
+# define HPET_CFG_ENABLE (1 << 0)
+# define HPET_LEGACY_ROUTE (1 << 1)
+#define HPET_COUNTER 0xf0
+#define HPET_T0_CFG 0x100
+# define HPET_T0_32BIT_MODE (1 << 8)
+# define HPET_T0_VAL_SET (1 << 6)
+# define HPET_T0_TYPE_PERIODIC (1 << 3)
+# define HPET_T0_INT_ENABLE (1 << 2)
+#define HPET_T0_COMPARATOR 0x108
+#define FSEC_PER_NSEC 1000000
+#define NSEC_PER_USEC 1000
 void
 hpet_init(void)
 {

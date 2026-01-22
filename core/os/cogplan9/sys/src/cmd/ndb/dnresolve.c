@@ -10,63 +10,63 @@ typedef struct Query Query;
 enum
 {
 Udp, Tcp,
-Answerr=	-1,
+Answerr= -1,
 Answnone,
-Maxdest=	24,
-Maxoutstanding=	15,
-Remntretry=	15,
-Maxtrans=	5,
-Maxretries=	5,
-Maxwaitms=	5000,
-Minwaitms=	500,
-Destmagic=	0xcafebabe,
-Querymagic=	0xdeadbeef,
+Maxdest= 24,
+Maxoutstanding= 15,
+Remntretry= 15,
+Maxtrans= 5,
+Maxretries= 5,
+Maxwaitms= 5000,
+Minwaitms= 500,
+Destmagic= 0xcafebabe,
+Querymagic= 0xdeadbeef,
 };
 enum { Hurry, Patient, };
 enum { Outns, Inns, };
 struct Ipaddr {
 Ipaddr *next;
-uchar	ip[IPaddrlen];
+uchar ip[IPaddrlen];
 };
 struct Dest
 {
-uchar	a[IPaddrlen];
-DN	*s;
-int	nx;
-int	code;
-ulong	magic;
+uchar a[IPaddrlen];
+DN *s;
+int nx;
+int code;
+ulong magic;
 };
 struct Query {
-DN	*dp;
-ushort	type;
+DN *dp;
+ushort type;
 Request *req;
-RR	*nsrp;
-Dest	*dest;
-Dest	*curdest;
-int	ndest;
-int	udpfd;
-QLock	tcplock;
-int	tcpset;
-int	tcpfd;
-int	tcpctlfd;
-uchar	tcpip[IPaddrlen];
-ulong	magic;
+RR *nsrp;
+Dest *dest;
+Dest *curdest;
+int ndest;
+int udpfd;
+QLock tcplock;
+int tcpset;
+int tcpfd;
+int tcpctlfd;
+uchar tcpip[IPaddrlen];
+ulong magic;
 };
 int likely[] = {
-[Ta]		95,
-[Taaaa]		10,
-[Tcname]	15,
-[Tmx]		60,
-[Tns]		90,
-[Tnull]		5,
-[Tptr]		35,
-[Tsoa]		90,
-[Tsrv]		60,
-[Ttxt]		15,
-[Tall]		95,
+[Ta] 95,
+[Taaaa] 10,
+[Tcname] 15,
+[Tmx] 60,
+[Tns] 90,
+[Tnull] 5,
+[Tptr] 35,
+[Tsoa] 90,
+[Tsrv] 60,
+[Ttxt] 15,
+[Tall] 95,
 };
-static RR*	dnresolve1(char*, int, int, Request*, int, int);
-static int	netquery(Query *, int);
+static RR* dnresolve1(char*, int, int, Request*, int, int);
+static int netquery(Query *, int);
 static char *
 procgetname(void)
 {
@@ -485,7 +485,7 @@ notestats(startns, len < 0, qp->type);
 if (len >= IPaddrlen)
 memmove(srcip, ibuf, IPaddrlen);
 if (len >= Udphdrsize) {
-len   -= Udphdrsize;
+len -= Udphdrsize;
 reply += Udphdrsize;
 }
 }
@@ -941,7 +941,7 @@ if(isnegrname(mp))
 qp->dp->respcode = Rname;
 else
 qp->dp->respcode = Rok;
-if(  mp->an == nil)
+if( mp->an == nil)
 cacheneg(qp->dp, qp->type, (mp->flags & Rmask), soarr);
 else {
 lock(&dnlock);

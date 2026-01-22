@@ -10,29 +10,29 @@
 #include <string>
 #include <vector>
 static const char * magika_labels[] = {
-"ai",                 "apk",                "appleplist",         "asm",                "asp",
-"batch",              "bmp",                "bzip",               "c",                  "cab",
-"cat",                "chm",                "coff",               "crx",                "cs",
-"css",                "csv",                "deb",                "dex",                "dmg",
-"doc",                "docx",               "elf",                "emf",                "eml",
-"epub",               "flac",               "gif",                "go",                 "gzip",
-"hlp",                "html",               "ico",                "ini",                "internetshortcut",
-"iso",                "jar",                "java",               "javabytecode",       "javascript",
-"jpeg",               "json",               "latex",              "lisp",               "lnk",
-"m3u",                "macho",              "makefile",           "markdown",           "mht",
-"mp3",                "mp4",                "mscompress",         "msi",                "mum",
-"odex",               "odp",                "ods",                "odt",                "ogg",
-"outlook",            "pcap",               "pdf",                "pebin",              "pem",
-"perl",               "php",                "png",                "postscript",         "powershell",
-"ppt",                "pptx",               "python",             "pythonbytecode",     "rar",
-"rdf",                "rpm",                "rst",                "rtf",                "ruby",
-"rust",               "scala",              "sevenzip",           "shell",              "smali",
-"sql",                "squashfs",           "svg",                "swf",                "symlinktext",
-"tar",                "tga",                "tiff",               "torrent",            "ttf",
-"txt",                "unknown",            "vba",                "wav",                "webm",
-"webp",               "winregistry",        "wmf",                "xar",                "xls",
-"xlsb",               "xlsx",               "xml",                "xpi",                "xz",
-"yaml",               "zip",                "zlibstream"
+"ai", "apk", "appleplist", "asm", "asp",
+"batch", "bmp", "bzip", "c", "cab",
+"cat", "chm", "coff", "crx", "cs",
+"css", "csv", "deb", "dex", "dmg",
+"doc", "docx", "elf", "emf", "eml",
+"epub", "flac", "gif", "go", "gzip",
+"hlp", "html", "ico", "ini", "internetshortcut",
+"iso", "jar", "java", "javabytecode", "javascript",
+"jpeg", "json", "latex", "lisp", "lnk",
+"m3u", "macho", "makefile", "markdown", "mht",
+"mp3", "mp4", "mscompress", "msi", "mum",
+"odex", "odp", "ods", "odt", "ogg",
+"outlook", "pcap", "pdf", "pebin", "pem",
+"perl", "php", "png", "postscript", "powershell",
+"ppt", "pptx", "python", "pythonbytecode", "rar",
+"rdf", "rpm", "rst", "rtf", "ruby",
+"rust", "scala", "sevenzip", "shell", "smali",
+"sql", "squashfs", "svg", "swf", "symlinktext",
+"tar", "tga", "tiff", "torrent", "ttf",
+"txt", "unknown", "vba", "wav", "webm",
+"webp", "winregistry", "wmf", "xar", "xls",
+"xlsb", "xlsx", "xml", "xpi", "xz",
+"yaml", "zip", "zlibstream"
 };
 struct magika_hparams {
 const int block_size = 4096;
@@ -96,13 +96,13 @@ try {
 model.dense_w = checked_get_tensor(ctx, "dense/kernel:0");
 model.dense_b = checked_get_tensor(ctx, "dense/bias:0");
 model.layer_norm_gamma = checked_get_tensor(ctx, "layer_normalization/gamma:0");
-model.layer_norm_beta  = checked_get_tensor(ctx, "layer_normalization/beta:0");
+model.layer_norm_beta = checked_get_tensor(ctx, "layer_normalization/beta:0");
 model.dense_1_w = checked_get_tensor(ctx, "dense_1/kernel:0");
 model.dense_1_b = checked_get_tensor(ctx, "dense_1/bias:0");
 model.dense_2_w = checked_get_tensor(ctx, "dense_2/kernel:0");
 model.dense_2_b = checked_get_tensor(ctx, "dense_2/bias:0");
 model.layer_norm_1_gamma = checked_get_tensor(ctx, "layer_normalization_1/gamma:0");
-model.layer_norm_1_beta  = checked_get_tensor(ctx, "layer_normalization_1/beta:0");
+model.layer_norm_1_beta = checked_get_tensor(ctx, "layer_normalization_1/beta:0");
 model.target_label_w = checked_get_tensor(ctx, "target_label/kernel:0");
 model.target_label_b = checked_get_tensor(ctx, "target_label/bias:0");
 } catch (const std::exception & e) {

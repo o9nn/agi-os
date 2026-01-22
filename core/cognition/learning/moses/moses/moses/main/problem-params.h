@@ -92,7 +92,7 @@ unsigned hc_crossover_pop_size;
 unsigned hc_crossover_min_neighbors;
 bool hc_resize_to_fit_ram;
 unsigned hc_max_nn;
-double   hc_frac_of_nn;
+double hc_frac_of_nn;
 unsigned ps_max_particles;
 unsigned contin_depth;
 bool use_well_enough;

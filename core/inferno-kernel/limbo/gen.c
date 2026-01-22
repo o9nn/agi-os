@@ -1,5 +1,5 @@
 #include "limbo.h"
-static	int	addrmode[Rend] =
+static int addrmode[Rend] =
 {
 Afp,
 Amp,
@@ -20,16 +20,16 @@ Aerr,
 Aerr,
 Aldt,
 };
-static	Decl	*wtemp;
-static	Decl	*bigtemp;
-static	int	ntemp;
-static	Node	retnode;
-static	Inst	zinst;
-int	*blockstack;
-int	blockdep;
-int	nblocks;
-static	int	lenblockstack;
-static	Node	*ntoz;
+static Decl *wtemp;
+static Decl *bigtemp;
+static int ntemp;
+static Node retnode;
+static Inst zinst;
+int *blockstack;
+int blockdep;
+int nblocks;
+static int lenblockstack;
+static Node *ntoz;
 static Inst* genfixop(Src *src, int op, Node *s, Node *m, Node *d);
 void
 genstart(void)
@@ -944,7 +944,7 @@ return genrawop(src, op, s, nil, d);
 if(op != IMULX && op != IDIVX)
 genstore(src, sumark(mkconst(src, a)), STemp);
 genstore(src, sumark(mkconst(src, p)), DTemp);
-i =  genrawop(src, op, s, m, d);
+i = genrawop(src, op, s, m, d);
 return i;
 }
 Inst*

@@ -477,7 +477,7 @@ if (code < 0) {
 return code;
 }
 for (old = igs, new = pctx->state.pgs;
-old != 0   && code >= 0;
+old != 0 && code >= 0;
 old = gs_state_saved(old), new = gs_state_saved(new)
 )
 code = gs_setgstate(new, old);

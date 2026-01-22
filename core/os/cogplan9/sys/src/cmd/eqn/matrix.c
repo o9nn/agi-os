@@ -62,7 +62,7 @@ lfont[yyval] = rfont[yyval] = 0;
 dprintf(".\tmatrix S%d: r=%d, c=%d, h=%g, b=%g\n",
 yyval,nrow,ncol,eht[yyval],ebase[yyval]);
 printf(".ds %d \"", yyval);
-for( i=0; i<ncol; i++ )  {
+for( i=0; i<ncol; i++ ) {
 printf("\\*(%d%s", val[i], i==ncol-1 ? "" : space);
 sfree(val[i]);
 }

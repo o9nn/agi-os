@@ -7,7 +7,7 @@ include "dial.m";
 include "security.m";
 Rcmd: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 DEFAULTALG := "none";
 sys: Sys;
@@ -41,9 +41,9 @@ if (n == -1 || exportpath == nil)
 arg->usage();
 'f' =>
 keyfile = arg->earg();
-if (! (keyfile[0] == '/' || (len keyfile > 2 &&  keyfile[0:2] == "./")))
+if (! (keyfile[0] == '/' || (len keyfile > 2 && keyfile[0:2] == "./")))
 keyfile = "/usr/" + user() + "/keyring/" + keyfile;
-*   =>
+* =>
 arg->usage();
 }
 argv = arg->argv();
@@ -82,8 +82,8 @@ ai := kr->readauthinfo(keyfile);
 #
 # let auth->client handle nil ai
 # if(ai == nil){
-#	sys->fprint(stderr(), "rcmd: certificate for %s not found\n", addr);
-#	raise "fail:no certificate";
+# sys->fprint(stderr(), "rcmd: certificate for %s not found\n", addr);
+# raise "fail:no certificate";
 # }
 #
 err := au->init();

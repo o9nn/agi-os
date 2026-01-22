@@ -37,8 +37,8 @@ The sensitivity functions obtained this way should be equivalent to the ones obt
 ```julia
 using ControlSystemsBase
 P = tf(1.0, [1, 1])
-C = 1                      # Negative feedback assumed in ControlSystems
-S = sensitivity(P, C)      # or feedback(1, P*C)
+C = 1 # Negative feedback assumed in ControlSystems
+S = sensitivity(P, C) # or feedback(1, P*C)
 T = comp_sensitivity(P, C) # or feedback(P*C)
 ```
 """
@@ -296,7 +296,7 @@ if nameof(root) != hierarchy[1]
 error("""
 Invalid analysis point name `$(join(hierarchy, NAMESPACE_SEPARATOR))`. The name
 must include the name of the root system `$(nameof(root))`. This typically happens
-when  using an analysis point obtained by calling `getproperty` on a system marked
+when using an analysis point obtained by calling `getproperty` on a system marked
 as `complete` to linearize a system that is not marked as `complete`.
 """)
 end

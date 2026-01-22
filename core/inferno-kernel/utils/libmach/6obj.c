@@ -3,20 +3,20 @@
 #include "mach.h"
 #include "6c/6.out.h"
 #include "obj.h"
-typedef struct Addr	Addr;
+typedef struct Addr Addr;
 struct Addr
 {
-char	sym;
-char	flags;
+char sym;
+char flags;
 };
-static	Addr	addr(Biobuf*);
-static	char	type2char(int);
-static	void	skip(Biobuf*, int);
+static Addr addr(Biobuf*);
+static char type2char(int);
+static void skip(Biobuf*, int);
 int
 _is6(char *t)
 {
 uchar *s = (uchar*)t;
-return  s[0] == (ANAME&0xff)
+return s[0] == (ANAME&0xff)
 && s[1] == ((ANAME>>8)&0xff)
 && s[2] == D_FILE
 && s[3] == 1
@@ -119,11 +119,11 @@ static char
 type2char(int t)
 {
 switch(t){
-case D_EXTERN:		return 'U';
-case D_STATIC:		return 'b';
-case D_AUTO:		return 'a';
-case D_PARAM:		return 'p';
-default:		return UNKNOWN;
+case D_EXTERN: return 'U';
+case D_STATIC: return 'b';
+case D_AUTO: return 'a';
+case D_PARAM: return 'p';
+default: return UNKNOWN;
 }
 }
 static void

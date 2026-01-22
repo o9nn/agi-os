@@ -5,24 +5,24 @@
 #include "9.h"
 struct Fsys {
 VtLock* lock;
-char*	name;
-char*	dev;
-char*	venti;
-Fs*	fs;
+char* name;
+char* dev;
+char* venti;
+Fs* fs;
 VtSession* session;
-int	ref;
-int	noauth;
-int	noperm;
-int	wstatallow;
-Fsys*	next;
+int ref;
+int noauth;
+int noperm;
+int wstatallow;
+Fsys* next;
 };
 int mempcnt;
-int	fsGetBlockSize(Fs *fs);
+int fsGetBlockSize(Fs *fs);
 static struct {
-VtLock*	lock;
-Fsys*	head;
-Fsys*	tail;
-char*	curfsys;
+VtLock* lock;
+Fsys* head;
+Fsys* tail;
+char* curfsys;
 } sbox;
 static char *_argv0;
 #define argv0 _argv0
@@ -1473,36 +1473,36 @@ fsysPut(fsys);
 return 1;
 }
 static struct {
-char*	cmd;
-int	(*f)(Fsys*, int, char**);
-int	(*f1)(char*, int, char**);
+char* cmd;
+int (*f)(Fsys*, int, char**);
+int (*f1)(char*, int, char**);
 } fsyscmd[] = {
-{ "close",	fsysClose, },
-{ "config",	nil, fsysConfig, },
-{ "open",	nil, fsysOpen, },
-{ "unconfig",	nil, fsysUnconfig, },
-{ "venti",	nil, fsysVenti, },
-{ "bfree",	fsysBfree, },
-{ "block",	fsysBlock, },
-{ "check",	fsysCheck, },
-{ "clre",	fsysClre, },
-{ "clri",	fsysClri, },
-{ "clrp",	fsysClrp, },
-{ "create",	fsysCreate, },
-{ "df",		fsysDf, },
-{ "epoch",	fsysEpoch, },
-{ "halt",	fsysHalt, },
-{ "label",	fsysLabel, },
-{ "remove",	fsysRemove, },
-{ "snap",	fsysSnap, },
-{ "snaptime",	fsysSnapTime, },
-{ "snapclean",	fsysSnapClean, },
-{ "stat",	fsysStat, },
-{ "sync",	fsysSync, },
-{ "unhalt",	fsysUnhalt, },
-{ "wstat",	fsysWstat, },
-{ "vac",	fsysVac, },
-{ nil,		nil, },
+{ "close", fsysClose, },
+{ "config", nil, fsysConfig, },
+{ "open", nil, fsysOpen, },
+{ "unconfig", nil, fsysUnconfig, },
+{ "venti", nil, fsysVenti, },
+{ "bfree", fsysBfree, },
+{ "block", fsysBlock, },
+{ "check", fsysCheck, },
+{ "clre", fsysClre, },
+{ "clri", fsysClri, },
+{ "clrp", fsysClrp, },
+{ "create", fsysCreate, },
+{ "df", fsysDf, },
+{ "epoch", fsysEpoch, },
+{ "halt", fsysHalt, },
+{ "label", fsysLabel, },
+{ "remove", fsysRemove, },
+{ "snap", fsysSnap, },
+{ "snaptime", fsysSnapTime, },
+{ "snapclean", fsysSnapClean, },
+{ "stat", fsysStat, },
+{ "sync", fsysSync, },
+{ "unhalt", fsysUnhalt, },
+{ "wstat", fsysWstat, },
+{ "vac", fsysVac, },
+{ nil, nil, },
 };
 static int
 fsysXXX1(Fsys *fsys, int i, int argc, char* argv[])

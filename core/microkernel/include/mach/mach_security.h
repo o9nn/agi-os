@@ -5,8 +5,8 @@
 #include <mach/boolean.h>
 #include <stdint.h>
 #include <stddef.h>
-#define CFI_RETURN_MAGIC    0xCAFEBABE
-#define CFI_CALL_MAGIC      0xDEADBEEF
+#define CFI_RETURN_MAGIC 0xCAFEBABE
+#define CFI_CALL_MAGIC 0xDEADBEEF
 typedef enum {
 CFI_VALID = 0,
 CFI_INVALID_RETURN_ADDR,
@@ -89,7 +89,7 @@ security_event_log(SEC_EVENT_ROP_ATTEMPT, \
 } \
 } while (0)
 extern boolean_t security_monitoring_enabled;
-#define SECURITY_MONITORING_ENABLE()  (security_monitoring_enabled = TRUE)
+#define SECURITY_MONITORING_ENABLE() (security_monitoring_enabled = TRUE)
 #define SECURITY_MONITORING_DISABLE() (security_monitoring_enabled = FALSE)
 #define SECURITY_CHECK(check) \
 do { \

@@ -101,7 +101,7 @@ remote = g.remotesys;
 referer = g.referer;
 (cnt, header) := parseheader( hstr );
 method = str->toupper( method);
-if (method  == "POST") {
+if (method == "POST") {
 s := "";
 while(!eof && cnt && (c = g.bin.getc()) != '\n' ) {
 s[len s] = c;

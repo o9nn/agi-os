@@ -1,5 +1,5 @@
 #ifndef gxsample_INCLUDED
-#  define gxsample_INCLUDED
+# define gxsample_INCLUDED
 typedef union sample_lookup_s {
 bits32 lookup4x1to32[16];
 bits16 lookup2x2to16[16];

@@ -7,30 +7,30 @@ __u8 code;
 __u16 csum;
 __u32 group;
 };
-#define IGMP_HOST_MEMBERSHIP_QUERY	0x11
-#define IGMP_HOST_MEMBERSHIP_REPORT	0x12
-#define IGMP_DVMRP			0x13
-#define IGMP_PIM			0x14
-#define IGMP_TRACE			0x15
+#define IGMP_HOST_MEMBERSHIP_QUERY 0x11
+#define IGMP_HOST_MEMBERSHIP_REPORT 0x12
+#define IGMP_DVMRP 0x13
+#define IGMP_PIM 0x14
+#define IGMP_TRACE 0x15
 #define IGMP_HOST_NEW_MEMBERSHIP_REPORT 0x16
-#define IGMP_HOST_LEAVE_MESSAGE 	0x17
-#define IGMP_MTRACE_RESP		0x1e
-#define IGMP_MTRACE			0x1f
-#define IGMP_DELAYING_MEMBER		0x01
-#define IGMP_IDLE_MEMBER		0x02
-#define IGMP_LAZY_MEMBER		0x03
-#define IGMP_SLEEPING_MEMBER		0x04
-#define IGMP_AWAKENING_MEMBER		0x05
-#define IGMP_OLD_ROUTER 		0x00
-#define IGMP_NEW_ROUTER 		0x01
-#define IGMP_MINLEN			8
-#define IGMP_MAX_HOST_REPORT_DELAY	10
-#define IGMP_TIMER_SCALE		10
-#define IGMP_AGE_THRESHOLD		540
-#define IGMP_ALL_HOSTS		htonl(0xE0000001L)
-#define IGMP_ALL_ROUTER 	htonl(0xE0000002L)
-#define IGMP_LOCAL_GROUP	htonl(0xE0000000L)
-#define IGMP_LOCAL_GROUP_MASK	htonl(0xFFFFFF00L)
+#define IGMP_HOST_LEAVE_MESSAGE 0x17
+#define IGMP_MTRACE_RESP 0x1e
+#define IGMP_MTRACE 0x1f
+#define IGMP_DELAYING_MEMBER 0x01
+#define IGMP_IDLE_MEMBER 0x02
+#define IGMP_LAZY_MEMBER 0x03
+#define IGMP_SLEEPING_MEMBER 0x04
+#define IGMP_AWAKENING_MEMBER 0x05
+#define IGMP_OLD_ROUTER 0x00
+#define IGMP_NEW_ROUTER 0x01
+#define IGMP_MINLEN 8
+#define IGMP_MAX_HOST_REPORT_DELAY 10
+#define IGMP_TIMER_SCALE 10
+#define IGMP_AGE_THRESHOLD 540
+#define IGMP_ALL_HOSTS htonl(0xE0000001L)
+#define IGMP_ALL_ROUTER htonl(0xE0000002L)
+#define IGMP_LOCAL_GROUP htonl(0xE0000000L)
+#define IGMP_LOCAL_GROUP_MASK htonl(0xFFFFFF00L)
 #ifdef __KERNEL__
 struct ip_mc_socklist
 {
@@ -50,8 +50,8 @@ int users;
 struct ip_router_info
 {
 struct device *dev;
-int    type;
-int    time;
+int type;
+int time;
 struct timer_list timer;
 struct ip_router_info *next;
 };

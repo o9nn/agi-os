@@ -1,6 +1,6 @@
 implement Logfile;
 #
-# Copyright © 1999 Vita Nuova Limited.  All rights reserved.
+# Copyright © 1999 Vita Nuova Limited. All rights reserved.
 #
 include "sys.m";
 sys: Sys;
@@ -10,9 +10,9 @@ Logfile: module {
 init: fn(nil: ref Draw->Context, argv: list of string);
 };
 Fidrec: adt {
-fid: 	int;		# fid of read
-rq: 	list of (int, Sys->Rread);	# outstanding read requests
-pos:	int;		# current position in the logfile
+fid: int; # fid of read
+rq: list of (int, Sys->Rread); # outstanding read requests
+pos: int; # current position in the logfile
 };
 Circbuf: adt {
 start: int;
@@ -84,7 +84,7 @@ continue;
 if (r == nil) {
 r = ref Fidrec(fid, nil, buf.start);
 if (r.pos < len buf.data)
-r.pos = len buf.data;		# first buffer's worth is garbage
+r.pos = len buf.data; # first buffer's worth is garbage
 readers.put(r);
 }
 (s, d) := buf.get(r.pos, count);
@@ -134,7 +134,7 @@ wl = nil;
 worker(work: chan of (Sys->Rread, array of byte), ready: chan of int)
 {
 for (;;) {
-(rc, data) := <-work;	# blocks forever if the reading process is killed
+(rc, data) := <-work; # blocks forever if the reading process is killed
 rc <-= (data, nil);
 (rc, data) = (nil, nil);
 ready <-= 1;

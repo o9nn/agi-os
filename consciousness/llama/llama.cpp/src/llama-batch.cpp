@@ -21,7 +21,7 @@ true,
 0,
 0,
 !has_embd ? ubatch_token.data() : nullptr,
-has_embd  ? ubatch_embd.data()  : nullptr,
+has_embd ? ubatch_embd.data() : nullptr,
 ubatch_pos.data(),
 ubatch_n_seq_id.data(),
 ubatch_seq_id.data(),
@@ -123,7 +123,7 @@ GGML_ASSERT(ubatch.n_tokens == ubatch.n_seq_tokens * ubatch.n_seqs);
 }
 llama_ubatch llama_sbatch::split_simple(size_t n_ubatch) {
 n_ubatch = n_tokens < n_ubatch ? n_tokens : n_ubatch;
-llama_ubatch ubatch = reserve_ubatch(n_ubatch,  batch->embd != nullptr);
+llama_ubatch ubatch = reserve_ubatch(n_ubatch, batch->embd != nullptr);
 ubatch.equal_seqs = false;
 if (!seq.empty()) {
 llama_sbatch_seq & s = seq[0];
@@ -135,7 +135,7 @@ return ubatch;
 }
 llama_ubatch llama_sbatch::split_equal(size_t n_ubatch) {
 n_ubatch = n_tokens < n_ubatch ? n_tokens : n_ubatch;
-llama_ubatch ubatch = reserve_ubatch(n_ubatch,  batch->embd != nullptr);
+llama_ubatch ubatch = reserve_ubatch(n_ubatch, batch->embd != nullptr);
 if (!seq.empty()) {
 size_t length = 0;
 size_t n_tokens_in_ubatch = 0;
@@ -156,7 +156,7 @@ return ubatch;
 }
 llama_ubatch llama_sbatch::split_seq(size_t n_ubatch) {
 n_ubatch = n_tokens < n_ubatch ? n_tokens : n_ubatch;
-llama_ubatch ubatch = reserve_ubatch(n_ubatch,  batch->embd != nullptr);
+llama_ubatch ubatch = reserve_ubatch(n_ubatch, batch->embd != nullptr);
 if (!seq.empty()) {
 llama_sbatch_seq & s = seq[seq.size() - 1];
 size_t length = s.length < n_ubatch ? s.length : n_ubatch;
@@ -270,7 +270,7 @@ batch.logits = logits.data();
 }
 struct llama_batch llama_batch_get_one(
 llama_token * tokens,
-int32_t   n_tokens) {
+int32_t n_tokens) {
 return {
 n_tokens,
 tokens,
@@ -296,20 +296,20 @@ batch.embd = (float *) malloc(sizeof(float) * n_tokens_alloc * embd);
 } else {
 batch.token = (llama_token *) malloc(sizeof(llama_token) * n_tokens_alloc);
 }
-batch.pos      = (llama_pos *)     malloc(sizeof(llama_pos)      * n_tokens_alloc);
-batch.n_seq_id = (int32_t *)       malloc(sizeof(int32_t)        * n_tokens_alloc);
-batch.seq_id   = (llama_seq_id **) malloc(sizeof(llama_seq_id *) * (n_tokens_alloc + 1));
+batch.pos = (llama_pos *) malloc(sizeof(llama_pos) * n_tokens_alloc);
+batch.n_seq_id = (int32_t *) malloc(sizeof(int32_t) * n_tokens_alloc);
+batch.seq_id = (llama_seq_id **) malloc(sizeof(llama_seq_id *) * (n_tokens_alloc + 1));
 for (int i = 0; i < n_tokens_alloc; ++i) {
 batch.seq_id[i] = (llama_seq_id *) malloc(sizeof(llama_seq_id) * n_seq_max);
 }
 batch.seq_id[n_tokens_alloc] = nullptr;
-batch.logits   = (int8_t *)        malloc(sizeof(int8_t)         * n_tokens_alloc);
+batch.logits = (int8_t *) malloc(sizeof(int8_t) * n_tokens_alloc);
 return batch;
 }
 void llama_batch_free(struct llama_batch batch) {
-if (batch.token)    free(batch.token);
-if (batch.embd)     free(batch.embd);
-if (batch.pos)      free(batch.pos);
+if (batch.token) free(batch.token);
+if (batch.embd) free(batch.embd);
+if (batch.pos) free(batch.pos);
 if (batch.n_seq_id) free(batch.n_seq_id);
 if (batch.seq_id) {
 for (int i = 0; batch.seq_id[i] != nullptr; ++i) {
@@ -317,5 +317,5 @@ free(batch.seq_id[i]);
 }
 free(batch.seq_id);
 }
-if (batch.logits)   free(batch.logits);
+if (batch.logits) free(batch.logits);
 }

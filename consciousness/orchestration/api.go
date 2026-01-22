@@ -1,602 +1,602 @@
 package orchestration
 import (
-	"fmt"
-	"net/http"
-	"time"
-	"github.com/gin-gonic/gin"
+"fmt"
+"net/http"
+"time"
+"github.com/gin-gonic/gin"
 )
 type APIServer struct {
-	engine *Engine
-	router *gin.Engine
+engine *Engine
+router *gin.Engine
 }
 func NewAPIServer(engine *Engine) *APIServer {
-	router := gin.Default()
-	server := &APIServer{
-		engine: engine,
-		router: router,
-	}
-	server.setupRoutes()
-	return server
+router := gin.Default()
+server := &APIServer{
+engine: engine,
+router: router,
+}
+server.setupRoutes()
+return server
 }
 func (s *APIServer) setupRoutes() {
-	s.router.StaticFile("/dashboard.html", "./examples/dashboard.html")
-	s.router.GET("/", func(c *gin.Context) {
-		c.Redirect(http.StatusFound, "/dashboard.html")
-	})
-	dte := s.router.Group("/api/deep-tree-echo")
-	{
-		dte.GET("/status", s.getDTEStatus)
-		dte.GET("/dashboard", s.getDTEDashboard)
-		dte.POST("/initialize", s.initializeDTE)
-		dte.POST("/diagnostics", s.runDTEDiagnostics)
-		dte.POST("/refresh", s.refreshDTEStatus)
-		dte.POST("/introspection", s.performDTEIntrospection)
-	}
-	agents := s.router.Group("/api/agents")
-	{
-		agents.GET("/", s.listAgents)
-		agents.POST("/", s.createAgent)
-		agents.GET("/:id", s.getAgent)
-		agents.PUT("/:id", s.updateAgent)
-		agents.DELETE("/:id", s.deleteAgent)
-		agents.POST("/:id/tasks", s.executeTask)
-	}
-	orchestration := s.router.Group("/api/orchestration")
-	{
-		orchestration.POST("/", s.orchestrateTasks)
-		orchestration.GET("/tools", s.getAvailableTools)
-		orchestration.GET("/plugins", s.getAvailablePlugins)
-	}
-	learning := s.router.Group("/api/learning")
-	{
-		learning.GET("/agents/:id/model", s.getLearningModel)
-		learning.GET("/agents/:id/performance", s.getAgentPerformance)
-		learning.POST("/agents/:id/adapt", s.adaptAgent)
-		learning.POST("/predict-optimal-agent", s.predictOptimalAgent)
-		learning.GET("/system/metrics", s.getLearningSystemMetrics)
-	}
-	performance := s.router.Group("/api/performance")
-	{
-		performance.GET("/metrics", s.getSystemMetrics)
-		performance.GET("/alerts", s.getActiveAlerts)
-		performance.GET("/resources", s.getResourceUsage)
-		performance.GET("/agents/loads", s.getAgentLoads)
-		performance.POST("/tasks/execute-optimized", s.executeTaskOptimized)
-	}
+s.router.StaticFile("/dashboard.html", "./examples/dashboard.html")
+s.router.GET("/", func(c *gin.Context) {
+c.Redirect(http.StatusFound, "/dashboard.html")
+})
+dte := s.router.Group("/api/deep-tree-echo")
+{
+dte.GET("/status", s.getDTEStatus)
+dte.GET("/dashboard", s.getDTEDashboard)
+dte.POST("/initialize", s.initializeDTE)
+dte.POST("/diagnostics", s.runDTEDiagnostics)
+dte.POST("/refresh", s.refreshDTEStatus)
+dte.POST("/introspection", s.performDTEIntrospection)
+}
+agents := s.router.Group("/api/agents")
+{
+agents.GET("/", s.listAgents)
+agents.POST("/", s.createAgent)
+agents.GET("/:id", s.getAgent)
+agents.PUT("/:id", s.updateAgent)
+agents.DELETE("/:id", s.deleteAgent)
+agents.POST("/:id/tasks", s.executeTask)
+}
+orchestration := s.router.Group("/api/orchestration")
+{
+orchestration.POST("/", s.orchestrateTasks)
+orchestration.GET("/tools", s.getAvailableTools)
+orchestration.GET("/plugins", s.getAvailablePlugins)
+}
+learning := s.router.Group("/api/learning")
+{
+learning.GET("/agents/:id/model", s.getLearningModel)
+learning.GET("/agents/:id/performance", s.getAgentPerformance)
+learning.POST("/agents/:id/adapt", s.adaptAgent)
+learning.POST("/predict-optimal-agent", s.predictOptimalAgent)
+learning.GET("/system/metrics", s.getLearningSystemMetrics)
+}
+performance := s.router.Group("/api/performance")
+{
+performance.GET("/metrics", s.getSystemMetrics)
+performance.GET("/alerts", s.getActiveAlerts)
+performance.GET("/resources", s.getResourceUsage)
+performance.GET("/agents/loads", s.getAgentLoads)
+performance.POST("/tasks/execute-optimized", s.executeTaskOptimized)
+}
 }
 func (s *APIServer) Run(port int) error {
-	return s.router.Run(fmt.Sprintf(":%d", port))
+return s.router.Run(fmt.Sprintf(":%d", port))
 }
 func (s *APIServer) getDTEStatus(c *gin.Context) {
-	status := s.engine.GetDeepTreeEchoStatus()
-	c.JSON(http.StatusOK, gin.H{
-		"status": "success",
-		"data":   status,
-	})
+status := s.engine.GetDeepTreeEchoStatus()
+c.JSON(http.StatusOK, gin.H{
+"status": "success",
+"data":   status,
+})
 }
 func (s *APIServer) getDTEDashboard(c *gin.Context) {
-	dashboardData := s.engine.GetDeepTreeEchoDashboardData()
-	c.JSON(http.StatusOK, gin.H{
-		"status": "success",
-		"data":   dashboardData,
-	})
+dashboardData := s.engine.GetDeepTreeEchoDashboardData()
+c.JSON(http.StatusOK, gin.H{
+"status": "success",
+"data":   dashboardData,
+})
 }
 func (s *APIServer) initializeDTE(c *gin.Context) {
-	err := s.engine.InitializeDeepTreeEcho(c.Request.Context())
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"status": "error",
-			"error":  err.Error(),
-		})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"status":  "success",
-		"message": "Deep Tree Echo system initialized successfully",
-	})
+err := s.engine.InitializeDeepTreeEcho(c.Request.Context())
+if err != nil {
+c.JSON(http.StatusInternalServerError, gin.H{
+"status": "error",
+"error":  err.Error(),
+})
+return
+}
+c.JSON(http.StatusOK, gin.H{
+"status":  "success",
+"message": "Deep Tree Echo system initialized successfully",
+})
 }
 func (s *APIServer) runDTEDiagnostics(c *gin.Context) {
-	diagnostics, err := s.engine.RunDeepTreeEchoDiagnostics(c.Request.Context())
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"status": "error",
-			"error":  err.Error(),
-		})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"status": "success",
-		"data":   diagnostics,
-	})
+diagnostics, err := s.engine.RunDeepTreeEchoDiagnostics(c.Request.Context())
+if err != nil {
+c.JSON(http.StatusInternalServerError, gin.H{
+"status": "error",
+"error":  err.Error(),
+})
+return
+}
+c.JSON(http.StatusOK, gin.H{
+"status": "success",
+"data":   diagnostics,
+})
 }
 func (s *APIServer) refreshDTEStatus(c *gin.Context) {
-	err := s.engine.RefreshDeepTreeEchoStatus(c.Request.Context())
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"status": "error",
-			"error":  err.Error(),
-		})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"status":  "success",
-		"message": "Deep Tree Echo status refreshed successfully",
-	})
+err := s.engine.RefreshDeepTreeEchoStatus(c.Request.Context())
+if err != nil {
+c.JSON(http.StatusInternalServerError, gin.H{
+"status": "error",
+"error":  err.Error(),
+})
+return
+}
+c.JSON(http.StatusOK, gin.H{
+"status":  "success",
+"message": "Deep Tree Echo status refreshed successfully",
+})
 }
 func (s *APIServer) performDTEIntrospection(c *gin.Context) {
-	var req struct {
-		RepositoryRoot string  `json:"repository_root"`
-		CurrentLoad    float64 `json:"current_load"`
-		RecentActivity float64 `json:"recent_activity"`
-	}
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status": "error",
-			"error":  "Invalid request body",
-		})
-		return
-	}
-	result, err := s.engine.PerformDeepTreeEchoIntrospection(
-		c.Request.Context(),
-		req.RepositoryRoot,
-		req.CurrentLoad,
-		req.RecentActivity,
-	)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"status": "error",
-			"error":  err.Error(),
-		})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"status": "success",
-		"data":   result,
-	})
+var req struct {
+RepositoryRoot string  `json:"repository_root"`
+CurrentLoad    float64 `json:"current_load"`
+RecentActivity float64 `json:"recent_activity"`
+}
+if err := c.ShouldBindJSON(&req); err != nil {
+c.JSON(http.StatusBadRequest, gin.H{
+"status": "error",
+"error":  "Invalid request body",
+})
+return
+}
+result, err := s.engine.PerformDeepTreeEchoIntrospection(
+c.Request.Context(),
+req.RepositoryRoot,
+req.CurrentLoad,
+req.RecentActivity,
+)
+if err != nil {
+c.JSON(http.StatusInternalServerError, gin.H{
+"status": "error",
+"error":  err.Error(),
+})
+return
+}
+c.JSON(http.StatusOK, gin.H{
+"status": "success",
+"data":   result,
+})
 }
 func (s *APIServer) listAgents(c *gin.Context) {
-	agents, err := s.engine.ListAgents(c.Request.Context())
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"status": "error",
-			"error":  err.Error(),
-		})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"status": "success",
-		"data":   agents,
-	})
+agents, err := s.engine.ListAgents(c.Request.Context())
+if err != nil {
+c.JSON(http.StatusInternalServerError, gin.H{
+"status": "error",
+"error":  err.Error(),
+})
+return
+}
+c.JSON(http.StatusOK, gin.H{
+"status": "success",
+"data":   agents,
+})
 }
 func (s *APIServer) createAgent(c *gin.Context) {
-	var agent Agent
-	if err := c.ShouldBindJSON(&agent); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status": "error",
-			"error":  "Invalid request body",
-		})
-		return
-	}
-	err := s.engine.CreateAgent(c.Request.Context(), &agent)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"status": "error",
-			"error":  err.Error(),
-		})
-		return
-	}
-	c.JSON(http.StatusCreated, gin.H{
-		"status": "success",
-		"data":   agent,
-	})
+var agent Agent
+if err := c.ShouldBindJSON(&agent); err != nil {
+c.JSON(http.StatusBadRequest, gin.H{
+"status": "error",
+"error":  "Invalid request body",
+})
+return
+}
+err := s.engine.CreateAgent(c.Request.Context(), &agent)
+if err != nil {
+c.JSON(http.StatusInternalServerError, gin.H{
+"status": "error",
+"error":  err.Error(),
+})
+return
+}
+c.JSON(http.StatusCreated, gin.H{
+"status": "success",
+"data":   agent,
+})
 }
 func (s *APIServer) getAgent(c *gin.Context) {
-	id := c.Param("id")
-	agent, err := s.engine.GetAgent(c.Request.Context(), id)
-	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{
-			"status": "error",
-			"error":  err.Error(),
-		})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"status": "success",
-		"data":   agent,
-	})
+id := c.Param("id")
+agent, err := s.engine.GetAgent(c.Request.Context(), id)
+if err != nil {
+c.JSON(http.StatusNotFound, gin.H{
+"status": "error",
+"error":  err.Error(),
+})
+return
+}
+c.JSON(http.StatusOK, gin.H{
+"status": "success",
+"data":   agent,
+})
 }
 func (s *APIServer) updateAgent(c *gin.Context) {
-	id := c.Param("id")
-	var agent Agent
-	if err := c.ShouldBindJSON(&agent); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status": "error",
-			"error":  "Invalid request body",
-		})
-		return
-	}
-	agent.ID = id
-	err := s.engine.UpdateAgent(c.Request.Context(), &agent)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"status": "error",
-			"error":  err.Error(),
-		})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"status": "success",
-		"data":   agent,
-	})
+id := c.Param("id")
+var agent Agent
+if err := c.ShouldBindJSON(&agent); err != nil {
+c.JSON(http.StatusBadRequest, gin.H{
+"status": "error",
+"error":  "Invalid request body",
+})
+return
+}
+agent.ID = id
+err := s.engine.UpdateAgent(c.Request.Context(), &agent)
+if err != nil {
+c.JSON(http.StatusInternalServerError, gin.H{
+"status": "error",
+"error":  err.Error(),
+})
+return
+}
+c.JSON(http.StatusOK, gin.H{
+"status": "success",
+"data":   agent,
+})
 }
 func (s *APIServer) deleteAgent(c *gin.Context) {
-	id := c.Param("id")
-	err := s.engine.DeleteAgent(c.Request.Context(), id)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"status": "error",
-			"error":  err.Error(),
-		})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"status":  "success",
-		"message": "Agent deleted successfully",
-	})
+id := c.Param("id")
+err := s.engine.DeleteAgent(c.Request.Context(), id)
+if err != nil {
+c.JSON(http.StatusInternalServerError, gin.H{
+"status": "error",
+"error":  err.Error(),
+})
+return
+}
+c.JSON(http.StatusOK, gin.H{
+"status":  "success",
+"message": "Agent deleted successfully",
+})
 }
 func (s *APIServer) executeTask(c *gin.Context) {
-	agentID := c.Param("id")
-	var task Task
-	if err := c.ShouldBindJSON(&task); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status": "error",
-			"error":  "Invalid request body",
-		})
-		return
-	}
-	task.AgentID = agentID
-	agent, err := s.engine.GetAgent(c.Request.Context(), agentID)
-	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{
-			"status": "error",
-			"error":  "Agent not found",
-		})
-		return
-	}
-	result, err := s.engine.ExecuteTask(c.Request.Context(), &task, agent)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"status": "error",
-			"error":  err.Error(),
-		})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"status": "success",
-		"data": gin.H{
-			"task":   task,
-			"result": result,
-		},
-	})
+agentID := c.Param("id")
+var task Task
+if err := c.ShouldBindJSON(&task); err != nil {
+c.JSON(http.StatusBadRequest, gin.H{
+"status": "error",
+"error":  "Invalid request body",
+})
+return
+}
+task.AgentID = agentID
+agent, err := s.engine.GetAgent(c.Request.Context(), agentID)
+if err != nil {
+c.JSON(http.StatusNotFound, gin.H{
+"status": "error",
+"error":  "Agent not found",
+})
+return
+}
+result, err := s.engine.ExecuteTask(c.Request.Context(), &task, agent)
+if err != nil {
+c.JSON(http.StatusInternalServerError, gin.H{
+"status": "error",
+"error":  err.Error(),
+})
+return
+}
+c.JSON(http.StatusOK, gin.H{
+"status": "success",
+"data": gin.H{
+"task":   task,
+"result": result,
+},
+})
 }
 func (s *APIServer) orchestrateTasks(c *gin.Context) {
-	var req OrchestrationRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status": "error",
-			"error":  "Invalid request body",
-		})
-		return
-	}
-	response, err := s.engine.OrchestrateTasks(c.Request.Context(), &req)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"status": "error",
-			"error":  err.Error(),
-		})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"status": "success",
-		"data":   response,
-	})
+var req OrchestrationRequest
+if err := c.ShouldBindJSON(&req); err != nil {
+c.JSON(http.StatusBadRequest, gin.H{
+"status": "error",
+"error":  "Invalid request body",
+})
+return
+}
+response, err := s.engine.OrchestrateTasks(c.Request.Context(), &req)
+if err != nil {
+c.JSON(http.StatusInternalServerError, gin.H{
+"status": "error",
+"error":  err.Error(),
+})
+return
+}
+c.JSON(http.StatusOK, gin.H{
+"status": "success",
+"data":   response,
+})
 }
 func (s *APIServer) getAvailableTools(c *gin.Context) {
-	tools := s.engine.GetAvailableTools()
-	c.JSON(http.StatusOK, gin.H{
-		"status": "success",
-		"data":   tools,
-	})
+tools := s.engine.GetAvailableTools()
+c.JSON(http.StatusOK, gin.H{
+"status": "success",
+"data":   tools,
+})
 }
 func (s *APIServer) getAvailablePlugins(c *gin.Context) {
-	plugins := s.engine.GetAvailablePlugins()
-	c.JSON(http.StatusOK, gin.H{
-		"status": "success",
-		"data":   plugins,
-	})
+plugins := s.engine.GetAvailablePlugins()
+c.JSON(http.StatusOK, gin.H{
+"status": "success",
+"data":   plugins,
+})
 }
 func (s *APIServer) sendError(c *gin.Context, statusCode int, message string) {
-	c.JSON(statusCode, gin.H{
-		"status": "error",
-		"error":  message,
-	})
+c.JSON(statusCode, gin.H{
+"status": "error",
+"error":  message,
+})
 }
 func (s *APIServer) sendSuccess(c *gin.Context, data interface{}) {
-	c.JSON(http.StatusOK, gin.H{
-		"status": "success",
-		"data":   data,
-	})
+c.JSON(http.StatusOK, gin.H{
+"status": "success",
+"data":   data,
+})
 }
 func FormatDashboardMetrics(dte *DeepTreeEcho) map[string]interface{} {
-	return map[string]interface{}{
-		"systemHealth": map[string]interface{}{
-			"status": dte.SystemHealth,
-			"color":  getHealthColor(dte.SystemHealth),
-		},
-		"dteCore": map[string]interface{}{
-			"status": dte.CoreStatus,
-			"color":  getCoreStatusColor(dte.CoreStatus),
-		},
-		"thoughtCount": dte.ThoughtCount,
-		"recursiveDepth": dte.RecursiveDepth,
-	}
+return map[string]interface{}{
+"systemHealth": map[string]interface{}{
+"status": dte.SystemHealth,
+"color":  getHealthColor(dte.SystemHealth),
+},
+"dteCore": map[string]interface{}{
+"status": dte.CoreStatus,
+"color":  getCoreStatusColor(dte.CoreStatus),
+},
+"thoughtCount": dte.ThoughtCount,
+"recursiveDepth": dte.RecursiveDepth,
+}
 }
 func FormatIdentityCoherence(coherence *IdentityCoherence) map[string]interface{} {
-	return map[string]interface{}{
-		"overallCoherence": fmt.Sprintf("%.0f%%", coherence.OverallCoherence*100),
-		"maintainingCore": "Maintaining core essence while adapting",
-		"factors": coherence.Factors,
-	}
+return map[string]interface{}{
+"overallCoherence": fmt.Sprintf("%.0f%%", coherence.OverallCoherence*100),
+"maintainingCore": "Maintaining core essence while adapting",
+"factors": coherence.Factors,
+}
 }
 func FormatMemoryResonance(resonance *MemoryResonance) map[string]interface{} {
-	return map[string]interface{}{
-		"memoryNodes":      resonance.MemoryNodes,
-		"connections":      resonance.Connections,
-		"coherence":        fmt.Sprintf("%.0f%%", resonance.Coherence*100),
-		"activePatterns":   resonance.ActivePatterns,
-		"resonancePattern": resonance.ResonancePattern,
-	}
+return map[string]interface{}{
+"memoryNodes":      resonance.MemoryNodes,
+"connections":      resonance.Connections,
+"coherence":        fmt.Sprintf("%.0f%%", resonance.Coherence*100),
+"activePatterns":   resonance.ActivePatterns,
+"resonancePattern": resonance.ResonancePattern,
+}
 }
 func FormatEchoPatterns(patterns *EchoPatterns) map[string]interface{} {
-	return map[string]interface{}{
-		"recursiveSelfImprovement": map[string]interface{}{
-			"name":        patterns.RecursiveSelfImprovement.Name,
-			"description": patterns.RecursiveSelfImprovement.Description,
-			"strength":    fmt.Sprintf("%.0f%%", patterns.RecursiveSelfImprovement.Strength*100),
-			"frequency":   patterns.RecursiveSelfImprovement.Frequency,
-		},
-		"crossSystemSynthesis": map[string]interface{}{
-			"name":        patterns.CrossSystemSynthesis.Name,
-			"description": patterns.CrossSystemSynthesis.Description,
-			"strength":    fmt.Sprintf("%.0f%%", patterns.CrossSystemSynthesis.Strength*100),
-			"frequency":   patterns.CrossSystemSynthesis.Frequency,
-		},
-		"identityPreservation": map[string]interface{}{
-			"name":        patterns.IdentityPreservation.Name,
-			"description": patterns.IdentityPreservation.Description,
-			"strength":    fmt.Sprintf("%.0f%%", patterns.IdentityPreservation.Strength*100),
-			"frequency":   patterns.IdentityPreservation.Frequency,
-		},
-	}
+return map[string]interface{}{
+"recursiveSelfImprovement": map[string]interface{}{
+"name":        patterns.RecursiveSelfImprovement.Name,
+"description": patterns.RecursiveSelfImprovement.Description,
+"strength":    fmt.Sprintf("%.0f%%", patterns.RecursiveSelfImprovement.Strength*100),
+"frequency":   patterns.RecursiveSelfImprovement.Frequency,
+},
+"crossSystemSynthesis": map[string]interface{}{
+"name":        patterns.CrossSystemSynthesis.Name,
+"description": patterns.CrossSystemSynthesis.Description,
+"strength":    fmt.Sprintf("%.0f%%", patterns.CrossSystemSynthesis.Strength*100),
+"frequency":   patterns.CrossSystemSynthesis.Frequency,
+},
+"identityPreservation": map[string]interface{}{
+"name":        patterns.IdentityPreservation.Name,
+"description": patterns.IdentityPreservation.Description,
+"strength":    fmt.Sprintf("%.0f%%", patterns.IdentityPreservation.Strength*100),
+"frequency":   patterns.IdentityPreservation.Frequency,
+},
+}
 }
 func getHealthColor(health SystemHealthStatus) string {
-	switch health {
-	case SystemHealthOptimal:
-		return "green"
-	case SystemHealthStable:
-		return "blue"
-	case SystemHealthDegraded:
-		return "orange"
-	case SystemHealthInactive:
-		return "red"
-	default:
-		return "gray"
-	}
+switch health {
+case SystemHealthOptimal:
+return "green"
+case SystemHealthStable:
+return "blue"
+case SystemHealthDegraded:
+return "orange"
+case SystemHealthInactive:
+return "red"
+default:
+return "gray"
+}
 }
 func getCoreStatusColor(status CoreStatus) string {
-	switch status {
-	case CoreStatusActive:
-		return "green"
-	case CoreStatusStarting:
-		return "yellow"
-	case CoreStatusInactive:
-		return "orange"
-	case CoreStatusError:
-		return "red"
-	default:
-		return "gray"
-	}
+switch status {
+case CoreStatusActive:
+return "green"
+case CoreStatusStarting:
+return "yellow"
+case CoreStatusInactive:
+return "orange"
+case CoreStatusError:
+return "red"
+default:
+return "gray"
+}
 }
 func (s *APIServer) getLearningModel(c *gin.Context) {
-	agentID := c.Param("id")
-	learningSystem := s.engine.GetLearningSystem()
-	model := learningSystem.GetLearningModel(agentID)
-	c.JSON(http.StatusOK, gin.H{
-		"status": "success",
-		"data":   model,
-	})
+agentID := c.Param("id")
+learningSystem := s.engine.GetLearningSystem()
+model := learningSystem.GetLearningModel(agentID)
+c.JSON(http.StatusOK, gin.H{
+"status": "success",
+"data":   model,
+})
 }
 func (s *APIServer) getAgentPerformance(c *gin.Context) {
-	agentID := c.Param("id")
-	learningSystem := s.engine.GetLearningSystem()
-	history := learningSystem.performanceHistory[agentID]
-	if history == nil {
-		history = make([]*TaskPerformance, 0)
-	}
-	recentHistory := history
-	if len(history) > 20 {
-		recentHistory = history[len(history)-20:]
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"status": "success",
-		"data": map[string]interface{}{
-			"agent_id":           agentID,
-			"total_tasks":        len(history),
-			"recent_performance": recentHistory,
-		},
-	})
+agentID := c.Param("id")
+learningSystem := s.engine.GetLearningSystem()
+history := learningSystem.performanceHistory[agentID]
+if history == nil {
+history = make([]*TaskPerformance, 0)
+}
+recentHistory := history
+if len(history) > 20 {
+recentHistory = history[len(history)-20:]
+}
+c.JSON(http.StatusOK, gin.H{
+"status": "success",
+"data": map[string]interface{}{
+"agent_id":           agentID,
+"total_tasks":        len(history),
+"recent_performance": recentHistory,
+},
+})
 }
 func (s *APIServer) adaptAgent(c *gin.Context) {
-	agentID := c.Param("id")
-	result, err := s.engine.AdaptAgent(c.Request.Context(), agentID)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"status": "error",
-			"error":  err.Error(),
-		})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"status": "success",
-		"data":   result,
-	})
+agentID := c.Param("id")
+result, err := s.engine.AdaptAgent(c.Request.Context(), agentID)
+if err != nil {
+c.JSON(http.StatusInternalServerError, gin.H{
+"status": "error",
+"error":  err.Error(),
+})
+return
+}
+c.JSON(http.StatusOK, gin.H{
+"status": "success",
+"data":   result,
+})
 }
 func (s *APIServer) predictOptimalAgent(c *gin.Context) {
-	var req struct {
-		TaskType   string                 `json:"task_type"`
-		Input      string                 `json:"input"`
-		Parameters map[string]interface{} `json:"parameters"`
-	}
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status": "error",
-			"error":  "Invalid request body",
-		})
-		return
-	}
-	task := &Task{
-		Type:       req.TaskType,
-		Input:      req.Input,
-		Parameters: req.Parameters,
-	}
-	agent, confidence, err := s.engine.PredictOptimalAgentForTask(c.Request.Context(), task)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"status": "error",
-			"error":  err.Error(),
-		})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"status": "success",
-		"data": map[string]interface{}{
-			"optimal_agent": agent,
-			"confidence":    confidence,
-		},
-	})
+var req struct {
+TaskType   string                 `json:"task_type"`
+Input      string                 `json:"input"`
+Parameters map[string]interface{} `json:"parameters"`
+}
+if err := c.ShouldBindJSON(&req); err != nil {
+c.JSON(http.StatusBadRequest, gin.H{
+"status": "error",
+"error":  "Invalid request body",
+})
+return
+}
+task := &Task{
+Type:       req.TaskType,
+Input:      req.Input,
+Parameters: req.Parameters,
+}
+agent, confidence, err := s.engine.PredictOptimalAgentForTask(c.Request.Context(), task)
+if err != nil {
+c.JSON(http.StatusInternalServerError, gin.H{
+"status": "error",
+"error":  err.Error(),
+})
+return
+}
+c.JSON(http.StatusOK, gin.H{
+"status": "success",
+"data": map[string]interface{}{
+"optimal_agent": agent,
+"confidence":    confidence,
+},
+})
 }
 func (s *APIServer) getLearningSystemMetrics(c *gin.Context) {
-	learningSystem := s.engine.GetLearningSystem()
-	totalAgents := len(learningSystem.learningModels)
-	totalPerformanceRecords := 0
-	avgLearningRate := 0.0
-	avgCurrentPerformance := 0.0
-	for _, model := range learningSystem.learningModels {
-		if history, exists := learningSystem.performanceHistory[model.AgentID]; exists {
-			totalPerformanceRecords += len(history)
-		}
-		avgLearningRate += model.LearningRate
-		avgCurrentPerformance += model.LearningTrajectory.CurrentPerformance
-	}
-	if totalAgents > 0 {
-		avgLearningRate /= float64(totalAgents)
-		avgCurrentPerformance /= float64(totalAgents)
-	}
-	adaptationStrategiesCount := len(learningSystem.adaptationEngine.adaptationStrategies)
-	c.JSON(http.StatusOK, gin.H{
-		"status": "success",
-		"data": map[string]interface{}{
-			"total_agents":                totalAgents,
-			"total_performance_records":   totalPerformanceRecords,
-			"average_learning_rate":       avgLearningRate,
-			"average_current_performance": avgCurrentPerformance,
-			"adaptation_strategies_count": adaptationStrategiesCount,
-			"environment_factors":         learningSystem.adaptationEngine.environmentFactors,
-		},
-	})
+learningSystem := s.engine.GetLearningSystem()
+totalAgents := len(learningSystem.learningModels)
+totalPerformanceRecords := 0
+avgLearningRate := 0.0
+avgCurrentPerformance := 0.0
+for _, model := range learningSystem.learningModels {
+if history, exists := learningSystem.performanceHistory[model.AgentID]; exists {
+totalPerformanceRecords += len(history)
+}
+avgLearningRate += model.LearningRate
+avgCurrentPerformance += model.LearningTrajectory.CurrentPerformance
+}
+if totalAgents > 0 {
+avgLearningRate /= float64(totalAgents)
+avgCurrentPerformance /= float64(totalAgents)
+}
+adaptationStrategiesCount := len(learningSystem.adaptationEngine.adaptationStrategies)
+c.JSON(http.StatusOK, gin.H{
+"status": "success",
+"data": map[string]interface{}{
+"total_agents":                totalAgents,
+"total_performance_records":   totalPerformanceRecords,
+"average_learning_rate":       avgLearningRate,
+"average_current_performance": avgCurrentPerformance,
+"adaptation_strategies_count": adaptationStrategiesCount,
+"environment_factors":         learningSystem.adaptationEngine.environmentFactors,
+},
+})
 }
 func (s *APIServer) getSystemMetrics(c *gin.Context) {
-	metrics := s.engine.GetSystemMetrics()
-	c.JSON(http.StatusOK, gin.H{
-		"status": "success",
-		"data":   metrics,
-	})
+metrics := s.engine.GetSystemMetrics()
+c.JSON(http.StatusOK, gin.H{
+"status": "success",
+"data":   metrics,
+})
 }
 func (s *APIServer) getActiveAlerts(c *gin.Context) {
-	alerts := s.engine.GetActiveAlerts()
-	c.JSON(http.StatusOK, gin.H{
-		"status": "success",
-		"data":   alerts,
-	})
+alerts := s.engine.GetActiveAlerts()
+c.JSON(http.StatusOK, gin.H{
+"status": "success",
+"data":   alerts,
+})
 }
 func (s *APIServer) getResourceUsage(c *gin.Context) {
-	usage := s.engine.GetResourceUsage()
-	c.JSON(http.StatusOK, gin.H{
-		"status": "success",
-		"data":   usage,
-	})
+usage := s.engine.GetResourceUsage()
+c.JSON(http.StatusOK, gin.H{
+"status": "success",
+"data":   usage,
+})
 }
 func (s *APIServer) getAgentLoads(c *gin.Context) {
-	loads := s.engine.GetAgentLoads()
-	c.JSON(http.StatusOK, gin.H{
-		"status": "success",
-		"data":   loads,
-	})
+loads := s.engine.GetAgentLoads()
+c.JSON(http.StatusOK, gin.H{
+"status": "success",
+"data":   loads,
+})
 }
 func (s *APIServer) executeTaskOptimized(c *gin.Context) {
-	var req struct {
-		Type       string                 `json:"type"`
-		Input      string                 `json:"input"`
-		ModelName  string                 `json:"model_name"`
-		Parameters map[string]interface{} `json:"parameters"`
-		Priority   string                 `json:"priority"`   
-		Deadline   string                 `json:"deadline"`   
-	}
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status": "error",
-			"error":  "Invalid request body",
-		})
-		return
-	}
-	var priority TaskPriority
-	switch req.Priority {
-	case "low":
-		priority = TaskPriorityLow
-	case "normal":
-		priority = TaskPriorityNormal
-	case "high":
-		priority = TaskPriorityHigh
-	case "urgent":
-		priority = TaskPriorityUrgent
-	default:
-		priority = TaskPriorityNormal
-	}
-	deadline := time.Now().Add(30 * time.Minute) 
-	if req.Deadline != "" {
-		if parsedDeadline, err := time.Parse(time.RFC3339, req.Deadline); err == nil {
-			deadline = parsedDeadline
-		}
-	}
-	task := &Task{
-		ID:         fmt.Sprintf("opt-task-%d", time.Now().Unix()),
-		Type:       req.Type,
-		Input:      req.Input,
-		ModelName:  req.ModelName,
-		Parameters: req.Parameters,
-		Status:     TaskStatusPending,
-		CreatedAt:  time.Now(),
-	}
-	result, err := s.engine.ExecuteTaskOptimized(c.Request.Context(), task, priority, deadline)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"status": "error",
-			"error":  err.Error(),
-		})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"status": "success",
-		"data":   result,
-	})
+var req struct {
+Type       string                 `json:"type"`
+Input      string                 `json:"input"`
+ModelName  string                 `json:"model_name"`
+Parameters map[string]interface{} `json:"parameters"`
+Priority   string                 `json:"priority"`
+Deadline   string                 `json:"deadline"`
+}
+if err := c.ShouldBindJSON(&req); err != nil {
+c.JSON(http.StatusBadRequest, gin.H{
+"status": "error",
+"error":  "Invalid request body",
+})
+return
+}
+var priority TaskPriority
+switch req.Priority {
+case "low":
+priority = TaskPriorityLow
+case "normal":
+priority = TaskPriorityNormal
+case "high":
+priority = TaskPriorityHigh
+case "urgent":
+priority = TaskPriorityUrgent
+default:
+priority = TaskPriorityNormal
+}
+deadline := time.Now().Add(30 * time.Minute)
+if req.Deadline != "" {
+if parsedDeadline, err := time.Parse(time.RFC3339, req.Deadline); err == nil {
+deadline = parsedDeadline
+}
+}
+task := &Task{
+ID:         fmt.Sprintf("opt-task-%d", time.Now().Unix()),
+Type:       req.Type,
+Input:      req.Input,
+ModelName:  req.ModelName,
+Parameters: req.Parameters,
+Status:     TaskStatusPending,
+CreatedAt:  time.Now(),
+}
+result, err := s.engine.ExecuteTaskOptimized(c.Request.Context(), task, priority, deadline)
+if err != nil {
+c.JSON(http.StatusInternalServerError, gin.H{
+"status": "error",
+"error":  err.Error(),
+})
+return
+}
+c.JSON(http.StatusOK, gin.H{
+"status": "success",
+"data":   result,
+})
 }

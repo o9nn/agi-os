@@ -20,12 +20,12 @@ u32 pci_irq_mask = 0;
 #ifndef MACH
 struct pci_dev *pci_devices = NULL;
 struct pci_bus pci_root = {
-parent:	NULL,
-children:	NULL,
-next:	NULL,
-self:	NULL,
-devices:	NULL,
-number:	0
+parent: NULL,
+children: NULL,
+next: NULL,
+self: NULL,
+devices: NULL,
+number: 0
 };
 #endif
 #endif
@@ -95,24 +95,24 @@ return NULL;
 #if (LINUX_VERSION_CODE < VERSION(2,3,24)) && defined(__i386__)
 #pragma pack(1)
 struct slot_entry {
-u8		bus, devfn;
+u8 bus, devfn;
 struct pirq_pin {
-u8	link;
-u16	irq_map;
+u8 link;
+u16 irq_map;
 } pin[4];
-u8		slot;
-u8		reserved;
+u8 slot;
+u8 reserved;
 };
 struct routing_table {
-u32		signature;
-u8		minor, major;
-u16		size;
-u8		bus, devfn;
-u16		pci_mask;
-u32		compat;
-u32		miniport;
-u8		reserved[11];
-u8		checksum;
+u32 signature;
+u8 minor, major;
+u16 size;
+u8 bus, devfn;
+u16 pci_mask;
+u32 compat;
+u32 miniport;
+u8 reserved[11];
+u8 checksum;
 struct slot_entry entry[0];
 };
 #pragma pack()
@@ -241,22 +241,22 @@ u16 vendor, device;
 u8 (*xlate)(struct pci_dev *, u8);
 void (*init)(struct pci_dev *, u8, u8);
 } router_table[] = {
-{ ID(INTEL, 82371FB_0),	&pIIx_link,	&pIIx_init },
-{ ID(INTEL, 82371SB_0),	&pIIx_link,	&pIIx_init },
-{ ID(INTEL, 82371AB_0),	&pIIx_link,	&pIIx_init },
-{ ID(INTEL, 82443MX_1),	&pIIx_link,	&pIIx_init },
-{ ID(INTEL, 82801AA_0),	&pIIx_link,	&pIIx_init },
-{ ID(INTEL, 82801AB_0),	&pIIx_link,	&pIIx_init },
-{ ID(INTEL, 82801BA_0),	&pIIx_link,	&pIIx_init },
-{ ID(INTEL, 82801BAM_0),	&pIIx_link,	&pIIx_init },
-{ ID(VIA, 82C586_0),	&via_link,	&via_init },
-{ ID(VIA, 82C596),		&via_link,	&via_init },
-{ ID(VIA, 82C686),		&via_link,	&via_init },
-{ ID(OPTI, 82C700),		&opti_link,	&opti_init },
-{ ID(AL, M1533),		&ali_link,	&ali_init },
-{ ID(SI, 503),		&pIIx_link,	&pIIx_init },
-{ ID(SI, 496),		&pIIx_link,	&pIIx_init },
-{ ID(CYRIX, 5530_LEGACY),	&cyrix_link,	&cyrix_init }
+{ ID(INTEL, 82371FB_0), &pIIx_link, &pIIx_init },
+{ ID(INTEL, 82371SB_0), &pIIx_link, &pIIx_init },
+{ ID(INTEL, 82371AB_0), &pIIx_link, &pIIx_init },
+{ ID(INTEL, 82443MX_1), &pIIx_link, &pIIx_init },
+{ ID(INTEL, 82801AA_0), &pIIx_link, &pIIx_init },
+{ ID(INTEL, 82801AB_0), &pIIx_link, &pIIx_init },
+{ ID(INTEL, 82801BA_0), &pIIx_link, &pIIx_init },
+{ ID(INTEL, 82801BAM_0), &pIIx_link, &pIIx_init },
+{ ID(VIA, 82C586_0), &via_link, &via_init },
+{ ID(VIA, 82C596), &via_link, &via_init },
+{ ID(VIA, 82C686), &via_link, &via_init },
+{ ID(OPTI, 82C700), &opti_link, &opti_init },
+{ ID(AL, M1533), &ali_link, &ali_init },
+{ ID(SI, 503), &pIIx_link, &pIIx_init },
+{ ID(SI, 496), &pIIx_link, &pIIx_init },
+{ ID(CYRIX, 5530_LEGACY), &cyrix_link, &cyrix_init }
 };
 #define ROUTER_COUNT (sizeof(router_table)/sizeof(router_table[0]))
 static struct routing_table *pirq = NULL;

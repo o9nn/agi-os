@@ -4,7 +4,7 @@
 #if defined(OPENSSL_SYS_WINDOWS) || defined(OPENSSL_SYS_WIN32)
 # include <windows.h>
 # ifndef _WIN32_WINNT
-#  define _WIN32_WINNT 0x0400
+# define _WIN32_WINNT 0x0400
 # endif
 # include <wincrypt.h>
 # include <tlhelp32.h>
@@ -20,7 +20,7 @@ DWORD flags;
 HCURSOR hCursor;
 POINT ptScreenPos;
 } CURSORINFO, *PCURSORINFO, *LPCURSORINFO;
-#  define CURSOR_SHOWING     0x00000001
+# define CURSOR_SHOWING 0x00000001
 # endif
 # if !defined(OPENSSL_SYS_WINCE)
 typedef BOOL(WINAPI *CRYPTACQUIRECONTEXTW) (HCRYPTPROV *, LPCWSTR, LPCWSTR,
@@ -38,13 +38,13 @@ typedef BOOL(WINAPI *HEAP32LIST) (HANDLE, LPHEAPLIST32);
 typedef BOOL(WINAPI *PROCESS32) (HANDLE, LPPROCESSENTRY32);
 typedef BOOL(WINAPI *THREAD32) (HANDLE, LPTHREADENTRY32);
 typedef BOOL(WINAPI *MODULE32) (HANDLE, LPMODULEENTRY32);
-#  include <lmcons.h>
-#  include <lmstats.h>
-#  if 1
+# include <lmcons.h>
+# include <lmstats.h>
+# if 1
 typedef NET_API_STATUS(NET_API_FUNCTION *NETSTATGET)
 (LPWSTR, LPWSTR, DWORD, DWORD, LPBYTE *);
 typedef NET_API_STATUS(NET_API_FUNCTION *NETFREE) (LPBYTE);
-#  endif
+# endif
 # endif
 int RAND_poll(void)
 {
@@ -53,7 +53,7 @@ HCRYPTPROV hProvider = 0;
 DWORD w;
 int good = 0;
 # if defined(OPENSSL_SYS_WINCE)
-#  if defined(_WIN32_WCE) && _WIN32_WCE>=300
+# if defined(_WIN32_WCE) && _WIN32_WCE>=300
 {
 BYTE buf[64];
 if (CryptAcquireContextW(&hProvider, NULL, NULL, PROV_RSA_FULL,
@@ -63,7 +63,7 @@ RAND_add(buf, sizeof(buf), sizeof(buf));
 CryptReleaseContext(hProvider, 0);
 }
 }
-#  endif
+# endif
 # else
 {
 HMODULE advapi = LoadLibrary(TEXT("ADVAPI32.DLL"));
@@ -107,9 +107,9 @@ CRYPT_VERIFYCONTEXT)) {
 if (gen(hProvider, sizeof(buf), buf) != 0) {
 RAND_add(buf, sizeof(buf), 0);
 good = 1;
-#  if 0
+# if 0
 printf("randomness from PROV_RSA_FULL\n");
-#  endif
+# endif
 }
 release(hProvider, 0);
 }
@@ -117,9 +117,9 @@ if (acquire(&hProvider, 0, INTEL_DEF_PROV, PROV_INTEL_SEC, 0)) {
 if (gen(hProvider, sizeof(buf), buf) != 0) {
 RAND_add(buf, sizeof(buf), sizeof(buf));
 good = 1;
-#  if 0
+# if 0
 printf("randomness from PROV_INTEL_SEC\n");
-#  endif
+# endif
 }
 release(hProvider, 0);
 }
@@ -200,7 +200,7 @@ ZeroMemory(&hlist, sizeof(HEAPLIST32));
 hlist.dwSize = sizeof(HEAPLIST32);
 if (good)
 starttime = GetTickCount();
-#  ifdef _MSC_VER
+# ifdef _MSC_VER
 if (heaplist_first(handle, &hlist)) {
 int ex_cnt_limit = 42;
 do {
@@ -229,7 +229,7 @@ ex_cnt_limit--;
 || (GetTickCount() - starttime) < MAXDELAY)
 && ex_cnt_limit > 0);
 }
-#  else
+# else
 if (heaplist_first(handle, &hlist)) {
 do {
 RAND_add(&hlist, hlist.dwSize, 3);
@@ -247,7 +247,7 @@ while (heap_next(&hentry)
 && (!good
 || (GetTickCount() - starttime) < MAXDELAY));
 }
-#  endif
+# endif
 p.dwSize = sizeof(PROCESSENTRY32);
 if (good)
 starttime = GetTickCount();
@@ -351,7 +351,7 @@ have_tsc = 0;
 }
 }
 # else
-#  define have_tsc 0
+# define have_tsc 0
 # endif
 if (have_perfc) {
 if (QueryPerformanceCounter(&l) == 0)

@@ -8,14 +8,14 @@
 #include "auth-cache.h"
 #include <sys/stat.h>
 #ifdef HAVE_SECURITY_PAM_APPL_H
-#  include <security/pam_appl.h>
+# include <security/pam_appl.h>
 #elif defined(HAVE_PAM_PAM_APPL_H)
-#  include <pam/pam_appl.h>
+# include <pam/pam_appl.h>
 #endif
 #if defined(sun) || defined(__sun__) || defined(_HPUX_SOURCE)
-#  define pam_const
+# define pam_const
 #else
-#  define pam_const const
+# define pam_const const
 #endif
 typedef pam_const void *pam_item_t;
 #define PASSDB_PAM_DEFAULT_MAX_REQUESTS 100

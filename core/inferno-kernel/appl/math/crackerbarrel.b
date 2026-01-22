@@ -5,12 +5,12 @@ implement CBPuzzle;
 # are seated pegs. A 6th order puzzle appears in the diagram below.
 # Note, the hole in the lower left corner of the triangle is empty.
 #
-#                 V
-#               V   V
-#             V   V   V
-#           V   V   V   V
-#         V   V   V   V   V
-#       O   V   V   V   V   V
+# V
+# V V
+# V V V
+# V V V V
+# V V V V V
+# O V V V V V
 #
 # Pegs are moved by jumping over a neighboring peg thereby removing the
 # jumped peg. A peg can only be moved if a neighboring hole contains a

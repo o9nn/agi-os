@@ -33,11 +33,11 @@ static const float HALF_FLT_MAX = 65504.F;
 __inline__ __device__ uint4 dequantize_s4_to_fp16x2(uint32_t const& source)
 {
 uint4 result;
-uint32_t*      h   = reinterpret_cast<uint32_t*>(&result);
+uint32_t* h = reinterpret_cast<uint32_t*>(&result);
 uint32_t const i4s = reinterpret_cast<uint32_t const&>(source);
-static constexpr uint32_t immLut                = (0xf0 & 0xcc) | 0xaa;
-static constexpr uint32_t BOTTOM_MASK           = 0x000f000f;
-static constexpr uint32_t TOP_MASK              = 0x00f000f0;
+static constexpr uint32_t immLut = (0xf0 & 0xcc) | 0xaa;
+static constexpr uint32_t BOTTOM_MASK = 0x000f000f;
+static constexpr uint32_t TOP_MASK = 0x00f000f0;
 static constexpr uint32_t I4s_TO_F16s_MAGIC_NUM = 0x64006400;
 const uint32_t top_i4s = i4s >> 8;
 asm("lop3.b32 %0, %1, %2, %3, %4;\n"
@@ -64,11 +64,11 @@ return result;
 __inline__ __device__ uint4 dequantize_s4_to_fp16x2_v2(uint32_t const& source)
 {
 uint4 result;
-uint32_t*       h   = reinterpret_cast<uint32_t*>(&result);
+uint32_t* h = reinterpret_cast<uint32_t*>(&result);
 uint32_t const& i4s = reinterpret_cast<uint32_t const&>(source);
-static constexpr uint32_t immLut      = (0xf0 & 0xcc) | 0xaa;
-static constexpr uint32_t BOT_MASK    = 0x000f000f;
-static constexpr uint32_t TOP_MASK    = 0x00f000f0;
+static constexpr uint32_t immLut = (0xf0 & 0xcc) | 0xaa;
+static constexpr uint32_t BOT_MASK = 0x000f000f;
+static constexpr uint32_t TOP_MASK = 0x00f000f0;
 static constexpr uint32_t MAGIC_NUM_0 = 0x64006400;
 static constexpr uint32_t MAGIC_NUM_1 = 0x54005400;
 static constexpr uint32_t MAGIC_NUM_2 = MAGIC_NUM_1 >> 4;
@@ -96,7 +96,7 @@ return result;
 __inline__ __device__ uint4 dequantize_s4_to_bf16x2_v2(uint32_t const& source)
 {
 uint4 result;
-uint32_t*                h = reinterpret_cast<uint32_t*>(&result);
+uint32_t* h = reinterpret_cast<uint32_t*>(&result);
 uint32_t const& source_i4s = reinterpret_cast<uint32_t const&>(source);
 static constexpr uint32_t immLut = (0xf0 & 0xcc) | 0xaa;
 static constexpr uint32_t MASK = 0x000f000f;
@@ -175,7 +175,7 @@ uint s, z;
 (half2&)z = __halves2half2(q.x, q.x);
 (half2&)s = __halves2half2(q.y, q.y);
 auto& t = (const uint&)x;
-uint  u, v;
+uint u, v;
 asm("sub.ftz.f16x2 %0, %1, %2;\n" : "=r"(u) : "r"(t), "r"(z));
 asm("mul.ftz.f16x2 %0, %1, %2;\n" : "=r"(v) : "r"(u), "r"(s));
 return (half2&)v;

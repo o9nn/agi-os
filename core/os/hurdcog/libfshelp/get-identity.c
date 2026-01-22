@@ -11,9 +11,9 @@ struct port_info pi;
 hurd_ihash_locp_t id_hashloc;
 ino_t cache_id;
 };
-#define mix_fasthash(h) ({              \
-(h) ^= (h) >> 23;               \
-(h) *= 0x2127599bf4325c37ULL;   \
+#define mix_fasthash(h) ({ \
+(h) ^= (h) >> 23; \
+(h) *= 0x2127599bf4325c37ULL; \
 (h) ^= (h) >> 47; })
 static hurd_ihash_key_t
 hash (const void *key)

@@ -3,7 +3,7 @@
 # include <openssl/ui.h>
 # include <openssl/crypto.h>
 # ifdef _
-#  undef _
+# undef _
 # endif
 struct ui_method_st {
 char *name;
@@ -40,8 +40,8 @@ const UI_METHOD *meth;
 STACK_OF(UI_STRING) *strings;
 void *user_data;
 CRYPTO_EX_DATA ex_data;
-# define UI_FLAG_REDOABLE        0x0001
-# define UI_FLAG_PRINT_ERRORS    0x0100
+# define UI_FLAG_REDOABLE 0x0001
+# define UI_FLAG_PRINT_ERRORS 0x0100
 int flags;
 };
 #endif

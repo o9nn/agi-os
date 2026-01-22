@@ -32,7 +32,7 @@ WmDebugger: module
 {
 init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
-icondir :	con "debug/";
+icondir : con "debug/";
 tkconfig := array[] of {
 "frame .m -relief raised -bd 1",
 "frame .p -padx 2",
@@ -252,9 +252,9 @@ tkoptions := array[] of {
 "pack .line .crlf -expand 1 -anchor w -in .layout",
 };
 tkopttabs := array[] of {
-("General",	".gen"),
-("Thread",	".prog"),
-("Layout",	".layout"),
+("General", ".gen"),
+("Thread", ".prog"),
+("Layout", ".layout"),
 };
 # prog listing dialog box
 tkpicktab := array[] of {
@@ -274,65 +274,65 @@ tkpicktab := array[] of {
 };
 Bpt: adt
 {
-id:	int;
-m:	ref Mod;
-pc:	int;
+id: int;
+m: ref Mod;
+pc: int;
 };
 Recv, Send, Alt, Running, Stopped, Exited, Broken, Killing, Killed: con iota;
 status := array[] of
 {
-Running =>	"Running",
-Recv =>		"Receive",
-Send =>		"Send",
-Alt =>		"Alt",
-Stopped =>	"Stopped",
-Exited =>	"Exited",
-Broken =>	"Broken",
-Killing =>	"Killed",
-Killed =>	"Killed",
+Running => "Running",
+Recv => "Receive",
+Send => "Send",
+Alt => "Alt",
+Stopped => "Stopped",
+Exited => "Exited",
+Broken => "Broken",
+Killing => "Killed",
+Killed => "Killed",
 };
 tktools : array of array of string;
 toolstate : array of string;
 KidGrab, KidStep, KidStmt, KidOver, KidOut, KidKill, KidRun: con iota;
 Kid: adt
 {
-state:	int;
-prog:	ref Prog;
-watch:	int;		# pid of watching prog
-run:	int;		# pid of stepping prog
-pickup:	int;		# picking up this kid?
-cmd:	chan of int;
-stack:	ref Vars;
+state: int;
+prog: ref Prog;
+watch: int; # pid of watching prog
+run: int; # pid of stepping prog
+pickup: int; # picking up this kid?
+cmd: chan of int;
+stack: ref Vars;
 };
 Options: adt
 {
-start:	string;		# src of module to start
-mod:	ref Mod;	# module to start
-wm:	int;		# program is a wm program?
-path:	array of string;# search path for .src and .sbl
-args:	list of string;	# argument for starting a kid
-dir:	string;		# . for kid
-tabs:	int;		# options to show
-nrun:	int;		# run new kids?
-xkill:	int;		# kill kids on exit?
-xscroll: int;	# horizontal scrolling
-remcr: int;	# CR/LF -> LF
+start: string; # src of module to start
+mod: ref Mod; # module to start
+wm: int; # program is a wm program?
+path: array of string;# search path for .src and .sbl
+args: list of string; # argument for starting a kid
+dir: string; # . for kid
+tabs: int; # options to show
+nrun: int; # run new kids?
+xkill: int; # kill kids on exit?
+xscroll: int; # horizontal scrolling
+remcr: int; # CR/LF -> LF
 };
-tktop:		ref Tk->Toplevel;
-kids:		list of ref Kid;
-kid:		ref Kid;
-kidctxt:	ref Draw->Context;
-kidack:		chan of (ref Kid, string);
-kidevent:	chan of (ref Kid, string);
-bpts:		list of ref Bpt;
-bptid:=		1;
-title:		string;
-runok :=	0;
-context:	ref Draw->Context;
-opts:		ref Options;
-dbpid:		int;
-searchfor:	string;
-initsrc:	string;
+tktop: ref Tk->Toplevel;
+kids: list of ref Kid;
+kid: ref Kid;
+kidctxt: ref Draw->Context;
+kidack: chan of (ref Kid, string);
+kidevent: chan of (ref Kid, string);
+bpts: list of ref Bpt;
+bptid:= 1;
+title: string;
+runok := 0;
+context: ref Draw->Context;
+opts: ref Options;
+dbpid: int;
+searchfor: string;
+initsrc: string;
 badmodule(p: string)
 {
 sys->fprint(sys->fildes(2), "deb: cannot load %s: %r\n", p);
@@ -408,15 +408,15 @@ pickchan := pickdummy;
 optdummy := chan of ref Options;
 optchan := optdummy;
 tktools = array[] of {
-Running =>	tkrunning,
-Recv =>		tkrunning,
-Send =>		tkrunning,
-Alt =>		tkrunning,
-Stopped =>	tkstopped,
-Exited =>	tkexited,
-Broken =>	tkexited,
-Killing =>	tkexited,
-Killed =>	tkexited,
+Running => tkrunning,
+Recv => tkrunning,
+Send => tkrunning,
+Alt => tkrunning,
+Stopped => tkstopped,
+Exited => tkexited,
+Broken => tkexited,
+Killing => tkexited,
+Killed => tkexited,
 };
 tkclient->init();
 selectfile->init();
@@ -715,7 +715,7 @@ tk->cmd(t, ".killkids configure -command 'send cmd kill");
 tk->cmd(t, ".runkids configure -command 'send cmd run");
 tkclient->onscreen(t, nil);
 tkclient->startinput(t, "ptr" :: "kbd" :: nil);
-out:	for(;;){
+out: for(;;){
 tk->cmd(t, "update");
 alt{
 c := <-t.ctxt.kbd =>
@@ -1215,7 +1215,7 @@ err := k.prog.step(xlate[c]);
 kidack <-= (k, err);
 KidKill =>
 err := "kill "+k.prog.kill();
-k.prog.kill();			# kill again to slay blocked progs
+k.prog.kill(); # kill again to slay blocked progs
 kidack <-= (k, err);
 exit;
 KidRun =>
@@ -1242,8 +1242,8 @@ dialog->prompt(context, tktop.image, "warning -fg yellow",
 tkcmd(cmd: string): string
 {
 s := tk->cmd(tktop, cmd);
-#	if(len s != 0 && s[0] == '!')
-#		sys->print("%s '%s'\n", s, cmd);
+# if(len s != 0 && s[0] == '!')
+# sys->print("%s '%s'\n", s, cmd);
 return s;
 }
 sysname(): string

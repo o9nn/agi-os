@@ -28,7 +28,7 @@ if(c->background.color != t->background.color)
 draw(im, cr, getcolor(c->background.color), nil, ZP);
 if(t->border)
 border(im, cr, t->border, display->black, ZP);
-laydraw(p, im,  c->lay);
+laydraw(p, im, c->lay);
 }
 }
 enum

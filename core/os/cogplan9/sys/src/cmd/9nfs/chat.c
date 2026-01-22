@@ -1,10 +1,10 @@
 #include "all.h"
-#define	SIZE	1024
-int		chatty;
-int		conftime;
-#define	NSIZE	128
-static char	nbuf[NSIZE];
-static int	chatpid;
+#define SIZE 1024
+int chatty;
+int conftime;
+#define NSIZE 128
+static char nbuf[NSIZE];
+static int chatpid;
 static void
 killchat(void)
 {

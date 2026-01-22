@@ -5,12 +5,12 @@
 #include <openssl/des.h>
 #include <openssl/mdc2.h>
 #undef c2l
-#define c2l(c,l)        (l =((DES_LONG)(*((c)++)))    , \
+#define c2l(c,l) (l =((DES_LONG)(*((c)++))) , \
 l|=((DES_LONG)(*((c)++)))<< 8L, \
 l|=((DES_LONG)(*((c)++)))<<16L, \
 l|=((DES_LONG)(*((c)++)))<<24L)
 #undef l2c
-#define l2c(l,c)        (*((c)++)=(unsigned char)(((l)     )&0xff), \
+#define l2c(l,c) (*((c)++)=(unsigned char)(((l) )&0xff), \
 *((c)++)=(unsigned char)(((l)>> 8L)&0xff), \
 *((c)++)=(unsigned char)(((l)>>16L)&0xff), \
 *((c)++)=(unsigned char)(((l)>>24L)&0xff))

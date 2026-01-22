@@ -6,12 +6,12 @@
 #include "io.h"
 #include "arm.h"
 enum {
-Retinst	= 0xe1a0f00e,
-Opmask	= MASK(3),
-Regmask	= MASK(4),
+Retinst = 0xe1a0f00e,
+Opmask = MASK(3),
+Regmask = MASK(4),
 };
 typedef ulong (*Pufv)(void);
-typedef void  (*Pvfu)(ulong);
+typedef void (*Pvfu)(ulong);
 static void
 setupcpop(ulong instr[2], ulong opcode, int cp, int op1, int crn, int crm,
 int op2)
@@ -21,7 +21,7 @@ op1 &= Opmask;
 op2 &= Opmask;
 crn &= Regmask;
 crm &= Regmask;
-cp  &= Regmask;
+cp &= Regmask;
 instr[0] = opcode | op1 << 21 | crn << 16 | cp << 8 | op2 << 5 | crm;
 instr[1] = Retinst;
 cachedwbse(instr, sizeof instrsz);

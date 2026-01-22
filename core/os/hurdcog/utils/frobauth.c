@@ -10,8 +10,8 @@ static struct argp common_argp;
 static struct argp fr_ugids_argp;
 static const struct argp_option common_options[] =
 {
-{"verbose",   'v', 0, 0, "Print informational messages"},
-{"dry-run",   'n', 0, 0, "Don't do anything, just print what would be done"},
+{"verbose", 'v', 0, 0, "Print informational messages"},
+{"dry-run", 'n', 0, 0, "Don't do anything, just print what would be done"},
 { 0 }
 };
 static struct argp_child common_child_argps[] =

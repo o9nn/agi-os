@@ -2,18 +2,18 @@
 #include "y.tab.h"
 extern char **_environ;
 extern char **environ;
-typedef struct Kw	Kw;
-#define	NKW	30
-#define NVAR	521
+typedef struct Kw Kw;
+#define NKW 30
+#define NVAR 521
 struct Kw{
-char	*name;
-int	type;
-Kw	*next;
+char *name;
+int type;
+Kw *next;
 };
-void	updenvlocal(Var *v);
-void	addenv(Var *v);
-Kw	*kw[NKW];
-Var	*gvar[NVAR];
+void updenvlocal(Var *v);
+void addenv(Var *v);
+Kw *kw[NKW];
+Var *gvar[NVAR];
 int
 hash(char *s, int n)
 {
@@ -144,7 +144,7 @@ if(runq)
 updenvlocal(runq->local);
 }
 static void
-envput(char *var, char  *val)
+envput(char *var, char *val)
 {
 int i, n;
 char *e;

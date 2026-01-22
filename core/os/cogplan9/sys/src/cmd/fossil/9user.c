@@ -1,32 +1,32 @@
 #include "stdinc.h"
 #include "9.h"
 enum {
-NUserHash	= 1009,
+NUserHash = 1009,
 };
 typedef struct Ubox Ubox;
 typedef struct User User;
 struct User {
-char*	uid;
-char*	uname;
-char*	leader;
-char**	group;
-int	ngroup;
-User*	next;
-User*	ihash;
-User*	nhash;
+char* uid;
+char* uname;
+char* leader;
+char** group;
+int ngroup;
+User* next;
+User* ihash;
+User* nhash;
 };
-#pragma varargck type "U"   User*
+#pragma varargck type "U" User*
 struct Ubox {
-User*	head;
-User*	tail;
-int	nuser;
-int	len;
-User*	ihash[NUserHash];
-User*	nhash[NUserHash];
+User* head;
+User* tail;
+int nuser;
+int len;
+User* ihash[NUserHash];
+User* nhash[NUserHash];
 };
 static struct {
-VtLock*	lock;
-Ubox*	box;
+VtLock* lock;
+Ubox* box;
 } ubox;
 static char usersDefault[] = {
 "adm:adm:adm:sys\n"

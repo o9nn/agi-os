@@ -96,7 +96,7 @@ if r <= cp
 return i
 end
 end
-return length(probs)  # Fallback
+return length(probs) # Fallback
 end
 """
 generate_token(engine::LLMInferenceEngine, tokens::Vector{Int})

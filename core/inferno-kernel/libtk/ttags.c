@@ -18,70 +18,70 @@ static char* tkttagprevrange(Tk*, char*, char**);
 static char* tkttagraise(Tk*, char*, char**);
 static char* tkttagranges(Tk*, char*, char**);
 static char* tkttagremove(Tk*, char*, char**);
-#define	O(t, e)		((long)(&((t*)0)->e))
-#define TKTEO		(O(TkTtaginfo, env))
+#define O(t, e) ((long)(&((t*)0)->e))
+#define TKTEO (O(TkTtaginfo, env))
 static
 TkOption tagopts[] =
 {
 "borderwidth",
-OPTnndist, O(TkTtaginfo, opts[TkTborderwidth]),	nil,
+OPTnndist, O(TkTtaginfo, opts[TkTborderwidth]), nil,
 "justify",
-OPTstab, O(TkTtaginfo, opts[TkTjustify]),	tkjustify,
+OPTstab, O(TkTtaginfo, opts[TkTjustify]), tkjustify,
 "lineheight",
-OPTnndist, O(TkTtaginfo, opts[TkTlineheight]),	IAUX(TKTEO),
+OPTnndist, O(TkTtaginfo, opts[TkTlineheight]), IAUX(TKTEO),
 "lmargin1",
-OPTdist, O(TkTtaginfo, opts[TkTlmargin1]),	IAUX(TKTEO),
+OPTdist, O(TkTtaginfo, opts[TkTlmargin1]), IAUX(TKTEO),
 "lmargin2",
-OPTdist, O(TkTtaginfo, opts[TkTlmargin2]),	IAUX(TKTEO),
+OPTdist, O(TkTtaginfo, opts[TkTlmargin2]), IAUX(TKTEO),
 "lmargin3",
-OPTdist, O(TkTtaginfo, opts[TkTlmargin3]),	IAUX(TKTEO),
+OPTdist, O(TkTtaginfo, opts[TkTlmargin3]), IAUX(TKTEO),
 "rmargin",
-OPTdist, O(TkTtaginfo, opts[TkTrmargin]),	IAUX(TKTEO),
+OPTdist, O(TkTtaginfo, opts[TkTrmargin]), IAUX(TKTEO),
 "spacing1",
-OPTnndist, O(TkTtaginfo, opts[TkTspacing1]),	IAUX(TKTEO),
+OPTnndist, O(TkTtaginfo, opts[TkTspacing1]), IAUX(TKTEO),
 "spacing2",
-OPTnndist, O(TkTtaginfo, opts[TkTspacing2]),	IAUX(TKTEO),
+OPTnndist, O(TkTtaginfo, opts[TkTspacing2]), IAUX(TKTEO),
 "spacing3",
-OPTnndist, O(TkTtaginfo, opts[TkTspacing3]),	IAUX(TKTEO),
+OPTnndist, O(TkTtaginfo, opts[TkTspacing3]), IAUX(TKTEO),
 "offset",
-OPTdist, O(TkTtaginfo, opts[TkToffset]),	IAUX(TKTEO),
+OPTdist, O(TkTtaginfo, opts[TkToffset]), IAUX(TKTEO),
 "underline",
-OPTstab, O(TkTtaginfo, opts[TkTunderline]),	tkbool,
+OPTstab, O(TkTtaginfo, opts[TkTunderline]), tkbool,
 "overstrike",
-OPTstab, O(TkTtaginfo, opts[TkToverstrike]),	tkbool,
+OPTstab, O(TkTtaginfo, opts[TkToverstrike]), tkbool,
 "relief",
-OPTstab, O(TkTtaginfo, opts[TkTrelief]),	tkrelief,
+OPTstab, O(TkTtaginfo, opts[TkTrelief]), tkrelief,
 "tabs",
-OPTtabs, O(TkTtaginfo, tabs),			IAUX(TKTEO),
+OPTtabs, O(TkTtaginfo, tabs), IAUX(TKTEO),
 "wrap",
-OPTstab, O(TkTtaginfo, opts[TkTwrap]),		tkwrap,
+OPTstab, O(TkTtaginfo, opts[TkTwrap]), tkwrap,
 nil,
 };
 static
 TkOption tagenvopts[] =
 {
-"foreground",	OPTcolr,	O(TkTtaginfo, env),	IAUX(TkCforegnd),
-"background",	OPTcolr,	O(TkTtaginfo, env),	IAUX(TkCbackgnd),
-"fg",		OPTcolr,	O(TkTtaginfo, env),	IAUX(TkCforegnd),
-"bg",		OPTcolr,	O(TkTtaginfo, env),	IAUX(TkCbackgnd),
-"font",		OPTfont,	O(TkTtaginfo, env),	nil,
+"foreground", OPTcolr, O(TkTtaginfo, env), IAUX(TkCforegnd),
+"background", OPTcolr, O(TkTtaginfo, env), IAUX(TkCbackgnd),
+"fg", OPTcolr, O(TkTtaginfo, env), IAUX(TkCforegnd),
+"bg", OPTcolr, O(TkTtaginfo, env), IAUX(TkCbackgnd),
+"font", OPTfont, O(TkTtaginfo, env), nil,
 nil
 };
 TkCmdtab
 tkttagcmd[] =
 {
-"add",		tkttagadd,
-"bind",		tkttagbind,
-"cget",		tkttagcget,
-"configure",	tkttagconfigure,
-"delete",	tkttagdelete,
-"lower",	tkttaglower,
-"names",	tkttagnames,
-"nextrange",	tkttagnextrange,
-"prevrange",	tkttagprevrange,
-"raise",	tkttagraise,
-"ranges",	tkttagranges,
-"remove",	tkttagremove,
+"add", tkttagadd,
+"bind", tkttagbind,
+"cget", tkttagcget,
+"configure", tkttagconfigure,
+"delete", tkttagdelete,
+"lower", tkttaglower,
+"names", tkttagnames,
+"nextrange", tkttagnextrange,
+"prevrange", tkttagprevrange,
+"raise", tkttagraise,
+"ranges", tkttagranges,
+"remove", tkttagremove,
 nil
 };
 int

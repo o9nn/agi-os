@@ -14,7 +14,7 @@ echo "   - Auto-scaling: CONFIGURED"
 echo ""
 echo "🏗️  Starting distributed agent framework..."
 echo "   ✓ Framework manager initialized"
-echo "   ✓ Node registry established"  
+echo "   ✓ Node registry established"
 echo "   ✓ Monitoring system started"
 echo "   ✓ Health checker activated"
 echo "   ✓ Load balancer configured"
@@ -189,14 +189,14 @@ echo "   → Develop autonomous decision making"
 echo ""
 echo "🔮 Distributed Agent Framework: MISSION ACCOMPLISHED! 🔮"
 if [ -f "../cogkernel/distributed-agent-framework.scm" ]; then
-    echo "✓ Framework implementation file verified"
+echo "✓ Framework implementation file verified"
 else
-    echo "⚠️  Framework implementation file location needs verification"
+echo "⚠️  Framework implementation file location needs verification"
 fi
 if [ -f "../cogkernel/test-distributed-agent-framework.scm" ]; then
-    echo "✓ Framework test file verified"
+echo "✓ Framework test file verified"
 else
-    echo "⚠️  Framework test file location needs verification"
+echo "⚠️  Framework test file location needs verification"
 fi
 echo ""
 echo "Demo completed successfully!"

@@ -11,11 +11,11 @@ dc_msg_t* msg = NULL;
 if ((msg=calloc(1, sizeof(dc_msg_t)))==NULL) {
 exit(15);
 }
-msg->context   = context;
-msg->magic     = DC_MSG_MAGIC;
-msg->type      = viewtype;
-msg->state     = DC_STATE_UNDEFINED;
-msg->param     = dc_param_new();
+msg->context = context;
+msg->magic = DC_MSG_MAGIC;
+msg->type = viewtype;
+msg->state = DC_STATE_UNDEFINED;
+msg->param = dc_param_new();
 return msg;
 }
 dc_msg_t* dc_msg_new_untyped(dc_context_t* context)
@@ -112,7 +112,7 @@ return msg->timestamp_sort;
 }
 int dc_msg_has_deviating_timestamp(const dc_msg_t* msg)
 {
-long   cnv_to_local = dc_gm2local_offset();
+long cnv_to_local = dc_gm2local_offset();
 time_t sort_timestamp = dc_msg_get_sort_timestamp(msg) + cnv_to_local;
 time_t send_timestamp = dc_msg_get_timestamp(msg) + cnv_to_local;
 return (sort_timestamp/DC_SECONDS_PER_DAY != send_timestamp/DC_SECONDS_PER_DAY);
@@ -189,7 +189,7 @@ return ret? ret : dc_strdup(NULL);
 uint64_t dc_msg_get_filebytes(const dc_msg_t* msg)
 {
 uint64_t ret = 0;
-char*    file = NULL;
+char* file = NULL;
 if (msg==NULL || msg->magic!=DC_MSG_MAGIC) {
 goto cleanup;
 }
@@ -235,9 +235,9 @@ return 0;
 }
 dc_lot_t* dc_msg_get_summary(const dc_msg_t* msg, const dc_chat_t* chat)
 {
-dc_lot_t*      ret = dc_lot_new();
-dc_contact_t*  contact = NULL;
-dc_chat_t*     chat_to_delete = NULL;
+dc_lot_t* ret = dc_lot_new();
+dc_contact_t* contact = NULL;
+dc_chat_t* chat_to_delete = NULL;
 if (msg==NULL || msg->magic!=DC_MSG_MAGIC) {
 goto cleanup;
 }
@@ -306,12 +306,12 @@ return dc_param_get_int(msg->param, DC_PARAM_CMD, 0)==DC_CMD_AUTOCRYPT_SETUP_MES
 }
 char* dc_msg_get_setupcodebegin(const dc_msg_t* msg)
 {
-char*        filename = NULL;
-char*        buf = NULL;
-size_t       buf_bytes = 0;
-const char*  buf_headerline = NULL;
-const char*  buf_setupcodebegin = NULL;
-char*        ret = NULL;
+char* filename = NULL;
+char* buf = NULL;
+size_t buf_bytes = 0;
+const char* buf_headerline = NULL;
+const char* buf_setupcodebegin = NULL;
+char* ret = NULL;
 if (!dc_msg_is_setupmessage(msg)) {
 goto cleanup;
 }
@@ -337,27 +337,27 @@ return ret? ret : dc_strdup(NULL);
 static int dc_msg_set_from_stmt(dc_msg_t* msg, sqlite3_stmt* row, int row_offset)
 {
 dc_msg_empty(msg);
-msg->id           =           (uint32_t)sqlite3_column_int  (row, row_offset++);
-msg->rfc724_mid   =    dc_strdup((char*)sqlite3_column_text (row, row_offset++));
-msg->in_reply_to  =    dc_strdup((char*)sqlite3_column_text (row, row_offset++));
-msg->server_folder=    dc_strdup((char*)sqlite3_column_text (row, row_offset++));
-msg->server_uid   =           (uint32_t)sqlite3_column_int  (row, row_offset++);
-msg->move_state   =    (dc_move_state_t)sqlite3_column_int  (row, row_offset++);
-msg->chat_id      =           (uint32_t)sqlite3_column_int  (row, row_offset++);
-msg->from_id      =           (uint32_t)sqlite3_column_int  (row, row_offset++);
-msg->to_id        =           (uint32_t)sqlite3_column_int  (row, row_offset++);
-msg->timestamp_sort =           (time_t)sqlite3_column_int64(row, row_offset++);
-msg->timestamp_sent =           (time_t)sqlite3_column_int64(row, row_offset++);
-msg->timestamp_rcvd =           (time_t)sqlite3_column_int64(row, row_offset++);
-msg->type         =                     sqlite3_column_int  (row, row_offset++);
-msg->state        =                     sqlite3_column_int  (row, row_offset++);
-msg->is_dc_message=                     sqlite3_column_int  (row, row_offset++);
-msg->text         =    dc_strdup((char*)sqlite3_column_text (row, row_offset++));
+msg->id = (uint32_t)sqlite3_column_int (row, row_offset++);
+msg->rfc724_mid = dc_strdup((char*)sqlite3_column_text (row, row_offset++));
+msg->in_reply_to = dc_strdup((char*)sqlite3_column_text (row, row_offset++));
+msg->server_folder= dc_strdup((char*)sqlite3_column_text (row, row_offset++));
+msg->server_uid = (uint32_t)sqlite3_column_int (row, row_offset++);
+msg->move_state = (dc_move_state_t)sqlite3_column_int (row, row_offset++);
+msg->chat_id = (uint32_t)sqlite3_column_int (row, row_offset++);
+msg->from_id = (uint32_t)sqlite3_column_int (row, row_offset++);
+msg->to_id = (uint32_t)sqlite3_column_int (row, row_offset++);
+msg->timestamp_sort = (time_t)sqlite3_column_int64(row, row_offset++);
+msg->timestamp_sent = (time_t)sqlite3_column_int64(row, row_offset++);
+msg->timestamp_rcvd = (time_t)sqlite3_column_int64(row, row_offset++);
+msg->type = sqlite3_column_int (row, row_offset++);
+msg->state = sqlite3_column_int (row, row_offset++);
+msg->is_dc_message= sqlite3_column_int (row, row_offset++);
+msg->text = dc_strdup((char*)sqlite3_column_text (row, row_offset++));
 dc_param_set_packed( msg->param, (char*)sqlite3_column_text (row, row_offset++));
-msg->starred      =                     sqlite3_column_int  (row, row_offset++);
-msg->hidden       =                     sqlite3_column_int  (row, row_offset++);
-msg->location_id  =                     sqlite3_column_int  (row, row_offset++);
-msg->chat_blocked =                     sqlite3_column_int  (row, row_offset++);
+msg->starred = sqlite3_column_int (row, row_offset++);
+msg->hidden = sqlite3_column_int (row, row_offset++);
+msg->location_id = sqlite3_column_int (row, row_offset++);
+msg->chat_blocked = sqlite3_column_int (row, row_offset++);
 if (msg->chat_blocked==2) {
 dc_truncate_n_unwrap_str(msg->text, 256 ,
 0);
@@ -366,7 +366,7 @@ return 1;
 }
 int dc_msg_load_from_db(dc_msg_t* msg, dc_context_t* context, uint32_t id)
 {
-int           success = 0;
+int success = 0;
 sqlite3_stmt* stmt = NULL;
 if (msg==NULL || msg->magic!=DC_MSG_MAGIC || context==NULL || context->sql==NULL) {
 goto cleanup;
@@ -391,13 +391,13 @@ return success;
 void dc_msg_guess_msgtype_from_suffix(const char* pathNfilename, int* ret_msgtype, char** ret_mime)
 {
 char* suffix = NULL;
-int   dummy_msgtype = 0;
+int dummy_msgtype = 0;
 char* dummy_buf = NULL;
 if (pathNfilename==NULL) {
 goto cleanup;
 }
 if (ret_msgtype==NULL) { ret_msgtype = &dummy_msgtype; }
-if (ret_mime==NULL)    { ret_mime = &dummy_buf; }
+if (ret_mime==NULL) { ret_mime = &dummy_buf; }
 *ret_msgtype = 0;
 *ret_mime = NULL;
 suffix = dc_get_filesuffix_lc(pathNfilename);
@@ -447,7 +447,7 @@ char* prefix = NULL;
 char* pathNfilename = NULL;
 char* label = NULL;
 char* value = NULL;
-int   append_text = 1;
+int append_text = 1;
 switch (type) {
 case DC_MSG_IMAGE:
 prefix = dc_stock_str(context, DC_STR_IMAGE);
@@ -557,7 +557,7 @@ void dc_msg_set_location(dc_msg_t* msg, double latitude, double longitude)
 if (msg==NULL || msg->magic!=DC_MSG_MAGIC || (latitude==0.0 && longitude==0.0)) {
 return;
 }
-dc_param_set_float(msg->param, DC_PARAM_SET_LATITUDE,  latitude);
+dc_param_set_float(msg->param, DC_PARAM_SET_LATITUDE, latitude);
 dc_param_set_float(msg->param, DC_PARAM_SET_LONGITUDE, longitude);
 }
 void dc_msg_latefiling_mediasize(dc_msg_t* msg, int width, int height, int duration)
@@ -578,7 +578,7 @@ cleanup:
 }
 int dc_msg_exists(dc_context_t* context, uint32_t msg_id)
 {
-int           msg_exists = 0;
+int msg_exists = 0;
 sqlite3_stmt* stmt = NULL;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC
 || msg_id<=DC_MSG_ID_LAST_SPECIAL) {
@@ -628,13 +628,13 @@ sqlite3_finalize(stmt);
 }
 void dc_set_msg_failed(dc_context_t* context, uint32_t msg_id, const char* error)
 {
-dc_msg_t*     msg = dc_msg_new_untyped(context);
+dc_msg_t* msg = dc_msg_new_untyped(context);
 sqlite3_stmt* stmt = NULL;
 if (!dc_msg_load_from_db(msg, context, msg_id)) {
 goto cleanup;
 }
 if (DC_STATE_OUT_PREPARING==msg->state ||
-DC_STATE_OUT_PENDING  ==msg->state ||
+DC_STATE_OUT_PENDING ==msg->state ||
 DC_STATE_OUT_DELIVERED==msg->state)
 {
 msg->state = DC_STATE_OUT_FAILED;
@@ -657,7 +657,7 @@ dc_msg_unref(msg);
 size_t dc_get_real_msg_cnt(dc_context_t* context)
 {
 sqlite3_stmt* stmt = NULL;
-size_t        ret = 0;
+size_t ret = 0;
 if (context->sql->cobj==NULL) {
 goto cleanup;
 }
@@ -680,7 +680,7 @@ return ret;
 size_t dc_get_deaddrop_msg_cnt(dc_context_t* context)
 {
 sqlite3_stmt* stmt = NULL;
-size_t        ret = 0;
+size_t ret = 0;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC || context->sql->cobj==NULL) {
 goto cleanup;
 }
@@ -696,7 +696,7 @@ return ret;
 }
 int dc_rfc724_mid_cnt(dc_context_t* context, const char* rfc724_mid)
 {
-int           ret = 0;
+int ret = 0;
 sqlite3_stmt* stmt = NULL;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC || context->sql->cobj==NULL) {
 goto cleanup;
@@ -714,7 +714,7 @@ return ret;
 }
 uint32_t dc_rfc724_mid_exists(dc_context_t* context, const char* rfc724_mid, char** ret_server_folder, uint32_t* ret_server_uid)
 {
-uint32_t      ret = 0;
+uint32_t ret = 0;
 sqlite3_stmt* stmt = NULL;
 if (context==NULL || rfc724_mid==NULL || rfc724_mid[0]==0) {
 goto cleanup;
@@ -724,11 +724,11 @@ stmt = dc_sqlite3_prepare(context->sql,
 sqlite3_bind_text(stmt, 1, rfc724_mid, -1, SQLITE_STATIC);
 if (sqlite3_step(stmt)!=SQLITE_ROW) {
 if (ret_server_folder) { *ret_server_folder = NULL; }
-if (ret_server_uid)    { *ret_server_uid    = 0; }
+if (ret_server_uid) { *ret_server_uid = 0; }
 goto cleanup;
 }
 if (ret_server_folder) { *ret_server_folder = dc_strdup((char*)sqlite3_column_text(stmt, 0)); }
-if (ret_server_uid)    { *ret_server_uid = sqlite3_column_int(stmt, 1);  }
+if (ret_server_uid) { *ret_server_uid = sqlite3_column_int(stmt, 1); }
 ret = sqlite3_column_int(stmt, 2);
 cleanup:
 sqlite3_finalize(stmt);
@@ -766,11 +766,11 @@ return NULL;
 }
 char* dc_get_msg_info(dc_context_t* context, uint32_t msg_id)
 {
-sqlite3_stmt*   stmt = NULL;
-dc_msg_t*       msg = dc_msg_new_untyped(context);
-dc_contact_t*   contact_from = dc_contact_new(context);
-char*           rawtxt = NULL;
-char*           p = NULL;
+sqlite3_stmt* stmt = NULL;
+dc_msg_t* msg = dc_msg_new_untyped(context);
+dc_contact_t* contact_from = dc_contact_new(context);
+char* rawtxt = NULL;
+char* p = NULL;
 dc_strbuilder_t ret;
 dc_strbuilder_init(&ret, 0);
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC) {
@@ -819,15 +819,15 @@ sqlite3_finalize(stmt);
 stmt = NULL;
 p = NULL;
 switch (msg->state) {
-case DC_STATE_IN_FRESH:      p = dc_strdup("Fresh");           break;
-case DC_STATE_IN_NOTICED:    p = dc_strdup("Noticed");         break;
-case DC_STATE_IN_SEEN:       p = dc_strdup("Seen");            break;
-case DC_STATE_OUT_DELIVERED: p = dc_strdup("Delivered");       break;
-case DC_STATE_OUT_FAILED:    p = dc_strdup("Failed");          break;
-case DC_STATE_OUT_MDN_RCVD:  p = dc_strdup("Read");            break;
-case DC_STATE_OUT_PENDING:   p = dc_strdup("Pending");         break;
-case DC_STATE_OUT_PREPARING: p = dc_strdup("Preparing");       break;
-default:                     p = dc_mprintf("%i", msg->state); break;
+case DC_STATE_IN_FRESH: p = dc_strdup("Fresh"); break;
+case DC_STATE_IN_NOTICED: p = dc_strdup("Noticed"); break;
+case DC_STATE_IN_SEEN: p = dc_strdup("Seen"); break;
+case DC_STATE_OUT_DELIVERED: p = dc_strdup("Delivered"); break;
+case DC_STATE_OUT_FAILED: p = dc_strdup("Failed"); break;
+case DC_STATE_OUT_MDN_RCVD: p = dc_strdup("Read"); break;
+case DC_STATE_OUT_PENDING: p = dc_strdup("Pending"); break;
+case DC_STATE_OUT_PREPARING: p = dc_strdup("Preparing"); break;
+default: p = dc_mprintf("%i", msg->state); break;
 }
 dc_strbuilder_catf(&ret, "State: %s", p);
 free(p);
@@ -859,14 +859,14 @@ dc_strbuilder_catf(&ret, "\nFile: %s, %i bytes\n", p, (int)dc_get_filebytes(cont
 free(p);
 if (msg->type!=DC_MSG_TEXT) {
 p = NULL;
-switch (msg->type)  {
-case DC_MSG_AUDIO: p = dc_strdup("Audio");          break;
-case DC_MSG_FILE:  p = dc_strdup("File");           break;
-case DC_MSG_GIF:   p = dc_strdup("GIF");            break;
-case DC_MSG_IMAGE: p = dc_strdup("Image");          break;
-case DC_MSG_VIDEO: p = dc_strdup("Video");          break;
-case DC_MSG_VOICE: p = dc_strdup("Voice");          break;
-default:           p = dc_mprintf("%i", msg->type); break;
+switch (msg->type) {
+case DC_MSG_AUDIO: p = dc_strdup("Audio"); break;
+case DC_MSG_FILE: p = dc_strdup("File"); break;
+case DC_MSG_GIF: p = dc_strdup("GIF"); break;
+case DC_MSG_IMAGE: p = dc_strdup("Image"); break;
+case DC_MSG_VIDEO: p = dc_strdup("Video"); break;
+case DC_MSG_VOICE: p = dc_strdup("Voice"); break;
+default: p = dc_mprintf("%i", msg->type); break;
 }
 dc_strbuilder_catf(&ret, "Type: %s\n", p);
 free(p);
@@ -903,7 +903,7 @@ return ret.buf;
 }
 char* dc_get_mime_headers(dc_context_t* context, uint32_t msg_id)
 {
-char*         eml = NULL;
+char* eml = NULL;
 sqlite3_stmt* stmt = NULL;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC) {
 goto cleanup;
@@ -938,7 +938,7 @@ dc_sqlite3_commit(context->sql);
 }
 void dc_delete_msg_from_db(dc_context_t* context, uint32_t msg_id)
 {
-dc_msg_t*     msg = dc_msg_new_untyped(context);
+dc_msg_t* msg = dc_msg_new_untyped(context);
 sqlite3_stmt* stmt = NULL;
 if (!dc_msg_load_from_db(msg, context, msg_id)) {
 goto cleanup;
@@ -1002,7 +1002,7 @@ sqlite3_bind_int(stmt, 1, msg_ids[i]);
 if (sqlite3_step(stmt)!=SQLITE_ROW) {
 continue;
 }
-curr_state   = sqlite3_column_int(stmt, 0);
+curr_state = sqlite3_column_int(stmt, 0);
 curr_blocked = sqlite3_column_int(stmt, 1);
 if (curr_blocked==0)
 {
@@ -1033,7 +1033,7 @@ sqlite3_finalize(stmt);
 int dc_mdn_from_ext(dc_context_t* context, uint32_t from_id, const char* rfc724_mid, time_t timestamp_sent,
 uint32_t* ret_chat_id, uint32_t* ret_msg_id)
 {
-int           read_by_all = 0;
+int read_by_all = 0;
 sqlite3_stmt* stmt = NULL;
 if (context==NULL || context->magic!=DC_CONTEXT_MAGIC || from_id<=DC_CONTACT_ID_LAST_SPECIAL || rfc724_mid==NULL || ret_chat_id==NULL || ret_msg_id==NULL
 || *ret_chat_id!=0 || *ret_msg_id!=0) {
@@ -1048,10 +1048,10 @@ sqlite3_bind_text(stmt, 1, rfc724_mid, -1, SQLITE_STATIC);
 if (sqlite3_step(stmt)!=SQLITE_ROW) {
 goto cleanup;
 }
-*ret_msg_id    = sqlite3_column_int(stmt, 0);
-*ret_chat_id   = sqlite3_column_int(stmt, 1);
-int chat_type  = sqlite3_column_int(stmt, 2);
-int msg_state  = sqlite3_column_int(stmt, 3);
+*ret_msg_id = sqlite3_column_int(stmt, 0);
+*ret_chat_id = sqlite3_column_int(stmt, 1);
+int chat_type = sqlite3_column_int(stmt, 2);
+int msg_state = sqlite3_column_int(stmt, 3);
 sqlite3_finalize(stmt);
 stmt = NULL;
 if (msg_state!=DC_STATE_OUT_PREPARING &&
@@ -1070,8 +1070,8 @@ stmt = NULL;
 if (!mdn_already_in_table) {
 stmt = dc_sqlite3_prepare(context->sql,
 "INSERT INTO msgs_mdns (msg_id, contact_id, timestamp_sent) VALUES (?, ?, ?);");
-sqlite3_bind_int  (stmt, 1, *ret_msg_id);
-sqlite3_bind_int  (stmt, 2, from_id);
+sqlite3_bind_int (stmt, 1, *ret_msg_id);
+sqlite3_bind_int (stmt, 2, from_id);
 sqlite3_bind_int64(stmt, 3, timestamp_sent);
 sqlite3_step(stmt);
 sqlite3_finalize(stmt);
@@ -1088,7 +1088,7 @@ sqlite3_bind_int(stmt, 1, *ret_msg_id);
 if (sqlite3_step(stmt)!=SQLITE_ROW) {
 goto cleanup;
 }
-int ist_cnt  = sqlite3_column_int(stmt, 0);
+int ist_cnt = sqlite3_column_int(stmt, 0);
 sqlite3_finalize(stmt);
 stmt = NULL;
 int soll_cnt = (dc_get_chat_contact_cnt(context, *ret_chat_id)+1) / 2;

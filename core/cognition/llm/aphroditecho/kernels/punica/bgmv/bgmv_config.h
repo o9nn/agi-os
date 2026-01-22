@@ -183,7 +183,7 @@ f(in_T, out_T, W_T, 128256, narrow) \
 f(in_T, out_T, W_T, 128512, narrow) \
 f(in_T, out_T, W_T, 131072, narrow) \
 #define FOR_BGMV_WIDE_NARROW(f, in_T, out_T, W_T) \
-FOR_BGMV_WIDE(f, in_T, out_T, W_T, 8)  \
+FOR_BGMV_WIDE(f, in_T, out_T, W_T, 8) \
 FOR_BGMV_WIDE(f, in_T, out_T, W_T, 16) \
 FOR_BGMV_WIDE(f, in_T, out_T, W_T, 32) \
 FOR_BGMV_WIDE(f, in_T, out_T, W_T, 64)

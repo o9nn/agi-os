@@ -18,18 +18,18 @@ BadHeap = ~0
 };
 struct VtCache
 {
-QLock	lk;
-VtConn	*z;
-u32int	blocksize;
-u32int	now;
-VtBlock	**hash;
-int		nhash;
-VtBlock	**heap;
-int		nheap;
-VtBlock	*block;
-int		nblock;
-uchar	*mem;
-int		(*write)(VtConn*, uchar[VtScoreSize], uint, uchar*, int);
+QLock lk;
+VtConn *z;
+u32int blocksize;
+u32int now;
+VtBlock **hash;
+int nhash;
+VtBlock **heap;
+int nheap;
+VtBlock *block;
+int nblock;
+uchar *mem;
+int (*write)(VtConn*, uchar[VtScoreSize], uint, uchar*, int);
 };
 static void cachecheck(VtCache*);
 VtCache*

@@ -1,80 +1,80 @@
 #include "sam.h"
-Header	h;
-uchar	indata[DATASIZE];
-uchar	outdata[2*DATASIZE+3];
-uchar	*inp;
-uchar	*outp;
-uchar	*outmsg = outdata;
-Posn	cmdpt;
-Posn	cmdptadv;
-Buffer	snarfbuf;
-int	waitack;
-int	outbuffered;
-int	tversion;
-int	inshort(void);
-long	inlong(void);
-vlong	invlong(void);
-int	inmesg(Tmesg);
-void	outshort(int);
-void	outlong(long);
-void	outvlong(vlong);
-void	outcopy(int, void*);
-void	outsend(void);
-void	outstart(Hmesg);
-void	setgenstr(File*, Posn, Posn);
+Header h;
+uchar indata[DATASIZE];
+uchar outdata[2*DATASIZE+3];
+uchar *inp;
+uchar *outp;
+uchar *outmsg = outdata;
+Posn cmdpt;
+Posn cmdptadv;
+Buffer snarfbuf;
+int waitack;
+int outbuffered;
+int tversion;
+int inshort(void);
+long inlong(void);
+vlong invlong(void);
+int inmesg(Tmesg);
+void outshort(int);
+void outlong(long);
+void outvlong(vlong);
+void outcopy(int, void*);
+void outsend(void);
+void outstart(Hmesg);
+void setgenstr(File*, Posn, Posn);
 #ifdef DEBUG
 char *hname[] = {
-[Hversion]	"Hversion",
-[Hbindname]	"Hbindname",
-[Hcurrent]	"Hcurrent",
-[Hnewname]	"Hnewname",
-[Hmovname]	"Hmovname",
-[Hgrow]		"Hgrow",
-[Hcheck0]	"Hcheck0",
-[Hcheck]	"Hcheck",
-[Hunlock]	"Hunlock",
-[Hdata]		"Hdata",
-[Horigin]	"Horigin",
-[Hunlockfile]	"Hunlockfile",
-[Hsetdot]	"Hsetdot",
-[Hgrowdata]	"Hgrowdata",
-[Hmoveto]	"Hmoveto",
-[Hclean]	"Hclean",
-[Hdirty]	"Hdirty",
-[Hcut]		"Hcut",
-[Hsetpat]	"Hsetpat",
-[Hdelname]	"Hdelname",
-[Hclose]	"Hclose",
-[Hsetsnarf]	"Hsetsnarf",
-[Hsnarflen]	"Hsnarflen",
-[Hack]		"Hack",
-[Hexit]		"Hexit",
-[Hplumb]		"Hplumb",
+[Hversion] "Hversion",
+[Hbindname] "Hbindname",
+[Hcurrent] "Hcurrent",
+[Hnewname] "Hnewname",
+[Hmovname] "Hmovname",
+[Hgrow] "Hgrow",
+[Hcheck0] "Hcheck0",
+[Hcheck] "Hcheck",
+[Hunlock] "Hunlock",
+[Hdata] "Hdata",
+[Horigin] "Horigin",
+[Hunlockfile] "Hunlockfile",
+[Hsetdot] "Hsetdot",
+[Hgrowdata] "Hgrowdata",
+[Hmoveto] "Hmoveto",
+[Hclean] "Hclean",
+[Hdirty] "Hdirty",
+[Hcut] "Hcut",
+[Hsetpat] "Hsetpat",
+[Hdelname] "Hdelname",
+[Hclose] "Hclose",
+[Hsetsnarf] "Hsetsnarf",
+[Hsnarflen] "Hsnarflen",
+[Hack] "Hack",
+[Hexit] "Hexit",
+[Hplumb] "Hplumb",
 };
 char *tname[] = {
-[Tversion]	"Tversion",
-[Tstartcmdfile]	"Tstartcmdfile",
-[Tcheck]	"Tcheck",
-[Trequest]	"Trequest",
-[Torigin]	"Torigin",
-[Tstartfile]	"Tstartfile",
-[Tworkfile]	"Tworkfile",
-[Ttype]		"Ttype",
-[Tcut]		"Tcut",
-[Tpaste]	"Tpaste",
-[Tsnarf]	"Tsnarf",
-[Tstartnewfile]	"Tstartnewfile",
-[Twrite]	"Twrite",
-[Tclose]	"Tclose",
-[Tlook]		"Tlook",
-[Tsearch]	"Tsearch",
-[Tsend]		"Tsend",
-[Tdclick]	"Tdclick",
-[Tstartsnarf]	"Tstartsnarf",
-[Tsetsnarf]	"Tsetsnarf",
-[Tack]		"Tack",
-[Texit]		"Texit",
-[Tplumb]		"Tplumb",
+[Tversion] "Tversion",
+[Tstartcmdfile] "Tstartcmdfile",
+[Tcheck] "Tcheck",
+[Trequest] "Trequest",
+[Torigin] "Torigin",
+[Tstartfile] "Tstartfile",
+[Tworkfile] "Tworkfile",
+[Ttype] "Ttype",
+[Tcut] "Tcut",
+[Tpaste] "Tpaste",
+[Tsnarf] "Tsnarf",
+[Tstartnewfile] "Tstartnewfile",
+[Twrite] "Twrite",
+[Tclose] "Tclose",
+[Tlook] "Tlook",
+[Tsearch] "Tsearch",
+[Tsend] "Tsend",
+[Tdclick] "Tdclick",
+[Tstartsnarf] "Tstartsnarf",
+[Tsetsnarf] "Tsetsnarf",
+[Tack] "Tack",
+[Texit] "Texit",
+[Tplumb] "Tplumb",
 };
 void
 journal(int out, char *s)
@@ -99,7 +99,7 @@ sprint(buf, sizeof(buf), "%lld", v);
 journal(out, buf);
 }
 #else
-#define	journal(a, b)
+#define journal(a, b)
 #define journaln(a, b)
 #define journalv(a, b)
 #endif

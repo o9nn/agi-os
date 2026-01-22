@@ -1,6 +1,6 @@
 implement Mkauthinfo;
 #
-#  sign a new key to produce a certificate
+# sign a new key to produce a certificate
 #
 include "sys.m";
 sys: Sys;
@@ -14,7 +14,7 @@ include "daytime.m";
 daytime: Daytime;
 include "arg.m";
 Mkauthinfo: module{
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 stderr: ref Sys->FD;
 init(nil: ref Draw->Context, args: list of string)

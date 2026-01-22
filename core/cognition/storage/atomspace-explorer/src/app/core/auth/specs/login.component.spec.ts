@@ -3,20 +3,20 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { LoginComponent } from '../ui/login.component';
 describe('LoginComponent', () => {
-  let component: LoginComponent;
-  let fixture: ComponentFixture<LoginComponent>;
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ LoginComponent ]
-    })
-    .compileComponents();
-  }));
-  beforeEach(() => {
-    fixture = TestBed.createComponent(LoginComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+let component: LoginComponent;
+let fixture: ComponentFixture<LoginComponent>;
+beforeEach(async(() => {
+TestBed.configureTestingModule({
+declarations: [ LoginComponent ]
+})
+.compileComponents();
+}));
+beforeEach(() => {
+fixture = TestBed.createComponent(LoginComponent);
+component = fixture.componentInstance;
+fixture.detectChanges();
+});
+it('should create', () => {
+expect(component).toBeTruthy();
+});
 });

@@ -28,11 +28,11 @@ try
 # Test reservoir size derivation
 sizes = [derive_reservoir_size(i) for i in 1:6]
 # Cumulative formula: sum(A000081[1:i]) for each i
-expected_sizes = [1, 2, 4, 8, 17, 37]  # [1], [1+1], [1+1+2], [1+1+2+4], etc.
+expected_sizes = [1, 2, 4, 8, 17, 37] # [1], [1+1], [1+1+2], [1+1+2+4], etc.
 @assert sizes == expected_sizes "Reservoir sizes don't match: got $sizes, expected $expected_sizes"
 # Test membrane count derivation
 membranes = [derive_num_membranes(i) for i in 1:6]
-expected_membranes = [1, 1, 2, 4, 9, 20]  # A000081 values
+expected_membranes = [1, 1, 2, 4, 9, 20] # A000081 values
 @assert membranes == expected_membranes "Membrane counts don't match: got $membranes, expected $expected_membranes"
 # Test growth rate
 growth = derive_growth_rate(5)

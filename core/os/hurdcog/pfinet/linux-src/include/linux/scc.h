@@ -1,12 +1,12 @@
-#ifndef	_SCC_H
-#define	_SCC_H
+#ifndef _SCC_H
+#define _SCC_H
 #include <linux/config.h>
-#define PA0HZP		0x00
-#define EAGLE         	0x01
-#define PC100		0x02
-#define PRIMUS		0x04
-#define DRSI		0x08
-#define BAYCOM		0x10
+#define PA0HZP 0x00
+#define EAGLE 0x01
+#define PC100 0x02
+#define PRIMUS 0x04
+#define DRSI 0x08
+#define BAYCOM 0x10
 enum SCC_ioctl_cmds {
 SIOCSCCRESERVED = SIOCDEVPRIVATE,
 SIOCSCCCFG,
@@ -18,7 +18,7 @@ SIOCSCCSKISS,
 SIOCSCCGSTAT,
 SIOCSCCCAL
 };
-#define SCC_MAGIC	0x8530
+#define SCC_MAGIC 0x8530
 enum L1_params {
 PARAM_DATA,
 PARAM_TXDELAY,
@@ -48,15 +48,15 @@ KISS_DUPLEX_FULL,
 KISS_DUPLEX_LINK,
 KISS_DUPLEX_OPTIMA
 };
-#define TIMER_OFF	65535U
-#define NO_SUCH_PARAM	65534U
+#define TIMER_OFF 65535U
+#define NO_SUCH_PARAM 65534U
 enum HWEVENT_opts {
 HWEV_DCD_ON,
 HWEV_DCD_OFF,
 HWEV_ALL_SENT
 };
-#define RXGROUP		0100
-#define TXGROUP		0200
+#define RXGROUP 0100
+#define TXGROUP 0200
 enum CLOCK_sources {
 CLK_DPLL,
 CLK_EXTERNAL,
@@ -96,7 +96,7 @@ char clocksrc;
 char nrz;
 };
 struct scc_kiss_cmd {
-int  	 command;
+int command;
 unsigned param;
 };
 struct scc_hw_config {
@@ -105,10 +105,10 @@ io_port ctrl_a;
 io_port data_b;
 io_port ctrl_b;
 io_port vector_latch;
-io_port	special;
-int	irq;
-long	clock;
-char	option;
+io_port special;
+int irq;
+long clock;
+char option;
 char brand;
 char escc;
 };
@@ -122,17 +122,17 @@ unsigned char pattern;
 };
 #ifdef __KERNEL__
 enum {TX_OFF, TX_ON};
-#define VECTOR_MASK	0x06
-#define TXINT		0x00
-#define EXINT		0x02
-#define RXINT		0x04
-#define SPINT		0x06
+#define VECTOR_MASK 0x06
+#define TXINT 0x00
+#define EXINT 0x02
+#define RXINT 0x04
+#define SPINT 0x06
 #ifdef CONFIG_SCC_DELAY
-#define Inb(port)	inb_p(port)
-#define Outb(port, val)	outb_p(val, port)
+#define Inb(port) inb_p(port)
+#define Outb(port, val) outb_p(val, port)
 #else
-#define Inb(port)	inb(port)
-#define Outb(port, val)	outb(val, port)
+#define Inb(port) inb(port)
+#define Outb(port, val) outb(val, port)
 #endif
 struct scc_kiss {
 unsigned char txdelay;
@@ -141,10 +141,10 @@ unsigned char slottime;
 unsigned char tailtime;
 unsigned char fulldup;
 unsigned char waittime;
-unsigned int  maxkeyup;
+unsigned int maxkeyup;
 unsigned char mintime;
-unsigned int  idletime;
-unsigned int  maxdefer;
+unsigned int idletime;
+unsigned int maxdefer;
 unsigned char tx_inhibit;
 unsigned char group;
 unsigned char mode;
@@ -158,7 +158,7 @@ struct net_device_stats dev_stat;
 char brand;
 long clock;
 io_port ctrl;
-io_port	data;
+io_port data;
 io_port special;
 int irq;
 char option;

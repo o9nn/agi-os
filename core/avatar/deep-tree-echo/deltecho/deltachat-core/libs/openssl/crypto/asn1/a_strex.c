@@ -5,7 +5,7 @@
 #include <openssl/x509.h>
 #include <openssl/asn1.h>
 #include "charmap.h"
-#define CHARTYPE_BS_ESC         (ASN1_STRFLGS_ESC_2253 | CHARTYPE_FIRST_ESC_2253 | CHARTYPE_LAST_ESC_2253)
+#define CHARTYPE_BS_ESC (ASN1_STRFLGS_ESC_2253 | CHARTYPE_FIRST_ESC_2253 | CHARTYPE_LAST_ESC_2253)
 #define ESC_FLAGS (ASN1_STRFLGS_ESC_2253 | \
 ASN1_STRFLGS_ESC_QUOTE | \
 ASN1_STRFLGS_ESC_CTRL | \
@@ -91,8 +91,8 @@ if (!io_ch(arg, &chtmp, 1))
 return -1;
 return 1;
 }
-#define BUF_TYPE_WIDTH_MASK     0x7
-#define BUF_TYPE_CONVUTF8       0x8
+#define BUF_TYPE_WIDTH_MASK 0x7
+#define BUF_TYPE_CONVUTF8 0x8
 static int do_buf(unsigned char *buf, int buflen,
 int type, unsigned char flags, char *quotes, char_io *io_ch,
 void *arg)
@@ -281,8 +281,8 @@ if (!io_ch(arg, " ", 1))
 return 0;
 return 1;
 }
-#define FN_WIDTH_LN     25
-#define FN_WIDTH_SN     10
+#define FN_WIDTH_LN 25
+#define FN_WIDTH_SN 10
 static int do_name_ex(char_io *io_ch, void *arg, X509_NAME *n,
 int indent, unsigned long flags)
 {

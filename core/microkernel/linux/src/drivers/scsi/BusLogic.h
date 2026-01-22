@@ -20,18 +20,18 @@ extern int BusLogic_AbortCommand(SCSI_Command_T *);
 extern int BusLogic_ResetCommand(SCSI_Command_T *, unsigned int);
 extern int BusLogic_BIOSDiskParameters(SCSI_Disk_T *, KernelDevice_T, int *);
 extern int BusLogic_ProcDirectoryInfo(char *, char **, off_t, int, int, int);
-#define BUSLOGIC							       \
-{ proc_dir:       &BusLogic_ProcDirectoryEntry,  \
-proc_info:      BusLogic_ProcDirectoryInfo,	   \
-name:           "BusLogic",			   \
-detect:         BusLogic_DetectHostAdapter,	   \
-release:        BusLogic_ReleaseHostAdapter,   \
-info:           BusLogic_DriverInfo,	   \
-queuecommand:   BusLogic_QueueCommand,	   \
-abort:          BusLogic_AbortCommand,	   \
-reset:          BusLogic_ResetCommand,	   \
-bios_param:     BusLogic_BIOSDiskParameters,   \
-unchecked_isa_dma: 1,			   \
+#define BUSLOGIC \
+{ proc_dir: &BusLogic_ProcDirectoryEntry, \
+proc_info: BusLogic_ProcDirectoryInfo, \
+name: "BusLogic", \
+detect: BusLogic_DetectHostAdapter, \
+release: BusLogic_ReleaseHostAdapter, \
+info: BusLogic_DriverInfo, \
+queuecommand: BusLogic_QueueCommand, \
+abort: BusLogic_AbortCommand, \
+reset: BusLogic_ResetCommand, \
+bios_param: BusLogic_BIOSDiskParameters, \
+unchecked_isa_dma: 1, \
 use_clustering: ENABLE_CLUSTERING }
 #ifdef BusLogic_DriverVersion
 #ifndef __i386__
@@ -44,27 +44,27 @@ use_clustering: ENABLE_CLUSTERING }
 #define BusLogic_InitializeProbeInfoListISA \
 BusLogic_InitializeProbeInfoList
 #endif
-#define BusLogic_MaxHostAdapters		16
-#define BusLogic_MaxTargetDevices		16
-#define BusLogic_ScatterGatherLimit		128
-#define BusLogic_MaxTaggedQueueDepth		64
-#define BusLogic_MaxAutomaticTaggedQueueDepth	28
-#define BusLogic_MinAutomaticTaggedQueueDepth	7
-#define BusLogic_TaggedQueueDepthBB		3
-#define BusLogic_UntaggedQueueDepth		3
-#define BusLogic_UntaggedQueueDepthBB		2
-#define BusLogic_DefaultBusSettleTime		2
-#define BusLogic_MaxMailboxes			211
-#define BusLogic_CCB_AllocationGroupSize	7
-#define BusLogic_LineBufferSize			100
-#define BusLogic_MessageBufferSize		9700
+#define BusLogic_MaxHostAdapters 16
+#define BusLogic_MaxTargetDevices 16
+#define BusLogic_ScatterGatherLimit 128
+#define BusLogic_MaxTaggedQueueDepth 64
+#define BusLogic_MaxAutomaticTaggedQueueDepth 28
+#define BusLogic_MinAutomaticTaggedQueueDepth 7
+#define BusLogic_TaggedQueueDepthBB 3
+#define BusLogic_UntaggedQueueDepth 3
+#define BusLogic_UntaggedQueueDepthBB 2
+#define BusLogic_DefaultBusSettleTime 2
+#define BusLogic_MaxMailboxes 211
+#define BusLogic_CCB_AllocationGroupSize 7
+#define BusLogic_LineBufferSize 100
+#define BusLogic_MessageBufferSize 9700
 typedef enum BusLogic_MessageLevel
 {
-BusLogic_AnnounceLevel =			0,
-BusLogic_InfoLevel =				1,
-BusLogic_NoticeLevel =			2,
-BusLogic_WarningLevel =			3,
-BusLogic_ErrorLevel =				4
+BusLogic_AnnounceLevel = 0,
+BusLogic_InfoLevel = 1,
+BusLogic_NoticeLevel = 2,
+BusLogic_WarningLevel = 3,
+BusLogic_ErrorLevel = 4
 }
 BusLogic_MessageLevel_T;
 static char
@@ -82,13 +82,13 @@ BusLogic_Message(BusLogic_WarningLevel, Format, ##Arguments)
 BusLogic_Message(BusLogic_ErrorLevel, Format, ##Arguments)
 typedef enum
 {
-BusLogic_MultiMaster =			1,
-BusLogic_FlashPoint =				2
+BusLogic_MultiMaster = 1,
+BusLogic_FlashPoint = 2
 }
 __attribute__ ((packed))
 BusLogic_HostAdapterType_T;
-#define BusLogic_MultiMasterAddressCount	4
-#define BusLogic_FlashPointAddressCount		256
+#define BusLogic_MultiMasterAddressCount 4
+#define BusLogic_FlashPointAddressCount 256
 static int
 BusLogic_HostAdapterAddressCount[3] =
 { 0, BusLogic_MultiMasterAddressCount, BusLogic_FlashPointAddressCount };
@@ -105,12 +105,12 @@ BusLogic_HostAdapterAddressCount[3] =
 #endif
 typedef enum
 {
-BusLogic_Unknown_Bus =			0,
-BusLogic_ISA_Bus =				1,
-BusLogic_EISA_Bus =				2,
-BusLogic_PCI_Bus =				3,
-BusLogic_VESA_Bus =				4,
-BusLogic_MCA_Bus =				5
+BusLogic_Unknown_Bus = 0,
+BusLogic_ISA_Bus = 1,
+BusLogic_EISA_Bus = 2,
+BusLogic_PCI_Bus = 3,
+BusLogic_VESA_Bus = 4,
+BusLogic_MCA_Bus = 5
 }
 __attribute__ ((packed))
 BusLogic_HostAdapterBusType_T;
@@ -127,10 +127,10 @@ BusLogic_Unknown_Bus,
 BusLogic_PCI_Bus };
 typedef enum BusLogic_BIOS_DiskGeometryTranslation
 {
-BusLogic_BIOS_Disk_Not_Installed =		0,
-BusLogic_BIOS_Disk_Installed_64x32 =		1,
-BusLogic_BIOS_Disk_Installed_128x32 =		2,
-BusLogic_BIOS_Disk_Installed_255x63 =		3
+BusLogic_BIOS_Disk_Not_Installed = 0,
+BusLogic_BIOS_Disk_Installed_64x32 = 1,
+BusLogic_BIOS_Disk_Installed_128x32 = 2,
+BusLogic_BIOS_Disk_Installed_255x63 = 3
 }
 __attribute__ ((packed))
 BusLogic_BIOS_DiskGeometryTranslation_T;
@@ -193,10 +193,10 @@ boolean InhibitTargetInquiry:1;
 BusLogic_LocalOptions_T;
 typedef enum
 {
-BusLogic_ErrorRecovery_Default =		0,
-BusLogic_ErrorRecovery_BusDeviceReset =	1,
-BusLogic_ErrorRecovery_HardReset =		2,
-BusLogic_ErrorRecovery_None =			3
+BusLogic_ErrorRecovery_Default = 0,
+BusLogic_ErrorRecovery_BusDeviceReset = 1,
+BusLogic_ErrorRecovery_HardReset = 2,
+BusLogic_ErrorRecovery_None = 3
 }
 __attribute__ ((packed))
 BusLogic_ErrorRecoveryStrategy_T;
@@ -205,12 +205,12 @@ static char
 { "Default", "Bus Device Reset", "Hard Reset", "None" },
 BusLogic_ErrorRecoveryStrategyLetters[] =
 { 'D', 'B', 'H', 'N' };
-#define BusLogic_ControlRegisterOffset		0
-#define BusLogic_StatusRegisterOffset		0
-#define BusLogic_CommandParameterRegisterOffset	1
-#define BusLogic_DataInRegisterOffset		1
-#define BusLogic_InterruptRegisterOffset	2
-#define BusLogic_GeometryRegisterOffset		3
+#define BusLogic_ControlRegisterOffset 0
+#define BusLogic_StatusRegisterOffset 0
+#define BusLogic_CommandParameterRegisterOffset 1
+#define BusLogic_DataInRegisterOffset 1
+#define BusLogic_InterruptRegisterOffset 2
+#define BusLogic_GeometryRegisterOffset 3
 typedef union BusLogic_ControlRegister
 {
 unsigned char All;
@@ -264,50 +264,50 @@ boolean ExtendedTranslationEnabled:1;
 BusLogic_GeometryRegister_T;
 typedef enum
 {
-BusLogic_TestCommandCompleteInterrupt =	0x00,
-BusLogic_InitializeMailbox =			0x01,
-BusLogic_ExecuteMailboxCommand =		0x02,
-BusLogic_ExecuteBIOSCommand =			0x03,
-BusLogic_InquireBoardID =			0x04,
-BusLogic_EnableOutgoingMailboxAvailableInt =	0x05,
-BusLogic_SetSCSISelectionTimeout =		0x06,
-BusLogic_SetPreemptTimeOnBus =		0x07,
-BusLogic_SetTimeOffBus =			0x08,
-BusLogic_SetBusTransferRate =			0x09,
-BusLogic_InquireInstalledDevicesID0to7 =	0x0A,
-BusLogic_InquireConfiguration =		0x0B,
-BusLogic_EnableTargetMode =			0x0C,
-BusLogic_InquireSetupInformation =		0x0D,
-BusLogic_WriteAdapterLocalRAM =		0x1A,
-BusLogic_ReadAdapterLocalRAM =		0x1B,
-BusLogic_WriteBusMasterChipFIFO =		0x1C,
-BusLogic_ReadBusMasterChipFIFO =		0x1D,
-BusLogic_EchoCommandData =			0x1F,
-BusLogic_HostAdapterDiagnostic =		0x20,
-BusLogic_SetAdapterOptions =			0x21,
-BusLogic_InquireInstalledDevicesID8to15 =	0x23,
-BusLogic_InquireTargetDevices =		0x24,
-BusLogic_DisableHostAdapterInterrupt =	0x25,
-BusLogic_InitializeExtendedMailbox =		0x81,
-BusLogic_ExecuteSCSICommand =			0x83,
-BusLogic_InquireFirmwareVersion3rdDigit =	0x84,
-BusLogic_InquireFirmwareVersionLetter =	0x85,
-BusLogic_InquirePCIHostAdapterInformation =	0x86,
-BusLogic_InquireHostAdapterModelNumber =	0x8B,
-BusLogic_InquireSynchronousPeriod =		0x8C,
-BusLogic_InquireExtendedSetupInformation =	0x8D,
-BusLogic_EnableStrictRoundRobinMode =		0x8F,
-BusLogic_StoreHostAdapterLocalRAM =		0x90,
-BusLogic_FetchHostAdapterLocalRAM =		0x91,
-BusLogic_StoreLocalDataInEEPROM =		0x92,
-BusLogic_UploadAutoSCSICode =			0x94,
-BusLogic_ModifyIOAddress =			0x95,
-BusLogic_SetCCBFormat =			0x96,
-BusLogic_WriteInquiryBuffer =			0x9A,
-BusLogic_ReadInquiryBuffer =			0x9B,
-BusLogic_FlashROMUploadDownload =		0xA7,
-BusLogic_ReadSCAMData =			0xA8,
-BusLogic_WriteSCAMData =			0xA9
+BusLogic_TestCommandCompleteInterrupt = 0x00,
+BusLogic_InitializeMailbox = 0x01,
+BusLogic_ExecuteMailboxCommand = 0x02,
+BusLogic_ExecuteBIOSCommand = 0x03,
+BusLogic_InquireBoardID = 0x04,
+BusLogic_EnableOutgoingMailboxAvailableInt = 0x05,
+BusLogic_SetSCSISelectionTimeout = 0x06,
+BusLogic_SetPreemptTimeOnBus = 0x07,
+BusLogic_SetTimeOffBus = 0x08,
+BusLogic_SetBusTransferRate = 0x09,
+BusLogic_InquireInstalledDevicesID0to7 = 0x0A,
+BusLogic_InquireConfiguration = 0x0B,
+BusLogic_EnableTargetMode = 0x0C,
+BusLogic_InquireSetupInformation = 0x0D,
+BusLogic_WriteAdapterLocalRAM = 0x1A,
+BusLogic_ReadAdapterLocalRAM = 0x1B,
+BusLogic_WriteBusMasterChipFIFO = 0x1C,
+BusLogic_ReadBusMasterChipFIFO = 0x1D,
+BusLogic_EchoCommandData = 0x1F,
+BusLogic_HostAdapterDiagnostic = 0x20,
+BusLogic_SetAdapterOptions = 0x21,
+BusLogic_InquireInstalledDevicesID8to15 = 0x23,
+BusLogic_InquireTargetDevices = 0x24,
+BusLogic_DisableHostAdapterInterrupt = 0x25,
+BusLogic_InitializeExtendedMailbox = 0x81,
+BusLogic_ExecuteSCSICommand = 0x83,
+BusLogic_InquireFirmwareVersion3rdDigit = 0x84,
+BusLogic_InquireFirmwareVersionLetter = 0x85,
+BusLogic_InquirePCIHostAdapterInformation = 0x86,
+BusLogic_InquireHostAdapterModelNumber = 0x8B,
+BusLogic_InquireSynchronousPeriod = 0x8C,
+BusLogic_InquireExtendedSetupInformation = 0x8D,
+BusLogic_EnableStrictRoundRobinMode = 0x8F,
+BusLogic_StoreHostAdapterLocalRAM = 0x90,
+BusLogic_FetchHostAdapterLocalRAM = 0x91,
+BusLogic_StoreLocalDataInEEPROM = 0x92,
+BusLogic_UploadAutoSCSICode = 0x94,
+BusLogic_ModifyIOAddress = 0x95,
+BusLogic_SetCCBFormat = 0x96,
+BusLogic_WriteInquiryBuffer = 0x9A,
+BusLogic_ReadInquiryBuffer = 0x9B,
+BusLogic_FlashROMUploadDownload = 0xA7,
+BusLogic_ReadSCAMData = 0xA8,
+BusLogic_WriteSCAMData = 0xA9
 }
 BusLogic_OperationCode_T;
 typedef struct BusLogic_BoardID
@@ -384,14 +384,14 @@ typedef unsigned char BusLogic_FirmwareVersion3rdDigit_T;
 typedef unsigned char BusLogic_FirmwareVersionLetter_T;
 typedef enum BusLogic_ISACompatibleIOPort
 {
-BusLogic_IO_330 =				0,
-BusLogic_IO_334 =				1,
-BusLogic_IO_230 =				2,
-BusLogic_IO_234 =				3,
-BusLogic_IO_130 =				4,
-BusLogic_IO_134 =				5,
-BusLogic_IO_Disable =				6,
-BusLogic_IO_Disable2 =			7
+BusLogic_IO_330 = 0,
+BusLogic_IO_334 = 1,
+BusLogic_IO_230 = 2,
+BusLogic_IO_234 = 3,
+BusLogic_IO_130 = 4,
+BusLogic_IO_134 = 5,
+BusLogic_IO_Disable = 6,
+BusLogic_IO_Disable2 = 7
 }
 __attribute__ ((packed))
 BusLogic_ISACompatibleIOPort_T;
@@ -435,13 +435,13 @@ __attribute__ ((packed))
 BusLogic_ExtendedSetupInformation_T;
 typedef enum BusLogic_RoundRobinModeRequest
 {
-BusLogic_AggressiveRoundRobinMode =		0,
-BusLogic_StrictRoundRobinMode =		1
+BusLogic_AggressiveRoundRobinMode = 0,
+BusLogic_StrictRoundRobinMode = 1
 }
 __attribute__ ((packed))
 BusLogic_RoundRobinModeRequest_T;
-#define BusLogic_BIOS_BaseOffset		0
-#define BusLogic_AutoSCSI_BaseOffset		64
+#define BusLogic_BIOS_BaseOffset 0
+#define BusLogic_AutoSCSI_BaseOffset 64
 typedef struct BusLogic_FetchHostAdapterLocalRAMRequest
 {
 unsigned char ByteOffset;
@@ -527,7 +527,7 @@ unsigned char ForceBusDeviceScanningOrder:1;
 unsigned char :7;
 }
 BusLogic_AutoSCSIByte45_T;
-#define BusLogic_BIOS_DriveMapOffset		17
+#define BusLogic_BIOS_DriveMapOffset 17
 typedef struct BusLogic_BIOSDriveMapByte
 {
 unsigned char TargetIDBit3:1;
@@ -539,97 +539,97 @@ BusLogic_BIOSDriveMapByte_T;
 typedef BusLogic_ISACompatibleIOPort_T BusLogic_ModifyIOAddressRequest_T;
 typedef enum BusLogic_SetCCBFormatRequest
 {
-BusLogic_LegacyLUNFormatCCB =			0,
-BusLogic_ExtendedLUNFormatCCB =		1
+BusLogic_LegacyLUNFormatCCB = 0,
+BusLogic_ExtendedLUNFormatCCB = 1
 }
 __attribute__ ((packed))
 BusLogic_SetCCBFormatRequest_T;
 typedef unsigned char BusLogic_RequestedReplyLength_T;
 typedef enum
 {
-BusLogic_OutgoingMailboxFree =		0x00,
-BusLogic_MailboxStartCommand =		0x01,
-BusLogic_MailboxAbortCommand =		0x02
+BusLogic_OutgoingMailboxFree = 0x00,
+BusLogic_MailboxStartCommand = 0x01,
+BusLogic_MailboxAbortCommand = 0x02
 }
 __attribute__ ((packed))
 BusLogic_ActionCode_T;
 typedef enum
 {
-BusLogic_IncomingMailboxFree =		0x00,
-BusLogic_CommandCompletedWithoutError =	0x01,
-BusLogic_CommandAbortedAtHostRequest =	0x02,
-BusLogic_AbortedCommandNotFound =		0x03,
-BusLogic_CommandCompletedWithError =		0x04,
-BusLogic_InvalidCCB =				0x05
+BusLogic_IncomingMailboxFree = 0x00,
+BusLogic_CommandCompletedWithoutError = 0x01,
+BusLogic_CommandAbortedAtHostRequest = 0x02,
+BusLogic_AbortedCommandNotFound = 0x03,
+BusLogic_CommandCompletedWithError = 0x04,
+BusLogic_InvalidCCB = 0x05
 }
 __attribute__ ((packed))
 BusLogic_CompletionCode_T;
 typedef enum
 {
-BusLogic_InitiatorCCB =			0x00,
-BusLogic_TargetCCB =				0x01,
-BusLogic_InitiatorCCB_ScatterGather =		0x02,
-BusLogic_InitiatorCCB_ResidualDataLength =	0x03,
-BusLogic_InitiatorCCB_ScatterGatherResidual =	0x04,
-BusLogic_BusDeviceReset =			0x81
+BusLogic_InitiatorCCB = 0x00,
+BusLogic_TargetCCB = 0x01,
+BusLogic_InitiatorCCB_ScatterGather = 0x02,
+BusLogic_InitiatorCCB_ResidualDataLength = 0x03,
+BusLogic_InitiatorCCB_ScatterGatherResidual = 0x04,
+BusLogic_BusDeviceReset = 0x81
 }
 __attribute__ ((packed))
 BusLogic_CCB_Opcode_T;
 typedef enum
 {
-BusLogic_UncheckedDataTransfer =		0,
-BusLogic_DataInLengthChecked =		1,
-BusLogic_DataOutLengthChecked =		2,
-BusLogic_NoDataTransfer =			3
+BusLogic_UncheckedDataTransfer = 0,
+BusLogic_DataInLengthChecked = 1,
+BusLogic_DataOutLengthChecked = 2,
+BusLogic_NoDataTransfer = 3
 }
 BusLogic_DataDirection_T;
 typedef enum
 {
-BusLogic_CommandCompletedNormally =		0x00,
-BusLogic_LinkedCommandCompleted =		0x0A,
-BusLogic_LinkedCommandCompletedWithFlag =	0x0B,
-BusLogic_DataUnderRun =			0x0C,
-BusLogic_SCSISelectionTimeout =		0x11,
-BusLogic_DataOverRun =			0x12,
-BusLogic_UnexpectedBusFree =			0x13,
-BusLogic_InvalidBusPhaseRequested =		0x14,
-BusLogic_InvalidOutgoingMailboxActionCode =	0x15,
-BusLogic_InvalidCommandOperationCode =	0x16,
-BusLogic_LinkedCCBhasInvalidLUN =		0x17,
-BusLogic_InvalidCommandParameter =		0x1A,
-BusLogic_AutoRequestSenseFailed =		0x1B,
-BusLogic_TaggedQueuingMessageRejected =	0x1C,
-BusLogic_UnsupportedMessageReceived =		0x1D,
-BusLogic_HostAdapterHardwareFailed =		0x20,
-BusLogic_TargetFailedResponseToATN =		0x21,
-BusLogic_HostAdapterAssertedRST =		0x22,
-BusLogic_OtherDeviceAssertedRST =		0x23,
-BusLogic_TargetDeviceReconnectedImproperly =	0x24,
-BusLogic_HostAdapterAssertedBusDeviceReset =	0x25,
-BusLogic_AbortQueueGenerated =		0x26,
-BusLogic_HostAdapterSoftwareError =		0x27,
-BusLogic_HostAdapterHardwareTimeoutError =	0x30,
-BusLogic_SCSIParityErrorDetected =		0x34
+BusLogic_CommandCompletedNormally = 0x00,
+BusLogic_LinkedCommandCompleted = 0x0A,
+BusLogic_LinkedCommandCompletedWithFlag = 0x0B,
+BusLogic_DataUnderRun = 0x0C,
+BusLogic_SCSISelectionTimeout = 0x11,
+BusLogic_DataOverRun = 0x12,
+BusLogic_UnexpectedBusFree = 0x13,
+BusLogic_InvalidBusPhaseRequested = 0x14,
+BusLogic_InvalidOutgoingMailboxActionCode = 0x15,
+BusLogic_InvalidCommandOperationCode = 0x16,
+BusLogic_LinkedCCBhasInvalidLUN = 0x17,
+BusLogic_InvalidCommandParameter = 0x1A,
+BusLogic_AutoRequestSenseFailed = 0x1B,
+BusLogic_TaggedQueuingMessageRejected = 0x1C,
+BusLogic_UnsupportedMessageReceived = 0x1D,
+BusLogic_HostAdapterHardwareFailed = 0x20,
+BusLogic_TargetFailedResponseToATN = 0x21,
+BusLogic_HostAdapterAssertedRST = 0x22,
+BusLogic_OtherDeviceAssertedRST = 0x23,
+BusLogic_TargetDeviceReconnectedImproperly = 0x24,
+BusLogic_HostAdapterAssertedBusDeviceReset = 0x25,
+BusLogic_AbortQueueGenerated = 0x26,
+BusLogic_HostAdapterSoftwareError = 0x27,
+BusLogic_HostAdapterHardwareTimeoutError = 0x30,
+BusLogic_SCSIParityErrorDetected = 0x34
 }
 __attribute__ ((packed))
 BusLogic_HostAdapterStatus_T;
 typedef enum
 {
-BusLogic_OperationGood =			0x00,
-BusLogic_CheckCondition =			0x02,
-BusLogic_DeviceBusy =				0x08
+BusLogic_OperationGood = 0x00,
+BusLogic_CheckCondition = 0x02,
+BusLogic_DeviceBusy = 0x08
 }
 __attribute__ ((packed))
 BusLogic_TargetDeviceStatus_T;
 typedef enum
 {
-BusLogic_SimpleQueueTag =			0,
-BusLogic_HeadOfQueueTag =			1,
-BusLogic_OrderedQueueTag =			2,
-BusLogic_ReservedQT =				3
+BusLogic_SimpleQueueTag = 0,
+BusLogic_HeadOfQueueTag = 1,
+BusLogic_OrderedQueueTag = 2,
+BusLogic_ReservedQT = 3
 }
 BusLogic_QueueTag_T;
-#define BusLogic_CDB_MaxLength			12
+#define BusLogic_CDB_MaxLength 12
 typedef unsigned char SCSI_CDB_T[BusLogic_CDB_MaxLength];
 typedef struct BusLogic_ScatterGatherSegment
 {
@@ -639,10 +639,10 @@ BusLogic_BusAddress_T SegmentDataPointer;
 BusLogic_ScatterGatherSegment_T;
 typedef enum
 {
-BusLogic_CCB_Free =				0,
-BusLogic_CCB_Active =				1,
-BusLogic_CCB_Completed =			2,
-BusLogic_CCB_Reset =				3
+BusLogic_CCB_Free = 0,
+BusLogic_CCB_Active = 1,
+BusLogic_CCB_Completed = 2,
+BusLogic_CCB_Reset = 3
 }
 __attribute__ ((packed))
 BusLogic_CCB_Status_T;
@@ -728,7 +728,7 @@ boolean CommandSuccessfulFlag:1;
 boolean TargetInfoReported:1;
 }
 BusLogic_TargetFlags_T;
-#define BusLogic_SizeBuckets			10
+#define BusLogic_SizeBuckets 10
 typedef unsigned int BusLogic_CommandSizeBuckets_T[BusLogic_SizeBuckets];
 typedef struct BusLogic_TargetStatistics
 {
@@ -751,7 +751,7 @@ unsigned short HostAdapterResetsAttempted;
 unsigned short HostAdapterResetsCompleted;
 }
 BusLogic_TargetStatistics_T;
-#define FlashPoint_BadCardHandle		0xFFFFFFFF
+#define FlashPoint_BadCardHandle 0xFFFFFFFF
 typedef unsigned int FlashPoint_CardHandle_T;
 typedef struct FlashPoint_Info
 {
@@ -1072,10 +1072,10 @@ else Index = (Amount < 64*1024 ? 6 : 7);
 else Index = (Amount < 256*1024 ? 8 : 9);
 CommandSizeBuckets[Index]++;
 }
-#define FlashPoint_FirmwareVersion		"5.02"
-#define FlashPoint_NormalInterrupt		0x00
-#define FlashPoint_InternalError		0xFE
-#define FlashPoint_ExternalBusReset		0xFF
+#define FlashPoint_FirmwareVersion "5.02"
+#define FlashPoint_NormalInterrupt 0x00
+#define FlashPoint_InternalError 0xFE
+#define FlashPoint_ExternalBusReset 0xFF
 static void BusLogic_QueueCompletedCCB(BusLogic_CCB_T *);
 static void BusLogic_InterruptHandler(int, void *, Registers_T *);
 static int BusLogic_ResetHostAdapter(BusLogic_HostAdapter_T *,

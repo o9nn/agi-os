@@ -25,9 +25,9 @@ if(server->trace > 1)
 print("logfsserverwstat(%ud, %ud)\n", fid, nstat);
 if(nstat < 49)
 return Eshortstat;
-p  = stat;
+p = stat;
 len = GBIT16(p); p += BIT16SZ;
-if(len + BIT16SZ  != nstat)
+if(len + BIT16SZ != nstat)
 return Eshortstat;
 mep = p + len;
 p += BIT16SZ + BIT32SZ;

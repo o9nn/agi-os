@@ -17,7 +17,7 @@ l = logfsrealloc(nil, sizeof(*l));
 if(l == nil)
 return Enomem;
 *ep = l;
-return  nil;
+return nil;
 }
 void
 logfsextentlistreset(ExtentList *l)

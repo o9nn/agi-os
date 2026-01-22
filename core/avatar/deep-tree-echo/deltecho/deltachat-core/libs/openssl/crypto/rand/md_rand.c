@@ -1,7 +1,7 @@
 #define OPENSSL_FIPSEVP
 #ifdef MD_RAND_DEBUG
 # ifndef NDEBUG
-#  define NDEBUG
+# define NDEBUG
 # endif
 #endif
 #include <assert.h>
@@ -15,7 +15,7 @@
 #ifdef BN_DEBUG
 # define PREDICT
 #endif
-#define STATE_SIZE      1023
+#define STATE_SIZE 1023
 static int state_num = 0, state_index = 0;
 static unsigned char state[STATE_SIZE + MD_DIGEST_LENGTH];
 static unsigned char md[MD_DIGEST_LENGTH];

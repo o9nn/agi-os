@@ -5,115 +5,115 @@
 #include <ctype.h>
 #include "dns.h"
 enum {
-Deftarget	= 1<<30,
-Minage		= 1<<30,
-Defagefreq	= 1<<30,
-Restartmins	= 0,
+Deftarget = 1<<30,
+Minage = 1<<30,
+Defagefreq = 1<<30,
+Restartmins = 0,
 };
 DN *ht[HTLEN];
 static struct {
 Lock;
-ulong	names;
-ulong	oldest;
-int	active;
-int	mutex;
-ushort	id;
+ulong names;
+ulong oldest;
+int active;
+int mutex;
+ushort id;
 } dnvars;
 char *rrtname[] =
 {
-[Ta]		"ip",
-[Tns]		"ns",
-[Tmd]		"md",
-[Tmf]		"mf",
-[Tcname]	"cname",
-[Tsoa]		"soa",
-[Tmb]		"mb",
-[Tmg]		"mg",
-[Tmr]		"mr",
-[Tnull]		"null",
-[Twks]		"wks",
-[Tptr]		"ptr",
-[Thinfo]	"hinfo",
-[Tminfo]	"minfo",
-[Tmx]		"mx",
-[Ttxt]		"txt",
-[Trp]		"rp",
-[Tafsdb]	"afsdb",
-[Tx25]		"x.25",
-[Tisdn]		"isdn",
-[Trt]		"rt",
-[Tnsap]		"nsap",
-[Tnsapptr]	"nsap-ptr",
-[Tsig]		"sig",
-[Tkey]		"key",
-[Tpx]		"px",
-[Tgpos]		"gpos",
-[Taaaa]		"ipv6",
-[Tloc]		"loc",
-[Tnxt]		"nxt",
-[Teid]		"eid",
-[Tnimloc]	"nimrod",
-[Tsrv]		"srv",
-[Tatma]		"atma",
-[Tnaptr]	"naptr",
-[Tkx]		"kx",
-[Tcert]		"cert",
-[Ta6]		"a6",
-[Tdname]	"dname",
-[Tsink]		"sink",
-[Topt]		"opt",
-[Tapl]		"apl",
-[Tds]		"ds",
-[Tsshfp]	"sshfp",
-[Tipseckey]	"ipseckey",
-[Trrsig]	"rrsig",
-[Tnsec]		"nsec",
-[Tdnskey]	"dnskey",
-[Tspf]		"spf",
-[Tuinfo]	"uinfo",
-[Tuid]		"uid",
-[Tgid]		"gid",
-[Tunspec]	"unspec",
-[Ttkey]		"tkey",
-[Ttsig]		"tsig",
-[Tixfr]		"ixfr",
-[Taxfr]		"axfr",
-[Tmailb]	"mailb",
-[Tmaila]	"maila",
-[Tall]		"all",
+[Ta] "ip",
+[Tns] "ns",
+[Tmd] "md",
+[Tmf] "mf",
+[Tcname] "cname",
+[Tsoa] "soa",
+[Tmb] "mb",
+[Tmg] "mg",
+[Tmr] "mr",
+[Tnull] "null",
+[Twks] "wks",
+[Tptr] "ptr",
+[Thinfo] "hinfo",
+[Tminfo] "minfo",
+[Tmx] "mx",
+[Ttxt] "txt",
+[Trp] "rp",
+[Tafsdb] "afsdb",
+[Tx25] "x.25",
+[Tisdn] "isdn",
+[Trt] "rt",
+[Tnsap] "nsap",
+[Tnsapptr] "nsap-ptr",
+[Tsig] "sig",
+[Tkey] "key",
+[Tpx] "px",
+[Tgpos] "gpos",
+[Taaaa] "ipv6",
+[Tloc] "loc",
+[Tnxt] "nxt",
+[Teid] "eid",
+[Tnimloc] "nimrod",
+[Tsrv] "srv",
+[Tatma] "atma",
+[Tnaptr] "naptr",
+[Tkx] "kx",
+[Tcert] "cert",
+[Ta6] "a6",
+[Tdname] "dname",
+[Tsink] "sink",
+[Topt] "opt",
+[Tapl] "apl",
+[Tds] "ds",
+[Tsshfp] "sshfp",
+[Tipseckey] "ipseckey",
+[Trrsig] "rrsig",
+[Tnsec] "nsec",
+[Tdnskey] "dnskey",
+[Tspf] "spf",
+[Tuinfo] "uinfo",
+[Tuid] "uid",
+[Tgid] "gid",
+[Tunspec] "unspec",
+[Ttkey] "tkey",
+[Ttsig] "tsig",
+[Tixfr] "ixfr",
+[Taxfr] "axfr",
+[Tmailb] "mailb",
+[Tmaila] "maila",
+[Tall] "all",
 0,
 };
 char *rname[Rmask+1] =
 {
-[Rok]			"ok",
-[Rformat]		"format error",
-[Rserver]		"server failure",
-[Rname]			"bad name",
-[Runimplimented]	"unimplemented",
-[Rrefused]		"we don't like you",
-[Ryxdomain]		"name should not exist",
-[Ryxrrset]		"rr set should not exist",
-[Rnxrrset]		"rr set should exist",
-[Rnotauth]		"not authorative",
-[Rnotzone]		"not in zone",
-[Rbadvers]		"bad opt version",
-[Rbadkey]		"bad key",
-[Rbadtime]		"bad signature time",
-[Rbadmode]		"bad mode",
-[Rbadname]		"duplicate key name",
-[Rbadalg]		"bad algorithm",
+[Rok] "ok",
+[Rformat] "format error",
+[Rserver] "server failure",
+[Rname] "bad name",
+[Runimplimented] "unimplemented",
+[Rrefused] "we don't like you",
+[Ryxdomain] "name should not exist",
+[Ryxrrset] "rr set should not exist",
+[Rnxrrset] "rr set should exist",
+[Rnotauth] "not authorative",
+[Rnotzone] "not in zone",
+[Rbadvers] "bad opt version",
+[Rbadkey] "bad key",
+[Rbadtime] "bad signature time",
+[Rbadmode] "bad mode",
+[Rbadname] "duplicate key name",
+[Rbadalg] "bad algorithm",
 };
 unsigned nrname = nelem(rname);
 char *opname[] =
 {
-[Oquery]	"query",
-[Oinverse]	"inverse query (retired)",
-[Ostatus]	"status",
-[Oupdate]	"update",
+[Oquery] "query",
+[Oinverse] "inverse query (retired)",
+[Ostatus] "status",
+[Oupdate] "update",
 };
 ulong target = Deftarget;
 ulong start;
-Lock	dnlock;
+Lock dnlock;
 static ulong agefreq = Defagefreq;
 static int rrequiv(RR *r1, RR *r2);
 static int sencodefmt(Fmt*);
@@ -307,7 +307,7 @@ else
 l = &rp->next;
 }
 }
-#define MARK(dp)	{ if (dp) (dp)->keep = 1; }
+#define MARK(dp) { if (dp) (dp)->keep = 1; }
 void
 dnagenever(DN *dp, int dolock)
 {
@@ -380,7 +380,7 @@ if(dnvars.names >= target)
 dnslog("more initial domain names (%ld) than target (%ld)",
 dnvars.names, target);
 }
-#define REF(dp)	{ if (dp) (dp)->refs++; }
+#define REF(dp) { if (dp) (dp)->refs++; }
 void
 dnageall(int doit)
 {
@@ -1050,7 +1050,7 @@ case Tmf:
 fmtprint(&fstr, " mbox=%s", dnname(rp->host));
 break;
 case Tns:
-fmtprint(&fstr,  " ns=%s", dnname(rp->host));
+fmtprint(&fstr, " ns=%s", dnname(rp->host));
 break;
 case Tmg:
 case Tmr:
@@ -1424,7 +1424,7 @@ if(ttl)
 rp->ttl = ttl;
 return rp;
 }
-void	bytes2nibbles(uchar *nibbles, uchar *bytes, int nbytes);
+void bytes2nibbles(uchar *nibbles, uchar *bytes, int nbytes);
 void
 dnptr(uchar *net, uchar *mask, char *dom, int forwtype, int subdoms, int ttl)
 {

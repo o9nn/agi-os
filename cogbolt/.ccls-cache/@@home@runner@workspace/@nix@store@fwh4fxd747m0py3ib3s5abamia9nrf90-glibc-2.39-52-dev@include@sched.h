@@ -1,5 +1,5 @@
-#ifndef	_SCHED_H
-#define	_SCHED_H	1
+#ifndef _SCHED_H
+#define _SCHED_H 1
 #include <features.h>
 #include <bits/types.h>
 #define __need_size_t
@@ -16,8 +16,8 @@ typedef __pid_t pid_t;
 #endif
 #include <bits/sched.h>
 #include <bits/cpu-set.h>
-#define sched_priority    sched_priority
-#define __sched_priority  sched_priority
+#define sched_priority sched_priority
+#define __sched_priority sched_priority
 __BEGIN_DECLS
 extern int sched_setparam (__pid_t __pid, const struct sched_param *__param)
 __THROW;
@@ -36,23 +36,23 @@ extern int __REDIRECT_NTH (sched_rr_get_interval,
 (__pid_t __pid, struct timespec *__t),
 __sched_rr_get_interval64);
 # else
-#  define sched_rr_get_interval __sched_rr_get_interval64
+# define sched_rr_get_interval __sched_rr_get_interval64
 # endif
 #endif
 #ifdef __USE_GNU
 # define CPU_SETSIZE __CPU_SETSIZE
-# define CPU_SET(cpu, cpusetp)	 __CPU_SET_S (cpu, sizeof (cpu_set_t), cpusetp)
-# define CPU_CLR(cpu, cpusetp)	 __CPU_CLR_S (cpu, sizeof (cpu_set_t), cpusetp)
+# define CPU_SET(cpu, cpusetp) __CPU_SET_S (cpu, sizeof (cpu_set_t), cpusetp)
+# define CPU_CLR(cpu, cpusetp) __CPU_CLR_S (cpu, sizeof (cpu_set_t), cpusetp)
 # define CPU_ISSET(cpu, cpusetp) __CPU_ISSET_S (cpu, sizeof (cpu_set_t), \
 cpusetp)
-# define CPU_ZERO(cpusetp)	 __CPU_ZERO_S (sizeof (cpu_set_t), cpusetp)
-# define CPU_COUNT(cpusetp)	 __CPU_COUNT_S (sizeof (cpu_set_t), cpusetp)
-# define CPU_SET_S(cpu, setsize, cpusetp)   __CPU_SET_S (cpu, setsize, cpusetp)
-# define CPU_CLR_S(cpu, setsize, cpusetp)   __CPU_CLR_S (cpu, setsize, cpusetp)
+# define CPU_ZERO(cpusetp) __CPU_ZERO_S (sizeof (cpu_set_t), cpusetp)
+# define CPU_COUNT(cpusetp) __CPU_COUNT_S (sizeof (cpu_set_t), cpusetp)
+# define CPU_SET_S(cpu, setsize, cpusetp) __CPU_SET_S (cpu, setsize, cpusetp)
+# define CPU_CLR_S(cpu, setsize, cpusetp) __CPU_CLR_S (cpu, setsize, cpusetp)
 # define CPU_ISSET_S(cpu, setsize, cpusetp) __CPU_ISSET_S (cpu, setsize, \
 cpusetp)
-# define CPU_ZERO_S(setsize, cpusetp)	    __CPU_ZERO_S (setsize, cpusetp)
-# define CPU_COUNT_S(setsize, cpusetp)	    __CPU_COUNT_S (setsize, cpusetp)
+# define CPU_ZERO_S(setsize, cpusetp) __CPU_ZERO_S (setsize, cpusetp)
+# define CPU_COUNT_S(setsize, cpusetp) __CPU_COUNT_S (setsize, cpusetp)
 # define CPU_EQUAL(cpusetp1, cpusetp2) \
 __CPU_EQUAL_S (sizeof (cpu_set_t), cpusetp1, cpusetp2)
 # define CPU_EQUAL_S(setsize, cpusetp1, cpusetp2) \

@@ -57,8 +57,8 @@ eltype(fieldtype(T, :values)) === Any && return Float64
 error("Invalid AbstractMultiScaleArray, type of values not specified")
 end
 Base.eltype(::T) where {T <: AbstractMultiScaleArray} = eltype(T)
-#broadcast_getindex(m::AbstractMultiScaleArrayLeaf, i::Int)    =  (println("here");m[i])
-#broadcast_getindex(m::AbstractMultiScaleArray, i::Int)    =  (println("here");m[i])
+#broadcast_getindex(m::AbstractMultiScaleArrayLeaf, i::Int) = (println("here");m[i])
+#broadcast_getindex(m::AbstractMultiScaleArray, i::Int) = (println("here");m[i])
 #broadcast_getindex(m::AbstractMultiScaleArray, i::Int...) = m[i]
 getindices(m::AbstractMultiScaleArrayHead) = 1:length(m)
 function getindices(m::AbstractMultiScaleArrayHead, i::Int)

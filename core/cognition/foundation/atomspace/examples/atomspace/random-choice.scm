@@ -1,22 +1,22 @@
 (use-modules (opencog) (opencog exec))
 (Define (DefinedSchema "randy")
-	(RandomChoice
-		(List (Number 0.7) (Number 0.3))
-		(List (Concept "A") (Concept "B"))))
+(RandomChoice
+(List (Number 0.7) (Number 0.3))
+(List (Concept "A") (Concept "B"))))
 (State (Anchor "sum-A") (Number 0))
 (State (Anchor "sum-B") (Number 0))
 (Define (DefinedPredicate "counter")
-	(SequentialOr
-		(SequentialAnd
-			(Equal (DefinedSchema "randy") (Concept "A"))
-			(True (Put
-				(State (Anchor "sum-A") (Variable "$x"))
-				(Plus (Number 1)
-					(Get (State (Anchor "sum-A") (Variable "$y")))))))
-		(True (Put
-			(State (Anchor "sum-B") (Variable "$x"))
-			(Plus (Number 1)
-				(Get (State (Anchor "sum-B") (Variable "$y"))))))))
+(SequentialOr
+(SequentialAnd
+(Equal (DefinedSchema "randy") (Concept "A"))
+(True (Put
+(State (Anchor "sum-A") (Variable "$x"))
+(Plus (Number 1)
+(Get (State (Anchor "sum-A") (Variable "$y")))))))
+(True (Put
+(State (Anchor "sum-B") (Variable "$x"))
+(Plus (Number 1)
+(Get (State (Anchor "sum-B") (Variable "$y"))))))))
 (cog-evaluate! (DefinedPredicate "counter"))
 (cog-evaluate! (DefinedPredicate "counter"))
 (cog-evaluate! (DefinedPredicate "counter"))
@@ -31,25 +31,25 @@
 (cog-execute! (Get (State (Anchor "sum-B") (Variable "$x"))))
 (State (Anchor "loop-count") (Number 0))
 (Define (DefinedPredicate "loop a lot of times")
-	(SequentialAnd
-		(DefinedPredicate "counter")
-		(TrueLink (PutLink
-			(State (Anchor "loop-count") (Variable "$x"))
-			(Plus (Number 1) (Get (State (Anchor "loop-count") (Variable "$x"))))))
-		(GreaterThan
-			(Number 1000)
-			(Get (State (Anchor "loop-count") (Variable "$x"))))
-		(DefinedPredicate "loop a lot of times")))
+(SequentialAnd
+(DefinedPredicate "counter")
+(TrueLink (PutLink
+(State (Anchor "loop-count") (Variable "$x"))
+(Plus (Number 1) (Get (State (Anchor "loop-count") (Variable "$x"))))))
+(GreaterThan
+(Number 1000)
+(Get (State (Anchor "loop-count") (Variable "$x"))))
+(DefinedPredicate "loop a lot of times")))
 (cog-evaluate! (DefinedPredicate "loop a lot of times"))
 (cog-execute! (Get (State (Anchor "sum-A") (Variable "$x"))))
 (cog-execute! (Get (State (Anchor "sum-B") (Variable "$x"))))
 (Define (DefinedSchema "ratio")
-	(Divide
-		(Get (State (Anchor "sum-A") (Variable "$x")))
-		(Get (State (Anchor "sum-B") (Variable "$x")))))
+(Divide
+(Get (State (Anchor "sum-A") (Variable "$x")))
+(Get (State (Anchor "sum-B") (Variable "$x")))))
 (cog-execute! (DefinedSchema "ratio"))
 (Define (DefinedPredicate "test expectation")
-   (SequentialAnd
-      (GreaterThan (Number 2.5) (DefinedSchema "ratio"))
-      (GreaterThan (DefinedSchema "ratio") (NumberNode 2.1))))
+(SequentialAnd
+(GreaterThan (Number 2.5) (DefinedSchema "ratio"))
+(GreaterThan (DefinedSchema "ratio") (NumberNode 2.1))))
 (cog-evaluate! (DefinedPredicate "test expectation"))

@@ -3,19 +3,19 @@ static const unsigned
 B1 = 715094163,
 B2 = 696219795;
 static const double
-C =  5.42857142857142815906e-01,
+C = 5.42857142857142815906e-01,
 D = -7.05306122448979611050e-01,
-E =  1.41428571428571436819e+00,
-F =  1.60714285714285720630e+00,
-G =  3.57142857142857150787e-01;
+E = 1.41428571428571436819e+00,
+F = 1.60714285714285720630e+00,
+G = 3.57142857142857150787e-01;
 double cbrt(double x)
 {
-int	hx;
+int hx;
 double r,s,t=0.0,w;
 unsigned sign;
 hx = __HI(x);
 sign=hx&0x80000000;
-hx  ^=sign;
+hx ^=sign;
 if(hx>=0x7ff00000) return(x+x);
 if((hx|__LO(x))==0)
 return(x);

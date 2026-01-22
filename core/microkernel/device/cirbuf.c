@@ -2,10 +2,10 @@
 #include <device/cirbuf.h>
 #include <kern/debug.h>
 #include <kern/kalloc.h>
-#if	DEBUG
+#if DEBUG
 #include <mach/boolean.h>
 boolean_t cb_check_enable = FALSE;
-#define	CB_CHECK(cb) if (cb_check_enable) cb_check(cb)
+#define CB_CHECK(cb) if (cb_check_enable) cb_check(cb)
 void
 cb_check(struct cirbuf *cb)
 {
@@ -31,10 +31,10 @@ cb->c_cl - cb->c_start);
 }
 }
 #else
-#define	CB_CHECK(cb)
+#define CB_CHECK(cb)
 #endif
 int putc(
-int	c,
+int c,
 struct cirbuf *cb)
 {
 char *ow, *nw;
@@ -53,7 +53,7 @@ return 0;
 int getc(struct cirbuf *cb)
 {
 unsigned char *nr;
-int	c;
+int c;
 nr = (unsigned char *)cb->c_cf;
 if (nr == (unsigned char *)cb->c_cl) {
 CB_CHECK(cb);
@@ -70,11 +70,11 @@ return c;
 }
 int
 q_to_b( struct cirbuf *cb,
-char	*cp,
-int	count)
+char *cp,
+int count)
 {
-char * const	ocp = cp;
-int		i;
+char * const ocp = cp;
+int i;
 while (count != 0) {
 if (cb->c_cl == cb->c_cf)
 break;
@@ -97,12 +97,12 @@ CB_CHECK(cb);
 return cp - ocp;
 }
 int
-b_to_q( char	*cp,
-int	count,
+b_to_q( char *cp,
+int count,
 struct cirbuf *cb)
 {
-int	i;
-char	*lim;
+int i;
+char *lim;
 while (count != 0) {
 lim = cb->c_cf - 1;
 if (lim < cb->c_start)
@@ -129,9 +129,9 @@ return count;
 }
 void
 ndflush(struct cirbuf *cb,
-int	count)
+int count)
 {
-int	i;
+int i;
 while (count != 0) {
 if (cb->c_cl == cb->c_cf)
 break;
@@ -159,7 +159,7 @@ cb->c_cc = 0;
 void
 cb_alloc(
 struct cirbuf *cb,
-vm_size_t	buf_size)
+vm_size_t buf_size)
 {
 char *buf;
 buf = (char *)kalloc(buf_size);
@@ -174,7 +174,7 @@ CB_CHECK(cb);
 void
 cb_free(struct cirbuf *cb)
 {
-vm_size_t	size;
+vm_size_t size;
 size = cb->c_end - cb->c_start;
 kfree((vm_offset_t)cb->c_start, size);
 }

@@ -3,25 +3,25 @@
 #include <smtp.h>
 enum
 {
-Nmx=		16,
-Maxstring=	256,
-Maxipstr=	8*5,
+Nmx= 16,
+Maxstring= 256,
+Maxipstr= 8*5,
 };
-typedef struct Mx	Mx;
+typedef struct Mx Mx;
 struct Mx
 {
-char	host[Maxstring];
-char	ip[Maxipstr];
-int	pref;
+char host[Maxstring];
+char ip[Maxipstr];
+int pref;
 };
-char	*bustedmxs[Maxbustedmx];
+char *bustedmxs[Maxbustedmx];
 Ndb *db;
 static Mx mx[Nmx];
-static int	callmx(DS*, char*, char*);
-static int	compar(void*, void*);
-static void	expand_meta(DS *ds);
-static int	mxlookup(DS*, char*);
-static int	mxlookup1(DS*, char*);
+static int callmx(DS*, char*, char*);
+static int compar(void*, void*);
+static void expand_meta(DS *ds);
+static int mxlookup(DS*, char*);
+static int mxlookup1(DS*, char*);
 int
 mxdial(char *addr, char *ddomain, char *gdomain)
 {

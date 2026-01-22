@@ -3,7 +3,7 @@
 #include <ctype.h>
 #include <fcall.h>
 #include <String.h>
-#define	TARGBEGIN {\
+#define TARGBEGIN {\
 (argv0 || (argv0 = *argv)), argv++, argc--;\
 if (argv[0]) {\
 char *_args, *_argt;\
@@ -12,16 +12,16 @@ _args = &argv[0][0];\
 _argc = 0;\
 while(*_args && (_args += chartorune(&_argc, _args)))\
 switch(_argc)
-#define	TARGEND	SET(_argt); USED(_argt);USED(_argc);USED(_args); \
+#define TARGEND SET(_argt); USED(_argt);USED(_argc);USED(_args); \
 argc--, argv++; } \
 USED(argv); USED(argc); }
-#define	TARGC() (_argc)
-#define HOWMANY(a, size)	(((a) + (size) - 1) / (size))
-#define BYTES2TBLKS(bytes)	HOWMANY(bytes, Tblock)
-#define	G2BEBYTE(x)	(((x)[0]<<8)  |  (x)[1])
-#define	G3BEBYTE(x)	(((x)[0]<<16) | ((x)[1]<<8)  |  (x)[2])
-#define	G4BEBYTE(x)	(((x)[0]<<24) | ((x)[1]<<16) | ((x)[2]<<8) | (x)[3])
-#define	G8BEBYTE(x)	(((vlong)G4BEBYTE(x)<<32) | (u32int)G4BEBYTE((x)+4))
+#define TARGC() (_argc)
+#define HOWMANY(a, size) (((a) + (size) - 1) / (size))
+#define BYTES2TBLKS(bytes) HOWMANY(bytes, Tblock)
+#define G2BEBYTE(x) (((x)[0]<<8) | (x)[1])
+#define G3BEBYTE(x) (((x)[0]<<16) | ((x)[1]<<8) | (x)[2])
+#define G4BEBYTE(x) (((x)[0]<<24) | ((x)[1]<<16) | ((x)[2]<<8) | (x)[3])
+#define G8BEBYTE(x) (((vlong)G4BEBYTE(x)<<32) | (u32int)G4BEBYTE((x)+4))
 typedef vlong Off;
 typedef char *(*Refill)(int ar, char *bufs, int justhdr);
 enum { Stdin, Stdout, Stderr };
@@ -41,58 +41,58 @@ Dblock = 20,
 Debug = 0,
 };
 enum {
-LF_PLAIN1 =	'\0',
-LF_PLAIN2 =	'0',
-LF_LINK =	'1',
-LF_SYMLINK1 =	'2',
-LF_SYMLINK2 =	's',
-LF_CHR =	'3',
-LF_BLK =	'4',
-LF_DIR =	'5',
-LF_FIFO =	'6',
-LF_CONTIG =	'7',
+LF_PLAIN1 = '\0',
+LF_PLAIN2 = '0',
+LF_LINK = '1',
+LF_SYMLINK1 = '2',
+LF_SYMLINK2 = 's',
+LF_CHR = '3',
+LF_BLK = '4',
+LF_DIR = '5',
+LF_FIFO = '6',
+LF_CONTIG = '7',
 };
-#define islink(lf)	(isreallink(lf) || issymlink(lf))
-#define isreallink(lf)	((lf) == LF_LINK)
-#define issymlink(lf)	((lf) == LF_SYMLINK1 || (lf) == LF_SYMLINK2)
+#define islink(lf) (isreallink(lf) || issymlink(lf))
+#define isreallink(lf) ((lf) == LF_LINK)
+#define issymlink(lf) ((lf) == LF_SYMLINK1 || (lf) == LF_SYMLINK2)
 typedef union {
-uchar	data[Tblock];
+uchar data[Tblock];
 struct {
-char	name[Namsiz];
-char	mode[8];
-char	uid[8];
-char	gid[8];
-char	size[12];
-char	mtime[12];
-char	chksum[8];
-char	linkflag;
-char	linkname[Namsiz];
-char	magic[6];
-char	version[2];
-char	uname[32];
-char	gname[32];
-char	devmajor[8];
-char	devminor[8];
-char	prefix[Maxpfx];
+char name[Namsiz];
+char mode[8];
+char uid[8];
+char gid[8];
+char size[12];
+char mtime[12];
+char chksum[8];
+char linkflag;
+char linkname[Namsiz];
+char magic[6];
+char version[2];
+char uname[32];
+char gname[32];
+char devmajor[8];
+char devminor[8];
+char prefix[Maxpfx];
 };
 } Hdr;
 typedef struct {
-char	*comp;
-char	*decomp;
-char	*sfx[4];
+char *comp;
+char *decomp;
+char *sfx[4];
 } Compress;
 static Compress comps[] = {
-"gzip",		"gunzip",	{ ".tar.gz", ".tgz" },
-"compress",	"uncompress",	{ ".tar.Z",  ".tz" },
-"bzip2",	"bunzip2",	{ ".tar.bz", ".tbz",
+"gzip", "gunzip", { ".tar.gz", ".tgz" },
+"compress", "uncompress", { ".tar.Z", ".tz" },
+"bzip2", "bunzip2", { ".tar.bz", ".tbz",
 ".tar.bz2",".tbz2" },
 };
 typedef struct {
-int	kid;
-int	fd;
-int	rfd;
-int	input;
-int	open;
+int kid;
+int fd;
+int rfd;
+int input;
+int open;
 } Pushstate;
 #define OTHER(rdwr) ((rdwr) == Rd? Wr: Rd)
 static int debug;

@@ -123,9 +123,9 @@ uint sunCallSize(SunProg*, SunCall*);
 void sunCallSetup(SunCall*, SunProg*, uint);
 #pragma varargck type "B" SunRpc*
 #pragma varargck type "C" SunCall*
-int	sunRpcFmt(Fmt*);
-int	sunCallFmt(Fmt*);
-void	sunFmtInstall(SunProg*);
+int sunRpcFmt(Fmt*);
+int sunCallFmt(Fmt*);
+void sunFmtInstall(SunProg*);
 typedef struct SunMsg SunMsg;
 typedef struct SunSrv SunSrv;
 enum
@@ -157,47 +157,47 @@ Channel *creply;
 Channel *cthread;
 };
 SunSrv *sunSrv(void);
-void	sunSrvProg(SunSrv *srv, SunProg *prog, Channel *c);
-int	sunSrvAnnounce(SunSrv *srv, char *address);
-int	sunSrvUdp(SunSrv *srv, char *address);
-int	sunSrvNet(SunSrv *srv, char *address);
-int	sunSrvFd(SunSrv *srv, int fd);
-void	sunSrvThreadCreate(SunSrv *srv, void (*fn)(void*), void*);
-void	sunSrvClose(SunSrv*);
-int	sunMsgReply(SunMsg*, SunCall*);
-int	sunMsgDrop(SunMsg*);
-int	sunMsgReplyError(SunMsg*, SunStatus);
+void sunSrvProg(SunSrv *srv, SunProg *prog, Channel *c);
+int sunSrvAnnounce(SunSrv *srv, char *address);
+int sunSrvUdp(SunSrv *srv, char *address);
+int sunSrvNet(SunSrv *srv, char *address);
+int sunSrvFd(SunSrv *srv, int fd);
+void sunSrvThreadCreate(SunSrv *srv, void (*fn)(void*), void*);
+void sunSrvClose(SunSrv*);
+int sunMsgReply(SunMsg*, SunCall*);
+int sunMsgDrop(SunMsg*);
+int sunMsgReplyError(SunMsg*, SunStatus);
 typedef struct SunClient SunClient;
 struct SunClient
 {
-int		fd;
-int		chatty;
-int		needcount;
-ulong	maxwait;
-ulong	xidgen;
-int		nsend;
-int		nresend;
+int fd;
+int chatty;
+int needcount;
+ulong maxwait;
+ulong xidgen;
+int nsend;
+int nresend;
 struct {
 ulong min;
 ulong max;
 ulong avg;
 } rtt;
-Channel	*dying;
-Channel	*rpcchan;
-Channel	*timerchan;
-Channel	*flushchan;
-Channel	*readchan;
-SunProg	**prog;
-int		nprog;
-int 		timertid;
-int 		nettid;
+Channel *dying;
+Channel *rpcchan;
+Channel *timerchan;
+Channel *flushchan;
+Channel *readchan;
+SunProg **prog;
+int nprog;
+int timertid;
+int nettid;
 };
-SunClient	*sunDial(char*);
-int	sunClientRpc(SunClient*, ulong, SunCall*, SunCall*, uchar**);
-void	sunClientClose(SunClient*);
-void	sunClientFlushRpc(SunClient*, ulong);
-void	sunClientProg(SunClient*, SunProg*);
-void	*emalloc(ulong);
+SunClient *sunDial(char*);
+int sunClientRpc(SunClient*, ulong, SunCall*, SunCall*, uchar**);
+void sunClientClose(SunClient*);
+void sunClientFlushRpc(SunClient*, ulong);
+void sunClientProg(SunClient*, SunProg*);
+void *emalloc(ulong);
 void *erealloc(void*, ulong);
 typedef struct PortMap PortMap;
 typedef struct PortTNull PortTNull;
@@ -229,10 +229,10 @@ PortCallRCallit,
 } PortCallType;
 enum
 {
-PortProgram	= 100000,
-PortVersion	= 2,
-PortProtoTcp	= 6,
-PortProtoUdp	= 17
+PortProgram = 100000,
+PortVersion = 2,
+PortProtoTcp = 6,
+PortProtoUdp = 17
 };
 struct PortMap {
 u32int prog;

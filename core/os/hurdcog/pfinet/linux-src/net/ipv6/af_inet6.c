@@ -88,24 +88,24 @@ sk->num = protocol;
 goto free_and_badtype;
 }
 sock_init_data(sock, sk);
-sk->destruct            = NULL;
-sk->zapped		= 0;
-sk->family		= PF_INET6;
-sk->protocol		= protocol;
-sk->prot		= prot;
-sk->backlog_rcv		= prot->backlog_rcv;
-sk->timer.data		= (unsigned long)sk;
-sk->timer.function	= &net_timer;
-sk->net_pinfo.af_inet6.hop_limit  = -1;
+sk->destruct = NULL;
+sk->zapped = 0;
+sk->family = PF_INET6;
+sk->protocol = protocol;
+sk->prot = prot;
+sk->backlog_rcv = prot->backlog_rcv;
+sk->timer.data = (unsigned long)sk;
+sk->timer.function = &net_timer;
+sk->net_pinfo.af_inet6.hop_limit = -1;
 sk->net_pinfo.af_inet6.mcast_hops = -1;
-sk->net_pinfo.af_inet6.mc_loop	  = 1;
-sk->net_pinfo.af_inet6.pmtudisc	  = IPV6_PMTUDISC_WANT;
-sk->net_pinfo.af_inet6.ipv6only	  = sysctl_ipv6_bindv6only;
-sk->ip_ttl	= 64;
-sk->ip_mc_loop	= 1;
-sk->ip_mc_ttl	= 1;
-sk->ip_mc_index	= 0;
-sk->ip_mc_list	= NULL;
+sk->net_pinfo.af_inet6.mc_loop = 1;
+sk->net_pinfo.af_inet6.pmtudisc = IPV6_PMTUDISC_WANT;
+sk->net_pinfo.af_inet6.ipv6only = sysctl_ipv6_bindv6only;
+sk->ip_ttl = 64;
+sk->ip_mc_loop = 1;
+sk->ip_mc_ttl = 1;
+sk->ip_mc_index = 0;
+sk->ip_mc_list = NULL;
 if (sk->type==SOCK_RAW && protocol==IPPROTO_RAW)
 sk->ip_hdrincl=1;
 if (sk->num) {
@@ -143,8 +143,8 @@ unsigned short snum;
 int addr_type = 0;
 if(sk->prot->bind)
 return sk->prot->bind(sk, uaddr, addr_len);
-if ((sk->state != TCP_CLOSE)			||
-(addr_len < sizeof(struct sockaddr_in6))	||
+if ((sk->state != TCP_CLOSE) ||
+(addr_len < sizeof(struct sockaddr_in6)) ||
 (sk->num != 0))
 return -EINVAL;
 addr_type = ipv6_addr_type(&addr->sin6_addr);
@@ -169,7 +169,7 @@ if (!dev)
 return(-ENODEV);
 }
 v4addr = LOOPBACK4_IPV6;
-if (!(addr_type & IPV6_ADDR_MULTICAST))	{
+if (!(addr_type & IPV6_ADDR_MULTICAST)) {
 if (ipv6_chk_addr(&addr->sin6_addr, NULL, 0) == NULL)
 return(-EADDRNOTAVAIL);
 }

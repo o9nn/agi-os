@@ -15,7 +15,7 @@ DCRYPT_MODE_DECRYPT
 };
 enum dcrypt_key_type {
 DCRYPT_KEY_RSA = 0x1,
-DCRYPT_KEY_EC  = 0x2
+DCRYPT_KEY_EC = 0x2
 };
 enum dcrypt_key_format {
 DCRYPT_FORMAT_PEM,

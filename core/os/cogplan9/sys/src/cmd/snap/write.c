@@ -3,15 +3,15 @@
 #include <bio.h>
 #include "snap.h"
 char *pfile[Npfile] = {
-[Psegment]	"segment",
-[Pfd]			"fd",
-[Pfpregs]		"fpregs",
-[Pnoteid]		"noteid",
-[Pkregs]		"kregs",
-[Pns]			"ns",
-[Pproc]		"proc",
-[Pregs]		"regs",
-[Pstatus]		"status",
+[Psegment] "segment",
+[Pfd] "fd",
+[Pfpregs] "fpregs",
+[Pnoteid] "noteid",
+[Pkregs] "kregs",
+[Pns] "ns",
+[Pproc] "proc",
+[Pregs] "regs",
+[Pstatus] "status",
 };
 static void
 writeseg(Biobuf *b, Proc *proc, Seg *s)
@@ -23,7 +23,7 @@ if(s == nil){
 Bprint(b, "%-11ud %-11ud ", 0, 0);
 return;
 }
-type = proc->text ==  s ? 't' : 'm';
+type = proc->text == s ? 't' : 'm';
 npg = (s->len+Pagesize-1)/Pagesize;
 if(npg != s->npg)
 abort();

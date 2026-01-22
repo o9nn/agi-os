@@ -1,13 +1,13 @@
-#ifndef	_KERN_COUNTERS_
-#define	_KERN_COUNTERS_
-#define counter_always(code)	code
-#if	MACH_COUNTERS
-#define counter(code)		counter_always(code)
+#ifndef _KERN_COUNTERS_
+#define _KERN_COUNTERS_
+#define counter_always(code) code
+#if MACH_COUNTERS
+#define counter(code) counter_always(code)
 #else
 #define counter(code)
 #endif
 typedef unsigned int mach_counter_t;
-#if	MACH_COUNTERS
+#if MACH_COUNTERS
 extern mach_counter_t c_thread_invoke_hits;
 extern mach_counter_t c_thread_invoke_misses;
 extern mach_counter_t c_thread_invoke_csw;

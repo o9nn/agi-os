@@ -14,18 +14,18 @@ static int multicast_filter_limit = 64;
 #define MAX_UNITS 8
 static int options[MAX_UNITS] = {-1, -1, -1, -1, -1, -1, -1, -1};
 static int full_duplex[MAX_UNITS] = {-1, -1, -1, -1, -1, -1, -1, -1};
-#define TX_RING_SIZE	32
-#define RX_RING_SIZE	32
-#define TX_QUEUE_LIMIT  12
+#define TX_RING_SIZE 32
+#define RX_RING_SIZE 32
+#define TX_QUEUE_LIMIT 12
 #define TX_QUEUE_UNFULL 8
-#define TX_TIMEOUT  (6*HZ)
-#define PKT_BUF_SZ		1536
+#define TX_TIMEOUT (6*HZ)
+#define PKT_BUF_SZ 1536
 #ifndef __KERNEL__
 #define __KERNEL__
 #endif
 #if !defined(__OPTIMIZE__)
-#warning  You must compile this file with the correct options!
-#warning  See the last lines of the source file.
+#warning You must compile this file with the correct options!
+#warning See the last lines of the source file.
 #error You must compile this driver with "-O".
 #endif
 #include <linux/config.h>
@@ -69,9 +69,9 @@ static int full_duplex[MAX_UNITS] = {-1, -1, -1, -1, -1, -1, -1, -1};
 #include "pci-scan.h"
 #include "kern_compat.h"
 #endif
-#define virt_to_le32desc(addr)  cpu_to_le32(virt_to_bus(addr))
-#define le32desc_to_virt(addr)  bus_to_virt(le32_to_cpu(addr))
-#if (LINUX_VERSION_CODE >= 0x20100)  &&  defined(MODULE)
+#define virt_to_le32desc(addr) cpu_to_le32(virt_to_bus(addr))
+#define le32desc_to_virt(addr) bus_to_virt(le32_to_cpu(addr))
+#if (LINUX_VERSION_CODE >= 0x20100) && defined(MODULE)
 char kernel_version[] = UTS_RELEASE;
 #endif
 MODULE_AUTHOR("Donald Becker <becker@scyld.com>");
@@ -106,57 +106,57 @@ long ioaddr, int irq, int chip_idx, int fnd_cnt);
 static int speedo_pwr_event(void *dev_instance, int event);
 enum chip_capability_flags { ResetMII=1, HasChksum=2};
 #ifdef USE_IO_OPS
-#define SPEEDO_IOTYPE   PCI_USES_MASTER|PCI_USES_IO|PCI_ADDR1
-#define SPEEDO_SIZE		32
+#define SPEEDO_IOTYPE PCI_USES_MASTER|PCI_USES_IO|PCI_ADDR1
+#define SPEEDO_SIZE 32
 #else
-#define SPEEDO_IOTYPE   PCI_USES_MASTER|PCI_USES_MEM|PCI_ADDR0
-#define SPEEDO_SIZE		0x1000
+#define SPEEDO_IOTYPE PCI_USES_MASTER|PCI_USES_MEM|PCI_ADDR0
+#define SPEEDO_SIZE 0x1000
 #endif
 struct pci_id_info static pci_id_tbl[] = {
-{"Intel PCI EtherExpress Pro100 82865",		{ 0x12278086, 0xffffffff,},
+{"Intel PCI EtherExpress Pro100 82865", { 0x12278086, 0xffffffff,},
 SPEEDO_IOTYPE, SPEEDO_SIZE, 0, },
 {"Intel PCI EtherExpress Pro100 Smart (i960RP/RD)",
 { 0x12288086, 0xffffffff,}, SPEEDO_IOTYPE, SPEEDO_SIZE, 0, },
-{"Intel i82559 rev 8",			{ 0x12298086, ~0, 0,0, 8,0xff},
+{"Intel i82559 rev 8", { 0x12298086, ~0, 0,0, 8,0xff},
 SPEEDO_IOTYPE, SPEEDO_SIZE, HasChksum, },
-{"Intel PCI EtherExpress Pro100",			{ 0x12298086, 0xffffffff,},
+{"Intel PCI EtherExpress Pro100", { 0x12298086, 0xffffffff,},
 SPEEDO_IOTYPE, SPEEDO_SIZE, 0, },
-{"Intel EtherExpress Pro/100+ i82559ER",	{ 0x12098086, 0xffffffff,},
+{"Intel EtherExpress Pro/100+ i82559ER", { 0x12098086, 0xffffffff,},
 SPEEDO_IOTYPE, SPEEDO_SIZE, ResetMII, },
-{"Intel EtherExpress Pro/100 type 1029",	{ 0x10298086, 0xffffffff,},
+{"Intel EtherExpress Pro/100 type 1029", { 0x10298086, 0xffffffff,},
 SPEEDO_IOTYPE, SPEEDO_SIZE, 0, },
-{"Intel EtherExpress Pro/100 type 1030",	{ 0x10308086, 0xffffffff,},
+{"Intel EtherExpress Pro/100 type 1030", { 0x10308086, 0xffffffff,},
 SPEEDO_IOTYPE, SPEEDO_SIZE, 0, },
-{"Intel Pro/100 V Network",					{ 0x24498086, 0xffffffff,},
+{"Intel Pro/100 V Network", { 0x24498086, 0xffffffff,},
 SPEEDO_IOTYPE, SPEEDO_SIZE, 0, },
-{"Intel PCI LAN0 Controller 82801E",		{ 0x24598086, 0xffffffff,},
+{"Intel PCI LAN0 Controller 82801E", { 0x24598086, 0xffffffff,},
 SPEEDO_IOTYPE, SPEEDO_SIZE, 0, },
-{"Intel PCI LAN1 Controller 82801E",		{ 0x245D8086, 0xffffffff,},
+{"Intel PCI LAN1 Controller 82801E", { 0x245D8086, 0xffffffff,},
 SPEEDO_IOTYPE, SPEEDO_SIZE, 0, },
-{"Intel Pro/100 VE (type 1031)",			{ 0x10318086, 0xffffffff,},
+{"Intel Pro/100 VE (type 1031)", { 0x10318086, 0xffffffff,},
 SPEEDO_IOTYPE, SPEEDO_SIZE, 0, },
-{"Intel Pro/100 VE (type 1032)",			{ 0x10328086, 0xffffffff,},
+{"Intel Pro/100 VE (type 1032)", { 0x10328086, 0xffffffff,},
 SPEEDO_IOTYPE, SPEEDO_SIZE, 0, },
-{"Intel Pro/100 VE (type 1033)",			{ 0x10338086, 0xffffffff,},
+{"Intel Pro/100 VE (type 1033)", { 0x10338086, 0xffffffff,},
 SPEEDO_IOTYPE, SPEEDO_SIZE, 0, },
-{"Intel Pro/100 VE (type 1034)",			{ 0x10348086, 0xffffffff,},
+{"Intel Pro/100 VE (type 1034)", { 0x10348086, 0xffffffff,},
 SPEEDO_IOTYPE, SPEEDO_SIZE, 0, },
-{"Intel Pro/100 VE (type 1035)",			{ 0x10358086, 0xffffffff,},
+{"Intel Pro/100 VE (type 1035)", { 0x10358086, 0xffffffff,},
 SPEEDO_IOTYPE, SPEEDO_SIZE, 0, },
-{"Intel Pro/100 VM (type 1038)",			{ 0x10388086, 0xffffffff,},
+{"Intel Pro/100 VM (type 1038)", { 0x10388086, 0xffffffff,},
 SPEEDO_IOTYPE, SPEEDO_SIZE, 0, },
-{"Intel Pro/100 VM (type 1039)",			{ 0x10398086, 0xffffffff,},
+{"Intel Pro/100 VM (type 1039)", { 0x10398086, 0xffffffff,},
 SPEEDO_IOTYPE, SPEEDO_SIZE, 0, },
-{"Intel Pro/100 VM (type 103a)",			{ 0x103a8086, 0xffffffff,},
+{"Intel Pro/100 VM (type 103a)", { 0x103a8086, 0xffffffff,},
 SPEEDO_IOTYPE, SPEEDO_SIZE, 0, },
 {"HP/Compaq D510 Intel Pro/100 VM",
 { 0x103b8086, 0xffffffff, 0x00120e11, 0xffffffff,},
 SPEEDO_IOTYPE, SPEEDO_SIZE, 0, },
-{"Intel Pro/100 VM (type 103b)",			{ 0x103b8086, 0xffffffff,},
+{"Intel Pro/100 VM (type 103b)", { 0x103b8086, 0xffffffff,},
 SPEEDO_IOTYPE, SPEEDO_SIZE, 0, },
-{"Intel Pro/100 VE (type 103D)",			{ 0x103d8086, 0xffffffff,},
+{"Intel Pro/100 VE (type 103D)", { 0x103d8086, 0xffffffff,},
 SPEEDO_IOTYPE, SPEEDO_SIZE, 0, },
-{"Intel Pro/100 VE (type 103E)",			{ 0x103e8086, 0xffffffff,},
+{"Intel Pro/100 VE (type 103E)", { 0x103e8086, 0xffffffff,},
 SPEEDO_IOTYPE, SPEEDO_SIZE, 0, },
 {"Intel EtherExpress Pro/100 865G Northbridge type 1051",
 { 0x10518086, 0xffffffff,}, SPEEDO_IOTYPE, SPEEDO_SIZE, 0, },
@@ -204,14 +204,14 @@ CmdIntr = 0x20000000,
 CmdTxFlex = 0x00080000,
 };
 #if defined(__i386__)
-#define clear_suspend(cmd)   ((char *)(&(cmd)->cmd_status))[3] &= ~0x40
+#define clear_suspend(cmd) ((char *)(&(cmd)->cmd_status))[3] &= ~0x40
 #elif defined(__alpha__) || defined(__x86_64) || defined(__ia64)
-#define clear_suspend(cmd)   clear_bit(30, &(cmd)->cmd_status)
+#define clear_suspend(cmd) clear_bit(30, &(cmd)->cmd_status)
 #elif defined(__powerpc__) || defined(__sparc__) || (__BIG_ENDIAN)
-#define clear_suspend(cmd)	clear_bit(6, &(cmd)->cmd_status)
+#define clear_suspend(cmd) clear_bit(6, &(cmd)->cmd_status)
 #else
 #warning Undefined architecture.
-#define clear_suspend(cmd)	(cmd)->cmd_status &= cpu_to_le32(~CmdSuspend)
+#define clear_suspend(cmd) (cmd)->cmd_status &= cpu_to_le32(~CmdSuspend)
 #endif
 enum SCBCmdBits {
 SCBMaskCmdDone=0x8000, SCBMaskRxDone=0x4000, SCBMaskCmdIdle=0x2000,
@@ -226,7 +226,7 @@ RxStart=0x0001, RxResume=0x0002, RxAbort=0x0004, RxAddrLoad=0x0006,
 RxResumeNoResources=0x0007,
 };
 enum intr_status_bits {
-IntrCmdDone=0x8000,  IntrRxDone=0x4000, IntrCmdIdle=0x2000,
+IntrCmdDone=0x8000, IntrRxDone=0x4000, IntrCmdIdle=0x2000,
 IntrRxSuspend=0x1000, IntrMIIDone=0x0800, IntrDrvrIntr=0x0400,
 IntrAllNormal=0xfc00,
 };
@@ -248,7 +248,7 @@ enum RxFD_bits {
 RxComplete=0x8000, RxOK=0x2000,
 RxErrCRC=0x0800, RxErrAlign=0x0400, RxErrTooBig=0x0200, RxErrSymbol=0x0010,
 RxEth2Type=0x0020, RxNoMatch=0x0004, RxNoIAMatch=0x0002,
-TxUnderrun=0x1000,  StatusComplete=0x8000,
+TxUnderrun=0x1000, StatusComplete=0x8000,
 };
 struct TxFD {
 s32 status;
@@ -280,12 +280,12 @@ u32 rx_runt_errs;
 u32 done_marker;
 };
 struct speedo_private {
-struct TxFD	tx_ring[TX_RING_SIZE];
+struct TxFD tx_ring[TX_RING_SIZE];
 struct RxFD *rx_ringp[RX_RING_SIZE];
 struct speedo_stats lstats;
 struct sk_buff* tx_skbuff[TX_RING_SIZE];
 struct sk_buff* rx_skbuff[RX_RING_SIZE];
-struct descriptor  *last_cmd;
+struct descriptor *last_cmd;
 unsigned int cur_tx, dirty_tx;
 spinlock_t lock;
 u32 tx_threshold;
@@ -332,13 +332,13 @@ AcceptBroadcast=0x08, AcceptMulticast=0x04,
 AcceptMyPhys=0x01, RxInvalidMode=0x7f
 };
 const char i82557_config_cmd[22] = {
-22, 0x08, 0, 0,  0, 0, 0x32, 0x03,  1,
-0, 0x2E, 0,  0x60, 0,
-0xf2, 0x48,   0, 0x40, 0xf2, 0x80,
+22, 0x08, 0, 0, 0, 0, 0x32, 0x03, 1,
+0, 0x2E, 0, 0x60, 0,
+0xf2, 0x48, 0, 0x40, 0xf2, 0x80,
 0x3f, 0x05, };
 const char i82558_config_cmd[22] = {
-22, 0x08, 0, 1,  0, 0, 0x22, 0x03,  1,
-0, 0x2E, 0,  0x60, 0x08, 0x88,
+22, 0x08, 0, 1, 0, 0, 0x22, 0x03, 1,
+0, 0x2E, 0, 0x60, 0x08, 0x88,
 0x68, 0, 0x40, 0xf2, 0xBD,
 0x31, 0x05, };
 static const char *phys[] = {
@@ -349,7 +349,7 @@ static const char *phys[] = {
 enum phy_chips { NonSuchPhy=0, I82553AB, I82553C, I82503, DP83840, S80C240,
 S80C24, I82555, DP83840A=10, };
 static const char is_mii[] = { 0, 1, 1, 0, 1, 1, 0, 1 };
-#define EE_READ_CMD		(6)
+#define EE_READ_CMD (6)
 static int do_eeprom_cmd(long ioaddr, int cmd, int cmd_len);
 static int mdio_read(struct net_device *dev, int phy_id, int location);
 static int mdio_write(long ioaddr, int phy_id, int location, int value);
@@ -384,7 +384,7 @@ if (!dev)
 return NULL;
 if (dev->mem_start > 0)
 option = dev->mem_start;
-else if (card_idx >= 0  &&  options[card_idx] >= 0)
+else if (card_idx >= 0 && options[card_idx] >= 0)
 option = options[card_idx];
 else
 option = -1;
@@ -444,7 +444,7 @@ if (eeprom[7] & 0x0700)
 printk(KERN_INFO "    Secondary interface chip %s.\n",
 phys[(eeprom[7]>>8)&7]);
 if (((eeprom[6]>>8) & 0x3f) == DP83840
-||  ((eeprom[6]>>8) & 0x3f) == DP83840A) {
+|| ((eeprom[6]>>8) & 0x3f) == DP83840A) {
 int mdi_reg23 = mdio_read(dev, eeprom[6] & 0x1f, 23) | 0x0422;
 if (congenb)
 mdi_reg23 |= 0x0100;
@@ -469,21 +469,21 @@ printk(KERN_INFO "\n" KERN_INFO "  ** The configuration "
 "EEPROM enables Sleep Mode.\n" KERN_INFO "\n"
 "  ** This will cause PCI bus errors!\n"
 KERN_INFO "  ** Update the configuration EEPROM "
-"with the eepro100-diag program.\n"  );
+"with the eepro100-diag program.\n" );
 if (eeprom[6] == 0)
 printk(KERN_INFO "  ** The configuration EEPROM does not have a "
 "transceiver type set.\n" KERN_INFO "\n"
 "  ** This will cause configuration problems and prevent "
 "monitoring the link!\n"
 KERN_INFO "  ** Update the configuration EEPROM "
-"with the eepro100-diag program.\n"  );
+"with the eepro100-diag program.\n" );
 self_test_results = (s32*)(&sp->lstats);
 self_test_results[0] = 0;
 self_test_results[1] = -1;
 outl(virt_to_bus(self_test_results) | PortSelfTest, ioaddr + SCBPort);
 do {
 udelay(10);
-} while (self_test_results[1] == -1  &&  --boguscnt >= 0);
+} while (self_test_results[1] == -1 && --boguscnt >= 0);
 if (boguscnt < 0) {
 printk(KERN_ERR "Self test failed, status %8.8x:\n"
 KERN_ERR " Failure to initialize the i82557.\n"
@@ -575,18 +575,18 @@ printk(KERN_ERR "%s: Command %4.4x was not accepted after %d polls!"
 "  Current status %8.8x.\n",
 dev->name, cmd, wait, (int)inl(dev->base_addr + SCBStatus));
 }
-#define EE_SHIFT_CLK	0x01
-#define EE_CS			0x02
-#define EE_DATA_WRITE	0x04
-#define EE_DATA_READ	0x08
-#define EE_ENB			(0x4800 | EE_CS)
-#define EE_WRITE_0		0x4802
-#define EE_WRITE_1		0x4806
-#define EE_OFFSET		SCBeeprom
+#define EE_SHIFT_CLK 0x01
+#define EE_CS 0x02
+#define EE_DATA_WRITE 0x04
+#define EE_DATA_READ 0x08
+#define EE_ENB (0x4800 | EE_CS)
+#define EE_WRITE_0 0x4802
+#define EE_WRITE_1 0x4806
+#define EE_OFFSET SCBeeprom
 #ifndef USE_IO_OPS
-#define eeprom_delay(ee_addr)	writew(readw(ee_addr), ee_addr)
+#define eeprom_delay(ee_addr) writew(readw(ee_addr), ee_addr)
 #else
-#define eeprom_delay(ee_addr)	inw(ee_addr)
+#define eeprom_delay(ee_addr) inw(ee_addr)
 #endif
 static int do_eeprom_cmd(long ioaddr, int cmd, int cmd_len)
 {
@@ -767,7 +767,7 @@ netif_link_down(dev);
 }
 }
 if (sp->cur_tx - sp->dirty_tx > 1 &&
-(jiffies - dev->trans_start) > TX_TIMEOUT  &&
+(jiffies - dev->trans_start) > TX_TIMEOUT &&
 (jiffies - sp->last_cmd_time) > TX_TIMEOUT) {
 if (status == 0xffff) {
 if (jiffies - sp->last_reset > 10*HZ) {
@@ -792,8 +792,8 @@ speedo_tx_timeout(dev);
 sp->last_reset = jiffies;
 }
 }
-if (sp->rx_mode == RxInvalidMode  ||
-(sp->rx_bug  && jiffies - sp->last_rx_time > 2*HZ)) {
+if (sp->rx_mode == RxInvalidMode ||
+(sp->rx_bug && jiffies - sp->last_rx_time > 2*HZ)) {
 set_rx_mode(dev);
 }
 add_timer(&sp->timer);
@@ -879,7 +879,7 @@ sp->tx_ring[(sp->dirty_tx+2) % TX_RING_SIZE].status);
 speedo_get_stats(dev);
 speedo_show_state(dev);
 if ((status & 0x00C0) != 0x0080
-&&  (status & 0x003C) == 0x0010  &&  0) {
+&& (status & 0x003C) == 0x0010 && 0) {
 printk(KERN_WARNING "%s: Trying to restart the transmitter...\n",
 dev->name);
 outl(virt_to_bus(&sp->tx_ring[sp->dirty_tx % TX_RING_SIZE]),
@@ -1000,7 +1000,7 @@ return;
 #endif
 do {
 status = inw(ioaddr + SCBStatus);
-if ((status & IntrAllNormal) == 0  ||  status == 0xffff)
+if ((status & IntrAllNormal) == 0 || status == 0xffff)
 break;
 outw(status & IntrAllNormal, ioaddr + SCBStatus);
 if (sp->msg_level & NETIF_MSG_INTR)
@@ -1019,7 +1019,7 @@ if (sp->msg_level & NETIF_MSG_INTR)
 printk(KERN_DEBUG " scavenge candidate %d status %4.4x.\n",
 entry, status);
 if ((status & StatusComplete) == 0) {
-if (sp->cur_tx - dirty_tx > 2  &&
+if (sp->cur_tx - dirty_tx > 2 &&
 (sp->tx_ring[(dirty_tx+1) % TX_RING_SIZE].status
 & cpu_to_le32(StatusComplete))) {
 printk(KERN_ERR "%s: Command unit failed to mark "
@@ -1056,7 +1056,7 @@ dirty_tx += TX_RING_SIZE;
 #endif
 sp->dirty_tx = dirty_tx;
 if (sp->tx_full
-&&  sp->cur_tx - dirty_tx < TX_QUEUE_UNFULL) {
+&& sp->cur_tx - dirty_tx < TX_QUEUE_UNFULL) {
 sp->tx_full = 0;
 netif_resume_tx_queue(dev);
 }
@@ -1317,7 +1317,7 @@ unsigned long flags;
 int entry, i;
 if (dev->flags & IFF_PROMISC) {
 new_rx_mode = AcceptAllMulticast | AcceptAllPhys;
-} else if ((dev->flags & IFF_ALLMULTI)  ||
+} else if ((dev->flags & IFF_ALLMULTI) ||
 dev->mc_count > sp->multicast_filter_limit) {
 new_rx_mode = AcceptAllMulticast;
 } else
@@ -1360,7 +1360,7 @@ outb(CUResume, ioaddr + SCBCmd);
 spin_unlock_irqrestore(&sp->lock, flags);
 sp->last_cmd_time = jiffies;
 }
-if (new_rx_mode == 0  &&  dev->mc_count < 4) {
+if (new_rx_mode == 0 && dev->mc_count < 4) {
 struct dev_mc_list *mclist;
 u16 *setup_params, *eaddrs;
 spin_lock_irqsave(&sp->lock, flags);
@@ -1533,14 +1533,14 @@ kfree(root_speedo_dev);
 root_speedo_dev = next_dev;
 }
 }
-#if (LINUX_VERSION_CODE >= 0x020400)  && 0
+#if (LINUX_VERSION_CODE >= 0x020400) && 0
 module_init(init_module);
 module_exit(cleanup_module);
 #endif
 #else
 int eepro100_probe(struct net_device *dev)
 {
-int cards_found =  pci_drv_register(&eepro100_drv_id, dev);
+int cards_found = pci_drv_register(&eepro100_drv_id, dev);
 if (cards_found >= 0)
 printk(KERN_INFO "%s" KERN_INFO "%s", version1, version2);
 return cards_found;

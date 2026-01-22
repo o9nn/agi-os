@@ -11,7 +11,7 @@
 #include "gzht.h"
 #include "gzline.h"
 #include "gxfmap.h"
-extern  gx_color_map_procs *const cmap_procs_default;
+extern gx_color_map_procs *const cmap_procs_default;
 private
 ENUM_PTRS_WITH(line_params_enum_ptrs, gx_line_params *plp) return 0;
 case 0: return ENUM_OBJ((plp->dash.pattern_size == 0 ?

@@ -5,9 +5,9 @@
 #include <string>
 #define WHISPER_ASSERT GGML_ASSERT
 #define WHISPER_SAMPLE_RATE 16000
-#define WHISPER_N_FFT       400
-#define WHISPER_HOP_LENGTH  160
-#define WHISPER_CHUNK_SIZE  30
+#define WHISPER_N_FFT 400
+#define WHISPER_HOP_LENGTH 160
+#define WHISPER_CHUNK_SIZE 30
 #define COMMON_SAMPLE_RATE 16000
 namespace whisper_preprocessor {
 struct whisper_mel {

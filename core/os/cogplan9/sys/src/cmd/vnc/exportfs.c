@@ -1,85 +1,85 @@
-#include	<u.h>
-#include	<libc.h>
-#include	<fcall.h>
-#include	"compat.h"
-#include	"error.h"
-typedef	struct Fid	Fid;
-typedef	struct Export	Export;
-typedef	struct Exq	Exq;
-typedef	struct Exwork	Exwork;
+#include <u.h>
+#include <libc.h>
+#include <fcall.h>
+#include "compat.h"
+#include "error.h"
+typedef struct Fid Fid;
+typedef struct Export Export;
+typedef struct Exq Exq;
+typedef struct Exwork Exwork;
 enum
 {
-Nfidhash	= 32,
-Maxfdata	= 8192,
-Maxrpc		= IOHDRSZ + Maxfdata,
+Nfidhash = 32,
+Maxfdata = 8192,
+Maxrpc = IOHDRSZ + Maxfdata,
 };
 struct Export
 {
-Ref	r;
-Exq*	work;
-Lock	fidlock;
-Fid*	fid[Nfidhash];
-int	io;
-int	iounit;
-int	nroots;
-Chan	**roots;
+Ref r;
+Exq* work;
+Lock fidlock;
+Fid* fid[Nfidhash];
+int io;
+int iounit;
+int nroots;
+Chan **roots;
 };
 struct Fid
 {
-Fid*	next;
-Fid**	last;
-Chan*	chan;
-long	offset;
-int	fid;
-int	ref;
-int	attached;
+Fid* next;
+Fid** last;
+Chan* chan;
+long offset;
+int fid;
+int ref;
+int attached;
 };
 struct Exq
 {
-Lock	lk;
-int	responding;
-int	noresponse;
-Exq*	next;
-int	shut;
-Export*	export;
-void*	slave;
-Fcall	rpc;
-uchar	buf[Maxrpc];
+Lock lk;
+int responding;
+int noresponse;
+Exq* next;
+int shut;
+Export* export;
+void* slave;
+Fcall rpc;
+uchar buf[Maxrpc];
 };
 struct Exwork
 {
-Lock	l;
-int	ref;
-int	nwaiters;
-QLock	qwait;
-Rendez	rwait;
-Exq	*head;
-Exq	*tail;
+Lock l;
+int ref;
+int nwaiters;
+QLock qwait;
+Rendez rwait;
+Exq *head;
+Exq *tail;
 };
 Exwork exq;
-static void	exshutdown(Export*);
-static void	exflush(Export*, int, int);
-static void	exslave(void*);
-static void	exfree(Export*);
-static void	exportproc(Export*);
-static char*	Exattach(Export*, Fcall*, uchar*);
-static char*	Exauth(Export*, Fcall*, uchar*);
-static char*	Exclunk(Export*, Fcall*, uchar*);
-static char*	Excreate(Export*, Fcall*, uchar*);
-static char*	Exversion(Export*, Fcall*, uchar*);
-static char*	Exopen(Export*, Fcall*, uchar*);
-static char*	Exread(Export*, Fcall*, uchar*);
-static char*	Exremove(Export*, Fcall*, uchar*);
-static char*	Exsession(Export*, Fcall*, uchar*);
-static char*	Exstat(Export*, Fcall*, uchar*);
-static char*	Exwalk(Export*, Fcall*, uchar*);
-static char*	Exwrite(Export*, Fcall*, uchar*);
-static char*	Exwstat(Export*, Fcall*, uchar*);
-static char	*(*fcalls[Tmax])(Export*, Fcall*, uchar*);
-static char	Enofid[]   = "no such fid";
-static char	Eseekdir[] = "can't seek on a directory";
-static char	Ereaddir[] = "unaligned read of a directory";
-static int	exdebug = 0;
+static void exshutdown(Export*);
+static void exflush(Export*, int, int);
+static void exslave(void*);
+static void exfree(Export*);
+static void exportproc(Export*);
+static char* Exattach(Export*, Fcall*, uchar*);
+static char* Exauth(Export*, Fcall*, uchar*);
+static char* Exclunk(Export*, Fcall*, uchar*);
+static char* Excreate(Export*, Fcall*, uchar*);
+static char* Exversion(Export*, Fcall*, uchar*);
+static char* Exopen(Export*, Fcall*, uchar*);
+static char* Exread(Export*, Fcall*, uchar*);
+static char* Exremove(Export*, Fcall*, uchar*);
+static char* Exsession(Export*, Fcall*, uchar*);
+static char* Exstat(Export*, Fcall*, uchar*);
+static char* Exwalk(Export*, Fcall*, uchar*);
+static char* Exwrite(Export*, Fcall*, uchar*);
+static char* Exwstat(Export*, Fcall*, uchar*);
+static char *(*fcalls[Tmax])(Export*, Fcall*, uchar*);
+static char Enofid[] = "no such fid";
+static char Eseekdir[] = "can't seek on a directory";
+static char Ereaddir[] = "unaligned read of a directory";
+static int exdebug = 0;
 int
 sysexport(int fd, Chan **roots, int nroots)
 {

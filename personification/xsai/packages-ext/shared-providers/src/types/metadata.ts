@@ -1,3 +1,3 @@
 export interface ProviderMetadata {
-  id: string
+id: string
 }

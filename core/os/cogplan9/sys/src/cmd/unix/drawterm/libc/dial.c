@@ -1,22 +1,22 @@
 #include <u.h>
 #include <libc.h>
 typedef struct DS DS;
-static int	call(char*, char*, DS*);
-static int	csdial(DS*);
-static void	_dial_string_parse(char*, DS*);
+static int call(char*, char*, DS*);
+static int csdial(DS*);
+static void _dial_string_parse(char*, DS*);
 enum
 {
-Maxstring	= 128,
-Maxpath		= 256,
+Maxstring = 128,
+Maxpath = 256,
 };
 struct DS {
-char	buf[Maxstring];
-char	*netdir;
-char	*proto;
-char	*rem;
-char	*local;
-char	*dir;
-int	*cfdp;
+char buf[Maxstring];
+char *netdir;
+char *proto;
+char *rem;
+char *local;
+char *dir;
+int *cfdp;
 };
 int
 dial(char *dest, char *local, char *dir, int *cfdp)

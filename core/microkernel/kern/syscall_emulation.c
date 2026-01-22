@@ -7,19 +7,19 @@
 #include <kern/mach.server.h>
 #include <vm/vm_kern.h>
 #define syscall_emulation_sync(task)
-#define	base_size	(sizeof(struct eml_dispatch) - sizeof(eml_routine_t))
-#define	count_to_size(count) \
+#define base_size (sizeof(struct eml_dispatch) - sizeof(eml_routine_t))
+#define count_to_size(count) \
 (base_size + sizeof(vm_offset_t) * (count))
-#define	size_to_count(size) \
+#define size_to_count(size) \
 ( ((size) - base_size) / sizeof(vm_offset_t) )
 void eml_init(void)
 {
 }
 void eml_task_reference(
-task_t	task,
-task_t	parent)
+task_t task,
+task_t parent)
 {
-eml_dispatch_t	eml;
+eml_dispatch_t eml;
 if (parent == TASK_NULL)
 eml = EML_DISPATCH_NULL;
 else
@@ -33,7 +33,7 @@ task->eml_dispatch = eml;
 }
 void eml_task_deallocate(const task_t task)
 {
-eml_dispatch_t	eml;
+eml_dispatch_t eml;
 eml = task->eml_dispatch;
 if (eml != EML_DISPATCH_NULL) {
 int count;
@@ -46,16 +46,16 @@ kfree((vm_offset_t)eml, count_to_size(eml->disp_count));
 }
 static kern_return_t
 task_set_emulation_vector_internal(
-task_t 			task,
-int			vector_start,
-emulation_vector_t	emulation_vector,
-unsigned int		emulation_vector_count)
+task_t task,
+int vector_start,
+emulation_vector_t emulation_vector,
+unsigned int emulation_vector_count)
 {
-eml_dispatch_t	cur_eml, new_eml, old_eml;
-vm_size_t	new_size;
-int		cur_start, cur_end;
-int		new_start = 0, new_end = 0;
-int		vector_end;
+eml_dispatch_t cur_eml, new_eml, old_eml;
+vm_size_t new_size;
+int cur_start, cur_end;
+int new_start = 0, new_end = 0;
+int vector_end;
 if (task == TASK_NULL)
 return EML_BAD_TASK;
 vector_end = vector_start + emulation_vector_count;
@@ -66,7 +66,7 @@ task_lock(task);
 cur_eml = task->eml_dispatch;
 if (cur_eml != EML_DISPATCH_NULL) {
 cur_start = cur_eml->disp_min;
-cur_end   = cur_eml->disp_count + cur_start;
+cur_end = cur_eml->disp_count + cur_start;
 simple_lock(&cur_eml->lock);
 if (cur_eml->ref_count == 1 &&
 cur_start <= vector_start &&
@@ -116,7 +116,7 @@ new_eml = (eml_dispatch_t) kalloc(new_size);
 memset(new_eml, 0, new_size);
 simple_lock_init(&new_eml->lock);
 new_eml->ref_count = 1;
-new_eml->disp_min   = new_start;
+new_eml->disp_min = new_start;
 new_eml->disp_count = new_end - new_start;
 continue;
 }
@@ -130,13 +130,13 @@ return KERN_SUCCESS;
 }
 kern_return_t
 task_set_emulation_vector(
-task_t 			task,
-int			vector_start,
-emulation_vector_t	emulation_vector,
-unsigned int		emulation_vector_count)
+task_t task,
+int vector_start,
+emulation_vector_t emulation_vector,
+unsigned int emulation_vector_count)
 {
-kern_return_t		kr;
-vm_offset_t		emul_vector_addr;
+kern_return_t kr;
+vm_offset_t emul_vector_addr;
 if (task == TASK_NULL)
 return EML_BAD_TASK;
 kr = vm_map_copyout(ipc_kernel_map, &emul_vector_addr,
@@ -155,20 +155,20 @@ return kr;
 }
 kern_return_t
 task_get_emulation_vector(
-task_t			task,
-int			*vector_start,
-emulation_vector_t	*emulation_vector,
-unsigned int		*emulation_vector_count)
+task_t task,
+int *vector_start,
+emulation_vector_t *emulation_vector,
+unsigned int *emulation_vector_count)
 {
-eml_dispatch_t		eml;
-vm_size_t		vector_size, size;
-vm_offset_t		addr;
+eml_dispatch_t eml;
+vm_size_t vector_size, size;
+vm_offset_t addr;
 if (task == TASK_NULL)
 return EML_BAD_TASK;
 addr = 0;
 size = 0;
 for(;;) {
-vm_size_t	size_needed;
+vm_size_t size_needed;
 task_lock(task);
 eml = task->eml_dispatch;
 if (eml == EML_DISPATCH_NULL) {
@@ -198,8 +198,8 @@ eml->disp_vector,
 vector_size);
 task_unlock(task);
 {
-vm_size_t	size_used, size_left;
-vm_map_copy_t	memory;
+vm_size_t size_used, size_left;
+vm_map_copy_t memory;
 size_used = round_page(vector_size);
 if (size_used != size)
 (void) kmem_free(ipc_kernel_map,
@@ -214,9 +214,9 @@ memset((char *)addr + vector_size, 0, size_left);
 return KERN_SUCCESS;
 }
 kern_return_t task_set_emulation(
-task_t		task,
-vm_offset_t 	routine_entry_pt,
-int		routine_number)
+task_t task,
+vm_offset_t routine_entry_pt,
+int routine_number)
 {
 return task_set_emulation_vector_internal(task, routine_number,
 &routine_entry_pt, 1);

@@ -84,7 +84,7 @@ const gs_composite_type_t *
 gs_find_compositor(int comp_id)
 {
 const gs_composite_type_t *const * ppcomp = gx_compositor_list;
-const gs_composite_type_t *  pcomp;
+const gs_composite_type_t * pcomp;
 while ((pcomp = *ppcomp++) != 0 && pcomp->comp_id != comp_id)
 ;
 return pcomp;

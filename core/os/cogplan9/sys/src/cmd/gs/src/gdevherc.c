@@ -13,9 +13,9 @@ typedef union REGS registers;
 #define outport2(port, index, data)\
 (outportb(port, index), outportb((port)+1, data))
 #ifdef A4
-#  define PAGE_HEIGHT_INCHES 11.69
+# define PAGE_HEIGHT_INCHES 11.69
 #else
-#  define PAGE_HEIGHT_INCHES 11.0
+# define PAGE_HEIGHT_INCHES 11.0
 #endif
 #define screen_size_x (FB_RASTER * 8)
 #define screen_size_y SCREEN_HEIGHT
@@ -52,19 +52,19 @@ private void herc_set_mode(int);
 private int herc_save_mode = -1;
 int
 herc_close(gx_device *dev)
-{	if ( herc_save_mode >= 0 ) herc_set_mode(herc_save_mode);
+{ if ( herc_save_mode >= 0 ) herc_set_mode(herc_save_mode);
 return 0;
 }
 private int
 herc_get_mode(void)
-{	registers regs;
+{ registers regs;
 regs.h.ah = 0xf;
 int86(0x10, &regs, &regs);
 return regs.h.al;
 }
 private void
 herc_set_mode(int mode)
-{	registers regs;
+{ registers regs;
 regs.h.ah = 0;
 regs.h.al = mode;
 int86(0x10, &regs, &regs);
@@ -72,7 +72,7 @@ int86(0x10, &regs, &regs);
 static const char paramg[12] = {0x35, 0x2d, 0x2e, 0x07, 0x5b, 0x02,
 0x57, 0x57, 0x02, 0x03, 0x00, 0x00};
 typedef byte far *fb_ptr;
-#  define mk_fb_ptr(x, y)\
+# define mk_fb_ptr(x, y)\
 (fb_ptr)((regen) + ((0x2000 * ((y) % 4) + (90 * ((y) >> 2))) + ((int)(x) >> 3)))
 typedef struct rop_params_s {
 fb_ptr dest;
@@ -96,7 +96,7 @@ int y_pos;
 #endif
 int
 herc_open(gx_device *dev)
-{	int i;
+{ int i;
 if ( herc_save_mode < 0 ) herc_save_mode = herc_get_mode();
 outportb(graph_config,3);
 for(i=0;i<sizeof(paramg);i++)
@@ -106,7 +106,7 @@ outport2(seq_addr,i,paramg[i]);
 outportb(graph_mode,0x0a);
 for(i=0;i<0x3FFFL;i++)
 {
-int far *loc = (int far *)( regen  +(2L*i));
+int far *loc = (int far *)( regen +(2L*i));
 *loc = 0;
 }
 return 0;
@@ -116,7 +116,7 @@ int
 herc_copy_mono(gx_device *dev,
 const byte *base, int sourcex, int raster, gx_bitmap_id id,
 int x, int y, int w, int h, gx_color_index izero, gx_color_index ione)
-{	rop_params params;
+{ rop_params params;
 #define czero (int)izero
 #define cone (int)ione
 int dleft, sleft, count;
@@ -236,15 +236,15 @@ int
 herc_copy_color(gx_device *dev,
 const byte *base, int sourcex, int raster, gx_bitmap_id id,
 int x, int y, int w, int h)
-{	return herc_copy_mono(dev, base, sourcex, raster, id,
+{ return herc_copy_mono(dev, base, sourcex, raster, id,
 x, y, w, h,(gx_color_index)0, (gx_color_index)1);
 }
-#  define mk_fb_yptr(x, y)\
+# define mk_fb_yptr(x, y)\
 (fb_ptr)((regen) + ((0x2000 * ((y) % 4) + (90 * ((y) >> 2))) + x))
 int
 herc_fill_rectangle(gx_device *dev, int x, int y, int w, int h,
 gx_color_index color)
-{	rop_params params;
+{ rop_params params;
 int x2, y2, xlen;
 byte led, red, d;
 byte far *ptr;
@@ -258,7 +258,7 @@ y2 = y + h - 1;
 xlen = (x2 >> 3) - (x >> 3) - 1;
 led = 0xff >> (x & 7);
 red = 0xff << (7 - (x2 & 7));
-ptr =  mk_fb_ptr(x,y);
+ptr = mk_fb_ptr(x,y);
 if (color)
 {
 if (xlen == -1)
@@ -273,7 +273,7 @@ return 0;
 }
 xloc = params.x_pos >> 3;
 for(; h >= 0; h--, ptr = mk_fb_ptr(x,params.y_pos))
-{	register int x_count = xlen;
+{ register int x_count = xlen;
 register byte far *p = ptr;
 *p |= led;
 xloc++;
@@ -293,7 +293,7 @@ red = ~red;
 if (xlen == -1)
 {
 d = led | red;
-for(; h >= 0; h--, ptr  = mk_fb_ptr(x,params.y_pos))
+for(; h >= 0; h--, ptr = mk_fb_ptr(x,params.y_pos))
 {
 *ptr &= d;
 params.y_pos++;
@@ -302,7 +302,7 @@ return 0;
 }
 xloc = x >> 3;
 for(; h >= 0; h--, ptr = mk_fb_ptr(x,params.y_pos))
-{	register int x_count = xlen;
+{ register int x_count = xlen;
 register byte far *p = ptr;
 *p &= led;
 xloc++;

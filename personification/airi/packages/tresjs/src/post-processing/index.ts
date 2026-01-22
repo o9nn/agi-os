@@ -1,15 +1,15 @@
 export {
-  EffectComposerPmndrs,
-  HueSaturationPmndrs,
+EffectComposerPmndrs,
+HueSaturationPmndrs,
 } from './components'
 export {
-  useEffectPmndrs,
+useEffectPmndrs,
 } from './composables'
 export {
-  get,
-  makePropWatcher,
-  makePropWatchers,
-  makePropWatchersUsingAllProps,
-  omit,
-  set,
+get,
+makePropWatcher,
+makePropWatchers,
+makePropWatchersUsingAllProps,
+omit,
+set,
 } from './utils'

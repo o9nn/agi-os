@@ -14,15 +14,15 @@ dict : ref Dict;
 # Globals (these will have to be removed if we are going multithreaded)
 #
 pid := 0;
-modeminfo:	ref	Modem->ModemInfo;
+modeminfo: ref Modem->ModemInfo;
 pppdir: string;
 ppplog(log: chan of int, errfile: string, pidc: chan of int)
 {
-pidc <-= sys->pctl(0, nil);				# set reset pid to our pid
+pidc <-= sys->pctl(0, nil); # set reset pid to our pid
 src := sys->open(errfile, Sys->OREAD);
 if (src == nil)
 raise sys->sprint("fail: Couldn't open %s: %r", errfile);
-LOGBUFMAX:	con 1024;
+LOGBUFMAX: con 1024;
 buf := array[LOGBUFMAX] of byte;
 connected := 0;
 while ((count := sys->read(src, buf, LOGBUFMAX)) > 0) {
@@ -45,7 +45,7 @@ log <-= s_Error;
 }
 }
 }
-if(count == 0 && connected && lasterror == nil){	# should change ip/pppmedium.c instead?
+if(count == 0 && connected && lasterror == nil){ # should change ip/pppmedium.c instead?
 lasterror = X("Lost Connection");
 log <-= s_Error;
 }
@@ -66,8 +66,8 @@ pid = <-pidc;
 logchan <-= s_StartPPP;
 if (pppinfo.ipaddr == nil)
 pppinfo.ipaddr = "-";
-#	if (pppinfo.ipmask == nil)
-#		pppinfo.ipmask = "255.255.255.255";
+# if (pppinfo.ipmask == nil)
+# pppinfo.ipmask = "255.255.255.255";
 if (pppinfo.peeraddr == nil)
 pppinfo.peeraddr = "-";
 if (pppinfo.maxmtu == nil)
@@ -96,7 +96,7 @@ translate->init();
 dictname := translate->mkdictname("", "pppclient");
 (dict, nil) = translate->opendict(dictname);
 }
-if (pid != 0)			# yikes we are already running
+if (pid != 0) # yikes we are already running
 reset();
 # create a new process group
 pid = sys->pctl( Sys->NEWPGRP, nil);
@@ -124,9 +124,9 @@ logchan <-= s_StartScript;
 script->execute(modem, modemdev, scriptinfo);
 logchan <-= s_SuccessScript;
 }
-mc := modem->close(modemdev);	# keep connection open for ppp mode
+mc := modem->close(modemdev); # keep connection open for ppp mode
 modemdev = nil;
-modem = nil;	# unload modem module
+modem = nil; # unload modem module
 # if ppp
 if (pppinfo != nil)
 startppp(logchan, pppinfo);
@@ -149,7 +149,7 @@ if(pid != 0){
 kill(pid, "killgrp");
 pid = 0;
 }
-if(pppdir != nil){	# shut down the PPP link
+if(pppdir != nil){ # shut down the PPP link
 fd := sys->open(pppdir + "/ctl", Sys->OWRITE);
 if(fd == nil || sys->fprint(fd, "unbind") < 0)
 sys->print("pppclient: can't unbind: %r\n");

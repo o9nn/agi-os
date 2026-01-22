@@ -3,72 +3,72 @@
 #include <mach/mach.h>
 #include <mach/port.h>
 #include <sys/time.h>
-#define ECAP_MAX_PERMISSIONS    64
+#define ECAP_MAX_PERMISSIONS 64
 #define ECAP_MAX_DELEGATION_DEPTH 8
-#define ECAP_MAX_AUDIT_ENTRIES  1000
+#define ECAP_MAX_AUDIT_ENTRIES 1000
 typedef enum {
-ECAP_PERM_SEND          = (1 << 0),
-ECAP_PERM_RECEIVE       = (1 << 1),
-ECAP_PERM_SEND_ONCE     = (1 << 2),
-ECAP_PERM_SEND_TIMEOUT  = (1 << 3),
+ECAP_PERM_SEND = (1 << 0),
+ECAP_PERM_RECEIVE = (1 << 1),
+ECAP_PERM_SEND_ONCE = (1 << 2),
+ECAP_PERM_SEND_TIMEOUT = (1 << 3),
 ECAP_PERM_RECEIVE_TIMEOUT = (1 << 4),
-ECAP_PERM_MSG_PRIORITY  = (1 << 5),
-ECAP_PERM_VM_READ       = (1 << 8),
-ECAP_PERM_VM_WRITE      = (1 << 9),
-ECAP_PERM_VM_EXECUTE    = (1 << 10),
-ECAP_PERM_VM_MAP        = (1 << 11),
-ECAP_PERM_VM_UNMAP      = (1 << 12),
-ECAP_PERM_TASK_CREATE   = (1 << 16),
-ECAP_PERM_TASK_DESTROY  = (1 << 17),
-ECAP_PERM_TASK_SUSPEND  = (1 << 18),
-ECAP_PERM_TASK_RESUME   = (1 << 19),
-ECAP_PERM_TASK_INFO     = (1 << 20),
+ECAP_PERM_MSG_PRIORITY = (1 << 5),
+ECAP_PERM_VM_READ = (1 << 8),
+ECAP_PERM_VM_WRITE = (1 << 9),
+ECAP_PERM_VM_EXECUTE = (1 << 10),
+ECAP_PERM_VM_MAP = (1 << 11),
+ECAP_PERM_VM_UNMAP = (1 << 12),
+ECAP_PERM_TASK_CREATE = (1 << 16),
+ECAP_PERM_TASK_DESTROY = (1 << 17),
+ECAP_PERM_TASK_SUSPEND = (1 << 18),
+ECAP_PERM_TASK_RESUME = (1 << 19),
+ECAP_PERM_TASK_INFO = (1 << 20),
 ECAP_PERM_THREAD_CREATE = (1 << 24),
 ECAP_PERM_THREAD_DESTROY = (1 << 25),
 ECAP_PERM_THREAD_CONTROL = (1 << 26),
-ECAP_PERM_CAP_DELEGATE  = (1 << 32),
-ECAP_PERM_CAP_REVOKE    = (1 << 33),
-ECAP_PERM_CAP_AUDIT     = (1 << 34),
-ECAP_PERM_ADMIN_ALL     = (1ULL << 63)
+ECAP_PERM_CAP_DELEGATE = (1 << 32),
+ECAP_PERM_CAP_REVOKE = (1 << 33),
+ECAP_PERM_CAP_AUDIT = (1 << 34),
+ECAP_PERM_ADMIN_ALL = (1ULL << 63)
 } ecap_permission_t;
 typedef struct {
-unsigned int    max_depth;
-unsigned int    current_depth;
-struct timeval  expiration_time;
-task_t          delegator_task;
-uint64_t        delegation_id;
+unsigned int max_depth;
+unsigned int current_depth;
+struct timeval expiration_time;
+task_t delegator_task;
+uint64_t delegation_id;
 } ecap_delegation_info_t;
 typedef struct {
-mach_port_t         port;
-uint64_t            permissions;
-task_t              owner_task;
+mach_port_t port;
+uint64_t permissions;
+task_t owner_task;
 ecap_delegation_info_t delegation;
-uint32_t            security_label;
-unsigned int        reference_count;
-boolean_t           is_transferable;
-struct timeval      creation_time;
-struct timeval      last_use_time;
-unsigned long       use_count;
-uint64_t            capability_id;
+uint32_t security_label;
+unsigned int reference_count;
+boolean_t is_transferable;
+struct timeval creation_time;
+struct timeval last_use_time;
+unsigned long use_count;
+uint64_t capability_id;
 } ecap_capability_t;
 typedef struct {
-uint64_t            capability_id;
-task_t              task;
-ecap_permission_t   permission_used;
-struct timeval      timestamp;
-kern_return_t       result;
-char                operation[64];
+uint64_t capability_id;
+task_t task;
+ecap_permission_t permission_used;
+struct timeval timestamp;
+kern_return_t result;
+char operation[64];
 } ecap_audit_entry_t;
 typedef struct {
-ecap_capability_t   *capabilities;
-unsigned int        capability_count;
-unsigned int        max_capabilities;
-ecap_audit_entry_t  *audit_log;
-unsigned int        audit_count;
-unsigned int        audit_max;
-boolean_t           audit_enabled;
-boolean_t           strict_delegation;
-unsigned int        default_expiration;
+ecap_capability_t *capabilities;
+unsigned int capability_count;
+unsigned int max_capabilities;
+ecap_audit_entry_t *audit_log;
+unsigned int audit_count;
+unsigned int audit_max;
+boolean_t audit_enabled;
+boolean_t strict_delegation;
+unsigned int default_expiration;
 } ecap_system_context_t;
 kern_return_t ecap_system_init(ecap_system_context_t *context);
 kern_return_t ecap_system_cleanup(ecap_system_context_t *context);
@@ -129,12 +129,12 @@ uint64_t capability_id,
 ecap_capability_t *info);
 void ecap_print_capability(const ecap_capability_t *capability);
 typedef struct {
-unsigned long   total_checks;
-unsigned long   successful_checks;
-unsigned long   failed_checks;
-unsigned long   delegations_created;
-unsigned long   delegations_revoked;
-double          avg_check_time_us;
+unsigned long total_checks;
+unsigned long successful_checks;
+unsigned long failed_checks;
+unsigned long delegations_created;
+unsigned long delegations_revoked;
+double avg_check_time_us;
 } ecap_statistics_t;
 kern_return_t ecap_get_statistics(ecap_system_context_t *context,
 ecap_statistics_t *stats);
@@ -151,10 +151,10 @@ ecap_condition_func_t condition,
 void *condition_context,
 uint64_t *capability_id);
 typedef struct {
-char            name[64];
-uint64_t        default_permissions;
-unsigned int    default_expiration;
-boolean_t       transferable;
+char name[64];
+uint64_t default_permissions;
+unsigned int default_expiration;
+boolean_t transferable;
 } ecap_template_t;
 kern_return_t ecap_create_template(ecap_system_context_t *context,
 const char *name,

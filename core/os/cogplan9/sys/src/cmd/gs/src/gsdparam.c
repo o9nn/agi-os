@@ -129,7 +129,7 @@ return code;
 return 0;
 }
 private bool
-param_HWColorMap(gx_device * dev, byte * palette  )
+param_HWColorMap(gx_device * dev, byte * palette )
 {
 int depth = dev->color_info.depth;
 int colors = dev->color_info.num_components;
@@ -329,15 +329,15 @@ switch (code = pread(plist, (param_name = pname), &(pa))) {\
 case 0:\
 if ((pa).size != psize) {\
 ecode = gs_note_error(gs_error_rangecheck);\
-(pa).data = 0;	\
+(pa).data = 0; \
 } else
 #define END_ARRAY_PARAM(pa, e)\
 goto e;\
 default:\
 ecode = code;\
-e:	param_signal_error(plist, param_name, ecode);\
+e: param_signal_error(plist, param_name, ecode);\
 case 1:\
-(pa).data = 0;		\
+(pa).data = 0; \
 }\
 END
 BEGIN_ARRAY_PARAM(param_read_float_array, "HWResolution", hwra, 2, hwre) {

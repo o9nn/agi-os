@@ -1,24 +1,24 @@
 (use-modules ((opencog exec)))
 (ListLink
-  (ConceptNode "glib")
-  (PredicateNode "blab"))
+(ConceptNode "glib")
+(PredicateNode "blab"))
 (define basic-get
 (GetLink
-  (ListLink
-    (GlobNode "$x"))))
+(ListLink
+(GlobNode "$x"))))
 (define typed-get
-  (GetLink
-    (TypedVariableLink
-      (GlobNode "$x")
-      (TypeNode "ConceptNode"))
-    (ListLink
-      (GlobNode "$x"))))
+(GetLink
+(TypedVariableLink
+(GlobNode "$x")
+(TypeNode "ConceptNode"))
+(ListLink
+(GlobNode "$x"))))
 (define type-choice-get
-  (GetLink
-    (TypedVariableLink
-      (GlobNode "$x")
-      (TypeChoice
-        (TypeNode "ConceptNode")
-        (TypeNode "PredicateNode")))
-    (ListLink
-      (GlobNode "$x"))))
+(GetLink
+(TypedVariableLink
+(GlobNode "$x")
+(TypeChoice
+(TypeNode "ConceptNode")
+(TypeNode "PredicateNode")))
+(ListLink
+(GlobNode "$x"))))

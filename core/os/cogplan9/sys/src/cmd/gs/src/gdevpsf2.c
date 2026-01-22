@@ -1198,7 +1198,7 @@ if_debug1('l', "[l]%s offset error\n", msg);
 return gs_error_rangecheck;
 }
 #else
-#  define offset_error(msg) gs_error_rangecheck
+# define offset_error(msg) gs_error_rangecheck
 #endif
 int
 psf_write_cid0_font(stream *s, gs_font_cid0 *pfont, int options,
@@ -1208,7 +1208,7 @@ const gs_const_string *alt_font_name)
 gs_font_base *const pbfont = (gs_font_base *)pfont;
 cff_writer_t writer;
 cff_string_item_t std_string_items[500];
-cff_string_item_t string_items[500  +
+cff_string_item_t string_items[500 +
 40 ];
 gs_const_string font_name;
 stream poss;

@@ -28,8 +28,8 @@
 #include <dirent.h>
 #define VALGRIND_TIMEOUT_MULTIPLIER (ON_VALGRIND ? 5 : 1)
 #define CLIENT_PROGRESS_TIMEOUT_MSECS (60 * VALGRIND_TIMEOUT_MULTIPLIER * 1000)
-#define SERVER_KILL_TIMEOUT_SECS      (20 * VALGRIND_TIMEOUT_MULTIPLIER)
-#define MAX_PARALLEL_PENDING          200
+#define SERVER_KILL_TIMEOUT_SECS (20 * VALGRIND_TIMEOUT_MULTIPLIER)
+#define MAX_PARALLEL_PENDING 200
 static bool debug = FALSE;
 static bool small_socket_buffers = FALSE;
 static const char *failure = NULL;

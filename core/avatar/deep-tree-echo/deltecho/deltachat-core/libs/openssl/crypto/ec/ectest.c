@@ -16,7 +16,7 @@ return 0;
 #else
 # include <openssl/ec.h>
 # ifndef OPENSSL_NO_ENGINE
-#  include <openssl/engine.h>
+# include <openssl/engine.h>
 # endif
 # include <openssl/err.h>
 # include <openssl/obj_mac.h>
@@ -25,7 +25,7 @@ return 0;
 # include <openssl/bn.h>
 # include <openssl/opensslconf.h>
 # if defined(_MSC_VER) && defined(_MIPS_) && (_MSC_VER/100==12)
-#  pragma warning(disable:4959)
+# pragma warning(disable:4959)
 # endif
 # define ABORT do { \
 fflush(stdout); \
@@ -80,12 +80,12 @@ ABORT;
 }
 clck = clock() - clck;
 fprintf(stdout, "\n");
-#  ifdef CLOCKS_PER_SEC
-#   define UNIT "s"
-#  else
-#   define UNIT "units"
-#   define CLOCKS_PER_SEC 1
-#  endif
+# ifdef CLOCKS_PER_SEC
+# define UNIT "s"
+# else
+# define UNIT "units"
+# define CLOCKS_PER_SEC 1
+# endif
 if (type == TIMING_BASE_PT) {
 fprintf(stdout, "%i %s in %.2f " UNIT "\n", i * j,
 "base point multiplications", (double)clck / CLOCKS_PER_SEC);
@@ -776,7 +776,7 @@ if (P_521)
 EC_GROUP_free(P_521);
 }
 # ifdef OPENSSL_EC_BIN_PT_COMP
-#  define CHAR2_CURVE_TEST_INTERNAL(_name, _p, _a, _b, _x, _y, _y_bit, _order, _cof, _degree, _variable) \
+# define CHAR2_CURVE_TEST_INTERNAL(_name, _p, _a, _b, _x, _y, _y_bit, _order, _cof, _degree, _variable) \
 if (!BN_hex2bn(&x, _x)) ABORT; \
 if (!EC_POINT_set_compressed_coordinates_GF2m(group, P, x, _y_bit, ctx)) ABORT; \
 if (EC_POINT_is_on_curve(group, P, ctx) <= 0) ABORT; \
@@ -793,7 +793,7 @@ fprintf(stdout, "\n"); \
 if (!BN_hex2bn(&z, _y)) ABORT; \
 if (0 != BN_cmp(y, z)) ABORT;
 # else
-#  define CHAR2_CURVE_TEST_INTERNAL(_name, _p, _a, _b, _x, _y, _y_bit, _order, _cof, _degree, _variable) \
+# define CHAR2_CURVE_TEST_INTERNAL(_name, _p, _a, _b, _x, _y, _y_bit, _order, _cof, _degree, _variable) \
 if (!BN_hex2bn(&x, _x)) ABORT; \
 if (!BN_hex2bn(&y, _y)) ABORT; \
 if (!EC_POINT_set_affine_coordinates_GF2m(group, P, x, y, ctx)) ABORT; \
@@ -834,11 +834,11 @@ BIGNUM *x, *y, *z, *cof;
 unsigned char buf[100];
 size_t i, len;
 int k;
-#  if 1
+# if 1
 ctx = BN_CTX_new();
 if (!ctx)
 ABORT;
-#  endif
+# endif
 p = BN_new();
 a = BN_new();
 b = BN_new();
@@ -899,20 +899,20 @@ if (!x || !y || !z || !cof)
 ABORT;
 if (!BN_hex2bn(&x, "6"))
 ABORT;
-#  ifdef OPENSSL_EC_BIN_PT_COMP
+# ifdef OPENSSL_EC_BIN_PT_COMP
 if (!EC_POINT_set_compressed_coordinates_GF2m(group, Q, x, 1, ctx))
 ABORT;
-#  else
+# else
 if (!BN_hex2bn(&y, "8"))
 ABORT;
 if (!EC_POINT_set_affine_coordinates_GF2m(group, Q, x, y, ctx))
 ABORT;
-#  endif
+# endif
 if (EC_POINT_is_on_curve(group, Q, ctx) <= 0) {
-#  ifdef OPENSSL_EC_BIN_PT_COMP
+# ifdef OPENSSL_EC_BIN_PT_COMP
 if (!EC_POINT_get_affine_coordinates_GF2m(group, Q, x, y, ctx))
 ABORT;
-#  endif
+# endif
 fprintf(stderr, "Point is not on curve: x = 0x");
 BN_print_fp(stderr, x);
 fprintf(stderr, ", y = 0x");
@@ -946,7 +946,7 @@ if (!EC_POINT_add(group, P, Q, R, ctx))
 ABORT;
 if (!EC_POINT_is_at_infinity(group, P))
 ABORT;
-#  ifdef OPENSSL_EC_BIN_PT_COMP
+# ifdef OPENSSL_EC_BIN_PT_COMP
 len =
 EC_POINT_point2oct(group, Q, POINT_CONVERSION_COMPRESSED, buf,
 sizeof buf, ctx);
@@ -959,7 +959,7 @@ ABORT;
 fprintf(stdout, "Generator as octet string, compressed form:\n     ");
 for (i = 0; i < len; i++)
 fprintf(stdout, "%02X", buf[i]);
-#  endif
+# endif
 len =
 EC_POINT_point2oct(group, Q, POINT_CONVERSION_UNCOMPRESSED, buf,
 sizeof buf, ctx);
@@ -972,7 +972,7 @@ ABORT;
 fprintf(stdout, "\nGenerator as octet string, uncompressed form:\n     ");
 for (i = 0; i < len; i++)
 fprintf(stdout, "%02X", buf[i]);
-#  ifdef OPENSSL_EC_BIN_PT_COMP
+# ifdef OPENSSL_EC_BIN_PT_COMP
 len =
 EC_POINT_point2oct(group, Q, POINT_CONVERSION_HYBRID, buf, sizeof buf,
 ctx);
@@ -985,7 +985,7 @@ ABORT;
 fprintf(stdout, "\nGenerator as octet string, hybrid form:\n     ");
 for (i = 0; i < len; i++)
 fprintf(stdout, "%02X", buf[i]);
-#  endif
+# endif
 fprintf(stdout, "\n");
 if (!EC_POINT_invert(group, P, ctx))
 ABORT;
@@ -1158,7 +1158,7 @@ if (!EC_POINT_is_at_infinity(group, P))
 ABORT;
 fprintf(stdout, " ok\n\n");
 }
-#  if 0
+# if 0
 timings(C2_K163, TIMING_BASE_PT, ctx);
 timings(C2_K163, TIMING_RAND_PT, ctx);
 timings(C2_K163, TIMING_SIMUL, ctx);
@@ -1189,7 +1189,7 @@ timings(C2_K571, TIMING_SIMUL, ctx);
 timings(C2_B571, TIMING_BASE_PT, ctx);
 timings(C2_B571, TIMING_RAND_PT, ctx);
 timings(C2_B571, TIMING_SIMUL, ctx);
-#  endif
+# endif
 if (ctx)
 BN_CTX_free(ctx);
 BN_free(p);
@@ -1408,10 +1408,10 @@ if (0 != EC_POINT_cmp(NISTP, Q, Q_CHECK, ctx))
 ABORT;
 fprintf(stdout, "ok\n");
 group_order_tests(NISTP);
-#  if 0
+# if 0
 timings(NISTP, TIMING_BASE_PT, ctx);
 timings(NISTP, TIMING_RAND_PT, ctx);
-#  endif
+# endif
 EC_GROUP_free(NISTP);
 EC_POINT_free(G);
 EC_POINT_free(P);

@@ -209,7 +209,7 @@ int ppb = 1 << ll->l2pagesperblock;
 int pagesize = 1 << ll->l2pagesize;
 for(page = 0; page < ppb; page++) {
 uchar *p, *bufend;
-char *errmsg = (*ll->readpagerange)(ll, buf, seg->blockmap[i], page, 0,  pagesize, &llrr);
+char *errmsg = (*ll->readpagerange)(ll, buf, seg->blockmap[i], page, 0, pagesize, &llrr);
 if(errmsg)
 return errmsg;
 if(llrr != LogfsLowLevelReadResultOk)
@@ -326,7 +326,7 @@ buf = logfsrealloc(nil, 1 << server->ll->l2pagesize);
 if(buf == nil)
 return Enomem;
 for(i = 0; i <= seg->curblockindex; i++) {
-errmsg = replayblock(server, seg, buf,  i, &page, disableerrorsforfirstblock);
+errmsg = replayblock(server, seg, buf, i, &page, disableerrorsforfirstblock);
 disableerrorsforfirstblock = 0;
 if(errmsg) {
 print("logfsreplay: error: %s\n", errmsg);

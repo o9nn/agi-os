@@ -3,71 +3,71 @@
 (load "common.scm")
 (define (get-atoms-of-height height)
 "
-  get-atms-of-height -- gt all atoms of a given height
+get-atms-of-height -- gt all atoms of a given height
 "
-	(define row #f)
-	(define uuid 0)
-	(define atom-list (list))
-	(define qry (string-append
-		"SELECT * FROM atoms WHERE height="
-		(number->string height)))
-	(display qry)(newline)
-	(dbi-query conxion qry)
-	(set! row (dbi-get_row conxion))
-	(while (not (equal? row #f))
-		(set! uuid (cdr (assoc "uuid" row)))
-		(set! atom-list (cons uuid atom-list))
-		(set! row (dbi-get_row conxion))
-	)
-	atom-list
+(define row #f)
+(define uuid 0)
+(define atom-list (list))
+(define qry (string-append
+"SELECT * FROM atoms WHERE height="
+(number->string height)))
+(display qry)(newline)
+(dbi-query conxion qry)
+(set! row (dbi-get_row conxion))
+(while (not (equal? row #f))
+(set! uuid (cdr (assoc "uuid" row)))
+(set! atom-list (cons uuid atom-list))
+(set! row (dbi-get_row conxion))
+)
+atom-list
 )
 (define (look-for-orphans uuid-list)
 "
-  look-for-orphans -- look for osets that don't have atoms
-  Given a list of uuid's that are links, fetch the outgoing set
-  of each link, and then look to see if the atoms in the outgoing
-  set are in the database.  Return a list of the links that have
-  outgoing sets that fail to refer to atoms.
+look-for-orphans -- look for osets that don't have atoms
+Given a list of uuid's that are links, fetch the outgoing set
+of each link, and then look to see if the atoms in the outgoing
+set are in the database.  Return a list of the links that have
+outgoing sets that fail to refer to atoms.
 "
-	(define orphan-list (list))
-	(define (check-atom uuid)
-		(define row #f)
-		(define have #f)
-		(define qry (string-append
-			"SELECT * FROM atoms WHERE uuid="
-			(number->string uuid)))
-		(dbi-query conxion qry)
-		(set! row (dbi-get_row conxion))
-		(while (not (equal? row #f))
-			(set! have #t)
-			(set! row (dbi-get_row conxion))
-		)
-		(if (not have) (begin
-			(display "Cannot find uuid ")(display uuid)(newline))
-		)
-		have
-	)
-	(define (check-oset uuid)
-		(define row #f)
-		(define oset-list (list))
-		(define qry (string-append
-			"SELECT outgoing FROM atoms WHERE uuid="
-			(number->string uuid)))
-		(dbi-query conxion qry)
-		(set! row (dbi-get_row conxion))
-		(while (not (equal? row #f))
-			(set! oset-list (cdr (assoc "outgoing" row)))
-			(set! row (dbi-get_row conxion))
-		)
-		(if (any (lambda (x) (not x)) (map check-atom oset-list))
-			(begin
-				(display "oh nooo!! bad link is ")(display uuid)(newline)
-				(set! orphan-list (cons uuid orphan-list))
-			)
-		)
-	)
-	(for-each check-oset uuid-list)
-	orphan-list
+(define orphan-list (list))
+(define (check-atom uuid)
+(define row #f)
+(define have #f)
+(define qry (string-append
+"SELECT * FROM atoms WHERE uuid="
+(number->string uuid)))
+(dbi-query conxion qry)
+(set! row (dbi-get_row conxion))
+(while (not (equal? row #f))
+(set! have #t)
+(set! row (dbi-get_row conxion))
+)
+(if (not have) (begin
+(display "Cannot find uuid ")(display uuid)(newline))
+)
+have
+)
+(define (check-oset uuid)
+(define row #f)
+(define oset-list (list))
+(define qry (string-append
+"SELECT outgoing FROM atoms WHERE uuid="
+(number->string uuid)))
+(dbi-query conxion qry)
+(set! row (dbi-get_row conxion))
+(while (not (equal? row #f))
+(set! oset-list (cdr (assoc "outgoing" row)))
+(set! row (dbi-get_row conxion))
+)
+(if (any (lambda (x) (not x)) (map check-atom oset-list))
+(begin
+(display "oh nooo!! bad link is ")(display uuid)(newline)
+(set! orphan-list (cons uuid orphan-list))
+)
+)
+)
+(for-each check-oset uuid-list)
+orphan-list
 )
 (define h3 (get-atoms-of-height 3))
 (display "Number of atoms of height 3: ") (display (length h3))(newline)

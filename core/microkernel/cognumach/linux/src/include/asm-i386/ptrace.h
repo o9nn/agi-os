@@ -13,10 +13,10 @@
 #define GS 10
 #define ORIG_EAX 11
 #define EIP 12
-#define CS  13
+#define CS 13
 #define EFL 14
 #define UESP 15
-#define SS   16
+#define SS 16
 struct pt_regs {
 long ebx;
 long ecx;
@@ -36,10 +36,10 @@ long eflags;
 long esp;
 unsigned short ss, __ssu;
 };
-#define PTRACE_GETREGS            12
-#define PTRACE_SETREGS            13
-#define PTRACE_GETFPREGS          14
-#define PTRACE_SETFPREGS          15
+#define PTRACE_GETREGS 12
+#define PTRACE_SETREGS 13
+#define PTRACE_GETFPREGS 14
+#define PTRACE_SETFPREGS 15
 #ifdef __KERNEL__
 #define user_mode(regs) ((VM_MASK & (regs)->eflags) || (3 & (regs)->cs))
 #define instruction_pointer(regs) ((regs)->eip)

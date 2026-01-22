@@ -36,12 +36,12 @@ tofdproc(f, w: chan of ref Sys->FD, errorc: chan of string)
 fd0 := <-w;
 f <-= fd0;
 fd1 := <-f;
-if(fd1 == nil)		# asked to quit? tell w to quit too.
+if(fd1 == nil) # asked to quit? tell w to quit too.
 w <-= nil;
 else
-if(fd0 == nil)		# no proposed fd? give 'em the one we've just got.
+if(fd0 == nil) # no proposed fd? give 'em the one we've just got.
 w <-= fd1;
-else{				# otherwise one-way stream from w to f.
+else{ # otherwise one-way stream from w to f.
 w <-= nil;
 buf := array[Sys->ATOMICIO] of byte;
 while((n := sys->read(fd0, buf, len buf)) > 0){

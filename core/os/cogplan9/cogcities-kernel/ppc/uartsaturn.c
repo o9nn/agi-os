@@ -32,26 +32,26 @@ Rxsize = 16,
 };
 typedef struct Saturnuart Saturnuart;
 struct Saturnuart {
-uchar	rxb;
-#define txb	rxb
-#define dll	rxb
-uchar	ier;
-#define dlm	ier
-uchar	iir;
-#define fcr	iir
-uchar	lcr;
-uchar	f1;
-uchar	lsr;
-ushort	f2;
+uchar rxb;
+#define txb rxb
+#define dll rxb
+uchar ier;
+#define dlm ier
+uchar iir;
+#define fcr iir
+uchar lcr;
+uchar f1;
+uchar lsr;
+ushort f2;
 };
 typedef struct UartData UartData;
 struct UartData {
-int			suno;
-Saturnuart	*su;
-char			*rxbuf;
-char			*txbuf;
-int			initialized;
-int			enabled;
+int suno;
+Saturnuart *su;
+char *rxbuf;
+char *txbuf;
+int initialized;
+int enabled;
 } uartdata[Nuart];
 extern PhysUart saturnphysuart;
 Uart suart[Nuart] = {
@@ -277,7 +277,7 @@ sugetc(Uart *uart)
 {
 static uchar buf[128], *p;
 static int cnt;
-char	c;
+char c;
 if (cnt <= 0) {
 cnt = getchars(uart, buf);
 p = buf;
@@ -316,23 +316,23 @@ su = ((UartData*)uart->regs)->su;
 su->ier&=~(Ier_txempty|Ier_rxfull);
 }
 PhysUart saturnphysuart = {
-.name		= "su",
-.pnp			= supnp,
-.enable		= suenable,
-.disable		= sudisable,
-.kick			= sukick,
-.dobreak		= subreak,
-.baud		= subaud,
-.bits			= subits,
-.stop			= sustop,
-.parity		= suparity,
-.modemctl	= sumodemctl,
-.rts			= surts,
-.dtr			= sudtr,
-.status		= sustatus,
-.fifo			= sufifo,
-.getc			= sugetc,
-.putc			= suputc,
+.name = "su",
+.pnp = supnp,
+.enable = suenable,
+.disable = sudisable,
+.kick = sukick,
+.dobreak = subreak,
+.baud = subaud,
+.bits = subits,
+.stop = sustop,
+.parity = suparity,
+.modemctl = sumodemctl,
+.rts = surts,
+.dtr = sudtr,
+.status = sustatus,
+.fifo = sufifo,
+.getc = sugetc,
+.putc = suputc,
 };
 void
 console(void)

@@ -12,22 +12,22 @@ int ret;
 # ifdef HAVE_TERMIOS_H
 ret = tcgetattr(fd, ts);
 # else
-#  ifdef HAVE_TERMIO_H
+# ifdef HAVE_TERMIO_H
 ret = ioctl(fd, TCGETA, ts);
-#  else
+# else
 ret = ioctl(fd, TIOCGETP, &ts->sgttyb);
-#   ifdef TIOCGATC
+# ifdef TIOCGATC
 if (ioctl(fd, TIOCGATC, &ts->lchars) < 0)
 ret = -1;
-#   else
+# else
 if (ioctl(fd, TIOCGETC, &ts->tchars) < 0)
 ret = -1;
-#    ifdef TIOCGLTC
+# ifdef TIOCGLTC
 if (ioctl(fd, TIOCGLTC, &ts->ltchars) < 0)
 ret = -1;
-#    endif
-#   endif
-#  endif
+# endif
+# endif
+# endif
 # endif
 return ret;
 }
@@ -41,42 +41,42 @@ int ret = 0;
 # ifdef HAVE_TERMIOS_H
 ret = tcsetattr(fd, TCSADRAIN, ts);
 # else
-#  ifdef HAVE_TERMIO_H
-#   ifndef TCSETAW
-#    ifdef TCSBRK
+# ifdef HAVE_TERMIO_H
+# ifndef TCSETAW
+# ifdef TCSBRK
 if (ioctl(tty_fd, TCSBRK, 1) < 0)
 ret = -1;
-#    else
+# else
 if (flags & TF_WAIT)
 sleep((unsigned)1);
-#    endif
-#   endif
-#   if defined(_BSD_SYSV) || !defined(TCSETAW)
+# endif
+# endif
+# if defined(_BSD_SYSV) || !defined(TCSETAW)
 if (ioctl(tty_fd, TCSETA, ts) < 0)
 ret = -1;
-#   else
+# else
 if (ioctl(tty_fd, TCSETAW, ts) < 0)
 ret = -1;
-#   endif
-#  else
-#   if defined(__mips) && (defined(_SYSTYPE_BSD43) || defined(__SYSTYPE_BSD43))
+# endif
+# else
+# if defined(__mips) && (defined(_SYSTYPE_BSD43) || defined(__SYSTYPE_BSD43))
 if (flags & TF_MIPSKLUDGE)
 ret = ioctl(fd, TIOCSETP, &ts->sgttyb);
 else
-#   endif
+# endif
 ret = ioctl(fd, TIOCSETN, &ts->sgttyb);
-#   ifdef TIOCGATC
+# ifdef TIOCGATC
 if (ioctl(fd, TIOCSATC, &ts->lchars) < 0)
 ret = -1;
-#   else
+# else
 if (ioctl(fd, TIOCSETC, &ts->tchars) < 0)
 ret = -1;
-#    ifdef TIOCGLTC
+# ifdef TIOCGLTC
 if (ioctl(fd, TIOCSLTC, &ts->ltchars) < 0)
 ret = -1;
-#    endif
-#   endif
-#  endif
+# endif
+# endif
+# endif
 # endif
 return ret;
 }
@@ -84,8 +84,8 @@ void
 tty_init(init_ttystate)
 int init_ttystate;
 {
-int	do_close = 1;
-int	tfd;
+int do_close = 1;
+int tfd;
 if (tty_fd >= 0) {
 close(tty_fd);
 tty_fd = -1;

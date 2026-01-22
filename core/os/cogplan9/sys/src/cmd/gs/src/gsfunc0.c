@@ -10,7 +10,7 @@
 #define POLE_CACHE_GENERIC_1D 1
 #define POLE_CACHE_IGNORE 0
 #if POLE_CACHE_DEBUG
-#   include <assert.h>
+# include <assert.h>
 #endif
 #define MAX_FAST_COMPS 8
 typedef struct gs_function_Sd_s {
@@ -626,15 +626,15 @@ if (POLE_CACHE_GENERIC_1D || pfn->params.m > 1)
 code = fn_Sd_evaluate_multicubic_cached(pfn, in, out);
 else
 code = fn_Sd_evaluate_cubic_cached_1d(pfn, in, out);
-#	if POLE_CACHE_DEBUG
-{   float y[max_Sd_n];
+# if POLE_CACHE_DEBUG
+{ float y[max_Sd_n];
 int k, code1;
 code1 = fn_Sd_evaluate_general(pfn_common, in, y);
 assert(code == code1);
 for (k = 0; k < pfn->params.n; k++)
 assert(any_abs(y[k] - out[k]) <= 1e-6 * (pfn->params.Range[k * 2 + 1] - pfn->params.Range[k * 2 + 0]));
 }
-#	endif
+# endif
 } else
 code = fn_Sd_evaluate_general(pfn_common, in, out);
 return code;
@@ -949,9 +949,9 @@ int I[4];
 double T0[count_of(I)], T1[count_of(I)];
 double S0[count_of(I)], S1[count_of(I)];
 uint m, mm, m1;
-#   if DEBUG_Sd_1arg
+# if DEBUG_Sd_1arg
 int code1, mask1;
-#   endif
+# endif
 if (ii >= count_of(T0)) {
 return_error(gs_error_limitcheck);
 }
@@ -965,12 +965,12 @@ T1[i] = w1;
 }
 if (pfn->params.m == 1 && pfn->params.Order == 1 && pfn->params.n <= MAX_FAST_COMPS) {
 code = fn_Sd_1arg_linear_monotonic(pfn, T0[0], T1[0], mask);
-#	if !DEBUG_Sd_1arg
+# if !DEBUG_Sd_1arg
 return code;
-#	else
+# else
 mask1 = *mask;
 code1 = code;
-#	endif
+# endif
 }
 m1 = (1 << pfn->params.m )- 1;
 code = make_interpolation_nodes(pfn, T0, T1, I, S0, 0, 0, ii);
@@ -985,12 +985,12 @@ mm |= m;
 if (mm == m1)
 break;
 }
-#   if DEBUG_Sd_1arg
+# if DEBUG_Sd_1arg
 if (mask1 != mm)
 return_error(gs_error_unregistered);
 if (code1 != !mm)
 return_error(gs_error_unregistered);
-#   endif
+# endif
 *mask = mm;
 return !mm;
 }

@@ -24,7 +24,7 @@ include "styxservers.m";
 styxservers: Styxservers;
 Styxserver, Fid, Navigator, Navop, Enotfound: import styxservers;
 Vacfs: module {
-init:	fn(nil: ref Draw->Context, args: list of string);
+init: fn(nil: ref Draw->Context, args: list of string);
 };
 addr := "$venti";
 dflag: int;
@@ -32,23 +32,23 @@ pflag: int;
 session: ref Session;
 ss: ref Styxserver;
 Elem: adt {
-qid:	int;
-de: 	ref Direntry;
-size:	big;
+qid: int;
+de: ref Direntry;
+size: big;
 pick {
-File =>	vf: 	ref Vacfile;
-Dir =>	vd:	ref Vacdir;
-pqid:	int;
-offset:	int;
-nprev:	int;
-prev:	array of ref Sys->Dir;
+File => vf: ref Vacfile;
+Dir => vd: ref Vacdir;
+pqid: int;
+offset: int;
+nprev: int;
+prev: array of ref Sys->Dir;
 }
-new:	fn(nqid: int, vd: ref Vacdir, de: ref Direntry, pqid: int): ref Elem;
-stat:	fn(e: self ref Elem): ref Sys->Dir;
+new: fn(nqid: int, vd: ref Vacdir, de: ref Direntry, pqid: int): ref Elem;
+stat: fn(e: self ref Elem): ref Sys->Dir;
 };
 Qdir: adt {
-qid:	int;
-cqids:	list of (string, int); # name, qid
+qid: int;
+cqids: list of (string, int); # name, qid
 };
 elems := array[512] of list of ref Elem;
 qids := array[512] of list of ref Qdir;
@@ -158,7 +158,7 @@ elems[e.qid % len elems] = e::elems[e.qid % len elems];
 getfile(qid: int): ref Elem.File
 {
 pick file := get(qid) {
-File =>	return file;
+File => return file;
 }
 fail("internal error, getfile");
 return nil;
@@ -166,7 +166,7 @@ return nil;
 getdir(qid: int): ref Elem.Dir
 {
 pick d := get(qid) {
-Dir =>	return d;
+Dir => return d;
 }
 fail("internal error, getdir");
 return nil;
@@ -193,11 +193,11 @@ arg->init(args);
 arg->setusage(arg->progname()+" [-Ddp] [-a addr] [[tag:]score]");
 while((ch := arg->opt()) != 0)
 case ch {
-'D' =>	styxservers->traceset(1);
-'a' =>	addr = arg->earg();
-'d' =>	vac->dflag = dflag++;
-'p' =>	pflag++;
-* =>	arg->usage();
+'D' => styxservers->traceset(1);
+'a' => addr = arg->earg();
+'d' => vac->dflag = dflag++;
+'p' => pflag++;
+* => arg->usage();
 }
 args = arg->argv();
 if(len args > 1)

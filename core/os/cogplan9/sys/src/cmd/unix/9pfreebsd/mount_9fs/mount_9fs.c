@@ -1,7 +1,7 @@
 #ifndef lint
 static const char copyright[] =
 "@(#) Copyright (c) 1992, 1993, 1994\n\
-The Regents of the University of California.  All rights reserved.\n";
+The Regents of the University of California. All rights reserved.\n";
 #endif
 #ifndef lint
 #if 0
@@ -45,25 +45,25 @@ static const char rcsid[] =
 #include <sysexits.h>
 #include <unistd.h>
 #include "mntopts.h"
-#define	ALTF_BG		0x1
-#define ALTF_NOCONN	0x2
-#define ALTF_DUMBTIMR	0x4
-#define ALTF_INTR	0x8
-#define ALTF_KERB	0x10
-#define ALTF_NFSV3	0x20
-#define ALTF_RDIRPLUS	0x40
-#define	ALTF_MNTUDP	0x80
-#define ALTF_RESVPORT	0x100
-#define ALTF_SEQPACKET	0x200
-#define ALTF_NQNFS	0x400
-#define ALTF_SOFT	0x800
-#define ALTF_TCP	0x1000
-#define ALTF_PORT	0x2000
-#define ALTF_NFSV2	0x4000
-#define ALTF_ACREGMIN	0x8000
-#define ALTF_ACREGMAX	0x10000
-#define ALTF_ACDIRMIN	0x20000
-#define ALTF_ACDIRMAX	0x40000
+#define ALTF_BG 0x1
+#define ALTF_NOCONN 0x2
+#define ALTF_DUMBTIMR 0x4
+#define ALTF_INTR 0x8
+#define ALTF_KERB 0x10
+#define ALTF_NFSV3 0x20
+#define ALTF_RDIRPLUS 0x40
+#define ALTF_MNTUDP 0x80
+#define ALTF_RESVPORT 0x100
+#define ALTF_SEQPACKET 0x200
+#define ALTF_NQNFS 0x400
+#define ALTF_SOFT 0x800
+#define ALTF_TCP 0x1000
+#define ALTF_PORT 0x2000
+#define ALTF_NFSV2 0x4000
+#define ALTF_ACREGMIN 0x8000
+#define ALTF_ACREGMAX 0x10000
+#define ALTF_ACDIRMIN 0x20000
+#define ALTF_ACDIRMAX 0x40000
 struct mntopt mopts[] = {
 MOPT_STDOPTS,
 MOPT_FORCE,
@@ -112,15 +112,15 @@ SOCK_SEQPACKET,
 IPPROTO_IL,
 };
 struct nfhret {
-u_long		stat;
-long		vers;
-long		auth;
-long		fhsize;
-u_char		nfh[NFSX_V3FHMAX];
+u_long stat;
+long vers;
+long auth;
+long fhsize;
+u_char nfh[NFSX_V3FHMAX];
 };
-#define	DEF_RETRY	10000
-#define	BGRND	1
-#define	ISBGRND	2
+#define DEF_RETRY 10000
+#define BGRND 1
+#define ISBGRND 2
 int retrycnt = DEF_RETRY;
 int opflags = 0;
 int nfsproto = IPPROTO_UDP;
@@ -135,8 +135,8 @@ V3
 char inst[INST_SZ];
 char realm[REALM_SZ];
 struct {
-u_long		kind;
-KTEXT_ST	kt;
+u_long kind;
+KTEXT_ST kt;
 } ktick;
 struct nfsrpc_nickverf kverf;
 struct nfsrpc_fullblock kin, kout;
@@ -145,31 +145,31 @@ CREDENTIALS kcr;
 struct timeval ktv;
 NFSKERBKEYSCHED_T kerb_keysched;
 #endif
-int	getnfsargs __P((char *, struct u9fs_args *));
+int getnfsargs __P((char *, struct u9fs_args *));
 #ifdef ISO
-struct	iso_addr *iso_addr __P((const char *));
+struct iso_addr *iso_addr __P((const char *));
 #endif
-void	set_rpc_maxgrouplist __P((int));
-void	usage __P((void)) __dead2;
-int	xdr_dir __P((XDR *, char *));
-int	xdr_fh __P((XDR *, struct nfhret *));
+void set_rpc_maxgrouplist __P((int));
+void usage __P((void)) __dead2;
+int xdr_dir __P((XDR *, char *));
+int xdr_fh __P((XDR *, struct nfhret *));
 void gethostaddr(char * hostp, struct sockaddr_in * saddr);
 static void
 setflags(int* altflags, int* nfsflags, int dir)
 {
-#define F2(af, nf)					\
-if (dir) {					\
-if (*nfsflags & NFSMNT_##nf)		\
-*altflags |= ALTF_##af;		\
-else					\
-*altflags &= ~ALTF_##af;	\
-} else {					\
-if (*altflags & ALTF_##af)		\
-*nfsflags |= NFSMNT_##nf;	\
-else					\
-*nfsflags &= ~NFSMNT_##nf;	\
+#define F2(af, nf) \
+if (dir) { \
+if (*nfsflags & NFSMNT_##nf) \
+*altflags |= ALTF_##af; \
+else \
+*altflags &= ~ALTF_##af; \
+} else { \
+if (*altflags & ALTF_##af) \
+*nfsflags |= NFSMNT_##nf; \
+else \
+*nfsflags &= ~NFSMNT_##nf; \
 }
-#define F(f)	F2(f,f)
+#define F(f) F2(f,f)
 F(NOCONN);
 F(DUMBTIMR);
 F2(INTR, INT);

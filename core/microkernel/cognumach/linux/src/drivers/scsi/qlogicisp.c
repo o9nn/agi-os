@@ -13,275 +13,275 @@
 #include "sd.h"
 #include "hosts.h"
 #include "qlogicisp.h"
-#define RELOAD_FIRMWARE		0
-#define USE_NVRAM_DEFAULTS	0
-#define DEBUG_ISP1020		0
-#define DEBUG_ISP1020_INT	0
-#define DEBUG_ISP1020_SETUP	0
-#define TRACE_ISP		0
-#define DEFAULT_LOOP_COUNT	1000000
+#define RELOAD_FIRMWARE 0
+#define USE_NVRAM_DEFAULTS 0
+#define DEBUG_ISP1020 0
+#define DEBUG_ISP1020_INT 0
+#define DEBUG_ISP1020_SETUP 0
+#define TRACE_ISP 0
+#define DEFAULT_LOOP_COUNT 1000000
 #include <linux/module.h>
 #if TRACE_ISP
-# define TRACE_BUF_LEN	(32*1024)
+# define TRACE_BUF_LEN (32*1024)
 struct {
-u_long		next;
+u_long next;
 struct {
-u_long		time;
-u_int		index;
-u_int		addr;
-u_char *	name;
+u_long time;
+u_int index;
+u_int addr;
+u_char * name;
 } buf[TRACE_BUF_LEN];
 } trace;
-#define TRACE(w, i, a)						\
-{								\
-unsigned long flags;					\
+#define TRACE(w, i, a) \
+{ \
+unsigned long flags; \
 \
-save_flags(flags);					\
-cli();							\
-trace.buf[trace.next].name  = (w);			\
-trace.buf[trace.next].time  = jiffies;			\
-trace.buf[trace.next].index = (i);			\
-trace.buf[trace.next].addr  = (long) (a);		\
-trace.next = (trace.next + 1) & (TRACE_BUF_LEN - 1);	\
-restore_flags(flags);					\
+save_flags(flags); \
+cli(); \
+trace.buf[trace.next].name = (w); \
+trace.buf[trace.next].time = jiffies; \
+trace.buf[trace.next].index = (i); \
+trace.buf[trace.next].addr = (long) (a); \
+trace.next = (trace.next + 1) & (TRACE_BUF_LEN - 1); \
+restore_flags(flags); \
 }
 #else
 # define TRACE(w, i, a)
 #endif
 #if DEBUG_ISP1020
-#define ENTER(x)	printk("isp1020 : entering %s()\n", x);
-#define LEAVE(x)	printk("isp1020 : leaving %s()\n", x);
-#define DEBUG(x)	x
+#define ENTER(x) printk("isp1020 : entering %s()\n", x);
+#define LEAVE(x) printk("isp1020 : leaving %s()\n", x);
+#define DEBUG(x) x
 #else
 #define ENTER(x)
 #define LEAVE(x)
 #define DEBUG(x)
 #endif
 #if DEBUG_ISP1020_INTR
-#define ENTER_INTR(x)	printk("isp1020 : entering %s()\n", x);
-#define LEAVE_INTR(x)	printk("isp1020 : leaving %s()\n", x);
-#define DEBUG_INTR(x)	x
+#define ENTER_INTR(x) printk("isp1020 : entering %s()\n", x);
+#define LEAVE_INTR(x) printk("isp1020 : leaving %s()\n", x);
+#define DEBUG_INTR(x) x
 #else
 #define ENTER_INTR(x)
 #define LEAVE_INTR(x)
 #define DEBUG_INTR(x)
 #endif
-#define ISP1020_REV_ID	1
-#define MAX_TARGETS	16
-#define MAX_LUNS	8
-#define HOST_HCCR	0xc0
-#define PCI_ID_LOW	0x00
-#define PCI_ID_HIGH	0x02
-#define ISP_CFG0	0x04
-#define ISP_CFG1	0x06
-#define PCI_INTF_CTL	0x08
-#define PCI_INTF_STS	0x0a
-#define PCI_SEMAPHORE	0x0c
-#define PCI_NVRAM	0x0e
-#define MBOX0		0x70
-#define MBOX1		0x72
-#define MBOX2		0x74
-#define MBOX3		0x76
-#define MBOX4		0x78
-#define MBOX5		0x7a
-#define MBOX_COMMAND_COMPLETE		0x4000
-#define INVALID_COMMAND			0x4001
-#define HOST_INTERFACE_ERROR		0x4002
-#define TEST_FAILED			0x4003
-#define COMMAND_ERROR			0x4005
-#define COMMAND_PARAM_ERROR		0x4006
-#define ASYNC_SCSI_BUS_RESET		0x8001
-#define SYSTEM_ERROR			0x8002
-#define REQUEST_TRANSFER_ERROR		0x8003
-#define RESPONSE_TRANSFER_ERROR		0x8004
-#define REQUEST_QUEUE_WAKEUP		0x8005
-#define EXECUTION_TIMEOUT_RESET		0x8006
+#define ISP1020_REV_ID 1
+#define MAX_TARGETS 16
+#define MAX_LUNS 8
+#define HOST_HCCR 0xc0
+#define PCI_ID_LOW 0x00
+#define PCI_ID_HIGH 0x02
+#define ISP_CFG0 0x04
+#define ISP_CFG1 0x06
+#define PCI_INTF_CTL 0x08
+#define PCI_INTF_STS 0x0a
+#define PCI_SEMAPHORE 0x0c
+#define PCI_NVRAM 0x0e
+#define MBOX0 0x70
+#define MBOX1 0x72
+#define MBOX2 0x74
+#define MBOX3 0x76
+#define MBOX4 0x78
+#define MBOX5 0x7a
+#define MBOX_COMMAND_COMPLETE 0x4000
+#define INVALID_COMMAND 0x4001
+#define HOST_INTERFACE_ERROR 0x4002
+#define TEST_FAILED 0x4003
+#define COMMAND_ERROR 0x4005
+#define COMMAND_PARAM_ERROR 0x4006
+#define ASYNC_SCSI_BUS_RESET 0x8001
+#define SYSTEM_ERROR 0x8002
+#define REQUEST_TRANSFER_ERROR 0x8003
+#define RESPONSE_TRANSFER_ERROR 0x8004
+#define REQUEST_QUEUE_WAKEUP 0x8005
+#define EXECUTION_TIMEOUT_RESET 0x8006
 struct Entry_header {
-u_char	entry_type;
-u_char	entry_cnt;
-u_char	sys_def_1;
-u_char	flags;
+u_char entry_type;
+u_char entry_cnt;
+u_char sys_def_1;
+u_char flags;
 };
-#define ENTRY_COMMAND		1
-#define ENTRY_CONTINUATION	2
-#define ENTRY_STATUS		3
-#define ENTRY_MARKER		4
-#define ENTRY_EXTENDED_COMMAND	5
-#define EFLAG_CONTINUATION	1
-#define EFLAG_BUSY		2
-#define EFLAG_BAD_HEADER	4
-#define EFLAG_BAD_PAYLOAD	8
+#define ENTRY_COMMAND 1
+#define ENTRY_CONTINUATION 2
+#define ENTRY_STATUS 3
+#define ENTRY_MARKER 4
+#define ENTRY_EXTENDED_COMMAND 5
+#define EFLAG_CONTINUATION 1
+#define EFLAG_BUSY 2
+#define EFLAG_BAD_HEADER 4
+#define EFLAG_BAD_PAYLOAD 8
 struct dataseg {
-u_int			d_base;
-u_int			d_count;
+u_int d_base;
+u_int d_count;
 };
 struct Command_Entry {
-struct Entry_header	hdr;
-u_int			handle;
-u_char			target_lun;
-u_char			target_id;
-u_short			cdb_length;
-u_short			control_flags;
-u_short			rsvd;
-u_short			time_out;
-u_short			segment_cnt;
-u_char			cdb[12];
-struct dataseg		dataseg[4];
+struct Entry_header hdr;
+u_int handle;
+u_char target_lun;
+u_char target_id;
+u_short cdb_length;
+u_short control_flags;
+u_short rsvd;
+u_short time_out;
+u_short segment_cnt;
+u_char cdb[12];
+struct dataseg dataseg[4];
 };
-#define CFLAG_NODISC		0x01
-#define CFLAG_HEAD_TAG		0x02
-#define CFLAG_ORDERED_TAG	0x04
-#define CFLAG_SIMPLE_TAG	0x08
-#define CFLAG_TAR_RTN		0x10
-#define CFLAG_READ		0x20
-#define CFLAG_WRITE		0x40
+#define CFLAG_NODISC 0x01
+#define CFLAG_HEAD_TAG 0x02
+#define CFLAG_ORDERED_TAG 0x04
+#define CFLAG_SIMPLE_TAG 0x08
+#define CFLAG_TAR_RTN 0x10
+#define CFLAG_READ 0x20
+#define CFLAG_WRITE 0x40
 struct Ext_Command_Entry {
-struct Entry_header	hdr;
-u_int			handle;
-u_char			target_lun;
-u_char			target_id;
-u_short			cdb_length;
-u_short			control_flags;
-u_short			rsvd;
-u_short			time_out;
-u_short			segment_cnt;
-u_char			cdb[44];
+struct Entry_header hdr;
+u_int handle;
+u_char target_lun;
+u_char target_id;
+u_short cdb_length;
+u_short control_flags;
+u_short rsvd;
+u_short time_out;
+u_short segment_cnt;
+u_char cdb[44];
 };
 struct Continuation_Entry {
-struct Entry_header	hdr;
-u_int			reserved;
-struct dataseg		dataseg[7];
+struct Entry_header hdr;
+u_int reserved;
+struct dataseg dataseg[7];
 };
 struct Marker_Entry {
-struct Entry_header	hdr;
-u_int			reserved;
-u_char			target_lun;
-u_char			target_id;
-u_char			modifier;
-u_char			rsvd;
-u_char			rsvds[52];
+struct Entry_header hdr;
+u_int reserved;
+u_char target_lun;
+u_char target_id;
+u_char modifier;
+u_char rsvd;
+u_char rsvds[52];
 };
-#define SYNC_DEVICE	0
-#define SYNC_TARGET	1
-#define SYNC_ALL	2
+#define SYNC_DEVICE 0
+#define SYNC_TARGET 1
+#define SYNC_ALL 2
 struct Status_Entry {
-struct Entry_header	hdr;
-u_int			handle;
-u_short			scsi_status;
-u_short			completion_status;
-u_short			state_flags;
-u_short			status_flags;
-u_short			time;
-u_short			req_sense_len;
-u_int			residual;
-u_char			rsvd[8];
-u_char			req_sense_data[32];
+struct Entry_header hdr;
+u_int handle;
+u_short scsi_status;
+u_short completion_status;
+u_short state_flags;
+u_short status_flags;
+u_short time;
+u_short req_sense_len;
+u_int residual;
+u_char rsvd[8];
+u_char req_sense_data[32];
 };
-#define CS_COMPLETE			0x0000
-#define CS_INCOMPLETE			0x0001
-#define CS_DMA_ERROR			0x0002
-#define CS_TRANSPORT_ERROR		0x0003
-#define CS_RESET_OCCURRED		0x0004
-#define CS_ABORTED			0x0005
-#define CS_TIMEOUT			0x0006
-#define CS_DATA_OVERRUN			0x0007
-#define CS_COMMAND_OVERRUN		0x0008
-#define CS_STATUS_OVERRUN		0x0009
-#define CS_BAD_MESSAGE			0x000a
-#define CS_NO_MESSAGE_OUT		0x000b
-#define CS_EXT_ID_FAILED		0x000c
-#define CS_IDE_MSG_FAILED		0x000d
-#define CS_ABORT_MSG_FAILED		0x000e
-#define CS_REJECT_MSG_FAILED		0x000f
-#define CS_NOP_MSG_FAILED		0x0010
-#define CS_PARITY_ERROR_MSG_FAILED	0x0011
-#define CS_DEVICE_RESET_MSG_FAILED	0x0012
-#define CS_ID_MSG_FAILED		0x0013
-#define CS_UNEXP_BUS_FREE		0x0014
-#define CS_DATA_UNDERRUN		0x0015
-#define CS_INVALID_ENTRY_TYPE		0x001b
-#define CS_DEVICE_QUEUE_FULL		0x001c
-#define CS_SCSI_PHASE_SKIPPED		0x001d
-#define CS_ARS_FAILED			0x001e
-#define SF_GOT_BUS			0x0100
-#define SF_GOT_TARGET			0x0200
-#define SF_SENT_CDB			0x0400
-#define SF_TRANSFERRED_DATA		0x0800
-#define SF_GOT_STATUS			0x1000
-#define SF_GOT_SENSE			0x2000
-#define STF_DISCONNECT			0x0001
-#define STF_SYNCHRONOUS			0x0002
-#define STF_PARITY_ERROR		0x0004
-#define STF_BUS_RESET			0x0008
-#define STF_DEVICE_RESET		0x0010
-#define STF_ABORTED			0x0020
-#define STF_TIMEOUT			0x0040
-#define STF_NEGOTIATION			0x0080
-#define ISP_RESET			0x0001
-#define ISP_EN_INT			0x0002
-#define ISP_EN_RISC			0x0004
-#define HCCR_NOP			0x0000
-#define HCCR_RESET			0x1000
-#define HCCR_PAUSE			0x2000
-#define HCCR_RELEASE			0x3000
-#define HCCR_SINGLE_STEP		0x4000
-#define HCCR_SET_HOST_INTR		0x5000
-#define HCCR_CLEAR_HOST_INTR		0x6000
-#define HCCR_CLEAR_RISC_INTR		0x7000
-#define HCCR_BP_ENABLE			0x8000
-#define HCCR_BIOS_DISABLE		0x9000
-#define HCCR_TEST_MODE			0xf000
-#define RISC_BUSY			0x0004
-#define MBOX_NO_OP			0x0000
-#define MBOX_LOAD_RAM			0x0001
-#define MBOX_EXEC_FIRMWARE		0x0002
-#define MBOX_DUMP_RAM			0x0003
-#define MBOX_WRITE_RAM_WORD		0x0004
-#define MBOX_READ_RAM_WORD		0x0005
-#define MBOX_MAILBOX_REG_TEST		0x0006
-#define MBOX_VERIFY_CHECKSUM		0x0007
-#define MBOX_ABOUT_FIRMWARE		0x0008
-#define MBOX_CHECK_FIRMWARE		0x000e
-#define MBOX_INIT_REQ_QUEUE		0x0010
-#define MBOX_INIT_RES_QUEUE		0x0011
-#define MBOX_EXECUTE_IOCB		0x0012
-#define MBOX_WAKE_UP			0x0013
-#define MBOX_STOP_FIRMWARE		0x0014
-#define MBOX_ABORT			0x0015
-#define MBOX_ABORT_DEVICE		0x0016
-#define MBOX_ABORT_TARGET		0x0017
-#define MBOX_BUS_RESET			0x0018
-#define MBOX_STOP_QUEUE			0x0019
-#define MBOX_START_QUEUE		0x001a
-#define MBOX_SINGLE_STEP_QUEUE		0x001b
-#define MBOX_ABORT_QUEUE		0x001c
-#define MBOX_GET_DEV_QUEUE_STATUS	0x001d
-#define MBOX_GET_FIRMWARE_STATUS	0x001f
-#define MBOX_GET_INIT_SCSI_ID		0x0020
-#define MBOX_GET_SELECT_TIMEOUT		0x0021
-#define MBOX_GET_RETRY_COUNT		0x0022
-#define MBOX_GET_TAG_AGE_LIMIT		0x0023
-#define MBOX_GET_CLOCK_RATE		0x0024
-#define MBOX_GET_ACT_NEG_STATE		0x0025
-#define MBOX_GET_ASYNC_DATA_SETUP_TIME	0x0026
-#define MBOX_GET_PCI_PARAMS		0x0027
-#define MBOX_GET_TARGET_PARAMS		0x0028
-#define MBOX_GET_DEV_QUEUE_PARAMS	0x0029
-#define MBOX_SET_INIT_SCSI_ID		0x0030
-#define MBOX_SET_SELECT_TIMEOUT		0x0031
-#define MBOX_SET_RETRY_COUNT		0x0032
-#define MBOX_SET_TAG_AGE_LIMIT		0x0033
-#define MBOX_SET_CLOCK_RATE		0x0034
-#define MBOX_SET_ACTIVE_NEG_STATE	0x0035
-#define MBOX_SET_ASYNC_DATA_SETUP_TIME	0x0036
-#define MBOX_SET_PCI_CONTROL_PARAMS	0x0037
-#define MBOX_SET_TARGET_PARAMS		0x0038
-#define MBOX_SET_DEV_QUEUE_PARAMS	0x0039
-#define MBOX_RETURN_BIOS_BLOCK_ADDR	0x0040
-#define MBOX_WRITE_FOUR_RAM_WORDS	0x0041
-#define MBOX_EXEC_BIOS_IOCB		0x0042
+#define CS_COMPLETE 0x0000
+#define CS_INCOMPLETE 0x0001
+#define CS_DMA_ERROR 0x0002
+#define CS_TRANSPORT_ERROR 0x0003
+#define CS_RESET_OCCURRED 0x0004
+#define CS_ABORTED 0x0005
+#define CS_TIMEOUT 0x0006
+#define CS_DATA_OVERRUN 0x0007
+#define CS_COMMAND_OVERRUN 0x0008
+#define CS_STATUS_OVERRUN 0x0009
+#define CS_BAD_MESSAGE 0x000a
+#define CS_NO_MESSAGE_OUT 0x000b
+#define CS_EXT_ID_FAILED 0x000c
+#define CS_IDE_MSG_FAILED 0x000d
+#define CS_ABORT_MSG_FAILED 0x000e
+#define CS_REJECT_MSG_FAILED 0x000f
+#define CS_NOP_MSG_FAILED 0x0010
+#define CS_PARITY_ERROR_MSG_FAILED 0x0011
+#define CS_DEVICE_RESET_MSG_FAILED 0x0012
+#define CS_ID_MSG_FAILED 0x0013
+#define CS_UNEXP_BUS_FREE 0x0014
+#define CS_DATA_UNDERRUN 0x0015
+#define CS_INVALID_ENTRY_TYPE 0x001b
+#define CS_DEVICE_QUEUE_FULL 0x001c
+#define CS_SCSI_PHASE_SKIPPED 0x001d
+#define CS_ARS_FAILED 0x001e
+#define SF_GOT_BUS 0x0100
+#define SF_GOT_TARGET 0x0200
+#define SF_SENT_CDB 0x0400
+#define SF_TRANSFERRED_DATA 0x0800
+#define SF_GOT_STATUS 0x1000
+#define SF_GOT_SENSE 0x2000
+#define STF_DISCONNECT 0x0001
+#define STF_SYNCHRONOUS 0x0002
+#define STF_PARITY_ERROR 0x0004
+#define STF_BUS_RESET 0x0008
+#define STF_DEVICE_RESET 0x0010
+#define STF_ABORTED 0x0020
+#define STF_TIMEOUT 0x0040
+#define STF_NEGOTIATION 0x0080
+#define ISP_RESET 0x0001
+#define ISP_EN_INT 0x0002
+#define ISP_EN_RISC 0x0004
+#define HCCR_NOP 0x0000
+#define HCCR_RESET 0x1000
+#define HCCR_PAUSE 0x2000
+#define HCCR_RELEASE 0x3000
+#define HCCR_SINGLE_STEP 0x4000
+#define HCCR_SET_HOST_INTR 0x5000
+#define HCCR_CLEAR_HOST_INTR 0x6000
+#define HCCR_CLEAR_RISC_INTR 0x7000
+#define HCCR_BP_ENABLE 0x8000
+#define HCCR_BIOS_DISABLE 0x9000
+#define HCCR_TEST_MODE 0xf000
+#define RISC_BUSY 0x0004
+#define MBOX_NO_OP 0x0000
+#define MBOX_LOAD_RAM 0x0001
+#define MBOX_EXEC_FIRMWARE 0x0002
+#define MBOX_DUMP_RAM 0x0003
+#define MBOX_WRITE_RAM_WORD 0x0004
+#define MBOX_READ_RAM_WORD 0x0005
+#define MBOX_MAILBOX_REG_TEST 0x0006
+#define MBOX_VERIFY_CHECKSUM 0x0007
+#define MBOX_ABOUT_FIRMWARE 0x0008
+#define MBOX_CHECK_FIRMWARE 0x000e
+#define MBOX_INIT_REQ_QUEUE 0x0010
+#define MBOX_INIT_RES_QUEUE 0x0011
+#define MBOX_EXECUTE_IOCB 0x0012
+#define MBOX_WAKE_UP 0x0013
+#define MBOX_STOP_FIRMWARE 0x0014
+#define MBOX_ABORT 0x0015
+#define MBOX_ABORT_DEVICE 0x0016
+#define MBOX_ABORT_TARGET 0x0017
+#define MBOX_BUS_RESET 0x0018
+#define MBOX_STOP_QUEUE 0x0019
+#define MBOX_START_QUEUE 0x001a
+#define MBOX_SINGLE_STEP_QUEUE 0x001b
+#define MBOX_ABORT_QUEUE 0x001c
+#define MBOX_GET_DEV_QUEUE_STATUS 0x001d
+#define MBOX_GET_FIRMWARE_STATUS 0x001f
+#define MBOX_GET_INIT_SCSI_ID 0x0020
+#define MBOX_GET_SELECT_TIMEOUT 0x0021
+#define MBOX_GET_RETRY_COUNT 0x0022
+#define MBOX_GET_TAG_AGE_LIMIT 0x0023
+#define MBOX_GET_CLOCK_RATE 0x0024
+#define MBOX_GET_ACT_NEG_STATE 0x0025
+#define MBOX_GET_ASYNC_DATA_SETUP_TIME 0x0026
+#define MBOX_GET_PCI_PARAMS 0x0027
+#define MBOX_GET_TARGET_PARAMS 0x0028
+#define MBOX_GET_DEV_QUEUE_PARAMS 0x0029
+#define MBOX_SET_INIT_SCSI_ID 0x0030
+#define MBOX_SET_SELECT_TIMEOUT 0x0031
+#define MBOX_SET_RETRY_COUNT 0x0032
+#define MBOX_SET_TAG_AGE_LIMIT 0x0033
+#define MBOX_SET_CLOCK_RATE 0x0034
+#define MBOX_SET_ACTIVE_NEG_STATE 0x0035
+#define MBOX_SET_ASYNC_DATA_SETUP_TIME 0x0036
+#define MBOX_SET_PCI_CONTROL_PARAMS 0x0037
+#define MBOX_SET_TARGET_PARAMS 0x0038
+#define MBOX_SET_DEV_QUEUE_PARAMS 0x0039
+#define MBOX_RETURN_BIOS_BLOCK_ADDR 0x0040
+#define MBOX_WRITE_FOUR_RAM_WORDS 0x0041
+#define MBOX_EXEC_BIOS_IOCB 0x0042
 unsigned short risc_code_addr01 = 0x1000 ;
-#define PACKB(a, b)			(((a)<<4)|(b))
+#define PACKB(a, b) (((a)<<4)|(b))
 const u_char mbox_param[] = {
 PACKB(1, 1),
 PACKB(5, 5),
@@ -351,69 +351,69 @@ PACKB(1, 2),
 PACKB(6, 1),
 PACKB(2, 3)
 };
-#define MAX_MBOX_COMMAND	(sizeof(mbox_param)/sizeof(u_short))
+#define MAX_MBOX_COMMAND (sizeof(mbox_param)/sizeof(u_short))
 struct host_param {
-u_short		fifo_threshold;
-u_short		host_adapter_enable;
-u_short		initiator_scsi_id;
-u_short		bus_reset_delay;
-u_short		retry_count;
-u_short		retry_delay;
-u_short		async_data_setup_time;
-u_short		req_ack_active_negation;
-u_short		data_line_active_negation;
-u_short		data_dma_burst_enable;
-u_short		command_dma_burst_enable;
-u_short		tag_aging;
-u_short		selection_timeout;
-u_short		max_queue_depth;
+u_short fifo_threshold;
+u_short host_adapter_enable;
+u_short initiator_scsi_id;
+u_short bus_reset_delay;
+u_short retry_count;
+u_short retry_delay;
+u_short async_data_setup_time;
+u_short req_ack_active_negation;
+u_short data_line_active_negation;
+u_short data_dma_burst_enable;
+u_short command_dma_burst_enable;
+u_short tag_aging;
+u_short selection_timeout;
+u_short max_queue_depth;
 };
 struct dev_param {
-u_short		device_flags;
-u_short		execution_throttle;
-u_short		synchronous_period;
-u_short		synchronous_offset;
-u_short		device_enable;
-u_short		reserved;
+u_short device_flags;
+u_short execution_throttle;
+u_short synchronous_period;
+u_short synchronous_offset;
+u_short device_enable;
+u_short reserved;
 };
-#define RES_QUEUE_LEN		((QLOGICISP_REQ_QUEUE_LEN + 1) / 8 - 1)
-#define QUEUE_ENTRY_LEN		64
+#define RES_QUEUE_LEN ((QLOGICISP_REQ_QUEUE_LEN + 1) / 8 - 1)
+#define QUEUE_ENTRY_LEN 64
 struct isp1020_hostdata {
-u_char	bus;
-u_char	revision;
-u_char	device_fn;
-struct	host_param host_param;
-struct	dev_param dev_param[MAX_TARGETS];
-u_int	req_in_ptr;
-u_int	res_out_ptr;
-long	send_marker;
-char	res[RES_QUEUE_LEN+1][QUEUE_ENTRY_LEN];
-char	req[QLOGICISP_REQ_QUEUE_LEN+1][QUEUE_ENTRY_LEN];
+u_char bus;
+u_char revision;
+u_char device_fn;
+struct host_param host_param;
+struct dev_param dev_param[MAX_TARGETS];
+u_int req_in_ptr;
+u_int res_out_ptr;
+long send_marker;
+char res[RES_QUEUE_LEN+1][QUEUE_ENTRY_LEN];
+char req[QLOGICISP_REQ_QUEUE_LEN+1][QUEUE_ENTRY_LEN];
 };
-#define QUEUE_DEPTH(in, out, ql)	((in - out) & (ql))
-#define REQ_QUEUE_DEPTH(in, out)	QUEUE_DEPTH(in, out, 		     \
+#define QUEUE_DEPTH(in, out, ql) ((in - out) & (ql))
+#define REQ_QUEUE_DEPTH(in, out) QUEUE_DEPTH(in, out, \
 QLOGICISP_REQ_QUEUE_LEN)
-#define RES_QUEUE_DEPTH(in, out)	QUEUE_DEPTH(in, out, RES_QUEUE_LEN)
+#define RES_QUEUE_DEPTH(in, out) QUEUE_DEPTH(in, out, RES_QUEUE_LEN)
 struct Scsi_Host *irq2host[NR_IRQS];
-static void	isp1020_enable_irqs(struct Scsi_Host *);
-static void	isp1020_disable_irqs(struct Scsi_Host *);
-static int	isp1020_init(struct Scsi_Host *);
-static int	isp1020_reset_hardware(struct Scsi_Host *);
-static int	isp1020_set_defaults(struct Scsi_Host *);
-static int	isp1020_load_parameters(struct Scsi_Host *);
-static int	isp1020_mbox_command(struct Scsi_Host *, u_short []);
-static int	isp1020_return_status(struct Status_Entry *);
-static void	isp1020_intr_handler(int, void *, struct pt_regs *);
+static void isp1020_enable_irqs(struct Scsi_Host *);
+static void isp1020_disable_irqs(struct Scsi_Host *);
+static int isp1020_init(struct Scsi_Host *);
+static int isp1020_reset_hardware(struct Scsi_Host *);
+static int isp1020_set_defaults(struct Scsi_Host *);
+static int isp1020_load_parameters(struct Scsi_Host *);
+static int isp1020_mbox_command(struct Scsi_Host *, u_short []);
+static int isp1020_return_status(struct Status_Entry *);
+static void isp1020_intr_handler(int, void *, struct pt_regs *);
 #if USE_NVRAM_DEFAULTS
-static int	isp1020_get_defaults(struct Scsi_Host *);
-static int	isp1020_verify_nvram(struct Scsi_Host *);
-static u_short	isp1020_read_nvram_word(struct Scsi_Host *, u_short);
+static int isp1020_get_defaults(struct Scsi_Host *);
+static int isp1020_verify_nvram(struct Scsi_Host *);
+static u_short isp1020_read_nvram_word(struct Scsi_Host *, u_short);
 #endif
 #if DEBUG_ISP1020
-static void	isp1020_print_scsi_cmd(Scsi_Cmnd *);
+static void isp1020_print_scsi_cmd(Scsi_Cmnd *);
 #endif
 #if DEBUG_ISP1020_INTR
-static void	isp1020_print_status_entry(struct Status_Entry *);
+static void isp1020_print_status_entry(struct Status_Entry *);
 #endif
 static struct proc_dir_entry proc_scsi_isp1020 = {
 PROC_SCSI_QLOGICISP, 7, "isp1020",
@@ -528,7 +528,7 @@ hostdata = (struct isp1020_hostdata *) host->hostdata;
 Cmnd->scsi_done = done;
 DEBUG(isp1020_print_scsi_cmd(Cmnd));
 out_ptr = inw(host->io_port + MBOX4);
-in_ptr  = hostdata->req_in_ptr;
+in_ptr = hostdata->req_in_ptr;
 DEBUG(printk("qlogicisp : request queue depth %d\n",
 REQ_QUEUE_DEPTH(in_ptr, out_ptr)));
 cmd = (struct Command_Entry *) &hostdata->req[in_ptr][0];
@@ -575,7 +575,7 @@ n = sg_count;
 if (n > 4)
 n = 4;
 for (i = 0; i < n; i++) {
-ds[i].d_base  = (u_int) virt_to_bus(sg->address);
+ds[i].d_base = (u_int) virt_to_bus(sg->address);
 ds[i].d_count = sg->length;
 ++sg;
 }
@@ -592,9 +592,9 @@ return 1;
 }
 TRACE("queue continuation", in_ptr, 0);
 cont->hdr.entry_type = ENTRY_CONTINUATION;
-cont->hdr.entry_cnt  = 0;
-cont->hdr.sys_def_1  = 0;
-cont->hdr.flags      = 0;
+cont->hdr.entry_cnt = 0;
+cont->hdr.sys_def_1 = 0;
+cont->hdr.flags = 0;
 cont->reserved = 0;
 ds = cont->dataseg;
 n = sg_count;
@@ -622,7 +622,7 @@ host->sg_tablesize = QLOGICISP_MAX_SG(num_free);
 LEAVE("isp1020_queuecommand");
 return 0;
 }
-#define ASYNC_EVENT_INTERRUPT	0x01
+#define ASYNC_EVENT_INTERRUPT 0x01
 void isp1020_intr_handler(int irq, void *dev_id, struct pt_regs *regs)
 {
 Scsi_Cmnd *Cmnd;
@@ -1044,12 +1044,12 @@ hostdata->dev_param[i].device_enable);
 LEAVE("isp1020_get_defaults");
 return 0;
 }
-#define ISP1020_NVRAM_LEN	0x40
-#define ISP1020_NVRAM_SIG1	0x5349
-#define ISP1020_NVRAM_SIG2	0x2050
+#define ISP1020_NVRAM_LEN 0x40
+#define ISP1020_NVRAM_SIG1 0x5349
+#define ISP1020_NVRAM_SIG2 0x2050
 static int isp1020_verify_nvram(struct Scsi_Host *host)
 {
-int	i;
+int i;
 u_short value;
 u_char checksum = 0;
 for (i = 0; i < ISP1020_NVRAM_LEN; i++) {

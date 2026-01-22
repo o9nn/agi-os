@@ -22,18 +22,18 @@ png_debug1(1, "in %s storage function\n", "cHRM");
 if (png_ptr == NULL || info_ptr == NULL)
 return;
 if (white_x < 0.0 || white_y < 0.0 ||
-red_x < 0.0 ||   red_y < 0.0 ||
+red_x < 0.0 || red_y < 0.0 ||
 green_x < 0.0 || green_y < 0.0 ||
-blue_x < 0.0 ||  blue_y < 0.0)
+blue_x < 0.0 || blue_y < 0.0)
 {
 png_warning(png_ptr,
 "Ignoring attempt to set negative chromaticity value");
 return;
 }
 if (white_x > 21474.83 || white_y > 21474.83 ||
-red_x > 21474.83 ||   red_y > 21474.83 ||
+red_x > 21474.83 || red_y > 21474.83 ||
 green_x > 21474.83 || green_y > 21474.83 ||
-blue_x > 21474.83 ||  blue_y > 21474.83)
+blue_x > 21474.83 || blue_y > 21474.83)
 {
 png_warning(png_ptr,
 "Ignoring attempt to set chromaticity value exceeding 21474.83");
@@ -41,21 +41,21 @@ return;
 }
 info_ptr->x_white = (float)white_x;
 info_ptr->y_white = (float)white_y;
-info_ptr->x_red   = (float)red_x;
-info_ptr->y_red   = (float)red_y;
+info_ptr->x_red = (float)red_x;
+info_ptr->y_red = (float)red_y;
 info_ptr->x_green = (float)green_x;
 info_ptr->y_green = (float)green_y;
-info_ptr->x_blue  = (float)blue_x;
-info_ptr->y_blue  = (float)blue_y;
+info_ptr->x_blue = (float)blue_x;
+info_ptr->y_blue = (float)blue_y;
 #ifdef PNG_FIXED_POINT_SUPPORTED
 info_ptr->int_x_white = (png_fixed_point)(white_x*100000.+0.5);
 info_ptr->int_y_white = (png_fixed_point)(white_y*100000.+0.5);
-info_ptr->int_x_red   = (png_fixed_point)(  red_x*100000.+0.5);
-info_ptr->int_y_red   = (png_fixed_point)(  red_y*100000.+0.5);
+info_ptr->int_x_red = (png_fixed_point)( red_x*100000.+0.5);
+info_ptr->int_y_red = (png_fixed_point)( red_y*100000.+0.5);
 info_ptr->int_x_green = (png_fixed_point)(green_x*100000.+0.5);
 info_ptr->int_y_green = (png_fixed_point)(green_y*100000.+0.5);
-info_ptr->int_x_blue  = (png_fixed_point)( blue_x*100000.+0.5);
-info_ptr->int_y_blue  = (png_fixed_point)( blue_y*100000.+0.5);
+info_ptr->int_x_blue = (png_fixed_point)( blue_x*100000.+0.5);
+info_ptr->int_y_blue = (png_fixed_point)( blue_y*100000.+0.5);
 #endif
 info_ptr->valid |= PNG_INFO_cHRM;
 }
@@ -71,9 +71,9 @@ png_debug1(1, "in %s storage function\n", "cHRM");
 if (png_ptr == NULL || info_ptr == NULL)
 return;
 if (white_x < 0 || white_y < 0 ||
-red_x < 0 ||   red_y < 0 ||
+red_x < 0 || red_y < 0 ||
 green_x < 0 || green_y < 0 ||
-blue_x < 0 ||  blue_y < 0)
+blue_x < 0 || blue_y < 0)
 {
 png_warning(png_ptr,
 "Ignoring attempt to set negative chromaticity value");
@@ -94,21 +94,21 @@ return;
 }
 info_ptr->int_x_white = white_x;
 info_ptr->int_y_white = white_y;
-info_ptr->int_x_red   = red_x;
-info_ptr->int_y_red   = red_y;
+info_ptr->int_x_red = red_x;
+info_ptr->int_y_red = red_y;
 info_ptr->int_x_green = green_x;
 info_ptr->int_y_green = green_y;
-info_ptr->int_x_blue  = blue_x;
-info_ptr->int_y_blue  = blue_y;
+info_ptr->int_x_blue = blue_x;
+info_ptr->int_y_blue = blue_y;
 #ifdef PNG_FLOATING_POINT_SUPPORTED
 info_ptr->x_white = (float)(white_x/100000.);
 info_ptr->y_white = (float)(white_y/100000.);
-info_ptr->x_red   = (float)(  red_x/100000.);
-info_ptr->y_red   = (float)(  red_y/100000.);
+info_ptr->x_red = (float)( red_x/100000.);
+info_ptr->y_red = (float)( red_y/100000.);
 info_ptr->x_green = (float)(green_x/100000.);
 info_ptr->y_green = (float)(green_y/100000.);
-info_ptr->x_blue  = (float)( blue_x/100000.);
-info_ptr->y_blue  = (float)( blue_y/100000.);
+info_ptr->x_blue = (float)( blue_x/100000.);
+info_ptr->y_blue = (float)( blue_y/100000.);
 #endif
 info_ptr->valid |= PNG_INFO_cHRM;
 }
@@ -516,12 +516,12 @@ png_set_gAMA_fixed(png_ptr, info_ptr, int_file_gamma);
 #ifdef PNG_FIXED_POINT_SUPPORTED
 int_white_x = 31270L;
 int_white_y = 32900L;
-int_red_x   = 64000L;
-int_red_y   = 33000L;
+int_red_x = 64000L;
+int_red_y = 33000L;
 int_green_x = 30000L;
 int_green_y = 60000L;
-int_blue_x  = 15000L;
-int_blue_y  =  6000L;
+int_blue_x = 15000L;
+int_blue_y = 6000L;
 png_set_cHRM_fixed(png_ptr, info_ptr,
 int_white_x, int_white_y, int_red_x, int_red_y, int_green_x, int_green_y,
 int_blue_x, int_blue_y);
@@ -529,12 +529,12 @@ int_blue_x, int_blue_y);
 #ifdef PNG_FLOATING_POINT_SUPPORTED
 white_x = (float).3127;
 white_y = (float).3290;
-red_x   = (float).64;
-red_y   = (float).33;
+red_x = (float).64;
+red_y = (float).33;
 green_x = (float).30;
 green_y = (float).60;
-blue_x  = (float).15;
-blue_y  = (float).06;
+blue_x = (float).15;
+blue_y = (float).06;
 png_set_cHRM(png_ptr, info_ptr,
 white_x, white_y, red_x, red_y, green_x, green_y, blue_x, blue_y);
 #endif
@@ -989,15 +989,15 @@ png_uint_32 settable_asm_flags;
 png_uint_32 settable_mmx_flags;
 settable_mmx_flags =
 #ifdef PNG_HAVE_ASSEMBLER_COMBINE_ROW
-PNG_ASM_FLAG_MMX_READ_COMBINE_ROW  |
+PNG_ASM_FLAG_MMX_READ_COMBINE_ROW |
 #endif
 #ifdef PNG_HAVE_ASSEMBLER_READ_INTERLACE
-PNG_ASM_FLAG_MMX_READ_INTERLACE    |
+PNG_ASM_FLAG_MMX_READ_INTERLACE |
 #endif
 #ifdef PNG_HAVE_ASSEMBLER_READ_FILTER_ROW
-PNG_ASM_FLAG_MMX_READ_FILTER_SUB   |
-PNG_ASM_FLAG_MMX_READ_FILTER_UP    |
-PNG_ASM_FLAG_MMX_READ_FILTER_AVG   |
+PNG_ASM_FLAG_MMX_READ_FILTER_SUB |
+PNG_ASM_FLAG_MMX_READ_FILTER_UP |
+PNG_ASM_FLAG_MMX_READ_FILTER_AVG |
 PNG_ASM_FLAG_MMX_READ_FILTER_PAETH |
 #endif
 0;

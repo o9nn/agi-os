@@ -1,15 +1,15 @@
 #ifndef gspcolor_INCLUDED
-#  define gspcolor_INCLUDED
+# define gspcolor_INCLUDED
 #include "gsccolor.h"
 #include "gsrefct.h"
 #include "gsuid.h"
 #ifndef gs_pattern_type_DEFINED
-#  define gs_pattern_type_DEFINED
+# define gs_pattern_type_DEFINED
 typedef struct gs_pattern_type_s gs_pattern_type_t;
 #endif
 #define gs_pattern_template_common\
 const gs_pattern_type_t *type;\
-int PatternType;		\
+int PatternType; \
 gs_uid uid;\
 void *client_data
 typedef struct gs_pattern_template_s {
@@ -22,13 +22,13 @@ gs_public_st_ptrs2(st_pattern_template, gs_pattern_template_t,\
 pattern_template_reloc_ptrs, uid.xvalues, client_data)
 #define st_pattern_template_max_ptrs 2
 #ifndef gs_pattern_instance_DEFINED
-#  define gs_pattern_instance_DEFINED
+# define gs_pattern_instance_DEFINED
 typedef struct gs_pattern_instance_s gs_pattern_instance_t;
 #endif
 #define gs_pattern_instance_common\
 rc_header rc;\
 \
-const gs_pattern_type_t *type;  \
+const gs_pattern_type_t *type; \
 gs_state *saved;\
 gs_id pattern_id
 struct gs_pattern_instance_s {

@@ -42,9 +42,9 @@ static void test_driver_isolation(void)
 {
 printf("Testing driver isolation and security...\n");
 unsigned int security_caps = 0;
-#define TEST_CAP_SANDBOXED      0x10000000
+#define TEST_CAP_SANDBOXED 0x10000000
 #define TEST_CAP_RESOURCE_LIMIT 0x20000000
-#define TEST_CAP_FAULT_ISOLATE  0x40000000
+#define TEST_CAP_FAULT_ISOLATE 0x40000000
 security_caps |= TEST_CAP_SANDBOXED;
 security_caps |= TEST_CAP_RESOURCE_LIMIT;
 security_caps |= TEST_CAP_FAULT_ISOLATE;

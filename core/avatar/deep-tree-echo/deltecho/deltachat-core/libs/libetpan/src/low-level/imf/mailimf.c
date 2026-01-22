@@ -1,5 +1,5 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #include "mailimf.h"
 #include <ctype.h>
@@ -1287,7 +1287,7 @@ cur_token ++;
 str = malloc(terminal - begin + 1);
 if (str == NULL)
 return MAILIMF_ERROR_MEMORY;
-strncpy(str, message + begin,  terminal - begin);
+strncpy(str, message + begin, terminal - begin);
 str[terminal - begin] = '\0';
 * indx = terminal;
 * result = str;
@@ -1982,7 +1982,7 @@ enum {
 STATE_ZONE_1 = 0,
 STATE_ZONE_2 = 1,
 STATE_ZONE_3 = 2,
-STATE_ZONE_OK  = 3,
+STATE_ZONE_OK = 3,
 STATE_ZONE_ERR = 4,
 STATE_ZONE_CONT = 5
 };
@@ -3712,7 +3712,7 @@ struct mailimf_from * from;
 size_t cur_token;
 int r;
 int res;
-cur_token =  * indx;
+cur_token = * indx;
 r = mailimf_token_case_insensitive_parse(message, length,
 &cur_token, "From");
 if (r != MAILIMF_NO_ERROR) {
@@ -4701,7 +4701,7 @@ struct mailimf_from * from;
 size_t cur_token;
 int r;
 int res;
-cur_token =  * indx;
+cur_token = * indx;
 r = mailimf_token_case_insensitive_parse(message, length,
 &cur_token, "Resent-From");
 if (r != MAILIMF_NO_ERROR) {

@@ -1,5 +1,5 @@
 #ifndef gxdht_INCLUDED
-#  define gxdht_INCLUDED
+# define gxdht_INCLUDED
 #include "gsrefct.h"
 #include "gsmatrix.h"
 #include "gxarith.h"
@@ -25,20 +25,20 @@ ht_mask_t mask;
 typedef ht_mask_t ht_sample_t;
 #define max_ht_sample (ht_sample_t)(((1 << (ht_mask_bits - 2)) - 1) * 2 + 1)
 #ifndef wts_screen_t_DEFINED
-#  define wts_screen_t_DEFINED
+# define wts_screen_t_DEFINED
 typedef struct wts_screen_s wts_screen_t;
 #endif
 #ifndef gs_wts_screen_enum_t_DEFINED
-#  define gs_wts_screen_enum_t_DEFINED
+# define gs_wts_screen_enum_t_DEFINED
 typedef struct gs_wts_screen_enum_s gs_wts_screen_enum_t;
 #endif
 typedef struct gx_ht_cache_s gx_ht_cache;
 #ifndef gx_ht_order_DEFINED
-#  define gx_ht_order_DEFINED
+# define gx_ht_order_DEFINED
 typedef struct gx_ht_order_s gx_ht_order;
 #endif
 #ifndef gx_ht_tile_DEFINED
-#  define gx_ht_tile_DEFINED
+# define gx_ht_tile_DEFINED
 typedef struct gx_ht_tile_s gx_ht_tile;
 #endif
 typedef struct gx_ht_order_procs_s {
@@ -87,7 +87,7 @@ gx_ht_order_screen_params_t screen_params;
 (porder)->width / igcd((porder)->width, (porder)->shift) *\
 (porder)->height)
 extern_st(st_ht_order);
-#define public_st_ht_order()	\
+#define public_st_ht_order() \
 gs_public_st_composite(st_ht_order, gx_ht_order, "gx_ht_order",\
 ht_order_enum_ptrs, ht_order_reloc_ptrs)
 #define st_ht_order_max_ptrs 4
@@ -96,7 +96,7 @@ gx_ht_order corder;
 int comp_number;
 int cname;
 } gx_ht_order_component;
-#define private_st_ht_order_component()	\
+#define private_st_ht_order_component() \
 gs_private_st_ptrs_add0(st_ht_order_component, gx_ht_order_component,\
 "gx_ht_order_component", ht_order_component_enum_ptrs,\
 ht_order_component_reloc_ptrs, st_ht_order, corder)
@@ -107,7 +107,7 @@ gs_public_st_element(st_ht_order_component_element, gx_ht_order_component,\
 "gx_ht_order_component[]", ht_order_element_enum_ptrs,\
 ht_order_element_reloc_ptrs, st_ht_order_component)
 #ifndef gx_device_halftone_DEFINED
-#  define gx_device_halftone_DEFINED
+# define gx_device_halftone_DEFINED
 typedef struct gx_device_halftone_s gx_device_halftone;
 #endif
 struct gx_device_halftone_s {

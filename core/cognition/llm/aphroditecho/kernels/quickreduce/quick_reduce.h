@@ -2,14 +2,14 @@
 #include <vector>
 #include <hip/hip_runtime.h>
 #include "quick_reduce_impl.cuh"
-#define HIP_CHECK(err)                                                     \
-do {                                                                     \
-hipError_t err_ = (err);                                               \
-if (err_ != hipSuccess) {                                              \
+#define HIP_CHECK(err) \
+do { \
+hipError_t err_ = (err); \
+if (err_ != hipSuccess) { \
 std::printf("HIP error %d at %s:%d. %s\n", err_, __FILE__, __LINE__, \
-hipGetErrorString(err_));                                \
-throw std::runtime_error("HIP error");                               \
-}                                                                      \
+hipGetErrorString(err_)); \
+throw std::runtime_error("HIP error"); \
+} \
 } while (0)
 namespace quickreduce {
 using fptr_t = int64_t;
@@ -28,28 +28,28 @@ block += grid;
 flag_color++;
 }
 }
-#define TWOSHOT_DISPATCH(__codec)                                           \
-if (world_size == 2) {                                                    \
-using LineCodec = __codec<T, 2>;                                        \
-using AllReduceKernel = AllReduceTwoshot<T, LineCodec, cast_bf2half>;   \
-hipLaunchKernelGGL((allreduce_prototype_twoshot<AllReduceKernel, T>),   \
+#define TWOSHOT_DISPATCH(__codec) \
+if (world_size == 2) { \
+using LineCodec = __codec<T, 2>; \
+using AllReduceKernel = AllReduceTwoshot<T, LineCodec, cast_bf2half>; \
+hipLaunchKernelGGL((allreduce_prototype_twoshot<AllReduceKernel, T>), \
 dim3(grid), dim3(kBlockTwoShot), 0, stream, A, B, N, \
-num_blocks, rank, dbuffer_list, data_offset,         \
-flag_color);                                         \
-} else if (world_size == 4) {                                             \
-using LineCodec = __codec<T, 4>;                                        \
-using AllReduceKernel = AllReduceTwoshot<T, LineCodec, cast_bf2half>;   \
-hipLaunchKernelGGL((allreduce_prototype_twoshot<AllReduceKernel, T>),   \
+num_blocks, rank, dbuffer_list, data_offset, \
+flag_color); \
+} else if (world_size == 4) { \
+using LineCodec = __codec<T, 4>; \
+using AllReduceKernel = AllReduceTwoshot<T, LineCodec, cast_bf2half>; \
+hipLaunchKernelGGL((allreduce_prototype_twoshot<AllReduceKernel, T>), \
 dim3(grid), dim3(kBlockTwoShot), 0, stream, A, B, N, \
-num_blocks, rank, dbuffer_list, data_offset,         \
-flag_color);                                         \
-} else if (world_size == 8) {                                             \
-using LineCodec = __codec<T, 8>;                                        \
-using AllReduceKernel = AllReduceTwoshot<T, LineCodec, cast_bf2half>;   \
-hipLaunchKernelGGL((allreduce_prototype_twoshot<AllReduceKernel, T>),   \
+num_blocks, rank, dbuffer_list, data_offset, \
+flag_color); \
+} else if (world_size == 8) { \
+using LineCodec = __codec<T, 8>; \
+using AllReduceKernel = AllReduceTwoshot<T, LineCodec, cast_bf2half>; \
+hipLaunchKernelGGL((allreduce_prototype_twoshot<AllReduceKernel, T>), \
 dim3(grid), dim3(kBlockTwoShot), 0, stream, A, B, N, \
-num_blocks, rank, dbuffer_list, data_offset,         \
-flag_color);                                         \
+num_blocks, rank, dbuffer_list, data_offset, \
+flag_color); \
 }
 enum QuickReduceQuantLevel {
 F16 = 0,

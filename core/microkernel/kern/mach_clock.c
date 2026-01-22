@@ -27,66 +27,66 @@
 #endif
 #include <kern/constants.h>
 #define MICROSECONDS_IN_ONE_SECOND MICROSECONDS_PER_SECOND
-int		hz = HZ;
-int		tick = (MICROSECONDS_IN_ONE_SECOND / HZ);
-time_value64_t	time = { 0, 0 };
-time_value64_t	uptime = { 0, 0 };
-unsigned long	elapsed_ticks = 0;
-int		timedelta = 0;
-int		tickdelta = 0;
-#if	HZ > 500
-unsigned	tickadj = 1;
+int hz = HZ;
+int tick = (MICROSECONDS_IN_ONE_SECOND / HZ);
+time_value64_t time = { 0, 0 };
+time_value64_t uptime = { 0, 0 };
+unsigned long elapsed_ticks = 0;
+int timedelta = 0;
+int tickdelta = 0;
+#if HZ > 500
+unsigned tickadj = 1;
 #else
-unsigned	tickadj = 500 / HZ;
+unsigned tickadj = 500 / HZ;
 #endif
-unsigned	bigadj = MICROSECONDS_PER_SECOND;
-uint32_t	last_hpc_read = 0;
+unsigned bigadj = MICROSECONDS_PER_SECOND;
+uint32_t last_hpc_read = 0;
 volatile mapped_time_value_t *mtime = 0;
-#define update_mapped_time(time)					\
-MACRO_BEGIN								\
-if (mtime != 0) {						\
-mtime->check_seconds = (time)->seconds;			\
-mtime->check_seconds64 = (time)->seconds;		\
-__sync_synchronize();					\
-mtime->microseconds = (time)->nanoseconds / 1000;	\
-mtime->time_value.nanoseconds = (time)->nanoseconds;		\
-__sync_synchronize();					\
-mtime->seconds = (time)->seconds;			\
-mtime->time_value.seconds = (time)->seconds;			\
-}								\
+#define update_mapped_time(time) \
+MACRO_BEGIN \
+if (mtime != 0) { \
+mtime->check_seconds = (time)->seconds; \
+mtime->check_seconds64 = (time)->seconds; \
+__sync_synchronize(); \
+mtime->microseconds = (time)->nanoseconds / 1000; \
+mtime->time_value.nanoseconds = (time)->nanoseconds; \
+__sync_synchronize(); \
+mtime->seconds = (time)->seconds; \
+mtime->time_value.seconds = (time)->seconds; \
+} \
 MACRO_END
-#define update_mapped_uptime(uptime)					\
-MACRO_BEGIN								\
-if (mtime != 0) {						\
-mtime->check_upseconds64 = (uptime)->seconds;		\
-__sync_synchronize();					\
+#define update_mapped_uptime(uptime) \
+MACRO_BEGIN \
+if (mtime != 0) { \
+mtime->check_upseconds64 = (uptime)->seconds; \
+__sync_synchronize(); \
 mtime->uptime_value.nanoseconds = (uptime)->nanoseconds;\
-__sync_synchronize();					\
-mtime->uptime_value.seconds = (uptime)->seconds;	\
-}								\
+__sync_synchronize(); \
+mtime->uptime_value.seconds = (uptime)->seconds; \
+} \
 MACRO_END
-#define read_mapped_time(time)						\
-MACRO_BEGIN								\
-do {								\
-(time)->seconds = mtime->time_value.seconds;		\
-__sync_synchronize();					\
-(time)->nanoseconds = mtime->time_value.nanoseconds;	\
-__sync_synchronize();					\
-} while ((time)->seconds != mtime->check_seconds64);		\
-time_value64_add_hpc(time);					\
+#define read_mapped_time(time) \
+MACRO_BEGIN \
+do { \
+(time)->seconds = mtime->time_value.seconds; \
+__sync_synchronize(); \
+(time)->nanoseconds = mtime->time_value.nanoseconds; \
+__sync_synchronize(); \
+} while ((time)->seconds != mtime->check_seconds64); \
+time_value64_add_hpc(time); \
 MACRO_END
-#define read_mapped_uptime(uptime)				    	\
-MACRO_BEGIN								\
-do {								\
-(uptime)->seconds = mtime->uptime_value.seconds;	\
-__sync_synchronize();					\
+#define read_mapped_uptime(uptime) \
+MACRO_BEGIN \
+do { \
+(uptime)->seconds = mtime->uptime_value.seconds; \
+__sync_synchronize(); \
 (uptime)->nanoseconds = mtime->uptime_value.nanoseconds;\
-__sync_synchronize();					\
-} while ((uptime)->seconds != mtime->check_upseconds64);	\
-time_value64_add_hpc(uptime);					\
+__sync_synchronize(); \
+} while ((uptime)->seconds != mtime->check_upseconds64); \
+time_value64_add_hpc(uptime); \
 MACRO_END
-def_simple_lock_irq_data(static,	timer_lock)
-timer_elt_data_t	timer_head;
+def_simple_lock_irq_data(static, timer_lock)
+timer_elt_data_t timer_head;
 #ifdef TICKLESS_TIMER
 static boolean_t
 tickless_have_pending_timers(void)
@@ -127,17 +127,17 @@ return (tickless_next_timer_deadline() > 1);
 }
 #endif
 void clock_interrupt(
-int		usec,
-boolean_t	usermode,
-boolean_t	basepri,
-vm_offset_t	pc)
+int usec,
+boolean_t usermode,
+boolean_t basepri,
+vm_offset_t pc)
 {
-int		my_cpu = cpu_number();
-thread_t	thread = current_thread();
+int my_cpu = cpu_number();
+thread_t thread = current_thread();
 counter(c_clock_ticks++);
 counter(c_threads_total += c_threads_current);
 counter(c_stacks_total += c_stacks_current);
-#if	STAT_TIME
+#if STAT_TIME
 if (usermode) {
 timer_bump(&thread->user_timer, usec);
 }
@@ -147,7 +147,7 @@ timer_bump(&thread->system_timer, usec);
 }
 #endif
 {
-int		state;
+int state;
 if (usermode)
 state = CPU_STATE_USER;
 else if (!cpu_idle(my_cpu))
@@ -157,7 +157,7 @@ state = CPU_STATE_IDLE;
 machine_slot[my_cpu].cpu_ticks[state]++;
 thread_quantum_update(my_cpu, thread, 1, state);
 }
-#if 	MACH_PCSAMPLE
+#if MACH_PCSAMPLE
 #ifndef MACH_KERNSAMPLE
 if (usermode)
 #endif
@@ -168,10 +168,10 @@ take_pc_sample_macro(thread, SAMPLED_PC_PERIODIC, usermode, pc);
 #endif
 if (my_cpu == master_cpu) {
 spl_t s;
-timer_elt_t	telt;
-boolean_t	needsoft = FALSE;
+timer_elt_t telt;
+boolean_t needsoft = FALSE;
 #ifdef TICKLESS_TIMER
-boolean_t	should_skip_tick = FALSE;
+boolean_t should_skip_tick = FALSE;
 #endif
 s = simple_lock_irq(&timer_lock);
 #ifdef TICKLESS_TIMER
@@ -194,7 +194,7 @@ time_value64_add_nanos(&time, usec * 1000);
 time_value64_add_nanos(&uptime, usec * 1000);
 }
 else {
-int	delta;
+int delta;
 if (timedelta < 0) {
 if (usec > tickdelta) {
 delta = usec - tickdelta;
@@ -227,10 +227,10 @@ last_hpc_read = hpclock_read_counter();
 }
 void softclock(void)
 {
-spl_t	s;
-timer_elt_t	telt;
-void	(*fcn)( void * param );
-void	*param;
+spl_t s;
+timer_elt_t telt;
+void (*fcn)( void * param );
+void *param;
 #ifdef TICKLESS_TIMER
 int processed = 0;
 const int max_batch = 16;
@@ -266,11 +266,11 @@ break;
 }
 }
 void set_timeout(
-timer_elt_t	telt,
-unsigned int	interval)
+timer_elt_t telt,
+unsigned int interval)
 {
-spl_t			s;
-timer_elt_t		next;
+spl_t s;
+timer_elt_t next;
 s = simple_lock_irq(&timer_lock);
 interval += elapsed_ticks;
 for (next = (timer_elt_t)queue_first(&timer_head.chain);
@@ -286,7 +286,7 @@ simple_unlock_irq(s, &timer_lock);
 }
 boolean_t reset_timeout(timer_elt_t telt)
 {
-spl_t	s;
+spl_t s;
 s = simple_lock_irq(&timer_lock);
 if (telt->set) {
 remqueue(&timer_head.chain, (queue_entry_t)telt);
@@ -366,10 +366,10 @@ return host_set_time64(host, new_time64);
 kern_return_t
 host_set_time64(const host_t host, time_value64_t new_time)
 {
-spl_t	s;
+spl_t s;
 if (host == HOST_NULL)
 return(KERN_INVALID_HOST);
-#if	NCPUS > 1
+#if NCPUS > 1
 thread_bind(current_thread(), master_processor);
 if (current_processor() != master_processor)
 thread_block(thread_no_continuation);
@@ -380,18 +380,18 @@ time = new_time;
 update_mapped_time(&time);
 resettodr();
 splx(s);
-#if	NCPUS > 1
+#if NCPUS > 1
 thread_bind(current_thread(), PROCESSOR_NULL);
 #endif
 return(KERN_SUCCESS);
 }
 kern_return_t
 host_adjust_time(
-const host_t	host,
-time_value_t	new_adjustment,
-time_value_t	*old_adjustment	)
+const host_t host,
+time_value_t new_adjustment,
+time_value_t *old_adjustment )
 {
-time_value64_t	old_adjustment64;
+time_value64_t old_adjustment64;
 time_value64_t new_adjustment64;
 kern_return_t ret;
 TIME_VALUE_TO_TIME_VALUE64(&new_adjustment, &new_adjustment64);
@@ -403,18 +403,18 @@ return ret;
 }
 kern_return_t
 host_adjust_time64(
-const host_t	host,
-time_value64_t	new_adjustment,
-time_value64_t	*old_adjustment	)
+const host_t host,
+time_value64_t new_adjustment,
+time_value64_t *old_adjustment )
 {
-time_value64_t	oadj;
+time_value64_t oadj;
 uint64_t ndelta_microseconds;
-spl_t		s;
+spl_t s;
 if (host == HOST_NULL)
 return (KERN_INVALID_HOST);
 ndelta_microseconds = new_adjustment.seconds * MICROSECONDS_IN_ONE_SECOND
 + new_adjustment.nanoseconds / 1000;
-#if	NCPUS > 1
+#if NCPUS > 1
 thread_bind(current_thread(), master_processor);
 if (current_processor() != master_processor)
 thread_block(thread_no_continuation);
@@ -432,7 +432,7 @@ if (ndelta_microseconds % tickdelta)
 ndelta_microseconds = ndelta_microseconds / tickdelta * tickdelta;
 timedelta = ndelta_microseconds;
 splx(s);
-#if	NCPUS > 1
+#if NCPUS > 1
 thread_bind(current_thread(), PROCESSOR_NULL);
 #endif
 *old_adjustment = oadj;
@@ -463,14 +463,14 @@ void timeclose(dev_t dev, int flag)
 {
 return;
 }
-#define NTIMERS		20
+#define NTIMERS 20
 timer_elt_data_t timeout_timers[NTIMERS];
 void timeout(
-void	(*fcn)(void *param),
-void *	param,
-int	interval)
+void (*fcn)(void *param),
+void * param,
+int interval)
 {
-spl_t	s;
+spl_t s;
 timer_elt_t elt;
 s = simple_lock_irq(&timer_lock);
 for (elt = &timeout_timers[0]; elt < &timeout_timers[NTIMERS]; elt++)
@@ -486,7 +486,7 @@ set_timeout(elt, (unsigned int)interval);
 }
 boolean_t untimeout(void (*fcn)( void * param ), const void *param)
 {
-spl_t	s;
+spl_t s;
 timer_elt_t elt;
 s = simple_lock_irq(&timer_lock);
 queue_iterate(&timer_head.chain, elt, timer_elt_t, chain) {

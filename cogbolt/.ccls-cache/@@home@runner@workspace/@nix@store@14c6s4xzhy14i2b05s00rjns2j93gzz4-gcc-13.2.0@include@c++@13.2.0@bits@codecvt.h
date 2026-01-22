@@ -22,10 +22,10 @@ class __codecvt_abstract_base
 : public locale::facet, public codecvt_base
 {
 public:
-typedef codecvt_base::result	result;
-typedef _InternT			intern_type;
-typedef _ExternT			extern_type;
-typedef _StateT			state_type;
+typedef codecvt_base::result result;
+typedef _InternT intern_type;
+typedef _ExternT extern_type;
+typedef _StateT state_type;
 result
 out(state_type& __state, const intern_type* __from,
 const intern_type* __from_end, const intern_type*& __from_next,
@@ -94,14 +94,14 @@ class codecvt
 : public __codecvt_abstract_base<_InternT, _ExternT, _StateT>
 {
 public:
-typedef codecvt_base::result	result;
-typedef _InternT			intern_type;
-typedef _ExternT			extern_type;
-typedef _StateT			state_type;
+typedef codecvt_base::result result;
+typedef _InternT intern_type;
+typedef _ExternT extern_type;
+typedef _StateT state_type;
 protected:
-__c_locale			_M_c_locale_codecvt;
+__c_locale _M_c_locale_codecvt;
 public:
-static locale::id			id;
+static locale::id id;
 explicit
 codecvt(size_t __refs = 0)
 : __codecvt_abstract_base<_InternT, _ExternT, _StateT> (__refs),
@@ -143,11 +143,11 @@ class codecvt<char, char, mbstate_t>
 {
 friend class messages<char>;
 public:
-typedef char			intern_type;
-typedef char			extern_type;
-typedef mbstate_t			state_type;
+typedef char intern_type;
+typedef char extern_type;
+typedef mbstate_t state_type;
 protected:
-__c_locale			_M_c_locale_codecvt;
+__c_locale _M_c_locale_codecvt;
 public:
 static locale::id id;
 explicit
@@ -187,13 +187,13 @@ class codecvt<wchar_t, char, mbstate_t>
 {
 friend class messages<wchar_t>;
 public:
-typedef wchar_t			intern_type;
-typedef char			extern_type;
-typedef mbstate_t			state_type;
+typedef wchar_t intern_type;
+typedef char extern_type;
+typedef mbstate_t state_type;
 protected:
-__c_locale			_M_c_locale_codecvt;
+__c_locale _M_c_locale_codecvt;
 public:
-static locale::id			id;
+static locale::id id;
 explicit
 codecvt(size_t __refs = 0);
 explicit
@@ -233,11 +233,11 @@ class codecvt<char16_t, char, mbstate_t>
 : public __codecvt_abstract_base<char16_t, char, mbstate_t>
 {
 public:
-typedef char16_t			intern_type;
-typedef char			extern_type;
-typedef mbstate_t			state_type;
+typedef char16_t intern_type;
+typedef char extern_type;
+typedef mbstate_t state_type;
 public:
-static locale::id			id;
+static locale::id id;
 explicit
 codecvt(size_t __refs = 0)
 : __codecvt_abstract_base<char16_t, char, mbstate_t>(__refs) { }
@@ -274,11 +274,11 @@ class codecvt<char32_t, char, mbstate_t>
 : public __codecvt_abstract_base<char32_t, char, mbstate_t>
 {
 public:
-typedef char32_t			intern_type;
-typedef char			extern_type;
-typedef mbstate_t			state_type;
+typedef char32_t intern_type;
+typedef char extern_type;
+typedef mbstate_t state_type;
 public:
-static locale::id			id;
+static locale::id id;
 explicit
 codecvt(size_t __refs = 0)
 : __codecvt_abstract_base<char32_t, char, mbstate_t>(__refs) { }
@@ -316,11 +316,11 @@ class codecvt<char16_t, char8_t, mbstate_t>
 : public __codecvt_abstract_base<char16_t, char8_t, mbstate_t>
 {
 public:
-typedef char16_t			intern_type;
-typedef char8_t			extern_type;
-typedef mbstate_t			state_type;
+typedef char16_t intern_type;
+typedef char8_t extern_type;
+typedef mbstate_t state_type;
 public:
-static locale::id			id;
+static locale::id id;
 explicit
 codecvt(size_t __refs = 0)
 : __codecvt_abstract_base<char16_t, char8_t, mbstate_t>(__refs) { }
@@ -357,11 +357,11 @@ class codecvt<char32_t, char8_t, mbstate_t>
 : public __codecvt_abstract_base<char32_t, char8_t, mbstate_t>
 {
 public:
-typedef char32_t			intern_type;
-typedef char8_t			extern_type;
-typedef mbstate_t			state_type;
+typedef char32_t intern_type;
+typedef char8_t extern_type;
+typedef mbstate_t state_type;
 public:
-static locale::id			id;
+static locale::id id;
 explicit
 codecvt(size_t __refs = 0)
 : __codecvt_abstract_base<char32_t, char8_t, mbstate_t>(__refs) { }

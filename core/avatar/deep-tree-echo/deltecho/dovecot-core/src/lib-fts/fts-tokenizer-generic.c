@@ -579,7 +579,7 @@ i_assert(tok->token->used == 0);
 start_pos = i;
 continue;
 }
-if (tok->wb5a &&  tok->token->used <= FTS_WB5A_PREFIX_MAX_LENGTH)
+if (tok->wb5a && tok->token->used <= FTS_WB5A_PREFIX_MAX_LENGTH)
 add_letter(tok, c);
 if (uni_found_word_boundary(tok, lt)) {
 i_assert(char_start_i >= start_pos && size >= start_pos);

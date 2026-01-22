@@ -1,5 +1,5 @@
 #ifndef estack_INCLUDED
-#  define estack_INCLUDED
+# define estack_INCLUDED
 #include "iestack.h"
 #include "icstate.h"
 #define esfile (iexec_stack.current_file)

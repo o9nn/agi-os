@@ -282,7 +282,7 @@ template<typename _Tp, typename _Alloc = std::allocator<_Tp> >
 class vector : protected _Vector_base<_Tp, _Alloc>
 {
 #ifdef _GLIBCXX_CONCEPT_CHECKS
-typedef typename _Alloc::value_type		_Alloc_value_type;
+typedef typename _Alloc::value_type _Alloc_value_type;
 # if __cplusplus < 201103L
 __glibcxx_class_requires(_Tp, _SGIAssignableConcept)
 # endif
@@ -296,23 +296,23 @@ static_assert(is_same<typename _Alloc::value_type, _Tp>::value,
 "std::vector must have the same value_type as its allocator");
 # endif
 #endif
-typedef _Vector_base<_Tp, _Alloc>			_Base;
-typedef typename _Base::_Tp_alloc_type		_Tp_alloc_type;
-typedef __gnu_cxx::__alloc_traits<_Tp_alloc_type>	_Alloc_traits;
+typedef _Vector_base<_Tp, _Alloc> _Base;
+typedef typename _Base::_Tp_alloc_type _Tp_alloc_type;
+typedef __gnu_cxx::__alloc_traits<_Tp_alloc_type> _Alloc_traits;
 public:
-typedef _Tp					value_type;
-typedef typename _Base::pointer			pointer;
-typedef typename _Alloc_traits::const_pointer	const_pointer;
-typedef typename _Alloc_traits::reference		reference;
-typedef typename _Alloc_traits::const_reference	const_reference;
+typedef _Tp value_type;
+typedef typename _Base::pointer pointer;
+typedef typename _Alloc_traits::const_pointer const_pointer;
+typedef typename _Alloc_traits::reference reference;
+typedef typename _Alloc_traits::const_reference const_reference;
 typedef __gnu_cxx::__normal_iterator<pointer, vector> iterator;
 typedef __gnu_cxx::__normal_iterator<const_pointer, vector>
 const_iterator;
-typedef std::reverse_iterator<const_iterator>	const_reverse_iterator;
-typedef std::reverse_iterator<iterator>		reverse_iterator;
-typedef size_t					size_type;
-typedef ptrdiff_t					difference_type;
-typedef _Alloc					allocator_type;
+typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+typedef std::reverse_iterator<iterator> reverse_iterator;
+typedef size_t size_type;
+typedef ptrdiff_t difference_type;
+typedef _Alloc allocator_type;
 private:
 #if __cplusplus >= 201103L
 static constexpr bool
@@ -1031,7 +1031,7 @@ _Storage& operator=(const _Storage&) = delete;
 unsigned char _M_byte;
 _Tp _M_val;
 };
-vector*  _M_this;
+vector* _M_this;
 _Storage _M_storage;
 };
 template<typename _Arg>

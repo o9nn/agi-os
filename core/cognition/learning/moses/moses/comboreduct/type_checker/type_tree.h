@@ -116,7 +116,7 @@ bool is_well_formed(const type_tree& tt);
 bool does_contain_all_arg_up_to(const combo_tree& tr, arity_t n);
 arity_t infer_arity(const combo_tree& tr);
 arity_t explicit_arity(const combo_tree& tr);
-type_tree     get_signature_output(const type_tree& ty);
+type_tree get_signature_output(const type_tree& ty);
 type_tree_seq get_signature_inputs(const type_tree& ty);
 type_tree gen_signature(const std::vector<type_node>& itypes, type_node otype);
 type_tree gen_signature(const type_tree_seq& inputs, const type_tree& output);

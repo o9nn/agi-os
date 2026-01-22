@@ -83,7 +83,7 @@ cura = newprint(win, stats, --curc);
 if(curc < len stats.mods - 1)
 cura = newprint(win, stats, ++curc);
 "s" =>
-if(cura  != nil)
+if(cura != nil)
 scroll(win, cura);
 "m" =>
 x := cmd(win, ".f cget actx");
@@ -233,7 +233,7 @@ j = 0;
 }
 }
 }
-tags := array[256]  of { * => byte 0 };
+tags := array[256] of { * => byte 0 };
 gettag(win: ref Tk->Toplevel, n: int, d: int): string
 {
 i := int ((real n/real d) * real 15);

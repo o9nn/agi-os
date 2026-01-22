@@ -1,27 +1,27 @@
 #include "sh.h"
 # if DEBUG_ALLOC
 void acheck ARGS((Area *ap));
-#  define ACHECK(ap)	acheck(ap)
+# define ACHECK(ap) acheck(ap)
 # else
-#  define ACHECK(ap)
+# define ACHECK(ap)
 # endif
-#define	ICELLS	200
+#define ICELLS 200
 typedef union Cell Cell;
 typedef struct Block Block;
-#define NOBJECT_FIELDS	2
+#define NOBJECT_FIELDS 2
 union Cell {
-size_t	size;
-Cell   *next;
-Block  *block;
+size_t size;
+Cell *next;
+Block *block;
 struct {int _;} junk;
 double djunk;
 };
 struct Block {
-Block  *next;
-Block  *prev;
-Cell   *freelist;
-Cell   *last;
-Cell	cell [1];
+Block *next;
+Block *prev;
+Cell *freelist;
+Cell *last;
+Cell cell [1];
 };
 static Block aempty = {&aempty, &aempty, aempty.cell, aempty.cell};
 static void ablockfree ARGS((Block *bp, Area *ap));

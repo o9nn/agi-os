@@ -48,7 +48,7 @@ sblfile := "";
 while((opt := arg->opt()) != 0){
 case opt {
 's' =>
-arg->earg();	# XXX make it a list of maps from dis to sbl later
+arg->earg(); # XXX make it a list of maps from dis to sbl later
 sblfile = arg->earg();
 'l' =>
 showsource = 1;
@@ -107,7 +107,7 @@ stk[i].findsym();
 }
 depth := 0;
 if(printpid){
-stdout.puts(sys->sprint("prog %d {\n", pid));	# }
+stdout.puts(sys->sprint("prog %d {\n", pid)); # }
 depth++;
 }
 pexp(stk, tl toks, depth);
@@ -209,7 +209,7 @@ stdout.puts(", ");
 }
 stdout.puts(")\n");
 indent(depth);
-stdout.puts("{\n");	# }
+stdout.puts("{\n"); # }
 if((e = getname(exps, "locals")) != nil){
 locals := e.expand();
 for(i := 0; i < len locals; i++){
@@ -367,7 +367,7 @@ exps := exp.expand();
 if(len exps == 0)
 stdout.puts(v);
 else{
-stdout.puts(v+"{\n");		# }
+stdout.puts(v+"{\n"); # }
 if (len exps > 0){
 if(depth >= maxrecur){
 indent(depth);
@@ -380,7 +380,7 @@ stdout.puts("\n");
 }
 }
 }
-indent(depth);		# {
+indent(depth); # {
 stdout.puts("}");
 }
 }else

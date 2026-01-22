@@ -22,7 +22,7 @@ __to_chars_len(_Tp __value, int __base = 10) noexcept
 static_assert(__integer_to_chars_is_unsigned<_Tp>, "implementation bug");
 #endif
 unsigned __n = 1;
-const unsigned __b2 = __base  * __base;
+const unsigned __b2 = __base * __base;
 const unsigned __b3 = __b2 * __base;
 const unsigned long __b4 = __b3 * __base;
 for (;;)

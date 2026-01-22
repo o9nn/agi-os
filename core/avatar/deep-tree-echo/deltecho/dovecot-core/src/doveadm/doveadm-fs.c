@@ -98,7 +98,7 @@ if ((props & FS_PROPERTY_WRITE_HASH_MD5) == 0)
 i_fatal("fs backend doesn't support MD5 hashes");
 fs_write_set_hash(file,
 hash_method_lookup(hash_method_md5.name), hash->data);
-} else  if (hash->used == hash_method_sha256.digest_size) {
+} else if (hash->used == hash_method_sha256.digest_size) {
 if ((props & FS_PROPERTY_WRITE_HASH_SHA256) == 0)
 i_fatal("fs backend doesn't support SHA256 hashes");
 fs_write_set_hash(file,

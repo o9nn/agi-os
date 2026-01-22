@@ -1,23 +1,23 @@
 #ifndef _PARPORT_H_
 #define _PARPORT_H_
-#define PARPORT_MAX  8
-#define PARPORT_IRQ_NONE  -1
-#define PARPORT_DMA_NONE  -1
-#define PARPORT_IRQ_AUTO  -2
-#define PARPORT_DMA_AUTO  -2
-#define PARPORT_DISABLE   -2
+#define PARPORT_MAX 8
+#define PARPORT_IRQ_NONE -1
+#define PARPORT_DMA_NONE -1
+#define PARPORT_IRQ_AUTO -2
+#define PARPORT_DMA_AUTO -2
+#define PARPORT_DISABLE -2
 #define PARPORT_IRQ_PROBEONLY -3
-#define PARPORT_CONTROL_STROBE    0x1
-#define PARPORT_CONTROL_AUTOFD    0x2
-#define PARPORT_CONTROL_INIT      0x4
-#define PARPORT_CONTROL_SELECT    0x8
-#define PARPORT_CONTROL_INTEN     0x10
+#define PARPORT_CONTROL_STROBE 0x1
+#define PARPORT_CONTROL_AUTOFD 0x2
+#define PARPORT_CONTROL_INIT 0x4
+#define PARPORT_CONTROL_SELECT 0x8
+#define PARPORT_CONTROL_INTEN 0x10
 #define PARPORT_CONTROL_DIRECTION 0x20
-#define PARPORT_STATUS_ERROR      0x8
-#define PARPORT_STATUS_SELECT     0x10
-#define PARPORT_STATUS_PAPEROUT   0x20
-#define PARPORT_STATUS_ACK        0x40
-#define PARPORT_STATUS_BUSY       0x80
+#define PARPORT_STATUS_ERROR 0x8
+#define PARPORT_STATUS_SELECT 0x10
+#define PARPORT_STATUS_PAPEROUT 0x20
+#define PARPORT_STATUS_ACK 0x40
+#define PARPORT_STATUS_BUSY 0x80
 typedef enum {
 PARPORT_CLASS_LEGACY = 0,
 PARPORT_CLASS_PRINTER,
@@ -33,13 +33,13 @@ PARPORT_CLASS_DIGCAM,
 PARPORT_CLASS_OTHER,
 PARPORT_CLASS_UNSPEC
 } parport_device_class;
-#define PARPORT_MODE_PCSPP	        0x0001
-#define PARPORT_MODE_PCPS2		0x0002
-#define PARPORT_MODE_PCEPP		0x0004
-#define PARPORT_MODE_PCECP		0x0008
-#define PARPORT_MODE_PCECPEPP		0x0010
-#define PARPORT_MODE_PCECR		0x0020
-#define PARPORT_MODE_PCECPPS2		0x0040
+#define PARPORT_MODE_PCSPP 0x0001
+#define PARPORT_MODE_PCPS2 0x0002
+#define PARPORT_MODE_PCEPP 0x0004
+#define PARPORT_MODE_PCECP 0x0008
+#define PARPORT_MODE_PCECPEPP 0x0010
+#define PARPORT_MODE_PCECR 0x0020
+#define PARPORT_MODE_PCECPPS2 0x0040
 #ifdef __KERNEL__
 #include <asm/system.h>
 #include <asm/ptrace.h>
@@ -153,7 +153,7 @@ unsigned long base_hi;
 struct parport *parport_register_port(unsigned long base, int irq, int dma,
 struct parport_operations *ops);
 extern void parport_unregister_port(struct parport *port);
-#define parport_in_use(x)  ((x)->devices != NULL)
+#define parport_in_use(x) ((x)->devices != NULL)
 extern void parport_quiesce(struct parport *);
 struct parport *parport_enumerate(void);
 struct pardevice *parport_register_device(struct parport *port,
@@ -195,11 +195,11 @@ printk(KERN_ERR "%s: irq%d happened with irq_func NULL "
 out_unlock:
 read_unlock(&port->cad_lock);
 }
-#define PARPORT_DEV_TRAN		0
-#define PARPORT_DEV_LURK		(1<<0)
-#define PARPORT_DEV_EXCL		(1<<1)
-#define PARPORT_FLAG_COMA		(1<<0)
-#define PARPORT_FLAG_EXCL		(1<<1)
+#define PARPORT_DEV_TRAN 0
+#define PARPORT_DEV_LURK (1<<0)
+#define PARPORT_DEV_EXCL (1<<1)
+#define PARPORT_FLAG_COMA (1<<0)
+#define PARPORT_FLAG_EXCL (1<<1)
 extern void parport_parse_irqs(int, const char *[], int irqval[]);
 extern int parport_ieee1284_nibble_mode_ok(struct parport *, unsigned char);
 extern int parport_wait_peripheral(struct parport *, unsigned char, unsigned
@@ -216,48 +216,48 @@ extern void (*parport_probe_hook)(struct parport *port);
 #if (defined(CONFIG_PARPORT_PC) || defined(CONFIG_PARPORT_PC_MODULE)) && !(defined(CONFIG_PARPORT_AX) || defined(CONFIG_PARPORT_AX_MODULE)) && !(defined(CONFIG_PARPORT_ARC) || defined(CONFIG_PARPORT_ARC_MODULE)) && !defined(CONFIG_PARPORT_OTHER)
 #undef PARPORT_NEED_GENERIC_OPS
 #include <linux/parport_pc.h>
-#define parport_write_data(p,x)            parport_pc_write_data(p,x)
-#define parport_read_data(p)               parport_pc_read_data(p)
-#define parport_write_control(p,x)         parport_pc_write_control(p,x)
-#define parport_read_control(p)            parport_pc_read_control(p)
-#define parport_frob_control(p,m,v)        parport_pc_frob_control(p,m,v)
-#define parport_write_econtrol(p,x)        parport_pc_write_econtrol(p,x)
-#define parport_read_econtrol(p)           parport_pc_read_econtrol(p)
-#define parport_frob_econtrol(p,m,v)       parport_pc_frob_econtrol(p,m,v)
-#define parport_write_status(p,v)          parport_pc_write_status(p,v)
-#define parport_read_status(p)             parport_pc_read_status(p)
-#define parport_write_fifo(p,v)            parport_pc_write_fifo(p,v)
-#define parport_read_fifo(p)               parport_pc_read_fifo(p)
-#define parport_change_mode(p,m)           parport_pc_change_mode(p,m)
-#define parport_release_resources(p)       parport_pc_release_resources(p)
-#define parport_claim_resources(p)         parport_pc_claim_resources(p)
-#define parport_epp_write_data(p,x)        parport_pc_write_epp(p,x)
-#define parport_epp_read_data(p)           parport_pc_read_epp(p)
-#define parport_epp_write_addr(p,x)        parport_pc_write_epp_addr(p,x)
-#define parport_epp_read_addr(p)           parport_pc_read_epp_addr(p)
-#define parport_epp_check_timeout(p)       parport_pc_check_epp_timeout(p)
+#define parport_write_data(p,x) parport_pc_write_data(p,x)
+#define parport_read_data(p) parport_pc_read_data(p)
+#define parport_write_control(p,x) parport_pc_write_control(p,x)
+#define parport_read_control(p) parport_pc_read_control(p)
+#define parport_frob_control(p,m,v) parport_pc_frob_control(p,m,v)
+#define parport_write_econtrol(p,x) parport_pc_write_econtrol(p,x)
+#define parport_read_econtrol(p) parport_pc_read_econtrol(p)
+#define parport_frob_econtrol(p,m,v) parport_pc_frob_econtrol(p,m,v)
+#define parport_write_status(p,v) parport_pc_write_status(p,v)
+#define parport_read_status(p) parport_pc_read_status(p)
+#define parport_write_fifo(p,v) parport_pc_write_fifo(p,v)
+#define parport_read_fifo(p) parport_pc_read_fifo(p)
+#define parport_change_mode(p,m) parport_pc_change_mode(p,m)
+#define parport_release_resources(p) parport_pc_release_resources(p)
+#define parport_claim_resources(p) parport_pc_claim_resources(p)
+#define parport_epp_write_data(p,x) parport_pc_write_epp(p,x)
+#define parport_epp_read_data(p) parport_pc_read_epp(p)
+#define parport_epp_write_addr(p,x) parport_pc_write_epp_addr(p,x)
+#define parport_epp_read_addr(p) parport_pc_read_epp_addr(p)
+#define parport_epp_check_timeout(p) parport_pc_check_epp_timeout(p)
 #endif
 #ifdef PARPORT_NEED_GENERIC_OPS
-#define parport_write_data(p,x)            (p)->ops->write_data(p,x)
-#define parport_read_data(p)               (p)->ops->read_data(p)
-#define parport_write_control(p,x)         (p)->ops->write_control(p,x)
-#define parport_read_control(p)            (p)->ops->read_control(p)
-#define parport_frob_control(p,m,v)        (p)->ops->frob_control(p,m,v)
-#define parport_write_econtrol(p,x)        (p)->ops->write_econtrol(p,x)
-#define parport_read_econtrol(p)           (p)->ops->read_econtrol(p)
-#define parport_frob_econtrol(p,m,v)       (p)->ops->frob_econtrol(p,m,v)
-#define parport_write_status(p,v)          (p)->ops->write_status(p,v)
-#define parport_read_status(p)             (p)->ops->read_status(p)
-#define parport_write_fifo(p,v)            (p)->ops->write_fifo(p,v)
-#define parport_read_fifo(p)               (p)->ops->read_fifo(p)
-#define parport_change_mode(p,m)           (p)->ops->change_mode(p,m)
-#define parport_release_resources(p)       (p)->ops->release_resources(p)
-#define parport_claim_resources(p)         (p)->ops->claim_resources(p)
-#define parport_epp_write_data(p,x)        (p)->ops->epp_write_data(p,x)
-#define parport_epp_read_data(p)           (p)->ops->epp_read_data(p)
-#define parport_epp_write_addr(p,x)        (p)->ops->epp_write_addr(p,x)
-#define parport_epp_read_addr(p)           (p)->ops->epp_read_addr(p)
-#define parport_epp_check_timeout(p)       (p)->ops->epp_check_timeout(p)
+#define parport_write_data(p,x) (p)->ops->write_data(p,x)
+#define parport_read_data(p) (p)->ops->read_data(p)
+#define parport_write_control(p,x) (p)->ops->write_control(p,x)
+#define parport_read_control(p) (p)->ops->read_control(p)
+#define parport_frob_control(p,m,v) (p)->ops->frob_control(p,m,v)
+#define parport_write_econtrol(p,x) (p)->ops->write_econtrol(p,x)
+#define parport_read_econtrol(p) (p)->ops->read_econtrol(p)
+#define parport_frob_econtrol(p,m,v) (p)->ops->frob_econtrol(p,m,v)
+#define parport_write_status(p,v) (p)->ops->write_status(p,v)
+#define parport_read_status(p) (p)->ops->read_status(p)
+#define parport_write_fifo(p,v) (p)->ops->write_fifo(p,v)
+#define parport_read_fifo(p) (p)->ops->read_fifo(p)
+#define parport_change_mode(p,m) (p)->ops->change_mode(p,m)
+#define parport_release_resources(p) (p)->ops->release_resources(p)
+#define parport_claim_resources(p) (p)->ops->claim_resources(p)
+#define parport_epp_write_data(p,x) (p)->ops->epp_write_data(p,x)
+#define parport_epp_read_data(p) (p)->ops->epp_read_data(p)
+#define parport_epp_write_addr(p,x) (p)->ops->epp_write_addr(p,x)
+#define parport_epp_read_addr(p) (p)->ops->epp_read_addr(p)
+#define parport_epp_check_timeout(p) (p)->ops->epp_check_timeout(p)
 #endif
 #endif
 #endif

@@ -1,23 +1,23 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"../port/error.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "../port/error.h"
 enum {
 Qdir,
 Qwdctl,
 };
 Watchdog*watchdog;
-int	watchdogon;
+int watchdogon;
 static Watchdog *wd;
 static int wdautopet;
 static int wdclock0called;
 static Ref refs;
 static Dirtab wddir[] = {
-".",		{ Qdir, 0, QTDIR },	0,		0555,
-"wdctl",	{ Qwdctl, 0 },		0,		0664,
+".", { Qdir, 0, QTDIR }, 0, 0555,
+"wdctl", { Qwdctl, 0 }, 0, 0664,
 };
 void
 addwatchdog(Watchdog *wdog)

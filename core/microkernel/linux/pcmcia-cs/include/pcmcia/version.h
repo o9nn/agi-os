@@ -1,5 +1,5 @@
-#define CS_PKG_RELEASE		"3.2.8"
-#define CS_PKG_RELEASE_CODE	0x3208
-#define VERSION(v,p,s)		(((v)<<16)+(p<<8)+s)
-#define CS_RELEASE		CS_PKG_RELEASE
-#define CS_RELEASE_CODE		CS_PKG_RELEASE_CODE
+#define CS_PKG_RELEASE "3.2.8"
+#define CS_PKG_RELEASE_CODE 0x3208
+#define VERSION(v,p,s) (((v)<<16)+(p<<8)+s)
+#define CS_RELEASE CS_PKG_RELEASE
+#define CS_RELEASE_CODE CS_PKG_RELEASE_CODE

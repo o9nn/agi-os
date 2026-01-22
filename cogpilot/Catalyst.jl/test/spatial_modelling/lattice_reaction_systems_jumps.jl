@@ -67,7 +67,7 @@ dprob = DiscreteProblem(lrs, u0, (0.0, 100.0), [pE; pV])
 jprob = JumpProblem(lrs, dprob, NSM())
 @test jprob.prob.u0 == true_u0
 @test jprob.discrete_jump_aggregation.hop_rates.hop_const_cumulative_sums == true_hopping_rates
-@test jprob.massaction_jump.reactant_stoch  == true_maj_reactant_stoch
+@test jprob.massaction_jump.reactant_stoch == true_maj_reactant_stoch
 @test all(issetequal(ns1, ns2) for (ns1, ns2) in zip(jprob.massaction_jump.net_stoch, true_maj_net_stoch))
 end
 end

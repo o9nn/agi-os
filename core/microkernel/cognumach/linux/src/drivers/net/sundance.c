@@ -9,18 +9,18 @@ static int rx_copybreak = 0;
 #define MAX_UNITS 8
 static int options[MAX_UNITS] = {-1, -1, -1, -1, -1, -1, -1, -1};
 static int full_duplex[MAX_UNITS] = {-1, -1, -1, -1, -1, -1, -1, -1};
-#define TX_RING_SIZE	16
-#define TX_QUEUE_LEN	10
-#define RX_RING_SIZE	32
-#define TX_TIMEOUT  (6*HZ)
-#define PKT_BUF_SZ		1536
+#define TX_RING_SIZE 16
+#define TX_QUEUE_LEN 10
+#define RX_RING_SIZE 32
+#define TX_TIMEOUT (6*HZ)
+#define PKT_BUF_SZ 1536
 static char mii_preamble_required = 0;
 #ifndef __KERNEL__
 #define __KERNEL__
 #endif
 #if !defined(__OPTIMIZE__)
-#warning  You must compile this file with the correct options!
-#warning  See the last lines of the source file.
+#warning You must compile this file with the correct options!
+#warning See the last lines of the source file.
 #error You must compile this driver with "-O".
 #endif
 #include <linux/config.h>
@@ -63,9 +63,9 @@ static char mii_preamble_required = 0;
 #include "pci-scan.h"
 #include "kern_compat.h"
 #endif
-#define virt_to_le32desc(addr)  cpu_to_le32(virt_to_bus(addr))
-#define le32desc_to_virt(addr)  bus_to_virt(le32_to_cpu(addr))
-#if (LINUX_VERSION_CODE >= 0x20100)  &&  defined(MODULE)
+#define virt_to_le32desc(addr) cpu_to_le32(virt_to_bus(addr))
+#define le32desc_to_virt(addr) bus_to_virt(le32_to_cpu(addr))
+#if (LINUX_VERSION_CODE >= 0x20100) && defined(MODULE)
 char kernel_version[] = UTS_RELEASE;
 #endif
 MODULE_AUTHOR("Donald Becker <becker@scyld.com>");
@@ -95,7 +95,7 @@ long ioaddr, int irq, int chip_idx, int find_cnt);
 static int sundance_pwr_event(void *dev_instance, int event);
 enum chip_capability_flags {CanHaveMII=1, KendinPktDropBug=2, };
 #ifdef USE_IO_OPS
-#define PCI_IOTYPE (PCI_USES_MASTER | PCI_USES_IO  | PCI_ADDR0)
+#define PCI_IOTYPE (PCI_USES_MASTER | PCI_USES_IO | PCI_ADDR0)
 #else
 #define PCI_IOTYPE (PCI_USES_MASTER | PCI_USES_MEM | PCI_ADDR1)
 #endif
@@ -133,7 +133,7 @@ sundance_probe1, sundance_pwr_event };
 #define writel outl
 #endif
 enum alta_offsets {
-DMACtrl=0x00,     TxListPtr=0x04, TxDMACtrl=0x08, TxDescPoll=0x0a,
+DMACtrl=0x00, TxListPtr=0x04, TxDMACtrl=0x08, TxDescPoll=0x0a,
 RxDMAStatus=0x0c, RxListPtr=0x10, RxDMACtrl=0x14, RxDescPoll=0x16,
 LEDCtrl=0x1a, ASICCtrl=0x30,
 EEData=0x34, EECtrl=0x36, TxThreshold=0x3c,
@@ -165,7 +165,7 @@ EnbFullDuplex=0x20, EnbRcvLargeFrame=0x40,
 EnbFlowCtrl=0x100, EnbPassRxCRC=0x200,
 };
 enum mac_ctrl1_bits {
-StatsEnable=0x0020,	StatsDisable=0x0040, StatsEnabled=0x0080,
+StatsEnable=0x0020, StatsDisable=0x0040, StatsEnabled=0x0080,
 TxEnable=0x0100, TxDisable=0x0200, TxEnabled=0x0400,
 RxEnable=0x0800, RxDisable=0x1000, RxEnabled=0x2000,
 };
@@ -179,7 +179,7 @@ DescOwn=0x8000, DescEndPacket=0x4000, DescEndRing=0x2000,
 DescTxDMADone=0x10000,
 LastFrag=0x80000000, DescIntrOnTx=0x8000, DescIntrOnDMADone=0x80000000,
 };
-#define PRIV_ALIGN	15
+#define PRIV_ALIGN 15
 struct netdev_private {
 struct netdev_desc rx_ring[RX_RING_SIZE];
 struct netdev_desc tx_ring[TX_RING_SIZE];
@@ -214,28 +214,28 @@ int link_status;
 u16 advertising;
 unsigned char phys[2];
 };
-#define EEPROM_SA_OFFSET	0x10
-static int  eeprom_read(long ioaddr, int location);
-static int  mdio_read(struct net_device *dev, int phy_id,
+#define EEPROM_SA_OFFSET 0x10
+static int eeprom_read(long ioaddr, int location);
+static int mdio_read(struct net_device *dev, int phy_id,
 unsigned int location);
 static void mdio_write(struct net_device *dev, int phy_id,
 unsigned int location, int value);
-static int  netdev_open(struct net_device *dev);
+static int netdev_open(struct net_device *dev);
 static void sundance_start(struct net_device *dev);
-static int  change_mtu(struct net_device *dev, int new_mtu);
+static int change_mtu(struct net_device *dev, int new_mtu);
 static void check_duplex(struct net_device *dev);
 static void netdev_timer(unsigned long data);
 static void tx_timeout(struct net_device *dev);
 static void init_ring(struct net_device *dev);
-static int  start_tx(struct sk_buff *skb, struct net_device *dev);
+static int start_tx(struct sk_buff *skb, struct net_device *dev);
 static void intr_handler(int irq, void *dev_instance, struct pt_regs *regs);
 static void netdev_error(struct net_device *dev, int intr_status);
-static int  netdev_rx(struct net_device *dev);
+static int netdev_rx(struct net_device *dev);
 static void netdev_error(struct net_device *dev, int intr_status);
 static void set_rx_mode(struct net_device *dev);
 static struct net_device_stats *get_stats(struct net_device *dev);
 static int mii_ioctl(struct net_device *dev, struct ifreq *rq, int cmd);
-static int  netdev_close(struct net_device *dev);
+static int netdev_close(struct net_device *dev);
 static struct net_device *root_net_dev = NULL;
 #ifndef MODULE
 int sundance_probe(struct net_device *dev)
@@ -287,7 +287,7 @@ np->max_interrupt_work = max_interrupt_work;
 np->multicast_filter_limit = multicast_filter_limit;
 if (dev->mem_start)
 option = dev->mem_start;
-if (card_idx < MAX_UNITS  &&  full_duplex[card_idx] > 0)
+if (card_idx < MAX_UNITS && full_duplex[card_idx] > 0)
 np->full_duplex = 1;
 if (np->full_duplex)
 np->medialock = 1;
@@ -304,7 +304,7 @@ np->phys[0] = 1;
 mii_preamble_required++;
 for (phy = 1; phy < 32 && phy_idx < 4; phy++) {
 int mii_status = mdio_read(dev, phy, 1);
-if (mii_status != 0xffff  &&  mii_status != 0x0000) {
+if (mii_status != 0xffff && mii_status != 0x0000) {
 np->phys[phy_idx++] = phy;
 np->advertising = mdio_read(dev, phy, 4);
 if ((mii_status & 0x0040) == 0)
@@ -370,7 +370,7 @@ return 0;
 enum mii_reg_bits {
 MDIO_ShiftClk=0x0001, MDIO_Data=0x0002, MDIO_EnbOutput=0x0004,
 };
-#define MDIO_EnbIn  (0)
+#define MDIO_EnbIn (0)
 #define MDIO_WRITE0 (MDIO_EnbOutput)
 #define MDIO_WRITE1 (MDIO_Data | MDIO_EnbOutput)
 static void mdio_sync(long mdio_addr)
@@ -496,7 +496,7 @@ long ioaddr = dev->base_addr;
 int mii_reg5 = mdio_read(dev, np->phys[0], 5);
 int negotiated = mii_reg5 & np->advertising;
 int duplex;
-if (np->duplex_lock  ||  mii_reg5 == 0xffff)
+if (np->duplex_lock || mii_reg5 == 0xffff)
 return;
 duplex = (negotiated & 0x0100) || (negotiated & 0x01C0) == 0x0040;
 if (np->full_duplex != duplex) {
@@ -520,8 +520,8 @@ printk(KERN_DEBUG "%s: Media selection timer tick, intr status %4.4x, "
 dev->name, (int)readw(ioaddr + IntrEnable),
 (int)readw(ioaddr + TxStatus), (int)readl(ioaddr + RxStatus));
 }
-if (netif_queue_paused(dev)  &&
-np->cur_tx - np->dirty_tx > 1  &&
+if (netif_queue_paused(dev) &&
+np->cur_tx - np->dirty_tx > 1 &&
 (jiffies - dev->trans_start) > TX_TIMEOUT) {
 tx_timeout(dev);
 }
@@ -664,14 +664,14 @@ if (np->msg_level & NETIF_MSG_TX_ERR)
 printk("%s: Transmit error status %4.4x.\n",
 dev->name, tx_status);
 np->stats.tx_errors++;
-if (tx_status & 0x10)  np->stats.tx_fifo_errors++;
+if (tx_status & 0x10) np->stats.tx_fifo_errors++;
 #ifdef ETHER_STATS
-if (tx_status & 0x08)  np->stats.collisions16++;
+if (tx_status & 0x08) np->stats.collisions16++;
 #else
-if (tx_status & 0x08)  np->stats.collisions++;
+if (tx_status & 0x08) np->stats.collisions++;
 #endif
-if (tx_status & 0x04)  np->stats.tx_fifo_errors++;
-if (tx_status & 0x02)  np->stats.tx_window_errors++;
+if (tx_status & 0x04) np->stats.tx_fifo_errors++;
+if (tx_status & 0x02) np->stats.tx_window_errors++;
 if (tx_status & 0x10) {
 writel(0x001c0000 | readl(ioaddr + ASICCtrl),
 ioaddr + ASICCtrl);
@@ -696,7 +696,7 @@ break;
 dev_free_skb_irq(np->tx_skbuff[entry]);
 np->tx_skbuff[entry] = 0;
 }
-if (np->tx_full  &&  np->cur_tx - np->dirty_tx < TX_QUEUE_LEN - 4) {
+if (np->tx_full && np->cur_tx - np->dirty_tx < TX_QUEUE_LEN - 4) {
 np->tx_full = 0;
 netif_resume_tx_queue(dev);
 }
@@ -835,7 +835,7 @@ struct netdev_private *np = (struct netdev_private *)dev->priv;
 int i;
 if (readw(ioaddr + StationAddr) == 0xffff)
 return &np->stats;
-np->stats.rx_missed_errors	+= readb(ioaddr + RxMissed);
+np->stats.rx_missed_errors += readb(ioaddr + RxMissed);
 np->stats.tx_packets += readw(ioaddr + TxFramesOK);
 np->stats.rx_packets += readw(ioaddr + RxFramesOK);
 np->stats.collisions += readb(ioaddr + StatsLateColl);
@@ -887,7 +887,7 @@ printk(KERN_NOTICE "%s: Promiscuous mode enabled.\n", dev->name);
 memset(mc_filter, ~0, sizeof(mc_filter));
 rx_mode = AcceptBroadcast | AcceptMulticast | AcceptAll | AcceptMyPhys;
 } else if ((dev->mc_count > np->multicast_filter_limit)
-||  (dev->flags & IFF_ALLMULTI)) {
+|| (dev->flags & IFF_ALLMULTI)) {
 memset(mc_filter, 0xff, sizeof(mc_filter));
 rx_mode = AcceptBroadcast | AcceptMulticast | AcceptMyPhys;
 } else if (dev->mc_count) {

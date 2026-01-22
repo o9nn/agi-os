@@ -78,14 +78,14 @@ op = OptimizationProblem(of, x0, ps)
 # using Plots
 # oh = []
 # plot_cb = (opt_state, loss) -> begin
-#     opt_state.iter % 500 ≠ 0 && return false
-#     @info "step $(opt_state.iter), loss: $loss"
-#     push!(oh, opt_state)
-#     new_p = SciMLStructures.replace(Tunable(), prob.p, opt_state.u)
-#     new_prob = remake(prob, p = new_p)
-#     sol = solve(new_prob, Vern9(), abstol = 1e-8, reltol = 1e-8)
-#     display(plot(sol))
-#     false
+# opt_state.iter % 500 ≠ 0 && return false
+# @info "step $(opt_state.iter), loss: $loss"
+# push!(oh, opt_state)
+# new_p = SciMLStructures.replace(Tunable(), prob.p, opt_state.u)
+# new_prob = remake(prob, p = new_p)
+# sol = solve(new_prob, Vern9(), abstol = 1e-8, reltol = 1e-8)
+# display(plot(sol))
+# false
 # end
 res = solve(op, Adam(1e-3), maxiters = 25_000)#, callback = plot_cb)
 display(res.stats)

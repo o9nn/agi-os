@@ -1,13 +1,13 @@
 import ReactionsBar from './ReactionsBar'
 import useReactionsBar, { showReactionsUi } from './useReactionsBar'
 import {
-  ReactionsBarProvider,
-  ReactionsBarContext,
+ReactionsBarProvider,
+ReactionsBarContext,
 } from './ReactionsBarContext'
 export default ReactionsBar
 export {
-  ReactionsBarContext,
-  ReactionsBarProvider,
-  showReactionsUi,
-  useReactionsBar,
+ReactionsBarContext,
+ReactionsBarProvider,
+showReactionsUi,
+useReactionsBar,
 }

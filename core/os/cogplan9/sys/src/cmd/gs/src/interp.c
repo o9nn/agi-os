@@ -51,7 +51,7 @@ int code = op_proc(i_ctx_p);
 return code;
 }
 #else
-#  define call_operator(proc, p) ((*(proc))(p))
+# define call_operator(proc, p) ((*(proc))(p))
 #endif
 #ifdef DEBUG
 struct stats_interp_s {
@@ -78,17 +78,17 @@ private int oparray_cleanup(i_ctx_t *);
 private int zsetstackprotect(i_ctx_t *);
 private int zcurrentstackprotect(i_ctx_t *);
 #ifndef MAX_OSTACK
-#  define MAX_OSTACK 800
+# define MAX_OSTACK 800
 #endif
 #define MIN_BLOCK_OSTACK 16
 const int gs_interp_max_op_num_args = MIN_BLOCK_OSTACK;
 #ifndef MAX_ESTACK
-#  define MAX_ESTACK 5000
+# define MAX_ESTACK 5000
 #endif
 #define MIN_BLOCK_ESTACK 8
 #define ES_HEADROOM 20
 #ifndef MAX_DSTACK
-#  define MAX_DSTACK 20
+# define MAX_DSTACK 20
 #endif
 #define MIN_BLOCK_DSTACK 3
 extern_st(st_ref_stack);
@@ -496,9 +496,9 @@ i_ctx_t *i_ctx_p = *pi_ctx_p;
 register const ref_packed *iref_packed = (const ref_packed *)pref;
 #ifdef ALIGNMENT_ALIASING_BUG
 const ref *iref_temp;
-#  define IREF (iref_temp = (const ref *)iref_packed, iref_temp)
+# define IREF (iref_temp = (const ref *)iref_packed, iref_temp)
 #else
-#  define IREF ((const ref *)iref_packed)
+# define IREF ((const ref *)iref_packed)
 #endif
 #define SET_IREF(rp) (iref_packed = (const ref_packed *)(rp))
 register int icount = 0;
@@ -551,10 +551,10 @@ if ( --icount <= 0 ) { if ( icount < 0 ) goto up; iesp--; }\
 if ( --icount <= 0 ) { if ( icount < 0 ) goto up; iesp--; }\
 iref_packed = IREF_NEXT_EITHER(iref_packed); goto top
 #if !PACKED_SPECIAL_OPS
-#  undef next_either
-#  define next_either() next()
-#  undef store_state_either
-#  define store_state_either(ep) store_state(ep)
+# undef next_either
+# define next_either() next()
+# undef store_state_either
+# define store_state_either(ep) store_state(ep)
 #endif
 if (iesp >= estop)
 return_with_error(e_execstackoverflow, pref);
@@ -648,20 +648,20 @@ cases_lit_array():
 INCR(lit_array);
 break;
 case plain_exec(tx_op_add):
-x_add:	    INCR(x_add);
+x_add: INCR(x_add);
 if ((code = zop_add(iosp)) < 0)
 return_with_error_code_op(2);
 iosp--;
 next_either();
 case plain_exec(tx_op_def):
-x_def:	    INCR(x_def);
+x_def: INCR(x_def);
 osp = iosp;
 if ((code = zop_def(i_ctx_p)) < 0)
 return_with_error_code_op(2);
 iosp -= 2;
 next_either();
 case plain_exec(tx_op_dup):
-x_dup:	    INCR(x_dup);
+x_dup: INCR(x_dup);
 if (iosp < osbot)
 return_with_error_iref(e_stackunderflow);
 if (iosp >= ostop)
@@ -670,7 +670,7 @@ iosp++;
 ref_assign_inline(iosp, iosp - 1);
 next_either();
 case plain_exec(tx_op_exch):
-x_exch:	    INCR(x_exch);
+x_exch: INCR(x_exch);
 if (iosp <= osbot)
 return_with_error_iref(e_stackunderflow);
 ref_assign_inline(&token, iosp);
@@ -678,7 +678,7 @@ ref_assign_inline(iosp, iosp - 1);
 ref_assign_inline(iosp - 1, &token);
 next_either();
 case plain_exec(tx_op_if):
-x_if:	    INCR(x_if);
+x_if: INCR(x_if);
 if (!r_has_type(iosp - 1, t_boolean))
 return_with_error_iref((iosp <= osbot ?
 e_stackunderflow : e_typecheck));
@@ -695,7 +695,7 @@ whichp = iosp;
 iosp -= 2;
 goto ifup;
 case plain_exec(tx_op_ifelse):
-x_ifelse:   INCR(x_ifelse);
+x_ifelse: INCR(x_ifelse);
 if (!r_has_type(iosp - 2, t_boolean))
 return_with_error_iref((iosp < osbot + 2 ?
 e_stackunderflow : e_typecheck));
@@ -722,26 +722,26 @@ if (--ticks_left > 0)
 goto top;
 goto slice;
 case plain_exec(tx_op_index):
-x_index:    INCR(x_index);
+x_index: INCR(x_index);
 osp = iosp;
 if ((code = zindex(i_ctx_p)) < 0)
 return_with_error_code_op(1);
 next_either();
 case plain_exec(tx_op_pop):
-x_pop:	    INCR(x_pop);
+x_pop: INCR(x_pop);
 if (iosp < osbot)
 return_with_error_iref(e_stackunderflow);
 iosp--;
 next_either();
 case plain_exec(tx_op_roll):
-x_roll:	    INCR(x_roll);
+x_roll: INCR(x_roll);
 osp = iosp;
 if ((code = zroll(i_ctx_p)) < 0)
 return_with_error_code_op(2);
 iosp -= 2;
 next_either();
 case plain_exec(tx_op_sub):
-x_sub:	    INCR(x_sub);
+x_sub: INCR(x_sub);
 if ((code = zop_sub(iosp)) < 0)
 return_with_error_code_op(2);
 iosp--;
@@ -809,8 +809,8 @@ case o_reschedule:
 store_state(iesp);
 goto res;
 case e_RemapColor:
-oe_remap:	    store_state(iesp);
-remap:		    if (iesp + 2 >= estop) {
+oe_remap: store_state(iesp);
+remap: if (iesp + 2 >= estop) {
 esp = iesp;
 code = ref_stack_extend(&e_stack, 2);
 if (code < 0)
@@ -1083,7 +1083,7 @@ goto oppr;
 }
 INCR(p_exec_operator);
 #if PACKED_SPECIAL_OPS
-#  define case_xop(xop) case xop - (int)tx_op + 1
+# define case_xop(xop) case xop - (int)tx_op + 1
 switch (index) {
 case_xop(tx_op_add):goto x_add;
 case_xop(tx_op_def):goto x_def;
@@ -1099,7 +1099,7 @@ case 0:
 default:
 ;
 }
-#  undef case_xop
+# undef case_xop
 #endif
 INCR(p_exec_non_x_operator);
 esp = iesp;

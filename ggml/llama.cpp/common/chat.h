@@ -113,21 +113,21 @@ bool add_bos = false;
 bool add_eos = false;
 };
 struct common_chat_params {
-common_chat_format                  format = COMMON_CHAT_FORMAT_CONTENT_ONLY;
-std::string                         prompt;
-std::string                         grammar;
-bool                                grammar_lazy = false;
-bool                                thinking_forced_open = false;
+common_chat_format format = COMMON_CHAT_FORMAT_CONTENT_ONLY;
+std::string prompt;
+std::string grammar;
+bool grammar_lazy = false;
+bool thinking_forced_open = false;
 std::vector<common_grammar_trigger> grammar_triggers;
-std::vector<std::string>            preserved_tokens;
-std::vector<std::string>            additional_stops;
+std::vector<std::string> preserved_tokens;
+std::vector<std::string> additional_stops;
 };
 struct common_chat_syntax {
-common_chat_format       format                = COMMON_CHAT_FORMAT_CONTENT_ONLY;
-common_reasoning_format  reasoning_format      = COMMON_REASONING_FORMAT_NONE;
-bool                     reasoning_in_content  = false;
-bool                     thinking_forced_open  = false;
-bool                     parse_tool_calls      = true;
+common_chat_format format = COMMON_CHAT_FORMAT_CONTENT_ONLY;
+common_reasoning_format reasoning_format = COMMON_REASONING_FORMAT_NONE;
+bool reasoning_in_content = false;
+bool thinking_forced_open = false;
+bool parse_tool_calls = true;
 };
 bool common_chat_verify_template(const std::string & tmpl, bool use_jinja);
 void common_chat_templates_free(struct common_chat_templates * tmpls);
@@ -138,9 +138,9 @@ const struct llama_model * model,
 const std::string & chat_template_override,
 const std::string & bos_token_override = "",
 const std::string & eos_token_override = "");
-bool         common_chat_templates_was_explicit(const struct common_chat_templates * tmpls);
+bool common_chat_templates_was_explicit(const struct common_chat_templates * tmpls);
 const char * common_chat_templates_source(const struct common_chat_templates * tmpls, const char * variant = nullptr);
-struct common_chat_params      common_chat_templates_apply(
+struct common_chat_params common_chat_templates_apply(
 const struct common_chat_templates * tmpls,
 const struct common_chat_templates_inputs & inputs);
 std::string common_chat_format_single(
@@ -152,9 +152,9 @@ bool use_jinja);
 std::string common_chat_format_example(
 const struct common_chat_templates * tmpls,
 bool use_jinja);
-const char*               common_chat_format_name(common_chat_format format);
-const char*               common_reasoning_format_name(common_reasoning_format format);
-common_chat_msg           common_chat_parse(const std::string & input, bool is_partial, const common_chat_syntax & syntax);
+const char* common_chat_format_name(common_chat_format format);
+const char* common_reasoning_format_name(common_reasoning_format format);
+common_chat_msg common_chat_parse(const std::string & input, bool is_partial, const common_chat_syntax & syntax);
 common_chat_tool_choice common_chat_tool_choice_parse_oaicompat(const std::string & tool_choice);
 template <class T> std::vector<common_chat_msg> common_chat_msgs_parse_oaicompat(const T & messages);
 template <class T> T common_chat_msgs_to_json_oaicompat(const std::vector<common_chat_msg> & msgs, bool concat_typed_text = false);

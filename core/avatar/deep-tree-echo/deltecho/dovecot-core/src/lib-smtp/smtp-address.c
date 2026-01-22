@@ -414,7 +414,7 @@ user = p_strdup_until(pool, localpart, p);
 if (address->domain == NULL || *address->domain == '\0')
 *username_r = user;
 else if (strchr(user, '@') == NULL) {
-*username_r = p_strconcat(pool,	user, "@", address->domain,
+*username_r = p_strconcat(pool, user, "@", address->domain,
 NULL);
 } else {
 struct smtp_address uaddr;
@@ -445,7 +445,7 @@ if (endp_r != NULL)
 *endp_r = in;
 poffset = p = (const unsigned char *)in;
 pend = p + strlen(in);
-if (*p  == '<') {
+if (*p == '<') {
 path = TRUE;
 p++;
 poffset = p;
@@ -679,7 +679,7 @@ struct smtp_address addr;
 smtp_address_init(&addr, localpart, domain);
 return smtp_address_clone_temp(&addr);
 }
-int  smtp_address_create_from_msg_temp(const struct message_address *msg_addr,
+int smtp_address_create_from_msg_temp(const struct message_address *msg_addr,
 struct smtp_address **address_r)
 {
 struct smtp_address addr;
@@ -698,7 +698,7 @@ struct smtp_address *new_addr;
 const char delim[] = {delim_c, '\0'};
 i_assert(!smtp_address_isnull(address));
 new_addr = p_new(pool, struct smtp_address, 1);
-new_addr->localpart = p_strconcat(pool,	address->localpart, delim,
+new_addr->localpart = p_strconcat(pool, address->localpart, delim,
 detail, NULL);
 new_addr->domain = p_strdup_empty(pool, address->domain);
 return new_addr;

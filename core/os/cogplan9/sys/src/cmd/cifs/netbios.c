@@ -6,30 +6,30 @@
 #include <9p.h>
 #include "cifs.h"
 enum {
-MAXNBPKT		= 8096,
-NBquery			= 0,
-NBAdapterStatus		= 0x21,
-NBInternet		= 1,
-NBmessage 		= 0x00,
-NBrequest 		= 0x81,
+MAXNBPKT = 8096,
+NBquery = 0,
+NBAdapterStatus = 0x21,
+NBInternet = 1,
+NBmessage = 0x00,
+NBrequest = 0x81,
 NBpositive,
 NBnegative,
 NBretarget,
 NBkeepalive,
-ISgroup			= 0x8000,
+ISgroup = 0x8000,
 };
 static char *NBerr[] = {
-[0]	"not listening on called name",
-[1]	"not listening for calling name",
-[2]	"called name not present",
-[3]	"insufficient resources",
-[15]	"unspecified error"
+[0] "not listening on called name",
+[1] "not listening for calling name",
+[2] "called name not present",
+[3] "insufficient resources",
+[15] "unspecified error"
 };
 static ulong
 GL32(uchar **p)
 {
 ulong n;
-n  = *(*p)++;
+n = *(*p)++;
 n |= *(*p)++ << 8;
 n |= *(*p)++ << 16;
 n |= *(*p)++ << 24;
@@ -39,7 +39,7 @@ static ushort
 GL16(uchar **p)
 {
 ushort n;
-n  = *(*p)++;
+n = *(*p)++;
 n |= *(*p)++ << 8;
 return n;
 }
@@ -54,7 +54,7 @@ static ulong
 GB32(uchar **p)
 {
 ulong n;
-n  = *(*p)++ << 24;
+n = *(*p)++ << 24;
 n |= *(*p)++ << 16;
 n |= *(*p)++ << 8;
 n |= *(*p)++;
@@ -64,7 +64,7 @@ static ushort
 GB16(uchar **p)
 {
 ushort n;
-n  = *(*p)++ << 8;
+n = *(*p)++ << 8;
 n |= *(*p)++;
 return n;
 }

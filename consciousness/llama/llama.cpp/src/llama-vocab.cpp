@@ -160,10 +160,10 @@ return;
 }
 const auto & tok_data = vocab.get_token_data(token);
 llm_bigram_spm bigram;
-bigram.left  = left;
+bigram.left = left;
 bigram.right = right;
 bigram.score = tok_data.score;
-bigram.size  = text.size();
+bigram.size = text.size();
 work_queue.push(bigram);
 rev_merge[text] = std::make_pair(left, right);
 }
@@ -182,7 +182,7 @@ std::pop_heap(this->c.begin(), this->c.end(), this->comp);
 this->c.pop_back();
 return item;
 }
-void pop() =  delete;
+void pop() = delete;
 };
 struct llm_bigram_bpe {
 struct comparator {
@@ -341,7 +341,7 @@ std::vector<std::string> regex_exprs;
 };
 struct llm_tokenizer_bpe_session {
 llm_tokenizer_bpe_session(const llama_vocab & vocab, const llm_tokenizer_bpe & tokenizer) : vocab(vocab), tokenizer(tokenizer) {}
-static void append(const llama_token token_id, std::vector<llama_token> & output)  {
+static void append(const llama_token token_id, std::vector<llama_token> & output) {
 output.push_back(token_id);
 }
 bool append_bos(std::vector<llama_token> & output) const {
@@ -462,7 +462,7 @@ void add_new_bigram(int left, int right) {
 if (left == -1 || right == -1) {
 return;
 }
-std::string left_token  = std::string(symbols[left].text,  symbols[left].n);
+std::string left_token = std::string(symbols[left].text, symbols[left].n);
 std::string right_token = std::string(symbols[right].text, symbols[right].n);
 int rank_found = -1;
 rank_found = vocab.find_bpe_rank(left_token, right_token);
@@ -470,11 +470,11 @@ if (rank_found < 0) {
 return;
 }
 llm_bigram_bpe bigram;
-bigram.left  = left;
+bigram.left = left;
 bigram.right = right;
-bigram.text  = left_token + right_token;
-bigram.size  = left_token.size() + right_token.size();
-bigram.rank  = rank_found;
+bigram.text = left_token + right_token;
+bigram.size = left_token.size() + right_token.size();
+bigram.rank = rank_found;
 work_queue.push(bigram);
 }
 const llama_vocab & vocab;
@@ -518,7 +518,7 @@ output.push_back(vocab.token_unk());
 }
 }
 }
-static std::vector<std::string> preprocess(const std::string & text)  {
+static std::vector<std::string> preprocess(const std::string & text) {
 const std::vector<uint32_t> cpts_nfd = unicode_cpts_normalize_nfd(unicode_cpts_from_utf8(text));
 std::vector<std::string> words(1, "");
 for (const uint32_t cpt : cpts_nfd) {
@@ -677,8 +677,8 @@ normalized->clear();
 normalized->reserve(input.size() * 3);
 const std::string space = vocab.get_escape_whitespaces() ? tokenizer.escaped_space : " ";
 const bool shall_prepend_space = !vocab.get_treat_whitespace_as_suffix() && vocab.get_add_space_prefix();
-const bool shall_append_space  =  vocab.get_treat_whitespace_as_suffix() && vocab.get_add_space_prefix();
-const bool shall_merge_spaces  =  vocab.get_remove_extra_whitespaces();
+const bool shall_append_space = vocab.get_treat_whitespace_as_suffix() && vocab.get_add_space_prefix();
+const bool shall_merge_spaces = vocab.get_remove_extra_whitespaces();
 bool is_space_prepended = false;
 bool processing_non_ws = false;
 size_t input_len = input.size();
@@ -908,16 +908,16 @@ struct llama_vocab::impl {
 uint32_t n_token_types = 0;
 std::string tokenizer_model;
 std::string tokenizer_pre;
-enum llama_vocab_type     type     = LLAMA_VOCAB_TYPE_SPM;
+enum llama_vocab_type type = LLAMA_VOCAB_TYPE_SPM;
 enum llama_vocab_pre_type pre_type = LLAMA_VOCAB_PRE_TYPE_DEFAULT;
 int max_token_len = 0;
-llama_token special_bos_id  = 1;
-llama_token special_eos_id  = 2;
-llama_token special_eot_id  = LLAMA_TOKEN_NULL;
-llama_token special_eom_id  = LLAMA_TOKEN_NULL;
-llama_token special_unk_id  = 0;
-llama_token special_sep_id  = LLAMA_TOKEN_NULL;
-llama_token special_pad_id  = LLAMA_TOKEN_NULL;
+llama_token special_bos_id = 1;
+llama_token special_eos_id = 2;
+llama_token special_eot_id = LLAMA_TOKEN_NULL;
+llama_token special_eom_id = LLAMA_TOKEN_NULL;
+llama_token special_unk_id = 0;
+llama_token special_sep_id = LLAMA_TOKEN_NULL;
+llama_token special_pad_id = LLAMA_TOKEN_NULL;
 llama_token special_mask_id = LLAMA_TOKEN_NULL;
 llama_token linefeed_id = 13;
 llama_token special_fim_pre_id = LLAMA_TOKEN_NULL;
@@ -926,16 +926,16 @@ llama_token special_fim_mid_id = LLAMA_TOKEN_NULL;
 llama_token special_fim_pad_id = LLAMA_TOKEN_NULL;
 llama_token special_fim_rep_id = LLAMA_TOKEN_NULL;
 llama_token special_fim_sep_id = LLAMA_TOKEN_NULL;
-bool add_space_prefix           = false;
-bool add_bos                    = false;
-bool add_eos                    = false;
-bool ignore_merges              = false;
-bool clean_spaces               = false;
-bool remove_extra_whitespaces   = false;
-bool escape_whitespaces         = true;
+bool add_space_prefix = false;
+bool add_bos = false;
+bool add_eos = false;
+bool ignore_merges = false;
+bool clean_spaces = false;
+bool remove_extra_whitespaces = false;
+bool escape_whitespaces = true;
 bool treat_whitespace_as_suffix = false;
 std::unordered_map<std::string, llama_token> token_to_id;
-std::vector<token_data>                      id_to_token;
+std::vector<token_data> id_to_token;
 std::vector<llama_token> cache_special_tokens;
 std::vector<std::string> cache_token_to_piece;
 struct pair_hash {
@@ -954,48 +954,48 @@ impl(const llama_vocab & vocab) : vocab(vocab) {
 void load(llama_model_loader & ml, const LLM_KV & kv);
 enum llama_vocab_type get_type() const;
 std::string type_name() const;
-bool is_normal      (llama_token id) const;
-bool is_unknown     (llama_token id) const;
-bool is_control     (llama_token id) const;
-bool is_byte        (llama_token id) const;
+bool is_normal (llama_token id) const;
+bool is_unknown (llama_token id) const;
+bool is_control (llama_token id) const;
+bool is_byte (llama_token id) const;
 bool is_user_defined(llama_token id) const;
-bool is_unused      (llama_token id) const;
-bool is_eog         (llama_token id) const;
+bool is_unused (llama_token id) const;
+bool is_eog (llama_token id) const;
 uint8_t token_to_byte(llama_token id) const;
 llama_token_attr token_get_attr(llama_token id) const;
 void init_tokenizer(enum llama_vocab_type type);
 void tokenizer_st_partition(std::forward_list<fragment_buffer_variant> & buffer, bool parse_special) const;
 std::string token_to_piece_for_cache(
-llama_token   token,
-bool   special) const;
+llama_token token,
+bool special) const;
 std::vector<llama_token> tokenize(
 const std::string & raw_text,
-bool   add_special,
-bool   parse_special = false) const;
+bool add_special,
+bool parse_special = false) const;
 int32_t tokenize(
 const char * text,
-int32_t   text_len,
+int32_t text_len,
 llama_token * tokens,
-int32_t   n_tokens_max,
-bool   add_special,
-bool   parse_special) const;
+int32_t n_tokens_max,
+bool add_special,
+bool parse_special) const;
 int32_t token_to_piece(
-llama_token   token,
+llama_token token,
 char * buf,
-int32_t   length,
-int32_t   lstrip,
-bool   special) const;
+int32_t length,
+int32_t lstrip,
+bool special) const;
 const std::string & token_to_piece(llama_token token) const;
 int32_t detokenize(
 const llama_token * tokens,
-int32_t   n_tokens,
+int32_t n_tokens,
 char * text,
-int32_t   text_len_max,
-bool   remove_special,
-bool   unparse_special) const;
+int32_t text_len_max,
+bool remove_special,
+bool unparse_special) const;
 std::string detokenize(
 const std::vector<llama_token> & tokens,
-bool   special) const;
+bool special) const;
 void print_info() const;
 private:
 const llama_vocab & vocab;
@@ -1004,17 +1004,17 @@ void llama_vocab::impl::load(llama_model_loader & ml, const LLM_KV & kv) {
 struct gguf_context * ctx = ml.meta.get();
 {
 ml.get_key(LLM_KV_TOKENIZER_MODEL, tokenizer_model);
-ml.get_key(LLM_KV_TOKENIZER_PRE,   tokenizer_pre, false);
+ml.get_key(LLM_KV_TOKENIZER_PRE, tokenizer_pre, false);
 ml.get_key(LLM_KV_TOKENIZER_TOKEN_TYPE_COUNT, n_token_types, false);
 if (tokenizer_model == "no_vocab" || tokenizer_model == "none") {
 type = LLAMA_VOCAB_TYPE_NONE;
-special_bos_id  = LLAMA_TOKEN_NULL;
-special_eos_id  = LLAMA_TOKEN_NULL;
-special_unk_id  = LLAMA_TOKEN_NULL;
-special_sep_id  = LLAMA_TOKEN_NULL;
-special_pad_id  = LLAMA_TOKEN_NULL;
+special_bos_id = LLAMA_TOKEN_NULL;
+special_eos_id = LLAMA_TOKEN_NULL;
+special_unk_id = LLAMA_TOKEN_NULL;
+special_sep_id = LLAMA_TOKEN_NULL;
+special_pad_id = LLAMA_TOKEN_NULL;
 special_mask_id = LLAMA_TOKEN_NULL;
-linefeed_id     = LLAMA_TOKEN_NULL;
+linefeed_id = LLAMA_TOKEN_NULL;
 uint32_t n_tokens = 0;
 if (ml.get_key(LLM_KV_VOCAB_SIZE, n_tokens, false)) {
 LLAMA_LOG_WARN("%s: adding %u dummy tokens\n", __func__, n_tokens);
@@ -1024,19 +1024,19 @@ return;
 }
 if (tokenizer_model == "llama") {
 type = LLAMA_VOCAB_TYPE_SPM;
-special_bos_id  = 1;
-special_eos_id  = 2;
-special_unk_id  = 0;
-special_sep_id  = LLAMA_TOKEN_NULL;
-special_pad_id  = LLAMA_TOKEN_NULL;
+special_bos_id = 1;
+special_eos_id = 2;
+special_unk_id = 0;
+special_sep_id = LLAMA_TOKEN_NULL;
+special_pad_id = LLAMA_TOKEN_NULL;
 special_mask_id = LLAMA_TOKEN_NULL;
 } else if (tokenizer_model == "bert") {
 type = LLAMA_VOCAB_TYPE_WPM;
-special_bos_id  = 101;
-special_eos_id  = LLAMA_TOKEN_NULL;
-special_unk_id  = 100;
-special_sep_id  = 102;
-special_pad_id  = 0;
+special_bos_id = 101;
+special_eos_id = LLAMA_TOKEN_NULL;
+special_unk_id = 100;
+special_sep_id = 102;
+special_pad_id = 0;
 special_mask_id = 103;
 } else if (tokenizer_model == "gpt2") {
 type = LLAMA_VOCAB_TYPE_BPE;
@@ -1051,24 +1051,24 @@ std::string first;
 std::string second;
 const size_t pos = word.find(' ', 1);
 if (pos != std::string::npos) {
-first  = word.substr(0, pos);
+first = word.substr(0, pos);
 second = word.substr(pos + 1);
 }
 bpe_ranks.emplace(std::make_pair(first, second), i);
 }
-special_bos_id  = 11;
-special_eos_id  = 11;
-special_unk_id  = LLAMA_TOKEN_NULL;
-special_sep_id  = LLAMA_TOKEN_NULL;
-special_pad_id  = LLAMA_TOKEN_NULL;
+special_bos_id = 11;
+special_eos_id = 11;
+special_unk_id = LLAMA_TOKEN_NULL;
+special_sep_id = LLAMA_TOKEN_NULL;
+special_pad_id = LLAMA_TOKEN_NULL;
 special_mask_id = LLAMA_TOKEN_NULL;
 } else if (tokenizer_model == "t5") {
 type = LLAMA_VOCAB_TYPE_UGM;
-special_bos_id  = LLAMA_TOKEN_NULL;
-special_eos_id  = 1;
-special_unk_id  = 2;
-special_sep_id  = LLAMA_TOKEN_NULL;
-special_pad_id  = 0;
+special_bos_id = LLAMA_TOKEN_NULL;
+special_eos_id = 1;
+special_unk_id = 2;
+special_sep_id = LLAMA_TOKEN_NULL;
+special_pad_id = 0;
 special_mask_id = LLAMA_TOKEN_NULL;
 const int precompiled_charsmap_keyidx = gguf_find_key(ctx, kv(LLM_KV_TOKENIZER_PRECOMPILED_CHARSMAP).c_str());
 if (precompiled_charsmap_keyidx != -1) {
@@ -1103,10 +1103,10 @@ clean_spaces = true;
 if (tokenizer_pre == "default") {
 pre_type = LLAMA_VOCAB_PRE_TYPE_DEFAULT;
 } else if (
-tokenizer_pre == "llama3"   ||
+tokenizer_pre == "llama3" ||
 tokenizer_pre == "llama-v3" ||
 tokenizer_pre == "llama-bpe"||
-tokenizer_pre == "falcon3"  ||
+tokenizer_pre == "falcon3" ||
 tokenizer_pre == "pixtral") {
 pre_type = LLAMA_VOCAB_PRE_TYPE_LLAMA3;
 ignore_merges = true;
@@ -1133,11 +1133,11 @@ pre_type = LLAMA_VOCAB_PRE_TYPE_MPT;
 tokenizer_pre == "starcoder") {
 pre_type = LLAMA_VOCAB_PRE_TYPE_STARCODER;
 } else if (
-tokenizer_pre == "gpt-2"   ||
-tokenizer_pre == "phi-2"   ||
+tokenizer_pre == "gpt-2" ||
+tokenizer_pre == "phi-2" ||
 tokenizer_pre == "jina-es" ||
 tokenizer_pre == "jina-de" ||
-tokenizer_pre == "gigachat"   ||
+tokenizer_pre == "gigachat" ||
 tokenizer_pre == "jina-v1-en" ||
 tokenizer_pre == "jina-v2-es" ||
 tokenizer_pre == "jina-v2-de" ||
@@ -1267,7 +1267,7 @@ add_eos = false;
 } else {
 pre_type = LLAMA_VOCAB_PRE_TYPE_DEFAULT;
 }
-ml.get_key(LLM_KV_TOKENIZER_ADD_PREFIX,      add_space_prefix,         false);
+ml.get_key(LLM_KV_TOKENIZER_ADD_PREFIX, add_space_prefix, false);
 ml.get_key(LLM_KV_TOKENIZER_REMOVE_EXTRA_WS, remove_extra_whitespaces, false);
 }
 const int token_idx = gguf_find_key(ctx, kv(LLM_KV_TOKENIZER_LIST).c_str());
@@ -1295,19 +1295,19 @@ word = "[EMPTY_" + std::to_string(i) + "]";
 token_to_id[word] = i;
 max_token_len = std::max(max_token_len, (int) word.size());
 auto & token_data = id_to_token[i];
-token_data.text  = std::move(word);
+token_data.text = std::move(word);
 token_data.score = scores ? scores[i] : 0.0f;
-token_data.attr  = LLAMA_TOKEN_ATTR_NORMAL;
+token_data.attr = LLAMA_TOKEN_ATTR_NORMAL;
 if (toktypes) {
 switch(toktypes[i]) {
-case LLAMA_TOKEN_TYPE_UNKNOWN:      token_data.attr = LLAMA_TOKEN_ATTR_UNKNOWN;      break;
-case LLAMA_TOKEN_TYPE_UNUSED:       token_data.attr = LLAMA_TOKEN_ATTR_UNUSED;       break;
-case LLAMA_TOKEN_TYPE_NORMAL:       token_data.attr = LLAMA_TOKEN_ATTR_NORMAL;       break;
-case LLAMA_TOKEN_TYPE_CONTROL:      token_data.attr = LLAMA_TOKEN_ATTR_CONTROL;      break;
+case LLAMA_TOKEN_TYPE_UNKNOWN: token_data.attr = LLAMA_TOKEN_ATTR_UNKNOWN; break;
+case LLAMA_TOKEN_TYPE_UNUSED: token_data.attr = LLAMA_TOKEN_ATTR_UNUSED; break;
+case LLAMA_TOKEN_TYPE_NORMAL: token_data.attr = LLAMA_TOKEN_ATTR_NORMAL; break;
+case LLAMA_TOKEN_TYPE_CONTROL: token_data.attr = LLAMA_TOKEN_ATTR_CONTROL; break;
 case LLAMA_TOKEN_TYPE_USER_DEFINED: token_data.attr = LLAMA_TOKEN_ATTR_USER_DEFINED; break;
-case LLAMA_TOKEN_TYPE_BYTE:         token_data.attr = LLAMA_TOKEN_ATTR_BYTE;         break;
-case LLAMA_TOKEN_TYPE_UNDEFINED:    token_data.attr = LLAMA_TOKEN_ATTR_UNDEFINED;    break;
-default:                            token_data.attr = LLAMA_TOKEN_ATTR_UNDEFINED;    break;
+case LLAMA_TOKEN_TYPE_BYTE: token_data.attr = LLAMA_TOKEN_ATTR_BYTE; break;
+case LLAMA_TOKEN_TYPE_UNDEFINED: token_data.attr = LLAMA_TOKEN_ATTR_UNDEFINED; break;
+default: token_data.attr = LLAMA_TOKEN_ATTR_UNDEFINED; break;
 }
 }
 }
@@ -1337,14 +1337,14 @@ linefeed_id = ids[0];
 }
 {
 const std::vector<std::pair<enum llm_kv, int32_t &>> special_token_types = {
-{ LLM_KV_TOKENIZER_BOS_ID,     special_bos_id     },
-{ LLM_KV_TOKENIZER_EOS_ID,     special_eos_id     },
-{ LLM_KV_TOKENIZER_EOT_ID,     special_eot_id     },
-{ LLM_KV_TOKENIZER_EOM_ID,     special_eom_id     },
-{ LLM_KV_TOKENIZER_UNK_ID,     special_unk_id     },
-{ LLM_KV_TOKENIZER_SEP_ID,     special_sep_id     },
-{ LLM_KV_TOKENIZER_PAD_ID,     special_pad_id     },
-{ LLM_KV_TOKENIZER_MASK_ID,    special_mask_id    },
+{ LLM_KV_TOKENIZER_BOS_ID, special_bos_id },
+{ LLM_KV_TOKENIZER_EOS_ID, special_eos_id },
+{ LLM_KV_TOKENIZER_EOT_ID, special_eot_id },
+{ LLM_KV_TOKENIZER_EOM_ID, special_eom_id },
+{ LLM_KV_TOKENIZER_UNK_ID, special_unk_id },
+{ LLM_KV_TOKENIZER_SEP_ID, special_sep_id },
+{ LLM_KV_TOKENIZER_PAD_ID, special_pad_id },
+{ LLM_KV_TOKENIZER_MASK_ID, special_mask_id },
 { LLM_KV_TOKENIZER_FIM_PRE_ID, special_fim_pre_id },
 { LLM_KV_TOKENIZER_FIM_SUF_ID, special_fim_suf_id },
 { LLM_KV_TOKENIZER_FIM_MID_ID, special_fim_mid_id },
@@ -1594,7 +1594,7 @@ _set_tokenid_attr(token_to_id.at(token), attr, value);
 };
 std::string model_name;
 std::string tokenizer_pre;
-ml.get_key(LLM_KV_GENERAL_NAME,  model_name,    false);
+ml.get_key(LLM_KV_GENERAL_NAME, model_name, false);
 ml.get_key(LLM_KV_TOKENIZER_PRE, tokenizer_pre, false);
 std::transform(model_name.begin(), model_name.end(), model_name.begin(),
 [] (const std::string::value_type x) {
@@ -1622,12 +1622,12 @@ return type;
 std::string llama_vocab::impl::type_name() const{
 switch (type) {
 case LLAMA_VOCAB_TYPE_NONE: return "no vocab";
-case LLAMA_VOCAB_TYPE_SPM:  return "SPM";
-case LLAMA_VOCAB_TYPE_BPE:  return "BPE";
-case LLAMA_VOCAB_TYPE_WPM:  return "WPM";
-case LLAMA_VOCAB_TYPE_UGM:  return "UGM";
+case LLAMA_VOCAB_TYPE_SPM: return "SPM";
+case LLAMA_VOCAB_TYPE_BPE: return "BPE";
+case LLAMA_VOCAB_TYPE_WPM: return "WPM";
+case LLAMA_VOCAB_TYPE_UGM: return "UGM";
 case LLAMA_VOCAB_TYPE_RWKV: return "RWKV";
-default:                    return "unknown";
+default: return "unknown";
 }
 }
 bool llama_vocab::impl::is_normal(llama_token id) const {
@@ -2036,11 +2036,11 @@ return cache_token_to_piece.at(token);
 }
 int32_t llama_vocab::impl::detokenize(
 const llama_token * tokens,
-int32_t   n_tokens,
+int32_t n_tokens,
 char * text,
-int32_t   text_len_max,
-bool   remove_special,
-bool   unparse_special) const {
+int32_t text_len_max,
+bool remove_special,
+bool unparse_special) const {
 if (type == LLAMA_VOCAB_TYPE_NONE) {
 return 0;
 }
@@ -2069,7 +2069,7 @@ avail = 0;
 total -= n_chars;
 } else if (n_chars > 0) {
 avail -= n_chars;
-text  += n_chars;
+text += n_chars;
 total += n_chars;
 }
 }
@@ -2126,18 +2126,18 @@ text[total++] = x;
 return total <= text_len_max ? total : -total;
 }
 void llama_vocab::impl::print_info() const {
-LLAMA_LOG_INFO("%s: vocab type       = %s\n",     __func__, type_name().c_str());
-LLAMA_LOG_INFO("%s: n_vocab          = %u\n",     __func__, vocab.n_tokens());
-LLAMA_LOG_INFO("%s: n_merges         = %u\n",     __func__, (uint32_t) bpe_ranks.size());
-if (special_bos_id  != LLAMA_TOKEN_NULL)    { LLAMA_LOG_INFO( "%s: BOS token        = %d '%s'\n", __func__, special_bos_id,     id_to_token[special_bos_id].text.c_str() );  }
-if (special_eos_id  != LLAMA_TOKEN_NULL)    { LLAMA_LOG_INFO( "%s: EOS token        = %d '%s'\n", __func__, special_eos_id,     id_to_token[special_eos_id].text.c_str() );  }
-if (special_eot_id  != LLAMA_TOKEN_NULL)    { LLAMA_LOG_INFO( "%s: EOT token        = %d '%s'\n", __func__, special_eot_id,     id_to_token[special_eot_id].text.c_str() );  }
-if (special_eom_id  != LLAMA_TOKEN_NULL)    { LLAMA_LOG_INFO( "%s: EOM token        = %d '%s'\n", __func__, special_eom_id,     id_to_token[special_eom_id].text.c_str() );  }
-if (special_unk_id  != LLAMA_TOKEN_NULL)    { LLAMA_LOG_INFO( "%s: UNK token        = %d '%s'\n", __func__, special_unk_id,     id_to_token[special_unk_id].text.c_str() );  }
-if (special_sep_id  != LLAMA_TOKEN_NULL)    { LLAMA_LOG_INFO( "%s: SEP token        = %d '%s'\n", __func__, special_sep_id,     id_to_token[special_sep_id].text.c_str() );  }
-if (special_pad_id  != LLAMA_TOKEN_NULL)    { LLAMA_LOG_INFO( "%s: PAD token        = %d '%s'\n", __func__, special_pad_id,     id_to_token[special_pad_id].text.c_str() );  }
-if (special_mask_id != LLAMA_TOKEN_NULL)    { LLAMA_LOG_INFO( "%s: MASK token       = %d '%s'\n", __func__, special_mask_id,    id_to_token[special_mask_id].text.c_str() ); }
-if (linefeed_id != LLAMA_TOKEN_NULL)        { LLAMA_LOG_INFO( "%s: LF token         = %d '%s'\n", __func__, linefeed_id,        id_to_token[linefeed_id].text.c_str() ); }
+LLAMA_LOG_INFO("%s: vocab type       = %s\n", __func__, type_name().c_str());
+LLAMA_LOG_INFO("%s: n_vocab          = %u\n", __func__, vocab.n_tokens());
+LLAMA_LOG_INFO("%s: n_merges         = %u\n", __func__, (uint32_t) bpe_ranks.size());
+if (special_bos_id != LLAMA_TOKEN_NULL) { LLAMA_LOG_INFO( "%s: BOS token        = %d '%s'\n", __func__, special_bos_id, id_to_token[special_bos_id].text.c_str() ); }
+if (special_eos_id != LLAMA_TOKEN_NULL) { LLAMA_LOG_INFO( "%s: EOS token        = %d '%s'\n", __func__, special_eos_id, id_to_token[special_eos_id].text.c_str() ); }
+if (special_eot_id != LLAMA_TOKEN_NULL) { LLAMA_LOG_INFO( "%s: EOT token        = %d '%s'\n", __func__, special_eot_id, id_to_token[special_eot_id].text.c_str() ); }
+if (special_eom_id != LLAMA_TOKEN_NULL) { LLAMA_LOG_INFO( "%s: EOM token        = %d '%s'\n", __func__, special_eom_id, id_to_token[special_eom_id].text.c_str() ); }
+if (special_unk_id != LLAMA_TOKEN_NULL) { LLAMA_LOG_INFO( "%s: UNK token        = %d '%s'\n", __func__, special_unk_id, id_to_token[special_unk_id].text.c_str() ); }
+if (special_sep_id != LLAMA_TOKEN_NULL) { LLAMA_LOG_INFO( "%s: SEP token        = %d '%s'\n", __func__, special_sep_id, id_to_token[special_sep_id].text.c_str() ); }
+if (special_pad_id != LLAMA_TOKEN_NULL) { LLAMA_LOG_INFO( "%s: PAD token        = %d '%s'\n", __func__, special_pad_id, id_to_token[special_pad_id].text.c_str() ); }
+if (special_mask_id != LLAMA_TOKEN_NULL) { LLAMA_LOG_INFO( "%s: MASK token       = %d '%s'\n", __func__, special_mask_id, id_to_token[special_mask_id].text.c_str() ); }
+if (linefeed_id != LLAMA_TOKEN_NULL) { LLAMA_LOG_INFO( "%s: LF token         = %d '%s'\n", __func__, linefeed_id, id_to_token[linefeed_id].text.c_str() ); }
 if (special_fim_pre_id != LLAMA_TOKEN_NULL) { LLAMA_LOG_INFO( "%s: FIM PRE token    = %d '%s'\n", __func__, special_fim_pre_id, id_to_token[special_fim_pre_id].text.c_str() ); }
 if (special_fim_suf_id != LLAMA_TOKEN_NULL) { LLAMA_LOG_INFO( "%s: FIM SUF token    = %d '%s'\n", __func__, special_fim_suf_id, id_to_token[special_fim_suf_id].text.c_str() ); }
 if (special_fim_mid_id != LLAMA_TOKEN_NULL) { LLAMA_LOG_INFO( "%s: FIM MID token    = %d '%s'\n", __func__, special_fim_mid_id, id_to_token[special_fim_mid_id].text.c_str() ); }
@@ -2325,9 +2325,9 @@ int llama_vocab::max_token_len() const {
 return pimpl->max_token_len;
 }
 int llama_vocab::find_bpe_rank(const std::string & token_left, const std::string & token_right) const {
-GGML_ASSERT(token_left.find(' ')   == std::string::npos);
-GGML_ASSERT(token_left.find('\n')  == std::string::npos);
-GGML_ASSERT(token_right.find(' ')  == std::string::npos);
+GGML_ASSERT(token_left.find(' ') == std::string::npos);
+GGML_ASSERT(token_left.find('\n') == std::string::npos);
+GGML_ASSERT(token_right.find(' ') == std::string::npos);
 GGML_ASSERT(token_right.find('\n') == std::string::npos);
 auto it = pimpl->bpe_ranks.find(std::make_pair(token_left, token_right));
 if (it == pimpl->bpe_ranks.end()) {
@@ -2347,11 +2347,11 @@ return pimpl->precompiled_charsmap;
 }
 int32_t llama_vocab::tokenize(
 const char * text,
-int32_t   text_len,
+int32_t text_len,
 llama_token * tokens,
-int32_t   n_tokens_max,
-bool   add_special,
-bool   parse_special) const {
+int32_t n_tokens_max,
+bool add_special,
+bool parse_special) const {
 auto res = tokenize(std::string(text, text_len), add_special, parse_special);
 if (n_tokens_max < (int) res.size()) {
 return -((int) res.size());
@@ -2375,11 +2375,11 @@ return pimpl->token_to_piece(token, buf, length, lstrip, special);
 }
 int32_t llama_vocab::detokenize(
 const llama_token * tokens,
-int32_t   n_tokens,
+int32_t n_tokens,
 char * text,
-int32_t   text_len_max,
-bool   remove_special,
-bool   unparse_special) const {
+int32_t text_len_max,
+bool remove_special,
+bool unparse_special) const {
 return pimpl->detokenize(tokens, n_tokens, text, text_len_max, remove_special, unparse_special);
 }
 std::string llama_vocab::detokenize(const std::vector<llama_token> & tokens, bool special) const {
@@ -2529,29 +2529,29 @@ return llama_vocab_fim_sep(vocab);
 int32_t llama_tokenize(
 const struct llama_vocab * vocab,
 const char * text,
-int32_t   text_len,
+int32_t text_len,
 llama_token * tokens,
-int32_t   n_tokens_max,
-bool   add_special,
-bool   parse_special) {
+int32_t n_tokens_max,
+bool add_special,
+bool parse_special) {
 return vocab->tokenize(text, text_len, tokens, n_tokens_max, add_special, parse_special);
 }
 int32_t llama_token_to_piece(
 const struct llama_vocab * vocab,
-llama_token   token,
+llama_token token,
 char * buf,
-int32_t   length,
-int32_t   lstrip,
-bool   special) {
+int32_t length,
+int32_t lstrip,
+bool special) {
 return vocab->token_to_piece(token, buf, length, lstrip, special);
 }
 int32_t llama_detokenize(
 const struct llama_vocab * vocab,
 const llama_token * tokens,
-int32_t   n_tokens,
+int32_t n_tokens,
 char * text,
-int32_t   text_len_max,
-bool   remove_special,
-bool   unparse_special) {
+int32_t text_len_max,
+bool remove_special,
+bool unparse_special) {
 return vocab->detokenize(tokens, n_tokens, text, text_len_max, remove_special, unparse_special);
 }

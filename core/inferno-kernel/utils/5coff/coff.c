@@ -1,28 +1,28 @@
-#include	"auxi.h"
-#define C_NULL	0
-#define C_AUTO	1
-#define C_EXT		2
-#define C_STAT	3
-#define C_ARG		9
-#define C_FCN		101
-#define C_FILE		103
-#define T_VOID	0
-#define T_CHAR	2
-#define T_SHORT	3
-#define T_INT		4
-#define T_LONG	5
-#define DT_NON	0
-#define DT_PTR	1
-#define DT_FCN	2
-#define DT_ARY	3
-#define T(a, b)	(((a)<<4)|b)
-#define DOTTEXT	".text"
-#define DOTDATA	".data"
-#define DOTBSS	".bss"
-#define DOTBF		".bf"
-#define DOTEF		".ef"
-#define SINDEX(s)	(*((long*)(&s->become)))
-#define LINDEX(s)	(*((long*)(&s->used)))
+#include "auxi.h"
+#define C_NULL 0
+#define C_AUTO 1
+#define C_EXT 2
+#define C_STAT 3
+#define C_ARG 9
+#define C_FCN 101
+#define C_FILE 103
+#define T_VOID 0
+#define T_CHAR 2
+#define T_SHORT 3
+#define T_INT 4
+#define T_LONG 5
+#define DT_NON 0
+#define DT_PTR 1
+#define DT_FCN 2
+#define DT_ARY 3
+#define T(a, b) (((a)<<4)|b)
+#define DOTTEXT ".text"
+#define DOTDATA ".data"
+#define DOTBSS ".bss"
+#define DOTBF ".bf"
+#define DOTEF ".ef"
+#define SINDEX(s) (*((long*)(&s->become)))
+#define LINDEX(s) (*((long*)(&s->used)))
 typedef struct Hist Hist;
 struct Hist{
 Auto *a;

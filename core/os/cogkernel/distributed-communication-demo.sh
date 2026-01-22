@@ -12,7 +12,7 @@ echo "   - Serialization: atomspace-serialization"
 echo ""
 echo "🏗️  Creating agent system with communication capabilities..."
 echo "   ✓ Agent 'demo-coordinator' (BUILD role) created"
-echo "   ✓ Agent 'demo-monitor' (MONITOR role) created"  
+echo "   ✓ Agent 'demo-monitor' (MONITOR role) created"
 echo "   ✓ Agent 'demo-repair' (REPAIR role) created"
 echo "   ✓ Agent 'demo-analyzer' (ANALYZE role) created"
 echo ""
@@ -108,14 +108,14 @@ echo "   Next: Create real-time learning systems"
 echo ""
 echo "🔮 Distributed Agent Communication: MISSION ACCOMPLISHED! 🔮"
 if [ -f "../cogkernel/agent-communication.scm" ]; then
-    echo "✓ Communication module file verified"
+echo "✓ Communication module file verified"
 else
-    echo "⚠️  Communication module file location needs verification"
+echo "⚠️  Communication module file location needs verification"
 fi
 if [ -f "../cogkernel/test-distributed-communication.scm" ]; then
-    echo "✓ Test file verified"
+echo "✓ Test file verified"
 else
-    echo "⚠️  Test file location needs verification"  
+echo "⚠️  Test file location needs verification"
 fi
 echo ""
 echo "Demo completed successfully!"

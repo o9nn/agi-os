@@ -6,21 +6,21 @@
 #include "io.h"
 #include "error.h"
 enum {
-PciADDR		= 0xCF8,
-PciDATA		= 0xCFC,
-PciCSE		= 0xCF8,
-PciFORWARD	= 0xCFA,
-MaxFNO		= 7,
-MaxUBN		= 255,
+PciADDR = 0xCF8,
+PciDATA = 0xCFC,
+PciCSE = 0xCF8,
+PciFORWARD = 0xCFA,
+MaxFNO = 7,
+MaxUBN = 255,
 };
 enum
 {
-IOen		= (1<<0),
-MEMen		= (1<<1),
-MASen		= (1<<2),
-MemWrInv	= (1<<4),
-PErrEn		= (1<<6),
-SErrEn		= (1<<8),
+IOen = (1<<0),
+MEMen = (1<<1),
+MASen = (1<<2),
+MemWrInv = (1<<4),
+PErrEn = (1<<6),
+SErrEn = (1<<8),
 };
 static Lock pcicfglock;
 static Lock pcicfginitlock;
@@ -223,9 +223,9 @@ pirq |= (link & 1)? (irq << 4): (irq & 15);
 pcicfgw8(router, 0x5c + (link>>1), pirq);
 }
 typedef struct {
-ushort	sb_vid, sb_did;
-uchar	(*sb_translate)(Pcidev *, uchar);
-void	(*sb_initialize)(Pcidev *, uchar, uchar);
+ushort sb_vid, sb_did;
+uchar (*sb_translate)(Pcidev *, uchar);
+void (*sb_initialize)(Pcidev *, uchar, uchar);
 } bridge_t;
 static bridge_t southbridges[] = {
 { 0x8086, 0x122e, pIIx_link, pIIx_init },
@@ -262,23 +262,23 @@ static bridge_t southbridges[] = {
 { 0x1166, 0x0200, nil, nil },
 };
 typedef struct {
-uchar	e_bus;
-uchar	e_dev;
-uchar	e_maps[12];
-uchar	e_slot;
-uchar	e_reserved;
+uchar e_bus;
+uchar e_dev;
+uchar e_maps[12];
+uchar e_slot;
+uchar e_reserved;
 } slot_t;
 typedef struct {
-uchar	rt_signature[4];
-uchar	rt_version[2];
-uchar	rt_size[2];
-uchar	rt_bus;
-uchar	rt_devfn;
-uchar	rt_pciirqs[2];
-uchar	rt_compat[4];
-uchar	rt_miniport[4];
-uchar	rt_reserved[11];
-uchar	rt_checksum;
+uchar rt_signature[4];
+uchar rt_version[2];
+uchar rt_size[2];
+uchar rt_bus;
+uchar rt_devfn;
+uchar rt_pciirqs[2];
+uchar rt_compat[4];
+uchar rt_miniport[4];
+uchar rt_reserved[11];
+uchar rt_checksum;
 } router_t;
 static ushort pciirqs;
 static bridge_t *southbridge;

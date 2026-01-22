@@ -1,27 +1,27 @@
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
-#include	<interp.h>
-#define NETTYPE(x)	((ulong)(x)&0x1f)
-#define NETID(x)	(((ulong)(x))>>5)
-#define NETQID(i,t)	(((i)<<5)|(t))
-typedef struct Pipe	Pipe;
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
+#include <interp.h>
+#define NETTYPE(x) ((ulong)(x)&0x1f)
+#define NETID(x) (((ulong)(x))>>5)
+#define NETQID(i,t) (((i)<<5)|(t))
+typedef struct Pipe Pipe;
 struct Pipe
 {
-QLock	l;
-Pipe*	next;
-int	ref;
-ulong	path;
-Queue*	q[2];
-int	qref[2];
-Dirtab*	pipedir;
-char*	user;
+QLock l;
+Pipe* next;
+int ref;
+ulong path;
+Queue* q[2];
+int qref[2];
+Dirtab* pipedir;
+char* user;
 };
 static struct
 {
-Lock	l;
-ulong	path;
-int	pipeqsize;
+Lock l;
+ulong path;
+int pipeqsize;
 } pipealloc;
 enum
 {
@@ -31,9 +31,9 @@ Qdata1
 };
 Dirtab pipedir[] =
 {
-".",		{Qdir,0,QTDIR},	0,		DMDIR|0500,
-"data",		{Qdata0},	0,			0660,
-"data1",	{Qdata1},	0,			0660,
+".", {Qdir,0,QTDIR}, 0, DMDIR|0500,
+"data", {Qdata0}, 0, 0660,
+"data1", {Qdata1}, 0, 0660,
 };
 static void
 freepipe(Pipe *p)

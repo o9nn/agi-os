@@ -270,7 +270,7 @@ indent = (indent + 8) & ~7;
 else
 indent++;
 }
-for (t = s;  ISDIGIT (*t) || *t == ',';  t++)
+for (t = s; ISDIGIT (*t) || *t == ','; t++)
 continue;
 this_is_a_command = (ISDIGIT (*s) &&
 (*t == 'd' || *t == 'c' || *t == 'a') );
@@ -286,10 +286,10 @@ name[OLD] = fetchname (s+4, strippath, &p_timestamp[OLD]);
 else if (strnEQ(s, "Index:", 6))
 name[INDEX] = fetchname (s+6, strippath, (time_t *) 0);
 else if (strnEQ(s, "Prereq:", 7)) {
-for (t = s + 7;  ISSPACE ((unsigned char) *t);  t++)
+for (t = s + 7; ISSPACE ((unsigned char) *t); t++)
 continue;
 revision = t;
-for (t = revision;  *t && !ISSPACE ((unsigned char) *t);  t++)
+for (t = revision; *t && !ISSPACE ((unsigned char) *t); t++)
 continue;
 if (t == revision)
 revision = 0;
@@ -301,7 +301,7 @@ revision = savestr (revision);
 }
 } else
 {
-for (t = s;  t[0] == '-' && t[1] == ' ';  t += 2)
+for (t = s; t[0] == '-' && t[1] == ' '; t += 2)
 continue;
 if (strnEQ(t, "--- ", 4))
 {
@@ -400,7 +400,7 @@ if (! posixly_correct && (name[OLD] || name[NEW]) && name[INDEX])
 free (name[INDEX]);
 name[INDEX] = 0;
 }
-for (i = OLD;  i <= INDEX;  i++)
+for (i = OLD; i <= INDEX; i++)
 if (name[i])
 {
 if (i0 != NONE && strcmp (name[i0], name[i]) == 0)
@@ -425,7 +425,7 @@ i = best_name (name, stat_errno);
 if (i == NONE && patch_get)
 {
 enum nametype nope = NONE;
-for (i = OLD;  i <= INDEX;  i++)
+for (i = OLD; i <= INDEX; i++)
 if (name[i])
 {
 char const *cs;
@@ -474,7 +474,7 @@ if (i == NONE && p_says_nonexistent[reverse])
 int newdirs[3];
 int newdirs_min = INT_MAX;
 int distance_from_minimum[3];
-for (i = OLD;  i <= INDEX;  i++)
+for (i = OLD; i <= INDEX; i++)
 if (name[i])
 {
 newdirs[i] = (prefix_components (name[i], 0)
@@ -482,7 +482,7 @@ newdirs[i] = (prefix_components (name[i], 0)
 if (newdirs[i] < newdirs_min)
 newdirs_min = newdirs[i];
 }
-for (i = OLD;  i <= INDEX;  i++)
+for (i = OLD; i <= INDEX; i++)
 if (name[i])
 distance_from_minimum[i] = newdirs[i] - newdirs_min;
 i = best_name (name, distance_from_minimum);
@@ -499,7 +499,7 @@ inerrno = stat_errno[i];
 invc = version_controlled[i];
 instat = st[i];
 }
-for (i = OLD;  i <= INDEX;  i++)
+for (i = OLD; i <= INDEX; i++)
 if (name[i])
 free (name[i]);
 return retval;
@@ -541,7 +541,7 @@ size_t basename_len[3];
 size_t basename_len_min = (size_t) -1;
 size_t len[3];
 size_t len_min = (size_t) -1;
-for (i = OLD;  i <= INDEX;  i++)
+for (i = OLD; i <= INDEX; i++)
 if (name[i] && !ignore[i])
 {
 components[i] = prefix_components (name[i], 0);
@@ -557,7 +557,7 @@ if (len_min < len[i])
 continue;
 len_min = len[i];
 }
-for (i = OLD;  i <= INDEX;  i++)
+for (i = OLD; i <= INDEX; i++)
 if (name[i] && !ignore[i]
 && components[i] == components_min
 && basename_len[i] == basename_len_min
@@ -700,7 +700,7 @@ if (! (p_line[p_end] = savestr (buf))) {
 p_end--;
 return -1;
 }
-for (s = buf;  *s && !ISDIGIT (*s);  s++)
+for (s = buf; *s && !ISDIGIT (*s); s++)
 continue;
 if (!*s)
 malformed ();
@@ -772,7 +772,7 @@ p_end--;
 return -1;
 }
 p_Char[p_end] = '=';
-for (s = buf;  *s && ! ISDIGIT (*s);  s++)
+for (s = buf; *s && ! ISDIGIT (*s); s++)
 continue;
 if (!*s)
 malformed ();
@@ -807,7 +807,7 @@ if (p_repl_lines != ptrn_copiable
 repl_could_be_missing = FALSE;
 context = 0;
 break;
-case '+':  case '!':
+case '+': case '!':
 repl_could_be_missing = FALSE;
 change_line:
 s = buf + 1;
@@ -1151,7 +1151,7 @@ next_intuit_at(line_beginning,p_input_line);
 return chars_read == (size_t) -1 ? -1 : 0;
 }
 p_first = (LINENUM)atol(buf);
-for (s = buf;  ISDIGIT (*s);  s++)
+for (s = buf; ISDIGIT (*s); s++)
 continue;
 if (*s == ',') {
 p_ptrn_lines = (LINENUM)atol(++s) - p_first + 1;
@@ -1359,7 +1359,7 @@ register int c;
 register file_offset line_beginning = file_tell (fp);
 if (getc (fp) == '\\')
 {
-while ((c = getc (fp)) != '\n'  &&  c != EOF)
+while ((c = getc (fp)) != '\n' && c != EOF)
 continue;
 return TRUE;
 }
@@ -1564,7 +1564,7 @@ if (! chars_read) {
 next_intuit_at(beginning_of_this_line,p_input_line);
 break;
 }
-for (t = buf;  ISDIGIT (*t) || *t == ',';  t++)
+for (t = buf; ISDIGIT (*t) || *t == ','; t++)
 continue;
 this_line_is_command = (ISDIGIT (*buf) &&
 (*t == 'd' || *t == 'c' || *t == 'a' || *t == 'i' || *t == 's') );
@@ -1577,7 +1577,7 @@ while ((chars_read = get_line ()) != 0) {
 if (pipefp)
 if (! fwrite (buf, sizeof *buf, chars_read, pipefp))
 write_fatal ();
-if (chars_read == 2  &&  strEQ (buf, ".\n"))
+if (chars_read == 2 && strEQ (buf, ".\n"))
 break;
 }
 }

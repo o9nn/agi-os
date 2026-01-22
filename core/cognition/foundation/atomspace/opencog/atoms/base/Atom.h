@@ -156,10 +156,10 @@ static MutexPool _mutex_pool;
 #define KVP_SHARED_LOCK std::shared_lock<std::shared_mutex> lck(_mtx);
 #endif
 enum AtomFlags : uint8_t {
-ABSENT_FLAG     = 0x01,
-MARKED_FLAG     = 0x02,
-CHECKED_FLAG    = 0x04,
-USE_ISET_FLAG   = 0x08
+ABSENT_FLAG = 0x01,
+MARKED_FLAG = 0x02,
+CHECKED_FLAG = 0x04,
+USE_ISET_FLAG = 0x08
 };
 mutable std::atomic<uint8_t> _flags;
 mutable ContentHash _content_hash;
@@ -294,13 +294,13 @@ return operator==(dynamic_cast<const Atom&>(other));
 }
 virtual bool operator<(const Atom&) const = 0;
 };
-#define ATOM_PTR_DECL(CNAME)                                \
-typedef std::shared_ptr<CNAME> CNAME##Ptr;              \
-static inline CNAME##Ptr CNAME##Cast(const Handle& h)   \
-{ return std::dynamic_pointer_cast<CNAME>(h); }     \
+#define ATOM_PTR_DECL(CNAME) \
+typedef std::shared_ptr<CNAME> CNAME##Ptr; \
+static inline CNAME##Ptr CNAME##Cast(const Handle& h) \
+{ return std::dynamic_pointer_cast<CNAME>(h); } \
 static inline CNAME##Ptr CNAME##Cast(const ValuePtr& v) \
 { return std::dynamic_pointer_cast<CNAME>(v); }
-#define CREATE_DECL(CNAME)  std::make_shared<CNAME>
+#define CREATE_DECL(CNAME) std::make_shared<CNAME>
 static inline AtomPtr AtomCast(const ValuePtr& pa)
 { return std::dynamic_pointer_cast<Atom>(pa); }
 static inline AtomPtr AtomCast(const Handle& h)

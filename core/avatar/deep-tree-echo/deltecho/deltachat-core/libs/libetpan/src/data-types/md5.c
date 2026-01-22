@@ -1,13 +1,13 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #include <sys/types.h>
 #ifdef WIN32
-#	include <win_etpan.h>
+# include <win_etpan.h>
 #else
-#	include <sys/param.h>
-#	include <sys/socket.h>
-#	include <netinet/in.h>
+# include <sys/param.h>
+# include <sys/socket.h>
+# include <netinet/in.h>
 #endif
 #include "md5global.h"
 #include "md5.h"
@@ -47,10 +47,10 @@ static unsigned char PADDING[64] = {
 #define H(x, y, z) ((x) ^ (y) ^ (z))
 #define I(x, y, z) ((y) ^ ((x) | (~z)))
 #define ROTATE_LEFT(x, n) (((x) << (n)) | ((x) >> (32-(n))))
-#define FF(a, b, c, d, x, s, ac) { (a) += F ((b), (c), (d)) + (x) + (UINT4)(ac); (a) = ROTATE_LEFT ((a), (s));        (a) += (b);        }
-#define GG(a, b, c, d, x, s, ac) {        (a) += G ((b), (c), (d)) + (x) + (UINT4)(ac);        (a) = ROTATE_LEFT ((a), (s));        (a) += (b);         }
-#define HH(a, b, c, d, x, s, ac) {        (a) += H ((b), (c), (d)) + (x) + (UINT4)(ac);        (a) = ROTATE_LEFT ((a), (s));        (a) += (b);        }
-#define II(a, b, c, d, x, s, ac) {        (a) += I ((b), (c), (d)) + (x) + (UINT4)(ac);        (a) = ROTATE_LEFT ((a), (s));        (a) += (b);        }
+#define FF(a, b, c, d, x, s, ac) { (a) += F ((b), (c), (d)) + (x) + (UINT4)(ac); (a) = ROTATE_LEFT ((a), (s)); (a) += (b); }
+#define GG(a, b, c, d, x, s, ac) { (a) += G ((b), (c), (d)) + (x) + (UINT4)(ac); (a) = ROTATE_LEFT ((a), (s)); (a) += (b); }
+#define HH(a, b, c, d, x, s, ac) { (a) += H ((b), (c), (d)) + (x) + (UINT4)(ac); (a) = ROTATE_LEFT ((a), (s)); (a) += (b); }
+#define II(a, b, c, d, x, s, ac) { (a) += I ((b), (c), (d)) + (x) + (UINT4)(ac); (a) = ROTATE_LEFT ((a), (s)); (a) += (b); }
 void MD5Init (context)
 MD5_CTX *context;
 {
@@ -127,7 +127,7 @@ GG (d, a, b, c, x[ 6], S22, 0xc040b340);
 GG (c, d, a, b, x[11], S23, 0x265e5a51);
 GG (b, c, d, a, x[ 0], S24, 0xe9b6c7aa);
 GG (a, b, c, d, x[ 5], S21, 0xd62f105d);
-GG (d, a, b, c, x[10], S22,  0x2441453);
+GG (d, a, b, c, x[10], S22, 0x2441453);
 GG (c, d, a, b, x[15], S23, 0xd8a1e681);
 GG (b, c, d, a, x[ 4], S24, 0xe7d3fbc8);
 GG (a, b, c, d, x[ 9], S21, 0x21e1cde6);
@@ -149,7 +149,7 @@ HH (b, c, d, a, x[10], S34, 0xbebfbc70);
 HH (a, b, c, d, x[13], S31, 0x289b7ec6);
 HH (d, a, b, c, x[ 0], S32, 0xeaa127fa);
 HH (c, d, a, b, x[ 3], S33, 0xd4ef3085);
-HH (b, c, d, a, x[ 6], S34,  0x4881d05);
+HH (b, c, d, a, x[ 6], S34, 0x4881d05);
 HH (a, b, c, d, x[ 9], S31, 0xd9d4d039);
 HH (d, a, b, c, x[12], S32, 0xe6db99e5);
 HH (c, d, a, b, x[15], S33, 0x1fa27cf8);
@@ -226,7 +226,7 @@ unsigned char k_opad[65];
 unsigned char tk[16];
 int i;
 if (key_len > 64) {
-MD5_CTX      tctx;
+MD5_CTX tctx;
 MD5Init(&tctx);
 MD5Update(&tctx, key, key_len);
 MD5Final(tk, &tctx);
@@ -293,7 +293,7 @@ unsigned char k_opad[65];
 unsigned char tk[16];
 int i;
 if (key_len > 64) {
-MD5_CTX      tctx;
+MD5_CTX tctx;
 MD5Init(&tctx);
 MD5Update(&tctx, key, key_len);
 MD5Final(tk, &tctx);

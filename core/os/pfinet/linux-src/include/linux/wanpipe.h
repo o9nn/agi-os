@@ -1,21 +1,21 @@
-#ifndef	_WANPIPE_H
-#define	_WANPIPE_H
+#ifndef _WANPIPE_H
+#define _WANPIPE_H
 #ifdef __SMP__
 #include <asm/spinlock.h>
 #endif
 #include <linux/wanrouter.h>
-#ifndef	PACKED
-#define	PACKED	__attribute__((packed))
+#ifndef PACKED
+#define PACKED __attribute__((packed))
 #endif
-#define	WANPIPE_MAGIC	0x414C4453L
-#define	WANPIPE_DUMP	(ROUTER_USER+0)
-#define	WANPIPE_EXEC	(ROUTER_USER+1)
-#define TRACE_ALL                       0x00
-#define TRACE_PROT			0x01
-#define TRACE_DATA			0x02
-#define UDPMGMT_REQUEST	0x01
-#define UDPMGMT_REPLY	0x02
-#define UDP_OFFSET	12
+#define WANPIPE_MAGIC 0x414C4453L
+#define WANPIPE_DUMP (ROUTER_USER+0)
+#define WANPIPE_EXEC (ROUTER_USER+1)
+#define TRACE_ALL 0x00
+#define TRACE_PROT 0x01
+#define TRACE_DATA 0x02
+#define UDPMGMT_REQUEST 0x01
+#define UDPMGMT_REPLY 0x02
+#define UDP_OFFSET 12
 typedef struct sdla_dump
 {
 unsigned long magic;
@@ -57,28 +57,28 @@ unsigned long poll_host_disable_irq;
 unsigned long poll_host_enable_irq;
 } global_stats_t;
 typedef struct{
-unsigned short	udp_src_port		PACKED;
-unsigned short	udp_dst_port		PACKED;
-unsigned short	udp_length		PACKED;
-unsigned short	udp_checksum		PACKED;
+unsigned short udp_src_port PACKED;
+unsigned short udp_dst_port PACKED;
+unsigned short udp_length PACKED;
+unsigned short udp_checksum PACKED;
 } udp_pkt_t;
 typedef struct {
-unsigned char	ver_inet_hdr_length	PACKED;
-unsigned char	service_type		PACKED;
-unsigned short	total_length		PACKED;
-unsigned short	identifier		PACKED;
-unsigned short	flags_frag_offset	PACKED;
-unsigned char	ttl			PACKED;
-unsigned char	protocol		PACKED;
-unsigned short	hdr_checksum		PACKED;
-unsigned long	ip_src_address		PACKED;
-unsigned long	ip_dst_address		PACKED;
+unsigned char ver_inet_hdr_length PACKED;
+unsigned char service_type PACKED;
+unsigned short total_length PACKED;
+unsigned short identifier PACKED;
+unsigned short flags_frag_offset PACKED;
+unsigned char ttl PACKED;
+unsigned char protocol PACKED;
+unsigned short hdr_checksum PACKED;
+unsigned long ip_src_address PACKED;
+unsigned long ip_dst_address PACKED;
 } ip_pkt_t;
 typedef struct {
-unsigned char           signature[8]    PACKED;
-unsigned char           request_reply   PACKED;
-unsigned char           id              PACKED;
-unsigned char           reserved[6]     PACKED;
+unsigned char signature[8] PACKED;
+unsigned char request_reply PACKED;
+unsigned char id PACKED;
+unsigned char reserved[6] PACKED;
 } wp_mgmt_t;
 typedef struct if_send_stat{
 unsigned long if_send_entry;
@@ -121,24 +121,24 @@ unsigned long UDP_PIPE_mgmt_no_socket;
 unsigned long UDP_PIPE_mgmt_passed_to_adptr;
 } pipe_mgmt_stat_t;
 #define MAX_LGTH_UDP_MGNT_PKT 2000
-#define INTR_TEST_MODE	0x02
-#define	WUM_SIGNATURE_L	0x50495046
-#define	WUM_SIGNATURE_H	0x444E3845
-#define	WUM_KILL	0x50
-#define	WUM_EXEC	0x51
-#ifdef	__KERNEL__
+#define INTR_TEST_MODE 0x02
+#define WUM_SIGNATURE_L 0x50495046
+#define WUM_SIGNATURE_H 0x444E3845
+#define WUM_KILL 0x50
+#define WUM_EXEC 0x51
+#ifdef __KERNEL__
 #include <linux/sdladrv.h>
 #include <linux/sdlasfm.h>
-#ifndef	min
+#ifndef min
 #define min(a,b) (((a)<(b))?(a):(b))
 #endif
-#ifndef	max
+#ifndef max
 #define max(a,b) (((a)>(b))?(a):(b))
 #endif
-#define	is_digit(ch) (((ch)>=(unsigned)'0'&&(ch)<=(unsigned)'9')?1:0)
-#define	is_alpha(ch) ((((ch)>=(unsigned)'a'&&(ch)<=(unsigned)'z')||\
+#define is_digit(ch) (((ch)>=(unsigned)'0'&&(ch)<=(unsigned)'9')?1:0)
+#define is_alpha(ch) ((((ch)>=(unsigned)'a'&&(ch)<=(unsigned)'z')||\
 ((ch)>=(unsigned)'A'&&(ch)<=(unsigned)'Z'))?1:0)
-#define	is_hex_digit(ch) ((((ch)>=(unsigned)'0'&&(ch)<=(unsigned)'9')||\
+#define is_hex_digit(ch) ((((ch)>=(unsigned)'0'&&(ch)<=(unsigned)'9')||\
 ((ch)>=(unsigned)'a'&&(ch)<=(unsigned)'f')||\
 ((ch)>=(unsigned)'A'&&(ch)<=(unsigned)'F'))?1:0)
 typedef struct sdla
@@ -197,7 +197,7 @@ void* trc_el_base;
 void* trc_el_last;
 void *curr_trc_el;
 unsigned short trc_bfr_space;
-unsigned char  update_comms_stats;
+unsigned char update_comms_stats;
 } f;
 struct
 {
@@ -257,8 +257,8 @@ unsigned trace_end;
 } h;
 } u;
 } sdla_t;
-void wanpipe_open      (sdla_t* card);
-void wanpipe_close     (sdla_t* card);
+void wanpipe_open (sdla_t* card);
+void wanpipe_close (sdla_t* card);
 void wanpipe_set_state (sdla_t* card, int state);
 int wpx_init (sdla_t* card, wandev_conf_t* conf);
 int wpf_init (sdla_t* card, wandev_conf_t* conf);

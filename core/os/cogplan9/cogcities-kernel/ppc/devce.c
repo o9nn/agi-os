@@ -24,35 +24,35 @@ Cesize = 0x100000,
 };
 typedef struct Cpld Cpld;
 struct Cpld{
-uchar	led;
-uchar	fpga1;
-uchar	slotid;
-uchar	version;
-uchar	watchdog;
-uchar	spi;
-uchar	asicreset;
-uchar	dspreset;
-uchar	generalreset;
-uchar	ucuversion;
-uchar	fpga2;
+uchar led;
+uchar fpga1;
+uchar slotid;
+uchar version;
+uchar watchdog;
+uchar spi;
+uchar asicreset;
+uchar dspreset;
+uchar generalreset;
+uchar ucuversion;
+uchar fpga2;
 };
 typedef struct Circbuf Circbuf;
 struct Circbuf{
-uchar	*nextin;
-uchar	*nextout;
-uchar	*start;
-uchar	*end;
+uchar *nextin;
+uchar *nextout;
+uchar *start;
+uchar *end;
 };
 typedef struct Dsp Dsp;
 struct Dsp{
 Ref;
-int		state;
-Circbuf	*cb;
+int state;
+Circbuf *cb;
 };
 typedef struct Ce Ce;
 struct Ce{
-int		ucutype;
-Ce		*ces[Ndsp];
+int ucutype;
+Ce *ces[Ndsp];
 };
 static Cpld*cpld = (Cpld*)Cpldbase;
 static Ce ce;
@@ -71,9 +71,9 @@ ceattach(char*spec)
 {
 return devattach('C', spec);
 }
-#define DEV(q)			((int)(((q).path >> 8) & 0xff))
-#define TYPE(q)			((int)((q).path & 0xff))
-#define QID(d, t)		((((d) & 0xff) << 8) | (t))
+#define DEV(q) ((int)(((q).path >> 8) & 0xff))
+#define TYPE(q) ((int)((q).path & 0xff))
+#define QID(d, t) ((((d) & 0xff) << 8) | (t))
 static int
 cegen(Chan*c, char*, Dirtab*, int, int i, Dir*dp)
 {

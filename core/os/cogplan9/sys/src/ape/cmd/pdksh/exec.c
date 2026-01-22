@@ -3,33 +3,33 @@
 #include <ctype.h>
 #include "ksh_stat.h"
 #ifdef KSH
-# define PS4_SUBSTITUTE(s)	substitute((s), 0)
+# define PS4_SUBSTITUTE(s) substitute((s), 0)
 #else
-# define PS4_SUBSTITUTE(s)	(s)
+# define PS4_SUBSTITUTE(s) (s)
 #endif
-static int	comexec	 ARGS((struct op *t, struct tbl *volatile tp, char **ap,
+static int comexec ARGS((struct op *t, struct tbl *volatile tp, char **ap,
 int volatile flags));
-static void	scriptexec ARGS((struct op *tp, char **ap));
-static int	call_builtin ARGS((struct tbl *tp, char **wp));
-static int	iosetup ARGS((struct ioword *iop, struct tbl *tp));
-static int	herein ARGS((const char *content, int sub));
+static void scriptexec ARGS((struct op *tp, char **ap));
+static int call_builtin ARGS((struct tbl *tp, char **wp));
+static int iosetup ARGS((struct ioword *iop, struct tbl *tp));
+static int herein ARGS((const char *content, int sub));
 #ifdef KSH
-static char 	*do_selectargs ARGS((char **ap, bool_t print_menu));
+static char *do_selectargs ARGS((char **ap, bool_t print_menu));
 #endif
 #ifdef KSH
-static int	dbteste_isa ARGS((Test_env *te, Test_meta meta));
+static int dbteste_isa ARGS((Test_env *te, Test_meta meta));
 static const char *dbteste_getopnd ARGS((Test_env *te, Test_op op,
 int do_eval));
-static int	dbteste_eval ARGS((Test_env *te, Test_op op, const char *opnd1,
+static int dbteste_eval ARGS((Test_env *te, Test_op op, const char *opnd1,
 const char *opnd2, int do_eval));
-static void	dbteste_error ARGS((Test_env *te, int offset, const char *msg));
+static void dbteste_error ARGS((Test_env *te, int offset, const char *msg));
 #endif
 #ifdef OS2
-static int	search_access1 ARGS((const char *path, int mode, int *errnop));
+static int search_access1 ARGS((const char *path, int mode, int *errnop));
 #endif
 #ifndef F_SETFD
 # ifndef MAXFD
-#   define  MAXFD 64
+# define MAXFD 64
 # endif
 static char clexec_tab[MAXFD+1];
 #endif
@@ -137,7 +137,7 @@ break;
 case TCOPROC:
 {
 # ifdef JOB_SIGS
-sigset_t	omask;
+sigset_t omask;
 # endif
 # ifdef JOB_SIGS
 sigprocmask(SIG_BLOCK, &sm_sigchld, &omask);
@@ -579,7 +579,7 @@ shell = search(shell, path, X_OK, (int *) 0);
 if (!shell || !*shell)
 shell = EXECSHELL;
 *tp->args-- = tp->str;
-#ifdef	SHARPBANG
+#ifdef SHARPBANG
 {
 char buf[LINE];
 register char *cp;
@@ -751,7 +751,7 @@ tp->val.f = func;
 struct tbl *
 findcom(name, flags)
 const char *name;
-int	flags;
+int flags;
 {
 static struct tbl temp;
 unsigned int h = hash(name);
@@ -1177,9 +1177,9 @@ print_menu = 1;
 }
 }
 struct select_menu_info {
-char	*const *args;
-int	arg_width;
-int	num_width;
+char *const *args;
+int arg_width;
+int num_width;
 } info;
 static char *select_fmt_entry ARGS((void *arg, int i, char *buf, int buflen));
 static char *

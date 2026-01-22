@@ -6,14 +6,14 @@
 #include <thread.h>
 #include <9p.h>
 int dbg = 0;
-#define DBG	if(dbg)fprint
+#define DBG if(dbg)fprint
 enum {
 NHASH = 4096,
 Readlen = 4,
 Pagequantum = 1024,
 };
 Lock pglock;
-typedef struct	Page	Page;
+typedef struct Page Page;
 struct Page {
 Page *link;
 ulong len;
@@ -97,7 +97,7 @@ unlock(&pglock);
 }
 enum
 {
-Xctl	= 1,
+Xctl = 1,
 Xfpregs,
 Xkregs,
 Xmem,
@@ -106,13 +106,13 @@ Xregs,
 Xtext,
 Xstatus,
 };
-int	textfd;
-int	rfd;
-Biobuf	rfb;
-char*	portname = "/dev/eia0";
-char*	textfile = "/386/9pc";
-char*	procname = "1";
-char*	srvname;
+int textfd;
+int rfd;
+Biobuf rfb;
+char* portname = "/dev/eia0";
+char* textfile = "/386/9pc";
+char* procname = "1";
+char* srvname;
 Channel* rchan;
 void
 usage(void)
@@ -315,14 +315,14 @@ char *s;
 int id;
 int mode;
 } tab[] = {
-"ctl",		Xctl,		0222,
-"fpregs",	Xfpregs,	0666,
-"kregs",	Xkregs,		0666,
-"mem",		Xmem,		0666,
-"proc",		Xproc,		0444,
-"regs",		Xregs,		0666,
-"text",		Xtext,		0444,
-"status",	Xstatus,	0444,
+"ctl", Xctl, 0222,
+"fpregs", Xfpregs, 0666,
+"kregs", Xkregs, 0666,
+"mem", Xmem, 0666,
+"proc", Xproc, 0444,
+"regs", Xregs, 0666,
+"text", Xtext, 0444,
+"status", Xstatus, 0444,
 };
 void
 killall(Srv*)
@@ -330,10 +330,10 @@ killall(Srv*)
 postnote(PNGROUP, getpid(), "kill");
 }
 Srv fs = {
-.open=	fsopen,
-.read=	fsread,
-.write=	fswrite,
-.end=	killall,
+.open= fsopen,
+.read= fsread,
+.write= fswrite,
+.end= killall,
 };
 void
 threadmain(int argc, char **argv)

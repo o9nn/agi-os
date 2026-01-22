@@ -1,17 +1,17 @@
-#define	EXTERN
-#include	"l.h"
-#include	<ar.h>
-#ifndef	DEFAULT
-#define	DEFAULT	'9'
+#define EXTERN
+#include "l.h"
+#include <ar.h>
+#ifndef DEFAULT
+#define DEFAULT '9'
 #endif
-char	*noname		= "<none>";
-char	symname[]	= SYMDEF;
-char	thechar		= '6';
-char	*thestring 	= "amd64";
-char	*paramspace	= "FP";
-char**	libdir;
-int	nlibdir	= 0;
-static	int	maxlibdir = 0;
+char *noname = "<none>";
+char symname[] = SYMDEF;
+char thechar = '6';
+char *thestring = "amd64";
+char *paramspace = "FP";
+char** libdir;
+int nlibdir = 0;
+static int maxlibdir = 0;
 void
 usage(void)
 {

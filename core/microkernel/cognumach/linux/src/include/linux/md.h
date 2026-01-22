@@ -4,49 +4,49 @@
 #include <linux/major.h>
 #include <linux/ioctl.h>
 #include <linux/types.h>
-#define MD_MAJOR_VERSION		0
-#define MD_MINOR_VERSION		36
-#define MD_PATCHLEVEL_VERSION		3
+#define MD_MAJOR_VERSION 0
+#define MD_MINOR_VERSION 36
+#define MD_PATCHLEVEL_VERSION 3
 #define REGISTER_DEV _IO (MD_MAJOR, 1)
-#define START_MD     _IO (MD_MAJOR, 2)
-#define STOP_MD      _IO (MD_MAJOR, 3)
-#define FAULT_SHIFT       8
+#define START_MD _IO (MD_MAJOR, 2)
+#define STOP_MD _IO (MD_MAJOR, 3)
+#define FAULT_SHIFT 8
 #define PERSONALITY_SHIFT 16
-#define FACTOR_MASK       0x000000FFUL
-#define FAULT_MASK        0x0000FF00UL
-#define PERSONALITY_MASK  0x00FF0000UL
-#define MD_RESERVED       0
-#define LINEAR            (1UL << PERSONALITY_SHIFT)
-#define STRIPED           (2UL << PERSONALITY_SHIFT)
-#define RAID0             STRIPED
-#define RAID1             (3UL << PERSONALITY_SHIFT)
-#define RAID5             (4UL << PERSONALITY_SHIFT)
-#define MAX_PERSONALITY   5
-#define MD_RESERVED_BYTES		(64 * 1024)
-#define MD_RESERVED_SECTORS		(MD_RESERVED_BYTES / 512)
-#define MD_RESERVED_BLOCKS		(MD_RESERVED_BYTES / BLOCK_SIZE)
-#define MD_NEW_SIZE_SECTORS(x)		((x & ~(MD_RESERVED_SECTORS - 1)) - MD_RESERVED_SECTORS)
-#define MD_NEW_SIZE_BLOCKS(x)		((x & ~(MD_RESERVED_BLOCKS - 1)) - MD_RESERVED_BLOCKS)
-#define MD_SB_BYTES			4096
-#define MD_SB_WORDS			(MD_SB_BYTES / 4)
-#define MD_SB_BLOCKS			(MD_SB_BYTES / BLOCK_SIZE)
-#define MD_SB_SECTORS			(MD_SB_BYTES / 512)
-#define	MD_SB_GENERIC_OFFSET		0
-#define MD_SB_PERSONALITY_OFFSET	64
-#define MD_SB_DISKS_OFFSET		128
-#define MD_SB_DESCRIPTOR_OFFSET		992
-#define MD_SB_GENERIC_CONSTANT_WORDS	32
-#define MD_SB_GENERIC_STATE_WORDS	32
-#define MD_SB_GENERIC_WORDS		(MD_SB_GENERIC_CONSTANT_WORDS + MD_SB_GENERIC_STATE_WORDS)
-#define MD_SB_PERSONALITY_WORDS		64
-#define MD_SB_DISKS_WORDS		384
-#define MD_SB_DESCRIPTOR_WORDS		32
-#define MD_SB_RESERVED_WORDS		(1024 - MD_SB_GENERIC_WORDS - MD_SB_PERSONALITY_WORDS - MD_SB_DISKS_WORDS - MD_SB_DESCRIPTOR_WORDS)
-#define MD_SB_EQUAL_WORDS		(MD_SB_GENERIC_WORDS + MD_SB_PERSONALITY_WORDS + MD_SB_DISKS_WORDS)
-#define MD_SB_DISKS			(MD_SB_DISKS_WORDS / MD_SB_DESCRIPTOR_WORDS)
-#define MD_FAULTY_DEVICE		0
-#define MD_ACTIVE_DEVICE		1
-#define MD_SYNC_DEVICE			2
+#define FACTOR_MASK 0x000000FFUL
+#define FAULT_MASK 0x0000FF00UL
+#define PERSONALITY_MASK 0x00FF0000UL
+#define MD_RESERVED 0
+#define LINEAR (1UL << PERSONALITY_SHIFT)
+#define STRIPED (2UL << PERSONALITY_SHIFT)
+#define RAID0 STRIPED
+#define RAID1 (3UL << PERSONALITY_SHIFT)
+#define RAID5 (4UL << PERSONALITY_SHIFT)
+#define MAX_PERSONALITY 5
+#define MD_RESERVED_BYTES (64 * 1024)
+#define MD_RESERVED_SECTORS (MD_RESERVED_BYTES / 512)
+#define MD_RESERVED_BLOCKS (MD_RESERVED_BYTES / BLOCK_SIZE)
+#define MD_NEW_SIZE_SECTORS(x) ((x & ~(MD_RESERVED_SECTORS - 1)) - MD_RESERVED_SECTORS)
+#define MD_NEW_SIZE_BLOCKS(x) ((x & ~(MD_RESERVED_BLOCKS - 1)) - MD_RESERVED_BLOCKS)
+#define MD_SB_BYTES 4096
+#define MD_SB_WORDS (MD_SB_BYTES / 4)
+#define MD_SB_BLOCKS (MD_SB_BYTES / BLOCK_SIZE)
+#define MD_SB_SECTORS (MD_SB_BYTES / 512)
+#define MD_SB_GENERIC_OFFSET 0
+#define MD_SB_PERSONALITY_OFFSET 64
+#define MD_SB_DISKS_OFFSET 128
+#define MD_SB_DESCRIPTOR_OFFSET 992
+#define MD_SB_GENERIC_CONSTANT_WORDS 32
+#define MD_SB_GENERIC_STATE_WORDS 32
+#define MD_SB_GENERIC_WORDS (MD_SB_GENERIC_CONSTANT_WORDS + MD_SB_GENERIC_STATE_WORDS)
+#define MD_SB_PERSONALITY_WORDS 64
+#define MD_SB_DISKS_WORDS 384
+#define MD_SB_DESCRIPTOR_WORDS 32
+#define MD_SB_RESERVED_WORDS (1024 - MD_SB_GENERIC_WORDS - MD_SB_PERSONALITY_WORDS - MD_SB_DISKS_WORDS - MD_SB_DESCRIPTOR_WORDS)
+#define MD_SB_EQUAL_WORDS (MD_SB_GENERIC_WORDS + MD_SB_PERSONALITY_WORDS + MD_SB_DISKS_WORDS)
+#define MD_SB_DISKS (MD_SB_DISKS_WORDS / MD_SB_DESCRIPTOR_WORDS)
+#define MD_FAULTY_DEVICE 0
+#define MD_ACTIVE_DEVICE 1
+#define MD_SYNC_DEVICE 2
 typedef struct md_device_descriptor_s {
 __u32 number;
 __u32 major;
@@ -55,9 +55,9 @@ __u32 raid_disk;
 __u32 state;
 __u32 reserved[MD_SB_DESCRIPTOR_WORDS - 5];
 } md_descriptor_t;
-#define MD_SB_MAGIC		0xa92b4efc
-#define MD_SB_CLEAN		0
-#define MD_SB_ERRORS		1
+#define MD_SB_MAGIC 0xa92b4efc
+#define MD_SB_CLEAN 0
+#define MD_SB_ERRORS 1
 typedef struct md_superblock_s {
 __u32 md_magic;
 __u32 major_version;
@@ -89,12 +89,12 @@ md_descriptor_t descriptor;
 #include <linux/mm.h>
 #include <linux/fs.h>
 #include <linux/blkdev.h>
-#define MAX_REAL     8
-#define MAX_MD_DEV   4
+#define MAX_REAL 8
+#define MAX_MD_DEV 4
 #define MAX_MD_THREADS 2
-#define FACTOR(a)         ((a)->repartition & FACTOR_MASK)
-#define MAX_FAULT(a)      (((a)->repartition & FAULT_MASK)>>8)
-#define PERSONALITY(a)    ((a)->repartition & PERSONALITY_MASK)
+#define FACTOR(a) ((a)->repartition & FACTOR_MASK)
+#define MAX_FAULT(a) (((a)->repartition & FAULT_MASK)>>8)
+#define PERSONALITY(a) ((a)->repartition & PERSONALITY_MASK)
 #define FACTOR_SHIFT(a) (PAGE_SHIFT + (a) - 10)
 struct real_dev
 {
@@ -133,12 +133,12 @@ int nb_dev;
 void *private;
 };
 struct md_thread {
-void			(*run) (void *data);
-void			*data;
-struct wait_queue	*wqueue;
-__u32			flags;
+void (*run) (void *data);
+void *data;
+struct wait_queue *wqueue;
+__u32 flags;
 };
-#define THREAD_WAKEUP	0
+#define THREAD_WAKEUP 0
 extern struct md_dev md_dev[MAX_MD_DEV];
 extern int md_size[MAX_MD_DEV];
 extern char *partition_name (kdev_t dev);

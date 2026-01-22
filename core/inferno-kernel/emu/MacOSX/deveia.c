@@ -13,41 +13,41 @@
 #include <sys/ioctl.h>
 #include <sys/ttycom.h>
 #undef nil
-#define B14400	14400
-#define B28800	28800
-#define B57600	57600
-#define B76800	76800
-#define B115200	115200
-#define B230400	230400
+#define B14400 14400
+#define B28800 28800
+#define B57600 57600
+#define B76800 76800
+#define B115200 115200
+#define B230400 230400
 extern int vflag;
 #define MAXDEV 16
 static char *sysdev[MAXDEV];
 static void _buildsysdev(void);
-#define	buildsysdev()	_buildsysdev()
+#define buildsysdev() _buildsysdev()
 #include "deveia-posix.c"
 #include "deveia-bsd.c"
 static struct tcdef_t bps[] = {
-{0,             B0},
-{50,            B50},
-{75,            B75},
-{110,           B110},
-{134,           B134},
-{150,           B150},
-{200,           B200},
-{300,           B300},
-{600,           B600},
-{1200,	B1200},
-{1800,	B1800},
-{2400,	B2400},
-{4800,	B4800},
-{9600,	B9600},
-{19200,	B19200},
-{38400,	B38400},
-{57600,	B57600},
-{76800,	B76800},
-{115200,	B115200},
-{230400,	B230400},
-{0,		-1}
+{0, B0},
+{50, B50},
+{75, B75},
+{110, B110},
+{134, B134},
+{150, B150},
+{200, B200},
+{300, B300},
+{600, B600},
+{1200, B1200},
+{1800, B1800},
+{2400, B2400},
+{4800, B4800},
+{9600, B9600},
+{19200, B19200},
+{38400, B38400},
+{57600, B57600},
+{76800, B76800},
+{115200, B115200},
+{230400, B230400},
+{0, -1}
 };
 static void
 _buildsysdev(void)
@@ -58,7 +58,7 @@ io_iterator_t serialPortIterator;
 io_object_t serialDevice;
 CFMutableArrayRef paths;
 CFTypeRef path;
-char	eiapath[MAXPATHLEN];
+char eiapath[MAXPATHLEN];
 CFIndex i, o, npath;
 if(IOMasterPort(MACH_PORT_NULL, &port) != KERN_SUCCESS)
 return;

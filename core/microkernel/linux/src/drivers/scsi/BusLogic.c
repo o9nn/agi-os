@@ -1,5 +1,5 @@
-#define BusLogic_DriverVersion		"2.0.15"
-#define BusLogic_DriverDate		"17 August 1998"
+#define BusLogic_DriverVersion "2.0.15"
+#define BusLogic_DriverDate "17 August 1998"
 #include <linux/version.h>
 #include <linux/module.h>
 #include <linux/config.h>
@@ -22,22 +22,22 @@
 #include "BusLogic.h"
 #include "FlashPoint.c"
 static int
-BusLogic_DriverOptionsCount =			0;
+BusLogic_DriverOptionsCount = 0;
 static BusLogic_DriverOptions_T
 BusLogic_DriverOptions[BusLogic_MaxHostAdapters];
 static char
-*BusLogic_Options =				NULL;
+*BusLogic_Options = NULL;
 static BusLogic_ProbeOptions_T
-BusLogic_ProbeOptions =			{ 0 };
+BusLogic_ProbeOptions = { 0 };
 static BusLogic_GlobalOptions_T
-BusLogic_GlobalOptions =			{ 0 };
+BusLogic_GlobalOptions = { 0 };
 static BusLogic_HostAdapter_T
-*BusLogic_FirstRegisteredHostAdapter =	NULL,
-*BusLogic_LastRegisteredHostAdapter =		NULL;
+*BusLogic_FirstRegisteredHostAdapter = NULL,
+*BusLogic_LastRegisteredHostAdapter = NULL;
 static int
-BusLogic_ProbeInfoCount =			0;
+BusLogic_ProbeInfoCount = 0;
 static BusLogic_ProbeInfo_T
-*BusLogic_ProbeInfoList =			NULL;
+*BusLogic_ProbeInfoList = NULL;
 static char
 *BusLogic_CommandFailureReason;
 PROC_DirectoryEntry_T
@@ -2897,15 +2897,15 @@ return 0;
 Buffer = HostAdapter->MessageBuffer;
 Length = HostAdapter->MessageBufferLength;
 Length += sprintf(&Buffer[Length], "\n\
-Current Driver Queue Depth:	%d\n\
-Currently Allocated CCBs:	%d\n",
+Current Driver Queue Depth: %d\n\
+Currently Allocated CCBs: %d\n",
 HostAdapter->DriverQueueDepth,
 HostAdapter->AllocatedCCBs);
 Length += sprintf(&Buffer[Length], "\n\n\
 DATA TRANSFER STATISTICS\n\
 \n\
-Target	Tagged Queuing	Queue Depth  Active  Attempted	Completed\n\
-======	==============	===========  ======  =========	=========\n");
+Target Tagged Queuing Queue Depth Active Attempted Completed\n\
+====== ============== =========== ====== ========= =========\n");
 for (TargetID = 0; TargetID < HostAdapter->MaxTargetDevices; TargetID++)
 {
 BusLogic_TargetFlags_T *TargetFlags = &HostAdapter->TargetFlags[TargetID];
@@ -2926,8 +2926,8 @@ TargetStatistics[TargetID].CommandsAttempted,
 TargetStatistics[TargetID].CommandsCompleted);
 }
 Length += sprintf(&Buffer[Length], "\n\
-Target  Read Commands  Write Commands   Total Bytes Read    Total Bytes Written\n\
-======  =============  ==============  ===================  ===================\n");
+Target Read Commands Write Commands Total Bytes Read Total Bytes Written\n\
+====== ============= ============== =================== ===================\n");
 for (TargetID = 0; TargetID < HostAdapter->MaxTargetDevices; TargetID++)
 {
 BusLogic_TargetFlags_T *TargetFlags = &HostAdapter->TargetFlags[TargetID];
@@ -2956,8 +2956,8 @@ sprintf(&Buffer[Length], "	     %9u\n",
 TargetStatistics[TargetID].TotalBytesWritten.Units);
 }
 Length += sprintf(&Buffer[Length], "\n\
-Target  Command    0-1KB      1-2KB      2-4KB      4-8KB     8-16KB\n\
-======  =======  =========  =========  =========  =========  =========\n");
+Target Command 0-1KB 1-2KB 2-4KB 4-8KB 8-16KB\n\
+====== ======= ========= ========= ========= ========= =========\n");
 for (TargetID = 0; TargetID < HostAdapter->MaxTargetDevices; TargetID++)
 {
 BusLogic_TargetFlags_T *TargetFlags = &HostAdapter->TargetFlags[TargetID];
@@ -2980,8 +2980,8 @@ TargetStatistics[TargetID].WriteCommandSizeBuckets[3],
 TargetStatistics[TargetID].WriteCommandSizeBuckets[4]);
 }
 Length += sprintf(&Buffer[Length], "\n\
-Target  Command   16-32KB    32-64KB   64-128KB   128-256KB   256KB+\n\
-======  =======  =========  =========  =========  =========  =========\n");
+Target Command 16-32KB 32-64KB 64-128KB 128-256KB 256KB+\n\
+====== ======= ========= ========= ========= ========= =========\n");
 for (TargetID = 0; TargetID < HostAdapter->MaxTargetDevices; TargetID++)
 {
 BusLogic_TargetFlags_T *TargetFlags = &HostAdapter->TargetFlags[TargetID];
@@ -3006,17 +3006,17 @@ TargetStatistics[TargetID].WriteCommandSizeBuckets[9]);
 Length += sprintf(&Buffer[Length], "\n\n\
 ERROR RECOVERY STATISTICS\n\
 \n\
-Command Aborts      Bus Device Resets	  Host Adapter Resets\n\
-Target	Requested Completed  Requested Completed  Requested Completed\n\
-ID	\\\\\\\\ Attempted
-======	 ===== ===== =====    ===== ===== =====	   ===== ===== =====\n");
+Command Aborts Bus Device Resets Host Adapter Resets\n\
+Target Requested Completed Requested Completed Requested Completed\n\
+ID \\\\\\\\ Attempted
+====== ===== ===== ===== ===== ===== ===== ===== ===== =====\n");
 for (TargetID = 0; TargetID < HostAdapter->MaxTargetDevices; TargetID++)
 {
 BusLogic_TargetFlags_T *TargetFlags = &HostAdapter->TargetFlags[TargetID];
 if (!TargetFlags->TargetExists) continue;
 Length +=
 sprintf(&Buffer[Length], "\
-%2d	 %5d %5d %5d    %5d %5d %5d	   %5d %5d %5d\n", TargetID,
+%2d %5d %5d %5d %5d %5d %5d %5d %5d %5d\n", TargetID,
 TargetStatistics[TargetID].CommandAbortsRequested,
 TargetStatistics[TargetID].CommandAbortsAttempted,
 TargetStatistics[TargetID].CommandAbortsCompleted,

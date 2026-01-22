@@ -1,24 +1,24 @@
 #include <string.h>
 #include "antiword.h"
-#define MAX_FILESIZE		0x2000000UL
+#define MAX_FILESIZE 0x2000000UL
 static int
 iGet2InfoLength(int iByteNbr, const UCHAR *aucGrpprl)
 {
-int	iTmp, iDel, iAdd;
+int iTmp, iDel, iAdd;
 switch (ucGetByte(iByteNbr, aucGrpprl)) {
-case   3: case  15: case  78: case 152: case 154: case 155:
+case 3: case 15: case 78: case 152: case 154: case 155:
 return 2 + (int)ucGetByte(iByteNbr + 1, aucGrpprl);
-case  16: case  17: case  18: case  19: case  21: case  22: case  26:
-case  27: case  28: case  30: case  31: case  32: case  33: case  34:
-case  35: case  36: case  38: case  39: case  40: case  41: case  42:
-case  43: case  45: case  46: case  47: case  48: case  49: case  68:
-case  71: case  72: case  82: case  83: case  96: case  97: case  98:
-case  99: case 115: case 116: case 119: case 120: case 123: case 124:
+case 16: case 17: case 18: case 19: case 21: case 22: case 26:
+case 27: case 28: case 30: case 31: case 32: case 33: case 34:
+case 35: case 36: case 38: case 39: case 40: case 41: case 42:
+case 43: case 45: case 46: case 47: case 48: case 49: case 68:
+case 71: case 72: case 82: case 83: case 96: case 97: case 98:
+case 99: case 115: case 116: case 119: case 120: case 123: case 124:
 case 129: case 130: case 131: case 132: case 135: case 136: case 139:
 case 140: case 141: case 142: case 143: case 144: case 145: case 146:
 case 147: case 148: case 153: case 159: case 161: case 162:
 return 1 + 2;
-case  23:
+case 23:
 iTmp = (int)ucGetByte(iByteNbr + 1, aucGrpprl);
 if (iTmp == 255) {
 iDel = (int)ucGetByte(iByteNbr + 2, aucGrpprl);
@@ -27,9 +27,9 @@ iByteNbr + 3 + iDel * 4, aucGrpprl);
 iTmp = 2 + iDel * 4 + iAdd * 3;
 }
 return 2 + iTmp;
-case  70:
+case 70:
 return 1 + 3;
-case  95:
+case 95:
 return 1 + 13;
 case 157: case 163:
 return 1 + 5;
@@ -42,11 +42,11 @@ return 1 + 1;
 void
 vGet2DopInfo(FILE *pFile, const UCHAR *aucHeader)
 {
-document_block_type	tDocument;
-UCHAR	*aucBuffer;
-ULONG	ulBeginDocpInfo, ulTmp;
-size_t	tDocpInfoLen;
-USHORT	usTmp;
+document_block_type tDocument;
+UCHAR *aucBuffer;
+ULONG ulBeginDocpInfo, ulTmp;
+size_t tDocpInfoLen;
+USHORT usTmp;
 ulBeginDocpInfo = ulGetLong(0x112, aucHeader);
 DBG_HEX(ulBeginDocpInfo);
 tDocpInfoLen = (size_t)usGetWord(0x116, aucHeader);
@@ -74,9 +74,9 @@ static void
 vGet2SectionInfo(const UCHAR *aucGrpprl, size_t tBytes,
 section_block_type *pSection)
 {
-int	iFodoOff, iInfoLen;
-USHORT	usCcol;
-UCHAR	ucTmp;
+int iFodoOff, iInfoLen;
+USHORT usCcol;
+UCHAR ucTmp;
 fail(aucGrpprl == NULL || pSection == NULL);
 iFodoOff = 0;
 while (tBytes >= (size_t)iFodoOff + 1) {
@@ -105,12 +105,12 @@ iFodoOff += iInfoLen;
 void
 vGet2SepInfo(FILE *pFile, const UCHAR *aucHeader)
 {
-section_block_type	tSection;
-ULONG	*aulSectPage, *aulCharPos;
-UCHAR	*aucBuffer, *aucFpage;
-ULONG	ulBeginOfText, ulTextOffset, ulBeginSectInfo;
-size_t	tSectInfoLen, tIndex, tOffset, tLen, tBytes;
-UCHAR	aucTmp[1];
+section_block_type tSection;
+ULONG *aulSectPage, *aulCharPos;
+UCHAR *aucBuffer, *aucFpage;
+ULONG ulBeginOfText, ulTextOffset, ulBeginSectInfo;
+size_t tSectInfoLen, tIndex, tOffset, tLen, tBytes;
+UCHAR aucTmp[1];
 fail(pFile == NULL || aucHeader == NULL);
 ulBeginOfText = ulGetLong(0x18, aucHeader);
 NO_DBG_HEX(ulBeginOfText);
@@ -173,10 +173,10 @@ aulSectPage = xfree(aulSectPage);
 void
 vGet2HdrFtrInfo(FILE *pFile, const UCHAR *aucHeader)
 {
-ULONG	*aulCharPos;
-UCHAR	*aucBuffer;
-ULONG	ulHdrFtrOffset, ulBeginHdrFtrInfo;
-size_t	tHdrFtrInfoLen, tIndex, tOffset, tLen;
+ULONG *aulCharPos;
+UCHAR *aucBuffer;
+ULONG ulHdrFtrOffset, ulBeginHdrFtrInfo;
+size_t tHdrFtrInfoLen, tIndex, tOffset, tLen;
 fail(pFile == NULL || aucHeader == NULL);
 ulBeginHdrFtrInfo = ulGetLong(0x9a, aucHeader);
 NO_DBG_HEX(ulBeginHdrFtrInfo);
@@ -210,11 +210,11 @@ row_info_enum
 eGet2RowInfo(int iFodo,
 const UCHAR *aucGrpprl, int iBytes, row_block_type *pRow)
 {
-int	iFodoOff, iInfoLen;
-int	iIndex, iSize, iCol;
-int	iPosCurr, iPosPrev;
-USHORT	usTmp;
-BOOL	bFound24_0, bFound24_1, bFound25_0, bFound25_1, bFound154;
+int iFodoOff, iInfoLen;
+int iIndex, iSize, iCol;
+int iPosCurr, iPosPrev;
+USHORT usTmp;
+BOOL bFound24_0, bFound24_1, bFound25_0, bFound25_1, bFound154;
 fail(iFodo < 0 || aucGrpprl == NULL || pRow == NULL);
 iFodoOff = 0;
 bFound24_0 = FALSE;
@@ -225,14 +225,14 @@ bFound154 = FALSE;
 while (iBytes >= iFodoOff + 1) {
 iInfoLen = 0;
 switch (ucGetByte(iFodo + iFodoOff, aucGrpprl)) {
-case  24:
+case 24:
 if (odd(ucGetByte(iFodo + iFodoOff + 1, aucGrpprl))) {
 bFound24_1 = TRUE;
 } else {
 bFound24_0 = TRUE;
 }
 break;
-case  25:
+case 25:
 if (odd(ucGetByte(iFodo + iFodoOff + 1, aucGrpprl))) {
 bFound25_1 = TRUE;
 } else {
@@ -385,37 +385,37 @@ void
 vGet2StyleInfo(int iFodo,
 const UCHAR *aucGrpprl, int iBytes, style_block_type *pStyle)
 {
-int	iFodoOff, iInfoLen;
-int	iTmp, iDel, iAdd;
-short	sTmp;
-UCHAR	ucTmp;
+int iFodoOff, iInfoLen;
+int iTmp, iDel, iAdd;
+short sTmp;
+UCHAR ucTmp;
 fail(iFodo < 0 || aucGrpprl == NULL || pStyle == NULL);
 NO_DBG_DEC(pStyle->usIstd);
 iFodoOff = 0;
 while (iBytes >= iFodoOff + 1) {
 iInfoLen = 0;
 switch (ucGetByte(iFodo + iFodoOff, aucGrpprl)) {
-case   2:
+case 2:
 sTmp = (short)ucGetByte(
 iFodo + iFodoOff + 1, aucGrpprl);
 NO_DBG_DEC(sTmp);
 break;
-case   5:
+case 5:
 pStyle->ucAlignment = ucGetByte(
 iFodo + iFodoOff + 1, aucGrpprl);
 break;
-case  12:
+case 12:
 pStyle->ucNFC = ucGetByte(
 iFodo + iFodoOff + 1, aucGrpprl);
 break;
-case  13:
+case 13:
 ucTmp = ucGetByte(iFodo + iFodoOff + 1, aucGrpprl);
 pStyle->ucNumLevel = ucTmp;
 pStyle->bNumPause =
 eGetNumType(ucTmp) == level_type_pause;
 break;
-case  15:
-case  23:
+case 15:
+case 23:
 iTmp = (int)ucGetByte(iFodo + iFodoOff + 1, aucGrpprl);
 if (iTmp < 2) {
 iInfoLen = 1;
@@ -436,17 +436,17 @@ break;
 }
 NO_DBG_DEC(iAdd);
 break;
-case  16:
+case 16:
 pStyle->sRightIndent = (short)usGetWord(
 iFodo + iFodoOff + 1, aucGrpprl);
 NO_DBG_DEC(pStyle->sRightIndent);
 break;
-case  17:
+case 17:
 pStyle->sLeftIndent = (short)usGetWord(
 iFodo + iFodoOff + 1, aucGrpprl);
 NO_DBG_DEC(pStyle->sLeftIndent);
 break;
-case  18:
+case 18:
 sTmp = (short)usGetWord(
 iFodo + iFodoOff + 1, aucGrpprl);
 pStyle->sLeftIndent += sTmp;
@@ -456,17 +456,17 @@ pStyle->sLeftIndent = 0;
 NO_DBG_DEC(sTmp);
 NO_DBG_DEC(pStyle->sLeftIndent);
 break;
-case  19:
+case 19:
 pStyle->sLeftIndent1 = (short)usGetWord(
 iFodo + iFodoOff + 1, aucGrpprl);
 NO_DBG_DEC(pStyle->sLeftIndent1);
 break;
-case  21:
+case 21:
 pStyle->usBeforeIndent = usGetWord(
 iFodo + iFodoOff + 1, aucGrpprl);
 NO_DBG_DEC(pStyle->usBeforeIndent);
 break;
-case  22:
+case 22:
 pStyle->usAfterIndent = usGetWord(
 iFodo + iFodoOff + 1, aucGrpprl);
 NO_DBG_DEC(pStyle->usAfterIndent);
@@ -485,18 +485,18 @@ iFodoOff += iInfoLen;
 void
 vGet2PapInfo(FILE *pFile, const UCHAR *aucHeader)
 {
-row_block_type		tRow;
-style_block_type	tStyle;
-USHORT	*ausParfPage;
-UCHAR	*aucBuffer;
-ULONG	ulCharPos, ulCharPosFirst, ulCharPosLast;
-ULONG	ulBeginParfInfo;
-size_t	tParfInfoLen, tParfPageNum, tOffset, tSize, tLenOld, tLen;
-int	iIndex, iIndex2, iRun, iFodo, iLen;
-row_info_enum	eRowInfo;
-USHORT	usParfFirstPage, usCount, usIstd;
-UCHAR	ucStc;
-UCHAR	aucFpage[BIG_BLOCK_SIZE];
+row_block_type tRow;
+style_block_type tStyle;
+USHORT *ausParfPage;
+UCHAR *aucBuffer;
+ULONG ulCharPos, ulCharPosFirst, ulCharPosLast;
+ULONG ulBeginParfInfo;
+size_t tParfInfoLen, tParfPageNum, tOffset, tSize, tLenOld, tLen;
+int iIndex, iIndex2, iRun, iFodo, iLen;
+row_info_enum eRowInfo;
+USHORT usParfFirstPage, usCount, usIstd;
+UCHAR ucStc;
+UCHAR aucFpage[BIG_BLOCK_SIZE];
 fail(pFile == NULL || aucHeader == NULL);
 ulBeginParfInfo = ulGetLong(0xa6, aucHeader);
 NO_DBG_HEX(ulBeginParfInfo);
@@ -605,10 +605,10 @@ void
 vGet1FontInfo(int iFodo,
 const UCHAR *aucGrpprl, size_t tBytes, font_block_type *pFont)
 {
-BOOL	bIcoChange, bFtcChange, bHpsChange, bKulChange;
-USHORT	usTmp;
-UCHAR	ucTmp;
-UCHAR	aucChpx[12];
+BOOL bIcoChange, bFtcChange, bHpsChange, bKulChange;
+USHORT usTmp;
+UCHAR ucTmp;
+UCHAR aucChpx[12];
 fail(iFodo < 0 || aucGrpprl == NULL || pFont == NULL);
 if (tBytes > sizeof(aucChpx)) {
 NO_DBG_PRINT_BLOCK(aucGrpprl + iFodo, tBytes);
@@ -686,10 +686,10 @@ void
 vGet2FontInfo(int iFodo,
 const UCHAR *aucGrpprl, size_t tBytes, font_block_type *pFont)
 {
-BOOL	bIcoChange, bFtcChange, bHpsChange, bKulChange;
-USHORT	usTmp;
-UCHAR	ucTmp;
-UCHAR	aucChpx[18];
+BOOL bIcoChange, bFtcChange, bHpsChange, bKulChange;
+USHORT usTmp;
+UCHAR ucTmp;
+UCHAR aucChpx[18];
 fail(iFodo < 0 || aucGrpprl == NULL || pFont == NULL);
 if (tBytes > sizeof(aucChpx)) {
 NO_DBG_PRINT_BLOCK(aucGrpprl + iFodo, tBytes);
@@ -765,8 +765,8 @@ static BOOL
 bGet1PicInfo(int iFodo,
 const UCHAR *aucGrpprl, size_t tBytes, picture_block_type *pPicture)
 {
-ULONG	ulTmp;
-UCHAR	aucChpx[12];
+ULONG ulTmp;
+UCHAR aucChpx[12];
 fail(iFodo < 0 || aucGrpprl == NULL || pPicture == NULL);
 if (tBytes > sizeof(aucChpx)) {
 NO_DBG_PRINT_BLOCK(aucGrpprl + iFodo, tBytes);
@@ -786,8 +786,8 @@ static BOOL
 bGet2PicInfo(int iFodo,
 const UCHAR *aucGrpprl, size_t tBytes, picture_block_type *pPicture)
 {
-ULONG	ulTmp;
-UCHAR	aucChpx[18];
+ULONG ulTmp;
+UCHAR aucChpx[18];
 fail(iFodo < 0 || aucGrpprl == NULL || pPicture == NULL);
 if (tBytes > sizeof(aucChpx)) {
 NO_DBG_PRINT_BLOCK(aucGrpprl + iFodo, tBytes);
@@ -807,17 +807,17 @@ return FALSE;
 void
 vGet2ChrInfo(FILE *pFile, int iWordVersion, const UCHAR *aucHeader)
 {
-font_block_type		tFont;
-picture_block_type	tPicture;
-USHORT	*ausCharPage;
-UCHAR	*aucBuffer;
-ULONG	ulFileOffset, ulCharPos, ulBeginCharInfo;
-size_t	tCharInfoLen, tOffset, tSize, tChrLen, tCharPageNum;
-size_t	tLenOld, tLen;
-int	iIndex, iIndex2, iRun, iFodo;
-BOOL	bSuccess1, bSuccess2;
-USHORT	usCharFirstPage, usCount, usIstd;
-UCHAR	aucFpage[BIG_BLOCK_SIZE];
+font_block_type tFont;
+picture_block_type tPicture;
+USHORT *ausCharPage;
+UCHAR *aucBuffer;
+ULONG ulFileOffset, ulCharPos, ulBeginCharInfo;
+size_t tCharInfoLen, tOffset, tSize, tChrLen, tCharPageNum;
+size_t tLenOld, tLen;
+int iIndex, iIndex2, iRun, iFodo;
+BOOL bSuccess1, bSuccess2;
+USHORT usCharFirstPage, usCount, usIstd;
+UCHAR aucFpage[BIG_BLOCK_SIZE];
 fail(pFile == NULL || aucHeader == NULL);
 fail(iWordVersion != 1 && iWordVersion != 2);
 ulBeginCharInfo = ulGetLong(0xa0, aucHeader);

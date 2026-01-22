@@ -1,13 +1,13 @@
-#define	INS	32768
-#define	OBS	4096
-#define	NARG	128
-#define	NINCLUDE 64
-#define	NIF	32
+#define INS 32768
+#define OBS 4096
+#define NARG 128
+#define NINCLUDE 64
+#define NIF 32
 #ifndef EOF
-#define	EOF	(-1)
+#define EOF (-1)
 #endif
 #ifndef NULL
-#define NULL	0
+#define NULL 0
 #endif
 enum toktype { END, UNCLASS, NAME, NUMBER, STRING, CCON, NL, WS, DSHARP,
 EQ, NEQ, LEQ, GEQ, LSH, RSH, LAND, LOR, PPLUS, MMINUS,
@@ -20,127 +20,127 @@ DSHARP1, NAME1, DEFINED, UMINUS };
 enum kwtype { KIF, KIFDEF, KIFNDEF, KELIF, KELSE, KENDIF, KINCLUDE, KDEFINE,
 KUNDEF, KLINE, KERROR, KWARNING, KPRAGMA, KDEFINED,
 KLINENO, KFILE, KDATE, KTIME, KSTDC, KEVAL };
-#define	ISDEFINED	01
-#define	ISKW		02
-#define	ISUNCHANGE	04
-#define	ISMAC		010
-#define	ISVARMAC	020
-#define	EOB	0xFE
-#define	EOFC	0xFD
-#define	XPWS	1
+#define ISDEFINED 01
+#define ISKW 02
+#define ISUNCHANGE 04
+#define ISMAC 010
+#define ISVARMAC 020
+#define EOB 0xFE
+#define EOFC 0xFD
+#define XPWS 1
 enum { Notinmacro, Inmacro };
 typedef struct token {
-unsigned char	type;
-unsigned char 	flag;
-unsigned short	hideset;
-unsigned int	wslen;
-unsigned int	len;
-uchar	*t;
+unsigned char type;
+unsigned char flag;
+unsigned short hideset;
+unsigned int wslen;
+unsigned int len;
+uchar *t;
 } Token;
 typedef struct tokenrow {
-Token	*tp;
-Token	*bp;
-Token	*lp;
-int	max;
+Token *tp;
+Token *bp;
+Token *lp;
+int max;
 } Tokenrow;
 typedef struct source {
-char	*filename;
-int	line;
-int	lineinc;
-uchar	*inb;
-uchar	*inp;
-uchar	*inl;
-int 	ins;
-int	fd;
-int	ifdepth;
-struct	source *next;
+char *filename;
+int line;
+int lineinc;
+uchar *inb;
+uchar *inp;
+uchar *inl;
+int ins;
+int fd;
+int ifdepth;
+struct source *next;
 } Source;
 typedef struct nlist {
 struct nlist *next;
-uchar	*name;
-int	len;
+uchar *name;
+int len;
 Tokenrow *vp;
 Tokenrow *ap;
-char	val;
-char	flag;
+char val;
+char flag;
 } Nlist;
-typedef	struct	includelist {
-char	deleted;
-char	always;
-char	*file;
+typedef struct includelist {
+char deleted;
+char always;
+char *file;
 } Includelist;
-#define	new(t)	(t *)domalloc(sizeof(t))
-#define	quicklook(a,b)	(namebit[(a)&077] & (1<<((b)&037)))
-#define	quickset(a,b)	namebit[(a)&077] |= (1<<((b)&037))
-extern	unsigned long namebit[077+1];
+#define new(t) (t *)domalloc(sizeof(t))
+#define quicklook(a,b) (namebit[(a)&077] & (1<<((b)&037)))
+#define quickset(a,b) namebit[(a)&077] |= (1<<((b)&037))
+extern unsigned long namebit[077+1];
 enum errtype { WARNING, ERROR, FATAL };
-void	expandlex(void);
-void	fixlex(void);
-void	setup(int, char **);
+void expandlex(void);
+void fixlex(void);
+void setup(int, char **);
 #define gettokens cpp_gettokens
-int	gettokens(Tokenrow *, int);
-int	comparetokens(Tokenrow *, Tokenrow *);
-Source	*setsource(char *, int, char *);
-void	unsetsource(void);
-void	puttokens(Tokenrow *);
-void	process(Tokenrow *);
-void	*dorealloc(void *, int);
-void	*domalloc(int);
-void	dofree(void *);
-void	error(enum errtype, char *, ...);
-void	flushout(void);
-int	fillbuf(Source *);
-int	trigraph(Source *);
-int	foldline(Source *);
-Nlist	*lookup(Token *, int);
-void	control(Tokenrow *);
-void	dodefine(Tokenrow *);
-void	doadefine(Tokenrow *, int);
-void	doinclude(Tokenrow *);
-void	doif(Tokenrow *, enum kwtype);
-void	expand(Tokenrow *, Nlist *, int);
-void	builtin(Tokenrow *, int);
-int	gatherargs(Tokenrow *, Tokenrow **, int, int *);
-void	substargs(Nlist *, Tokenrow *, Tokenrow **);
-void	expandrow(Tokenrow *, char *, int);
-void	maketokenrow(int, Tokenrow *);
+int gettokens(Tokenrow *, int);
+int comparetokens(Tokenrow *, Tokenrow *);
+Source *setsource(char *, int, char *);
+void unsetsource(void);
+void puttokens(Tokenrow *);
+void process(Tokenrow *);
+void *dorealloc(void *, int);
+void *domalloc(int);
+void dofree(void *);
+void error(enum errtype, char *, ...);
+void flushout(void);
+int fillbuf(Source *);
+int trigraph(Source *);
+int foldline(Source *);
+Nlist *lookup(Token *, int);
+void control(Tokenrow *);
+void dodefine(Tokenrow *);
+void doadefine(Tokenrow *, int);
+void doinclude(Tokenrow *);
+void doif(Tokenrow *, enum kwtype);
+void expand(Tokenrow *, Nlist *, int);
+void builtin(Tokenrow *, int);
+int gatherargs(Tokenrow *, Tokenrow **, int, int *);
+void substargs(Nlist *, Tokenrow *, Tokenrow **);
+void expandrow(Tokenrow *, char *, int);
+void maketokenrow(int, Tokenrow *);
 Tokenrow *copytokenrow(Tokenrow *, Tokenrow *);
-Token	*growtokenrow(Tokenrow *);
+Token *growtokenrow(Tokenrow *);
 Tokenrow *normtokenrow(Tokenrow *);
-void	adjustrow(Tokenrow *, int);
-void	movetokenrow(Tokenrow *, Tokenrow *);
-void	insertrow(Tokenrow *, int, Tokenrow *);
-void	peektokens(Tokenrow *, char *);
-void	doconcat(Tokenrow *);
+void adjustrow(Tokenrow *, int);
+void movetokenrow(Tokenrow *, Tokenrow *);
+void insertrow(Tokenrow *, int, Tokenrow *);
+void peektokens(Tokenrow *, char *);
+void doconcat(Tokenrow *);
 Tokenrow *stringify(Tokenrow *);
-int	lookuparg(Nlist *, Token *);
-long	eval(Tokenrow *, int);
-void	genline(void);
-void	setempty(Tokenrow *);
-void	makespace(Tokenrow *);
-char	*outnum(char *, int);
-int	digit(int);
-uchar	*newstring(uchar *, int, int);
-int	checkhideset(int, Nlist *);
-void	prhideset(int);
-int	newhideset(int, Nlist *);
-int	unionhideset(int, int);
-void	iniths(void);
-void	setobjname(char *);
-void	clearwstab(void);
-#define	rowlen(tokrow)	((tokrow)->lp - (tokrow)->bp)
-extern	char *outp;
-extern	Token	nltoken;
-extern	Source *cursource;
-extern	char *curtime;
-extern	int incdepth;
-extern	int ifdepth;
-extern	int ifsatisfied[NIF];
-extern	int Mflag;
-extern	int nolineinfo;
-extern	int skipping;
-extern	int verbose;
-extern	int Cplusplus;
-extern	Nlist *kwdefined;
-extern	Includelist includelist[NINCLUDE];
-extern	char wd[];
+int lookuparg(Nlist *, Token *);
+long eval(Tokenrow *, int);
+void genline(void);
+void setempty(Tokenrow *);
+void makespace(Tokenrow *);
+char *outnum(char *, int);
+int digit(int);
+uchar *newstring(uchar *, int, int);
+int checkhideset(int, Nlist *);
+void prhideset(int);
+int newhideset(int, Nlist *);
+int unionhideset(int, int);
+void iniths(void);
+void setobjname(char *);
+void clearwstab(void);
+#define rowlen(tokrow) ((tokrow)->lp - (tokrow)->bp)
+extern char *outp;
+extern Token nltoken;
+extern Source *cursource;
+extern char *curtime;
+extern int incdepth;
+extern int ifdepth;
+extern int ifsatisfied[NIF];
+extern int Mflag;
+extern int nolineinfo;
+extern int skipping;
+extern int verbose;
+extern int Cplusplus;
+extern Nlist *kwdefined;
+extern Includelist includelist[NINCLUDE];
+extern char wd[];

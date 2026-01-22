@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <openssl/tmdiff.h>
 #include "bn_lcl.h"
-#define SIZE    256
-#define NUM     (8*8*8)
-#define MOD     (8*8*8*8*8)
+#define SIZE 256
+#define NUM (8*8*8)
+#define MOD (8*8*8*8*8)
 main(argc, argv)
 int argc;
 char *argv[];
@@ -37,7 +37,7 @@ for (i = 0; i < num; i++) {
 BN_mod_exp_mont(&r, &a, &b, &c, &ctx, &mont);
 }
 ms_time_get(end);
-d = ms_time_diff(start, end)  ;
+d = ms_time_diff(start, end) ;
 printf("%5d bit:%6.2f %6d %6.4f %4d m_set(%5.4f)\n", size,
 d, num, d / num, (int)((d / num) * mod), md / 10.0);
 num /= 8;

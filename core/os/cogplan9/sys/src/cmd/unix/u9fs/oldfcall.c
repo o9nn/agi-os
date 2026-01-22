@@ -1,15 +1,15 @@
 #include <plan9.h>
 #include <fcall.h>
 #include <oldfcall.h>
-#define	SHORT(x)	p[0]=f->x; p[1]=f->x>>8; p += 2
-#define	LONG(x)		p[0]=f->x; p[1]=f->x>>8; p[2]=f->x>>16; p[3]=f->x>>24; p += 4
-#define	VLONG(x)	p[0]=f->x;	p[1]=f->x>>8;\
-p[2]=f->x>>16;	p[3]=f->x>>24;\
-p[4]=f->x>>32;	p[5]=f->x>>40;\
-p[6]=f->x>>48;	p[7]=f->x>>56;\
+#define SHORT(x) p[0]=f->x; p[1]=f->x>>8; p += 2
+#define LONG(x) p[0]=f->x; p[1]=f->x>>8; p[2]=f->x>>16; p[3]=f->x>>24; p += 4
+#define VLONG(x) p[0]=f->x; p[1]=f->x>>8;\
+p[2]=f->x>>16; p[3]=f->x>>24;\
+p[4]=f->x>>32; p[5]=f->x>>40;\
+p[6]=f->x>>48; p[7]=f->x>>56;\
 p += 8
-#define	STRING(x,n)	strecpy((char*)p, (char*)p+n, f->x); p += n;
-#define	FIXQID(q)		q.path ^= (q.path>>33); q.path &= 0x7FFFFFFF; q.path |= (q.type&0x80)<<24
+#define STRING(x,n) strecpy((char*)p, (char*)p+n, f->x); p += n;
+#define FIXQID(q) q.path ^= (q.path>>33); q.path &= 0x7FFFFFFF; q.path |= (q.type&0x80)<<24
 uint
 oldhdrsize(uchar type)
 {
@@ -237,15 +237,15 @@ return p - ap;
 #undef LONG
 #undef VLONG
 #undef STRING
-#define	CHAR(x)	f->x = *p++
-#define	SHORT(x)	f->x = (p[0] | (p[1]<<8)); p += 2
-#define	LONG(x)		f->x = (p[0] | (p[1]<<8) |\
+#define CHAR(x) f->x = *p++
+#define SHORT(x) f->x = (p[0] | (p[1]<<8)); p += 2
+#define LONG(x) f->x = (p[0] | (p[1]<<8) |\
 (p[2]<<16) | (p[3]<<24)); p += 4
-#define	VLONG(x)	f->x = (ulong)(p[0] | (p[1]<<8) |\
+#define VLONG(x) f->x = (ulong)(p[0] | (p[1]<<8) |\
 (p[2]<<16) | (p[3]<<24)) |\
 ((vlong)(p[4] | (p[5]<<8) |\
 (p[6]<<16) | (p[7]<<24)) << 32); p += 8
-#define	STRING(x,n)	f->x = (char*)p; p += n
+#define STRING(x,n) f->x = (char*)p; p += n
 uint
 convM2Sold(uchar *ap, uint nap, Fcall *f)
 {

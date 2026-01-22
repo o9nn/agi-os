@@ -7,7 +7,7 @@ assert_equals(false, builder.try_parse_reasoning("<tnk>", "</tnk>"));
 assert_equals("<tnk>Cogito</tnk>Ergo sum", builder.consume_rest());
 }
 {
-common_chat_msg_parser builder("<tnk>Cogito</tnk>Ergo sum",  false, {
+common_chat_msg_parser builder("<tnk>Cogito</tnk>Ergo sum", false, {
 COMMON_CHAT_FORMAT_CONTENT_ONLY,
 COMMON_REASONING_FORMAT_DEEPSEEK,
 false,
@@ -18,7 +18,7 @@ assert_equals(std::string("Cogito"), builder.result().reasoning_content);
 assert_equals("Ergo sum", builder.consume_rest());
 }
 {
-common_chat_msg_parser builder("Cogito</tnk>Ergo sum",  false, {
+common_chat_msg_parser builder("Cogito</tnk>Ergo sum", false, {
 COMMON_CHAT_FORMAT_CONTENT_ONLY,
 COMMON_REASONING_FORMAT_NONE,
 false,
@@ -28,7 +28,7 @@ assert_equals(false, builder.try_parse_reasoning("<tnk>", "</tnk>"));
 assert_equals("Cogito</tnk>Ergo sum", builder.consume_rest());
 }
 {
-common_chat_msg_parser builder("Cogito</tnk>Ergo sum",  false, {
+common_chat_msg_parser builder("Cogito</tnk>Ergo sum", false, {
 COMMON_CHAT_FORMAT_CONTENT_ONLY,
 COMMON_REASONING_FORMAT_DEEPSEEK,
 false,
@@ -39,7 +39,7 @@ assert_equals(std::string("Cogito"), builder.result().reasoning_content);
 assert_equals("Ergo sum", builder.consume_rest());
 }
 {
-common_chat_msg_parser builder("Cogito</tnk>Ergo sum",  false, {
+common_chat_msg_parser builder("Cogito</tnk>Ergo sum", false, {
 COMMON_CHAT_FORMAT_CONTENT_ONLY,
 COMMON_REASONING_FORMAT_DEEPSEEK,
 true,
@@ -52,22 +52,22 @@ assert_equals("Ergo sum", builder.consume_rest());
 }
 static void test_regex() {
 auto test_throws = [](const std::string & input, const std::string & regex, const std::string & expected_exception_pattern = "") {
-common_chat_msg_parser builder(input,  false, {});
+common_chat_msg_parser builder(input, false, {});
 assert_throws([&]() { builder.consume_regex(common_regex(regex)); }, expected_exception_pattern);
 };
 test_throws("Hello, world!", "abc", "^abc$");
 test_throws("Hello, world!", "e", "^e$");
 {
-common_chat_msg_parser builder("Hello, world!",  false, {});
+common_chat_msg_parser builder("Hello, world!", false, {});
 builder.consume_regex(common_regex("Hello"));
 assert_equals(", world!", builder.consume_rest());
 }
 {
-common_chat_msg_parser builder("Hello,",  false, {});
+common_chat_msg_parser builder("Hello,", false, {});
 assert_equals(false, builder.try_consume_regex(common_regex("Hello, world!")).has_value());
 }
 {
-common_chat_msg_parser builder("Hello,",  false, {});
+common_chat_msg_parser builder("Hello,", false, {});
 auto res = builder.try_consume_regex(common_regex("H(el)l(?:o, world!)?"));
 assert_equals(true, res.has_value());
 assert_equals<size_t>(2, res->groups.size());
@@ -77,7 +77,7 @@ assert_equals<size_t>(4, builder.pos());
 assert_equals("o,", builder.consume_rest());
 }
 {
-common_chat_msg_parser builder("Hello,",  true, {});
+common_chat_msg_parser builder("Hello,", true, {});
 assert_throws([&]() {
 builder.try_consume_regex(common_regex("Hello, world!"));
 }, "^Hello, world!$");
@@ -218,7 +218,7 @@ R"({"foo":"bar","args":"{\"arg1\":["})"
 }
 static void test_positions() {
 {
-common_chat_msg_parser builder("Hello, world!",  false, {});
+common_chat_msg_parser builder("Hello, world!", false, {});
 assert_equals<size_t>(0, builder.pos());
 assert_throws([&]() { builder.move_to(100); });
 assert_equals<size_t>(0, builder.pos());
@@ -237,7 +237,7 @@ builder.move_to(builder.input().size());
 builder.finish();
 }
 {
-common_chat_msg_parser builder("Hello, world!",  true, {});
+common_chat_msg_parser builder("Hello, world!", true, {});
 builder.move_to(builder.input().size());
 assert_equals<size_t>(builder.input().size(), builder.pos());
 builder.finish();

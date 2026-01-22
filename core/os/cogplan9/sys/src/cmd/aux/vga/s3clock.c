@@ -124,13 +124,13 @@ setcrt42(vga, ctlr, 3);
 ctlr->flag |= Fload;
 }
 static struct {
-char*	name;
-void	(*load)(Vga*, Ctlr*);
+char* name;
+void (*load)(Vga*, Ctlr*);
 } clocks[] = {
-{ "icd2061a",		icd2061aload, },
-{ "ch9294",		ch9294load, },
-{ "tvp3025clock",	tvp3025load, },
-{ "tvp3026clock",	tvp3026load, },
+{ "icd2061a", icd2061aload, },
+{ "ch9294", ch9294load, },
+{ "tvp3025clock", tvp3025load, },
+{ "tvp3026clock", tvp3026load, },
 { 0 },
 };
 static void

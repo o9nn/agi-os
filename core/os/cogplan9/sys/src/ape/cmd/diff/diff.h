@@ -24,15 +24,15 @@ OUTPUT_SDIFF
 #define ROBUST_OUTPUT_STYLE(S) ((S) != OUTPUT_ED && (S) != OUTPUT_FORWARD_ED)
 EXTERN enum output_style output_style;
 EXTERN int no_diff_means_no_output;
-EXTERN int      context;
-EXTERN int	always_text_flag;
-EXTERN int      horizon_lines;
-EXTERN int      ignore_space_change_flag;
-EXTERN int      ignore_all_space_flag;
-EXTERN int      ignore_blank_lines_flag;
-EXTERN int      ignore_some_line_changes;
-EXTERN int      ignore_some_changes;
-EXTERN int      ignore_case_flag;
+EXTERN int context;
+EXTERN int always_text_flag;
+EXTERN int horizon_lines;
+EXTERN int ignore_space_change_flag;
+EXTERN int ignore_all_space_flag;
+EXTERN int ignore_blank_lines_flag;
+EXTERN int ignore_some_line_changes;
+EXTERN int ignore_some_changes;
+EXTERN int ignore_case_flag;
 EXTERN char *file_label[2];
 struct regexp_list
 {
@@ -41,14 +41,14 @@ struct regexp_list *next;
 };
 EXTERN struct regexp_list *function_regexp_list;
 EXTERN struct regexp_list *ignore_regexp_list;
-EXTERN int 	no_details_flag;
-EXTERN int      print_file_same_flag;
-EXTERN int	tab_align_flag;
-EXTERN int	tab_expand_flag;
-EXTERN char	*dir_start_file;
-EXTERN int	entire_new_file_flag;
-EXTERN int	unidirectional_new_file_flag;
-EXTERN int	paginate_flag;
+EXTERN int no_details_flag;
+EXTERN int print_file_same_flag;
+EXTERN int tab_align_flag;
+EXTERN int tab_expand_flag;
+EXTERN char *dir_start_file;
+EXTERN int entire_new_file_flag;
+EXTERN int unidirectional_new_file_flag;
+EXTERN int paginate_flag;
 enum line_class {
 OLD,
 NEW,
@@ -62,8 +62,8 @@ EXTERN int sdiff_left_only;
 EXTERN int sdiff_skip_common_lines;
 EXTERN unsigned sdiff_half_width;
 EXTERN unsigned sdiff_column2_offset;
-EXTERN char *	switch_string;
-EXTERN int	heuristic;
+EXTERN char * switch_string;
+EXTERN int heuristic;
 EXTERN char *program_name;
 struct change
 {
@@ -75,24 +75,24 @@ int line1;
 char ignore;
 };
 struct file_data {
-int             desc;
-char const      *name;
-struct stat     stat;
-int             dir_p;
-char *	    buffer;
-size_t	    bufsize;
-size_t	    buffered_chars;
+int desc;
+char const *name;
+struct stat stat;
+int dir_p;
+char * buffer;
+size_t bufsize;
+size_t buffered_chars;
 char const **linbuf;
 int linbuf_base, buffered_lines, valid_lines, alloc_lines;
 char const *prefix_end;
 int prefix_lines;
 char const *suffix_begin;
-int		   *equivs;
-int		   *undiscarded;
-int		   *realindexes;
-int		    nondiscarded_lines;
-char	   *changed_flag;
-int		    missing_newline;
+int *equivs;
+int *undiscarded;
+int *realindexes;
+int nondiscarded_lines;
+char *changed_flag;
+int missing_newline;
 int equiv_max;
 };
 EXTERN struct file_data files[2];

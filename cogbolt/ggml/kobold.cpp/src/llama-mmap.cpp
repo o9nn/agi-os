@@ -377,9 +377,9 @@ size_t llama_mmap::size() const { return pimpl->size; }
 void * llama_mmap::addr() const { return pimpl->addr; }
 void llama_mmap::unmap_fragment(size_t first, size_t last) { pimpl->unmap_fragment(first, last); }
 #if defined(_POSIX_MEMLOCK_RANGE) || defined(_WIN32)
-const bool llama_mmap::SUPPORTED  = true;
+const bool llama_mmap::SUPPORTED = true;
 #else
-const bool llama_mmap::SUPPORTED  = false;
+const bool llama_mmap::SUPPORTED = false;
 #endif
 struct llama_mlock::impl {
 #ifdef _POSIX_MEMLOCK_RANGE

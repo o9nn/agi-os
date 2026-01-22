@@ -1,31 +1,31 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"ureg.h"
-#include	"pool.h"
-#include	"../port/error.h"
-#include	"../port/netif.h"
-#include	"dosfs.h"
-#include	"../port/sd.h"
-#include	"iso9660.h"
-#define gettokens(l, a, an, del)	getfields(l, a, an, 1, del)
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "ureg.h"
+#include "pool.h"
+#include "../port/error.h"
+#include "../port/netif.h"
+#include "dosfs.h"
+#include "../port/sd.h"
+#include "iso9660.h"
+#define gettokens(l, a, an, del) getfields(l, a, an, 1, del)
 enum {
-Trace	= 0,
+Trace = 0,
 Parttrace = 0,
 Debugboot = 0,
-Maxsec	= 2048,
-Normsec	= 512,
-PartLOG		= 8,
-NPart		= (1<<PartLOG),
+Maxsec = 2048,
+Normsec = 512,
+PartLOG = 8,
+NPart = (1<<PartLOG),
 };
 typedef struct PSDunit PSDunit;
 struct PSDunit {
 SDunit;
-Chan	*ctlc;
-Chan	*data;
+Chan *ctlc;
+Chan *data;
 };
 static uchar *mbrbuf, *partbuf;
 static char buf[128], buf2[128];
@@ -170,7 +170,7 @@ break;
 if(gettokens(line[i], field, 4, " ") != 4)
 break;
 start = strtoull(field[2], 0, 0);
-end   = strtoull(field[3], 0, 0);
+end = strtoull(field[3], 0, 0);
 if(start >= end || end > unit->sectors)
 break;
 psdaddpart(unit, field[1], p->start+start, p->start+end);
@@ -422,7 +422,7 @@ readparts(char *disk)
 {
 Chan *ctl, *data;
 snprint(buf, sizeof buf, "%s/ctl", disk);
-ctl  = namecopen(buf, ORDWR);
+ctl = namecopen(buf, ORDWR);
 snprint(buf2, sizeof buf2, "%s/data", disk);
 data = namecopen(buf2, OREAD);
 if (ctl != nil && data != nil)

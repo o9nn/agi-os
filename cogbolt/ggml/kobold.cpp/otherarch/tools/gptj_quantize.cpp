@@ -12,12 +12,12 @@
 #include <regex>
 struct gptj_hparams {
 int32_t n_vocab = 50400;
-int32_t n_ctx   = 2048;
-int32_t n_embd  = 4096;
-int32_t n_head  = 16;
+int32_t n_ctx = 2048;
+int32_t n_embd = 4096;
+int32_t n_head = 16;
 int32_t n_layer = 28;
-int32_t n_rot   = 64;
-int32_t ftype   = 1;
+int32_t n_rot = 64;
+int32_t ftype = 1;
 };
 bool gptj_model_quantize(const std::string & fname_inp, const std::string & fname_out, ggml_v3_ftype ftype) {
 gpt_vocab vocab;
@@ -44,13 +44,13 @@ fout.write((char *) &magic, sizeof(magic));
 gptj_hparams hparams;
 {
 finp.read((char *) &hparams.n_vocab, sizeof(hparams.n_vocab));
-finp.read((char *) &hparams.n_ctx,   sizeof(hparams.n_ctx));
-finp.read((char *) &hparams.n_embd,  sizeof(hparams.n_embd));
-finp.read((char *) &hparams.n_head,  sizeof(hparams.n_head));
+finp.read((char *) &hparams.n_ctx, sizeof(hparams.n_ctx));
+finp.read((char *) &hparams.n_embd, sizeof(hparams.n_embd));
+finp.read((char *) &hparams.n_head, sizeof(hparams.n_head));
 finp.read((char *) &hparams.n_layer, sizeof(hparams.n_layer));
-finp.read((char *) &hparams.n_rot,   sizeof(hparams.n_rot));
-finp.read((char *) &hparams.ftype,   sizeof(hparams.ftype));
-const int32_t qntvr_src =    hparams.ftype / GGML_V3_QNT_VERSION_FACTOR;
+finp.read((char *) &hparams.n_rot, sizeof(hparams.n_rot));
+finp.read((char *) &hparams.ftype, sizeof(hparams.ftype));
+const int32_t qntvr_src = hparams.ftype / GGML_V3_QNT_VERSION_FACTOR;
 const int32_t ftype_dst = GGML_V3_QNT_VERSION * GGML_V3_QNT_VERSION_FACTOR + ftype;
 printf("%s: n_vocab     = %d\n", __func__, hparams.n_vocab);
 printf("%s: n_ctx       = %d\n", __func__, hparams.n_ctx);
@@ -62,12 +62,12 @@ printf("%s: qntvr (src) = %d\n", __func__, qntvr_src);
 printf("%s: ftype (dst) = %d\n", __func__, ftype_dst);
 printf("%s: qntvr (dst) = %d\n", __func__, GGML_V3_QNT_VERSION);
 fout.write((char *) &hparams.n_vocab, sizeof(hparams.n_vocab));
-fout.write((char *) &hparams.n_ctx,   sizeof(hparams.n_ctx));
-fout.write((char *) &hparams.n_embd,  sizeof(hparams.n_embd));
-fout.write((char *) &hparams.n_head,  sizeof(hparams.n_head));
+fout.write((char *) &hparams.n_ctx, sizeof(hparams.n_ctx));
+fout.write((char *) &hparams.n_embd, sizeof(hparams.n_embd));
+fout.write((char *) &hparams.n_head, sizeof(hparams.n_head));
 fout.write((char *) &hparams.n_layer, sizeof(hparams.n_layer));
-fout.write((char *) &hparams.n_rot,   sizeof(hparams.n_rot));
-fout.write((char *) &ftype_dst,       sizeof(ftype_dst));
+fout.write((char *) &hparams.n_rot, sizeof(hparams.n_rot));
+fout.write((char *) &ftype_dst, sizeof(ftype_dst));
 }
 {
 int32_t n_vocab = 0;

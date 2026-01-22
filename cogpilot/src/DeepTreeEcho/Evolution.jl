@@ -56,7 +56,7 @@ Initialize a population of Deep Tree Echo reservoirs with A000081-aligned parame
 population = initialize_reservoir_population(base_order=5)
 # Specify population size, auto-derive others
 population = initialize_reservoir_population(
-population_size = 9,  # A000081[5]
+population_size = 9, # A000081[5]
 base_order = 5
 )
 ```
@@ -261,7 +261,7 @@ Run evolutionary optimization of reservoir population with A000081-aligned param
 population = run_evolution(base_order=5, max_generations=100)
 # Specify some parameters
 population = run_evolution(
-population_size = 9,  # A000081[5]
+population_size = 9, # A000081[5]
 max_generations = 100,
 verbose = true
 )

@@ -15,7 +15,7 @@ sh->initialise();
 str = load String String->PATH;
 }
 DIR: con "/n/endpoint";
-new(nil, addr: string, force: int): string		# XXX don't ignore net directory
+new(nil, addr: string, force: int): string # XXX don't ignore net directory
 {
 if(!force && sys->stat(DIR+"/"+addr+"/clone").t0 != -1)
 return nil;

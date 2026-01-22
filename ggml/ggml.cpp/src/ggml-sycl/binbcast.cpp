@@ -7,7 +7,7 @@ template<float (*bin_op)(const float, const float), typename src0_t, typename sr
 static void k_bin_bcast(const src0_t * src0, const src1_t * src1, dst_t * dst,
 int ne0, int ne1, int ne2, int ne3,
 int ne10, int ne11, int ne12, int ne13,
-int s1,  int s2,  int s3,
+int s1, int s2, int s3,
 int s01, int s02, int s03,
 int s11, int s12, int s13,
 const sycl::nd_item<3> &item_ct1) {
@@ -27,9 +27,9 @@ return;
 const int i11 = i1 % ne11;
 const int i12 = i2 % ne12;
 const int i13 = i3 % ne13;
-const size_t i_src0 =  i3*s03 +  i2*s02 +  i1*s01;
+const size_t i_src0 = i3*s03 + i2*s02 + i1*s01;
 const size_t i_src1 = i13*s13 + i12*s12 + i11*s11;
-const size_t i_dst  =  i3*s3  +  i2*s2  +  i1*s1;
+const size_t i_dst = i3*s3 + i2*s2 + i1*s1;
 const src0_t * src0_row = src0 + i_src0;
 const src1_t * src1_row = src1 + i_src1;
 dst_t * dst_row = dst + i_dst;
@@ -43,7 +43,7 @@ template<float (*bin_op)(const float, const float), typename src0_t, typename sr
 static void k_bin_bcast_unravel(const src0_t * src0, const src1_t * src1, dst_t * dst,
 int ne0, int ne1, int ne2, int ne3,
 int ne10, int ne11, int ne12, int ne13,
-int s1,  int s2,  int s3,
+int s1, int s2, int s3,
 int s01, int s02, int s03,
 int s11, int s12, int s13,
 const sycl::nd_item<3> &item_ct1) {
@@ -59,9 +59,9 @@ return;
 const int i11 = i1 % ne11;
 const int i12 = i2 % ne12;
 const int i13 = i3 % ne13;
-const size_t i_src0 =  i3*s03 +  i2*s02 +  i1*s01;
+const size_t i_src0 = i3*s03 + i2*s02 + i1*s01;
 const size_t i_src1 = i13*s13 + i12*s12 + i11*s11;
-const size_t i_dst  =  i3*s3  +  i2*s2  +  i1*s1;
+const size_t i_dst = i3*s3 + i2*s2 + i1*s1;
 const src0_t * src0_row = src0 + i_src0;
 const src1_t * src1_row = src1 + i_src1;
 dst_t * dst_row = dst + i_dst;

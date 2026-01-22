@@ -3,7 +3,7 @@
 (load "background-knowledge.scm")
 (load "pln-fc-config.scm")
 (for-each (lambda (i) (cog-execute! implication-partial-instantiation-rule))
-          (iota 2))
+(iota 2))
 (cog-execute! implication-scope-to-implication-rule)
 (cog-execute! and-lambda-distribution-rule)
 (cog-execute! closed-lambda-evaluation-rule)

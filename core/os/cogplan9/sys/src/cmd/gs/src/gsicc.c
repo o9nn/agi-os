@@ -19,7 +19,7 @@ stream *strp;
 private void
 cie_icc_finalize(void * pvicc_info)
 {
-gs_cie_icc *    picc_info = (gs_cie_icc *)pvicc_info;
+gs_cie_icc * picc_info = (gs_cie_icc *)pvicc_info;
 if (picc_info->plu != NULL) {
 picc_info->plu->del(picc_info->plu);
 picc_info->plu = NULL;
@@ -97,7 +97,7 @@ return (pcs->params.icc.picc_info->picc == NULL)
 private void
 gx_init_CIEICC(gs_client_color * pcc, const gs_color_space * pcs)
 {
-int     i, ncomps = pcs->params.icc.picc_info->num_components;
+int i, ncomps = pcs->params.icc.picc_info->num_components;
 for (i = 0; i < ncomps; ++i)
 pcc->paint.values[i] = 0.0;
 gx_restrict_CIEICC(pcc, pcs);
@@ -105,11 +105,11 @@ gx_restrict_CIEICC(pcc, pcs);
 private void
 gx_restrict_CIEICC(gs_client_color * pcc, const gs_color_space * pcs)
 {
-int                 i, ncomps = pcs->params.icc.picc_info->num_components;
-const gs_range *    ranges = pcs->params.icc.picc_info->Range.ranges;
+int i, ncomps = pcs->params.icc.picc_info->num_components;
+const gs_range * ranges = pcs->params.icc.picc_info->Range.ranges;
 for (i = 0; i < ncomps; ++i) {
-floatp  v = pcc->paint.values[i];
-floatp  rmin = ranges[i].rmin, rmax = ranges[i].rmax;
+floatp v = pcc->paint.values[i];
+floatp rmin = ranges[i].rmin, rmax = ranges[i].rmax;
 if (v < rmin)
 pcc->paint.values[i] = rmin;
 else if (v > rmax)
@@ -120,7 +120,7 @@ private const gs_color_space *
 gx_concrete_space_CIEICC(const gs_color_space * pcs, const gs_imager_state * pis)
 {
 if (pcs->params.icc.picc_info->picc == NULL) {
-const gs_color_space *  pacs = (const gs_color_space *)
+const gs_color_space * pacs = (const gs_color_space *)
 &pcs->params.icc.alt_space;
 return cs_concrete_space(pacs, pis);
 } else
@@ -129,18 +129,18 @@ return gx_concrete_space_CIE(NULL, pis);
 private int
 gx_concretize_CIEICC(
 const gs_client_color * pcc,
-const gs_color_space *  pcs,
-frac *                  pconc,
+const gs_color_space * pcs,
+frac * pconc,
 const gs_imager_state * pis )
 {
-const gs_icc_params *   picc_params = &pcs->params.icc;
-const gs_cie_icc *      picc_info = picc_params->picc_info;
-stream *                instrp = picc_info->instrp;
-icc *                   picc = picc_info->picc;
-double                  inv[4], outv[3];
-cie_cached_vector3      vlmn;
-gs_client_color         lcc = *pcc;
-int                     i, ncomps = picc_info->num_components;
+const gs_icc_params * picc_params = &pcs->params.icc;
+const gs_cie_icc * picc_info = picc_params->picc_info;
+stream * instrp = picc_info->instrp;
+icc * picc = picc_info->picc;
+double inv[4], outv[3];
+cie_cached_vector3 vlmn;
+gs_client_color lcc = *pcc;
+int i, ncomps = picc_info->num_components;
 if (picc == NULL)
 return picc_params->alt_space.type->concretize_color(
 pcc,
@@ -162,8 +162,8 @@ inv[2] = inv[2]*255 - 128;
 if (picc_info->plu->lookup(picc_info->plu, outv, inv) > 1)
 return_error(gs_error_unregistered);
 if (picc_info->pcs_is_cielab) {
-floatp              f[3];
-const gs_vector3 *  pwhtpt = &picc_info->common.points.WhitePoint;
+floatp f[3];
+const gs_vector3 * pwhtpt = &picc_info->common.points.WhitePoint;
 f[1] = (outv[0] + 16.0) / 116.0;
 f[0] = f[1] + outv[1] / 500.0;
 f[2] = f[1] - outv[2] / 200;
@@ -186,7 +186,7 @@ return 0;
 private void
 gx_adjust_cspace_CIEICC(const gs_color_space * pcs, int delta)
 {
-const gs_icc_params *   picc_params = &pcs->params.icc;
+const gs_icc_params * picc_params = &pcs->params.icc;
 rc_adjust_const(picc_params->picc_info, delta, "gx_adjust_cspace_CIEICC");
 picc_params->alt_space.type->adjust_cspace_count(
 (const gs_color_space *)&picc_params->alt_space, delta );
@@ -206,16 +206,16 @@ private size_t
 icmFileGs_read(icmFile *pp, void *buffer, size_t size, size_t count)
 {
 icmFileGs *p = (icmFileGs *)pp;
-uint    tot;
-int     status = sgets(p->strp, buffer, size * count, &tot);
+uint tot;
+int status = sgets(p->strp, buffer, size * count, &tot);
 return (status < 0) ? status : tot;
 }
 private size_t
 icmFileGs_write(icmFile *pp, void *buffer, size_t size, size_t count)
 {
 icmFileGs *p = (icmFileGs *)pp;
-uint    tot;
-int     status = sputs(p->strp, buffer, size * count, &tot);
+uint tot;
+int status = sputs(p->strp, buffer, size * count, &tot);
 return (status < 0) ? status : tot;
 }
 private int
@@ -236,19 +236,19 @@ gx_wrap_icc_stream(stream *strp)
 icmFileGs *p;
 if ((p = (icmFileGs *) calloc(1,sizeof(icmFileGs))) == NULL)
 return NULL;
-p->seek  = icmFileGs_seek;
-p->read  = icmFileGs_read;
+p->seek = icmFileGs_seek;
+p->read = icmFileGs_read;
 p->write = icmFileGs_write;
 p->flush = icmFileGs_flush;
-p->del   = icmFileGs_delete;
+p->del = icmFileGs_delete;
 p->strp = strp;
 return (icmFile *)p;
 }
 int
 gx_load_icc_profile(gs_cie_icc *picc_info)
 {
-stream *        instrp = picc_info->instrp;
-icc *           picc;
+stream * instrp = picc_info->instrp;
+icc * picc;
 icmLuBase * plu = NULL;
 icmFile *pfile = NULL;
 if (picc_info->file_id != (instrp->read_id | instrp->write_id))
@@ -257,16 +257,16 @@ if ((picc = new_icc()) == NULL)
 return_error(gs_error_limitcheck);
 {
 icProfileClassSignature profile_class;
-icColorSpaceSignature   cspace_type;
-gs_vector3 *            ppt;
+icColorSpaceSignature cspace_type;
+gs_vector3 * ppt;
 pfile = gx_wrap_icc_stream (instrp);
 if ((picc->read(picc, pfile, 0)) != 0)
 goto return_rangecheck;
 profile_class = picc->header->deviceClass;
-if ( profile_class != icSigInputClass     &&
-profile_class != icSigDisplayClass   &&
-profile_class != icSigOutputClass    &&
-profile_class != icSigColorSpaceClass  )
+if ( profile_class != icSigInputClass &&
+profile_class != icSigDisplayClass &&
+profile_class != icSigOutputClass &&
+profile_class != icSigColorSpaceClass )
 goto return_rangecheck;
 cspace_type = picc->header->pcs;
 if (cspace_type == icSigLabData)
@@ -280,7 +280,7 @@ if (cspace_type == icSigCmykData) {
 if (picc_info->num_components != 4)
 goto return_rangecheck;
 } else if ( cspace_type == icSigRgbData ||
-cspace_type == icSigLabData   ) {
+cspace_type == icSigLabData ) {
 if (picc_info->num_components != 3)
 goto return_rangecheck;
 } else if (cspace_type == icSigGrayData) {
@@ -316,19 +316,19 @@ private int
 gx_install_CIEICC(const gs_color_space * pcs, gs_state * pgs)
 {
 const gs_icc_params * picc_params = (const gs_icc_params *)&pcs->params.icc;
-gs_cie_icc *    picc_info = picc_params->picc_info;
+gs_cie_icc * picc_info = picc_params->picc_info;
 gx_cie_load_common_cache(&picc_info->common, pgs);
 gx_cie_common_complete(&picc_info->common);
 return gs_cie_cs_complete(pgs, true);
 }
 int
 gs_cspace_build_CIEICC(
-gs_color_space **   ppcspace,
-void *              client_data,
-gs_memory_t *       pmem )
+gs_color_space ** ppcspace,
+void * client_data,
+gs_memory_t * pmem )
 {
-gs_cie_icc *        picc_info;
-gs_color_space *    pcs;
+gs_cie_icc * picc_info;
+gs_color_space * pcs;
 picc_info = gx_build_cie_space( ppcspace,
 &gs_color_space_type_CIEICC,
 &st_cie_icc,

@@ -8,18 +8,18 @@ import {InspectEstimateCommand} from "./commands/InspectEstimateCommand.js";
 type InspectCommand = {
 };
 export const InspectCommand: CommandModule<object, InspectCommand> = {
-    command: "inspect <command>",
-    describe: withCliCommandDescriptionDocsUrl(
-        "Inspect the inner workings of `node-llama-cpp`",
-        documentationPageUrls.CLI.Inspect.index
-    ),
-    builder(yargs) {
-        return yargs
-            .command(InspectGpuCommand)
-            .command(InspectGgufCommand)
-            .command(InspectMeasureCommand)
-            .command(InspectEstimateCommand);
-    },
-    async handler() {
-    }
+command: "inspect <command>",
+describe: withCliCommandDescriptionDocsUrl(
+"Inspect the inner workings of `node-llama-cpp`",
+documentationPageUrls.CLI.Inspect.index
+),
+builder(yargs) {
+return yargs
+.command(InspectGpuCommand)
+.command(InspectGgufCommand)
+.command(InspectMeasureCommand)
+.command(InspectEstimateCommand);
+},
+async handler() {
+}
 };

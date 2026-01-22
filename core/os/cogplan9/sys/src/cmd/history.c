@@ -1,23 +1,23 @@
-#include	<u.h>
-#include	<libc.h>
-#define	MINUTE(x)	((long)(x)*60L)
-#define	HOUR(x)		(MINUTE(x)*60L)
-#define	YEAR(x)		(HOUR(x)*24L*360L)
-int	verb;
-int	uflag;
-int	force;
-int	diff;
-char*	sflag;
-char*	dargv[20] = {
+#include <u.h>
+#include <libc.h>
+#define MINUTE(x) ((long)(x)*60L)
+#define HOUR(x) (MINUTE(x)*60L)
+#define YEAR(x) (HOUR(x)*24L*360L)
+int verb;
+int uflag;
+int force;
+int diff;
+char* sflag;
+char* dargv[20] = {
 "diff",
 };
-int	ndargv = 1;
-void	usage(void);
-void	ysearch(char*, char*);
-long	starttime(char*);
-void	lastbefore(ulong, char*, char*, char*);
-char*	prtime(ulong);
-void	darg(char*);
+int ndargv = 1;
+void usage(void);
+void ysearch(char*, char*);
+long starttime(char*);
+void lastbefore(ulong, char*, char*, char*);
+char* prtime(ulong);
+void darg(char*);
 void
 main(int argc, char *argv[])
 {

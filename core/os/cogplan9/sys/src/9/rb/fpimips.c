@@ -1,11 +1,11 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"ureg.h"
-#include	"../port/fpi.h"
-#include	<tos.h>
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "ureg.h"
+#include "../port/fpi.h"
+#include <tos.h>
 #ifdef FPEMUDEBUG
 #define DBG(bits) (fpemudebug & (bits))
 #define intpr _intpr
@@ -13,142 +13,142 @@
 #define dbgstuck _dbgstuck
 #else
 #define DBG(bits) (0)
-#define internsane(i, ur)	do { USED(ur); } while(0)
-#define intpr(i, reg, fmt, ufp)	do {} while(0)
-#define dbgstuck(pc, ur, ufp)	do {} while(0)
+#define internsane(i, ur) do { USED(ur); } while(0)
+#define intpr(i, reg, fmt, ufp) do {} while(0)
+#define dbgstuck(pc, ur, ufp) do {} while(0)
 #endif
-#define	OFR(memb) (uintptr)&((Ureg*)0)->memb
-#define	REG(ur, r) *acpureg(ur, r)
-#define	FREG(ufp, fr) (ufp)->reg[(fr) & REGMASK]
-#define OP(ul)	 ((ul) >> 26)
+#define OFR(memb) (uintptr)&((Ureg*)0)->memb
+#define REG(ur, r) *acpureg(ur, r)
+#define FREG(ufp, fr) (ufp)->reg[(fr) & REGMASK]
+#define OP(ul) ((ul) >> 26)
 #define REGMASK MASK(5)
-#define FMT(ul)	 (((ul) >> 21) & REGMASK)
+#define FMT(ul) (((ul) >> 21) & REGMASK)
 #define REGT(ul) (((ul) >> 16) & REGMASK)
 #define REGS(ul) (((ul) >> 11) & REGMASK)
-#define REGD(ul) (((ul) >>  6) & REGMASK)
+#define REGD(ul) (((ul) >> 6) & REGMASK)
 #define FUNC(ul) ((ul) & MASK(6))
 enum {
 Dbgbasic = 1<<0,
 Dbgmoves = 1<<1,
-Dbgregs	 = 1<<2,
+Dbgregs = 1<<2,
 Dbgdelay = 1<<3,
 Failed = -1,
 Advpc,
 Leavepc,
 Leavepcret,
 Nomatch,
-NOP	= 0x27,
+NOP = 0x27,
 MIPSNOP = 0,
-COP1	= 0x11,
-LWC1	= 0x31,
-LDC1	= 0x35,
-SWC1	= 0x39,
-SDC1	= 0x3d,
+COP1 = 0x11,
+LWC1 = 0x31,
+LDC1 = 0x35,
+SWC1 = 0x39,
+SDC1 = 0x3d,
 N = 1<<31,
 Z = 1<<30,
 C = 1<<29,
 V = 1<<28,
-MFC1	= 0,
+MFC1 = 0,
 DMFC1,
 CFC1,
-MTC1	= 4,
+MTC1 = 4,
 DMTC1,
 CTC1,
-BRANCH	= 8,
-Ffloat	= 16,
+BRANCH = 8,
+Ffloat = 16,
 Fdouble,
-Flong	= 20,
+Flong = 20,
 Fvlong,
-Fpimp	= 0,
-Fpcsr	= 31,
+Fpimp = 0,
+Fpcsr = 31,
 };
 typedef struct FP1 FP1;
 typedef struct FP2 FP2;
 typedef struct FPcvt FPcvt;
 typedef struct Instr Instr;
 struct Instr {
-int	iw;
-uintptr	pc;
-int	o;
-int	fmt;
-int	rm;
-int	rn;
-int	rd;
+int iw;
+uintptr pc;
+int o;
+int fmt;
+int rm;
+int rn;
+int rd;
 Internal *fm;
 Internal *fn;
-char	*dfmt;
-FPsave	*ufp;
-Ureg	*ur;
+char *dfmt;
+FPsave *ufp;
+Ureg *ur;
 };
 struct FP2 {
-char*	name;
-void	(*f)(Internal*, Internal*, Internal*);
+char* name;
+void (*f)(Internal*, Internal*, Internal*);
 };
 struct FP1 {
-char*	name;
-void	(*f)(Internal*, Internal*);
+char* name;
+void (*f)(Internal*, Internal*);
 };
 struct FPcvt {
-char*	name;
-void	(*f)(int, int, int, Ureg *, FPsave *);
+char* name;
+void (*f)(int, int, int, Ureg *, FPsave *);
 };
-static	int	roff[32] = {
-0,       OFR(r1), OFR(r2), OFR(r3),
+static int roff[32] = {
+0, OFR(r1), OFR(r2), OFR(r3),
 OFR(r4), OFR(r5), OFR(r6), OFR(r7),
 OFR(r8), OFR(r9), OFR(r10), OFR(r11),
 OFR(r12), OFR(r13), OFR(r14), OFR(r15),
 OFR(r16), OFR(r17), OFR(r18), OFR(r19),
 OFR(r20), OFR(r21), OFR(r22), OFR(r23),
 OFR(r24), OFR(r25), OFR(r26), OFR(r27),
-OFR(r28), OFR(sp),  OFR(r30), OFR(r31),
+OFR(r28), OFR(sp), OFR(r30), OFR(r31),
 };
 enum {
 FZERO = 24,
 FHALF = 26,
 };
 static Internal fpconst[Nfpregs] = {
-[FZERO]	{0, 0x1, 0x00000000, 0x00000000},
-[FHALF]	{0, 0x3FE, 0x00000000, 0x08000000},
-[28]	{0, 0x3FF, 0x00000000, 0x08000000},
-[30]	{0, 0x400, 0x00000000, 0x08000000},
+[FZERO] {0, 0x1, 0x00000000, 0x00000000},
+[FHALF] {0, 0x3FE, 0x00000000, 0x08000000},
+[28] {0, 0x3FF, 0x00000000, 0x08000000},
+[30] {0, 0x400, 0x00000000, 0x08000000},
 };
 static char *fmtnames[] = {
-[MFC1]	"MF",
-[DMFC1]	"DMF",
-[CFC1]	"CF",
-[MTC1]	"MT",
-[DMTC1]	"DMT",
-[CTC1]	"CT",
+[MFC1] "MF",
+[DMFC1] "DMF",
+[CFC1] "CF",
+[MTC1] "MT",
+[DMTC1] "DMT",
+[CTC1] "CT",
 [BRANCH]"BR",
 [Ffloat]"F",
 [Fdouble]"D",
-[Flong]	"W",
+[Flong] "W",
 [Fvlong]"L",
 };
 static char *prednames[] = {
-[0]	"F",
-[1]	"UN",
-[2]	"EQ",
-[3]	"UEQ",
-[4]	"OLT",
-[5]	"ULT",
-[6]	"OLE",
-[7]	"ULE",
-[8]	"SF",
-[9]	"NGLE",
-[10]	"SEQ",
-[11]	"NGL",
-[12]	"LT",
-[13]	"NGE",
-[14]	"LE",
-[15]	"NGT",
+[0] "F",
+[1] "UN",
+[2] "EQ",
+[3] "UEQ",
+[4] "OLT",
+[5] "ULT",
+[6] "OLE",
+[7] "ULE",
+[8] "SF",
+[9] "NGLE",
+[10] "SEQ",
+[11] "NGL",
+[12] "LT",
+[13] "NGE",
+[14] "LE",
+[15] "NGT",
 };
 int fpemudebug = 0;
 static ulong dummyr0;
 static QLock watchlock;
-ulong	branch(Ureg*, ulong);
-int	isbranch(ulong *);
-static int	fpimips(ulong, ulong, Ureg *, FPsave *);
+ulong branch(Ureg*, ulong);
+int isbranch(ulong *);
+static int fpimips(ulong, ulong, Ureg *, FPsave *);
 char *
 fpemuprint(char *p, char *ep)
 {
@@ -252,7 +252,7 @@ static void
 dbl2dreg(int reg, Double *dp, FPsave *ufp)
 {
 reg &= ~1;
-FREG(ufp, reg)   = dp->l;
+FREG(ufp, reg) = dp->l;
 FREG(ufp, reg+1) = dp->h;
 }
 static void
@@ -267,7 +267,7 @@ dbl2vreg(int reg, Double *dp, FPsave *ufp)
 {
 reg &= ~1;
 FREG(ufp, reg+1) = dp->l;
-FREG(ufp, reg)   = dp->h;
+FREG(ufp, reg) = dp->h;
 }
 static void
 fcvtd(int fmt, int rm, int rd, Ureg *ur, FPsave *ufp)
@@ -383,31 +383,31 @@ internsane(&intrn, ur);
 fpii2v((vlong *)&FREG(ufp, rd), &intrn);
 }
 }
-static	FP2	optab2[] = {
-[0]	{"ADDF",	fadd},
-[1]	{"SUBF",	fsub},
-[2]	{"MULF",	fpimul},
-[3]	{"DIVF",	fpidiv},
+static FP2 optab2[] = {
+[0] {"ADDF", fadd},
+[1] {"SUBF", fsub},
+[2] {"MULF", fpimul},
+[3] {"DIVF", fpidiv},
 };
-static	FP1	optab1[32] = {
-[4]	{"SQTF",	0},
-[5]	{"ABSF",	0},
-[6]	{"MOVF",	0},
-[7]	{"NEGF",	0},
-[8]	{"ROUND.L",	0},
-[9]	{"TRUNC.L",	0},
-[10]	{"CEIL.L",	0},
-[11]	{"FLOOR.L",	0},
-[12]	{"ROUND.W",	frnd},
-[13]	{"TRUNC.W",	0},
-[14]	{"CEIL.W",	0},
-[15]	{"FLOOR.W",	0},
+static FP1 optab1[32] = {
+[4] {"SQTF", 0},
+[5] {"ABSF", 0},
+[6] {"MOVF", 0},
+[7] {"NEGF", 0},
+[8] {"ROUND.L", 0},
+[9] {"TRUNC.L", 0},
+[10] {"CEIL.L", 0},
+[11] {"FLOOR.L", 0},
+[12] {"ROUND.W", frnd},
+[13] {"TRUNC.W", 0},
+[14] {"CEIL.W", 0},
+[15] {"FLOOR.W", 0},
 };
-static	FPcvt	optabcvt[] = {
-[32]	{"CVT.S",	fcvts},
-[33]	{"CVT.D",	fcvtd},
-[36]	{"CVT.W",	fcvtw},
-[37]	{"CVT.L",	fcvtv},
+static FPcvt optabcvt[] = {
+[32] {"CVT.S", fcvts},
+[33] {"CVT.D", fcvtd},
+[36] {"CVT.W", fcvtw},
+[37] {"CVT.L", fcvtv},
 };
 static void
 fld(int d, ulong ea, int n, FPsave *ufp)

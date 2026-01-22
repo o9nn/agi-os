@@ -108,14 +108,14 @@ float sumf = 0;
 #if defined(__VXE__) || defined(__VXE2__)
 __vector float acc = vec_splats(0.0f);
 const __vector uint8_t v_m = vec_splats((const uint8_t)0x0F);
-const __vector int8_t  v_s = vec_splats( (const int8_t)0x08);
+const __vector int8_t v_s = vec_splats( (const int8_t)0x08);
 for (; ib < nb; ++ib) {
 const __vector uint8_t v_x = vec_xl(0, x[ib].qs);
 const __vector int8_t v_xl = (const __vector int8_t)(v_x & v_m);
 const __vector int8_t v_xh = (const __vector int8_t)(v_x >> 4);
 const __vector int8_t v_xls = vec_sub(v_xl, v_s);
 const __vector int8_t v_xhs = vec_sub(v_xh, v_s);
-const __vector int8_t v_yl = vec_xl(0      , y[ib].qs);
+const __vector int8_t v_yl = vec_xl(0 , y[ib].qs);
 const __vector int8_t v_yh = vec_xl(QK8_0/2, y[ib].qs);
 const __vector int16_t v_xylso = vec_mulo(v_xls, v_yl);
 const __vector int16_t v_xylse = vec_mule(v_xls, v_yl);
@@ -162,7 +162,7 @@ summs += GGML_CPU_FP16_TO_FP32(x[ib].m) * GGML_CPU_FP16_TO_FP32(y[ib].s);
 const uint8x16_t v_x = vec_xl(0, x[ib].qs);
 const int8x16_t v_xl = (const int8x16_t)(v_x & v_m);
 const int8x16_t v_xh = (const int8x16_t)(v_x >> 4);
-const int8x16_t v_yl = vec_xl(0      , y[ib].qs);
+const int8x16_t v_yl = vec_xl(0 , y[ib].qs);
 const int8x16_t v_yh = vec_xl(QK8_1/2, y[ib].qs);
 const int32x4_t v_xy_ = ggml_vec_dot(ggml_vec_dot(vec_splats(0), v_xl, v_yl), v_xh, v_yh);
 const float32x4_t v_xy = vec_float(v_xy_);
@@ -199,9 +199,9 @@ __vector float acc = vec_splats(0.0f);
 for (; ib < nb; ++ib) {
 __builtin_prefetch(x[ib].qs, 0, 1);
 __builtin_prefetch(y[ib].qs, 0, 1);
-const int8x16_t v_xl = vec_xl(0      , x[ib].qs);
+const int8x16_t v_xl = vec_xl(0 , x[ib].qs);
 const int8x16_t v_xh = vec_xl(QK8_0/2, x[ib].qs);
-const int8x16_t v_yl = vec_xl(0      , y[ib].qs);
+const int8x16_t v_yl = vec_xl(0 , y[ib].qs);
 const int8x16_t v_yh = vec_xl(QK8_0/2, y[ib].qs);
 const int32x4_t v_xy_ = ggml_vec_dot(ggml_vec_dot(vec_splats(0), v_xl, v_yl), v_xh, v_yh);
 const float32x4_t v_xy = vec_float(v_xy_);
@@ -250,7 +250,7 @@ for (int i = 0; i < nb; ++i) {
 const float d = y[i].d * GGML_CPU_FP16_TO_FP32(x[i].d);
 const uint8_t * restrict x0l = x[i].qs;
 const uint8_t * restrict x0h = x[i].hmask;
-const int8_t  * restrict y0  = y[i].qs;
+const int8_t * restrict y0 = y[i].qs;
 qhbits[0] = vec_xl(0 , x0h);
 qhbits[1] = vec_xl(16, x0h);
 int32_t isum = 0;
@@ -266,7 +266,7 @@ int32x4_t isum0, isum1, isum2, isum3;
 q3b[0] = vec_xl(0 , x0l);
 q3b[1] = vec_xl(16, x0l);
 x0l += 32;
-q8bytes[0] = vec_xl(0  , y0);
+q8bytes[0] = vec_xl(0 , y0);
 q8bytes[1] = vec_xl(16 , y0);
 q8bytes[2] = vec_xl(32 , y0);
 q8bytes[3] = vec_xl(48 , y0);
@@ -344,8 +344,8 @@ uint32_t utmp[4];
 const uint8x16_t v_lm = vec_splat_u8(0x0F);
 const int32x4_t v_z = vec_splat_s32(0);
 uint8x16_t v_x[2];
-int8x16_t  v_xl[2];
-int8x16_t  v_y[2];
+int8x16_t v_xl[2];
+int8x16_t v_y[2];
 float sumf = 0;
 for (int i = 0; i < nb; ++i) {
 const float d = y[i].d * GGML_CPU_FP16_TO_FP32(x[i].d);
@@ -366,7 +366,7 @@ const int32x4_t v_mins = v_minso + v_minse;
 sumf -= dmin * (v_mins[0] + v_mins[1] + v_mins[2] + v_mins[3]);
 const uint8_t * scales = (const uint8_t *)utmp;
 const uint8_t * GGML_RESTRICT x0 = x[i].qs;
-const int8_t  * GGML_RESTRICT y0 = y[i].qs;
+const int8_t * GGML_RESTRICT y0 = y[i].qs;
 int32_t sumi1 = 0;
 int32_t sumi2 = 0;
 for (int j = 0; j < QK_K/64; ++j) {
@@ -402,7 +402,7 @@ UNUSED(utmp);
 ggml_vec_dot_q4_K_q8_K_generic(n, s, bs, vx, bx, vy, by, nrc);
 #endif
 }
-void ggml_vec_dot_q5_K_q8_K(int n, float * GGML_RESTRICT s, size_t bs, const void * GGML_RESTRICT vx, size_t bx, const void * GGML_RESTRICT vy,  size_t by, int nrc) {
+void ggml_vec_dot_q5_K_q8_K(int n, float * GGML_RESTRICT s, size_t bs, const void * GGML_RESTRICT vx, size_t bx, const void * GGML_RESTRICT vy, size_t by, int nrc) {
 assert(n % QK_K == 0);
 assert(nrc == 1);
 UNUSED(nrc);
@@ -425,11 +425,11 @@ const uchar8x16_t v_minsm = {
 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
 };
-int8x16_t  q5b[4];
+int8x16_t q5b[4];
 uint8x16_t q5h[4];
 uint8x16_t v_xl[2];
 uint8x16_t v_xh[2];
-int8x16_t  v_y[4];
+int8x16_t v_y[4];
 float sumf = 0;
 for (int i = 0; i < nb; ++i) {
 const float d = y[i].d * GGML_CPU_FP16_TO_FP32(x[i].d);
@@ -453,7 +453,7 @@ const int32_t mins = v_mins[0] + v_mins[1] + v_mins[2] + v_mins[3];
 const uint8_t * scales = (const uint8_t *)utmp;
 const uint8_t * GGML_RESTRICT x0l = x[i].qs;
 const uint8_t * GGML_RESTRICT x0h = x[i].qh;
-const int8_t  * GGML_RESTRICT y0 = y[i].qs;
+const int8_t * GGML_RESTRICT y0 = y[i].qs;
 v_xh[0] = vec_xl(0 , x0h);
 v_xh[1] = vec_xl(16, x0h);
 int32_t sumi = 0;
@@ -510,20 +510,20 @@ float sum = 0;
 const uint8x16_t v_lm = vec_splat_u8(0x0F);
 const uint8x16_t v_um = vec_splat_u8(0x03);
 const int32x4_t v_z = vec_splat_s32(0);
-int8x16_t  q6b[4];
+int8x16_t q6b[4];
 uint8x16_t q6h[4];
 uint8x16_t v_xl[4];
 uint8x16_t v_xh[2];
-int8x16_t  v_y[4];
+int8x16_t v_y[4];
 for (int i = 0; i < nb; ++i) {
 const float d_all = GGML_CPU_FP16_TO_FP32(x[i].d);
 const uint8_t * GGML_RESTRICT x0l = x[i].ql;
 const uint8_t * GGML_RESTRICT x0h = x[i].qh;
-const int8_t  * GGML_RESTRICT y0 = y[i].qs;
-const int8_t  * GGML_RESTRICT scale = x[i].scales;
+const int8_t * GGML_RESTRICT y0 = y[i].qs;
+const int8_t * GGML_RESTRICT scale = x[i].scales;
 const int16x8_t v_ysumsl = vec_xl(0 , y[i].bsums);
 const int16x8_t v_ysumsh = vec_xl(16, y[i].bsums);
-const int8x16_t v_scale  = vec_xl(0, scale);
+const int8x16_t v_scale = vec_xl(0, scale);
 const int16x8_t v_scalel = vec_unpackh(v_scale);
 const int16x8_t v_scaleh = vec_unpackl(v_scale);
 const int32x4_t v_minslo = vec_mulo(v_ysumsl, v_scalel);
@@ -612,7 +612,7 @@ UNUSED(bs);
 assert(n % QK4_NL == 0);
 static_assert(QK4_NL == QK8_0, "QK4_NL and QK8_0 must be the same");
 const block_iq4_nl * GGML_RESTRICT x = vx;
-const block_q8_0   * GGML_RESTRICT y = vy;
+const block_q8_0 * GGML_RESTRICT y = vy;
 const int nb = n / QK4_NL;
 int ib = 0;
 float sumf = 0;
@@ -621,13 +621,13 @@ const int8x16_t v_k = vec_xl(0, kvalues_iq4nl);
 const uint8x16_t v_m = vec_splat_u8(0x0F);
 for (; ib < nb; ++ib) {
 const block_iq4_nl * GGML_RESTRICT x0 = &x[ib];
-const block_q8_0   * GGML_RESTRICT y0 = &y[ib];
+const block_q8_0 * GGML_RESTRICT y0 = &y[ib];
 const uint8x16_t v_x = vec_xl(0, x0->qs);
 int8x16_t v_xl = (int8x16_t)vec_and(v_x, v_m);
 int8x16_t v_xh = (int8x16_t)vec_sr(v_x, 4);
 v_xl = vec_perm(v_k, v_k, (uchar8x16_t)v_xl);
 v_xh = vec_perm(v_k, v_k, (uchar8x16_t)v_xh);
-const int8x16_t v_yl = vec_xl(0      , y0->qs);
+const int8x16_t v_yl = vec_xl(0 , y0->qs);
 const int8x16_t v_yh = vec_xl(QK8_0/2, y0->qs);
 const int32x4_t v_xy = ggml_vec_dot(ggml_vec_dot(vec_splats(0), v_xl, v_yl), v_xh, v_yh);
 sumf += GGML_CPU_FP16_TO_FP32(x0->d) * GGML_CPU_FP16_TO_FP32(y0->d) * (v_xy[0] + v_xy[1] + v_xy[2] + v_xy[3]);
@@ -650,7 +650,7 @@ UNUSED(by);
 UNUSED(bs);
 assert(n % QK_K == 0);
 const block_iq4_xs * GGML_RESTRICT x = vx;
-const block_q8_K   * GGML_RESTRICT y = vy;
+const block_q8_K * GGML_RESTRICT y = vy;
 const int nb = n / QK_K;
 #if defined(__VXE__) || defined(__VXE2__)
 const int8x16_t v_k = vec_xl(0, kvalues_iq4nl);
@@ -658,11 +658,11 @@ const uint8x16_t v_m = vec_splat_u8(0x0F);
 float sumf = 0;
 for (int ibl = 0; ibl < nb; ++ibl) {
 const uint8_t * GGML_RESTRICT q4 = x[ibl].qs;
-const int8_t  * GGML_RESTRICT q8 = y[ibl].qs;
+const int8_t * GGML_RESTRICT q8 = y[ibl].qs;
 uint16_t h = x[ibl].scales_h;
 int sumi1 = 0, sumi2 = 0;
 for (int ib = 0; ib < QK_K/64; ++ib) {
-const uint8x16_t v_x0 = vec_xl(0       , q4);
+const uint8x16_t v_x0 = vec_xl(0 , q4);
 const uint8x16_t v_x1 = vec_xl(QK4_NL/2, q4);
 q4 += 32;
 int8x16_t v_x0l = (int8x16_t)vec_and(v_x0, v_m);
@@ -681,7 +681,7 @@ q8 += 64;
 int32x4_t vsumi0 = ggml_vec_dot(ggml_vec_dot(vec_splats(0), v_x0l, v_y0), v_x0h, v_y1);
 int32x4_t vsumi1 = ggml_vec_dot(ggml_vec_dot(vec_splats(0), v_x1l, v_y2), v_x1h, v_y3);
 int ls1 = ((x[ibl].scales_l[ib] & 0xF) | ((h << 4) & 0x30)) - 32;
-int ls2 = ((x[ibl].scales_l[ib] >>  4) | ((h << 2) & 0x30)) - 32;
+int ls2 = ((x[ibl].scales_l[ib] >> 4) | ((h << 2) & 0x30)) - 32;
 h >>= 4;
 sumi1 += (vsumi0[0] + vsumi0[1] + vsumi0[2] + vsumi0[3]) * ls1;
 sumi2 += (vsumi1[0] + vsumi1[1] + vsumi1[2] + vsumi1[3]) * ls2;

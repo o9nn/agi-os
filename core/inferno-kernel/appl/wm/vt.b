@@ -16,19 +16,19 @@ Toplevel: import tk;
 include "tkclient.m";
 tkclient: Tkclient;
 include "sh.m";
-CON_Maxnpts:	con 1000;
-Maxnhits:	con 5;
+CON_Maxnpts: con 1000;
+Maxnhits: con 5;
 WmVt: module {
-init:   fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 VT_MAXPARAM: con 8;
 Vt: adt {
 y1, y2: int;
-mode: int;	# misc mode parameters
-qmode: int;	# extended mode parameters
-attr: int; 	# display attributes
-fg: int;	# foreground color
-bg: int;	# background color
+mode: int; # misc mode parameters
+qmode: int; # extended mode parameters
+attr: int; # display attributes
+fg: int; # foreground color
+bg: int; # background color
 # saved values:
 save_x, save_y: int;
 save_attr: int;
@@ -36,11 +36,11 @@ save_fg, save_bg: int;
 save_mode: int;
 save_qmode: int;
 # escape code parsing:
-esc: int;	# escape mode
-pcount: int;	# parameter count
-etype: int;	# escape code type
-ptype: int;	# current parameter type
-value: int;	# current value
+esc: int; # escape mode
+pcount: int; # parameter count
+etype: int; # escape code type
+ptype: int; # current parameter type
+value: int; # current value
 param: array of int;
 # display info:
 wid, hgt: int;
@@ -179,7 +179,7 @@ return;
 # XXX - need to kill this later
 ic := chan of string;
 spawn consinp(ic, file.read);
-inpchan = ic;	# hack
+inpchan = ic; # hack
 for(;;) alt {
 s := <-t.ctxt.kbd =>
 tk->keyboard(t, s);
@@ -224,7 +224,7 @@ canvas = t.image;
 canvrect = canvposn(t);
 org = canvrect.min;
 # sys->print("%d,%d %d,%d\n", canvrect.max.x, canvrect.min.x,
-#	canvas.r.max.x, canvas.r.min.x);
+# canvas.r.max.x, canvas.r.min.x);
 resize((canvrect.max.x-canvrect.min.x)/font.width("0"),
 (canvrect.max.y-canvrect.min.y)/font.height);
 titlebar();
@@ -619,20 +619,20 @@ check_scroll = 1;
 132 =>
 vt.y++;
 check_scroll = 1;
-136 =>	# XXX - set a tabstop
+136 => # XXX - set a tabstop
 ;
 141 =>
 vt.y--;
 check_scroll = 1;
-142 =>	# XXX -- map G2 into GL for next char only
+142 => # XXX -- map G2 into GL for next char only
 ;
-143 =>	# XXX -- map G3 into GL for next char
+143 => # XXX -- map G3 into GL for next char
 ;
-144 =>	# XXX -- device control string
+144 => # XXX -- device control string
 ;
-145 =>	# XXX -- start of string - ignored
+145 => # XXX -- start of string - ignored
 ;
-146 =>	# XXX -- device attribute request
+146 => # XXX -- device attribute request
 ;
 147 =>
 vt.esc = 2;
@@ -799,7 +799,7 @@ vt.x = 0;
 'D' =>
 vt.y++;
 return 1;
-'H' =>	# XXX -- horizontal tab set
+'H' => # XXX -- horizontal tab set
 ;
 '6' =>
 ;

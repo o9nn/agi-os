@@ -117,9 +117,9 @@ __m512i vc0[ROWS * COLS];
 __m512i vc1[ROWS * COLS];
 __m512i vcomp0[COLS];
 __m512i vcomp1[COLS];
-__m512  was;
-__m512  vbs0[COLS];
-__m512  vbs1[COLS];
+__m512 was;
+__m512 vbs0[COLS];
+__m512 vbs1[COLS];
 auto loadc = [&](auto i) {
 vc0[i] = _mm512_set1_epi32(0);
 vc1[i] = _mm512_set1_epi32(0);
@@ -188,10 +188,10 @@ Unroll<ROWS * COLS>{}(storec);
 }
 };
 #endif
-#define LAUNCH_TINYGEMM_KERNEL_VNNI(MB_SIZE, NB_SIZE)                        \
-tinygemm_kernel_vnni<scalar_t, MB_SIZE, NB_SIZE>::apply(                 \
-A + mb_start * lda, B0 + nb_start * 4, B1 + nb_start * 4,            \
-C + mb_start * ldc + nb_start, As + mb_start,                        \
+#define LAUNCH_TINYGEMM_KERNEL_VNNI(MB_SIZE, NB_SIZE) \
+tinygemm_kernel_vnni<scalar_t, MB_SIZE, NB_SIZE>::apply( \
+A + mb_start * lda, B0 + nb_start * 4, B1 + nb_start * 4, \
+C + mb_start * ldc + nb_start, As + mb_start, \
 Bs0 + nb_start, Bs1 + nb_start, Bcomp0 + nb_start, Bcomp1 + nb_start,\
 K, lda, ldb, ldc);
 template <typename scalar_t>
@@ -254,8 +254,8 @@ __m512i va;
 __m512i vb[COLS];
 __m512i vc[ROWS * COLS];
 __m512i vcomp[COLS];
-__m512  was;
-__m512  vbs[COLS];
+__m512 was;
+__m512 vbs[COLS];
 auto loadc = [&](auto i) {
 vc[i] = _mm512_set1_epi32(0);
 };
@@ -301,10 +301,10 @@ Unroll<ROWS * COLS>{}(storec);
 }
 };
 #endif
-#define LAUNCH_TINYGEMM_KERNEL_VNNI2(MB_SIZE, NB_SIZE)                       \
-tinygemm_kernel_vnni2<scalar_t, MB_SIZE, NB_SIZE>::apply(                \
+#define LAUNCH_TINYGEMM_KERNEL_VNNI2(MB_SIZE, NB_SIZE) \
+tinygemm_kernel_vnni2<scalar_t, MB_SIZE, NB_SIZE>::apply( \
 A + mb_start * lda, B + nb_start * 4, C + mb_start * ldc + nb_start, \
-As + mb_start, Bs + nb_start, Bcomp + nb_start,                      \
+As + mb_start, Bs + nb_start, Bcomp + nb_start, \
 K, lda, ldb, ldc);
 template <typename scalar_t>
 void tinygemm_kernel(
@@ -475,16 +475,16 @@ sum_stub(output + m * K, ic2 + m * topk * K, topk, K);
 }
 });
 }
-#define INSTANTIATE_MOE_INT8_TEMPLATE(TYPE)                                                  \
-template void fused_experts_int8_kernel_impl<TYPE> (                                       \
-TYPE* __restrict__ output, TYPE* __restrict__ ic1,                                     \
-TYPE* __restrict__ ic2, uint8_t* __restrict__ A_tmp,                                   \
-float* __restrict__ C_tmp, uint8_t* __restrict__ Aq_tmp,                               \
-float* __restrict__ As_tmp, const TYPE* __restrict__ input,                            \
-const int8_t* __restrict__ packed_w1, const int8_t* __restrict__ packed_w2,            \
-const float* __restrict__ w1s, const float* __restrict__ w2s,                          \
-const float* __restrict__ topk_weights, const int32_t* __restrict__ sorted_ids,        \
-const int32_t* __restrict__ expert_ids, const int32_t* __restrict__ offsets,           \
+#define INSTANTIATE_MOE_INT8_TEMPLATE(TYPE) \
+template void fused_experts_int8_kernel_impl<TYPE> ( \
+TYPE* __restrict__ output, TYPE* __restrict__ ic1, \
+TYPE* __restrict__ ic2, uint8_t* __restrict__ A_tmp, \
+float* __restrict__ C_tmp, uint8_t* __restrict__ Aq_tmp, \
+float* __restrict__ As_tmp, const TYPE* __restrict__ input, \
+const int8_t* __restrict__ packed_w1, const int8_t* __restrict__ packed_w2, \
+const float* __restrict__ w1s, const float* __restrict__ w2s, \
+const float* __restrict__ topk_weights, const int32_t* __restrict__ sorted_ids, \
+const int32_t* __restrict__ expert_ids, const int32_t* __restrict__ offsets, \
 int64_t M, int64_t N, int64_t K, int64_t E, int64_t topk, int64_t num_tokens_post_pad)
 INSTANTIATE_MOE_INT8_TEMPLATE(at::BFloat16);
 INSTANTIATE_MOE_INT8_TEMPLATE(at::Half);
@@ -597,14 +597,14 @@ add_mul_stub(out + m * K, C + m * BLOCK_N, fused_out + m * K, routed_scaling_fac
 }
 });
 }
-#define INSTANTIATE_SHARED_EXPERT_INT8_TEMPLATE(TYPE)                                        \
-template void shared_expert_int8_kernel_impl<TYPE> (                                       \
-TYPE* __restrict__ output, TYPE* __restrict__ ic1,                                     \
-float* __restrict__ C_tmp, uint8_t* __restrict__ Aq_tmp,                               \
-float* __restrict__ As_tmp, const TYPE* __restrict__ input,                            \
-const int8_t* __restrict__ packed_w1, const int8_t* __restrict__ packed_w2,            \
-const float* __restrict__ w1s, const float* __restrict__ w2s,                          \
-const TYPE* __restrict__ fused_experts_out, float routed_scaling_factor,               \
+#define INSTANTIATE_SHARED_EXPERT_INT8_TEMPLATE(TYPE) \
+template void shared_expert_int8_kernel_impl<TYPE> ( \
+TYPE* __restrict__ output, TYPE* __restrict__ ic1, \
+float* __restrict__ C_tmp, uint8_t* __restrict__ Aq_tmp, \
+float* __restrict__ As_tmp, const TYPE* __restrict__ input, \
+const int8_t* __restrict__ packed_w1, const int8_t* __restrict__ packed_w2, \
+const float* __restrict__ w1s, const float* __restrict__ w2s, \
+const TYPE* __restrict__ fused_experts_out, float routed_scaling_factor, \
 int64_t M, int64_t N, int64_t K)
 INSTANTIATE_SHARED_EXPERT_INT8_TEMPLATE(at::BFloat16);
 INSTANTIATE_SHARED_EXPERT_INT8_TEMPLATE(at::Half);

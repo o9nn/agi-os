@@ -137,7 +137,7 @@ of the docs.
 See also: [`connect`](@ref), [`@connector`](@ref), [`Equality`](@ref),
 [`Stream`](@ref).
 """
-struct Flow <: AbstractConnectType end     # sum to 0
+struct Flow <: AbstractConnectType end # sum to 0
 """
 $(TYPEDEF)
 Flag which is meant to be passed to the `connect` metadata of a variable to affect how it
@@ -148,7 +148,7 @@ of the docs.
 See also: [`connect`](@ref), [`@connector`](@ref), [`Equality`](@ref),
 [`Flow`](@ref).
 """
-struct Stream <: AbstractConnectType end   # special stream connector
+struct Stream <: AbstractConnectType end # special stream connector
 """
 getconnect(x)
 Get the connect type of x. See also [`hasconnect`](@ref).
@@ -534,16 +534,16 @@ using ModelingToolkit
 @variables t x(t) y(t)
 @parameters p
 # Evaluate x at time t=1.0
-EvalAt(1.0)(x)  # Returns x(1.0)
+EvalAt(1.0)(x) # Returns x(1.0)
 # Works with parameters (returns unchanged)
-EvalAt(1.0)(p)  # Returns p
+EvalAt(1.0)(p) # Returns p
 # Works with derivatives
 D = Differential(t)
-EvalAt(1.0)(D(x))  # Returns D(x) evaluated at t=1.0
+EvalAt(1.0)(D(x)) # Returns D(x) evaluated at t=1.0
 # Use in optimization constraints
 @optimization_model model begin
 @constraints begin
-EvalAt(0.5)(x) ~ 2.0  # x must equal 2.0 at t=0.5
+EvalAt(0.5)(x) ~ 2.0 # x must equal 2.0 at t=0.5
 end
 end
 ```

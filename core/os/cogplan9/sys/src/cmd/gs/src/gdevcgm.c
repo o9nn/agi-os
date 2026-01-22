@@ -30,11 +30,11 @@ private dev_proc_copy_color(cgm_copy_color);
 private dev_proc_get_params(cgm_get_params);
 private dev_proc_put_params(cgm_put_params);
 #define cgm_device(dname, depth, max_value, dither, map_rgb_color, map_color_rgb)\
-{	std_device_color_stype_body(gx_device_cgm, 0, dname, &st_device_cgm,\
+{ std_device_color_stype_body(gx_device_cgm, 0, dname, &st_device_cgm,\
 850, 1100, 100, 100, depth, max_value, dither),\
-{	cgm_open,\
-NULL,			\
-NULL,			\
+{ cgm_open,\
+NULL, \
+NULL, \
 cgm_output_page,\
 cgm_close,\
 map_rgb_color,\
@@ -43,15 +43,15 @@ cgm_fill_rectangle,\
 cgm_tile_rectangle,\
 cgm_copy_mono,\
 cgm_copy_color,\
-NULL,			\
-NULL,			\
+NULL, \
+NULL, \
 cgm_get_params,\
 cgm_put_params\
 },\
-{ 0 },		\
-0,		\
-0,		\
-0 	\
+{ 0 }, \
+0, \
+0, \
+0 \
 }
 gx_device_cgm gs_cgmmono_device =
 cgm_device("cgmmono", 1, 1, 2,

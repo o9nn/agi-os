@@ -1,6 +1,6 @@
 implement WmLogon;
 #
-# Copyright © 2003 Vita Nuova Holdings Limited.  All rights reserved.
+# Copyright © 2003 Vita Nuova Holdings Limited. All rights reserved.
 #
 #
 # get a certificate to enable remote access.
@@ -31,7 +31,7 @@ Registry, Attributes: import registries;
 # how do we find out the signer; presumably from the registry?
 # should do that before signing on; if we can't get it, then prompt for it.
 WmLogon: module {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 registry: ref Registry;
 usr := "";

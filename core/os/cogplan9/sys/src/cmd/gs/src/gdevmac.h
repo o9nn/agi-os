@@ -1,5 +1,5 @@
 #ifndef gdevmac_INCLUDED
-#  define gdevmac_INCLUDED
+# define gdevmac_INCLUDED
 #include <stdlib.h>
 #include "math_.h"
 #include "string_.h"
@@ -16,30 +16,30 @@
 #include "gxxfont.h"
 #include "gsstruct.h"
 #include "gserrors.h"
-#define DEFAULT_PAGE_SIZE_H		8.5
-#define DEFAULT_PAGE_SIZE_V		11.0
-#define DEFAULT_DEV_DPI			72.0
-#define DEFAULT_PAGE_DPI		72.0
-#define DEFAULT_DEV_WIDTH  		(DEFAULT_PAGE_SIZE_H * DEFAULT_DEV_DPI)
-#define DEFAULT_DEV_HEIGHT 		(DEFAULT_PAGE_SIZE_V * DEFAULT_DEV_DPI)
-#define DEFAULT_PAGE_WIDTH  	(DEFAULT_PAGE_SIZE_H * DEFAULT_PAGE_DPI)
-#define DEFAULT_PAGE_HEIGHT 	(DEFAULT_PAGE_SIZE_V * DEFAULT_PAGE_DPI)
+#define DEFAULT_PAGE_SIZE_H 8.5
+#define DEFAULT_PAGE_SIZE_V 11.0
+#define DEFAULT_DEV_DPI 72.0
+#define DEFAULT_PAGE_DPI 72.0
+#define DEFAULT_DEV_WIDTH (DEFAULT_PAGE_SIZE_H * DEFAULT_DEV_DPI)
+#define DEFAULT_DEV_HEIGHT (DEFAULT_PAGE_SIZE_V * DEFAULT_DEV_DPI)
+#define DEFAULT_PAGE_WIDTH (DEFAULT_PAGE_SIZE_H * DEFAULT_PAGE_DPI)
+#define DEFAULT_PAGE_HEIGHT (DEFAULT_PAGE_SIZE_V * DEFAULT_PAGE_DPI)
 typedef struct gx_device_macos_s
 {
 gx_device_common;
-char			outputFileName[gp_file_name_sizeof];
-FILE			*outputFile;
-PicHandle		pic;
-short			*currPicPos;
-bool			outputPage;
-bool			useXFonts;
-FMFontStyle		lastFontFace;
-FMFontSize		lastFontSize;
-FMFontFamily	lastFontID;
-int				numUsedFonts;
-FMFontFamily	usedFontIDs[256];
+char outputFileName[gp_file_name_sizeof];
+FILE *outputFile;
+PicHandle pic;
+short *currPicPos;
+bool outputPage;
+bool useXFonts;
+FMFontStyle lastFontFace;
+FMFontSize lastFontSize;
+FMFontFamily lastFontID;
+int numUsedFonts;
+FMFontFamily usedFontIDs[256];
 } gx_device_macos;
-#define DEV_MAC_NAME	"macos"
+#define DEV_MAC_NAME "macos"
 dev_proc_open_device(mac_open);
 dev_proc_get_initial_matrix(mac_get_initial_matrix);
 dev_proc_sync_output(mac_sync_output);
@@ -61,36 +61,36 @@ private xfont_proc_render_char(mac_render_char);
 private xfont_proc_release(mac_release);
 typedef struct mac_xfont_s mac_xfont;
 struct mac_xfont_s {
-gx_xfont_common	common;
-gx_device		*dev;
-Str255			fontName;
-FMFontFamily	fontID;
-FMFontStyle		fontFace;
-FMFontSize		fontSize;
-int				fontEncoding;
-FMetricRec		fontMetrics;
+gx_xfont_common common;
+gx_device *dev;
+Str255 fontName;
+FMFontFamily fontID;
+FMFontStyle fontFace;
+FMFontSize fontSize;
+int fontEncoding;
+FMetricRec fontMetrics;
 };
-#define	CheckMem(a,b)																\
-{																			\
-long	offset = (long) mdev->currPicPos - (long) *mdev->pic;			\
-long	len = GetHandleSize((Handle) mdev->pic);						\
-if (len - offset < a) {													\
-HUnlock((Handle) mdev->pic);										\
-SetHandleSize((Handle) mdev->pic, len + b);							\
-if (MemError() != noErr) return gs_error_VMerror;					\
-HLockHi((Handle) mdev->pic);										\
-mdev->currPicPos = (short*) ((long) *mdev->pic + offset);			\
-}																		\
+#define CheckMem(a,b) \
+{ \
+long offset = (long) mdev->currPicPos - (long) *mdev->pic; \
+long len = GetHandleSize((Handle) mdev->pic); \
+if (len - offset < a) { \
+HUnlock((Handle) mdev->pic); \
+SetHandleSize((Handle) mdev->pic, len + b); \
+if (MemError() != noErr) return gs_error_VMerror; \
+HLockHi((Handle) mdev->pic); \
+mdev->currPicPos = (short*) ((long) *mdev->pic + offset); \
+} \
 }
-#define ResetPage()																	\
-{																			\
-if (mdev->outputPage) {													\
-mdev->outputPage = false;											\
-mdev->currPicPos = (short*) *mdev->pic;								\
-mdev->currPicPos += 42; 							\
-mdev->lastFontID = mdev->lastFontSize = mdev->lastFontFace = -1;	\
-mdev->numUsedFonts = 0;												\
-}																		\
+#define ResetPage() \
+{ \
+if (mdev->outputPage) { \
+mdev->outputPage = false; \
+mdev->currPicPos = (short*) *mdev->pic; \
+mdev->currPicPos += 42; \
+mdev->lastFontID = mdev->lastFontSize = mdev->lastFontFace = -1; \
+mdev->numUsedFonts = 0; \
+} \
 }
 typedef struct {
 unsigned short red;
@@ -102,14 +102,14 @@ float h;
 float s;
 float v;
 } colorHSV;
-private int		mac_save_pict(gx_device * dev);
-private void	mac_convert_rgb_hsv(colorRGB *inRGB, colorHSV *HSV);
-private void	mac_convert_hsv_rgb(colorHSV *inHSV, colorRGB *RGB);
-private void	mac_find_font_family(ConstStringPtr fname, int len,
+private int mac_save_pict(gx_device * dev);
+private void mac_convert_rgb_hsv(colorRGB *inRGB, colorHSV *HSV);
+private void mac_convert_hsv_rgb(colorHSV *inHSV, colorRGB *RGB);
+private void mac_find_font_family(ConstStringPtr fname, int len,
 FMFontFamily *fontFamilyID, FMFontStyle *fontFace);
-private int		mac_get_font_encoding(mac_xfont *macxf);
-private void	mac_get_font_resource(mac_xfont *macxf, ResType *resType, short *resID);
-private int     mac_set_colordepth(gx_device *dev, int depth);
+private int mac_get_font_encoding(mac_xfont *macxf);
+private void mac_get_font_resource(mac_xfont *macxf, ResType *resType, short *resID);
+private int mac_set_colordepth(gx_device *dev, int depth);
 #pragma export on
 int GSDLLAPI gsdll_get_pict(unsigned char *, PicHandle *);
 typedef int (GSDLLAPI * PFN_gsdll_get_pict) (unsigned char *, PicHandle *);

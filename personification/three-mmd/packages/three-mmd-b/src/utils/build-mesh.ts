@@ -4,17 +4,17 @@ import { buildBones } from './build-bones'
 import { buildGeometry } from './build-geometry'
 import { buildMaterial } from './build-material'
 export const buildMesh = (
-  pmx: PmxObject,
-  resourcePath: string,
+pmx: PmxObject,
+resourcePath: string,
 ): SkinnedMesh => {
-  const geometry = buildGeometry(pmx)
-  const material = buildMaterial(
-    pmx,
-    geometry,
-    resourcePath,
-  )
-  const mesh = new SkinnedMesh(geometry, material)
-  const skeleton = new Skeleton(buildBones(pmx, mesh))
-  mesh.bind(skeleton)
-  return mesh
+const geometry = buildGeometry(pmx)
+const material = buildMaterial(
+pmx,
+geometry,
+resourcePath,
+)
+const mesh = new SkinnedMesh(geometry, material)
+const skeleton = new Skeleton(buildBones(pmx, mesh))
+mesh.bind(skeleton)
+return mesh
 }

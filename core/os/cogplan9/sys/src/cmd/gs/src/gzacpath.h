@@ -1,5 +1,5 @@
 #ifndef gzacpath_INCLUDED
-#  define gzacpath_INCLUDED
+# define gzacpath_INCLUDED
 typedef struct gx_device_cpath_accum_s {
 gx_device_common;
 gs_memory_t *list_memory;

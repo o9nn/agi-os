@@ -360,7 +360,7 @@ if (err)
 error (2, err, "mach_port_extract_right");
 if (
 hurd_ihash_find (&traced_names, send_right)
-|| send_right != send	)
+|| send_right != send )
 {
 mach_port_deallocate (mach_task_self (), send_right);
 continue;
@@ -1027,21 +1027,21 @@ const char *letter;
 };
 static const char *const msg_types[] =
 {
-[MACH_MSG_TYPE_BIT]		= {"bool", "b"},
-[MACH_MSG_TYPE_INTEGER_16]	= {"int16", "h"},
-[MACH_MSG_TYPE_INTEGER_32]	= {"int32", "i"},
-[MACH_MSG_TYPE_CHAR]		= {"char", "c"},
-[MACH_MSG_TYPE_INTEGER_8]	= {"int8", "B"},
-[MACH_MSG_TYPE_REAL]		= {"float", "f"},
-[MACH_MSG_TYPE_INTEGER_64]	= {"int64", "q"},
-[MACH_MSG_TYPE_STRING]	= {"string", "s"},
-[MACH_MSG_TYPE_MOVE_RECEIVE]	= {"move-receive", "R"},
-[MACH_MSG_TYPE_MOVE_SEND]	= {"move-send", "S"},
+[MACH_MSG_TYPE_BIT] = {"bool", "b"},
+[MACH_MSG_TYPE_INTEGER_16] = {"int16", "h"},
+[MACH_MSG_TYPE_INTEGER_32] = {"int32", "i"},
+[MACH_MSG_TYPE_CHAR] = {"char", "c"},
+[MACH_MSG_TYPE_INTEGER_8] = {"int8", "B"},
+[MACH_MSG_TYPE_REAL] = {"float", "f"},
+[MACH_MSG_TYPE_INTEGER_64] = {"int64", "q"},
+[MACH_MSG_TYPE_STRING] = {"string", "s"},
+[MACH_MSG_TYPE_MOVE_RECEIVE] = {"move-receive", "R"},
+[MACH_MSG_TYPE_MOVE_SEND] = {"move-send", "S"},
 [MACH_MSG_TYPE_MOVE_SEND_ONCE]= {"move-send-once", "O"},
-[MACH_MSG_TYPE_COPY_SEND]	= {"copy-send", "s"},
-[MACH_MSG_TYPE_MAKE_SEND]	= {"make-send", ""},
+[MACH_MSG_TYPE_COPY_SEND] = {"copy-send", "s"},
+[MACH_MSG_TYPE_MAKE_SEND] = {"make-send", ""},
 [MACH_MSG_TYPE_MAKE_SEND_ONCE]= {"make-send-once", ""},
-[MACH_MSG_TYPE_PORT_NAME]	= {"port-name", "n"},
+[MACH_MSG_TYPE_PORT_NAME] = {"port-name", "n"},
 };
 #endif
 static mach_port_t last_reply_port;
@@ -1163,18 +1163,18 @@ if (eltsize == 1)
 FMT ("'%c'", unsigned char);
 break;
 #endif
-#define FMT(fmt, ctype) do {						      \
-mach_msg_type_number_t i;					      \
-for (i = 0; i < nelt; ++i)					      \
-{								      \
-fprintf (ostream, "%s" fmt,					      \
-(i == 0 && nelt > 1) ? "{" : i > 0 ? " " : "",	      \
-*(const ctype *) data);				      \
-data += eltsize;						      \
-}								      \
-if (nelt > 1)							      \
-putc ('}', ostream);						      \
-return;								      \
+#define FMT(fmt, ctype) do { \
+mach_msg_type_number_t i; \
+for (i = 0; i < nelt; ++i) \
+{ \
+fprintf (ostream, "%s" fmt, \
+(i == 0 && nelt > 1) ? "{" : i > 0 ? " " : "", \
+*(const ctype *) data); \
+data += eltsize; \
+} \
+if (nelt > 1) \
+putc ('}', ostream); \
+return; \
 } while (0)
 case MACH_MSG_TYPE_BIT:
 case MACH_MSG_TYPE_INTEGER_8:
@@ -1183,10 +1183,10 @@ case MACH_MSG_TYPE_INTEGER_32:
 case MACH_MSG_TYPE_INTEGER_64:
 switch (eltsize)
 {
-case 1:				FMT ("%"PRId8, int8_t);
-case 2:				FMT ("%"PRId16, int16_t);
-case 4:				FMT ("%"PRId32, int32_t);
-case 8:				FMT ("%"PRId64, int64_t);
+case 1: FMT ("%"PRId8, int8_t);
+case 2: FMT ("%"PRId16, int16_t);
+case 4: FMT ("%"PRId32, int32_t);
+case 8: FMT ("%"PRId64, int64_t);
 }
 break;
 case MACH_MSG_TYPE_REAL:

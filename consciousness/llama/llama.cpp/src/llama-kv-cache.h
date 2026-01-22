@@ -15,20 +15,20 @@ struct llama_context;
 struct llama_kv_cache : public llama_memory_i {
 virtual ~llama_kv_cache() = default;
 virtual void restore() = 0;
-virtual void commit()  = 0;
+virtual void commit() = 0;
 virtual bool update(llama_context & lctx) = 0;
 virtual void defrag_sched(float thold) = 0;
 virtual void set_full() = 0;
 virtual llama_sbatch sbatch_init(const llama_batch & batch, bool logits_all) = 0;
 virtual llama_ubatch ubatch_next(llama_sbatch & sbatch, uint32_t n_ubatch, bool embd_pooled) const = 0;
 virtual bool find_slot(const llama_ubatch & batch) = 0;
-virtual int32_t   get_n_tokens()   const = 0;
-virtual int32_t   get_used_cells() const = 0;
-virtual llama_pos get_pos_max()    const = 0;
-virtual bool      get_can_shift()  const = 0;
+virtual int32_t get_n_tokens() const = 0;
+virtual int32_t get_used_cells() const = 0;
+virtual llama_pos get_pos_max() const = 0;
+virtual bool get_can_shift() const = 0;
 bool get_can_edit() const override { return get_can_shift(); }
 virtual void state_write(llama_io_write_i & io, llama_seq_id seq_id = -1) const = 0;
-virtual void state_read (llama_io_read_i  & io, llama_seq_id seq_id = -1) = 0;
+virtual void state_read (llama_io_read_i & io, llama_seq_id seq_id = -1) = 0;
 };
 struct llama_kv_cache_guard {
 llama_kv_cache_guard(llama_kv_cache * kv) : kv(kv) {}
@@ -49,8 +49,8 @@ uint32_t len;
 class llama_kv_cache_unified : public llama_kv_cache {
 public:
 struct kv_cell {
-llama_pos pos   = -1;
-llama_pos delta =  0;
+llama_pos pos = -1;
+llama_pos delta = 0;
 std::set<llama_seq_id> seq_id;
 bool has_seq_id(const llama_seq_id & id) const {
 return seq_id.find(id) != seq_id.end();
@@ -65,34 +65,34 @@ return seq_id == other.seq_id;
 static uint32_t get_padding(const llama_cparams & cparams);
 llama_kv_cache_unified(
 const llama_model & model,
-ggml_type   type_k,
-ggml_type   type_v,
-bool   v_trans,
-bool   offload,
-uint32_t   kv_size,
-uint32_t   padding);
+ggml_type type_k,
+ggml_type type_v,
+bool v_trans,
+bool offload,
+uint32_t kv_size,
+uint32_t padding);
 ~llama_kv_cache_unified() = default;
 void clear() override;
-bool seq_rm  (llama_seq_id seq_id,                              llama_pos p0, llama_pos p1) override;
-void seq_cp  (llama_seq_id seq_id_src, llama_seq_id seq_id_dst, llama_pos p0, llama_pos p1) override;
+bool seq_rm (llama_seq_id seq_id, llama_pos p0, llama_pos p1) override;
+void seq_cp (llama_seq_id seq_id_src, llama_seq_id seq_id_dst, llama_pos p0, llama_pos p1) override;
 void seq_keep(llama_seq_id seq_id) override;
-void seq_add (llama_seq_id seq_id,                              llama_pos p0, llama_pos p1, llama_pos delta) override;
-void seq_div (llama_seq_id seq_id,                              llama_pos p0, llama_pos p1, int d) override;
+void seq_add (llama_seq_id seq_id, llama_pos p0, llama_pos p1, llama_pos delta) override;
+void seq_div (llama_seq_id seq_id, llama_pos p0, llama_pos p1, int d) override;
 llama_pos seq_pos_max(llama_seq_id seq_id) const override;
 void restore() override;
-void commit()  override;
+void commit() override;
 bool update(llama_context & ctx) override;
 void defrag_sched(float thold) override;
 void set_full() override;
 llama_sbatch sbatch_init(const llama_batch & batch, bool logits_all) override;
 llama_ubatch ubatch_next(llama_sbatch & sbatch, uint32_t n_ubatch, bool embd_pooled) const override;
 bool find_slot(const llama_ubatch & batch) override;
-int32_t get_n_tokens()   const override;
+int32_t get_n_tokens() const override;
 int32_t get_used_cells() const override;
 llama_pos get_pos_max() const override;
 bool get_can_shift() const override;
 void state_write(llama_io_write_i & io, llama_seq_id seq_id = -1) const override;
-void state_read (llama_io_read_i  & io, llama_seq_id seq_id = -1) override;
+void state_read (llama_io_read_i & io, llama_seq_id seq_id = -1) override;
 uint32_t head = 0;
 uint32_t size = 0;
 uint32_t used = 0;
@@ -105,12 +105,12 @@ const llama_model & model;
 const llama_hparams & hparams;
 bool has_shift = false;
 bool do_defrag = false;
-bool v_trans   = true;
+bool v_trans = true;
 bool can_shift = false;
 uint32_t padding = 1;
 ggml_type type_k = GGML_TYPE_F16;
 ggml_type type_v = GGML_TYPE_F16;
-std::vector<ggml_context_ptr>        ctxs;
+std::vector<ggml_context_ptr> ctxs;
 std::vector<ggml_backend_buffer_ptr> bufs;
 struct {
 std::vector<llama_kv_defrag_move> moves;
@@ -133,8 +133,8 @@ ggml_context * ctx,
 ggml_tensor * cur,
 ggml_tensor * shift,
 ggml_tensor * factors,
-float   freq_base,
-float   freq_scale) const;
+float freq_base,
+float freq_scale) const;
 llm_graph_result_ptr build_graph_shift(
 const llama_cparams & cparams,
 ggml_context * ctx,
@@ -152,9 +152,9 @@ bool state_read_data(llama_io_read_i & io, uint32_t cell_count);
 class llama_kv_cache_recurrent : public llama_kv_cache {
 public:
 struct kv_cell {
-llama_pos pos  = -1;
-int32_t   src  = -1;
-int32_t   tail = -1;
+llama_pos pos = -1;
+int32_t src = -1;
+int32_t tail = -1;
 std::set<llama_seq_id> seq_id;
 bool has_seq_id(const llama_seq_id & id) const {
 return seq_id.find(id) != seq_id.end();
@@ -168,34 +168,34 @@ return seq_id == other.seq_id;
 };
 llama_kv_cache_recurrent(
 const llama_model & model,
-ggml_type   type_k,
-ggml_type   type_v,
-bool   offload,
-uint32_t   kv_size);
+ggml_type type_k,
+ggml_type type_v,
+bool offload,
+uint32_t kv_size);
 ~llama_kv_cache_recurrent() = default;
 void clear() override;
-bool seq_rm  (llama_seq_id seq_id,                              llama_pos p0, llama_pos p1) override;
-void seq_cp  (llama_seq_id seq_id_src, llama_seq_id seq_id_dst, llama_pos p0, llama_pos p1) override;
+bool seq_rm (llama_seq_id seq_id, llama_pos p0, llama_pos p1) override;
+void seq_cp (llama_seq_id seq_id_src, llama_seq_id seq_id_dst, llama_pos p0, llama_pos p1) override;
 void seq_keep(llama_seq_id seq_id) override;
-void seq_add (llama_seq_id seq_id,                              llama_pos p0, llama_pos p1, llama_pos delta) override;
-void seq_div (llama_seq_id seq_id,                              llama_pos p0, llama_pos p1, int d) override;
+void seq_add (llama_seq_id seq_id, llama_pos p0, llama_pos p1, llama_pos delta) override;
+void seq_div (llama_seq_id seq_id, llama_pos p0, llama_pos p1, int d) override;
 llama_pos seq_pos_max(llama_seq_id seq_id) const override;
 void restore() override;
-void commit()  override;
+void commit() override;
 bool update(llama_context & lctx) override;
 void defrag_sched(float thold) override;
 void set_full() override;
 llama_sbatch sbatch_init(const llama_batch & batch, bool logits_all) override;
 llama_ubatch ubatch_next(llama_sbatch & sbatch, uint32_t n_ubatch, bool embd_pooled) const override;
 bool find_slot(const llama_ubatch & batch) override;
-int32_t get_n_tokens()   const override;
+int32_t get_n_tokens() const override;
 int32_t get_used_cells() const override;
 llama_pos get_pos_max() const override;
 bool get_can_shift() const override;
 int32_t s_copy(int i) const;
-float   s_mask(int i) const;
+float s_mask(int i) const;
 void state_write(llama_io_write_i & io, llama_seq_id seq_id = -1) const override;
-void state_read (llama_io_read_i  & io, llama_seq_id seq_id = -1) override;
+void state_read (llama_io_read_i & io, llama_seq_id seq_id = -1) override;
 uint32_t head = 0;
 uint32_t size = 0;
 uint32_t used = 0;
@@ -214,7 +214,7 @@ std::vector<slot_range> ranges;
 } pending;
 ggml_type type_k = GGML_TYPE_F16;
 ggml_type type_v = GGML_TYPE_F16;
-std::vector<ggml_context_ptr>        ctxs;
+std::vector<ggml_context_ptr> ctxs;
 std::vector<ggml_backend_buffer_ptr> bufs;
 uint32_t cell_max() const;
 size_t total_size() const;

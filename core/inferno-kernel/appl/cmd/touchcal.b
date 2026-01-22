@@ -2,12 +2,12 @@ implement Touchcal;
 #
 # calibrate a touch screen
 #
-# Copyright © 2001 Vita Nuova Holdings Limited.  All rights reserved.
+# Copyright © 2001 Vita Nuova Holdings Limited. All rights reserved.
 #
 include "sys.m";
-sys:	Sys;
+sys: Sys;
 include "draw.m";
-draw:	Draw;
+draw: Draw;
 Display, Font, Image, Point, Pointer, Rect: import draw;
 include "tk.m";
 include "wmclient.m";
@@ -18,7 +18,7 @@ translate: Translate;
 Dict: import translate;
 Touchcal: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 Margin: con 20;
 prompt:= "Please tap the centre\nof the cross\nwith the stylus";
@@ -97,9 +97,9 @@ err(sys->sprint("can't open /dev/touchctl: %r"));
 #oldvalues := array[128] of byte;
 #nr := sys->read(ctl, oldvalues, len oldvalues);
 #if(nr < 0)
-#	err(sys->sprint("can't read old values from /dev/touchctl: %r"));
+# err(sys->sprint("can't read old values from /dev/touchctl: %r"));
 #oldvalues = oldvalues[0:nr];
-sys->fprint(ctl, "X %d %d %d\nY %d %d %d\n", FX(1,1), 0, 0, 0, FX(1,1), 0);	# identity
+sys->fprint(ctl, "X %d %d %d\nY %d %d %d\n", FX(1,1), 0, 0, 0, FX(1,1), 0); # identity
 font := Font.open(display, sys->sprint("/fonts/lucida/unicode.%d.font", 6+(r.dx()/512)));
 if(font == nil)
 font = Font.open(display, "*default*");
@@ -125,7 +125,7 @@ samples[i] = (samples[i].y, samples[i].x);
 actx := (samples[1].x-samples[0].x)+(samples[2].x-samples[3].x);
 acty := (samples[3].y-samples[0].y)+(samples[2].y-samples[1].y);
 if(actx == 0 || acty == 0)
-continue;		# either the user or device is not trying
+continue; # either the user or device is not trying
 tm[0][rotate] = refx/actx;
 tm[0][2] = FX(points[0].x - XF(tm[0][rotate]*samples[0].x), 1);
 tm[1][1-rotate] = refy/acty;

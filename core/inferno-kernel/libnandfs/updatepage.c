@@ -10,7 +10,7 @@ uchar tbuf[NandfsFullSize];
 ulong ecc1, ecc2;
 ulong rawoffset;
 NandfsAuxiliary *hdr;
-rawoffset =  (nandfs->baseblock + block) * nandfs->rawblocksize + page * NandfsFullSize;
+rawoffset = (nandfs->baseblock + block) * nandfs->rawblocksize + page * NandfsFullSize;
 memmove(tbuf, buf, NandfsPageSize);
 ecc1 = nandecc(tbuf);
 ecc2 = nandecc(tbuf + 256);

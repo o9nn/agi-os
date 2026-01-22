@@ -350,7 +350,7 @@ static bool connector_matches_alam(Connector * a, Connector * b)
 {
 char * s, * t, *u;
 if (((!a->multi) && b->multi) ||
-(a->label != b->label))  return false;
+(a->label != b->label)) return false;
 s = a->string;
 t = b->string;
 while (isupper(*s) || isupper(*t))

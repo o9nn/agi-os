@@ -1,2 +1,2 @@
-extern	char*		tkdrawframe(Tk*, Point);
-extern	void		tkfreeframe(Tk*);
+extern char* tkdrawframe(Tk*, Point);
+extern void tkfreeframe(Tk*);

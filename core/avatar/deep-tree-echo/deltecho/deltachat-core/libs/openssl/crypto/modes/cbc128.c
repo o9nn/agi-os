@@ -3,7 +3,7 @@
 #include <string.h>
 #ifndef MODES_DEBUG
 # ifndef NDEBUG
-#  define NDEBUG
+# define NDEBUG
 # endif
 #endif
 #include <assert.h>

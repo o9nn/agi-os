@@ -19,7 +19,7 @@
 #include <vm/vm_user.h>
 #include <vm/pmap.h>
 #include <device/device_port.h>
-#if	MACH_KDB
+#if MACH_KDB
 #include <machine/db_machdep.h>
 #include <ddb/db_sym.h>
 #endif
@@ -32,7 +32,7 @@
 #else
 #include <mach/machine/multiboot.h>
 #include <mach/exec/exec.h>
-#ifdef	MACH_XEN
+#ifdef MACH_XEN
 #include <mach/xen.h>
 extern struct start_info boot_info;
 #else
@@ -40,8 +40,8 @@ extern struct multiboot_raw_info boot_info;
 #endif
 #endif
 #include "boot_script.h"
-static mach_port_name_t	boot_device_port;
-static mach_port_name_t	boot_host_port;
+static mach_port_name_t boot_device_port;
+static mach_port_name_t boot_host_port;
 extern char *kernel_cmdline;
 static void user_bootstrap(void);
 static void user_bootstrap_compat(void);
@@ -79,7 +79,7 @@ void bootstrap_create(void)
 {
 int compat;
 unsigned n = 0;
-#ifdef	MACH_XEN
+#ifdef MACH_XEN
 #ifdef __x86_64__
 struct multiboot32_module *bmods32 = (struct multiboot32_module *)
 boot_info.mod_start;
@@ -251,8 +251,8 @@ free_bootstrap_pages(bmods[n].mod_start, bmods[n].mod_end);
 static void
 bootstrap_exec_compat(void *e)
 {
-task_t		bootstrap_task;
-thread_t	bootstrap_thread;
+task_t bootstrap_task;
+thread_t bootstrap_thread;
 (void) task_create(TASK_NULL, FALSE, &bootstrap_task);
 (void) task_set_name(bootstrap_task, "bootstrap");
 (void) thread_create(bootstrap_task, &bootstrap_thread);
@@ -269,11 +269,11 @@ thread_start(bootstrap_thread, user_bootstrap_compat);
 }
 static void
 itoa(
-char		*str,
-vm_size_t	num)
+char *str,
+vm_size_t num)
 {
-char	buf[sizeof(vm_size_t)*2+3];
-char 	*np;
+char buf[sizeof(vm_size_t)*2+3];
+char *np;
 np = buf + sizeof(buf);
 *--np = 0;
 do {
@@ -321,16 +321,16 @@ if (cp == &flags_str[1])
 *cp = '\0';
 }
 #if 0
-static boolean_t	load_protect_text = TRUE;
+static boolean_t load_protect_text = TRUE;
 #if MACH_KDB
-static boolean_t	load_fault_in_text = TRUE;
+static boolean_t load_fault_in_text = TRUE;
 #endif
 static vm_offset_t
 boot_map(
-void *		data,
-vm_offset_t	offset)
+void * data,
+vm_offset_t offset)
 {
-vm_offset_t	start_offset = (vm_offset_t) data;
+vm_offset_t start_offset = (vm_offset_t) data;
 return pmap_extract(kernel_pmap, start_offset + offset);
 }
 #if BOOTSTRAP_SYMBOLS
@@ -393,7 +393,7 @@ static void copy_bootstrap(void *e, exec_info_t *boot_exec_info)
 int err;
 if ((err = exec_load(boot_read, read_exec, e, boot_exec_info)))
 panic("Cannot load user-bootstrap image: error code %d", err);
-#if	MACH_KDB
+#if MACH_KDB
 #if 0
 if (load_bootstrap_symbols)
 (void) X_db_sym_init(
@@ -425,17 +425,17 @@ static void
 build_args_and_stack(struct exec_info *boot_exec_info,
 char **argv, char **envp)
 {
-vm_offset_t	stack_base;
-vm_size_t	stack_size;
-char *		arg_ptr;
-long		arg_count, envc;
-int		arg_len;
-char *		arg_pos;
-int		arg_item_len;
-char *		string_pos;
-rpc_vm_offset_t	zero = 0;
+vm_offset_t stack_base;
+vm_size_t stack_size;
+char * arg_ptr;
+long arg_count, envc;
+int arg_len;
+char * arg_pos;
+int arg_item_len;
+char * string_pos;
+rpc_vm_offset_t zero = 0;
 int i;
-#define	STACK_SIZE	(2*64*1024)
+#define STACK_SIZE (2*64*1024)
 arg_len = 0;
 arg_count = 0;
 while (argv[arg_count] != 0) {
@@ -489,10 +489,10 @@ static void
 user_bootstrap_compat(void)
 {
 exec_info_t boot_exec_info;
-char	host_string[12];
-char	device_string[12];
-char	flag_string[1024];
-char	root_string[1024];
+char host_string[12];
+char device_string[12];
+char flag_string[1024];
+char root_string[1024];
 copy_bootstrap(current_thread()->saved.other, &boot_exec_info);
 itoa(host_string, boot_host_port);
 itoa(device_string, boot_device_port);

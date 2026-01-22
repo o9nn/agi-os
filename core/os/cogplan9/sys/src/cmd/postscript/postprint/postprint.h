@@ -1,24 +1,24 @@
-#define LINESPP		66
-#define TABSTOPS	8
-#define POINTSIZE	10
+#define LINESPP 66
+#define TABSTOPS 8
+#define POINTSIZE 10
 typedef struct {
-char	*name;
-char	*val;
+char *name;
+char *val;
 } Fontmap;
-#define FONTMAP								\
+#define FONTMAP \
 \
-{								\
-"R", "Courier",						\
-"I", "Courier-Oblique",					\
-"B", "Courier-Bold",					\
-"CO", "Courier",						\
-"CI", "Courier-Oblique",					\
-"CB", "Courier-Bold",					\
-"CW", "Courier",						\
-"PO", "Courier",						\
-"courier", "Courier",					\
-"cour", "Courier",						\
-"co", "Courier",						\
-NULL, NULL							\
+{ \
+"R", "Courier", \
+"I", "Courier-Oblique", \
+"B", "Courier-Bold", \
+"CO", "Courier", \
+"CI", "Courier-Oblique", \
+"CB", "Courier-Bold", \
+"CW", "Courier", \
+"PO", "Courier", \
+"courier", "Courier", \
+"cour", "Courier", \
+"co", "Courier", \
+NULL, NULL \
 }
-char	*get_font();
+char *get_font();

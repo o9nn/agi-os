@@ -18,34 +18,34 @@ Debugger("schedule_task");
 return 0;
 }
 #define min(x,y) ({ \
-const typeof(x) _x = (x);       \
-const typeof(y) _y = (y);       \
-(void) (&_x == &_y);            \
+const typeof(x) _x = (x); \
+const typeof(y) _y = (y); \
+(void) (&_x == &_y); \
 _x < _y ? _x : _y; })
 #define max(x,y) ({ \
-const typeof(x) _x = (x);       \
-const typeof(y) _y = (y);       \
-(void) (&_x == &_y);            \
+const typeof(x) _x = (x); \
+const typeof(y) _y = (y); \
+(void) (&_x == &_y); \
 _x > _y ? _x : _y; })
 #define min_t(type,x,y) \
 ({ type __x = (x); type __y = (y); __x < __y ? __x: __y; })
 #define max_t(type,x,y) \
 ({ type __x = (x); type __y = (y); __x > __y ? __x: __y; })
-#define DEV_KFREE_SKB(skb)      dev_kfree_skb(skb, FREE_WRITE)
-#define le16_to_cpus(x)  do { } while(0)
+#define DEV_KFREE_SKB(skb) dev_kfree_skb(skb, FREE_WRITE)
+#define le16_to_cpus(x) do { } while(0)
 #undef copy_to_user
-#define copy_to_user(a,b,c)    ((memcpy_tofs(a,b,c)), 0)
+#define copy_to_user(a,b,c) ((memcpy_tofs(a,b,c)), 0)
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
-#define PREPARE_TQUEUE(_tq, _routine, _data)                    \
-do {                                                          \
-(_tq)->routine = _routine;                                  \
-(_tq)->data = _data;					\
+#define PREPARE_TQUEUE(_tq, _routine, _data) \
+do { \
+(_tq)->routine = _routine; \
+(_tq)->data = _data; \
 } while (0)
-#define INIT_TQUEUE(_tq, _routine, _data)                       \
-do {								\
-(_tq)->next = 0;						\
-(_tq)->sync = 0;						\
-PREPARE_TQUEUE((_tq), (_routine), (_data));			\
+#define INIT_TQUEUE(_tq, _routine, _data) \
+do { \
+(_tq)->next = 0; \
+(_tq)->sync = 0; \
+PREPARE_TQUEUE((_tq), (_routine), (_data)); \
 } while (0)
 static inline struct net_device *
 alloc_etherdev(int sz)

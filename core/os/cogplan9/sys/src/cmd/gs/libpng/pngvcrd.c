@@ -33,10 +33,10 @@ _asm _emit 0x0f
 _asm _emit 0xa2
 and edx, 0x00800000
 cmp edx, 0
-jz  NOT_SUPPORTED
-mov  mmx_supported_local, 1
+jz NOT_SUPPORTED
+mov mmx_supported_local, 1
 NOT_SUPPORTED:
-mov  eax, mmx_supported_local
+mov eax, mmx_supported_local
 pop edx
 pop ecx
 pop ebx
@@ -236,50 +236,50 @@ srcptr = png_ptr->row_buf + 1;
 dstptr = row;
 m = 0x80;
 unmask = ~mask;
-len  = png_ptr->width &~7;
+len = png_ptr->width &~7;
 diff = png_ptr->width & 7;
 _asm
 {
-movd       mm7, unmask
-psubb      mm6,mm6
-punpcklbw  mm7,mm7
-punpcklwd  mm7,mm7
-punpckldq  mm7,mm7
-movq       mm0,mask0
-pand       mm0,mm7
-pcmpeqb    mm0,mm6
-mov        ecx,len
-mov        esi,srcptr
-mov        ebx,dstptr
-cmp        ecx,0
-je         mainloop8end
+movd mm7, unmask
+psubb mm6,mm6
+punpcklbw mm7,mm7
+punpcklwd mm7,mm7
+punpckldq mm7,mm7
+movq mm0,mask0
+pand mm0,mm7
+pcmpeqb mm0,mm6
+mov ecx,len
+mov esi,srcptr
+mov ebx,dstptr
+cmp ecx,0
+je mainloop8end
 mainloop8:
-movq       mm4,[esi]
-pand       mm4,mm0
-movq       mm6,mm0
-pandn      mm6,[ebx]
-por        mm4,mm6
-movq       [ebx],mm4
-add        esi,8
-add        ebx,8
-sub        ecx,8
-ja         mainloop8
+movq mm4,[esi]
+pand mm4,mm0
+movq mm6,mm0
+pandn mm6,[ebx]
+por mm4,mm6
+movq [ebx],mm4
+add esi,8
+add ebx,8
+sub ecx,8
+ja mainloop8
 mainloop8end:
-mov        ecx,diff
-cmp        ecx,0
-jz         end8
-mov        edx,mask
-sal        edx,24
+mov ecx,diff
+cmp ecx,0
+jz end8
+mov edx,mask
+sal edx,24
 secondloop8:
-sal        edx,1
-jnc        skip8
-mov        al,[esi]
-mov        [ebx],al
+sal edx,1
+jnc skip8
+mov al,[esi]
+mov [ebx],al
 skip8:
-inc        esi
-inc        ebx
-dec        ecx
-jnz        secondloop8
+inc esi
+inc ebx
+dec ecx
+jnz secondloop8
 end8:
 emms
 }
@@ -325,61 +325,61 @@ if (mmx_supported)
 srcptr = png_ptr->row_buf + 1;
 dstptr = row;
 unmask = ~mask;
-len     = (png_ptr->width)&~7;
+len = (png_ptr->width)&~7;
 diff = (png_ptr->width)&7;
 _asm
 {
-movd       mm7, unmask
-psubb      mm6,mm6
-punpcklbw  mm7,mm7
-punpcklwd  mm7,mm7
-punpckldq  mm7,mm7
-movq       mm0,mask0
-movq       mm1,mask1
-pand       mm0,mm7
-pand       mm1,mm7
-pcmpeqb    mm0,mm6
-pcmpeqb    mm1,mm6
-mov        ecx,len
-mov        esi,srcptr
-mov        ebx,dstptr
-cmp        ecx,0
-jz         mainloop16end
+movd mm7, unmask
+psubb mm6,mm6
+punpcklbw mm7,mm7
+punpcklwd mm7,mm7
+punpckldq mm7,mm7
+movq mm0,mask0
+movq mm1,mask1
+pand mm0,mm7
+pand mm1,mm7
+pcmpeqb mm0,mm6
+pcmpeqb mm1,mm6
+mov ecx,len
+mov esi,srcptr
+mov ebx,dstptr
+cmp ecx,0
+jz mainloop16end
 mainloop16:
-movq       mm4,[esi]
-pand       mm4,mm0
-movq       mm6,mm0
-movq       mm7,[ebx]
-pandn      mm6,mm7
-por        mm4,mm6
-movq       [ebx],mm4
-movq       mm5,[esi+8]
-pand       mm5,mm1
-movq       mm7,mm1
-movq       mm6,[ebx+8]
-pandn      mm7,mm6
-por        mm5,mm7
-movq       [ebx+8],mm5
-add        esi,16
-add        ebx,16
-sub        ecx,8
-ja         mainloop16
+movq mm4,[esi]
+pand mm4,mm0
+movq mm6,mm0
+movq mm7,[ebx]
+pandn mm6,mm7
+por mm4,mm6
+movq [ebx],mm4
+movq mm5,[esi+8]
+pand mm5,mm1
+movq mm7,mm1
+movq mm6,[ebx+8]
+pandn mm7,mm6
+por mm5,mm7
+movq [ebx+8],mm5
+add esi,16
+add ebx,16
+sub ecx,8
+ja mainloop16
 mainloop16end:
-mov        ecx,diff
-cmp        ecx,0
-jz         end16
-mov        edx,mask
-sal        edx,24
+mov ecx,diff
+cmp ecx,0
+jz end16
+mov edx,mask
+sal edx,24
 secondloop16:
-sal        edx,1
-jnc        skip16
-mov        ax,[esi]
-mov        [ebx],ax
+sal edx,1
+jnc skip16
+mov ax,[esi]
+mov [ebx],ax
 skip16:
-add        esi,2
-add        ebx,2
-dec        ecx
-jnz        secondloop16
+add esi,2
+add ebx,2
+dec ecx
+jnz secondloop16
 end16:
 emms
 }
@@ -419,7 +419,7 @@ mask0=0x2020404040808080;
 srcptr = png_ptr->row_buf + 1;
 dstptr = row;
 unmask = ~mask;
-len     = (png_ptr->width)&~7;
+len = (png_ptr->width)&~7;
 diff = (png_ptr->width)&7;
 #if !defined(PNG_1_0_X)
 if ((png_ptr->asm_flags & PNG_ASM_FLAG_MMX_READ_COMBINE_ROW)
@@ -430,70 +430,70 @@ if (mmx_supported)
 {
 _asm
 {
-movd       mm7, unmask
-psubb      mm6,mm6
-punpcklbw  mm7,mm7
-punpcklwd  mm7,mm7
-punpckldq  mm7,mm7
-movq       mm0,mask0
-movq       mm1,mask1
-movq       mm2,mask2
-pand       mm0,mm7
-pand       mm1,mm7
-pand       mm2,mm7
-pcmpeqb    mm0,mm6
-pcmpeqb    mm1,mm6
-pcmpeqb    mm2,mm6
-mov        ecx,len
-mov        esi,srcptr
-mov        ebx,dstptr
-cmp        ecx,0
-jz         mainloop24end
+movd mm7, unmask
+psubb mm6,mm6
+punpcklbw mm7,mm7
+punpcklwd mm7,mm7
+punpckldq mm7,mm7
+movq mm0,mask0
+movq mm1,mask1
+movq mm2,mask2
+pand mm0,mm7
+pand mm1,mm7
+pand mm2,mm7
+pcmpeqb mm0,mm6
+pcmpeqb mm1,mm6
+pcmpeqb mm2,mm6
+mov ecx,len
+mov esi,srcptr
+mov ebx,dstptr
+cmp ecx,0
+jz mainloop24end
 mainloop24:
-movq       mm4,[esi]
-pand       mm4,mm0
-movq       mm6,mm0
-movq       mm7,[ebx]
-pandn      mm6,mm7
-por        mm4,mm6
-movq       [ebx],mm4
-movq       mm5,[esi+8]
-pand       mm5,mm1
-movq       mm7,mm1
-movq       mm6,[ebx+8]
-pandn      mm7,mm6
-por        mm5,mm7
-movq       [ebx+8],mm5
-movq       mm6,[esi+16]
-pand       mm6,mm2
-movq       mm4,mm2
-movq       mm7,[ebx+16]
-pandn      mm4,mm7
-por        mm6,mm4
-movq       [ebx+16],mm6
-add        esi,24
-add        ebx,24
-sub        ecx,8
-ja         mainloop24
+movq mm4,[esi]
+pand mm4,mm0
+movq mm6,mm0
+movq mm7,[ebx]
+pandn mm6,mm7
+por mm4,mm6
+movq [ebx],mm4
+movq mm5,[esi+8]
+pand mm5,mm1
+movq mm7,mm1
+movq mm6,[ebx+8]
+pandn mm7,mm6
+por mm5,mm7
+movq [ebx+8],mm5
+movq mm6,[esi+16]
+pand mm6,mm2
+movq mm4,mm2
+movq mm7,[ebx+16]
+pandn mm4,mm7
+por mm6,mm4
+movq [ebx+16],mm6
+add esi,24
+add ebx,24
+sub ecx,8
+ja mainloop24
 mainloop24end:
-mov        ecx,diff
-cmp        ecx,0
-jz         end24
-mov        edx,mask
-sal        edx,24
+mov ecx,diff
+cmp ecx,0
+jz end24
+mov edx,mask
+sal edx,24
 secondloop24:
-sal        edx,1
-jnc        skip24
-mov        ax,[esi]
-mov        [ebx],ax
-xor        eax,eax
-mov        al,[esi+2]
-mov        [ebx+2],al
+sal edx,1
+jnc skip24
+mov ax,[esi]
+mov [ebx],ax
+xor eax,eax
+mov al,[esi+2]
+mov [ebx+2],al
 skip24:
-add        esi,3
-add        ebx,3
-dec        ecx
-jnz        secondloop24
+add esi,3
+add ebx,3
+dec ecx
+jnz secondloop24
 end24:
 emms
 }
@@ -534,7 +534,7 @@ mask0=0x4040404080808080;
 srcptr = png_ptr->row_buf + 1;
 dstptr = row;
 unmask = ~mask;
-len     = (png_ptr->width)&~7;
+len = (png_ptr->width)&~7;
 diff = (png_ptr->width)&7;
 #if !defined(PNG_1_0_X)
 if ((png_ptr->asm_flags & PNG_ASM_FLAG_MMX_READ_COMBINE_ROW)
@@ -545,77 +545,77 @@ if (mmx_supported)
 {
 _asm
 {
-movd       mm7, unmask
-psubb      mm6,mm6
-punpcklbw  mm7,mm7
-punpcklwd  mm7,mm7
-punpckldq  mm7,mm7
-movq       mm0,mask0
-movq       mm1,mask1
-movq       mm2,mask2
-movq       mm3,mask3
-pand       mm0,mm7
-pand       mm1,mm7
-pand       mm2,mm7
-pand       mm3,mm7
-pcmpeqb    mm0,mm6
-pcmpeqb    mm1,mm6
-pcmpeqb    mm2,mm6
-pcmpeqb    mm3,mm6
-mov        ecx,len
-mov        esi,srcptr
-mov        ebx,dstptr
-cmp        ecx,0
-jz         mainloop32end
+movd mm7, unmask
+psubb mm6,mm6
+punpcklbw mm7,mm7
+punpcklwd mm7,mm7
+punpckldq mm7,mm7
+movq mm0,mask0
+movq mm1,mask1
+movq mm2,mask2
+movq mm3,mask3
+pand mm0,mm7
+pand mm1,mm7
+pand mm2,mm7
+pand mm3,mm7
+pcmpeqb mm0,mm6
+pcmpeqb mm1,mm6
+pcmpeqb mm2,mm6
+pcmpeqb mm3,mm6
+mov ecx,len
+mov esi,srcptr
+mov ebx,dstptr
+cmp ecx,0
+jz mainloop32end
 mainloop32:
-movq       mm4,[esi]
-pand       mm4,mm0
-movq       mm6,mm0
-movq       mm7,[ebx]
-pandn      mm6,mm7
-por        mm4,mm6
-movq       [ebx],mm4
-movq       mm5,[esi+8]
-pand       mm5,mm1
-movq       mm7,mm1
-movq       mm6,[ebx+8]
-pandn      mm7,mm6
-por        mm5,mm7
-movq       [ebx+8],mm5
-movq       mm6,[esi+16]
-pand       mm6,mm2
-movq       mm4,mm2
-movq       mm7,[ebx+16]
-pandn      mm4,mm7
-por        mm6,mm4
-movq       [ebx+16],mm6
-movq       mm7,[esi+24]
-pand       mm7,mm3
-movq       mm5,mm3
-movq       mm4,[ebx+24]
-pandn      mm5,mm4
-por        mm7,mm5
-movq       [ebx+24],mm7
-add        esi,32
-add        ebx,32
-sub        ecx,8
-ja         mainloop32
+movq mm4,[esi]
+pand mm4,mm0
+movq mm6,mm0
+movq mm7,[ebx]
+pandn mm6,mm7
+por mm4,mm6
+movq [ebx],mm4
+movq mm5,[esi+8]
+pand mm5,mm1
+movq mm7,mm1
+movq mm6,[ebx+8]
+pandn mm7,mm6
+por mm5,mm7
+movq [ebx+8],mm5
+movq mm6,[esi+16]
+pand mm6,mm2
+movq mm4,mm2
+movq mm7,[ebx+16]
+pandn mm4,mm7
+por mm6,mm4
+movq [ebx+16],mm6
+movq mm7,[esi+24]
+pand mm7,mm3
+movq mm5,mm3
+movq mm4,[ebx+24]
+pandn mm5,mm4
+por mm7,mm5
+movq [ebx+24],mm7
+add esi,32
+add ebx,32
+sub ecx,8
+ja mainloop32
 mainloop32end:
-mov        ecx,diff
-cmp        ecx,0
-jz         end32
-mov        edx,mask
-sal        edx,24
+mov ecx,diff
+cmp ecx,0
+jz end32
+mov edx,mask
+sal edx,24
 secondloop32:
-sal        edx,1
-jnc        skip32
-mov        eax,[esi]
-mov        [ebx],eax
+sal edx,1
+jnc skip32
+mov eax,[esi]
+mov [ebx],eax
 skip32:
-add        esi,4
-add        ebx,4
-dec        ecx
-jnz        secondloop32
+add esi,4
+add ebx,4
+dec ecx
+jnz secondloop32
 end32:
 emms
 }
@@ -665,95 +665,95 @@ if (mmx_supported)
 srcptr = png_ptr->row_buf + 1;
 dstptr = row;
 unmask = ~mask;
-len     = (png_ptr->width)&~7;
+len = (png_ptr->width)&~7;
 diff = (png_ptr->width)&7;
 _asm
 {
-movd       mm7, unmask
-psubb      mm6,mm6
-punpcklbw  mm7,mm7
-punpcklwd  mm7,mm7
-punpckldq  mm7,mm7
-movq       mm0,mask0
-movq       mm1,mask1
-movq       mm2,mask2
-movq       mm3,mask3
-movq       mm4,mask4
-movq       mm5,mask5
-pand       mm0,mm7
-pand       mm1,mm7
-pand       mm2,mm7
-pand       mm3,mm7
-pand       mm4,mm7
-pand       mm5,mm7
-pcmpeqb    mm0,mm6
-pcmpeqb    mm1,mm6
-pcmpeqb    mm2,mm6
-pcmpeqb    mm3,mm6
-pcmpeqb    mm4,mm6
-pcmpeqb    mm5,mm6
-mov        ecx,len
-mov        esi,srcptr
-mov        ebx,dstptr
-cmp        ecx,0
-jz         mainloop48end
+movd mm7, unmask
+psubb mm6,mm6
+punpcklbw mm7,mm7
+punpcklwd mm7,mm7
+punpckldq mm7,mm7
+movq mm0,mask0
+movq mm1,mask1
+movq mm2,mask2
+movq mm3,mask3
+movq mm4,mask4
+movq mm5,mask5
+pand mm0,mm7
+pand mm1,mm7
+pand mm2,mm7
+pand mm3,mm7
+pand mm4,mm7
+pand mm5,mm7
+pcmpeqb mm0,mm6
+pcmpeqb mm1,mm6
+pcmpeqb mm2,mm6
+pcmpeqb mm3,mm6
+pcmpeqb mm4,mm6
+pcmpeqb mm5,mm6
+mov ecx,len
+mov esi,srcptr
+mov ebx,dstptr
+cmp ecx,0
+jz mainloop48end
 mainloop48:
-movq       mm7,[esi]
-pand       mm7,mm0
-movq       mm6,mm0
-pandn      mm6,[ebx]
-por        mm7,mm6
-movq       [ebx],mm7
-movq       mm6,[esi+8]
-pand       mm6,mm1
-movq       mm7,mm1
-pandn      mm7,[ebx+8]
-por        mm6,mm7
-movq       [ebx+8],mm6
-movq       mm6,[esi+16]
-pand       mm6,mm2
-movq       mm7,mm2
-pandn      mm7,[ebx+16]
-por        mm6,mm7
-movq       [ebx+16],mm6
-movq       mm7,[esi+24]
-pand       mm7,mm3
-movq       mm6,mm3
-pandn      mm6,[ebx+24]
-por        mm7,mm6
-movq       [ebx+24],mm7
-movq       mm6,[esi+32]
-pand       mm6,mm4
-movq       mm7,mm4
-pandn      mm7,[ebx+32]
-por        mm6,mm7
-movq       [ebx+32],mm6
-movq       mm7,[esi+40]
-pand       mm7,mm5
-movq       mm6,mm5
-pandn      mm6,[ebx+40]
-por        mm7,mm6
-movq       [ebx+40],mm7
-add        esi,48
-add        ebx,48
-sub        ecx,8
-ja         mainloop48
+movq mm7,[esi]
+pand mm7,mm0
+movq mm6,mm0
+pandn mm6,[ebx]
+por mm7,mm6
+movq [ebx],mm7
+movq mm6,[esi+8]
+pand mm6,mm1
+movq mm7,mm1
+pandn mm7,[ebx+8]
+por mm6,mm7
+movq [ebx+8],mm6
+movq mm6,[esi+16]
+pand mm6,mm2
+movq mm7,mm2
+pandn mm7,[ebx+16]
+por mm6,mm7
+movq [ebx+16],mm6
+movq mm7,[esi+24]
+pand mm7,mm3
+movq mm6,mm3
+pandn mm6,[ebx+24]
+por mm7,mm6
+movq [ebx+24],mm7
+movq mm6,[esi+32]
+pand mm6,mm4
+movq mm7,mm4
+pandn mm7,[ebx+32]
+por mm6,mm7
+movq [ebx+32],mm6
+movq mm7,[esi+40]
+pand mm7,mm5
+movq mm6,mm5
+pandn mm6,[ebx+40]
+por mm7,mm6
+movq [ebx+40],mm7
+add esi,48
+add ebx,48
+sub ecx,8
+ja mainloop48
 mainloop48end:
-mov        ecx,diff
-cmp        ecx,0
-jz         end48
-mov        edx,mask
-sal        edx,24
+mov ecx,diff
+cmp ecx,0
+jz end48
+mov edx,mask
+sal edx,24
 secondloop48:
-sal        edx,1
-jnc        skip48
-mov        eax,[esi]
-mov        [ebx],eax
+sal edx,1
+jnc skip48
+mov eax,[esi]
+mov [ebx],eax
 skip48:
-add        esi,4
-add        ebx,4
-dec        ecx
-jnz        secondloop48
+add esi,4
+add ebx,4
+dec ecx
+jnz secondloop48
 end48:
 emms
 }
@@ -1020,23 +1020,23 @@ mov edi, dp
 mov ecx, width
 sub edi, 21
 loop_pass0:
-movd mm0, [esi]     ; X X X X X v2 v1 v0
-pand mm0, const4    ; 0 0 0 0 0 v2 v1 v0
-movq mm1, mm0       ; 0 0 0 0 0 v2 v1 v0
-psllq mm0, 16       ; 0 0 0 v2 v1 v0 0 0
-movq mm2, mm0       ; 0 0 0 v2 v1 v0 0 0
-psllq mm0, 24       ; v2 v1 v0 0 0 0 0 0
-psrlq mm1, 8        ; 0 0 0 0 0 0 v2 v1
-por mm0, mm2        ; v2 v1 v0 v2 v1 v0 0 0
-por mm0, mm1        ; v2 v1 v0 v2 v1 v0 v2 v1
-movq mm3, mm0       ; v2 v1 v0 v2 v1 v0 v2 v1
-psllq mm0, 16       ; v0 v2 v1 v0 v2 v1 0 0
-movq mm4, mm3       ; v2 v1 v0 v2 v1 v0 v2 v1
-punpckhdq mm3, mm0  ; v0 v2 v1 v0 v2 v1 v0 v2
+movd mm0, [esi] ; X X X X X v2 v1 v0
+pand mm0, const4 ; 0 0 0 0 0 v2 v1 v0
+movq mm1, mm0 ; 0 0 0 0 0 v2 v1 v0
+psllq mm0, 16 ; 0 0 0 v2 v1 v0 0 0
+movq mm2, mm0 ; 0 0 0 v2 v1 v0 0 0
+psllq mm0, 24 ; v2 v1 v0 0 0 0 0 0
+psrlq mm1, 8 ; 0 0 0 0 0 0 v2 v1
+por mm0, mm2 ; v2 v1 v0 v2 v1 v0 0 0
+por mm0, mm1 ; v2 v1 v0 v2 v1 v0 v2 v1
+movq mm3, mm0 ; v2 v1 v0 v2 v1 v0 v2 v1
+psllq mm0, 16 ; v0 v2 v1 v0 v2 v1 0 0
+movq mm4, mm3 ; v2 v1 v0 v2 v1 v0 v2 v1
+punpckhdq mm3, mm0 ; v0 v2 v1 v0 v2 v1 v0 v2
 movq [edi+16] , mm4
-psrlq mm0, 32       ; 0 0 0 0 v0 v2 v1 v0
+psrlq mm0, 32 ; 0 0 0 0 v0 v2 v1 v0
 movq [edi+8] , mm3
-punpckldq mm0, mm4  ; v1 v0 v2 v1 v0 v2 v1 v0
+punpckldq mm0, mm4 ; v1 v0 v2 v1 v0 v2 v1 v0
 sub esi, 3
 movq [edi], mm0
 sub edi, 24
@@ -1054,18 +1054,18 @@ mov edi, dp
 mov ecx, width
 sub edi, 9
 loop_pass2:
-movd mm0, [esi]     ; X X X X X v2 v1 v0
-pand mm0, const4    ; 0 0 0 0 0 v2 v1 v0
-movq mm1, mm0       ; 0 0 0 0 0 v2 v1 v0
-psllq mm0, 16       ; 0 0 0 v2 v1 v0 0 0
-movq mm2, mm0       ; 0 0 0 v2 v1 v0 0 0
-psllq mm0, 24       ; v2 v1 v0 0 0 0 0 0
-psrlq mm1, 8        ; 0 0 0 0 0 0 v2 v1
-por mm0, mm2        ; v2 v1 v0 v2 v1 v0 0 0
-por mm0, mm1        ; v2 v1 v0 v2 v1 v0 v2 v1
-movq [edi+4], mm0   ; move to memory
-psrlq mm0, 16       ; 0 0 v2 v1 v0 v2 v1 v0
-movd [edi], mm0     ; move to memory
+movd mm0, [esi] ; X X X X X v2 v1 v0
+pand mm0, const4 ; 0 0 0 0 0 v2 v1 v0
+movq mm1, mm0 ; 0 0 0 0 0 v2 v1 v0
+psllq mm0, 16 ; 0 0 0 v2 v1 v0 0 0
+movq mm2, mm0 ; 0 0 0 v2 v1 v0 0 0
+psllq mm0, 24 ; v2 v1 v0 0 0 0 0 0
+psrlq mm1, 8 ; 0 0 0 0 0 0 v2 v1
+por mm0, mm2 ; v2 v1 v0 v2 v1 v0 0 0
+por mm0, mm1 ; v2 v1 v0 v2 v1 v0 v2 v1
+movq [edi+4], mm0 ; move to memory
+psrlq mm0, 16 ; 0 0 v2 v1 v0 v2 v1 v0
+movd [edi], mm0 ; move to memory
 sub esi, 3
 sub edi, 12
 dec ecx
@@ -1089,20 +1089,20 @@ mov ecx, width_mmx
 sub esi, 3
 sub edi, 9
 loop_pass4:
-movq mm0, [esi]     ; X X v2 v1 v0 v5 v4 v3
-movq mm7, mm0       ; X X v2 v1 v0 v5 v4 v3
-movq mm6, mm0       ; X X v2 v1 v0 v5 v4 v3
-psllq mm0, 24       ; v1 v0 v5 v4 v3 0 0 0
-pand mm7, const4    ; 0 0 0 0 0 v5 v4 v3
-psrlq mm6, 24       ; 0 0 0 X X v2 v1 v0
-por mm0, mm7        ; v1 v0 v5 v4 v3 v5 v4 v3
-movq mm5, mm6       ; 0 0 0 X X v2 v1 v0
-psllq mm6, 8        ; 0 0 X X v2 v1 v0 0
-movq [edi], mm0     ; move quad to memory
-psrlq mm5, 16       ; 0 0 0 0 0 X X v2
-pand mm5, const6    ; 0 0 0 0 0 0 0 v2
-por mm6, mm5        ; 0 0 X X v2 v1 v0 v2
-movd [edi+8], mm6   ; move double to memory
+movq mm0, [esi] ; X X v2 v1 v0 v5 v4 v3
+movq mm7, mm0 ; X X v2 v1 v0 v5 v4 v3
+movq mm6, mm0 ; X X v2 v1 v0 v5 v4 v3
+psllq mm0, 24 ; v1 v0 v5 v4 v3 0 0 0
+pand mm7, const4 ; 0 0 0 0 0 v5 v4 v3
+psrlq mm6, 24 ; 0 0 0 X X v2 v1 v0
+por mm0, mm7 ; v1 v0 v5 v4 v3 v5 v4 v3
+movq mm5, mm6 ; 0 0 0 X X v2 v1 v0
+psllq mm6, 8 ; 0 0 X X v2 v1 v0 0
+movq [edi], mm0 ; move quad to memory
+psrlq mm5, 16 ; 0 0 0 0 0 X X v2
+pand mm5, const6 ; 0 0 0 0 0 0 0 v2
+por mm6, mm5 ; 0 0 X X v2 v1 v0 v2
+movd [edi+8], mm6 ; move double to memory
 sub esi, 6
 sub edi, 12
 sub ecx, 2
@@ -1142,22 +1142,22 @@ mov ecx, width_mmx
 sub edi, 31
 sub esi, 3
 loop1_pass0:
-movd mm0, [esi]     ; X X X X v0 v1 v2 v3
-movq mm1, mm0       ; X X X X v0 v1 v2 v3
-punpcklbw mm0, mm0  ; v0 v0 v1 v1 v2 v2 v3 v3
-movq mm2, mm0       ; v0 v0 v1 v1 v2 v2 v3 v3
-punpcklwd mm0, mm0  ; v2 v2 v2 v2 v3 v3 v3 v3
-movq mm3, mm0       ; v2 v2 v2 v2 v3 v3 v3 v3
-punpckldq mm0, mm0  ; v3 v3 v3 v3 v3 v3 v3 v3
-punpckhdq mm3, mm3  ; v2 v2 v2 v2 v2 v2 v2 v2
-movq [edi], mm0     ; move to memory v3
-punpckhwd mm2, mm2  ; v0 v0 v0 v0 v1 v1 v1 v1
-movq [edi+8], mm3   ; move to memory v2
-movq mm4, mm2       ; v0 v0 v0 v0 v1 v1 v1 v1
-punpckldq mm2, mm2  ; v1 v1 v1 v1 v1 v1 v1 v1
-punpckhdq mm4, mm4  ; v0 v0 v0 v0 v0 v0 v0 v0
-movq [edi+16], mm2  ; move to memory v1
-movq [edi+24], mm4  ; move to memory v0
+movd mm0, [esi] ; X X X X v0 v1 v2 v3
+movq mm1, mm0 ; X X X X v0 v1 v2 v3
+punpcklbw mm0, mm0 ; v0 v0 v1 v1 v2 v2 v3 v3
+movq mm2, mm0 ; v0 v0 v1 v1 v2 v2 v3 v3
+punpcklwd mm0, mm0 ; v2 v2 v2 v2 v3 v3 v3 v3
+movq mm3, mm0 ; v2 v2 v2 v2 v3 v3 v3 v3
+punpckldq mm0, mm0 ; v3 v3 v3 v3 v3 v3 v3 v3
+punpckhdq mm3, mm3 ; v2 v2 v2 v2 v2 v2 v2 v2
+movq [edi], mm0 ; move to memory v3
+punpckhwd mm2, mm2 ; v0 v0 v0 v0 v1 v1 v1 v1
+movq [edi+8], mm3 ; move to memory v2
+movq mm4, mm2 ; v0 v0 v0 v0 v1 v1 v1 v1
+punpckldq mm2, mm2 ; v1 v1 v1 v1 v1 v1 v1 v1
+punpckhdq mm4, mm4 ; v0 v0 v0 v0 v0 v0 v0 v0
+movq [edi+16], mm2 ; move to memory v1
+movq [edi+24], mm4 ; move to memory v0
 sub esi, 4
 sub edi, 32
 sub ecx, 4
@@ -1189,14 +1189,14 @@ mov ecx, width_mmx
 sub edi, 15
 sub esi, 3
 loop1_pass2:
-movd mm0, [esi]     ; X X X X v0 v1 v2 v3
-punpcklbw mm0, mm0  ; v0 v0 v1 v1 v2 v2 v3 v3
-movq mm1, mm0       ; v0 v0 v1 v1 v2 v2 v3 v3
-punpcklwd mm0, mm0  ; v2 v2 v2 v2 v3 v3 v3 v3
-punpckhwd mm1, mm1  ; v0 v0 v0 v0 v1 v1 v1 v1
-movq [edi], mm0     ; move to memory v2 and v3
+movd mm0, [esi] ; X X X X v0 v1 v2 v3
+punpcklbw mm0, mm0 ; v0 v0 v1 v1 v2 v2 v3 v3
+movq mm1, mm0 ; v0 v0 v1 v1 v2 v2 v3 v3
+punpcklwd mm0, mm0 ; v2 v2 v2 v2 v3 v3 v3 v3
+punpckhwd mm1, mm1 ; v0 v0 v0 v0 v1 v1 v1 v1
+movq [edi], mm0 ; move to memory v2 and v3
 sub esi, 4
-movq [edi+8], mm1   ; move to memory v1     and v0
+movq [edi+8], mm1 ; move to memory v1 and v0
 sub edi, 16
 sub ecx, 4
 jnz loop1_pass2
@@ -1229,13 +1229,13 @@ mov ecx, width_mmx
 sub edi, 15
 sub esi, 7
 loop1_pass4:
-movq mm0, [esi]     ; v0 v1 v2 v3 v4 v5 v6 v7
-movq mm1, mm0       ; v0 v1 v2 v3 v4 v5 v6 v7
-punpcklbw mm0, mm0  ; v4 v4 v5 v5 v6 v6 v7 v7
-punpckhbw mm1, mm1  ;v0 v0 v1 v1 v2 v2 v3 v3
-movq [edi+8], mm1   ; move to memory v0 v1 v2 and v3
+movq mm0, [esi] ; v0 v1 v2 v3 v4 v5 v6 v7
+movq mm1, mm0 ; v0 v1 v2 v3 v4 v5 v6 v7
+punpcklbw mm0, mm0 ; v4 v4 v5 v5 v6 v6 v7 v7
+punpckhbw mm1, mm1 ;v0 v0 v1 v1 v2 v2 v3 v3
+movq [edi+8], mm1 ; move to memory v0 v1 v2 and v3
 sub esi, 8
-movq [edi], mm0     ; move to memory v4 v5 v6 and v7
+movq [edi], mm0 ; move to memory v4 v5 v6 and v7
 sub edi, 16
 sub ecx, 8
 jnz loop1_pass4
@@ -1271,11 +1271,11 @@ mov ecx, width_mmx
 sub esi, 2
 sub edi, 30
 loop2_pass0:
-movd mm0, [esi]        ; X X X X v1 v0 v3 v2
-punpcklwd mm0, mm0     ; v1 v0 v1 v0 v3 v2 v3 v2
-movq mm1, mm0          ; v1 v0 v1 v0 v3 v2 v3 v2
-punpckldq mm0, mm0     ; v3 v2 v3 v2 v3 v2 v3 v2
-punpckhdq mm1, mm1     ; v1 v0 v1 v0 v1 v0 v1 v0
+movd mm0, [esi] ; X X X X v1 v0 v3 v2
+punpcklwd mm0, mm0 ; v1 v0 v1 v0 v3 v2 v3 v2
+movq mm1, mm0 ; v1 v0 v1 v0 v3 v2 v3 v2
+punpckldq mm0, mm0 ; v3 v2 v3 v2 v3 v2 v3 v2
+punpckhdq mm1, mm1 ; v1 v0 v1 v0 v1 v0 v1 v0
 movq [edi], mm0
 movq [edi + 8], mm0
 movq [edi + 16], mm1
@@ -1316,11 +1316,11 @@ mov ecx, width_mmx
 sub esi, 2
 sub edi, 14
 loop2_pass2:
-movd mm0, [esi]        ; X X X X v1 v0 v3 v2
-punpcklwd mm0, mm0     ; v1 v0 v1 v0 v3 v2 v3 v2
-movq mm1, mm0          ; v1 v0 v1 v0 v3 v2 v3 v2
-punpckldq mm0, mm0     ; v3 v2 v3 v2 v3 v2 v3 v2
-punpckhdq mm1, mm1     ; v1 v0 v1 v0 v1 v0 v1 v0
+movd mm0, [esi] ; X X X X v1 v0 v3 v2
+punpcklwd mm0, mm0 ; v1 v0 v1 v0 v3 v2 v3 v2
+movq mm1, mm0 ; v1 v0 v1 v0 v3 v2 v3 v2
+punpckldq mm0, mm0 ; v3 v2 v3 v2 v3 v2 v3 v2
+punpckhdq mm1, mm1 ; v1 v0 v1 v0 v1 v0 v1 v0
 movq [edi], mm0
 sub esi, 4
 movq [edi + 8], mm1
@@ -1359,8 +1359,8 @@ mov ecx, width_mmx
 sub esi, 2
 sub edi, 6
 loop2_pass4:
-movd mm0, [esi]        ; X X X X v1 v0 v3 v2
-punpcklwd mm0, mm0     ; v1 v0 v1 v0 v3 v2 v3 v2
+movd mm0, [esi] ; X X X X v1 v0 v3 v2
+punpcklwd mm0, mm0 ; v1 v0 v1 v0 v3 v2 v3 v2
 sub esi, 4
 movq [edi], mm0
 sub edi, 8
@@ -1401,10 +1401,10 @@ mov ecx, width_mmx
 sub esi, 4
 sub edi, 60
 loop4_pass0:
-movq mm0, [esi]        ; v3 v2 v1 v0 v7 v6 v5 v4
-movq mm1, mm0          ; v3 v2 v1 v0 v7 v6 v5 v4
-punpckldq mm0, mm0     ; v7 v6 v5 v4 v7 v6 v5 v4
-punpckhdq mm1, mm1     ; v3 v2 v1 v0 v3 v2 v1 v0
+movq mm0, [esi] ; v3 v2 v1 v0 v7 v6 v5 v4
+movq mm1, mm0 ; v3 v2 v1 v0 v7 v6 v5 v4
+punpckldq mm0, mm0 ; v7 v6 v5 v4 v7 v6 v5 v4
+punpckhdq mm1, mm1 ; v3 v2 v1 v0 v3 v2 v1 v0
 movq [edi], mm0
 movq [edi + 8], mm0
 movq [edi + 16], mm0
@@ -1449,10 +1449,10 @@ mov ecx, width_mmx
 sub esi, 4
 sub edi, 28
 loop4_pass2:
-movq mm0, [esi]      ; v3 v2 v1 v0 v7 v6 v5 v4
-movq mm1, mm0        ; v3 v2 v1 v0 v7 v6 v5 v4
-punpckldq mm0, mm0   ; v7 v6 v5 v4 v7 v6 v5 v4
-punpckhdq mm1, mm1   ; v3 v2 v1 v0 v3 v2 v1 v0
+movq mm0, [esi] ; v3 v2 v1 v0 v7 v6 v5 v4
+movq mm1, mm0 ; v3 v2 v1 v0 v7 v6 v5 v4
+punpckldq mm0, mm0 ; v7 v6 v5 v4 v7 v6 v5 v4
+punpckhdq mm1, mm1 ; v3 v2 v1 v0 v3 v2 v1 v0
 movq [edi], mm0
 movq [edi + 8], mm0
 movq [edi+16], mm1
@@ -1493,10 +1493,10 @@ mov ecx, width_mmx
 sub esi, 4
 sub edi, 12
 loop4_pass4:
-movq mm0, [esi]      ; v3 v2 v1 v0 v7 v6 v5 v4
-movq mm1, mm0        ; v3 v2 v1 v0 v7 v6 v5 v4
-punpckldq mm0, mm0   ; v7 v6 v5 v4 v7 v6 v5 v4
-punpckhdq mm1, mm1   ; v3 v2 v1 v0 v3 v2 v1 v0
+movq mm0, [esi] ; v3 v2 v1 v0 v7 v6 v5 v4
+movq mm1, mm0 ; v3 v2 v1 v0 v7 v6 v5 v4
+punpckldq mm0, mm0 ; v7 v6 v5 v4 v7 v6 v5 v4
+punpckhdq mm1, mm1 ; v3 v2 v1 v0 v3 v2 v1 v0
 movq [edi], mm0
 sub esi, 8
 movq [edi + 8], mm1
@@ -1651,7 +1651,7 @@ row_info->rowbytes = PNG_ROWBYTES(row_info->pixel_depth,final_width);
 #endif
 union uAll {
 __int64 use;
-double  align;
+double align;
 } LBCarryMask = {0x0101010101010101},
 HBClearMask = {0x7f7f7f7f7f7f7f7f},
 ActiveMask, ActiveMask2, ActiveMaskEnd, ShiftBpp, ShiftRem;
@@ -1664,7 +1664,7 @@ png_uint_32 FullLength;
 png_uint_32 MMXLength;
 int diff;
 bpp = (row_info->pixel_depth + 7) >> 3;
-FullLength  = row_info->rowbytes;
+FullLength = row_info->rowbytes;
 _asm {
 mov edi, row
 xor ebx, ebx
@@ -1710,7 +1710,7 @@ switch ( bpp )
 {
 case 3:
 {
-ActiveMask.use  = 0x0000000000ffffff;
+ActiveMask.use = 0x0000000000ffffff;
 ShiftBpp.use = 24;
 ShiftRem.use = 40;
 _asm {
@@ -1729,12 +1729,12 @@ movq mm1, [esi + ebx]
 movq mm6, mm7
 pand mm3, mm1
 psrlq mm1, 1
-pand  mm1, mm4
+pand mm1, mm4
 paddb mm0, mm1
 movq mm1, mm3
 pand mm1, mm2
 psrlq mm2, 1
-pand  mm2, mm4
+pand mm2, mm4
 paddb mm2, mm1
 pand mm2, mm6
 paddb mm0, mm2
@@ -1744,7 +1744,7 @@ psllq mm2, ShiftBpp
 movq mm1, mm3
 pand mm1, mm2
 psrlq mm2, 1
-pand  mm2, mm4
+pand mm2, mm4
 paddb mm2, mm1
 pand mm2, mm6
 paddb mm0, mm2
@@ -1754,7 +1754,7 @@ psllq mm2, ShiftBpp
 movq mm1, mm3
 pand mm1, mm2
 psrlq mm2, 1
-pand  mm2, mm4
+pand mm2, mm4
 paddb mm2, mm1
 pand mm2, mm6
 add ebx, 8
@@ -1771,7 +1771,7 @@ case 4:
 case 7:
 case 5:
 {
-ActiveMask.use  = 0xffffffffffffffff;
+ActiveMask.use = 0xffffffffffffffff;
 ShiftBpp.use = bpp << 3;
 ShiftRem.use = 64 - ShiftBpp.use;
 _asm {
@@ -1792,12 +1792,12 @@ movq mm1, [esi + ebx]
 movq mm3, mm5
 pand mm3, mm1
 psrlq mm1, 1
-pand  mm1, mm4
+pand mm1, mm4
 paddb mm0, mm1
 movq mm1, mm3
 pand mm1, mm2
 psrlq mm2, 1
-pand  mm2, mm4
+pand mm2, mm4
 paddb mm2, mm1
 pand mm2, mm7
 paddb mm0, mm2
@@ -1807,7 +1807,7 @@ add ebx, 8
 movq mm1, mm3
 pand mm1, mm2
 psrlq mm2, 1
-pand  mm2, mm4
+pand mm2, mm4
 paddb mm2, mm1
 pand mm2, mm6
 paddb mm0, mm2
@@ -1820,7 +1820,7 @@ jb davg4lp
 break;
 case 2:
 {
-ActiveMask.use  = 0x000000000000ffff;
+ActiveMask.use = 0x000000000000ffff;
 ShiftBpp.use = 16;
 ShiftRem.use = 48;
 _asm {
@@ -1838,13 +1838,13 @@ movq mm1, [esi + ebx]
 movq mm3, mm5
 pand mm3, mm1
 psrlq mm1, 1
-pand  mm1, mm4
+pand mm1, mm4
 movq mm6, mm7
 paddb mm0, mm1
 movq mm1, mm3
 pand mm1, mm2
 psrlq mm2, 1
-pand  mm2, mm4
+pand mm2, mm4
 paddb mm2, mm1
 pand mm2, mm6
 paddb mm0, mm2
@@ -1854,7 +1854,7 @@ psllq mm2, ShiftBpp
 movq mm1, mm3
 pand mm1, mm2
 psrlq mm2, 1
-pand  mm2, mm4
+pand mm2, mm4
 paddb mm2, mm1
 pand mm2, mm6
 paddb mm0, mm2
@@ -1864,7 +1864,7 @@ psllq mm2, ShiftBpp
 movq mm1, mm3
 pand mm1, mm2
 psrlq mm2, 1
-pand  mm2, mm4
+pand mm2, mm4
 paddb mm2, mm1
 pand mm2, mm6
 paddb mm0, mm2
@@ -1875,7 +1875,7 @@ add ebx, 8
 movq mm1, mm3
 pand mm1, mm2
 psrlq mm2, 1
-pand  mm2, mm4
+pand mm2, mm4
 paddb mm2, mm1
 pand mm2, mm6
 paddb mm0, mm2
@@ -1930,9 +1930,9 @@ pand mm3, mm1
 psrlq mm1, 1
 pand mm3, mm2
 psrlq mm2, 1
-pand  mm1, mm4
+pand mm1, mm4
 paddb mm0, mm3
-pand  mm2, mm4
+pand mm2, mm4
 paddb mm0, mm1
 paddb mm0, mm2
 cmp ebx, MMXLength
@@ -1961,9 +1961,9 @@ movq mm2, [edx + ebx]
 psrlq mm1, 1
 pand mm3, mm2
 psrlq mm2, 1
-pand  mm1, mm4
+pand mm1, mm4
 paddb mm0, mm3
-pand  mm2, mm4
+pand mm2, mm4
 paddb mm0, mm1
 add ebx, 8
 paddb mm0, mm2
@@ -2008,7 +2008,7 @@ int bpp;
 int diff;
 int patemp, pbtemp, pctemp;
 bpp = (row_info->pixel_depth + 7) >> 3;
-FullLength  = row_info->rowbytes;
+FullLength = row_info->rowbytes;
 _asm
 {
 xor ebx, ebx
@@ -2254,7 +2254,7 @@ case 6:
 case 7:
 case 5:
 {
-ActiveMask.use  = 0x00000000ffffffff;
+ActiveMask.use = 0x00000000ffffffff;
 ActiveMask2.use = 0xffffffff00000000;
 ShiftBpp.use = bpp << 3;
 ShiftRem.use = 64 - ShiftBpp.use;
@@ -2373,7 +2373,7 @@ jb dpth6lp
 break;
 case 4:
 {
-ActiveMask.use  = 0x00000000ffffffff;
+ActiveMask.use = 0x00000000ffffffff;
 _asm {
 mov ebx, diff
 mov edi, row
@@ -2478,7 +2478,7 @@ jb dpth4lp
 break;
 case 8:
 {
-ActiveMask.use  = 0x00000000ffffffff;
+ActiveMask.use = 0x00000000ffffffff;
 _asm {
 mov ebx, diff
 mov edi, row
@@ -2719,7 +2719,7 @@ png_uint_32 FullLength;
 png_uint_32 MMXLength;
 int diff;
 bpp = (row_info->pixel_depth + 7) >> 3;
-FullLength  = row_info->rowbytes - bpp;
+FullLength = row_info->rowbytes - bpp;
 _asm {
 mov edi, row
 mov esi, edi
@@ -2749,9 +2749,9 @@ switch ( bpp )
 {
 case 3:
 {
-ActiveMask.use  = 0x0000ffffff000000;
+ActiveMask.use = 0x0000ffffff000000;
 ShiftBpp.use = 24;
-ShiftRem.use  = 40;
+ShiftRem.use = 40;
 _asm {
 mov edi, row
 movq mm7, ActiveMask
@@ -2831,7 +2831,7 @@ jb dsub4lp
 break;
 case 2:
 {
-ActiveMask.use  = 0x00000000ffff0000;
+ActiveMask.use = 0x00000000ffff0000;
 ShiftBpp.use = 16;
 ShiftRem.use = 48;
 _asm {
@@ -2963,7 +2963,7 @@ png_read_filter_row_mmx_up(png_row_infop row_info, png_bytep row,
 png_bytep prev_row)
 {
 png_uint_32 len;
-len  = row_info->rowbytes;
+len = row_info->rowbytes;
 _asm {
 mov edi, row
 mov ecx, edi

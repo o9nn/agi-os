@@ -29,7 +29,7 @@
 #define OPENBLAS_OS_WINDOWS
 #ifdef DOUBLE
 #define DOUBLE_DEFINED DOUBLE
-#undef  DOUBLE
+#undef DOUBLE
 #endif
 #endif
 #ifdef OPENBLAS_NEEDBUNDERSCORE
@@ -40,7 +40,7 @@
 #ifdef OPENBLAS_QUAD_PRECISION
 typedef struct {
 unsigned long x[2];
-}  xdouble;
+} xdouble;
 #elif defined OPENBLAS_EXPRECISION
 #define xdouble long double
 #else
@@ -63,12 +63,12 @@ typedef BLASLONG blasint;
 typedef int blasint;
 #endif
 #if defined(XDOUBLE) || defined(DOUBLE)
-#define FLOATRET	FLOAT
+#define FLOATRET FLOAT
 #else
 #ifdef NEED_F2CCONV
-#define FLOATRET	double
+#define FLOATRET double
 #else
-#define FLOATRET	float
+#define FLOATRET float
 #endif
 #endif
 #include <stdio.h>
@@ -81,29 +81,29 @@ typedef int blasint;
 typedef float _Complex openblas_complex_float;
 typedef double _Complex openblas_complex_double;
 typedef xdouble _Complex openblas_complex_xdouble;
-#define openblas_make_complex_float(real, imag)    ((real) + ((imag) * _Complex_I))
-#define openblas_make_complex_double(real, imag)   ((real) + ((imag) * _Complex_I))
-#define openblas_make_complex_xdouble(real, imag)  ((real) + ((imag) * _Complex_I))
-#define openblas_complex_float_real(z)             (creal(z))
-#define openblas_complex_float_imag(z)             (cimag(z))
-#define openblas_complex_double_real(z)            (creal(z))
-#define openblas_complex_double_imag(z)            (cimag(z))
-#define openblas_complex_xdouble_real(z)           (creal(z))
-#define openblas_complex_xdouble_imag(z)           (cimag(z))
+#define openblas_make_complex_float(real, imag) ((real) + ((imag) * _Complex_I))
+#define openblas_make_complex_double(real, imag) ((real) + ((imag) * _Complex_I))
+#define openblas_make_complex_xdouble(real, imag) ((real) + ((imag) * _Complex_I))
+#define openblas_complex_float_real(z) (creal(z))
+#define openblas_complex_float_imag(z) (cimag(z))
+#define openblas_complex_double_real(z) (creal(z))
+#define openblas_complex_double_imag(z) (cimag(z))
+#define openblas_complex_xdouble_real(z) (creal(z))
+#define openblas_complex_xdouble_imag(z) (cimag(z))
 #else
 #define OPENBLAS_COMPLEX_STRUCT
 typedef struct { float real, imag; } openblas_complex_float;
 typedef struct { double real, imag; } openblas_complex_double;
 typedef struct { xdouble real, imag; } openblas_complex_xdouble;
-#define openblas_make_complex_float(real, imag)    {(real), (imag)}
-#define openblas_make_complex_double(real, imag)   {(real), (imag)}
-#define openblas_make_complex_xdouble(real, imag)  {(real), (imag)}
-#define openblas_complex_float_real(z)             ((z).real)
-#define openblas_complex_float_imag(z)             ((z).imag)
-#define openblas_complex_double_real(z)            ((z).real)
-#define openblas_complex_double_imag(z)            ((z).imag)
-#define openblas_complex_xdouble_real(z)           ((z).real)
-#define openblas_complex_xdouble_imag(z)           ((z).imag)
+#define openblas_make_complex_float(real, imag) {(real), (imag)}
+#define openblas_make_complex_double(real, imag) {(real), (imag)}
+#define openblas_make_complex_xdouble(real, imag) {(real), (imag)}
+#define openblas_complex_float_real(z) ((z).real)
+#define openblas_complex_float_imag(z) ((z).imag)
+#define openblas_complex_double_real(z) ((z).real)
+#define openblas_complex_double_imag(z) ((z).imag)
+#define openblas_complex_xdouble_real(z) ((z).real)
+#define openblas_complex_xdouble_imag(z) ((z).imag)
 #endif
 #ifdef OPENBLAS_OS_LINUX
 #ifndef _GNU_SOURCE

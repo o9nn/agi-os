@@ -18,11 +18,11 @@ void gx_set_effective_transfer(gs_state *);
 int
 gs_setcmykcolor(gs_state * pgs, floatp c, floatp m, floatp y, floatp k)
 {
-gs_color_space      cs;
-int                 code;
+gs_color_space cs;
+int code;
 gs_cspace_init_DeviceCMYK(pgs->memory, &cs);
 if ((code = gs_setcolorspace(pgs, &cs)) >= 0) {
-gs_client_color *    pcc = pgs->ccolor;
+gs_client_color * pcc = pgs->ccolor;
 cs_adjust_color_count(pgs, -1);
 pcc->paint.values[0] = FORCE_UNIT(c);
 pcc->paint.values[1] = FORCE_UNIT(m);

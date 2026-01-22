@@ -11,8 +11,8 @@
 #include "dat.h"
 #include "fns.h"
 #include <ctype.h>
-char	Ebadwr[]		= "bad rectangle in wctl request";
-char	Ewalloc[]		= "window allocation failed in wctl request";
+char Ebadwr[] = "bad rectangle in wctl request";
+char Ewalloc[] = "window allocation failed in wctl request";
 enum
 {
 New,
@@ -29,18 +29,18 @@ Unhide,
 Delete,
 };
 static char *cmds[] = {
-[New]	= "new",
-[Resize]	= "resize",
-[Move]	= "move",
-[Scroll]	= "scroll",
-[Noscroll]	= "noscroll",
-[Set]		= "set",
-[Top]	= "top",
-[Bottom]	= "bottom",
-[Current]	= "current",
-[Hide]	= "hide",
-[Unhide]	= "unhide",
-[Delete]	= "delete",
+[New] = "new",
+[Resize] = "resize",
+[Move] = "move",
+[Scroll] = "scroll",
+[Noscroll] = "noscroll",
+[Set] = "set",
+[Top] = "top",
+[Bottom] = "bottom",
+[Current] = "current",
+[Hide] = "hide",
+[Unhide] = "unhide",
+[Delete] = "delete",
 nil
 };
 enum
@@ -60,19 +60,19 @@ Scrolling,
 Noscrolling,
 };
 static char *params[] = {
-[Cd]	 			= "-cd",
-[Deltax]			= "-dx",
-[Deltay]			= "-dy",
-[Hidden]			= "-hide",
-[Id]				= "-id",
-[Maxx]			= "-maxx",
-[Maxy]			= "-maxy",
-[Minx]			= "-minx",
-[Miny]			= "-miny",
-[PID]				= "-pid",
-[R]				= "-r",
-[Scrolling]			= "-scroll",
-[Noscrolling]		= "-noscroll",
+[Cd] = "-cd",
+[Deltax] = "-dx",
+[Deltay] = "-dy",
+[Hidden] = "-hide",
+[Id] = "-id",
+[Maxx] = "-maxx",
+[Maxy] = "-maxy",
+[Minx] = "-minx",
+[Miny] = "-miny",
+[PID] = "-pid",
+[R] = "-r",
+[Scrolling] = "-scroll",
+[Noscrolling] = "-noscroll",
 nil
 };
 int

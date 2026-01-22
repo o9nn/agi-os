@@ -5,15 +5,15 @@
 #include "fns.h"
 #include "io.h"
 #include "../port/error.h"
-#define	Image	IMAGE
+#define Image IMAGE
 #include <draw.h>
 #include <memdraw.h>
 #include <cursor.h>
 #include "screen.h"
 enum {
-PCIVMWARE	= 0x15AD,
-VMWARE1		= 0x0710,
-VMWARE2		= 0x0405,
+PCIVMWARE = 0x15AD,
+VMWARE1 = 0x0710,
+VMWARE2 = 0x0405,
 };
 enum {
 Rid = 0,
@@ -89,16 +89,16 @@ CursorOnRemoveFromFb = 2,
 CursorOnRestoreToFb = 3,
 Rpalette = 1024,
 };
-typedef struct Vmware	Vmware;
+typedef struct Vmware Vmware;
 struct Vmware {
-ulong	fb;
-ulong	ra;
-ulong	rd;
-ulong	r[Nreg];
-ulong	*mmio;
-ulong	mmiosize;
-char	chan[32];
-int	depth;
+ulong fb;
+ulong ra;
+ulong rd;
+ulong r[Nreg];
+ulong *mmio;
+ulong mmiosize;
+char chan[32];
+int depth;
 };
 Vmware xvm;
 Vmware *vm=&xvm;

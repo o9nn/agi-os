@@ -1,11 +1,11 @@
 #ifndef HEADER_ASN1_MAC_H
 # define HEADER_ASN1_MAC_H
 # include <openssl/asn1.h>
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 # ifndef ASN1_MAC_ERR_LIB
-#  define ASN1_MAC_ERR_LIB        ERR_LIB_ASN1
+# define ASN1_MAC_ERR_LIB ERR_LIB_ASN1
 # endif
 # define ASN1_MAC_H_err(f,r,line) \
 ERR_PUT_error(ASN1_MAC_ERR_LIB,(f),(r),__FILE__,(line))
@@ -19,7 +19,7 @@ c.error=ERR_R_NESTED_ASN1_ERROR; \
 if ((a == NULL) || ((*a) == NULL)) \
 { if ((ret=(type)func()) == NULL) \
 { c.line=__LINE__; goto err; } } \
-else    ret=(*a);
+else ret=(*a);
 # define M_ASN1_D2I_Init() \
 c.p= *(const unsigned char **)pp; \
 c.max=(length == 0)?0:(c.p+length);
@@ -255,15 +255,15 @@ if ((ret=(type *)OPENSSL_malloc(sizeof(type))) == NULL) \
 if (((arg)=func()) == NULL) return(NULL)
 # define M_ASN1_New_Error(a) \
 \
-err2:   ASN1_MAC_H_err((a),ERR_R_MALLOC_FAILURE,c.line); \
+err2: ASN1_MAC_H_err((a),ERR_R_MALLOC_FAILURE,c.line); \
 return(NULL)
-# define M_ASN1_next             (*((unsigned char *)(c.p)))
-# define M_ASN1_next_prev        (*((unsigned char *)(c.q)))
-# define M_ASN1_I2D_vars(a)      int r=0,ret=0; \
+# define M_ASN1_next (*((unsigned char *)(c.p)))
+# define M_ASN1_next_prev (*((unsigned char *)(c.q)))
+# define M_ASN1_I2D_vars(a) int r=0,ret=0; \
 unsigned char *p; \
 if (a == NULL) return(0)
-# define M_ASN1_I2D_len(a,f)     ret+=f(a,NULL)
-# define M_ASN1_I2D_len_IMP_opt(a,f)     if (a != NULL) M_ASN1_I2D_len(a,f)
+# define M_ASN1_I2D_len(a,f) ret+=f(a,NULL)
+# define M_ASN1_I2D_len_IMP_opt(a,f) if (a != NULL) M_ASN1_I2D_len(a,f)
 # define M_ASN1_I2D_len_SET(a,f) \
 ret+=i2d_ASN1_SET(a,NULL,f,V_ASN1_SET,V_ASN1_UNIVERSAL,IS_SET);
 # define M_ASN1_I2D_len_SET_type(type,a,f) \
@@ -333,8 +333,8 @@ V_ASN1_UNIVERSAL, \
 IS_SEQUENCE); \
 ret+=ASN1_object_size(1,v,mtag); \
 }
-# define M_ASN1_I2D_put(a,f)     f(a,&p)
-# define M_ASN1_I2D_put_IMP_opt(a,f,t)   \
+# define M_ASN1_I2D_put(a,f) f(a,&p)
+# define M_ASN1_I2D_put_IMP_opt(a,f,t) \
 if (a != NULL) \
 { \
 unsigned char *q=p; \
@@ -411,11 +411,11 @@ ASN1_put_object(&p,1,ret,V_ASN1_SEQUENCE,V_ASN1_UNIVERSAL)
 *(p++)=(V_ASN1_CONSTRUCTED|(tag)|(ctx)); \
 *(p++)=0x80
 # define M_ASN1_I2D_INF_seq_end() *(p++)=0x00; *(p++)=0x00
-# define M_ASN1_I2D_finish()     *pp=p; \
+# define M_ASN1_I2D_finish() *pp=p; \
 return(r);
 int asn1_GetSequence(ASN1_const_CTX *c, long *length);
 void asn1_add_error(const unsigned char *address, int offset);
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif
 #endif

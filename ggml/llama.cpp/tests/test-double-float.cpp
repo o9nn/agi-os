@@ -29,7 +29,7 @@ for (x = 0; x <= UINT16_MAX; x++) {
 float f = _cvtsh_ss(x);
 const float so = silu_orig(f);
 const float sf = silu_float(f);
-assert(   (_cvtss_sh(so, 0) == _cvtss_sh(sf, 0))
+assert( (_cvtss_sh(so, 0) == _cvtss_sh(sf, 0))
 || (nextafterf(so, sf) == sf)
 || (nextafterf(sf, so) == so));
 }

@@ -6,7 +6,7 @@
 #include <argp.h>
 #include <lwip/ip.h>
 #include <lwip/netif.h>
-#define DEV_NAME_LEN    256
+#define DEV_NAME_LEN 256
 struct parse_interface
 {
 char dev_name[DEV_NAME_LEN];

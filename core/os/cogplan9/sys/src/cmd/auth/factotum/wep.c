@@ -95,11 +95,11 @@ return rv;
 }
 Proto wep =
 {
-.name=		"wep",
-.init=		wepinit,
-.write=		wepwrite,
-.read=		wepread,
-.close=		wepclose,
-.addkey=	replacekey,
-.keyprompt=	"!key1? !key2? !key3? essid?",
+.name= "wep",
+.init= wepinit,
+.write= wepwrite,
+.read= wepread,
+.close= wepclose,
+.addkey= replacekey,
+.keyprompt= "!key1? !key2? !key3? essid?",
 };

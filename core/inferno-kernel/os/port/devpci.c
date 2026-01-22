@@ -1,23 +1,23 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"../port/error.h"
-#define	DPRINT	if(0) print
-#define	XPRINT	if(1) print
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "../port/error.h"
+#define DPRINT if(0) print
+#define XPRINT if(1) print
 enum {
 Qtopdir = 0,
 Qpcidir,
 Qpcictl,
 Qpciraw,
 };
-#define TYPE(q)		((ulong)(q).path & 0x0F)
-#define QID(c, t)	(((c)<<4)|(t))
+#define TYPE(q) ((ulong)(q).path & 0x0F)
+#define QID(c, t) (((c)<<4)|(t))
 static Dirtab topdir[] = {
-".",	{ Qtopdir, 0, QTDIR },	0,	0555,
-"pci",	{ Qpcidir, 0, QTDIR },	0,	0555,
+".", { Qtopdir, 0, QTDIR }, 0, 0555,
+"pci", { Qpcidir, 0, QTDIR }, 0, 0555,
 };
 extern Dev pcidevtab;
 static int

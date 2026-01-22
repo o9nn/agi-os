@@ -1,20 +1,20 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"../port/error.h"
-#include	"../port/netif.h"
-#include	"etherif.h"
-#include	"ethermii.h"
-#include	<pool.h>
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "../port/error.h"
+#include "../port/netif.h"
+#include "etherif.h"
+#include "ethermii.h"
+#include <pool.h>
 enum {
-Ntd	= 64,
-Nrd	= 256,
-Nrb	= 1024,
+Ntd = 64,
+Nrd = 256,
+Nrb = 1024,
 Bufalign= 4,
-Rbsz	= ETHERMAXTU + 4,
+Rbsz = ETHERMAXTU + 4,
 };
 extern uchar arge0mac[Eaddrlen];
 extern uchar arge1mac[Eaddrlen];
@@ -23,218 +23,218 @@ typedef struct Ctlr Ctlr;
 typedef struct Desc Desc;
 typedef struct Etherif Etherif;
 struct Arge {
-ulong	cfg1;
-ulong	cfg2;
-ulong	ifg;
-ulong	hduplex;
-ulong	maxframelen;
-uchar	_pad0[0x20 - 0x14];
-ulong	miicfg;
-ulong	miicmd;
-ulong	miiaddr;
-ulong	miictl;
-ulong	miists;
-ulong	miiindic;
-ulong	ifctl;
-ulong	_pad1;
-ulong	staaddr1;
-ulong	staaddr2;
-ulong	fifocfg[3];
-ulong	fifotxthresh;
-ulong	fiforxfiltmatch;
-ulong	fiforxfiltmask;
-ulong	fiforam[7];
-uchar	_pad2[0x180 - 0x7c];
-ulong	txctl;
-ulong	txdesc;
-ulong	txsts;
-ulong	rxctl;
-ulong	rxdesc;
-ulong	rxsts;
-ulong	dmaintr;
-ulong	dmaintrsts;
+ulong cfg1;
+ulong cfg2;
+ulong ifg;
+ulong hduplex;
+ulong maxframelen;
+uchar _pad0[0x20 - 0x14];
+ulong miicfg;
+ulong miicmd;
+ulong miiaddr;
+ulong miictl;
+ulong miists;
+ulong miiindic;
+ulong ifctl;
+ulong _pad1;
+ulong staaddr1;
+ulong staaddr2;
+ulong fifocfg[3];
+ulong fifotxthresh;
+ulong fiforxfiltmatch;
+ulong fiforxfiltmask;
+ulong fiforam[7];
+uchar _pad2[0x180 - 0x7c];
+ulong txctl;
+ulong txdesc;
+ulong txsts;
+ulong rxctl;
+ulong rxdesc;
+ulong rxsts;
+ulong dmaintr;
+ulong dmaintrsts;
 };
 enum {
-Cfg1softrst		= 1 << 31,
-Cfg1simulrst		= 1 << 30,
-Cfg1macrxblkrst		= 1 << 19,
-Cfg1mactxblkrst		= 1 << 18,
-Cfg1rxfuncrst		= 1 << 17,
-Cfg1txfuncrst		= 1 << 16,
-Cfg1loopback		= 1 <<  8,
-Cfg1rxflowctl		= 1 <<  5,
-Cfg1txflowctl		= 1 <<  4,
-Cfg1syncrx		= 1 <<  3,
-Cfg1rxen		= 1 <<  2,
-Cfg1synctx		= 1 <<  1,
-Cfg1txen		= 1 <<  0,
-Cfg2preamblelenmask	= 0xf,
-Cfg2preamblelenshift	= 12,
-Cfg2ifmode1000		= 2 << 8,
-Cfg2ifmode10_100	= 1 << 8,
-Cfg2ifmodeshift		= 8,
-Cfg2ifmodemask		= 3,
-Cfg2hugeframe		= 1 << 5,
-Cfg2lenfield		= 1 << 4,
-Cfg2enpadcrc		= 1 << 2,
-Cfg2encrc		= 1 << 1,
-Cfg2fdx			= 1 << 0,
-Miicfgrst		= 1 << 31,
-Miicfgscanautoinc	= 1 <<  5,
-Miicfgpreamblesup	= 1 <<  4,
-Miicfgclkselmask	= 0x7,
-Miicfgclkdiv4		= 0,
-Miicfgclkdiv6		= 2,
-Miicfgclkdiv8		= 3,
-Miicfgclkdiv10		= 4,
-Miicfgclkdiv14		= 5,
-Miicfgclkdiv20		= 6,
-Miicfgclkdiv28		= 7,
-Miicmdscancycle		= 1 << 1,
-Miicmdread		= 1,
-Miicmdwrite		= 0,
-Miiphyaddrshift		= 8,
-Miiphyaddrmask		= 0xff,
-Miiregmask		= 0x1f,
-Miictlmask		= 0xffff,
-Miistsmask		= 0xffff,
-Miiindicinvalid		= 1 << 2,
-Miiindicscanning	= 1 << 1,
-Miiindicbusy		= 1 << 0,
-Ifctlspeed		= 1 << 16,
-Fifocfg0txfabric	= 1 << 4,
-Fifocfg0txsys		= 1 << 3,
-Fifocfg0rxfabric	= 1 << 2,
-Fifocfg0rxsys		= 1 << 1,
-Fifocfg0watermark	= 1 << 0,
-Fifocfg0all		= MASK(5),
-Fifocfg0enshift		= 8,
-Ffunicast		= 1 << 17,
-Fftruncframe		= 1 << 16,
-Ffvlantag		= 1 << 15,
-Ffunsupopcode		= 1 << 14,
-Ffpauseframe		= 1 << 13,
-Ffctlframe		= 1 << 12,
-Fflongevent		= 1 << 11,
-Ffdribblenibble		= 1 << 10,
-Ffbcast			= 1 <<  9,
-Ffmcast			= 1 <<  8,
-Ffok			= 1 <<  7,
-Ffoorange		= 1 <<  6,
-Fflenmsmtch		= 1 <<  5,
-Ffcrcerr		= 1 <<  4,
-Ffcodeerr		= 1 <<  3,
-Fffalsecarrier		= 1 <<  2,
-Ffrxdvevent		= 1 <<  1,
-Ffdropevent		= 1 <<  0,
+Cfg1softrst = 1 << 31,
+Cfg1simulrst = 1 << 30,
+Cfg1macrxblkrst = 1 << 19,
+Cfg1mactxblkrst = 1 << 18,
+Cfg1rxfuncrst = 1 << 17,
+Cfg1txfuncrst = 1 << 16,
+Cfg1loopback = 1 << 8,
+Cfg1rxflowctl = 1 << 5,
+Cfg1txflowctl = 1 << 4,
+Cfg1syncrx = 1 << 3,
+Cfg1rxen = 1 << 2,
+Cfg1synctx = 1 << 1,
+Cfg1txen = 1 << 0,
+Cfg2preamblelenmask = 0xf,
+Cfg2preamblelenshift = 12,
+Cfg2ifmode1000 = 2 << 8,
+Cfg2ifmode10_100 = 1 << 8,
+Cfg2ifmodeshift = 8,
+Cfg2ifmodemask = 3,
+Cfg2hugeframe = 1 << 5,
+Cfg2lenfield = 1 << 4,
+Cfg2enpadcrc = 1 << 2,
+Cfg2encrc = 1 << 1,
+Cfg2fdx = 1 << 0,
+Miicfgrst = 1 << 31,
+Miicfgscanautoinc = 1 << 5,
+Miicfgpreamblesup = 1 << 4,
+Miicfgclkselmask = 0x7,
+Miicfgclkdiv4 = 0,
+Miicfgclkdiv6 = 2,
+Miicfgclkdiv8 = 3,
+Miicfgclkdiv10 = 4,
+Miicfgclkdiv14 = 5,
+Miicfgclkdiv20 = 6,
+Miicfgclkdiv28 = 7,
+Miicmdscancycle = 1 << 1,
+Miicmdread = 1,
+Miicmdwrite = 0,
+Miiphyaddrshift = 8,
+Miiphyaddrmask = 0xff,
+Miiregmask = 0x1f,
+Miictlmask = 0xffff,
+Miistsmask = 0xffff,
+Miiindicinvalid = 1 << 2,
+Miiindicscanning = 1 << 1,
+Miiindicbusy = 1 << 0,
+Ifctlspeed = 1 << 16,
+Fifocfg0txfabric = 1 << 4,
+Fifocfg0txsys = 1 << 3,
+Fifocfg0rxfabric = 1 << 2,
+Fifocfg0rxsys = 1 << 1,
+Fifocfg0watermark = 1 << 0,
+Fifocfg0all = MASK(5),
+Fifocfg0enshift = 8,
+Ffunicast = 1 << 17,
+Fftruncframe = 1 << 16,
+Ffvlantag = 1 << 15,
+Ffunsupopcode = 1 << 14,
+Ffpauseframe = 1 << 13,
+Ffctlframe = 1 << 12,
+Fflongevent = 1 << 11,
+Ffdribblenibble = 1 << 10,
+Ffbcast = 1 << 9,
+Ffmcast = 1 << 8,
+Ffok = 1 << 7,
+Ffoorange = 1 << 6,
+Fflenmsmtch = 1 << 5,
+Ffcrcerr = 1 << 4,
+Ffcodeerr = 1 << 3,
+Fffalsecarrier = 1 << 2,
+Ffrxdvevent = 1 << 1,
+Ffdropevent = 1 << 0,
 Ffmatchdflt = Ffvlantag | Ffunsupopcode | Ffpauseframe | Ffctlframe |
 Fflongevent | Ffdribblenibble | Ffbcast | Ffmcast | Ffok |
 Ffoorange | Fflenmsmtch | Ffcrcerr | Ffcodeerr |
 Fffalsecarrier | Ffrxdvevent | Ffdropevent,
-Frmbytemode		= 1 << 19,
-Frmnoshortframe		= 1 << 18,
-Frmbit17		= 1 << 17,
-Frmbit16		= 1 << 16,
-Frmtruncframe		= 1 << 15,
-Frmlongevent		= 1 << 14,
-Frmvlantag		= 1 << 13,
-Frmunsupopcode		= 1 << 12,
-Frmpauseframe		= 1 << 11,
-Frmctlframe		= 1 << 10,
-Frmdribblenibble	= 1 <<  9,
-Frmbcast		= 1 <<  8,
-Frmmcast		= 1 <<  7,
-Frmok			= 1 <<  6,
-Frmoorange		= 1 <<  5,
-Frmlenmsmtch		= 1 <<  4,
-Frmcodeerr		= 1 <<  3,
-Frmfalsecarrier		= 1 <<  2,
-Frmrxdvevent		= 1 <<  1,
-Frmdropevent		= 1 <<  0,
+Frmbytemode = 1 << 19,
+Frmnoshortframe = 1 << 18,
+Frmbit17 = 1 << 17,
+Frmbit16 = 1 << 16,
+Frmtruncframe = 1 << 15,
+Frmlongevent = 1 << 14,
+Frmvlantag = 1 << 13,
+Frmunsupopcode = 1 << 12,
+Frmpauseframe = 1 << 11,
+Frmctlframe = 1 << 10,
+Frmdribblenibble = 1 << 9,
+Frmbcast = 1 << 8,
+Frmmcast = 1 << 7,
+Frmok = 1 << 6,
+Frmoorange = 1 << 5,
+Frmlenmsmtch = 1 << 4,
+Frmcodeerr = 1 << 3,
+Frmfalsecarrier = 1 << 2,
+Frmrxdvevent = 1 << 1,
+Frmdropevent = 1 << 0,
 Ffmaskdflt = Frmnoshortframe | Frmbit17 | Frmbit16 | Frmtruncframe |
 Frmlongevent | Frmvlantag | Frmpauseframe | Frmctlframe |
 Frmdribblenibble | Frmbcast | Frmmcast | Frmok | Frmoorange |
 Frmcodeerr | Frmfalsecarrier | Frmrxdvevent | Frmdropevent,
-Dmatxctlen	= 1 << 0,
-Txpcountmask	= 0xff,
-Txpcountshift	= 16,
-Txbuserr	= 1 << 3,
-Txunderrun	= 1 << 1,
-Txpktsent	= 1 << 0,
-Dmarxctlen	= 1 << 0,
-Rxpcountmask	= 0xff,
-Rxpcountshift	= 16,
-Rxbuserr	= 1 << 3,
-Rxovflo		= 1 << 2,
-Rxpktrcvd	= 1 << 0,
-Dmarxbuserr	= 1 << 7,
-Dmarxovflo	= 1 << 6,
-Dmarxpktrcvd	= 1 << 4,
-Dmatxbuserr	= 1 << 3,
-Dmatxunderrun	= 1 << 1,
-Dmatxpktsent	= 1 << 0,
-Dmaall		= Dmarxbuserr | Dmarxovflo | Dmarxpktrcvd | Dmatxbuserr,
-Spictlremapdisable	= 1 << 6,
-Spictlclkdividermask	= MASK(6),
-Spiioctlcs2		= 1 << 18,
-Spiioctlcs1		= 1 << 17,
-Spiioctlcs0		= 1 << 16,
-Spiioctlcsmask		= 7 << 16,
-Spiioctlclk		= 1 << 8,
-Spiioctldo		= 1,
+Dmatxctlen = 1 << 0,
+Txpcountmask = 0xff,
+Txpcountshift = 16,
+Txbuserr = 1 << 3,
+Txunderrun = 1 << 1,
+Txpktsent = 1 << 0,
+Dmarxctlen = 1 << 0,
+Rxpcountmask = 0xff,
+Rxpcountshift = 16,
+Rxbuserr = 1 << 3,
+Rxovflo = 1 << 2,
+Rxpktrcvd = 1 << 0,
+Dmarxbuserr = 1 << 7,
+Dmarxovflo = 1 << 6,
+Dmarxpktrcvd = 1 << 4,
+Dmatxbuserr = 1 << 3,
+Dmatxunderrun = 1 << 1,
+Dmatxpktsent = 1 << 0,
+Dmaall = Dmarxbuserr | Dmarxovflo | Dmarxpktrcvd | Dmatxbuserr,
+Spictlremapdisable = 1 << 6,
+Spictlclkdividermask = MASK(6),
+Spiioctlcs2 = 1 << 18,
+Spiioctlcs1 = 1 << 17,
+Spiioctlcs0 = 1 << 16,
+Spiioctlcsmask = 7 << 16,
+Spiioctlclk = 1 << 8,
+Spiioctldo = 1,
 };
 struct Spi {
-ulong	fs;
-ulong	ctl;
-ulong	ioctl;
-ulong	rds;
+ulong fs;
+ulong ctl;
+ulong ioctl;
+ulong rds;
 };
 struct Desc {
-ulong	addr;
-ulong	ctl;
-Desc	*next;
-ulong	_pad;
+ulong addr;
+ulong ctl;
+Desc *next;
+ulong _pad;
 };
 enum {
-Descempty	= 1 << 31,
-Descmore	= 1 << 24,
-Descszmask	= MASK(12),
+Descempty = 1 << 31,
+Descmore = 1 << 24,
+Descszmask = MASK(12),
 };
-#define DMASIZE(len)	((len) & Descszmask)
+#define DMASIZE(len) ((len) & Descszmask)
 struct Ctlr {
-Arge	*regs;
-Ether*	edev;
+Arge *regs;
+Ether* edev;
 Lock;
-int	init;
-int	attached;
-Mii*	mii;
-Rendez	lrendez;
-int	lim;
-int	link;
-int	phymask;
-Rendez	rrendez;
-uint	rintr;
-int	pktstoread;
-int	discard;
-Desc*	rdba;
-Block**	rd;
-uint	rdh;
-uint	rdt;
-uint	nrdfree;
-Rendez	trendez;
-uint	tintr;
-int	pktstosend;
-int	ntq;
-Desc*	tdba;
-Block**	td;
-uint	tdh;
-uint	tdt;
+int init;
+int attached;
+Mii* mii;
+Rendez lrendez;
+int lim;
+int link;
+int phymask;
+Rendez rrendez;
+uint rintr;
+int pktstoread;
+int discard;
+Desc* rdba;
+Block** rd;
+uint rdh;
+uint rdt;
+uint nrdfree;
+Rendez trendez;
+uint tintr;
+int pktstosend;
+int ntq;
+Desc* tdba;
+Block** td;
+uint tdh;
+uint tdt;
 };
 struct Etherif {
-uintptr	regs;
-int	irq;
-uchar	*mac;
-int	phymask;
+uintptr regs;
+int irq;
+uchar *mac;
+int phymask;
 };
 static Etherif etherifs[] = {
 { 0x1a000000, ILenet0, arge0mac, 1<<4 },
@@ -243,50 +243,50 @@ static Etherif etherifs[] = {
 static Ether *etherxx[MaxEther];
 static Lock athrblock;
 static Block* athrbpool;
-static void	athrbfree(Block* bp);
+static void athrbfree(Block* bp);
 enum {
-Swrgmii	= 0,
-Swgmii	= 1,
+Swrgmii = 0,
+Swgmii = 1,
 Swphy4cpu = 0,
 };
 typedef struct Switch Switch;
 struct Switch {
-int	page;
-int	scdev;
+int page;
+int scdev;
 };
 enum {
-Miiathdbgaddr	= 0x1d,
-Miiathdbgdata	= 0x1e,
-Swregmask	= 0,
-Swmaskrevmask	= 0x00ff,
-Swmaskvermask	= 0xff00,
-Swmaskvershift	= 8,
-Swmasksoftreset	= 1 << 31,
-Swregmode	= 8,
-Swdir615uboot	= 0x8d1003e0,
-Swrgmiiport4iso	= 0x81461bea,
-Swrgmiiport4sw	= 0x01261be2,
-Swgmiiavm	= 0x010e5b71,
-Swmac0gmiien	= 1 <<  0,
-Swmac0rgmiien	= 1 <<  1,
-Swphy4gmiien	= 1 <<  2,
-Swphy4rgmiien	= 1 <<  3,
-Swmac0macmode	= 1 <<  4,
-Swrgmiirxclkdelayen= 1 <<  6,
-Swrgmiitxclkdelayen= 1 <<  7,
-Swmac5macmode	= 1 << 14,
-Swmac5phymode	= 1 << 15,
-Swtxdelays0	= 1 << 21,
-Swtxdelays1	= 1 << 22,
-Swrxdelays0	= 1 << 23,
-Swledopenen	= 1 << 24,
-Swspien		= 1 << 25,
-Swrxdelays1	= 1 << 26,
-Swpoweronsel	= 1 << 31,
-Swregfloodmask	= 0x2c,
+Miiathdbgaddr = 0x1d,
+Miiathdbgdata = 0x1e,
+Swregmask = 0,
+Swmaskrevmask = 0x00ff,
+Swmaskvermask = 0xff00,
+Swmaskvershift = 8,
+Swmasksoftreset = 1 << 31,
+Swregmode = 8,
+Swdir615uboot = 0x8d1003e0,
+Swrgmiiport4iso = 0x81461bea,
+Swrgmiiport4sw = 0x01261be2,
+Swgmiiavm = 0x010e5b71,
+Swmac0gmiien = 1 << 0,
+Swmac0rgmiien = 1 << 1,
+Swphy4gmiien = 1 << 2,
+Swphy4rgmiien = 1 << 3,
+Swmac0macmode = 1 << 4,
+Swrgmiirxclkdelayen= 1 << 6,
+Swrgmiitxclkdelayen= 1 << 7,
+Swmac5macmode = 1 << 14,
+Swmac5phymode = 1 << 15,
+Swtxdelays0 = 1 << 21,
+Swtxdelays1 = 1 << 22,
+Swrxdelays0 = 1 << 23,
+Swledopenen = 1 << 24,
+Swspien = 1 << 25,
+Swrxdelays1 = 1 << 26,
+Swpoweronsel = 1 << 31,
+Swregfloodmask = 0x2c,
 Swfloodmaskbcast2cpu= 1 << 26,
-Swregglobal	= 0x30,
-Swglobalmtumask	= 0x7fff,
+Swregglobal = 0x30,
+Swglobalmtumask = 0x7fff,
 };
 #ifdef NOTYET
 void *
@@ -453,7 +453,7 @@ bp = 0;
 }
 return bp;
 }
-tome   = memcmp(pkt->d, ether->ea, sizeof(pkt->d)) == 0;
+tome = memcmp(pkt->d, ether->ea, sizeof(pkt->d)) == 0;
 fromme = memcmp(pkt->s, ether->ea, sizeof(pkt->s)) == 0;
 for(fp = ether->f; fp < ep; fp++)
 if((f = *fp) != nil && (f->type == type || f->type < 0))
@@ -814,13 +814,13 @@ arge->miicfg = Miicfgclkdiv28;
 delay(100);
 }
 eaddr = ether->ea;
-arge->staaddr1 = eaddr[2]<<24 | eaddr[3]<<16 | eaddr[4]<<8  | eaddr[5];
+arge->staaddr1 = eaddr[2]<<24 | eaddr[3]<<16 | eaddr[4]<<8 | eaddr[5];
 arge->staaddr2 = eaddr[0]<< 8 | eaddr[1];
 arge->fifocfg[0] = Fifocfg0all << Fifocfg0enshift;
 arge->fifocfg[1] = 0x0fff0000;
 arge->fifocfg[2] = 0x00001fff;
 arge->fiforxfiltmatch = Ffmatchdflt;
-arge->fiforxfiltmask  = Ffmaskdflt;
+arge->fiforxfiltmask = Ffmaskdflt;
 athmii(ether, phymask);
 if (ether->ctlrno > 0)
 cfgmediaduplex(ether);

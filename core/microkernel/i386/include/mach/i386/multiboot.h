@@ -1,53 +1,53 @@
 #ifndef _MACH_I386_MULTIBOOT_H_
 #define _MACH_I386_MULTIBOOT_H_
-#define MULTIBOOT_SEARCH	8192
-#define MULTIBOOT_MAGIC		0x1badb002
-#define MULTIBOOT_MUSTKNOW	0x0000ffff
-#define MULTIBOOT_PAGE_ALIGN	0x00000001
-#define MULTIBOOT_MEMORY_INFO	0x00000002
-#define MULTIBOOT_VIDEO_MODE	0x00000004
-#define MULTIBOOT_AOUT_KLUDGE	0x00010000
-#define MULTIBOOT_VALID         0x2badb002
-#define MULTIBOOT_MEMORY	0x00000001
-#define MULTIBOOT_BOOT_DEVICE	0x00000002
-#define MULTIBOOT_CMDLINE	0x00000004
-#define MULTIBOOT_MODS		0x00000008
-#define MULTIBOOT_AOUT_SYMS	0x00000010
-#define MULTIBOOT_ELF_SHDR	0x00000020
-#define MULTIBOOT_MEM_MAP	0x00000040
-#define MULTIBOOT_FRAMEBUFFER	0x00001000
-#define MULTIBOOT_VIDEO_MODE_TYPE_LINEARFB	0
-#define MULTIBOOT_VIDEO_MODE_TYPE_EGA_TEXT	1
-#define MULTIBOOT_VIDEO_PARAM_NO_PREFERENCE	0
+#define MULTIBOOT_SEARCH 8192
+#define MULTIBOOT_MAGIC 0x1badb002
+#define MULTIBOOT_MUSTKNOW 0x0000ffff
+#define MULTIBOOT_PAGE_ALIGN 0x00000001
+#define MULTIBOOT_MEMORY_INFO 0x00000002
+#define MULTIBOOT_VIDEO_MODE 0x00000004
+#define MULTIBOOT_AOUT_KLUDGE 0x00010000
+#define MULTIBOOT_VALID 0x2badb002
+#define MULTIBOOT_MEMORY 0x00000001
+#define MULTIBOOT_BOOT_DEVICE 0x00000002
+#define MULTIBOOT_CMDLINE 0x00000004
+#define MULTIBOOT_MODS 0x00000008
+#define MULTIBOOT_AOUT_SYMS 0x00000010
+#define MULTIBOOT_ELF_SHDR 0x00000020
+#define MULTIBOOT_MEM_MAP 0x00000040
+#define MULTIBOOT_FRAMEBUFFER 0x00001000
+#define MULTIBOOT_VIDEO_MODE_TYPE_LINEARFB 0
+#define MULTIBOOT_VIDEO_MODE_TYPE_EGA_TEXT 1
+#define MULTIBOOT_VIDEO_PARAM_NO_PREFERENCE 0
 #ifndef __ASSEMBLER__
 #include <mach/machine/vm_types.h>
 struct multiboot_module
 {
-vm_offset_t		mod_start;
-vm_offset_t		mod_end;
-vm_offset_t		string;
-unsigned		reserved;
+vm_offset_t mod_start;
+vm_offset_t mod_end;
+vm_offset_t string;
+unsigned reserved;
 };
 #ifdef __x86_64__
 struct multiboot32_module
 {
-unsigned		mod_start;
-unsigned		mod_end;
-unsigned		string;
-unsigned		reserved;
+unsigned mod_start;
+unsigned mod_end;
+unsigned string;
+unsigned reserved;
 };
 #endif
-#define MB_ARD_MEMORY       1
+#define MB_ARD_MEMORY 1
 #include <kern/macros.h>
 #define MULTIBOOT_OS_MAGIC 0x1badb002
 #define MULTIBOOT_OS_MEMORY_INFO 0x2
 #define MULTIBOOT_OS_FLAGS MULTIBOOT_OS_MEMORY_INFO
 #define MULTIBOOT_LOADER_MAGIC 0x2badb002
-#define MULTIBOOT_LOADER_MEMORY     0x01
-#define MULTIBOOT_LOADER_CMDLINE    0x04
-#define MULTIBOOT_LOADER_MODULES    0x08
-#define MULTIBOOT_LOADER_SHDR       0x20
-#define MULTIBOOT_LOADER_MMAP       0x40
+#define MULTIBOOT_LOADER_MEMORY 0x01
+#define MULTIBOOT_LOADER_CMDLINE 0x04
+#define MULTIBOOT_LOADER_MODULES 0x08
+#define MULTIBOOT_LOADER_SHDR 0x20
+#define MULTIBOOT_LOADER_MMAP 0x40
 struct multiboot_header
 {
 uint32_t magic;
@@ -87,9 +87,9 @@ uint32_t framebuffer_pitch;
 uint32_t framebuffer_width;
 uint32_t framebuffer_height;
 uint8_t framebuffer_bpp;
-#define MULTIBOOT_FRAMEBUFFER_TYPE_INDEXED	0
-#define MULTIBOOT_FRAMEBUFFER_TYPE_RGB		1
-#define MULTIBOOT_FRAMEBUFFER_TYPE_EGA_TEXT	2
+#define MULTIBOOT_FRAMEBUFFER_TYPE_INDEXED 0
+#define MULTIBOOT_FRAMEBUFFER_TYPE_RGB 1
+#define MULTIBOOT_FRAMEBUFFER_TYPE_EGA_TEXT 2
 uint8_t framebuffer_type;
 union
 {

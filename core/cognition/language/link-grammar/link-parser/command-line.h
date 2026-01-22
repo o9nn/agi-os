@@ -7,10 +7,10 @@
 #define FIELD_WIDTH(str, width) (int)((width)+strlen(str)-utf8_strwidth(str))
 #define INITIAL_SCREEN_WIDTH 16381
 #if !defined(MIN)
-#define MIN(X,Y)  (((X) < (Y)) ? (X) : (Y))
+#define MIN(X,Y) (((X) < (Y)) ? (X) : (Y))
 #endif
 #if !defined(MAX)
-#define MAX(X,Y)  (((X) > (Y)) ? (X) : (Y))
+#define MAX(X,Y) (((X) > (Y)) ? (X) : (Y))
 #endif
 typedef struct
 {
@@ -37,7 +37,7 @@ ConstituentDisplayStyle display_constituents;
 bool display_bad;
 bool display_disjuncts;
 bool display_links;
-int  display_wordgraph;
+int display_wordgraph;
 } Command_Options;
 void put_local_vars_in_opts(Command_Options *);
 void put_opts_in_local_vars(Command_Options *);

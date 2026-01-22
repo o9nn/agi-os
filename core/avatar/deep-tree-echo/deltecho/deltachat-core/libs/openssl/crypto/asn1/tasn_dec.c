@@ -44,8 +44,8 @@ if ((tag < 0) || (tag > 30))
 return 0;
 return tag2bit[tag];
 }
-#define asn1_tlc_clear(c)       if (c) (c)->valid = 0
-#define asn1_tlc_clear_nc(c)    (c)->valid = 0
+#define asn1_tlc_clear(c) if (c) (c)->valid = 0
+#define asn1_tlc_clear_nc(c) (c)->valid = 0
 ASN1_VALUE *ASN1_item_d2i(ASN1_VALUE **pval,
 const unsigned char **in, long len,
 const ASN1_ITEM *it)

@@ -140,7 +140,7 @@ if (adapter_type != "lora") {
 throw std::runtime_error("expect adapter.type to be 'lora', but got: " + adapter_type);
 }
 auto general_arch_base = get_kv_str(base_model.ctx_gguf, "general.architecture");
-auto general_arch_lora = get_kv_str(adapter->ctx_gguf,   "general.architecture");
+auto general_arch_lora = get_kv_str(adapter->ctx_gguf, "general.architecture");
 if (general_arch_base != general_arch_lora) {
 throw std::runtime_error("model arch and LoRA arch mismatch");
 }
@@ -296,7 +296,7 @@ ggml_cont(ctx0, ggml_transpose(ctx0, ggml_cast(ctx0, inp_a[i], GGML_TYPE_F32))),
 ggml_cast(ctx0, inp_b[i], GGML_TYPE_F32));
 }
 const float alpha = adapters[i]->alpha;
-const float rank  = (float) inp_b[i]->ne[0];
+const float rank = (float) inp_b[i]->ne[0];
 const float scale = alpha ? adapters[i]->scale * alpha / rank : adapters[i]->scale;
 delta = ggml_scale(ctx0, delta, scale);
 cur = ggml_add(ctx0, delta, cur);

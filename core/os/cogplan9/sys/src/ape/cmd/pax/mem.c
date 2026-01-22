@@ -7,11 +7,11 @@ static char *copyright = "Copyright (c) 1989 Mark H. Colburn.\nAll rights reserv
 char *mem_get(uint len)
 #else
 char *mem_get(len)
-uint            len;
+uint len;
 #endif
 {
-char           *mem;
-static short    outofmem = 0;
+char *mem;
+static short outofmem = 0;
 if ((mem = (char *)malloc(len)) == (char *)NULL && !outofmem) {
 outofmem++;
 warn("mem_get()", "Out of memory");
@@ -22,10 +22,10 @@ return (mem);
 char *mem_str(char *str)
 #else
 char *mem_str(str)
-char           *str;
+char *str;
 #endif
 {
-char           *mem;
+char *mem;
 if (mem = mem_get((uint) strlen(str) + 1)) {
 strcpy(mem, str);
 }

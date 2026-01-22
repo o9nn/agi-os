@@ -1,68 +1,68 @@
 package thinking
 import (
-	"testing"
-	"text/template"
+"testing"
+"text/template"
 )
 func TestInferThinkingTags(t *testing.T) {
-	cases := []struct {
-		desc           string
-		tmplString     string
-		wantOpeningTag string
-		wantClosingTag string
-	}{
-		{
-			desc: "basic",
-			tmplString: `
-			{{ if .Thinking}}
-				/think
-			{{ end }}
-			{{- range $i, $_ := .Messages }}
-				{{- $last := eq (len (slice $.Messages $i)) 1 -}}
-				{{ if and $last .Thinking }}
-					<think>{{ .Thinking }}</think>
-				{{ end }}
-			{{ end }}
-		`,
-			wantOpeningTag: "<think>",
-			wantClosingTag: "</think>",
-		},
-		{
-			desc: "doubly nested range",
-			tmplString: `
-			{{ if .Thinking}}
-				/think
-			{{ end }}
-			{{- range $i, $_ := .Messages }}
-				{{- range $j, $_ := .NotMessages }}
-					{{- $last := eq (len (slice $.Messages $i)) 1 -}}
-					{{ if and $last .Thinking }}
-						<think>{{ .Thinking }}</think>
-					{{ end }}
-				{{ end }}
-			{{ end }}
-		`,
-			wantOpeningTag: "",
-			wantClosingTag: "",
-		},
-		{
-			desc: "whitespace is trimmed",
-			tmplString: `
-			{{ if .Thinking}}
-				/think
-			{{ end }}
-			{{- range $i, $_ := .Messages }}
-				{{- $last := eq (len (slice $.Messages $i)) 1 -}}
-				{{ if and $last .Thinking }}
-					Some text before   {{ .Thinking }}    Some text after
-				{{ end }}
-			{{ end }}
-		`,
-			wantOpeningTag: "Some text before",
-			wantClosingTag: "Some text after",
-		},
-		{
-			desc: "qwen3",
-			tmplString: `
+cases := []struct {
+desc           string
+tmplString     string
+wantOpeningTag string
+wantClosingTag string
+}{
+{
+desc: "basic",
+tmplString: `
+{{ if .Thinking}}
+/think
+{{ end }}
+{{- range $i, $_ := .Messages }}
+{{- $last := eq (len (slice $.Messages $i)) 1 -}}
+{{ if and $last .Thinking }}
+<think>{{ .Thinking }}</think>
+{{ end }}
+{{ end }}
+`,
+wantOpeningTag: "<think>",
+wantClosingTag: "</think>",
+},
+{
+desc: "doubly nested range",
+tmplString: `
+{{ if .Thinking}}
+/think
+{{ end }}
+{{- range $i, $_ := .Messages }}
+{{- range $j, $_ := .NotMessages }}
+{{- $last := eq (len (slice $.Messages $i)) 1 -}}
+{{ if and $last .Thinking }}
+<think>{{ .Thinking }}</think>
+{{ end }}
+{{ end }}
+{{ end }}
+`,
+wantOpeningTag: "",
+wantClosingTag: "",
+},
+{
+desc: "whitespace is trimmed",
+tmplString: `
+{{ if .Thinking}}
+/think
+{{ end }}
+{{- range $i, $_ := .Messages }}
+{{- $last := eq (len (slice $.Messages $i)) 1 -}}
+{{ if and $last .Thinking }}
+Some text before   {{ .Thinking }}    Some text after
+{{ end }}
+{{ end }}
+`,
+wantOpeningTag: "Some text before",
+wantClosingTag: "Some text after",
+},
+{
+desc: "qwen3",
+tmplString: `
 {{- if or .System .Tools .Thinking }}<|im_start|>system
 {{- if .System }}
 {{ .System }}
@@ -109,16 +109,16 @@ For each function call, return a json object with function name and arguments wi
 {{- if and (ne .Role "assistant") $last }}<|im_start|>assistant
 {{ end }}
 {{- end }}
-			`,
-			wantOpeningTag: "<think>",
-			wantClosingTag: "</think>",
-		},
-	}
-	for _, c := range cases {
-		tmpl := template.Must(template.New("test").Parse(c.tmplString))
-		openingTag, closingTag := InferTags(tmpl)
-		if openingTag != c.wantOpeningTag || closingTag != c.wantClosingTag {
-			t.Errorf("case %q: got (%q,%q), want (%q,%q)", c.desc, openingTag, closingTag, c.wantOpeningTag, c.wantClosingTag)
-		}
-	}
+`,
+wantOpeningTag: "<think>",
+wantClosingTag: "</think>",
+},
+}
+for _, c := range cases {
+tmpl := template.Must(template.New("test").Parse(c.tmplString))
+openingTag, closingTag := InferTags(tmpl)
+if openingTag != c.wantOpeningTag || closingTag != c.wantClosingTag {
+t.Errorf("case %q: got (%q,%q), want (%q,%q)", c.desc, openingTag, closingTag, c.wantOpeningTag, c.wantClosingTag)
+}
+}
 }

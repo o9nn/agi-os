@@ -1,5 +1,5 @@
 #ifndef NO_GZIP
-#  define GUNZIP
+# define GUNZIP
 #endif
 typedef enum {
 HEAD,

@@ -44,11 +44,11 @@ int storespace[Dend] =
 0,
 0,
 };
-static	Decl	*scopes[MaxScope];
-static	Decl	*tails[MaxScope];
-static	Node *scopenode[MaxScope];
-static	uchar scopekind[MaxScope];
-static	void	freeloc(Decl*);
+static Decl *scopes[MaxScope];
+static Decl *tails[MaxScope];
+static Node *scopenode[MaxScope];
+static uchar scopekind[MaxScope];
+static void freeloc(Decl*);
 void
 popscopes(void)
 {
@@ -458,7 +458,7 @@ if(old != nil
 && old->store != Dfn
 && old->store != Dwundef
 && old->store != Dundef)
-warn(d->src.start,  "redeclaration of %K, previously declared as %k on line %L",
+warn(d->src.start, "redeclaration of %K, previously declared as %k on line %L",
 d, old, old->src.start);
 n->decl = d;
 d->refs++;
@@ -1107,7 +1107,7 @@ return 0;
 int
 dequal(Decl *d1, Decl *d2, int full)
 {
-return	d1->sym == d2->sym &&
+return d1->sym == d2->sym &&
 d1->store == d2->store &&
 d1->implicit == d2->implicit &&
 d1->cyc == d2->cyc &&

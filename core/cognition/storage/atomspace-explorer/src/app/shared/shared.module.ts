@@ -17,21 +17,21 @@ import { OpencogAPIService } from './services/opencog_API.service';
 import { AtomService } from 'ng2-atomspace-visualizer';
 import { EqualValidator } from './directives/equal-validator.directive';
 @NgModule({
-  imports: [ TranslateModule, BrowserModule, CommonModule ],
-  declarations: [
-    InitializeDropdown,
-    CardTransition,
-    OrderByPipe,
-    SearchPipe,
-    TruncatePipe,
-    ConfirmationDialogComponent,
-    InitializeToggle,
-    InitializeTooltip,
-    InitializeModal,
-    EqualValidator
-  ],
-  providers: [ OpencogAPIService, AtomService ],
-  exports: [ InitializeDropdown, InitializeToggle, InitializeTooltip, OrderByPipe, SearchPipe, TruncatePipe, TranslatePipe,
-    CardTransition, ConfirmationDialogComponent ]
+imports: [ TranslateModule, BrowserModule, CommonModule ],
+declarations: [
+InitializeDropdown,
+CardTransition,
+OrderByPipe,
+SearchPipe,
+TruncatePipe,
+ConfirmationDialogComponent,
+InitializeToggle,
+InitializeTooltip,
+InitializeModal,
+EqualValidator
+],
+providers: [ OpencogAPIService, AtomService ],
+exports: [ InitializeDropdown, InitializeToggle, InitializeTooltip, OrderByPipe, SearchPipe, TruncatePipe, TranslatePipe,
+CardTransition, ConfirmationDialogComponent ]
 })
 export class SharedModule { }

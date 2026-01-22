@@ -1,5 +1,5 @@
-#define Qroot	0
-#define MSGMAX	((((8192+128)*2)+3) & ~3)
+#define Qroot 0
+#define MSGMAX ((((8192+128)*2)+3) & ~3)
 extern char Enomem[];
 extern char Eperm[];
 extern char Enodev[];
@@ -8,8 +8,8 @@ extern char Eexist[];
 extern char Enonexist[];
 extern char Ebadcmd[];
 extern char Ebadarg[];
-typedef uvlong	Path;
-typedef struct Styxserver	Styxserver;
+typedef uvlong Path;
+typedef struct Styxserver Styxserver;
 typedef struct Styxops Styxops;
 typedef struct Styxfile Styxfile;
 typedef struct Client Client;
@@ -24,22 +24,22 @@ Client *clients;
 Client *curc;
 Styxfile *root;
 Styxfile **ftab;
-void	*priv;
+void *priv;
 };
 struct Client
 {
 Styxserver *server;
 Client *next;
-int		fd;
-char	msg[MSGMAX];
-uint		nread;
-int		nc;
-char	data[MSGMAX];
-int		state;
-Fid		*fids;
-char		*uname;
-char		*aname;
-void		*u;
+int fd;
+char msg[MSGMAX];
+uint nread;
+int nc;
+char data[MSGMAX];
+int state;
+Fid *fids;
+char *uname;
+char *aname;
+void *u;
 };
 struct Styxops
 {
@@ -58,14 +58,14 @@ char *(*wstat)(Qid qid, Dir *d);
 };
 struct Styxfile
 {
-Dir	d;
+Dir d;
 Styxfile *parent;
 Styxfile *child;
 Styxfile *sibling;
 Styxfile *next;
 int ref;
 int open;
-void	*u;
+void *u;
 };
 char *styxinit(Styxserver *server, Styxops *ops, char *port, int perm, int needfile);
 char *styxwait(Styxserver *server);
@@ -76,7 +76,7 @@ Styxfile *styxaddfile(Styxserver *server, Path pqid, Path qid, char *name, int m
 Styxfile *styxadddir(Styxserver *server, Path pqid, Path qid, char *name, int mode, char *owner);
 int styxrmfile(Styxserver *server, Path qid);
 Styxfile *styxfindfile(Styxserver *server, Path qid);
-int	styxperm(Styxfile *file, char *uid, int mode);
+int styxperm(Styxfile *file, char *uid, int mode);
 long styxreadstr(ulong off, char *buf, ulong n, char *str);
 Qid styxqid(int path, int isdir);
 void *styxmalloc(int n);

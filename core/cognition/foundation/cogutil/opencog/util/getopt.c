@@ -5,10 +5,10 @@ int opterr = 1,
 optind = 1,
 optopt,
 optreset;
-char    *optarg;
-#define BADCH   (int)'?'
-#define BADARG  (int)':'
-#define EMSG    ""
+char *optarg;
+#define BADCH (int)'?'
+#define BADARG (int)':'
+#define EMSG ""
 int
 getopt(nargc, nargv, ostr)
 int nargc;

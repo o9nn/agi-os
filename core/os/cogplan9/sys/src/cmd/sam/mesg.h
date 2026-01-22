@@ -1,7 +1,7 @@
-#define	VERSION	2
-#define	TBLOCKSIZE 512
-#define	DATASIZE  (UTFmax*TBLOCKSIZE+30)
-#define	SNARFSIZE 32000
+#define VERSION 2
+#define TBLOCKSIZE 512
+#define DATASIZE (UTFmax*TBLOCKSIZE+30)
+#define SNARFSIZE 32000
 typedef enum Tmesg
 {
 Tversion,
@@ -60,8 +60,8 @@ Hplumb,
 HMAX,
 }Hmesg;
 typedef struct Header{
-uchar	type;
-uchar	count0;
-uchar	count1;
-uchar	data[1];
+uchar type;
+uchar count0;
+uchar count1;
+uchar data[1];
 }Header;

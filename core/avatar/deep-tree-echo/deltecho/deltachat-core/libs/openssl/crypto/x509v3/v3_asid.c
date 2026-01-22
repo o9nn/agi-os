@@ -13,16 +13,16 @@ ASN1_SIMPLE(ASRange, min, ASN1_INTEGER),
 ASN1_SIMPLE(ASRange, max, ASN1_INTEGER)
 } ASN1_SEQUENCE_END(ASRange)
 ASN1_CHOICE(ASIdOrRange) = {
-ASN1_SIMPLE(ASIdOrRange, u.id,    ASN1_INTEGER),
+ASN1_SIMPLE(ASIdOrRange, u.id, ASN1_INTEGER),
 ASN1_SIMPLE(ASIdOrRange, u.range, ASRange)
 } ASN1_CHOICE_END(ASIdOrRange)
 ASN1_CHOICE(ASIdentifierChoice) = {
-ASN1_SIMPLE(ASIdentifierChoice,      u.inherit,       ASN1_NULL),
+ASN1_SIMPLE(ASIdentifierChoice, u.inherit, ASN1_NULL),
 ASN1_SEQUENCE_OF(ASIdentifierChoice, u.asIdsOrRanges, ASIdOrRange)
 } ASN1_CHOICE_END(ASIdentifierChoice)
 ASN1_SEQUENCE(ASIdentifiers) = {
 ASN1_EXP_OPT(ASIdentifiers, asnum, ASIdentifierChoice, 0),
-ASN1_EXP_OPT(ASIdentifiers, rdi,   ASIdentifierChoice, 1)
+ASN1_EXP_OPT(ASIdentifiers, rdi, ASIdentifierChoice, 1)
 } ASN1_SEQUENCE_END(ASIdentifiers)
 IMPLEMENT_ASN1_FUNCTIONS(ASRange)
 IMPLEMENT_ASN1_FUNCTIONS(ASIdOrRange)
@@ -491,18 +491,18 @@ a->asnum->u.asIdsOrRanges) &&
 asid_contains(b->rdi->u.asIdsOrRanges,
 a->rdi->u.asIdsOrRanges)));
 }
-# define validation_err(_err_)           \
-do {                                  \
-if (ctx != NULL) {                  \
-ctx->error = _err_;               \
-ctx->error_depth = i;             \
-ctx->current_cert = x;            \
-ret = ctx->verify_cb(0, ctx);     \
-} else {                            \
-ret = 0;                          \
-}                                   \
-if (!ret)                           \
-goto done;                        \
+# define validation_err(_err_) \
+do { \
+if (ctx != NULL) { \
+ctx->error = _err_; \
+ctx->error_depth = i; \
+ctx->current_cert = x; \
+ret = ctx->verify_cb(0, ctx); \
+} else { \
+ret = 0; \
+} \
+if (!ret) \
+goto done; \
 } while (0)
 static int v3_asid_validate_path_internal(X509_STORE_CTX *ctx,
 STACK_OF(X509) *chain,

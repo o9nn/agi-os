@@ -1,19 +1,19 @@
 #include "all.h"
 #include "io.h"
 enum {
-Ninquiry	= 255,
-Nsense		= 255,
-CMDtest		= 0x00,
-CMDreqsense	= 0x03,
-CMDread6	= 0x08,
-CMDwrite6	= 0x0A,
-CMDinquiry	= 0x12,
-CMDstart	= 0x1B,
-CMDread10	= 0x28,
-CMDwrite10	= 0x2A,
+Ninquiry = 255,
+Nsense = 255,
+CMDtest = 0x00,
+CMDreqsense = 0x03,
+CMDread6 = 0x08,
+CMDwrite6 = 0x0A,
+CMDinquiry = 0x12,
+CMDstart = 0x1B,
+CMDread10 = 0x28,
+CMDwrite10 = 0x2A,
 };
 typedef struct {
-Target	target[NTarget];
+Target target[NTarget];
 } Ctlr;
 static Ctlr scsictlr[MaxScsi];
 extern int scsiverbose;

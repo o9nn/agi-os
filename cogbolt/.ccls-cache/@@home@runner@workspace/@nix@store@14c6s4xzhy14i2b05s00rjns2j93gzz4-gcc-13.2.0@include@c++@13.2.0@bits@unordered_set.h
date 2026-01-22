@@ -41,24 +41,24 @@ typename _Pred = equal_to<_Value>,
 typename _Alloc = allocator<_Value>>
 class unordered_set
 {
-typedef __uset_hashtable<_Value, _Hash, _Pred, _Alloc>  _Hashtable;
+typedef __uset_hashtable<_Value, _Hash, _Pred, _Alloc> _Hashtable;
 _Hashtable _M_h;
 public:
-typedef typename _Hashtable::key_type	key_type;
-typedef typename _Hashtable::value_type	value_type;
-typedef typename _Hashtable::hasher	hasher;
-typedef typename _Hashtable::key_equal	key_equal;
+typedef typename _Hashtable::key_type key_type;
+typedef typename _Hashtable::value_type value_type;
+typedef typename _Hashtable::hasher hasher;
+typedef typename _Hashtable::key_equal key_equal;
 typedef typename _Hashtable::allocator_type allocator_type;
-typedef typename _Hashtable::pointer		pointer;
-typedef typename _Hashtable::const_pointer	const_pointer;
-typedef typename _Hashtable::reference		reference;
-typedef typename _Hashtable::const_reference	const_reference;
-typedef typename _Hashtable::iterator		iterator;
-typedef typename _Hashtable::const_iterator	const_iterator;
-typedef typename _Hashtable::local_iterator	local_iterator;
-typedef typename _Hashtable::const_local_iterator	const_local_iterator;
-typedef typename _Hashtable::size_type		size_type;
-typedef typename _Hashtable::difference_type	difference_type;
+typedef typename _Hashtable::pointer pointer;
+typedef typename _Hashtable::const_pointer const_pointer;
+typedef typename _Hashtable::reference reference;
+typedef typename _Hashtable::const_reference const_reference;
+typedef typename _Hashtable::iterator iterator;
+typedef typename _Hashtable::const_iterator const_iterator;
+typedef typename _Hashtable::local_iterator local_iterator;
+typedef typename _Hashtable::const_local_iterator const_local_iterator;
+typedef typename _Hashtable::size_type size_type;
+typedef typename _Hashtable::difference_type difference_type;
 #if __cplusplus > 201402L
 using node_type = typename _Hashtable::node_type;
 using insert_return_type = typename _Hashtable::insert_return_type;
@@ -444,24 +444,24 @@ typename _Pred = equal_to<_Value>,
 typename _Alloc = allocator<_Value>>
 class unordered_multiset
 {
-typedef __umset_hashtable<_Value, _Hash, _Pred, _Alloc>  _Hashtable;
+typedef __umset_hashtable<_Value, _Hash, _Pred, _Alloc> _Hashtable;
 _Hashtable _M_h;
 public:
-typedef typename _Hashtable::key_type	key_type;
-typedef typename _Hashtable::value_type	value_type;
-typedef typename _Hashtable::hasher	hasher;
-typedef typename _Hashtable::key_equal	key_equal;
+typedef typename _Hashtable::key_type key_type;
+typedef typename _Hashtable::value_type value_type;
+typedef typename _Hashtable::hasher hasher;
+typedef typename _Hashtable::key_equal key_equal;
 typedef typename _Hashtable::allocator_type allocator_type;
-typedef typename _Hashtable::pointer		pointer;
-typedef typename _Hashtable::const_pointer	const_pointer;
-typedef typename _Hashtable::reference		reference;
-typedef typename _Hashtable::const_reference	const_reference;
-typedef typename _Hashtable::iterator		iterator;
-typedef typename _Hashtable::const_iterator	const_iterator;
-typedef typename _Hashtable::local_iterator	local_iterator;
-typedef typename _Hashtable::const_local_iterator	const_local_iterator;
-typedef typename _Hashtable::size_type		size_type;
-typedef typename _Hashtable::difference_type	difference_type;
+typedef typename _Hashtable::pointer pointer;
+typedef typename _Hashtable::const_pointer const_pointer;
+typedef typename _Hashtable::reference reference;
+typedef typename _Hashtable::const_reference const_reference;
+typedef typename _Hashtable::iterator iterator;
+typedef typename _Hashtable::const_iterator const_iterator;
+typedef typename _Hashtable::local_iterator local_iterator;
+typedef typename _Hashtable::const_local_iterator const_local_iterator;
+typedef typename _Hashtable::size_type size_type;
+typedef typename _Hashtable::difference_type difference_type;
 #if __cplusplus > 201402L
 using node_type = typename _Hashtable::node_type;
 #endif

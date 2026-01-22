@@ -1,7 +1,6 @@
 #include "devfs-posix.c"
-
 static vlong
 osdisksize(int fd)
 {
-	return 0;
+return 0;
 }

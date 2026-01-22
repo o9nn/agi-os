@@ -1,7 +1,7 @@
 #
 # stream data from files
 #
-# Copyright © 2000 Vita Nuova Limited.  All rights reserved.
+# Copyright © 2000 Vita Nuova Limited. All rights reserved.
 #
 implement Stream;
 include "sys.m";
@@ -9,7 +9,7 @@ sys: Sys;
 include "draw.m";
 Stream: module
 {
-init:	fn(nil: ref Draw->Context, argv: list of string);
+init: fn(nil: ref Draw->Context, argv: list of string);
 };
 stderr: ref Sys->FD;
 usage()
@@ -58,7 +58,7 @@ fail("stdout");
 f1 := eopen(hd argv, Sys->OREAD);
 spawn stream(f1, f2, bsize, sync);
 }
-if(sync != nil){	# count them back in
+if(sync != nil){ # count them back in
 <-sync;
 if(argc > 1)
 <-sync;

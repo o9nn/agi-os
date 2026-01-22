@@ -1,5 +1,5 @@
 #ifndef gximage_INCLUDED
-#  define gximage_INCLUDED
+# define gximage_INCLUDED
 #include "gsiparam.h"
 #include "gxcspace.h"
 #include "strimpl.h"
@@ -30,9 +30,9 @@ typedef struct sample_map_s sample_map;
 switch ( penum->map[i].decoding )\
 {\
 case sd_none:\
-cc.paint.values[i] = (sample_value) * (1.0 / 255.0);  \
+cc.paint.values[i] = (sample_value) * (1.0 / 255.0); \
 break;\
-case sd_lookup:	\
+case sd_lookup: \
 cc.paint.values[i] =\
 penum->map[i].decode_lookup[(sample_value) >> 4];\
 break;\
@@ -55,11 +55,11 @@ gx_device_color dev_color;
 bits32 key;
 } gx_image_clue;
 #ifndef gx_device_clip_DEFINED
-#  define gx_device_clip_DEFINED
+# define gx_device_clip_DEFINED
 typedef struct gx_device_clip_s gx_device_clip;
 #endif
 #ifndef gx_device_rop_texture_DEFINED
-#  define gx_device_rop_texture_DEFINED
+# define gx_device_rop_texture_DEFINED
 typedef struct gx_device_rop_texture_s gx_device_rop_texture;
 #endif
 struct gx_image_enum_s {

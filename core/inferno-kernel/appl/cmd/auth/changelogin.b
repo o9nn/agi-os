@@ -8,7 +8,7 @@ include "keyring.m";
 kr: Keyring;
 Changelogin: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 stderr, stdin, stdout: ref Sys->FD;
 keydb := "/mnt/keys";
@@ -71,7 +71,7 @@ newsecret = array[Keyring->SHA1dlen] of byte;
 kr->sha1(pwbuf, len pwbuf, newsecret, nil);
 }
 # get expiration time (midnight of date specified)
-maxdate := "17012038";			# largest date possible without incurring integer overflow
+maxdate := "17012038"; # largest date possible without incurring integer overflow
 now := daytime->now();
 tm := daytime->local(now);
 tm.sec = 59;
@@ -79,7 +79,7 @@ tm.min = 59;
 tm.hour = 23;
 tm.year += 1;
 if(dbdir == nil)
-expsecs := daytime->tm2epoch(tm);	# set expiration date to 23:59:59 one year from today
+expsecs := daytime->tm2epoch(tm); # set expiration date to 23:59:59 one year from today
 else
 expsecs = expiry;
 for(;;){
@@ -122,24 +122,24 @@ if(expsecs > now)
 break;
 else {
 newexpdate := sys->sprint("%2.2d%2.2d%4.4d", tm.mday, tm.mon+1, tm.year+1900);
-tm          = daytime->local(daytime->now());
-today      := sys->sprint("%2.2d%2.2d%4.4d", tm.mday, tm.mon+1, tm.year+1900);
+tm = daytime->local(daytime->now());
+today := sys->sprint("%2.2d%2.2d%4.4d", tm.mday, tm.mon+1, tm.year+1900);
 sys->print("!bad expiration date %s (must be between %s and %s)\n", newexpdate, today, maxdate);
 expsecs = now;
 }
 }
 newexpiry := expsecs;
-#	# get the free form field
-#	if(pw != nil)
-#		npw.other = pw.other;
-#	else
-#		npw.other = "";
-#	sys->print("free form info [return = %s]: ", npw.other);
-#	(ok, word) = readline(stdin,"rawoff");
-#	if(!ok)
-#		exit;
-#	if(word != "")
-#		npw.other = word;
+# # get the free form field
+# if(pw != nil)
+# npw.other = pw.other;
+# else
+# npw.other = "";
+# sys->print("free form info [return = %s]: ", npw.other);
+# (ok, word) = readline(stdin,"rawoff");
+# if(!ok)
+# exit;
+# if(word != "")
+# npw.other = word;
 if(dbdir == nil){
 dbdir = keydb+"/"+id;
 fd := sys->create(dbdir, Sys->OREAD, Sys->DMDIR|8r700);

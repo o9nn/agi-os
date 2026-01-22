@@ -5,14 +5,14 @@
 #ifdef _WIN32
 # include <malloc.h>
 # ifndef alloca
-#  define alloca _alloca
+# define alloca _alloca
 # endif
 #elif defined(__GNUC__)
 # ifndef alloca
-#  define alloca(s) __builtin_alloca((s))
+# define alloca(s) __builtin_alloca((s))
 # endif
 #endif
-#define TABLE_SIZE      32
+#define TABLE_SIZE 32
 int BN_exp(BIGNUM *r, const BIGNUM *a, const BIGNUM *p, BN_CTX *ctx)
 {
 int i, bits, ret = 0;
@@ -589,7 +589,7 @@ BIGNUM *d, *r, *t;
 BIGNUM *swap_tmp;
 #define BN_MOD_MUL_WORD(r, w, m) \
 (BN_mul_word(r, (w)) && \
-(  \
+( \
 (BN_mod(t, r, m, ctx) && (swap_tmp = r, r = t, t = swap_tmp, 1))))
 #define BN_TO_MONTGOMERY_WORD(r, w, mont) \
 (BN_set_word(r, (w)) && BN_to_montgomery(r, r, (mont), ctx))

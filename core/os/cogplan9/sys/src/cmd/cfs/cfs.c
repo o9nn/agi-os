@@ -11,7 +11,7 @@
 #include "stats.h"
 enum
 {
-Nfid=		10240,
+Nfid= 10240,
 };
 enum { MAXLEN = ~0ULL >> 1 };
 typedef struct Mfile Mfile;
@@ -19,84 +19,84 @@ typedef struct Ram Ram;
 typedef struct P9fs P9fs;
 struct Mfile
 {
-Qid	qid;
-char	busy;
+Qid qid;
+char busy;
 };
-Mfile	mfile[Nfid];
-Icache	ic;
-int	debug, statson, noauth, openserver;
+Mfile mfile[Nfid];
+Icache ic;
+int debug, statson, noauth, openserver;
 struct P9fs
 {
-int	fd[2];
-Fcall	rhdr;
-Fcall	thdr;
-long	len;
-char	*name;
+int fd[2];
+Fcall rhdr;
+Fcall thdr;
+long len;
+char *name;
 };
-P9fs	c;
-P9fs	s;
-struct Cfsstat  cfsstat, cfsprev;
-char	statbuf[2048];
-int	statlen;
-#define	MAXFDATA	8192
-int		messagesize = MAXFDATA+IOHDRSZ;
-uchar	datasnd[MAXFDATA + IOHDRSZ];
-uchar	datarcv[MAXFDATA + IOHDRSZ];
-Qid	rootqid;
-Qid	ctlqid = {0x5555555555555555LL, 0, 0};
-void	rversion(void);
-void	rauth(Mfile*);
-void	rflush(void);
-void	rattach(Mfile*);
-void	rwalk(Mfile*);
-void	ropen(Mfile*);
-void	rcreate(Mfile*);
-void	rread(Mfile*);
-void	rwrite(Mfile*);
-void	rclunk(Mfile*);
-void	rremove(Mfile*);
-void	rstat(Mfile*);
-void	rwstat(Mfile*);
-void	error(char*, ...);
-void	warning(char*);
-void	mountinit(char*, char*);
-void	io(void);
-void	sendreply(char*);
-void	sendmsg(P9fs*, Fcall*);
-void	rcvmsg(P9fs*, Fcall*);
-int	delegate(void);
-int	askserver(void);
-void	cachesetup(int, char*, char*);
-int	ctltest(Mfile*);
-void	genstats(void);
+P9fs c;
+P9fs s;
+struct Cfsstat cfsstat, cfsprev;
+char statbuf[2048];
+int statlen;
+#define MAXFDATA 8192
+int messagesize = MAXFDATA+IOHDRSZ;
+uchar datasnd[MAXFDATA + IOHDRSZ];
+uchar datarcv[MAXFDATA + IOHDRSZ];
+Qid rootqid;
+Qid ctlqid = {0x5555555555555555LL, 0, 0};
+void rversion(void);
+void rauth(Mfile*);
+void rflush(void);
+void rattach(Mfile*);
+void rwalk(Mfile*);
+void ropen(Mfile*);
+void rcreate(Mfile*);
+void rread(Mfile*);
+void rwrite(Mfile*);
+void rclunk(Mfile*);
+void rremove(Mfile*);
+void rstat(Mfile*);
+void rwstat(Mfile*);
+void error(char*, ...);
+void warning(char*);
+void mountinit(char*, char*);
+void io(void);
+void sendreply(char*);
+void sendmsg(P9fs*, Fcall*);
+void rcvmsg(P9fs*, Fcall*);
+int delegate(void);
+int askserver(void);
+void cachesetup(int, char*, char*);
+int ctltest(Mfile*);
+void genstats(void);
 char *mname[]={
-[Tversion]		"Tversion",
-[Tauth]	"Tauth",
-[Tflush]	"Tflush",
-[Tattach]	"Tattach",
-[Twalk]		"Twalk",
-[Topen]		"Topen",
-[Tcreate]	"Tcreate",
-[Tclunk]	"Tclunk",
-[Tread]		"Tread",
-[Twrite]	"Twrite",
-[Tremove]	"Tremove",
-[Tstat]		"Tstat",
-[Twstat]	"Twstat",
-[Rversion]	"Rversion",
-[Rauth]	"Rauth",
-[Rerror]	"Rerror",
-[Rflush]	"Rflush",
-[Rattach]	"Rattach",
-[Rwalk]		"Rwalk",
-[Ropen]		"Ropen",
-[Rcreate]	"Rcreate",
-[Rclunk]	"Rclunk",
-[Rread]		"Rread",
-[Rwrite]	"Rwrite",
-[Rremove]	"Rremove",
-[Rstat]		"Rstat",
-[Rwstat]	"Rwstat",
+[Tversion] "Tversion",
+[Tauth] "Tauth",
+[Tflush] "Tflush",
+[Tattach] "Tattach",
+[Twalk] "Twalk",
+[Topen] "Topen",
+[Tcreate] "Tcreate",
+[Tclunk] "Tclunk",
+[Tread] "Tread",
+[Twrite] "Twrite",
+[Tremove] "Tremove",
+[Tstat] "Tstat",
+[Twstat] "Twstat",
+[Rversion] "Rversion",
+[Rauth] "Rauth",
+[Rerror] "Rerror",
+[Rflush] "Rflush",
+[Rattach] "Rattach",
+[Rwalk] "Rwalk",
+[Ropen] "Ropen",
+[Rcreate] "Rcreate",
+[Rclunk] "Rclunk",
+[Rread] "Rread",
+[Rwrite] "Rwrite",
+[Rremove] "Rremove",
+[Rstat] "Rstat",
+[Rwstat] "Rwstat",
 0,
 };
 void

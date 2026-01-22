@@ -1,34 +1,34 @@
 implement Mash;
 #
-#	mash - Inferno make/shell
+# mash - Inferno make/shell
 #
-#	Bruce Ellis - 1Q 98
+# Bruce Ellis - 1Q 98
 #
-include	"mash.m";
-include	"mashparse.m";
+include "mash.m";
+include "mashparse.m";
 #
-#	mash consists of three modules plus library modules and loadable builtins.
+# mash consists of three modules plus library modules and loadable builtins.
 #
-#	This module, Mash, loads the other two (Mashparse and Mashlib), loads
-#	the builtin "builtins", initializes things and calls the parser.
+# This module, Mash, loads the other two (Mashparse and Mashlib), loads
+# the builtin "builtins", initializes things and calls the parser.
 #
-#	It has two entry points.  One is the traditional init() function and the other,
-#	tkinit, is an interface to WmMash that allows the "tk" builtin to cooperate
-#	with the command window.
+# It has two entry points. One is the traditional init() function and the other,
+# tkinit, is an interface to WmMash that allows the "tk" builtin to cooperate
+# with the command window.
 #
 Mash: module
 {
-tkinit:	fn(ctxt: ref Draw->Context, top: ref Tk->Toplevel, args: list of string);
-init:		fn(ctxt: ref Draw->Context, args: list of string);
+tkinit: fn(ctxt: ref Draw->Context, top: ref Tk->Toplevel, args: list of string);
+init: fn(ctxt: ref Draw->Context, args: list of string);
 };
-Iobuf:	import Bufio;
-sys:		Sys;
-lib:		Mashlib;
-parse:	Mashparse;
-Env, Stab:	import lib;
-cmd:		string;
+Iobuf: import Bufio;
+sys: Sys;
+lib: Mashlib;
+parse: Mashparse;
+Env, Stab: import lib;
+cmd: string;
 #
-#	Check for /dev/console.
+# Check for /dev/console.
 #
 isconsole(fd: ref Sys->FD): int
 {

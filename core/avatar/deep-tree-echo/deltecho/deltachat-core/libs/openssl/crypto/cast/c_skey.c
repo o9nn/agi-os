@@ -4,7 +4,7 @@
 #include "cast_s.h"
 #define CAST_exp(l,A,a,n) \
 A[n/4]=l; \
-a[n+3]=(l    )&0xff; \
+a[n+3]=(l )&0xff; \
 a[n+2]=(l>> 8)&0xff; \
 a[n+1]=(l>>16)&0xff; \
 a[n+0]=(l>>24)&0xff;

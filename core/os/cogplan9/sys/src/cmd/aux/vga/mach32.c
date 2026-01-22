@@ -4,34 +4,34 @@
 #include "pci.h"
 #include "vga.h"
 enum {
-Advfunc		= 0x4AE8,
-Clocksel	= 0x4AEE,
-Misc		= 0x36EE,
-Membndry	= 0x42EE,
-Memcfg		= 0x5EEE,
+Advfunc = 0x4AE8,
+Clocksel = 0x4AEE,
+Misc = 0x36EE,
+Membndry = 0x42EE,
+Memcfg = 0x5EEE,
 };
 typedef struct {
-ushort	advfunc;
-ushort	clocksel;
-ushort	misc;
-ushort	membndry;
-ushort	memcfg;
+ushort advfunc;
+ushort clocksel;
+ushort misc;
+ushort membndry;
+ushort memcfg;
 } Mach32;
 typedef struct {
-ulong	frequency;
-uchar	b8;
-uchar	b9;
-uchar	be;
-uchar	misc;
+ulong frequency;
+uchar b8;
+uchar b9;
+uchar be;
+uchar misc;
 } Clock;
 static Clock clocks[] = {
-{  VgaFreq0,	0x40, 0x02, 0x00, 0x00, },
-{  32000000,	0x00, 0x00, 0x10, 0x04, },
-{  40000000,	0x00, 0x02, 0x10, 0x00, },
-{  44900000,	0x00, 0x02, 0x00, 0x0C, },
-{  65000000,	0x00, 0x02, 0x10, 0x0C, },
-{  75000000,	0x00, 0x02, 0x10, 0x08, },
-{	  0, },
+{ VgaFreq0, 0x40, 0x02, 0x00, 0x00, },
+{ 32000000, 0x00, 0x00, 0x10, 0x04, },
+{ 40000000, 0x00, 0x02, 0x10, 0x00, },
+{ 44900000, 0x00, 0x02, 0x00, 0x0C, },
+{ 65000000, 0x00, 0x02, 0x10, 0x0C, },
+{ 75000000, 0x00, 0x02, 0x10, 0x08, },
+{ 0, },
 };
 static ulong atix;
 static uchar

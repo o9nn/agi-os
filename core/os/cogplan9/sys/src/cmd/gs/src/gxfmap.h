@@ -1,5 +1,5 @@
 #ifndef gxfmap_INCLUDED
-#  define gxfmap_INCLUDED
+# define gxfmap_INCLUDED
 #include "gsrefct.h"
 #include "gsstype.h"
 #include "gxfrac.h"
@@ -21,11 +21,11 @@ void gx_set_identity_transfer(gx_transfer_map *);
 #define FRAC_MAP_INTERPOLATE (log2_transfer_map_size <= 8)
 #if FRAC_MAP_INTERPOLATE
 frac gx_color_frac_map(frac, const frac *);
-#  define gx_map_color_frac(pgs,cf,m)\
+# define gx_map_color_frac(pgs,cf,m)\
 (pgs->m->proc == gs_identity_transfer ? cf :\
 gx_color_frac_map(cf, &pgs->m->values[0]))
 #else
-#  define gx_map_color_frac(pgs,cf,m)\
+# define gx_map_color_frac(pgs,cf,m)\
 (pgs->m->values[frac2bits(cf, log2_transfer_map_size)])
 #endif
 #define gx_map_color_float(pmap,v)\

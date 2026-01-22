@@ -1,34 +1,34 @@
-#define	DEBUG
+#define DEBUG
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include "awk.h"
 #include "ytab.h"
-#define	HAT	(NCHARS-2)
+#define HAT (NCHARS-2)
 #define MAXLIN 22
-#define type(v)		(v)->nobj
-#define info(v)		(v)->ntype
-#define left(v)		(v)->narg[0]
-#define right(v)	(v)->narg[1]
-#define parent(v)	(v)->nnext
-#define LEAF	case CCL: case NCCL: case CHAR: case DOT: case FINAL: case ALL:
-#define UNARY	case STAR: case PLUS: case QUEST:
-int	*setvec;
-int	*tmpset;
-int	maxsetvec = 0;
-int	rtok;
-int	rlxval;
-static uschar	*rlxstr;
-static uschar	*prestr;
-static uschar	*lastre;
-static	int setcnt;
-static	int poscnt;
-char	*patbeg;
-int	patlen;
-#define	NFA	20
-fa	*fatab[NFA];
-int	nfatab	= 0;
+#define type(v) (v)->nobj
+#define info(v) (v)->ntype
+#define left(v) (v)->narg[0]
+#define right(v) (v)->narg[1]
+#define parent(v) (v)->nnext
+#define LEAF case CCL: case NCCL: case CHAR: case DOT: case FINAL: case ALL:
+#define UNARY case STAR: case PLUS: case QUEST:
+int *setvec;
+int *tmpset;
+int maxsetvec = 0;
+int rtok;
+int rlxval;
+static uschar *rlxstr;
+static uschar *prestr;
+static uschar *lastre;
+static int setcnt;
+static int poscnt;
+char *patbeg;
+int patlen;
+#define NFA 20
+fa *fatab[NFA];
+int nfatab = 0;
 fa *makedfa(char *s, int anchor)
 {
 int i, use, nuse;

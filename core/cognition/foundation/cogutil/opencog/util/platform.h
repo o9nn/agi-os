@@ -12,11 +12,11 @@
 #ifdef WIN32_NOT_UNIX
 #define M_PI 3.14159265358979323846
 struct timezone {};
-int                round(float x);
-int                gettimeofday(struct timeval* tp, void* tzp);
-void               usleep(unsigned useconds);
+int round(float x);
+int gettimeofday(struct timeval* tp, void* tzp);
+void usleep(unsigned useconds);
 unsigned long long atoll(const char *str);
-unsigned int       sleep(unsigned seconds);
+unsigned int sleep(unsigned seconds);
 #endif
 namespace opencog
 {

@@ -89,7 +89,7 @@ return false;
 pos_ = pos;
 return true;
 }
-std::optional<common_chat_msg_parser::find_regex_result>  common_chat_msg_parser::try_find_literal(const std::string & literal) {
+std::optional<common_chat_msg_parser::find_regex_result> common_chat_msg_parser::try_find_literal(const std::string & literal) {
 auto idx = input_.find(literal, pos_);
 if (idx != std::string::npos) {
 find_regex_result res;
@@ -136,13 +136,13 @@ add_reasoning_content(stripped_reasoning);
 if (syntax_.reasoning_format != COMMON_REASONING_FORMAT_NONE) {
 if (syntax_.thinking_forced_open || try_consume_literal(start_think)) {
 if (auto res = try_find_literal(end_think)) {
-handle_reasoning(res->prelude,  true);
+handle_reasoning(res->prelude, true);
 consume_spaces();
 return true;
 }
 auto rest = consume_rest();
 if (!rest.empty()) {
-handle_reasoning(rest,  !is_partial());
+handle_reasoning(rest, !is_partial());
 }
 return true;
 }

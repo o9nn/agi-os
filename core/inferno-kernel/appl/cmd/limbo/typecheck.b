@@ -1,7 +1,7 @@
-fndecls:	ref Decl;
-labstack:	array of ref Node;
-maxlabdep:	int;
-inexcept:	ref Node;
+fndecls: ref Decl;
+labstack: array of ref Node;
+maxlabdep: int;
+inexcept: ref Node;
 nexc: int;
 fndec: ref Decl;
 increfs(id: ref Decl)
@@ -19,10 +19,10 @@ n = n.right;
 if(n.op == Oseq && n.right == nil)
 n = n.left;
 #
-# 	inline
-# 		(a) return e;
-# 		(b) if(c) return e1; else return e2;
-# 		(c) if(c) return e1; return e2;
+# inline
+# (a) return e;
+# (b) if(c) return e1; else return e2;
+# (c) if(c) return e1; return e2;
 #
 case(n.op){
 Oret =>
@@ -494,8 +494,8 @@ vardecled(n);
 varcheck(n, 0);
 if (nested() && tmustzero(n.decl.ty))
 decltozero(n);
-#			else if (inloop() && tmustzero(n.decl.ty))
-#				decltozero(n);
+# else if (inloop() && tmustzero(n.decl.ty))
+# decltozero(n);
 return top;
 Ovardecli =>
 vardecled(left);
@@ -826,13 +826,13 @@ right := n.right;
 nocheck = 0;
 if(n.op == Odot || n.op == Omdot || n.op == Ocall || n.op == Oref || n.op == Otagof || n.op == Oindex)
 nocheck = 1;
-if(n.op != Odas			# special case
-&& n.op != Oload)		# can have better error recovery
+if(n.op != Odas # special case
+&& n.op != Oload) # can have better error recovery
 (ok, allok) = echeck(left, nocheck, isglobal, n);
-if(n.op != Odas			# special case
-&& n.op != Odot			# special check
-&& n.op != Omdot		# special check
-&& n.op != Ocall		# can have better error recovery
+if(n.op != Odas # special case
+&& n.op != Odot # special check
+&& n.op != Omdot # special check
+&& n.op != Ocall # can have better error recovery
 && n.op != Oindex){
 (okr, allokr) := echeck(right, 0, isglobal, n);
 ok &= okr;
@@ -1419,7 +1419,7 @@ return (0, 0);
 n.ty = usetype(t);
 break;
 }
-if(0 && right.op == Oseq){		# a[e1, e2, ...]
+if(0 && right.op == Oseq){ # a[e1, e2, ...]
 # array creation to do before we allow this
 rewind(n);
 return echeck(n, typeok, isglobal, par);
@@ -1522,11 +1522,11 @@ if(n.op == Oexpas && !islval(left))
 return (0, 0);
 break;
 # if(mathchk(n, 0)){
-# 	if(n.ty != tint){
-# 		nerror(n, "exponentiation operands not int");
-# 		return (0, 0);
-# 	}
-# 	break;
+# if(n.ty != tint){
+# nerror(n, "exponentiation operands not int");
+# return (0, 0);
+# }
+# break;
 # }
 # return (0, 0);
 Olsh or
@@ -1671,7 +1671,7 @@ if(right == nil)
 return (1, allok);
 }
 # try a cast
-if(t.kind != Texception && right != nil && right.right == nil){	# Oseq but single expression
+if(t.kind != Texception && right != nil && right.right == nil){ # Oseq but single expression
 right = right.left;
 n.op = Ocast;
 n.left = right;
@@ -1731,7 +1731,7 @@ if(n == nil)
 return 0;
 case n.op{
 Oname =>
-return storespace[n.decl.store] && n.ty.kind != Texception;	#ZZZZ && n.decl.tagged == nil;
+return storespace[n.decl.store] && n.ty.kind != Texception; #ZZZZ && n.decl.tagged == nil;
 Odot =>
 if(n.right.decl.store != Dfield)
 return 0;
@@ -2047,7 +2047,7 @@ return args;
 mem(t: ref Type, d: ref Decl): int
 {
 for( ; d != nil; d = d.next)
-if(d.ty == t)	# was if(d.ty == t || tequal(d.ty, t))
+if(d.ty == t) # was if(d.ty == t || tequal(d.ty, t))
 return 1;
 return 0;
 }
@@ -2070,11 +2070,11 @@ sym = idf.sym;
 (id, mod) = fnlookup(sym, tt);
 while(id != nil && id.link != nil)
 id = id.link;
-if(id == nil)	# error flagged already
+if(id == nil) # error flagged already
 continue;
 id.refs++;
 id.inline = byte -1;
-if(tt.kind == Tmodule){	# mod an actual parameter
+if(tt.kind == Tmodule){ # mod an actual parameter
 for(;;){
 if(args0 != nil && tequal(tt, args0.left.ty)){
 mod = args0.left;
@@ -2360,7 +2360,7 @@ wild = nil;
 nlab := 0;
 ok := 1;
 for(n := inits; n != nil; n = n.right){
-if(!tcompat(t,  n.left.ty, 0)){
+if(!tcompat(t, n.left.ty, 0)){
 t = tparent(t, n.left.ty);
 if(!tcompat(t, n.left.ty, 0)){
 nerror(n.left, "inconsistent types "+typeconv(t)+" and "+typeconv(n.left.ty)+" in array initializer");

@@ -1,5 +1,5 @@
 #include "gc.h"
-static	int	resvreg[nelem(reg)];
+static int resvreg[nelem(reg)];
 void
 ginit(void)
 {
@@ -521,7 +521,7 @@ regfree(&nod);
 }else
 gopcode(op, n->type, n, cn);
 }
-#define	CASE(a,b)	((a<<8)|(b<<0))
+#define CASE(a,b) ((a<<8)|(b<<0))
 void
 gmove(Node *f, Node *t)
 {
@@ -634,19 +634,19 @@ t->op == OIND || t->op == OINDEX)
 switch(tt) {
 case TCHAR:
 case TUCHAR:
-a = AMOVB;	goto st;
+a = AMOVB; goto st;
 case TSHORT:
 case TUSHORT:
-a = AMOVW;	goto st;
+a = AMOVW; goto st;
 case TINT:
 case TUINT:
 case TLONG:
 case TULONG:
-a = AMOVL;	goto st;
+a = AMOVL; goto st;
 case TVLONG:
 case TUVLONG:
 case TIND:
-a = AMOVQ;	goto st;
+a = AMOVQ; goto st;
 st:
 if(f->op == OCONST) {
 gins(a, f, t);
@@ -669,19 +669,19 @@ switch(CASE(ft,tt)) {
 default:
 a = AMOVL;
 break;
-case CASE(	TVLONG,	TCHAR):
-case	CASE(	TVLONG,	TSHORT):
-case CASE(	TVLONG,	TINT):
-case CASE(	TVLONG,	TLONG):
-case CASE(	TUVLONG, TCHAR):
-case	CASE(	TUVLONG, TSHORT):
-case CASE(	TUVLONG, TINT):
-case CASE(	TUVLONG, TLONG):
-case CASE(	TINT,	TVLONG):
-case CASE(	TINT,	TUVLONG):
-case CASE(	TLONG,	TVLONG):
-case CASE(	TINT,	TIND):
-case CASE(	TLONG,	TIND):
+case CASE( TVLONG, TCHAR):
+case CASE( TVLONG, TSHORT):
+case CASE( TVLONG, TINT):
+case CASE( TVLONG, TLONG):
+case CASE( TUVLONG, TCHAR):
+case CASE( TUVLONG, TSHORT):
+case CASE( TUVLONG, TINT):
+case CASE( TUVLONG, TLONG):
+case CASE( TINT, TVLONG):
+case CASE( TINT, TUVLONG):
+case CASE( TLONG, TVLONG):
+case CASE( TINT, TIND):
+case CASE( TLONG, TIND):
 a = AMOVLQSX;
 if(f->op == OCONST) {
 f->vconst &= (uvlong)0xffffffffU;
@@ -690,33 +690,33 @@ f->vconst |= (vlong)0xffffffff << 32;
 a = AMOVQ;
 }
 break;
-case CASE(	TUINT,	TIND):
-case CASE(	TUINT,	TVLONG):
-case CASE(	TUINT,	TUVLONG):
-case CASE(	TULONG,	TVLONG):
-case CASE(	TULONG,	TUVLONG):
-case CASE(	TULONG,	TIND):
+case CASE( TUINT, TIND):
+case CASE( TUINT, TVLONG):
+case CASE( TUINT, TUVLONG):
+case CASE( TULONG, TVLONG):
+case CASE( TULONG, TUVLONG):
+case CASE( TULONG, TIND):
 a = AMOVL;
 if(f->op == OCONST) {
 f->vconst &= (uvlong)0xffffffffU;
 a = AMOVQ;
 }
 break;
-case CASE(	TIND,	TVLONG):
-case CASE(	TVLONG,	TVLONG):
-case CASE(	TUVLONG,	TVLONG):
-case CASE(	TVLONG,	TUVLONG):
-case CASE(	TUVLONG,	TUVLONG):
-case CASE(	TIND,	TUVLONG):
-case CASE(	TVLONG,	TIND):
-case CASE(	TUVLONG,	TIND):
-case CASE(	TIND,	TIND):
+case CASE( TIND, TVLONG):
+case CASE( TVLONG, TVLONG):
+case CASE( TUVLONG, TVLONG):
+case CASE( TVLONG, TUVLONG):
+case CASE( TUVLONG, TUVLONG):
+case CASE( TIND, TUVLONG):
+case CASE( TVLONG, TIND):
+case CASE( TUVLONG, TIND):
+case CASE( TIND, TIND):
 a = AMOVQ;
 break;
-case CASE(	TSHORT,	TINT):
-case CASE(	TSHORT,	TUINT):
-case CASE(	TSHORT,	TLONG):
-case CASE(	TSHORT,	TULONG):
+case CASE( TSHORT, TINT):
+case CASE( TSHORT, TUINT):
+case CASE( TSHORT, TLONG):
+case CASE( TSHORT, TULONG):
 a = AMOVWLSX;
 if(f->op == OCONST) {
 f->vconst &= 0xffff;
@@ -725,9 +725,9 @@ f->vconst |= 0xffff0000;
 a = AMOVL;
 }
 break;
-case CASE(	TSHORT,	TVLONG):
-case CASE(	TSHORT,	TUVLONG):
-case CASE(	TSHORT,	TIND):
+case CASE( TSHORT, TVLONG):
+case CASE( TSHORT, TUVLONG):
+case CASE( TSHORT, TIND):
 a = AMOVWQSX;
 if(f->op == OCONST) {
 f->vconst &= 0xffff;
@@ -738,31 +738,31 @@ f->vconst |= (vlong)~0 << 32;
 a = AMOVL;
 }
 break;
-case CASE(	TUSHORT,TINT):
-case CASE(	TUSHORT,TUINT):
-case CASE(	TUSHORT,TLONG):
-case CASE(	TUSHORT,TULONG):
+case CASE( TUSHORT,TINT):
+case CASE( TUSHORT,TUINT):
+case CASE( TUSHORT,TLONG):
+case CASE( TUSHORT,TULONG):
 a = AMOVWLZX;
 if(f->op == OCONST) {
 f->vconst &= 0xffff;
 a = AMOVL;
 }
 break;
-case CASE(	TUSHORT,TVLONG):
-case CASE(	TUSHORT,TUVLONG):
-case CASE(	TUSHORT,TIND):
+case CASE( TUSHORT,TVLONG):
+case CASE( TUSHORT,TUVLONG):
+case CASE( TUSHORT,TIND):
 a = AMOVWQZX;
 if(f->op == OCONST) {
 f->vconst &= 0xffff;
 a = AMOVL;
 }
 break;
-case CASE(	TCHAR,	TSHORT):
-case CASE(	TCHAR,	TUSHORT):
-case CASE(	TCHAR,	TINT):
-case CASE(	TCHAR,	TUINT):
-case CASE(	TCHAR,	TLONG):
-case CASE(	TCHAR,	TULONG):
+case CASE( TCHAR, TSHORT):
+case CASE( TCHAR, TUSHORT):
+case CASE( TCHAR, TINT):
+case CASE( TCHAR, TUINT):
+case CASE( TCHAR, TLONG):
+case CASE( TCHAR, TULONG):
 a = AMOVBLSX;
 if(f->op == OCONST) {
 f->vconst &= 0xff;
@@ -771,9 +771,9 @@ f->vconst |= 0xffffff00;
 a = AMOVL;
 }
 break;
-case CASE(	TCHAR,	TVLONG):
-case CASE(	TCHAR,	TUVLONG):
-case CASE(	TCHAR,	TIND):
+case CASE( TCHAR, TVLONG):
+case CASE( TCHAR, TUVLONG):
+case CASE( TCHAR, TIND):
 a = AMOVBQSX;
 if(f->op == OCONST) {
 f->vconst &= 0xff;
@@ -784,49 +784,49 @@ f->vconst |= (vlong)~0 << 32;
 a = AMOVQ;
 }
 break;
-case CASE(	TUCHAR,	TSHORT):
-case CASE(	TUCHAR,	TUSHORT):
-case CASE(	TUCHAR,	TINT):
-case CASE(	TUCHAR,	TUINT):
-case CASE(	TUCHAR,	TLONG):
-case CASE(	TUCHAR,	TULONG):
+case CASE( TUCHAR, TSHORT):
+case CASE( TUCHAR, TUSHORT):
+case CASE( TUCHAR, TINT):
+case CASE( TUCHAR, TUINT):
+case CASE( TUCHAR, TLONG):
+case CASE( TUCHAR, TULONG):
 a = AMOVBLZX;
 if(f->op == OCONST) {
 f->vconst &= 0xff;
 a = AMOVL;
 }
 break;
-case CASE(	TUCHAR,	TVLONG):
-case CASE(	TUCHAR,	TUVLONG):
-case CASE(	TUCHAR,	TIND):
+case CASE( TUCHAR, TVLONG):
+case CASE( TUCHAR, TUVLONG):
+case CASE( TUCHAR, TIND):
 a = AMOVBQZX;
 if(f->op == OCONST) {
 f->vconst &= 0xff;
 a = AMOVL;
 }
 break;
-case CASE(	TFLOAT,	TCHAR):
-case CASE(	TFLOAT,	TUCHAR):
-case CASE(	TFLOAT,	TSHORT):
-case CASE(	TFLOAT,	TUSHORT):
-case CASE(	TFLOAT,	TINT):
-case CASE(	TFLOAT,	TUINT):
-case CASE(	TFLOAT,	TLONG):
-case CASE(	TFLOAT,	TULONG):
-case CASE(	TFLOAT,	TVLONG):
-case CASE(	TFLOAT,	TUVLONG):
-case CASE(	TFLOAT,	TIND):
-case CASE(	TDOUBLE,TCHAR):
-case CASE(	TDOUBLE,TUCHAR):
-case CASE(	TDOUBLE,TSHORT):
-case CASE(	TDOUBLE,TUSHORT):
-case CASE(	TDOUBLE,TINT):
-case CASE(	TDOUBLE,TUINT):
-case CASE(	TDOUBLE,TLONG):
-case CASE(	TDOUBLE,TULONG):
-case CASE(	TDOUBLE,TVLONG):
-case CASE(	TDOUBLE,TUVLONG):
-case CASE(	TDOUBLE,TIND):
+case CASE( TFLOAT, TCHAR):
+case CASE( TFLOAT, TUCHAR):
+case CASE( TFLOAT, TSHORT):
+case CASE( TFLOAT, TUSHORT):
+case CASE( TFLOAT, TINT):
+case CASE( TFLOAT, TUINT):
+case CASE( TFLOAT, TLONG):
+case CASE( TFLOAT, TULONG):
+case CASE( TFLOAT, TVLONG):
+case CASE( TFLOAT, TUVLONG):
+case CASE( TFLOAT, TIND):
+case CASE( TDOUBLE,TCHAR):
+case CASE( TDOUBLE,TUCHAR):
+case CASE( TDOUBLE,TSHORT):
+case CASE( TDOUBLE,TUSHORT):
+case CASE( TDOUBLE,TINT):
+case CASE( TDOUBLE,TUINT):
+case CASE( TDOUBLE,TLONG):
+case CASE( TDOUBLE,TULONG):
+case CASE( TDOUBLE,TVLONG):
+case CASE( TDOUBLE,TUVLONG):
+case CASE( TDOUBLE,TIND):
 regalloc(&nod, t, Z);
 if(ewidth[tt] == SZ_VLONG || typeu[tt] && ewidth[tt] == SZ_INT){
 if(ft == TFLOAT)
@@ -843,8 +843,8 @@ gins(a, f, &nod);
 gmove(&nod, t);
 regfree(&nod);
 return;
-case CASE(	TUVLONG,	TDOUBLE):
-case CASE(	TUVLONG,	TFLOAT):
+case CASE( TUVLONG, TDOUBLE):
+case CASE( TUVLONG, TFLOAT):
 a = ACVTSQ2SS;
 if(tt == TDOUBLE)
 a = ACVTSQ2SD;
@@ -873,10 +873,10 @@ patch(p2, pc);
 regfree(&nod);
 regfree(&nod1);
 return;
-case CASE(	TULONG,	TDOUBLE):
-case CASE(	TUINT,	TDOUBLE):
-case CASE(	TULONG,	TFLOAT):
-case CASE(	TUINT,	TFLOAT):
+case CASE( TULONG, TDOUBLE):
+case CASE( TUINT, TDOUBLE):
+case CASE( TULONG, TFLOAT):
+case CASE( TUINT, TFLOAT):
 a = ACVTSQ2SS;
 if(tt == TDOUBLE)
 a = ACVTSQ2SD;
@@ -888,22 +888,22 @@ gmove(&nod1, t);
 regfree(&nod);
 regfree(&nod1);
 return;
-case CASE(	TCHAR,	TFLOAT):
-case CASE(	TUCHAR,	TFLOAT):
-case CASE(	TSHORT,	TFLOAT):
-case CASE(	TUSHORT,TFLOAT):
-case CASE(	TINT,	TFLOAT):
-case CASE(	TLONG,	TFLOAT):
-case	CASE(	TVLONG,	TFLOAT):
-case CASE(	TIND,	TFLOAT):
-case CASE(	TCHAR,	TDOUBLE):
-case CASE(	TUCHAR,	TDOUBLE):
-case CASE(	TSHORT,	TDOUBLE):
-case CASE(	TUSHORT,TDOUBLE):
-case CASE(	TINT,	TDOUBLE):
-case CASE(	TLONG,	TDOUBLE):
-case CASE(	TVLONG,	TDOUBLE):
-case CASE(	TIND,	TDOUBLE):
+case CASE( TCHAR, TFLOAT):
+case CASE( TUCHAR, TFLOAT):
+case CASE( TSHORT, TFLOAT):
+case CASE( TUSHORT,TFLOAT):
+case CASE( TINT, TFLOAT):
+case CASE( TLONG, TFLOAT):
+case CASE( TVLONG, TFLOAT):
+case CASE( TIND, TFLOAT):
+case CASE( TCHAR, TDOUBLE):
+case CASE( TUCHAR, TDOUBLE):
+case CASE( TSHORT, TDOUBLE):
+case CASE( TUSHORT,TDOUBLE):
+case CASE( TINT, TDOUBLE):
+case CASE( TLONG, TDOUBLE):
+case CASE( TVLONG, TDOUBLE):
+case CASE( TIND, TDOUBLE):
 regalloc(&nod, t, t);
 if(ewidth[ft] == SZ_VLONG){
 if(tt == TFLOAT)
@@ -920,16 +920,16 @@ gins(a, f, &nod);
 gmove(&nod, t);
 regfree(&nod);
 return;
-case CASE(	TFLOAT,	TFLOAT):
+case CASE( TFLOAT, TFLOAT):
 a = AMOVSS;
 break;
-case CASE(	TDOUBLE,TFLOAT):
+case CASE( TDOUBLE,TFLOAT):
 a = ACVTSD2SS;
 break;
-case CASE(	TFLOAT,	TDOUBLE):
+case CASE( TFLOAT, TDOUBLE):
 a = ACVTSS2SD;
 break;
-case CASE(	TDOUBLE,TDOUBLE):
+case CASE( TDOUBLE,TDOUBLE):
 a = AMOVSD;
 break;
 }
@@ -1175,16 +1175,16 @@ if(et == TDOUBLE)
 a = AUCOMISD;
 gins(a, f, t);
 switch(o) {
-case OEQ:	a = AJEQ; break;
-case ONE:	a = AJNE; break;
-case OLT:	a = AJLT; break;
-case OLE:	a = AJLE; break;
-case OGE:	a = AJGE; break;
-case OGT:	a = AJGT; break;
-case OLO:	a = AJCS; break;
-case OLS:	a = AJLS; break;
-case OHS:	a = AJCC; break;
-case OHI:	a = AJHI; break;
+case OEQ: a = AJEQ; break;
+case ONE: a = AJNE; break;
+case OLT: a = AJLT; break;
+case OLE: a = AJLE; break;
+case OGE: a = AJGE; break;
+case OGT: a = AJGT; break;
+case OLO: a = AJCS; break;
+case OLS: a = AJLS; break;
+case OHS: a = AJCC; break;
+case OHI: a = AJHI; break;
 }
 gins(a, Z, Z);
 return;
@@ -1213,7 +1213,7 @@ break;
 }
 nextpc();
 if(a == AGOK) {
-diag(Z, "bad in gbranch %O",  o);
+diag(Z, "bad in gbranch %O", o);
 nextpc();
 }
 p->as = a;
@@ -1262,7 +1262,7 @@ return o;
 }
 return 0;
 }
-schar	ewidth[NTYPE] =
+schar ewidth[NTYPE] =
 {
 -1,
 SZ_CHAR,
@@ -1285,7 +1285,7 @@ SZ_IND,
 -1,
 SZ_INT,
 };
-long	ncast[NTYPE] =
+long ncast[NTYPE] =
 {
 0,
 BCHAR|BUCHAR,

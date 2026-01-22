@@ -1,5 +1,5 @@
 #ifndef gxshade4_INCLUDED
-#  define gxshade4_INCLUDED
+# define gxshade4_INCLUDED
 #define USE_LINEAR_COLOR_PROCS 1
 #define QUADRANGLES 0
 #define INTERPATCH_PADDING (fixed_1 / 2)

@@ -11,7 +11,7 @@ const unsigned char *iv, int enc);
 typedef struct {
 CAMELLIA_KEY ks;
 } EVP_CAMELLIA_KEY;
-# define data(ctx)       EVP_C_DATA(EVP_CAMELLIA_KEY,ctx)
+# define data(ctx) EVP_C_DATA(EVP_CAMELLIA_KEY,ctx)
 IMPLEMENT_BLOCK_CIPHER(camellia_128, ks, Camellia, EVP_CAMELLIA_KEY,
 NID_camellia_128, 16, 16, 16, 128,
 0, camellia_init_key, NULL,
@@ -24,7 +24,7 @@ IMPLEMENT_BLOCK_CIPHER(camellia_256, ks, Camellia, EVP_CAMELLIA_KEY,
 NID_camellia_256, 16, 32, 16, 128,
 0, camellia_init_key, NULL,
 EVP_CIPHER_set_asn1_iv, EVP_CIPHER_get_asn1_iv, NULL)
-# define IMPLEMENT_CAMELLIA_CFBR(ksize,cbits)    IMPLEMENT_CFBR(camellia,Camellia,EVP_CAMELLIA_KEY,ks,ksize,cbits,16)
+# define IMPLEMENT_CAMELLIA_CFBR(ksize,cbits) IMPLEMENT_CFBR(camellia,Camellia,EVP_CAMELLIA_KEY,ks,ksize,cbits,16)
 IMPLEMENT_CAMELLIA_CFBR(128, 1)
 IMPLEMENT_CAMELLIA_CFBR(192, 1)
 IMPLEMENT_CAMELLIA_CFBR(256, 1)

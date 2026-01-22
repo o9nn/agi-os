@@ -36,11 +36,11 @@ const char *bad_dma_drives[] = {"WDC AC11000H",
 "WDC AC32500H",
 "WDC AC33100H",
 NULL};
-#define PRD_BYTES	8
-#define PRD_ENTRIES	(PAGE_SIZE / (2 * PRD_BYTES))
-#define DEFAULT_BMIBA	0xe800
-#define DEFAULT_BMCRBA  0xcc00
-#define DEFAULT_BMALIBA	0xd400
+#define PRD_BYTES 8
+#define PRD_ENTRIES (PAGE_SIZE / (2 * PRD_BYTES))
+#define DEFAULT_BMIBA 0xe800
+#define DEFAULT_BMCRBA 0xcc00
+#define DEFAULT_BMALIBA 0xd400
 static void dma_intr (ide_drive_t *drive)
 {
 byte stat, dma_stat;
@@ -213,10 +213,10 @@ return 0;
 static void print_triton_drive_flags (unsigned int unit, byte flags)
 {
 printk("         %s ", unit ? "slave :" : "master:");
-printk( "fastDMA=%s",	(flags&9)	? "on " : "off");
-printk(" PreFetch=%s",	(flags&4)	? "on " : "off");
-printk(" IORDY=%s",	(flags&2)	? "on " : "off");
-printk(" fastPIO=%s\n",	((flags&9)==1)	? "on " : "off");
+printk( "fastDMA=%s", (flags&9) ? "on " : "off");
+printk(" PreFetch=%s", (flags&4) ? "on " : "off");
+printk(" IORDY=%s", (flags&2) ? "on " : "off");
+printk(" fastPIO=%s\n", ((flags&9)==1) ? "on " : "off");
 }
 #endif
 static void init_triton_dma (ide_hwif_t *hwif, unsigned short base)
@@ -235,7 +235,7 @@ if (dmatable) {
 hwif->dmatable = (unsigned long *) dmatable;
 dmatable += (PRD_ENTRIES * PRD_BYTES);
 outl(virt_to_bus(hwif->dmatable), base + 4);
-hwif->dmaproc  = &triton_dmaproc;
+hwif->dmaproc = &triton_dmaproc;
 }
 }
 printk("\n");
@@ -305,7 +305,7 @@ default:
 break;
 }
 }
-#define HPT343_PCI_INIT_REG		0x80
+#define HPT343_PCI_INIT_REG 0x80
 void ide_init_triton (byte bus, byte fn)
 {
 byte bridgebus, bridgefn, bridgeset = 0, hpt34x_flag = 0;
@@ -387,11 +387,11 @@ pcibios_write_config_byte(bus, fn, (PCI_INTERRUPT_LINE)|0x80, irq);
 case PCI_VENDOR_ID_ARTOP:
 hpt343_jump_in:
 printk("ide: %s UDMA Bus Mastering ",
-(device == PCI_DEVICE_ID_ARTOP_ATP850UF) 		? "AEC6210" :
-(device == PCI_DEVICE_ID_PROMISE_20246)  		? "PDC20246" :
-(device == PCI_DEVICE_ID_PROMISE_20262)  		? "PDC20262" :
-(hpt34x_flag && (device == PCI_DEVICE_ID_TTI_HPT343))	? "HPT345" :
-(device == PCI_DEVICE_ID_TTI_HPT343)     		? "HPT343" : "UNKNOWN");
+(device == PCI_DEVICE_ID_ARTOP_ATP850UF) ? "AEC6210" :
+(device == PCI_DEVICE_ID_PROMISE_20246) ? "PDC20246" :
+(device == PCI_DEVICE_ID_PROMISE_20262) ? "PDC20262" :
+(hpt34x_flag && (device == PCI_DEVICE_ID_TTI_HPT343)) ? "HPT345" :
+(device == PCI_DEVICE_ID_TTI_HPT343) ? "HPT343" : "UNKNOWN");
 pcibios_read_config_dword(bus, fn, PCI_ROM_ADDRESS, &addressbios);
 if (addressbios) {
 pcibios_write_config_byte(bus, fn, PCI_ROM_ADDRESS, addressbios | PCI_ROM_ADDRESS_ENABLE);
@@ -419,7 +419,7 @@ return;
 printk("\n    Controller on PCI bus %d function %d\n", bus, fn);
 if ((rc = pcibios_read_config_word(bus, fn, PCI_COMMAND, &pcicmd)))
 goto quit;
-if ((pcicmd & 1) == 0)  {
+if ((pcicmd & 1) == 0) {
 printk("ide: ports are not enabled (BIOS)\n");
 goto quit;
 }
@@ -538,10 +538,10 @@ if (((vendor == PCI_VENDOR_ID_INTEL) ||
 (vendor == PCI_VENDOR_ID_SI) ||
 (vendor == PCI_VENDOR_ID_VIA) ||
 (vendor == PCI_VENDOR_ID_AL)) && (h >= 2)) {
-hwif->io_base	= channel ? 0x170 : 0x1f0;
-hwif->ctl_port	= channel ? 0x376 : 0x3f6;
-hwif->irq	= channel ? 15 : 14;
-hwif->noprobe	= 0;
+hwif->io_base = channel ? 0x170 : 0x1f0;
+hwif->ctl_port = channel ? 0x376 : 0x3f6;
+hwif->irq = channel ? 15 : 14;
+hwif->noprobe = 0;
 }
 #endif
 if (hwif->chipset != ide_unknown) {
@@ -574,7 +574,7 @@ continue;
 }
 #ifdef DISPLAY_TRITON_TIMINGS
 s_clks = ((~time >> 12) & 3) + 2;
-r_clks = ((~time >>  8) & 3) + 1;
+r_clks = ((~time >> 8) & 3) + 1;
 printk("    %s timing: (0x%04x) sample_CLKs=%d, recovery_CLKs=%d\n",
 hwif->name, time, s_clks, r_clks);
 if ((time & 0x40) && !pcibios_read_config_word(bus, fn, PCI_DEVICE_ID, &devid)
@@ -644,7 +644,7 @@ continue;
 }
 } else if (vendor == PCI_VENDOR_ID_AL) {
 byte ideic, inmir;
-byte irq_routing_table[] = { -1,  9, 3, 10, 4,  5, 7,  6,
+byte irq_routing_table[] = { -1, 9, 3, 10, 4, 5, 7, 6,
 1, 11, 0, 12, 0, 14, 0, 15 };
 if (bridgeset) {
 pcibios_read_config_byte(bridgebus, bridgefn, 0x58, &ideic);
@@ -694,16 +694,16 @@ if (vendor == PCI_VENDOR_ID_TTI) {
 if ((!hpt34x_flag) && (h < 2)) {
 goto quit;
 } else if (hpt34x_flag) {
-hwif->io_base	= channel ? (bmiba + 0x28) : (bmiba + 0x20);
-hwif->ctl_port	= channel ? (bmiba + 0x3e) : (bmiba + 0x36);
+hwif->io_base = channel ? (bmiba + 0x28) : (bmiba + 0x20);
+hwif->ctl_port = channel ? (bmiba + 0x3e) : (bmiba + 0x36);
 } else {
 goto io_temps;
 }
 } else {
 io_temps:
-tmp		= channel ? 2 : 0;
-hwif->io_base	= io[tmp];
-hwif->ctl_port	= io[tmp + 1] + 2;
+tmp = channel ? 2 : 0;
+hwif->io_base = io[tmp];
+hwif->ctl_port = io[tmp + 1] + 2;
 }
 hwif->irq = irq;
 hwif->noprobe = 0;

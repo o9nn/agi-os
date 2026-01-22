@@ -1,73 +1,73 @@
 (DefineLink
-	(DefinedPredicateNode "factorial")
-	(LambdaLink
-		(VariableNode "$n")
-		(SequentialAndLink
-			(GreaterThanLink (VariableNode "$n") (NumberNode 1))
-			(TimesLink
-				(VariableNode "$n")
-				(PutLink
-					(DefinedPredicateNode "factorial")
-					(PlusLink (VariableNode "$n") (NumberNode -1)))))))
+(DefinedPredicateNode "factorial")
+(LambdaLink
+(VariableNode "$n")
+(SequentialAndLink
+(GreaterThanLink (VariableNode "$n") (NumberNode 1))
+(TimesLink
+(VariableNode "$n")
+(PutLink
+(DefinedPredicateNode "factorial")
+(PlusLink (VariableNode "$n") (NumberNode -1)))))))
 (DefineLink
-	(DefinedSchemaNode "NP detector")
-	(LambdaLink
-		(VariableNode "$word")
-		(ChoiceLink
-			(EvaluationLink
-				(PredicateNode "Noun")
-				(ListLink
-					(VariableNode "$word")))
-			(EvaluationLink
-				(PredicateNode "NP")
-				(ListLink
-					(VariableNode "$word")
-					(DefinedSchemaNode "NP detector"))))))
+(DefinedSchemaNode "NP detector")
+(LambdaLink
+(VariableNode "$word")
+(ChoiceLink
 (EvaluationLink
-	(PredicateNode "NP")
-	(ListLink
-		(WordNode "a")
-		(EvaluationLink
-			(PredicateNode "NP")
-			(ListLink
-				(WordNode "noun")
-				(EvaluationLink
-					(PredicateNode "Noun")
-					(ListLink
-						(WordNode "phrase")))))))
+(PredicateNode "Noun")
+(ListLink
+(VariableNode "$word")))
+(EvaluationLink
+(PredicateNode "NP")
+(ListLink
+(VariableNode "$word")
+(DefinedSchemaNode "NP detector"))))))
+(EvaluationLink
+(PredicateNode "NP")
+(ListLink
+(WordNode "a")
+(EvaluationLink
+(PredicateNode "NP")
+(ListLink
+(WordNode "noun")
+(EvaluationLink
+(PredicateNode "Noun")
+(ListLink
+(WordNode "phrase")))))))
 (DefineLink
-	(DefinedSchemaNode "flat NP detector")
-	(LambdaLink
-		(VariableNode "$word")
-		(VariableNode "$np")
-		(ChoiceLink
-			(EvaluationLink
-				(PredicateNode "Noun")
-				(ListLink
-					(VariableNode "$word")))
-			(AndLink
-				(EvaluationLink
-					(PredicateNode "WordPair")
-					(ListLink
-						(VariableNode "$word")
-						(VariableNode "$np")))
-				(PutLink
-					(DefinedSchemaNode "flat NP detector")
-					(ListLink
-						(VariableNode "$word")
-						(VariableNode "$np"))) ))))
+(DefinedSchemaNode "flat NP detector")
+(LambdaLink
+(VariableNode "$word")
+(VariableNode "$np")
+(ChoiceLink
 (EvaluationLink
-	(PredicateNode "Determiner")
-	(ListLink (WordNode "a")))
+(PredicateNode "Noun")
+(ListLink
+(VariableNode "$word")))
+(AndLink
 (EvaluationLink
-	(PredicateNode "Adjective")
-	(ListLink (WordNode "short")))
+(PredicateNode "WordPair")
+(ListLink
+(VariableNode "$word")
+(VariableNode "$np")))
+(PutLink
+(DefinedSchemaNode "flat NP detector")
+(ListLink
+(VariableNode "$word")
+(VariableNode "$np"))) ))))
 (EvaluationLink
-	(PredicateNode "Noun")
-	(ListLink (WordNode "phrase")))
+(PredicateNode "Determiner")
+(ListLink (WordNode "a")))
 (EvaluationLink
-	(PredicateNode "WordPair")
-	(ListLink (WordNode "short") (WordNode "phrase")))
+(PredicateNode "Adjective")
+(ListLink (WordNode "short")))
 (EvaluationLink
-	(PredicateNode "WordPair")
-	(ListLink (WordNode "a") (WordNode "short")))
+(PredicateNode "Noun")
+(ListLink (WordNode "phrase")))
+(EvaluationLink
+(PredicateNode "WordPair")
+(ListLink (WordNode "short") (WordNode "phrase")))
+(EvaluationLink
+(PredicateNode "WordPair")
+(ListLink (WordNode "a") (WordNode "short")))

@@ -4,33 +4,33 @@
 #include <draw.h>
 #include <event.h>
 enum {
-NLIFE	= 256,
-PX	= 4,
-BX	= PX - 1,
-NADJUST	= NLIFE * NLIFE,
+NLIFE = 256,
+PX = 4,
+BX = PX - 1,
+NADJUST = NLIFE * NLIFE,
 };
-char	life[NLIFE][NLIFE];
-int	row[NLIFE];
-int	col[NLIFE];
-char	action[18];
-char	*adjust[NADJUST];
-int		delay;
-Point	cen;
-Image	*box;
-int	i0, i1, j0, j1;
-int	needresize;
-void	birth(int, int);
-void	centerlife(void);
-void	death(int, int);
-int	generate(void);
-int	interest(int [NLIFE], int);
-void	main(int, char *[]);
-int	min(int, int);
-void	readlife(char *);
-void	redraw(void);
-void	setrules(char *);
-void	window(void);
-static void	reshape(void);
+char life[NLIFE][NLIFE];
+int row[NLIFE];
+int col[NLIFE];
+char action[18];
+char *adjust[NADJUST];
+int delay;
+Point cen;
+Image *box;
+int i0, i1, j0, j1;
+int needresize;
+void birth(int, int);
+void centerlife(void);
+void death(int, int);
+int generate(void);
+int interest(int [NLIFE], int);
+void main(int, char *[]);
+int min(int, int);
+void readlife(char *);
+void redraw(void);
+void setrules(char *);
+void window(void);
+static void reshape(void);
 static void
 setbox(int i, int j)
 {
@@ -73,7 +73,7 @@ while (ecanmouse())
 emouse();
 while (ecankbd()){
 c = ekbd();
-if (c  == 'q' || c == 0177)
+if (c == 'q' || c == 0177)
 exits(nil);
 if (c >= '1' && c <= '9')
 delay = (c - '0') * 100;
@@ -107,7 +107,7 @@ initdraw(g9err, 0, argv0);
 einit(Emouse|Ekeyboard);
 cen = divpt(subpt(addpt(screen->r.min, screen->r.max),
 Pt(NLIFE * PX, NLIFE * PX)), 2);
-box  = allocimage(display, Rect(0, 0, BX, BX), RGB24, 1, DBlack);
+box = allocimage(display, Rect(0, 0, BX, BX), RGB24, 1, DBlack);
 assert(box != nil);
 redraw();
 readlife(argv[0]);
@@ -124,16 +124,16 @@ interest(int rc[NLIFE], int i)
 {
 return(rc[i-1] != 0 || rc[i] != 0 || rc[i+1] != 0);
 }
-#define	neighbour(di, dj, op) lp[(di)*NLIFE+(dj)] op= 2
-#define	neighbours(op)\
+#define neighbour(di, dj, op) lp[(di)*NLIFE+(dj)] op= 2
+#define neighbours(op)\
 neighbour(-1, -1, op);\
-neighbour(-1,  0, op);\
-neighbour(-1,  1, op);\
+neighbour(-1, 0, op);\
+neighbour(-1, 1, op);\
 neighbour( 0, -1, op);\
-neighbour( 0,  1, op);\
+neighbour( 0, 1, op);\
 neighbour( 1, -1, op);\
-neighbour( 1,  0, op);\
-neighbour( 1,  1, op)
+neighbour( 1, 0, op);\
+neighbour( 1, 1, op)
 int
 generate(void)
 {

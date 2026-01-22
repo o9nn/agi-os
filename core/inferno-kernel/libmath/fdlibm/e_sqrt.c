@@ -1,9 +1,9 @@
 #include "fdlibm.h"
-static	const double	one	= 1.0, tiny=1.0e-300;
+static const double one = 1.0, tiny=1.0e-300;
 double __ieee754_sqrt(double x)
 {
 double z;
-int 	sign = (int)0x80000000;
+int sign = (int)0x80000000;
 unsigned r,t1,s1,ix1,q1;
 int ix0,s0,q,m,t,i;
 ix0 = __HI(x);
@@ -41,9 +41,9 @@ r = 0x00200000;
 while(r!=0) {
 t = s0+r;
 if(t<=ix0) {
-s0   = t+r;
+s0 = t+r;
 ix0 -= t;
-q   += r;
+q += r;
 }
 ix0 += ix0 + ((ix1&sign)>>31);
 ix1 += ix1;
@@ -52,14 +52,14 @@ r>>=1;
 r = sign;
 while(r!=0) {
 t1 = s1+r;
-t  = s0;
+t = s0;
 if((t<ix0)||((t==ix0)&&(t1<=ix1))) {
-s1  = t1+r;
+s1 = t1+r;
 if(((t1&sign)==sign)&&(s1&sign)==0) s0 += 1;
 ix0 -= t;
 if (ix1 < t1) ix0 -= 1;
 ix1 -= t1;
-q1  += r;
+q1 += r;
 }
 ix0 += ix0 + ((ix1&sign)>>31);
 ix1 += ix1;
@@ -78,7 +78,7 @@ q1 += (q1&1);
 }
 }
 ix0 = (q>>1)+0x3fe00000;
-ix1 =  q1>>1;
+ix1 = q1>>1;
 if ((q&1)==1) ix1 |= sign;
 ix0 += (m <<20);
 __HI(z) = ix0;

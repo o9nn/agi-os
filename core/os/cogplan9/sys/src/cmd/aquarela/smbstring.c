@@ -29,7 +29,7 @@ smbstringlen(SmbPeerInfo *i, char *string)
 {
 if (smbglobals.unicode && (i == nil || (i->capabilities & CAP_UNICODE) != 0))
 return smbucs2len(string);
-return  smbstrlen(string);
+return smbstrlen(string);
 }
 char *
 smbstrinline(uchar **bdatap, uchar *edata)

@@ -5,7 +5,7 @@
 #define OPENBLAS_OS_WINDOWS
 #ifdef DOUBLE
 #define DOUBLE_DEFINED DOUBLE
-#undef  DOUBLE
+#undef DOUBLE
 #endif
 #endif
 #ifdef NEEDBUNDERSCORE
@@ -16,7 +16,7 @@
 #ifdef OPENBLAS_QUAD_PRECISION
 typedef struct {
 unsigned long x[2];
-}  xdouble;
+} xdouble;
 #elif defined OPENBLAS_EXPRECISION
 #define xdouble long double
 #else
@@ -35,12 +35,12 @@ typedef BLASLONG blasint;
 typedef int blasint;
 #endif
 #if defined(XDOUBLE) || defined(DOUBLE)
-#define FLOATRET	FLOAT
+#define FLOATRET FLOAT
 #else
 #ifdef NEED_F2CCONV
-#define FLOATRET	double
+#define FLOATRET double
 #else
-#define FLOATRET	float
+#define FLOATRET float
 #endif
 #endif
 #include <stdio.h>

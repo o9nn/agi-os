@@ -1,4 +1,4 @@
-# Copyright  © 1999 Roger Peppe.  All rights reserved.
+# Copyright © 1999 Roger Peppe. All rights reserved.
 implement Tetris;
 include "sys.m";
 sys: Sys;
@@ -18,7 +18,7 @@ include "arg.m";
 include "keyboard.m";
 Up, Down, Right, Left: import Keyboard;
 include "keyring.m";
-include "security.m";	# for random seed
+include "security.m"; # for random seed
 Tetris: module {
 init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
@@ -29,54 +29,54 @@ BOARDWIDTH: con 10;
 BOARDHEIGHT: con 22;
 awaitingscore := 1;
 Row: adt {
-tag:		string;
-delete:	int;
+tag: string;
+delete: int;
 };
 Board: adt {
-new:			fn(top: ref Tk->Toplevel, w: string,
+new: fn(top: ref Tk->Toplevel, w: string,
 blocksize: int, maxsize: Point): ref Board;
-makeblock:	fn(bd: self ref Board, colour: string, p: Point): string;
-moveblock:	fn(bd: self ref Board, b: string, p: Point);
-movecurr:	fn(bd: self ref Board, delta: Point);
-delrows:		fn(bd: self ref Board, rows: list of int);
-landedblock:	fn(bd: self ref Board, b: string, p: Point);
-setnextshape:	fn(bd: self ref Board, colour: string, spec: array of Point);
-setscore:		fn(bd: self ref Board, score: int);
-setlevel:		fn(bd: self ref Board, level: int);
-setnrows:		fn(bd: self ref Board, level: int);
-gameover:	fn(bd: self ref Board);
-update:		fn(bd: self ref Board);
-state:		array of array of byte;
-w:			string;
-dx:			int;
-win:			ref Tk->Toplevel;
-rows:		array of Row;
-maxid:		int;
+makeblock: fn(bd: self ref Board, colour: string, p: Point): string;
+moveblock: fn(bd: self ref Board, b: string, p: Point);
+movecurr: fn(bd: self ref Board, delta: Point);
+delrows: fn(bd: self ref Board, rows: list of int);
+landedblock: fn(bd: self ref Board, b: string, p: Point);
+setnextshape: fn(bd: self ref Board, colour: string, spec: array of Point);
+setscore: fn(bd: self ref Board, score: int);
+setlevel: fn(bd: self ref Board, level: int);
+setnrows: fn(bd: self ref Board, level: int);
+gameover: fn(bd: self ref Board);
+update: fn(bd: self ref Board);
+state: array of array of byte;
+w: string;
+dx: int;
+win: ref Tk->Toplevel;
+rows: array of Row;
+maxid: int;
 };
 Piece: adt {
-shape:	int;
-rot:		int;
+shape: int;
+rot: int;
 };
 Shape: adt {
-coords:	array of array of Point;
-colour:	string;
-score:	array of int;
+coords: array of array of Point;
+colour: string;
+score: array of int;
 };
 Game: adt {
-new:		fn(bd: ref Board): ref Game;
-move:	fn(g: self ref Game, dx: int);
-rotate:	fn(g: self ref Game, clockwise: int);
-tick:		fn(g: self ref Game): int;
-drop:	fn(g: self ref Game);
-bd:		ref Board;
-level:	int;
-delay:	int;
-score:	int;
-nrows:	int;
-pieceids:	array of string;
-pos:		Point;
+new: fn(bd: ref Board): ref Game;
+move: fn(g: self ref Game, dx: int);
+rotate: fn(g: self ref Game, clockwise: int);
+tick: fn(g: self ref Game): int;
+drop: fn(g: self ref Game);
+bd: ref Board;
+level: int;
+delay: int;
+score: int;
+nrows: int;
+pieceids: array of string;
+pos: Point;
 next,
-curr:		Piece;
+curr: Piece;
 };
 badmod(path: string)
 {
@@ -108,7 +108,7 @@ if (arg == nil)
 badmod(Arg->PATH);
 if (ctxt == nil)
 ctxt = tkclient->makedrawcontext();
-blocksize := 17;			# preferred block size
+blocksize := 17; # preferred block size
 arg->init(argv);
 while ((opt := arg->opt()) != 0) {
 case opt {
@@ -222,7 +222,7 @@ if (key != 'q')
 continue;
 }
 case key {
-'9'  or 'c' or Right =>
+'9' or 'c' or Right =>
 g.move(1);
 '7' or 'z' or Left =>
 g.move(-1);
@@ -273,7 +273,7 @@ cmd(win, "pack " + w + " -side top");
 }
 showhighscores(win: ref Tk->Toplevel, fromuser: chan of string, winctl: chan of string, rank: int): int
 {
-widths := array[] of {"10w", "7w", "7w", "5w"};	# user, score, level, rows
+widths := array[] of {"10w", "7w", "7w", "5w"}; # user, score, level, rows
 cmd(win, "frame .f -bd 4 -relief raised");
 cmd(win, "label .f.title -text {High Scores}");
 cmd(win, "pack .f.title -side top -anchor n");
@@ -450,7 +450,7 @@ g.bd.setnrows(g.nrows);
 level := g.nrows / 10;
 if (level != g.level) {
 g.bd.setlevel(level);
-g.level  = level;
+g.level = level;
 if (level >= len delays)
 level = len delays - 1;
 g.delay = delays[level];
@@ -532,7 +532,7 @@ cmd(top, w + ".c configure -width " + string(dx * BOARDWIDTH + 1) +
 " -height " + string(dx * BOARDHEIGHT + 1));
 bd := ref Board(array[BOARDHEIGHT]
 of {* => array[BOARDWIDTH] of {* => byte 0}},
-w, dx, top, array[BOARDHEIGHT]  of {* => Row(nil, 0)}, 1);
+w, dx, top, array[BOARDHEIGHT] of {* => Row(nil, 0)}, 1);
 return bd;
 }
 makescorewidget(top: ref Tk->Toplevel, w, title: string)
@@ -666,7 +666,7 @@ cmd(bd.win, bd.w + ".c create window " + string p.x + " " + string p.y + " -wind
 cmd(top: ref Tk->Toplevel, s: string): string
 {
 e := tk->cmd(top, s);
-#	sys->print("%s\n", s);
+# sys->print("%s\n", s);
 if (e != nil && e[0] == '!')
 sys->fprint(stderr, "tetris: tk error on '%s': %s\n", s, e);
 return e;
@@ -705,7 +705,7 @@ array[] of {Point(1,0), Point(0,1), Point(1,1), Point(1,2)},
 array[] of {5,5,6,5}),
 Shape(
 # ##
-#  ##
+# ##
 array[] of {
 array[] of {Point(0,0), Point(1,0), Point(1,1), Point(2,1)},
 array[] of {Point(1,0), Point(0,1), Point(1,1), Point(0,2)},
@@ -713,7 +713,7 @@ array[] of {Point(1,0), Point(0,1), Point(1,1), Point(0,2)},
 "green",
 array[] of {6,7}),
 Shape(
-#  ##
+# ##
 # ##
 array[] of {
 array[] of {Point(1,0), Point(2,0), Point(0,1), Point(1,1)},

@@ -1,5 +1,5 @@
 #ifndef gxfcmap_INCLUDED
-#  define gxfcmap_INCLUDED
+# define gxfcmap_INCLUDED
 #include "gsfcmap.h"
 #include "gsuid.h"
 #include "gxcid.h"
@@ -25,27 +25,27 @@ gs_const_string value;
 int font_index;
 } gx_cmap_lookup_entry_t;
 #ifndef gs_cmap_DEFINED
-#  define gs_cmap_DEFINED
+# define gs_cmap_DEFINED
 typedef struct gs_cmap_s gs_cmap_t;
 #endif
 #define GS_CMAP_COMMON\
-int CMapType;		\
-gs_id id;			\
+int CMapType; \
+gs_id id; \
 \
 gs_const_string CMapName;\
 gs_cid_system_info_t *CIDSystemInfo; \
 int num_fonts;\
 float CMapVersion;\
-gs_uid uid;			\
+gs_uid uid; \
 long UIDOffset;\
 int WMode;\
-bool from_Unicode;		\
-bool ToUnicode;             \
-gs_glyph_name_proc_t glyph_name;  \
-void *glyph_name_data;	\
+bool from_Unicode; \
+bool ToUnicode; \
+gs_glyph_name_proc_t glyph_name; \
+void *glyph_name_data; \
 const gs_cmap_procs_t *procs
 extern_st(st_cmap);
-#define public_st_cmap()	\
+#define public_st_cmap() \
 BASIC_PTRS(cmap_ptrs) {\
 GC_CONST_STRING_ELT(gs_cmap_t, CMapName),\
 GC_OBJ_ELT3(gs_cmap_t, CIDSystemInfo, uid.xvalues, glyph_name_data)\

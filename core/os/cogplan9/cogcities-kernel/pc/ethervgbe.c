@@ -11,60 +11,60 @@
 #define DEBUG
 enum
 {
-DumpIntr	= (1<<0),
-DumpRx		= (1<<1),
-DumpTx		= (1<<2),
+DumpIntr = (1<<0),
+DumpRx = (1<<1),
+DumpTx = (1<<2),
 };
 #define htole16(x) (x)
 #define htole32(x) (x)
 #define le32toh(x) (x)
 enum
 {
-Timeout		= 50000,
-RxCount		= 256,
-TxCount		= 256,
-RxSize		= 2048,
-EthAddr		= 0x00,
-Cr0S		= 0x08,
-Cr0C		= 0x0c,
-Cr0_Start	= 0x01,
-Cr0_Stop	= 0x02,
-Cr0_EnableRx	= 0x04,
-Cr0_EnableTx	= 0x08,
-Cr1S		= 0x09,
-Cr1C		= 0x0d,
-Cr1_NoPool	= 0x08,
-Cr1_reset	= 0x80,
-Cr2S		= 0x0a,
-Cr2_XonEnable	= 0x80,
-Cr3S		= 0x0b,
-Cr3C		= 0x0f,
-Cr3_IntMask	= 0x02,
-Eecsr		= 0x93,
-Eecsr_Autold	= 0x20,
-MiiStatus	= 0x6D,
-MiiStatus_idle	= 0x80,
-MiiCmd		= 0x70,
-MiiCmd_write	= 0x20,
-MiiCmd_read	= 0x40,
-MiiCmd_auto	= 0x80,
-MiiAddr		= 0x71,
-MiiData		= 0x72,
-TxDescHi	= 0x18,
-DataBufHi	= 0x1d,
-RxDescLo	= 0x38,
-RxCsrS		= 0x32,
-RxCsrC		= 0x36,
-RxCsr_RunQueue	= 0x01,
-RxCsr_Active	= 0x02,
-RxCsr_Wakeup	= 0x04,
-RxCsr_Dead	= 0x08,
-RxNum		= 0x50,
-RxDscIdx	= 0x3c,
-RxResCnt	= 0x5e,
-RxHostErr	= 0x23,
-RxTimer		= 0x3e,
-RxControl	= 0x06,
+Timeout = 50000,
+RxCount = 256,
+TxCount = 256,
+RxSize = 2048,
+EthAddr = 0x00,
+Cr0S = 0x08,
+Cr0C = 0x0c,
+Cr0_Start = 0x01,
+Cr0_Stop = 0x02,
+Cr0_EnableRx = 0x04,
+Cr0_EnableTx = 0x08,
+Cr1S = 0x09,
+Cr1C = 0x0d,
+Cr1_NoPool = 0x08,
+Cr1_reset = 0x80,
+Cr2S = 0x0a,
+Cr2_XonEnable = 0x80,
+Cr3S = 0x0b,
+Cr3C = 0x0f,
+Cr3_IntMask = 0x02,
+Eecsr = 0x93,
+Eecsr_Autold = 0x20,
+MiiStatus = 0x6D,
+MiiStatus_idle = 0x80,
+MiiCmd = 0x70,
+MiiCmd_write = 0x20,
+MiiCmd_read = 0x40,
+MiiCmd_auto = 0x80,
+MiiAddr = 0x71,
+MiiData = 0x72,
+TxDescHi = 0x18,
+DataBufHi = 0x1d,
+RxDescLo = 0x38,
+RxCsrS = 0x32,
+RxCsrC = 0x36,
+RxCsr_RunQueue = 0x01,
+RxCsr_Active = 0x02,
+RxCsr_Wakeup = 0x04,
+RxCsr_Dead = 0x08,
+RxNum = 0x50,
+RxDscIdx = 0x3c,
+RxResCnt = 0x5e,
+RxHostErr = 0x23,
+RxTimer = 0x3e,
+RxControl = 0x06,
 RxControl_BadFrame = 0x01,
 RxControl_Runt = 0x02,
 RxControl_MultiCast = 0x04,
@@ -73,7 +73,7 @@ RxControl_Promisc = 0x10,
 RxControl_Giant = 0x20,
 RxControl_UniCast = 0x40,
 RxControl_SymbolErr = 0x80,
-RxConfig	= 0x7e,
+RxConfig = 0x7e,
 RxConfig_VlanFilter = 0x01,
 RxConfig_VlanOpt0 = (0<<1),
 RxConfig_VlanOpt1 = (1<<1),
@@ -85,18 +85,18 @@ RxConfig_FifoTh512 = (1<<4),
 RxConfig_FifoTh1024 = (2<<4),
 RxConfig_FifoThFwd = (3<<4),
 RxConfig_ArbPrio = 0x80,
-TxDescLo	= 0x40,
-TxCsrS		= 0x30,
-TxCsrC		= 0x38,
-TxCsr_RunQueue	= 0x01,
-TxCsr_Active	= 0x02,
-TxCsr_Wakeup	= 0x04,
-TxCsr_Dead	= 0x08,
-TxNum		= 0x52,
-TxDscIdx	= 0x54,
-TxHostErr	= 0x22,
-TxTimer		= 0x3f,
-TxControl	= 0x07,
+TxDescLo = 0x40,
+TxCsrS = 0x30,
+TxCsrC = 0x38,
+TxCsr_RunQueue = 0x01,
+TxCsr_Active = 0x02,
+TxCsr_Wakeup = 0x04,
+TxCsr_Dead = 0x08,
+TxNum = 0x52,
+TxDscIdx = 0x54,
+TxHostErr = 0x22,
+TxTimer = 0x3f,
+TxControl = 0x07,
 TxControl_LC_Off = (0<<0),
 TxControl_LC_Mac = (1<<0),
 TxControl_LC_Ext = (2<<0),
@@ -104,57 +104,57 @@ TxControl_Coll16 = (0<<2),
 TxControl_Coll32 = (1<<2),
 TxControl_Coll48 = (2<<2),
 TxControl_CollInf = (3<<2),
-TxConfig	= 0x7f,
+TxConfig = 0x7f,
 TxConfig_SnapOpt = 0x01,
-TxConfig_NonBlk	= 0x02,
-TxConfig_Blk64	= (0<<3),
-TxConfig_Blk32	= (1<<3),
-TxConfig_Blk128	= (2<<3),
-TxConfig_Blk8	= (3<<3),
-TxConfig_ArbPrio	= 0x80,
-Timer0		= 0x74,
-Timer1		= 0x76,
-ChipCfgA	= 0x78,
-ChipCfgB	= 0x79,
-ChipCfgC	= 0x7a,
-ChipCfgD	= 0x7b,
-DmaCfg0		= 0x7C,
-DmaCfg1		= 0x7D,
-IntCtl		= 0x20,
-Imr		= 0x28,
-Isr		= 0x24,
-Isr_RxHiPrio	= (1<<0),
-Isr_TxHiPrio	= (1<<1),
-Isr_RxComplete	= (1<<2),
-Isr_TxComplete	= (1<<3),
-Isr_TxComplete0	= (1<<4),
-Isr_TxComplete1	= (1<<5),
-Isr_TxComplete2	= (1<<6),
-Isr_TxComplete3	= (1<<7),
-Isr_Reserved8	= (1<<8),
-Isr_Reserver9	= (1<<9),
+TxConfig_NonBlk = 0x02,
+TxConfig_Blk64 = (0<<3),
+TxConfig_Blk32 = (1<<3),
+TxConfig_Blk128 = (2<<3),
+TxConfig_Blk8 = (3<<3),
+TxConfig_ArbPrio = 0x80,
+Timer0 = 0x74,
+Timer1 = 0x76,
+ChipCfgA = 0x78,
+ChipCfgB = 0x79,
+ChipCfgC = 0x7a,
+ChipCfgD = 0x7b,
+DmaCfg0 = 0x7C,
+DmaCfg1 = 0x7D,
+IntCtl = 0x20,
+Imr = 0x28,
+Isr = 0x24,
+Isr_RxHiPrio = (1<<0),
+Isr_TxHiPrio = (1<<1),
+Isr_RxComplete = (1<<2),
+Isr_TxComplete = (1<<3),
+Isr_TxComplete0 = (1<<4),
+Isr_TxComplete1 = (1<<5),
+Isr_TxComplete2 = (1<<6),
+Isr_TxComplete3 = (1<<7),
+Isr_Reserved8 = (1<<8),
+Isr_Reserver9 = (1<<9),
 Isr_RxCountOvflow = (1<<10),
-Isr_RxPause	= (1<<11),
+Isr_RxPause = (1<<11),
 Isr_RxFifoOvflow = (1<<12),
-Isr_RxNoDesc	= (1<<13),
-Isr_RxNoDescWar	= (1<<14),
-Isr_LinkStatus	= (1<<15),
-Isr_Timer0	= (1<<16),
-Isr_Timer1	= (1<<17),
-Isr_Power	= (1<<18),
-Isr_PhyIntr	= (1<<19),
-Isr_Stopped	= (1<<20),
-Isr_MibOvflow	= (1<<21),
-Isr_SoftIntr	= (1<<22),
+Isr_RxNoDesc = (1<<13),
+Isr_RxNoDescWar = (1<<14),
+Isr_LinkStatus = (1<<15),
+Isr_Timer0 = (1<<16),
+Isr_Timer1 = (1<<17),
+Isr_Power = (1<<18),
+Isr_PhyIntr = (1<<19),
+Isr_Stopped = (1<<20),
+Isr_MibOvflow = (1<<21),
+Isr_SoftIntr = (1<<22),
 Isr_HoldOffReload = (1<<23),
-Isr_RxDmaStall	= (1<<24),
-Isr_TxDmaStall	= (1<<25),
-Isr_Reserved26	= (1<<26),
-Isr_Reserved27	= (1<<27),
-Isr_Source0	= (1<<28),
-Isr_Source1	= (1<<29),
-Isr_Source2	= (1<<30),
-Isr_Source3	= (1<<31),
+Isr_RxDmaStall = (1<<24),
+Isr_TxDmaStall = (1<<25),
+Isr_Reserved26 = (1<<26),
+Isr_Reserved27 = (1<<27),
+Isr_Source0 = (1<<28),
+Isr_Source1 = (1<<29),
+Isr_Source2 = (1<<30),
+Isr_Source3 = (1<<31),
 Isr_Mask = Isr_TxComplete0|Isr_RxComplete|Isr_Stopped|
 Isr_RxFifoOvflow|Isr_PhyIntr|Isr_LinkStatus|
 Isr_RxNoDesc|Isr_RxDmaStall|Isr_TxDmaStall
@@ -162,95 +162,95 @@ Isr_RxNoDesc|Isr_RxDmaStall|Isr_TxDmaStall
 typedef struct Frag Frag;
 struct Frag
 {
-ulong	addr_lo;
-ushort	addr_hi;
-ushort	length;
+ulong addr_lo;
+ushort addr_hi;
+ushort length;
 };
 typedef struct RxDesc RxDesc;
 struct RxDesc
 {
-ulong	status;
-ulong	control;
+ulong status;
+ulong control;
 Frag;
 };
 typedef struct TxDesc TxDesc;
 struct TxDesc
 {
-ulong	status;
-ulong	control;
-Frag	frags[7];
+ulong status;
+ulong control;
+Frag frags[7];
 };
 enum
 {
-RxDesc_Status_VidMiss	= (1<<0),
-RxDesc_Status_CrcErr	= (1<<1),
-RxDesc_Status_FrAlErr	= (1<<3),
-RxDesc_Status_CsumErr	= (1<<3),
-RxDesc_Status_RxLenErr	= (1<<4),
-RxDesc_Status_SymErr	= (1<<5),
-RxDesc_Status_SnTag	= (1<<6),
-RxDesc_Status_DeTag	= (1<<7),
-RxDesc_Status_OneFrag	= (0<<8),
-RxDesc_Status_FirstFrag	= (1<<8),
-RxDesc_Status_LastFrag	= (2<<8),
-RxDesc_Status_MidFrag	= (3<<8),
-RxDesc_Status_Vtag	= (1<<10),
-RxDesc_Status_UniCast	= (1<<11),
-RxDesc_Status_BroadCast	= (1<<12),
-RxDesc_Status_MultiCast	= (1<<13),
-RxDesc_Status_Perfect	= (1<<14),
-RxDesc_Status_Goodframe	= (1<<15),
-RxDesc_Status_SizShift	= 16,
-RxDesc_Status_SizMask	= 0x3FFF,
-RxDesc_Status_Shutdown	= (1<<30),
-RxDesc_Status_Own	= (1<<31),
-TxDesc_Status_Own	= (1<<31),
-TxDesc_Control_Intr	= (1<<23),
-TxDesc_Control_Normal	= (3<<24),
+RxDesc_Status_VidMiss = (1<<0),
+RxDesc_Status_CrcErr = (1<<1),
+RxDesc_Status_FrAlErr = (1<<3),
+RxDesc_Status_CsumErr = (1<<3),
+RxDesc_Status_RxLenErr = (1<<4),
+RxDesc_Status_SymErr = (1<<5),
+RxDesc_Status_SnTag = (1<<6),
+RxDesc_Status_DeTag = (1<<7),
+RxDesc_Status_OneFrag = (0<<8),
+RxDesc_Status_FirstFrag = (1<<8),
+RxDesc_Status_LastFrag = (2<<8),
+RxDesc_Status_MidFrag = (3<<8),
+RxDesc_Status_Vtag = (1<<10),
+RxDesc_Status_UniCast = (1<<11),
+RxDesc_Status_BroadCast = (1<<12),
+RxDesc_Status_MultiCast = (1<<13),
+RxDesc_Status_Perfect = (1<<14),
+RxDesc_Status_Goodframe = (1<<15),
+RxDesc_Status_SizShift = 16,
+RxDesc_Status_SizMask = 0x3FFF,
+RxDesc_Status_Shutdown = (1<<30),
+RxDesc_Status_Own = (1<<31),
+TxDesc_Status_Own = (1<<31),
+TxDesc_Control_Intr = (1<<23),
+TxDesc_Control_Normal = (3<<24),
 };
 typedef struct Stats Stats;
 struct Stats
 {
-ulong	rx;
-ulong	tx;
-ulong	txe;
-ulong	intr;
+ulong rx;
+ulong tx;
+ulong txe;
+ulong intr;
 };
 typedef struct Ctlr Ctlr;
 struct Ctlr
 {
-Ctlr*	link;
-Pcidev*	pdev;
-int	port;
-int	inited;
-Lock	init_lock;
-ulong	debugflags;
-ulong	debugcount;
-Mii*	mii;
-int	active;
-uchar	ea[6];
-RxDesc*	rx_ring;
-Block*	rx_blocks[RxCount];
-Lock	tx_lock;
-TxDesc*	tx_ring;
-Block*	tx_blocks[TxCount];
-ulong	tx_count;
-Stats	stats;
+Ctlr* link;
+Pcidev* pdev;
+int port;
+int inited;
+Lock init_lock;
+ulong debugflags;
+ulong debugcount;
+Mii* mii;
+int active;
+uchar ea[6];
+RxDesc* rx_ring;
+Block* rx_blocks[RxCount];
+Lock tx_lock;
+TxDesc* tx_ring;
+Block* tx_blocks[TxCount];
+ulong tx_count;
+Stats stats;
 };
 static Ctlr* vgbehead;
 static Ctlr* vgbetail;
-#define riob(c, r)	inb(c->port + r)
-#define riow(c, r)	ins(c->port + r)
-#define riol(c, r)	inl(c->port + r)
-#define wiob(c, r, d)	outb(c->port + r, d)
-#define wiow(c, r, d)	outs(c->port + r, d)
-#define wiol(c, r, d)	outl(c->port + r, d)
-#define siob(c, r, b)	wiob(c, r, riob(c, r) | b)
-#define siow(c, r, b)	wiow(c, r, riob(c, r) | b)
-#define siol(c, r, b)	wiol(c, r, riob(c, r) | b)
-#define ciob(c, r, b)	wiob(c, r, riob(c, r) & ~b)
-#define ciow(c, r, b)	wiow(c, r, riob(c, r) & ~b)
-#define ciol(c, r, b)	wiol(c, r, riob(c, r) & ~b)
+#define riob(c, r) inb(c->port + r)
+#define riow(c, r) ins(c->port + r)
+#define riol(c, r) inl(c->port + r)
+#define wiob(c, r, d) outb(c->port + r, d)
+#define wiow(c, r, d) outs(c->port + r, d)
+#define wiol(c, r, d) outl(c->port + r, d)
+#define siob(c, r, b) wiob(c, r, riob(c, r) | b)
+#define siow(c, r, b) wiow(c, r, riob(c, r) | b)
+#define siol(c, r, b) wiol(c, r, riob(c, r) | b)
+#define ciob(c, r, b) wiob(c, r, riob(c, r) & ~b)
+#define ciow(c, r, b) wiow(c, r, riob(c, r) & ~b)
+#define ciol(c, r, b) wiol(c, r, riob(c, r) & ~b)
 static int
 vgbemiiw(Mii* mii, int phy, int addr, int data)
 {

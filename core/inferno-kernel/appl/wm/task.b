@@ -13,19 +13,19 @@ include "dialog.m";
 dialog: Dialog;
 Prog: adt
 {
-pid:	int;
+pid: int;
 pgrp: int;
-size:	int;
-state:	string;
-mod:	string;
+size: int;
+state: string;
+mod: string;
 };
 WmTask: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 Wm: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 task_cfg := array[] of {
 "frame .fl",
@@ -46,13 +46,13 @@ task_cfg := array[] of {
 };
 init(ctxt: ref Draw->Context, nil: list of string)
 {
-sys  = load Sys  Sys->PATH;
+sys = load Sys Sys->PATH;
 if (ctxt == nil) {
 sys->fprint(sys->fildes(2), "task: no window context\n");
 raise "fail:bad context";
 }
 draw = load Draw Draw->PATH;
-tk   = load Tk   Tk->PATH;
+tk = load Tk Tk->PATH;
 tkclient= load Tkclient Tkclient->PATH;
 dialog = load Dialog Dialog->PATH;
 tkclient->init();

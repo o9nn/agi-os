@@ -110,9 +110,9 @@ byte *ptr = 0;
 #ifdef DEBUG
 const char *msg;
 static const char *const ok_msg = "OK";
-#  define set_msg(str) (msg = (str))
+# define set_msg(str) (msg = (str))
 #else
-#  define set_msg(str) DO_NOTHING
+# define set_msg(str) DO_NOTHING
 #endif
 if (size > mmem->limit - sizeof(gs_malloc_block_t)) {
 set_msg("exceeded limit");

@@ -8,13 +8,13 @@
 #include <ddb/db_task_thread.h>
 #include <ddb/db_elf.h>
 #include <vm/vm_map.h>
-#define	MAXNOSYMTABS	5
-db_symtab_t	db_symtabs[MAXNOSYMTABS] = {{0,},};
+#define MAXNOSYMTABS 5
+db_symtab_t db_symtabs[MAXNOSYMTABS] = {{0,},};
 int db_nsymtab = 0;
-db_symtab_t	*db_last_symtab;
+db_symtab_t *db_last_symtab;
 boolean_t
 db_add_symbol_table(
-int  type,
+int type,
 char *start,
 char *end,
 const char *name,
@@ -39,8 +39,8 @@ return (TRUE);
 static char * __attribute__ ((pure))
 db_qualify(const char *symname, const char *symtabname)
 {
-static char     tmp[256];
-char		*s;
+static char tmp[256];
+char *s;
 s = tmp;
 while ((*s++ = *symtabname++)) {
 }
@@ -61,10 +61,10 @@ return (FALSE);
 }
 boolean_t
 db_value_of_name(
-char		*name,
-db_expr_t	*valuep)
+char *name,
+db_expr_t *valuep)
 {
-db_sym_t	sym;
+db_sym_t sym;
 sym = db_lookup(name);
 if (sym == DB_SYM_NULL)
 return (FALSE);
@@ -107,18 +107,18 @@ return 0;
 }
 db_sym_t
 db_sym_parse_and_lookup(
-db_sym_t	(*func) (db_symtab_t *, const char*, const char*, int),
-db_symtab_t	*symtab,
-char		*symstr)
+db_sym_t (*func) (db_symtab_t *, const char*, const char*, int),
+db_symtab_t *symtab,
+char *symstr)
 {
-char 		*p;
-int 		n;
-int	 	n_name;
-int	 	line_number;
-char	 	*file_name = 0;
-char	 	*sym_name = 0;
-char		*component[3];
-db_sym_t 	found = DB_SYM_NULL;
+char *p;
+int n;
+int n_name;
+int line_number;
+char *file_name = 0;
+char *sym_name = 0;
+char *component[3];
+db_sym_t found = DB_SYM_NULL;
 component[0] = symstr;
 component[1] = component[2] = 0;
 for (p = symstr, n = 1; *p; p++) {
@@ -168,8 +168,8 @@ boolean_t db_qualify_ambiguous_names = FALSE;
 static boolean_t
 db_name_is_ambiguous(char *sym_name)
 {
-int		i;
-boolean_t	found_once = FALSE;
+int i;
+boolean_t found_once = FALSE;
 if (!db_qualify_ambiguous_names)
 return FALSE;
 for (i = 0; i < db_nsymtab; i++) {
@@ -188,10 +188,10 @@ return FALSE;
 }
 db_sym_t
 db_search_task_symbol(
-db_addr_t		val,
-db_strategy_t		strategy,
-db_addr_t		*offp,
-task_t			task)
+db_addr_t val,
+db_strategy_t strategy,
+db_addr_t *offp,
+task_t task)
 {
 db_sym_t ret;
 if (task != TASK_NULL)
@@ -210,21 +210,21 @@ return ret;
 }
 db_sym_t
 db_search_in_task_symbol(
-db_addr_t		val,
-db_strategy_t		strategy,
-db_addr_t		*offp,
-task_t			task)
+db_addr_t val,
+db_strategy_t strategy,
+db_addr_t *offp,
+task_t task)
 {
-vm_size_t 	diff;
-vm_size_t	newdiff;
-int		i;
-db_symtab_t	*sp;
-db_sym_t	ret = DB_SYM_NULL, sym;
-vm_map_t	map_for_val;
+vm_size_t diff;
+vm_size_t newdiff;
+int i;
+db_symtab_t *sp;
+db_sym_t ret = DB_SYM_NULL, sym;
+vm_map_t map_for_val;
 map_for_val = (task == TASK_NULL)? VM_MAP_NULL: task->map;
 newdiff = diff = ~0;
 db_last_symtab = (db_symtab_t *) 0;
-for (sp = &db_symtabs[0], i = 0; i < db_nsymtab;  sp++, i++)
+for (sp = &db_symtabs[0], i = 0; i < db_nsymtab; sp++, i++)
 {
 newdiff = ~0;
 if ((vm_map_t)sp->map_pointer == VM_MAP_NULL ||
@@ -269,13 +269,13 @@ return ret;
 }
 void
 db_symbol_values(
-db_symtab_t	*stab,
-db_sym_t	sym,
-char		**namep,
-db_expr_t	*valuep)
+db_symtab_t *stab,
+db_sym_t sym,
+char **namep,
+db_expr_t *valuep)
 {
-db_expr_t	value;
-char		*name;
+db_expr_t value;
+char *name;
 if (sym == DB_SYM_NULL) {
 *namep = 0;
 return;
@@ -290,19 +290,19 @@ else
 if (valuep)
 *valuep = value;
 }
-unsigned long	db_maxoff = 0x4000;
+unsigned long db_maxoff = 0x4000;
 void
 db_task_printsym(
-db_addr_t	off,
-db_strategy_t	strategy,
-task_t		task)
+db_addr_t off,
+db_strategy_t strategy,
+task_t task)
 {
-db_addr_t	d;
-char 		*filename;
-char		*name;
-db_expr_t	value;
-int 		linenum;
-db_sym_t	cursym;
+db_addr_t d;
+char *filename;
+char *name;
+db_expr_t value;
+int linenum;
+db_sym_t cursym;
 cursym = db_search_task_symbol(off, strategy, &d, task);
 db_symbol_values(0, cursym, &name, &value);
 if (name == 0 || d >= db_maxoff || value == 0 || *name == 0) {
@@ -325,17 +325,17 @@ db_free_symbol(cursym);
 }
 void
 db_printsym(
-db_expr_t	off,
-db_strategy_t	strategy)
+db_expr_t off,
+db_strategy_t strategy)
 {
 db_task_printsym(off, strategy, TASK_NULL);
 }
 boolean_t
 db_line_at_pc(
-db_sym_t	sym,
-char		**filename,
-int		*linenum,
-db_addr_t	pc)
+db_sym_t sym,
+char **filename,
+int *linenum,
+db_addr_t pc)
 {
 return (db_last_symtab) ?
 X_db_line_at_pc( db_last_symtab, sym, filename, linenum, pc) :
@@ -355,7 +355,7 @@ struct db_sym_switch x_db[] = {
 { 0,},
 { 0,},
 { 0,},
-#ifdef	DB_NO_ELF
+#ifdef DB_NO_ELF
 { 0,},
 #else
 { dummy_db_sym_init, elf_db_lookup, elf_db_search_symbol,

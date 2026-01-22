@@ -1,5 +1,5 @@
 # Translated to Limbo by Eric Grosse <ehg@netlib.bell-labs.com> 3/96
-# Translated to Java by Reed Wade  (wade@cs.utk.edu) 2/96
+# Translated to Java by Reed Wade (wade@cs.utk.edu) 2/96
 # Translated to C by Bonnie Toy 5/88
 # Will Menninger, 10/93
 # Jack Dongarra, linpack, 3/11/78.
@@ -30,7 +30,7 @@ top: ref Tk->Toplevel;
 buttonlist: string;
 linbench: module
 {
-init:   fn(nil: ref Draw->Context, argv: list of string);
+init: fn(nil: ref Draw->Context, argv: list of string);
 };
 tkcmd(arg: string): string{
 rv := tk->cmd(top,arg);
@@ -40,11 +40,11 @@ return rv;
 }
 init(xctxt: ref Draw->Context, nil: list of string)
 {
-sys    = load Sys  Sys->PATH;
-math   = load Math Math->PATH;
-draw   = load Draw Draw->PATH;
-tk     = load Tk   Tk->PATH;
-tkclient  = load Tkclient Tkclient->PATH;
+sys = load Sys Sys->PATH;
+math = load Math Math->PATH;
+draw = load Draw Draw->PATH;
+tk = load Tk Tk->PATH;
+tkclient = load Tkclient Tkclient->PATH;
 linalg = load LinAlg LinAlg->PATH;
 if(linalg==nil) print("couldn't load LinAlg\n");
 sys->pctl(Sys->NEWPGRP, nil);
@@ -58,7 +58,7 @@ tk->namechan(top, cmd, "cmd");
 tkcmd("pack .Wm_t -fill x");
 tkcmd("frame .b");
 tkcmd("button .b.Run -text Run -command {send cmd run}");
-tkcmd("entry .b.N -width 10w");  tkcmd(".b.N insert 0 200");
+tkcmd("entry .b.N -width 10w"); tkcmd(".b.N insert 0 200");
 tkcmd("pack .b.Run .b.N -side left");
 tkcmd("pack .b -anchor w");
 tkcmd("frame .d");

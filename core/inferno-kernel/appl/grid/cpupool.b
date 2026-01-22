@@ -1,6 +1,6 @@
 implement CpuPool;
 #
-# Copyright © 2003 Vita Nuova Holdings Limited.  All rights reserved.
+# Copyright © 2003 Vita Nuova Holdings Limited. All rights reserved.
 #
 include "sys.m";
 sys : Sys;
@@ -246,7 +246,7 @@ break;
 }
 ind := int f.uname;
 mode := m.mode & 3;
-case int f.path  & 15 {
+case int f.path & 15 {
 Qclone =>
 if (mode == sys->OREAD) {
 srv.reply(ref Rmsg.Error(m.tag, "ctl cannot be open as read only"));
@@ -267,7 +267,7 @@ spawn sessionctl(sessid, tree);
 Qdir := Qsessdir | (sessid<<4);
 tree.create(big Qroot, dir(string sessid,
 8r777 | sys->DMDIR,0, Qdir));
-tree.create(big Qdir, dir("data",	8r666,0, Qsessdat | (sessid<<4)));
+tree.create(big Qdir, dir("data", 8r666,0, Qsessdat | (sessid<<4)));
 if (TEST)
 sys->fprint(sys->fildes(2), "New Session %d\n\tcpuid: %d\n"
 ,sessid,cpuid);
@@ -292,9 +292,9 @@ else
 cpusession[sessid].sync <-= STDINOPEN;
 }
 # sys->fprint(sys->fildes(2),
-#		"Open: Data: sessid %d, stdout %d stdin %d: err: '%s'\n",
-#		sessid,cpusession[sessid].stdoutopen,
-#		cpusession[sessid].stdinopen, err);
+# "Open: Data: sessid %d, stdout %d stdin %d: err: '%s'\n",
+# sessid,cpusession[sessid].stdoutopen,
+# cpusession[sessid].stdinopen, err);
 if (err == nil)
 srv.default(gm);
 else
@@ -313,7 +313,7 @@ case int f.path & 15 {
 Qsessdat =>
 sessid := (int f.path)>>4;
 # sys->fprint(sys->fildes(2), "Write: Data %d len: %d\n",
-#	sessid,len m.data);
+# sessid,len m.data);
 spawn datawrite(sessid,srv,m);
 Qclone =>
 sessid := getsession(m.fid);
@@ -378,7 +378,7 @@ srv.reply(ref Rmsg.Read(m.tag, data));
 datawrite(sessid: int, srv: ref Styxserver, m: ref Tmsg.Write)
 {
 # sys->fprint(sys->fildes(2), "Writing to Stdin %d (%d)\n'%s'\n",
-#	len m.data, m.tag, string m.data);
+# len m.data, m.tag, string m.data);
 cpusession[sessid].stdinchan <-= m.data;
 # sys->fprint(sys->fildes(2), "Written to Stdin %d!\n",m.tag);
 srv.reply(ref Rmsg.Write(m.tag, len m.data));
@@ -502,7 +502,7 @@ runit(id, sessid: int, cmd: string, sync: chan of int)
 {
 # sys->print("got runit!\n");
 cpusession[sessid].sync <-= PID;
-cpusession[sessid].sync <-=  sys->pctl(sys->FORKNS, nil);
+cpusession[sessid].sync <-= sys->pctl(sys->FORKNS, nil);
 if (!TEST && sys->bind("/net.alt", "/net", sys->MREPL) == -1) {
 sys->fprint(sys->fildes(2), "cpupool net.alt bind failed: %r\n");
 sync <-= -1;
@@ -604,7 +604,7 @@ cpusession[sessid].stdinopen = -1;
 cpusession[sessid].closestdin <-= 1;
 }
 # sys->fprint(sys->fildes(2), "Clunk: stdin (in %d: out %d\n",
-#	cpusession[sessid].stdinopen, cpusession[sessid].stdoutopen);
+# cpusession[sessid].stdinopen, cpusession[sessid].stdoutopen);
 STDOUTCLOSE =>
 cpusession[sessid].stdoutopen--;
 if (TEST)
@@ -615,13 +615,13 @@ cpusession[sessid].stdoutopen = -1;
 cpusession[sessid].closestdout <-= 1;
 }
 #sys->fprint(sys->fildes(2), "Clunk: stdout (in %d: out %d\n",
-#	cpusession[sessid].stdinopen, cpusession[sessid].stdoutopen);
+# cpusession[sessid].stdinopen, cpusession[sessid].stdoutopen);
 CLONECLOSE =>
 if (TEST)
 sys->fprint(sys->fildes(2), "%d: Close clone\n", sessid);
 clone = 0;
 #sys->fprint(sys->fildes(2), "Clunk: clone (in %d: out %d\n",
-#	cpusession[sessid].stdinopen, cpusession[sessid].stdoutopen);
+# cpusession[sessid].stdinopen, cpusession[sessid].stdoutopen);
 FINISHED =>
 if (TEST)
 sys->fprint(sys->fildes(2), "%d: Rcmd finished", sessid);
@@ -640,7 +640,7 @@ if (cpusession[sessid].finished || !cpusession[sessid].written)
 break main;
 }
 }
-if (!cpusession[sessid].finished)	# ie never executed anything
+if (!cpusession[sessid].finished) # ie never executed anything
 poolchanin <-= "free "+string cpusession[sessid].cpuid;
 cpusession[sessid] = NILCPUSESSION;
 if (TEST)

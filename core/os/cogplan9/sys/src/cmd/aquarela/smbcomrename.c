@@ -3,7 +3,7 @@ SmbProcessResult
 smbcomrename(SmbSession *s, SmbHeader *h, uchar *, SmbBuffer *b)
 {
 int rv;
-char *old,     *new;
+char *old, *new;
 char *oldpath = nil;
 char *newpath = nil;
 char *olddir, *newdir;
@@ -39,7 +39,7 @@ if (rv < 0) {
 smblogprint(h->command, "smbcomrename failed: %r\n");
 noaccess:
 smbseterror(s, ERRDOS, ERRnoaccess);
-pr =  SmbProcessResultError;
+pr = SmbProcessResultError;
 }
 else
 pr = smbbufferputack(s->response, h, &s->peerinfo);

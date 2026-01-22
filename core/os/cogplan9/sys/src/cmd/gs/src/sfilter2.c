@@ -54,7 +54,7 @@ ulong v4 = word / 85;
 ulong v3 = v4 / 85;
 uint v2 = v3 / 85;
 uint v1 = v2 / 85;
-put:	    if (q + 5 > qn) {
+put: if (q + 5 > qn) {
 if (q >= wlimit) {
 status = 1;
 break;

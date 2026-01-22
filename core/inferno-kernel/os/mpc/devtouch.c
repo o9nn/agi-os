@@ -5,19 +5,19 @@
 #include "fns.h"
 #include "io.h"
 #include "../port/error.h"
-#define	DPRINT	if(0)print
-#define	THREEBUT	0
+#define DPRINT if(0)print
+#define THREEBUT 0
 enum {
-MeasureX =	(1<<7)|(0<<6)|(1<<3)|(1<<2)|3,
-MeasureY =	(1<<7)|(1<<6)|(1<<3)|(1<<2)|3,
+MeasureX = (1<<7)|(0<<6)|(1<<3)|(1<<2)|3,
+MeasureY = (1<<7)|(1<<6)|(1<<3)|(1<<2)|3,
 ADselect = IBIT(16),
-Xenable =	1<<2,
-Yenable =	1<<3,
+Xenable = 1<<2,
+Yenable = 1<<3,
 Touched = 1<<10,
-TouchIRQ=	2,
-TouchEnable=	1<<TouchIRQ,
-Nconverge =	10,
-MaxDelta =	2,
+TouchIRQ= 2,
+TouchEnable= 1<<TouchIRQ,
+Nconverge = 10,
+MaxDelta = 2,
 };
 static int
 getcoord(int cw)
@@ -79,19 +79,19 @@ io->pbpar &= ~ADselect;
 io->pbdir |= ADselect;
 iopunlock();
 }
-#define	FX(n)	((n)<<16)
-#define	XF(v)		((v)>>16)
+#define FX(n) ((n)<<16)
+#define XF(v) ((v)>>16)
 typedef struct Touch Touch;
 struct Touch {
 Lock;
-Rendez	r;
-int	m[2][3];
-int	rate;
-int	down;
-int	raw_count;
-int	valid_count;
-int	wake_time;
-int	sleep_time;
+Rendez r;
+int m[2][3];
+int rate;
+int down;
+int raw_count;
+int valid_count;
+int wake_time;
+int sleep_time;
 };
 static Touch touch = {
 {0},
@@ -134,10 +134,10 @@ Qtouchstat,
 Qtouch,
 };
 Dirtab touchdir[]={
-".",	{Qdir, 0, QTDIR}, 0, 0555,
-"touchctl",	{Qtouchctl, 0}, 	0,	0666,
-"touchstat",	{Qtouchstat, 0}, 	0,	0444,
-"touch",	{Qtouch, 0},	0,	0444,
+".", {Qdir, 0, QTDIR}, 0, 0555,
+"touchctl", {Qtouchctl, 0}, 0, 0666,
+"touchstat", {Qtouchstat, 0}, 0, 0444,
+"touch", {Qtouch, 0}, 0, 0444,
 };
 static int
 ptmap(int *m, int x, int y)
@@ -163,8 +163,8 @@ return 1;
 }
 return 0;
 }
-#define	timer_start()	0
-#define	tmr2us(n)	0
+#define timer_start() 0
+#define tmr2us(n) 0
 static void
 touchproc(void*)
 {

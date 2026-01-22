@@ -12,7 +12,7 @@
 #include "link-includes.h"
 #include "error.h"
 #include "spellcheck.h"
-#define ASPELL_LANG_KEY  "lang"
+#define ASPELL_LANG_KEY "lang"
 static const char *spellcheck_lang_mapping[] =
 {
 "en", "en_US",

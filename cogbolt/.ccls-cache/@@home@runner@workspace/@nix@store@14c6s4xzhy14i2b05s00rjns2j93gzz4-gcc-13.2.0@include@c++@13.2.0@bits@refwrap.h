@@ -29,23 +29,23 @@ using __maybe_type
 = _Maybe_unary_or_binary_function<_Res, _Class*, _ArgTypes...>;
 using __arity = integral_constant<size_t, sizeof...(_ArgTypes)>;
 };
-#define _GLIBCXX_MEM_FN_TRAITS2(_CV, _REF, _LVAL, _RVAL)		\
-template<typename _Res, typename _Class, typename... _ArgTypes>	\
-struct _Mem_fn_traits<_Res (_Class::*)(_ArgTypes...) _CV _REF>	\
-: _Mem_fn_traits_base<_Res, _CV _Class, _ArgTypes...>		\
-{									\
-using __vararg = false_type;					\
-};									\
-template<typename _Res, typename _Class, typename... _ArgTypes>	\
-struct _Mem_fn_traits<_Res (_Class::*)(_ArgTypes... ...) _CV _REF>	\
-: _Mem_fn_traits_base<_Res, _CV _Class, _ArgTypes...>		\
-{									\
-using __vararg = true_type;					\
+#define _GLIBCXX_MEM_FN_TRAITS2(_CV, _REF, _LVAL, _RVAL) \
+template<typename _Res, typename _Class, typename... _ArgTypes> \
+struct _Mem_fn_traits<_Res (_Class::*)(_ArgTypes...) _CV _REF> \
+: _Mem_fn_traits_base<_Res, _CV _Class, _ArgTypes...> \
+{ \
+using __vararg = false_type; \
+}; \
+template<typename _Res, typename _Class, typename... _ArgTypes> \
+struct _Mem_fn_traits<_Res (_Class::*)(_ArgTypes... ...) _CV _REF> \
+: _Mem_fn_traits_base<_Res, _CV _Class, _ArgTypes...> \
+{ \
+using __vararg = true_type; \
 };
-#define _GLIBCXX_MEM_FN_TRAITS(_REF, _LVAL, _RVAL)		\
-_GLIBCXX_MEM_FN_TRAITS2(		, _REF, _LVAL, _RVAL)	\
-_GLIBCXX_MEM_FN_TRAITS2(const		, _REF, _LVAL, _RVAL)	\
-_GLIBCXX_MEM_FN_TRAITS2(volatile	, _REF, _LVAL, _RVAL)	\
+#define _GLIBCXX_MEM_FN_TRAITS(_REF, _LVAL, _RVAL) \
+_GLIBCXX_MEM_FN_TRAITS2( , _REF, _LVAL, _RVAL) \
+_GLIBCXX_MEM_FN_TRAITS2(const , _REF, _LVAL, _RVAL) \
+_GLIBCXX_MEM_FN_TRAITS2(volatile , _REF, _LVAL, _RVAL) \
 _GLIBCXX_MEM_FN_TRAITS2(const volatile, _REF, _LVAL, _RVAL)
 _GLIBCXX_MEM_FN_TRAITS( , true_type, true_type)
 _GLIBCXX_MEM_FN_TRAITS(&, true_type, false_type)

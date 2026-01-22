@@ -1,5 +1,5 @@
 #ifndef gp_INCLUDED
-#  define gp_INCLUDED
+# define gp_INCLUDED
 #include "gstypes.h"
 #include "gpgetenv.h"
 #include "srdline.h"
@@ -59,7 +59,7 @@ gp_cache_alloc alloc, void *userdata);
 FILE *gp_open_printer(char fname[gp_file_name_sizeof], int binary_mode);
 void gp_close_printer(FILE * pfile, const char *fname);
 #ifndef file_enum_DEFINED
-#  define file_enum_DEFINED
+# define file_enum_DEFINED
 typedef struct file_enum_s file_enum;
 #endif
 file_enum *gp_enumerate_files_init(const char *pat, uint patlen,

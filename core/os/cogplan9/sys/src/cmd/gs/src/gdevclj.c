@@ -14,25 +14,25 @@ bool rotated;
 #define X_DPI 300
 #define Y_DPI 300
 typedef struct clj_paper_size_s {
-uint        tag;
-int         orient;
-float       width, height;
-gs_point    offsets;
+uint tag;
+int orient;
+float width, height;
+gs_point offsets;
 } clj_paper_size;
-private const clj_paper_size    clj_paper_sizes[] = {
-{   2,  1, 11.00 * 72.0, 8.50 * 72.0, { .200 * 72.0, 0.0 } },
-{   1,  1, 10.50 * 72.0, 7.25 * 72.0, { .200 * 72.0, 0.0 } },
-{  26,  1, 11.69 * 72.0, 8.27 * 72.0, { .197 * 72.0, 0.0 } }
+private const clj_paper_size clj_paper_sizes[] = {
+{ 2, 1, 11.00 * 72.0, 8.50 * 72.0, { .200 * 72.0, 0.0 } },
+{ 1, 1, 10.50 * 72.0, 7.25 * 72.0, { .200 * 72.0, 0.0 } },
+{ 26, 1, 11.69 * 72.0, 8.27 * 72.0, { .197 * 72.0, 0.0 } }
 };
 private const float supported_resolutions[] = { 75.0, 100.0, 150.0, 300.0 };
-#define CLJ_MAX_RES        300.0
-#define CLJ_MAX_SCANLINE   (12.0 * 72.0)
+#define CLJ_MAX_RES 300.0
+#define CLJ_MAX_SCANLINE (12.0 * 72.0)
 private bool
 is_supported_resolution(
 const float HWResolution[2]
 )
 {
-int     i;
+int i;
 for (i = 0; i < countof(supported_resolutions); i++) {
 if (HWResolution[0] == supported_resolutions[i])
 return HWResolution[0] == HWResolution[1];
@@ -41,23 +41,23 @@ return false;
 }
 private const clj_paper_size *
 get_paper_size(
-const float             MediaSize[2],
-bool *                  rotatep
+const float MediaSize[2],
+bool * rotatep
 )
 {
-static const float      tolerance = 5.0;
-float                   width = MediaSize[0];
-float                   height = MediaSize[1];
-const clj_paper_size *  psize = 0;
-int                     i;
+static const float tolerance = 5.0;
+float width = MediaSize[0];
+float height = MediaSize[1];
+const clj_paper_size * psize = 0;
+int i;
 for (i = 0, psize = clj_paper_sizes; i < countof(clj_paper_sizes); i++, psize++) {
-if ( (fabs(width - psize->width) <= tolerance)  &&
-(fabs(height - psize->height) <= tolerance)  ) {
+if ( (fabs(width - psize->width) <= tolerance) &&
+(fabs(height - psize->height) <= tolerance) ) {
 if (rotatep != 0)
 *rotatep = false;
 return psize;
 } else if ( (fabs(width - psize->height) <= tolerance) &&
-(fabs(height - psize->width) <= tolerance)   ) {
+(fabs(height - psize->width) <= tolerance) ) {
 if (rotatep != 0)
 *rotatep = true;
 return psize;
@@ -68,8 +68,8 @@ return 0;
 private void
 clj_get_initial_matrix( gx_device *pdev, gs_matrix *pmat)
 {
-floatp      	fs_res = pdev->HWResolution[0] / 72.0;
-floatp      	ss_res = pdev->HWResolution[1] / 72.0;
+floatp fs_res = pdev->HWResolution[0] / 72.0;
+floatp ss_res = pdev->HWResolution[1] / 72.0;
 const clj_paper_size *psize;
 psize = get_paper_size(pdev->MediaSize, NULL);
 if (psize == 0) {
@@ -146,13 +146,13 @@ return have_pagesize;
 }
 private int
 clj_put_params(
-gx_device *             pdev,
-gs_param_list *         plist
+gx_device * pdev,
+gs_param_list * plist
 )
 {
-float		    mediasize[2];
-bool                    rotate = false;
-int                     have_pagesize = clj_media_size(mediasize, plist);
+float mediasize[2];
+bool rotate = false;
+int have_pagesize = clj_media_size(mediasize, plist);
 if (have_pagesize < 0)
 return have_pagesize;
 if (have_pagesize) {
@@ -163,25 +163,25 @@ return gdev_prn_put_params(pdev, plist);
 }
 private void
 pack_and_compress_scanline(
-const byte *        pin,
-int                 in_size,
-byte  *             pout[3],
-int                 out_size[3]
+const byte * pin,
+int in_size,
+byte * pout[3],
+int out_size[3]
 )
 {
-#define BUFF_SIZE                                                           \
-( ((int)(CLJ_MAX_RES * CLJ_MAX_SCANLINE / 72.0) + sizeof(ulong) - 1)    \
+#define BUFF_SIZE \
+( ((int)(CLJ_MAX_RES * CLJ_MAX_SCANLINE / 72.0) + sizeof(ulong) - 1) \
 / sizeof(ulong) )
-ulong               buff[3 * BUFF_SIZE];
-byte *              p_c = (byte *)buff;
-byte *              p_m = (byte *)(buff + BUFF_SIZE);
-byte *              p_y = (byte *)(buff + 2 * BUFF_SIZE);
-ulong *             ptrs[3];
-byte                c_val = 0, m_val = 0, y_val = 0;
-ulong               mask = 0x80;
-int                 i;
+ulong buff[3 * BUFF_SIZE];
+byte * p_c = (byte *)buff;
+byte * p_m = (byte *)(buff + BUFF_SIZE);
+byte * p_y = (byte *)(buff + 2 * BUFF_SIZE);
+ulong * ptrs[3];
+byte c_val = 0, m_val = 0, y_val = 0;
+ulong mask = 0x80;
+int i;
 for (i = 0; i < in_size; i++) {
-uint    ival = *pin++;
+uint ival = *pin++;
 if (ival != 0) {
 if ((ival & 0x4) != 0)
 y_val |= mask;
@@ -227,22 +227,22 @@ out_size[i] = gdev_pcl_mode2compress(p_start, p_end, pout[i]);
 }
 private int
 clj_print_page(
-gx_device_printer *     pdev,
-FILE *                  prn_stream
+gx_device_printer * pdev,
+FILE * prn_stream
 )
 {
 gs_memory_t *mem = pdev->memory;
-bool                    rotate;
-const clj_paper_size *  psize = get_paper_size(pdev->MediaSize, &rotate);
-int                     lsize = pdev->width;
-int                     clsize = (lsize + (lsize + 255) / 128) / 8;
-byte *                  data = 0;
-byte *                  cdata[3];
-int                     blank_lines = 0;
-int                     i;
-floatp                  fs_res = pdev->HWResolution[0] / 72.0;
-floatp                  ss_res = pdev->HWResolution[1] / 72.0;
-int			    imageable_width, imageable_height;
+bool rotate;
+const clj_paper_size * psize = get_paper_size(pdev->MediaSize, &rotate);
+int lsize = pdev->width;
+int clsize = (lsize + (lsize + 255) / 128) / 8;
+byte * data = 0;
+byte * cdata[3];
+int blank_lines = 0;
+int i;
+floatp fs_res = pdev->HWResolution[0] / 72.0;
+floatp ss_res = pdev->HWResolution[1] / 72.0;
+int imageable_width, imageable_height;
 if (psize == 0)
 return_error(gs_error_unregistered);
 if ((data = gs_alloc_bytes(mem, lsize, "clj_print_page(data)")) == 0)
@@ -276,7 +276,7 @@ imageable_width,
 imageable_height
 );
 for (i = 0; i < imageable_height; i++) {
-int     clen[3];
+int clen[3];
 gdev_prn_copy_scan_lines(pdev, i, data, lsize);
 pack_and_compress_scanline(data, imageable_width, cdata, clen);
 if ((clen[0] == 0) && (clen[1] == 0) && (clen[2] == 0))
@@ -300,25 +300,25 @@ gs_free_object(mem, data, "clj_print_page(data)");
 return 0;
 }
 #define CLJ_PROCS(get_params, put_params)\
-gdev_prn_open,                  \
-clj_get_initial_matrix,         \
-NULL,	                    \
-gdev_prn_output_page,           \
-gdev_prn_close,                 \
-gdev_pcl_3bit_map_rgb_color,    \
-gdev_pcl_3bit_map_color_rgb,    \
-NULL,	                    \
-NULL,	                    \
-NULL,	                    \
-NULL,	                    \
-NULL,	                    \
-NULL,	                    \
-get_params, 	            \
-put_params,                     \
-NULL,	                    \
-NULL,	                    \
-NULL,	                    \
-NULL,	                    \
+gdev_prn_open, \
+clj_get_initial_matrix, \
+NULL, \
+gdev_prn_output_page, \
+gdev_prn_close, \
+gdev_pcl_3bit_map_rgb_color, \
+gdev_pcl_3bit_map_color_rgb, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+get_params, \
+put_params, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
 gx_page_device_get_page_device
 private gx_device_procs cljet5_procs = {
 CLJ_PROCS(clj_get_params, clj_put_params)
@@ -326,18 +326,18 @@ CLJ_PROCS(clj_get_params, clj_put_params)
 #define CLJ_DEVICE_BODY(procs, dname, rotated)\
 prn_device_body(\
 gx_device_clj,\
-procs,                  \
-dname,                  \
-110,                    \
-85,                     \
-X_DPI, Y_DPI,           \
-0.167, 0.167,           \
+procs, \
+dname, \
+110, \
+85, \
+X_DPI, Y_DPI, \
+0.167, 0.167, \
 0.167, 0.167,\
-3,                      \
-8,			    \
-1, 1, 		    \
-2, 2,		     \
-clj_print_page          \
+3, \
+8, \
+1, 1, \
+2, 2, \
+clj_print_page \
 ),\
 rotated
 gx_device_clj gs_cljet5_device = {
@@ -349,7 +349,7 @@ clj_pr_get_params( gx_device *pdev, gs_param_list *plist )
 int code;
 if (pclj->rotated) {
 float ftmp;
-int   itmp;
+int itmp;
 ftmp = pdev->MediaSize[0];
 pdev->MediaSize[0] = pdev->MediaSize[1];
 pdev->MediaSize[1] = ftmp;
@@ -360,7 +360,7 @@ pdev->height = itmp;
 code = gdev_prn_get_params(pdev, plist);
 if (pclj->rotated) {
 float ftmp;
-int   itmp;
+int itmp;
 ftmp = pdev->MediaSize[0];
 pdev->MediaSize[0] = pdev->MediaSize[1];
 pdev->MediaSize[1] = ftmp;
@@ -372,23 +372,23 @@ return code;
 }
 private int
 clj_pr_put_params(
-gx_device *             pdev,
-gs_param_list *         plist
+gx_device * pdev,
+gs_param_list * plist
 )
 {
-float		    mediasize[2];
-int                     code = 0;
-bool                    rotate = false;
-int                     have_pagesize = clj_media_size(mediasize, plist);
+float mediasize[2];
+int code = 0;
+bool rotate = false;
+int have_pagesize = clj_media_size(mediasize, plist);
 if (have_pagesize < 0)
 return have_pagesize;
 if (have_pagesize) {
 if (get_paper_size(mediasize, &rotate) == 0)
 return_error(gs_error_rangecheck);
 if (rotate) {
-gs_param_float_array	pf_array;
-gs_c_param_list		alist;
-float			ftmp = mediasize[0];
+gs_param_float_array pf_array;
+gs_c_param_list alist;
+float ftmp = mediasize[0];
 mediasize[0] = mediasize[1];
 mediasize[1] = ftmp;
 pf_array.data = mediasize;

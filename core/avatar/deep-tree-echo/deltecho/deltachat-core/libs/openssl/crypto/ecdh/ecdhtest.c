@@ -20,9 +20,9 @@ return (0);
 # include <openssl/ec.h>
 # include <openssl/ecdh.h>
 # ifdef OPENSSL_SYS_WIN16
-#  define MS_CALLBACK     _far _loadds
+# define MS_CALLBACK _far _loadds
 # else
-#  define MS_CALLBACK
+# define MS_CALLBACK
 # endif
 # if 0
 static void MS_CALLBACK cb(int p, int n, void *arg);
@@ -297,9 +297,9 @@ if (p == 3)
 c = '\n';
 BIO_write((BIO *)arg, &c, 1);
 (void)BIO_flush((BIO *)arg);
-#  ifdef LINT
+# ifdef LINT
 p = n;
-#  endif
+# endif
 }
 # endif
 #endif

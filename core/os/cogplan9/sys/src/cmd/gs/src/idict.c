@@ -185,7 +185,7 @@ return 0;
 }
 int
 dict_find(const ref * pdref, const ref * pkey,
-ref ** ppvalue  )
+ref ** ppvalue )
 {
 dict *pdict = pdref->value.pdict;
 uint size = npairs(pdict);
@@ -314,7 +314,7 @@ return dict_find(pdref, &kname, ppvalue);
 return 0;
 }
 int
-dict_put(ref * pdref  , const ref * pkey, const ref * pvalue,
+dict_put(ref * pdref , const ref * pkey, const ref * pvalue,
 dict_stack_t *pds)
 {
 dict *pdict = pdref->value.pdict;
@@ -463,25 +463,25 @@ make_null_old_in(mem, &pdict->values, pvslot, "dict_undef(value)");
 return 0;
 }
 uint
-dict_length(const ref * pdref  )
+dict_length(const ref * pdref )
 {
 return d_length(pdref->value.pdict);
 }
 uint
-dict_maxlength(const ref * pdref  )
+dict_maxlength(const ref * pdref )
 {
 return d_maxlength(pdref->value.pdict);
 }
 uint
-dict_max_index(const ref * pdref  )
+dict_max_index(const ref * pdref )
 {
 return npairs(pdref->value.pdict) - 1;
 }
 #define COPY_NEW_ONLY 1
 #define COPY_FOR_RESIZE 2
 private int
-dict_copy_elements(const ref * pdrfrom  ,
-ref * pdrto  , int options,
+dict_copy_elements(const ref * pdrfrom ,
+ref * pdrto , int options,
 dict_stack_t *pds)
 {
 int space = r_space(pdrto);
@@ -606,7 +606,7 @@ dict_first(const ref * pdref)
 return (int)nslots(pdref->value.pdict);
 }
 int
-dict_next(const ref * pdref, int index, ref * eltp  )
+dict_next(const ref * pdref, int index, ref * eltp )
 {
 dict *pdict = pdref->value.pdict;
 ref *vp = pdict->values.value.refs + index;
@@ -631,7 +631,7 @@ dict_value_index(const ref * pdref, const ref * pvalue)
 return (int)(pvalue - pdref->value.pdict->values.value.refs - 1);
 }
 int
-dict_index_entry(const ref * pdref, int index, ref * eltp  )
+dict_index_entry(const ref * pdref, int index, ref * eltp )
 {
 const dict *pdict = pdref->value.pdict;
 array_get(dict_mem(pdict), &pdict->keys, (long)(index + 1), eltp);

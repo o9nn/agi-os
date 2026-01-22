@@ -1,5 +1,5 @@
 #ifndef gsargs_INCLUDED
-#  define gsargs_INCLUDED
+# define gsargs_INCLUDED
 #define arg_str_max 2048
 #define arg_depth_max 10
 typedef struct arg_source_s {

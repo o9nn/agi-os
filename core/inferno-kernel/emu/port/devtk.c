@@ -1,11 +1,11 @@
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
 #include <interp.h>
-#include	"draw.h"
-#include	<memdraw.h>
-#include	<memlayer.h>
-#include	<cursor.h>
+#include "draw.h"
+#include <memdraw.h>
+#include <memlayer.h>
+#include <cursor.h>
 enum{
 Qdir,
 Qtkevents
@@ -13,13 +13,13 @@ Qtkevents
 static
 Dirtab tkdirtab[]=
 {
-".",	{Qdir, 0, QTDIR},	0,		DMDIR|0555,
-"tkevents",		{Qtkevents, 0},		0,	0600,
+".", {Qdir, 0, QTDIR}, 0, DMDIR|0555,
+"tkevents", {Qtkevents, 0}, 0, 0600,
 };
 static struct {
-QLock	l;
-Queue*	eq;
-Ref	inuse;
+QLock l;
+Queue* eq;
+Ref inuse;
 } tkevents;
 static void
 tkwiretapper(void *top, char *cmd, char *result, void *image, Rectangle *rp)
@@ -74,7 +74,7 @@ qunlock(&tkevents.l);
 acquire();
 }
 }
-void	(*tkwiretap)(void*, char*, char*, void*, Rectangle*) = tkwiretapper;
+void (*tkwiretap)(void*, char*, char*, void*, Rectangle*) = tkwiretapper;
 static Chan*
 tkattach(char* spec)
 {

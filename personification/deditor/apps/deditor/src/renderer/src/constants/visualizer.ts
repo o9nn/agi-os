@@ -1,5 +1,5 @@
 export enum ProjectionAlgorithm {
-  UMAP = 'umap',
-  PCA = 'pca',
-  TSNE = 'tsne',
+UMAP = 'umap',
+PCA = 'pca',
+TSNE = 'tsne',
 }

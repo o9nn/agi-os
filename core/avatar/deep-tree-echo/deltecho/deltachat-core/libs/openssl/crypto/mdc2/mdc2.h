@@ -1,14 +1,14 @@
 #ifndef HEADER_MDC2_H
 # define HEADER_MDC2_H
 # include <openssl/des.h>
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 # ifdef OPENSSL_NO_MDC2
-#  error MDC2 is disabled.
+# error MDC2 is disabled.
 # endif
-# define MDC2_BLOCK              8
-# define MDC2_DIGEST_LENGTH      16
+# define MDC2_BLOCK 8
+# define MDC2_DIGEST_LENGTH 16
 typedef struct mdc2_ctx_st {
 unsigned int num;
 unsigned char data[MDC2_BLOCK];
@@ -22,7 +22,7 @@ int MDC2_Init(MDC2_CTX *c);
 int MDC2_Update(MDC2_CTX *c, const unsigned char *data, size_t len);
 int MDC2_Final(unsigned char *md, MDC2_CTX *c);
 unsigned char *MDC2(const unsigned char *d, size_t n, unsigned char *md);
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif
 #endif

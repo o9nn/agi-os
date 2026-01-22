@@ -1,8 +1,8 @@
 #ifndef XMS_SUPPORTED
-#define XMS_SUPPORTED  1
+#define XMS_SUPPORTED 1
 #endif
 #ifndef EMS_SUPPORTED
-#define EMS_SUPPORTED  1
+#define EMS_SUPPORTED 1
 #endif
 #define JPEG_INTERNALS
 #include "jinclude.h"
@@ -16,21 +16,21 @@ extern char * getenv JPP((const char * name));
 #ifdef NEED_FAR_POINTERS
 #ifdef __TURBOC__
 #include <alloc.h>
-#define far_malloc(x)	farmalloc(x)
-#define far_free(x)	farfree(x)
+#define far_malloc(x) farmalloc(x)
+#define far_free(x) farfree(x)
 #else
 #include <malloc.h>
-#define far_malloc(x)	_fmalloc(x)
-#define far_free(x)	_ffree(x)
+#define far_malloc(x) _fmalloc(x)
+#define far_free(x) _ffree(x)
 #endif
 #else
-#define far_malloc(x)	malloc(x)
-#define far_free(x)	free(x)
+#define far_malloc(x) malloc(x)
+#define far_free(x) free(x)
 #endif
 #ifdef DONT_USE_B_MODE
-#define READ_BINARY	"r"
+#define READ_BINARY "r"
 #else
-#define READ_BINARY	"rb"
+#define READ_BINARY "rb"
 #endif
 #ifndef USE_MSDOS_MEMMGR
 You forgot to define USE_MSDOS_MEMMGR in jconfig.h.
@@ -104,7 +104,7 @@ jpeg_free_large (j_common_ptr cinfo, void FAR * object, size_t sizeofobject)
 far_free(object);
 }
 #ifndef DEFAULT_MAX_MEM
-#define DEFAULT_MAX_MEM		300000L
+#define DEFAULT_MAX_MEM 300000L
 #endif
 GLOBAL(long)
 jpeg_mem_available (j_common_ptr cinfo, long min_bytes_needed,
@@ -175,7 +175,7 @@ XMSPTR src;
 XMSH dst_handle;
 XMSPTR dst;
 } XMSspec;
-#define ODD(X)	(((X) & 1L) != 0)
+#define ODD(X) (((X) & 1L) != 0)
 METHODDEF(void)
 read_xms_store (j_common_ptr cinfo, backing_store_ptr info,
 void FAR * buffer_address,
@@ -266,20 +266,20 @@ typedef union {
 long length;
 char bytes[18];
 } EMSspec;
-#define FIELD_AT(spec,offset,type)  (*((type *) &(spec.bytes[offset])))
-#define SRC_TYPE(spec)		FIELD_AT(spec,4,char)
-#define SRC_HANDLE(spec)	FIELD_AT(spec,5,EMSH)
-#define SRC_OFFSET(spec)	FIELD_AT(spec,7,unsigned short)
-#define SRC_PAGE(spec)		FIELD_AT(spec,9,unsigned short)
-#define SRC_PTR(spec)		FIELD_AT(spec,7,EMSPTR)
-#define DST_TYPE(spec)		FIELD_AT(spec,11,char)
-#define DST_HANDLE(spec)	FIELD_AT(spec,12,EMSH)
-#define DST_OFFSET(spec)	FIELD_AT(spec,14,unsigned short)
-#define DST_PAGE(spec)		FIELD_AT(spec,16,unsigned short)
-#define DST_PTR(spec)		FIELD_AT(spec,14,EMSPTR)
-#define EMSPAGESIZE	16384L
-#define HIBYTE(W)  (((W) >> 8) & 0xFF)
-#define LOBYTE(W)  ((W) & 0xFF)
+#define FIELD_AT(spec,offset,type) (*((type *) &(spec.bytes[offset])))
+#define SRC_TYPE(spec) FIELD_AT(spec,4,char)
+#define SRC_HANDLE(spec) FIELD_AT(spec,5,EMSH)
+#define SRC_OFFSET(spec) FIELD_AT(spec,7,unsigned short)
+#define SRC_PAGE(spec) FIELD_AT(spec,9,unsigned short)
+#define SRC_PTR(spec) FIELD_AT(spec,7,EMSPTR)
+#define DST_TYPE(spec) FIELD_AT(spec,11,char)
+#define DST_HANDLE(spec) FIELD_AT(spec,12,EMSH)
+#define DST_OFFSET(spec) FIELD_AT(spec,14,unsigned short)
+#define DST_PAGE(spec) FIELD_AT(spec,16,unsigned short)
+#define DST_PTR(spec) FIELD_AT(spec,14,EMSPTR)
+#define EMSPAGESIZE 16384L
+#define HIBYTE(W) (((W) >> 8) & 0xFF)
+#define LOBYTE(W) ((W) & 0xFF)
 METHODDEF(void)
 read_ems_store (j_common_ptr cinfo, backing_store_ptr info,
 void FAR * buffer_address,
@@ -290,11 +290,11 @@ EMSspec spec;
 spec.length = byte_count;
 SRC_TYPE(spec) = 1;
 SRC_HANDLE(spec) = info->handle.ems_handle;
-SRC_PAGE(spec)   = (unsigned short) (file_offset / EMSPAGESIZE);
+SRC_PAGE(spec) = (unsigned short) (file_offset / EMSPAGESIZE);
 SRC_OFFSET(spec) = (unsigned short) (file_offset % EMSPAGESIZE);
 DST_TYPE(spec) = 0;
 DST_HANDLE(spec) = 0;
-DST_PTR(spec)    = buffer_address;
+DST_PTR(spec) = buffer_address;
 ctx.ds_si = (void far *) & spec;
 ctx.ax = 0x5700;
 jems_calldriver((EMScontext far *) & ctx);
@@ -311,10 +311,10 @@ EMSspec spec;
 spec.length = byte_count;
 SRC_TYPE(spec) = 0;
 SRC_HANDLE(spec) = 0;
-SRC_PTR(spec)    = buffer_address;
+SRC_PTR(spec) = buffer_address;
 DST_TYPE(spec) = 1;
 DST_HANDLE(spec) = info->handle.ems_handle;
-DST_PAGE(spec)   = (unsigned short) (file_offset / EMSPAGESIZE);
+DST_PAGE(spec) = (unsigned short) (file_offset / EMSPAGESIZE);
 DST_OFFSET(spec) = (unsigned short) (file_offset % EMSPAGESIZE);
 ctx.ds_si = (void far *) & spec;
 ctx.ax = 0x5700;

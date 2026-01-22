@@ -1,50 +1,50 @@
 #include "sh.h"
 #include "c_test.h"
 struct nesting_state {
-int	start_token;
-int	start_line;
+int start_token;
+int start_line;
 };
-static void	yyparse		ARGS((void));
-static struct op *pipeline	ARGS((int cf));
-static struct op *andor		ARGS((void));
-static struct op *c_list	ARGS((int multi));
-static struct ioword *synio	ARGS((int cf));
-static void	musthave	ARGS((int c, int cf));
-static struct op *nested	ARGS((int type, int smark, int emark));
-static struct op *get_command	ARGS((int cf));
-static struct op *dogroup	ARGS((void));
-static struct op *thenpart	ARGS((void));
-static struct op *elsepart	ARGS((void));
-static struct op *caselist	ARGS((void));
-static struct op *casepart	ARGS((int endtok));
-static struct op *function_body	ARGS((char *name, int ksh_func));
-static char **	wordlist	ARGS((void));
-static struct op *block		ARGS((int type, struct op *t1, struct op *t2,
+static void yyparse ARGS((void));
+static struct op *pipeline ARGS((int cf));
+static struct op *andor ARGS((void));
+static struct op *c_list ARGS((int multi));
+static struct ioword *synio ARGS((int cf));
+static void musthave ARGS((int c, int cf));
+static struct op *nested ARGS((int type, int smark, int emark));
+static struct op *get_command ARGS((int cf));
+static struct op *dogroup ARGS((void));
+static struct op *thenpart ARGS((void));
+static struct op *elsepart ARGS((void));
+static struct op *caselist ARGS((void));
+static struct op *casepart ARGS((int endtok));
+static struct op *function_body ARGS((char *name, int ksh_func));
+static char ** wordlist ARGS((void));
+static struct op *block ARGS((int type, struct op *t1, struct op *t2,
 char **wp));
-static struct op *newtp		ARGS((int type));
-static void	syntaxerr	ARGS((const char *what))
+static struct op *newtp ARGS((int type));
+static void syntaxerr ARGS((const char *what))
 GCC_FUNC_ATTR(noreturn);
-static void	nesting_push ARGS((struct nesting_state *save, int tok));
-static void	nesting_pop ARGS((struct nesting_state *saved));
-static int	assign_command ARGS((char *s));
-static int	inalias ARGS((struct source *s));
+static void nesting_push ARGS((struct nesting_state *save, int tok));
+static void nesting_pop ARGS((struct nesting_state *saved));
+static int assign_command ARGS((char *s));
+static int inalias ARGS((struct source *s));
 #ifdef KSH
-static int	dbtestp_isa ARGS((Test_env *te, Test_meta meta));
+static int dbtestp_isa ARGS((Test_env *te, Test_meta meta));
 static const char *dbtestp_getopnd ARGS((Test_env *te, Test_op op,
 int do_eval));
-static int	dbtestp_eval ARGS((Test_env *te, Test_op op, const char *opnd1,
+static int dbtestp_eval ARGS((Test_env *te, Test_op op, const char *opnd1,
 const char *opnd2, int do_eval));
-static void	dbtestp_error ARGS((Test_env *te, int offset, const char *msg));
+static void dbtestp_error ARGS((Test_env *te, int offset, const char *msg));
 #endif
-static	struct	op	*outtree;
+static struct op *outtree;
 static struct nesting_state nesting;
-static	int	reject;
-static	int	symbol;
-#define	REJECT	(reject = 1)
-#define	ACCEPT	(reject = 0)
-#define	token(cf) \
+static int reject;
+static int symbol;
+#define REJECT (reject = 1)
+#define ACCEPT (reject = 0)
+#define token(cf) \
 ((reject) ? (ACCEPT, symbol) : (symbol = yylex(cf)))
-#define	tpeek(cf) \
+#define tpeek(cf) \
 ((reject) ? (symbol) : (REJECT, symbol = yylex(cf)))
 static void
 yyparse()
@@ -520,43 +520,43 @@ t->right = t2;
 t->vars = wp;
 return (t);
 }
-const	struct tokeninfo {
+const struct tokeninfo {
 const char *name;
-short	val;
-short	reserved;
+short val;
+short reserved;
 } tokentab[] = {
-{ "if",		IF,	TRUE },
-{ "then",	THEN,	TRUE },
-{ "else",	ELSE,	TRUE },
-{ "elif",	ELIF,	TRUE },
-{ "fi",		FI,	TRUE },
-{ "case",	CASE,	TRUE },
-{ "esac",	ESAC,	TRUE },
-{ "for",	FOR,	TRUE },
+{ "if", IF, TRUE },
+{ "then", THEN, TRUE },
+{ "else", ELSE, TRUE },
+{ "elif", ELIF, TRUE },
+{ "fi", FI, TRUE },
+{ "case", CASE, TRUE },
+{ "esac", ESAC, TRUE },
+{ "for", FOR, TRUE },
 #ifdef KSH
-{ "select",	SELECT,	TRUE },
+{ "select", SELECT, TRUE },
 #endif
-{ "while",	WHILE,	TRUE },
-{ "until",	UNTIL,	TRUE },
-{ "do",		DO,	TRUE },
-{ "done",	DONE,	TRUE },
-{ "in",		IN,	TRUE },
-{ "function",	FUNCTION, TRUE },
-{ "time",	TIME,	TRUE },
-{ "{",		'{',	TRUE },
-{ "}",		'}',	TRUE },
-{ "!",		BANG,	TRUE },
+{ "while", WHILE, TRUE },
+{ "until", UNTIL, TRUE },
+{ "do", DO, TRUE },
+{ "done", DONE, TRUE },
+{ "in", IN, TRUE },
+{ "function", FUNCTION, TRUE },
+{ "time", TIME, TRUE },
+{ "{", '{', TRUE },
+{ "}", '}', TRUE },
+{ "!", BANG, TRUE },
 #ifdef KSH
-{ "[[",		DBRACKET, TRUE },
+{ "[[", DBRACKET, TRUE },
 #endif
-{ "&&",		LOGAND,	FALSE },
-{ "||",		LOGOR,	FALSE },
-{ ";;",		BREAK,	FALSE },
+{ "&&", LOGAND, FALSE },
+{ "||", LOGOR, FALSE },
+{ ";;", BREAK, FALSE },
 #ifdef KSH
-{ "((",		MDPAREN, FALSE },
-{ "|&",		COPROC,	FALSE },
+{ "((", MDPAREN, FALSE },
+{ "|&", COPROC, FALSE },
 #endif
-{ "newline",	'\n',	FALSE },
+{ "newline", '\n', FALSE },
 { 0 }
 };
 void
@@ -667,7 +667,7 @@ char *s;
 char c = *s;
 if (Flag(FPOSIX) || !*s)
 return 0;
-return     (c == 'a' && strcmp(s, "alias") == 0)
+return (c == 'a' && strcmp(s, "alias") == 0)
 || (c == 'e' && strcmp(s, "export") == 0)
 || (c == 'r' && strcmp(s, "readonly") == 0)
 || (c == 't' && strcmp(s, "typeset") == 0);
@@ -713,7 +713,7 @@ ret = uqword && strcmp(yylval.cp, dbtest_tokens[(int) TM_NOT]) == 0;
 else if (meta == TM_OPAREN)
 ret = c == '(' ;
 else if (meta == TM_CPAREN)
-ret = c ==  ')';
+ret = c == ')';
 else if (meta == TM_UNOP || meta == TM_BINOP) {
 if (meta == TM_BINOP && c == REDIR
 && (yylval.iop->flag == IOREAD

@@ -1,195 +1,195 @@
 #include <linux/config.h>
 #ifndef CONFIG_SCSI_OMIT_FLASHPOINT
 #define UNIX
-#define FW_TYPE		_SCCB_MGR_
-#define MAX_CARDS	8
+#define FW_TYPE _SCCB_MGR_
+#define MAX_CARDS 8
 #undef BUSTYPE_PCI
-#define OS_InPortByte(port)		inb(port)
-#define OS_InPortWord(port)		inw(port)
-#define OS_InPortLong(port)		inl(port)
-#define OS_OutPortByte(port, value)	outb(value, port)
-#define OS_OutPortWord(port, value)	outw(value, port)
-#define OS_OutPortLong(port, value)	outl(value, port)
+#define OS_InPortByte(port) inb(port)
+#define OS_InPortWord(port) inw(port)
+#define OS_InPortLong(port) inl(port)
+#define OS_OutPortByte(port, value) outb(value, port)
+#define OS_OutPortWord(port, value) outw(value, port)
+#define OS_OutPortLong(port, value) outl(value, port)
 #define OS_Lock(x)
 #define OS_UnLock(x)
-#define SccbMgr_sense_adapter		FlashPoint_ProbeHostAdapter
-#define SccbMgr_config_adapter		FlashPoint_HardwareResetHostAdapter
-#define SccbMgr_unload_card		FlashPoint_ReleaseHostAdapter
-#define SccbMgr_start_sccb		FlashPoint_StartCCB
-#define SccbMgr_abort_sccb		FlashPoint_AbortCCB
-#define SccbMgr_my_int			FlashPoint_InterruptPending
-#define SccbMgr_isr			FlashPoint_HandleInterrupt
-#define BL_Card				FPT_BL_Card
-#define BusMasterInit			FPT_BusMasterInit
-#define CalcCrc16			FPT_CalcCrc16
-#define CalcLrc				FPT_CalcLrc
-#define ChkIfChipInitialized		FPT_ChkIfChipInitialized
-#define DiagBusMaster			FPT_DiagBusMaster
-#define DiagEEPROM			FPT_DiagEEPROM
-#define DiagXbow			FPT_DiagXbow
-#define GetTarLun			FPT_GetTarLun
-#define RNVRamData			FPT_RNVRamData
-#define RdStack				FPT_RdStack
-#define SccbMgrTableInitAll		FPT_SccbMgrTableInitAll
-#define SccbMgrTableInitCard		FPT_SccbMgrTableInitCard
-#define SccbMgrTableInitTarget		FPT_SccbMgrTableInitTarget
-#define SccbMgr_bad_isr			FPT_SccbMgr_bad_isr
-#define SccbMgr_scsi_reset		FPT_SccbMgr_scsi_reset
-#define SccbMgr_timer_expired		FPT_SccbMgr_timer_expired
-#define SendMsg				FPT_SendMsg
-#define Wait				FPT_Wait
-#define Wait1Second			FPT_Wait1Second
-#define WrStack				FPT_WrStack
-#define XbowInit			FPT_XbowInit
-#define autoCmdCmplt			FPT_autoCmdCmplt
-#define autoLoadDefaultMap		FPT_autoLoadDefaultMap
-#define busMstrDataXferStart		FPT_busMstrDataXferStart
-#define busMstrSGDataXferStart		FPT_busMstrSGDataXferStart
-#define busMstrTimeOut			FPT_busMstrTimeOut
-#define dataXferProcessor		FPT_dataXferProcessor
-#define default_intena			FPT_default_intena
-#define hostDataXferAbort		FPT_hostDataXferAbort
-#define hostDataXferRestart		FPT_hostDataXferRestart
-#define inisci				FPT_inisci
-#define mbCards				FPT_mbCards
-#define nvRamInfo			FPT_nvRamInfo
-#define phaseBusFree			FPT_phaseBusFree
-#define phaseChkFifo			FPT_phaseChkFifo
-#define phaseCommand			FPT_phaseCommand
-#define phaseDataIn			FPT_phaseDataIn
-#define phaseDataOut			FPT_phaseDataOut
-#define phaseDecode			FPT_phaseDecode
-#define phaseIllegal			FPT_phaseIllegal
-#define phaseMsgIn			FPT_phaseMsgIn
-#define phaseMsgOut			FPT_phaseMsgOut
-#define phaseStatus			FPT_phaseStatus
-#define queueAddSccb			FPT_queueAddSccb
-#define queueCmdComplete		FPT_queueCmdComplete
-#define queueDisconnect			FPT_queueDisconnect
-#define queueFindSccb			FPT_queueFindSccb
-#define queueFlushSccb			FPT_queueFlushSccb
-#define queueFlushTargSccb		FPT_queueFlushTargSccb
-#define queueSearchSelect		FPT_queueSearchSelect
-#define queueSelectFail			FPT_queueSelectFail
-#define s_PhaseTbl			FPT_s_PhaseTbl
-#define scamHAString			FPT_scamHAString
-#define scamInfo			FPT_scamInfo
-#define scarb				FPT_scarb
-#define scasid				FPT_scasid
-#define scbusf				FPT_scbusf
-#define sccbMgrTbl			FPT_sccbMgrTbl
-#define schkdd				FPT_schkdd
-#define scini				FPT_scini
-#define sciso				FPT_sciso
-#define scmachid			FPT_scmachid
-#define scsavdi				FPT_scsavdi
-#define scsel				FPT_scsel
-#define scsell				FPT_scsell
-#define scsendi				FPT_scsendi
-#define scvalq				FPT_scvalq
-#define scwirod				FPT_scwirod
-#define scwiros				FPT_scwiros
-#define scwtsel				FPT_scwtsel
-#define scxferc				FPT_scxferc
-#define sdecm				FPT_sdecm
-#define sfm				FPT_sfm
-#define shandem				FPT_shandem
-#define sinits				FPT_sinits
-#define sisyncn				FPT_sisyncn
-#define sisyncr				FPT_sisyncr
-#define siwidn				FPT_siwidn
-#define siwidr				FPT_siwidr
-#define sres				FPT_sres
-#define sresb				FPT_sresb
-#define ssel				FPT_ssel
-#define ssenss				FPT_ssenss
-#define sssyncv				FPT_sssyncv
-#define stsyncn				FPT_stsyncn
-#define stwidn				FPT_stwidn
-#define sxfrp				FPT_sxfrp
-#define utilEERead			FPT_utilEERead
-#define utilEEReadOrg			FPT_utilEEReadOrg
-#define utilEESendCmdAddr		FPT_utilEESendCmdAddr
-#define utilEEWrite			FPT_utilEEWrite
-#define utilEEWriteOnOff		FPT_utilEEWriteOnOff
-#define utilUpdateResidual		FPT_utilUpdateResidual
+#define SccbMgr_sense_adapter FlashPoint_ProbeHostAdapter
+#define SccbMgr_config_adapter FlashPoint_HardwareResetHostAdapter
+#define SccbMgr_unload_card FlashPoint_ReleaseHostAdapter
+#define SccbMgr_start_sccb FlashPoint_StartCCB
+#define SccbMgr_abort_sccb FlashPoint_AbortCCB
+#define SccbMgr_my_int FlashPoint_InterruptPending
+#define SccbMgr_isr FlashPoint_HandleInterrupt
+#define BL_Card FPT_BL_Card
+#define BusMasterInit FPT_BusMasterInit
+#define CalcCrc16 FPT_CalcCrc16
+#define CalcLrc FPT_CalcLrc
+#define ChkIfChipInitialized FPT_ChkIfChipInitialized
+#define DiagBusMaster FPT_DiagBusMaster
+#define DiagEEPROM FPT_DiagEEPROM
+#define DiagXbow FPT_DiagXbow
+#define GetTarLun FPT_GetTarLun
+#define RNVRamData FPT_RNVRamData
+#define RdStack FPT_RdStack
+#define SccbMgrTableInitAll FPT_SccbMgrTableInitAll
+#define SccbMgrTableInitCard FPT_SccbMgrTableInitCard
+#define SccbMgrTableInitTarget FPT_SccbMgrTableInitTarget
+#define SccbMgr_bad_isr FPT_SccbMgr_bad_isr
+#define SccbMgr_scsi_reset FPT_SccbMgr_scsi_reset
+#define SccbMgr_timer_expired FPT_SccbMgr_timer_expired
+#define SendMsg FPT_SendMsg
+#define Wait FPT_Wait
+#define Wait1Second FPT_Wait1Second
+#define WrStack FPT_WrStack
+#define XbowInit FPT_XbowInit
+#define autoCmdCmplt FPT_autoCmdCmplt
+#define autoLoadDefaultMap FPT_autoLoadDefaultMap
+#define busMstrDataXferStart FPT_busMstrDataXferStart
+#define busMstrSGDataXferStart FPT_busMstrSGDataXferStart
+#define busMstrTimeOut FPT_busMstrTimeOut
+#define dataXferProcessor FPT_dataXferProcessor
+#define default_intena FPT_default_intena
+#define hostDataXferAbort FPT_hostDataXferAbort
+#define hostDataXferRestart FPT_hostDataXferRestart
+#define inisci FPT_inisci
+#define mbCards FPT_mbCards
+#define nvRamInfo FPT_nvRamInfo
+#define phaseBusFree FPT_phaseBusFree
+#define phaseChkFifo FPT_phaseChkFifo
+#define phaseCommand FPT_phaseCommand
+#define phaseDataIn FPT_phaseDataIn
+#define phaseDataOut FPT_phaseDataOut
+#define phaseDecode FPT_phaseDecode
+#define phaseIllegal FPT_phaseIllegal
+#define phaseMsgIn FPT_phaseMsgIn
+#define phaseMsgOut FPT_phaseMsgOut
+#define phaseStatus FPT_phaseStatus
+#define queueAddSccb FPT_queueAddSccb
+#define queueCmdComplete FPT_queueCmdComplete
+#define queueDisconnect FPT_queueDisconnect
+#define queueFindSccb FPT_queueFindSccb
+#define queueFlushSccb FPT_queueFlushSccb
+#define queueFlushTargSccb FPT_queueFlushTargSccb
+#define queueSearchSelect FPT_queueSearchSelect
+#define queueSelectFail FPT_queueSelectFail
+#define s_PhaseTbl FPT_s_PhaseTbl
+#define scamHAString FPT_scamHAString
+#define scamInfo FPT_scamInfo
+#define scarb FPT_scarb
+#define scasid FPT_scasid
+#define scbusf FPT_scbusf
+#define sccbMgrTbl FPT_sccbMgrTbl
+#define schkdd FPT_schkdd
+#define scini FPT_scini
+#define sciso FPT_sciso
+#define scmachid FPT_scmachid
+#define scsavdi FPT_scsavdi
+#define scsel FPT_scsel
+#define scsell FPT_scsell
+#define scsendi FPT_scsendi
+#define scvalq FPT_scvalq
+#define scwirod FPT_scwirod
+#define scwiros FPT_scwiros
+#define scwtsel FPT_scwtsel
+#define scxferc FPT_scxferc
+#define sdecm FPT_sdecm
+#define sfm FPT_sfm
+#define shandem FPT_shandem
+#define sinits FPT_sinits
+#define sisyncn FPT_sisyncn
+#define sisyncr FPT_sisyncr
+#define siwidn FPT_siwidn
+#define siwidr FPT_siwidr
+#define sres FPT_sres
+#define sresb FPT_sresb
+#define ssel FPT_ssel
+#define ssenss FPT_ssenss
+#define sssyncv FPT_sssyncv
+#define stsyncn FPT_stsyncn
+#define stwidn FPT_stwidn
+#define sxfrp FPT_sxfrp
+#define utilEERead FPT_utilEERead
+#define utilEEReadOrg FPT_utilEEReadOrg
+#define utilEESendCmdAddr FPT_utilEESendCmdAddr
+#define utilEEWrite FPT_utilEEWrite
+#define utilEEWriteOnOff FPT_utilEEWriteOnOff
+#define utilUpdateResidual FPT_utilUpdateResidual
 #ifndef __GLOBALS_H__
 #define __GLOBALS_H__
-#define _UCB_MGR_  1
+#define _UCB_MGR_ 1
 #define _SCCB_MGR_ 2
-#define MAX_CDBLEN  12
-#define SCAM_LEV_2	1
-#define CRCMASK	0xA001
+#define MAX_CDBLEN 12
+#define SCAM_LEV_2 1
+#define CRCMASK 0xA001
 #if defined(DOS) || defined(WIN95_16) || defined(OS2) || defined(OTHER_16)
-#define       COMPILER_16_BIT 1
+#define COMPILER_16_BIT 1
 #elif defined(NETWARE) || defined(NT) || defined(WIN95_32) || defined(UNIX) || defined(OTHER_32) || defined(SOLARIS_REAL_MODE)
-#define       COMPILER_32_BIT 1
+#define COMPILER_32_BIT 1
 #endif
-#define     BL_VENDOR_ID      0x104B
-#define     FP_DEVICE_ID      0x8130
-#define     MM_DEVICE_ID      0x1040
+#define BL_VENDOR_ID 0x104B
+#define FP_DEVICE_ID 0x8130
+#define MM_DEVICE_ID 0x1040
 #ifndef FALSE
-#define FALSE           0
+#define FALSE 0
 #endif
 #ifndef TRUE
-#define TRUE            (!(FALSE))
+#define TRUE (!(FALSE))
 #endif
 #ifndef NULL
-#define NULL            0
+#define NULL 0
 #endif
-#define FAILURE         0xFFFFFFFFL
-typedef unsigned char   UCHAR;
-typedef unsigned short  USHORT;
-typedef unsigned int    UINT;
-typedef unsigned long   ULONG;
+#define FAILURE 0xFFFFFFFFL
+typedef unsigned char UCHAR;
+typedef unsigned short USHORT;
+typedef unsigned int UINT;
+typedef unsigned long ULONG;
 typedef unsigned char * PUCHAR;
 typedef unsigned short* PUSHORT;
 typedef unsigned long * PULONG;
-typedef void *          PVOID;
+typedef void * PVOID;
 #if defined(COMPILER_16_BIT)
-typedef unsigned char far       * uchar_ptr;
-typedef unsigned short far      * ushort_ptr;
-typedef unsigned long far       * ulong_ptr;
+typedef unsigned char far * uchar_ptr;
+typedef unsigned short far * ushort_ptr;
+typedef unsigned long far * ulong_ptr;
 #endif
 #if defined(COMPILER_32_BIT)
-typedef unsigned char           * uchar_ptr;
-typedef unsigned short          * ushort_ptr;
-typedef unsigned long           * ulong_ptr;
+typedef unsigned char * uchar_ptr;
+typedef unsigned short * ushort_ptr;
+typedef unsigned long * ulong_ptr;
 #endif
-#define s08bits	char
-#define s16bits 	short
-#define s32bits	long
-#define u08bits	unsigned s08bits
-#define u16bits	unsigned s16bits
-#define u32bits	unsigned s32bits
+#define s08bits char
+#define s16bits short
+#define s32bits long
+#define u08bits unsigned s08bits
+#define u16bits unsigned s16bits
+#define u32bits unsigned s32bits
 #if defined(COMPILER_16_BIT)
-typedef u08bits far 	* pu08bits;
-typedef u16bits far 	* pu16bits;
-typedef u32bits far	* pu32bits;
+typedef u08bits far * pu08bits;
+typedef u16bits far * pu16bits;
+typedef u32bits far * pu32bits;
 #endif
 #if defined(COMPILER_32_BIT)
-typedef u08bits 	* pu08bits;
-typedef u16bits 	* pu16bits;
-typedef u32bits 	* pu32bits;
+typedef u08bits * pu08bits;
+typedef u16bits * pu16bits;
+typedef u32bits * pu32bits;
 #endif
-#define BIT(x)          ((UCHAR)(1<<(x)))
-#define BITW(x)          ((USHORT)(1<<(x)))
+#define BIT(x) ((UCHAR)(1<<(x)))
+#define BITW(x) ((USHORT)(1<<(x)))
 #if defined(DOS)
 #undef inportb
 #undef inport
 #undef outportb
 #undef outport
-#define OS_InPortByte(ioport) 		inportb(ioport)
-#define OS_InPortWord(ioport) 		inport(ioport)
-#define OS_InPortLong(ioport)			inportq(ioport, val)
+#define OS_InPortByte(ioport) inportb(ioport)
+#define OS_InPortWord(ioport) inport(ioport)
+#define OS_InPortLong(ioport) inportq(ioport, val)
 #define OS_OutPortByte(ioport, val) outportb(ioport, val)
-#define OS_OutPortWord(ioport, val)	outport(ioport, val)
-#define OS_OutPortLong(ioport)		outportq(ioport, val)
+#define OS_OutPortWord(ioport, val) outport(ioport, val)
+#define OS_OutPortLong(ioport) outportq(ioport, val)
 #endif
-#if defined(NETWARE) || defined(OTHER_32) ||  defined(OTHER_16)
-extern u08bits	OS_InPortByte(u32bits ioport);
-extern u16bits	OS_InPortWord(u32bits ioport);
-extern u32bits	OS_InPortLong(u32bits ioport);
+#if defined(NETWARE) || defined(OTHER_32) || defined(OTHER_16)
+extern u08bits OS_InPortByte(u32bits ioport);
+extern u16bits OS_InPortWord(u32bits ioport);
+extern u32bits OS_InPortLong(u32bits ioport);
 extern OS_InPortByteBuffer(u32bits ioport, pu08bits buffer, u32bits count);
 extern OS_InPortWordBuffer(u32bits ioport, pu16bits buffer, u32bits count);
 extern OS_OutPortByte(u32bits ioport, u08bits val);
@@ -228,38 +228,38 @@ ScsiPortWritePortBufferUshort((pu16bits)&port, (pu16bits) buffer, (u32bits) coun
 #define OS_UnLock(x)
 #endif
 #if defined (UNIX) && !defined(OS_InPortByte)
-#define OS_InPortByte(ioport)    inb((u16bits)ioport)
-#define OS_InPortWord(ioport)    inw((u16bits)ioport)
-#define OS_InPortLong(ioport)    inl((u16bits)ioport)
-#define OS_OutPortByte(ioport,val)  outb((u16bits)ioport, (u08bits)val)
-#define OS_OutPortWord(ioport,val)  outw((u16bits)ioport, (u16bits)val)
-#define OS_OutPortLong(ioport,val)  outl((u16bits)ioport, (u32bits)val)
+#define OS_InPortByte(ioport) inb((u16bits)ioport)
+#define OS_InPortWord(ioport) inw((u16bits)ioport)
+#define OS_InPortLong(ioport) inl((u16bits)ioport)
+#define OS_OutPortByte(ioport,val) outb((u16bits)ioport, (u08bits)val)
+#define OS_OutPortWord(ioport,val) outw((u16bits)ioport, (u16bits)val)
+#define OS_OutPortLong(ioport,val) outl((u16bits)ioport, (u32bits)val)
 #define OS_Lock(x)
 #define OS_UnLock(x)
 #endif
 #if defined(OS2)
-extern u08bits	inb(u32bits ioport);
-extern u16bits	inw(u32bits ioport);
-extern void	outb(u32bits ioport, u08bits val);
-extern void	outw(u32bits ioport, u16bits val);
-#define OS_InPortByte(ioport)			inb(ioport)
-#define OS_InPortWord(ioport)			inw(ioport)
-#define OS_OutPortByte(ioport, val)	outb(ioport, val)
-#define OS_OutPortWord(ioport, val)	outw(ioport, val)
-extern u32bits	OS_InPortLong(u32bits ioport);
-extern void	OS_OutPortLong(u32bits ioport, u32bits val);
+extern u08bits inb(u32bits ioport);
+extern u16bits inw(u32bits ioport);
+extern void outb(u32bits ioport, u08bits val);
+extern void outw(u32bits ioport, u16bits val);
+#define OS_InPortByte(ioport) inb(ioport)
+#define OS_InPortWord(ioport) inw(ioport)
+#define OS_OutPortByte(ioport, val) outb(ioport, val)
+#define OS_OutPortWord(ioport, val) outw(ioport, val)
+extern u32bits OS_InPortLong(u32bits ioport);
+extern void OS_OutPortLong(u32bits ioport, u32bits val);
 #define OS_Lock(x)
 #define OS_UnLock(x)
 #endif
 #if defined(SOLARIS_REAL_MODE)
-extern unsigned char    inb(unsigned long ioport);
-extern unsigned short   inw(unsigned long ioport);
-#define OS_InPortByte(ioport)    inb(ioport)
-#define OS_InPortWord(ioport)    inw(ioport)
+extern unsigned char inb(unsigned long ioport);
+extern unsigned short inw(unsigned long ioport);
+#define OS_InPortByte(ioport) inb(ioport)
+#define OS_InPortWord(ioport) inw(ioport)
 extern void OS_OutPortByte(unsigned long ioport, unsigned char val);
 extern void OS_OutPortWord(unsigned long ioport, unsigned short val);
-extern unsigned long  OS_InPortLong(unsigned long ioport);
-extern void     OS_OutPortLong(unsigned long ioport, unsigned long val);
+extern unsigned long OS_InPortLong(unsigned long ioport);
+extern void OS_OutPortLong(unsigned long ioport, unsigned long val);
 #define OS_Lock(x)
 #define OS_UnLock(x)
 #endif
@@ -286,54 +286,54 @@ typedef void (*CALL_BK_FN)(PSCCB);
 #endif
 #endif
 typedef struct SCCBMgr_info {
-ULONG    si_baseaddr;
-UCHAR    si_present;
-UCHAR    si_intvect;
-UCHAR    si_id;
-UCHAR    si_lun;
-USHORT   si_fw_revision;
-USHORT   si_per_targ_init_sync;
-USHORT   si_per_targ_fast_nego;
-USHORT   si_per_targ_ultra_nego;
-USHORT   si_per_targ_no_disc;
-USHORT   si_per_targ_wide_nego;
-USHORT   si_flags;
-UCHAR    si_card_family;
-UCHAR    si_bustype;
-UCHAR    si_card_model[3];
-UCHAR    si_relative_cardnum;
-UCHAR    si_reserved[4];
-ULONG    si_OS_reserved;
-UCHAR    si_XlatInfo[4];
-ULONG    si_reserved2[5];
-ULONG    si_secondary_range;
+ULONG si_baseaddr;
+UCHAR si_present;
+UCHAR si_intvect;
+UCHAR si_id;
+UCHAR si_lun;
+USHORT si_fw_revision;
+USHORT si_per_targ_init_sync;
+USHORT si_per_targ_fast_nego;
+USHORT si_per_targ_ultra_nego;
+USHORT si_per_targ_no_disc;
+USHORT si_per_targ_wide_nego;
+USHORT si_flags;
+UCHAR si_card_family;
+UCHAR si_bustype;
+UCHAR si_card_model[3];
+UCHAR si_relative_cardnum;
+UCHAR si_reserved[4];
+ULONG si_OS_reserved;
+UCHAR si_XlatInfo[4];
+ULONG si_reserved2[5];
+ULONG si_secondary_range;
 } SCCBMGR_INFO;
 #if defined(DOS)
-typedef SCCBMGR_INFO *      PSCCBMGR_INFO;
+typedef SCCBMGR_INFO * PSCCBMGR_INFO;
 #else
 #if defined (COMPILER_16_BIT)
-typedef SCCBMGR_INFO far *  PSCCBMGR_INFO;
+typedef SCCBMGR_INFO far * PSCCBMGR_INFO;
 #else
-typedef SCCBMGR_INFO *      PSCCBMGR_INFO;
+typedef SCCBMGR_INFO * PSCCBMGR_INFO;
 #endif
 #endif
 #if (FW_TYPE==_SCCB_MGR_)
-#define SCSI_PARITY_ENA		  0x0001
-#define LOW_BYTE_TERM		  0x0010
-#define HIGH_BYTE_TERM		  0x0020
-#define BUSTYPE_PCI	  0x3
+#define SCSI_PARITY_ENA 0x0001
+#define LOW_BYTE_TERM 0x0010
+#define HIGH_BYTE_TERM 0x0020
+#define BUSTYPE_PCI 0x3
 #endif
-#define SUPPORT_16TAR_32LUN	  0x0002
-#define SOFT_RESET		  0x0004
-#define EXTENDED_TRANSLATION	  0x0008
-#define POST_ALL_UNDERRRUNS	  0x0040
-#define FLAG_SCAM_ENABLED	  0x0080
-#define FLAG_SCAM_LEVEL2	  0x0100
-#define HARPOON_FAMILY        0x02
-#define ISA_BUS_CARD          0x01
-#define EISA_BUS_CARD         0x02
-#define PCI_BUS_CARD          0x03
-#define VESA_BUS_CARD         0x04
+#define SUPPORT_16TAR_32LUN 0x0002
+#define SOFT_RESET 0x0004
+#define EXTENDED_TRANSLATION 0x0008
+#define POST_ALL_UNDERRRUNS 0x0040
+#define FLAG_SCAM_ENABLED 0x0080
+#define FLAG_SCAM_LEVEL2 0x0100
+#define HARPOON_FAMILY 0x02
+#define ISA_BUS_CARD 0x01
+#define EISA_BUS_CARD 0x02
+#define PCI_BUS_CARD 0x03
+#define VESA_BUS_CARD 0x04
 #pragma pack(1)
 typedef struct _SCCB {
 UCHAR OperationCode;
@@ -353,101 +353,101 @@ UCHAR Reserved1;
 ULONG Reserved2;
 ULONG SensePointer;
 CALL_BK_FN SccbCallback;
-ULONG  SccbIOPort;
-UCHAR  SccbStatus;
-UCHAR  SCCBRes2;
+ULONG SccbIOPort;
+UCHAR SccbStatus;
+UCHAR SCCBRes2;
 USHORT SccbOSFlags;
-ULONG   Sccb_XferCnt;
-ULONG   Sccb_ATC;
-ULONG   SccbVirtDataPtr;
-ULONG   Sccb_res1;
-USHORT  Sccb_MGRFlags;
-USHORT  Sccb_sgseg;
-UCHAR   Sccb_scsimsg;
-UCHAR   Sccb_tag;
-UCHAR   Sccb_scsistat;
-UCHAR   Sccb_idmsg;
-PSCCB   Sccb_forwardlink;
-PSCCB   Sccb_backlink;
-ULONG   Sccb_savedATC;
-UCHAR   Save_Cdb[6];
-UCHAR   Save_CdbLen;
-UCHAR   Sccb_XferState;
-ULONG   Sccb_SGoffset;
+ULONG Sccb_XferCnt;
+ULONG Sccb_ATC;
+ULONG SccbVirtDataPtr;
+ULONG Sccb_res1;
+USHORT Sccb_MGRFlags;
+USHORT Sccb_sgseg;
+UCHAR Sccb_scsimsg;
+UCHAR Sccb_tag;
+UCHAR Sccb_scsistat;
+UCHAR Sccb_idmsg;
+PSCCB Sccb_forwardlink;
+PSCCB Sccb_backlink;
+ULONG Sccb_savedATC;
+UCHAR Save_Cdb[6];
+UCHAR Save_CdbLen;
+UCHAR Sccb_XferState;
+ULONG Sccb_SGoffset;
 #if (FW_TYPE == _UCB_MGR_)
-PUCB    Sccb_ucb_ptr;
+PUCB Sccb_ucb_ptr;
 #endif
 } SCCB;
 #define SCCB_SIZE sizeof(SCCB)
 #pragma pack()
-#define SCSI_INITIATOR_COMMAND    0x00
-#define TARGET_MODE_COMMAND       0x01
-#define SCATTER_GATHER_COMMAND    0x02
-#define RESIDUAL_COMMAND          0x03
-#define RESIDUAL_SG_COMMAND       0x04
-#define RESET_COMMAND             0x81
-#define F_USE_CMD_Q              0x20
-#define TAG_TYPE_MASK            0xC0
-#define TAG_Q_MASK               0xE0
-#define SCCB_DATA_XFER_OUT       0x10
-#define SCCB_DATA_XFER_IN        0x08
-#define FOURTEEN_BYTES           0x00
-#define NO_AUTO_REQUEST_SENSE    0x01
-#define BUS_FREE_ST     0
-#define SELECT_ST       1
-#define SELECT_BDR_ST   2
-#define SELECT_SN_ST    3
-#define SELECT_WN_ST    4
-#define SELECT_Q_ST     5
-#define COMMAND_ST      6
-#define DATA_OUT_ST     7
-#define DATA_IN_ST      8
-#define DISCONNECT_ST   9
-#define STATUS_ST       10
-#define ABORT_ST        11
-#define MESSAGE_ST      12
-#define F_HOST_XFER_DIR                0x01
-#define F_ALL_XFERRED                  0x02
-#define F_SG_XFER                      0x04
-#define F_AUTO_SENSE                   0x08
-#define F_ODD_BALL_CNT                 0x10
-#define F_NO_DATA_YET                  0x80
-#define F_STATUSLOADED                 0x01
-#define F_MSGLOADED                    0x02
-#define F_DEV_SELECTED                 0x04
-#define SCCB_COMPLETE               0x00
-#define SCCB_DATA_UNDER_RUN         0x0C
-#define SCCB_SELECTION_TIMEOUT      0x11
-#define SCCB_DATA_OVER_RUN          0x12
-#define SCCB_UNEXPECTED_BUS_FREE    0x13
-#define SCCB_PHASE_SEQUENCE_FAIL    0x14
-#define SCCB_INVALID_OP_CODE        0x16
-#define SCCB_INVALID_SCCB           0x1A
-#define SCCB_GROSS_FW_ERR           0x27
-#define SCCB_BM_ERR                 0x30
-#define SCCB_PARITY_ERR             0x34
+#define SCSI_INITIATOR_COMMAND 0x00
+#define TARGET_MODE_COMMAND 0x01
+#define SCATTER_GATHER_COMMAND 0x02
+#define RESIDUAL_COMMAND 0x03
+#define RESIDUAL_SG_COMMAND 0x04
+#define RESET_COMMAND 0x81
+#define F_USE_CMD_Q 0x20
+#define TAG_TYPE_MASK 0xC0
+#define TAG_Q_MASK 0xE0
+#define SCCB_DATA_XFER_OUT 0x10
+#define SCCB_DATA_XFER_IN 0x08
+#define FOURTEEN_BYTES 0x00
+#define NO_AUTO_REQUEST_SENSE 0x01
+#define BUS_FREE_ST 0
+#define SELECT_ST 1
+#define SELECT_BDR_ST 2
+#define SELECT_SN_ST 3
+#define SELECT_WN_ST 4
+#define SELECT_Q_ST 5
+#define COMMAND_ST 6
+#define DATA_OUT_ST 7
+#define DATA_IN_ST 8
+#define DISCONNECT_ST 9
+#define STATUS_ST 10
+#define ABORT_ST 11
+#define MESSAGE_ST 12
+#define F_HOST_XFER_DIR 0x01
+#define F_ALL_XFERRED 0x02
+#define F_SG_XFER 0x04
+#define F_AUTO_SENSE 0x08
+#define F_ODD_BALL_CNT 0x10
+#define F_NO_DATA_YET 0x80
+#define F_STATUSLOADED 0x01
+#define F_MSGLOADED 0x02
+#define F_DEV_SELECTED 0x04
+#define SCCB_COMPLETE 0x00
+#define SCCB_DATA_UNDER_RUN 0x0C
+#define SCCB_SELECTION_TIMEOUT 0x11
+#define SCCB_DATA_OVER_RUN 0x12
+#define SCCB_UNEXPECTED_BUS_FREE 0x13
+#define SCCB_PHASE_SEQUENCE_FAIL 0x14
+#define SCCB_INVALID_OP_CODE 0x16
+#define SCCB_INVALID_SCCB 0x1A
+#define SCCB_GROSS_FW_ERR 0x27
+#define SCCB_BM_ERR 0x30
+#define SCCB_PARITY_ERR 0x34
 #if (FW_TYPE==_UCB_MGR_)
-#define  HBA_AUTO_SENSE_FAIL        0x1B
-#define  HBA_TQ_REJECTED            0x1C
-#define  HBA_UNSUPORTED_MSG         0x1D
-#define  HBA_HW_ERROR               0x20
-#define  HBA_ATN_NOT_RESPONDED      0x21
-#define  HBA_SCSI_RESET_BY_ADAPTER  0x22
-#define  HBA_SCSI_RESET_BY_TARGET   0x23
-#define  HBA_WRONG_CONNECTION       0x24
-#define  HBA_BUS_DEVICE_RESET       0x25
-#define  HBA_ABORT_QUEUE            0x26
+#define HBA_AUTO_SENSE_FAIL 0x1B
+#define HBA_TQ_REJECTED 0x1C
+#define HBA_UNSUPORTED_MSG 0x1D
+#define HBA_HW_ERROR 0x20
+#define HBA_ATN_NOT_RESPONDED 0x21
+#define HBA_SCSI_RESET_BY_ADAPTER 0x22
+#define HBA_SCSI_RESET_BY_TARGET 0x23
+#define HBA_WRONG_CONNECTION 0x24
+#define HBA_BUS_DEVICE_RESET 0x25
+#define HBA_ABORT_QUEUE 0x26
 #else
-#define SCCB_INVALID_DIRECTION      0x18
-#define SCCB_DUPLICATE_SCCB         0x19
-#define SCCB_SCSI_RST               0x35
+#define SCCB_INVALID_DIRECTION 0x18
+#define SCCB_DUPLICATE_SCCB 0x19
+#define SCCB_SCSI_RST 0x35
 #endif
-#define SCCB_IN_PROCESS            0x00
-#define SCCB_SUCCESS               0x01
-#define SCCB_ABORT                 0x02
-#define SCCB_NOT_FOUND             0x03
-#define SCCB_ERROR                 0x04
-#define SCCB_INVALID               0x05
+#define SCCB_IN_PROCESS 0x00
+#define SCCB_SUCCESS 0x01
+#define SCCB_ABORT 0x02
+#define SCCB_NOT_FOUND 0x03
+#define SCCB_ERROR 0x04
+#define SCCB_INVALID 0x05
 #define SCCB_SIZE sizeof(SCCB)
 #if (FW_TYPE == _UCB_MGR_)
 void SccbMgr_start_sccb(CARD_HANDLE pCurrCard, PUCB p_ucb);
@@ -463,158 +463,158 @@ void SccbMgr_save_foreign_state(PADAPTER_INFO pAdapterInfo);
 #endif
 #if (FW_TYPE == _SCCB_MGR_)
 #if defined (DOS)
-int    SccbMgr_sense_adapter(PSCCBMGR_INFO pCardInfo);
+int SccbMgr_sense_adapter(PSCCBMGR_INFO pCardInfo);
 USHORT SccbMgr_config_adapter(PSCCBMGR_INFO pCardInfo);
-void  SccbMgr_start_sccb(USHORT pCurrCard, PSCCB p_SCCB);
-int   SccbMgr_abort_sccb(USHORT pCurrCard, PSCCB p_SCCB);
+void SccbMgr_start_sccb(USHORT pCurrCard, PSCCB p_SCCB);
+int SccbMgr_abort_sccb(USHORT pCurrCard, PSCCB p_SCCB);
 UCHAR SccbMgr_my_int(USHORT pCurrCard);
-int   SccbMgr_isr(USHORT pCurrCard);
-void  SccbMgr_scsi_reset(USHORT pCurrCard);
-void  SccbMgr_timer_expired(USHORT pCurrCard);
+int SccbMgr_isr(USHORT pCurrCard);
+void SccbMgr_scsi_reset(USHORT pCurrCard);
+void SccbMgr_timer_expired(USHORT pCurrCard);
 USHORT SccbMgr_status(USHORT pCurrCard);
 void SccbMgr_unload_card(USHORT pCurrCard);
 #else
-int   SccbMgr_sense_adapter(PSCCBMGR_INFO pCardInfo);
+int SccbMgr_sense_adapter(PSCCBMGR_INFO pCardInfo);
 ULONG SccbMgr_config_adapter(PSCCBMGR_INFO pCardInfo);
-void  SccbMgr_start_sccb(ULONG pCurrCard, PSCCB p_SCCB);
-int   SccbMgr_abort_sccb(ULONG pCurrCard, PSCCB p_SCCB);
+void SccbMgr_start_sccb(ULONG pCurrCard, PSCCB p_SCCB);
+int SccbMgr_abort_sccb(ULONG pCurrCard, PSCCB p_SCCB);
 UCHAR SccbMgr_my_int(ULONG pCurrCard);
-int   SccbMgr_isr(ULONG pCurrCard);
-void  SccbMgr_scsi_reset(ULONG pCurrCard);
-void  SccbMgr_enable_int(ULONG pCurrCard);
-void  SccbMgr_disable_int(ULONG pCurrCard);
-void  SccbMgr_timer_expired(ULONG pCurrCard);
+int SccbMgr_isr(ULONG pCurrCard);
+void SccbMgr_scsi_reset(ULONG pCurrCard);
+void SccbMgr_enable_int(ULONG pCurrCard);
+void SccbMgr_disable_int(ULONG pCurrCard);
+void SccbMgr_timer_expired(ULONG pCurrCard);
 void SccbMgr_unload_card(ULONG pCurrCard);
 #endif
 #endif
 #endif
 #ifndef __blx30_H__
 #define __blx30_H__
-#define  ORION_FW_REV      3110
-#define HARP_REVD    1
+#define ORION_FW_REV 3110
+#define HARP_REVD 1
 #if defined(DOS)
-#define QUEUE_DEPTH     8+1
+#define QUEUE_DEPTH 8+1
 #else
-#define QUEUE_DEPTH     254+1
+#define QUEUE_DEPTH 254+1
 #endif
-#define	MAX_MB_CARDS	4
-#define WIDE_SCSI       1
+#define MAX_MB_CARDS 4
+#define WIDE_SCSI 1
 #if defined(WIDE_SCSI)
 #if defined(DOS)
-#define MAX_SCSI_TAR    16
-#define MAX_LUN         8
-#define LUN_MASK			0x07
+#define MAX_SCSI_TAR 16
+#define MAX_LUN 8
+#define LUN_MASK 0x07
 #else
-#define MAX_SCSI_TAR    16
-#define MAX_LUN         32
-#define LUN_MASK			0x1f
+#define MAX_SCSI_TAR 16
+#define MAX_LUN 32
+#define LUN_MASK 0x1f
 #endif
 #else
-#define MAX_SCSI_TAR    8
-#define MAX_LUN         8
-#define LUN_MASK			0x07
+#define MAX_SCSI_TAR 8
+#define MAX_LUN 8
+#define LUN_MASK 0x07
 #endif
 #if defined(HARP_REVA)
-#define SG_BUF_CNT      15
+#define SG_BUF_CNT 15
 #else
-#define SG_BUF_CNT      16
+#define SG_BUF_CNT 16
 #endif
 #define SG_ELEMENT_SIZE 8
-#define SG_LOCAL_MASK   0x00000000L
+#define SG_LOCAL_MASK 0x00000000L
 #define SG_ELEMENT_MASK 0xFFFFFFFFL
 #if (FW_TYPE == _UCB_MGR_)
-#define OPC_DECODE_NORMAL       0x0f7f
+#define OPC_DECODE_NORMAL 0x0f7f
 #endif
 #if defined(DOS)
-#define RD_HARPOON(ioport)          (OS_InPortByte(ioport))
-#define RDW_HARPOON(ioport)         (OS_InPortWord(ioport))
-#define WR_HARPOON(ioport,val)      (OS_OutPortByte(ioport,val))
-#define WRW_HARPOON(ioport,val)     (OS_OutPortWord(ioport,val))
-#define RD_HARP32(port,offset,data)  asm{db 66h;         \
-push ax;             \
-mov dx,port;         \
-add dx, offset;      \
-db 66h;              \
-in ax,dx;            \
-db 66h;              \
+#define RD_HARPOON(ioport) (OS_InPortByte(ioport))
+#define RDW_HARPOON(ioport) (OS_InPortWord(ioport))
+#define WR_HARPOON(ioport,val) (OS_OutPortByte(ioport,val))
+#define WRW_HARPOON(ioport,val) (OS_OutPortWord(ioport,val))
+#define RD_HARP32(port,offset,data) asm{db 66h; \
+push ax; \
+mov dx,port; \
+add dx, offset; \
+db 66h; \
+in ax,dx; \
+db 66h; \
 mov word ptr data,ax;\
-db 66h;              \
+db 66h; \
 pop ax}
-#define WR_HARP32(port,offset,data) asm{db 66h;          \
-push ax;             \
-mov dx,port;         \
-add dx, offset;      \
-db 66h;              \
+#define WR_HARP32(port,offset,data) asm{db 66h; \
+push ax; \
+mov dx,port; \
+add dx, offset; \
+db 66h; \
 mov ax,word ptr data;\
-db 66h;              \
-out dx,ax;           \
-db 66h;              \
+db 66h; \
+out dx,ax; \
+db 66h; \
 pop ax}
 #endif
-#if defined(NETWARE) || defined(OTHER_32) ||  defined(OTHER_16)
-#define RD_HARPOON(ioport)     OS_InPortByte((unsigned long)ioport)
-#define RDW_HARPOON(ioport)    OS_InPortWord((unsigned long)ioport)
+#if defined(NETWARE) || defined(OTHER_32) || defined(OTHER_16)
+#define RD_HARPOON(ioport) OS_InPortByte((unsigned long)ioport)
+#define RDW_HARPOON(ioport) OS_InPortWord((unsigned long)ioport)
 #define RD_HARP32(ioport,offset,data) (data = OS_InPortLong(ioport + offset))
 #define WR_HARPOON(ioport,val) OS_OutPortByte((ULONG)ioport,(UCHAR) val)
-#define WRW_HARPOON(ioport,val)  OS_OutPortWord((ULONG)ioport,(USHORT)val)
-#define WR_HARP32(ioport,offset,data)  OS_OutPortLong((ioport + offset), data)
+#define WRW_HARPOON(ioport,val) OS_OutPortWord((ULONG)ioport,(USHORT)val)
+#define WR_HARP32(ioport,offset,data) OS_OutPortLong((ioport + offset), data)
 #endif
 #if defined(NT) || defined(WIN95_32) || defined(WIN95_16)
-#define RD_HARPOON(ioport)          OS_InPortByte((ULONG)ioport)
-#define RDW_HARPOON(ioport)         OS_InPortWord((ULONG)ioport)
+#define RD_HARPOON(ioport) OS_InPortByte((ULONG)ioport)
+#define RDW_HARPOON(ioport) OS_InPortWord((ULONG)ioport)
 #define RD_HARP32(ioport,offset,data) (data = OS_InPortLong((ULONG)(ioport + offset)))
-#define WR_HARPOON(ioport,val)      OS_OutPortByte((ULONG)ioport,(UCHAR) val)
-#define WRW_HARPOON(ioport,val)     OS_OutPortWord((ULONG)ioport,(USHORT)val)
-#define WR_HARP32(ioport,offset,data)  OS_OutPortLong((ULONG)(ioport + offset), data)
+#define WR_HARPOON(ioport,val) OS_OutPortByte((ULONG)ioport,(UCHAR) val)
+#define WRW_HARPOON(ioport,val) OS_OutPortWord((ULONG)ioport,(USHORT)val)
+#define WR_HARP32(ioport,offset,data) OS_OutPortLong((ULONG)(ioport + offset), data)
 #endif
 #if defined (UNIX)
-#define RD_HARPOON(ioport)          OS_InPortByte((u32bits)ioport)
-#define RDW_HARPOON(ioport)         OS_InPortWord((u32bits)ioport)
+#define RD_HARPOON(ioport) OS_InPortByte((u32bits)ioport)
+#define RDW_HARPOON(ioport) OS_InPortWord((u32bits)ioport)
 #define RD_HARP32(ioport,offset,data) (data = OS_InPortLong((u32bits)(ioport + offset)))
-#define WR_HARPOON(ioport,val)      OS_OutPortByte((u32bits)ioport,(u08bits) val)
-#define WRW_HARPOON(ioport,val)       OS_OutPortWord((u32bits)ioport,(u16bits)val)
-#define WR_HARP32(ioport,offset,data)  OS_OutPortLong((u32bits)(ioport + offset), data)
+#define WR_HARPOON(ioport,val) OS_OutPortByte((u32bits)ioport,(u08bits) val)
+#define WRW_HARPOON(ioport,val) OS_OutPortWord((u32bits)ioport,(u16bits)val)
+#define WR_HARP32(ioport,offset,data) OS_OutPortLong((u32bits)(ioport + offset), data)
 #endif
 #if defined(OS2)
-#define RD_HARPOON(ioport)          OS_InPortByte((unsigned long)ioport)
-#define RDW_HARPOON(ioport)         OS_InPortWord((unsigned long)ioport)
+#define RD_HARPOON(ioport) OS_InPortByte((unsigned long)ioport)
+#define RDW_HARPOON(ioport) OS_InPortWord((unsigned long)ioport)
 #define RD_HARP32(ioport,offset,data) (data = OS_InPortLong((ULONG)(ioport + offset)))
-#define WR_HARPOON(ioport,val)      OS_OutPortByte((ULONG)ioport,(UCHAR) val)
-#define WRW_HARPOON(ioport,val)       OS_OutPortWord((ULONG)ioport,(USHORT)val)
-#define WR_HARP32(ioport,offset,data)  OS_OutPortLong(((ULONG)(ioport + offset)), data)
+#define WR_HARPOON(ioport,val) OS_OutPortByte((ULONG)ioport,(UCHAR) val)
+#define WRW_HARPOON(ioport,val) OS_OutPortWord((ULONG)ioport,(USHORT)val)
+#define WR_HARP32(ioport,offset,data) OS_OutPortLong(((ULONG)(ioport + offset)), data)
 #endif
 #if defined(SOLARIS_REAL_MODE)
-#define RD_HARPOON(ioport)          OS_InPortByte((unsigned long)ioport)
-#define RDW_HARPOON(ioport)         OS_InPortWord((unsigned long)ioport)
+#define RD_HARPOON(ioport) OS_InPortByte((unsigned long)ioport)
+#define RDW_HARPOON(ioport) OS_InPortWord((unsigned long)ioport)
 #define RD_HARP32(ioport,offset,data) (data = OS_InPortLong((ULONG)(ioport + offset)))
-#define WR_HARPOON(ioport,val)      OS_OutPortByte((ULONG)ioport,(UCHAR) val)
-#define WRW_HARPOON(ioport,val)       OS_OutPortWord((ULONG)ioport,(USHORT)val)
-#define WR_HARP32(ioport,offset,data)  OS_OutPortLong((ULONG)(ioport + offset), (ULONG)data)
+#define WR_HARPOON(ioport,val) OS_OutPortByte((ULONG)ioport,(UCHAR) val)
+#define WRW_HARPOON(ioport,val) OS_OutPortWord((ULONG)ioport,(USHORT)val)
+#define WR_HARP32(ioport,offset,data) OS_OutPortLong((ULONG)(ioport + offset), (ULONG)data)
 #endif
 #endif
 #ifndef __TARGET__
 #define __TARGET__
-#define  TAR_SYNC_MASK     (BIT(7)+BIT(6))
-#define  SYNC_UNKNOWN      0x00
-#define  SYNC_TRYING               BIT(6)
-#define  SYNC_SUPPORTED    (BIT(7)+BIT(6))
-#define  TAR_WIDE_MASK     (BIT(5)+BIT(4))
-#define  WIDE_DISABLED     0x00
-#define  WIDE_ENABLED              BIT(4)
-#define  WIDE_NEGOCIATED   BIT(5)
-#define  TAR_TAG_Q_MASK    (BIT(3)+BIT(2))
-#define  TAG_Q_UNKNOWN     0x00
-#define  TAG_Q_TRYING              BIT(2)
-#define  TAG_Q_REJECT      BIT(3)
-#define  TAG_Q_SUPPORTED   (BIT(3)+BIT(2))
-#define  TAR_ALLOW_DISC    BIT(0)
-#define  EE_SYNC_MASK      (BIT(0)+BIT(1))
-#define  EE_SYNC_ASYNC     0x00
-#define  EE_SYNC_5MB       BIT(0)
-#define  EE_SYNC_10MB      BIT(1)
-#define  EE_SYNC_20MB      (BIT(0)+BIT(1))
-#define  EE_ALLOW_DISC     BIT(6)
-#define  EE_WIDE_SCSI      BIT(7)
+#define TAR_SYNC_MASK (BIT(7)+BIT(6))
+#define SYNC_UNKNOWN 0x00
+#define SYNC_TRYING BIT(6)
+#define SYNC_SUPPORTED (BIT(7)+BIT(6))
+#define TAR_WIDE_MASK (BIT(5)+BIT(4))
+#define WIDE_DISABLED 0x00
+#define WIDE_ENABLED BIT(4)
+#define WIDE_NEGOCIATED BIT(5)
+#define TAR_TAG_Q_MASK (BIT(3)+BIT(2))
+#define TAG_Q_UNKNOWN 0x00
+#define TAG_Q_TRYING BIT(2)
+#define TAG_Q_REJECT BIT(3)
+#define TAG_Q_SUPPORTED (BIT(3)+BIT(2))
+#define TAR_ALLOW_DISC BIT(0)
+#define EE_SYNC_MASK (BIT(0)+BIT(1))
+#define EE_SYNC_ASYNC 0x00
+#define EE_SYNC_5MB BIT(0)
+#define EE_SYNC_10MB BIT(1)
+#define EE_SYNC_20MB (BIT(0)+BIT(1))
+#define EE_ALLOW_DISC BIT(6)
+#define EE_WIDE_SCSI BIT(7)
 #if defined(DOS)
 typedef struct SCCBMgr_tar_info near *PSCCBMgr_tar_info;
 #elif defined(OS2)
@@ -623,32 +623,32 @@ typedef struct SCCBMgr_tar_info far *PSCCBMgr_tar_info;
 typedef struct SCCBMgr_tar_info *PSCCBMgr_tar_info;
 #endif
 typedef struct SCCBMgr_tar_info {
-PSCCB    TarSelQ_Head;
-PSCCB    TarSelQ_Tail;
-UCHAR    TarLUN_CA;
-UCHAR    TarTagQ_Cnt;
-UCHAR    TarSelQ_Cnt;
-UCHAR    TarStatus;
-UCHAR    TarEEValue;
-UCHAR 	TarSyncCtrl;
-UCHAR 	TarReserved[2];
-UCHAR 	LunDiscQ_Idx[MAX_LUN];
-UCHAR    TarLUNBusy[MAX_LUN];
+PSCCB TarSelQ_Head;
+PSCCB TarSelQ_Tail;
+UCHAR TarLUN_CA;
+UCHAR TarTagQ_Cnt;
+UCHAR TarSelQ_Cnt;
+UCHAR TarStatus;
+UCHAR TarEEValue;
+UCHAR TarSyncCtrl;
+UCHAR TarReserved[2];
+UCHAR LunDiscQ_Idx[MAX_LUN];
+UCHAR TarLUNBusy[MAX_LUN];
 } SCCBMGR_TAR_INFO;
 typedef struct NVRAMInfo {
-UCHAR		niModel;
-UCHAR		niCardNo;
+UCHAR niModel;
+UCHAR niCardNo;
 #if defined(DOS)
-USHORT	niBaseAddr;
+USHORT niBaseAddr;
 #else
-ULONG		niBaseAddr;
+ULONG niBaseAddr;
 #endif
-UCHAR		niSysConf;
-UCHAR		niScsiConf;
-UCHAR		niScamConf;
-UCHAR		niAdapId;
-UCHAR		niSyncTbl[MAX_SCSI_TAR / 2];
-UCHAR		niScamTbl[MAX_SCSI_TAR][4];
+UCHAR niSysConf;
+UCHAR niScsiConf;
+UCHAR niScamConf;
+UCHAR niAdapId;
+UCHAR niSyncTbl[MAX_SCSI_TAR / 2];
+UCHAR niScamTbl[MAX_SCSI_TAR][4];
 }NVRAMINFO;
 #if defined(DOS)
 typedef NVRAMINFO near *PNVRamInfo;
@@ -657,10 +657,10 @@ typedef NVRAMINFO far *PNVRamInfo;
 #else
 typedef NVRAMINFO *PNVRamInfo;
 #endif
-#define	MODEL_LT		1
-#define	MODEL_DL		2
-#define	MODEL_LW		3
-#define	MODEL_DW		4
+#define MODEL_LT 1
+#define MODEL_DL 2
+#define MODEL_LW 3
+#define MODEL_DW 4
 typedef struct SCCBcard {
 PSCCB currentSCCB;
 #if (FW_TYPE==_SCCB_MGR_)
@@ -674,8 +674,8 @@ USHORT ioPort;
 ULONG ioPort;
 #endif
 USHORT cmdCounter;
-UCHAR  discQCount;
-UCHAR  tagQ_Lst;
+UCHAR discQCount;
+UCHAR tagQ_Lst;
 UCHAR cardIndex;
 UCHAR scanIndex;
 UCHAR globalFlags;
@@ -690,649 +690,649 @@ typedef struct SCCBcard far *PSCCBcard;
 #else
 typedef struct SCCBcard *PSCCBcard;
 #endif
-#define F_TAG_STARTED		0x01
-#define F_CONLUN_IO			0x02
-#define F_DO_RENEGO			0x04
-#define F_NO_FILTER			0x08
-#define F_GREEN_PC			0x10
-#define F_HOST_XFER_ACT		0x20
-#define F_NEW_SCCB_CMD		0x40
-#define F_UPDATE_EEPROM		0x80
-#define  ID_STRING_LENGTH  32
-#define  TYPE_CODE0        0x63
-#define  TYPE_CODE1        00
-#define  SLV_TYPE_CODE0    0xA3
-#define  ASSIGN_ID   0x00
-#define  SET_P_FLAG  0x01
-#define  CFG_CMPLT   0x03
-#define  DOM_MSTR    0x0F
-#define  SYNC_PTRN   0x1F
-#define  ID_0_7      0x18
-#define  ID_8_F      0x11
-#define  ID_10_17    0x12
-#define  ID_18_1F    0x0B
-#define  MISC_CODE   0x14
-#define  CLR_P_FLAG  0x18
-#define  LOCATE_ON   0x12
-#define  LOCATE_OFF  0x0B
-#define  LVL_1_MST   0x00
-#define  LVL_2_MST   0x40
-#define  DOM_LVL_2   0xC0
-#define  INIT_SELTD  0x01
-#define  LEVEL2_TAR  0x02
+#define F_TAG_STARTED 0x01
+#define F_CONLUN_IO 0x02
+#define F_DO_RENEGO 0x04
+#define F_NO_FILTER 0x08
+#define F_GREEN_PC 0x10
+#define F_HOST_XFER_ACT 0x20
+#define F_NEW_SCCB_CMD 0x40
+#define F_UPDATE_EEPROM 0x80
+#define ID_STRING_LENGTH 32
+#define TYPE_CODE0 0x63
+#define TYPE_CODE1 00
+#define SLV_TYPE_CODE0 0xA3
+#define ASSIGN_ID 0x00
+#define SET_P_FLAG 0x01
+#define CFG_CMPLT 0x03
+#define DOM_MSTR 0x0F
+#define SYNC_PTRN 0x1F
+#define ID_0_7 0x18
+#define ID_8_F 0x11
+#define ID_10_17 0x12
+#define ID_18_1F 0x0B
+#define MISC_CODE 0x14
+#define CLR_P_FLAG 0x18
+#define LOCATE_ON 0x12
+#define LOCATE_OFF 0x0B
+#define LVL_1_MST 0x00
+#define LVL_2_MST 0x40
+#define DOM_LVL_2 0xC0
+#define INIT_SELTD 0x01
+#define LEVEL2_TAR 0x02
 enum scam_id_st { ID0,ID1,ID2,ID3,ID4,ID5,ID6,ID7,ID8,ID9,ID10,ID11,ID12,
 ID13,ID14,ID15,ID_UNUSED,ID_UNASSIGNED,ID_ASSIGNED,LEGACY,
 CLR_PRIORITY,NO_ID_AVAIL };
 typedef struct SCCBscam_info {
-UCHAR    id_string[ID_STRING_LENGTH];
+UCHAR id_string[ID_STRING_LENGTH];
 enum scam_id_st state;
 } SCCBSCAM_INFO, *PSCCBSCAM_INFO;
 #endif
 #ifndef __SCSI_H__
 #define __SCSI_H__
-#define  SCSI_TEST_UNIT_READY    0x00
-#define  SCSI_REZERO_UNIT        0x01
-#define  SCSI_REQUEST_SENSE      0x03
-#define  SCSI_FORMAT_UNIT        0x04
-#define  SCSI_REASSIGN           0x07
-#define  SCSI_READ               0x08
-#define  SCSI_WRITE              0x0A
-#define  SCSI_SEEK               0x0B
-#define  SCSI_INQUIRY            0x12
-#define  SCSI_MODE_SELECT        0x15
-#define  SCSI_RESERVE_UNIT       0x16
-#define  SCSI_RELEASE_UNIT       0x17
-#define  SCSI_MODE_SENSE         0x1A
-#define  SCSI_START_STOP_UNIT    0x1B
-#define  SCSI_SEND_DIAGNOSTIC    0x1D
-#define  SCSI_READ_CAPACITY      0x25
-#define  SCSI_READ_EXTENDED      0x28
-#define  SCSI_WRITE_EXTENDED     0x2A
-#define  SCSI_SEEK_EXTENDED      0x2B
-#define  SCSI_WRITE_AND_VERIFY   0x2E
-#define  SCSI_VERIFY             0x2F
-#define  SCSI_READ_DEFECT_DATA   0x37
-#define  SCSI_WRITE_BUFFER       0x3B
-#define  SCSI_READ_BUFFER        0x3C
-#define  SCSI_RECV_DIAGNOSTIC    0x1C
-#define  SCSI_READ_LONG          0x3E
-#define  SCSI_WRITE_LONG         0x3F
-#define  SCSI_LAST_SCSI_CMND     SCSI_WRITE_LONG
-#define  SCSI_INVALID_CMND       0xFF
-#define  SSGOOD                  0x00
-#define  SSCHECK                 0x02
-#define  SSCOND_MET              0x04
-#define  SSBUSY                  0x08
-#define  SSRESERVATION_CONFLICT  0x18
-#define  SSCMD_TERM              0x22
-#define  SSQ_FULL                0x28
-#define  SKNO_SEN                0x00
-#define  SKRECOV_ERR             0x01
-#define  SKNOT_RDY               0x02
-#define  SKMED_ERR               0x03
-#define  SKHW_ERR                0x04
-#define  SKILL_REQ               0x05
-#define  SKUNIT_ATTN             0x06
-#define  SKDATA_PROTECT          0x07
-#define  SKBLNK_CHK              0x08
-#define  SKCPY_ABORT             0x0A
-#define  SKABORT_CMD             0x0B
-#define  SKEQUAL                 0x0C
-#define  SKVOL_OVF               0x0D
-#define  SKMIS_CMP               0x0E
-#define  SMCMD_COMP              0x00
-#define  SMEXT                   0x01
-#define  SMSAVE_DATA_PTR         0x02
-#define  SMREST_DATA_PTR         0x03
-#define  SMDISC                  0x04
-#define  SMINIT_DETEC_ERR        0x05
-#define  SMABORT                 0x06
-#define  SMREJECT                0x07
-#define  SMNO_OP                 0x08
-#define  SMPARITY                0x09
-#define  SMDEV_RESET             0x0C
-#define	SMABORT_TAG					0x0D
-#define	SMINIT_RECOVERY			0x0F
-#define	SMREL_RECOVERY				0x10
-#define  SMIDENT                 0x80
-#define  DISC_PRIV               0x40
-#define  SMSYNC                  0x01
-#define  SM10MBS                 0x19
-#define  SM5MBS                  0x32
-#define  SMOFFSET                0x0F
-#define  SMWDTR                  0x03
-#define  SM8BIT                  0x00
-#define  SM16BIT                 0x01
-#define  SM32BIT                 0x02
-#define  SMIGNORWR               0x23
-#define  ARBITRATION_DELAY       0x01
-#define  BUS_SETTLE_DELAY        0x01
-#define  BUS_CLEAR_DELAY         0x01
-#define  SPHASE_TO               0x0A
-#define  SCMD_TO                 0x0F
-#define  SIX_BYTE_CMD            0x06
-#define  TEN_BYTE_CMD            0x0A
-#define  TWELVE_BYTE_CMD         0x0C
-#define  ASYNC                   0x00
-#define  PERI25NS                0x06
-#define  SYNC10MBS               0x19
-#define  SYNC5MBS                0x32
-#define  MAX_OFFSET              0x0F
+#define SCSI_TEST_UNIT_READY 0x00
+#define SCSI_REZERO_UNIT 0x01
+#define SCSI_REQUEST_SENSE 0x03
+#define SCSI_FORMAT_UNIT 0x04
+#define SCSI_REASSIGN 0x07
+#define SCSI_READ 0x08
+#define SCSI_WRITE 0x0A
+#define SCSI_SEEK 0x0B
+#define SCSI_INQUIRY 0x12
+#define SCSI_MODE_SELECT 0x15
+#define SCSI_RESERVE_UNIT 0x16
+#define SCSI_RELEASE_UNIT 0x17
+#define SCSI_MODE_SENSE 0x1A
+#define SCSI_START_STOP_UNIT 0x1B
+#define SCSI_SEND_DIAGNOSTIC 0x1D
+#define SCSI_READ_CAPACITY 0x25
+#define SCSI_READ_EXTENDED 0x28
+#define SCSI_WRITE_EXTENDED 0x2A
+#define SCSI_SEEK_EXTENDED 0x2B
+#define SCSI_WRITE_AND_VERIFY 0x2E
+#define SCSI_VERIFY 0x2F
+#define SCSI_READ_DEFECT_DATA 0x37
+#define SCSI_WRITE_BUFFER 0x3B
+#define SCSI_READ_BUFFER 0x3C
+#define SCSI_RECV_DIAGNOSTIC 0x1C
+#define SCSI_READ_LONG 0x3E
+#define SCSI_WRITE_LONG 0x3F
+#define SCSI_LAST_SCSI_CMND SCSI_WRITE_LONG
+#define SCSI_INVALID_CMND 0xFF
+#define SSGOOD 0x00
+#define SSCHECK 0x02
+#define SSCOND_MET 0x04
+#define SSBUSY 0x08
+#define SSRESERVATION_CONFLICT 0x18
+#define SSCMD_TERM 0x22
+#define SSQ_FULL 0x28
+#define SKNO_SEN 0x00
+#define SKRECOV_ERR 0x01
+#define SKNOT_RDY 0x02
+#define SKMED_ERR 0x03
+#define SKHW_ERR 0x04
+#define SKILL_REQ 0x05
+#define SKUNIT_ATTN 0x06
+#define SKDATA_PROTECT 0x07
+#define SKBLNK_CHK 0x08
+#define SKCPY_ABORT 0x0A
+#define SKABORT_CMD 0x0B
+#define SKEQUAL 0x0C
+#define SKVOL_OVF 0x0D
+#define SKMIS_CMP 0x0E
+#define SMCMD_COMP 0x00
+#define SMEXT 0x01
+#define SMSAVE_DATA_PTR 0x02
+#define SMREST_DATA_PTR 0x03
+#define SMDISC 0x04
+#define SMINIT_DETEC_ERR 0x05
+#define SMABORT 0x06
+#define SMREJECT 0x07
+#define SMNO_OP 0x08
+#define SMPARITY 0x09
+#define SMDEV_RESET 0x0C
+#define SMABORT_TAG 0x0D
+#define SMINIT_RECOVERY 0x0F
+#define SMREL_RECOVERY 0x10
+#define SMIDENT 0x80
+#define DISC_PRIV 0x40
+#define SMSYNC 0x01
+#define SM10MBS 0x19
+#define SM5MBS 0x32
+#define SMOFFSET 0x0F
+#define SMWDTR 0x03
+#define SM8BIT 0x00
+#define SM16BIT 0x01
+#define SM32BIT 0x02
+#define SMIGNORWR 0x23
+#define ARBITRATION_DELAY 0x01
+#define BUS_SETTLE_DELAY 0x01
+#define BUS_CLEAR_DELAY 0x01
+#define SPHASE_TO 0x0A
+#define SCMD_TO 0x0F
+#define SIX_BYTE_CMD 0x06
+#define TEN_BYTE_CMD 0x0A
+#define TWELVE_BYTE_CMD 0x0C
+#define ASYNC 0x00
+#define PERI25NS 0x06
+#define SYNC10MBS 0x19
+#define SYNC5MBS 0x32
+#define MAX_OFFSET 0x0F
 #endif
 #ifndef __EEPROM__
 #define __EEPROM__
-#define  EEPROM_WD_CNT     256
-#define  EEPROM_CHECK_SUM  0
-#define  FW_SIGNATURE      2
-#define  MODEL_NUMB_0      4
-#define  MODEL_NUMB_1      5
-#define  MODEL_NUMB_2      6
-#define  MODEL_NUMB_3      7
-#define  MODEL_NUMB_4      8
-#define  MODEL_NUMB_5      9
-#define  IO_BASE_ADDR      10
-#define  IRQ_NUMBER        12
-#define  PCI_INT_PIN       13
-#define  BUS_DELAY         14
-#define  SYSTEM_CONFIG     16
-#define  SCSI_CONFIG       17
-#define  BIOS_CONFIG       18
-#define  SPIN_UP_DELAY     19
-#define  SCAM_CONFIG       20
-#define  ADAPTER_SCSI_ID   24
-#define  IGNORE_B_SCAN     32
-#define  SEND_START_ENA    34
-#define  DEVICE_ENABLE     36
-#define  SYNC_RATE_TBL     38
-#define  SYNC_RATE_TBL01   38
-#define  SYNC_RATE_TBL23   40
-#define  SYNC_RATE_TBL45   42
-#define  SYNC_RATE_TBL67   44
-#define  SYNC_RATE_TBL89   46
-#define  SYNC_RATE_TBLab   48
-#define  SYNC_RATE_TBLcd   50
-#define  SYNC_RATE_TBLef   52
-#define  EE_SCAMBASE      256
-#define  DOM_MASTER     (BIT(0) + BIT(1))
-#define  SCAM_ENABLED   BIT(2)
-#define  SCAM_LEVEL2    BIT(3)
-#define	RENEGO_ENA		BITW(10)
-#define	CONNIO_ENA		BITW(11)
-#define  GREEN_PC_ENA   BITW(12)
-#define  AUTO_RATE_00   00
-#define  AUTO_RATE_05   01
-#define  AUTO_RATE_10   02
-#define  AUTO_RATE_20   03
-#define  WIDE_NEGO_BIT     BIT(7)
-#define  DISC_ENABLE_BIT   BIT(6)
+#define EEPROM_WD_CNT 256
+#define EEPROM_CHECK_SUM 0
+#define FW_SIGNATURE 2
+#define MODEL_NUMB_0 4
+#define MODEL_NUMB_1 5
+#define MODEL_NUMB_2 6
+#define MODEL_NUMB_3 7
+#define MODEL_NUMB_4 8
+#define MODEL_NUMB_5 9
+#define IO_BASE_ADDR 10
+#define IRQ_NUMBER 12
+#define PCI_INT_PIN 13
+#define BUS_DELAY 14
+#define SYSTEM_CONFIG 16
+#define SCSI_CONFIG 17
+#define BIOS_CONFIG 18
+#define SPIN_UP_DELAY 19
+#define SCAM_CONFIG 20
+#define ADAPTER_SCSI_ID 24
+#define IGNORE_B_SCAN 32
+#define SEND_START_ENA 34
+#define DEVICE_ENABLE 36
+#define SYNC_RATE_TBL 38
+#define SYNC_RATE_TBL01 38
+#define SYNC_RATE_TBL23 40
+#define SYNC_RATE_TBL45 42
+#define SYNC_RATE_TBL67 44
+#define SYNC_RATE_TBL89 46
+#define SYNC_RATE_TBLab 48
+#define SYNC_RATE_TBLcd 50
+#define SYNC_RATE_TBLef 52
+#define EE_SCAMBASE 256
+#define DOM_MASTER (BIT(0) + BIT(1))
+#define SCAM_ENABLED BIT(2)
+#define SCAM_LEVEL2 BIT(3)
+#define RENEGO_ENA BITW(10)
+#define CONNIO_ENA BITW(11)
+#define GREEN_PC_ENA BITW(12)
+#define AUTO_RATE_00 00
+#define AUTO_RATE_05 01
+#define AUTO_RATE_10 02
+#define AUTO_RATE_20 03
+#define WIDE_NEGO_BIT BIT(7)
+#define DISC_ENABLE_BIT BIT(6)
 #endif
 #ifndef __HARPOON__
 #define __HARPOON__
-#define  hp_vendor_id_0       0x00
-#define  ORION_VEND_0   0x4B
-#define  hp_vendor_id_1       0x01
-#define  ORION_VEND_1   0x10
-#define  hp_device_id_0       0x02
-#define  ORION_DEV_0    0x30
-#define  hp_device_id_1       0x03
-#define  ORION_DEV_1    0x81
-#define  hp_sub_vendor_id_0   0x04
-#define  hp_sub_vendor_id_1   0x05
-#define  hp_sub_device_id_0   0x06
-#define  hp_sub_device_id_1   0x07
-#define  hp_dual_addr_lo      0x08
-#define  hp_dual_addr_lmi     0x09
-#define  hp_dual_addr_hmi     0x0A
-#define  hp_dual_addr_hi      0x0B
-#define  hp_semaphore         0x0C
-#define SCCB_MGR_ACTIVE    BIT(0)
-#define TICKLE_ME          BIT(1)
-#define SCCB_MGR_PRESENT   BIT(3)
-#define BIOS_IN_USE        BIT(4)
-#define  hp_user_defined_D    0x0D
-#define  hp_reserved_E        0x0E
-#define  hp_sys_ctrl          0x0F
-#define  STOP_CLK          BIT(0)
-#define  DRVR_RST          BIT(1)
-#define  HALT_MACH         BIT(3)
-#define  HARD_ABORT        BIT(4)
-#define  DIAG_MODE         BIT(5)
-#define  BM_ABORT_TMOUT    0x50
-#define  hp_sys_cfg           0x10
-#define  DONT_RST_FIFO     BIT(7)
-#define  hp_host_ctrl0        0x11
-#define  DUAL_ADDR_MODE    BIT(0)
-#define  IO_MEM_SPACE      BIT(1)
-#define  RESOURCE_LOCK     BIT(2)
-#define  IGNOR_ACCESS_ERR  BIT(3)
-#define  HOST_INT_EDGE     BIT(4)
-#define  SIX_CLOCKS        BIT(5)
-#define  DMA_EVEN_PARITY   BIT(6)
-#define  hp_reserved_12       0x12
-#define  hp_host_blk_cnt      0x13
-#define  XFER_BLK1         0x00
-#define  XFER_BLK2         0x01
-#define  XFER_BLK4         0x02
-#define  XFER_BLK8         0x03
-#define  XFER_BLK16        0x04
-#define  XFER_BLK32        0x05
-#define  XFER_BLK64        0x06
-#define  BM_THRESHOLD      0x40
-#define  hp_reserved_14       0x14
-#define  hp_reserved_15       0x15
-#define  hp_reserved_16       0x16
-#define  hp_int_mask          0x17
-#define  INT_CMD_COMPL     BIT(0)
-#define  INT_EXT_STATUS    BIT(1)
-#define  INT_SCSI          BIT(2)
-#define  INT_FIFO_RDY      BIT(4)
-#define  hp_xfer_cnt_lo       0x18
-#define  hp_xfer_cnt_mi       0x19
-#define  hp_xfer_cnt_hi       0x1A
-#define  hp_xfer_cmd          0x1B
-#define  XFER_HOST_DMA     0x00
-#define  XFER_DMA_HOST     0x01
-#define  XFER_HOST_MPU     0x02
-#define  XFER_MPU_HOST     0x03
-#define  XFER_DMA_MPU      0x04
-#define  XFER_MPU_DMA      0x05
-#define  SET_SEMAPHORE     0x06
-#define  XFER_NOP          0x07
-#define  XFER_MB_MPU       0x06
-#define  XFER_MB_DMA       0x07
-#define  XFER_HOST_AUTO    0x00
-#define  XFER_HOST_8BIT    0x08
-#define  XFER_HOST_16BIT   0x10
-#define  XFER_HOST_32BIT   0x18
-#define  XFER_DMA_8BIT     0x20
-#define  XFER_DMA_16BIT    0x40
-#define  DISABLE_INT       BIT(7)
-#define  HOST_WRT_CMD      ((DISABLE_INT + XFER_HOST_DMA + XFER_HOST_AUTO + XFER_DMA_8BIT))
-#define  HOST_RD_CMD       ((DISABLE_INT + XFER_DMA_HOST + XFER_HOST_AUTO + XFER_DMA_8BIT))
-#define  WIDE_HOST_WRT_CMD ((DISABLE_INT + XFER_HOST_DMA + XFER_HOST_AUTO + XFER_DMA_16BIT))
-#define  WIDE_HOST_RD_CMD  ((DISABLE_INT + XFER_DMA_HOST + XFER_HOST_AUTO + XFER_DMA_16BIT))
-#define  hp_host_addr_lo      0x1C
-#define  hp_host_addr_lmi     0x1D
-#define  hp_host_addr_hmi     0x1E
-#define  hp_host_addr_hi      0x1F
-#define  hp_pio_data          0x20
-#define  hp_reserved_21       0x21
-#define  hp_ee_ctrl           0x22
-#define  EXT_ARB_ACK       BIT(7)
-#define  SCSI_TERM_ENA_H   BIT(6)
-#define  SEE_MS            BIT(5)
-#define  SEE_CS            BIT(3)
-#define  SEE_CLK           BIT(2)
-#define  SEE_DO            BIT(1)
-#define  SEE_DI            BIT(0)
-#define  EE_READ           0x06
-#define  EE_WRITE          0x05
-#define  EWEN              0x04
-#define  EWEN_ADDR         0x03C0
-#define  EWDS              0x04
-#define  EWDS_ADDR         0x0000
-#define  hp_brdctl            0x23
-#define  DAT_7             BIT(7)
-#define  DAT_6             BIT(6)
-#define  DAT_5             BIT(5)
-#define  BRD_STB           BIT(4)
-#define  BRD_CS            BIT(3)
-#define  BRD_WR            BIT(2)
-#define  hp_reserved_24       0x24
-#define  hp_reserved_25       0x25
-#define  hp_bm_ctrl           0x26
-#define  SCSI_TERM_ENA_L   BIT(0)
-#define  FLUSH_XFER_CNTR   BIT(1)
-#define  BM_XFER_MIN_8     BIT(2)
-#define  BIOS_ENA          BIT(3)
-#define  FORCE1_XFER       BIT(5)
-#define  FAST_SINGLE       BIT(6)
-#define  BMCTRL_DEFAULT    (FORCE1_XFER|FAST_SINGLE|SCSI_TERM_ENA_L)
-#define  hp_reserved_27       0x27
-#define  hp_sg_addr           0x28
-#define  hp_page_ctrl         0x29
-#define  SCATTER_EN        BIT(0)
-#define  SGRAM_ARAM        BIT(1)
-#define  BIOS_SHADOW       BIT(2)
-#define  G_INT_DISABLE     BIT(3)
-#define  NARROW_SCSI_CARD  BIT(4)
-#define  hp_reserved_2A       0x2A
-#define  hp_pci_cmd_cfg       0x2B
-#define  IO_SPACE_ENA      BIT(0)
-#define  MEM_SPACE_ENA     BIT(1)
-#define  BUS_MSTR_ENA      BIT(2)
-#define  MEM_WI_ENA        BIT(4)
-#define  PAR_ERR_RESP      BIT(6)
-#define  hp_reserved_2C       0x2C
-#define  hp_pci_stat_cfg      0x2D
-#define  DATA_PARITY_ERR   BIT(0)
-#define  REC_TARGET_ABORT  BIT(4)
-#define  REC_MASTER_ABORT  BIT(5)
-#define  SIG_SYSTEM_ERR    BIT(6)
-#define  DETECTED_PAR_ERR  BIT(7)
-#define  hp_reserved_2E       0x2E
-#define  hp_sys_status        0x2F
-#define  SLV_DATA_RDY      BIT(0)
-#define  XFER_CNT_ZERO     BIT(1)
-#define  BM_FIFO_EMPTY     BIT(2)
-#define  BM_FIFO_FULL      BIT(3)
-#define  HOST_OP_DONE      BIT(4)
-#define  DMA_OP_DONE       BIT(5)
-#define  SLV_OP_DONE       BIT(6)
-#define  PWR_ON_FLAG       BIT(7)
-#define  hp_reserved_30       0x30
-#define  hp_host_status0      0x31
-#define  HOST_TERM         BIT(5)
-#define  HOST_TRSHLD       BIT(6)
-#define  CONNECTED_2_HOST  BIT(7)
-#define  hp_reserved_32       0x32
-#define  hp_rev_num           0x33
-#define  REV_A_CONST       0x0E
-#define  REV_B_CONST       0x0E
-#define  hp_stack_data        0x34
-#define  hp_stack_addr        0x35
-#define  hp_ext_status        0x36
-#define  BM_FORCE_OFF      BIT(0)
-#define  PCI_TGT_ABORT     BIT(0)
-#define  PCI_DEV_TMOUT     BIT(1)
-#define  FIFO_TC_NOT_ZERO  BIT(2)
-#define  CHIP_RST_OCCUR    BIT(3)
-#define  CMD_ABORTED       BIT(4)
-#define  BM_PARITY_ERR     BIT(5)
-#define  PIO_OVERRUN       BIT(6)
-#define  BM_CMD_BUSY       BIT(7)
-#define  BAD_EXT_STATUS    (BM_FORCE_OFF | PCI_DEV_TMOUT | CMD_ABORTED | \
+#define hp_vendor_id_0 0x00
+#define ORION_VEND_0 0x4B
+#define hp_vendor_id_1 0x01
+#define ORION_VEND_1 0x10
+#define hp_device_id_0 0x02
+#define ORION_DEV_0 0x30
+#define hp_device_id_1 0x03
+#define ORION_DEV_1 0x81
+#define hp_sub_vendor_id_0 0x04
+#define hp_sub_vendor_id_1 0x05
+#define hp_sub_device_id_0 0x06
+#define hp_sub_device_id_1 0x07
+#define hp_dual_addr_lo 0x08
+#define hp_dual_addr_lmi 0x09
+#define hp_dual_addr_hmi 0x0A
+#define hp_dual_addr_hi 0x0B
+#define hp_semaphore 0x0C
+#define SCCB_MGR_ACTIVE BIT(0)
+#define TICKLE_ME BIT(1)
+#define SCCB_MGR_PRESENT BIT(3)
+#define BIOS_IN_USE BIT(4)
+#define hp_user_defined_D 0x0D
+#define hp_reserved_E 0x0E
+#define hp_sys_ctrl 0x0F
+#define STOP_CLK BIT(0)
+#define DRVR_RST BIT(1)
+#define HALT_MACH BIT(3)
+#define HARD_ABORT BIT(4)
+#define DIAG_MODE BIT(5)
+#define BM_ABORT_TMOUT 0x50
+#define hp_sys_cfg 0x10
+#define DONT_RST_FIFO BIT(7)
+#define hp_host_ctrl0 0x11
+#define DUAL_ADDR_MODE BIT(0)
+#define IO_MEM_SPACE BIT(1)
+#define RESOURCE_LOCK BIT(2)
+#define IGNOR_ACCESS_ERR BIT(3)
+#define HOST_INT_EDGE BIT(4)
+#define SIX_CLOCKS BIT(5)
+#define DMA_EVEN_PARITY BIT(6)
+#define hp_reserved_12 0x12
+#define hp_host_blk_cnt 0x13
+#define XFER_BLK1 0x00
+#define XFER_BLK2 0x01
+#define XFER_BLK4 0x02
+#define XFER_BLK8 0x03
+#define XFER_BLK16 0x04
+#define XFER_BLK32 0x05
+#define XFER_BLK64 0x06
+#define BM_THRESHOLD 0x40
+#define hp_reserved_14 0x14
+#define hp_reserved_15 0x15
+#define hp_reserved_16 0x16
+#define hp_int_mask 0x17
+#define INT_CMD_COMPL BIT(0)
+#define INT_EXT_STATUS BIT(1)
+#define INT_SCSI BIT(2)
+#define INT_FIFO_RDY BIT(4)
+#define hp_xfer_cnt_lo 0x18
+#define hp_xfer_cnt_mi 0x19
+#define hp_xfer_cnt_hi 0x1A
+#define hp_xfer_cmd 0x1B
+#define XFER_HOST_DMA 0x00
+#define XFER_DMA_HOST 0x01
+#define XFER_HOST_MPU 0x02
+#define XFER_MPU_HOST 0x03
+#define XFER_DMA_MPU 0x04
+#define XFER_MPU_DMA 0x05
+#define SET_SEMAPHORE 0x06
+#define XFER_NOP 0x07
+#define XFER_MB_MPU 0x06
+#define XFER_MB_DMA 0x07
+#define XFER_HOST_AUTO 0x00
+#define XFER_HOST_8BIT 0x08
+#define XFER_HOST_16BIT 0x10
+#define XFER_HOST_32BIT 0x18
+#define XFER_DMA_8BIT 0x20
+#define XFER_DMA_16BIT 0x40
+#define DISABLE_INT BIT(7)
+#define HOST_WRT_CMD ((DISABLE_INT + XFER_HOST_DMA + XFER_HOST_AUTO + XFER_DMA_8BIT))
+#define HOST_RD_CMD ((DISABLE_INT + XFER_DMA_HOST + XFER_HOST_AUTO + XFER_DMA_8BIT))
+#define WIDE_HOST_WRT_CMD ((DISABLE_INT + XFER_HOST_DMA + XFER_HOST_AUTO + XFER_DMA_16BIT))
+#define WIDE_HOST_RD_CMD ((DISABLE_INT + XFER_DMA_HOST + XFER_HOST_AUTO + XFER_DMA_16BIT))
+#define hp_host_addr_lo 0x1C
+#define hp_host_addr_lmi 0x1D
+#define hp_host_addr_hmi 0x1E
+#define hp_host_addr_hi 0x1F
+#define hp_pio_data 0x20
+#define hp_reserved_21 0x21
+#define hp_ee_ctrl 0x22
+#define EXT_ARB_ACK BIT(7)
+#define SCSI_TERM_ENA_H BIT(6)
+#define SEE_MS BIT(5)
+#define SEE_CS BIT(3)
+#define SEE_CLK BIT(2)
+#define SEE_DO BIT(1)
+#define SEE_DI BIT(0)
+#define EE_READ 0x06
+#define EE_WRITE 0x05
+#define EWEN 0x04
+#define EWEN_ADDR 0x03C0
+#define EWDS 0x04
+#define EWDS_ADDR 0x0000
+#define hp_brdctl 0x23
+#define DAT_7 BIT(7)
+#define DAT_6 BIT(6)
+#define DAT_5 BIT(5)
+#define BRD_STB BIT(4)
+#define BRD_CS BIT(3)
+#define BRD_WR BIT(2)
+#define hp_reserved_24 0x24
+#define hp_reserved_25 0x25
+#define hp_bm_ctrl 0x26
+#define SCSI_TERM_ENA_L BIT(0)
+#define FLUSH_XFER_CNTR BIT(1)
+#define BM_XFER_MIN_8 BIT(2)
+#define BIOS_ENA BIT(3)
+#define FORCE1_XFER BIT(5)
+#define FAST_SINGLE BIT(6)
+#define BMCTRL_DEFAULT (FORCE1_XFER|FAST_SINGLE|SCSI_TERM_ENA_L)
+#define hp_reserved_27 0x27
+#define hp_sg_addr 0x28
+#define hp_page_ctrl 0x29
+#define SCATTER_EN BIT(0)
+#define SGRAM_ARAM BIT(1)
+#define BIOS_SHADOW BIT(2)
+#define G_INT_DISABLE BIT(3)
+#define NARROW_SCSI_CARD BIT(4)
+#define hp_reserved_2A 0x2A
+#define hp_pci_cmd_cfg 0x2B
+#define IO_SPACE_ENA BIT(0)
+#define MEM_SPACE_ENA BIT(1)
+#define BUS_MSTR_ENA BIT(2)
+#define MEM_WI_ENA BIT(4)
+#define PAR_ERR_RESP BIT(6)
+#define hp_reserved_2C 0x2C
+#define hp_pci_stat_cfg 0x2D
+#define DATA_PARITY_ERR BIT(0)
+#define REC_TARGET_ABORT BIT(4)
+#define REC_MASTER_ABORT BIT(5)
+#define SIG_SYSTEM_ERR BIT(6)
+#define DETECTED_PAR_ERR BIT(7)
+#define hp_reserved_2E 0x2E
+#define hp_sys_status 0x2F
+#define SLV_DATA_RDY BIT(0)
+#define XFER_CNT_ZERO BIT(1)
+#define BM_FIFO_EMPTY BIT(2)
+#define BM_FIFO_FULL BIT(3)
+#define HOST_OP_DONE BIT(4)
+#define DMA_OP_DONE BIT(5)
+#define SLV_OP_DONE BIT(6)
+#define PWR_ON_FLAG BIT(7)
+#define hp_reserved_30 0x30
+#define hp_host_status0 0x31
+#define HOST_TERM BIT(5)
+#define HOST_TRSHLD BIT(6)
+#define CONNECTED_2_HOST BIT(7)
+#define hp_reserved_32 0x32
+#define hp_rev_num 0x33
+#define REV_A_CONST 0x0E
+#define REV_B_CONST 0x0E
+#define hp_stack_data 0x34
+#define hp_stack_addr 0x35
+#define hp_ext_status 0x36
+#define BM_FORCE_OFF BIT(0)
+#define PCI_TGT_ABORT BIT(0)
+#define PCI_DEV_TMOUT BIT(1)
+#define FIFO_TC_NOT_ZERO BIT(2)
+#define CHIP_RST_OCCUR BIT(3)
+#define CMD_ABORTED BIT(4)
+#define BM_PARITY_ERR BIT(5)
+#define PIO_OVERRUN BIT(6)
+#define BM_CMD_BUSY BIT(7)
+#define BAD_EXT_STATUS (BM_FORCE_OFF | PCI_DEV_TMOUT | CMD_ABORTED | \
 BM_PARITY_ERR | PIO_OVERRUN)
-#define  hp_int_status        0x37
-#define  BM_CMD_CMPL       BIT(0)
-#define  EXT_STATUS_ON     BIT(1)
-#define  SCSI_INTERRUPT    BIT(2)
-#define  BM_FIFO_RDY       BIT(4)
-#define  INT_ASSERTED      BIT(5)
-#define  SRAM_BUSY         BIT(6)
-#define  CMD_REG_BUSY      BIT(7)
-#define  hp_fifo_cnt          0x38
-#define  hp_curr_host_cnt     0x39
-#define  hp_reserved_3A       0x3A
-#define  hp_fifo_in_addr      0x3B
-#define  hp_fifo_out_addr     0x3C
-#define  hp_reserved_3D       0x3D
-#define  hp_reserved_3E       0x3E
-#define  hp_reserved_3F       0x3F
+#define hp_int_status 0x37
+#define BM_CMD_CMPL BIT(0)
+#define EXT_STATUS_ON BIT(1)
+#define SCSI_INTERRUPT BIT(2)
+#define BM_FIFO_RDY BIT(4)
+#define INT_ASSERTED BIT(5)
+#define SRAM_BUSY BIT(6)
+#define CMD_REG_BUSY BIT(7)
+#define hp_fifo_cnt 0x38
+#define hp_curr_host_cnt 0x39
+#define hp_reserved_3A 0x3A
+#define hp_fifo_in_addr 0x3B
+#define hp_fifo_out_addr 0x3C
+#define hp_reserved_3D 0x3D
+#define hp_reserved_3E 0x3E
+#define hp_reserved_3F 0x3F
 extern USHORT default_intena;
-#define  hp_intena		 0x40
-#define  RESET		 BITW(7)
-#define  PROG_HLT		 BITW(6)
-#define  PARITY		 BITW(5)
-#define  FIFO		 BITW(4)
-#define  SEL		 BITW(3)
-#define  SCAM_SEL		 BITW(2)
-#define  RSEL		 BITW(1)
-#define  TIMEOUT		 BITW(0)
-#define  BUS_FREE		 BITW(15)
-#define  XFER_CNT_0	 BITW(14)
-#define  PHASE		 BITW(13)
-#define  IUNKWN		 BITW(12)
-#define  ICMD_COMP	 BITW(11)
-#define  ITICKLE		 BITW(10)
-#define  IDO_STRT		 BITW(9)
-#define  ITAR_DISC	 BITW(8)
-#define  AUTO_INT		 (BITW(12)+BITW(11)+BITW(10)+BITW(9)+BITW(8))
-#define  CLR_ALL_INT	 0xFFFF
-#define  CLR_ALL_INT_1	 0xFF00
-#define  hp_intstat		 0x42
-#define  hp_scsisig           0x44
-#define  SCSI_SEL          BIT(7)
-#define  SCSI_BSY          BIT(6)
-#define  SCSI_REQ          BIT(5)
-#define  SCSI_ACK          BIT(4)
-#define  SCSI_ATN          BIT(3)
-#define  SCSI_CD           BIT(2)
-#define  SCSI_MSG          BIT(1)
-#define  SCSI_IOBIT        BIT(0)
-#define  S_SCSI_PHZ        (BIT(2)+BIT(1)+BIT(0))
-#define  S_CMD_PH          (BIT(2)              )
-#define  S_MSGO_PH         (BIT(2)+BIT(1)       )
-#define  S_STAT_PH         (BIT(2)       +BIT(0))
-#define  S_MSGI_PH         (BIT(2)+BIT(1)+BIT(0))
-#define  S_DATAI_PH        (              BIT(0))
-#define  S_DATAO_PH        0x00
-#define  S_ILL_PH          (       BIT(1)       )
-#define  hp_scsictrl_0        0x45
-#define  NO_ARB            BIT(7)
-#define  SEL_TAR           BIT(6)
-#define  ENA_ATN           BIT(4)
-#define  ENA_RESEL         BIT(2)
-#define  SCSI_RST          BIT(1)
-#define  ENA_SCAM_SEL      BIT(0)
-#define  hp_portctrl_0        0x46
-#define  SCSI_PORT         BIT(7)
-#define  SCSI_INBIT        BIT(6)
-#define  DMA_PORT          BIT(5)
-#define  DMA_RD            BIT(4)
-#define  HOST_PORT         BIT(3)
-#define  HOST_WRT          BIT(2)
-#define  SCSI_BUS_EN       BIT(1)
-#define  START_TO          BIT(0)
-#define  hp_scsireset         0x47
-#define  SCSI_TAR          BIT(7)
-#define  SCSI_INI          BIT(6)
-#define  SCAM_EN           BIT(5)
-#define  ACK_HOLD          BIT(4)
-#define  DMA_RESET         BIT(3)
-#define  HPSCSI_RESET      BIT(2)
-#define  PROG_RESET        BIT(1)
-#define  FIFO_CLR          BIT(0)
-#define  hp_xfercnt_0         0x48
-#define  hp_xfercnt_1         0x49
-#define  hp_xfercnt_2         0x4A
-#define  hp_xfercnt_3         0x4B
-#define  hp_fifodata_0        0x4C
-#define  hp_fifodata_1        0x4D
-#define  hp_addstat           0x4E
-#define  SCAM_TIMER        BIT(7)
-#define  AUTO_RUNNING      BIT(6)
-#define  FAST_SYNC         BIT(5)
-#define  SCSI_MODE8        BIT(3)
-#define  SCSI_PAR_ERR      BIT(0)
-#define  hp_prgmcnt_0         0x4F
-#define  AUTO_PC_MASK      0x3F
-#define  hp_selfid_0          0x50
-#define  hp_selfid_1          0x51
-#define  hp_arb_id            0x52
-#define  ARB_ID            (BIT(3) + BIT(2) + BIT(1) + BIT(0))
-#define  hp_select_id         0x53
-#define  RESEL_ID          (BIT(7) + BIT(6) + BIT(5) + BIT(4))
-#define  SELECT_ID         (BIT(3) + BIT(2) + BIT(1) + BIT(0))
-#define  hp_synctarg_base     0x54
-#define  hp_synctarg_12       0x54
-#define  hp_synctarg_13       0x55
-#define  hp_synctarg_14       0x56
-#define  hp_synctarg_15       0x57
-#define  hp_synctarg_8        0x58
-#define  hp_synctarg_9        0x59
-#define  hp_synctarg_10       0x5A
-#define  hp_synctarg_11       0x5B
-#define  hp_synctarg_4        0x5C
-#define  hp_synctarg_5        0x5D
-#define  hp_synctarg_6        0x5E
-#define  hp_synctarg_7        0x5F
-#define  hp_synctarg_0        0x60
-#define  hp_synctarg_1        0x61
-#define  hp_synctarg_2        0x62
-#define  hp_synctarg_3        0x63
-#define  RATE_20MB         0x00
-#define  RATE_10MB         (              BIT(5))
-#define  RATE_6_6MB        (       BIT(6)       )
-#define  RATE_5MB          (       BIT(6)+BIT(5))
-#define  RATE_4MB          (BIT(7)              )
-#define  RATE_3_33MB       (BIT(7)       +BIT(5))
-#define  RATE_2_85MB       (BIT(7)+BIT(6)       )
-#define  RATE_2_5MB        (BIT(7)+BIT(5)+BIT(6))
-#define  NEXT_CLK          BIT(5)
-#define  SLOWEST_SYNC      (BIT(7)+BIT(6)+BIT(5))
-#define  NARROW_SCSI       BIT(4)
-#define  SYNC_OFFSET       (BIT(3) + BIT(2) + BIT(1) + BIT(0))
-#define  DEFAULT_ASYNC     0x00
-#define  DEFAULT_OFFSET    0x0F
-#define  hp_autostart_0       0x64
-#define  hp_autostart_1       0x65
-#define  hp_autostart_2       0x66
-#define  hp_autostart_3       0x67
-#define  DISABLE  0x00
-#define  AUTO_IMMED    BIT(5)
-#define  SELECT   BIT(6)
-#define  RESELECT (BIT(6)+BIT(5))
-#define  BUSFREE  BIT(7)
-#define  XFER_0   (BIT(7)+BIT(5))
-#define  END_DATA (BIT(7)+BIT(6))
-#define  MSG_PHZ  (BIT(7)+BIT(6)+BIT(5))
-#define  hp_gp_reg_0          0x68
-#define  hp_gp_reg_1          0x69
-#define  hp_gp_reg_2          0x6A
-#define  hp_gp_reg_3          0x6B
-#define  hp_seltimeout        0x6C
-#define  TO_2ms            0x54
-#define  TO_4ms            0x67
-#define  TO_5ms            0x03
-#define  TO_10ms           0x07
-#define  TO_250ms          0x99
-#define  TO_290ms          0xB1
-#define  TO_350ms          0xD6
-#define  TO_417ms          0xFF
-#define  hp_clkctrl_0         0x6D
-#define  PWR_DWN           BIT(6)
-#define  ACTdeassert       BIT(4)
-#define  ATNonErr          BIT(3)
-#define  CLK_30MHZ         BIT(1)
-#define  CLK_40MHZ         (BIT(1) + BIT(0))
-#define  CLK_50MHZ         BIT(2)
-#define  CLKCTRL_DEFAULT   (ACTdeassert | CLK_40MHZ)
-#define  hp_fiforead          0x6E
-#define  hp_fifowrite         0x6F
-#define  hp_offsetctr         0x70
-#define  hp_xferstat          0x71
-#define  FIFO_FULL         BIT(7)
-#define  FIFO_EMPTY        BIT(6)
-#define  FIFO_MASK         0x3F
-#define  FIFO_LEN          0x20
-#define  hp_portctrl_1        0x72
-#define  EVEN_HOST_P       BIT(5)
-#define  INVT_SCSI         BIT(4)
-#define  CHK_SCSI_P        BIT(3)
-#define  HOST_MODE8        BIT(0)
-#define  HOST_MODE16       0x00
-#define  hp_xfer_pad          0x73
-#define  ID_UNLOCK         BIT(3)
-#define  XFER_PAD          BIT(2)
-#define  hp_scsidata_0        0x74
-#define  hp_scsidata_1        0x75
-#define  hp_timer_0           0x76
-#define  hp_timer_1           0x77
-#define  hp_reserved_78       0x78
-#define  hp_reserved_79       0x79
-#define  hp_reserved_7A       0x7A
-#define  hp_reserved_7B       0x7B
-#define  hp_reserved_7C       0x7C
-#define  hp_reserved_7D       0x7D
-#define  hp_reserved_7E       0x7E
-#define  hp_reserved_7F       0x7F
-#define  hp_aramBase          0x80
-#define  BIOS_DATA_OFFSET     0x60
-#define  BIOS_RELATIVE_CARD   0x64
-#define  AUTO_LEN 0x80
-#define  AR0      0x00
-#define  AR1      BITW(8)
-#define  AR2      BITW(9)
-#define  AR3      (BITW(9) + BITW(8))
-#define  SDATA    BITW(10)
-#define  NOP_OP   0x00
-#define  CRD_OP   BITW(11)
-#define  CRR_OP   BITW(12)
-#define  CBE_OP   (BITW(14)+BITW(12)+BITW(11))
-#define  CBN_OP   (BITW(14)+BITW(13))
-#define  CPE_OP   (BITW(14)+BITW(11))
-#define  CPN_OP   (BITW(14)+BITW(12))
-#define  ADATA_OUT   0x00
-#define  ADATA_IN    BITW(8)
-#define  ACOMMAND    BITW(10)
-#define  ASTATUS     (BITW(10)+BITW(8))
-#define  AMSG_OUT    (BITW(10)+BITW(9))
-#define  AMSG_IN     (BITW(10)+BITW(9)+BITW(8))
-#define  AILLEGAL    (BITW(9)+BITW(8))
-#define  BRH_OP   BITW(13)
-#define  ALWAYS   0x00
-#define  EQUAL    BITW(8)
-#define  NOT_EQ   BITW(9)
-#define  TCB_OP   (BITW(13)+BITW(11))
-#define  ATN_SET     BITW(8)
-#define  ATN_RESET   BITW(9)
-#define  XFER_CNT    (BITW(9)+BITW(8))
-#define  FIFO_0      BITW(10)
-#define  FIFO_NOT0   (BITW(10)+BITW(8))
-#define  T_USE_SYNC0 (BITW(10)+BITW(9))
-#define  MPM_OP   BITW(15)
-#define  MDR_OP   (BITW(12)+BITW(11))
-#define  MRR_OP   BITW(14)
-#define  S_IDREG  (BIT(2)+BIT(1)+BIT(0))
-#define  D_AR0    0x00
-#define  D_AR1    BIT(0)
-#define  D_AR2    BIT(1)
-#define  D_AR3    (BIT(1) + BIT(0))
-#define  D_SDATA  BIT(2)
-#define  D_BUCKET (BIT(2) + BIT(1) + BIT(0))
-#define  ADR_OP   (BITW(13)+BITW(12))
-#define  ADS_OP   (BITW(14)+BITW(13)+BITW(12))
-#define  ODR_OP   (BITW(13)+BITW(12)+BITW(11))
-#define  ODS_OP   (BITW(14)+BITW(13)+BITW(12)+BITW(11))
-#define  STR_OP   (BITW(15)+BITW(14))
-#define  AINT_ENA1   0x00
-#define  AINT_STAT1  BITW(8)
-#define  ASCSI_SIG   BITW(9)
-#define  ASCSI_CNTL  (BITW(9)+BITW(8))
-#define  APORT_CNTL  BITW(10)
-#define  ARST_CNTL   (BITW(10)+BITW(8))
-#define  AXFERCNT0   (BITW(10)+BITW(9))
-#define  AXFERCNT1   (BITW(10)+BITW(9)+BITW(8))
-#define  AXFERCNT2   BITW(11)
-#define  AFIFO_DATA  (BITW(11)+BITW(8))
-#define  ASCSISELID  (BITW(11)+BITW(9))
-#define  ASCSISYNC0  (BITW(11)+BITW(9)+BITW(8))
-#define  RAT_OP      (BITW(14)+BITW(13)+BITW(11))
-#define  SSI_OP      (BITW(15)+BITW(11))
-#define  SSI_ITAR_DISC	(ITAR_DISC >> 8)
-#define  SSI_IDO_STRT	(IDO_STRT >> 8)
-#define  SSI_IDI_STRT	(IDO_STRT >> 8)
-#define  SSI_ICMD_COMP	(ICMD_COMP >> 8)
-#define  SSI_ITICKLE	(ITICKLE >> 8)
-#define  SSI_IUNKWN	(IUNKWN >> 8)
-#define  SSI_INO_CC	(IUNKWN >> 8)
-#define  SSI_IRFAIL	(IUNKWN >> 8)
-#define  NP    0x10
-#define  NTCMD 0x02
-#define  CMDPZ 0x04
-#define  DINT  0x12
-#define  DI    0x13
-#define  MI    0x14
-#define  DC    0x19
-#define  ST    0x1D
-#define  UNKNWN 0x24
-#define  CC    0x25
-#define  TICK  0x26
-#define  RFAIL 0x27
-#define  SELCHK 0x28
-#define  ID_MSG_STRT    hp_aramBase + 0x00
-#define  NON_TAG_ID_MSG hp_aramBase + 0x06
-#define  CMD_STRT       hp_aramBase + 0x08
-#define  SYNC_MSGS      hp_aramBase + 0x08
-#define  TAG_STRT          0x00
-#define  SELECTION_START   0x00
-#define  DISCONNECT_START  0x10/2
-#define  END_DATA_START    0x14/2
-#define  NONTAG_STRT       0x02/2
-#define  CMD_ONLY_STRT     CMDPZ/2
-#define  TICKLE_STRT     TICK/2
-#define  SELCHK_STRT     SELCHK/2
+#define hp_intena 0x40
+#define RESET BITW(7)
+#define PROG_HLT BITW(6)
+#define PARITY BITW(5)
+#define FIFO BITW(4)
+#define SEL BITW(3)
+#define SCAM_SEL BITW(2)
+#define RSEL BITW(1)
+#define TIMEOUT BITW(0)
+#define BUS_FREE BITW(15)
+#define XFER_CNT_0 BITW(14)
+#define PHASE BITW(13)
+#define IUNKWN BITW(12)
+#define ICMD_COMP BITW(11)
+#define ITICKLE BITW(10)
+#define IDO_STRT BITW(9)
+#define ITAR_DISC BITW(8)
+#define AUTO_INT (BITW(12)+BITW(11)+BITW(10)+BITW(9)+BITW(8))
+#define CLR_ALL_INT 0xFFFF
+#define CLR_ALL_INT_1 0xFF00
+#define hp_intstat 0x42
+#define hp_scsisig 0x44
+#define SCSI_SEL BIT(7)
+#define SCSI_BSY BIT(6)
+#define SCSI_REQ BIT(5)
+#define SCSI_ACK BIT(4)
+#define SCSI_ATN BIT(3)
+#define SCSI_CD BIT(2)
+#define SCSI_MSG BIT(1)
+#define SCSI_IOBIT BIT(0)
+#define S_SCSI_PHZ (BIT(2)+BIT(1)+BIT(0))
+#define S_CMD_PH (BIT(2) )
+#define S_MSGO_PH (BIT(2)+BIT(1) )
+#define S_STAT_PH (BIT(2) +BIT(0))
+#define S_MSGI_PH (BIT(2)+BIT(1)+BIT(0))
+#define S_DATAI_PH ( BIT(0))
+#define S_DATAO_PH 0x00
+#define S_ILL_PH ( BIT(1) )
+#define hp_scsictrl_0 0x45
+#define NO_ARB BIT(7)
+#define SEL_TAR BIT(6)
+#define ENA_ATN BIT(4)
+#define ENA_RESEL BIT(2)
+#define SCSI_RST BIT(1)
+#define ENA_SCAM_SEL BIT(0)
+#define hp_portctrl_0 0x46
+#define SCSI_PORT BIT(7)
+#define SCSI_INBIT BIT(6)
+#define DMA_PORT BIT(5)
+#define DMA_RD BIT(4)
+#define HOST_PORT BIT(3)
+#define HOST_WRT BIT(2)
+#define SCSI_BUS_EN BIT(1)
+#define START_TO BIT(0)
+#define hp_scsireset 0x47
+#define SCSI_TAR BIT(7)
+#define SCSI_INI BIT(6)
+#define SCAM_EN BIT(5)
+#define ACK_HOLD BIT(4)
+#define DMA_RESET BIT(3)
+#define HPSCSI_RESET BIT(2)
+#define PROG_RESET BIT(1)
+#define FIFO_CLR BIT(0)
+#define hp_xfercnt_0 0x48
+#define hp_xfercnt_1 0x49
+#define hp_xfercnt_2 0x4A
+#define hp_xfercnt_3 0x4B
+#define hp_fifodata_0 0x4C
+#define hp_fifodata_1 0x4D
+#define hp_addstat 0x4E
+#define SCAM_TIMER BIT(7)
+#define AUTO_RUNNING BIT(6)
+#define FAST_SYNC BIT(5)
+#define SCSI_MODE8 BIT(3)
+#define SCSI_PAR_ERR BIT(0)
+#define hp_prgmcnt_0 0x4F
+#define AUTO_PC_MASK 0x3F
+#define hp_selfid_0 0x50
+#define hp_selfid_1 0x51
+#define hp_arb_id 0x52
+#define ARB_ID (BIT(3) + BIT(2) + BIT(1) + BIT(0))
+#define hp_select_id 0x53
+#define RESEL_ID (BIT(7) + BIT(6) + BIT(5) + BIT(4))
+#define SELECT_ID (BIT(3) + BIT(2) + BIT(1) + BIT(0))
+#define hp_synctarg_base 0x54
+#define hp_synctarg_12 0x54
+#define hp_synctarg_13 0x55
+#define hp_synctarg_14 0x56
+#define hp_synctarg_15 0x57
+#define hp_synctarg_8 0x58
+#define hp_synctarg_9 0x59
+#define hp_synctarg_10 0x5A
+#define hp_synctarg_11 0x5B
+#define hp_synctarg_4 0x5C
+#define hp_synctarg_5 0x5D
+#define hp_synctarg_6 0x5E
+#define hp_synctarg_7 0x5F
+#define hp_synctarg_0 0x60
+#define hp_synctarg_1 0x61
+#define hp_synctarg_2 0x62
+#define hp_synctarg_3 0x63
+#define RATE_20MB 0x00
+#define RATE_10MB ( BIT(5))
+#define RATE_6_6MB ( BIT(6) )
+#define RATE_5MB ( BIT(6)+BIT(5))
+#define RATE_4MB (BIT(7) )
+#define RATE_3_33MB (BIT(7) +BIT(5))
+#define RATE_2_85MB (BIT(7)+BIT(6) )
+#define RATE_2_5MB (BIT(7)+BIT(5)+BIT(6))
+#define NEXT_CLK BIT(5)
+#define SLOWEST_SYNC (BIT(7)+BIT(6)+BIT(5))
+#define NARROW_SCSI BIT(4)
+#define SYNC_OFFSET (BIT(3) + BIT(2) + BIT(1) + BIT(0))
+#define DEFAULT_ASYNC 0x00
+#define DEFAULT_OFFSET 0x0F
+#define hp_autostart_0 0x64
+#define hp_autostart_1 0x65
+#define hp_autostart_2 0x66
+#define hp_autostart_3 0x67
+#define DISABLE 0x00
+#define AUTO_IMMED BIT(5)
+#define SELECT BIT(6)
+#define RESELECT (BIT(6)+BIT(5))
+#define BUSFREE BIT(7)
+#define XFER_0 (BIT(7)+BIT(5))
+#define END_DATA (BIT(7)+BIT(6))
+#define MSG_PHZ (BIT(7)+BIT(6)+BIT(5))
+#define hp_gp_reg_0 0x68
+#define hp_gp_reg_1 0x69
+#define hp_gp_reg_2 0x6A
+#define hp_gp_reg_3 0x6B
+#define hp_seltimeout 0x6C
+#define TO_2ms 0x54
+#define TO_4ms 0x67
+#define TO_5ms 0x03
+#define TO_10ms 0x07
+#define TO_250ms 0x99
+#define TO_290ms 0xB1
+#define TO_350ms 0xD6
+#define TO_417ms 0xFF
+#define hp_clkctrl_0 0x6D
+#define PWR_DWN BIT(6)
+#define ACTdeassert BIT(4)
+#define ATNonErr BIT(3)
+#define CLK_30MHZ BIT(1)
+#define CLK_40MHZ (BIT(1) + BIT(0))
+#define CLK_50MHZ BIT(2)
+#define CLKCTRL_DEFAULT (ACTdeassert | CLK_40MHZ)
+#define hp_fiforead 0x6E
+#define hp_fifowrite 0x6F
+#define hp_offsetctr 0x70
+#define hp_xferstat 0x71
+#define FIFO_FULL BIT(7)
+#define FIFO_EMPTY BIT(6)
+#define FIFO_MASK 0x3F
+#define FIFO_LEN 0x20
+#define hp_portctrl_1 0x72
+#define EVEN_HOST_P BIT(5)
+#define INVT_SCSI BIT(4)
+#define CHK_SCSI_P BIT(3)
+#define HOST_MODE8 BIT(0)
+#define HOST_MODE16 0x00
+#define hp_xfer_pad 0x73
+#define ID_UNLOCK BIT(3)
+#define XFER_PAD BIT(2)
+#define hp_scsidata_0 0x74
+#define hp_scsidata_1 0x75
+#define hp_timer_0 0x76
+#define hp_timer_1 0x77
+#define hp_reserved_78 0x78
+#define hp_reserved_79 0x79
+#define hp_reserved_7A 0x7A
+#define hp_reserved_7B 0x7B
+#define hp_reserved_7C 0x7C
+#define hp_reserved_7D 0x7D
+#define hp_reserved_7E 0x7E
+#define hp_reserved_7F 0x7F
+#define hp_aramBase 0x80
+#define BIOS_DATA_OFFSET 0x60
+#define BIOS_RELATIVE_CARD 0x64
+#define AUTO_LEN 0x80
+#define AR0 0x00
+#define AR1 BITW(8)
+#define AR2 BITW(9)
+#define AR3 (BITW(9) + BITW(8))
+#define SDATA BITW(10)
+#define NOP_OP 0x00
+#define CRD_OP BITW(11)
+#define CRR_OP BITW(12)
+#define CBE_OP (BITW(14)+BITW(12)+BITW(11))
+#define CBN_OP (BITW(14)+BITW(13))
+#define CPE_OP (BITW(14)+BITW(11))
+#define CPN_OP (BITW(14)+BITW(12))
+#define ADATA_OUT 0x00
+#define ADATA_IN BITW(8)
+#define ACOMMAND BITW(10)
+#define ASTATUS (BITW(10)+BITW(8))
+#define AMSG_OUT (BITW(10)+BITW(9))
+#define AMSG_IN (BITW(10)+BITW(9)+BITW(8))
+#define AILLEGAL (BITW(9)+BITW(8))
+#define BRH_OP BITW(13)
+#define ALWAYS 0x00
+#define EQUAL BITW(8)
+#define NOT_EQ BITW(9)
+#define TCB_OP (BITW(13)+BITW(11))
+#define ATN_SET BITW(8)
+#define ATN_RESET BITW(9)
+#define XFER_CNT (BITW(9)+BITW(8))
+#define FIFO_0 BITW(10)
+#define FIFO_NOT0 (BITW(10)+BITW(8))
+#define T_USE_SYNC0 (BITW(10)+BITW(9))
+#define MPM_OP BITW(15)
+#define MDR_OP (BITW(12)+BITW(11))
+#define MRR_OP BITW(14)
+#define S_IDREG (BIT(2)+BIT(1)+BIT(0))
+#define D_AR0 0x00
+#define D_AR1 BIT(0)
+#define D_AR2 BIT(1)
+#define D_AR3 (BIT(1) + BIT(0))
+#define D_SDATA BIT(2)
+#define D_BUCKET (BIT(2) + BIT(1) + BIT(0))
+#define ADR_OP (BITW(13)+BITW(12))
+#define ADS_OP (BITW(14)+BITW(13)+BITW(12))
+#define ODR_OP (BITW(13)+BITW(12)+BITW(11))
+#define ODS_OP (BITW(14)+BITW(13)+BITW(12)+BITW(11))
+#define STR_OP (BITW(15)+BITW(14))
+#define AINT_ENA1 0x00
+#define AINT_STAT1 BITW(8)
+#define ASCSI_SIG BITW(9)
+#define ASCSI_CNTL (BITW(9)+BITW(8))
+#define APORT_CNTL BITW(10)
+#define ARST_CNTL (BITW(10)+BITW(8))
+#define AXFERCNT0 (BITW(10)+BITW(9))
+#define AXFERCNT1 (BITW(10)+BITW(9)+BITW(8))
+#define AXFERCNT2 BITW(11)
+#define AFIFO_DATA (BITW(11)+BITW(8))
+#define ASCSISELID (BITW(11)+BITW(9))
+#define ASCSISYNC0 (BITW(11)+BITW(9)+BITW(8))
+#define RAT_OP (BITW(14)+BITW(13)+BITW(11))
+#define SSI_OP (BITW(15)+BITW(11))
+#define SSI_ITAR_DISC (ITAR_DISC >> 8)
+#define SSI_IDO_STRT (IDO_STRT >> 8)
+#define SSI_IDI_STRT (IDO_STRT >> 8)
+#define SSI_ICMD_COMP (ICMD_COMP >> 8)
+#define SSI_ITICKLE (ITICKLE >> 8)
+#define SSI_IUNKWN (IUNKWN >> 8)
+#define SSI_INO_CC (IUNKWN >> 8)
+#define SSI_IRFAIL (IUNKWN >> 8)
+#define NP 0x10
+#define NTCMD 0x02
+#define CMDPZ 0x04
+#define DINT 0x12
+#define DI 0x13
+#define MI 0x14
+#define DC 0x19
+#define ST 0x1D
+#define UNKNWN 0x24
+#define CC 0x25
+#define TICK 0x26
+#define RFAIL 0x27
+#define SELCHK 0x28
+#define ID_MSG_STRT hp_aramBase + 0x00
+#define NON_TAG_ID_MSG hp_aramBase + 0x06
+#define CMD_STRT hp_aramBase + 0x08
+#define SYNC_MSGS hp_aramBase + 0x08
+#define TAG_STRT 0x00
+#define SELECTION_START 0x00
+#define DISCONNECT_START 0x10/2
+#define END_DATA_START 0x14/2
+#define NONTAG_STRT 0x02/2
+#define CMD_ONLY_STRT CMDPZ/2
+#define TICKLE_STRT TICK/2
+#define SELCHK_STRT SELCHK/2
 #define mEEPROM_CLK_DELAY(port) (RD_HARPOON(port+hp_intstat_1))
 #define mWAIT_10MS(port) (RD_HARPOON(port+hp_intstat_1))
 #define CLR_XFER_CNT(port) (WR_HARPOON(port+hp_xfercnt_0, 0x00))
@@ -1381,214 +1381,214 @@ void UpdateCheckSum(u32bits baseport);
 #endif
 #if defined(DOS)
 UCHAR sfm(USHORT port, PSCCB pcurrSCCB);
-void  scsiStartAuto(USHORT port);
+void scsiStartAuto(USHORT port);
 UCHAR sisyncn(USHORT port, UCHAR p_card, UCHAR syncFlag);
-void  ssel(USHORT port, UCHAR p_card);
-void  sres(USHORT port, UCHAR p_card, PSCCBcard pCurrCard);
-void  sdecm(UCHAR message, USHORT port, UCHAR p_card);
-void  shandem(USHORT port, UCHAR p_card,PSCCB pCurrSCCB);
-void  stsyncn(USHORT port, UCHAR p_card);
-void  sisyncr(USHORT port,UCHAR sync_pulse, UCHAR offset);
-void  sssyncv(USHORT p_port, UCHAR p_id, UCHAR p_sync_value, PSCCBMgr_tar_info currTar_Info);
-void  sresb(USHORT port, UCHAR p_card);
-void  sxfrp(USHORT p_port, UCHAR p_card);
-void  schkdd(USHORT port, UCHAR p_card);
+void ssel(USHORT port, UCHAR p_card);
+void sres(USHORT port, UCHAR p_card, PSCCBcard pCurrCard);
+void sdecm(UCHAR message, USHORT port, UCHAR p_card);
+void shandem(USHORT port, UCHAR p_card,PSCCB pCurrSCCB);
+void stsyncn(USHORT port, UCHAR p_card);
+void sisyncr(USHORT port,UCHAR sync_pulse, UCHAR offset);
+void sssyncv(USHORT p_port, UCHAR p_id, UCHAR p_sync_value, PSCCBMgr_tar_info currTar_Info);
+void sresb(USHORT port, UCHAR p_card);
+void sxfrp(USHORT p_port, UCHAR p_card);
+void schkdd(USHORT port, UCHAR p_card);
 UCHAR RdStack(USHORT port, UCHAR index);
-void  WrStack(USHORT portBase, UCHAR index, UCHAR data);
+void WrStack(USHORT portBase, UCHAR index, UCHAR data);
 UCHAR ChkIfChipInitialized(USHORT ioPort);
 #if defined(V302)
 UCHAR GetTarLun(USHORT port, UCHAR p_card, UCHAR our_target, PSCCBcard pCurrCard, PUCHAR tag, PUCHAR lun);
 #endif
 void SendMsg(USHORT port, UCHAR message);
-void  queueFlushTargSccb(UCHAR p_card, UCHAR thisTarg, UCHAR error_code);
+void queueFlushTargSccb(UCHAR p_card, UCHAR thisTarg, UCHAR error_code);
 UCHAR scsellDOS(USHORT p_port, UCHAR targ_id);
 #else
 UCHAR sfm(ULONG port, PSCCB pcurrSCCB);
-void  scsiStartAuto(ULONG port);
+void scsiStartAuto(ULONG port);
 UCHAR sisyncn(ULONG port, UCHAR p_card, UCHAR syncFlag);
-void  ssel(ULONG port, UCHAR p_card);
-void  sres(ULONG port, UCHAR p_card, PSCCBcard pCurrCard);
-void  sdecm(UCHAR message, ULONG port, UCHAR p_card);
-void  shandem(ULONG port, UCHAR p_card,PSCCB pCurrSCCB);
-void  stsyncn(ULONG port, UCHAR p_card);
-void  sisyncr(ULONG port,UCHAR sync_pulse, UCHAR offset);
-void  sssyncv(ULONG p_port, UCHAR p_id, UCHAR p_sync_value, PSCCBMgr_tar_info currTar_Info);
-void  sresb(ULONG port, UCHAR p_card);
-void  sxfrp(ULONG p_port, UCHAR p_card);
-void  schkdd(ULONG port, UCHAR p_card);
+void ssel(ULONG port, UCHAR p_card);
+void sres(ULONG port, UCHAR p_card, PSCCBcard pCurrCard);
+void sdecm(UCHAR message, ULONG port, UCHAR p_card);
+void shandem(ULONG port, UCHAR p_card,PSCCB pCurrSCCB);
+void stsyncn(ULONG port, UCHAR p_card);
+void sisyncr(ULONG port,UCHAR sync_pulse, UCHAR offset);
+void sssyncv(ULONG p_port, UCHAR p_id, UCHAR p_sync_value, PSCCBMgr_tar_info currTar_Info);
+void sresb(ULONG port, UCHAR p_card);
+void sxfrp(ULONG p_port, UCHAR p_card);
+void schkdd(ULONG port, UCHAR p_card);
 UCHAR RdStack(ULONG port, UCHAR index);
-void  WrStack(ULONG portBase, UCHAR index, UCHAR data);
+void WrStack(ULONG portBase, UCHAR index, UCHAR data);
 UCHAR ChkIfChipInitialized(ULONG ioPort);
 #if defined(V302)
 UCHAR GetTarLun(ULONG port, UCHAR p_card, UCHAR our_target, PSCCBcard pCurrCard, PUCHAR tar, PUCHAR lun);
 #endif
 void SendMsg(ULONG port, UCHAR message);
-void  queueFlushTargSccb(UCHAR p_card, UCHAR thisTarg, UCHAR error_code);
+void queueFlushTargSccb(UCHAR p_card, UCHAR thisTarg, UCHAR error_code);
 #endif
-void  ssenss(PSCCBcard pCurrCard);
-void  sinits(PSCCB p_sccb, UCHAR p_card);
-void  RNVRamData(PNVRamInfo pNvRamInfo);
+void ssenss(PSCCBcard pCurrCard);
+void sinits(PSCCB p_sccb, UCHAR p_card);
+void RNVRamData(PNVRamInfo pNvRamInfo);
 #if defined(WIDE_SCSI)
 #if defined(DOS)
 UCHAR siwidn(USHORT port, UCHAR p_card);
-void  stwidn(USHORT port, UCHAR p_card);
-void  siwidr(USHORT port, UCHAR width);
+void stwidn(USHORT port, UCHAR p_card);
+void siwidr(USHORT port, UCHAR width);
 #else
 UCHAR siwidn(ULONG port, UCHAR p_card);
-void  stwidn(ULONG port, UCHAR p_card);
-void  siwidr(ULONG port, UCHAR width);
+void stwidn(ULONG port, UCHAR p_card);
+void siwidr(ULONG port, UCHAR width);
 #endif
 #endif
-void  queueSelectFail(PSCCBcard pCurrCard, UCHAR p_card);
-void  queueDisconnect(PSCCB p_SCCB, UCHAR p_card);
-void  queueCmdComplete(PSCCBcard pCurrCard, PSCCB p_SCCB, UCHAR p_card);
-void  queueSearchSelect(PSCCBcard pCurrCard, UCHAR p_card);
-void  queueFlushSccb(UCHAR p_card, UCHAR error_code);
-void  queueAddSccb(PSCCB p_SCCB, UCHAR card);
+void queueSelectFail(PSCCBcard pCurrCard, UCHAR p_card);
+void queueDisconnect(PSCCB p_SCCB, UCHAR p_card);
+void queueCmdComplete(PSCCBcard pCurrCard, PSCCB p_SCCB, UCHAR p_card);
+void queueSearchSelect(PSCCBcard pCurrCard, UCHAR p_card);
+void queueFlushSccb(UCHAR p_card, UCHAR error_code);
+void queueAddSccb(PSCCB p_SCCB, UCHAR card);
 UCHAR queueFindSccb(PSCCB p_SCCB, UCHAR p_card);
-void  utilUpdateResidual(PSCCB p_SCCB);
+void utilUpdateResidual(PSCCB p_SCCB);
 USHORT CalcCrc16(UCHAR buffer[]);
-UCHAR  CalcLrc(UCHAR buffer[]);
+UCHAR CalcLrc(UCHAR buffer[]);
 #if defined(DOS)
-void  Wait1Second(USHORT p_port);
-void  Wait(USHORT p_port, UCHAR p_delay);
-void  utilEEWriteOnOff(USHORT p_port,UCHAR p_mode);
-void  utilEEWrite(USHORT p_port, USHORT ee_data, USHORT ee_addr);
+void Wait1Second(USHORT p_port);
+void Wait(USHORT p_port, UCHAR p_delay);
+void utilEEWriteOnOff(USHORT p_port,UCHAR p_mode);
+void utilEEWrite(USHORT p_port, USHORT ee_data, USHORT ee_addr);
 USHORT utilEERead(USHORT p_port, USHORT ee_addr);
 USHORT utilEEReadOrg(USHORT p_port, USHORT ee_addr);
-void  utilEESendCmdAddr(USHORT p_port, UCHAR ee_cmd, USHORT ee_addr);
+void utilEESendCmdAddr(USHORT p_port, UCHAR ee_cmd, USHORT ee_addr);
 #else
-void  Wait1Second(ULONG p_port);
-void  Wait(ULONG p_port, UCHAR p_delay);
-void  utilEEWriteOnOff(ULONG p_port,UCHAR p_mode);
-void  utilEEWrite(ULONG p_port, USHORT ee_data, USHORT ee_addr);
+void Wait1Second(ULONG p_port);
+void Wait(ULONG p_port, UCHAR p_delay);
+void utilEEWriteOnOff(ULONG p_port,UCHAR p_mode);
+void utilEEWrite(ULONG p_port, USHORT ee_data, USHORT ee_addr);
 USHORT utilEERead(ULONG p_port, USHORT ee_addr);
 USHORT utilEEReadOrg(ULONG p_port, USHORT ee_addr);
-void  utilEESendCmdAddr(ULONG p_port, UCHAR ee_cmd, USHORT ee_addr);
+void utilEESendCmdAddr(ULONG p_port, UCHAR ee_cmd, USHORT ee_addr);
 #endif
 #if defined(OS2)
-void  far phaseDataOut(ULONG port, UCHAR p_card);
-void  far phaseDataIn(ULONG port, UCHAR p_card);
-void  far phaseCommand(ULONG port, UCHAR p_card);
-void  far phaseStatus(ULONG port, UCHAR p_card);
-void  far phaseMsgOut(ULONG port, UCHAR p_card);
-void  far phaseMsgIn(ULONG port, UCHAR p_card);
-void  far phaseIllegal(ULONG port, UCHAR p_card);
+void far phaseDataOut(ULONG port, UCHAR p_card);
+void far phaseDataIn(ULONG port, UCHAR p_card);
+void far phaseCommand(ULONG port, UCHAR p_card);
+void far phaseStatus(ULONG port, UCHAR p_card);
+void far phaseMsgOut(ULONG port, UCHAR p_card);
+void far phaseMsgIn(ULONG port, UCHAR p_card);
+void far phaseIllegal(ULONG port, UCHAR p_card);
 #else
 #if defined(DOS)
-void  phaseDataOut(USHORT port, UCHAR p_card);
-void  phaseDataIn(USHORT port, UCHAR p_card);
-void  phaseCommand(USHORT port, UCHAR p_card);
-void  phaseStatus(USHORT port, UCHAR p_card);
-void  phaseMsgOut(USHORT port, UCHAR p_card);
-void  phaseMsgIn(USHORT port, UCHAR p_card);
-void  phaseIllegal(USHORT port, UCHAR p_card);
+void phaseDataOut(USHORT port, UCHAR p_card);
+void phaseDataIn(USHORT port, UCHAR p_card);
+void phaseCommand(USHORT port, UCHAR p_card);
+void phaseStatus(USHORT port, UCHAR p_card);
+void phaseMsgOut(USHORT port, UCHAR p_card);
+void phaseMsgIn(USHORT port, UCHAR p_card);
+void phaseIllegal(USHORT port, UCHAR p_card);
 #else
-void  phaseDataOut(ULONG port, UCHAR p_card);
-void  phaseDataIn(ULONG port, UCHAR p_card);
-void  phaseCommand(ULONG port, UCHAR p_card);
-void  phaseStatus(ULONG port, UCHAR p_card);
-void  phaseMsgOut(ULONG port, UCHAR p_card);
-void  phaseMsgIn(ULONG port, UCHAR p_card);
-void  phaseIllegal(ULONG port, UCHAR p_card);
+void phaseDataOut(ULONG port, UCHAR p_card);
+void phaseDataIn(ULONG port, UCHAR p_card);
+void phaseCommand(ULONG port, UCHAR p_card);
+void phaseStatus(ULONG port, UCHAR p_card);
+void phaseMsgOut(ULONG port, UCHAR p_card);
+void phaseMsgIn(ULONG port, UCHAR p_card);
+void phaseIllegal(ULONG port, UCHAR p_card);
 #endif
 #endif
 #if defined(DOS)
-void  phaseDecode(USHORT port, UCHAR p_card);
-void  phaseChkFifo(USHORT port, UCHAR p_card);
-void  phaseBusFree(USHORT p_port, UCHAR p_card);
+void phaseDecode(USHORT port, UCHAR p_card);
+void phaseChkFifo(USHORT port, UCHAR p_card);
+void phaseBusFree(USHORT p_port, UCHAR p_card);
 #else
-void  phaseDecode(ULONG port, UCHAR p_card);
-void  phaseChkFifo(ULONG port, UCHAR p_card);
-void  phaseBusFree(ULONG p_port, UCHAR p_card);
+void phaseDecode(ULONG port, UCHAR p_card);
+void phaseChkFifo(ULONG port, UCHAR p_card);
+void phaseBusFree(ULONG p_port, UCHAR p_card);
 #endif
 #if defined(DOS)
-void  XbowInit(USHORT port, UCHAR scamFlg);
-void  BusMasterInit(USHORT p_port);
-int   DiagXbow(USHORT port);
-int   DiagBusMaster(USHORT port);
-void  DiagEEPROM(USHORT p_port);
+void XbowInit(USHORT port, UCHAR scamFlg);
+void BusMasterInit(USHORT p_port);
+int DiagXbow(USHORT port);
+int DiagBusMaster(USHORT port);
+void DiagEEPROM(USHORT p_port);
 #else
-void  XbowInit(ULONG port, UCHAR scamFlg);
-void  BusMasterInit(ULONG p_port);
-int   DiagXbow(ULONG port);
-int   DiagBusMaster(ULONG port);
-void  DiagEEPROM(ULONG p_port);
+void XbowInit(ULONG port, UCHAR scamFlg);
+void BusMasterInit(ULONG p_port);
+int DiagXbow(ULONG port);
+int DiagBusMaster(ULONG port);
+void DiagEEPROM(ULONG p_port);
 #endif
 #if defined(DOS)
-void  busMstrAbort(USHORT port);
+void busMstrAbort(USHORT port);
 UCHAR busMstrTimeOut(USHORT port);
-void  dataXferProcessor(USHORT port, PSCCBcard pCurrCard);
-void  busMstrSGDataXferStart(USHORT port, PSCCB pCurrSCCB);
-void  busMstrDataXferStart(USHORT port, PSCCB pCurrSCCB);
-void  hostDataXferAbort(USHORT port, UCHAR p_card, PSCCB pCurrSCCB);
+void dataXferProcessor(USHORT port, PSCCBcard pCurrCard);
+void busMstrSGDataXferStart(USHORT port, PSCCB pCurrSCCB);
+void busMstrDataXferStart(USHORT port, PSCCB pCurrSCCB);
+void hostDataXferAbort(USHORT port, UCHAR p_card, PSCCB pCurrSCCB);
 #else
-void  busMstrAbort(ULONG port);
+void busMstrAbort(ULONG port);
 UCHAR busMstrTimeOut(ULONG port);
-void  dataXferProcessor(ULONG port, PSCCBcard pCurrCard);
-void  busMstrSGDataXferStart(ULONG port, PSCCB pCurrSCCB);
-void  busMstrDataXferStart(ULONG port, PSCCB pCurrSCCB);
-void  hostDataXferAbort(ULONG port, UCHAR p_card, PSCCB pCurrSCCB);
+void dataXferProcessor(ULONG port, PSCCBcard pCurrCard);
+void busMstrSGDataXferStart(ULONG port, PSCCB pCurrSCCB);
+void busMstrDataXferStart(ULONG port, PSCCB pCurrSCCB);
+void hostDataXferAbort(ULONG port, UCHAR p_card, PSCCB pCurrSCCB);
 #endif
-void  hostDataXferRestart(PSCCB currSCCB);
+void hostDataXferRestart(PSCCB currSCCB);
 #if defined (DOS)
 UCHAR SccbMgr_bad_isr(USHORT p_port, UCHAR p_card, PSCCBcard pCurrCard, USHORT p_int);
 #else
 UCHAR SccbMgr_bad_isr(ULONG p_port, UCHAR p_card, PSCCBcard pCurrCard, USHORT p_int);
 #endif
-void  SccbMgrTableInitAll(void);
-void  SccbMgrTableInitCard(PSCCBcard pCurrCard, UCHAR p_card);
-void  SccbMgrTableInitTarget(UCHAR p_card, UCHAR target);
-void  scini(UCHAR p_card, UCHAR p_our_id, UCHAR p_power_up);
+void SccbMgrTableInitAll(void);
+void SccbMgrTableInitCard(PSCCBcard pCurrCard, UCHAR p_card);
+void SccbMgrTableInitTarget(UCHAR p_card, UCHAR target);
+void scini(UCHAR p_card, UCHAR p_our_id, UCHAR p_power_up);
 #if defined(DOS)
-int   scarb(USHORT p_port, UCHAR p_sel_type);
-void  scbusf(USHORT p_port);
-void  scsel(USHORT p_port);
-void  scasid(UCHAR p_card, USHORT p_port);
+int scarb(USHORT p_port, UCHAR p_sel_type);
+void scbusf(USHORT p_port);
+void scsel(USHORT p_port);
+void scasid(UCHAR p_card, USHORT p_port);
 UCHAR scxferc(USHORT p_port, UCHAR p_data);
 UCHAR scsendi(USHORT p_port, UCHAR p_id_string[]);
 UCHAR sciso(USHORT p_port, UCHAR p_id_string[]);
-void  scwirod(USHORT p_port, UCHAR p_data_bit);
-void  scwiros(USHORT p_port, UCHAR p_data_bit);
+void scwirod(USHORT p_port, UCHAR p_data_bit);
+void scwiros(USHORT p_port, UCHAR p_data_bit);
 UCHAR scvalq(UCHAR p_quintet);
 UCHAR scsell(USHORT p_port, UCHAR targ_id);
-void  scwtsel(USHORT p_port);
-void  inisci(UCHAR p_card, USHORT p_port, UCHAR p_our_id);
-void  scsavdi(UCHAR p_card, USHORT p_port);
+void scwtsel(USHORT p_port);
+void inisci(UCHAR p_card, USHORT p_port, UCHAR p_our_id);
+void scsavdi(UCHAR p_card, USHORT p_port);
 #else
-int   scarb(ULONG p_port, UCHAR p_sel_type);
-void  scbusf(ULONG p_port);
-void  scsel(ULONG p_port);
-void  scasid(UCHAR p_card, ULONG p_port);
+int scarb(ULONG p_port, UCHAR p_sel_type);
+void scbusf(ULONG p_port);
+void scsel(ULONG p_port);
+void scasid(UCHAR p_card, ULONG p_port);
 UCHAR scxferc(ULONG p_port, UCHAR p_data);
 UCHAR scsendi(ULONG p_port, UCHAR p_id_string[]);
 UCHAR sciso(ULONG p_port, UCHAR p_id_string[]);
-void  scwirod(ULONG p_port, UCHAR p_data_bit);
-void  scwiros(ULONG p_port, UCHAR p_data_bit);
+void scwirod(ULONG p_port, UCHAR p_data_bit);
+void scwiros(ULONG p_port, UCHAR p_data_bit);
 UCHAR scvalq(UCHAR p_quintet);
 UCHAR scsell(ULONG p_port, UCHAR targ_id);
-void  scwtsel(ULONG p_port);
-void  inisci(UCHAR p_card, ULONG p_port, UCHAR p_our_id);
-void  scsavdi(UCHAR p_card, ULONG p_port);
+void scwtsel(ULONG p_port);
+void inisci(UCHAR p_card, ULONG p_port, UCHAR p_our_id);
+void scsavdi(UCHAR p_card, ULONG p_port);
 #endif
 UCHAR scmachid(UCHAR p_card, UCHAR p_id_string[]);
 #if defined(DOS)
-void  autoCmdCmplt(USHORT p_port, UCHAR p_card);
-void  autoLoadDefaultMap(USHORT p_port);
+void autoCmdCmplt(USHORT p_port, UCHAR p_card);
+void autoLoadDefaultMap(USHORT p_port);
 #else
-void  autoCmdCmplt(ULONG p_port, UCHAR p_card);
-void  autoLoadDefaultMap(ULONG p_port);
+void autoCmdCmplt(ULONG p_port, UCHAR p_card);
+void autoLoadDefaultMap(ULONG p_port);
 #endif
 #if (FW_TYPE==_SCCB_MGR_)
-void  OS_start_timer(unsigned long ioport, unsigned long timeout);
-void  OS_stop_timer(unsigned long ioport, unsigned long timeout);
-void  OS_disable_int(unsigned char intvec);
-void  OS_enable_int(unsigned char intvec);
-void  OS_delay(unsigned long count);
-int   OS_VirtToPhys(u32bits CardHandle, u32bits *physaddr, u32bits *virtaddr);
+void OS_start_timer(unsigned long ioport, unsigned long timeout);
+void OS_stop_timer(unsigned long ioport, unsigned long timeout);
+void OS_disable_int(unsigned char intvec);
+void OS_enable_int(unsigned char intvec);
+void OS_delay(unsigned long count);
+int OS_VirtToPhys(u32bits CardHandle, u32bits *physaddr, u32bits *virtaddr);
 #if !(defined(UNIX) || defined(OS2) || defined(SOLARIS_REAL_MODE))
-void  OS_Lock(PSCCBMGR_INFO pCardInfo);
-void  OS_UnLock(PSCCBMGR_INFO pCardInfo);
+void OS_Lock(PSCCBMGR_INFO pCardInfo);
+void OS_UnLock(PSCCBMGR_INFO pCardInfo);
 #endif
 #endif
 extern SCCBCARD BL_Card[MAX_CARDS];
@@ -1631,11 +1631,11 @@ extern unsigned int SccbGlobalFlags;
 #if (FW_TYPE==_UCB_MGR_)
 #endif
 #if (FW_TYPE==_SCCB_MGR_)
-#define mOS_Lock(card)    OS_Lock((PSCCBMGR_INFO)(((PSCCBcard)card)->cardInfo))
-#define mOS_UnLock(card)  OS_UnLock((PSCCBMGR_INFO)(((PSCCBcard)card)->cardInfo))
+#define mOS_Lock(card) OS_Lock((PSCCBMGR_INFO)(((PSCCBcard)card)->cardInfo))
+#define mOS_UnLock(card) OS_UnLock((PSCCBMGR_INFO)(((PSCCBcard)card)->cardInfo))
 #else
-#define mOS_Lock(card)    OS_Lock((u32bits)(((PSCCBcard)card)->ioPort))
-#define mOS_UnLock(card)  OS_UnLock((u32bits)(((PSCCBcard)card)->ioPort))
+#define mOS_Lock(card) OS_Lock((u32bits)(((PSCCBcard)card)->ioPort))
+#define mOS_UnLock(card) OS_UnLock((u32bits)(((PSCCBcard)card)->ioPort))
 #endif
 #if (FW_TYPE==_SCCB_MGR_)
 int SccbMgr_sense_adapter(PSCCBMGR_INFO pCardInfo)
@@ -1867,7 +1867,7 @@ pCardInfo->si_present = 0x01;
 #if defined(BUGBUG)
 for (i = 0; i < MAX_CARDS; i++) {
 for (id=0; id<debug_size; id++)
-debug_int[i][id] =  (UCHAR)0x00;
+debug_int[i][id] = (UCHAR)0x00;
 debug_index[i] = 0;
 }
 #endif
@@ -2022,7 +2022,7 @@ return((ULONG)CurrCard);
 #else
 STATIC s16bits FP_PresenceCheck(PMGR_INFO pMgrInfo)
 {
-PMGR_ENTRYPNTS	pMgr_EntryPnts = &pMgrInfo->mi_Functions;
+PMGR_ENTRYPNTS pMgr_EntryPnts = &pMgrInfo->mi_Functions;
 pMgr_EntryPnts->UCBMgr_probe_adapter = probe_adapter;
 pMgr_EntryPnts->UCBMgr_init_adapter = init_adapter;
 pMgr_EntryPnts->UCBMgr_start_UCB = SccbMgr_start_sccb;
@@ -2215,7 +2215,7 @@ pAdapterInfo->ai_attributes |= (WIDE_CAPABLE | FAST20_CAPABLE
 | SUPRESS_UNDERRRUNS_CAPABLE
 | SCSI_PARITY_CAPABLE);
 pAdapterInfo->ai_MaxTarg = 16;
-pAdapterInfo->ai_MaxLun  = 32;
+pAdapterInfo->ai_MaxLun = 32;
 }
 else
 {
@@ -2224,7 +2224,7 @@ pAdapterInfo->ai_attributes |= (FAST20_CAPABLE | SCAM2_CAPABLE
 | SUPRESS_UNDERRRUNS_CAPABLE
 | SCSI_PARITY_CAPABLE);
 pAdapterInfo->ai_MaxTarg = 8;
-pAdapterInfo->ai_MaxLun  = 8;
+pAdapterInfo->ai_MaxLun = 8;
 }
 pAdapterInfo->ai_product_family = HARPOON_FAMILY;
 pAdapterInfo->ai_HBAbustype = BUSTYPE_PCI;
@@ -2311,7 +2311,7 @@ pAdapterInfo->ai_present = 0x01;
 #if defined(BUGBUG)
 for (i = 0; i < MAX_CARDS; i++) {
 for (id=0; id<debug_size; id++)
-debug_int[i][id] =  (u08bits)0x00;
+debug_int[i][id] = (u08bits)0x00;
 debug_index[i] = 0;
 }
 #endif
@@ -2517,7 +2517,7 @@ p_sccb->SensePointer=p_ucb->UCB_phys_senseptr;
 sinits(p_sccb,thisCard);
 }
 #ifndef NO_IOCTLS
-STATIC  int GetDevSyncRate(PSCCBcard pCurrCard,PUCB p_ucb)
+STATIC int GetDevSyncRate(PSCCBcard pCurrCard,PUCB p_ucb)
 {
 struct _SYNC_RATE_INFO * pSyncStr;
 PSCCBMgr_tar_info currTar_Info;
@@ -2529,8 +2529,8 @@ if( p_ucb->UCB_targid >= pCurrCard->cardInfo->ai_MaxTarg )
 return(1);
 }
 #endif
-ioport  = pCurrCard->ioPort;
-pSyncStr	= (struct _SYNC_RATE_INFO *) p_ucb->UCB_virt_dataptr;
+ioport = pCurrCard->ioPort;
+pSyncStr = (struct _SYNC_RATE_INFO *) p_ucb->UCB_virt_dataptr;
 scsiID = (u08bits) p_ucb->UCB_targid;
 currTar_Info = &sccbMgrTbl[pCurrCard->cardIndex][scsiID];
 j = currTar_Info->TarSyncCtrl;
@@ -2603,8 +2603,8 @@ if( p_ucb->UCB_targid >= pCurrCard->cardInfo->ai_MaxTarg )
 return(1);
 }
 #endif
-ioPort  = pCurrCard->ioPort;
-pSyncStr	= (struct _SYNC_RATE_INFO *) p_ucb->UCB_virt_dataptr;
+ioPort = pCurrCard->ioPort;
+pSyncStr = (struct _SYNC_RATE_INFO *) p_ucb->UCB_virt_dataptr;
 scsiID = (u08bits) p_ucb->UCB_targid;
 currTar_Info = &sccbMgrTbl[pCurrCard->cardIndex][scsiID];
 i = RD_HARPOON(ioPort+hp_xfer_pad);
@@ -2689,7 +2689,7 @@ if( p_ucb->UCB_targid >= pCurrCard->cardInfo->ai_MaxTarg )
 return(1);
 }
 #endif
-ioPort  = pCurrCard->ioPort;
+ioPort = pCurrCard->ioPort;
 pData = (u08bits *)p_ucb->UCB_virt_dataptr;
 scsiID = (u08bits) p_ucb->UCB_targid;
 currTar_Info = &sccbMgrTbl[pCurrCard->cardIndex][scsiID];
@@ -2744,9 +2744,9 @@ u16bits ioport;
 u32bits ioport;
 #endif
 numbytes = (u16bits) p_ucb->UCB_datalen;
-ioport  = pCurrCard->ioPort;
-pdata   = (u08bits *) p_ucb->UCB_virt_dataptr;
-offset  = (u16bits) (p_ucb->UCB_IOCTLParams[0]);
+ioport = pCurrCard->ioPort;
+pdata = (u08bits *) p_ucb->UCB_virt_dataptr;
+offset = (u16bits) (p_ucb->UCB_IOCTLParams[0]);
 if (offset & 0x1)
 {
 *((u16bits*) pdata) = utilEERead(ioport,(u16bits)((offset - 1) / 2));
@@ -2778,8 +2778,8 @@ u08bits *pdata;
 u16bits i,numwrds,numbytes,offset, eeprom_end;
 u08bits OneMore = FALSE;
 union {
-u08bits  tempb[2];
-u16bits  tempw;
+u08bits tempb[2];
+u16bits tempw;
 } temp2;
 #if defined(DOS)
 u16bits ioport;
@@ -2787,9 +2787,9 @@ u16bits ioport;
 u32bits ioport;
 #endif
 numbytes = (u16bits) p_ucb->UCB_datalen;
-ioport  = pCurrCard->ioPort;
-pdata   = (u08bits *) p_ucb->UCB_virt_dataptr;
-offset  = (u16bits) (p_ucb->UCB_IOCTLParams[0]);
+ioport = pCurrCard->ioPort;
+pdata = (u08bits *) p_ucb->UCB_virt_dataptr;
+offset = (u16bits) (p_ucb->UCB_IOCTLParams[0]);
 if (RD_HARPOON(ioport+hp_page_ctrl) & NARROW_SCSI_CARD)
 eeprom_end = 512;
 else
@@ -2921,11 +2921,11 @@ ULONG far *pScamTbl;
 #else
 ULONG *pScamTbl;
 #endif
-pNvRamInfo->niModel    = RdStack(pNvRamInfo->niBaseAddr, 0);
-pNvRamInfo->niSysConf  = RdStack(pNvRamInfo->niBaseAddr, 1);
+pNvRamInfo->niModel = RdStack(pNvRamInfo->niBaseAddr, 0);
+pNvRamInfo->niSysConf = RdStack(pNvRamInfo->niBaseAddr, 1);
 pNvRamInfo->niScsiConf = RdStack(pNvRamInfo->niBaseAddr, 2);
 pNvRamInfo->niScamConf = RdStack(pNvRamInfo->niBaseAddr, 3);
-pNvRamInfo->niAdapId   = RdStack(pNvRamInfo->niBaseAddr, 4);
+pNvRamInfo->niAdapId = RdStack(pNvRamInfo->niBaseAddr, 4);
 for(i = 0; i < MAX_SCSI_TAR / 2; i++)
 pNvRamInfo->niSyncTbl[i] = RdStack(pNvRamInfo->niBaseAddr, (UCHAR)(i+5));
 portBase = pNvRamInfo->niBaseAddr;
@@ -3239,7 +3239,7 @@ UCHAR TID;
 PSCCB pSaveSCCB;
 PSCCBMgr_tar_info currTar_Info;
 #if (FW_TYPE==_UCB_MGR_)
-PSCCB    p_Sccb;
+PSCCB p_Sccb;
 p_Sccb=(PSCCB)p_ucb->UCB_MgrPrivatePtr;
 #endif
 ioport = ((PSCCBcard) pCurrCard)->ioPort;
@@ -3689,11 +3689,11 @@ UCHAR thisCard;
 for (thisCard = 0; thisCard < MAX_CARDS; thisCard++)
 {
 SccbMgrTableInitCard(&BL_Card[thisCard],thisCard);
-BL_Card[thisCard].ioPort      = 0x00;
-BL_Card[thisCard].cardInfo    = NULL;
-BL_Card[thisCard].cardIndex   = 0xFF;
-BL_Card[thisCard].ourId       = 0x00;
-BL_Card[thisCard].pNvRamInfo	= NULL;
+BL_Card[thisCard].ioPort = 0x00;
+BL_Card[thisCard].cardInfo = NULL;
+BL_Card[thisCard].cardIndex = 0xFF;
+BL_Card[thisCard].ourId = 0x00;
+BL_Card[thisCard].pNvRamInfo = NULL;
 }
 }
 void SccbMgrTableInitCard(PSCCBcard pCurrCard, UCHAR p_card)
@@ -3712,7 +3712,7 @@ SccbMgrTableInitTarget(p_card, scsiID);
 pCurrCard->scanIndex = 0x00;
 pCurrCard->currentSCCB = NULL;
 pCurrCard->globalFlags = 0x00;
-pCurrCard->cmdCounter  = 0x00;
+pCurrCard->cmdCounter = 0x00;
 pCurrCard->tagQ_Lst = 0x01;
 pCurrCard->discQCount = 0;
 }
@@ -3777,9 +3777,9 @@ UCHAR scamHAString[] = {0x63, 0x07, 'B', 'U', 'S', 'L', 'O', 'G', 'I', 'C', \
 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20};
 USHORT default_intena = 0;
 #if defined(BUGBUG)
-UCHAR    debug_int[MAX_CARDS][debug_size] = { 0 };
-UCHAR    debug_index[MAX_CARDS] = { 0 };
-UCHAR    reserved_1[3] = { 0 };
+UCHAR debug_int[MAX_CARDS][debug_size] = { 0 };
+UCHAR debug_index[MAX_CARDS] = { 0 };
+UCHAR reserved_1[3] = { 0 };
 #endif
 #if (FW_TYPE==_UCB_MGR_)
 #endif
@@ -3985,13 +3985,13 @@ WR_HARPOON(port+hp_autostart_3, (SELECT+SELCHK_STRT));
 auto_loaded = TRUE;
 }
 #if defined(WIDE_SCSI)
-else if (!(currTar_Info->TarStatus & WIDE_NEGOCIATED))  {
+else if (!(currTar_Info->TarStatus & WIDE_NEGOCIATED)) {
 auto_loaded = siwidn(port,p_card);
 currSCCB->Sccb_scsistat = SELECT_WN_ST;
 }
 #endif
 else if (!((currTar_Info->TarStatus & TAR_SYNC_MASK)
-== SYNC_SUPPORTED))  {
+== SYNC_SUPPORTED)) {
 auto_loaded = sisyncn(port,p_card, FALSE);
 currSCCB->Sccb_scsistat = SELECT_SN_ST;
 }
@@ -4067,7 +4067,7 @@ cdb_reg +=2;
 theCCB++;
 }
 if (currSCCB->CdbLength != TWELVE_BYTE_CMD)
-WRW_HARPOON(cdb_reg, (BRH_OP+ALWAYS+    NP));
+WRW_HARPOON(cdb_reg, (BRH_OP+ALWAYS+ NP));
 }
 #if defined(WIDE_SCSI)
 WRW_HARPOON((port+hp_fiforead), (USHORT) 0x00);
@@ -4609,7 +4609,7 @@ WRW_HARPOON((port+ID_MSG_STRT),
 (MPM_OP+AMSG_OUT+(currSCCB->Sccb_idmsg & ~(UCHAR)DISC_PRIV)));
 WRW_HARPOON((port+ID_MSG_STRT+2),BRH_OP+ALWAYS+CMDPZ);
 WRW_HARPOON((port+SYNC_MSGS+0), (MPM_OP+AMSG_OUT+SMEXT ));
-WRW_HARPOON((port+SYNC_MSGS+2), (MPM_OP+AMSG_OUT+0x03  ));
+WRW_HARPOON((port+SYNC_MSGS+2), (MPM_OP+AMSG_OUT+0x03 ));
 WRW_HARPOON((port+SYNC_MSGS+4), (MPM_OP+AMSG_OUT+SMSYNC));
 if ((currTar_Info->TarEEValue & EE_SYNC_MASK) == EE_SYNC_20MB)
 WRW_HARPOON((port+SYNC_MSGS+6), (MPM_OP+AMSG_OUT+ 12));
@@ -4619,9 +4619,9 @@ else if ((currTar_Info->TarEEValue & EE_SYNC_MASK) == EE_SYNC_5MB)
 WRW_HARPOON((port+SYNC_MSGS+6), (MPM_OP+AMSG_OUT+ 50));
 else
 WRW_HARPOON((port+SYNC_MSGS+6), (MPM_OP+AMSG_OUT+ 00));
-WRW_HARPOON((port+SYNC_MSGS+8), (RAT_OP                ));
+WRW_HARPOON((port+SYNC_MSGS+8), (RAT_OP ));
 WRW_HARPOON((port+SYNC_MSGS+10),(MPM_OP+AMSG_OUT+DEFAULT_OFFSET));
-WRW_HARPOON((port+SYNC_MSGS+12),(BRH_OP+ALWAYS+NP      ));
+WRW_HARPOON((port+SYNC_MSGS+12),(BRH_OP+ALWAYS+NP ));
 if(syncFlag == FALSE)
 {
 WR_HARPOON(port+hp_autostart_3, (SELECT+SELCHK_STRT));
@@ -4635,7 +4635,7 @@ WR_HARPOON(port+hp_autostart_3, (AUTO_IMMED + CMD_ONLY_STRT));
 return(TRUE);
 }
 else {
-currTar_Info->TarStatus |=	 (UCHAR)SYNC_SUPPORTED;
+currTar_Info->TarStatus |= (UCHAR)SYNC_SUPPORTED;
 currTar_Info->TarEEValue &= ~EE_SYNC_MASK;
 return(FALSE);
 }
@@ -4728,12 +4728,12 @@ void sisyncr(ULONG port,UCHAR sync_pulse, UCHAR offset)
 {
 ARAM_ACCESS(port);
 WRW_HARPOON((port+SYNC_MSGS+0), (MPM_OP+AMSG_OUT+SMEXT ));
-WRW_HARPOON((port+SYNC_MSGS+2), (MPM_OP+AMSG_OUT+0x03  ));
+WRW_HARPOON((port+SYNC_MSGS+2), (MPM_OP+AMSG_OUT+0x03 ));
 WRW_HARPOON((port+SYNC_MSGS+4), (MPM_OP+AMSG_OUT+SMSYNC));
 WRW_HARPOON((port+SYNC_MSGS+6), (MPM_OP+AMSG_OUT+sync_pulse));
-WRW_HARPOON((port+SYNC_MSGS+8), (RAT_OP                ));
+WRW_HARPOON((port+SYNC_MSGS+8), (RAT_OP ));
 WRW_HARPOON((port+SYNC_MSGS+10),(MPM_OP+AMSG_OUT+offset));
-WRW_HARPOON((port+SYNC_MSGS+12),(BRH_OP+ALWAYS+NP      ));
+WRW_HARPOON((port+SYNC_MSGS+12),(BRH_OP+ALWAYS+NP ));
 SGRAM_ACCESS(port);
 WR_HARPOON(port+hp_portctrl_0, SCSI_PORT);
 WRW_HARPOON((port+hp_intstat), CLR_ALL_INT_1);
@@ -4756,11 +4756,11 @@ WRW_HARPOON((port+ID_MSG_STRT),
 (MPM_OP+AMSG_OUT+(currSCCB->Sccb_idmsg & ~(UCHAR)DISC_PRIV)));
 WRW_HARPOON((port+ID_MSG_STRT+2),BRH_OP+ALWAYS+CMDPZ);
 WRW_HARPOON((port+SYNC_MSGS+0), (MPM_OP+AMSG_OUT+SMEXT ));
-WRW_HARPOON((port+SYNC_MSGS+2), (MPM_OP+AMSG_OUT+0x02  ));
+WRW_HARPOON((port+SYNC_MSGS+2), (MPM_OP+AMSG_OUT+0x02 ));
 WRW_HARPOON((port+SYNC_MSGS+4), (MPM_OP+AMSG_OUT+SMWDTR));
-WRW_HARPOON((port+SYNC_MSGS+6), (RAT_OP                ));
+WRW_HARPOON((port+SYNC_MSGS+6), (RAT_OP ));
 WRW_HARPOON((port+SYNC_MSGS+8), (MPM_OP+AMSG_OUT+ SM16BIT));
-WRW_HARPOON((port+SYNC_MSGS+10),(BRH_OP+ALWAYS+NP      ));
+WRW_HARPOON((port+SYNC_MSGS+10),(BRH_OP+ALWAYS+NP ));
 WR_HARPOON(port+hp_autostart_3, (SELECT+SELCHK_STRT));
 currTar_Info->TarStatus = ((currTar_Info->TarStatus &
 ~(UCHAR)TAR_WIDE_MASK) | (UCHAR)WIDE_ENABLED);
@@ -4803,7 +4803,7 @@ currTar_Info->TarStatus &= ~WIDE_ENABLED;
 sssyncv(port,currSCCB->TargID,width,currTar_Info);
 if (currSCCB->Sccb_scsistat == SELECT_WN_ST)
 {
-currTar_Info->TarStatus |=	 WIDE_NEGOCIATED;
+currTar_Info->TarStatus |= WIDE_NEGOCIATED;
 if (!((currTar_Info->TarStatus & TAR_SYNC_MASK) == SYNC_SUPPORTED))
 {
 ACCEPT_MSG_ATN(port);
@@ -4836,11 +4836,11 @@ void siwidr(ULONG port, UCHAR width)
 {
 ARAM_ACCESS(port);
 WRW_HARPOON((port+SYNC_MSGS+0), (MPM_OP+AMSG_OUT+SMEXT ));
-WRW_HARPOON((port+SYNC_MSGS+2), (MPM_OP+AMSG_OUT+0x02  ));
+WRW_HARPOON((port+SYNC_MSGS+2), (MPM_OP+AMSG_OUT+0x02 ));
 WRW_HARPOON((port+SYNC_MSGS+4), (MPM_OP+AMSG_OUT+SMWDTR));
-WRW_HARPOON((port+SYNC_MSGS+6), (RAT_OP                ));
+WRW_HARPOON((port+SYNC_MSGS+6), (RAT_OP ));
 WRW_HARPOON((port+SYNC_MSGS+8),(MPM_OP+AMSG_OUT+width));
-WRW_HARPOON((port+SYNC_MSGS+10),(BRH_OP+ALWAYS+NP      ));
+WRW_HARPOON((port+SYNC_MSGS+10),(BRH_OP+ALWAYS+NP ));
 SGRAM_ACCESS(port);
 WR_HARPOON(port+hp_portctrl_0, SCSI_PORT);
 WRW_HARPOON((port+hp_intstat), CLR_ALL_INT_1);
@@ -4949,7 +4949,7 @@ BL_Card[p_card].scanIndex = 0x00;
 BL_Card[p_card].currentSCCB = NULL;
 BL_Card[p_card].globalFlags &= ~(F_TAG_STARTED | F_HOST_XFER_ACT
 | F_NEW_SCCB_CMD);
-BL_Card[p_card].cmdCounter  = 0x00;
+BL_Card[p_card].cmdCounter = 0x00;
 BL_Card[p_card].discQCount = 0x00;
 BL_Card[p_card].tagQ_Lst = 0x01;
 for(i = 0; i < QUEUE_DEPTH; i++)
@@ -4967,12 +4967,12 @@ for (i = 0; i < 6; i++) {
 currSCCB->Save_Cdb[i] = currSCCB->Cdb[i];
 }
 currSCCB->CdbLength = SIX_BYTE_CMD;
-currSCCB->Cdb[0]    = SCSI_REQUEST_SENSE;
-currSCCB->Cdb[1]    = currSCCB->Cdb[1] & (UCHAR)0xE0;
-currSCCB->Cdb[2]    = 0x00;
-currSCCB->Cdb[3]    = 0x00;
-currSCCB->Cdb[4]    = currSCCB->RequestSenseLength;
-currSCCB->Cdb[5]    = 0x00;
+currSCCB->Cdb[0] = SCSI_REQUEST_SENSE;
+currSCCB->Cdb[1] = currSCCB->Cdb[1] & (UCHAR)0xE0;
+currSCCB->Cdb[2] = 0x00;
+currSCCB->Cdb[3] = 0x00;
+currSCCB->Cdb[4] = currSCCB->RequestSenseLength;
+currSCCB->Cdb[5] = 0x00;
 currSCCB->Sccb_XferCnt = (unsigned long)currSCCB->RequestSenseLength;
 currSCCB->Sccb_ATC = 0x00;
 currSCCB->Sccb_XferState |= F_AUTO_SENSE;
@@ -5086,8 +5086,8 @@ if ((RD_HARPOON(port+hp_scsisig) & SCSI_REQ) || (TimeOutLoop++>0x3000) )
 break;
 }
 sPhase = RD_HARPOON(port+hp_scsisig) & (SCSI_BSY | S_SCSI_PHZ);
-if ((!(RD_HARPOON(port+hp_xferstat) & FIFO_EMPTY))                     ||
-(RD_HARPOON(port+hp_offsetctr) & (UCHAR)0x1F)                       ||
+if ((!(RD_HARPOON(port+hp_xferstat) & FIFO_EMPTY)) ||
+(RD_HARPOON(port+hp_offsetctr) & (UCHAR)0x1F) ||
 (sPhase == (SCSI_BSY | S_DATAO_PH)) ||
 (sPhase == (SCSI_BSY | S_DATAI_PH)))
 {
@@ -5124,13 +5124,13 @@ if((p_sccb->TargID > MAX_SCSI_TAR) || (p_sccb->Lun > MAX_LUN))
 return;
 }
 currTar_Info = &sccbMgrTbl[p_card][p_sccb->TargID];
-p_sccb->Sccb_XferState     = 0x00;
-p_sccb->Sccb_XferCnt       = p_sccb->DataLength;
+p_sccb->Sccb_XferState = 0x00;
+p_sccb->Sccb_XferCnt = p_sccb->DataLength;
 if ((p_sccb->OperationCode == SCATTER_GATHER_COMMAND) ||
 (p_sccb->OperationCode == RESIDUAL_SG_COMMAND)) {
-p_sccb->Sccb_SGoffset   = 0;
-p_sccb->Sccb_XferState  = F_SG_XFER;
-p_sccb->Sccb_XferCnt    = 0x00;
+p_sccb->Sccb_SGoffset = 0;
+p_sccb->Sccb_XferState = F_SG_XFER;
+p_sccb->Sccb_XferCnt = 0x00;
 }
 if (p_sccb->DataLength == 0x00)
 p_sccb->Sccb_XferState |= F_ALL_XFERRED;
@@ -5143,21 +5143,21 @@ currTar_Info->TarStatus |= TAG_Q_TRYING;
 }
 if ((currTar_Info->TarStatus & TAR_ALLOW_DISC) ||
 (currTar_Info->TarStatus & TAG_Q_TRYING)) {
-p_sccb->Sccb_idmsg      = (UCHAR)(SMIDENT | DISC_PRIV) | p_sccb->Lun;
+p_sccb->Sccb_idmsg = (UCHAR)(SMIDENT | DISC_PRIV) | p_sccb->Lun;
 }
 else {
-p_sccb->Sccb_idmsg      = (UCHAR)SMIDENT | p_sccb->Lun;
+p_sccb->Sccb_idmsg = (UCHAR)SMIDENT | p_sccb->Lun;
 }
-p_sccb->HostStatus         = 0x00;
-p_sccb->TargetStatus       = 0x00;
-p_sccb->Sccb_tag           = 0x00;
-p_sccb->Sccb_MGRFlags      = 0x00;
-p_sccb->Sccb_sgseg         = 0x00;
-p_sccb->Sccb_ATC           = 0x00;
-p_sccb->Sccb_savedATC      = 0x00;
-p_sccb->Sccb_scsistat      = BUS_FREE_ST;
-p_sccb->SccbStatus         = SCCB_IN_PROCESS;
-p_sccb->Sccb_scsimsg       = SMNO_OP;
+p_sccb->HostStatus = 0x00;
+p_sccb->TargetStatus = 0x00;
+p_sccb->Sccb_tag = 0x00;
+p_sccb->Sccb_MGRFlags = 0x00;
+p_sccb->Sccb_sgseg = 0x00;
+p_sccb->Sccb_ATC = 0x00;
+p_sccb->Sccb_savedATC = 0x00;
+p_sccb->Sccb_scsistat = BUS_FREE_ST;
+p_sccb->SccbStatus = SCCB_IN_PROCESS;
+p_sccb->Sccb_scsimsg = SMNO_OP;
 }
 #if (FW_TYPE==_UCB_MGR_)
 #endif
@@ -5282,7 +5282,7 @@ WRW_HARPOON(cdb_reg, (MPM_OP + ACOMMAND + currSCCB->Cdb[i]));
 cdb_reg +=2;
 }
 if (currSCCB->CdbLength != TWELVE_BYTE_CMD)
-WRW_HARPOON(cdb_reg, (BRH_OP+ALWAYS+    NP));
+WRW_HARPOON(cdb_reg, (BRH_OP+ALWAYS+ NP));
 WR_HARPOON(p_port+hp_portctrl_0,(SCSI_PORT));
 currSCCB->Sccb_scsistat = COMMAND_ST;
 WR_HARPOON(p_port+hp_autostart_3, (AUTO_IMMED | CMD_ONLY_STRT));
@@ -5496,14 +5496,14 @@ while((!(RD_HARPOON(port+hp_xferstat) & FIFO_EMPTY)) &&
 #if defined(DOS)
 asm { mov dx,port;
 add dx,hp_xfercnt_2;
-in  al,dx;
+in al,dx;
 dec dx;
 xor ah,ah;
 mov word ptr xfercnt+2,ax;
-in  al,dx;
+in al,dx;
 dec dx;
 mov ah,al;
-in  al,dx;
+in al,dx;
 mov word ptr xfercnt,ax;
 }
 #else
@@ -5642,41 +5642,41 @@ WRW_HARPOON(map_addr, (CPE_OP+ADATA_OUT+ DINT));
 map_addr +=2;
 WRW_HARPOON(map_addr, (TCB_OP+FIFO_0+ DI));
 map_addr +=2;
-WRW_HARPOON(map_addr, (SSI_OP+   SSI_IDO_STRT));
+WRW_HARPOON(map_addr, (SSI_OP+ SSI_IDO_STRT));
 map_addr +=2;
 WRW_HARPOON(map_addr, (CPE_OP+ADATA_IN+DINT));
 map_addr +=2;
-WRW_HARPOON(map_addr, (CPN_OP+AMSG_IN+  ST));
+WRW_HARPOON(map_addr, (CPN_OP+AMSG_IN+ ST));
 map_addr +=2;
-WRW_HARPOON(map_addr, (CRD_OP+SDATA+    0x02));
+WRW_HARPOON(map_addr, (CRD_OP+SDATA+ 0x02));
 map_addr +=2;
-WRW_HARPOON(map_addr, (BRH_OP+NOT_EQ+   DC));
+WRW_HARPOON(map_addr, (BRH_OP+NOT_EQ+ DC));
 map_addr +=2;
-WRW_HARPOON(map_addr, (MRR_OP+SDATA+    D_AR1));
+WRW_HARPOON(map_addr, (MRR_OP+SDATA+ D_AR1));
 map_addr +=2;
-WRW_HARPOON(map_addr, (CPN_OP+AMSG_IN+  ST));
+WRW_HARPOON(map_addr, (CPN_OP+AMSG_IN+ ST));
 map_addr +=2;
-WRW_HARPOON(map_addr, (CRD_OP+SDATA+    0x04));
+WRW_HARPOON(map_addr, (CRD_OP+SDATA+ 0x04));
 map_addr +=2;
-WRW_HARPOON(map_addr, (BRH_OP+NOT_EQ+   UNKNWN));
+WRW_HARPOON(map_addr, (BRH_OP+NOT_EQ+ UNKNWN));
 map_addr +=2;
-WRW_HARPOON(map_addr, (MRR_OP+SDATA+    D_BUCKET));
+WRW_HARPOON(map_addr, (MRR_OP+SDATA+ D_BUCKET));
 map_addr +=2;
-WRW_HARPOON(map_addr, (SSI_OP+          SSI_ITAR_DISC));
+WRW_HARPOON(map_addr, (SSI_OP+ SSI_ITAR_DISC));
 map_addr +=2;
-WRW_HARPOON(map_addr, (CPN_OP+ASTATUS+  UNKNWN));
+WRW_HARPOON(map_addr, (CPN_OP+ASTATUS+ UNKNWN));
 map_addr +=2;
-WRW_HARPOON(map_addr, (MRR_OP+SDATA+  D_AR0));
+WRW_HARPOON(map_addr, (MRR_OP+SDATA+ D_AR0));
 map_addr +=2;
-WRW_HARPOON(map_addr, (CPN_OP+AMSG_IN+  CC));
+WRW_HARPOON(map_addr, (CPN_OP+AMSG_IN+ CC));
 map_addr +=2;
-WRW_HARPOON(map_addr, (CRD_OP+SDATA+    0x00));
+WRW_HARPOON(map_addr, (CRD_OP+SDATA+ 0x00));
 map_addr +=2;
-WRW_HARPOON(map_addr, (BRH_OP+NOT_EQ+   CC));
+WRW_HARPOON(map_addr, (BRH_OP+NOT_EQ+ CC));
 map_addr +=2;
-WRW_HARPOON(map_addr, (MRR_OP+SDATA+  D_BUCKET));
+WRW_HARPOON(map_addr, (MRR_OP+SDATA+ D_BUCKET));
 map_addr +=2;
-WRW_HARPOON(map_addr, (SSI_OP+       SSI_ICMD_COMP));
+WRW_HARPOON(map_addr, (SSI_OP+ SSI_ICMD_COMP));
 map_addr +=2;
 WRW_HARPOON(map_addr, (SSI_OP+ SSI_IUNKWN));
 map_addr +=2;
@@ -5686,9 +5686,9 @@ WRW_HARPOON(map_addr, (SSI_OP+ SSI_ITICKLE));
 map_addr +=2;
 WRW_HARPOON(map_addr, (SSI_OP+ SSI_IRFAIL));
 map_addr +=2;
-WRW_HARPOON(map_addr, (CRR_OP+AR3+  S_IDREG));
+WRW_HARPOON(map_addr, (CRR_OP+AR3+ S_IDREG));
 map_addr +=2;
-WRW_HARPOON(map_addr, (BRH_OP+EQUAL+   0x00));
+WRW_HARPOON(map_addr, (BRH_OP+EQUAL+ 0x00));
 map_addr +=2;
 WRW_HARPOON(map_addr, (SSI_OP+ SSI_INO_CC));
 SGRAM_ACCESS(p_port);
@@ -5891,8 +5891,8 @@ queueCmdComplete(&BL_Card[p_card], currSCCB, p_card);
 }
 #if (FW_TYPE==_UCB_MGR_)
 #endif
-#define SHORT_WAIT   0x0000000F
-#define LONG_WAIT    0x0000FFFFL
+#define SHORT_WAIT 0x0000000F
+#define LONG_WAIT 0x0000FFFFL
 #if defined(BUGBUG)
 void Debug_Load(UCHAR p_card, UCHAR p_bug_data);
 #endif
@@ -5938,10 +5938,10 @@ USHORT reg_offset;
 ULONG reg_offset;
 #endif
 if (pcurrSCCB->Sccb_XferState & F_HOST_XFER_DIR) {
-count =  ((ULONG) HOST_RD_CMD)<<24;
+count = ((ULONG) HOST_RD_CMD)<<24;
 }
 else {
-count =  ((ULONG) HOST_WRT_CMD)<<24;
+count = ((ULONG) HOST_WRT_CMD)<<24;
 }
 sg_count = 0;
 tmpSGCnt = 0;
@@ -6252,7 +6252,7 @@ WR_HARPOON(port+hp_int_mask,(INT_CMD_COMPL | SCSI_INTERRUPT));
 void hostDataXferRestart(PSCCB currSCCB)
 {
 ULONG data_count;
-UINT  sg_index;
+UINT sg_index;
 #if defined(COMPILER_16_BIT) && !defined(DOS)
 ULONG far *sg_ptr;
 #else
@@ -6488,7 +6488,7 @@ WR_HARPOON(p_port+hp_scsidata_0, 0x00);
 WR_HARPOON(p_port+hp_portctrl_0, (RD_HARPOON(p_port+hp_portctrl_0)
 & ~SCSI_BUS_EN));
 WR_HARPOON(p_port+hp_scsisig, 0x00);
-WR_HARPOON(p_port+hp_scsireset,  (RD_HARPOON(p_port+hp_scsireset)
+WR_HARPOON(p_port+hp_scsireset, (RD_HARPOON(p_port+hp_scsireset)
 & ~SCAM_EN));
 WR_HARPOON(p_port+hp_clkctrl_0, (RD_HARPOON(p_port+hp_clkctrl_0)
 | ACTdeassert));
@@ -6735,7 +6735,7 @@ WR_HARPOON(p_port+hp_seltimeout,TO_4ms);
 for (i = p_port+CMD_STRT; i < p_port+CMD_STRT+12; i+=2) {
 WRW_HARPOON(i, (MPM_OP+ACOMMAND));
 }
-WRW_HARPOON(i, (BRH_OP+ALWAYS+    NP));
+WRW_HARPOON(i, (BRH_OP+ALWAYS+ NP));
 WRW_HARPOON((p_port+hp_intstat),
 (RESET | TIMEOUT | SEL | BUS_FREE | AUTO_INT));
 WR_HARPOON(p_port+hp_select_id, targ_id);
@@ -6783,7 +6783,7 @@ WR_HARPOON(p_port+hp_seltimeout,TO_2ms);
 for (i = p_port+CMD_STRT; i < p_port+CMD_STRT+12; i+=2) {
 WRW_HARPOON(i, (MPM_OP+ACOMMAND));
 }
-WRW_HARPOON(i, (BRH_OP+ALWAYS+    NP));
+WRW_HARPOON(i, (BRH_OP+ALWAYS+ NP));
 WRW_HARPOON((p_port+hp_intstat),
 (RESET | TIMEOUT | SEL | BUS_FREE | AUTO_INT));
 WR_HARPOON(p_port+hp_select_id, targ_id);
@@ -7132,10 +7132,10 @@ WR_HARPOON(port+hp_host_addr_lo,testdata);
 WR_HARPOON(port+hp_host_addr_lmi,testdata);
 WR_HARPOON(port+hp_host_addr_hmi,testdata);
 WR_HARPOON(port+hp_host_addr_hi,testdata);
-if ((RD_HARPOON(port+hp_xfer_cnt_lo) != testdata)   ||
-(RD_HARPOON(port+hp_xfer_cnt_mi) != testdata)   ||
-(RD_HARPOON(port+hp_xfer_cnt_hi) != testdata)   ||
-(RD_HARPOON(port+hp_host_addr_lo) != testdata)  ||
+if ((RD_HARPOON(port+hp_xfer_cnt_lo) != testdata) ||
+(RD_HARPOON(port+hp_xfer_cnt_mi) != testdata) ||
+(RD_HARPOON(port+hp_xfer_cnt_hi) != testdata) ||
+(RD_HARPOON(port+hp_host_addr_lo) != testdata) ||
 (RD_HARPOON(port+hp_host_addr_lmi) != testdata) ||
 (RD_HARPOON(port+hp_host_addr_hmi) != testdata) ||
 (RD_HARPOON(port+hp_host_addr_hi) != testdata))
@@ -7413,15 +7413,15 @@ p_ucb=p_sccb->Sccb_ucb_ptr;
 SCSIcmd = p_sccb->Cdb[0];
 if (!(p_sccb->Sccb_XferState & F_ALL_XFERRED))
 {
-if ((p_ucb->UCB_opcode & OPC_CHK_UNDER_OVER_RUN)                     &&
-(p_sccb->HostStatus == SCCB_COMPLETE)                             &&
+if ((p_ucb->UCB_opcode & OPC_CHK_UNDER_OVER_RUN) &&
+(p_sccb->HostStatus == SCCB_COMPLETE) &&
 (p_sccb->TargetStatus != SSCHECK))
-if ((SCSIcmd == SCSI_READ)             ||
-(SCSIcmd == SCSI_WRITE)            ||
-(SCSIcmd == SCSI_READ_EXTENDED)    ||
-(SCSIcmd == SCSI_WRITE_EXTENDED)   ||
+if ((SCSIcmd == SCSI_READ) ||
+(SCSIcmd == SCSI_WRITE) ||
+(SCSIcmd == SCSI_READ_EXTENDED) ||
+(SCSIcmd == SCSI_WRITE_EXTENDED) ||
 (SCSIcmd == SCSI_WRITE_AND_VERIFY) ||
-(SCSIcmd == SCSI_START_STOP_UNIT)  ||
+(SCSIcmd == SCSI_START_STOP_UNIT) ||
 (pCurrCard->globalFlags & F_NO_FILTER)
 )
 p_sccb->HostStatus = SCCB_DATA_UNDER_RUN;
@@ -7482,14 +7482,14 @@ PSCCBMgr_tar_info currTar_Info;
 SCSIcmd = p_sccb->Cdb[0];
 if (!(p_sccb->Sccb_XferState & F_ALL_XFERRED)) {
 if ((p_sccb->ControlByte & (SCCB_DATA_XFER_OUT | SCCB_DATA_XFER_IN)) &&
-(p_sccb->HostStatus == SCCB_COMPLETE)                             &&
+(p_sccb->HostStatus == SCCB_COMPLETE) &&
 (p_sccb->TargetStatus != SSCHECK))
-if ((SCSIcmd == SCSI_READ)             ||
-(SCSIcmd == SCSI_WRITE)            ||
-(SCSIcmd == SCSI_READ_EXTENDED)    ||
-(SCSIcmd == SCSI_WRITE_EXTENDED)   ||
+if ((SCSIcmd == SCSI_READ) ||
+(SCSIcmd == SCSI_WRITE) ||
+(SCSIcmd == SCSI_READ_EXTENDED) ||
+(SCSIcmd == SCSI_WRITE_EXTENDED) ||
 (SCSIcmd == SCSI_WRITE_AND_VERIFY) ||
-(SCSIcmd == SCSI_START_STOP_UNIT)  ||
+(SCSIcmd == SCSI_START_STOP_UNIT) ||
 (pCurrCard->globalFlags & F_NO_FILTER)
 )
 p_sccb->HostStatus = SCCB_DATA_UNDER_RUN;
@@ -7571,7 +7571,7 @@ BL_Card[p_card].discQ_Tbl[currTar_Info->LunDiscQ_Idx[0]] = p_sccb;
 }
 BL_Card[p_card].currentSCCB = NULL;
 }
-void  queueFlushSccb(UCHAR p_card, UCHAR error_code)
+void queueFlushSccb(UCHAR p_card, UCHAR error_code)
 {
 UCHAR qtag,thisTarg;
 PSCCB currSCCB;
@@ -7593,7 +7593,7 @@ currTar_Info->TarTagQ_Cnt--;
 }
 }
 }
-void  queueFlushTargSccb(UCHAR p_card, UCHAR thisTarg, UCHAR error_code)
+void queueFlushTargSccb(UCHAR p_card, UCHAR thisTarg, UCHAR error_code)
 {
 UCHAR qtag;
 PSCCBMgr_tar_info currTar_Info;
@@ -7653,10 +7653,10 @@ q_ptr = q_ptr->Sccb_forwardlink;
 }
 return(FALSE);
 }
-void  utilUpdateResidual(PSCCB p_SCCB)
+void utilUpdateResidual(PSCCB p_SCCB)
 {
 ULONG partial_cnt;
-UINT  sg_index;
+UINT sg_index;
 #if defined(COMPILER_16_BIT) && !defined(DOS)
 ULONG far *sg_ptr;
 #else
@@ -7939,13 +7939,13 @@ FlashPoint__HandleInterrupt(FlashPoint_CardHandle_T CardHandle)
 {
 return FlashPoint_HandleInterrupt(CardHandle);
 }
-#define FlashPoint_ProbeHostAdapter	    FlashPoint__ProbeHostAdapter
+#define FlashPoint_ProbeHostAdapter FlashPoint__ProbeHostAdapter
 #define FlashPoint_HardwareResetHostAdapter FlashPoint__HardwareResetHostAdapter
-#define FlashPoint_ReleaseHostAdapter	    FlashPoint__ReleaseHostAdapter
-#define FlashPoint_StartCCB		    FlashPoint__StartCCB
-#define FlashPoint_AbortCCB		    FlashPoint__AbortCCB
-#define FlashPoint_InterruptPending	    FlashPoint__InterruptPending
-#define FlashPoint_HandleInterrupt	    FlashPoint__HandleInterrupt
+#define FlashPoint_ReleaseHostAdapter FlashPoint__ReleaseHostAdapter
+#define FlashPoint_StartCCB FlashPoint__StartCCB
+#define FlashPoint_AbortCCB FlashPoint__AbortCCB
+#define FlashPoint_InterruptPending FlashPoint__InterruptPending
+#define FlashPoint_HandleInterrupt FlashPoint__HandleInterrupt
 void FlashPoint_InquireTargetInfo(FlashPoint_CardHandle_T CardHandle,
 int TargetID,
 unsigned char *SynchronousPeriod,

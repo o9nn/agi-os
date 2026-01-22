@@ -1,5 +1,5 @@
 #ifndef gscssub_INCLUDED
-#  define gscssub_INCLUDED
+# define gscssub_INCLUDED
 #include "gscspace.h"
 int gs_setsubstitutecolorspace(gs_state *pgs, gs_color_space_index csi,
 const gs_color_space *pcs);

@@ -11,55 +11,55 @@ typedef struct Cookie Cookie;
 typedef struct Jar Jar;
 struct Cookie
 {
-char*	name;
-char*	value;
-char*	dom;
-char*	path;
-char*	version;
-char*	comment;
-uint	expire;
-int	secure;
-int	explicitdom;
-int	explicitpath;
-int	netscapestyle;
-int	deleted;
-int	mark;
-int	ondisk;
+char* name;
+char* value;
+char* dom;
+char* path;
+char* version;
+char* comment;
+uint expire;
+int secure;
+int explicitdom;
+int explicitpath;
+int netscapestyle;
+int deleted;
+int mark;
+int ondisk;
 };
 struct Jar
 {
-Cookie	*c;
-int	nc;
-int	mc;
-Qid	qid;
-int	dirty;
-char	*file;
-char	*lockfile;
-};
-struct {
-char	*s;
-int	offset;
-int	ishttp;
-} stab[] = {
-"domain",		offsetof(Cookie, dom),		1,
-"path",			offsetof(Cookie, path),		1,
-"name",			offsetof(Cookie, name),		0,
-"value",		offsetof(Cookie, value),	0,
-"comment",		offsetof(Cookie, comment),	1,
-"version",		offsetof(Cookie, version),	1,
+Cookie *c;
+int nc;
+int mc;
+Qid qid;
+int dirty;
+char *file;
+char *lockfile;
 };
 struct {
 char *s;
-int	offset;
-} itab[] = {
-"expire",		offsetof(Cookie, expire),
-"secure",		offsetof(Cookie, secure),
-"explicitdomain",	offsetof(Cookie, explicitdom),
-"explicitpath",		offsetof(Cookie, explicitpath),
-"netscapestyle",	offsetof(Cookie, netscapestyle),
+int offset;
+int ishttp;
+} stab[] = {
+"domain", offsetof(Cookie, dom), 1,
+"path", offsetof(Cookie, path), 1,
+"name", offsetof(Cookie, name), 0,
+"value", offsetof(Cookie, value), 0,
+"comment", offsetof(Cookie, comment), 1,
+"version", offsetof(Cookie, version), 1,
 };
-#pragma varargck type "J"	Jar*
-#pragma varargck type "K"	Cookie*
+struct {
+char *s;
+int offset;
+} itab[] = {
+"expire", offsetof(Cookie, expire),
+"secure", offsetof(Cookie, secure),
+"explicitdomain", offsetof(Cookie, explicitdom),
+"explicitpath", offsetof(Cookie, explicitpath),
+"netscapestyle", offsetof(Cookie, netscapestyle),
+};
+#pragma varargck type "J" Jar*
+#pragma varargck type "K" Cookie*
 int
 jarfmt(Fmt *fmt)
 {
@@ -970,11 +970,11 @@ closejar(jar);
 }
 Srv fs =
 {
-.open=		fsopen,
-.read=		fsread,
-.write=		fswrite,
-.destroyfid=	fsdestroyfid,
-.end=		fsend,
+.open= fsopen,
+.read= fsread,
+.write= fswrite,
+.destroyfid= fsdestroyfid,
+.end= fsend,
 };
 void
 usage(void)

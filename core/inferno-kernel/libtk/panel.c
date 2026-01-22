@@ -1,20 +1,20 @@
 #include "lib9.h"
 #include "draw.h"
 #include "tk.h"
-#define	O(t, e)		((long)(&((t*)0)->e))
+#define O(t, e) ((long)(&((t*)0)->e))
 typedef struct TkPanel TkPanel;
 struct TkPanel
 {
-Image*	image;
-Image*	matte;
-Point		view;
-Rectangle		r;
-int		anchor;
-int		hasalpha;
+Image* image;
+Image* matte;
+Point view;
+Rectangle r;
+int anchor;
+int hasalpha;
 };
 static TkOption tkpanelopts[] =
 {
-"anchor",	OPTflag,	O(TkPanel, anchor),	tkanchor,
+"anchor", OPTflag, O(TkPanel, anchor), tkanchor,
 nil
 };
 static int
@@ -317,14 +317,14 @@ return nil;
 static
 TkCmdtab tkpanelcmd[] =
 {
-"cget",			tkpanelcget,
-"configure",		tkpanelconf,
-"dirty",			tkpaneldirty,
-"origin",			tkpanelorigin,
-"panelx",			tkpanelpanelx,
-"panely",			tkpanelpanely,
-"screenx",			tkpanelscreenx,
-"screeny",			tkpanelscreeny,
+"cget", tkpanelcget,
+"configure", tkpanelconf,
+"dirty", tkpaneldirty,
+"origin", tkpanelorigin,
+"panelx", tkpanelpanelx,
+"panely", tkpanelpanely,
+"screenx", tkpanelscreenx,
+"screeny", tkpanelscreeny,
 nil
 };
 TkMethod panelmethod = {

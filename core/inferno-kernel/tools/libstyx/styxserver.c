@@ -2,24 +2,24 @@
 #include <styx.h>
 #include "styxserver.h"
 #include "styxaux.h"
-#define MAXSTAT	512
-#define EMSGLEN			256
-#define TABSZ	32
-static	unsigned long		boottime;
-static	char*	eve = "inferno";
-static	int		Debug = 0;
-char Enomem[] =		"out of memory";
-char Eperm[] =			"permission denied";
-char Enodev[] =		"no free devices";
-char Ehungup[] =		"write to hungup channel";
-char	Eexist[] =			"file exists";
-char Enonexist[] =		"file does not exist";
-char Ebadcmd[] =		"bad command";
-char Ebadarg[] =			"bad arg in system call";
-char Enofid[] =			"no such fid";
-char Enotdir[] =		"not a directory";
-char	Eopen[] =			"already open";
-char	Ebadfid[] =		"bad fid";
+#define MAXSTAT 512
+#define EMSGLEN 256
+#define TABSZ 32
+static unsigned long boottime;
+static char* eve = "inferno";
+static int Debug = 0;
+char Enomem[] = "out of memory";
+char Eperm[] = "permission denied";
+char Enodev[] = "no free devices";
+char Ehungup[] = "write to hungup channel";
+char Eexist[] = "file exists";
+char Enonexist[] = "file does not exist";
+char Ebadcmd[] = "bad command";
+char Ebadarg[] = "bad arg in system call";
+char Enofid[] = "no such fid";
+char Enotdir[] = "not a directory";
+char Eopen[] = "already open";
+char Ebadfid[] = "bad fid";
 enum{
 CDISC = 01,
 CNREAD = 02,
@@ -28,20 +28,20 @@ CRECV = 04,
 typedef struct Walkqid Walkqid;
 struct Fid
 {
-Client 	*client;
+Client *client;
 Fid *next;
-short	fid;
-ushort	open;
-ushort	mode;
-ulong	offset;
-int		dri;
-Qid		qid;
+short fid;
+ushort open;
+ushort mode;
+ulong offset;
+int dri;
+Qid qid;
 };
 struct Walkqid
 {
-Fid	*clone;
-int	nqid;
-Qid	qid[1];
+Fid *clone;
+int nqid;
+Qid qid[1];
 };
 #define ASSERT(A,B) styxassert((int)A,B)
 static int hash(Path);
@@ -271,10 +271,10 @@ styxperm(Styxfile *f, char *uid, int mode)
 int m, p;
 p = 0;
 switch(mode&3){
-case OREAD:	p = AREAD;	break;
-case OWRITE:	p = AWRITE;	break;
-case ORDWR:	p = AREAD+AWRITE;	break;
-case OEXEC:	p = AEXEC;	break;
+case OREAD: p = AREAD; break;
+case OWRITE: p = AWRITE; break;
+case ORDWR: p = AREAD+AWRITE; break;
+case OEXEC: p = AEXEC; break;
 }
 if(mode&OTRUNC)
 p |= AWRITE;
@@ -586,7 +586,7 @@ return;
 }
 }
 switch(f.type){
-case	Twalk:
+case Twalk:
 if(Debug){
 fprint(2, "Twalk %d %d", f.fid, f.newfid);
 for(i = 0; i < f.nwname; i++)
@@ -630,7 +630,7 @@ styxfree(wq);
 }
 wr(c, &f);
 break;
-case	Topen:
+case Topen:
 if(Debug)
 fprint(2, "Topen %d\n", f.fid);
 f.ename = nil;
@@ -662,7 +662,7 @@ f.type = Rerror;
 increff(fp);
 wr(c, &f);
 break;
-case	Tcreate:
+case Tcreate:
 if(Debug)
 fprint(2, "Tcreate %d %s\n", f.fid, f.name);
 f.ename = nil;
@@ -700,7 +700,7 @@ f.type = Rerror;
 increff(fp);
 wr(c, &f);
 break;
-case	Tread:
+case Tread:
 if(Debug)
 fprint(2, "Tread %d\n", f.fid);
 if(!fp->open){
@@ -733,7 +733,7 @@ f.data = c->data;
 }
 wr(c, &f);
 break;
-case	Twrite:
+case Twrite:
 if(Debug)
 fprint(2, "Twrite %d\n", f.fid);
 if(!fp->open){
@@ -749,7 +749,7 @@ f.type = Rwrite;
 }
 wr(c, &f);
 break;
-case	Tclunk:
+case Tclunk:
 if(Debug)
 fprint(2, "Tclunk %d\n", f.fid);
 open = fp->open;
@@ -761,7 +761,7 @@ if(open && ops->close && (f.ename = ops->close(qid, mode)) != nil)
 f.type = Rerror;
 wr(c, &f);
 break;
-case	Tremove:
+case Tremove:
 if(Debug)
 fprint(2, "Tremove %d\n", f.fid);
 if(file != nil && file->parent != nil && !styxperm(file->parent, c->uname, OWRITE)){
@@ -779,7 +779,7 @@ f.type = Rerror;
 deletefid(c, fp);
 wr(c, &f);
 break;
-case	Tstat:
+case Tstat:
 if(Debug)
 fprint(2, "Tstat %d qid=%llx\n", f.fid, fp->qid.path);
 f.stat = styxmalloc(MAXSTAT);
@@ -797,7 +797,7 @@ f.type = Rerror;
 wr(c, &f);
 styxfree(f.stat);
 break;
-case	Twstat:
+case Twstat:
 if(Debug)
 fprint(2, "Twstat %d\n", f.fid);
 f.ename = Eperm;
@@ -812,7 +812,7 @@ else
 f.type = Rerror;
 wr(c, &f);
 break;
-case	Tversion:
+case Tversion:
 if(Debug)
 fprint(2, "Tversion\n");
 f.type = Rversion;
@@ -825,7 +825,7 @@ fprint(2, "Tauth\n");
 f.type = Rauth;
 wr(c, &f);
 break;
-case	Tattach:
+case Tattach:
 if(Debug)
 fprint(2, "Tattach %d %s %s\n", f.fid, f.uname[0] ? f.uname : c->uname, f.aname[0]? f.aname: c->aname);
 if(fp){

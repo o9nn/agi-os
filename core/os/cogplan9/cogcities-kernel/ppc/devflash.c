@@ -1,87 +1,87 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
 enum {
 Nflash = 2,
-Maxwchunk=	1024,
+Maxwchunk= 1024,
 };
 typedef struct FlashAlg FlashAlg;
 typedef struct Flash Flash;
 typedef struct FlashRegion FlashRegion;
 #ifdef WIDTH8
-typedef		uchar		Funit;
-#	define		toendian(x)	(x)
-#	define		fromendian(x)	(x)
-#	define		reg(x)		((x)<<1)
-#	ifdef INTERLEAVED
-#		define	mirror(x)		((x)<<8|(x))
-typedef	ushort		Fword;
-#		define	Wshift		1
-#	else
-#		define 	mirror(x)		(x)
-typedef	uchar		Fword;
-#		define	Wshift		0
-#	endif
+typedef uchar Funit;
+# define toendian(x) (x)
+# define fromendian(x) (x)
+# define reg(x) ((x)<<1)
+# ifdef INTERLEAVED
+# define mirror(x) ((x)<<8|(x))
+typedef ushort Fword;
+# define Wshift 1
+# else
+# define mirror(x) (x)
+typedef uchar Fword;
+# define Wshift 0
+# endif
 #else
-typedef		ushort		Funit;
-#	define		toendian(x)	((x)<<8)
-#	define		fromendian(x)	((x)>>8)
-#	define		reg(x)		(x)
-#	ifdef INTERLEAVED
-#		define	mirror(x)		(toendian(x)<<16|toendian(x))
-typedef	ulong		Fword;
-#		define	Wshift		2
-#	else
-#		define mirror(x)		toendian(x)
-typedef	ushort		Fword;
-#		define	Wshift		1
-#	endif
+typedef ushort Funit;
+# define toendian(x) ((x)<<8)
+# define fromendian(x) ((x)>>8)
+# define reg(x) (x)
+# ifdef INTERLEAVED
+# define mirror(x) (toendian(x)<<16|toendian(x))
+typedef ulong Fword;
+# define Wshift 2
+# else
+# define mirror(x) toendian(x)
+typedef ushort Fword;
+# define Wshift 1
+# endif
 #endif
 struct FlashRegion
 {
-ulong	addr;
-ulong	end;
-ulong	n;
-ulong	size;
+ulong addr;
+ulong end;
+ulong n;
+ulong size;
 };
 struct Flash
 {
 ISAConf;
 RWlock;
-Fword		*p;
-ushort		algid;
-FlashAlg		*alg;
-ushort		manid;
-ushort		devid;
-int			wbsize;
-ulong		nr;
-uchar		bootprotect;
-ulong		offset;
-FlashRegion	r[32];
+Fword *p;
+ushort algid;
+FlashAlg *alg;
+ushort manid;
+ushort devid;
+int wbsize;
+ulong nr;
+uchar bootprotect;
+ulong offset;
+FlashRegion r[32];
 };
 struct FlashAlg
 {
-int	id;
-char	*name;
-void	(*identify)(Flash*);
-void	(*erase)(Flash*, ulong);
-void	(*write)(Flash*, void*, long, ulong);
+int id;
+char *name;
+void (*identify)(Flash*);
+void (*erase)(Flash*, ulong);
+void (*write)(Flash*, void*, long, ulong);
 };
-static void	ise_id(Flash*);
-static void	ise_erase(Flash*, ulong);
-static void	ise_write(Flash*, void*, long, ulong);
-static void	afs_id(Flash*);
-static void	afs_erase(Flash*, ulong);
-static void	afs_write(Flash*, void*, long, ulong);
-static ulong	blockstart(Flash*, ulong);
-static ulong	blockend(Flash*, ulong);
+static void ise_id(Flash*);
+static void ise_erase(Flash*, ulong);
+static void ise_write(Flash*, void*, long, ulong);
+static void afs_id(Flash*);
+static void afs_erase(Flash*, ulong);
+static void afs_write(Flash*, void*, long, ulong);
+static ulong blockstart(Flash*, ulong);
+static ulong blockend(Flash*, ulong);
 FlashAlg falg[] =
 {
-{ 1,	"Intel/Sharp Extended",	ise_id, ise_erase, ise_write	},
-{ 2,	"AMD/Fujitsu Standard",	afs_id, afs_erase, afs_write	},
+{ 1, "Intel/Sharp Extended", ise_id, ise_erase, ise_write },
+{ 2, "AMD/Fujitsu Standard", afs_id, afs_erase, afs_write },
 };
 Flash flashes[Nflash];
 static uchar
@@ -145,16 +145,16 @@ Maxpart= 8,
 typedef struct FPart FPart;
 struct FPart
 {
-Flash	*flash;
-char		*name;
-char		*ctlname;
-ulong	start;
-ulong	end;
+Flash *flash;
+char *name;
+char *ctlname;
+ulong start;
+ulong end;
 };
-static FPart	part[Maxpart];
-#define FQID(p,q)	((p)<<8|(q))
-#define FTYPE(q)	((q) & 0xff)
-#define FPART(q)	(&part[(q) >>8])
+static FPart part[Maxpart];
+#define FQID(p,q) ((p)<<8|(q))
+#define FTYPE(q) ((q) & 0xff)
+#define FPART(q) (&part[(q) >>8])
 static int
 gen(Chan *c, char*, Dirtab*, int, int i, Dir *dp)
 {
@@ -602,13 +602,13 @@ devwstat,
 };
 enum
 {
-ISEs_lockerr=		1<<1,
-ISEs_powererr=		1<<3,
-ISEs_progerr=		1<<4,
-ISEs_eraseerr=		1<<5,
-ISEs_ready=		1<<7,
+ISEs_lockerr= 1<<1,
+ISEs_powererr= 1<<3,
+ISEs_progerr= 1<<4,
+ISEs_eraseerr= 1<<5,
+ISEs_ready= 1<<7,
 ISEs_err= (ISEs_lockerr|ISEs_powererr|ISEs_progerr|ISEs_eraseerr),
-ISExs_bufavail=		1<<7,
+ISExs_bufavail= 1<<7,
 };
 static void
 ise_reset(Flash* flash)

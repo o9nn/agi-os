@@ -4,7 +4,7 @@ sys: Sys;
 Dir, Qid, QTDIR, QTFILE, DMDIR: import sys;
 include "draw.m";
 include "daytime.m";
-daytime:	Daytime;
+daytime: Daytime;
 include "string.m";
 str: String;
 include "styx.m";
@@ -13,18 +13,18 @@ Rmsg, Tmsg: import styx;
 include "arg.m";
 ISO9660: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 Sectorsize: con 2048;
 Maxname: con 256;
-Enonexist:	con "file does not exist";
-Eperm:	con "permission denied";
-Enofile:	con "no file system specified";
-Eauth:	con "authentication failed";
-Ebadfid:	con	"invalid fid";
-Efidinuse:	con	"fid already in use";
-Enotdir:	con	"not a directory";
-Esyntax:	con	"file name syntax";
+Enonexist: con "file does not exist";
+Eperm: con "permission denied";
+Enofile: con "no file system specified";
+Eauth: con "authentication failed";
+Ebadfid: con "invalid fid";
+Efidinuse: con "fid already in use";
+Enotdir: con "not a directory";
+Esyntax: con "file name syntax";
 devname: string;
 chatty := 0;
 showstyx := 0;
@@ -207,7 +207,7 @@ if(!(f.qid.qtype & Sys->QTDIR))
 return Enotdir;
 case name {
 "." =>
-return nil;	# nop, but shouldn't happen
+return nil; # nop, but shouldn't happen
 ".." =>
 if(f.qid.path==f.xf.rootqid.path)
 return nil;
@@ -358,10 +358,10 @@ if(chatty)
 sys->fprint(stderr, "%s", s);
 }
 Fid: adt {
-fid:	int;
-file:	ref Xfile;
+fid: int;
+file: ref Xfile;
 };
-FIDMOD: con 127;	# prime
+FIDMOD: con 127; # prime
 fids := array[FIDMOD] of list of ref Fid;
 hashfid(fid: int): (ref Fid, array of list of ref Fid)
 {
@@ -371,9 +371,9 @@ nl = nil;
 for(l := hp[0]; l != nil; l = tl l){
 f := hd l;
 if(f.fid == fid){
-l = tl l;	# excluding f
+l = tl l; # excluding f
 for(; nl != nil; nl = tl nl)
-l = (hd nl) :: l;	# put examined ones back, in order
+l = (hd nl) :: l; # put examined ones back, in order
 hp[0] = l;
 return (f, hp);
 } else
@@ -414,65 +414,65 @@ f.file.clean();
 #
 #
 Xfs: adt {
-d:	ref Device;
-inuse:	int;
-issusp:	int;	# system use sharing protocol in use?
-suspoff:	int;	# LEN_SKP, if so
-isplan9:	int;	# has Plan 9-specific directory info
-isrock:	int;	# is rock ridge
-rootqid:	Sys->Qid;
-ptr:	int;	# tag for private data
-new:	fn(nil: ref Device): ref Xfs;
-incref:	fn(nil: self ref Xfs);
-decref:	fn(nil: self ref Xfs);
+d: ref Device;
+inuse: int;
+issusp: int; # system use sharing protocol in use?
+suspoff: int; # LEN_SKP, if so
+isplan9: int; # has Plan 9-specific directory info
+isrock: int; # is rock ridge
+rootqid: Sys->Qid;
+ptr: int; # tag for private data
+new: fn(nil: ref Device): ref Xfs;
+incref: fn(nil: self ref Xfs);
+decref: fn(nil: self ref Xfs);
 };
-Xfile:	adt {
-xf:	ref Xfs;
-flags:	int;
-qid:	Sys->Qid;
-ptr:	ref Isofile;	# tag for private data
-new:		fn(): ref Xfile;
-clean:	fn(nil: self ref Xfile): ref Xfile;
-save:		fn(nil: self ref Xfile): ref Xfile;
-restore:	fn(nil: self ref Xfile, s: ref Xfile);
-attach:	fn(nil: self ref Xfile): string;
-clone:	fn(nil: self ref Xfile, nil: ref Xfile);
-walkup:	fn(nil: self ref Xfile): string;
-walk:	fn(nil: self ref Xfile, nil: string): string;
-open:	fn(nil: self ref Xfile, nil: int): string;
-create:	fn(nil: self ref Xfile, nil: string, nil: int, nil: int): string;
-readdir:	fn(nil: self ref Xfile, nil: array of byte, nil: int, nil: int): (int, string);
-read:		fn(nil: self ref Xfile, nil: array of byte, nil: int, nil: int): (int, string);
-write:	fn(nil: self ref Xfile, nil: array of byte, nil: int, nil: int): (int, string);
-clunk:	fn(nil: self ref Xfile);
-remove:	fn(nil: self ref Xfile): string;
-stat:		fn(nil: self ref Xfile): (ref Sys->Dir, string);
-wstat:	fn(nil: self ref Xfile, nil: ref Sys->Dir): string;
+Xfile: adt {
+xf: ref Xfs;
+flags: int;
+qid: Sys->Qid;
+ptr: ref Isofile; # tag for private data
+new: fn(): ref Xfile;
+clean: fn(nil: self ref Xfile): ref Xfile;
+save: fn(nil: self ref Xfile): ref Xfile;
+restore: fn(nil: self ref Xfile, s: ref Xfile);
+attach: fn(nil: self ref Xfile): string;
+clone: fn(nil: self ref Xfile, nil: ref Xfile);
+walkup: fn(nil: self ref Xfile): string;
+walk: fn(nil: self ref Xfile, nil: string): string;
+open: fn(nil: self ref Xfile, nil: int): string;
+create: fn(nil: self ref Xfile, nil: string, nil: int, nil: int): string;
+readdir: fn(nil: self ref Xfile, nil: array of byte, nil: int, nil: int): (int, string);
+read: fn(nil: self ref Xfile, nil: array of byte, nil: int, nil: int): (int, string);
+write: fn(nil: self ref Xfile, nil: array of byte, nil: int, nil: int): (int, string);
+clunk: fn(nil: self ref Xfile);
+remove: fn(nil: self ref Xfile): string;
+stat: fn(nil: self ref Xfile): (ref Sys->Dir, string);
+wstat: fn(nil: self ref Xfile, nil: ref Sys->Dir): string;
 };
 Oread, Owrite, Orclose: con 1<<iota;
-Omodes: con 3;	# mask
-VOLDESC: con 16;	# sector number
+Omodes: con 3; # mask
+VOLDESC: con 16; # sector number
 Drec: adt {
-reclen:	int;
-attrlen:	int;
-addr:	int;	# should be big?
-size:	int;	# should be big?
-date:	array of byte;
-time:	int;
-tzone:	int;	# not in high sierra
-flags:	int;
-unitsize:	int;
-gapsize:	int;
-vseqno:	int;
-name:	array of byte;
-data:	array of byte;	# system extensions
+reclen: int;
+attrlen: int;
+addr: int; # should be big?
+size: int; # should be big?
+date: array of byte;
+time: int;
+tzone: int; # not in high sierra
+flags: int;
+unitsize: int;
+gapsize: int;
+vseqno: int;
+name: array of byte;
+data: array of byte; # system extensions
 };
 Isofile: adt {
-fmt:	int;	# 'z' if iso, 'r' if high sierra
-blksize:	int;
-offset:	int;	# true offset when reading directory
-doffset:	int;	# styx offset when reading directory
-d:	ref Drec;
+fmt: int; # 'z' if iso, 'r' if high sierra
+blksize: int;
+offset: int; # true offset when reading directory
+doffset: int; # styx offset when reading directory
+d: ref Drec;
 };
 Xfile.new(): ref Xfile
 {
@@ -518,17 +518,17 @@ if(dirp != nil)
 dirp.put();
 return "can't read volume descriptor";
 }
-v := p.data;	# Voldesc
-if(eqs(v[0:7], "\u0001CD001\u0001")){		# ISO
+v := p.data; # Voldesc
+if(eqs(v[0:7], "\u0001CD001\u0001")){ # ISO
 if(dirp != nil)
 dirp.put();
 dirp = p;
 fmt = 'z';
-convM2Drec(v[156:], dp, 0);	# v.z.desc.rootdir
-blksize = l16(v[128:]);	# v.z.desc.blksize
+convM2Drec(v[156:], dp, 0); # v.z.desc.rootdir
+blksize = l16(v[128:]); # v.z.desc.blksize
 if(chatty)
 chat(sys->sprint("iso, blksize=%d...", blksize));
-haveplan9 = eqs(v[8:8+6], "PLAN 9");	# v.z.boot.sysid
+haveplan9 = eqs(v[8:8+6], "PLAN 9"); # v.z.boot.sysid
 if(haveplan9){
 if(noplan9) {
 chat("ignoring plan9");
@@ -540,27 +540,27 @@ chat("plan9 iso...");
 }
 continue;
 }
-if(eqs(v[8:8+7], "\u0001CDROM\u0001")){	# high sierra
+if(eqs(v[8:8+7], "\u0001CDROM\u0001")){ # high sierra
 if(dirp != nil)
 dirp.put();
 dirp = p;
 fmt = 'r';
-convM2Drec(v[180:], dp, 1);	# v.r.desc.rootdir
-blksize = l16(v[136:]);	# v.r.desc.blksize
+convM2Drec(v[180:], dp, 1); # v.r.desc.rootdir
+blksize = l16(v[136:]); # v.r.desc.blksize
 if(chatty)
 chat(sys->sprint("high sierra, blksize=%d...", blksize));
 continue;
 }
 if(haveplan9==0 && !nojoliet && eqs(v[0:7], "\u0002CD001\u0001")){
-q := v[88:];	# v.z.desc.escapes
+q := v[88:]; # v.z.desc.escapes
 if(q[0] == byte 16r25 && q[1] == byte 16r2F &&
-(q[2] == byte 16r40 || q[2] == byte 16r43 || q[2] == byte 16r45)){	# joliet, it appears
+(q[2] == byte 16r40 || q[2] == byte 16r43 || q[2] == byte 16r45)){ # joliet, it appears
 if(dirp != nil)
 dirp.put();
 dirp = p;
 fmt = 'J';
-convM2Drec(v[156:], dp, 0);	# v.z.desc.rootdir
-if(blksize != l16(v[128:]))	# v.z.desc.blksize
+convM2Drec(v[156:], dp, 0); # v.z.desc.rootdir
+if(blksize != l16(v[128:])) # v.z.desc.blksize
 sys->fprint(stderr, "9660srv: warning: suspicious Joliet block size: %d\n", l16(v[128:]));
 chat("joliet...");
 continue;
@@ -571,7 +571,7 @@ if(v[0] == byte 16rFF)
 break;
 }
 }
-if(fmt ==  0){
+if(fmt == 0){
 if(dirp != nil)
 dirp.put();
 return "CD format not recognised";
@@ -615,7 +615,7 @@ continue;
 } else if(s[0] == byte 'R' && s[1] == byte 'R'){
 if(!norock)
 root.xf.isrock = 1;
-break;	# can skip search for ER
+break; # can skip search for ER
 } else if(s[0] == byte 'S' && s[1] == byte 'T')
 break;
 s = s[l:];
@@ -636,7 +636,7 @@ newf.ptr = nil;
 newf.xf.incref();
 ip := iso(oldf);
 np := iso(newf);
-*np = *ip;	# might not be right; shares ip.d
+*np = *ip; # might not be right; shares ip.d
 }
 Xfile.walkup(f: self ref Xfile): string
 {
@@ -740,7 +740,7 @@ continue;
 }
 if(rcnt+len a > count)
 break;
-buf[rcnt:] = a;		# BOTCH: copy
+buf[rcnt:] = a; # BOTCH: copy
 rcnt += len a;
 }
 ip.doffset += rcnt;
@@ -942,11 +942,11 @@ n := len dp.name;
 if(n == 1) {
 case int dp.name[0] {
 0 => d.name = "."; have |= Hname;
-1 =>	d.name = ".."; have |= Hname;
-* =>	d.name = ""; d.name[0] = tolower(int dp.name[0]);
+1 => d.name = ".."; have |= Hname;
+* => d.name = ""; d.name[0] = tolower(int dp.name[0]);
 }
 } else {
-if(fmt == 'J'){	# Joliet, 16-bit Unicode
+if(fmt == 'J'){ # Joliet, 16-bit Unicode
 d.name = "";
 for(i:=0; i<n; i+=2){
 r := (int dp.name[i]<<8) | int dp.name[i+1];
@@ -1004,8 +1004,8 @@ d.mode |= DMDIR|8r111;
 d.uid = "cdrom";
 for(i := 0; i < len d.name; i++)
 if(d.name[i] == ';') {
-vers = int string d.name[i+1:];	# inefficient
-d.name = d.name[0:i];	# inefficient
+vers = int string d.name[i+1:]; # inefficient
+d.name = d.name[0:i]; # inefficient
 break;
 }
 n = len dp.data - fs.suspoff;
@@ -1033,7 +1033,7 @@ nm = 1;
 } else
 d.name += string s[5:l];
 if(flags == 0)
-have |= Hname;	# no more
+have |= Hname; # no more
 }
 } else if(s[0] == byte 'C' && s[1] == byte 'E' && int s[2] >= 28){
 (s, n) = getcontin(fs.d, s);
@@ -1081,7 +1081,7 @@ d.name = array[n] of byte;
 d.name[0:] = a[33:33+n];
 n += 33;
 if(n & 1)
-n++;	# check this
+n++; # check this
 syslen := d.reclen - n;
 if(syslen > 0){
 d.data = array[syslen] of byte;
@@ -1128,7 +1128,7 @@ if((y%4) == 0)
 return 366;
 return 365;
 }
-gtime(p: array of byte): int	# yMdhms
+gtime(p: array of byte): int # yMdhms
 {
 y:=int p[0]; M:=int p[1]; d:=int p[2];
 h:=int p[3]; m:=int p[4]; s:=int p[5];;
@@ -1189,32 +1189,32 @@ return c;
 # I/O buffers
 #
 Device: adt {
-inuse:	int;	# attach count
-name:	string;	# of underlying file
-fd:	ref Sys->FD;
-sectorsize:	int;
-qid:	Sys->Qid;	# (qid,dtype,dev) identify uniquely
-dtype:	int;
-dev:	int;
-detach:	fn(nil: self ref Device);
+inuse: int; # attach count
+name: string; # of underlying file
+fd: ref Sys->FD;
+sectorsize: int;
+qid: Sys->Qid; # (qid,dtype,dev) identify uniquely
+dtype: int;
+dev: int;
+detach: fn(nil: self ref Device);
 };
 Block: adt {
-dev:	ref Device;
-addr:	int;
-data:	array of byte;
+dev: ref Device;
+addr: int;
+data: array of byte;
 # internal
-next:	cyclic ref Block;
-prev:	cyclic ref Block;
-busy:	int;
-get:	fn(nil: ref Device, addr: int): ref Block;
-put:	fn(nil: self ref Block);
+next: cyclic ref Block;
+prev: cyclic ref Block;
+busy: int;
+get: fn(nil: ref Device, addr: int): ref Block;
+put: fn(nil: self ref Block);
 };
-devices:	list of ref Device;
-NIOB:	con 100;	# for starters
-HIOB:	con 127;	# prime
-hiob := array[HIOB] of list of ref Block;	# hash buckets
-iohead:	ref Block;
-iotail:	ref Block;
+devices: list of ref Device;
+NIOB: con 100; # for starters
+HIOB: con 127; # prime
+hiob := array[HIOB] of list of ref Block; # hash buckets
+iohead: ref Block;
+iotail: ref Block;
 bufsize := 0;
 iobufinit(bsize: int)
 {
@@ -1268,7 +1268,7 @@ p.dev = dev;
 p.busy++;
 sys->seek(dev.fd, big addr*big dev.sectorsize, 0);
 if(sys->read(dev.fd, p.data, dev.sectorsize) != dev.sectorsize){
-p.addr = -1;	# stop caching
+p.addr = -1; # stop caching
 p.put();
 purge(dev);
 return nil;
@@ -1302,7 +1302,7 @@ purge(dev: ref Device)
 for(i := 0; i < HIOB; i++){
 l := hiob[i];
 hiob[i] = nil;
-for(; l != nil; l = tl l){	# reverses bucket's list, but never mind
+for(; l != nil; l = tl l){ # reverses bucket's list, but never mind
 p := hd l;
 if(p.dev == dev)
 p.busy = 0;

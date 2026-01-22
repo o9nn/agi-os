@@ -1,5 +1,5 @@
 #ifndef gxtype1_INCLUDED
-#  define gxtype1_INCLUDED
+# define gxtype1_INCLUDED
 #include "gscrypt1.h"
 #include "gsgdata.h"
 #include "gstype1.h"
@@ -31,11 +31,11 @@ decrypt_skip_next(ch, state)) :\
 #define charstring_skip_next(ch, state, encrypted)\
 (encrypted ? decrypt_skip_next(ch, state) : 0)
 #ifndef gx_path_DEFINED
-#  define gx_path_DEFINED
+# define gx_path_DEFINED
 typedef struct gx_path_s gx_path;
 #endif
 #ifndef segment_DEFINED
-#  define segment_DEFINED
+# define segment_DEFINED
 typedef struct segment_s segment;
 #endif
 #define ostack_size 48
@@ -131,10 +131,10 @@ else\
 charstring_skip_next(c2, state, encrypted);\
 END
 #if arch_sizeof_long > 4
-#  define sign_extend_num4(lw)\
+# define sign_extend_num4(lw)\
 lw = (lw ^ 0x80000000L) - 0x80000000L
 #else
-#  define sign_extend_num4(lw) DO_NOTHING
+# define sign_extend_num4(lw) DO_NOTHING
 #endif
 #define decode_num4(lw, cip, state, encrypted)\
 BEGIN\

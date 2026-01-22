@@ -27,12 +27,12 @@ static int depca_debug = DEPCA_DEBUG;
 static int depca_debug = 1;
 #endif
 #define DEPCA_NDA 0xffe0
-#define PROBE_LENGTH    32
-#define ETH_PROM_SIG    0xAA5500FFUL
-#define NUM_RX_DESC     8
-#define NUM_TX_DESC     8
-#define RX_BUFF_SZ	1536
-#define TX_BUFF_SZ	1536
+#define PROBE_LENGTH 32
+#define ETH_PROM_SIG 0xAA5500FFUL
+#define NUM_RX_DESC 8
+#define NUM_TX_DESC 8
+#define RX_BUFF_SZ 1536
+#define TX_BUFF_SZ 1536
 #define CRC_POLYNOMIAL_BE 0x04c11db7UL
 #define CRC_POLYNOMIAL_LE 0xedb88320UL
 #define DEPCA_EISA_IO_PORTS 0x0c00
@@ -51,9 +51,9 @@ static short mem_chkd = 0;
 static enum {DEPCA, de100, de101, de200, de201, de202, de210, de422, unknown} adapter;
 #define DEPCA_STRLEN 16
 #define MAX_NUM_DEPCAS 2
-#define ALIGN4      ((u_long)4 - 1)
-#define ALIGN8      ((u_long)8 - 1)
-#define ALIGN         ALIGN8
+#define ALIGN4 ((u_long)4 - 1)
+#define ALIGN8 ((u_long)8 - 1)
+#define ALIGN ALIGN8
 struct depca_rx_desc {
 volatile s32 base;
 s16 buf_length;
@@ -67,26 +67,26 @@ s16 misc;
 #define LA_MASK 0x0000ffff
 struct depca_init {
 u16 mode;
-u8  phys_addr[ETH_ALEN];
-u8  mcast_table[8];
+u8 phys_addr[ETH_ALEN];
+u8 mcast_table[8];
 u32 rx_ring;
 u32 tx_ring;
 };
 #define DEPCA_PKT_STAT_SZ 16
-#define DEPCA_PKT_BIN_SZ  128
+#define DEPCA_PKT_BIN_SZ 128
 struct depca_private {
 char devname[DEPCA_STRLEN];
 char adapter_name[DEPCA_STRLEN];
 char adapter;
 struct depca_rx_desc *rx_ring;
 struct depca_tx_desc *tx_ring;
-struct depca_init	init_block;
+struct depca_init init_block;
 char *rx_memcpy[NUM_RX_DESC];
 char *tx_memcpy[NUM_TX_DESC];
 u_long bus_offset;
 u_long sh_mem;
 u_long dma_buffs;
-int	rx_new, tx_new;
+int rx_new, tx_new;
 int rx_old, tx_old;
 struct enet_statistics stats;
 struct {
@@ -105,47 +105,47 @@ s32 tx_rlen;
 };
 #define TX_BUFFS_AVAIL ((lp->tx_old<=lp->tx_new)?\
 lp->tx_old+lp->txRingMask-lp->tx_new:\
-lp->tx_old               -lp->tx_new-1)
-static int    depca_open(struct device *dev);
-static int    depca_start_xmit(struct sk_buff *skb, struct device *dev);
-static void   depca_interrupt(int irq, void *dev_id, struct pt_regs * regs);
-static int    depca_close(struct device *dev);
-static int    depca_ioctl(struct device *dev, struct ifreq *rq, int cmd);
+lp->tx_old -lp->tx_new-1)
+static int depca_open(struct device *dev);
+static int depca_start_xmit(struct sk_buff *skb, struct device *dev);
+static void depca_interrupt(int irq, void *dev_id, struct pt_regs * regs);
+static int depca_close(struct device *dev);
+static int depca_ioctl(struct device *dev, struct ifreq *rq, int cmd);
 static struct enet_statistics *depca_get_stats(struct device *dev);
-static void   set_multicast_list(struct device *dev);
-static int    depca_hw_init(struct device *dev, u_long ioaddr);
-static void   depca_init_ring(struct device *dev);
-static int    depca_rx(struct device *dev);
-static int    depca_tx(struct device *dev);
-static void   LoadCSRs(struct device *dev);
-static int    InitRestartDepca(struct device *dev);
-static void   DepcaSignature(char *name, u_long paddr);
-static int    DevicePresent(u_long ioaddr);
-static int    get_hw_addr(struct device *dev);
-static int    EISA_signature(char *name, s32 eisa_id);
-static void   SetMulticastFilter(struct device *dev);
-static void   isa_probe(struct device *dev, u_long iobase);
-static void   eisa_probe(struct device *dev, u_long iobase);
+static void set_multicast_list(struct device *dev);
+static int depca_hw_init(struct device *dev, u_long ioaddr);
+static void depca_init_ring(struct device *dev);
+static int depca_rx(struct device *dev);
+static int depca_tx(struct device *dev);
+static void LoadCSRs(struct device *dev);
+static int InitRestartDepca(struct device *dev);
+static void DepcaSignature(char *name, u_long paddr);
+static int DevicePresent(u_long ioaddr);
+static int get_hw_addr(struct device *dev);
+static int EISA_signature(char *name, s32 eisa_id);
+static void SetMulticastFilter(struct device *dev);
+static void isa_probe(struct device *dev, u_long iobase);
+static void eisa_probe(struct device *dev, u_long iobase);
 static struct device *alloc_device(struct device *dev, u_long iobase);
-static int    depca_dev_index(char *s);
+static int depca_dev_index(char *s);
 static struct device *insert_device(struct device *dev, u_long iobase, int (*init)(struct device *));
-static int    load_packet(struct device *dev, struct sk_buff *skb);
-static void   depca_dbg_open(struct device *dev);
+static int load_packet(struct device *dev, struct sk_buff *skb);
+static void depca_dbg_open(struct device *dev);
 #ifdef MODULE
-int           init_module(void);
-void          cleanup_module(void);
-static int    autoprobed = 1, loading_module = 1;
+int init_module(void);
+void cleanup_module(void);
+static int autoprobed = 1, loading_module = 1;
 # else
 static u_char de1xx_irq[] = {2,3,4,5,7,9,0};
 static u_char de2xx_irq[] = {5,9,10,11,15,0};
 static u_char de422_irq[] = {5,9,10,11,0};
 static u_char *depca_irq;
-static int    autoprobed = 0, loading_module = 0;
+static int autoprobed = 0, loading_module = 0;
 #endif
-static char   name[DEPCA_STRLEN];
-static int    num_depcas = 0, num_eth = 0;
-static int    mem=0;
-static char   *adapter_name = '\0';
+static char name[DEPCA_STRLEN];
+static int num_depcas = 0, num_eth = 0;
+static int mem=0;
+static char *adapter_name = '\0';
 #define STOP_DEPCA \
 outw(CSR0, DEPCA_ADDR);\
 outw(STOP, DEPCA_DATA)
@@ -494,7 +494,7 @@ if (status & R_ERR) {
 lp->stats.rx_errors++;
 if (status & R_FRAM) lp->stats.rx_frame_errors++;
 if (status & R_OFLO) lp->stats.rx_over_errors++;
-if (status & R_CRC)  lp->stats.rx_crc_errors++;
+if (status & R_CRC) lp->stats.rx_crc_errors++;
 if (status & R_BUFF) lp->stats.rx_fifo_errors++;
 } else {
 short len, pkt_len = readw(&lp->rx_ring[entry].msg_length);
@@ -1072,7 +1072,7 @@ struct depca_ioctl *ioc = (struct depca_ioctl *) &rq->ifr_data;
 int i, status = 0;
 u_long ioaddr = dev->base_addr;
 union {
-u8  addr[(HASH_TABLE_LEN * ETH_ALEN)];
+u8 addr[(HASH_TABLE_LEN * ETH_ALEN)];
 u16 sval[(HASH_TABLE_LEN * ETH_ALEN) >> 1];
 u32 lval[(HASH_TABLE_LEN * ETH_ALEN) >> 2];
 } tmp;

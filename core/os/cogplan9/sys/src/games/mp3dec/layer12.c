@@ -1,11 +1,11 @@
 # ifdef HAVE_CONFIG_H
-#  include "config.h"
+# include "config.h"
 # endif
 # include "global.h"
 # ifdef HAVE_LIMITS_H
-#  include <limits.h>
+# include <limits.h>
 # else
-#  define CHAR_BIT  8
+# define CHAR_BIT 8
 # endif
 # include "fixed.h"
 # include "bit.h"
@@ -132,7 +132,7 @@ unsigned char const offsets[30];
 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0 } },
 { 30, { 7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 6, 3, 3, 3, 3, 3,
 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0 } },
-{  8, { 5, 5, 2, 2, 2, 2, 2, 2 } },
+{ 8, { 5, 5, 2, 2, 2, 2, 2, 2 } },
 { 12, { 5, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 } },
 { 30, { 4, 4, 4, 4, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1,
 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 } }
@@ -153,12 +153,12 @@ unsigned short offset;
 };
 static
 unsigned char const offset_table[6][15] = {
-{ 0, 1, 16                                             },
-{ 0, 1,  2, 3, 4, 5, 16                                },
-{ 0, 1,  2, 3, 4, 5,  6, 7,  8,  9, 10, 11, 12, 13, 14 },
-{ 0, 1,  3, 4, 5, 6,  7, 8,  9, 10, 11, 12, 13, 14, 15 },
-{ 0, 1,  2, 3, 4, 5,  6, 7,  8,  9, 10, 11, 12, 13, 16 },
-{ 0, 2,  4, 5, 6, 7,  8, 9, 10, 11, 12, 13, 14, 15, 16 }
+{ 0, 1, 16 },
+{ 0, 1, 2, 3, 4, 5, 16 },
+{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 },
+{ 0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
+{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16 },
+{ 0, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 }
 };
 static
 struct quantclass {
@@ -192,7 +192,7 @@ sample[s] = mad_bit_read(ptr, nb);
 }
 for (s = 0; s < 3; ++s) {
 mad_fixed_t requantized;
-requantized  = sample[s] ^ (1 << (nb - 1));
+requantized = sample[s] ^ (1 << (nb - 1));
 requantized |= -(requantized & (1 << (nb - 1)));
 requantized <<= MAD_F_FRACBITS - (nb - 1);
 output[s] = mad_f_mul(requantized + quantclass->D, quantclass->C);

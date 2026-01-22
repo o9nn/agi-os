@@ -1,4 +1,4 @@
-#define	BLS	(&aic7xxx_buffer[size])
+#define BLS (&aic7xxx_buffer[size])
 #define HDRB \
 "             < 2K      2K+     4K+     8K+    16K+    32K+    64K+   128K+"
 #ifdef PROC_DEBUG
@@ -14,7 +14,7 @@ printk(buf);
 va_end(ap);
 }
 #else
-#  define proc_debug(fmt, args...)
+# define proc_debug(fmt, args...)
 #endif
 static int aic7xxx_buffer_size = 0;
 static char *aic7xxx_buffer = NULL;
@@ -30,7 +30,7 @@ int hostno, int inout)
 {
 struct Scsi_Host *HBAptr;
 struct aic7xxx_host *p;
-int    size = 0;
+int size = 0;
 unsigned char i;
 struct aic7xxx_xferstats *sp;
 unsigned char target;

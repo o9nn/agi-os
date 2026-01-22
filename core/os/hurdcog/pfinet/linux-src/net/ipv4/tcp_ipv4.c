@@ -114,7 +114,7 @@ int low = sysctl_local_port_range[0];
 int high = sysctl_local_port_range[1];
 int rover = net_random() % (high - low) + low;
 int remaining = (high - low) + 1;
-do {	rover++;
+do { rover++;
 if ((rover < low) || (rover > high))
 rover = low;
 tb = tcp_bhash[tcp_bhashfn(rover)];
@@ -145,11 +145,11 @@ int sk_reuse = sk->reuse;
 for( ; sk2 != NULL; sk2 = sk2->bind_next) {
 if (!ipv6_only_sock(sk2) &&
 sk->bound_dev_if == sk2->bound_dev_if) {
-if (!sk_reuse	||
-!sk2->reuse	||
+if (!sk_reuse ||
+!sk2->reuse ||
 sk2->state == TCP_LISTEN) {
-if (!sk2->rcv_saddr	||
-!sk->rcv_saddr	||
+if (!sk2->rcv_saddr ||
+!sk->rcv_saddr ||
 (sk2->rcv_saddr == sk->rcv_saddr))
 break;
 }
@@ -627,7 +627,7 @@ if (sk->ip_recverr) {
 sk->err = err;
 mb();
 sk->error_report(sk);
-} else	{
+} else {
 sk->err_soft = err;
 mb();
 }
@@ -667,7 +667,7 @@ rth.ack_seq = th->syn ? htonl(ntohl(th->seq)+1) : th->seq;
 }
 memset(&arg, 0, sizeof arg);
 arg.iov[0].iov_base = (unsigned char *)&rth;
-arg.iov[0].iov_len  = sizeof rth;
+arg.iov[0].iov_len = sizeof rth;
 arg.csum = csum_tcpudp_nofold(skb->nh.iph->daddr,
 skb->nh.iph->saddr,
 sizeof(struct tcphdr),
@@ -694,7 +694,7 @@ rth.ack = 1;
 rth.window = htons(window);
 memset(&arg, 0, sizeof arg);
 arg.iov[0].iov_base = (unsigned char *)&rth;
-arg.iov[0].iov_len  = sizeof rth;
+arg.iov[0].iov_len = sizeof rth;
 arg.csum = csum_tcpudp_nofold(skb->nh.iph->daddr,
 skb->nh.iph->saddr,
 sizeof(struct tcphdr),
@@ -1314,9 +1314,9 @@ skb->nh.iph->daddr, th->dest, skb->dev->ifindex);
 static void v4_addr2sockaddr(struct sock *sk, struct sockaddr * uaddr)
 {
 struct sockaddr_in *sin = (struct sockaddr_in *) uaddr;
-sin->sin_family		= AF_INET;
-sin->sin_addr.s_addr	= sk->daddr;
-sin->sin_port		= sk->dport;
+sin->sin_family = AF_INET;
+sin->sin_addr.s_addr = sk->daddr;
+sin->sin_port = sk->dport;
 }
 struct tcp_func ipv4_specific = {
 ip_queue_xmit,
@@ -1336,7 +1336,7 @@ static int tcp_v4_init_sock(struct sock *sk)
 struct tcp_opt *tp = &(sk->tp_pinfo.af_tcp);
 skb_queue_head_init(&tp->out_of_order_queue);
 tcp_init_xmit_timers(sk);
-tp->rto  = TCP_TIMEOUT_INIT;
+tp->rto = TCP_TIMEOUT_INIT;
 tp->mdev = TCP_TIMEOUT_INIT;
 tp->mss_clamp = ~0;
 tp->snd_cwnd = 2;

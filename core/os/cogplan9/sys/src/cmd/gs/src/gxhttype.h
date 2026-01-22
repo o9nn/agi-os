@@ -1,5 +1,5 @@
 #ifndef gxhttype_INCLUDED
-#  define gxhttype_INCLUDED
+# define gxhttype_INCLUDED
 typedef enum {
 ht_type_none,
 ht_type_screen,

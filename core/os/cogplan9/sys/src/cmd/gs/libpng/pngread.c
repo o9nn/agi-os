@@ -103,7 +103,7 @@ png_ptr->zstream.zfree = png_zfree;
 png_ptr->zstream.opaque = (voidpf)png_ptr;
 switch (inflateInit(&png_ptr->zstream))
 {
-case Z_OK:  break;
+case Z_OK: break;
 case Z_MEM_ERROR:
 case Z_STREAM_ERROR: png_error(png_ptr, "zlib memory error"); break;
 case Z_VERSION_ERROR: png_error(png_ptr, "zlib version error"); break;
@@ -222,7 +222,7 @@ png_ptr->zstream.zfree = png_zfree;
 png_ptr->zstream.opaque = (voidpf)png_ptr;
 switch (inflateInit(&png_ptr->zstream))
 {
-case Z_OK:  break;
+case Z_OK: break;
 case Z_MEM_ERROR:
 case Z_STREAM_ERROR: png_error(png_ptr, "zlib memory"); break;
 case Z_VERSION_ERROR: png_error(png_ptr, "zlib version"); break;

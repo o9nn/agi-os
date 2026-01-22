@@ -7,22 +7,22 @@ typedef struct IHash IHash;
 typedef struct ISum ISum;
 struct ICache
 {
-QLock	lock;
-Rendez	full;
-IHash	*hash;
-IEntry	*entries;
-int		nentries;
-IEntry	free;
-IEntry	clean;
-IEntry	dirty;
-u32int	maxdirty;
-u32int	ndirty;
-AState	as;
-ISum	**sum;
-int		nsum;
-IHash	*shash;
-IEntry	*sentries;
-int		nsentries;
+QLock lock;
+Rendez full;
+IHash *hash;
+IEntry *entries;
+int nentries;
+IEntry free;
+IEntry clean;
+IEntry dirty;
+u32int maxdirty;
+u32int ndirty;
+AState as;
+ISum **sum;
+int nsum;
+IHash *shash;
+IEntry *sentries;
+int nsentries;
 };
 static ICache icache;
 struct IHash
@@ -111,10 +111,10 @@ return ie;
 }
 struct ISum
 {
-QLock	lock;
-IEntry	*entries;
-int	nentries;
-int	loaded;
+QLock lock;
+IEntry *entries;
+int nentries;
+int loaded;
 u64int addr;
 u64int limit;
 Arena *arena;

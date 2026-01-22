@@ -16,7 +16,7 @@ typedef struct {
 int key_bits;
 RC2_KEY ks;
 } EVP_RC2_KEY;
-# define data(ctx)       ((EVP_RC2_KEY *)(ctx)->cipher_data)
+# define data(ctx) ((EVP_RC2_KEY *)(ctx)->cipher_data)
 IMPLEMENT_BLOCK_CIPHER(rc2, ks, RC2, EVP_RC2_KEY, NID_rc2,
 8,
 RC2_KEY_LENGTH, 8, 64,
@@ -24,12 +24,12 @@ EVP_CIPH_VARIABLE_LENGTH | EVP_CIPH_CTRL_INIT,
 rc2_init_key, NULL,
 rc2_set_asn1_type_and_iv, rc2_get_asn1_type_and_iv,
 rc2_ctrl)
-# define RC2_40_MAGIC    0xa0
-# define RC2_64_MAGIC    0x78
-# define RC2_128_MAGIC   0x3a
+# define RC2_40_MAGIC 0xa0
+# define RC2_64_MAGIC 0x78
+# define RC2_128_MAGIC 0x3a
 static const EVP_CIPHER r2_64_cbc_cipher = {
 NID_rc2_64_cbc,
-8, 8  , 8,
+8, 8 , 8,
 EVP_CIPH_CBC_MODE | EVP_CIPH_VARIABLE_LENGTH | EVP_CIPH_CTRL_INIT,
 rc2_init_key,
 rc2_cbc_cipher,
@@ -42,7 +42,7 @@ NULL
 };
 static const EVP_CIPHER r2_40_cbc_cipher = {
 NID_rc2_40_cbc,
-8, 5  , 8,
+8, 5 , 8,
 EVP_CIPH_CBC_MODE | EVP_CIPH_VARIABLE_LENGTH | EVP_CIPH_CTRL_INIT,
 rc2_init_key,
 rc2_cbc_cipher,

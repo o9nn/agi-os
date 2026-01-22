@@ -2,193 +2,193 @@
 typedef struct instr Instr;
 struct opcode
 {
-char	*mnemonic;
-void	(*f)(Instr*, char*);
-int	flag;
+char *mnemonic;
+void (*f)(Instr*, char*);
+int flag;
 };
-static	char FRAMENAME[] = ".frame";
+static char FRAMENAME[] = ".frame";
 struct instr
 {
-uchar	op;
-uchar	rd;
-uchar	op2;
-uchar	a;
-uchar	cond;
-uchar	op3;
-uchar	rs1;
-uchar	i;
-uchar	asi;
-uchar	rs2;
-short	simm13;
-ushort	opf;
-ulong	immdisp22;
-ulong	simmdisp22;
-ulong	disp30;
-ulong	imm32;
-int	target;
-long	w0;
-long	w1;
-ulong	addr;
-char*	curr;
-char*	end;
-int 	size;
-char*	err;
+uchar op;
+uchar rd;
+uchar op2;
+uchar a;
+uchar cond;
+uchar op3;
+uchar rs1;
+uchar i;
+uchar asi;
+uchar rs2;
+short simm13;
+ushort opf;
+ulong immdisp22;
+ulong simmdisp22;
+ulong disp30;
+ulong imm32;
+int target;
+long w0;
+long w1;
+ulong addr;
+char* curr;
+char* end;
+int size;
+char* err;
 };
-static	int	dascase;
-static int	mkinstr(ulong*, Instr*);
-static void	bra1(Instr*, char*, char*[]);
-static void	bra(Instr*, char*);
-static void	fbra(Instr*, char*);
-static void	cbra(Instr*, char*);
-static void	unimp(Instr*, char*);
-static void	fpop(Instr*, char*);
-static void	shift(Instr*, char*);
-static void	sethi(Instr*, char*);
-static void	load(Instr*, char*);
-static void	loada(Instr*, char*);
-static void	store(Instr*, char*);
-static void	storea(Instr*, char*);
-static void	add(Instr*, char*);
-static void	cmp(Instr*, char*);
-static void	wr(Instr*, char*);
-static void	jmpl(Instr*, char*);
-static void	rd(Instr*, char*);
-static void	loadf(Instr*, char*);
-static void	storef(Instr*, char*);
-static void	loadc(Instr*, char*);
-static void	loadcsr(Instr*, char*);
-static void	trap(Instr*, char*);
+static int dascase;
+static int mkinstr(ulong*, Instr*);
+static void bra1(Instr*, char*, char*[]);
+static void bra(Instr*, char*);
+static void fbra(Instr*, char*);
+static void cbra(Instr*, char*);
+static void unimp(Instr*, char*);
+static void fpop(Instr*, char*);
+static void shift(Instr*, char*);
+static void sethi(Instr*, char*);
+static void load(Instr*, char*);
+static void loada(Instr*, char*);
+static void store(Instr*, char*);
+static void storea(Instr*, char*);
+static void add(Instr*, char*);
+static void cmp(Instr*, char*);
+static void wr(Instr*, char*);
+static void jmpl(Instr*, char*);
+static void rd(Instr*, char*);
+static void loadf(Instr*, char*);
+static void storef(Instr*, char*);
+static void loadc(Instr*, char*);
+static void loadcsr(Instr*, char*);
+static void trap(Instr*, char*);
 static struct opcode sparcop0[8] = {
-"UNIMP",	unimp,	0,
-0,		0,	0,
-"B",		bra,	0,
-0,		0,	0,
-"SETHI",	sethi,	0,
-0,		0,	0,
-"FB",		fbra,	0,
-"CB",		cbra,	0,
+"UNIMP", unimp, 0,
+0, 0, 0,
+"B", bra, 0,
+0, 0, 0,
+"SETHI", sethi, 0,
+0, 0, 0,
+"FB", fbra, 0,
+"CB", cbra, 0,
 };
 static struct opcode sparcop2[64] = {
-"ADD",		add,	0,
-"AND",		add,	0,
-"OR",		add,	0,
-"XOR",		add,	0,
-"SUB",		add,	0,
-"ANDN",		add,	0,
-"ORN",		add,	0,
-"XORN",		add,	0,
-"ADDX",		add,	0,
-0,		0,	0,
-"UMUL",		add,	0,
-"SMUL",		add,	0,
-"SUBX",		add,	0,
-0,		0,	0,
-"UDIV",		add,	0,
-"SDIV",		add,	0,
-"ADDCC",	add,	0,
-"ANDCC",	add,	0,
-"ORCC",		add,	0,
-"XORCC",	add,	0,
-"SUBCC",	cmp,	0,
-"ANDNCC",	add,	0,
-"ORNCC",	add,	0,
-"XORNCC",	add,	0,
-"ADDXCC",	add,	0,
-0,		0,	0,
-"UMULCC",	add,	0,
-"SMULCC",	add,	0,
-"SUBXCC",	add,	0,
-0,		0,	0,
-"UDIVCC",	add,	0,
-"SDIVCC",	add,	0,
-"TADD",		add,	0,
-"TSUB",		add,	0,
-"TADDCCTV",	add,	0,
-"TSUBCCTV",	add,	0,
-"MULSCC",	add,	0,
-"SLL",		shift,	0,
-"SRL",		shift,	0,
-"SRA",		shift,	0,
-"rdy",		rd,	0,
-"rdpsr",	rd,	0,
-"rdwim",	rd,	0,
-"rdtbr",	rd,	0,
-0,		0,	0,
-0,		0,	0,
-0,		0,	0,
-0,		0,	0,
-"wry",		wr,	0,
-"wrpsr",	wr,	0,
-"wrwim",	wr,	0,
-"wrtbr",	wr,	0,
-"FPOP",		fpop,	0,
-"FPOP",		fpop,	0,
-0,		0,	0,
-0,		0,	0,
-"JMPL",		jmpl,	0,
-"RETT",		add,	0,
-"T",		trap,	0,
-"flush",	add,	0,
-"SAVE",		add,	0,
-"RESTORE",	add,	0,
+"ADD", add, 0,
+"AND", add, 0,
+"OR", add, 0,
+"XOR", add, 0,
+"SUB", add, 0,
+"ANDN", add, 0,
+"ORN", add, 0,
+"XORN", add, 0,
+"ADDX", add, 0,
+0, 0, 0,
+"UMUL", add, 0,
+"SMUL", add, 0,
+"SUBX", add, 0,
+0, 0, 0,
+"UDIV", add, 0,
+"SDIV", add, 0,
+"ADDCC", add, 0,
+"ANDCC", add, 0,
+"ORCC", add, 0,
+"XORCC", add, 0,
+"SUBCC", cmp, 0,
+"ANDNCC", add, 0,
+"ORNCC", add, 0,
+"XORNCC", add, 0,
+"ADDXCC", add, 0,
+0, 0, 0,
+"UMULCC", add, 0,
+"SMULCC", add, 0,
+"SUBXCC", add, 0,
+0, 0, 0,
+"UDIVCC", add, 0,
+"SDIVCC", add, 0,
+"TADD", add, 0,
+"TSUB", add, 0,
+"TADDCCTV", add, 0,
+"TSUBCCTV", add, 0,
+"MULSCC", add, 0,
+"SLL", shift, 0,
+"SRL", shift, 0,
+"SRA", shift, 0,
+"rdy", rd, 0,
+"rdpsr", rd, 0,
+"rdwim", rd, 0,
+"rdtbr", rd, 0,
+0, 0, 0,
+0, 0, 0,
+0, 0, 0,
+0, 0, 0,
+"wry", wr, 0,
+"wrpsr", wr, 0,
+"wrwim", wr, 0,
+"wrtbr", wr, 0,
+"FPOP", fpop, 0,
+"FPOP", fpop, 0,
+0, 0, 0,
+0, 0, 0,
+"JMPL", jmpl, 0,
+"RETT", add, 0,
+"T", trap, 0,
+"flush", add, 0,
+"SAVE", add, 0,
+"RESTORE", add, 0,
 };
 static struct opcode sparcop3[64]={
-"ld",		load,	0,
-"ldub",		load,	0,
-"lduh",		load,	0,
-"ldd",		load,	0,
-"st",		store,	0,
-"stb",		store,	0,
-"sth",		store,	0,
-"std",		store,	0,
-0,		0,	0,
-"ldsb",		load,	0,
-"ldsh",		load,	0,
-0,		0,	0,
-0,		0,	0,
-"ldstub",	store,	0,
-0,		0,	0,
-"swap",		load,	0,
-"lda",		loada,	0,
-"lduba",	loada,	0,
-"lduha",	loada,	0,
-"ldda",		loada,	0,
-"sta",		storea,	0,
-"stba",		storea,	0,
-"stha",		storea,	0,
-"stda",		storea,	0,
-0,		0,	0,
-"ldsba",	loada,	0,
-"ldsha",	loada,	0,
-0,		0,	0,
-0,		0,	0,
-"ldstuba",	storea,	0,
-0,		0,	0,
-"swapa",	loada,	0,
-"ldf",		loadf,	0,
-"ldfsr",	loadf,	0,
-0,		0,	0,
-"lddf",		loadf,	0,
-"stf",		storef,	0,
-"stfsr",	storef,	0,
-"stdfq",	storef,	0,
-"stdf",		storef,	0,
-0,		0,	0,
-0,		0,	0,
-0,		0,	0,
-0,		0,	0,
-0,		0,	0,
-0,		0,	0,
-0,		0,	0,
-0,		0,	0,
-"ldc",		loadc,	0,
-"ldcsr",	loadcsr,0,
-0,		0,	0,
-"lddc",		loadc,	0,
-"stc",		loadc,	0,
-"stcsr",	loadcsr,0,
-"stdcq",	loadcsr,0,
-"stdc",		loadc,	0,
+"ld", load, 0,
+"ldub", load, 0,
+"lduh", load, 0,
+"ldd", load, 0,
+"st", store, 0,
+"stb", store, 0,
+"sth", store, 0,
+"std", store, 0,
+0, 0, 0,
+"ldsb", load, 0,
+"ldsh", load, 0,
+0, 0, 0,
+0, 0, 0,
+"ldstub", store, 0,
+0, 0, 0,
+"swap", load, 0,
+"lda", loada, 0,
+"lduba", loada, 0,
+"lduha", loada, 0,
+"ldda", loada, 0,
+"sta", storea, 0,
+"stba", storea, 0,
+"stha", storea, 0,
+"stda", storea, 0,
+0, 0, 0,
+"ldsba", loada, 0,
+"ldsha", loada, 0,
+0, 0, 0,
+0, 0, 0,
+"ldstuba", storea, 0,
+0, 0, 0,
+"swapa", loada, 0,
+"ldf", loadf, 0,
+"ldfsr", loadf, 0,
+0, 0, 0,
+"lddf", loadf, 0,
+"stf", storef, 0,
+"stfsr", storef, 0,
+"stdfq", storef, 0,
+"stdf", storef, 0,
+0, 0, 0,
+0, 0, 0,
+0, 0, 0,
+0, 0, 0,
+0, 0, 0,
+0, 0, 0,
+0, 0, 0,
+0, 0, 0,
+"ldc", loadc, 0,
+"ldcsr", loadcsr,0,
+0, 0, 0,
+"lddc", loadc, 0,
+"stc", loadc, 0,
+"stcsr", loadcsr,0,
+"stdcq", loadcsr,0,
+"stdc", loadc, 0,
 };
 static void
 bprint(Instr *i, char *fmt, ...)
@@ -325,7 +325,7 @@ unimp(Instr *i, char *m)
 {
 bprint(i, "%s", m);
 }
-static char	*bratab[16] = {
+static char *bratab[16] = {
 "N",
 "E",
 "LE",
@@ -343,7 +343,7 @@ static char	*bratab[16] = {
 "POS",
 "VC",
 };
-static char	*fbratab[16] = {
+static char *fbratab[16] = {
 "N",
 "NE",
 "LG",
@@ -361,7 +361,7 @@ static char	*fbratab[16] = {
 "ULE",
 "O",
 };
-static char	*cbratab[16] = {
+static char *cbratab[16] = {
 "N",
 "123",
 "12",
@@ -521,7 +521,7 @@ if(i->rs1 == i->rd)
 if(dascase)
 bprint(i, "%s\t$%d,R%d", m, i->simm13&0x1F, i->rs1);
 else
-bprint(i, "%s\tR%d, $%d", m,  i->rs1, i->simm13&0x1F);
+bprint(i, "%s\tR%d, $%d", m, i->rs1, i->simm13&0x1F);
 else
 if(dascase)
 bprint(i, "%s\tR%d, $%d, R%d",m,i->rs1,i->simm13&0x1F,i->rd);
@@ -691,51 +691,51 @@ bprint(i, ", CSR");
 }
 static struct
 {
-int	opf;
-char	*name;
+int opf;
+char *name;
 } fptab1[] = {
-0xC4,	"FITOS",
-0xC8,	"FITOD",
-0xCC,	"FITOX",
-0xD1,	"FSTOI",
-0xD2,	"FDTOI",
-0xD3,	"FXTOI",
-0xC9,	"FSTOD",
-0xCD,	"FSTOX",
-0xC6,	"FDTOS",
-0xCE,	"FDTOX",
-0xC7,	"FXTOS",
-0xCB,	"FXTOD",
-0x01,	"FMOVS",
-0x05,	"FNEGS",
-0x09,	"FABSS",
-0x29,	"FSQRTS",
-0x2A,	"FSQRTD",
-0x2B,	"FSQRTX",
-0,	0,
+0xC4, "FITOS",
+0xC8, "FITOD",
+0xCC, "FITOX",
+0xD1, "FSTOI",
+0xD2, "FDTOI",
+0xD3, "FXTOI",
+0xC9, "FSTOD",
+0xCD, "FSTOX",
+0xC6, "FDTOS",
+0xCE, "FDTOX",
+0xC7, "FXTOS",
+0xCB, "FXTOD",
+0x01, "FMOVS",
+0x05, "FNEGS",
+0x09, "FABSS",
+0x29, "FSQRTS",
+0x2A, "FSQRTD",
+0x2B, "FSQRTX",
+0, 0,
 };
 static struct{
-int	opf;
-char	*name;
+int opf;
+char *name;
 } fptab2[] = {
-0x41,	"FADDS",
-0x42,	"FADDD",
-0x43,	"FADDX",
-0x45,	"FSUBS",
-0x46,	"FSUBD",
-0x47,	"FSUBX",
-0x49,	"FMULS",
-0x4A,	"FMULD",
-0x4B,	"FMULX",
-0x4D,	"FDIVS",
-0x4E,	"FDIVD",
-0x4F,	"FDIVX",
-0x51,	"FCMPS",
-0x52,	"FCMPD",
-0x53,	"FCMPX",
-0x55,	"FCMPES",
-0x56,	"FCMPED",
-0x57,	"FCMPEX",
+0x41, "FADDS",
+0x42, "FADDD",
+0x43, "FADDX",
+0x45, "FSUBS",
+0x46, "FSUBD",
+0x47, "FSUBX",
+0x49, "FMULS",
+0x4A, "FMULD",
+0x4B, "FMULX",
+0x4D, "FDIVS",
+0x4E, "FDIVD",
+0x4F, "FDIVX",
+0x51, "FCMPS",
+0x52, "FCMPD",
+0x53, "FCMPX",
+0x55, "FCMPES",
+0x56, "FCMPED",
+0x57, "FCMPEX",
 0, 0
 };
 static void

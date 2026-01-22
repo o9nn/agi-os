@@ -3,9 +3,9 @@
 struct mailbox;
 struct mdbox_mailbox;
 enum mdbox_sync_flags {
-MDBOX_SYNC_FLAG_FORCE		= 0x01,
-MDBOX_SYNC_FLAG_FSYNC		= 0x02,
-MDBOX_SYNC_FLAG_FORCE_REBUILD	= 0x04,
+MDBOX_SYNC_FLAG_FORCE = 0x01,
+MDBOX_SYNC_FLAG_FSYNC = 0x02,
+MDBOX_SYNC_FLAG_FORCE_REBUILD = 0x04,
 };
 struct mdbox_sync_context {
 struct mdbox_mailbox *mbox;

@@ -20,19 +20,19 @@ Enotdir, Enotfound: import Styxservers;
 include "arg.m";
 # files:
 # 'new'
-#	write name of new service; (and possibly attribute column names)
-#		entry appears in directory of that name
-#	can then write attributes/values
+# write name of new service; (and possibly attribute column names)
+# entry appears in directory of that name
+# can then write attributes/values
 # 'index'
-#	read to get info on all services and their attributes.
+# read to get info on all services and their attributes.
 # 'find'
-#	write to set filter.
-#	read to get info on all services with matching attributes
+# write to set filter.
+# read to get info on all services with matching attributes
 # 'event' (not needed initially)
-#	read to block until changes happen.
+# read to block until changes happen.
 # servicename
-#	write to change attributes (only by owner)
-#	remove to unregister service.
+# write to change attributes (only by owner)
+# remove to unregister service.
 Registry: module {
 init: fn(nil: ref Draw->Context, argv: list of string);
 };
@@ -41,46 +41,46 @@ Qnew,
 Qindex,
 Qevent,
 Qfind,
-Qsvc:	con iota;
-Shift:	con 4;
-Mask:	con 2r1111;
+Qsvc: con iota;
+Shift: con 4;
+Mask: con 2r1111;
 Egreg: con "buggy program!";
 Maxreplyidle: con 3;
 Service: adt {
-id:		int;
-slot:		int;
-owner:	string;
-name:	string;
-atime:	int;
-mtime:	int;
-vers:		int;
-fid:		int;		# fid that created it (NOFID if static)
-attrs:		list of (string, string);
-new:		fn(owner: string): ref Service;
-find:		fn(id: int): ref Service;
-remove:	fn(svc: self ref Service);
-set:		fn(svc: self ref Service, attr, val: string);
-get:		fn(svc: self ref Service, attr: string): string;
+id: int;
+slot: int;
+owner: string;
+name: string;
+atime: int;
+mtime: int;
+vers: int;
+fid: int; # fid that created it (NOFID if static)
+attrs: list of (string, string);
+new: fn(owner: string): ref Service;
+find: fn(id: int): ref Service;
+remove: fn(svc: self ref Service);
+set: fn(svc: self ref Service, attr, val: string);
+get: fn(svc: self ref Service, attr: string): string;
 };
 Filter: adt {
-id:		int;	# filter ID (it's a fid)
-attrs:		array of (string, string);
-new:		fn(id: int): ref Filter;
-find:		fn(id: int): ref Filter;
-set:		fn(f: self ref Filter, a: array of (string, string));
-match:	fn(f: self ref Filter, attrs: list of (string, string)): int;
-remove:	fn(f: self ref Filter);
+id: int; # filter ID (it's a fid)
+attrs: array of (string, string);
+new: fn(id: int): ref Filter;
+find: fn(id: int): ref Filter;
+set: fn(f: self ref Filter, a: array of (string, string));
+match: fn(f: self ref Filter, attrs: list of (string, string)): int;
+remove: fn(f: self ref Filter);
 };
 Event: adt {
-id:		int;					# fid reading from Qevents
-vers:		int;					# last change seen
-m:		ref Tmsg.Read;			# outstanding read request
-new:		fn(id: int): ref Event;
-find:		fn(id: int): ref Event;
-remove:	fn(e: self ref Event);
-queue:	fn(e: self ref Event, m: ref Tmsg.Read): string;
-post:		fn(vers: int);
-flush:	fn(tag: int);
+id: int; # fid reading from Qevents
+vers: int; # last change seen
+m: ref Tmsg.Read; # outstanding read request
+new: fn(id: int): ref Event;
+find: fn(id: int): ref Event;
+remove: fn(e: self ref Event);
+queue: fn(e: self ref Event, m: ref Tmsg.Read): string;
+post: fn(vers: int);
+flush: fn(tag: int);
 };
 filters: list of ref Filter;
 events: list of ref Event;
@@ -116,8 +116,8 @@ arg->init(args);
 arg->setusage("ndb/registry [-f initdb]");
 while((o := arg->opt()) != 0)
 case o {
-'f' =>	dbfile = arg->earg();
-* =>	arg->usage();
+'f' => dbfile = arg->earg();
+* => arg->usage();
 }
 args = arg->argv();
 if(args != nil)
@@ -134,7 +134,7 @@ db := Db.open(dbfile);
 if(db == nil)
 error(sys->sprint("can't open %s: %r", dbfile));
 dbload(db);
-db = nil;	# for now assume it's static
+db = nil; # for now assume it's static
 attrdb = nil;
 }
 navops := chan of ref Navop;
@@ -189,7 +189,7 @@ Clunk =>
 clunk(srv.clunk(m));
 Remove =>
 (fid, nil, e) := srv.canremove(m);
-srv.delfid(fid);	# always clunked even on error
+srv.delfid(fid); # always clunked even on error
 if((err = e) != nil)
 break;
 err = remove(fid);
@@ -319,7 +319,7 @@ Qsvc =>
 svc := Service.find(path >> Shift);
 if(svc != nil && svc.fid == fid.fid && (fid.mode & Sys->ORCLOSE || int svc.get("persist") == 0)){
 svc.remove();
-if(svc.name != nil){	# otherwise there's no visible change
+if(svc.name != nil){ # otherwise there's no visible change
 rootvers++;
 Event.post(rootvers);
 }
@@ -404,7 +404,7 @@ case path & Mask {
 Qroot =>
 case name{
 ".." =>
-;	# nop
+; # nop
 "new" =>
 path = Qnew;
 "index" =>
@@ -437,7 +437,7 @@ Readdir =>
 d: array of int;
 case path & Mask {
 Qroot =>
-Nstatic:	con 4;
+Nstatic: con 4;
 d = array[Nstatic + nservices] of int;
 d[0] = Qnew;
 d[1] = Qindex;
@@ -688,7 +688,7 @@ break;
 svcname := e.findfirst("service");
 if(svcname == nil || svcnameok(svcname) != nil)
 continue;
-svc := Service.new("registry");	 # TO DO: read user's name
+svc := Service.new("registry"); # TO DO: read user's name
 svc.name = svcname;
 svc.fid = Styx->NOFID;
 for(l := e.lines; l != nil; l = tl l){

@@ -16,9 +16,9 @@ Bootconf, Lease: import dhcpclient;
 include "arg.m";
 Dhcp: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
-RetryTime: con 10*1000;	# msec
+RetryTime: con 10*1000; # msec
 init(nil: ref Draw->Context, args: list of string)
 {
 sys = load Sys Sys->PATH;
@@ -38,16 +38,16 @@ netdir := "/net";
 cfg := Bootconf.new();
 while((o := arg->opt()) != 0)
 case o {
-'b' =>	bootp = 1;
-'d' =>	trace++;
-'g' =>	cfg.ipgw = arg->earg();
-'h' =>	cfg.puts(Dhcpclient->Ohostname, arg->earg());
-'m' =>	monitor = 1;
-'n' =>	noctl = 1;
-'p' =>	pcfg = 1;
-'r' =>		retry = 1;
-'x' =>	netdir = arg->earg();
-* =>		arg->usage();
+'b' => bootp = 1;
+'d' => trace++;
+'g' => cfg.ipgw = arg->earg();
+'h' => cfg.puts(Dhcpclient->Ohostname, arg->earg());
+'m' => monitor = 1;
+'n' => noctl = 1;
+'p' => pcfg = 1;
+'r' => retry = 1;
+'x' => netdir = arg->earg();
+* => arg->usage();
 }
 args = arg->argv();
 if(len args == 0)
@@ -92,7 +92,7 @@ printcfg(cfg);
 break;
 }
 }else{
-(cfg, lease, e) = dhcpclient->dhcp(netdir, ifcctl, etherdir+"/addr", cfg, nil);	# last is array of int options
+(cfg, lease, e) = dhcpclient->dhcp(netdir, ifcctl, etherdir+"/addr", cfg, nil); # last is array of int options
 if(e == nil){
 if(pcfg)
 printcfg(cfg);

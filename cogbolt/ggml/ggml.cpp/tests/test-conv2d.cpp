@@ -45,7 +45,7 @@ bdata[i] = 1.5f;
 size_t buffer_size = 0;
 {
 buffer_size += KW * KH * IC * OC * ggml_type_size(GGML_TYPE_F16);
-buffer_size += IW * IH * IC * N  * ggml_type_size(GGML_TYPE_F32);
+buffer_size += IW * IH * IC * N * ggml_type_size(GGML_TYPE_F32);
 buffer_size += 1024;
 }
 printf("%s: ggml tensor size    = %d bytes\n", __func__, (int) sizeof(ggml_tensor));
@@ -80,7 +80,7 @@ model.backend = ggml_backend_cpu_init();
 }
 model.buffer = ggml_backend_alloc_buffer(model.backend, buffer_size);
 model.ctx = ggml_init(params);
-model.a = ggml_new_tensor_4d(model.ctx, GGML_TYPE_F16,  KW, KH, IC, OC);
+model.a = ggml_new_tensor_4d(model.ctx, GGML_TYPE_F16, KW, KH, IC, OC);
 model.b = ggml_new_tensor_4d(model.ctx, GGML_TYPE_F32, IW, IH, IC, N);
 struct ggml_tallocr alloc = ggml_tallocr_new(model.buffer);
 ggml_tallocr_alloc(&alloc, model.a);
@@ -109,7 +109,7 @@ buf.data(),
 true,
 };
 struct ggml_context * ctx0 = ggml_init(params0);
-struct ggml_cgraph  * gf = ggml_new_graph(ctx0);
+struct ggml_cgraph * gf = ggml_new_graph(ctx0);
 int s0 = 1;
 int s1 = 1;
 int p0 = 1;

@@ -1,8 +1,7 @@
-#include	<u.h>
-#include	<libc.h>
-
+#include <u.h>
+#include <libc.h>
 int
 rand(void)
 {
-	return lrand() & 0x7fff;
+return lrand() & 0x7fff;
 }

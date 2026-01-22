@@ -9,8 +9,8 @@ static const char cprt[] = "EFS: "EFS_VERSION" - (c) 1999 Al Smith <Al.Smith@aes
 #if LINUX_VERSION_CODE < 0x20200
 #error This code is only for linux-2.2 and later.
 #endif
-#define	EFS_BLOCKSIZE_BITS	9
-#define	EFS_BLOCKSIZE		(1 << EFS_BLOCKSIZE_BITS)
+#define EFS_BLOCKSIZE_BITS 9
+#define EFS_BLOCKSIZE (1 << EFS_BLOCKSIZE_BITS)
 #include <linux/efs_fs_i.h>
 #include <linux/efs_dir.h>
 #ifndef MIN
@@ -20,11 +20,11 @@ static const char cprt[] = "EFS: "EFS_VERSION" - (c) 1999 Al Smith <Al.Smith@aes
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
 #endif
 #ifdef _EFS_USE_GENERIC
-#define INODE_INFO(i) (struct efs_inode_info *)	&((i)->u.generic_ip)
-#define SUPER_INFO(s) (struct efs_sb_info *)	&((s)->u.generic_sbp)
+#define INODE_INFO(i) (struct efs_inode_info *) &((i)->u.generic_ip)
+#define SUPER_INFO(s) (struct efs_sb_info *) &((s)->u.generic_sbp)
 #else
-#define INODE_INFO(i)				&((i)->u.efs_i)
-#define SUPER_INFO(s)				&((s)->u.efs_sb)
+#define INODE_INFO(i) &((i)->u.efs_i)
+#define SUPER_INFO(s) &((s)->u.efs_sb)
 #endif
 extern struct inode_operations efs_dir_inode_operations;
 extern struct inode_operations efs_file_inode_operations;

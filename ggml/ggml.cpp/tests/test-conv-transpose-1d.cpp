@@ -42,8 +42,8 @@ float adata_0[] = {1,2,3};
 float bdata_0[] = {1,2};
 float adata_1[] = {1,2,3,3,2,1};
 float bdata_1[] = {2,3,1,1,3,2};
-float adata_2[] =  {3,2,1,1,2,3,1,2,3,3,2,1};
-float bdata_2[] =  {2,3,1,1,3,2};
+float adata_2[] = {3,2,1,1,2,3,1,2,3,3,2,1};
+float bdata_2[] = {2,3,1,1,3,2};
 float data[16*32*32];
 for (int i = 0; i < 16*32*32; ++i) {
 data[i] = (float)(i%1024);
@@ -195,7 +195,7 @@ buf.data(),
 true,
 };
 struct ggml_context * ctx0 = ggml_init(params0);
-struct ggml_cgraph  * gf = ggml_new_graph(ctx0);
+struct ggml_cgraph * gf = ggml_new_graph(ctx0);
 int s0 = 1;
 int p0 = 0;
 int d0 = 1;
@@ -293,7 +293,7 @@ std::vector<float> conv1d_transpose_data_1(ggml_nelements(conv1d_transpose_res_1
 ggml_backend_tensor_get(conv1d_transpose_res_1, conv1d_transpose_data_1.data(), 0, ggml_nbytes(conv1d_transpose_res_1));
 const int n_conv_transpose_1d_test_1 = 5;
 float expected_conv1d_1[n_conv_transpose_1d_test_1] =
-{5.0f, 18.0f, 26.0f, 18.0f,  5.0f};
+{5.0f, 18.0f, 26.0f, 18.0f, 5.0f};
 struct ggml_tensor * conv1d_transpose_res_2 = NULL;
 for(int i = 0; i < ggml_graph_n_nodes(gf_res); i++) {
 if(strcmp(ggml_get_name(ggml_graph_node(gf_res, i)), "conv1d_transpose_res_2") == 0) {
@@ -304,8 +304,8 @@ std::vector<float> conv1d_transpose_data_2(ggml_nelements(conv1d_transpose_res_2
 ggml_backend_tensor_get(conv1d_transpose_res_2, conv1d_transpose_data_2.data(), 0, ggml_nbytes(conv1d_transpose_res_2));
 const int n_conv_transpose_1d_test_2 = 10;
 float expected_conv1d_2[n_conv_transpose_1d_test_2] =
-{7.0f, 18.0f, 22.0f, 18.0f,  7.0f,
-5.0f, 18.0f, 26.0f, 18.0f,  5.0f};
+{7.0f, 18.0f, 22.0f, 18.0f, 7.0f,
+5.0f, 18.0f, 26.0f, 18.0f, 5.0f};
 struct ggml_tensor * conv1d_transpose_res_3 = NULL;
 for(int i = 0; i < ggml_graph_n_nodes(gf_res); i++) {
 if(strcmp(ggml_get_name(ggml_graph_node(gf_res, i)), "conv1d_transpose_res_3") == 0) {
@@ -316,8 +316,8 @@ std::vector<float> conv1d_transpose_data_3(ggml_nelements(conv1d_transpose_res_3
 ggml_backend_tensor_get(conv1d_transpose_res_3, conv1d_transpose_data_3.data(), 0, ggml_nbytes(conv1d_transpose_res_3));
 const int n_conv_transpose_1d_test_3 = 14;
 float expected_conv1d_3[n_conv_transpose_1d_test_3] =
-{7.0f,  6.0f, 17.0f, 12.0f, 17.0f,  6.0f,  7.0f
-,5.0f,  6.0f, 19.0f, 12.0f, 19.0f,  6.0f,  5.0f};
+{7.0f, 6.0f, 17.0f, 12.0f, 17.0f, 6.0f, 7.0f
+,5.0f, 6.0f, 19.0f, 12.0f, 19.0f, 6.0f, 5.0f};
 struct ggml_tensor * conv1d_transpose_res_4 = NULL;
 for(int i = 0; i < ggml_graph_n_nodes(gf_res); i++) {
 if(strcmp(ggml_get_name(ggml_graph_node(gf_res, i)), "conv1d_transpose_res_4") == 0) {

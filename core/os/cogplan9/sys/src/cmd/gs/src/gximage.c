@@ -198,8 +198,8 @@ dputs("]\n");
 }
 }
 #else
-#  define debug_b_print_matrix(pim) DO_NOTHING
-#  define debug_b_print_decode(pim, num_decode) DO_NOTHING
+# define debug_b_print_matrix(pim) DO_NOTHING
+# define debug_b_print_decode(pim, num_decode) DO_NOTHING
 #endif
 bool
 gx_image_matrix_is_default(const gs_data_image_t *pid)

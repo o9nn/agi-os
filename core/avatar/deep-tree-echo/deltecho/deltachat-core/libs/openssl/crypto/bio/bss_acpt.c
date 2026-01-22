@@ -5,12 +5,12 @@
 #include <openssl/bio.h>
 #ifndef OPENSSL_NO_SOCK
 # ifdef OPENSSL_SYS_WIN16
-#  define SOCKET_PROTOCOL 0
+# define SOCKET_PROTOCOL 0
 # else
-#  define SOCKET_PROTOCOL IPPROTO_TCP
+# define SOCKET_PROTOCOL IPPROTO_TCP
 # endif
 # if (defined(OPENSSL_SYS_VMS) && __VMS_VER < 70000000)
-#  undef FIONBIO
+# undef FIONBIO
 # endif
 typedef struct bio_accept_st {
 int state;
@@ -32,9 +32,9 @@ static int acpt_state(BIO *b, BIO_ACCEPT *c);
 static void acpt_close_socket(BIO *data);
 static BIO_ACCEPT *BIO_ACCEPT_new(void);
 static void BIO_ACCEPT_free(BIO_ACCEPT *a);
-# define ACPT_S_BEFORE                   1
-# define ACPT_S_GET_ACCEPT_SOCKET        2
-# define ACPT_S_OK                       3
+# define ACPT_S_BEFORE 1
+# define ACPT_S_GET_ACCEPT_SOCKET 2
+# define ACPT_S_OK 3
 static BIO_METHOD methods_acceptp = {
 BIO_TYPE_ACCEPT,
 "socket accept",

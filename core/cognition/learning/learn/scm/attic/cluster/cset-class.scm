@@ -1,66 +1,66 @@
 (use-modules (srfi srfi-1))
 (use-modules (opencog) (opencog sheaf) (opencog persist))
 (define (get-classified-words)
-	(define (memb CLS) (map gar (cog-incoming-by-type CLS 'MemberLink)))
-	(define (wmemb CLS)
-		(filter (lambda (w) (eq? 'WordNode (cog-type w))) (memb CLS)))
-	(fold (lambda (CLS lst) (append! (memb CLS) lst)) '()
-		(cog-get-atoms 'WordClassNode))
+(define (memb CLS) (map gar (cog-incoming-by-type CLS 'MemberLink)))
+(define (wmemb CLS)
+(filter (lambda (w) (eq? 'WordNode (cog-type w))) (memb CLS)))
+(fold (lambda (CLS lst) (append! (memb CLS) lst)) '()
+(cog-get-atoms 'WordClassNode))
 )
 (define (get-all-sections-in-classes WCL)
-	(define (connector-in-any-class? CTR)
-		(define wrd-of-ctr (gar CTR))
-		(find (lambda (MEMB)
-				(eq? 'WordClassNode (cog-type (gdr MEMB))))
-			(cog-incoming-by-type wrd-of-ctr 'MemberLink)))
-	(define (classifiable-section? SEC)
-		(define con-seq (cog-outgoing-set (gdr SEC)))
-		(find connector-in-any-class? con-seq))
-	(filter classifiable-section? (cog-incoming-by-type WCL 'Section))
+(define (connector-in-any-class? CTR)
+(define wrd-of-ctr (gar CTR))
+(find (lambda (MEMB)
+(eq? 'WordClassNode (cog-type (gdr MEMB))))
+(cog-incoming-by-type wrd-of-ctr 'MemberLink)))
+(define (classifiable-section? SEC)
+(define con-seq (cog-outgoing-set (gdr SEC)))
+(find connector-in-any-class? con-seq))
+(filter classifiable-section? (cog-incoming-by-type WCL 'Section))
 )
 (define (get-sections-by-size WCL SIZ)
-	(define sects (get-all-sections-in-classes WCL))
-	(define (size-section? SEC)
-		(eq? SIZ (length (cog-outgoing-set (gdr SEC)))))
-	(filter size-section? sects)
+(define sects (get-all-sections-in-classes WCL))
+(define (size-section? SEC)
+(eq? SIZ (length (cog-outgoing-set (gdr SEC)))))
+(filter size-section? sects)
 )
 (define-public (in-gram-class? WORD GCLS)
 "
-  in-gram-class? WORD GRAM-CLASS - is the WORD a member of the
-  grammatical class CRAM-CLASS? Returns either #t or #f.
+in-gram-class? WORD GRAM-CLASS - is the WORD a member of the
+grammatical class CRAM-CLASS? Returns either #t or #f.
 "
-	(define memlnk (cog-link 'MemberLink WORD GCLS))
-	(if (null? memlnk) #f #t)
+(define memlnk (cog-link 'MemberLink WORD GCLS))
+(if (null? memlnk) #f #t)
 )
 (define (connector-seq-compare SEQA SEQB)
-	(define (get-idx)
-		(define mismatch-idx #f)
-		(define cnt 0)
-		(pair-fold
-			(lambda (subseq-a subseq-b idx)
-				(if (not (equal? (car subseq-a) (car subseq-b)))
-					(begin (set! mismatch-idx idx)
-						(set! cnt (+ cnt 1))))
-				(+ idx 1))
-			0 (cog-outgoing-set SEQA) (cog-outgoing-set SEQB))
-		(if (eq? 1 cnt) mismatch-idx #f))
-	(if (or (eq? SEQA SEQB) (not (eq? (cog-arity SEQA) (cog-arity SEQB))))
-		 #f
-		 (get-idx))
+(define (get-idx)
+(define mismatch-idx #f)
+(define cnt 0)
+(pair-fold
+(lambda (subseq-a subseq-b idx)
+(if (not (equal? (car subseq-a) (car subseq-b)))
+(begin (set! mismatch-idx idx)
+(set! cnt (+ cnt 1))))
+(+ idx 1))
+0 (cog-outgoing-set SEQA) (cog-outgoing-set SEQB))
+(if (eq? 1 cnt) mismatch-idx #f))
+(if (or (eq? SEQA SEQB) (not (eq? (cog-arity SEQA) (cog-arity SEQB))))
+#f
+(get-idx))
 )
 (define (fetch-class-words CLS-LST)
-	(delete-dup-atoms
-		(concatenate!
-			(map
-				(lambda (CLS)
-					(fetch-incoming-by-type CLS 'MemberLink)
-					(map
-						(lambda (MEMB) (cog-outgoing-atom MEMB 0))
-						(cog-incoming-by-type CLS 'MemberLink)))
-				CLS-LST)))
+(delete-dup-atoms
+(concatenate!
+(map
+(lambda (CLS)
+(fetch-incoming-by-type CLS 'MemberLink)
+(map
+(lambda (MEMB) (cog-outgoing-atom MEMB 0))
+(cog-incoming-by-type CLS 'MemberLink)))
+CLS-LST)))
 )
 (define (fetch-mergable-sections CLS-LST)
-	(delete-dup-atoms
-		(map fetch-endpoint-sections
-			(fetch-class-words CLS-LST)))
+(delete-dup-atoms
+(map fetch-endpoint-sections
+(fetch-class-words CLS-LST)))
 )

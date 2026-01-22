@@ -1,5 +1,5 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #include "mailsmtp.h"
 #include "mailsmtp_private.h"
@@ -7,24 +7,24 @@
 #include "base64.h"
 #include "mail.h"
 #ifdef HAVE_SYS_SOCKET_H
-#	include <sys/socket.h>
+# include <sys/socket.h>
 #endif
 #ifdef HAVE_STRING_H
-#  include <string.h>
+# include <string.h>
 #endif
 #ifdef WIN32
-#	include "win_etpan.h"
+# include "win_etpan.h"
 #else
-#	include <sys/types.h>
-#   include <netdb.h>
+# include <sys/types.h>
+# include <netdb.h>
 #endif
 #ifdef HAVE_NETINET_IN_H
-#	include <netinet/in.h>
+# include <netinet/in.h>
 #endif
 #include <string.h>
 #include <stdlib.h>
 #ifdef HAVE_UNISTD_H
-#	include <unistd.h>
+# include <unistd.h>
 #endif
 #include <stdio.h>
 #ifdef USE_SASL
@@ -862,7 +862,7 @@ return 0;
 }
 const char * mailsmtp_strerror(int errnum)
 {
-switch (errnum)    {
+switch (errnum) {
 case MAILSMTP_NO_ERROR:
 return "No error";
 case MAILSMTP_ERROR_UNEXPECTED_CODE:
@@ -980,19 +980,19 @@ char * encoded;
 unsigned int encoded_len;
 unsigned int max_encoded;
 sasl_callback[0].id = SASL_CB_GETREALM;
-sasl_callback[0].proc =  (int(*)(void)) sasl_getrealm;
+sasl_callback[0].proc = (int(*)(void)) sasl_getrealm;
 sasl_callback[0].context = session;
 sasl_callback[1].id = SASL_CB_USER;
-sasl_callback[1].proc =  (int(*)(void)) sasl_getsimple;
+sasl_callback[1].proc = (int(*)(void)) sasl_getsimple;
 sasl_callback[1].context = session;
 sasl_callback[2].id = SASL_CB_AUTHNAME;
-sasl_callback[2].proc =  (int(*)(void)) sasl_getsimple;
+sasl_callback[2].proc = (int(*)(void)) sasl_getsimple;
 sasl_callback[2].context = session;
 sasl_callback[3].id = SASL_CB_PASS;
-sasl_callback[3].proc =  (int(*)(void)) sasl_getsecret;
+sasl_callback[3].proc = (int(*)(void)) sasl_getsecret;
 sasl_callback[3].context = session;
 sasl_callback[4].id = SASL_CB_LIST_END;
-sasl_callback[4].proc =  NULL;
+sasl_callback[4].proc = NULL;
 sasl_callback[4].context = NULL;
 len = strlen(password);
 secret = malloc(sizeof(* secret) + len);

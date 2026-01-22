@@ -13,7 +13,7 @@ const char *argp_program_version = STANDARD_HURD_VERSION (fsysopts);
 static struct argp_option options[] =
 {
 {"dereference", 'L', 0, 0, "If FILESYS is a symbolic link, follow it"},
-{"recursive",   'R', 0, 0, "Pass these options to any child translators"},
+{"recursive", 'R', 0, 0, "Pass these options to any child translators"},
 {0, 0, 0, 0}
 };
 static char *args_doc = "FILESYS [FS_OPTION...]";

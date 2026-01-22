@@ -35,7 +35,7 @@ static inline int dict_order_bare(const char *s, const Dict_node * dn)
 {
 const char * t = dn->string;
 while ((*s == *t) && (*s != '\0')) { s++; t++; }
-return (*s)  -  ((*t == SUBSCRIPT_MARK)?(0):(*t));
+return (*s) - ((*t == SUBSCRIPT_MARK)?(0):(*t));
 }
 #define WILD_TYPE '*'
 #define D_DOW 6

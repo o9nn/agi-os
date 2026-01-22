@@ -15,7 +15,7 @@ __posix_getopt);
 extern int __posix_getopt (int ___argc, char *const *___argv,
 const char *__shortopts)
 __THROW __nonnull ((2, 3));
-#  define getopt __posix_getopt
+# define getopt __posix_getopt
 # endif
 #endif
 __END_DECLS

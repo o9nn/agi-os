@@ -16,7 +16,7 @@ end
 end
 """
 Position(solves_force = true; name)
-Linear 1D position input source.  Set `solves_force=false` to force input force to 0 (i.e. only the position is given, the respective force needed is already provided elsewhere in the model).
+Linear 1D position input source. Set `solves_force=false` to force input force to 0 (i.e. only the position is given, the respective force needed is already provided elsewhere in the model).
 # Connectors:
 - `flange`: 1-dim. translational flange
 - `s`: real input
@@ -36,7 +36,7 @@ name, systems)
 end
 """
 Velocity(solves_force = true; name)
-Linear 1D position input source.  Set `solves_force=false` to force input force to 0 (i.e. only the velocity is given, the respective force needed is already provided elsewhere in the model).
+Linear 1D position input source. Set `solves_force=false` to force input force to 0 (i.e. only the velocity is given, the respective force needed is already provided elsewhere in the model).
 # Connectors:
 - `flange`: 1-dim. translational flange
 - `v`: real input
@@ -54,7 +54,7 @@ System(eqs, t, [], []; name, systems)
 end
 """
 Acceleration(solves_force = true; name)
-Linear 1D position input source.  Set `solves_force=false` to force input force to 0 (i.e. only the acceleration is given, the respective force needed is already provided elsewhere in the model).
+Linear 1D position input source. Set `solves_force=false` to force input force to 0 (i.e. only the acceleration is given, the respective force needed is already provided elsewhere in the model).
 # Connectors:
 - `flange`: 1-dim. translational flange
 - `a`: real input

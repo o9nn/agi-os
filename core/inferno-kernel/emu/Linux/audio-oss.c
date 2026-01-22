@@ -4,18 +4,18 @@
 #include "audio.h"
 #include <sys/ioctl.h>
 #include <sys/soundcard.h>
-#define 	Audio_Mic_Val		SOUND_MIXER_MIC
-#define 	Audio_Linein_Val	SOUND_MIXER_LINE
-#define		Audio_Speaker_Val	SOUND_MIXER_PCM
-#define		Audio_Headphone_Val	SOUND_MIXER_ALTPCM
-#define		Audio_Lineout_Val	SOUND_MIXER_CD
-#define 	Audio_Pcm_Val		AFMT_S16_LE
-#define 	Audio_Ulaw_Val		AFMT_MU_LAW
-#define 	Audio_Alaw_Val		AFMT_A_LAW
+#define Audio_Mic_Val SOUND_MIXER_MIC
+#define Audio_Linein_Val SOUND_MIXER_LINE
+#define Audio_Speaker_Val SOUND_MIXER_PCM
+#define Audio_Headphone_Val SOUND_MIXER_ALTPCM
+#define Audio_Lineout_Val SOUND_MIXER_CD
+#define Audio_Pcm_Val AFMT_S16_LE
+#define Audio_Ulaw_Val AFMT_MU_LAW
+#define Audio_Alaw_Val AFMT_A_LAW
 #include "audio-tbls.c"
-#define	min(a,b)	((a) < (b) ? (a) : (b))
-#define DEVAUDIO	"/dev/dsp"
-#define DEVMIXER	"/dev/mixer"
+#define min(a,b) ((a) < (b) ? (a) : (b))
+#define DEVAUDIO "/dev/dsp"
+#define DEVMIXER "/dev/mixer"
 #define DPRINT if(1)print
 enum {
 A_Pause,

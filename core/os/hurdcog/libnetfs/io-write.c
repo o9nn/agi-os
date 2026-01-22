@@ -32,7 +32,7 @@ user->po->filepointer = np->nn_stat.st_size;
 }
 off = user->po->filepointer;
 }
-err =  netfs_attempt_write (user->user, np, off, amount, data);
+err = netfs_attempt_write (user->user, np, off, amount, data);
 if (offset == -1 && !err)
 user->po->filepointer += *amount;
 pthread_mutex_unlock (&np->lock);

@@ -9,15 +9,15 @@
 (cog-set-value! foo key seq)
 (define set-value (SetValue bar kee (FloatValueOf foo key)))
 (define square (SetValue bar kee
-	(Times (FloatValueOf foo key) (FloatValueOf foo key))))
+(Times (FloatValueOf foo key) (FloatValueOf foo key))))
 (DefineLink
-   (DefinedSchema "triangle numbers")
-	(Lambda
-		(Variable "$X")
-		(Divide
-			(Times (Variable "$X") (Plus (Variable "$X") (Number 1)))
-			(Number 2))))
+(DefinedSchema "triangle numbers")
+(Lambda
+(Variable "$X")
+(Divide
+(Times (Variable "$X") (Plus (Variable "$X") (Number 1)))
+(Number 2))))
 (define triangle
-	(SetValue bar kee
-		(DefinedSchema "triangle numbers")
-		(FloatValueOf foo key)))
+(SetValue bar kee
+(DefinedSchema "triangle numbers")
+(FloatValueOf foo key)))

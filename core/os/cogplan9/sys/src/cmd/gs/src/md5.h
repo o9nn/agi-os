@@ -1,5 +1,5 @@
 #ifndef md5_INCLUDED
-#  define md5_INCLUDED
+# define md5_INCLUDED
 typedef unsigned char md5_byte_t;
 typedef unsigned int md5_word_t;
 typedef struct md5_state_s {

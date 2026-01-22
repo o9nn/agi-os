@@ -27,34 +27,34 @@ DeflateEnc,
 };
 struct PaqHeader
 {
-ulong	magic;
-ushort	version;
-ulong	blocksize;
-ulong	time;
-char	label[32];
+ulong magic;
+ushort version;
+ulong blocksize;
+ulong time;
+char label[32];
 };
 struct PaqBlock
 {
-ulong	magic;
-ulong	size;
-uchar	type;
-uchar	encoding;
-ulong	adler32;
+ulong magic;
+ulong size;
+uchar type;
+uchar encoding;
+ulong adler32;
 };
 struct PaqTrailer
 {
-ulong	magic;
-ulong	root;
-uchar	sha1[20];
+ulong magic;
+ulong root;
+uchar sha1[20];
 };
 struct PaqDir
 {
-ulong	qid;
-ulong	mode;
-ulong	mtime;
-ulong	length;
-ulong	offset;
-char 	*name;
-char	*uid;
-char	*gid;
+ulong qid;
+ulong mode;
+ulong mtime;
+ulong length;
+ulong offset;
+char *name;
+char *uid;
+char *gid;
 };

@@ -27,7 +27,7 @@ const gx_io_device gs_iodev_os =
 {
 "%os%", "FileSystem",
 {iodev_no_init, iodev_no_open_device,
-NULL  , iodev_os_fopen, iodev_os_fclose,
+NULL , iodev_os_fopen, iodev_os_fclose,
 os_delete, os_rename, os_status,
 os_enumerate, gp_enumerate_files_next, gp_enumerate_files_close,
 os_get_params, iodev_no_put_params
@@ -241,13 +241,13 @@ case ENOENT:
 return_error(gs_error_undefinedfilename);
 #endif
 #ifdef ENOFILE
-#  ifndef ENOENT
-#    define ENOENT ENOFILE
-#  endif
-#  if ENOFILE != ENOENT
+# ifndef ENOENT
+# define ENOENT ENOFILE
+# endif
+# if ENOFILE != ENOENT
 case ENOFILE:
 return_error(gs_error_undefinedfilename);
-#  endif
+# endif
 #endif
 #ifdef ENAMETOOLONG
 case ENAMETOOLONG:

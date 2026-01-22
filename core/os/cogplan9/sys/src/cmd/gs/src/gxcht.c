@@ -16,16 +16,16 @@
 #define tile_longs_LARGE 256
 #define tile_longs_SMALL 64
 #if arch_small_memory
-#  define tile_longs_allocated tile_longs_SMALL
-#  define tile_longs tile_longs_SMALL
+# define tile_longs_allocated tile_longs_SMALL
+# define tile_longs tile_longs_SMALL
 #else
-#  define tile_longs_allocated tile_longs_LARGE
-#  ifdef DEBUG
-#    define tile_longs\
+# define tile_longs_allocated tile_longs_LARGE
+# ifdef DEBUG
+# define tile_longs\
 (gs_debug_c('.') ? tile_longs_SMALL : tile_longs_LARGE)
-#  else
-#    define tile_longs tile_longs_LARGE
-#  endif
+# else
+# define tile_longs tile_longs_LARGE
+# endif
 #endif
 gs_private_st_ptrs1(st_dc_ht_colored, gx_device_color, "dc_ht_colored",
 dc_ht_colored_enum_ptrs, dc_ht_colored_reloc_ptrs, colors.colored.c_ht);
@@ -89,33 +89,33 @@ num_comp * sizeof(pdevc1->colors.colored.c_base[0])) &&
 pdevc2->colors.colored.c_level,
 num_comp * sizeof(pdevc1->colors.colored.c_level[0]));
 }
-private const int   dc_ht_colored_has_base = 0x01;
-private const int   dc_ht_colored_has_level = 0x02;
-private const int   dc_ht_colored_has_alpha = 0x04;
-private const int   dc_ht_colored_alpha_is_max = 0x08;
+private const int dc_ht_colored_has_base = 0x01;
+private const int dc_ht_colored_has_level = 0x02;
+private const int dc_ht_colored_has_alpha = 0x04;
+private const int dc_ht_colored_alpha_is_max = 0x08;
 private int
 gx_dc_ht_colored_write(
-const gx_device_color *         pdevc,
-const gx_device_color_saved *   psdc0,
-const gx_device *               dev,
-byte *                          pdata,
-uint *                          psize )
+const gx_device_color * pdevc,
+const gx_device_color_saved * psdc0,
+const gx_device * dev,
+byte * pdata,
+uint * psize )
 {
-int                             req_size = 1;
-int                             flag_bits = 0;
-int                             num_comps = dev->color_info.num_components;
-int                             depth = dev->color_info.depth;
-gx_color_index                  plane_mask = pdevc->colors.colored.plane_mask;
-gx_color_value                  alpha = pdevc->colors.colored.alpha;
-const gx_device_color_saved *   psdc = psdc0;
-byte *                          pdata0 = pdata;
+int req_size = 1;
+int flag_bits = 0;
+int num_comps = dev->color_info.num_components;
+int depth = dev->color_info.depth;
+gx_color_index plane_mask = pdevc->colors.colored.plane_mask;
+gx_color_value alpha = pdevc->colors.colored.alpha;
+const gx_device_color_saved * psdc = psdc0;
+byte * pdata0 = pdata;
 assert(pdevc->colors.colored.num_components == num_comps);
 if (psdc != 0 && psdc->type != pdevc->type)
 psdc = 0;
-if ( psdc == 0                                                         ||
+if ( psdc == 0 ||
 memcmp( pdevc->colors.colored.c_base,
 psdc->colors.colored.c_base,
-num_comps * sizeof(pdevc->colors.colored.c_base[0]) ) != 0  ) {
+num_comps * sizeof(pdevc->colors.colored.c_base[0]) ) != 0 ) {
 flag_bits |= dc_ht_colored_has_base;
 if (num_comps == depth)
 req_size += (num_comps + 7) >> 3;
@@ -123,13 +123,13 @@ else
 req_size += num_comps * sizeof(pdevc->colors.colored.c_base[0]);
 }
 plane_mask = pdevc->colors.colored.plane_mask;
-if ( psdc == 0                                                          ||
+if ( psdc == 0 ||
 memcmp( pdevc->colors.colored.c_level,
 psdc->colors.colored.c_level,
-num_comps * sizeof(pdevc->colors.colored.c_level[0]) ) != 0  ) {
-gx_color_index  comp_bit;
-int             i;
-uint            tmp_mask;
+num_comps * sizeof(pdevc->colors.colored.c_level[0]) ) != 0 ) {
+gx_color_index comp_bit;
+int i;
+uint tmp_mask;
 flag_bits |= dc_ht_colored_has_level;
 if (num_comps > 8 * sizeof(uint)) {
 tmp_mask = (uint)plane_mask;
@@ -164,9 +164,9 @@ return gs_error_rangecheck;
 *pdata++ = (byte)flag_bits;
 if ((flag_bits & dc_ht_colored_has_base) != 0) {
 if (num_comps == depth) {
-gx_color_index  base_mask = 0;
-int             num_bytes = (num_comps + 7) >> 3;
-int             i;
+gx_color_index base_mask = 0;
+int num_bytes = (num_comps + 7) >> 3;
+int i;
 for (i = 0; i < num_comps; i++) {
 if (pdevc->colors.colored.c_base[i] != 0)
 base_mask |= (gx_color_index)1 << i;
@@ -181,9 +181,9 @@ pdata += num_comps * sizeof(pdevc->colors.colored.c_base[0]);
 }
 }
 if ((flag_bits & dc_ht_colored_has_level) != 0) {
-gx_color_index  code_bit;
-int             i;
-uint            tmp_mask;
+gx_color_index code_bit;
+int i;
+uint tmp_mask;
 if (num_comps > 8 * sizeof(uint)) {
 tmp_mask = (uint)plane_mask;
 enc_u_putw(tmp_mask, pdata);
@@ -205,19 +205,19 @@ return 0;
 }
 private int
 gx_dc_ht_colored_read(
-gx_device_color *       pdevc,
+gx_device_color * pdevc,
 const gs_imager_state * pis,
 const gx_device_color * prior_devc,
-const gx_device *       dev,
-const byte *            pdata,
-uint                    size,
-gs_memory_t *           mem )
+const gx_device * dev,
+const byte * pdata,
+uint size,
+gs_memory_t * mem )
 {
-gx_device_color         devc;
-int                     num_comps = dev->color_info.num_components;
-int                     depth = dev->color_info.depth;
-const byte *            pdata0 = pdata;
-int                     flag_bits;
+gx_device_color devc;
+int num_comps = dev->color_info.num_components;
+int depth = dev->color_info.depth;
+const byte * pdata0 = pdata;
+int flag_bits;
 if (prior_devc != 0 && prior_devc->type == gx_dc_type_ht_colored)
 devc = *prior_devc;
 else
@@ -231,9 +231,9 @@ size--;
 flag_bits = *pdata++;
 if ((flag_bits & dc_ht_colored_has_base) != 0) {
 if (depth == num_comps) {
-gx_color_index  base_mask = 0;
-int             num_bytes = (num_comps + 7) >> 3;
-int             i, shift = 0;
+gx_color_index base_mask = 0;
+int num_bytes = (num_comps + 7) >> 3;
+int i, shift = 0;
 if (size < num_bytes)
 return_error(gs_error_rangecheck);
 size -= num_bytes;
@@ -250,10 +250,10 @@ pdata += num_comps;
 }
 }
 if ((flag_bits & dc_ht_colored_has_level) != 0) {
-const byte *    pdata_start = pdata;
-gx_color_index  plane_mask;
-uint            tmp_mask;
-int             i;
+const byte * pdata_start = pdata;
+gx_color_index plane_mask;
+uint tmp_mask;
+int i;
 if (size < 1)
 return_error(gs_error_rangecheck);
 if (num_comps > 8 * sizeof(uint)) {
@@ -279,7 +279,7 @@ size -= pdata - pdata_start;
 if ((flag_bits & dc_ht_colored_alpha_is_max) != 0)
 devc.colors.colored.alpha = gx_max_color_value;
 else if ((flag_bits & dc_ht_colored_has_alpha) != 0) {
-const byte *    pdata_start = pdata;
+const byte * pdata_start = pdata;
 if (size < 1)
 return_error(gs_error_rangecheck);
 enc_u_getw(devc.colors.colored.alpha, pdata);
@@ -296,11 +296,11 @@ return pdata - pdata0;
 int
 gx_dc_ht_colored_get_nonzero_comps(
 const gx_device_color * pdevc,
-const gx_device *       dev_ignored,
-gx_color_index *        pcomp_bits )
+const gx_device * dev_ignored,
+gx_color_index * pcomp_bits )
 {
-int                     i, ncomps =  pdevc->colors.colored.num_components;
-gx_color_index          comp_bits = pdevc->colors.colored.plane_mask;
+int i, ncomps = pdevc->colors.colored.num_components;
+gx_color_index comp_bits = pdevc->colors.colored.plane_mask;
 for (i = 0; i < ncomps; i++) {
 if (pdevc->colors.colored.c_base[i] != 0)
 comp_bits |= ((gx_color_index)1) << i;
@@ -331,19 +331,19 @@ private SET_HT_COLORS_PROC(set_ht_colors_gt_4);
 void proc(\
 byte *dest_data, \
 uint dest_raster, \
-int px,	\
+int px, \
 int py,\
-int w,	\
+int w, \
 int h,\
-int depth,	\
-int special,	\
+int depth, \
+int special, \
 int nplanes,\
-gx_color_index plane_mask,	\
-gx_device *dev,		\
-const color_values_pair_t *pvp,	\
-gx_color_index colors[MAX_DCC],	\
+gx_color_index plane_mask, \
+gx_device *dev, \
+const color_values_pair_t *pvp, \
+gx_color_index colors[MAX_DCC], \
 \
-const gx_const_strip_bitmap * sbits[MAX_DCC]	\
+const gx_const_strip_bitmap * sbits[MAX_DCC] \
 \
 )
 private SET_COLOR_HT_PROC(set_color_ht_le_4);
@@ -560,17 +560,17 @@ else if (!invert) {\
 pvp->values[1][i] = fractional_color(q + 1, max_color);\
 sbits[i] = (const gx_const_strip_bitmap *)\
 &gx_render_ht(caches[i], r)->tiles;\
-} else {                                                        \
-const gx_device_halftone *pdht = pdc->colors.colored.c_ht;  \
+} else { \
+const gx_device_halftone *pdht = pdc->colors.colored.c_ht; \
 int nlevels =\
 (pdht->components ?\
 pdht->components[i].corder.num_levels :\
 pdht->order.num_levels);\
 \
-pvp->values[1][i] = pvp->values[0][i];                   \
-pvp->values[0][i] = fractional_color(q + 1, max_color);   \
+pvp->values[1][i] = pvp->values[0][i]; \
+pvp->values[0][i] = fractional_color(q + 1, max_color); \
 sbits[i] = (const gx_const_strip_bitmap *)\
-&gx_render_ht(caches[i], nlevels - r)->tiles;    \
+&gx_render_ht(caches[i], nlevels - r)->tiles; \
 }\
 END
 private int
@@ -627,16 +627,16 @@ M(15); M(14); M(13); M(12);
 M(11); M(10); M(9); M(8);
 case 7:
 M(7); M(6); M(5); M(4);
-c3:	    case 3:
+c3: case 3:
 M(3); M(2);
-c1:	    case 1:
+c1: case 1:
 M(1);
 break;
 case 14:
 M(14); M(12); M(10); M(8);
 case 6:
 M(6); M(4);
-c2:	    case 2:
+c2: case 2:
 M(2);
 break;
 case 13:
@@ -697,7 +697,7 @@ sbits[3 - i] = (const gx_const_strip_bitmap *)\
 &gx_render_ht(caches[i], nlevels - r)->tiles;\
 }\
 END
-SET_PLANE_COLOR_CMYK(0,  (bits32)~0x77777777);
+SET_PLANE_COLOR_CMYK(0, (bits32)~0x77777777);
 SET_PLANE_COLOR_CMYK(1, 0x44444444);
 SET_PLANE_COLOR_CMYK(2, 0x22222222);
 SET_PLANE_COLOR_CMYK(3, 0x11111111);
@@ -791,7 +791,7 @@ ptc->xshift &= 7;
 BEGIN\
 if (c.row > c.tdata)\
 c.row -= c.raster;\
-else {	\
+else { \
 wrap_shifted_cursor(&c, sbits[i]);\
 }\
 c.data = c.row + c.xoffset;\
@@ -1013,7 +1013,7 @@ for (i = pmin; i <= pmax; ++i)
 if ((plane_mask >> i) & 1) {
 tile_cursor_t *ptc = &cursor[i];
 byte tile_bit;
-b:		    if (ptc->bit_shift < 8)
+b: if (ptc->bit_shift < 8)
 tile_bit = *ptc->data >> ptc->bit_shift++;
 else if (ptc->data > ptc->row) {
 tile_bit = *--(ptc->data);

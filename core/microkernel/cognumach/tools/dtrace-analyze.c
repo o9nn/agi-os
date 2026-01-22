@@ -10,34 +10,34 @@
 #include <fcntl.h>
 typedef enum {
 DTRACE_PROBE_FUNCTION_ENTRY = 1,
-DTRACE_PROBE_FUNCTION_EXIT  = 2,
-DTRACE_PROBE_SYSCALL_ENTRY  = 3,
-DTRACE_PROBE_SYSCALL_EXIT   = 4,
-DTRACE_PROBE_IPC_SEND       = 5,
-DTRACE_PROBE_IPC_RECEIVE    = 6,
-DTRACE_PROBE_VM_FAULT       = 7,
-DTRACE_PROBE_THREAD_SWITCH  = 8,
-DTRACE_PROBE_TIMER_TICK     = 9,
-DTRACE_PROBE_CUSTOM         = 10
+DTRACE_PROBE_FUNCTION_EXIT = 2,
+DTRACE_PROBE_SYSCALL_ENTRY = 3,
+DTRACE_PROBE_SYSCALL_EXIT = 4,
+DTRACE_PROBE_IPC_SEND = 5,
+DTRACE_PROBE_IPC_RECEIVE = 6,
+DTRACE_PROBE_VM_FAULT = 7,
+DTRACE_PROBE_THREAD_SWITCH = 8,
+DTRACE_PROBE_TIMER_TICK = 9,
+DTRACE_PROBE_CUSTOM = 10
 } dtrace_probe_type_t;
 typedef struct dtrace_event {
-uint32_t    probe_id;
-uint64_t    timestamp;
-uint32_t    cpu_id;
-uint32_t    thread_id;
-uint32_t    task_id;
-uint64_t    args[6];
+uint32_t probe_id;
+uint64_t timestamp;
+uint32_t cpu_id;
+uint32_t thread_id;
+uint32_t task_id;
+uint64_t args[6];
 } dtrace_event_t;
 typedef struct dtrace_probe {
-uint32_t             id;
-dtrace_probe_type_t  type;
-const char          *name;
-const char          *function;
-int                  enabled;
-uint64_t             fire_count;
-uint64_t             total_time;
-uint32_t             arg_count;
-void                *handler;
+uint32_t id;
+dtrace_probe_type_t type;
+const char *name;
+const char *function;
+int enabled;
+uint64_t fire_count;
+uint64_t total_time;
+uint32_t arg_count;
+void *handler;
 } dtrace_probe_t;
 typedef struct dtrace_metrics {
 uint64_t total_probes_fired;

@@ -26,19 +26,19 @@
 #define RWKV_MAYBE_BREAK
 #include <sys/stat.h>
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-#    define stat _stat64
-#    define fstat _fstat64
-#    define ftell _ftelli64
-#    define fseek _fseeki64
-#    if !defined(NDEBUG)
-#        include <intrin.h>
-#        define RWKV_MAYBE_BREAK __debugbreak()
-#    endif
+# define stat _stat64
+# define fstat _fstat64
+# define ftell _ftelli64
+# define fseek _fseeki64
+# if !defined(NDEBUG)
+# include <intrin.h>
+# define RWKV_MAYBE_BREAK __debugbreak()
+# endif
 #else
-#    if !defined(__APPLE__)
-#        define ftell ftello
-#        define fseek fseeko
-#    endif
+# if !defined(__APPLE__)
+# define ftell ftello
+# define fseek fseeko
+# endif
 #endif
 static_assert(sizeof(stat::st_size) >= 8, "File offsets should be 64-bit or else rwkv.cpp will not be able to load model files over 2 GB");
 static_assert(sizeof(decltype(ftell(NULL))) >= 8, "File offsets should be 64-bit or else rwkv.cpp will not be able to load model files over 2 GB");
@@ -164,18 +164,18 @@ return value;
 const char * rwkv_get_system_info_string(void) {
 static std::string s;
 if (s.empty()) {
-s  = "";
-s += "AVX="       + std::to_string(ggml_cpu_has_avx())       + " ";
-s += "AVX2="      + std::to_string(ggml_cpu_has_avx2())      + " ";
-s += "AVX512="    + std::to_string(ggml_cpu_has_avx512())    + " ";
-s += "FMA="       + std::to_string(ggml_cpu_has_fma())       + " ";
-s += "NEON="      + std::to_string(ggml_cpu_has_neon())      + " ";
-s += "ARM_FMA="   + std::to_string(ggml_cpu_has_arm_fma())   + " ";
-s += "F16C="      + std::to_string(ggml_cpu_has_f16c())      + " ";
-s += "FP16_VA="   + std::to_string(ggml_cpu_has_fp16_va())   + " ";
+s = "";
+s += "AVX=" + std::to_string(ggml_cpu_has_avx()) + " ";
+s += "AVX2=" + std::to_string(ggml_cpu_has_avx2()) + " ";
+s += "AVX512=" + std::to_string(ggml_cpu_has_avx512()) + " ";
+s += "FMA=" + std::to_string(ggml_cpu_has_fma()) + " ";
+s += "NEON=" + std::to_string(ggml_cpu_has_neon()) + " ";
+s += "ARM_FMA=" + std::to_string(ggml_cpu_has_arm_fma()) + " ";
+s += "F16C=" + std::to_string(ggml_cpu_has_f16c()) + " ";
+s += "FP16_VA=" + std::to_string(ggml_cpu_has_fp16_va()) + " ";
 s += "WASM_SIMD=" + std::to_string(ggml_cpu_has_wasm_simd()) + " ";
-s += "SSE3="      + std::to_string(ggml_cpu_has_sse3())      + " ";
-s += "VSX="       + std::to_string(ggml_cpu_has_vsx());
+s += "SSE3=" + std::to_string(ggml_cpu_has_sse3()) + " ";
+s += "VSX=" + std::to_string(ggml_cpu_has_vsx());
 }
 return s.c_str();
 }

@@ -1,5 +1,5 @@
 #ifndef files_INCLUDED
-#  define files_INCLUDED
+# define files_INCLUDED
 #define fptr(pref) (pref)->value.pfile
 #define make_file(pref,a,id,s)\
 make_tasv(pref,t_file,a,id,pfile,s)
@@ -41,7 +41,7 @@ int fcode = file_switch_to_read(op);\
 if (fcode < 0)\
 error_return(fcode);\
 } else {\
-invalid_action;	\
+invalid_action; \
 }\
 }\
 END
@@ -55,20 +55,20 @@ END
 BEGIN\
 svar = fptr(op);\
 if ( svar->write_id != r_size(op) )\
-{	int fcode = file_switch_to_write(op);\
+{ int fcode = file_switch_to_write(op);\
 if ( fcode < 0 ) error_return(fcode);\
 }\
 END
 extern const uint file_default_buffer_size;
 #ifndef gs_file_path_ptr_DEFINED
-#  define gs_file_path_ptr_DEFINED
+# define gs_file_path_ptr_DEFINED
 typedef struct gs_file_path_s *gs_file_path_ptr;
 #endif
 FILE *lib_fopen(const gs_file_path_ptr pfpath, const gs_memory_t *mem, const char *);
 int lib_file_open(const gs_file_path_ptr pfpath, i_ctx_t *, const char *, uint, byte *, uint,
 uint *, ref *, gs_memory_t *);
 #ifndef gs_ref_memory_DEFINED
-#  define gs_ref_memory_DEFINED
+# define gs_ref_memory_DEFINED
 typedef struct gs_ref_memory_s gs_ref_memory_t;
 #endif
 int file_read_string(const byte *, uint, ref *, gs_ref_memory_t *);

@@ -12,8 +12,8 @@
 #include "scsi.h"
 #include "sd.h"
 #include "hosts.h"
-#define IN2000_VERSION    "1.33"
-#define IN2000_DATE       "26/August/1998"
+#define IN2000_VERSION "1.33"
+#define IN2000_DATE "26/August/1998"
 #include "in2000.h"
 static char *setup_args[] =
 {"","","","","","","","",""};
@@ -69,16 +69,16 @@ return value;
 static int is_dir_out(Scsi_Cmnd *cmd)
 {
 switch (cmd->cmnd[0]) {
-case WRITE_6:           case WRITE_10:          case WRITE_12:
-case WRITE_LONG:        case WRITE_SAME:        case WRITE_BUFFER:
-case WRITE_VERIFY:      case WRITE_VERIFY_12:
-case COMPARE:           case COPY:              case COPY_VERIFY:
-case SEARCH_EQUAL:      case SEARCH_HIGH:       case SEARCH_LOW:
-case SEARCH_EQUAL_12:   case SEARCH_HIGH_12:    case SEARCH_LOW_12:
-case FORMAT_UNIT:       case REASSIGN_BLOCKS:   case RESERVE:
-case MODE_SELECT:       case MODE_SELECT_10:    case LOG_SELECT:
-case SEND_DIAGNOSTIC:   case CHANGE_DEFINITION: case UPDATE_BLOCK:
-case SET_WINDOW:        case MEDIUM_SCAN:       case SEND_VOLUME_TAG:
+case WRITE_6: case WRITE_10: case WRITE_12:
+case WRITE_LONG: case WRITE_SAME: case WRITE_BUFFER:
+case WRITE_VERIFY: case WRITE_VERIFY_12:
+case COMPARE: case COPY: case COPY_VERIFY:
+case SEARCH_EQUAL: case SEARCH_HIGH: case SEARCH_LOW:
+case SEARCH_EQUAL_12: case SEARCH_HIGH_12: case SEARCH_LOW_12:
+case FORMAT_UNIT: case REASSIGN_BLOCKS: case RESERVE:
+case MODE_SELECT: case MODE_SELECT_10: case LOG_SELECT:
+case SEND_DIAGNOSTIC: case CHANGE_DEFINITION: case UPDATE_BLOCK:
+case SET_WINDOW: case MEDIUM_SCAN: case SEND_VOLUME_TAG:
 case 0xea:
 return 1;
 default:
@@ -86,7 +86,7 @@ return 0;
 }
 }
 static struct sx_period sx_table[] = {
-{  1, 0x20},
+{ 1, 0x20},
 {252, 0x20},
 {376, 0x30},
 {500, 0x40},
@@ -94,13 +94,13 @@ static struct sx_period sx_table[] = {
 {752, 0x60},
 {876, 0x70},
 {1000,0x00},
-{0,   0} };
+{0, 0} };
 static int round_period(unsigned int period)
 {
 int x;
 for (x=1; sx_table[x].period_ns; x++) {
 if ((period <= sx_table[x-0].period_ns) &&
-(period >  sx_table[x-1].period_ns)) {
+(period > sx_table[x-1].period_ns)) {
 return x;
 }
 }
@@ -511,31 +511,31 @@ hostdata->outgoing_len = 1;
 hostdata->state = S_CONNECTED;
 break;
 case CSR_XFER_DONE|PHS_DATA_IN:
-case CSR_UNEXP    |PHS_DATA_IN:
-case CSR_SRV_REQ  |PHS_DATA_IN:
+case CSR_UNEXP |PHS_DATA_IN:
+case CSR_SRV_REQ |PHS_DATA_IN:
 DB(DB_INTR,printk("IN-%d.%d",cmd->SCp.this_residual,cmd->SCp.buffers_residual))
 transfer_bytes(cmd, DATA_IN_DIR);
 if (hostdata->state != S_RUNNING_LEVEL2)
 hostdata->state = S_CONNECTED;
 break;
 case CSR_XFER_DONE|PHS_DATA_OUT:
-case CSR_UNEXP    |PHS_DATA_OUT:
-case CSR_SRV_REQ  |PHS_DATA_OUT:
+case CSR_UNEXP |PHS_DATA_OUT:
+case CSR_SRV_REQ |PHS_DATA_OUT:
 DB(DB_INTR,printk("OUT-%d.%d",cmd->SCp.this_residual,cmd->SCp.buffers_residual))
 transfer_bytes(cmd, DATA_OUT_DIR);
 if (hostdata->state != S_RUNNING_LEVEL2)
 hostdata->state = S_CONNECTED;
 break;
 case CSR_XFER_DONE|PHS_COMMAND:
-case CSR_UNEXP    |PHS_COMMAND:
-case CSR_SRV_REQ  |PHS_COMMAND:
+case CSR_UNEXP |PHS_COMMAND:
+case CSR_SRV_REQ |PHS_COMMAND:
 DB(DB_INTR,printk("CMND-%02x,%ld",cmd->cmnd[0],cmd->pid))
 transfer_pio(cmd->cmnd, cmd->cmd_len, DATA_OUT_DIR, hostdata);
 hostdata->state = S_CONNECTED;
 break;
 case CSR_XFER_DONE|PHS_STATUS:
-case CSR_UNEXP    |PHS_STATUS:
-case CSR_SRV_REQ  |PHS_STATUS:
+case CSR_UNEXP |PHS_STATUS:
+case CSR_SRV_REQ |PHS_STATUS:
 DB(DB_INTR,printk("STATUS="))
 cmd->SCp.Status = read_1_byte(hostdata);
 DB(DB_INTR,printk("%02x",cmd->SCp.Status))
@@ -550,8 +550,8 @@ hostdata->state = S_CONNECTED;
 }
 break;
 case CSR_XFER_DONE|PHS_MESS_IN:
-case CSR_UNEXP    |PHS_MESS_IN:
-case CSR_SRV_REQ  |PHS_MESS_IN:
+case CSR_UNEXP |PHS_MESS_IN:
+case CSR_SRV_REQ |PHS_MESS_IN:
 DB(DB_INTR,printk("MSG_IN="))
 msg = read_1_byte(hostdata);
 sr = read_3393(hostdata,WD_SCSI_STATUS);
@@ -699,8 +699,8 @@ write_3393(hostdata,WD_COMMAND_PHASE, 0x41);
 write_3393_cmd(hostdata,WD_CMD_SEL_ATN_XFER);
 break;
 case CSR_XFER_DONE|PHS_MESS_OUT:
-case CSR_UNEXP    |PHS_MESS_OUT:
-case CSR_SRV_REQ  |PHS_MESS_OUT:
+case CSR_UNEXP |PHS_MESS_OUT:
+case CSR_SRV_REQ |PHS_MESS_OUT:
 DB(DB_INTR,printk("MSG_OUT="))
 if (hostdata->outgoing_len == 0) {
 hostdata->outgoing_len = 1;
@@ -835,7 +835,7 @@ write1_io(0, IO_LED_OFF);
 DB(DB_INTR,printk("} "))
 CLISPIN_UNLOCK(flags);
 }
-#define RESET_CARD         0
+#define RESET_CARD 0
 #define RESET_CARD_AND_BUS 1
 #define B_FLAG 0x80
 static int reset_hardware(struct Scsi_Host *instance, int type)
@@ -1019,7 +1019,7 @@ in2000__INITFUNC( static int check_setup_args(char *key, int *flags, int *val, c
 {
 int x;
 char *cp;
-for  (x=0; x<MAX_SETUP_ARGS; x++) {
+for (x=0; x<MAX_SETUP_ARGS; x++) {
 if (setup_used[x])
 continue;
 if (!strncmp(setup_args[x], key, strlen(key)))
@@ -1106,7 +1106,7 @@ continue;
 }
 tpnt->proc_dir = &proc_scsi_in2000;
 detect_count++;
-instance  = scsi_register(tpnt, sizeof(struct IN2000_hostdata));
+instance = scsi_register(tpnt, sizeof(struct IN2000_hostdata));
 if (!instance_list)
 instance_list = instance;
 hostdata = (struct IN2000_hostdata *)instance->hostdata;
@@ -1215,7 +1215,7 @@ return detect_count;
 int in2000_biosparam(Disk *disk, kdev_t dev, int *iinfo)
 {
 int size;
-size  = disk->capacity;
+size = disk->capacity;
 iinfo[0] = 64;
 iinfo[1] = 32;
 iinfo[2] = size >> 11;

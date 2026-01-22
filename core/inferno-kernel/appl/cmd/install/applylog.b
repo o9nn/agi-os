@@ -22,11 +22,11 @@ S: import logs;
 include "arg.m";
 Applylog: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 Apply, Applydb, Install, Asis, Skip: con iota;
-client:	ref Db;	# client current state from client log
-updates:	ref Db;	# state delta from new section of server log
+client: ref Db; # client current state from client log
+updates: ref Db; # state delta from new section of server log
 nerror := 0;
 nconflict := 0;
 debug := 0;
@@ -63,15 +63,15 @@ arg->setusage("applylog [-vuged] [-sc] [-T timefile] clientlog clientroot server
 dump := 0;
 while((o := arg->opt()) != 0)
 case o {
-'T' =>	timefile = arg->earg();
-'d' =>	dump = 1; debug = 1;
-'e' =>	noerr = 1;
-'g' =>	setgid = 1;
-'n' =>	nflag = 1; verbose = 1;
-'s' or 'c' =>	resolve = o;
-'u' =>	setuid = 1;
-'v' =>	verbose = 1;
-* =>	arg->usage();
+'T' => timefile = arg->earg();
+'d' => dump = 1; debug = 1;
+'e' => noerr = 1;
+'g' => setgid = 1;
+'n' => nflag = 1; verbose = 1;
+'s' or 'c' => resolve = o;
+'u' => setuid = 1;
+'v' => verbose = 1;
+* => arg->usage();
 }
 args = arg->argv();
 if(len args < 3)
@@ -127,7 +127,7 @@ skip := 0;
 for(i := 0; i < updates.nstate; i++){
 e := updates.state[i];
 ce := client.look(e.path);
-if(ce != nil && ce.seq >= e.seq){	# replay
+if(ce != nil && ce.seq >= e.seq){ # replay
 if(debug)
 sys->print("replay %c %q\n", e.action, e.path);
 if(!nflag && !skip)
@@ -141,15 +141,15 @@ Install =>
 if(debug)
 sys->print("resolve %q to install\n", e.path);
 c := e;
-c.action = 'a';	# force (re)creation/installation
+c.action = 'a'; # force (re)creation/installation
 if(!enact(c)){
 skip = 1;
-continue;	# don't update db
+continue; # don't update db
 }
 Apply =>
 if(!enact(e)){
 skip = 1;
-continue;	# don't update db
+continue; # don't update db
 }
 Applydb =>
 if(debug)
@@ -158,7 +158,7 @@ sys->print("resolve %q to update db\n", e.path);
 Asis =>
 if(debug)
 sys->print("resolve %q to client\n", e.path);
-#continue;	# ?
+#continue; # ?
 Skip =>
 if(debug)
 sys->print("conflict %q\n", e.path);
@@ -236,17 +236,17 @@ replaylog(db: ref Db, log: ref Entry)
 e := db.look(log.path);
 indb := e != nil && !e.removed();
 case log.action {
-'a' =>	# add new file
+'a' => # add new file
 if(indb){
 note(sys->sprint("%q duplicate create", log.path));
 return;
 }
-'c' =>	# contents
+'c' => # contents
 if(!indb){
 note(sys->sprint("%q contents but no entry", log.path));
 return;
 }
-'d' =>	# delete
+'d' => # delete
 if(!indb){
 note(sys->sprint("%q deleted but no entry", log.path));
 return;
@@ -255,7 +255,7 @@ if(e.d.mtime > log.d.mtime){
 note(sys->sprint("%q deleted but it's newer", log.path));
 return;
 }
-'m' =>	# metadata
+'m' => # metadata
 if(!indb){
 note(sys->sprint("%q metadata but no entry", log.path));
 return;
@@ -280,9 +280,9 @@ chooseaction(e: ref Entry): int
 cf := logs->mkpath(clientroot, e.path);
 sf := logs->mkpath(srvroot, e.serverpath);
 (ishere, cd) := sys->stat(logs->mkpath(clientroot, e.path));
-ishere = ishere >= 0;				# in local file system
+ishere = ishere >= 0; # in local file system
 db := client.look(e.path);
-indb := db != nil && !db.removed();	# previously arrived from server
+indb := db != nil && !db.removed(); # previously arrived from server
 unchanged := indb && ishere && (samestat(db.d, cd) || samecontents(sf, cf)) || !indb && !ishere;
 if(unchanged && (e.action != 'm' || samemeta(db.d, cd)))
 return Apply;
@@ -310,7 +310,7 @@ conflict(e.path, "locally modified", action(e.action));
 conflict(e.path, "locally removed", action(e.action));
 }else{
 if(db != nil)
-conflict(e.path, "locally retained or recreated", action(e.action));	# server installed it but later removed it
+conflict(e.path, "locally retained or recreated", action(e.action)); # server installed it but later removed it
 else
 conflict(e.path, "locally created", action(e.action));
 }
@@ -324,7 +324,7 @@ return 0;
 srcfile := logs->mkpath(srvroot, e.serverpath);
 dstfile := logs->mkpath(clientroot, e.path);
 case e.action {
-'a' =>	# create and copy in
+'a' => # create and copy in
 if(debug)
 sys->print("create %q\n", dstfile);
 if(e.d.mode & Sys->DMDIR)
@@ -337,7 +337,7 @@ error(err);
 warn(err);
 return 0;
 }
-'c' =>	# contents
+'c' => # contents
 err := copyin(srcfile, dstfile, 0, e);
 if(err != nil){
 if(noerr)
@@ -345,14 +345,14 @@ error(err);
 warn(err);
 return 0;
 }
-'d' =>	# delete
+'d' => # delete
 if(debug)
 sys->print("remove %q\n", dstfile);
 if(remove(dstfile) < 0){
 warn(sys->sprint("can't remove %q: %r", dstfile));
 return 0;
 }
-'m' =>	# metadata
+'m' => # metadata
 if(debug)
 sys->print("wstat %q\n", dstfile);
 d := sys->nulldir;
@@ -411,11 +411,11 @@ nconflict++;
 action(a: int): string
 {
 case a {
-'a' =>	return "create";
-'c' =>	return "update";
-'d' =>	return "delete";
-'m' =>	return "update metadata";
-* =>	return sys->sprint("unknown action %c", a);
+'a' => return "create";
+'c' => return "update";
+'d' => return "delete";
+'m' => return "update metadata";
+* => return sys->sprint("unknown action %c", a);
 }
 }
 samecontents(path1, path2: string): int
@@ -428,7 +428,7 @@ if(f2 == nil)
 return 0;
 b1 := array[Sys->ATOMICIO] of byte;
 b2 := array[Sys->ATOMICIO] of byte;
-n := 256;	# start with something small; dis files and big executables should fail more quickly
+n := 256; # start with something small; dis files and big executables should fail more quickly
 n1, n2: int;
 do{
 n1 = sys->read(f1, b1, n);
@@ -447,7 +447,7 @@ samestat(a: Sys->Dir, b: Sys->Dir): int
 # doesn't check permission/ownership, does check QTDIR/QTFILE
 if(a.mode & Sys->DMDIR)
 return (b.mode & Sys->DMDIR) != 0;
-return a.length == b.length && a.mtime == b.mtime && a.qid.qtype == b.qid.qtype;	# TO DO: a.name==b.name?
+return a.length == b.length && a.mtime == b.mtime && a.qid.qtype == b.qid.qtype; # TO DO: a.name==b.name?
 }
 samemeta(a: Sys->Dir, b: Sys->Dir): int
 {
@@ -474,7 +474,7 @@ if(setgid)
 fchgrp(fd, e.d.gid);
 if(setuid)
 fchown(fd, e.d.uid);
-#	e.d.mtime = now;
+# e.d.mtime = now;
 return nil;
 }
 fchmod(fd: ref Sys->FD, mode: int)

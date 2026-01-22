@@ -14,7 +14,7 @@
 #include "gserrors.h"
 #include "vdtrace.h"
 #define VD_DRAW_IMPORT 0
-#define VD_SCALE  (4.0 / 4096.0)
+#define VD_SCALE (4.0 / 4096.0)
 #define VD_SHIFT_X 50
 #define VD_SHIFT_Y 100
 #define VD_PAINT_POLE_IDS 1
@@ -59,38 +59,38 @@ return ((((a0 * b) >> (s - 1)) + 1) >> 1) + a1 * b;
 #endif
 }
 private inline int32_t shift_rounded(int32_t v, unsigned int s)
-{   return ((v >> (s - 1)) + 1) >> 1;
+{ return ((v >> (s - 1)) + 1) >> 1;
 }
 private inline int32_t Max(int32_t a, int32_t b)
-{   return a > b ? a : b;
+{ return a > b ? a : b;
 }
 private inline int32_t Min(int32_t a, int32_t b)
-{   return a < b ? a : b;
+{ return a < b ? a : b;
 }
 private inline long rshift(long a, int b)
-{   return b > 0 ? a << b : a >> -b;
+{ return b > 0 ? a << b : a >> -b;
 }
 private inline ulong urshift(ulong a, int b)
-{   return b > 0 ? a << b : a >> -b;
+{ return b > 0 ? a << b : a >> -b;
 }
 private inline void double_matrix__set(double_matrix * this, const gs_matrix_fixed * m)
-{   this->xx = m->xx;
+{ this->xx = m->xx;
 this->xy = m->xy;
 this->yx = m->yx;
 this->yy = m->yy;
 }
 private inline int double_matrix__invert_to(const double_matrix * this, double_matrix * m)
-{   double det = this->xx * this->yy - this->xy * this->yx;
+{ double det = this->xx * this->yy - this->xy * this->yx;
 if (fabs(det) * 1000000 < fabs(this->xx) + fabs(this->xy) + fabs(this->yx) + fabs(this->yy))
 return_error(gs_error_rangecheck);
-m->xx =  this->yy / det;
+m->xx = this->yy / det;
 m->xy = -this->xy / det;
 m->yx = -this->yx / det;
-m->yy =  this->xx / det;
+m->yy = this->xx / det;
 return 0;
 }
 private void fraction_matrix__drop_bits(fraction_matrix * this, unsigned int bits)
-{   this->xx = shift_rounded(this->xx, bits);
+{ this->xx = shift_rounded(this->xx, bits);
 this->xy = shift_rounded(this->xy, bits);
 this->yx = shift_rounded(this->yx, bits);
 this->yy = shift_rounded(this->yy, bits);
@@ -98,7 +98,7 @@ this->denominator >>= bits;
 this->bitshift -= bits;
 }
 private void fraction_matrix__set(fraction_matrix * this, const double_matrix * pmat)
-{   double axx = fabs(pmat->xx), axy = fabs(pmat->xy);
+{ double axx = fabs(pmat->xx), axy = fabs(pmat->xy);
 double ayx = fabs(pmat->xx), ayy = fabs(pmat->xy);
 double scale = max(axx + axy, ayx + ayy);
 int matrix_exp, m;
@@ -125,7 +125,7 @@ pmat->yy = (double)this->yy / this->denominator;
 return 0;
 }
 private int fraction_matrix__invert_to(const fraction_matrix * this, fraction_matrix * pmat)
-{   double_matrix m, M;
+{ double_matrix m, M;
 int code;
 code = fraction_matrix__to_double(this, &M);
 if (code < 0)
@@ -137,16 +137,16 @@ fraction_matrix__set(pmat, &m);
 return 0;
 }
 private inline int32_t fraction_matrix__transform_x(fraction_matrix *this, int24 x, int24 y, unsigned int s)
-{   return mul_shift_round(x, this->xx, s) + mul_shift_round(y, this->yx, s);
+{ return mul_shift_round(x, this->xx, s) + mul_shift_round(y, this->yx, s);
 }
 private inline int32_t fraction_matrix__transform_y(fraction_matrix *this, int24 x, int24 y, unsigned int s)
-{   return mul_shift_round(x, this->xy, s) + mul_shift_round(y, this->yy, s);
+{ return mul_shift_round(x, this->xy, s) + mul_shift_round(y, this->yy, s);
 }
 private inline int ranger_step_f(int i, int beg, int end)
-{   return (i == end ? beg : i + 1);
+{ return (i == end ? beg : i + 1);
 }
 private inline int ranger_step_b(int i, int beg, int end)
-{   return (i == beg ? end : i - 1);
+{ return (i == beg ? end : i - 1);
 }
 private inline fixed o2d(const t1_hinter *h, t1_hinter_space_coord v)
 {
@@ -159,21 +159,21 @@ else
 return v << -s;
 }
 private inline fixed d2o(const t1_hinter *h, t1_hinter_space_coord v)
-{   int s = h->g2o_fraction_bits - _fixed_shift;
+{ int s = h->g2o_fraction_bits - _fixed_shift;
 if (s >= 0)
 return v << s;
 else
 return v >> -s;
 }
 private inline void g2o(t1_hinter * h, t1_glyph_space_coord gx, t1_glyph_space_coord gy, t1_hinter_space_coord *ox, t1_hinter_space_coord *oy)
-{   *ox = fraction_matrix__transform_x(&h->ctmf, gx, gy, g2o_bitshift);
+{ *ox = fraction_matrix__transform_x(&h->ctmf, gx, gy, g2o_bitshift);
 *oy = fraction_matrix__transform_y(&h->ctmf, gx, gy, g2o_bitshift);
 }
 private inline t1_hinter_space_coord g2o_dist(t1_glyph_space_coord gd, int19 coef)
-{   return mul_shift(gd, coef, g2o_bitshift);
+{ return mul_shift(gd, coef, g2o_bitshift);
 }
 private inline void g2d(t1_hinter * h, t1_glyph_space_coord gx, t1_glyph_space_coord gy, fixed *dx, fixed *dy)
-{   *dx = fraction_matrix__transform_x(&h->ctmf, gx, gy, g2o_bitshift);
+{ *dx = fraction_matrix__transform_x(&h->ctmf, gx, gy, g2o_bitshift);
 *dy = fraction_matrix__transform_y(&h->ctmf, gx, gy, g2o_bitshift);
 *dx = o2d(h, *dx);
 *dy = o2d(h, *dy);
@@ -181,20 +181,20 @@ private inline void g2d(t1_hinter * h, t1_glyph_space_coord gx, t1_glyph_space_c
 *dy += h->orig_dy;
 }
 private inline void o2g(t1_hinter * h, t1_hinter_space_coord ox, t1_hinter_space_coord oy, t1_glyph_space_coord *gx, t1_glyph_space_coord *gy)
-{   *gx = fraction_matrix__transform_x(&h->ctmi, ox, oy, split_bits);
+{ *gx = fraction_matrix__transform_x(&h->ctmi, ox, oy, split_bits);
 *gy = fraction_matrix__transform_y(&h->ctmi, ox, oy, split_bits);
 *gx = shift_rounded(*gx, h->g2o_fraction_bits + h->ctmi.bitshift - _fixed_shift - split_bits);
 *gy = shift_rounded(*gy, h->g2o_fraction_bits + h->ctmi.bitshift - _fixed_shift - split_bits);
 }
 private inline t1_glyph_space_coord o2g_dist(t1_hinter * h, t1_hinter_space_coord od, int19 coef)
-{   return shift_rounded(mul_shift(od, coef, split_bits), h->g2o_fraction_bits + h->ctmi.bitshift - _fixed_shift - split_bits);
+{ return shift_rounded(mul_shift(od, coef, split_bits), h->g2o_fraction_bits + h->ctmi.bitshift - _fixed_shift - split_bits);
 }
 private inline void o2g_float(t1_hinter * h, t1_hinter_space_coord ox, t1_hinter_space_coord oy, t1_glyph_space_coord *gx, t1_glyph_space_coord *gy)
-{   *gx = (long)(((double)ox * h->ctmi.xx + (double)oy * h->ctmi.yx) * fixed_scale / h->g2o_fraction / h->ctmi.denominator);
+{ *gx = (long)(((double)ox * h->ctmi.xx + (double)oy * h->ctmi.yx) * fixed_scale / h->g2o_fraction / h->ctmi.denominator);
 *gy = (long)(((double)ox * h->ctmi.xy + (double)oy * h->ctmi.yy) * fixed_scale / h->g2o_fraction / h->ctmi.denominator);
 }
 private void t1_hint__set_aligned_coord(t1_hint * this, t1_glyph_space_coord gc, t1_pole * pole, enum t1_align_type align, int quality)
-{   t1_glyph_space_coord g = (this->type == hstem ? pole->gy : pole->gx);
+{ t1_glyph_space_coord g = (this->type == hstem ? pole->gy : pole->gx);
 #if FINE_STEM_COMPLEXES
 if (any_abs(this->g0 - g) < any_abs(this->g1 - g)) {
 if (this->aligned0 <= align && this->q0 > quality)
@@ -226,7 +226,7 @@ int i, j;
 char buf[15];
 if (!vd_enabled)
 return;
-#   if VD_PAINT_POLE_IDS
+# if VD_PAINT_POLE_IDS
 for(i = 0; i < this->contour_count; i++) {
 int beg_pole = this->contour[i];
 int end_pole = this->contour[i + 1] - 2;
@@ -238,7 +238,7 @@ if (this->pole[j + 1].type == offcurve)
 j+=2;
 }
 }
-#   endif
+# endif
 vd_setcolor(aligned ? RGB(0,255,0) : RGB(0,0,255));
 for(i = 0; i < this->contour_count; i++) {
 int beg_pole = this->contour[i];
@@ -259,7 +259,7 @@ vd_lineto(X(beg_pole), Y(beg_pole));
 #undef Y
 #endif
 }
-private void  t1_hinter__paint_raster_grid(t1_hinter * this)
+private void t1_hinter__paint_raster_grid(t1_hinter * this)
 {
 #ifdef VD_TRACE
 int i;
@@ -305,7 +305,7 @@ vd_bar(gx0, gy0, gx1, gy1, 1, (!j ? 0 : pix ? c1 : c0));
 #endif
 }
 void t1_hinter__init(t1_hinter * this, gx_path *output_path)
-{   this->max_import_coord = (1 << max_coord_bits);
+{ this->max_import_coord = (1 << max_coord_bits);
 this->stem_snap_count[0] = this->stem_snap_count[1] = 0;
 this->zone_count = 0;
 this->pole_count = 0;
@@ -347,7 +347,7 @@ this->autohinting = false;
 this->stem_snap[0][0] = this->stem_snap[1][0] = 100;
 }
 private inline void t1_hinter__free_arrays(t1_hinter * this)
-{   if (this->pole != this->pole0)
+{ if (this->pole != this->pole0)
 gs_free_object(this->memory, this->pole, s_pole_array);
 if (this->hint != this->hint0)
 gs_free_object(this->memory, this->hint, s_hint_array);
@@ -369,7 +369,7 @@ this->hint_range = 0;
 this->stem_snap[0] = this->stem_snap[1] = 0;
 }
 private inline void t1_hinter__init_outline(t1_hinter * this)
-{   this->contour_count = 0;
+{ this->contour_count = 0;
 this->pole_count = 0;
 this->contour[0] = 0;
 this->seac_flag = 0;
@@ -386,7 +386,7 @@ this->heigt_transform_coef_inv = (int19)(this->ctmi.denominator / this->heigt_tr
 this->width_transform_coef_inv = (int19)(this->ctmi.denominator / this->width_transform_coef + 0.5);
 }
 private inline void t1_hinter__adjust_matrix_precision(t1_hinter * this, fixed xx, fixed yy)
-{   fixed x = any_abs(xx), y = any_abs(yy);
+{ fixed x = any_abs(xx), y = any_abs(yy);
 fixed c = (x > y ? x : y);
 while (c >= this->max_import_coord) {
 this->max_import_coord <<= 1;
@@ -409,7 +409,7 @@ this->orig_dy = (dy + align_y / 2) & ~(align_y - 1);
 t1_hinter__adjust_matrix_precision(this, this->orig_dx, this->orig_dy);
 this->orig_ox = d2o(this, this->orig_dx);
 this->orig_oy = d2o(this, this->orig_dy);
-#   if ADOBE_SHIFT_CHARPATH
+# if ADOBE_SHIFT_CHARPATH
 if (this->charpath_flag) {
 this->orig_dx += fixed_half;
 this->orig_dx &= ~(fixed_1 - 1);
@@ -418,14 +418,14 @@ this->orig_dy += fixed_half;
 } else {
 this->orig_dy += fixed_1;
 }
-#   endif
+# endif
 }
 int t1_hinter__set_mapping(t1_hinter * this, gs_matrix_fixed * ctm,
 gs_matrix * FontMatrix, gs_matrix * baseFontMatrix,
 int log2_pixels_x, int log2_pixels_y,
 int log2_subpixels_x, int log2_subpixels_y,
 fixed origin_x, fixed origin_y, bool align_to_pixels)
-{   float axx = fabs(ctm->xx), axy = fabs(ctm->xy);
+{ float axx = fabs(ctm->xx), axy = fabs(ctm->xy);
 float ayx = fabs(ctm->xx), ayy = fabs(ctm->xy);
 float scale = max(axx + axy, ayx + ayy);
 double_matrix CTM;
@@ -481,7 +481,7 @@ d0 = hypot(p0.x, p0.y);
 d1 = hypot(p1.x, p1.y);
 d2 = hypot(p2.x, p2.y);
 this->base_font_scale = d0;
-this->font_size =  floor(d1 / d0 * 10000 + 0.5) / 10000;
+this->font_size = floor(d1 / d0 * 10000 + 0.5) / 10000;
 this->resolution = floor(d2 / d1 * 10000000 + 0.5) / 10000000;
 }
 if (1 ||
@@ -499,9 +499,9 @@ t1_hinter__set_origin(this, origin_x, origin_y);
 return 0;
 }
 private void t1_hinter__make_zone(t1_hinter * this, t1_zone *zone, float * blues, enum t1_zone_type type, t1_glyph_space_coord blue_fuzz)
-{   t1_glyph_space_coord d = 0;
+{ t1_glyph_space_coord d = 0;
 zone->type = type;
-zone->y           = float2fixed(blues[0] + d);
+zone->y = float2fixed(blues[0] + d);
 zone->overshoot_y = float2fixed(blues[1] + d);
 zone->y_min = min(zone->y, zone->overshoot_y) - blue_fuzz;
 zone->y_max = max(zone->y, zone->overshoot_y) + blue_fuzz;
@@ -523,7 +523,7 @@ gs_free_object(mem, *a, cname);
 return false;
 }
 private int t1_hinter__set_alignment_zones(t1_hinter * this, float * blues, int count, enum t1_zone_type type, bool family)
-{   int count2 = count / 2, i, j;
+{ int count2 = count / 2, i, j;
 if (!family) {
 if (count2 + this->zone_count >= this->max_zone_count)
 if(t1_hinter__realloc_array(this->memory, (void **)&this->zone, this->zone0, &this->max_zone_count,
@@ -539,7 +539,7 @@ for (i = 0; i < count2; i++) {
 t1_hinter__make_zone(this, &zone, blues + i, type, this->blue_fuzz);
 for (j = 0; j<this->zone_count; j++) {
 t1_zone *zone1 = &this->zone[j];
-if (any_abs(zone.y -           zone1->y          ) * this->heigt_transform_coef <= 1 &&
+if (any_abs(zone.y - zone1->y ) * this->heigt_transform_coef <= 1 &&
 any_abs(zone.overshoot_y - zone1->overshoot_y) * this->heigt_transform_coef <= 1)
 *zone1 = zone;
 }
@@ -548,7 +548,7 @@ any_abs(zone.overshoot_y - zone1->overshoot_y) * this->heigt_transform_coef <= 1
 return 0;
 }
 private int t1_hinter__set_stem_snap(t1_hinter * this, float * value, int count, unsigned short hv)
-{   int count0 = this->stem_snap_count[hv], i;
+{ int count0 = this->stem_snap_count[hv], i;
 if (count + count0 >= this->max_stem_snap_count[hv])
 if(t1_hinter__realloc_array(this->memory, (void **)&this->stem_snap[hv], this->stem_snap0[hv], &this->max_stem_snap_count[hv],
 sizeof(this->stem_snap0[0]) / count_of(this->stem_snap0[0]),
@@ -570,12 +570,12 @@ vd_setcolor(VD_IMPORT_COLOR);
 vd_setlinewidth(0);
 }
 int t1_hinter__set_font_data(t1_hinter * this, int FontType, gs_type1_data *pdata, bool no_grid_fitting)
-{   int code;
+{ int code;
 t1_hinter__init_outline(this);
 this->FontType = FontType;
 this->BlueScale = pdata->BlueScale;
 this->blue_shift = float2fixed(pdata->BlueShift);
-this->blue_fuzz  = float2fixed(pdata->BlueFuzz);
+this->blue_fuzz = float2fixed(pdata->BlueFuzz);
 this->suppress_overshoots = (this->BlueScale > this->heigt_transform_coef / (1 << this->log2_pixels_y) - 0.00020417);
 this->overshoot_threshold = (this->heigt_transform_coef != 0 ? (t1_glyph_space_coord)(fixed_half * (1 << this->log2_pixels_y) / this->heigt_transform_coef) : 0);
 this->ForceBold = pdata->ForceBold;
@@ -612,7 +612,7 @@ t1_hinter__init_outline(this);
 this->FontType = FontType;
 this->BlueScale = 0.039625;
 this->blue_shift = 7;
-this->blue_fuzz  = 1;
+this->blue_fuzz = 1;
 this->suppress_overshoots = (this->BlueScale > this->heigt_transform_coef / (1 << this->log2_pixels_y) - 0.00020417);
 this->overshoot_threshold = (this->heigt_transform_coef != 0 ? (t1_glyph_space_coord)(fixed_half * (1 << this->log2_pixels_y) / this->heigt_transform_coef) : 0);
 this->ForceBold = false;
@@ -626,7 +626,7 @@ return 0;
 return 0;
 }
 private inline int t1_hinter__can_add_pole(t1_hinter * this, t1_pole **pole)
-{   if (this->pole_count >= this->max_pole_count)
+{ if (this->pole_count >= this->max_pole_count)
 if(t1_hinter__realloc_array(this->memory, (void **)&this->pole, this->pole0, &this->max_pole_count,
 sizeof(this->pole0) / count_of(this->pole0), T1_MAX_POLES, s_pole_array))
 return_error(gs_error_VMerror);
@@ -634,7 +634,7 @@ return_error(gs_error_VMerror);
 return 0;
 }
 private inline int t1_hinter__add_pole(t1_hinter * this, t1_glyph_space_coord xx, t1_glyph_space_coord yy, enum t1_pole_type type)
-{   t1_pole *pole;
+{ t1_pole *pole;
 int code = t1_hinter__can_add_pole(this, &pole);
 if (code < 0)
 return code;
@@ -647,8 +647,8 @@ pole->aligned_x = pole->aligned_y = unaligned;
 this->pole_count++;
 return 0;
 }
-int t1_hinter__sbw(t1_hinter * this, fixed sbx, fixed sby, fixed wx,  fixed wy)
-{   t1_hinter__adjust_matrix_precision(this, sbx, sby);
+int t1_hinter__sbw(t1_hinter * this, fixed sbx, fixed sby, fixed wx, fixed wy)
+{ t1_hinter__adjust_matrix_precision(this, sbx, sby);
 t1_hinter__adjust_matrix_precision(this, wx, wy);
 this->cx = this->orig_gx = this->subglyph_orig_gx = sbx;
 this->cy = this->orig_gy = this->subglyph_orig_gy = sby;
@@ -657,13 +657,13 @@ this->width_gy = wy;
 return 0;
 }
 int t1_hinter__sbw_seac(t1_hinter * this, fixed sbx, fixed sby)
-{   t1_hinter__adjust_matrix_precision(this, sbx, sby);
+{ t1_hinter__adjust_matrix_precision(this, sbx, sby);
 this->cx = this->subglyph_orig_gx = this->orig_gx + sbx;
 this->cy = this->subglyph_orig_gy = this->orig_gy + sby;
 return 0;
 }
 int t1_hinter__rmoveto(t1_hinter * this, fixed xx, fixed yy)
-{   int code;
+{ int code;
 t1_hinter__adjust_matrix_precision(this, xx, yy);
 if (this->flex_count == 0) {
 if (this->disable_hinting) {
@@ -782,7 +782,7 @@ this->cy = yy;
 }
 }
 int t1_hinter__closepath(t1_hinter * this)
-{   if (this->disable_hinting) {
+{ if (this->disable_hinting) {
 vd_lineto(this->bx, this->by);
 this->path_opened = false;
 return gx_path_close_subpath(this->output_path);
@@ -817,7 +817,7 @@ return 0;
 }
 }
 private inline int t1_hinter__can_add_hint(t1_hinter * this, t1_hint **hint)
-{   if (this->hint_count >= this->max_hint_count)
+{ if (this->hint_count >= this->max_hint_count)
 if(t1_hinter__realloc_array(this->memory, (void **)&this->hint, this->hint0, &this->max_hint_count,
 sizeof(this->hint0) / count_of(this->hint0), T1_MAX_HINTS, s_hint_array))
 return_error(gs_error_VMerror);
@@ -825,7 +825,7 @@ return_error(gs_error_VMerror);
 return 0;
 }
 int t1_hinter__flex_beg(t1_hinter * this)
-{   if (this->flex_count != 0)
+{ if (this->flex_count != 0)
 return_error(gs_error_invalidfont);
 this->flex_count++;
 if (this->disable_hinting)
@@ -833,13 +833,13 @@ return t1_hinter__rmoveto(this, 0, 0);
 return 0;
 }
 int t1_hinter__flex_point(t1_hinter * this)
-{   if (this->flex_count == 0)
+{ if (this->flex_count == 0)
 return_error(gs_error_invalidfont);
 this->flex_count++;
 return 0;
 }
 int t1_hinter__flex_end(t1_hinter * this, fixed flex_height)
-{   t1_pole *pole0, *pole1, *pole4;
+{ t1_pole *pole0, *pole1, *pole4;
 t1_hinter_space_coord ox, oy;
 const int32_t div_x = this->g2o_fraction << this->log2_pixels_x;
 const int32_t div_y = this->g2o_fraction << this->log2_pixels_y;
@@ -896,7 +896,7 @@ this->flex_count = 0;
 return 0;
 }
 private inline int t1_hinter__can_add_hint_range(t1_hinter * this, t1_hint_range **hint_range)
-{   if (this->hint_range_count >= this->max_hint_range_count)
+{ if (this->hint_range_count >= this->max_hint_range_count)
 if(t1_hinter__realloc_array(this->memory, (void **)&this->hint_range, this->hint_range0, &this->max_hint_range_count,
 sizeof(this->hint_range0) / count_of(this->hint_range0), T1_MAX_HINTS, s_hint_range_array))
 return_error(gs_error_VMerror);
@@ -904,7 +904,7 @@ return_error(gs_error_VMerror);
 return 0;
 }
 int t1_hinter__hint_mask(t1_hinter * this, byte *mask)
-{   int hint_count, i;
+{ int hint_count, i;
 if (this->disable_hinting)
 return 0;
 hint_count = this->hint_count;
@@ -938,7 +938,7 @@ DO_NOTHING;
 return 0;
 }
 int t1_hinter__drop_hints(t1_hinter * this)
-{   if (this->disable_hinting)
+{ if (this->disable_hinting)
 return 0;
 if (this->primary_hint_count == -1)
 this->primary_hint_count = this->hint_range_count;
@@ -946,7 +946,7 @@ return t1_hinter__hint_mask(this, NULL);
 }
 private inline int t1_hinter__stem(t1_hinter * this, enum t1_hint_type type, unsigned short stem3_index
 , fixed v0, fixed v1, int side_mask)
-{   t1_hint *hint;
+{ t1_hint *hint;
 t1_glyph_space_coord s = (type == hstem ? this->subglyph_orig_gy : this->subglyph_orig_gx);
 t1_glyph_space_coord g0 = s + v0;
 t1_glyph_space_coord g1 = s + v0 + v1;
@@ -988,14 +988,14 @@ this->hint_range_count++;
 return 0;
 }
 int t1_hinter__dotsection(t1_hinter * this)
-{   if (this->pole_count == 0 || this->pole[this->pole_count - 1].type != moveto)
+{ if (this->pole_count == 0 || this->pole[this->pole_count - 1].type != moveto)
 return 0;
 if (this->disable_hinting)
 return 0;
 return t1_hinter__stem(this, dot, 0, 0, 0, 0);
 }
 int t1_hinter__hstem(t1_hinter * this, fixed x0, fixed x1)
-{   if (this->disable_hinting)
+{ if (this->disable_hinting)
 return 0;
 return t1_hinter__stem(this, hstem, 0, x0, x1, 3);
 }
@@ -1006,12 +1006,12 @@ return 0;
 return t1_hinter__stem(this, hstem, 0, x0, x1, side_mask);
 }
 int t1_hinter__vstem(t1_hinter * this, fixed y0, fixed y1)
-{   if (this->disable_hinting)
+{ if (this->disable_hinting)
 return 0;
 return t1_hinter__stem(this, vstem, 0, y0, y1, 3);
 }
 int t1_hinter__hstem3(t1_hinter * this, fixed x0, fixed x1, fixed x2, fixed x3, fixed x4, fixed x5)
-{   int code;
+{ int code;
 if (this->disable_hinting)
 return 0;
 code = t1_hinter__stem(this, hstem, 1, x0, x1, 3);
@@ -1023,7 +1023,7 @@ return code;
 return t1_hinter__stem(this, hstem, 3, x4, x5, 3);
 }
 int t1_hinter__vstem3(t1_hinter * this, fixed y0, fixed y1, fixed y2, fixed y3, fixed y4, fixed y5)
-{   int code;
+{ int code;
 if (this->disable_hinting)
 return 0;
 code = t1_hinter__stem(this, vstem, 1, y0, y1, 3);
@@ -1035,14 +1035,14 @@ return code;
 return t1_hinter__stem(this, vstem, 3, y4, y5, 3);
 }
 int t1_hinter__endchar(t1_hinter * this, bool seac_flag)
-{   this->seac_flag = seac_flag;
+{ this->seac_flag = seac_flag;
 return 0;
 }
 int t1_hinter__is_x_fitting(t1_hinter * this)
-{   return this->grid_fit_x;
+{ return this->grid_fit_x;
 }
 private inline int t1_hinter__segment_beg(t1_hinter * this, int pole_index)
-{   int contour_index = this->pole[pole_index].contour_index;
+{ int contour_index = this->pole[pole_index].contour_index;
 int beg_contour_pole = this->contour[contour_index];
 int end_contour_pole = this->contour[contour_index + 1] - 2;
 int prev = ranger_step_b(pole_index, beg_contour_pole, end_contour_pole);
@@ -1051,7 +1051,7 @@ prev = ranger_step_b(prev, beg_contour_pole, end_contour_pole);
 return prev;
 }
 private inline int t1_hinter__segment_end(t1_hinter * this, int pole_index)
-{   int contour_index = this->pole[pole_index].contour_index;
+{ int contour_index = this->pole[pole_index].contour_index;
 int beg_contour_pole = this->contour[contour_index];
 int end_contour_pole = this->contour[contour_index + 1] - 2;
 int next = ranger_step_f(pole_index, beg_contour_pole, end_contour_pole);
@@ -1076,7 +1076,7 @@ this->ymax = this->pole[i].gy;
 this->ymid = (this->ymax + this->ymin) / 2;
 }
 private void t1_hinter__simplify_representation(t1_hinter * this)
-{   int i, j;
+{ int i, j;
 if (this->pole_count <= 1) {
 return;
 }
@@ -1097,7 +1097,7 @@ this->hint_count = j;
 }
 private inline bool t1_hinter__is_small_angle(t1_hinter * this, int pole_index0, int pole_index1,
 long tan_x, long tan_y, int alpha, int alpha_div, int *quality)
-{   long gx = this->pole[pole_index1].gx - this->pole[pole_index0].gx;
+{ long gx = this->pole[pole_index1].gx - this->pole[pole_index0].gx;
 long gy = this->pole[pole_index1].gy - this->pole[pole_index0].gy;
 long vp = mul_shift(gx, tan_y, _fixed_shift) - mul_shift(gy, tan_x, _fixed_shift);
 long sp = mul_shift(gx, tan_x, _fixed_shift) + mul_shift(gy, tan_y, _fixed_shift);
@@ -1118,7 +1118,7 @@ return false;
 return true;
 }
 private inline bool t1_hinter__is_conjugated(t1_hinter * this, int pole_index)
-{   int prev = t1_hinter__segment_beg(this, pole_index);
+{ int prev = t1_hinter__segment_beg(this, pole_index);
 int next = t1_hinter__segment_end(this, pole_index);
 long gx0 = this->pole[prev].gx - this->pole[pole_index].gx;
 long gy0 = this->pole[prev].gy - this->pole[pole_index].gy;
@@ -1133,13 +1133,13 @@ return true;
 return any_abs(vp) < -sp / 1000;
 }
 private inline bool t1_hinter__next_contour_pole(t1_hinter * this, int pole_index)
-{   int contour_index = this->pole[pole_index].contour_index;
+{ int contour_index = this->pole[pole_index].contour_index;
 int beg_contour_pole = this->contour[contour_index];
 int end_contour_pole = this->contour[contour_index + 1] - 2;
 return ranger_step_f(pole_index, beg_contour_pole, end_contour_pole);
 }
 private inline bool t1_hinter__is_good_tangent(t1_hinter * this, int pole_index, long tan_x, long tan_y, int *quality)
-{   int contour_index = this->pole[pole_index].contour_index;
+{ int contour_index = this->pole[pole_index].contour_index;
 int beg_contour_pole = this->contour[contour_index];
 int end_contour_pole = this->contour[contour_index + 1] - 2, prev, next;
 int const alpha = 9, alpha_div = 10;
@@ -1157,7 +1157,7 @@ good1 = t1_hinter__is_small_angle(this, next, pole_index, tan_x, tan_y, alpha, a
 return good0 || good1;
 }
 private void t1_hinter__compute_type1_stem_ranges(t1_hinter * this)
-{   int j;
+{ int j;
 int end_range_pole = this->pole_count - 3;
 int primary_hint_count = this->primary_hint_count;
 if (this->hint_count == 0)
@@ -1167,17 +1167,17 @@ primary_hint_count = this->hint_range_count;
 for (j = 0; j < this->hint_range_count; j++)
 if (this->hint_range[j].beg_pole > this->contour[this->hint_range[j].contour_index])
 this->hint_range[j].beg_pole = t1_hinter__segment_beg(this, this->hint_range[j].beg_pole);
-for(j = 0; j < primary_hint_count; j++)      {
+for(j = 0; j < primary_hint_count; j++) {
 this->hint_range[j].beg_pole = 0;
 this->hint_range[j].end_pole = end_range_pole;
 }
-for(; j < this->hint_range_count; j++)      {
+for(; j < this->hint_range_count; j++) {
 if (this->hint_range[j].end_pole == -1)
 this->hint_range[j].end_pole = this->contour[this->hint_range[j].contour_index + 1] - 1;
 }
 }
 private void t1_hinter__compute_type2_stem_ranges(t1_hinter * this)
-{   int i;
+{ int i;
 for (i = 0; i < this->hint_range_count; i++)
 if (this->hint_range[i].end_pole == -1)
 this->hint_range[i].end_pole = this->pole_count - 2;
@@ -1204,7 +1204,7 @@ return k;
 return 0;
 }
 private t1_zone * t1_hinter__find_zone(t1_hinter * this, t1_glyph_space_coord pole_y, bool curve, bool convex, bool concave)
-{   bool maybe_top = !curve || convex;
+{ bool maybe_top = !curve || convex;
 bool maybe_bot = !curve || concave;
 int i;
 for (i = 0; i < this->zone_count; i++) {
@@ -1257,7 +1257,7 @@ if (this->grid_fit_y) {
 }
 }
 private int t1_hinter__find_best_standard_width(t1_hinter * this, t1_glyph_space_coord w, bool horiz)
-{   int k = (horiz ? 0 : 1), m = 0, i;
+{ int k = (horiz ? 0 : 1), m = 0, i;
 long d = any_abs(this->stem_snap[k][0] - w);
 for (i = 1; i < this->stem_snap_count[k]; i++) {
 long dd = any_abs(this->stem_snap[k][i] - w);
@@ -1270,7 +1270,7 @@ return 0;
 }
 private void t1_hinter__align_to_grid(t1_hinter * this, int32_t unit,
 t1_glyph_space_coord *x, t1_glyph_space_coord *y, bool align_to_pixels)
-{   if (unit > 0) {
+{ if (unit > 0) {
 t1_hinter_space_coord dx, dy;
 t1_hinter__align_to_grid__general(this, unit, *x, *y, &dx, &dy, align_to_pixels, align_to_pixels);
 t1_hinter__align_to_grid__final(this, x, y, dx, dy);
@@ -1310,7 +1310,7 @@ int stdw_index1 = t1_hinter__find_best_standard_width(this, gw + ge1, horiz);
 t1_glyph_space_coord w0 = this->stem_snap[horiz ? 0 : 1][stdw_index0];
 t1_glyph_space_coord w1 = this->stem_snap[horiz ? 0 : 1][stdw_index1];
 t1_glyph_space_coord thr0 = pixel_g * 70 / 100, thr1 = pixel_g * 35 / 100;
-t1_glyph_space_coord  W[4];
+t1_glyph_space_coord W[4];
 t1_hinter_space_coord E[4];
 int k = 0;
 if (gw - thr0 <= w0 && w0 <= gw + thr1) {
@@ -1340,7 +1340,7 @@ ww = W[j] + D;
 }
 private void t1_hinter__align_stem_to_grid(t1_hinter * this, int32_t unit,
 t1_glyph_space_coord *x0, t1_glyph_space_coord *y0,
-t1_glyph_space_coord  x1, t1_glyph_space_coord  y1,
+t1_glyph_space_coord x1, t1_glyph_space_coord y1,
 bool align_to_pixels, const t1_hint *hint)
 {
 if (unit > 0) {
@@ -1351,7 +1351,7 @@ bool positive = (gw >= 0);
 int19 cf = (horiz ? this->heigt_transform_coef_rat : this->width_transform_coef_rat);
 t1_hinter_space_coord dx0, dy0, dx1, dy1, dgw;
 t1_hinter__align_to_grid__general(this, unit, *x0, *y0, &dx0, &dy0, align_to_pixels, align_to_pixels);
-t1_hinter__align_to_grid__general(this, unit,  x1,  y1, &dx1, &dy1, align_to_pixels, align_to_pixels);
+t1_hinter__align_to_grid__general(this, unit, x1, y1, &dx1, &dy1, align_to_pixels, align_to_pixels);
 t1_hinter__align_stem_width(this, &GW, hint);
 dgw = g2o_dist(GW - GW0, cf);
 if ((horiz ? this->ctmf.yy : this->ctmf.xx) < 0)
@@ -1372,12 +1372,12 @@ t1_hinter__align_to_grid__final(this, x0, y0, dx0, dy0);
 }
 #if ADOBE_OVERSHOOT_COMPATIBILIY
 private inline t1_hinter_space_coord g2o_dist_blue(t1_hinter * h, t1_glyph_space_coord gw)
-{   double W = fixed2float(gw);
+{ double W = fixed2float(gw);
 double w = W * (h->resolution * h->font_size * h->base_font_scale - h->BlueScale) + 1;
 return (t1_hinter_space_coord)(w * h->g2o_fraction);
 }
 private void t1_hinter__add_overshoot(t1_hinter * this, t1_zone * zone, t1_glyph_space_coord * x, t1_glyph_space_coord * y)
-{   t1_glyph_space_coord gy = *y;
+{ t1_glyph_space_coord gy = *y;
 t1_glyph_space_coord gw = any_abs(gy - zone->y);
 t1_hinter_space_coord ow = g2o_dist_blue(this, gw);
 t1_hinter_space_coord ow1 = ow / this->g2o_fraction * this->g2o_fraction;
@@ -1413,9 +1413,9 @@ int contour_index = pole->contour_index;
 int beg_contour_pole = this->contour[contour_index];
 int end_contour_pole = this->contour[contour_index + 1] - 2;
 int prev1 = ranger_step_b(segment_index, beg_contour_pole, end_contour_pole);
-int prev2 = ranger_step_b(prev1        , beg_contour_pole, end_contour_pole);
+int prev2 = ranger_step_b(prev1 , beg_contour_pole, end_contour_pole);
 int next1 = ranger_step_f(segment_index, beg_contour_pole, end_contour_pole);
-int next2 = ranger_step_f(next1        , beg_contour_pole, end_contour_pole);
+int next2 = ranger_step_f(next1 , beg_contour_pole, end_contour_pole);
 bool forwd_horiz = (any_abs(this->pole[next1].gy - pole->gy) <=
 max(this->blue_fuzz, any_abs(this->pole[next1].gx - pole->gx) / 10));
 bool bckwd_horiz = (any_abs(this->pole[prev1].gy - pole->gy) <=
@@ -1428,7 +1428,7 @@ if (forwd_horiz || bckwd_horiz || maximum || minimum) {
 bool forwd_curve = (this->pole[next1].type == offcurve);
 bool bckwd_curve = (this->pole[prev1].type == offcurve);
 bool curve = (bckwd_curve && forwd_curve);
-bool convex  = (curve && this->pole[prev2].gy <= pole->gy &&
+bool convex = (curve && this->pole[prev2].gy <= pole->gy &&
 this->pole[next2].gy <= pole->gy);
 bool concave = (curve && this->pole[prev2].gy >= pole->gy &&
 this->pole[next2].gy >= pole->gy);
@@ -1439,11 +1439,11 @@ if (zone != NULL &&
 (maximum && zone->type == topzone) ||
 (minimum && zone->type == botzone))) {
 if (this->suppress_overshoots)
-#                   if ADOBE_OVERSHOOT_COMPATIBILIY
+# if ADOBE_OVERSHOOT_COMPATIBILIY
 gy = (zone->type == topzone ? zone->overshoot_y : zone->y);
-#                   else
+# else
 gy = zone->y;
-#                   endif
+# endif
 else {
 t1_glyph_space_coord s = zone->y - pole->gy;
 if (zone->type == topzone)
@@ -1455,9 +1455,9 @@ t1_glyph_space_coord ss = this->overshoot_threshold * 2;
 if (s < ss)
 gy = (zone->type == topzone ? zone->y + ss : zone->y - ss);
 else {
-#                           if ADOBE_OVERSHOOT_COMPATIBILIY
+# if ADOBE_OVERSHOOT_COMPATIBILIY
 t1_hinter__add_overshoot(this, zone, &gx, &gy);
-#                           endif
+# endif
 }
 }
 }
@@ -1561,7 +1561,7 @@ j = this->contour[this->pole[j].contour_index + 1];
 }
 }
 private void t1_hinter__align_stem_commands(t1_hinter * this)
-{   int i, j, jj, k;
+{ int i, j, jj, k;
 for(i = 0; i < this->hint_count; i++)
 if (this->hint[i].type == vstem || this->hint[i].type == hstem)
 for (k = this->hint[i].range_index; k != -1; k = this->hint_range[k].next) {
@@ -1584,11 +1584,11 @@ if (this->hint[i].side_mask != 3) {
 align = (this->hint[i].side_mask & 2 ? topzn : botzn);
 } else if (this->autohinting && horiz) {
 if (this->pole[segment_index].gy == this->hint[i].g0)
-#				if TT_AUTOHINT_TOPZONE_BUG_FIX
+# if TT_AUTOHINT_TOPZONE_BUG_FIX
 align = (this->hint[i].g0 > this->hint[i].g1 ? topzn : botzn);
-#				else
+# else
 align = (this->hint[i].g0 > this->hint[i].g0 ? topzn : botzn);
-#				endif
+# endif
 }
 align = t1_hinter__compute_aligned_coord(this, &gc,
 segment_index, t, &this->hint[i], align);
@@ -1668,7 +1668,7 @@ if (*p_oj == aligned)
 }
 }
 private void t1_hinter__compute_opposite_stem_coords(t1_hinter * this)
-{   int i;
+{ int i;
 for (i = 0; i < this->hint_count; i++)
 if ((this->hint[i].type == vstem || this->hint[i].type == hstem)) {
 t1_glyph_space_coord ag0 = this->hint[i].ag0;
@@ -1716,7 +1716,7 @@ this->hint[i].ag1 = ag1;
 }
 }
 private void t1_hinter__align_stem_poles(t1_hinter * this)
-{   int i, j, k;
+{ int i, j, k;
 t1_glyph_space_coord const fuzz = this->blue_fuzz;
 for (i = 0; i < this->hint_count; i++)
 if (this->hint[i].type == vstem || this->hint[i].type == hstem)
@@ -1834,7 +1834,7 @@ this->pole[i].aligned_y |= !aligned_y;
 }
 }
 private void t1_hinter__process_dotsections(t1_hinter * this)
-{   int i;
+{ int i;
 for(i=0; i<this->hint_count; i++)
 if (this->hint[i].type == dot) {
 int contour_index = this->hint_range[this->hint[i].range_index].contour_index;
@@ -1844,7 +1844,7 @@ t1_hinter__process_dotsection(this, beg_pole, end_pole);
 }
 }
 private void t1_hinter__interpolate_other_poles(t1_hinter * this)
-{   int i, j, k;
+{ int i, j, k;
 for (k = 0; k<2; k++) {
 t1_glyph_space_coord *p_gc = (!k ? &this->pole[0].gx : &this->pole[0].gy);
 t1_glyph_space_coord *p_wc = (!k ? &this->pole[0].gy : &this->pole[0].gx);
@@ -1853,7 +1853,7 @@ enum t1_align_type *p_f = (!k ? &this->pole[0].aligned_x : &this->pole[0].aligne
 int offset_gc = (char *)p_gc - (char *)&this->pole[0];
 int offset_wc = (char *)p_wc - (char *)&this->pole[0];
 int offset_ac = (char *)p_ac - (char *)&this->pole[0];
-int offset_f  = (char *)p_f -  (char *)&this->pole[0];
+int offset_f = (char *)p_f - (char *)&this->pole[0];
 for (i = 0; i < this->contour_count; i++) {
 int beg_contour_pole = this->contour[i];
 int end_contour_pole = this->contour[i + 1] - 2;
@@ -1880,9 +1880,9 @@ min_g = g0;
 max_g = g0;
 min_w = max_w = w0;
 jp = start_pole;
-for (j = ranger_step_f(start_pole,  beg_contour_pole, end_contour_pole), l = 1;
+for (j = ranger_step_f(start_pole, beg_contour_pole, end_contour_pole), l = 1;
 j != start_pole;
-j = ranger_step_f(j,  beg_contour_pole, end_contour_pole), l++) {
+j = ranger_step_f(j, beg_contour_pole, end_contour_pole), l++) {
 t1_glyph_space_coord g = * member_prt(t1_glyph_space_coord, &this->pole[j], offset_gc);
 t1_glyph_space_coord w = * member_prt(t1_glyph_space_coord, &this->pole[j], offset_wc);
 if (min_g > g)
@@ -1924,7 +1924,7 @@ min_a = a1;
 max_a = a0;
 }
 for (j = start_pole; ;
-j = ranger_step_f(j,  beg_contour_pole, end_contour_pole)) {
+j = ranger_step_f(j, beg_contour_pole, end_contour_pole)) {
 t1_glyph_space_coord g = * member_prt(t1_glyph_space_coord, &this->pole[j], offset_gc);
 if (g <= min_g)
 * member_prt(t1_glyph_space_coord, &this->pole[j], offset_ac) =
@@ -1945,8 +1945,8 @@ m0 >>= 5, d >>= 5;
 q1 = m0 / d, r1 = m0 % d, m1 = r1 << 12;
 q2 = m1 / d;
 u = (q1 << 12) + q2;
-for (j = ranger_step_f(start_pole,  beg_contour_pole, end_contour_pole); j != stop_pole;
-j = ranger_step_f(j,  beg_contour_pole, end_contour_pole)) {
+for (j = ranger_step_f(start_pole, beg_contour_pole, end_contour_pole); j != stop_pole;
+j = ranger_step_f(j, beg_contour_pole, end_contour_pole)) {
 t1_glyph_space_coord g = *member_prt(t1_glyph_space_coord, &this->pole[j], offset_gc);
 if (min_g < g && g < max_g) {
 t1_glyph_space_coord *a = member_prt(t1_glyph_space_coord, &this->pole[j], offset_ac);
@@ -1962,7 +1962,7 @@ j = stop_pole;
 }
 }
 private int t1_hinter__export(t1_hinter * this)
-{   int i, j, code;
+{ int i, j, code;
 fixed fx, fy;
 for(i = 0; ; i++) {
 int beg_pole = this->contour[i];
@@ -2005,7 +2005,7 @@ return code;
 return 0;
 }
 private int t1_hinter__add_trailing_moveto(t1_hinter * this)
-{   t1_glyph_space_coord gx = this->width_gx, gy = this->width_gy;
+{ t1_glyph_space_coord gx = this->width_gx, gy = this->width_gy;
 #if 0
 if (this->align_to_pixels)
 t1_hinter__align_to_grid(this, this->g2o_fraction, &gx, &gy, this->align_to_pixels);
@@ -2013,7 +2013,7 @@ t1_hinter__align_to_grid(this, this->g2o_fraction, &gx, &gy, this->align_to_pixe
 return t1_hinter__rmoveto(this, gx - this->cx, gy - this->cy);
 }
 int t1_hinter__endglyph(t1_hinter * this)
-{   int code;
+{ int code;
 if (!vd_enabled) {
 vd_get_dc('h');
 vd_set_shift(VD_SHIFT_X, VD_SHIFT_Y);

@@ -4,174 +4,174 @@
 #include "raise.h"
 enum
 {
-R8	= 8,
-R9	= 9,
-R10	= 10,
-R11	= 11,
-R12	= 12,
-R13	= 13,
-R14	= 14,
-R15	= 15,
-R16	= 16,
-R17	= 17,
-R18	= 18,
-R19	= 19,
-R20	= 20,
-R21	= 21,
-R22	= 22,
-R23	= 23,
-RLINK	= 15,
-RZ	= 0,
-RFP	= R23,
-RMP	= R22,
-RTA	= R21,
-RREG	= R20,
-RA3	= R19,
-RA2	= R18,
-RA1	= R17,
-RA0	= R16,
-RCON	= R8,
-FA2	= 2,
-FA3	= 3,
-FA4	= 4,
-FA5	= 5,
-Olea	= (1<<20),
-Owry	= 48,
-Omul	= 11,
-Oumul	= 10,
-Osdiv	= 15,
-Osll	= 37,
-Osra	= 39,
-Osrl	= 38,
-Osethi	= 4,
-Oadd	= 0,
-Oaddcc	= 16,
-Oaddx	= 8,
-Osub	= 4,
-Osubcc	= 20,
-Osubx	= 12,
-Oor	= 2,
-Oand	= 1,
-Oxor	= 3,
-Oldw	= 0,
-Oldsh	= 10,
-Ostw	= 4,
-Osth	= 6,
-Ojmpl	= 56,
-Ocall	= 1,
-Ocmp	= 20,
-Oldbu	= 1,
-Ostb	= 5,
-Oba	= 8,
-Obn	= 0,
-Obne	= 9,
-Obe	= 1,
-Obg	= 10,
-Oble	= 2,
-Obge	= 11,
-Obl	= 3,
-Obgu	= 12,
-Obleu	= 4,
-Obcc	= 13,
-Obcs	= 5,
-Obpos	= 14,
-Obneg	= 6,
-Obvc	= 15,
-Obvs	= 7,
-OfaddD	= 66,
-OfsubD	= 70,
-OfdivD	= 78,
-OfmulD	= 74,
-Oldf	= 32,
-Ostf	= 36,
-OfDtoQ	= 206,
-OfnegS	= 5,
-OfcmpD	= 82,
-Ofba	= 8,
-Ofbe	= 9,
-Ofbg	= 6,
-Ofbge	= 11,
-Ofbl	= 4,
-Ofble	= 13,
-Ofbne	= 1,
-OfWtoD	= 200,
-OfDtoW	= 210,
-Osave	= 60,
+R8 = 8,
+R9 = 9,
+R10 = 10,
+R11 = 11,
+R12 = 12,
+R13 = 13,
+R14 = 14,
+R15 = 15,
+R16 = 16,
+R17 = 17,
+R18 = 18,
+R19 = 19,
+R20 = 20,
+R21 = 21,
+R22 = 22,
+R23 = 23,
+RLINK = 15,
+RZ = 0,
+RFP = R23,
+RMP = R22,
+RTA = R21,
+RREG = R20,
+RA3 = R19,
+RA2 = R18,
+RA1 = R17,
+RA0 = R16,
+RCON = R8,
+FA2 = 2,
+FA3 = 3,
+FA4 = 4,
+FA5 = 5,
+Olea = (1<<20),
+Owry = 48,
+Omul = 11,
+Oumul = 10,
+Osdiv = 15,
+Osll = 37,
+Osra = 39,
+Osrl = 38,
+Osethi = 4,
+Oadd = 0,
+Oaddcc = 16,
+Oaddx = 8,
+Osub = 4,
+Osubcc = 20,
+Osubx = 12,
+Oor = 2,
+Oand = 1,
+Oxor = 3,
+Oldw = 0,
+Oldsh = 10,
+Ostw = 4,
+Osth = 6,
+Ojmpl = 56,
+Ocall = 1,
+Ocmp = 20,
+Oldbu = 1,
+Ostb = 5,
+Oba = 8,
+Obn = 0,
+Obne = 9,
+Obe = 1,
+Obg = 10,
+Oble = 2,
+Obge = 11,
+Obl = 3,
+Obgu = 12,
+Obleu = 4,
+Obcc = 13,
+Obcs = 5,
+Obpos = 14,
+Obneg = 6,
+Obvc = 15,
+Obvs = 7,
+OfaddD = 66,
+OfsubD = 70,
+OfdivD = 78,
+OfmulD = 74,
+Oldf = 32,
+Ostf = 36,
+OfDtoQ = 206,
+OfnegS = 5,
+OfcmpD = 82,
+Ofba = 8,
+Ofbe = 9,
+Ofbg = 6,
+Ofbge = 11,
+Ofbl = 4,
+Ofble = 13,
+Ofbne = 1,
+OfWtoD = 200,
+OfDtoW = 210,
+Osave = 60,
 Orestore= 61,
-SRCOP	= (1<<0),
-DSTOP	= (1<<1),
-WRTPC	= (1<<2),
-TCHECK	= (1<<3),
-NEWPC	= (1<<4),
-DBRAN	= (1<<5),
-THREOP	= (1<<6),
-ANDAND	= 1,
-OROR	= 2,
-EQAND	= 3,
-MacFRP	= 0,
-MacRET	= 1,
-MacCASE	= 2,
-MacCOLR	= 3,
-MacMCAL	= 4,
-MacFRAM	= 5,
-MacMFRA	= 6,
+SRCOP = (1<<0),
+DSTOP = (1<<1),
+WRTPC = (1<<2),
+TCHECK = (1<<3),
+NEWPC = (1<<4),
+DBRAN = (1<<5),
+THREOP = (1<<6),
+ANDAND = 1,
+OROR = 2,
+EQAND = 3,
+MacFRP = 0,
+MacRET = 1,
+MacCASE = 2,
+MacCOLR = 3,
+MacMCAL = 4,
+MacFRAM = 5,
+MacMFRA = 6,
 NMACRO
 };
-#define OP(n)			   (n<<30)
-#define I13(i)			   ((i)&0x1fff)
-#define D22(i)			   ((i)&0x3fffff)
-#define PC30(pc)		   (((ulong)(pc) - (ulong)code)>>2)
-#define CALL(addr)		   *code=OP(1)|PC30(addr); code++
-#define FM2I(op2, i, rd)	   *code=OP(0)|(rd<<25)|(op2<<22)|D22(i); code++
-#define BRA(cond, disp)		   *code=OP(0)|(cond<<25)|(2<<22)|D22((disp)); code++
-#define BRAF(cond, disp)	   *code=OP(0)|(cond<<25)|(6<<22)|D22((disp)); code++
-#define BRADIS(r, o)		   BRA(r, ((ulong)(base+patch[o])-(ulong)code)>>2)
-#define BRAFDIS(r, o)		   BRAF(r, ((ulong)(base+patch[o])-(ulong)code)>>2)
-#define BRAMAC(r, o)		   BRA(r, ((ulong)(base+macro[o])-(ulong)code)>>2);
-#define FM3I(op, op3, i, rs1, rd)  *code++=OP(op)|(rd<<25)|(op3<<19)|(rs1<<14)|\
+#define OP(n) (n<<30)
+#define I13(i) ((i)&0x1fff)
+#define D22(i) ((i)&0x3fffff)
+#define PC30(pc) (((ulong)(pc) - (ulong)code)>>2)
+#define CALL(addr) *code=OP(1)|PC30(addr); code++
+#define FM2I(op2, i, rd) *code=OP(0)|(rd<<25)|(op2<<22)|D22(i); code++
+#define BRA(cond, disp) *code=OP(0)|(cond<<25)|(2<<22)|D22((disp)); code++
+#define BRAF(cond, disp) *code=OP(0)|(cond<<25)|(6<<22)|D22((disp)); code++
+#define BRADIS(r, o) BRA(r, ((ulong)(base+patch[o])-(ulong)code)>>2)
+#define BRAFDIS(r, o) BRAF(r, ((ulong)(base+patch[o])-(ulong)code)>>2)
+#define BRAMAC(r, o) BRA(r, ((ulong)(base+macro[o])-(ulong)code)>>2);
+#define FM3I(op, op3, i, rs1, rd) *code++=OP(op)|(rd<<25)|(op3<<19)|(rs1<<14)|\
 (1<<13)|I13(i)
 #define FM3(op, op3, rs2, rs1, rd) *code++=OP(op)|(rd<<25)|(op3<<19)|(rs1<<14)|rs2
-#define FMF1(opf, rs2, rs1, rd)	   *code++=OP(2)|(rd<<25)|(52<<19)|(rs1<<14)|(opf<<5)|rs2
-#define FMF2(opf, rs2, rs1, rd)	   *code++=OP(2)|(rd<<25)|(53<<19)|(rs1<<14)|(opf<<5)|rs2
-#define NOOP			   *code++=(4<<22)
-#define RETURN			   FM3I(2, Ojmpl, 8, RLINK, RZ);
-#define MOV(s, d)		   FM3(2, Oor, s, RZ, d)
-#define RELPC(pc)		   (ulong)(base+pc)
-#define PATCH(ptr)		   *ptr |= (code-ptr) & 0x3fffff
-static	ulong*	code;
-static	ulong*	base;
-static	ulong*	patch;
-static	int	pass;
-static	int	puntpc = 1;
-static	Module*	mod;
-static	uchar*	tinit;
-static	ulong*	litpool;
-static	int	nlit;
-static	void	macfrp(void);
-static	void	macret(void);
-static	void	maccase(void);
-static	void	maccolr(void);
-static	void	macmcal(void);
-static	void	macfram(void);
-static	void	macmfra(void);
-static	ulong	macro[NMACRO];
-void	(*comvec)(void);
-extern	void	das(ulong*, int);
-#define T(r)	*((void**)(R.r))
+#define FMF1(opf, rs2, rs1, rd) *code++=OP(2)|(rd<<25)|(52<<19)|(rs1<<14)|(opf<<5)|rs2
+#define FMF2(opf, rs2, rs1, rd) *code++=OP(2)|(rd<<25)|(53<<19)|(rs1<<14)|(opf<<5)|rs2
+#define NOOP *code++=(4<<22)
+#define RETURN FM3I(2, Ojmpl, 8, RLINK, RZ);
+#define MOV(s, d) FM3(2, Oor, s, RZ, d)
+#define RELPC(pc) (ulong)(base+pc)
+#define PATCH(ptr) *ptr |= (code-ptr) & 0x3fffff
+static ulong* code;
+static ulong* base;
+static ulong* patch;
+static int pass;
+static int puntpc = 1;
+static Module* mod;
+static uchar* tinit;
+static ulong* litpool;
+static int nlit;
+static void macfrp(void);
+static void macret(void);
+static void maccase(void);
+static void maccolr(void);
+static void macmcal(void);
+static void macfram(void);
+static void macmfra(void);
+static ulong macro[NMACRO];
+void (*comvec)(void);
+extern void das(ulong*, int);
+#define T(r) *((void**)(R.r))
 struct
 {
-int	idx;
-void	(*gen)(void);
-char*	name;
+int idx;
+void (*gen)(void);
+char* name;
 } mactab[] =
 {
-MacFRP,		macfrp,		"FRP",
-MacRET,		macret,		"RET",
-MacCASE,	maccase,	"CASE",
-MacCOLR,	maccolr,	"COLR",
-MacMCAL,	macmcal,	"MCAL",
-MacFRAM,	macfram,	"FRAM",
-MacMFRA,	macmfra,	"MFRA",
+MacFRP, macfrp, "FRP",
+MacRET, macret, "RET",
+MacCASE, maccase, "CASE",
+MacCOLR, maccolr, "COLR",
+MacMCAL, macmcal, "MCAL",
+MacFRAM, macfram, "FRAM",
+MacMFRA, macmfra, "MFRA",
 };
 static void
 rdestroy(void)

@@ -10,63 +10,63 @@
 #include <net/snmp.h>
 #endif
 #include <net/sock.h>
-#define IP_CE		0x8000
-#define IP_DF		0x4000
-#define IP_MF		0x2000
-#define IP_OFFSET	0x1FFF
-#define IP_FRAG_TIME	(30 * HZ)
+#define IP_CE 0x8000
+#define IP_DF 0x4000
+#define IP_MF 0x2000
+#define IP_OFFSET 0x1FFF
+#define IP_FRAG_TIME (30 * HZ)
 #ifdef CONFIG_IP_MULTICAST
-extern void		ip_mc_dropsocket(struct sock *);
-extern void		ip_mc_dropdevice(struct device *dev);
-extern int		ip_mc_procinfo(char *, char **, off_t, int, int);
+extern void ip_mc_dropsocket(struct sock *);
+extern void ip_mc_dropdevice(struct device *dev);
+extern int ip_mc_procinfo(char *, char **, off_t, int, int);
 #endif
 #include <net/ip_forward.h>
 struct ipfrag
 {
-int		offset;
-int		end;
-int		len;
-struct sk_buff	*skb;
-unsigned char	*ptr;
-struct ipfrag	*next;
-struct ipfrag	*prev;
+int offset;
+int end;
+int len;
+struct sk_buff *skb;
+unsigned char *ptr;
+struct ipfrag *next;
+struct ipfrag *prev;
 };
 struct ipq
 {
-unsigned char	*mac;
-struct iphdr	*iph;
-int		len;
-short		ihlen;
-short 		maclen;
+unsigned char *mac;
+struct iphdr *iph;
+int len;
+short ihlen;
+short maclen;
 struct timer_list timer;
-struct ipfrag	*fragments;
-struct ipq	*next;
-struct ipq	*prev;
-struct device	*dev;
+struct ipfrag *fragments;
+struct ipq *next;
+struct ipq *prev;
+struct device *dev;
 };
-extern void		ip_print(const struct iphdr *ip);
-extern int		ip_ioctl(struct sock *sk, int cmd, unsigned long arg);
-extern void		ip_route_check(__u32 daddr);
-extern int 		ip_send(struct rtable *rt, struct sk_buff *skb, __u32 daddr, int len, struct device *dev, __u32 saddr);
-extern int 		ip_build_header(struct sk_buff *skb,
+extern void ip_print(const struct iphdr *ip);
+extern int ip_ioctl(struct sock *sk, int cmd, unsigned long arg);
+extern void ip_route_check(__u32 daddr);
+extern int ip_send(struct rtable *rt, struct sk_buff *skb, __u32 daddr, int len, struct device *dev, __u32 saddr);
+extern int ip_build_header(struct sk_buff *skb,
 __u32 saddr,
 __u32 daddr,
 struct device **dev, int type,
 struct options *opt, int len,
 int tos,int ttl,struct rtable **rp);
-extern int		ip_rcv(struct sk_buff *skb, struct device *dev,
+extern int ip_rcv(struct sk_buff *skb, struct device *dev,
 struct packet_type *pt);
-extern int		ip_options_echo(struct options * dopt, struct options * sopt,
+extern int ip_options_echo(struct options * dopt, struct options * sopt,
 __u32 daddr, __u32 saddr,
 struct sk_buff * skb);
-extern int		ip_options_compile(struct options * opt, struct sk_buff * skb);
-extern void		ip_send_check(struct iphdr *ip);
-extern int		ip_id_count;
-extern void		ip_queue_xmit(struct sock *sk,
+extern int ip_options_compile(struct options * opt, struct sk_buff * skb);
+extern void ip_send_check(struct iphdr *ip);
+extern int ip_id_count;
+extern void ip_queue_xmit(struct sock *sk,
 struct device *dev, struct sk_buff *skb,
 int free);
-extern void		ip_init(void);
-extern int		ip_build_xmit(struct sock *sk,
+extern void ip_init(void);
+extern int ip_build_xmit(struct sock *sk,
 void getfrag (const void *,
 __u32,
 char *,
@@ -80,7 +80,7 @@ struct options * opt,
 int flags,
 int type,
 int noblock);
-extern struct ip_mib	ip_statistics;
+extern struct ip_mib ip_statistics;
 extern int sysctl_ip_dynaddr;
 int ip_rewrite_addrs(struct sock *sk, struct sk_buff *skb, struct device *dev);
 struct sk_buff *ip_defrag(struct iphdr *iph, struct sk_buff *skb, struct device *dev);
@@ -91,6 +91,6 @@ extern void ip_options_build(struct sk_buff *skb, struct options *opt, __u32 dad
 extern int ip_options_echo(struct options *dopt, struct options *sopt, __u32 daddr, __u32 saddr, struct sk_buff *skb);
 extern void ip_options_fragment(struct sk_buff *skb);
 extern int ip_options_compile(struct options *opt, struct sk_buff *skb);
-extern int 		ip_setsockopt(struct sock *sk, int level, int optname, char *optval, int optlen);
-extern int 		ip_getsockopt(struct sock *sk, int level, int optname, char *optval, int *optlen);
+extern int ip_setsockopt(struct sock *sk, int level, int optname, char *optval, int optlen);
+extern int ip_getsockopt(struct sock *sk, int level, int optname, char *optval, int *optlen);
 #endif

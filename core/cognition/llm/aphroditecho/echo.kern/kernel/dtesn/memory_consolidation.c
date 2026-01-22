@@ -11,11 +11,11 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
-#define DTESN_CONSOLIDATION_MEMORY_THRESHOLD    0.7f
-#define DTESN_CONSOLIDATION_IMPORTANCE_DECAY    0.95f
-#define DTESN_CONSOLIDATION_REPLAY_RATIO        0.1f
-#define DTESN_CONSOLIDATION_MAX_CHUNKS          1024
-#define DTESN_CONSOLIDATION_CHUNK_SIZE          4096
+#define DTESN_CONSOLIDATION_MEMORY_THRESHOLD 0.7f
+#define DTESN_CONSOLIDATION_IMPORTANCE_DECAY 0.95f
+#define DTESN_CONSOLIDATION_REPLAY_RATIO 0.1f
+#define DTESN_CONSOLIDATION_MAX_CHUNKS 1024
+#define DTESN_CONSOLIDATION_CHUNK_SIZE 4096
 typedef struct consolidation_chunk {
 uint32_t chunk_id;
 float importance_score;

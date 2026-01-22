@@ -8,22 +8,22 @@
 static Cinfo slinfo[] = {
 { 0x10c4, 0xea60, },
 { 0x10c4, 0xea61, },
-{ 0,	0, },
+{ 0, 0, },
 };
 enum {
-Enable		= 0x00,
-Getbaud		= 0x1D,
-Setbaud		= 0x1E,
-Setlcr		= 0x03,
-Getlcr		= 0x04,
-Bitsmask	= 0x0F00,
-Bitsshift	= 8,
-Parmask		= 0x00F0,
-Parshift	= 4,
-Stopmask	= 0x000F,
-Stop1		= 0x0000,
-Stop1_5		= 0x0001,
-Stop2		= 0x0002,
+Enable = 0x00,
+Getbaud = 0x1D,
+Setbaud = 0x1E,
+Setlcr = 0x03,
+Getlcr = 0x04,
+Bitsmask = 0x0F00,
+Bitsshift = 8,
+Parmask = 0x00F0,
+Parshift = 4,
+Stopmask = 0x000F,
+Stop1 = 0x0000,
+Stop1_5 = 0x0001,
+Stop2 = 0x0002,
 };
 slmatch(char *info)
 {
@@ -113,9 +113,9 @@ qlock(p->s);
 return n;
 }
 Serialops slops = {
-.init		= slinit,
-.getparam	= slgetparam,
-.setparam	= slsetparam,
-.seteps		= seteps,
-.wait4data	= wait4data,
+.init = slinit,
+.getparam = slgetparam,
+.setparam = slsetparam,
+.seteps = seteps,
+.wait4data = wait4data,
 };

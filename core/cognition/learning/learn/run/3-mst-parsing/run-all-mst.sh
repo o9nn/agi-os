@@ -1,35 +1,35 @@
 #! /bin/bash
 if [[ `tty` == "not a tty" ]]
 then
-	script -c $0 /dev/null
-	exit 0
+script -c $0 /dev/null
+exit 0
 fi
 if [ -z $MASTER_CONFIG_FILE ]; then
-	echo "MASTER_CONFIG_FILE not defined!"
-	exit -1
+echo "MASTER_CONFIG_FILE not defined!"
+exit -1
 fi
 if [ -r $MASTER_CONFIG_FILE ]; then
-	source $MASTER_CONFIG_FILE
+source $MASTER_CONFIG_FILE
 else
-	echo "Cannot find master configuration file!"
-	env |grep CONF
-	exit -1
+echo "Cannot find master configuration file!"
+env |grep CONF
+exit -1
 fi
 if [ -r ${MST_CONF_FILE} ]; then
-	source ${MST_CONF_FILE}
+source ${MST_CONF_FILE}
 else
-	echo "Cannot find MST configuration file!"
-	env |grep CONF
-	exit -1
+echo "Cannot find MST configuration file!"
+env |grep CONF
+exit -1
 fi
 byobu new-session -d -s 'mst-count-auto' -n 'cntl' 'top; $SHELL'
 byobu new-window -n 'cogsrv' ' \
-	nice guile -l ${COMMON_DIR}/cogserver-mst.scm ; \
-	nice ./compute-mst-marginals.sh ; \
-	$SHELL'
+nice guile -l ${COMMON_DIR}/cogserver-mst.scm ; \
+nice ./compute-mst-marginals.sh ; \
+$SHELL'
 while ! nc -z $HOSTNAME $PORT ; do
-	echo "Wating for cogserver at $HOSTNAME $PORT ..."
-	sleep 1
+echo "Wating for cogserver at $HOSTNAME $PORT ..."
+sleep 1
 done
 echo "Found CogServer at $HOSTNAME $PORT"
 tmux new-window -n 'telnet' 'rlwrap telnet $HOSTNAME $PORT; $SHELL'

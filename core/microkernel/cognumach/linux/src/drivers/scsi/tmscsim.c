@@ -31,9 +31,9 @@
 #include "sd.h"
 #include <linux/stat.h>
 #include "dc390.h"
-#define PCI_DEVICE_ID_AMD53C974 	PCI_DEVICE_ID_AMD_SCSI
-#ifndef  VERSION_ELF_1_2_13
-struct proc_dir_entry	proc_scsi_tmscsim ={
+#define PCI_DEVICE_ID_AMD53C974 PCI_DEVICE_ID_AMD_SCSI
+#ifndef VERSION_ELF_1_2_13
+struct proc_dir_entry proc_scsi_tmscsim ={
 PROC_SCSI_DC390T, 7 ,"tmscsim",
 S_IFDIR | S_IRUGO | S_IXUGO, 2
 };
@@ -64,23 +64,23 @@ static void RequestSense( PACB pACB, PDCB pDCB, PSRB pSRB );
 static void EnableMsgOut2( PACB pACB, PSRB pSRB );
 static void EnableMsgOut( PACB pACB, PSRB pSRB );
 static void DC390_InvalidCmd( PACB pACB );
-int    DC390_initAdapter( PSH psh, ULONG io_port, UCHAR Irq, USHORT index );
-void   DC390_initDCB( PACB pACB, PDCB pDCB, PSCSICMD cmd );
+int DC390_initAdapter( PSH psh, ULONG io_port, UCHAR Irq, USHORT index );
+void DC390_initDCB( PACB pACB, PDCB pDCB, PSCSICMD cmd );
 #ifdef MODULE
 static int DC390_release(struct Scsi_Host *host);
 static int DC390_shutdown (struct Scsi_Host *host);
 #endif
-static PSHT	pSHT_start = NULL;
-static PSH	pSH_start = NULL;
-static PSH	pSH_current = NULL;
-static PACB	pACB_start= NULL;
-static PACB	pACB_current = NULL;
-static PDCB	pPrevDCB = NULL;
-static USHORT	adapterCnt = 0;
-static USHORT	InitialTime = 0;
-static USHORT	CurrSyncOffset = 0;
-static ULONG	mech1addr;
-static UCHAR	mech2bus, mech2Agent, mech2CfgSPenR;
+static PSHT pSHT_start = NULL;
+static PSH pSH_start = NULL;
+static PSH pSH_current = NULL;
+static PACB pACB_start= NULL;
+static PACB pACB_current = NULL;
+static PDCB pPrevDCB = NULL;
+static USHORT adapterCnt = 0;
+static USHORT InitialTime = 0;
+static USHORT CurrSyncOffset = 0;
+static ULONG mech1addr;
+static UCHAR mech2bus, mech2Agent, mech2CfgSPenR;
 static PVOID DC390_phase0[]={
 DC390_DataOut_0,
 DC390_DataIn_0,
@@ -103,17 +103,17 @@ DC390_MsgOutPhase,
 DC390_MsgInPhase,
 DC390_Nop_1,
 };
-UCHAR  eepromBuf[MAX_ADAPTER_NUM][128];
-UCHAR  clock_period1[] = {4, 5, 6, 7, 8, 10, 13, 20};
-UCHAR  baddevname1[2][28] ={
+UCHAR eepromBuf[MAX_ADAPTER_NUM][128];
+UCHAR clock_period1[] = {4, 5, 6, 7, 8, 10, 13, 20};
+UCHAR baddevname1[2][28] ={
 "SEAGATE ST3390N         9546",
 "HP      C3323-300       4269"};
-#define BADDEVCNT	2
+#define BADDEVCNT 2
 static void
 QLinkcmd( PSCSICMD cmd, PDCB pDCB )
 {
-ULONG  flags;
-PSCSICMD  pcmd;
+ULONG flags;
+PSCSICMD pcmd;
 save_flags(flags);
 cli();
 if( !pDCB->QIORBCnt )
@@ -136,8 +136,8 @@ restore_flags(flags);
 static PSCSICMD
 Getcmd( PDCB pDCB )
 {
-ULONG  flags;
-PSCSICMD  pcmd;
+ULONG flags;
+PSCSICMD pcmd;
 save_flags(flags);
 cli();
 pcmd = pDCB->pQIORBhead;
@@ -150,8 +150,8 @@ return( pcmd );
 static PSRB
 GetSRB( PACB pACB )
 {
-ULONG  flags;
-PSRB   pSRB;
+ULONG flags;
+PSRB pSRB;
 save_flags(flags);
 cli();
 pSRB = pACB->pFreeSRB;
@@ -166,8 +166,8 @@ return( pSRB );
 static void
 RewaitSRB0( PDCB pDCB, PSRB pSRB )
 {
-PSRB   psrb1;
-ULONG  flags;
+PSRB psrb1;
+ULONG flags;
 save_flags(flags);
 cli();
 if( (psrb1 = pDCB->pWaitingSRB) )
@@ -186,9 +186,9 @@ restore_flags(flags);
 static void
 RewaitSRB( PDCB pDCB, PSRB pSRB )
 {
-PSRB   psrb1;
-ULONG  flags;
-UCHAR  bval;
+PSRB psrb1;
+ULONG flags;
+UCHAR bval;
 save_flags(flags);
 cli();
 pDCB->GoingSRBCnt--;
@@ -223,9 +223,9 @@ restore_flags(flags);
 static void
 DoWaitingSRB( PACB pACB )
 {
-ULONG  flags;
-PDCB   ptr, ptr1;
-PSRB   pSRB;
+ULONG flags;
+PDCB ptr, ptr1;
+PSRB pSRB;
 save_flags(flags);
 cli();
 if( !(pACB->pActiveDCB) && !(pACB->ACBFlag & (RESET_DETECT+RESET_DONE+RESET_DEV) ) )
@@ -293,8 +293,8 @@ pDCB->pWaitLast = pSRB;
 static void
 SendSRB( PSCSICMD pcmd, PACB pACB, PSRB pSRB )
 {
-ULONG  flags;
-PDCB   pDCB;
+ULONG flags;
+PDCB pDCB;
 save_flags(flags);
 cli();
 pDCB = pSRB->pSRBDCB;
@@ -337,10 +337,10 @@ DC390_queue_command (Scsi_Cmnd *cmd, void (* done)(Scsi_Cmnd *))
 USHORT ioport, i;
 Scsi_Cmnd *pcmd;
 struct Scsi_Host *psh;
-PACB   pACB;
-PDCB   pDCB;
-PSRB   pSRB;
-ULONG  flags;
+PACB pACB;
+PDCB pDCB;
+PSRB pSRB;
+ULONG flags;
 PUCHAR ptr,ptr1;
 psh = cmd->host;
 pACB = (PACB ) psh->hostdata;
@@ -467,8 +467,8 @@ static void
 DoNextCmd( PACB pACB, PDCB pDCB )
 {
 Scsi_Cmnd *pcmd;
-PSRB   pSRB;
-ULONG  flags;
+PSRB pSRB;
+ULONG flags;
 PUCHAR ptr,ptr1;
 USHORT i;
 if( pACB->ACBFlag & (RESET_DETECT+RESET_DONE+RESET_DEV) )
@@ -528,7 +528,7 @@ SendSRB( pcmd, pACB, pSRB );
 restore_flags(flags);
 return;
 }
-#ifdef	VERSION_ELF_1_2_13
+#ifdef VERSION_ELF_1_2_13
 int DC390_bios_param(Disk *disk, int devno, int geom[])
 #else
 int DC390_bios_param(Disk *disk, kdev_t devno, int geom[])
@@ -555,12 +555,12 @@ int
 DC390_abort (Scsi_Cmnd *cmd)
 {
 ULONG flags;
-PACB  pACB;
-PDCB  pDCB, pdcb;
-PSRB  pSRB, psrb;
+PACB pACB;
+PDCB pDCB, pdcb;
+PSRB pSRB, psrb;
 USHORT count, i;
-PSCSICMD  pcmd, pcmd1;
-int   status;
+PSCSICMD pcmd, pcmd1;
+int status;
 #ifdef DC390_DEBUG0
 printk("DC390 : Abort Cmd.");
 #endif
@@ -574,7 +574,7 @@ while( (pDCB->UnitSCSIID != cmd->target) ||
 {
 pDCB = pDCB->pNextDCB;
 if( pDCB == pdcb )
-goto  NOT_RUN;
+goto NOT_RUN;
 }
 if( pDCB->QIORBCnt )
 {
@@ -585,7 +585,7 @@ pDCB->pQIORBhead = pcmd->next;
 pcmd->next = NULL;
 pDCB->QIORBCnt--;
 status = SCSI_ABORT_SUCCESS;
-goto  ABO_X;
+goto ABO_X;
 }
 for( count = pDCB->QIORBCnt, i=0; i<count-1; i++)
 {
@@ -596,7 +596,7 @@ pcmd->next = pcmd1->next;
 pcmd1->next = NULL;
 pDCB->QIORBCnt--;
 status = SCSI_ABORT_SUCCESS;
-goto  ABO_X;
+goto ABO_X;
 }
 else
 {
@@ -606,11 +606,11 @@ pcmd = pcmd->next;
 }
 pSRB = pDCB->pWaitingSRB;
 if( !pSRB )
-goto  ON_GOING;
+goto ON_GOING;
 if( pSRB->pcmd == cmd )
 {
 pDCB->pWaitingSRB = pSRB->pNextSRB;
-goto  IN_WAIT;
+goto IN_WAIT;
 }
 else
 {
@@ -632,7 +632,7 @@ pSRB->pNextSRB = pACB->pFreeSRB;
 pACB->pFreeSRB = pSRB;
 cmd->next = NULL;
 status = SCSI_ABORT_SUCCESS;
-goto  ABO_X;
+goto ABO_X;
 }
 ON_GOING:
 pSRB = pDCB->pGoingSRB;
@@ -645,12 +645,12 @@ else
 if( (pACB->pActiveDCB == pDCB) && (pDCB->pActiveSRB == pSRB) )
 {
 status = SCSI_ABORT_BUSY;
-goto  ABO_X;
+goto ABO_X;
 }
 else
 {
 status = SCSI_ABORT_SNOOZE;
-goto  ABO_X;
+goto ABO_X;
 }
 }
 }
@@ -665,7 +665,7 @@ return( status );
 static void
 ResetDevParam( PACB pACB )
 {
-PDCB   pDCB, pdcb;
+PDCB pDCB, pdcb;
 pDCB = pACB->pLinkDCB;
 if( pDCB == NULL )
 return;
@@ -685,8 +685,8 @@ while( pdcb != pDCB );
 static void
 RecoverSRB( PACB pACB )
 {
-PDCB   pDCB, pdcb;
-PSRB   psrb, psrb2;
+PDCB pDCB, pdcb;
+PSRB psrb, psrb2;
 USHORT cnt, i;
 pDCB = pACB->pLinkDCB;
 if( pDCB == NULL )
@@ -719,17 +719,17 @@ pdcb = pdcb->pNextDCB;
 }
 while( pdcb != pDCB );
 }
-#ifdef	VERSION_2_0_0
+#ifdef VERSION_2_0_0
 int DC390_reset(Scsi_Cmnd *cmd, unsigned int resetFlags)
 #else
 int DC390_reset (Scsi_Cmnd *cmd)
 #endif
 {
-USHORT   ioport;
+USHORT ioport;
 unsigned long flags;
-PACB  pACB;
-UCHAR    bval;
-USHORT  i;
+PACB pACB;
+UCHAR bval;
+USHORT i;
 #ifdef DC390_DEBUG1
 printk("DC390: RESET,");
 #endif
@@ -764,9 +764,9 @@ return( SCSI_RESET_SUCCESS );
 #include "scsiiom.c"
 void DC390_initDCB( PACB pACB, PDCB pDCB, PSCSICMD cmd )
 {
-PEEprom	prom;
-UCHAR	bval;
-USHORT	index;
+PEEprom prom;
+UCHAR bval;
+USHORT index;
 if( pACB->DeviceCnt == 0 )
 {
 pACB->pLinkDCB = pDCB;
@@ -828,8 +828,8 @@ psrb->PhysSRB = (ULONG) psrb;
 }
 void DC390_linkSRB( PACB pACB )
 {
-USHORT  count, i;
-PSRB    psrb;
+USHORT count, i;
+PSRB psrb;
 count = pACB->SRBCount;
 for( i=0; i< count; i++)
 {
@@ -843,8 +843,8 @@ DC390_initSRB( psrb );
 }
 void DC390_initACB( PSH psh, ULONG io_port, UCHAR Irq, USHORT index )
 {
-PACB    pACB;
-USHORT  i;
+PACB pACB;
+USHORT i;
 psh->can_queue = MAX_CMD_QUEUE;
 psh->cmd_per_lun = MAX_CMD_PER_LUN;
 psh->this_id = (int) eepromBuf[index][EE_ADAPT_SCSI_ID];
@@ -854,7 +854,7 @@ psh->irq = Irq;
 pACB = (PACB) psh->hostdata;
 #ifndef VERSION_ELF_1_2_13
 psh->max_id = 8;
-#ifdef	CONFIG_SCSI_MULTI_LUN
+#ifdef CONFIG_SCSI_MULTI_LUN
 if( eepromBuf[index][EE_MODE2] & LUN_CHECK )
 psh->max_lun = 8;
 else
@@ -864,7 +864,7 @@ psh->max_lun = 1;
 pACB->max_id = 7;
 if( pACB->max_id == eepromBuf[index][EE_ADAPT_SCSI_ID] )
 pACB->max_id--;
-#ifdef	CONFIG_SCSI_MULTI_LUN
+#ifdef CONFIG_SCSI_MULTI_LUN
 if( eepromBuf[index][EE_MODE2] & LUN_CHECK )
 pACB->max_lun = 7;
 else
@@ -900,8 +900,8 @@ pACB->DCBmap[i] = 0;
 int DC390_initAdapter( PSH psh, ULONG io_port, UCHAR Irq, USHORT index )
 {
 USHORT ioport;
-UCHAR  bval;
-PACB   pACB, pacb;
+UCHAR bval;
+PACB pACB, pacb;
 USHORT used_irq = 0;
 pacb = pACB_start;
 if( pacb != NULL )
@@ -919,7 +919,7 @@ pacb = pacb->pNextACB;
 }
 if( !used_irq )
 {
-#ifdef	VERSION_ELF_1_2_13
+#ifdef VERSION_ELF_1_2_13
 if( request_irq(Irq, DC390_Interrupt, SA_INTERRUPT, "tmscsim"))
 #else
 if( request_irq(Irq, DC390_Interrupt, SA_INTERRUPT | SA_SHIRQ, "tmscsim", NULL))
@@ -1052,7 +1052,7 @@ void
 DC390_OutB(USHORT mechnum, UCHAR regval, UCHAR bval )
 {
 USHORT wval;
-ULONG  flags;
+ULONG flags;
 save_flags(flags);
 cli();
 DC390_EnableCfg(mechnum,regval);
@@ -1154,9 +1154,9 @@ j >>= 1;
 void
 DC390_ReadEEprom( USHORT mechnum, USHORT index )
 {
-UCHAR   regval,cmd;
+UCHAR regval,cmd;
 PUSHORT ptr;
-USHORT  i;
+USHORT i;
 ptr = (PUSHORT) &eepromBuf[index][0];
 cmd = EEPROM_READ;
 for(i=0; i<0x40; i++)
@@ -1173,7 +1173,7 @@ USHORT
 DC390_CheckEEpromCheckSum( USHORT MechNum, USHORT index )
 {
 USHORT wval, rc, *ptr;
-UCHAR  i;
+UCHAR i;
 DC390_ReadEEprom( MechNum, index );
 wval = 0;
 ptr = (PUSHORT) &eepromBuf[index][0];
@@ -1209,8 +1209,8 @@ return(0);
 static int
 DC390_init (PSHT psht, ULONG io_port, UCHAR Irq, USHORT index, USHORT MechNum)
 {
-PSH   psh;
-PACB  pACB;
+PSH psh;
+PACB pACB;
 if( !DC390_CheckEEpromCheckSum( MechNum, index) )
 {
 psh = scsi_register( psht, sizeof(DC390_ACB) );
@@ -1244,7 +1244,7 @@ else
 {
 pACB_current->pNextACB = pACB;
 pACB_current = pACB;
-pACB->pNextACB = (PACB)  -1;
+pACB->pNextACB = (PACB) -1;
 }
 #ifdef DC390_DEBUG0
 printk("DC390: pACB = %8x, pDCB_array = %8x, pSRB_array = %8x\n",
@@ -1271,22 +1271,22 @@ int
 DC390_detect(Scsi_Host_Template *psht)
 {
 #ifdef FOR_PCI_OK
-UCHAR   pci_bus, pci_device_fn;
-int     error = 0;
-USHORT  chipType = 0;
-USHORT  i;
+UCHAR pci_bus, pci_device_fn;
+int error = 0;
+USHORT chipType = 0;
+USHORT i;
 #endif
-UCHAR   irq;
-UCHAR   istatus;
+UCHAR irq;
+UCHAR istatus;
 #ifndef VERSION_ELF_1_2_13
-UINT    io_port;
+UINT io_port;
 #else
-ULONG   io_port;
+ULONG io_port;
 #endif
-USHORT  adaptCnt = 0;
-USHORT  pci_index = 0;
-USHORT  MechNum, BusDevFunNum;
-ULONG   wlval;
+USHORT adaptCnt = 0;
+USHORT pci_index = 0;
+USHORT MechNum, BusDevFunNum;
+ULONG wlval;
 #ifndef VERSION_ELF_1_2_13
 psht->proc_dir = &proc_scsi_tmscsim;
 #endif
@@ -1445,8 +1445,8 @@ return length;
 static int
 DC390_shutdown (struct Scsi_Host *host)
 {
-UCHAR    bval;
-USHORT   ioport;
+UCHAR bval;
+USHORT ioport;
 unsigned long flags;
 PACB pACB = (PACB)(host->hostdata);
 ioport = (unsigned int) pACB->IOPortBase;

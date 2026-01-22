@@ -4,7 +4,7 @@
 #include "pci.h"
 #include "vga.h"
 enum {
-Cr0		= 0x00,
+Cr0 = 0x00,
 };
 static void
 init(Vga* vga, Ctlr* ctlr)

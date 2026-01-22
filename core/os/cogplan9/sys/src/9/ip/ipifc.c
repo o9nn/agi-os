@@ -8,46 +8,46 @@
 #include "ipv6.h"
 #define DPRINT if(0)print
 enum {
-Maxmedia	= 32,
-Nself		= Maxmedia*5,
-NHASH		= 1<<6,
-NCACHE		= 256,
-QMAX		= 192*1024-1,
-Maxv6repr	= (128/(4*4))*(4+1),
+Maxmedia = 32,
+Nself = Maxmedia*5,
+NHASH = 1<<6,
+NCACHE = 256,
+QMAX = 192*1024-1,
+Maxv6repr = (128/(4*4))*(4+1),
 };
 Medium *media[Maxmedia] = { 0 };
 struct Ipself
 {
-uchar	a[IPaddrlen];
-Ipself	*hnext;
-Iplink	*link;
-ulong	expire;
-uchar	type;
-int	ref;
-Ipself	*next;
+uchar a[IPaddrlen];
+Ipself *hnext;
+Iplink *link;
+ulong expire;
+uchar type;
+int ref;
+Ipself *next;
 };
 struct Ipselftab
 {
 QLock;
-int	inited;
-int	acceptall;
-Ipself	*hash[NHASH];
+int inited;
+int acceptall;
+Ipself *hash[NHASH];
 };
 typedef struct Ipmcast Ipmcast;
 struct Ipmcast
 {
-Ipmcast	*next;
-uchar	ma[IPaddrlen];
-uchar	ia[IPaddrlen];
+Ipmcast *next;
+uchar ma[IPaddrlen];
+uchar ia[IPaddrlen];
 };
 #define hashipa(a) ( ( ((a)[IPaddrlen-2]<<8) | (a)[IPaddrlen-1] )%NHASH )
 static char tifc[] = "ifc ";
-static void	addselfcache(Fs *f, Ipifc *ifc, Iplifc *lifc, uchar *a, int type);
-static void	remselfcache(Fs *f, Ipifc *ifc, Iplifc *lifc, uchar *a);
-static char*	ipifcjoinmulti(Ipifc *ifc, char **argv, int argc);
-static char*	ipifcleavemulti(Ipifc *ifc, char **argv, int argc);
-static void	ipifcregisterproxy(Fs*, Ipifc*, uchar*);
-static char*	ipifcremlifc(Ipifc*, Iplifc*);
+static void addselfcache(Fs *f, Ipifc *ifc, Iplifc *lifc, uchar *a, int type);
+static void remselfcache(Fs *f, Ipifc *ifc, Iplifc *lifc, uchar *a);
+static char* ipifcjoinmulti(Ipifc *ifc, char **argv, int argc);
+static char* ipifcleavemulti(Ipifc *ifc, char **argv, int argc);
+static void ipifcregisterproxy(Fs*, Ipifc*, uchar*);
+static char* ipifcremlifc(Ipifc*, Iplifc*);
 void
 addipmedium(Medium *med)
 {

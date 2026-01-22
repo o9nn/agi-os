@@ -65,9 +65,9 @@ pmap_put_mapwindow(dst_map);
 }
 void
 copy_to_phys(
-vm_offset_t 	src_addr_v,
-phys_addr_t 	dst_addr_p,
-int 		count)
+vm_offset_t src_addr_v,
+phys_addr_t dst_addr_p,
+int count)
 {
 vm_offset_t dst_addr_v;
 pmap_mapwindow_t *dst_map;
@@ -87,9 +87,9 @@ pmap_put_mapwindow(dst_map);
 }
 void
 copy_from_phys(
-phys_addr_t 	src_addr_p,
-vm_offset_t 	dst_addr_v,
-int 		count)
+phys_addr_t src_addr_p,
+vm_offset_t dst_addr_v,
+int count)
 {
 vm_offset_t src_addr_v;
 pmap_mapwindow_t *src_map;

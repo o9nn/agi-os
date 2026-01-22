@@ -1,7 +1,7 @@
 implement Calc;
-#line	2	"calc.y"
+#line 2 "calc.y"
 #
-# from Plan 9.  subject to the Lucent Public License 1.02
+# from Plan 9. subject to the Lucent Public License 1.02
 #
 include "sys.m";
 sys: Sys;
@@ -16,31 +16,31 @@ DIV,
 FRAC,
 NEG: con iota;
 Exp: adt {
-ty:	int;
-n:	big;
-e1, e2:	cyclic ref Exp;
+ty: int;
+n: big;
+e1, e2: cyclic ref Exp;
 };
 YYSTYPE: adt {
-e:	ref Exp;
+e: ref Exp;
 };
 yyexp: ref Exp;
 YYLEX: adt {
-s:	string;
-n:	int;
+s: string;
+n: int;
 lval: YYSTYPE;
 lex: fn(l: self ref YYLEX): int;
 error: fn(l: self ref YYLEX, msg: string);
 };
 Calc: module {
 parseexpr: fn(s: string, a, b, c: big): (big, string);
-init:	fn(nil: ref Draw->Context, nil: list of string);
-NUMBER: con	57346;
-UNARYMINUS: con	57347;
+init: fn(nil: ref Draw->Context, nil: list of string);
+NUMBER: con 57346;
+UNARYMINUS: con 57347;
 };
 YYEOFCODE: con 1;
 YYERRCODE: con 2;
 YYMAXDEPTH: con 200;
-#line	68	"calc.y"
+#line 68 "calc.y"
 mkNUM(x: big): ref Exp
 {
 return ref Exp(NUM, x, nil, nil);
@@ -141,44 +141,44 @@ YYPRIVATE: con 57344;
 yytoknames: array of string;
 yystates: array of string;
 yydebug: con 0;
-YYLAST:	con 30;
+YYLAST: con 30;
 yyact := array[] of {
-8,   9,  10,  11,   3,  12,   7,   2,  12,  19,
-1,   4,   5,   6,  13,  14,  15,  16,  17,  18,
-8,   9,  10,  11,   0,  12,  10,  11,   0,  12,
+8, 9, 10, 11, 3, 12, 7, 2, 12, 19,
+1, 4, 5, 6, 13, 14, 15, 16, 17, 18,
+8, 9, 10, 11, 0, 12, 10, 11, 0, 12,
 };
 yypact := array[] of {
-0,-1000,  15,-1000,-1000,-1000,   0,   0,   0,   0,
-0,   0,-1000,  -5,-1000,  19,  19,  -2,  -2,-1000,
+0,-1000, 15,-1000,-1000,-1000, 0, 0, 0, 0,
+0, 0,-1000, -5,-1000, 19, 19, -2, -2,-1000,
 };
 yypgo := array[] of {
-0,   7,  10,
+0, 7, 10,
 };
 yyr1 := array[] of {
-0,   2,   1,   1,   1,   1,   1,   1,   1,   1,
-1,   1,
+0, 2, 1, 1, 1, 1, 1, 1, 1, 1,
+1, 1,
 };
 yyr2 := array[] of {
-0,   1,   1,   1,   1,   3,   3,   3,   3,   3,
-2,   2,
+0, 1, 1, 1, 1, 3, 3, 3, 3, 3,
+2, 2,
 };
 yychk := array[] of {
--1000,  -2,  -1,   4,  11,  12,  13,   6,   5,   6,
-7,   8,  10,  -1,  -1,  -1,  -1,  -1,  -1,  14,
+-1000, -2, -1, 4, 11, 12, 13, 6, 5, 6,
+7, 8, 10, -1, -1, -1, -1, -1, -1, 14,
 };
 yydef := array[] of {
-0,  -2,   1,   2,   3,   4,   0,   0,   0,   0,
-0,   0,  10,   0,  11,   6,   7,   8,   9,   5,
+0, -2, 1, 2, 3, 4, 0, 0, 0, 0,
+0, 0, 10, 0, 11, 6, 7, 8, 9, 5,
 };
 yytok1 := array[] of {
-1,   3,   3,   3,   3,   3,   3,   3,   3,   3,
-3,   3,   3,   3,   3,   3,   3,   3,   3,   3,
-3,   3,   3,   3,   3,   3,   3,   3,   3,   3,
-3,   3,   3,   3,   3,   3,  12,  10,   3,   3,
-13,  14,   7,   5,   3,   6,  11,   8,
+1, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+3, 3, 3, 3, 3, 3, 12, 10, 3, 3,
+13, 14, 7, 5, 3, 6, 11, 8,
 };
 yytok2 := array[] of {
-2,   3,   4,   9,
+2, 3, 4, 9,
 };
 yytok3 := array[] of {
 0
@@ -187,10 +187,10 @@ YYSys: module
 {
 FD: adt
 {
-fd:	int;
+fd: int;
 };
-fildes:		fn(fd: int): ref FD;
-fprint:		fn(fd: ref FD, s: string, *): int;
+fildes: fn(fd: int): ref FD;
+fprint: fn(fd: ref FD, s: string, *): int;
 };
 yysys: YYSys;
 yystderr: ref YYSys->FD;
@@ -228,7 +228,7 @@ break;
 }
 }
 if(c == 0)
-c = yytok2[1];	# unknown char
+c = yytok2[1]; # unknown char
 }
 if(yydebug >= 3)
 yysys->fprint(yystderr, "lex %.4ux %s\n", yychar, yytokname(c));
@@ -249,8 +249,8 @@ yys := array[YYMAXDEPTH] of YYS;
 yyval: YYSTYPE;
 yystate := 0;
 yychar := -1;
-yynerrs := 0;		# number of errors
-yyerrflag := 0;		# error recovery flag
+yynerrs := 0; # number of errors
+yyerrflag := 0; # error recovery flag
 yyp := -1;
 yyn := 0;
 yystack:
@@ -265,7 +265,7 @@ yys[yyp].yys = yystate;
 yys[yyp].yyv = yyval;
 for(;;){
 yyn = yypact[yystate];
-if(yyn > YYFLAG) {	# simple state
+if(yyn > YYFLAG) { # simple state
 if(yychar < 0)
 yychar = yylex1(yylex);
 yyn += yychar;
@@ -324,7 +324,7 @@ yyerrflag = 3;
 while(yyp >= 0) {
 yyn = yypact[yys[yyp].yys] + YYERRCODE;
 if(yyn >= 0 && yyn < YYLAST) {
-yystate = yyact[yyn];  # simulate a shift of "error"
+yystate = yyact[yyn]; # simulate a shift of "error"
 if(yychk[yystate] == YYERRCODE)
 continue yystack;
 }
@@ -353,7 +353,7 @@ if(yydebug >= 2)
 yysys->fprint(yystderr, "reduce %d in:\n\t%s", yyn, yystatname(yystate));
 yypt := yyp;
 yyp -= yyr2[yyn];
-#		yyval = yys[yyp+1].yyv;
+# yyval = yys[yyp+1].yyv;
 yym := yyn;
 # consult goto table to find next state
 yyn = yyr1[yyn];
@@ -363,36 +363,36 @@ if(yyj >= YYLAST || yychk[yystate=yyact[yyj]] != -yyn)
 yystate = yyact[yyg];
 case yym {
 1=>
-#line	54	"calc.y"
+#line 54 "calc.y"
 { yyexp = yys[yypt-0].yyv.e; return 0; }
 2=>
 yyval.e = yys[yyp+1].yyv.e;
 3=>
-#line	57	"calc.y"
+#line 57 "calc.y"
 { yyval.e = mkOP(DOT, nil, nil); }
 4=>
-#line	58	"calc.y"
+#line 58 "calc.y"
 { yyval.e = mkOP(DOLLAR, nil, nil); }
 5=>
-#line	59	"calc.y"
+#line 59 "calc.y"
 { yyval.e = yys[yypt-1].yyv.e; }
 6=>
-#line	60	"calc.y"
+#line 60 "calc.y"
 { yyval.e = mkOP(ADD, yys[yypt-2].yyv.e, yys[yypt-0].yyv.e); }
 7=>
-#line	61	"calc.y"
+#line 61 "calc.y"
 { yyval.e = mkOP(SUB, yys[yypt-2].yyv.e, yys[yypt-0].yyv.e); }
 8=>
-#line	62	"calc.y"
+#line 62 "calc.y"
 { yyval.e = mkOP(MUL, yys[yypt-2].yyv.e, yys[yypt-0].yyv.e); }
 9=>
-#line	63	"calc.y"
+#line 63 "calc.y"
 { yyval.e = mkOP(DIV, yys[yypt-2].yyv.e, yys[yypt-0].yyv.e); }
 10=>
-#line	64	"calc.y"
+#line 64 "calc.y"
 { yyval.e = mkOP(FRAC, yys[yypt-1].yyv.e, nil); }
 11=>
-#line	65	"calc.y"
+#line 65 "calc.y"
 { yyval.e = mkOP(NEG, yys[yypt-0].yyv.e, nil); }
 }
 }

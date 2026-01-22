@@ -15,91 +15,91 @@ init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 # fairly general card clique client.
 # inherent restrictions:
-#	no dragging of cards visible over the net; it's unclear how
-#		to handle the coordinate spaces involved
+# no dragging of cards visible over the net; it's unclear how
+# to handle the coordinate spaces involved
 Object: adt {
-id:				int;
+id: int;
 pick {
 Card =>
-parentid:		int;
-face:			int;			# 1 is face up
-number:		int;
-rear:			int;
+parentid: int;
+face: int; # 1 is face up
+number: int;
+rear: int;
 Member =>
-cid:			int;
-name:		string;
+cid: int;
+name: string;
 Stack =>
-o:			ref Layobject.Stack;
+o: ref Layobject.Stack;
 Widget =>
-o:			ref Layobject.Widget;
+o: ref Layobject.Widget;
 Menuentry =>
-parentid:		int;
-text:			string;
+parentid: int;
+text: string;
 Layoutframe =>
-lay:			ref Layout.Frame;
+lay: ref Layout.Frame;
 Layoutobj =>
-lay:			ref Layout.Obj;
+lay: ref Layout.Obj;
 Scoretable =>
-scores:		array of ref Object.Score;
+scores: array of ref Object.Score;
 Score =>
-row:			array of (int, string);
-height:		int;
+row: array of (int, string);
+height: int;
 Button =>
 Other =>
 }
 };
 # specify how an object is laid out.
 Layout: adt {
-id:			int;
-parentid:		int;
-opts:			string;		# pack options
-orientation:	int;
+id: int;
+parentid: int;
+opts: string; # pack options
+orientation: int;
 pick {
 Frame =>
-lays:		cyclic array of ref Layout;
+lays: cyclic array of ref Layout;
 Obj =>
-layid:	int;			# reference to layid of laid-out object
+layid: int; # reference to layid of laid-out object
 }
 };
 # an object which can be laid out on the canvas
 Layobject: adt {
-id:			int;
-parentid:		int;
-w:			string;
-size:			Point;
-needrepack:	int;
-orientation:	int;
-layid:		int;
+id: int;
+parentid: int;
+w: string;
+size: Point;
+needrepack: int;
+orientation: int;
+layid: int;
 pick {
 Stack =>
-style:		int;
-cards:		array of ref Object.Card;	# fake objects when invisible
-pos:			Point;		# top-left origin of first card in stack
-delta:		Point;		# card offset delta.
-animq:		ref Queue;	# queue of pending animations.
-actions:		int;
-maxcards:	int;
-title:			string;
-visible:		int;
-n:			int;			# for concealed stacks, n cards in stack.
-ownerid:		int;			# owner of selection
-sel:			ref Selection;
+style: int;
+cards: array of ref Object.Card; # fake objects when invisible
+pos: Point; # top-left origin of first card in stack
+delta: Point; # card offset delta.
+animq: ref Queue; # queue of pending animations.
+actions: int;
+maxcards: int;
+title: string;
+visible: int;
+n: int; # for concealed stacks, n cards in stack.
+ownerid: int; # owner of selection
+sel: ref Selection;
 showsize,
-hassize:		int;
+hassize: int;
 Widget =>
-wtype:		string;
-entries:		array of ref Object.Menuentry;
-cmd:			string;		# only used for entry widgets
-width:		int;
+wtype: string;
+entries: array of ref Object.Menuentry;
+cmd: string; # only used for entry widgets
+width: int;
 }
 };
 Animation: adt {
-tag:		string;					# canvas tag common to cards being moved.
-srcpt:	Point;					# where cards are coming from.
-cards:	array of ref Object.Card;		# objects being transferred.
-dstid:	int;
-index:	int;
-waitch:	chan of ref Animation;		# notification comes on this chan when finished.
+tag: string; # canvas tag common to cards being moved.
+srcpt: Point; # where cards are coming from.
+cards: array of ref Object.Card; # objects being transferred.
+dstid: int;
+index: int;
+waitch: chan of ref Animation; # notification comes on this chan when finished.
 };
 Selection: adt {
 pick {
@@ -153,31 +153,31 @@ configcmds := array[] of {
 ".status configure -text {}",
 "pack propagate . 0",
 };
-objects: 		array of ref Object;
+objects: array of ref Object;
 layobjects := array[20] of list of ref Layobject;
 members := array[8] of list of ref Object.Member;
-win: 			ref Tk->Toplevel;
-drawctxt:		ref Draw->Context;
-me:			ref Object.Member;
-layout:		ref Layout;
-scoretable:	ref Object.Scoretable;
+win: ref Tk->Toplevel;
+drawctxt: ref Draw->Context;
+me: ref Object.Member;
+layout: ref Layout;
+scoretable: ref Object.Scoretable;
 showingscores := 0;
 debugging := 0;
-stderr:		ref Sys->FD;
+stderr: ref Sys->FD;
 animfinishedch: chan of (ref Animation, chan of chan of ref Animation);
-yieldch:		chan of int;
-cardlockch: 	chan of int;
-notifych:		chan of string;
+yieldch: chan of int;
+cardlockch: chan of int;
+notifych: chan of string;
 tickregisterch, tickunregisterch: chan of chan of int;
-starttime :=	0;
-cvsfont: 		ref Font;
-packwin:		ref Tk->Toplevel;	# invisible; used to steal tk's packing algorithms...
-packobjs:		list of ref Layobject;
-repackobjs:	list of ref Layobject;
+starttime := 0;
+cvsfont: ref Font;
+packwin: ref Tk->Toplevel; # invisible; used to steal tk's packing algorithms...
+packobjs: list of ref Layobject;
+repackobjs: list of ref Layobject;
 needresize := 0;
 needrepack := 0;
 animid := 0;
-fakeid := -2;		# ids allocated to "fake" cards in private hands; descending
+fakeid := -2; # ids allocated to "fake" cards in private hands; descending
 nimages := 0;
 Hiddenpos := Point(5000, 5000);
 cliquefd: ref Sys->FD;
@@ -215,7 +215,7 @@ Rearborder := 3;
 Border := 6;
 Selectborder := 3;
 cardsize: Point;
-carddelta := Point(12, 15);		# offset in order to see card number/suit
+carddelta := Point(12, 15); # offset in order to see card number/suit
 Selectcolour := "red";
 Textfont := "/fonts/pelm/unicode.8.font";
 client1()
@@ -322,7 +322,7 @@ cmd(win, "update");
 "debug" =>
 debugging = int cmd(win, "variable debug");
 }
-c := <-srvcmd =>		# from button or menu entry
+c := <-srvcmd => # from button or menu entry
 cardscmd(c);
 s := <-win.ctxt.ctl or
 s = <-win.wreq or
@@ -359,7 +359,7 @@ if (!hitsomething) {
 dopan(bcmd, "b1", p);
 return 0;
 }
-if (id < 0) {		# either error, or someone else's private card
+if (id < 0) { # either error, or someone else's private card
 sys->print("no card hit (%d)\n", id);
 return 1;
 }
@@ -421,7 +421,7 @@ b3raise(bcmd: chan of string, p: Point)
 {
 currcard := -1;
 above := "";
-loop:	for (;;) {
+loop: for (;;) {
 (nil, id) := hitcard(p);
 if (id != currcard) {
 if (currcard != -1 && above != nil)
@@ -464,7 +464,7 @@ for (; tags != nil; tags = tl tags) {
 tag := hd tags;
 if (tag[0] == 'i' || tag[0] == 'r' || tag[0] == 'n' || tag[0] == 'N')
 return (1, int (hd tags)[1:]);
-if (tag[0] == 's')		# ignore selection
+if (tag[0] == 's') # ignore selection
 break;
 }
 if (tags == nil)
@@ -545,7 +545,7 @@ applyupdate(s: string)
 {
 if (debugging) {
 sys->print("update: %s\n", s);
-#		showtk = 1;
+# showtk = 1;
 }
 (nt, toks) := sys->tokenize(s, " ");
 case hd toks {
@@ -636,16 +636,16 @@ index: int;
 r: Range;
 (src, toks) = (stackobj(int hd tl toks), tl tl toks);
 (dst, toks) = (stackobj(int hd toks), tl toks);
-(r.start, toks) =  (int hd toks, tl toks);
-(r.end, toks) =  (int hd toks, tl toks);
+(r.start, toks) = (int hd toks, tl toks);
+(r.end, toks) = (int hd toks, tl toks);
 (index, toks) = (int hd toks, tl toks);
 transfer(src, r, dst, index);
 "del" =>
 # del parent start end objs...
-oo := objects[int hd tl toks];	# parent
+oo := objects[int hd tl toks]; # parent
 r := Range(int hd tl tl toks, int hd tl tl tl toks);
 pick o := oo {
-Stack =>			# deleting cards from a stack.
+Stack => # deleting cards from a stack.
 stk := o.o;
 completeanim(stk);
 if (!stk.visible) {
@@ -663,7 +663,7 @@ cards := extractcards(stk, r);
 for (i := 0; i < len cards; i++)
 destroy(cards[i]);
 }
-Layoutframe =>		# deleting the layout specification.
+Layoutframe => # deleting the layout specification.
 lay := o.lay;
 if (r.start != 0 || r.end != len lay.lays)
 panic("cannot partially delete layouts");
@@ -735,25 +735,25 @@ id,
 ref Layobject.Stack(
 id,
 parentid,
-"",			# pack widget name
-(0, 0),		# size
-0,			# needrepack
--1,			# orientation
--1,			# layid
--1,			# style
-nil,			# cards
-Hiddenpos,	# pos
-(0, 0),		# delta
+"", # pack widget name
+(0, 0), # size
+0, # needrepack
+-1, # orientation
+-1, # layid
+-1, # style
+nil, # cards
+Hiddenpos, # pos
+(0, 0), # delta
 ref Queue,
-0,			# actions
-0,			# maxcards
-"",			# title
-vis,			# visible
-0,			# n
--1,			# ownerid
-ref Selection.Empty,		# sel
-1,			# showsize
-0			# hassize
+0, # actions
+0, # maxcards
+"", # title
+vis, # visible
+0, # n
+-1, # ownerid
+ref Selection.Empty, # sel
+1, # showsize
+0 # hassize
 )
 );
 cmd(win, ".c create rectangle -10 -10 -10 -10 -width 3 -tags r" + string id);
@@ -784,20 +784,20 @@ id,
 ref Layobject.Widget(
 id,
 parentid,
-nil,		# w
-(0, 0),	# size
-0,		# needrepack
--1,		# orientation
--1,		# style
+nil, # w
+(0, 0), # size
+0, # needrepack
+-1, # orientation
+-1, # style
 wtype,
-nil,		# entries
-"",		# cmd
-0		# width
+nil, # entries
+"", # cmd
+0 # width
 )
 );
 return o;
 }
-menutitleid := 0;		# hack to identify menu entries
+menutitleid := 0; # hack to identify menu entries
 makemenuentry(id, parentid: int, nil: list of string): ref Object.Menuentry
 {
 m := ".buts." + string parentid + ".m";
@@ -831,7 +831,7 @@ t := join(val);
 if (b.wtype == "entry") {
 cmd(win, w + " delete 0 end");
 cmd(win, w + " insert 0 '" + t);
-cmd(win, w + " select 0 end");		# XXX ??
+cmd(win, w + " select 0 end"); # XXX ??
 } else {
 cmd(win, w + " configure -text '" + t);
 needresize = 1;
@@ -843,7 +843,7 @@ cmd(win, w + " configure -command 'send srv " + join(val));
 "entry" =>
 b.cmd = join(val);
 }
-"width" =>		# width in characters
+"width" => # width in characters
 b.width = int hd val;
 sys->print("configuring %s for width %s\n", w, hd val);
 cmd(win, w + " configure -width " + hd val + "w");
@@ -1105,7 +1105,7 @@ sys->print("unknown orientation '%s'\n", hd val);
 }
 lay.opts = join(tl val);
 "layid" =>
-#		sys->print("layout obj %d => layid %s\n", lay.id, hd val);
+# sys->print("layout obj %d => layid %s\n", lay.id, hd val);
 pick l := lay {
 Obj =>
 l.layid = int hd val;
@@ -1123,8 +1123,8 @@ scoresetattr(score: ref Object.Score, attr: string, val: list of string)
 if (attr != "score")
 return;
 cmd(win, ".c delete score");
-Padx: con 10;		# padding to the right of each item
-Pady: con 6;		# padding below each item.
+Padx: con 10; # padding to the right of each item
+Pady: con 6; # padding below each item.
 n := len val;
 row := score.row = array[n] of (int, string);
 height := 0;
@@ -1257,7 +1257,7 @@ for (i := 0; i < len cards; i++) {
 p := pos.add(delta.mul(i));
 id := string cards[i].id;
 cmd(win, ".c coords i" + id + " " + p2s(p));
-cmd(win, ".c raise i" + id);		# XXX could be more efficient.
+cmd(win, ".c raise i" + id); # XXX could be more efficient.
 cmd(win, ".c lower s" + string o.id + "." + string i + " i" + id);
 }
 changesel(o, o.sel);
@@ -1284,7 +1284,7 @@ return;
 if (packwin == nil) {
 # use an unmapped tk window to do our packing arrangements
 packwin = tk->toplevel(drawctxt.display, "-bd 0");
-packwin.wreq = nil;			# stop window requests piling up.
+packwin.wreq = nil; # stop window requests piling up.
 }
 cmd(packwin, "destroy " + cmd(packwin, "pack slaves ."));
 packobjs = nil;
@@ -1316,7 +1316,7 @@ sizetofit()
 if (packobjs == nil)
 return;
 cmd(packwin, "pack propagate . 1");
-cmd(packwin, ". configure -width 0 -height 0");	# make sure propagation works.
+cmd(packwin, ". configure -width 0 -height 0"); # make sure propagation works.
 csz := actsize(packwin, ".");
 cmd(win, "bind . <Configure> {}");
 cmd(win, "pack propagate . 1");
@@ -1356,7 +1356,7 @@ needresize = 0;
 if (packobjs == nil)
 return;
 cmd(packwin, "pack propagate . 1");
-cmd(packwin, ". configure -width 0 -height 0");	# make sure propagation works.
+cmd(packwin, ". configure -width 0 -height 0"); # make sure propagation works.
 for (sl := packobjs; sl != nil; sl = tl sl) {
 obj := hd sl;
 sizeobj(obj);
@@ -1405,13 +1405,13 @@ delta := Point(0, 0);
 case o.style {
 styDISPLAY =>
 case o.orientation {
-oRIGHT =>	delta.x = carddelta.x;
-oLEFT =>		delta.x = -carddelta.x;
-oDOWN =>	delta.y = carddelta.y;
-oUP =>		delta.y = -carddelta.y;
+oRIGHT => delta.x = carddelta.x;
+oLEFT => delta.x = -carddelta.x;
+oDOWN => delta.y = carddelta.y;
+oUP => delta.y = -carddelta.y;
 }
 styPILE =>
-;	# no offset
+; # no offset
 }
 o.delta = delta;
 r := Rect((0, 0), size(cardrect(o, (0, max(len o.cards, o.maxcards)))));
@@ -1422,13 +1422,13 @@ tbox := Rect((p.x - tr.dx() / 2, p.y - tr.dy()), (p.x + tr.dx() / 2, p.y));
 r = union(r, tbox);
 }
 o.size = r.max.sub(r.min).add((Border * 2, Border * 2));
-#		sys->print("sized stack %d => %s\n", o.id, p2s(o.size));
+# sys->print("sized stack %d => %s\n", o.id, p2s(o.size));
 Widget =>
 w := ".buts." + string o.id;
 o.size.x = int cmd(win, w + " cget -width");
 o.size.y = int cmd(win, w + " cget -height");
-#		sys->print("sized widget %d (%s) => %s\n", o.id,
-#			cmd(win, "winfo class " + w + ".b"), p2s(o.size));
+# sys->print("sized widget %d (%s) => %s\n", o.id,
+# cmd(win, "winfo class " + w + ".b"), p2s(o.size));
 }
 }
 # set a laid-out object's position on the canvas, given
@@ -1437,7 +1437,7 @@ positionobj(obj: ref Layobject, r: Rect)
 {
 pick o := obj {
 Stack =>
-#		sys->print("positioning stack %d, r %s\n", o.id, r2s(r));
+# sys->print("positioning stack %d, r %s\n", o.id, r2s(r));
 delta := o.delta;
 sz := o.size.sub((Border * 2, Border * 2));
 r.min.x += (r.dx() - sz.x) / 2;
@@ -1461,7 +1461,7 @@ o.pos.y = r.max.y - cardsize.y;
 cmd(win, ".c coords r" + string o.id + " " + r2s(r.inset(-(Border / 2))));
 objneedsrepack(o);
 Widget =>
-#		sys->print("positioning widget %d, r %s\n", o.id, r2s(r));
+# sys->print("positioning widget %d, r %s\n", o.id, r2s(r));
 cmd(win, ".c coords r" + string o.id + " " + p2s(r.min));
 bd := int cmd(win, ".buts." + string o.id + " cget -bd");
 cmd(win, ".c itemconfigure r" + string o.id +
@@ -1498,7 +1498,7 @@ newcards := array[len src.cards - n] of ref Object.Card;
 newcards[0:] = src.cards[0:r.start];
 newcards[r.start:] = src.cards[r.end:];
 src.cards = newcards;
-objneedsrepack(src);		# XXX not necessary if moving from top?
+objneedsrepack(src); # XXX not necessary if moving from top?
 return cards;
 }
 insertcards(dst: ref Layobject.Stack, cards: array of ref Object.Card, index: int)
@@ -1512,7 +1512,7 @@ dst.cards = newcards;
 for (i := 0; i < len cards; i++)
 cards[i].parentid = dst.id;
 addtag(dst.cards[index:index + n], "c" + string dst.id);
-objneedsrepack(dst);		# XXX not necessary if adding to top?
+objneedsrepack(dst); # XXX not necessary if adding to top?
 if (len dst.cards > dst.maxcards)
 needresize = 1;
 }
@@ -1523,7 +1523,7 @@ objects[obj.id] = nil;
 id := string obj.id;
 pick o := obj {
 Card =>
-cmd(win, ".c delete i" + id);	# XXX crashed here once...
+cmd(win, ".c delete i" + id); # XXX crashed here once...
 Widget =>
 cmd(win, ".c delete r" + id);
 w := ".buts." + id;
@@ -1534,7 +1534,7 @@ completeanim(o.o);
 cmd(win, ".c delete r" + id + " s" + id + " n" + id + " N" + id);
 if (o.o.title != nil)
 cmd(win, ".c delete t" + id);
-cmd(win, ".c delete c" + id);		# any remaining "fake" cards
+cmd(win, ".c delete c" + id); # any remaining "fake" cards
 needrepack = 1;
 dellayobject(o.o);
 Button =>
@@ -1764,7 +1764,7 @@ a.dstid = dst.id;
 a.index = index;
 spawn animproc(a);
 }
-SPEED: con 1.5;			# animation speed in pixels/millisec
+SPEED: con 1.5; # animation speed in pixels/millisec
 animproc(a: ref Animation)
 {
 tick := chan of int;
@@ -1778,7 +1778,7 @@ d := dstpt.sub(srcpt);
 if (!srcpt.eq(Hiddenpos) && !dst.pos.eq(Hiddenpos) && !d.eq((0, 0))) {
 mag := math->sqrt(real(d.x * d.x + d.y * d.y));
 (vx, vy) := (real d.x / mag, real d.y / mag);
-currpt := a.srcpt;		# current position of cards
+currpt := a.srcpt; # current position of cards
 t0 := starttime;
 dt := int (mag / SPEED);
 t := 0;

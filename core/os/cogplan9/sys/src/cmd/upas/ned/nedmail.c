@@ -4,166 +4,166 @@
 typedef struct Message Message;
 typedef struct Ctype Ctype;
 typedef struct Cmd Cmd;
-char	root[Pathlen];
-char	mbname[Elemlen];
-int	rootlen;
-int	didopen;
-char	*user;
-char	wd[2048];
-String	*mbpath;
-int	natural;
-int	doflush;
+char root[Pathlen];
+char mbname[Elemlen];
+int rootlen;
+int didopen;
+char *user;
+char wd[2048];
+String *mbpath;
+int natural;
+int doflush;
 int interrupted;
 struct Message {
-Message	*next;
-Message	*prev;
-Message	*cmd;
-Message	*child;
-Message	*parent;
-String	*path;
-int	id;
-int	len;
-int	fileno;
-String	*info;
-char	*from;
-char	*to;
-char	*cc;
-char	*replyto;
-char	*date;
-char	*subject;
-char	*type;
-char	*disposition;
-char	*filename;
-char	deleted;
-char	stored;
+Message *next;
+Message *prev;
+Message *cmd;
+Message *child;
+Message *parent;
+String *path;
+int id;
+int len;
+int fileno;
+String *info;
+char *from;
+char *to;
+char *cc;
+char *replyto;
+char *date;
+char *subject;
+char *type;
+char *disposition;
+char *filename;
+char deleted;
+char stored;
 };
 Message top;
 struct Ctype {
-char	*type;
-char 	*ext;
-int	display;
-char	*plumbdest;
-Ctype	*next;
+char *type;
+char *ext;
+int display;
+char *plumbdest;
+Ctype *next;
 };
 Ctype ctype[] = {
-{ "text/plain",			"txt",	1,	0	},
-{ "text/html",			"htm",	1,	0	},
-{ "text/html",			"html",	1,	0	},
-{ "text/tab-separated-values",	"tsv",	1,	0	},
-{ "text/richtext",		"rtx",	1,	0	},
-{ "text/rtf",			"rtf",	1,	0	},
-{ "text/calendar",		"ics",	1,	0	},
-{ "text",			"txt",	1,	0	},
-{ "message/rfc822",		"msg",	0,	0	},
-{ "image/bmp",			"bmp",	0,	"image"	},
-{ "image/jpeg",			"jpg",	0,	"image"	},
-{ "image/gif",			"gif",	0,	"image"	},
-{ "image/png",			"png",	0,	"image"	},
-{ "application/pdf",		"pdf",	0,	"postscript"	},
-{ "application/postscript",	"ps",	0,	"postscript"	},
-{ "application/",		0,	0,	0	},
-{ "image/",			0,	0,	0	},
-{ "multipart/",			"mul",	0,	0	},
+{ "text/plain", "txt", 1, 0 },
+{ "text/html", "htm", 1, 0 },
+{ "text/html", "html", 1, 0 },
+{ "text/tab-separated-values", "tsv", 1, 0 },
+{ "text/richtext", "rtx", 1, 0 },
+{ "text/rtf", "rtf", 1, 0 },
+{ "text/calendar", "ics", 1, 0 },
+{ "text", "txt", 1, 0 },
+{ "message/rfc822", "msg", 0, 0 },
+{ "image/bmp", "bmp", 0, "image" },
+{ "image/jpeg", "jpg", 0, "image" },
+{ "image/gif", "gif", 0, "image" },
+{ "image/png", "png", 0, "image" },
+{ "application/pdf", "pdf", 0, "postscript" },
+{ "application/postscript", "ps", 0, "postscript" },
+{ "application/", 0, 0, 0 },
+{ "image/", 0, 0, 0 },
+{ "multipart/", "mul", 0, 0 },
 };
-Message*	acmd(Cmd*, Message*);
-Message*	bcmd(Cmd*, Message*);
-Message*	dcmd(Cmd*, Message*);
-Message*	eqcmd(Cmd*, Message*);
-Message*	hcmd(Cmd*, Message*);
-Message*	Hcmd(Cmd*, Message*);
-Message*	helpcmd(Cmd*, Message*);
-Message*	icmd(Cmd*, Message*);
-Message*	pcmd(Cmd*, Message*);
-Message*	qcmd(Cmd*, Message*);
-Message*	rcmd(Cmd*, Message*);
-Message*	scmd(Cmd*, Message*);
-Message*	ucmd(Cmd*, Message*);
-Message*	wcmd(Cmd*, Message*);
-Message*	xcmd(Cmd*, Message*);
-Message*	ycmd(Cmd*, Message*);
-Message*	pipecmd(Cmd*, Message*);
-Message*	rpipecmd(Cmd*, Message*);
-Message*	bangcmd(Cmd*, Message*);
-Message*	Pcmd(Cmd*, Message*);
-Message*	mcmd(Cmd*, Message*);
-Message*	fcmd(Cmd*, Message*);
-Message*	quotecmd(Cmd*, Message*);
+Message* acmd(Cmd*, Message*);
+Message* bcmd(Cmd*, Message*);
+Message* dcmd(Cmd*, Message*);
+Message* eqcmd(Cmd*, Message*);
+Message* hcmd(Cmd*, Message*);
+Message* Hcmd(Cmd*, Message*);
+Message* helpcmd(Cmd*, Message*);
+Message* icmd(Cmd*, Message*);
+Message* pcmd(Cmd*, Message*);
+Message* qcmd(Cmd*, Message*);
+Message* rcmd(Cmd*, Message*);
+Message* scmd(Cmd*, Message*);
+Message* ucmd(Cmd*, Message*);
+Message* wcmd(Cmd*, Message*);
+Message* xcmd(Cmd*, Message*);
+Message* ycmd(Cmd*, Message*);
+Message* pipecmd(Cmd*, Message*);
+Message* rpipecmd(Cmd*, Message*);
+Message* bangcmd(Cmd*, Message*);
+Message* Pcmd(Cmd*, Message*);
+Message* mcmd(Cmd*, Message*);
+Message* fcmd(Cmd*, Message*);
+Message* quotecmd(Cmd*, Message*);
 struct {
-char		*cmd;
-int		args;
-Message*	(*f)(Cmd*, Message*);
-char		*help;
+char *cmd;
+int args;
+Message* (*f)(Cmd*, Message*);
+char *help;
 } cmdtab[] = {
-{ "a",	1,	acmd,	"a        reply to sender and recipients" },
-{ "A",	1,	acmd,	"A        reply to sender and recipients with copy" },
-{ "b",	0,	bcmd,	"b        print the next 10 headers" },
-{ "d",	0,	dcmd,	"d        mark for deletion" },
-{ "f",	0,	fcmd,	"f        file message by from address" },
-{ "h",	0,	hcmd,	"h        print elided message summary (,h for all)" },
-{ "help", 0,	helpcmd, "help     print this info" },
-{ "H",	0,	Hcmd,	"H        print message's MIME structure " },
-{ "i",	0,	icmd,	"i        incorporate new mail" },
-{ "m",	1,	mcmd,	"m addr   forward mail" },
-{ "M",	1,	mcmd,	"M addr   forward mail with message" },
-{ "p",	0,	pcmd,	"p        print the processed message" },
-{ "P",	0,	Pcmd,	"P        print the raw message" },
-{ "\"",	0,	quotecmd, "\"        print a quoted version of msg" },
-{ "q",	0,	qcmd,	"q        exit and remove all deleted mail" },
-{ "r",	1,	rcmd,	"r [addr] reply to sender plus any addrs specified" },
-{ "rf",	1,	rcmd,	"rf [addr]file message and reply" },
-{ "R",	1,	rcmd,	"R [addr] reply including copy of message" },
-{ "Rf",	1,	rcmd,	"Rf [addr]file message and reply with copy" },
-{ "s",	1,	scmd,	"s file   append raw message to file" },
-{ "u",	0,	ucmd,	"u        remove deletion mark" },
-{ "w",	1,	wcmd,	"w file   store message contents as file" },
-{ "x",	0,	xcmd,	"x        exit without flushing deleted messages" },
-{ "y",	0,	ycmd,	"y        synchronize with mail box" },
-{ "=",	1,	eqcmd,	"=        print current message number" },
-{ "|",	1,	pipecmd, "|cmd     pipe message body to a command" },
-{ "||",	1,	rpipecmd, "||cmd     pipe raw message to a command" },
-{ "!",	1,	bangcmd, "!cmd     run a command" },
-{ nil,	0,	nil, 	nil },
+{ "a", 1, acmd, "a        reply to sender and recipients" },
+{ "A", 1, acmd, "A        reply to sender and recipients with copy" },
+{ "b", 0, bcmd, "b        print the next 10 headers" },
+{ "d", 0, dcmd, "d        mark for deletion" },
+{ "f", 0, fcmd, "f        file message by from address" },
+{ "h", 0, hcmd, "h        print elided message summary (,h for all)" },
+{ "help", 0, helpcmd, "help     print this info" },
+{ "H", 0, Hcmd, "H        print message's MIME structure " },
+{ "i", 0, icmd, "i        incorporate new mail" },
+{ "m", 1, mcmd, "m addr   forward mail" },
+{ "M", 1, mcmd, "M addr   forward mail with message" },
+{ "p", 0, pcmd, "p        print the processed message" },
+{ "P", 0, Pcmd, "P        print the raw message" },
+{ "\"", 0, quotecmd, "\"        print a quoted version of msg" },
+{ "q", 0, qcmd, "q        exit and remove all deleted mail" },
+{ "r", 1, rcmd, "r [addr] reply to sender plus any addrs specified" },
+{ "rf", 1, rcmd, "rf [addr]file message and reply" },
+{ "R", 1, rcmd, "R [addr] reply including copy of message" },
+{ "Rf", 1, rcmd, "Rf [addr]file message and reply with copy" },
+{ "s", 1, scmd, "s file   append raw message to file" },
+{ "u", 0, ucmd, "u        remove deletion mark" },
+{ "w", 1, wcmd, "w file   store message contents as file" },
+{ "x", 0, xcmd, "x        exit without flushing deleted messages" },
+{ "y", 0, ycmd, "y        synchronize with mail box" },
+{ "=", 1, eqcmd, "=        print current message number" },
+{ "|", 1, pipecmd, "|cmd     pipe message body to a command" },
+{ "||", 1, rpipecmd, "||cmd     pipe raw message to a command" },
+{ "!", 1, bangcmd, "!cmd     run a command" },
+{ nil, 0, nil, nil },
 };
 enum
 {
-NARG=	32,
+NARG= 32,
 };
 struct Cmd {
-Message	*msgs;
-Message	*(*f)(Cmd*, Message*);
-int	an;
-char	*av[NARG];
-int	delete;
+Message *msgs;
+Message *(*f)(Cmd*, Message*);
+int an;
+char *av[NARG];
+int delete;
 };
 Biobuf out;
 int startedfs;
 int reverse;
 int longestfrom = 12;
-String*		file2string(String*, char*);
-int		dir2message(Message*, int);
-int		filelen(String*, char*);
-String*		extendpath(String*, char*);
-void		snprintheader(char*, int, Message*);
-void		cracktime(char*, char*, int);
-int		cistrncmp(char*, char*, int);
-int		cistrcmp(char*, char*);
-Reprog*		parsesearch(char**);
-char*		parseaddr(char**, Message*, Message*, Message*, Message**);
-char*		parsecmd(char*, Cmd*, Message*, Message*);
-char*		readline(char*, char*, int);
-void		messagecount(Message*);
-void		system(char*, char**, int);
-void		mkid(String*, Message*);
-int		switchmb(char*, char*);
-void		closemb(void);
-int		lineize(char*, char**, int);
-int		rawsearch(Message*, Reprog*);
-Message*	dosingleton(Message*, char*);
-String*		rooted(String*);
-int		plumb(Message*, Ctype*);
-String*		addrecolon(char*);
-void		exitfs(char*);
-Message*	flushdeleted(Message*);
+String* file2string(String*, char*);
+int dir2message(Message*, int);
+int filelen(String*, char*);
+String* extendpath(String*, char*);
+void snprintheader(char*, int, Message*);
+void cracktime(char*, char*, int);
+int cistrncmp(char*, char*, int);
+int cistrcmp(char*, char*);
+Reprog* parsesearch(char**);
+char* parseaddr(char**, Message*, Message*, Message*, Message**);
+char* parsecmd(char*, Cmd*, Message*, Message*);
+char* readline(char*, char*, int);
+void messagecount(Message*);
+void system(char*, char**, int);
+void mkid(String*, Message*);
+int switchmb(char*, char*);
+void closemb(void);
+int lineize(char*, char**, int);
+int rawsearch(Message*, Reprog*);
+Message* dosingleton(Message*, char*);
+String* rooted(String*);
+int plumb(Message*, Ctype*);
+String* addrecolon(char*);
+void exitfs(char*);
+Message* flushdeleted(Message*);
 void
 usage(void)
 {
@@ -597,8 +597,8 @@ char *p;
 char ftype[128];
 int n, pfd[2];
 Ctype *a, *cp;
-static Ctype nulltype	= { "", 0, 0, 0 };
-static Ctype bintype 	= { "application/octet-stream", "bin", 0, 0 };
+static Ctype nulltype = { "", 0, 0, 0 };
+static Ctype bintype = { "application/octet-stream", "bin", 0, 0 };
 for(cp = ctype; cp; cp = cp->next)
 if(strncmp(cp->type, m->type, strlen(cp->type)) == 0)
 return cp;
@@ -1071,7 +1071,7 @@ Bprint(&out, "%d message%s\n", i, plural(i));
 Message*
 aichcmd(Message *m, int indent)
 {
-char	hdr[256];
+char hdr[256];
 if(m == &top)
 return nil;
 snprintHeader(hdr, sizeof(hdr), indent, m);
@@ -1091,7 +1091,7 @@ return nil;
 Message*
 hcmd(Cmd*, Message *m)
 {
-char	hdr[256];
+char hdr[256];
 if(m == &top)
 return nil;
 snprintheader(hdr, sizeof(hdr), m);

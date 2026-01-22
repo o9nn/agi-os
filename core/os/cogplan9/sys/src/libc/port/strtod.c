@@ -3,19 +3,19 @@
 #include <ctype.h>
 enum
 {
-Nbits	= 28,
-Nmant	= 53,
-Bias		= 1022,
-Prec	= (Nmant+Nbits+1)/Nbits,
-Sigbit	= 1<<(Prec*Nbits-Nmant),
-Ndig	= 1500,
-One	= (ulong)(1<<Nbits),
-Half	= (ulong)(One>>1),
-Maxe	= 310,
-Fsign	= 1<<0,
-Fesign	= 1<<1,
-Fdpoint	= 1<<2,
-S0	= 0,
+Nbits = 28,
+Nmant = 53,
+Bias = 1022,
+Prec = (Nmant+Nbits+1)/Nbits,
+Sigbit = 1<<(Prec*Nbits-Nmant),
+Ndig = 1500,
+One = (ulong)(1<<Nbits),
+Half = (ulong)(One>>1),
+Maxe = 310,
+Fsign = 1<<0,
+Fesign = 1<<1,
+Fdpoint = 1<<2,
+S0 = 0,
 S1,
 S2,
 S3,
@@ -24,18 +24,18 @@ S5,
 S6,
 S7,
 };
-static	int	xcmp(char*, char*);
-static	int	fpcmp(char*, ulong*);
-static	void	frnorm(ulong*);
-static	void	divascii(char*, int*, int*, int*);
-static	void	mulascii(char*, int*, int*, int*);
-static	void	divby(char*, int*, int);
-typedef	struct	Tab	Tab;
-struct	Tab
+static int xcmp(char*, char*);
+static int fpcmp(char*, ulong*);
+static void frnorm(ulong*);
+static void divascii(char*, int*, int*, int*);
+static void mulascii(char*, int*, int*, int*);
+static void divby(char*, int*, int);
+typedef struct Tab Tab;
+struct Tab
 {
-int	bp;
-int	siz;
-char*	cmp;
+int bp;
+int siz;
+char* cmp;
 };
 double
 strtod(char *as, char **aas)
@@ -348,18 +348,18 @@ b -= 9;
 if(b > 0)
 _divby(a, na, b);
 }
-static	Tab	tab1[] =
+static Tab tab1[] =
 {
-1,  0, "",
-3,  1, "7",
-6,  2, "63",
-9,  3, "511",
-13,  4, "8191",
-16,  5, "65535",
-19,  6, "524287",
-23,  7, "8388607",
-26,  8, "67108863",
-27,  9, "134217727",
+1, 0, "",
+3, 1, "7",
+6, 2, "63",
+9, 3, "511",
+13, 4, "8191",
+16, 5, "65535",
+19, 6, "524287",
+23, 7, "8388607",
+26, 8, "67108863",
+27, 9, "134217727",
 };
 static void
 divascii(char *a, int *na, int *dp, int *bp)
@@ -402,12 +402,12 @@ p--;
 *p = c + '0';
 }
 }
-static	Tab	tab2[] =
+static Tab tab2[] =
 {
-1,  1, "",
-3,  3, "125",
-6,  5, "15625",
-9,  7, "1953125",
+1, 1, "",
+3, 3, "125",
+6, 5, "15625",
+9, 7, "1953125",
 13, 10, "1220703125",
 16, 12, "152587890625",
 19, 14, "19073486328125",

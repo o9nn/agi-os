@@ -1,14 +1,14 @@
 #include "limbo.h"
-#define	bzero	bbzero
-#define BLEN	(8*sizeof(ulong))
-#define BSHIFT	5
-#define BMASK	(BLEN-1)
-#define	SIGN(n)		(1<<(n-1))
-#define	MSK(n)		(SIGN(n)|(SIGN(n)-1))
-#define	MASK(a, b)	(MSK((b)-(a)+1)<<(a))
-#define isnilsrc(s)	((s)->start.line == 0 && (s)->stop.line == 0 && (s)->start.pos == 0 && (s)->stop.pos == 0)
-#define limbovar(d)	((d)->sym->name[0] != '.')
-#define structure(t)	((t)->kind == Tadt || (t)->kind == Ttuple)
+#define bzero bbzero
+#define BLEN (8*sizeof(ulong))
+#define BSHIFT 5
+#define BMASK (BLEN-1)
+#define SIGN(n) (1<<(n-1))
+#define MSK(n) (SIGN(n)|(SIGN(n)-1))
+#define MASK(a, b) (MSK((b)-(a)+1)<<(a))
+#define isnilsrc(s) ((s)->start.line == 0 && (s)->stop.line == 0 && (s)->start.pos == 0 && (s)->stop.pos == 0)
+#define limbovar(d) ((d)->sym->name[0] != '.')
+#define structure(t) ((t)->kind == Tadt || (t)->kind == Ttuple)
 enum
 {
 Bclr,
@@ -57,12 +57,12 @@ Sshift = 10,
 Mshift = 5,
 Dshift = 0,
 };
-#define S(x)	((x)<<Sshift)
-#define M(x)	((x)<<Mshift)
-#define D(x)	((x)<<Dshift)
-#define SS(x)	(((x)>>Sshift)&0x1f)
-#define SM(x)	(((x)>>Mshift)&0x1f)
-#define SD(x)	(((x)>>Dshift)&0x1f)
+#define S(x) ((x)<<Sshift)
+#define M(x) ((x)<<Mshift)
+#define D(x) ((x)<<Dshift)
+#define SS(x) (((x)>>Sshift)&0x1f)
+#define SM(x) (((x)>>Mshift)&0x1f)
+#define SD(x) (((x)>>Dshift)&0x1f)
 enum
 {
 I = 0,
@@ -103,34 +103,34 @@ typedef struct Idlist Idlist;
 typedef struct Optab Optab;
 struct Array
 {
-int	n;
-int	m;
-Block	**a;
+int n;
+int m;
+Block **a;
 };
 struct Bits
 {
-int	n;
-ulong	*b;
+int n;
+ulong *b;
 };
 struct Blist
 {
-Block	*block;
-Blist	*next;
+Block *block;
+Blist *next;
 };
 struct Block
 {
-int	dfn;
-int	flags;
-Inst	*first;
-Inst	*last;
-Block	*prev;
-Block	*next;
-Blist	*pred;
+int dfn;
+int flags;
+Inst *first;
+Inst *last;
+Block *prev;
+Block *next;
+Blist *pred;
 Blist *succ;
-Bits	kill;
-Bits	gen;
-Bits	in;
-Bits	out;
+Bits kill;
+Bits gen;
+Bits in;
+Bits out;
 };
 struct Idlist
 {
@@ -142,8 +142,8 @@ struct Optab
 short flags;
 short size;
 };
-Block	zblock;
-Decl	*regdecls;
+Block zblock;
+Decl *regdecls;
 Idlist *frelist;
 Idlist *deflist;
 Idlist *uselist;
@@ -174,184 +174,184 @@ frelist = *hd;
 }
 }
 Optab opflags[] = {
-None,	0,
-Unop,	S(Mp)|D(W),
-Unop,	S(Mp)|D(W),
-Use2,	S(W)|D(I),
-Use2,	S(P)|D(Pc),
-Unop,	S(W)|D(P),
-Use2,	S(P)|D(Pc),
-None,	0,
-Threop,	S(C)|M(P)|D(P),
-Use3,	S(P)|M(W)|D(P),
-Use3,	S(P)|M(W)|D(P),
-Threop,	S(P)|M(W)|D(P),
-None,	0,
-Duse,	D(Pc),
-Use2,	S(W)|D(I),
-None,	0,
-Unop,	S(W)|D(P),
-Threop,	S(W)|M(W)|D(P),
-Cunop,	M(W)|D(P),
-Cunop,	M(W)|D(P),
-Cunop,	M(W)|D(P),
-Cunop,	M(W)|D(P),
-Threop,	S(W)|M(W)|D(P),
-Threop,	S(W)|M(W)|D(P),
-Use2,	S(Mp)|D(P),
-Unop,	S(P)|D(Mp),
-Abinop,	S(B)|D(P),
-Abinop,	S(W)|D(P),
-Abinop,	S(P)|D(P),
-Abinop,	S(F)|D(P),
-Mabinop,	S(Mp)|M(W)|D(P),
-Mabinop,	S(Mp)|M(W)|D(P),
-Unop,	S(P)|D(B),
-Unop,	S(P)|D(W),
-Unop,	S(P)|D(P),
-Unop,	S(P)|D(F),
-Threop,	S(P)|M(W)|D(Mp),
-Threop,	S(P)|M(W)|D(Mp),
-Unop,	S(P)|D(P),
-Ddef,	S(Mp)|D(P),
-Mbinop,	S(P)|M(P)|D(W),
-Unop,	S(P)|D(P),
-Threop,	S(Mp)|M(W)|D(Mp),
-Threop,	S(Mp)|M(W)|D(Mp),
-Unop,	Bop2,
-Unop,	Wop2,
-Unop,	Fop2,
-Unop,	S(B)|D(W),
-Unop,	S(W)|D(B),
-Unop,	S(F)|D(W),
-Unop,	S(W)|D(F),
-Unop,	S(C)|D(A),
-Unop,	S(A)|D(C),
-Unop,	S(W)|D(C),
-Unop,	S(C)|D(W),
-Unop,	S(F)|D(C),
-Unop,	S(C)|D(F),
-Binop,	Bop,
-Binop,	Wop,
-Binop,	Fop,
-Binop,	Bop,
-Binop,	Wop,
-Binop,	Fop,
-Binop,	Bop,
-Binop,	Wop,
-Binop,	Fop,
-Binop,	Bop,
-Binop,	Wop,
-Binop,	Fop,
-Binop,	Wop,
-Binop,	Bop,
-Binop,	Bop,
-Binop,	Wop,
-Binop,	Bop,
-Binop,	Wop,
-Binop,	Bop,
-Binop,	Wop,
-Binop,	S(W)|M(B)|D(B),
-Binop,	Wop,
-Binop,	S(W)|M(B)|D(B),
-Binop,	Wop,
-Mabinop,	S(W)|M(W)|D(C),
-Threop,	S(C)|M(W)|D(W),
-Binop,	Cop,
-Unop,	S(C)|D(W),
-Unop,	S(A)|D(W),
-Unop,	S(P)|D(W),
-Use3,	Bopb,
-Use3,	Bopb,
-Use3,	Bopb,
-Use3,	Bopb,
-Use3,	Bopb,
-Use3,	Bopb,
-Use3,	Wopb,
-Use3,	Wopb,
-Use3,	Wopb,
-Use3,	Wopb,
-Use3,	Wopb,
-Use3,	Wopb,
-Use3,	Fopb,
-Use3,	Fopb,
-Use3,	Fopb,
-Use3,	Fopb,
-Use3,	Fopb,
-Use3,	Fopb,
-Use3,	Copb,
-Use3,	Copb,
-Use3,	Copb,
-Use3,	Copb,
-Use3,	Copb,
-Use3,	Copb,
-Mabinop,	S(W)|M(W)|D(P),
-Use3,	S(P)|M(W)|D(P),
-Mabinop,	S(W)|M(W)|D(C),
-Mbinop,	S(P)|M(P)|D(W),
-Mbinop,	S(P)|M(P)|D(W),
-Mbinop,	S(P)|M(P)|D(W),
-Unop,	Fop2,
-Unop,	Lop2,
-Binop,	Lop,
-Binop,	Lop,
-Binop,	Lop,
-Binop,	Lop,
-Binop,	Lop,
-Binop,	Lop,
-Binop,	Lop,
-Binop,	Lop,
-Binop,	S(W)|M(L)|D(L),
-Binop,	S(W)|M(L)|D(L),
-Use3,	Lopb,
-Use3,	Lopb,
-Use3,	Lopb,
-Use3,	Lopb,
-Use3,	Lopb,
-Use3,	Lopb,
-Unop,	S(L)|D(F),
-Unop,	S(F)|D(L),
-Unop,	S(L)|D(W),
-Unop,	S(W)|D(L),
-Unop,	S(L)|D(C),
-Unop,	S(C)|D(L),
-Unop,	S(P)|D(L),
-Abinop,	S(L)|D(P),
-Cunop,	M(W)|D(P),
-Use2,	S(C)|D(I),
-Mbinop,	S(P)|M(P)|D(W),
-Unop,	S(W)|D(P),
-Use2,	S(P)|D(P),
-Threop,	S(P)|M(W)|D(P),
-Unop,	S(R)|D(F),
-Unop,	S(F)|D(R),
-Unop,	S(W)|D(Sh),
-Unop,	S(Sh)|D(W),
-Binop,	Wop,
-Binop,	S(W)|M(L)|D(L),
-None,	0,
-Unop,	S(W)|D(P),
-Threop,	S(W)|M(W)|D(P),
-Use1,	S(P),
-Use2,	S(L)|D(I),
-Binop|Tuse2,	Xop,
-Binop|Tuse2,	Xop,
-Threop,	Xop,
-Binop|Tuse1|Tuse2,	Xop,
-Binop|Tuse1|Tuse2,	Xop,
-Threop|Tuse1,	Xop,
-Binop|Tuse1|Tuse2,	Xop,
-Binop|Tuse1|Tuse2,	Xop,
-Threop|Tuse1,	Xop,
-Threop,	S(F)|M(F)|D(X),
-Threop,	S(X)|M(F)|D(F),
-Binop,	S(W)|M(W)|D(W),
-Binop,	S(W)|M(L)|D(L),
-Binop,	S(W)|M(F)|D(F),
-Ddef,	D(P),
-None,		0,
-None,		0,
-None,		0,
+None, 0,
+Unop, S(Mp)|D(W),
+Unop, S(Mp)|D(W),
+Use2, S(W)|D(I),
+Use2, S(P)|D(Pc),
+Unop, S(W)|D(P),
+Use2, S(P)|D(Pc),
+None, 0,
+Threop, S(C)|M(P)|D(P),
+Use3, S(P)|M(W)|D(P),
+Use3, S(P)|M(W)|D(P),
+Threop, S(P)|M(W)|D(P),
+None, 0,
+Duse, D(Pc),
+Use2, S(W)|D(I),
+None, 0,
+Unop, S(W)|D(P),
+Threop, S(W)|M(W)|D(P),
+Cunop, M(W)|D(P),
+Cunop, M(W)|D(P),
+Cunop, M(W)|D(P),
+Cunop, M(W)|D(P),
+Threop, S(W)|M(W)|D(P),
+Threop, S(W)|M(W)|D(P),
+Use2, S(Mp)|D(P),
+Unop, S(P)|D(Mp),
+Abinop, S(B)|D(P),
+Abinop, S(W)|D(P),
+Abinop, S(P)|D(P),
+Abinop, S(F)|D(P),
+Mabinop, S(Mp)|M(W)|D(P),
+Mabinop, S(Mp)|M(W)|D(P),
+Unop, S(P)|D(B),
+Unop, S(P)|D(W),
+Unop, S(P)|D(P),
+Unop, S(P)|D(F),
+Threop, S(P)|M(W)|D(Mp),
+Threop, S(P)|M(W)|D(Mp),
+Unop, S(P)|D(P),
+Ddef, S(Mp)|D(P),
+Mbinop, S(P)|M(P)|D(W),
+Unop, S(P)|D(P),
+Threop, S(Mp)|M(W)|D(Mp),
+Threop, S(Mp)|M(W)|D(Mp),
+Unop, Bop2,
+Unop, Wop2,
+Unop, Fop2,
+Unop, S(B)|D(W),
+Unop, S(W)|D(B),
+Unop, S(F)|D(W),
+Unop, S(W)|D(F),
+Unop, S(C)|D(A),
+Unop, S(A)|D(C),
+Unop, S(W)|D(C),
+Unop, S(C)|D(W),
+Unop, S(F)|D(C),
+Unop, S(C)|D(F),
+Binop, Bop,
+Binop, Wop,
+Binop, Fop,
+Binop, Bop,
+Binop, Wop,
+Binop, Fop,
+Binop, Bop,
+Binop, Wop,
+Binop, Fop,
+Binop, Bop,
+Binop, Wop,
+Binop, Fop,
+Binop, Wop,
+Binop, Bop,
+Binop, Bop,
+Binop, Wop,
+Binop, Bop,
+Binop, Wop,
+Binop, Bop,
+Binop, Wop,
+Binop, S(W)|M(B)|D(B),
+Binop, Wop,
+Binop, S(W)|M(B)|D(B),
+Binop, Wop,
+Mabinop, S(W)|M(W)|D(C),
+Threop, S(C)|M(W)|D(W),
+Binop, Cop,
+Unop, S(C)|D(W),
+Unop, S(A)|D(W),
+Unop, S(P)|D(W),
+Use3, Bopb,
+Use3, Bopb,
+Use3, Bopb,
+Use3, Bopb,
+Use3, Bopb,
+Use3, Bopb,
+Use3, Wopb,
+Use3, Wopb,
+Use3, Wopb,
+Use3, Wopb,
+Use3, Wopb,
+Use3, Wopb,
+Use3, Fopb,
+Use3, Fopb,
+Use3, Fopb,
+Use3, Fopb,
+Use3, Fopb,
+Use3, Fopb,
+Use3, Copb,
+Use3, Copb,
+Use3, Copb,
+Use3, Copb,
+Use3, Copb,
+Use3, Copb,
+Mabinop, S(W)|M(W)|D(P),
+Use3, S(P)|M(W)|D(P),
+Mabinop, S(W)|M(W)|D(C),
+Mbinop, S(P)|M(P)|D(W),
+Mbinop, S(P)|M(P)|D(W),
+Mbinop, S(P)|M(P)|D(W),
+Unop, Fop2,
+Unop, Lop2,
+Binop, Lop,
+Binop, Lop,
+Binop, Lop,
+Binop, Lop,
+Binop, Lop,
+Binop, Lop,
+Binop, Lop,
+Binop, Lop,
+Binop, S(W)|M(L)|D(L),
+Binop, S(W)|M(L)|D(L),
+Use3, Lopb,
+Use3, Lopb,
+Use3, Lopb,
+Use3, Lopb,
+Use3, Lopb,
+Use3, Lopb,
+Unop, S(L)|D(F),
+Unop, S(F)|D(L),
+Unop, S(L)|D(W),
+Unop, S(W)|D(L),
+Unop, S(L)|D(C),
+Unop, S(C)|D(L),
+Unop, S(P)|D(L),
+Abinop, S(L)|D(P),
+Cunop, M(W)|D(P),
+Use2, S(C)|D(I),
+Mbinop, S(P)|M(P)|D(W),
+Unop, S(W)|D(P),
+Use2, S(P)|D(P),
+Threop, S(P)|M(W)|D(P),
+Unop, S(R)|D(F),
+Unop, S(F)|D(R),
+Unop, S(W)|D(Sh),
+Unop, S(Sh)|D(W),
+Binop, Wop,
+Binop, S(W)|M(L)|D(L),
+None, 0,
+Unop, S(W)|D(P),
+Threop, S(W)|M(W)|D(P),
+Use1, S(P),
+Use2, S(L)|D(I),
+Binop|Tuse2, Xop,
+Binop|Tuse2, Xop,
+Threop, Xop,
+Binop|Tuse1|Tuse2, Xop,
+Binop|Tuse1|Tuse2, Xop,
+Threop|Tuse1, Xop,
+Binop|Tuse1|Tuse2, Xop,
+Binop|Tuse1|Tuse2, Xop,
+Threop|Tuse1, Xop,
+Threop, S(F)|M(F)|D(X),
+Threop, S(X)|M(F)|D(F),
+Binop, S(W)|M(W)|D(W),
+Binop, S(W)|M(L)|D(L),
+Binop, S(W)|M(F)|D(F),
+Ddef, D(P),
+None, 0,
+None, 0,
+None, 0,
 };
 static int
 bitc(uint x)
@@ -434,22 +434,22 @@ static ulong
 bop(int o, ulong s, ulong d)
 {
 switch(o){
-case Bclr:	return 0;
-case Band:	return s & d;
-case Bandinv:	return s & ~d;
-case Bstore:	return s;
-case Bandrev:	return ~s & d;
-case Bnoop:	return d;
-case Bxor:	return s ^ d;
-case Bor:	return s | d;
-case Bnor:	return ~(s | d);
-case Bequiv:	return ~(s ^ d);
-case Binv:	return ~d;
-case Bimpby:	return s | ~d;
-case Brev:	return ~s;
-case Bimp:	return ~s | d;
-case Bnand:	return ~(s & d);
-case Bset:	return 0xffffffff;
+case Bclr: return 0;
+case Band: return s & d;
+case Bandinv: return s & ~d;
+case Bstore: return s;
+case Bandrev: return ~s & d;
+case Bnoop: return d;
+case Bxor: return s ^ d;
+case Bor: return s | d;
+case Bnor: return ~(s | d);
+case Bequiv: return ~(s ^ d);
+case Binv: return ~d;
+case Bimpby: return s | ~d;
+case Brev: return ~s;
+case Bimp: return ~s | d;
+case Bnand: return ~(s & d);
+case Bset: return 0xffffffff;
 }
 return 0;
 }

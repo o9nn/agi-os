@@ -68,7 +68,7 @@ BIO_free(b);
 return (ret);
 }
 #endif
-#define HEADER_SIZE   8
+#define HEADER_SIZE 8
 #define ASN1_CHUNK_INITIAL_SIZE (16 * 1024)
 static int asn1_d2i_read_bio(BIO *in, BUF_MEM **pb)
 {
@@ -138,7 +138,7 @@ want = c.slen;
 if (want > (len - off)) {
 size_t chunk_max = ASN1_CHUNK_INITIAL_SIZE;
 want -= (len - off);
-if (want > INT_MAX   ||
+if (want > INT_MAX ||
 len + want < len) {
 ASN1err(ASN1_F_ASN1_D2I_READ_BIO, ASN1_R_TOO_LONG);
 goto err;

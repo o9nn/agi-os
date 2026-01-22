@@ -38,67 +38,67 @@ char *kindname[Tend] =
 };
 Tattr tattr[Tend] =
 {
-{ 0,	0,	0,	0,	0, },
-{ 0,	1,	1,	1,	1, },
-{ 0,	1,	0,	1,	1, },
-{ 1,	0,	0,	0,	1, },
-{ 0,	0,	1,	1,	1, },
-{ 0,	0,	1,	0,	1, },
-{ 1,	0,	0,	0,	1, },
-{ 0,	0,	1,	1,	1, },
-{ 0,	1,	0,	0,	1, },
-{ 0,	0,	1,	0,	1, },
-{ 1,	0,	0,	0,	1, },
-{ 1,	0,	0,	0,	1, },
-{ 1,	0,	0,	0,	1, },
-{ 1,	0,	1,	0,	1, },
-{ 0,	1,	1,	1,	1, },
-{ 0,	0,	0,	1,	1, },
-{ 0,	0,	1,	0,	1, },
-{ 1,	0,	0,	0,	1, },
-{ 0,	0,	0,	1,	0, },
-{ 0,	0,	0,	1,	0, },
-{ 1,	0,	0,	0,	0, },
-{ 0,	0,	0,	0,	1, },
-{ 0,	0,	0,	1,	0, },
-{ 0,	0,	0,	1,	0, },
-{ 0,	0,	0,	1,	0, },
-{ 0,	0,	0,	0,	1, },
-{ 0,	1,	1,	0,	0, },
-{ 0,	0,	0,	1,	0, },
-{ 0,	0,	0,	0,	1, },
-{ 0,	0,	0,	1,	0, },
-{ 0,	0,	0,	1,	0, },
-{ 0,	1,	1,	1,	1, },
+{ 0, 0, 0, 0, 0, },
+{ 0, 1, 1, 1, 1, },
+{ 0, 1, 0, 1, 1, },
+{ 1, 0, 0, 0, 1, },
+{ 0, 0, 1, 1, 1, },
+{ 0, 0, 1, 0, 1, },
+{ 1, 0, 0, 0, 1, },
+{ 0, 0, 1, 1, 1, },
+{ 0, 1, 0, 0, 1, },
+{ 0, 0, 1, 0, 1, },
+{ 1, 0, 0, 0, 1, },
+{ 1, 0, 0, 0, 1, },
+{ 1, 0, 0, 0, 1, },
+{ 1, 0, 1, 0, 1, },
+{ 0, 1, 1, 1, 1, },
+{ 0, 0, 0, 1, 1, },
+{ 0, 0, 1, 0, 1, },
+{ 1, 0, 0, 0, 1, },
+{ 0, 0, 0, 1, 0, },
+{ 0, 0, 0, 1, 0, },
+{ 1, 0, 0, 0, 0, },
+{ 0, 0, 0, 0, 1, },
+{ 0, 0, 0, 1, 0, },
+{ 0, 0, 0, 1, 0, },
+{ 0, 0, 0, 1, 0, },
+{ 0, 0, 0, 0, 1, },
+{ 0, 1, 1, 0, 0, },
+{ 0, 0, 0, 1, 0, },
+{ 0, 0, 0, 0, 1, },
+{ 0, 0, 0, 1, 0, },
+{ 0, 0, 0, 1, 0, },
+{ 0, 1, 1, 1, 1, },
 };
-static	Teq	*eqclass[Tend];
-static	Type	ztype;
-static	int	eqrec;
-static	int	eqset;
-static	int	tcomset;
-static	int	idcompat(Decl*, Decl*, int, int);
-static	int	rtcompat(Type *t1, Type *t2, int any, int);
-static	int	assumeteq(Type *t1, Type *t2);
-static	int	assumetcom(Type *t1, Type *t2);
-static	int	cleartcomrec(Type *t);
-static	int	rtequal(Type*, Type*);
-static	int	cleareqrec(Type*);
-static	int	idequal(Decl*, Decl*, int, int*);
-static	int	pyequal(Type*, Type*);
-static	int	rtsign(Type*, uchar*, int, int);
-static	int	clearrec(Type*);
-static	int	idsign(Decl*, int, uchar*, int, int);
-static	int	idsign1(Decl*, int, uchar*, int, int);
-static	int	raisessign(Node *n, uchar *sig, int lensig, int spos);
-static	void	ckfix(Type*, double);
-static	int	fnunify(Type*, Type*, Tpair**, int);
-static	int	rtunify(Type*, Type*, Tpair**, int);
-static	int	idunify(Decl*, Decl*, Tpair**, int);
-static	int	toccurs(Type*, Tpair**);
-static	int	fncleareqrec(Type*, Type*);
-static	Type*	comtype(Src*, Type*, Decl*);
-static	Type*	duptype(Type*);
-static	int	tpolys(Type*);
+static Teq *eqclass[Tend];
+static Type ztype;
+static int eqrec;
+static int eqset;
+static int tcomset;
+static int idcompat(Decl*, Decl*, int, int);
+static int rtcompat(Type *t1, Type *t2, int any, int);
+static int assumeteq(Type *t1, Type *t2);
+static int assumetcom(Type *t1, Type *t2);
+static int cleartcomrec(Type *t);
+static int rtequal(Type*, Type*);
+static int cleareqrec(Type*);
+static int idequal(Decl*, Decl*, int, int*);
+static int pyequal(Type*, Type*);
+static int rtsign(Type*, uchar*, int, int);
+static int clearrec(Type*);
+static int idsign(Decl*, int, uchar*, int, int);
+static int idsign1(Decl*, int, uchar*, int, int);
+static int raisessign(Node *n, uchar *sig, int lensig, int spos);
+static void ckfix(Type*, double);
+static int fnunify(Type*, Type*, Tpair**, int);
+static int rtunify(Type*, Type*, Tpair**, int);
+static int idunify(Decl*, Decl*, Tpair**, int);
+static int toccurs(Type*, Tpair**);
+static int fncleareqrec(Type*, Type*);
+static Type* comtype(Src*, Type*, Decl*);
+static Type* duptype(Type*);
+static int tpolys(Type*);
 static void
 addtmap(Type *t1, Type *t2, Tpair **tpp)
 {
@@ -1674,12 +1674,12 @@ break;
 }
 enum
 {
-ArcValue	= 1 << 0,
-ArcList		= 1 << 1,
-ArcArray	= 1 << 2,
-ArcRef		= 1 << 3,
-ArcCyc		= 1 << 4,
-ArcPolycyc	= 1 << 5,
+ArcValue = 1 << 0,
+ArcList = 1 << 1,
+ArcArray = 1 << 2,
+ArcRef = 1 << 3,
+ArcCyc = 1 << 4,
+ArcPolycyc = 1 << 5,
 };
 void
 cyctype(Type *t)
@@ -3126,10 +3126,10 @@ return t->sig;
 }
 enum
 {
-SIGSELF =	'S',
-SIGVARARGS =	'*',
-SIGCYC =	'y',
-SIGREC =	'@'
+SIGSELF = 'S',
+SIGVARARGS = '*',
+SIGCYC = 'y',
+SIGREC = '@'
 };
 static int sigkind[Tend] =
 {
@@ -3808,9 +3808,9 @@ scale2(Type *f, Type *t)
 {
 return scale(f)/scale(t);
 }
-#define I(x)	((int)(x))
-#define V(x)	((Long)(x))
-#define D(x)	((double)(x))
+#define I(x) ((int)(x))
+#define V(x) ((Long)(x))
+#define D(x) ((double)(x))
 static int
 nf(double x, int *mant)
 {

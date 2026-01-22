@@ -10,9 +10,9 @@ int is_forwarded;
 int is_cut_at_begin;
 int is_cut_at_end;
 };
-dc_simplify_t* dc_simplify_new           ();
-void           dc_simplify_unref         (dc_simplify_t*);
-char*          dc_simplify_simplify      (dc_simplify_t*,
+dc_simplify_t* dc_simplify_new ();
+void dc_simplify_unref (dc_simplify_t*);
+char* dc_simplify_simplify (dc_simplify_t*,
 const char* txt_unterminated, int txt_bytes,
 int is_html, int is_msgrmsg);
 #ifdef __cplusplus

@@ -40,7 +40,7 @@ private dev_proc_get_bits_rectangle(x_get_bits_rectangle);
 #define x_device(this_device, dev_body, max_bitmap) \
 const gx_device_X this_device = { \
 dev_body, \
-{				 \
+{ \
 x_open, \
 x_get_initial_matrix, \
 x_sync, \
@@ -49,133 +49,133 @@ x_close, \
 gdev_x_map_rgb_color, \
 gdev_x_map_color_rgb, \
 x_fill_rectangle, \
-NULL,			 \
+NULL, \
 x_copy_mono, \
 x_copy_color, \
-NULL,			 \
-NULL,			 \
+NULL, \
+NULL, \
 gdev_x_get_params, \
 gdev_x_put_params, \
-NULL,			 \
+NULL, \
 gdev_x_get_xfont_procs, \
-NULL,			 \
-NULL,			 \
+NULL, \
+NULL, \
 x_get_page_device, \
-NULL,			 \
-NULL,			 \
-NULL,			 \
-NULL,			 \
-NULL,			 \
-NULL,			 \
-NULL,			 \
-NULL,			 \
-NULL,			 \
-NULL,			 \
-NULL,			 \
-NULL,			 \
-NULL,			 \
-NULL,			 \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
 x_strip_tile_rectangle, \
-NULL,			 \
-NULL,			 \
+NULL, \
+NULL, \
 x_begin_typed_image, \
 x_get_bits_rectangle, \
-NULL,			 \
-NULL,			 \
-NULL,			 \
-NULL,			 \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
 gdev_x_finish_copydevice \
 }, \
 gx_device_bbox_common_initial(0 , 1 , 1 ), \
-0 ,		 \
-1 ,			 \
-max_bitmap,			 \
-NULL,			 \
-0,				 \
-{				 \
-0, 0,			 \
-0, XYBitmap, NULL,	 \
-MSBFirst, 8,		 \
-MSBFirst, 8, 1,		 \
-0, 1,			 \
-0, 0, 0,		 \
-NULL,			 \
-{NULL,			 \
-NULL,			 \
-NULL,			 \
-NULL,			 \
-NULL,			 \
-NULL			 \
+0 , \
+1 , \
+max_bitmap, \
+NULL, \
+0, \
+{ \
+0, 0, \
+0, XYBitmap, NULL, \
+MSBFirst, 8, \
+MSBFirst, 8, 1, \
+0, 1, \
+0, 0, 0, \
+NULL, \
+{NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL \
 }, \
 }, \
-NULL, NULL,			 \
+NULL, NULL, \
 \
-NULL,			 \
-(Colormap) None,		 \
-(Window) None,		 \
-NULL,			 \
-(Window) None,		 \
-(Pixmap) 0,			 \
-0,				 \
-(Window) None,		 \
-{identity_matrix_body},	 \
-(Atom) 0, (Atom) 0, (Atom) 0,	 \
-{				 \
-{			 \
+NULL, \
+(Colormap) None, \
+(Window) None, \
+NULL, \
+(Window) None, \
+(Pixmap) 0, \
+0, \
+(Window) None, \
+{identity_matrix_body}, \
+(Atom) 0, (Atom) 0, (Atom) 0, \
+{ \
+{ \
 {max_int_in_fixed, max_int_in_fixed}, \
 {min_int_in_fixed, min_int_in_fixed} \
 }, \
-0,			 \
-0,			 \
-0			 \
+0, \
+0, \
+0 \
 }, \
-(Pixmap) 0,			 \
-0L, (ulong)~0L,		 \
-{				 \
-(Pixmap) 0,		 \
-NULL,			 \
--1, -1			 \
-}, \
-{				 \
-(Pixmap) None,		 \
-(Pixmap) None,		 \
-gx_no_bitmap_id,	 \
-0, 0, 0,		 \
-0, 0			 \
-}, \
-GXcopy,			 \
-FillSolid,			 \
-0,				 \
-0, 0,			 \
-0, 0,			 \
-{ 0 },			 \
-0, 0,			 \
-NULL,			 \
-128, 5,			 \
-NULL,			 \
-NULL, NULL, NULL,		 \
-NULL, NULL, NULL,		 \
-1, 1,			 \
-1, 0,			 \
-0.0, 0.0,			 \
-1,				 \
-1, 1,			 \
-\
-0 ,		 \
-20000,			 \
-5000,			 \
-100000,			 \
-100000,			 \
-max_int,			 \
-\
-{				 \
-0,			 \
-0,			 \
-{0, 0},			 \
-0,			 \
+(Pixmap) 0, \
+0L, (ulong)~0L, \
 { \
-{0}},		 \
-{0}			 \
+(Pixmap) 0, \
+NULL, \
+-1, -1 \
+}, \
+{ \
+(Pixmap) None, \
+(Pixmap) None, \
+gx_no_bitmap_id, \
+0, 0, 0, \
+0, 0 \
+}, \
+GXcopy, \
+FillSolid, \
+0, \
+0, 0, \
+0, 0, \
+{ 0 }, \
+0, 0, \
+NULL, \
+128, 5, \
+NULL, \
+NULL, NULL, NULL, \
+NULL, NULL, NULL, \
+1, 1, \
+1, 0, \
+0.0, 0.0, \
+1, \
+1, 1, \
+\
+0 , \
+20000, \
+5000, \
+100000, \
+100000, \
+max_int, \
+\
+{ \
+0, \
+0, \
+{0, 0}, \
+0, \
+{ \
+{0}}, \
+{0} \
 } \
 };
 x_device(gs_x11_device,

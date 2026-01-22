@@ -1,5 +1,5 @@
 #include "astro.h"
-Obj2*	objlst[] =
+Obj2* objlst[] =
 {
 &osun,
 &omoon,
@@ -15,25 +15,25 @@ Obj2*	objlst[] =
 &ocomet,
 0,
 };
-struct	idata
+struct idata
 {
-char*	name;
-char*	name1;
-void	(*obj)(void);
+char* name;
+char* name1;
+void (*obj)(void);
 } idata[] =
 {
-"The sun",	"sun",		fsun,
-"The moon",	"moon",		moon,
-"The shadow",	"shadow",	shad,
-"Mercury",	"mercury",	merc,
-"Venus",	"venus",	venus,
-"Mars",		"mars",		mars,
-"Jupiter",	"jupiter",	jup,
-"Saturn",	"saturn",	sat,
-"Uranus",	"uranus",	uran,
-"Neptune",	"neptune",	nept,
-"Pluto",	"pluto",	plut,
-"Comet",	"comet",	comet,
+"The sun", "sun", fsun,
+"The moon", "moon", moon,
+"The shadow", "shadow", shad,
+"Mercury", "mercury", merc,
+"Venus", "venus", venus,
+"Mars", "mars", mars,
+"Jupiter", "jupiter", jup,
+"Saturn", "saturn", sat,
+"Uranus", "uranus", uran,
+"Neptune", "neptune", nept,
+"Pluto", "pluto", plut,
+"Comet", "comet", comet,
 };
 void
 init(void)
@@ -92,7 +92,7 @@ p->az = az;
 p->el = el;
 p->mag = mag;
 }
-long	starsao = 0;
+long starsao = 0;
 void
 fstar(void)
 {

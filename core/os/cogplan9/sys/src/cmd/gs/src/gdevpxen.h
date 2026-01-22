@@ -1,5 +1,5 @@
 #ifndef gdevpxen_INCLUDED
-#  define gdevpxen_INCLUDED
+# define gdevpxen_INCLUDED
 typedef enum {
 eClockWise = 0,
 eCounterClockWise,
@@ -166,7 +166,7 @@ m(eJB4Paper, -1, -1, -1)\
 m(eJB5Paper, 300, 2150, 3035)\
 m(eB5Envelope, 300, 2078, 2952)\
 m(eB5Paper, 300, 2150, 3035)\
-m(eJPostcard,  300, 1181, 1748)\
+m(eJPostcard, 300, 1181, 1748)\
 m(eJDoublePostcard, -1, -1, -1)\
 m(eA5Paper,300,1748, 2480)\
 m(eA6Paper,-1, -1, -1)\

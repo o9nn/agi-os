@@ -21,19 +21,19 @@ void utf_in(int, long *, struct convert *);
 void utf_out(Rune *, int, long *);
 void isoutf_in(int, long *, struct convert *);
 void isoutf_out(Rune *, int, long *);
-#define		N		10000
-#define	OUT(out, r, n)	if(out->flags&Table) outtable(r, n, (long *)out->data);\
+#define N 10000
+#define OUT(out, r, n) if(out->flags&Table) outtable(r, n, (long *)out->data);\
 else ((Outfn)(out->fn))(r, n, (long *)0)
 extern Rune runes[N];
 extern char obuf[UTFmax*N];
-#define		BADMAP		(0xFFFD)
-#define		BYTEBADMAP	('?')
-#define		ESC		033
-#ifdef	PLAN9
-#define	EPR		fprint(2,
-#define	EXIT(n,s)	exits(s)
+#define BADMAP (0xFFFD)
+#define BYTEBADMAP ('?')
+#define ESC 033
+#ifdef PLAN9
+#define EPR fprint(2,
+#define EXIT(n,s) exits(s)
 #else
-#define	EPR		fprintf(stderr,
-#define	USED(x)
-#define	EXIT(n,s)	exit(n)
+#define EPR fprintf(stderr,
+#define USED(x)
+#define EXIT(n,s) exit(n)
 #endif

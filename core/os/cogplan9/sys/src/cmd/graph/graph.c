@@ -2,20 +2,20 @@
 #include <libc.h>
 #include <stdio.h>
 #include "iplot.h"
-#define	INF	1.e+37
-#define	F	.25
+#define INF 1.e+37
+#define F .25
 struct xy {
-int	xlbf;
-int 	xubf;
-int	xqf;
+int xlbf;
+int xubf;
+int xqf;
 double (*xf)(double);
-float	xa,xb;
-float	xlb,xub;
-float	xquant;
-float	xoff;
-float	xsize;
-int	xbot,xtop;
-float	xmult;
+float xa,xb;
+float xlb,xub;
+float xquant;
+float xoff;
+float xsize;
+int xbot,xtop;
+float xmult;
 } xd,yd;
 struct val {
 float xv;
@@ -28,20 +28,20 @@ int tick = 50;
 int top = 4000;
 int bot = 200;
 float absbot;
-int	n;
-int	erasf = 1;
-int	gridf = 2;
-int	symbf = 0;
-int	absf = 0;
-int	transf;
-int	equf;
-int	brkf;
-int	ovlay = 1;
-float	dx;
-char	*plotsymb;
+int n;
+int erasf = 1;
+int gridf = 2;
+int symbf = 0;
+int absf = 0;
+int transf;
+int equf;
+int brkf;
+int ovlay = 1;
+float dx;
+char *plotsymb;
 #define BSIZ 80
-char	labbuf[BSIZ];
-char	titlebuf[BSIZ];
+char labbuf[BSIZ];
+char titlebuf[BSIZ];
 char *modes[] = {
 "disconnected",
 "solid",
@@ -61,14 +61,14 @@ struct {
 char *name;
 int next;
 } palette[] = {
-['b']	{ "blue", 'b' },
-['c']	{ "cyan", 'c' },
-['g']	{ "green", 'g' },
-['k']	{ "kblack", 'k' },
-['m']	{ "magenta", 'm' },
-['r']	{ "red", 'r' },
-['w']	{ "white", 'w' },
-['y']	{ "yellow", 'y' }
+['b'] { "blue", 'b' },
+['c'] { "cyan", 'c' },
+['g'] { "green", 'g' },
+['k'] { "kblack", 'k' },
+['m'] { "magenta", 'm' },
+['r'] { "red", 'r' },
+['w'] { "white", 'w' },
+['y'] { "yellow", 'y' }
 };
 int pencolor = 'k';
 void init(struct xy *);
@@ -134,7 +134,7 @@ xd.xlb = yd.xlb = INF;
 xd.xub = yd.xub = -INF;
 while(--argc > 0) {
 argv++;
-again:		switch(argv[0][0]) {
+again: switch(argv[0][0]) {
 case '-':
 argv[0]++;
 goto again;

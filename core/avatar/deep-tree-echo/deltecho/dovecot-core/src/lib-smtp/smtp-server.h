@@ -185,8 +185,8 @@ void (*conn_free)(void *context);
 bool (*conn_is_trusted)(void *context);
 };
 enum smtp_server_workarounds {
-SMTP_SERVER_WORKAROUND_WHITESPACE_BEFORE_PATH   = BIT(0),
-SMTP_SERVER_WORKAROUND_MAILBOX_FOR_PATH         = BIT(1)
+SMTP_SERVER_WORKAROUND_WHITESPACE_BEFORE_PATH = BIT(0),
+SMTP_SERVER_WORKAROUND_MAILBOX_FOR_PATH = BIT(1)
 };
 struct smtp_server_settings {
 enum smtp_protocol protocol;
@@ -306,7 +306,7 @@ struct smtp_server_connection *conn, const char *param);
 bool smtp_server_connection_is_ssl_secured(struct smtp_server_connection *conn);
 bool smtp_server_connection_is_trusted(struct smtp_server_connection *conn);
 enum smtp_server_command_flags {
-SMTP_SERVER_CMD_FLAG_PRETLS  = BIT(0),
+SMTP_SERVER_CMD_FLAG_PRETLS = BIT(0),
 SMTP_SERVER_CMD_FLAG_PREAUTH = BIT(1)
 };
 enum smtp_server_command_hook_type {

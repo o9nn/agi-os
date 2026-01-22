@@ -12,7 +12,7 @@ namespace std _GLIBCXX_VISIBILITY(default)
 _GLIBCXX_BEGIN_NAMESPACE_VERSION
 template<typename _Tp, typename _Hash>
 using __cache_default
-=  __not_<__and_<
+= __not_<__and_<
 __is_fast_hash<_Hash>,
 __is_nothrow_invocable<const _Hash&, const _Tp&>>>;
 template<typename _Equal, typename _Hash, typename _Allocator>
@@ -75,14 +75,14 @@ _RehashPolicy, _Traits>;
 using __enable_default_ctor
 = _Hashtable_enable_default_ctor<_Equal, _Hash, _Alloc>;
 public:
-typedef _Key						key_type;
-typedef _Value						value_type;
-typedef _Alloc						allocator_type;
-typedef _Equal						key_equal;
-typedef typename __value_alloc_traits::pointer		pointer;
-typedef typename __value_alloc_traits::const_pointer	const_pointer;
-typedef value_type&					reference;
-typedef const value_type&					const_reference;
+typedef _Key key_type;
+typedef _Value value_type;
+typedef _Alloc allocator_type;
+typedef _Equal key_equal;
+typedef typename __value_alloc_traits::pointer pointer;
+typedef typename __value_alloc_traits::const_pointer const_pointer;
+typedef value_type& reference;
+typedef const value_type& const_reference;
 using iterator = typename __insert_base::iterator;
 using const_iterator = typename __insert_base::const_iterator;
 using local_iterator = __detail::_Local_iterator<key_type, _Value,
@@ -100,8 +100,8 @@ using __unique_keys = typename __traits_type::__unique_keys;
 using __hashtable_base = __detail::
 _Hashtable_base<_Key, _Value, _ExtractKey,
 _Equal, _Hash, _RangeHash, _Unused, _Traits>;
-using __hash_code_base =  typename __hashtable_base::__hash_code_base;
-using __hash_code =  typename __hashtable_base::__hash_code;
+using __hash_code_base = typename __hashtable_base::__hash_code_base;
+using __hash_code = typename __hashtable_base::__hash_code;
 using __ireturn_type = typename __insert_base::__ireturn_type;
 using __map_base = __detail::_Map_base<_Key, _Value, _Alloc, _ExtractKey,
 _Equal, _Hash, _RangeHash, _Unused,
@@ -185,12 +185,12 @@ using node_type = _Node_handle<_Key, _Value, __node_alloc_type>;
 using insert_return_type = _Node_insert_return<iterator, node_type>;
 #endif
 private:
-__buckets_ptr		_M_buckets		= &_M_single_bucket;
-size_type			_M_bucket_count		= 1;
-__node_base		_M_before_begin;
-size_type			_M_element_count	= 0;
-_RehashPolicy		_M_rehash_policy;
-__node_base_ptr		_M_single_bucket	= nullptr;
+__buckets_ptr _M_buckets = &_M_single_bucket;
+size_type _M_bucket_count = 1;
+__node_base _M_before_begin;
+size_type _M_element_count = 0;
+_RehashPolicy _M_rehash_policy;
+__node_base_ptr _M_single_bucket = nullptr;
 void
 _M_update_bbegin()
 {
@@ -1539,7 +1539,7 @@ _Hash, _RangeHash, _Unused, _RehashPolicy, _Traits>::
 _M_emplace(true_type , _Args&&... __args)
 -> pair<iterator, bool>
 {
-_Scoped_node __node { this, std::forward<_Args>(__args)...  };
+_Scoped_node __node { this, std::forward<_Args>(__args)... };
 const key_type& __k = _ExtractKey{}(__node._M_node->_M_v());
 if (size() <= __small_size_threshold())
 {
@@ -1568,7 +1568,7 @@ _M_emplace(const_iterator __hint, false_type ,
 _Args&&... __args)
 -> iterator
 {
-_Scoped_node __node { this, std::forward<_Args>(__args)...  };
+_Scoped_node __node { this, std::forward<_Args>(__args)... };
 const key_type& __k = _ExtractKey{}(__node._M_node->_M_v());
 auto __res = this->_M_compute_hash_code(__hint, __k);
 auto __pos

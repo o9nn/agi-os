@@ -1,5 +1,5 @@
 (use-modules (opencog)
-             (opencog test-runner))
+(opencog test-runner))
 (opencog-test-runner)
 (define t "opencog-test-runner-fail")
 (test-begin t)

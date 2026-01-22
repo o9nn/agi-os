@@ -9,8 +9,8 @@ void append_archive(void)
 void append_archive()
 #endif
 {
-Stat            sb;
-char            name[PATH_MAX + 1];
+Stat sb;
+char name[PATH_MAX + 1];
 name[0] = '\0';
 while (get_header(name, &sb) == 0) {
 if (((ar_format == TAR)

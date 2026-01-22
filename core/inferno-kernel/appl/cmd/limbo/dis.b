@@ -1,10 +1,10 @@
-NAMELEN:	con 28;
-cache:		array of byte;
-ncached:	int;
-ndatum:		int;
-startoff:	int;
-lastoff:	int;
-lastkind:	int;
+NAMELEN: con 28;
+cache: array of byte;
+ncached: int;
+ndatum: int;
+startoff: int;
+lastoff: int;
+lastkind: int;
 discon(val: int)
 {
 if(val >= -64 && val <= 63){
@@ -243,13 +243,13 @@ if(c.iwild != nil)
 disint(offset, c.iwild.pc);
 Tarray =>
 disflush(-1, -1, 0);
-disdata(DEFA, 1);		# 1 is ignored
+disdata(DEFA, 1); # 1 is ignored
 discon(offset);
 disword(n.ty.tof.decl.desc.id);
 disword(int n.left.c.val);
 if(n.right == nil)
 break;
-disdata(DIND, 1);		# 1 is ignored
+disdata(DIND, 1); # 1 is ignored
 discon(offset);
 disword(0);
 c = n.right.ty.cse;
@@ -274,7 +274,7 @@ if(wild != nil)
 for(e = int n.left.c.val; last < e; last++)
 disdatum(esz * last, wild);
 disflush(-1, -1, 0);
-disdata(DAPOP, 1);		# 1 is ignored
+disdata(DAPOP, 1); # 1 is ignored
 discon(0);
 Tiface =>
 disint(offset, int n.c.val);
@@ -412,40 +412,40 @@ cache = c;
 }
 dismode := array[int Aend] of
 {
-int Aimm =>	byte AIMM,
-int Amp =>	byte AMP,
-int Ampind =>	byte(AMP|AIND),
-int Afp =>	byte AFP,
-int Afpind =>	byte(AFP|AIND),
-int Apc =>	byte AIMM,
-int Adesc =>	byte AIMM,
-int Aoff =>	byte AIMM,
-int Anoff =>	byte AIMM,
-int Aerr =>	byte AXXX,
-int Anone =>	byte AXXX,
-int Aldt =>	byte AIMM,
+int Aimm => byte AIMM,
+int Amp => byte AMP,
+int Ampind => byte(AMP|AIND),
+int Afp => byte AFP,
+int Afpind => byte(AFP|AIND),
+int Apc => byte AIMM,
+int Adesc => byte AIMM,
+int Aoff => byte AIMM,
+int Anoff => byte AIMM,
+int Aerr => byte AXXX,
+int Anone => byte AXXX,
+int Aldt => byte AIMM,
 };
 disregmode := array[int Aend] of
 {
-int Aimm =>	byte AXIMM,
-int Amp =>	byte AXINM,
-int Ampind =>	byte AXNON,
-int Afp =>	byte AXINF,
-int Afpind =>	byte AXNON,
-int Apc =>	byte AXIMM,
-int Adesc =>	byte AXIMM,
-int Aoff =>	byte AXIMM,
-int Anoff =>	byte AXIMM,
-int Aerr =>	byte AXNON,
-int Anone =>	byte AXNON,
-int Aldt =>	byte AXIMM,
+int Aimm => byte AXIMM,
+int Amp => byte AXINM,
+int Ampind => byte AXNON,
+int Afp => byte AXINF,
+int Afpind => byte AXNON,
+int Apc => byte AXIMM,
+int Adesc => byte AXIMM,
+int Aoff => byte AXIMM,
+int Anoff => byte AXIMM,
+int Aerr => byte AXNON,
+int Anone => byte AXNON,
+int Aldt => byte AXIMM,
 };
 MAXCON: con 4;
 MAXADDR: con 2*MAXCON;
 MAXINST: con 3*MAXADDR+2;
 NIBUF: con 1024;
-ibuf:	array of byte;
-nibuf:	int;
+ibuf: array of byte;
+nibuf: int;
 disinst(in: ref Inst)
 {
 fileoff := bout.seek(big 0, 1);

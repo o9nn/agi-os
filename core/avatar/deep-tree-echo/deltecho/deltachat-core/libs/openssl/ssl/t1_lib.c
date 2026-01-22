@@ -184,19 +184,19 @@ return 0;
 #endif
 #ifndef OPENSSL_NO_TLSEXT
 # ifdef OPENSSL_NO_RSA
-#  define tlsext_sigalg_rsa(md)
+# define tlsext_sigalg_rsa(md)
 # else
-#  define tlsext_sigalg_rsa(md) md, TLSEXT_signature_rsa,
+# define tlsext_sigalg_rsa(md) md, TLSEXT_signature_rsa,
 # endif
 # ifdef OPENSSL_NO_DSA
-#  define tlsext_sigalg_dsa(md)
+# define tlsext_sigalg_dsa(md)
 # else
-#  define tlsext_sigalg_dsa(md) md, TLSEXT_signature_dsa,
+# define tlsext_sigalg_dsa(md) md, TLSEXT_signature_dsa,
 # endif
 # ifdef OPENSSL_NO_ECDSA
-#  define tlsext_sigalg_ecdsa(md)
+# define tlsext_sigalg_ecdsa(md)
 # else
-#  define tlsext_sigalg_ecdsa(md) md, TLSEXT_signature_ecdsa,
+# define tlsext_sigalg_ecdsa(md) md, TLSEXT_signature_ecdsa,
 # endif
 # define tlsext_sigalg(md) \
 tlsext_sigalg_rsa(md) \
@@ -805,7 +805,7 @@ ecpointformatlist_length;
 memcpy(s->session->tlsext_ecpointformatlist, sdata,
 ecpointformatlist_length);
 }
-#  if 0
+# if 0
 fprintf(stderr,
 "ssl_parse_clienthello_tlsext s->session->tlsext_ecpointformatlist (length=%i) ",
 s->session->tlsext_ecpointformatlist_length);
@@ -813,7 +813,7 @@ sdata = s->session->tlsext_ecpointformatlist;
 for (i = 0; i < s->session->tlsext_ecpointformatlist_length; i++)
 fprintf(stderr, "%i ", *(sdata++));
 fprintf(stderr, "\n");
-#  endif
+# endif
 } else if (type == TLSEXT_TYPE_elliptic_curves) {
 unsigned char *sdata = data;
 int ellipticcurvelist_length = (*(sdata++) << 8);
@@ -836,7 +836,7 @@ ellipticcurvelist_length;
 memcpy(s->session->tlsext_ellipticcurvelist, sdata,
 ellipticcurvelist_length);
 }
-#  if 0
+# if 0
 fprintf(stderr,
 "ssl_parse_clienthello_tlsext s->session->tlsext_ellipticcurvelist (length=%i) ",
 s->session->tlsext_ellipticcurvelist_length);
@@ -844,7 +844,7 @@ sdata = s->session->tlsext_ellipticcurvelist;
 for (i = 0; i < s->session->tlsext_ellipticcurvelist_length; i++)
 fprintf(stderr, "%i ", *(sdata++));
 fprintf(stderr, "\n");
-#  endif
+# endif
 }
 # endif
 # ifdef TLSEXT_TYPE_opaque_prf_input
@@ -1084,14 +1084,14 @@ ecpointformatlist_length;
 memcpy(s->session->tlsext_ecpointformatlist, sdata,
 ecpointformatlist_length);
 }
-#  if 0
+# if 0
 fprintf(stderr,
 "ssl_parse_serverhello_tlsext s->session->tlsext_ecpointformatlist ");
 sdata = s->session->tlsext_ecpointformatlist;
 for (i = 0; i < s->session->tlsext_ecpointformatlist_length; i++)
 fprintf(stderr, "%i ", *(sdata++));
 fprintf(stderr, "\n");
-#  endif
+# endif
 }
 # endif
 else if (type == TLSEXT_TYPE_session_ticket) {

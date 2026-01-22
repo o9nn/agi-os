@@ -2,43 +2,43 @@
 (use-modules (opencog) (opencog exec))
 (define left-wall (Concept "LEFT-WALL"))
 (Section
-	(Concept "LEFT-WALL")
-	(ConnectorSeq
-		(Connector (Concept "WV") (ConnectorDir "+"))
-		(Connector (Concept "W") (ConnectorDir "+"))))
+(Concept "LEFT-WALL")
+(ConnectorSeq
+(Connector (Concept "WV") (ConnectorDir "+"))
+(Connector (Concept "W") (ConnectorDir "+"))))
 (Section
-	(Concept "John")
-	(ConnectorSeq
-		(Connector (Concept "W") (ConnectorDir "-"))
-		(Connector (Concept "S") (ConnectorDir "+"))))
+(Concept "John")
+(ConnectorSeq
+(Connector (Concept "W") (ConnectorDir "-"))
+(Connector (Concept "S") (ConnectorDir "+"))))
 (Section
-	(Concept "Mary")
-	(ConnectorSeq
-		(Connector (Concept "W") (ConnectorDir "-"))
-		(Connector (Concept "S") (ConnectorDir "+"))))
+(Concept "Mary")
+(ConnectorSeq
+(Connector (Concept "W") (ConnectorDir "-"))
+(Connector (Concept "S") (ConnectorDir "+"))))
 (Section
-	(Concept "could")
-	(ConnectorSeq
-		(Connector (Concept "S") (ConnectorDir "-"))
-		(Connector (Concept "I") (ConnectorDir "+"))))
+(Concept "could")
+(ConnectorSeq
+(Connector (Concept "S") (ConnectorDir "-"))
+(Connector (Concept "I") (ConnectorDir "+"))))
 (Section
-	(Concept "see")
-	(ConnectorSeq
-		(Connector (Concept "I") (ConnectorDir "-"))
-		(Connector (Concept "WV") (ConnectorDir "-"))
-		(Connector (Concept "O") (ConnectorDir "+"))))
+(Concept "see")
+(ConnectorSeq
+(Connector (Concept "I") (ConnectorDir "-"))
+(Connector (Concept "WV") (ConnectorDir "-"))
+(Connector (Concept "O") (ConnectorDir "+"))))
 (Section
-	(Concept "hear")
-	(ConnectorSeq
-		(Connector (Concept "I") (ConnectorDir "-"))
-		(Connector (Concept "WV") (ConnectorDir "-"))
-		(Connector (Concept "O") (ConnectorDir "+"))))
+(Concept "hear")
+(ConnectorSeq
+(Connector (Concept "I") (ConnectorDir "-"))
+(Connector (Concept "WV") (ConnectorDir "-"))
+(Connector (Concept "O") (ConnectorDir "+"))))
 (Section
-	(Concept "the")
-	(ConnectorSeq
-		(Connector (Concept "D") (ConnectorDir "+"))))
+(Concept "the")
+(ConnectorSeq
+(Connector (Concept "D") (ConnectorDir "+"))))
 (Section
-	(Concept "dog")
-	(ConnectorSeq
-		(Connector (Concept "D") (ConnectorDir "-"))
-		(Connector (Concept "O") (ConnectorDir "-"))))
+(Concept "dog")
+(ConnectorSeq
+(Connector (Concept "D") (ConnectorDir "-"))
+(Connector (Concept "O") (ConnectorDir "-"))))

@@ -63,7 +63,7 @@ code = t1_hinter__set_font_data(h, 1, pdata, pcis->no_grid_fitting);
 if (code < 0)
 return code;
 break;
-default  :
+default :
 break;
 }
 INIT_CSTACK(cstack, csp, pcis);

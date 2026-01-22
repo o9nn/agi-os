@@ -36,7 +36,7 @@ newviewer(fd : ref Sys->FD)
 {
 reply := array of byte sys->sprint("%.11d %.11d ", drawR.max.x - drawR.min.x, drawR.max.y - drawR.min.y);
 if (sys->write(fd, reply, len reply) != len reply) {
-#		sys->print("viewer hangup\n");
+# sys->print("viewer hangup\n");
 return;
 }
 buf := array [Sys->ATOMICIO] of byte;
@@ -53,7 +53,7 @@ cnum := int string buf[0:12];
 cdata := sys->sprint("/%d/data", cnum);
 datafd := sys->open(cdata, Sys->ORDWR);
 if (datafd == nil) {
-#		sys->print("cannot open viewer data file: %r\n");
+# sys->print("cannot open viewer data file: %r\n");
 return;
 }
 Viewer.new(datafd, pubscr, chans);
@@ -158,7 +158,7 @@ v := hd viewers;
 if (!v.hungup)
 ok = v :: ok;
 else {
-#					sys->print("shutting down Viewer\n");
+# sys->print("shutting down Viewer\n");
 v.output <- = (nil, nil);
 }
 }
@@ -166,7 +166,7 @@ viewers = ok;
 prevnhangups = nhangups;
 }
 }
-#	sys->print("DRAWIO DONE!\n");
+# sys->print("DRAWIO DONE!\n");
 }
 writereply(wc : chan of (int, string), val : (int, string))
 {
@@ -247,22 +247,22 @@ lookup: fn (s: self ref Screenset, id: int): ref Screen;
 Drawreq: adt {
 data: array of byte;
 pick {
-#	a =>	# allocate image
-#		id: int;
-#		screenid: int;
-#		refresh: int;
-#		ldepth: int;
-#		repl: int;
-#		R: Draw->Rect;
-#		clipR: Draw->Rect;
-#		value: int;
-b =>	# new allocate image
+# a => # allocate image
+# id: int;
+# screenid: int;
+# refresh: int;
+# ldepth: int;
+# repl: int;
+# R: Draw->Rect;
+# clipR: Draw->Rect;
+# value: int;
+b => # new allocate image
 id: int;
 screenid: int;
 refresh: int;
 chans: Draw->Chans;
 repl: int;
-R: 	Draw->Rect;
+R: Draw->Rect;
 clipR: Draw->Rect;
 rrggbbaa: int;
 A => # allocate screen
@@ -273,9 +273,9 @@ c => # set clipr and repl
 dstid: int;
 repl: int;
 clipR: Draw->Rect;
-#	x => # move cursor
-#	C => # set cursor image and hotspot
-#		_: int;
+# x => # move cursor
+# C => # set cursor image and hotspot
+# _: int;
 d => # general draw op
 dstid: int;
 srcid: int;
@@ -287,8 +287,8 @@ dstid: int;
 srcid: int;
 f => # free image
 id: int;
-img: ref Image;	# helper for Viewers
-F =>	 # free screen
+img: ref Image; # helper for Viewers
+F => # free screen
 id: int;
 i => # convert image to font
 fontid: int;
@@ -305,26 +305,26 @@ width: int;
 L => # draw line
 dstid: int;
 srcid: int;
-n =>	# attach to named image
+n => # attach to named image
 dstid: int;
 name: string;
 N => # name image
 dstid: int;
 in: int;
 name: string;
-o =>	# set window origins
+o => # set window origins
 id: int;
 rmin: Draw->Point;
 screenrmin: Draw->Point;
 O => # set next compositing op
 op: int;
-p =>	# draw polygon
+p => # draw polygon
 dstid: int;
 srcid: int;
-r =>	# read pixels
+r => # read pixels
 id: int;
 R: Draw->Rect;
-s =>	# draw text
+s => # draw text
 dstid: int;
 srcid: int;
 fontid: int;
@@ -333,12 +333,12 @@ dstid: int;
 srcid: int;
 fontid: int;
 bgid: int;
-S =>	# import public screen
-t =>	# adjust window z order
+S => # import public screen
+t => # adjust window z order
 top: int;
 ids: array of int;
-v =>	 # flush updates to display
-y =>	# write pixels
+v => # flush updates to display
+y => # write pixels
 id: int;
 R: Draw->Rect;
 }
@@ -434,7 +434,7 @@ r.data = data;
 r.id = get4(data, OPF_id);
 req = r;
 }
-'i' =>	 # alloc font
+'i' => # alloc font
 mlen = 1+4+4+1;
 if (mlen+ix <= len data) {
 data = data[ix:ix+mlen];
@@ -445,7 +445,7 @@ r.nchars = get4(data, OPi_nchars);
 r.ascent = get1(data, OPi_ascent);
 req = r;
 }
-'l' =>	 # load font char
+'l' => # load font char
 mlen = 1+4+4+2+(4*4)+(2*4)+1+1;
 if (mlen+ix <= len data) {
 data = data[ix:ix+mlen];
@@ -537,7 +537,7 @@ req = r;
 }
 }
 }
-'r' =>	 # read pixels
+'r' => # read pixels
 mlen = 1+4+(4*4);
 if (mlen+ix <= len data) {
 data = data[ix:ix+mlen];
@@ -605,7 +605,7 @@ req = r;
 req = ref Drawreq.v;
 req.data = data[ix:ix+1];
 'y' or
-'Y' =>	# write pixels
+'Y' => # write pixels
 mlen = 1+4+(4*4);
 if (ix+mlen <= len data) {
 imgid := get4(data, ix+OPy_id);
@@ -641,7 +641,7 @@ readn := 0;
 sendtoviews := 1;
 # actions that must be done before sending to Viewers
 pick r := req {
-b =>	# allocate image
+b => # allocate image
 bwidth := bytesperline(r.R, r.chans);
 img := ref Image (r.id, 0, r.screenid, r.refresh, r.chans, r.repl, r.R, r.clipR, r.rrggbbaa, nil, r.R.min, bwidth, 0, "");
 images.add(r.id, img);
@@ -649,29 +649,29 @@ if (r.screenid != 0) {
 scr := screens.lookup(r.screenid);
 scr.addwin(r.id);
 }
-A =>	# allocate screen
+A => # allocate screen
 scr := ref Screen (r.id, r.imageid, r.fillid, nil);
 screens.add(scr);
 # we never allocate public screens on our Viewers
 put1(r.data, OPA_public, 0);
 dirty(r.imageid, 0);
-c =>	# set clipr and repl
+c => # set clipr and repl
 img := images.lookup(r.dstid);
 img.repl = r.repl;
 img.clipR = r.clipR;
-d =>	# general draw op
+d => # general draw op
 dirty(r.dstid, 1);
 drawop = Draw->SoverD;
-e =>	# draw ellipse
+e => # draw ellipse
 dirty(r.dstid, 1);
 drawop = Draw->SoverD;
 f => # free image
 # help out Viewers, real work is done later
 r.img = images.lookup(r.id);
-L =>	# draw line
+L => # draw line
 dirty(r.dstid, 1);
 drawop = Draw->SoverD;
-n =>	# attach to named image
+n => # attach to named image
 img := images.findname(r.name);
 images.add(r.dstid, img);
 N => # name image
@@ -689,28 +689,28 @@ h := img.R.max.y - img.R.min.y;
 img.R = Draw->Rect(r.screenrmin, (r.screenrmin.x + w, r.screenrmin.y + h));
 img.clipR = Draw->Rect((img.clipR.min.x - deltax, img.clipR.min.y - deltay), (img.clipR.max.x - deltax, img.clipR.max.y - deltay));
 img.lorigin = r.rmin;
-O =>	# set compositing op
+O => # set compositing op
 drawop = r.op;
-p =>	# draw polygon
+p => # draw polygon
 dirty(r.dstid, 1);
 drawop = Draw->SoverD;
 r => # read pixels
 img := images.lookup(r.id);
 bpl := bytesperline(r.R, img.chans);
 readn = bpl * (r.R.max.y - r.R.min.y);
-s =>	# draw text
+s => # draw text
 dirty(r.dstid, 1);
 drawop = Draw->SoverD;
 x => # draw text with bg
 dirty(r.dstid, 1);
 drawop = Draw->SoverD;
-t =>	# adjust window z order
+t => # adjust window z order
 if (r.ids != nil) {
 img := images.lookup(r.ids[0]);
 scr := screens.lookup(img.screenid);
 scr.setz(r.ids, r.top);
 }
-y =>	# write pixels
+y => # write pixels
 dirty(r.id, 1);
 }
 if (readn) {
@@ -731,7 +731,7 @@ scr := screens.lookup(img.screenid);
 scr.delwin(img.id);
 }
 images.del(r.id);
-F =>	# free screen
+F => # free screen
 scr := screens.lookup(r.id);
 for (i := 0; i < len scr.windows; i++) {
 img := images.lookup(scr.windows[i]);
@@ -744,7 +744,7 @@ font := ref Font;
 font.ascent = r.ascent;
 font.chars = array[r.nchars] of ref Fontchar;
 img.font = font;
-l =>	# load a char into font
+l => # load a char into font
 img := images.lookup(r.fontid);
 font := img.font;
 fc := ref Fontchar(r.srcid, r.R, r.P, r.left, r.width);
@@ -785,20 +785,20 @@ break;
 lineix = byteaddr(i, Point(r.min.x, y));
 elineix = lineix+bpl;
 }
-if (ix == eix)	# buffer too small
+if (ix == eix) # buffer too small
 return -1;
 c := int data[ix++];
 if (c >= 128) {
 for (cnt := c-128+1; cnt != 0; --cnt) {
-if (ix == eix)	# buffer too small
+if (ix == eix) # buffer too small
 return -1;
-if (lineix == elineix)	# phase error
+if (lineix == elineix) # phase error
 return -1;
 lineix++;
 ix++;
 }
 } else {
-if (ix == eix)	# short buffer
+if (ix == eix) # short buffer
 return -1;
 ix++;
 for (cnt := (c >> 2)+3; cnt != 0; --cnt) {
@@ -827,7 +827,7 @@ l, t: int;
 if(r.min.x >= 0){
 l = (r.max.x*d+8-1)/8;
 l -= (r.min.x*d)/8;
-}else{			# make positive before divide
+}else{ # make positive before divide
 t = (-r.min.x*d+8-1)/8;
 l = t+(r.max.x*d+8-1)/8;
 }
@@ -888,9 +888,9 @@ minx := int data[ix] | ((int data[ix+1]) << 8) | ((int data[ix+2]) << 16) | ((in
 ix += 4;
 miny := int data[ix] | ((int data[ix+1]) << 8) | ((int data[ix+2]) << 16) | ((int data[ix+3]) << 24);
 ix += 4;
-maxx :=  int data[ix] | ((int data[ix+1]) << 8) | ((int data[ix+2]) << 16) | ((int data[ix+3]) << 24);
+maxx := int data[ix] | ((int data[ix+1]) << 8) | ((int data[ix+2]) << 16) | ((int data[ix+3]) << 24);
 ix += 4;
-maxy :=  int data[ix] | ((int data[ix+1]) << 8) | ((int data[ix+2]) << 16) | ((int data[ix+3]) << 24);
+maxy := int data[ix] | ((int data[ix+1]) << 8) | ((int data[ix+2]) << 16) | ((int data[ix+3]) << 24);
 return Draw->Rect(Draw->Point(minx, miny), Draw->Point(maxx, maxy));
 }
 putR(data : array of byte, ix : int , R : Draw->Rect)
@@ -957,7 +957,7 @@ s.windows = nw;
 }
 Screen.addwin(s : self ref Screen, wid : int)
 {
-nw :=  array [len s.windows + 1] of int;
+nw := array [len s.windows + 1] of int;
 nw[0] = wid;
 nw[1:] = s.windows;
 s.windows = nw;
@@ -1110,24 +1110,24 @@ return nil;
 return s.screens[ix];
 }
 Viewer : adt {
-imgmap:	ref Idmap;
-scrmap:	ref Idmap;
-chanmap:	ref Idmap;	# maps to 1 for images that require chan conversion
-imageid:	int;
-screenid:	int;
-whiteid:	int;
-hungup:	int;
-dchans:	Draw->Chans;	# chans.desc of remote display img
+imgmap: ref Idmap;
+scrmap: ref Idmap;
+chanmap: ref Idmap; # maps to 1 for images that require chan conversion
+imageid: int;
+screenid: int;
+whiteid: int;
+hungup: int;
+dchans: Draw->Chans; # chans.desc of remote display img
 # temporary image for chan conversion
-tmpid:	int;
-tmpR:	Draw->Rect;
-output:	chan of (array of byte, chan of string);
-new:		fn(fd: ref Sys->FD, pubscr: int, chans: Draw->Chans): string;
-process:	fn(v: self ref Viewer, req: ref Drawreq);
-getimg:	fn(v: self ref Viewer, id: int): int;
-getscr:	fn(v: self ref Viewer, id, win: int): (int, int);
-copyimg:	fn(v: self ref Viewer, img: ref Image, id: int);
-chanconv:	fn(v: self ref Viewer, img: ref Image, id: int, r: Rect, ymsg: array of byte);
+tmpid: int;
+tmpR: Draw->Rect;
+output: chan of (array of byte, chan of string);
+new: fn(fd: ref Sys->FD, pubscr: int, chans: Draw->Chans): string;
+process: fn(v: self ref Viewer, req: ref Drawreq);
+getimg: fn(v: self ref Viewer, id: int): int;
+getscr: fn(v: self ref Viewer, id, win: int): (int, int);
+copyimg: fn(v: self ref Viewer, img: ref Image, id: int);
+chanconv: fn(v: self ref Viewer, img: ref Image, id: int, r: Rect, ymsg: array of byte);
 };
 vwriter(fd : ref Sys->FD, datac : chan of array of byte, nc : chan of string)
 {
@@ -1137,11 +1137,11 @@ if (data == nil)
 return;
 n := sys->write(fd, data, len data);
 if (n != len data) {
-#			sys->print("[%c]: %r\n", int data[0]);
-#			sys->print("[%c] datalen %d got %d error: %r\n", int data[0], len data, n);
+# sys->print("[%c]: %r\n", int data[0]);
+# sys->print("[%c] datalen %d got %d error: %r\n", int data[0], len data, n);
 nc <-= sys->sprint("%r");
 } else {
-#			sys->print("[%c]", int data[0]);
+# sys->print("[%c]", int data[0]);
 nc <-= nil;
 }
 }
@@ -1318,7 +1318,7 @@ return;
 return;
 c => # set clipr and repl
 put4(data, OPc_dstid, v.getimg(r.dstid));
-d =>	 # general draw op
+d => # general draw op
 dstid := v.imgmap.lookup(r.dstid);
 if (dstid == -1) {
 # don't do draw op as getimg() will do a writepixels
@@ -1328,7 +1328,7 @@ return;
 put4(data, OPd_maskid, v.getimg(r.maskid));
 put4(data, OPd_srcid, v.getimg(r.srcid));
 put4(data, OPd_dstid, dstid);
-e =>	 # draw ellipse
+e => # draw ellipse
 dstid := v.imgmap.lookup(r.dstid);
 if (dstid == -1) {
 # don't do draw op as getimg() will do a writepixels
@@ -1371,20 +1371,20 @@ return;
 }
 put4(data, OPL_srcid, v.getimg(r.srcid));
 put4(data, OPL_dstid, dstid);
-#	n =>	# attach to named image
-#	N =>	# name
-#		Handled by id remapping to avoid clashes in namespace of remote viewers.
-#		If it is a name we know then the id is remapped within the images Imageset
-#		Otherwise, there is nothing we can do other than ignore all ops related to the id.
-o =>	 # set image origins
+# n => # attach to named image
+# N => # name
+# Handled by id remapping to avoid clashes in namespace of remote viewers.
+# If it is a name we know then the id is remapped within the images Imageset
+# Otherwise, there is nothing we can do other than ignore all ops related to the id.
+o => # set image origins
 id := v.imgmap.lookup(r.id);
 if (id == -1)
 # Viewer has never seen this image - ignore
 return;
 put4(data, OPo_id, id);
-O =>	# set next compositing op
+O => # set next compositing op
 ;
-p =>	 # draw polygon
+p => # draw polygon
 dstid := v.imgmap.lookup(r.dstid);
 if (dstid == -1) {
 # don't do draw op as getimg() will do a writepixels
@@ -1403,7 +1403,7 @@ return;
 put4(data, OPs_fontid, v.getimg(r.fontid));
 put4(data, OPs_srcid, v.getimg(r.srcid));
 put4(data, OPs_dstid, dstid);
-x =>	# draw text with bg
+x => # draw text with bg
 dstid := v.imgmap.lookup(r.dstid);
 if (dstid == -1) {
 # don't do draw op as getimg() will do a writepixels
@@ -1551,7 +1551,7 @@ break;
 nb := bpl * ystep;
 ymsg := array [1+4+(4*4)+nb] of byte;
 ymsg[0] = byte 'y';
-#		put4(ymsg, OPy_id, id);
+# put4(ymsg, OPy_id, id);
 putR(ymsg, OPy_R, R);
 n := sys->read(drawfd, ymsg[OPy_data:], nb);
 if (n != nb)
@@ -1651,7 +1651,7 @@ break;
 # if i == 25 then we have a problem
 # ...
 if (i == 25) {
-#		sys->print("failed to create remote screen\n");
+# sys->print("failed to create remote screen\n");
 return (0, 0);
 }
 # pre-construct the windows on this screen

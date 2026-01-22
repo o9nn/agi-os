@@ -59,17 +59,17 @@ return BDF_SYSTEM_ERROR;
 }
 return 0;
 }
-#define parse_template(str, template, rest...)				\
-do									\
-{									\
-int parse_template_count = -1;					\
-sscanf (str, template " %n", rest, &parse_template_count);	\
-if (parse_template_count == -1 || *(str + parse_template_count))	\
-err = BDF_SYNTAX_ERROR;						\
-}									\
+#define parse_template(str, template, rest...) \
+do \
+{ \
+int parse_template_count = -1; \
+sscanf (str, template " %n", rest, &parse_template_count); \
+if (parse_template_count == -1 || *(str + parse_template_count)) \
+err = BDF_SYNTAX_ERROR; \
+} \
 while (0)
-#define hex2nr(c) (((c) >= '0' && (c) <= '9') ? (c) - '0'		\
-: (((c) >= 'a' && (c) <= 'f') ? (c) - 'a' + 10	\
+#define hex2nr(c) (((c) >= '0' && (c) <= '9') ? (c) - '0' \
+: (((c) >= 'a' && (c) <= 'f') ? (c) - 'a' + 10 \
 : (((c) >= 'A' && (c) <= 'F') ? (c) - 'A' + 10 : 0)))
 static bdf_error_t
 parse_hexbyte (char *line, unsigned char *byte)
@@ -533,25 +533,25 @@ bdf->metricsset = metricsset;
 *font = bdf;
 return 0;
 }
-#define bdf_set_something(what)					\
-bdf_error_t							\
-bdf_set_##what (bdf_font_t font, int glyph, int x, int y)	\
-{								\
-if (x < 0 || y < 0 || glyph > font->glyphs_count - 1)		\
-return BDF_INVALID_ARGUMENT;				\
-if (glyph < 0)						\
-{								\
-font->has_##what = 1;					\
-font->what.x = x;						\
-font->what.y = y;						\
-}								\
-else								\
-{								\
-font->glyphs[glyph].has_##what = 1;			\
-font->glyphs[glyph].what.x = x;				\
-font->glyphs[glyph].what.y = y;				\
-}								\
-return 0;							\
+#define bdf_set_something(what) \
+bdf_error_t \
+bdf_set_##what (bdf_font_t font, int glyph, int x, int y) \
+{ \
+if (x < 0 || y < 0 || glyph > font->glyphs_count - 1) \
+return BDF_INVALID_ARGUMENT; \
+if (glyph < 0) \
+{ \
+font->has_##what = 1; \
+font->what.x = x; \
+font->what.y = y; \
+} \
+else \
+{ \
+font->glyphs[glyph].has_##what = 1; \
+font->glyphs[glyph].what.x = x; \
+font->glyphs[glyph].what.y = y; \
+} \
+return 0; \
 }
 bdf_set_something (swidth)
 bdf_set_something (dwidth)

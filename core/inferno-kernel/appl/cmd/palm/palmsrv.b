@@ -2,13 +2,13 @@ implement Palmsrv;
 #
 # serve up a Palm using SLP and PADP
 #
-# Copyright © 2003 Vita Nuova Holdings Limited.  All rights reserved.
+# Copyright © 2003 Vita Nuova Holdings Limited. All rights reserved.
 #
 # forsyth@vitanuova.com
 #
 # TO DO
-#	USB and possibly other transports
-#	tickle
+# USB and possibly other transports
+# tickle
 include "sys.m";
 sys: Sys;
 include "draw.m";
@@ -19,7 +19,7 @@ include "palm.m";
 include "arg.m";
 Palmsrv: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 debug := 0;
 usage()
@@ -74,9 +74,9 @@ raise "fail:error";
 }
 Xact: adt
 {
-fid:	int;
-reply:	array of byte;
-error:	string;
+fid: int;
+reply: array of byte;
+error: string;
 };
 server(srv: ref Sys->FileIO, p: ref Pchan)
 {
@@ -101,9 +101,9 @@ rc <-= (nil, act.error);
 else if(act.reply != nil)
 rc <-= (act.reply, nil);
 else
-rc <-= (nil, "no reply");	# probably shouldn't happen
+rc <-= (nil, "no reply"); # probably shouldn't happen
 (nil, data, fid, wc) := <-srv.write =>
-actions = delact(actions, fid);	# discard result of any previous transaction
+actions = delact(actions, fid); # discard result of any previous transaction
 if(wc == nil){
 if(--nuser <= 0){
 nuser = 0;
@@ -117,7 +117,7 @@ wc <-= (len data, nil);
 exit;
 }
 if(p.shutdown){
-wc <-= (0, "link shut down");	# must close then reopen
+wc <-= (0, "link shut down"); # must close then reopen
 break;
 }
 if(!p.started){
@@ -163,53 +163,53 @@ sys->fprint(fd, "kill");
 }
 #
 # protocol implementation
-#	Serial Link Protocol (framing)
-#	Connection Management Protocol (wakeup, negotiation)
-#	Packet Assembly/Disassembly Protocol (reliable delivery fragmented datagram)
+# Serial Link Protocol (framing)
+# Connection Management Protocol (wakeup, negotiation)
+# Packet Assembly/Disassembly Protocol (reliable delivery fragmented datagram)
 #
 DATALIM: con 1024;
 # SLP packet types
 SLP_System, SLP_Unused, SLP_PAD, SLP_Loop: con iota;
 # SLP block content, without framing
 Sblock: adt {
-src:	int;	# socket ID
-dst:	int;	# socket ID
-proto:	int;	# packet type
-xid:	int;	# transaction ID
-data:	array of byte;
-new:	fn(): ref Sblock;
-print:	fn(sb: self ref Sblock, dir: string);
+src: int; # socket ID
+dst: int; # socket ID
+proto: int; # packet type
+xid: int; # transaction ID
+data: array of byte;
+new: fn(): ref Sblock;
+print: fn(sb: self ref Sblock, dir: string);
 };
 #
 # Palm channel
 #
 Pchan: adt {
-started:	int;
-shutdown:	int;
-protocol:	int;
-lport:	byte;
-rport:	byte;
-fd:	ref Sys->FD;
-cfd:	ref Sys->FD;
-baud:	int;
-rpid:	int;
-lastid:	int;
-rd:	chan of ref Sblock;
-reply:	ref Sblock;	# data replacing lost ack
-init:	fn(dfd: ref Sys->FD, cfd: ref Sys->FD): ref Pchan;
-start:	fn(p: self ref Pchan): string;
-stop:	fn(p: self ref Pchan);
-close:	fn(p: self ref Pchan): int;
-slp_read:	fn(p: self ref Pchan, nil: int): (ref Sblock, string);
-slp_write:	fn(p: self ref Pchan, xid: int, nil: array of byte): string;
-setbaud:	fn(p: self ref Pchan, nil: int);
-padp_read:	fn(p: self ref Pchan, xid: int, timeout: int): (array of byte, string);
-padp_write:	fn(p: self ref Pchan, msg: array of byte, xid: int): string;
-padp_xchg:	fn(p: self ref Pchan, msg: array of byte, timeout: int): (array of byte, string);
-tickle:	fn(p: self ref Pchan);
-connect:	fn(p: self ref Pchan): string;
-accept:	fn(p: self ref Pchan, baud: int): string;
-nextseq:	fn(p: self ref Pchan): int;
+started: int;
+shutdown: int;
+protocol: int;
+lport: byte;
+rport: byte;
+fd: ref Sys->FD;
+cfd: ref Sys->FD;
+baud: int;
+rpid: int;
+lastid: int;
+rd: chan of ref Sblock;
+reply: ref Sblock; # data replacing lost ack
+init: fn(dfd: ref Sys->FD, cfd: ref Sys->FD): ref Pchan;
+start: fn(p: self ref Pchan): string;
+stop: fn(p: self ref Pchan);
+close: fn(p: self ref Pchan): int;
+slp_read: fn(p: self ref Pchan, nil: int): (ref Sblock, string);
+slp_write: fn(p: self ref Pchan, xid: int, nil: array of byte): string;
+setbaud: fn(p: self ref Pchan, nil: int);
+padp_read: fn(p: self ref Pchan, xid: int, timeout: int): (array of byte, string);
+padp_write: fn(p: self ref Pchan, msg: array of byte, xid: int): string;
+padp_xchg: fn(p: self ref Pchan, msg: array of byte, timeout: int): (array of byte, string);
+tickle: fn(p: self ref Pchan);
+connect: fn(p: self ref Pchan): string;
+accept: fn(p: self ref Pchan, baud: int): string;
+nextseq: fn(p: self ref Pchan): int;
 };
 Pchan.init(dfd: ref Sys->FD, cfd: ref Sys->FD): ref Pchan
 {
@@ -270,10 +270,10 @@ return;
 killpid(p.rpid);
 p.rpid = 0;
 p.reply = nil;
-#	ctl(p, "f");
-#	ctl(p, "d0");
-#	ctl(p, "r0");
-#	ctl(p, sys->sprint("b%d", InitBaud));
+# ctl(p, "f");
+# ctl(p, "d0");
+# ctl(p, "r0");
+# ctl(p, sys->sprint("b%d", InitBaud));
 p.started = 0;
 }
 Pchan.close(p: self ref Pchan): int
@@ -287,31 +287,31 @@ timers->shutdown();
 return 0;
 }
 # CMP protocol for connection management
-#	See include/Core/System/CMCommon.h, Palm SDK
+# See include/Core/System/CMCommon.h, Palm SDK
 # There are two major versions: the original V1, still always used in wakeup messsages;
 # and V2, which is completely different (similar structure to Desklink) and used by newer devices, but the headers
-# are the same length.  Start off in V1 announcing version 2.x, then switch to that.
+# are the same length. Start off in V1 announcing version 2.x, then switch to that.
 # My device supports only V1, so I use that.
-CMPHDRLEN: con 10;	# V1: type[1] flags[1] vermajor[1] verminor[1] mbz[2] baud[4]
+CMPHDRLEN: con 10; # V1: type[1] flags[1] vermajor[1] verminor[1] mbz[2] baud[4]
 # V2: type[1] cmd[1] error[2] argc[1] mbz[1] mbz[4]
 # CMP V1
-Cmajor:	con 1;
-Cminor:	con 2;
+Cmajor: con 1;
+Cminor: con 2;
 InitBaud: con 9600;
 # type
 Cwake, Cinit, Cabort, Cextended: con 1+iota;
 # Cinit flags
 ChangeBaud: con 16r80;
-RcvTimeout1: con 16r40;	# tell Palm to set receive timeout to 1 minute (CMP v1.1)
-RcvTimeout2:	con 16r20;	# tell Palm to set receive timeout to 2 minutes (v1.1)
+RcvTimeout1: con 16r40; # tell Palm to set receive timeout to 1 minute (CMP v1.1)
+RcvTimeout2: con 16r20; # tell Palm to set receive timeout to 2 minutes (v1.1)
 # Cinit and Cwake flag
-LongPacketEnable:	con 16r10;	# enable long packet support (v1.2)
+LongPacketEnable: con 16r10; # enable long packet support (v1.2)
 # Cabort flags
-WrongVersion:	con 16r80;	# incompatible com versions
+WrongVersion: con 16r80; # incompatible com versions
 # CMP V2
-Carg1:		con Palm->ArgIDbase;
-Cresponse:	con 16r80;
-Cxchgprefs, Chandshake:	con 16r10+iota;
+Carg1: con Palm->ArgIDbase;
+Cresponse: con 16r80;
+Cxchgprefs, Chandshake: con 16r10+iota;
 Pchan.connect(p: self ref Pchan): string
 {
 (nil, e1) := cmp_write(p, Cwake, 0, Cmajor, Cminor, 57600);
@@ -379,8 +379,8 @@ return (int c[0], int c[1], int c[2], int c[3], get4(c[6:]), nil);
 }
 #
 # Palm PADP protocol
-#	``The Packet Assembly/Disassembly Protocol'' in
-#	Developing Palm OS Communications, US Robotics, 1996, pp. 53-68.
+# ``The Packet Assembly/Disassembly Protocol'' in
+# Developing Palm OS Communications, US Robotics, 1996, pp. 53-68.
 #
 # forsyth@caldo.demon.co.uk, 1997
 #
@@ -392,7 +392,7 @@ Pdata: con 1;
 Pack: con 2;
 Ptickle: con 4;
 Pabort: con 8;
-PADPHDRLEN: con 4;	# type[1] flags[1] size[2]
+PADPHDRLEN: con 4; # type[1] flags[1] size[2]
 RetryInterval: con 4*Sec;
 MaxRetries: con 14; # they say 14 `seconds', but later state they might need 20 for heap mgmt, so i'll assume 14 attempts (at 4sec ea)
 Pchan.padp_xchg(p: self ref Pchan, msg: array of byte, timeout: int): (array of byte, string)
@@ -405,7 +405,7 @@ return p.padp_read(xid, timeout);
 }
 #
 # PADP header
-#	type[1] flags[2] size[2], high byte first for size
+# type[1] flags[2] size[2], high byte first for size
 #
 # max block size is 2^16-1
 # must ack within 2 seconds
@@ -432,9 +432,9 @@ ob[0] = byte Pdata;
 ob[1] = byte flags;
 l: int;
 if(flags & FIRST)
-l = count;	# total size in first segment
+l = count; # total size in first segment
 else
-l = offset;	# offset in rest
+l = offset; # offset in rest
 put2(ob[2:], l);
 ob[PADPHDRLEN:] = mem[0:n];
 if(debug)
@@ -458,7 +458,7 @@ if(ib.proto != SLP_PAD || len ib.data < PADPHDRLEN || ib.xid != xid && ib.xid !=
 sys->print("padp write: ack wrong type(%d) or xid(%d,%d), or len %d\n", ib.proto, ib.xid, xid, len ib.data);
 continue;
 }
-if(ib.xid == 16rFF){	# connection management
+if(ib.xid == 16rFF){ # connection management
 if(int ib.data[0] == Ptickle)
 continue;
 if(int ib.data[0] == Pabort){
@@ -496,7 +496,7 @@ flags &= ~FIRST;
 }
 return nil;
 }
-Pchan.padp_read(p: self ref Pchan,  xid, timeout: int): (array of byte, string)
+Pchan.padp_read(p: self ref Pchan, xid, timeout: int): (array of byte, string)
 {
 buf, mem: array of byte;
 offset := 0;
@@ -592,11 +592,11 @@ padp_dump(data: array of byte, dir: string)
 {
 stype: string;
 case int data[0] {
-Pdata =>	stype = "Data";
-Pack =>	stype = "Ack";
-Ptickle =>	stype = "Tickle";
-Pabort =>	stype = "Abort";
-* =>	stype = sys->sprint("#%x", int data[0]);
+Pdata => stype = "Data";
+Pack => stype = "Ack";
+Ptickle => stype = "Tickle";
+Pabort => stype = "Abort";
+* => stype = sys->sprint("#%x", int data[0]);
 }
 sys->print("PADP %s %s flags=#%x len=%d\n", stype, dir, int data[1], get2(data[2:]));
 if(debug > 1 && (data[0] != byte Pack || len data > 4)){
@@ -611,10 +611,10 @@ sys->print("\n");
 }
 #
 # Palm's Serial Link Protocol
-#	See include/Core/System/SerialLinkMgr.h in Palm SDK
-# 	and the description in the USR document mentioned above.
+# See include/Core/System/SerialLinkMgr.h in Palm SDK
+# and the description in the USR document mentioned above.
 #
-SLPHDRLEN: con 10;		# BE[1] EF[1] ED[1] dest[1] src[1] type[1] size[2] xid[1] check[1] body[size] crc[2]
+SLPHDRLEN: con 10; # BE[1] EF[1] ED[1] dest[1] src[1] type[1] size[2] xid[1] check[1] body[size] crc[2]
 SLP_MTU: con SLPHDRLEN+PADPHDRLEN+DATALIM;
 Sblock.new(): ref Sblock
 {
@@ -690,7 +690,7 @@ if(n <= 0)
 break Work;
 wr += n;
 }
-#		{for(i:=0; i<wr;i++)sys->print("%.2x", int buf[i]);sys->print("\n");}
+# {for(i:=0; i<wr;i++)sys->print("%.2x", int buf[i]);sys->print("\n");}
 if(buf[0] != byte 16rBE || buf[1] != byte 16rEF || buf[2] != byte 16rED){
 rd++;
 continue;
@@ -727,7 +727,7 @@ if(crc != get2(buf[rd+size:])){
 if(debug)
 sys->print("CRC error: local=#%.4ux pilot=#%.4ux\n", crc, get2(buf[rd+size:]));
 for(; rd < wr && buf[rd] != byte 16rBE; rd++)
-;	# hunt for next header
+; # hunt for next header
 continue;
 }
 if(sb.proto != SLP_Loop){

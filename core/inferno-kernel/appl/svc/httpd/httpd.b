@@ -166,8 +166,8 @@ if(n >= 0)
 if (dbg_log!=nil)
 sys->fprint(dbg_log,"New client http: %s %s", nc.dir,
 string buf[0:n]);
-#  wait for a call (or an error)
-#  start a process for the service
+# wait for a call (or an error)
+# start a process for the service
 g:= ref Private_info;
 g.bufio = bufio;
 g.dbg_log=dbg_log;
@@ -231,7 +231,7 @@ parser->logit(g,sys->sprint("unimplemented method %s%s", meth, g.getcerr));
 parser->fail(g,Unimp, meth);
 }
 "HTTP/V1.0" or "HTTP/1.0" or "HTTP/1.1" =>
-if((meth != "GET")  && (meth!= "HEAD") && (meth!="POST")){
+if((meth != "GET") && (meth!= "HEAD") && (meth!="POST")){
 parser->logit(g,sys->sprint("unimplemented method %s", meth));
 parser->fail(g,Unimp, meth);
 }
@@ -247,14 +247,14 @@ parser->logit(g,sys->sprint("fragment %s", extra));
 # munge uri for search, protection, and magic
 (uri, search) = stripsearch(uri);
 uri = compact_path(parser->urlunesc(uri));
-#	if(uri == SVR_ROOT)
-#		parser->fail(g,NotFound, "no object specified");
+# if(uri == SVR_ROOT)
+# parser->fail(g,NotFound, "no object specified");
 (uri, magic) = stripmagic(uri);
 debug_print(g,"stripmagic=("+uri+","+magic+")\n");
 # normal case is just file transfer
 if(magic == nil || (magic == "httpd")){
 if (meth=="POST")
-parser->fail(g,Unimp,meth);	# /magic does handles POST
+parser->fail(g,Unimp,meth); # /magic does handles POST
 g.host = g.mydomain;
 origuri = uri;
 parser->httpheaders(g,v);
@@ -382,8 +382,8 @@ g.bout.puts(sys->sprint("Version: %uxv%ux\r\n", int dir.qid.path, dir.qid.vers))
 g.bout.puts(sys->sprint("Message-Id: <%uxv%ux@%s>\r\n",
 int dir.qid.path, dir.qid.vers, g.mydomain));
 g.bout.puts(sys->sprint("Content-Type: %s/%s", typ.generic, typ.specific));
-#		if(typ.generic== "text")
-#			g.bout.puts(";charset=unicode-1-1-utf-8");
+# if(typ.generic== "text")
+# g.bout.puts(";charset=unicode-1-1-utf-8");
 g.bout.puts("\r\n");
 if(enc != nil){
 g.bout.puts(sys->sprint("Content-Encoding: %s", enc.generic));
@@ -510,7 +510,7 @@ if(rlpath!=nil){
 cpath = hd rlpath;
 rlpath = tl rlpath;
 while( rlpath != nil ) {
-cpath = (hd rlpath) + "/" +  cpath;
+cpath = (hd rlpath) + "/" + cpath;
 rlpath = tl rlpath;
 }
 }
@@ -590,7 +590,7 @@ if(dn == nil)
 dn = "who cares";
 return dn;
 }
-#  query the connection server
+# query the connection server
 csquery(attr, val, rattr : string): string
 {
 token : string;
@@ -644,7 +644,7 @@ return (sysf, serv);
 }
 getendpoints(dir: string): string
 {
-#	(lsys, lserv) := getendpoint(dir, "local");
+# (lsys, lserv) := getendpoint(dir, "local");
 (rsys, nil) := getendpoint(dir, "remote");
 return rsys;
 }

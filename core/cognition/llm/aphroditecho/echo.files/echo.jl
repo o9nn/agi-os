@@ -63,7 +63,7 @@ Symbol[],
 0.5,
 rand(n_signatures, n_signatures),
 ones(length(COGNITIVE_PRIMES)),
-zeros(2387)  # Size based on core consciousness tensor
+zeros(2387) # Size based on core consciousness tensor
 )
 end
 end
@@ -140,7 +140,7 @@ Compute prime factor resonance across all active tensors
 function compute_prime_resonance(pattern::Dict{Symbol, Float64})::Vector{Float64}
 resonance = zeros(length(COGNITIVE_PRIMES))
 for (name, activation) in pattern
-if activation > 0.05  # Threshold for consideration
+if activation > 0.05 # Threshold for consideration
 signature = ECHO_GESTALT.tensor_signatures[name]
 for (i, prime) in enumerate(COGNITIVE_PRIMES)
 if prime in signature.prime_factors

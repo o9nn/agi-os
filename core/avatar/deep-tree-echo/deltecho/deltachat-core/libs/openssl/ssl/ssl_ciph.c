@@ -7,36 +7,36 @@
 # include <openssl/engine.h>
 #endif
 #include "ssl_locl.h"
-#define SSL_ENC_DES_IDX         0
-#define SSL_ENC_3DES_IDX        1
-#define SSL_ENC_RC4_IDX         2
-#define SSL_ENC_RC2_IDX         3
-#define SSL_ENC_IDEA_IDX        4
-#define SSL_ENC_NULL_IDX        5
-#define SSL_ENC_AES128_IDX      6
-#define SSL_ENC_AES256_IDX      7
+#define SSL_ENC_DES_IDX 0
+#define SSL_ENC_3DES_IDX 1
+#define SSL_ENC_RC4_IDX 2
+#define SSL_ENC_RC2_IDX 3
+#define SSL_ENC_IDEA_IDX 4
+#define SSL_ENC_NULL_IDX 5
+#define SSL_ENC_AES128_IDX 6
+#define SSL_ENC_AES256_IDX 7
 #define SSL_ENC_CAMELLIA128_IDX 8
 #define SSL_ENC_CAMELLIA256_IDX 9
-#define SSL_ENC_GOST89_IDX      10
-#define SSL_ENC_SEED_IDX        11
-#define SSL_ENC_AES128GCM_IDX   12
-#define SSL_ENC_AES256GCM_IDX   13
-#define SSL_ENC_NUM_IDX         14
+#define SSL_ENC_GOST89_IDX 10
+#define SSL_ENC_SEED_IDX 11
+#define SSL_ENC_AES128GCM_IDX 12
+#define SSL_ENC_AES256GCM_IDX 13
+#define SSL_ENC_NUM_IDX 14
 static const EVP_CIPHER *ssl_cipher_methods[SSL_ENC_NUM_IDX] = {
 NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
 NULL, NULL
 };
-#define SSL_COMP_NULL_IDX       0
-#define SSL_COMP_ZLIB_IDX       1
-#define SSL_COMP_NUM_IDX        2
+#define SSL_COMP_NULL_IDX 0
+#define SSL_COMP_ZLIB_IDX 1
+#define SSL_COMP_NUM_IDX 2
 static STACK_OF(SSL_COMP) *ssl_comp_methods = NULL;
-#define SSL_MD_MD5_IDX  0
+#define SSL_MD_MD5_IDX 0
 #define SSL_MD_SHA1_IDX 1
 #define SSL_MD_GOST94_IDX 2
 #define SSL_MD_GOST89MAC_IDX 3
 #define SSL_MD_SHA256_IDX 4
 #define SSL_MD_SHA384_IDX 5
-#define SSL_MD_NUM_IDX  SSL_MAX_DIGEST
+#define SSL_MD_NUM_IDX SSL_MAX_DIGEST
 static const EVP_MD *ssl_digest_methods[SSL_MD_NUM_IDX] = {
 NULL, NULL, NULL, NULL, NULL, NULL
 };
@@ -52,11 +52,11 @@ SSL_HANDSHAKE_MAC_MD5, SSL_HANDSHAKE_MAC_SHA,
 SSL_HANDSHAKE_MAC_GOST94, 0, SSL_HANDSHAKE_MAC_SHA256,
 SSL_HANDSHAKE_MAC_SHA384
 };
-#define CIPHER_ADD      1
-#define CIPHER_KILL     2
-#define CIPHER_DEL      3
-#define CIPHER_ORD      4
-#define CIPHER_SPECIAL  5
+#define CIPHER_ADD 1
+#define CIPHER_KILL 2
+#define CIPHER_DEL 3
+#define CIPHER_ORD 4
+#define CIPHER_SPECIAL 5
 typedef struct cipher_order_st {
 const SSL_CIPHER *cipher;
 int active;

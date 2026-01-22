@@ -5,16 +5,16 @@
 #include <errno.h>
 #include "pic.h"
 #include "y.tab.h"
-Infile	infile[10];
-Infile	*curfile = infile;
-#define	MAXSRC	50
-Src	src[MAXSRC];
-Src	*srcp	= src;
-void	do_thru(void);
-int	nextchar(void);
-int	getarg(char *);
-void	freedef(char *);
-int	baldelim(int, char *);
+Infile infile[10];
+Infile *curfile = infile;
+#define MAXSRC 50
+Src src[MAXSRC];
+Src *srcp = src;
+void do_thru(void);
+int nextchar(void);
+int getarg(char *);
+void freedef(char *);
+int baldelim(int, char *);
 void pushsrc(int type, char *ptr)
 {
 if (++srcp >= src + MAXSRC)
@@ -145,9 +145,9 @@ while (*s == ' ' || *s == '\t')
 s++;
 freedef(s);
 }
-Arg	args[10];
-Arg	*argfp = args;
-int	argcnt;
+Arg args[10];
+Arg *argfp = args;
+int argcnt;
 void dodef(struct symtab *stp)
 {
 int i, len;
@@ -200,15 +200,15 @@ n++;
 unput(c);
 return(n + 1);
 }
-#define	PBSIZE	2000
-char	pbuf[PBSIZE];
-char	*pb	= pbuf-1;
-char	ebuf[200];
-char	*ep	= ebuf;
-int	begin	= 0;
-extern	int	thru;
-extern	struct symtab	*thrudef;
-extern	char	*untilstr;
+#define PBSIZE 2000
+char pbuf[PBSIZE];
+char *pb = pbuf-1;
+char ebuf[200];
+char *ep = ebuf;
+int begin = 0;
+extern int thru;
+extern struct symtab *thrudef;
+extern char *untilstr;
 input(void)
 {
 register int c;
@@ -386,7 +386,7 @@ void pbstr(char *s)
 {
 pushsrc(String, s);
 }
-double errcheck(double x, char  *s)
+double errcheck(double x, char *s)
 {
 extern int errno;
 if (errno == EDOM) {
@@ -398,8 +398,8 @@ ERROR "%s result out of range", s WARNING;
 }
 return x;
 }
-char	errbuf[200];
-void	eprint(void);
+char errbuf[200];
+void eprint(void);
 void yyerror(char *s)
 {
 extern char *cmdname;
@@ -449,10 +449,10 @@ yywrap(void)
 {
 return 1;
 }
-char	*newfile = 0;
-char	*untilstr = 0;
-int	thru	= 0;
-struct symtab	*thrudef = 0;
+char *newfile = 0;
+char *untilstr = 0;
+int thru = 0;
+struct symtab *thrudef = 0;
 void copyfile(char *s)
 {
 newfile = s;
@@ -524,7 +524,7 @@ thru = 1;
 begin = 1;
 }
 }
-char	shellbuf[1000], *shellp;
+char shellbuf[1000], *shellp;
 void shell_init(void)
 {
 sprintf(shellbuf, "rc -c '");

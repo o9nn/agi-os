@@ -73,7 +73,7 @@ break;
 }
 }
 #else
-#  define tiff_fixup_tag(dp) DO_NOTHING
+# define tiff_fixup_tag(dp) DO_NOTHING
 #endif
 int
 gdev_tiff_begin_page(gx_device_printer * pdev, gdev_tiff_state * tifs,
@@ -186,7 +186,7 @@ else if (nse == 0 || (nce != 0 && pce->tag < pse->tag))
 std = false, entry = *pce++, --nce;
 else
 std = false, ++pse, --nse, entry = *pce++, --nce;
-if (entry.tag == TIFFTAG_StripOffsets)  {
+if (entry.tag == TIFFTAG_StripOffsets) {
 if (tifs->strip_count > 1) {
 tifs->offset_StripOffsets = tifs->dir_off +
 (ntags * sizeof(TIFF_dir_entry)) + std_value_size + value_size;

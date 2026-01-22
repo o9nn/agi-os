@@ -1,8 +1,8 @@
 #
 # basic Flash Translation Layer driver
-#	see for instance the Intel technical paper
-#	``Understanding the Flash Translation Layer (FTL) Specification''
-#	Order number 297816-001 (online at www.intel.com)
+# see for instance the Intel technical paper
+# ``Understanding the Flash Translation Layer (FTL) Specification''
+# Order number 297816-001 (online at www.intel.com)
 #
 # a public driver by David Hinds, dhinds@allegro.stanford.edu
 # further helps with some details.
@@ -12,7 +12,7 @@
 # rather building it on the fly as the block maps are read.
 #
 # Plan 9 driver (c) 1997 by C H Forsyth (forsyth@caldo.demon.co.uk)
-#	This driver may be used or adapted by anyone for any non-commercial purpose.
+# This driver may be used or adapted by anyone for any non-commercial purpose.
 #
 # adapted for Inferno 1998 by C H Forsyth, Vita Nuova Limited, York, England (byteles@vitanuova.com)
 #
@@ -21,14 +21,14 @@
 # including commercial applications.
 #
 # TO DO:
-#	check error handling details for get/put flash
-#	bad block handling
-#	reserved space in formatted size
-#	possibly block size as parameter
-#	fetch parameters from header on init
+# check error handling details for get/put flash
+# bad block handling
+# reserved space in formatted size
+# possibly block size as parameter
+# fetch parameters from header on init
 #
 # Adapted to a ftl formatter for Inferno 2000 by J R Firth, Vita Nuova Limited
-#	usage : ftl flashsize secsize inputfile outputfile
+# usage : ftl flashsize secsize inputfile outputfile
 # outputfile will then be a ftl image of inputfile
 # nb assumes the base address is zero
 #
@@ -47,13 +47,13 @@ stderr : ref FD;
 flashsize, secsize : int;
 flashm : array of byte;
 trace : int = 0;
-Eshift : con 18;			# 2^18=256k; log2(eraseunit)
+Eshift : con 18; # 2^18=256k; log2(eraseunit)
 Flashseg : con 1<<Eshift;
-Bshift : con 9;			# 2^9=512
+Bshift : con 9; # 2^9=512
 Bsize : con 1<<Bshift;
 BAMoffset : con 16r100;
 Nolimit : con ~0;
-USABLEPCT : con 95;	# release only this % to client
+USABLEPCT : con 95; # release only this % to client
 FTLDEBUG : con 0;
 # erase unit header (defined by FTL specification)
 # offsets into Merase
@@ -75,12 +75,12 @@ O_SERIAL : con 40;
 O_ALTOFFSET : con 44;
 O_BAMOFFSET : con 48;
 O_RSV2 : con 52;
-ERASEHDRLEN : con	64;
+ERASEHDRLEN : con 64;
 # special unit IDs
 XferID : con 16rffff;
 XferBusy : con 16r7fff;
 # special BAM addresses
-Bfree : con -1;	#16rffffffff
+Bfree : con -1; #16rffffffff
 Bwriting : con -2; #16rfffffffe
 Bdeleted : con 0;
 # block types
@@ -113,30 +113,30 @@ nbad : int;
 nerase : int;
 };
 Ftl : adt {
-base : int;		# base of flash region
-size : int;		# size of flash region
-segsize : int;	# size of flash segment (erase unit)
-eshift : int;	# log2(erase-unit-size)
-bshift : int;	# log2(bsize)
+base : int; # base of flash region
+size : int; # size of flash region
+segsize : int; # size of flash segment (erase unit)
+eshift : int; # log2(erase-unit-size)
+bshift : int; # log2(bsize)
 bsize : int;
-nunit : int;		# number of segments (erase units)
+nunit : int; # number of segments (erase units)
 unit : array of ref Terase;
-lastx : int;		# index in unit of last allocation
-xfer : int;		# index in unit of current transfer unit (-1 if none)
-nfree : int;		# total free space in blocks
-nblock : int;	# total space in blocks
-rwlimit : int;	# user-visible block limit (`formatted size')
-vbm : array of int;		# virtual block map
-fstart : int;		# address of first block of data in a segment
-trace : int;		# (debugging) trace of read/write actions
-detach : int;	# free Ftl on last close
+lastx : int; # index in unit of last allocation
+xfer : int; # index in unit of current transfer unit (-1 if none)
+nfree : int; # total free space in blocks
+nblock : int; # total space in blocks
+rwlimit : int; # user-visible block limit (`formatted size')
+vbm : array of int; # virtual block map
+fstart : int; # address of first block of data in a segment
+trace : int; # (debugging) trace of read/write actions
+detach : int; # free Ftl on last close
 # scavenging variables
 needspace : int;
 hasproc : int;
 };
 # Ftl.detach
-Detached : con 1;	# detach on close
-Deferred : con 2;	# scavenger must free it
+Detached : con 1; # detach on close
+Deferred : con 2; # scavenger must free it
 ftls : ref Ftl;
 ftlstat(sz : int)
 {
@@ -245,7 +245,7 @@ ftl.bsize = Bsize;
 ftl.eshift = eshift;
 ftl.segsize = 1<<eshift;
 ftl.nunit = size>>eshift;
-nov = ((ftl.segsize/Bsize)*4 + BAMoffset + Bsize - 1)/Bsize;	# number of overhead blocks per segment (header, and BAM itself)
+nov = ((ftl.segsize/Bsize)*4 + BAMoffset + Bsize - 1)/Bsize; # number of overhead blocks per segment (header, and BAM itself)
 ftl.fstart = nov;
 segblocks = ftl.segsize/Bsize - nov;
 ftl.nblock = ftl.nunit*segblocks;
@@ -299,9 +299,9 @@ exit;
 if(ftl.xfer < 0)
 fprint(stderr, "ftl: no transfer unit: device is WORM\n");
 else
-ftl.nblock -= segblocks;	# discount transfer segment
+ftl.nblock -= segblocks; # discount transfer segment
 if(ftl.nblock >= 1000)
-ftl.rwlimit = ftl.nblock-100;	# TO DO: variable reserve
+ftl.rwlimit = ftl.nblock-100; # TO DO: variable reserve
 else
 ftl.rwlimit = ftl.nblock*USABLEPCT/100;
 return ftl;
@@ -383,22 +383,22 @@ ControlBlock =>
 too.nused++;
 break;
 * =>
-# case BadBlock:	# it isn't necessarily bad in this unit
+# case BadBlock: # it isn't necessarily bad in this unit
 too.nfree++;
 PUT4(bam[4*i:], Bfree);
 break;
 }
 }
 # for(i=0; i<from.nbam; i++){
-#	v = GET4(bam[4*i:]);
-#	if(v != Bfree && ftl.trace > 1)
-#		print("to[%d]=#%x\n", i, v);
-#	PUT4(bam[4*i:], v);
+# v = GET4(bam[4*i:]);
+# if(v != Bfree && ftl.trace > 1)
+# print("to[%d]=#%x\n", i, v);
+# PUT4(bam[4*i:], v);
 # }
-putflash(ftl, too.bamoffset, bam, nb);	# BUG: PUT4 ? IS IT ?
+putflash(ftl, too.bamoffset, bam, nb); # BUG: PUT4 ? IS IT ?
 # for(i=0; i<from.nbam; i++){
-#	v = GET4(bam[4*i:]);
-#	PUT4(bam[4*i:], v);
+# v = GET4(bam[4*i:]);
+# PUT4(bam[4*i:], v);
 # }
 too.id = from.id;
 PUT2(id, too.id);
@@ -454,7 +454,7 @@ ftl.needspace = 0;
 scavenge(ftl : ref Ftl) : int
 {
 if(ftl.xfer < 0 || bestcopy(ftl) == nil)
-return 0;	# you worm!
+return 0; # you worm!
 if(!ftl.hasproc){
 ftl.hasproc = 1;
 }
@@ -516,7 +516,7 @@ eraseinit(ftl : ref Ftl, offset : int, id : int, nerase : int)
 m : array of byte;
 bam : array of byte;
 i, nov : int;
-nov = ((ftl.segsize/Bsize)*4 + BAMoffset + Bsize - 1)/Bsize;	# number of overhead blocks (header, and BAM itself)
+nov = ((ftl.segsize/Bsize)*4 + BAMoffset + Bsize - 1)/Bsize; # number of overhead blocks (header, and BAM itself)
 if(nov*Bsize >= ftl.segsize) {
 fprint(stderr, "ftl -- too small for files");
 exit;
@@ -543,7 +543,7 @@ m[O_ESHIFT] = byte ftl.eshift;
 PUT2(m[O_PSTART:], 0);
 PUT2(m[O_NUNITS:], ftl.nunit);
 PUT4(m[O_PSIZE:], ftl.size - nov*Bsize);
-PUT4(m[O_VBMBASE:], -1);	# we always calculate the VBM (16rffffffff)
+PUT4(m[O_VBMBASE:], -1); # we always calculate the VBM (16rffffffff)
 PUT2(m[O_NVBM:], 0);
 m[O_FLAGS] = byte 0;
 m[O_CODE] = byte 16rFF;
@@ -554,14 +554,14 @@ putflash(ftl, offset, m, ERASEHDRLEN);
 m = nil;
 if(id == XferID)
 return;
-nov *= 4;	# now bytes of BAM
+nov *= 4; # now bytes of BAM
 bam = array[nov] of byte;
 if(bam == nil) {
 fprint(stderr, "nomem");
 exit;
 }
 for(i=0; i<nov; i += 4)
-PUT4(bam[i:], ControlBlock);	# reserve them
+PUT4(bam[i:], ControlBlock); # reserve them
 putflash(ftl, offset+BAMoffset, bam, nov);
 bam = nil;
 }
@@ -631,7 +631,7 @@ break;
 DataBlock =>
 # add to VBM
 if(v & (1<<31))
-break;	# negative => VBM page, ignored
+break; # negative => VBM page, ignored
 bno = BNO(v & ~BlockType);
 if(i < ftl.fstart || bno >= ftl.nblock){
 print("ftl: unit %d:#%x bad bam[%d]=#%x\n", e.x, e.id, i, v);

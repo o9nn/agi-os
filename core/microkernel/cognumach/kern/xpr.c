@@ -5,7 +5,7 @@
 #include "cpu_number.h"
 #include <machine/spl.h>
 #include <vm/vm_kern.h>
-def_simple_lock_data(static,	xprlock)
+def_simple_lock_data(static, xprlock)
 boolean_t xprenable = TRUE;
 int nxprbufs = 0;
 int xprflags = 0;
@@ -13,12 +13,12 @@ struct xprbuf *xprbase;
 struct xprbuf *xprptr;
 struct xprbuf *xprlast;
 void xpr(
-char 	*msg,
-int 	arg1,
-int 	arg2,
-int 	arg3,
-int 	arg4,
-int 	arg5)
+char *msg,
+int arg1,
+int arg2,
+int arg3,
+int arg4,
+int arg5)
 {
 spl_t s;
 struct xprbuf *x;
@@ -61,18 +61,18 @@ xprbase = (struct xprbuf *) addr;
 xprlast = &xprbase[nxprbufs];
 xprptr = xprbase;
 }
-int		xprinitial = 0;
+int xprinitial = 0;
 void xprinit(void)
 {
 xprflags |= xprinitial;
 }
-#if	MACH_KDB
+#if MACH_KDB
 #include <machine/setjmp.h>
 #include <ddb/db_output.h>
 extern jmp_buf_t *db_recover;
 void xpr_dump(
-struct xprbuf 	*base,
-int 		nbufs)
+struct xprbuf *base,
+int nbufs)
 {
 jmp_buf_t db_jmpbuf;
 jmp_buf_t *prev;

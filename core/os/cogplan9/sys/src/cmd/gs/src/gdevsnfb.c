@@ -1,7 +1,7 @@
 #include "gdevprn.h"
 #define prn_dev ((gx_device_printer *)dev)
-typedef	char *	caddr_t;
-typedef	long	off_t;
+typedef char * caddr_t;
+typedef long off_t;
 #include <sys/uio.h>
 #include <newsiop/framebuf.h>
 private dev_proc_open_device(sonyfb_open);
@@ -43,7 +43,7 @@ fb_file = -1;
 }
 return gdev_prn_close(dev);
 }
-#define FRAME_WIDTH	1024
+#define FRAME_WIDTH 1024
 private int
 sonyfb_output_page(gx_device *dev, int num_copies, int flush)
 {
@@ -51,11 +51,11 @@ int l, i, byte_width, height;
 unsigned char *bm, *fbs, *fb;
 byte_width = (dev->width + 7) / 8;
 height = dev->height;
-bm	 = (typeof(bm))prn_dev->mem.base;
+bm = (typeof(bm))prn_dev->mem.base;
 prect.refPoint.x = 0;
 prect.refPoint.y = 0;
 prect.ptnRect = prect.rect;
-prect.ptnBM.type  = BM_MEM;
+prect.ptnBM.type = BM_MEM;
 prect.ptnBM.depth = 1;
 prect.ptnBM.width = (byte_width + 1) / 2;
 prect.ptnBM.rect.origin.x = 0;
@@ -69,7 +69,7 @@ prect.planemask = FB_PLANEALL;
 prect.transp = 0;
 prect.func = BF_S;
 prect.clip = prect.rect;
-prect.drawBM.type  = BM_FB;
+prect.drawBM.type = BM_FB;
 prect.drawBM.depth = 1;
 prect.drawBM.width = (prect.rect.extent.x + 15) / 16;
 prect.drawBM.rect = prect.rect;

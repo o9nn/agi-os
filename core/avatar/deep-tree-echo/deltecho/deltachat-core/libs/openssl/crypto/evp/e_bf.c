@@ -10,7 +10,7 @@ const unsigned char *iv, int enc);
 typedef struct {
 BF_KEY ks;
 } EVP_BF_KEY;
-# define data(ctx)       EVP_C_DATA(EVP_BF_KEY,ctx)
+# define data(ctx) EVP_C_DATA(EVP_BF_KEY,ctx)
 IMPLEMENT_BLOCK_CIPHER(bf, ks, BF, EVP_BF_KEY, NID_bf, 8, 16, 8, 64,
 EVP_CIPH_VARIABLE_LENGTH, bf_init_key, NULL,
 EVP_CIPHER_set_asn1_iv, EVP_CIPHER_get_asn1_iv, NULL)

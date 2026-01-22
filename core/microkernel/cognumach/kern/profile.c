@@ -1,25 +1,25 @@
 #if 0
-#include	<kern/thread.h>
-#include	<kern/queue.h>
-#include	<mach/profil.h>
-#include	<kern/sched_prim.h>
-#include	<ipc/ipc_space.h>
-extern vm_map_t	kernel_map;
+#include <kern/thread.h>
+#include <kern/queue.h>
+#include <mach/profil.h>
+#include <kern/sched_prim.h>
+#include <ipc/ipc_space.h>
+extern vm_map_t kernel_map;
 thread_t profile_thread_id = THREAD_NULL;
 void profile_thread()
 {
 struct message {
-mach_msg_header_t	head;
-mach_msg_type_t		type;
-int			arg[SIZE_PROF_BUFFER+1];
+mach_msg_header_t head;
+mach_msg_type_t type;
+int arg[SIZE_PROF_BUFFER+1];
 } msg;
-spl_t	s;
-buf_to_send_t	buf_entry;
-queue_entry_t	prof_queue_entry;
-prof_data_t	pbuf;
-simple_lock_t 	lock;
-msg_return_t 	mr;
-int		j;
+spl_t s;
+buf_to_send_t buf_entry;
+queue_entry_t prof_queue_entry;
+prof_data_t pbuf;
+simple_lock_t lock;
+msg_return_t mr;
+int j;
 mpqueue_init(&prof_queue);
 msg.head.msgh_bits = MACH_MSGH_BITS(MACH_MSG_TYPE_COPY_SEND, MACH_MSG_TYPE_MAKE_SEND_ONCE);
 msg.head.msgh_size = sizeof(msg);
@@ -44,11 +44,11 @@ if (current_thread()->wait_result != THREAD_AWAKENED)
 break;
 }
 else {
-task_t		curr_task;
-thread_t	curr_th;
-int 	*sample;
-int 		curr_buf;
-int 		imax;
+task_t curr_task;
+thread_t curr_th;
+int *sample;
+int curr_buf;
+int imax;
 curr_th = (thread_t) buf_entry->thread;
 curr_buf = (int) buf_entry->number;
 pbuf = curr_th->profil_buffer;
@@ -116,9 +116,9 @@ kmem_free(kernel_map, vm_buf_entry, sizeof(struct buf_to_send));
 profile(pc) {
 thread_t it_thread = current_thread();
 int inout_val = pc;
-buf_to_send_t	buf_entry;
-vm_offset_t 	vm_buf_entry;
-int		*val;
+buf_to_send_t buf_entry;
+vm_offset_t vm_buf_entry;
+int *val;
 if (it_thread->thread_profiled) {
 set_pbuf_value(it_thread->profil_buffer, &inout_val);
 switch(inout_val) {
@@ -157,8 +157,8 @@ mach_sample_thread (ipc_space_t task,
 ipc_object_t reply,
 thread_t cur_thread)
 {
-prof_data_t	pbuf;
-vm_offset_t     vmpbuf;
+prof_data_t pbuf;
+vm_offset_t vmpbuf;
 if (reply != MACH_PORT_NULL) {
 if (cur_thread->thread_profiled && cur_thread->thread_profiled_own) {
 if (reply == cur_thread->profil_buffer->prof_port)
@@ -178,7 +178,7 @@ reset_pbuf_area(pbuf);
 }
 pbuf->prof_port = reply;
 cur_thread->thread_profiled = TRUE;
-cur_thread->thread_profiled_own     = TRUE;
+cur_thread->thread_profiled_own = TRUE;
 if (profile_thread_id == THREAD_NULL)
 profile_thread_id = kernel_thread(current_task(), "profile", profile_thread);
 } else {
@@ -187,7 +187,7 @@ cur_thread->thread_profiled = FALSE;
 if (!cur_thread->thread_profiled)
 return KERN_SUCCESS;
 send_last_sample_buf(cur_thread);
-cur_thread->thread_profiled_own     = FALSE;
+cur_thread->thread_profiled_own = FALSE;
 cur_thread->thread_profiled = FALSE;
 dealloc_pbuf_area(cur_thread->profil_buffer);
 cur_thread->profil_buffer = NULLPBUF;
@@ -197,9 +197,9 @@ return KERN_SUCCESS;
 kern_return_t
 mach_sample_task (ipc_space_t task, ipc_object_t reply, task_t cur_task)
 {
-prof_data_t	pbuf=cur_task->profil_buffer;
-vm_offset_t     vmpbuf;
-int		turnon = (reply != MACH_PORT_NULL);
+prof_data_t pbuf=cur_task->profil_buffer;
+vm_offset_t vmpbuf;
+int turnon = (reply != MACH_PORT_NULL);
 if (turnon) {
 if (cur_task->task_profiled) {
 if (cur_task->profil_buffer->prof_port == reply)

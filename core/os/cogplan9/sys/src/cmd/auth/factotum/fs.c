@@ -1,24 +1,24 @@
 #include "dat.h"
-int		askforkeys = 1;
-char		*authaddr;
-int		debug;
-int		doprivate = 1;
-int		gflag;
-char		*owner;
-int		kflag;
-char		*mtpt = "/mnt";
-Keyring	*ring;
-char		*service;
-int		sflag;
-int		uflag;
-extern Srv		fs;
-static void		notifyf(void*, char*);
-static void		private(void);
-char	Easproto[]		= "auth server protocol botch";
-char Ebadarg[]		= "invalid argument";
-char Ebadkey[]		= "bad key";
-char Enegotiation[]	= "negotiation failed, no common protocols or keys";
-char Etoolarge[]	= "rpc too large";
+int askforkeys = 1;
+char *authaddr;
+int debug;
+int doprivate = 1;
+int gflag;
+char *owner;
+int kflag;
+char *mtpt = "/mnt";
+Keyring *ring;
+char *service;
+int sflag;
+int uflag;
+extern Srv fs;
+static void notifyf(void*, char*);
+static void private(void);
+char Easproto[] = "auth server protocol botch";
+char Ebadarg[] = "invalid argument";
+char Ebadkey[] = "bad key";
+char Enegotiation[] = "negotiation failed, no common protocols or keys";
+char Etoolarge[] = "rpc too large";
 Proto*
 prototab[] =
 {
@@ -228,12 +228,12 @@ char *name;
 int qidpath;
 ulong perm;
 } dirtab[] = {
-"confirm",	Qconfirm,	0600|DMEXCL,
-"needkey", Qneedkey,	0600|DMEXCL,
-"ctl",		Qctl,			0644,
-"rpc",	Qrpc,		0666,
-"proto",	Qprotolist,	0444,
-"log",	Qlog,		0400|DMEXCL,
+"confirm", Qconfirm, 0600|DMEXCL,
+"needkey", Qneedkey, 0600|DMEXCL,
+"ctl", Qctl, 0644,
+"rpc", Qrpc, 0666,
+"proto", Qprotolist, 0444,
+"log", Qlog, 0400|DMEXCL,
 };
 static int inuse[nelem(dirtab)];
 int *confirminuse = &inuse[0];
@@ -526,12 +526,12 @@ logflush(r->oldreq);
 respond(r, nil);
 }
 Srv fs = {
-.attach=	fsattach,
-.walk1=	fswalk1,
-.open=	fsopen,
-.read=	fsread,
-.write=	fswrite,
-.stat=	fsstat,
-.flush=	fsflush,
-.destroyfid=	fsdestroyfid,
+.attach= fsattach,
+.walk1= fswalk1,
+.open= fsopen,
+.read= fsread,
+.write= fswrite,
+.stat= fsstat,
+.flush= fsflush,
+.destroyfid= fsdestroyfid,
 };

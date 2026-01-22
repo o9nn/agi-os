@@ -21,23 +21,23 @@ TM_BINOP,
 TM_END
 };
 typedef enum Test_meta Test_meta;
-#define TEF_ERROR	BIT(0)
-#define TEF_DBRACKET	BIT(1)
+#define TEF_ERROR BIT(0)
+#define TEF_DBRACKET BIT(1)
 typedef struct test_env Test_env;
 struct test_env {
-int	flags;
+int flags;
 union {
-char	**wp;
-XPtrV	*av;
+char **wp;
+XPtrV *av;
 } pos;
 char **wp_end;
-int	(*isa) ARGS((Test_env *te, Test_meta meta));
+int (*isa) ARGS((Test_env *te, Test_meta meta));
 const char *(*getopnd) ARGS((Test_env *te, Test_op op, int do_eval));
-int	(*eval) ARGS((Test_env *te, Test_op op, const char *opnd1,
+int (*eval) ARGS((Test_env *te, Test_op op, const char *opnd1,
 const char *opnd2, int do_eval));
-void	(*error) ARGS((Test_env *te, int offset, const char *msg));
+void (*error) ARGS((Test_env *te, int offset, const char *msg));
 };
-Test_op	test_isop ARGS((Test_env *te, Test_meta meta, const char *s));
-int     test_eval ARGS((Test_env *te, Test_op op, const char *opnd1,
+Test_op test_isop ARGS((Test_env *te, Test_meta meta, const char *s));
+int test_eval ARGS((Test_env *te, Test_op op, const char *opnd1,
 const char *opnd2, int do_eval));
-int	test_parse ARGS((Test_env *te));
+int test_parse ARGS((Test_env *te));

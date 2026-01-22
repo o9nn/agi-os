@@ -15,13 +15,13 @@
 #endif
 #ifdef __linux__
 # if __GLIBC_PREREQ(2, 27)
-#  define _GLIBCXX_NATIVE_THREAD_ID pthread_self()
+# define _GLIBCXX_NATIVE_THREAD_ID pthread_self()
 # else
-#  define _GLIBCXX_NATIVE_THREAD_ID \
+# define _GLIBCXX_NATIVE_THREAD_ID \
 (__gthread_active_p() ? __gthread_self() : (__gthread_t)1)
 # endif
 # if __GLIBC_PREREQ(2, 34)
-#  define _GLIBCXX_GTHREAD_USE_WEAK 0
+# define _GLIBCXX_GTHREAD_USE_WEAK 0
 # endif
 #endif
 #endif

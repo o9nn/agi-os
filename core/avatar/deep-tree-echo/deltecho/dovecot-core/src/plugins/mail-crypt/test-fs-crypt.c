@@ -207,7 +207,7 @@ int main(void)
 {
 if (!test_init_dcrypt())
 return 0;
-void (*const tests[])(void)  = {
+void (*const tests[])(void) = {
 test_setup,
 test_fs_crypt_read_write,
 test_fs_crypt_read_write_0,

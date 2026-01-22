@@ -5,9 +5,9 @@
 #include <openssl/lhash.h>
 const char lh_version[] = "lhash" OPENSSL_VERSION_PTEXT;
 #undef MIN_NODES
-#define MIN_NODES       16
-#define UP_LOAD         (2*LH_LOAD_MULT)
-#define DOWN_LOAD       (LH_LOAD_MULT)
+#define MIN_NODES 16
+#define UP_LOAD (2*LH_LOAD_MULT)
+#define DOWN_LOAD (LH_LOAD_MULT)
 static void expand(_LHASH *lh);
 static void contract(_LHASH *lh);
 static LHASH_NODE **getrn(_LHASH *lh, const void *data, unsigned long *rhash);

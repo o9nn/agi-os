@@ -93,7 +93,7 @@ end
 # This assumes that the `coef` are always stored with increasing `order` of the
 # rooted trees and that the underlying data format in OrderedCollections.jl does
 # not change. A general fallback would be
-#   RootedTrees.order(series::TruncatedBSeries) = maximum(order, keys(series.coef))
+# RootedTrees.order(series::TruncatedBSeries) = maximum(order, keys(series.coef))
 # but that is O(n) instead of O(1). Since we do not consider the constructor as
 # public API but as internal implementation detail, users violating this assumption
 # are outside of the public API and may run into self-made problems.
@@ -174,15 +174,15 @@ See also [`IdentityMap`](@ref), [`IdentityField`](@ref).
 ```jldoctest
 julia> bseries(ExactSolution{Rational{Int}}(), 5)
 TruncatedBSeries{RootedTree{Int64, Vector{Int64}}, Rational{Int64}} with 18 entries:
-RootedTree{Int64}: Int64[]         => 1
-RootedTree{Int64}: [1]             => 1
-RootedTree{Int64}: [1, 2]          => 1
-RootedTree{Int64}: [1, 2, 3]       => 1
-RootedTree{Int64}: [1, 2, 2]       => 1
-RootedTree{Int64}: [1, 2, 3, 4]    => 1
-RootedTree{Int64}: [1, 2, 3, 3]    => 1
-RootedTree{Int64}: [1, 2, 3, 2]    => 1
-RootedTree{Int64}: [1, 2, 2, 2]    => 1
+RootedTree{Int64}: Int64[] => 1
+RootedTree{Int64}: [1] => 1
+RootedTree{Int64}: [1, 2] => 1
+RootedTree{Int64}: [1, 2, 3] => 1
+RootedTree{Int64}: [1, 2, 2] => 1
+RootedTree{Int64}: [1, 2, 3, 4] => 1
+RootedTree{Int64}: [1, 2, 3, 3] => 1
+RootedTree{Int64}: [1, 2, 3, 2] => 1
+RootedTree{Int64}: [1, 2, 2, 2] => 1
 RootedTree{Int64}: [1, 2, 3, 4, 5] => 1
 RootedTree{Int64}: [1, 2, 3, 4, 4] => 1
 RootedTree{Int64}: [1, 2, 3, 4, 3] => 1
@@ -231,15 +231,15 @@ See also [`ExactSolution`](@ref), [`IdentityMap`](@ref).
 ```jldoctest
 julia> bseries(IdentityMap{Rational{Int}}(), 5)
 TruncatedBSeries{RootedTree{Int64, Vector{Int64}}, Rational{Int64}} with 18 entries:
-RootedTree{Int64}: Int64[]         => 1
-RootedTree{Int64}: [1]             => 0
-RootedTree{Int64}: [1, 2]          => 0
-RootedTree{Int64}: [1, 2, 3]       => 0
-RootedTree{Int64}: [1, 2, 2]       => 0
-RootedTree{Int64}: [1, 2, 3, 4]    => 0
-RootedTree{Int64}: [1, 2, 3, 3]    => 0
-RootedTree{Int64}: [1, 2, 3, 2]    => 0
-RootedTree{Int64}: [1, 2, 2, 2]    => 0
+RootedTree{Int64}: Int64[] => 1
+RootedTree{Int64}: [1] => 0
+RootedTree{Int64}: [1, 2] => 0
+RootedTree{Int64}: [1, 2, 3] => 0
+RootedTree{Int64}: [1, 2, 2] => 0
+RootedTree{Int64}: [1, 2, 3, 4] => 0
+RootedTree{Int64}: [1, 2, 3, 3] => 0
+RootedTree{Int64}: [1, 2, 3, 2] => 0
+RootedTree{Int64}: [1, 2, 2, 2] => 0
 RootedTree{Int64}: [1, 2, 3, 4, 5] => 0
 RootedTree{Int64}: [1, 2, 3, 4, 4] => 0
 RootedTree{Int64}: [1, 2, 3, 4, 3] => 0
@@ -287,15 +287,15 @@ See also [`ExactSolution`](@ref), [`IdentityMap`](@ref).
 ```jldoctest
 julia> bseries(IdentityField(), 5)
 TruncatedBSeries{RootedTree{Int64, Vector{Int64}}, Bool} with 18 entries:
-RootedTree{Int64}: Int64[]         => 0
-RootedTree{Int64}: [1]             => 1
-RootedTree{Int64}: [1, 2]          => 0
-RootedTree{Int64}: [1, 2, 3]       => 0
-RootedTree{Int64}: [1, 2, 2]       => 0
-RootedTree{Int64}: [1, 2, 3, 4]    => 0
-RootedTree{Int64}: [1, 2, 3, 3]    => 0
-RootedTree{Int64}: [1, 2, 3, 2]    => 0
-RootedTree{Int64}: [1, 2, 2, 2]    => 0
+RootedTree{Int64}: Int64[] => 0
+RootedTree{Int64}: [1] => 1
+RootedTree{Int64}: [1, 2] => 0
+RootedTree{Int64}: [1, 2, 3] => 0
+RootedTree{Int64}: [1, 2, 2] => 0
+RootedTree{Int64}: [1, 2, 3, 4] => 0
+RootedTree{Int64}: [1, 2, 3, 3] => 0
+RootedTree{Int64}: [1, 2, 3, 2] => 0
+RootedTree{Int64}: [1, 2, 2, 2] => 0
 RootedTree{Int64}: [1, 2, 3, 4, 5] => 0
 RootedTree{Int64}: [1, 2, 3, 4, 4] => 0
 RootedTree{Int64}: [1, 2, 3, 4, 3] => 0
@@ -461,9 +461,9 @@ return v / (n + 1)
 end
 end
 TruncatedBSeries{RootedTree{Int64, Vector{Int64}}, Rational{Int64}} with 5 entries:
-RootedTree{Int64}: Int64[]   => 1
-RootedTree{Int64}: [1]       => 1
-RootedTree{Int64}: [1, 2]    => 1
+RootedTree{Int64}: Int64[] => 1
+RootedTree{Int64}: [1] => 1
+RootedTree{Int64}: [1, 2] => 1
 RootedTree{Int64}: [1, 2, 3] => 1
 RootedTree{Int64}: [1, 2, 2] => 1
 ```
@@ -507,11 +507,11 @@ See also [`IdentityField`](@ref), [`IdentityMap`](@ref).
 ```jldoctest
 julia> series = bseries(ExactSolution{Rational{Int}}(), 4)
 TruncatedBSeries{RootedTree{Int64, Vector{Int64}}, Rational{Int64}} with 9 entries:
-RootedTree{Int64}: Int64[]      => 1
-RootedTree{Int64}: [1]          => 1
-RootedTree{Int64}: [1, 2]       => 1
-RootedTree{Int64}: [1, 2, 3]    => 1
-RootedTree{Int64}: [1, 2, 2]    => 1
+RootedTree{Int64}: Int64[] => 1
+RootedTree{Int64}: [1] => 1
+RootedTree{Int64}: [1, 2] => 1
+RootedTree{Int64}: [1, 2, 3] => 1
+RootedTree{Int64}: [1, 2, 2] => 1
 RootedTree{Int64}: [1, 2, 3, 4] => 1
 RootedTree{Int64}: [1, 2, 3, 3] => 1
 RootedTree{Int64}: [1, 2, 3, 2] => 1
@@ -539,15 +539,15 @@ See also [`ExactSolution`](@ref), [`IdentityField`](@ref).
 ```jldoctest
 julia> bseries(IdentityMap{Rational{Int}}(), 5)
 TruncatedBSeries{RootedTree{Int64, Vector{Int64}}, Rational{Int64}} with 18 entries:
-RootedTree{Int64}: Int64[]         => 1
-RootedTree{Int64}: [1]             => 0
-RootedTree{Int64}: [1, 2]          => 0
-RootedTree{Int64}: [1, 2, 3]       => 0
-RootedTree{Int64}: [1, 2, 2]       => 0
-RootedTree{Int64}: [1, 2, 3, 4]    => 0
-RootedTree{Int64}: [1, 2, 3, 3]    => 0
-RootedTree{Int64}: [1, 2, 3, 2]    => 0
-RootedTree{Int64}: [1, 2, 2, 2]    => 0
+RootedTree{Int64}: Int64[] => 1
+RootedTree{Int64}: [1] => 0
+RootedTree{Int64}: [1, 2] => 0
+RootedTree{Int64}: [1, 2, 3] => 0
+RootedTree{Int64}: [1, 2, 2] => 0
+RootedTree{Int64}: [1, 2, 3, 4] => 0
+RootedTree{Int64}: [1, 2, 3, 3] => 0
+RootedTree{Int64}: [1, 2, 3, 2] => 0
+RootedTree{Int64}: [1, 2, 2, 2] => 0
 RootedTree{Int64}: [1, 2, 3, 4, 5] => 0
 RootedTree{Int64}: [1, 2, 3, 4, 4] => 0
 RootedTree{Int64}: [1, 2, 3, 4, 3] => 0
@@ -580,15 +580,15 @@ See also [`ExactSolution`](@ref), [`IdentityMap`](@ref).
 ```jldoctest
 julia> series = bseries(IdentityField(), 5)
 TruncatedBSeries{RootedTree{Int64, Vector{Int64}}, Bool} with 18 entries:
-RootedTree{Int64}: Int64[]         => 0
-RootedTree{Int64}: [1]             => 1
-RootedTree{Int64}: [1, 2]          => 0
-RootedTree{Int64}: [1, 2, 3]       => 0
-RootedTree{Int64}: [1, 2, 2]       => 0
-RootedTree{Int64}: [1, 2, 3, 4]    => 0
-RootedTree{Int64}: [1, 2, 3, 3]    => 0
-RootedTree{Int64}: [1, 2, 3, 2]    => 0
-RootedTree{Int64}: [1, 2, 2, 2]    => 0
+RootedTree{Int64}: Int64[] => 0
+RootedTree{Int64}: [1] => 1
+RootedTree{Int64}: [1, 2] => 0
+RootedTree{Int64}: [1, 2, 3] => 0
+RootedTree{Int64}: [1, 2, 2] => 0
+RootedTree{Int64}: [1, 2, 3, 4] => 0
+RootedTree{Int64}: [1, 2, 3, 3] => 0
+RootedTree{Int64}: [1, 2, 3, 2] => 0
+RootedTree{Int64}: [1, 2, 2, 2] => 0
 RootedTree{Int64}: [1, 2, 3, 4, 5] => 0
 RootedTree{Int64}: [1, 2, 3, 4, 4] => 0
 RootedTree{Int64}: [1, 2, 3, 4, 3] => 0
@@ -653,9 +653,9 @@ We can generate this as follows.
 ```jldoctest
 julia> series = bseries(AverageVectorFieldMethod(), 3)
 TruncatedBSeries{RootedTree{Int64, Vector{Int64}}, Rational{Int64}} with 5 entries:
-RootedTree{Int64}: Int64[]   => 1
-RootedTree{Int64}: [1]       => 1
-RootedTree{Int64}: [1, 2]    => 1
+RootedTree{Int64}: Int64[] => 1
+RootedTree{Int64}: [1] => 1
+RootedTree{Int64}: [1, 2] => 1
 RootedTree{Int64}: [1, 2, 3] => 1
 RootedTree{Int64}: [1, 2, 2] => 1
 ```
@@ -799,22 +799,22 @@ julia> M = fill(1
 1
 julia> series = bseries(ContinuousStageRungeKuttaMethod(M), 4)
 TruncatedBSeries{RootedTree{Int64, Vector{Int64}}, Rational{Int64}} with 9 entries:
-RootedTree{Int64}: Int64[]      => 1
-RootedTree{Int64}: [1]          => 1
-RootedTree{Int64}: [1, 2]       => 1
-RootedTree{Int64}: [1, 2, 3]    => 1
-RootedTree{Int64}: [1, 2, 2]    => 1
+RootedTree{Int64}: Int64[] => 1
+RootedTree{Int64}: [1] => 1
+RootedTree{Int64}: [1, 2] => 1
+RootedTree{Int64}: [1, 2, 3] => 1
+RootedTree{Int64}: [1, 2, 2] => 1
 RootedTree{Int64}: [1, 2, 3, 4] => 1
 RootedTree{Int64}: [1, 2, 3, 3] => 1
 RootedTree{Int64}: [1, 2, 3, 2] => 1
 RootedTree{Int64}: [1, 2, 2, 2] => 1
 julia> series - bseries(AverageVectorFieldMethod(), order(series))
 TruncatedBSeries{RootedTree{Int64, Vector{Int64}}, Rational{Int64}} with 9 entries:
-RootedTree{Int64}: Int64[]      => 0
-RootedTree{Int64}: [1]          => 0
-RootedTree{Int64}: [1, 2]       => 0
-RootedTree{Int64}: [1, 2, 3]    => 0
-RootedTree{Int64}: [1, 2, 2]    => 0
+RootedTree{Int64}: Int64[] => 0
+RootedTree{Int64}: [1] => 0
+RootedTree{Int64}: [1, 2] => 0
+RootedTree{Int64}: [1, 2, 3] => 0
+RootedTree{Int64}: [1, 2, 2] => 0
 RootedTree{Int64}: [1, 2, 3, 4] => 0
 RootedTree{Int64}: [1, 2, 3, 3] => 0
 RootedTree{Int64}: [1, 2, 3, 2] => 0
@@ -857,9 +857,9 @@ end
 # `derivative_weight` below to save additional computations.
 A_τζ = _matrix_a(csrk)
 # The elementary weight Φ is given as
-#   Φ(t) = ∫₀¹ B_τ ϕ_τ(t₁) ... ϕ_τ(tₘ) dτ
+# Φ(t) = ∫₀¹ B_τ ϕ_τ(t₁) ... ϕ_τ(tₘ) dτ
 # where
-#   B_ζ = A_1ζ
+# B_ζ = A_1ζ
 # Since the polynomial matrix `A_τζ` is stored as a polynomial in ζ
 # with coefficients as polynomials in τ, setting `τ = 1` means that
 # we need to evaluate all coefficients at 1 and interpret the result
@@ -883,7 +883,7 @@ end
 function RootedTrees.derivative_weight(t::RootedTree,
 A_τζ, csrk::ContinuousStageRungeKuttaMethod)
 # The derivative weight ϕ_τ is given as
-#   ϕ_τ(t) = ∫₀¹ A_τζ ϕ_ζ(t₁) ... ϕ_ζ(tₘ) dζ
+# ϕ_τ(t) = ∫₀¹ A_τζ ϕ_ζ(t₁) ... ϕ_ζ(tₘ) dζ
 # Since the polynomial matrix `A_τζ` is stored as a polynomial in ζ
 # with coefficients as polynomials in τ, we need to interpret the
 # return value of the inner `derivative_weight` as the constant
@@ -1185,15 +1185,15 @@ It is assumed that the B-series `b` has the coefficient unity of the empty tree.
 ```jldoctest
 julia> series = bseries(ExactSolution{Rational{Int}}(), 5)
 TruncatedBSeries{RootedTree{Int64, Vector{Int64}}, Rational{Int64}} with 18 entries:
-RootedTree{Int64}: Int64[]         => 1
-RootedTree{Int64}: [1]             => 1
-RootedTree{Int64}: [1, 2]          => 1
-RootedTree{Int64}: [1, 2, 3]       => 1
-RootedTree{Int64}: [1, 2, 2]       => 1
-RootedTree{Int64}: [1, 2, 3, 4]    => 1
-RootedTree{Int64}: [1, 2, 3, 3]    => 1
-RootedTree{Int64}: [1, 2, 3, 2]    => 1
-RootedTree{Int64}: [1, 2, 2, 2]    => 1
+RootedTree{Int64}: Int64[] => 1
+RootedTree{Int64}: [1] => 1
+RootedTree{Int64}: [1, 2] => 1
+RootedTree{Int64}: [1, 2, 3] => 1
+RootedTree{Int64}: [1, 2, 2] => 1
+RootedTree{Int64}: [1, 2, 3, 4] => 1
+RootedTree{Int64}: [1, 2, 3, 3] => 1
+RootedTree{Int64}: [1, 2, 3, 2] => 1
+RootedTree{Int64}: [1, 2, 2, 2] => 1
 RootedTree{Int64}: [1, 2, 3, 4, 5] => 1
 RootedTree{Int64}: [1, 2, 3, 4, 4] => 1
 RootedTree{Int64}: [1, 2, 3, 4, 3] => 1
@@ -1205,15 +1205,15 @@ RootedTree{Int64}: [1, 2, 3, 2, 2] => 1
 RootedTree{Int64}: [1, 2, 2, 2, 2] => 1
 julia> compose(series, IdentityField())
 TruncatedBSeries{RootedTree{Int64, Vector{Int64}}, Rational{Int64}} with 18 entries:
-RootedTree{Int64}: Int64[]         => 0
-RootedTree{Int64}: [1]             => 1
-RootedTree{Int64}: [1, 2]          => 1
-RootedTree{Int64}: [1, 2, 3]       => 1
-RootedTree{Int64}: [1, 2, 2]       => 1
-RootedTree{Int64}: [1, 2, 3, 4]    => 1
-RootedTree{Int64}: [1, 2, 3, 3]    => 1
-RootedTree{Int64}: [1, 2, 3, 2]    => 1
-RootedTree{Int64}: [1, 2, 2, 2]    => 1
+RootedTree{Int64}: Int64[] => 0
+RootedTree{Int64}: [1] => 1
+RootedTree{Int64}: [1, 2] => 1
+RootedTree{Int64}: [1, 2, 3] => 1
+RootedTree{Int64}: [1, 2, 2] => 1
+RootedTree{Int64}: [1, 2, 3, 4] => 1
+RootedTree{Int64}: [1, 2, 3, 3] => 1
+RootedTree{Int64}: [1, 2, 3, 2] => 1
+RootedTree{Int64}: [1, 2, 2, 2] => 1
 RootedTree{Int64}: [1, 2, 3, 4, 5] => 1
 RootedTree{Int64}: [1, 2, 3, 4, 4] => 1
 RootedTree{Int64}: [1, 2, 3, 4, 3] => 1
@@ -1225,15 +1225,15 @@ RootedTree{Int64}: [1, 2, 3, 2, 2] => 1
 RootedTree{Int64}: [1, 2, 2, 2, 2] => 1
 julia> hf = bseries(IdentityField(), 5)
 TruncatedBSeries{RootedTree{Int64, Vector{Int64}}, Bool} with 18 entries:
-RootedTree{Int64}: Int64[]         => 0
-RootedTree{Int64}: [1]             => 1
-RootedTree{Int64}: [1, 2]          => 0
-RootedTree{Int64}: [1, 2, 3]       => 0
-RootedTree{Int64}: [1, 2, 2]       => 0
-RootedTree{Int64}: [1, 2, 3, 4]    => 0
-RootedTree{Int64}: [1, 2, 3, 3]    => 0
-RootedTree{Int64}: [1, 2, 3, 2]    => 0
-RootedTree{Int64}: [1, 2, 2, 2]    => 0
+RootedTree{Int64}: Int64[] => 0
+RootedTree{Int64}: [1] => 1
+RootedTree{Int64}: [1, 2] => 0
+RootedTree{Int64}: [1, 2, 3] => 0
+RootedTree{Int64}: [1, 2, 2] => 0
+RootedTree{Int64}: [1, 2, 3, 4] => 0
+RootedTree{Int64}: [1, 2, 3, 3] => 0
+RootedTree{Int64}: [1, 2, 3, 2] => 0
+RootedTree{Int64}: [1, 2, 2, 2] => 0
 RootedTree{Int64}: [1, 2, 3, 4, 5] => 0
 RootedTree{Int64}: [1, 2, 3, 4, 4] => 0
 RootedTree{Int64}: [1, 2, 3, 4, 3] => 0
@@ -1308,9 +1308,9 @@ result = zero(f)
 end
 for t in keys(series)
 # Otherwise, SymPy.jl might result in
-#   DomainError with -1:
-#   Cannot raise an integer x to a negative power -1.
-#   Convert input to float.
+# DomainError with -1:
+# Cannot raise an integer x to a negative power -1.
+# Convert input to float.
 power = order(t) - reduce_order_by
 if power > 0
 dt_term = dt^power
@@ -1351,7 +1351,7 @@ function _modified_equation(series_integrator, ::EagerEvaluation)
 V = valtype(series_integrator)
 # B-series of the exact solution
 # We could just use the lazy version
-#   series_ex = ExactSolution{V}()
+# series_ex = ExactSolution{V}()
 # However, we need to access elements of `series_ex` more than once in the
 # substitution below. Thus, it's cheaper to compute every entry only once and
 # re-use it later.
@@ -1375,13 +1375,13 @@ series[t] = series_integrator[t]
 iter = iterate(series_keys, t_state)
 end
 # Recursively solve
-#   substitute(series, series_ex, t) == series_integrator[t]
+# substitute(series, series_ex, t) == series_integrator[t]
 # This works because
-#   substitute(series, series_ex, t) = series[t] + lower order terms
+# substitute(series, series_ex, t) = series[t] + lower order terms
 # Since the `keys` are ordered, we don't need to use nested loops of the form
-#   for o in 2:order
-#     for _t in RootedTreeIterator(o)
-#       t = copy(_t)
+# for o in 2:order
+# for _t in RootedTreeIterator(o)
+# t = copy(_t)
 # which are slightly less efficient due to additional computations and
 # allocations.
 while iter !== nothing
@@ -1512,13 +1512,13 @@ series[t] = series_integrator[t]
 iter = iterate(series_keys, t_state)
 end
 # Recursively solve
-#   substitute(series, series_integrator, t) == series_ex[t]
+# substitute(series, series_integrator, t) == series_ex[t]
 # This works because
-#   substitute(series, series_integrator, t) = series[t] + lower order terms
+# substitute(series, series_integrator, t) = series[t] + lower order terms
 # Since the `keys` are ordered, we don't need to use nested loops of the form
-#   for o in 2:order
-#     for _t in RootedTreeIterator(o)
-#       t = copy(_t)
+# for o in 2:order
+# for _t in RootedTreeIterator(o)
+# t = copy(_t)
 # which are slightly less efficient due to additional computations and
 # allocations.
 while iter !== nothing
@@ -1650,11 +1650,11 @@ u_idx = Base.tail(idx_tuple)
 issorted(u_idx) || continue
 # Next, we re-use already computed partial derivatives. Thus, we do not
 # compute the full set of derivatives as in
-#   f_idx = first(idx_tuple)
-#   partial_derivative = f[f_idx]
-#   for i in u_idx
-#     partial_derivative = compute_derivative(partial_derivative, u[i])
-#   end
+# f_idx = first(idx_tuple)
+# partial_derivative = f[f_idx]
+# for i in u_idx
+# partial_derivative = compute_derivative(partial_derivative, u[i])
+# end
 # but we re-use the already computed `lower_derivatives`.
 idx_known = Base.front(idx_tuple)
 idx_new = last(idx_tuple)
@@ -1708,7 +1708,7 @@ Base.Cartesian.@nloops $(N - 1) j input_derivative begin
 # A naive version uses the full input of all possible combinations of
 # partial derivatives. If these were all computed in
 # `_compute_partial_derivatives!` above, we could just use
-#   term = Base.Cartesian.@ncall $(N-1) getindex input_derivative i j
+# term = Base.Cartesian.@ncall $(N-1) getindex input_derivative i j
 # and get rid of `sorted_j` here. However, all this B-series analysis
 # only really makes sense for smooth functions. Hence, we can use the
 # symmetry of the partial derivatives to speed-up the computations
@@ -1793,33 +1793,33 @@ See also [`renormalize`](@ref).
 ```jldoctest
 julia> series = bseries(ExactSolution{Rational{Int}}(), 4)
 TruncatedBSeries{RootedTree{Int64, Vector{Int64}}, Rational{Int64}} with 9 entries:
-RootedTree{Int64}: Int64[]      => 1
-RootedTree{Int64}: [1]          => 1
-RootedTree{Int64}: [1, 2]       => 1
-RootedTree{Int64}: [1, 2, 3]    => 1
-RootedTree{Int64}: [1, 2, 2]    => 1
+RootedTree{Int64}: Int64[] => 1
+RootedTree{Int64}: [1] => 1
+RootedTree{Int64}: [1, 2] => 1
+RootedTree{Int64}: [1, 2, 3] => 1
+RootedTree{Int64}: [1, 2, 2] => 1
 RootedTree{Int64}: [1, 2, 3, 4] => 1
 RootedTree{Int64}: [1, 2, 3, 3] => 1
 RootedTree{Int64}: [1, 2, 3, 2] => 1
 RootedTree{Int64}: [1, 2, 2, 2] => 1
 julia> renormalize!(series)
 TruncatedBSeries{RootedTree{Int64, Vector{Int64}}, Rational{Int64}} with 9 entries:
-RootedTree{Int64}: Int64[]      => 1
-RootedTree{Int64}: [1]          => 1
-RootedTree{Int64}: [1, 2]       => 1
-RootedTree{Int64}: [1, 2, 3]    => 1
-RootedTree{Int64}: [1, 2, 2]    => 1
+RootedTree{Int64}: Int64[] => 1
+RootedTree{Int64}: [1] => 1
+RootedTree{Int64}: [1, 2] => 1
+RootedTree{Int64}: [1, 2, 3] => 1
+RootedTree{Int64}: [1, 2, 2] => 1
 RootedTree{Int64}: [1, 2, 3, 4] => 1
 RootedTree{Int64}: [1, 2, 3, 3] => 1
 RootedTree{Int64}: [1, 2, 3, 2] => 1
 RootedTree{Int64}: [1, 2, 2, 2] => 1
 julia> series - ExactSolution(series)
 TruncatedBSeries{RootedTree{Int64, Vector{Int64}}, Rational{Int64}} with 9 entries:
-RootedTree{Int64}: Int64[]      => 0
-RootedTree{Int64}: [1]          => 0
-RootedTree{Int64}: [1, 2]       => 0
-RootedTree{Int64}: [1, 2, 3]    => 0
-RootedTree{Int64}: [1, 2, 2]    => -1
+RootedTree{Int64}: Int64[] => 0
+RootedTree{Int64}: [1] => 0
+RootedTree{Int64}: [1, 2] => 0
+RootedTree{Int64}: [1, 2, 3] => 0
+RootedTree{Int64}: [1, 2, 2] => -1
 RootedTree{Int64}: [1, 2, 3, 4] => 0
 RootedTree{Int64}: [1, 2, 3, 3] => -1
 RootedTree{Int64}: [1, 2, 3, 2] => 0
@@ -1849,22 +1849,22 @@ See also [`renormalize!`](@ref).
 ```jldoctest
 julia> series = bseries(ExactSolution{Rational{Int}}(), 4)
 TruncatedBSeries{RootedTree{Int64, Vector{Int64}}, Rational{Int64}} with 9 entries:
-RootedTree{Int64}: Int64[]      => 1
-RootedTree{Int64}: [1]          => 1
-RootedTree{Int64}: [1, 2]       => 1
-RootedTree{Int64}: [1, 2, 3]    => 1
-RootedTree{Int64}: [1, 2, 2]    => 1
+RootedTree{Int64}: Int64[] => 1
+RootedTree{Int64}: [1] => 1
+RootedTree{Int64}: [1, 2] => 1
+RootedTree{Int64}: [1, 2, 3] => 1
+RootedTree{Int64}: [1, 2, 2] => 1
 RootedTree{Int64}: [1, 2, 3, 4] => 1
 RootedTree{Int64}: [1, 2, 3, 3] => 1
 RootedTree{Int64}: [1, 2, 3, 2] => 1
 RootedTree{Int64}: [1, 2, 2, 2] => 1
 julia> renormalize(series)
 TruncatedBSeries{RootedTree{Int64, Vector{Int64}}, Rational{Int64}} with 9 entries:
-RootedTree{Int64}: Int64[]      => 1
-RootedTree{Int64}: [1]          => 1
-RootedTree{Int64}: [1, 2]       => 1
-RootedTree{Int64}: [1, 2, 3]    => 1
-RootedTree{Int64}: [1, 2, 2]    => 1
+RootedTree{Int64}: Int64[] => 1
+RootedTree{Int64}: [1] => 1
+RootedTree{Int64}: [1, 2] => 1
+RootedTree{Int64}: [1, 2, 3] => 1
+RootedTree{Int64}: [1, 2, 2] => 1
 RootedTree{Int64}: [1, 2, 3, 4] => 1
 RootedTree{Int64}: [1, 2, 3, 3] => 1
 RootedTree{Int64}: [1, 2, 3, 2] => 1
@@ -1997,8 +1997,8 @@ end
 # condition.
 function _is_energy_preserving(trees, coefficients)
 # TODO: `Float32` would also be nice to have. However, the default tolerance
-#       of the rank computation is based on `Float64`. Thus, it will usually
-#       not work with coefficients given only in 32 bit precision.
+# of the rank computation is based on `Float64`. Thus, it will usually
+# not work with coefficients given only in 32 bit precision.
 # For very few coefficients, dense operations are more efficient than
 # sparse operations.
 if (length(coefficients) > 20 &&
@@ -2344,25 +2344,25 @@ See also [`is_symplectic`](@ref),
 """
 function order_of_symplecticity(series::TruncatedBSeries; kwargs...)
 # TODO: Implement this for colored trees
-#       Theorem IV.7.2 of Hairer, Lubich, Wanner (2006) states the
-#       following conditions.
-#       1) If the coefficients a(t) satisfy
-#            a(u ∘ v) + a(v ∘ u) = a(u) * a(v) for u ∈ TP_p, v ∈ TP_q,
-#          and
-#            a(τ) is independent of the colour of the root of τ,
-#          the method exactly conserves quadratic invariants Q(p, q)
-#          and it is symplectic for general Hamiltonian systems.
-#        2) If the coefficients a(τ) satisfy only
-#             a(u ∘ v) + a(v ∘ u) = a(u) * a(v) for u ∈ TP_p, v ∈ TP_q,
-#           the method exactly conserves quadratic invariants Q(p,q)
-#           for problems of the form p' = f1(q), q' = f2(p), and it
-#           is symplectic for separable Hamiltonian systems where
-#           H(p,q) = T(p) + U(q).
-#        How do we want to handle the two cases? The general interface
-#        should be that we check the first condition by default. Then,
-#        we need to different `iterator`s for the two cases.
-#        It should also be possible to specify that we want to check
-#        only the second case, i.e., separable Hamiltonian systems.
+# Theorem IV.7.2 of Hairer, Lubich, Wanner (2006) states the
+# following conditions.
+# 1) If the coefficients a(t) satisfy
+# a(u ∘ v) + a(v ∘ u) = a(u) * a(v) for u ∈ TP_p, v ∈ TP_q,
+# and
+# a(τ) is independent of the colour of the root of τ,
+# the method exactly conserves quadratic invariants Q(p, q)
+# and it is symplectic for general Hamiltonian systems.
+# 2) If the coefficients a(τ) satisfy only
+# a(u ∘ v) + a(v ∘ u) = a(u) * a(v) for u ∈ TP_p, v ∈ TP_q,
+# the method exactly conserves quadratic invariants Q(p,q)
+# for problems of the form p' = f1(q), q' = f2(p), and it
+# is symplectic for separable Hamiltonian systems where
+# H(p,q) = T(p) + U(q).
+# How do we want to handle the two cases? The general interface
+# should be that we check the first condition by default. Then,
+# we need to different `iterator`s for the two cases.
+# It should also be possible to specify that we want to check
+# only the second case, i.e., separable Hamiltonian systems.
 if !(keytype(series) <: RootedTree)
 throw(ArgumentError("This method is only implemented for single-colored rooted trees"))
 end

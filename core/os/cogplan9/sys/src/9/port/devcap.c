@@ -1,27 +1,27 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	<libsec.h>
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include <libsec.h>
 enum
 {
-Hashlen=	SHA1dlen,
-Maxhash=	256,
+Hashlen= SHA1dlen,
+Maxhash= 256,
 };
-typedef struct Caphash	Caphash;
+typedef struct Caphash Caphash;
 struct Caphash
 {
-Caphash	*next;
-char		hash[Hashlen];
-ulong		ticks;
+Caphash *next;
+char hash[Hashlen];
+ulong ticks;
 };
 struct
 {
 QLock;
-Caphash	*first;
-int	nhash;
+Caphash *first;
+int nhash;
 } capalloc;
 enum
 {
@@ -31,9 +31,9 @@ Quse,
 };
 Dirtab capdir[] =
 {
-".",		{Qdir,0,QTDIR},	0,		DMDIR|0500,
-"capuse",	{Quse},		0,		0222,
-"caphash",	{Qhash},	0,		0200,
+".", {Qdir,0,QTDIR}, 0, DMDIR|0500,
+"capuse", {Quse}, 0, 0222,
+"caphash", {Qhash}, 0, 0200,
 };
 int ncapdir = nelem(capdir);
 static Chan*

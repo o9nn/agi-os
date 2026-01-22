@@ -1,17 +1,17 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
 typedef struct CogProcExt CogProcExt;
 struct CogProcExt {
-ulong	atomid;
-short	sti;
-short	lti;
-ulong	inferences;
-ulong	cogcycles;
-int	cogstate;
+ulong atomid;
+short sti;
+short lti;
+ulong inferences;
+ulong cogcycles;
+int cogstate;
 Lock;
 };
 enum {
@@ -21,10 +21,10 @@ CogReasoning,
 CogLearning,
 CogWaiting,
 };
-static CogProcExt**	cogprocs;
-static int		ncogprocs;
-static int		maxcogprocs;
-static Lock		cogproclock;
+static CogProcExt** cogprocs;
+static int ncogprocs;
+static int maxcogprocs;
+static Lock cogproclock;
 void
 cogprocinit(void)
 {

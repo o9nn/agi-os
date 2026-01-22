@@ -2,9 +2,9 @@
 #include "tdef.h"
 #include "fns.h"
 #include "ext.h"
-char	termtab[NS];
-char	fontdir[NS];
-char	devname[20];
+char termtab[NS];
+char fontdir[NS];
+char devname[20];
 Numtab numtab[NN] = {
 { PAIR('%', 0) },
 { PAIR('n', 'l') },
@@ -22,35 +22,35 @@ Numtab numtab[NN] = {
 { PAIR('c', '.') },
 { PAIR('$', '$') },
 };
-int	alphabet	= 256;
-int	pto	= 10000;
-int	pfrom	= 1;
-int	print	= 1;
-char	nextf[NS]	= TMACDIR;
-char	mfiles[NMF][NS];
-int	nmfi	= 0;
-int	oldbits	= -1;
-int	init	= 1;
-int	fc	= IMP;
-int	eschar	= '\\';
-int	pl;
-int	po;
-FILE	*ptid	= stdout;
-int	dfact	= 1;
-int	dfactd	= 1;
-int	res	= 1;
-int	smnt	= 0;
-int	ascii	= 0;
-int	lg;
-int	pnlist[NPN] = { -1 };
-int	*pnp	= pnlist;
-int	npn	= 1;
-int	npnflg	=  1;
-int	dpn	=  -1;
-int	totout	=  1;
-int	ulfont	=  ULFONT;
-int	tabch	=  TAB;
-int	ldrch	=  LEADER;
+int alphabet = 256;
+int pto = 10000;
+int pfrom = 1;
+int print = 1;
+char nextf[NS] = TMACDIR;
+char mfiles[NMF][NS];
+int nmfi = 0;
+int oldbits = -1;
+int init = 1;
+int fc = IMP;
+int eschar = '\\';
+int pl;
+int po;
+FILE *ptid = stdout;
+int dfact = 1;
+int dfactd = 1;
+int res = 1;
+int smnt = 0;
+int ascii = 0;
+int lg;
+int pnlist[NPN] = { -1 };
+int *pnp = pnlist;
+int npn = 1;
+int npnflg = 1;
+int dpn = -1;
+int totout = 1;
+int ulfont = ULFONT;
+int tabch = TAB;
+int ldrch = LEADER;
 Contab contab[NM] = {
 C(PAIR('d', 's'), caseds),
 C(PAIR('a', 's'), caseas),
@@ -214,150 +214,150 @@ HYPHALG,
 0,
 0,
 } };
-Env	*envp	= env;
-Numerr	numerr;
-Stack	*frame, *stk, *ejl;
-Stack	*nxf;
-int	pipeflg;
-int	hflg;
-int	eqflg;
-int	xpts;
-int	ppts;
-int	pfont;
-int	mpts;
-int	mfont;
-int	cs;
-int	ccs;
-int	bd;
-int	stdi;
-int	quiet;
-int	stop;
-char	ibuf[IBUFSZ];
-char	xbuf[IBUFSZ];
-char	*ibufp;
-char	*xbufp;
-char	*eibuf;
-char	*xeibuf;
-Tchar	pbbuf[NC];
-Tchar	*pbp = pbbuf;
-Tchar	*lastpbp = pbbuf;
-int	nx;
-int	mflg;
-Tchar	ch = 0;
-int	ibf;
-int	ifi;
-int	iflg;
-int	rargc;
-char	**argp;
-Ushort	trtab[NTRTAB];
-int	lgf;
-int	copyf;
-Offset	ip;
-int	nlflg;
-int	donef;
-int	nflush;
-int	nfo;
-int	padc;
-int	raw;
-int	flss;
-int	nonumb;
-int	trap;
-int	tflg;
-int	ejf;
-int	dilev;
-Offset	offset;
-int	em;
-int	ds;
-Offset	woff;
-int	app;
-int	ndone;
-int	lead;
-int	ralss;
-Offset	nextb;
-Tchar	nrbits;
-int	nform;
-int	oldmn;
-int	newmn;
-int	macerr;
-Offset	apptr;
-int	diflg;
-int	evi;
-int	vflag;
-int	noscale;
-int	po1;
-int	nlist[NTRAP];
-int	mlist[NTRAP];
-int	evlist[EVLSZ];
-int	ev;
-int	tty;
-int	sfont	= FT;
-int	sv;
-int	esc;
-int	widthp;
-int	xfont;
-int	setwdf;
-int	over;
-int	nhyp;
-Tchar	**hyp;
-Tchar	*olinep;
-int	dotT;
-char	*unlkp;
-Wcache	widcache[NWIDCACHE];
-Diver	d[NDI];
-Diver	*dip;
-int	c_hyphen;
-int	c_emdash;
-int	c_rule;
-int	c_minus;
-int	c_fi;
-int	c_fl;
-int	c_ff;
-int	c_ffi;
-int	c_ffl;
-int	c_acute;
-int	c_grave;
-int	c_under;
-int	c_rooten;
-int	c_boxrule;
-int	c_lefthand;
-int	c_dagger;
-int	c_isalnum;
-Spnames	spnames[] =
+Env *envp = env;
+Numerr numerr;
+Stack *frame, *stk, *ejl;
+Stack *nxf;
+int pipeflg;
+int hflg;
+int eqflg;
+int xpts;
+int ppts;
+int pfont;
+int mpts;
+int mfont;
+int cs;
+int ccs;
+int bd;
+int stdi;
+int quiet;
+int stop;
+char ibuf[IBUFSZ];
+char xbuf[IBUFSZ];
+char *ibufp;
+char *xbufp;
+char *eibuf;
+char *xeibuf;
+Tchar pbbuf[NC];
+Tchar *pbp = pbbuf;
+Tchar *lastpbp = pbbuf;
+int nx;
+int mflg;
+Tchar ch = 0;
+int ibf;
+int ifi;
+int iflg;
+int rargc;
+char **argp;
+Ushort trtab[NTRTAB];
+int lgf;
+int copyf;
+Offset ip;
+int nlflg;
+int donef;
+int nflush;
+int nfo;
+int padc;
+int raw;
+int flss;
+int nonumb;
+int trap;
+int tflg;
+int ejf;
+int dilev;
+Offset offset;
+int em;
+int ds;
+Offset woff;
+int app;
+int ndone;
+int lead;
+int ralss;
+Offset nextb;
+Tchar nrbits;
+int nform;
+int oldmn;
+int newmn;
+int macerr;
+Offset apptr;
+int diflg;
+int evi;
+int vflag;
+int noscale;
+int po1;
+int nlist[NTRAP];
+int mlist[NTRAP];
+int evlist[EVLSZ];
+int ev;
+int tty;
+int sfont = FT;
+int sv;
+int esc;
+int widthp;
+int xfont;
+int setwdf;
+int over;
+int nhyp;
+Tchar **hyp;
+Tchar *olinep;
+int dotT;
+char *unlkp;
+Wcache widcache[NWIDCACHE];
+Diver d[NDI];
+Diver *dip;
+int c_hyphen;
+int c_emdash;
+int c_rule;
+int c_minus;
+int c_fi;
+int c_fl;
+int c_ff;
+int c_ffi;
+int c_ffl;
+int c_acute;
+int c_grave;
+int c_under;
+int c_rooten;
+int c_boxrule;
+int c_lefthand;
+int c_dagger;
+int c_isalnum;
+Spnames spnames[] =
 {
-&c_hyphen,	"hy",
-&c_emdash,	"em",
-&c_rule,	"ru",
-&c_minus,	"\\-",
-&c_fi,		"fi",
-&c_fl,		"fl",
-&c_ff,		"ff",
-&c_ffi,		"Fi",
-&c_ffl,		"Fl",
-&c_acute,	"aa",
-&c_grave,	"ga",
-&c_under,	"ul",
-&c_rooten,	"rn",
-&c_boxrule,	"br",
-&c_lefthand,	"lh",
-&c_dagger,	"dg",
-&c_isalnum,	"__",
+&c_hyphen, "hy",
+&c_emdash, "em",
+&c_rule, "ru",
+&c_minus, "\\-",
+&c_fi, "fi",
+&c_fl, "fl",
+&c_ff, "ff",
+&c_ffi, "Fi",
+&c_ffl, "Fl",
+&c_acute, "aa",
+&c_grave, "ga",
+&c_under, "ul",
+&c_rooten, "rn",
+&c_boxrule, "br",
+&c_lefthand, "lh",
+&c_dagger, "dg",
+&c_isalnum, "__",
 0, 0
 };
-Tchar	(*hmot)(void);
-Tchar	(*makem)(int i);
-Tchar	(*setabs)(void);
-Tchar	(*setch)(int c);
-Tchar	(*sethl)(int k);
-Tchar	(*setht)(void);
-Tchar	(*setslant)(void);
-Tchar	(*vmot)(void);
-Tchar	(*xlss)(void);
-int	(*findft)(int i);
-int	(*width)(Tchar j);
-void	(*mchbits)(void);
-void	(*ptlead)(void);
-void	(*ptout)(Tchar i);
-void	(*ptpause)(void);
-void	(*setfont)(int a);
-void	(*setps)(void);
-void	(*setwd)(void);
+Tchar (*hmot)(void);
+Tchar (*makem)(int i);
+Tchar (*setabs)(void);
+Tchar (*setch)(int c);
+Tchar (*sethl)(int k);
+Tchar (*setht)(void);
+Tchar (*setslant)(void);
+Tchar (*vmot)(void);
+Tchar (*xlss)(void);
+int (*findft)(int i);
+int (*width)(Tchar j);
+void (*mchbits)(void);
+void (*ptlead)(void);
+void (*ptout)(Tchar i);
+void (*ptpause)(void);
+void (*setfont)(int a);
+void (*setps)(void);
+void (*setwd)(void);

@@ -24,13 +24,13 @@ C : Ctype;
 include "sh.m";
 # package up info related to a navigation command
 GoSpec: adt {
-kind: int;				# GoNormal, etc.
-url: ref Parsedurl;		# destination (absolute)
-meth: int;				# HGet or HPost
-body: string;			# used if HPost
-target: string;			# name of target frame
-auth: string;			# optional auth info
-histnode: ref HistNode;	# if kind is GoHistnode
+kind: int; # GoNormal, etc.
+url: ref Parsedurl; # destination (absolute)
+meth: int; # HGet or HPost
+body: string; # used if HPost
+target: string; # name of target frame
+auth: string; # optional auth info
+histnode: ref HistNode; # if kind is GoHistnode
 newget: fn(kind: int, url: ref Parsedurl, target: string) : ref GoSpec;
 newpost: fn(url: ref Parsedurl, body, target: string) : ref GoSpec;
 newspecial: fn(kind: int, histnode: ref HistNode) : ref GoSpec;
@@ -39,9 +39,9 @@ equal: fn(a: self ref GoSpec, b: ref GoSpec) : int;
 GoNormal, GoReplace, GoLink, GoHistnode, GoSettext: con iota;
 # Information about a set of frames making up the screen
 DocConfig: adt {
-framename: string;		# nonempty, except possibly for topconfig
+framename: string; # nonempty, except possibly for topconfig
 title: string;
-initconfig: int;			# true unless this is a frameset and some subframe changed
+initconfig: int; # true unless this is a frameset and some subframe changed
 gospec: cyclic ref GoSpec;
 # TODO: add current y pos and form field values
 equal: fn(a: self ref DocConfig, b: ref DocConfig) : int;
@@ -49,18 +49,18 @@ equalarray: fn(a1: array of ref DocConfig, a2: array of ref DocConfig) : int;
 };
 # Information about a particular screen configuration
 HistNode: adt {
-topconfig: cyclic ref DocConfig;			# config of top (whole doc, or frameset root)
-kidconfigs: cyclic array of ref DocConfig;	# configs for kid frames (if a frameset)
-preds: cyclic list of ref HistNode;	# edges in (via normal navigation)
-succs: cyclic list of ref HistNode;	# edges out (via normal navigation)
+topconfig: cyclic ref DocConfig; # config of top (whole doc, or frameset root)
+kidconfigs: cyclic array of ref DocConfig; # configs for kid frames (if a frameset)
+preds: cyclic list of ref HistNode; # edges in (via normal navigation)
+succs: cyclic list of ref HistNode; # edges out (via normal navigation)
 findid : int;
 findchain : cyclic list of ref HistNode;
 addedge: fn(a: self ref HistNode, b: ref HistNode, atob: int);
 copy: fn(a: self ref HistNode) : ref HistNode;
 };
 History: adt {
-h: array of ref HistNode;	# all visited HistNodes, in LRU order
-n: int;				# h[0:n] is valid part of h
+h: array of ref HistNode; # all visited HistNodes, in LRU order
+n: int; # h[0:n] is valid part of h
 findid : int;
 add: fn(h: self ref History, f: ref Frame, g: ref GoSpec, navkind: int);
 update: fn(h: self ref History, f: ref Frame);
@@ -81,8 +81,8 @@ mouseover: ref B->Anchor;
 mouseoverfr: ref Frame;
 grabctl: ref Control;
 popupctl: ref Control;
-SP : con 8;			# a spacer for between controls
-SP2 : con 4;			# half of SP
+SP : con 8; # a spacer for between controls
+SP2 : con 4; # half of SP
 SP3 : con 2;
 pgrp := 0;
 gopgrp := 0;
@@ -152,7 +152,7 @@ J = CU->J;
 G = CU->G;
 C = CU->C;
 dbg = int (CU->config).dbg['d'];
-warn = dbg ||  int (CU->config).dbg['w'];
+warn = dbg || int (CU->config).dbg['w'];
 dbgres = int (CU->config).dbg['r'];
 doscripts = (CU->config).doscripts && J != nil;
 if(dbg && (CU->config).dbgfile != "") {
@@ -212,7 +212,7 @@ sys->print("%s\n", ev.tostring());
 sys->print("%s\n", ev.tostring());
 }
 }
-pick  e := ev {
+pick e := ev {
 Ekey =>
 g = nil;
 case e.keychar {
@@ -346,18 +346,18 @@ redraw(resized: int)
 {
 im := mainwin;
 if(resized) {
-#		top.r = im.r.inset(2*L->ReliefBd);
+# top.r = im.r.inset(2*L->ReliefBd);
 top.r = im.r;
 top.cim = mainwin;
 top.reset();
 (CU->imcache).resetlimits();
 }
 im.clipr = im.r;
-#	L->drawrelief(im, top.r.inset(-L->ReliefBd), L->ReliefRaised);
-#	L->drawrelief(im, top.r, L->ReliefSunk);
+# L->drawrelief(im, top.r.inset(-L->ReliefBd), L->ReliefRaised);
+# L->drawrelief(im, top.r, L->ReliefSunk);
 L->drawfill(im, top.r, CU->White);
 G->flush(im.r);
-#	im.clipr = top.r;
+# im.clipr = top.r;
 }
 # Return a Loc representing a control in the frame f
 frameloc(c: ref Control, f: ref Frame) : ref Loc
@@ -454,7 +454,7 @@ if(dbg > 1)
 sys->print("in anchor %d, href=%s\n", a.index, a.href.tostring());
 if(doscripts && a.evmask) {
 if(a == mouseover) {
-domouseout = 0;	# still over same anchor
+domouseout = 0; # still over same anchor
 } else if(e.mtype == E->Mmove) {
 if(domouseout) {
 if(mouseover.evmask & E->SEonmouseout) {
@@ -1179,12 +1179,12 @@ v = v + ucvt(f.name + ".x") + "=" + ucvt(string max(p.x,0))
 continue;
 }
 }
-#		if(val != "") {
+# if(val != "") {
 if(sep != "")
 v = v + sep;
 sep = "&";
 v = v + ucvt(f.name) + "=" + ucvt(val);
-#		}
+# }
 }
 action := ref *frm.action;
 if (frm.method == CU->HGet) {
@@ -1193,7 +1193,7 @@ action.query += "&";
 action.query += v;
 v = "";
 }
-#	action.query = v;
+# action.query = v;
 E->evchan <-= ref Event.Esubmit(frm.method, action, v, frm.target);
 }
 hexdigit := "0123456789ABCDEF";
@@ -1235,7 +1235,7 @@ a := hd fl;
 if(a.ctlid >= 0)
 fr.controls[a.ctlid].reset();
 }
-#	fr.cim.flush(D->Flushnow);
+# fr.cim.flush(D->Flushnow);
 }
 formaction(frameid, formid, ftype, onsubmit: int)
 {
@@ -1600,7 +1600,7 @@ i := 0;
 for(l := f.kids; l != nil; l = tl l) {
 kf := hd l;
 if(kf.src != nil)
-kc[i] = ref DocConfig(kf.name, kf.src.tostring(), 1,  GoSpec.newget(GoNormal, kf.src, "_self"));
+kc[i] = ref DocConfig(kf.name, kf.src.tostring(), 1, GoSpec.newget(GoNormal, kf.src, "_self"));
 i++;
 }
 hnode.kidconfigs = kc;

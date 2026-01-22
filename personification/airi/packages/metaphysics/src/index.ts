@@ -1,13 +1,13 @@
 export type {
-  Echo,
-  GestaltPattern,
-  IdentityNucleus,
-  ResonanceEvent,
-  BeingState,
-  TransformativeExperience,
-  Connection,
-  OntologicalConfiguration,
-  MemoryIntegration,
+Echo,
+GestaltPattern,
+IdentityNucleus,
+ResonanceEvent,
+BeingState,
+TransformativeExperience,
+Connection,
+OntologicalConfiguration,
+MemoryIntegration,
 } from './types'
 export { EchoSystem } from './echo-system'
 export type { EchoSystemConfig } from './echo-system'

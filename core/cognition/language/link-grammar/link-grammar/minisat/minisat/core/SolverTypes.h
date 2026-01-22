@@ -15,20 +15,20 @@ typedef int Var;
 const Var var_Undef = -1;
 #endif
 struct Lit {
-int     x;
+int x;
 friend Lit mkLit(Var var, bool sign);
 bool operator == (Lit p) const { return x == p.x; }
 bool operator != (Lit p) const { return x != p.x; }
-bool operator <  (Lit p) const { return x < p.x;  }
+bool operator < (Lit p) const { return x < p.x; }
 };
-inline  Lit  mkLit     (Var var, bool sign = false) { Lit p; p.x = var + var + (int)sign; return p; }
-inline  Lit  operator ~(Lit p)              { Lit q; q.x = p.x ^ 1; return q; }
-inline  Lit  operator ^(Lit p, bool b)      { Lit q; q.x = p.x ^ (unsigned int)b; return q; }
-inline  bool sign      (Lit p)              { return p.x & 1; }
-inline  int  var       (Lit p)              { return p.x >> 1; }
-inline  int  toInt     (Var v)              { return v; }
-inline  int  toInt     (Lit p)              { return p.x; }
-inline  Lit  toLit     (int i)              { Lit p; p.x = i; return p; }
+inline Lit mkLit (Var var, bool sign = false) { Lit p; p.x = var + var + (int)sign; return p; }
+inline Lit operator ~(Lit p) { Lit q; q.x = p.x ^ 1; return q; }
+inline Lit operator ^(Lit p, bool b) { Lit q; q.x = p.x ^ (unsigned int)b; return q; }
+inline bool sign (Lit p) { return p.x & 1; }
+inline int var (Lit p) { return p.x >> 1; }
+inline int toInt (Var v) { return v; }
+inline int toInt (Lit p) { return p.x; }
+inline Lit toLit (int i) { Lit p; p.x = i; return p; }
 const Lit lit_Undef = { -2 };
 const Lit lit_Error = { -1 };
 struct MkIndexLit { vec<Lit>::Size operator()(Lit l) const { return vec<Lit>::Size(l.x); } };
@@ -39,26 +39,26 @@ class lbool {
 uint8_t value;
 public:
 explicit lbool(uint8_t v) : value(v) { }
-lbool()       : value(0) { }
+lbool() : value(0) { }
 explicit lbool(bool x) : value(!x) { }
-bool  operator == (lbool b) const { return ((b.value&2) & (value&2)) | (!(b.value&2)&(value == b.value)); }
-bool  operator != (lbool b) const { return !(*this == b); }
-lbool operator ^  (bool  b) const { return lbool((uint8_t)(value^(uint8_t)b)); }
+bool operator == (lbool b) const { return ((b.value&2) & (value&2)) | (!(b.value&2)&(value == b.value)); }
+bool operator != (lbool b) const { return !(*this == b); }
+lbool operator ^ (bool b) const { return lbool((uint8_t)(value^(uint8_t)b)); }
 lbool operator && (lbool b) const {
 uint8_t sel = (this->value << 1) | (b.value << 3);
-uint8_t v   = (0xF7F755F4 >> sel) & 3;
+uint8_t v = (0xF7F755F4 >> sel) & 3;
 return lbool(v); }
 lbool operator || (lbool b) const {
 uint8_t sel = (this->value << 1) | (b.value << 3);
-uint8_t v   = (0xFCFCF400 >> sel) & 3;
+uint8_t v = (0xFCFCF400 >> sel) & 3;
 return lbool(v); }
-friend int   toInt  (lbool l);
-friend lbool toLbool(int   v);
+friend int toInt (lbool l);
+friend lbool toLbool(int v);
 };
-inline int   toInt  (lbool l) { return l.value; }
-inline lbool toLbool(int   v) { return lbool((uint8_t)v);  }
+inline int toInt (lbool l) { return l.value; }
+inline lbool toLbool(int v) { return lbool((uint8_t)v); }
 #if defined(MINISAT_CONSTANTS_AS_MACROS)
-#define l_True  (lbool((uint8_t)0))
+#define l_True (lbool((uint8_t)0))
 #define l_False (lbool((uint8_t)1))
 #define l_Undef (lbool((uint8_t)2))
 #else
@@ -70,19 +70,19 @@ class Clause;
 typedef RegionAllocator<uint32_t>::Ref CRef;
 class Clause {
 struct {
-unsigned mark      : 2;
-unsigned learnt    : 1;
+unsigned mark : 2;
+unsigned learnt : 1;
 unsigned has_extra : 1;
-unsigned reloced   : 1;
-unsigned size      : 27; }                        header;
+unsigned reloced : 1;
+unsigned size : 27; } header;
 union { Lit lit; float act; uint32_t abs; CRef rel; } data[0];
 friend class ClauseAllocator;
 Clause(const vec<Lit>& ps, bool use_extra, bool learnt_) {
-header.mark      = 0;
-header.learnt    = learnt_;
+header.mark = 0;
+header.learnt = learnt_;
 header.has_extra = use_extra;
-header.reloced   = 0;
-header.size      = ps.size();
+header.reloced = 0;
+header.size = ps.size();
 for (int i = 0; i < ps.size(); i++)
 data[i].lit = ps[i];
 if (header.has_extra){
@@ -93,7 +93,7 @@ calcAbstraction();
 }
 }
 Clause(const Clause& from, bool use_extra){
-header           = from.header;
+header = from.header;
 header.has_extra = use_extra;
 for (int i = 0; i < from.size(); i++)
 data[i].lit = from[i];
@@ -110,25 +110,25 @@ assert(header.has_extra);
 uint32_t abstracton = 0;
 for (int i = 0; i < size(); i++)
 abstracton |= 1 << (var(data[i].lit) & 31);
-data[header.size].abs = abstracton;  }
-int          size        ()      const   { return header.size; }
-void         shrink      (int i)         { assert(i <= size()); if (header.has_extra) data[header.size-i] = data[header.size]; header.size -= i; }
-void         pop         ()              { shrink(1); }
-bool         learnt      ()      const   { return header.learnt; }
-bool         has_extra   ()      const   { return header.has_extra; }
-uint32_t     mark        ()      const   { return header.mark; }
-void         mark        (uint32_t m)    { header.mark = m; }
-const Lit&   last        ()      const   { return data[header.size-1].lit; }
-bool         reloced     ()      const   { return header.reloced; }
-CRef         relocation  ()      const   { return data[0].rel; }
-void         relocate    (CRef c)        { header.reloced = 1; data[0].rel = c; }
-Lit&         operator [] (int i)         { return data[i].lit; }
-Lit          operator [] (int i) const   { return data[i].lit; }
-operator const Lit* (void) const         { return (Lit*)data; }
-float&       activity    ()              { assert(header.has_extra); return data[header.size].act; }
-uint32_t     abstraction () const        { assert(header.has_extra); return data[header.size].abs; }
-Lit          subsumes    (const Clause& other) const;
-void         strengthen  (Lit p);
+data[header.size].abs = abstracton; }
+int size () const { return header.size; }
+void shrink (int i) { assert(i <= size()); if (header.has_extra) data[header.size-i] = data[header.size]; header.size -= i; }
+void pop () { shrink(1); }
+bool learnt () const { return header.learnt; }
+bool has_extra () const { return header.has_extra; }
+uint32_t mark () const { return header.mark; }
+void mark (uint32_t m) { header.mark = m; }
+const Lit& last () const { return data[header.size-1].lit; }
+bool reloced () const { return header.reloced; }
+CRef relocation () const { return data[0].rel; }
+void relocate (CRef c) { header.reloced = 1; data[0].rel = c; }
+Lit& operator [] (int i) { return data[i].lit; }
+Lit operator [] (int i) const { return data[i].lit; }
+operator const Lit* (void) const { return (Lit*)data; }
+float& activity () { assert(header.has_extra); return data[header.size].act; }
+uint32_t abstraction () const { assert(header.has_extra); return data[header.size].abs; }
+Lit subsumes (const Clause& other) const;
+void strengthen (Lit p);
 };
 const CRef CRef_Undef = RegionAllocator<uint32_t>::Ref_Undef;
 class ClauseAllocator
@@ -146,26 +146,26 @@ to.extra_clause_field = extra_clause_field;
 ra.moveTo(to.ra); }
 CRef alloc(const vec<Lit>& ps, bool learnt = false)
 {
-assert(sizeof(Lit)      == sizeof(uint32_t));
-assert(sizeof(float)    == sizeof(uint32_t));
+assert(sizeof(Lit) == sizeof(uint32_t));
+assert(sizeof(float) == sizeof(uint32_t));
 bool use_extra = learnt | extra_clause_field;
-CRef cid       = ra.alloc(clauseWord32Size(ps.size(), use_extra));
+CRef cid = ra.alloc(clauseWord32Size(ps.size(), use_extra));
 new (lea(cid)) Clause(ps, use_extra, learnt);
 return cid;
 }
 CRef alloc(const Clause& from)
 {
 bool use_extra = from.learnt() | extra_clause_field;
-CRef cid       = ra.alloc(clauseWord32Size(from.size(), use_extra));
+CRef cid = ra.alloc(clauseWord32Size(from.size(), use_extra));
 new (lea(cid)) Clause(from, use_extra);
 return cid; }
-uint32_t size      () const      { return ra.size(); }
-uint32_t wasted    () const      { return ra.wasted(); }
-Clause&       operator[](CRef r)         { return (Clause&)ra[r]; }
-const Clause& operator[](CRef r) const   { return (Clause&)ra[r]; }
-Clause*       lea       (CRef r)         { return (Clause*)ra.lea(r); }
-const Clause* lea       (CRef r) const   { return (Clause*)ra.lea(r);; }
-CRef          ael       (const Clause* t){ return ra.ael((uint32_t*)t); }
+uint32_t size () const { return ra.size(); }
+uint32_t wasted () const { return ra.wasted(); }
+Clause& operator[](CRef r) { return (Clause&)ra[r]; }
+const Clause& operator[](CRef r) const { return (Clause&)ra[r]; }
+Clause* lea (CRef r) { return (Clause*)ra.lea(r); }
+const Clause* lea (CRef r) const { return (Clause*)ra.lea(r);; }
+CRef ael (const Clause* t){ return ra.ael((uint32_t*)t); }
 void free(CRef cid)
 {
 Clause& c = operator[](cid);
@@ -181,7 +181,7 @@ c.relocate(cr);
 };
 class ClauseIterator {
 const ClauseAllocator& ca;
-const CRef*            crefs;
+const CRef* crefs;
 public:
 ClauseIterator(const ClauseAllocator& _ca, const CRef* _crefs) : ca(_ca), crefs(_crefs){}
 void operator++(){ crefs++; }
@@ -193,37 +193,37 @@ class TrailIterator {
 const Lit* lits;
 public:
 TrailIterator(const Lit* _lits) : lits(_lits){}
-void operator++()   { lits++; }
-Lit  operator*() const { return *lits; }
+void operator++() { lits++; }
+Lit operator*() const { return *lits; }
 bool operator==(const TrailIterator& ti) const { return lits == ti.lits; }
 bool operator!=(const TrailIterator& ti) const { return lits != ti.lits; }
 };
 template<class K, class Vec, class Deleted, class MkIndex = MkIndexDefault<K> >
 class OccLists
 {
-IntMap<K, Vec,  MkIndex> occs;
+IntMap<K, Vec, MkIndex> occs;
 IntMap<K, char, MkIndex> dirty;
-vec<K>                   dirties;
-Deleted                  deleted;
+vec<K> dirties;
+Deleted deleted;
 public:
 OccLists(const Deleted& d, MkIndex _index = MkIndex()) :
 occs(_index),
 dirty(_index),
 deleted(d){}
-void  init      (const K& idx){ occs.reserve(idx); occs[idx].clear(); dirty.reserve(idx, 0); }
-Vec&  operator[](const K& idx){ return occs[idx]; }
-Vec&  lookup    (const K& idx){ if (dirty[idx]) clean(idx); return occs[idx]; }
-void  cleanAll  ();
-void  clean     (const K& idx);
-void  smudge    (const K& idx){
+void init (const K& idx){ occs.reserve(idx); occs[idx].clear(); dirty.reserve(idx, 0); }
+Vec& operator[](const K& idx){ return occs[idx]; }
+Vec& lookup (const K& idx){ if (dirty[idx]) clean(idx); return occs[idx]; }
+void cleanAll ();
+void clean (const K& idx);
+void smudge (const K& idx){
 if (dirty[idx] == 0){
 dirty[idx] = 1;
 dirties.push(idx);
 }
 }
-void  clear(bool free = true){
-occs   .clear(free);
-dirty  .clear(free);
+void clear(bool free = true){
+occs .clear(free);
+dirty .clear(free);
 dirties.clear(free);
 }
 };
@@ -239,7 +239,7 @@ template<class K, class Vec, class Deleted, class MkIndex>
 void OccLists<K,Vec,Deleted,MkIndex>::clean(const K& idx)
 {
 Vec& vec = occs[idx];
-int  i, j;
+int i, j;
 for (i = j = 0; i < vec.size(); i++)
 if (!deleted(vec[i]))
 vec[j++] = vec[i];
@@ -254,15 +254,15 @@ uint32_t operator()(CRef cr) const { return (uint32_t)cr; } };
 typedef Map<CRef, T, CRefHash> HashTable;
 HashTable map;
 public:
-void     clear       ()                           { map.clear(); }
-int      size        ()                const      { return map.elems(); }
-void     insert      (CRef cr, const T& t){ map.insert(cr, t); }
-void     growTo      (CRef cr, const T& t){ map.insert(cr, t); }
-void     remove      (CRef cr)            { map.remove(cr); }
-bool     has         (CRef cr, T& t)      { return map.peek(cr, t); }
-const T& operator [] (CRef cr) const      { return map[cr]; }
-T&       operator [] (CRef cr)            { return map[cr]; }
-int  bucket_count() const { return map.bucket_count(); }
+void clear () { map.clear(); }
+int size () const { return map.elems(); }
+void insert (CRef cr, const T& t){ map.insert(cr, t); }
+void growTo (CRef cr, const T& t){ map.insert(cr, t); }
+void remove (CRef cr) { map.remove(cr); }
+bool has (CRef cr, T& t) { return map.peek(cr, t); }
+const T& operator [] (CRef cr) const { return map[cr]; }
+T& operator [] (CRef cr) { return map[cr]; }
+int bucket_count() const { return map.bucket_count(); }
 const vec<typename HashTable::Pair>& bucket(int i) const { return map.bucket(i); }
 void moveTo(CMap& other){ map.moveTo(other.map); }
 void debug(){
@@ -270,13 +270,13 @@ printf(" --- size = %d, bucket_count = %d\n", size(), map.bucket_count()); }
 };
 inline Lit Clause::subsumes(const Clause& other) const
 {
-assert(!header.learnt);   assert(!other.header.learnt);
+assert(!header.learnt); assert(!other.header.learnt);
 assert(header.has_extra); assert(other.header.has_extra);
 if (other.header.size < header.size || (data[header.size].abs & ~other.data[other.header.size].abs) != 0)
 return lit_Error;
-Lit        ret = lit_Undef;
-const Lit* c   = (const Lit*)(*this);
-const Lit* d   = (const Lit*)other;
+Lit ret = lit_Undef;
+const Lit* c = (const Lit*)(*this);
+const Lit* d = (const Lit*)other;
 for (unsigned i = 0; i < header.size; i++) {
 for (unsigned j = 0; j < other.header.size; j++)
 if (c[i] == d[j])

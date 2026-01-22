@@ -102,7 +102,7 @@ addr, nbuf);
 if(readpart(is->part, addr, buf, nbuf) < 0){
 fprint(2, "%s: part %s addr 0x%llux: icachewritesect "
 "readpart: %r\n", argv0, is->part->name, addr);
-err  = -1;
+err = -1;
 continue;
 }
 trace(TraceProc, "icachewritesect updatebuf");

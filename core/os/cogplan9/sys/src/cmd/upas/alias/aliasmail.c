@@ -1,9 +1,9 @@
 #include "common.h"
-static String	*getdbfiles(void);
-static int	translate(char*, char**, String*, String*);
-static int	lookup(String**, String*, String*);
-static int	compare(String*, char*);
-static char*	mklower(char*);
+static String *getdbfiles(void);
+static int translate(char*, char**, String*, String*);
+static int lookup(String**, String*, String*);
+static int compare(String*, char*);
+static char* mklower(char*);
 static int debug;
 static int from;
 static char *namefiles = "namefiles";
@@ -149,7 +149,7 @@ String *line = s_new();
 String *token = s_new();
 String *bangtoken;
 int i, rv = -1;
-char *name =  s_to_c(namev[0]);
+char *name = s_to_c(namev[0]);
 Sinstack *sp;
 DEBUG print("lookup(%s, %s, %s, %s)\n", s_to_c(namev[0]), s_to_c(namev[1]),
 s_to_c(file), s_to_c(alias));

@@ -2,10 +2,10 @@
 # they refer to (using "src=..." in a tag) into the local file space.
 # Assume http: scheme if none specified.
 # Usage:
-#	webgrab [-r] [-v] [-o stem] url
-#  If stem is specified, file will be saved in stem.html and images will
-#  go in stem_1.jpg (or .gif, ...), stem_2.jpg, etc.
-#  If stem is not specified, derive it from url (see getstem comment, below).
+# webgrab [-r] [-v] [-o stem] url
+# If stem is specified, file will be saved in stem.html and images will
+# go in stem_1.jpg (or .gif, ...), stem_2.jpg, etc.
+# If stem is not specified, derive it from url (see getstem comment, below).
 # If -r is specified, get "raw", i.e., no image fetching/html munging.
 # If -v is specified (verbose), print some progress information,
 # with more if -vv is given.
@@ -34,7 +34,7 @@ stderr: ref FD;
 verbose := 0;
 postbody : string;
 httpproxy: ref Url->ParsedUrl;
-noproxydoms: list of string;	# domains that don't require proxy
+noproxydoms: list of string; # domains that don't require proxy
 init(nil: ref Draw->Context, args: list of string)
 {
 sys = load Sys Sys->PATH;
@@ -114,7 +114,7 @@ sys->fprint(stderr, "Using http proxy %s\n", httpproxy.tostring());
 }
 # Make up a stem for forming save-file-names, based on url u.
 # Use the last non-nil component of u.path, without a final extension,
-# else use the host.  Then, if the stem still contains a '.' (e.g., www.lucent)
+# else use the host. Then, if the stem still contains a '.' (e.g., www.lucent)
 # use the part after the final '.'.
 # Finally, if all else fails, use use "grabout".
 getstem(u: ref ParsedUrl) : string
@@ -159,7 +159,7 @@ return;
 }
 # get subordinates, modify contents
 subs : list of (string, string);
-(contents, subs)  = subfix(contents, stem);
+(contents, subs) = subfix(contents, stem);
 writebytes(stem + ".html", contents, fd);
 for(l := subs; l != nil; l = tl l) {
 (fname, suburl) := hd l;
@@ -348,7 +348,7 @@ restfd: ref Sys->FD;
 req : string;
 for(redir := 0; redir < 10; redir++) {
 if(u.port == "")
-u.port = "80";	# default IP port for HTTP
+u.port = "80"; # default IP port for HTTP
 if(verbose)
 sys->fprint(stderr, "connecting to %s\n", u.host);
 dialhost, port: string;
@@ -445,12 +445,12 @@ need_proxy(h: string) : int
 {
 doml := noproxydoms;
 if(doml == nil)
-return 1;		# all domains need proxy
+return 1; # all domains need proxy
 lh := len h;
 for(dom := hd doml; doml != nil; doml = tl doml) {
 ld := len dom;
 if(lh >= ld && h[lh-ld:] == dom)
-return 0;	# domain is on the noproxy list
+return 0; # domain is on the noproxy list
 }
 return 1;
 }

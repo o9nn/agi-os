@@ -1,5 +1,5 @@
-#include	"lib9.h"
-#include	"fcall.h"
+#include "lib9.h"
+#include "fcall.h"
 static
 uchar*
 pstring(uchar *p, char *s)
@@ -185,16 +185,16 @@ break;
 case Tauth:
 PBIT32(p, f->afid);
 p += BIT32SZ;
-p  = pstring(p, f->uname);
-p  = pstring(p, f->aname);
+p = pstring(p, f->uname);
+p = pstring(p, f->aname);
 break;
 case Tattach:
 PBIT32(p, f->fid);
 p += BIT32SZ;
 PBIT32(p, f->afid);
 p += BIT32SZ;
-p  = pstring(p, f->uname);
-p  = pstring(p, f->aname);
+p = pstring(p, f->uname);
+p = pstring(p, f->aname);
 break;
 case Twalk:
 PBIT32(p, f->fid);

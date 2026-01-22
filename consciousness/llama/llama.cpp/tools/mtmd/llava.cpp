@@ -11,15 +11,15 @@
 #include <vector>
 #include <memory>
 #if defined(LLAVA_LOG_OFF)
-#   define LOG_INF(...)
-#   define LOG_WRN(...)
-#   define LOG_ERR(...)
-#   define LOG_DBG(...)
+# define LOG_INF(...)
+# define LOG_WRN(...)
+# define LOG_ERR(...)
+# define LOG_DBG(...)
 #else
-#   define LOG_INF(...) do { fprintf(stdout, __VA_ARGS__); } while (0)
-#   define LOG_WRN(...) do { fprintf(stderr, __VA_ARGS__); } while (0)
-#   define LOG_ERR(...) do { fprintf(stderr, __VA_ARGS__); } while (0)
-#   define LOG_DBG(...) do { fprintf(stdout, __VA_ARGS__); } while (0)
+# define LOG_INF(...) do { fprintf(stdout, __VA_ARGS__); } while (0)
+# define LOG_WRN(...) do { fprintf(stderr, __VA_ARGS__); } while (0)
+# define LOG_ERR(...) do { fprintf(stderr, __VA_ARGS__); } while (0)
+# define LOG_DBG(...) do { fprintf(stdout, __VA_ARGS__); } while (0)
 #endif
 struct clip_image_u8 {
 int nx;
@@ -44,7 +44,7 @@ void operator()(clip_image_f32_batch * val) { clip_image_f32_batch_free(val); }
 };
 typedef std::unique_ptr<clip_image_size, clip_image_size_deleter> clip_image_size_ptr;
 static std::pair<int, int> select_best_resolution(const std::pair<int, int>& original_size, const std::vector<std::pair<int, int>>& possible_resolutions) {
-int original_width  = original_size.first;
+int original_width = original_size.first;
 int original_height = original_size.second;
 std::pair<int, int> best_fit;
 int max_effective_resolution = 0;
@@ -53,7 +53,7 @@ for (const auto& resolution : possible_resolutions) {
 int width = resolution.first;
 int height = resolution.second;
 float scale = std::min(static_cast<float>(width) / original_width, static_cast<float>(height) / original_height);
-int downscaled_width  = static_cast<int>(original_width * scale);
+int downscaled_width = static_cast<int>(original_width * scale);
 int downscaled_height = static_cast<int>(original_height * scale);
 int effective_resolution = std::min(downscaled_width * downscaled_height, original_width * original_height);
 int wasted_resolution = (width * height) - effective_resolution;
@@ -76,7 +76,7 @@ struct ggml_context * ctx;
 const int32_t image_size = clip_get_image_size(ctx_clip);
 const int32_t patch_size = clip_get_patch_size(ctx_clip);
 int32_t num_patches_per_side = image_size / patch_size;
-int num_patches_width  = grid_shape.first;
+int num_patches_width = grid_shape.first;
 int num_patches_height = grid_shape.second;
 const size_t num_images = num_patches_width * num_patches_height + 1;
 size_t ctx_size = 0;
@@ -95,7 +95,7 @@ for (size_t i = 1; i < num_images; i++) {
 size_t offset = (i-1) * clip_embd_nbytes(ctx_clip);
 memcpy((uint8_t *)(image_features->data) + offset, image_embd_v[i], clip_embd_nbytes(ctx_clip));
 }
-struct ggml_cgraph  * gf = ggml_new_graph(model.ctx);
+struct ggml_cgraph * gf = ggml_new_graph(model.ctx);
 size_t size_ele = ggml_type_size(GGML_TYPE_F32);
 struct ggml_tensor *image_features_patchview = ggml_view_4d(model.ctx, image_features,
 num_patches_per_side * clip_n_mmproj_embd(ctx_clip),
@@ -106,7 +106,7 @@ size_ele * num_patches_per_side * clip_n_mmproj_embd(ctx_clip),
 size_ele * num_patches_per_side * clip_n_mmproj_embd(ctx_clip) * num_patches_per_side,
 size_ele * num_patches_per_side * clip_n_mmproj_embd(ctx_clip) * num_patches_per_side * num_patches_width, 0);
 struct ggml_tensor *permuted_cont = ggml_cont(model.ctx, ggml_permute(model.ctx, image_features_patchview, 0, 2, 1, 3));
-struct ggml_tensor *flatten = ggml_view_2d(model.ctx, permuted_cont, clip_n_mmproj_embd(ctx_clip), num_patches_height * num_patches_width * num_patches_per_side * num_patches_per_side,  size_ele * clip_n_mmproj_embd(ctx_clip), 0);
+struct ggml_tensor *flatten = ggml_view_2d(model.ctx, permuted_cont, clip_n_mmproj_embd(ctx_clip), num_patches_height * num_patches_width * num_patches_per_side * num_patches_per_side, size_ele * clip_n_mmproj_embd(ctx_clip), 0);
 ggml_build_forward_expand(gf, flatten);
 ggml_backend_ptr backend { ggml_backend_init_by_type(GGML_BACKEND_DEVICE_TYPE_CPU, nullptr) };
 GGML_ASSERT(backend != nullptr && "failed to initialize CPU backend");
@@ -205,7 +205,7 @@ LOG_INF("%s: load_image_size %d %d\n", __func__, load_image_size.width, load_ima
 }
 else if (clip_is_glm(ctx_clip)){
 struct clip_image_size * load_image_size = clip_image_size_init();
-load_image_size->width  = clip_image_f32_batch_nx(img_res_v.get(), 0);
+load_image_size->width = clip_image_f32_batch_nx(img_res_v.get(), 0);
 load_image_size->height = clip_image_f32_batch_ny(img_res_v.get(), 0);
 clip_add_load_image_size(ctx_clip, load_image_size);
 clip_image_f32 * img_res = clip_image_f32_get_img(img_res_v.get(), 0);
@@ -301,17 +301,17 @@ return false;
 return true;
 }
 struct llava_embd_batch {
-std::vector<llama_pos>      pos;
-std::vector<int32_t>        n_seq_id;
-std::vector<llama_seq_id>   seq_id_0;
+std::vector<llama_pos> pos;
+std::vector<int32_t> n_seq_id;
+std::vector<llama_seq_id> seq_id_0;
 std::vector<llama_seq_id *> seq_ids;
-std::vector<int8_t>         logits;
+std::vector<int8_t> logits;
 llama_batch batch;
 llava_embd_batch(float * embd, int32_t n_tokens, llama_pos pos_0, llama_seq_id seq_id) {
-pos     .resize(n_tokens);
+pos .resize(n_tokens);
 n_seq_id.resize(n_tokens);
 seq_ids .resize(n_tokens + 1);
-logits  .resize(n_tokens);
+logits .resize(n_tokens);
 seq_id_0.resize(1);
 seq_id_0[0] = seq_id;
 seq_ids [n_tokens] = nullptr;
@@ -325,15 +325,15 @@ seq_ids.data(),
 logits.data(),
 };
 for (int i = 0; i < n_tokens; i++) {
-batch.pos     [i] = pos_0 + i;
+batch.pos [i] = pos_0 + i;
 batch.n_seq_id[i] = 1;
-batch.seq_id  [i] = seq_id_0.data();
-batch.logits  [i] = false;
+batch.seq_id [i] = seq_id_0.data();
+batch.logits [i] = false;
 }
 }
 };
 bool llava_eval_image_embed(llama_context * ctx_llama, const struct llava_image_embed * image_embed, int n_batch, int * n_past) {
-int n_embd  = llama_model_n_embd(llama_get_model(ctx_llama));
+int n_embd = llama_model_n_embd(llama_get_model(ctx_llama));
 for (int i = 0; i < image_embed->n_image_pos; i += n_batch) {
 int n_eval = image_embed->n_image_pos - i;
 if (n_eval > n_batch) {

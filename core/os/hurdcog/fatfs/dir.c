@@ -448,7 +448,7 @@ write_word (new->first_cluster_low, np->dn->start_cluster & 0xffff);
 write_word (new->first_cluster_high, np->dn->start_cluster >> 16);
 write_dword (new->file_size, np->dn_stat.st_size);
 if (!(name[0] == '.' && (name[1] == '\0'
-|| (name[1] == '.'  && name[2] =='\0'))))
+|| (name[1] == '.' && name[2] =='\0'))))
 {
 vi_key_t entry_key;
 entry_key.dir_inode = dp->cache_id;

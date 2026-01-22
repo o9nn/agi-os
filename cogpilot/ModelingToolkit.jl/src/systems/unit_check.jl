@@ -146,7 +146,7 @@ return screen_unit(getmetadata(x, VariableUnit, unitless)) # Like x(t) or x[i]
 elseif iscall(op) && !iscall(operation(op))
 gp = getmetadata(x, Symbolics.GetindexParent, nothing) # Like x[1](t)
 return screen_unit(getmetadata(gp, VariableUnit, unitless))
-end  # Actual function calls:
+end # Actual function calls:
 args = arguments(x)
 return get_unit(op, args)
 else # This function should only be reached by Terms, for which `iscall` is true

@@ -33,12 +33,12 @@ fflush(stderr);
 }
 struct gpt2_hparams {
 int32_t n_vocab = 50257;
-int32_t n_ctx   = 1024;
-int32_t n_embd  = 768;
-int32_t n_head  = 12;
+int32_t n_ctx = 1024;
+int32_t n_embd = 768;
+int32_t n_head = 12;
 int32_t n_layer = 12;
-int32_t ftype   = 1;
-float   eps     = 1e-5f;
+int32_t ftype = 1;
+float eps = 1e-5f;
 };
 struct gpt2_layer {
 struct ggml_tensor * ln_1_g;
@@ -128,11 +128,11 @@ return false;
 {
 auto & hparams = model.hparams;
 fin.read((char *) &hparams.n_vocab, sizeof(hparams.n_vocab));
-fin.read((char *) &hparams.n_ctx,   sizeof(hparams.n_ctx));
-fin.read((char *) &hparams.n_embd,  sizeof(hparams.n_embd));
-fin.read((char *) &hparams.n_head,  sizeof(hparams.n_head));
+fin.read((char *) &hparams.n_ctx, sizeof(hparams.n_ctx));
+fin.read((char *) &hparams.n_embd, sizeof(hparams.n_embd));
+fin.read((char *) &hparams.n_head, sizeof(hparams.n_head));
 fin.read((char *) &hparams.n_layer, sizeof(hparams.n_layer));
-fin.read((char *) &hparams.ftype,   sizeof(hparams.ftype));
+fin.read((char *) &hparams.ftype, sizeof(hparams.ftype));
 const int32_t qntvr = hparams.ftype / GGML_QNT_VERSION_FACTOR;
 printf("%s: n_vocab = %d\n", __func__, hparams.n_vocab);
 printf("%s: n_ctx   = %d\n", __func__, hparams.n_ctx);
@@ -171,7 +171,7 @@ return false;
 }
 auto & ctx = model.ctx_w;
 {
-size_t n_tensors = 3  + 2  + 6 + 12*model.hparams.n_layer;
+size_t n_tensors = 3 + 2 + 6 + 12*model.hparams.n_layer;
 struct ggml_init_params params = {
 ggml_tensor_overhead() * n_tensors,
 NULL,
@@ -185,47 +185,47 @@ return false;
 }
 {
 const auto & hparams = model.hparams;
-const int n_embd  = hparams.n_embd;
+const int n_embd = hparams.n_embd;
 const int n_layer = hparams.n_layer;
-const int n_ctx   = hparams.n_ctx;
+const int n_ctx = hparams.n_ctx;
 const int n_vocab = hparams.n_vocab;
 model.layers.resize(n_layer);
 model.ln_f_g = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_embd);
 model.ln_f_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_embd);
-model.wte     = ggml_new_tensor_2d(ctx, wtype,         n_embd, n_vocab);
-model.wpe     = ggml_new_tensor_2d(ctx, GGML_TYPE_F32, n_embd, n_ctx);
-model.lm_head = ggml_new_tensor_2d(ctx, wtype,         n_embd, n_vocab);
+model.wte = ggml_new_tensor_2d(ctx, wtype, n_embd, n_vocab);
+model.wpe = ggml_new_tensor_2d(ctx, GGML_TYPE_F32, n_embd, n_ctx);
+model.lm_head = ggml_new_tensor_2d(ctx, wtype, n_embd, n_vocab);
 model.tensors["model/ln_f/g"] = model.ln_f_g;
 model.tensors["model/ln_f/b"] = model.ln_f_b;
-model.tensors["model/wte"]     = model.wte;
-model.tensors["model/wpe"]     = model.wpe;
+model.tensors["model/wte"] = model.wte;
+model.tensors["model/wpe"] = model.wpe;
 model.tensors["model/lm_head"] = model.lm_head;
 for (int i = 0; i < n_layer; ++i) {
 auto & layer = model.layers[i];
-layer.ln_1_g        = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_embd);
-layer.ln_1_b        = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_embd);
-layer.ln_2_g        = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_embd);
-layer.ln_2_b        = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_embd);
-layer.c_attn_attn_w = ggml_new_tensor_2d(ctx, wtype,           n_embd, 3*n_embd);
+layer.ln_1_g = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_embd);
+layer.ln_1_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_embd);
+layer.ln_2_g = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_embd);
+layer.ln_2_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_embd);
+layer.c_attn_attn_w = ggml_new_tensor_2d(ctx, wtype, n_embd, 3*n_embd);
 layer.c_attn_attn_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, 3*n_embd);
-layer.c_attn_proj_w = ggml_new_tensor_2d(ctx, wtype,           n_embd, n_embd);
-layer.c_attn_proj_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_embd);
-layer.c_mlp_fc_w    = ggml_new_tensor_2d(ctx, wtype,           n_embd, 4*n_embd);
-layer.c_mlp_fc_b    = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, 4*n_embd);
-layer.c_mlp_proj_w  = ggml_new_tensor_2d(ctx, wtype,         4*n_embd, n_embd);
-layer.c_mlp_proj_b  = ggml_new_tensor_1d(ctx, GGML_TYPE_F32,   n_embd);
-model.tensors["model/h" + std::to_string(i) + "/ln_1/g"]        = layer.ln_1_g;
-model.tensors["model/h" + std::to_string(i) + "/ln_1/b"]        = layer.ln_1_b;
-model.tensors["model/h" + std::to_string(i) + "/ln_2/g"]        = layer.ln_2_g;
-model.tensors["model/h" + std::to_string(i) + "/ln_2/b"]        = layer.ln_2_b;
+layer.c_attn_proj_w = ggml_new_tensor_2d(ctx, wtype, n_embd, n_embd);
+layer.c_attn_proj_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_embd);
+layer.c_mlp_fc_w = ggml_new_tensor_2d(ctx, wtype, n_embd, 4*n_embd);
+layer.c_mlp_fc_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, 4*n_embd);
+layer.c_mlp_proj_w = ggml_new_tensor_2d(ctx, wtype, 4*n_embd, n_embd);
+layer.c_mlp_proj_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_embd);
+model.tensors["model/h" + std::to_string(i) + "/ln_1/g"] = layer.ln_1_g;
+model.tensors["model/h" + std::to_string(i) + "/ln_1/b"] = layer.ln_1_b;
+model.tensors["model/h" + std::to_string(i) + "/ln_2/g"] = layer.ln_2_g;
+model.tensors["model/h" + std::to_string(i) + "/ln_2/b"] = layer.ln_2_b;
 model.tensors["model/h" + std::to_string(i) + "/attn/c_attn/w"] = layer.c_attn_attn_w;
 model.tensors["model/h" + std::to_string(i) + "/attn/c_attn/b"] = layer.c_attn_attn_b;
 model.tensors["model/h" + std::to_string(i) + "/attn/c_proj/w"] = layer.c_attn_proj_w;
 model.tensors["model/h" + std::to_string(i) + "/attn/c_proj/b"] = layer.c_attn_proj_b;
-model.tensors["model/h" + std::to_string(i) + "/mlp/c_fc/w"]    = layer.c_mlp_fc_w;
-model.tensors["model/h" + std::to_string(i) + "/mlp/c_fc/b"]    = layer.c_mlp_fc_b;
-model.tensors["model/h" + std::to_string(i) + "/mlp/c_proj/w"]  = layer.c_mlp_proj_w;
-model.tensors["model/h" + std::to_string(i) + "/mlp/c_proj/b"]  = layer.c_mlp_proj_b;
+model.tensors["model/h" + std::to_string(i) + "/mlp/c_fc/w"] = layer.c_mlp_fc_w;
+model.tensors["model/h" + std::to_string(i) + "/mlp/c_fc/b"] = layer.c_mlp_fc_b;
+model.tensors["model/h" + std::to_string(i) + "/mlp/c_proj/w"] = layer.c_mlp_proj_w;
+model.tensors["model/h" + std::to_string(i) + "/mlp/c_proj/b"] = layer.c_mlp_proj_b;
 }
 }
 init_backends(model, params);
@@ -281,10 +281,10 @@ model.buffers_w.push_back(NULL);
 }
 {
 const auto & hparams = model.hparams;
-const int n_embd  = hparams.n_embd;
+const int n_embd = hparams.n_embd;
 const int n_layer = hparams.n_layer;
-const int n_ctx   = hparams.n_ctx;
-const int n_mem      = n_layer*n_ctx;
+const int n_ctx = hparams.n_ctx;
+const int n_mem = n_layer*n_ctx;
 const int n_elements = n_embd*n_mem;
 model.memory_k = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_elements);
 model.memory_v = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_elements);
@@ -311,7 +311,7 @@ int32_t length;
 int32_t ttype;
 fin.read(reinterpret_cast<char *>(&n_dims), sizeof(n_dims));
 fin.read(reinterpret_cast<char *>(&length), sizeof(length));
-fin.read(reinterpret_cast<char *>(&ttype),  sizeof(ttype));
+fin.read(reinterpret_cast<char *>(&ttype), sizeof(ttype));
 if (fin.eof()) {
 break;
 }
@@ -396,10 +396,10 @@ const int n_past,
 const std::vector<gpt_vocab::id> & embd_inp) {
 const int N = embd_inp.size();
 const auto & hparams = model.hparams;
-const int n_embd  = hparams.n_embd;
+const int n_embd = hparams.n_embd;
 const int n_layer = hparams.n_layer;
-const int n_ctx   = hparams.n_ctx;
-const int n_head  = hparams.n_head;
+const int n_ctx = hparams.n_ctx;
+const int n_head = hparams.n_head;
 static size_t buf_size = ggml_tensor_overhead()*GPT2_MAX_NODES + ggml_graph_overhead_custom(GPT2_MAX_NODES, false);
 static std::vector<uint8_t> buf(buf_size);
 struct ggml_init_params params = {
@@ -408,7 +408,7 @@ buf.data(),
 true,
 };
 struct ggml_context * ctx = ggml_init(params);
-struct ggml_cgraph  * gf = ggml_new_graph_custom(ctx, GPT2_MAX_NODES, false);
+struct ggml_cgraph * gf = ggml_new_graph_custom(ctx, GPT2_MAX_NODES, false);
 struct ggml_tensor * embd = ggml_view_1d(ctx, model.embd, N, 0);
 ggml_backend_tensor_set(model.embd, embd_inp.data(), 0, N*ggml_element_size(embd));
 struct ggml_tensor * position = ggml_view_1d(ctx, model.position, N, 0);
@@ -564,7 +564,7 @@ const gpt2_model & model,
 ggml_backend_sched_t sched,
 const int n_past,
 const std::vector<gpt_vocab::id> & embd_inp,
-std::vector<float>         & embd_w) {
+std::vector<float> & embd_w) {
 const int N = embd_inp.size();
 const auto & hparams = model.hparams;
 const int n_vocab = hparams.n_vocab;
@@ -622,7 +622,7 @@ printf("%s: %8s compute buffer size = %8.2f MB\n", __func__, ggml_backend_name(m
 printf("%s: total compute buffer size: %.2f MB\n", __func__, mem_size/1024.0/1024.0);
 }
 int n_past = 0;
-int64_t t_sample_us  = 0;
+int64_t t_sample_us = 0;
 int64_t t_predict_us = 0;
 std::vector<float> logits;
 std::vector<gpt_vocab::id> embd_inp = ::gpt_tokenize(vocab, params.prompt);
@@ -646,9 +646,9 @@ t_predict_us += ggml_time_us() - t_start_us;
 n_past += embd.size();
 embd.clear();
 if (i >= embd_inp.size()) {
-const int   top_k = params.top_k;
+const int top_k = params.top_k;
 const float top_p = params.top_p;
-const float temp  = params.temp;
+const float temp = params.temp;
 const int n_vocab = model.hparams.n_vocab;
 gpt_vocab::id id = 0;
 {

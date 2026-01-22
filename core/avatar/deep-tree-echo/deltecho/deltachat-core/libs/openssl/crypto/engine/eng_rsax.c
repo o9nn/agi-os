@@ -128,11 +128,11 @@ break;
 return to_return;
 }
 # ifndef OPENSSL_NO_RSA
-#  ifdef _WIN32
+# ifdef _WIN32
 typedef unsigned __int64 UINT64;
-#  else
+# else
 typedef unsigned long long UINT64;
-#  endif
+# endif
 typedef unsigned short UINT16;
 static int interleaved_array_to_bn_512(BIGNUM *b, UINT64 *array);
 static int bn_extract_to_array_512(const BIGNUM *b, unsigned int n,

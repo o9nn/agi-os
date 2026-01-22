@@ -24,7 +24,7 @@ struct compare_sti_less {
 bool operator()(const std::pair<Handle, AttentionValuePtr>& h1,
 const std::pair<Handle, AttentionValuePtr>& h2) const
 {
-return  (h1.second)->getSTI() < (h2.second)->getSTI();
+return (h1.second)->getSTI() < (h2.second)->getSTI();
 }
 };
 std::multiset<std::pair<Handle, AttentionValuePtr>, compare_sti_less> attentionalFocus;

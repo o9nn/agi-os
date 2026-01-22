@@ -17,7 +17,7 @@ return;
 const csmVersion Version = csmGetVersion();
 const uint32 Major = static_cast<uint32>((Version & 0xFF000000) >> 24);
 const uint32 Minor = static_cast<uint32>((Version & 0x00FF0000) >> 16);
-const uint32 Patch = static_cast<uint32>((Version & 0x0000FFFF)      );
+const uint32 Patch = static_cast<uint32>((Version & 0x0000FFFF) );
 const uint32 VersionNumber = Version;
 UE_LOG(LogCubism, Log, TEXT("Live2D Cubism Core version: %02d.%02d.%04d (%d)"), Major, Minor, Patch, VersionNumber);
 UE_LOG(LogCubism, Log, TEXT("FLive2DCubismFrameworkModule::StartupModule() is complete."));

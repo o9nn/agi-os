@@ -306,7 +306,7 @@ Notes:
 - The complex outgoing matrix, ``\Delta``, is defined by
 ```math
 \Delta_{i j} = \begin{cases}
-= 0,    &\text{if } B_{i j} = 1, \\
+= 0, &\text{if } B_{i j} = 1, \\
 = B_{i j}, &\text{otherwise.}
 \end{cases}
 ```
@@ -377,7 +377,7 @@ nps.incidencegraph
 end
 function incidencematgraph(incidencemat::Matrix{Int})
 @assert all(∈([-1, 0, 1]), incidencemat)
-n = size(incidencemat, 1)  # no. of nodes/complexes
+n = size(incidencemat, 1) # no. of nodes/complexes
 graph = Graphs.DiGraph(n)
 for col in eachcol(incidencemat)
 src = 0
@@ -566,7 +566,7 @@ newps = Vector{eltype(p)}()
 for rx in rxs
 Symbolics.get_variables!(newps, rx.rate, p)
 end
-rxs, specs, newps   # reactions and species involved in reactions of subnetwork
+rxs, specs, newps # reactions and species involved in reactions of subnetwork
 end
 """
 subnetworks(rn::ReactionSystem)
@@ -739,7 +739,7 @@ end
 # Used in the subsequent function.
 function cache_conservationlaw_eqs!(rn::ReactionSystem, N::AbstractMatrix, col_order)
 nullity = size(N, 1)
-r = numspecies(rn) - nullity     # rank of the netstoichmat
+r = numspecies(rn) - nullity # rank of the netstoichmat
 sts = species(rn)
 indepidxs = col_order[begin:r]
 indepspecs = sts[indepidxs]
@@ -1065,9 +1065,9 @@ complexes, D = reactioncomplexes(rn)
 lcs = linkageclasses(rn)
 tslcs = terminallinkageclasses(rn)
 # Check the conditions for the deficiency one theorem:
-#   1) the deficiency of each individual linkage class is at most 1;
-#   2) the sum of the linkage deficiencies is the total deficiency, and
-#   3) there is only one terminal linkage class per linkage class.
+# 1) the deficiency of each individual linkage class is at most 1;
+# 2) the sum of the linkage deficiencies is the total deficiency, and
+# 3) there is only one terminal linkage class per linkage class.
 all(<=(1), δ_l) && (sum(δ_l) == δ) && (length(lcs) == length(tslcs))
 end
 """

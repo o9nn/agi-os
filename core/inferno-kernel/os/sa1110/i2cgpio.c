@@ -1,15 +1,15 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"io.h"
-#include	"i2c.h"
-static  struct {
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "io.h"
+#include "i2c.h"
+static struct {
 Lock;
-ulong	sda;
-ulong	scl;
+ulong sda;
+ulong scl;
 } i2c;
 static void
 i2c_set(int pin)

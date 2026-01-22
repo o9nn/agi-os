@@ -1,3 +1,3 @@
 export interface PathMethods {
-  join: (paths: string[]) => string
+join: (paths: string[]) => string
 }

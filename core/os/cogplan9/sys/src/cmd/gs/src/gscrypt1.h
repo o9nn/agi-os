@@ -1,5 +1,5 @@
 #ifndef gscrypt1_INCLUDED
-#  define gscrypt1_INCLUDED
+# define gscrypt1_INCLUDED
 typedef ushort crypt_state;
 int gs_type1_encrypt(byte * dest, const byte * src, uint len,
 crypt_state * pstate);

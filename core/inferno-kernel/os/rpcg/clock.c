@@ -1,22 +1,22 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"ureg.h"
-#include	<isa.h>
-#include	<interp.h>
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "ureg.h"
+#include <isa.h>
+#include <interp.h>
 typedef struct Clock0link Clock0link;
 typedef struct Clock0link {
-void		(*clock)(void);
-Clock0link*	link;
+void (*clock)(void);
+Clock0link* link;
 } Clock0link;
 static Clock0link *clock0link;
 static Lock clock0lock;
-ulong	clkrelinq;
-void	(*kproftick)(ulong);
-void	(*archclocktick)(void);
+ulong clkrelinq;
+void (*kproftick)(ulong);
+void (*archclocktick)(void);
 Timer*
 addclock0link(void (*clock)(void), int)
 {
@@ -55,7 +55,7 @@ for(i = 0; i < l; i++)
 enum {
 Timebase = 2,
 };
-static	ulong	clkreload;
+static ulong clkreload;
 void
 clockinit(void)
 {

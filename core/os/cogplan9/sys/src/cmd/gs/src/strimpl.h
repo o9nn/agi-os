@@ -1,5 +1,5 @@
 #ifndef strimpl_INCLUDED
-#  define strimpl_INCLUDED
+# define strimpl_INCLUDED
 #include "scommon.h"
 #include "gstypes.h"
 #include "gsstruct.h"

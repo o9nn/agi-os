@@ -6,20 +6,20 @@
 #include "master-service-private.h"
 #include "master-service-settings.h"
 #define HAPROXY_V1_MAX_HEADER_SIZE (108)
-#define PP2_TYPE_ALPN           0x01
-#define PP2_TYPE_AUTHORITY      0x02
-#define PP2_TYPE_CRC32C         0x03
-#define PP2_TYPE_NOOP           0x04
-#define PP2_TYPE_SSL            0x20
+#define PP2_TYPE_ALPN 0x01
+#define PP2_TYPE_AUTHORITY 0x02
+#define PP2_TYPE_CRC32C 0x03
+#define PP2_TYPE_NOOP 0x04
+#define PP2_TYPE_SSL 0x20
 #define PP2_SUBTYPE_SSL_VERSION 0x21
-#define PP2_SUBTYPE_SSL_CN      0x22
-#define PP2_SUBTYPE_SSL_CIPHER  0x23
+#define PP2_SUBTYPE_SSL_CN 0x22
+#define PP2_SUBTYPE_SSL_CIPHER 0x23
 #define PP2_SUBTYPE_SSL_SIG_ALG 0x24
 #define PP2_SUBTYPE_SSL_KEY_ALG 0x25
-#define PP2_TYPE_NETNS          0x30
-#define PP2_CLIENT_SSL	   	0x01
-#define PP2_CLIENT_CERT_CONN	0x02
-#define PP2_CLIENT_CERT_SESS	0x04
+#define PP2_TYPE_NETNS 0x30
+#define PP2_CLIENT_SSL 0x01
+#define PP2_CLIENT_CERT_CONN 0x02
+#define PP2_CLIENT_CERT_SESS 0x04
 enum haproxy_version_t {
 HAPROXY_VERSION_1,
 HAPROXY_VERSION_2,
@@ -30,14 +30,14 @@ HAPROXY_CMD_PROXY = 0x01
 };
 enum {
 HAPROXY_AF_UNSPEC = 0x00,
-HAPROXY_AF_INET   = 0x01,
-HAPROXY_AF_INET6  = 0x02,
-HAPROXY_AF_UNIX   = 0x03
+HAPROXY_AF_INET = 0x01,
+HAPROXY_AF_INET6 = 0x02,
+HAPROXY_AF_UNIX = 0x03
 };
 enum {
 HAPROXY_SOCK_UNSPEC = 0x00,
 HAPROXY_SOCK_STREAM = 0x01,
-HAPROXY_SOCK_DGRAM  = 0x02
+HAPROXY_SOCK_DGRAM = 0x02
 };
 static const char haproxy_v2sig[12] =
 "\x0D\x0A\x0D\x0A\x00\x0D\x0A\x51\x55\x49\x54\x0A";
@@ -56,8 +56,8 @@ uint16_t src_port;
 uint16_t dst_port;
 } ip4;
 struct {
-uint8_t  src_addr[16];
-uint8_t  dst_addr[16];
+uint8_t src_addr[16];
+uint8_t dst_addr[16];
 uint16_t src_port;
 uint16_t dst_port;
 } ip6;

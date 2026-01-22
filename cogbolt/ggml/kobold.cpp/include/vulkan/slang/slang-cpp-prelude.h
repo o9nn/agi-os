@@ -23,7 +23,7 @@
 #ifdef __cplusplus
 #define SLANG_PRELUDE_EXTERN_C extern "C"
 #define SLANG_PRELUDE_EXTERN_C_START \
-extern "C"                       \
+extern "C" \
 {
 #define SLANG_PRELUDE_EXTERN_C_END }
 #else
@@ -218,12 +218,12 @@ queryInterface(SlangUUID const& uuid, void** outObject) = 0;
 virtual SLANG_NO_THROW uint32_t SLANG_MCALL addRef() = 0;
 virtual SLANG_NO_THROW uint32_t SLANG_MCALL release() = 0;
 };
-#define SLANG_COM_INTERFACE(a, b, c, d0, d1, d2, d3, d4, d5, d6, d7)             \
-public:                                                                          \
-SLANG_FORCE_INLINE static const SlangUUID& getTypeGuid()                     \
-{                                                                            \
+#define SLANG_COM_INTERFACE(a, b, c, d0, d1, d2, d3, d4, d5, d6, d7) \
+public: \
+SLANG_FORCE_INLINE static const SlangUUID& getTypeGuid() \
+{ \
 static const SlangUUID guid = {a, b, c, d0, d1, d2, d3, d4, d5, d6, d7}; \
-return guid;                                                             \
+return guid; \
 }
 #endif
 #include "slang-cpp-scalar-intrinsics.h"

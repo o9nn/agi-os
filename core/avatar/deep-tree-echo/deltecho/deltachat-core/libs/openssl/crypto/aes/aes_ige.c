@@ -11,11 +11,11 @@ unsigned long data[N_WORDS];
 # define UNALIGNED_MEMOPS_ARE_FAST 0
 #endif
 #if UNALIGNED_MEMOPS_ARE_FAST
-# define load_block(d, s)        (d) = *(const aes_block_t *)(s)
-# define store_block(d, s)       *(aes_block_t *)(d) = (s)
+# define load_block(d, s) (d) = *(const aes_block_t *)(s)
+# define store_block(d, s) *(aes_block_t *)(d) = (s)
 #else
-# define load_block(d, s)        memcpy((d).data, (s), AES_BLOCK_SIZE)
-# define store_block(d, s)       memcpy((d), (s).data, AES_BLOCK_SIZE)
+# define load_block(d, s) memcpy((d).data, (s), AES_BLOCK_SIZE)
+# define store_block(d, s) memcpy((d), (s).data, AES_BLOCK_SIZE)
 #endif
 void AES_ige_encrypt(const unsigned char *in, unsigned char *out,
 size_t length, const AES_KEY *key,

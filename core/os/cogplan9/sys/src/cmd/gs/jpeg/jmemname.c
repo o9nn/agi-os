@@ -7,27 +7,27 @@ extern void * malloc JPP((size_t size));
 extern void free JPP((void *ptr));
 #endif
 #ifndef SEEK_SET
-#define SEEK_SET  0
+#define SEEK_SET 0
 #endif
 #ifdef DONT_USE_B_MODE
-#define READ_BINARY	"r"
-#define RW_BINARY	"w+"
+#define READ_BINARY "r"
+#define RW_BINARY "w+"
 #else
 #ifdef VMS
-#define READ_BINARY	"rb", "ctx=stm"
-#define RW_BINARY	"w+b", "ctx=stm"
+#define READ_BINARY "rb", "ctx=stm"
+#define RW_BINARY "w+b", "ctx=stm"
 #else
-#define READ_BINARY	"rb"
-#define RW_BINARY	"w+b"
+#define READ_BINARY "rb"
+#define RW_BINARY "w+b"
 #endif
 #endif
 #ifndef TEMP_DIRECTORY
-#define TEMP_DIRECTORY  "/usr/tmp/"
+#define TEMP_DIRECTORY "/usr/tmp/"
 #endif
 static int next_file_num;
 #ifdef NO_MKTEMP
 #ifndef TEMP_FILE_NAME
-#define TEMP_FILE_NAME  "%sJPG%03d.TMP"
+#define TEMP_FILE_NAME "%sJPG%03d.TMP"
 #endif
 #ifndef NO_ERRNO_H
 #include <errno.h>
@@ -54,7 +54,7 @@ fclose(tfile);
 }
 #else
 #ifndef TEMP_FILE_NAME
-#define TEMP_FILE_NAME  "%sJPG%dXXXXXX"
+#define TEMP_FILE_NAME "%sJPG%dXXXXXX"
 #endif
 LOCAL(void)
 select_file_name (char * fname)
@@ -85,7 +85,7 @@ jpeg_free_large (j_common_ptr cinfo, void FAR * object, size_t sizeofobject)
 free(object);
 }
 #ifndef DEFAULT_MAX_MEM
-#define DEFAULT_MAX_MEM		1000000L
+#define DEFAULT_MAX_MEM 1000000L
 #endif
 GLOBAL(long)
 jpeg_mem_available (j_common_ptr cinfo, long min_bytes_needed,

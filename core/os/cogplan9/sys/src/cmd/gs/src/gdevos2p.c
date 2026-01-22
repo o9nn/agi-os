@@ -156,10 +156,10 @@ break;
 }
 dev->width = hcinfo.cx * caps[0] / 1000;
 dev->height = hcinfo.cy * caps[1] / 1000;
-m[0]   = hcinfo.xLeftClip / 25.4;
-m[1]   = hcinfo.yBottomClip / 25.4;
-m[2]   = (hcinfo.cx - hcinfo.xRightClip) / 25.4;
-m[3]   = (hcinfo.cy - hcinfo.yTopClip) / 25.4;
+m[0] = hcinfo.xLeftClip / 25.4;
+m[1] = hcinfo.yBottomClip / 25.4;
+m[2] = (hcinfo.cx - hcinfo.xRightClip) / 25.4;
+m[3] = (hcinfo.cy - hcinfo.yTopClip) / 25.4;
 gx_device_set_margins(dev, m, true);
 opdev->clipbox[0] = (int)(hcinfo.xLeftClip / 25.4 * dev->x_pixels_per_inch + 1);
 opdev->clipbox[1] = (int)(hcinfo.yBottomClip / 25.4 * dev->y_pixels_per_inch + 1);

@@ -1,29 +1,29 @@
-#pragma	lib	"liboventi.a"
-#pragma	src	"/sys/src/liboventi"
-typedef struct VtSession	VtSession;
-typedef struct VtSha1		VtSha1;
-typedef struct Packet		Packet;
-typedef struct VtLock 		VtLock;
-typedef struct VtRendez		VtRendez;
-typedef struct VtRoot		VtRoot;
-typedef struct VtEntry		VtEntry;
-typedef struct VtServerVtbl	VtServerVtbl;
+#pragma lib "liboventi.a"
+#pragma src "/sys/src/liboventi"
+typedef struct VtSession VtSession;
+typedef struct VtSha1 VtSha1;
+typedef struct Packet Packet;
+typedef struct VtLock VtLock;
+typedef struct VtRendez VtRendez;
+typedef struct VtRoot VtRoot;
+typedef struct VtEntry VtEntry;
+typedef struct VtServerVtbl VtServerVtbl;
 #pragma incomplete VtSession
 #pragma incomplete VtSha1
 #pragma incomplete Packet
 #pragma incomplete VtLock
 #pragma incomplete VtRendez
 enum {
-VtScoreSize	= 20,
-VtMaxLumpSize	= 56*1024,
-VtPointerDepth	= 7,
-VtEntrySize	= 40,
-VtRootSize 	= 300,
-VtMaxStringSize	= 1000,
-VtAuthSize 	= 1024,
-MaxFragSize 	= 9*1024,
-VtMaxFileSize	= (1ULL<<48) - 1,
-VtRootVersion	= 2,
+VtScoreSize = 20,
+VtMaxLumpSize = 56*1024,
+VtPointerDepth = 7,
+VtEntrySize = 40,
+VtRootSize = 300,
+VtMaxStringSize = 1000,
+VtAuthSize = 1024,
+MaxFragSize = 9*1024,
+VtMaxFileSize = (1ULL<<48) - 1,
+VtRootVersion = 2,
 };
 enum {
 VtCryptoStrengthNone,
@@ -205,6 +205,6 @@ void vtFdClose(int);
 int vtFdRead(int, uchar*, int);
 int vtFdReadFully(int, uchar*, int);
 int vtFdWrite(int, uchar*, int);
-#pragma	varargck	type	"V"		uchar*
-#pragma	varargck	type	"R"		void
-#pragma	varargck	argpos	vtSetError	1
+#pragma varargck type "V" uchar*
+#pragma varargck type "R" void
+#pragma varargck argpos vtSetError 1

@@ -13,69 +13,69 @@ Format: module
 init: fn(nil: ref Draw->Context, args: list of string);
 };
 #
-#  floppy types (all MFM encoding)
+# floppy types (all MFM encoding)
 #
 Type: adt {
-name:	string;
-bytes:	int;	# bytes/sector
-sectors:	int;	# sectors/track
-heads:	int;	# number of heads
-tracks:	int;	# tracks/disk
-media:	int;	# media descriptor byte
-cluster:	int;	# default cluster size
+name: string;
+bytes: int; # bytes/sector
+sectors: int; # sectors/track
+heads: int; # number of heads
+tracks: int; # tracks/disk
+media: int; # media descriptor byte
+cluster: int; # default cluster size
 };
-floppytype := array[] of  {
-Type ( "3½HD",	512, 18,	2,	80,	16rf0,	1 ),
-Type ( "3½DD",	512,	  9,	2,	80,	16rf9,	2 ),
-Type ( "3½QD",	512, 36,	2,	80,	16rf9,	2 ),	# invented
-Type ( "5¼HD",	512,	15,	2,	80,	16rf9,	1 ),
-Type ( "5¼DD",	512,	  9,	2,	40,	16rfd,	2 ),
-Type	( "hard",	512,	  0,	0,	  0,	16rf8,	4 ),
+floppytype := array[] of {
+Type ( "3½HD", 512, 18, 2, 80, 16rf0, 1 ),
+Type ( "3½DD", 512, 9, 2, 80, 16rf9, 2 ),
+Type ( "3½QD", 512, 36, 2, 80, 16rf9, 2 ), # invented
+Type ( "5¼HD", 512, 15, 2, 80, 16rf9, 1 ),
+Type ( "5¼DD", 512, 9, 2, 40, 16rfd, 2 ),
+Type ( "hard", 512, 0, 0, 0, 16rf8, 4 ),
 };
 # offsets in DOS boot area
-DB_MAGIC 	: con 0;
-DB_VERSION	: con 3;
-DB_SECTSIZE	: con 11;
-DB_CLUSTSIZE	: con 13;
-DB_NRESRV	: con 14;
-DB_NFATS	: con 16;
-DB_ROOTSIZE	: con	17;
-DB_VOLSIZE	: con	19;
+DB_MAGIC : con 0;
+DB_VERSION : con 3;
+DB_SECTSIZE : con 11;
+DB_CLUSTSIZE : con 13;
+DB_NRESRV : con 14;
+DB_NFATS : con 16;
+DB_ROOTSIZE : con 17;
+DB_VOLSIZE : con 19;
 DB_MEDIADESC: con 21;
-DB_FATSIZE	: con 22;
-DB_TRKSIZE	: con 24;
-DB_NHEADS	: con 26;
-DB_NHIDDEN	: con 28;
+DB_FATSIZE : con 22;
+DB_TRKSIZE : con 24;
+DB_NHEADS : con 26;
+DB_NHIDDEN : con 28;
 DB_BIGVOLSIZE: con 32;
-DB_DRIVENO 	: con 36;
+DB_DRIVENO : con 36;
 DB_RESERVED0: con 37;
-DB_BOOTSIG	: con 38;
-DB_VOLID	: con 39;
-DB_LABEL	: con 43;
-DB_TYPE		: con 54;
+DB_BOOTSIG : con 38;
+DB_VOLID : con 39;
+DB_LABEL : con 43;
+DB_TYPE : con 54;
 DB_VERSIONSIZE: con 8;
-DB_LABELSIZE	: con 11;
-DB_TYPESIZE	: con 8;
-DB_SIZE		: con 62;
+DB_LABELSIZE : con 11;
+DB_TYPESIZE : con 8;
+DB_SIZE : con 62;
 # offsets in DOS directory
-DD_NAME	: con 0;
-DD_EXT		: con 8;
-DD_ATTR		: con 11;
-DD_RESERVED 	: con 12;
-DD_TIME		: con 22;
-DD_DATE		: con 24;
-DD_START	: con 26;
-DD_LENGTH	: con 28;
-DD_NAMESIZE	: con 8;
-DD_EXTSIZE	: con 3;
-DD_SIZE		: con 32;
-DRONLY	: con 16r01;
-DHIDDEN	: con 16r02;
-DSYSTEM	: con byte 16r04;
-DVLABEL	: con byte 16r08;
-DDIR	: con byte 16r10;
-DARCH	: con byte 16r20;
-#  the boot program for the boot sector.
+DD_NAME : con 0;
+DD_EXT : con 8;
+DD_ATTR : con 11;
+DD_RESERVED : con 12;
+DD_TIME : con 22;
+DD_DATE : con 24;
+DD_START : con 26;
+DD_LENGTH : con 28;
+DD_NAMESIZE : con 8;
+DD_EXTSIZE : con 3;
+DD_SIZE : con 32;
+DRONLY : con 16r01;
+DHIDDEN : con 16r02;
+DSYSTEM : con byte 16r04;
+DVLABEL : con byte 16r08;
+DDIR : con byte 16r10;
+DARCH : con byte 16r20;
+# the boot program for the boot sector.
 bootprog := array[512] of {
 16r000 =>
 byte 16rEB, byte 16r3C, byte 16r90, byte 16r00, byte 16r00, byte 16r00, byte 16r00, byte 16r00,
@@ -88,15 +88,15 @@ byte 16r8E, byte 16rC3, byte 16rBB, byte 16r72, byte 16r00, byte 16rB8, byte 16r
 byte 16r26, byte 16r89, byte 16r07, byte 16rEA, byte 16r00, byte 16r00, byte 16rFF, byte 16rFF,
 byte 16rEB, byte 16rD6, byte 16rAC, byte 16r0A, byte 16rC0, byte 16r74, byte 16r09, byte 16rB4,
 byte 16r0E, byte 16rBB, byte 16r07, byte 16r00, byte 16rCD, byte 16r10, byte 16rEB, byte 16rF2,
-byte 16rC3,  byte 'N',  byte 'o',  byte 't',  byte ' ',  byte 'a',  byte ' ',  byte 'b',
-byte 'o',  byte 'o',  byte 't',  byte 'a',  byte 'b',  byte 'l',  byte 'e',  byte ' ',
-byte 'd',  byte 'i',  byte 's',  byte 'c',  byte ' ',  byte 'o',  byte 'r',  byte ' ',
-byte 'd',  byte 'i',  byte 's',  byte 'c',  byte ' ',  byte 'e',  byte 'r',  byte 'r',
-byte 'o',  byte 'r', byte '\r', byte '\n',  byte 'P',  byte 'r',  byte 'e',  byte 's',
-byte 's',  byte ' ',  byte 'a',  byte 'l',  byte 'm',  byte 'o',  byte 's',  byte 't',
-byte ' ',  byte 'a',  byte 'n',  byte 'y',  byte ' ',  byte 'k',  byte 'e',  byte 'y',
-byte ' ',  byte 't',  byte 'o',  byte ' ',  byte 'r',  byte 'e',  byte 'b',  byte 'o',
-byte 'o',  byte 't',  byte '.',  byte '.',  byte '.', byte 16r00, byte 16r00, byte 16r00,
+byte 16rC3, byte 'N', byte 'o', byte 't', byte ' ', byte 'a', byte ' ', byte 'b',
+byte 'o', byte 'o', byte 't', byte 'a', byte 'b', byte 'l', byte 'e', byte ' ',
+byte 'd', byte 'i', byte 's', byte 'c', byte ' ', byte 'o', byte 'r', byte ' ',
+byte 'd', byte 'i', byte 's', byte 'c', byte ' ', byte 'e', byte 'r', byte 'r',
+byte 'o', byte 'r', byte '\r', byte '\n', byte 'P', byte 'r', byte 'e', byte 's',
+byte 's', byte ' ', byte 'a', byte 'l', byte 'm', byte 'o', byte 's', byte 't',
+byte ' ', byte 'a', byte 'n', byte 'y', byte ' ', byte 'k', byte 'e', byte 'y',
+byte ' ', byte 't', byte 'o', byte ' ', byte 'r', byte 'e', byte 'b', byte 'o',
+byte 'o', byte 't', byte '.', byte '.', byte '.', byte 16r00, byte 16r00, byte 16r00,
 16r1F0 =>
 byte 16r00, byte 16r00, byte 16r00, byte 16r00, byte 16r00, byte 16r00, byte 16r00, byte 16r00,
 byte 16r00, byte 16r00, byte 16r00, byte 16r00, byte 16r00, byte 16r00, byte 16r55, byte 16rAA,
@@ -105,13 +105,13 @@ byte 16r00,
 };
 dev: string;
 clustersize := 0;
-fat: array of byte;	# the fat
+fat: array of byte; # the fat
 fatbits: int;
 fatsecs: int;
-fatlast: int;	# last cluster allocated
+fatlast: int; # last cluster allocated
 clusters: int;
 volsecs: int;
-root: array of byte;	# first block of root
+root: array of byte; # first block of root
 rootsecs: int;
 rootfiles: int;
 rootnext: int;
@@ -120,11 +120,11 @@ xflag := 0;
 nresrv := 1;
 dos := 0;
 fflag := 0;
-file: string;	# output file name
+file: string; # output file name
 pbs: string;
 typ: string;
-Sof: con 1;	# start of file
-Eof: con 2;	# end of file
+Sof: con 1; # start of file
+Eof: con 2; # end of file
 stdin, stdout, stderr: ref Sys->FD;
 fatal(str: string)
 {
@@ -263,7 +263,7 @@ raise "fail:failed disk sanity check";
 getdriveno(disk: ref Disk): int
 {
 if(disk.dtype != "sd")
-return 16r80;	# first hard disk
+return 16r80; # first hard disk
 name := sys->fd2path(disk.fd);
 if(len name < 3)
 return 16r80;
@@ -344,7 +344,7 @@ memset(buf, 0, DB_SIZE);
 #
 # Jump instruction and OEM name
 #
-b := buf;	# hmm.
+b := buf; # hmm.
 b[DB_MAGIC+0] = byte 16rEB;
 b[DB_MAGIC+1] = byte 16r3C;
 b[DB_MAGIC+2] = byte 16r90;
@@ -388,14 +388,14 @@ clustersize = t.cluster;
 #
 # the number of fat bits depends on how much disk is left
 # over after you subtract out the space taken up by the fat tables.
-# try both.  what a crock.
+# try both. what a crock.
 #
 for(fatbits = 12;;){
 volsecs = int (length/big secsize);
 #
-# here's a crock inside a crock.  even having fixed fatbits,
+# here's a crock inside a crock. even having fixed fatbits,
 # the number of fat sectors depends on the number of clusters,
-# but of course we don't know yet.  maybe iterating will get us there.
+# but of course we don't know yet. maybe iterating will get us there.
 # or maybe it will cycle.
 #
 clusters = 0;
@@ -470,7 +470,7 @@ fatal(sys->sprint("writing to boot sector: %r"));
 if(dofat == 0)
 return;
 #
-#  allocate an in memory fat
+# allocate an in memory fat
 #
 if(sys->seek(disk.wfd, big (nresrv*secsize), 0) < big 0)
 fatal(sys->sprint("seek to fat: %r"));
@@ -484,14 +484,14 @@ fat[2] = byte 16rff;
 if(fatbits == 16)
 fat[3] = byte 16rff;
 fatlast = 1;
-if(sys->seek(disk.wfd, big (2*fatsecs*secsize), 1) < big 0)	# 2 fats
+if(sys->seek(disk.wfd, big (2*fatsecs*secsize), 1) < big 0) # 2 fats
 fatal(sys->sprint("seek to root: %r"));
 if(chatty) sys->print("root @%buX\n", sys->seek(disk.wfd, big 0, 1));
 #
-#  allocate an in memory root
+# allocate an in memory root
 #
 root = array[rootsecs*secsize] of {* => byte 0};
-if(sys->seek(disk.wfd, big (rootsecs*secsize), 1) < big 0)		# rootsecs
+if(sys->seek(disk.wfd, big (rootsecs*secsize), 1) < big 0) # rootsecs
 fatal(sys->sprint("seek to files: %r"));
 if(chatty) sys->print("files @%buX\n", sys->seek(disk.wfd, big 0, 1));
 #
@@ -561,7 +561,7 @@ addrname(root[p:], d, hd arg, x);
 p += DD_SIZE;
 }
 #
-#  write the fats and root
+# write the fats and root
 #
 if(commit){
 if(sys->seek(disk.wfd, big (nresrv*secsize), 0) < big 0)
@@ -575,7 +575,7 @@ fatal(sys->sprint("writing root: %r"));
 }
 }
 #
-#  allocate a cluster
+# allocate a cluster
 #
 clustalloc(flag: int): int
 {

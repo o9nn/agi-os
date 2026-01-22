@@ -32,7 +32,7 @@ svp_t audio_rate_tbl[] = {
 { "44100", 44100 },
 {nil},
 };
-Audio_d Default_Audio_Format =  {
+Audio_d Default_Audio_Format = {
 0,
 16,
 Audio_Max_Val,

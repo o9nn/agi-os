@@ -4,12 +4,12 @@
 #include "dat.h"
 #include "protos.h"
 enum {
-HDLC_frame=	0x7e,
-HDLC_esc=	0x7d,
-PPP_addr=	0xff,
-PPP_ctl=	0x3,
-PPP_initfcs=	0xffff,
-PPP_goodfcs=	0xf0b8,
+HDLC_frame= 0x7e,
+HDLC_esc= 0x7d,
+PPP_addr= 0xff,
+PPP_ctl= 0x3,
+PPP_initfcs= 0xffff,
+PPP_goodfcs= 0xf0b8,
 };
 ushort fcstab[256] =
 {
@@ -50,7 +50,7 @@ static uchar inbuf[16*1024];
 static int inlen;
 static Mux p_mux[] =
 {
-{"ppp",		(PPP_addr<<8)|PPP_ctl,	} ,
+{"ppp", (PPP_addr<<8)|PPP_ctl, } ,
 {0}
 };
 enum

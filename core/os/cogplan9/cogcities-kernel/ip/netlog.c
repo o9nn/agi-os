@@ -1,46 +1,46 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"../ip/ip.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "../ip/ip.h"
 enum {
-Nlog		= 16*1024,
+Nlog = 16*1024,
 };
 struct Netlog {
 Lock;
-int	opens;
-char*	buf;
-char	*end;
-char	*rptr;
-int	len;
-int	logmask;
-uchar	iponly[IPaddrlen];
-int	iponlyset;
+int opens;
+char* buf;
+char *end;
+char *rptr;
+int len;
+int logmask;
+uchar iponly[IPaddrlen];
+int iponlyset;
 QLock;
 Rendez;
 };
 typedef struct Netlogflag {
-char*	name;
-int	mask;
+char* name;
+int mask;
 } Netlogflag;
 static Netlogflag flags[] =
 {
-{ "ppp",	Logppp, },
-{ "ip",		Logip, },
-{ "fs",		Logfs, },
-{ "tcp",	Logtcp, },
-{ "icmp",	Logicmp, },
-{ "udp",	Logudp, },
-{ "compress",	Logcompress, },
-{ "gre",	Loggre, },
-{ "tcpwin",	Logtcp|Logtcpwin, },
-{ "tcprxmt",	Logtcp|Logtcprxmt, },
-{ "udpmsg",	Logudp|Logudpmsg, },
-{ "ipmsg",	Logip|Logipmsg, },
-{ "esp",	Logesp, },
-{ nil,		0, },
+{ "ppp", Logppp, },
+{ "ip", Logip, },
+{ "fs", Logfs, },
+{ "tcp", Logtcp, },
+{ "icmp", Logicmp, },
+{ "udp", Logudp, },
+{ "compress", Logcompress, },
+{ "gre", Loggre, },
+{ "tcpwin", Logtcp|Logtcpwin, },
+{ "tcprxmt", Logtcp|Logtcprxmt, },
+{ "udpmsg", Logudp|Logudpmsg, },
+{ "ipmsg", Logip|Logipmsg, },
+{ "esp", Logesp, },
+{ nil, 0, },
 };
 char Ebadnetctl[] = "too few arguments for netlog control message";
 enum
@@ -51,9 +51,9 @@ CMonly,
 };
 static
 Cmdtab routecmd[] = {
-CMset,		"set",		0,
-CMclear,	"clear",	0,
-CMonly,		"only",		0,
+CMset, "set", 0,
+CMclear, "clear", 0,
+CMonly, "only", 0,
 };
 void
 netloginit(Fs *f)

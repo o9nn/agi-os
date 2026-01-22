@@ -1,11 +1,11 @@
 #include "stdinc.h"
 #include "dat.h"
 #include "fns.h"
-Index			*mainindex;
-int			paranoid = 1;
-static ArenaPart	*configarenas(char *file);
-static ISect		*configisect(char *file);
-static Bloom		*configbloom(char *file);
+Index *mainindex;
+int paranoid = 1;
+static ArenaPart *configarenas(char *file);
+static ISect *configisect(char *file);
+static Bloom *configbloom(char *file);
 int
 initventi(char *file, Config *conf)
 {
@@ -39,7 +39,7 @@ return 0;
 }
 enum
 {
-MaxArgs	= 2
+MaxArgs = 2
 };
 int
 runconfig(char *file, Config *config)

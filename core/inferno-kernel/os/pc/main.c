@@ -1,21 +1,21 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"ureg.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "ureg.h"
 extern int main_pool_pcnt;
 extern int heap_pool_pcnt;
 extern int image_pool_pcnt;
-int	pckdebug;
+int pckdebug;
 Mach *m;
-static  uchar *sp;
-#define BOOTLINE	((char*)CONFADDR)
-#define BOOTLINELEN	64
-#define BOOTARGS	((char*)(CONFADDR+BOOTLINELEN))
-#define	BOOTARGSLEN	(4096-0x200-BOOTLINELEN)
-#define	MAXCONF		64
+static uchar *sp;
+#define BOOTLINE ((char*)CONFADDR)
+#define BOOTLINELEN 64
+#define BOOTARGS ((char*)(CONFADDR+BOOTLINELEN))
+#define BOOTARGSLEN (4096-0x200-BOOTLINELEN)
+#define MAXCONF 64
 char bootdisk[KNAMELEN];
 char *confname[MAXCONF];
 char *confval[MAXCONF];
@@ -181,7 +181,7 @@ p->sched.pc = (ulong)init0;
 p->sched.sp = (ulong)p->kstack+KSTACK-BY2WD;
 ready(p);
 }
-Conf	conf;
+Conf conf;
 char*
 getconf(char *name)
 {

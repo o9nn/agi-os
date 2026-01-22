@@ -4,34 +4,34 @@
 #include <linux/stat.h>
 #include <linux/fd.h>
 #include <asm/byteorder.h>
-#define MSDOS_ROOT_INO  1
-#define SECTOR_SIZE     512
-#define SECTOR_BITS	9
-#define MSDOS_DPB	(MSDOS_DPS)
-#define MSDOS_DPB_BITS	4
-#define MSDOS_DPS	(SECTOR_SIZE/sizeof(struct msdos_dir_entry))
-#define MSDOS_DPS_BITS	4
-#define MSDOS_DIR_BITS	5
+#define MSDOS_ROOT_INO 1
+#define SECTOR_SIZE 512
+#define SECTOR_BITS 9
+#define MSDOS_DPB (MSDOS_DPS)
+#define MSDOS_DPB_BITS 4
+#define MSDOS_DPS (SECTOR_SIZE/sizeof(struct msdos_dir_entry))
+#define MSDOS_DPS_BITS 4
+#define MSDOS_DIR_BITS 5
 #define MSDOS_SUPER_MAGIC 0x4d44
-#define FAT_CACHE    8
-#define MSDOS_MAX_EXTRA	3
-#define ATTR_RO      1
-#define ATTR_HIDDEN  2
-#define ATTR_SYS     4
-#define ATTR_VOLUME  8
-#define ATTR_DIR     16
-#define ATTR_ARCH    32
-#define ATTR_NONE    0
-#define ATTR_UNUSED  (ATTR_VOLUME | ATTR_ARCH | ATTR_SYS | ATTR_HIDDEN)
-#define ATTR_EXT     (ATTR_RO | ATTR_HIDDEN | ATTR_SYS | ATTR_VOLUME)
+#define FAT_CACHE 8
+#define MSDOS_MAX_EXTRA 3
+#define ATTR_RO 1
+#define ATTR_HIDDEN 2
+#define ATTR_SYS 4
+#define ATTR_VOLUME 8
+#define ATTR_DIR 16
+#define ATTR_ARCH 32
+#define ATTR_NONE 0
+#define ATTR_UNUSED (ATTR_VOLUME | ATTR_ARCH | ATTR_SYS | ATTR_HIDDEN)
+#define ATTR_EXT (ATTR_RO | ATTR_HIDDEN | ATTR_SYS | ATTR_VOLUME)
 #define ATTR_DIR_READ_BOTH 512
 #define ATTR_DIR_READ_SHORT 1024
 #define CASE_LOWER_BASE 8
-#define CASE_LOWER_EXT  16
-#define SCAN_ANY     0
-#define SCAN_HID     1
-#define SCAN_NOTHID  2
-#define SCAN_NOTANY  3
+#define CASE_LOWER_EXT 16
+#define SCAN_ANY 0
+#define SCAN_HID 1
+#define SCAN_NOTHID 2
+#define SCAN_NOTANY 3
 #define DELETED_FLAG 0xe5
 #define IS_FREE(n) (!*(n) || *(const unsigned char *) (n) == DELETED_FLAG || \
 *(const unsigned char *) (n) == FD_FILL_BYTE)
@@ -41,7 +41,7 @@
 #define MSDOS_NAME 11
 #define MSDOS_LONGNAME 256
 #define MSDOS_SLOTS 21
-#define MSDOS_DOT    ".          "
+#define MSDOS_DOT ".          "
 #define MSDOS_DOTDOT "..         "
 #define MSDOS_FAT12 4078
 #define EOF_FAT12 0xFF8
@@ -49,64 +49,64 @@
 #define EOF_FAT32 0xFFFFFF8
 #define EOF_FAT(s) (MSDOS_SB(s)->fat_bits == 32 ? EOF_FAT32 : \
 MSDOS_SB(s)->fat_bits == 16 ? EOF_FAT16 : EOF_FAT12)
-#define FAT_BINARY_FL		0x00000001
-#define	VFAT_IOCTL_READDIR_BOTH		_IOR('r', 1, struct dirent [2])
-#define	VFAT_IOCTL_READDIR_SHORT	_IOR('r', 2, struct dirent [2])
+#define FAT_BINARY_FL 0x00000001
+#define VFAT_IOCTL_READDIR_BOTH _IOR('r', 1, struct dirent [2])
+#define VFAT_IOCTL_READDIR_SHORT _IOR('r', 2, struct dirent [2])
 #define CF_LE_W(v) le16_to_cpu(v)
 #define CF_LE_L(v) le32_to_cpu(v)
 #define CT_LE_W(v) cpu_to_le16(v)
 #define CT_LE_L(v) cpu_to_le32(v)
 struct fat_boot_sector {
-__s8	ignored[3];
-__s8	system_id[8];
-__u8	sector_size[2];
-__u8	cluster_size;
-__u16	reserved;
-__u8	fats;
-__u8	dir_entries[2];
-__u8	sectors[2];
-__u8	media;
-__u16	fat_length;
-__u16	secs_track;
-__u16	heads;
-__u32	hidden;
-__u32	total_sect;
-__u32	fat32_length;
-__u16	flags;
-__u8	version[2];
-__u32	root_cluster;
-__u16	info_sector;
-__u16	backup_boot;
-__u16	reserved2[6];
+__s8 ignored[3];
+__s8 system_id[8];
+__u8 sector_size[2];
+__u8 cluster_size;
+__u16 reserved;
+__u8 fats;
+__u8 dir_entries[2];
+__u8 sectors[2];
+__u8 media;
+__u16 fat_length;
+__u16 secs_track;
+__u16 heads;
+__u32 hidden;
+__u32 total_sect;
+__u32 fat32_length;
+__u16 flags;
+__u8 version[2];
+__u32 root_cluster;
+__u16 info_sector;
+__u16 backup_boot;
+__u16 reserved2[6];
 };
 struct fat_boot_fsinfo {
-__u32   reserved1;
-__u32   signature;
-__u32   free_clusters;
-__u32   next_cluster;
-__u32   reserved2[4];
+__u32 reserved1;
+__u32 signature;
+__u32 free_clusters;
+__u32 next_cluster;
+__u32 reserved2[4];
 };
 struct msdos_dir_entry {
-__s8	name[8],ext[3];
-__u8	attr;
-__u8    lcase;
-__u8	ctime_ms;
-__u16	ctime;
-__u16	cdate;
-__u16	adate;
-__u16   starthi;
-__u16	time,date,start;
-__u32	size;
+__s8 name[8],ext[3];
+__u8 attr;
+__u8 lcase;
+__u8 ctime_ms;
+__u16 ctime;
+__u16 cdate;
+__u16 adate;
+__u16 starthi;
+__u16 time,date,start;
+__u32 size;
 };
 struct msdos_dir_slot {
-__u8    id;
-__u8    name0_4[10];
-__u8    attr;
-__u8    reserved;
-__u8    alias_checksum;
-__u8    name5_10[12];
-__u16   start;
-__u8    name11_12[4];
+__u8 id;
+__u8 name0_4[10];
+__u8 attr;
+__u8 reserved;
+__u8 alias_checksum;
+__u8 name5_10[12];
+__u16 start;
+__u8 name11_12[4];
 };
 struct vfat_slot_info {
 int is_long;

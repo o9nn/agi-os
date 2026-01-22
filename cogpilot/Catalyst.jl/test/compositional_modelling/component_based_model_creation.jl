@@ -77,7 +77,7 @@ ParentScope(sys₃.R) ~ ParentScope(sys₂.P)]
 @named repressilator = ReactionSystem(t; systems = [csys, sys₁, sys₂, sys₃])
 repressilator = complete(repressilator)
 @named oderepressilator2 = convert(ODESystem, repressilator, include_zero_odes = false)
-sys2 = structural_simplify(oderepressilator2)  # FAILS currently
+sys2 = structural_simplify(oderepressilator2) # FAILS currently
 oprob = ODEProblem(sys2, u₀, tspan, pvals)
 sol = solve(oprob, Tsit5())
 @test all(isapprox.(sol(tvs, idxs = sys₁.P), sol2(tvs, idxs = 4), atol = 1e-4))
@@ -215,7 +215,7 @@ for o in ModelingToolkit.observed(subconstraints)]])
 @test Set(ModelingToolkit.observed(nlsystem)) == obs
 # Test can make ODESystem.
 @named oderepressilator = convert(ODESystem, repressilator2, include_zero_odes = false)
-sys2 = structural_simplify(oderepressilator)  # FAILS currently
+sys2 = structural_simplify(oderepressilator) # FAILS currently
 oprob = ODEProblem(sys2, u₀, tspan, pvals)
 sol = solve(oprob, Tsit5())
 @test all(isapprox.(sol(tvs, idxs = sys₁.P), sol2(tvs, idxs = 4), atol = 1e-4))

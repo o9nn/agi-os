@@ -1,21 +1,21 @@
 #include "gdevprn.h"
 #include "gdevdljm.h"
 #ifdef X_DPI
-#  define X_DPI2 X_DPI
+# define X_DPI2 X_DPI
 #else
-#  define X_DPI 300
-#  define X_DPI2 600
+# define X_DPI 300
+# define X_DPI2 600
 #endif
 #ifdef Y_DPI
-#  define Y_DPI2 Y_DPI
+# define Y_DPI2 Y_DPI
 #else
-#  define Y_DPI 300
-#  define Y_DPI2 600
+# define Y_DPI 300
+# define Y_DPI2 600
 #endif
-#define DESKJET_MARGINS_LETTER  (float)0.2, (float)0.45, (float)0.3, (float)0.05
-#define DESKJET_MARGINS_A4	(float)0.125, (float)0.5, (float)0.143, (float)0.09
-#define LASERJET_MARGINS_A4	(float)0.167, (float)0.167, (float)0.167, (float)0.167
-#define LASERJET_MARGINS_LETTER	(float)0.167, (float)0.167, (float)0.167, (float)0.167
+#define DESKJET_MARGINS_LETTER (float)0.2, (float)0.45, (float)0.3, (float)0.05
+#define DESKJET_MARGINS_A4 (float)0.125, (float)0.5, (float)0.143, (float)0.09
+#define LASERJET_MARGINS_A4 (float)0.167, (float)0.167, (float)0.167, (float)0.167
+#define LASERJET_MARGINS_LETTER (float)0.167, (float)0.167, (float)0.167, (float)0.167
 private dev_proc_open_device(hpjet_open);
 private dev_proc_close_device(hpjet_close);
 private dev_proc_print_page_copies(djet_print_page_copies);

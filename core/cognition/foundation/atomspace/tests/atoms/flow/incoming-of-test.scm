@@ -8,12 +8,12 @@
 (define lf (List (Predicate "foo") (Concept "boing")))
 (define inc-foo (IncomingOf (Predicate "foo")))
 (test-assert "all-inc"
-	(equal? (cog-arity (cog-execute! inc-foo)) 4))
+(equal? (cog-arity (cog-execute! inc-foo)) 4))
 (define inc-evl (IncomingOf (Predicate "foo") (Type 'EvaluationLink)))
 (test-assert "inc-evl"
-	(equal? (cog-arity (cog-execute! inc-evl)) 2))
+(equal? (cog-arity (cog-execute! inc-evl)) 2))
 (define super-set (cog-execute! (CollectionOf inc-foo)))
 (test-assert "inc-super"
-	(equal? super-set (Set ea eb lf inc-foo inc-evl)))
+(equal? super-set (Set ea eb lf inc-foo inc-evl)))
 (test-end tname)
 (opencog-test-end)

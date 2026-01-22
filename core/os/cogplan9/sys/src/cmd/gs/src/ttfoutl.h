@@ -13,7 +13,7 @@ typedef struct _TInstance TInstance;
 typedef struct _TExecution_Context TExecution_Context;
 #endif
 #ifndef ttfInterpreter_DEFINED
-#  define ttfInterpreter_DEFINED
+# define ttfInterpreter_DEFINED
 typedef struct ttfInterpreter_s ttfInterpreter;
 #endif
 typedef struct ttfMemoryDescriptor_s ttfMemoryDescriptor;
@@ -23,10 +23,10 @@ double a, b, c, d, tx, ty;
 typedef struct {
 double x, y;
 } FloatPoint;
-#if   ARCH_LOG2_SIZEOF_LONG == 2
+#if ARCH_LOG2_SIZEOF_LONG == 2
 typedef signed long F26Dot6;
-#elif ARCH_LOG2_SIZEOF_INT  == 2
-typedef signed int  F26Dot6;
+#elif ARCH_LOG2_SIZEOF_INT == 2
+typedef signed int F26Dot6;
 #else
 #error "No appropriate type for Fixed 26.6 Floats"
 #endif
@@ -36,9 +36,9 @@ F26Dot6 y;
 } F26Dot6Point;
 typedef struct ttfMemory_s ttfMemory;
 struct ttfMemory_s {
-void *(*alloc_bytes)(ttfMemory *, int size,  const char *cname);
-void *(*alloc_struct)(ttfMemory *, const ttfMemoryDescriptor *,  const char *cname);
-void (*free)(ttfMemory *, void *p,  const char *cname);
+void *(*alloc_bytes)(ttfMemory *, int size, const char *cname);
+void *(*alloc_struct)(ttfMemory *, const ttfMemoryDescriptor *, const char *cname);
+void (*free)(ttfMemory *, void *p, const char *cname);
 } ;
 typedef struct ttfSubGlyphUsage_s ttfSubGlyphUsage;
 struct ttfInterpreter_s {
@@ -63,19 +63,19 @@ fBadInstruction
 } FontError;
 typedef struct ttfReader_s ttfReader;
 struct ttfReader_s {
-bool   (*Eof)(ttfReader *);
-void   (*Read)(ttfReader *, void *p, int n);
-void   (*Seek)(ttfReader *, int nPos);
-int    (*Tell)(ttfReader *);
-bool   (*Error)(ttfReader *);
-int    (*LoadGlyph)(ttfReader *, int nIndex, const byte **, int *);
-void   (*ReleaseGlyph)(ttfReader *, int nIndex);
+bool (*Eof)(ttfReader *);
+void (*Read)(ttfReader *, void *p, int n);
+void (*Seek)(ttfReader *, int nPos);
+int (*Tell)(ttfReader *);
+bool (*Error)(ttfReader *);
+int (*LoadGlyph)(ttfReader *, int nIndex, const byte **, int *);
+void (*ReleaseGlyph)(ttfReader *, int nIndex);
 };
 typedef struct {
 int nPos, nLen;
 } ttfPtrElem;
 #ifndef ttfFont_DEFINED
-#  define ttfFont_DEFINED
+# define ttfFont_DEFINED
 typedef struct ttfFont_s ttfFont;
 #endif
 struct ttfFont_s {
@@ -98,11 +98,11 @@ unsigned int nMaxComponents;
 unsigned int nLongMetricsVert;
 unsigned int nLongMetricsHorz;
 unsigned int nIndexToLocFormat;
-bool    patented;
-bool    design_grid;
+bool patented;
+bool design_grid;
 TFace *face;
 TInstance *inst;
-TExecution_Context  *exec;
+TExecution_Context *exec;
 ttfInterpreter *tti;
 void (*DebugRepaint)(ttfFont *);
 int (*DebugPrint)(ttfFont *, const char *s, ...);
@@ -128,19 +128,19 @@ void (*DebugPaint)(ttfExport *);
 int ttfInterpreter__obtain(ttfMemory *mem, ttfInterpreter **ptti);
 void ttfInterpreter__release(ttfInterpreter **ptti);
 typedef struct {
-bool    bCompound;
-int     contourCount;
-uint    pointCount;
-F26Dot6Point  advance;
+bool bCompound;
+int contourCount;
+uint pointCount;
+F26Dot6Point advance;
 F26Dot6 sideBearing;
-F26Dot6   xMinB, yMinB, xMaxB, yMaxB;
+F26Dot6 xMinB, yMinB, xMaxB, yMaxB;
 } ttfGlyphOutline;
 typedef struct {
 bool bOutline;
 bool bFirst;
 bool bVertical;
-int  nPointsTotal;
-int  nContoursTotal;
+int nPointsTotal;
+int nContoursTotal;
 F26Dot6 ppx, ppy;
 ttfReader *r;
 ttfExport *exp;

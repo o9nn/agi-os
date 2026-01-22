@@ -3,7 +3,7 @@ using ModelingToolkit, Graphs, JumpProcesses, RecursiveArrayTools
 using ModelingToolkit: t_nounits as t, D_nounits as D
 import ModelingToolkit: value
 #################################
-#  testing for Jumps / all dgs
+# testing for Jumps / all dgs
 #################################
 @testset "JumpSystem" begin
 @parameters k1 k2
@@ -66,19 +66,19 @@ var_vardeps = [[1, 2, 3], [1, 2, 3], [3]],
 var_var_ne = 3
 )
 @testset "Case $i" for (i, test_case) in enumerate([test_case_1, test_case_2])
-(;         # filter out vrjs in making graphs
-eqs,         # eq to vars they depend on
+(; # filter out vrjs in making graphs
+eqs, # eq to vars they depend on
 eq_sdeps,
 eq_sidepsf,
-eq_sidepsb,         # eq to params they depend on
+eq_sidepsb, # eq to params they depend on
 eq_pdeps,
 eq_pidepsf,
-eq_pidepsb,         # var to eqs that modify them
+eq_pidepsb, # var to eqs that modify them
 s_eqdepsf,
 s_eqdepsb,
-var_eq_ne,         # eq to eqs that depend on them
+var_eq_ne, # eq to eqs that depend on them
 eq_eqdeps,
-eq_eq_ne,         # var to vars that depend on them
+eq_eq_ne, # var to vars that depend on them
 var_vardeps,
 var_var_ne
 ) = test_case
@@ -118,7 +118,7 @@ dg4 = varvar_dependencies(depsbg, deps2)
 end
 end
 #####################################
-#       testing for ODE/SDEs
+# testing for ODE/SDEs
 #####################################
 @testset "ODEs, SDEs" begin
 @parameters k1 k2
@@ -144,7 +144,7 @@ s_eqdeps = [[1], [2], [3]]
 @test deps.fadjlist == s_eqdeps
 end
 #####################################
-#       testing for nonlin sys
+# testing for nonlin sys
 #####################################
 @testset "Nonlinear" begin
 @variables x y z

@@ -19,12 +19,12 @@ Yellow = Bright|Brown,
 White = Bright|Grey,
 };
 enum {
-Width		= 80*2,
-Height		= 25,
-Attr		= (Black<<4)|Grey,
+Width = 80*2,
+Height = 25,
+Attr = (Black<<4)|Grey,
 };
-#define CGASCREENBASE	((uchar*)KADDR(0xB8000))
-#define inb(x)		0
+#define CGASCREENBASE ((uchar*)KADDR(0xB8000))
+#define inb(x) 0
 #define outb(x, y)
 static int cgapos;
 static Lock cgascreenlock;

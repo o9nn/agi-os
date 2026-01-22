@@ -4,24 +4,24 @@
 #include "ftpfs.h"
 enum
 {
-Chunk=		1024,
-Nfile=		128,
+Chunk= 1024,
+Nfile= 128,
 };
 struct File
 {
-char	*mem;
-ulong	len;
-long	off;
-short	fd;
-char	inuse;
-char	dirty;
-ulong	atime;
-Node	*node;
-char 	*template;
+char *mem;
+ulong len;
+long off;
+short fd;
+char inuse;
+char dirty;
+ulong atime;
+Node *node;
+char *template;
 };
-static File	files[Nfile];
-static ulong	now;
-static int	ntmp;
+static File files[Nfile];
+static ulong now;
+static int ntmp;
 static File*
 fileget(Node *node)
 {

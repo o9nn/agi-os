@@ -18,17 +18,17 @@
 #include "screen.h"
 #include "keyboard.h"
 #include "keycodes.h"
-#define rWindowResource  128
-#define topLeft(r)  (((Point *) &(r))[0])
+#define rWindowResource 128
+#define topLeft(r) (((Point *) &(r))[0])
 #define botRight(r) (((Point *) &(r))[1])
 extern int mousequeue;
 static int depth;
-Boolean   gDone;
+Boolean gDone;
 RgnHandle gCursorRegionHdl;
-Memimage	*gscreen;
-Screeninfo	screen;
+Memimage *gscreen;
+Screeninfo screen;
 static int readybit;
-static Rendez	rend;
+static Rendez rend;
 static MenuRef windMenu;
 static MenuRef viewMenu;
 enum {
@@ -255,7 +255,7 @@ theWindow = oldWindow;
 ShowWindow(theWindow);
 amFullScreen = 0;
 window_resized();
-Rectangle rect =  { { 0, 0 },
+Rectangle rect = { { 0, 0 },
 { bounds.size.width,
 bounds.size.height} };
 drawqlock();
@@ -272,7 +272,7 @@ HideWindow(theWindow);
 BeginFullScreen(&fullScreenRestore, 0, 0, 0, &theWindow, 0, 0);
 amFullScreen = 1;
 window_resized();
-Rectangle rect =  { { 0, 0 },
+Rectangle rect = { { 0, 0 },
 { bounds.size.width,
 bounds.size.height} };
 drawqlock();
@@ -440,8 +440,8 @@ break;
 }
 else if(class == kEventClassWindow)
 {
-WindowRef     window;
-_Rect          rectPort = {0,0,0,0};
+WindowRef window;
+_Rect rectPort = {0,0,0,0};
 GetEventParameter(event, kEventParamDirectObject, typeWindowRef,
 NULL, sizeof(WindowRef), NULL, &window);
 if(window)
@@ -466,7 +466,7 @@ SendEventToEventTarget(quitEvent, target);
 break;
 case kEventWindowBoundsChanged:
 window_resized();
-Rectangle rect =  { { 0, 0 },
+Rectangle rect = { { 0, 0 },
 { bounds.size.width,
 bounds.size.height} };
 drawqlock();

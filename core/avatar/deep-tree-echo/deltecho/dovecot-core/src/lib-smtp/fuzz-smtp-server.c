@@ -66,7 +66,7 @@ struct smtp_server_settings smtp_server_set = {
 };
 struct smtp_server_callbacks server_callbacks = {
 .conn_cmd_rcpt = server_cmd_rcpt,
-.conn_cmd_data_begin =  server_cmd_data_begin,
+.conn_cmd_data_begin = server_cmd_data_begin,
 .conn_cmd_data_continue = server_cmd_data_continue,
 .conn_free = server_connection_free,
 };

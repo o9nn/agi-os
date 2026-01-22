@@ -1,11 +1,11 @@
 #include <lib9.h>
 #include <bio.h>
 #include "mach.h"
-static	char	*powerexcep(Map*, Rgetter);
-static	int	powerfoll(Map*, uvlong, Rgetter, uvlong*);
-static	int	powerinst(Map*, uvlong, char, char*, int);
-static	int	powerinstlen(Map*, uvlong);
-static	int	powerdas(Map*, uvlong, char*, int);
+static char *powerexcep(Map*, Rgetter);
+static int powerfoll(Map*, uvlong, Rgetter, uvlong*);
+static int powerinst(Map*, uvlong, char, char*, int);
+static int powerinstlen(Map*, uvlong);
+static int powerdas(Map*, uvlong, char*, int);
 Machdata powermach =
 {
 {0x07f, 0xe0, 0x00, 0x08},
@@ -71,63 +71,63 @@ return excname[c];
 sprint(buf, "unknown trap #%lx", c);
 return buf;
 }
-#define	REGSP	1
-#define	REGSB	2
-static	char FRAMENAME[] = ".frame";
+#define REGSP 1
+#define REGSB 2
+static char FRAMENAME[] = ".frame";
 static Map *mymap;
 typedef struct {
-uchar	aa;
-uchar	crba;
-uchar	crbb;
-long	bd;
-uchar	crfd;
-uchar	crfs;
-uchar	bi;
-uchar	bo;
-uchar	crbd;
-short	d;
-short	simm;
-ushort	uimm;
-uchar	fm;
-uchar	fra;
-uchar	frb;
-uchar	frc;
-uchar	frs;
-uchar	frd;
-uchar	crm;
-long	li;
-uchar	lk;
-uchar	mb;
-uchar	me;
-uchar	xmbe;
-uchar	xsh;
-uchar	nb;
-uchar	op;
-uchar	oe;
-uchar	ra;
-uchar	rb;
-uchar	rc;
-uchar	rs;
-uchar	rd;
-uchar	sh;
-ushort	spr;
-uchar	to;
-uchar	imm;
-ushort	xo;
-uvlong	imm64;
+uchar aa;
+uchar crba;
+uchar crbb;
+long bd;
+uchar crfd;
+uchar crfs;
+uchar bi;
+uchar bo;
+uchar crbd;
+short d;
+short simm;
+ushort uimm;
+uchar fm;
+uchar fra;
+uchar frb;
+uchar frc;
+uchar frs;
+uchar frd;
+uchar crm;
+long li;
+uchar lk;
+uchar mb;
+uchar me;
+uchar xmbe;
+uchar xsh;
+uchar nb;
+uchar op;
+uchar oe;
+uchar ra;
+uchar rb;
+uchar rc;
+uchar rs;
+uchar rd;
+uchar sh;
+ushort spr;
+uchar to;
+uchar imm;
+ushort xo;
+uvlong imm64;
 long w0;
 long w1;
-uvlong	addr;
-short	target;
-short	m64;
-char	*curr;
-char	*end;
-int 	size;
-char	*err;
+uvlong addr;
+short target;
+short m64;
+char *curr;
+char *end;
+int size;
+char *err;
 } Instr;
-#define	IBF(v,a,b) (((ulong)(v)>>(32-(b)-1)) & ~(~0L<<(((b)-(a)+1))))
-#define	IB(v,b) IBF((v),(b),(b))
-#pragma	varargck	argpos	bprint		2
+#define IBF(v,a,b) (((ulong)(v)>>(32-(b)-1)) & ~(~0L<<(((b)-(a)+1))))
+#define IB(v,b) IBF((v),(b),(b))
+#pragma varargck argpos bprint 2
 static void
 bprint(Instr *i, char *fmt, ...)
 {
@@ -280,17 +280,17 @@ bprint(i, "-%x(R%d)", -i->simm, i->ra);
 else
 bprint(i, "%llux(R%d)", i->imm64, i->ra);
 }
-static	char	*tcrbits[] = {"LT", "GT", "EQ", "VS"};
-static	char	*fcrbits[] = {"GE", "LE", "NE", "VC"};
+static char *tcrbits[] = {"LT", "GT", "EQ", "VS"};
+static char *fcrbits[] = {"GE", "LE", "NE", "VC"};
 typedef struct Opcode Opcode;
 struct Opcode {
-uchar	op;
-ushort	xo;
-ushort	xomask;
-char	*mnemonic;
-void	(*f)(Opcode *, Instr *);
-char	*ken;
-int	flags;
+uchar op;
+ushort xo;
+ushort xomask;
+char *mnemonic;
+void (*f)(Opcode *, Instr *);
+char *ken;
+int flags;
 };
 static void format(char *, Instr *, char *);
 static void
@@ -582,280 +582,280 @@ format(o->mnemonic, i, "R%d");
 else
 format(o->mnemonic, i, o->ken);
 }
-static	char	ir2[] = "R%a,R%d";
-static	char	ir3[] = "R%b,R%a,R%d";
-static	char	ir3r[] = "R%a,R%b,R%d";
-static	char	il3[] = "R%b,R%s,R%a";
-static	char	il2u[] = "%I,R%d,R%a";
-static	char	il3s[] = "$%k,R%s,R%a";
-static	char	il2[] = "R%s,R%a";
-static	char	icmp3[] = "R%a,R%b,%D";
-static	char	cr3op[] = "%b,%a,%d";
-static	char	ir2i[] = "%i,R%a,R%d";
-static	char	fp2[] = "F%b,F%d";
-static	char	fp3[] = "F%b,F%a,F%d";
-static	char	fp3c[] = "F%c,F%a,F%d";
-static	char	fp4[] = "F%a,F%c,F%b,F%d";
-static	char	fpcmp[] = "F%a,F%b,%D";
-static	char	ldop[] = "%l,R%d";
-static	char	stop[] = "R%d,%l";
-static	char	fldop[] = "%l,F%d";
-static	char	fstop[] = "F%d,%l";
-static	char	rldc[] = "R%b,R%s,$%E,R%a";
-static	char	rlim[] = "R%b,R%s,$%z,R%a";
-static	char	rlimi[] = "$%k,R%s,$%z,R%a";
-static	char	rldi[] = "$%e,R%s,$%E,R%a";
-#define	OEM	IBF(~0,22,30)
-#define	FP4	IBF(~0,26,30)
-#define	ALL	(~0)
-#define	RLDC	0xF
-#define	RLDI	0xE
+static char ir2[] = "R%a,R%d";
+static char ir3[] = "R%b,R%a,R%d";
+static char ir3r[] = "R%a,R%b,R%d";
+static char il3[] = "R%b,R%s,R%a";
+static char il2u[] = "%I,R%d,R%a";
+static char il3s[] = "$%k,R%s,R%a";
+static char il2[] = "R%s,R%a";
+static char icmp3[] = "R%a,R%b,%D";
+static char cr3op[] = "%b,%a,%d";
+static char ir2i[] = "%i,R%a,R%d";
+static char fp2[] = "F%b,F%d";
+static char fp3[] = "F%b,F%a,F%d";
+static char fp3c[] = "F%c,F%a,F%d";
+static char fp4[] = "F%a,F%c,F%b,F%d";
+static char fpcmp[] = "F%a,F%b,%D";
+static char ldop[] = "%l,R%d";
+static char stop[] = "R%d,%l";
+static char fldop[] = "%l,F%d";
+static char fstop[] = "F%d,%l";
+static char rldc[] = "R%b,R%s,$%E,R%a";
+static char rlim[] = "R%b,R%s,$%z,R%a";
+static char rlimi[] = "$%k,R%s,$%z,R%a";
+static char rldi[] = "$%e,R%s,$%E,R%a";
+#define OEM IBF(~0,22,30)
+#define FP4 IBF(~0,26,30)
+#define ALL (~0)
+#define RLDC 0xF
+#define RLDI 0xE
 static Opcode opcodes[] = {
-{31,	266,	OEM,	"ADD%V%C",	add,	ir3},
-{31,	 10,	OEM,	"ADDC%V%C",	add,	ir3},
-{31,	138,	OEM,	"ADDE%V%C",	add,	ir3},
-{14,	0,	0,	"ADD",		addi,	ir2i},
-{12,	0,	0,	"ADDC",		addi,	ir2i},
-{13,	0,	0,	"ADDCCC",	addi,	ir2i},
-{15,	0,	0,	"ADD",		addis,	0},
-{31,	234,	OEM,	"ADDME%V%C",	gencc,	ir2},
-{31,	202,	OEM,	"ADDZE%V%C",	gencc,	ir2},
-{31,	28,	ALL,	"AND%C",	and,	il3},
-{31,	60,	ALL,	"ANDN%C",	and,	il3},
-{28,	0,	0,	"ANDCC",	andi,	il2u},
-{29,	0,	0,	"ANDCC",	shifted, 0},
-{18,	0,	0,	"B%L",		gencc,	"%j"},
-{16,	0,	0,	"BC%L",		branch,	"%d,%a,%J"},
-{19,	528,	ALL,	"BC%L",		branch,	"%d,%a,(CTR)"},
-{19,	16,	ALL,	"BC%L",		branch,	"%d,%a,(LR)"},
-{31,	0,	ALL,	"CMP",		0,	icmp3},
-{11,	0,	0,	"CMP",		0,	"R%a,%i,%D"},
-{31,	32,	ALL,	"CMPU",		0,	icmp3},
-{10,	0,	0,	"CMPU",		0,	"R%a,%I,%D"},
-{31,	58,	ALL,	"CNTLZD%C",	gencc,	ir2},
-{31,	26,	ALL,	"CNTLZ%W%C",	gencc,	ir2},
-{19,	257,	ALL,	"CRAND",	gen,	cr3op},
-{19,	129,	ALL,	"CRANDN",	gen,	cr3op},
-{19,	289,	ALL,	"CREQV",	gen,	cr3op},
-{19,	225,	ALL,	"CRNAND",	gen,	cr3op},
-{19,	33,	ALL,	"CRNOR",	gen,	cr3op},
-{19,	449,	ALL,	"CROR",		gen,	cr3op},
-{19,	417,	ALL,	"CRORN",	gen,	cr3op},
-{19,	193,	ALL,	"CRXOR",	gen,	cr3op},
-{31,	86,	ALL,	"DCBF",		dcb,	0},
-{31,	470,	ALL,	"DCBI",		dcb,	0},
-{31,	54,	ALL,	"DCBST",	dcb,	0},
-{31,	278,	ALL,	"DCBT",		dcb,	0},
-{31,	246,	ALL,	"DCBTST",	dcb,	0},
-{31,	1014,	ALL,	"DCBZ",		dcb,	0},
-{31,	454,	ALL,	"DCCCI",	dcb,	0},
-{31,	966,	ALL,	"ICCCI",	dcb,	0},
-{31,	489,	OEM,	"DIVD%V%C",	qmuldiv,	ir3},
-{31,	457,	OEM,	"DIVDU%V%C",	qmuldiv,	ir3},
-{31,	491,	OEM,	"DIVW%V%C",	qmuldiv,	ir3},
-{31,	459,	OEM,	"DIVWU%V%C",	qmuldiv,	ir3},
-{31,	310,	ALL,	"ECIWX",	ldx,	0},
-{31,	438,	ALL,	"ECOWX",	stx,	0},
-{31,	854,	ALL,	"EIEIO",	gen,	0},
-{31,	284,	ALL,	"EQV%C",	gencc,	il3},
-{31,	954,	ALL,	"EXTSB%C",	gencc,	il2},
-{31,	922,	ALL,	"EXTSH%C",	gencc,	il2},
-{31,	986,	ALL,	"EXTSW%C",	gencc,	il2},
-{63,	264,	ALL,	"FABS%C",	gencc,	fp2},
-{63,	21,	ALL,	"FADD%C",	gencc,	fp3},
-{59,	21,	ALL,	"FADDS%C",	gencc,	fp3},
-{63,	32,	ALL,	"FCMPO",	gen,	fpcmp},
-{63,	0,	ALL,	"FCMPU",	gen,	fpcmp},
-{63,	846,	ALL,	"FCFID%C",	gencc,	fp2},
-{63,	814,	ALL,	"FCTID%C",	gencc,	fp2},
-{63,	815,	ALL,	"FCTIDZ%C",	gencc,	fp2},
-{63,	14,	ALL,	"FCTIW%C",	gencc,	fp2},
-{63,	15,	ALL,	"FCTIWZ%C",	gencc,	fp2},
-{63,	18,	ALL,	"FDIV%C",	gencc,	fp3},
-{59,	18,	ALL,	"FDIVS%C",	gencc,	fp3},
-{63,	29,	FP4,	"FMADD%C",	gencc,	fp4},
-{59,	29,	FP4,	"FMADDS%C",	gencc,	fp4},
-{63,	72,	ALL,	"FMOVD%C",	gencc,	fp2},
-{63,	28,	FP4,	"FMSUB%C",	gencc,	fp4},
-{59,	28,	FP4,	"FMSUBS%C",	gencc,	fp4},
-{63,	25,	FP4,	"FMUL%C",	gencc,	fp3c},
-{59,	25,	FP4,	"FMULS%C",	gencc,	fp3c},
-{63,	136,	ALL,	"FNABS%C",	gencc,	fp2},
-{63,	40,	ALL,	"FNEG%C",	gencc,	fp2},
-{63,	31,	FP4,	"FNMADD%C",	gencc,	fp4},
-{59,	31,	FP4,	"FNMADDS%C",	gencc,	fp4},
-{63,	30,	FP4,	"FNMSUB%C",	gencc,	fp4},
-{59,	30,	FP4,	"FNMSUBS%C",	gencc,	fp4},
-{59,	24,	ALL,	"FRES%C",	gencc,	fp2},
-{63,	12,	ALL,	"FRSP%C",	gencc,	fp2},
-{63,	26,	ALL,	"FRSQRTE%C",	gencc,	fp2},
-{63,	23,	FP4,	"FSEL%CC",	gencc,	fp4},
-{63,	22,	ALL,	"FSQRT%C",	gencc,	fp2},
-{59,	22,	ALL,	"FSQRTS%C",	gencc,	fp2},
-{63,	20,	FP4,	"FSUB%C",	gencc,	fp3},
-{59,	20,	FP4,	"FSUBS%C",	gencc,	fp3},
-{31,	982,	ALL,	"ICBI",		dcb,	0},
-{19,	150,	ALL,	"ISYNC",	gen,	0},
-{34,	0,	0,	"MOVBZ",	load,	ldop},
-{35,	0,	0,	"MOVBZU",	load,	ldop},
-{31,	119,	ALL,	"MOVBZU",	ldx,	0},
-{31,	87,	ALL,	"MOVBZ",	ldx,	0},
-{50,	0,	0,	"FMOVD",	fload,	fldop},
-{51,	0,	0,	"FMOVDU",	fload,	fldop},
-{31,	631,	ALL,	"FMOVDU",	fldx,	0},
-{31,	599,	ALL,	"FMOVD",	fldx,	0},
-{48,	0,	0,	"FMOVS",	load,	fldop},
-{49,	0,	0,	"FMOVSU",	load,	fldop},
-{31,	567,	ALL,	"FMOVSU",	fldx,	0},
-{31,	535,	ALL,	"FMOVS",	fldx,	0},
-{42,	0,	0,	"MOVH",		load,	ldop},
-{43,	0,	0,	"MOVHU",	load,	ldop},
-{31,	375,	ALL,	"MOVHU",	ldx,	0},
-{31,	343,	ALL,	"MOVH",		ldx,	0},
-{31,	790,	ALL,	"MOVHBR",	ldx,	0},
-{40,	0,	0,	"MOVHZ",	load,	ldop},
-{41,	0,	0,	"MOVHZU",	load,	ldop},
-{31,	311,	ALL,	"MOVHZU",	ldx,	0},
-{31,	279,	ALL,	"MOVHZ",	ldx,	0},
-{46,	0,	0,	"MOVMW",	load,	ldop},
-{31,	597,	ALL,	"LSW",		gen,	"(R%a),$%n,R%d"},
-{31,	533,	ALL,	"LSW",		ldx,	0},
-{31,	20,	ALL,	"LWAR",		ldx,	0},
-{31,	84,	ALL,	"LWARD",	ldx,	0},
-{58,	0,	ALL,	"MOVD",		load,	ldop},
-{58,	1,	ALL,	"MOVDU",	load,	ldop},
-{31,	53,	ALL,	"MOVDU",	ldx,	0},
-{31,	21,	ALL,	"MOVD",		ldx,	0},
-{31,	534,	ALL,	"MOVWBR",	ldx,	0},
-{58,	2,	ALL,	"MOVW",		load,	ldop},
-{31,	373,	ALL,	"MOVWU",	ldx,	0},
-{31,	341,	ALL,	"MOVW",		ldx,	0},
-{32,	0,	0,	"MOVW%Z",	load,	ldop},
-{33,	0,	0,	"MOVW%ZU",	load,	ldop},
-{31,	55,	ALL,	"MOVW%ZU",	ldx,	0},
-{31,	23,	ALL,	"MOVW%Z",	ldx,	0},
-{19,	0,	ALL,	"MOVFL",	gen,	"%S,%D"},
-{63,	64,	ALL,	"MOVCRFS",	gen,	"%S,%D"},
-{31,	512,	ALL,	"MOVW",		gen,	"XER,%D"},
-{31,	19,	ALL,	"MOVW",		gen,	"CR,R%d"},
-{63,	583,	ALL,	"MOVW%C",	gen,	"FPSCR, F%d"},
-{31,	83,	ALL,	"MOVW",		gen,	"MSR,R%d"},
-{31,	339,	ALL,	"MOVW",		gen,	"%P,R%d"},
-{31,	595,	ALL,	"MOVW",		gen,	"SEG(%a),R%d"},
-{31,	659,	ALL,	"MOVW",		gen,	"SEG(R%b),R%d"},
-{31,	323,	ALL,	"MOVW",		gen,	"DCR(%Q),R%d"},
-{31,	451,	ALL,	"MOVW",		gen,	"R%s,DCR(%Q)"},
-{31,	259,	ALL,	"MOVW",		gen,	"DCR(R%a),R%d"},
-{31,	387,	ALL,	"MOVW",		gen,	"R%s,DCR(R%a)"},
-{31,	144,	ALL,	"MOVFL",	gen,	"R%s,%m,CR"},
-{63,	70,	ALL,	"MTFSB0%C",	gencc,	"%D"},
-{63,	38,	ALL,	"MTFSB1%C",	gencc,	"%D"},
-{63,	711,	ALL,	"MOVFL%C",	gencc,	"F%b,%M,FPSCR"},
-{63,	134,	ALL,	"MOVFL%C",	gencc,	"%K,%D"},
-{31,	146,	ALL,	"MOVW",		gen,	"R%s,MSR"},
-{31,	178,	ALL,	"MOVD",		gen,	"R%s,MSR"},
-{31,	467,	ALL,	"MOVW",		gen,	"R%s,%P"},
-{31,	210,	ALL,	"MOVW",		gen,	"R%s,SEG(%a)"},
-{31,	242,	ALL,	"MOVW",		gen,	"R%s,SEG(R%b)"},
-{31,	73,	ALL,	"MULHD%C",	gencc,	ir3},
-{31,	9,	ALL,	"MULHDU%C",	gencc,	ir3},
-{31,	233,	OEM,	"MULLD%V%C",	gencc,	ir3},
-{31,	75,	ALL,	"MULHW%C",	gencc,	ir3},
-{31,	11,	ALL,	"MULHWU%C",	gencc,	ir3},
-{31,	235,	OEM,	"MULLW%V%C",	gencc,	ir3},
-{7,	0,	0,	"MULLW",	qmuldiv,	"%i,R%a,R%d"},
-{31,	476,	ALL,	"NAND%C",	gencc,	il3},
-{31,	104,	OEM,	"NEG%V%C",	neg,	ir2},
-{31,	124,	ALL,	"NOR%C",	gencc,	il3},
-{31,	444,	ALL,	"OR%C",		or,	il3},
-{31,	412,	ALL,	"ORN%C",	or,	il3},
-{24,	0,	0,	"OR",		and,	"%I,R%d,R%a"},
-{25,	0,	0,	"OR",		shifted, 0},
-{19,	50,	ALL,	"RFI",		gen,	0},
-{19,	51,	ALL,	"RFCI",		gen,	0},
-{30,	8,	RLDC,	"RLDCL%C",	gencc,	rldc},
-{30,	9,	RLDC,	"RLDCR%C",	gencc,	rldc},
-{30,	0,	RLDI,	"RLDCL%C",	gencc,	rldi},
-{30,	1<<1, RLDI,	"RLDCR%C",	gencc,	rldi},
-{30,	2<<1, RLDI,	"RLDC%C",	gencc,	rldi},
-{30,	3<<1, RLDI,	"RLDMI%C",	gencc,	rldi},
-{20,	0,	0,	"RLWMI%C",	gencc,	rlimi},
-{21,	0,	0,	"RLWNM%C",	gencc,	rlimi},
-{23,	0,	0,	"RLWNM%C",	gencc,	rlim},
-{17,	1,	ALL,	"SYSCALL",	gen,	0},
-{31,	27,	ALL,	"SLD%C",	shift,	il3},
-{31,	24,	ALL,	"SLW%C",	shift,	il3},
-{31,	794,	ALL,	"SRAD%C",	shift,	il3},
-{31,	(413<<1)|0,	ALL,	"SRAD%C",	shifti,	il3s},
-{31,	(413<<1)|1,	ALL,	"SRAD%C",	shifti,	il3s},
-{31,	792,	ALL,	"SRAW%C",	shift,	il3},
-{31,	824,	ALL,	"SRAW%C",	shifti,	il3s},
-{31,	539,	ALL,	"SRD%C",	shift,	il3},
-{31,	536,	ALL,	"SRW%C",	shift,	il3},
-{38,	0,	0,	"MOVB",		store,	stop},
-{39,	0,	0,	"MOVBU",	store,	stop},
-{31,	247,	ALL,	"MOVBU",	stx,	0},
-{31,	215,	ALL,	"MOVB",		stx,	0},
-{54,	0,	0,	"FMOVD",	fstore,	fstop},
-{55,	0,	0,	"FMOVDU",	fstore,	fstop},
-{31,	759,	ALL,	"FMOVDU",	fstx,	0},
-{31,	727,	ALL,	"FMOVD",	fstx,	0},
-{52,	0,	0,	"FMOVS",	fstore,	fstop},
-{53,	0,	0,	"FMOVSU",	fstore,	fstop},
-{31,	695,	ALL,	"FMOVSU",	fstx,	0},
-{31,	663,	ALL,	"FMOVS",	fstx,	0},
-{44,	0,	0,	"MOVH",		store,	stop},
-{31,	918,	ALL,	"MOVHBR",	stx,	0},
-{45,	0,	0,	"MOVHU",	store,	stop},
-{31,	439,	ALL,	"MOVHU",	stx,	0},
-{31,	407,	ALL,	"MOVH",		stx,	0},
-{47,	0,	0,	"MOVMW",	store,	stop},
-{31,	725,	ALL,	"STSW",		gen,	"R%d,$%n,(R%a)"},
-{31,	661,	ALL,	"STSW",		stx,	0},
-{36,	0,	0,	"MOVW",		store,	stop},
-{31,	662,	ALL,	"MOVWBR",	stx,	0},
-{31,	150,	ALL,	"STWCCC",	stx,	0},
-{31,	214,	ALL,	"STDCCC",	stx,	0},
-{37,	0,	0,	"MOVWU",	store,	stop},
-{31,	183,	ALL,	"MOVWU",	stx,	0},
-{31,	151,	ALL,	"MOVW",		stx,	0},
-{62,	0,	0,	"MOVD%U",	store,	stop},
-{31,	149,	ALL,	"MOVD",		stx,	0,},
-{31,	181,	ALL,	"MOVDU",	stx,	0},
-{31,	498,	ALL,	"SLBIA",	gen,	0},
-{31,	434,	ALL,	"SLBIE",	gen,	"R%b"},
-{31,	466,	ALL,	"SLBIEX",	gen,	"R%b"},
-{31,	915,	ALL,	"SLBMFEE",	gen,	"R%b,R%d"},
-{31,	851,	ALL,	"SLBMFEV",	gen,	"R%b,R%d"},
-{31,	402,	ALL,	"SLBMTE",	gen,	"R%s,R%b"},
-{31,	40,	OEM,	"SUB%V%C",	sub,	ir3},
-{31,	8,	OEM,	"SUBC%V%C",	sub,	ir3},
-{31,	136,	OEM,	"SUBE%V%C",	sub,	ir3},
-{8,	0,	0,	"SUBC",		gen,	"R%a,%i,R%d"},
-{31,	232,	OEM,	"SUBME%V%C",	sub,	ir2},
-{31,	200,	OEM,	"SUBZE%V%C",	sub,	ir2},
-{31,	598,	ALL,	"SYNC",		gen,	0},
-{2,	0,	0,	"TD",		gen,	"%d,R%a,%i"},
-{31,	370,	ALL,	"TLBIA",	gen,	0},
-{31,	306,	ALL,	"TLBIE",	gen,	"R%b"},
-{31,	274,	ALL,	"TLBIEL",	gen,	"R%b"},
-{31,	1010,	ALL,	"TLBLI",	gen,	"R%b"},
-{31,	978,	ALL,	"TLBLD",	gen,	"R%b"},
-{31,	566,	ALL,	"TLBSYNC",	gen,	0},
-{31,	68,	ALL,	"TD",		gen,	"%d,R%a,R%b"},
-{31,	4,	ALL,	"TW",		gen,	"%d,R%a,R%b"},
-{3,	0,	0,	"TW",		gen,	"%d,R%a,%i"},
-{31,	316,	ALL,	"XOR",		and,	il3},
-{26,	0,	0,	"XOR",		and,	il2u},
-{27,	0,	0,	"XOR",		shifted, 0},
+{31, 266, OEM, "ADD%V%C", add, ir3},
+{31, 10, OEM, "ADDC%V%C", add, ir3},
+{31, 138, OEM, "ADDE%V%C", add, ir3},
+{14, 0, 0, "ADD", addi, ir2i},
+{12, 0, 0, "ADDC", addi, ir2i},
+{13, 0, 0, "ADDCCC", addi, ir2i},
+{15, 0, 0, "ADD", addis, 0},
+{31, 234, OEM, "ADDME%V%C", gencc, ir2},
+{31, 202, OEM, "ADDZE%V%C", gencc, ir2},
+{31, 28, ALL, "AND%C", and, il3},
+{31, 60, ALL, "ANDN%C", and, il3},
+{28, 0, 0, "ANDCC", andi, il2u},
+{29, 0, 0, "ANDCC", shifted, 0},
+{18, 0, 0, "B%L", gencc, "%j"},
+{16, 0, 0, "BC%L", branch, "%d,%a,%J"},
+{19, 528, ALL, "BC%L", branch, "%d,%a,(CTR)"},
+{19, 16, ALL, "BC%L", branch, "%d,%a,(LR)"},
+{31, 0, ALL, "CMP", 0, icmp3},
+{11, 0, 0, "CMP", 0, "R%a,%i,%D"},
+{31, 32, ALL, "CMPU", 0, icmp3},
+{10, 0, 0, "CMPU", 0, "R%a,%I,%D"},
+{31, 58, ALL, "CNTLZD%C", gencc, ir2},
+{31, 26, ALL, "CNTLZ%W%C", gencc, ir2},
+{19, 257, ALL, "CRAND", gen, cr3op},
+{19, 129, ALL, "CRANDN", gen, cr3op},
+{19, 289, ALL, "CREQV", gen, cr3op},
+{19, 225, ALL, "CRNAND", gen, cr3op},
+{19, 33, ALL, "CRNOR", gen, cr3op},
+{19, 449, ALL, "CROR", gen, cr3op},
+{19, 417, ALL, "CRORN", gen, cr3op},
+{19, 193, ALL, "CRXOR", gen, cr3op},
+{31, 86, ALL, "DCBF", dcb, 0},
+{31, 470, ALL, "DCBI", dcb, 0},
+{31, 54, ALL, "DCBST", dcb, 0},
+{31, 278, ALL, "DCBT", dcb, 0},
+{31, 246, ALL, "DCBTST", dcb, 0},
+{31, 1014, ALL, "DCBZ", dcb, 0},
+{31, 454, ALL, "DCCCI", dcb, 0},
+{31, 966, ALL, "ICCCI", dcb, 0},
+{31, 489, OEM, "DIVD%V%C", qmuldiv, ir3},
+{31, 457, OEM, "DIVDU%V%C", qmuldiv, ir3},
+{31, 491, OEM, "DIVW%V%C", qmuldiv, ir3},
+{31, 459, OEM, "DIVWU%V%C", qmuldiv, ir3},
+{31, 310, ALL, "ECIWX", ldx, 0},
+{31, 438, ALL, "ECOWX", stx, 0},
+{31, 854, ALL, "EIEIO", gen, 0},
+{31, 284, ALL, "EQV%C", gencc, il3},
+{31, 954, ALL, "EXTSB%C", gencc, il2},
+{31, 922, ALL, "EXTSH%C", gencc, il2},
+{31, 986, ALL, "EXTSW%C", gencc, il2},
+{63, 264, ALL, "FABS%C", gencc, fp2},
+{63, 21, ALL, "FADD%C", gencc, fp3},
+{59, 21, ALL, "FADDS%C", gencc, fp3},
+{63, 32, ALL, "FCMPO", gen, fpcmp},
+{63, 0, ALL, "FCMPU", gen, fpcmp},
+{63, 846, ALL, "FCFID%C", gencc, fp2},
+{63, 814, ALL, "FCTID%C", gencc, fp2},
+{63, 815, ALL, "FCTIDZ%C", gencc, fp2},
+{63, 14, ALL, "FCTIW%C", gencc, fp2},
+{63, 15, ALL, "FCTIWZ%C", gencc, fp2},
+{63, 18, ALL, "FDIV%C", gencc, fp3},
+{59, 18, ALL, "FDIVS%C", gencc, fp3},
+{63, 29, FP4, "FMADD%C", gencc, fp4},
+{59, 29, FP4, "FMADDS%C", gencc, fp4},
+{63, 72, ALL, "FMOVD%C", gencc, fp2},
+{63, 28, FP4, "FMSUB%C", gencc, fp4},
+{59, 28, FP4, "FMSUBS%C", gencc, fp4},
+{63, 25, FP4, "FMUL%C", gencc, fp3c},
+{59, 25, FP4, "FMULS%C", gencc, fp3c},
+{63, 136, ALL, "FNABS%C", gencc, fp2},
+{63, 40, ALL, "FNEG%C", gencc, fp2},
+{63, 31, FP4, "FNMADD%C", gencc, fp4},
+{59, 31, FP4, "FNMADDS%C", gencc, fp4},
+{63, 30, FP4, "FNMSUB%C", gencc, fp4},
+{59, 30, FP4, "FNMSUBS%C", gencc, fp4},
+{59, 24, ALL, "FRES%C", gencc, fp2},
+{63, 12, ALL, "FRSP%C", gencc, fp2},
+{63, 26, ALL, "FRSQRTE%C", gencc, fp2},
+{63, 23, FP4, "FSEL%CC", gencc, fp4},
+{63, 22, ALL, "FSQRT%C", gencc, fp2},
+{59, 22, ALL, "FSQRTS%C", gencc, fp2},
+{63, 20, FP4, "FSUB%C", gencc, fp3},
+{59, 20, FP4, "FSUBS%C", gencc, fp3},
+{31, 982, ALL, "ICBI", dcb, 0},
+{19, 150, ALL, "ISYNC", gen, 0},
+{34, 0, 0, "MOVBZ", load, ldop},
+{35, 0, 0, "MOVBZU", load, ldop},
+{31, 119, ALL, "MOVBZU", ldx, 0},
+{31, 87, ALL, "MOVBZ", ldx, 0},
+{50, 0, 0, "FMOVD", fload, fldop},
+{51, 0, 0, "FMOVDU", fload, fldop},
+{31, 631, ALL, "FMOVDU", fldx, 0},
+{31, 599, ALL, "FMOVD", fldx, 0},
+{48, 0, 0, "FMOVS", load, fldop},
+{49, 0, 0, "FMOVSU", load, fldop},
+{31, 567, ALL, "FMOVSU", fldx, 0},
+{31, 535, ALL, "FMOVS", fldx, 0},
+{42, 0, 0, "MOVH", load, ldop},
+{43, 0, 0, "MOVHU", load, ldop},
+{31, 375, ALL, "MOVHU", ldx, 0},
+{31, 343, ALL, "MOVH", ldx, 0},
+{31, 790, ALL, "MOVHBR", ldx, 0},
+{40, 0, 0, "MOVHZ", load, ldop},
+{41, 0, 0, "MOVHZU", load, ldop},
+{31, 311, ALL, "MOVHZU", ldx, 0},
+{31, 279, ALL, "MOVHZ", ldx, 0},
+{46, 0, 0, "MOVMW", load, ldop},
+{31, 597, ALL, "LSW", gen, "(R%a),$%n,R%d"},
+{31, 533, ALL, "LSW", ldx, 0},
+{31, 20, ALL, "LWAR", ldx, 0},
+{31, 84, ALL, "LWARD", ldx, 0},
+{58, 0, ALL, "MOVD", load, ldop},
+{58, 1, ALL, "MOVDU", load, ldop},
+{31, 53, ALL, "MOVDU", ldx, 0},
+{31, 21, ALL, "MOVD", ldx, 0},
+{31, 534, ALL, "MOVWBR", ldx, 0},
+{58, 2, ALL, "MOVW", load, ldop},
+{31, 373, ALL, "MOVWU", ldx, 0},
+{31, 341, ALL, "MOVW", ldx, 0},
+{32, 0, 0, "MOVW%Z", load, ldop},
+{33, 0, 0, "MOVW%ZU", load, ldop},
+{31, 55, ALL, "MOVW%ZU", ldx, 0},
+{31, 23, ALL, "MOVW%Z", ldx, 0},
+{19, 0, ALL, "MOVFL", gen, "%S,%D"},
+{63, 64, ALL, "MOVCRFS", gen, "%S,%D"},
+{31, 512, ALL, "MOVW", gen, "XER,%D"},
+{31, 19, ALL, "MOVW", gen, "CR,R%d"},
+{63, 583, ALL, "MOVW%C", gen, "FPSCR, F%d"},
+{31, 83, ALL, "MOVW", gen, "MSR,R%d"},
+{31, 339, ALL, "MOVW", gen, "%P,R%d"},
+{31, 595, ALL, "MOVW", gen, "SEG(%a),R%d"},
+{31, 659, ALL, "MOVW", gen, "SEG(R%b),R%d"},
+{31, 323, ALL, "MOVW", gen, "DCR(%Q),R%d"},
+{31, 451, ALL, "MOVW", gen, "R%s,DCR(%Q)"},
+{31, 259, ALL, "MOVW", gen, "DCR(R%a),R%d"},
+{31, 387, ALL, "MOVW", gen, "R%s,DCR(R%a)"},
+{31, 144, ALL, "MOVFL", gen, "R%s,%m,CR"},
+{63, 70, ALL, "MTFSB0%C", gencc, "%D"},
+{63, 38, ALL, "MTFSB1%C", gencc, "%D"},
+{63, 711, ALL, "MOVFL%C", gencc, "F%b,%M,FPSCR"},
+{63, 134, ALL, "MOVFL%C", gencc, "%K,%D"},
+{31, 146, ALL, "MOVW", gen, "R%s,MSR"},
+{31, 178, ALL, "MOVD", gen, "R%s,MSR"},
+{31, 467, ALL, "MOVW", gen, "R%s,%P"},
+{31, 210, ALL, "MOVW", gen, "R%s,SEG(%a)"},
+{31, 242, ALL, "MOVW", gen, "R%s,SEG(R%b)"},
+{31, 73, ALL, "MULHD%C", gencc, ir3},
+{31, 9, ALL, "MULHDU%C", gencc, ir3},
+{31, 233, OEM, "MULLD%V%C", gencc, ir3},
+{31, 75, ALL, "MULHW%C", gencc, ir3},
+{31, 11, ALL, "MULHWU%C", gencc, ir3},
+{31, 235, OEM, "MULLW%V%C", gencc, ir3},
+{7, 0, 0, "MULLW", qmuldiv, "%i,R%a,R%d"},
+{31, 476, ALL, "NAND%C", gencc, il3},
+{31, 104, OEM, "NEG%V%C", neg, ir2},
+{31, 124, ALL, "NOR%C", gencc, il3},
+{31, 444, ALL, "OR%C", or, il3},
+{31, 412, ALL, "ORN%C", or, il3},
+{24, 0, 0, "OR", and, "%I,R%d,R%a"},
+{25, 0, 0, "OR", shifted, 0},
+{19, 50, ALL, "RFI", gen, 0},
+{19, 51, ALL, "RFCI", gen, 0},
+{30, 8, RLDC, "RLDCL%C", gencc, rldc},
+{30, 9, RLDC, "RLDCR%C", gencc, rldc},
+{30, 0, RLDI, "RLDCL%C", gencc, rldi},
+{30, 1<<1, RLDI, "RLDCR%C", gencc, rldi},
+{30, 2<<1, RLDI, "RLDC%C", gencc, rldi},
+{30, 3<<1, RLDI, "RLDMI%C", gencc, rldi},
+{20, 0, 0, "RLWMI%C", gencc, rlimi},
+{21, 0, 0, "RLWNM%C", gencc, rlimi},
+{23, 0, 0, "RLWNM%C", gencc, rlim},
+{17, 1, ALL, "SYSCALL", gen, 0},
+{31, 27, ALL, "SLD%C", shift, il3},
+{31, 24, ALL, "SLW%C", shift, il3},
+{31, 794, ALL, "SRAD%C", shift, il3},
+{31, (413<<1)|0, ALL, "SRAD%C", shifti, il3s},
+{31, (413<<1)|1, ALL, "SRAD%C", shifti, il3s},
+{31, 792, ALL, "SRAW%C", shift, il3},
+{31, 824, ALL, "SRAW%C", shifti, il3s},
+{31, 539, ALL, "SRD%C", shift, il3},
+{31, 536, ALL, "SRW%C", shift, il3},
+{38, 0, 0, "MOVB", store, stop},
+{39, 0, 0, "MOVBU", store, stop},
+{31, 247, ALL, "MOVBU", stx, 0},
+{31, 215, ALL, "MOVB", stx, 0},
+{54, 0, 0, "FMOVD", fstore, fstop},
+{55, 0, 0, "FMOVDU", fstore, fstop},
+{31, 759, ALL, "FMOVDU", fstx, 0},
+{31, 727, ALL, "FMOVD", fstx, 0},
+{52, 0, 0, "FMOVS", fstore, fstop},
+{53, 0, 0, "FMOVSU", fstore, fstop},
+{31, 695, ALL, "FMOVSU", fstx, 0},
+{31, 663, ALL, "FMOVS", fstx, 0},
+{44, 0, 0, "MOVH", store, stop},
+{31, 918, ALL, "MOVHBR", stx, 0},
+{45, 0, 0, "MOVHU", store, stop},
+{31, 439, ALL, "MOVHU", stx, 0},
+{31, 407, ALL, "MOVH", stx, 0},
+{47, 0, 0, "MOVMW", store, stop},
+{31, 725, ALL, "STSW", gen, "R%d,$%n,(R%a)"},
+{31, 661, ALL, "STSW", stx, 0},
+{36, 0, 0, "MOVW", store, stop},
+{31, 662, ALL, "MOVWBR", stx, 0},
+{31, 150, ALL, "STWCCC", stx, 0},
+{31, 214, ALL, "STDCCC", stx, 0},
+{37, 0, 0, "MOVWU", store, stop},
+{31, 183, ALL, "MOVWU", stx, 0},
+{31, 151, ALL, "MOVW", stx, 0},
+{62, 0, 0, "MOVD%U", store, stop},
+{31, 149, ALL, "MOVD", stx, 0,},
+{31, 181, ALL, "MOVDU", stx, 0},
+{31, 498, ALL, "SLBIA", gen, 0},
+{31, 434, ALL, "SLBIE", gen, "R%b"},
+{31, 466, ALL, "SLBIEX", gen, "R%b"},
+{31, 915, ALL, "SLBMFEE", gen, "R%b,R%d"},
+{31, 851, ALL, "SLBMFEV", gen, "R%b,R%d"},
+{31, 402, ALL, "SLBMTE", gen, "R%s,R%b"},
+{31, 40, OEM, "SUB%V%C", sub, ir3},
+{31, 8, OEM, "SUBC%V%C", sub, ir3},
+{31, 136, OEM, "SUBE%V%C", sub, ir3},
+{8, 0, 0, "SUBC", gen, "R%a,%i,R%d"},
+{31, 232, OEM, "SUBME%V%C", sub, ir2},
+{31, 200, OEM, "SUBZE%V%C", sub, ir2},
+{31, 598, ALL, "SYNC", gen, 0},
+{2, 0, 0, "TD", gen, "%d,R%a,%i"},
+{31, 370, ALL, "TLBIA", gen, 0},
+{31, 306, ALL, "TLBIE", gen, "R%b"},
+{31, 274, ALL, "TLBIEL", gen, "R%b"},
+{31, 1010, ALL, "TLBLI", gen, "R%b"},
+{31, 978, ALL, "TLBLD", gen, "R%b"},
+{31, 566, ALL, "TLBSYNC", gen, 0},
+{31, 68, ALL, "TD", gen, "%d,R%a,R%b"},
+{31, 4, ALL, "TW", gen, "%d,R%a,R%b"},
+{3, 0, 0, "TW", gen, "%d,R%a,%i"},
+{31, 316, ALL, "XOR", and, il3},
+{26, 0, 0, "XOR", and, il2u},
+{27, 0, 0, "XOR", shifted, 0},
 {0},
 };
 typedef struct Spr Spr;
 struct Spr {
-int	n;
-char	*name;
+int n;
+char *name;
 };
-static	Spr	sprname[] = {
+static Spr sprname[] = {
 {0, "MQ"},
 {1, "XER"},
 {268, "TBL"},
@@ -969,8 +969,8 @@ bprint(i, "%d", i->xsh);
 break;
 case 'E':
 switch(IBF(i->w0,27,30)){
-case 8:	i->mb = i->xmbe; i->me = 63; break;
-case 9:	i->mb = 0; i->me = i->xmbe; break;
+case 8: i->mb = i->xmbe; i->me = 63; break;
+case 9: i->mb = 0; i->me = i->xmbe; break;
 case 4: case 5:
 i->mb = i->xmbe; i->me = 63-i->xsh; break;
 case 0: case 1:

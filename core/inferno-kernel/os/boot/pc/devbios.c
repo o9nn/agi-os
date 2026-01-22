@@ -15,68 +15,68 @@ Maxdevs = 4,
 CF = 1,
 Flopid = 0,
 Baseid = 0x80,
-Biosinit	= 0,
+Biosinit = 0,
 Biosdrvsts,
 Bioschsrdsects,
-Biosdrvparam	= 8,
+Biosdrvparam = 8,
 Biosctlrinit,
-Biosreset	=  0xd,
-Biosdrvrdy	= 0x10,
-Biosdrvtype	= 0x15,
-Biosckext	= 0x41,
+Biosreset = 0xd,
+Biosdrvrdy = 0x10,
+Biosdrvtype = 0x15,
+Biosckext = 0x41,
 Biosrdsect,
-Biosedrvparam	= 0x48,
+Biosedrvparam = 0x48,
 Typenone = 0,
 Typedisk = 3,
 };
 struct Biosdrive {
-int	ndevs;
+int ndevs;
 };
 struct Biosdev {
 Devbytes size;
 Devbytes offset;
-uchar	id;
-char	type;
-ushort	sectsz;
+uchar id;
+char type;
+ushort sectsz;
 };
 typedef struct Extread {
-uchar	size;
-uchar	unused1;
-uchar	nsects;
-uchar	unused2;
-ulong	addr;
-uvlong	stsect;
+uchar size;
+uchar unused1;
+uchar nsects;
+uchar unused2;
+ulong addr;
+uvlong stsect;
 } Extread;
 typedef struct Edrvparam {
-ushort	size;
-ushort	flags;
-ulong	physcyls;
-ulong	physheads;
-ulong	phystracksects;
-uvlong	physsects;
-ushort	sectsz;
-void	*dpte;
-ushort	key;
-uchar	dpilen;
-uchar	unused1;
-ushort	unused2;
-char	bustype[4];
-char	ifctype[8];
-uvlong	ifcpath;
-uvlong	devpath;
-uchar	unused3;
-uchar	dpicksum;
+ushort size;
+ushort flags;
+ulong physcyls;
+ulong physheads;
+ulong phystracksects;
+uvlong physsects;
+ushort sectsz;
+void *dpte;
+ushort key;
+uchar dpilen;
+uchar unused1;
+ushort unused2;
+char bustype[4];
+char ifctype[8];
+uvlong ifcpath;
+uvlong devpath;
+uchar unused3;
+uchar dpicksum;
 } Edrvparam;
-void	realmode(int intr, Ureg *ureg);
+void realmode(int intr, Ureg *ureg);
 int onlybios0;
 int biosinited;
 static Biosdev bdev[Maxdevs];
 static Biosdrive bdrive;
 static Ureg regs;
-static int	dreset(uchar drive);
-static Devbytes	extgetsize(Biosdev *);
-static Devsects	getsize(uchar drive, char *type);
-static int	islba(uchar drive);
+static int dreset(uchar drive);
+static Devbytes extgetsize(Biosdev *);
+static Devsects getsize(uchar drive, char *type);
+static int islba(uchar drive);
 static int
 biosdiskcall(Ureg *rp, uchar op, ulong bx, ulong dx, ulong si)
 {
@@ -107,7 +107,7 @@ if (pxe || getconf("*nobiosload") != nil || onlybios0 || !biosinited)
 return mask;
 for (devid = 0; devid < (1 << 8) && bdrive.ndevs < Maxdevs; devid++) {
 lba = islba(devid);
-if(!lba  )
+if(!lba )
 continue;
 type = Typedisk;
 if (getsize(devid, &type) == 0) {
@@ -292,7 +292,7 @@ fs->dev, n, offset, want, bdp->id);
 part = offset % bdp->sectsz;
 if (part != 0) {
 offset -= part;
-totnr  -= part;
+totnr -= part;
 if (totnr < 0) {
 print("biosread: negative count %ld\n", totnr);
 return -1;

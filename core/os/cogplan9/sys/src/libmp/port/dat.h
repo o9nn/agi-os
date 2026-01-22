@@ -1,4 +1,4 @@
-#define	mpdighi  (mpdigit)(1<<(Dbits-1))
+#define mpdighi (mpdigit)(1<<(Dbits-1))
 #define DIGITS(x) ((Dbits - 1 + (x))/Dbits)
 #define MAXUINT ((uint)-1)
 #define MAXINT (MAXUINT>>1)

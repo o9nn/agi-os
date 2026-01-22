@@ -87,9 +87,9 @@
 #define CPPHTTPLIB_COMPRESSION_BUFSIZ size_t(16384u)
 #endif
 #ifndef CPPHTTPLIB_THREAD_POOL_COUNT
-#define CPPHTTPLIB_THREAD_POOL_COUNT                                           \
-((std::max)(8u, std::thread::hardware_concurrency() > 0                      \
-? std::thread::hardware_concurrency() - 1                \
+#define CPPHTTPLIB_THREAD_POOL_COUNT \
+((std::max)(8u, std::thread::hardware_concurrency() > 0 \
+? std::thread::hardware_concurrency() - 1 \
 : 0))
 #endif
 #ifndef CPPHTTPLIB_RECV_FLAGS
@@ -260,13 +260,13 @@ return std::unique_ptr<T>(new RT[n]);
 namespace case_ignore {
 inline unsigned char to_lower(int c) {
 const static unsigned char table[256] = {
-0,   1,   2,   3,   4,   5,   6,   7,   8,   9,   10,  11,  12,  13,  14,
-15,  16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,
-30,  31,  32,  33,  34,  35,  36,  37,  38,  39,  40,  41,  42,  43,  44,
-45,  46,  47,  48,  49,  50,  51,  52,  53,  54,  55,  56,  57,  58,  59,
-60,  61,  62,  63,  64,  97,  98,  99,  100, 101, 102, 103, 104, 105, 106,
+0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
+15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
+30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44,
+45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
+60, 61, 62, 63, 64, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106,
 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121,
-122, 91,  92,  93,  94,  95,  96,  97,  98,  99,  100, 101, 102, 103, 104,
+122, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104,
 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119,
 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134,
 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149,
@@ -641,7 +641,7 @@ pool_.jobs_.pop_front();
 assert(true == static_cast<bool>(fn));
 fn();
 }
-#if defined(CPPHTTPLIB_OPENSSL_SUPPORT) && !defined(OPENSSL_IS_BORINGSSL) &&   \
+#if defined(CPPHTTPLIB_OPENSSL_SUPPORT) && !defined(OPENSSL_IS_BORINGSSL) && \
 !defined(LIBRESSL_VERSION_NUMBER)
 OPENSSL_thread_stop();
 #endif
@@ -4411,7 +4411,7 @@ std::string algo = "MD5";
 if (auth.find("algorithm") != auth.end()) { algo = auth.at("algorithm"); }
 std::string response;
 {
-auto H = algo == "SHA-256"   ? detail::SHA_256
+auto H = algo == "SHA-256" ? detail::SHA_256
 : algo == "SHA-512" ? detail::SHA_512
 : detail::MD5;
 auto A1 = username + ":" + auth.at("realm") + ":" + password;
@@ -5245,7 +5245,7 @@ count++;
 if (count != 3) { return false; }
 }
 thread_local const std::set<std::string> methods{
-"GET",     "HEAD",    "POST",  "PUT",   "DELETE",
+"GET", "HEAD", "POST", "PUT", "DELETE",
 "CONNECT", "OPTIONS", "TRACE", "PATCH", "PRI"};
 if (methods.find(req.method) == methods.end()) { return false; }
 if (req.version != "HTTP/1.1" && req.version != "HTTP/1.0") { return false; }

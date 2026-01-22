@@ -18,9 +18,9 @@ int create_archive(void)
 int create_archive()
 #endif
 {
-char            name[PATH_MAX + 1];
-Stat            sb;
-int             fd;
+char name[PATH_MAX + 1];
+Stat sb;
+int fd;
 while (name_next(name, &sb) != -1) {
 if ((fd = openin(name, &sb)) < 0) {
 continue;
@@ -63,16 +63,16 @@ return (0);
 static void writetar(char *name, Stat *asb)
 #else
 static void writetar(name, asb)
-char           *name;
-Stat           *asb;
+char *name;
+Stat *asb;
 #endif
 {
-char	   *p;
-char           *prefix = (char *)NULL;
-int             i;
-int             sum;
-char            hdr[BLOCKSIZE];
-Link           *from;
+char *p;
+char *prefix = (char *)NULL;
+int i;
+int sum;
+char hdr[BLOCKSIZE];
+Link *from;
 memset(hdr, 0, BLOCKSIZE);
 if (strlen(name) > 255) {
 warn(name, "name too long");
@@ -129,7 +129,7 @@ outwrite(hdr, BLOCKSIZE);
 static char tartype(int mode)
 #else
 static char tartype(mode)
-int	    mode;
+int mode;
 #endif
 {
 switch (mode & S_IFMT) {
@@ -163,12 +163,12 @@ return (REGTYPE);
 static void writecpio(char *name, Stat *asb)
 #else
 static void writecpio(name, asb)
-char           *name;
-Stat           *asb;
+char *name;
+Stat *asb;
 #endif
 {
-uint            namelen;
-char            header[M_STRLEN + H_STRLEN + 1];
+uint namelen;
+char header[M_STRLEN + H_STRLEN + 1];
 namelen = (uint) strlen(name) + 1;
 strcpy(header, M_ASCII);
 sprintf(header + M_STRLEN, "%06o%06o%06o%06o%06o",
@@ -184,7 +184,7 @@ f_mtime ? asb->sb_mtime : time((time_t *) 0),
 namelen, asb->sb_size);
 outwrite(header, M_STRLEN + H_STRLEN);
 outwrite(name, namelen);
-#ifdef	S_IFLNK
+#ifdef S_IFLNK
 if ((asb->sb_mode & S_IFMT) == S_IFLNK) {
 outwrite(asb->sb_link, (uint) asb->sb_size);
 }

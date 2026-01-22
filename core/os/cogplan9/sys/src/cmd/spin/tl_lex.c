@@ -1,15 +1,15 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include "tl.h"
-static Symbol	*symtab[Nhash+1];
-static int	tl_lex(void);
+static Symbol *symtab[Nhash+1];
+static int tl_lex(void);
 extern int tl_peek(int);
-extern YYSTYPE	tl_yylval;
-extern char	yytext[];
-#define Token(y)        tl_yylval = tl_nn(y,ZN,ZN); return y
+extern YYSTYPE tl_yylval;
+extern char yytext[];
+#define Token(y) tl_yylval = tl_nn(y,ZN,ZN); return y
 static void
 tl_getword(int first, int (*tst)(int))
-{	int i=0; char c;
+{ int i=0; char c;
 yytext[i++] = (char ) first;
 while (tst(c = tl_Getchar()))
 yytext[i++] = c;
@@ -18,7 +18,7 @@ tl_UnGetchar();
 }
 static int
 tl_follow(int tok, int ifyes, int ifno)
-{	int c;
+{ int c;
 char buf[32];
 extern int tl_yychar;
 if ((c = tl_Getchar()) == tok)
@@ -31,7 +31,7 @@ return ifno;
 }
 int
 tl_yylex(void)
-{	int c = tl_lex();
+{ int c = tl_lex();
 #if 0
 printf("c = %c (%d)\n", c, c);
 #endif
@@ -39,43 +39,43 @@ return c;
 }
 static int
 is_predicate(int z)
-{	char c, c_prev = z;
+{ char c, c_prev = z;
 char want = (z == '{') ? '}' : ')';
 int i = 0, j, nesting = 0;
 char peek_buf[512];
 c = tl_peek(i++);
 while ((c != want || nesting > 0) && c != -1 && i < 2047)
-{	if (islower((int) c))
-{	peek_buf[0] = c;
+{ if (islower((int) c))
+{ peek_buf[0] = c;
 j = 1;
 while (j < (int) sizeof(peek_buf) && isalnum((int)(c = tl_peek(i))))
-{	peek_buf[j++] = c;
+{ peek_buf[j++] = c;
 i++;
 }
 c = 0;
 if (j >= (int) sizeof(peek_buf))
-{	peek_buf[j-1] = '\0';
+{ peek_buf[j-1] = '\0';
 fatal("name '%s' in ltl formula too long", peek_buf);
 }
 peek_buf[j] = '\0';
 if (strcmp(peek_buf, "always") == 0
-||  strcmp(peek_buf, "eventually") == 0
-||  strcmp(peek_buf, "until") == 0
-||  strcmp(peek_buf, "next") == 0)
-{	return 0;
+|| strcmp(peek_buf, "eventually") == 0
+|| strcmp(peek_buf, "until") == 0
+|| strcmp(peek_buf, "next") == 0)
+{ return 0;
 }
 } else
-{	char c_nxt = tl_peek(i);
+{ char c_nxt = tl_peek(i);
 if (((c == 'U' || c == 'V' || c == 'X') && !isalnum_(c_prev) && !isalnum_(c_nxt))
-||  (c == '<' && c_nxt == '>')
-||  (c == '[' && c_nxt == ']'))
-{	return 0;
-}	}
+|| (c == '<' && c_nxt == '>')
+|| (c == '[' && c_nxt == ']'))
+{ return 0;
+} }
 if (c == z)
-{	nesting++;
+{ nesting++;
 }
 if (c == want)
-{	nesting--;
+{ nesting--;
 }
 c_prev = c;
 c = tl_peek(i++);
@@ -84,16 +84,16 @@ return 1;
 }
 static void
 read_upto_closing(int z)
-{	char c, want = (z == '{') ? '}' : ')';
+{ char c, want = (z == '{') ? '}' : ')';
 int i = 0, nesting = 0;
 c = tl_Getchar();
 while ((c != want || nesting > 0) && c != -1 && i < 2047)
-{	yytext[i++] = c;
+{ yytext[i++] = c;
 if (c == z)
-{	nesting++;
+{ nesting++;
 }
 if (c == want)
-{	nesting--;
+{ nesting--;
 }
 c = tl_Getchar();
 }
@@ -101,66 +101,66 @@ yytext[i] = '\0';
 }
 static int
 tl_lex(void)
-{	int c;
+{ int c;
 do {
 c = tl_Getchar();
 yytext[0] = (char ) c;
 yytext[1] = '\0';
 if (c <= 0)
-{	Token(';');
+{ Token(';');
 }
 } while (c == ' ');
 if (c == '{' || c == '(')
-{	if (is_predicate(c))
-{	read_upto_closing(c);
+{ if (is_predicate(c))
+{ read_upto_closing(c);
 tl_yylval = tl_nn(PREDICATE,ZN,ZN);
 tl_yylval->sym = tl_lookup(yytext);
 return PREDICATE;
-}	}
+} }
 if (c == '}')
-{	tl_yyerror("unexpected '}'");
+{ tl_yyerror("unexpected '}'");
 }
 if (islower(c))
-{	tl_getword(c, isalnum_);
+{ tl_getword(c, isalnum_);
 if (strcmp("true", yytext) == 0)
-{	Token(TRUE);
+{ Token(TRUE);
 }
 if (strcmp("false", yytext) == 0)
-{	Token(FALSE);
+{ Token(FALSE);
 }
 if (strcmp("always", yytext) == 0)
-{	Token(ALWAYS);
+{ Token(ALWAYS);
 }
 if (strcmp("eventually", yytext) == 0)
-{	Token(EVENTUALLY);
+{ Token(EVENTUALLY);
 }
 if (strcmp("until", yytext) == 0)
-{	Token(U_OPER);
+{ Token(U_OPER);
 }
 #ifdef NXT
 if (strcmp("next", yytext) == 0)
-{	Token(NEXT);
+{ Token(NEXT);
 }
 #endif
 if (strcmp("not", yytext) == 0)
-{	Token(NOT);
+{ Token(NOT);
 }
 tl_yylval = tl_nn(PREDICATE,ZN,ZN);
 tl_yylval->sym = tl_lookup(yytext);
 return PREDICATE;
 }
 if (c == '<')
-{	c = tl_Getchar();
+{ c = tl_Getchar();
 if (c == '>')
-{	Token(EVENTUALLY);
+{ Token(EVENTUALLY);
 }
 if (c != '-')
-{	tl_UnGetchar();
+{ tl_UnGetchar();
 tl_yyerror("expected '<>' or '<->'");
 }
 c = tl_Getchar();
 if (c == '>')
-{	Token(EQUIV);
+{ Token(EQUIV);
 }
 tl_UnGetchar();
 tl_yyerror("expected '<->'");
@@ -178,13 +178,13 @@ case 'V' : c = V_OPER; break;
 #ifdef NXT
 case 'X' : c = NEXT; break;
 #endif
-default  : break;
+default : break;
 }
 Token(c);
 }
 Symbol *
 tl_lookup(char *s)
-{	Symbol *sp;
+{ Symbol *sp;
 int h = hash(s);
 for (sp = symtab[h]; sp; sp = sp->next)
 if (strcmp(sp->name, s) == 0)
@@ -198,7 +198,7 @@ return sp;
 }
 Symbol *
 getsym(Symbol *s)
-{	Symbol *n = (Symbol *) tl_emalloc(sizeof(Symbol));
+{ Symbol *n = (Symbol *) tl_emalloc(sizeof(Symbol));
 n->name = s->name;
 return n;
 }

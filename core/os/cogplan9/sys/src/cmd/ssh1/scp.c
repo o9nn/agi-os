@@ -11,33 +11,33 @@ if(strlen(buf)>=9 && strcmp(buf+strlen(buf)-9, "/dev/cons")==0)
 return 1;
 return 0;
 }
-#define	OK	0x00
-#define	ERROR	0x01
-#define	FATAL	0x02
-char	*progname;
-int	dflag;
-int	fflag;
-int	iflag;
-int	pflag;
-int	rflag;
-int	tflag;
-int	vflag;
-int	remote;
-char	*exitflag = nil;
-void	scperror(int, char*, ...);
-void	mustbedir(char*);
-void	receive(char*);
-char	*fileaftercolon(char*);
-void	destislocal(char *cmd, int argc, char *argv[], char *dest);
-void	destisremote(char *cmd, int argc, char *argv[], char *host, char *dest);
-int	remotessh(char *host, char *cmd);
-void	send(char*);
-void	senddir(char*, int, Dir*);
-int 	getresponse(void);
-char	theuser[32];
-char	ssh[] = "/bin/ssh";
-int	remotefd0;
-int	remotefd1;
+#define OK 0x00
+#define ERROR 0x01
+#define FATAL 0x02
+char *progname;
+int dflag;
+int fflag;
+int iflag;
+int pflag;
+int rflag;
+int tflag;
+int vflag;
+int remote;
+char *exitflag = nil;
+void scperror(int, char*, ...);
+void mustbedir(char*);
+void receive(char*);
+char *fileaftercolon(char*);
+void destislocal(char *cmd, int argc, char *argv[], char *dest);
+void destisremote(char *cmd, int argc, char *argv[], char *host, char *dest);
+int remotessh(char *host, char *cmd);
+void send(char*);
+void senddir(char*, int, Dir*);
+int getresponse(void);
+char theuser[32];
+char ssh[] = "/bin/ssh";
+int remotefd0;
+int remotefd1;
 int
 runcommand(char *cmd)
 {
@@ -96,8 +96,8 @@ usage(void)
 fprint(2, "Usage: scp [-Iidfprtv] source ... destination\n");
 exits("usage");
 }
-#pragma	varargck	type	"F"	int
-#pragma	varargck	type	"V"	char*
+#pragma varargck type "F" int
+#pragma varargck type "V" char*
 static int flag;
 int
 flagfmt(Fmt *f)

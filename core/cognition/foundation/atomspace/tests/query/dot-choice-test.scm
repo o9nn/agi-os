@@ -14,27 +14,27 @@
 (Associative (Predicate "furry")    (Concept "cat") (CountTruthValue 1 0 5))
 (Associative (Predicate "domestic") (Concept "cat") (CountTruthValue 1 0 6))
 (define qdot-math
-	(Query
-		(VariableList
-			(TypedVariable (Variable "$prop") (Type 'Predicate))
-			(TypedVariable (Variable "$dog")
-				(TypeChoice (Type 'Evaluation) (Type 'Associative)))
-			(TypedVariable (Variable "$cat")
-				(TypeChoice (Type 'Evaluation) (Type 'Associative)))
-		)
-		(And
-			(Identical (Variable "$dog")
-				(Choice
-					(Evaluation (Variable "$prop") (Concept "dog"))
-					(Associative (Variable "$prop") (Concept "dog"))))
-			(Identical (Variable "$cat")
-				(Choice
-					(Evaluation (Variable "$prop") (Concept "cat"))
-					(Associative (Variable "$prop") (Concept "cat"))))
-		)
-		(Times
-			(CountOf (Variable "$dog"))
-			(CountOf (Variable "$cat")))))
+(Query
+(VariableList
+(TypedVariable (Variable "$prop") (Type 'Predicate))
+(TypedVariable (Variable "$dog")
+(TypeChoice (Type 'Evaluation) (Type 'Associative)))
+(TypedVariable (Variable "$cat")
+(TypeChoice (Type 'Evaluation) (Type 'Associative)))
+)
+(And
+(Identical (Variable "$dog")
+(Choice
+(Evaluation (Variable "$prop") (Concept "dog"))
+(Associative (Variable "$prop") (Concept "dog"))))
+(Identical (Variable "$cat")
+(Choice
+(Evaluation (Variable "$prop") (Concept "cat"))
+(Associative (Variable "$prop") (Concept "cat"))))
+)
+(Times
+(CountOf (Variable "$dog"))
+(CountOf (Variable "$cat")))))
 (define seventy (cog-execute! (Accumulate qdot-math)))
 (test-assert "final dot product" (equal? (FloatValue 70) seventy))
 (test-end tname)

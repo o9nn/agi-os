@@ -25,7 +25,7 @@ return -1;
 }
 template <int K, int N> struct block {
 ggml_half d[N];
-int8_t    qs[(QK_0<K>() * N * K) / 8];
+int8_t qs[(QK_0<K>() * N * K) / 8];
 };
 static_assert(sizeof(block<4, 4>) == 4 * sizeof(ggml_half) + QK8_0 * 2, "wrong block<4,4> size/padding");
 static_assert(sizeof(block<4, 8>) == 8 * sizeof(ggml_half) + QK8_0 * 4, "wrong block<4,8> size/padding");
@@ -50,7 +50,7 @@ int16_t bsums[QK_K / 4];
 static_assert(sizeof(block_q8_Kx4) == sizeof(float) * 4 + QK_K * 4 + (QK_K / 4) * sizeof(int16_t), "wrong q8_K block size/padding");
 struct block_iq4_nlx4 {
 ggml_half d[4];
-uint8_t   qs[QK4_NL * 2];
+uint8_t qs[QK4_NL * 2];
 };
 static_assert(sizeof(block_iq4_nlx4) == 4 * sizeof(ggml_half) + QK4_NL * 2, "wrong iq4_nlx4 block size/padding");
 #if defined(__GNUC__)
@@ -66,12 +66,12 @@ return (i & 0x007fffff) - 0x00400000;
 #if defined(__AVX__)
 #if defined(__F16C__)
 #if defined(__AVX512F__)
-#define GGML_F32Cx8x2_LOAD(x, y)     _mm512_cvtph_ps(_mm256_set_m128i(_mm_loadu_si128((const __m128i *)(y)), _mm_loadu_si128((const __m128i *)(x))))
-#define GGML_F32Cx16_REPEAT_LOAD(x)  _mm512_cvtph_ps(_mm256_set_m128i(x, x))
+#define GGML_F32Cx8x2_LOAD(x, y) _mm512_cvtph_ps(_mm256_set_m128i(_mm_loadu_si128((const __m128i *)(y)), _mm_loadu_si128((const __m128i *)(x))))
+#define GGML_F32Cx16_REPEAT_LOAD(x) _mm512_cvtph_ps(_mm256_set_m128i(x, x))
 #endif
-#define GGML_F32Cx8_LOAD(x)     _mm256_cvtph_ps(_mm_loadu_si128((const __m128i *)(x)))
-#define GGML_F32Cx8_REPEAT_LOAD(x, loadMask)     _mm256_cvtph_ps(_mm_shuffle_epi32(_mm_maskload_epi32((int const*)(x), loadMask), 68))
-#define GGML_F32Cx8_REARRANGE_LOAD(x, arrangeMask)     _mm256_cvtph_ps(_mm_shuffle_epi8(_mm_loadu_si128((const __m128i *) x), arrangeMask))
+#define GGML_F32Cx8_LOAD(x) _mm256_cvtph_ps(_mm_loadu_si128((const __m128i *)(x)))
+#define GGML_F32Cx8_REPEAT_LOAD(x, loadMask) _mm256_cvtph_ps(_mm_shuffle_epi32(_mm_maskload_epi32((int const*)(x), loadMask), 68))
+#define GGML_F32Cx8_REARRANGE_LOAD(x, arrangeMask) _mm256_cvtph_ps(_mm_shuffle_epi8(_mm_loadu_si128((const __m128i *) x), arrangeMask))
 #else
 #if defined(__AVX512F__)
 static inline __m512 __avx512_f32cx8x2_load(ggml_fp16_t *x, ggml_fp16_t *y) {
@@ -121,12 +121,12 @@ tmp[i] = GGML_FP16_TO_FP32(tmphalf[i]);
 }
 return _mm256_loadu_ps(tmp);
 }
-#define GGML_F32Cx8_LOAD(x)     __avx_f32cx8_load(x)
-#define GGML_F32Cx8_REPEAT_LOAD(x, loadMask)     __avx_repeat_f32cx8_load(x)
-#define GGML_F32Cx8_REARRANGE_LOAD(x, arrangeMask)     __avx_rearranged_f32cx8_load(x, arrangeMask)
+#define GGML_F32Cx8_LOAD(x) __avx_f32cx8_load(x)
+#define GGML_F32Cx8_REPEAT_LOAD(x, loadMask) __avx_repeat_f32cx8_load(x)
+#define GGML_F32Cx8_REARRANGE_LOAD(x, arrangeMask) __avx_rearranged_f32cx8_load(x, arrangeMask)
 #if defined(__AVX512F__)
-#define GGML_F32Cx8x2_LOAD(x, y)     __avx512_f32cx8x2_load(x, y)
-#define GGML_F32Cx16_REPEAT_LOAD(x)  __avx512_repeat_f32cx16_load(x)
+#define GGML_F32Cx8x2_LOAD(x, y) __avx512_f32cx8x2_load(x, y)
+#define GGML_F32Cx16_REPEAT_LOAD(x) __avx512_repeat_f32cx16_load(x)
 #endif
 #endif
 #endif
@@ -343,7 +343,7 @@ __m128 max4 = _mm_max_ps( _mm256_extractf128_ps( maxAbs, 1 ), _mm256_castps256_p
 max4 = _mm_max_ps( max4, _mm_movehl_ps( max4, max4 ) );
 max4 = _mm_max_ss( max4, _mm_movehdup_ps( max4 ) );
 const float maxScalar = _mm_cvtss_f32( max4 );
-const float d = maxScalar  / 127.f;
+const float d = maxScalar / 127.f;
 id[row_iter] = ( maxScalar != 0.0f ) ? 127.f / maxScalar : 0.0f;
 y[i].d[row_iter] = GGML_FP32_TO_FP16(d);
 srcv[row_iter][0] = v0;
@@ -470,7 +470,7 @@ mask1 = _mm256_cmp_ps( maxAbs, v1, _CMP_EQ_OQ );
 mask2 = _mm256_cmp_ps( maxAbs, v2, _CMP_EQ_OQ );
 mask3 = _mm256_cmp_ps( maxAbs, v3, _CMP_EQ_OQ );
 __m256 mask_curr = _mm256_or_ps(_mm256_or_ps(mask0, mask1),_mm256_or_ps(mask2, mask3));
-maskAbs =  _mm256_or_ps(maskAbs, mask_curr);
+maskAbs = _mm256_or_ps(maskAbs, mask_curr);
 srcv[row_iter][sb * 4] = v0;
 srcv[row_iter][sb * 4 + 1] = v1;
 srcv[row_iter][sb * 4 + 2] = v2;
@@ -596,7 +596,7 @@ y[i].bsums[j] = 0;
 }
 for (int j = 0; j < QK_K * 4; j++) {
 int src_offset = (j / (4 * blck_size_interleave)) * blck_size_interleave;
-int src_id     = (j % (4 * blck_size_interleave)) / blck_size_interleave;
+int src_id = (j % (4 * blck_size_interleave)) / blck_size_interleave;
 src_offset += (j % blck_size_interleave);
 int index = (((j & 31) >> 3) << 2) + ((j >> 8) << 4) + ((j >> 6) & 3);
 float x0 = srcv[src_id][src_offset] * iscale[src_id];
@@ -2669,7 +2669,7 @@ for (int i = 0; i < 3; ++i) {
 a_ptrs[i + 1] = a_ptrs[i] + nb;
 }
 for (int64_t x = 0; x < anc / 8; x += 2) {
-const block_q4_0x8 * b_ptr_0 = b_ptr_start + ((x)     * b_nb);
+const block_q4_0x8 * b_ptr_0 = b_ptr_start + ((x) * b_nb);
 const block_q4_0x8 * b_ptr_1 = b_ptr_start + ((x + 1) * b_nb);
 __m512 acc_rows[16];
 for (int i = 0; i < 16; i++) {
@@ -2777,8 +2777,8 @@ __m512i iacc_row_2 = _mm512_mask_blend_epi32(0xCCCC, iacc_mat_10, _mm512_shuffle
 __m512i iacc_row_3 = _mm512_mask_blend_epi32(0xCCCC, _mm512_shuffle_epi32(iacc_mat_10, (_MM_PERM_ENUM)78), iacc_mat_11);
 const __m128i row_scale_f16 = _mm_shuffle_epi32(_mm_maskload_epi32((int const*)(a_ptrs[rp][b].d), loadMask), 68);
 const __m512 row_scale_f32 = GGML_F32Cx16_REPEAT_LOAD(row_scale_f16);
-acc_rows[rp * 4]     = _mm512_fmadd_ps(_mm512_cvtepi32_ps(iacc_row_0), _mm512_mul_ps(col_scale_f32, _mm512_shuffle_ps(row_scale_f32, row_scale_f32, 0)),   acc_rows[rp * 4]);
-acc_rows[rp * 4 + 1] = _mm512_fmadd_ps(_mm512_cvtepi32_ps(iacc_row_1), _mm512_mul_ps(col_scale_f32, _mm512_shuffle_ps(row_scale_f32, row_scale_f32, 85)),  acc_rows[rp * 4 + 1]);
+acc_rows[rp * 4] = _mm512_fmadd_ps(_mm512_cvtepi32_ps(iacc_row_0), _mm512_mul_ps(col_scale_f32, _mm512_shuffle_ps(row_scale_f32, row_scale_f32, 0)), acc_rows[rp * 4]);
+acc_rows[rp * 4 + 1] = _mm512_fmadd_ps(_mm512_cvtepi32_ps(iacc_row_1), _mm512_mul_ps(col_scale_f32, _mm512_shuffle_ps(row_scale_f32, row_scale_f32, 85)), acc_rows[rp * 4 + 1]);
 acc_rows[rp * 4 + 2] = _mm512_fmadd_ps(_mm512_cvtepi32_ps(iacc_row_2), _mm512_mul_ps(col_scale_f32, _mm512_shuffle_ps(row_scale_f32, row_scale_f32, 170)), acc_rows[rp * 4 + 2]);
 acc_rows[rp * 4 + 3] = _mm512_fmadd_ps(_mm512_cvtepi32_ps(iacc_row_3), _mm512_mul_ps(col_scale_f32, _mm512_shuffle_ps(row_scale_f32, row_scale_f32, 255)), acc_rows[rp * 4 + 3]);
 }
@@ -2791,7 +2791,7 @@ _mm512_storeu_ps((float *)(s + ((y * 4 + i) * bs + x * 8)), acc_rows[i]);
 for (; y < nr / 4; y ++) {
 const block_q8_0x4 * a_ptr = a_ptr_start + (y * nb);
 for (int64_t x = 0; x < anc / 8; x += 2) {
-const block_q4_0x8 * b_ptr_0 = b_ptr_start + ((x)     * b_nb);
+const block_q4_0x8 * b_ptr_0 = b_ptr_start + ((x) * b_nb);
 const block_q4_0x8 * b_ptr_1 = b_ptr_start + ((x + 1) * b_nb);
 __m512 acc_rows[4];
 for (int i = 0; i < 4; i++) {
@@ -2898,8 +2898,8 @@ __m512i iacc_row_2 = _mm512_mask_blend_epi32(0xCCCC, iacc_mat_10, _mm512_shuffle
 __m512i iacc_row_3 = _mm512_mask_blend_epi32(0xCCCC, _mm512_shuffle_epi32(iacc_mat_10, (_MM_PERM_ENUM)78), iacc_mat_11);
 const __m128i row_scale_f16 = _mm_shuffle_epi32(_mm_maskload_epi32((int const*)(a_ptr[b].d), loadMask), 68);
 const __m512 row_scale_f32 = GGML_F32Cx16_REPEAT_LOAD(row_scale_f16);
-acc_rows[0] = _mm512_fmadd_ps(_mm512_cvtepi32_ps(iacc_row_0), _mm512_mul_ps(col_scale_f32, _mm512_shuffle_ps(row_scale_f32, row_scale_f32, 0)),   acc_rows[0]);
-acc_rows[1] = _mm512_fmadd_ps(_mm512_cvtepi32_ps(iacc_row_1), _mm512_mul_ps(col_scale_f32, _mm512_shuffle_ps(row_scale_f32, row_scale_f32, 85)),  acc_rows[1]);
+acc_rows[0] = _mm512_fmadd_ps(_mm512_cvtepi32_ps(iacc_row_0), _mm512_mul_ps(col_scale_f32, _mm512_shuffle_ps(row_scale_f32, row_scale_f32, 0)), acc_rows[0]);
+acc_rows[1] = _mm512_fmadd_ps(_mm512_cvtepi32_ps(iacc_row_1), _mm512_mul_ps(col_scale_f32, _mm512_shuffle_ps(row_scale_f32, row_scale_f32, 85)), acc_rows[1]);
 acc_rows[2] = _mm512_fmadd_ps(_mm512_cvtepi32_ps(iacc_row_2), _mm512_mul_ps(col_scale_f32, _mm512_shuffle_ps(row_scale_f32, row_scale_f32, 170)), acc_rows[2]);
 acc_rows[3] = _mm512_fmadd_ps(_mm512_cvtepi32_ps(iacc_row_3), _mm512_mul_ps(col_scale_f32, _mm512_shuffle_ps(row_scale_f32, row_scale_f32, 255)), acc_rows[3]);
 }
@@ -3009,7 +3009,7 @@ const __m256 row_scale_f32 = GGML_F32Cx8_REPEAT_LOAD(a_ptrs[rp][b].d, loadMask);
 acc_rows[rp * 4] = _mm256_fmadd_ps(_mm256_cvtepi32_ps(iacc_row_0), _mm256_mul_ps(col_scale_f32, _mm256_shuffle_ps(row_scale_f32, row_scale_f32, 0)), acc_rows[rp * 4]);
 acc_rows[rp * 4 + 1] = _mm256_fmadd_ps(_mm256_cvtepi32_ps(iacc_row_1), _mm256_mul_ps(col_scale_f32, _mm256_shuffle_ps(row_scale_f32, row_scale_f32, 85)), acc_rows[rp * 4 + 1]);
 acc_rows[rp * 4 + 2] = _mm256_fmadd_ps(_mm256_cvtepi32_ps(iacc_row_2), _mm256_mul_ps(col_scale_f32, _mm256_shuffle_ps(row_scale_f32, row_scale_f32, 170)), acc_rows[rp * 4 + 2]);
-acc_rows[rp * 4 + 3] = _mm256_fmadd_ps(_mm256_cvtepi32_ps(iacc_row_3), _mm256_mul_ps(col_scale_f32, _mm256_shuffle_ps(row_scale_f32, row_scale_f32,  255)), acc_rows[rp * 4 + 3]);
+acc_rows[rp * 4 + 3] = _mm256_fmadd_ps(_mm256_cvtepi32_ps(iacc_row_3), _mm256_mul_ps(col_scale_f32, _mm256_shuffle_ps(row_scale_f32, row_scale_f32, 255)), acc_rows[rp * 4 + 3]);
 }
 }
 for (int i = 0; i < 16; i++) {
@@ -3631,7 +3631,7 @@ const __m128 row_scale_f32_sse = _mm_load_ps(a_ptrs[rp][b].d);
 const __m256 row_scale_f32_ymm = _mm256_set_m128(row_scale_f32_sse, row_scale_f32_sse);
 const __m512 row_scale_f32 = _mm512_insertf32x8(_mm512_castps256_ps512(row_scale_f32_ymm), row_scale_f32_ymm, 1);
 acc_rows[rp * 4] = _mm512_fmadd_ps(_mm512_cvtepi32_ps(iacc_row_0), _mm512_mul_ps(col_scale_f32, _mm512_shuffle_ps(row_scale_f32, row_scale_f32, 0)), acc_rows[rp * 4]);
-acc_rows[rp * 4  + 1] = _mm512_fmadd_ps(_mm512_cvtepi32_ps(iacc_row_1), _mm512_mul_ps(col_scale_f32, _mm512_shuffle_ps(row_scale_f32, row_scale_f32, 85)), acc_rows[rp * 4 + 1]);
+acc_rows[rp * 4 + 1] = _mm512_fmadd_ps(_mm512_cvtepi32_ps(iacc_row_1), _mm512_mul_ps(col_scale_f32, _mm512_shuffle_ps(row_scale_f32, row_scale_f32, 85)), acc_rows[rp * 4 + 1]);
 acc_rows[rp * 4 + 2] = _mm512_fmadd_ps(_mm512_cvtepi32_ps(iacc_row_2), _mm512_mul_ps(col_scale_f32, _mm512_shuffle_ps(row_scale_f32, row_scale_f32, 170)), acc_rows[rp * 4 + 2]);
 acc_rows[rp * 4 + 3] = _mm512_fmadd_ps(_mm512_cvtepi32_ps(iacc_row_3), _mm512_mul_ps(col_scale_f32, _mm512_shuffle_ps(row_scale_f32, row_scale_f32, 255)), acc_rows[rp * 4 + 3]);
 __m512i iacc_row_min_0 = _mm512_madd_epi16(_mm512_shuffle_epi32(lhs_bsums_hsum_0123_01, (_MM_PERM_ENUM)0), mins_01);
@@ -4631,16 +4631,16 @@ for (int j = 0; j < 8; j++) {
 s[j] = in[j].scales[i] & 63;
 m[j] = in[j].scales[i + 4] & 63;
 }
-out.scales[i * 12]      = (s[0] & 63) + ((s[4] & 48) << 2);
-out.scales[i * 12 + 1]  = (s[1] & 63) + ((s[5] & 48) << 2);
-out.scales[i * 12 + 2]  = (s[2] & 63) + ((s[6] & 48) << 2);
-out.scales[i * 12 + 3]  = (s[3] & 63) + ((s[7] & 48) << 2);
-out.scales[i * 12 + 4]  = (m[0] & 63) + ((m[4] & 48) << 2);
-out.scales[i * 12 + 5]  = (m[1] & 63) + ((m[5] & 48) << 2);
-out.scales[i * 12 + 6]  = (m[2] & 63) + ((m[6] & 48) << 2);
-out.scales[i * 12 + 7]  = (m[3] & 63) + ((m[7] & 48) << 2);
-out.scales[i * 12 + 8]  = (s[4] & 15) + ((m[4] & 15) << 4);
-out.scales[i * 12 + 9]  = (s[5] & 15) + ((m[5] & 15) << 4);
+out.scales[i * 12] = (s[0] & 63) + ((s[4] & 48) << 2);
+out.scales[i * 12 + 1] = (s[1] & 63) + ((s[5] & 48) << 2);
+out.scales[i * 12 + 2] = (s[2] & 63) + ((s[6] & 48) << 2);
+out.scales[i * 12 + 3] = (s[3] & 63) + ((s[7] & 48) << 2);
+out.scales[i * 12 + 4] = (m[0] & 63) + ((m[4] & 48) << 2);
+out.scales[i * 12 + 5] = (m[1] & 63) + ((m[5] & 48) << 2);
+out.scales[i * 12 + 6] = (m[2] & 63) + ((m[6] & 48) << 2);
+out.scales[i * 12 + 7] = (m[3] & 63) + ((m[7] & 48) << 2);
+out.scales[i * 12 + 8] = (s[4] & 15) + ((m[4] & 15) << 4);
+out.scales[i * 12 + 9] = (s[5] & 15) + ((m[5] & 15) << 4);
 out.scales[i * 12 + 10] = (s[6] & 15) + ((m[6] & 15) << 4);
 out.scales[i * 12 + 11] = (s[7] & 15) + ((m[7] & 15) << 4);
 }
@@ -4704,7 +4704,7 @@ return -1;
 }
 for (int b = 0; b < nrow; b += nrows_interleaved) {
 for (int64_t x = 0; x < nblocks; x++) {
-for (int i  = 0; i < nrows_interleaved; i++ ) {
+for (int i = 0; i < nrows_interleaved; i++ ) {
 dst_tmp[i] = src[x + i * nblocks];
 }
 *dst++ = make_block_q4_Kx8(dst_tmp, interleave_block);
@@ -4729,7 +4729,7 @@ return -1;
 }
 for (int b = 0; b < nrow; b += nrows_interleaved) {
 for (int64_t x = 0; x < nblocks; x++) {
-for (int i  = 0; i < nrows_interleaved; i++ ) {
+for (int i = 0; i < nrows_interleaved; i++ ) {
 dst_tmp[i] = src[x + i * nblocks];
 }
 *dst++ = make_block_q4_0x8(dst_tmp, interleave_block);
@@ -4870,7 +4870,7 @@ return false;
 void forward_mul_mat(ggml_compute_params * params, ggml_tensor * op) {
 const ggml_tensor * src0 = op->src[0];
 const ggml_tensor * src1 = op->src[1];
-ggml_tensor *       dst  = op;
+ggml_tensor * dst = op;
 GGML_TENSOR_BINARY_OP_LOCALS
 const int ith = params->ith;
 const int nth = params->nth;
@@ -4884,8 +4884,8 @@ GGML_ASSERT(nb1 <= nb2);
 GGML_ASSERT(nb2 <= nb3);
 GGML_ASSERT(src1->type == GGML_TYPE_F32);
 GGML_ASSERT(ggml_n_dims(op->src[0]) == 2);
-char *       wdata = static_cast<char *>(params->wdata);
-const size_t nbw1  = ggml_row_size(PARAM_TYPE, ne10);
+char * wdata = static_cast<char *>(params->wdata);
+const size_t nbw1 = ggml_row_size(PARAM_TYPE, ne10);
 assert(params->wsize >= nbw1 * ne11);
 const ggml_from_float_t from_float = ggml_get_type_traits_cpu(PARAM_TYPE)->from_float;
 int64_t i11_processed = 0;
@@ -4897,12 +4897,12 @@ for (int64_t i11 = i11_processed + ith; i11 < ne11; i11 += nth) {
 from_float((float *) ((char *) src1->data + i11 * nb11), (void *) (wdata + i11 * nbw1), ne10);
 }
 ggml_barrier(params->threadpool);
-const void * src1_wdata      = params->wdata;
+const void * src1_wdata = params->wdata;
 const size_t src1_col_stride = ggml_row_size(PARAM_TYPE, ne10);
-int64_t      src0_start      = (ith * ne01) / nth;
-int64_t      src0_end        = ((ith + 1) * ne01) / nth;
+int64_t src0_start = (ith * ne01) / nth;
+int64_t src0_end = ((ith + 1) * ne01) / nth;
 src0_start = (src0_start % NB_COLS) ? src0_start + NB_COLS - (src0_start % NB_COLS) : src0_start;
-src0_end   = (src0_end   % NB_COLS) ? src0_end   + NB_COLS - (src0_end   % NB_COLS) : src0_end;
+src0_end = (src0_end % NB_COLS) ? src0_end + NB_COLS - (src0_end % NB_COLS) : src0_end;
 if (src0_start >= src0_end) {
 return;
 }
@@ -4923,8 +4923,8 @@ src0_end - src0_start);
 void forward_mul_mat_id(ggml_compute_params * params, ggml_tensor * op) {
 const ggml_tensor * src0 = op->src[0];
 const ggml_tensor * src1 = op->src[1];
-const ggml_tensor * ids  = op->src[2];
-ggml_tensor *       dst  = op;
+const ggml_tensor * ids = op->src[2];
+ggml_tensor * dst = op;
 GGML_TENSOR_BINARY_OP_LOCALS
 const int ith = params->ith;
 const int nth = params->nth;
@@ -4937,10 +4937,10 @@ GGML_ASSERT(nb1 <= nb2);
 GGML_ASSERT(nb2 <= nb3);
 GGML_ASSERT(ne03 == 1);
 GGML_ASSERT(ne13 == 1);
-GGML_ASSERT(ne3  == 1);
+GGML_ASSERT(ne3 == 1);
 GGML_ASSERT(src1->type == GGML_TYPE_F32);
 const int n_ids = ids->ne[0];
-const int n_as  = ne02;
+const int n_as = ne02;
 const size_t nbw1 = ggml_row_size(PARAM_TYPE, ne10);
 const size_t nbw2 = nbw1*ne11;
 const size_t nbw3 = nbw2*ne12;
@@ -4950,14 +4950,14 @@ int32_t i2;
 };
 GGML_ASSERT(params->wsize >= (GGML_PAD(nbw3, sizeof(int64_t)) + n_as * sizeof(int64_t) +
 n_as * ne12 * sizeof(mmid_row_mapping)));
-auto * wdata             = (char *)     params->wdata;
-auto * wdata_src1_end    = (char *)     wdata + GGML_PAD(nbw3, sizeof(int64_t));
+auto * wdata = (char *) params->wdata;
+auto * wdata_src1_end = (char *) wdata + GGML_PAD(nbw3, sizeof(int64_t));
 auto * matrix_row_counts = (int64_t *) (wdata_src1_end);
 struct mmid_row_mapping * matrix_rows = (struct mmid_row_mapping *) (matrix_row_counts + n_as);
 for (int64_t i12 = 0; i12 < ne12; ++i12) {
 for (int64_t i11 = ith; i11 < ne11; i11 += nth) {
 from_float((float *)((char *) src1->data + i12 * nb12 + i11 * nb11),
-(void *)               (wdata + i12 * nbw2 + i11 * nbw1),
+(void *) (wdata + i12 * nbw2 + i11 * nbw1),
 ne10);
 }
 }
@@ -4983,9 +4983,9 @@ continue;
 const auto * src0_cur = (const char *) src0->data + cur_a*nb02;
 const int64_t nr1 = cne1;
 int64_t src0_cur_start = (ith * ne01) / nth;
-int64_t src0_cur_end   = ((ith + 1) * ne01) / nth;
+int64_t src0_cur_end = ((ith + 1) * ne01) / nth;
 src0_cur_start = (src0_cur_start % NB_COLS) ? src0_cur_start + NB_COLS - (src0_cur_start % NB_COLS) : src0_cur_start;
-src0_cur_end   = (src0_cur_end   % NB_COLS) ? src0_cur_end   + NB_COLS - (src0_cur_end   % NB_COLS) : src0_cur_end;
+src0_cur_end = (src0_cur_end % NB_COLS) ? src0_cur_end + NB_COLS - (src0_cur_end % NB_COLS) : src0_cur_end;
 if (src0_cur_start >= src0_cur_end) {
 return;
 }
@@ -5059,7 +5059,7 @@ const void * data, size_t offset, size_t size) {
 GGML_ASSERT(offset == 0);
 GGML_ASSERT(size == ggml_nbytes(tensor));
 auto tensor_traits = (ggml::cpu::aarch64::tensor_traits_base *) tensor->extra;
-auto OK            = tensor_traits->repack(tensor, data, size);
+auto OK = tensor_traits->repack(tensor, data, size);
 GGML_ASSERT(OK == 0);
 GGML_UNUSED(buffer);
 }
@@ -5072,11 +5072,11 @@ ggml_backend_buffer_t buffer = ggml_backend_buft_alloc_buffer(ggml_backend_cpu_b
 if (buffer == nullptr) {
 return nullptr;
 }
-buffer->buft              = buft;
+buffer->buft = buft;
 buffer->iface.init_tensor = ggml_backend_cpu_aarch64_buffer_init_tensor;
-buffer->iface.set_tensor  = ggml_backend_cpu_aarch64_buffer_set_tensor;
-buffer->iface.get_tensor  = nullptr;
-buffer->iface.cpy_tensor  = nullptr;
+buffer->iface.set_tensor = ggml_backend_cpu_aarch64_buffer_set_tensor;
+buffer->iface.get_tensor = nullptr;
+buffer->iface.cpy_tensor = nullptr;
 return buffer;
 }
 static size_t ggml_backend_cpu_aarch64_buffer_type_get_alignment(ggml_backend_buffer_type_t buft) {
@@ -5086,7 +5086,7 @@ GGML_UNUSED(buft);
 namespace ggml::cpu::aarch64 {
 class extra_buffer_type : ggml::cpu::extra_buffer_type {
 bool supports_op(ggml_backend_dev_t, const struct ggml_tensor * op) override {
-if (    op->op == GGML_OP_MUL_MAT &&
+if ( op->op == GGML_OP_MUL_MAT &&
 op->src[0]->buffer &&
 (ggml_n_dims(op->src[0]) == 2) &&
 op->src[0]->buffer->buft == ggml_backend_cpu_aarch64_buffer_type() &&

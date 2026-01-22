@@ -10,11 +10,11 @@ namespace opencog
 class BuiltinRequestsModule : public Module
 {
 private:
-Factory<ConfigModuleRequest, Request>  configmoduleFactory;
-Factory<ListModulesRequest, Request>  listmodulesFactory;
-Factory<LoadModuleRequest, Request>   loadmoduleFactory;
+Factory<ConfigModuleRequest, Request> configmoduleFactory;
+Factory<ListModulesRequest, Request> listmodulesFactory;
+Factory<LoadModuleRequest, Request> loadmoduleFactory;
 Factory<UnloadModuleRequest, Request> unloadmoduleFactory;
-Factory<ShutdownRequest, Request>     shutdownFactory;
+Factory<ShutdownRequest, Request> shutdownFactory;
 DECLARE_CMD_REQUEST(BuiltinRequestsModule, "exit", do_exit,
 "Close the shell connection",
 "Usage: exit\n\n"

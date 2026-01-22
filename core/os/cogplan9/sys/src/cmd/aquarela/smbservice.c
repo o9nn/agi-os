@@ -53,7 +53,7 @@ smbservicefind(SmbSession *s, char *uncpath, char *servicetype, uchar *errclassp
 {
 char *p, *q;
 if ((uncpath[0] == '/' && uncpath[1] == '/')
-||  (uncpath[0] == '\\' && uncpath[1] == '\\')) {
+|| (uncpath[0] == '\\' && uncpath[1] == '\\')) {
 p = uncpath + 2;
 q = strchr(p, uncpath[0]);
 if (q == nil)

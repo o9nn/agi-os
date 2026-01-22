@@ -67,9 +67,9 @@ static struct device_emulation_ops *emulation_list[] =
 #endif
 &mach_device_emulation_ops,
 };
-static struct vm_map	device_io_map_store;
-vm_map_t		device_io_map = &device_io_map_store;
-struct kmem_cache	io_inband_cache;
+static struct vm_map device_io_map_store;
+vm_map_t device_io_map = &device_io_map_store;
+struct kmem_cache io_inband_cache;
 #define NUM_EMULATION (sizeof (emulation_list) / sizeof (emulation_list[0]))
 io_return_t
 ds_device_open (ipc_port_t open_port, ipc_port_t reply_port,
@@ -335,16 +335,16 @@ mach_device_deallocate(device);
 return port;
 }
 static io_return_t
-device_open(const ipc_port_t	reply_port,
+device_open(const ipc_port_t reply_port,
 mach_msg_type_name_t reply_port_type,
-dev_mode_t		mode,
-const char *		name,
-device_t		*device_p)
+dev_mode_t mode,
+const char * name,
+device_t *device_p)
 {
-mach_device_t		device;
-kern_return_t		result;
-io_req_t		ior;
-ipc_port_t		notify;
+mach_device_t device;
+kern_return_t result;
+io_req_t ior;
+ipc_port_t notify;
 device = device_lookup(name);
 if (device == MACH_DEVICE_NULL)
 return (D_NO_SUCH_DEVICE);
@@ -387,12 +387,12 @@ ip_lock(device->port);
 ipc_port_nsrequest(device->port, 1, notify, &notify);
 assert(notify == IP_NULL);
 io_req_alloc(ior, 0);
-ior->io_device	= device;
-ior->io_unit	= device->dev_number;
-ior->io_op	= IO_OPEN | IO_CALL;
-ior->io_mode	= mode;
-ior->io_error	= 0;
-ior->io_done	= ds_open_done;
+ior->io_device = device;
+ior->io_unit = device->dev_number;
+ior->io_op = IO_OPEN | IO_CALL;
+ior->io_mode = mode;
+ior->io_error = 0;
+ior->io_done = ds_open_done;
 ior->io_reply_port = reply_port;
 ior->io_reply_port_type = reply_port_type;
 result = (*device->dev_ops->d_open)(device->dev_number, (int)mode, ior);
@@ -406,8 +406,8 @@ return (MIG_NO_REPLY);
 boolean_t
 ds_open_done(const io_req_t ior)
 {
-kern_return_t		result;
-mach_device_t		device;
+kern_return_t result;
+mach_device_t device;
 device = ior->io_device;
 result = ior->io_error;
 if (result != D_SUCCESS) {
@@ -472,35 +472,35 @@ return (D_SUCCESS);
 }
 static io_return_t
 device_write(void *dev,
-const ipc_port_t	reply_port,
-mach_msg_type_name_t	reply_port_type,
-dev_mode_t		mode,
-recnum_t		recnum,
-const io_buf_ptr_t	data,
-unsigned int	data_count,
-int		*bytes_written)
+const ipc_port_t reply_port,
+mach_msg_type_name_t reply_port_type,
+dev_mode_t mode,
+recnum_t recnum,
+const io_buf_ptr_t data,
+unsigned int data_count,
+int *bytes_written)
 {
-mach_device_t		device = dev;
-io_req_t		ior;
-io_return_t		result;
+mach_device_t device = dev;
+io_req_t ior;
+io_return_t result;
 if (device->state != DEV_STATE_OPEN)
 return (D_NO_SUCH_DEVICE);
 io_req_alloc(ior, data_count);
-ior->io_device		= device;
-ior->io_unit		= device->dev_number;
-ior->io_op		= IO_WRITE | IO_CALL;
-ior->io_mode		= mode;
-ior->io_recnum		= recnum;
-ior->io_data		= data;
-ior->io_count		= data_count;
-ior->io_total		= data_count;
-ior->io_alloc_size	= 0;
-ior->io_residual	= 0;
-ior->io_error		= 0;
-ior->io_done		= ds_write_done;
-ior->io_reply_port	= reply_port;
-ior->io_reply_port_type	= reply_port_type;
-ior->io_copy		= VM_MAP_COPY_NULL;
+ior->io_device = device;
+ior->io_unit = device->dev_number;
+ior->io_op = IO_WRITE | IO_CALL;
+ior->io_mode = mode;
+ior->io_recnum = recnum;
+ior->io_data = data;
+ior->io_count = data_count;
+ior->io_total = data_count;
+ior->io_alloc_size = 0;
+ior->io_residual = 0;
+ior->io_error = 0;
+ior->io_done = ds_write_done;
+ior->io_reply_port = reply_port;
+ior->io_reply_port_type = reply_port_type;
+ior->io_copy = VM_MAP_COPY_NULL;
 mach_device_reference(device);
 do {
 result = (*device->dev_ops->d_write)(device->dev_number, ior);
@@ -513,34 +513,34 @@ io_req_free(ior);
 return (result);
 }
 static io_return_t
-device_write_inband(void		*dev,
-const ipc_port_t	reply_port,
-mach_msg_type_name_t	reply_port_type,
-dev_mode_t		mode,
-recnum_t		recnum,
-const io_buf_ptr_inband_t	data,
-unsigned int	data_count,
-int			*bytes_written)
+device_write_inband(void *dev,
+const ipc_port_t reply_port,
+mach_msg_type_name_t reply_port_type,
+dev_mode_t mode,
+recnum_t recnum,
+const io_buf_ptr_inband_t data,
+unsigned int data_count,
+int *bytes_written)
 {
-mach_device_t		device = dev;
-io_req_t		ior;
-io_return_t		result;
+mach_device_t device = dev;
+io_req_t ior;
+io_return_t result;
 if (device->state != DEV_STATE_OPEN)
 return (D_NO_SUCH_DEVICE);
 io_req_alloc(ior, 0);
-ior->io_device		= device;
-ior->io_unit		= device->dev_number;
-ior->io_op		= IO_WRITE | IO_CALL | IO_INBAND;
-ior->io_mode		= mode;
-ior->io_recnum		= recnum;
-ior->io_data		= (io_buf_ptr_t)data;
-ior->io_count		= data_count;
-ior->io_total		= data_count;
-ior->io_alloc_size	= 0;
-ior->io_residual	= 0;
-ior->io_error		= 0;
-ior->io_done		= ds_write_done;
-ior->io_reply_port	= reply_port;
+ior->io_device = device;
+ior->io_unit = device->dev_number;
+ior->io_op = IO_WRITE | IO_CALL | IO_INBAND;
+ior->io_mode = mode;
+ior->io_recnum = recnum;
+ior->io_data = (io_buf_ptr_t)data;
+ior->io_count = data_count;
+ior->io_total = data_count;
+ior->io_alloc_size = 0;
+ior->io_residual = 0;
+ior->io_error = 0;
+ior->io_done = ds_write_done;
+ior->io_reply_port = reply_port;
 ior->io_reply_port_type = reply_port_type;
 mach_device_reference(device);
 result = (*device->dev_ops->d_write)(device->dev_number, ior);
@@ -553,14 +553,14 @@ return (result);
 }
 kern_return_t
 device_write_get(
-io_req_t		ior,
-boolean_t		*wait)
+io_req_t ior,
+boolean_t *wait)
 {
-vm_map_copy_t		io_copy;
-vm_offset_t		new_addr;
-kern_return_t		result;
-int			bsize;
-vm_size_t		min_size;
+vm_map_copy_t io_copy;
+vm_offset_t new_addr;
+kern_return_t result;
+int bsize;
+vm_size_t min_size;
 *wait = FALSE;
 if (ior->io_count == 0)
 return (KERN_SUCCESS);
@@ -603,11 +603,11 @@ return (KERN_SUCCESS);
 boolean_t
 device_write_dealloc(io_req_t ior)
 {
-vm_map_copy_t	new_copy = VM_MAP_COPY_NULL;
-vm_map_copy_t	io_copy;
-kern_return_t	result;
-vm_offset_t	size_to_do;
-int		bsize;
+vm_map_copy_t new_copy = VM_MAP_COPY_NULL;
+vm_map_copy_t io_copy;
+kern_return_t result;
+vm_offset_t size_to_do;
+int bsize;
 if (ior->io_alloc_size == 0)
 return (TRUE);
 if (ior->io_op & IO_INBAND) {
@@ -629,7 +629,7 @@ vm_map_copy_abort_cont(io_copy);
 result = KERN_FAILURE;
 }
 if (result == KERN_SUCCESS && new_copy != VM_MAP_COPY_NULL) {
-int		res;
+int res;
 ior->io_op &= ~IO_DONE;
 ior->io_op |= IO_CALL;
 res = (*ior->io_device->dev_ops->d_dev_info)(
@@ -654,8 +654,8 @@ boolean_t
 ds_write_done(const io_req_t ior)
 {
 while (!device_write_dealloc(ior)) {
-io_return_t		result;
-mach_device_t		device;
+io_return_t result;
+mach_device_t device;
 device = ior->io_device;
 result = (*device->dev_ops->d_write)(device->dev_number, ior);
 if (result == D_IO_QUEUED)
@@ -675,17 +675,17 @@ return (TRUE);
 }
 static io_return_t
 device_read(void *dev,
-const ipc_port_t	reply_port,
-mach_msg_type_name_t	reply_port_type,
-dev_mode_t		mode,
-recnum_t		recnum,
-int			bytes_wanted,
-io_buf_ptr_t	*data,
-unsigned int	*data_count)
+const ipc_port_t reply_port,
+mach_msg_type_name_t reply_port_type,
+dev_mode_t mode,
+recnum_t recnum,
+int bytes_wanted,
+io_buf_ptr_t *data,
+unsigned int *data_count)
 {
-mach_device_t 		device = dev;
-io_req_t		ior;
-io_return_t		result;
+mach_device_t device = dev;
+io_req_t ior;
+io_return_t result;
 if (device->state != DEV_STATE_OPEN)
 return (D_NO_SUCH_DEVICE);
 if (!IP_VALID(reply_port)) {
@@ -694,19 +694,19 @@ SoftDebugger("ds_* reply_port");
 return (MIG_NO_REPLY);
 }
 io_req_alloc(ior, 0);
-ior->io_device		= device;
-ior->io_unit		= device->dev_number;
-ior->io_op		= IO_READ | IO_CALL;
-ior->io_mode		= mode;
-ior->io_recnum		= recnum;
-ior->io_data		= 0;
-ior->io_count		= bytes_wanted;
-ior->io_alloc_size	= 0;
-ior->io_residual	= 0;
-ior->io_error		= 0;
-ior->io_done		= ds_read_done;
-ior->io_reply_port	= reply_port;
-ior->io_reply_port_type	= reply_port_type;
+ior->io_device = device;
+ior->io_unit = device->dev_number;
+ior->io_op = IO_READ | IO_CALL;
+ior->io_mode = mode;
+ior->io_recnum = recnum;
+ior->io_data = 0;
+ior->io_count = bytes_wanted;
+ior->io_alloc_size = 0;
+ior->io_residual = 0;
+ior->io_error = 0;
+ior->io_done = ds_read_done;
+ior->io_reply_port = reply_port;
+ior->io_reply_port_type = reply_port_type;
 mach_device_reference(device);
 result = (*device->dev_ops->d_read)(device->dev_number, ior);
 if (result == D_IO_QUEUED)
@@ -717,18 +717,18 @@ io_req_free(ior);
 return (MIG_NO_REPLY);
 }
 static io_return_t
-device_read_inband(void			*dev,
-const ipc_port_t	reply_port,
-mach_msg_type_name_t	reply_port_type,
-dev_mode_t		mode,
-recnum_t		recnum,
-int			bytes_wanted,
-char			*data,
-unsigned int		*data_count)
+device_read_inband(void *dev,
+const ipc_port_t reply_port,
+mach_msg_type_name_t reply_port_type,
+dev_mode_t mode,
+recnum_t recnum,
+int bytes_wanted,
+char *data,
+unsigned int *data_count)
 {
-mach_device_t		device = dev;
-io_req_t		ior;
-io_return_t		result;
+mach_device_t device = dev;
+io_req_t ior;
+io_return_t result;
 if (device->state != DEV_STATE_OPEN)
 return (D_NO_SUCH_DEVICE);
 if (!IP_VALID(reply_port)) {
@@ -737,21 +737,21 @@ SoftDebugger("ds_* reply_port");
 return (MIG_NO_REPLY);
 }
 io_req_alloc(ior, 0);
-ior->io_device		= device;
-ior->io_unit		= device->dev_number;
-ior->io_op		= IO_READ | IO_CALL | IO_INBAND;
-ior->io_mode		= mode;
-ior->io_recnum		= recnum;
-ior->io_data		= 0;
-ior->io_count		=
+ior->io_device = device;
+ior->io_unit = device->dev_number;
+ior->io_op = IO_READ | IO_CALL | IO_INBAND;
+ior->io_mode = mode;
+ior->io_recnum = recnum;
+ior->io_data = 0;
+ior->io_count =
 ((bytes_wanted < sizeof(io_buf_ptr_inband_t)) ?
 bytes_wanted : sizeof(io_buf_ptr_inband_t));
-ior->io_alloc_size	= 0;
-ior->io_residual	= 0;
-ior->io_error		= 0;
-ior->io_done		= ds_read_done;
-ior->io_reply_port	= reply_port;
-ior->io_reply_port_type	= reply_port_type;
+ior->io_alloc_size = 0;
+ior->io_residual = 0;
+ior->io_error = 0;
+ior->io_done = ds_read_done;
+ior->io_reply_port = reply_port;
+ior->io_reply_port_type = reply_port_type;
 mach_device_reference(device);
 result = (*device->dev_ops->d_read)(device->dev_number, ior);
 if (result == D_IO_QUEUED)
@@ -762,11 +762,11 @@ io_req_free(ior);
 return (MIG_NO_REPLY);
 }
 kern_return_t device_read_alloc(
-io_req_t		ior,
-vm_size_t		size)
+io_req_t ior,
+vm_size_t size)
 {
-vm_offset_t		addr;
-kern_return_t		kr;
+vm_offset_t addr;
+kern_return_t kr;
 if (ior->io_count == 0)
 return (KERN_SUCCESS);
 if (ior->io_op & IO_INBAND) {
@@ -784,25 +784,25 @@ return (KERN_SUCCESS);
 }
 boolean_t ds_read_done(const io_req_t ior)
 {
-vm_offset_t		start_data, end_data;
-vm_offset_t		start_sent, end_sent;
-vm_size_t		size_read;
+vm_offset_t start_data, end_data;
+vm_offset_t start_sent, end_sent;
+vm_size_t size_read;
 if (ior->io_error)
 size_read = 0;
 else
 size_read = ior->io_count - ior->io_residual;
-start_data  = (vm_offset_t)ior->io_data;
-end_data    = start_data + size_read;
-start_sent  = (ior->io_op & IO_INBAND) ? start_data :
+start_data = (vm_offset_t)ior->io_data;
+end_data = start_data + size_read;
+start_sent = (ior->io_op & IO_INBAND) ? start_data :
 trunc_page(start_data);
-end_sent    = (ior->io_op & IO_INBAND) ?
+end_sent = (ior->io_op & IO_INBAND) ?
 start_data + ior->io_alloc_size : round_page(end_data);
 if (start_sent < start_data)
 memset((void *)start_sent, 0, start_data - start_sent);
 if (end_sent > end_data)
 memset((void *)end_data, 0, end_sent - end_data);
 {
-vm_offset_t			touch;
+vm_offset_t touch;
 for (touch = start_sent; touch < end_sent; touch += PAGE_SIZE) {
 int c = *(volatile char *)touch;
 *(volatile char *)touch = c;
@@ -833,7 +833,7 @@ if (ior->io_op & IO_INBAND) {
 if (ior->io_alloc_size > 0)
 kmem_cache_free(&io_inband_cache, (vm_offset_t)ior->io_data);
 } else {
-vm_offset_t		end_alloc;
+vm_offset_t end_alloc;
 end_alloc = start_sent + round_page(ior->io_alloc_size);
 if (end_alloc > end_sent)
 (void) vm_deallocate(kernel_map,
@@ -846,12 +846,12 @@ return (TRUE);
 }
 static io_return_t
 device_set_status(
-void 			*dev,
-dev_flavor_t		flavor,
-dev_status_t		status,
-mach_msg_type_number_t	status_count)
+void *dev,
+dev_flavor_t flavor,
+dev_status_t status,
+mach_msg_type_number_t status_count)
 {
-mach_device_t		device = dev;
+mach_device_t device = dev;
 if (device->state != DEV_STATE_OPEN)
 return (D_NO_SUCH_DEVICE);
 return ((*device->dev_ops->d_setstat)(device->dev_number,
@@ -861,12 +861,12 @@ status_count));
 }
 static io_return_t
 mach_device_get_status(
-void			*dev,
-dev_flavor_t		flavor,
-dev_status_t		status,
-mach_msg_type_number_t	*status_count)
+void *dev,
+dev_flavor_t flavor,
+dev_status_t status,
+mach_msg_type_number_t *status_count)
 {
-mach_device_t		device = dev;
+mach_device_t device = dev;
 if (device->state != DEV_STATE_OPEN)
 return (D_NO_SUCH_DEVICE);
 return ((*device->dev_ops->d_getstat)(device->dev_number,
@@ -875,13 +875,13 @@ status,
 status_count));
 }
 static io_return_t
-device_set_filter(void			*dev,
-const ipc_port_t	receive_port,
-int			priority,
-filter_t		filter[],
-unsigned int		filter_count)
+device_set_filter(void *dev,
+const ipc_port_t receive_port,
+int priority,
+filter_t filter[],
+unsigned int filter_count)
 {
-mach_device_t		device = dev;
+mach_device_t device = dev;
 if (device->state != DEV_STATE_OPEN)
 return (D_NO_SUCH_DEVICE);
 if (!IP_VALID(receive_port))
@@ -894,14 +894,14 @@ filter_count));
 }
 static io_return_t
 device_map(
-void 			*dev,
-vm_prot_t		protection,
-vm_offset_t		offset,
-vm_size_t		size,
-ipc_port_t		*pager,
-boolean_t		unmap)
+void *dev,
+vm_prot_t protection,
+vm_offset_t offset,
+vm_size_t size,
+ipc_port_t *pager,
+boolean_t unmap)
 {
-mach_device_t		device = dev;
+mach_device_t device = dev;
 if (protection & ~VM_PROT_ALL)
 return (KERN_INVALID_ARGUMENT);
 if (device->state != DEV_STATE_OPEN)
@@ -916,12 +916,12 @@ printf("ds_no_senders called! device_port=0x%zx count=%d\n",
 notification->not_header.msgh_remote_port,
 notification->not_count);
 }
-def_simple_lock_irq_data(static,	io_done_list_lock)
-queue_head_t		io_done_list;
-#define	splio	splsched
+def_simple_lock_irq_data(static, io_done_list_lock)
+queue_head_t io_done_list;
+#define splio splsched
 void iodone(io_req_t ior)
 {
-spl_t			s;
+spl_t s;
 if (ior->io_op & IO_LOANED) {
 (*ior->io_done)(ior);
 return;
@@ -942,11 +942,11 @@ simple_unlock_nocheck(&io_done_list_lock.slock);
 }
 splx(s);
 }
-static void  __attribute__ ((noreturn)) io_done_thread_continue(void)
+static void __attribute__ ((noreturn)) io_done_thread_continue(void)
 {
 for (;;) {
-spl_t		s;
-io_req_t		ior;
+spl_t s;
+io_req_t ior;
 #if defined (LINUX_DEV) && defined (CONFIG_INET)
 free_skbuffs ();
 #endif
@@ -971,11 +971,11 @@ stack_privilege(current_thread());
 thread_set_own_priority(0);
 io_done_thread_continue();
 }
-#define	DEVICE_IO_MAP_SIZE	(16 * 1024 * 1024)
+#define DEVICE_IO_MAP_SIZE (16 * 1024 * 1024)
 static void mach_device_trap_init(void);
 void mach_device_init(void)
 {
-vm_offset_t	device_io_min, device_io_max;
+vm_offset_t device_io_min, device_io_max;
 queue_init(&io_done_list);
 simple_lock_init_irq(&io_done_list_lock);
 kmem_submap(device_io_map, kernel_map, &device_io_min, &device_io_max,
@@ -1015,7 +1015,7 @@ return (io_req_t) kmem_cache_alloc(&io_trap_cache);
 static boolean_t
 ds_trap_write_done(const io_req_t ior)
 {
-mach_device_t 	dev;
+mach_device_t dev;
 dev = ior->io_device;
 kmem_cache_free(&io_trap_cache, (vm_offset_t) ior);
 mach_device_deallocate(dev);
@@ -1030,20 +1030,20 @@ io_return_t result;
 if (device->state != DEV_STATE_OPEN)
 return (D_NO_SUCH_DEVICE);
 ior = ds_trap_req_alloc(device, data_count);
-ior->io_device          = device;
-ior->io_unit            = device->dev_number;
-ior->io_op              = IO_WRITE | IO_CALL | IO_LOANED;
-ior->io_mode            = mode;
-ior->io_recnum          = recnum;
-ior->io_data            = (io_buf_ptr_t)
+ior->io_device = device;
+ior->io_unit = device->dev_number;
+ior->io_op = IO_WRITE | IO_CALL | IO_LOANED;
+ior->io_mode = mode;
+ior->io_recnum = recnum;
+ior->io_data = (io_buf_ptr_t)
 (vm_offset_t)ior + sizeof(struct io_req);
-ior->io_count           = data_count;
-ior->io_total           = data_count;
-ior->io_alloc_size      = 0;
-ior->io_residual        = 0;
-ior->io_error           = 0;
-ior->io_done            = ds_trap_write_done;
-ior->io_reply_port      = IP_NULL;
+ior->io_count = data_count;
+ior->io_total = data_count;
+ior->io_alloc_size = 0;
+ior->io_residual = 0;
+ior->io_error = 0;
+ior->io_done = ds_trap_write_done;
+ior->io_reply_port = IP_NULL;
 ior->io_reply_port_type = 0;
 if (data_count > 0)
 copyin((void*)(vm_offset_t)data, ior->io_data, data_count);
@@ -1061,7 +1061,7 @@ rpc_recnum_t recnum, rpc_io_buf_vec_t *iovec, rpc_vm_size_t iocount)
 {
 io_req_t ior;
 io_return_t result;
-io_buf_vec_t	stack_iovec[16];
+io_buf_vec_t stack_iovec[16];
 vm_size_t data_count;
 unsigned i;
 if (device->state != DEV_STATE_OPEN)
@@ -1077,20 +1077,20 @@ stack_iovec[i].count = riov.count;
 data_count += stack_iovec[i].count;
 }
 ior = ds_trap_req_alloc(device, data_count);
-ior->io_device          = device;
-ior->io_unit            = device->dev_number;
-ior->io_op              = IO_WRITE | IO_CALL | IO_LOANED;
-ior->io_mode            = mode;
-ior->io_recnum          = recnum;
-ior->io_data            = (io_buf_ptr_t)
+ior->io_device = device;
+ior->io_unit = device->dev_number;
+ior->io_op = IO_WRITE | IO_CALL | IO_LOANED;
+ior->io_mode = mode;
+ior->io_recnum = recnum;
+ior->io_data = (io_buf_ptr_t)
 (vm_offset_t)ior + sizeof(struct io_req);
-ior->io_count           = data_count;
-ior->io_total           = data_count;
-ior->io_alloc_size      = 0;
-ior->io_residual        = 0;
-ior->io_error           = 0;
-ior->io_done            = ds_trap_write_done;
-ior->io_reply_port      = IP_NULL;
+ior->io_count = data_count;
+ior->io_total = data_count;
+ior->io_alloc_size = 0;
+ior->io_residual = 0;
+ior->io_error = 0;
+ior->io_done = ds_trap_write_done;
+ior->io_reply_port = IP_NULL;
 ior->io_reply_port_type = 0;
 if (data_count > 0) {
 vm_offset_t p;

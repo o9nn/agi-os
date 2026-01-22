@@ -113,10 +113,10 @@ sources, npop);
 int
 image1_setup(i_ctx_t * i_ctx_p, bool has_alpha)
 {
-os_ptr          op = osp;
-gs_image_t      image;
-image_params    ip;
-int             code;
+os_ptr op = osp;
+gs_image_t image;
+image_params ip;
+int code;
 gs_image_t_init(&image, gs_currentcolorspace(igs));
 code = pixel_image_params( i_ctx_p,
 op,

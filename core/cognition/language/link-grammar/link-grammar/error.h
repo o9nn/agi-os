@@ -5,11 +5,11 @@
 #include "utilities.h"
 #define D_USER_BASIC 1
 #define D_USER_TIMES 2
-#define D_USER_INFO  3
+#define D_USER_INFO 3
 #define D_USER_FILES 4
-#define D_USER_MAX   4
-#define D_DICT      10
-#define D_SPEC     100
+#define D_USER_MAX 4
+#define D_DICT 10
+#define D_SPEC 100
 typedef struct
 {
 Sentence sent;

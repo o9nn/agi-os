@@ -17,7 +17,7 @@ Edit, Part: import pedit;
 include "arg.m";
 Prep: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 blank := 0;
 file := 0;
@@ -33,12 +33,12 @@ Prepedit: type Edit[string];
 edit: ref Edit;
 Auto: adt
 {
-name:	string;
-min:		big;
-max:		big;
-weight:	int;
-alloc:	int;
-size:		big;
+name: string;
+min: big;
+max: big;
+weight: int;
+alloc: int;
+size: big;
 };
 KB: con big 1024;
 MB: con KB*KB;
@@ -47,16 +47,16 @@ GB: con KB*MB;
 # Order matters -- this is the layout order on disk.
 #
 auto: array of Auto = array[] of {
-("9fat",		big 10*MB,	big 100*MB,	10, 0, big 0),
-("nvram",	big 512,	big 512,	1, 0, big 0),
-("fscfg",	big 512,	big 512,	1, 0, big 0),
-("fs",		big 200*MB,	big 0,	10, 0, big 0),
-("fossil",	big 200*MB,	big 0,	4, 0, big 0),
-("arenas",	big 500*MB,	big 0,	20, 0, big 0),
-("isect",	big 25*MB,	big 0,	1, 0, big 0),
-("other",	big 200*MB,	big 0,	4, 0, big 0),
-("swap",		big 100*MB,	big 512*MB,	1, 0, big 0),
-("cache",	big 50*MB,	big 1*GB,	2, 0, big 0),
+("9fat", big 10*MB, big 100*MB, 10, 0, big 0),
+("nvram", big 512, big 512, 1, 0, big 0),
+("fscfg", big 512, big 512, 1, 0, big 0),
+("fs", big 200*MB, big 0, 10, 0, big 0),
+("fossil", big 200*MB, big 0, 4, 0, big 0),
+("arenas", big 500*MB, big 0, 20, 0, big 0),
+("isect", big 25*MB, big 0, 1, 0, big 0),
+("other", big 200*MB, big 0, 4, 0, big 0),
+("swap", big 100*MB, big 512*MB, 1, 0, big 0),
+("cache", big 50*MB, big 1*GB, 2, 0, big 0),
 };
 stderr: ref Sys->FD;
 init(nil: ref Draw->Context, args: list of string)
@@ -203,13 +203,13 @@ wrpart(edit);
 return nil;
 }
 isfrog := array[256] of {
-byte 1, byte 1, byte 1, byte 1, byte 1, byte 1, byte 1, byte 1,	# NUL
-byte 1, byte 1, byte 1, byte 1, byte 1, byte 1, byte 1, byte 1,	# BKS
-byte 1, byte 1, byte 1, byte 1, byte 1, byte 1, byte 1, byte 1,	# DLE
-byte 1, byte 1, byte 1, byte 1, byte 1, byte 1, byte 1, byte 1,	# CAN
-' ' =>	byte 1,
-'/' =>	byte 1,
-16r7f=>	byte 1,
+byte 1, byte 1, byte 1, byte 1, byte 1, byte 1, byte 1, byte 1, # NUL
+byte 1, byte 1, byte 1, byte 1, byte 1, byte 1, byte 1, byte 1, # BKS
+byte 1, byte 1, byte 1, byte 1, byte 1, byte 1, byte 1, byte 1, # DLE
+byte 1, byte 1, byte 1, byte 1, byte 1, byte 1, byte 1, byte 1, # CAN
+' ' => byte 1,
+'/' => byte 1,
+16r7f=> byte 1,
 * => byte 0
 };
 cmdokname(nil: ref Edit, elem: string): string

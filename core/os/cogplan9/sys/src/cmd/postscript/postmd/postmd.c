@@ -2,7 +2,7 @@
 #include <signal.h>
 #include <ctype.h>
 #ifdef plan9
-#define	isascii(c)	((unsigned char)(c)<=0177)
+#define isascii(c) ((unsigned char)(c)<=0177)
 #endif
 #include <sys/types.h>
 #include <fcntl.h>
@@ -12,40 +12,40 @@
 #include "path.h"
 #include "ext.h"
 #include "postmd.h"
-char	*optnames = "a:b:c:d:g:i:m:n:o:p:w:x:y:A:C:E:J:L:P:R:DI";
-char	*prologue = POSTMD;
-char	*formfile = FORMFILE;
-char	*temp_dir = TEMPDIR;
-int	formsperpage = 1;
-int	copies = 1;
-int	bytespp = 6;
-int	dostats = ON;
-int	nxtstat = ON;
-char	*interval = DFLTILIST;
-char	*colormap = NULL;
-char	*window = NULL;
-char	*matrixname = "pipe.end";
-Ilist	ilist[128];
-int	next = 0;
-int	regions;
-int	wlist[4];
-int	page = 0;
-int	printed = 0;
-int	dfltrows = 0;
-int	dfltcols = 0;
-int	rows;
-int	columns;
-int	patcount = 0;
-double	element;
-char	*raster = NULL;
-char	*rptr;
-char	*eptr;
-FILE	*fp_in = stdin;
-FILE	*fp_out = stdout;
-FILE	*fp_acct = NULL;
+char *optnames = "a:b:c:d:g:i:m:n:o:p:w:x:y:A:C:E:J:L:P:R:DI";
+char *prologue = POSTMD;
+char *formfile = FORMFILE;
+char *temp_dir = TEMPDIR;
+int formsperpage = 1;
+int copies = 1;
+int bytespp = 6;
+int dostats = ON;
+int nxtstat = ON;
+char *interval = DFLTILIST;
+char *colormap = NULL;
+char *window = NULL;
+char *matrixname = "pipe.end";
+Ilist ilist[128];
+int next = 0;
+int regions;
+int wlist[4];
+int page = 0;
+int printed = 0;
+int dfltrows = 0;
+int dfltcols = 0;
+int rows;
+int columns;
+int patcount = 0;
+double element;
+char *raster = NULL;
+char *rptr;
+char *eptr;
+FILE *fp_in = stdin;
+FILE *fp_out = stdout;
+FILE *fp_acct = NULL;
 main(agc, agv)
-int		agc;
-char	*agv[];
+int agc;
+char *agv[];
 {
 argc = agc;
 argv = agv;
@@ -61,7 +61,7 @@ exit(x_stat);
 }
 init_signals()
 {
-if ( signal(SIGINT, interrupt) == SIG_IGN )  {
+if ( signal(SIGINT, interrupt) == SIG_IGN ) {
 signal(SIGINT, SIG_IGN);
 signal(SIGQUIT, SIG_IGN);
 signal(SIGHUP, SIG_IGN);
@@ -74,8 +74,8 @@ signal(SIGFPE, interrupt);
 }
 header()
 {
-int		ch;
-int		old_optind = optind;
+int ch;
+int old_optind = optind;
 while ( (ch = getopt(argc, argv, optnames)) != EOF )
 if ( ch == 'L' )
 prologue = optarg;
@@ -95,9 +95,9 @@ fprintf(stdout, "mark\n");
 }
 options()
 {
-int		ch;
-while ( (ch = getopt(argc, argv, optnames)) != EOF )  {
-switch ( ch )  {
+int ch;
+while ( (ch = getopt(argc, argv, optnames)) != EOF ) {
+switch ( ch ) {
 case 'a':
 fprintf(stdout, "/aspectratio %s def\n", optarg);
 break;
@@ -185,7 +185,7 @@ setup()
 writerequest(0, stdout);
 setencoding(fontencoding);
 fprintf(stdout, "setup\n");
-if ( formsperpage > 1 )  {
+if ( formsperpage > 1 ) {
 if ( cat(formfile) == FALSE )
 error(FATAL, "can't read %s", formfile);
 fprintf(stdout, "%d setupforms\n", formsperpage);
@@ -196,10 +196,10 @@ arguments()
 {
 if ( argc < 1 )
 matrix();
-else  {
-while ( argc > 0 )  {
+else {
+while ( argc > 0 ) {
 matrixname = *argv;
-if ( strcmp(*argv, "-") == 0 )  {
+if ( strcmp(*argv, "-") == 0 ) {
 fp_in = stdin;
 matrixname = "pipe.end";
 } else if ( (fp_in = fopen(*argv, "r")) == NULL )
@@ -227,8 +227,8 @@ fprintf(fp_acct, " print %d\n copies %d\n", printed, copies);
 }
 matrix()
 {
-int		count;
-long	total;
+int count;
+long total;
 if ( fp_in == stdin )
 copystdin();
 rows = dfltrows;
@@ -247,7 +247,7 @@ fprintf(fp_out, "%s %d %d\n", PAGE, page, printed+1);
 fprintf(fp_out, "/saveobj save def\n");
 writerequest(printed+1, fp_out);
 fprintf(fp_out, "%d %d bitmap\n", wlist[2] - wlist[0] + 1, wlist[3] - wlist[1] + 1);
-while ( patcount != total && fscanf(fp_in, "%f", &element) != EOF )  {
+while ( patcount != total && fscanf(fp_in, "%f", &element) != EOF ) {
 if ( inwindow() ) *rptr++ = mapfloat(element);
 if ( ++patcount % columns == 0 )
 if ( inrange() )
@@ -263,10 +263,10 @@ fprintf(fp_out, "%s %d %d\n", ENDPAGE, page, printed);
 }
 copystdin()
 {
-int		fd_out;
-int		fd_in;
-int		buf[512];
-int		count;
+int fd_out;
+int fd_in;
+int buf[512];
+int count;
 if ( temp_file != NULL )
 unlink(temp_file);
 if ( (temp_file = tempnam(temp_dir, "post")) == NULL )
@@ -283,29 +283,29 @@ error(FATAL, "can't open %s", temp_file);
 }
 getheader()
 {
-char	buf[512];
-char	*cmap = NULL;
-long	pos;
+char buf[512];
+char *cmap = NULL;
+long pos;
 pos = ftell(fp_in);
-while ( fscanf(fp_in, "%s", buf) != EOF )  {
+while ( fscanf(fp_in, "%s", buf) != EOF ) {
 if ( strncmp(buf, "dimension", strlen("dimension")) == 0 )
 fscanf(fp_in, "%dx%d", &rows, &columns);
-else if ( strncmp(buf, "window", strlen("window")) == 0 )  {
+else if ( strncmp(buf, "window", strlen("window")) == 0 ) {
 fgets(buf, sizeof(buf), fp_in);
 setwindow(buf);
-} else if ( strncmp(buf, "name", strlen("name")) == 0 )  {
+} else if ( strncmp(buf, "name", strlen("name")) == 0 ) {
 fgets(buf, sizeof(buf), fp_in);
 matrixname = savestring(buf);
-} else if ( strncmp(buf, "colormap", strlen("colormap")) == 0 )  {
+} else if ( strncmp(buf, "colormap", strlen("colormap")) == 0 ) {
 fgets(buf, sizeof(buf), fp_in);
 cmap = savestring(buf);
-} else if ( strncmp(buf, "grayscale", strlen("grayscale")) == 0 )  {
+} else if ( strncmp(buf, "grayscale", strlen("grayscale")) == 0 ) {
 fgets(buf, sizeof(buf), fp_in);
 cmap = savestring(buf);
-} else if ( strncmp(buf, "interval", strlen("interval")) == 0 )  {
+} else if ( strncmp(buf, "interval", strlen("interval")) == 0 ) {
 fgets(buf, sizeof(buf), fp_in);
 buildilist(buf);
-} else if ( strncmp(buf, "statistics", strlen("statistics")) == 0 )  {
+} else if ( strncmp(buf, "statistics", strlen("statistics")) == 0 ) {
 fscanf(fp_in, "%s", buf);
 if ( strcmp(buf, "on") == 0 || strcmp(buf, "ON") == 0 )
 nxtstat = ON;
@@ -318,10 +318,10 @@ fseek(fp_in, pos, 0);
 }
 dimensions()
 {
-char	buf[100];
-long	count = 0;
-long	pos;
-if ( rows == 0 )  {
+char buf[100];
+long count = 0;
+long pos;
+if ( rows == 0 ) {
 pos = ftell(fp_in);
 while ( fscanf(fp_in, "%s", buf) != EOF )
 count++;
@@ -335,23 +335,23 @@ error(FATAL, "no memory");
 eptr = rptr + columns;
 if ( rows <= 0 || columns <= 0 )
 error(FATAL, "bad matrix dimensions");
-if ( wlist[0] > wlist[2] || wlist[1] > wlist[3] )  {
+if ( wlist[0] > wlist[2] || wlist[1] > wlist[3] ) {
 wlist[0] = wlist[1] = 1;
 wlist[2] = columns;
 wlist[3] = rows;
 }
 }
 buildilist(list)
-char	*list;
+char *list;
 {
-static char	*templist = NULL;
-char	*ptr;
-int		i;
+static char *templist = NULL;
+char *ptr;
+int i;
 if ( templist != NULL )
 free(templist);
 while ( isascii(*list) && isspace(*list) )
 list++;
-for ( ptr = list, regions = 3; *ptr != '\0'; ptr++ )  {
+for ( ptr = list, regions = 3; *ptr != '\0'; ptr++ ) {
 if ( *ptr == ',' || *ptr == '/' || isspace(*ptr) )
 regions += 2;
 while ( isascii(*ptr) && isspace(*ptr) ) ptr++;
@@ -359,7 +359,7 @@ while ( isascii(*ptr) && isspace(*ptr) ) ptr++;
 next = 0;
 templist = savestring(list);
 ptr = strtok(templist, ",/ \t\n");
-while ( ptr != NULL )  {
+while ( ptr != NULL ) {
 ilist[next].count = 0;
 ilist[next++].color = 254 * (regions - 1 - next) / (regions - 1);
 ilist[next].val = atof(ptr);
@@ -376,36 +376,36 @@ if ( ilist[i].val <= ilist[i-2].val )
 error(FATAL, "bad interval list");
 }
 addcolormap(list)
-char	*list;
+char *list;
 {
-static char	*templist = NULL;
-char	*ptr;
-int		i = 0;
-if ( list != NULL )  {
+static char *templist = NULL;
+char *ptr;
+int i = 0;
+if ( list != NULL ) {
 if ( templist != NULL )
 free(templist);
 templist = savestring(list);
 ptr = strtok(templist, ",/ \t\n");
-while ( ptr != NULL )  {
+while ( ptr != NULL ) {
 ilist[i++].color = atoi(ptr) % 256;
 ptr = strtok(NULL, ",/ \t\n");
 }
 }
 }
 setwindow(list)
-char	*list;
+char *list;
 {
-static char	*templist = NULL;
-char	*ptr;
-int		i = 0;
+static char *templist = NULL;
+char *ptr;
+int i = 0;
 wlist[0] = wlist[1] = 1;
 wlist[2] = wlist[3] = 0;
-if ( list != NULL )  {
+if ( list != NULL ) {
 if ( templist != NULL )
 free(templist);
 templist = savestring(list);
 ptr = strtok(templist, ",/ \t\n");
-while ( ptr != NULL )  {
+while ( ptr != NULL ) {
 wlist[i++] = atoi(ptr);
 ptr = strtok(NULL, ",/ \t\n");
 }
@@ -413,8 +413,8 @@ ptr = strtok(NULL, ",/ \t\n");
 }
 inwindow()
 {
-int		r;
-int		c;
+int r;
+int c;
 r = (patcount/columns) + 1;
 c = (patcount%columns) + 1;
 return((c >= wlist[0]) && (r >= wlist[1]) && (c <= wlist[2]) && (r <= wlist[3]));
@@ -424,9 +424,9 @@ inrange()
 return(((patcount/columns) >= wlist[1]) && ((patcount/columns) <= wlist[3]));
 }
 mapfloat(element)
-double	element;
+double element;
 {
-int		i;
+int i;
 for ( i = 1; i < next && ilist[i].val < element; i += 2 ) ;
 if ( i > next || element < ilist[i].val )
 i--;
@@ -435,12 +435,12 @@ return(ilist[i].color);
 }
 putrow()
 {
-char	*p1, *p2;
-int		n;
-int		i;
+char *p1, *p2;
+int n;
+int i;
 n = (bytespp <= 0) ? columns : bytespp;
 for ( p1 = raster, p2 = raster + n; p1 < eptr; p1 = p2 )
-if ( patncmp(p1, n) == TRUE )  {
+if ( patncmp(p1, n) == TRUE ) {
 while ( patncmp(p2, n) == TRUE ) p2 += n;
 p2 += n;
 fprintf(fp_out, "%d ", n);
@@ -460,8 +460,8 @@ rptr = raster;
 }
 labelmatrix()
 {
-int		total;
-int		i;
+int total;
+int i;
 fprintf(fp_out, "(%s) ((%d, %d) to (%d, %d)) labelmatrix\n", matrixname,
 wlist[0], wlist[1], wlist[2], wlist[3]);
 total = (wlist[2] - wlist[0] + 1) * (wlist[3] - wlist[1] + 1);
@@ -476,10 +476,10 @@ fprintf(fp_out, "{(\\%.3o)} %d ", ilist[i].color, ilist[i].count);
 fprintf(fp_out, "%d %d legend\n", total, regions);
 }
 patncmp(p1, n)
-char	*p1;
-int		n;
+char *p1;
+int n;
 {
-char	*p2;
+char *p2;
 p2 = p1 + n;
 for ( ; n > 0; n--, p1++, p2++ )
 if ( p2 >= eptr || *p1 != *p2 )
@@ -487,10 +487,10 @@ return(FALSE);
 return(TRUE);
 }
 char *savestring(str)
-char	*str;
+char *str;
 {
-char	*ptr = NULL;
-if ( str != NULL && *str != '\0' )  {
+char *ptr = NULL;
+if ( str != NULL && *str != '\0' ) {
 if ( (ptr = malloc(strlen(str) + 1)) == NULL )
 error(FATAL, "no memory available for string %s", str);
 strcpy(ptr, str);
@@ -498,9 +498,9 @@ strcpy(ptr, str);
 return(ptr);
 }
 redirect(pg)
-int		pg;
+int pg;
 {
-static FILE	*fp_null = NULL;
+static FILE *fp_null = NULL;
 if ( pg >= 0 && in_olist(pg) == ON )
 fp_out = stdout;
 else if ( (fp_out = fp_null) == NULL )

@@ -6,9 +6,9 @@ const int64_t stride_sample, const float eps, const sycl::nd_item<3>& item_ct1, 
 const int nrows = item_ct1.get_group_range(2);
 const int nchannels = item_ct1.get_group_range(1);
 const int nthreads = item_ct1.get_local_range(2);
-const int sample  = item_ct1.get_group(0);
+const int sample = item_ct1.get_group(0);
 const int channel = item_ct1.get_group(1);
-const int row     = item_ct1.get_group(2);
+const int row = item_ct1.get_group(2);
 const int tid = item_ct1.get_local_id(2);
 const int nwarps = nthreads / WARP_SIZE;
 const auto strided_offset = calculate_offset<3>({stride_sample, stride_channel, stride_row}, {sample, channel, row});
@@ -22,7 +22,7 @@ mean_var.x() += xi;
 mean_var.y() += xi * xi;
 }
 mean_var = warp_reduce_sum(mean_var, item_ct1);
-if  (block_size > WARP_SIZE) {
+if (block_size > WARP_SIZE) {
 const auto sub_group = item_ct1.get_sub_group();
 const auto sg_id = sub_group.get_group_linear_id();
 const auto wi_in_sg = sub_group.get_local_linear_id();
@@ -107,15 +107,15 @@ static void rms_norm_f32(const float* x, float* dst, const int ncols, const int6
 const int64_t stride_sample, const float eps, const sycl::nd_item<3>& item_ct1, float* s_sum, int block_size) {
 const int nrows = item_ct1.get_group_range(2);
 const int nchannels = item_ct1.get_group_range(1);
-const int sample  = item_ct1.get_group(0);
+const int sample = item_ct1.get_group(0);
 const int channel = item_ct1.get_group(1);
-const int row     = item_ct1.get_group(2);
+const int row = item_ct1.get_group(2);
 const int nthreads = item_ct1.get_local_range(2);
 const int tid = item_ct1.get_local_id(2);
 const int nwarps = nthreads / WARP_SIZE;
 const auto strided_offset = calculate_offset<3>({stride_sample, stride_channel, stride_row}, {sample, channel, row});
 const auto packed_offset = calculate_offset<3>({nchannels * nrows * ncols, nrows * ncols, ncols}, {sample, channel, row});
-x   += strided_offset;
+x += strided_offset;
 dst += packed_offset;
 float tmp = 0.0f;
 for (int col = tid; col < ncols; col += block_size) {
@@ -303,7 +303,7 @@ GGML_TENSOR_UNARY_OP_LOCALS
 dpct::queue_ptr main_stream = ctx.stream();
 SYCL_CHECK(ggml_sycl_set_device(ctx.device));
 const float * src0_dd = static_cast<const float *>(dst->src[0]->data);
-float *       dst_dd  = static_cast<float *>(dst->data);
+float * dst_dd = static_cast<float *>(dst->data);
 float eps;
 memcpy(&eps, dst->op_params, sizeof(float));
 GGML_ASSERT(eps >= 0.0f);
@@ -321,7 +321,7 @@ int num_groups = dst->op_params[0];
 dpct::queue_ptr main_stream = ctx.stream();
 SYCL_CHECK(ggml_sycl_set_device(ctx.device));
 const float * src0_dd = static_cast<const float *>(dst->src[0]->data);
-float *       dst_dd  = static_cast<float *>(dst->data);
+float * dst_dd = static_cast<float *>(dst->data);
 float eps;
 memcpy(&eps, dst->op_params + 1, sizeof(float));
 int group_size = dst->src[0]->ne[0] * dst->src[0]->ne[1] * ((dst->src[0]->ne[2] + num_groups - 1) / num_groups);
@@ -334,7 +334,7 @@ GGML_ASSERT(dst->type == GGML_TYPE_F32);
 dpct::queue_ptr main_stream = ctx.stream();
 SYCL_CHECK(ggml_sycl_set_device(ctx.device));
 const float * src0_dd = static_cast<const float *>(dst->src[0]->data);
-float *       dst_dd  = static_cast<float *>(dst->data);
+float * dst_dd = static_cast<float *>(dst->data);
 float eps;
 memcpy(&eps, dst->op_params, sizeof(float));
 GGML_TENSOR_UNARY_OP_LOCALS

@@ -1,103 +1,103 @@
-#include	"u.h"
-#include	"lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
+#include "u.h"
+#include "lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
 #define DPRINT if(0)print
-typedef	struct Drive		Drive;
-typedef	struct Ident		Ident;
-typedef	struct Controller	Controller;
+typedef struct Drive Drive;
+typedef struct Ident Ident;
+typedef struct Controller Controller;
 enum
 {
-Pbase0=		0x1F0,
-Pbase1=		0x170,
-Pbase2=		0x1E8,
-Pbase3=		0x168,
-Pdata=		0,
-Perror=		1,
-Pprecomp=	1,
-Pcount=		2,
-Psector=	3,
-Pcyllsb=	4,
-Pcylmsb=	5,
-Pdh=		6,
-DHmagic=	0xA0,
-DHslave=	0x10,
-Pstatus=	7,
-Sbusy=		 (1<<7),
-Sready=	 (1<<6),
-Sdrq=		 (1<<3),
-Serr=		 (1<<0),
-Pcmd=		7,
-Crecal=		0x10,
-Cread=		0x20,
-Cwrite=		0x30,
-Cident=		0xEC,
-Cident2=	0xFF,
-Csetbuf=	0xEF,
-Qdir=		0,
-Timeout=	5,
-NCtlr=		4,
-NDrive=		NCtlr*2,
+Pbase0= 0x1F0,
+Pbase1= 0x170,
+Pbase2= 0x1E8,
+Pbase3= 0x168,
+Pdata= 0,
+Perror= 1,
+Pprecomp= 1,
+Pcount= 2,
+Psector= 3,
+Pcyllsb= 4,
+Pcylmsb= 5,
+Pdh= 6,
+DHmagic= 0xA0,
+DHslave= 0x10,
+Pstatus= 7,
+Sbusy= (1<<7),
+Sready= (1<<6),
+Sdrq= (1<<3),
+Serr= (1<<0),
+Pcmd= 7,
+Crecal= 0x10,
+Cread= 0x20,
+Cwrite= 0x30,
+Cident= 0xEC,
+Cident2= 0xFF,
+Csetbuf= 0xEF,
+Qdir= 0,
+Timeout= 5,
+NCtlr= 4,
+NDrive= NCtlr*2,
 };
 struct Ident
 {
-ushort	config;
-ushort	cyls;
-ushort	reserved0;
-ushort	heads;
-ushort	b2t;
-ushort	b2s;
-ushort	s2t;
-ushort	reserved1[3];
-ushort	serial[10];
-ushort	type;
-ushort	bsize;
-ushort	ecc;
-ushort	firm[4];
-ushort	model[20];
-ushort	s2i;
-ushort	dwtf;
-ushort	capabilities;
-ushort	reserved2;
-ushort	piomode;
-ushort	dmamode;
-ushort	cvalid;
-ushort	ccyls;
-ushort	cheads;
-ushort	cs2t;
-ushort	ccap[2];
-ushort	cs2i;
-ushort	lbasecs[2];
-ushort	dmasingle;
-ushort	dmadouble;
-ushort	reserved3[64];
-ushort	vendor[32];
-ushort	reserved4[96];
+ushort config;
+ushort cyls;
+ushort reserved0;
+ushort heads;
+ushort b2t;
+ushort b2s;
+ushort s2t;
+ushort reserved1[3];
+ushort serial[10];
+ushort type;
+ushort bsize;
+ushort ecc;
+ushort firm[4];
+ushort model[20];
+ushort s2i;
+ushort dwtf;
+ushort capabilities;
+ushort reserved2;
+ushort piomode;
+ushort dmamode;
+ushort cvalid;
+ushort ccyls;
+ushort cheads;
+ushort cs2t;
+ushort ccap[2];
+ushort cs2i;
+ushort lbasecs[2];
+ushort dmasingle;
+ushort dmadouble;
+ushort reserved3[64];
+ushort vendor[32];
+ushort reserved4[96];
 };
 struct Drive
 {
 Controller *cp;
-uchar	driveno;
-uchar	dh;
+uchar driveno;
+uchar dh;
 Disc;
 };
 struct Controller
 {
-int	pbase;
-uchar	ctlrno;
-int	cmd;
-char	*buf;
-int	tcyl;
-int	thead;
-int	tsec;
-int	tbyte;
-int	nsecs;
-int	sofar;
-int	status;
-int	error;
-Drive	*dp;
+int pbase;
+uchar ctlrno;
+int cmd;
+char *buf;
+int tcyl;
+int thead;
+int tsec;
+int tbyte;
+int nsecs;
+int sofar;
+int status;
+int error;
+Drive *dp;
 };
 static int atactlrmask;
 static Controller *atactlr[NCtlr];
@@ -106,14 +106,14 @@ static Drive *atadrive[NDrive];
 static int pbase[NCtlr] = {
 Pbase0, Pbase1, Pbase2, Pbase3,
 };
-static void	hardintr(Ureg*, void*);
-static long	hardxfer(Drive*, Partition*, int, ulong, long);
-static int	hardident(Drive*);
-static void	hardsetbuf(Drive*, int);
-static void	hardpart(Drive*);
-static int	hardparams(Drive*);
-static void	hardrecal(Drive*);
-static int	hardprobe(Drive*, int, int, int);
+static void hardintr(Ureg*, void*);
+static long hardxfer(Drive*, Partition*, int, ulong, long);
+static int hardident(Drive*);
+static void hardsetbuf(Drive*, int);
+static void hardpart(Drive*);
+static int hardparams(Drive*);
+static void hardrecal(Drive*);
+static int hardprobe(Drive*, int, int, int);
 static void
 atactlrprobe(int ctlrno, int irq)
 {

@@ -5,9 +5,9 @@ namespace opencog {
 namespace moses {
 typedef unsigned long int packed_t;
 #define bits_per_packed_t (8*sizeof(packed_t))
-typedef double       contin_t;
-typedef unsigned     disc_t;
-typedef std::string  term_t;
+typedef double contin_t;
+typedef unsigned disc_t;
+typedef std::string term_t;
 typedef tree<term_t> term_tree;
 typedef std::vector<packed_t> instance;
 }

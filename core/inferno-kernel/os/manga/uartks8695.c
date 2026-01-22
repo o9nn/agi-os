@@ -7,95 +7,95 @@
 #include "../port/error.h"
 #include "../port/uart.h"
 enum {
-UartFREQ	= CLOCKFREQ,
+UartFREQ = CLOCKFREQ,
 };
 enum {
-Rbr		= 0,
-Thr		= 1,
-Fcr		= 2,
-Lcr		= 3,
-Mcr		= 4,
-Lsr		= 5,
-Msr		= 6,
-Div		= 7,
-Usr		= 8,
+Rbr = 0,
+Thr = 1,
+Fcr = 2,
+Lcr = 3,
+Mcr = 4,
+Lsr = 5,
+Msr = 6,
+Div = 7,
+Usr = 8,
 };
 enum {
-FIFOena		= 0x01,
-FIFOrclr	= 0x02,
-FIFOtclr	= 0x04,
-FIFO1		= 0x00,
-FIFO4		= 0x40,
-FIFO8		= 0x80,
-FIFO14		= 0xC0,
+FIFOena = 0x01,
+FIFOrclr = 0x02,
+FIFOtclr = 0x04,
+FIFO1 = 0x00,
+FIFO4 = 0x40,
+FIFO8 = 0x80,
+FIFO14 = 0xC0,
 };
 enum {
-Wls5		= 0x00,
-Wls6		= 0x01,
-Wls7		= 0x02,
-Wls8		= 0x03,
-WlsMASK		= 0x03,
-Stb		= 0x04,
-Pen		= 0x08,
-Eps		= 0x10,
-Stp		= 0x20,
-Brk		= 0x40,
-Dlab		= 0x80,
+Wls5 = 0x00,
+Wls6 = 0x01,
+Wls7 = 0x02,
+Wls8 = 0x03,
+WlsMASK = 0x03,
+Stb = 0x04,
+Pen = 0x08,
+Eps = 0x10,
+Stp = 0x20,
+Brk = 0x40,
+Dlab = 0x80,
 };
 enum {
-Dtr		= 0x01,
-Rts		= 0x02,
-Out1		= 0x04,
-Out2		= 0x08,
-Dm		= 0x10,
+Dtr = 0x01,
+Rts = 0x02,
+Out1 = 0x04,
+Out2 = 0x08,
+Dm = 0x10,
 };
 enum {
-Dr		= 0x01,
-Oe		= 0x02,
-Pe		= 0x04,
-Fe		= 0x08,
-Bi		= 0x10,
-Thre		= 0x20,
-Temt		= 0x40,
-FIFOerr		= 0x80,
-LsrInput		= FIFOerr|Oe|Pe|Fe|Dr|Bi,
+Dr = 0x01,
+Oe = 0x02,
+Pe = 0x04,
+Fe = 0x08,
+Bi = 0x10,
+Thre = 0x20,
+Temt = 0x40,
+FIFOerr = 0x80,
+LsrInput = FIFOerr|Oe|Pe|Fe|Dr|Bi,
 };
 enum {
-Dcts		= 0x01,
-Ddsr		= 0x02,
-Teri		= 0x04,
-Ddcd		= 0x08,
-Cts		= 0x10,
-Dsr		= 0x20,
-Ri		= 0x40,
-Dcd		= 0x80,
+Dcts = 0x01,
+Ddsr = 0x02,
+Teri = 0x04,
+Ddcd = 0x08,
+Cts = 0x10,
+Dsr = 0x20,
+Ri = 0x40,
+Dcd = 0x80,
 };
 enum {
-Uti		= 0x01,
+Uti = 0x01,
 };
 typedef struct Ctlr {
-ulong*	regs;
-int	irq;
-int	iena;
+ulong* regs;
+int irq;
+int iena;
 Lock;
-int	fena;
+int fena;
 } Ctlr;
 extern PhysUart ks8695physuart;
 static Ctlr ks8695_ctlr[1] = {
-{	.regs	= (ulong*)PHYSUART,
-.irq	= IRQuts,
+{ .regs = (ulong*)PHYSUART,
+.irq = IRQuts,
 },
 };
 static Uart ks8695_uart[1] = {
-{	.regs	= &ks8695_ctlr[0],
-.name	= "eia0",
-.freq	= UartFREQ,
-.phys	= &ks8695physuart,
+{ .regs = &ks8695_ctlr[0],
+.name = "eia0",
+.freq = UartFREQ,
+.phys = &ks8695physuart,
 .special= 0,
-.next	= nil, },
+.next = nil, },
 };
-#define csr8r(c, r)	((c)->regs[(r)])
-#define csr8w(c, r, v)	((c)->regs[(r)] = (v))
+#define csr8r(c, r) ((c)->regs[(r)])
+#define csr8w(c, r, v) ((c)->regs[(r)] = (v))
 static long
 ks8695_status(Uart* uart, void* buf, long n, long offset)
 {
@@ -439,23 +439,23 @@ while((csr8r(ctlr, Lsr) & Temt) == 0){
 #endif
 }
 PhysUart ks8695physuart = {
-.name		= "ks8695",
-.pnp		= ks8695_pnp,
-.enable		= ks8695_enable,
-.disable	= ks8695_disable,
-.kick		= ks8695_kick,
-.dobreak	= ks8695_break,
-.baud		= ks8695_baud,
-.bits		= ks8695_bits,
-.stop		= ks8695_stop,
-.parity		= ks8695_parity,
-.modemctl	= ks8695_modemctl,
-.rts		= ks8695_rts,
-.dtr		= ks8695_dtr,
-.status		= ks8695_status,
-.fifo		= ks8695_fifo,
-.getc		= ks8695_getc,
-.putc		= ks8695_putc,
+.name = "ks8695",
+.pnp = ks8695_pnp,
+.enable = ks8695_enable,
+.disable = ks8695_disable,
+.kick = ks8695_kick,
+.dobreak = ks8695_break,
+.baud = ks8695_baud,
+.bits = ks8695_bits,
+.stop = ks8695_stop,
+.parity = ks8695_parity,
+.modemctl = ks8695_modemctl,
+.rts = ks8695_rts,
+.dtr = ks8695_dtr,
+.status = ks8695_status,
+.fifo = ks8695_fifo,
+.getc = ks8695_getc,
+.putc = ks8695_putc,
 };
 void
 uartconsole(void)
@@ -467,7 +467,7 @@ uartctl(uart, "b38400 l8 pn s1");
 consuart = uart;
 uart->console = 1;
 }
-#define	UR(p,r)	((ulong*)(p))[r]
+#define UR(p,r) ((ulong*)(p))[r]
 void
 serialputc(int c)
 {

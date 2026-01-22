@@ -3,11 +3,11 @@
 #include <mach/machine/vm_types.h>
 #include <mach/machine/multiboot.h>
 #define BIOSMEM_EBDA_PTR 0x40e
-#define BIOSMEM_BASE        0x010000
-#define BIOSMEM_BASE_END    0x0a0000
-#define BIOSMEM_EXT_ROM     0x0e0000
-#define BIOSMEM_ROM         0x0f0000
-#define BIOSMEM_END         0x100000
+#define BIOSMEM_BASE 0x010000
+#define BIOSMEM_BASE_END 0x0a0000
+#define BIOSMEM_EXT_ROM 0x0e0000
+#define BIOSMEM_ROM 0x0f0000
+#define BIOSMEM_END 0x100000
 void biosmem_register_boot_data(phys_addr_t start, phys_addr_t end,
 boolean_t temporary);
 #ifdef MACH_HYP

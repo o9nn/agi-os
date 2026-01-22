@@ -3,42 +3,42 @@
 #include <bio.h>
 #include <mach.h>
 static int debug = 0;
-#define	BITS(a, b)	((1<<(b+1))-(1<<a))
-#define LSR(v, s)	((ulong)(v) >> (s))
-#define ASR(v, s)	((long)(v) >> (s))
-#define ROR(v, s)	(LSR((v), (s)) | (((v) & ((1 << (s))-1)) << (32 - (s))))
-typedef struct	Instr	Instr;
-struct	Instr
+#define BITS(a, b) ((1<<(b+1))-(1<<a))
+#define LSR(v, s) ((ulong)(v) >> (s))
+#define ASR(v, s) ((long)(v) >> (s))
+#define ROR(v, s) (LSR((v), (s)) | (((v) & ((1 << (s))-1)) << (32 - (s))))
+typedef struct Instr Instr;
+struct Instr
 {
-Map	*map;
-ulong	w;
-uvlong	addr;
-uchar	op;
-uchar	cond;
-uchar	store;
-uchar	rd;
-uchar	rn;
-uchar	rs;
-long	imm;
-char*	curr;
-char*	end;
-char*	err;
+Map *map;
+ulong w;
+uvlong addr;
+uchar op;
+uchar cond;
+uchar store;
+uchar rd;
+uchar rn;
+uchar rs;
+long imm;
+char* curr;
+char* end;
+char* err;
 };
 typedef struct Opcode Opcode;
 struct Opcode
 {
-char*	o;
-void	(*fmt)(Opcode*, Instr*);
-uvlong	(*foll)(Map*, Rgetter, Instr*, uvlong);
-char*	a;
+char* o;
+void (*fmt)(Opcode*, Instr*);
+uvlong (*foll)(Map*, Rgetter, Instr*, uvlong);
+char* a;
 };
-static	void	format(char*, Instr*, char*);
-static	char	FRAMENAME[] = ".frame";
-static	char	*armexcep(Map*, Rgetter);
-static	int	armfoll(Map*, uvlong, Rgetter, uvlong*);
-static	int	arminst(Map*, uvlong, char, char*, int);
-static	int	armdas(Map*, uvlong, char*, int);
-static	int	arminstlen(Map*, uvlong);
+static void format(char*, Instr*, char*);
+static char FRAMENAME[] = ".frame";
+static char *armexcep(Map*, Rgetter);
+static int armfoll(Map*, uvlong, Rgetter, uvlong*);
+static int arminst(Map*, uvlong, char, char*, int);
+static int armdas(Map*, uvlong, char*, int);
+static int arminstlen(Map*, uvlong);
 Machdata armmach =
 {
 {0x70, 0x00, 0x20, 0xE1},
@@ -82,27 +82,27 @@ return "Undefined trap";
 }
 }
 static
-char*	cond[16] =
+char* cond[16] =
 {
-"EQ",	"NE",	"CS",	"CC",
-"MI",	"PL",	"VS",	"VC",
-"HI",	"LS",	"GE",	"LT",
-"GT",	"LE",	0,	"NV"
+"EQ", "NE", "CS", "CC",
+"MI", "PL", "VS", "VC",
+"HI", "LS", "GE", "LT",
+"GT", "LE", 0, "NV"
 };
 static
-char*	shtype[4] =
+char* shtype[4] =
 {
-"<<",	">>",	"->",	"@>"
+"<<", ">>", "->", "@>"
 };
 static
 char *hb[4] =
 {
-"???",	"HU", "B", "H"
+"???", "HU", "B", "H"
 };
 static
-char*	addsub[2] =
+char* addsub[2] =
 {
-"-",	"+",
+"-", "+",
 };
 int
 armclass(long w)
@@ -275,7 +275,7 @@ i->op = armclass(w);
 i->map = map;
 return 1;
 }
-#pragma	varargck	argpos	bprint		2
+#pragma varargck argpos bprint 2
 static void
 bprint(Instr *i, char *fmt, ...)
 {
@@ -535,22 +535,22 @@ c = (psr >> 29) & 1;
 v = (psr >> 28) & 1;
 switch(cond) {
 default:
-case 0:		return z;
-case 1:		return !z;
-case 2:		return c;
-case 3:		return !c;
-case 4:		return n;
-case 5:		return !n;
-case 6:		return v;
-case 7:		return !v;
-case 8:		return c && !z;
-case 9:		return !c || z;
-case 10:	return n == v;
-case 11:	return n != v;
-case 12:	return !z && (n == v);
-case 13:	return z || (n != v);
-case 14:	return 1;
-case 15:	return 0;
+case 0: return z;
+case 1: return !z;
+case 2: return c;
+case 3: return !c;
+case 4: return n;
+case 5: return !n;
+case 6: return v;
+case 7: return !v;
+case 8: return c && !z;
+case 9: return !c || z;
+case 10: return n == v;
+case 11: return n != v;
+case 12: return !z && (n == v);
+case 13: return z || (n != v);
+case 14: return 1;
+case 15: return 0;
 }
 }
 static ulong
@@ -663,9 +663,9 @@ uchar rm;
 sprint(buf, "R%ld", i->w & 0xf);
 rm = rget(map, buf);
 switch((i->w & BITS(5,6)) >> 5) {
-case 0: index = rm << ((i->w & BITS(7,11)) >> 7);	break;
-case 1: index = LSR(rm, ((i->w & BITS(7,11)) >> 7));	break;
-case 2: index = ASR(rm, ((i->w & BITS(7,11)) >> 7));	break;
+case 0: index = rm << ((i->w & BITS(7,11)) >> 7); break;
+case 1: index = LSR(rm, ((i->w & BITS(7,11)) >> 7)); break;
+case 2: index = ASR(rm, ((i->w & BITS(7,11)) >> 7)); break;
 case 3:
 if((i->w & BITS(7,11)) == 0) {
 c = (rget(map, "PSR") >> 29) & 1;
@@ -744,134 +744,134 @@ return v;
 }
 static Opcode opcodes[] =
 {
-"AND%C%S",	armdps, 0,	"R%s,R%n,R%d",
-"EOR%C%S",	armdps, 0,	"R%s,R%n,R%d",
-"SUB%C%S",	armdps, 0,	"R%s,R%n,R%d",
-"RSB%C%S",	armdps, 0,	"R%s,R%n,R%d",
-"ADD%C%S",	armdps, armfadd,	"R%s,R%n,R%d",
-"ADC%C%S",	armdps, 0,	"R%s,R%n,R%d",
-"SBC%C%S",	armdps, 0,	"R%s,R%n,R%d",
-"RSC%C%S",	armdps, 0,	"R%s,R%n,R%d",
-"TST%C%S",	armdps, 0,	"R%s,R%n",
-"TEQ%C%S",	armdps, 0,	"R%s,R%n",
-"CMP%C%S",	armdps, 0,	"R%s,R%n",
-"CMN%C%S",	armdps, 0,	"R%s,R%n",
-"ORR%C%S",	armdps, 0,	"R%s,R%n,R%d",
-"MOVW%C%S",	armdps, armfmov,	"R%s,R%d",
-"BIC%C%S",	armdps, 0,	"R%s,R%n,R%d",
-"MVN%C%S",	armdps, 0,	"R%s,R%d",
-"AND%C%S",	armdps, 0,	"(R%s%h%m),R%n,R%d",
-"EOR%C%S",	armdps, 0,	"(R%s%h%m),R%n,R%d",
-"SUB%C%S",	armdps, 0,	"(R%s%h%m),R%n,R%d",
-"RSB%C%S",	armdps, 0,	"(R%s%h%m),R%n,R%d",
-"ADD%C%S",	armdps, armfadd,	"(R%s%h%m),R%n,R%d",
-"ADC%C%S",	armdps, 0,	"(R%s%h%m),R%n,R%d",
-"SBC%C%S",	armdps, 0,	"(R%s%h%m),R%n,R%d",
-"RSC%C%S",	armdps, 0,	"(R%s%h%m),R%n,R%d",
-"TST%C%S",	armdps, 0,	"(R%s%h%m),R%n",
-"TEQ%C%S",	armdps, 0,	"(R%s%h%m),R%n",
-"CMP%C%S",	armdps, 0,	"(R%s%h%m),R%n",
-"CMN%C%S",	armdps, 0,	"(R%s%h%m),R%n",
-"ORR%C%S",	armdps, 0,	"(R%s%h%m),R%n,R%d",
-"MOVW%C%S",	armdps, armfmov,	"(R%s%h%m),R%d",
-"BIC%C%S",	armdps, 0,	"(R%s%h%m),R%n,R%d",
-"MVN%C%S",	armdps, 0,	"(R%s%h%m),R%d",
-"AND%C%S",	armdps, 0,	"(R%s%hR%M),R%n,R%d",
-"EOR%C%S",	armdps, 0,	"(R%s%hR%M),R%n,R%d",
-"SUB%C%S",	armdps, 0,	"(R%s%hR%M),R%n,R%d",
-"RSB%C%S",	armdps, 0,	"(R%s%hR%M),R%n,R%d",
-"ADD%C%S",	armdps, armfadd,	"(R%s%hR%M),R%n,R%d",
-"ADC%C%S",	armdps, 0,	"(R%s%hR%M),R%n,R%d",
-"SBC%C%S",	armdps, 0,	"(R%s%hR%M),R%n,R%d",
-"RSC%C%S",	armdps, 0,	"(R%s%hR%M),R%n,R%d",
-"TST%C%S",	armdps, 0,	"(R%s%hR%M),R%n",
-"TEQ%C%S",	armdps, 0,	"(R%s%hR%M),R%n",
-"CMP%C%S",	armdps, 0,	"(R%s%hR%M),R%n",
-"CMN%C%S",	armdps, 0,	"(R%s%hR%M),R%n",
-"ORR%C%S",	armdps, 0,	"(R%s%hR%M),R%n,R%d",
-"MOVW%C%S",	armdps, armfmov,	"(R%s%hR%M),R%d",
-"BIC%C%S",	armdps, 0,	"(R%s%hR%M),R%n,R%d",
-"MVN%C%S",	armdps, 0,	"(R%s%hR%M),R%d",
-"AND%C%S",	armdpi, 0,	"$#%i,R%n,R%d",
-"EOR%C%S",	armdpi, 0,	"$#%i,R%n,R%d",
-"SUB%C%S",	armdpi, 0,	"$#%i,R%n,R%d",
-"RSB%C%S",	armdpi, 0,	"$#%i,R%n,R%d",
-"ADD%C%S",	armdpi, armfadd,	"$#%i,R%n,R%d",
-"ADC%C%S",	armdpi, 0,	"$#%i,R%n,R%d",
-"SBC%C%S",	armdpi, 0,	"$#%i,R%n,R%d",
-"RSC%C%S",	armdpi, 0,	"$#%i,R%n,R%d",
-"TST%C%S",	armdpi, 0,	"$#%i,R%n",
-"TEQ%C%S",	armdpi, 0,	"$#%i,R%n",
-"CMP%C%S",	armdpi, 0,	"$#%i,R%n",
-"CMN%C%S",	armdpi, 0,	"$#%i,R%n",
-"ORR%C%S",	armdpi, 0,	"$#%i,R%n,R%d",
-"MOVW%C%S",	armdpi, armfmov,	"$#%i,R%d",
-"BIC%C%S",	armdpi, 0,	"$#%i,R%n,R%d",
-"MVN%C%S",	armdpi, 0,	"$#%i,R%d",
-"MUL%C%S",	armdpi, 0,	"R%M,R%s,R%n",
-"MULA%C%S",	armdpi, 0,	"R%M,R%s,R%n,R%d",
-"SWPW",		armdpi, 0,	"R%s,(R%n),R%d",
-"SWPB",		armdpi, 0,	"R%s,(R%n),R%d",
-"MOV%u%C%p",	armhwby, 0,	"R%d,(R%n%UR%M)",
-"MOV%u%C%p",	armhwby, 0,	"R%d,%I",
-"MOV%u%C%p",	armhwby, armfmov,	"(R%n%UR%M),R%d",
-"MOV%u%C%p",	armhwby, armfmov,	"%I,R%d",
-"MOVW%C%p",	armsdti, 0,	"R%d,%I",
-"MOVB%C%p",	armsdti, 0,	"R%d,%I",
-"MOVW%C%p",	armsdti, armfmov,	"%I,R%d",
-"MOVBU%C%p",	armsdti, armfmov,	"%I,R%d",
-"MOVW%C%p",	armsdts, 0,	"R%d,(R%s%h%m)(R%n)",
-"MOVB%C%p",	armsdts, 0,	"R%d,(R%s%h%m)(R%n)",
-"MOVW%C%p",	armsdts, armfmov,	"(R%s%h%m)(R%n),R%d",
-"MOVBU%C%p",	armsdts, armfmov,	"(R%s%h%m)(R%n),R%d",
-"MOVM%C%P%a",	armbdt, armfmovm,		"[%r],(R%n)",
-"MOVM%C%P%a",	armbdt, armfmovm,		"(R%n),[%r]",
-"B%C",		armb, armfbranch,		"%b",
-"BL%C",		armb, armfbranch,		"%b",
-"CDP%C",	armco, 0,		"",
-"CDP%C",	armco, 0,		"",
-"MCR%C",	armco, 0,		"",
-"MRC%C",	armco, 0,		"",
-"MULLU%C%S",	armdpi, 0,	"R%M,R%s,(R%n,R%d)",
-"MULALU%C%S",	armdpi, 0,	"R%M,R%s,(R%n,R%d)",
-"MULL%C%S",	armdpi, 0,	"R%M,R%s,(R%n,R%d)",
-"MULAL%C%S",	armdpi, 0,	"R%M,R%s,(R%n,R%d)",
-"UNK",		armunk, 0,	"",
-"LDREX",	armdpi, 0,	"(R%n),R%d",
-"STREX",	armdpi, 0,	"R%s,(R%n),R%d",
-"CLREX",	armunk, 0,	"",
-"DSB",		armunk, 0,	"",
-"DMB",		armunk, 0,	"",
-"ISB",		armunk, 0,	"",
-"RFEV7%P%a",	armbdt, 0,	"(R%n)",
-"MLA%f%C",	armdps,	0,	"F%s,F%n,F%d",
-"MLS%f%C",	armdps,	0,	"F%s,F%n,F%d",
-"NMLS%f%C",	armdps,	0,	"F%s,F%n,F%d",
-"NMLA%f%C",	armdps,	0,	"F%s,F%n,F%d",
-"MUL%f%C",	armdps,	0,	"F%s,F%n,F%d",
-"NMUL%f%C",	armdps,	0,	"F%s,F%n,F%d",
-"ADD%f%C",	armdps,	0,	"F%s,F%n,F%d",
-"SUB%f%C",	armdps,	0,	"F%s,F%n,F%d",
-"DIV%f%C",	armdps,	0,	"F%s,F%n,F%d",
-"MOV%f%C",	armdps,	0,	"F%s,F%d",
-"ABS%f%C",	armdps,	0,	"F%s,F%d",
-"NEG%f%C",	armdps,	0,	"F%s,F%d",
-"SQRT%f%C",	armdps,	0,	"F%s,F%d",
-"CMP%f%C",	armdps,	0,	"F%s,F%d",
-"CMPE%f%C",	armdps,	0,	"F%s,F%d",
-"CMP%f%C",	armdps,	0,	"$0.0,F%d",
-"CMPE%f%C",	armdps,	0,	"$0.0,F%d",
-"MOV%F%R%C",	armdps, 0,	"F%s,F%d",
-"MOVW%C",	armdps, 0,	"R%d,F%n",
-"MOVW%C",	armdps, 0,	"F%n,R%d",
-"MOVW%C",	armdps, 0,	"R%d,%x",
-"MOVW%C",	armdps, 0,	"%x,R%d",
-"MOV%f%C",	armvstdi,	0,	"F%d,%I",
-"MOV%f%C",	armvstdi,	0,	"%I,F%d",
-"BKPT%C",	armbpt,	0,		"$#%i",
-"BX%C",		armdps,	armfbx,	"(R%s)",
-"BXJ%C",	armdps,	armfbx,	"(R%s)",
-"BLX%C",	armdps,	armfbx,	"(R%s)",
+"AND%C%S", armdps, 0, "R%s,R%n,R%d",
+"EOR%C%S", armdps, 0, "R%s,R%n,R%d",
+"SUB%C%S", armdps, 0, "R%s,R%n,R%d",
+"RSB%C%S", armdps, 0, "R%s,R%n,R%d",
+"ADD%C%S", armdps, armfadd, "R%s,R%n,R%d",
+"ADC%C%S", armdps, 0, "R%s,R%n,R%d",
+"SBC%C%S", armdps, 0, "R%s,R%n,R%d",
+"RSC%C%S", armdps, 0, "R%s,R%n,R%d",
+"TST%C%S", armdps, 0, "R%s,R%n",
+"TEQ%C%S", armdps, 0, "R%s,R%n",
+"CMP%C%S", armdps, 0, "R%s,R%n",
+"CMN%C%S", armdps, 0, "R%s,R%n",
+"ORR%C%S", armdps, 0, "R%s,R%n,R%d",
+"MOVW%C%S", armdps, armfmov, "R%s,R%d",
+"BIC%C%S", armdps, 0, "R%s,R%n,R%d",
+"MVN%C%S", armdps, 0, "R%s,R%d",
+"AND%C%S", armdps, 0, "(R%s%h%m),R%n,R%d",
+"EOR%C%S", armdps, 0, "(R%s%h%m),R%n,R%d",
+"SUB%C%S", armdps, 0, "(R%s%h%m),R%n,R%d",
+"RSB%C%S", armdps, 0, "(R%s%h%m),R%n,R%d",
+"ADD%C%S", armdps, armfadd, "(R%s%h%m),R%n,R%d",
+"ADC%C%S", armdps, 0, "(R%s%h%m),R%n,R%d",
+"SBC%C%S", armdps, 0, "(R%s%h%m),R%n,R%d",
+"RSC%C%S", armdps, 0, "(R%s%h%m),R%n,R%d",
+"TST%C%S", armdps, 0, "(R%s%h%m),R%n",
+"TEQ%C%S", armdps, 0, "(R%s%h%m),R%n",
+"CMP%C%S", armdps, 0, "(R%s%h%m),R%n",
+"CMN%C%S", armdps, 0, "(R%s%h%m),R%n",
+"ORR%C%S", armdps, 0, "(R%s%h%m),R%n,R%d",
+"MOVW%C%S", armdps, armfmov, "(R%s%h%m),R%d",
+"BIC%C%S", armdps, 0, "(R%s%h%m),R%n,R%d",
+"MVN%C%S", armdps, 0, "(R%s%h%m),R%d",
+"AND%C%S", armdps, 0, "(R%s%hR%M),R%n,R%d",
+"EOR%C%S", armdps, 0, "(R%s%hR%M),R%n,R%d",
+"SUB%C%S", armdps, 0, "(R%s%hR%M),R%n,R%d",
+"RSB%C%S", armdps, 0, "(R%s%hR%M),R%n,R%d",
+"ADD%C%S", armdps, armfadd, "(R%s%hR%M),R%n,R%d",
+"ADC%C%S", armdps, 0, "(R%s%hR%M),R%n,R%d",
+"SBC%C%S", armdps, 0, "(R%s%hR%M),R%n,R%d",
+"RSC%C%S", armdps, 0, "(R%s%hR%M),R%n,R%d",
+"TST%C%S", armdps, 0, "(R%s%hR%M),R%n",
+"TEQ%C%S", armdps, 0, "(R%s%hR%M),R%n",
+"CMP%C%S", armdps, 0, "(R%s%hR%M),R%n",
+"CMN%C%S", armdps, 0, "(R%s%hR%M),R%n",
+"ORR%C%S", armdps, 0, "(R%s%hR%M),R%n,R%d",
+"MOVW%C%S", armdps, armfmov, "(R%s%hR%M),R%d",
+"BIC%C%S", armdps, 0, "(R%s%hR%M),R%n,R%d",
+"MVN%C%S", armdps, 0, "(R%s%hR%M),R%d",
+"AND%C%S", armdpi, 0, "$#%i,R%n,R%d",
+"EOR%C%S", armdpi, 0, "$#%i,R%n,R%d",
+"SUB%C%S", armdpi, 0, "$#%i,R%n,R%d",
+"RSB%C%S", armdpi, 0, "$#%i,R%n,R%d",
+"ADD%C%S", armdpi, armfadd, "$#%i,R%n,R%d",
+"ADC%C%S", armdpi, 0, "$#%i,R%n,R%d",
+"SBC%C%S", armdpi, 0, "$#%i,R%n,R%d",
+"RSC%C%S", armdpi, 0, "$#%i,R%n,R%d",
+"TST%C%S", armdpi, 0, "$#%i,R%n",
+"TEQ%C%S", armdpi, 0, "$#%i,R%n",
+"CMP%C%S", armdpi, 0, "$#%i,R%n",
+"CMN%C%S", armdpi, 0, "$#%i,R%n",
+"ORR%C%S", armdpi, 0, "$#%i,R%n,R%d",
+"MOVW%C%S", armdpi, armfmov, "$#%i,R%d",
+"BIC%C%S", armdpi, 0, "$#%i,R%n,R%d",
+"MVN%C%S", armdpi, 0, "$#%i,R%d",
+"MUL%C%S", armdpi, 0, "R%M,R%s,R%n",
+"MULA%C%S", armdpi, 0, "R%M,R%s,R%n,R%d",
+"SWPW", armdpi, 0, "R%s,(R%n),R%d",
+"SWPB", armdpi, 0, "R%s,(R%n),R%d",
+"MOV%u%C%p", armhwby, 0, "R%d,(R%n%UR%M)",
+"MOV%u%C%p", armhwby, 0, "R%d,%I",
+"MOV%u%C%p", armhwby, armfmov, "(R%n%UR%M),R%d",
+"MOV%u%C%p", armhwby, armfmov, "%I,R%d",
+"MOVW%C%p", armsdti, 0, "R%d,%I",
+"MOVB%C%p", armsdti, 0, "R%d,%I",
+"MOVW%C%p", armsdti, armfmov, "%I,R%d",
+"MOVBU%C%p", armsdti, armfmov, "%I,R%d",
+"MOVW%C%p", armsdts, 0, "R%d,(R%s%h%m)(R%n)",
+"MOVB%C%p", armsdts, 0, "R%d,(R%s%h%m)(R%n)",
+"MOVW%C%p", armsdts, armfmov, "(R%s%h%m)(R%n),R%d",
+"MOVBU%C%p", armsdts, armfmov, "(R%s%h%m)(R%n),R%d",
+"MOVM%C%P%a", armbdt, armfmovm, "[%r],(R%n)",
+"MOVM%C%P%a", armbdt, armfmovm, "(R%n),[%r]",
+"B%C", armb, armfbranch, "%b",
+"BL%C", armb, armfbranch, "%b",
+"CDP%C", armco, 0, "",
+"CDP%C", armco, 0, "",
+"MCR%C", armco, 0, "",
+"MRC%C", armco, 0, "",
+"MULLU%C%S", armdpi, 0, "R%M,R%s,(R%n,R%d)",
+"MULALU%C%S", armdpi, 0, "R%M,R%s,(R%n,R%d)",
+"MULL%C%S", armdpi, 0, "R%M,R%s,(R%n,R%d)",
+"MULAL%C%S", armdpi, 0, "R%M,R%s,(R%n,R%d)",
+"UNK", armunk, 0, "",
+"LDREX", armdpi, 0, "(R%n),R%d",
+"STREX", armdpi, 0, "R%s,(R%n),R%d",
+"CLREX", armunk, 0, "",
+"DSB", armunk, 0, "",
+"DMB", armunk, 0, "",
+"ISB", armunk, 0, "",
+"RFEV7%P%a", armbdt, 0, "(R%n)",
+"MLA%f%C", armdps, 0, "F%s,F%n,F%d",
+"MLS%f%C", armdps, 0, "F%s,F%n,F%d",
+"NMLS%f%C", armdps, 0, "F%s,F%n,F%d",
+"NMLA%f%C", armdps, 0, "F%s,F%n,F%d",
+"MUL%f%C", armdps, 0, "F%s,F%n,F%d",
+"NMUL%f%C", armdps, 0, "F%s,F%n,F%d",
+"ADD%f%C", armdps, 0, "F%s,F%n,F%d",
+"SUB%f%C", armdps, 0, "F%s,F%n,F%d",
+"DIV%f%C", armdps, 0, "F%s,F%n,F%d",
+"MOV%f%C", armdps, 0, "F%s,F%d",
+"ABS%f%C", armdps, 0, "F%s,F%d",
+"NEG%f%C", armdps, 0, "F%s,F%d",
+"SQRT%f%C", armdps, 0, "F%s,F%d",
+"CMP%f%C", armdps, 0, "F%s,F%d",
+"CMPE%f%C", armdps, 0, "F%s,F%d",
+"CMP%f%C", armdps, 0, "$0.0,F%d",
+"CMPE%f%C", armdps, 0, "$0.0,F%d",
+"MOV%F%R%C", armdps, 0, "F%s,F%d",
+"MOVW%C", armdps, 0, "R%d,F%n",
+"MOVW%C", armdps, 0, "F%n,R%d",
+"MOVW%C", armdps, 0, "R%d,%x",
+"MOVW%C", armdps, 0, "%x,R%d",
+"MOV%f%C", armvstdi, 0, "F%d,%I",
+"MOV%f%C", armvstdi, 0, "%I,F%d",
+"BKPT%C", armbpt, 0, "$#%i",
+"BX%C", armdps, armfbx, "(R%s)",
+"BXJ%C", armdps, armfbx, "(R%s)",
+"BLX%C", armdps, armfbx, "(R%s)",
 };
 static void
 gaddr(Instr *i)
@@ -879,9 +879,9 @@ gaddr(Instr *i)
 *i->curr++ = '$';
 i->curr += gsymoff(i->curr, i->end-i->curr, i->imm, CANY);
 }
-static	char *mode[] = { 0, "IA", "DB", "IB" };
-static	char *pw[] = { "P", "PW", 0, "W" };
-static	char *sw[] = { 0, "W", "S", "SW" };
+static char *mode[] = { 0, "IA", "DB", "IB" };
+static char *pw[] = { "P", "PW", 0, "W" };
+static char *sw[] = { 0, "W", "S", "SW" };
 static void
 format(char *mnemonic, Instr *i, char *f)
 {

@@ -1,28 +1,28 @@
 #ifndef _LINUX_MINIX_FS_H
 #define _LINUX_MINIX_FS_H
 #define MINIX_ROOT_INO 1
-#define MINIX_LINK_MAX	250
-#define MINIX2_LINK_MAX	65530
-#define MINIX_I_MAP_SLOTS	8
-#define MINIX_Z_MAP_SLOTS	64
-#define MINIX_SUPER_MAGIC	0x137F
-#define MINIX_SUPER_MAGIC2	0x138F
-#define MINIX2_SUPER_MAGIC	0x2468
-#define MINIX2_SUPER_MAGIC2	0x2478
-#define MINIX_VALID_FS		0x0001
-#define MINIX_ERROR_FS		0x0002
+#define MINIX_LINK_MAX 250
+#define MINIX2_LINK_MAX 65530
+#define MINIX_I_MAP_SLOTS 8
+#define MINIX_Z_MAP_SLOTS 64
+#define MINIX_SUPER_MAGIC 0x137F
+#define MINIX_SUPER_MAGIC2 0x138F
+#define MINIX2_SUPER_MAGIC 0x2468
+#define MINIX2_SUPER_MAGIC2 0x2478
+#define MINIX_VALID_FS 0x0001
+#define MINIX_ERROR_FS 0x0002
 #define MINIX_INODES_PER_BLOCK ((BLOCK_SIZE)/(sizeof (struct minix_inode)))
 #define MINIX2_INODES_PER_BLOCK ((BLOCK_SIZE)/(sizeof (struct minix2_inode)))
-#define MINIX_V1		0x0001
-#define MINIX_V2		0x0002
-#define INODE_VERSION(inode)	inode->i_sb->u.minix_sb.s_version
+#define MINIX_V1 0x0001
+#define MINIX_V2 0x0002
+#define INODE_VERSION(inode) inode->i_sb->u.minix_sb.s_version
 struct minix_inode {
 __u16 i_mode;
 __u16 i_uid;
 __u32 i_size;
 __u32 i_time;
-__u8  i_gid;
-__u8  i_nlinks;
+__u8 i_gid;
+__u8 i_nlinks;
 __u16 i_zone[9];
 };
 struct minix2_inode {

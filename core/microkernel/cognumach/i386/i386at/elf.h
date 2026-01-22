@@ -1,7 +1,7 @@
 #ifndef _X86_ELF_H
 #define _X86_ELF_H
-#define ELF_SHT_SYMTAB  2
-#define ELF_SHT_STRTAB  3
+#define ELF_SHT_SYMTAB 2
+#define ELF_SHT_STRTAB 3
 struct elf_shdr {
 unsigned int name;
 unsigned int type;

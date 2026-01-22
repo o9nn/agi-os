@@ -1,5 +1,5 @@
 #ifndef igc_INCLUDED
-#  define igc_INCLUDED
+# define igc_INCLUDED
 #include "istruct.h"
 extern vm_reclaim_proc(gs_gc_reclaim);
 struct struct_shared_procs_s {
@@ -14,7 +14,7 @@ void proc(const gs_memory_t *cmem, obj_header_t *pre, obj_header_t *dpre, uint s
 gc_proc_compact((*compact));
 };
 #ifndef name_table_DEFINED
-#  define name_table_DEFINED
+# define name_table_DEFINED
 typedef struct name_table_s name_table;
 #endif
 struct gc_state_s {
@@ -39,9 +39,9 @@ const gs_memory_t * gcst_get_memory_ptr(gc_state_t *gcst);
 const void *print_reloc_proc(const void *obj, const char *cname,
 const void *robj);
 #ifdef DEBUG
-#  define print_reloc(obj, cname, nobj)\
+# define print_reloc(obj, cname, nobj)\
 (gs_debug_c('9') ? print_reloc_proc(obj, cname, nobj) : nobj)
 #else
-#  define print_reloc(obj, cname, nobj) (nobj)
+# define print_reloc(obj, cname, nobj) (nobj)
 #endif
 #endif

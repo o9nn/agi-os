@@ -11,10 +11,10 @@
 #include "gzpath.h"
 #include "gzcpath.h"
 #ifndef X_DPI
-#  define X_DPI 720
+# define X_DPI 720
 #endif
 #ifndef Y_DPI
-#  define Y_DPI 720
+# define Y_DPI 720
 #endif
 extern_st(st_gs_text_enum);
 extern_st(st_gx_image_enum_common);
@@ -524,30 +524,30 @@ X_DPI, Y_DPI, ncomp, depth,\
 1 << (depth / ncomp),\
 (ncomp > 1 ? 1 << (depth / ncomp) : 1)),\
 {\
-NULL,			\
-NULL,			\
-NULL,			\
-NULL,			\
-NULL,			\
-map_rgb_color,		\
-map_color_rgb,		\
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+map_rgb_color, \
+map_color_rgb, \
 trace_fill_rectangle,\
-NULL,			\
+NULL, \
 trace_copy_mono,\
 trace_copy_color,\
-NULL,			\
-NULL,			\
-NULL,			\
-NULL,			\
-map_cmyk_color,		\
-NULL,			\
-NULL,			\
-map_rgb_alpha_color,	\
+NULL, \
+NULL, \
+NULL, \
+NULL, \
+map_cmyk_color, \
+NULL, \
+NULL, \
+map_rgb_alpha_color, \
 gx_page_device_get_page_device,\
-NULL,			\
+NULL, \
 trace_copy_alpha,\
-NULL,			\
-NULL,			\
+NULL, \
+NULL, \
 trace_fill_path,\
 trace_stroke_path,\
 trace_fill_mask,\
@@ -555,19 +555,19 @@ trace_fill_trapezoid,\
 trace_fill_parallelogram,\
 trace_fill_triangle,\
 trace_draw_thin_line,\
-NULL,			\
-NULL,			\
-NULL,			\
+NULL, \
+NULL, \
+NULL, \
 trace_strip_tile_rectangle,\
 trace_strip_copy_rop,\
-NULL,			\
+NULL, \
 trace_begin_typed_image,\
-NULL,			\
-NULL,			\
-NULL,			\
-NULL,			\
+NULL, \
+NULL, \
+NULL, \
+NULL, \
 trace_text_begin,\
-NULL			\
+NULL \
 }
 const gx_device gs_tr_mono_device = {
 TRACE_DEVICE_BODY("tr_mono", 1, 1,

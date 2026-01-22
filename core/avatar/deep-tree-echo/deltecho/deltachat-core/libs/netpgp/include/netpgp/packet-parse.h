@@ -3,11 +3,11 @@
 #include "types.h"
 #include "packet.h"
 typedef struct pgp_region_t {
-struct pgp_region_t	*parent;
-unsigned		 length;
-unsigned		 readc;
-unsigned		 last_read;
-unsigned		 indeterminate:1;
+struct pgp_region_t *parent;
+unsigned length;
+unsigned readc;
+unsigned last_read;
+unsigned indeterminate:1;
 } pgp_region_t;
 void pgp_init_subregion(pgp_region_t *, pgp_region_t *);
 typedef enum {
@@ -15,14 +15,14 @@ PGP_RELEASE_MEMORY,
 PGP_KEEP_MEMORY,
 PGP_FINISHED
 } pgp_cb_ret_t;
-typedef struct pgp_cbdata_t	 pgp_cbdata_t;
+typedef struct pgp_cbdata_t pgp_cbdata_t;
 typedef pgp_cb_ret_t pgp_cbfunc_t(const pgp_packet_t *,
 pgp_cbdata_t *);
 pgp_cb_ret_t
 get_passphrase_cb(const pgp_packet_t *, pgp_cbdata_t *);
-typedef struct pgp_stream_t	pgp_stream_t;
-typedef struct pgp_reader_t		pgp_reader_t;
-typedef struct pgp_cryptinfo_t	pgp_cryptinfo_t;
+typedef struct pgp_stream_t pgp_stream_t;
+typedef struct pgp_reader_t pgp_reader_t;
+typedef struct pgp_cryptinfo_t pgp_cryptinfo_t;
 typedef int pgp_reader_func_t(pgp_stream_t *, void *, size_t, pgp_error_t **,
 pgp_reader_t *, pgp_cbdata_t *);
 typedef void pgp_reader_destroyer_t(pgp_reader_t *);
@@ -65,7 +65,7 @@ void pgp_parse_hash_finish(pgp_stream_t *);
 #if 0
 pgp_hash_t *pgp_parse_hash_find(pgp_stream_t *, const uint8_t *);
 #endif
-pgp_reader_func_t    pgp_stacked_read;
+pgp_reader_func_t pgp_stacked_read;
 int pgp_decompress(pgp_region_t *, pgp_stream_t *,
 pgp_compression_type_t);
 unsigned pgp_writez(pgp_output_t *, const uint8_t *,

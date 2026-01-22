@@ -1,5 +1,5 @@
 #ifndef gdevpdfx_INCLUDED
-#  define gdevpdfx_INCLUDED
+# define gdevpdfx_INCLUDED
 #include "gsparam.h"
 #include "gsuid.h"
 #include "gxdevice.h"
@@ -32,11 +32,11 @@ typedef struct cos_object_procs_s cos_object_procs_t;
 typedef const cos_object_procs_t *cos_type_t;
 #define cos_types_DEFINED
 #ifndef pdf_text_state_DEFINED
-#  define pdf_text_state_DEFINED
+# define pdf_text_state_DEFINED
 typedef struct pdf_text_state_s pdf_text_state_t;
 #endif
 #ifndef pdf_char_glyph_pairs_DEFINED
-#  define pdf_char_glyph_pairs_DEFINED
+# define pdf_char_glyph_pairs_DEFINED
 typedef struct pdf_char_glyph_pairs_s pdf_char_glyph_pairs_t;
 #endif
 typedef enum {
@@ -61,36 +61,36 @@ NUM_RESOURCE_TYPES
 "/ColorSpace", "/ExtGState", "/Pattern", "/Shading", "/XObject", 0, "/Font",\
 0, "/Font", "/CMap", "/FontDescriptor", "/Group", "/Mask", 0, 0
 #define PDF_RESOURCE_TYPE_STRUCTS\
-&st_pdf_color_space,		\
-&st_pdf_resource,		\
+&st_pdf_color_space, \
+&st_pdf_resource, \
 &st_pdf_pattern,\
 &st_pdf_resource,\
-&st_pdf_x_object,		\
+&st_pdf_x_object, \
 &st_pdf_resource,\
-&st_pdf_font_resource,	\
-&st_pdf_char_proc,		\
-&st_pdf_font_resource,	\
+&st_pdf_font_resource, \
+&st_pdf_char_proc, \
+&st_pdf_font_resource, \
 &st_pdf_resource,\
-&st_pdf_font_descriptor,	\
+&st_pdf_font_descriptor, \
 &st_pdf_resource,\
 &st_pdf_resource,\
 &st_pdf_resource,\
 &st_pdf_resource
 #define pdf_resource_common(typ)\
-typ *next;			\
-pdf_resource_t *prev;	\
-gs_id rid;			\
+typ *next; \
+pdf_resource_t *prev; \
+gs_id rid; \
 bool named;\
-bool global;                \
+bool global; \
 char rname[1 + (sizeof(long) * 8 / 3 + 1) + 1];\
-ulong where_used;		\
+ulong where_used; \
 cos_object_t *object
 typedef struct pdf_resource_s pdf_resource_t;
 struct pdf_resource_s {
 pdf_resource_common(pdf_resource_t);
 };
 extern_st(st_pdf_resource);
-#define public_st_pdf_resource()  \
+#define public_st_pdf_resource() \
 gs_public_st_ptrs3(st_pdf_resource, pdf_resource_t, "pdf_resource_t",\
 pdf_resource_enum_ptrs, pdf_resource_reloc_ptrs, next, prev, object)
 typedef struct pdf_x_object_s pdf_x_object_t;
@@ -99,7 +99,7 @@ pdf_resource_common(pdf_x_object_t);
 int width, height;
 int data_height;
 };
-#define private_st_pdf_x_object()  \
+#define private_st_pdf_x_object() \
 gs_private_st_suffix_add0(st_pdf_x_object, pdf_x_object_t,\
 "pdf_x_object_t", pdf_x_object_enum_ptrs, pdf_x_object_reloc_ptrs,\
 st_pdf_resource)
@@ -172,7 +172,7 @@ pdf_page_dsc_info_t dsc_info;
 bool NumCopies_set;
 int NumCopies;
 } pdf_page_t;
-#define private_st_pdf_page()	\
+#define private_st_pdf_page() \
 gs_private_st_ptrs2(st_pdf_page, pdf_page_t, "pdf_page_t",\
 pdf_page_enum_ptrs, pdf_page_reloc_ptrs, Page, Annots)
 typedef struct pdf_temp_file_s {
@@ -183,7 +183,7 @@ byte *strm_buf;
 stream *save_strm;
 } pdf_temp_file_t;
 #ifndef gx_device_pdf_DEFINED
-#  define gx_device_pdf_DEFINED
+# define gx_device_pdf_DEFINED
 typedef struct gx_device_pdf_s gx_device_pdf;
 #endif
 typedef struct pdf_font_cache_elem_s pdf_font_cache_elem_t;
@@ -227,21 +227,21 @@ float dash_pattern[max_dash];
 gs_id soft_mask_id;
 } pdf_viewer_state;
 typedef struct pdf_substream_save_s {
-pdf_context_t	context;
-pdf_text_state_t	*text_state;
-gx_path		*clip_path;
-gs_id		clip_path_id;
-int			vgstack_bottom;
-stream		*strm;
-cos_dict_t		*substream_Resources;
-pdf_procset_t	procsets;
-bool		skip_colors;
-pdf_resource_t      *font3;
-pdf_resource_t	*accumulating_substream_resource;
-bool		charproc_just_accumulated;
-bool		accumulating_a_global_object;
-pdf_resource_t      *pres_soft_mask_dict;
-gs_const_string		objname;
+pdf_context_t context;
+pdf_text_state_t *text_state;
+gx_path *clip_path;
+gs_id clip_path_id;
+int vgstack_bottom;
+stream *strm;
+cos_dict_t *substream_Resources;
+pdf_procset_t procsets;
+bool skip_colors;
+pdf_resource_t *font3;
+pdf_resource_t *accumulating_substream_resource;
+bool charproc_just_accumulated;
+bool accumulating_a_global_object;
+pdf_resource_t *pres_soft_mask_dict;
+gs_const_string objname;
 } pdf_substream_save;
 #define private_st_pdf_substream_save()\
 gs_private_st_strings1_ptrs7(st_pdf_substream_save, pdf_substream_save,\
@@ -378,11 +378,11 @@ bool accumulating_a_global_object;
 const pdf_char_glyph_pairs_t *cgp;
 int substituted_pattern_count;
 int substituted_pattern_drop_page;
-gs_id     image_mask_id;
-bool      image_mask_is_SMask;
-bool      image_mask_skip;
+gs_id image_mask_id;
+bool image_mask_is_SMask;
+bool image_mask_skip;
 gs_matrix converting_image_matrix;
-double    image_mask_scale;
+double image_mask_scale;
 pdf_resource_t *pres_soft_mask_dict;
 gs_const_string objname;
 };
@@ -416,9 +416,9 @@ m(0, objname)
 #define st_device_pdf_max_ptrs\
 (st_device_psdf_max_ptrs + gx_device_pdf_num_ptrs +\
 gx_device_pdf_num_param_strings + gx_device_pdf_num_const_strings +\
-NUM_RESOURCE_TYPES * NUM_RESOURCE_CHAINS  +\
+NUM_RESOURCE_TYPES * NUM_RESOURCE_CHAINS +\
 MAX_OUTLINE_DEPTH * 2
-#define private_st_device_pdfwrite()	\
+#define private_st_device_pdfwrite() \
 gs_private_st_composite_final(st_device_pdfwrite, gx_device_pdf,\
 "gx_device_pdf", device_pdfwrite_enum_ptrs, device_pdfwrite_reloc_ptrs,\
 device_pdfwrite_finalize)
@@ -552,7 +552,7 @@ const char *RunLengthDecode;
 } pdf_filter_names_t;
 #define PDF_FILTER_NAMES\
 "/ASCII85Decode", "/ASCIIHexDecode", "/CCITTFaxDecode",\
-"/DCTDecode",  "/DecodeParms", "/Filter", "/FlateDecode",\
+"/DCTDecode", "/DecodeParms", "/Filter", "/FlateDecode",\
 "/LZWDecode", "/RunLengthDecode"
 #define PDF_FILTER_NAMES_SHORT\
 "/A85", "/AHx", "/CCF", "/DCT", "/DP", "/F", "/Fl", "/LZW", "/RL"
@@ -581,7 +581,7 @@ bool encrypted;
 #define DATA_STREAM_BINARY 1
 #define DATA_STREAM_COMPRESS 2
 #define DATA_STREAM_NOLENGTH 4
-#define DATA_STREAM_ENCRYPT  8
+#define DATA_STREAM_ENCRYPT 8
 int pdf_begin_data_stream(gx_device_pdf *pdev, pdf_data_writer_t *pdw,
 int options, gs_id object_id);
 int pdf_append_data_stream_filters(gx_device_pdf *pdev, pdf_data_writer_t *pdw,
@@ -591,7 +591,7 @@ int pdf_end_data(pdf_data_writer_t *pdw);
 #define MAX_REF_CHARS ((sizeof(long) * 8 + 2) / 3)
 #ifndef gs_function_DEFINED
 typedef struct gs_function_s gs_function_t;
-#  define gs_function_DEFINED
+# define gs_function_DEFINED
 #endif
 int pdf_function(gx_device_pdf *pdev, const gs_function_t *pfn,
 cos_value_t *pvalue);

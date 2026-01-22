@@ -10,10 +10,10 @@ extern void breakrestore(Bkpt *b);
 extern Bkpt* breakclear(int id);
 extern void breaknotify(Bkpt *b, Proc *p);
 extern int breakmatch(BkptCond *cond, Ureg *ur, Proc *p);
-void	skipfree(Bkpt *b);
+void skipfree(Bkpt *b);
 Bkpt*newskip(ulong addr, Bkpt *skipb, Proc *skipp);
 Bkpt *skipalloc;
-extern Bkpt	*breakpoints;
+extern Bkpt *breakpoints;
 typedef struct SkipArg SkipArg;
 struct SkipArg
 {
@@ -77,7 +77,7 @@ breaknotify(b, p);
 if(nmatched)
 return BrkSched;
 skip = nil;
-for(b = breakpoints; b != nil;  b = b->next) {
+for(b = breakpoints; b != nil; b = b->next) {
 if(b->addr == ur->pc) {
 if(breakclear(b->id) == nil)
 panic("breakhit: breakclear() failed");

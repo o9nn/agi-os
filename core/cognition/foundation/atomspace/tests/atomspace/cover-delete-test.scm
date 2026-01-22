@@ -71,20 +71,20 @@
 (test-assert "base-space" (cog-atom? (cog-node 'Concept "foo")))
 (test-equal "base-tv" 2 (inexact->exact (cog-count (Concept "foo"))))
 (test-equal "base-litv" 10 (inexact->exact (cog-count
-    (ListLink (Concept "foo") (Concept "bar")))))
+(ListLink (Concept "foo") (Concept "bar")))))
 (cog-set-atomspace! mid1-space)
 (test-assert "mid1-space" (nil? (cog-node 'Concept "foo")))
 (cog-set-atomspace! mid2-space)
 (test-assert "mid2-space" (cog-atom? (cog-node 'Concept "foo")))
 (test-equal "mid2-tv" 4 (inexact->exact (cog-count (Concept "foo"))))
 (test-equal "mid2-litv" 20 (inexact->exact (cog-count
-    (ListLink (Concept "foo") (Concept "bar")))))
+(ListLink (Concept "foo") (Concept "bar")))))
 (cog-set-atomspace! mid3-space)
 (test-assert "mid3-space" (nil? (cog-node 'Concept "foo")))
 (cog-set-atomspace! surface-space)
 (test-assert "surface-space" (cog-atom? (cog-node 'Concept "foo")))
 (test-equal "surface-tv" 6 (inexact->exact (cog-count (Concept "foo"))))
 (test-equal "surface-litv" 30 (inexact->exact (cog-count
-    (ListLink (Concept "foo") (Concept "bar")))))
+(ListLink (Concept "foo") (Concept "bar")))))
 (test-end deep-link-delete)
 (opencog-test-end)

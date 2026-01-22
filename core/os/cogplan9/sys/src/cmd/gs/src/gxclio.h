@@ -1,5 +1,5 @@
 #ifndef gxclio_INCLUDED
-#  define gxclio_INCLUDED
+# define gxclio_INCLUDED
 #include "gp.h"
 typedef void *clist_file_ptr;
 int clist_fopen(char fname[gp_file_name_sizeof], const char *fmode,

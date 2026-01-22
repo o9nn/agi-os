@@ -2,15 +2,15 @@
 # include <values.h>
 #endif
 #ifndef DMAXEXP
-# define DMAXEXP	128
+# define DMAXEXP 128
 #endif
 #ifndef BITSPERBYTE
 # ifdef CHAR_BIT
-#  define BITSPERBYTE	CHAR_BIT
+# define BITSPERBYTE CHAR_BIT
 # else
-#  define BITSPERBYTE	8
+# define BITSPERBYTE 8
 # endif
 #endif
 #ifndef BITS
-# define BITS(t)	(BITSPERBYTE * sizeof(t))
+# define BITS(t) (BITSPERBYTE * sizeof(t))
 #endif

@@ -24,11 +24,11 @@ const bool USE_PSEUDOCOUNT = true;
 typedef struct Table_tracon_s Table_tracon;
 struct Table_tracon_s
 {
-Table_tracon     *next;
-int              l_id, r_id;
-Count_bin        count;
-null_count_m     null_count;
-size_t           hash;
+Table_tracon *next;
+int l_id, r_id;
+Count_bin count;
+null_count_m null_count;
+size_t hash;
 };
 typedef struct
 {
@@ -56,10 +56,10 @@ struct count_context_s
 {
 fast_matcher_t *mchxt;
 Sentence sent;
-bool    islands_ok;
-bool    exhausted;
+bool islands_ok;
+bool exhausted;
 uint8_t num_growth;
-bool    is_short;
+bool is_short;
 uint32_t checktimer;
 size_t table_size;
 size_t table_mask;
@@ -113,7 +113,7 @@ ctxt->table_size *= 2;
 else
 ctxt->table_size = reqsz;
 if ((1ULL << MAX_LOG2_TABLE_SIZE) <= ctxt->table_size)
-ctxt->table_size  = (1ULL << MAX_LOG2_TABLE_SIZE);
+ctxt->table_size = (1ULL << MAX_LOG2_TABLE_SIZE);
 lgdebug(+D_COUNT, "Tracon table size %lu\n", ctxt->table_size);
 if (kept_table_size < ctxt->table_size)
 {
@@ -323,7 +323,7 @@ for (Table_tracon *t = ctxt->table[i]; t != NULL; t = t->next)
 {
 if (t->null_count != nc) continue;
 int n = printf("[%zu]", i);
-printf("%*d %5d c=%"COUNT_FMT"\n",  15-n, t->l_id, t->r_id, t->count);
+printf("%*d %5d c=%"COUNT_FMT"\n", 15-n, t->l_id, t->r_id, t->count);
 }
 }
 }
@@ -411,7 +411,7 @@ if (hash != NULL) *hash = h;
 TABLE_STAT(miss++);
 return NULL;
 }
-extern  Count_bin *
+extern Count_bin *
 table_lookup(count_context_t *, int, int,
 const Connector *, const Connector *,
 unsigned int, size_t *);
@@ -447,7 +447,7 @@ for (i = start_word; i < end_word; i++)
 {
 Table_lrcnt *e = &wv[i - le->nearest_word];
 printf("\tw%-3d idx %-3d status %d nc %-3u next %d\n",
-i,  i - le->nearest_word, e->status, e->null_count,
+i, i - le->nearest_word, e->status, e->null_count,
 e->check_next);
 }
 #endif
@@ -478,7 +478,7 @@ for (i = start_word; i < end_word; i++)
 {
 Table_lrcnt *e = &wv[i - re->farthest_word];
 printf("\tw%-3d idx %-3d status %d nc %-3u next %d\n",
-i,  i - re->farthest_word, e->status, e->null_count,
+i, i - re->farthest_word, e->status, e->null_count,
 e->check_next);
 }
 #endif
@@ -511,7 +511,7 @@ static void lrcnt_cache_match_list(wordvecp lrcnt_cache, count_context_t *ctxt,
 size_t mlb, bool dir)
 {
 size_t dcnt = 0;
-size_t i  = 0;
+size_t i = 0;
 fast_matcher_t *mchxt = ctxt->mchxt;
 if (!ENABLE_MATCH_LIST_CACHE) return;
 for (i = mlb; get_match_list_element(mchxt, i) != NULL; i++)
@@ -549,7 +549,7 @@ if (wvp->status == -1)
 if (null_start != NULL) *null_start = 0;
 return wvp;
 }
-if  (wvp->status == 1)
+if (wvp->status == 1)
 {
 if (null_start != NULL)
 *null_start = (null_count_m)(wvp->null_count + 1);

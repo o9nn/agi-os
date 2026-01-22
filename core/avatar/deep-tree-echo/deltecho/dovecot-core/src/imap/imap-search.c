@@ -393,7 +393,7 @@ if (!cmd->uid || ctx->have_seqsets)
 sync_flags |= MAILBOX_SYNC_FLAG_NO_EXPUNGES;
 ok_reply = t_strdup_printf("OK %s%s completed",
 lost_data ? "["IMAP_RESP_CODE_EXPUNGEISSUED"] " : "",
-!ctx->sorting ? "Search"  : "Sort");
+!ctx->sorting ? "Search" : "Sort");
 return cmd_sync(cmd, sync_flags, 0, ok_reply);
 }
 static void cmd_search_more_callback(struct client_command_context *cmd)

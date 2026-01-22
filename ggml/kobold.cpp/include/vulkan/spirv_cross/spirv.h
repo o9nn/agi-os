@@ -2141,7 +2141,7 @@ SpvOpMax = 0x7fffffff,
 inline void SpvHasResultAndType(SpvOp opcode, bool *hasResult, bool *hasResultType) {
 *hasResult = *hasResultType = false;
 switch (opcode) {
-default:  break;
+default: break;
 case SpvOpNop: *hasResult = false; *hasResultType = false; break;
 case SpvOpUndef: *hasResult = true; *hasResultType = true; break;
 case SpvOpSourceContinued: *hasResult = false; *hasResultType = false; break;

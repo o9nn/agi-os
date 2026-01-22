@@ -8,11 +8,11 @@
 int inpanic;
 #define CSR ((ushort *) 0x2000000)
 typedef struct Irqctlr {
-uint	addr;
-uint	enabled;
+uint addr;
+uint enabled;
 struct {
-void	(*r)(Ureg*, void*);
-void 	*a;
+void (*r)(Ureg*, void*);
+void *a;
 } h[16];
 } Irqctlr;
 static Irqctlr irqctlr;

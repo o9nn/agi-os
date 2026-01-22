@@ -5,16 +5,16 @@
 #include <ip.h>
 enum
 {
-Ffound=	1<<0,
+Ffound= 1<<0,
 Fignore=1<<1,
-Faddr=	1<<2,
+Faddr= 1<<2,
 };
-static Ndbtuple*	filter(Ndb *db, Ndbtuple *t, Ndbtuple *f);
-static Ndbtuple*	mkfilter(int argc, char **argv);
-static int		filtercomplete(Ndbtuple *f);
-static Ndbtuple*	toipaddr(Ndb *db, Ndbtuple *t);
-static int		prefixlen(uchar *ip);
-static Ndbtuple*	subnet(Ndb *db, uchar *net, Ndbtuple *f, int prefix);
+static Ndbtuple* filter(Ndb *db, Ndbtuple *t, Ndbtuple *f);
+static Ndbtuple* mkfilter(int argc, char **argv);
+static int filtercomplete(Ndbtuple *f);
+static Ndbtuple* toipaddr(Ndb *db, Ndbtuple *t);
+static int prefixlen(uchar *ip);
+static Ndbtuple* subnet(Ndb *db, uchar *net, Ndbtuple *f, int prefix);
 static Ndbtuple*
 mkfilter(int argc, char **argv)
 {

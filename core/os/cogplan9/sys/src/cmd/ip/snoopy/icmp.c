@@ -3,16 +3,16 @@
 #include <ip.h>
 #include "dat.h"
 #include "protos.h"
-typedef struct Hdr	Hdr;
+typedef struct Hdr Hdr;
 struct Hdr
-{	uchar	type;
-uchar	code;
-uchar	cksum[2];
-uchar	data[1];
+{ uchar type;
+uchar code;
+uchar cksum[2];
+uchar data[1];
 };
 enum
 {
-ICMPLEN=	4,
+ICMPLEN= 4,
 };
 enum
 {
@@ -21,45 +21,45 @@ Op,
 };
 static Field p_fields[] =
 {
-{"t",		Fnum,	Ot,	"type",	} ,
+{"t", Fnum, Ot, "type", } ,
 {0}
 };
 enum
 {
-EchoRep=	0,
-Unreachable=	3,
-SrcQuench=	4,
-Redirect=	5,
-EchoReq=	8,
-TimeExceed=	11,
-ParamProb=	12,
-TSreq=		13,
-TSrep=		14,
-InfoReq=	15,
-InfoRep=	16,
+EchoRep= 0,
+Unreachable= 3,
+SrcQuench= 4,
+Redirect= 5,
+EchoReq= 8,
+TimeExceed= 11,
+ParamProb= 12,
+TSreq= 13,
+TSrep= 14,
+InfoReq= 15,
+InfoRep= 16,
 };
 static Mux p_mux[] =
 {
-{"ip",	Unreachable, },
-{"ip",	SrcQuench, },
-{"ip",	Redirect, },
-{"ip",	TimeExceed, },
-{"ip",	ParamProb, },
+{"ip", Unreachable, },
+{"ip", SrcQuench, },
+{"ip", Redirect, },
+{"ip", TimeExceed, },
+{"ip", ParamProb, },
 {0},
 };
 char *icmpmsg[256] =
 {
-[EchoRep]	"EchoRep",
-[Unreachable]	"Unreachable",
-[SrcQuench]	"SrcQuench",
-[Redirect]	"Redirect",
-[EchoReq]	"EchoReq",
-[TimeExceed]	"TimeExceed",
-[ParamProb]	"ParamProb",
-[TSreq]		"TSreq",
-[TSrep]		"TSrep",
-[InfoReq]	"InfoReq",
-[InfoRep]	"InfoRep",
+[EchoRep] "EchoRep",
+[Unreachable] "Unreachable",
+[SrcQuench] "SrcQuench",
+[Redirect] "Redirect",
+[EchoReq] "EchoReq",
+[TimeExceed] "TimeExceed",
+[ParamProb] "ParamProb",
+[TSreq] "TSreq",
+[TSrep] "TSrep",
+[InfoReq] "InfoReq",
+[InfoRep] "InfoRep",
 };
 static void
 p_compile(Filter *f)

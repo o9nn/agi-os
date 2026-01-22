@@ -1,10 +1,10 @@
-#include	"u.h"
-#include 	"mem.h"
-#include	"../port/lib.h"
-#include 	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#define	GPIOREGS	((Gpioregs*)KADDR(PHYSGPIO))
+#include "u.h"
+#include "mem.h"
+#include "../port/lib.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#define GPIOREGS ((Gpioregs*)KADDR(PHYSGPIO))
 static ulong gpioreserved;
 static Lock gpiolock;
 void
@@ -19,7 +19,7 @@ iunlock(&gpiolock);
 static ulong
 inflate(ulong m)
 {
-m  = ((m & 0xFF00) << 8) | (m & 0x00FF);
+m = ((m & 0xFF00) << 8) | (m & 0x00FF);
 m = ((m << 4) | m) & 0x0F0F0F0F;
 m = ((m << 2) | m) & 0x33333333;
 return ((m << 1) | m) & 0x55555555;

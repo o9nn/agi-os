@@ -1,5 +1,5 @@
 #ifndef _LG_DICT_API_H_
-#define  _LG_DICT_API_H_
+#define _LG_DICT_API_H_
 #include "dict-structures.h"
 #include "link-includes.h"
 #ifndef SWIG

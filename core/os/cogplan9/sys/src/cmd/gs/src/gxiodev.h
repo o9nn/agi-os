@@ -1,22 +1,22 @@
 #ifndef gxiodev_INCLUDED
-#  define gxiodev_INCLUDED
+# define gxiodev_INCLUDED
 #include "stat_.h"
 #ifndef gx_io_device_DEFINED
-#  define gx_io_device_DEFINED
+# define gx_io_device_DEFINED
 typedef struct gx_io_device_s gx_io_device;
 #endif
 typedef struct gx_io_device_procs_s gx_io_device_procs;
 #ifndef file_enum_DEFINED
-#  define file_enum_DEFINED
+# define file_enum_DEFINED
 struct file_enum_s;
 typedef struct file_enum_s file_enum;
 #endif
 #ifndef gs_param_list_DEFINED
-#  define gs_param_list_DEFINED
+# define gs_param_list_DEFINED
 typedef struct gs_param_list_s gs_param_list;
 #endif
 #ifndef stream_DEFINED
-#  define stream_DEFINED
+# define stream_DEFINED
 typedef struct stream_s stream;
 #endif
 struct gx_io_device_procs_s {
@@ -92,7 +92,7 @@ const char *dtype;
 gx_io_device_procs procs;
 void *state;
 };
-#define private_st_io_device()	\
+#define private_st_io_device() \
 gs_private_st_ptrs1(st_io_device, gx_io_device, "gx_io_device",\
 io_device_enum_ptrs, io_device_reloc_ptrs, state)
 #endif

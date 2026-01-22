@@ -2,14 +2,14 @@
 #define _MACH_A_OUT_
 struct exec
 {
-unsigned long  	a_magic;
-unsigned long   a_text;
-unsigned long   a_data;
-unsigned long   a_bss;
-unsigned long   a_syms;
-unsigned long   a_entry;
-unsigned long   a_trsize;
-unsigned long   a_drsize;
+unsigned long a_magic;
+unsigned long a_text;
+unsigned long a_data;
+unsigned long a_bss;
+unsigned long a_syms;
+unsigned long a_entry;
+unsigned long a_trsize;
+unsigned long a_drsize;
 };
 struct nlist {
 long n_strx;
@@ -26,7 +26,7 @@ unsigned long n_value;
 ( (ex).a_magic & 0xffff )
 #define N_GETMAGIC_NET(ex) \
 (ntohl((ex).a_magic) & 0xffff)
-#define	N_BADMAG(ex) \
+#define N_BADMAG(ex) \
 (N_GETMAGIC(ex) != OMAGIC && N_GETMAGIC(ex) != NMAGIC && \
 N_GETMAGIC(ex) != ZMAGIC && N_GETMAGIC(ex) != QMAGIC && \
 N_GETMAGIC_NET(ex) != OMAGIC && N_GETMAGIC_NET(ex) != NMAGIC && \

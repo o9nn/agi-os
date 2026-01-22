@@ -5,22 +5,22 @@
 (use-modules (srfi srfi-1))
 (define (setup-parser STORAGE)
 "
-  Create parser attached to storage.
+Create parser attached to storage.
 "
-	(make-random-pair-parser
-		(ValueOf (Anchor "parse pipe") (Predicate "text src"))
-		STORAGE)
+(make-random-pair-parser
+(ValueOf (Anchor "parse pipe") (Predicate "text src"))
+STORAGE)
 )
 (define (obs-file FILE-NAME PARSER)
-	(define sensor (Sensory (string-append "file://" FILE-NAME)))
-	(cog-execute!
-		(SetValue
-			(Anchor "parse pipe") (Predicate "text src")
-			(Open (Type 'TextFileStream) sensor)))
-	(define (looper) (cog-execute! PARSER) (looper))
-	(catch #t looper
-		(lambda (key . args) (format #t "The end ~A\n" key)))
-	(cog-extract-recursive! sensor)
+(define sensor (Sensory (string-append "file://" FILE-NAME)))
+(cog-execute!
+(SetValue
+(Anchor "parse pipe") (Predicate "text src")
+(Open (Type 'TextFileStream) sensor)))
+(define (looper) (cog-execute! PARSER) (looper))
+(catch #t looper
+(lambda (key . args) (format #t "The end ~A\n" key)))
+(cog-extract-recursive! sensor)
 )
 #|
 (use-modules (opencog persist-rocks))
@@ -33,8 +33,8 @@
 (cog-execute! (ValueOf (Word "is") (Predicate "*-TruthValueKey-*")))
 (cog-get-atoms 'Edge)
 (cog-execute! (ValueOf
-    (car (cog-get-atoms 'Edge))
-    (Predicate "*-TruthValueKey-*")))
+(car (cog-get-atoms 'Edge))
+(Predicate "*-TruthValueKey-*")))
 (extract-type 'WordNode)
 (cog-close storage-node)
 (use-modules (opencog persist-rocks))

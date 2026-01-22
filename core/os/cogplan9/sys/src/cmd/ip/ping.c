@@ -6,33 +6,33 @@
 #include <ndb.h>
 #include "icmp.h"
 enum {
-MAXMSG		= 32,
-SLEEPMS		= 1000,
-SECOND		= 1000000000LL,
-MINUTE		= 60*SECOND,
+MAXMSG = 32,
+SLEEPMS = 1000,
+SECOND = 1000000000LL,
+MINUTE = 60*SECOND,
 };
 typedef struct Req Req;
 struct Req
 {
-ushort	seq;
-vlong	time;
-vlong	rtt;
-int	ttl;
-int	replied;
-Req	 *next;
+ushort seq;
+vlong time;
+vlong rtt;
+int ttl;
+int replied;
+Req *next;
 };
 typedef struct {
-int	version;
-char	*net;
-int	echocmd;
-int	echoreply;
+int version;
+char *net;
+int echocmd;
+int echoreply;
 unsigned iphdrsz;
-void	(*prreply)(Req *r, void *v);
-void	(*prlost)(ushort seq, void *v);
+void (*prreply)(Req *r, void *v);
+void (*prlost)(ushort seq, void *v);
 } Proto;
-Req	*first;
-Req	*last;
-Lock	listlock;
+Req *first;
+Req *last;
+Lock listlock;
 char *argv0;
 int addresses;
 int debug;
@@ -97,16 +97,16 @@ r->seq - firstseq, ip6->src, ip6->dst, r->rtt, sum/rcvdmsgs,
 r->ttl);
 }
 static Proto v4pr = {
-4,		"icmp",
-EchoRequest,	EchoReply,
+4, "icmp",
+EchoRequest, EchoReply,
 IPV4HDR_LEN,
-prreply4,	prlost4,
+prreply4, prlost4,
 };
 static Proto v6pr = {
-6,		"icmpv6",
-EchoRequestV6,	EchoReplyV6,
+6, "icmpv6",
+EchoRequestV6, EchoReplyV6,
 IPV6HDR_LEN,
-prreply6,	prlost6,
+prreply6, prlost6,
 };
 static Proto *proto = &v4pr;
 Icmphdr *
@@ -326,18 +326,18 @@ return colon;
 }
 enum
 {
-Maxstring	= 128,
-Maxpath		= 256,
+Maxstring = 128,
+Maxpath = 256,
 };
 typedef struct DS DS;
 struct DS {
-char	buf[Maxstring];
-char	*netdir;
-char	*proto;
-char	*rem;
-char	*local;
-char	*dir;
-int	*cfdp;
+char buf[Maxstring];
+char *netdir;
+char *proto;
+char *rem;
+char *local;
+char *dir;
+int *cfdp;
 };
 static void
 _dial_string_parse(char *str, DS *ds)

@@ -29,7 +29,7 @@ byte *out = buf2;
 int lnum, top, bottom, left, width;
 int count, i, left1, left2, left0;
 if ( buf1 == 0 || buf2 == 0 )
-{       if ( buf1 )
+{ if ( buf1 )
 gs_free(pdev->memory, (char *)buf1, in_size, 1, "lp8000_print_page(buf1)");
 if ( buf2 )
 gs_free(pdev->memory, (char *)buf2, in_size, 1, "lp8000_print_page(buf2)");
@@ -50,7 +50,7 @@ fwrite("\0351cmE\0350alfP",1,11,prn_stream);
 fwrite("\0350affP\0350boP\0350abP",1,16,prn_stream);
 fwrite("\0354ilG\0350bcI\0350sarG",1,16,prn_stream);
 fwrite("\0351;0;100spE\0352owE",1,16,prn_stream);
-left1  =  (int) (L_MARGIN * pdev->x_pixels_per_inch) - 60;
+left1 = (int) (L_MARGIN * pdev->x_pixels_per_inch) - 60;
 left1 = (left1 >> 3) << 3;
 left0 = left1;
 fwrite("\035",1,1,prn_stream);
@@ -59,7 +59,7 @@ fwrite("X",1,1,prn_stream);
 fwrite("\0353bcI",1,5,prn_stream);
 top = T_MARGIN * pdev->y_pixels_per_inch;
 bottom = pdev->height - B_MARGIN * pdev->y_pixels_per_inch;
-left  = ( (int) (L_MARGIN * pdev->x_pixels_per_inch) ) >> 3 ;
+left = ( (int) (L_MARGIN * pdev->x_pixels_per_inch) ) >> 3 ;
 width = ((pdev->width - (int)(R_MARGIN * pdev->x_pixels_per_inch)) >> 3) - left;
 for ( lnum = top; lnum < bottom ; )
 {
@@ -79,9 +79,9 @@ gdev_prn_get_bits(pdev, lnum, in, &in_data);
 }
 if(lnum == bottom ) break;
 lcnt = gdev_prn_copy_scan_lines(pdev, lnum, in, in_size);
-inp = in  + left;
+inp = in + left;
 in_end = inp + width;
-while (in_end > inp &&  in_end[-1] == 0)
+while (in_end > inp && in_end[-1] == 0)
 {
 in_end--;
 }

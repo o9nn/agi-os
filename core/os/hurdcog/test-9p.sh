@@ -4,34 +4,34 @@ echo "=================================="
 echo "Test 1: Building lib9p..."
 cd lib9p
 if make clean && make; then
-    echo "✓ lib9p built successfully"
+echo "✓ lib9p built successfully"
 else
-    echo "✗ lib9p build failed"
-    exit 1
+echo "✗ lib9p build failed"
+exit 1
 fi
 echo "Test 2: Running lib9p tests..."
 if ./9p-test; then
-    echo "✓ lib9p tests passed"
+echo "✓ lib9p tests passed"
 else
-    echo "✗ lib9p tests failed"
-    exit 1
+echo "✗ lib9p tests failed"
+exit 1
 fi
 echo "Test 3: Testing 9pfs compilation..."
 cd ../9pfs
 if gcc -c -Wall -I. -I../lib9p -I../libnetfs -I../include 9pfs.c -o 9pfs.o 2>/dev/null; then
-    echo "✓ 9pfs main module compiles"
+echo "✓ 9pfs main module compiles"
 else
-    echo "✗ 9pfs main module compilation failed"
+echo "✗ 9pfs main module compilation failed"
 fi
 if gcc -c -Wall -I. -I../lib9p -I../libnetfs -I../include node.c -o node.o 2>/dev/null; then
-    echo "✓ 9pfs node module compiles"  
+echo "✓ 9pfs node module compiles"
 else
-    echo "✗ 9pfs node module compilation failed"
+echo "✗ 9pfs node module compilation failed"
 fi
 if gcc -c -Wall -I. -I../lib9p -I../libnetfs -I../include ops.c -o ops.o 2>/dev/null; then
-    echo "✓ 9pfs ops module compiles"
+echo "✓ 9pfs ops module compiles"
 else
-    echo "✗ 9pfs ops module compilation failed"
+echo "✗ 9pfs ops module compilation failed"
 fi
 echo
 echo "9P Implementation Status:"

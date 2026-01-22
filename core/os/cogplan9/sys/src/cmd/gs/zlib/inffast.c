@@ -4,11 +4,11 @@
 #include "inffast.h"
 #ifndef ASMINF
 #ifdef POSTINC
-#  define OFF 0
-#  define PUP(a) *(a)++
+# define OFF 0
+# define PUP(a) *(a)++
 #else
-#  define OFF 1
-#  define PUP(a) *++(a)
+# define OFF 1
+# define PUP(a) *++(a)
 #endif
 void inflate_fast(strm, start)
 z_streamp strm;

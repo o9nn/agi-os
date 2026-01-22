@@ -1,67 +1,67 @@
 #include "all.h"
 #include "io.h"
 enum {
-SCSInone	= SCSIread,
-MAXDRIVE	= 10,
-MAXSIDE		= 500,
-TWORM		= MINUTE(10),
-THYSTER		= SECOND(10),
-Sectorsz	= 512,
-Jukemagic	= 0xbabfece2,
+SCSInone = SCSIread,
+MAXDRIVE = 10,
+MAXSIDE = 500,
+TWORM = MINUTE(10),
+THYSTER = SECOND(10),
+Sectorsz = 512,
+Jukemagic = 0xbabfece2,
 };
-typedef	struct	Side	Side;
-struct	Side
+typedef struct Side Side;
+struct Side
 {
 QLock;
-int	elem;
-int	drive;
-uchar	status;
-uchar	rot;
-int	ord;
-Timet	time;
-Timet	stime;
-long	nblock;
-long	block;
-long	mult;
-long	max;
+int elem;
+int drive;
+uchar status;
+uchar rot;
+int ord;
+Timet time;
+Timet stime;
+long nblock;
+long block;
+long mult;
+long max;
 };
-typedef	struct	Juke	Juke;
-struct	Juke
+typedef struct Juke Juke;
+struct Juke
 {
 QLock;
-Side	side[MAXSIDE];
-int	nside;
-int	ndrive;
-Device*	juke;
-Device*	drive[MAXDRIVE];
-uchar	offline[MAXDRIVE];
-int	isfixedsize;
-long	fixedsize;
-int	probeok;
-Scsi*	robot;
-char*	robotdir;
-int	mt0,	nmt;
-int	se0,	nse;
-int	ie0,	nie;
-int	dt0,	ndt;
-int	rot;
-ulong	magic;
-Juke*	link;
+Side side[MAXSIDE];
+int nside;
+int ndrive;
+Device* juke;
+Device* drive[MAXDRIVE];
+uchar offline[MAXDRIVE];
+int isfixedsize;
+long fixedsize;
+int probeok;
+Scsi* robot;
+char* robotdir;
+int mt0, nmt;
+int se0, nse;
+int ie0, nie;
+int dt0, ndt;
+int rot;
+ulong magic;
+Juke* link;
 };
-static	Juke*	jukelist;
+static Juke* jukelist;
 enum
 {
 Sempty = 0,
 Sunload,
 Sstart,
 };
-static	int	bestdrive(Juke*, int);
-static	void	element(Juke*, int);
-static	int	mmove(Juke*, int, int, int, int);
-static	void	shelves(void);
-static	int	waitready(Juke *, Device*);
-static	int	wormsense(Device*);
-static	Side*	wormunit(Device*);
+static int bestdrive(Juke*, int);
+static void element(Juke*, int);
+static int mmove(Juke*, int, int, int, int);
+static void shelves(void);
+static int waitready(Juke *, Device*);
+static int wormsense(Device*);
+static Side* wormunit(Device*);
 static void
 newlabel(Device *d, Off labelblk, char *labelbuf, unsigned vord)
 {
@@ -413,11 +413,11 @@ return nil;
 return x;
 }
 typedef struct {
-int	sleft;
-int	starget;
-Device	*topdev;
-int	sawjuke;
-int	sized;
+int sleft;
+int starget;
+Device *topdev;
+int sawjuke;
+int sized;
 } Visit;
 static Off
 visitsides(Device *d, Device *parentj, Visit *vp)

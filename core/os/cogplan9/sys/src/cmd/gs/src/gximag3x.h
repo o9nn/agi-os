@@ -1,5 +1,5 @@
 #ifndef gximag3x_INCLUDED
-#  define gximag3x_INCLUDED
+# define gximag3x_INCLUDED
 #include "gsipar3x.h"
 #include "gxiparam.h"
 #define IMAGE3X_MAKE_MID_PROC(proc)\

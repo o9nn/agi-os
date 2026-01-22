@@ -6,7 +6,7 @@
 #define DISABLE_CLUSTERING 0
 #define ENABLE_CLUSTERING 1
 typedef struct scsi_disk Disk;
-typedef struct	SHT
+typedef struct SHT
 {
 struct SHT * next;
 long * usage_count;
@@ -46,7 +46,7 @@ unsigned int max_channel;
 struct Scsi_Host * block;
 unsigned wish_block:1;
 unsigned char *base;
-unsigned int  io_port;
+unsigned int io_port;
 unsigned char n_io_port;
 unsigned char irq;
 unsigned char dma_channel;
@@ -64,7 +64,7 @@ unsigned long hostdata[0];
 extern struct Scsi_Host * scsi_hostlist;
 extern struct Scsi_Device_Template * scsi_devicelist;
 extern Scsi_Host_Template * scsi_hosts;
-extern void build_proc_dir_entries(Scsi_Host_Template  *);
+extern void build_proc_dir_entries(Scsi_Host_Template *);
 extern void * scsi_init_malloc(unsigned int size, int priority);
 extern void scsi_init_free(char * ptr, unsigned int size);
 extern int next_scsi_host;

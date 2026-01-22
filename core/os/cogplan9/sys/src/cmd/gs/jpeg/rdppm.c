@@ -2,17 +2,17 @@
 #ifdef PPM_SUPPORTED
 #ifdef HAVE_UNSIGNED_CHAR
 typedef unsigned char U_CHAR;
-#define UCH(x)	((int) (x))
+#define UCH(x) ((int) (x))
 #else
 #ifdef CHAR_IS_UNSIGNED
 typedef char U_CHAR;
-#define UCH(x)	((int) (x))
+#define UCH(x) ((int) (x))
 #else
 typedef char U_CHAR;
-#define UCH(x)	((int) (x) & 0xFF)
+#define UCH(x) ((int) (x) & 0xFF)
 #endif
 #endif
-#define	ReadOK(file,buffer,len)	(JFREAD(file,buffer,len) == ((size_t) (len)))
+#define ReadOK(file,buffer,len) (JFREAD(file,buffer,len) == ((size_t) (len)))
 typedef struct {
 struct cjpeg_source_struct pub;
 U_CHAR *iobuffer;
@@ -140,7 +140,7 @@ ptr = source->pub.buffer[0];
 bufferptr = source->iobuffer;
 for (col = cinfo->image_width; col > 0; col--) {
 register int temp;
-temp  = UCH(*bufferptr++);
+temp = UCH(*bufferptr++);
 temp |= UCH(*bufferptr++) << 8;
 *ptr++ = rescale[temp];
 }
@@ -160,13 +160,13 @@ ptr = source->pub.buffer[0];
 bufferptr = source->iobuffer;
 for (col = cinfo->image_width; col > 0; col--) {
 register int temp;
-temp  = UCH(*bufferptr++);
+temp = UCH(*bufferptr++);
 temp |= UCH(*bufferptr++) << 8;
 *ptr++ = rescale[temp];
-temp  = UCH(*bufferptr++);
+temp = UCH(*bufferptr++);
 temp |= UCH(*bufferptr++) << 8;
 *ptr++ = rescale[temp];
-temp  = UCH(*bufferptr++);
+temp = UCH(*bufferptr++);
 temp |= UCH(*bufferptr++) << 8;
 *ptr++ = rescale[temp];
 }

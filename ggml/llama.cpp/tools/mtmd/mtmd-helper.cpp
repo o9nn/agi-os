@@ -1,7 +1,7 @@
 #if defined(_WIN32)
 #define WIN32_LEAN_AND_MEAN
 #ifndef NOMINMAX
-#   define NOMINMAX
+# define NOMINMAX
 #endif
 #include <windows.h>
 #endif
@@ -13,7 +13,7 @@
 #include <vector>
 #define MINIAUDIO_IMPLEMENTATION
 #ifndef MTMD_AUDIO_DEBUG
-#   define MA_NO_ENCODING
+# define MA_NO_ENCODING
 #endif
 #define MA_NO_DEVICE_IO
 #define MA_NO_RESOURCE_MANAGER
@@ -45,18 +45,18 @@ return n_pos;
 struct decode_embd_batch {
 int n_pos_per_embd;
 int n_mmproj_embd;
-std::vector<llama_pos>      pos;
-std::vector<llama_pos>      pos_view;
-std::vector<int32_t>        n_seq_id;
-std::vector<llama_seq_id>   seq_id_0;
+std::vector<llama_pos> pos;
+std::vector<llama_pos> pos_view;
+std::vector<int32_t> n_seq_id;
+std::vector<llama_seq_id> seq_id_0;
 std::vector<llama_seq_id *> seq_ids;
-std::vector<int8_t>         logits;
+std::vector<int8_t> logits;
 llama_batch batch;
 decode_embd_batch(float * embd, int32_t n_tokens, int n_pos_per_embd, int n_mmproj_embd) : n_pos_per_embd(n_pos_per_embd), n_mmproj_embd(n_mmproj_embd) {
-pos     .resize(n_tokens * n_pos_per_embd);
+pos .resize(n_tokens * n_pos_per_embd);
 n_seq_id.resize(n_tokens);
 seq_ids .resize(n_tokens + 1);
-logits  .resize(n_tokens);
+logits .resize(n_tokens);
 seq_id_0.resize(1);
 seq_ids [n_tokens] = nullptr;
 batch = {
@@ -72,10 +72,10 @@ logits.data(),
 void set_position_normal(llama_pos pos_0, llama_seq_id seq_id) {
 seq_id_0[0] = seq_id;
 for (int i = 0; i < batch.n_tokens; i++) {
-batch.pos     [i] = pos_0 + i;
+batch.pos [i] = pos_0 + i;
 batch.n_seq_id[i] = 1;
-batch.seq_id  [i] = seq_id_0.data();
-batch.logits  [i] = false;
+batch.seq_id [i] = seq_id_0.data();
+batch.logits [i] = false;
 }
 }
 void set_position_mrope_2d(llama_pos pos_0, int nx, int ny, llama_seq_id seq_id) {
@@ -84,31 +84,31 @@ seq_id_0[0] = seq_id;
 for (int y = 0; y < ny; y++) {
 for (int x = 0; x < nx; x++) {
 int i = y * nx + x;
-pos[i                     ] = pos_0;
-pos[i + batch.n_tokens    ] = pos_0 + y;
+pos[i ] = pos_0;
+pos[i + batch.n_tokens ] = pos_0 + y;
 pos[i + batch.n_tokens * 2] = pos_0 + x;
 pos[i + batch.n_tokens * 3] = 0;
 }
 }
 for (int i = 0; i < batch.n_tokens; i++) {
 batch.n_seq_id[i] = 1;
-batch.seq_id  [i] = seq_id_0.data();
-batch.logits  [i] = false;
+batch.seq_id [i] = seq_id_0.data();
+batch.logits [i] = false;
 }
 }
 void set_position_mrope_1d(llama_pos pos_0, llama_seq_id seq_id) {
 GGML_ASSERT(n_pos_per_embd == 4);
 seq_id_0[0] = seq_id;
 for (int i = 0; i < batch.n_tokens; i++) {
-pos[i                     ] = pos_0 + i;
-pos[i + batch.n_tokens    ] = pos_0 + i;
+pos[i ] = pos_0 + i;
+pos[i + batch.n_tokens ] = pos_0 + i;
 pos[i + batch.n_tokens * 2] = pos_0 + i;
 pos[i + batch.n_tokens * 3] = 0;
 }
 for (int i = 0; i < batch.n_tokens; i++) {
 batch.n_seq_id[i] = 1;
-batch.seq_id  [i] = seq_id_0.data();
-batch.logits  [i] = false;
+batch.seq_id [i] = seq_id_0.data();
+batch.logits [i] = false;
 }
 }
 llama_batch get_view(int offset, int n_tokens) {
@@ -129,11 +129,11 @@ pos_ptr = pos.data() + offset;
 return {
 n_tokens,
 nullptr,
-batch.embd     + offset * n_mmproj_embd,
+batch.embd + offset * n_mmproj_embd,
 pos_ptr,
 batch.n_seq_id + offset,
-batch.seq_id   + offset,
-batch.logits   + offset,
+batch.seq_id + offset,
+batch.logits + offset,
 };
 }
 };
@@ -221,11 +221,11 @@ while (i < n_tokens) {
 text_batch.n_tokens = 0;
 for (; i < n_tokens && text_batch.n_tokens < n_batch; i++) {
 int32_t j = text_batch.n_tokens;
-text_batch.token   [j]    = tokens[i];
-text_batch.pos     [j]    = n_past++;
-text_batch.n_seq_id[j]    = 1;
-text_batch.seq_id  [j][0] = seq_id;
-text_batch.logits  [j]    = false;
+text_batch.token [j] = tokens[i];
+text_batch.pos [j] = n_past++;
+text_batch.n_seq_id[j] = 1;
+text_batch.seq_id [j][0] = seq_id;
+text_batch.logits [j] = false;
 text_batch.n_tokens++;
 }
 bool is_last_token = (i == n_tokens);

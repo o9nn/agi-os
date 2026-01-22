@@ -15,8 +15,8 @@ NameServer& _nameserver;
 private:
 const Variables* _variables;
 const Pattern* _pat;
-std::stack<const Variables*>  _stack_variables;
-std::stack<const Pattern*>    _stack_pattern;
+std::stack<const Variables*> _stack_variables;
+std::stack<const Pattern*> _stack_pattern;
 void push_redex(void);
 void pop_redex(void);
 GroundingMap var_grounding;

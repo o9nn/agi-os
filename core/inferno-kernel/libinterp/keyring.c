@@ -6,34 +6,34 @@
 #include <libsec.h>
 #include "pool.h"
 #include "raise.h"
-#define	DigestState_copy Keyring_DigestState_copy
-#define	IPint_random Keyring_IPint_random
+#define DigestState_copy Keyring_DigestState_copy
+#define IPint_random Keyring_IPint_random
 #include "keyringif.h"
 #include "keyring.h"
 #include "ipint.h"
 #include "../libkeyring/keys.h"
-static Type*	TDigestState;
-static Type*	TAESstate;
-static Type*	TDESstate;
-static Type*	TIDEAstate;
-static Type*	TBFstate;
-static Type*	TRC4state;
-static Type*	TSigAlg;
-static Type*	TCertificate;
-static Type*	TSK;
-static Type*	TPK;
-static Type*	TAuthinfo;
-static Type*	TDSAsk;
-static Type*	TDSApk;
-static Type*	TDSAsig;
-static Type*	TEGsk;
-static Type*	TEGpk;
-static Type*	TEGsig;
-static Type*	TRSAsk;
-static Type*	TRSApk;
-static Type*	TRSAsig;
+static Type* TDigestState;
+static Type* TAESstate;
+static Type* TDESstate;
+static Type* TIDEAstate;
+static Type* TBFstate;
+static Type* TRC4state;
+static Type* TSigAlg;
+static Type* TCertificate;
+static Type* TSK;
+static Type* TPK;
+static Type* TAuthinfo;
+static Type* TDSAsk;
+static Type* TDSApk;
+static Type* TDSAsig;
+static Type* TEGsk;
+static Type* TEGpk;
+static Type* TEGsig;
+static Type* TRSAsk;
+static Type* TRSApk;
+static Type* TRSAsig;
 enum {
-Maxmsg=	4096
+Maxmsg= 4096
 };
 static uchar DigestStatemap[] = Keyring_DigestState_map;
 static uchar AESstatemap[] = Keyring_AESstate_map;
@@ -55,24 +55,24 @@ static uchar EGsigmap[] = Keyring_EGsig_map;
 static uchar RSAskmap[] = Keyring_RSAsk_map;
 static uchar RSApkmap[] = Keyring_RSApk_map;
 static uchar RSAsigmap[] = Keyring_RSAsig_map;
-static	PK*	checkPK(Keyring_PK *k);
-extern void		setid(char*, int);
-extern vlong		osusectime(void);
-extern void		freeIPint(Heap*, int);
-static char exBadSA[]	= "bad signature algorithm";
-static char exBadSK[]	= "bad secret key";
-static char exBadPK[]	= "bad public key";
-static char exBadCert[]	= "bad certificate";
-static char exBadBsize[]	= "data not multiple of block size";
-static char exBadKey[]	= "bad encryption key";
-static char exBadDigest[]	= "bad digest value";
-static char exBadIvec[]	= "bad ivec";
+static PK* checkPK(Keyring_PK *k);
+extern void setid(char*, int);
+extern vlong osusectime(void);
+extern void freeIPint(Heap*, int);
+static char exBadSA[] = "bad signature algorithm";
+static char exBadSK[] = "bad secret key";
+static char exBadPK[] = "bad public key";
+static char exBadCert[] = "bad certificate";
+static char exBadBsize[] = "data not multiple of block size";
+static char exBadKey[] = "bad encryption key";
+static char exBadDigest[] = "bad digest value";
+static char exBadIvec[] = "bad ivec";
 static char exBadState[] = "bad encryption state";
 typedef struct XBFstate XBFstate;
 struct XBFstate
 {
-Keyring_BFstate	x;
-BFstate	state;
+Keyring_BFstate x;
+BFstate state;
 };
 int
 bigtobase64(mpint* b, char *buf, int len)
@@ -116,7 +116,7 @@ buf = malloc(n);
 bigtobase64(b, buf, n);
 n = fmtstrcpy(f, buf);
 free(buf);
-return  n;
+return n;
 }
 static void*
 newthing(Type *t, int add)
@@ -158,8 +158,8 @@ enum
 {
 Maxalg = 8
 };
-static SigAlgVec	*algs[Maxalg];
-static int		nalg;
+static SigAlgVec *algs[Maxalg];
+static int nalg;
 static SigAlg*
 newSigAlg(SigAlgVec *vec)
 {

@@ -194,7 +194,7 @@ if(buf[n-1]=='\n'){
 buf[n-1] = '\0';
 return;
 }
-buf += n;  blen -= n;
+buf += n; blen -= n;
 if(blen<=0)
 exits("input too large");
 }

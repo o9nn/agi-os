@@ -28,11 +28,11 @@ RELOC_PTRS_END
 gx_color_index
 gx_default_encode_color(gx_device * dev, const gx_color_value cv[])
 {
-int             ncomps = dev->color_info.num_components;
-int             i;
-const byte *    comp_shift = dev->color_info.comp_shift;
-const byte *    comp_bits = dev->color_info.comp_bits;
-gx_color_index  color = 0;
+int ncomps = dev->color_info.num_components;
+int i;
+const byte * comp_shift = dev->color_info.comp_shift;
+const byte * comp_bits = dev->color_info.comp_bits;
+gx_color_index color = 0;
 #ifdef DEBUG
 if ( dev->color_info.separable_and_linear != GX_CINFO_SEP_LIN ) {
 dprintf( "gx_default_encode_color() requires separable and linear\n" );
@@ -48,11 +48,11 @@ return color;
 int
 gx_default_decode_color(gx_device * dev, gx_color_index color, gx_color_value cv[])
 {
-int                     ncomps = dev->color_info.num_components;
-int                     i;
-const byte *            comp_shift = dev->color_info.comp_shift;
-const byte *            comp_bits = dev->color_info.comp_bits;
-const gx_color_index *  comp_mask = dev->color_info.comp_mask;
+int ncomps = dev->color_info.num_components;
+int i;
+const byte * comp_shift = dev->color_info.comp_shift;
+const byte * comp_bits = dev->color_info.comp_bits;
+const gx_color_index * comp_mask = dev->color_info.comp_mask;
 uint shift, ivalue, nbits, scale;
 #ifdef DEBUG
 if ( dev->color_info.separable_and_linear != GX_CINFO_SEP_LIN ) {
@@ -192,8 +192,8 @@ frac r, frac g, frac b, frac out[])
 if (pis != 0)
 color_rgb_to_cmyk(r, g, b, pis, out);
 else {
-frac    c = frac_1 - r, m = frac_1 - g, y = frac_1 - b;
-frac    k = min(c, min(m, g));
+frac c = frac_1 - r, m = frac_1 - g, y = frac_1 - b;
+frac k = min(c, min(m, g));
 out[0] = c - k;
 out[1] = m - k;
 out[2] = y - k;
@@ -367,7 +367,7 @@ int
 gx_remap_color(gs_state * pgs)
 {
 const gs_color_space *pcs = pgs->color_space;
-int                   code;
+int code;
 code = (*pcs->type->remap_color) (pgs->ccolor, pcs, pgs->dev_color,
 (gs_imager_state *) pgs, pgs->device,
 gs_color_select_texture);
@@ -891,8 +891,8 @@ return mv + ((rem * mdv) >> cp_frac_bits);
 gx_color_index
 gx_default_w_b_map_rgb_color(gx_device * dev, const gx_color_value cv[])
 {
-int             i, ncomps = dev->color_info.num_components;
-gx_color_value  cv_all = 0;
+int i, ncomps = dev->color_info.num_components;
+gx_color_value cv_all = 0;
 for (i = 0; i < ncomps; i++)
 cv_all |= cv[i];
 return cv_all > gx_max_color_value / 2 ? (gx_color_index)1
@@ -908,8 +908,8 @@ return 0;
 gx_color_index
 gx_default_b_w_map_rgb_color(gx_device * dev, const gx_color_value cv[])
 {
-int             i, ncomps = dev->color_info.num_components;
-gx_color_value  cv_all = 0;
+int i, ncomps = dev->color_info.num_components;
+gx_color_value cv_all = 0;
 for (i = 0; i < ncomps; i++)
 cv_all |= cv[i];
 return cv_all > gx_max_color_value / 2 ? (gx_color_index)0
@@ -969,7 +969,7 @@ else {
 int bpc = dev->color_info.depth / 3;
 int drop = sizeof(gx_color_value) * 8 - bpc;
 return ( ( (((gx_color_index)cv[0] >> drop) << bpc) +
-((gx_color_index)cv[1] >> drop)         ) << bpc) +
+((gx_color_index)cv[1] >> drop) ) << bpc) +
 ((gx_color_index)cv[2] >> drop);
 }
 }

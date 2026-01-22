@@ -39,75 +39,75 @@ int myprec;
 typedef struct Sample Sample;
 struct Sample
 {
-Sample	*next;
-uvlong	ticks;
-vlong	ltime;
-vlong	stime;
+Sample *next;
+uvlong ticks;
+vlong ltime;
+vlong stime;
 };
 typedef struct NTPpkt NTPpkt;
 struct NTPpkt
 {
-uchar	mode;
-uchar	stratum;
-uchar	poll;
-uchar	precision;
-uchar	rootdelay[4];
-uchar	rootdisp[4];
-uchar	rootid[4];
-uchar	refts[8];
-uchar	origts[8];
-uchar	recvts[8];
-uchar	xmitts[8];
-uchar	keyid[4];
-uchar	digest[16];
+uchar mode;
+uchar stratum;
+uchar poll;
+uchar precision;
+uchar rootdelay[4];
+uchar rootdisp[4];
+uchar rootid[4];
+uchar refts[8];
+uchar origts[8];
+uchar recvts[8];
+uchar xmitts[8];
+uchar keyid[4];
+uchar digest[16];
 };
 typedef struct NTPserver NTPserver;
 struct NTPserver
 {
 NTPserver *next;
-char	*name;
-uchar	stratum;
-uchar	precision;
-vlong	rootdelay;
-vlong	rootdisp;
-vlong	rtt;
-vlong	dt;
+char *name;
+uchar stratum;
+uchar precision;
+vlong rootdelay;
+vlong rootdisp;
+vlong rtt;
+vlong dt;
 };
 NTPserver *ntpservers;
 enum
 {
-NTPSIZE= 	48,
-NTPDIGESTSIZE=	20,
+NTPSIZE= 48,
+NTPDIGESTSIZE= 20,
 };
-ulong	ε;
-static void	addntpserver(char *name);
-static int	adjustperiod(vlong diff, vlong accuracy, int secs);
-static void	background(void);
-static int	caperror(vlong dhz, int tsecs, vlong taccuracy);
-static long	fstime(void);
-static int	gettime(vlong *nsec, uvlong *ticks, uvlong *hz);
-static int	getclockprecision(vlong);
-static vlong	gpssample(void);
-static void	hnputts(void *p, vlong nsec);
-static void	hnputts(void *p, vlong nsec);
-static void	inittime(void);
-static vlong	nhgetts(void *p);
-static vlong	nhgetts(void *p);
-static void	ntpserver(char*);
-static vlong	ntpsample(void);
-static int	ntptimediff(NTPserver *ns);
-static int	openfreqfile(void);
-static vlong	readfreqfile(int fd, vlong ohz, vlong minhz, vlong maxhz);
-static long	rtctime(void);
-static vlong	sample(long (*get)(void));
-static void	setpriority(void);
-static void	setrootid(char *d);
-static void	settime(vlong now, uvlong hz, vlong delta, int n);
-static vlong	utcsample(void);
-static uvlong	vabs(vlong);
-static uvlong	whatisthefrequencykenneth(uvlong hz, uvlong minhz, uvlong maxhz,
+ulong ε;
+static void addntpserver(char *name);
+static int adjustperiod(vlong diff, vlong accuracy, int secs);
+static void background(void);
+static int caperror(vlong dhz, int tsecs, vlong taccuracy);
+static long fstime(void);
+static int gettime(vlong *nsec, uvlong *ticks, uvlong *hz);
+static int getclockprecision(vlong);
+static vlong gpssample(void);
+static void hnputts(void *p, vlong nsec);
+static void hnputts(void *p, vlong nsec);
+static void inittime(void);
+static vlong nhgetts(void *p);
+static vlong nhgetts(void *p);
+static void ntpserver(char*);
+static vlong ntpsample(void);
+static int ntptimediff(NTPserver *ns);
+static int openfreqfile(void);
+static vlong readfreqfile(int fd, vlong ohz, vlong minhz, vlong maxhz);
+static long rtctime(void);
+static vlong sample(long (*get)(void));
+static void setpriority(void);
+static void setrootid(char *d);
+static void settime(vlong now, uvlong hz, vlong delta, int n);
+static vlong utcsample(void);
+static uvlong vabs(vlong);
+static uvlong whatisthefrequencykenneth(uvlong hz, uvlong minhz, uvlong maxhz,
 vlong dt, vlong ticks, vlong period);
-static void	writefreqfile(int fd, vlong hz, int secs, vlong diff);
+static void writefreqfile(int fd, vlong hz, int secs, vlong diff);
 #define EPOCHDIFF 2208988800UL
 static void
 usage(void)
@@ -803,9 +803,9 @@ return -1;
 static vlong
 gpssample(void)
 {
-vlong	l, g, d;
-int	i, n;
-char	*v[4], buf[128];
+vlong l, g, d;
+int i, n;
+char *v[4], buf[128];
 d = -1000000000000000000LL;
 for(i = 0; i < 5; i++){
 sleep(1100);
@@ -859,9 +859,9 @@ return ns->dt;
 static vlong
 utcsample(void)
 {
-vlong	s;
-int	n;
-char	*v[2], buf[128];
+vlong s;
+int n;
+char *v[2], buf[128];
 s = 0;
 seek(utcfil, 0, 0);
 n = read(utcfil, buf, sizeof buf - 1);

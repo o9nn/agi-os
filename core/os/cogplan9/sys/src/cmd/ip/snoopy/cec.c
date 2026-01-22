@@ -4,13 +4,13 @@
 #include "dat.h"
 #include "protos.h"
 typedef struct{
-uchar	type;
-uchar	conn;
-uchar	seq;
-uchar	len;
+uchar type;
+uchar conn;
+uchar seq;
+uchar len;
 }Hdr;
 enum{
-Hsize	= 4,
+Hsize = 4,
 };
 enum{
 Otype,
@@ -20,10 +20,10 @@ Olen,
 };
 static Field p_fields[] =
 {
-{"type",	Fnum,	Otype,		"type",	},
-{"conn",	Fnum,	Oconn,		"conn",	},
-{"seq",		Fnum,	Oseq,		"seq",	},
-{"len",		Fnum,	Olen,		"len",	},
+{"type", Fnum, Otype, "type", },
+{"conn", Fnum, Oconn, "conn", },
+{"seq", Fnum, Oseq, "seq", },
+{"len", Fnum, Olen, "len", },
 {0}
 };
 static void

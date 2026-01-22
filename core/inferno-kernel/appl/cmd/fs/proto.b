@@ -104,7 +104,7 @@ for(; j < len sub; j++){
 s := sub[j].name;
 if(s == prevsub){
 report(errorc, sys->sprint("duplicate entry %s", pathconcat(path, s)));
-continue;			# eliminate duplicates in proto
+continue; # eliminate duplicates in proto
 }
 # if we're copying from an old file, and there's a matching
 # entry in the directory, then skip it.
@@ -254,7 +254,7 @@ else
 break;
 }
 if(i == len s || s[i] == '#' || s[i] == '\n')
-return readline(proto, indent);	# XXX sort out tail recursion!
+return readline(proto, indent); # XXX sort out tail recursion!
 if(spc <= indent){
 proto.lastline = s;
 return nil;

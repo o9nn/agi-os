@@ -10,13 +10,13 @@ void dump_ss(const struct i386_saved_state *st);
 void debug_trace_reset(void);
 void debug_trace_dump(void);
 #else
-#define DEBUG_TRACE				\
-pushl	$__LINE__			;\
-pushl	$9f				;\
-call	__debug_trace			;\
-addl	$8,%esp				;\
-.data					;\
-9:	.ascii	__FILE__"\0"			;\
+#define DEBUG_TRACE \
+pushl $__LINE__ ;\
+pushl $9f ;\
+call __debug_trace ;\
+addl $8,%esp ;\
+.data ;\
+9: .ascii __FILE__"\0" ;\
 .text
 #endif
 #endif

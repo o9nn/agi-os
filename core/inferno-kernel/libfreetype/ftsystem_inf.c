@@ -7,46 +7,46 @@
 #include "lib9.h"
 #include "kernel.h"
 FT_CALLBACK_DEF( void* )
-ft_alloc( FT_Memory  memory,
-long       size )
+ft_alloc( FT_Memory memory,
+long size )
 {
 FT_UNUSED( memory );
 return malloc( size );
 }
 FT_CALLBACK_DEF( void* )
-ft_realloc( FT_Memory  memory,
-long       cur_size,
-long       new_size,
-void*      block )
+ft_realloc( FT_Memory memory,
+long cur_size,
+long new_size,
+void* block )
 {
 FT_UNUSED( memory );
 FT_UNUSED( cur_size );
 return realloc( block, new_size );
 }
 FT_CALLBACK_DEF( void )
-ft_free( FT_Memory  memory,
-void*      block )
+ft_free( FT_Memory memory,
+void* block )
 {
 FT_UNUSED( memory );
 free( block );
 }
-#undef  FT_COMPONENT
-#define FT_COMPONENT  trace_io
-#define STREAM_FD( stream )  ( (int)stream->descriptor.pointer )
-#define CLOSED_FD	(void*)-1
+#undef FT_COMPONENT
+#define FT_COMPONENT trace_io
+#define STREAM_FD( stream ) ( (int)stream->descriptor.pointer )
+#define CLOSED_FD (void*)-1
 FT_CALLBACK_DEF( void )
-ft_ansi_stream_close( FT_Stream  stream )
+ft_ansi_stream_close( FT_Stream stream )
 {
 kclose( STREAM_FD( stream ) );
 stream->descriptor.pointer = CLOSED_FD;
-stream->size               = 0;
-stream->base               = 0;
+stream->size = 0;
+stream->base = 0;
 }
 FT_CALLBACK_DEF( unsigned long )
-ft_ansi_stream_io( FT_Stream       stream,
-unsigned long   offset,
-unsigned char*  buffer,
-unsigned long   count )
+ft_ansi_stream_io( FT_Stream stream,
+unsigned long offset,
+unsigned char* buffer,
+unsigned long count )
 {
 int fd;
 fd = STREAM_FD( stream );
@@ -56,10 +56,10 @@ return 0;
 return (unsigned long)kread( fd, buffer, count);
 }
 FT_EXPORT_DEF( FT_Error )
-FT_Stream_Open( FT_Stream stream, const char*  filepathname)
+FT_Stream_Open( FT_Stream stream, const char* filepathname)
 {
 Dir *dir;
-int  file;
+int file;
 if ( !stream )
 return FT_Err_Invalid_Stream_Handle;
 file = kopen( (char*)filepathname, OREAD);
@@ -80,7 +80,7 @@ free(dir);
 stream->descriptor.pointer = (void*)file;
 stream->pathname.pointer = (char*)filepathname;
 stream->pos = 0;
-stream->read  = ft_ansi_stream_io;
+stream->read = ft_ansi_stream_io;
 stream->close = ft_ansi_stream_close;
 FT_TRACE1(( "FT_Stream_Open:" ));
 FT_TRACE1(( " opened `%s' (%d bytes) successfully\n",
@@ -89,21 +89,21 @@ return FT_Err_Ok;
 }
 #ifdef FT_DEBUG_MEMORY
 extern FT_Int
-ft_mem_debug_init( FT_Memory  memory );
+ft_mem_debug_init( FT_Memory memory );
 extern void
-ft_mem_debug_done( FT_Memory  memory );
+ft_mem_debug_done( FT_Memory memory );
 #endif
 FT_EXPORT_DEF( FT_Memory )
 FT_New_Memory( void )
 {
-FT_Memory  memory;
+FT_Memory memory;
 memory = (FT_Memory)malloc( sizeof ( *memory ) );
 if ( memory )
 {
-memory->user    = 0;
-memory->alloc   = ft_alloc;
+memory->user = 0;
+memory->alloc = ft_alloc;
 memory->realloc = ft_realloc;
-memory->free    = ft_free;
+memory->free = ft_free;
 #ifdef FT_DEBUG_MEMORY
 ft_mem_debug_init( memory );
 #endif
@@ -111,7 +111,7 @@ ft_mem_debug_init( memory );
 return memory;
 }
 FT_EXPORT_DEF( void )
-FT_Done_Memory( FT_Memory  memory )
+FT_Done_Memory( FT_Memory memory )
 {
 #ifdef FT_DEBUG_MEMORY
 ft_mem_debug_done( memory );

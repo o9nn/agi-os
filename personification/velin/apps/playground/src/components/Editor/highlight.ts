@@ -9,18 +9,18 @@ import { shikiToMonaco } from '@shikijs/monaco'
 import * as monaco from 'monaco-editor-core'
 let registered = false
 export function registerHighlighter() {
-  if (!registered) {
-    const highlighter = createHighlighterCoreSync({
-      themes: [themeDark, themeLight],
-      langs: [langVue, langTsx, langJsx],
-      engine: createJavaScriptRegexEngine(),
-    })
-    monaco.languages.register({ id: 'vue' })
-    shikiToMonaco(highlighter, monaco)
-    registered = true
-  }
-  return {
-    light: themeLight.name!,
-    dark: themeDark.name!,
-  }
+if (!registered) {
+const highlighter = createHighlighterCoreSync({
+themes: [themeDark, themeLight],
+langs: [langVue, langTsx, langJsx],
+engine: createJavaScriptRegexEngine(),
+})
+monaco.languages.register({ id: 'vue' })
+shikiToMonaco(highlighter, monaco)
+registered = true
+}
+return {
+light: themeLight.name!,
+dark: themeDark.name!,
+}
 }

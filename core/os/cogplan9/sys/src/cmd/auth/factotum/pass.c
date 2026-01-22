@@ -11,7 +11,7 @@ Maxphase,
 };
 static char *phasenames[Maxphase] =
 {
-[HavePass]	"HavePass",
+[HavePass] "HavePass",
 };
 static int
 passinit(Proto *p, Fsstate *fss)
@@ -71,11 +71,11 @@ return phaseerror(fss, "write");
 }
 Proto pass =
 {
-.name=		"pass",
-.init=		passinit,
-.write=		passwrite,
-.read=		passread,
-.close=		passclose,
-.addkey=		replacekey,
-.keyprompt=	"user? !password?",
+.name= "pass",
+.init= passinit,
+.write= passwrite,
+.read= passread,
+.close= passclose,
+.addkey= replacekey,
+.keyprompt= "user? !password?",
 };

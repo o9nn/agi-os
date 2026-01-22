@@ -1,5 +1,5 @@
 #ifndef gsht_INCLUDED
-#  define gsht_INCLUDED
+# define gsht_INCLUDED
 typedef struct gs_screen_halftone_s {
 float frequency;
 float angle;

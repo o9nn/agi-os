@@ -10,92 +10,92 @@
 #include <plumb.h>
 #include "dat.h"
 #include "fns.h"
-static	int	cfd;
-static	int	sfd;
+static int cfd;
+static int sfd;
 enum
 {
-Nhash	= 16,
-DEBUG	= 0
+Nhash = 16,
+DEBUG = 0
 };
-static	Fid	*fids[Nhash];
-Fid	*newfid(int);
-static	Xfid*	fsysflush(Xfid*, Fid*);
-static	Xfid*	fsysauth(Xfid*, Fid*);
-static	Xfid*	fsysversion(Xfid*, Fid*);
-static	Xfid*	fsysattach(Xfid*, Fid*);
-static	Xfid*	fsyswalk(Xfid*, Fid*);
-static	Xfid*	fsysopen(Xfid*, Fid*);
-static	Xfid*	fsyscreate(Xfid*, Fid*);
-static	Xfid*	fsysread(Xfid*, Fid*);
-static	Xfid*	fsyswrite(Xfid*, Fid*);
-static	Xfid*	fsysclunk(Xfid*, Fid*);
-static	Xfid*	fsysremove(Xfid*, Fid*);
-static	Xfid*	fsysstat(Xfid*, Fid*);
-static	Xfid*	fsyswstat(Xfid*, Fid*);
-Xfid* 	(*fcall[Tmax])(Xfid*, Fid*) =
+static Fid *fids[Nhash];
+Fid *newfid(int);
+static Xfid* fsysflush(Xfid*, Fid*);
+static Xfid* fsysauth(Xfid*, Fid*);
+static Xfid* fsysversion(Xfid*, Fid*);
+static Xfid* fsysattach(Xfid*, Fid*);
+static Xfid* fsyswalk(Xfid*, Fid*);
+static Xfid* fsysopen(Xfid*, Fid*);
+static Xfid* fsyscreate(Xfid*, Fid*);
+static Xfid* fsysread(Xfid*, Fid*);
+static Xfid* fsyswrite(Xfid*, Fid*);
+static Xfid* fsysclunk(Xfid*, Fid*);
+static Xfid* fsysremove(Xfid*, Fid*);
+static Xfid* fsysstat(Xfid*, Fid*);
+static Xfid* fsyswstat(Xfid*, Fid*);
+Xfid* (*fcall[Tmax])(Xfid*, Fid*) =
 {
-[Tflush]	= fsysflush,
-[Tversion]	= fsysversion,
-[Tauth]	= fsysauth,
-[Tattach]	= fsysattach,
-[Twalk]	= fsyswalk,
-[Topen]	= fsysopen,
-[Tcreate]	= fsyscreate,
-[Tread]	= fsysread,
-[Twrite]	= fsyswrite,
-[Tclunk]	= fsysclunk,
+[Tflush] = fsysflush,
+[Tversion] = fsysversion,
+[Tauth] = fsysauth,
+[Tattach] = fsysattach,
+[Twalk] = fsyswalk,
+[Topen] = fsysopen,
+[Tcreate] = fsyscreate,
+[Tread] = fsysread,
+[Twrite] = fsyswrite,
+[Tclunk] = fsysclunk,
 [Tremove]= fsysremove,
-[Tstat]	= fsysstat,
-[Twstat]	= fsyswstat,
+[Tstat] = fsysstat,
+[Twstat] = fsyswstat,
 };
 char Eperm[] = "permission denied";
 char Eexist[] = "file does not exist";
 char Enotdir[] = "not a directory";
 Dirtab dirtab[]=
 {
-{ ".",			QTDIR,	Qdir,		0500|DMDIR },
-{ "acme",		QTDIR,	Qacme,	0500|DMDIR },
-{ "cons",		QTFILE,	Qcons,	0600 },
-{ "consctl",	QTFILE,	Qconsctl,	0000 },
-{ "draw",		QTDIR,	Qdraw,	0000|DMDIR },
-{ "editout",	QTFILE,	Qeditout,	0200 },
-{ "index",		QTFILE,	Qindex,	0400 },
-{ "label",		QTFILE,	Qlabel,	0600 },
-{ "new",		QTDIR,	Qnew,	0500|DMDIR },
+{ ".", QTDIR, Qdir, 0500|DMDIR },
+{ "acme", QTDIR, Qacme, 0500|DMDIR },
+{ "cons", QTFILE, Qcons, 0600 },
+{ "consctl", QTFILE, Qconsctl, 0000 },
+{ "draw", QTDIR, Qdraw, 0000|DMDIR },
+{ "editout", QTFILE, Qeditout, 0200 },
+{ "index", QTFILE, Qindex, 0400 },
+{ "label", QTFILE, Qlabel, 0600 },
+{ "new", QTDIR, Qnew, 0500|DMDIR },
 { nil, }
 };
 Dirtab dirtabw[]=
 {
-{ ".",			QTDIR,		Qdir,			0500|DMDIR },
-{ "addr",		QTFILE,		QWaddr,		0600 },
-{ "body",		QTAPPEND,	QWbody,		0600|DMAPPEND },
-{ "ctl",		QTFILE,		QWctl,		0600 },
-{ "data",		QTFILE,		QWdata,		0600 },
-{ "editout",	QTFILE,		QWeditout,	0200 },
-{ "errors",		QTFILE,		QWerrors,		0200 },
-{ "event",		QTFILE,		QWevent,		0600 },
-{ "rdsel",		QTFILE,		QWrdsel,		0400 },
-{ "wrsel",		QTFILE,		QWwrsel,		0200 },
-{ "tag",		QTAPPEND,	QWtag,		0600|DMAPPEND },
-{ "xdata",		QTFILE,		QWxdata,		0600 },
+{ ".", QTDIR, Qdir, 0500|DMDIR },
+{ "addr", QTFILE, QWaddr, 0600 },
+{ "body", QTAPPEND, QWbody, 0600|DMAPPEND },
+{ "ctl", QTFILE, QWctl, 0600 },
+{ "data", QTFILE, QWdata, 0600 },
+{ "editout", QTFILE, QWeditout, 0200 },
+{ "errors", QTFILE, QWerrors, 0200 },
+{ "event", QTFILE, QWevent, 0600 },
+{ "rdsel", QTFILE, QWrdsel, 0400 },
+{ "wrsel", QTFILE, QWwrsel, 0200 },
+{ "tag", QTAPPEND, QWtag, 0600|DMAPPEND },
+{ "xdata", QTFILE, QWxdata, 0600 },
 { nil, }
 };
 typedef struct Mnt Mnt;
 struct Mnt
 {
 QLock;
-int		id;
-Mntdir	*md;
+int id;
+Mntdir *md;
 };
-Mnt	mnt;
-Xfid*	respond(Xfid*, Fcall*, char*);
-int		dostat(int, Dirtab*, uchar*, int, uint);
-uint	getclock(void);
-char	*user = "Wile E. Coyote";
-int	clockfd;
+Mnt mnt;
+Xfid* respond(Xfid*, Fcall*, char*);
+int dostat(int, Dirtab*, uchar*, int, uint);
+uint getclock(void);
+char *user = "Wile E. Coyote";
+int clockfd;
 static int closing = 0;
-int	messagesize = Maxblock+IOHDRSZ;
-void	fsysproc(void *);
+int messagesize = Maxblock+IOHDRSZ;
+void fsysproc(void *);
 void
 fsysinit(void)
 {
@@ -168,7 +168,7 @@ continue;
 break;
 }
 x->f = f;
-x  = (*fcall[x->type])(x, f);
+x = (*fcall[x->type])(x, f);
 }
 }
 }
@@ -181,7 +181,7 @@ qlock(&mnt);
 id = ++mnt.id;
 m = emalloc(sizeof *m);
 m->id = id;
-m->dir =  dir;
+m->dir = dir;
 m->ref = 1;
 m->ndir = ndir;
 m->next = mnt.md;
@@ -461,7 +461,7 @@ if(nf){
 nf->busy = FALSE;
 fsysdelid(nf->mntdir);
 }
-}else if(t.nwqid  == x->nwname){
+}else if(t.nwqid == x->nwname){
 if(w){
 f->w = w;
 w = nil;

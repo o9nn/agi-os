@@ -1,5 +1,5 @@
 #ifndef gsalphac_INCLUDED
-#  define gsalphac_INCLUDED
+# define gsalphac_INCLUDED
 #include "gscompt.h"
 typedef enum {
 composite_Clear = 0,

@@ -20,7 +20,7 @@
 #endif
 #ifdef OPENSSL_SYS_NETWARE
 # if !defined __int64
-#  define __int64 long long
+# define __int64 long long
 # endif
 # include <nwmpk.h>
 #endif
@@ -38,7 +38,7 @@
 # define TEST_SERVER_CERT "../../apps/server.pem"
 # define TEST_CLIENT_CERT "../../apps/client.pem"
 #endif
-#define MAX_THREAD_NUMBER       100
+#define MAX_THREAD_NUMBER 100
 int verify_callback(int ok, X509_STORE_CTX *xs);
 void thread_setup(void);
 void thread_cleanup(void);
@@ -254,10 +254,10 @@ BIO_printf(bio_err, "done free\n");
 exit(ret);
 return (0);
 }
-#define W_READ  1
+#define W_READ 1
 #define W_WRITE 2
-#define C_DONE  1
-#define S_DONE  2
+#define C_DONE 1
+#define S_DONE 2
 int ndoit(SSL_CTX *ssl_ctx[2])
 {
 int i;

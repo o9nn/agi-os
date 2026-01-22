@@ -5,11 +5,11 @@
 #include "fns.h"
 #include "io.h"
 #include "../port/error.h"
-#define DBG	if(0) pcilog
+#define DBG if(0) pcilog
 struct
 {
-char	output[16384];
-int	ptr;
+char output[16384];
+int ptr;
 }PCICONS;
 int
 pcilog(char *fmt, ...)
@@ -26,21 +26,21 @@ return n;
 }
 enum
 {
-PciADDR		= 0xCF8,
-PciDATA		= 0xCFC,
-PciCSE		= 0xCF8,
-PciFORWARD	= 0xCFA,
-MaxFNO		= 7,
-MaxUBN		= 255,
+PciADDR = 0xCF8,
+PciDATA = 0xCFC,
+PciCSE = 0xCF8,
+PciFORWARD = 0xCFA,
+MaxFNO = 7,
+MaxUBN = 255,
 };
 enum
 {
-IOen		= (1<<0),
-MEMen		= (1<<1),
-MASen		= (1<<2),
-MemWrInv	= (1<<4),
-PErrEn		= (1<<6),
-SErrEn		= (1<<8),
+IOen = (1<<0),
+MEMen = (1<<1),
+MASen = (1<<2),
+MemWrInv = (1<<4),
+PErrEn = (1<<6),
+SErrEn = (1<<8),
 };
 static Lock pcicfglock;
 static QLock pcicfginitlock;
@@ -72,7 +72,7 @@ static char* bustypes[] = {
 "VME",
 "XPRESS",
 };
-#pragma	varargck	type	"T"	int
+#pragma varargck type "T" int
 static int
 tbdffmt(Fmt* fmt)
 {

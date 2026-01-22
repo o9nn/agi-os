@@ -17,7 +17,7 @@ Value: import alphabet;
 Filter: module {};
 typesig(): string
 {
-return "ffcs*";		# XXX option to suppress stderr?
+return "ffcs*"; # XXX option to suppress stderr?
 }
 init()
 {
@@ -65,12 +65,12 @@ Context.new(drawctxt).run(ref Sh->Listnode(c, nil)::args, 0);
 sys->fprint(sys->fildes(2), "");
 }
 # read side (when it's an argument):
-# 	read proposed new fd
-# 	write actual fd for them to write to (creating pipe in necessary)
+# read proposed new fd
+# write actual fd for them to write to (creating pipe in necessary)
 #
 # write side (when you're returning it):
-# 	write a proposed new fd (or nil if no suggestion)
-# 	read actual fd for writing
+# write a proposed new fd (or nil if no suggestion)
+# read actual fd for writing
 startfilter(f0, f1: chan of ref Sys->FD, errorc: chan of string): (ref Sys->FD, ref Sys->FD)
 {
 f1 <-= nil;

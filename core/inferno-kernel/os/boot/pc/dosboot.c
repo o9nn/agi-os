@@ -1,70 +1,70 @@
-#include	"u.h"
-#include	"lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"fs.h"
+#include "u.h"
+#include "lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "fs.h"
 struct Dosboot{
-uchar	magic[3];
-uchar	version[8];
-uchar	sectsize[2];
-uchar	clustsize;
-uchar	nresrv[2];
-uchar	nfats;
-uchar	rootsize[2];
-uchar	volsize[2];
-uchar	mediadesc;
-uchar	fatsize[2];
-uchar	trksize[2];
-uchar	nheads[2];
-uchar	nhidden[4];
-uchar	bigvolsize[4];
-uchar	bigfatsize[4];
-uchar	extflags[2];
-uchar	fsversion[2];
-uchar	rootdirstartclust[4];
-uchar	fsinfosect[2];
-uchar	backupbootsect[2];
+uchar magic[3];
+uchar version[8];
+uchar sectsize[2];
+uchar clustsize;
+uchar nresrv[2];
+uchar nfats;
+uchar rootsize[2];
+uchar volsize[2];
+uchar mediadesc;
+uchar fatsize[2];
+uchar trksize[2];
+uchar nheads[2];
+uchar nhidden[4];
+uchar bigvolsize[4];
+uchar bigfatsize[4];
+uchar extflags[2];
+uchar fsversion[2];
+uchar rootdirstartclust[4];
+uchar fsinfosect[2];
+uchar backupbootsect[2];
 };
 struct Dosdir{
-uchar	name[8];
-uchar	ext[3];
-uchar	attr;
-uchar	lowercase;
-uchar	hundredth;
-uchar	ctime[2];
-uchar	cdate[2];
-uchar	adate[2];
-uchar	highstart[2];
-uchar	mtime[2];
-uchar	mdate[2];
-uchar	start[2];
-uchar	length[4];
+uchar name[8];
+uchar ext[3];
+uchar attr;
+uchar lowercase;
+uchar hundredth;
+uchar ctime[2];
+uchar cdate[2];
+uchar adate[2];
+uchar highstart[2];
+uchar mtime[2];
+uchar mdate[2];
+uchar start[2];
+uchar length[4];
 };
-#define	DOSRONLY	0x01
-#define	DOSHIDDEN	0x02
-#define	DOSSYSTEM	0x04
-#define	DOSVLABEL	0x08
-#define	DOSDIR	0x10
-#define	DOSARCH	0x20
-static void	bootdump(Dosboot*);
-static void	setname(Dosfile*, char*);
-#define chatty	0
-#define chat	if(chatty)print
+#define DOSRONLY 0x01
+#define DOSHIDDEN 0x02
+#define DOSSYSTEM 0x04
+#define DOSVLABEL 0x08
+#define DOSDIR 0x10
+#define DOSARCH 0x20
+static void bootdump(Dosboot*);
+static void setname(Dosfile*, char*);
+#define chatty 0
+#define chat if(chatty)print
 enum
 {
-Nbio=	16,
+Nbio= 16,
 };
-typedef struct	Clustbuf	Clustbuf;
+typedef struct Clustbuf Clustbuf;
 struct Clustbuf
 {
-int	age;
-long	sector;
-uchar	*iobuf;
-Dos	*dos;
-int	size;
+int age;
+long sector;
+uchar *iobuf;
+Dos *dos;
+int size;
 };
-Clustbuf	bio[Nbio];
+Clustbuf bio[Nbio];
 Clustbuf*
 getclust(Dos *dos, long sector)
 {
@@ -188,7 +188,7 @@ l++;
 }
 fp->lcurrent = l;
 fp->pcurrent = p;
-l =  dos->dataaddr + (p-2)*dos->clustsize;
+l = dos->dataaddr + (p-2)*dos->clustsize;
 chat("fileaddr %ld -> %ld\n", ltarget, l);
 return l;
 }
@@ -262,8 +262,8 @@ return 1;
 }
 return n >= 0 ? 0 : -1;
 }
-#define	JMPSHORT	0xeb
-#define JMPNEAR		0xe9
+#define JMPSHORT 0xeb
+#define JMPNEAR 0xe9
 long
 dosreadseg(File *f, void *va, long len)
 {

@@ -1,17 +1,17 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"ip.h"
-static void	walkadd(Fs*, Route**, Route*);
-static void	addnode(Fs*, Route**, Route*);
-static void	calcd(Route*);
-static Route*	v4freelist;
-static Route*	v6freelist;
-static RWlock	routelock;
-static ulong	v4routegeneration, v6routegeneration;
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "ip.h"
+static void walkadd(Fs*, Route**, Route*);
+static void addnode(Fs*, Route**, Route*);
+static void calcd(Route*);
+static Route* v4freelist;
+static Route* v6freelist;
+static RWlock routelock;
+static ulong v4routegeneration, v6routegeneration;
 static void
 freeroute(Route *r)
 {
@@ -215,7 +215,7 @@ break;
 }
 balancetree(cur);
 }
-#define	V4H(a)	((a&0x07ffffff)>>(32-Lroot-5))
+#define V4H(a) ((a&0x07ffffff)>>(32-Lroot-5))
 void
 v4addroute(Fs *f, char *tag, uchar *a, uchar *mask, uchar *gate, int type)
 {
@@ -246,7 +246,7 @@ wunlock(&routelock);
 v4routegeneration++;
 ipifcaddroute(f, Rv4, a, mask, gate, type);
 }
-#define	V6H(a)	(((a)[IPllen-1] & 0x07ffffff)>>(32-Lroot-5))
+#define V6H(a) (((a)[IPllen-1] & 0x07ffffff)>>(32-Lroot-5))
 #define ISDFLT(a, mask, tag) ((ipcmp((a),v6Unspecified)==0) && (ipcmp((mask),v6Unspecified)==0) && (strcmp((tag), "ra")!=0))
 void
 v6addroute(Fs *f, char *tag, uchar *a, uchar *mask, uchar *gate, int type)
@@ -464,7 +464,7 @@ break;
 }
 q = p;
 p = p->mid;
-next:		;
+next: ;
 }
 if(q && (q->ifc == nil || q->ifcid != q->ifc->ifcid)){
 if(q->type & Rifc) {

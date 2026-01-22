@@ -1,118 +1,118 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"kernel.h"
-typedef	struct Fid	Fid;
-typedef	struct Export	Export;
-typedef	struct Exq	Exq;
-typedef	struct Uqid Uqid;
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "kernel.h"
+typedef struct Fid Fid;
+typedef struct Export Export;
+typedef struct Exq Exq;
+typedef struct Uqid Uqid;
 enum
 {
-Nfidhash	= 32,
+Nfidhash = 32,
 Nqidhash = 32,
 QIDMASK = ((vlong)1<<48)-1,
-MAXFDATA	= 8192,
-MAXRPCDEF		= IOHDRSZ+MAXFDATA,
-MAXRPCMAX	= IOHDRSZ+64*1024,
-MSGHDRSZ	= BIT32SZ+BIT8SZ+BIT16SZ
+MAXFDATA = 8192,
+MAXRPCDEF = IOHDRSZ+MAXFDATA,
+MAXRPCMAX = IOHDRSZ+64*1024,
+MSGHDRSZ = BIT32SZ+BIT8SZ+BIT16SZ
 };
 struct Export
 {
 Lock;
-Ref	r;
-Exq*	work;
-Lock	fidlock;
-Fid*	fid[Nfidhash];
-QLock	qidlock;
-Uqid*	qids[Nqidhash];
-ulong	pathgen;
-Chan*	io;
-Chan*	root;
-Pgrp*	pgrp;
-Egrp*	egrp;
-Fgrp*	fgrp;
-int	async;
-int	readonly;
-int	msize;
-char*	user;
+Ref r;
+Exq* work;
+Lock fidlock;
+Fid* fid[Nfidhash];
+QLock qidlock;
+Uqid* qids[Nqidhash];
+ulong pathgen;
+Chan* io;
+Chan* root;
+Pgrp* pgrp;
+Egrp* egrp;
+Fgrp* fgrp;
+int async;
+int readonly;
+int msize;
+char* user;
 };
 struct Fid
 {
-Fid*	next;
-Fid**	last;
-Chan*	chan;
-int	fid;
-int	ref;
-vlong	offset;
-int	attached;
-Uqid*	qid;
+Fid* next;
+Fid** last;
+Chan* chan;
+int fid;
+int ref;
+vlong offset;
+int attached;
+Uqid* qid;
 };
 struct Uqid
 {
 Ref;
-int	type;
-int	dev;
-vlong	oldpath;
-vlong	newpath;
-Uqid*	next;
+int type;
+int dev;
+vlong oldpath;
+vlong newpath;
+Uqid* next;
 };
 struct Exq
 {
 Lock;
-int	busy;
-int	finished;
-Exq*	next;
-int	shut;
-Exq*	flush;
-Exq*	flusht;
-Export*	export;
-Proc*	slave;
-Fcall	in, out;
-uchar*	buf;
-int	bsize;
+int busy;
+int finished;
+Exq* next;
+int shut;
+Exq* flush;
+Exq* flusht;
+Export* export;
+Proc* slave;
+Fcall in, out;
+uchar* buf;
+int bsize;
 };
 struct
 {
-Lock	l;
-QLock	qwait;
-Rendez	rwait;
-Exq	*head;
-Exq	*tail;
+Lock l;
+QLock qwait;
+Rendez rwait;
+Exq *head;
+Exq *tail;
 }exq;
-static void	exshutdown(Export*);
-static int	exflushed(Export*, Exq*);
-static void	exslave(void*);
-static void	exfree(Export*);
-static void	exfreeq(Exq*);
-static void	exportproc(void*);
-static void	exreply(Exq*, char*);
-static int	exisroot(Export*, Chan*);
-static Uqid*	uqidalloc(Export*, Chan*);
-static void		freeuqid(Export*, Uqid*);
-static char*	Exversion(Export*, Fcall*, Fcall*);
-static char*	Exauth(Export*, Fcall*, Fcall*);
-static char*	Exattach(Export*, Fcall*, Fcall*);
-static char*	Exclunk(Export*, Fcall*, Fcall*);
-static char*	Excreate(Export*, Fcall*, Fcall*);
-static char*	Exopen(Export*, Fcall*, Fcall*);
-static char*	Exread(Export*, Fcall*, Fcall*);
-static char*	Exremove(Export*, Fcall*, Fcall*);
-static char*	Exstat(Export*, Fcall*, Fcall*);
-static char*	Exwalk(Export*, Fcall*, Fcall*);
-static char*	Exwrite(Export*, Fcall*, Fcall*);
-static char*	Exwstat(Export*, Fcall*, Fcall*);
-static char	*(*fcalls[Tmax])(Export*, Fcall*, Fcall*);
-static char	Enofid[]   = "no such fid";
-static char	Eseekdir[] = "can't seek on a directory";
-static char	Eopen[]	= "walk of open fid";
-static char	Emode[] = "open/create -- unknown mode";
-static char	Edupfid[]	= "fid in use";
-static char	Eaccess[] = "read/write -- not open in suitable mode";
-static char	Ecount[] = "read/write -- count too big";
-int	exdebug = 0;
+static void exshutdown(Export*);
+static int exflushed(Export*, Exq*);
+static void exslave(void*);
+static void exfree(Export*);
+static void exfreeq(Exq*);
+static void exportproc(void*);
+static void exreply(Exq*, char*);
+static int exisroot(Export*, Chan*);
+static Uqid* uqidalloc(Export*, Chan*);
+static void freeuqid(Export*, Uqid*);
+static char* Exversion(Export*, Fcall*, Fcall*);
+static char* Exauth(Export*, Fcall*, Fcall*);
+static char* Exattach(Export*, Fcall*, Fcall*);
+static char* Exclunk(Export*, Fcall*, Fcall*);
+static char* Excreate(Export*, Fcall*, Fcall*);
+static char* Exopen(Export*, Fcall*, Fcall*);
+static char* Exread(Export*, Fcall*, Fcall*);
+static char* Exremove(Export*, Fcall*, Fcall*);
+static char* Exstat(Export*, Fcall*, Fcall*);
+static char* Exwalk(Export*, Fcall*, Fcall*);
+static char* Exwrite(Export*, Fcall*, Fcall*);
+static char* Exwstat(Export*, Fcall*, Fcall*);
+static char *(*fcalls[Tmax])(Export*, Fcall*, Fcall*);
+static char Enofid[] = "no such fid";
+static char Eseekdir[] = "can't seek on a directory";
+static char Eopen[] = "walk of open fid";
+static char Emode[] = "open/create -- unknown mode";
+static char Edupfid[] = "fid in use";
+static char Eaccess[] = "read/write -- not open in suitable mode";
+static char Ecount[] = "read/write -- count too big";
+int exdebug = 0;
 int
 export(int fd, char *dir, int async)
 {

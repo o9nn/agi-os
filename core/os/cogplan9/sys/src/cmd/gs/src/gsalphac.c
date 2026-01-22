@@ -17,7 +17,7 @@ uint source_values[4];
 } gs_composite_params_t;
 #define pixel_row_fields(elt_type)\
 elt_type *data;\
-int bits_per_value;	\
+int bits_per_value; \
 int initial_x;\
 gs_image_alpha_t alpha
 typedef struct pixel_row_s {
@@ -213,7 +213,7 @@ gx_device_init((gx_device *)cdev,
 (const gx_device *)&gs_composite_alpha_device, mem, true);
 gx_device_copy_params((gx_device *)cdev, dev);
 cdev->color_info.depth =
-(dev->color_info.num_components == 4 ? 32  :
+(dev->color_info.num_components == 4 ? 32 :
 (dev->color_info.num_components + 1) * 8);
 cdev->color_info.max_gray = cdev->color_info.max_color = 255;
 cdev->color_info.dither_grays = cdev->color_info.dither_colors = 256;
@@ -243,9 +243,9 @@ byte a = gx_color_value_to_byte(alpha);
 (((c) * a + gx_max_color_value / 2) / gx_max_color_value)
 #ifdef PREMULTIPLY_TOWARDS_WHITE
 byte bias = ~a;
-#  define premult(c) (premult_(c) + bias)
+# define premult(c) (premult_(c) + bias)
 #else
-#  define premult(c) premult_(c)
+# define premult(c) premult_(c)
 #endif
 gx_color_index color;
 if (dev->color_info.num_components == 1) {
@@ -280,9 +280,9 @@ byte a = (byte) color;
 (((c) * 0xff + a / 2) / a)
 #ifdef PREMULTIPLY_TOWARDS_WHITE
 byte bias = ~a;
-#  define postdiv(c) postdiv_(c - bias)
+# define postdiv(c) postdiv_(c - bias)
 #else
-#  define postdiv(c) postdiv_(c)
+# define postdiv(c) postdiv_(c)
 #endif
 if (dev->color_info.num_components == 1) {
 if (a != 0xff) {
@@ -390,11 +390,11 @@ GB_OFFSET_0 | GB_RASTER_ALL | GB_ALIGN_STANDARD);
 native_params.data[0] = native_row;
 code = gx_get_bits_copy(target, 0, w, 1, &native_params,
 &std_params, std_row,
-0  );
+0 );
 if (code < 0)
 break;
 code = (*dev_proc(target, copy_color))
-(target, native_row, 0, 0  ,
+(target, native_row, 0, 0 ,
 gx_no_bitmap_id, x, yi, w, 1);
 if (code < 0)
 break;

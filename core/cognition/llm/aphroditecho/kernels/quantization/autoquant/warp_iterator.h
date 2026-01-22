@@ -22,8 +22,8 @@ uint4 frag_A4_[ITER_X];
 T_Q frag_Q_[ITER_X][4];
 const uint4* smem_A_;
 const T_Q* smem_Q_;
-const int    offset_m_;
-const int    offset_m_Q_;
+const int offset_m_;
+const int offset_m_Q_;
 int stage_{0};
 int offset_A_{0};
 int offset_Q_{0};
@@ -45,7 +45,7 @@ PRAGMA_UNROLL
 for (int x = 0; x < ITER_X; ++x) {
 PRAGMA_UNROLL
 for (int i = 0; i < 4; ++i) {
-const int mm           = offset_m_Q_ + x * 32 + i * 8;
+const int mm = offset_m_Q_ + x * 32 + i * 8;
 ((uint&)frag_Q_[x][i]) = ((uint&)smem_Q_[offset_Q_ + g * CTA_M + mm]);
 }
 }
@@ -84,14 +84,14 @@ offset_Q_ = stage_ * kSizePerStageQ;
 template<int CTA_N, int CTA_K, int WARP_N, int WARP_K, int OP_N, int OP_K, int SMEM_STRIDE, int STAGES, typename T_BC>
 struct WarpIteratorB {
 static constexpr int kLdsmNum = WARP_N == 8 ? 2 : 4;
-static constexpr int ITER_N   = WARP_N / OP_N;
-static constexpr int ITER_K   = WARP_K / OP_K;
+static constexpr int ITER_N = WARP_N / OP_N;
+static constexpr int ITER_K = WARP_K / OP_K;
 static_assert(OP_N == 8 && OP_K == 16);
 const int warp_id_n_;
 const int lane_id_;
 const int ldsm_group_id_;
 const int offset_k_;
-int       offset_n_;
+int offset_n_;
 const uint32_t smem_base_ptr_;
 uint32_t smem_ptr_;
 int stage_{0};
@@ -111,12 +111,12 @@ offset_n_ += warp_id_n_ * WARP_N;
 }
 __device__ void load(Array<T_BC, 4>* data, int iter_k)
 {
-const int kk  = iter_k * OP_K + offset_k_;
-auto      ptr = (uint*)data;
+const int kk = iter_k * OP_K + offset_k_;
+auto ptr = (uint*)data;
 PRAGMA_UNROLL
 for (int iter_n = 0; iter_n < ITER_N;) {
-const int nn  = offset_n_ + iter_n * OP_N;
-auto      src = smem_ptr_ + sizeof(T_BC) * (nn * SMEM_STRIDE + kk);
+const int nn = offset_n_ + iter_n * OP_N;
+auto src = smem_ptr_ + sizeof(T_BC) * (nn * SMEM_STRIDE + kk);
 if constexpr (kLdsmNum == 4) {
 ldmatrix_m8n8_x4_b16(ptr[0], ptr[1], ptr[2], ptr[3], src);
 ptr += 4;

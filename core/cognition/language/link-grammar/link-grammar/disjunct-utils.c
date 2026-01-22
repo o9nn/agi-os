@@ -382,7 +382,7 @@ Connector *prevc = &head;
 Connector *newc = &head;
 Connector *lcblock = ts->cblock;
 Tracon_list *tl = ts->tracon_list;
-for (Connector *o = origc; NULL != o;  o = o->next)
+for (Connector *o = origc; NULL != o; o = o->next)
 {
 newc = NULL;
 o->shallow = (o == origc);
@@ -473,7 +473,7 @@ tracon_set_reset(ts->csid[1]);
 }
 }
 newd->left = pack_connectors(ts, d->left, 0, w);
-newd->right = pack_connectors(ts, d->right, 1,  w);
+newd->right = pack_connectors(ts, d->right, 1, w);
 return newd;
 }
 static Disjunct *pack_disjuncts(Sentence sent, Tracon_sharing *ts,

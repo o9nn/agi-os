@@ -19,7 +19,7 @@ template <float (*op)(float, float), typename src0_t, typename src1_t, typename 
 static inline void vec_binary_op_contiguous(const int64_t n, dst_t * z, const src0_t * x, const src1_t * y) {
 constexpr auto src0_to_f32 = type_conversion_table<src0_t>::to_f32;
 constexpr auto src1_to_f32 = type_conversion_table<src1_t>::to_f32;
-constexpr auto f32_to_dst  = type_conversion_table<dst_t >::from_f32;
+constexpr auto f32_to_dst = type_conversion_table<dst_t >::from_f32;
 for (int i = 0; i < n; i++) {
 z[i] = f32_to_dst(op(src0_to_f32(x[i]), src1_to_f32(y[i])));
 }
@@ -28,7 +28,7 @@ template <float (*op)(float, float), typename src0_t, typename src1_t, typename 
 static inline void vec_binary_op_non_contiguous(const int64_t n, const int64_t ne10, const int64_t nb10, dst_t * z, const src0_t * x, const src1_t * y) {
 constexpr auto src0_to_f32 = type_conversion_table<src0_t>::to_f32;
 constexpr auto src1_to_f32 = type_conversion_table<src1_t>::to_f32;
-constexpr auto f32_to_dst  = type_conversion_table<dst_t >::from_f32;
+constexpr auto f32_to_dst = type_conversion_table<dst_t >::from_f32;
 for (int i = 0; i < n; i++) {
 int i10 = i % ne10;
 const src1_t * y_ptr = (const src1_t *)((const char *)y + i10*nb10);
@@ -69,7 +69,7 @@ const int64_t i01 = (ir - i03*ne02*ne01 - i02*ne01);
 const int64_t i13 = i03 % ne13;
 const int64_t i12 = i02 % ne12;
 const int64_t i11 = i01 % ne11;
-dst_t        * dst_ptr  = (dst_t  *)       ((char *)       dst->data  + i03*nb3  + i02*nb2  + i01*nb1 );
+dst_t * dst_ptr = (dst_t *) ((char *) dst->data + i03*nb3 + i02*nb2 + i01*nb1 );
 const src0_t * src0_ptr = (const src0_t *) ((const char *) src0->data + i03*nb03 + i02*nb02 + i01*nb01);
 const src1_t * src1_ptr = (const src1_t *) ((const char *) src1->data + i13*nb13 + i12*nb12 + i11*nb11);
 if (is_src1_contiguous) {
@@ -94,19 +94,19 @@ template <float (*op)(float, float)>
 static void binary_op(const ggml_compute_params * params, ggml_tensor * dst) {
 const ggml_tensor * src0 = dst->src[0];
 const ggml_tensor * src1 = dst->src[1];
-if (src0->type == GGML_TYPE_F32  && src1->type == GGML_TYPE_F32  && dst->type == GGML_TYPE_F32) {
+if (src0->type == GGML_TYPE_F32 && src1->type == GGML_TYPE_F32 && dst->type == GGML_TYPE_F32) {
 apply_binary_op<op, float, float, float>(params, dst);
-} else if (src0->type == GGML_TYPE_F16  && src1->type == GGML_TYPE_F16  && dst->type == GGML_TYPE_F16) {
+} else if (src0->type == GGML_TYPE_F16 && src1->type == GGML_TYPE_F16 && dst->type == GGML_TYPE_F16) {
 apply_binary_op<op, ggml_fp16_t, ggml_fp16_t, ggml_fp16_t>(params, dst);
 } else if (src0->type == GGML_TYPE_BF16 && src1->type == GGML_TYPE_BF16 && dst->type == GGML_TYPE_BF16) {
 apply_binary_op<op, ggml_bf16_t, ggml_bf16_t, ggml_bf16_t>(params, dst);
-} else if (src0->type == GGML_TYPE_BF16 && src1->type == GGML_TYPE_F32  && dst->type == GGML_TYPE_BF16) {
+} else if (src0->type == GGML_TYPE_BF16 && src1->type == GGML_TYPE_F32 && dst->type == GGML_TYPE_BF16) {
 apply_binary_op<op, ggml_bf16_t, float, ggml_bf16_t>(params, dst);
-} else if (src0->type == GGML_TYPE_BF16 && src1->type == GGML_TYPE_F32  && dst->type == GGML_TYPE_F32) {
+} else if (src0->type == GGML_TYPE_BF16 && src1->type == GGML_TYPE_F32 && dst->type == GGML_TYPE_F32) {
 apply_binary_op<op, ggml_bf16_t, float, float>(params, dst);
-} else if (src0->type == GGML_TYPE_F16  && src1->type == GGML_TYPE_F32  && dst->type == GGML_TYPE_F16) {
+} else if (src0->type == GGML_TYPE_F16 && src1->type == GGML_TYPE_F32 && dst->type == GGML_TYPE_F16) {
 apply_binary_op<op, ggml_fp16_t, float, ggml_fp16_t>(params, dst);
-} else if (src0->type == GGML_TYPE_F16  && src1->type == GGML_TYPE_F32  && dst->type == GGML_TYPE_F32) {
+} else if (src0->type == GGML_TYPE_F16 && src1->type == GGML_TYPE_F32 && dst->type == GGML_TYPE_F32) {
 apply_binary_op<op, ggml_fp16_t, float, float>(params, dst);
 } else {
 GGML_ABORT("%s: unsupported types: dst: %s, src0: %s, src1: %s\n", __func__,

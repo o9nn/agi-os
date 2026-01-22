@@ -1,5 +1,5 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #include "imapdriver_cached.h"
 #include "libetpan-config.h"
@@ -9,7 +9,7 @@
 #include <fcntl.h>
 #include <string.h>
 #ifdef HAVE_UNISTD_H
-#	include <unistd.h>
+# include <unistd.h>
 #endif
 #include <stdlib.h>
 #include "mail.h"
@@ -346,7 +346,7 @@ return r;
 static int imapdriver_cached_starttls(mailsession * session)
 {
 int r;
-r =  mailsession_starttls(get_ancestor(session));
+r = mailsession_starttls(get_ancestor(session));
 check_for_uid_cache(session);
 return r;
 }
@@ -759,7 +759,7 @@ if (cache_item->uid > uid_max)
 uid_max = cache_item->uid;
 }
 #endif
-r = imap_get_messages_list(imap,  session, imap_cached_message_driver,
+r = imap_get_messages_list(imap, session, imap_cached_message_driver,
 uid_max + 1, &env_list);
 check_for_uid_cache(session);
 if (r != MAIL_NO_ERROR) {

@@ -10,18 +10,18 @@ __u32 level3cnt;
 __u32 datablkcnt;
 __u32 datablklen;
 } capi_register_params;
-#define	CAPI_REGISTER	_IOW('C',0x01,struct capi_register_params)
-#define CAPI_MANUFACTURER_LEN		64
-#define	CAPI_GET_MANUFACTURER	_IOWR('C',0x06,CAPI_MANUFACTURER_LEN)
+#define CAPI_REGISTER _IOW('C',0x01,struct capi_register_params)
+#define CAPI_MANUFACTURER_LEN 64
+#define CAPI_GET_MANUFACTURER _IOWR('C',0x06,CAPI_MANUFACTURER_LEN)
 typedef struct capi_version {
 __u32 majorversion;
 __u32 minorversion;
 __u32 majormanuversion;
 __u32 minormanuversion;
 } capi_version;
-#define CAPI_GET_VERSION	_IOWR('C',0x07,struct capi_version)
-#define CAPI_SERIAL_LEN		8
-#define CAPI_GET_SERIAL		_IOWR('C',0x08, CAPI_SERIAL_LEN)
+#define CAPI_GET_VERSION _IOWR('C',0x07,struct capi_version)
+#define CAPI_SERIAL_LEN 8
+#define CAPI_GET_SERIAL _IOWR('C',0x08, CAPI_SERIAL_LEN)
 typedef struct capi_profile {
 __u16 ncontroller;
 __u16 nbchannel;
@@ -32,14 +32,14 @@ __u32 support3;
 __u32 reserved[6];
 __u32 manu[5];
 } capi_profile;
-#define CAPI_GET_PROFILE	_IOWR('C',0x09,struct capi_profile)
+#define CAPI_GET_PROFILE _IOWR('C',0x09,struct capi_profile)
 typedef struct capi_manufacturer_cmd {
 unsigned long cmd;
 void *data;
 } capi_manufacturer_cmd;
-#define CAPI_MANUFACTURER_CMD	_IOWR('C',0x20, struct capi_manufacturer_cmd)
-#define CAPI_GET_ERRCODE	_IOR('C',0x21, __u16)
-#define CAPI_INSTALLED		_IOR('C',0x22, __u16)
+#define CAPI_MANUFACTURER_CMD _IOWR('C',0x20, struct capi_manufacturer_cmd)
+#define CAPI_GET_ERRCODE _IOR('C',0x21, __u16)
+#define CAPI_INSTALLED _IOR('C',0x22, __u16)
 typedef union capi_ioctl_struct {
 __u32 contr;
 capi_register_params rparams;

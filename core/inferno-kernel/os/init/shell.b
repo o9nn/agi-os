@@ -4,11 +4,11 @@ include "draw.m";
 sys: Sys;
 InitShell: module
 {
-init:	fn(nil: ref Draw->Context, nil: list of string);
+init: fn(nil: ref Draw->Context, nil: list of string);
 };
 Sh: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 init(nil: ref Draw->Context, nil: list of string)
 {
@@ -16,15 +16,15 @@ shell := load Sh "/dis/sh.dis";
 sys = load Sys Sys->PATH;
 if(sys != nil)
 sys->print("init: starting shell\n");
-#	sys->bind("#I", "/net", sys->MAFTER);	# IP
-sys->bind("#p", "/prog", sys->MREPL);	# prog device
+# sys->bind("#I", "/net", sys->MAFTER); # IP
+sys->bind("#p", "/prog", sys->MREPL); # prog device
 sys->bind("#d", "/fd", Sys->MREPL);
-sys->bind("#i", "/dev", sys->MREPL); 	# draw device
-sys->bind("#t", "/dev", sys->MAFTER);	# serial line
-sys->bind("#c", "/dev", sys->MAFTER); 	# console device
-sys->bind("#W","/dev",sys->MAFTER);	# Flash
-#	sys->bind("#O", "/dev", sys->MAFTER);	# Modem
-#	sys->bind("#T","/dev",sys->MAFTER);	# Touchscreen
+sys->bind("#i", "/dev", sys->MREPL); # draw device
+sys->bind("#t", "/dev", sys->MAFTER); # serial line
+sys->bind("#c", "/dev", sys->MAFTER); # console device
+sys->bind("#W","/dev",sys->MAFTER); # Flash
+# sys->bind("#O", "/dev", sys->MAFTER); # Modem
+# sys->bind("#T","/dev",sys->MAFTER); # Touchscreen
 srv();
 spawn shell->init(nil, nil);
 }

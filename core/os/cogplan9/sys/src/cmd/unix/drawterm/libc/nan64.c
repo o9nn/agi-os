@@ -4,8 +4,8 @@
 #if defined (__APPLE__) || (__powerpc__)
 #define _NEEDLL
 #endif
-static uvlong uvnan    = ((uvlong)0x7FF00000<<32)|0x00000001;
-static uvlong uvinf    = ((uvlong)0x7FF00000<<32)|0x00000000;
+static uvlong uvnan = ((uvlong)0x7FF00000<<32)|0x00000001;
+static uvlong uvinf = ((uvlong)0x7FF00000<<32)|0x00000000;
 static uvlong uvneginf = ((uvlong)0xFFF00000<<32)|0x00000000;
 double
 __NaN(void)

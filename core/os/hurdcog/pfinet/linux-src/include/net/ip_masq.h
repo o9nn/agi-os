@@ -9,48 +9,48 @@
 #include <linux/list.h>
 #endif
 #define MAX_MASQ_APP_PORTS 12
-#define PORT_MASQ_BEGIN	61000
-#define PORT_MASQ_END	(PORT_MASQ_BEGIN+4096)
-#define MASQUERADE_EXPIRE_TCP     15*60*HZ
-#define MASQUERADE_EXPIRE_TCP_FIN  2*60*HZ
-#define MASQUERADE_EXPIRE_UDP      5*60*HZ
-#define MASQUERADE_EXPIRE_ICMP      125*HZ
-#define IP_MASQ_MOD_CTL			0x00
-#define IP_MASQ_USER_CTL		0x01
+#define PORT_MASQ_BEGIN 61000
+#define PORT_MASQ_END (PORT_MASQ_BEGIN+4096)
+#define MASQUERADE_EXPIRE_TCP 15*60*HZ
+#define MASQUERADE_EXPIRE_TCP_FIN 2*60*HZ
+#define MASQUERADE_EXPIRE_UDP 5*60*HZ
+#define MASQUERADE_EXPIRE_ICMP 125*HZ
+#define IP_MASQ_MOD_CTL 0x00
+#define IP_MASQ_USER_CTL 0x01
 #ifdef __KERNEL__
-#define IP_MASQ_TAB_SIZE	256
-#define IP_MASQ_F_NO_DADDR	      0x0001
-#define IP_MASQ_F_NO_DPORT     	      0x0002
-#define IP_MASQ_F_NO_SADDR	      0x0004
-#define IP_MASQ_F_NO_SPORT	      0x0008
-#define IP_MASQ_F_DLOOSE	      0x0010
-#define IP_MASQ_F_NO_REPLY	      0x0080
-#define IP_MASQ_F_HASHED	      0x0100
-#define IP_MASQ_F_OUT_SEQ             0x0200
-#define IP_MASQ_F_IN_SEQ              0x0400
-#define IP_MASQ_F_MPORT		      0x1000
-#define IP_MASQ_F_USER		      0x2000
-#define IP_MASQ_F_SIMPLE_HASH	      0x8000
+#define IP_MASQ_TAB_SIZE 256
+#define IP_MASQ_F_NO_DADDR 0x0001
+#define IP_MASQ_F_NO_DPORT 0x0002
+#define IP_MASQ_F_NO_SADDR 0x0004
+#define IP_MASQ_F_NO_SPORT 0x0008
+#define IP_MASQ_F_DLOOSE 0x0010
+#define IP_MASQ_F_NO_REPLY 0x0080
+#define IP_MASQ_F_HASHED 0x0100
+#define IP_MASQ_F_OUT_SEQ 0x0200
+#define IP_MASQ_F_IN_SEQ 0x0400
+#define IP_MASQ_F_MPORT 0x1000
+#define IP_MASQ_F_USER 0x2000
+#define IP_MASQ_F_SIMPLE_HASH 0x8000
 struct ip_masq_seq {
-__u32		init_seq;
-short		delta;
-short		previous_delta;
+__u32 init_seq;
+short delta;
+short previous_delta;
 };
 struct ip_masq {
 struct list_head m_list, s_list, d_list;
 atomic_t refcnt;
 struct timer_list timer;
-__u16 		protocol;
-__u16		sport, dport, mport;
-__u32 		saddr, daddr, maddr;
+__u16 protocol;
+__u16 sport, dport, mport;
+__u32 saddr, daddr, maddr;
 struct ip_masq_seq out_seq, in_seq;
 struct ip_masq_app *app;
-void		*app_data;
-struct ip_masq	*control;
-atomic_t        n_control;
-unsigned  	flags;
-unsigned	timeout;
-unsigned	state;
+void *app_data;
+struct ip_masq *control;
+atomic_t n_control;
+unsigned flags;
+unsigned timeout;
+unsigned state;
 struct ip_masq_timeout_table *timeout_table;
 };
 struct ip_fw_masq {
@@ -121,7 +121,7 @@ iph->daddr, portp[1]);
 }
 static __inline__ struct ip_masq * ip_masq_out_get_iph(const struct iphdr *iph)
 {
-const __u16 *portp  = (__u16 *)&(((char *)iph)[iph->ihl*4]);
+const __u16 *portp = (__u16 *)&(((char *)iph)[iph->ihl*4]);
 return ip_masq_out_get(iph->protocol,
 iph->saddr, portp[0],
 iph->daddr, portp[1]);
@@ -129,19 +129,19 @@ iph->daddr, portp[1]);
 extern void ip_masq_put(struct ip_masq *ms);
 extern rwlock_t __ip_masq_lock;
 #ifdef __SMP__
-#define read_lock_bh(lock) 	do { start_bh_atomic(); read_lock(lock); \
+#define read_lock_bh(lock) do { start_bh_atomic(); read_lock(lock); \
 } while (0)
-#define read_unlock_bh(lock)	do { read_unlock(lock); end_bh_atomic(); \
+#define read_unlock_bh(lock) do { read_unlock(lock); end_bh_atomic(); \
 } while (0)
-#define write_lock_bh(lock)	do { start_bh_atomic(); write_lock(lock); \
+#define write_lock_bh(lock) do { start_bh_atomic(); write_lock(lock); \
 } while (0)
-#define write_unlock_bh(lock)	do { write_unlock(lock); end_bh_atomic(); \
+#define write_unlock_bh(lock) do { write_unlock(lock); end_bh_atomic(); \
 } while (0)
 #else
-#define read_lock_bh(lock)	start_bh_atomic()
-#define read_unlock_bh(lock)	end_bh_atomic()
-#define write_lock_bh(lock)	start_bh_atomic()
-#define write_unlock_bh(lock)	end_bh_atomic()
+#define read_lock_bh(lock) start_bh_atomic()
+#define read_unlock_bh(lock) end_bh_atomic()
+#define write_lock_bh(lock) start_bh_atomic()
+#define write_unlock_bh(lock) end_bh_atomic()
 #endif
 extern int ip_masq_get_debug_level(void);
 #ifdef CONFIG_IP_MASQ_DEBUG
@@ -166,10 +166,10 @@ static __inline__ int masq_proto_num(unsigned proto)
 {
 switch (proto)
 {
-case IPPROTO_UDP:  return (0); break;
-case IPPROTO_TCP:  return (1); break;
+case IPPROTO_UDP: return (0); break;
+case IPPROTO_TCP: return (1); break;
 case IPPROTO_ICMP: return (2); break;
-default:           return (-1); break;
+default: return (-1); break;
 }
 }
 static __inline__ const char *masq_proto_name(unsigned proto)
@@ -177,7 +177,7 @@ static __inline__ const char *masq_proto_name(unsigned proto)
 static char buf[20];
 static const char *strProt[] = {"UDP","TCP","ICMP"};
 int msproto = masq_proto_num(proto);
-if (msproto<0||msproto>2)  {
+if (msproto<0||msproto>2) {
 sprintf(buf, "IP_%d", proto);
 return buf;
 }

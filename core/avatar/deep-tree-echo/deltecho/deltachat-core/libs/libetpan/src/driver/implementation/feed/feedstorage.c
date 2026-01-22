@@ -1,5 +1,5 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #include "feedstorage.h"
 #include <stdlib.h>
@@ -8,7 +8,7 @@
 #include "feeddriver.h"
 #include "mailstorage_tools.h"
 #include "mail.h"
-#define FEED_DEFAULT_PORT  119
+#define FEED_DEFAULT_PORT 119
 #define FEEDS_DEFAULT_PORT 563
 static int feed_mailstorage_connect(struct mailstorage * storage);
 static int feed_mailstorage_get_folder_session(struct mailstorage * storage,

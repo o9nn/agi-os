@@ -28,8 +28,8 @@ static char version[] =
 static unsigned int net_debug = NET_DEBUG;
 #undef F_DEB
 #include "eth82586.h"
-#define PRIV(x)         ((struct net_local *)(x)->priv)
-#define EEXP_IO_EXTENT  16
+#define PRIV(x) ((struct net_local *)(x)->priv)
+#define EEXP_IO_EXTENT 16
 struct net_local
 {
 struct enet_statistics stats;
@@ -78,23 +78,23 @@ unsigned short start_code[] = {
 #define CONF_LINK 0x0020
 #define CONF_HW_ADDR 0x0038
 static char irqrmap[] = { 0,0,1,2,3,4,0,0,0,1,5,6,0,0,0,0 };
-extern int                  express_probe(struct device *dev);
-static int                     eexp_open (struct device *dev);
-static int                     eexp_close(struct device *dev);
+extern int express_probe(struct device *dev);
+static int eexp_open (struct device *dev);
+static int eexp_close(struct device *dev);
 static struct enet_statistics *eexp_stats(struct device *dev);
-static int                     eexp_xmit (struct sk_buff *buf, struct device *dev);
-static void                    eexp_irq  (int irq, void *dev_addr, struct pt_regs *regs);
-static void                    eexp_set_multicast(struct device *dev);
-static void           eexp_hw_rx        (struct device *dev);
-static void           eexp_hw_tx        (struct device *dev, unsigned short *buf, unsigned short len);
-static int            eexp_hw_probe     (struct device *dev,unsigned short ioaddr);
+static int eexp_xmit (struct sk_buff *buf, struct device *dev);
+static void eexp_irq (int irq, void *dev_addr, struct pt_regs *regs);
+static void eexp_set_multicast(struct device *dev);
+static void eexp_hw_rx (struct device *dev);
+static void eexp_hw_tx (struct device *dev, unsigned short *buf, unsigned short len);
+static int eexp_hw_probe (struct device *dev,unsigned short ioaddr);
 static unsigned short eexp_hw_readeeprom(unsigned short ioaddr, unsigned char location);
 static unsigned short eexp_hw_lasttxstat(struct device *dev);
-static void           eexp_hw_txrestart (struct device *dev);
-static void           eexp_hw_txinit    (struct device *dev);
-static void           eexp_hw_rxinit    (struct device *dev);
-static void           eexp_hw_init586   (struct device *dev);
-static void           eexp_hw_ASICrst   (struct device *dev);
+static void eexp_hw_txrestart (struct device *dev);
+static void eexp_hw_txinit (struct device *dev);
+static void eexp_hw_rxinit (struct device *dev);
+static void eexp_hw_init586 (struct device *dev);
+static void eexp_hw_ASICrst (struct device *dev);
 int express_probe(struct device *dev)
 {
 unsigned short *port,ports[] = { 0x0300,0x0270,0x0320,0x0340,0 };
@@ -852,8 +852,8 @@ if ((dev->flags & IFF_PROMISC) != PRIV(dev)->promisc)
 eexp_hw_init586(dev);
 }
 #ifdef MODULE
-#define EEXP_MAX_CARDS     4
-#define NAMELEN            8
+#define EEXP_MAX_CARDS 4
+#define NAMELEN 8
 static char namelist[NAMELEN * EEXP_MAX_CARDS] = { 0, };
 static struct device dev_eexp[EEXP_MAX_CARDS] =
 {

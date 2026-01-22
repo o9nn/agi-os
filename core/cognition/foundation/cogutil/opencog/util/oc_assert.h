@@ -13,7 +13,7 @@ if (not test) opencog::cassert(TRACE_INFO, test, ##__VA_ARGS__); }
 ((void)0)
 #endif
 namespace opencog {
-void cassert(const char * trace,  bool condition, const char * msg, ...);
+void cassert(const char * trace, bool condition, const char * msg, ...);
 void cassert(const char* trace, bool condition, const std::string& msg);
 void cassert(const char * trace, bool condition);
 }

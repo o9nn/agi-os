@@ -136,7 +136,7 @@ loadvars(void)
 {
 Lsym *l;
 Value *v;
-l =  mkvar("proc");
+l = mkvar("proc");
 v = l->v;
 v->type = TINT;
 v->vstore.fmt = 'X';

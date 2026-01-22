@@ -10,7 +10,7 @@
 (define database-uri (get-connection-uri))
 (define language (get-lang))
 (repl-default-option-set! 'prompt (string-append "scheme@("
-    language "-mst)> "))
+language "-mst)> "))
 (start-cogserver (string-append "config/opencog-mst-" language ".conf"))
 (sql-open database-uri)
 (display "Fetching all words from database. This may take a few minutes.\n")

@@ -19,81 +19,81 @@ log_info "  Build directory: $BUILD_DIR"
 log_info "  Output directory: $OUTPUT_DIR"
 log_info ""
 PACKAGES=(
-    "inferno-kernel"
-    "cognumach-mig"
-    "cognumach"
-    "cognumach-cognitive-scheduler"
-    "hurdcog"
-    "hurdcog-cogkernel-core"
-    "hurdcog-machspace"
-    "hurdcog-atomspace-bridge"
-    "hurdcog-occ-bridge"
-    "cogplan9"
-    "cogutil"
-    "atomspace"
-    "atomspace-storage"
-    "atomspace-rocks"
-    "atomspace-pgres"
-    "atomspace-dht"
-    "atomspace-ipfs"
-    "atomspace-restful"
-    "atomspace-metta"
-    "cogserver"
-    "atomspace-cog"
-    "unify"
-    "ure"
-    "pln"
-    "spacetime"
-    "attention"
-    "learn"
-    "miner"
-    "asmoses"
-    "link-grammar"
-    "lg-atomese"
-    "agents"
-    "generate"
-    "agi-bio"
-    "atomspace-9p"
-    "pln-9p"
-    "ecan-9p"
-    "das"
-    "cognitive-grip"
-    "agi-os-unified"
-    "agi-os-cognitive-init"
-    "agi-os-monitoring"
+"inferno-kernel"
+"cognumach-mig"
+"cognumach"
+"cognumach-cognitive-scheduler"
+"hurdcog"
+"hurdcog-cogkernel-core"
+"hurdcog-machspace"
+"hurdcog-atomspace-bridge"
+"hurdcog-occ-bridge"
+"cogplan9"
+"cogutil"
+"atomspace"
+"atomspace-storage"
+"atomspace-rocks"
+"atomspace-pgres"
+"atomspace-dht"
+"atomspace-ipfs"
+"atomspace-restful"
+"atomspace-metta"
+"cogserver"
+"atomspace-cog"
+"unify"
+"ure"
+"pln"
+"spacetime"
+"attention"
+"learn"
+"miner"
+"asmoses"
+"link-grammar"
+"lg-atomese"
+"agents"
+"generate"
+"agi-bio"
+"atomspace-9p"
+"pln-9p"
+"ecan-9p"
+"das"
+"cognitive-grip"
+"agi-os-unified"
+"agi-os-cognitive-init"
+"agi-os-monitoring"
 )
 BUILT_COUNT=0
 FAILED_COUNT=0
 SKIPPED_COUNT=0
 for package in "${PACKAGES[@]}"; do
-    log_info "Building package: $package"
-    if [ ! -d "$SCRIPT_DIR/$package" ]; then
-        log_warning "  Package directory not found, skipping: $package"
-        ((SKIPPED_COUNT++))
-        continue
-    fi
-    if [ ! -f "$SCRIPT_DIR/$package/control" ]; then
-        log_warning "  No control file found, skipping: $package"
-        ((SKIPPED_COUNT++))
-        continue
-    fi
-    cd "$SCRIPT_DIR/$package"
-    if dpkg-buildpackage -us -uc -b 2>&1 | tee "$BUILD_DIR/$package.log"; then
-        log_success "  Built: $package"
-        ((BUILT_COUNT++))
-        mv ../*.deb "$OUTPUT_DIR/" 2>/dev/null || true
-        mv ../*.changes "$OUTPUT_DIR/" 2>/dev/null || true
-        mv ../*.buildinfo "$OUTPUT_DIR/" 2>/dev/null || true
-    else
-        log_error "  Failed to build: $package"
-        log_error "  See log: $BUILD_DIR/$package.log"
-        ((FAILED_COUNT++))
-        if [ "${STOP_ON_ERROR:-0}" = "1" ]; then
-            log_error "Stopping due to build failure"
-            exit 1
-        fi
-    fi
-    cd "$SCRIPT_DIR"
+log_info "Building package: $package"
+if [ ! -d "$SCRIPT_DIR/$package" ]; then
+log_warning "  Package directory not found, skipping: $package"
+((SKIPPED_COUNT++))
+continue
+fi
+if [ ! -f "$SCRIPT_DIR/$package/control" ]; then
+log_warning "  No control file found, skipping: $package"
+((SKIPPED_COUNT++))
+continue
+fi
+cd "$SCRIPT_DIR/$package"
+if dpkg-buildpackage -us -uc -b 2>&1 | tee "$BUILD_DIR/$package.log"; then
+log_success "  Built: $package"
+((BUILT_COUNT++))
+mv ../*.deb "$OUTPUT_DIR/" 2>/dev/null || true
+mv ../*.changes "$OUTPUT_DIR/" 2>/dev/null || true
+mv ../*.buildinfo "$OUTPUT_DIR/" 2>/dev/null || true
+else
+log_error "  Failed to build: $package"
+log_error "  See log: $BUILD_DIR/$package.log"
+((FAILED_COUNT++))
+if [ "${STOP_ON_ERROR:-0}" = "1" ]; then
+log_error "Stopping due to build failure"
+exit 1
+fi
+fi
+cd "$SCRIPT_DIR"
 done
 log_info ""
 log_info "Build Summary:"
@@ -103,9 +103,9 @@ log_info "  Skipped: $SKIPPED_COUNT"
 log_info "  Total: ${
 log_info ""
 if [ $FAILED_COUNT -eq 0 ]; then
-    log_success "All packages built successfully!"
-    log_info "Packages available in: $OUTPUT_DIR"
+log_success "All packages built successfully!"
+log_info "Packages available in: $OUTPUT_DIR"
 else
-    log_warning "Some packages failed to build"
-    log_info "Check logs in: $BUILD_DIR"
+log_warning "Some packages failed to build"
+log_info "Check logs in: $BUILD_DIR"
 fi

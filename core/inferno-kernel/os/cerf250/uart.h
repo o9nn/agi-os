@@ -1,9 +1,9 @@
-#define	UR(p,r)	((ulong*)(p))[r]
-#define uartwr(u,r,v)	(UR(u->regs,r) = (v))
-#define uartwrreg(u,r,v)	(UR(u->regs,r)= (u)->sticky[r] | (v))
-#define uartrdreg(u,r)		UR(u->regs,r)
-extern void	uartsetup(ulong, void*, ulong, char*);
-extern void	uartclock(void);
+#define UR(p,r) ((ulong*)(p))[r]
+#define uartwr(u,r,v) (UR(u->regs,r) = (v))
+#define uartwrreg(u,r,v) (UR(u->regs,r)= (u)->sticky[r] | (v))
+#define uartrdreg(u,r) UR(u->regs,r)
+extern void uartsetup(ulong, void*, ulong, char*);
+extern void uartclock(void);
 static void
 uartportpower(Uart *p, int on)
 {

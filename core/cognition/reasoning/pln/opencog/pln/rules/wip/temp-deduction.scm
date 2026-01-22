@@ -1,24 +1,24 @@
 (define (gen-temp-deduction-rule link-type)
-    (BindLink
-        (VariableList
-            (VariableNode "$A")
-            (VariableNode "$B")
-            (VariableNode "$C"))
-        (AndLink
-            (link-type
-                (VariableNode "$A")
-                (VariableNode "$B"))
-            (link-type
-                (VariableNode "$B")
-                (VariableNode "$C"))
-            (NotLink
-                (IdenticalLink
-                    (VariableNode "$A")
-                    (VariableNode "$C")
-                )))
-        (link-type
-            (VariableNode "$A")
-            (VariableNode "$C")))
+(BindLink
+(VariableList
+(VariableNode "$A")
+(VariableNode "$B")
+(VariableNode "$C"))
+(AndLink
+(link-type
+(VariableNode "$A")
+(VariableNode "$B"))
+(link-type
+(VariableNode "$B")
+(VariableNode "$C"))
+(NotLink
+(IdenticalLink
+(VariableNode "$A")
+(VariableNode "$C")
+)))
+(link-type
+(VariableNode "$A")
+(VariableNode "$C")))
 )
 (define temp-deduction-inheritance-rule
-    (gen-temp-deduction-rule InheritanceLink))
+(gen-temp-deduction-rule InheritanceLink))

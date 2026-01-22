@@ -1,162 +1,162 @@
-#define DCMD_BLOCK_MOVE      0
-#define DCMD_IO 	    0x040000000
-#define DCMD_RD_WRT	    0x040000000
-#define DCMD_XFER_CTRL	    0x080000000
-#define DCMD_MEM_MOVE	    0x0C0000000
-#define DCMD_LOAD_STORE     0x0E0000000
-#define INDIRECT_ADDR	     0x20000000
-#define TABLE_INDIRECT	     0x10000000
-#define BLOCK_MOVE	     0x08000000
-#define CHAIN_MOVE	     0
-#define DATA_OUT_	     0x00000000
-#define DATA_IN_	     0x01000000
-#define COMMAND_	     0x02000000
-#define STATUS_ 	     0x03000000
-#define RESERVED_OUT	     0x04000000
-#define RESERVED_IN	     0x05000000
-#define MSG_OUT_	     0x06000000
-#define MSG_IN_ 	     0x07000000
-#define DCMD_SELECT	     0x40000000
-#define DCMD_SELECT_ATN      0x41000000
-#define DCMD_WAIT_DISC	     0x48000000
-#define DCMD_WAIT_RESEL      0x50000000
-#define DCMD_SET_CARRY	     0x58000400
-#define DCMD_SET_ACK	     0x58000040
-#define DCMD_SET_ATN	     0x58000008
-#define DCMD_CLR_CARRY	     0x60000400
-#define DCMD_CLR_ACK	     0x60000040
-#define DCMD_CLR_ATN	     0x60000008
-#define RELATIVE_ADDR	     0x04000000
-#define IO_TABLE_INDIR	     0x02000000
-#define MOVE_FROM_SFBR	     0x68000000
-#define MOVE_TO_SFBR	     0x70000000
-#define RD_MODIFY_WRT	     0x78000000
-#define OP_MOVE_DATA	     0
-#define OP_SHIFT_LEFT_C      0x01000000
-#define OP_OR		     0x02000000
-#define OP_XOR		     0x03000000
-#define OP_AND		     0x04000000
-#define OP_SHIFT_RIGHT_C     0x05000000
-#define OP_ADD_DATA	     0x06000000
-#define OP_ADD_DATA_C	     0x07000000
-#define USE_SFBR	     0x00800000
-#define DCMD_JUMP	     0x80000000
-#define DCMD_CALL	     0x88000000
-#define DCMD_RETURN	     0x90000000
-#define DCMD_INT	     0x98000000
-#define RELATIVE_	     0x00800000
-#define IF_CARRY	     0x00200000
-#define INT_ON_FLY_	     0x00100000
-#define IF_TRUE 	     0x00080000
-#define IF_NOT		     0
-#define DATA_CMP	     0x00040000
-#define PHASE_CMP	     0x00020000
-#define WAIT_PHASE_VALID     0x00010000
-#define DSA_RELATIVE	     0x10000000
-#define FLUSH_PREFETCH	     0x02000000
-#define DCMD_LOAD	    0x0E1000000
-#define DCMD_STORE	    0x0E0000000
-#define CMD_COMPLETE	     0
-#define EXT_MSG 	     1
-#define SAVE_PTR	     2
-#define RESTORE_PTR	     3
-#define DISCONNECTMSG	     4
-#define INITIATOR_ERR	     5
-#define ABORTMSG	     6
-#define MSG_REJECT	     7
-#define NOPMSG		     8
-#define MSG_PARITY	     9
-#define LINK_CMD_CPL	     0x0a
-#define LINK_CMD_FLAG	     0x0b
-#define RESET_DEVICE	     0x0c
-#define IDENTIFYMSG	     0x80
-#define SIMPLE_TAG	     0x20
-#define IGNORE_WIDE_RES      0x23
-ULONG  start_script[]={
+#define DCMD_BLOCK_MOVE 0
+#define DCMD_IO 0x040000000
+#define DCMD_RD_WRT 0x040000000
+#define DCMD_XFER_CTRL 0x080000000
+#define DCMD_MEM_MOVE 0x0C0000000
+#define DCMD_LOAD_STORE 0x0E0000000
+#define INDIRECT_ADDR 0x20000000
+#define TABLE_INDIRECT 0x10000000
+#define BLOCK_MOVE 0x08000000
+#define CHAIN_MOVE 0
+#define DATA_OUT_ 0x00000000
+#define DATA_IN_ 0x01000000
+#define COMMAND_ 0x02000000
+#define STATUS_ 0x03000000
+#define RESERVED_OUT 0x04000000
+#define RESERVED_IN 0x05000000
+#define MSG_OUT_ 0x06000000
+#define MSG_IN_ 0x07000000
+#define DCMD_SELECT 0x40000000
+#define DCMD_SELECT_ATN 0x41000000
+#define DCMD_WAIT_DISC 0x48000000
+#define DCMD_WAIT_RESEL 0x50000000
+#define DCMD_SET_CARRY 0x58000400
+#define DCMD_SET_ACK 0x58000040
+#define DCMD_SET_ATN 0x58000008
+#define DCMD_CLR_CARRY 0x60000400
+#define DCMD_CLR_ACK 0x60000040
+#define DCMD_CLR_ATN 0x60000008
+#define RELATIVE_ADDR 0x04000000
+#define IO_TABLE_INDIR 0x02000000
+#define MOVE_FROM_SFBR 0x68000000
+#define MOVE_TO_SFBR 0x70000000
+#define RD_MODIFY_WRT 0x78000000
+#define OP_MOVE_DATA 0
+#define OP_SHIFT_LEFT_C 0x01000000
+#define OP_OR 0x02000000
+#define OP_XOR 0x03000000
+#define OP_AND 0x04000000
+#define OP_SHIFT_RIGHT_C 0x05000000
+#define OP_ADD_DATA 0x06000000
+#define OP_ADD_DATA_C 0x07000000
+#define USE_SFBR 0x00800000
+#define DCMD_JUMP 0x80000000
+#define DCMD_CALL 0x88000000
+#define DCMD_RETURN 0x90000000
+#define DCMD_INT 0x98000000
+#define RELATIVE_ 0x00800000
+#define IF_CARRY 0x00200000
+#define INT_ON_FLY_ 0x00100000
+#define IF_TRUE 0x00080000
+#define IF_NOT 0
+#define DATA_CMP 0x00040000
+#define PHASE_CMP 0x00020000
+#define WAIT_PHASE_VALID 0x00010000
+#define DSA_RELATIVE 0x10000000
+#define FLUSH_PREFETCH 0x02000000
+#define DCMD_LOAD 0x0E1000000
+#define DCMD_STORE 0x0E0000000
+#define CMD_COMPLETE 0
+#define EXT_MSG 1
+#define SAVE_PTR 2
+#define RESTORE_PTR 3
+#define DISCONNECTMSG 4
+#define INITIATOR_ERR 5
+#define ABORTMSG 6
+#define MSG_REJECT 7
+#define NOPMSG 8
+#define MSG_PARITY 9
+#define LINK_CMD_CPL 0x0a
+#define LINK_CMD_FLAG 0x0b
+#define RESET_DEVICE 0x0c
+#define IDENTIFYMSG 0x80
+#define SIMPLE_TAG 0x20
+#define IGNORE_WIDE_RES 0x23
+ULONG start_script[]={
 DCMD_WAIT_RESEL
 };
-ULONG  jmp_select0[]={
+ULONG jmp_select0[]={
 0
 };
-ULONG  reselected[]={
+ULONG reselected[]={
 RD_MODIFY_WRT+OP_OR+0x200+0x340000,
 0,
 DCMD_INT+WAIT_PHASE_VALID+IF_NOT+PHASE_CMP+MSG_IN_,
 __RESELECTED,
 BLOCK_MOVE+MSG_IN_+1
 };
-ULONG  ACB_msgin123_1[]={
+ULONG ACB_msgin123_1[]={
 0,
 DCMD_INT+IF_TRUE,
 __RESELECTED1
 };
-ULONG  reselecttag[]={
+ULONG reselecttag[]={
 DCMD_CLR_ACK,
 0,
 BLOCK_MOVE+MSG_IN_+2
 };
-ULONG  ACB_msgin123_2[]={
+ULONG ACB_msgin123_2[]={
 0,
 DCMD_INT+IF_TRUE,
 __RESELECTEDT
 };
-ULONG  select0[]={
+ULONG select0[]={
 DCMD_INT+IF_TRUE,
 __SIGNAL
 };
-ULONG  select1[]={
+ULONG select1[]={
 DCMD_SELECT_ATN+IO_TABLE_INDIR
 };
-ULONG  jmp_reselected[]={
+ULONG jmp_reselected[]={
 0,
 DCMD_JUMP+WAIT_PHASE_VALID+IF_NOT+PHASE_CMP+MSG_OUT_
 };
-ULONG  jmp_check_phase[]={
+ULONG jmp_check_phase[]={
 0,
 TABLE_INDIRECT+BLOCK_MOVE+MSG_OUT_
 };
-ULONG  SRB_msgout0[]={
+ULONG SRB_msgout0[]={
 0
 };
-ULONG  check_phase[]={
+ULONG check_phase[]={
 DCMD_RETURN+WAIT_PHASE_VALID+IF_TRUE+PHASE_CMP+DATA_IN_,
 0,
 DCMD_RETURN+WAIT_PHASE_VALID+IF_TRUE+PHASE_CMP+DATA_OUT_,
 0
 };
-ULONG  status1_phase[]={
+ULONG status1_phase[]={
 DCMD_JUMP+WAIT_PHASE_VALID+IF_TRUE+PHASE_CMP+STATUS_
 };
-ULONG  jmp_status_phase[]={
+ULONG jmp_status_phase[]={
 0,
 DCMD_JUMP+WAIT_PHASE_VALID+IF_TRUE+PHASE_CMP+COMMAND_
 };
-ULONG  jmp_command_phase[]={
+ULONG jmp_command_phase[]={
 0,
 DCMD_JUMP+WAIT_PHASE_VALID+IF_TRUE+PHASE_CMP+MSG_IN_
 };
-ULONG  jmp_min_phase[]={
+ULONG jmp_min_phase[]={
 0,
 DCMD_JUMP+WAIT_PHASE_VALID+IF_TRUE+PHASE_CMP+MSG_OUT_
 };
-ULONG  jmp_mout_phase[]={
+ULONG jmp_mout_phase[]={
 0,
 DCMD_INT+IF_TRUE,
 __FATALERROR
 };
-ULONG  command_phase[]={
+ULONG command_phase[]={
 DCMD_CLR_ATN,
 0,
 TABLE_INDIRECT+BLOCK_MOVE+COMMAND_
 };
-ULONG  SRB_command[]={
+ULONG SRB_command[]={
 0,
 DCMD_JUMP+IF_TRUE
 };
-ULONG  jmp_check_phase1[]={
+ULONG jmp_check_phase1[]={
 0
 };
-ULONG  jmp_dio_phaseB[]={
+ULONG jmp_dio_phaseB[]={
 DCMD_JUMP+WAIT_PHASE_VALID+IF_TRUE+PHASE_CMP+DATA_IN_,
 0,
 DCMD_JUMP+WAIT_PHASE_VALID+IF_TRUE+PHASE_CMP+DATA_OUT_,
@@ -290,18 +290,18 @@ DCMD_JUMP+WAIT_PHASE_VALID+IF_TRUE+PHASE_CMP+DATA_IN_,
 DCMD_JUMP+WAIT_PHASE_VALID+IF_TRUE+PHASE_CMP+DATA_OUT_,
 0
 };
-ULONG  jump_table0[]={
+ULONG jump_table0[]={
 DCMD_JUMP+WAIT_PHASE_VALID+IF_TRUE+PHASE_CMP+DATA_IN_
 };
-ULONG  jmp_din_pad_0[]={
+ULONG jmp_din_pad_0[]={
 0,
 DCMD_JUMP+WAIT_PHASE_VALID+IF_TRUE+PHASE_CMP+DATA_OUT_
 };
-ULONG  jmp_dout_pad_0[]={
+ULONG jmp_dout_pad_0[]={
 0
 };
-#define jump_tableB	jump_table0
-ULONG  din_phaseB[]={
+#define jump_tableB jump_table0
+ULONG din_phaseB[]={
 DCMD_BLOCK_MOVE+TABLE_INDIRECT+BLOCK_MOVE+DATA_IN_,
 0,
 DCMD_BLOCK_MOVE+TABLE_INDIRECT+BLOCK_MOVE+DATA_IN_,
@@ -372,25 +372,25 @@ RD_MODIFY_WRT+OP_OR+0x100+0x340000,
 0,
 DCMD_JUMP+WAIT_PHASE_VALID+IF_NOT+PHASE_CMP+DATA_IN_
 };
-ULONG  jmp_status1_phase[]={
+ULONG jmp_status1_phase[]={
 0
 };
-#define din_phase	din_phaseB
-ULONG  din_pad_0[]={
+#define din_phase din_phaseB
+ULONG din_pad_0[]={
 RD_MODIFY_WRT+OP_OR+0x340000+0x400,
 0
 };
-ULONG  din_pad_addrB[]={
+ULONG din_pad_addrB[]={
 DCMD_BLOCK_MOVE+TABLE_INDIRECT+BLOCK_MOVE+DATA_IN_
 };
-ULONG  SRB_SegmentPad[]={
+ULONG SRB_SegmentPad[]={
 0,
 DCMD_JUMP+IF_TRUE
 };
-ULONG  jmp_din_pad_addrB[]={
+ULONG jmp_din_pad_addrB[]={
 0
 };
-ULONG  dout_phaseB[]={
+ULONG dout_phaseB[]={
 DCMD_BLOCK_MOVE+TABLE_INDIRECT+BLOCK_MOVE+DATA_OUT_,
 0,
 DCMD_BLOCK_MOVE+TABLE_INDIRECT+BLOCK_MOVE+DATA_OUT_,
@@ -461,25 +461,25 @@ RD_MODIFY_WRT+OP_OR+0x100+0x340000,
 0,
 DCMD_JUMP+WAIT_PHASE_VALID+IF_NOT+PHASE_CMP+DATA_OUT_
 };
-ULONG  jmp_status1_phase1[]={
+ULONG jmp_status1_phase1[]={
 0
 };
-#define dout_phase	dout_phaseB
-ULONG  dout_pad_0[]={
+#define dout_phase dout_phaseB
+ULONG dout_pad_0[]={
 RD_MODIFY_WRT+OP_OR+0x340000+0x400,
 0
 };
-ULONG  dout_pad_addrB[]={
+ULONG dout_pad_addrB[]={
 DCMD_BLOCK_MOVE+TABLE_INDIRECT+BLOCK_MOVE+DATA_OUT_
 };
-ULONG  SRB_SegmentPad1[]={
+ULONG SRB_SegmentPad1[]={
 0,
 DCMD_JUMP+IF_TRUE
 };
-ULONG  jmp_dout_pad_addrB[]={
+ULONG jmp_dout_pad_addrB[]={
 0
 };
-ULONG  jmp_dio_phaseW[]={
+ULONG jmp_dio_phaseW[]={
 DCMD_JUMP+WAIT_PHASE_VALID+IF_TRUE+PHASE_CMP+DATA_IN_,
 0,
 DCMD_JUMP+WAIT_PHASE_VALID+IF_TRUE+PHASE_CMP+DATA_OUT_,
@@ -613,18 +613,18 @@ DCMD_JUMP+WAIT_PHASE_VALID+IF_TRUE+PHASE_CMP+DATA_IN_,
 DCMD_JUMP+WAIT_PHASE_VALID+IF_TRUE+PHASE_CMP+DATA_OUT_,
 0
 };
-ULONG  jump_tablew[]={
+ULONG jump_tablew[]={
 DCMD_JUMP+WAIT_PHASE_VALID+IF_TRUE+PHASE_CMP+DATA_IN_
 };
-ULONG  jmp_din_pad_1[]={
+ULONG jmp_din_pad_1[]={
 0,
 DCMD_JUMP+WAIT_PHASE_VALID+IF_TRUE+PHASE_CMP+DATA_OUT_
 };
-ULONG  jmp_dout_pad_1[]={
+ULONG jmp_dout_pad_1[]={
 0
 };
-#define jump_tableW	jump_tablew
-ULONG  din_phaseW[]={
+#define jump_tableW jump_tablew
+ULONG din_phaseW[]={
 DCMD_BLOCK_MOVE+TABLE_INDIRECT+CHAIN_MOVE+DATA_IN_,
 0,
 DCMD_BLOCK_MOVE+TABLE_INDIRECT+CHAIN_MOVE+DATA_IN_,
@@ -695,25 +695,25 @@ RD_MODIFY_WRT+OP_OR+0x340000+0x100,
 0,
 DCMD_JUMP+WAIT_PHASE_VALID+IF_NOT+PHASE_CMP+DATA_IN_
 };
-ULONG  jmp_status1_phase2[]={
+ULONG jmp_status1_phase2[]={
 0
 };
-#define din_phase1	din_phaseW
-ULONG  din_pad_1[]={
+#define din_phase1 din_phaseW
+ULONG din_pad_1[]={
 RD_MODIFY_WRT+OP_OR+0x340000+0x400,
 0
 };
-ULONG  din_pad_addrW[]={
+ULONG din_pad_addrW[]={
 DCMD_BLOCK_MOVE+TABLE_INDIRECT+CHAIN_MOVE+DATA_IN_
 };
-ULONG  SRB_SegmentPad2[]={
+ULONG SRB_SegmentPad2[]={
 0,
 DCMD_JUMP+IF_TRUE
 };
-ULONG  jmp_din_pad_addrW[]={
+ULONG jmp_din_pad_addrW[]={
 0
 };
-ULONG  dout_phaseW[]={
+ULONG dout_phaseW[]={
 DCMD_BLOCK_MOVE+TABLE_INDIRECT+CHAIN_MOVE+DATA_OUT_,
 0,
 DCMD_BLOCK_MOVE+TABLE_INDIRECT+CHAIN_MOVE+DATA_OUT_,
@@ -784,53 +784,53 @@ RD_MODIFY_WRT+OP_OR+0x340000+0x100,
 0,
 DCMD_JUMP+WAIT_PHASE_VALID+IF_NOT+PHASE_CMP+DATA_OUT_
 };
-ULONG  jmp_status1_phase3[]={
+ULONG jmp_status1_phase3[]={
 0
 };
-#define dout_phase1	dout_phaseW
-ULONG  dout_pad_1[]={
+#define dout_phase1 dout_phaseW
+ULONG dout_pad_1[]={
 RD_MODIFY_WRT+OP_OR+0x340000+0x400,
 0
 };
-ULONG  dout_pad_addrW[]={
+ULONG dout_pad_addrW[]={
 DCMD_BLOCK_MOVE+TABLE_INDIRECT+BLOCK_MOVE+DATA_OUT_
 };
-ULONG  SRB_SegmentPad3[]={
+ULONG SRB_SegmentPad3[]={
 0,
 DCMD_JUMP+IF_TRUE
 };
-ULONG  jmp_dout_pad_addrW[]={
+ULONG jmp_dout_pad_addrW[]={
 0
 };
-ULONG  mout_phase[]={
+ULONG mout_phase[]={
 DCMD_SET_ATN,
 0,
 DCMD_BLOCK_MOVE+TABLE_INDIRECT+BLOCK_MOVE+MSG_OUT_
 };
-ULONG  SRB_msgout01[]={
+ULONG SRB_msgout01[]={
 0,
 DCMD_JUMP+IF_TRUE
 };
-ULONG  jmp_check_phase2[]={
+ULONG jmp_check_phase2[]={
 0
 };
-ULONG  status_phase[]={
+ULONG status_phase[]={
 DCMD_BLOCK_MOVE+BLOCK_MOVE+STATUS_+1
 };
-ULONG  ACB_status[]={
+ULONG ACB_status[]={
 0
 };
-ULONG  min_phase[]={
+ULONG min_phase[]={
 DCMD_BLOCK_MOVE+BLOCK_MOVE+MSG_IN_+1
 };
-ULONG  ACB_msgin123_3[]={
+ULONG ACB_msgin123_3[]={
 0,
 DCMD_JUMP+IF_NOT+DATA_CMP+CMD_COMPLETE
 };
-ULONG  jmp_jump_msgok[]={
+ULONG jmp_jump_msgok[]={
 0
 };
-ULONG  msg__0[]={
+ULONG msg__0[]={
 RD_MODIFY_WRT+OP_AND+0x20000+0x7F00,
 0,
 DCMD_CLR_ACK,
@@ -840,113 +840,113 @@ DCMD_WAIT_DISC,
 DCMD_INT+IF_TRUE,
 __COMPLETE
 };
-ULONG  jump_msgok[]={
+ULONG jump_msgok[]={
 DCMD_JUMP+IF_TRUE+DATA_CMP+SAVE_PTR
 };
-ULONG  jmp_msg__a[]={
+ULONG jmp_msg__a[]={
 0,
 DCMD_JUMP+IF_TRUE+DATA_CMP+RESTORE_PTR
 };
-ULONG  jmp_msg__3[]={
+ULONG jmp_msg__3[]={
 0,
 DCMD_JUMP+IF_TRUE+DATA_CMP+DISCONNECTMSG
 };
-ULONG  jmp_msg__4[]={
+ULONG jmp_msg__4[]={
 0,
 DCMD_JUMP+IF_TRUE+DATA_CMP+EXT_MSG
 };
-ULONG  jmp_msg__1[]={
+ULONG jmp_msg__1[]={
 0,
 DCMD_INT+IF_TRUE+DATA_CMP+MSG_REJECT,
 __MSGREJECT,
 DCMD_JUMP+IF_TRUE+DATA_CMP+LINK_CMD_CPL
 };
-ULONG  jmp_msg__a1[]={
+ULONG jmp_msg__a1[]={
 0,
 DCMD_JUMP+IF_TRUE+DATA_CMP+LINK_CMD_FLAG
 };
-ULONG  jmp_msg__a2[]={
+ULONG jmp_msg__a2[]={
 0,
 DCMD_JUMP+IF_TRUE+DATA_CMP+IGNORE_WIDE_RES
 };
-ULONG  jmp_msg__23[]={
+ULONG jmp_msg__23[]={
 0,
 DCMD_INT+IF_TRUE,
 __MSGUNKNOWN
 };
-ULONG  msg__1[]={
+ULONG msg__1[]={
 DCMD_CLR_ACK,
 0,
 DCMD_BLOCK_MOVE+BLOCK_MOVE+MSG_IN_+1
 };
-ULONG  ACB_msgin123_4[]={
+ULONG ACB_msgin123_4[]={
 0,
 DCMD_JUMP+IF_TRUE+DATA_CMP+3
 };
-ULONG  jmp_msg___3[]={
+ULONG jmp_msg___3[]={
 0,
 DCMD_JUMP+IF_TRUE+DATA_CMP+2
 };
-ULONG  jmp_msg___2[]={
+ULONG jmp_msg___2[]={
 0,
 DCMD_INT+IF_TRUE,
 __MSGEXTEND
 };
-ULONG  msg___3[]={
+ULONG msg___3[]={
 DCMD_CLR_ACK,
 0,
 DCMD_BLOCK_MOVE+BLOCK_MOVE+MSG_IN_+3
 };
-ULONG  ACB_msgin123_5[]={
+ULONG ACB_msgin123_5[]={
 0,
 DCMD_INT+IF_TRUE,
 __MSGSYNC
 };
-ULONG  msg___2[]={
+ULONG msg___2[]={
 DCMD_CLR_ACK,
 0,
 DCMD_BLOCK_MOVE+BLOCK_MOVE+MSG_IN_+2
 };
-ULONG  ACB_msgin123_6[]={
+ULONG ACB_msgin123_6[]={
 0,
 DCMD_INT+IF_TRUE,
 __MSGWIDE
 };
-ULONG  set_atn[]={
+ULONG set_atn[]={
 DCMD_SET_ATN,
 0
 };
-ULONG  msg__a[]={
+ULONG msg__a[]={
 DCMD_CLR_ACK,
 0,
 DCMD_JUMP+IF_TRUE
 };
-ULONG  jmp_check_phase3[]={
+ULONG jmp_check_phase3[]={
 0
 };
-ULONG  msg__23[]={
+ULONG msg__23[]={
 DCMD_CLR_ACK,
 0,
 DCMD_BLOCK_MOVE+BLOCK_MOVE+MSG_IN_+1
 };
-ULONG  ACB_msgin123_7[]={
+ULONG ACB_msgin123_7[]={
 0,
 DCMD_CLR_ACK,
 0,
 DCMD_JUMP+IF_TRUE
 };
-ULONG  jmp_check_phase4[]={
+ULONG jmp_check_phase4[]={
 0
 };
-ULONG  msg__3[]={
+ULONG msg__3[]={
 DCMD_CLR_ACK,
 0,
 DCMD_JUMP+IF_TRUE
 };
-ULONG  jmp_check_phase5[]={
+ULONG jmp_check_phase5[]={
 0
 };
-ULONG  msg__4[]={
+ULONG msg__4[]={
 RD_MODIFY_WRT+OP_AND+0x20000+0x7F00,
 0,
 DCMD_CLR_ACK,
@@ -956,25 +956,25 @@ DCMD_WAIT_DISC,
 DCMD_INT+IF_TRUE,
 __DISCONNECTED
 };
-ULONG  clr_atn[]={
+ULONG clr_atn[]={
 DCMD_CLR_ATN,
 0,
 DCMD_JUMP+IF_TRUE
 };
-ULONG  jmp_check_phase6[]={
+ULONG jmp_check_phase6[]={
 0
 };
-ULONG  start_mov[]={
+ULONG start_mov[]={
 DCMD_MEM_MOVE+0x1000
 };
-ULONG  SrcPhysAddr[]={
+ULONG SrcPhysAddr[]={
 0
 };
-ULONG  DesPhysAddr[]={
+ULONG DesPhysAddr[]={
 0,
 DCMD_INT+IF_TRUE,
 0,
 DCMD_INT+IF_NOT,
 0
 };
-ULONG  end_script[]={0};
+ULONG end_script[]={0};

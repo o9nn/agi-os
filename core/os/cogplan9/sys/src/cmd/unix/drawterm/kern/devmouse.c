@@ -1,26 +1,26 @@
-#include	"u.h"
-#include	"lib.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
-#include	"draw.h"
-#include	"memdraw.h"
-#include	"screen.h"
-int	mousequeue = 1;
-Mouseinfo	mouse;
-Cursorinfo	cursor;
-static int	mousechanged(void*);
+#include "u.h"
+#include "lib.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
+#include "draw.h"
+#include "memdraw.h"
+#include "screen.h"
+int mousequeue = 1;
+Mouseinfo mouse;
+Cursorinfo cursor;
+static int mousechanged(void*);
 enum{
 Qdir,
 Qcursor,
 Qmouse
 };
 Dirtab mousedir[]={
-".",		{Qdir, 0, QTDIR},	0,	DMDIR|0555,
-"cursor",	{Qcursor},	0,			0666,
-"mouse",	{Qmouse},	0,			0666,
+".", {Qdir, 0, QTDIR}, 0, DMDIR|0555,
+"cursor", {Qcursor}, 0, 0666,
+"mouse", {Qmouse}, 0, 0666,
 };
-#define	NMOUSE	(sizeof(mousedir)/sizeof(Dirtab))
+#define NMOUSE (sizeof(mousedir)/sizeof(Dirtab))
 static Chan*
 mouseattach(char *spec)
 {

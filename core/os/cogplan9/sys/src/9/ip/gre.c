@@ -6,21 +6,21 @@
 #include "../port/error.h"
 #include "ip.h"
 enum {
-GRE_IPONLY	= 12,
-GRE_IPPLUSGRE	= 12,
-IP_GREPROTO	= 47,
-GRErxms		= 200,
-GREtickms	= 100,
-GREmaxxmit	= 10,
-K		= 1024,
-GREqlen		= 256 * K,
-GRE_cksum	= 0x8000,
-GRE_routing	= 0x4000,
-GRE_key		= 0x2000,
-GRE_seq		= 0x1000,
-Nring		= 1 << 10,
-Ringmask	= Nring - 1,
-GREctlraw	= 0,
+GRE_IPONLY = 12,
+GRE_IPPLUSGRE = 12,
+IP_GREPROTO = 47,
+GRErxms = 200,
+GREtickms = 100,
+GREmaxxmit = 10,
+K = 1024,
+GREqlen = 256 * K,
+GRE_cksum = 0x8000,
+GRE_routing = 0x4000,
+GRE_key = 0x2000,
+GRE_seq = 0x1000,
+Nring = 1 << 10,
+Ringmask = Nring - 1,
+GREctlraw = 0,
 GREctlcooked,
 GREctlretunnel,
 GREctlreport,
@@ -34,49 +34,49 @@ Ncmds,
 };
 typedef struct GREhdr GREhdr;
 struct GREhdr{
-uchar	vihl;
-uchar	tos;
-uchar	len[2];
-uchar	id[2];
-uchar	frag[2];
-uchar	ttl;
-uchar	proto;
-uchar	cksum[2];
-uchar	src[4];
-uchar	dst[4];
-uchar	flags[2];
-uchar	eproto[2];
+uchar vihl;
+uchar tos;
+uchar len[2];
+uchar id[2];
+uchar frag[2];
+uchar ttl;
+uchar proto;
+uchar cksum[2];
+uchar src[4];
+uchar dst[4];
+uchar flags[2];
+uchar eproto[2];
 };
 typedef struct GREpriv GREpriv;
 struct GREpriv{
-ulong	lenerr;
+ulong lenerr;
 };
-typedef struct Bring	Bring;
+typedef struct Bring Bring;
 struct Bring{
-Block	*ring[Nring];
-long	produced;
-long	consumed;
+Block *ring[Nring];
+long produced;
+long consumed;
 };
-typedef struct GREconv	GREconv;
+typedef struct GREconv GREconv;
 struct GREconv{
-int	raw;
-uchar	north[4];
-uchar	south[4];
-uchar	hoa[4];
-uchar	coa[4];
-ulong	seq;
-int	dlsusp;
-int	ulsusp;
-ulong	ulkey;
-QLock	lock;
-Bring	dlpending;
-Bring	dlbuffered;
-Bring	ulbuffered;
+int raw;
+uchar north[4];
+uchar south[4];
+uchar hoa[4];
+uchar coa[4];
+ulong seq;
+int dlsusp;
+int ulsusp;
+ulong ulkey;
+QLock lock;
+Bring dlpending;
+Bring dlbuffered;
+Bring ulbuffered;
 };
 typedef struct Metablock Metablock;
 struct Metablock{
-uchar	*rp;
-ulong	seq;
+uchar *rp;
+ulong seq;
 };
 static char *grectlcooked(Conv *, int, char **);
 static char *grectldlresume(Conv *, int, char **);
@@ -89,20 +89,20 @@ static char *grectlulkey(Conv *, int, char **);
 static char *grectlulresume(Conv *, int, char **);
 static char *grectlulsuspend(Conv *, int, char **);
 static struct{
-char	*cmd;
-int	argc;
-char	*(*f)(Conv *, int, char **);
+char *cmd;
+int argc;
+char *(*f)(Conv *, int, char **);
 } grectls[Ncmds] = {
-[GREctlraw]	=	{	"raw",		1,	grectlraw,	},
-[GREctlcooked]	=	{	"cooked",	1,	grectlcooked,	},
-[GREctlretunnel]=	{	"retunnel",	5,	grectlretunnel,	},
-[GREctlreport]	=	{	"report",	2,	grectlreport,	},
-[GREctldlsuspend]=	{	"dlsuspend",	1,	grectldlsuspend,},
-[GREctlulsuspend]=	{	"ulsuspend",	1,	grectlulsuspend,},
-[GREctldlresume]=	{	"dlresume",	1,	grectldlresume,	},
-[GREctlulresume]=	{	"ulresume",	1,	grectlulresume,	},
-[GREctlforward]	=	{	"forward",	2,	grectlforward,	},
-[GREctlulkey]	=	{	"ulkey",	2,	grectlulkey,	},
+[GREctlraw] = { "raw", 1, grectlraw, },
+[GREctlcooked] = { "cooked", 1, grectlcooked, },
+[GREctlretunnel]= { "retunnel", 5, grectlretunnel, },
+[GREctlreport] = { "report", 2, grectlreport, },
+[GREctldlsuspend]= { "dlsuspend", 1, grectldlsuspend,},
+[GREctlulsuspend]= { "ulsuspend", 1, grectlulsuspend,},
+[GREctldlresume]= { "dlresume", 1, grectldlresume, },
+[GREctlulresume]= { "ulresume", 1, grectlulresume, },
+[GREctlforward] = { "forward", 2, grectlforward, },
+[GREctlulkey] = { "ulkey", 2, grectlulkey, },
 };
 static uchar nulladdr[4];
 static char *sessend = "session end";
@@ -177,9 +177,9 @@ grestate(Conv *c, char *state, int n)
 GREconv *grec;
 char *ep, *p;
 grec = c->ptcl;
-p    = state;
-ep   = p + n;
-p    = seprint(p, ep, "%s%s%s%shoa %V north %V south %V seq %ulx "
+p = state;
+ep = p + n;
+p = seprint(p, ep, "%s%s%s%shoa %V north %V south %V seq %ulx "
 "pending %uld  %uld buffered dl %uld %uld ul %uld %uld ulkey %.8ulx\n",
 c->inuse? "Open ": "Closed ",
 grec->raw? "raw ": "",
@@ -236,7 +236,7 @@ GREhdr *gre;
 uchar laddr[IPaddrlen], raddr[IPaddrlen];
 if(bp == nil)
 return;
-c    = x;
+c = x;
 grec = c->ptcl;
 bp = padblock(bp, GRE_IPONLY);
 if(bp == nil)
@@ -278,8 +278,8 @@ if(gre->ttl == 1){
 freeb(bp);
 return;
 }
-grec   = c->ptcl;
-flags  = nhgets(gre->flags);
+grec = c->ptcl;
+flags = nhgets(gre->flags);
 hdrlen = 0;
 if(flags & GRE_cksum)
 hdrlen += 2;
@@ -311,7 +311,7 @@ hnputs(gre->flags, GRE_seq);
 hnputl(bp->rp + sizeof(GREhdr), seq);
 assert(bp->rp - bp->base >= sizeof(Metablock));
 m = (Metablock *)bp->base;
-m->rp  = bp->rp;
+m->rp = bp->rp;
 m->seq = seq;
 restart:
 suspended = grec->dlsusp;
@@ -401,7 +401,7 @@ GREpriv *gpriv;
 Ip4hdr *ip;
 if(bp->next){
 len = blocklen(bp);
-bp  = pullupblock(bp, len);
+bp = pullupblock(bp, len);
 assert(BLEN(bp) == len && bp->next == nil);
 }
 gre = (GREhdr *)bp->rp;
@@ -411,7 +411,7 @@ return;
 }
 v4tov6(raddr, gre->src);
 eproto = nhgets(gre->eproto);
-flags  = nhgets(gre->flags);
+flags = nhgets(gre->flags);
 hdrlen = sizeof(GREhdr);
 if(flags & GRE_cksum)
 hdrlen += 2;
@@ -545,7 +545,7 @@ Bring *r;
 GREconv *grec;
 Metablock *m;
 grec = c->ptcl;
-seq  = strtoul(argv[1], nil, 0);
+seq = strtoul(argv[1], nil, 0);
 qlock(&grec->lock);
 r = &grec->dlpending;
 while(r->produced - r->consumed > 0){
@@ -652,7 +652,7 @@ nbp = allocb(len);
 memmove(nbp->wp, m->rp, len);
 nbp->wp += len;
 freeb(bp);
-bp  = nbp;
+bp = nbp;
 }
 else{
 bp->rp = m->rp;

@@ -1,7 +1,7 @@
 #include "defs.h"
 #include <sys/stat.h>
 #include <ar.h>
-#define NAMESPERBLOCK	32
+#define NAMESPERBLOCK 32
 char *dfltmacro[] =
 {
 ".SUFFIXES : .o .c .y .l .a .sh .f",
@@ -82,25 +82,25 @@ char *dfltsuff[] =
 "\tcp $< $@",
 "\tchmod a+x $@",
 0 };
-static struct dirhd	*opdir(char *, int);
-static void		cldir(struct dirhd *, int);
-static int		amatch(char *, char *);
-static int		umatch(char *, char *);
-static void		clarch(void);
-static int		openarch(char *);
-static int		getarch(void);
+static struct dirhd *opdir(char *, int);
+static void cldir(struct dirhd *, int);
+static int amatch(char *, char *);
+static int umatch(char *, char *);
+static void clarch(void);
+static int openarch(char *);
+static int getarch(void);
 time_t
 exists(char *filename)
 {
 struct stat buf;
 char *s;
-for(s = filename ; *s!='\0' && *s!='(' &&  *s!=')' ; ++s)
+for(s = filename ; *s!='\0' && *s!='(' && *s!=')' ; ++s)
 ;
 if(*s != '\0')
 return lookarch(filename);
 if(stat(filename,&buf) < 0)
 return 0;
-else	return buf.st_mtime;
+else return buf.st_mtime;
 }
 time_t
 prestime(void)
@@ -139,7 +139,7 @@ dirname = ".";
 dirpref = "";
 filepat = pat;
 }
-else	{
+else {
 dirname = pat;
 *endir = '\0';
 dirpref = concat(dirname, "/", temp);
@@ -224,7 +224,7 @@ return amatch(++s, ++p);
 else
 return 0;
 case '-':
-k |= (lc <= scc)  & (scc <= (cc=p[1]) ) ;
+k |= (lc <= scc) & (scc <= (cc=p[1]) ) ;
 }
 if (scc==(lc=cc)) k++;
 }
@@ -251,7 +251,7 @@ return 0;
 }
 #ifdef METERFILE
 #include <pwd.h>
-int meteron	= 0;
+int meteron = 0;
 extern void meter(char *file)
 {
 time_t tvec;
@@ -310,7 +310,7 @@ return arfdate;
 }
 }
 clarch();
-return  0L;
+return 0L;
 }
 static void
 clarch(void)

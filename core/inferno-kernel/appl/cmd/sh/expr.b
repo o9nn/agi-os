@@ -167,15 +167,15 @@ if (tl args != nil)
 n2 = hd tl args;
 r := big 0;
 case op {
-EQ =>	r = big(n1 == n2);
-NEQ =>	r = big(n1 != n2);
-GT =>	r = big(n1 > n2);
-LT =>	r = big(n1 < n2);
-GE =>	r = big(n1 >= n2);
-LE =>	r = big(n1 <= n2);
-PLUS =>	r = big(n1 + n2);
-MINUS =>	r = big(n1 - n2);
-NOT	 =>	r = big(n1 != big 0);
+EQ => r = big(n1 == n2);
+NEQ => r = big(n1 != n2);
+GT => r = big(n1 > n2);
+LT => r = big(n1 < n2);
+GE => r = big(n1 >= n2);
+LE => r = big(n1 <= n2);
+PLUS => r = big(n1 + n2);
+MINUS => r = big(n1 - n2);
+NOT => r = big(n1 != big 0);
 DIVIDE =>
 if (n2 == big 0)
 ctxt.fail("divide by zero", "expr: division by zero");
@@ -184,15 +184,15 @@ MOD =>
 if (n2 == big 0)
 ctxt.fail("divide by zero", "expr: division by zero");
 r = n1 % n2;
-TIMES =>	r = n1 * n2;
-AND =>	r = n1 & n2;
-OR =>	r = n1 | n2;
-XOR =>	r = n1 ^ n2;
+TIMES => r = n1 * n2;
+AND => r = n1 & n2;
+OR => r = n1 | n2;
+XOR => r = n1 ^ n2;
 UMINUS => r = -n1;
-BNOT =>	r = ~n1;
-SHL =>	r = n1 << int n2;
-SHR =>	r = n1 >> int n2;
-SEQ =>	return seq(n1, n2, stk);
+BNOT => r = ~n1;
+SHL => r = n1 << int n2;
+SHR => r = n1 >> int n2;
+SEQ => return seq(n1, n2, stk);
 }
 return r :: stk;
 }
@@ -230,7 +230,7 @@ if ('0' <= s[i] && s[i] <= '9')
 n = (n * big radix) + big(s[i] - '0');
 else if ('a' <= s[i] && s[i] < 'a' + radix - 10)
 n = (n * big radix) + big(s[i] - 'a' + 10);
-else if ('A' <= s[i] && s[i]  < 'A' + radix - 10)
+else if ('A' <= s[i] && s[i] < 'A' + radix - 10)
 n = (n * big radix) + big(s[i] - 'A' + 10);
 else
 break;

@@ -7,15 +7,15 @@ struct common_arg {
 std::set<enum llama_example> examples = {LLAMA_EXAMPLE_COMMON};
 std::set<enum llama_example> excludes = {};
 std::vector<const char *> args;
-const char * value_hint   = nullptr;
+const char * value_hint = nullptr;
 const char * value_hint_2 = nullptr;
-const char * env          = nullptr;
+const char * env = nullptr;
 std::string help;
 bool is_sparam = false;
-void (*handler_void)   (common_params & params) = nullptr;
+void (*handler_void) (common_params & params) = nullptr;
 void (*handler_string) (common_params & params, const std::string &) = nullptr;
 void (*handler_str_str)(common_params & params, const std::string &, const std::string &) = nullptr;
-void (*handler_int)    (common_params & params, int) = nullptr;
+void (*handler_int) (common_params & params, int) = nullptr;
 common_arg(
 const std::initializer_list<const char *> & args,
 const char * value_hint,

@@ -818,7 +818,7 @@ test_end();
 static void test_mail_cache_purge_deadlines(void)
 {
 static const uint32_t BASE_TIME = 1000;
-static const uint32_t DROP_SECS =  100;
+static const uint32_t DROP_SECS = 100;
 struct mail_cache cache;
 struct mail_index index;
 struct mail_index_header hdr;

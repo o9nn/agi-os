@@ -4,10 +4,10 @@ struct State
 int asfd;
 int astype;
 Key *key;
-Ticket	t;
-Ticketreq	tr;
+Ticket t;
+Ticketreq tr;
 char chal[128];
-char	resp[64];
+char resp[64];
 char *user;
 };
 enum
@@ -20,11 +20,11 @@ SNeedResp,
 Maxphase,
 };
 static char *phasenames[Maxphase] = {
-[CNeedChal]	"CNeedChal",
-[CHaveResp]	"CHaveResp",
-[SHaveChal]	"SHaveChal",
-[SNeedUser]	"SNeedUser",
-[SNeedResp]	"SNeedResp",
+[CNeedChal] "CNeedChal",
+[CHaveResp] "CHaveResp",
+[SHaveChal] "SHaveChal",
+[SNeedUser] "SNeedUser",
+[SNeedResp] "SNeedResp",
 };
 static int dochal(State*);
 static int doreply(State*, char*, char*);
@@ -249,20 +249,20 @@ s->asfd = -1;
 return -1;
 }
 Proto apop = {
-.name=	"apop",
-.init=		apopinit,
-.write=	apopwrite,
-.read=	apopread,
-.close=	apopclose,
-.addkey=	replacekey,
-.keyprompt=	"!password?"
+.name= "apop",
+.init= apopinit,
+.write= apopwrite,
+.read= apopread,
+.close= apopclose,
+.addkey= replacekey,
+.keyprompt= "!password?"
 };
 Proto cram = {
-.name=	"cram",
-.init=		apopinit,
-.write=	apopwrite,
-.read=	apopread,
-.close=	apopclose,
-.addkey=	replacekey,
-.keyprompt=	"!password?"
+.name= "cram",
+.init= apopinit,
+.write= apopwrite,
+.read= apopread,
+.close= apopclose,
+.addkey= replacekey,
+.keyprompt= "!password?"
 };

@@ -4,66 +4,66 @@
 typedef struct Mode Mode;
 struct Mode
 {
-char*	name;
-int	bit;
+char* name;
+int bit;
 };
 Mode ou[] =
 {
-"opost",	OPOST,
-"olcuc",	OLCUC,
-"onlcr",	ONLCR,
-"ocrnl",	OCRNL,
-"onocr",	ONOCR,
-"onlret",	ONLRET,
-"ofill",	OFILL,
-"ofdel",	OFDEL,
+"opost", OPOST,
+"olcuc", OLCUC,
+"onlcr", ONLCR,
+"ocrnl", OCRNL,
+"onocr", ONOCR,
+"onlret", ONLRET,
+"ofill", OFILL,
+"ofdel", OFDEL,
 0
 };
 Mode in[] =
 {
-"brkint",	BRKINT,
-"icrnl",	ICRNL,
-"ignbrk",	IGNBRK,
-"igncr",	IGNCR,
-"ignpar",	IGNPAR,
-"inlcr",	INLCR,
-"inpck",	INPCK,
-"istrip",	ISTRIP,
-"ixoff",	IXOFF,
-"ixon",		IXON,
-"parmrk",	PARMRK,
+"brkint", BRKINT,
+"icrnl", ICRNL,
+"ignbrk", IGNBRK,
+"igncr", IGNCR,
+"ignpar", IGNPAR,
+"inlcr", INLCR,
+"inpck", INPCK,
+"istrip", ISTRIP,
+"ixoff", IXOFF,
+"ixon", IXON,
+"parmrk", PARMRK,
 0
 };
 Mode lo[] =
 {
-"echo",		ECHO,
-"echoe",	ECHOE,
-"echok", 	ECHOK,
-"echonl",	ECHONL,
-"icanon",	ICANON,
-"iexten",	IEXTEN,
-"isig",		ISIG,
-"noflsh",	NOFLSH,
-"tostop",	TOSTOP,
+"echo", ECHO,
+"echoe", ECHOE,
+"echok", ECHOK,
+"echonl", ECHONL,
+"icanon", ICANON,
+"iexten", IEXTEN,
+"isig", ISIG,
+"noflsh", NOFLSH,
+"tostop", TOSTOP,
 0
 };
 Mode cc[] =
 {
-"eof",		VEOF,
-"eol",		VEOL,
-"erase",	VERASE,
-"intr",		VINTR,
-"kill",		VKILL,
-"min",		VMIN,
-"quit",		VQUIT,
-"susp",		VSUSP,
-"time",		VTIME,
-"start",	VSTART,
-"stop",		VSTOP,
+"eof", VEOF,
+"eol", VEOL,
+"erase", VERASE,
+"intr", VINTR,
+"kill", VKILL,
+"min", VMIN,
+"quit", VQUIT,
+"susp", VSUSP,
+"time", VTIME,
+"start", VSTART,
+"stop", VSTOP,
 0,
 };
-int	getmode(int, Termios*);
-int	setmode(int, Termios*);
+int getmode(int, Termios*);
+int setmode(int, Termios*);
 char*
 ctlchar(char c)
 {

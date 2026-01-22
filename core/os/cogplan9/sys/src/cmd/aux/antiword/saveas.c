@@ -6,11 +6,11 @@
 #include "DeskLib:Window.h"
 #include "drawfile.h"
 #include "antiword.h"
-static window_handle	tSaveWindow = 0;
-#define DRAG_SPRITE	3
-#define OK_BUTTON	0
-#define CANCEL_BUTTON	(-1)
-#define FILENAME_ICON	2
+static window_handle tSaveWindow = 0;
+#define DRAG_SPRITE 3
+#define OK_BUTTON 0
+#define CANCEL_BUTTON (-1)
+#define FILENAME_ICON 2
 static void
 saveas(int iFileType, char *szOutfile, size_t tEstSize,
 save_filesaver save_function, void *pvReference)
@@ -37,13 +37,13 @@ return TRUE;
 static BOOL
 bText2File(char *szFilename, void *pvHandle)
 {
-FILE	*pFile;
-diagram_type	*pDiag;
-drawfile_object	*pObj;
-drawfile_text	*pText;
-const char	*pcTmp;
-int	iToGo, iX, iYtopPrev, iHeight, iLines;
-BOOL	bFirst, bIndent, bSuccess;
+FILE *pFile;
+diagram_type *pDiag;
+drawfile_object *pObj;
+drawfile_text *pText;
+const char *pcTmp;
+int iToGo, iX, iYtopPrev, iHeight, iLines;
+BOOL bFirst, bIndent, bSuccess;
 TRACE_MSG("bText2File");
 fail(szFilename == NULL || szFilename[0] == '\0');
 fail(pvHandle == NULL);
@@ -125,8 +125,8 @@ return bSuccess;
 BOOL
 bSaveTextfile(event_pollblock *pEvent, void *pvReference)
 {
-diagram_type	*pDiag;
-size_t	tRecLen, tNbrRecs, tEstSize;
+diagram_type *pDiag;
+size_t tRecLen, tNbrRecs, tEstSize;
 TRACE_MSG("bSaveTextfile");
 fail(pEvent == NULL);
 fail(pvReference == NULL);
@@ -159,18 +159,18 @@ return TRUE;
 static BOOL
 bDraw2File(char *szFilename, void *pvHandle)
 {
-FILE		*pFile;
-diagram_type	*pDiagram;
-wimp_box	*pBbox;
-drawfile_object	*pObj;
-drawfile_text	*pText;
-drawfile_path	*pPath;
-drawfile_sprite	*pSprite;
-drawfile_jpeg	*pJpeg;
-int	*piPath;
-char	*pcTmp;
-int	iYadd, iToGo, iSize;
-BOOL	bSuccess;
+FILE *pFile;
+diagram_type *pDiagram;
+wimp_box *pBbox;
+drawfile_object *pObj;
+drawfile_text *pText;
+drawfile_path *pPath;
+drawfile_sprite *pSprite;
+drawfile_jpeg *pJpeg;
+int *piPath;
+char *pcTmp;
+int iYadd, iToGo, iSize;
+BOOL bSuccess;
 TRACE_MSG("bDraw2File");
 fail(szFilename == NULL || szFilename[0] == '\0');
 fail(pvHandle == NULL);
@@ -282,8 +282,8 @@ return bSuccess;
 BOOL
 bSaveDrawfile(event_pollblock *pEvent, void *pvReference)
 {
-diagram_type	*pDiag;
-size_t		tEstSize;
+diagram_type *pDiag;
+size_t tEstSize;
 TRACE_MSG("bSaveDrawfile");
 fail(pEvent == NULL);
 fail(pvReference == NULL);

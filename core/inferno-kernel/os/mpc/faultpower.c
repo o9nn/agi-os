@@ -1,16 +1,16 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"ureg.h"
-#include	"io.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "ureg.h"
+#include "io.h"
 enum
 {
-MC_IFETCH	= (1<<30),
-MC_STORE	= (1<<11),
-DSI_STORE	= (1<<25),
-DSI_PROT		= (1<<27),
+MC_IFETCH = (1<<30),
+MC_STORE = (1<<11),
+DSI_STORE = (1<<25),
+DSI_PROT = (1<<27),
 };
 void
 faultpower(Ureg *ur)

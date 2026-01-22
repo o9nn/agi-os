@@ -1,55 +1,55 @@
 (EvaluationLink
-	(PredicateNode "similar")
-	(ListLink
-		(ConceptNode "apple")
-		(ConceptNode "banana")
-	)
+(PredicateNode "similar")
+(ListLink
+(ConceptNode "apple")
+(ConceptNode "banana")
+)
 )
 (EvaluationLink
-	(PredicateNode "similar")
-	(ListLink
-		(ConceptNode "orange")
-		(ConceptNode "apple")
-	)
+(PredicateNode "similar")
+(ListLink
+(ConceptNode "orange")
+(ConceptNode "apple")
+)
 )
 (EvaluationLink
-	(PredicateNode "similar")
-	(ListLink
-		(ConceptNode "apple")
-		(ConceptNode "grape")
-	)
+(PredicateNode "similar")
+(ListLink
+(ConceptNode "apple")
+(ConceptNode "grape")
+)
 )
 (EvaluationLink
-	(PredicateNode "similar")
-	(ListLink
-		(VariableNode "$var-a")
-		(ConceptNode "banana")
-	)
+(PredicateNode "similar")
+(ListLink
+(VariableNode "$var-a")
+(ConceptNode "banana")
+)
 )
 (EvaluationLink
-	(PredicateNode "all-var")
-	(ListLink
-		(VariableNode "$var-a")
-		(VariableNode "$var-b")
-	)
+(PredicateNode "all-var")
+(ListLink
+(VariableNode "$var-a")
+(VariableNode "$var-b")
+)
 )
 (EvaluationLink
-	(PredicateNode "similar")
-	(ListLink
-		(VariableNode "$var-a")
-		(VariableNode "$wrong-var-b")
-	)
+(PredicateNode "similar")
+(ListLink
+(VariableNode "$var-a")
+(VariableNode "$wrong-var-b")
+)
 )
 (define bindy
-	(BindLink
-		(VariableNode "$var-a")
-		(EvaluationLink
-			(VariableNode "$var-a")
-			(QuoteLink (ListLink
-				(VariableNode "$var-a")
-				(VariableNode "$var-b")
-			))
-		)
-		(VariableNode "$var-a")
-	)
+(BindLink
+(VariableNode "$var-a")
+(EvaluationLink
+(VariableNode "$var-a")
+(QuoteLink (ListLink
+(VariableNode "$var-a")
+(VariableNode "$var-b")
+))
+)
+(VariableNode "$var-a")
+)
 )

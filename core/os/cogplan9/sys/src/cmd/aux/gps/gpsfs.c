@@ -7,50 +7,50 @@
 #include "dat.h"
 enum
 {
-Numsize=	12,
-Vlnumsize=	22,
-Rawbuf=		0x10000,
-Rawmask=	Rawbuf-1,
+Numsize= 12,
+Vlnumsize= 22,
+Rawbuf= 0x10000,
+Rawmask= Rawbuf-1,
 };
-#define	nsecperchar	((int)(1000000000.0 * 10.0 / baud))
+#define nsecperchar ((int)(1000000000.0 * 10.0 / baud))
 typedef struct Fix Fix;
 typedef struct Satellite Satellite;
 typedef struct GPSfile GPSfile;
 typedef struct Gpsmsg Gpsmsg;
 struct Satellite {
-int		prn;
-int		elevation;
-int		azimuth;
-int		snr;
+int prn;
+int elevation;
+int azimuth;
+int snr;
 };
 struct Fix {
-int		messages;
+int messages;
 Place;
-vlong		localtime;
-vlong		gpstime;
-long		time;
-double		zulu;
-int		date;
-char		valid;
-uchar		quality;
-ushort		satellites;
-double		pdop;
-double		hdop;
-double		vdop;
-double		altitude;
-double		sealevel;
-double		groundspeed;
-double		kmh;
-double		course;
-double		heading;
-double		magvar;
-Satellite	s[12];
+vlong localtime;
+vlong gpstime;
+long time;
+double zulu;
+int date;
+char valid;
+uchar quality;
+ushort satellites;
+double pdop;
+double hdop;
+double vdop;
+double altitude;
+double sealevel;
+double groundspeed;
+double kmh;
+double course;
+double heading;
+double magvar;
+Satellite s[12];
 };
 struct GPSfile {
-char	*name;
-char*	(*rread)(Req*);
-int	mode;
-vlong	offset;
+char *name;
+char* (*rread)(Req*);
+int mode;
+vlong offset;
 };
 enum {
 ASTRAL,
@@ -68,24 +68,24 @@ char *name;
 int tokens;
 ulong errors;
 };
-char	raw[Rawbuf];
-vlong	rawin;
-vlong	rawout;
-ulong	badlat, goodlat, suspectlat;
-ulong	badlon, goodlon, suspectlon;
-ulong	suspecttime, goodtime;
+char raw[Rawbuf];
+vlong rawin;
+vlong rawout;
+ulong badlat, goodlat, suspectlat;
+ulong badlon, goodlon, suspectlon;
+ulong suspecttime, goodtime;
 ulong histo[32];
 char *serial = "/dev/eia0";
 Gpsmsg gpsmsg[] = {
-[ASTRAL]	= { "ASTRAL",	 0,	0},
-[GPGGA]		= { "$GPGGA",	15,	0},
-[GPGLL]		= { "$GPGLL",	 7,	0},
-[GPGSA]		= { "$GPGSA",	18,	0},
-[GPGSV]		= { "$GPGSV",	0,	0},
-[GPRMC]		= { "$GPRMC",	0,	0},
-[GPVTG]		= { "$GPVTG",	0,	0},
-[PRWIRID]	= { "$PRWIRID",	0,	0},
-[PRWIZCH]	= { "$PRWIZCH",	0,	0},
+[ASTRAL] = { "ASTRAL", 0, 0},
+[GPGGA] = { "$GPGGA", 15, 0},
+[GPGLL] = { "$GPGLL", 7, 0},
+[GPGSA] = { "$GPGSA", 18, 0},
+[GPGSV] = { "$GPGSV", 0, 0},
+[GPRMC] = { "$GPRMC", 0, 0},
+[GPVTG] = { "$GPVTG", 0, 0},
+[PRWIRID] = { "$PRWIRID", 0, 0},
+[PRWIZCH] = { "$PRWIZCH", 0, 0},
 };
 int ttyfd, ctlfd, debug;
 int setrtc;
@@ -98,43 +98,43 @@ int gpsplayback;
 Place where = {-(74.0 + 23.9191/60.0), 40.0 + 41.1346/60.0};
 Fix curfix;
 Lock fixlock;
-int	type(char*);
-void	setline(void);
-int	getonechar(vlong*);
-void	getline(char*, int, vlong*);
-void	putline(char*);
-int	gettime(Fix*);
-int	getzulu(char *, Fix*);
-int	getalt(char*, char*, Fix*);
-int	getsea(char*, char*, Fix*);
-int	getlat(char*, char*, Fix*);
-int	getlon(char*, char*, Fix*);
-int	getgs(char*, Fix *);
-int	getkmh(char*, Fix*);
-int	getcrs(char*, Fix*);
-int	gethdg(char*, Fix*);
-int	getdate(char*, Fix*);
-int	getmagvar(char*, char*, Fix*);
-void	printfix(int, Fix*);
-void	ropen(Req *r);
-void	rread(Req *r);
-void	rend(Srv *s);
-void	gpsinit(void);
-char*	readposn(Req*);
-char*	readtime(Req*);
-char*	readsats(Req*);
-char*	readstats(Req*);
-char*	readraw(Req*);
+int type(char*);
+void setline(void);
+int getonechar(vlong*);
+void getline(char*, int, vlong*);
+void putline(char*);
+int gettime(Fix*);
+int getzulu(char *, Fix*);
+int getalt(char*, char*, Fix*);
+int getsea(char*, char*, Fix*);
+int getlat(char*, char*, Fix*);
+int getlon(char*, char*, Fix*);
+int getgs(char*, Fix *);
+int getkmh(char*, Fix*);
+int getcrs(char*, Fix*);
+int gethdg(char*, Fix*);
+int getdate(char*, Fix*);
+int getmagvar(char*, char*, Fix*);
+void printfix(int, Fix*);
+void ropen(Req *r);
+void rread(Req *r);
+void rend(Srv *s);
+void gpsinit(void);
+char* readposn(Req*);
+char* readtime(Req*);
+char* readsats(Req*);
+char* readstats(Req*);
+char* readraw(Req*);
 GPSfile files[] = {
-{ "time",	readtime,	0444,	0 },
-{ "position",	readposn,	0444,	0 },
-{ "satellites",	readsats,	0444,	0 },
-{ "stats",	readstats,	0444,	0 },
-{ "raw",	readraw,	DMEXCL|0444, 0 },
+{ "time", readtime, 0444, 0 },
+{ "position", readposn, 0444, 0 },
+{ "satellites", readsats, 0444, 0 },
+{ "stats", readstats, 0444, 0 },
+{ "raw", readraw, DMEXCL|0444, 0 },
 };
 Srv s = {
-.open	= ropen,
-.read	= rread,
+.open = ropen,
+.read = rread,
 .end = rend,
 };
 File *root;
@@ -846,7 +846,7 @@ fprint(2, "ridiculous gps line: %d bytes\n", n);
 *p = 0;
 for(p = s; isdigit(*p); p++)
 ;
-if(*p++ == '	')
+if(*p++ == ' ')
 memmove(s, p, strlen(p)+1);
 if(s[0] == '$'){
 if(n > 4 && s[n-3] == '*'){

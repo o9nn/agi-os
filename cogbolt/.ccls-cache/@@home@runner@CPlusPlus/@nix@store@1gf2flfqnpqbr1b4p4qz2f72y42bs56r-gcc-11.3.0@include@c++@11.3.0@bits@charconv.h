@@ -15,7 +15,7 @@ __to_chars_len(_Tp __value, int __base = 10) noexcept
 static_assert(is_integral<_Tp>::value, "implementation bug");
 static_assert(is_unsigned<_Tp>::value, "implementation bug");
 unsigned __n = 1;
-const unsigned __b2 = __base  * __base;
+const unsigned __b2 = __base * __base;
 const unsigned __b3 = __b2 * __base;
 const unsigned long __b4 = __b3 * __base;
 for (;;)

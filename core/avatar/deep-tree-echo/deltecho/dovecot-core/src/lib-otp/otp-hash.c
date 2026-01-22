@@ -58,9 +58,9 @@ sha1_result(ctx, tmp);
 #define F_FINAL(name) ((void (*)(void *, void *)) (name))
 #define F_FOLD(name) ((void (*)(void *, void *)) (name))
 static const struct digest digests[] = {
-{ "md4",  F_INIT(md4_init),  F_UPDATE(md4_update), F_FINAL(md4_final),   F_FOLD(md4_fold) },
-{ "md5",  F_INIT(md5_init),  F_UPDATE(md5_update), F_FINAL(md5_final),   F_FOLD(md5_fold) },
-{ "sha1", F_INIT(sha1_init), F_UPDATE(sha1_loop),  F_FINAL(sha1_result), F_FOLD(sha1_fold) },
+{ "md4", F_INIT(md4_init), F_UPDATE(md4_update), F_FINAL(md4_final), F_FOLD(md4_fold) },
+{ "md5", F_INIT(md5_init), F_UPDATE(md5_update), F_FINAL(md5_final), F_FOLD(md5_fold) },
+{ "sha1", F_INIT(sha1_init), F_UPDATE(sha1_loop), F_FINAL(sha1_result), F_FOLD(sha1_fold) },
 };
 #undef F_INIT
 #undef F_UPDATE

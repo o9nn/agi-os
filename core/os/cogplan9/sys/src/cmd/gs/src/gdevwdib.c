@@ -3,9 +3,9 @@
 #include "gsdll.h"
 #include "gsdllwin.h"
 #ifdef __WIN32__
-#  define USE_SEGMENTS 0
+# define USE_SEGMENTS 0
 #else
-#  define USE_SEGMENTS 1
+# define USE_SEGMENTS 1
 #endif
 typedef struct gx_device_win_dib_s gx_device_win_dib;
 #undef wdev
@@ -50,7 +50,7 @@ NULL,
 win_dib_copy_mono,
 win_dib_copy_color,
 NULL,
-win_dib_get_bits  ,
+win_dib_get_bits ,
 win_get_params,
 win_dib_put_params,
 NULL,
@@ -133,9 +133,9 @@ return code;
 #define single_block(y, h)\
 !(((y - wdev->y_base) ^ (y - wdev->y_base + h - 1)) & ~wdev->y_mask)
 #define BEGIN_BLOCKS\
-{	int by, bh, left = h;\
+{ int by, bh, left = h;\
 for ( by = y; left > 0; by += bh, left -= bh )\
-{	bh = wdev->y_block - (by & wdev->y_mask);\
+{ bh = wdev->y_block - (by & wdev->y_mask);\
 if ( bh > left ) bh = left;
 #define END_BLOCKS\
 }\

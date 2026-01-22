@@ -4,35 +4,35 @@
 typedef struct Audit Audit;
 struct Audit
 {
-Type*	t;
-ulong	n;
-ulong	size;
-Audit*	hash;
+Type* t;
+ulong n;
+ulong size;
+Audit* hash;
 };
-Audit*	ahash[128];
-extern	Pool*	heapmem;
+Audit* ahash[128];
+extern Pool* heapmem;
 extern void conslog(char*, ...);
-#define	conslog	print
-typedef struct Typed	Typed;
-typedef struct Ptyped	Ptyped;
+#define conslog print
+typedef struct Typed Typed;
+typedef struct Ptyped Ptyped;
 extern Type Trdchan;
 extern Type Twrchan;
 struct Typed
 {
-char*	name;
-Type*	ptr;
+char* name;
+Type* ptr;
 } types[] =
 {
-{"array",	&Tarray},
-{"byte",	&Tbyte},
-{"channel",	&Tchannel},
-{"list",	&Tlist},
-{"modlink",	&Tmodlink},
-{"ptr",		&Tptr},
-{"string",	&Tstring},
-{"rdchan",	&Trdchan},
-{"wrchan",	&Twrchan},
-{"unspec",	nil},
+{"array", &Tarray},
+{"byte", &Tbyte},
+{"channel", &Tchannel},
+{"list", &Tlist},
+{"modlink", &Tmodlink},
+{"ptr", &Tptr},
+{"string", &Tstring},
+{"rdchan", &Trdchan},
+{"wrchan", &Twrchan},
+{"unspec", nil},
 0
 };
 extern Type* TDisplay;
@@ -54,25 +54,25 @@ extern Type* TDESstate;
 extern Type* TIPint;
 struct Ptyped
 {
-char*	name;
-Type**	ptr;
+char* name;
+Type** ptr;
 } ptypes[] =
 {
-{"Display",	&TDisplay},
-{"Font",	&TFont},
-{"Image",	&TImage},
-{"Screen",	&TScreen},
-{"SigAlg",	&TSigAlg},
-{"Certificate",	&TCertificate},
-{"SK",		&TSK},
-{"PK",		&TPK},
-{"DigestState",	&TDigestState},
-{"Authinfo",	&TAuthinfo},
-{"DESstate",	&TDESstate},
-{"IPint",	&TIPint},
-{"FD",		&TFD},
-{"FileIO",	&TFileIO},
-{"TkTop",	&fakeTkTop},
+{"Display", &TDisplay},
+{"Font", &TFont},
+{"Image", &TImage},
+{"Screen", &TScreen},
+{"SigAlg", &TSigAlg},
+{"Certificate", &TCertificate},
+{"SK", &TSK},
+{"PK", &TPK},
+{"DigestState", &TDigestState},
+{"Authinfo", &TAuthinfo},
+{"DESstate", &TDESstate},
+{"IPint", &TIPint},
+{"FD", &TFD},
+{"FileIO", &TFileIO},
+{"TkTop", &fakeTkTop},
 0
 };
 static Audit **

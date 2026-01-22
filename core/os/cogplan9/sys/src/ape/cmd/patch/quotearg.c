@@ -28,7 +28,7 @@ case '^': case '`': case '|': case '~':
 {
 len = 0;
 c = *arg++;
-if (c == '-'  &&  arg < a)
+if (c == '-' && arg < a)
 {
 c = *arg++;
 if (quoted)
@@ -52,7 +52,7 @@ c = *arg++;
 if (quoted)
 quoted[len] = '\'';
 len++;
-for (;  c;  c = *arg++)
+for (; c; c = *arg++)
 {
 if (c == '\'')
 {

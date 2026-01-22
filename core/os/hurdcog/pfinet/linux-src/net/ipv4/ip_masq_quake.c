@@ -14,10 +14,10 @@ typedef struct
 {
 __u16 type;
 __u16 length;
-char  message[0];
+char message[0];
 } QUAKEHEADER;
 struct quake_priv_data {
-signed char	cl_connect;
+signed char cl_connect;
 };
 static int
 masq_quake_init_1 (struct ip_masq_app *mapp, struct ip_masq *ms)

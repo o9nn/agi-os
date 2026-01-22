@@ -8,26 +8,26 @@
 #include <asm/system.h>
 struct net_profile_slot
 {
-char   id[16];
+char id[16];
 struct net_profile_slot *next;
 struct timeval entered;
 struct timeval accumulator;
 struct timeval irq;
-int    	hits;
-int    	active;
-int	underflow;
+int hits;
+int active;
+int underflow;
 };
 extern atomic_t net_profile_active;
 extern struct timeval net_profile_adjust;
 extern void net_profile_irq_adjust(struct timeval *entered, struct timeval* leaved);
 #if CPU == 586 || CPU == 686
-static __inline__ void  net_profile_stamp(struct timeval *pstamp)
+static __inline__ void net_profile_stamp(struct timeval *pstamp)
 {
 __asm__ __volatile__ (".byte 0x0f,0x31"
 :"=a" (pstamp->tv_usec),
 "=d" (pstamp->tv_sec));
 }
-static __inline__ void  net_profile_accumulate(struct timeval *entered,
+static __inline__ void net_profile_accumulate(struct timeval *entered,
 struct timeval *leaved,
 struct timeval *acc)
 {
@@ -42,7 +42,7 @@ __asm__ __volatile__ ("subl %2,%0\n\t"
 "g" (leaved->tv_usec), "g" (leaved->tv_sec),
 "0" (acc->tv_usec), "1" (acc->tv_sec));
 }
-static __inline__ void  net_profile_sub(struct timeval *sub,
+static __inline__ void net_profile_sub(struct timeval *sub,
 struct timeval *acc)
 {
 __asm__ __volatile__ ("subl %2,%0\n\t"
@@ -51,7 +51,7 @@ __asm__ __volatile__ ("subl %2,%0\n\t"
 : "g" (sub->tv_usec), "g" (sub->tv_sec),
 "0" (acc->tv_usec), "1" (acc->tv_sec));
 }
-static __inline__ void  net_profile_add(struct timeval *add,
+static __inline__ void net_profile_add(struct timeval *add,
 struct timeval *acc)
 {
 __asm__ __volatile__ ("addl %2,%0\n\t"
@@ -63,7 +63,7 @@ __asm__ __volatile__ ("addl %2,%0\n\t"
 #elif defined (__alpha__)
 extern __u32 alpha_lo;
 extern long alpha_hi;
-static __inline__ void  net_profile_stamp(struct timeval *pstamp)
+static __inline__ void net_profile_stamp(struct timeval *pstamp)
 {
 __u32 result;
 __asm__ __volatile__ ("rpcc %0" : "r="(result));
@@ -73,7 +73,7 @@ alpha_lo = result;
 pstamp->tv_sec = alpha_hi;
 pstamp->tv_usec = alpha_lo;
 }
-static __inline__ void  net_profile_accumulate(struct timeval *entered,
+static __inline__ void net_profile_accumulate(struct timeval *entered,
 struct timeval *leaved,
 struct timeval *acc)
 {
@@ -93,7 +93,7 @@ secs--;
 acc->tv_sec = secs;
 acc->tv_usec = usecs;
 }
-static __inline__ void  net_profile_sub(struct timeval *entered,
+static __inline__ void net_profile_sub(struct timeval *entered,
 struct timeval *leaved)
 {
 time_t usecs = leaved->tv_usec - entered->tv_usec;
@@ -105,7 +105,7 @@ secs--;
 leaved->tv_sec = secs;
 leaved->tv_usec = usecs;
 }
-static __inline__ void  net_profile_add(struct timeval *entered, struct timeval *leaved)
+static __inline__ void net_profile_add(struct timeval *entered, struct timeval *leaved)
 {
 time_t usecs = leaved->tv_usec + entered->tv_usec;
 time_t secs = leaved->tv_sec + entered->tv_sec;
@@ -117,11 +117,11 @@ leaved->tv_sec = secs;
 leaved->tv_usec = usecs;
 }
 #else
-static __inline__ void  net_profile_stamp(struct timeval *pstamp)
+static __inline__ void net_profile_stamp(struct timeval *pstamp)
 {
 do_gettimeofday(pstamp);
 }
-static __inline__ void  net_profile_accumulate(struct timeval *entered,
+static __inline__ void net_profile_accumulate(struct timeval *entered,
 struct timeval *leaved,
 struct timeval *acc)
 {
@@ -141,7 +141,7 @@ secs--;
 acc->tv_sec = secs;
 acc->tv_usec = usecs;
 }
-static __inline__ void  net_profile_sub(struct timeval *entered,
+static __inline__ void net_profile_sub(struct timeval *entered,
 struct timeval *leaved)
 {
 time_t usecs = leaved->tv_usec - entered->tv_usec;
@@ -153,7 +153,7 @@ secs--;
 leaved->tv_sec = secs;
 leaved->tv_usec = usecs;
 }
-static __inline__ void  net_profile_add(struct timeval *entered, struct timeval *leaved)
+static __inline__ void net_profile_add(struct timeval *entered, struct timeval *leaved)
 {
 time_t usecs = leaved->tv_usec + entered->tv_usec;
 time_t secs = leaved->tv_sec + entered->tv_sec;
@@ -239,15 +239,15 @@ extern int net_profile_init(void);
 extern int net_profile_register(struct net_profile_slot *);
 extern int net_profile_unregister(struct net_profile_slot *);
 #else
-#define NET_PROFILE_ENTER(slot) do {  } while(0)
-#define NET_PROFILE_LEAVE(slot) do {  } while(0)
-#define NET_PROFILE_LEAVE_IRQ(slot) do {  } while(0)
-#define NET_PROFILE_SKB_CLEAR(skb) do {  } while(0)
-#define NET_PROFILE_SKB_INIT(skb) do {  } while(0)
-#define NET_PROFILE_SKB_PASSED(skb, slot) do {  } while(0)
+#define NET_PROFILE_ENTER(slot) do { } while(0)
+#define NET_PROFILE_LEAVE(slot) do { } while(0)
+#define NET_PROFILE_LEAVE_IRQ(slot) do { } while(0)
+#define NET_PROFILE_SKB_CLEAR(skb) do { } while(0)
+#define NET_PROFILE_SKB_INIT(skb) do { } while(0)
+#define NET_PROFILE_SKB_PASSED(skb, slot) do { } while(0)
 #define NET_PROFILE_DECL(slot)
 #define NET_PROFILE_DEFINE(slot)
-#define NET_PROFILE_REGISTER(slot) do {  } while(0)
-#define NET_PROFILE_UNREGISTER(slot) do {  } while(0)
+#define NET_PROFILE_REGISTER(slot) do { } while(0)
+#define NET_PROFILE_UNREGISTER(slot) do { } while(0)
 #endif
 #endif

@@ -1,5 +1,5 @@
 #ifndef _STDIO_H
-#define _STDIO_H	1
+#define _STDIO_H 1
 #define __GLIBC_INTERNAL_STARTING_HEADER_IMPLEMENTATION
 #include <bits/libc-header-start.h>
 __BEGIN_DECLS
@@ -19,12 +19,12 @@ __BEGIN_DECLS
 #endif
 #if defined __USE_XOPEN || defined __USE_XOPEN2K8
 # ifdef __GNUC__
-#  ifndef _VA_LIST_DEFINED
+# ifndef _VA_LIST_DEFINED
 typedef __gnuc_va_list va_list;
-#   define _VA_LIST_DEFINED
-#  endif
+# define _VA_LIST_DEFINED
+# endif
 # else
-#  include <stdarg.h>
+# include <stdarg.h>
 # endif
 #endif
 #if defined __USE_UNIX98 || defined __USE_XOPEN2K
@@ -60,15 +60,15 @@ typedef __fpos64_t fpos64_t;
 #define _IONBF 2
 #define BUFSIZ 8192
 #define EOF (-1)
-#define SEEK_SET	0
-#define SEEK_CUR	1
-#define SEEK_END	2
+#define SEEK_SET 0
+#define SEEK_CUR 1
+#define SEEK_END 2
 #ifdef __USE_GNU
-# define SEEK_DATA	3
-# define SEEK_HOLE	4
+# define SEEK_DATA 3
+# define SEEK_HOLE 4
 #endif
 #if defined __USE_MISC || defined __USE_XOPEN
-# define P_tmpdir	"/tmp"
+# define P_tmpdir "/tmp"
 #endif
 #define L_tmpnam 20
 #define TMP_MAX 238328
@@ -76,10 +76,10 @@ typedef __fpos64_t fpos64_t;
 #ifdef __USE_POSIX
 # define L_ctermid 9
 # if !defined __USE_XOPEN2K || defined __USE_GNU
-#  define L_cuserid 9
+# define L_cuserid 9
 # endif
 #endif
-#undef  FOPEN_MAX
+#undef FOPEN_MAX
 #define FOPEN_MAX 16
 #if __GLIBC_USE (ISOC2X)
 # define _PRINTF_NAN_LEN_MAX 4
@@ -114,7 +114,7 @@ __attribute_malloc__ __attr_dealloc_fclose __wur;
 extern FILE *__REDIRECT (tmpfile, (void), tmpfile64)
 __attribute_malloc__ __attr_dealloc_fclose __wur;
 # else
-#  define tmpfile tmpfile64
+# define tmpfile tmpfile64
 # endif
 #endif
 #ifdef __USE_LARGEFILE64
@@ -153,8 +153,8 @@ const char *__restrict __modes,
 FILE *__restrict __stream), freopen64)
 __wur __nonnull ((3));
 # else
-#  define fopen fopen64
-#  define freopen freopen64
+# define fopen fopen64
+# define freopen freopen64
 # endif
 #endif
 #ifdef __USE_LARGEFILE64
@@ -165,11 +165,11 @@ extern FILE *freopen64 (const char *__restrict __filename,
 const char *__restrict __modes,
 FILE *__restrict __stream) __wur __nonnull ((3));
 #endif
-#ifdef	__USE_POSIX
+#ifdef __USE_POSIX
 extern FILE *fdopen (int __fd, const char *__modes) __THROW
 __attribute_malloc__ __attr_dealloc_fclose __wur;
 #endif
-#ifdef	__USE_MISC
+#ifdef __USE_MISC
 extern FILE *fopencookie (void *__restrict __magic_cookie,
 const char *__restrict __modes,
 cookie_io_functions_t __io_funcs) __THROW
@@ -189,7 +189,7 @@ extern void setbuf (FILE *__restrict __stream, char *__restrict __buf) __THROW
 __nonnull ((1));
 extern int setvbuf (FILE *__restrict __stream, char *__restrict __buf,
 int __modes, size_t __n) __THROW __nonnull ((1));
-#ifdef	__USE_MISC
+#ifdef __USE_MISC
 extern void setbuffer (FILE *__restrict __stream, char *__restrict __buf,
 size_t __size) __THROW __nonnull ((1));
 extern void setlinebuf (FILE *__stream) __THROW __nonnull ((1));
@@ -239,7 +239,7 @@ const char *__restrict __format, ...) __THROW;
 #if !__GLIBC_USE (DEPRECATED_SCANF) && !defined __LDBL_COMPAT \
 && __LDOUBLE_REDIRECTS_TO_FLOAT128_ABI == 0
 # if __GLIBC_USE (C2X_STRTOL)
-#  ifdef __REDIRECT
+# ifdef __REDIRECT
 extern int __REDIRECT (fscanf, (FILE *__restrict __stream,
 const char *__restrict __format, ...),
 __isoc23_fscanf) __wur __nonnull ((1));
@@ -248,19 +248,19 @@ __isoc23_scanf) __wur;
 extern int __REDIRECT_NTH (sscanf, (const char *__restrict __s,
 const char *__restrict __format, ...),
 __isoc23_sscanf);
-#  else
+# else
 extern int __isoc23_fscanf (FILE *__restrict __stream,
 const char *__restrict __format, ...) __wur
 __nonnull ((1));
 extern int __isoc23_scanf (const char *__restrict __format, ...) __wur;
 extern int __isoc23_sscanf (const char *__restrict __s,
 const char *__restrict __format, ...) __THROW;
-#   define fscanf __isoc23_fscanf
-#   define scanf __isoc23_scanf
-#   define sscanf __isoc23_sscanf
-#  endif
+# define fscanf __isoc23_fscanf
+# define scanf __isoc23_scanf
+# define sscanf __isoc23_sscanf
+# endif
 # else
-#  ifdef __REDIRECT
+# ifdef __REDIRECT
 extern int __REDIRECT (fscanf, (FILE *__restrict __stream,
 const char *__restrict __format, ...),
 __isoc99_fscanf) __wur __nonnull ((1));
@@ -269,20 +269,20 @@ __isoc99_scanf) __wur;
 extern int __REDIRECT_NTH (sscanf, (const char *__restrict __s,
 const char *__restrict __format, ...),
 __isoc99_sscanf);
-#  else
+# else
 extern int __isoc99_fscanf (FILE *__restrict __stream,
 const char *__restrict __format, ...) __wur
 __nonnull ((1));
 extern int __isoc99_scanf (const char *__restrict __format, ...) __wur;
 extern int __isoc99_sscanf (const char *__restrict __s,
 const char *__restrict __format, ...) __THROW;
-#   define fscanf __isoc99_fscanf
-#   define scanf __isoc99_scanf
-#   define sscanf __isoc99_sscanf
-#  endif
+# define fscanf __isoc99_fscanf
+# define scanf __isoc99_scanf
+# define sscanf __isoc99_sscanf
+# endif
 # endif
 #endif
-#ifdef	__USE_ISOC99
+#ifdef __USE_ISOC99
 extern int vfscanf (FILE *__restrict __s, const char *__restrict __format,
 __gnuc_va_list __arg)
 __attribute__ ((__format__ (__scanf__, 2, 0))) __wur __nonnull ((1));
@@ -292,8 +292,8 @@ extern int vsscanf (const char *__restrict __s,
 const char *__restrict __format, __gnuc_va_list __arg)
 __THROW __attribute__ ((__format__ (__scanf__, 2, 0)));
 # if !__GLIBC_USE (DEPRECATED_SCANF)
-#  if __GLIBC_USE (C2X_STRTOL)
-#   if defined __REDIRECT && !defined __LDBL_COMPAT	\
+# if __GLIBC_USE (C2X_STRTOL)
+# if defined __REDIRECT && !defined __LDBL_COMPAT \
 && __LDOUBLE_REDIRECTS_TO_FLOAT128_ABI == 0
 extern int __REDIRECT (vfscanf,
 (FILE *__restrict __s,
@@ -308,7 +308,7 @@ extern int __REDIRECT_NTH (vsscanf,
 const char *__restrict __format,
 __gnuc_va_list __arg), __isoc23_vsscanf)
 __attribute__ ((__format__ (__scanf__, 2, 0)));
-#   elif !defined __REDIRECT
+# elif !defined __REDIRECT
 extern int __isoc23_vfscanf (FILE *__restrict __s,
 const char *__restrict __format,
 __gnuc_va_list __arg) __wur __nonnull ((1));
@@ -317,12 +317,12 @@ __gnuc_va_list __arg) __wur;
 extern int __isoc23_vsscanf (const char *__restrict __s,
 const char *__restrict __format,
 __gnuc_va_list __arg) __THROW;
-#    define vfscanf __isoc23_vfscanf
-#    define vscanf __isoc23_vscanf
-#    define vsscanf __isoc23_vsscanf
-#   endif
-#  else
-#   if defined __REDIRECT && !defined __LDBL_COMPAT	\
+# define vfscanf __isoc23_vfscanf
+# define vscanf __isoc23_vscanf
+# define vsscanf __isoc23_vsscanf
+# endif
+# else
+# if defined __REDIRECT && !defined __LDBL_COMPAT \
 && __LDOUBLE_REDIRECTS_TO_FLOAT128_ABI == 0
 extern int __REDIRECT (vfscanf,
 (FILE *__restrict __s,
@@ -337,7 +337,7 @@ extern int __REDIRECT_NTH (vsscanf,
 const char *__restrict __format,
 __gnuc_va_list __arg), __isoc99_vsscanf)
 __attribute__ ((__format__ (__scanf__, 2, 0)));
-#   elif !defined __REDIRECT
+# elif !defined __REDIRECT
 extern int __isoc99_vfscanf (FILE *__restrict __s,
 const char *__restrict __format,
 __gnuc_va_list __arg) __wur __nonnull ((1));
@@ -346,11 +346,11 @@ __gnuc_va_list __arg) __wur;
 extern int __isoc99_vsscanf (const char *__restrict __s,
 const char *__restrict __format,
 __gnuc_va_list __arg) __THROW;
-#    define vfscanf __isoc99_vfscanf
-#    define vscanf __isoc99_vscanf
-#    define vsscanf __isoc99_vsscanf
-#   endif
-#  endif
+# define vfscanf __isoc99_vfscanf
+# define vscanf __isoc99_vscanf
+# define vsscanf __isoc99_vsscanf
+# endif
+# endif
 # endif
 #endif
 extern int fgetc (FILE *__stream) __nonnull ((1));
@@ -430,16 +430,16 @@ extern int fseeko (FILE *__stream, __off_t __off, int __whence)
 __nonnull ((1));
 extern __off_t ftello (FILE *__stream) __wur __nonnull ((1));
 # else
-#  ifdef __REDIRECT
+# ifdef __REDIRECT
 extern int __REDIRECT (fseeko,
 (FILE *__stream, __off64_t __off, int __whence),
 fseeko64) __nonnull ((1));
 extern __off64_t __REDIRECT (ftello, (FILE *__stream), ftello64)
 __nonnull ((1));
-#  else
-#   define fseeko fseeko64
-#   define ftello ftello64
-#  endif
+# else
+# define fseeko fseeko64
+# define ftello ftello64
+# endif
 # endif
 #endif
 #ifndef __USE_FILE_OFFSET64
@@ -455,8 +455,8 @@ extern int __REDIRECT (fsetpos,
 (FILE *__stream, const fpos_t *__pos), fsetpos64)
 __nonnull ((1));
 # else
-#  define fgetpos fgetpos64
-#  define fsetpos fsetpos64
+# define fgetpos fgetpos64
+# define fsetpos fsetpos64
 # endif
 #endif
 #ifdef __USE_LARGEFILE64
@@ -476,7 +476,7 @@ extern int feof_unlocked (FILE *__stream) __THROW __wur __nonnull ((1));
 extern int ferror_unlocked (FILE *__stream) __THROW __wur __nonnull ((1));
 #endif
 extern void perror (const char *__s) __COLD;
-#ifdef	__USE_POSIX
+#ifdef __USE_POSIX
 extern int fileno (FILE *__stream) __THROW __wur __nonnull ((1));
 #endif
 #ifdef __USE_MISC
@@ -487,7 +487,7 @@ extern int pclose (FILE *__stream) __nonnull ((1));
 extern FILE *popen (const char *__command, const char *__modes)
 __attribute_malloc__ __attr_dealloc (pclose, 1) __wur;
 #endif
-#ifdef	__USE_POSIX
+#ifdef __USE_POSIX
 extern char *ctermid (char *__s) __THROW
 __attr_access ((__write_only__, 1));
 #endif
@@ -495,7 +495,7 @@ __attr_access ((__write_only__, 1));
 extern char *cuserid (char *__s)
 __attr_access ((__write_only__, 1));
 #endif
-#ifdef	__USE_GNU
+#ifdef __USE_GNU
 struct obstack;
 extern int obstack_printf (struct obstack *__restrict __obstack,
 const char *__restrict __format, ...)

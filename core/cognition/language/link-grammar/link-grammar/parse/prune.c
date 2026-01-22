@@ -268,7 +268,7 @@ int lword, int rword)
 {
 Sentence sent = pc->sent;
 Disjunct *d = sent->word[w].d;
-if ((pc->ml[w].nw[0]  == w) || (pc->ml[w].nw[1] == w)) return true;
+if ((pc->ml[w].nw[0] == w) || (pc->ml[w].nw[1] == w)) return true;
 for (d = sent->word[w].d; d != NULL; d = d->next)
 {
 if (d->left->nearest_word < lword)

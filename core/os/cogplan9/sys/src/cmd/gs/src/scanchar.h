@@ -1,5 +1,5 @@
 #ifndef scanchar_INCLUDED
-#  define scanchar_INCLUDED
+# define scanchar_INCLUDED
 extern const byte scan_char_array[max_stream_exception + 256];
 #define scan_char_decoder (&scan_char_array[max_stream_exception])
 #define min_radix 2
@@ -15,8 +15,8 @@ extern const byte scan_char_array[max_stream_exception + 256];
 #define char_DOS_EOF 032
 #define char_CR '\r'
 #if '\r' == '\n'
-#  define char_EOL 0x0a
+# define char_EOL 0x0a
 #else
-#  define char_EOL '\n'
+# define char_EOL '\n'
 #endif
 #endif

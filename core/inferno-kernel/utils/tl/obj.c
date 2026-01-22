@@ -1,13 +1,13 @@
-#define	EXTERN
-#include	"l.h"
-#include	<ar.h>
-#ifndef	DEFAULT
-#define	DEFAULT	'9'
+#define EXTERN
+#include "l.h"
+#include <ar.h>
+#ifndef DEFAULT
+#define DEFAULT '9'
 #endif
-char	*noname		= "<none>";
-char	symname[]	= SYMDEF;
-char	thechar		= '5';
-char	*thestring 	= "arm";
+char *noname = "<none>";
+char symname[] = SYMDEF;
+char thechar = '5';
+char *thestring = "arm";
 static int
 isobjfile(char *f)
 {

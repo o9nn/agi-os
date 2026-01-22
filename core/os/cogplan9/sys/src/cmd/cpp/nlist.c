@@ -2,46 +2,46 @@
 #include <libc.h>
 #include <stdio.h>
 #include "cpp.h"
-extern	int getopt(int, char **, char *);
-extern	char	*optarg;
-extern	int	optind;
-int	verbose;
-int	Mflag;
-int	Cplusplus;
-int	nolineinfo;
-Nlist	*kwdefined;
-char	wd[128];
-#define	NLSIZE	128
-Nlist	*nlist[NLSIZE];
-struct	kwtab {
-char	*kw;
-int	val;
-int	flag;
+extern int getopt(int, char **, char *);
+extern char *optarg;
+extern int optind;
+int verbose;
+int Mflag;
+int Cplusplus;
+int nolineinfo;
+Nlist *kwdefined;
+char wd[128];
+#define NLSIZE 128
+Nlist *nlist[NLSIZE];
+struct kwtab {
+char *kw;
+int val;
+int flag;
 } kwtab[] = {
-"if",		KIF,		ISKW,
-"ifdef",	KIFDEF,		ISKW,
-"ifndef",	KIFNDEF,	ISKW,
-"elif",		KELIF,		ISKW,
-"else",		KELSE,		ISKW,
-"endif",	KENDIF,		ISKW,
-"include",	KINCLUDE,	ISKW,
-"define",	KDEFINE,	ISKW,
-"undef",	KUNDEF,		ISKW,
-"line",		KLINE,		ISKW,
-"error",	KERROR,		ISKW,
-"warning",	KWARNING,	ISKW,
-"pragma",	KPRAGMA,	ISKW,
-"eval",		KEVAL,		ISKW,
-"defined",	KDEFINED,	ISDEFINED+ISUNCHANGE,
-"__LINE__",	KLINENO,	ISMAC+ISUNCHANGE,
-"__FILE__",	KFILE,		ISMAC+ISUNCHANGE,
-"__DATE__",	KDATE,		ISMAC+ISUNCHANGE,
-"__TIME__",	KTIME,		ISMAC+ISUNCHANGE,
-"__STDC__",	KSTDC,		ISUNCHANGE,
+"if", KIF, ISKW,
+"ifdef", KIFDEF, ISKW,
+"ifndef", KIFNDEF, ISKW,
+"elif", KELIF, ISKW,
+"else", KELSE, ISKW,
+"endif", KENDIF, ISKW,
+"include", KINCLUDE, ISKW,
+"define", KDEFINE, ISKW,
+"undef", KUNDEF, ISKW,
+"line", KLINE, ISKW,
+"error", KERROR, ISKW,
+"warning", KWARNING, ISKW,
+"pragma", KPRAGMA, ISKW,
+"eval", KEVAL, ISKW,
+"defined", KDEFINED, ISDEFINED+ISUNCHANGE,
+"__LINE__", KLINENO, ISMAC+ISUNCHANGE,
+"__FILE__", KFILE, ISMAC+ISUNCHANGE,
+"__DATE__", KDATE, ISMAC+ISUNCHANGE,
+"__TIME__", KTIME, ISMAC+ISUNCHANGE,
+"__STDC__", KSTDC, ISUNCHANGE,
 NULL
 };
-unsigned long	namebit[077+1];
-Nlist 	*np;
+unsigned long namebit[077+1];
+Nlist *np;
 void
 setup(int argc, char **argv)
 {

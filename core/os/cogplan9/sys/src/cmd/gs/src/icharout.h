@@ -1,5 +1,5 @@
 #ifndef icharout_INCLUDED
-#  define icharout_INCLUDED
+# define icharout_INCLUDED
 int zchar_exec_char_proc(i_ctx_t *);
 typedef enum {
 metricsNone = 0,

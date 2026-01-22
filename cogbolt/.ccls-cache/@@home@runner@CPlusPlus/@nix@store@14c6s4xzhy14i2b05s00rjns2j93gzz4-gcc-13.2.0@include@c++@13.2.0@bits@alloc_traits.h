@@ -6,7 +6,7 @@
 # include <bits/ptr_traits.h>
 # include <ext/numeric_traits.h>
 # if _GLIBCXX_HOSTED
-#  include <bits/allocator.h>
+# include <bits/allocator.h>
 # endif
 #endif
 namespace std _GLIBCXX_VISIBILITY(default)

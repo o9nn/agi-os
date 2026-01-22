@@ -8,120 +8,120 @@
 #define imark u.mark
 #define iline u.line
 #define FLUSH() flushimage(tk->env->top->display, 1)
-#define	O(t, e)		((long)(&((t*)0)->e))
+#define O(t, e) ((long)(&((t*)0)->e))
 enum {
-Textpadx	= 2,
-Textpady	= 0,
+Textpadx = 2,
+Textpady = 0,
 };
 typedef struct Interval {
-int	lo;
-int	hi;
+int lo;
+int hi;
 } Interval;
 typedef struct Mprint Mprint;
 struct Mprint
 {
-char*	buf;
-int	ptr;
-int	len;
+char* buf;
+int ptr;
+int len;
 };
 typedef struct TkDump TkDump;
 struct TkDump
 {
-int	sgml;
-int	metrics;
+int sgml;
+int metrics;
 };
 static
 TkOption dumpopts[] =
 {
-"sgml",		OPTbool,	O(TkDump, sgml),	nil,
-"metrics",	OPTbool,	O(TkDump, metrics),	nil,
+"sgml", OPTbool, O(TkDump, sgml), nil,
+"metrics", OPTbool, O(TkDump, metrics), nil,
 nil
 };
 static
 TkStab tkcompare[] =
 {
-"<",		TkLt,
-"<=",		TkLte,
-"==",		TkEq,
-">=",		TkGte,
-">",		TkGt,
-"!=",		TkNeq,
+"<", TkLt,
+"<=", TkLte,
+"==", TkEq,
+">=", TkGte,
+">", TkGt,
+"!=", TkNeq,
 nil
 };
 static
 TkOption textopts[] =
 {
-"wrap",			OPTstab, O(TkText, opts[TkTwrap]),	tkwrap,
-"spacing1",		OPTnndist, O(TkText, opts[TkTspacing1]),	(void *)O(Tk, env),
-"spacing2",		OPTnndist, O(TkText, opts[TkTspacing2]),	(void *)O(Tk, env),
-"spacing3",		OPTnndist, O(TkText, opts[TkTspacing3]),	(void *)O(Tk, env),
-"tabs",			OPTtabs, O(TkText, tabs), 		(void *)O(Tk, env),
-"xscrollcommand",	OPTtext, O(TkText, xscroll),		nil,
-"yscrollcommand",	OPTtext, O(TkText, yscroll),		nil,
-"insertwidth",		OPTnndist, O(TkText, inswidth),		nil,
-"tagshare",		OPTwinp, O(TkText, tagshare),		nil,
-"propagate",		OPTstab, O(TkText, propagate),	tkbool,
-"selectborderwidth",	OPTnndist, O(TkText, sborderwidth), nil,
+"wrap", OPTstab, O(TkText, opts[TkTwrap]), tkwrap,
+"spacing1", OPTnndist, O(TkText, opts[TkTspacing1]), (void *)O(Tk, env),
+"spacing2", OPTnndist, O(TkText, opts[TkTspacing2]), (void *)O(Tk, env),
+"spacing3", OPTnndist, O(TkText, opts[TkTspacing3]), (void *)O(Tk, env),
+"tabs", OPTtabs, O(TkText, tabs), (void *)O(Tk, env),
+"xscrollcommand", OPTtext, O(TkText, xscroll), nil,
+"yscrollcommand", OPTtext, O(TkText, yscroll), nil,
+"insertwidth", OPTnndist, O(TkText, inswidth), nil,
+"tagshare", OPTwinp, O(TkText, tagshare), nil,
+"propagate", OPTstab, O(TkText, propagate), tkbool,
+"selectborderwidth", OPTnndist, O(TkText, sborderwidth), nil,
 nil
 };
 #define CNTL(c) ((c)&0x1f)
 #define DEL 0x7f
 static TkEbind tktbinds[] = {
-{TkButton1P,		"%W tkTextButton1 %X %Y"},
-{TkButton1P|TkMotion,	"%W tkTextSelectTo %X %Y"},
-{TkButton1P|TkDouble,	"%W tkTextSelectTo %X %Y double"},
-{TkButton1R,		"%W tkTextButton1R"},
-{TkButton2P,		"%W scan mark %x %y"},
-{TkButton2P|TkMotion,	"%W scan dragto %x %y"},
-{TkKey,			"%W tkTextInsert {%A}"},
-{TkKey|CNTL('a'),	"%W tkTextSetCursor {insert linestart}"},
-{TkKey|Home,		"%W tkTextSetCursor {insert linestart}"},
-{TkKey|CNTL('<'),	"%W tkTextSetCursor {insert linestart}"},
-{TkKey|CNTL('b'),	"%W tkTextSetCursor insert-1c"},
-{TkKey|Left,		"%W tkTextSetCursor insert-1c"},
-{TkKey|CNTL('d'),	"%W tkTextDelIns"},
-{TkKey|CNTL('e'),	"%W tkTextSetCursor {insert lineend}"},
-{TkKey|End,		"%W tkTextSetCursor {insert lineend}"},
-{TkKey|CNTL('>'),	"%W tkTextSetCursor {insert lineend}"},
-{TkKey|CNTL('f'),	"%W tkTextSetCursor insert+1c"},
-{TkKey|Right,		"%W tkTextSetCursor insert+1c"},
-{TkKey|CNTL('h'),	"%W tkTextDelIns -c"},
-{TkKey|DEL,		"%W tkTextDelIns"},
-{TkKey|CNTL('k'),	"%W tkTextDelIns +l"},
-{TkKey|CNTL('n'),	"%W tkTextSetCursor {insert+1l}"},
-{TkKey|Down,		"%W tkTextSetCursor {insert+1l}"},
-{TkKey|CNTL('o'),       "%W tkTextInsert {\n}; %W mark set insert insert-1c"},
-{TkKey|CNTL('p'),	"%W tkTextSetCursor {insert-1l}"},
-{TkKey|Up,		"%W tkTextSetCursor {insert-1l}"},
-{TkKey|CNTL('u'),	"%W tkTextDelIns -l"},
-{TkKey|CNTL('v'),	"%W yview scroll 0.75 page"},
-{TkKey|Pgdown,	"%W yview scroll 0.75 page"},
-{TkKey|CNTL('w'),	"%W tkTextDelIns -w"},
-{TkKey|Pgup,	"%W yview scroll -0.75 page"},
-{TkButton4P,	"%W yview scroll -0.2 page"},
-{TkButton5P,	"%W yview scroll 0.2 page"},
-{TkFocusout,            "%W tkTextCursor delete"},
-{TkKey|APP|'\t',	""},
-{TkKey|BackTab,		""},
+{TkButton1P, "%W tkTextButton1 %X %Y"},
+{TkButton1P|TkMotion, "%W tkTextSelectTo %X %Y"},
+{TkButton1P|TkDouble, "%W tkTextSelectTo %X %Y double"},
+{TkButton1R, "%W tkTextButton1R"},
+{TkButton2P, "%W scan mark %x %y"},
+{TkButton2P|TkMotion, "%W scan dragto %x %y"},
+{TkKey, "%W tkTextInsert {%A}"},
+{TkKey|CNTL('a'), "%W tkTextSetCursor {insert linestart}"},
+{TkKey|Home, "%W tkTextSetCursor {insert linestart}"},
+{TkKey|CNTL('<'), "%W tkTextSetCursor {insert linestart}"},
+{TkKey|CNTL('b'), "%W tkTextSetCursor insert-1c"},
+{TkKey|Left, "%W tkTextSetCursor insert-1c"},
+{TkKey|CNTL('d'), "%W tkTextDelIns"},
+{TkKey|CNTL('e'), "%W tkTextSetCursor {insert lineend}"},
+{TkKey|End, "%W tkTextSetCursor {insert lineend}"},
+{TkKey|CNTL('>'), "%W tkTextSetCursor {insert lineend}"},
+{TkKey|CNTL('f'), "%W tkTextSetCursor insert+1c"},
+{TkKey|Right, "%W tkTextSetCursor insert+1c"},
+{TkKey|CNTL('h'), "%W tkTextDelIns -c"},
+{TkKey|DEL, "%W tkTextDelIns"},
+{TkKey|CNTL('k'), "%W tkTextDelIns +l"},
+{TkKey|CNTL('n'), "%W tkTextSetCursor {insert+1l}"},
+{TkKey|Down, "%W tkTextSetCursor {insert+1l}"},
+{TkKey|CNTL('o'), "%W tkTextInsert {\n}; %W mark set insert insert-1c"},
+{TkKey|CNTL('p'), "%W tkTextSetCursor {insert-1l}"},
+{TkKey|Up, "%W tkTextSetCursor {insert-1l}"},
+{TkKey|CNTL('u'), "%W tkTextDelIns -l"},
+{TkKey|CNTL('v'), "%W yview scroll 0.75 page"},
+{TkKey|Pgdown, "%W yview scroll 0.75 page"},
+{TkKey|CNTL('w'), "%W tkTextDelIns -w"},
+{TkKey|Pgup, "%W yview scroll -0.75 page"},
+{TkButton4P, "%W yview scroll -0.2 page"},
+{TkButton5P, "%W yview scroll 0.2 page"},
+{TkFocusout, "%W tkTextCursor delete"},
+{TkKey|APP|'\t', ""},
+{TkKey|BackTab, ""},
 };
-static int	tktclickmatch(TkText *, int, int, int, TkTindex *);
-static void	tktdoubleclick(TkText *, TkTindex *, TkTindex *);
-static char* 	tktdrawline(Image*, Tk*, TkTline*, Point);
-static void	tktextcursordraw(Tk *, int);
-static char* 	tktsetscroll(Tk*, int);
-static void	tktsetclip(Tk *);
-static char* 	tktview(Tk*, char*, char**, int, int*, int, int);
+static int tktclickmatch(TkText *, int, int, int, TkTindex *);
+static void tktdoubleclick(TkText *, TkTindex *, TkTindex *);
+static char* tktdrawline(Image*, Tk*, TkTline*, Point);
+static void tktextcursordraw(Tk *, int);
+static char* tktsetscroll(Tk*, int);
+static void tktsetclip(Tk *);
+static char* tktview(Tk*, char*, char**, int, int*, int, int);
 static Interval tkttranslate(Tk*, Interval, int);
-static void 	tktfixscroll(Tk*, Point);
-static void 	tktnotdrawn(Tk*, int, int, int);
-static void	tktdrawbg(Tk*, int, int, int);
-static int	tktwidbetween(Tk*, int, TkTindex*, TkTindex*);
-static int	tktpostspace(Tk*, TkTline*);
-static int	tktprespace(Tk*, TkTline*);
-static void	tktsee(Tk*, TkTindex*, int);
-static Point	tktrelpos(Tk*);
-static void	autoselect(Tk*, void*, int);
-static void	blinkreset(Tk*);
+static void tktfixscroll(Tk*, Point);
+static void tktnotdrawn(Tk*, int, int, int);
+static void tktdrawbg(Tk*, int, int, int);
+static int tktwidbetween(Tk*, int, TkTindex*, TkTindex*);
+static int tktpostspace(Tk*, TkTline*);
+static int tktprespace(Tk*, TkTline*);
+static void tktsee(Tk*, TkTindex*, int);
+static Point tktrelpos(Tk*);
+static void autoselect(Tk*, void*, int);
+static void blinkreset(Tk*);
 extern int tktdbg;
 extern void tktprinttext(TkText*);
 extern void tktprintindex(TkTindex*);
@@ -531,7 +531,7 @@ TkText *tkt;
 Image *i;
 tkt = TKobj(TkText, tk);
 r = rectaddpt(tkt->cur_rec, subpt(tkt->deltaiv, tkt->deltatv));
-if( ! (	r.max.x < tkt->deltaiv.x ||
+if( ! ( r.max.x < tkt->deltaiv.x ||
 r.min.x > tkt->deltaiv.x + tk->act.width ||
 r.max.y < tkt->deltaiv.y ||
 r.min.y > tkt->deltaiv.y + tk->act.height)) {
@@ -1699,7 +1699,7 @@ s = "\n";
 break;
 case TkTwin:
 sub = ix1->item->iwin->sub;
-if(sgml &&  sub != nil && sub->name != nil) {
+if(sgml && sub != nil && sub->name != nil) {
 snprint(buf, 100, "<Window %s>", sub->name->name);
 s = buf;
 }
@@ -1797,7 +1797,7 @@ tktviewrectclip(Rectangle *rp, Rectangle b)
 {
 Rectangle *bp = &b;
 if((rp->min.x<bp->max.x &&
-(bp->min.x<rp->max.x || (rp->max.x  == b.min.x
+(bp->min.x<rp->max.x || (rp->max.x == b.min.x
 && rp->min.x == b.min.x)) &&
 rp->min.y<bp->max.y && bp->min.y<rp->max.y)==0)
 return 0;
@@ -2738,7 +2738,7 @@ static char tktright1[] = "}])>";
 static char tktleft2[] = "\n";
 static char tktleft3[] = "\'\"`";
 static char *tktleft[] = {tktleft1, tktleft2, tktleft3, nil};
-static char *tktright[] = {tktright1,  tktleft2, tktleft3, nil};
+static char *tktright[] = {tktright1, tktleft2, tktleft3, nil};
 static void
 tktdoubleclick(TkText *tkt, TkTindex *first, TkTindex *last)
 {
@@ -2965,7 +2965,7 @@ return nil;
 }
 odeltatv = tkt->deltatv;
 vh = tk->act.height;
-l =  tkt->end.prev;
+l = tkt->end.prev;
 ntot = l->orig.y + l->height;
 e = tktview(tk, arg, val, vh, &tkt->deltatv.y, ntot, Tkvertical);
 d = tkt->deltatv.y-odeltatv.y;
@@ -2996,34 +2996,34 @@ tkappendfocusorder(isub);
 }
 TkCmdtab tktextcmd[] =
 {
-"bbox",			tktextbbox,
-"cget",			tktextcget,
-"compare",		tktextcompare,
-"configure",		tktextconfigure,
-"debug",		tktextdebug,
-"delete",		tktextdelete,
-"dlineinfo",		tktextdlineinfo,
-"dump",			tktextdump,
-"get",			tktextget,
-"index",		tktextindex,
-"insert",		tktextinsert,
-"mark",			tktextmark,
-"scan",			tktextscan,
-"search",		tktextsearch,
-"see",			tktextsee,
-"selection",		tktextselection,
-"tag",			tktexttag,
-"window",		tktextwindow,
-"xview",		tktextxview,
-"yview",		tktextyview,
-"tkTextButton1",	tktextbutton1,
-"tkTextButton1R",	tktextbutton1r,
-"tkTextDelIns",		tktextdelins,
-"tkTextInsert",		tktextinserti,
-"tkTextSelectTo",	tktextselectto,
-"tkTextSetCursor",	tktextsetcursor,
-"tkTextScrollPages",	tktextscrollpages,
-"tkTextCursor",		tktextcursor,
+"bbox", tktextbbox,
+"cget", tktextcget,
+"compare", tktextcompare,
+"configure", tktextconfigure,
+"debug", tktextdebug,
+"delete", tktextdelete,
+"dlineinfo", tktextdlineinfo,
+"dump", tktextdump,
+"get", tktextget,
+"index", tktextindex,
+"insert", tktextinsert,
+"mark", tktextmark,
+"scan", tktextscan,
+"search", tktextsearch,
+"see", tktextsee,
+"selection", tktextselection,
+"tag", tktexttag,
+"window", tktextwindow,
+"xview", tktextxview,
+"yview", tktextyview,
+"tkTextButton1", tktextbutton1,
+"tkTextButton1R", tktextbutton1r,
+"tkTextDelIns", tktextdelins,
+"tkTextInsert", tktextinserti,
+"tkTextSelectTo", tktextselectto,
+"tkTextSetCursor", tktextsetcursor,
+"tkTextScrollPages", tktextscrollpages,
+"tkTextCursor", tktextcursor,
 nil
 };
 TkMethod textmethod = {

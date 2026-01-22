@@ -1,5 +1,5 @@
 #ifndef gdevpcl_INCLUDED
-#  define gdevpcl_INCLUDED
+# define gdevpcl_INCLUDED
 #define PAPER_SIZE_EXECUTIVE 1
 #define PAPER_SIZE_LETTER 2
 #define PAPER_SIZE_LEGAL 3

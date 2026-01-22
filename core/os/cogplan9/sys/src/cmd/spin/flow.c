@@ -1,32 +1,32 @@
 #include "spin.h"
 #include "y.tab.h"
-extern Symbol	*Fname;
-extern int	nr_errs, lineno, verbose, in_for;
-extern short	has_unless, has_badelse, has_xu;
+extern Symbol *Fname;
+extern int nr_errs, lineno, verbose, in_for;
+extern short has_unless, has_badelse, has_xu;
 extern char CurScope[MAXSCOPESZ];
 Element *Al_El = ZE;
-Label	*labtab = (Label *) 0;
-int	Unique = 0, Elcnt = 0, DstepStart = -1;
-int	initialization_ok = 1;
-static Lbreak	*breakstack = (Lbreak *) 0;
-static Lextok	*innermost;
-static SeqList	*cur_s = (SeqList *) 0;
-static int	break_id=0;
-static Element	*if_seq(Lextok *);
-static Element	*new_el(Lextok *);
-static Element	*unless_seq(Lextok *);
-static void	add_el(Element *, Sequence *);
-static void	attach_escape(Sequence *, Sequence *);
-static void	mov_lab(Symbol *, Element *, Element *);
-static void	walk_atomic(Element *, Element *, int);
+Label *labtab = (Label *) 0;
+int Unique = 0, Elcnt = 0, DstepStart = -1;
+int initialization_ok = 1;
+static Lbreak *breakstack = (Lbreak *) 0;
+static Lextok *innermost;
+static SeqList *cur_s = (SeqList *) 0;
+static int break_id=0;
+static Element *if_seq(Lextok *);
+static Element *new_el(Lextok *);
+static Element *unless_seq(Lextok *);
+static void add_el(Element *, Sequence *);
+static void attach_escape(Sequence *, Sequence *);
+static void mov_lab(Symbol *, Element *, Element *);
+static void walk_atomic(Element *, Element *, int);
 void
 open_seq(int top)
-{	SeqList *t;
+{ SeqList *t;
 Sequence *s = (Sequence *) emalloc(sizeof(Sequence));
 t = seqlist(s, cur_s);
 cur_s = t;
 if (top)
-{	Elcnt = 1;
+{ Elcnt = 1;
 initialization_ok = 1;
 }
 }
@@ -42,29 +42,29 @@ DstepStart = -1;
 }
 static int
 Rjumpslocal(Element *q, Element *stop)
-{	Element *lb, *f;
+{ Element *lb, *f;
 SeqList *h;
 for (f = q; f && f != stop; f = f->nxt)
-{	if (f && f->n && f->n->ntyp == GOTO)
-{	lb = get_lab(f->n, 0);
+{ if (f && f->n && f->n->ntyp == GOTO)
+{ lb = get_lab(f->n, 0);
 if (!lb || lb->Seqno < DstepStart)
-{	lineno = f->n->ln;
+{ lineno = f->n->ln;
 Fname = f->n->fn;
 return 0;
-}	}
+} }
 for (h = f->sub; h; h = h->nxt)
-{	if (!Rjumpslocal(h->this->frst, h->this->last))
+{ if (!Rjumpslocal(h->this->frst, h->this->last))
 return 0;
-}	}
+} }
 return 1;
 }
 void
 cross_dsteps(Lextok *a, Lextok *b)
 {
 if (a && b
-&&  a->indstep != b->indstep)
-{	lineno = a->ln;
-Fname  = a->fn;
+&& a->indstep != b->indstep)
+{ lineno = a->ln;
+Fname = a->fn;
 fatal("jump into d_step sequence", (char *) 0);
 }
 }
@@ -72,31 +72,31 @@ int
 is_skip(Lextok *n)
 {
 return (n->ntyp == PRINT
-||	n->ntyp == PRINTM
-||	(n->ntyp == 'c'
+|| n->ntyp == PRINTM
+|| (n->ntyp == 'c'
 && n->lft
 && n->lft->ntyp == CONST
-&& n->lft->val  == 1));
+&& n->lft->val == 1));
 }
 void
 check_sequence(Sequence *s)
-{	Element *e, *le = ZE;
+{ Element *e, *le = ZE;
 Lextok *n;
 int cnt = 0;
 for (e = s->frst; e; le = e, e = e->nxt)
-{	n = e->n;
+{ n = e->n;
 if (is_skip(n) && !has_lab(e, 0))
-{	cnt++;
+{ cnt++;
 if (cnt > 1
-&&  n->ntyp != PRINT
-&&  n->ntyp != PRINTM)
-{	if (verbose&32)
+&& n->ntyp != PRINT
+&& n->ntyp != PRINTM)
+{ if (verbose&32)
 printf("spin: %s:%d, redundant skip\n",
 n->fn->name, n->ln);
 if (e != s->frst
-&&  e != s->last
-&&  e != s->extent)
-{	e->status |= DONE;
+&& e != s->last
+&& e != s->extent)
+{ e->status |= DONE;
 le->nxt = e->nxt;
 e = le;
 }
@@ -107,7 +107,7 @@ cnt = 0;
 }
 void
 prune_opts(Lextok *n)
-{	SeqList *l;
+{ SeqList *l;
 extern Symbol *context;
 extern char *claimproc;
 if (!n
@@ -118,13 +118,13 @@ check_sequence(l->this);
 }
 Sequence *
 close_seq(int nottop)
-{	Sequence *s = cur_s->this;
+{ Sequence *s = cur_s->this;
 Symbol *z;
 if (nottop == 0)
-{	initialization_ok = 1;
+{ initialization_ok = 1;
 }
 if (nottop > 0 && (z = has_lab(s->frst, 0)))
-{	printf("error: (%s:%d) label %s placed incorrectly\n",
+{ printf("error: (%s:%d) label %s placed incorrectly\n",
 (s->frst->n)?s->frst->n->fn->name:"-",
 (s->frst->n)?s->frst->n->ln:0,
 z->name);
@@ -188,7 +188,7 @@ return s;
 }
 Lextok *
 do_unless(Lextok *No, Lextok *Es)
-{	SeqList *Sl;
+{ SeqList *Sl;
 Lextok *Re = nn(ZN, UNLESS, ZN, ZN);
 Re->ln = No->ln;
 Re->fn = No->fn;
@@ -196,16 +196,16 @@ has_unless++;
 if (Es->ntyp == NON_ATOMIC)
 Sl = Es->sl;
 else
-{	open_seq(0); add_seq(Es);
+{ open_seq(0); add_seq(Es);
 Sl = seqlist(close_seq(1), 0);
 }
 if (No->ntyp == NON_ATOMIC)
-{	No->sl->nxt = Sl;
+{ No->sl->nxt = Sl;
 Sl = No->sl;
-} else	if (No->ntyp == ':'
+} else if (No->ntyp == ':'
 && (No->lft->ntyp == NON_ATOMIC
-||  No->lft->ntyp == ATOMIC
-||  No->lft->ntyp == D_STEP))
+|| No->lft->ntyp == ATOMIC
+|| No->lft->ntyp == D_STEP))
 {
 int tok = No->lft->ntyp;
 No->lft->sl->nxt = Sl;
@@ -220,7 +220,7 @@ Re->ln = No->ln;
 Re->fn = No->fn;
 return Re;
 } else
-{	open_seq(0); add_seq(No);
+{ open_seq(0); add_seq(No);
 Sl = seqlist(close_seq(2), Sl);
 }
 Re->sl = Sl;
@@ -228,16 +228,16 @@ return Re;
 }
 SeqList *
 seqlist(Sequence *s, SeqList *r)
-{	SeqList *t = (SeqList *) emalloc(sizeof(SeqList));
+{ SeqList *t = (SeqList *) emalloc(sizeof(SeqList));
 t->this = s;
 t->nxt = r;
 return t;
 }
 static Element *
 new_el(Lextok *n)
-{	Element *m;
+{ Element *m;
 if (n)
-{	if (n->ntyp == IF || n->ntyp == DO)
+{ if (n->ntyp == IF || n->ntyp == DO)
 return if_seq(n);
 if (n->ntyp == UNLESS)
 return unless_seq(n);
@@ -254,12 +254,12 @@ has_chanref(Lextok *n)
 {
 if (!n) return 0;
 switch (n->ntyp) {
-case 's':	case 'r':
+case 's': case 'r':
 #if 0
-case 'R':	case LEN:
+case 'R': case LEN:
 #endif
-case FULL:	case NFULL:
-case EMPTY:	case NEMPTY:
+case FULL: case NFULL:
+case EMPTY: case NEMPTY:
 return 1;
 default:
 break;
@@ -270,10 +270,10 @@ return has_chanref(n->rgt);
 }
 void
 loose_ends(void)
-{	Element *e, *f;
+{ Element *e, *f;
 for (e = Al_El; e; e = e->Nxt)
-{	if (!e->n
-||  !e->nxt)
+{ if (!e->n
+|| !e->nxt)
 continue;
 switch (e->n->ntyp) {
 case ATOMIC:
@@ -291,32 +291,32 @@ e->n->sl->this->last->nxt?e->n->sl->this->last->nxt->seqno:-1);
 if (!e->n->sl->this->last->nxt)
 e->n->sl->this->last->nxt = f;
 else
-{	if (e->n->sl->this->last->nxt->n->ntyp != GOTO)
-{	if (!f || e->n->sl->this->last->nxt->seqno != f->seqno)
+{ if (e->n->sl->this->last->nxt->n->ntyp != GOTO)
+{ if (!f || e->n->sl->this->last->nxt->seqno != f->seqno)
 non_fatal("unexpected: loose ends", (char *)0);
 } else
 e->n->sl->this->last = e->n->sl->this->last->nxt;
 }
 break;
-}	}
+} }
 }
 static Element *
 if_seq(Lextok *n)
-{	int	tok = n->ntyp;
-SeqList	*s  = n->sl;
-Element	*e  = new_el(ZN);
-Element	*t  = new_el(nn(ZN,'.',ZN,ZN));
-SeqList	*z, *prev_z = (SeqList *) 0;
-SeqList *move_else  = (SeqList *) 0;
-int	ref_chans = 0;
+{ int tok = n->ntyp;
+SeqList *s = n->sl;
+Element *e = new_el(ZN);
+Element *t = new_el(nn(ZN,'.',ZN,ZN));
+SeqList *z, *prev_z = (SeqList *) 0;
+SeqList *move_else = (SeqList *) 0;
+int ref_chans = 0;
 for (z = s; z; z = z->nxt)
-{	if (!z->this->frst)
+{ if (!z->this->frst)
 continue;
 if (z->this->frst->n->ntyp == ELSE)
-{	if (move_else)
+{ if (move_else)
 fatal("duplicate `else'", (char *) 0);
 if (z->nxt)
-{	move_else = z;
+{ move_else = z;
 if (prev_z)
 prev_z->nxt = z->nxt;
 else
@@ -328,21 +328,21 @@ ref_chans |= has_chanref(z->this->frst->n);
 prev_z = z;
 }
 if (move_else)
-{	move_else->nxt = (SeqList *) 0;
+{ move_else->nxt = (SeqList *) 0;
 if (!prev_z) fatal("cannot happen - if_seq", (char *) 0);
 prev_z->nxt = move_else;
 prev_z = move_else;
 }
 if (prev_z
-&&  ref_chans
-&&  prev_z->this->frst->n->ntyp == ELSE)
-{	prev_z->this->frst->n->val = 1;
+&& ref_chans
+&& prev_z->this->frst->n->ntyp == ELSE)
+{ prev_z->this->frst->n->val = 1;
 has_badelse++;
 if (has_xu)
-{	fatal("invalid use of 'else' combined with i/o and xr/xs assertions,",
+{ fatal("invalid use of 'else' combined with i/o and xr/xs assertions,",
 (char *)0);
 } else
-{	non_fatal("dubious use of 'else' combined with i/o,",
+{ non_fatal("dubious use of 'else' combined with i/o,",
 (char *)0);
 }
 nr_errs--;
@@ -353,7 +353,7 @@ e->sub = s;
 for (z = s; z; prev_z = z, z = z->nxt)
 add_el(t, z->this);
 if (tok == DO)
-{	add_el(t, cur_s->this);
+{ add_el(t, cur_s->this);
 t = new_el(nn(n, BREAK, ZN, ZN));
 set_lab(break_dest(), t);
 breakstack = breakstack->nxt;
@@ -364,7 +364,7 @@ return e;
 }
 static void
 escape_el(Element *f, Sequence *e)
-{	SeqList *z;
+{ SeqList *z;
 for (z = f->esc; z; z = z->nxt)
 if (z->this == e)
 return;
@@ -398,19 +398,19 @@ break;
 }
 static void
 attach_escape(Sequence *n, Sequence *e)
-{	Element *f;
+{ Element *f;
 for (f = n->frst; f; f = f->nxt)
-{	escape_el(f, e);
+{ escape_el(f, e);
 if (f == n->extent)
 break;
 }
 }
 static Element *
 unless_seq(Lextok *n)
-{	SeqList	*s  = n->sl;
-Element	*e  = new_el(ZN);
-Element	*t  = new_el(nn(ZN,'.',ZN,ZN));
-SeqList	*z;
+{ SeqList *s = n->sl;
+Element *e = new_el(ZN);
+Element *t = new_el(nn(ZN,'.',ZN,ZN));
+SeqList *z;
 e->n = nn(n, UNLESS, ZN, ZN);
 e->n->sl = s;
 e->sub = s;
@@ -424,7 +424,7 @@ add_el(t, cur_s->this);
 #ifdef DEBUG
 printf("unless element (%d,%d):\n", e->Seqno, t->Seqno);
 for (z = s; z; z = z->nxt)
-{	Element *x; printf("\t%d,%d,%d :: ",
+{ Element *x; printf("\t%d,%d,%d :: ",
 z->this->frst->Seqno,
 z->this->extent->Seqno,
 z->this->last->Seqno);
@@ -437,7 +437,7 @@ return e;
 }
 Element *
 mk_skip(void)
-{	Lextok  *t = nn(ZN, CONST, ZN, ZN);
+{ Lextok *t = nn(ZN, CONST, ZN, ZN);
 t->val = 1;
 return new_el(nn(ZN, 'c', t, ZN));
 }
@@ -445,13 +445,13 @@ static void
 add_el(Element *e, Sequence *s)
 {
 if (e->n->ntyp == GOTO)
-{	Symbol *z = has_lab(e, (1|2|4));
+{ Symbol *z = has_lab(e, (1|2|4));
 if (z)
-{	Element *y;
+{ Element *y;
 y = mk_skip();
 mov_lab(z, e, y);
 add_el(y, s);
-}	}
+} }
 #ifdef DEBUG
 printf("add_el %d after %d -- ",
 e->Seqno, (s->last)?s->last->Seqno:-1);
@@ -470,7 +470,7 @@ colons(Lextok *n)
 if (!n)
 return ZE;
 if (n->ntyp == ':')
-{	Element *e = colons(n->lft);
+{ Element *e = colons(n->lft);
 set_lab(n->sym, e);
 return e;
 }
@@ -479,33 +479,33 @@ return new_el(n);
 }
 void
 add_seq(Lextok *n)
-{	Element *e;
+{ Element *e;
 if (!n) return;
 innermost = n;
 e = colons(n);
 if (innermost->ntyp != IF
-&&  innermost->ntyp != DO
-&&  innermost->ntyp != UNLESS)
+&& innermost->ntyp != DO
+&& innermost->ntyp != UNLESS)
 add_el(e, cur_s->this);
 }
 void
 show_lab(void)
-{	Label *l;
+{ Label *l;
 for (l = labtab; l; l = l->nxt)
 printf("label %s\n", l->s->name);
 }
 void
 set_lab(Symbol *s, Element *e)
-{	Label *l; extern Symbol *context;
+{ Label *l; extern Symbol *context;
 int cur_uiid = is_inline();
 if (!s) return;
 for (l = labtab; l; l = l->nxt)
-{	if (strcmp(l->s->name, s->name) == 0
-&&  l->c == context
-&&  l->uiid == cur_uiid)
-{	non_fatal("label %s redeclared", s->name);
+{ if (strcmp(l->s->name, s->name) == 0
+&& l->c == context
+&& l->uiid == cur_uiid)
+{ non_fatal("label %s redeclared", s->name);
 break;
-}	}
+} }
 l = (Label *) emalloc(sizeof(Label));
 l->s = s;
 l->c = context;
@@ -516,62 +516,62 @@ labtab = l;
 }
 static Label *
 get_labspec(Lextok *n)
-{	Symbol *s = n->sym;
+{ Symbol *s = n->sym;
 Label *l, *anymatch = (Label *) 0;
 int cur_uiid = n->uiid;
 for (l = labtab; l; l = l->nxt)
-{	if (strcmp(s->name, l->s->name) == 0
-&&  s->context == l->s->context)
-{	anymatch = l;
+{ if (strcmp(s->name, l->s->name) == 0
+&& s->context == l->s->context)
+{ anymatch = l;
 if (cur_uiid == l->uiid)
-{	return l;
-}	}	}
+{ return l;
+} } }
 return anymatch;
 }
 Element *
 get_lab(Lextok *n, int md)
-{	Label *l = get_labspec(n);
+{ Label *l = get_labspec(n);
 if (l != (Label *) 0)
-{	return (l->e);
+{ return (l->e);
 }
 if (md)
-{	lineno = n->ln;
-Fname  = n->fn;
+{ lineno = n->ln;
+Fname = n->fn;
 fatal("undefined label %s", n->sym->name);
 }
 return ZE;
 }
 Symbol *
 has_lab(Element *e, int special)
-{	Label *l;
+{ Label *l;
 for (l = labtab; l; l = l->nxt)
-{	if (e != l->e)
+{ if (e != l->e)
 continue;
 if (special == 0
-||  ((special&1) && !strncmp(l->s->name, "accept", 6))
-||  ((special&2) && !strncmp(l->s->name, "end", 3))
-||  ((special&4) && !strncmp(l->s->name, "progress", 8)))
+|| ((special&1) && !strncmp(l->s->name, "accept", 6))
+|| ((special&2) && !strncmp(l->s->name, "end", 3))
+|| ((special&4) && !strncmp(l->s->name, "progress", 8)))
 return (l->s);
 }
 return ZS;
 }
 static void
 mov_lab(Symbol *z, Element *e, Element *y)
-{	Label *l;
+{ Label *l;
 for (l = labtab; l; l = l->nxt)
 if (e == l->e)
-{	l->e = y;
+{ l->e = y;
 return;
 }
 if (e->n)
-{	lineno = e->n->ln;
-Fname  = e->n->fn;
+{ lineno = e->n->ln;
+Fname = e->n->fn;
 }
 fatal("cannot happen - mov_lab %s", z->name);
 }
 void
 fix_dest(Symbol *c, Symbol *a)
-{	Label *l; extern Symbol *context;
+{ Label *l; extern Symbol *context;
 #if 0
 printf("ref to label '%s' in proctype '%s', search:\n",
 c->name, a->name);
@@ -579,12 +579,12 @@ for (l = labtab; l; l = l->nxt)
 printf("	%s in	%s\n", l->s->name, l->c->name);
 #endif
 for (l = labtab; l; l = l->nxt)
-{	if (strcmp(c->name, l->s->name) == 0
-&&  strcmp(a->name, l->c->name) == 0)
+{ if (strcmp(c->name, l->s->name) == 0
+&& strcmp(a->name, l->c->name) == 0)
 break;
 }
 if (!l)
-{	printf("spin: label '%s' (proctype %s)\n", c->name, a->name);
+{ printf("spin: label '%s' (proctype %s)\n", c->name, a->name);
 non_fatal("unknown label '%s'", c->name);
 if (context == a)
 printf("spin: cannot remote ref a label inside the same proctype\n");
@@ -593,9 +593,9 @@ return;
 if (!l->e || !l->e->n)
 fatal("fix_dest error (%s)", c->name);
 if (l->e->n->ntyp == GOTO)
-{	Element	*y = (Element *) emalloc(sizeof(Element));
-int	keep_ln = l->e->n->ln;
-Symbol	*keep_fn = l->e->n->fn;
+{ Element *y = (Element *) emalloc(sizeof(Element));
+int keep_ln = l->e->n->ln;
+Symbol *keep_fn = l->e->n->fn;
 y->n = l->e->n;
 y->seqno = find_maxel(a);
 y->nxt = l->e->nxt;
@@ -608,24 +608,24 @@ l->e->nxt = y;
 }
 l->e->status |= CHECK2;
 if (l->e->status & (ATOM | L_ATOM | D_ATOM))
-{	non_fatal("cannot reference label inside atomic or d_step (%s)",
+{ non_fatal("cannot reference label inside atomic or d_step (%s)",
 c->name);
 }
 }
 int
 find_lab(Symbol *s, Symbol *c, int markit)
-{	Label *l;
+{ Label *l;
 for (l = labtab; l; l = l->nxt)
-{	if (strcmp(s->name, l->s->name) == 0
-&&  strcmp(c->name, l->c->name) == 0)
-{	l->visible |= markit;
+{ if (strcmp(s->name, l->s->name) == 0
+&& strcmp(c->name, l->c->name) == 0)
+{ l->visible |= markit;
 return (l->e->seqno);
-}	}
+} }
 return 0;
 }
 void
 pushbreak(void)
-{	Lbreak *r = (Lbreak *) emalloc(sizeof(Lbreak));
+{ Lbreak *r = (Lbreak *) emalloc(sizeof(Lbreak));
 Symbol *l;
 char buf[64];
 sprintf(buf, ":b%d", break_id++);
@@ -643,7 +643,7 @@ return breakstack->l;
 }
 void
 make_atomic(Sequence *s, int added)
-{	Element *f;
+{ Element *f;
 walk_atomic(s->frst, s->last, added);
 f = s->last;
 switch (f->n->ntyp) {
@@ -665,7 +665,7 @@ static int depth = 0;
 void dump_sym(Symbol *, char *);
 void
 dump_lex(Lextok *t, char *s)
-{	int i;
+{ int i;
 depth++;
 printf(s);
 for (i = 0; i < depth; i++)
@@ -674,26 +674,26 @@ explain(t->ntyp);
 if (t->ntyp == NAME) printf(" %s ", t->sym->name);
 if (t->ntyp == CONST) printf(" %d ", t->val);
 if (t->ntyp == STRUCT)
-{	dump_sym(t->sym, "\n:Z:");
+{ dump_sym(t->sym, "\n:Z:");
 }
 if (t->lft)
-{	dump_lex(t->lft, "\nL");
+{ dump_lex(t->lft, "\nL");
 }
 if (t->rgt)
-{	dump_lex(t->rgt, "\nR");
+{ dump_lex(t->rgt, "\nR");
 }
 depth--;
 }
 void
 dump_sym(Symbol *z, char *s)
-{	int i;
+{ int i;
 char txt[64];
 depth++;
 printf(s);
 for (i = 0; i < depth; i++)
 printf("\t");
 if (z->type == CHAN)
-{	if (z->ini && z->ini->rgt && z->ini->rgt->sym)
+{ if (z->ini && z->ini->rgt && z->ini->rgt->sym)
 {
 if (z->ini->rgt->rgt
 || !z->ini->rgt->sym)
@@ -701,10 +701,10 @@ fatal("chan %s in for should have only one field (a typedef)", z->name);
 printf(" -- %s %p -- ", z->ini->rgt->sym->name, z->ini->rgt->sym);
 }
 } else if (z->type == STRUCT)
-{	if (z->Snm)
+{ if (z->Snm)
 printf(" == %s %p == ", z->Snm->name, z->Snm);
 else
-{	if (z->Slst)
+{ if (z->Slst)
 dump_lex(z->Slst, "\n:X:");
 if (z->ini)
 dump_lex(z->ini, "\n:I:");
@@ -717,14 +717,14 @@ int
 match_struct(Symbol *s, Symbol *t)
 {
 if (!t
-||  !t->ini
-||  !t->ini->rgt
-||  !t->ini->rgt->sym
-||   t->ini->rgt->rgt)
-{	fatal("chan %s in for should have only one field (a typedef)", t->name);
+|| !t->ini
+|| !t->ini->rgt
+|| !t->ini->rgt->sym
+|| t->ini->rgt->rgt)
+{ fatal("chan %s in for should have only one field (a typedef)", t->name);
 }
 if (0)
-{	printf("index type %s %p ==\n", s->Snm->name, s->Snm);
+{ printf("index type %s %p ==\n", s->Snm->name, s->Snm);
 printf("chan type  %s %p --\n\n", t->ini->rgt->sym->name, t->ini->rgt->sym);
 }
 return (s->Snm == t->ini->rgt->sym);
@@ -733,15 +733,15 @@ void
 valid_name(Lextok *a3, Lextok *a5, Lextok *a8, char *tp)
 {
 if (a3->ntyp != NAME)
-{	fatal("%s ( .name : from .. to ) { ... }", tp);
+{ fatal("%s ( .name : from .. to ) { ... }", tp);
 }
 if (a3->sym->type == CHAN
-||  a3->sym->type == STRUCT
-||  a3->sym->isarray != 0)
-{	fatal("bad index in for-construct %s", a3->sym->name);
+|| a3->sym->type == STRUCT
+|| a3->sym->isarray != 0)
+{ fatal("bad index in for-construct %s", a3->sym->name);
 }
 if (a5->ntyp == CONST && a8->ntyp == CONST && a5->val > a8->val)
-{	non_fatal("start value for %s exceeds end-value", a3->sym->name);
+{ non_fatal("start value for %s exceeds end-value", a3->sym->name);
 }
 }
 void
@@ -754,18 +754,18 @@ add_seq(nn(ZN, 'c', nn(a3, LE, a3, a8), ZN));
 }
 Lextok *
 for_index(Lextok *a3, Lextok *a5)
-{	Lextok *z0, *z1, *z2, *z3;
+{ Lextok *z0, *z1, *z2, *z3;
 Symbol *tmp_cnt;
 char tmp_nm[MAXSCOPESZ];
 if (a3->ntyp != NAME)
-{	fatal("for ( .name in name ) { ... }", (char *) 0);
+{ fatal("for ( .name in name ) { ... }", (char *) 0);
 }
 if (a5->ntyp != NAME)
-{	fatal("for ( %s in .name ) { ... }", a3->sym->name);
+{ fatal("for ( %s in .name ) { ... }", a3->sym->name);
 }
 if (a3->sym->type == STRUCT)
-{	if (a5->sym->type != CHAN)
-{	fatal("for ( %s in .channel_name ) { ... }",
+{ if (a5->sym->type != CHAN)
+{ fatal("for ( %s in .channel_name ) { ... }",
 a3->sym->name);
 }
 z0 = a5->sym->ini;
@@ -773,19 +773,19 @@ if (!z0
 || z0->val <= 0
 || z0->rgt->ntyp != STRUCT
 || z0->rgt->rgt != NULL)
-{	fatal("bad channel type %s in for", a5->sym->name);
+{ fatal("bad channel type %s in for", a5->sym->name);
 }
 if (!match_struct(a3->sym, a5->sym))
-{	fatal("type of %s does not match chan", a3->sym->name);
+{ fatal("type of %s does not match chan", a3->sym->name);
 }
 z1 = nn(ZN, CONST, ZN, ZN); z1->val = 0;
 z2 = nn(a5, LEN, a5, ZN);
 sprintf(tmp_nm, "_f0r_t3mp%s", CurScope);
 tmp_cnt = lookup(tmp_nm);
 if (z0->val > 255)
-{	tmp_cnt->type = SHORT;
+{ tmp_cnt->type = SHORT;
 } else
-{	tmp_cnt->type = BYTE;
+{ tmp_cnt->type = BYTE;
 }
 z3 = nn(ZN, NAME, ZN, ZN);
 z3->sym = tmp_cnt;
@@ -798,9 +798,9 @@ add_seq(nn(a5, 's', a5, expand(a3, 1)));
 in_for = 1;
 return z3;
 } else
-{	if (a5->sym->isarray == 0
-||  a5->sym->nel <= 0)
-{	fatal("bad arrayname %s", a5->sym->name);
+{ if (a5->sym->isarray == 0
+|| a5->sym->nel <= 0)
+{ fatal("bad arrayname %s", a5->sym->name);
 }
 z1 = nn(ZN, CONST, ZN, ZN); z1->val = 0;
 z2 = nn(ZN, CONST, ZN, ZN); z2->val = a5->sym->nel - 1;
@@ -810,9 +810,9 @@ return a3;
 }
 Lextok *
 for_body(Lextok *a3, int with_else)
-{	Lextok *t1, *t2, *t0, *rv;
+{ Lextok *t1, *t2, *t0, *rv;
 rv = nn(ZN, CONST, ZN, ZN); rv->val = 1;
-rv = nn(ZN,  '+', a3, rv);
+rv = nn(ZN, '+', a3, rv);
 rv = nn(a3, ASGN, a3, rv);
 add_seq(rv);
 pushbreak();
@@ -820,7 +820,7 @@ t1 = nn(ZN, 0, ZN, ZN);
 t1->sq = close_seq(8);
 open_seq(0);
 if (with_else)
-{	add_seq(nn(ZN, ELSE, ZN, ZN));
+{ add_seq(nn(ZN, ELSE, ZN, ZN));
 }
 t2 = nn(ZN, GOTO, ZN, ZN);
 t2->sym = break_dest();
@@ -844,12 +844,12 @@ return for_body(a3, 0);
 }
 static void
 walk_atomic(Element *a, Element *b, int added)
-{	Element *f; Symbol *ofn; int oln;
+{ Element *f; Symbol *ofn; int oln;
 SeqList *h;
 ofn = Fname;
 oln = lineno;
 for (f = a; ; f = f->nxt)
-{	f->status |= (ATOM|added);
+{ f->status |= (ATOM|added);
 switch (f->n->ntyp) {
 case ATOMIC:
 if (verbose&32)
@@ -858,19 +858,19 @@ f->n->fn->name, f->n->ln, (added)?"d_step":"atomic");
 goto mknonat;
 case D_STEP:
 if (!(verbose&32))
-{	if (added) goto mknonat;
+{ if (added) goto mknonat;
 break;
 }
 printf("spin: warning, %s:%d, d_step inside ",
 f->n->fn->name, f->n->ln);
 if (added)
-{	printf("d_step (ignored)\n");
+{ printf("d_step (ignored)\n");
 goto mknonat;
 }
 printf("atomic\n");
 break;
 case NON_ATOMIC:
-mknonat:		f->n->ntyp = NON_ATOMIC;
+mknonat: f->n->ntyp = NON_ATOMIC;
 h = f->n->sl;
 walk_atomic(h->this->frst, h->this->last, added);
 break;
@@ -890,10 +890,10 @@ lineno = oln;
 }
 void
 dumplabels(void)
-{	Label *l;
+{ Label *l;
 for (l = labtab; l; l = l->nxt)
 if (l->c != 0 && l->s->name[0] != ':')
-{	printf("label	%s	%d	",
+{ printf("label	%s	%d	",
 l->s->name, l->e->seqno);
 if (l->uiid == 0)
 printf("<%s>\n", l->c->name);

@@ -3,8 +3,8 @@
 #include <sys/mman.h>
 #include <hurd/netfs.h>
 #include "ccache.h"
-#define READ_CHUNK_SIZE   (8*1024)
-#define ALLOC_CHUNK_SIZE  (64*1024)
+#define READ_CHUNK_SIZE (8*1024)
+#define ALLOC_CHUNK_SIZE (64*1024)
 error_t
 ccache_read (struct ccache *cc, off_t offs, size_t len, void *data)
 {
@@ -149,7 +149,7 @@ ccache_invalidate (struct ccache *cc)
 {
 error_t err = 0;
 pthread_mutex_lock (&cc->lock);
-while  (cc->fetching_active && !err)
+while (cc->fetching_active && !err)
 {
 if (pthread_hurd_cond_wait_np (&cc->wakeup, &cc->lock))
 err = EINTR;

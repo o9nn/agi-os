@@ -12,42 +12,42 @@ Binsize = 0x80,
 Binnegsz = 0xff,
 };
 enum {
-LF_PLAIN1 =	'\0',
-LF_PLAIN2 =	'0',
-LF_LINK =	'1',
-LF_SYMLINK1 =	'2',
-LF_SYMLINK2 =	's',
-LF_CHR =	'3',
-LF_BLK =	'4',
-LF_DIR =	'5',
-LF_FIFO =	'6',
-LF_CONTIG =	'7',
+LF_PLAIN1 = '\0',
+LF_PLAIN2 = '0',
+LF_LINK = '1',
+LF_SYMLINK1 = '2',
+LF_SYMLINK2 = 's',
+LF_CHR = '3',
+LF_BLK = '4',
+LF_DIR = '5',
+LF_FIFO = '6',
+LF_CONTIG = '7',
 };
 typedef union {
-char	dummy[Tblock];
-char	tbuf[Maxbuf];
+char dummy[Tblock];
+char tbuf[Maxbuf];
 struct Header {
-char	name[Namsiz];
-char	mode[8];
-char	uid[8];
-char	gid[8];
-char	size[12];
-char	mtime[12];
-char	chksum[8];
-char	linkflag;
-char	linkname[Namsiz];
-char	magic[6];
-char	version[2];
-char	uname[32];
-char	gname[32];
-char	devmajor[8];
-char	devminor[8];
-char	prefix[Maxpfx];
+char name[Namsiz];
+char mode[8];
+char uid[8];
+char gid[8];
+char size[12];
+char mtime[12];
+char chksum[8];
+char linkflag;
+char linkname[Namsiz];
+char magic[6];
+char version[2];
+char uname[32];
+char gname[32];
+char devmajor[8];
+char devminor[8];
+char prefix[Maxpfx];
 };
 } Hdr;
 Hdr dblock;
 int tapefile;
-int	checksum(void);
+int checksum(void);
 static int
 isustar(Hdr *hp)
 {
@@ -98,14 +98,14 @@ if (fname[0] == '\0')
 break;
 f.addr = blkno + 1;
 f.mode = strtoul(hp->mode, 0, 8);
-f.uid  = strtoul(hp->uid, 0, 8);
-f.gid  = strtoul(hp->gid, 0, 8);
+f.uid = strtoul(hp->uid, 0, 8);
+f.gid = strtoul(hp->gid, 0, 8);
 if((uchar)hp->size[0] == 0x80)
 f.size = b8byte(hp->size+3);
 else
 f.size = strtoull(hp->size, 0, 8);
 f.mdate = strtoul(hp->mtime, 0, 8);
-chksum  = strtoul(hp->chksum, 0, 8);
+chksum = strtoul(hp->chksum, 0, 8);
 if (hp->linkflag == LF_DIR || (f.mode&0170000) == 040000 ||
 strrchr(fname, '\0')[-1] == '/'){
 f.mode |= DMDIR;

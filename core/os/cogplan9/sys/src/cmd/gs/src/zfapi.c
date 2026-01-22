@@ -41,21 +41,21 @@ fixed x0, y0;
 bool close_path, need_close;
 } FAPI_outline_handler;
 private inline int import_shift(int x, int n)
-{   return n > 0 ? x << n : x >> -n;
+{ return n > 0 ? x << n : x >> -n;
 }
 private inline int export_shift(int x, int n)
-{   return n > 0 ? x >> n : x << -n;
+{ return n > 0 ? x >> n : x << -n;
 }
 private inline int fapi_round(double x)
-{   return (int)(x + 0.5);
+{ return (int)(x + 0.5);
 }
 private int add_closepath(FAPI_path *I)
-{   FAPI_outline_handler *olh = (FAPI_outline_handler *)I->olh;
+{ FAPI_outline_handler *olh = (FAPI_outline_handler *)I->olh;
 olh->need_close = false;
 return gx_path_close_subpath_notes(olh->path, 0);
 }
 private int add_move(FAPI_path *I, FracInt x, FracInt y)
-{   FAPI_outline_handler *olh = (FAPI_outline_handler *)I->olh;
+{ FAPI_outline_handler *olh = (FAPI_outline_handler *)I->olh;
 int code;
 if (olh->need_close && olh->close_path)
 if ((code = add_closepath(I)) < 0)
@@ -64,12 +64,12 @@ olh->need_close = false;
 return gx_path_add_point(olh->path, import_shift(x, I->shift) + olh->x0, -import_shift(y, I->shift) + olh->y0);
 }
 private int add_line(FAPI_path *I, FracInt x, FracInt y)
-{   FAPI_outline_handler *olh = (FAPI_outline_handler *)I->olh;
+{ FAPI_outline_handler *olh = (FAPI_outline_handler *)I->olh;
 olh->need_close = true;
 return gx_path_add_line_notes(olh->path, import_shift(x, I->shift) + olh->x0, -import_shift(y, I->shift) + olh->y0, 0);
 }
 private int add_curve(FAPI_path *I, FracInt x0, FracInt y0, FracInt x1, FracInt y1, FracInt x2, FracInt y2)
-{   FAPI_outline_handler *olh = (FAPI_outline_handler *)I->olh;
+{ FAPI_outline_handler *olh = (FAPI_outline_handler *)I->olh;
 olh->need_close = true;
 return gx_path_add_curve_notes(olh->path, import_shift(x0, I->shift) + olh->x0, -import_shift(y0, I->shift) + olh->y0,
 import_shift(x1, I->shift) + olh->x0, -import_shift(y1, I->shift) + olh->y0,
@@ -77,12 +77,12 @@ import_shift(x2, I->shift) + olh->x0, -import_shift(y2, I->shift) + olh->y0, 0);
 }
 private FAPI_path path_interface_stub = { NULL, 0, add_move, add_line, add_curve, add_closepath };
 private inline bool IsCIDFont(const gs_font_base *pbfont)
-{   return (pbfont->FontType == ft_CID_encrypted ||
+{ return (pbfont->FontType == ft_CID_encrypted ||
 pbfont->FontType == ft_CID_user_defined ||
 pbfont->FontType == ft_CID_TrueType);
 }
 private inline bool IsType1GlyphData(const gs_font_base *pbfont)
-{   return pbfont->FontType == ft_encrypted ||
+{ return pbfont->FontType == ft_encrypted ||
 pbfont->FontType == ft_encrypted2 ||
 pbfont->FontType == ft_CID_encrypted;
 }
@@ -102,7 +102,7 @@ void (*rstring)(sfnts_reader *r, byte *v, int length);
 void (*seek)(sfnts_reader *r, ulong pos);
 };
 private void sfnts_next_elem(sfnts_reader *r)
-{   ref s;
+{ ref s;
 if (r->error)
 return;
 r->index++;
@@ -114,22 +114,22 @@ r->length = r_size(&s) & ~(uint)1;
 r->offset = 0;
 }
 private inline byte sfnts_reader_rbyte_inline(sfnts_reader *r)
-{   if (r->offset >= r->length)
+{ if (r->offset >= r->length)
 sfnts_next_elem(r);
 return (r->error ? 0 : r->p[r->offset++]);
 }
 private byte sfnts_reader_rbyte(sfnts_reader *r)
-{   return sfnts_reader_rbyte_inline(r);
+{ return sfnts_reader_rbyte_inline(r);
 }
 private ushort sfnts_reader_rword(sfnts_reader *r)
-{   return (sfnts_reader_rbyte_inline(r) << 8) + sfnts_reader_rbyte_inline(r);
+{ return (sfnts_reader_rbyte_inline(r) << 8) + sfnts_reader_rbyte_inline(r);
 }
 private ulong sfnts_reader_rlong(sfnts_reader *r)
-{   return (sfnts_reader_rbyte_inline(r) << 24) + (sfnts_reader_rbyte_inline(r) << 16) +
+{ return (sfnts_reader_rbyte_inline(r) << 24) + (sfnts_reader_rbyte_inline(r) << 16) +
 (sfnts_reader_rbyte_inline(r) << 8) + sfnts_reader_rbyte_inline(r);
 }
 private void sfnts_reader_rstring(sfnts_reader *r, byte *v, int length)
-{   if (length < 0)
+{ if (length < 0)
 return;
 while (!r->error) {
 int l = min(length, r->length - r->offset);
@@ -153,7 +153,7 @@ sfnts_next_elem(r);
 r->offset = pos - skipped;
 }
 private void sfnts_reader_init(sfnts_reader *r, ref *pdr)
-{   r->rbyte = sfnts_reader_rbyte;
+{ r->rbyte = sfnts_reader_rbyte;
 r->rword = sfnts_reader_rword;
 r->rlong = sfnts_reader_rlong;
 r->rstring = sfnts_reader_rstring;
@@ -175,29 +175,29 @@ void (*wlong)(sfnts_writer *w, ulong v);
 void (*wstring)(sfnts_writer *w, byte *v, int length);
 };
 private void sfnts_writer_wbyte(sfnts_writer *w, byte v)
-{   if (w->buf + w->buf_size < w->p + 1)
+{ if (w->buf + w->buf_size < w->p + 1)
 return;
 w->p[0] = v;
 w->p++;
 }
 private void sfnts_writer_wword(sfnts_writer *w, ushort v)
-{   if (w->buf + w->buf_size < w->p + 2)
+{ if (w->buf + w->buf_size < w->p + 2)
 return;
 w->p[0] = v / 256;
 w->p[1] = v % 256;
 w->p += 2;
 }
 private void sfnts_writer_wlong(sfnts_writer *w, ulong v)
-{   if (w->buf + w->buf_size < w->p + 4)
+{ if (w->buf + w->buf_size < w->p + 4)
 return;
 w->p[0] = v >> 24;
 w->p[1] = (v >> 16) & 0xFF;
-w->p[2] = (v >>  8) & 0xFF;
+w->p[2] = (v >> 8) & 0xFF;
 w->p[3] = v & 0xFF;
 w->p += 4;
 }
 private void sfnts_writer_wstring(sfnts_writer *w, byte *v, int length)
-{   if (w->buf + w->buf_size < w->p + length)
+{ if (w->buf + w->buf_size < w->p + length)
 return;
 memcpy(w->p, v, length);
 w->p += length;
@@ -217,7 +217,7 @@ memcmp(tag, "locx", 4) &&
 memcmp(tag, "cmap", 4);
 }
 private void sfnt_copy_table(sfnts_reader *r, sfnts_writer *w, int length)
-{   byte buf[1024];
+{ byte buf[1024];
 while (length > 0 && !r->error) {
 int l = min(length, sizeof(buf));
 r->rstring(r, buf, l);
@@ -291,12 +291,12 @@ w->wbyte(w, 0);
 return size_new;
 }
 private ulong true_type_size(ref *pdr)
-{   sfnts_reader r;
+{ sfnts_reader r;
 sfnts_reader_init(&r, pdr);
 return sfnts_copy_except_glyf(&r, 0);
 }
 private ushort FAPI_FF_serialize_tt_font(FAPI_font *ff, void *buf, int buf_size)
-{   ref *pdr = (ref *)ff->client_font_data2;
+{ ref *pdr = (ref *)ff->client_font_data2;
 sfnts_reader r;
 sfnts_writer w = sfnts_writer_stub;
 w.buf_size = buf_size;
@@ -307,10 +307,10 @@ return 1;
 return r.error;
 }
 private inline ushort float_to_ushort(float v)
-{   return (ushort)(v * 16);
+{ return (ushort)(v * 16);
 }
 private ushort FAPI_FF_get_word(FAPI_font *ff, fapi_font_feature var_id, int index)
-{   gs_font_type1 *pfont = (gs_font_type1 *)ff->client_font_data;
+{ gs_font_type1 *pfont = (gs_font_type1 *)ff->client_font_data;
 ref *pdr = (ref *)ff->client_font_data2;
 switch((int)var_id) {
 case FAPI_FONT_FEATURE_Weight: return 0;
@@ -347,7 +347,7 @@ case FAPI_FONT_FEATURE_ForceBold: return pfont->data.ForceBold;
 case FAPI_FONT_FEATURE_LanguageGroup: return pfont->data.LanguageGroup;
 case FAPI_FONT_FEATURE_lenIV: return (ff->need_decrypt ? 0 : pfont->data.lenIV);
 case FAPI_FONT_FEATURE_Subrs_count:
-{   ref *Private, *Subrs, *GlobalSubrs;
+{ ref *Private, *Subrs, *GlobalSubrs;
 int n1, n2;
 if (dict_find_string(pdr, "Private", &Private) <= 0)
 return 0;
@@ -363,13 +363,13 @@ return (n1 < n2 ? n2 : n1) * 2;
 return 0;
 }
 private ulong FAPI_FF_get_long(FAPI_font *ff, fapi_font_feature var_id, int index)
-{   gs_font_type1 *pfont = (gs_font_type1 *)ff->client_font_data;
+{ gs_font_type1 *pfont = (gs_font_type1 *)ff->client_font_data;
 ref *pdr = (ref *)ff->client_font_data2;
 switch((int)var_id) {
 case FAPI_FONT_FEATURE_UniqueID: return pfont->UID.id;
 case FAPI_FONT_FEATURE_BlueScale: return (ulong)(pfont->data.BlueScale * 65536);
 case FAPI_FONT_FEATURE_Subrs_total_size :
-{   ref *Private, *Subrs, v;
+{ ref *Private, *Subrs, v;
 int lenIV = max(pfont->data.lenIV, 0), k;
 ulong size = 0;
 long i;
@@ -391,10 +391,10 @@ return true_type_size(pdr);
 return 0;
 }
 private float FAPI_FF_get_float(FAPI_font *ff, fapi_font_feature var_id, int index)
-{   gs_font_base *pbfont = (gs_font_base *)ff->client_font_data;
+{ gs_font_base *pbfont = (gs_font_base *)ff->client_font_data;
 switch((int)var_id) {
 case FAPI_FONT_FEATURE_FontMatrix:
-{   double FontMatrix_div = (ff->is_cid && !IsCIDFont(pbfont) ? 1000 : 1);
+{ double FontMatrix_div = (ff->is_cid && !IsCIDFont(pbfont) ? 1000 : 1);
 switch(index) {
 case 0 : return pbfont->base->FontMatrix.xx / FontMatrix_div;
 case 1 : return pbfont->base->FontMatrix.xy / FontMatrix_div;
@@ -408,7 +408,7 @@ case 5 : return pbfont->base->FontMatrix.ty / FontMatrix_div;
 return 0;
 }
 private inline void decode_bytes(byte *p, const byte *s, int l, int lenIV)
-{   ushort state = 4330;
+{ ushort state = 4330;
 for (; l; s++, l--) {
 uchar c = (*s ^ (state >> 8));
 state = (*s + state) * crypt_c1 + crypt_c2;
@@ -422,7 +422,7 @@ p++;
 }
 private ushort get_type1_data(FAPI_font *ff, const ref *type1string,
 byte *buf, ushort buf_length)
-{   gs_font_type1 *pfont = (gs_font_type1 *)ff->client_font_data;
+{ gs_font_type1 *pfont = (gs_font_type1 *)ff->client_font_data;
 int lenIV = max(pfont->data.lenIV, 0);
 int length = r_size(type1string) - (ff->need_decrypt ? lenIV : 0);
 if (buf != 0) {
@@ -435,7 +435,7 @@ memcpy(buf, type1string->value.const_bytes, l);
 return length;
 }
 private ushort FAPI_FF_get_subr(FAPI_font *ff, int index, byte *buf, ushort buf_length)
-{   ref *pdr = (ref *)ff->client_font_data2;
+{ ref *pdr = (ref *)ff->client_font_data2;
 ref *Private, *Subrs, *GlobalSubrs, subr;
 int n1, n2, n;
 if (dict_find_string(pdr, "Private", &Private) <= 0)
@@ -485,7 +485,7 @@ return r_size(glyph);
 return -1;
 }
 private bool get_MetricsCount(FAPI_font *ff)
-{   if (!ff->is_type1 && ff->is_cid) {
+{ if (!ff->is_type1 && ff->is_cid) {
 gs_font_cid2 *pfcid = (gs_font_cid2 *)ff->client_font_data;
 return pfcid->cidata.MetricsCount;
 }
@@ -508,7 +508,7 @@ return -1;
 if (buf != NULL) {
 ff->char_data = NULL;
 }
-}  else {
+} else {
 i_ctx_t *i_ctx_p = (i_ctx_t *)ff->client_ctx_p;
 ref *StandardEncoding;
 if (dict_find_string(systemdict, "StandardEncoding", &StandardEncoding) <= 0 ||
@@ -569,7 +569,7 @@ FAPI_FF_get_glyph,
 FAPI_FF_serialize_tt_font
 };
 private int FAPI_get_xlatmap(i_ctx_t *i_ctx_p, char **xlatmap)
-{   ref *pref;
+{ ref *pref;
 int code;
 if ((code = dict_find_string(systemdict, ".xlatmap", &pref)) < 0)
 return code;
@@ -579,13 +579,13 @@ return_error(e_typecheck);
 return 0;
 }
 private int renderer_retcode(i_ctx_t *i_ctx_p, FAPI_server *I, FAPI_retcode rc)
-{   if (rc == 0)
+{ if (rc == 0)
 return 0;
 eprintf2("Error: Font Renderer Plugin ( %s ) return code = %d\n", I->ig.d->subtype, rc);
 return rc < 0 ? rc : e_invalidfont;
 }
 private int zFAPIavailable(i_ctx_t *i_ctx_p)
-{   i_plugin_holder *h = i_plugin_get_list(i_ctx_p);
+{ i_plugin_holder *h = i_plugin_get_list(i_ctx_p);
 bool available = true;
 os_ptr op = osp;
 for (; h != 0; h = h->next)
@@ -598,7 +598,7 @@ make_bool(op, available);
 return 0;
 }
 private int FAPI_find_plugin(i_ctx_t *i_ctx_p, const char *subtype, FAPI_server **pI)
-{   i_plugin_holder *h = i_plugin_get_list(i_ctx_p);
+{ i_plugin_holder *h = i_plugin_get_list(i_ctx_p);
 int code;
 for (; h != 0; h = h->next)
 if (!strcmp(h->I->d->type,"FAPI"))
@@ -703,7 +703,7 @@ return bbox_set;
 }
 }
 private int FAPI_refine_font(i_ctx_t *i_ctx_p, os_ptr op, gs_font_base *pbfont, const char *font_file_path)
-{   ref *pdr = op;
+{ ref *pdr = op;
 double size, size1;
 int BBox[4], scale;
 const char *decodingID = NULL;
@@ -786,7 +786,7 @@ pbfont->FAPI->release_typeface(pbfont->FAPI, pbfont->FAPI_font_data);
 return 0;
 }
 private int zFAPIrebuildfont(i_ctx_t *i_ctx_p)
-{   os_ptr op = osp;
+{ os_ptr op = osp;
 build_proc_refs build;
 gs_font *pfont;
 int code = font_param(op - 1, &pfont), code1;
@@ -845,7 +845,7 @@ return i;
 return 0;
 }
 private int outline_char(i_ctx_t *i_ctx_p, FAPI_server *I, int import_shift_v, gs_show_enum *penum_s, struct gx_path_s *path, bool close_path)
-{   FAPI_path path_interface = path_interface_stub;
+{ FAPI_path path_interface = path_interface_stub;
 FAPI_outline_handler olh;
 int code;
 olh.path = path;
@@ -875,7 +875,7 @@ rounding_y = (int)(0x00800000 / sy);
 *em_scale_y = (int)(sy * rounding_y + 0.5) / (double)rounding_y;
 }
 private int fapi_copy_mono(gx_device *dev1, FAPI_raster *rast, int dx, int dy)
-{   if ((rast->line_step & (align_bitmap_mod - 1)) == 0)
+{ if ((rast->line_step & (align_bitmap_mod - 1)) == 0)
 return dev_proc(dev1, copy_mono)(dev1, rast->p, 0, rast->line_step, 0, dx, dy, rast->width, rast->height, 0, 1);
 else {
 int line_step = bitmap_raster(rast->width), code;
@@ -893,7 +893,7 @@ return code;
 }
 private const int frac_pixel_shift = 4;
 private int fapi_finish_render_aux(i_ctx_t *i_ctx_p, gs_font_base *pbfont, FAPI_server *I)
-{   gs_text_enum_t *penum = op_show_find(i_ctx_p);
+{ gs_text_enum_t *penum = op_show_find(i_ctx_p);
 gs_show_enum *penum_s = (gs_show_enum *)penum;
 gs_state *pgs = penum_s->pgs;
 gx_device *dev1 = gs_currentdevice_inline(pgs);
@@ -925,12 +925,12 @@ return code;
 if ((code = gs_moveto(pgs->show_gstate, pt.x, pt.y)) < 0)
 return code;
 } else {
-int rast_orig_x =   rast.orig_x - (int)(penum_s->fapi_glyph_shift.x * (1 << frac_pixel_shift));
+int rast_orig_x = rast.orig_x - (int)(penum_s->fapi_glyph_shift.x * (1 << frac_pixel_shift));
 int rast_orig_y = - rast.orig_y - (int)(penum_s->fapi_glyph_shift.y * (1 << frac_pixel_shift));
 if ((code = renderer_retcode(i_ctx_p, I, code)) < 0)
 return code;
 if (pgs->in_cachedevice == CACHE_DEVICE_CACHING) {
-int shift_rd = _fixed_shift  - frac_pixel_shift;
+int shift_rd = _fixed_shift - frac_pixel_shift;
 int rounding = 1 << (frac_pixel_shift - 1);
 int dx = arith_rshift_slow((pgs->ctm.tx_fixed >> shift_rd) + rast_orig_x + rounding, frac_pixel_shift);
 int dy = arith_rshift_slow((pgs->ctm.ty_fixed >> shift_rd) + rast_orig_y + rounding, frac_pixel_shift);
@@ -952,7 +952,7 @@ pop(2);
 return 0;
 }
 private int fapi_finish_render(i_ctx_t *i_ctx_p)
-{   os_ptr op = osp;
+{ os_ptr op = osp;
 gs_font *pfont;
 int code = font_param(op - 1, &pfont);
 if (code == 0) {
@@ -1018,15 +1018,15 @@ font_scale.align_to_pixels = gs_currentaligntopixels(pbfont->dir);
 if (penum == 0)
 return_error(e_undefined);
 scale = 1 << I->frac_shift;
-{   gs_matrix *base_font_matrix = &pbfont->base->FontMatrix;
+{ gs_matrix *base_font_matrix = &pbfont->base->FontMatrix;
 double dx = hypot(base_font_matrix->xx, base_font_matrix->xy);
 double dy = hypot(base_font_matrix->yx, base_font_matrix->yy);
-font_scale.matrix[0] =  (FracInt)(ctm->xx * FontMatrix_div / dx * 72 / dev->HWResolution[0] * scale);
+font_scale.matrix[0] = (FracInt)(ctm->xx * FontMatrix_div / dx * 72 / dev->HWResolution[0] * scale);
 font_scale.matrix[1] = -(FracInt)(ctm->xy * FontMatrix_div / dy * 72 / dev->HWResolution[0] * scale);
-font_scale.matrix[2] =  (FracInt)(ctm->yx * FontMatrix_div / dx * 72 / dev->HWResolution[1] * scale);
+font_scale.matrix[2] = (FracInt)(ctm->yx * FontMatrix_div / dx * 72 / dev->HWResolution[1] * scale);
 font_scale.matrix[3] = -(FracInt)(ctm->yy * FontMatrix_div / dy * 72 / dev->HWResolution[1] * scale);
-font_scale.matrix[4] =  (FracInt)(ctm->tx * FontMatrix_div / dx * 72 / dev->HWResolution[0] * scale);
-font_scale.matrix[5] =  (FracInt)(ctm->ty * FontMatrix_div / dy * 72 / dev->HWResolution[1] * scale);
+font_scale.matrix[4] = (FracInt)(ctm->tx * FontMatrix_div / dx * 72 / dev->HWResolution[0] * scale);
+font_scale.matrix[5] = (FracInt)(ctm->ty * FontMatrix_div / dy * 72 / dev->HWResolution[1] * scale);
 }
 font_scale.HWResolution[0] = (FracInt)((double)dev->HWResolution[0] * font_scale.subpixels[0] * scale);
 font_scale.HWResolution[1] = (FracInt)((double)dev->HWResolution[1] * font_scale.subpixels[1] * scale);
@@ -1043,7 +1043,7 @@ ff.is_mtx_skipped = (get_MetricsCount(&ff) != 0);
 ff.client_ctx_p = i_ctx_p;
 if ((code = renderer_retcode(i_ctx_p, I, I->get_scaled_font(I, &ff, subfont, &font_scale,
 NULL, bVertical,
-(!bCID || (pbfont->FontType != ft_encrypted  &&
+(!bCID || (pbfont->FontType != ft_encrypted &&
 pbfont->FontType != ft_encrypted2)
 ? FAPI_TOPLEVEL_PREPARED : FAPI_DESCENDANT_PREPARED)))) < 0)
 return code;
@@ -1282,7 +1282,7 @@ gs_free_string(imemory, (byte *)font_file_path, r_size(v) + 1, "font file path")
 return code;
 }
 private int FAPIBuildGlyph9aux(i_ctx_t *i_ctx_p)
-{   os_ptr op = osp;
+{ os_ptr op = osp;
 ref font9 = *pfont_dict(gs_currentfont(igs));
 ref *rFDArray, f;
 int font_index;
@@ -1302,10 +1302,10 @@ return code;
 return 0;
 }
 private int zFAPIBuildChar(i_ctx_t *i_ctx_p)
-{   return FAPI_char(i_ctx_p, false, NULL);
+{ return FAPI_char(i_ctx_p, false, NULL);
 }
 private int zFAPIBuildGlyph(i_ctx_t *i_ctx_p)
-{   return FAPI_char(i_ctx_p, true, NULL);
+{ return FAPI_char(i_ctx_p, true, NULL);
 }
 private int zFAPIBuildGlyph9(i_ctx_t *i_ctx_p)
 {
@@ -1330,7 +1330,7 @@ ialloc_set_space(idmemory, s);
 return code;
 }
 private int do_FAPIpassfont(i_ctx_t *i_ctx_p, char *font_file_path, bool *success)
-{   ref *pdr = osp;
+{ ref *pdr = osp;
 gs_font *pfont;
 int code = font_param(osp, &pfont);
 gs_font_base *pbfont;
@@ -1371,7 +1371,7 @@ return 0;
 return 0;
 }
 private int zFAPIpassfont(i_ctx_t *i_ctx_p)
-{   os_ptr op = osp;
+{ os_ptr op = osp;
 int code;
 bool found;
 char *font_file_path = NULL;
@@ -1389,11 +1389,11 @@ make_bool(op, found);
 return 0;
 }
 const op_def zfapi_op_defs[] =
-{   {"2.FAPIavailable",   zFAPIavailable},
-{"2.FAPIpassfont",    zFAPIpassfont},
+{ {"2.FAPIavailable", zFAPIavailable},
+{"2.FAPIpassfont", zFAPIpassfont},
 {"2.FAPIrebuildfont", zFAPIrebuildfont},
-{"2.FAPIBuildChar",   zFAPIBuildChar},
-{"2.FAPIBuildGlyph",  zFAPIBuildGlyph},
+{"2.FAPIBuildChar", zFAPIBuildChar},
+{"2.FAPIBuildGlyph", zFAPIBuildGlyph},
 {"2.FAPIBuildGlyph9", zFAPIBuildGlyph9},
 op_def_end(0)
 };

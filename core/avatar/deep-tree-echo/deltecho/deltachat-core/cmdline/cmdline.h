@@ -3,8 +3,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-char*           dc_cmdline           (dc_context_t*, const char* cmd);
-void            dc_cmdline_skip_auth ();
+char* dc_cmdline (dc_context_t*, const char* cmd);
+void dc_cmdline_skip_auth ();
 #ifdef __cplusplus
 }
 #endif

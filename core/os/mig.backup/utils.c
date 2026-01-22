@@ -385,11 +385,11 @@ fmt++;
 }
 (void) vfprintf(file, fmt, pvar);
 }
-#define do_skip_vfprintf(file, fmt, lastarg) do {			      \
-va_list ap;								      \
-va_start(ap, lastarg);						      \
-SkipVFPrintf(file, fmt, ap);					      \
-va_end (ap);							      \
+#define do_skip_vfprintf(file, fmt, lastarg) do { \
+va_list ap; \
+va_start(ap, lastarg); \
+SkipVFPrintf(file, fmt, ap); \
+va_end (ap); \
 } while (0)
 void
 WriteCopyType(FILE *file, const ipc_type_t *it, const char *left,

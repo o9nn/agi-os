@@ -4,10 +4,10 @@ struct imap_url;
 struct imap_urlauth_context;
 struct imap_urlauth_fetch;
 enum imap_urlauth_fetch_flags {
-IMAP_URLAUTH_FETCH_FLAG_EXTENDED		= 0x01,
-IMAP_URLAUTH_FETCH_FLAG_BODY			= 0x02,
-IMAP_URLAUTH_FETCH_FLAG_BINARY			= 0x04,
-IMAP_URLAUTH_FETCH_FLAG_BODYPARTSTRUCTURE	= 0x08,
+IMAP_URLAUTH_FETCH_FLAG_EXTENDED = 0x01,
+IMAP_URLAUTH_FETCH_FLAG_BODY = 0x02,
+IMAP_URLAUTH_FETCH_FLAG_BINARY = 0x04,
+IMAP_URLAUTH_FETCH_FLAG_BODYPARTSTRUCTURE = 0x08,
 };
 struct imap_urlauth_fetch_reply {
 const char *url;

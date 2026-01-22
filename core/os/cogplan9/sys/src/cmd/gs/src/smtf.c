@@ -88,24 +88,24 @@ bp -= sizeof(long);
 goto m7;
 case 7:
 *++q = first = ss->prev.b[7];
-m7:		ss->prev.b[7] = ss->prev.b[6];
+m7: ss->prev.b[7] = ss->prev.b[6];
 goto m6;
 case 6:
 *++q = first = ss->prev.b[6];
-m6:		ss->prev.b[6] = ss->prev.b[5];
+m6: ss->prev.b[6] = ss->prev.b[5];
 goto m5;
 case 5:
 *++q = first = ss->prev.b[5];
-m5:		ss->prev.b[5] = ss->prev.b[4];
+m5: ss->prev.b[5] = ss->prev.b[4];
 goto m4;
 case 4:
 *++q = first = ss->prev.b[4];
-m4:		ss->prev.b[4] = v3;
+m4: ss->prev.b[4] = v3;
 #endif
 goto m3;
 case 3:
 *++q = first = v3;
-m3:		v3 = v2, v2 = v1, v1 = v0, v0 = first;
+m3: v3 = v2, v2 = v1, v1 = v0, v0 = first;
 break;
 case 2:
 *++q = first = v2;

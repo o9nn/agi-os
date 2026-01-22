@@ -36,55 +36,55 @@
 (ContextLink (And green-state go-reverse) (List my-trans halt-state))
 (ContextLink (And blue-state go-reverse) (List my-trans halt-state))
 (define (create-fsm fsm-name fsm-state extern-state)
-	(BindLink
-		(VariableList
-			(Variable "$extern-state")
-			(Variable "$curr-state")
-			(Variable "$next-state")
-		)
-		(And
-			(List
-				fsm-state
-				(Variable "$curr-state")
-			)
-			(EvaluationLink
-				extern-state
-				(Variable "$extern-state")
-			)
-			(ContextLink
-				(And
-					(Variable "$curr-state")
-					(Variable "$extern-state")
-				)
-				(List
-					fsm-name
-					(Variable "$next-state")
-				)
-			)
-		)
-		(And
-			(DeleteLink
-				(List
-					fsm-state
-					(Variable "$curr-state")
-				)
-			)
-			(List
-				fsm-state
-				(Variable "$next-state")
-			)
-		)
-	)
+(BindLink
+(VariableList
+(Variable "$extern-state")
+(Variable "$curr-state")
+(Variable "$next-state")
+)
+(And
+(List
+fsm-state
+(Variable "$curr-state")
+)
+(EvaluationLink
+extern-state
+(Variable "$extern-state")
+)
+(ContextLink
+(And
+(Variable "$curr-state")
+(Variable "$extern-state")
+)
+(List
+fsm-name
+(Variable "$next-state")
+)
+)
+)
+(And
+(DeleteLink
+(List
+fsm-state
+(Variable "$curr-state")
+)
+)
+(List
+fsm-state
+(Variable "$next-state")
+)
+)
+)
 )
 (define my-fsm (create-fsm my-trans my-state extern-anchor))
 (define (take-step) (gar (gar (cog-execute! my-fsm))))
 (define (show-fsm-state)
-	(car (cog-chase-link 'ListLink 'ConceptNode my-state)))
+(car (cog-chase-link 'ListLink 'ConceptNode my-state)))
 (define (show-environment-state)
-	(car (cog-chase-link 'EvaluationLink 'ConceptNode extern-anchor)))
+(car (cog-chase-link 'EvaluationLink 'ConceptNode extern-anchor)))
 (define (move-dir dir)
-	(cog-extract! (Evaluation extern-anchor (show-environment-state)))
-	(Evaluation extern-anchor dir))
+(cog-extract! (Evaluation extern-anchor (show-environment-state)))
+(Evaluation extern-anchor dir))
 (define (move-forward) (move-dir go-forward))
 (define (move-reverse) (move-dir go-reverse))
 (define (move-halt) (move-dir halt))

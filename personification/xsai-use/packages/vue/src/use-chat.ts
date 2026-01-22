@@ -3,190 +3,190 @@ import { callApi, generateWeakID, PartParser } from '@xsai-use/shared'
 import { computed, readonly, ref, watch } from 'vue'
 import { deepToRaw } from './utils/deep-to-raw'
 declare global {
-  interface ReadableStream<R = any> {
-    [Symbol.asyncIterator](): AsyncIterableIterator<R>
-  }
+interface ReadableStream<R = any> {
+[Symbol.asyncIterator](): AsyncIterableIterator<R>
+}
 }
 export function useChat(options: UseChatOptions) {
-  const {
-    id,
-    generateID = generateWeakID,
-    initialMessages = [],
-    onFinish,
-    preventDefault = false,
-    ...streamTextOptions
-  } = options
-  const partParser = new PartParser()
-  const initialUIMessages = initialMessages.map((m) => {
-    return {
-      ...m,
-      id: generateID(),
-      parts: partParser.exec(m),
-    }
-  })
-  const messages = ref<UIMessage[]>(initialUIMessages)
-  const status = ref<UseChatStatus>('idle')
-  const input = ref('')
-  const error = ref<Error>()
-  let abortController: AbortController | undefined
-  const initialUIMessagesR = computed(() => initialUIMessages)
-  watch(initialUIMessagesR, (newInitialMessages) => {
-    if (status.value === 'idle') {
-      messages.value = newInitialMessages
-    }
-  }, { deep: true })
-  const request = async ({ messages: requestMessages }: { messages: UIMessage[] }) => {
-    status.value = 'loading'
-    error.value = undefined
-    abortController = new AbortController()
-    try {
-      await callApi({
-        ...streamTextOptions,
-        messages: requestMessages,
-        onFinish: () => {
-          status.value = 'idle'
-          abortController = undefined
-          void options.onFinish?.()
-        },
-        signal: abortController.signal,
-      }, {
-        generateID,
-        updatingMessage: {
-          id: generateID(),
-          parts: [],
-          role: 'assistant',
-        },
-        onUpdate: (message) => {
-          if (abortController?.signal.aborted) {
-            return
-          }
-          const clonedMessage = structuredClone(message)
-          const currentMessages = messages.value
-          const newMessages = [
-            ...(currentMessages.at(-1)?.role === 'assistant'
-              ? currentMessages.slice(0, -1)
-              : currentMessages),
-            clonedMessage,
-          ]
-          messages.value = newMessages
-        },
-      })
-    }
-    catch (err) {
-      if (abortController?.signal.aborted) {
-        return
-      }
-      status.value = 'error'
-      const actualError = err instanceof Error ? err : new Error(String(err))
-      error.value = actualError
-      abortController = undefined
-    }
-  }
-  const submitMessage = async (message: InputMessage) => {
-    if (status.value !== 'idle') {
-      return
-    }
-    if (
-      (Array.isArray(message.content) && message.content.length === 0)
-      || (typeof message.content === 'string' && message.content.trim() === '')
-    ) {
-      return
-    }
-    const userMessage = {
-      ...message,
-      id: generateID(),
-      role: 'user',
-    } as UIMessage
-    userMessage.parts = partParser.exec(userMessage)
-    const newMessages = [...messages.value, userMessage]
-    messages.value = newMessages
-    await request({
-      messages: deepToRaw(newMessages),
-    })
-  }
-  const handleSubmit = async (e?: Event) => {
-    preventDefault && e?.preventDefault?.()
-    if (!input.value.trim()) {
-      return
-    }
-    await submitMessage({
-      content: [
-        {
-          text: input.value,
-          type: 'text',
-        },
-      ],
-    })
-    input.value = ''
-  }
-  const stop = () => {
-    if (abortController) {
-      abortController.abort()
-      abortController = undefined
-      status.value = 'idle'
-    }
-  }
-  const reload = async (id?: string) => {
-    if (status.value === 'loading') {
-      return
-    }
-    const currentMessages = messages.value
-    if (currentMessages.length === 0) {
-      return
-    }
-    let msgIdx = -1
-    for (let i = currentMessages.length - 1; i >= 0; i--) {
-      if (currentMessages[i].role === 'user' && (id === undefined || currentMessages[i].id === id)) {
-        msgIdx = i
-        break
-      }
-    }
-    if (msgIdx === -1) {
-      for (let i = currentMessages.length - 1; i >= 0; i--) {
-        if (currentMessages[i].role === 'user') {
-          msgIdx = i
-          break
-        }
-      }
-    }
-    if (msgIdx === -1) {
-      return
-    }
-    const newMessages = currentMessages.slice(0, msgIdx + 1)
-    messages.value = newMessages
-    await request({
-      messages: deepToRaw(newMessages),
-    })
-  }
-  const reset = () => {
-    stop()
-    messages.value = initialUIMessages
-    input.value = ''
-    error.value = undefined
-    status.value = 'idle'
-  }
-  const setMessages = (newMessages: UIMessage[]) => {
-    if (status.value === 'loading') {
-      return
-    }
-    messages.value = newMessages
-  }
-  const handleInputChange = (e: Event) => {
-    const target = e.target as HTMLInputElement | HTMLTextAreaElement
-    input.value = target.value
-  }
-  return {
-    messages: readonly(messages),
-    status: readonly(status),
-    input,
-    error: readonly(error),
-    submitMessage,
-    handleSubmit,
-    handleInputChange,
-    setMessages,
-    reload,
-    reset,
-    stop,
-  }
+const {
+id,
+generateID = generateWeakID,
+initialMessages = [],
+onFinish,
+preventDefault = false,
+...streamTextOptions
+} = options
+const partParser = new PartParser()
+const initialUIMessages = initialMessages.map((m) => {
+return {
+...m,
+id: generateID(),
+parts: partParser.exec(m),
+}
+})
+const messages = ref<UIMessage[]>(initialUIMessages)
+const status = ref<UseChatStatus>('idle')
+const input = ref('')
+const error = ref<Error>()
+let abortController: AbortController | undefined
+const initialUIMessagesR = computed(() => initialUIMessages)
+watch(initialUIMessagesR, (newInitialMessages) => {
+if (status.value === 'idle') {
+messages.value = newInitialMessages
+}
+}, { deep: true })
+const request = async ({ messages: requestMessages }: { messages: UIMessage[] }) => {
+status.value = 'loading'
+error.value = undefined
+abortController = new AbortController()
+try {
+await callApi({
+...streamTextOptions,
+messages: requestMessages,
+onFinish: () => {
+status.value = 'idle'
+abortController = undefined
+void options.onFinish?.()
+},
+signal: abortController.signal,
+}, {
+generateID,
+updatingMessage: {
+id: generateID(),
+parts: [],
+role: 'assistant',
+},
+onUpdate: (message) => {
+if (abortController?.signal.aborted) {
+return
+}
+const clonedMessage = structuredClone(message)
+const currentMessages = messages.value
+const newMessages = [
+...(currentMessages.at(-1)?.role === 'assistant'
+? currentMessages.slice(0, -1)
+: currentMessages),
+clonedMessage,
+]
+messages.value = newMessages
+},
+})
+}
+catch (err) {
+if (abortController?.signal.aborted) {
+return
+}
+status.value = 'error'
+const actualError = err instanceof Error ? err : new Error(String(err))
+error.value = actualError
+abortController = undefined
+}
+}
+const submitMessage = async (message: InputMessage) => {
+if (status.value !== 'idle') {
+return
+}
+if (
+(Array.isArray(message.content) && message.content.length === 0)
+|| (typeof message.content === 'string' && message.content.trim() === '')
+) {
+return
+}
+const userMessage = {
+...message,
+id: generateID(),
+role: 'user',
+} as UIMessage
+userMessage.parts = partParser.exec(userMessage)
+const newMessages = [...messages.value, userMessage]
+messages.value = newMessages
+await request({
+messages: deepToRaw(newMessages),
+})
+}
+const handleSubmit = async (e?: Event) => {
+preventDefault && e?.preventDefault?.()
+if (!input.value.trim()) {
+return
+}
+await submitMessage({
+content: [
+{
+text: input.value,
+type: 'text',
+},
+],
+})
+input.value = ''
+}
+const stop = () => {
+if (abortController) {
+abortController.abort()
+abortController = undefined
+status.value = 'idle'
+}
+}
+const reload = async (id?: string) => {
+if (status.value === 'loading') {
+return
+}
+const currentMessages = messages.value
+if (currentMessages.length === 0) {
+return
+}
+let msgIdx = -1
+for (let i = currentMessages.length - 1; i >= 0; i--) {
+if (currentMessages[i].role === 'user' && (id === undefined || currentMessages[i].id === id)) {
+msgIdx = i
+break
+}
+}
+if (msgIdx === -1) {
+for (let i = currentMessages.length - 1; i >= 0; i--) {
+if (currentMessages[i].role === 'user') {
+msgIdx = i
+break
+}
+}
+}
+if (msgIdx === -1) {
+return
+}
+const newMessages = currentMessages.slice(0, msgIdx + 1)
+messages.value = newMessages
+await request({
+messages: deepToRaw(newMessages),
+})
+}
+const reset = () => {
+stop()
+messages.value = initialUIMessages
+input.value = ''
+error.value = undefined
+status.value = 'idle'
+}
+const setMessages = (newMessages: UIMessage[]) => {
+if (status.value === 'loading') {
+return
+}
+messages.value = newMessages
+}
+const handleInputChange = (e: Event) => {
+const target = e.target as HTMLInputElement | HTMLTextAreaElement
+input.value = target.value
+}
+return {
+messages: readonly(messages),
+status: readonly(status),
+input,
+error: readonly(error),
+submitMessage,
+handleSubmit,
+handleInputChange,
+setMessages,
+reload,
+reset,
+stop,
+}
 }
 export default useChat

@@ -5,16 +5,16 @@
 #include "fns.h"
 #include "io.h"
 #include "../port/error.h"
-#define	Image	IMAGE
+#define Image IMAGE
 #include <draw.h>
 #include <memdraw.h>
 #include <cursor.h>
 #include "screen.h"
 enum {
-MATROX		= 0x102B,
-MGA2064		= 0x0519,
-MGA2164		= 0x051B,
-MGA2164AGP	= 0x051F
+MATROX = 0x102B,
+MGA2064 = 0x0519,
+MGA2164 = 0x051B,
+MGA2164AGP = 0x051F
 };
 static Pcidev*
 mgapcimatch(void)
@@ -54,17 +54,17 @@ if(scr->paddr)
 addvgaseg("mga2164wscreen", scr->paddr, scr->apsize);
 }
 enum {
-Index		= 0x00,
-Data		= 0x0A,
-CaddrW		= 0x04,
-Cdata		= 0x05,
-Cctl		= 0x09,
-Cram		= 0x0B,
-Cxlsb		= 0x0C,
-Cxmsb		= 0x0D,
-Cylsb		= 0x0E,
-Cymsb		= 0x0F,
-Icctl		= 0x06,
+Index = 0x00,
+Data = 0x0A,
+CaddrW = 0x04,
+Cdata = 0x05,
+Cctl = 0x09,
+Cram = 0x0B,
+Cxlsb = 0x0C,
+Cxmsb = 0x0D,
+Cylsb = 0x0E,
+Cymsb = 0x0F,
+Icctl = 0x06,
 };
 static void
 tvp3026disable(VGAscr* scr)

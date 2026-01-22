@@ -316,7 +316,7 @@ printf("====================================</mime>=============================
 #endif
 static void mailimf_get_recipients__add_addr(dc_hash_t* recipients, struct mailimf_mailbox* mb)
 {
-if (mb)  {
+if (mb) {
 char* addr_norm = dc_addr_normalize(mb->mb_addr_spec);
 dc_hash_insert(recipients, addr_norm, strlen(addr_norm), (void*)1);
 free(addr_norm);
@@ -329,9 +329,9 @@ dc_hash_init(recipients, DC_HASH_STRING, 1);
 clistiter* cur1;
 for (cur1 = clist_begin(imffields->fld_list); cur1!=NULL ; cur1=clist_next(cur1))
 {
-struct mailimf_field*        fld = (struct mailimf_field*)clist_content(cur1);
-struct mailimf_to*           fld_to = NULL;
-struct mailimf_cc*           fld_cc = NULL;
+struct mailimf_field* fld = (struct mailimf_field*)clist_content(cur1);
+struct mailimf_to* fld_to = NULL;
+struct mailimf_cc* fld_cc = NULL;
 struct mailimf_address_list* addr_list = NULL;
 switch (fld->fld_type)
 {
@@ -381,11 +381,11 @@ return NULL;
 }
 int mailmime_transfer_decode(struct mailmime* mime, const char** ret_decoded_data, size_t* ret_decoded_data_bytes, char** ret_to_mmap_string_unref)
 {
-int                   mime_transfer_encoding = MAILMIME_MECHANISM_BINARY;
+int mime_transfer_encoding = MAILMIME_MECHANISM_BINARY;
 struct mailmime_data* mime_data = NULL;
-const char*           decoded_data = NULL;
-size_t                decoded_data_bytes = 0;
-char*                 transfer_decoding_buffer = NULL;
+const char* decoded_data = NULL;
+size_t decoded_data_bytes = 0;
+char* transfer_decoding_buffer = NULL;
 if (mime==NULL || ret_decoded_data==NULL || ret_decoded_data_bytes==NULL || ret_to_mmap_string_unref==NULL
 || *ret_decoded_data!=NULL || *ret_decoded_data_bytes!=0 || *ret_to_mmap_string_unref!=NULL) {
 return 0;
@@ -405,7 +405,7 @@ if (mime_transfer_encoding==MAILMIME_MECHANISM_7BIT
 || mime_transfer_encoding==MAILMIME_MECHANISM_8BIT
 || mime_transfer_encoding==MAILMIME_MECHANISM_BINARY)
 {
-decoded_data       = mime_data->dt_data.dt_text.dt_data;
+decoded_data = mime_data->dt_data.dt_text.dt_data;
 decoded_data_bytes = mime_data->dt_data.dt_text.dt_length;
 if (decoded_data==NULL || decoded_data_bytes <= 0) {
 return 0;
@@ -423,8 +423,8 @@ return 0;
 }
 decoded_data = transfer_decoding_buffer;
 }
-*ret_decoded_data         = decoded_data;
-*ret_decoded_data_bytes   = decoded_data_bytes;
+*ret_decoded_data = decoded_data;
+*ret_decoded_data_bytes = decoded_data_bytes;
 *ret_to_mmap_string_unref = transfer_decoding_buffer;
 return 1;
 }
@@ -522,20 +522,20 @@ subtype? subtype : "octet-stream");
 static int mailmime_get_mime_type(struct mailmime* mime, int* msg_type,
 char** raw_mime )
 {
-#define DC_MIMETYPE_MP_ALTERNATIVE      10
-#define DC_MIMETYPE_MP_RELATED          20
-#define DC_MIMETYPE_MP_MIXED            30
-#define DC_MIMETYPE_MP_NOT_DECRYPTABLE  40
-#define DC_MIMETYPE_MP_REPORT           45
-#define DC_MIMETYPE_MP_SIGNED           46
-#define DC_MIMETYPE_MP_OTHER            50
-#define DC_MIMETYPE_TEXT_PLAIN          60
-#define DC_MIMETYPE_TEXT_HTML           70
-#define DC_MIMETYPE_IMAGE               80
-#define DC_MIMETYPE_AUDIO               90
-#define DC_MIMETYPE_VIDEO              100
-#define DC_MIMETYPE_FILE               110
-#define DC_MIMETYPE_AC_SETUP_FILE      111
+#define DC_MIMETYPE_MP_ALTERNATIVE 10
+#define DC_MIMETYPE_MP_RELATED 20
+#define DC_MIMETYPE_MP_MIXED 30
+#define DC_MIMETYPE_MP_NOT_DECRYPTABLE 40
+#define DC_MIMETYPE_MP_REPORT 45
+#define DC_MIMETYPE_MP_SIGNED 46
+#define DC_MIMETYPE_MP_OTHER 50
+#define DC_MIMETYPE_TEXT_PLAIN 60
+#define DC_MIMETYPE_TEXT_HTML 70
+#define DC_MIMETYPE_IMAGE 80
+#define DC_MIMETYPE_AUDIO 90
+#define DC_MIMETYPE_VIDEO 100
+#define DC_MIMETYPE_FILE 110
+#define DC_MIMETYPE_AC_SETUP_FILE 111
 struct mailmime_content* c = mime->mm_content_type;
 int dummy = 0; if (msg_type==NULL) { msg_type = &dummy; }
 *msg_type = 0;
@@ -636,8 +636,8 @@ dc_mimepart_t* mimepart = NULL;
 if ((mimepart=calloc(1, sizeof(dc_mimepart_t)))==NULL) {
 exit(33);
 }
-mimepart->type    = 0;
-mimepart->param   = dc_param_new();
+mimepart->type = 0;
+mimepart->param = dc_param_new();
 return mimepart;
 }
 static void dc_mimepart_unref(dc_mimepart_t* mimepart)
@@ -659,7 +659,7 @@ if ((mimeparser=calloc(1, sizeof(dc_mimeparser_t)))==NULL) {
 exit(30);
 }
 mimeparser->context = context;
-mimeparser->parts   = carray_new(16);
+mimeparser->parts = carray_new(16);
 mimeparser->blobdir = blobdir;
 mimeparser->reports = carray_new(16);
 mimeparser->e2ee_helper = calloc(1, sizeof(dc_e2ee_helper_t));
@@ -697,13 +697,13 @@ dc_mimepart_unref(part);
 }
 carray_set_size(mimeparser->parts, 0);
 }
-mimeparser->header_root  = NULL;
+mimeparser->header_root = NULL;
 dc_hash_clear(&mimeparser->header);
 if (mimeparser->header_protected) {
 mailimf_fields_free(mimeparser->header_protected);
 mimeparser->header_protected = NULL;
 }
-mimeparser->is_send_by_messenger  = 0;
+mimeparser->is_send_by_messenger = 0;
 mimeparser->is_system_message = 0;
 free(mimeparser->subject);
 mimeparser->subject = NULL;
@@ -727,7 +727,7 @@ void dc_mimeparser_repl_msg_by_error(dc_mimeparser_t* mimeparser,
 const char* error_msg)
 {
 dc_mimepart_t* part = NULL;
-int            i = 0;
+int i = 0;
 if (mimeparser==NULL || mimeparser->parts==NULL
 || carray_count(mimeparser->parts)<=0) {
 return;
@@ -760,7 +760,7 @@ const char* decoded_data, size_t decoded_data_bytes,
 const char* desired_filename)
 {
 dc_mimepart_t* part = NULL;
-char*          pathNfilename = NULL;
+char* pathNfilename = NULL;
 if ((pathNfilename=dc_get_fine_pathNfilename(parser->context, "$BLOBDIR", desired_filename))==NULL) {
 goto cleanup;
 }
@@ -768,7 +768,7 @@ if (dc_write_file(parser->context, pathNfilename, decoded_data, decoded_data_byt
 goto cleanup;
 }
 part = dc_mimepart_new();
-part->type  = msg_type;
+part->type = msg_type;
 part->int_mimetype = mime_type;
 part->bytes = decoded_data_bytes;
 dc_param_set(part->param, DC_PARAM_FILE, pathNfilename);
@@ -788,19 +788,19 @@ dc_mimepart_unref(part);
 }
 static int dc_mimeparser_add_single_part_if_known(dc_mimeparser_t* mimeparser, struct mailmime* mime)
 {
-dc_mimepart_t*               part = NULL;
-int                          old_part_count = carray_count(mimeparser->parts);
-int                          mime_type;
-struct mailmime_data*        mime_data;
-char*                        file_suffix = NULL;
-char*                        desired_filename = NULL;
-int                          msg_type = 0;
-char*                        raw_mime = NULL;
-char*                        transfer_decoding_buffer = NULL;
-char*                        charset_buffer = NULL;
-const char*                  decoded_data = NULL;
-size_t                       decoded_data_bytes = 0;
-dc_simplify_t*               simplifier = NULL;
+dc_mimepart_t* part = NULL;
+int old_part_count = carray_count(mimeparser->parts);
+int mime_type;
+struct mailmime_data* mime_data;
+char* file_suffix = NULL;
+char* desired_filename = NULL;
+int msg_type = 0;
+char* raw_mime = NULL;
+char* transfer_decoding_buffer = NULL;
+char* charset_buffer = NULL;
+const char* decoded_data = NULL;
+size_t decoded_data_bytes = 0;
+dc_simplify_t* simplifier = NULL;
 if (mime==NULL || mime->mm_data.mm_single==NULL) {
 goto cleanup;
 }
@@ -836,7 +836,7 @@ dc_log_warning(mimeparser->context, 0, "Cannot convert %i bytes from \"%s\" to \
 else if (charset_buffer==NULL || ret_bytes <= 0) {
 goto cleanup;
 }
-else  {
+else {
 decoded_data = charset_buffer;
 decoded_data_bytes = ret_bytes;
 }
@@ -953,7 +953,7 @@ return carray_count(mimeparser->parts)>old_part_count? 1 : 0;
 }
 static int dc_mimeparser_parse_mime_recursive(dc_mimeparser_t* mimeparser, struct mailmime* mime)
 {
-int        any_part_added = 0;
+int any_part_added = 0;
 clistiter* cur = NULL;
 if (mimeparser==NULL || mime==NULL) {
 return 0;
@@ -1072,7 +1072,7 @@ html_part = childmime;
 html_cnt++;
 }
 }
-if (plain_cnt==1 && html_cnt==1)  {
+if (plain_cnt==1 && html_cnt==1) {
 dc_log_warning(mimeparser->context, 0, "HACK: multipart/mixed message found with PLAIN and HTML, we'll skip the HTML part as this seems to be unwanted.");
 skip_part = html_part;
 }
@@ -1115,17 +1115,17 @@ const char *key = NULL;
 switch (field->fld_type)
 {
 case MAILIMF_FIELD_RETURN_PATH: key = "Return-Path"; break;
-case MAILIMF_FIELD_ORIG_DATE:   key = "Date";        break;
-case MAILIMF_FIELD_FROM:        key = "From";        break;
-case MAILIMF_FIELD_SENDER:      key = "Sender";      break;
-case MAILIMF_FIELD_REPLY_TO:    key = "Reply-To";    break;
-case MAILIMF_FIELD_TO:          key = "To";          break;
-case MAILIMF_FIELD_CC:          key = "Cc";          break;
-case MAILIMF_FIELD_BCC:         key = "Bcc";         break;
-case MAILIMF_FIELD_MESSAGE_ID:  key = "Message-ID";  break;
+case MAILIMF_FIELD_ORIG_DATE: key = "Date"; break;
+case MAILIMF_FIELD_FROM: key = "From"; break;
+case MAILIMF_FIELD_SENDER: key = "Sender"; break;
+case MAILIMF_FIELD_REPLY_TO: key = "Reply-To"; break;
+case MAILIMF_FIELD_TO: key = "To"; break;
+case MAILIMF_FIELD_CC: key = "Cc"; break;
+case MAILIMF_FIELD_BCC: key = "Bcc"; break;
+case MAILIMF_FIELD_MESSAGE_ID: key = "Message-ID"; break;
 case MAILIMF_FIELD_IN_REPLY_TO: key = "In-Reply-To"; break;
-case MAILIMF_FIELD_REFERENCES:  key = "References";  break;
-case MAILIMF_FIELD_SUBJECT:     key = "Subject";     break;
+case MAILIMF_FIELD_REFERENCES: key = "References"; break;
+case MAILIMF_FIELD_SUBJECT: key = "Subject"; break;
 case MAILIMF_FIELD_OPTIONAL_FIELD:
 {
 const struct mailimf_optional_field* optional_field = field->fld_data.fld_optional_field;
@@ -1155,8 +1155,8 @@ dc_hash_insert(out, key, key_len, field);
 }
 void dc_mimeparser_parse(dc_mimeparser_t* mimeparser, const char* body_not_terminated, size_t body_bytes)
 {
-int                            r = 0;
-size_t                         index = 0;
+int r = 0;
+size_t index = 0;
 struct mailimf_optional_field* optional_field = NULL;
 dc_mimeparser_empty(mimeparser);
 r = mailmime_parse(body_not_terminated, body_bytes, &index, &mimeparser->mimeroot);
@@ -1382,12 +1382,12 @@ return 0;
 }
 int dc_mimeparser_sender_equals_recipient(dc_mimeparser_t* mimeparser)
 {
-int                         sender_equals_recipient = 0;
+int sender_equals_recipient = 0;
 const struct mailimf_field* fld = NULL;
-const struct mailimf_from*  fld_from = NULL;
-struct mailimf_mailbox*     mb = NULL;
-char*                       from_addr_norm = NULL;
-dc_hash_t*                  recipients = NULL;
+const struct mailimf_from* fld_from = NULL;
+struct mailimf_mailbox* mb = NULL;
+char* from_addr_norm = NULL;
+dc_hash_t* recipients = NULL;
 if (mimeparser==NULL || mimeparser->header_root==NULL) {
 goto cleanup;
 }

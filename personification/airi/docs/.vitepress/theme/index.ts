@@ -17,14 +17,14 @@ import '@fontsource/dm-mono'
 import '@fontsource/dm-serif-display'
 import '@fontsource-variable/comfortaa'
 export default {
-  Layout,
-  enhanceApp({ app }) {
-    const i18n = createI18n({
-      legacy: false,
-      locale: 'en',
-      fallbackLocale: 'en',
-      messages,
-    })
-    app.use(i18n)
-  },
+Layout,
+enhanceApp({ app }) {
+const i18n = createI18n({
+legacy: false,
+locale: 'en',
+fallbackLocale: 'en',
+messages,
+})
+app.use(i18n)
+},
 } satisfies Theme

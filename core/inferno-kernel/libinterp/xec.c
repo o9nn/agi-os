@@ -3,32 +3,32 @@
 #include "interp.h"
 #include "raise.h"
 #include "pool.h"
-REG	R;
-String	snil;
-#define Stmp	*((WORD*)(R.FP+NREG*IBY2WD))
-#define Dtmp	*((WORD*)(R.FP+(NREG+2)*IBY2WD))
-#define OP(fn)	void fn(void)
-#define B(r)	*((BYTE*)(R.r))
-#define W(r)	*((WORD*)(R.r))
-#define UW(r)	*((UWORD*)(R.r))
-#define F(r)	*((REAL*)(R.r))
-#define V(r)	*((LONG*)(R.r))
-#define UV(r)	*((ULONG*)(R.r))
-#define	S(r)	*((String**)(R.r))
-#define	A(r)	*((Array**)(R.r))
-#define	L(r)	*((List**)(R.r))
-#define P(r)	*((WORD**)(R.r))
-#define C(r)	*((Channel**)(R.r))
-#define T(r)	*((void**)(R.r))
-#define JMP(r)	R.PC = *(Inst**)(R.r)
-#define SH(r)	*((SHORT*)(R.r))
-#define SR(r)	*((SREAL*)(R.r))
+REG R;
+String snil;
+#define Stmp *((WORD*)(R.FP+NREG*IBY2WD))
+#define Dtmp *((WORD*)(R.FP+(NREG+2)*IBY2WD))
+#define OP(fn) void fn(void)
+#define B(r) *((BYTE*)(R.r))
+#define W(r) *((WORD*)(R.r))
+#define UW(r) *((UWORD*)(R.r))
+#define F(r) *((REAL*)(R.r))
+#define V(r) *((LONG*)(R.r))
+#define UV(r) *((ULONG*)(R.r))
+#define S(r) *((String**)(R.r))
+#define A(r) *((Array**)(R.r))
+#define L(r) *((List**)(R.r))
+#define P(r) *((WORD**)(R.r))
+#define C(r) *((Channel**)(R.r))
+#define T(r) *((void**)(R.r))
+#define JMP(r) R.PC = *(Inst**)(R.r)
+#define SH(r) *((SHORT*)(R.r))
+#define SR(r) *((SREAL*)(R.r))
 OP(runt) {}
 OP(negf) { F(d) = -F(s); }
-OP(jmp)  { JMP(d); }
+OP(jmp) { JMP(d); }
 OP(movpc){ T(d) = &R.M->prog[W(s)]; }
 OP(movm) { memmove(R.d, R.s, W(m)); }
-OP(lea)  { W(d) = (WORD)R.s; }
+OP(lea) { W(d) = (WORD)R.s; }
 OP(movb) { B(d) = B(s); }
 OP(movw) { W(d) = W(s); }
 OP(movf) { F(d) = F(s); }
@@ -65,9 +65,9 @@ OP(andl) { V(d) = V(m) & V(s); }
 OP(xorb) { B(d) = B(m) ^ B(s); }
 OP(xorw) { W(d) = W(m) ^ W(s); }
 OP(xorl) { V(d) = V(m) ^ V(s); }
-OP(orb)  { B(d) = B(m) | B(s); }
-OP(orw)  { W(d) = W(m) | W(s); }
-OP(orl)  { V(d) = V(m) | V(s); }
+OP(orb) { B(d) = B(m) | B(s); }
+OP(orw) { W(d) = W(m) | W(s); }
+OP(orl) { V(d) = V(m) | V(s); }
 OP(shlb) { B(d) = B(m) << W(s); }
 OP(shlw) { W(d) = W(m) << W(s); }
 OP(shll) { V(d) = V(m) << W(s); }
@@ -78,33 +78,33 @@ OP(lsrw) { W(d) = UW(m) >> W(s); }
 OP(lsrl) { V(d) = UV(m) >> W(s); }
 OP(beqb) { if(B(s) == B(m)) JMP(d); }
 OP(bneb) { if(B(s) != B(m)) JMP(d); }
-OP(bltb) { if(B(s) <  B(m)) JMP(d); }
+OP(bltb) { if(B(s) < B(m)) JMP(d); }
 OP(bleb) { if(B(s) <= B(m)) JMP(d); }
-OP(bgtb) { if(B(s) >  B(m)) JMP(d); }
+OP(bgtb) { if(B(s) > B(m)) JMP(d); }
 OP(bgeb) { if(B(s) >= B(m)) JMP(d); }
 OP(beqw) { if(W(s) == W(m)) JMP(d); }
 OP(bnew) { if(W(s) != W(m)) JMP(d); }
-OP(bltw) { if(W(s) <  W(m)) JMP(d); }
+OP(bltw) { if(W(s) < W(m)) JMP(d); }
 OP(blew) { if(W(s) <= W(m)) JMP(d); }
-OP(bgtw) { if(W(s) >  W(m)) JMP(d); }
+OP(bgtw) { if(W(s) > W(m)) JMP(d); }
 OP(bgew) { if(W(s) >= W(m)) JMP(d); }
 OP(beql) { if(V(s) == V(m)) JMP(d); }
 OP(bnel) { if(V(s) != V(m)) JMP(d); }
-OP(bltl) { if(V(s) <  V(m)) JMP(d); }
+OP(bltl) { if(V(s) < V(m)) JMP(d); }
 OP(blel) { if(V(s) <= V(m)) JMP(d); }
-OP(bgtl) { if(V(s) >  V(m)) JMP(d); }
+OP(bgtl) { if(V(s) > V(m)) JMP(d); }
 OP(bgel) { if(V(s) >= V(m)) JMP(d); }
 OP(beqf) { if(F(s) == F(m)) JMP(d); }
 OP(bnef) { if(F(s) != F(m)) JMP(d); }
-OP(bltf) { if(F(s) <  F(m)) JMP(d); }
+OP(bltf) { if(F(s) < F(m)) JMP(d); }
 OP(blef) { if(F(s) <= F(m)) JMP(d); }
-OP(bgtf) { if(F(s) >  F(m)) JMP(d); }
+OP(bgtf) { if(F(s) > F(m)) JMP(d); }
 OP(bgef) { if(F(s) >= F(m)) JMP(d); }
 OP(beqc) { if(stringcmp(S(s), S(m)) == 0) JMP(d); }
 OP(bnec) { if(stringcmp(S(s), S(m)) != 0) JMP(d); }
-OP(bltc) { if(stringcmp(S(s), S(m)) <  0) JMP(d); }
+OP(bltc) { if(stringcmp(S(s), S(m)) < 0) JMP(d); }
 OP(blec) { if(stringcmp(S(s), S(m)) <= 0) JMP(d); }
-OP(bgtc) { if(stringcmp(S(s), S(m)) >  0) JMP(d); }
+OP(bgtc) { if(stringcmp(S(s), S(m)) > 0) JMP(d); }
 OP(bgec) { if(stringcmp(S(s), S(m)) >= 0) JMP(d); }
 OP(iexit){ error(""); }
 OP(cvtwl){ V(d) = W(s); }
@@ -323,8 +323,8 @@ T(d) = R.s;
 return;
 }
 f = (Frame*)R.SP;
-R.SP  = nsp;
-f->t  = t;
+R.SP = nsp;
+f->t = t;
 f->mr = nil;
 if (t->np)
 initmem(t, f);
@@ -463,11 +463,11 @@ oldc = *cp;
 destroy(oldc);
 return *cp;
 }
-OP(newcl)  { newc(&Tlong, movl);  }
-OP(newcb)  { newc(&Tbyte, movb);  }
-OP(newcw)  { newc(&Tword, movw);  }
-OP(newcf)  { newc(&Treal, movf);  }
-OP(newcp)  { newc(&Tptr, movp);  }
+OP(newcl) { newc(&Tlong, movl); }
+OP(newcb) { newc(&Tbyte, movb); }
+OP(newcw) { newc(&Tword, movw); }
+OP(newcf) { newc(&Treal, movf); }
+OP(newcp) { newc(&Tptr, movp); }
 OP(newcm)
 {
 Channel *c;

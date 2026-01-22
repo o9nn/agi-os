@@ -46,11 +46,11 @@ const char* sampling_methods_str[] = {
 };
 void calculate_alphas_cumprod(float* alphas_cumprod,
 float linear_start = 0.00085f,
-float linear_end   = 0.0120,
-int timesteps      = TIMESTEPS) {
+float linear_end = 0.0120,
+int timesteps = TIMESTEPS) {
 float ls_sqrt = sqrtf(linear_start);
 float le_sqrt = sqrtf(linear_end);
-float amount  = le_sqrt - ls_sqrt;
+float amount = le_sqrt - ls_sqrt;
 float product = 1.0f;
 for (int i = 0; i < timesteps; i++) {
 float beta = ls_sqrt + amount * ((float)i / (timesteps - 1));
@@ -60,20 +60,20 @@ alphas_cumprod[i] = product;
 }
 class StableDiffusionGGML {
 public:
-ggml_backend_t backend             = NULL;
-ggml_backend_t clip_backend        = NULL;
+ggml_backend_t backend = NULL;
+ggml_backend_t clip_backend = NULL;
 ggml_backend_t control_net_backend = NULL;
-ggml_backend_t vae_backend         = NULL;
-ggml_type model_wtype              = GGML_TYPE_COUNT;
-ggml_type conditioner_wtype        = GGML_TYPE_COUNT;
-ggml_type diffusion_model_wtype    = GGML_TYPE_COUNT;
-ggml_type vae_wtype                = GGML_TYPE_COUNT;
+ggml_backend_t vae_backend = NULL;
+ggml_type model_wtype = GGML_TYPE_COUNT;
+ggml_type conditioner_wtype = GGML_TYPE_COUNT;
+ggml_type diffusion_model_wtype = GGML_TYPE_COUNT;
+ggml_type vae_wtype = GGML_TYPE_COUNT;
 SDVersion version;
-bool vae_decode_only         = false;
+bool vae_decode_only = false;
 bool free_params_immediately = false;
 std::shared_ptr<RNG> rng = std::make_shared<STDDefaultRNG>();
-int n_threads            = -1;
-float scale_factor       = 0.18215f;
+int n_threads = -1;
+float scale_factor = 0.18215f;
 std::shared_ptr<Conditioner> cond_stage_model;
 std::shared_ptr<FrozenCLIPVisionEmbedder> clip_vision;
 std::shared_ptr<DiffusionModel> diffusion_model;
@@ -85,8 +85,8 @@ std::shared_ptr<LoraModel> pmid_lora;
 std::shared_ptr<PhotoMakerIDEmbed> pmid_id_embeds;
 std::string taesd_path;
 bool use_tiny_autoencoder = false;
-bool vae_tiling           = false;
-bool stacked_id           = false;
+bool vae_tiling = false;
+bool stacked_id = false;
 std::map<std::string, struct ggml_tensor*> tensors;
 std::string lora_model_dir;
 std::unordered_map<std::string, float> curr_lora_state;
@@ -271,10 +271,10 @@ if (vae_wtype == GGML_TYPE_COUNT) {
 vae_wtype = wtype;
 }
 } else {
-model_wtype           = wtype;
-conditioner_wtype     = wtype;
+model_wtype = wtype;
+conditioner_wtype = wtype;
 diffusion_model_wtype = wtype;
-vae_wtype             = wtype;
+vae_wtype = wtype;
 model_loader.set_wtype_override(wtype);
 }
 if (sd_version_is_sdxl(version)) {
@@ -312,7 +312,7 @@ LOG_DEBUG("vae_decode_only %d", vae_decode_only);
 first_stage_model->alloc_params_buffer();
 first_stage_model->get_param_tensors(tensors, "first_stage_model");
 } else {
-clip_backend   = backend;
+clip_backend = backend;
 bool use_t5xxl = false;
 if (sd_version_is_dit(version)) {
 use_t5xxl = true;
@@ -333,7 +333,7 @@ if (diffusion_flash_attn) {
 LOG_WARN("flash attention in this diffusion model is currently unsupported!");
 }
 cond_stage_model = std::make_shared<SD3CLIPEmbedder>(clip_backend, model_loader.tensor_storages_types);
-diffusion_model  = std::make_shared<MMDiTModel>(backend, model_loader.tensor_storages_types);
+diffusion_model = std::make_shared<MMDiTModel>(backend, model_loader.tensor_storages_types);
 } else if (sd_version_is_flux(version)) {
 bool is_chroma = false;
 for (auto pair : model_loader.tensor_storages_types) {
@@ -412,9 +412,9 @@ pmid_model->get_param_tensors(tensors, "pmid");
 }
 }
 struct ggml_init_params params;
-params.mem_size   = static_cast<size_t>(10 * 1024) * 1024;
+params.mem_size = static_cast<size_t>(10 * 1024) * 1024;
 params.mem_buffer = NULL;
-params.no_alloc   = false;
+params.no_alloc = false;
 struct ggml_context* ctx = ggml_init(params);
 GGML_ASSERT(ctx != NULL);
 ggml_tensor* alphas_cumprod_tensor = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, TIMESTEPS);
@@ -446,7 +446,7 @@ if (version == VERSION_SVD) {
 } else {
 size_t clip_params_mem_size = cond_stage_model->get_params_buffer_size();
 size_t unet_params_mem_size = diffusion_model->get_params_buffer_size();
-size_t vae_params_mem_size  = 0;
+size_t vae_params_mem_size = 0;
 if (!use_tiny_autoencoder) {
 vae_params_mem_size = first_stage_model->get_params_buffer_size();
 } else {
@@ -466,7 +466,7 @@ size_t pmid_params_mem_size = 0;
 if (stacked_id) {
 pmid_params_mem_size = pmid_model->get_params_buffer_size();
 }
-size_t total_params_ram_size  = 0;
+size_t total_params_ram_size = 0;
 size_t total_params_vram_size = 0;
 if (ggml_backend_is_cpu(clip_backend)) {
 total_params_ram_size += clip_params_mem_size + pmid_params_mem_size;
@@ -555,12 +555,12 @@ denoiser->schedule = std::make_shared<ExponentialSchedule>();
 break;
 case AYS:
 LOG_INFO("Running with Align-Your-Steps schedule");
-denoiser->schedule          = std::make_shared<AYSSchedule>();
+denoiser->schedule = std::make_shared<AYSSchedule>();
 denoiser->schedule->version = version;
 break;
 case GITS:
 LOG_INFO("Running with GITS schedule");
-denoiser->schedule          = std::make_shared<GITSSchedule>();
+denoiser->schedule = std::make_shared<GITSSchedule>();
 denoiser->schedule->version = version;
 break;
 case DEFAULT:
@@ -573,7 +573,7 @@ abort();
 auto comp_vis_denoiser = std::dynamic_pointer_cast<CompVisDenoiser>(denoiser);
 if (comp_vis_denoiser) {
 for (int i = 0; i < TIMESTEPS; i++) {
-comp_vis_denoiser->sigmas[i]     = std::sqrt((1 - ((float*)alphas_cumprod_tensor->data)[i]) / ((float*)alphas_cumprod_tensor->data)[i]);
+comp_vis_denoiser->sigmas[i] = std::sqrt((1 - ((float*)alphas_cumprod_tensor->data)[i]) / ((float*)alphas_cumprod_tensor->data)[i]);
 comp_vis_denoiser->log_sigmas[i] = std::log(comp_vis_denoiser->sigmas[i]);
 }
 }
@@ -592,13 +592,13 @@ struct ggml_tensor* concat = is_inpaint ? ggml_new_tensor_4d(work_ctx, GGML_TYPE
 if (concat != NULL) {
 ggml_set_f32(concat, 0);
 }
-int64_t t0              = ggml_time_ms();
+int64_t t0 = ggml_time_ms();
 struct ggml_tensor* out = ggml_dup_tensor(work_ctx, x_t);
 diffusion_model->compute(n_threads, x_t, timesteps, c, concat, NULL, NULL, {}, -1, {}, 0.f, &out);
 diffusion_model->free_compute_buffer();
 double result = 0.f;
 {
-float* vec_x   = (float*)x_t->data;
+float* vec_x = (float*)x_t->data;
 float* vec_out = (float*)out->data;
 int64_t n = ggml_nelements(out);
 for (int i = 0; i < n; i++) {
@@ -615,8 +615,8 @@ pending_apply_lora_fname = lora_path;
 pending_apply_lora_power = multiplier;
 }
 void apply_lora_from_file(const std::string& lora_path, float multiplier) {
-int64_t t0                 = ggml_time_ms();
-std::string st_file_path   = lora_path;
+int64_t t0 = ggml_time_ms();
+std::string st_file_path = lora_path;
 std::string file_path;
 if (file_exists(st_file_path)) {
 file_path = st_file_path;
@@ -638,8 +638,8 @@ lora_path.c_str(),
 (t1 - t0) * 1.0f / 1000);
 }
 void apply_lora(const std::string& lora_name, float multiplier) {
-int64_t t0                 = ggml_time_ms();
-std::string st_file_path   = path_join(lora_model_dir, lora_name + ".safetensors");
+int64_t t0 = ggml_time_ms();
+std::string st_file_path = path_join(lora_model_dir, lora_name + ".safetensors");
 std::string ckpt_file_path = path_join(lora_model_dir, lora_name + ".ckpt");
 std::string file_path;
 if (file_exists(st_file_path)) {
@@ -668,12 +668,12 @@ LOG_WARN("In quantized models when applying LoRA, the images have poor quality."
 std::unordered_map<std::string, float> lora_state_diff;
 for (auto& kv : lora_state) {
 const std::string& lora_name = kv.first;
-float multiplier             = kv.second;
+float multiplier = kv.second;
 lora_state_diff[lora_name] += multiplier;
 }
 for (auto& kv : curr_lora_state) {
 const std::string& lora_name = kv.first;
-float curr_multiplier        = kv.second;
+float curr_multiplier = kv.second;
 lora_state_diff[lora_name] -= curr_multiplier;
 }
 size_t rm = lora_state_diff.size() - lora_state.size();
@@ -700,18 +700,18 @@ SDCondition get_svd_condition(ggml_context* work_ctx,
 sd_image_t init_image,
 int width,
 int height,
-int fps                    = 6,
-int motion_bucket_id       = 127,
-float augmentation_level   = 0.f,
+int fps = 6,
+int motion_bucket_id = 127,
+float augmentation_level = 0.f,
 bool force_zero_embeddings = false) {
-int64_t t0                      = ggml_time_ms();
+int64_t t0 = ggml_time_ms();
 struct ggml_tensor* c_crossattn = NULL;
 {
 if (force_zero_embeddings) {
 c_crossattn = ggml_new_tensor_1d(work_ctx, GGML_TYPE_F32, clip_vision->vision_model.projection_dim);
 ggml_set_f32(c_crossattn, 0.f);
 } else {
-sd_image_f32_t image         = sd_image_t_to_sd_image_f32_t(init_image);
+sd_image_f32_t image = sd_image_t_to_sd_image_f32_t(init_image);
 sd_image_f32_t resized_image = clip_preprocess(image, clip_vision->vision_model.image_size);
 free(image.data);
 image.data = NULL;
@@ -730,7 +730,7 @@ ggml_set_f32(c_concat, 0.f);
 } else {
 ggml_tensor* init_img = ggml_new_tensor_4d(work_ctx, GGML_TYPE_F32, width, height, 3, 1);
 if (width != init_image.width || height != init_image.height) {
-sd_image_f32_t image         = sd_image_t_to_sd_image_f32_t(init_image);
+sd_image_f32_t image = sd_image_t_to_sd_image_f32_t(init_image);
 sd_image_f32_t resized_image = resize_sd_image_f32_t(image, width, height);
 free(image.data);
 image.data = NULL;
@@ -747,14 +747,14 @@ ggml_tensor_scale(noise, augmentation_level);
 ggml_tensor_add(init_img, noise);
 }
 ggml_tensor* moments = encode_first_stage(work_ctx, init_img);
-c_concat             = get_first_stage_encoding(work_ctx, moments);
+c_concat = get_first_stage_encoding(work_ctx, moments);
 }
 }
 struct ggml_tensor* y = NULL;
 {
-y                            = ggml_new_tensor_1d(work_ctx, GGML_TYPE_F32, diffusion_model->get_adm_in_channels());
-int out_dim                  = 256;
-int fps_id                   = fps - 1;
+y = ggml_new_tensor_1d(work_ctx, GGML_TYPE_F32, diffusion_model->get_adm_in_channels());
+int out_dim = 256;
+int fps_id = fps - 1;
 std::vector<float> timesteps = {(float)fps_id, (float)motion_bucket_id, augmentation_level};
 set_timestep_embedding(timesteps, y, out_dim);
 }
@@ -779,10 +779,10 @@ int start_merge_step,
 SDCondition id_cond,
 std::vector<ggml_tensor*> ref_latents = {},
 std::vector<int> skip_layers = {},
-float slg_scale              = 0,
-float skip_layer_start       = 0.01,
-float skip_layer_end         = 0.2,
-ggml_tensor* noise_mask      = nullptr) {
+float slg_scale = 0,
+float skip_layer_start = 0.01,
+float skip_layer_end = 0.2,
+ggml_tensor* noise_mask = nullptr) {
 LOG_DEBUG("Sample");
 struct ggml_init_params params;
 size_t data_size = ggml_row_size(init_latent->type, init_latent->ne[0]);
@@ -790,9 +790,9 @@ for (int i = 1; i < 4; i++) {
 data_size *= init_latent->ne[i];
 }
 data_size += 1024;
-params.mem_size       = data_size * 3;
-params.mem_buffer     = NULL;
-params.no_alloc       = false;
+params.mem_size = data_size * 3;
+params.mem_buffer = NULL;
+params.no_alloc = false;
 ggml_context* tmp_ctx = ggml_init(params);
 size_t steps = sigmas.size() - 1;
 struct ggml_tensor* x = ggml_dup_tensor(work_ctx, init_latent);
@@ -800,10 +800,10 @@ copy_ggml_tensor(x, init_latent);
 x = denoiser->noise_scaling(sigmas[0], noise, x);
 struct ggml_tensor* noised_input = ggml_dup_tensor(work_ctx, noise);
 bool has_unconditioned = cfg_scale != 1.0 && uncond.c_crossattn != NULL;
-bool has_skiplayer     = slg_scale != 0.0 && skip_layers.size() > 0;
-struct ggml_tensor* out_cond   = ggml_dup_tensor(work_ctx, x);
+bool has_skiplayer = slg_scale != 0.0 && skip_layers.size() > 0;
+struct ggml_tensor* out_cond = ggml_dup_tensor(work_ctx, x);
 struct ggml_tensor* out_uncond = NULL;
-struct ggml_tensor* out_skip   = NULL;
+struct ggml_tensor* out_skip = NULL;
 if (has_unconditioned) {
 out_uncond = ggml_dup_tensor(work_ctx, x);
 }
@@ -824,8 +824,8 @@ int64_t t0 = ggml_time_us();
 std::vector<float> scaling = denoiser->get_scalings(sigma);
 GGML_ASSERT(scaling.size() == 3);
 float c_skip = scaling[0];
-float c_out  = scaling[1];
-float c_in   = scaling[2];
+float c_out = scaling[1];
+float c_in = scaling[2];
 float t = denoiser->sigma_to_t(sigma);
 std::vector<float> timesteps_vec(x->ne[3], t);
 auto timesteps = vector_to_ggml_tensor(work_ctx, timesteps_vec);
@@ -885,7 +885,7 @@ control_strength,
 &out_uncond);
 negative_data = (float*)out_uncond->data;
 }
-int step_count         = sigmas.size();
+int step_count = sigmas.size();
 bool is_skiplayer_step = has_skiplayer && step > (int)(skip_layer_start * step_count) && step < (int)(skip_layer_end * step_count);
 float* skip_layer_data = NULL;
 if (is_skiplayer_step) {
@@ -906,16 +906,16 @@ NULL,
 skip_layers);
 skip_layer_data = (float*)out_skip->data;
 }
-float* vec_denoised  = (float*)denoised->data;
-float* vec_input     = (float*)input->data;
+float* vec_denoised = (float*)denoised->data;
+float* vec_input = (float*)input->data;
 float* positive_data = (float*)out_cond->data;
-int ne_elements      = (int)ggml_nelements(denoised);
+int ne_elements = (int)ggml_nelements(denoised);
 for (int i = 0; i < ne_elements; i++) {
 float latent_result = positive_data[i];
 if (has_unconditioned) {
 int64_t ne3 = out_cond->ne[3];
 if (min_cfg != cfg_scale && ne3 != 1) {
-int64_t i3  = i / out_cond->ne[0] * out_cond->ne[1] * out_cond->ne[2];
+int64_t i3 = i / out_cond->ne[0] * out_cond->ne[1] * out_cond->ne[2];
 float scale = min_cfg + (cfg_scale - min_cfg) * (i3 * 1.0f / ne3);
 } else {
 latent_result = negative_data[i] + cfg_scale * (positive_data[i] - negative_data[i]);
@@ -936,7 +936,7 @@ for (int64_t y = 0; y < denoised->ne[1]; y++) {
 float mask = ggml_tensor_get_f32(noise_mask, x, y);
 for (int64_t k = 0; k < denoised->ne[2]; k++) {
 float init = ggml_tensor_get_f32(init_latent, x, y, k);
-float den  = ggml_tensor_get_f32(denoised, x, y, k);
+float den = ggml_tensor_get_f32(denoised, x, y, k);
 ggml_tensor_set_f32(denoised, init + mask * (den - init), x, y, k);
 }
 }
@@ -954,24 +954,24 @@ diffusion_model->free_compute_buffer();
 return x;
 }
 ggml_tensor* get_first_stage_encoding(ggml_context* work_ctx, ggml_tensor* moments) {
-ggml_tensor* latent       = ggml_new_tensor_4d(work_ctx, moments->type, moments->ne[0], moments->ne[1], moments->ne[2] / 2, moments->ne[3]);
+ggml_tensor* latent = ggml_new_tensor_4d(work_ctx, moments->type, moments->ne[0], moments->ne[1], moments->ne[2] / 2, moments->ne[3]);
 struct ggml_tensor* noise = ggml_dup_tensor(work_ctx, latent);
 ggml_tensor_set_f32_randn(noise, rng);
 {
-float mean   = 0;
+float mean = 0;
 float logvar = 0;
-float value  = 0;
-float std_   = 0;
+float value = 0;
+float std_ = 0;
 for (int i = 0; i < latent->ne[3]; i++) {
 for (int j = 0; j < latent->ne[2]; j++) {
 for (int k = 0; k < latent->ne[1]; k++) {
 for (int l = 0; l < latent->ne[0]; l++) {
-mean   = ggml_tensor_get_f32(moments, l, k, j, i);
+mean = ggml_tensor_get_f32(moments, l, k, j, i);
 logvar = ggml_tensor_get_f32(moments, l, k, j + (int)latent->ne[2], i);
 logvar = std::max(-30.0f, std::min(logvar, 20.0f));
-std_   = std::exp(0.5f * logvar);
-value  = mean + std_ * ggml_tensor_get_f32(noise, l, k, j, i);
-value  = value * scale_factor;
+std_ = std::exp(0.5f * logvar);
+value = mean + std_ * ggml_tensor_get_f32(noise, l, k, j, i);
+value = value * scale_factor;
 ggml_tensor_set_f32(latent, value, l, k, j, i);
 }
 }
@@ -998,7 +998,7 @@ decode ? (W * 8) : (W / 8),
 decode ? (H * 8) : (H / 8),
 decode ? 3 : C,
 x->ne[3]);
-int64_t t0          = ggml_time_ms();
+int64_t t0 = ggml_time_ms();
 float tile_overlap = 0.5f;
 const char* SD_TILE_OVERLAP = getenv("SD_TILE_OVERLAP");
 if (SD_TILE_OVERLAP != nullptr) {
@@ -1242,17 +1242,17 @@ bool normalize_input,
 std::string input_id_images_path,
 std::vector<ggml_tensor*> ref_latents,
 std::vector<int> skip_layers = {},
-float slg_scale              = 0,
-float skip_layer_start       = 0.01,
-float skip_layer_end         = 0.2,
-ggml_tensor* masked_image    = NULL,
+float slg_scale = 0,
+float skip_layer_start = 0.01,
+float skip_layer_end = 0.2,
+ggml_tensor* masked_image = NULL,
 const std::vector<sd_image_t*> photomaker_references = std::vector<sd_image_t*>()) {
 if (seed < 0) {
 srand((int)time(NULL));
 seed = rand();
 }
 int sample_steps = sigmas.size() - 1;
-auto result_pair                                = extract_and_remove_lora(prompt);
+auto result_pair = extract_and_remove_lora(prompt);
 std::unordered_map<std::string, float> lora_f2m = result_pair.first;
 for (auto& kv : lora_f2m) {
 LOG_DEBUG("lora %s:%.2f", kv.first.c_str(), kv.second);
@@ -1280,7 +1280,7 @@ if (sd_ctx->sd->stacked_id) {
 if (!sd_ctx->sd->pmid_lora->applied) {
 t0 = ggml_time_ms();
 sd_ctx->sd->pmid_lora->apply(sd_ctx->sd->tensors, sd_ctx->sd->version, sd_ctx->sd->n_threads);
-t1                             = ggml_time_ms();
+t1 = ggml_time_ms();
 sd_ctx->sd->pmid_lora->applied = true;
 LOG_INFO("pmid_lora apply completed, taking %.2fs", (t1 - t0) * 1.0f / 1000);
 if (sd_ctx->sd->free_params_immediately) {
@@ -1305,11 +1305,11 @@ continue;
 LOG_INFO("PhotoMaker loaded image from '%s'", img_file.c_str());
 }
 sd_image_t* input_image = NULL;
-input_image             = new sd_image_t{(uint32_t)width,
+input_image = new sd_image_t{(uint32_t)width,
 (uint32_t)height,
 3,
 input_image_buffer};
-input_image             = preprocess_id_image(input_image);
+input_image = preprocess_id_image(input_image);
 if (input_image == NULL) {
 LOG_ERROR("preprocess input id image from '%s' failed", img_file.c_str());
 continue;
@@ -1328,11 +1328,11 @@ height = photomaker_references[i]->height;
 c = photomaker_references[i]->channel;
 uint8_t* input_image_buffer = photomaker_references[i]->data;
 sd_image_t* input_image = NULL;
-input_image  = new sd_image_t{(uint32_t)width,
+input_image = new sd_image_t{(uint32_t)width,
 (uint32_t)height,
 3,
 input_image_buffer};
-input_image   = preprocess_id_image(input_image);
+input_image = preprocess_id_image(input_image);
 if (input_image == NULL) {
 LOG_ERROR("\npreprocess input id image from kcpp photomaker failed\n");
 } else {
@@ -1343,13 +1343,13 @@ input_id_images.push_back(input_image);
 }
 if (input_id_images.size() > 0) {
 sd_ctx->sd->pmid_model->style_strength = style_ratio;
-int32_t w                              = input_id_images[0]->width;
-int32_t h                              = input_id_images[0]->height;
-int32_t channels                       = input_id_images[0]->channel;
-int32_t num_input_images               = (int32_t)input_id_images.size();
-init_img                               = ggml_new_tensor_4d(work_ctx, GGML_TYPE_F32, w, h, channels, num_input_images);
+int32_t w = input_id_images[0]->width;
+int32_t h = input_id_images[0]->height;
+int32_t channels = input_id_images[0]->channel;
+int32_t num_input_images = (int32_t)input_id_images.size();
+init_img = ggml_new_tensor_4d(work_ctx, GGML_TYPE_F32, w, h, channels, num_input_images);
 float mean[] = {0.48145466f, 0.4578275f, 0.40821073f};
-float std[]  = {0.26862954f, 0.26130258f, 0.27577711f};
+float std[] = {0.26862954f, 0.26130258f, 0.27577711f};
 for (int i = 0; i < num_input_images; i++) {
 sd_image_t* init_image = input_id_images[i];
 if (normalize_input)
@@ -1357,22 +1357,22 @@ sd_mul_images_to_tensor(init_image->data, init_img, i, mean, std);
 else
 sd_mul_images_to_tensor(init_image->data, init_img, i, NULL, NULL);
 }
-t0                            = ggml_time_ms();
-auto cond_tup                 = sd_ctx->sd->cond_stage_model->get_learned_condition_with_trigger(work_ctx,
+t0 = ggml_time_ms();
+auto cond_tup = sd_ctx->sd->cond_stage_model->get_learned_condition_with_trigger(work_ctx,
 sd_ctx->sd->n_threads, prompt,
 clip_skip,
 width,
 height,
 num_input_images,
 sd_ctx->sd->diffusion_model->get_adm_in_channels());
-id_cond                       = std::get<0>(cond_tup);
-class_tokens_mask             = std::get<1>(cond_tup);
+id_cond = std::get<0>(cond_tup);
+class_tokens_mask = std::get<1>(cond_tup);
 struct ggml_tensor* id_embeds = NULL;
 if (pmv2) {
 id_embeds = load_tensor_from_file(work_ctx, path_join(input_id_images_path, "id_embeds.bin"));
 }
 id_cond.c_crossattn = sd_ctx->sd->id_encoder(work_ctx, init_img, id_cond.c_crossattn, id_embeds, class_tokens_mask);
-t1                  = ggml_time_ms();
+t1 = ggml_time_ms();
 LOG_INFO("Photomaker ID Stacking, taking %" PRId64 " ms", t1 - t0);
 if (sd_ctx->sd->free_params_immediately) {
 sd_ctx->sd->pmid_model->free_params_buffer();
@@ -1389,7 +1389,7 @@ free(img->data);
 }
 input_id_images.clear();
 }
-t0               = ggml_time_ms();
+t0 = ggml_time_ms();
 SDCondition cond = sd_ctx->sd->cond_stage_model->get_learned_condition(work_ctx,
 sd_ctx->sd->n_threads,
 prompt,
@@ -1458,17 +1458,17 @@ ggml_tensor_set_f32(masked_image, 0, x, y, c);
 }
 }
 }
-cond.c_concat   = masked_image;
+cond.c_concat = masked_image;
 uncond.c_concat = masked_image;
 } else {
 noise_mask = masked_image;
 }
 for (int b = 0; b < batch_count; b++) {
 int64_t sampling_start = ggml_time_ms();
-int64_t cur_seed       = seed + b;
+int64_t cur_seed = seed + b;
 LOG_INFO("generating image: %i/%i - seed %" PRId64, b + 1, batch_count, cur_seed);
 sd_ctx->sd->rng->manual_seed(cur_seed);
-struct ggml_tensor* x_t   = init_latent;
+struct ggml_tensor* x_t = init_latent;
 struct ggml_tensor* noise = ggml_new_tensor_4d(work_ctx, GGML_TYPE_F32, W, H, C, 1);
 ggml_tensor_set_f32_randn(noise, sd_ctx->sd->rng);
 int start_merge_step = -1;
@@ -1509,7 +1509,7 @@ LOG_INFO("generating %d latent images completed, taking %.2fs", final_latents.si
 LOG_INFO("decoding %zu latents", final_latents.size());
 std::vector<struct ggml_tensor*> decoded_images;
 for (size_t i = 0; i < final_latents.size(); i++) {
-t1                      = ggml_time_ms();
+t1 = ggml_time_ms();
 struct ggml_tensor* img = sd_ctx->sd->decode_first_stage(work_ctx, final_latents[i] );
 if (img != NULL) {
 decoded_images.push_back(img);
@@ -1528,10 +1528,10 @@ ggml_free(work_ctx);
 return NULL;
 }
 for (size_t i = 0; i < decoded_images.size(); i++) {
-result_images[i].width   = width;
-result_images[i].height  = height;
+result_images[i].width = width;
+result_images[i].height = height;
 result_images[i].channel = 3;
-result_images[i].data    = sd_tensor_to_image(decoded_images[i]);
+result_images[i].data = sd_tensor_to_image(decoded_images[i]);
 }
 ggml_free(work_ctx);
 return result_images;
@@ -1556,11 +1556,11 @@ bool normalize_input,
 const char* input_id_images_path_c_str,
 sd_image_t* kontext_imgs,
 int kontext_img_count,
-int* skip_layers         = NULL,
+int* skip_layers = NULL,
 size_t skip_layers_count = 0,
-float slg_scale          = 0,
-float skip_layer_start   = 0.01,
-float skip_layer_end     = 0.2,
+float slg_scale = 0,
+float skip_layer_start = 0.01,
+float skip_layer_end = 0.2,
 const std::vector<sd_image_t*> photomaker_references = std::vector<sd_image_t*>()) {
 std::vector<int> skip_layers_vec(skip_layers, skip_layers + skip_layers_count);
 LOG_DEBUG("txt2img %dx%d", width, height);
@@ -1581,7 +1581,7 @@ params.mem_size += static_cast<size_t>(15 * 1024 * 1024);
 params.mem_size += width * height * 3 * sizeof(float);
 params.mem_size *= batch_count;
 params.mem_buffer = NULL;
-params.no_alloc   = false;
+params.no_alloc = false;
 struct ggml_context* work_ctx = ggml_init(params);
 if (!work_ctx) {
 LOG_ERROR("ggml_init() failed");
@@ -1595,8 +1595,8 @@ C = 16;
 } else if (sd_version_is_flux(sd_ctx->sd->version)) {
 C = 16;
 }
-int W                    = width / 8;
-int H                    = height / 8;
+int W = width / 8;
+int H = height / 8;
 ggml_tensor* init_latent = ggml_new_tensor_4d(work_ctx, GGML_TYPE_F32, W, H, C, 1);
 if (sd_version_is_sd3(sd_ctx->sd->version)) {
 ggml_set_f32(init_latent, 0.0609f);
@@ -1616,7 +1616,7 @@ sd_image_to_tensor(kontext_imgs[i].data, img);
 ggml_tensor* latent = NULL;
 if (!sd_ctx->sd->use_tiny_autoencoder) {
 ggml_tensor* moments = sd_ctx->sd->encode_first_stage(work_ctx, img);
-latent               = sd_ctx->sd->get_first_stage_encoding(work_ctx, moments);
+latent = sd_ctx->sd->get_first_stage_encoding(work_ctx, moments);
 } else {
 latent = sd_ctx->sd->encode_first_stage(work_ctx, img);
 }
@@ -1677,11 +1677,11 @@ bool normalize_input,
 const char* input_id_images_path_c_str,
 sd_image_t* kontext_imgs,
 int kontext_img_count,
-int* skip_layers         = NULL,
+int* skip_layers = NULL,
 size_t skip_layers_count = 0,
-float slg_scale          = 0,
-float skip_layer_start   = 0.01,
-float skip_layer_end     = 0.2,
+float slg_scale = 0,
+float skip_layer_start = 0.01,
+float skip_layer_end = 0.2,
 const std::vector<sd_image_t*> photomaker_references = std::vector<sd_image_t*>()) {
 std::vector<int> skip_layers_vec(skip_layers, skip_layers + skip_layers_count);
 LOG_DEBUG("img2img %dx%d", width, height);
@@ -1702,7 +1702,7 @@ params.mem_size += static_cast<size_t>(10 * 1024 * 1024);
 params.mem_size += width * height * 3 * sizeof(float) * 3;
 params.mem_size *= batch_count;
 params.mem_buffer = NULL;
-params.no_alloc   = false;
+params.no_alloc = false;
 struct ggml_context* work_ctx = ggml_init(params);
 if (!work_ctx) {
 LOG_ERROR("ggml_init() failed");
@@ -1729,7 +1729,7 @@ sd_apply_mask(init_img, mask_img, masked_img);
 ggml_tensor* masked_image_0 = NULL;
 if (!sd_ctx->sd->use_tiny_autoencoder) {
 ggml_tensor* moments = sd_ctx->sd->encode_first_stage(work_ctx, masked_img);
-masked_image_0       = sd_ctx->sd->get_first_stage_encoding(work_ctx, moments);
+masked_image_0 = sd_ctx->sd->get_first_stage_encoding(work_ctx, moments);
 } else {
 masked_image_0 = sd_ctx->sd->encode_first_stage(work_ctx, masked_img);
 }
@@ -1763,8 +1763,8 @@ ggml_tensor_set_f32(masked_image, v, ix, iy, k + mask_channels);
 masked_image = ggml_new_tensor_4d(work_ctx, GGML_TYPE_F32, width / 8, height / 8, 1, 1);
 for (int ix = 0; ix < masked_image->ne[0]; ix++) {
 for (int iy = 0; iy < masked_image->ne[1]; iy++) {
-int mx  = ix * 8;
-int my  = iy * 8;
+int mx = ix * 8;
+int my = iy * 8;
 float m = ggml_tensor_get_f32(mask_img, mx, my);
 ggml_tensor_set_f32(masked_image, m, ix, iy);
 }
@@ -1773,7 +1773,7 @@ ggml_tensor_set_f32(masked_image, m, ix, iy);
 ggml_tensor* init_latent = NULL;
 if (!sd_ctx->sd->use_tiny_autoencoder) {
 ggml_tensor* moments = sd_ctx->sd->encode_first_stage(work_ctx, init_img);
-init_latent          = sd_ctx->sd->get_first_stage_encoding(work_ctx, moments);
+init_latent = sd_ctx->sd->get_first_stage_encoding(work_ctx, moments);
 } else {
 init_latent = sd_ctx->sd->encode_first_stage(work_ctx, init_img);
 }
@@ -1785,7 +1785,7 @@ sd_image_to_tensor(kontext_imgs[i].data, img);
 ggml_tensor* latent = NULL;
 if (!sd_ctx->sd->use_tiny_autoencoder) {
 ggml_tensor* moments = sd_ctx->sd->encode_first_stage(work_ctx, img);
-latent               = sd_ctx->sd->get_first_stage_encoding(work_ctx, moments);
+latent = sd_ctx->sd->get_first_stage_encoding(work_ctx, moments);
 } else {
 latent = sd_ctx->sd->encode_first_stage(work_ctx, img);
 }
@@ -1795,7 +1795,7 @@ kontext_latents.push_back(latent);
 size_t t1 = ggml_time_ms();
 LOG_INFO("encode_first_stage completed, taking %.2fs", (t1 - t0) * 1.0f / 1000);
 std::vector<float> sigmas = sd_ctx->sd->denoiser->get_sigmas(sample_steps);
-size_t t_enc              = static_cast<size_t>(sample_steps * strength);
+size_t t_enc = static_cast<size_t>(sample_steps * strength);
 if (t_enc == sample_steps)
 t_enc--;
 LOG_INFO("target t_enc is %zu steps", t_enc);
@@ -1855,7 +1855,7 @@ struct ggml_init_params params;
 params.mem_size = static_cast<size_t>(10 * 1024) * 1024;
 params.mem_size += width * height * 3 * sizeof(float) * video_frames;
 params.mem_buffer = NULL;
-params.no_alloc   = false;
+params.no_alloc = false;
 struct ggml_context* work_ctx = ggml_init(params);
 if (!work_ctx) {
 LOG_ERROR("ggml_init() failed");
@@ -1885,9 +1885,9 @@ if (sd_ctx->sd->free_params_immediately) {
 sd_ctx->sd->clip_vision->free_params_buffer();
 }
 sd_ctx->sd->rng->manual_seed(seed);
-int C                   = 4;
-int W                   = width / 8;
-int H                   = height / 8;
+int C = 4;
+int W = width / 8;
+int H = height / 8;
 struct ggml_tensor* x_t = ggml_new_tensor_4d(work_ctx, GGML_TYPE_F32, W, H, C, video_frames);
 ggml_set_f32(x_t, 0.f);
 struct ggml_tensor* noise = ggml_new_tensor_4d(work_ctx, GGML_TYPE_F32, W, H, C, video_frames);
@@ -1928,10 +1928,10 @@ return NULL;
 }
 for (size_t i = 0; i < video_frames; i++) {
 auto img_i = ggml_view_3d(work_ctx, img, img->ne[0], img->ne[1], img->ne[2], img->nb[1], img->nb[2], img->nb[3] * i);
-result_images[i].width   = width;
-result_images[i].height  = height;
+result_images[i].width = width;
+result_images[i].height = height;
 result_images[i].channel = 3;
-result_images[i].data    = sd_tensor_to_image(img_i);
+result_images[i].data = sd_tensor_to_image(img_i);
 }
 ggml_free(work_ctx);
 int64_t t3 = ggml_time_ms();
@@ -1958,11 +1958,11 @@ const sd_image_t* control_cond,
 float control_strength,
 float style_ratio,
 bool normalize_input,
-int* skip_layers         = NULL,
+int* skip_layers = NULL,
 size_t skip_layers_count = 0,
-float slg_scale          = 0,
-float skip_layer_start   = 0.01,
-float skip_layer_end     = 0.2) {
+float slg_scale = 0,
+float skip_layer_start = 0.01,
+float skip_layer_end = 0.2) {
 std::vector<int> skip_layers_vec(skip_layers, skip_layers + skip_layers_count);
 LOG_DEBUG("edit %dx%d", width, height);
 if (sd_ctx == NULL) {
@@ -1977,7 +1977,7 @@ params.mem_size = static_cast<size_t>(30 * 1024 * 1024);
 params.mem_size += width * height * 3 * sizeof(float) * 3 * ref_images_count;
 params.mem_size *= batch_count;
 params.mem_buffer = NULL;
-params.no_alloc   = false;
+params.no_alloc = false;
 struct ggml_context* work_ctx = ggml_init(params);
 if (!work_ctx) {
 LOG_ERROR("ggml_init() failed");
@@ -1994,8 +1994,8 @@ C = 16;
 } else if (sd_version_is_flux(sd_ctx->sd->version)) {
 C = 16;
 }
-int W                    = width / 8;
-int H                    = height / 8;
+int W = width / 8;
+int H = height / 8;
 ggml_tensor* init_latent = ggml_new_tensor_4d(work_ctx, GGML_TYPE_F32, W, H, C, 1);
 if (sd_version_is_sd3(sd_ctx->sd->version)) {
 ggml_set_f32(init_latent, 0.0609f);
@@ -2012,7 +2012,7 @@ sd_image_to_tensor(ref_images[i].data, img);
 ggml_tensor* latent = NULL;
 if (!sd_ctx->sd->use_tiny_autoencoder) {
 ggml_tensor* moments = sd_ctx->sd->encode_first_stage(work_ctx, img);
-latent               = sd_ctx->sd->get_first_stage_encoding(work_ctx, moments);
+latent = sd_ctx->sd->get_first_stage_encoding(work_ctx, moments);
 } else {
 latent = sd_ctx->sd->encode_first_stage(work_ctx, img);
 }

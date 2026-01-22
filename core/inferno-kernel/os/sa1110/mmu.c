@@ -68,7 +68,7 @@ ttb[MmuL1x(va)] |= MmuWB | MmuIDC;
 for(i = 0; i < 64*MB; i += MB)
 ttb[MmuL1x(UCDRAMZERO+i)] = (PHYSMEM0+i) | 0xC10 | MmuL1section;
 for(va = KZERO; va < KZERO+64*MB; va += MB)
-ttb[MmuL1x(va|MINICACHED)] = va | 0xC10  | MmuIDC | MmuL1section;
+ttb[MmuL1x(va|MINICACHED)] = va | 0xC10 | MmuIDC | MmuL1section;
 ttb[MmuL1x(DCFADDR)] |= MmuIDC | MmuWB;
 ttb[MmuL1x(MCFADDR)] |= MmuIDC;
 for(i=0; i<32*MB; i+=MB)

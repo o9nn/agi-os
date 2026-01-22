@@ -7,9 +7,9 @@
 || !defined(_GTHREAD_USE_MUTEX_TIMEDLOCK))
 # include <unistd.h>
 # if defined(_POSIX_TIMEOUTS) && _POSIX_TIMEOUTS >= 0
-#  define _GTHREAD_USE_MUTEX_TIMEDLOCK 1
+# define _GTHREAD_USE_MUTEX_TIMEDLOCK 1
 # else
-#  define _GTHREAD_USE_MUTEX_TIMEDLOCK 0
+# define _GTHREAD_USE_MUTEX_TIMEDLOCK 0
 # endif
 #endif
 typedef pthread_t __gthread_t;
@@ -19,7 +19,7 @@ typedef pthread_mutex_t __gthread_mutex_t;
 typedef pthread_mutex_t __gthread_recursive_mutex_t;
 typedef pthread_cond_t __gthread_cond_t;
 typedef struct timespec __gthread_time_t;
-#define __GTHREAD_HAS_COND	1
+#define __GTHREAD_HAS_COND 1
 #define __GTHREAD_MUTEX_INIT PTHREAD_MUTEX_INITIALIZER
 #define __GTHREAD_MUTEX_INIT_FUNCTION __gthread_mutex_init_function
 #define __GTHREAD_ONCE_INIT PTHREAD_ONCE_INIT
@@ -46,7 +46,7 @@ typedef struct timespec __gthread_time_t;
 #endif
 #if __GXX_WEAK__ && _GLIBCXX_GTHREAD_USE_WEAK
 # ifndef __gthrw_pragma
-#  define __gthrw_pragma(pragma)
+# define __gthrw_pragma(pragma)
 # endif
 # define __gthrw2(name,name2,type) \
 static __typeof(type) name \
@@ -138,11 +138,11 @@ return __gthread_active_latest_value != 0;
 __gthrw2(__gthrw_(__pthread_key_create),
 __pthread_key_create,
 pthread_key_create)
-# define GTHR_ACTIVE_PROXY	__gthrw_(__pthread_key_create)
+# define GTHR_ACTIVE_PROXY __gthrw_(__pthread_key_create)
 #elif defined (__BIONIC__)
-# define GTHR_ACTIVE_PROXY	__gthrw_(pthread_create)
+# define GTHR_ACTIVE_PROXY __gthrw_(pthread_create)
 #else
-# define GTHR_ACTIVE_PROXY	__gthrw_(pthread_cancel)
+# define GTHR_ACTIVE_PROXY __gthrw_(pthread_cancel)
 #endif
 static inline int
 __gthread_active_p (void)

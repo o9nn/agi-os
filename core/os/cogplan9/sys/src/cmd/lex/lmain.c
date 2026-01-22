@@ -1,14 +1,14 @@
 # include "ldefs.h"
-Biobuf	fout;
-int	foutopen;
-int	errorf = 1;
-int	sect = DEFSECTION;
-int	prev = '\n';
-int	pres = '\n';
-int	peek = '\n';
-uchar	*pushptr = pushc;
-uchar	*slptr = slist;
-char	*cname = "/sys/lib/lex/ncform";
+Biobuf fout;
+int foutopen;
+int errorf = 1;
+int sect = DEFSECTION;
+int prev = '\n';
+int pres = '\n';
+int peek = '\n';
+uchar *pushptr = pushc;
+uchar *slptr = slist;
+char *cname = "/sys/lib/lex/ncform";
 int nine;
 int ccount = 1;
 int casecount = 1;
@@ -75,12 +75,12 @@ long rcount;
 int *verify, *advance, *stoff;
 int scon;
 uchar *psave;
-static void	free1core(void);
-static void	free2core(void);
-static void	free3core(void);
-static void	get1core(void);
-static void	get2core(void);
-static void	get3core(void);
+static void free1core(void);
+static void free2core(void);
+static void free3core(void);
+static void get1core(void);
+static void get2core(void);
+static void get3core(void);
 void
 main(int argc, char **argv)
 {
@@ -141,7 +141,7 @@ mkmatch();
 # ifdef DEBUG
 if(debug) pccl();
 # endif
-sect  = ENDSECTION;
+sect = ENDSECTION;
 if(tptr>0)cfoll(tptr-1);
 # ifdef DEBUG
 if(debug)pfoll();
@@ -168,7 +168,7 @@ Bterm(fother);
 Bterm(&fout);
 if(
 # ifdef DEBUG
-debug   ||
+debug ||
 # endif
 report == 1)statistics();
 if (fin)
@@ -178,7 +178,7 @@ exits(0);
 static void
 get1core(void)
 {
-ccptr =	ccl = myalloc(CCLSIZE,sizeof(*ccl));
+ccptr = ccl = myalloc(CCLSIZE,sizeof(*ccl));
 pcptr = pchar = myalloc(pchlen, sizeof(*pchar));
 def = myalloc(DEFSIZE,sizeof(*def));
 subs = myalloc(DEFSIZE,sizeof(*subs));

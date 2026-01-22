@@ -2,12 +2,12 @@
 # define HEADER_LHASH_H
 # include <openssl/e_os2.h>
 # ifndef OPENSSL_NO_FP_API
-#  include <stdio.h>
+# include <stdio.h>
 # endif
 # ifndef OPENSSL_NO_BIO
-#  include <openssl/bio.h>
+# include <openssl/bio.h>
 # endif
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 typedef struct lhash_node_st {
@@ -32,7 +32,7 @@ return name##_hash(a); }
 int name##_LHASH_COMP(const void *, const void *);
 # define IMPLEMENT_LHASH_COMP_FN(name, o_type) \
 int name##_LHASH_COMP(const void *arg1, const void *arg2) { \
-const o_type *a = arg1;             \
+const o_type *a = arg1; \
 const o_type *b = arg2; \
 return name##_cmp(a,b); }
 # define LHASH_COMP_FN(name) name##_LHASH_COMP
@@ -77,8 +77,8 @@ unsigned long num_retrieve_miss;
 unsigned long num_hash_comps;
 int error;
 } _LHASH;
-# define LH_LOAD_MULT    256
-# define lh_error(lh)    ((lh)->error)
+# define LH_LOAD_MULT 256
+# define lh_error(lh) ((lh)->error)
 _LHASH *lh_new(LHASH_HASH_FN_TYPE h, LHASH_COMP_FN_TYPE c);
 void lh_free(_LHASH *lh);
 void *lh_insert(_LHASH *lh, void *data);
@@ -113,7 +113,7 @@ CHECKED_PTR_OF(type, inst)))
 ((type *)lh_retrieve(CHECKED_LHASH_OF(type, lh), \
 CHECKED_PTR_OF(type, inst)))
 # define LHM_lh_delete(type, lh, inst) \
-((type *)lh_delete(CHECKED_LHASH_OF(type, lh),                        \
+((type *)lh_delete(CHECKED_LHASH_OF(type, lh), \
 CHECKED_PTR_OF(type, inst)))
 # define LHM_lh_doall(type, lh,fn) lh_doall(CHECKED_LHASH_OF(type, lh), fn)
 # define LHM_lh_doall_arg(type, lh, fn, arg_type, arg) \
@@ -129,7 +129,7 @@ lh_stats_bio(CHECKED_LHASH_OF(type, lh), out)
 # define LHM_lh_free(type, lh) lh_free(CHECKED_LHASH_OF(type, lh))
 DECLARE_LHASH_OF(OPENSSL_STRING);
 DECLARE_LHASH_OF(OPENSSL_CSTRING);
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif
 #endif

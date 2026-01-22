@@ -7,7 +7,7 @@ static char *copyright = "Copyright (c) 1989 Mark H. Colburn.\nAll rights reserv
 int open_archive(int mode)
 #else
 int open_archive(mode)
-int             mode;
+int mode;
 #endif
 {
 if (ar_file[0] == '-' && ar_file[1] == '\0') {
@@ -48,20 +48,20 @@ areof = 0;
 int openout(char *name, Stat *asb, Link *linkp, int ispass)
 #else
 int openout(name, asb, linkp, ispass)
-char           *name;
-Stat           *asb;
-Link           *linkp;
-int             ispass;
+char *name;
+Stat *asb;
+Link *linkp;
+int ispass;
 #endif
 {
-int             exists;
-int             fd;
-ushort          perm;
-ushort          operm = 0;
-Stat            osb;
-#ifdef	S_IFLNK
-int             ssize;
-char            sname[PATH_MAX + 1];
+int exists;
+int fd;
+ushort perm;
+ushort operm = 0;
+Stat osb;
+#ifdef S_IFLNK
+int ssize;
+char sname[PATH_MAX + 1];
 #endif
 if (exists = (LSTAT(name, &osb) == 0)) {
 if (ispass && osb.sb_ino == asb->sb_ino && osb.sb_dev == asb->sb_dev) {
@@ -167,7 +167,7 @@ warn(name, "Directories are not being created (-d option)");
 }
 return (0);
 #ifndef _POSIX_SOURCE
-#ifdef	S_IFIFO
+#ifdef S_IFIFO
 case S_IFIFO:
 fd = 0;
 if (exists) {
@@ -195,7 +195,7 @@ return(0);
 break;
 #endif
 #endif
-#ifdef	S_IFLNK
+#ifdef S_IFLNK
 case S_IFLNK:
 if (exists) {
 if ((ssize = readlink(name, sname, sizeof(sname))) < 0) {
@@ -272,17 +272,17 @@ return (fd);
 int openin(char *name, Stat *asb)
 #else
 int openin(name, asb)
-char           *name;
-Stat           *asb;
+char *name;
+Stat *asb;
 #endif
 {
-int             fd;
+int fd;
 switch (asb->sb_mode & S_IFMT) {
 case S_IFDIR:
 asb->sb_nlink = 1;
 asb->sb_size = 0;
 return (0);
-#ifdef	S_IFLNK
+#ifdef S_IFLNK
 case S_IFLNK:
 if ((asb->sb_size = readlink(name,
 asb->sb_link, sizeof(asb->sb_link) - 1)) < 0) {

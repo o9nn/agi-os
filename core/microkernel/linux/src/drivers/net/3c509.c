@@ -1,5 +1,5 @@
 static char *version = "3c509.c:1.16 2/3/98 becker@cesdis.gsfc.nasa.gov\n";
-#define TX_TIMEOUT  (400*HZ/1000)
+#define TX_TIMEOUT (400*HZ/1000)
 static int max_interrupt_work = 10;
 #include <linux/module.h>
 #include <linux/config.h>
@@ -27,8 +27,8 @@ int el3_debug = 2;
 #define EL3_DATA 0x00
 #define EL3_CMD 0x0e
 #define EL3_STATUS 0x0e
-#define	 EEPROM_READ 0x80
-#define EL3_IO_EXTENT	16
+#define EEPROM_READ 0x80
+#define EL3_IO_EXTENT 16
 #define EL3WINDOW(win_num) outw(SelectWindow + (win_num), ioaddr + EL3_CMD)
 enum c509cmd {
 TotalReset = 0<<11, SelectWindow = 1<<11, StartCoax = 2<<11,
@@ -44,15 +44,15 @@ TxAvailable = 0x0008, RxComplete = 0x0010, RxEarly = 0x0020,
 IntReq = 0x0040, StatsFull = 0x0080, CmdBusy = 0x1000, };
 enum RxFilter {
 RxStation = 1, RxMulticast = 2, RxBroadcast = 4, RxProm = 8 };
-#define TX_FIFO		0x00
-#define RX_FIFO		0x00
-#define RX_STATUS 	0x08
-#define TX_STATUS 	0x0B
-#define TX_FREE		0x0C
-#define WN0_IRQ		0x08
-#define WN4_MEDIA	0x0A
-#define  MEDIA_TP	0x00C0
-#define SKB_QUEUE_SIZE	64
+#define TX_FIFO 0x00
+#define RX_FIFO 0x00
+#define RX_STATUS 0x08
+#define TX_STATUS 0x0B
+#define TX_FREE 0x0C
+#define WN0_IRQ 0x08
+#define WN4_MEDIA 0x0A
+#define MEDIA_TP 0x00C0
+#define SKB_QUEUE_SIZE 64
 struct el3_private {
 struct enet_statistics stats;
 struct device *next_dev;
@@ -147,11 +147,11 @@ ioaddr = 0x200 + ((iobase & 0x1f) << 4);
 }
 irq = id_read_eeprom(9) >> 12;
 if (dev) {
-if (dev->irq > 1  &&  dev->irq < 16)
+if (dev->irq > 1 && dev->irq < 16)
 irq = dev->irq;
 if (dev->base_addr) {
 if (dev->mem_end == 0x3c509
-&& dev->base_addr >= 0x200  &&  dev->base_addr <= 0x3e0)
+&& dev->base_addr >= 0x200 && dev->base_addr <= 0x3e0)
 ioaddr = dev->base_addr & 0x3f0;
 else if (dev->base_addr != ioaddr)
 return -ENODEV;
@@ -311,7 +311,7 @@ printk("%s: Transmitter access conflict.\n", dev->name);
 else {
 outw(skb->len, ioaddr + TX_FIFO);
 outw(0x00, ioaddr + TX_FIFO);
-#ifdef  __powerpc__
+#ifdef __powerpc__
 outsl_unswapped(ioaddr + TX_FIFO, skb->data, (skb->len + 3) >> 2);
 #else
 outsl(ioaddr + TX_FIFO, skb->data, (skb->len + 3) >> 2);
@@ -326,7 +326,7 @@ dev_kfree_skb (skb, FREE_WRITE);
 {
 short tx_status;
 int i = 4;
-while (--i > 0	&&	(tx_status = inb(ioaddr + TX_STATUS)) > 0) {
+while (--i > 0 && (tx_status = inb(ioaddr + TX_STATUS)) > 0) {
 if (tx_status & 0x38) lp->stats.tx_aborted_errors++;
 if (tx_status & 0x30) outw(TxReset, ioaddr + EL3_CMD);
 if (tx_status & 0x3C) outw(TxEnable, ioaddr + EL3_CMD);
@@ -424,13 +424,13 @@ if (el3_debug > 5)
 printk("   Updating the statistics.\n");
 outw(StatsDisable, ioaddr + EL3_CMD);
 EL3WINDOW(6);
-lp->stats.tx_carrier_errors 	+= inb(ioaddr + 0);
-lp->stats.tx_heartbeat_errors	+= inb(ioaddr + 1);
+lp->stats.tx_carrier_errors += inb(ioaddr + 0);
+lp->stats.tx_heartbeat_errors += inb(ioaddr + 1);
 inb(ioaddr + 2);
-lp->stats.collisions			+= inb(ioaddr + 3);
-lp->stats.tx_window_errors		+= inb(ioaddr + 4);
-lp->stats.rx_fifo_errors		+= inb(ioaddr + 5);
-lp->stats.tx_packets			+= inb(ioaddr + 6);
+lp->stats.collisions += inb(ioaddr + 3);
+lp->stats.tx_window_errors += inb(ioaddr + 4);
+lp->stats.rx_fifo_errors += inb(ioaddr + 5);
+lp->stats.tx_packets += inb(ioaddr + 6);
 inb(ioaddr + 7);
 inb(ioaddr + 8);
 inw(ioaddr + 10);
@@ -454,12 +454,12 @@ short error = rx_status & 0x3800;
 outw(RxDiscard, ioaddr + EL3_CMD);
 lp->stats.rx_errors++;
 switch (error) {
-case 0x0000:		lp->stats.rx_over_errors++; break;
-case 0x0800:		lp->stats.rx_length_errors++; break;
-case 0x1000:		lp->stats.rx_frame_errors++; break;
-case 0x1800:		lp->stats.rx_length_errors++; break;
-case 0x2000:		lp->stats.rx_frame_errors++; break;
-case 0x2800:		lp->stats.rx_crc_errors++; break;
+case 0x0000: lp->stats.rx_over_errors++; break;
+case 0x0800: lp->stats.rx_length_errors++; break;
+case 0x1000: lp->stats.rx_frame_errors++; break;
+case 0x1800: lp->stats.rx_length_errors++; break;
+case 0x2000: lp->stats.rx_frame_errors++; break;
+case 0x2800: lp->stats.rx_crc_errors++; break;
 }
 } else {
 short pkt_len = rx_status & 0x7ff;
@@ -471,7 +471,7 @@ pkt_len, rx_status);
 if (skb != NULL) {
 skb->dev = dev;
 skb_reserve(skb, 2);
-#ifdef  __powerpc__
+#ifdef __powerpc__
 insl_unswapped(ioaddr+RX_FIFO, skb_put(skb,pkt_len),
 (pkt_len + 3) >> 2);
 #else

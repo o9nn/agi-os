@@ -1,7 +1,7 @@
 implement Bootpd;
 #
 # to do:
-#	DHCP
+# DHCP
 #
 include "sys.m";
 sys: Sys;
@@ -77,14 +77,14 @@ arg->setusage("bootpd [-dsqv] [-f file] [-x network]");
 progname = arg->progname();
 while((o := arg->opt()) != 0)
 case o {
-'d' =>	debug++;
-'s' =>		sniff = 1; debug = 255;
-'q' =>	verbose = 0;
-'v' =>	verbose = 1;
-'x' =>	net = arg->earg();
-'f' =>		ndbfile = arg->earg();
-'t' =>		testing = 1; debug = 1; verbose = 1;
-* =>		arg->usage();
+'d' => debug++;
+'s' => sniff = 1; debug = 255;
+'q' => verbose = 0;
+'v' => verbose = 1;
+'x' => net = arg->earg();
+'f' => ndbfile = arg->earg();
+'t' => testing = 1; debug = 1; verbose = 1;
+* => arg->usage();
 }
 args = arg->argv();
 if(args != nil)
@@ -169,7 +169,7 @@ sys->fprint(stderr, "bootpd: hardware type not ether; ignoring.\n");
 continue;
 }
 if((err = dbread()) != nil) {
-sys->fprint(stderr,  "bootpd: getreply: dbread failed: %s\n", err);
+sys->fprint(stderr, "bootpd: getreply: dbread failed: %s\n", err);
 continue;
 }
 rec := lookup(bootp);
@@ -253,18 +253,18 @@ return (ipa, nil);
 }
 Hostinfo: adt {
 hostname: string;
-ha: array of byte;	# hardware addr
-ip: IPaddr;		# client IP addr
-bootf: string;		# boot file path
-netmask: IPaddr;	# subnet mask
-ipgw: IPaddr;	# gateway IP addr
-fs: IPaddr;		# file server IP addr
-auth: IPaddr;	# authentication server IP addr
-text:	fn(inf: self ref Hostinfo): string;
+ha: array of byte; # hardware addr
+ip: IPaddr; # client IP addr
+bootf: string; # boot file path
+netmask: IPaddr; # subnet mask
+ipgw: IPaddr; # gateway IP addr
+fs: IPaddr; # file server IP addr
+auth: IPaddr; # authentication server IP addr
+text: fn(inf: self ref Hostinfo): string;
 };
 send(hdr: ref Udphdr, msg: array of byte)
 {
-replyaddr := net+"/udp!255.255.255.255!68";	# TO DO: gateway
+replyaddr := net+"/udp!255.255.255.255!68"; # TO DO: gateway
 if(testing)
 replyaddr = sys->sprint("udp!%s!%d", hdr.raddr.text(), hdr.rport);
 lport := "67";
@@ -378,7 +378,7 @@ return nil;
 for(; results != nil; results = tl results){
 (a, nattrs) := hd results;
 if(!a.eq(inf.ip))
-continue;	# different network
+continue; # different network
 for(; nattrs != nil; nattrs = tl nattrs){
 na := hd nattrs;
 case na.name {
@@ -526,24 +526,24 @@ ether->text(rec.ha), rec.ip.text(), rec.bootf, rec.netmask.masktext(), rec.ipgw.
 }
 Bootp: adt
 {
-op:	int;		# opcode [1]
-htype:	int;	# hardware type[1]
-hlen:	int;		# hardware address length [1]
-hops:	int;	# gateway hops [1]
-xid:	int;		# random number [4]
-secs:	int;		# seconds elapsed since client started booting [2]
-flags:	int;	# flags[2]
-ciaddr:	IPaddr;	# client ip address (client->server)[4]
-yiaddr:	IPaddr;	# your ip address (server->client)[4]
-siaddr:	IPaddr;	# server's ip address [4]
-giaddr:	IPaddr;	# gateway ip address [4]
-chaddr:	array of byte;	# client hardware (mac) address [16]
-sname:	string;	# server host name [64]
-file:	string;		# boot file name [128]
-vend:	array of byte;	# vendor-specific [128]
-unpack:	fn(a: array of byte): (ref Bootp, string);
-pack:	fn(bp: self ref Bootp): array of byte;
-text:	fn(bp: self ref Bootp): string;
+op: int; # opcode [1]
+htype: int; # hardware type[1]
+hlen: int; # hardware address length [1]
+hops: int; # gateway hops [1]
+xid: int; # random number [4]
+secs: int; # seconds elapsed since client started booting [2]
+flags: int; # flags[2]
+ciaddr: IPaddr; # client ip address (client->server)[4]
+yiaddr: IPaddr; # your ip address (server->client)[4]
+siaddr: IPaddr; # server's ip address [4]
+giaddr: IPaddr; # gateway ip address [4]
+chaddr: array of byte; # client hardware (mac) address [16]
+sname: string; # server host name [64]
+file: string; # boot file name [128]
+vend: array of byte; # vendor-specific [128]
+unpack: fn(a: array of byte): (ref Bootp, string);
+pack: fn(bp: self ref Bootp): array of byte;
+text: fn(bp: self ref Bootp): string;
 };
 Bootp.unpack(data: array of byte): (ref Bootp, string)
 {

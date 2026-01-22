@@ -1,19 +1,19 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#define csr8r(r)	(((ulong *)PHYSCONS)[r])
-#define csr8o(r, v)	(((ulong *)PHYSCONS)[r] = (v))
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#define csr8r(r) (((ulong *)PHYSCONS)[r])
+#define csr8o(r, v) (((ulong *)PHYSCONS)[r] = (v))
 enum {
-Thr		= 0,
-Lsr		= 5,
+Thr = 0,
+Lsr = 5,
 };
 enum {
-Thre		= 0x20,
+Thre = 0x20,
 };
-void	putc(int);
+void putc(int);
 void
 main(ulong aentry, ulong acode, ulong asize)
 {

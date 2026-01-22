@@ -12,8 +12,8 @@ mma_m16n8k16_row_col(Array<float, 4>& d, const Array<half, 8>& a, const Array<ha
 #if APHRODITE_ARCH_SM80
 uint32_t const* A = reinterpret_cast<uint32_t const*>(&a);
 uint32_t const* B = reinterpret_cast<uint32_t const*>(&b);
-float const*    C = reinterpret_cast<float const*>(&c);
-float*          D = reinterpret_cast<float*>(&d);
+float const* C = reinterpret_cast<float const*>(&c);
+float* D = reinterpret_cast<float*>(&d);
 asm("mma.sync.aligned.m16n8k16.row.col.f32.f16.f16.f32  {%0,%1,%2,%3}, "
 "{%4,%5,%6,%7}, {%8,%9}, {%10,%11,%12,%13};\n"
 : "=f"(D[0]), "=f"(D[1]), "=f"(D[2]), "=f"(D[3])
@@ -28,8 +28,8 @@ mma_m16n8k16_row_col(Array<float, 4>& d, const Array<__nv_bfloat16, 8>& a, const
 #if APHRODITE_ARCH_SM80
 uint32_t const* A = reinterpret_cast<uint32_t const*>(&a);
 uint32_t const* B = reinterpret_cast<uint32_t const*>(&b);
-float const*    C = reinterpret_cast<float const*>(&c);
-float*          D = reinterpret_cast<float*>(&d);
+float const* C = reinterpret_cast<float const*>(&c);
+float* D = reinterpret_cast<float*>(&d);
 asm("mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32  {%0,%1,%2,%3}, "
 "{%4,%5,%6,%7}, {%8,%9}, {%10,%11,%12,%13};\n"
 : "=f"(D[0]), "=f"(D[1]), "=f"(D[2]), "=f"(D[3])
@@ -40,9 +40,9 @@ assert(APHRODITE_ARCH_SM80);
 }
 __inline__ __device__ uint transpose_m8n8_b16_warp_shuffle(uint value, int lane_id)
 {
-int    src_lane = lane_id / 8 + lane_id % 4 * 8;
-uint   u0       = __shfl_sync(0xffffffff, value, src_lane);
-uint   u1       = __shfl_sync(0xffffffff, value, src_lane + 4);
+int src_lane = lane_id / 8 + lane_id % 4 * 8;
+uint u0 = __shfl_sync(0xffffffff, value, src_lane);
+uint u1 = __shfl_sync(0xffffffff, value, src_lane + 4);
 short2 r;
 if (lane_id % 8 < 4) {
 r.x = ((short2&)u0).x;
@@ -102,8 +102,8 @@ static constexpr int kWarpCountM = CTA_M / WARP_M;
 static constexpr int kWarpCountN = CTA_N / WARP_N;
 static constexpr int kWarpCountK = CTA_K / WARP_K;
 static constexpr int kWarpCountMN = kWarpCountM * kWarpCountN;
-static constexpr int kWarpCount   = kWarpCountMN * kWarpCountK;
-static constexpr int SLICES  = kWarpCountK;
+static constexpr int kWarpCount = kWarpCountMN * kWarpCountK;
+static constexpr int SLICES = kWarpCountK;
 static constexpr int SLICE_K = CTA_K / SLICES;
 static_assert(SLICE_K % WARP_K == 0, "infeasible sliced-k setting");
 using IteratorA = aphrodite::autoquant::IteratorA<kWarpCountMN, CTA_M, CTA_N, CTA_K, STAGES, SLICES>;
@@ -131,9 +131,9 @@ IteratorQ& iter_Q,
 IteratorB& iter_B,
 WarpIterA& warp_iter_A,
 WarpIterB& warp_iter_B,
-float*     accum,
-int        slice_id,
-int&       gemm_iter)
+float* accum,
+int slice_id,
+int& gemm_iter)
 {
 constexpr int ITER_M = WARP_M / OP_M;
 constexpr int ITER_N = WARP_N / OP_N;
@@ -201,9 +201,9 @@ if constexpr (SLICES == 1) {
 __syncthreads();
 }
 else {
-constexpr int      SLICE_GROUP = (SLICES + 7) / 8;
+constexpr int SLICE_GROUP = (SLICES + 7) / 8;
 constexpr uint32_t num_threads = kWarpCountMN * WARP_SIZE;
-const uint32_t     barrier_id  = slice_id / SLICE_GROUP + 1;
+const uint32_t barrier_id = slice_id / SLICE_GROUP + 1;
 asm volatile("bar.sync %0, %1;" : : "r"(barrier_id), "n"(num_threads));
 }
 }
@@ -228,15 +228,15 @@ partial_C[cta * CTA_N * CTA_M + i * CTA_M + threadIdx.x] = tb_frag_C[i];
 template<int Index>
 __device__ void store_accum(float* tb_frag_C,
 float* tb_smem_C,
-T_BC*  C,
-int    m,
-int    n,
-int    cta_m,
-int    cta_n,
-int    warp_id_m,
-int    warp_id_n,
-int    lane_id,
-int    slice_id)
+T_BC* C,
+int m,
+int n,
+int cta_m,
+int cta_n,
+int warp_id_m,
+int warp_id_n,
+int lane_id,
+int slice_id)
 {
 if (slice_id != 0) {
 return;
@@ -244,7 +244,7 @@ return;
 PRAGMA_UNROLL
 for (int i = 0; i < WARP_N / OP_N; ++i) {
 const float2* frag_C = (float2*)&tb_frag_C[i * WARP_M / OP_M * 4];
-const int     nn     = cta_n + warp_id_n * WARP_N + i * OP_N + lane_id / 4;
+const int nn = cta_n + warp_id_n * WARP_N + i * OP_N + lane_id / 4;
 PRAGMA_UNROLL
 for (int j = 0; j < WARP_M / OP_M; ++j) {
 PRAGMA_UNROLL
@@ -325,10 +325,10 @@ float tb_frag_C[(WARP_N / OP_N) * (WARP_M / OP_M) * 4];
 extern __shared__ uint8_t smem[];
 const int warp_id = threadIdx.x / WARP_SIZE;
 const int lane_id = threadIdx.x % WARP_SIZE;
-const int warp_id_m  = warp_id % kWarpCountM;
+const int warp_id_m = warp_id % kWarpCountM;
 const int warp_id_nk = warp_id / kWarpCountM;
-const int warp_id_n  = warp_id_nk % kWarpCountN;
-const int warp_id_k  = warp_id_nk / kWarpCountN;
+const int warp_id_n = warp_id_nk % kWarpCountN;
+const int warp_id_k = warp_id_nk / kWarpCountN;
 const int warp_id_mn = warp_id_n * kWarpCountM + warp_id_m;
 const int slice_id = warp_id_k;
 const int cta_k = slice_id * SLICE_K;

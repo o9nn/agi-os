@@ -14,17 +14,17 @@
 (Evaluation (Predicate "furry")    (Concept "cat") (CountTruthValue 1 0 4))
 (Evaluation (Predicate "domestic") (Concept "cat") (CountTruthValue 1 0 5))
 (define qdot-math
-	(Query
-		(TypedVariable (Variable "$prop") (Type 'Predicate))
-		(Present
-			(Evaluation (Variable "$prop") (Concept "dog"))
-			(Evaluation (Variable "$prop") (Concept "cat")))
-		(Put
-			(Lambda (Variable "$foo")
-				(Times
-					(CountOf (Evaluation (Variable "$foo") (Concept "dog")))
-					(CountOf (Evaluation (Variable "$foo") (Concept "cat")))))
-			(Variable "$prop"))))
+(Query
+(TypedVariable (Variable "$prop") (Type 'Predicate))
+(Present
+(Evaluation (Variable "$prop") (Concept "dog"))
+(Evaluation (Variable "$prop") (Concept "cat")))
+(Put
+(Lambda (Variable "$foo")
+(Times
+(CountOf (Evaluation (Variable "$foo") (Concept "dog")))
+(CountOf (Evaluation (Variable "$foo") (Concept "cat")))))
+(Variable "$prop"))))
 (define five-five (cog-execute! (Accumulate qdot-math)))
 (test-assert "final dot product" (equal? (FloatValue 55) five-five))
 (test-end tname)

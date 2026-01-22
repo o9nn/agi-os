@@ -1,7 +1,7 @@
 #ifndef _LINUX_EXT2_FS_SB
 #define _LINUX_EXT2_FS_SB
 #include <linux/ext2_fs.h>
-#define EXT2_MAX_GROUP_LOADED	8
+#define EXT2_MAX_GROUP_LOADED 8
 struct ext2_sb_info {
 unsigned long s_frag_size;
 unsigned long s_frags_per_block;
@@ -22,7 +22,7 @@ unsigned long s_inode_bitmap_number[EXT2_MAX_GROUP_LOADED];
 struct buffer_head * s_inode_bitmap[EXT2_MAX_GROUP_LOADED];
 unsigned long s_block_bitmap_number[EXT2_MAX_GROUP_LOADED];
 struct buffer_head * s_block_bitmap[EXT2_MAX_GROUP_LOADED];
-unsigned long  s_mount_opt;
+unsigned long s_mount_opt;
 unsigned short s_resuid;
 unsigned short s_resgid;
 unsigned short s_mount_state;

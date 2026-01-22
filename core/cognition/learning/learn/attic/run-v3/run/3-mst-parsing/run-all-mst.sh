@@ -1,42 +1,42 @@
 #! /bin/bash
 if [ -z $MASTER_CONFIG_FILE ]; then
-	echo "MASTER_CONFIG_FILE not defined!"
-	exit -1
+echo "MASTER_CONFIG_FILE not defined!"
+exit -1
 fi
 if [ -r $MASTER_CONFIG_FILE ]; then
-	. $MASTER_CONFIG_FILE
+. $MASTER_CONFIG_FILE
 else
-	echo "Cannot find master configuration file!"
-	exit -1
+echo "Cannot find master configuration file!"
+exit -1
 fi
 if ! [ -z ${PAIR_CONF_FILE} ] && [ -r ${PAIR_CONF_FILE} ]; then
-	. ${PAIR_CONF_FILE}
+. ${PAIR_CONF_FILE}
 else
-	echo "Cannot find pair-counting configuration file!"
-	exit -1
+echo "Cannot find pair-counting configuration file!"
+exit -1
 fi
 if ! [ -z ${MST_CONF_FILE} ] && [ -r ${MST_CONF_FILE} ]; then
-	. ${MST_CONF_FILE}
+. ${MST_CONF_FILE}
 else
-	echo "Cannot find MST configuration file!"
-	exit -1
+echo "Cannot find MST configuration file!"
+exit -1
 fi
 if [[ $STORAGE_NODE = "(RocksStorageNode"* ]]; then
-	if [ -d ${MST_DB} ]; then
-		echo "The MST database ${MST_DB} already exists; not copying!"
-		exit -1
-	fi
-	cp -pr ${PAIRS_DB} ${MST_DB}
+if [ -d ${MST_DB} ]; then
+echo "The MST database ${MST_DB} already exists; not copying!"
+exit -1
+fi
+cp -pr ${PAIRS_DB} ${MST_DB}
 elif [[ $STORAGE_NODE = "(PostgresStorageNode"* ]]; then
-	createdb -T ${PAIRS_DB} ${MST_DB}
-	retVal=$?
-	if [ $retVal -ne 0 ]; then
-		echo "Postgres database create failed; not continuing!"
-		exit -1
-	fi
+createdb -T ${PAIRS_DB} ${MST_DB}
+retVal=$?
+if [ $retVal -ne 0 ]; then
+echo "Postgres database create failed; not continuing!"
+exit -1
+fi
 else
-	echo "Unknown storage medium!"
-	exit -1
+echo "Unknown storage medium!"
+exit -1
 fi
 guile -l ${COMMON_DIR}/cogserver-mst.scm -c "(sleep 150000000)" &
 sleep 3

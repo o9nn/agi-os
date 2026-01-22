@@ -1,17 +1,17 @@
 #ifndef gxcomp_INCLUDED
-#  define gxcomp_INCLUDED
+# define gxcomp_INCLUDED
 #include "gscompt.h"
 #include "gsrefct.h"
 #include "gxbitfmt.h"
-#define GX_COMPOSITOR_ALPHA        0x01
-#define GX_COMPOSITOR_OVERPRINT    0x02
-#define GX_COMPOSITOR_PDF14_TRANS  0x03
+#define GX_COMPOSITOR_ALPHA 0x01
+#define GX_COMPOSITOR_OVERPRINT 0x02
+#define GX_COMPOSITOR_PDF14_TRANS 0x03
 #ifndef gs_imager_state_DEFINED
-#  define gs_imager_state_DEFINED
+# define gs_imager_state_DEFINED
 typedef struct gs_imager_state_s gs_imager_state;
 #endif
 #ifndef gx_device_DEFINED
-#  define gx_device_DEFINED
+# define gx_device_DEFINED
 typedef struct gx_device_s gx_device;
 #endif
 typedef struct gs_composite_type_procs_s {
@@ -46,7 +46,7 @@ composite_clist_write_update(gx_default_composite_clist_write_update);
 composite_clist_read_update(gx_default_composite_clist_read_update);
 #define gs_composite_common\
 const gs_composite_type_t *type;\
-gs_id id;		\
+gs_id id; \
 rc_header rc
 struct gs_composite_s {
 gs_composite_common;

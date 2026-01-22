@@ -133,14 +133,14 @@ mel.data[j * mel.n_len + i] = sum;
 }
 static bool log_mel_spectrogram(
 const float * samples,
-const int   n_samples,
-const int   ,
-const int   frame_size,
-const int   frame_step,
-const int   n_mel,
-const int   n_threads,
+const int n_samples,
+const int ,
+const int frame_size,
+const int frame_step,
+const int n_mel,
+const int n_threads,
 const whisper_filters & filters,
-const bool   debug,
+const bool debug,
 whisper_mel & mel) {
 WHISPER_ASSERT(frame_size == WHISPER_N_FFT && "Unsupported frame_size");
 const float * hann = global_cache.hann_window;
@@ -151,8 +151,8 @@ samples_padded.resize(n_samples + stage_1_pad + stage_2_pad * 2);
 std::copy(samples, samples + n_samples, samples_padded.begin() + stage_2_pad);
 std::fill(samples_padded.begin() + n_samples + stage_2_pad, samples_padded.begin() + n_samples + stage_1_pad + 2 * stage_2_pad, 0);
 std::reverse_copy(samples + 1, samples + 1 + stage_2_pad, samples_padded.begin());
-mel.n_mel     = n_mel;
-mel.n_len     = (samples_padded.size() - frame_size) / frame_step;
+mel.n_mel = n_mel;
+mel.n_len = (samples_padded.size() - frame_size) / frame_step;
 mel.n_len_org = 1 + (n_samples + stage_2_pad - frame_size) / frame_step;
 mel.data.resize(mel.n_mel * mel.n_len);
 {
@@ -223,8 +223,8 @@ if ((size_t)n_len < frames_per_chunk) {
 break;
 }
 whisper_mel out_chunk;
-out_chunk.n_len     = n_len;
-out_chunk.n_mel     = out_full.n_mel;
+out_chunk.n_len = n_len;
+out_chunk.n_mel = out_full.n_mel;
 out_chunk.n_len_org = out_full.n_mel;
 out_chunk.data.reserve(out_chunk.n_mel * out_chunk.n_len);
 for (int i = 0; i < out_full.n_mel; i++) {

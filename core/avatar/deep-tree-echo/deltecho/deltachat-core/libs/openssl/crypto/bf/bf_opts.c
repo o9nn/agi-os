@@ -29,32 +29,32 @@ OPENSSL_DECLARE_EXIT
 #include <openssl/blowfish.h>
 #define BF_DEFAULT_OPTIONS
 #undef BF_ENC
-#define BF_encrypt  BF_encrypt_normal
+#define BF_encrypt BF_encrypt_normal
 #undef HEADER_BF_LOCL_H
 #include "bf_enc.c"
 #define BF_PTR
 #undef BF_PTR2
 #undef BF_ENC
 #undef BF_encrypt
-#define BF_encrypt  BF_encrypt_ptr
+#define BF_encrypt BF_encrypt_ptr
 #undef HEADER_BF_LOCL_H
 #include "bf_enc.c"
 #undef BF_PTR
 #define BF_PTR2
 #undef BF_ENC
 #undef BF_encrypt
-#define BF_encrypt  BF_encrypt_ptr2
+#define BF_encrypt BF_encrypt_ptr2
 #undef HEADER_BF_LOCL_H
 #include "bf_enc.c"
 #ifndef HZ
 # ifndef CLK_TCK
-#  ifndef _BSD_CLK_TCK_
-#   define HZ   100.0
-#  else
-#   define HZ ((double)_BSD_CLK_TCK_)
-#  endif
+# ifndef _BSD_CLK_TCK_
+# define HZ 100.0
 # else
-#  define HZ ((double)CLK_TCK)
+# define HZ ((double)_BSD_CLK_TCK_)
+# endif
+# else
+# define HZ ((double)CLK_TCK)
 # endif
 #endif
 #define BUFSIZE ((long)1024)
@@ -62,9 +62,9 @@ long run = 0;
 double Time_F(int s);
 #ifdef SIGALRM
 # if defined(__STDC__) || defined(sgi)
-#  define SIGRETTYPE void
+# define SIGRETTYPE void
 # else
-#  define SIGRETTYPE int
+# define SIGRETTYPE int
 # endif
 SIGRETTYPE sig_done(int sig);
 SIGRETTYPE sig_done(int sig)
@@ -76,8 +76,8 @@ sig = sig;
 # endif
 }
 #endif
-#define START   0
-#define STOP    1
+#define START 0
+#define STOP 1
 double Time_F(int s)
 {
 double ret;

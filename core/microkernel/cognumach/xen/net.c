@@ -29,22 +29,22 @@
 #define ADDRESS_SIZE 6
 #define WINDOW __CONST_RING_SIZE(netif_rx, PAGE_SIZE)
 struct net_data {
-struct device	device;
-struct ifnet	ifnet;
-int		open_count;
-char		*backend;
-domid_t		domid;
-char		*vif;
-u_char		address[ADDRESS_SIZE];
-int		handle;
-ipc_port_t	port;
-netif_tx_front_ring_t	tx;
-netif_rx_front_ring_t	rx;
-void		*rx_buf[WINDOW];
-grant_ref_t	rx_buf_gnt[WINDOW];
-unsigned long	rx_buf_pfn[WINDOW];
-int		rx_copy;
-evtchn_port_t	evt;
+struct device device;
+struct ifnet ifnet;
+int open_count;
+char *backend;
+domid_t domid;
+char *vif;
+u_char address[ADDRESS_SIZE];
+int handle;
+ipc_port_t port;
+netif_tx_front_ring_t tx;
+netif_rx_front_ring_t rx;
+void *rx_buf[WINDOW];
+grant_ref_t rx_buf_gnt[WINDOW];
+unsigned long rx_buf_pfn[WINDOW];
+int rx_copy;
+evtchn_port_t evt;
 simple_lock_data_t lock;
 simple_lock_data_t pushlock;
 };
@@ -53,9 +53,9 @@ static struct net_data *vif_data;
 struct device_emulation_ops hyp_net_emulation_ops;
 static int hextoi(char *cp, int *nump)
 {
-int	number;
-char	*original;
-char	c;
+int number;
+char *original;
+char c;
 original = cp;
 for (number = 0, c = *cp | 0x20; (('0' <= c) && (c <= '9')) || (('a' <= c) && (c <= 'f')); c = *(++cp)) {
 number *= 16;
@@ -143,7 +143,7 @@ if (nd->rx_copy) {
 hyp_grant_takeback(nd->rx_buf_gnt[number]);
 } else {
 unsigned long mfn = hyp_grant_finish_transfer(nd->rx_buf_gnt[number]);
-#ifdef	MACH_PSEUDO_PHYS
+#ifdef MACH_PSEUDO_PHYS
 mfn_list[nd->rx_buf_pfn[number]] = mfn;
 #endif
 pmap_map_mfn(nd->rx_buf[number], mfn);
@@ -188,7 +188,7 @@ memcpy(ph + 1, data + sizeof (struct ether_header), len - sizeof(struct ether_he
 RING_FINAL_CHECK_FOR_RESPONSES(&nd->rx, more);
 enqueue_rx_buf(nd, number);
 ph->type = eh->ether_type;
-ph->length  = len - sizeof(struct ether_header) + sizeof (struct packet_header);
+ph->length = len - sizeof(struct ether_header) + sizeof (struct packet_header);
 net_kmsg(kmsg)->sent = FALSE;
 net_packet(&nd->ifnet, kmsg, ph->length, ethernet_priority(kmsg));
 continue;

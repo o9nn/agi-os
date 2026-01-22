@@ -6,65 +6,65 @@
 #include "io.h"
 enum
 {
-Data=	0,
-Iena=	1,
-Ircv=	(1<<0),
-Ixmt=	(1<<1),
+Data= 0,
+Iena= 1,
+Ircv= (1<<0),
+Ixmt= (1<<1),
 Irstat=(1<<2),
 Imstat=(1<<3),
-Istat=	2,
-Tctl=	2,
-Format=	3,
-Bits8=	(3<<0),
-Stop2=	(1<<2),
-Pena=	(1<<3),
-Peven=	(1<<4),
+Istat= 2,
+Tctl= 2,
+Format= 3,
+Bits8= (3<<0),
+Stop2= (1<<2),
+Pena= (1<<3),
+Peven= (1<<4),
 Pforce=(1<<5),
-Break=	(1<<6),
-Dra=	(1<<7),
-Mctl=	4,
-Dtr=	(1<<0),
-Rts=	(1<<1),
-Ri=	(1<<2),
-Inton=	(1<<3),
-Loop=	(1<<4),
-Lstat=	5,
+Break= (1<<6),
+Dra= (1<<7),
+Mctl= 4,
+Dtr= (1<<0),
+Rts= (1<<1),
+Ri= (1<<2),
+Inton= (1<<3),
+Loop= (1<<4),
+Lstat= 5,
 Inready=(1<<0),
 Oerror=(1<<1),
 Perror=(1<<2),
 Ferror=(1<<3),
 Outready=(1<<5),
-Mstat=	6,
-Ctsc=	(1<<0),
-Dsrc=	(1<<1),
-Rire=	(1<<2),
-Dcdc=	(1<<3),
-Cts=	(1<<4),
-Dsr=	(1<<5),
-Ring=	(1<<6),
-Dcd=	(1<<7),
+Mstat= 6,
+Ctsc= (1<<0),
+Dsrc= (1<<1),
+Rire= (1<<2),
+Dcdc= (1<<3),
+Cts= (1<<4),
+Dsr= (1<<5),
+Ring= (1<<6),
+Dcd= (1<<7),
 Scratch=7,
-Dlsb=	0,
-Dmsb=	1,
-Serial=	0,
-Modem=	1,
+Dlsb= 0,
+Dmsb= 1,
+Serial= 0,
+Modem= 1,
 };
-typedef struct Uart	Uart;
+typedef struct Uart Uart;
 struct Uart
 {
-int	port;
-uchar	sticky[8];
-uchar	txbusy;
-void	(*rx)(int);
-int	(*tx)(void);
-ulong	frame;
-ulong	overrun;
+int port;
+uchar sticky[8];
+uchar txbusy;
+void (*rx)(int);
+int (*tx)(void);
+ulong frame;
+ulong overrun;
 };
 static Uart com[2];
 static Uart* uart;
 #define UartFREQ 1843200
-#define uartwrreg(u,r,v)	outb((u)->port + r, (u)->sticky[r] | (v))
-#define uartrdreg(u,r)		inb((u)->port + r)
+#define uartwrreg(u,r,v) outb((u)->port + r, (u)->sticky[r] | (v))
+#define uartrdreg(u,r) inb((u)->port + r)
 static void
 uartsetbaud(Uart *up, int rate)
 {

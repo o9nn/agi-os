@@ -5,212 +5,212 @@
 #include "fns.h"
 #include "io.h"
 #include "etherif.h"
-#define DEBUG		(0)
-#define debug		if(DEBUG)print
+#define DEBUG (0)
+#define debug if(DEBUG)print
 enum {
-Nrde		= 32,
-Ntde		= 4,
+Nrde = 32,
+Ntde = 4,
 };
-#define Rbsz		ROUNDUP(sizeof(Etherpkt)+4, 4)
+#define Rbsz ROUNDUP(sizeof(Etherpkt)+4, 4)
 enum {
-Swr		= 0x00000001,
-Bar		= 0x00000002,
-Dsl		= 0x0000007C,
-Ble		= 0x00000080,
-Pbl		= 0x00003F00,
-Cal		= 0x0000C000,
-Cal8		= 0x00004000,
-Cal16		= 0x00008000,
-Cal32		= 0x0000C000,
-Tap		= 0x000E0000,
-Dbo		= 0x00100000,
-Rml		= 0x00200000,
-};
-enum {
-Ti		= 0x00000001,
-Tps		= 0x00000002,
-Tu		= 0x00000004,
-Tjt		= 0x00000008,
-Unf		= 0x00000020,
-Ri		= 0x00000040,
-Ru		= 0x00000080,
-Rps		= 0x00000100,
-Rwt		= 0x00000200,
-Eti		= 0x00000400,
-Gte		= 0x00000800,
-Fbe		= 0x00002000,
-Ais		= 0x00008000,
-Nis		= 0x00010000,
-Rs		= 0x000E0000,
-Ts		= 0x00700000,
-Eb		= 0x03800000,
+Swr = 0x00000001,
+Bar = 0x00000002,
+Dsl = 0x0000007C,
+Ble = 0x00000080,
+Pbl = 0x00003F00,
+Cal = 0x0000C000,
+Cal8 = 0x00004000,
+Cal16 = 0x00008000,
+Cal32 = 0x0000C000,
+Tap = 0x000E0000,
+Dbo = 0x00100000,
+Rml = 0x00200000,
 };
 enum {
-Hp		= 0x00000001,
-Sr		= 0x00000002,
-Ho		= 0x00000004,
-Pb		= 0x00000008,
-If		= 0x00000010,
-Sb		= 0x00000020,
-Pr		= 0x00000040,
-Pm		= 0x00000080,
-Fd		= 0x00000200,
-Om		= 0x00000C00,
-Fc		= 0x00001000,
-St		= 0x00002000,
-Tr		= 0x0000C000,
-Tr128		= 0x00000000,
-Tr256		= 0x00004000,
-Tr512		= 0x00008000,
-Tr1024		= 0x0000C000,
-Ca		= 0x00020000,
-Ps		= 0x00040000,
-Hbd		= 0x00080000,
-Imm		= 0x00100000,
-Sf		= 0x00200000,
-Ttm		= 0x00400000,
-Pcs		= 0x00800000,
-Scr		= 0x01000000,
-Mbo		= 0x02000000,
-Ra		= 0x40000000,
-Sc		= 0x80000000,
-TrMODE		= Tr512,
+Ti = 0x00000001,
+Tps = 0x00000002,
+Tu = 0x00000004,
+Tjt = 0x00000008,
+Unf = 0x00000020,
+Ri = 0x00000040,
+Ru = 0x00000080,
+Rps = 0x00000100,
+Rwt = 0x00000200,
+Eti = 0x00000400,
+Gte = 0x00000800,
+Fbe = 0x00002000,
+Ais = 0x00008000,
+Nis = 0x00010000,
+Rs = 0x000E0000,
+Ts = 0x00700000,
+Eb = 0x03800000,
 };
 enum {
-Scs		= 0x00000001,
-Sclk		= 0x00000002,
-Sdi		= 0x00000004,
-Sdo		= 0x00000008,
-Ss		= 0x00000800,
-Wr		= 0x00002000,
-Rd		= 0x00004000,
-Mdc		= 0x00010000,
-Mdo		= 0x00020000,
-Mii		= 0x00040000,
-Mdi		= 0x00080000,
+Hp = 0x00000001,
+Sr = 0x00000002,
+Ho = 0x00000004,
+Pb = 0x00000008,
+If = 0x00000010,
+Sb = 0x00000020,
+Pr = 0x00000040,
+Pm = 0x00000080,
+Fd = 0x00000200,
+Om = 0x00000C00,
+Fc = 0x00001000,
+St = 0x00002000,
+Tr = 0x0000C000,
+Tr128 = 0x00000000,
+Tr256 = 0x00004000,
+Tr512 = 0x00008000,
+Tr1024 = 0x0000C000,
+Ca = 0x00020000,
+Ps = 0x00040000,
+Hbd = 0x00080000,
+Imm = 0x00100000,
+Sf = 0x00200000,
+Ttm = 0x00400000,
+Pcs = 0x00800000,
+Scr = 0x01000000,
+Mbo = 0x02000000,
+Ra = 0x40000000,
+Sc = 0x80000000,
+TrMODE = Tr512,
 };
 enum {
-Gpc		= 0x00000100,
+Scs = 0x00000001,
+Sclk = 0x00000002,
+Sdi = 0x00000004,
+Sdo = 0x00000008,
+Ss = 0x00000800,
+Wr = 0x00002000,
+Rd = 0x00004000,
+Mdc = 0x00010000,
+Mdo = 0x00020000,
+Mii = 0x00040000,
+Mdi = 0x00080000,
+};
+enum {
+Gpc = 0x00000100,
 };
 typedef struct Des {
-int	status;
-int	control;
-ulong	addr;
-void*	bp;
+int status;
+int control;
+ulong addr;
+void* bp;
 } Des;
 enum {
-Of		= 0x00000001,
-Ce		= 0x00000002,
-Db		= 0x00000004,
-Re		= 0x00000008,
-Rw		= 0x00000010,
-Ft		= 0x00000020,
-Cs		= 0x00000040,
-Tl		= 0x00000080,
-Ls		= 0x00000100,
-Fs		= 0x00000200,
-Mf		= 0x00000400,
-Rf		= 0x00000800,
-Dt		= 0x00003000,
-De		= 0x00004000,
-Fl		= 0x3FFF0000,
-Ff		= 0x40000000,
-Def		= 0x00000001,
-Uf		= 0x00000002,
-Lf		= 0x00000004,
-Cc		= 0x00000078,
-Hf		= 0x00000080,
-Ec		= 0x00000100,
-Lc		= 0x00000200,
-Nc		= 0x00000400,
-Lo		= 0x00000800,
-To		= 0x00004000,
-Es		= 0x00008000,
-Own		= 0x80000000,
+Of = 0x00000001,
+Ce = 0x00000002,
+Db = 0x00000004,
+Re = 0x00000008,
+Rw = 0x00000010,
+Ft = 0x00000020,
+Cs = 0x00000040,
+Tl = 0x00000080,
+Ls = 0x00000100,
+Fs = 0x00000200,
+Mf = 0x00000400,
+Rf = 0x00000800,
+Dt = 0x00003000,
+De = 0x00004000,
+Fl = 0x3FFF0000,
+Ff = 0x40000000,
+Def = 0x00000001,
+Uf = 0x00000002,
+Lf = 0x00000004,
+Cc = 0x00000078,
+Hf = 0x00000080,
+Ec = 0x00000100,
+Lc = 0x00000200,
+Nc = 0x00000400,
+Lo = 0x00000800,
+To = 0x00004000,
+Es = 0x00008000,
+Own = 0x80000000,
 };
 enum {
-Bs1		= 0x000007FF,
-Bs2		= 0x003FF800,
-Ch		= 0x01000000,
-Er		= 0x02000000,
-Ft0		= 0x00400000,
-Dpd		= 0x00800000,
-Ac		= 0x04000000,
-Set		= 0x08000000,
-Ft1		= 0x10000000,
-Fseg		= 0x20000000,
-Lseg		= 0x40000000,
-Ic		= 0x80000000,
+Bs1 = 0x000007FF,
+Bs2 = 0x003FF800,
+Ch = 0x01000000,
+Er = 0x02000000,
+Ft0 = 0x00400000,
+Dpd = 0x00800000,
+Ac = 0x04000000,
+Set = 0x08000000,
+Ft1 = 0x10000000,
+Fseg = 0x20000000,
+Lseg = 0x40000000,
+Ic = 0x80000000,
 };
 enum {
-Bmcr		= 0,
-Bmsr		= 1,
-Phyidr1		= 2,
-Phyidr2		= 3,
-Anar		= 4,
-Anlpar		= 5,
-Aner		= 6,
+Bmcr = 0,
+Bmsr = 1,
+Phyidr1 = 2,
+Phyidr2 = 3,
+Anar = 4,
+Anlpar = 5,
+Aner = 6,
 };
 enum {
-Tulip0		= (0x0009<<16)|0x1011,
-Tulip1		= (0x0014<<16)|0x1011,
-Tulip3		= (0x0019<<16)|0x1011,
-Pnic		= (0x0002<<16)|0x11AD,
-Pnic2		= (0xC115<<16)|0x11AD,
+Tulip0 = (0x0009<<16)|0x1011,
+Tulip1 = (0x0014<<16)|0x1011,
+Tulip3 = (0x0019<<16)|0x1011,
+Pnic = (0x0002<<16)|0x11AD,
+Pnic2 = (0xC115<<16)|0x11AD,
 };
 typedef struct Ctlr Ctlr;
 typedef struct Ctlr {
-int	port;
-Pcidev*	pcidev;
-Ctlr*	next;
-int	active;
-int	id;
-uchar	*srom;
-int	sromsz;
-uchar*	sromea;
-uchar*	leaf;
-int	sct;
-int	k;
-uchar*	infoblock[16];
-int	sctk;
-int	curk;
-uchar*	type5block;
-int	phy[32];
-int	phyreset;
-int	curphyad;
-int	fdx;
-int	ttm;
-uchar	fd;
-int	medium;
-int	csr6;
-int	mask;
-int	mbps;
-Des*	rdr;
-int	nrdr;
-int	rdrx;
-Des*	tdr;
-int	ntdr;
-int	tdrh;
-int	tdri;
-int	ntq;
-Block*	setupbp;
-ulong	of;
-ulong	ce;
-ulong	cs;
-ulong	tl;
-ulong	rf;
-ulong	de;
-ulong	uf;
-ulong	ec;
-ulong	lc;
-ulong	nc;
-ulong	lo;
-ulong	to;
+int port;
+Pcidev* pcidev;
+Ctlr* next;
+int active;
+int id;
+uchar *srom;
+int sromsz;
+uchar* sromea;
+uchar* leaf;
+int sct;
+int k;
+uchar* infoblock[16];
+int sctk;
+int curk;
+uchar* type5block;
+int phy[32];
+int phyreset;
+int curphyad;
+int fdx;
+int ttm;
+uchar fd;
+int medium;
+int csr6;
+int mask;
+int mbps;
+Des* rdr;
+int nrdr;
+int rdrx;
+Des* tdr;
+int ntdr;
+int tdrh;
+int tdri;
+int ntq;
+Block* setupbp;
+ulong of;
+ulong ce;
+ulong cs;
+ulong tl;
+ulong rf;
+ulong de;
+ulong uf;
+ulong ec;
+ulong lc;
+ulong nc;
+ulong lo;
+ulong to;
 } Ctlr;
 static Ctlr* ctlrhead;
 static Ctlr* ctlrtail;
-#define csr32r(c, r)	(inl((c)->port+((r)*8)))
-#define csr32w(c, r, l)	(outl((c)->port+((r)*8), (ulong)(l)))
+#define csr32r(c, r) (inl((c)->port+((r)*8)))
+#define csr32w(c, r, l) (outl((c)->port+((r)*8), (ulong)(l)))
 static void
 attach(Ether* ether)
 {

@@ -1,10 +1,10 @@
 #include "sh.h"
 #include "ksh_stat.h"
 #include "ksh_limval.h"
-#define EB_READSW	0x01
-#define EB_GROW		0x02
-static int	shf_fillbuf	ARGS((struct shf *shf));
-static int	shf_emptybuf	ARGS((struct shf *shf, int flags));
+#define EB_READSW 0x01
+#define EB_GROW 0x02
+static int shf_fillbuf ARGS((struct shf *shf));
+static int shf_emptybuf ARGS((struct shf *shf, int flags));
 struct shf *
 shf_open(name, oflags, mode, sflags)
 const char *name;
@@ -253,7 +253,7 @@ ret = shf_flush(shf);
 shf->flags &= ~SHF_READING;
 }
 if (shf->flags & SHF_STRING) {
-unsigned char	*nbuf;
+unsigned char *nbuf;
 if (!(flags & EB_GROW) || !(shf->flags & SHF_DYNAMIC)
 || !(shf->flags & SHF_ALLOCB))
 return EOF;
@@ -644,37 +644,37 @@ va_end(args);
 return shf_sclose(&shf);
 }
 #undef FP
-#define BUF_SIZE	128
-#define FPBUF_SIZE	(DMAXEXP+16)
-#define POP_INT(f, s, a) (((f) & FL_LONG) ?				\
-va_arg((a), unsigned long)		\
-:						\
-(sizeof(int) < sizeof(long) ?		\
-((s) ?				\
-(long) va_arg((a), int)	\
-:				\
-va_arg((a), unsigned))	\
-:					\
+#define BUF_SIZE 128
+#define FPBUF_SIZE (DMAXEXP+16)
+#define POP_INT(f, s, a) (((f) & FL_LONG) ? \
+va_arg((a), unsigned long) \
+: \
+(sizeof(int) < sizeof(long) ? \
+((s) ? \
+(long) va_arg((a), int) \
+: \
+va_arg((a), unsigned)) \
+: \
 va_arg((a), unsigned)))
-#define ABIGNUM		32000
-#define LOG2_10		3.321928094887362347870319429
-#define	FL_HASH		0x001
-#define FL_PLUS		0x002
-#define FL_RIGHT	0x004
-#define FL_BLANK	0x008
-#define FL_SHORT	0x010
-#define FL_LONG		0x020
-#define FL_ZERO		0x040
-#define FL_DOT		0x080
-#define FL_UPPER	0x100
-#define FL_NUMBER	0x200
+#define ABIGNUM 32000
+#define LOG2_10 3.321928094887362347870319429
+#define FL_HASH 0x001
+#define FL_PLUS 0x002
+#define FL_RIGHT 0x004
+#define FL_BLANK 0x008
+#define FL_SHORT 0x010
+#define FL_LONG 0x020
+#define FL_ZERO 0x040
+#define FL_DOT 0x080
+#define FL_UPPER 0x100
+#define FL_NUMBER 0x200
 #ifdef FP
 #include <math.h>
 static double
 my_ceil(d)
-double	d;
+double d;
 {
-double		i;
+double i;
 return d - modf(d, &i) + (d < 0 ? -1 : 1);
 }
 #endif
@@ -684,20 +684,20 @@ struct shf *shf;
 const char *fmt;
 va_list args;
 {
-char		c, *s;
-int		UNINITIALIZED(tmp);
-int		field, precision;
-int		len;
-int		flags;
-unsigned long	lnum;
-char		numbuf[(BITS(long) + 2) / 3 + 1];
-int		nwritten = 0;
+char c, *s;
+int UNINITIALIZED(tmp);
+int field, precision;
+int len;
+int flags;
+unsigned long lnum;
+char numbuf[(BITS(long) + 2) / 3 + 1];
+int nwritten = 0;
 #ifdef FP
 extern char *ecvt();
-double		fpnum;
-int		expo, decpt;
-char		style;
-char		fpbuf[FPBUF_SIZE];
+double fpnum;
+int expo, decpt;
+char style;
+char fpbuf[FPBUF_SIZE];
 #endif
 if (!fmt)
 return 0;
@@ -891,7 +891,7 @@ if (precision > &fpbuf[sizeof(fpbuf)]
 precision =
 &fpbuf[sizeof(fpbuf)]
 - s - 7;
-for (tmp = decpt;  tmp++ < 0 &&
+for (tmp = decpt; tmp++ < 0 &&
 precision > 0 ; precision--)
 *s++ = '0';
 tmp = strlen(p);

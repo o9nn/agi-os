@@ -86,7 +86,7 @@ if (i > 0)
 str_append_c(output, '\t');
 if (values[i] == NULL)
 str_append_c(output, NULL_CHR);
-else  {
+else {
 if (values[i][0] == NULL_CHR)
 str_append_c(output, NULL_CHR);
 str_append_tabescaped(output, values[i]);

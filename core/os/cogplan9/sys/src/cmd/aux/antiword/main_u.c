@@ -5,11 +5,11 @@
 #include <io.h>
 #endif
 #if defined(__CYGWIN__) || defined(__CYGMING__)
-#  ifdef X_LOCALE
-#    include <X11/Xlocale.h>
-#  else
-#    include <locale.h>
-#  endif
+# ifdef X_LOCALE
+# include <X11/Xlocale.h>
+# else
+# include <locale.h>
+# endif
 #else
 #include <locale.h>
 #endif
@@ -21,7 +21,7 @@
 #endif
 #include "version.h"
 #include "antiword.h"
-static const char	*szTask = NULL;
+static const char *szTask = NULL;
 static void
 vUsage(void)
 {
@@ -56,10 +56,10 @@ fprintf(stderr, "\t\t-s Show hidden (by Word) text\n");
 static FILE *
 pStdin2TmpFile(long *lFilesize)
 {
-FILE	*pTmpFile;
-size_t	tSize;
-BOOL	bFailure;
-UCHAR	aucBytes[BUFSIZ];
+FILE *pTmpFile;
+size_t tSize;
+BOOL bFailure;
+UCHAR aucBytes[BUFSIZ];
 DBG_MSG("pStdin2TmpFile");
 fail(lFilesize == NULL);
 pTmpFile = tmpfile();
@@ -97,11 +97,11 @@ return pTmpFile;
 static BOOL
 bProcessFile(const char *szFilename)
 {
-FILE		*pFile;
-diagram_type	*pDiag;
-long		lFilesize;
-int		iWordVersion;
-BOOL		bResult;
+FILE *pFile;
+diagram_type *pDiag;
+long lFilesize;
+int iWordVersion;
+BOOL bResult;
 fail(szFilename == NULL || szFilename[0] == '\0');
 DBG_MSG(szFilename);
 if (szFilename[0] == '-' && szFilename[1] == '\0') {
@@ -158,10 +158,10 @@ return bResult;
 int
 main(int argc, char **argv)
 {
-options_type	tOptions;
-const char	*szWordfile;
-int	iFirst, iIndex, iGoodCount;
-BOOL	bUsage, bMultiple, bUseTXT, bUseXML;
+options_type tOptions;
+const char *szWordfile;
+int iFirst, iIndex, iGoodCount;
+BOOL bUsage, bMultiple, bUseTXT, bUseXML;
 if (argc <= 0) {
 return EXIT_FAILURE;
 }

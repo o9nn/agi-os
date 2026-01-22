@@ -1,5 +1,5 @@
 export interface Speaker {
-	name: string;
-	avatarUrl: string;
-	isHuman: boolean;
+name: string;
+avatarUrl: string;
+isHuman: boolean;
 }

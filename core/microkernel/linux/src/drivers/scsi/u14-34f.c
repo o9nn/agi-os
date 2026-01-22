@@ -71,28 +71,28 @@ struct proc_dir_entry proc_scsi_u14_34f = {
 PROC_SCSI_U14_34F, 6, "u14_34f",
 S_IFDIR | S_IRUGO | S_IXUGO, 2
 };
-#define PRODUCT_ID1  0x56
-#define PRODUCT_ID2  0x40
-#define ISA  0
+#define PRODUCT_ID1 0x56
+#define PRODUCT_ID2 0x40
+#define ISA 0
 #define ESA 1
-#define OP_HOST_ADAPTER   0x1
-#define OP_SCSI           0x2
-#define OP_RESET          0x4
-#define DTD_SCSI          0x0
-#define DTD_IN            0x1
-#define DTD_OUT           0x2
-#define DTD_NONE          0x3
-#define HA_CMD_INQUIRY    0x1
-#define HA_CMD_SELF_DIAG  0x2
-#define HA_CMD_READ_BUFF  0x3
+#define OP_HOST_ADAPTER 0x1
+#define OP_SCSI 0x2
+#define OP_RESET 0x4
+#define DTD_SCSI 0x0
+#define DTD_IN 0x1
+#define DTD_OUT 0x2
+#define DTD_NONE 0x3
+#define HA_CMD_INQUIRY 0x1
+#define HA_CMD_SELF_DIAG 0x2
+#define HA_CMD_READ_BUFF 0x3
 #define HA_CMD_WRITE_BUFF 0x4
-#undef  DEBUG_LINKED_COMMANDS
-#undef  DEBUG_DETECT
-#undef  DEBUG_INTERRUPT
-#undef  DEBUG_RESET
-#undef  DEBUG_GENERATE_ERRORS
-#undef  DEBUG_GENERATE_ABORTS
-#undef  DEBUG_GEOMETRY
+#undef DEBUG_LINKED_COMMANDS
+#undef DEBUG_DETECT
+#undef DEBUG_INTERRUPT
+#undef DEBUG_RESET
+#undef DEBUG_GENERATE_ERRORS
+#undef DEBUG_GENERATE_ABORTS
+#undef DEBUG_GEOMETRY
 #define MAX_ISA 3
 #define MAX_VESA 1
 #define MAX_EISA 0
@@ -111,37 +111,37 @@ S_IFDIR | S_IRUGO | S_IXUGO, 2
 #define FALSE 0
 #define TRUE 1
 #define FREE 0
-#define IN_USE   1
-#define LOCKED   2
+#define IN_USE 1
+#define LOCKED 2
 #define IN_RESET 3
-#define IGNORE   4
-#define READY    5
+#define IGNORE 4
+#define READY 5
 #define ABORTING 6
-#define NO_DMA  0xff
-#define MAXLOOP  10000
-#define REG_LCL_MASK      0
-#define REG_LCL_INTR      1
-#define REG_SYS_MASK      2
-#define REG_SYS_INTR      3
-#define REG_PRODUCT_ID1   4
-#define REG_PRODUCT_ID2   5
-#define REG_CONFIG1       6
-#define REG_CONFIG2       7
-#define REG_OGM           8
-#define REG_ICM           12
-#define REGION_SIZE       13
-#define BSY_ASSERTED      0x01
-#define IRQ_ASSERTED      0x01
-#define CMD_RESET         0xc0
-#define CMD_OGM_INTR      0x01
-#define CMD_CLR_INTR      0x01
-#define CMD_ENA_INTR      0x81
-#define ASOK              0x00
-#define ASST              0x91
+#define NO_DMA 0xff
+#define MAXLOOP 10000
+#define REG_LCL_MASK 0
+#define REG_LCL_INTR 1
+#define REG_SYS_MASK 2
+#define REG_SYS_INTR 3
+#define REG_PRODUCT_ID1 4
+#define REG_PRODUCT_ID2 5
+#define REG_CONFIG1 6
+#define REG_CONFIG2 7
+#define REG_OGM 8
+#define REG_ICM 12
+#define REGION_SIZE 13
+#define BSY_ASSERTED 0x01
+#define IRQ_ASSERTED 0x01
+#define CMD_RESET 0xc0
+#define CMD_OGM_INTR 0x01
+#define CMD_CLR_INTR 0x01
+#define CMD_ENA_INTR 0x81
+#define ASOK 0x00
+#define ASST 0x91
 #define ARRAY_SIZE(arr) (sizeof (arr) / sizeof (arr)[0])
 #define YESNO(a) ((a) ? 'y' : 'n')
 #define TLDEV(type) ((type) == TYPE_DISK || (type) == TYPE_ROM)
-#define PACKED          __attribute__((packed))
+#define PACKED __attribute__((packed))
 struct sg_list {
 unsigned int address;
 unsigned int num_bytes;
@@ -193,8 +193,8 @@ static const char *driver_name = "Ux4F";
 static char sha[MAX_BOARDS];
 static unsigned int num_boards = MAX_BOARDS;
 static unsigned long io_port[] __initdata = {
-SKIP,    SKIP,   SKIP,   SKIP,   SKIP,   SKIP,   SKIP,   SKIP,
-SKIP,    SKIP,
+SKIP, SKIP, SKIP, SKIP, SKIP, SKIP, SKIP, SKIP,
+SKIP, SKIP,
 0x330, 0x340, 0x230, 0x240, 0x210, 0x130, 0x140,
 0x0
 };
@@ -202,8 +202,8 @@ SKIP,    SKIP,
 #define BN(board) (HD(board)->board_name)
 #define SWAP_BYTE(x) ((unsigned long)( \
 (((unsigned long)(x) & 0x000000ffU) << 24) | \
-(((unsigned long)(x) & 0x0000ff00U) <<  8) | \
-(((unsigned long)(x) & 0x00ff0000U) >>  8) | \
+(((unsigned long)(x) & 0x0000ff00U) << 8) | \
+(((unsigned long)(x) & 0x00ff0000U) >> 8) | \
 (((unsigned long)(x) & 0xff000000U) >> 24)))
 #if defined(__BIG_ENDIAN)
 #define H2DEV(x) SWAP_BYTE(x)
@@ -441,7 +441,7 @@ sh[j]->sg_tablesize = MAX_SAFE_SGLIST;
 }
 }
 if (dma_channel == NO_DMA) sprintf(dma_name, "%s", "BMST");
-else                       sprintf(dma_name, "DMA %u", dma_channel);
+else sprintf(dma_name, "DMA %u", dma_channel);
 for (i = 0; i < sh[j]->can_queue; i++)
 if (! ((&HD(j)->cp[i])->sglist = kmalloc(
 sh[j]->sg_tablesize * sizeof(struct sg_list),
@@ -486,10 +486,10 @@ else if (c == 'y' || c == 'Y') val = TRUE;
 else val = (int) simple_strtoul(pc, NULL, 0);
 if (!strncmp(cur, "lc:", 3)) linked_comm = val;
 else if (!strncmp(cur, "of:", 3)) have_old_firmware = val;
-else if (!strncmp(cur, "mq:", 3))  max_queue_depth = val;
-else if (!strncmp(cur, "ls:", 3))  link_statistics = val;
-else if (!strncmp(cur, "eh:", 3))  use_new_eh_code = val;
-else if (!strncmp(cur, "et:", 3))  ext_tran = val;
+else if (!strncmp(cur, "mq:", 3)) max_queue_depth = val;
+else if (!strncmp(cur, "ls:", 3)) link_statistics = val;
+else if (!strncmp(cur, "eh:", 3)) use_new_eh_code = val;
+else if (!strncmp(cur, "et:", 3)) ext_tran = val;
 if ((cur = strchr(cur, ','))) ++cur;
 }
 return;
@@ -944,7 +944,7 @@ IRQ_LOCK
 HD(j)->in_reset = FALSE;
 do_trace = FALSE;
 if (arg_done) printk("%s: reset, exit, pid %ld done.\n", BN(j), SCarg->pid);
-else          printk("%s: reset, exit.\n", BN(j));
+else printk("%s: reset, exit.\n", BN(j));
 return SUCCESS;
 }
 int u14_34f_reset(Scsi_Cmnd *SCarg) {
@@ -1046,8 +1046,8 @@ batchcount++; readycount += n_ready, seeknosort += seek / 1024;
 if (input_only) inputcount++;
 if (overlap) { ovlcount++; seeksorted += iseek / 1024; }
 else seeksorted += (iseek + maxsec - minsec) / 1024;
-if (rev && !r)     {  revcount++; readysorted += n_ready; }
-if (!rev && !s)    { sortcount++; readysorted += n_ready; }
+if (rev && !r) { revcount++; readysorted += n_ready; }
+if (!rev && !s) { sortcount++; readysorted += n_ready; }
 }
 #if defined(DEBUG_LINKED_COMMANDS)
 if (link_statistics && (overlap || !(flushcount % link_statistics)))
@@ -1224,7 +1224,7 @@ SCpnt->result = status | spp->target_status;
 #if defined(DEBUG_INTERRUPT)
 if (SCpnt->result || do_trace)
 #else
-if ((spp->adapter_status != ASOK && HD(j)->iocount >  1000) ||
+if ((spp->adapter_status != ASOK && HD(j)->iocount > 1000) ||
 (spp->adapter_status != ASOK &&
 spp->adapter_status != ASST && HD(j)->iocount <= 1000) ||
 do_trace || msg_byte(spp->target_status))

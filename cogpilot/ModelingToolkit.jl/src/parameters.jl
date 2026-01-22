@@ -85,7 +85,7 @@ x -> begin
 # t = typeof(x)
 get!(set, typeof(x)) do
 # if t == Float64
-#     1
+# 1
 # else
 counter[] += 1
 # end
@@ -119,7 +119,7 @@ if ps isa StaticArray
 parrs = map(x -> SArray{Tuple{size(x)...}}(x), split_ps)
 split_ps = SArray{Tuple{size(parrs)...}}(parrs)
 end
-if length(split_ps) == 1  #Tuple not needed, only 1 type
+if length(split_ps) == 1 #Tuple not needed, only 1 type
 return split_ps[1], split_idxs
 else
 return (split_ps...,), split_idxs

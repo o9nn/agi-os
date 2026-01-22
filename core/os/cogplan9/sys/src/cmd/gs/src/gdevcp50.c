@@ -1,10 +1,10 @@
 #include "gdevprn.h"
 #define ppdev ((gx_device_printer *)pdev)
-#define X_PIXEL   474
-#define Y_PIXEL   800
+#define X_PIXEL 474
+#define Y_PIXEL 800
 #define FIRST_LINE 140
-#define LAST_LINE  933
-#define FIRST_COLUMN    180
+#define LAST_LINE 933
+#define FIRST_COLUMN 180
 #define X_DPI 154
 #define Y_DPI 187
 private dev_proc_print_page(cp50_print_page);
@@ -39,7 +39,7 @@ byte num_copies;
 int i,j;
 if ( out == 0 || r_plane == 0 || g_plane == 0 || b_plane == 0 ||
 t_plane == 0)
-{	if ( out )
+{ if ( out )
 gs_free(pdev->memory, (char *)out, line_size, 1,
 "cp50_print_page(out)");
 if (r_plane)
@@ -106,7 +106,7 @@ return 0;
 }
 int private
 cp50_output_page(gx_device *pdev, int num_copies, int flush)
-{   int code, outcode, closecode;
+{ int code, outcode, closecode;
 code = gdev_prn_open_printer(pdev, 1);
 if ( code < 0 ) return code;
 copies = num_copies;
@@ -133,7 +133,7 @@ gx_color_value_to_byte(blue);
 private int
 cp50_color_rgb(gx_device *dev, gx_color_index color,
 gx_color_value prgb[3])
-{   prgb[2] = gx_color_value_from_byte(color & 0xff);
+{ prgb[2] = gx_color_value_from_byte(color & 0xff);
 prgb[1] = gx_color_value_from_byte((color >> 8) & 0xff);
 prgb[0] = gx_color_value_from_byte(color >> 16);
 return 0;

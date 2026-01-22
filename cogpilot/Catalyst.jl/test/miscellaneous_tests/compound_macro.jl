@@ -3,7 +3,7 @@
 using Catalyst, Test
 # Sets the default `t` to use.
 t = default_t()
-### Test Macro Basic Functionality  ###
+### Test Macro Basic Functionality ###
 # Miscellaneous basic usage.
 let
 @species C(t) H(t) O(t)

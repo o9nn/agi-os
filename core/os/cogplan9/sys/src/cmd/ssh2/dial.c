@@ -6,42 +6,42 @@ typedef struct Dest Dest;
 typedef struct DS DS;
 enum
 {
-Maxstring	= 128,
-Maxpath		= 256,
-Maxcsreply	= 64*80,
-Maxconnms	= 2*60*1000,
+Maxstring = 128,
+Maxpath = 256,
+Maxcsreply = 64*80,
+Maxconnms = 2*60*1000,
 };
 struct DS {
-char	buf[Maxstring];
-char	*netdir;
-char	*proto;
-char	*rem;
-char	*local;
-char	*dir;
-int	*cfdp;
+char buf[Maxstring];
+char *netdir;
+char *proto;
+char *rem;
+char *local;
+char *dir;
+int *cfdp;
 };
 struct Conn {
-int	pid;
-int	dead;
-int	dfd;
-int	cfd;
-char	dir[NETPATHLEN+1];
-char	err[ERRMAX];
+int pid;
+int dead;
+int dfd;
+int cfd;
+char dir[NETPATHLEN+1];
+char err[ERRMAX];
 };
 struct Dest {
-Conn	*conn;
-Conn	*connend;
-int	nkid;
-long	oalarm;
-int	naddrs;
-QLock	winlck;
-int	winner;
-char	*nextaddr;
-char	addrlist[Maxcsreply];
+Conn *conn;
+Conn *connend;
+int nkid;
+long oalarm;
+int naddrs;
+QLock winlck;
+int winner;
+char *nextaddr;
+char addrlist[Maxcsreply];
 };
-static int	call(char*, char*, DS*, Dest*, Conn*);
-static int	csdial(DS*);
-static void	_dial_string_parse(char*, DS*);
+static int call(char*, char*, DS*, Dest*, Conn*);
+static int csdial(DS*);
+static void _dial_string_parse(char*, DS*);
 static int
 dialimpl(char *dest, char *local, char *dir, int *cfdp)
 {

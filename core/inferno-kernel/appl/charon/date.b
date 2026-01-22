@@ -34,9 +34,9 @@ tm.hour, tm.min, tm.sec);
 # return 0 for a failure
 #
 # need to handle three formats (we'll be a bit more tolerant)
-#  Sun, 06 Nov 1994 08:49:37 GMT  (rfc822+rfc1123; preferred)
-#  Sunday, 06-Nov-94 08:49:37 GMT (rfc850, obsoleted by rfc1036)
-#  Sun Nov  6 08:49:37 1994	  (ANSI C's asctime() format; GMT assumed)
+# Sun, 06 Nov 1994 08:49:37 GMT (rfc822+rfc1123; preferred)
+# Sunday, 06-Nov-94 08:49:37 GMT (rfc850, obsoleted by rfc1036)
+# Sun Nov 6 08:49:37 1994 (ANSI C's asctime() format; GMT assumed)
 date2sec(date : string): int
 {
 tm := daytime->string2tm(date);

@@ -48,7 +48,7 @@ pbs->data = bytes + offset;
 RELOC_CONST_STRING_VAR(*(gs_const_string *)pbs);
 }
 void
-gs_alloc_memset(void *ptr, int  fill, ulong lsize)
+gs_alloc_memset(void *ptr, int fill, ulong lsize)
 {
 ulong msize = lsize;
 char *p = ptr;

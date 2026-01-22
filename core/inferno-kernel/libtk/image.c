@@ -2,27 +2,27 @@
 #include <kernel.h>
 #include "draw.h"
 #include "tk.h"
-#define	O(t, e)		((long)(&((t*)0)->e))
-char*	tkimgbmcreate(TkTop*, char*, int, char**);
-char*	tkimgbmdel(TkImg*);
-void	tkimgbmfree(TkImg*);
+#define O(t, e) ((long)(&((t*)0)->e))
+char* tkimgbmcreate(TkTop*, char*, int, char**);
+char* tkimgbmdel(TkImg*);
+void tkimgbmfree(TkImg*);
 static Rectangle huger = { -1000000, -1000000, 1000000, 1000000 };
 typedef struct TkImgtype TkImgtype;
 struct TkImgtype
 {
-char*	type;
-char*	(*create)(TkTop*, char*, int, char**);
-char*	(*delete)(TkImg*);
-void	(*destroy)(TkImg*);
+char* type;
+char* (*create)(TkTop*, char*, int, char**);
+char* (*delete)(TkImg*);
+void (*destroy)(TkImg*);
 } tkimgopts[] =
 {
-"bitmap",	tkimgbmcreate,		tkimgbmdel, 	tkimgbmfree,
+"bitmap", tkimgbmcreate, tkimgbmdel, tkimgbmfree,
 nil,
 };
 typedef struct Imgargs Imgargs;
 struct Imgargs {
-Image*	fgimg;
-Image*	maskimg;
+Image* fgimg;
+Image* maskimg;
 };
 TkImg*
 tkname2img(TkTop *t, char *name)
@@ -36,8 +36,8 @@ return nil;
 TkOption
 bitopt[] =
 {
-"file",		OPTbmap,	O(Imgargs, fgimg),	nil,
-"maskfile",	OPTbmap,	O(Imgargs, maskimg),	nil,
+"file", OPTbmap, O(Imgargs, fgimg), nil,
+"maskfile", OPTbmap, O(Imgargs, maskimg), nil,
 nil
 };
 void

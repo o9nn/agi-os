@@ -1,5 +1,5 @@
 #ifndef gstrans_INCLUDED
-#  define gstrans_INCLUDED
+# define gstrans_INCLUDED
 #include "gstparam.h"
 #include "gxcomp.h"
 typedef enum {
@@ -23,13 +23,13 @@ PDF14_SET_BLEND_PARAMS
 "PDF14_END_TRANS_MASK   ",\
 "PDF14_SET_BLEND_PARAMS "\
 }
-#define PDF14_SET_BLEND_MODE    (1 << 0)
+#define PDF14_SET_BLEND_MODE (1 << 0)
 #define PDF14_SET_TEXT_KNOCKOUT (1 << 1)
-#define PDF14_SET_SHAPE_ALPHA   (1 << 2)
+#define PDF14_SET_SHAPE_ALPHA (1 << 2)
 #define PDF14_SET_OPACITY_ALPHA (1 << 3)
 #ifndef gs_function_DEFINED
 typedef struct gs_function_s gs_function_t;
-#  define gs_function_DEFINED
+# define gs_function_DEFINED
 #endif
 typedef struct gs_transparency_source_s {
 float alpha;
@@ -58,7 +58,7 @@ bool mask_is_image;
 typedef struct gs_pdf14trans_params_s gs_pdf14trans_params_t;
 typedef struct gs_pdf14trans_s {
 gs_composite_common;
-gs_pdf14trans_params_t  params;
+gs_pdf14trans_params_t params;
 } gs_pdf14trans_t;
 int gs_setblendmode(gs_state *, gs_blend_mode_t);
 gs_blend_mode_t gs_currentblendmode(const gs_state *);

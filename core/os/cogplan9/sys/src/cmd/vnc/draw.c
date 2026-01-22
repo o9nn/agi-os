@@ -1,21 +1,21 @@
 #include "vnc.h"
 #include "vncv.h"
 static struct {
-char	*name;
-int	num;
+char *name;
+int num;
 } enctab[] = {
-"copyrect",	EncCopyRect,
-"corre",	EncCorre,
-"hextile",	EncHextile,
-"raw",		EncRaw,
-"rre",		EncRre,
-"mousewarp",	EncMouseWarp,
+"copyrect", EncCopyRect,
+"corre", EncCorre,
+"hextile", EncHextile,
+"raw", EncRaw,
+"rre", EncRre,
+"mousewarp", EncMouseWarp,
 };
-static	uchar	*pixbuf;
-static	uchar	*linebuf;
-static	int	vpixb;
-static	int	pixb;
-static	void	(*pixcp)(uchar*, uchar*);
+static uchar *pixbuf;
+static uchar *linebuf;
+static int vpixb;
+static int pixb;
+static void (*pixcp)(uchar*, uchar*);
 static void
 vncrdcolor(Vnc *v, uchar *color)
 {

@@ -1,3 +1,3 @@
 module.exports = {
-  get_first_emoji: jest.fn(() => '😊'),
+get_first_emoji: jest.fn(() => '😊'),
 }

@@ -972,10 +972,10 @@ void *any;
 } values[STORE_ATTR_TYPE_NUM + 1];
 size_t value_sizes[STORE_ATTR_TYPE_NUM + 1];
 };
-#define ATTR_IS_SET(a,i)        ((i) > 0 && (i) < STORE_ATTR_TYPE_NUM \
+#define ATTR_IS_SET(a,i) ((i) > 0 && (i) < STORE_ATTR_TYPE_NUM \
 && ((a)->set[(i) / 8] & (1 << ((i) % 8))))
-#define SET_ATTRBIT(a,i)        ((a)->set[(i) / 8] |= (1 << ((i) % 8)))
-#define CLEAR_ATTRBIT(a,i)      ((a)->set[(i) / 8] &= ~(1 << ((i) % 8)))
+#define SET_ATTRBIT(a,i) ((a)->set[(i) / 8] |= (1 << ((i) % 8)))
+#define CLEAR_ATTRBIT(a,i) ((a)->set[(i) / 8] &= ~(1 << ((i) % 8)))
 STORE_ATTR_INFO *STORE_ATTR_INFO_new(void)
 {
 return (STORE_ATTR_INFO *)OPENSSL_malloc(sizeof(STORE_ATTR_INFO));

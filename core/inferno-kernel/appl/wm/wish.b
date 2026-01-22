@@ -5,28 +5,28 @@ include "draw.m";
 draw: Draw;
 include "tk.m";
 tk: Tk;
-include	"tkclient.m";
+include "tkclient.m";
 tkclient: Tkclient;
 include "bufio.m";
 bufmod : Bufio;
-Iobuf :	import bufmod;
+Iobuf : import bufmod;
 include "../lib/tcl.m";
 tcl : Tcl_Core;
 wish : module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 menubut : chan of string;
 keyboard,mypid : int;
 Wwsh : ref Tk->Toplevel;
 init(ctxt: ref Draw->Context, argv: list of string) {
-sys  = load Sys  Sys->PATH;
+sys = load Sys Sys->PATH;
 if (ctxt == nil) {
 sys->fprint(sys->fildes(2), "wish: no window context\n");
 raise "fail:bad context";
 }
 draw = load Draw Draw->PATH;
-tk   = load Tk   Tk->PATH;
+tk = load Tk Tk->PATH;
 tkclient= load Tkclient Tkclient->PATH;
 bufmod = load Bufio Bufio->PATH;
 if (tk==nil || tkclient==nil || bufmod==nil){
@@ -93,7 +93,7 @@ if (msg!=nil)
 sys->print("%s\n",msg);
 sys->print("%s ", new_inp);
 tcl->clear_error();
-rline := <-Tcl_Chan  =>
+rline := <-Tcl_Chan =>
 rline = tcl->prepass(rline);
 msg:= tcl->evalcmd(rline,0);
 if (msg!=nil)

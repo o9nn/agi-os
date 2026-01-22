@@ -17,48 +17,48 @@ RealModeBuf = 0x9000,
 };
 struct Vbe
 {
-int	rmfd;
-int	memfd;
-uchar	*mem;
-uchar	*isvalid;
-uchar	*buf;
-uchar	*modebuf;
+int rmfd;
+int memfd;
+uchar *mem;
+uchar *isvalid;
+uchar *buf;
+uchar *modebuf;
 };
 struct Vmode
 {
-char	name[32];
-char	chan[32];
-int	id;
-int	attr;
-int	bpl;
-int	dx, dy;
-int	depth;
-char	*model;
-int	r, g, b, x;
-int	ro, go, bo, xo;
-int	directcolor;
-ulong	paddr;
+char name[32];
+char chan[32];
+int id;
+int attr;
+int bpl;
+int dx, dy;
+int depth;
+char *model;
+int r, g, b, x;
+int ro, go, bo, xo;
+int directcolor;
+ulong paddr;
 };
 struct Edid {
-char		mfr[4];
-char		serialstr[16];
-char		name[16];
-ushort	product;
-ulong	serial;
-uchar	version;
-uchar	revision;
-uchar	mfrweek;
-int		mfryear;
-uchar 	dxcm;
-uchar	dycm;
-int		gamma;
-int		rrmin;
-int		rrmax;
-int		hrmin;
-int		hrmax;
-ulong	pclkmax;
-int		flags;
-Modelist	*modelist;
+char mfr[4];
+char serialstr[16];
+char name[16];
+ushort product;
+ulong serial;
+uchar version;
+uchar revision;
+uchar mfrweek;
+int mfryear;
+uchar dxcm;
+uchar dycm;
+int gamma;
+int rrmin;
+int rrmax;
+int hrmin;
+int hrmax;
+ulong pclkmax;
+int flags;
+Modelist *modelist;
 };
 struct Modelist
 {
@@ -448,7 +448,7 @@ return 0;
 m->xo = m->x = 0;
 d = 1 << (m->depth - 1);
 d |= d - 1;
-c  = ((1<<m->r)-1) << m->ro;
+c = ((1<<m->r)-1) << m->ro;
 c |= ((1<<m->g)-1) << m->go;
 c |= ((1<<m->b)-1) << m->bo;
 x = d ^ c;
@@ -775,7 +775,7 @@ p += 3;
 for(i=0, m=1<<23; i<nelem(estabtime); i++, m>>=1)
 if(estab & m)
 if(vesalookup(&mode, estabtime[i]) == 0)
-e->modelist = addmode(e->modelist,  mode);
+e->modelist = addmode(e->modelist, mode);
 assert(p == (uchar*)v+8+10+2+5+10+3);
 for(i=0; i<8; i++, p+=2)
 if(decodesti(&mode, p+2*i) == 0)

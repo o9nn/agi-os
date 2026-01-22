@@ -5,51 +5,51 @@
 #include "fns.h"
 #include "ureg.h"
 #include "../port/error.h"
-#include	"rdbg.h"
-#include	<kernel.h>
-#include	<interp.h>
-int	dbgstart;
-char	*dbgdata;
-char	*dbgctl;
-char	*dbgctlstart;
-char	*dbgctlstop;
-char	*dbgctlflush;
-static	uchar	Ereset[9] = { 'r', 'e', 's', 'e', 't' };
-static	uchar	Ecount[9] = { 'c', 'o', 'u', 'n', 't' };
-static	uchar	Eunk[9] = { 'u', 'n', 'k' };
-static	uchar	Einval[9] = { 'i', 'n', 'v', 'a', 'l' };
-static	uchar	Ebadpid[9] = {'p', 'i', 'd'};
-static	uchar	Eunsup[9] = { 'u', 'n', 's', 'u', 'p' };
-static	uchar	Enotstop[9] = { 'n', 'o', 't', 's', 't', 'o', 'p' };
-static	char	Erunning[] = "Not allowed while debugger is running";
-static	char	Enumarg[] = "Not enough args";
-static	char	Ebadcmd[] = "Unknown command";
-static	int	PROCREG;
-static	struct {
+#include "rdbg.h"
+#include <kernel.h>
+#include <interp.h>
+int dbgstart;
+char *dbgdata;
+char *dbgctl;
+char *dbgctlstart;
+char *dbgctlstop;
+char *dbgctlflush;
+static uchar Ereset[9] = { 'r', 'e', 's', 'e', 't' };
+static uchar Ecount[9] = { 'c', 'o', 'u', 'n', 't' };
+static uchar Eunk[9] = { 'u', 'n', 'k' };
+static uchar Einval[9] = { 'i', 'n', 'v', 'a', 'l' };
+static uchar Ebadpid[9] = {'p', 'i', 'd'};
+static uchar Eunsup[9] = { 'u', 'n', 's', 'u', 'p' };
+static uchar Enotstop[9] = { 'n', 'o', 't', 's', 't', 'o', 'p' };
+static char Erunning[] = "Not allowed while debugger is running";
+static char Enumarg[] = "Not enough args";
+static char Ebadcmd[] = "Unknown command";
+static int PROCREG;
+static struct {
 Rendez;
 Bkpt *b;
 } brk;
-static	Queue	*logq;
-int	dbgchat = 0;
+static Queue *logq;
+int dbgchat = 0;
 typedef struct Debugger Debugger;
 struct Debugger {
 RWlock;
-int	running;
-char	data[PRINTSIZE];
-char	ctl[PRINTSIZE];
-char	ctlstart[PRINTSIZE];
-char	ctlstop[PRINTSIZE];
-char	ctlflush[PRINTSIZE];
+int running;
+char data[PRINTSIZE];
+char ctl[PRINTSIZE];
+char ctlstart[PRINTSIZE];
+char ctlstop[PRINTSIZE];
+char ctlflush[PRINTSIZE];
 };
 static Debugger debugger = {
-.data=		"#t/eia0",
-.ctl=		"#t/eia0ctl",
-.ctlstart=	"b19200",
-.ctlstop=	"h",
-.ctlflush=	"f",
+.data= "#t/eia0",
+.ctl= "#t/eia0ctl",
+.ctlstart= "b19200",
+.ctlstop= "h",
+.ctlflush= "f",
 };
 enum {
-BkptStackSize=	256,
+BkptStackSize= 256,
 };
 typedef struct SkipArg SkipArg;
 struct SkipArg
@@ -57,8 +57,8 @@ struct SkipArg
 Bkpt *b;
 Proc *p;
 };
-Bkpt	*breakpoints;
-void	freecondlist(BkptCond *l);
+Bkpt *breakpoints;
+void freecondlist(BkptCond *l);
 static int
 getbreaks(ulong addr, Bkpt **a, int nb)
 {
@@ -288,20 +288,20 @@ dumpcmd(uchar cmd, uchar *min)
 char *s;
 int n;
 switch(cmd){
-case Terr:		s = "Terr"; break;
-case Tmget:		s = "Tmget"; break;
-case Tmput:		s = "Tmput"; break;
-case Tspid:		s = "Tspid"; break;
-case Tproc:		s = "Tproc"; break;
-case Tstatus:		s = "Tstatus"; break;
-case Trnote:		s = "Trnote"; break;
-case Tstartstop:	s = "Tstartstop"; break;
-case Twaitstop:		s = "Twaitstop"; break;
-case Tstart:		s = "Tstart"; break;
-case Tstop:		s = "Tstop"; break;
-case Tkill:		s = "Tkill"; break;
-case Tcondbreak:	s = "Tcondbreak"; break;
-default:		s = "<Unknown>"; break;
+case Terr: s = "Terr"; break;
+case Tmget: s = "Tmget"; break;
+case Tmput: s = "Tmput"; break;
+case Tspid: s = "Tspid"; break;
+case Tproc: s = "Tproc"; break;
+case Tstatus: s = "Tstatus"; break;
+case Trnote: s = "Trnote"; break;
+case Tstartstop: s = "Tstartstop"; break;
+case Twaitstop: s = "Twaitstop"; break;
+case Tstart: s = "Tstart"; break;
+case Tstop: s = "Tstop"; break;
+case Tkill: s = "Tkill"; break;
+case Tcondbreak: s = "Tcondbreak"; break;
+default: s = "<Unknown>"; break;
 }
 dbglog("%s: [%2.2ux]: ", s, cmd);
 for(n = 0; n < 9; n++)
@@ -609,9 +609,9 @@ Loglimit = 4096,
 };
 static Dirtab dbgdir[]=
 {
-".",		{Qdir, 0, QTDIR},	0,	0555,
-"dbgctl",	{Qdbgctl},	0,		0660,
-"dbglog",	{Qdbglog},	0,		0440,
+".", {Qdir, 0, QTDIR}, 0, 0555,
+"dbgctl", {Qdbgctl}, 0, 0660,
+"dbglog", {Qdbglog}, 0, 0440,
 };
 static void
 start_debugger(void)

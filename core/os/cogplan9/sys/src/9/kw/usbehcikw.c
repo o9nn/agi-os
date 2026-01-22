@@ -1,16 +1,16 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"../port/error.h"
-#include	"../port/usb.h"
-#include	"../port/portusbehci.h"
-#include	"usbehci.h"
-#define WINTARG(ctl)	(((ctl) >> 4) & 017)
-#define WINATTR(ctl)	(((ctl) >> 8) & 0377)
-#define WIN64KSIZE(ctl)	(((ctl) >> 16) + 1)
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "../port/error.h"
+#include "../port/usb.h"
+#include "../port/portusbehci.h"
+#include "usbehci.h"
+#define WINTARG(ctl) (((ctl) >> 4) & 017)
+#define WINATTR(ctl) (((ctl) >> 8) & 0377)
+#define WIN64KSIZE(ctl) (((ctl) >> 16) + 1)
 #define SIZETO64KSIZE(size) ((size) / (64*1024) - 1)
 enum {
 Debug = 0,
@@ -19,38 +19,38 @@ typedef struct Kwusb Kwusb;
 typedef struct Kwusbtt Kwusbtt;
 typedef struct Usbwin Usbwin;
 struct Kwusbtt {
-ulong	id;
-ulong	hwgeneral;
-ulong	hwhost;
-ulong	hwdevice;
-ulong	hwtxbuf;
-ulong	hwrxbuf;
-ulong	hwtttxbuf;
-ulong	hwttrxbuf;
+ulong id;
+ulong hwgeneral;
+ulong hwhost;
+ulong hwdevice;
+ulong hwtxbuf;
+ulong hwrxbuf;
+ulong hwtttxbuf;
+ulong hwttrxbuf;
 };
 struct Kwusb {
-ulong	bcs;
-uchar	_pad0[0x310-0x304];
-ulong	bic;
-ulong	bim;
-ulong	_pad1;
-ulong	bea;
+ulong bcs;
+uchar _pad0[0x310-0x304];
+ulong bic;
+ulong bim;
+ulong _pad1;
+ulong bea;
 struct Usbwin {
-ulong	ctl;
-ulong	base;
-ulong	_pad2[2];
+ulong ctl;
+ulong base;
+ulong _pad2[2];
 } win[4];
-ulong	phycfg;
-uchar	_pad3[0x400-0x364];
-ulong	pwrctl;
-uchar	_pad4[0x410-0x404];
-ulong	phypll;
-uchar	_pad5[0x420-0x414];
-ulong	phytxctl;
-uchar	_pad6[0x430-0x424];
-ulong	phyrxctl;
-uchar	_pad7[0x440-0x434];
-ulong	phyivref;
+ulong phycfg;
+uchar _pad3[0x400-0x364];
+ulong pwrctl;
+uchar _pad4[0x410-0x404];
+ulong phypll;
+uchar _pad5[0x420-0x414];
+ulong phytxctl;
+uchar _pad6[0x430-0x424];
+ulong phyrxctl;
+uchar _pad7[0x440-0x434];
+ulong phyivref;
 };
 static Ctlr* ctlrs[Nhcis];
 static void
@@ -209,7 +209,7 @@ ctlr = malloc(sizeof(Ctlr));
 if (ctlr == nil)
 panic("ehci: out of memory");
 ctlr->capio = (Ecapio *)(soc.ehci + 0x100);
-ctlr->opio  = (Eopio *) (soc.ehci + 0x140);
+ctlr->opio = (Eopio *) (soc.ehci + 0x140);
 dprint("usbehci: port %#p\n", ctlr->capio);
 for(i = 0; i < Nhcis; i++)
 if(ctlrs[i] == nil){

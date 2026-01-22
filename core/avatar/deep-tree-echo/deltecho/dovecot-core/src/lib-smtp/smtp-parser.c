@@ -282,7 +282,7 @@ if (value_r != NULL)
 str_append_c(value, *parser->cur);
 parser->cur++;
 }
-if (parser->cur >= parser->end)  {
+if (parser->cur >= parser->end) {
 parser->error = "Premature end of quoted string";
 return -1;
 }

@@ -29,8 +29,8 @@ break;
 }
 }
 #ifdef DEBUG
-const char *s1 =  &connector_string(c1)[d1->more->uc_start];
-const char *s2 =  &connector_string(c1)[d1->more->uc_start];
+const char *s1 = &connector_string(c1)[d1->more->uc_start];
+const char *s2 = &connector_string(c1)[d1->more->uc_start];
 do
 {
 assert(is_connector_name_char(*s1) == is_connector_name_char(*s2),

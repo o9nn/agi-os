@@ -1,127 +1,127 @@
-#define	VOLDESC	16
-typedef uchar		Byte2L[2];
-typedef uchar		Byte2M[2];
-typedef uchar		Byte4LM[4];
-typedef uchar		Byte4L[4];
-typedef uchar		Byte4M[4];
-typedef uchar		Byte8LM[8];
-typedef union Drec	Drec;
-typedef union Voldesc	Voldesc;
+#define VOLDESC 16
+typedef uchar Byte2L[2];
+typedef uchar Byte2M[2];
+typedef uchar Byte4LM[4];
+typedef uchar Byte4L[4];
+typedef uchar Byte4M[4];
+typedef uchar Byte8LM[8];
+typedef union Drec Drec;
+typedef union Voldesc Voldesc;
 enum {
-BootIso		= 0,
-PrimaryIso	= 1,
+BootIso = 0,
+PrimaryIso = 1,
 SupplementaryIso = 2,
-PartitionIso	= 3,
-TerminatorIso	= 255,
+PartitionIso = 3,
+TerminatorIso = 255,
 };
 enum {
-Cdsec	= 2048,
+Cdsec = 2048,
 Maxname = 256,
 };
 union Voldesc {
-uchar	byte[Cdsec];
+uchar byte[Cdsec];
 union {
 struct {
-uchar	type;
-uchar	stdid[5];
-uchar	version;
-uchar	unused;
-uchar	sysid[32];
-uchar	bootid[32];
-uchar	data[1977];
+uchar type;
+uchar stdid[5];
+uchar version;
+uchar unused;
+uchar sysid[32];
+uchar bootid[32];
+uchar data[1977];
 } boot;
 struct {
-uchar	type;
-uchar	stdid[5];
-uchar	version;
-uchar	flags;
-uchar	sysid[32];
-uchar	volid[32];
-Byte8LM	partloc;
-Byte8LM	size;
-uchar	escapes[32];
-Byte4LM	vsetsize;
-Byte4LM	vseqno;
-Byte4LM	blksize;
-Byte8LM	ptabsize;
-Byte4L	lptable;
-Byte4L	optlptable;
-Byte4M	mptable;
-Byte4M	optmptable;
-uchar	rootdir[34];
-uchar	volsetid[128];
-uchar	pubid[128];
-uchar	prepid[128];
-uchar	appid[128];
-uchar	copyright[37];
-uchar	abstract[37];
-uchar	bibliography[37];
-uchar	cdate[17];
-uchar	mdate[17];
-uchar	expdate[17];
-uchar	effdate[17];
-uchar	fsversion;
-uchar	unused3[1];
-uchar	appuse[512];
-uchar	unused4[653];
+uchar type;
+uchar stdid[5];
+uchar version;
+uchar flags;
+uchar sysid[32];
+uchar volid[32];
+Byte8LM partloc;
+Byte8LM size;
+uchar escapes[32];
+Byte4LM vsetsize;
+Byte4LM vseqno;
+Byte4LM blksize;
+Byte8LM ptabsize;
+Byte4L lptable;
+Byte4L optlptable;
+Byte4M mptable;
+Byte4M optmptable;
+uchar rootdir[34];
+uchar volsetid[128];
+uchar pubid[128];
+uchar prepid[128];
+uchar appid[128];
+uchar copyright[37];
+uchar abstract[37];
+uchar bibliography[37];
+uchar cdate[17];
+uchar mdate[17];
+uchar expdate[17];
+uchar effdate[17];
+uchar fsversion;
+uchar unused3[1];
+uchar appuse[512];
+uchar unused4[653];
 } desc;
 } z;
 union {
 struct {
-Byte8LM	number;
-uchar	type;
-uchar	stdid[5];
-uchar	version;
-uchar	flags;
-uchar	sysid[32];
-uchar	volid[32];
-Byte8LM	partloc;
-Byte8LM	size;
-uchar	escapes[32];
-Byte4LM	vsetsize;
-Byte4LM	vseqno;
-Byte4LM	blksize;
-uchar	quux[40];
-uchar	rootdir[34];
-uchar	volsetid[128];
-uchar	pubid[128];
-uchar	prepid[128];
-uchar	appid[128];
-uchar	copyright[32];
-uchar	abstract[32];
-uchar	cdate[16];
-uchar	mdate[16];
-uchar	expdate[16];
-uchar	effdate[16];
-uchar	fsversion;
+Byte8LM number;
+uchar type;
+uchar stdid[5];
+uchar version;
+uchar flags;
+uchar sysid[32];
+uchar volid[32];
+Byte8LM partloc;
+Byte8LM size;
+uchar escapes[32];
+Byte4LM vsetsize;
+Byte4LM vseqno;
+Byte4LM blksize;
+uchar quux[40];
+uchar rootdir[34];
+uchar volsetid[128];
+uchar pubid[128];
+uchar prepid[128];
+uchar appid[128];
+uchar copyright[32];
+uchar abstract[32];
+uchar cdate[16];
+uchar mdate[16];
+uchar expdate[16];
+uchar effdate[16];
+uchar fsversion;
 } desc;
 } r;
 };
 union Drec {
 struct {
-uchar	reclen;
-uchar	attrlen;
-Byte8LM	addr;
-Byte8LM	size;
-uchar	date[6];
-uchar	tzone;
-uchar	flags;
-uchar	unitsize;
-uchar	gapsize;
-Byte4LM	vseqno;
-uchar	namelen;
-uchar	name[1];
+uchar reclen;
+uchar attrlen;
+Byte8LM addr;
+Byte8LM size;
+uchar date[6];
+uchar tzone;
+uchar flags;
+uchar unitsize;
+uchar gapsize;
+Byte4LM vseqno;
+uchar namelen;
+uchar name[1];
 };
 struct {
-uchar	r_pad[24];
-uchar	r_flags;
+uchar r_pad[24];
+uchar r_flags;
 };
 };
 struct Isofile {
-short	fmt;
-short	blksize;
-vlong	offset;
-long	odelta;
-vlong	doffset;
-Drec	d;
+short fmt;
+short blksize;
+vlong offset;
+long odelta;
+vlong doffset;
+Drec d;
 };

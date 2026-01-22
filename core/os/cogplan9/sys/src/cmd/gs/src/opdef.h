@@ -1,5 +1,5 @@
 #ifndef opdef_INCLUDED
-#  define opdef_INCLUDED
+# define opdef_INCLUDED
 typedef struct {
 const char *oname;
 op_proc_t proc;

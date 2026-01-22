@@ -15,41 +15,41 @@ U: Url;
 Parsedurl: import U;
 J: Script;
 ctype: array of byte;
-whitespace :  con " \t\n\r";
-notwhitespace :  con "^ \t\n\r";
+whitespace : con " \t\n\r";
+notwhitespace : con "^ \t\n\r";
 # These tables must be sorted
 align_tab := array[] of { T->StringInt
-("baseline",	int Abaseline),
-("bottom",	int Abottom),
-("center",	int Acenter),
-("char",	int Achar),
-("justify",	int Ajustify),
-("left",	int Aleft),
-("middle",	int Amiddle),
-("right",	int Aright),
-("top",	int Atop),
+("baseline", int Abaseline),
+("bottom", int Abottom),
+("center", int Acenter),
+("char", int Achar),
+("justify", int Ajustify),
+("left", int Aleft),
+("middle", int Amiddle),
+("right", int Aright),
+("top", int Atop),
 };
 input_tab := array[] of { T->StringInt
-("button",		Fbutton),
-("checkbox",	Fcheckbox),
-("file",		Ffile),
-("hidden",		Fhidden),
-("image",		Fimage),
-("password",	Fpassword),
-("radio",		Fradio),
-("reset",		Freset),
-("submit",		Fsubmit),
-("text",		Ftext),
+("button", Fbutton),
+("checkbox", Fcheckbox),
+("file", Ffile),
+("hidden", Fhidden),
+("image", Fimage),
+("password", Fpassword),
+("radio", Fradio),
+("reset", Freset),
+("submit", Fsubmit),
+("text", Ftext),
 };
 clear_tab := array[] of { T->StringInt
-("all",	IFcleft|IFcright),
-("left",	IFcleft),
-("right",	IFcright),
+("all", IFcleft|IFcright),
+("left", IFcleft),
+("right", IFcright),
 };
 fscroll_tab := array[] of { T->StringInt
-("auto",	FRhscrollauto|FRvscrollauto),
-("no",	FRnoscroll),
-("yes",	FRhscroll|FRvscroll),
+("auto", FRhscrollauto|FRvscrollauto),
+("no", FRnoscroll),
+("yes", FRhscroll|FRvscroll),
 };
 # blockbrk[tag] is break info for a block level element, or one
 # of a few others that get the same treatment re ending open paragraphs
@@ -87,18 +87,18 @@ LX->Aonsubmit => AGEN, LX->Aonunload => AGEN,
 * => byte 0
 };
 # Some constants
-FRKIDMARGIN: con 6;	# default margin around kid frames
-IMGHSPACE: con 0;		# default hspace for images (0 matches IE, Netscape)
-IMGVSPACE: con 0;		# default vspace for images
-FLTIMGHSPACE: con 2;	# default hspace for float images
-TABSP: con 2;			# default cellspacing for tables
-TABPAD: con 2;		# default cell padding for tables
-LISTTAB: con 1;		# number of tabs to indent lists
-BQTAB: con 1;			# number of tabs to indent blockquotes
-HRSZ: con 2;			# thickness of horizontal rules
-SUBOFF: con 4;			# vertical offset for subscripts
-SUPOFF: con 6;			# vertical offset for superscripts
-NBSP: con ' ';			# non-breaking space character
+FRKIDMARGIN: con 6; # default margin around kid frames
+IMGHSPACE: con 0; # default hspace for images (0 matches IE, Netscape)
+IMGVSPACE: con 0; # default vspace for images
+FLTIMGHSPACE: con 2; # default hspace for float images
+TABSP: con 2; # default cellspacing for tables
+TABPAD: con 2; # default cell padding for tables
+LISTTAB: con 1; # number of tabs to indent lists
+BQTAB: con 1; # number of tabs to indent blockquotes
+HRSZ: con 2; # thickness of horizontal rules
+SUBOFF: con 4; # vertical offset for subscripts
+SUPOFF: con 6; # vertical offset for superscripts
+NBSP: con ' '; # non-breaking space character
 dbg := 0;
 warn := 0;
 doscripts := 0;
@@ -150,8 +150,8 @@ return ref ItemSource(ts, mtype, di, f, psstk, 0, 0, 0, 0, nil, nil, nil, nil, n
 ItemSource.getitems(is: self ref ItemSource) : ref Item
 {
 psstk := is.psstk;
-ps := hd psstk;		# ps is always same as hd psstk
-curtab: ref Table = nil;	# curtab is always same as hd is.tabstk
+ps := hd psstk; # ps is always same as hd psstk
+curtab: ref Table = nil; # curtab is always same as hd is.tabstk
 if(is.tabstk != nil)
 curtab = hd is.tabstk;
 toks := is.toks;
@@ -235,12 +235,12 @@ addtext(ps, s);
 else case tag {
 # Some abbrevs used in following DTD comments
 # %text = #PCDATA
-#		| TT | I | B | U | STRIKE | BIG | SMALL | SUB | SUP
-#		| EM | STRONG | DFN | CODE | SAMP | KBD | VAR | CITE
-#		| A | IMG | APPLET | FONT | BASEFONT | BR | SCRIPT | MAP
-#		| INPUT | SELECT | TEXTAREA
+# | TT | I | B | U | STRIKE | BIG | SMALL | SUB | SUP
+# | EM | STRONG | DFN | CODE | SAMP | KBD | VAR | CITE
+# | A | IMG | APPLET | FONT | BASEFONT | BR | SCRIPT | MAP
+# | INPUT | SELECT | TEXTAREA
 # %block = P | UL | OL | DIR | MENU | DL | PRE | DL | DIV | CENTER
-#		| BLOCKQUOTE | FORM | ISINDEX | HR | TABLE
+# | BLOCKQUOTE | FORM | ISINDEX | HR | TABLE
 # %flow = (%text | %block)*
 # %body.content = (%heading | %text | %block | ADDRESS)*
 # <!ELEMENT A - - (%text) -(A)>
@@ -276,7 +276,7 @@ if(name != nil) {
 # add a null item to be destination
 brkstate := ps.curstate & IFbrk;
 additem(ps, Item.newspacer(ISPnull, 0), tok);
-ps.curstate |= brkstate;	# not quite right
+ps.curstate |= brkstate; # not quite right
 di.dests = ref DestAnchor(++is.nanchors, name, ps.lastit) :: di.dests;
 }
 LX->Ta+RBRA =>
@@ -324,7 +324,7 @@ sz += Large;
 else
 sz += Small;
 pushfontsize(ps, sz);
-LX->Tbig+RBRA or  LX->Tsmall+RBRA =>
+LX->Tbig+RBRA or LX->Tsmall+RBRA =>
 popfontsize(ps);
 # <!ELEMENT BLOCKQUOTE - - %body.content>
 LX->Tblockquote =>
@@ -400,7 +400,7 @@ al = atabbval(tok, LX->Aalign, align_tab, ps.curjust);
 pushjust(ps, al);
 LX->Tcenter+RBRA or LX->Tdiv+RBRA =>
 popjust(ps);
-# <!ELEMENT DD - O  %flow >
+# <!ELEMENT DD - O %flow >
 LX->Tdd =>
 if(ps.hangstk == nil) {
 if(warn)
@@ -607,7 +607,7 @@ break;
 tokslen = 0;
 }
 # <!ELEMENT H1 - - (%text;)*>, etc.
-LX->Th1 or  LX->Th2 or LX->Th3
+LX->Th1 or LX->Th2 or LX->Th3
 or LX->Th4 or LX->Th5 or LX->Th6 =>
 # don't want extra space if this is first addition
 # to this item list (BUG: problem if first of bufferful)
@@ -651,11 +651,11 @@ nosh := aboolval(tok, LX->Anoshade);
 additem(ps, Item.newrule(al, sz, nosh, wd), tok);
 addbrk(ps, 0, 0);
 # <!ELEMENT (I|CITE|DFN|EM|VAR) - - (%text)*>
-LX->Ti  or LX->Tcite or LX->Tdfn
+LX->Ti or LX->Tcite or LX->Tdfn
 or LX->Tem or LX->Tvar or LX->Taddress =>
 pushfontstyle(ps, FntI);
 # <!ELEMENT IMG - O EMPTY>
-LX->Timage or		# common html error supported by other browsers
+LX->Timage or # common html error supported by other browsers
 LX->Timg =>
 tok.tag = LX->Timg;
 map : ref Map = nil;
@@ -730,8 +730,8 @@ sys->print("<INPUT> not inside <FORM>\n");
 continue;
 }
 field := Formfield.new(atabval(tok, LX->Atype, input_tab, Ftext),
-++is.curform.nfields,	# fieldid
-is.curform,	# form
+++is.curform.nfields, # fieldid
+is.curform, # form
 aval(tok, LX->Aname),
 aval(tok, LX->Avalue),
 aintval(tok, LX->Asize, 0),
@@ -746,7 +746,7 @@ Fcheckbox =>
 if(field.name == "") {
 if(warn)
 sys->print("warning: checkbox form field missing name\n");
-#						continue;
+# continue;
 }
 if(field.value == "")
 field.value = "on";
@@ -754,7 +754,7 @@ Fradio =>
 if(field.name == "" || field.value == "") {
 if(warn)
 sys->print("warning: radio form field missing name or value\n");
-#						continue;
+# continue;
 }
 Fsubmit =>
 if(field.value == "")
@@ -766,7 +766,7 @@ src := aurlval(tok, LX->Asrc, nil, di.base);
 if(src == nil) {
 if(warn)
 sys->print("warning: image form field missing src\n");
-#						continue;
+# continue;
 } else {
 # width and height attrs aren't specified in HTML 3.2,
 # but some people provide them and they help avoid
@@ -803,7 +803,7 @@ target := astrval(tok, LX->Atarget, di.target);
 additem(ps, textit(ps, prompt), tok);
 frm := Form.new(++is.nforms, "", di.base, target, CU->HGet, nil);
 ff := Formfield.new(Ftext, 1, frm, "_ISINDEX_", "", 50, 1000);
-frm.fields =  ff :: nil;
+frm.fields = ff :: nil;
 frm.nfields = 1;
 di.forms = frm :: di.forms;
 additem(ps, Item.newformfield(ff), tok);
@@ -960,7 +960,7 @@ script := "";
 scripttoki := toki;
 (script, toki) = getpcdata(toks, toki);
 # check language version
-lang :=  astrval(tok, LX->Alanguage, "javascript");
+lang := astrval(tok, LX->Alanguage, "javascript");
 lang = S->tolower(lang);
 lang = trim_white(lang);
 # should give preference to type
@@ -1031,12 +1031,12 @@ sys->print("<SELECT> not inside <FORM>\n");
 continue;
 }
 field := Formfield.new(Fselect,
-++is.curform.nfields,	# fieldid
-is.curform,	# form
+++is.curform.nfields, # fieldid
+is.curform, # form
 aval(tok, LX->Aname),
-"", 			# value
+"", # value
 aintval(tok, LX->Asize, 1),
-0);			# maxlength
+0); # maxlength
 if(aboolval(tok, LX->Amultiple))
 field.flags = FFmultiple;
 is.curform.fields = field :: is.curform.fields;
@@ -1136,13 +1136,13 @@ curtab.background = Background(nil, color(aval(tok, LX->Abgcolor), -1));
 curtab.tabletok = tok;
 continue;
 }
-tab := Table.new(++is.ntables,	# tableid
-makealign(tok),	# align
+tab := Table.new(++is.ntables, # tableid
+makealign(tok), # align
 makedimen(tok, LX->Awidth),
 aflagval(tok, LX->Aborder),
 aintval(tok, LX->Acellspacing, TABSP),
 aintval(tok, LX->Acellpadding, TABPAD),
-#					Background(nil, color(aval(tok, LX->Abgcolor), ps.curbg.color)),
+# Background(nil, color(aval(tok, LX->Abgcolor), ps.curbg.color)),
 Background(nil, color(aval(tok, LX->Abgcolor), -1)),
 tok);
 is.tabstk = tab :: is.tabstk;
@@ -1299,18 +1299,18 @@ ft := Ftextarea;
 if (ncols == 0 || nrows == 0)
 ft = Fhidden;
 field := Formfield.new(ft,
-++is.curform.nfields,	# fieldid
-is.curform,	# form
+++is.curform.nfields, # fieldid
+is.curform, # form
 aval(tok, LX->Aname),
-"",				# value
-0, 0);				# size, maxlength
+"", # value
+0, 0); # size, maxlength
 field.rows = nrows;
 field.cols = ncols;
 is.curform.fields = field :: is.curform.fields;
 (field.value, toki) = getpcdata(toks, toki);
 if(warn && toki < tokslen-1 && toks[toki+1].tag != LX->Ttextarea+RBRA)
 sys->print("warning: <TEXTAREA> data ended by %s\n", toks[toki+1].tostring());
-ffit :=  Item.newformfield(field);
+ffit := Item.newformfield(field);
 additem(ps, ffit, tok);
 if(ffit.genattr != nil) {
 field.events = ffit.genattr.events;
@@ -1359,9 +1359,9 @@ sys->print("warning: empty row\n");
 curtab.currows = tl curtab.currows;
 }
 else
-tr.flags = byte 0;		# done parsing
+tr.flags = byte 0; # done parsing
 # <!ELEMENT (TT|CODE|KBD|SAMP) - - (%text)*>
-LX->Ttt or LX->Tcode or LX->Tkbd	or LX->Tsamp =>
+LX->Ttt or LX->Tcode or LX->Tkbd or LX->Tsamp =>
 pushfontstyle(ps, FntT);
 # <!ELEMENT (XMP|LISTING) - - %literal >
 # additional support exists in LX to ignore character escapes etc.
@@ -1535,7 +1535,7 @@ ans = ans + tok.text;
 else
 break;
 }
-return (trim_white(ans),  toki-1);
+return (trim_white(ans), toki-1);
 }
 optiontext(str : string) : string
 {
@@ -1572,17 +1572,17 @@ return (hd psstk, psstk);
 Pstate.new() : ref Pstate
 {
 ps := ref Pstate (
-0, 0, DefFnt,	# skipping, skipwhite, curfont
-CU->Black,	# curfg
+0, 0, DefFnt, # skipping, skipwhite, curfont
+CU->Black, # curfg
 Background(nil, CU->White),
-0,			# curvoff
-ULnone, Aleft,	# curul, curjust
-0, IFwrap,		# curanchor, curstate
-0, 0, 0,		# literal, inpar, adjsize
-nil, nil, nil,		# items, lastit, prelastit
-nil, nil, nil, nil,	# fntstylestk, fntsizestk, fgstk, ulstk
-nil, nil, nil, nil,	# voffstk, listtypestk, listcntstk, juststk
-nil);			# hangstk
+0, # curvoff
+ULnone, Aleft, # curul, curjust
+0, IFwrap, # curanchor, curstate
+0, 0, 0, # literal, inpar, adjsize
+nil, nil, nil, # items, lastit, prelastit
+nil, nil, nil, nil, # fntstylestk, fntsizestk, fgstk, ulstk
+nil, nil, nil, nil, # voffstk, listtypestk, listcntstk, juststk
+nil); # hangstk
 ps.items = Item.newspacer(ISPnull, 0);
 ps.lastit = ps.items;
 ps.prelastit = nil;
@@ -1673,9 +1673,9 @@ return Item.newtext(s, ps.curfont, ps.curfg, ps.curvoff+Voffbias, ps.curul);
 }
 # Add text item or items for s, paying attention to
 # current font, foreground, baseline offset, underline state,
-# and literal mode.  Unless we're in literal mode, compress
+# and literal mode. Unless we're in literal mode, compress
 # whitespace to single blank, and, if curstate has a break,
-# trim any leading whitespace.  Whether in literal mode or not,
+# trim any leading whitespace. Whether in literal mode or not,
 # turn nonbreaking spaces into spacer items with IFnobrk set.
 #
 # In literal mode, break up s at newlines and add breaks instead.
@@ -1852,7 +1852,7 @@ addnbsp(ps: ref Pstate)
 # do the break anyway (nbsp is being used to generate undiscardable
 # space rather than to prevent a break)
 if((ps.curstate&IFbrk) == 0)
-ps.curstate |=  IFnobrk;
+ps.curstate |= IFnobrk;
 additem(ps, Item.newspacer(ISPhspace, ps.curfont), nil);
 # but definitely no break on next item
 ps.curstate |= IFnobrk;
@@ -1993,7 +1993,7 @@ cells = c :: cells;
 t.cells = cells;
 t.grid = array[t.nrow] of { * => array[t.ncol] of ref Tablecell };
 # The following arrays keep track of cells that are spanning
-# multiple rows;  rowspancnt[i] is the number of rows left
+# multiple rows; rowspancnt[i] is the number of rows left
 # to be spanned in column i.
 # When done, cell's (row,col) is upper left grid point.
 rowspancnt := array[t.ncol] of { * => 0};
@@ -2263,7 +2263,7 @@ url = S->drop(url, whitespace);
 ans = U->parse(url);
 case (ans.scheme) {
 "javascript" =>
-;	# don't strip whitespace from the URL
+; # don't strip whitespace from the URL
 * =>
 # sometimes people put extraneous whitespace in
 url = stripwhite(url);
@@ -2354,7 +2354,7 @@ mul = mul / 10;
 kind = Dpixels;
 if(r != "") {
 if(len r >= 2) {
-Tkdpi := 100;	# hack, but matches current tk
+Tkdpi := 100; # hack, but matches current tk
 units := r[0:2];
 r = r[2:];
 case units {
@@ -2363,7 +2363,7 @@ case units {
 "in" => spec = spec*Tkdpi;
 "cm" => spec = (spec*100*Tkdpi)/254;
 "mm" => spec = (spec*10*Tkdpi)/254;
-"em" => spec = spec * 15;	# hack, lucidasans 8pt is 15 pixels high
+"em" => spec = spec * 15; # hack, lucidasans 8pt is 15 pixels high
 * =>
 if(warn)
 sys->print("warning: unknown units %s\n", units);
@@ -2576,20 +2576,20 @@ Table.new(tableid: int, align: Align, width: Dimen,
 border, cellspacing, cellpadding: int, bg: Background, tok: ref Lex->Token) : ref Table
 {
 return ref Table(tableid,
-0, 0, 0,		# nrow, ncol, ncell
+0, 0, 0, # nrow, ncol, ncell
 align, width, border, cellspacing, cellpadding, bg,
-nil, Abottom, -1,	# caption, caption_place, caption_lay
-nil, nil, nil,	nil,	# currows, cols, rows, cells
-0, 0, 0, 0,		# totw, toth, caph, availw
-nil, tok, byte 0);	# grid, tabletok, flags
+nil, Abottom, -1, # caption, caption_place, caption_lay
+nil, nil, nil, nil, # currows, cols, rows, cells
+0, 0, 0, 0, # totw, toth, caph, availw
+nil, tok, byte 0); # grid, tabletok, flags
 }
 Tablerow.new(align: Align, bg: Background, flags: byte) : ref Tablerow
 {
-return ref Tablerow(nil,	# cells
-0, 0,			# height, ascent
-align,		# align
-bg,			# background
-Point(0,0),		# pos
+return ref Tablerow(nil, # cells
+0, 0, # height, ascent
+align, # align
+bg, # background
+Point(0,0), # pos
 flags);
 }
 Tablecell.new(cellid, rowspan, colspan: int, align: Align, wspec: Dimen,
@@ -2600,11 +2600,11 @@ colspan = 0;
 if(rowspan < 0)
 rowspan = 0;
 return ref Tablecell(cellid,
-nil, -1,		# content, layid
+nil, -1, # content, layid
 rowspan, colspan, align, flags, wspec, hspec, bg,
-0, 0, 0,		# minw, maxw, ascent
-0, 0,			# row, col
-Point(0,0));	# pos
+0, 0, 0, # minw, maxw, ascent
+0, 0, # row, col
+Point(0,0)); # pos
 }
 Dimen.kind(d: self Dimen) : int
 {
@@ -2665,11 +2665,11 @@ d.images = nil;
 Kidinfo.new(isframeset: int) : ref Kidinfo
 {
 ki := ref Kidinfo(isframeset,
-nil,		# src
-"",		# name
-0, 0, 0,	# marginw, marginh, framebd
-0,		# flags
-nil, nil, nil	# rows, cols, kidinfos
+nil, # src
+"", # name
+0, 0, 0, # marginw, marginh, framebd
+0, # flags
+nil, nil, nil # rows, cols, kidinfos
 );
 if(!isframeset) {
 ki.flags = FRhscrollauto|FRvscrollauto;

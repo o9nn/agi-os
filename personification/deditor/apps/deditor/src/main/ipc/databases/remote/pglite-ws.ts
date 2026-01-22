@@ -6,14 +6,14 @@ import type { BrowserWindow } from 'electron'
 import { createServer } from 'node:http'
 import crossws from 'crossws/adapters/node'
 import {
-  postgresInformationSchemaColumns,
-  postgresInformationSchemaTables,
-  postgresPgCatalogPgAm,
-  postgresPgCatalogPgAttribute,
-  postgresPgCatalogPgClass,
-  postgresPgCatalogPgIndex,
-  postgresPgCatalogPgNamespace,
-  postgresPgCatalogPgType,
+postgresInformationSchemaColumns,
+postgresInformationSchemaTables,
+postgresPgCatalogPgAm,
+postgresPgCatalogPgAttribute,
+postgresPgCatalogPgClass,
+postgresPgCatalogPgIndex,
+postgresPgCatalogPgNamespace,
+postgresPgCatalogPgType,
 } from '@deditor-app/shared-schemas'
 import { useLogg } from '@guiiai/logg'
 import { defineInvoke, defineInvokeEventa } from '@unbird/eventa'
@@ -29,410 +29,410 @@ const websocketConnConnected = new Map<string, (ctx: PeerContext) => void>()
 const webSocketHandlersMessages = new Map<string, Hooks['message']>()
 const webSocketHandlersOpens = new Map<string, Hooks['open']>()
 function columnsFromIndexDefinition(indexDefinition: string) {
-  const trimRegexps = [
-    { matchBy: / WHERE .+|INCLUDE .+/, to: '' },
-    { matchBy: / WITH .+/, to: '' },
-    { matchBy: /.*\((.*)\)/, to: '$1' },
-  ]
-  let parsedColumnsResult = indexDefinition
-  for (const reg of trimRegexps) {
-    parsedColumnsResult = parsedColumnsResult.replace(reg.matchBy, reg.to)
-  }
-  return parsedColumnsResult.trim().split(',')
+const trimRegexps = [
+{ matchBy: / WHERE .+|INCLUDE .+/, to: '' },
+{ matchBy: / WITH .+/, to: '' },
+{ matchBy: /.*\((.*)\)/, to: '$1' },
+]
+let parsedColumnsResult = indexDefinition
+for (const reg of trimRegexps) {
+parsedColumnsResult = parsedColumnsResult.replace(reg.matchBy, reg.to)
+}
+return parsedColumnsResult.trim().split(',')
 }
 const queryInvoke = defineInvokeEventa<Promise<{ result: Results<unknown> }>, { statement: string, parameters?: any[] }>('deditor:database:postgres:query')
 function createServerIfNotStarted() {
-  if (websocketServerStarted)
-    return
-  websocketServerStarted = true
-  try {
-    const ws = crossws({ hooks: {
-      open: (peer) => {
-        const url = new URL(peer.request.url)
-        const token = url.searchParams.get('token')!
-        if (!token || !websocketConnConnected.has(token)) {
-          peer.close()
-          return
-        }
-        const { context, hooks } = createPeerContext(peer)
-        databaseSessions.set(peer.id, { peer, context })
-        databaseSessionsTokens.set(peer.id, token)
-        tokensDatabaseSessions.set(token, peer.id)
-        webSocketHandlersMessages.set(token, hooks.message!)
-        webSocketHandlersOpens.get(token)?.(peer)
-        websocketConnConnected.get(token)?.({ peer, context })
-      },
-      close: (peer) => {
-        if (databaseSessions.has(peer.id)) {
-          databaseSessions.delete(peer.id)
-          databaseSessionsTokens.delete(peer.id)
-        }
-        const token = databaseSessionsTokens.get(peer.id)
-        if (!token)
-          return
-        tokensDatabaseSessions.delete(token)
-        webSocketHandlersMessages.delete(token)
-        webSocketHandlersOpens.delete(token)
-        websocketConnConnected.delete(token)
-      },
-      message: (peer, message) => {
-        const token = databaseSessionsTokens.get(peer.id)
-        if (!token)
-          return
-        webSocketHandlersMessages.get(token)?.(peer, message)
-      },
-    } })
-    const server = createServer()
-    server.on('upgrade', (req, socket, head) => {
-      if (req.headers.upgrade === 'websocket') {
-        ws.handleUpgrade(req, socket, head)
-      }
-    })
-    server.listen(29930)
-  }
-  catch (err) {
-    websocketServerStarted = false
-    throw err
-  }
+if (websocketServerStarted)
+return
+websocketServerStarted = true
+try {
+const ws = crossws({ hooks: {
+open: (peer) => {
+const url = new URL(peer.request.url)
+const token = url.searchParams.get('token')!
+if (!token || !websocketConnConnected.has(token)) {
+peer.close()
+return
+}
+const { context, hooks } = createPeerContext(peer)
+databaseSessions.set(peer.id, { peer, context })
+databaseSessionsTokens.set(peer.id, token)
+tokensDatabaseSessions.set(token, peer.id)
+webSocketHandlersMessages.set(token, hooks.message!)
+webSocketHandlersOpens.get(token)?.(peer)
+websocketConnConnected.get(token)?.({ peer, context })
+},
+close: (peer) => {
+if (databaseSessions.has(peer.id)) {
+databaseSessions.delete(peer.id)
+databaseSessionsTokens.delete(peer.id)
+}
+const token = databaseSessionsTokens.get(peer.id)
+if (!token)
+return
+tokensDatabaseSessions.delete(token)
+webSocketHandlersMessages.delete(token)
+webSocketHandlersOpens.delete(token)
+websocketConnConnected.delete(token)
+},
+message: (peer, message) => {
+const token = databaseSessionsTokens.get(peer.id)
+if (!token)
+return
+webSocketHandlersMessages.get(token)?.(peer, message)
+},
+} })
+const server = createServer()
+server.on('upgrade', (req, socket, head) => {
+if (req.headers.upgrade === 'websocket') {
+ws.handleUpgrade(req, socket, head)
+}
+})
+server.listen(29930)
+}
+catch (err) {
+websocketServerStarted = false
+throw err
+}
 }
 export function registerPGLiteWebSocketDatabaseDialect(window: BrowserWindow) {
-  const log = useLogg('pglite-ws-database-dialect').useGlobalConfig()
-  defineIPCHandler<PGLiteMethods>(window, 'databaseRemotePGLiteWebSocket', 'connect')
-    .handle((_, { dsn }) => {
-      return new Promise((resolve) => {
-        try {
-          const parsedDSN = new URL(dsn)
-          if (!parsedDSN.searchParams.get('token')) {
-            throw new Error('Missing "token" parameter in DSN.')
-          }
-          createServerIfNotStarted()
-          const token = parsedDSN.searchParams.get('token')!
-          if (tokensDatabaseSessions.has(token)) {
-            const existingPeerId = tokensDatabaseSessions.get(token)!
-            resolve({
-              databaseSessionId: existingPeerId,
-              dialect: 'pglite',
-              results: [],
-            })
-          }
-          if (!websocketConnConnected.has(token)) {
-            websocketConnConnected.set(token, async ({ context, peer }) => {
-              const query = defineInvoke(context, queryInvoke)
-              const dialect = new PgDialect()
-              await query({ statement: 'SELECT 1', parameters: [] })
-              const { params: parameters, sql: statement } = await dialect.sqlToQuery(sql`CREATE SCHEMA IF NOT EXISTS "public"`)
-              await query({ statement, parameters })
-              if (!parsedDSN.searchParams.get('searchPath')) {
-                const { params: parameters, sql: statement } = await dialect.sqlToQuery(sql`SET search_path TO "public"`)
-                await query({ statement, parameters })
-              }
-              resolve({
-                databaseSessionId: peer.id,
-                dialect: 'pglite',
-                results: [],
-              })
-            })
-          }
-        }
-        catch (err) {
-          log.withError(err).error('failed to connect to local PGLite database')
-          throw err
-        }
-      })
-    })
-  defineIPCHandler<PGLiteMethods>(window, 'databaseRemotePGLiteWebSocket', 'query')
-    .handle(async (_, { databaseSessionId, statement, parameters }) => {
-      if (!databaseSessions.has(databaseSessionId)) {
-        throw new Error('Database session ID not found in session map, please connect to the database first.')
-      }
-      try {
-        const dbSession = databaseSessions.get(databaseSessionId)!
-        const query = defineInvoke(dbSession.context, queryInvoke)
-        const res = await query({ statement, parameters })
-        return { databaseSessionId, results: res.result.rows }
-      }
-      catch (err) {
-        log.withError(err).withFields({ databaseSessionId, statement }).error('failed to query local PGLite database')
-        throw err
-      }
-    })
-  defineIPCHandler<PGLiteMethods>(window, 'databaseRemotePGLiteWebSocket', 'listTables')
-    .handle(async (_, { databaseSessionId }) => {
-      if (!databaseSessions.has(databaseSessionId)) {
-        throw new Error('Database session ID not found in session map, please connect to the database first.')
-      }
-      try {
-        const dbSession = databaseSessions.get(databaseSessionId)!
-        const queryBuilder = new QueryBuilder()
-        const { sql, params } = new PgDialect().sqlToQuery(queryBuilder.select().from(postgresInformationSchemaTables).getSQL())
-        const query = defineInvoke(dbSession.context, queryInvoke)
-        const res = await query({ statement: sql, parameters: params })
-        return { databaseSessionId, results: res.result.rows }
-      }
-      catch (err) {
-        log.withError(err).withFields({ databaseSessionId }).error('failed to query local PGLite database to list tables')
-        throw err
-      }
-    })
-  defineIPCHandler<PGLiteMethods>(window, 'databaseRemotePGLiteWebSocket', 'listColumns')
-    .handle(async (_, { databaseSessionId, tableName, schema }) => {
-      if (!databaseSessions.has(databaseSessionId)) {
-        throw new Error('Database session ID not found in session map, please connect to the database first.')
-      }
-      try {
-        const dbSession = databaseSessions.get(databaseSessionId)!
-        const queryBuilder = new QueryBuilder()
-        const { sql, params } = new PgDialect().sqlToQuery(
-          queryBuilder
-            .select().from(postgresInformationSchemaColumns).where(
-              and(
-                eq(postgresInformationSchemaColumns.table_name, tableName),
-                eq(postgresInformationSchemaColumns.table_schema, schema ?? 'public'),
-              ),
-            ).getSQL(),
-        )
-        const query = defineInvoke(dbSession.context, queryInvoke)
-        const res = await query({ statement: sql, parameters: params })
-        return {
-          databaseSessionId,
-          tableName,
-          schema,
-          results: res.result.rows,
-        }
-      }
-      catch (err) {
-        log.withError(err).withError({ databaseSessionId, tableName, schema }).error('failed to query local PGLite database to list columns')
-        throw err
-      }
-    })
-  defineIPCHandler<PGLiteMethods>(window, 'databaseRemotePGLiteWebSocket', 'listIndexes')
-    .handle(async (_, { databaseSessionId, tableName, schema }) => {
-      if (!databaseSessions.has(databaseSessionId)) {
-        throw new Error('Database session ID not found in session map, please connect to the database first.')
-      }
-      try {
-        const dbSession = databaseSessions.get(databaseSessionId)!
-        const pgClassOnIndRelId = alias(postgresPgCatalogPgClass, 'pg_class_on_ind_rel_id')
-        const pgClassOnIndexRelId = alias(postgresPgCatalogPgClass, 'pg_class_on_index_rel_id')
-        const pgAmOnOid = alias(postgresPgCatalogPgAm, 'pg_am_on_oid')
-        const queryBuilder = new QueryBuilder()
-        const { sql: statement, params } = new PgDialect().sqlToQuery(
-          queryBuilder
-            .select({
-              id: postgresPgCatalogPgIndex.indexrelid,
-              indexName: sql<string>`${sql.identifier('pg_class_on_index_rel_id')}.${sql.identifier('relname')}`.as('index_name'),
-              indexAlgorithm: sql<string>`upper(${sql.identifier('pg_am_on_oid')}.${sql.identifier('amname')})`.as('index_algorithm'),
-              isUnique: sql<boolean>`${postgresPgCatalogPgIndex.indisunique}`.as('is_unique'),
-              isPrimary: sql<boolean>`${postgresPgCatalogPgIndex.indisprimary}`.as('is_primary'),
-              indexDefinition: sql<string>`pg_get_indexdef(indexrelid)`.as('index_definition'),
-              comment: sql<string>`${sql.identifier('pg_catalog')}.${sql.identifier('obj_description')} (${sql.identifier('pg_index')}.${sql.identifier('indexrelid')}, ${'pg_class'})`.as('comment'),
-            })
-            .from(postgresPgCatalogPgIndex)
-            .leftJoin(pgClassOnIndRelId, eq(pgClassOnIndRelId.oid, postgresPgCatalogPgIndex.indrelid))
-            .leftJoin(pgClassOnIndexRelId, eq(pgClassOnIndexRelId.oid, postgresPgCatalogPgIndex.indexrelid))
-            .leftJoin(postgresPgCatalogPgNamespace, eq(postgresPgCatalogPgNamespace.oid, pgClassOnIndRelId.relnamespace))
-            .leftJoin(pgAmOnOid, eq(pgClassOnIndexRelId.relam, pgAmOnOid.oid))
-            .where(
-              and(
-                eq(pgClassOnIndRelId.relname, tableName),
-                eq(postgresPgCatalogPgNamespace.nspname, schema ?? 'public'),
-              ),
-            )
-            .getSQL(),
-        )
-        const query = defineInvoke(dbSession.context, queryInvoke)
-        const res = await query({ statement, parameters: params }) as {
-          result: Results<{
-            id: string | null
-            indexName: string
-            indexAlgorithm: string
-            isUnique: boolean
-            isPrimary: boolean
-            indexDefinition: string
-            comment: string
-          }>
-        }
-        const transformedResults = res.result.rows.map((row) => {
-          return {
-            ...row,
-            columns: columnsFromIndexDefinition(row.indexDefinition),
-          }
-        })
-        return {
-          databaseSessionId,
-          tableName,
-          schema,
-          results: transformedResults,
-        }
-      }
-      catch (err) {
-        log.withError(err).withFields({ databaseSessionId, tableName, schema }).error('failed to query local PGLite database to list indexes')
-        throw err
-      }
-    })
-  defineIPCHandler<PGLiteMethods>(window, 'databaseRemotePGLiteWebSocket', 'listColumnsWithTypes')
-    .handle(async (_, { databaseSessionId, tableName, schema }) => {
-      if (!databaseSessions.has(databaseSessionId)) {
-        throw new Error('Database session ID not found in session map, please connect to the database first.')
-      }
-      try {
-        const dbSession = databaseSessions.get(databaseSessionId)!
-        const queryBuilder = new QueryBuilder()
-        const { sql: statement, params: parameters } = new PgDialect().sqlToQuery(
-          queryBuilder
-            .select({
-              columnName: postgresPgCatalogPgAttribute.attname,
-              typeName: postgresPgCatalogPgType.typname,
-              typeMod: postgresPgCatalogPgAttribute.atttypmod,
-            })
-            .from(postgresPgCatalogPgAttribute)
-            .leftJoin(postgresPgCatalogPgClass, eq(postgresPgCatalogPgAttribute.attrelid, postgresPgCatalogPgClass.oid))
-            .leftJoin(postgresPgCatalogPgNamespace, eq(postgresPgCatalogPgClass.relnamespace, postgresPgCatalogPgNamespace.oid))
-            .leftJoin(postgresPgCatalogPgType, eq(postgresPgCatalogPgAttribute.atttypid, postgresPgCatalogPgType.oid))
-            .where(
-              and(
-                eq(postgresPgCatalogPgNamespace.nspname, schema ?? 'public'),
-                eq(postgresPgCatalogPgClass.relname, tableName),
-                gt(postgresPgCatalogPgAttribute.attnum, 0),
-                not(postgresPgCatalogPgAttribute.attisdropped),
-              ),
-            )
-            .getSQL(),
-        )
-        const query = defineInvoke(dbSession.context, queryInvoke)
-        const res = await query({ statement, parameters }) as {
-          result: Results<{
-            columnName: string
-            typeName: string | null
-            typeMod: number
-          }>
-        }
-        return {
-          databaseSessionId,
-          tableName,
-          schema,
-          results: res.result.rows,
-        }
-      }
-      catch (err) {
-        log.withError(err).withFields({ databaseSessionId, tableName, schema }).error('failed to query local PGLite database to list columns with types')
-        throw err
-      }
-    })
-  defineIPCHandler<PGLiteMethods>(window, 'databaseRemotePGLiteWebSocket', 'listUserDefinedTypes')
-    .handle(async (_, { databaseSessionId }) => {
-      if (!databaseSessions.has(databaseSessionId)) {
-        throw new Error('Database session ID not found in session map, please connect to the database first.')
-      }
-      try {
-        const dbSession = databaseSessions.get(databaseSessionId)!
-        const queryBuilder = new QueryBuilder()
-        const typesSubQuery = queryBuilder
-          .$with('types')
-          .as(
-            queryBuilder.select({
-              nspname: postgresPgCatalogPgNamespace.nspname,
-              objName: sql<string>`${sql.identifier('pg_catalog')}.${sql.identifier('format_type')}(${postgresPgCatalogPgType.oid}, NULL)`.as('obj_name'),
-              objType: sql<string>`
-              CASE
-                WHEN ${postgresPgCatalogPgType.typrelid} != 0 THEN CAST('tuple' AS pg_catalog.text)
-                WHEN ${postgresPgCatalogPgType.typlen} < 0 THEN CAST('var' AS pg_catalog.text)
-                ELSE CAST(${postgresPgCatalogPgType.typlen} AS pg_catalog.text)
-              END`.as('obj_type'),
-              description: sql<string>`${sql.identifier('pg_catalog')}.${sql.identifier('obj_description')}(${postgresPgCatalogPgType.oid}, 'pg_type')`.as('description'),
-            })
-              .from(postgresPgCatalogPgType)
-              .leftJoin(postgresPgCatalogPgNamespace, eq(postgresPgCatalogPgType.typnamespace, postgresPgCatalogPgNamespace.oid))
-              .where(
-                and(
-                  or(
-                    eq(postgresPgCatalogPgType.typrelid, 0),
-                    queryBuilder
-                      .select({ c: eq(postgresPgCatalogPgClass.relkind, 'c') })
-                      .from(postgresPgCatalogPgClass)
-                      .where(eq(postgresPgCatalogPgClass.oid, postgresPgCatalogPgType.typrelid)),
-                  ),
-                  notExists(
-                    queryBuilder
-                      .select({
-                        1: sql`1`,
-                      })
-                      .from(postgresPgCatalogPgType)
-                      .where(
-                        and(
-                          eq(postgresPgCatalogPgType.oid, postgresPgCatalogPgType.typelem),
-                          eq(postgresPgCatalogPgType.typarray, postgresPgCatalogPgType.oid),
-                        ),
-                      ),
-                  ),
-                  ne(postgresPgCatalogPgNamespace.nspname, 'pg_catalog'),
-                  ne(postgresPgCatalogPgNamespace.nspname, 'information_schema'),
-                  notLike(postgresPgCatalogPgNamespace.nspname, 'pg_toast%'),
-                ),
-              ),
-          )
-        const colsSubQuery = queryBuilder
-          .$with('cols')
-          .as(
-            queryBuilder.select({
-              schemaName: postgresPgCatalogPgNamespace.nspname,
-              objName: sql<string>`${sql.identifier('pg_catalog')}.${sql.identifier('format_type')}(${postgresPgCatalogPgType.oid}, NULL)`.as('obj_name'),
-              columnName: postgresPgCatalogPgAttribute.attname,
-              dataType: sql<string>`${sql.identifier('pg_catalog')}.${sql.identifier('format_type')}(${postgresPgCatalogPgAttribute.atttypid}, ${postgresPgCatalogPgAttribute.atttypmod})`.as('data_type'),
-              isRequired: postgresPgCatalogPgAttribute.attnotnull,
-              ordinalPosition: postgresPgCatalogPgAttribute.attnum,
-              description: sql<string>`${sql.identifier('pg_catalog')}.${sql.identifier('col_description')}(${postgresPgCatalogPgAttribute.attrelid}, ${postgresPgCatalogPgAttribute.attnum})`.as('description'),
-            })
-              .from(postgresPgCatalogPgAttribute)
-              .leftJoin(postgresPgCatalogPgType, eq(postgresPgCatalogPgAttribute.atttypid, postgresPgCatalogPgType.oid))
-              .leftJoin(postgresPgCatalogPgNamespace, eq(postgresPgCatalogPgType.typnamespace, postgresPgCatalogPgNamespace.oid))
-              .leftJoin(sql`types`, and(
-                eq(typesSubQuery.nspname, postgresPgCatalogPgNamespace.nspname),
-                eq(typesSubQuery.objName, sql<string>`${sql.identifier('pg_catalog')}.${sql.identifier('format_type')}(${postgresPgCatalogPgType.oid}, NULL)`),
-              ))
-              .where(
-                and(
-                  gt(postgresPgCatalogPgAttribute.attnum, 0),
-                  eq(postgresPgCatalogPgAttribute.attisdropped, false),
-                ),
-              ),
-          )
-        const { sql: statement, params: parameters } = new PgDialect().sqlToQuery(
-          queryBuilder
-            .with(typesSubQuery, colsSubQuery)
-            .select({
-              schemaName: colsSubQuery.schemaName,
-              objName: colsSubQuery.objName,
-              columnName: colsSubQuery.columnName,
-              dataType: colsSubQuery.dataType,
-              ordinalPosition: colsSubQuery.ordinalPosition,
-              isRequired: colsSubQuery.isRequired,
-              description: sql<string>`coalesce(${colsSubQuery.description}, '')`.as('description'),
-            })
-            .from(colsSubQuery)
-            .orderBy(colsSubQuery.schemaName, colsSubQuery.objName, colsSubQuery.ordinalPosition)
-            .getSQL(),
-        )
-        const query = defineInvoke(dbSession.context, queryInvoke)
-        const res = await query({ statement, parameters }) as {
-          result: Results<{
-            schemaName: string | null
-            objName: string
-            columnName: string
-            dataType: string
-            ordinalPosition: number
-            isRequired: boolean
-            description: string
-          }>
-        }
-        return {
-          databaseSessionId,
-          results: res.result.rows,
-        }
-      }
-      catch (err) {
-        log.withError(err).withFields({ databaseSessionId }).error('failed to query local PGLite database to list user-defined types')
-        throw err
-      }
-    })
+const log = useLogg('pglite-ws-database-dialect').useGlobalConfig()
+defineIPCHandler<PGLiteMethods>(window, 'databaseRemotePGLiteWebSocket', 'connect')
+.handle((_, { dsn }) => {
+return new Promise((resolve) => {
+try {
+const parsedDSN = new URL(dsn)
+if (!parsedDSN.searchParams.get('token')) {
+throw new Error('Missing "token" parameter in DSN.')
+}
+createServerIfNotStarted()
+const token = parsedDSN.searchParams.get('token')!
+if (tokensDatabaseSessions.has(token)) {
+const existingPeerId = tokensDatabaseSessions.get(token)!
+resolve({
+databaseSessionId: existingPeerId,
+dialect: 'pglite',
+results: [],
+})
+}
+if (!websocketConnConnected.has(token)) {
+websocketConnConnected.set(token, async ({ context, peer }) => {
+const query = defineInvoke(context, queryInvoke)
+const dialect = new PgDialect()
+await query({ statement: 'SELECT 1', parameters: [] })
+const { params: parameters, sql: statement } = await dialect.sqlToQuery(sql`CREATE SCHEMA IF NOT EXISTS "public"`)
+await query({ statement, parameters })
+if (!parsedDSN.searchParams.get('searchPath')) {
+const { params: parameters, sql: statement } = await dialect.sqlToQuery(sql`SET search_path TO "public"`)
+await query({ statement, parameters })
+}
+resolve({
+databaseSessionId: peer.id,
+dialect: 'pglite',
+results: [],
+})
+})
+}
+}
+catch (err) {
+log.withError(err).error('failed to connect to local PGLite database')
+throw err
+}
+})
+})
+defineIPCHandler<PGLiteMethods>(window, 'databaseRemotePGLiteWebSocket', 'query')
+.handle(async (_, { databaseSessionId, statement, parameters }) => {
+if (!databaseSessions.has(databaseSessionId)) {
+throw new Error('Database session ID not found in session map, please connect to the database first.')
+}
+try {
+const dbSession = databaseSessions.get(databaseSessionId)!
+const query = defineInvoke(dbSession.context, queryInvoke)
+const res = await query({ statement, parameters })
+return { databaseSessionId, results: res.result.rows }
+}
+catch (err) {
+log.withError(err).withFields({ databaseSessionId, statement }).error('failed to query local PGLite database')
+throw err
+}
+})
+defineIPCHandler<PGLiteMethods>(window, 'databaseRemotePGLiteWebSocket', 'listTables')
+.handle(async (_, { databaseSessionId }) => {
+if (!databaseSessions.has(databaseSessionId)) {
+throw new Error('Database session ID not found in session map, please connect to the database first.')
+}
+try {
+const dbSession = databaseSessions.get(databaseSessionId)!
+const queryBuilder = new QueryBuilder()
+const { sql, params } = new PgDialect().sqlToQuery(queryBuilder.select().from(postgresInformationSchemaTables).getSQL())
+const query = defineInvoke(dbSession.context, queryInvoke)
+const res = await query({ statement: sql, parameters: params })
+return { databaseSessionId, results: res.result.rows }
+}
+catch (err) {
+log.withError(err).withFields({ databaseSessionId }).error('failed to query local PGLite database to list tables')
+throw err
+}
+})
+defineIPCHandler<PGLiteMethods>(window, 'databaseRemotePGLiteWebSocket', 'listColumns')
+.handle(async (_, { databaseSessionId, tableName, schema }) => {
+if (!databaseSessions.has(databaseSessionId)) {
+throw new Error('Database session ID not found in session map, please connect to the database first.')
+}
+try {
+const dbSession = databaseSessions.get(databaseSessionId)!
+const queryBuilder = new QueryBuilder()
+const { sql, params } = new PgDialect().sqlToQuery(
+queryBuilder
+.select().from(postgresInformationSchemaColumns).where(
+and(
+eq(postgresInformationSchemaColumns.table_name, tableName),
+eq(postgresInformationSchemaColumns.table_schema, schema ?? 'public'),
+),
+).getSQL(),
+)
+const query = defineInvoke(dbSession.context, queryInvoke)
+const res = await query({ statement: sql, parameters: params })
+return {
+databaseSessionId,
+tableName,
+schema,
+results: res.result.rows,
+}
+}
+catch (err) {
+log.withError(err).withError({ databaseSessionId, tableName, schema }).error('failed to query local PGLite database to list columns')
+throw err
+}
+})
+defineIPCHandler<PGLiteMethods>(window, 'databaseRemotePGLiteWebSocket', 'listIndexes')
+.handle(async (_, { databaseSessionId, tableName, schema }) => {
+if (!databaseSessions.has(databaseSessionId)) {
+throw new Error('Database session ID not found in session map, please connect to the database first.')
+}
+try {
+const dbSession = databaseSessions.get(databaseSessionId)!
+const pgClassOnIndRelId = alias(postgresPgCatalogPgClass, 'pg_class_on_ind_rel_id')
+const pgClassOnIndexRelId = alias(postgresPgCatalogPgClass, 'pg_class_on_index_rel_id')
+const pgAmOnOid = alias(postgresPgCatalogPgAm, 'pg_am_on_oid')
+const queryBuilder = new QueryBuilder()
+const { sql: statement, params } = new PgDialect().sqlToQuery(
+queryBuilder
+.select({
+id: postgresPgCatalogPgIndex.indexrelid,
+indexName: sql<string>`${sql.identifier('pg_class_on_index_rel_id')}.${sql.identifier('relname')}`.as('index_name'),
+indexAlgorithm: sql<string>`upper(${sql.identifier('pg_am_on_oid')}.${sql.identifier('amname')})`.as('index_algorithm'),
+isUnique: sql<boolean>`${postgresPgCatalogPgIndex.indisunique}`.as('is_unique'),
+isPrimary: sql<boolean>`${postgresPgCatalogPgIndex.indisprimary}`.as('is_primary'),
+indexDefinition: sql<string>`pg_get_indexdef(indexrelid)`.as('index_definition'),
+comment: sql<string>`${sql.identifier('pg_catalog')}.${sql.identifier('obj_description')} (${sql.identifier('pg_index')}.${sql.identifier('indexrelid')}, ${'pg_class'})`.as('comment'),
+})
+.from(postgresPgCatalogPgIndex)
+.leftJoin(pgClassOnIndRelId, eq(pgClassOnIndRelId.oid, postgresPgCatalogPgIndex.indrelid))
+.leftJoin(pgClassOnIndexRelId, eq(pgClassOnIndexRelId.oid, postgresPgCatalogPgIndex.indexrelid))
+.leftJoin(postgresPgCatalogPgNamespace, eq(postgresPgCatalogPgNamespace.oid, pgClassOnIndRelId.relnamespace))
+.leftJoin(pgAmOnOid, eq(pgClassOnIndexRelId.relam, pgAmOnOid.oid))
+.where(
+and(
+eq(pgClassOnIndRelId.relname, tableName),
+eq(postgresPgCatalogPgNamespace.nspname, schema ?? 'public'),
+),
+)
+.getSQL(),
+)
+const query = defineInvoke(dbSession.context, queryInvoke)
+const res = await query({ statement, parameters: params }) as {
+result: Results<{
+id: string | null
+indexName: string
+indexAlgorithm: string
+isUnique: boolean
+isPrimary: boolean
+indexDefinition: string
+comment: string
+}>
+}
+const transformedResults = res.result.rows.map((row) => {
+return {
+...row,
+columns: columnsFromIndexDefinition(row.indexDefinition),
+}
+})
+return {
+databaseSessionId,
+tableName,
+schema,
+results: transformedResults,
+}
+}
+catch (err) {
+log.withError(err).withFields({ databaseSessionId, tableName, schema }).error('failed to query local PGLite database to list indexes')
+throw err
+}
+})
+defineIPCHandler<PGLiteMethods>(window, 'databaseRemotePGLiteWebSocket', 'listColumnsWithTypes')
+.handle(async (_, { databaseSessionId, tableName, schema }) => {
+if (!databaseSessions.has(databaseSessionId)) {
+throw new Error('Database session ID not found in session map, please connect to the database first.')
+}
+try {
+const dbSession = databaseSessions.get(databaseSessionId)!
+const queryBuilder = new QueryBuilder()
+const { sql: statement, params: parameters } = new PgDialect().sqlToQuery(
+queryBuilder
+.select({
+columnName: postgresPgCatalogPgAttribute.attname,
+typeName: postgresPgCatalogPgType.typname,
+typeMod: postgresPgCatalogPgAttribute.atttypmod,
+})
+.from(postgresPgCatalogPgAttribute)
+.leftJoin(postgresPgCatalogPgClass, eq(postgresPgCatalogPgAttribute.attrelid, postgresPgCatalogPgClass.oid))
+.leftJoin(postgresPgCatalogPgNamespace, eq(postgresPgCatalogPgClass.relnamespace, postgresPgCatalogPgNamespace.oid))
+.leftJoin(postgresPgCatalogPgType, eq(postgresPgCatalogPgAttribute.atttypid, postgresPgCatalogPgType.oid))
+.where(
+and(
+eq(postgresPgCatalogPgNamespace.nspname, schema ?? 'public'),
+eq(postgresPgCatalogPgClass.relname, tableName),
+gt(postgresPgCatalogPgAttribute.attnum, 0),
+not(postgresPgCatalogPgAttribute.attisdropped),
+),
+)
+.getSQL(),
+)
+const query = defineInvoke(dbSession.context, queryInvoke)
+const res = await query({ statement, parameters }) as {
+result: Results<{
+columnName: string
+typeName: string | null
+typeMod: number
+}>
+}
+return {
+databaseSessionId,
+tableName,
+schema,
+results: res.result.rows,
+}
+}
+catch (err) {
+log.withError(err).withFields({ databaseSessionId, tableName, schema }).error('failed to query local PGLite database to list columns with types')
+throw err
+}
+})
+defineIPCHandler<PGLiteMethods>(window, 'databaseRemotePGLiteWebSocket', 'listUserDefinedTypes')
+.handle(async (_, { databaseSessionId }) => {
+if (!databaseSessions.has(databaseSessionId)) {
+throw new Error('Database session ID not found in session map, please connect to the database first.')
+}
+try {
+const dbSession = databaseSessions.get(databaseSessionId)!
+const queryBuilder = new QueryBuilder()
+const typesSubQuery = queryBuilder
+.$with('types')
+.as(
+queryBuilder.select({
+nspname: postgresPgCatalogPgNamespace.nspname,
+objName: sql<string>`${sql.identifier('pg_catalog')}.${sql.identifier('format_type')}(${postgresPgCatalogPgType.oid}, NULL)`.as('obj_name'),
+objType: sql<string>`
+CASE
+WHEN ${postgresPgCatalogPgType.typrelid} != 0 THEN CAST('tuple' AS pg_catalog.text)
+WHEN ${postgresPgCatalogPgType.typlen} < 0 THEN CAST('var' AS pg_catalog.text)
+ELSE CAST(${postgresPgCatalogPgType.typlen} AS pg_catalog.text)
+END`.as('obj_type'),
+description: sql<string>`${sql.identifier('pg_catalog')}.${sql.identifier('obj_description')}(${postgresPgCatalogPgType.oid}, 'pg_type')`.as('description'),
+})
+.from(postgresPgCatalogPgType)
+.leftJoin(postgresPgCatalogPgNamespace, eq(postgresPgCatalogPgType.typnamespace, postgresPgCatalogPgNamespace.oid))
+.where(
+and(
+or(
+eq(postgresPgCatalogPgType.typrelid, 0),
+queryBuilder
+.select({ c: eq(postgresPgCatalogPgClass.relkind, 'c') })
+.from(postgresPgCatalogPgClass)
+.where(eq(postgresPgCatalogPgClass.oid, postgresPgCatalogPgType.typrelid)),
+),
+notExists(
+queryBuilder
+.select({
+1: sql`1`,
+})
+.from(postgresPgCatalogPgType)
+.where(
+and(
+eq(postgresPgCatalogPgType.oid, postgresPgCatalogPgType.typelem),
+eq(postgresPgCatalogPgType.typarray, postgresPgCatalogPgType.oid),
+),
+),
+),
+ne(postgresPgCatalogPgNamespace.nspname, 'pg_catalog'),
+ne(postgresPgCatalogPgNamespace.nspname, 'information_schema'),
+notLike(postgresPgCatalogPgNamespace.nspname, 'pg_toast%'),
+),
+),
+)
+const colsSubQuery = queryBuilder
+.$with('cols')
+.as(
+queryBuilder.select({
+schemaName: postgresPgCatalogPgNamespace.nspname,
+objName: sql<string>`${sql.identifier('pg_catalog')}.${sql.identifier('format_type')}(${postgresPgCatalogPgType.oid}, NULL)`.as('obj_name'),
+columnName: postgresPgCatalogPgAttribute.attname,
+dataType: sql<string>`${sql.identifier('pg_catalog')}.${sql.identifier('format_type')}(${postgresPgCatalogPgAttribute.atttypid}, ${postgresPgCatalogPgAttribute.atttypmod})`.as('data_type'),
+isRequired: postgresPgCatalogPgAttribute.attnotnull,
+ordinalPosition: postgresPgCatalogPgAttribute.attnum,
+description: sql<string>`${sql.identifier('pg_catalog')}.${sql.identifier('col_description')}(${postgresPgCatalogPgAttribute.attrelid}, ${postgresPgCatalogPgAttribute.attnum})`.as('description'),
+})
+.from(postgresPgCatalogPgAttribute)
+.leftJoin(postgresPgCatalogPgType, eq(postgresPgCatalogPgAttribute.atttypid, postgresPgCatalogPgType.oid))
+.leftJoin(postgresPgCatalogPgNamespace, eq(postgresPgCatalogPgType.typnamespace, postgresPgCatalogPgNamespace.oid))
+.leftJoin(sql`types`, and(
+eq(typesSubQuery.nspname, postgresPgCatalogPgNamespace.nspname),
+eq(typesSubQuery.objName, sql<string>`${sql.identifier('pg_catalog')}.${sql.identifier('format_type')}(${postgresPgCatalogPgType.oid}, NULL)`),
+))
+.where(
+and(
+gt(postgresPgCatalogPgAttribute.attnum, 0),
+eq(postgresPgCatalogPgAttribute.attisdropped, false),
+),
+),
+)
+const { sql: statement, params: parameters } = new PgDialect().sqlToQuery(
+queryBuilder
+.with(typesSubQuery, colsSubQuery)
+.select({
+schemaName: colsSubQuery.schemaName,
+objName: colsSubQuery.objName,
+columnName: colsSubQuery.columnName,
+dataType: colsSubQuery.dataType,
+ordinalPosition: colsSubQuery.ordinalPosition,
+isRequired: colsSubQuery.isRequired,
+description: sql<string>`coalesce(${colsSubQuery.description}, '')`.as('description'),
+})
+.from(colsSubQuery)
+.orderBy(colsSubQuery.schemaName, colsSubQuery.objName, colsSubQuery.ordinalPosition)
+.getSQL(),
+)
+const query = defineInvoke(dbSession.context, queryInvoke)
+const res = await query({ statement, parameters }) as {
+result: Results<{
+schemaName: string | null
+objName: string
+columnName: string
+dataType: string
+ordinalPosition: number
+isRequired: boolean
+description: string
+}>
+}
+return {
+databaseSessionId,
+results: res.result.rows,
+}
+}
+catch (err) {
+log.withError(err).withFields({ databaseSessionId }).error('failed to query local PGLite database to list user-defined types')
+throw err
+}
+})
 }

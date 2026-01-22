@@ -132,7 +132,7 @@ if (mp->zero_out) memset(mp->ring, 0, mp->data_size);
 mp->alloc_next = mp->ring;
 }
 void *alloc_next = mp->alloc_next;
-mp->alloc_next +=  alloc_size;
+mp->alloc_next += alloc_size;
 return alloc_next;
 }
 void pool_reuse(Pool_desc *mp)
@@ -193,7 +193,7 @@ for (char *c = mp->chain; c != NULL; c = c_next)
 {
 alloc_attr *at = (alloc_attr *)c;
 #ifdef POOL_FREE
-ASAN_UNPOISON_MEMORY_REGION(c,  sizeof(alloc_attr) + at->size);
+ASAN_UNPOISON_MEMORY_REGION(c, sizeof(alloc_attr) + at->size);
 #endif
 c_next = at->next;
 free(c);

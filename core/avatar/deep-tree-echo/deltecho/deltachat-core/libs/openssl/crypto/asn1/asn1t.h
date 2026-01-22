@@ -4,25 +4,25 @@
 # include <openssl/e_os2.h>
 # include <openssl/asn1.h>
 # ifdef OPENSSL_BUILD_SHLIBCRYPTO
-#  undef OPENSSL_EXTERN
-#  define OPENSSL_EXTERN OPENSSL_EXPORT
+# undef OPENSSL_EXTERN
+# define OPENSSL_EXTERN OPENSSL_EXPORT
 # endif
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 # ifndef OPENSSL_EXPORT_VAR_AS_FUNCTION
-#  define ASN1_ADB_ptr(iptr) ((const ASN1_ADB *)(iptr))
-#  define ASN1_ITEM_start(itname) \
+# define ASN1_ADB_ptr(iptr) ((const ASN1_ADB *)(iptr))
+# define ASN1_ITEM_start(itname) \
 OPENSSL_GLOBAL const ASN1_ITEM itname##_it = {
-#  define ASN1_ITEM_end(itname) \
+# define ASN1_ITEM_end(itname) \
 };
 # else
-#  define ASN1_ADB_ptr(iptr) ((const ASN1_ADB *)(iptr()))
-#  define ASN1_ITEM_start(itname) \
+# define ASN1_ADB_ptr(iptr) ((const ASN1_ADB *)(iptr()))
+# define ASN1_ITEM_start(itname) \
 const ASN1_ITEM * itname##_it(void) \
 { \
 static const ASN1_ITEM local_it = {
-#  define ASN1_ITEM_end(itname) \
+# define ASN1_ITEM_end(itname) \
 }; \
 return &local_it; \
 }
@@ -148,11 +148,11 @@ ASN1_EX_TYPE(ASN1_TFLG_IMPLICIT | ex, tag, stname, field, type)
 # define ASN1_EXP_EX(stname, field, type, tag, ex) \
 ASN1_EX_TYPE(ASN1_TFLG_EXPLICIT | ex, tag, stname, field, type)
 # ifndef OPENSSL_EXPORT_VAR_AS_FUNCTION
-#  define ASN1_ADB_OBJECT(tblname) { ASN1_TFLG_ADB_OID, -1, 0, #tblname, (const ASN1_ITEM *)&(tblname##_adb) }
-#  define ASN1_ADB_INTEGER(tblname) { ASN1_TFLG_ADB_INT, -1, 0, #tblname, (const ASN1_ITEM *)&(tblname##_adb) }
+# define ASN1_ADB_OBJECT(tblname) { ASN1_TFLG_ADB_OID, -1, 0, #tblname, (const ASN1_ITEM *)&(tblname##_adb) }
+# define ASN1_ADB_INTEGER(tblname) { ASN1_TFLG_ADB_INT, -1, 0, #tblname, (const ASN1_ITEM *)&(tblname##_adb) }
 # else
-#  define ASN1_ADB_OBJECT(tblname) { ASN1_TFLG_ADB_OID, -1, 0, #tblname, tblname##_adb }
-#  define ASN1_ADB_INTEGER(tblname) { ASN1_TFLG_ADB_INT, -1, 0, #tblname, tblname##_adb }
+# define ASN1_ADB_OBJECT(tblname) { ASN1_TFLG_ADB_OID, -1, 0, #tblname, tblname##_adb }
+# define ASN1_ADB_INTEGER(tblname) { ASN1_TFLG_ADB_INT, -1, 0, #tblname, tblname##_adb }
 # endif
 # define ASN1_SIMPLE(stname, field, type) ASN1_EX_TYPE(0,0, stname, field, type)
 # define ASN1_OPT(stname, field, type) ASN1_EX_TYPE(ASN1_TFLG_OPTIONAL, 0, stname, field, type)
@@ -191,7 +191,7 @@ ASN1_EXP_EX(stname, field, type, tag, ASN1_TFLG_OPTIONAL|ASN1_TFLG_NDEF)
 # define ASN1_ADB(name) \
 static const ASN1_ADB_TABLE name##_adbtbl[]
 # ifndef OPENSSL_EXPORT_VAR_AS_FUNCTION
-#  define ASN1_ADB_END(name, flags, field, app_table, def, none) \
+# define ASN1_ADB_END(name, flags, field, app_table, def, none) \
 ;\
 static const ASN1_ADB name##_adb = {\
 flags,\
@@ -203,7 +203,7 @@ def,\
 none\
 }
 # else
-#  define ASN1_ADB_END(name, flags, field, app_table, def, none) \
+# define ASN1_ADB_END(name, flags, field, app_table, def, none) \
 ;\
 static const ASN1_ITEM *name##_adb(void) \
 { \
@@ -250,26 +250,26 @@ struct ASN1_ADB_TABLE_st {
 long value;
 const ASN1_TEMPLATE tt;
 };
-# define ASN1_TFLG_OPTIONAL      (0x1)
-# define ASN1_TFLG_SET_OF        (0x1 << 1)
-# define ASN1_TFLG_SEQUENCE_OF   (0x2 << 1)
-# define ASN1_TFLG_SET_ORDER     (0x3 << 1)
-# define ASN1_TFLG_SK_MASK       (0x3 << 1)
-# define ASN1_TFLG_IMPTAG        (0x1 << 3)
-# define ASN1_TFLG_EXPTAG        (0x2 << 3)
-# define ASN1_TFLG_TAG_MASK      (0x3 << 3)
-# define ASN1_TFLG_IMPLICIT      ASN1_TFLG_IMPTAG|ASN1_TFLG_CONTEXT
-# define ASN1_TFLG_EXPLICIT      ASN1_TFLG_EXPTAG|ASN1_TFLG_CONTEXT
-# define ASN1_TFLG_UNIVERSAL     (0x0<<6)
-# define ASN1_TFLG_APPLICATION   (0x1<<6)
-# define ASN1_TFLG_CONTEXT       (0x2<<6)
-# define ASN1_TFLG_PRIVATE       (0x3<<6)
-# define ASN1_TFLG_TAG_CLASS     (0x3<<6)
-# define ASN1_TFLG_ADB_MASK      (0x3<<8)
-# define ASN1_TFLG_ADB_OID       (0x1<<8)
-# define ASN1_TFLG_ADB_INT       (0x1<<9)
-# define ASN1_TFLG_COMBINE       (0x1<<10)
-# define ASN1_TFLG_NDEF          (0x1<<11)
+# define ASN1_TFLG_OPTIONAL (0x1)
+# define ASN1_TFLG_SET_OF (0x1 << 1)
+# define ASN1_TFLG_SEQUENCE_OF (0x2 << 1)
+# define ASN1_TFLG_SET_ORDER (0x3 << 1)
+# define ASN1_TFLG_SK_MASK (0x3 << 1)
+# define ASN1_TFLG_IMPTAG (0x1 << 3)
+# define ASN1_TFLG_EXPTAG (0x2 << 3)
+# define ASN1_TFLG_TAG_MASK (0x3 << 3)
+# define ASN1_TFLG_IMPLICIT ASN1_TFLG_IMPTAG|ASN1_TFLG_CONTEXT
+# define ASN1_TFLG_EXPLICIT ASN1_TFLG_EXPTAG|ASN1_TFLG_CONTEXT
+# define ASN1_TFLG_UNIVERSAL (0x0<<6)
+# define ASN1_TFLG_APPLICATION (0x1<<6)
+# define ASN1_TFLG_CONTEXT (0x2<<6)
+# define ASN1_TFLG_PRIVATE (0x3<<6)
+# define ASN1_TFLG_TAG_CLASS (0x3<<6)
+# define ASN1_TFLG_ADB_MASK (0x3<<8)
+# define ASN1_TFLG_ADB_OID (0x1<<8)
+# define ASN1_TFLG_ADB_INT (0x1<<9)
+# define ASN1_TFLG_COMBINE (0x1<<10)
+# define ASN1_TFLG_NDEF (0x1<<11)
 struct ASN1_ITEM_st {
 char itype;
 long utype;
@@ -281,13 +281,13 @@ long size;
 const char *sname;
 # endif
 };
-# define ASN1_ITYPE_PRIMITIVE            0x0
-# define ASN1_ITYPE_SEQUENCE             0x1
-# define ASN1_ITYPE_CHOICE               0x2
-# define ASN1_ITYPE_COMPAT               0x3
-# define ASN1_ITYPE_EXTERN               0x4
-# define ASN1_ITYPE_MSTRING              0x5
-# define ASN1_ITYPE_NDEF_SEQUENCE        0x6
+# define ASN1_ITYPE_PRIMITIVE 0x0
+# define ASN1_ITYPE_SEQUENCE 0x1
+# define ASN1_ITYPE_CHOICE 0x2
+# define ASN1_ITYPE_COMPAT 0x3
+# define ASN1_ITYPE_EXTERN 0x4
+# define ASN1_ITYPE_MSTRING 0x5
+# define ASN1_ITYPE_NDEF_SEQUENCE 0x6
 struct ASN1_TLC_st {
 char valid;
 int ret;
@@ -364,23 +364,23 @@ BIO *out;
 BIO *ndef_bio;
 unsigned char **boundary;
 } ASN1_STREAM_ARG;
-# define ASN1_AFLG_REFCOUNT      1
-# define ASN1_AFLG_ENCODING      2
-# define ASN1_AFLG_BROKEN        4
-# define ASN1_OP_NEW_PRE         0
-# define ASN1_OP_NEW_POST        1
-# define ASN1_OP_FREE_PRE        2
-# define ASN1_OP_FREE_POST       3
-# define ASN1_OP_D2I_PRE         4
-# define ASN1_OP_D2I_POST        5
-# define ASN1_OP_I2D_PRE         6
-# define ASN1_OP_I2D_POST        7
-# define ASN1_OP_PRINT_PRE       8
-# define ASN1_OP_PRINT_POST      9
-# define ASN1_OP_STREAM_PRE      10
-# define ASN1_OP_STREAM_POST     11
-# define ASN1_OP_DETACHED_PRE    12
-# define ASN1_OP_DETACHED_POST   13
+# define ASN1_AFLG_REFCOUNT 1
+# define ASN1_AFLG_ENCODING 2
+# define ASN1_AFLG_BROKEN 4
+# define ASN1_OP_NEW_PRE 0
+# define ASN1_OP_NEW_POST 1
+# define ASN1_OP_FREE_PRE 2
+# define ASN1_OP_FREE_POST 3
+# define ASN1_OP_D2I_PRE 4
+# define ASN1_OP_D2I_POST 5
+# define ASN1_OP_I2D_PRE 6
+# define ASN1_OP_I2D_POST 7
+# define ASN1_OP_PRINT_PRE 8
+# define ASN1_OP_PRINT_POST 9
+# define ASN1_OP_STREAM_PRE 10
+# define ASN1_OP_STREAM_POST 11
+# define ASN1_OP_DETACHED_PRE 12
+# define ASN1_OP_DETACHED_POST 13
 # define IMPLEMENT_ASN1_TYPE(stname) IMPLEMENT_ASN1_TYPE_ex(stname, stname, 0)
 # define IMPLEMENT_ASN1_TYPE_ex(itname, vname, ex) \
 ASN1_ITEM_start(itname) \
@@ -529,7 +529,7 @@ int asn1_enc_restore(int *len, unsigned char **out, ASN1_VALUE **pval,
 const ASN1_ITEM *it);
 int asn1_enc_save(ASN1_VALUE **pval, const unsigned char *in, int inlen,
 const ASN1_ITEM *it);
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif
 #endif

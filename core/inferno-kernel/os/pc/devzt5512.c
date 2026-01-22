@@ -1,9 +1,9 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
 enum{
 Qdir,
 Qsysid,
@@ -15,13 +15,13 @@ Qstat,
 };
 static
 Dirtab zttab[]={
-".",			{Qdir,0,QTDIR},		0,	0555,
-"id",			{Qsysid, 0},		0,	0444,
-"watchdog",	{Qwatchdog, 0}, 	0,	0600,
-"ledctl",		{Qledctl, 0},		0,	0666,
-"powerstat",	{Qpower, 0},		0,	0444,
-"switch",		{Qswitch, 0},		0,	0444,
-"stat",		{Qstat, 0},			0,	0444,
+".", {Qdir,0,QTDIR}, 0, 0555,
+"id", {Qsysid, 0}, 0, 0444,
+"watchdog", {Qwatchdog, 0}, 0, 0600,
+"ledctl", {Qledctl, 0}, 0, 0666,
+"powerstat", {Qpower, 0}, 0, 0444,
+"switch", {Qswitch, 0}, 0, 0444,
+"stat", {Qstat, 0}, 0, 0444,
 };
 extern int watchdog;
 void

@@ -1022,7 +1022,7 @@ joutput, "subject",
 "Stuff =?utf8?q?p=C3=A4_=3Dutf8=3Fq=3Fencoding=3F=3D?=");
 json_ostream_nwrite_string(joutput, "snippet",
 "P\xc3\xa4iv\xc3\xa4\xc3\xa4.");
-json_ostream_nwrite_number(joutput,  "unseen", 1);
+json_ostream_nwrite_number(joutput, "unseen", 1);
 json_ostream_nascend_object(joutput);
 json_ostream_nfinish_destroy(&joutput);
 test_assert_strcmp(

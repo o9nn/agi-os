@@ -21,20 +21,20 @@ editlog = mods.editlog;
 }
 #
 # Structure of Undo list:
-# 	The Undo structure follows any associated data, so the list
-#	can be read backwards: read the structure, then read whatever
-#	data is associated (insert string, file name) and precedes it.
-#	The structure includes the previous value of the modify bit
-#	and a sequence number; successive Undo structures with the
-#	same sequence number represent simultaneous changes.
+# The Undo structure follows any associated data, so the list
+# can be read backwards: read the structure, then read whatever
+# data is associated (insert string, file name) and precedes it.
+# The structure includes the previous value of the modify bit
+# and a sequence number; successive Undo structures with the
+# same sequence number represent simultaneous changes.
 #
 Undo : adt
 {
-typex : int;	# Delete, Insert, Filename
-mod : int;		# modify bit
-seq : int;		# sequence number
-p0 : int;		# location of change (unused in f)
-n : int;		# # runes in string or file name
+typex : int; # Delete, Insert, Filename
+mod : int; # modify bit
+seq : int; # sequence number
+p0 : int; # location of change (unused in f)
+n : int; # # runes in string or file name
 };
 Undosize : con 8;
 SHM : con 16rffff;
@@ -182,7 +182,7 @@ stop = f.seq;
 # redo; reverse epsilon onto delta, seq increases
 delta = f.epsilon;
 epsilon = f.delta;
-stop = 0;	# don't know yet
+stop = 0; # don't know yet
 }
 buf = utils->stralloc(BUFSIZE);
 while(delta.nc > 0){

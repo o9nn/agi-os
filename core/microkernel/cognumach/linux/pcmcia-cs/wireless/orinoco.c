@@ -31,34 +31,34 @@ EXPORT_SYMBOL(orinoco_debug);
 static int suppress_linkstatus;
 MODULE_PARM(suppress_linkstatus, "i");
 #ifndef SIOCIWFIRSTPRIV
-#define SIOCIWFIRSTPRIV		SIOCDEVPRIVATE
+#define SIOCIWFIRSTPRIV SIOCDEVPRIVATE
 #endif
 #ifndef SIOCIWLASTPRIV
-#define SIOCIWLASTPRIV		SIOCDEVPRIVATE+0xF
+#define SIOCIWLASTPRIV SIOCDEVPRIVATE+0xF
 #endif
 #ifdef WIRELESS_SPY
-#define SPY_NUMBER(priv)	(priv->spy_number)
+#define SPY_NUMBER(priv) (priv->spy_number)
 #else
-#define SPY_NUMBER(priv)	0
+#define SPY_NUMBER(priv) 0
 #endif
-#define ORINOCO_MIN_MTU		256
-#define ORINOCO_MAX_MTU		(IEEE802_11_DATA_LEN - ENCAPS_OVERHEAD)
-#define SYMBOL_MAX_VER_LEN	(14)
-#define USER_BAP		0
-#define IRQ_BAP			1
-#define MAX_IRQLOOPS_PER_IRQ	10
-#define MAX_IRQLOOPS_PER_JIFFY	(20000/HZ)
-#define SMALL_KEY_SIZE		5
-#define LARGE_KEY_SIZE		13
-#define TX_NICBUF_SIZE_BUG	1585
-#define DUMMY_FID		0xFFFF
+#define ORINOCO_MIN_MTU 256
+#define ORINOCO_MAX_MTU (IEEE802_11_DATA_LEN - ENCAPS_OVERHEAD)
+#define SYMBOL_MAX_VER_LEN (14)
+#define USER_BAP 0
+#define IRQ_BAP 1
+#define MAX_IRQLOOPS_PER_IRQ 10
+#define MAX_IRQLOOPS_PER_JIFFY (20000/HZ)
+#define SMALL_KEY_SIZE 5
+#define LARGE_KEY_SIZE 13
+#define TX_NICBUF_SIZE_BUG 1585
+#define DUMMY_FID 0xFFFF
 #define RUP_EVEN(a) (((a) + 1) & (~1))
-#define MAX_MULTICAST(priv)	(HERMES_MAX_MULTICAST)
+#define MAX_MULTICAST(priv) (HERMES_MAX_MULTICAST)
 #ifdef MACH
 #undef copy_to_user
-#define copy_to_user(a,b,c)     (memcpy(a,b,c), 0)
-#define verify_area(a,b,c)      (0)
-#define copy_from_user(a,b,c)   (memcpy(a,b,c), 0)
+#define copy_to_user(a,b,c) (memcpy(a,b,c), 0)
+#define verify_area(a,b,c) (0)
+#define copy_from_user(a,b,c) (memcpy(a,b,c), 0)
 #endif
 const long channel_frequency[] = {
 2412, 2417, 2422, 2427, 2432, 2437, 2442,
@@ -71,14 +71,14 @@ int automatic;
 u16 agere_txratectrl;
 u16 intersil_txratectrl;
 } bitrate_table[] = {
-{110, 1,  3, 15},
-{10,  0,  1,  1},
-{10,  1,  1,  1},
-{20,  0,  2,  2},
-{20,  1,  6,  3},
-{55,  0,  4,  4},
-{55,  1,  7,  7},
-{110, 0,  5,  8},
+{110, 1, 3, 15},
+{10, 0, 1, 1},
+{10, 1, 1, 1},
+{20, 0, 2, 2},
+{20, 1, 6, 3},
+{55, 0, 4, 4},
+{55, 1, 7, 7},
+{110, 0, 5, 8},
 };
 #define BITRATE_TABLE_SIZE (sizeof(bitrate_table) / sizeof(bitrate_table[0]))
 struct header_struct {
@@ -92,7 +92,7 @@ u8 oui[3];
 u16 ethertype;
 } __attribute__ ((packed));
 u8 encaps_hdr[] = {0xaa, 0xaa, 0x03, 0x00, 0x00, 0x00};
-#define ENCAPS_OVERHEAD		(sizeof(encaps_hdr) + 2)
+#define ENCAPS_OVERHEAD (sizeof(encaps_hdr) + 2)
 static void orinoco_stat_gather(struct net_device *dev,
 struct sk_buff *skb,
 struct hermes_rx_descriptor *desc);
@@ -514,8 +514,8 @@ static int __orinoco_hw_setup_wep(struct orinoco_private *priv)
 {
 hermes_t *hw = &priv->hw;
 int err = 0;
-int	master_wep_flag;
-int	auth_flag;
+int master_wep_flag;
+int auth_flag;
 switch (priv->firmware_type) {
 case FIRMWARE_TYPE_AGERE:
 if (priv->wep_on) {
@@ -1457,7 +1457,7 @@ memcpy(hdr.src, eh->h_source, ETH_ALEN);
 hdr.len = htons(data_len + ENCAPS_OVERHEAD);
 memcpy(&hdr.dsap, &encaps_hdr, sizeof(encaps_hdr));
 hdr.ethertype = eh->h_proto;
-err  = hermes_bap_pwrite(hw, USER_BAP, &hdr, sizeof(hdr),
+err = hermes_bap_pwrite(hw, USER_BAP, &hdr, sizeof(hdr),
 txfid, HERMES_802_3_OFFSET);
 if (err) {
 printk(KERN_ERR "%s: Error %d writing packet header to BAP\n",
@@ -1712,7 +1712,7 @@ err = -E2BIG;
 goto out;
 }
 if ( (erq->length > LARGE_KEY_SIZE)
-|| ( ! priv->has_big_wep && (erq->length > SMALL_KEY_SIZE))  ) {
+|| ( ! priv->has_big_wep && (erq->length > SMALL_KEY_SIZE)) ) {
 err = -EINVAL;
 goto out;
 }
@@ -2654,10 +2654,10 @@ struct {
 u16 rid;
 char *name;
 int displaytype;
-#define DISPLAY_WORDS	0
-#define DISPLAY_BYTES	1
-#define DISPLAY_STRING	2
-#define DISPLAY_XSTRING	3
+#define DISPLAY_WORDS 0
+#define DISPLAY_BYTES 1
+#define DISPLAY_STRING 2
+#define DISPLAY_XSTRING 3
 } record_table[] = {
 #define DEBUG_REC(name,type) { HERMES_RID_##name, #name, DISPLAY_##type }
 DEBUG_REC(CNFPORTTYPE,WORDS),
@@ -2760,7 +2760,7 @@ DEBUG_REC(BUILDSEQ,BYTES),
 DEBUG_REC(FWID,XSTRING)
 #undef DEBUG_REC
 };
-#define DEBUG_LTV_SIZE		128
+#define DEBUG_LTV_SIZE 128
 static int orinoco_debug_dump_recs(struct net_device *dev)
 {
 struct orinoco_private *priv = dev->priv;

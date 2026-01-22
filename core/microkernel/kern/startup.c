@@ -58,7 +58,7 @@
 #if ! MACH_KBD
 boolean_t reboot_on_panic = TRUE;
 #endif
-#if	NCPUS > 1
+#if NCPUS > 1
 #include <machine/mp_desc.h>
 #include <kern/smp.h>
 #include <kern/machine.h>
@@ -66,9 +66,9 @@ boolean_t reboot_on_panic = TRUE;
 extern char *kernel_cmdline;
 void setup_main(void)
 {
-thread_t		startup_thread;
-phys_addr_t		memsize;
-#if	MACH_KDB
+thread_t startup_thread;
+phys_addr_t memsize;
+#if MACH_KDB
 if (strstr(kernel_cmdline, "-d ")) {
 cninit();
 SoftDebugger("init");
@@ -100,10 +100,10 @@ vdso_init();
 PMAP_ACTIVATE_KERNEL(master_cpu);
 init_timers();
 init_timeout();
-#if	XPR_DEBUG
+#if XPR_DEBUG
 xprbootstrap();
 #endif
-#if	MACH_DTRACE
+#if MACH_DTRACE
 dtrace_init();
 #endif
 machine_init();
@@ -133,7 +133,7 @@ machine_info.minor_version = KERNEL_MINOR_VERSION;
 task_init();
 thread_init();
 swapper_init();
-#if	MACH_HOST
+#if MACH_HOST
 pset_sys_init();
 #endif
 recompute_priorities(NULL);
@@ -149,10 +149,10 @@ cpu_launch_first_thread(startup_thread);
 }
 void start_kernel_threads(void)
 {
-int	i;
+int i;
 for (i = 0; i < NCPUS; i++) {
 if (machine_slot[i].is_cpu) {
-thread_t	th;
+thread_t th;
 char name[10];
 (void) thread_create(kernel_task, &th);
 snprintf(name, sizeof(name), "idle/%d", i);
@@ -169,14 +169,14 @@ thread_doswapin(th);
 #ifndef MACH_XEN
 (void) kernel_thread(kernel_task, "intr", intr_thread, (char *)0);
 #endif
-#if	NCPUS > 1
+#if NCPUS > 1
 (void) kernel_thread(kernel_task, "action", action_thread, (char *) 0);
 start_other_cpus();
 #endif
 device_service_create();
 record_time_stamp (&kernel_task->creation_time);
 bootstrap_create();
-#if	XPR_DEBUG
+#if XPR_DEBUG
 xprinit();
 #endif
 (void) spl0();
@@ -185,7 +185,7 @@ vm_pageout();
 }
 void cpu_launch_first_thread(thread_t th)
 {
-int	mycpu;
+int mycpu;
 mycpu = cpu_number();
 cpu_up(mycpu);
 start_timer(&kernel_timer[mycpu]);

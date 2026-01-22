@@ -36,7 +36,7 @@ ASSERT(JsonObject->TryGetObjectField(TEXT("FileReferences"), FileReferences), "F
 (*FileReferences)->TryGetStringField(TEXT("Physics"), PhysicsPath);
 (*FileReferences)->TryGetStringField(TEXT("Pose"), PosePath);
 (*FileReferences)->TryGetStringField(TEXT("DisplayInfo"), DisplayInfoPath);
-const TArray< TSharedPtr<FJsonValue> >*  ExpressionsArrayObject;
+const TArray< TSharedPtr<FJsonValue> >* ExpressionsArrayObject;
 if ((*FileReferences)->TryGetArrayField(TEXT("Expressions"), ExpressionsArrayObject))
 {
 for (const TSharedPtr<FJsonValue>& ExpressionValue: *ExpressionsArrayObject)

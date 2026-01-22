@@ -4,25 +4,25 @@
 (ConceptNode "man" (stv .01 0.9))
 (ConceptNode "human" (stv .02 0.9))
 (InheritanceLink (stv 0.9 0.9)
-    (ConceptNode "Socrates")
-    (ConceptNode "man"))
+(ConceptNode "Socrates")
+(ConceptNode "man"))
 (InheritanceLink (stv 0.9 0.9)
-    (ConceptNode "Einstein")
-    (ConceptNode "man"))
+(ConceptNode "Einstein")
+(ConceptNode "man"))
 (InheritanceLink (stv 0.9 0.9)
-    (ConceptNode "Peirce")
-    (ConceptNode "man"))
+(ConceptNode "Peirce")
+(ConceptNode "man"))
 (InheritanceLink (stv 0.9 0.9)
-    (ConceptNode "man")
-    (ConceptNode "human"))
+(ConceptNode "man")
+(ConceptNode "human"))
 (InheritanceLink (stv 0.9 0.9)
-    (ConceptNode "Einstein")
-    (ConceptNode "violin-players"))
+(ConceptNode "Einstein")
+(ConceptNode "violin-players"))
 (define find-humans
-    (BindLink
-        (VariableNode "$X")
-        (InheritanceLink
-            (VariableNode "$X")
-            (ConceptNode "human"))
-        (ListLink
-            (VariableNode "$X"))))
+(BindLink
+(VariableNode "$X")
+(InheritanceLink
+(VariableNode "$X")
+(ConceptNode "human"))
+(ListLink
+(VariableNode "$X"))))

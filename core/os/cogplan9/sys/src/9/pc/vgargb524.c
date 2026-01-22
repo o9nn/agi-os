@@ -5,35 +5,35 @@
 #include "fns.h"
 #include "io.h"
 #include "../port/error.h"
-#define	Image	IMAGE
+#define Image IMAGE
 #include <draw.h>
 #include <memdraw.h>
 #include <cursor.h>
 #include "screen.h"
 enum {
-IndexLo		= 0x00,
-IndexHi		= 0x01,
-Data		= 0x02,
-IndexCtl	= 0x03,
+IndexLo = 0x00,
+IndexHi = 0x01,
+Data = 0x02,
+IndexCtl = 0x03,
 };
 enum {
-CursorCtl	= 0x30,
-CursorXLo	= 0x31,
-CursorXHi	= 0x32,
-CursorYLo	= 0x33,
-CursorYHi	= 0x34,
-CursorHotX	= 0x35,
-CursorHotY	= 0x36,
-CursorR1	= 0x40,
-CursorG1	= 0x41,
-CursorB1	= 0x42,
-CursorR2	= 0x43,
-CursorG2	= 0x44,
-CursorB2	= 0x45,
-CursorR3	= 0x46,
-CursorG3	= 0x47,
-CursorB3	= 0x48,
-CursorArray	= 0x100,
+CursorCtl = 0x30,
+CursorXLo = 0x31,
+CursorXHi = 0x32,
+CursorYLo = 0x33,
+CursorYHi = 0x34,
+CursorHotX = 0x35,
+CursorHotY = 0x36,
+CursorR1 = 0x40,
+CursorG1 = 0x41,
+CursorB1 = 0x42,
+CursorR2 = 0x43,
+CursorG2 = 0x44,
+CursorB2 = 0x45,
+CursorR3 = 0x46,
+CursorG3 = 0x47,
+CursorB3 = 0x48,
+CursorArray = 0x100,
 };
 static ushort dacxreg[4] = {
 PaddrW, Pdata, Pixmask, PaddrR

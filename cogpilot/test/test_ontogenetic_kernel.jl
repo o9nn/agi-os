@@ -23,7 +23,7 @@ genetic_distance, kernel_to_string,
 create_kernel, generate_trees_up_to_order
 println("""
 ╔════════════════════════════════════════════════════════════════╗
-║  ONTOGENETIC KERNEL TEST SUITE                                 ║
+║ ONTOGENETIC KERNEL TEST SUITE ║
 ╚════════════════════════════════════════════════════════════════╝
 """)
 Random.seed!(42)
@@ -61,14 +61,14 @@ println("\n[2/6] Testing Tree Generation...")
 trees_order_3 = generate_trees_up_to_order(3)
 trees_order_4 = generate_trees_up_to_order(4)
 trees_order_5 = generate_trees_up_to_order(5)
-@test length(trees_order_3) >= 4  # At least 1+1+2 trees
-@test length(trees_order_4) >= 8  # At least 1+1+2+4 trees
-@test length(trees_order_5) >= 11  # More trees
+@test length(trees_order_3) >= 4 # At least 1+1+2 trees
+@test length(trees_order_4) >= 8 # At least 1+1+2+4 trees
+@test length(trees_order_5) >= 11 # More trees
 # Test tree structure (level sequences)
 for tree in trees_order_3
 @test tree isa Vector{Int}
-@test all(x -> x >= 1, tree)  # All levels >= 1
-@test tree[1] == 1  # Root at level 1
+@test all(x -> x >= 1, tree) # All levels >= 1
+@test tree[1] == 1 # Root at level 1
 end
 println("  ✓ Tree generation working")
 println("  ✓ Generated $(length(trees_order_5)) trees up to order 5")
@@ -101,7 +101,7 @@ evaluate_kernel_fitness!(kernel1, nothing, population)
 novelty2 = kernel1.novelty
 # Novelty should change
 # (May increase or decrease depending on genetic distance)
-@test novelty1 != novelty2 || novelty1 == 0.5  # Unless defaulted
+@test novelty1 != novelty2 || novelty1 == 0.5 # Unless defaulted
 println("  ✓ Fitness evaluation working")
 println("  ✓ All components in valid range")
 println("  ✓ Novelty responds to population diversity")
@@ -172,7 +172,7 @@ update_stage!(kernel)
 kernel2 = create_kernel(4)
 kernel2.lifecycle.stage = :mature
 kernel2.lifecycle.age = 30
-kernel2.fitness = 0.3  # Low fitness
+kernel2.fitness = 0.3 # Low fitness
 update_stage!(kernel2)
 @test kernel2.lifecycle.stage == :senescent
 println("  ✓ Lifecycle stages transitioning correctly")
@@ -186,7 +186,7 @@ consciousness = generate_consciousness_kernel(order=5, depth_bias=2.0)
 @test consciousness isa OK.Kernel
 @test consciousness.genome.max_order == 5
 @test "consciousness_seed" in consciousness.lineage
-@test consciousness.lifecycle.stage == :juvenile  # Born mature
+@test consciousness.lifecycle.stage == :juvenile # Born mature
 # Test physics kernel
 physics = generate_physics_kernel(:hamiltonian, order=4,
 conserved_quantities=[:energy])

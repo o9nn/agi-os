@@ -1,5 +1,5 @@
 #ifndef gzpath_INCLUDED
-#  define gzpath_INCLUDED
+# define gzpath_INCLUDED
 #include "gxpath.h"
 #include "gsmatrix.h"
 #include "gsrefct.h"
@@ -13,31 +13,31 @@ s_curve
 #define segment_common\
 segment *prev;\
 segment *next;\
-ushort  type;\
-ushort  notes;\
-gs_fixed_point pt;		\
+ushort type;\
+ushort notes;\
+gs_fixed_point pt; \
 #ifndef segment_DEFINED
-#  define segment_DEFINED
+# define segment_DEFINED
 typedef struct segment_s segment;
 #endif
 typedef struct subpath_s subpath;
 struct segment_s {
 segment_common
 };
-#define private_st_segment()	\
+#define private_st_segment() \
 gs_private_st_ptrs2(st_segment, struct segment_s, "segment",\
 segment_enum_ptrs, segment_reloc_ptrs, prev, next)
 typedef struct {
 segment_common
 } line_segment;
-#define private_st_line()	\
+#define private_st_line() \
 gs_private_st_suffix_add0(st_line, line_segment, "line",\
 line_enum_ptrs, line_reloc_ptrs, st_segment)
 typedef struct {
 segment_common
 subpath * sub;
 } line_close_segment;
-#define private_st_line_close()	\
+#define private_st_line_close() \
 gs_private_st_suffix_add1(st_line_close, line_close_segment, "close",\
 close_enum_ptrs, close_reloc_ptrs, st_segment, sub)
 #define curve_points_to_coefficients(v0, v1, v2, v3, a, b, c, t01, t12)\
@@ -54,7 +54,7 @@ typedef struct {
 segment_common
 gs_fixed_point p1, p2;
 } curve_segment;
-#define private_st_curve()	\
+#define private_st_curve() \
 gs_private_st_suffix_add0_local(st_curve, curve_segment, "curve",\
 segment_enum_ptrs, segment_reloc_ptrs, st_segment)
 struct subpath_s {
@@ -62,9 +62,9 @@ segment_common
 segment * last;
 int curve_count;
 line_close_segment closer;
-char  is_closed;
+char is_closed;
 };
-#define private_st_subpath()	\
+#define private_st_subpath() \
 gs_private_st_suffix_add1(st_subpath, subpath, "subpath",\
 subpath_enum_ptrs, subpath_reloc_ptrs, st_segment, last)
 gx_path_rectangular_type
@@ -118,7 +118,7 @@ subpath *subpath_first;
 subpath *subpath_current;
 } contents;
 } gx_path_segments;
-#define private_st_path_segments()	\
+#define private_st_path_segments() \
 gs_private_st_ptrs2(st_path_segments, gx_path_segments, "path segments",\
 path_segments_enum_ptrs, path_segments_reloc_ptrs,\
 contents.subpath_first, contents.subpath_current)
@@ -143,10 +143,10 @@ gs_fixed_rect bbox;
 segment *box_last;
 #define first_subpath segments->contents.subpath_first
 #define current_subpath segments->contents.subpath_current
-byte  start_flags;
-byte  state_flags;
-byte  bbox_set;
-byte  bbox_accurate;
+byte start_flags;
+byte state_flags;
+byte bbox_set;
+byte bbox_accurate;
 byte _pad;
 int subpath_count;
 int curve_count;
@@ -154,7 +154,7 @@ gs_fixed_point position;
 gx_path_procs *procs;
 };
 extern_st(st_path);
-#define public_st_path()	\
+#define public_st_path() \
 gs_public_st_ptrs2(st_path, gx_path, "path",\
 path_enum_ptrs, path_reloc_ptrs, segments, box_last)
 #define st_path_max_ptrs 2
@@ -168,7 +168,7 @@ bool moveto_done;
 segment_notes notes;
 };
 extern_st(st_path_enum);
-#define public_st_path_enum()	\
+#define public_st_path_enum() \
 gs_public_st_ptrs3(st_path_enum, gs_path_enum, "gs_path_enum",\
 path_enum_enum_ptrs, path_enum_reloc_ptrs, pseg, path, copied_path)
 #define gx_path_has_curves_inline(ppath)\

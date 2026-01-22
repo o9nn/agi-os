@@ -1,25 +1,25 @@
 (use-modules (opencog))
 (use-modules (opencog exec))
 (define marconi
-	(ListLink
-		(ConceptNode "Marconi")
-		(ConceptNode "developed")
-		(ConceptNode "the")
-		(ConceptNode "first")
-		(ConceptNode "practical")
-		(ConceptNode "wireless.")))
+(ListLink
+(ConceptNode "Marconi")
+(ConceptNode "developed")
+(ConceptNode "the")
+(ConceptNode "first")
+(ConceptNode "practical")
+(ConceptNode "wireless.")))
 (define who
-	(BindLink
-		(ListLink
-			(ConceptNode "WHO")
-			(ConceptNode "INVENTED")
-			(ConceptNode "RADIO"))
-		marconi))
+(BindLink
+(ListLink
+(ConceptNode "WHO")
+(ConceptNode "INVENTED")
+(ConceptNode "RADIO"))
+marconi))
 (DefineLink (DefinedSchemaNode "Marco did") marconi)
 (define whodfn
-	(BindLink
-		(ListLink
-			(ConceptNode "WHO")
-			(ConceptNode "INVENTED")
-			(ConceptNode "RADIO"))
-		(DefinedSchemaNode "Marco did")))
+(BindLink
+(ListLink
+(ConceptNode "WHO")
+(ConceptNode "INVENTED")
+(ConceptNode "RADIO"))
+(DefinedSchemaNode "Marco did")))

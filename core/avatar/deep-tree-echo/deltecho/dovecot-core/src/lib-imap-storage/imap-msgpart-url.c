@@ -60,7 +60,7 @@ const char **client_error_r)
 {
 struct mailbox_status box_status;
 struct imap_url base_url, *url;
-const char  *error;
+const char *error;
 i_zero(&base_url);
 if (selected_box != NULL) {
 mailbox_get_open_status(selected_box, STATUS_UIDVALIDITY,

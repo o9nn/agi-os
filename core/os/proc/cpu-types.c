@@ -80,13 +80,13 @@ const char *const mach_cpu_subtypes[][32] =
 [CPU_SUBTYPE_MMAX_XPC] = "MMAX_XPC",
 [CPU_SUBTYPE_PC532] = "PC532",
 },
-#define Ix86_SUBTYPES							    \
-{									    \
-[CPU_SUBTYPE_AT386] = "AT386",					    \
-[CPU_SUBTYPE_EXL] = "EXL",					    \
-[CPU_SUBTYPE_iPSC386] = "iPSC386",				    \
-[CPU_SUBTYPE_SYMMETRY] = "SYMMETRY",				    \
-[CPU_SUBTYPE_PS2] = "PS2",					    \
+#define Ix86_SUBTYPES \
+{ \
+[CPU_SUBTYPE_AT386] = "AT386", \
+[CPU_SUBTYPE_EXL] = "EXL", \
+[CPU_SUBTYPE_iPSC386] = "iPSC386", \
+[CPU_SUBTYPE_SYMMETRY] = "SYMMETRY", \
+[CPU_SUBTYPE_PS2] = "PS2", \
 }
 [CPU_TYPE_I386] = Ix86_SUBTYPES,
 #ifdef CPU_TYPE_I486

@@ -33,8 +33,8 @@ struct imapc_save_cmd_context {
 struct imapc_save_context *ctx;
 int ret;
 };
-#define IMAPC_SAVECTX(s)	container_of(s, struct imapc_save_context, ctx)
-#define IMAPC_SERVER_CMDLINE_MAX_LEN 	8000
+#define IMAPC_SAVECTX(s) container_of(s, struct imapc_save_context, ctx)
+#define IMAPC_SERVER_CMDLINE_MAX_LEN 8000
 void imapc_transaction_save_rollback(struct mail_save_context *_ctx);
 static void imapc_mail_copy_bulk_flush(struct imapc_mailbox *mbox);
 struct mail_save_context *

@@ -6,7 +6,7 @@ extern void ledexit(int);
 extern void delay(int);
 extern void _uartputs(char*, int);
 extern int _uartprint(char*, ...);
-#pragma	varargck argpos	_uartprint 1
+#pragma varargck argpos _uartprint 1
 extern void archreboot(void);
 extern void archreset(void);
 extern void cachedinv(void);
@@ -80,8 +80,8 @@ extern void ttbput(u32int);
 extern void watchdoginit(void);
 extern int irqenable(int, void (*)(Ureg*, void*), void*, char*);
 extern int irqdisable(int, void (*)(Ureg*, void*), void*, char*);
-#define intrenable(i, f, a, b, n)	irqenable((i), (f), (a), (n))
-#define intrdisable(i, f, a, b, n)	irqdisable((i), (f), (a), (n))
+#define intrenable(i, f, a, b, n) irqenable((i), (f), (a), (n))
+#define intrdisable(i, f, a, b, n) irqdisable((i), (f), (a), (n))
 extern void vectors(void);
 extern void vtable(void);
 extern int inb(int);
@@ -105,7 +105,7 @@ extern void fpusysrfork(Ureg*);
 extern void fpusysrforkchild(Proc*, Ureg*, Proc*);
 extern int fpuemu(Ureg*);
 extern char* getenv(char*, char*, int);
-char*	getconf(char*);
+char* getconf(char*);
 uintptr mmukmap(uintptr, uintptr, usize);
 uintptr mmukunmap(uintptr, uintptr, usize);
 extern void* mmuuncache(void*, usize);
@@ -122,23 +122,23 @@ extern void idlehands(void);
 extern void setkernur(Ureg*, Proc*);
 extern void* sysexecregs(uintptr, ulong, int);
 extern void sysprocsetup(Proc*);
-int	cas32(void*, u32int, u32int);
-int	tas32(void*);
-#define CASU(p, e, n)	cas32((p), (u32int)(e), (u32int)(n))
-#define CASV(p, e, n)	cas32((p), (u32int)(e), (u32int)(n))
-#define CASW(addr, exp, new)	cas32((addr), (exp), (new))
-#define TAS(addr)	tas32(addr)
+int cas32(void*, u32int, u32int);
+int tas32(void*);
+#define CASU(p, e, n) cas32((p), (u32int)(e), (u32int)(n))
+#define CASV(p, e, n) cas32((p), (u32int)(e), (u32int)(n))
+#define CASW(addr, exp, new) cas32((addr), (exp), (new))
+#define TAS(addr) tas32(addr)
 extern void forkret(void);
 extern int userureg(Ureg*);
-void*	vmap(uintptr, usize);
-void	vunmap(void*, usize);
+void* vmap(uintptr, usize);
+void vunmap(void*, usize);
 extern void kexit(Ureg*);
-#define	getpgcolor(a)	0
-#define	kmapinval()
-#define PTR2UINT(p)	((uintptr)(p))
-#define UINT2PTR(i)	((void*)(i))
-#define	waserror()	(up->nerrlab++, setlabel(&up->errlab[up->nerrlab-1]))
-#define KADDR(pa)	UINT2PTR(KZERO    | ((uintptr)(pa) & ~KSEGM))
-#define PADDR(va)	PTR2UINT(PHYSDRAM | ((uintptr)(va) & ~KSEGM))
+#define getpgcolor(a) 0
+#define kmapinval()
+#define PTR2UINT(p) ((uintptr)(p))
+#define UINT2PTR(i) ((void*)(i))
+#define waserror() (up->nerrlab++, setlabel(&up->errlab[up->nerrlab-1]))
+#define KADDR(pa) UINT2PTR(KZERO | ((uintptr)(pa) & ~KSEGM))
+#define PADDR(va) PTR2UINT(PHYSDRAM | ((uintptr)(va) & ~KSEGM))
 #define wave(c) *(ulong *)PHYSCONS = (c)
-#define MASK(v)	((1UL << (v)) - 1)
+#define MASK(v) ((1UL << (v)) - 1)

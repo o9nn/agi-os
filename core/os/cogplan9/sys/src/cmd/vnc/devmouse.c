@@ -1,46 +1,46 @@
-#include	<u.h>
-#include	<libc.h>
-#include	"compat.h"
-#include	"error.h"
-#define	Image	IMAGE
-#include	<draw.h>
-#include	<memdraw.h>
-#include	<cursor.h>
-#include	"screen.h"
-typedef struct Mouseinfo	Mouseinfo;
-typedef struct Mousestate	Mousestate;
+#include <u.h>
+#include <libc.h>
+#include "compat.h"
+#include "error.h"
+#define Image IMAGE
+#include <draw.h>
+#include <memdraw.h>
+#include <cursor.h>
+#include "screen.h"
+typedef struct Mouseinfo Mouseinfo;
+typedef struct Mousestate Mousestate;
 struct Mousestate
 {
-Point	xy;
-int	buttons;
-ulong	counter;
-ulong	msec;
+Point xy;
+int buttons;
+ulong counter;
+ulong msec;
 };
 struct Mouseinfo
 {
 Mousestate;
-int	dx;
-int	dy;
-int	track;
-int	redraw;
-ulong	lastcounter;
-Rendez	r;
+int dx;
+int dy;
+int track;
+int redraw;
+ulong lastcounter;
+Rendez r;
 Ref;
 QLock;
-int	open;
-int	acceleration;
-int	maxacc;
-Mousestate 	queue[16];
-int	ri;
-int	wi;
-uchar	qfull;
+int open;
+int acceleration;
+int maxacc;
+Mousestate queue[16];
+int ri;
+int wi;
+uchar qfull;
 };
-Mouseinfo	mouse;
-Cursorinfo	cursor;
-int		mouseshifted;
-Cursor		curs;
-void	Cursortocursor(Cursor*);
-int	mousechanged(void*);
+Mouseinfo mouse;
+Cursorinfo cursor;
+int mouseshifted;
+Cursor curs;
+void Cursortocursor(Cursor*);
+int mousechanged(void*);
 static void mouseclock(void);
 enum{
 Qdir,
@@ -48,16 +48,16 @@ Qcursor,
 Qmouse,
 };
 static Dirtab mousedir[]={
-".",	{Qdir, 0, QTDIR},	0,			DMDIR|0555,
-"cursor",	{Qcursor},	0,			0666,
-"mouse",	{Qmouse},	0,			0666,
+".", {Qdir, 0, QTDIR}, 0, DMDIR|0555,
+"cursor", {Qcursor}, 0, 0666,
+"mouse", {Qmouse}, 0, 0666,
 };
 static uchar buttonmap[8] = {
 0, 1, 2, 3, 4, 5, 6, 7,
 };
 static int mouseswap;
-extern	Memimage*	gscreen;
-extern	void mousewarpnote(Point);
+extern Memimage* gscreen;
+extern void mousewarpnote(Point);
 static void
 mousereset(void)
 {

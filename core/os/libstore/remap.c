@@ -59,7 +59,7 @@ error_t create_remap (const struct store_run *runs, size_t num_runs)
 struct store *source;
 error_t err = store_decode_children (enc, 1, classes, &source);
 if (! err)
-err =  store_remap_create (source, runs, num_runs, flags, store);
+err = store_remap_create (source, runs, num_runs, flags, store);
 return err;
 }
 return store_with_decoded_runs (enc, num_runs, create_remap);

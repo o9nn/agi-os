@@ -251,12 +251,12 @@ return;
 printf("\n=== IPC Benchmark Results ===\n");
 const char *type_name;
 switch (result->type) {
-case IPC_BENCH_LATENCY:     type_name = "Latency"; break;
-case IPC_BENCH_THROUGHPUT:  type_name = "Throughput"; break;
-case IPC_BENCH_BANDWIDTH:   type_name = "Bandwidth"; break;
+case IPC_BENCH_LATENCY: type_name = "Latency"; break;
+case IPC_BENCH_THROUGHPUT: type_name = "Throughput"; break;
+case IPC_BENCH_BANDWIDTH: type_name = "Bandwidth"; break;
 case IPC_BENCH_SCALABILITY: type_name = "Scalability"; break;
 case IPC_BENCH_MEMORY_USAGE: type_name = "Memory Usage"; break;
-default:                    type_name = "Unknown"; break;
+default: type_name = "Unknown"; break;
 }
 printf("Test Type: %s\n", type_name);
 printf("Message Size: %u bytes\n", result->message_size);

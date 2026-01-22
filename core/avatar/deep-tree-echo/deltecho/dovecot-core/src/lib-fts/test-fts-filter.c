@@ -160,10 +160,10 @@ const char *error;
 int ret;
 const char *input[] = {"an", "elephant", "and", "a", "bear",
 "drive", "by", "for", "no", "reason",
-"they", "will", "not",  "sing", NULL};
+"they", "will", "not", "sing", NULL};
 const char *output[] = {NULL, "elephant", NULL, NULL, "bear",
 "drive", NULL, NULL, NULL, "reason",
-NULL, NULL, NULL,  "sing"};
+NULL, NULL, NULL, "sing"};
 const char **ip, **op;
 const char *token;
 test_begin("fts filter stopwords, English");
@@ -178,7 +178,7 @@ test_assert(ret == 0);
 test_assert(*op == NULL);
 } else {
 test_assert(*op != NULL);
-test_assert(strcmp(*ip, token)  == 0);
+test_assert(strcmp(*ip, token) == 0);
 }
 op++;
 ip++;
@@ -215,7 +215,7 @@ test_assert(ret == 0);
 test_assert(*op == NULL);
 } else {
 test_assert(*op != NULL);
-test_assert(strcmp(*ip, token)  == 0);
+test_assert(strcmp(*ip, token) == 0);
 }
 op++;
 ip++;
@@ -233,7 +233,7 @@ test_assert(ret == 0);
 test_assert(*op == NULL);
 } else {
 test_assert(*op != NULL);
-test_assert(strcmp(*ip, token)  == 0);
+test_assert(strcmp(*ip, token) == 0);
 }
 op++;
 ip++;
@@ -268,7 +268,7 @@ test_assert(ret == 0);
 test_assert(*op == NULL);
 } else {
 test_assert(*op != NULL);
-test_assert(strcmp(*ip, token)  == 0);
+test_assert(strcmp(*ip, token) == 0);
 }
 op++;
 ip++;
@@ -310,7 +310,7 @@ test_assert(ret == 0);
 test_assert(*op == NULL);
 } else {
 test_assert(*op != NULL);
-test_assert(strcmp(*ip, token)  == 0);
+test_assert(strcmp(*ip, token) == 0);
 }
 op++;
 ip++;
@@ -385,7 +385,7 @@ const char *error;
 const char *token = NULL;
 const char * const tokens[] = {
 "Tous", "les", "\xC3\xAAtres", "humains", "naissent",
-"libres", "et",	"\xC3\xA9gaux", "en", "dignit\xC3\xA9",
+"libres", "et", "\xC3\xA9gaux", "en", "dignit\xC3\xA9",
 "et", "en", "droits", NULL};
 const char * const bases[] = {
 "Tous" ,"le", "\xC3\xAAtre", "humain", "naissent", "libr", "et",
@@ -439,7 +439,7 @@ if (ret == 0)
 test_assert(*bpp == NULL);
 else {
 test_assert(*bpp != NULL);
-test_assert(null_strcmp(*bpp, token)  == 0);
+test_assert(null_strcmp(*bpp, token) == 0);
 }
 bpp++;
 }
@@ -706,7 +706,7 @@ test_assert(ret == 0);
 test_assert(*bpp == NULL);
 } else {
 test_assert(*bpp != NULL);
-test_assert(strcmp(*bpp, token)  == 0);
+test_assert(strcmp(*bpp, token) == 0);
 }
 bpp++;
 }
@@ -784,7 +784,7 @@ const char * const tokens[] = {
 "hos", "alla", "medlemmar", "av", "människosläktet", "och",
 "av", "deras", "lika", "och", "oförytterliga", "rättigheter",
 "är", "grundvalen", "för", "frihet", "rättvisa", "och", "fred",
-"i", "världen",	NULL};
+"i", "världen", NULL};
 const char * const bases[] = {
 "enar", "erkan", NULL, NULL, "inneboend", "vardet", "hos", NULL,
 "medlemm", NULL, "manniskoslaktet", NULL, NULL, NULL, "lik",

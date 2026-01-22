@@ -16,12 +16,12 @@ readpng: RImagefile;
 include "tk.m";
 tk: Tk;
 Toplevel: import tk;
-include	"tkclient.m";
+include "tkclient.m";
 tkclient: Tkclient;
 include "selectfile.m";
 selectfile: Selectfile;
-include	"arg.m";
-include	"plumbmsg.m";
+include "arg.m";
+include "plumbmsg.m";
 plumbmsg: Plumbmsg;
 Msg: import plumbmsg;
 stderr: ref Sys->FD;
@@ -33,7 +33,7 @@ plumbed := 0;
 background: ref Image;
 View: module
 {
-init:	fn(ctxt: ref Draw->Context, argv: list of string);
+init: fn(ctxt: ref Draw->Context, argv: list of string);
 };
 init(ctxt: ref Draw->Context, argv: list of string)
 {
@@ -109,7 +109,7 @@ continue;
 file = plumbfile();
 if(file == nil)
 break;
-errdiff = 1;	# set this from attributes?
+errdiff = 1; # set this from attributes?
 }else
 break;
 (ims, masks, err) := readimages(file, errdiff);
@@ -282,27 +282,27 @@ if(grabbing) {
 (nil, l) := sys->tokenize(s, " ");
 xx := int hd l;
 yy := int hd tl l;
-#				grabtop := tk->intop(ctxt.screen, xx, yy);
-#				if(grabtop != nil) {
-#					cim := grabtop.image;
-#					imr := Rect((0,0), (cim.r.dx(), cim.r.dy()));
-#					image = display.newimage(imr, cim.chans, 0, draw->White);
-#					if(image == nil){
-#						sys->fprint(stderr, "view: can't allocate image\n");
-#						exit;
-#					}
-#					image.draw(imr, cim, nil, cim.r.min);
-#					tk->cmd(t, ".Wm_t.title configure -text {View: grabbed}");
-#					imconfig(t, image);
-#					tk->putimage(t, ".p", image, nil);
-#					tk->cmd(t, "update");
-#					# Would be nicer if this could be spun off cleanly
-#					ims = array[1] of {image};
-#					masks = array[1] of ref Image;
-#					imno = 0;
-#					grabtop = nil;
-#					cim = nil;
-#				}
+# grabtop := tk->intop(ctxt.screen, xx, yy);
+# if(grabtop != nil) {
+# cim := grabtop.image;
+# imr := Rect((0,0), (cim.r.dx(), cim.r.dy()));
+# image = display.newimage(imr, cim.chans, 0, draw->White);
+# if(image == nil){
+# sys->fprint(stderr, "view: can't allocate image\n");
+# exit;
+# }
+# image.draw(imr, cim, nil, cim.r.min);
+# tk->cmd(t, ".Wm_t.title configure -text {View: grabbed}");
+# imconfig(t, image);
+# tk->putimage(t, ".p", image, nil);
+# tk->cmd(t, "update");
+# # Would be nicer if this could be spun off cleanly
+# ims = array[1] of {image};
+# masks = array[1] of ref Image;
+# imno = 0;
+# grabtop = nil;
+# cim = nil;
+# }
 tk->cmd(t, "cursor -default; grab release .p");
 grabbing = 0;
 }
@@ -362,18 +362,18 @@ return file;
 }
 Tab: adt
 {
-suf:	string;
-path:	string;
-mod:	RImagefile;
+suf: string;
+path: string;
+mod: RImagefile;
 };
 GIF, JPG, PIC, PNG, XBM: con iota;
 tab := array[] of
 {
-GIF => Tab(".gif",	RImagefile->READGIFPATH,	nil),
-JPG => Tab(".jpg",	RImagefile->READJPGPATH,	nil),
-PIC => Tab(".pic",	RImagefile->READPICPATH,	nil),
-XBM => Tab(".xbm",	RImagefile->READXBMPATH,	nil),
-PNG => Tab(".png",	RImagefile->READPNGPATH,	nil),
+GIF => Tab(".gif", RImagefile->READGIFPATH, nil),
+JPG => Tab(".jpg", RImagefile->READJPGPATH, nil),
+PIC => Tab(".pic", RImagefile->READPICPATH, nil),
+XBM => Tab(".xbm", RImagefile->READXBMPATH, nil),
+PNG => Tab(".png", RImagefile->READPNGPATH, nil),
 };
 filetype(file: string, fd: ref Iobuf): (RImagefile, string)
 {

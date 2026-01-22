@@ -1,5 +1,5 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #include "nntpstorage.h"
 #include <stdlib.h>
@@ -9,7 +9,7 @@
 #include "nntpdriver_cached.h"
 #include "mailstorage_tools.h"
 #include "mail.h"
-#define NNTP_DEFAULT_PORT  119
+#define NNTP_DEFAULT_PORT 119
 #define NNTPS_DEFAULT_PORT 563
 static int nntp_mailstorage_connect(struct mailstorage * storage);
 static int nntp_mailstorage_get_folder_session(struct mailstorage * storage,

@@ -5,64 +5,64 @@
 #include "fns.h"
 #include "io.h"
 enum {
-Nrxchan=	2,
-Ntxchan=	4,
-Maxchan		= 4
+Nrxchan= 2,
+Ntxchan= 4,
+Maxchan = 4
 };
 enum {
-Cfg=		0x180,
-Esr=		0x181,
-Ier=		0x182,
-Txcasr=	 0x184,
-Txcarr=	 0x185,
+Cfg= 0x180,
+Esr= 0x181,
+Ier= 0x182,
+Txcasr= 0x184,
+Txcarr= 0x185,
 Txeobisr= 0x186,
-Txdeir=	 0x187,
-Rxcasr=	 0x190,
-Rxcarr= 	0x191,
-Rxeobisr=	 0x192,
-Rxdeir=	 0x193,
+Txdeir= 0x187,
+Rxcasr= 0x190,
+Rxcarr= 0x191,
+Rxeobisr= 0x192,
+Rxdeir= 0x193,
 };
-#define	TXCTPR(n)	(0x1A0+(n))
-#define	RXCTPR(n)	(0x1C0+(n))
-#define	RCBS(n)	(0x1E0+(n))
+#define TXCTPR(n) (0x1A0+(n))
+#define RXCTPR(n) (0x1C0+(n))
+#define RCBS(n) (0x1E0+(n))
 enum {
-CfgSr=		1<<31,
-CfgPlbp0=	0<<22,
-CfgPlbp1=	1<<22,
-CfgPlbp2=	2<<22,
-CfgPlbp3=	3<<22,
-CfgGa=		1<<21,
-CfgOa=		1<<20,
-CfgPlble=		1<<19,
-CfgPlbt_f=	0xF<<15,
-CfgPlbt_s=	15,
-CfgPlbb=		1<<14,
-CfgOpbbl=	1<<7,
-CfgOepie=	1<<2,
-CfgLea=		1<<1,
-CfgSd=		1<<0,
-EsrEvb=		1<<31,
-EsrCid_f=		0x7F<<25,
-EsrDe=		1<<20,
-EsrOne=		1<<19,
-EsrOte=		1<<18,
-EsrOse=		1<<17,
-EsrPein=		1<<16,
-EsrDei=		1<<4,
-EsrOnei=		1<<3,
-EsrOtei=		1<<2,
-EsrOsei=		1<<1,
-EsrPbei=		1<<0,
+CfgSr= 1<<31,
+CfgPlbp0= 0<<22,
+CfgPlbp1= 1<<22,
+CfgPlbp2= 2<<22,
+CfgPlbp3= 3<<22,
+CfgGa= 1<<21,
+CfgOa= 1<<20,
+CfgPlble= 1<<19,
+CfgPlbt_f= 0xF<<15,
+CfgPlbt_s= 15,
+CfgPlbb= 1<<14,
+CfgOpbbl= 1<<7,
+CfgOepie= 1<<2,
+CfgLea= 1<<1,
+CfgSd= 1<<0,
+EsrEvb= 1<<31,
+EsrCid_f= 0x7F<<25,
+EsrDe= 1<<20,
+EsrOne= 1<<19,
+EsrOte= 1<<18,
+EsrOse= 1<<17,
+EsrPein= 1<<16,
+EsrDei= 1<<4,
+EsrOnei= 1<<3,
+EsrOtei= 1<<2,
+EsrOsei= 1<<1,
+EsrPbei= 1<<0,
 };
 typedef struct Malmem Malmem;
 struct Malmem {
 Lock;
-BD*	base;
-BD*	limit;
-BD*	avail;
+BD* base;
+BD* limit;
+BD* avail;
 };
-static Malmem	malmem;
-static Mal*	malchans[2][Maxchan];
+static Malmem malmem;
+static Mal* malchans[2][Maxchan];
 static void
 errorintr(Ureg*, void*)
 {

@@ -5,32 +5,32 @@
 #include "dat.h"
 #include "fns.h"
 #include "error.h"
-#define 	Audio_Mic_Val		0
-#define 	Audio_Linein_Val	-1
-#define	Audio_Speaker_Val	0
-#define	Audio_Headphone_Val	-1
-#define	Audio_Lineout_Val	-1
-#define 	Audio_Pcm_Val		WAVE_FORMAT_PCM
-#define 	Audio_Ulaw_Val		(WAVE_FORMAT_PCM+1)
-#define 	Audio_Alaw_Val		(WAVE_FORMAT_PCM+2)
-#define 	Audio_Max_Queue		8
-#define BUFLEN		1000
-#define INISOPEN	0x00000002
-#define OUTISOPEN	0x00000004
-#define INPUTISGOING	0x00000020
+#define Audio_Mic_Val 0
+#define Audio_Linein_Val -1
+#define Audio_Speaker_Val 0
+#define Audio_Headphone_Val -1
+#define Audio_Lineout_Val -1
+#define Audio_Pcm_Val WAVE_FORMAT_PCM
+#define Audio_Ulaw_Val (WAVE_FORMAT_PCM+1)
+#define Audio_Alaw_Val (WAVE_FORMAT_PCM+2)
+#define Audio_Max_Queue 8
+#define BUFLEN 1000
+#define INISOPEN 0x00000002
+#define OUTISOPEN 0x00000004
+#define INPUTISGOING 0x00000020
 #include "audio.h"
 #include "audio-tbls.c"
 static int debug = 0;
-#define  Ping 0
-#define  Pong 1
+#define Ping 0
+#define Pong 1
 static HWAVEIN audio_file_in;
 static HWAVEOUT audio_file_out;
 static long out_buf_count;
 typedef struct _awin {
 WAVEHDR hdr;
-long	sz;
-char*	ptr;
-char	data[Audio_Max_Buf];
+long sz;
+char* ptr;
+char data[Audio_Max_Buf];
 } AWin;
 static AWin audio_ping;
 static AWin audio_pong;
@@ -49,8 +49,8 @@ static void audio_close_in(void);
 static void audio_close_out(void);
 static void CALLBACK waveInProc(HWAVEIN, UINT, DWORD, DWORD, DWORD);
 static void CALLBACK waveOutProc(HWAVEOUT, UINT, DWORD, DWORD, DWORD);
-#define AUDIOIN  0
-#define AUDIOOUT  1
+#define AUDIOIN 0
+#define AUDIOOUT 1
 static int
 audioerror(unsigned int code, int in_out, char *msg)
 {
@@ -134,7 +134,7 @@ error(Einuse);
 if(!audio_open_in(&audio_file_in, &av.in) )
 error(Ebadarg);
 in_is_open = 1;
-if(!audio_open_out(&audio_file_out, &av.out))  {
+if(!audio_open_out(&audio_file_out, &av.out)) {
 CloseHandle(outlock);
 error(Ebadarg);
 }
@@ -361,8 +361,8 @@ qunlock(&flag_lock);
 nexterror();
 }
 while((total < count) && ((audio_ping.sz > 0) || (audio_pong.sz > 0))) {
-n  = paddle == Ping ? audio_ping.sz : audio_pong.sz;
-p  = paddle == Ping ? audio_ping.ptr : audio_pong.ptr;
+n = paddle == Ping ? audio_ping.sz : audio_pong.sz;
+p = paddle == Ping ? audio_ping.ptr : audio_pong.ptr;
 chunk = min(n, count - total);
 memmove(v+total, p , chunk);
 total += chunk;
@@ -573,7 +573,7 @@ format.nAvgBytesPerSec =
 format.nSamplesPerSec * format.nBlockAlign;
 format.cbSize = 0;
 if(audioerror(
-waveInOpen(NULL, WAVE_MAPPER, &format, 0, 0,  WAVE_FORMAT_QUERY),
+waveInOpen(NULL, WAVE_MAPPER, &format, 0, 0, WAVE_FORMAT_QUERY),
 AUDIOIN, "cannot open microphone/line-in to test parameters") == -1)
 error(Ebadarg);
 qlock(&flag_lock);

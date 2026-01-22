@@ -88,7 +88,7 @@ dcrypt_deinitialize();
 }
 int main(void)
 {
-void (*tests[])(void)  = {
+void (*tests[])(void) = {
 test_setup,
 test_try_load_keys,
 test_empty_keyset,

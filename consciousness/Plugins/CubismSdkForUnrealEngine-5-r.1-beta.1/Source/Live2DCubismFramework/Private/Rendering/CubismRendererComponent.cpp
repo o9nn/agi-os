@@ -242,10 +242,10 @@ for (const TSharedPtr<FCubismMaskJunction>& Junction : Junctions)
 for (const TObjectPtr<UCubismDrawableComponent>& Drawable : Junction->Drawables)
 {
 UMaterialInstanceDynamic* MaterialInstance = static_cast<UMaterialInstanceDynamic*>(Drawable->GetMaterial(0));
-const TObjectPtr<UTexture2D>& MainTexture   = Drawable->TextureIndex < Model->Textures.Num()? Model->Textures[Drawable->TextureIndex] : nullptr;
-FLinearColor BaseColor     = Drawable->BaseColor;
+const TObjectPtr<UTexture2D>& MainTexture = Drawable->TextureIndex < Model->Textures.Num()? Model->Textures[Drawable->TextureIndex] : nullptr;
+FLinearColor BaseColor = Drawable->BaseColor;
 FLinearColor MultiplyColor = Drawable->MultiplyColor;
-FLinearColor ScreenColor   = Drawable->ScreenColor;
+FLinearColor ScreenColor = Drawable->ScreenColor;
 {
 if (Model->bOverwriteFlagForModelMultiplyColors)
 {

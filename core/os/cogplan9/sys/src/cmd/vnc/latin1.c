@@ -1,12 +1,12 @@
 #include <u.h>
 struct cvlist
 {
-char	*ld;
-char	*si;
-Rune	*so;
+char *ld;
+char *si;
+Rune *so;
 } latintab[] = {
 #include "latin1.h"
-0,	0,		0
+0, 0, 0
 };
 long
 unicode(Rune *k)

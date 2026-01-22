@@ -76,7 +76,7 @@ c = ++(pdfont->u.simple.LastChar);
 pdfont->Widths[c] = psdf_round(pdev->char_width.x, 100, 10);
 if (c > pbfs->max_embedded_code)
 pbfs->max_embedded_code = c;
-{	gs_text_enum_t *pte = pdev->pte;
+{ gs_text_enum_t *pte = pdev->pte;
 gs_font *font = pte->current_font;
 code = pdf_add_ToUnicode(pdev, font, pdfont, pte->returned.current_glyph, c);
 if (code < 0)
@@ -621,7 +621,7 @@ pcp->char_next = pdfont->u.simple.s.type3.char_procs;
 pdfont->u.simple.s.type3.char_procs = pcp;
 pcp->font = pdfont;
 pdfont->Widths[ch] = pcp->real_width.x;
-real_widths[ch * 2    ] = pcp->real_width.x;
+real_widths[ch * 2 ] = pcp->real_width.x;
 real_widths[ch * 2 + 1] = pcp->real_width.y;
 glyph_usage[ch / 8] |= 0x80 >> (ch & 7);
 pdfont->used[ch >> 3] |= 0x80 >> (ch & 7);
@@ -634,7 +634,7 @@ gs_glyph glyph = font->procs.encode_char(font, i,
 font->FontType == ft_user_defined ? GLYPH_SPACE_NOGEN
 : GLYPH_SPACE_NAME);
 if (glyph == glyph0) {
-real_widths[i * 2    ] = real_widths[ch * 2    ];
+real_widths[i * 2 ] = real_widths[ch * 2 ];
 real_widths[i * 2 + 1] = real_widths[ch * 2 + 1];
 glyph_usage[i / 8] |= 0x80 >> (i & 7);
 pdfont->used[i >> 3] |= 0x80 >> (i & 7);

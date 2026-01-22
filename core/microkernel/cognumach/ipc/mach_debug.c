@@ -15,9 +15,9 @@
 #include <ipc/ipc_right.h>
 kern_return_t
 mach_port_get_srights(
-ipc_space_t		space,
-mach_port_name_t	name,
-mach_port_rights_t	*srightsp)
+ipc_space_t space,
+mach_port_name_t name,
+mach_port_rights_t *srightsp)
 {
 ipc_port_t port;
 kern_return_t kr;
@@ -34,10 +34,10 @@ return KERN_SUCCESS;
 }
 kern_return_t
 host_ipc_marequest_info(
-host_t 				host,
-unsigned int 			*maxp,
-hash_info_bucket_array_t 	*infop,
-unsigned int 			*countp)
+host_t host,
+unsigned int *maxp,
+hash_info_bucket_array_t *infop,
+unsigned int *countp)
 {
 vm_offset_t addr;
 vm_size_t size = 0;
@@ -82,10 +82,10 @@ return KERN_SUCCESS;
 }
 kern_return_t
 mach_port_dnrequest_info(
-ipc_space_t	space,
-mach_port_name_t	name,
-unsigned int	*totalp,
-unsigned int	*usedp)
+ipc_space_t space,
+mach_port_name_t name,
+unsigned int *totalp,
+unsigned int *usedp)
 {
 unsigned int total, used;
 ipc_port_t port;
@@ -116,10 +116,10 @@ return KERN_SUCCESS;
 }
 kern_return_t
 mach_port_kernel_object(
-ipc_space_t	space,
-mach_port_name_t	name,
-unsigned int	*typep,
-vm_offset_t	*addrp)
+ipc_space_t space,
+mach_port_name_t name,
+unsigned int *typep,
+vm_offset_t *addrp)
 {
 ipc_entry_t entry;
 ipc_port_t port;

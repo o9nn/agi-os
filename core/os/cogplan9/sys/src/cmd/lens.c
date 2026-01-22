@@ -31,12 +31,12 @@ Image *red;
 Image *tmp;
 Image *grid;
 Image *chequer;
-int	screenfd;
-int	mag = 4;
-int	showgrid = 0;
-Rectangle	screenr;
-uchar	*screenbuf;
-void	magnify(void);
+int screenfd;
+int mag = 4;
+int showgrid = 0;
+Rectangle screenr;
+uchar *screenbuf;
+void magnify(void);
 void makegrid(void);
 void
 drawit(void)
@@ -207,7 +207,7 @@ uchar sp[4];
 dx = (Dx(tmp->r)+mag-1)/mag;
 dy = (Dy(tmp->r)+mag-1)/mag;
 xoff = lastp.x-Dx(tmp->r)/(mag*2);
-yoff  = lastp.y-Dy(tmp->r)/(mag*2);
+yoff = lastp.y-Dy(tmp->r)/(mag*2);
 yy = yoff;
 dd = dy;
 if(yy < 0){

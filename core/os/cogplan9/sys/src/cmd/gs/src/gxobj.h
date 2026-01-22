@@ -1,5 +1,5 @@
 #ifndef gxobj_INCLUDED
-#  define gxobj_INCLUDED
+# define gxobj_INCLUDED
 #include "gxbitmap.h"
 #ifdef DEBUG
 #define IGC_PTR_STABILITY_CHECK 0
@@ -40,22 +40,22 @@ union _t {
 gs_memory_type_ptr_t type;
 uint reloc;
 } t;
-#   if IGC_PTR_STABILITY_CHECK
+# if IGC_PTR_STABILITY_CHECK
 unsigned space_id:3;
-#   endif
+# endif
 } obj_header_data_t;
 #define obj_align_mod\
 (((arch_align_memory_mod - 1) |\
 (align_bitmap_mod - 1) |\
 (obj_back_scale - 1)) + 1)
 #if obj_align_mod == 4
-#  define log2_obj_align_mod 2
+# define log2_obj_align_mod 2
 #else
 #if obj_align_mod == 8
-#  define log2_obj_align_mod 3
+# define log2_obj_align_mod 3
 #else
 #if obj_align_mod == 16
-#  define log2_obj_align_mod 4
+# define log2_obj_align_mod 4
 #endif
 #endif
 #endif

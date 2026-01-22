@@ -1,25 +1,25 @@
 #ifdef sun
-#define	uint uxuint
-#define	ulong uxulong
-#define	ushort uxushort
+#define uint uxuint
+#define ulong uxulong
+#define ushort uxushort
 #endif
 #include <sys/types.h>
-#include	<sys/time.h>
-#include	<sys/socket.h>
-#include	<net/if.h>
-#include	<net/if_arp.h>
-#include	<netinet/in.h>
-#include	<netinet/tcp.h>
-#include	<arpa/inet.h>
-#include	<netdb.h>
-#include	<sys/ioctl.h>
+#include <sys/time.h>
+#include <sys/socket.h>
+#include <net/if.h>
+#include <net/if_arp.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <sys/ioctl.h>
 #undef ulong
 #undef ushort
 #undef uint
-#include        "dat.h"
-#include        "fns.h"
-#include        "ip.h"
-#include        "error.h"
+#include "dat.h"
+#include "fns.h"
+#include "ip.h"
+#include "error.h"
 int
 so_socket(int type)
 {

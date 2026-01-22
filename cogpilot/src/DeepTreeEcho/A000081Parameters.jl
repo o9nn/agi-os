@@ -22,16 +22,16 @@ These three expressions of A000081 (Matula numbers) must be equal for consistenc
 For a given **base order** n (typically 3-7):
 | Order | Reservoir Size | Roots/Mems/Diffs |
 |-------|----------------|------------------|
-| 1     | 1              | 1                |
-| 2     | 2              | 1                |
-| 3     | 4              | 2                |
-| 4     | 8              | 4                |
-| 5     | 17             | 9                |
-| 6     | 37             | 20               |
-| 7     | 85             | 48               |
-| 8     | 200            | 115              |
-| 9     | 486            | 286              |
-| 10    | 1205           | 719              |
+| 1 | 1 | 1 |
+| 2 | 2 | 1 |
+| 3 | 4 | 2 |
+| 4 | 8 | 4 |
+| 5 | 17 | 9 |
+| 6 | 37 | 20 |
+| 7 | 85 | 48 |
+| 8 | 200 | 115 |
+| 9 | 486 | 286 |
+| 10 | 1205 | 719 |
 Where:
 - Column 2: `reservoir_size = sum(A000081[1:n])` (cumulative trees up to order n)
 - Column 3: `num_trees = A000081[n]` (number of roots/membranes/differentials at order n)
@@ -117,7 +117,7 @@ correspond to the total number of distinct trees available up to a given order.
 # Example
 ```julia
 # Order 5: 1 + 1 + 2 + 4 + 9 = 17 trees total
-reservoir_size = derive_reservoir_size(5)  # Returns 17
+reservoir_size = derive_reservoir_size(5) # Returns 17
 ```
 """
 function derive_reservoir_size(base_order::Int)
@@ -138,9 +138,9 @@ align with the tree count at a specific structural order.
 # Example
 ```julia
 # Order 3 has 2 trees, so 2 membranes
-num_membranes = derive_num_membranes(3)  # Returns 2
+num_membranes = derive_num_membranes(3) # Returns 2
 # Order 4 has 4 trees, so 4 membranes
-num_membranes = derive_num_membranes(4)  # Returns 4
+num_membranes = derive_num_membranes(4) # Returns 4
 ```
 """
 function derive_num_membranes(membrane_order::Int)

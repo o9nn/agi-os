@@ -123,16 +123,16 @@ return err;
 #define OA OPTION_ARG_OPTIONAL
 static const struct argp_option options[] =
 {
-{"login",      'L',     "LID", OA, "Processes from the login"
+{"login", 'L', "LID", OA, "Processes from the login"
 " collection LID (which defaults that of"
 " the current process)"},
-{"lid",        0,       0,      OPTION_ALIAS | OPTION_HIDDEN},
-{"pid",        'p',     "PID",  0,  "The process PID"},
-{"pgrp",       'P',     "PGRP", 0,  "Processes in process group PGRP"},
-{"session",    'S',     "SID",  OA, "Processes from the session SID"
+{"lid", 0, 0, OPTION_ALIAS | OPTION_HIDDEN},
+{"pid", 'p', "PID", 0, "The process PID"},
+{"pgrp", 'P', "PGRP", 0, "Processes in process group PGRP"},
+{"session", 'S', "SID", OA, "Processes from the session SID"
 " (which defaults to that of the"
 " current process)"},
-{"sid",        0,       0,      OPTION_ALIAS | OPTION_HIDDEN},
+{"sid", 0, 0, OPTION_ALIAS | OPTION_HIDDEN},
 {0, 0}
 };
 static error_t

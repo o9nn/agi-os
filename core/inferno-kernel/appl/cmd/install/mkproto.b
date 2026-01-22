@@ -1,5 +1,5 @@
 #
-# Copyright © 2000 Vita Nuova (Holdings) Limited.  All rights reserved.
+# Copyright © 2000 Vita Nuova (Holdings) Limited. All rights reserved.
 #
 implement Mkproto;
 # make a proto description of the directory or file

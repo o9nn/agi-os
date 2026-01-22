@@ -1,13 +1,13 @@
 #include <u.h>
 #include <libc.h>
 #include <bio.h>
-void	ps(char*);
-void	error(char*);
-int	cmp(void*, void*);
-Biobuf	bout;
-int	pflag;
-int	aflag;
-int	rflag;
+void ps(char*);
+void error(char*);
+int cmp(void*, void*);
+Biobuf bout;
+int pflag;
+int aflag;
+int rflag;
 void
 main(int argc, char *argv[])
 {
@@ -68,7 +68,7 @@ argv[argc] = 0;
 utime = strtoul(argv[3], 0, 0)/1000;
 stime = strtoul(argv[4], 0, 0)/1000;
 rtime = strtoul(argv[5], 0, 0)/1000;
-size  = strtoul(argv[9], 0, 0);
+size = strtoul(argv[9], 0, 0);
 if(pflag){
 basepri = strtoul(argv[10], 0, 0);
 pri = strtoul(argv[11], 0, 0);

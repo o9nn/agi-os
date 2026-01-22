@@ -4,7 +4,7 @@
 #include "dat.h"
 #include "fns.h"
 #include "../port/error.h"
-#define	Image	IMAGE
+#define Image IMAGE
 #include <draw.h>
 #include <memdraw.h>
 #include <cursor.h>
@@ -12,9 +12,9 @@
 typedef struct Vgaseg Vgaseg;
 struct Vgaseg {
 QLock;
-ulong	pa;
-ulong	len;
-void*	va;
+ulong pa;
+ulong len;
+void* va;
 };
 enum {
 Nvgaseg = 4,
@@ -26,10 +26,10 @@ Qsegs,
 Qmax = Qsegs+Nvgaseg
 };
 static Dirtab vgadir[Qmax] = {
-".",	{ Qdir, 0, QTDIR },		0,	0550,
-"vgactl",		{ Qvgactl, 0 },		0,	0660,
-"vgaovl",		{ Qvgaovl, 0 },		0,	0660,
-"vgaovlctl",	{ Qvgaovlctl, 0 },	0, 	0660,
+".", { Qdir, 0, QTDIR }, 0, 0550,
+"vgactl", { Qvgactl, 0 }, 0, 0660,
+"vgaovl", { Qvgaovl, 0 }, 0, 0660,
+"vgaovlctl", { Qvgaovlctl, 0 }, 0, 0660,
 };
 static Vgaseg vgasegs[Nvgaseg];
 static Lock vgadirlock;
@@ -50,19 +50,19 @@ CMtype,
 CMunblank,
 };
 static Cmdtab vgactlmsg[] = {
-CMactualsize,	"actualsize",	2,
-CMblank,	"blank",	1,
-CMblanktime,	"blanktime",	2,
-CMdrawinit,	"drawinit",	1,
-CMhwaccel,	"hwaccel",	2,
-CMhwblank,	"hwblank",	2,
-CMhwgc,		"hwgc",		2,
-CMlinear,	"linear",	0,
-CMpalettedepth,	"palettedepth",	2,
-CMpanning,	"panning",	2,
-CMsize,		"size",		3,
-CMtype,		"type",		2,
-CMunblank,	"unblank",	1,
+CMactualsize, "actualsize", 2,
+CMblank, "blank", 1,
+CMblanktime, "blanktime", 2,
+CMdrawinit, "drawinit", 1,
+CMhwaccel, "hwaccel", 2,
+CMhwblank, "hwblank", 2,
+CMhwgc, "hwgc", 2,
+CMlinear, "linear", 0,
+CMpalettedepth, "palettedepth", 2,
+CMpanning, "panning", 2,
+CMsize, "size", 3,
+CMtype, "type", 2,
+CMunblank, "unblank", 1,
 };
 static void
 vgareset(void)

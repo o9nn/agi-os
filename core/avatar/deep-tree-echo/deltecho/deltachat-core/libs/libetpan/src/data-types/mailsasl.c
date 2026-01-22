@@ -1,5 +1,5 @@
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+# include <config.h>
 #endif
 #include "mailsasl.h"
 #ifdef USE_SASL
@@ -17,7 +17,7 @@
 static pthread_mutex_t sasl_lock = PTHREAD_MUTEX_INITIALIZER;
 #elif (defined WIN32)
 static CRITICAL_SECTION sasl_lock = { 0 };
-static int sasl_lock_init_done =  0;
+static int sasl_lock_init_done = 0;
 #endif
 #endif
 #ifdef LIBETPAN_REENTRANT

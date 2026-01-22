@@ -84,15 +84,15 @@ argnames.c_str());
 ValueServer& valueserver();
 #define TOKENPASTE(x, y) x ## y
 #define TOKENPASTE2(x, y) TOKENPASTE(x, y)
-#define DEFINE_VALUE_FACTORY(CTYPE,CREATE,...)                       \
+#define DEFINE_VALUE_FACTORY(CTYPE,CREATE,...) \
 \
 \
 \
-static __attribute__ ((constructor (110))) void                      \
-TOKENPASTE2(init, __COUNTER__)(void)                             \
-{                                                                           \
-valueserver().addFactory(CTYPE, (ValueFactory) & (CREATE<__VA_ARGS__>),  \
-to_list_of_type_indexes<__VA_ARGS__>());                              \
+static __attribute__ ((constructor (110))) void \
+TOKENPASTE2(init, __COUNTER__)(void) \
+{ \
+valueserver().addFactory(CTYPE, (ValueFactory) & (CREATE<__VA_ARGS__>), \
+to_list_of_type_indexes<__VA_ARGS__>()); \
 }
 }
 #endif

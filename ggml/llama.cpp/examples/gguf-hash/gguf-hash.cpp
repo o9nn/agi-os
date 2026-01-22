@@ -21,9 +21,9 @@ extern "C" {
 #define UUID_NAMESPACE_LLAMA_CPP "ef001206-dadc-5f6d-a15f-3359e577d4e5"
 #define UUID_NAMESPACE_LLAMA_CPP_HEX 0xef, 0x00, 0x12, 0x06, 0xda, 0xdc, 0x5f, 0x6d, 0xa1, 0x5f, 0x33, 0x59, 0xe5, 0x77, 0xd4, 0xe5
 #define HASH_TYPE_SHA256_STR "sha256"
-#define HASH_TYPE_SHA1_STR   "sha1"
-#define HASH_TYPE_XXH64_STR  "xxh64"
-#define HASH_TYPE_UUID_STR   "uuid"
+#define HASH_TYPE_SHA1_STR "sha1"
+#define HASH_TYPE_XXH64_STR "xxh64"
+#define HASH_TYPE_UUID_STR "uuid"
 typedef enum {
 HASH_EXIT_SUCCESS = 0,
 HASH_EXIT_FAILURE = 1,
@@ -272,7 +272,7 @@ if (hash_params.xxh64) {
 if (!hash_params.no_layer) {
 XXH64_hash_t hash = XXH64(raw_data, n_bytes, 0);
 char hex_result[17];
-for (int  offset = 0; offset < 8; offset++) {
+for (int offset = 0; offset < 8; offset++) {
 unsigned int shift_bits_by = (8 * (8 - offset - 1));
 snprintf( ( hex_result + (2*offset)), sizeof(hex_result) - (2*offset), "%02x", (unsigned char) (hash >> shift_bits_by)&0xff);
 }
@@ -301,7 +301,7 @@ if (!hash_params.no_layer) {
 char result[21];
 SHA1( result, (const char *)raw_data, n_bytes);
 char hex_result[41] = {0};
-for (int  offset = 0; offset < 20; offset++) {
+for (int offset = 0; offset < 20; offset++) {
 snprintf( ( hex_result + (2*offset)), sizeof(hex_result) - (2*offset), "%02x", result[offset]&0xff);
 }
 if (hash_params.manifest_is_usable) {
@@ -329,7 +329,7 @@ if (!hash_params.no_layer) {
 unsigned char result[SHA256_DIGEST_SIZE];
 sha256_hash((unsigned char*) result, (const unsigned char *)raw_data, n_bytes);
 char hex_result[SHA256_DIGEST_SIZE * 2 + 1] = {0};
-for (int  offset = 0; offset < SHA256_DIGEST_SIZE; offset++) {
+for (int offset = 0; offset < SHA256_DIGEST_SIZE; offset++) {
 snprintf( ( hex_result + (2*offset)), sizeof(hex_result) - (2*offset), "%02x", result[offset]&0xff);
 }
 if (hash_params.manifest_is_usable) {
@@ -359,7 +359,7 @@ SHA1Update( &sha1_for_uuid_ctx, (unsigned char const *)raw_data, n_bytes);
 if (hash_params.xxh64) {
 XXH64_hash_t const hash = XXH64_digest(xxh64_model_hash_state);
 char hex_result[17];
-for (int  offset = 0; offset < 8; offset++) {
+for (int offset = 0; offset < 8; offset++) {
 unsigned int shift_bits_by = (8 * (8 - offset - 1));
 snprintf( ( hex_result + (2*offset)), sizeof(hex_result) - (2*offset), "%02x", (unsigned char) (hash >> shift_bits_by)&0xff);
 }
@@ -385,7 +385,7 @@ if (hash_params.sha1) {
 unsigned char result[21];
 SHA1Final(result, &sha1_model_hash_ctx);
 char hex_result[41];
-for (int  offset = 0; offset < 20; offset++) {
+for (int offset = 0; offset < 20; offset++) {
 snprintf( ( hex_result + (2*offset)), sizeof(hex_result) - (2*offset), "%02x", result[offset]&0xff);
 }
 if (hash_params.manifest_is_usable) {
@@ -408,9 +408,9 @@ printf("%-8s  %-s  %s\n", HASH_TYPE_SHA1_STR, hex_result, fname.c_str());
 }
 if (hash_params.sha256) {
 unsigned char result[SHA256_DIGEST_SIZE];
-sha256_final( &sha256_model_hash_ctx,  result);
+sha256_final( &sha256_model_hash_ctx, result);
 char hex_result[SHA256_DIGEST_SIZE * 2 + 1] = {0};
-for (int  offset = 0; offset < SHA256_DIGEST_SIZE; offset++) {
+for (int offset = 0; offset < SHA256_DIGEST_SIZE; offset++) {
 snprintf( ( hex_result + (2*offset)), sizeof(hex_result) - (2*offset), "%02x", result[offset]&0xff);
 }
 if (hash_params.manifest_is_usable) {

@@ -2,311 +2,311 @@ import type { BufferGeometry, LoadingManager, Material, MaterialParameters, Text
 import { PmxObject } from 'babylon-mmd/esm/Loader/Parser/pmxObject'
 import { SharedToonTextures } from 'babylon-mmd/esm/Loader/sharedToonTextures'
 import {
-  AddOperation,
-  Color,
-  CustomBlending,
-  DefaultLoadingManager,
-  DoubleSide,
-  DstAlphaFactor,
-  FrontSide,
-  MultiplyOperation,
-  NearestFilter,
-  OneMinusSrcAlphaFactor,
-  RepeatWrapping,
-  RGB_ETC1_Format,
-  RGB_ETC2_Format,
-  RGB_PVRTC_2BPPV1_Format,
-  RGB_PVRTC_4BPPV1_Format,
-  RGB_S3TC_DXT1_Format,
-  SrcAlphaFactor,
-  SRGBColorSpace,
-  TextureLoader,
+AddOperation,
+Color,
+CustomBlending,
+DefaultLoadingManager,
+DoubleSide,
+DstAlphaFactor,
+FrontSide,
+MultiplyOperation,
+NearestFilter,
+OneMinusSrcAlphaFactor,
+RepeatWrapping,
+RGB_ETC1_Format,
+RGB_ETC2_Format,
+RGB_PVRTC_2BPPV1_Format,
+RGB_PVRTC_4BPPV1_Format,
+RGB_S3TC_DXT1_Format,
+SrcAlphaFactor,
+SRGBColorSpace,
+TextureLoader,
 } from 'three'
 import { TGALoader } from 'three/addons/loaders/TGALoader.js'
 import { MMDToonMaterial } from '../materials/mmd-toon-material'
 interface MaterialBuilderParameters extends MaterialParameters {
-  diffuse?: Color
-  emissive: Color
-  fog: boolean
-  gradientMap: LoadingTexture
-  isDefaultToonTexture: boolean
-  isToonTexture: boolean
-  map?: LoadingTexture
-  matcap: Texture
-  matcapCombine: number
-  name?: string
-  opacity: number
-  shininess: number
-  specular: Color
-  transparent: boolean
-  userData: {
-    MMD: {
-      mapFileName: string
-      matcapFileName: string
-    }
-    outlineParameters: {
-      alpha: number
-      color: number[]
-      thickness: number
-      visible: boolean
-    }
-  }
+diffuse?: Color
+emissive: Color
+fog: boolean
+gradientMap: LoadingTexture
+isDefaultToonTexture: boolean
+isToonTexture: boolean
+map?: LoadingTexture
+matcap: Texture
+matcapCombine: number
+name?: string
+opacity: number
+shininess: number
+specular: Color
+transparent: boolean
+userData: {
+MMD: {
+mapFileName: string
+matcapFileName: string
+}
+outlineParameters: {
+alpha: number
+color: number[]
+thickness: number
+visible: boolean
+}
+}
 }
 const NON_ALPHA_CHANNEL_FORMATS = [
-  RGB_S3TC_DXT1_Format,
-  RGB_PVRTC_4BPPV1_Format,
-  RGB_PVRTC_2BPPV1_Format,
-  RGB_ETC1_Format,
-  RGB_ETC2_Format,
+RGB_S3TC_DXT1_Format,
+RGB_PVRTC_4BPPV1_Format,
+RGB_PVRTC_2BPPV1_Format,
+RGB_ETC1_Format,
+RGB_ETC2_Format,
 ] as readonly number[]
 interface LoadingTexture extends Texture {
-  readyCallbacks?: ((texture: Texture) => void)[]
-  transparent: boolean
+readyCallbacks?: ((texture: Texture) => void)[]
+transparent: boolean
 }
 const checkImageTransparency = (map: LoadingTexture, geometry: BufferGeometry, groupIndex: number) => {
-  map.readyCallbacks!.push((texture: Texture) => {
-    const createImageData = (image: HTMLImageElement) => {
-      const canvas = document.createElement('canvas')
-      canvas.width = image.width
-      canvas.height = image.height
-      const context = canvas.getContext('2d')!
-      context.drawImage(image, 0, 0)
-      return context.getImageData(0, 0, canvas.width, canvas.height)
-    }
-    const detectImageTransparency = (image: ImageData, uvs: TypedArray, indices: TypedArray) => {
-      const width = image.width
-      const height = image.height
-      const data = image.data
-      const threshold = 253
-      const getAlphaByUv = (image: ImageData, uv: { x: number, y: number }) => {
-        const width = image.width
-        const height = image.height
-        let x = Math.round(uv.x * width) % width
-        let y = Math.round(uv.y * height) % height
-        if (x < 0)
-          x += width
-        if (y < 0)
-          y += height
-        const index = y * width + x
-        return image.data[index * 4 + 3]
-      }
-      if (data.length / (width * height) !== 4)
-        return false
-      for (let i = 0; i < indices.length; i += 3) {
-        const centerUV = { x: 0.0, y: 0.0 }
-        for (let j = 0; j < 3; j++) {
-          const index = indices[i * 3 + j]
-          const uv = { x: uvs[index * 2 + 0], y: uvs[index * 2 + 1] }
-          if (getAlphaByUv(image, uv) < threshold)
-            return true
-          centerUV.x += uv.x
-          centerUV.y += uv.y
-        }
-        centerUV.x /= 3
-        centerUV.y /= 3
-        if (getAlphaByUv(image, centerUV) < threshold)
-          return true
-      }
-      return false
-    }
-    if ('isCompressedTexture' in texture && texture.isCompressedTexture === true) {
-      if (NON_ALPHA_CHANNEL_FORMATS.includes(texture.format)) {
-        map.transparent = false
-      }
-      else {
-        map.transparent = true
-      }
-      return
-    }
-    const imageData: ImageData = ('data' in texture.image && (texture.image as { data: unknown }).data != null)
-      ? texture.image as ImageData
-      : createImageData(texture.image as HTMLImageElement)
-    const group = geometry.groups[groupIndex]
-    if (detectImageTransparency(
-      imageData,
-      geometry.attributes.uv.array,
-      geometry.index!.array.slice(group.start, group.start + group.count),
-    )) {
-      map.transparent = true
-    }
-  })
+map.readyCallbacks!.push((texture: Texture) => {
+const createImageData = (image: HTMLImageElement) => {
+const canvas = document.createElement('canvas')
+canvas.width = image.width
+canvas.height = image.height
+const context = canvas.getContext('2d')!
+context.drawImage(image, 0, 0)
+return context.getImageData(0, 0, canvas.width, canvas.height)
+}
+const detectImageTransparency = (image: ImageData, uvs: TypedArray, indices: TypedArray) => {
+const width = image.width
+const height = image.height
+const data = image.data
+const threshold = 253
+const getAlphaByUv = (image: ImageData, uv: { x: number, y: number }) => {
+const width = image.width
+const height = image.height
+let x = Math.round(uv.x * width) % width
+let y = Math.round(uv.y * height) % height
+if (x < 0)
+x += width
+if (y < 0)
+y += height
+const index = y * width + x
+return image.data[index * 4 + 3]
+}
+if (data.length / (width * height) !== 4)
+return false
+for (let i = 0; i < indices.length; i += 3) {
+const centerUV = { x: 0.0, y: 0.0 }
+for (let j = 0; j < 3; j++) {
+const index = indices[i * 3 + j]
+const uv = { x: uvs[index * 2 + 0], y: uvs[index * 2 + 1] }
+if (getAlphaByUv(image, uv) < threshold)
+return true
+centerUV.x += uv.x
+centerUV.y += uv.y
+}
+centerUV.x /= 3
+centerUV.y /= 3
+if (getAlphaByUv(image, centerUV) < threshold)
+return true
+}
+return false
+}
+if ('isCompressedTexture' in texture && texture.isCompressedTexture === true) {
+if (NON_ALPHA_CHANNEL_FORMATS.includes(texture.format)) {
+map.transparent = false
+}
+else {
+map.transparent = true
+}
+return
+}
+const imageData: ImageData = ('data' in texture.image && (texture.image as { data: unknown }).data != null)
+? texture.image as ImageData
+: createImageData(texture.image as HTMLImageElement)
+const group = geometry.groups[groupIndex]
+if (detectImageTransparency(
+imageData,
+geometry.attributes.uv.array,
+geometry.index!.array.slice(group.start, group.start + group.count),
+)) {
+map.transparent = true
+}
+})
 }
 const getRotatedImage = (image: HTMLImageElement) => {
-  const canvas = document.createElement('canvas')
-  const context = canvas.getContext('2d')!
-  const width = image.width
-  const height = image.height
-  canvas.width = width
-  canvas.height = height
-  context.clearRect(0, 0, width, height)
-  context.translate(width / 2.0, height / 2.0)
-  context.rotate(0.5 * Math.PI) 
-  context.translate(-width / 2.0, -height / 2.0)
-  context.drawImage(image, 0, 0)
-  return context.getImageData(0, 0, width, height)
+const canvas = document.createElement('canvas')
+const context = canvas.getContext('2d')!
+const width = image.width
+const height = image.height
+canvas.width = width
+canvas.height = height
+context.clearRect(0, 0, width, height)
+context.translate(width / 2.0, height / 2.0)
+context.rotate(0.5 * Math.PI)
+context.translate(-width / 2.0, -height / 2.0)
+context.drawImage(image, 0, 0)
+return context.getImageData(0, 0, width, height)
 }
 export const buildMaterial = (
-  data: PmxObject,
-  geometry: BufferGeometry,
-  resourcePath: string,
-  onProgress?: (event: ProgressEvent) => void,
-  onError?: (event: unknown) => void,
+data: PmxObject,
+geometry: BufferGeometry,
+resourcePath: string,
+onProgress?: (event: ProgressEvent) => void,
+onError?: (event: unknown) => void,
 ) => {
-  const crossOrigin = 'anonymous'
-  const manager: LoadingManager = DefaultLoadingManager
-  const textureLoader = new TextureLoader(manager)
-  textureLoader.setCrossOrigin(crossOrigin)
-  let tgaLoader: TGALoader | undefined
-  const getTGALoader = (): TGALoader => {
-    if (tgaLoader === undefined)
-      tgaLoader = new TGALoader(manager)
-    return tgaLoader
-  }
-  const loadTexture = (
-    filePath: string,
-    textures: Record<string, LoadingTexture>,
-    params?: Partial<MaterialBuilderParameters>,
-  ): LoadingTexture => {
-    params = params ?? {}
-    let fullPath
-    if (params.isDefaultToonTexture === true) {
-      let index
-      try {
-        index = Number.parseInt(/toon(\d{2})\.bmp$/.exec(filePath)![1])
-      }
-      catch {
-        console.warn(`MMDLoader: ${filePath} seems like a `
-          + 'not right default texture path. Using toon00.bmp instead.')
-        index = 0
-      }
-      fullPath = SharedToonTextures.Data[index]
-    }
-    else {
-      fullPath = resourcePath + filePath
-    }
-    if (textures[fullPath] != null)
-      return textures[fullPath]
-    let loader = manager.getHandler(fullPath)
-    if (loader === null) {
-      loader = (filePath.slice(-4).toLowerCase() === '.tga')
-        ? getTGALoader()
-        : textureLoader
-    }
-    const texture: LoadingTexture = (loader as TextureLoader).load(fullPath, (t: Texture) => {
-      if (params.isToonTexture === true) {
-        t.image = getRotatedImage(t.image as HTMLImageElement)
-        t.magFilter = NearestFilter
-        t.minFilter = NearestFilter
-        t.generateMipmaps = false
-      }
-      t.flipY = false
-      t.wrapS = RepeatWrapping
-      t.wrapT = RepeatWrapping
-      t.colorSpace = SRGBColorSpace
-      for (let i = 0; i < texture.readyCallbacks!.length; i++)
-        texture.readyCallbacks![i](texture)
-      delete texture.readyCallbacks
-    }, onProgress, onError) as LoadingTexture
-    texture.readyCallbacks = []
-    textures[fullPath] = texture
-    return texture
-  }
-  const materials: MMDToonMaterial[] = []
-  const textures: Record<string, LoadingTexture> = {}
-  for (let i = 0; i < data.materials.length; i++) {
-    const material: PmxObject.Material = data.materials[i]
-    const params: MaterialBuilderParameters = { userData: { MMD: {} } } as any
-    params.name = material.name
-    params.diffuse = new Color().setRGB(
-      material.diffuse[0],
-      material.diffuse[1],
-      material.diffuse[2],
-      SRGBColorSpace,
-    )
-    params.opacity = material.diffuse[3]
-    params.specular = new Color().setRGB(...material.specular, SRGBColorSpace)
-    params.shininess = material.shininess
-    params.emissive = new Color().setRGB(...material.ambient, SRGBColorSpace)
-    params.transparent = params.opacity !== 1.0
-    params.fog = true
-    params.blending = CustomBlending
-    params.blendSrc = SrcAlphaFactor
-    params.blendDst = OneMinusSrcAlphaFactor
-    params.blendSrcAlpha = SrcAlphaFactor
-    params.blendDstAlpha = DstAlphaFactor
-    if ((material.flag & PmxObject.Material.Flag.IsDoubleSided) === 1) {
-      params.side = DoubleSide
-    }
-    else {
-      params.side = params.opacity === 1.0 ? FrontSide : DoubleSide
-    }
-    if (material.textureIndex !== -1) {
-      params.map = loadTexture(data.textures[material.textureIndex], textures)
-      params.userData.MMD.mapFileName = data.textures[material.textureIndex]
-    }
-    if (material.sphereTextureIndex !== -1 && (material.sphereTextureMode === PmxObject.Material.SphereTextureMode.Multiply || material.sphereTextureMode === PmxObject.Material.SphereTextureMode.Add)) {
-      params.matcap = loadTexture(
-        data.textures[material.sphereTextureIndex],
-        textures,
-      )
-      params.userData.MMD.matcapFileName = data.textures[material.sphereTextureIndex]
-      params.matcapCombine = material.sphereTextureMode === PmxObject.Material.SphereTextureMode.Multiply
-        ? MultiplyOperation
-        : AddOperation
-    }
-    let isDefaultToon, toonFileName
-    if (material.isSharedToonTexture) {
-      toonFileName = `toon${(`0${material.toonTextureIndex + 1}`).slice(-2)}.bmp`
-      isDefaultToon = true
-    }
-    else {
-      toonFileName = data.textures[material.toonTextureIndex]
-      isDefaultToon = false
-    }
-    params.gradientMap = loadTexture(
-      toonFileName,
-      textures,
-      {
-        isDefaultToonTexture: isDefaultToon,
-        isToonTexture: true,
-      },
-    )
-    params.userData.outlineParameters = {
-      alpha: material.edgeColor[3],
-      color: material.edgeColor.slice(0, 3),
-      thickness: material.edgeSize / 300, 
-      visible: (material.flag & PmxObject.Material.Flag.EnabledToonEdge) !== 0 && material.edgeSize > 0.0,
-    }
-    if (params.map !== undefined) {
-      if (!params.transparent)
-        checkImageTransparency(params.map, geometry, i)
-      params.emissive.multiplyScalar(0.2)
-    }
-    materials.push(new MMDToonMaterial(params))
-  }
-  const checkAlphaMorph = (elements: PmxObject.Morph.MaterialMorph['elements'], materials: Material[]) => {
-    for (let i = 0, il = elements.length; i < il; i++) {
-      const element = elements[i]
-      if (element.index === -1)
-        continue
-      const material = materials[element.index]
-      if (material.opacity !== element.diffuse[3])
-        material.transparent = true
-    }
-  }
-  for (let i = 0, il = data.morphs.length; i < il; i++) {
-    const morph = data.morphs[i]
-    if (morph.type === PmxObject.Morph.Type.GroupMorph) {
-      for (let j = 0, jl = morph.indices.length; j < jl; j++) {
-        const morph2 = data.morphs[morph.indices[j]]
-        if (morph2.type !== PmxObject.Morph.Type.MaterialMorph)
-          continue
-        checkAlphaMorph(morph2.elements, materials)
-      }
-    }
-    else if (morph.type === PmxObject.Morph.Type.MaterialMorph) {
-      checkAlphaMorph(morph.elements, materials)
-    }
-  }
-  return materials
+const crossOrigin = 'anonymous'
+const manager: LoadingManager = DefaultLoadingManager
+const textureLoader = new TextureLoader(manager)
+textureLoader.setCrossOrigin(crossOrigin)
+let tgaLoader: TGALoader | undefined
+const getTGALoader = (): TGALoader => {
+if (tgaLoader === undefined)
+tgaLoader = new TGALoader(manager)
+return tgaLoader
+}
+const loadTexture = (
+filePath: string,
+textures: Record<string, LoadingTexture>,
+params?: Partial<MaterialBuilderParameters>,
+): LoadingTexture => {
+params = params ?? {}
+let fullPath
+if (params.isDefaultToonTexture === true) {
+let index
+try {
+index = Number.parseInt(/toon(\d{2})\.bmp$/.exec(filePath)![1])
+}
+catch {
+console.warn(`MMDLoader: ${filePath} seems like a `
++ 'not right default texture path. Using toon00.bmp instead.')
+index = 0
+}
+fullPath = SharedToonTextures.Data[index]
+}
+else {
+fullPath = resourcePath + filePath
+}
+if (textures[fullPath] != null)
+return textures[fullPath]
+let loader = manager.getHandler(fullPath)
+if (loader === null) {
+loader = (filePath.slice(-4).toLowerCase() === '.tga')
+? getTGALoader()
+: textureLoader
+}
+const texture: LoadingTexture = (loader as TextureLoader).load(fullPath, (t: Texture) => {
+if (params.isToonTexture === true) {
+t.image = getRotatedImage(t.image as HTMLImageElement)
+t.magFilter = NearestFilter
+t.minFilter = NearestFilter
+t.generateMipmaps = false
+}
+t.flipY = false
+t.wrapS = RepeatWrapping
+t.wrapT = RepeatWrapping
+t.colorSpace = SRGBColorSpace
+for (let i = 0; i < texture.readyCallbacks!.length; i++)
+texture.readyCallbacks![i](texture)
+delete texture.readyCallbacks
+}, onProgress, onError) as LoadingTexture
+texture.readyCallbacks = []
+textures[fullPath] = texture
+return texture
+}
+const materials: MMDToonMaterial[] = []
+const textures: Record<string, LoadingTexture> = {}
+for (let i = 0; i < data.materials.length; i++) {
+const material: PmxObject.Material = data.materials[i]
+const params: MaterialBuilderParameters = { userData: { MMD: {} } } as any
+params.name = material.name
+params.diffuse = new Color().setRGB(
+material.diffuse[0],
+material.diffuse[1],
+material.diffuse[2],
+SRGBColorSpace,
+)
+params.opacity = material.diffuse[3]
+params.specular = new Color().setRGB(...material.specular, SRGBColorSpace)
+params.shininess = material.shininess
+params.emissive = new Color().setRGB(...material.ambient, SRGBColorSpace)
+params.transparent = params.opacity !== 1.0
+params.fog = true
+params.blending = CustomBlending
+params.blendSrc = SrcAlphaFactor
+params.blendDst = OneMinusSrcAlphaFactor
+params.blendSrcAlpha = SrcAlphaFactor
+params.blendDstAlpha = DstAlphaFactor
+if ((material.flag & PmxObject.Material.Flag.IsDoubleSided) === 1) {
+params.side = DoubleSide
+}
+else {
+params.side = params.opacity === 1.0 ? FrontSide : DoubleSide
+}
+if (material.textureIndex !== -1) {
+params.map = loadTexture(data.textures[material.textureIndex], textures)
+params.userData.MMD.mapFileName = data.textures[material.textureIndex]
+}
+if (material.sphereTextureIndex !== -1 && (material.sphereTextureMode === PmxObject.Material.SphereTextureMode.Multiply || material.sphereTextureMode === PmxObject.Material.SphereTextureMode.Add)) {
+params.matcap = loadTexture(
+data.textures[material.sphereTextureIndex],
+textures,
+)
+params.userData.MMD.matcapFileName = data.textures[material.sphereTextureIndex]
+params.matcapCombine = material.sphereTextureMode === PmxObject.Material.SphereTextureMode.Multiply
+? MultiplyOperation
+: AddOperation
+}
+let isDefaultToon, toonFileName
+if (material.isSharedToonTexture) {
+toonFileName = `toon${(`0${material.toonTextureIndex + 1}`).slice(-2)}.bmp`
+isDefaultToon = true
+}
+else {
+toonFileName = data.textures[material.toonTextureIndex]
+isDefaultToon = false
+}
+params.gradientMap = loadTexture(
+toonFileName,
+textures,
+{
+isDefaultToonTexture: isDefaultToon,
+isToonTexture: true,
+},
+)
+params.userData.outlineParameters = {
+alpha: material.edgeColor[3],
+color: material.edgeColor.slice(0, 3),
+thickness: material.edgeSize / 300,
+visible: (material.flag & PmxObject.Material.Flag.EnabledToonEdge) !== 0 && material.edgeSize > 0.0,
+}
+if (params.map !== undefined) {
+if (!params.transparent)
+checkImageTransparency(params.map, geometry, i)
+params.emissive.multiplyScalar(0.2)
+}
+materials.push(new MMDToonMaterial(params))
+}
+const checkAlphaMorph = (elements: PmxObject.Morph.MaterialMorph['elements'], materials: Material[]) => {
+for (let i = 0, il = elements.length; i < il; i++) {
+const element = elements[i]
+if (element.index === -1)
+continue
+const material = materials[element.index]
+if (material.opacity !== element.diffuse[3])
+material.transparent = true
+}
+}
+for (let i = 0, il = data.morphs.length; i < il; i++) {
+const morph = data.morphs[i]
+if (morph.type === PmxObject.Morph.Type.GroupMorph) {
+for (let j = 0, jl = morph.indices.length; j < jl; j++) {
+const morph2 = data.morphs[morph.indices[j]]
+if (morph2.type !== PmxObject.Morph.Type.MaterialMorph)
+continue
+checkAlphaMorph(morph2.elements, materials)
+}
+}
+else if (morph.type === PmxObject.Morph.Type.MaterialMorph) {
+checkAlphaMorph(morph.elements, materials)
+}
+}
+return materials
 }

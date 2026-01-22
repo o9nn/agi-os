@@ -115,7 +115,7 @@ off2group = gl32(p);
 gl32(p);
 gl32(p);
 if(off2owner){
-p->pos = base +  off2owner;
+p->pos = base + off2owner;
 fmtstrinit(f);
 fmtprint(f, "S-%ud", g8(p));
 n = g8(p);
@@ -125,7 +125,7 @@ fmtprint(f, "-%ud", gl32(p));
 *usid = fmtstrflush(f);
 }
 if(off2group){
-p->pos = base +  off2group;
+p->pos = base + off2group;
 fmtstrinit(f);
 fmtprint(f, "S-%ud", g8(p));
 n = g8(p);

@@ -19,9 +19,9 @@
 #endif
 mach_port_t bootstrap_resume_task = MACH_PORT_NULL;
 static const struct argp_option options[] = {
-{"host-priv-port",	'h', "PORT", 0, "Host private port PORT"},
+{"host-priv-port", 'h', "PORT", 0, "Host private port PORT"},
 {"device-master-port",'d', "PORT", 0, "Device master port PORT"},
-{"next-task",		'N', "TASK", 0, "Next bootstrap task TASK"},
+{"next-task", 'N', "TASK", 0, "Next bootstrap task TASK"},
 {0}
 };
 static error_t

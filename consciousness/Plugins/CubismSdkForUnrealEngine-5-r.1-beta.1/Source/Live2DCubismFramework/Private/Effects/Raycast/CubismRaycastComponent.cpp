@@ -139,7 +139,7 @@ FVector& HitPosition, float& HitTime
 {
 for (int32 i = 0; i < Indices.Num(); i += 3)
 {
-const FVector T0 = Positions[Indices[i    ]];
+const FVector T0 = Positions[Indices[i ]];
 const FVector T1 = Positions[Indices[i + 1]];
 const FVector T2 = Positions[Indices[i + 2]];
 if (RayIntersectTriangle(Origin, Dir, Length, T0, T1, T2, HitPosition, HitTime))

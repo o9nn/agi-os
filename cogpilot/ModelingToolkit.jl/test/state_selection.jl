@@ -66,7 +66,7 @@ eqs = [fluid_port_a.m ~ -fluid_port_b.m
 fluid_port_a.T ~ instream(fluid_port_a.T)
 fluid_port_b.T ~ fluid_port_a.T
 v * pi * d^2 / 4 * rho ~ fluid_port_a.m
-dp_z ~ abs(v) * v * 0.5 * rho * L / d * f  # pressure loss
+dp_z ~ abs(v) * v * 0.5 * rho * L / d * f # pressure loss
 D(v) * rho * L ~ (fluid_port_a.p - fluid_port_b.p - dp_z)]
 compose(System(eqs, t, sts, ps; name = name), [fluid_port_a, fluid_port_b])
 end

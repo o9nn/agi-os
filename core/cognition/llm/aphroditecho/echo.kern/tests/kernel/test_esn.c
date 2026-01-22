@@ -6,9 +6,9 @@
 #include <assert.h>
 #include <math.h>
 #define TEST_MAX_RESERVOIR_SIZE 1000
-#define TEST_MAX_INPUT_SIZE     100
-#define TEST_NUM_ITERATIONS     100
-#define TEST_TOLERANCE          1e-6f
+#define TEST_MAX_INPUT_SIZE 100
+#define TEST_NUM_ITERATIONS 100
+#define TEST_TOLERANCE 1e-6f
 static struct {
 uint32_t tests_run;
 uint32_t tests_passed;

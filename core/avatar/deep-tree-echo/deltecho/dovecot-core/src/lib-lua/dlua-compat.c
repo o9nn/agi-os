@@ -2,7 +2,7 @@
 #include "strnum.h"
 #include "dlua-script-private.h"
 #if LUA_VERSION_NUM == 502
-#  error "Lua 5.2 is not supported.  Use Lua 5.1 or 5.3 instead."
+# error "Lua 5.2 is not supported.  Use Lua 5.1 or 5.3 instead."
 #endif
 #ifndef HAVE_LUAL_SETFUNCS
 void luaL_setfuncs(lua_State *L, const luaL_Reg *l, int nup)
@@ -28,9 +28,9 @@ lua_setmetatable(L, -2);
 }
 #endif
 #ifndef HAVE_LUA_ISINTEGER
-#  if LUA_VERSION_NUM >= 503
-#    error "Lua 5.3+ should have lua_isinteger()"
-#  endif
+# if LUA_VERSION_NUM >= 503
+# error "Lua 5.3+ should have lua_isinteger()"
+# endif
 #undef lua_isinteger
 int lua_isinteger(lua_State *L, int idx)
 {
@@ -52,9 +52,9 @@ lua_settable(L, index);
 }
 #endif
 #ifndef HAVE_LUA_TOINTEGERX
-#  if LUA_VERSION_NUM >= 502
-#    error "Lua 5.2+ should have lua_tointegerx()"
-#  endif
+# if LUA_VERSION_NUM >= 502
+# error "Lua 5.2+ should have lua_tointegerx()"
+# endif
 lua_Integer lua_tointegerx(lua_State *L, int idx, int *isnum_r)
 {
 lua_Integer integer;
@@ -91,7 +91,7 @@ return 0;
 }
 #endif
 #if LUA_VERSION_NUM > 501 && LUA_VERSION_NUM < 504
-#  undef lua_resume
+# undef lua_resume
 int lua_resume_compat(lua_State *L, lua_State *from, int nargs, int *nresults)
 {
 *nresults = 1;

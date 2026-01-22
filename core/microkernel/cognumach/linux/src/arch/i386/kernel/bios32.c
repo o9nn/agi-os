@@ -6,20 +6,20 @@
 #include <asm/segment.h>
 #include <asm/system.h>
 #include <asm/io.h>
-#define PCIBIOS_PCI_FUNCTION_ID 	0xb1XX
-#define PCIBIOS_PCI_BIOS_PRESENT 	0xb101
-#define PCIBIOS_FIND_PCI_DEVICE		0xb102
-#define PCIBIOS_FIND_PCI_CLASS_CODE	0xb103
-#define PCIBIOS_GENERATE_SPECIAL_CYCLE	0xb106
-#define PCIBIOS_READ_CONFIG_BYTE	0xb108
-#define PCIBIOS_READ_CONFIG_WORD	0xb109
-#define PCIBIOS_READ_CONFIG_DWORD	0xb10a
-#define PCIBIOS_WRITE_CONFIG_BYTE	0xb10b
-#define PCIBIOS_WRITE_CONFIG_WORD	0xb10c
-#define PCIBIOS_WRITE_CONFIG_DWORD	0xb10d
-#define BIOS32_SIGNATURE	(('_' << 0) + ('3' << 8) + ('2' << 16) + ('_' << 24))
-#define PCI_SIGNATURE		(('P' << 0) + ('C' << 8) + ('I' << 16) + (' ' << 24))
-#define PCI_SERVICE		(('$' << 0) + ('P' << 8) + ('C' << 16) + ('I' << 24))
+#define PCIBIOS_PCI_FUNCTION_ID 0xb1XX
+#define PCIBIOS_PCI_BIOS_PRESENT 0xb101
+#define PCIBIOS_FIND_PCI_DEVICE 0xb102
+#define PCIBIOS_FIND_PCI_CLASS_CODE 0xb103
+#define PCIBIOS_GENERATE_SPECIAL_CYCLE 0xb106
+#define PCIBIOS_READ_CONFIG_BYTE 0xb108
+#define PCIBIOS_READ_CONFIG_WORD 0xb109
+#define PCIBIOS_READ_CONFIG_DWORD 0xb10a
+#define PCIBIOS_WRITE_CONFIG_BYTE 0xb10b
+#define PCIBIOS_WRITE_CONFIG_WORD 0xb10c
+#define PCIBIOS_WRITE_CONFIG_DWORD 0xb10d
+#define BIOS32_SIGNATURE (('_' << 0) + ('3' << 8) + ('2' << 16) + ('_' << 24))
+#define PCI_SIGNATURE (('P' << 0) + ('C' << 8) + ('I' << 16) + (' ' << 24))
+#define PCI_SERVICE (('$' << 0) + ('P' << 8) + ('C' << 16) + ('I' << 24))
 union bios32 {
 struct {
 unsigned long signature;
@@ -111,9 +111,9 @@ if (present_status || (signature != PCI_SIGNATURE)) {
 printk ("pcibios_init : %s : BIOS32 Service Directory says PCI BIOS is present,\n"
 "	but PCI_BIOS_PRESENT subfunction fails with present status of 0x%x\n"
 "	and signature of 0x%08lx (%c%c%c%c).  mail drew@Colorado.EDU\n",
-(signature == PCI_SIGNATURE) ?  "WARNING" : "ERROR",
+(signature == PCI_SIGNATURE) ? "WARNING" : "ERROR",
 present_status, signature,
-(char) (signature >>  0), (char) (signature >>  8),
+(char) (signature >> 0), (char) (signature >> 8),
 (char) (signature >> 16), (char) (signature >> 24));
 if (signature != PCI_SIGNATURE)
 pcibios_entry = 0;
@@ -336,7 +336,7 @@ return PCIBIOS_SUCCESSFUL;
 }
 return PCIBIOS_DEVICE_NOT_FOUND;
 }
-#define CONFIG_CMD(bus, device_fn, where)   (0x80000000 | (bus << 16) | (device_fn << 8) | (where & ~3))
+#define CONFIG_CMD(bus, device_fn, where) (0x80000000 | (bus << 16) | (device_fn << 8) | (where & ~3))
 static int pci_conf1_read_config_byte(unsigned char bus, unsigned char device_fn,
 unsigned char where, unsigned char *value)
 {
@@ -412,8 +412,8 @@ pci_conf1_write_config_byte,
 pci_conf1_write_config_word,
 pci_conf1_write_config_dword
 };
-#define IOADDR(devfn, where)   ((0xC000 | ((devfn & 0x78) << 5)) + where)
-#define FUNC(devfn)            (((devfn & 7) << 1) | 0xf0)
+#define IOADDR(devfn, where) ((0xC000 | ((devfn & 0x78) << 5)) + where)
+#define FUNC(devfn) (((devfn & 7) << 1) | 0xf0)
 static int pci_conf2_read_config_byte(unsigned char bus, unsigned char device_fn,
 unsigned char where, unsigned char *value)
 {

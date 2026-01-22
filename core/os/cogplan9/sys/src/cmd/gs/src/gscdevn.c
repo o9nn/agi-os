@@ -362,19 +362,19 @@ return code;
 private int
 gx_set_overprint_DeviceN(const gs_color_space * pcs, gs_state * pgs)
 {
-gs_devicen_color_map *  pcmap = &pgs->color_component_map;
+gs_devicen_color_map * pcmap = &pgs->color_component_map;
 if (pcmap->use_alt_cspace)
 return gx_spot_colors_set_overprint(
 (const gs_color_space *)&pcs->params.device_n.alt_space,
 pgs );
 else {
-gs_overprint_params_t   params;
+gs_overprint_params_t params;
 if ((params.retain_any_comps = pgs->overprint)) {
-int     i, ncomps = pcs->params.device_n.num_components;
+int i, ncomps = pcs->params.device_n.num_components;
 params.retain_spot_comps = false;
 params.drawn_comps = 0;
 for (i = 0; i < ncomps; i++) {
-int     mcomp = pcmap->color_map[i];
+int mcomp = pcmap->color_map[i];
 if (mcomp >= 0)
 gs_overprint_set_drawn_comp( params.drawn_comps, mcomp);
 }

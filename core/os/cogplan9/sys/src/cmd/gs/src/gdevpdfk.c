@@ -281,7 +281,7 @@ rgb_to_index(const profile_table_t *pnt)
 switch (pnt->tag[0]) {
 case 'r': return 0;
 case 'g': return 1;
-case 'b': default:  return 2;
+case 'b': default: return 2;
 }
 }
 private double
@@ -344,9 +344,9 @@ static const byte a2b0_data[sizeof(pa2b->header)] = {
 3,
 0,
 0,
-0, 1, 0, 0,  0, 0, 0, 0,  0, 0, 0, 0,
-0, 0, 0, 0,  0, 1, 0, 0,  0, 0, 0, 0,
-0, 0, 0, 0,  0, 0, 0, 0,  0, 1, 0, 0,
+0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
 0, NUM_IN_ENTRIES,
 0, NUM_OUT_ENTRIES
 };
@@ -381,7 +381,7 @@ int num_points = pa2b->num_points;
 int i;
 #define MAX_NCOMPS 4
 static const byte v01[MAX_NCOMPS * 2 * 2] = {
-0,0, 255,255,   0,0, 255,255,   0,0, 255,255,   0,0, 255,255
+0,0, 255,255, 0,0, 255,255, 0,0, 255,255, 0,0, 255,255
 };
 gs_imager_state *pis;
 int code;

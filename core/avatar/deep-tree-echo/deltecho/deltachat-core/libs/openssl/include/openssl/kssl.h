@@ -2,42 +2,42 @@
 # define KSSL_H
 # include <openssl/opensslconf.h>
 # ifndef OPENSSL_NO_KRB5
-#  include <stdio.h>
-#  include <ctype.h>
-#  include <krb5.h>
-#  ifdef OPENSSL_SYS_WIN32
-#   undef X509_NAME
-#   undef X509_EXTENSIONS
-#   undef OCSP_REQUEST
-#   undef OCSP_RESPONSE
-#  endif
-#ifdef  __cplusplus
+# include <stdio.h>
+# include <ctype.h>
+# include <krb5.h>
+# ifdef OPENSSL_SYS_WIN32
+# undef X509_NAME
+# undef X509_EXTENSIONS
+# undef OCSP_REQUEST
+# undef OCSP_RESPONSE
+# endif
+#ifdef __cplusplus
 extern "C" {
 #endif
-#  ifdef KRB5_HEIMDAL
+# ifdef KRB5_HEIMDAL
 typedef unsigned char krb5_octet;
-#   define FAR
-#  else
-#   ifndef FAR
-#    define FAR
-#   endif
-#  endif
-#  ifndef KRB5SVC
-#   define KRB5SVC "host"
-#  endif
-#  ifndef KRB5KEYTAB
-#   define KRB5KEYTAB      "/etc/krb5.keytab"
-#  endif
-#  ifndef KRB5SENDAUTH
-#   define KRB5SENDAUTH    1
-#  endif
-#  ifndef KRB5CHECKAUTH
-#   define KRB5CHECKAUTH   1
-#  endif
-#  ifndef KSSL_CLOCKSKEW
-#   define KSSL_CLOCKSKEW  300;
-#  endif
-#  define KSSL_ERR_MAX    255
+# define FAR
+# else
+# ifndef FAR
+# define FAR
+# endif
+# endif
+# ifndef KRB5SVC
+# define KRB5SVC "host"
+# endif
+# ifndef KRB5KEYTAB
+# define KRB5KEYTAB "/etc/krb5.keytab"
+# endif
+# ifndef KRB5SENDAUTH
+# define KRB5SENDAUTH 1
+# endif
+# ifndef KRB5CHECKAUTH
+# define KRB5CHECKAUTH 1
+# endif
+# ifndef KSSL_CLOCKSKEW
+# define KSSL_CLOCKSKEW 300;
+# endif
+# define KSSL_ERR_MAX 255
 typedef struct kssl_err_st {
 int reason;
 char text[KSSL_ERR_MAX + 1];
@@ -52,13 +52,13 @@ krb5_enctype enctype;
 int length;
 krb5_octet FAR *key;
 } KSSL_CTX;
-#  define KSSL_CLIENT     1
-#  define KSSL_SERVER     2
-#  define KSSL_SERVICE    3
-#  define KSSL_KEYTAB     4
-#  define KSSL_CTX_OK     0
-#  define KSSL_CTX_ERR    1
-#  define KSSL_NOMEM      2
+# define KSSL_CLIENT 1
+# define KSSL_SERVER 2
+# define KSSL_SERVICE 3
+# define KSSL_KEYTAB 4
+# define KSSL_CTX_OK 0
+# define KSSL_CTX_ERR 1
+# define KSSL_NOMEM 2
 krb5_error_code kssl_ctx_setstring(KSSL_CTX *kssl_ctx, int which, char *text);
 KSSL_CTX *kssl_ctx_new(void);
 KSSL_CTX *kssl_ctx_free(KSSL_CTX *kssl_ctx);
@@ -87,7 +87,7 @@ unsigned char *kssl_skip_confound(krb5_enctype enctype, unsigned char *authn);
 void SSL_set0_kssl_ctx(SSL *s, KSSL_CTX *kctx);
 KSSL_CTX *SSL_get0_kssl_ctx(SSL *s);
 char *kssl_ctx_get0_client_princ(KSSL_CTX *kctx);
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif
 # endif

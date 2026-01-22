@@ -124,7 +124,7 @@ math_error();
 }
 static struct irqaction irq13 = { math_error_irq, 0, 0, "math error", NULL, NULL };
 #endif
-static struct irqaction irq2  = { no_action, 0, 0, "cascade", NULL, NULL};
+static struct irqaction irq2 = { no_action, 0, 0, "cascade", NULL, NULL};
 static struct irqaction *irq_action[16] = {
 NULL, NULL, NULL, NULL,
 NULL, NULL, NULL, NULL,
@@ -229,14 +229,14 @@ static int count;
 if (smp_processor_id() != 0 && count++ < 1000)
 printk("IRQ %d: done by CPU %d\n",irq,smp_processor_id());
 #endif
-if (irq  >= 8) {
+if (irq >= 8) {
 c = cache_A1;
 intm = inb(0xA1);
-mask =  1 << (irq - 8);
+mask = 1 << (irq - 8);
 } else {
 c = cache_21;
 intm = inb(0x21);
-mask =  1 << irq;
+mask = 1 << irq;
 }
 if (!(c & mask) || !(intm & mask)) {
 #ifdef IRQ_DEBUG

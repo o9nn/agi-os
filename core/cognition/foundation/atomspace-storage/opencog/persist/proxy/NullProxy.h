@@ -11,7 +11,7 @@ NullProxy(Type t, const std::string&&);
 virtual ~NullProxy();
 virtual void open(void) {}
 virtual void close(void) {}
-virtual bool connected(void) { return  true; }
+virtual bool connected(void) { return true; }
 protected:
 virtual void getAtom(const Handle&) {}
 virtual void fetchIncomingSet(AtomSpace*, const Handle&) {}

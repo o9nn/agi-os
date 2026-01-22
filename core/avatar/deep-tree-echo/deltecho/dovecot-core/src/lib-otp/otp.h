@@ -1,9 +1,9 @@
 #ifndef OTP_H
 #define OTP_H
-#define OTP_MAX_SEED_LEN	16
-#define OTP_MAX_WORD_LEN	4
-#define OTP_WORDS_NUMBER	6
-#define OTP_HASH_SIZE		8
+#define OTP_MAX_SEED_LEN 16
+#define OTP_MAX_WORD_LEN 4
+#define OTP_WORDS_NUMBER 6
+#define OTP_HASH_SIZE 8
 struct otp_state {
 unsigned int algo;
 int seq;

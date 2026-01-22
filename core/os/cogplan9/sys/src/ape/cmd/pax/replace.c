@@ -7,13 +7,13 @@ static char *copyright = "Copyright (c) 1989 Mark H. Colburn.\nAll rights reserv
 void add_replstr(char *pattern)
 #else
 void add_replstr(pattern)
-char           *pattern;
+char *pattern;
 #endif
 {
-char           *p;
-char            sep;
-Replstr        *rptr;
-int             len;
+char *p;
+char sep;
+Replstr *rptr;
+int len;
 if ((len = strlen(pattern)) < 4) {
 warn("Replacement string not added",
 "Malformed substitution syntax");
@@ -77,17 +77,17 @@ rpltail = rptr;
 void rpl_name(char *name)
 #else
 void rpl_name(name)
-char           *name;
+char *name;
 #endif
 {
-int             found = 0;
-int             ret;
-Replstr        *rptr;
-char            buff[PATH_MAX + 1];
-char            buff1[PATH_MAX + 1];
-char            buff2[PATH_MAX + 1];
-char           *p;
-char           *b;
+int found = 0;
+int ret;
+Replstr *rptr;
+char buff[PATH_MAX + 1];
+char buff1[PATH_MAX + 1];
+char buff2[PATH_MAX + 1];
+char *p;
+char *b;
 strcpy(buff, name);
 for (rptr = rplhead; !found && rptr != (Replstr *)NULL; rptr = rptr->next) {
 do {
@@ -119,12 +119,12 @@ strcpy(name, buff);
 int get_disposition(char *mode, char *name)
 #else
 int get_disposition(mode, name)
-char	*mode;
-char	*name;
+char *mode;
+char *name;
 #endif
 {
-char	ans[2];
-char	buf[PATH_MAX + 10];
+char ans[2];
+char buf[PATH_MAX + 10];
 if (f_disposition) {
 sprintf(buf, "%s %s? ", mode, name);
 if (nextask(buf, ans, sizeof(ans)) == -1 || ans[0] == 'q') {
@@ -140,11 +140,11 @@ return(0);
 int get_newname(char *name, int size)
 #else
 int get_newname(name, size)
-char	*name;
-int	size;
+char *name;
+int size;
 #endif
 {
-char	buf[PATH_MAX + 10];
+char buf[PATH_MAX + 10];
 if (f_interactive) {
 sprintf(buf, "rename %s? ", name);
 if (nextask(buf, name, size) == -1) {

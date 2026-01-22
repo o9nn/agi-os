@@ -2,8 +2,8 @@ import { SpaceCard as SpaceCardImported, LFS as LFSImported } from './index'
 const SpaceCard = SpaceCardImported.esbuild as typeof SpaceCardImported.esbuild
 const LFS = LFSImported.esbuild as typeof LFSImported.esbuild
 const exports = {
-  SpaceCard: SpaceCard as typeof SpaceCardImported.esbuild,
-  LFS: LFS as typeof LFSImported.esbuild,
+SpaceCard: SpaceCard as typeof SpaceCardImported.esbuild,
+LFS: LFS as typeof LFSImported.esbuild,
 }
 export { SpaceCard, LFS }
 export { exports as 'module.exports' }

@@ -5,22 +5,22 @@
 #include "fns.h"
 #include "io.h"
 #include "fs.h"
-#define BOOTLINELEN	64
-#define BOOTARGS	((char*)(CONFADDR+BOOTLINELEN))
-#define	BOOTARGSLEN	(3584-0x200-BOOTLINELEN)
-#define	MAXCONF		100
+#define BOOTLINELEN 64
+#define BOOTARGS ((char*)(CONFADDR+BOOTLINELEN))
+#define BOOTARGSLEN (3584-0x200-BOOTLINELEN)
+#define MAXCONF 100
 static char *confname[MAXCONF];
 static char *confval[MAXCONF];
 static int nconf;
 extern char **ini;
 typedef struct {
-char*	name;
-int	start;
-int	end;
+char* name;
+int start;
+int end;
 } Mblock;
 typedef struct {
-char*	tag;
-Mblock*	mb;
+char* tag;
+Mblock* mb;
 } Mitem;
 static Mblock mblock[MAXCONF];
 static int nmblock;

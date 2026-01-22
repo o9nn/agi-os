@@ -1,16 +1,16 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"io.h"
-#include	"ureg.h"
-#include	"../ip/ip.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "io.h"
+#include "ureg.h"
+#include "../ip/ip.h"
 #include "version.h"
-#define	MAXCONF		32
+#define MAXCONF 32
 extern ulong kerndate;
 extern int cflag;
-int	remotedebug;
+int remotedebug;
 extern int main_pool_pcnt;
 extern int heap_pool_pcnt;
 extern int image_pool_pcnt;
@@ -18,7 +18,7 @@ char *confname[MAXCONF];
 char *confval[MAXCONF];
 int nconf;
 void addconf(char *, char *);
-void	eepromscan(void);
+void eepromscan(void);
 static void
 options(void)
 {
@@ -172,7 +172,7 @@ p->sched.pc = (ulong)init0;
 p->sched.sp = (ulong)p->kstack+KSTACK;
 ready(p);
 }
-Conf	conf;
+Conf conf;
 void
 addconf(char *name, char *val)
 {
@@ -298,11 +298,11 @@ getfcr()
 return 0;
 }
 enum {
-Cpc0Pllmr0=	0xF0,
-Cpc0Boot=	0xF1,
-Cpc0Pllmr1=	0xF4,
-Cpc0Srr=		0xF6,
-Cpc0PCI=		0xF9,
+Cpc0Pllmr0= 0xF0,
+Cpc0Boot= 0xF1,
+Cpc0Pllmr1= 0xF4,
+Cpc0Srr= 0xF6,
+Cpc0PCI= 0xF9,
 };
 void
 archconfinit(void)
@@ -359,7 +359,7 @@ cpuidprint(void)
 {
 iprint("PowerPC 405EP pvr=%8.8lux\n", getpvr());
 }
-#include	"../port/flashif.h"
+#include "../port/flashif.h"
 int
 archflashreset(int bank, Flash *f)
 {
@@ -387,15 +387,15 @@ archflashwp(Flash*, int)
 #include "../port/netif.h"
 #include "etherif.h"
 enum {
-Cpc0Epctl=	0xF3,
-E0Nf=	1<<31,
-E1Nf=	1<<30,
-E1pr=	1<<7,
-E0pr=	1<<6,
-E1rm=	1<<5,
-E0rm=	1<<4,
-E1pci=	1<<1,
-E0pci=	1<<0,
+Cpc0Epctl= 0xF3,
+E0Nf= 1<<31,
+E1Nf= 1<<30,
+E1pr= 1<<7,
+E0pr= 1<<6,
+E1rm= 1<<5,
+E0rm= 1<<4,
+E1pci= 1<<1,
+E0pci= 1<<0,
 };
 int
 archether(int ctlno, Ether *ether)
@@ -422,18 +422,18 @@ splx(s);
 return 1;
 }
 enum {
-Cpc0Ucr=		0xF5,
-U0Dc=		1<<21,
-U0Dt=		1<<20,
-U0Dr=		1<<19,
-U1Dc=		1<<18,
-U1Dt=		1<<17,
-U1Dr=		1<<16,
-U1Div_s=		8,
-U1Stop=		1<<8,
-U0Div_s=		0,
-U0Stop=		1<<0,
-UDiv_m=		0x7F,
+Cpc0Ucr= 0xF5,
+U0Dc= 1<<21,
+U0Dt= 1<<20,
+U0Dr= 1<<19,
+U1Dc= 1<<18,
+U1Dt= 1<<17,
+U1Dr= 1<<16,
+U1Div_s= 8,
+U1Stop= 1<<8,
+U0Div_s= 0,
+U0Stop= 1<<0,
+UDiv_m= 0x7F,
 };
 static ulong
 findserialclock(int rate, ulong *freq)
@@ -498,13 +498,13 @@ splx(s);
 }
 }
 enum {
-EEpromHdr=	8,
-Envsize=	0x400,
+EEpromHdr= 8,
+Envsize= 0x400,
 };
 static I2Cdev eedev;
 static struct {
-uchar	buf[Envsize];
-int	size;
+uchar buf[Envsize];
+int size;
 } bootenv;
 static int
 eepromitem(uchar *buf, int lim, ulong *off)

@@ -1,5 +1,5 @@
 #ifndef oper_INCLUDED
-#  define oper_INCLUDED
+# define oper_INCLUDED
 #include "ierrors.h"
 #include "ostack.h"
 #include "opdef.h"

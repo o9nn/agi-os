@@ -66,7 +66,7 @@ files: list of string;
 fout: ref Iobuf;
 infile: ref Iobuf;
 jflag := 0;
-lastregex:  Re;
+lastregex: Re;
 linebuf: string;
 filename := "";
 lnum := 0;
@@ -597,7 +597,7 @@ r = s[i];
 rhs[len rhs] = r;
 }
 if (i >= len s)
-fatal(sys->sprint("no closing %c in replacement text: %s", seof,  linebuf));
+fatal(sys->sprint("no closing %c in replacement text: %s", seof, linebuf));
 return (s[i+1:], rhs);
 }
 execute(l: list of ref Sedcom)
@@ -726,7 +726,7 @@ break;
 (l, r) := m[0];
 rep := "";
 for (i := 0; i < len c.rhs; i++){
-if (c.rhs[i] != '\\'  || i+1 == len c.rhs){
+if (c.rhs[i] != '\\' || i+1 == len c.rhs){
 if (c.rhs[i] == '&')
 rep += s[l: r];
 else

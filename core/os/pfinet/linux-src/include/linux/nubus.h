@@ -1,19 +1,19 @@
 struct nubus_slot
 {
 int slot_flags;
-#define NUBUS_DEVICE_PRESENT	1
-#define NUBUS_DEVICE_ACTIVE	2
-#define NUBUS_DEVICE_IRQ	4
+#define NUBUS_DEVICE_PRESENT 1
+#define NUBUS_DEVICE_ACTIVE 2
+#define NUBUS_DEVICE_IRQ 4
 __u32 slot_directory;
 __u32 slot_dlength;
 __u32 slot_crc;
-__u8  slot_rev;
-__u8  slot_format;
-__u8  slot_lanes;
-__u32  slot_dirbase;
-__u32  slot_thisdir;
-char   slot_vendor[64];
-char   slot_cardname[64];
+__u8 slot_rev;
+__u8 slot_format;
+__u8 slot_lanes;
+__u32 slot_dirbase;
+__u32 slot_thisdir;
+char slot_vendor[64];
+char slot_cardname[64];
 };
 struct nbnamevec
 {
@@ -41,16 +41,16 @@ __u16 type;
 __u16 DrHW;
 __u16 DrSW;
 };
-#define NUBUS_CAT_BOARD			0x0001
-#define NUBUS_CAT_DISPLAY		0x0003
-#define NUBUS_CAT_NETWORK		0x0004
-#define NUBUS_CAT_COMMUNICATIONS	0x0006
-#define NUBUS_CAT_FONT			0x0009
-#define NUBUS_CAT_CPU			0x000A
-#define RES_ID_TYPE		0x0001
-#define RES_ID_NAME		0x0002
-#define RES_ID_BOARD_DIR	0x0001
-#define RES_ID_FLAGS		0x0007
+#define NUBUS_CAT_BOARD 0x0001
+#define NUBUS_CAT_DISPLAY 0x0003
+#define NUBUS_CAT_NETWORK 0x0004
+#define NUBUS_CAT_COMMUNICATIONS 0x0006
+#define NUBUS_CAT_FONT 0x0009
+#define NUBUS_CAT_CPU 0x000A
+#define RES_ID_TYPE 0x0001
+#define RES_ID_NAME 0x0002
+#define RES_ID_BOARD_DIR 0x0001
+#define RES_ID_FLAGS 0x0007
 struct nubus_device_specifier
 {
 int (*setup)(struct nubus_device_specifier *, int slot, struct nubus_type *);

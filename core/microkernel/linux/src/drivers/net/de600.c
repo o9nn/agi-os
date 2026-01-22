@@ -38,77 +38,77 @@ typedef unsigned char byte;
 #ifndef DE600_IO
 #define DE600_IO 0x378
 #endif
-#define DATA_PORT	(DE600_IO)
-#define STATUS_PORT	(DE600_IO + 1)
-#define COMMAND_PORT	(DE600_IO + 2)
+#define DATA_PORT (DE600_IO)
+#define STATUS_PORT (DE600_IO + 1)
+#define COMMAND_PORT (DE600_IO + 2)
 #ifndef DE600_IRQ
-#define DE600_IRQ	7
+#define DE600_IRQ 7
 #endif
-#define SELECT_NIC	0x04
-#define SELECT_PRN	0x1c
-#define NML_PRN		0xec
-#define IRQEN		0x10
-#define RX_BUSY		0x80
-#define RX_GOOD		0x40
-#define TX_FAILED16	0x10
-#define TX_BUSY		0x08
-#define WRITE_DATA	0x00
-#define READ_DATA	0x01
-#define STATUS		0x02
-#define COMMAND		0x03
-#define NULL_COMMAND	0x04
-#define RX_LEN		0x05
-#define TX_ADDR		0x06
-#define RW_ADDR		0x07
-#define HI_NIBBLE	0x08
-#define RX_ALL		0x01
-#define RX_BP		0x02
-#define RX_MBP		0x03
-#define TX_ENABLE	0x04
-#define RX_ENABLE	0x08
-#define RESET		0x80
-#define STOP_RESET	0x00
-#define RX_PAGE2_SELECT	0x10
-#define RX_BASE_PAGE	0x20
-#define FLIP_IRQ	0x40
-#define MEM_2K		0x0800
-#define MEM_4K		0x1000
-#define MEM_6K		0x1800
-#define NODE_ADDRESS	0x2000
+#define SELECT_NIC 0x04
+#define SELECT_PRN 0x1c
+#define NML_PRN 0xec
+#define IRQEN 0x10
+#define RX_BUSY 0x80
+#define RX_GOOD 0x40
+#define TX_FAILED16 0x10
+#define TX_BUSY 0x08
+#define WRITE_DATA 0x00
+#define READ_DATA 0x01
+#define STATUS 0x02
+#define COMMAND 0x03
+#define NULL_COMMAND 0x04
+#define RX_LEN 0x05
+#define TX_ADDR 0x06
+#define RW_ADDR 0x07
+#define HI_NIBBLE 0x08
+#define RX_ALL 0x01
+#define RX_BP 0x02
+#define RX_MBP 0x03
+#define TX_ENABLE 0x04
+#define RX_ENABLE 0x08
+#define RESET 0x80
+#define STOP_RESET 0x00
+#define RX_PAGE2_SELECT 0x10
+#define RX_BASE_PAGE 0x20
+#define FLIP_IRQ 0x40
+#define MEM_2K 0x0800
+#define MEM_4K 0x1000
+#define MEM_6K 0x1800
+#define NODE_ADDRESS 0x2000
 #define RUNT 60
-static byte	de600_read_status(struct device *dev);
-static byte	de600_read_byte(unsigned char type, struct device *dev);
-static int	de600_open(struct device *dev);
-static int	de600_close(struct device *dev);
+static byte de600_read_status(struct device *dev);
+static byte de600_read_byte(unsigned char type, struct device *dev);
+static int de600_open(struct device *dev);
+static int de600_close(struct device *dev);
 static struct netstats *get_stats(struct device *dev);
-static int	de600_start_xmit(struct sk_buff *skb, struct device *dev);
-static void	de600_interrupt(int irq, void *dev_id, struct pt_regs *regs);
-static int	de600_tx_intr(struct device *dev, int irq_status);
-static void	de600_rx_intr(struct device *dev);
-static void	trigger_interrupt(struct device *dev);
-int		de600_probe(struct device *dev);
-static int	adapter_init(struct device *dev);
-static volatile int		rx_page		= 0;
+static int de600_start_xmit(struct sk_buff *skb, struct device *dev);
+static void de600_interrupt(int irq, void *dev_id, struct pt_regs *regs);
+static int de600_tx_intr(struct device *dev, int irq_status);
+static void de600_rx_intr(struct device *dev);
+static void trigger_interrupt(struct device *dev);
+int de600_probe(struct device *dev);
+static int adapter_init(struct device *dev);
+static volatile int rx_page = 0;
 #define TX_PAGES 2
-static volatile int		tx_fifo[TX_PAGES];
-static volatile int		tx_fifo_in = 0;
-static volatile int		tx_fifo_out = 0;
-static volatile int		free_tx_pages = TX_PAGES;
-static int			was_down = 0;
+static volatile int tx_fifo[TX_PAGES];
+static volatile int tx_fifo_in = 0;
+static volatile int tx_fifo_out = 0;
+static volatile int free_tx_pages = TX_PAGES;
+static int was_down = 0;
 #define select_prn() outb_p(SELECT_PRN, COMMAND_PORT); DE600_SLOW_DOWN
 #define select_nic() outb_p(SELECT_NIC, COMMAND_PORT); DE600_SLOW_DOWN
 #define de600_put_byte(data) ( \
-outb_p(((data) << 4)   | WRITE_DATA            , DATA_PORT), \
+outb_p(((data) << 4) | WRITE_DATA , DATA_PORT), \
 outb_p(((data) & 0xf0) | WRITE_DATA | HI_NIBBLE, DATA_PORT))
 #define de600_put_command(cmd) ( \
-outb_p(( rx_page        << 4)   | COMMAND            , DATA_PORT), \
-outb_p(( rx_page        & 0xf0) | COMMAND | HI_NIBBLE, DATA_PORT), \
-outb_p(((rx_page | cmd) << 4)   | COMMAND            , DATA_PORT), \
+outb_p(( rx_page << 4) | COMMAND , DATA_PORT), \
+outb_p(( rx_page & 0xf0) | COMMAND | HI_NIBBLE, DATA_PORT), \
+outb_p(((rx_page | cmd) << 4) | COMMAND , DATA_PORT), \
 outb_p(((rx_page | cmd) & 0xf0) | COMMAND | HI_NIBBLE, DATA_PORT))
 #define de600_setup_address(addr,type) ( \
-outb_p((((addr) << 4) & 0xf0) | type            , DATA_PORT), \
-outb_p(( (addr)       & 0xf0) | type | HI_NIBBLE, DATA_PORT), \
-outb_p((((addr) >> 4) & 0xf0) | type            , DATA_PORT), \
+outb_p((((addr) << 4) & 0xf0) | type , DATA_PORT), \
+outb_p(( (addr) & 0xf0) | type | HI_NIBBLE, DATA_PORT), \
+outb_p((((addr) >> 4) & 0xf0) | type , DATA_PORT), \
 outb_p((((addr) >> 8) & 0xf0) | type | HI_NIBBLE, DATA_PORT))
 #define rx_page_adr() ((rx_page & RX_PAGE2_SELECT)?(MEM_6K):(MEM_4K))
 #define next_rx_page() (rx_page ^= RX_PAGE2_SELECT)
@@ -179,10 +179,10 @@ de600_put_command(0);
 static int
 de600_start_xmit(struct sk_buff *skb, struct device *dev)
 {
-int	transmit_from;
-int	len;
-int	tickssofar;
-byte	*buffer = skb->data;
+int transmit_from;
+int len;
+int tickssofar;
+byte *buffer = skb->data;
 if (skb == NULL) {
 dev_tint(dev);
 return 0;
@@ -242,10 +242,10 @@ return 0;
 static void
 de600_interrupt(int irq, void *dev_id, struct pt_regs * regs)
 {
-struct device	*dev = irq2dev_map[irq];
-byte		irq_status;
-int		retrig = 0;
-int		boguscount = 0;
+struct device *dev = irq2dev_map[irq];
+byte irq_status;
+int retrig = 0;
+int boguscount = 0;
 if ((dev == NULL) || (dev->start == 0) || (DE600_IRQ != irq)) {
 printk("%s: bogus interrupt %d\n", dev?dev->name:"DE-600", irq);
 return;
@@ -295,11 +295,11 @@ return 0;
 static void
 de600_rx_intr(struct device *dev)
 {
-struct sk_buff	*skb;
-int		i;
-int		read_from;
-int		size;
-register unsigned char	*buffer;
+struct sk_buff *skb;
+int i;
+int read_from;
+int size;
+register unsigned char *buffer;
 cli();
 size = de600_read_byte(RX_LEN, dev);
 size += (de600_read_byte(RX_LEN, dev) << 8);
@@ -308,7 +308,7 @@ read_from = rx_page_adr();
 next_rx_page();
 de600_put_command(RX_ENABLE);
 sti();
-if ((size < 32)  ||  (size > 1535)) {
+if ((size < 32) || (size > 1535)) {
 printk("%s: Bogus packet size %d.\n", dev->name, size);
 if (size > 10000)
 adapter_init(dev);
@@ -334,7 +334,7 @@ netif_rx(skb);
 int
 de600_probe(struct device *dev)
 {
-int	i;
+int i;
 static struct netstats de600_netstats;
 printk("%s: D-Link DE-600 pocket adapter", dev->name);
 if (de600_debug > 1)
@@ -388,7 +388,7 @@ return 0;
 static int
 adapter_init(struct device *dev)
 {
-int	i;
+int i;
 long flags;
 save_flags(flags);
 cli();
@@ -439,7 +439,7 @@ return 0;
 #define DE600_MIN_WINDOW 1024
 #define DE600_MAX_WINDOW 2048
 #define DE600_TCP_WINDOW_DIFF 1024
-#define min(a,b)	((a)<(b)?(a):(b))
+#define min(a,b) ((a)<(b)?(a):(b))
 static unsigned long
 de600_rspace(struct sock *sk)
 {

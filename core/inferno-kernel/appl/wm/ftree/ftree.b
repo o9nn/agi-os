@@ -131,7 +131,7 @@ sys->fprint(stderr, "ftree: cannot make /chan/plumbstart: %r\n");
 raise "fail:error";
 }
 nsfio := sys->file2chan("/chan", "nsupdate");
-if (nsfio == nil)  {
+if (nsfio == nil) {
 sys->fprint(stderr, "ftree: cannot make /chan/nsupdate: %r\n");
 raise "fail:error";
 }
@@ -388,7 +388,7 @@ Open =>
 plumbit(it.name);
 }
 }
-#	id := cmd(tkwin, ".c create rectangle " + r2s(it.r) + " -fill yellow");
+# id := cmd(tkwin, ".c create rectangle " + r2s(it.r) + " -fill yellow");
 replyc <-= it;
 nsu <-= upd;
 }
@@ -425,7 +425,7 @@ highlightproc(c: chan of (ref Tree, Item, chan of Item), colour: string, time: i
 if (replyc == nil)
 return;
 r: Rect;
-pick t  := tree {
+pick t := tree {
 N =>
 r = t.e.titleitem.r.addpt(it.r.min);
 L =>
@@ -463,7 +463,7 @@ blankitem: Item;
 operate1(tree: ref Tree, it: Item, towhom, below: string,
 c: chan of (ref Tree, Item, chan of Item)): (int, Item)
 {
-#	sys->print("operate on %s, towhom: %s, below: %s\n", it.name, towhom, below);
+# sys->print("operate on %s, towhom: %s, below: %s\n", it.name, towhom, below);
 n: ref Tree.N;
 replyc := chan of Item;
 if (it.name != towhom) {
@@ -483,7 +483,7 @@ return (0, it);
 }
 for (i := 0; i < len n.e.children; i++) {
 f := n.e.children[i].name;
-#			sys->print("checking %s against child %s\n", path, f);
+# sys->print("checking %s against child %s\n", path, f);
 if (len path >= len f && path[0:len f] == f &&
 (len path == len f || path[len f] == '/')) {
 break;
@@ -495,8 +495,8 @@ oldit := n.e.children[i].addpt(it.r.min);
 (ok, nit) := operate1(n.sub[i], oldit, towhom, below, c);
 if (nit.eq(oldit))
 return (ok, it);
-#		sys->print("childchanged({%s, [%s]}, %d, {%s, [%s]})\n",
-#				it.name, r2s(it.r), i, nit.name, r2s(nit.r));
+# sys->print("childchanged({%s, [%s]}, %d, {%s, [%s]})\n",
+# it.name, r2s(it.r), i, nit.name, r2s(nit.r));
 n.e.children[i] = nit.subpt(it.r.min);
 return (ok, n.e.childrenchanged(it));
 }

@@ -664,8 +664,8 @@ aic7xxx_patch0_func(struct aic7xxx_host *p)
 return (0);
 }
 struct sequencer_patch {
-int		(*patch_func)(struct aic7xxx_host *);
-unsigned int	begin	   :10,
+int (*patch_func)(struct aic7xxx_host *);
+unsigned int begin :10,
 skip_instr :10,
 skip_patch :12;
 } sequencer_patches[] = {

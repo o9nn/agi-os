@@ -1,5 +1,5 @@
 #ifndef iddict_INCLUDED
-#  define iddict_INCLUDED
+# define iddict_INCLUDED
 #include "idict.h"
 #include "icstate.h"
 #define idict_stack (i_ctx_p->dict_stack)

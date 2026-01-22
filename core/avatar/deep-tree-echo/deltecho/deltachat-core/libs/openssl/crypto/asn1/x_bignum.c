@@ -2,7 +2,7 @@
 #include "cryptlib.h"
 #include <openssl/asn1t.h>
 #include <openssl/bn.h>
-#define BN_SENSITIVE    1
+#define BN_SENSITIVE 1
 static int bn_new(ASN1_VALUE **pval, const ASN1_ITEM *it);
 static void bn_free(ASN1_VALUE **pval, const ASN1_ITEM *it);
 static int bn_i2c(ASN1_VALUE **pval, unsigned char *cont, int *putype,

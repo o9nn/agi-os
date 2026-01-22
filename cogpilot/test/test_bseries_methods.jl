@@ -27,7 +27,7 @@ y1 = bseries_step(method, f, y0, 0.1)
 @test y1[1] ≈ 0.9
 # Integration
 times, solution = integrate(method, f, y0, (0.0, 1.0), 0.1)
-@test length(times) >= 11  # At least 11 points
+@test length(times) >= 11 # At least 11 points
 @test length(solution) >= 11
 @test solution[1][1] ≈ 1.0
 # Should decay (approximately)
@@ -80,7 +80,7 @@ error = abs(solution[end][1] - exact)
 function harmonic(y)
 return [y[2], -y[1]]
 end
-y0_osc = [1.0, 0.0]  # Start at y=1, v=0
+y0_osc = [1.0, 0.0] # Start at y=1, v=0
 times, solution = integrate(method, harmonic, y0_osc, (0.0, 2π), 0.1)
 # After one period, should return to initial state
 @test abs(solution[end][1] - 1.0) < 1e-4
@@ -98,7 +98,7 @@ y1, error = bseries_step(method, f, y0, 0.1)
 @test length(error) == length(y0)
 # Fixed step integration
 times, solution = integrate(method, f, y0, (0.0, 1.0), 0.1)
-@test length(times) >= 10  # At least 10 points
+@test length(times) >= 10 # At least 10 points
 # Should be very accurate (order 5 method)
 exact = exp(-1.0)
 error_val = abs(solution[end][1] - exact)
@@ -116,7 +116,7 @@ error_adaptive = abs(solution_adaptive[end][1] - exact)
 @test error_adaptive < 1e-6
 # Test that adaptive uses fewer steps than fixed for easy problem
 # (This may not always be true, but should be for smooth exponential decay)
-@test length(times_adaptive) <= 20  # Reasonable number of steps
+@test length(times_adaptive) <= 20 # Reasonable number of steps
 end
 @testset "Method Comparison" begin
 # Test all methods on same problem
@@ -138,14 +138,14 @@ error = abs(solution[end][1] - exact)
 push!(errors, error)
 end
 # Higher order methods should be more accurate
-@test errors[4] < errors[3]  # RK4 < Heun
-@test errors[3] < errors[1]  # Heun < Euler
-@test errors[2] < errors[1]  # Midpoint < Euler
+@test errors[4] < errors[3] # RK4 < Heun
+@test errors[3] < errors[1] # Heun < Euler
+@test errors[2] < errors[1] # Midpoint < Euler
 end
 @testset "Stiff Problem (Van der Pol)" begin
 # Van der Pol oscillator: y'' + μ(y² - 1)y' + y = 0
 # As system: dy1/dt = y2, dy2/dt = μ(1 - y1²)y2 - y1
-μ = 1.0  # Mild stiffness
+μ = 1.0 # Mild stiffness
 function vanderpol(y)
 return [y[2], μ*(1 - y[1]^2)*y[2] - y[1]]
 end

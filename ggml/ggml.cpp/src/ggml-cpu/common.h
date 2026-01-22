@@ -41,7 +41,7 @@ static constexpr ggml_bf16_t (*from_f32)(float) = f32_to_bf16;
 static std::pair<int64_t, int64_t> get_thread_range(const struct ggml_compute_params * params, const struct ggml_tensor * src0) {
 const int64_t ith = params->ith;
 const int64_t nth = params->nth;
-const int64_t nr  = ggml_nrows(src0);
+const int64_t nr = ggml_nrows(src0);
 const int64_t dr = (nr + nth - 1)/nth;
 const int64_t ir0 = dr*ith;
 const int64_t ir1 = MIN(ir0 + dr, nr);

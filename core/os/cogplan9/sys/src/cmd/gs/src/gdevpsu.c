@@ -168,7 +168,7 @@ return psw_print_lines(f, psw_end_prolog);
 int
 psw_end_file(FILE *f, const gx_device *dev,
 const gx_device_pswrite_common_t *pdpc, const gs_rect *pbbox,
-int  page_count)
+int page_count)
 {
 if (f == NULL)
 return 0;

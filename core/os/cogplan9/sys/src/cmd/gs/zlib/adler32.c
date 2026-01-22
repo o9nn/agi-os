@@ -2,13 +2,13 @@
 #include "zlib.h"
 #define BASE 65521UL
 #define NMAX 5552
-#define DO1(buf,i)  {s1 += buf[i]; s2 += s1;}
-#define DO2(buf,i)  DO1(buf,i); DO1(buf,i+1);
-#define DO4(buf,i)  DO2(buf,i); DO2(buf,i+2);
-#define DO8(buf,i)  DO4(buf,i); DO4(buf,i+4);
-#define DO16(buf)   DO8(buf,0); DO8(buf,8);
+#define DO1(buf,i) {s1 += buf[i]; s2 += s1;}
+#define DO2(buf,i) DO1(buf,i); DO1(buf,i+1);
+#define DO4(buf,i) DO2(buf,i); DO2(buf,i+2);
+#define DO8(buf,i) DO4(buf,i); DO4(buf,i+4);
+#define DO16(buf) DO8(buf,0); DO8(buf,8);
 #ifdef NO_DIVIDE
-#  define MOD(a) \
+# define MOD(a) \
 do { \
 if (a >= (BASE << 16)) a -= (BASE << 16); \
 if (a >= (BASE << 15)) a -= (BASE << 15); \
@@ -29,7 +29,7 @@ if (a >= (BASE << 1)) a -= (BASE << 1); \
 if (a >= BASE) a -= BASE; \
 } while (0)
 #else
-#  define MOD(a) a %= BASE
+# define MOD(a) a %= BASE
 #endif
 uLong ZEXPORT adler32(adler, buf, len)
 uLong adler;

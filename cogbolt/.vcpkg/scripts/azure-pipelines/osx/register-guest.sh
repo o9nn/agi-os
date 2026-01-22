@@ -1,11 +1,11 @@
 #!/bin/sh
 if [ -z "$1" ]; then
-    echo "PAT missing"
-    exit 1
+echo "PAT missing"
+exit 1
 fi
 if [ -z "$2" ]; then
-    echo "Agent number missing"
-    exit 1
+echo "Agent number missing"
+exit 1
 fi
 export AGENT=CPPMAC-ARM64-$2
 echo "THIS IS AGENT: $AGENT"

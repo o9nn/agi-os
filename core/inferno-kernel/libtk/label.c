@@ -3,16 +3,16 @@
 #include "draw.h"
 #include "tk.h"
 #include "label.h"
-#define	O(t, e)		((long)(&((t*)0)->e))
+#define O(t, e) ((long)(&((t*)0)->e))
 TkOption tklabelopts[] =
 {
-"text",		OPTtext,	O(TkLabel, text),	nil,
-"label",	OPTtext,	O(TkLabel, text),	nil,
-"underline",	OPTdist,	O(TkLabel, ul),		nil,
-"justify",	OPTflag,	O(TkLabel, justify),	tkjustify,
-"anchor",	OPTflag,	O(TkLabel, anchor),	tkanchor,
-"bitmap",	OPTbmap,	O(TkLabel, bitmap),	nil,
-"image",	OPTimag,	O(TkLabel, img),	nil,
+"text", OPTtext, O(TkLabel, text), nil,
+"label", OPTtext, O(TkLabel, text), nil,
+"underline", OPTdist, O(TkLabel, ul), nil,
+"justify", OPTflag, O(TkLabel, justify), tkjustify,
+"anchor", OPTflag, O(TkLabel, anchor), tkanchor,
+"bitmap", OPTbmap, O(TkLabel, bitmap), nil,
+"image", OPTimag, O(TkLabel, img), nil,
 nil
 };
 char*
@@ -295,8 +295,8 @@ else
 static
 TkCmdtab tklabelcmd[] =
 {
-"cget",			tklabelcget,
-"configure",		tklabelconf,
+"cget", tklabelcget,
+"configure", tklabelconf,
 nil
 };
 TkMethod labelmethod = {

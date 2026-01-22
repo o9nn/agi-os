@@ -1,18 +1,18 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"error.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "error.h"
 enum
 {
-Hdrspc		= 64,
-Bdead		= 0x51494F42,
+Hdrspc = 64,
+Bdead = 0x51494F42,
 };
 struct
 {
 Lock;
-ulong	bytes;
+ulong bytes;
 } ucialloc;
 static Block*
 _ucallocb(int size)

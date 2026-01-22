@@ -81,10 +81,10 @@ uint row_size, source_size;
 gx_image_enum_common_t *info;
 gs_matrix smat, dmat;
 int code;
-if ( pixel_copy                            &&
+if ( pixel_copy &&
 memcmp( &dev->color_info,
 &sdev->color_info,
-sizeof(dev->color_info) ) != 0  )
+sizeof(dev->color_info) ) != 0 )
 return_error(gs_error_typecheck);
 if (pixel_copy && depth <= 8)
 return_error(gs_error_unregistered);

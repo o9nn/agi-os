@@ -36,8 +36,8 @@ res = solve(prob, basis, alg, options = DataDrivenCommonOptions(maxiters = 100))
 #md println(res)
 # !!! note
 #
-#    Currently, the parameters of the result found by [`EQSearch`](@ref) are not turned into symbolic parameters.
-#    This affects some functions like `dof`, `aicc`, `bic`.
+# Currently, the parameters of the result found by [`EQSearch`](@ref) are not turned into symbolic parameters.
+# This affects some functions like `dof`, `aicc`, `bic`.
 system = get_basis(res)
 #md println(system) # hide
 #md # ## [Copy-Pasteable Code](@id symbolic_regression_simple_copy_paste)

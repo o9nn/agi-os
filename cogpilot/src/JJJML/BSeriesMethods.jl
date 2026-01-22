@@ -46,7 +46,7 @@ kernel::BSeriesKernel{T}
 function ExplicitMidpoint{T}() where T
 genome = Dict{RootedTree, T}()
 # Order 1 tree
-genome[RootedTree([1])] = T(0)  # No order-1 contribution
+genome[RootedTree([1])] = T(0) # No order-1 contribution
 # Order 2 tree: [∅]
 genome[RootedTree([1, 2])] = T(1)
 kernel = BSeriesKernel{T}(genome, 2)
@@ -213,7 +213,7 @@ h = min(dt, t_end - t)
 # Take step (handle methods with/without error estimation)
 result = bseries_step(method, f, y, h)
 if result isa Tuple
-y, _ = result  # Discard error estimate for now
+y, _ = result # Discard error estimate for now
 else
 y = result
 end

@@ -18,7 +18,7 @@ uint32_t mail_index_offset_to_uint32(uint32_t offset)
 offset = be32_to_cpu(offset);
 if ((offset & 0x80808080) != 0x80808080)
 return 0;
-return  (((offset & 0x0000007f)) |
+return (((offset & 0x0000007f)) |
 ((offset & 0x00007f00) >> 8 << 7) |
 ((offset & 0x007f0000) >> 16 << 14) |
 ((offset & 0x7f000000) >> 24 << 21)) << 2;

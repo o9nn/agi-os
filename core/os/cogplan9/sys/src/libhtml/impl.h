@@ -2,49 +2,49 @@ typedef struct List List;
 typedef struct Strlist Strlist;
 struct List
 {
-List*	next;
-int	val;
+List* next;
+int val;
 };
 struct Strlist
 {
-Strlist*	next;
-Rune*	val;
+Strlist* next;
+Rune* val;
 };
-extern int		_inclass(Rune c, Rune* cl);
-extern int		_listlen(List* l);
-extern List*	_newlist(int val, List* rest);
-extern Rune*	_newstr(int n);
-extern int		_prefix(Rune* pre, Rune* s);
-extern List*	_revlist(List* l);
-extern void	_splitl(Rune* s, int n, Rune* cl, Rune** p1, int* n1, Rune** p2, int* n2);
-extern void	_splitr(Rune* s, int n, Rune* cl, Rune** p1, int* n1, Rune** p2, int* n2);
-extern int		_splitall(Rune* s, int n, Rune* cl, Rune** strarr, int* lenarr, int alen);
-extern Rune*	_Stradd(Rune*s1, Rune* s2, int n);
-extern Rune*	_Strclass(Rune* s, Rune* cl);
-extern int		_Strcmp(Rune* s1, Rune* s2);
-extern Rune*	_Strdup(Rune* s);
-extern Rune*	_Strdup2(Rune* s, Rune* t);
-extern int		_Streqn(Rune* s1, int n1, Rune* s2);
-extern int		_Strlen(Rune* s);
-extern Rune*	_Strnclass(Rune* s, Rune* cl, int n);
-extern int		_Strncmpci(Rune* s1, int n1, Rune* s2);
-extern Rune*	_Strndup(Rune* s, int n);
-extern Rune*	_Strnrclass(Rune* s, Rune* cl, int n);
-extern Rune*	_Strrclass(Rune* s, Rune* cl);
-extern Rune*	_Strsubstr(Rune* s, int start, int stop);
-extern long	_Strtol(Rune* s, Rune** eptr, int base);
-extern void	_trimwhite(Rune* s, int n, Rune** pans, int* panslen);
-extern Rune*	notwhitespace;
-extern Rune*	whitespace;
+extern int _inclass(Rune c, Rune* cl);
+extern int _listlen(List* l);
+extern List* _newlist(int val, List* rest);
+extern Rune* _newstr(int n);
+extern int _prefix(Rune* pre, Rune* s);
+extern List* _revlist(List* l);
+extern void _splitl(Rune* s, int n, Rune* cl, Rune** p1, int* n1, Rune** p2, int* n2);
+extern void _splitr(Rune* s, int n, Rune* cl, Rune** p1, int* n1, Rune** p2, int* n2);
+extern int _splitall(Rune* s, int n, Rune* cl, Rune** strarr, int* lenarr, int alen);
+extern Rune* _Stradd(Rune*s1, Rune* s2, int n);
+extern Rune* _Strclass(Rune* s, Rune* cl);
+extern int _Strcmp(Rune* s1, Rune* s2);
+extern Rune* _Strdup(Rune* s);
+extern Rune* _Strdup2(Rune* s, Rune* t);
+extern int _Streqn(Rune* s1, int n1, Rune* s2);
+extern int _Strlen(Rune* s);
+extern Rune* _Strnclass(Rune* s, Rune* cl, int n);
+extern int _Strncmpci(Rune* s1, int n1, Rune* s2);
+extern Rune* _Strndup(Rune* s, int n);
+extern Rune* _Strnrclass(Rune* s, Rune* cl, int n);
+extern Rune* _Strrclass(Rune* s, Rune* cl);
+extern Rune* _Strsubstr(Rune* s, int start, int stop);
+extern long _Strtol(Rune* s, Rune** eptr, int base);
+extern void _trimwhite(Rune* s, int n, Rune** pans, int* panslen);
+extern Rune* notwhitespace;
+extern Rune* whitespace;
 typedef struct StringInt StringInt;
 struct StringInt
 {
-Rune*	key;
-int		val;
+Rune* key;
+int val;
 };
-extern int			_lookup(StringInt* t, int n, Rune* key, int keylen, int* pans);
-extern StringInt*	_makestrinttab(Rune** a, int n);
-extern Rune*		_revlookup(StringInt* t, int n, int val);
+extern int _lookup(StringInt* t, int n, Rune* key, int keylen, int* pans);
+extern StringInt* _makestrinttab(Rune** a, int n);
+extern Rune* _revlookup(StringInt* t, int n, int val);
 enum {
 White = 0xFFFFFF,
 Black = 0x000000,
@@ -114,20 +114,20 @@ Numattrs
 };
 struct Attr
 {
-Attr*		next;
-int		attid;
-Rune*	value;
+Attr* next;
+int attid;
+Rune* value;
 };
 struct Token
 {
-int		tag;
-Rune*	text;
-Attr*		attr;
-int		starti;
+int tag;
+Rune* text;
+Attr* attr;
+int starti;
 };
-extern Rune*	tagnames[];
-extern Rune*	attrnames[];
-extern void	_freetokens(Token* tarray, int n);
-extern Token*	_gettoks(uchar* data, int datalen, int chset, int mtype, int* plen);
-extern int		_tokaval(Token* t, int attid, Rune** pans, int xfer);
-#pragma varargck	type "T"	Token*
+extern Rune* tagnames[];
+extern Rune* attrnames[];
+extern void _freetokens(Token* tarray, int n);
+extern Token* _gettoks(uchar* data, int datalen, int chset, int mtype, int* plen);
+extern int _tokaval(Token* t, int attid, Rune** pans, int xfer);
+#pragma varargck type "T" Token*

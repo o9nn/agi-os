@@ -5,26 +5,26 @@
 #include <pool.h>
 extern Pool* imagmem;
 int drawdebug;
-static int	tablesbuilt;
-#define RGB2K(r,g,b)	((156763*(r)+307758*(g)+59769*(b))>>19)
+static int tablesbuilt;
+#define RGB2K(r,g,b) ((156763*(r)+307758*(g)+59769*(b))>>19)
 #define DIV255(x) ((((x)+1)*257)>>16)
-#define MUL(x, y, t)	(t = (x)*(y)+128, (t+(t>>8))>>8)
-#define MASK13	0xFF00FF00
-#define MASK02	0x00FF00FF
-#define MUL13(a, x, t)		(t = (a)*(((x)&MASK13)>>8)+128, ((t+((t>>8)&MASK02))>>8)&MASK02)
-#define MUL02(a, x, t)		(t = (a)*(((x)&MASK02)>>0)+128, ((t+((t>>8)&MASK02))>>8)&MASK02)
-#define MUL0123(a, x, s, t)	((MUL13(a, x, s)<<8)|MUL02(a, x, t))
-#define MUL2(u, v, x, y)	(t = (u)*(v)+(x)*(y)+256, (t+(t>>8))>>8)
+#define MUL(x, y, t) (t = (x)*(y)+128, (t+(t>>8))>>8)
+#define MASK13 0xFF00FF00
+#define MASK02 0x00FF00FF
+#define MUL13(a, x, t) (t = (a)*(((x)&MASK13)>>8)+128, ((t+((t>>8)&MASK02))>>8)&MASK02)
+#define MUL02(a, x, t) (t = (a)*(((x)&MASK02)>>0)+128, ((t+((t>>8)&MASK02))>>8)&MASK02)
+#define MUL0123(a, x, s, t) ((MUL13(a, x, s)<<8)|MUL02(a, x, t))
+#define MUL2(u, v, x, y) (t = (u)*(v)+(x)*(y)+256, (t+(t>>8))>>8)
 static void mktables(void);
 typedef int Subdraw(Memdrawparam*);
 static Subdraw chardraw, alphadraw, memoptdraw;
-static Memimage*	memones;
-static Memimage*	memzeros;
+static Memimage* memones;
+static Memimage* memzeros;
 Memimage *memwhite;
 Memimage *memblack;
 Memimage *memtransparent;
 Memimage *memopaque;
-int	_ifmt(Fmt*);
+int _ifmt(Fmt*);
 void
 memimageinit(void)
 {
@@ -65,7 +65,7 @@ static int n = 0;
 Memdrawparam par;
 if(mask == nil)
 mask = memopaque;
-DBG	print("memimagedraw %p/%luX %R @ %p %p/%luX %P %p/%luX %P... ", dst, dst->chan, r, dst->data->bdata, src, src->chan, p0, mask, mask->chan, p1);
+DBG print("memimagedraw %p/%luX %R @ %p %p/%luX %P %p/%luX %P... ", dst, dst->chan, r, dst->data->bdata, src, src->chan, p0, mask, mask->chan, p1);
 if(drawclip(dst, &r, src, &p0, mask, &p1, &par.sr, &par.mr) == 0){
 return;
 }
@@ -242,69 +242,69 @@ conv48[i][j] = replbit[4][(i>>sh)&mask];
 }
 }
 static uchar ones = 0xff;
-typedef struct	Buffer	Buffer;
+typedef struct Buffer Buffer;
 struct Buffer {
-uchar	*red;
-uchar	*grn;
-uchar	*blu;
-uchar	*alpha;
-uchar	*grey;
-ulong	*rgba;
-int	delta;
-uchar	*m;
-int		mskip;
-uchar	*bm;
-int		bmskip;
-uchar	*em;
-int		emskip;
+uchar *red;
+uchar *grn;
+uchar *blu;
+uchar *alpha;
+uchar *grey;
+ulong *rgba;
+int delta;
+uchar *m;
+int mskip;
+uchar *bm;
+int bmskip;
+uchar *em;
+int emskip;
 };
-typedef struct	Param	Param;
-typedef Buffer	Readfn(Param*, uchar*, int);
-typedef void	Writefn(Param*, uchar*, Buffer);
-typedef Buffer	Calcfn(Buffer, Buffer, Buffer, int, int, int);
+typedef struct Param Param;
+typedef Buffer Readfn(Param*, uchar*, int);
+typedef void Writefn(Param*, uchar*, Buffer);
+typedef Buffer Calcfn(Buffer, Buffer, Buffer, int, int, int);
 enum {
 MAXBCACHE = 16
 };
 struct Param {
-Readfn	*replcall;
-Readfn	*greymaskcall;
-Readfn	*convreadcall;
-Writefn	*convwritecall;
+Readfn *replcall;
+Readfn *greymaskcall;
+Readfn *convreadcall;
+Writefn *convwritecall;
 Memimage *img;
-Rectangle	r;
-int	dx;
-int	needbuf;
-int	convgrey;
-int	alphaonly;
-uchar	*bytey0s;
-uchar	*bytermin;
-uchar	*bytey0e;
-int		bwidth;
-int	replcache;
-Buffer	bcache[MAXBCACHE];
-ulong	bfilled;
-uchar	*bufbase;
-int	bufoff;
-int	bufdelta;
-int	dir;
-int	convbufoff;
-uchar	*convbuf;
-Param	*convdpar;
-int	convdx;
+Rectangle r;
+int dx;
+int needbuf;
+int convgrey;
+int alphaonly;
+uchar *bytey0s;
+uchar *bytermin;
+uchar *bytey0e;
+int bwidth;
+int replcache;
+Buffer bcache[MAXBCACHE];
+ulong bfilled;
+uchar *bufbase;
+int bufoff;
+int bufdelta;
+int dir;
+int convbufoff;
+uchar *convbuf;
+Param *convdpar;
+int convdx;
 };
 static uchar *drawbuf;
-static int	ndrawbuf;
-static int	mdrawbuf;
-static Readfn	greymaskread, replread, readptr;
-static Writefn	nullwrite;
-static Calcfn	alphacalc0, alphacalc14, alphacalc2810, alphacalc3679, alphacalc5, alphacalc11, alphacalcS;
-static Calcfn	boolcalc14, boolcalc236789, boolcalc1011;
-static Readfn*	readfn(Memimage*);
-static Readfn*	readalphafn(Memimage*);
-static Writefn*	writefn(Memimage*);
-static Calcfn*	boolcopyfn(Memimage*, Memimage*);
-static Readfn*	convfn(Memimage*, Param*, Memimage*, Param*, int*);
-static Readfn*	ptrfn(Memimage*);
+static int ndrawbuf;
+static int mdrawbuf;
+static Readfn greymaskread, replread, readptr;
+static Writefn nullwrite;
+static Calcfn alphacalc0, alphacalc14, alphacalc2810, alphacalc3679, alphacalc5, alphacalc11, alphacalcS;
+static Calcfn boolcalc14, boolcalc236789, boolcalc1011;
+static Readfn* readfn(Memimage*);
+static Readfn* readalphafn(Memimage*);
+static Writefn* writefn(Memimage*);
+static Calcfn* boolcopyfn(Memimage*, Memimage*);
+static Readfn* convfn(Memimage*, Param*, Memimage*, Param*, int*);
+static Readfn* ptrfn(Memimage*);
 static Calcfn *alphacalc[Ncomp] =
 {
 alphacalc0,
@@ -528,9 +528,9 @@ DBG print("[");
 bmask = rdmask(&z->mpar, z->mpar.bufbase, masky);
 DBG print("]\n");
 bdst = rddst(&z->dpar, z->dpar.bufbase, dsty);
-DBG		dumpbuf("src", bsrc, dx);
-DBG		dumpbuf("mask", bmask, dx);
-DBG		dumpbuf("dst", bdst, dx);
+DBG dumpbuf("src", bsrc, dx);
+DBG dumpbuf("mask", bmask, dx);
+DBG dumpbuf("dst", bdst, dx);
 bdst = calc(bdst, bsrc, bmask, dx, isgrey, op);
 wrdst(&z->dpar, z->dpar.bytermin+dsty*z->dpar.bwidth, bdst);
 }

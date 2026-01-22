@@ -7,53 +7,53 @@
 Sorry, this code only copes with 8x8 DCTs.
 #endif
 #if BITS_IN_JSAMPLE == 8
-#define CONST_BITS  8
-#define PASS1_BITS  2
+#define CONST_BITS 8
+#define PASS1_BITS 2
 #else
-#define CONST_BITS  8
-#define PASS1_BITS  1
+#define CONST_BITS 8
+#define PASS1_BITS 1
 #endif
 #if CONST_BITS == 8
-#define FIX_1_082392200  ((INT32)  277)
-#define FIX_1_414213562  ((INT32)  362)
-#define FIX_1_847759065  ((INT32)  473)
-#define FIX_2_613125930  ((INT32)  669)
+#define FIX_1_082392200 ((INT32) 277)
+#define FIX_1_414213562 ((INT32) 362)
+#define FIX_1_847759065 ((INT32) 473)
+#define FIX_2_613125930 ((INT32) 669)
 #else
-#define FIX_1_082392200  FIX(1.082392200)
-#define FIX_1_414213562  FIX(1.414213562)
-#define FIX_1_847759065  FIX(1.847759065)
-#define FIX_2_613125930  FIX(2.613125930)
+#define FIX_1_082392200 FIX(1.082392200)
+#define FIX_1_414213562 FIX(1.414213562)
+#define FIX_1_847759065 FIX(1.847759065)
+#define FIX_2_613125930 FIX(2.613125930)
 #endif
 #ifndef USE_ACCURATE_ROUNDING
 #undef DESCALE
-#define DESCALE(x,n)  RIGHT_SHIFT(x, n)
+#define DESCALE(x,n) RIGHT_SHIFT(x, n)
 #endif
-#define MULTIPLY(var,const)  ((DCTELEM) DESCALE((var) * (const), CONST_BITS))
+#define MULTIPLY(var,const) ((DCTELEM) DESCALE((var) * (const), CONST_BITS))
 #if BITS_IN_JSAMPLE == 8
-#define DEQUANTIZE(coef,quantval)  (((IFAST_MULT_TYPE) (coef)) * (quantval))
+#define DEQUANTIZE(coef,quantval) (((IFAST_MULT_TYPE) (coef)) * (quantval))
 #else
-#define DEQUANTIZE(coef,quantval)  \
+#define DEQUANTIZE(coef,quantval) \
 DESCALE((coef)*(quantval), IFAST_SCALE_BITS-PASS1_BITS)
 #endif
 #ifdef RIGHT_SHIFT_IS_UNSIGNED
-#define ISHIFT_TEMPS	DCTELEM ishift_temp;
+#define ISHIFT_TEMPS DCTELEM ishift_temp;
 #if BITS_IN_JSAMPLE == 8
-#define DCTELEMBITS  16
+#define DCTELEMBITS 16
 #else
-#define DCTELEMBITS  32
+#define DCTELEMBITS 32
 #endif
-#define IRIGHT_SHIFT(x,shft)  \
+#define IRIGHT_SHIFT(x,shft) \
 ((ishift_temp = (x)) < 0 ? \
 (ishift_temp >> (shft)) | ((~((DCTELEM) 0)) << (DCTELEMBITS-(shft))) : \
 (ishift_temp >> (shft)))
 #else
 #define ISHIFT_TEMPS
-#define IRIGHT_SHIFT(x,shft)	((x) >> (shft))
+#define IRIGHT_SHIFT(x,shft) ((x) >> (shft))
 #endif
 #ifdef USE_ACCURATE_ROUNDING
-#define IDESCALE(x,n)  ((int) IRIGHT_SHIFT((x) + (1 << ((n)-1)), n))
+#define IDESCALE(x,n) ((int) IRIGHT_SHIFT((x) + (1 << ((n)-1)), n))
 #else
-#define IDESCALE(x,n)  ((int) IRIGHT_SHIFT(x, n))
+#define IDESCALE(x,n) ((int) IRIGHT_SHIFT(x, n))
 #endif
 GLOBAL(void)
 jpeg_idct_ifast (j_decompress_ptr cinfo, jpeg_component_info * compptr,

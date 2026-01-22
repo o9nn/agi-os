@@ -1,10 +1,10 @@
-#include	"u.h"
-#include	"../port/lib.h"
-#include	"mem.h"
-#include	"dat.h"
-#include	"fns.h"
-#include	"../port/error.h"
-#include	"io.h"
+#include "u.h"
+#include "../port/lib.h"
+#include "mem.h"
+#include "dat.h"
+#include "fns.h"
+#include "../port/error.h"
+#include "io.h"
 enum{
 Qdir,
 Qrtc,
@@ -14,24 +14,24 @@ Qintstat,
 Qporta,
 Qportb,
 Qportc,
-RTDIV=	1<<24,
-RTSEL=	1<<23,
-RTE=	1<<0,
-R38K=	1<<4,
+RTDIV= 1<<24,
+RTSEL= 1<<23,
+RTE= 1<<0,
+R38K= 1<<4,
 };
-static	QLock	rtclock;
+static QLock rtclock;
 static Dirtab rtcdir[]={
-".",		{Qdir,0,QTDIR},	0,	0555,
-"rtc",		{Qrtc, 0},	12,	0664,
-"switch",	{Qswitch, 0}, 0, 0444,
-"intstat",	{Qintstat, 0}, 0, 0444,
-"porta",	{Qporta, 0}, 0, 0444,
-"portb",	{Qportb, 0}, 0, 0444,
-"portc",	{Qportc, 0}, 0, 0444,
-"nvram",	{Qnvram, 0},	0,	0660,
+".", {Qdir,0,QTDIR}, 0, 0555,
+"rtc", {Qrtc, 0}, 12, 0664,
+"switch", {Qswitch, 0}, 0, 0444,
+"intstat", {Qintstat, 0}, 0, 0444,
+"porta", {Qporta, 0}, 0, 0444,
+"portb", {Qportb, 0}, 0, 0444,
+"portc", {Qportc, 0}, 0, 0444,
+"nvram", {Qnvram, 0}, 0, 0660,
 };
 static long nrtc = nelem(rtcdir)-1;
-static	long	readport(int, ulong, char*, long);
+static long readport(int, ulong, char*, long);
 static void
 rtcreset(void)
 {

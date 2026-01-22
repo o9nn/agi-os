@@ -1,42 +1,42 @@
 #include <lib9.h>
-typedef struct	Instr	Instr;
-struct	Instr
+typedef struct Instr Instr;
+struct Instr
 {
-ulong	w;
-ulong	addr;
-uchar	op;
-uchar	cond;
-uchar	store;
-uchar	rd;
-uchar	rn;
-uchar	rs;
-long	imm;
-char*	curr;
-char*	end;
-char*	err;
+ulong w;
+ulong addr;
+uchar op;
+uchar cond;
+uchar store;
+uchar rd;
+uchar rn;
+uchar rs;
+long imm;
+char* curr;
+char* end;
+char* err;
 };
 typedef struct Opcode Opcode;
 struct Opcode
 {
-char*	o;
-void	(*f)(Opcode*, Instr*);
-char*	a;
+char* o;
+void (*f)(Opcode*, Instr*);
+char* a;
 };
-static	void	format(char*, Instr*, char*);
-static	int	arminst(ulong, char, char*, int);
-static	int	armdas(ulong, char*, int);
+static void format(char*, Instr*, char*);
+static int arminst(ulong, char, char*, int);
+static int armdas(ulong, char*, int);
 static
-char*	cond[16] =
+char* cond[16] =
 {
-"EQ",	"NE",	"CS",	"CC",
-"MI",	"PL",	"VS",	"VC",
-"HI",	"LS",	"GE",	"LT",
-"GT",	"LE",	0,	"NV"
+"EQ", "NE", "CS", "CC",
+"MI", "PL", "VS", "VC",
+"HI", "LS", "GE", "LT",
+"GT", "LE", 0, "NV"
 };
 static
-char*	shtype[4] =
+char* shtype[4] =
 {
-"<<",	">>",	"->",	"@>"
+"<<", ">>", "->", "@>"
 };
 static int
 get4(ulong addr, long *v)
@@ -260,95 +260,95 @@ format(o->o, i, buf);
 }
 static Opcode opcodes[] =
 {
-"AND%C%S",	armdps,	"R%s,R%n,R%d",
-"EOR%C%S",	armdps,	"R%s,R%n,R%d",
-"SUB%C%S",	armdps,	"R%s,R%n,R%d",
-"RSB%C%S",	armdps,	"R%s,R%n,R%d",
-"ADD%C%S",	armdps,	"R%s,R%n,R%d",
-"ADC%C%S",	armdps,	"R%s,R%n,R%d",
-"SBC%C%S",	armdps,	"R%s,R%n,R%d",
-"RSC%C%S",	armdps,	"R%s,R%n,R%d",
-"TST%C%S",	armdps,	"R%s,R%n,",
-"TEQ%C%S",	armdps,	"R%s,R%n,",
-"CMP%C%S",	armdps,	"R%s,R%n,",
-"CMN%C%S",	armdps,	"R%s,R%n,",
-"ORR%C%S",	armdps,	"R%s,R%n,R%d",
-"MOVW%C%S",	armdps,	"R%s,R%d",
-"BIC%C%S",	armdps,	"R%s,R%n,R%d",
-"MVN%C%S",	armdps,	"R%s,R%d",
-"AND%C%S",	armdps,	"(R%s%h#%m),R%n,R%d",
-"EOR%C%S",	armdps,	"(R%s%h#%m),R%n,R%d",
-"SUB%C%S",	armdps,	"(R%s%h#%m),R%n,R%d",
-"RSB%C%S",	armdps,	"(R%s%h#%m),R%n,R%d",
-"ADD%C%S",	armdps,	"(R%s%h#%m),R%n,R%d",
-"ADC%C%S",	armdps,	"(R%s%h#%m),R%n,R%d",
-"SBC%C%S",	armdps,	"(R%s%h#%m),R%n,R%d",
-"RSC%C%S",	armdps,	"(R%s%h#%m),R%n,R%d",
-"TST%C%S",	armdps,	"(R%s%h#%m),R%n,",
-"TEQ%C%S",	armdps,	"(R%s%h#%m),R%n,",
-"CMP%C%S",	armdps,	"(R%s%h#%m),R%n,",
-"CMN%C%S",	armdps,	"(R%s%h#%m),R%n,",
-"ORR%C%S",	armdps,	"(R%s%h#%m),R%n,R%d",
-"MOVW%C%S",	armdps,	"(R%s%h#%m),R%d",
-"BIC%C%S",	armdps,	"(R%s%h#%m),R%n,R%d",
-"MVN%C%S",	armdps,	"(R%s%h#%m),R%d",
-"AND%C%S",	armdps,	"(R%s%hR%m),R%n,R%d",
-"EOR%C%S",	armdps,	"(R%s%hR%m),R%n,R%d",
-"SUB%C%S",	armdps,	"(R%s%hR%m),R%n,R%d",
-"RSB%C%S",	armdps,	"(R%s%hR%m),R%n,R%d",
-"ADD%C%S",	armdps,	"(R%s%hR%m),R%n,R%d",
-"ADC%C%S",	armdps,	"(R%s%hR%m),R%n,R%d",
-"SBC%C%S",	armdps,	"(R%s%hR%m),R%n,R%d",
-"RSC%C%S",	armdps,	"(R%s%hR%m),R%n,R%d",
-"TST%C%S",	armdps,	"(R%s%hR%m),R%n,",
-"TEQ%C%S",	armdps,	"(R%s%hR%m),R%n,",
-"CMP%C%S",	armdps,	"(R%s%hR%m),R%n,",
-"CMN%C%S",	armdps,	"(R%s%hR%m),R%n,",
-"ORR%C%S",	armdps,	"(R%s%hR%m),R%n,R%d",
-"MOVW%C%S",	armdps,	"(R%s%hR%m),R%d",
-"BIC%C%S",	armdps,	"(R%s%hR%m),R%n,R%d",
-"MVN%C%S",	armdps,	"(R%s%hR%m),R%d",
-"AND%C%S",	armdpi,	"$#%i,R%n,R%d",
-"EOR%C%S",	armdpi,	"$#%i,R%n,R%d",
-"SUB%C%S",	armdpi,	"$#%i,R%n,R%d",
-"RSB%C%S",	armdpi,	"$#%i,R%n,R%d",
-"ADD%C%S",	armdpi,	"$#%i,R%n,R%d",
-"ADC%C%S",	armdpi,	"$#%i,R%n,R%d",
-"SBC%C%S",	armdpi,	"$#%i,R%n,R%d",
-"RSC%C%S",	armdpi,	"$#%i,R%n,R%d",
-"TST%C%S",	armdpi,	"$#%i,R%n,",
-"TEQ%C%S",	armdpi,	"$#%i,R%n,",
-"CMP%C%S",	armdpi,	"$#%i,R%n,",
-"CMN%C%S",	armdpi,	"$#%i,R%n,",
-"ORR%C%S",	armdpi,	"$#%i,R%n,R%d",
-"MOVW%C%S",	armdpi,	"$#%i,,R%d",
-"BIC%C%S",	armdpi,	"$#%i,R%n,R%d",
-"MVN%C%S",	armdpi,	"$#%i,,R%d",
-"MUL%C%S",	armdpi,	"R%s,R%m,R%n",
-"MULA%C%S",	armdpi,	"R%s,R%m,R%n,R%d",
-"SWPW",		armdpi,	"R%s,(R%n),R%d",
-"SWPB",		armdpi,	"R%s,(R%n),R%d",
-"MOVW%C%p",	armsdti,"R%d,#%i(R%n)",
-"MOVB%C%p",	armsdti,"R%d,#%i(R%n)",
-"MOVW%C%p",	armsdti,"#%i(R%n),R%d",
-"MOVB%C%p",	armsdti,"#%i(R%n),R%d",
-"MOVW%C%p",	armsdts,"R%d,%D(R%s%h#%m)(R%n)",
-"MOVB%C%p",	armsdts,"R%d,%D(R%s%h#%m)(R%n)",
-"MOVW%C%p",	armsdts,"%D(R%s%h#%m)(R%n),R%d",
-"MOVB%C%p",	armsdts,"%D(R%s%h#%m)(R%n),R%d",
-"MOVM%C%P%a",	armbdt,	"R%n,[%r]",
-"MOVM%C%P%a",	armbdt,	"[%r],R%n",
-"B%C",		armb,	"%b",
-"BL%C",		armb,	"%b",
-"CDP%C",	armco,	"",
-"CDP%C",	armco,	"",
-"MCR%C",	armco,	"",
-"MRC%C",	armco,	"",
-"UNK",		armunk,	"",
+"AND%C%S", armdps, "R%s,R%n,R%d",
+"EOR%C%S", armdps, "R%s,R%n,R%d",
+"SUB%C%S", armdps, "R%s,R%n,R%d",
+"RSB%C%S", armdps, "R%s,R%n,R%d",
+"ADD%C%S", armdps, "R%s,R%n,R%d",
+"ADC%C%S", armdps, "R%s,R%n,R%d",
+"SBC%C%S", armdps, "R%s,R%n,R%d",
+"RSC%C%S", armdps, "R%s,R%n,R%d",
+"TST%C%S", armdps, "R%s,R%n,",
+"TEQ%C%S", armdps, "R%s,R%n,",
+"CMP%C%S", armdps, "R%s,R%n,",
+"CMN%C%S", armdps, "R%s,R%n,",
+"ORR%C%S", armdps, "R%s,R%n,R%d",
+"MOVW%C%S", armdps, "R%s,R%d",
+"BIC%C%S", armdps, "R%s,R%n,R%d",
+"MVN%C%S", armdps, "R%s,R%d",
+"AND%C%S", armdps, "(R%s%h#%m),R%n,R%d",
+"EOR%C%S", armdps, "(R%s%h#%m),R%n,R%d",
+"SUB%C%S", armdps, "(R%s%h#%m),R%n,R%d",
+"RSB%C%S", armdps, "(R%s%h#%m),R%n,R%d",
+"ADD%C%S", armdps, "(R%s%h#%m),R%n,R%d",
+"ADC%C%S", armdps, "(R%s%h#%m),R%n,R%d",
+"SBC%C%S", armdps, "(R%s%h#%m),R%n,R%d",
+"RSC%C%S", armdps, "(R%s%h#%m),R%n,R%d",
+"TST%C%S", armdps, "(R%s%h#%m),R%n,",
+"TEQ%C%S", armdps, "(R%s%h#%m),R%n,",
+"CMP%C%S", armdps, "(R%s%h#%m),R%n,",
+"CMN%C%S", armdps, "(R%s%h#%m),R%n,",
+"ORR%C%S", armdps, "(R%s%h#%m),R%n,R%d",
+"MOVW%C%S", armdps, "(R%s%h#%m),R%d",
+"BIC%C%S", armdps, "(R%s%h#%m),R%n,R%d",
+"MVN%C%S", armdps, "(R%s%h#%m),R%d",
+"AND%C%S", armdps, "(R%s%hR%m),R%n,R%d",
+"EOR%C%S", armdps, "(R%s%hR%m),R%n,R%d",
+"SUB%C%S", armdps, "(R%s%hR%m),R%n,R%d",
+"RSB%C%S", armdps, "(R%s%hR%m),R%n,R%d",
+"ADD%C%S", armdps, "(R%s%hR%m),R%n,R%d",
+"ADC%C%S", armdps, "(R%s%hR%m),R%n,R%d",
+"SBC%C%S", armdps, "(R%s%hR%m),R%n,R%d",
+"RSC%C%S", armdps, "(R%s%hR%m),R%n,R%d",
+"TST%C%S", armdps, "(R%s%hR%m),R%n,",
+"TEQ%C%S", armdps, "(R%s%hR%m),R%n,",
+"CMP%C%S", armdps, "(R%s%hR%m),R%n,",
+"CMN%C%S", armdps, "(R%s%hR%m),R%n,",
+"ORR%C%S", armdps, "(R%s%hR%m),R%n,R%d",
+"MOVW%C%S", armdps, "(R%s%hR%m),R%d",
+"BIC%C%S", armdps, "(R%s%hR%m),R%n,R%d",
+"MVN%C%S", armdps, "(R%s%hR%m),R%d",
+"AND%C%S", armdpi, "$#%i,R%n,R%d",
+"EOR%C%S", armdpi, "$#%i,R%n,R%d",
+"SUB%C%S", armdpi, "$#%i,R%n,R%d",
+"RSB%C%S", armdpi, "$#%i,R%n,R%d",
+"ADD%C%S", armdpi, "$#%i,R%n,R%d",
+"ADC%C%S", armdpi, "$#%i,R%n,R%d",
+"SBC%C%S", armdpi, "$#%i,R%n,R%d",
+"RSC%C%S", armdpi, "$#%i,R%n,R%d",
+"TST%C%S", armdpi, "$#%i,R%n,",
+"TEQ%C%S", armdpi, "$#%i,R%n,",
+"CMP%C%S", armdpi, "$#%i,R%n,",
+"CMN%C%S", armdpi, "$#%i,R%n,",
+"ORR%C%S", armdpi, "$#%i,R%n,R%d",
+"MOVW%C%S", armdpi, "$#%i,,R%d",
+"BIC%C%S", armdpi, "$#%i,R%n,R%d",
+"MVN%C%S", armdpi, "$#%i,,R%d",
+"MUL%C%S", armdpi, "R%s,R%m,R%n",
+"MULA%C%S", armdpi, "R%s,R%m,R%n,R%d",
+"SWPW", armdpi, "R%s,(R%n),R%d",
+"SWPB", armdpi, "R%s,(R%n),R%d",
+"MOVW%C%p", armsdti,"R%d,#%i(R%n)",
+"MOVB%C%p", armsdti,"R%d,#%i(R%n)",
+"MOVW%C%p", armsdti,"#%i(R%n),R%d",
+"MOVB%C%p", armsdti,"#%i(R%n),R%d",
+"MOVW%C%p", armsdts,"R%d,%D(R%s%h#%m)(R%n)",
+"MOVB%C%p", armsdts,"R%d,%D(R%s%h#%m)(R%n)",
+"MOVW%C%p", armsdts,"%D(R%s%h#%m)(R%n),R%d",
+"MOVB%C%p", armsdts,"%D(R%s%h#%m)(R%n),R%d",
+"MOVM%C%P%a", armbdt, "R%n,[%r]",
+"MOVM%C%P%a", armbdt, "[%r],R%n",
+"B%C", armb, "%b",
+"BL%C", armb, "%b",
+"CDP%C", armco, "",
+"CDP%C", armco, "",
+"MCR%C", armco, "",
+"MRC%C", armco, "",
+"UNK", armunk, "",
 };
-static	char *mode[] = { 0, "IA", "DB", "IB" };
-static	char *pw[] = { "P", "PW", 0, "W" };
-static	char *sw[] = { 0, "W", "S", "SW" };
+static char *mode[] = { 0, "IA", "DB", "IB" };
+static char *pw[] = { "P", "PW", 0, "W" };
+static char *sw[] = { 0, "W", "S", "SW" };
 static void
 format(char *mnemonic, Instr *i, char *f)
 {

@@ -14,22 +14,22 @@
 constexpr int kVecSize = 1 << 16;
 #define QK4_0 32
 typedef struct {
-float   d;
+float d;
 uint8_t qs[QK4_0 / 2];
 } block_q4_0;
 static_assert(sizeof(block_q4_0) == sizeof(float) + QK4_0 / 2, "wrong q4_0 block size/padding");
 #define QK4_1 32
 typedef struct {
-float   d;
-float   m;
+float d;
+float m;
 uint8_t qs[QK4_1 / 2];
 } block_q4_1;
 static_assert(sizeof(block_q4_1) == sizeof(float) * 2 + QK4_1 / 2, "wrong q4_1 block size/padding");
 #define QK8_0 32
 typedef struct {
-float   d;
-float   s;
-int8_t  qs[QK8_0];
+float d;
+float s;
+int8_t qs[QK8_0];
 } block_q8_0;
 static_assert(sizeof(block_q8_0) == 2*sizeof(float) + QK8_0, "wrong q8_0 block size/padding");
 static_assert(QK4_1 == QK8_0, "QK4_1 and QK8_0 must be the same");
@@ -102,7 +102,7 @@ printf("<time> = %g +/- %g us. Max. time = %g us.\n",t,dt,maxt);
 };
 int main(int argc, char** argv) {
 int nloop = argc > 1 ? atoi(argv[1]) : 10;
-int type  = argc > 2 ? atoi(argv[2]) : 1;
+int type = argc > 2 ? atoi(argv[2]) : 1;
 std::mt19937 rndm(1234);
 std::vector<block_q4_1> x41;
 std::vector<block_q4_0> x40;

@@ -17,7 +17,7 @@ and relabelings needed to transform one tree into another.
 ```julia
 t1 = rootedtree([1, 2, 3])
 t2 = rootedtree([1, 2, 2])
-d = tree_edit_distance(t1, t2)  # Returns 1
+d = tree_edit_distance(t1, t2) # Returns 1
 ```
 """
 function tree_edit_distance(t1::RootedTree, t2::RootedTree)
@@ -52,7 +52,7 @@ maximum dissimilarity.
 ```julia
 t1 = rootedtree([1, 2, 3])
 t2 = rootedtree([1, 2, 3])
-s = tree_similarity(t1, t2)  # Returns 1.0
+s = tree_similarity(t1, t2) # Returns 1.0
 ```
 """
 function tree_similarity(t1::RootedTree, t2::RootedTree)
@@ -84,11 +84,11 @@ return Int[]
 end
 # Known values from OEIS A000081
 a = zeros(Int, max_order)
-a[1] = 1  # One tree with 1 node
+a[1] = 1 # One tree with 1 node
 if max_order == 1
 return a
 end
-a[2] = 1  # One tree with 2 nodes
+a[2] = 1 # One tree with 2 nodes
 # Compute using recurrence relation
 for n in 3:max_order
 # Simplified recurrence (exact formula is more complex)
@@ -128,7 +128,7 @@ Generate all rooted trees of a given order.
 # Examples
 ```julia
 trees = generate_all_trees(4)
-length(trees)  # Returns 4 (from A000081)
+length(trees) # Returns 4 (from A000081)
 ```
 """
 function generate_all_trees(order::Int)

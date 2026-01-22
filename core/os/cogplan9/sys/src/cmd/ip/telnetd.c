@@ -4,7 +4,7 @@
 #include <auth.h>
 #include <libsec.h>
 #include "../ip/telnet.h"
-typedef struct Consstate	Consstate;
+typedef struct Consstate Consstate;
 struct Consstate{
 int raw;
 int hold;
@@ -17,25 +17,25 @@ int nonone = 1;
 int noworldonly;
 enum
 {
-Maxpath=	256,
-Maxuser=	64,
-Maxvar=		32,
+Maxpath= 256,
+Maxuser= 64,
+Maxvar= 32,
 };
-Biobuf	netib;
-Biobuf	childib;
-char	remotesys[Maxpath];
-int	alnum(int);
-int	conssim(void);
-int	fromchild(char*, int);
-int	fromnet(char*, int);
-int	termchange(Biobuf*, int);
-int	termsub(Biobuf*, uchar*, int);
-int	xlocchange(Biobuf*, int);
-int	xlocsub(Biobuf*, uchar*, int);
-int	challuser(char*);
-int	noworldlogin(char*);
-void*	share(ulong);
-int	doauth(char*);
+Biobuf netib;
+Biobuf childib;
+char remotesys[Maxpath];
+int alnum(int);
+int conssim(void);
+int fromchild(char*, int);
+int fromnet(char*, int);
+int termchange(Biobuf*, int);
+int termsub(Biobuf*, uchar*, int);
+int xlocchange(Biobuf*, int);
+int xlocsub(Biobuf*, uchar*, int);
+int challuser(char*);
+int noworldlogin(char*);
+void* share(ulong);
+int doauth(char*);
 #define TELNETLOG "telnet"
 void
 logit(char *fmt, ...)

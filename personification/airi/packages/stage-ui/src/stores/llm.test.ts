@@ -3,24 +3,24 @@ import { createOpenRouter } from '@xsai-ext/providers-cloud'
 import { describe, expect, it } from 'vitest'
 import { attemptForToolsCompatibilityDiscovery } from './llm'
 function doesHaveOpenRouterApiKey() {
-  const apiKey = env.LLM_API_OPENROUTER_API_KEY
-  if (!apiKey) {
-    console.warn('Skipping llm store tests, because LLM_API_OPENROUTER_API_KEY is not set')
-  }
-  return !!apiKey
+const apiKey = env.LLM_API_OPENROUTER_API_KEY
+if (!apiKey) {
+console.warn('Skipping llm store tests, because LLM_API_OPENROUTER_API_KEY is not set')
+}
+return !!apiKey
 }
 const hasOpenRouterApiKey = doesHaveOpenRouterApiKey()
 describe.skipIf(!hasOpenRouterApiKey)('llm store', { timeout: 60000 }, async () => {
-  it('should be false for phi-4', async () => {
-    const res1 = await attemptForToolsCompatibilityDiscovery('microsoft/phi-4', createOpenRouter(env.LLM_API_OPENROUTER_API_KEY!, 'https://openrouter.ai/api/v1/'), [])
-    expect(res1).toBe(false)
-  })
-  it('should be false for gpt-4o-mini', async () => {
-    const res1 = await attemptForToolsCompatibilityDiscovery('openai/gpt-4o-mini', createOpenRouter(env.LLM_API_OPENROUTER_API_KEY!, 'https://openrouter.ai/api/v1/'), [])
-    expect(res1).toBe(false)
-  })
-  it('should be true for gpt-4o', async () => {
-    const res2 = await attemptForToolsCompatibilityDiscovery('openai/gpt-4o', createOpenRouter(env.LLM_API_OPENROUTER_API_KEY!, 'https://openrouter.ai/api/v1/'), [])
-    expect(res2).toBe(true)
-  })
+it('should be false for phi-4', async () => {
+const res1 = await attemptForToolsCompatibilityDiscovery('microsoft/phi-4', createOpenRouter(env.LLM_API_OPENROUTER_API_KEY!, 'https://openrouter.ai/api/v1/'), [])
+expect(res1).toBe(false)
+})
+it('should be false for gpt-4o-mini', async () => {
+const res1 = await attemptForToolsCompatibilityDiscovery('openai/gpt-4o-mini', createOpenRouter(env.LLM_API_OPENROUTER_API_KEY!, 'https://openrouter.ai/api/v1/'), [])
+expect(res1).toBe(false)
+})
+it('should be true for gpt-4o', async () => {
+const res2 = await attemptForToolsCompatibilityDiscovery('openai/gpt-4o', createOpenRouter(env.LLM_API_OPENROUTER_API_KEY!, 'https://openrouter.ai/api/v1/'), [])
+expect(res2).toBe(true)
+})
 })

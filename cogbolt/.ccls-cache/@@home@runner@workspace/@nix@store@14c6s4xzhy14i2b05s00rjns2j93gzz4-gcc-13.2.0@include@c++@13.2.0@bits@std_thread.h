@@ -28,7 +28,7 @@ using native_handle_type = int;
 #endif
 class id
 {
-native_handle_type	_M_thread;
+native_handle_type _M_thread;
 public:
 id() noexcept : _M_thread() { }
 explicit
@@ -50,7 +50,7 @@ friend basic_ostream<_CharT, _Traits>&
 operator<<(basic_ostream<_CharT, _Traits>& __out, id __id);
 };
 private:
-id				_M_id;
+id _M_id;
 template<typename _Tp>
 using __not_same = __not_<is_same<__remove_cvref_t<_Tp>, thread>>;
 public:
@@ -128,7 +128,7 @@ private:
 template<typename _Callable>
 struct _State_impl : public _State
 {
-_Callable		_M_func;
+_Callable _M_func;
 template<typename... _Args>
 _State_impl(_Args&&... __args)
 : _M_func(std::forward<_Args>(__args)...)
@@ -141,10 +141,10 @@ _M_start_thread(_State_ptr, void (*)());
 #if _GLIBCXX_THREAD_ABI_COMPAT
 public:
 struct _Impl_base;
-typedef shared_ptr<_Impl_base>	__shared_base_type;
+typedef shared_ptr<_Impl_base> __shared_base_type;
 struct _Impl_base
 {
-__shared_base_type	_M_this_ptr;
+__shared_base_type _M_this_ptr;
 virtual ~_Impl_base() = default;
 virtual void _M_run() = 0;
 };

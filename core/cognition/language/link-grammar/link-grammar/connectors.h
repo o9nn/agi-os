@@ -17,9 +17,9 @@
 #define MAX_LINK_NAME_LENGTH 12
 typedef uint64_t lc_enc_t;
 typedef uint32_t connector_uc_hash_t;
-#define CD_HEAD_DEPENDENT    (1<<0)
-#define CD_HEAD              (1<<1)
-#define CD_PERMANENT         (1<<2)
+#define CD_HEAD_DEPENDENT (1<<0)
+#define CD_HEAD (1<<1)
+#define CD_PERMANENT (1<<2)
 static inline bool is_connector_name_char(unsigned char c)
 {
 if (isupper(c)) return true;

@@ -328,7 +328,7 @@ uint hintmask_size;
 BEGIN\
 hints_changed = replace_hints;\
 if (hints_changed)\
-CHECK_OP();		\
+CHECK_OP(); \
 END
 #define CHECK_HINTS_CHANGED()\
 BEGIN\

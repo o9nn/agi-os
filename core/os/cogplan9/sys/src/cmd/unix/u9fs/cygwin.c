@@ -5,7 +5,7 @@ pread(int fd, void *p, size_t n, off_t off)
 {
 off_t ooff;
 int oerrno;
-if ((ooff  = lseek(fd, off, SEEK_SET)) == -1)
+if ((ooff = lseek(fd, off, SEEK_SET)) == -1)
 return -1;
 n = read(fd, p, n);
 oerrno = errno;
@@ -18,7 +18,7 @@ pwrite(int fd, const void *p, size_t n, off_t off)
 {
 off_t ooff;
 int oerrno;
-if ((ooff  = lseek(fd, off, SEEK_SET)) == -1)
+if ((ooff = lseek(fd, off, SEEK_SET)) == -1)
 return -1;
 n = write(fd, p, n);
 oerrno = errno;

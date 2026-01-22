@@ -12,23 +12,23 @@
 #ifdef WITH_DMALLOC
 #include <dmalloc.h>
 #endif
-short int  convbuffer [4096];
-int        convsize;
-ogg_sync_state    oy;
-ogg_stream_state  os;
-ogg_page          og;
-ogg_packet        op;
-vorbis_info       vi;
-vorbis_comment    vc;
-vorbis_dsp_state  vd;
-vorbis_block      vb;
-int lame_decode_ogg_initfile( lame_global_flags*  gfp,
-FILE*               fd,
-mp3data_struct*     mp3data )
+short int convbuffer [4096];
+int convsize;
+ogg_sync_state oy;
+ogg_stream_state os;
+ogg_page og;
+ogg_packet op;
+vorbis_info vi;
+vorbis_comment vc;
+vorbis_dsp_state vd;
+vorbis_block vb;
+int lame_decode_ogg_initfile( lame_global_flags* gfp,
+FILE* fd,
+mp3data_struct* mp3data )
 {
 lame_internal_flags *gfc = gfp->internal_flags;
 char *buffer;
-int  bytes;
+int bytes;
 int i;
 ogg_sync_init(&oy);
 buffer=ogg_sync_buffer(&oy,4096);
@@ -91,11 +91,11 @@ mp3data->bitrate = 0;
 mp3data->nsamp=MAX_U_32_NUM;
 return 0;
 }
-int lame_decode_ogg_fromfile( lame_global_flags*  gfp,
-FILE*               fd,
-short int           pcm_l[],
-short int           pcm_r[],
-mp3data_struct*     mp3data )
+int lame_decode_ogg_fromfile( lame_global_flags* gfp,
+FILE* fd,
+short int pcm_l[],
+short int pcm_r[],
+mp3data_struct* mp3data )
 {
 lame_internal_flags *gfc = gfp->internal_flags;
 int samples,result,i,j,eof=0,eos=0,bout=0;
@@ -107,7 +107,7 @@ if (samples >= convsize || eos || eof) {
 int clipflag=0;
 bout=(samples<convsize?samples:convsize);
 for(i=0;i<vi.channels;i++){
-double  *mono=pcm[i];
+double *mono=pcm[i];
 for(j=0;j<bout;j++){
 int val=mono[j]*32767.;
 if(val>32767){
@@ -165,13 +165,13 @@ return -1;
 }
 return bout;
 }
-ogg_stream_state  os2;
-ogg_page          og2;
-ogg_packet        op2;
-vorbis_info       vi2;
-vorbis_comment    vc2;
-vorbis_dsp_state  vd2;
-vorbis_block      vb2;
+ogg_stream_state os2;
+ogg_page og2;
+ogg_packet op2;
+vorbis_info vi2;
+vorbis_comment vc2;
+vorbis_dsp_state vd2;
+vorbis_block vb2;
 #define MAX_COMMENT_LENGTH 255
 int lame_encode_ogg_init(lame_global_flags *gfp)
 {
@@ -265,17 +265,17 @@ vorbis_block_clear(&vb2);
 vorbis_dsp_clear(&vd2);
 return bytes;
 }
-int  lame_encode_ogg_frame (
-lame_global_flags*  gfp,
-const sample_t*     inbuf_l,
-const sample_t*     inbuf_r,
-unsigned char*      mp3buf,
-size_t              mp3buf_size )
+int lame_encode_ogg_frame (
+lame_global_flags* gfp,
+const sample_t* inbuf_l,
+const sample_t* inbuf_r,
+unsigned char* mp3buf,
+size_t mp3buf_size )
 {
 lame_internal_flags *gfc = gfp->internal_flags;
-int  i;
-int  eos   = 0;
-int  bytes = 0;
+int i;
+int eos = 0;
+int bytes = 0;
 double **buffer = vorbis_analysis_buffer(&vd2,gfp->framesize);
 for ( i = 0; i < gfp->framesize; i++ )
 buffer [0] [i] = (1/32768.) * inbuf_l [i];

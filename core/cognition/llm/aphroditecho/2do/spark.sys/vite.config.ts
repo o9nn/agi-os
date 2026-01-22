@@ -6,15 +6,15 @@ import createIconImportProxy from "@github/spark/vitePhosphorIconProxyPlugin";
 import { resolve } from 'path'
 const projectRoot = process.env.PROJECT_ROOT || import.meta.dirname
 export default defineConfig({
-  plugins: [
-    react(),
-    tailwindcss(),
-    createIconImportProxy() as PluginOption,
-    sparkPlugin() as PluginOption,
-  ],
-  resolve: {
-    alias: {
-      '@': resolve(projectRoot, 'src')
-    }
-  },
+plugins: [
+react(),
+tailwindcss(),
+createIconImportProxy() as PluginOption,
+sparkPlugin() as PluginOption,
+],
+resolve: {
+alias: {
+'@': resolve(projectRoot, 'src')
+}
+},
 });

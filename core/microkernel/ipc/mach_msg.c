@@ -31,11 +31,11 @@
 #endif
 mach_msg_return_t
 mach_msg_send(
-mach_msg_user_header_t 	*msg,
-mach_msg_option_t 	option,
-mach_msg_size_t 	send_size,
-mach_msg_timeout_t 	time_out,
-mach_port_name_t 	notify)
+mach_msg_user_header_t *msg,
+mach_msg_option_t option,
+mach_msg_size_t send_size,
+mach_msg_timeout_t time_out,
+mach_port_name_t notify)
 {
 ipc_space_t space = current_space();
 vm_map_t map = current_map();
@@ -87,12 +87,12 @@ return mr;
 }
 mach_msg_return_t
 mach_msg_receive(
-mach_msg_user_header_t 	*msg,
-mach_msg_option_t 	option,
-mach_msg_size_t 	rcv_size,
-mach_port_name_t 	rcv_name,
-mach_msg_timeout_t 	time_out,
-mach_port_name_t 	notify)
+mach_msg_user_header_t *msg,
+mach_msg_option_t option,
+mach_msg_size_t rcv_size,
+mach_port_name_t rcv_name,
+mach_msg_timeout_t time_out,
+mach_port_name_t notify)
 {
 ipc_thread_t self = current_thread();
 ipc_space_t space = current_space();
@@ -241,13 +241,13 @@ thread_syscall_return(mr);
 }
 mach_msg_return_t
 mach_msg_trap(
-mach_msg_user_header_t 	*msg,
-mach_msg_option_t 	option,
-mach_msg_size_t 	send_size,
-mach_msg_size_t 	rcv_size,
-mach_port_name_t 	rcv_name,
-mach_msg_timeout_t 	time_out,
-mach_port_name_t 	notify)
+mach_msg_user_header_t *msg,
+mach_msg_option_t option,
+mach_msg_size_t send_size,
+mach_msg_size_t rcv_size,
+mach_port_name_t rcv_name,
+mach_msg_timeout_t time_out,
+mach_port_name_t notify)
 {
 mach_msg_return_t mr;
 uint64_t perf_start_time;
@@ -798,7 +798,7 @@ ip_unlock(dest_port);
 goto slow_send;
 kernel_send:
 {
-ipc_port_t	reply_port;
+ipc_port_t reply_port;
 kmsg = ipc_kobject_server(kmsg);
 if (kmsg == IKM_NULL) {
 goto slow_get_rcv_port;

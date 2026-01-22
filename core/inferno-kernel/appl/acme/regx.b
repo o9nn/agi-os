@@ -45,11 +45,11 @@ q0, q1 : int;
 {
 if(size == Char){
 if(dir == Fore)
-line = r.q1+line;	# was t.file.buf.nc+line;
+line = r.q1+line; # was t.file.buf.nc+line;
 else if(dir == Back){
 if(r.q0==0 && line > 0)
 r.q0 = t.file.buf.nc;
-line = r.q0-line;	# was t.file.buf.nc - line;
+line = r.q0-line; # was t.file.buf.nc - line;
 }
 if(line<0 || line>t.file.buf.nc)
 raise "e";
@@ -64,7 +64,7 @@ while(line>0 && q1<t.file.buf.nc)
 if(t.readc(q1++) == '\n')
 if(--line > 0)
 q0 = q1;
-if(line==1 && t.readc(q1-1)!='\n')	# no newline at end - count it
+if(line==1 && t.readc(q1-1)!='\n') # no newline at end - count it
 ;
 else if(line > 0)
 raise "e";
@@ -136,7 +136,7 @@ if (a0 == nil)
 return rgetc(a1, n);
 return tgetc(a0, n);
 }
-address(md: ref Dat->Mntdir, t : ref Text, lim : Range, ar : Range, a0 : ref Text, a1 : string, q0 : int, q1 : int,  eval : int) : (int, int, Range)
+address(md: ref Dat->Mntdir, t : ref Text, lim : Range, ar : Range, a0 : ref Text, a1 : string, q0 : int, q1 : int, eval : int) : (int, int, Range)
 {
 dir, size : int;
 prevc, c, n : int;
@@ -154,9 +154,9 @@ c = xgetc(a0, a1, q++);
 case(c){
 ';' =>
 ar = r;
-if(prevc == 0)	# lhs defaults to 0
+if(prevc == 0) # lhs defaults to 0
 r.q0 = 0;
-if(q>=q1 && t!=nil && t.file!=nil)	# rhs defaults to $
+if(q>=q1 && t!=nil && t.file!=nil) # rhs defaults to $
 r.q1 = t.file.buf.nc;
 else{
 (eval, q, nr) = address(md, t, lim, ar, a0, a1, q, q1, eval);
@@ -164,19 +164,19 @@ r.q1 = nr.q1;
 }
 return (eval, q, r);
 ',' =>
-if(prevc == 0)	# lhs defaults to 0
+if(prevc == 0) # lhs defaults to 0
 r.q0 = 0;
-if(q>=q1 && t!=nil && t.file!=nil)	# rhs defaults to $
+if(q>=q1 && t!=nil && t.file!=nil) # rhs defaults to $
 r.q1 = t.file.buf.nc;
 else{
 (eval, q, nr) = address(md, t, lim, ar, a0, a1, q, q1, eval);
 r.q1 = nr.q1;
 }
 return (eval, q, r);
-'+'  or '-' =>
+'+' or '-' =>
 if(eval && (prevc=='+' || prevc=='-')){
 if((nc := xgetc(a0, a1, q)) != '#' && nc != '/' && nc != '?')
-(eval, r) = number(md, t, r, 1, prevc, Line);	# do previous one
+(eval, r) = number(md, t, r, 1, prevc, Line); # do previous one
 }
 dir = c;
 '.' or '$' =>
@@ -254,14 +254,14 @@ return (eval, q-1, r);
 }
 }
 if(eval && dir != None)
-(eval, r) = number(md, t, r, 1, dir, Line);	# do previous one
+(eval, r) = number(md, t, r, 1, dir, Line); # do previous one
 return (eval, q, r);
 }
 sel : Rangeset = array[NRange] of Range;
 lastregexp : string;
 # Machine Information
 Inst : adt {
-typex : int;		# < 16r10000 ==> literal, otherwise action
+typex : int; # < 16r10000 ==> literal, otherwise action
 # sid : int;
 subid : int;
 class : int;
@@ -270,65 +270,65 @@ right : cyclic ref Inst;
 # left : cyclic ref Inst;
 next : cyclic ref Inst;
 };
-NPROG : con	1024;
+NPROG : con 1024;
 program := array[NPROG] of ref Inst;
 progp : int;
-startinst : ref Inst;		# First inst. of program; might not be program[0]
-bstartinst : ref Inst;		# same for backwards machine
+startinst : ref Inst; # First inst. of program; might not be program[0]
+bstartinst : ref Inst; # same for backwards machine
 Ilist : adt {
-inst : ref Inst;			# Instruction of the thread
+inst : ref Inst; # Instruction of the thread
 se : Rangeset;
-startp : int;		# first char of match
+startp : int; # first char of match
 };
-NLIST : con	128;
-thl, nl : array of Ilist;			# This list, next list
+NLIST : con 128;
+thl, nl : array of Ilist; # This list, next list
 listx := array[2] of array of Ilist;
 sempty : Rangeset = array[NRange] of Range;
 #
 # Actions and Tokens
 #
-#	0x100xx are operators, value == precedence
-#	0x200xx are tokens, i.e. operands for operators
+# 0x100xx are operators, value == precedence
+# 0x200xx are tokens, i.e. operands for operators
 #
-OPERATOR : con		16r10000;	# Bitmask of all operators
-START	  : con		16r10000;	# Start, used for marker on stack
-RBRA	  : con		16r10001;	# Right bracket, )
-LBRA	  : con		16r10002;	# Left bracket, (
-OR		  : con		16r10003;	# Alternation, |
-CAT		  : con		16r10004;	# Concatentation, implicit operator
-STAR	  : con		16r10005;	# Closure, *
-PLUS		  : con		16r10006;	# a+ == aa*
-QUEST	  : con		16r10007;	# a? == a|nothing, i.e. 0 or 1 a's
-ANY		  : con		16r20000;	# Any character but newline, .
-NOP		  : con		16r20001;	# No operation, internal use only
-BOL		  : con		16r20002;	# Beginning of line, ^
-EOL		  : con		16r20003;	# End of line, $
-CCLASS	  : con		16r20004;	# Character class, []
-NCCLASS	  : con		16r20005;	# Negated character class, [^]
-END		  : con		16r20077;	# Terminate: match found
-ISATOR	  : con		16r10000;
-ISAND	  : con		16r20000;
+OPERATOR : con 16r10000; # Bitmask of all operators
+START : con 16r10000; # Start, used for marker on stack
+RBRA : con 16r10001; # Right bracket, )
+LBRA : con 16r10002; # Left bracket, (
+OR : con 16r10003; # Alternation, |
+CAT : con 16r10004; # Concatentation, implicit operator
+STAR : con 16r10005; # Closure, *
+PLUS : con 16r10006; # a+ == aa*
+QUEST : con 16r10007; # a? == a|nothing, i.e. 0 or 1 a's
+ANY : con 16r20000; # Any character but newline, .
+NOP : con 16r20001; # No operation, internal use only
+BOL : con 16r20002; # Beginning of line, ^
+EOL : con 16r20003; # End of line, $
+CCLASS : con 16r20004; # Character class, []
+NCCLASS : con 16r20005; # Negated character class, [^]
+END : con 16r20077; # Terminate: match found
+ISATOR : con 16r10000;
+ISAND : con 16r20000;
 # Parser Information
 Node : adt {
 first : ref Inst;
 last : ref Inst;
 };
-NSTACK : con	20;
+NSTACK : con 20;
 andstack := array[NSTACK] of ref Node;
 andp : int;
 atorstack := array[NSTACK] of int;
 atorp : int;
-lastwasand : int;	# Last token was operand
+lastwasand : int; # Last token was operand
 cursubid : int;
 subidstack := array[NSTACK] of int;
 subidp : int;
 backwards : int;
 nbra : int;
 exprs : string;
-exprp : int;		# pointer to next character in source expression
-DCLASS : con	10;	# allocation increment
-nclass : int;		# number active
-Nclass : int = 0;		# high water mark
+exprp : int; # pointer to next character in source expression
+DCLASS : con 10; # allocation increment
+nclass : int; # number active
+Nclass : int = 0; # high water mark
 class : array of string;
 negateclass : int;
 nilnode : Node;
@@ -363,7 +363,7 @@ newinst(t : int) : ref Inst
 if(progp >= NPROG)
 regerror("expression too long");
 program[progp].typex = t;
-program[progp].next = nil;	# next was left
+program[progp].next = nil; # next was left
 program[progp].right = nil;
 return program[progp++];
 }
@@ -392,7 +392,7 @@ operand(END);
 evaluntil(START);
 if(nbra)
 regerror("unmatched `('");
---andp;	# points to first and only operand
+--andp; # points to first and only operand
 return andstack[andp].first;
 }
 exception{
@@ -430,12 +430,12 @@ operand(t : int)
 {
 i : ref Inst;
 if(lastwasand)
-operator(CAT);	# catenate is implicit
+operator(CAT); # catenate is implicit
 i = newinst(t);
 if(t == CCLASS){
 if(negateclass)
-i.typex = NCCLASS;	# UGH
-i.class = nclass-1;		# UGH
+i.typex = NCCLASS; # UGH
+i.class = nclass-1; # UGH
 }
 pushand(i, i);
 lastwasand = TRUE;
@@ -445,7 +445,7 @@ operator(t : int)
 if(t==RBRA && --nbra<0)
 regerror("unmatched `)'");
 if(t==LBRA){
-cursubid++;	# silently ignored
+cursubid++; # silently ignored
 nbra++;
 if(lastwasand)
 operator(CAT);
@@ -455,7 +455,7 @@ if(t!=RBRA)
 pushator(t);
 lastwasand = FALSE;
 if(t==STAR || t==QUEST || t==PLUS || t==RBRA)
-lastwasand = TRUE;	# these look like operands
+lastwasand = TRUE; # these look like operands
 }
 pushand(f : ref Inst, l : ref Inst)
 {
@@ -507,7 +507,7 @@ inst1 = newinst(LBRA);
 inst1.subid = subidstack[subidp];
 inst1.next = op1.first;
 pushand(inst1, inst2);
-return;		# must have been RBRA
+return; # must have been RBRA
 OR =>
 op2 = popand('|');
 op1 = popand('|');
@@ -516,7 +516,7 @@ op2.last.next = inst2;
 op1.last.next = inst2;
 inst1 = newinst(OR);
 inst1.right = op1.first;
-inst1.next = op2.first;	# next was left
+inst1.next = op2.first; # next was left
 pushand(inst1, inst2);
 CAT =>
 op2 = popand(0);
@@ -541,7 +541,7 @@ QUEST =>
 op2 = popand('?');
 inst1 = newinst(OR);
 inst2 = newinst(NOP);
-inst1.next = inst2;	# next was left
+inst1.next = inst2; # next was left
 inst1.right = op2.first;
 op2.last.next = inst2;
 pushand(inst1, inst2);
@@ -622,7 +622,7 @@ c1, c2 : int;
 classp : string;
 # we have already seen the '['
 if(exprp < len exprs && exprs[exprp] == '^'){
-classp[len classp] = '\n';	# don't match newline in negate case
+classp[len classp] = '\n'; # don't match newline in negate case
 negateclass = TRUE;
 exprp++;
 }else
@@ -633,7 +633,7 @@ classp = nil;
 regerror("malformed `[]'");
 }
 if(exprp < len exprs && exprs[exprp] == '-'){
-exprp++;	# eat '-'
+exprp++; # eat '-'
 if((c2 = nextrec()) == ']') {
 classp = nil;
 regerror("malformed '[]'");
@@ -671,8 +671,8 @@ return negate;
 }
 #
 # Note optimization in addinst:
-# 	*l must be pending when addinst called; if *l has been looked
-#		at already, the optimization is a bug.
+# *l must be pending when addinst called; if *l has been looked
+# at already, the optimization is a bug.
 #
 addinst(l : array of Ilist, inst : ref Inst, sep : Rangeset)
 {
@@ -681,7 +681,7 @@ for(p = 0; l[p].inst != nil; p++){
 if(l[p].inst==inst){
 if(sep[0].q0 < l[p].se[0].q0)
 l[p].se[0:] = sep[0:NRange]; # this would be bug
-return;	# It's already there
+return; # It's already there
 }
 }
 l[p].inst = inst;
@@ -722,9 +722,9 @@ nc = len r;
 for(;;p++){
 if(p>=eof || p>=nc){
 case(wrapped++){
-0 or 2 =>		# let loop run one more click
+0 or 2 => # let loop run one more click
 ;
-1 =>		# expired; wrap to beginning
+1 => # expired; wrap to beginning
 if(sel[0].q0>=0 || eof!=Dat->Infinity)
 return (sel[0].q0>=0, sel);
 listx[0][0].inst = listx[1][0].inst = nil;
@@ -760,7 +760,7 @@ addinst(thl, startinst, sempty);
 # Execute machine until this list is empty
 tlp = 0;
 inst = thl[0].inst;
-while(inst  != nil){	# assignment =
+while(inst != nil){ # assignment =
 case(inst.typex){
 LBRA =>
 if(inst.subid>=0)
@@ -806,12 +806,12 @@ if(++ntl >= NLIST)
 raise OVERFLOW;
 addinst(thl[tlp:], inst.right, thl[tlp].se);
 # efficiency: advance and re-evaluate
-inst = inst.next;	# next was left
+inst = inst.next; # next was left
 continue;
-END =>		# Match!
+END => # Match!
 thl[tlp].se[0].q1 = p;
 newmatch(thl[tlp].se);
-* =>		# regular character
+* => # regular character
 if(inst.typex==c){
 if(++nnl >= NLIST)
 raise OVERFLOW;
@@ -862,9 +862,9 @@ sel[0].q0= -1;
 for(;;--p){
 if(p <= 0){
 case(wrapped++){
-0 or 2 =>		# let loop run one more click
+0 or 2 => # let loop run one more click
 ;
-1 =>			# expired; wrap to end
+1 => # expired; wrap to end
 if(sel[0].q0>=0)
 return (sel[0].q0>=0, sel);
 listx[0][0].inst = listx[1][0].inst = nil;
@@ -898,7 +898,7 @@ addinst(thl, bstartinst, sempty);
 # Execute machine until this list is empty
 tlp = 0;
 inst = thl[0].inst;
-while(inst != nil){	# assignment =
+while(inst != nil){ # assignment =
 case(inst.typex){
 LBRA =>
 if(inst.subid>=0)
@@ -944,13 +944,13 @@ if(++ntl >= NLIST)
 raise OVERFLOW;
 addinst(thl[tlp:], inst.right, thl[tlp].se);
 # efficiency: advance and re-evaluate
-inst = inst.next;	# next was left
+inst = inst.next; # next was left
 continue;
-END =>		# Match!
+END => # Match!
 thl[tlp].se[0].q0 = -thl[tlp].se[0].q0; # minus sign
 thl[tlp].se[0].q1 = p;
 bnewmatch(thl[tlp].se);
-* =>	# regular character
+* => # regular character
 if(inst.typex == c){
 if(++nnl >= NLIST)
 raise OVERFLOW;
@@ -975,7 +975,7 @@ bnewmatch(sp : Rangeset)
 {
 i : int;
 if(sel[0].q0<0 || sp[0].q0>sel[0].q1 || (sp[0].q0==sel[0].q1 && sp[0].q1<sel[0].q0))
-for(i = 0; i<NRange; i++){       # note the reversal; q0<=q1
+for(i = 0; i<NRange; i++){ # note the reversal; q0<=q1
 sel[i].q0 = sp[i].q1;
 sel[i].q1 = sp[i].q0;
 }

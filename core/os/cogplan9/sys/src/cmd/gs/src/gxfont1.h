@@ -1,9 +1,9 @@
 #ifndef gxfont1_INCLUDED
-#  define gxfont1_INCLUDED
+# define gxfont1_INCLUDED
 #include "gstype1.h"
 #include "gxfixed.h"
 #ifndef gs_font_type1_DEFINED
-#  define gs_font_type1_DEFINED
+# define gs_font_type1_DEFINED
 typedef struct gs_font_type1_s gs_font_type1;
 #endif
 #define zone_table(size)\
@@ -73,7 +73,7 @@ gs_font_base_common;
 gs_type1_data data;
 };
 extern_st(st_gs_font_type1);
-#define public_st_gs_font_type1()	\
+#define public_st_gs_font_type1() \
 gs_public_st_suffix_add2_final(st_gs_font_type1, gs_font_type1,\
 "gs_font_type1", font_type1_enum_ptrs, font_type1_reloc_ptrs,\
 gs_font_finalize, st_gs_font_base, data.parent, data.proc_data)

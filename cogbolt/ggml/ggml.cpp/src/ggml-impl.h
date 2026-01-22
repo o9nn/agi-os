@@ -21,10 +21,10 @@ extern "C" {
 #endif
 void ggml_print_backtrace(void);
 #ifndef MIN
-#    define MIN(a, b) ((a) < (b) ? (a) : (b))
+# define MIN(a, b) ((a) < (b) ? (a) : (b))
 #endif
 #ifndef MAX
-#    define MAX(a, b) ((a) > (b) ? (a) : (b))
+# define MAX(a, b) ((a) > (b) ? (a) : (b))
 #endif
 #define TENSOR_ALIGNMENT 32
 #ifndef __cplusplus
@@ -58,14 +58,14 @@ return false;
 return true;
 }
 GGML_ATTRIBUTE_FORMAT(2, 3)
-GGML_API void ggml_log_internal        (enum ggml_log_level level, const char * format, ...);
+GGML_API void ggml_log_internal (enum ggml_log_level level, const char * format, ...);
 GGML_API void ggml_log_callback_default(enum ggml_log_level level, const char * text, void * user_data);
-#define GGML_LOG(...)       ggml_log_internal(GGML_LOG_LEVEL_NONE , __VA_ARGS__)
-#define GGML_LOG_INFO(...)  ggml_log_internal(GGML_LOG_LEVEL_INFO , __VA_ARGS__)
-#define GGML_LOG_WARN(...)  ggml_log_internal(GGML_LOG_LEVEL_WARN , __VA_ARGS__)
+#define GGML_LOG(...) ggml_log_internal(GGML_LOG_LEVEL_NONE , __VA_ARGS__)
+#define GGML_LOG_INFO(...) ggml_log_internal(GGML_LOG_LEVEL_INFO , __VA_ARGS__)
+#define GGML_LOG_WARN(...) ggml_log_internal(GGML_LOG_LEVEL_WARN , __VA_ARGS__)
 #define GGML_LOG_ERROR(...) ggml_log_internal(GGML_LOG_LEVEL_ERROR, __VA_ARGS__)
 #define GGML_LOG_DEBUG(...) ggml_log_internal(GGML_LOG_LEVEL_DEBUG, __VA_ARGS__)
-#define GGML_LOG_CONT(...)  ggml_log_internal(GGML_LOG_LEVEL_CONT , __VA_ARGS__)
+#define GGML_LOG_CONT(...) ggml_log_internal(GGML_LOG_LEVEL_CONT , __VA_ARGS__)
 #define GGML_DEBUG 0
 #if (GGML_DEBUG >= 1)
 #define GGML_PRINT_DEBUG(...) GGML_LOG_DEBUG(__VA_ARGS__)
@@ -104,24 +104,24 @@ assert(i < GGML_MAX_OP_PARAMS / sizeof(float));
 ((float *)(tensor->op_params))[i] = value;
 }
 struct ggml_map_custom1_op_params {
-ggml_custom1_op_t  fun;
-int                n_tasks;
-void             * userdata;
+ggml_custom1_op_t fun;
+int n_tasks;
+void * userdata;
 };
 struct ggml_map_custom2_op_params {
-ggml_custom2_op_t   fun;
-int                 n_tasks;
-void              * userdata;
+ggml_custom2_op_t fun;
+int n_tasks;
+void * userdata;
 };
 struct ggml_map_custom3_op_params {
 ggml_custom3_op_t fun;
-int               n_tasks;
-void            * userdata;
+int n_tasks;
+void * userdata;
 };
 struct ggml_custom_op_params {
 ggml_custom_op_t fun;
-int              n_tasks;
-void           * userdata;
+int n_tasks;
+void * userdata;
 };
 typedef uint32_t ggml_bitset_t;
 static_assert(sizeof(ggml_bitset_t) == 4, "bitset_t constants must be updated");
@@ -147,7 +147,7 @@ ggml_bitset_t * used;
 struct ggml_tensor ** keys;
 };
 struct ggml_hash_set ggml_hash_set_new(size_t size);
-void                 ggml_hash_set_free(struct ggml_hash_set * hash_set);
+void ggml_hash_set_free(struct ggml_hash_set * hash_set);
 size_t ggml_hash_size(size_t min_sz);
 void ggml_hash_set_reset(struct ggml_hash_set * hash_set);
 static bool ggml_hash_contains(const struct ggml_hash_set * hash_set, struct ggml_tensor * key);
@@ -217,7 +217,7 @@ struct ggml_tensor ** nodes;
 struct ggml_tensor ** grads;
 struct ggml_tensor ** grad_accs;
 struct ggml_tensor ** leafs;
-int32_t             * use_counts;
+int32_t * use_counts;
 struct ggml_hash_set visited_hash_set;
 enum ggml_cgraph_eval_order order;
 };

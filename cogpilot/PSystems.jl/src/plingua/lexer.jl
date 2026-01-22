@@ -14,21 +14,21 @@ TK_IDENTIFIER
 TK_NUMBER
 TK_STRING
 # Operators and delimiters
-TK_ARROW       # -->
-TK_GT          # >
-TK_LPAREN      # (
-TK_RPAREN      # )
-TK_LBRACKET    # [
-TK_RBRACKET    # ]
-TK_LBRACE      # {
-TK_RBRACE      # }
-TK_COMMA       # ,
-TK_SEMICOLON   # ;
-TK_EQUALS      # =
-TK_COLON       # :
-TK_APOSTROPHE  # '
-TK_AT          # @
-TK_LT          # <
+TK_ARROW # -->
+TK_GT # >
+TK_LPAREN # (
+TK_RPAREN # )
+TK_LBRACKET # [
+TK_RBRACKET # ]
+TK_LBRACE # {
+TK_RBRACE # }
+TK_COMMA # ,
+TK_SEMICOLON # ;
+TK_EQUALS # =
+TK_COLON # :
+TK_APOSTROPHE # '
+TK_AT # @
+TK_LT # <
 # Special
 TK_EOF
 TK_UNKNOWN
@@ -108,14 +108,14 @@ advance!(lexer)
 end
 elseif c == '/' && peek(lexer) == '*'
 # Multi-line comment
-advance!(lexer)  # '/'
-advance!(lexer)  # '*'
+advance!(lexer) # '/'
+advance!(lexer) # '*'
 while !(current_char(lexer) == '*' && peek(lexer) == '/') && current_char(lexer) != '\0'
 advance!(lexer)
 end
 if current_char(lexer) == '*'
-advance!(lexer)  # '*'
-advance!(lexer)  # '/'
+advance!(lexer) # '*'
+advance!(lexer) # '/'
 end
 else
 break

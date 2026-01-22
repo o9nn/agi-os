@@ -5,71 +5,71 @@
 (define dog (Concept "dog"))
 (define bark (Concept "barked"))
 (Section
-	(Concept "LEFT-WALL")
-	(ConnectorSeq
-		(Connector (Concept "Xp") (ConnectorDir "+"))
-		(Connector (Concept "WV") (ConnectorDir "+"))
-		(Connector (Concept "W") (ConnectorDir "+"))))
+(Concept "LEFT-WALL")
+(ConnectorSeq
+(Connector (Concept "Xp") (ConnectorDir "+"))
+(Connector (Concept "WV") (ConnectorDir "+"))
+(Connector (Concept "W") (ConnectorDir "+"))))
 (Section
-	(Concept "the")
-	(ConnectorSeq
-		(Connector (Concept "D") (ConnectorDir "+"))))
+(Concept "the")
+(ConnectorSeq
+(Connector (Concept "D") (ConnectorDir "+"))))
 (Section
-	(Concept "a")
-	(ConnectorSeq
-		(Connector (Concept "Ds") (ConnectorDir "+"))))
+(Concept "a")
+(ConnectorSeq
+(Connector (Concept "Ds") (ConnectorDir "+"))))
 (Section
-	(Concept "dog")
-	(ConnectorSeq
-		(Connector (Concept "W") (ConnectorDir "-"))
-		(Connector (Concept "D") (ConnectorDir "-"))
-		(Connector (Concept "MXs") (ConnectorDir "+"))
-		(Connector (Concept "S") (ConnectorDir "+"))))
+(Concept "dog")
+(ConnectorSeq
+(Connector (Concept "W") (ConnectorDir "-"))
+(Connector (Concept "D") (ConnectorDir "-"))
+(Connector (Concept "MXs") (ConnectorDir "+"))
+(Connector (Concept "S") (ConnectorDir "+"))))
 (Section
-	(Concept "cat")
-	(ConnectorSeq
-		(Connector (Concept "W") (ConnectorDir "-"))
-		(Connector (Concept "D") (ConnectorDir "-"))
-		(Connector (Concept "MXs") (ConnectorDir "+"))
-		(Connector (Concept "S") (ConnectorDir "+"))))
+(Concept "cat")
+(ConnectorSeq
+(Connector (Concept "W") (ConnectorDir "-"))
+(Connector (Concept "D") (ConnectorDir "-"))
+(Connector (Concept "MXs") (ConnectorDir "+"))
+(Connector (Concept "S") (ConnectorDir "+"))))
 (Section
-	(Concept ",")
-	(ConnectorSeq
-		(Connector (Concept "Xd") (ConnectorDir "+"))))
+(Concept ",")
+(ConnectorSeq
+(Connector (Concept "Xd") (ConnectorDir "+"))))
 (Section
-	(Concept ",")
-	(ConnectorSeq
-		(Connector (Concept "Xc") (ConnectorDir "-"))))
+(Concept ",")
+(ConnectorSeq
+(Connector (Concept "Xc") (ConnectorDir "-"))))
 (Section
-	(Concept ".")
-	(ConnectorSeq
-		(Connector (Concept "Xp") (ConnectorDir "-"))
-		(Connector (Concept "Xf") (ConnectorDir "-"))))
+(Concept ".")
+(ConnectorSeq
+(Connector (Concept "Xp") (ConnectorDir "-"))
+(Connector (Concept "Xf") (ConnectorDir "-"))))
 (Section
-	(Concept "black")
-	(ConnectorSeq
-		(Connector (Concept "A") (ConnectorDir "+"))))
+(Concept "black")
+(ConnectorSeq
+(Connector (Concept "A") (ConnectorDir "+"))))
 (Section
-	(Concept "white")
-	(ConnectorSeq
-		(Connector (Concept "A") (ConnectorDir "+"))))
+(Concept "white")
+(ConnectorSeq
+(Connector (Concept "A") (ConnectorDir "+"))))
 (Section
-	(Concept "lab")
-	(ConnectorSeq
-		(Connector (Concept "A") (ConnectorDir "-"))
-		(Connector (Concept "Ds") (ConnectorDir "-"))
-		(Connector (Concept "Xd") (ConnectorDir "-"))
-		(Connector (Concept "MXs") (ConnectorDir "-"))
-		(Connector (Concept "Xc") (ConnectorDir "+"))))
+(Concept "lab")
+(ConnectorSeq
+(Connector (Concept "A") (ConnectorDir "-"))
+(Connector (Concept "Ds") (ConnectorDir "-"))
+(Connector (Concept "Xd") (ConnectorDir "-"))
+(Connector (Concept "MXs") (ConnectorDir "-"))
+(Connector (Concept "Xc") (ConnectorDir "+"))))
 (Section
-	(Concept "barked")
-	(ConnectorSeq
-		(Connector (Concept "WV") (ConnectorDir "-"))
-		(Connector (Concept "S") (ConnectorDir "-"))
-		(Connector (Concept "Xf") (ConnectorDir "+"))))
+(Concept "barked")
+(ConnectorSeq
+(Connector (Concept "WV") (ConnectorDir "-"))
+(Connector (Concept "S") (ConnectorDir "-"))
+(Connector (Concept "Xf") (ConnectorDir "+"))))
 (Section
-	(Concept "purred")
-	(ConnectorSeq
-		(Connector (Concept "WV") (ConnectorDir "-"))
-		(Connector (Concept "S") (ConnectorDir "-"))
-		(Connector (Concept "Xf") (ConnectorDir "+"))))
+(Concept "purred")
+(ConnectorSeq
+(Connector (Concept "WV") (ConnectorDir "-"))
+(Connector (Concept "S") (ConnectorDir "-"))
+(Connector (Concept "Xf") (ConnectorDir "+"))))

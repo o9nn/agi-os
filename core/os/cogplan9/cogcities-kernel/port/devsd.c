@@ -21,37 +21,37 @@ Rawdata,
 Rawstatus,
 };
 enum {
-Qtopdir		= 1,
+Qtopdir = 1,
 Qtopbase,
-Qtopctl		 = Qtopbase,
+Qtopctl = Qtopbase,
 Qunitdir,
 Qunitbase,
-Qctl		= Qunitbase,
+Qctl = Qunitbase,
 Qraw,
 Qpart,
-TypeLOG		= 4,
-NType		= (1<<TypeLOG),
-TypeMASK	= (NType-1),
-TypeSHIFT	= 0,
-PartLOG		= 8,
-NPart		= (1<<PartLOG),
-PartMASK	= (NPart-1),
-PartSHIFT	= TypeLOG,
-UnitLOG		= 8,
-NUnit		= (1<<UnitLOG),
-UnitMASK	= (NUnit-1),
-UnitSHIFT	= (PartLOG+TypeLOG),
-DevLOG		= 8,
-NDev		= (1 << DevLOG),
-DevMASK		= (NDev-1),
-DevSHIFT	 = (UnitLOG+PartLOG+TypeLOG),
+TypeLOG = 4,
+NType = (1<<TypeLOG),
+TypeMASK = (NType-1),
+TypeSHIFT = 0,
+PartLOG = 8,
+NPart = (1<<PartLOG),
+PartMASK = (NPart-1),
+PartSHIFT = TypeLOG,
+UnitLOG = 8,
+NUnit = (1<<UnitLOG),
+UnitMASK = (NUnit-1),
+UnitSHIFT = (PartLOG+TypeLOG),
+DevLOG = 8,
+NDev = (1 << DevLOG),
+DevMASK = (NDev-1),
+DevSHIFT = (UnitLOG+PartLOG+TypeLOG),
 Ncmd = 20,
 };
-#define TYPE(q)		((((ulong)(q).path)>>TypeSHIFT) & TypeMASK)
-#define PART(q)		((((ulong)(q).path)>>PartSHIFT) & PartMASK)
-#define UNIT(q)		((((ulong)(q).path)>>UnitSHIFT) & UnitMASK)
-#define DEV(q)		((((ulong)(q).path)>>DevSHIFT) & DevMASK)
-#define QID(d,u, p, t)	(((d)<<DevSHIFT)|((u)<<UnitSHIFT)|\
+#define TYPE(q) ((((ulong)(q).path)>>TypeSHIFT) & TypeMASK)
+#define PART(q) ((((ulong)(q).path)>>PartSHIFT) & PartMASK)
+#define UNIT(q) ((((ulong)(q).path)>>UnitSHIFT) & UnitMASK)
+#define DEV(q) ((((ulong)(q).path)>>DevSHIFT) & DevMASK)
+#define QID(d,u, p, t) (((d)<<DevSHIFT)|((u)<<UnitSHIFT)|\
 ((p)<<PartSHIFT)|((t)<<TypeSHIFT))
 void
 sdaddpart(SDunit* unit, char* name, uvlong start, uvlong end)
@@ -1248,9 +1248,9 @@ sdconfig,
 };
 typedef struct Confdata Confdata;
 struct Confdata {
-int	on;
-char*	spec;
-DevConf	cf;
+int on;
+char* spec;
+DevConf cf;
 };
 static void
 parseswitch(Confdata* cd, char* option)
@@ -1326,15 +1326,15 @@ parsetype(Confdata* cd, char* option)
 cd->cf.type = option;
 }
 static struct {
-char	*name;
-void	(*parse)(Confdata*, char*);
+char *name;
+void (*parse)(Confdata*, char*);
 } options[] = {
-"switch",	parseswitch,
-"spec",		parsespec,
-"port",		parseport,
-"size",		parsesize,
-"irq",		parseirq,
-"type",		parsetype,
+"switch", parseswitch,
+"spec", parsespec,
+"port", parseport,
+"size", parsesize,
+"irq", parseirq,
+"type", parsetype,
 };
 static void
 legacytopctl(Cmdbuf *cb)

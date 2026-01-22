@@ -209,7 +209,7 @@ r.min.y += f->height/2;
 else
 r.min.y +=f->height-1;
 pt = r.min;
-pt.x +=  runestringwidth(f, i->s);
+pt.x += runestringwidth(f, i->s);
 line(im, r.min, pt, Enddisc, Enddisc, 0, c, ZP);
 }
 static
@@ -244,7 +244,7 @@ r.min.x += i->border + i->hspace;
 r.min.y += i->border + i->vspace;
 r.max.x -= i->border + i->hspace;
 r.max.y -= i->border + i->vspace;
-draw(im, r,  ci->i, nil, ci->i->r.min);
+draw(im, r, ci->i, nil, ci->i->r.min);
 if(i->border){
 if(i->anchorid >= 0)
 c = getcolor(p->doc->link);
@@ -313,10 +313,10 @@ colarray(c, getcolor(Dark), getcolor(Light), getcolor(Back), checked);
 rect3d(im, r, Border, c, ZP);
 r.min.x += Border + Margin;
 r.min.y += Border + Margin;
-runestringbg(im, r.min, display->black, ZP,  getfont(WFont), f->value, c[2], ZP);
+runestringbg(im, r.min, display->black, ZP, getfont(WFont), f->value, c[2], ZP);
 }
 void
-drawselect(Image *im, Rectangle r,	Iformfield *i)
+drawselect(Image *im, Rectangle r, Iformfield *i)
 {
 Formfield *f;
 Image *c[3];
@@ -332,7 +332,7 @@ if(i->aux==nil){
 i->aux = f->options->display;
 i->formfield->value = erunestrdup(f->options->value);
 }
-runestring(im, r.min, display->black, ZP,  getfont(WFont), i->aux);
+runestring(im, r.min, display->black, ZP, getfont(WFont), i->aux);
 }
 static
 void
@@ -461,7 +461,7 @@ if(y[runestrlen(y)-1] == L'?')
 sep = L"";
 else
 sep = L"?";
-src.r = runesmprint("%S%S%S",y, sep,  x);
+src.r = runesmprint("%S%S%S",y, sep, x);
 free(x);
 free(y);
 }else{
@@ -774,7 +774,7 @@ Line *l;
 Box *b;
 if(i->state&IFbrk || i->state&IFbrksp)
 newline(lay, i->state);
-else	if(lay->lastline->r.max.x+i->width>lay->xwall && forceitem(i)==FALSE)
+else if(lay->lastline->r.max.x+i->width>lay->xwall && forceitem(i)==FALSE)
 newline(lay, i->state);
 l = lay->lastline;
 r = Rect(l->r.max.x, l->r.min.y, l->r.max.x+i->width, l->r.min.y+i->height);

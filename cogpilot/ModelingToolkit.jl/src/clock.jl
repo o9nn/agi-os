@@ -37,7 +37,7 @@ Determine if variable `x` has a time-domain attributed to it.
 """
 function has_time_domain(x::Symbolic)
 # getmetadata(x, ContinuousClock, nothing) !== nothing ||
-# getmetadata(x, Discrete,   nothing) !== nothing
+# getmetadata(x, Discrete, nothing) !== nothing
 getmetadata(x, VariableTimeDomain, nothing) !== nothing
 end
 has_time_domain(x::Num) = has_time_domain(value(x))

@@ -1,5 +1,5 @@
 #ifndef ifilter_INCLUDED
-#  define ifilter_INCLUDED
+# define ifilter_INCLUDED
 #include "istream.h"
 #include "ivmspace.h"
 int filter_read(

@@ -1,5 +1,5 @@
 #ifndef gzht_INCLUDED
-#  define gzht_INCLUDED
+# define gzht_INCLUDED
 #include "gscsel.h"
 #include "gxht.h"
 #include "gxfmap.h"
@@ -71,15 +71,15 @@ gx_ht_tile *(*render_ht)(gx_ht_cache *, int);
 #define max_tile_bytes_LARGE 4096
 #define max_tile_bytes_SMALL 512
 #if arch_small_memory
-#  define max_tile_cache_bytes max_tile_bytes_SMALL
+# define max_tile_cache_bytes max_tile_bytes_SMALL
 #else
-#  define max_tile_cache_bytes\
+# define max_tile_cache_bytes\
 (gs_debug_c('.') ? max_tile_bytes_SMALL : max_tile_bytes_LARGE)
 #endif
-#define private_st_ht_tiles()	\
+#define private_st_ht_tiles() \
 gs_private_st_composite(st_ht_tiles, gx_ht_tile, "ht tiles",\
 ht_tiles_enum_ptrs, ht_tiles_reloc_ptrs)
-#define private_st_ht_cache()	\
+#define private_st_ht_cache() \
 gs_private_st_ptrs_add2(st_ht_cache, gx_ht_cache, "ht cache",\
 ht_cache_enum_ptrs, ht_cache_reloc_ptrs,\
 st_ht_order, order, bits, ht_tiles)

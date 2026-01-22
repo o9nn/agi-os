@@ -2,58 +2,58 @@
 #include "jinclude.h"
 #include "jpeglib.h"
 typedef enum {
-M_SOF0  = 0xc0,
-M_SOF1  = 0xc1,
-M_SOF2  = 0xc2,
-M_SOF3  = 0xc3,
-M_SOF5  = 0xc5,
-M_SOF6  = 0xc6,
-M_SOF7  = 0xc7,
-M_JPG   = 0xc8,
-M_SOF9  = 0xc9,
+M_SOF0 = 0xc0,
+M_SOF1 = 0xc1,
+M_SOF2 = 0xc2,
+M_SOF3 = 0xc3,
+M_SOF5 = 0xc5,
+M_SOF6 = 0xc6,
+M_SOF7 = 0xc7,
+M_JPG = 0xc8,
+M_SOF9 = 0xc9,
 M_SOF10 = 0xca,
 M_SOF11 = 0xcb,
 M_SOF13 = 0xcd,
 M_SOF14 = 0xce,
 M_SOF15 = 0xcf,
-M_DHT   = 0xc4,
-M_DAC   = 0xcc,
-M_RST0  = 0xd0,
-M_RST1  = 0xd1,
-M_RST2  = 0xd2,
-M_RST3  = 0xd3,
-M_RST4  = 0xd4,
-M_RST5  = 0xd5,
-M_RST6  = 0xd6,
-M_RST7  = 0xd7,
-M_SOI   = 0xd8,
-M_EOI   = 0xd9,
-M_SOS   = 0xda,
-M_DQT   = 0xdb,
-M_DNL   = 0xdc,
-M_DRI   = 0xdd,
-M_DHP   = 0xde,
-M_EXP   = 0xdf,
-M_APP0  = 0xe0,
-M_APP1  = 0xe1,
-M_APP2  = 0xe2,
-M_APP3  = 0xe3,
-M_APP4  = 0xe4,
-M_APP5  = 0xe5,
-M_APP6  = 0xe6,
-M_APP7  = 0xe7,
-M_APP8  = 0xe8,
-M_APP9  = 0xe9,
+M_DHT = 0xc4,
+M_DAC = 0xcc,
+M_RST0 = 0xd0,
+M_RST1 = 0xd1,
+M_RST2 = 0xd2,
+M_RST3 = 0xd3,
+M_RST4 = 0xd4,
+M_RST5 = 0xd5,
+M_RST6 = 0xd6,
+M_RST7 = 0xd7,
+M_SOI = 0xd8,
+M_EOI = 0xd9,
+M_SOS = 0xda,
+M_DQT = 0xdb,
+M_DNL = 0xdc,
+M_DRI = 0xdd,
+M_DHP = 0xde,
+M_EXP = 0xdf,
+M_APP0 = 0xe0,
+M_APP1 = 0xe1,
+M_APP2 = 0xe2,
+M_APP3 = 0xe3,
+M_APP4 = 0xe4,
+M_APP5 = 0xe5,
+M_APP6 = 0xe6,
+M_APP7 = 0xe7,
+M_APP8 = 0xe8,
+M_APP9 = 0xe9,
 M_APP10 = 0xea,
 M_APP11 = 0xeb,
 M_APP12 = 0xec,
 M_APP13 = 0xed,
 M_APP14 = 0xee,
 M_APP15 = 0xef,
-M_JPG0  = 0xf0,
+M_JPG0 = 0xf0,
 M_JPG13 = 0xfd,
-M_COM   = 0xfe,
-M_TEM   = 0x01,
+M_COM = 0xfe,
+M_TEM = 0x01,
 M_ERROR = 0x100
 } JPEG_MARKER;
 typedef struct {
@@ -66,27 +66,27 @@ jpeg_saved_marker_ptr cur_marker;
 unsigned int bytes_read;
 } my_marker_reader;
 typedef my_marker_reader * my_marker_ptr;
-#define INPUT_VARS(cinfo)  \
-struct jpeg_source_mgr * datasrc = (cinfo)->src;  \
-const JOCTET * next_input_byte = datasrc->next_input_byte;  \
+#define INPUT_VARS(cinfo) \
+struct jpeg_source_mgr * datasrc = (cinfo)->src; \
+const JOCTET * next_input_byte = datasrc->next_input_byte; \
 size_t bytes_in_buffer = datasrc->bytes_in_buffer
-#define INPUT_SYNC(cinfo)  \
-( datasrc->next_input_byte = next_input_byte,  \
+#define INPUT_SYNC(cinfo) \
+( datasrc->next_input_byte = next_input_byte, \
 datasrc->bytes_in_buffer = bytes_in_buffer )
-#define INPUT_RELOAD(cinfo)  \
-( next_input_byte = datasrc->next_input_byte,  \
+#define INPUT_RELOAD(cinfo) \
+( next_input_byte = datasrc->next_input_byte, \
 bytes_in_buffer = datasrc->bytes_in_buffer )
-#define MAKE_BYTE_AVAIL(cinfo,action)  \
-if (bytes_in_buffer == 0) {  \
-if (! (*datasrc->fill_input_buffer) (cinfo))  \
-{ action; }  \
-INPUT_RELOAD(cinfo);  \
+#define MAKE_BYTE_AVAIL(cinfo,action) \
+if (bytes_in_buffer == 0) { \
+if (! (*datasrc->fill_input_buffer) (cinfo)) \
+{ action; } \
+INPUT_RELOAD(cinfo); \
 }
-#define INPUT_BYTE(cinfo,V,action)  \
+#define INPUT_BYTE(cinfo,V,action) \
 MAKESTMT( MAKE_BYTE_AVAIL(cinfo,action); \
 bytes_in_buffer--; \
 V = GETJOCTET(*next_input_byte++); )
-#define INPUT_2BYTES(cinfo,V,action)  \
+#define INPUT_2BYTES(cinfo,V,action) \
 MAKESTMT( MAKE_BYTE_AVAIL(cinfo,action); \
 bytes_in_buffer--; \
 V = ((unsigned int) GETJOCTET(*next_input_byte++)) << 8; \
@@ -154,7 +154,7 @@ compptr->component_index = ci;
 INPUT_BYTE(cinfo, compptr->component_id, return FALSE);
 INPUT_BYTE(cinfo, c, return FALSE);
 compptr->h_samp_factor = (c >> 4) & 15;
-compptr->v_samp_factor = (c     ) & 15;
+compptr->v_samp_factor = (c ) & 15;
 INPUT_BYTE(cinfo, compptr->quant_tbl_no, return FALSE);
 TRACEMS4(cinfo, 1, JTRC_SOF_COMPONENT,
 compptr->component_id, compptr->h_samp_factor,
@@ -191,7 +191,7 @@ ERREXIT1(cinfo, JERR_BAD_COMPONENT_ID, cc);
 id_found:
 cinfo->cur_comp_info[i] = compptr;
 compptr->dc_tbl_no = (c >> 4) & 15;
-compptr->ac_tbl_no = (c     ) & 15;
+compptr->ac_tbl_no = (c ) & 15;
 TRACEMS3(cinfo, 1, JTRC_SOS_COMPONENT, cc,
 compptr->dc_tbl_no, compptr->ac_tbl_no);
 }
@@ -201,7 +201,7 @@ INPUT_BYTE(cinfo, c, return FALSE);
 cinfo->Se = c;
 INPUT_BYTE(cinfo, c, return FALSE);
 cinfo->Ah = (c >> 4) & 15;
-cinfo->Al = (c     ) & 15;
+cinfo->Al = (c ) & 15;
 TRACEMS4(cinfo, 1, JTRC_SOS_PARAMS, cinfo->Ss, cinfo->Se,
 cinfo->Ah, cinfo->Al);
 cinfo->marker->next_restart_num = 0;
@@ -240,7 +240,7 @@ INPUT_SYNC(cinfo);
 return TRUE;
 }
 #else
-#define get_dac(cinfo)  skip_variable(cinfo)
+#define get_dac(cinfo) skip_variable(cinfo)
 #endif
 LOCAL(boolean)
 get_dht (j_decompress_ptr cinfo)
@@ -322,7 +322,7 @@ quant_ptr->quantval[jpeg_natural_order[i]] = (UINT16) tmp;
 if (cinfo->err->trace_level >= 2) {
 for (i = 0; i < DCTSIZE2; i += 8) {
 TRACEMS8(cinfo, 2, JTRC_QUANTVALS,
-quant_ptr->quantval[i],   quant_ptr->quantval[i+1],
+quant_ptr->quantval[i], quant_ptr->quantval[i+1],
 quant_ptr->quantval[i+2], quant_ptr->quantval[i+3],
 quant_ptr->quantval[i+4], quant_ptr->quantval[i+5],
 quant_ptr->quantval[i+6], quant_ptr->quantval[i+7]);
@@ -351,9 +351,9 @@ cinfo->restart_interval = tmp;
 INPUT_SYNC(cinfo);
 return TRUE;
 }
-#define APP0_DATA_LEN	14
-#define APP14_DATA_LEN	12
-#define APPN_DATA_LEN	14
+#define APP0_DATA_LEN 14
+#define APP14_DATA_LEN 12
+#define APPN_DATA_LEN 14
 LOCAL(void)
 examine_app0 (j_decompress_ptr cinfo, JOCTET FAR * data,
 unsigned int datalen, INT32 remaining)

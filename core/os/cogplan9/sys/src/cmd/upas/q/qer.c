@@ -2,13 +2,13 @@
 typedef struct Qfile Qfile;
 struct Qfile
 {
-Qfile	*next;
-char	*name;
-char	*tname;
+Qfile *next;
+char *name;
+char *tname;
 } *files;
 char *user;
 int isnone;
-int	copy(Qfile*);
+int copy(Qfile*);
 void
 usage(void)
 {
@@ -21,22 +21,22 @@ error(char *f, char *a)
 char err[Errlen+1];
 char buf[256];
 rerrstr(err, sizeof(err));
-snprint(buf, sizeof(buf),  f, a);
+snprint(buf, sizeof(buf), f, a);
 fprint(2, "qer: %s: %s\n", buf, err);
 exits(buf);
 }
 void
 main(int argc, char**argv)
 {
-Dir	*dir;
-String	*f, *c;
-int	fd;
-char	file[1024];
-char	buf[1024];
-long	n;
-char	*cp, *qdir;
-int	i;
-Qfile	*q, **l;
+Dir *dir;
+String *f, *c;
+int fd;
+char file[1024];
+char buf[1024];
+long n;
+char *cp, *qdir;
+int i;
+Qfile *q, **l;
 l = &files;
 qdir = 0;
 ARGBEGIN {

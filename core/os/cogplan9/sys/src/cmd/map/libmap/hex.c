@@ -10,7 +10,7 @@ static double cr[3];
 static double ci[3];
 static struct place hem;
 static struct coord twist;
-static double  rootroot3, hkc;
+static double rootroot3, hkc;
 static double w2;
 static double rootk;
 static void

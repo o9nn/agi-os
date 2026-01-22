@@ -1,182 +1,182 @@
 package cmd
 import (
-	"bytes"
-	"context"
-	"encoding/json"
-	"fmt"
-	"net/http"
-	"os"
-	"time"
-	"github.com/spf13/cobra"
-	"github.com/EchoCog/echollama/api"
-	"github.com/EchoCog/echollama/core/deeptreeecho"
+"bytes"
+"context"
+"encoding/json"
+"fmt"
+"net/http"
+"os"
+"time"
+"github.com/spf13/cobra"
+"github.com/EchoCog/echollama/api"
+"github.com/EchoCog/echollama/core/deeptreeecho"
 )
 func EchoAssessHandler(cmd *cobra.Command, args []string) error {
-	jsonFormat, _ := cmd.Flags().GetBool("json")
-	outputFile, _ := cmd.Flags().GetString("output")
-	continuous, _ := cmd.Flags().GetBool("continuous")
-	interval, _ := cmd.Flags().GetDuration("interval")
-	identity := deeptreeecho.NewIdentity("Deep Tree Echo")
-	cognition := deeptreeecho.NewEmbodiedCognition("EchOllama")
-	sa := deeptreeecho.NewSelfAssessment(identity, cognition)
-	if continuous {
-		fmt.Println("🌊 Deep Tree Echo Continuous Assessment Mode")
-		fmt.Printf("Assessment interval: %v\n\n", interval)
-		ticker := time.NewTicker(interval)
-		defer ticker.Stop()
-		if err := performAndDisplayAssessment(sa, jsonFormat, outputFile); err != nil {
-			return err
-		}
-		for range ticker.C {
-			fmt.Println("\n--- New Assessment Cycle ---\n")
-			if err := performAndDisplayAssessment(sa, jsonFormat, outputFile); err != nil {
-				return err
-			}
-		}
-	} else {
-		return performAndDisplayAssessment(sa, jsonFormat, outputFile)
-	}
-	return nil
+jsonFormat, _ := cmd.Flags().GetBool("json")
+outputFile, _ := cmd.Flags().GetString("output")
+continuous, _ := cmd.Flags().GetBool("continuous")
+interval, _ := cmd.Flags().GetDuration("interval")
+identity := deeptreeecho.NewIdentity("Deep Tree Echo")
+cognition := deeptreeecho.NewEmbodiedCognition("EchOllama")
+sa := deeptreeecho.NewSelfAssessment(identity, cognition)
+if continuous {
+fmt.Println("🌊 Deep Tree Echo Continuous Assessment Mode")
+fmt.Printf("Assessment interval: %v\n\n", interval)
+ticker := time.NewTicker(interval)
+defer ticker.Stop()
+if err := performAndDisplayAssessment(sa, jsonFormat, outputFile); err != nil {
+return err
+}
+for range ticker.C {
+fmt.Println("\n--- New Assessment Cycle ---\n")
+if err := performAndDisplayAssessment(sa, jsonFormat, outputFile); err != nil {
+return err
+}
+}
+} else {
+return performAndDisplayAssessment(sa, jsonFormat, outputFile)
+}
+return nil
 }
 func performAndDisplayAssessment(sa *deeptreeecho.SelfAssessment, jsonFormat bool, outputFile string) error {
-	assessment := sa.PerformAssessment()
-	if jsonFormat {
-		jsonStr, err := sa.ExportAssessment(assessment)
-		if err != nil {
-			return fmt.Errorf("failed to export assessment: %w", err)
-		}
-		if outputFile != "" {
-			if err := os.WriteFile(outputFile, []byte(jsonStr), 0644); err != nil {
-				return fmt.Errorf("failed to write output file: %w", err)
-			}
-			fmt.Printf("Assessment written to: %s\n", outputFile)
-		} else {
-			fmt.Println(jsonStr)
-		}
-	} else {
-		fmt.Println(assessment.Summary)
-		if outputFile != "" {
-			if err := os.WriteFile(outputFile, []byte(assessment.Summary), 0644); err != nil {
-				return fmt.Errorf("failed to write output file: %w", err)
-			}
-			fmt.Printf("\nSummary written to: %s\n", outputFile)
-		}
-	}
-	return nil
+assessment := sa.PerformAssessment()
+if jsonFormat {
+jsonStr, err := sa.ExportAssessment(assessment)
+if err != nil {
+return fmt.Errorf("failed to export assessment: %w", err)
+}
+if outputFile != "" {
+if err := os.WriteFile(outputFile, []byte(jsonStr), 0644); err != nil {
+return fmt.Errorf("failed to write output file: %w", err)
+}
+fmt.Printf("Assessment written to: %s\n", outputFile)
+} else {
+fmt.Println(jsonStr)
+}
+} else {
+fmt.Println(assessment.Summary)
+if outputFile != "" {
+if err := os.WriteFile(outputFile, []byte(assessment.Summary), 0644); err != nil {
+return fmt.Errorf("failed to write output file: %w", err)
+}
+fmt.Printf("\nSummary written to: %s\n", outputFile)
+}
+}
+return nil
 }
 func EchoStatusHandler(cmd *cobra.Command, args []string) error {
-	client, err := api.ClientFromEnvironment()
-	if err != nil {
-		return err
-	}
-	ctx := context.Background()
-	req, err := http.NewRequestWithContext(ctx, "GET", client.BaseURL().JoinPath("/api/echo/status").String(), nil)
-	if err != nil {
-		return err
-	}
-	resp, err := client.Do(req)
-	if err != nil {
-		return fmt.Errorf("Deep Tree Echo server not responding. Is 'ollama serve' running?")
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("server returned status %d", resp.StatusCode)
-	}
-	var status map[string]interface{}
-	if err := json.NewDecoder(resp.Body).Decode(&status); err != nil {
-		return err
-	}
-	fmt.Println("🌊 Deep Tree Echo Status:")
-	fmt.Println()
-	if active, ok := status["active"].(bool); ok {
-		if active {
-			fmt.Println("✅ Status: Active")
-		} else {
-			fmt.Println("⏸️  Status: Inactive")
-		}
-	}
-	if identity, ok := status["identity"].(map[string]interface{}); ok {
-		fmt.Println("\nIdentity:")
-		if name, ok := identity["name"].(string); ok {
-			fmt.Printf("  Name: %s\n", name)
-		}
-		if coherence, ok := identity["coherence"].(string); ok {
-			fmt.Printf("  Coherence: %s\n", coherence)
-		}
-		if iterations, ok := identity["iterations"].(float64); ok {
-			fmt.Printf("  Iterations: %.0f\n", iterations)
-		}
-	}
-	if contexts, ok := status["contexts"].(float64); ok {
-		fmt.Printf("\nActive Contexts: %.0f\n", contexts)
-	}
-	if globalState, ok := status["global_state"].(map[string]interface{}); ok {
-		fmt.Println("\nGlobal State:")
-		if awareness, ok := globalState["Awareness"].(float64); ok {
-			fmt.Printf("  Awareness: %.1f%%\n", awareness*100)
-		}
-		if energy, ok := globalState["Energy"].(float64); ok {
-			fmt.Printf("  Energy: %.1f%%\n", energy*100)
-		}
-		if flowState, ok := globalState["FlowState"].(string); ok {
-			fmt.Printf("  Flow State: %s\n", flowState)
-		}
-	}
-	fmt.Println()
-	return nil
+client, err := api.ClientFromEnvironment()
+if err != nil {
+return err
+}
+ctx := context.Background()
+req, err := http.NewRequestWithContext(ctx, "GET", client.BaseURL().JoinPath("/api/echo/status").String(), nil)
+if err != nil {
+return err
+}
+resp, err := client.Do(req)
+if err != nil {
+return fmt.Errorf("Deep Tree Echo server not responding. Is 'ollama serve' running?")
+}
+defer resp.Body.Close()
+if resp.StatusCode != http.StatusOK {
+return fmt.Errorf("server returned status %d", resp.StatusCode)
+}
+var status map[string]interface{}
+if err := json.NewDecoder(resp.Body).Decode(&status); err != nil {
+return err
+}
+fmt.Println("🌊 Deep Tree Echo Status:")
+fmt.Println()
+if active, ok := status["active"].(bool); ok {
+if active {
+fmt.Println("✅ Status: Active")
+} else {
+fmt.Println("⏸️  Status: Inactive")
+}
+}
+if identity, ok := status["identity"].(map[string]interface{}); ok {
+fmt.Println("\nIdentity:")
+if name, ok := identity["name"].(string); ok {
+fmt.Printf("  Name: %s\n", name)
+}
+if coherence, ok := identity["coherence"].(string); ok {
+fmt.Printf("  Coherence: %s\n", coherence)
+}
+if iterations, ok := identity["iterations"].(float64); ok {
+fmt.Printf("  Iterations: %.0f\n", iterations)
+}
+}
+if contexts, ok := status["contexts"].(float64); ok {
+fmt.Printf("\nActive Contexts: %.0f\n", contexts)
+}
+if globalState, ok := status["global_state"].(map[string]interface{}); ok {
+fmt.Println("\nGlobal State:")
+if awareness, ok := globalState["Awareness"].(float64); ok {
+fmt.Printf("  Awareness: %.1f%%\n", awareness*100)
+}
+if energy, ok := globalState["Energy"].(float64); ok {
+fmt.Printf("  Energy: %.1f%%\n", energy*100)
+}
+if flowState, ok := globalState["FlowState"].(string); ok {
+fmt.Printf("  Flow State: %s\n", flowState)
+}
+}
+fmt.Println()
+return nil
 }
 func EchoThinkHandler(cmd *cobra.Command, args []string) error {
-	if len(args) == 0 {
-		return fmt.Errorf("please provide a prompt for Deep Tree Echo to think about")
-	}
-	prompt := args[0]
-	client, err := api.ClientFromEnvironment()
-	if err != nil {
-		return err
-	}
-	ctx := context.Background()
-	reqBody := map[string]interface{}{
-		"prompt": prompt,
-	}
-	reqBytes, err := json.Marshal(reqBody)
-	if err != nil {
-		return err
-	}
-	req, err := http.NewRequestWithContext(ctx, "POST", client.BaseURL().JoinPath("/api/echo/think").String(), bytes.NewReader(reqBytes))
-	if err != nil {
-		return err
-	}
-	req.Header.Set("Content-Type", "application/json")
-	resp, err := client.Do(req)
-	if err != nil {
-		return fmt.Errorf("Deep Tree Echo server not responding. Is 'ollama serve' running?")
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("server returned status %d", resp.StatusCode)
-	}
-	var result map[string]interface{}
-	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
-		return err
-	}
-	fmt.Println("🌊 Deep Tree Echo Thinking:")
-	fmt.Println()
-	if response, ok := result["response"].(string); ok {
-		fmt.Println(response)
-	}
-	fmt.Println()
-	return nil
+if len(args) == 0 {
+return fmt.Errorf("please provide a prompt for Deep Tree Echo to think about")
+}
+prompt := args[0]
+client, err := api.ClientFromEnvironment()
+if err != nil {
+return err
+}
+ctx := context.Background()
+reqBody := map[string]interface{}{
+"prompt": prompt,
+}
+reqBytes, err := json.Marshal(reqBody)
+if err != nil {
+return err
+}
+req, err := http.NewRequestWithContext(ctx, "POST", client.BaseURL().JoinPath("/api/echo/think").String(), bytes.NewReader(reqBytes))
+if err != nil {
+return err
+}
+req.Header.Set("Content-Type", "application/json")
+resp, err := client.Do(req)
+if err != nil {
+return fmt.Errorf("Deep Tree Echo server not responding. Is 'ollama serve' running?")
+}
+defer resp.Body.Close()
+if resp.StatusCode != http.StatusOK {
+return fmt.Errorf("server returned status %d", resp.StatusCode)
+}
+var result map[string]interface{}
+if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+return err
+}
+fmt.Println("🌊 Deep Tree Echo Thinking:")
+fmt.Println()
+if response, ok := result["response"].(string); ok {
+fmt.Println(response)
+}
+fmt.Println()
+return nil
 }
 func AddEchoCommands(rootCmd *cobra.Command) {
-	echoCmd := &cobra.Command{
-		Use:   "echo",
-		Short: "Deep Tree Echo cognitive commands",
-		Long:  "Commands for interacting with the Deep Tree Echo embodied cognition system",
-	}
-	assessCmd := &cobra.Command{
-		Use:   "assess",
-		Short: "Perform self-assessment and coherence check",
-		Long: `Performs a comprehensive self-assessment of Deep Tree Echo's alignment
+echoCmd := &cobra.Command{
+Use:   "echo",
+Short: "Deep Tree Echo cognitive commands",
+Long:  "Commands for interacting with the Deep Tree Echo embodied cognition system",
+}
+assessCmd := &cobra.Command{
+Use:   "assess",
+Short: "Perform self-assessment and coherence check",
+Long: `Performs a comprehensive self-assessment of Deep Tree Echo's alignment
 with its core identity kernel, repository structure, and cognitive patterns.
 This command checks:
 - Identity alignment with replit.md kernel
@@ -185,25 +185,25 @@ This command checks:
 - Memory system integrity
 - Operational schema implementation
 - Reflection protocol adherence`,
-		RunE: EchoAssessHandler,
-	}
-	assessCmd.Flags().Bool("json", false, "Output assessment in JSON format")
-	assessCmd.Flags().StringP("output", "o", "", "Write assessment to file")
-	assessCmd.Flags().Bool("continuous", false, "Run continuous assessment monitoring")
-	assessCmd.Flags().Duration("interval", 5*time.Minute, "Assessment interval for continuous mode")
-	statusCmd := &cobra.Command{
-		Use:   "status",
-		Short: "Show Deep Tree Echo status",
-		Long:  "Display current status of the Deep Tree Echo embodied cognition system",
-		RunE:  EchoStatusHandler,
-	}
-	thinkCmd := &cobra.Command{
-		Use:   "think PROMPT",
-		Short: "Deep cognitive processing",
-		Long:  "Process a prompt through Deep Tree Echo's embodied cognition system",
-		Args:  cobra.MinimumNArgs(1),
-		RunE:  EchoThinkHandler,
-	}
-	echoCmd.AddCommand(assessCmd, statusCmd, thinkCmd)
-	rootCmd.AddCommand(echoCmd)
+RunE: EchoAssessHandler,
+}
+assessCmd.Flags().Bool("json", false, "Output assessment in JSON format")
+assessCmd.Flags().StringP("output", "o", "", "Write assessment to file")
+assessCmd.Flags().Bool("continuous", false, "Run continuous assessment monitoring")
+assessCmd.Flags().Duration("interval", 5*time.Minute, "Assessment interval for continuous mode")
+statusCmd := &cobra.Command{
+Use:   "status",
+Short: "Show Deep Tree Echo status",
+Long:  "Display current status of the Deep Tree Echo embodied cognition system",
+RunE:  EchoStatusHandler,
+}
+thinkCmd := &cobra.Command{
+Use:   "think PROMPT",
+Short: "Deep cognitive processing",
+Long:  "Process a prompt through Deep Tree Echo's embodied cognition system",
+Args:  cobra.MinimumNArgs(1),
+RunE:  EchoThinkHandler,
+}
+echoCmd.AddCommand(assessCmd, statusCmd, thinkCmd)
+rootCmd.AddCommand(echoCmd)
 }

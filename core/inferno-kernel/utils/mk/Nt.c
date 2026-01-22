@@ -1,19 +1,19 @@
 #define INFERNO_KEEPENVIRON
-#include	"mk.h"
-#include	<signal.h>
-#include	<sys/utime.h>
-#define Arc	My_Arc
+#include "mk.h"
+#include <signal.h>
+#include <sys/utime.h>
+#define Arc My_Arc
 #undef DELETE
-#include	<windows.h>
+#include <windows.h>
 enum {
-Nchild	= 100,
+Nchild = 100,
 };
-char *rootdir =		ROOT;
-char *shell =		"Nt/386/bin/rcsh.exe";
-typedef struct Child	Child;
+char *rootdir = ROOT;
+char *shell = "Nt/386/bin/rcsh.exe";
+typedef struct Child Child;
 struct Child {
-int	pid;
-HANDLE	handle;
+int pid;
+HANDLE handle;
 };
 static Child child[Nchild];
 extern char **environ;

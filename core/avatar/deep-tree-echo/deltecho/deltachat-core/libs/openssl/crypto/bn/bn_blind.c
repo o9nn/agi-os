@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "cryptlib.h"
 #include "bn_lcl.h"
-#define BN_BLINDING_COUNTER     32
+#define BN_BLINDING_COUNTER 32
 struct bn_blinding_st {
 BIGNUM *A;
 BIGNUM *Ai;

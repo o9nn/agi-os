@@ -13,82 +13,82 @@ include "dialog.m";
 dialog: Dialog;
 WmTelnet: module
 {
-init:	fn(ctxt: ref Draw->Context, args: list of string);
+init: fn(ctxt: ref Draw->Context, args: list of string);
 };
 Iob: adt
 {
-fd:	ref Sys->FD;
-t:	ref Tk->Toplevel;
-out:	cyclic ref Iob;
-buf:	array of byte;
-ptr:	int;
-nbyte:	int;
+fd: ref Sys->FD;
+t: ref Tk->Toplevel;
+out: cyclic ref Iob;
+buf: array of byte;
+ptr: int;
+nbyte: int;
 };
-BS:		con 8;		# ^h backspace character
-BSW:		con 23;		# ^w bacspace word
-BSL:		con 21;		# ^u backspace line
-EOT:		con 4;		# ^d end of file
-ESC:		con 27;		# hold mode
-HIWAT:	con 2000;	# maximum number of lines in transcript
-LOWAT:	con 1500;	# amount to reduce to after high water
-Name:	con "Telnet";
-ctxt:	ref Context;
-cmds:	chan of string;
-net:	Connection;
+BS: con 8; # ^h backspace character
+BSW: con 23; # ^w bacspace word
+BSL: con 21; # ^u backspace line
+EOT: con 4; # ^d end of file
+ESC: con 27; # hold mode
+HIWAT: con 2000; # maximum number of lines in transcript
+LOWAT: con 1500; # amount to reduce to after high water
+Name: con "Telnet";
+ctxt: ref Context;
+cmds: chan of string;
+net: Connection;
 stderr: ref Sys->FD;
-mcrlf:	int;
-netinp:	ref Iob;
+mcrlf: int;
+netinp: ref Iob;
 # control characters
-Se:		con 240;	# end subnegotiation
-NOP:		con 241;
-Mark:		con 242;	# data mark
-Break:		con 243;
-Interrupt:	con 244;
-Abort:		con 245;	# TENEX ^O
-AreYouThere:	con 246;
-Erasechar:	con 247;	# erase last character
-Eraseline:	con 248;	# erase line
-GoAhead:	con 249;	# half duplex clear to send
-Sb:		con 250;	# start subnegotiation
-Will:		con 251;
-Wont:		con 252;
-Do:		con 253;
-Dont:		con 254;
-Iac:		con 255;
+Se: con 240; # end subnegotiation
+NOP: con 241;
+Mark: con 242; # data mark
+Break: con 243;
+Interrupt: con 244;
+Abort: con 245; # TENEX ^O
+AreYouThere: con 246;
+Erasechar: con 247; # erase last character
+Eraseline: con 248; # erase line
+GoAhead: con 249; # half duplex clear to send
+Sb: con 250; # start subnegotiation
+Will: con 251;
+Wont: con 252;
+Do: con 253;
+Dont: con 254;
+Iac: con 255;
 # options
-Binary,	Echo,	SGA,	Stat,	Timing,
-Det,	Term,	EOR,	Uid,	Outmark,
-Ttyloc,	M3270,	Padx3,	Window,	Speed,
-Flow,	Line,	Xloc,	Extend: con iota;
+Binary, Echo, SGA, Stat, Timing,
+Det, Term, EOR, Uid, Outmark,
+Ttyloc, M3270, Padx3, Window, Speed,
+Flow, Line, Xloc, Extend: con iota;
 Opt: adt
 {
-name:	string;
-code:	int;
-noway:	int;
-remote:	int;		# remote value
-local:	int;		# local value
+name: string;
+code: int;
+noway: int;
+remote: int; # remote value
+local: int; # local value
 };
 opt := array[] of
 {
-Binary	=> Opt("binary",			0,	0,	0, 	0),
-Echo		=> Opt("echo",				1,  	0, 	0,	0),
-SGA		=> Opt("suppress Go Ahead",	3,  	0, 	0,	0),
-Stat		=> Opt("status",			5,  	1, 	0,	0),
-Timing	=> Opt("timing",			6,  	1, 	0,	0),
-Det		=> Opt("det",				20, 	1, 	0,	0),
-Term	=> Opt("terminal",			24, 	0, 	0,	0),
-EOR		=> Opt("end of record",		25, 	1, 	0,	0),
-Uid		=> Opt("uid",				26, 	1, 	0,	0),
-Outmark	=> Opt("outmark",			27, 	1, 	0,	0),
-Ttyloc	=> Opt("ttyloc",				28, 	1, 	0,	0),
-M3270	=> Opt("3270 mode",		29, 	1, 	0,	0),
-Padx3	=> Opt("pad x.3",			30, 	1, 	0,	0),
-Window	=> Opt("window size",		31, 	1, 	0,	0),
-Speed	=> Opt("speed",			32, 	1, 	0,	0),
-Flow		=> Opt("flow control",		33, 	1, 	0,	0),
-Line		=> Opt("line mode",			34, 	0, 	0,	0),
-Xloc		=> Opt("X display loc",		35, 	1, 	0,	0),
-Extend	=> Opt("Extended",			255, 	1, 	0,	0),
+Binary => Opt("binary", 0, 0, 0, 0),
+Echo => Opt("echo", 1, 0, 0, 0),
+SGA => Opt("suppress Go Ahead", 3, 0, 0, 0),
+Stat => Opt("status", 5, 1, 0, 0),
+Timing => Opt("timing", 6, 1, 0, 0),
+Det => Opt("det", 20, 1, 0, 0),
+Term => Opt("terminal", 24, 0, 0, 0),
+EOR => Opt("end of record", 25, 1, 0, 0),
+Uid => Opt("uid", 26, 1, 0, 0),
+Outmark => Opt("outmark", 27, 1, 0, 0),
+Ttyloc => Opt("ttyloc", 28, 1, 0, 0),
+M3270 => Opt("3270 mode", 29, 1, 0, 0),
+Padx3 => Opt("pad x.3", 30, 1, 0, 0),
+Window => Opt("window size", 31, 1, 0, 0),
+Speed => Opt("speed", 32, 1, 0, 0),
+Flow => Opt("flow control", 33, 1, 0, 0),
+Line => Opt("line mode", 34, 0, 0, 0),
+Xloc => Opt("X display loc", 35, 1, 0, 0),
+Extend => Opt("Extended", 255, 1, 0, 0),
 };
 shwin_cfg := array[] of {
 "menu .m",
@@ -245,11 +245,11 @@ break;
 a0 := isalnum(tk->cmd(t, ".ft.t get insert-1chars"));
 a1 := isalnum(tk->cmd(t, ".ft.t get insert"));
 start: string;
-if(a0 && a1)	# middle of word
+if(a0 && a1) # middle of word
 start = "{insert wordstart}";
-else if(a0)		# end of word
+else if(a0) # end of word
 start = "{insert-1chars wordstart}";
-else{	# beginning or not in word; must search
+else{ # beginning or not in word; must search
 s: string;
 for(n:=1; ;){
 s = tk->cmd(t, ".ft.t get insert-"+ string n +"chars");
@@ -415,7 +415,7 @@ cmd := chan of string;
 tk->namechan(b, cmd, "cmd");
 tkclient->onscreen(b, nil);
 tkclient->startinput(b, "kbd"::"ptr"::nil);
-loop:	for(;;) alt {
+loop: for(;;) alt {
 s := <-b.ctxt.kbd =>
 tk->keyboard(b, s);
 s := <-b.ctxt.ptr =>
@@ -508,13 +508,13 @@ conout := iobnew(nil, t, nil, 2048);
 netinp = iobnew(net.dfd, nil, conout, 2048);
 crnls := 0;
 freenl := 0;
-loop:	for(;;) {
+loop: for(;;) {
 c := iobget(netinp);
 case c {
 -1 =>
 cmds <-= "dis";
 return;
-'\n' =>				# skip nl after string of cr's */
+'\n' => # skip nl after string of cr's */
 if(!opt[Binary].local && !mcrlf) {
 crnls++;
 if(freenl == 0)
@@ -531,7 +531,7 @@ break;
 }
 continue loop;
 }
-Iac  =>
+Iac =>
 c = iobget(netinp);
 if(c == Iac)
 break;
@@ -562,7 +562,7 @@ Se =>
 sys->fprint(stderr, "telnet: SE without an SB\n");
 -1 =>
 return -1;
-*  =>
+* =>
 break;
 }
 return 0;
@@ -709,7 +709,7 @@ t: string;
 case c0 {
 Will => t = "Will";
 Wont => t = "Wont";
-Do =>	t = "Do";
+Do => t = "Do";
 Dont => t = "Dont";
 }
 if(t != nil)

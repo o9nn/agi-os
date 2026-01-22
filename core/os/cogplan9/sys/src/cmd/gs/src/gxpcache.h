@@ -1,11 +1,11 @@
 #ifndef gxpcache_INCLUDED
-#  define gxpcache_INCLUDED
+# define gxpcache_INCLUDED
 #ifndef gx_pattern_cache_DEFINED
-#  define gx_pattern_cache_DEFINED
+# define gx_pattern_cache_DEFINED
 typedef struct gx_pattern_cache_s gx_pattern_cache;
 #endif
 #ifndef gx_color_tile_DEFINED
-#  define gx_color_tile_DEFINED
+# define gx_color_tile_DEFINED
 typedef struct gx_color_tile_s gx_color_tile;
 #endif
 struct gx_pattern_cache_s {

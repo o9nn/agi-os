@@ -36,7 +36,7 @@ create_kernel, kernel_to_string
 export generate_consciousness_kernel, generate_physics_kernel
 export generate_reaction_kernel, generate_timeseries_kernel
 export generate_universal_kernel
-export kernel_to_string  # Re-export from OntogeneticKernel
+export kernel_to_string # Re-export from OntogeneticKernel
 """
 generate_consciousness_kernel(;order::Int=5, depth_bias::Float64=2.0)
 Generate kernel for modeling consciousness-like dynamics.
@@ -73,7 +73,7 @@ end
 genome = KernelGenome(coefficients, order)
 kernel = Kernel(genome, ["consciousness_seed"])
 # Set identity
-kernel.lifecycle.stage = :juvenile  # Born mature
+kernel.lifecycle.stage = :juvenile # Born mature
 kernel.lifecycle.maturity = 0.5
 return kernel
 end
@@ -126,7 +126,7 @@ end
 elseif type == :lagrangian
 # Lagrangian: action principle
 coeff = 0.1 / order_val * (1.0 + 0.5 * symmetry)
-else  # dissipative
+else # dissipative
 # Dissipative: energy non-conserving
 coeff = 0.1 / order_val * (1.0 - 0.2 * symmetry)
 end
@@ -155,7 +155,7 @@ return symmetry > 0.5
 elseif type == :lagrangian
 # Lagrangian systems: no strong preference
 return true
-else  # dissipative
+else # dissipative
 # Dissipative systems: less symmetric
 return symmetry < 0.7
 end
@@ -182,7 +182,7 @@ mass_action::Bool=true)
 trees = generate_trees_up_to_order(order)
 coefficients = Dict{Vector{Int}, Float64}()
 # Determine number of species
-n_species = length(reactions) + 1  # Rough estimate
+n_species = length(reactions) + 1 # Rough estimate
 for tree in trees
 order_val = length(tree)
 # Mass action kinetics: linear and bilinear terms dominate
@@ -312,7 +312,7 @@ elseif occursin("reaction", desc_lower) || occursin("chemical", desc_lower) ||
 occursin("kinetic", desc_lower) || occursin("mass action", desc_lower)
 # Reaction network domain
 mass_action = occursin("mass action", desc_lower)
-reactions = ["A → B"]  # Default reaction (placeholder)
+reactions = ["A → B"] # Default reaction (placeholder)
 return generate_reaction_kernel(reactions, order=order, mass_action=mass_action)
 elseif occursin("time", desc_lower) || occursin("predict", desc_lower) ||
 occursin("forecast", desc_lower) || occursin("series", desc_lower)

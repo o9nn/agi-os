@@ -140,17 +140,17 @@ Reaction(d, [X], nothing)
 # Declares various misformatted events .
 @test_broken false # Some misformatted tests should throw error at this stage, but does not (https:
 continuous_events_bad = [
-X ~ 1.0 => [X ~ 0.5],       # Scalar condition.
-[X ~ 1.0] => X ~ 0.5,       # Scalar affect.
-(X ~ 1.0,) => [X ~ 0.5],    # Tuple condition.
-[X ~ 1.0] => (X ~ 0.5,),    # Tuple affect.
-[X - 1.0] => [X ~ 0.5],     # Non-equation condition (1).
-[X == 1.0] => [X ~ 0.5],    # Non-equation condition (2).
+X ~ 1.0 => [X ~ 0.5], # Scalar condition.
+[X ~ 1.0] => X ~ 0.5, # Scalar affect.
+(X ~ 1.0,) => [X ~ 0.5], # Tuple condition.
+[X ~ 1.0] => (X ~ 0.5,), # Tuple affect.
+[X - 1.0] => [X ~ 0.5], # Non-equation condition (1).
+[X == 1.0] => [X ~ 0.5], # Non-equation condition (2).
 # [X ~ 1.0] => [X ~ 0.5, p ~ 0.5], # No error on system creation, but permitted. Should probably throw an early error.
 ]
 discrete_events_bad = [
-[2.0] => p ~ 1.0,       # Scalar affect.
-[2.0] => (p ~ 1.0, ),   # Tuple affect.
+[2.0] => p ~ 1.0, # Scalar affect.
+[2.0] => (p ~ 1.0, ), # Tuple affect.
 #[X > 2.0] => [p ~ 1.0], # Vector conditions. Should probably throw an error here already, currently does not.
 #(1.0, 2.0) => [p ~ 1.0] # Tuple condition. Should probably throw an error here already, currently does not.
 ]
@@ -387,5 +387,5 @@ jprob = JumpProblem(jin)
 jprob_events = JumpProblem(jin_events; rng)
 sol = solve(jprob, SSAStepper(); seed, callback)
 sol_events = solve(jprob_events, SSAStepper(); seed)
-@test_broken sol == sol_events  # seems to be not identical in the sample paths
+@test_broken sol == sol_events # seems to be not identical in the sample paths
 end

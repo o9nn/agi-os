@@ -1,14 +1,14 @@
 #include "sampling.h"
 #include "log.h"
 #ifdef LLAMA_USE_LLGUIDANCE
-#    include "llguidance.h"
-#    include <cmath>
+# include "llguidance.h"
+# include <cmath>
 struct llama_sampler_llg {
 const llama_vocab * vocab;
-std::string         grammar_kind;
-std::string         grammar_data;
-LlgTokenizer *      tokenizer;
-LlgMatcher *        grammar;
+std::string grammar_kind;
+std::string grammar_data;
+LlgTokenizer * tokenizer;
+LlgMatcher * grammar;
 };
 static LlgMatcher * llama_sampler_llg_new(LlgTokenizer * tokenizer, const char * grammar_kind,
 const char * grammar_data) {
@@ -71,8 +71,8 @@ auto * result_ctx = (llama_sampler_llg *) result->ctx;
 if (ctx->grammar) {
 result_ctx->grammar_kind = ctx->grammar_kind;
 result_ctx->grammar_data = ctx->grammar_data;
-result_ctx->grammar      = llg_clone_matcher(ctx->grammar);
-result_ctx->tokenizer    = llg_clone_tokenizer(ctx->tokenizer);
+result_ctx->grammar = llg_clone_matcher(ctx->grammar);
+result_ctx->tokenizer = llg_clone_tokenizer(ctx->tokenizer);
 }
 }
 return result;
@@ -96,7 +96,7 @@ llama_sampler_llg_free,
 static size_t llama_sampler_llg_tokenize_fn(const void * user_data, const uint8_t * bytes, size_t bytes_len,
 uint32_t * output_tokens, size_t output_tokens_len) {
 const llama_vocab * vocab = (const llama_vocab *) user_data;
-int                 r     = 0;
+int r = 0;
 try {
 r = llama_tokenize(vocab, (const char *) bytes, bytes_len, (int32_t *) output_tokens, output_tokens_len, false,
 true);
@@ -110,7 +110,7 @@ return r;
 }
 static LlgTokenizer * llama_sampler_llg_new_tokenizer(const llama_vocab * vocab) {
 static const llama_vocab * vocab_cache;
-static LlgTokenizer *      tokenizer_cache;
+static LlgTokenizer * tokenizer_cache;
 if (vocab_cache == vocab) {
 return llg_clone_tokenizer(tokenizer_cache);
 }
@@ -119,9 +119,9 @@ if (tok_eos == LLAMA_TOKEN_NULL) {
 tok_eos = llama_vocab_eos(vocab);
 }
 size_t vocab_size = llama_vocab_n_tokens(vocab);
-auto token_lens       = new uint32_t[vocab_size];
+auto token_lens = new uint32_t[vocab_size];
 auto token_bytes_size = vocab_size * 16 + 1024 * 1024;
-auto token_bytes      = new uint8_t[token_bytes_size];
+auto token_bytes = new uint8_t[token_bytes_size];
 size_t offset = 0;
 for (size_t i = 0; i < vocab_size; i++) {
 size_t max_token = 1024;
@@ -129,8 +129,8 @@ if (token_bytes_size - offset < max_token) {
 GGML_ABORT("token_bytes buffer too small\n");
 }
 llama_token token = i;
-auto        dp    = (char *) token_bytes + offset;
-auto        size  = llama_detokenize(vocab, &token, 1, dp, max_token, false, false);
+auto dp = (char *) token_bytes + offset;
+auto size = llama_detokenize(vocab, &token, 1, dp, max_token, false, false);
 if (size < 0) {
 GGML_ABORT("llama_detokenize failed\n");
 }
@@ -159,7 +159,7 @@ false,
 vocab,
 nullptr,
 };
-char           error_buffer[1024];
+char error_buffer[1024];
 LlgTokenizer * tokenizer = llg_new_tokenizer(&tinit, error_buffer, sizeof(error_buffer));
 delete[] token_bytes;
 delete[] token_lens;
@@ -170,7 +170,7 @@ return tokenizer;
 if (tokenizer_cache) {
 llg_free_tokenizer(tokenizer_cache);
 }
-vocab_cache     = vocab;
+vocab_cache = vocab;
 tokenizer_cache = tokenizer;
 return llg_clone_tokenizer(tokenizer_cache);
 }
@@ -179,7 +179,7 @@ const char * grammar_data) {
 auto * ctx = new llama_sampler_llg;
 if (grammar_kind != nullptr && grammar_kind[0] != '\0') {
 auto tokenizer = llama_sampler_llg_new_tokenizer(vocab);
-*ctx           = {
+*ctx = {
 vocab,
 grammar_kind,
 grammar_data,

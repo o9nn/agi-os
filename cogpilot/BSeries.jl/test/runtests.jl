@@ -272,8 +272,8 @@ rootedtree([1, 2, 2]) => b31,
 rootedtree([1, 2, 3]) => b32)
 # See equation (6) of
 # - Philippe Chartier, Ernst Hairer and Gilles Vilmart (2007)
-#   Numerical integrators based on modified differential equations
-#   [DOI: 10.1090/S0025-5718-07-01967-9](https:
+# Numerical integrators based on modified differential equations
+# [DOI: 10.1090/S0025-5718-07-01967-9](https:
 b_a = @inferred substitute(b, a)
 t = rootedtree(Int[])
 @test isequal(b_a[t], a[t])
@@ -313,8 +313,8 @@ rootedtree([1, 2, 2]) => b31,
 rootedtree([1, 2, 3]) => b32)
 # See equation (5) of
 # - Philippe Chartier, Ernst Hairer and Gilles Vilmart (2007)
-#   Numerical integrators based on modified differential equations
-#   [DOI: 10.1090/S0025-5718-07-01967-9](https:
+# Numerical integrators based on modified differential equations
+# [DOI: 10.1090/S0025-5718-07-01967-9](https:
 t = rootedtree([1])
 @inferred compose(b, a, t)
 @test isequal(compose(b, a, t), a0 * b1 + a1)
@@ -1047,8 +1047,8 @@ b = @SArray [1
 c = @SArray [1
 # See eq. (12) of
 # - Philippe Chartier, Ernst Hairer and Gilles Vilmart (2007)
-#   Numerical integrators based on modified differential equations
-#   [DOI: 10.1090/S0025-5718-07-01967-9](https:
+# Numerical integrators based on modified differential equations
+# [DOI: 10.1090/S0025-5718-07-01967-9](https:
 series = modifying_integrator(f, u, dt, A, b, c, 5)
 # Dirty workaround since there is no way to get the polynomial coefficients
 # at the moment.
@@ -1088,8 +1088,8 @@ b = @SArray [1
 c = @SArray [1
 # See eq. (12) of
 # - Philippe Chartier, Ernst Hairer and Gilles Vilmart (2007)
-#   Numerical integrators based on modified differential equations
-#   [DOI: 10.1090/S0025-5718-07-01967-9](https:
+# Numerical integrators based on modified differential equations
+# [DOI: 10.1090/S0025-5718-07-01967-9](https:
 series = modifying_integrator(f, u, dt, A, b, c, 5)
 # Dirty workaround used also for the other symbolic setups - just make
 # it consistent here, although we could use another approach with SymPy.jl.
@@ -1126,8 +1126,8 @@ b = @SArray [1
 c = @SArray [1
 # See eq. (12) of
 # - Philippe Chartier, Ernst Hairer and Gilles Vilmart (2007)
-#   Numerical integrators based on modified differential equations
-#   [DOI: 10.1090/S0025-5718-07-01967-9](https:
+# Numerical integrators based on modified differential equations
+# [DOI: 10.1090/S0025-5718-07-01967-9](https:
 series = modifying_integrator(f, u, dt, A, b, c, 5)
 # Dirty workaround used also for the other symbolic setups - just make
 # it consistent here, although we could use another approach with SymPyPythonCall.jl.
@@ -1171,8 +1171,8 @@ b = @SArray [1
 c = @SArray [1
 # See eq. (12) of
 # - Philippe Chartier, Ernst Hairer and Gilles Vilmart (2007)
-#   Numerical integrators based on modified differential equations
-#   [DOI: 10.1090/S0025-5718-07-01967-9](https:
+# Numerical integrators based on modified differential equations
+# [DOI: 10.1090/S0025-5718-07-01967-9](https:
 series = modifying_integrator(f, u, dt, A, b, c, 5)
 # Dirty workaround since there is no way to get the polynomial coefficients
 # in Symbolics.jl at the moment, see
@@ -1218,10 +1218,10 @@ c = @SArray [0, 1
 # ClearAll["Global`*"];
 #
 # solution[t_,
-#   u0_] := {u0[[1]]*Cos[t/(u0[[1]]^2 + u0[[2]]^2)] -
-#   u0[[2]]*Sin[t/(u0[[1]]^2 + u0[[2]]^2)],
-#   u0[[2]]*Cos[t/(u0[[1]]^2 + u0[[2]]^2)] +
-#   u0[[1]]*Sin[t/(u0[[1]]^2 + u0[[2]]^2)]}
+# u0_] := {u0[[1]]*Cos[t/(u0[[1]]^2 + u0[[2]]^2)] -
+# u0[[2]]*Sin[t/(u0[[1]]^2 + u0[[2]]^2)],
+# u0[[2]]*Cos[t/(u0[[1]]^2 + u0[[2]]^2)] +
+# u0[[1]]*Sin[t/(u0[[1]]^2 + u0[[2]]^2)]}
 #
 # factorF2[u_] := 1/(12*(u[[1]]^2 + u[[2]]^2)^2)
 # (*factorF2[u_]:=ff2*)
@@ -1242,10 +1242,10 @@ c = @SArray [0, 1
 # (*factorU9[u_]:=fu9*)
 #
 # newModifiedF[
-#   u_] :=
+# u_] :=
 # (1 + factorF2[u]*h^2 + factorF4[u]*h^4 + factorF6[u]*h^6)*
-#   originalF[
-#     u] + (factorU3[u]*h^3 + factorU5[u]*h^5 + factorU7[u]*h^7)*u
+# originalF[
+# u] + (factorU3[u]*h^3 + factorU5[u]*h^5 + factorU7[u]*h^7)*u
 #
 # u0 = {u01, u02};
 # f = newModifiedF;
@@ -1536,13 +1536,13 @@ end
 # D-stability and Kaps-Rentrop methods
 # https:
 # Γ = [1
-#      -4 1
-#      -4 -1
-#      1
+# -4 1
+# -4 -1
+# 1
 # A = [0 0 0 0;
-#      1 0 0 0;
-#      7
-#      7
+# 1 0 0 0;
+# 7
+# 7
 # b = [4
 # ros = @inferred RosenbrockMethod(Γ, A, b)
 # However, this does not work directly. Thus, we reverse-engineer
@@ -1601,10 +1601,10 @@ series_avf = @inferred bseries(AverageVectorFieldMethod(), order(series))
 end
 @testset "Example in Section 4.2 of Miyatake and Butcher (2016)" begin
 # - Yuto Miyatake and John C. Butcher.
-#   "A characterization of energy-preserving methods and the construction of
-#   parallel integrators for Hamiltonian systems."
-#   SIAM Journal on Numerical Analysis 54, no. 3 (2016):
-#   [DOI: 10.1137/15M1020861](https:
+# "A characterization of energy-preserving methods and the construction of
+# parallel integrators for Hamiltonian systems."
+# SIAM Journal on Numerical Analysis 54, no. 3 (2016):
+# [DOI: 10.1137/15M1020861](https:
 M = [-6
 72
 -36
@@ -1690,7 +1690,7 @@ csrk = @inferred ContinuousStageRungeKuttaMethod(M)
 # series = @inferred bseries(csrk, 2)
 series = bseries(csrk, 2)
 # TODO: There are errors from Symbolics.jl if we go to higher
-#       orders.
+# orders.
 # @test @inferred(order_of_accuracy(series)) == 4
 # # TODO: This is currently not implemented
 @test_skip is_energy_preserving(series)
@@ -2433,9 +2433,9 @@ empty_tree = rootedtree(Int[])
 t1 = rootedtree([1])
 t2 = rootedtree([1, 2])
 t3 = rootedtree([1, 2, 3])
-t4 = rootedtree([1, 2, 2])  # This tree has symmetry 2
-@test result[empty_tree] == 1  # coefficient 1, symmetry 1
-@test result[t1] == 1          # coefficient 1, symmetry 1
+t4 = rootedtree([1, 2, 2]) # This tree has symmetry 2
+@test result[empty_tree] == 1 # coefficient 1, symmetry 1
+@test result[t1] == 1 # coefficient 1, symmetry 1
 @test result[t2] == 1
 @test result[t3] == 1
 @test result[t4] == 1
@@ -2538,7 +2538,7 @@ end
 unit_map = @inferred IdentityMap{Int}()
 # Test iteration through first few terms
 terms = collect(Iterators.take(unit_map, 5))
-@test terms == [1, 0, 0, 0, 0]  # first term is 1 (empty tree), rest are 0
+@test terms == [1, 0, 0, 0, 0] # first term is 1 (empty tree), rest are 0
 # Test that we can iterate multiple times
 terms2 = collect(Iterators.take(unit_map, 3))
 @test terms2 == [1, 0, 0]
@@ -2562,7 +2562,7 @@ if !isempty(t)
 end
 end
 # Test expected number of terms up to order 3
-@test length(series_rational) == 5  # 1 + 1 + 1 + 2 = 5 trees up to order 3
+@test length(series_rational) == 5 # 1 + 1 + 1 + 2 = 5 trees up to order 3
 end
 end
 @testset "IdentityField" begin
@@ -2600,7 +2600,7 @@ end
 unit_field = @inferred IdentityField()
 # Test iteration through first few terms
 terms = collect(Iterators.take(unit_field, 5))
-@test terms == [false, true, false, false, false]  # only order-1 tree is true
+@test terms == [false, true, false, false, false] # only order-1 tree is true
 # Test that we can iterate multiple times
 terms2 = collect(Iterators.take(unit_field, 3))
 @test terms2 == [false, true, false]
@@ -2621,7 +2621,7 @@ if order(t) != 1
 end
 end
 # Test expected number of terms up to order 4
-@test length(series) == 9  # 1 + 1 + 1 + 2 + 4 = 9 trees up to order 4
+@test length(series) == 9 # 1 + 1 + 1 + 2 + 4 = 9 trees up to order 4
 end
 end
 @testset "compose with IdentityField" begin
@@ -2728,10 +2728,10 @@ unit_field = IdentityField()
 # For any tree, exactly one of IdentityMap[t] and IdentityField[t] should be "active"
 # (IdentityMap is 1 for empty tree, IdentityField is true for order-1 trees)
 test_trees = [
-rootedtree(Int[]),      # order 0
-rootedtree([1]),        # order 1
-rootedtree([1, 2]),     # order 2
-rootedtree([1, 2, 3]),   # order 3
+rootedtree(Int[]), # order 0
+rootedtree([1]), # order 1
+rootedtree([1, 2]), # order 2
+rootedtree([1, 2, 3]), # order 3
 ]
 for t in test_trees
 map_val = unit_map[t]

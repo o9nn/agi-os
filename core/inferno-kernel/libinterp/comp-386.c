@@ -2,143 +2,143 @@
 #include "isa.h"
 #include "interp.h"
 #include "raise.h"
-#define DOT			((ulong)code)
-#define	RESCHED 1
+#define DOT ((ulong)code)
+#define RESCHED 1
 enum
 {
-RAX	= 0,
-RAH	= 4,
-RCX	= 1,
-RDX	= 2,
-RBX	= 3,
-RSP	= 4,
-RBP	= 5,
-RSI	= 6,
-RDI	= 7,
-RFP	= RSI,
-RMP	= RDI,
-RTA	= RDX,
-RTMP	= RBX,
-Omovzxb	= 0xb6,
-Omovzxw	= 0xb7,
-Osal	= 0xd1,
-Oaddf	= 0xdc,
-Ocall	= 0xe8,
-Ocallrm	= 0xff,
-Ocdq	= 0x99,
-Ocld	= 0xfc,
-Ocmpb	= 0x38,
-Ocmpw	= 0x39,
-Ocmpi	= 0x83,
-Odecrm	= 0xff,
-Oincr	= 0x40,
-Oincrm	= 0xff,
-Ojccl	= 0x83,
-Ojcsl	= 0x82,
-Ojeqb	= 0x74,
-Ojeql	= 0x84,
-Ojgel	= 0x8d,
-Ojgtl	= 0x8f,
-Ojhil	= 0x87,
-Ojlel	= 0x8e,
-Ojlsl	= 0x86,
-Ojltl	= 0x8c,
-Ojol	= 0x80,
-Ojnol	= 0x81,
-Ojbl	= 0x82,
-Ojael	= 0x83,
-Ojal	= 0x87,
-Ojnel	= 0x85,
-Ojbel	= 0x86,
-Ojneb	= 0x75,
-Ojgtb	= 0x7f,
-Ojgeb	= 0x7d,
-Ojleb	= 0x7e,
-Ojltb	= 0x7c,
-Ojmp	= 0xe9,
-Ojmpb	= 0xeb,
-Ojmprm	= 0xff,
-Oldb	= 0x8a,
-Olds	= 0x89,
-Oldw	= 0x8b,
-Olea	= 0x8d,
-Otestib	= 0xf6,
-Oshld	= 0xa5,
-Oshrd	= 0xad,
-Osar	= 0xd3,
+RAX = 0,
+RAH = 4,
+RCX = 1,
+RDX = 2,
+RBX = 3,
+RSP = 4,
+RBP = 5,
+RSI = 6,
+RDI = 7,
+RFP = RSI,
+RMP = RDI,
+RTA = RDX,
+RTMP = RBX,
+Omovzxb = 0xb6,
+Omovzxw = 0xb7,
+Osal = 0xd1,
+Oaddf = 0xdc,
+Ocall = 0xe8,
+Ocallrm = 0xff,
+Ocdq = 0x99,
+Ocld = 0xfc,
+Ocmpb = 0x38,
+Ocmpw = 0x39,
+Ocmpi = 0x83,
+Odecrm = 0xff,
+Oincr = 0x40,
+Oincrm = 0xff,
+Ojccl = 0x83,
+Ojcsl = 0x82,
+Ojeqb = 0x74,
+Ojeql = 0x84,
+Ojgel = 0x8d,
+Ojgtl = 0x8f,
+Ojhil = 0x87,
+Ojlel = 0x8e,
+Ojlsl = 0x86,
+Ojltl = 0x8c,
+Ojol = 0x80,
+Ojnol = 0x81,
+Ojbl = 0x82,
+Ojael = 0x83,
+Ojal = 0x87,
+Ojnel = 0x85,
+Ojbel = 0x86,
+Ojneb = 0x75,
+Ojgtb = 0x7f,
+Ojgeb = 0x7d,
+Ojleb = 0x7e,
+Ojltb = 0x7c,
+Ojmp = 0xe9,
+Ojmpb = 0xeb,
+Ojmprm = 0xff,
+Oldb = 0x8a,
+Olds = 0x89,
+Oldw = 0x8b,
+Olea = 0x8d,
+Otestib = 0xf6,
+Oshld = 0xa5,
+Oshrd = 0xad,
+Osar = 0xd3,
 Osarimm = 0xc1,
-Omov	= 0xc7,
-Omovf	= 0xdd,
-Omovimm	= 0xb8,
-Omovsb	= 0xa4,
-Orep	= 0xf3,
-Oret	= 0xc3,
-Oshl	= 0xd3,
-Oshr	= 0xd1,
-Ostb	= 0x88,
-Ostw	= 0x89,
-Osubf	= 0xdc,
-Oxchg	= 0x87,
-OxchgAX	= 0x90,
-Oxor	= 0x31,
-Opopl	= 0x58,
-Opushl	= 0x50,
-Opushrm	= 0xff,
-Oneg	= 0xf7,
-SRCOP	= (1<<0),
-DSTOP	= (1<<1),
-WRTPC	= (1<<2),
-TCHECK	= (1<<3),
-NEWPC	= (1<<4),
-DBRAN	= (1<<5),
-THREOP	= (1<<6),
-ANDAND	= 1,
-OROR	= 2,
-EQAND	= 3,
-MacFRP	= 0,
-MacRET	= 1,
-MacCASE	= 2,
-MacCOLR	= 3,
-MacMCAL	= 4,
-MacFRAM	= 5,
-MacMFRA	= 6,
+Omov = 0xc7,
+Omovf = 0xdd,
+Omovimm = 0xb8,
+Omovsb = 0xa4,
+Orep = 0xf3,
+Oret = 0xc3,
+Oshl = 0xd3,
+Oshr = 0xd1,
+Ostb = 0x88,
+Ostw = 0x89,
+Osubf = 0xdc,
+Oxchg = 0x87,
+OxchgAX = 0x90,
+Oxor = 0x31,
+Opopl = 0x58,
+Opushl = 0x50,
+Opushrm = 0xff,
+Oneg = 0xf7,
+SRCOP = (1<<0),
+DSTOP = (1<<1),
+WRTPC = (1<<2),
+TCHECK = (1<<3),
+NEWPC = (1<<4),
+DBRAN = (1<<5),
+THREOP = (1<<6),
+ANDAND = 1,
+OROR = 2,
+EQAND = 3,
+MacFRP = 0,
+MacRET = 1,
+MacCASE = 2,
+MacCOLR = 3,
+MacMCAL = 4,
+MacFRAM = 5,
+MacMFRA = 6,
 MacRELQ = 7,
 NMACRO
 };
-static	uchar*	code;
-static	uchar*	base;
-static	ulong*	patch;
-static	int	pass;
-static	Module*	mod;
-static	uchar*	tinit;
-static	ulong*	litpool;
-static	int	nlit;
-static	void	macfrp(void);
-static	void	macret(void);
-static	void	maccase(void);
-static	void	maccolr(void);
-static	void	macmcal(void);
-static	void	macfram(void);
-static	void	macmfra(void);
-static	void	macrelq(void);
-static	ulong	macro[NMACRO];
-void	(*comvec)(void);
-extern	void	das(uchar*, int);
-#define T(r)	*((void**)(R.r))
+static uchar* code;
+static uchar* base;
+static ulong* patch;
+static int pass;
+static Module* mod;
+static uchar* tinit;
+static ulong* litpool;
+static int nlit;
+static void macfrp(void);
+static void macret(void);
+static void maccase(void);
+static void maccolr(void);
+static void macmcal(void);
+static void macfram(void);
+static void macmfra(void);
+static void macrelq(void);
+static ulong macro[NMACRO];
+void (*comvec)(void);
+extern void das(uchar*, int);
+#define T(r) *((void**)(R.r))
 struct
 {
-int	idx;
-void	(*gen)(void);
+int idx;
+void (*gen)(void);
 } mactab[] =
 {
-MacFRP,		macfrp,
-MacRET,		macret,
-MacCASE,	maccase,
-MacCOLR,	maccolr,
-MacMCAL,	macmcal,
-MacFRAM,	macfram,
-MacMFRA,	macmfra,
-MacRELQ,		macrelq,
+MacFRP, macfrp,
+MacRET, macret,
+MacCASE, maccase,
+MacCOLR, maccolr,
+MacMCAL, macmcal,
+MacFRAM, macfram,
+MacMFRA, macmfra,
+MacRELQ, macrelq,
 };
 static void
 bounds(void)

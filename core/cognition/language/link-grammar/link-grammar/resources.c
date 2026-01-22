@@ -11,7 +11,7 @@
 #if defined(__hpux__)
 #include <sys/syscall.h>
 int syscall(int, int, struct rusage *rusage);
-#define getrusage(a, b)  syscall(SYS_GETRUSAGE, (a), (b))
+#define getrusage(a, b) syscall(SYS_GETRUSAGE, (a), (b))
 #endif
 #if defined(__sun__)
 int getrusage(int who, struct rusage *rusage);

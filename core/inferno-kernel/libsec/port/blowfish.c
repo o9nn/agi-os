@@ -56,11 +56,11 @@ int i;
 uchar *p;
 u32int bo[2], bi[2], b;
 assert((n & 7) == 0);
-bo[0] =  s->ivec[0] | ((u32int) s->ivec[1]<<8) | ((u32int)s->ivec[2]<<16) | ((u32int)s->ivec[3]<<24);
-bo[1] =  s->ivec[4] | ((u32int) s->ivec[5]<<8) | ((u32int)s->ivec[6]<<16) | ((u32int)s->ivec[7]<<24);
+bo[0] = s->ivec[0] | ((u32int) s->ivec[1]<<8) | ((u32int)s->ivec[2]<<16) | ((u32int)s->ivec[3]<<24);
+bo[1] = s->ivec[4] | ((u32int) s->ivec[5]<<8) | ((u32int)s->ivec[6]<<16) | ((u32int)s->ivec[7]<<24);
 for(i=0; i < n; i += 8, buf += 8) {
-bi[0] =  buf[0] | ((u32int) buf[1]<<8) | ((u32int)buf[2]<<16) | ((u32int)buf[3]<<24);
-bi[1] =  buf[4] | ((u32int) buf[5]<<8) | ((u32int)buf[6]<<16) | ((u32int)buf[7]<<24);
+bi[0] = buf[0] | ((u32int) buf[1]<<8) | ((u32int)buf[2]<<16) | ((u32int)buf[3]<<24);
+bi[1] = buf[4] | ((u32int) buf[5]<<8) | ((u32int)buf[6]<<16) | ((u32int)buf[7]<<24);
 bi[0] ^= bo[0];
 bi[1] ^= bo[1];
 bfencrypt(bi, s);
@@ -101,11 +101,11 @@ int i;
 uchar *p;
 u32int b, bo[2], bi[2], xr[2];
 assert((n & 7) == 0);
-bo[0] =  s->ivec[0] | ((u32int) s->ivec[1]<<8) | ((u32int)s->ivec[2]<<16) | ((u32int)s->ivec[3]<<24);
-bo[1] =  s->ivec[4] | ((u32int) s->ivec[5]<<8) | ((u32int)s->ivec[6]<<16) | ((u32int)s->ivec[7]<<24);
+bo[0] = s->ivec[0] | ((u32int) s->ivec[1]<<8) | ((u32int)s->ivec[2]<<16) | ((u32int)s->ivec[3]<<24);
+bo[1] = s->ivec[4] | ((u32int) s->ivec[5]<<8) | ((u32int)s->ivec[6]<<16) | ((u32int)s->ivec[7]<<24);
 for(i=0; i < n; i += 8, buf += 8) {
-bi[0] =  buf[0] | ((u32int) buf[1]<<8) | ((u32int)buf[2]<<16) | ((u32int)buf[3]<<24);
-bi[1] =  buf[4] | ((u32int) buf[5]<<8) | ((u32int)buf[6]<<16) | ((u32int)buf[7]<<24);
+bi[0] = buf[0] | ((u32int) buf[1]<<8) | ((u32int)buf[2]<<16) | ((u32int)buf[3]<<24);
+bi[1] = buf[4] | ((u32int) buf[5]<<8) | ((u32int)buf[6]<<16) | ((u32int)buf[7]<<24);
 xr[0] = bi[0];
 xr[1] = bi[1];
 bfdecrypt(bi, s);
@@ -147,8 +147,8 @@ bfECBencrypt(uchar *buf, int n, BFstate *s)
 int i;
 u32int b[2];
 for(i=0; i < n; i += 8, buf += 8) {
-b[0] =  buf[0] | ((u32int) buf[1]<<8) | ((u32int)buf[2]<<16) | ((u32int)buf[3]<<24);
-b[1] =  buf[4] | ((u32int) buf[5]<<8) | ((u32int)buf[6]<<16) | ((u32int)buf[7]<<24);
+b[0] = buf[0] | ((u32int) buf[1]<<8) | ((u32int)buf[2]<<16) | ((u32int)buf[3]<<24);
+b[1] = buf[4] | ((u32int) buf[5]<<8) | ((u32int)buf[6]<<16) | ((u32int)buf[7]<<24);
 bfencrypt(b, s);
 buf[7] = b[1] >> 24;
 buf[6] = b[1] >> 16;
@@ -167,8 +167,8 @@ bfECBdecrypt(uchar *buf, int n, BFstate *s)
 int i;
 u32int b[2];
 for(i=0; i < n; i += 8, buf += 8) {
-b[0] =  buf[0] | ((u32int) buf[1]<<8) | ((u32int)buf[2]<<16) | ((u32int)buf[3]<<24);
-b[1] =  buf[4] | ((u32int) buf[5]<<8) | ((u32int)buf[6]<<16) | ((u32int)buf[7]<<24);
+b[0] = buf[0] | ((u32int) buf[1]<<8) | ((u32int)buf[2]<<16) | ((u32int)buf[3]<<24);
+b[1] = buf[4] | ((u32int) buf[5]<<8) | ((u32int)buf[6]<<16) | ((u32int)buf[7]<<24);
 bfdecrypt(b, s);
 buf[7] = b[1] >> 24;
 buf[6] = b[1] >> 16;

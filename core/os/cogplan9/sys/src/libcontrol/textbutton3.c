@@ -9,25 +9,25 @@ typedef struct Textbutton3 Textbutton3;
 struct Textbutton3
 {
 Control;
-CFont	*font;
-CImage	*image;
-CImage	*mask;
-CImage	*light;
-CImage	*bordercolor;
-CImage	*textcolor;
-CImage	*pressedtextcolor;
-int		pressed;
-int		lastbut;
-int		lastshow;
-char		**line;
-int		nline;
-int		align;
-int		border;
-int		left;
-int		middle;
-int		right;
-int		toggle;
-int		gettextflg;
+CFont *font;
+CImage *image;
+CImage *mask;
+CImage *light;
+CImage *bordercolor;
+CImage *textcolor;
+CImage *pressedtextcolor;
+int pressed;
+int lastbut;
+int lastshow;
+char **line;
+int nline;
+int align;
+int border;
+int left;
+int middle;
+int right;
+int toggle;
+int gettextflg;
 };
 enum{
 EAlign,
@@ -54,31 +54,31 @@ EGettext,
 EValue,
 };
 static char *cmds[] = {
-[EAlign] =			"align",
-[EBorder] =		"border",
-[EBordercolor] = 	"bordercolor",
-[EFocus] = 		"focus",
-[EFont] =			"font",
-[EFormat] = 		"format",
-[EHide] =			"hide",
-[EImage] =		"image",
-[ELight] =			"light",
-[EMask] =			"mask",
+[EAlign] = "align",
+[EBorder] = "border",
+[EBordercolor] = "bordercolor",
+[EFocus] = "focus",
+[EFont] = "font",
+[EFormat] = "format",
+[EHide] = "hide",
+[EImage] = "image",
+[ELight] = "light",
+[EMask] = "mask",
 [EPressedtextcolor] ="pressedtextcolor",
-[ERect] =			"rect",
-[EReveal] =		"reveal",
-[EShow] =			"show",
-[ESize] =			"size",
-[EText] =			"text",
-[ETextcolor] =		"textcolor",
-[EEnable] =		"enable",
-[EDisable] =		"disable",
-[EToggle] =		"toggle",
-[EGettext] =		"gettext",
-[EValue] =			"value",
+[ERect] = "rect",
+[EReveal] = "reveal",
+[EShow] = "show",
+[ESize] = "size",
+[EText] = "text",
+[ETextcolor] = "textcolor",
+[EEnable] = "enable",
+[EDisable] = "disable",
+[EToggle] = "toggle",
+[EGettext] = "gettext",
+[EValue] = "value",
 nil
 };
-static void	textbutton3show(Textbutton3 *);
+static void textbutton3show(Textbutton3 *);
 static void
 textbutton3mouse(Control *c, Mouse *m)
 {

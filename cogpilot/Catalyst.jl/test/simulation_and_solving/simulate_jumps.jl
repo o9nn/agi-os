@@ -181,7 +181,7 @@ jprobsd = JumpProblem(jinput, SortingDirect(); save_positions = (false, false), 
 jprobrssa = JumpProblem(jinput, RSSA(); save_positions = (false, false), rng)
 @test issetequal(jprobrssa.discrete_jump_aggregation.vartojumps_map, [[],[],[],[1],[2],[]])
 @test issetequal(jprobrssa.discrete_jump_aggregation.jumptovars_map, [[5],[5,6]])
-N = 1000  # number of simulations to run
+N = 1000 # number of simulations to run
 function getmean(N, prob)
 m1 = 0.0
 m2 = 0.0
@@ -196,7 +196,7 @@ return m1, m2
 end
 means1 = zeros(2)
 means2 = zeros(2)
-for (i,prob) in enumerate((jprobdm, jprobsd))  # skip rssa due JumpProcesses #439 bug
+for (i,prob) in enumerate((jprobdm, jprobsd)) # skip rssa due JumpProcesses #439 bug
 means1[i],means2[i] = getmean(N, prob)
 end
 @test (means1[1] - means1[2]) < .1 * means1[1]

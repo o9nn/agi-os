@@ -2,9 +2,9 @@
 #define _TCP_H
 #include <linux/tcp.h>
 #include <net/checksum.h>
-#define TCP_HTABLE_SIZE		256
-#define TCP_LHTABLE_SIZE	32
-#define TCP_BHTABLE_SIZE	64
+#define TCP_HTABLE_SIZE 256
+#define TCP_LHTABLE_SIZE 32
+#define TCP_BHTABLE_SIZE 64
 extern struct sock *tcp_established_hash[TCP_HTABLE_SIZE];
 extern struct sock *tcp_listening_hash[TCP_LHTABLE_SIZE];
 extern struct sock *tcp_bound_hash[TCP_BHTABLE_SIZE];
@@ -62,36 +62,36 @@ if(sk->bind_next)
 sk->bind_next->bind_pprev = sk->bind_pprev;
 *(sk->bind_pprev) = sk->bind_next;
 }
-#define MAX_SYN_SIZE	(sizeof(struct iphdr) + 40 + sizeof(struct tcphdr) + 4 + MAX_HEADER + 15)
-#define MAX_FIN_SIZE	(sizeof(struct iphdr) + 40 + sizeof(struct tcphdr) + MAX_HEADER + 15)
-#define MAX_ACK_SIZE	(sizeof(struct iphdr) + 40 + sizeof(struct tcphdr) + MAX_HEADER + 15)
-#define MAX_RESET_SIZE	(sizeof(struct iphdr) + 40 + sizeof(struct tcphdr) + MAX_HEADER + 15)
-#define MAX_WINDOW	32767
-#define MIN_WINDOW	2048
-#define MAX_ACK_BACKLOG	2
-#define MAX_DUP_ACKS	3
-#define MIN_WRITE_SPACE	2048
-#define TCP_WINDOW_DIFF	2048
-#define URG_VALID	0x0100
-#define URG_NOTYET	0x0200
-#define URG_READ	0x0400
-#define TCP_RETR1	7
-#define TCP_RETR2	15
-#define TCP_TIMEOUT_LEN	(15*60*HZ)
+#define MAX_SYN_SIZE (sizeof(struct iphdr) + 40 + sizeof(struct tcphdr) + 4 + MAX_HEADER + 15)
+#define MAX_FIN_SIZE (sizeof(struct iphdr) + 40 + sizeof(struct tcphdr) + MAX_HEADER + 15)
+#define MAX_ACK_SIZE (sizeof(struct iphdr) + 40 + sizeof(struct tcphdr) + MAX_HEADER + 15)
+#define MAX_RESET_SIZE (sizeof(struct iphdr) + 40 + sizeof(struct tcphdr) + MAX_HEADER + 15)
+#define MAX_WINDOW 32767
+#define MIN_WINDOW 2048
+#define MAX_ACK_BACKLOG 2
+#define MAX_DUP_ACKS 3
+#define MIN_WRITE_SPACE 2048
+#define TCP_WINDOW_DIFF 2048
+#define URG_VALID 0x0100
+#define URG_NOTYET 0x0200
+#define URG_READ 0x0400
+#define TCP_RETR1 7
+#define TCP_RETR2 15
+#define TCP_TIMEOUT_LEN (15*60*HZ)
 #define TCP_TIMEWAIT_LEN (60*HZ)
 #define TCP_FIN_TIMEOUT (3*60*HZ)
-#define TCP_ACK_TIME	(3*HZ)
-#define TCP_DONE_TIME	(5*HZ/2)
-#define TCP_WRITE_TIME	(30*HZ)
+#define TCP_ACK_TIME (3*HZ)
+#define TCP_DONE_TIME (5*HZ/2)
+#define TCP_WRITE_TIME (30*HZ)
 #define TCP_TIMEOUT_INIT (3*HZ)
-#define TCP_SYN_RETRIES	 5
+#define TCP_SYN_RETRIES 5
 #define TCP_PROBEWAIT_LEN (1*HZ)
-#define TCP_NO_CHECK	0
-#define TCPOPT_NOP		1
-#define TCPOPT_EOL		0
-#define TCPOPT_MSS		2
-#define TCPOPT_WINDOW		3
-#define TCPOPT_TIMESTAMP	8
+#define TCP_NO_CHECK 0
+#define TCPOPT_NOP 1
+#define TCPOPT_EOL 0
+#define TCPOPT_MSS 2
+#define TCPOPT_WINDOW 3
+#define TCPOPT_TIMESTAMP 8
 extern __inline int before(__u32 seq1, __u32 seq2)
 {
 return (__s32)(seq1-seq2) < 0;
@@ -118,11 +118,11 @@ return a;
 }
 extern struct proto tcp_prot;
 extern struct tcp_mib tcp_statistics;
-extern unsigned short		tcp_good_socknum(void);
-extern void	tcp_err(int type, int code, unsigned char *header, __u32 daddr,
+extern unsigned short tcp_good_socknum(void);
+extern void tcp_err(int type, int code, unsigned char *header, __u32 daddr,
 __u32, struct inet_protocol *protocol, int len);
-extern void	tcp_shutdown (struct sock *sk, int how);
-extern int	tcp_rcv(struct sk_buff *skb, struct device *dev,
+extern void tcp_shutdown (struct sock *sk, int how);
+extern int tcp_rcv(struct sk_buff *skb, struct device *dev,
 struct options *opt, __u32 daddr,
 unsigned short len, __u32 saddr, int redo,
 struct inet_protocol *protocol);
@@ -149,7 +149,7 @@ extern void tcp_enqueue_partial(struct sk_buff *, struct sock *);
 extern struct sk_buff * tcp_dequeue_partial(struct sock *);
 extern void tcp_shrink_skb(struct sock *,struct sk_buff *,u32);
 extern int tcp_chkaddr(struct sk_buff *);
-#define     tcp_reset_msl_timer(x,y,z)	reset_timer(x,y,z)
+#define tcp_reset_msl_timer(x,y,z) reset_timer(x,y,z)
 extern void tcp_reset_xmit_timer(struct sock *, int, unsigned long);
 extern void tcp_delack_timer(unsigned long);
 extern void tcp_retransmit_timer(unsigned long);
@@ -177,7 +177,7 @@ return oldwin;
 extern __inline const int tcp_connected(const int state)
 {
 return(state == TCP_ESTABLISHED || state == TCP_CLOSE_WAIT ||
-state == TCP_FIN_WAIT1   || state == TCP_FIN_WAIT2 ||
+state == TCP_FIN_WAIT1 || state == TCP_FIN_WAIT2 ||
 state == TCP_SYN_RECV);
 }
 static __inline__ u16 tcp_check(struct tcphdr *th, int len,

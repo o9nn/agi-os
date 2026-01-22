@@ -209,10 +209,10 @@ error_t
 trivfs_append_args (struct trivfs_control *fsys, char **argz, size_t *argz_len)
 {
 error_t err = 0;
-#define ADD_OPT(fmt, args...)						\
-do { char buf[100];							\
-if (! err) {							\
-snprintf (buf, sizeof buf, fmt , ##args);			\
+#define ADD_OPT(fmt, args...) \
+do { char buf[100]; \
+if (! err) { \
+snprintf (buf, sizeof buf, fmt , ##args); \
 err = argz_add (argz, argz_len, buf); } } while (0)
 if (user_device_name)
 ADD_OPT ("--name=%s", user_device_name);

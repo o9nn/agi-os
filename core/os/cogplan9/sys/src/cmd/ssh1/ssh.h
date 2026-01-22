@@ -5,14 +5,14 @@
 #include <libsec.h>
 enum
 {
-DBG=			1<<0,
-DBG_CRYPTO=		1<<1,
-DBG_PACKET=		1<<2,
-DBG_AUTH=		1<<3,
-DBG_PROC=		1<<4,
-DBG_PROTO=		1<<5,
-DBG_IO=			1<<6,
-DBG_SCP=		1<<7,
+DBG= 1<<0,
+DBG_CRYPTO= 1<<1,
+DBG_PACKET= 1<<2,
+DBG_AUTH= 1<<3,
+DBG_PROC= 1<<4,
+DBG_PROTO= 1<<5,
+DBG_IO= 1<<6,
+DBG_SCP= 1<<7,
 };
 enum
 {
@@ -174,7 +174,7 @@ uchar *wp;
 uchar *ep;
 Msg *link;
 };
-#define LONG(p)	(((p)[0]<<24)|((p)[1]<<16)|((p)[2]<<8)|((p)[3]))
+#define LONG(p) (((p)[0]<<24)|((p)[1]<<16)|((p)[2]<<8)|((p)[3]))
 #define PLONG(p, l) \
 (((p)[0]=(l)>>24),((p)[1]=(l)>>16),\
 ((p)[2]=(l)>>8),((p)[3]=(l)))
@@ -198,35 +198,35 @@ extern Cipher cipherdes;
 extern Cipher cipherrc4;
 extern Cipher ciphernone;
 extern Cipher ciphertwiddle;
-Msg*	allocmsg(Conn*, int, int);
-void		badmsg(Msg*, int);
-Msg*	recvmsg(Conn*, int);
-void		unrecvmsg(Conn*, Msg*);
-int		sendmsg(Msg*);
-uchar	getbyte(Msg*);
-ushort	getshort(Msg*);
-ulong	getlong(Msg*);
-char*	getstring(Msg*);
-void*	getbytes(Msg*, int);
-mpint*	getmpint(Msg*);
-RSApub*	getRSApub(Msg*);
-void		putbyte(Msg*, uchar);
-void		putshort(Msg*, ushort);
-void		putlong(Msg*, ulong);
-void		putstring(Msg*, char*);
-void		putbytes(Msg*, void*, long);
-void		putmpint(Msg*, mpint*);
-void		putRSApub(Msg*, RSApub*);
-mpint*	rsapad(mpint*, int);
-mpint*	rsaunpad(mpint*);
-void		mptoberjust(mpint*, uchar*, int);
-mpint*	rsaencryptbuf(RSApub*, uchar*, int);
-void		sshclienthandshake(Conn*);
-void		requestpty(Conn*);
-int		readgeom(int*, int*, int*, int*);
-void		sendwindowsize(Conn*, int, int, int, int);
-int		rawhack;
-void		sshserverhandshake(Conn*);
+Msg* allocmsg(Conn*, int, int);
+void badmsg(Msg*, int);
+Msg* recvmsg(Conn*, int);
+void unrecvmsg(Conn*, Msg*);
+int sendmsg(Msg*);
+uchar getbyte(Msg*);
+ushort getshort(Msg*);
+ulong getlong(Msg*);
+char* getstring(Msg*);
+void* getbytes(Msg*, int);
+mpint* getmpint(Msg*);
+RSApub* getRSApub(Msg*);
+void putbyte(Msg*, uchar);
+void putshort(Msg*, ushort);
+void putlong(Msg*, ulong);
+void putstring(Msg*, char*);
+void putbytes(Msg*, void*, long);
+void putmpint(Msg*, mpint*);
+void putRSApub(Msg*, RSApub*);
+mpint* rsapad(mpint*, int);
+mpint* rsaunpad(mpint*);
+void mptoberjust(mpint*, uchar*, int);
+mpint* rsaencryptbuf(RSApub*, uchar*, int);
+void sshclienthandshake(Conn*);
+void requestpty(Conn*);
+int readgeom(int*, int*, int*, int*);
+void sendwindowsize(Conn*, int, int, int, int);
+int rawhack;
+void sshserverhandshake(Conn*);
 enum
 {
 KeyOk,
@@ -234,26 +234,26 @@ KeyWrong,
 NoKey,
 NoKeyFile,
 };
-int		appendkey(char*, char*, RSApub*);
-int		findkey(char*, char*, RSApub*);
-int		replacekey(char*, char*, RSApub*);
-int		startagent(Conn*);
-void		handleagentmsg(Msg*);
-void		handleagentopen(Msg*);
-void		handleagentieof(Msg*);
-void		handleagentoclose(Msg*);
-void		debug(int, char*, ...);
-void*	emalloc(long);
-void*	erealloc(void*, long);
-void		error(char*, ...);
-RSApriv*	readsecretkey(char*);
-int		readstrnl(int, char*, int);
-void		atexitkill(int);
-void		atexitkiller(void);
-void		calcsessid(Conn*);
-void		sshlog(char*, ...);
-void		setaliases(Conn*, char*);
-void		privatefactotum(void);
+int appendkey(char*, char*, RSApub*);
+int findkey(char*, char*, RSApub*);
+int replacekey(char*, char*, RSApub*);
+int startagent(Conn*);
+void handleagentmsg(Msg*);
+void handleagentopen(Msg*);
+void handleagentieof(Msg*);
+void handleagentoclose(Msg*);
+void debug(int, char*, ...);
+void* emalloc(long);
+void* erealloc(void*, long);
+void error(char*, ...);
+RSApriv* readsecretkey(char*);
+int readstrnl(int, char*, int);
+void atexitkill(int);
+void atexitkiller(void);
+void calcsessid(Conn*);
+void sshlog(char*, ...);
+void setaliases(Conn*, char*);
+void privatefactotum(void);
 #pragma varargck argpos debug 2
 #pragma varargck argpos error 1
 #pragma varargck argpos sshlog 2

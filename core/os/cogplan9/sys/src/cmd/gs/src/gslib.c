@@ -203,7 +203,7 @@ const gs_ptr_procs_t ptr_string_procs =
 const gs_ptr_procs_t ptr_const_string_procs =
 {NULL, NULL, NULL};
 void *
-gs_reloc_struct_ptr(const void *  obj, gc_state_t * gcst)
+gs_reloc_struct_ptr(const void * obj, gc_state_t * gcst)
 {
 return (void *)obj;
 }
@@ -229,7 +229,7 @@ gp_do_exit(1);
 private double
 gs_copysign(floatp x, floatp y)
 {
-return ( y >= 0  ? fabs(x) : -fabs(x) );
+return ( y >= 0 ? fabs(x) : -fabs(x) );
 }
 private long rand_state = 1;
 private long
@@ -728,8 +728,8 @@ ptile.size.x = ptile.size.y = 16;
 ptile.id = gs_no_bitmap_id;
 ptile.pix_depth = 2;
 ptile.num_comps = 1;
-gs_makepixmappattern(&ccolor, &ptile, false  , NULL  ,
-gs_no_id, pcs, 0  , pgs, mem);
+gs_makepixmappattern(&ccolor, &ptile, false , NULL ,
+gs_no_id, pcs, 0 , pgs, mem);
 {
 gs_rect r;
 r.p.x = 100;

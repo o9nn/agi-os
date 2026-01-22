@@ -49,7 +49,7 @@ modules: fn(ctxt: self ref Context, r: chan of string);
 loadtypes: fn(ctxt: self ref Context, name: string)
 : (chan of ref Proxy->Typescmd[ref Value], string);
 find: fn(ctxt: self ref Context, s: string): (ref Module, string);
-new:	fn(): ref Context;
+new: fn(): ref Context;
 };
 Module: adt {
 m: Fsmodule;
@@ -162,7 +162,7 @@ pick v := ev {
 Vd =>
 return ref Value.Vd(v.i);
 Vw =>
-return nil;		# can't happen
+return nil; # can't happen
 Vf =>
 return ref Value.Vf(v.i);
 Vr =>

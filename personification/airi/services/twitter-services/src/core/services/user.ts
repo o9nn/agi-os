@@ -3,65 +3,65 @@ import type { Context } from '../browser/context'
 import { TWITTER_BASE_URL } from '../../constants'
 import { logger } from '../../utils/logger'
 export interface UserProfile {
-  username: string
-  displayName: string
-  bio?: string
-  avatarUrl?: string
-  bannerUrl?: string
-  followersCount?: number
-  followingCount?: number
-  tweetCount?: number
-  isVerified?: boolean
-  joinDate?: string
+username: string
+displayName: string
+bio?: string
+avatarUrl?: string
+bannerUrl?: string
+followersCount?: number
+followingCount?: number
+tweetCount?: number
+isVerified?: boolean
+joinDate?: string
 }
 export interface UserStats {
-  tweets: number
-  following: number
-  followers: number
+tweets: number
+following: number
+followers: number
 }
 export interface UserLink {
-  type: string
-  url: string
-  title: string
+type: string
+url: string
+title: string
 }
 export function useTwitterUserServices(ctx: Context): TwitterService {
-  async function followUser(_username: string): Promise<boolean> {
-    throw new Error('Not implemented')
-  }
-  async function getUserProfile(username: string): Promise<UserProfile> {
-    try {
-      await ctx.page.goto(`${TWITTER_BASE_URL}/${username}`)
-      await ctx.page.waitForSelector('[data-testid="UserName"]')
-      const displayNameElement = await ctx.page.$('[data-testid="UserName"] div span')
-      const displayName = displayNameElement ? await displayNameElement.textContent() || username : username
-      const bioElement = await ctx.page.$('[data-testid="UserDescription"]')
-      const bio = bioElement ? await bioElement.textContent() : undefined
-      const avatarElement = await ctx.page.$('img[src*="/profile_images/"]')
-      const avatarUrl = avatarElement ? await avatarElement.getAttribute('src') : undefined
-      const followElement = await ctx.page.$('[href$="/followers"]')
-      const followingElement = await ctx.page.$('[href$="/following"]')
-      const followerCount = followElement
-        ? Number.parseInt((await followElement.textContent() || '0').replace(/\D/g, ''))
-        : undefined
-      const followingCount = followingElement
-        ? Number.parseInt((await followingElement.textContent() || '0').replace(/\D/g, ''))
-        : undefined
-      return {
-        username,
-        displayName,
-        bio: bio || undefined,
-        avatarUrl: avatarUrl || undefined,
-        followersCount: followerCount || undefined,
-        followingCount: followingCount || undefined,
-      }
-    }
-    catch (error) {
-      logger.main.error('Error fetching user profile:', (error as Error).message)
-      throw new Error(`Failed to fetch profile for @${username}`)
-    }
-  }
-  return {
-    followUser,
-    getUserProfile,
-  }
+async function followUser(_username: string): Promise<boolean> {
+throw new Error('Not implemented')
+}
+async function getUserProfile(username: string): Promise<UserProfile> {
+try {
+await ctx.page.goto(`${TWITTER_BASE_URL}/${username}`)
+await ctx.page.waitForSelector('[data-testid="UserName"]')
+const displayNameElement = await ctx.page.$('[data-testid="UserName"] div span')
+const displayName = displayNameElement ? await displayNameElement.textContent() || username : username
+const bioElement = await ctx.page.$('[data-testid="UserDescription"]')
+const bio = bioElement ? await bioElement.textContent() : undefined
+const avatarElement = await ctx.page.$('img[src*="/profile_images/"]')
+const avatarUrl = avatarElement ? await avatarElement.getAttribute('src') : undefined
+const followElement = await ctx.page.$('[href$="/followers"]')
+const followingElement = await ctx.page.$('[href$="/following"]')
+const followerCount = followElement
+? Number.parseInt((await followElement.textContent() || '0').replace(/\D/g, ''))
+: undefined
+const followingCount = followingElement
+? Number.parseInt((await followingElement.textContent() || '0').replace(/\D/g, ''))
+: undefined
+return {
+username,
+displayName,
+bio: bio || undefined,
+avatarUrl: avatarUrl || undefined,
+followersCount: followerCount || undefined,
+followingCount: followingCount || undefined,
+}
+}
+catch (error) {
+logger.main.error('Error fetching user profile:', (error as Error).message)
+throw new Error(`Failed to fetch profile for @${username}`)
+}
+}
+return {
+followUser,
+getUserProfile,
+}
 }

@@ -1,8 +1,8 @@
 #ifndef imain_INCLUDED
-#  define imain_INCLUDED
+# define imain_INCLUDED
 #include "gsexit.h"
 #ifndef gs_main_instance_DEFINED
-#  define gs_main_instance_DEFINED
+# define gs_main_instance_DEFINED
 typedef struct gs_main_instance_s gs_main_instance;
 #endif
 gs_main_instance* get_minst_from_memory(const gs_memory_t *mem);

@@ -1,5 +1,5 @@
 #ifndef gdevpdfc_INCLUDED
-#  define gdevpdfc_INCLUDED
+# define gdevpdfc_INCLUDED
 typedef enum {
 ONE_STEP_NOT,
 ONE_STEP_LMN,

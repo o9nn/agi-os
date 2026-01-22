@@ -1,50 +1,50 @@
-#include	<u.h>
-#include	<libc.h>
-#include	<bio.h>
-#include	<ctype.h>
-#define	NULL		((void *)0)
-#define	WORD_LIST	"/sys/games/lib/anawords"
-#define	VOWELS		"aeiouy"
-#define	ALPHAS		26
-#define	LENLIMIT	64
-#define	talloc(t)	salloc(sizeof (t))
-#define	MAP(c)		((c) - 'a')
+#include <u.h>
+#include <libc.h>
+#include <bio.h>
+#include <ctype.h>
+#define NULL ((void *)0)
+#define WORD_LIST "/sys/games/lib/anawords"
+#define VOWELS "aeiouy"
+#define ALPHAS 26
+#define LENLIMIT 64
+#define talloc(t) salloc(sizeof (t))
+#define MAP(c) ((c) - 'a')
 enum
 {
 in_fd,
 out_fd,
 err_fd,
 };
-typedef struct word	word;
+typedef struct word word;
 struct word
 {
-char	*text;
-int	length;
-ulong	mask;
-word	*next;
+char *text;
+int length;
+ulong mask;
+word *next;
 };
-typedef word	*set[LENLIMIT];
+typedef word *set[LENLIMIT];
 typedef struct
 {
-int	count[ALPHAS];
-int	length;
-ulong	mask;
+int count[ALPHAS];
+int length;
+ulong mask;
 }
 target;
-int	fixed;
-int	maxwords;
-set	words;
-word	*list[LENLIMIT];
+int fixed;
+int maxwords;
+set words;
+word *list[LENLIMIT];
 void
 error(char *s)
 {
 fprint(err_fd, "fatal error: %s\n", s);
 exits("fatal error");
 }
-void	*
+void *
 salloc(ulong z)
 {
-void	*p;
+void *p;
 if ((p = malloc(z)) == NULL)
 error("ran out of memory");
 return p;
@@ -64,8 +64,8 @@ if (*s == '\n')
 int
 word_ok(word *w)
 {
-char	*s;
-int	vowel;
+char *s;
+int vowel;
 if (w->length == 0 || w->length >= LENLIMIT)
 return 0;
 if (w->length == 1)
@@ -93,17 +93,17 @@ return vowel;
 ulong
 str_to_mask(char *s)
 {
-ulong	m;
+ulong m;
 m = 0;
 while (*s != '\0')
 m |= 1 << MAP(*s++);
 return m;
 }
-word	*
+word *
 get_word(Biobuf *bp)
 {
-char	*s;
-word	*w;
+char *s;
+word *w;
 retry:
 if ((s = Brdline(bp, '\n')) == NULL)
 return NULL;
@@ -123,9 +123,9 @@ return w;
 void
 build_wordlist(void)
 {
-Biobuf	*bp;
-word	*w;
-word	**p;
+Biobuf *bp;
+word *w;
+word **p;
 bp = Bopen(WORD_LIST, OREAD);
 if (!bp)
 {
@@ -142,7 +142,7 @@ w->next = *p;
 void
 count_letters(target *t, char *s)
 {
-int	i;
+int i;
 for (i = 0; i < ALPHAS; i++)
 t->count[i] = 0;
 t->length = 0;
@@ -155,9 +155,9 @@ t->length++;
 int
 contained(word *i, target *t)
 {
-int	n;
-char	*v;
-target	it;
+int n;
+char *v;
+target it;
 if ((i->mask & t->mask) != i->mask)
 return 0;
 count_letters(&it, i->text);
@@ -178,9 +178,9 @@ return 0;
 int
 prune(set in, int m, target *filter, set out)
 {
-word	*i, *o, *t;
-int	n;
-int	nz;
+word *i, *o, *t;
+int n;
+int nz;
 nz = 0;
 for (n = 1; n < LENLIMIT; n++)
 {
@@ -208,8 +208,8 @@ return nz;
 void
 print_set(set s)
 {
-word	*w;
-int	n;
+word *w;
+int n;
 for (n = 1; n < LENLIMIT; n++)
 {
 for (w = s[n]; w != NULL; w = w->next)
@@ -219,8 +219,8 @@ fprint(out_fd, "%s\n", w->text);
 ulong
 target_mask(int c[])
 {
-ulong	m;
-int	i;
+ulong m;
+int i;
 m = 0;
 for (i = 0; i < ALPHAS; i++)
 {
@@ -232,7 +232,7 @@ return m;
 void
 dump_list(word **e)
 {
-word	**p;
+word **p;
 fprint(out_fd, "%d", (int)(e - list + 1));
 for (p = list; p <= e; p++)
 fprint(out_fd, " %s", (*p)->text);
@@ -241,8 +241,8 @@ fprint(out_fd, "\n");
 void
 free_set(set s)
 {
-int	i;
-word	*p, *q;
+int i;
+word *p, *q;
 for (i = 1; i < LENLIMIT; i++)
 {
 for (p = s[i]; p != NULL; p = q)
@@ -255,11 +255,11 @@ free(p);
 void
 enumerate(word **p, target *i, set c)
 {
-target	t;
-set	o;
-word	*w, *h;
-char	*s;
-int	l, m, b;
+target t;
+set o;
+word *w, *h;
+char *s;
+int l, m, b;
 l = p - list;
 b = (i->length + (maxwords - l - 1)) / (maxwords - l);
 for (m = i->length; m >= b; m--)
@@ -294,7 +294,7 @@ c[m] = h;
 void
 clean(char *s)
 {
-char	*p, *q;
+char *p, *q;
 for (p = s, q = s; *p != '\0'; p++)
 {
 if (islower(*p))
@@ -307,8 +307,8 @@ else if (isupper(*p))
 void
 anagramulate(char *s)
 {
-target	t;
-set	subjects;
+target t;
+set subjects;
 clean(s);
 if (fixed)
 maxwords = fixed;
@@ -330,8 +330,8 @@ fixed = 1;
 void
 read_words(void)
 {
-char	*s;
-Biobuf  b;
+char *s;
+Biobuf b;
 Binit(&b, in_fd, OREAD);
 while ((s = Brdline(&b, '\n')) != NULL)
 {

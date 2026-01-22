@@ -2,14 +2,14 @@
 (use-modules (opencog ure))
 (define icr-rb (ConceptNode "icr-rb"))
 (define (icr-bc . args)
-  (apply cog-bc (cons icr-rb args)))
+(apply cog-bc (cons icr-rb args)))
 (define pp-icr-rb (ConceptNode "pp-icr-rb"))
 (define (pp-icr-bc . args)
-  (apply cog-bc (cons pp-icr-rb args)))
+(apply cog-bc (cons pp-icr-rb args)))
 (add-to-load-path "../../../opencog/pln/")
 (define rule-filenames
-  (list "rules/predicate/conditional-direct-evaluation.scm"
-        "rules/propositional/crisp-conjunction-introduction.scm"))
+(list "rules/predicate/conditional-direct-evaluation.scm"
+"rules/propositional/crisp-conjunction-introduction.scm"))
 (for-each load-from-path rule-filenames)
 (ure-add-rule icr-rb conditional-direct-evaluation-implication-scope-rule-name)
 (ure-add-rule pp-icr-rb true-conjunction-introduction-2ary-rule-name)

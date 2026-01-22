@@ -1,4 +1,4 @@
-#ifndef	_IPC_IPC_KMSG_H_
+#ifndef _IPC_IPC_KMSG_H_
 #define _IPC_IPC_KMSG_H_
 #include <mach/machine/vm_types.h>
 #include <mach/message.h>
@@ -16,147 +16,147 @@ vm_size_t ikm_size;
 ipc_marequest_t ikm_marequest;
 mach_msg_header_t ikm_header;
 } *ipc_kmsg_t;
-#define	IKM_NULL		((ipc_kmsg_t) 0)
-#define	IKM_OVERHEAD							\
+#define IKM_NULL ((ipc_kmsg_t) 0)
+#define IKM_OVERHEAD \
 (sizeof(struct ipc_kmsg) - sizeof(mach_msg_header_t))
-#define	ikm_plus_overhead(size)	((vm_size_t)((size) + IKM_OVERHEAD))
-#define	ikm_less_overhead(size)	((mach_msg_size_t)((size) - IKM_OVERHEAD))
-#if	MACH_IPC_TEST
-#define IKM_BOGUS		((ipc_kmsg_t) 0xffffff10)
-#define	ikm_mark_bogus(kmsg)						\
-MACRO_BEGIN								\
-(kmsg)->ikm_next = IKM_BOGUS;					\
-(kmsg)->ikm_prev = IKM_BOGUS;					\
+#define ikm_plus_overhead(size) ((vm_size_t)((size) + IKM_OVERHEAD))
+#define ikm_less_overhead(size) ((mach_msg_size_t)((size) - IKM_OVERHEAD))
+#if MACH_IPC_TEST
+#define IKM_BOGUS ((ipc_kmsg_t) 0xffffff10)
+#define ikm_mark_bogus(kmsg) \
+MACRO_BEGIN \
+(kmsg)->ikm_next = IKM_BOGUS; \
+(kmsg)->ikm_prev = IKM_BOGUS; \
 MACRO_END
 #else
-#define	ikm_mark_bogus(kmsg)	;
+#define ikm_mark_bogus(kmsg) ;
 #endif
-extern ipc_kmsg_t	ipc_kmsg_cache[NCPUS];
-#define ikm_cache()     ipc_kmsg_cache[cpu_number()]
-#define ikm_cache_alloc_try()						\
-MACRO_BEGIN								\
-ipc_kmsg_t __kmsg = ikm_cache();				\
-if (__kmsg != IKM_NULL) {					\
-ikm_cache() = IKM_NULL;					\
-ikm_check_initialized(__kmsg, IKM_SAVED_KMSG_SIZE);	\
-}								\
-__kmsg;								\
+extern ipc_kmsg_t ipc_kmsg_cache[NCPUS];
+#define ikm_cache() ipc_kmsg_cache[cpu_number()]
+#define ikm_cache_alloc_try() \
+MACRO_BEGIN \
+ipc_kmsg_t __kmsg = ikm_cache(); \
+if (__kmsg != IKM_NULL) { \
+ikm_cache() = IKM_NULL; \
+ikm_check_initialized(__kmsg, IKM_SAVED_KMSG_SIZE); \
+} \
+__kmsg; \
 MACRO_END
-#define ikm_cache_alloc()						\
-MACRO_BEGIN								\
-ipc_kmsg_t __kmsg = ikm_cache_alloc_try(); 			\
-if (!__kmsg) {							\
-__kmsg = ikm_alloc(IKM_SAVED_MSG_SIZE);			\
-if (__kmsg != IKM_NULL)					\
-ikm_init(__kmsg, IKM_SAVED_MSG_SIZE);		\
-}								\
-__kmsg;								\
+#define ikm_cache_alloc() \
+MACRO_BEGIN \
+ipc_kmsg_t __kmsg = ikm_cache_alloc_try(); \
+if (!__kmsg) { \
+__kmsg = ikm_alloc(IKM_SAVED_MSG_SIZE); \
+if (__kmsg != IKM_NULL) \
+ikm_init(__kmsg, IKM_SAVED_MSG_SIZE); \
+} \
+__kmsg; \
 MACRO_END
-#define ikm_cache_free_try(kmsg)					\
-MACRO_BEGIN								\
-int __success = 0;						\
-if (ikm_cache() == IKM_NULL) {					\
-ikm_cache() = (kmsg);					\
-__success = 1;						\
-}								\
-__success;							\
+#define ikm_cache_free_try(kmsg) \
+MACRO_BEGIN \
+int __success = 0; \
+if (ikm_cache() == IKM_NULL) { \
+ikm_cache() = (kmsg); \
+__success = 1; \
+} \
+__success; \
 MACRO_END
-#define ikm_cache_free(kmsg)						\
-MACRO_BEGIN								\
-if (((kmsg)->ikm_size == IKM_SAVED_KMSG_SIZE) &&		\
-(ikm_cache() == IKM_NULL))					\
-ikm_cache() = (kmsg);					\
-else								\
-ikm_free(kmsg);						\
+#define ikm_cache_free(kmsg) \
+MACRO_BEGIN \
+if (((kmsg)->ikm_size == IKM_SAVED_KMSG_SIZE) && \
+(ikm_cache() == IKM_NULL)) \
+ikm_cache() = (kmsg); \
+else \
+ikm_free(kmsg); \
 MACRO_END
-#define	IKM_SAVED_KMSG_SIZE	PAGE_SIZE
-#define	IKM_SAVED_MSG_SIZE	ikm_less_overhead(IKM_SAVED_KMSG_SIZE)
-#define	IPC_VIRTUAL_COPY_THRESHOLD	(2 * PAGE_SIZE)
-#define	IPC_ZERO_COPY_THRESHOLD		(4 * PAGE_SIZE)
-#define	ikm_alloc(size)							\
+#define IKM_SAVED_KMSG_SIZE PAGE_SIZE
+#define IKM_SAVED_MSG_SIZE ikm_less_overhead(IKM_SAVED_KMSG_SIZE)
+#define IPC_VIRTUAL_COPY_THRESHOLD (2 * PAGE_SIZE)
+#define IPC_ZERO_COPY_THRESHOLD (4 * PAGE_SIZE)
+#define ikm_alloc(size) \
 ((ipc_kmsg_t) kalloc(ikm_plus_overhead(size)))
-#define	IKM_EXPAND_FACTOR	((sizeof(mach_port_t) + sizeof(mach_port_name_t) - 1) / sizeof(mach_port_name_t))
+#define IKM_EXPAND_FACTOR ((sizeof(mach_port_t) + sizeof(mach_port_name_t) - 1) / sizeof(mach_port_name_t))
 _Static_assert(sizeof(mach_port_t) >= sizeof(mach_port_name_t));
-#define	ikm_init(kmsg, size)						\
-MACRO_BEGIN								\
-ikm_init_special((kmsg), ikm_plus_overhead(size));		\
+#define ikm_init(kmsg, size) \
+MACRO_BEGIN \
+ikm_init_special((kmsg), ikm_plus_overhead(size)); \
 MACRO_END
-#define	ikm_init_special(kmsg, size)					\
-MACRO_BEGIN								\
-(kmsg)->ikm_size = (size);					\
-(kmsg)->ikm_marequest = IMAR_NULL;				\
+#define ikm_init_special(kmsg, size) \
+MACRO_BEGIN \
+(kmsg)->ikm_size = (size); \
+(kmsg)->ikm_marequest = IMAR_NULL; \
 MACRO_END
-#define	ikm_check_initialized(kmsg, size)				\
-MACRO_BEGIN								\
-assert((kmsg)->ikm_size == (size));				\
-assert((kmsg)->ikm_marequest == IMAR_NULL);			\
+#define ikm_check_initialized(kmsg, size) \
+MACRO_BEGIN \
+assert((kmsg)->ikm_size == (size)); \
+assert((kmsg)->ikm_marequest == IMAR_NULL); \
 MACRO_END
-#define	IKM_SIZE_NORMA		0
-#define	IKM_SIZE_NETWORK	-1
-#define	ikm_free(kmsg)							\
-MACRO_BEGIN								\
-vm_size_t _size = (kmsg)->ikm_size;				\
+#define IKM_SIZE_NORMA 0
+#define IKM_SIZE_NETWORK -1
+#define ikm_free(kmsg) \
+MACRO_BEGIN \
+vm_size_t _size = (kmsg)->ikm_size; \
 \
-if ((integer_t)_size > 0)					\
-kfree((vm_offset_t) (kmsg), _size);			\
-else								\
-ipc_kmsg_free(kmsg);					\
+if ((integer_t)_size > 0) \
+kfree((vm_offset_t) (kmsg), _size); \
+else \
+ipc_kmsg_free(kmsg); \
 MACRO_END
 #include <ipc/ipc_kmsg_queue.h>
 typedef struct ipc_kmsg_queue *ipc_kmsg_queue_t;
-#define	IKMQ_NULL		((ipc_kmsg_queue_t) 0)
-#define	ipc_kmsg_queue_init(queue)		\
-MACRO_BEGIN					\
-(queue)->ikmq_base = IKM_NULL;		\
+#define IKMQ_NULL ((ipc_kmsg_queue_t) 0)
+#define ipc_kmsg_queue_init(queue) \
+MACRO_BEGIN \
+(queue)->ikmq_base = IKM_NULL; \
 MACRO_END
-#define	ipc_kmsg_queue_empty(queue)	((queue)->ikmq_base == IKM_NULL)
+#define ipc_kmsg_queue_empty(queue) ((queue)->ikmq_base == IKM_NULL)
 extern void ipc_kmsg_enqueue(
-ipc_kmsg_queue_t	queue,
-ipc_kmsg_t		kmsg);
+ipc_kmsg_queue_t queue,
+ipc_kmsg_t kmsg);
 extern ipc_kmsg_t ipc_kmsg_dequeue(
-ipc_kmsg_queue_t        queue);
+ipc_kmsg_queue_t queue);
 extern void ipc_kmsg_rmqueue(
-ipc_kmsg_queue_t	queue,
-ipc_kmsg_t		kmsg);
-#define	ipc_kmsg_queue_first(queue)		((queue)->ikmq_base)
+ipc_kmsg_queue_t queue,
+ipc_kmsg_t kmsg);
+#define ipc_kmsg_queue_first(queue) ((queue)->ikmq_base)
 extern ipc_kmsg_t ipc_kmsg_queue_next(
-ipc_kmsg_queue_t	queue,
-ipc_kmsg_t		kmsg);
-#define	ipc_kmsg_rmqueue_first_macro(queue, kmsg)			\
-MACRO_BEGIN								\
-ipc_kmsg_t _next;						\
+ipc_kmsg_queue_t queue,
+ipc_kmsg_t kmsg);
+#define ipc_kmsg_rmqueue_first_macro(queue, kmsg) \
+MACRO_BEGIN \
+ipc_kmsg_t _next; \
 \
-assert((queue)->ikmq_base == (kmsg));				\
+assert((queue)->ikmq_base == (kmsg)); \
 \
-_next = (kmsg)->ikm_next;					\
-if (_next == (kmsg)) {						\
-assert((kmsg)->ikm_prev == (kmsg));			\
-(queue)->ikmq_base = IKM_NULL;				\
-} else {							\
-ipc_kmsg_t _prev = (kmsg)->ikm_prev;			\
+_next = (kmsg)->ikm_next; \
+if (_next == (kmsg)) { \
+assert((kmsg)->ikm_prev == (kmsg)); \
+(queue)->ikmq_base = IKM_NULL; \
+} else { \
+ipc_kmsg_t _prev = (kmsg)->ikm_prev; \
 \
-(queue)->ikmq_base = _next;				\
-_next->ikm_prev = _prev;				\
-_prev->ikm_next = _next;				\
-}								\
-ikm_mark_bogus (kmsg);						\
+(queue)->ikmq_base = _next; \
+_next->ikm_prev = _prev; \
+_prev->ikm_next = _next; \
+} \
+ikm_mark_bogus (kmsg); \
 MACRO_END
-#define	ipc_kmsg_enqueue_macro(queue, kmsg)				\
-MACRO_BEGIN								\
-ipc_kmsg_t _first = (queue)->ikmq_base;				\
+#define ipc_kmsg_enqueue_macro(queue, kmsg) \
+MACRO_BEGIN \
+ipc_kmsg_t _first = (queue)->ikmq_base; \
 \
-if (_first == IKM_NULL) {					\
-(queue)->ikmq_base = (kmsg);				\
-(kmsg)->ikm_next = (kmsg);				\
-(kmsg)->ikm_prev = (kmsg);				\
-} else {							\
-ipc_kmsg_t _last = _first->ikm_prev;			\
+if (_first == IKM_NULL) { \
+(queue)->ikmq_base = (kmsg); \
+(kmsg)->ikm_next = (kmsg); \
+(kmsg)->ikm_prev = (kmsg); \
+} else { \
+ipc_kmsg_t _last = _first->ikm_prev; \
 \
-(kmsg)->ikm_next = _first;				\
-(kmsg)->ikm_prev = _last;				\
-_first->ikm_prev = (kmsg);				\
-_last->ikm_next = (kmsg);				\
-}								\
+(kmsg)->ikm_next = _first; \
+(kmsg)->ikm_prev = _last; \
+_first->ikm_prev = (kmsg); \
+_last->ikm_next = (kmsg); \
+} \
 MACRO_END
 extern void
 ipc_kmsg_destroy(ipc_kmsg_t);

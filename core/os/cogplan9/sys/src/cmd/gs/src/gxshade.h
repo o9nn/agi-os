@@ -1,5 +1,5 @@
 #ifndef gxshade_INCLUDED
-#  define gxshade_INCLUDED
+# define gxshade_INCLUDED
 #include "gsshade.h"
 #include "gxfixed.h"
 #include "gxmatrix.h"
@@ -70,7 +70,7 @@ int shade_next_vertex(shade_coord_stream_t * cs, shading_vertex_t * vertex);
 gx_device *dev;\
 gs_imager_state *pis;\
 const gs_color_space *direct_space;\
-int num_components;		\
+int num_components; \
 float cc_max_error[GS_CLIENT_COLOR_MAX_COMPONENTS]
 typedef struct shading_fill_state_s {
 shading_fill_state_common;
@@ -79,7 +79,7 @@ void shade_init_fill_state(shading_fill_state_t * pfs,
 const gs_shading_t * psh, gx_device * dev,
 gs_imager_state * pis);
 #ifndef gx_device_color_DEFINED
-#  define gx_device_color_DEFINED
+# define gx_device_color_DEFINED
 typedef struct gx_device_color_s gx_device_color;
 #endif
 int shade_fill_path(const shading_fill_state_t * pfs, gx_path * ppath,

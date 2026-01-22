@@ -4,8 +4,8 @@
 #include <sys/types.h>
 #include <argp.h>
 #include "pcifs.h"
-#define STR2(x)  #x
-#define STR(x)  STR2(x)
+#define STR2(x) #x
+#define STR(x) STR2(x)
 struct parse_hook
 {
 struct pcifs_perm *permsets;
